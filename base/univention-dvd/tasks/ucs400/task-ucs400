@@ -659,6 +659,53 @@ manpages-dev
 re2c
 zendframework
 
+/* pulse App */
+fonts-arphic-bkai00mp
+fonts-arphic-bsmi00lp
+fonts-arphic-gbsn00lp
+fonts-ipaexfont-gothic
+fonts-ipaexfont-mincho
+fonts-ipaexfont
+php5-xmlrpc
+ttf-arphic-bkai00mp
+ttf-arphic-bsmi00lp
+ttf-arphic-gbsn00lp
+autossh
+libtime-modules-perl
+backuppc
+curl
+fonts-freefont-ttf
+libgirepository-1.0-1
+gir1.2-glib-2.0
+ttf-freefont
+tinymce
+libphp-phpmailer
+libjs-extjs
+heirloom-mailx
+libcrypto++9
+libfile-rsyncp-perl
+libhtml-template-perl
+libio-dirent-perl
+nsis-common
+nsis
+python-poster
+python-antlr
+python-cairosvg
+python-ply
+python-pycparser
+python-gi
+python-oauthlib
+python-six
+python-requests
+python-cssselect
+python-xlwt
+rrdtool
+python-gobject
+uuid-runtime
+python-pyquery
+python-greenlet
+python-gevent
+
 /* php5-sqlite (Bug #35030) */
 php5-sqlite
 

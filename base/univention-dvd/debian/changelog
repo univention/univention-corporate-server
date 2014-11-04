@@ -1,3 +1,9 @@
+univention-dvd (0.2.16-1) unstable; urgency=low
+
+  * Added packages for pulse App (Bug #36426)
+
+ -- Felix Botner <botner@univention.de>  Tue, 04 Nov 2014 16:27:40 +0100
+
 univention-dvd (0.2.15-1) unstable; urgency=medium
 
   * Added gnome-session and gnome-panel to maintained (Bug #36050)
