@@ -1,3 +1,9 @@
+ucs-test (5.0.42-5) unstable; urgency=medium
+
+  * Bug #35985: add dependency on curl
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Nov 2014 17:14:06 +0100
+
 ucs-test (5.0.42-4) unstable; urgency=medium
 
   * Bug #35985: fetch curl from unmaintained
