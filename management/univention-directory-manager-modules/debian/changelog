@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.28-1) unstable; urgency=medium
+
+  * Bug #36304: Workaround for restrictive imghdr.test_jpeg
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Nov 2014 11:25:48 +0100
+
 univention-directory-manager-modules (10.0.27-1) unstable; urgency=medium
 
   * Added help link to shares/printer module (Bug #32026)

@@ -444,9 +444,12 @@ class jpegPhoto( Upload ):
 	@classmethod
 	def parse(self, text):
 		try:
-			assert base64.b64decode(text)[0:2] == b'\xff\xd8' ## this is what imghdr.py probably does in the future.
+			# imghdr.what(None, base64.b64dcode(text)) == 'jpeg'  # See Bug #36304
+			## this is what imghdr.py probably does in  the future:
+			if base64.b64decode(text)[0:2] != b'\xff\xd8':
+				raise ValueError
 			return text
-		except:
+		except (base64.binascii.Error, ValueError, TypeError):
 			raise univention.admin.uexceptions.valueError(_('Value must be Base64 encoded jpeg'))
 
 class Base64Bzip2XML( TextArea ):
