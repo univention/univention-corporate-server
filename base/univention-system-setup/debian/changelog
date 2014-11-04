@@ -1,3 +1,9 @@
+univention-system-setup (8.1.39-3) unstable; urgency=low
+
+  * Bug #33839: fix system upgrade on DC slaves
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 04 Nov 2014 13:35:07 +0100
+
 univention-system-setup (8.1.39-2) unstable; urgency=low
 
   * Bug #36116: Fix typo
