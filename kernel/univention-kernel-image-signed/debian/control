@@ -8,7 +8,6 @@ Standards-Version: 3.8.2
 Package: kernel-image-3.16-ucs102-amd64-di-signed
 Architecture: amd64
 Section: debian-installer
-Depends: linux-image-3.16-ucs102-amd64
 Package-Type: udeb
 Description: UCS - Linux kernel (standard)
  This package provides the signed version of:
