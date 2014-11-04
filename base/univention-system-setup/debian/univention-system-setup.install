@@ -1,2 +1,4 @@
 usr/share/locale
 usr/lib/univention-system-setup/scripts
+usr/lib/univention-system-setup/cleanup-post.d
+usr/lib/univention-system-setup/cleanup-pre.d

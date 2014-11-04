@@ -1,3 +1,10 @@
+univention-system-setup (8.1.44-1) unstable; urgency=medium
+
+  * Bug #35703: fix error handling
+  * Bug #36418: second approach to run the cleanup scripts in any case
+
+ -- Florian Best <best@univention.de>  Tue, 04 Nov 2014 19:26:00 +0100
+
 univention-system-setup (8.1.43-1) unstable; urgency=medium
 
   * Bug #36418: trying to fix running of cleanup scripts
