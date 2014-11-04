@@ -883,6 +883,11 @@
 				The KDE design has been adapted to UCS 4.0
 				(<ulink url="&ucsbug;35936">Bug 35936</ulink>).
 		</simpara></listitem>
+		<listitem><simpara>
+			The <application>xrdp</application> App has been updated to version 0.8.0
+			with better rdp and linux terminal server support
+			(<ulink url="&ucsbug;35885">Bug 35885</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 </section>
 
