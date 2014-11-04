@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.80-1) unstable; urgency=medium
+
+  * Bug #35654: adjust shadow of login message box
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 04 Nov 2014 12:09:58 +0100
+
 univention-management-console-frontend-theme (0.0.79-1) unstable; urgency=medium
 
   * Bug #35654: fix position of inline labels
