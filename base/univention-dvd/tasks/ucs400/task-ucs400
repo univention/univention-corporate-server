@@ -800,8 +800,6 @@ libipmiconsole2
 libipmidetect0
 freeipmi-tools
 console-tools
-gnome-session
-gnome-panel
 
 /* UCC 2 Bug 35891 */
 xorriso
