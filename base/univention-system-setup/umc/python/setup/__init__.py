@@ -73,13 +73,15 @@ RE_SSL = re.compile(r'^ssl/.*')
 
 class Instance(Base, ProgressMixin):
 
-	def __init__(self):
-		Base.__init__(self)
+	def __init__(self, *args, **kwargs):
+		Base.__init__(self, *args, **kwargs)
+		ProgressMixin.__init__(self)
 		self._finishedLock = threading.Lock()
 		self._finishedResult = True
 		self._progressParser = util.ProgressParser()
 		self._cleanup_required = False
 		self._very_first_locale = None
+		self.__keep_alive_request = None
 		# reset umask to default
 		os.umask( 0022 )
 
@@ -127,6 +129,12 @@ class Instance(Base, ProgressMixin):
 			return
 
 		self.finished( request.id, result )
+
+	def ping(self, request):
+		if request.options.get('keep_alive'):
+			self.__keep_alive_request = request
+			return
+		self.finished(request.id, None)
 
 	@simple_response
 	def load(self):
@@ -208,13 +216,14 @@ class Instance(Base, ProgressMixin):
 			notifier.Callback( _thread, request, self ), _finished )
 		thread.run()
 
-	def join(self, request):
+	@simple_response
+	def join(self, values=None, username=None, password=None):
 		'''Join and reconfigure the system according to the values specified in the dict given as
 		option named "values".'''
 
 		# get old and new values
 		orgValues = util.load_values()
-		values = request.options.get('values', {})
+		values = values or {}
 
 		# determine new system role
 		oldrole = orgValues.get('server/role', '')
@@ -222,7 +231,7 @@ class Instance(Base, ProgressMixin):
 		if orgValues.get('joined'):
 			raise Exception(_('Already joined systems cannot be joined.'))
 
-		def _thread(request, obj, username, password):
+		def _thread(obj, username, password):
 			# acquire the lock until the scripts have been executed
 			self._finishedResult = False
 			obj._finishedLock.acquire()
@@ -261,21 +270,20 @@ class Instance(Base, ProgressMixin):
 			finally:
 				obj._finishedLock.release()
 
-		def _finished( thread, result ):
-			success = True
-			if isinstance( result, BaseException ):
-				success = False
-				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
-				MODULE.warn( 'Exception during saving the settings: %s\n%s' % (result, msg) )
-				self._progressParser.current.errors.append(_('Encountered unexpected error during setup process: %s') % result)
+		def _finished(thread, result):
+			if self.__keep_alive_request:
+				self.finished(self.__keep_alive_request.id, None)
+				self.__keep_alive_request = None
+
+			if isinstance(result, BaseException):
+				MODULE.warn( 'Exception during saving the settings: %s\n%s' % (result, ''.join(traceback.format_exception(*thread.exc_info))))
+				self._progressParser.current.errors.append(_('Encountered unexpected error during setup process: %s') % (result,))
 				self._progressParser.current.critical = True
 				self._finishedResult = True
 
-			self.finished(request.id, success)
-
-		thread = notifier.threads.Simple( 'save',
-			notifier.Callback(_thread, request, self, request.options.get('username'), request.options.get('password')), _finished)
+		thread = notifier.threads.Simple('join', notifier.Callback(_thread, self, username, password), _finished)
 		thread.run()
+		return
 
 	def check_finished(self, request):
 		'''Check whether the join/setup scripts are finished. This method implements a long

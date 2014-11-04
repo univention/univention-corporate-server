@@ -1142,7 +1142,7 @@ define([
 				// dont do anything important here, just
 				// make sure that umc does not forget us
 				// dont even handle errors
-				this.umcpCommand('setup/finished', {}, false);
+				this.umcpCommand('setup/ping', {}, false);
 			});
 
 			// setup the progress bar
@@ -1699,10 +1699,10 @@ define([
 					// ... server cannot handle "undefined"
 					username: username || null,
 					password: password || null
-				}, false);
+				}, false).then(lang.hitch(this, function() {
+					// make sure the server process cannot die
+					this.umcpCommand('setup/ping', {keep_alive: true});
 
-				// poll whether script has finished
-				tools.defer(lang.hitch(this, function() {
 					this._progressBar.auto(
 						'setup/finished',
 						{},
@@ -1711,7 +1711,10 @@ define([
 						_('Configuration finished'),
 						true
 					);
-				}), 500);
+				}), lang.hitch(this, function(error) {
+					this._progressBar.setInfo(undefined, undefined, undefined, [tools.parseError(error).message], true);
+					deferred.resolve();
+				}));
 
 				return deferred.then(lang.hitch(this, function() {
 					this.standby(false);

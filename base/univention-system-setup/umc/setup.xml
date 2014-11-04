@@ -28,6 +28,7 @@
 		<command name="setup/save" function="save" />
 		<command name="setup/join" function="join" />
 		<command name="setup/finished" function="check_finished" />
+		<command name="setup/ping" function="ping" />
 		<command name="setup/cleanup" function="cleanup" />
 		<command name="setup/lang/default_timezone" function="lang_default_timezone" />
 		<command name="setup/lang/timezones" function="lang_timezones" />
