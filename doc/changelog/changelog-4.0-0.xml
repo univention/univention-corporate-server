@@ -535,7 +535,7 @@
 				(<ulink url="&ucsbug;35847">Bug 35847</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-				A module <emphasis>System diagnostic</emphasis> has been added to UMC which is able to analyze the system for known problems and helps to resolve them.
+				A module <emphasis>System diagnostic</emphasis> has been added to UMC which is able to analyse the system for known problems and helps to resolve them.
 				(<ulink url="&ucsbug;34765">Bug 34765</ulink>),
 				(<ulink url="&ucsbug;35866">Bug 35866</ulink>),
 				(<ulink url="&ucsbug;35864">Bug 35864</ulink>).
