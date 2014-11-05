@@ -1,3 +1,9 @@
+univention-updater (10.0.36-1) unstable; urgency=medium
+
+  * Bug #36441: run joinscripts in postup on master
+
+ -- Arvid Requate <requate@univention.de>  Wed, 05 Nov 2014 11:38:18 +0100
+
 univention-updater (10.0.35-1) unstable; urgency=low
 
   * Bug #35885: update univention-xrdp in postup if installed  

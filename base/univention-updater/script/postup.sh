@@ -198,6 +198,11 @@ ucr set \
 	repository/online/component/4.0-0-errata/description="Errata updates for UCS 4.0-0" \
 	repository/online/component/4.0-0-errata/version="4.0" >>"$UPDATER_LOG" 2>&1
 
+# run remaining joinscripts
+if [ "$server_role" = "domaincontroller_master" ]; then
+	univention-run-join-scripts
+fi
+
 # make sure that UMC server is restarted (Bug #33426)
 echo "
 
