@@ -254,7 +254,7 @@ ucr commit \
 
 # Reset the apache2 startsite
 initialsetup_startsite="ucs-overview/initialsetup.html"
-system_setup_boot_startsite="univention-management-console/?module=setup\&overview=false\&username=root"
+system_setup_boot_startsite="univention-management-console/?module=setup\&flavor=wizard\&overview=false\&username=root"
 startsite="$(ucr get apache2/startsite)"
 if [ "$startsite" = "$initialsetup_startsite" -o "$startsite" = "$system_setup_boot_startsite" ]; then
 	ucr set apache2/startsite="$(ucr get system/setup/prev/apache2/startsite)"

@@ -63,7 +63,7 @@ fi
 
 if [ "$1" = "configure" ] && [ ! -e /var/univention-join/joined ]; then
 	initialsetup_startsite="ucs-overview/initialsetup.html"
-	system_setup_boot_startsite='univention-management-console/?module=setup\&overview=false\&username=root'
+	system_setup_boot_startsite='univention-management-console/?module=setup\&flavor=wizard\&overview=false\&username=root'
 	if [ "$apache2_startsite" != "$system_setup_boot_startsite" -a "$apache2_startsite" != "$initialsetup_startsite" ]; then
 		ucr set system/setup/prev/apache2/startsite="$apache2_startsite"
 		ucr set apache2/startsite="$system_setup_boot_startsite"

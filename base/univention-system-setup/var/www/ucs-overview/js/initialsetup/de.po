@@ -38,6 +38,6 @@ msgstr ""
 msgid "ssh -i &lt;path/to/privatekey&gt; root@&lt;serveraddress&gt; passwd"
 msgstr "ssh -i &lt;pfad/zum/privatekey&gt; root@&lt;serveradresse&gt; passwd"
 
-msgid "If a password for <i>root</i> has been set, <a href='/univention-management-console/?module=setup&overview=false&displayUsername=false&username=root'>start the setup wizard</a>."
-msgstr "Wenn das Passwort für <i>root</i> gesetzt wurde, <a href='/univention-management-console/?module=setup&overview=false&displayUsernagme=false&username=root'>starten Sie den Einrichtungsassistenten</a>."
+msgid "If a password for <i>root</i> has been set, <a href='/univention-management-console/?module=setup&flavor=wizard&overview=false&username=root'>start the setup wizard</a>."
+msgstr "Wenn das Passwort für <i>root</i> gesetzt wurde, <a href='/univention-management-console/?module=setup&flavor=wizard&overview=false&username=root'>starten Sie den Einrichtungsassistenten</a>."
 
