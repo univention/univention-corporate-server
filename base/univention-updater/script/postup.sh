@@ -200,7 +200,7 @@ ucr set \
 
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then
-	univention-run-join-scripts
+	univention-run-join-scripts >>"$UPDATER_LOG" 2>&1
 fi
 
 # make sure that UMC server is restarted (Bug #33426)
