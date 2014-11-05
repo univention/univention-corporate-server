@@ -370,6 +370,11 @@
 					The keyboard settings have been improved
 					(<ulink url="&ucsbug;35709">Bug 35709</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+					When the &ucsUCRV; <envar>windows/domain</envar> is derived from the domainname
+					it is automatically truncated to up to 15 characters to conform to netbios
+					restrictions (<ulink url="&ucsbug;35709">Bug 35709</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
