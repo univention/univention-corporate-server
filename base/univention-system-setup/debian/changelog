@@ -1,3 +1,9 @@
+univention-system-setup (8.1.48-1) unstable; urgency=medium
+
+  * Bug #36459: Truncate windows/domain to 15 characters max
+
+ -- Arvid Requate <requate@univention.de>  Wed, 05 Nov 2014 20:15:44 +0100
+
 univention-system-setup (8.1.47-1) unstable; urgency=low
 
   * Bug #36328: removed obsolete css directory

@@ -786,6 +786,8 @@ def domain2windowdomain(domainname):
 	else:
 		windomain = ''
 
+	windomain = windomain[:15] ## enforce netbios limit
+
 	if not windomain:
 		# fallback name
 		windomain = 'UCSDOMAIN'
