@@ -753,6 +753,7 @@ libxcb-render-util0
 lib32gcc1
 lib32stdc++6
 cpp-4.4
+gcc-4.4
 firmware-linux
 fonts-droid
 gnuplot-nox
