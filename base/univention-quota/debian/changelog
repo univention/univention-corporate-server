@@ -1,3 +1,10 @@
+univention-quota (9.1.4-1) unstable; urgency=medium
+
+  * Bug #36434: remove notifications when setting/removing user quota. Display
+  	standby animation while UMCP requests are running
+
+ -- Florian Best <best@univention.de>  Wed, 05 Nov 2014 12:26:55 +0100
+
 univention-quota (9.1.3-2) unstable; urgency=medium
 
   * Bug #36207: Detect quota activation via "quotaon" instead of "usrquota"

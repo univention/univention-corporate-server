@@ -45,15 +45,15 @@ define([
 	return declare("umc.modules.quota.PartitionPage", [ Page ], {
 
 		moduleStore: null,
+		standby: null,
+		standbyDuring: null,
 		partitionDevice: null,
 		_grid: null,
 		_partitionInfo: null,
 		_searchForm: null,
 
-		i18nClass: 'umc.modules.quota',
-
 		_getPartitionInfo: function() {
-			tools.umcpCommand('quota/partitions/info', {'partitionDevice': this.partitionDevice}).then(lang.hitch(this, function(data) {
+			this.standbyDuring(tools.umcpCommand('quota/partitions/info', {'partitionDevice': this.partitionDevice})).then(lang.hitch(this, function(data) {
 				this._partitionInfo.set('content', lang.replace('<p>' + _('Mount point: ') + '{mountPoint} ' + _('Filesystem: ') + '{filesystem} ' + _('Options: ') + ' {options}' + '</p>', data.result));
 			}));
 		},
@@ -90,7 +90,7 @@ define([
 			var widgets = [{
 				type: TextBox,
 				name: 'filter',
-				value: '*',
+				value: '*'
 			}];
 
 			this._searchForm = new SearchForm({
@@ -214,7 +214,7 @@ define([
 					array.forEach(ids, function(iid) {
 						this.moduleStore.remove(iid);
 					}, this);
-					transaction.commit().then(lang.hitch(this, function(data) {
+					this.standbyDuring(transaction.commit()).then(lang.hitch(this, function(data) {
 						if (data.success === false) {
 							var failed = [];
 							array.forEach(data.objects, function(item) {

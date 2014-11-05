@@ -38,8 +38,9 @@ from fnmatch import fnmatch
 import univention.management.console as umc
 from univention.lib import fstab
 from univention.management.console.log import MODULE
-from univention.management.console.modules import UMC_CommandError, UMC_OptionMissing
 from univention.management.console.protocol.definitions import MODULE_ERR, SUCCESS
+from univention.management.console.modules.decorators import sanitize
+from univention.management.console.modules.sanitizers import StringSanitizer, IntegerSanitizer
 
 import mtab
 import tools
@@ -47,51 +48,19 @@ import tools
 _ = umc.Translation('univention-management-console-module-quota').translate
 
 class Commands(object):
-	def _check_error(self, request, partition_name): # TODO
-		message = None
-		try:
-			fs = fstab.File()
-			mt = mtab.File()
-		except IOError as error:
-			MODULE.error('Could not open %s' % error.filename)
-			message = _('Could not open %s') % error.filename
-		partition = fs.find(spec = partition_name)
-		if partition:
-			mounted_partition = mt.get(partition.spec)
-			if mounted_partition:
-				if 'usrquota' not in mounted_partition.options:
-					MODULE.error('The following partition is mounted '
-					             'without quota support: %s' % partition_name)
-					message = _('The following partition is mounted mounted '
-					            'without quota support: %s') % partition_name
-			else:
-				MODULE.error('The following partition is '
-				             'currently not mounted: %s' % partition_name)
-				message = _('The following partition is currently '
-				            'not mounted: %s') % partition_name
-		else:
-			MODULE.error('No partition found (%s)' % partition_name)
-			message = _('No partition found (%s)') % partition_name
-		if message:
-			request.status = MODULE_ERR
-			self.finished(request.id, None, message)
 
-	def _thread_finished(self, thread, thread_result, request):
-		if not isinstance(thread_result, BaseException):
-			request.status = SUCCESS
-			self.finished(request.id, {'objects': thread_result['result'],
-			                           'success': thread_result['success']},
-			              thread_result['message'])
-		else:
-			message = str(thread_result) + '\n' + '\n'.join(thread.trace)
-			MODULE.error('An internal error occurred: %s' % message)
-			request.status = MODULE_ERR
-			self.finished(request.id, None, message)
-
+	@sanitize(
+		partitionDevice=StringSanitizer(required=True)
+	)
 	def users_query(self, request):
-		self._check_error(request, request.options['partitionDevice'])
-		callback = notifier.Callback(self._users_query, request.id,
-		                       request.options['partitionDevice'], request)
+		partitionDevice = request.options['partitionDevice']
+		try:
+			self._check_error(request, partitionDevice)
+		except ValueError as exc:
+			self.finished(request.id, None, str(exc), status=MODULE_ERR)
+			return
+
+		callback = notifier.Callback(self._users_query, request.id, partitionDevice, request)
 		tools.repquota(request.options['partitionDevice'], callback)
 
 	def _users_query(self, pid, status, callbackResult, id, partition, request):
@@ -116,42 +85,45 @@ class Commands(object):
 		request.status = SUCCESS
 		self.finished(request.id, result)
 
+	@sanitize(
+		partitionDevice=StringSanitizer(required=True),
+		user=StringSanitizer(required=True),
+		sizeLimitSoft=IntegerSanitizer(required=True),
+		sizeLimitHard=IntegerSanitizer(required=True),
+		fileLimitSoft=IntegerSanitizer(required=True),
+		fileLimitHard=IntegerSanitizer(required=True),
+	)
 	def users_set(self, request):
 		def _thread(request):
-			message = None
-			success = True
-			result = []
-
 			partition = request.options['partitionDevice']
-			unicode_user = request.options['user']
-			user = unicode_user.encode('utf-8')
+			user = request.options['user']
+			if isinstance(user, unicode):
+				user = user.encode('utf-8')
+
 			size_soft = request.options['sizeLimitSoft']
 			size_hard = request.options['sizeLimitHard']
 			file_soft = request.options['fileLimitSoft']
 			file_hard = request.options['fileLimitHard']
-			self._check_error(request, partition)
-			failed = tools.setquota(partition, user, tools.byte2block(size_soft),
-			                        tools.byte2block(size_hard),
-			                        file_soft, file_hard)
+			try:
+				self._check_error(request, partition)
+			except ValueError as exc:
+				return dict(status=MODULE_ERR, message=str(exc))
+
+			failed = tools.setquota(partition, user, tools.byte2block(size_soft), tools.byte2block(size_hard), file_soft, file_hard)
 			if failed:
-				MODULE.error('Failed to modify quota settings for user %s '
-				             'on partition %s' % (user, partition))
-				message = _('Failed to modify quota settings for user %s on '
-				            'partition %s') % (user, partition)
-				request.status = MODULE_ERR
-				self.finished(request.id, None, message)
-			message = _('Successfully set quota settings')
-			return {'result': result, 'message': message, 'success': success}
-		thread = notifier.threads.Simple('Set', notifier.Callback(_thread, request),
-										 notifier.Callback(self._thread_finished, request))
+				MODULE.error('Failed to modify quota settings for user %s on partition %s' % (user, partition))
+				message = _('Failed to modify quota settings for user %s on partition %s') % (user, partition)
+				return dict(status=MODULE_ERR, message=message)
+			return dict(result={'objects': [], 'success': True})
+
+		thread = notifier.threads.Simple('Set', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
 		thread.run()
 
 	def users_remove(self, request):
 		def _thread(request):
 			partitions = []
-			message = None
 			success = True
-			result = []
+			objects = []
 
 			# Determine different partitions
 			for obj in request.options:
@@ -165,13 +137,46 @@ class Commands(object):
 				user = unicode_user.encode('utf-8')
 				failed = tools.setquota(partition, user, '0', '0', '0', '0')
 				if failed:
-					result.append({'id': obj['object'], 'success': False})
+					objects.append({'id': obj['object'], 'success': False})
 					success = False
 				else:
-					result.append({'id': obj['object'], 'success': True})
-			if success:
-				message = _('Successfully removed quota settings')
-			return {'result': result, 'message': message, 'success': success}
-		thread = notifier.threads.Simple('Remove', notifier.Callback(_thread, request),
-										 notifier.Callback(self._thread_finished, request))
+					objects.append({'id': obj['object'], 'success': True})
+			return dict(result={'objects': objects, 'success': success})
+		thread = notifier.threads.Simple('Remove', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
 		thread.run()
+
+	def _check_error(self, request, partition_name): # TODO
+		try:
+			fs = fstab.File()
+			mt = mtab.File()
+		except IOError as error:
+			MODULE.error('Could not open %s' % error.filename)
+			raise ValueError(_('Could not open %s') % error.filename)
+
+		message = None
+		partition = fs.find(spec = partition_name)
+		if partition:
+			mounted_partition = mt.get(partition.spec)
+			if mounted_partition:
+				if 'usrquota' not in mounted_partition.options:
+					MODULE.error('The following partition is mounted without quota support: %s' % partition_name)
+					message = _('The following partition is mounted mounted without quota support: %s') % partition_name
+			else:
+				MODULE.error('The following partition is '
+				             'currently not mounted: %s' % partition_name)
+				message = _('The following partition is currently '
+				            'not mounted: %s') % partition_name
+		else:
+			MODULE.error('No partition found (%s)' % partition_name)
+			message = _('No partition found (%s)') % partition_name
+		if message:
+			raise ValueError(message)
+
+	def _thread_finished(self, thread, thread_result, request):
+		if isinstance(thread_result, BaseException):
+			message = '%s\n%s' % (thread_result, '\n'.join(thread.trace))
+			MODULE.error('An internal error occurred: %s' % message)
+			request.status = MODULE_ERR
+			self.finished(request.id, None, message)
+			return
+		self.finished(request.id, thread_result.get('result'), thread_result.get('message'), status=thread_result.get('status', SUCCESS))

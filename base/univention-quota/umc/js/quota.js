@@ -101,7 +101,7 @@ define([
 				isStandardAction: true,
 				isMultiAction: false,
 				callback: lang.hitch(this, function() {
-					this._grid.filter({'dummy': 'dummy'});
+					this.refreshGrid();
 				})
 			}];
 
@@ -189,9 +189,9 @@ define([
 				callback: lang.hitch(this, function() {
 					var cmd = 'quota/partitions/' + (doActivate ? 'activate' : 'deactivate');
 					var opts = {"partitionDevice" : partitionDevice};
-					tools.umcpCommand(cmd, opts).then(lang.hitch(this, function(data) {
+					this.standbyDuring(tools.umcpCommand(cmd, opts)).then(lang.hitch(this, function(data) {
 						if (data.result.success === true) {
-							this._grid.filter({'dummy': 'dummy'});
+							this.refreshGrid();
 						} else {
 							this._showActivateQuotaDialog(data.result, doActivate);
 						}
@@ -201,6 +201,10 @@ define([
 				label: _('Cancel'),
 				'default': true
 			}]);
+		},
+
+		refreshGrid: function() {
+			this._grid.filter({'dummy': 'dummy'});
 		},
 
 		_showActivateQuotaDialog: function(result, doActivate) {
@@ -229,6 +233,8 @@ define([
 		renderPartitionPage: function(partitionDevice) {
 			this._partitionPage = new PartitionPage({
 				partitionDevice: partitionDevice,
+				standby: lang.hitch(this, 'standby'),
+				standbyDuring: lang.hitch(this, 'standbyDuring'),
 				moduleStore: store('id', this.moduleID + '/users'),
 				headerText: _('Partition: %s', partitionDevice),
 				helpText: _('Set, unset and modify filesystem quota')
@@ -244,13 +250,15 @@ define([
 		renderDetailPage: function(partitionDevice) {
 			this._detailPage = new DetailPage({
 				partitionDevice: partitionDevice,
+				standby: lang.hitch(this, 'standby'),
+				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
 			this.addChild(this._detailPage);
 			this._detailPage.on('ClosePage', lang.hitch(this, function() {
 				this.selectChild(this._partitionPage);
 			}));
 			this._detailPage.on('SetQuota', lang.hitch(this, function(values) {
-				tools.umcpCommand('quota/users/set', values).then(lang.hitch(this, function(data) {
+				this.standbyDuring(tools.umcpCommand('quota/users/set', values)).then(lang.hitch(this, function(data) {
 					if (data.result.success === true) {
 						this.selectChild(this._partitionPage);
 						this._partitionPage.filter();

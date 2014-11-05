@@ -35,16 +35,17 @@ define([
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Form",
-	"umc/widgets/Text",
 	"umc/widgets/TextBox",
 	"umc/widgets/Page",
 	"umc/widgets/NumberSpinner",
 	"umc/i18n!umc/modules/quota"
-], function(declare, lang, array, dialog, tools, Form, Text, TextBox,  Page, NumberSpinner, _) {
+], function(declare, lang, array, dialog, tools, Form, TextBox,  Page, NumberSpinner, _) {
 
 	return declare("umc.modules.quota.DetailPage", [ Page ], {
 
 		partitionDevice: null,
+		standby: null,
+		standbyDuring: null,
 		_form: null,
 
 		buildRendering: function() {
