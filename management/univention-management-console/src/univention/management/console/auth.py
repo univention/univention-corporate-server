@@ -172,6 +172,8 @@ class PAM_Auth( Auth ):
 		ask.run()
 
 	def _auth_result( self, thread, success ):
+		if isinstance(success, BaseException):
+			success = AuthenticationResult(false)
 		self.signal_emit( 'auth_return', success )
 
 	def _ask_pam( self, new_password=None ):
@@ -242,8 +244,7 @@ class PAM_Auth( Auth ):
 			self.__workaround_pw_expired = False
 			try:
 				self._pam.acct_mgmt()
-			## except PAM.error as e: ## or better:
-			except BaseException, e:
+			except PAM.error as e:
 				AUTH.error( "PAM: acct_mgmt error: %s" % str( e ) )
 				return AuthenticationResult(False)
 

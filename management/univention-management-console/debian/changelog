@@ -1,3 +1,9 @@
+univention-management-console (6.0.24-28) unstable; urgency=medium
+
+  * Bug #36319: improved security when authenticating
+
+ -- Florian Best <best@univention.de>  Wed, 05 Nov 2014 22:15:37 +0100
+
 univention-management-console (6.0.24-27) unstable; urgency=medium
 
   * Bug #36319: Avoid calling self._pam.acct_mgmt directly after
