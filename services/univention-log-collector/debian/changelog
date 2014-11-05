@@ -1,3 +1,9 @@
+univention-log-collector (8.0.0-2) unstable; urgency=low
+
+  * changed dependency from python-pyopenssl to python-openssl (Bug #36114)
+
+ -- Felix Botner <botner@univention.de>  Wed, 05 Nov 2014 12:53:35 +0100
+
 univention-log-collector (8.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #36114) 

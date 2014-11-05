@@ -13,7 +13,7 @@ Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  gzip,
  univention-config-registry,
- python-pyopenssl,
+ python-openssl,
  python-univention-lib (>= 1.0.25-1)
 Description: UCS log-file Collector Server
  UCS log-file collector - receives log-files via SSL connection.
@@ -27,7 +27,7 @@ Package: univention-log-collector-client
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  univention-config-registry,
- python-pyopenssl,
+ python-openssl,
  python-univention-lib (>= 1.0.25-1)
 Description: UCS log-file Collector Client
  UCS log-file collector - Sends log-files via SSL connection to logging host.
