@@ -290,7 +290,7 @@
 				The web interface design has been completely revised also with respect to
 				its rendering on mobile devices (responsive design). Along with this change
 				many details of UMC have been adapted accordingly
-				(<ulink url="&ucsbug;35654">Bug 35654</ulink>, <ulink url="&ucsbug;35499">Bug 35499</ulink>).
+				(<ulink url="&ucsbug;35654">Bug 35654</ulink>, <ulink url="&ucsbug;35499">Bug 35499</ulink>, <ulink url="&ucsbug;36095">Bug 36095</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The browser compatibility list has been updated to Chrome as of version 33, Firefox
