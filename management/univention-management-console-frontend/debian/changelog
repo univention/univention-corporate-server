@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.93-1) unstable; urgency=medium
+
+  * Bug #35654: add locale to UMC link
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 05 Nov 2014 18:30:30 +0100
+
 univention-management-console-frontend (4.1.92-2) unstable; urgency=medium
 
   * Bug #36316: added soft hyphens to UMC labels
