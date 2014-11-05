@@ -470,6 +470,10 @@
 				The handling of activation, deactivation and detection of filesystem quota has been improved
 				(<ulink url="&ucsbug;36207">Bug 36207</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The usability of the Filesystem quota module has been enhanced.
+				(<ulink url="&ucsbug;36434">Bug 36434</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
