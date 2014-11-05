@@ -36,7 +36,7 @@ var profile = {
 	basePath : "./js",
 	releaseDir : "../build/www/ucs-overview/js",
 	action : "release",
-	layerOptimize : "closure.keepLines",
+	layerOptimize : "closure",
 	cssOptimize: "comments.keepLines",
 	copyTests: false,
 
