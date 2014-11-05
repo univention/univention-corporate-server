@@ -16,4 +16,4 @@ msgid "System diagnostic"
 msgstr "System-Fehlerdiagnose"
 
 msgid "Analyse the system for known problems"
-msgstr "Das system auf bekannte Probleme analysieren"
+msgstr "Das System auf bekannte Probleme analysieren"

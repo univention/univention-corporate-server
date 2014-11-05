@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (1.0.14-2) unstable; urgency=low
+
+  * Bug #36454: fixed typo
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 05 Nov 2014 14:18:32 +0100
+
 univention-management-console-module-diagnostic (1.0.14-1) unstable; urgency=medium
 
   * Bug #35866: fix typo
