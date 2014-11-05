@@ -568,7 +568,10 @@ def run_scripts_in_path(path, logfile, category_name=""):
 		for filename in sorted(os.listdir(path)):
 			logfile.write('= Running %s\n' % filename);
 			logfile.flush()
-			subprocess.call(os.path.join(path, filename), stdout=logfile, stderr=logfile)
+			try:
+				subprocess.call(os.path.join(path, filename), stdout=logfile, stderr=logfile)
+			except (OSError, IOError):
+				logfile.write('%s' % (traceback.format_exc(),))
 			logfile.flush()
 
 	logfile.write('\n=== done (%s) ===\n' % timestamp())

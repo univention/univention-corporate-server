@@ -1701,7 +1701,7 @@ define([
 					password: password || null
 				}, false).then(lang.hitch(this, function() {
 					// make sure the server process cannot die
-					this.umcpCommand('setup/ping', {keep_alive: true});
+					this.umcpCommand('setup/ping', {keep_alive: true}, false);
 
 					this._progressBar.auto(
 						'setup/finished',
