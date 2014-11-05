@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.81-1) unstable; urgency=medium
+
+  * Bug #35654: remove blurring from standby animation
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 05 Nov 2014 18:37:01 +0100
+
 univention-management-console-frontend-theme (0.0.80-1) unstable; urgency=medium
 
   * Bug #35654: adjust shadow of login message box
