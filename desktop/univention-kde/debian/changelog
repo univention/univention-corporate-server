@@ -1,3 +1,9 @@
+univention-kde (9.0.2-6) unstable; urgency=low
+
+  * make startkde the default session (Bug #36411) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 05 Nov 2014 12:14:37 +0100
+
 univention-kde (9.0.2-5) unstable; urgency=low
 
   * link old 3.0 kde profile dir to new kde profile dir (Bug #35936) 

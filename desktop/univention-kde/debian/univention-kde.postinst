@@ -39,10 +39,10 @@ if [ "$1" = "configure" ]; then
 	update-alternatives --set x-cursor-theme $xctheme
 fi
 
-if [ "$1" = "configure" -a -z "$2" ]; then
-	update-alternatives --install /usr/bin/x-session-manager x-session-manager /usr/bin/startkde 50 \
-			--slave /usr/share/man/man1/x-session-manager.1.gz \
-			x-session-manager.1.gz "/usr/share/man/man1/startkde.1.gz"
+if [ "$1" = "configure"  ]; then
+	update-alternatives --install /usr/bin/x-session-manager x-session-manager /usr/bin/startkde 100 \
+		--slave /usr/share/man/man1/x-session-manager.1.gz \
+		x-session-manager.1.gz "/usr/share/man/man1/startkde.1.gz"
 fi
 
 rm -f /usr/share/apps/kdesktop/DesktopLinks/debian.desktop
