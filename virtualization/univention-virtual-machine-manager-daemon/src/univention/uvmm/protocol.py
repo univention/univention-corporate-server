@@ -403,7 +403,7 @@ class Data_Domain(object):
 	def __init__(self):
 		self.uuid = None
 		self.name = None
-		self.domain_type = 'qemu'
+		self.domain_type = 'kvm'
 		self.arch = 'i686' # i686, x86_64
 		self.os_type = 'hvm'
 		self.rtc_offset = None

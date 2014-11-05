@@ -425,7 +425,7 @@ class Domains(object):
 			else:
 				domain_info.arch = 'i686'
 
-		domain_info.domain_type = 'qemu'
+		domain_info.domain_type = 'kvm'
 		domain_info.os_type = 'hvm'
 		domain_info.maxMem = domain['maxMem']
 

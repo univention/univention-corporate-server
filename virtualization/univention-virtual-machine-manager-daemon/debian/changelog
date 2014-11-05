@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.16-5) unstable; urgency=low
+
+  * Bug #35656: Change QEMU to KVM as default domain type
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 05 Nov 2014 12:41:13 +0100
+
 univention-virtual-machine-manager-daemon (4.0.16-4) unstable; urgency=low
 
   * Bug #35946: Add openstack state transition paused->restart
