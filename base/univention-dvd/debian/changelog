@@ -1,3 +1,10 @@
+univention-dvd (0.2.19-1) unstable; urgency=low
+
+  * Added gnome-session gnome-panel gnome-control-center
+    to maintained (Bug #36050)
+
+ -- Felix Botner <botner@univention.de>  Wed, 05 Nov 2014 10:23:35 +0100
+
 univention-dvd (0.2.18-1) unstable; urgency=medium
 
   * Removed gnome-session and gnome-panel from maintained list

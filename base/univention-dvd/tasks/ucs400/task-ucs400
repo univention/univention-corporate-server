@@ -198,6 +198,9 @@ phonon-backend-xine
 phonon-backend-vlc
 vlc-nox
 amarok
+gnome-session
+gnome-panel
+gnome-control-center
 
 /* Development + Packaging Tools */
 univention-directory-manager-module-example
