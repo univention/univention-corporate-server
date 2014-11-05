@@ -35,12 +35,12 @@ def renew_root_certificate():
 	newCACert = os.path.join(SSLDIR, 'ucsCA', 'NewCAcert.pem')
 	cmd = [
 			'openssl', 'x509',
-			'-in', caCert, 
+			'-in', caCert,
 			'-out',	newCACert,
 			'-days', '1000',
 			'-passin', 'file:/%s' % os.path.join(SSLDIR, 'password'),
 			'-signkey', os.path.join(SSLDIR, 'ucsCA', 'private', 'CAkey.pem')
-			] 
+			]
 	print ' > %r' % ' '.join(cmd)
 	subprocess.call(cmd)
 	os.rename(newCACert, caCert)
@@ -178,16 +178,9 @@ def is_group_writable(file_path, group_name):
 def main():
 	before = get_permissions_info(SSLDIR)
 	backup_existing_certificate()
+
 	renew_root_certificate()
-	renew_all_computer_certificate()
-	copy_to_admin_website()
-	check_cert_validity()
-	if using_cyrus():
-		update_cyrus_cert()
-	if using_adconnector():
-		update_adconnector_cert()
-	if using_freeradius():
-		update_freeradius_cert()
+	
 	after = get_permissions_info(SSLDIR)
 	bda = [(k, before[k]) for k in before if after.get(k) != before.get(k)]
 	adb = [(k, after[k]) for k in after if after.get(k) != before.get(k)]
