@@ -154,11 +154,12 @@ transfer_addrs () {
     # Replace 'inet' with 'ip addr add' and change the device name $src
     # to 'dev $src'.
     ip addr show dev ${src} | egrep '^ *inet ' | sed -e "
-s/inet/ip addr add/
+s/inet/ip addr replace/
 s@\([0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+/[0-9]\+\)@\1@
-s/${src}/dev ${dst} label ${dst}/
+s/${src}/dev "\${dst}" label "\${dst}"/
 s/secondary//
-" | sh -e
+" >/etc/network/run/ucs-kvm-bridge
+    dst="$dst" sh -e /etc/network/run/ucs-kvm-bridge
     # Remove automatic routes on destination device
     ip route list | sed -ne "
 /dev ${dst}\( \|$\)/ {
@@ -274,7 +275,9 @@ op_start () {
 	ifenslave ${pdev} ${slaves}
     fi
     add_to_bridge2 ${bridge} ${pdev}
+    ip addr flush dev "${bridge}"
     do_ifup ${bridge}
+    dst="$bridge" sh -e /etc/network/run/ucs-kvm-bridge
 
     if [ ${antispoof} = 'yes' ] ; then
 	antispoofing
@@ -309,7 +312,9 @@ op_stop () {
 
     ip link set ${bridge} name ${tdev}
     ip link set ${pdev} name ${netdev}
+    ip addr flush dev "${netdev}"
     do_ifup ${netdev}
+    dst="$netdev" sh -e /etc/network/run/ucs-kvm-bridge
 
     brctl delbr ${tdev}
 
