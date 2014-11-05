@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-management-console
-fix: 6.0.24-27.825.201410281814
+fix: 6.0.24-28.832.201411052217
 version: [3]
 desc: |
   * The change of expired passwords during login at the
