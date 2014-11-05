@@ -588,6 +588,9 @@ php5-imagick
 /* zarafa App */
 libboost-system1.49.0
 libboost-filesystem1.49.0
+libxml-perl
+libxml-regexp-perl
+libxml-dom-perl
 
 /* z-push App */
 php-mail

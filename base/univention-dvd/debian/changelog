@@ -1,3 +1,10 @@
+univention-dvd (0.2.19-2) unstable; urgency=low
+
+  * Added libxml-perl, libxml-regexp-perl and libxml-dom-perl
+    (zarafa) to maintained (Bug #35750)
+
+ -- Felix Botner <botner@univention.de>  Wed, 05 Nov 2014 15:26:30 +0100
+
 univention-dvd (0.2.19-1) unstable; urgency=low
 
   * Added gnome-session gnome-panel gnome-control-center
