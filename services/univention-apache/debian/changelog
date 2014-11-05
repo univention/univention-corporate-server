@@ -1,3 +1,11 @@
+univention-apache (7.0.14-3) unstable; urgency=low
+
+  Bug #36316:
+  * removal of icon ucr variables now more generic / not role
+    specific anymore
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 05 Nov 2014 14:00:41 +0100
+
 univention-apache (7.0.14-2) unstable; urgency=low
 
   Bug #36095:
