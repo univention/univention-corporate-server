@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.92-2) unstable; urgency=medium
+
+  * Bug #36316: added soft hyphens to UMC labels
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 05 Nov 2014 12:55:42 +0100
+
 univention-management-console-frontend (4.1.92-1) unstable; urgency=medium
 
   * Bug #36422: added explicit referral for removeChild in umc/widgets/Module

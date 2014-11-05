@@ -45,13 +45,13 @@ ucr set	ucs/web/overview/entries/admin/umc/icon="/univention-management-console/
 
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 	ucr set ucs/web/overview/entries/admin/umc/label="System and domain settings" \
-	ucs/web/overview/entries/admin/umc/label/de="System- und Domäneneinstellungen" \
+	ucs/web/overview/entries/admin/umc/label/de="System- und Domänen&shy;einstellungen" \
 	ucs/web/overview/entries/admin/umc/description="Univention Management Console for administrating the UCS domain and the local system" \
 	ucs/web/overview/entries/admin/umc/description/de="Univention Management Console zur Verwaltung der UCS-Domäne und des lokalen Systems"
 
 else
 	ucr set ucs/web/overview/entries/admin/umc/label="System settings" \
-	ucs/web/overview/entries/admin/umc/label/de="Systemeinstellungen" \
+	ucs/web/overview/entries/admin/umc/label/de="System&shy;einstellungen" \
 	ucs/web/overview/entries/admin/umc/description="Univention Management Console for administrating the local UCS system" \
 	ucs/web/overview/entries/admin/umc/description/de="Univention Management Console für die Verwaltung des lokalen UCS-Systems"
 
