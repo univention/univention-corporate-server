@@ -1,3 +1,9 @@
+univention-mozilla-firefox (9.0.1-1) unstable; urgency=medium
+
+  * Bug #36453: Remove legacy "firefox" from the dependency options
+
+ -- Arvid Requate <requate@univention.de>  Wed, 05 Nov 2014 17:42:57 +0100
+
 univention-mozilla-firefox (9.0.0-1) unstable; urgency=low
 
   * Starting UCS 4.0 development (Bug #35266)

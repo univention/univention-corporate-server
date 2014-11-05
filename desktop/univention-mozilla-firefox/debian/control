@@ -11,7 +11,7 @@ Package: univention-mozilla-firefox
 Architecture: all
 Depends: ${misc:Depends},
  univention-config-registry,
- firefox-en | firefox-de | firefox
+ firefox-en | firefox-de
 Description: UCS - Mozilla Firefox support
  This package contains the univention-config configuration
  manager, primarily used by the UCS base configuration.
