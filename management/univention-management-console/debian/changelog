@@ -1,3 +1,9 @@
+univention-management-console (6.0.24-31) unstable; urgency=medium
+
+  * Bug #36319: Revert all changes, will not get fixed in errata3.2-3
+
+ -- Arvid Requate <requate@univention.de>  Thu, 06 Nov 2014 13:20:52 +0100
+
 univention-management-console (6.0.24-30) unstable; urgency=medium
 
   * Bug #36319: Fix case where posix authentication still works (not locked)
