@@ -240,6 +240,11 @@
 					all Scalix related attributes have been removed from the LDAP server
 					of the UCS domain (<ulink url="&ucsbug;28693">Bug 28693</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+					LDAP indices for the attributes <envar>shadowMax</envar> and
+					<envar>shadowExpire</envar> have been added
+					(<ulink url="&ucsbug;36215">Bug 36215</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 
 		<section id="changelog:domain:openldap:acl">
@@ -526,6 +531,9 @@
 		<title>&ucsUDM; command line interface and related tools</title>
 		<itemizedlist>
 			<listitem><simpara>
+				Two helper scripts have been added <envar>lock_expired_accounts</envar> and
+				<envar>lock_expired_passwords</envar>
+				(<ulink url="&ucsbug;36215">Bug 36215</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
