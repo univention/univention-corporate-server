@@ -333,6 +333,9 @@
 					applications domain wide. Each App Center module can manage any
 					application (<ulink url="&ucsbug;35781">Bug 35781</ulink>, <ulink url="&ucsbug;36370">Bug 36370</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+					Several text refinements (<ulink url="&ucsbug;36433">Bug 36433</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
