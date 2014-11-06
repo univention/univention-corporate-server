@@ -67,6 +67,7 @@ echo "no-ldap" > /var/run/univention-system-setup.ldap
 # Re-create sources.list files before installing the role packages
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=28089
 ucr commit /etc/apt/sources.list.d/*
+apt-get update
 
 # Install the server package
 /usr/lib/univention-system-setup/scripts/05_role/10role
