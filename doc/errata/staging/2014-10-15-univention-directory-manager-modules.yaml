@@ -2,10 +2,9 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-directory-manager-modules
-fix: 9.0.76-33.1249.201410171512
+fix: 9.0.75-33.1260.201411061237
 version: [3]
 desc: |
   * A backslash in the home share of an user no longer results in a
     traceback.
-  * Added new scripts lock_expired_accounts and lock_expired_passwords.
-bug: [35953,35088,36215]
+bug: [35953]
