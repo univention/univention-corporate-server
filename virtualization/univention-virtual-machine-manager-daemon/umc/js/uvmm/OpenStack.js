@@ -57,6 +57,7 @@ define([
 					'auth_version',
 					[ 'password', 'auth_token' ],
 					'auth_url',
+					'search_pattern',
 					'tenant',
 					'service_region',
 					'service_type',
@@ -137,6 +138,13 @@ define([
 					label: _('Service name'),
 					value: 'nova',
 					required: false
+				}, {
+					name: 'search_pattern',
+					type: TextBox,
+					value: '*',
+					label: _('Search pattern for images'),
+					required: true,
+					description: _('When creating new cloud instances with this connection, only images that match the pattern are available. "*" finds all images.')
 				}, {
 					name: 'base_url',
 					type: TextBox,

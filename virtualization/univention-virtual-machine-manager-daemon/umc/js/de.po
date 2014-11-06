@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 1.0.103-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-11-04 11:17+0100\n"
+"POT-Creation-Date: 2014-11-04 15:53+0100\n"
 "PO-Revision-Date: 2013-07-24 19:03+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -180,7 +180,7 @@ msgstr ""
 "Ein gültiger Sicherungspunktname darf keine \"/\", \"&\" oder \"<\" "
 "enthalten und kann nicht mit \".\" beginnen."
 
-#: umc/js/uvmm/OpenStack.js:86 umc/js/uvmm/OpenStack.js:107
+#: umc/js/uvmm/OpenStack.js:87 umc/js/uvmm/OpenStack.js:108
 msgid "API Key"
 msgstr "API Schlüssel"
 
@@ -252,11 +252,11 @@ msgstr ""
 "Sind Sie sicher, dass die virtuelle Maschine auf den Sicherungspunkt "
 "zurückgesetzt werden soll?"
 
-#: umc/js/uvmm/OpenStack.js:114
+#: umc/js/uvmm/OpenStack.js:115
 msgid "Authentication URL endpoint"
 msgstr "URL des Authentifizierungs-Endpunktes"
 
-#: umc/js/uvmm/CreatePage.js:104 umc/js/uvmm/InstanceWizard.js:66
+#: umc/js/uvmm/CreatePage.js:104 umc/js/uvmm/InstanceWizard.js:62
 #: umc/js/uvmm/DomainWizard.js:215 umc/js/uvmm/DomainPage.js:91
 #: umc/js/uvmm/InstancePage.js:64
 msgid "Back to overview"
@@ -316,15 +316,15 @@ msgstr "Abbrechen"
 msgid "Change medium"
 msgstr "Medium wechseln"
 
-#: umc/js/uvmm/InstanceWizard.js:247
+#: umc/js/uvmm/InstanceWizard.js:242
 msgid "Choose an AMI"
 msgstr "Wählen Sie ein AMI aus"
 
-#: umc/js/uvmm/InstanceWizard.js:162
+#: umc/js/uvmm/InstanceWizard.js:157
 msgid "Choose an Image"
 msgstr "Auswahl eines Images"
 
-#: umc/js/uvmm/InstanceWizard.js:172 umc/js/uvmm/InstanceWizard.js:230
+#: umc/js/uvmm/InstanceWizard.js:167 umc/js/uvmm/InstanceWizard.js:225
 msgid "Choose an Instance Size"
 msgstr "Wahl der Instanzgröße"
 
@@ -348,7 +348,7 @@ msgstr "Cloud-Verbindungen"
 msgid "Cloud instance"
 msgstr "Cloud-Instanz"
 
-#: umc/js/uvmm/InstanceWizard.js:189 umc/js/uvmm/InstanceWizard.js:258
+#: umc/js/uvmm/InstanceWizard.js:184 umc/js/uvmm/InstanceWizard.js:253
 msgid "Configure Security Group"
 msgstr "Konfigurieren einer Sicherheitsgruppe"
 
@@ -385,7 +385,7 @@ msgstr "Erstellen einer neuen Cloud-Verbindung."
 msgid "Create a new image"
 msgstr "Erstellen einer neuen Image-Datei"
 
-#: umc/js/uvmm/CreatePage.js:122 umc/js/uvmm/InstanceWizard.js:85
+#: umc/js/uvmm/CreatePage.js:122 umc/js/uvmm/InstanceWizard.js:81
 msgid "Create a new virtual machine instance."
 msgstr "Erstellen einer neuen virtuellen Instanz."
 
@@ -645,7 +645,7 @@ msgid "Guest controlled"
 msgstr "Gast-gesteuert"
 
 #: umc/js/uvmm/types.js:54 umc/js/uvmm/types.js:204
-#: umc/js/uvmm/InstanceWizard.js:122
+#: umc/js/uvmm/InstanceWizard.js:117
 msgid "Hard drive"
 msgstr "Festplatte"
 
@@ -663,7 +663,7 @@ msgid ""
 "<i>Extended format</i>."
 msgstr ""
 "Festplatten-Images können auf KVM-Systemen in zwei Formaten verwaltet "
-"werden: <p>Standardmässig werden Images im <i>Erweiterten Format (qcow2)</i> "
+"werden: <p>Standardmäßig werden Images im <i>Erweiterten Format (qcow2)</i> "
 "angelegt.Dieses unterstützt Copy-on-write, was bedeutet, dass eine Änderung "
 "nicht das Original überschreibt, sondern die neue Version stattdessen an "
 "einer anderen  Position abgelegt wird.Die interne Referenzierung wird dann "
@@ -716,7 +716,7 @@ msgstr "Image-Format"
 msgid "Inherit MAC addresses"
 msgstr "MAC-Adressen übernehmen"
 
-#: umc/js/uvmm/InstanceWizard.js:149 umc/js/uvmm/InstanceWizard.js:217
+#: umc/js/uvmm/InstanceWizard.js:144 umc/js/uvmm/InstanceWizard.js:212
 msgid "Instance Name"
 msgstr "Instanzname"
 
@@ -780,7 +780,7 @@ msgstr "Mazedonisch"
 msgid "Machine"
 msgstr "Maschine"
 
-#: umc/js/uvmm/InstanceWizard.js:121 umc/js/uvmm/DomainPage.js:211
+#: umc/js/uvmm/InstanceWizard.js:116 umc/js/uvmm/DomainPage.js:211
 msgid "Memory"
 msgstr "Speicher"
 
@@ -806,7 +806,7 @@ msgstr "NAT"
 
 #: umc/js/uvmm/EC2.js:58 umc/js/uvmm/DomainWizard.js:165
 #: umc/js/uvmm/DomainPage.js:121 umc/js/uvmm/SnapshotGrid.js:56
-#: umc/js/uvmm/InstancePage.js:82 umc/js/uvmm/OpenStack.js:73
+#: umc/js/uvmm/InstancePage.js:82 umc/js/uvmm/OpenStack.js:74
 #: umc/js/uvmm.js:1102 umc/js/uvmm.js:1120 umc/js/uvmm.js:1135
 msgid "Name"
 msgstr "Name"
@@ -852,7 +852,7 @@ msgstr "Norwegisch"
 msgid "Not removable"
 msgstr "Nicht löschbar"
 
-#: umc/js/uvmm/InstanceWizard.js:119 umc/js/uvmm/DomainWizard.js:199
+#: umc/js/uvmm/InstanceWizard.js:114 umc/js/uvmm/DomainWizard.js:199
 #: umc/js/uvmm/DomainPage.js:187
 msgid "Number of CPUs"
 msgstr "Anzahl der CPUs"
@@ -872,7 +872,11 @@ msgid ""
 "also available. \"*\" finds all images, but the list of available AMIs may "
 "get very long and take a considerable amount of time to load."
 msgstr ""
-"Optional. Standardmässig werden beim Anlegen einer neuen Cloud-Instanz alle UCS-Images angezeigt. Wird hier ein Suchmuster angegeben, stehen außerdem noch AMIs, die auf dieses Muster passen, zur Verfügung. \"*\" findet alle AMIs, allerdings kann dann die Liste der verfügbaren AMIs sehr lang werden und die Ladezeit beeinträchtigen."
+"Optional. Standardmäßig werden beim Anlegen einer neuen Cloud-Instanz alle "
+"UCS-Images angezeigt. Wird hier ein Suchmuster angegeben, stehen außerdem "
+"noch AMIs, die auf dieses Muster passen, zur Verfügung. \"*\" findet alle "
+"AMIs, allerdings kann dann die Liste der verfügbaren AMIs sehr lang werden "
+"und die Ladezeit beeinträchtigen."
 
 #: umc/js/uvmm/types.js:196
 msgid "Paravirtual device (virtio)"
@@ -895,12 +899,12 @@ msgstr ""
 "Paravirtualisierung ist eine spezielle Variante der Virtualisierung. Die "
 "virtualisierten Betriebssysteme werden dabei auf eine "
 "Virtualisierungstechnik angepasst, was die Performance verbessert. Linux-"
-"Systeme sind in der Regel standardmässig mit entsprechendem Support "
+"Systeme sind in der Regel standardmäßig mit entsprechendem Support "
 "versehen. Auf Windows-Systemen müssen entsprechende Unterstützungstreiber "
 "installiert werden, siehe <a href=\"http://wiki.univention.de/index.php?"
 "title=UVMM_Technische_Details\">Univention Wiki.</a>"
 
-#: umc/js/uvmm/OpenStack.js:85 umc/js/uvmm/OpenStack.js:100
+#: umc/js/uvmm/OpenStack.js:86 umc/js/uvmm/OpenStack.js:101
 msgid "Password"
 msgstr "Passwort"
 
@@ -933,12 +937,12 @@ msgid "Please enter the corresponding credentials for the cloud connection:"
 msgstr ""
 "Bitte geben Sie die dazugehörigen Anmeldedaten für die Cloud-Verbindung an:"
 
-#: umc/js/uvmm/InstanceWizard.js:74
+#: umc/js/uvmm/InstanceWizard.js:70
 msgid ""
 "Please enter the corresponding details for the virtual machine instance."
 msgstr "Bitte geben Sie die dazugehörigen Details der Instanz an:"
 
-#: umc/js/uvmm/InstanceWizard.js:76
+#: umc/js/uvmm/InstanceWizard.js:72
 msgid ""
 "Please enter the corresponding details for the virtual machine instance. <a "
 "href=\"https://aws.amazon.com/documentation/ec2/\" target=_blank>Use this "
@@ -1066,6 +1070,10 @@ msgstr "Speichern"
 msgid "Search pattern for AMIs"
 msgstr "Suchmuster für AMIs"
 
+#: umc/js/uvmm/OpenStack.js:145
+msgid "Search pattern for images"
+msgstr "Suchmuster für Images"
+
 #: umc/js/uvmm/EC2.js:68
 msgid "Secret Access Key"
 msgstr "Geheimer Zugriffsschlüssel (Secret Access Key)"
@@ -1074,7 +1082,7 @@ msgstr "Geheimer Zugriffsschlüssel (Secret Access Key)"
 msgid "Security group"
 msgstr "Sicherheitsgruppe"
 
-#: umc/js/uvmm/InstanceWizard.js:155 umc/js/uvmm/InstanceWizard.js:223
+#: umc/js/uvmm/InstanceWizard.js:150 umc/js/uvmm/InstanceWizard.js:218
 msgid "Select a key pair"
 msgstr "Auswahl eines Schlüsselpaares"
 
@@ -1100,19 +1108,19 @@ msgstr ""
 msgid "Send email"
 msgstr "E-Mail senden"
 
-#: umc/js/uvmm/OpenStack.js:143
+#: umc/js/uvmm/OpenStack.js:151
 msgid "Service URL endpoint"
 msgstr "URL des Service-Endpunktes"
 
-#: umc/js/uvmm/OpenStack.js:137
+#: umc/js/uvmm/OpenStack.js:138
 msgid "Service name"
 msgstr "Name des Dienstes"
 
-#: umc/js/uvmm/OpenStack.js:126
+#: umc/js/uvmm/OpenStack.js:127
 msgid "Service region"
 msgstr "Serviceregion"
 
-#: umc/js/uvmm/OpenStack.js:131
+#: umc/js/uvmm/OpenStack.js:132
 msgid "Service type"
 msgstr "Servicetyp"
 
@@ -1247,7 +1255,7 @@ msgstr "Speichern & Beenden"
 msgid "Swedish"
 msgstr "Schwedisch"
 
-#: umc/js/uvmm/OpenStack.js:121
+#: umc/js/uvmm/OpenStack.js:122
 msgid "Tenant"
 msgstr "Projekt / Tenant"
 
@@ -1426,11 +1434,11 @@ msgstr "Unbekannt"
 msgid "Use a local device"
 msgstr "Verwenden eines lokalen Gerätes"
 
-#: umc/js/uvmm/OpenStack.js:83
+#: umc/js/uvmm/OpenStack.js:84
 msgid "Use the following authentication type"
 msgstr "Folgenden Authentifizierungstyp benutzen"
 
-#: umc/js/uvmm/OpenStack.js:78
+#: umc/js/uvmm/OpenStack.js:79
 msgid "Username"
 msgstr "Benutzername"
 
@@ -1467,6 +1475,13 @@ msgstr "Virtuellen Maschine: %s"
 #: umc/js/uvmm/DriveWizard.js:68
 msgid "What type of drive should be created?"
 msgstr "Welche Art von Laufwerk soll erstellt werden?"
+
+#: umc/js/uvmm/OpenStack.js:147
+msgid ""
+"When creating new cloud instances with this connection, only images that "
+"match the pattern are available. \"*\" finds all images."
+msgstr ""
+"Beim Erstellen neuer Cloud-Instanzen mittels dieser Verbindung werden nur Images angezeigt, die auf das Suchmuster passen. \"*\" passt auf alle Images."
 
 #: umc/js/uvmm/CreatePage.js:136
 msgid "Where should the virtual machine instance be created"
