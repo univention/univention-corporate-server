@@ -55,6 +55,10 @@
 				The packages <package>mingetty</package> and <package>parted</package> have been
 				copied to maintained (<ulink url="&ucsbug;36231">Bug 36231</ulink>).
 		</simpara></listitem>
+		<listitem><simpara>
+				UEFI SecureBoot support has been added
+				(<ulink url="&ucsbug;28191">Bug 28191</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 </section>
 
