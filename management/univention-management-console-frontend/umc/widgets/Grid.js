@@ -172,6 +172,9 @@ define([
 		//
 		defaultActionColumn: '',
 
+		// gridOptions: options for the inner grid
+		gridOptions: null,
+
 		baseClass: 'umcGrid',
 
 		disabled: false,
@@ -265,7 +268,7 @@ define([
 			this.addChild(this._header);
 
 			// create the grid
-			this._grid = new _Grid({
+			this._grid = new _Grid(lang.mixin({
 				store: this._dataStore,
 				query: this.query,
 				queryOptions: { ignoreCase: true },
@@ -286,7 +289,7 @@ define([
 					// disable sorting for the action columns
 					return Math.abs(col) - 2 < this.columns.length && Math.abs(col) - 2 >= 0;
 				})*/
-			});
+			}, this.gridOptions || {}));
 
 			// add a footer for the grid
 			this._footer = new ContainerWidget({

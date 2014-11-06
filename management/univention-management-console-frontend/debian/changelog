@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.95-1) unstable; urgency=medium
+
+  * Bug #35654: allow Grid options to be given to the inner grid
+
+ -- Florian Best <best@univention.de>  Thu, 06 Nov 2014 18:04:27 +0100
+
 univention-management-console-frontend (4.1.94-1) unstable; urgency=medium
 
   * Bug #35654: remove size class for umc/widgets/TimeBox
