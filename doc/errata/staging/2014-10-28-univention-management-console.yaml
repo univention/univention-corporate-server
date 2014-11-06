@@ -2,9 +2,14 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-management-console
-fix: 6.0.24-28.832.201411052217
+fix: 6.0.24-29.833.201411061021
 version: [3]
 desc: |
   * The change of expired passwords during login at the
     Univention Management Console has been fixed.
-bug: [36319]
+  * The handling of connections between the UMC parts has
+    been improved:
+    - faulty connections will be closed
+    - if the connection between UMC server and UMC module
+      dies, the UMC module shuts down immediately
+bug: [36319,32818]
