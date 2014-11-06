@@ -1,3 +1,9 @@
+univention-updater (10.0.36-4) unstable; urgency=medium
+
+  * Bug #36453: Add firefox preup block
+
+ -- Arvid Requate <requate@univention.de>  Thu, 06 Nov 2014 17:39:31 +0100
+
 univention-updater (10.0.36-3) unstable; urgency=medium
 
   * Bug #36455: pre-update gcc-4.4 if it's installed

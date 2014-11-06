@@ -435,6 +435,23 @@ for pkg in $preups; do
 	fi
 done
 
+if dpkg -l "firefox" 2>&3 | grep ^ii  >&3 ; then ## Bug #36453
+	echo -n "Starting pre-upgrade of firefox: "
+	if [ "${LANG#de_*}" != "$LANG" ]; then
+		pkg="firefox-de"
+	else
+		pkg="firefox-en"
+	fi
+	if ! $update_commands_install "$pkg" >&3 2>&3
+	then
+		echo "failed."
+		echo "ERROR: Failed to upgrade $pkg."
+		exit 1
+	fi
+	echo "done."
+fi
+
+
 echo ""
 echo "Starting update process, this may take a while."
 echo "Check /var/log/univention/updater.log for more information."
