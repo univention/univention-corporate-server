@@ -251,6 +251,9 @@ define([
 				//onClick: lang.hitch(this, 'filter'),
 				getIconClass: lang.hitch(this, function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
 					return tools.getIconClass(this._iconClass(item));
+				}),
+				getTooltip: lang.hitch(this, function(item) {
+					return this._getTreeTooltip(item);
 				})
 			});
 			this._tree.dndController.singular = true;
@@ -1539,6 +1542,19 @@ define([
 			}
 
 			return widget;
+		},
+
+		_getTreeTooltip: function(item) {
+			var tooltip = '';
+			if (item.type == 'node' && !item.available) {
+				tooltip = lang.replace( _('Connection to server {node} failed.'), {
+					node: entities.encode(item.label)
+				} );
+			}
+			if (item.type == 'cloud' && !item.available && item.last_error_message) {
+				tooltip = item.last_error_message;
+			}
+			return tooltip;
 		},
 
 		filter: function() {
