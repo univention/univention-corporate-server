@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.17-1) unstable; urgency=medium
+
+  * Fixed typo in German translation (Bug #36154)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 06 Nov 2014 09:11:49 +0100
+
 univention-virtual-machine-manager-daemon (4.0.16-5) unstable; urgency=low
 
   * Bug #35656: Change QEMU to KVM as default domain type
