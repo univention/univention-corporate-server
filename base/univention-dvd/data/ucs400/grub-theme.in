@@ -1,5 +1,5 @@
 title-color: "black"
-title-text: TITLE
+title-text: ""
 title-font: "Sans Regular 16"
 desktop-color: "lightgrey"
 desktop-image: "/isolinux/splash.png"
