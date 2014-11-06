@@ -58,7 +58,7 @@
 }
 
 .umc .umcUCSSetupSoftwareGrid .dojoxGrid {
-	min-height: 350px;
+	height: 350px !important;
 }
 
 .umc .umcUCSSetupSoftwareGrid .dojoxGridCell .umcAppDescription {
