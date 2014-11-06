@@ -941,6 +941,14 @@
 			with better rdp and linux terminal server support
 			(<ulink url="&ucsbug;35885">Bug 35885</ulink>).
 		</simpara></listitem>
+		<listitem><simpara>
+			Several packages are no longer in the maintained packages repository. If these
+			packages are installed before the update, they will be removed during the update
+			(i.a.  <package>gimp</package>, <package>k3b</package>, <package>kdepim</package>,
+			<package>mplayer</package>, <package>krdc</package>, <package>krfb</package>,
+			<package>kontact</package> and <package>nautilus</package>,
+			<ulink url="&ucsbug;36050">Bug 36050</ulink>)
+		</simpara></listitem>
 	</itemizedlist>
 </section>
 
