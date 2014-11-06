@@ -35,7 +35,10 @@ import socket
 import time
 import os
 import sys
-from univention.config_registry import ConfigRegistry
+try:
+	from univention.config_registry import ConfigRegistry
+except ImportError:
+	ConfigRegistry = False
 
 
 def get_logfile():
@@ -73,9 +76,13 @@ def fork_server(sock, socket_path):
 	else:  # parent
 		os.waitpid(pid, os.P_NOWAIT)
 
-	ucr = ConfigRegistry()
-	ucr.load()
-	socket_timeout = float(ucr.get('directory/manager/cmd/sockettimeout', 50))
+	if ConfigRegistry:
+		ucr = ConfigRegistry()
+		ucr.load()
+		socket_timeout = float(ucr.get('directory/manager/cmd/sockettimeout', 50))
+	else:
+		socket_timeout = float(50)
+
 	stime = time.time() + socket_timeout
 	while not os.path.exists(socket_path):
 		time.sleep(0.1)

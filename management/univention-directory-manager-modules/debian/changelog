@@ -1,12 +1,3 @@
-univention-directory-manager-modules (9.0.76-33) unstable; urgency=low
-
-  * added script for automatic deactivation of expired user accounts
-    (Bug #35088)
-  * added script for automatic deactivation of user accounts with
-    expired password (Bug #36215)
-
- -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 16 Oct 2014 15:46:22 +0200
-
 univention-directory-manager-modules (9.0.76-32) unstable; urgency=medium
 
   * users/user: escape the share path filter (Bug #35953)
