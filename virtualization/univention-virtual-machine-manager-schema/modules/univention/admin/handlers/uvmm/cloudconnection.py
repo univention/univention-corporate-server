@@ -92,7 +92,7 @@ property_descriptions = {
 			required=True,
 			may_change=True,
 			identifies=False,
-			default=1
+			default='1'
 		),
 	'availableImages': univention.admin.property(
 			short_description=_('Add the listed images to the list of selectable images'),
