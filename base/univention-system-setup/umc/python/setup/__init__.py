@@ -97,6 +97,10 @@ class Instance(Base, ProgressMixin):
 		util.get_city_data()
 		util.get_country_data()
 
+	def _get_localized_label(self, label_dict):
+		# return the correctly loca
+		return label_dict.get(self.locale.language) or label_dict.get('en', '') or label_dict.get('', '')
+
 	def destroy(self):
 		if self._cleanup_required:
 			MODULE.info('Appliance mode: cleanup by timeout')
@@ -143,7 +147,7 @@ class Instance(Base, ProgressMixin):
 		return util.load_values()
 
 	@simple_response
-	def save_keymap(self, keymap=None):
+	def save_keymap(self, layout=None):
 		'''Set the systems x-keymap according to
 		request.options[keymap]'''
 
@@ -151,9 +155,8 @@ class Instance(Base, ProgressMixin):
 		if ucr.is_true('system/setup/boot/installer'):
 			return True
 
-		if keymap:
-			xkeymap = util._xkeymap(keymap)
-			subprocess.call(['/usr/bin/setxkbmap', '-display', ':0', '-layout', xkeymap['layout'], '-variant', xkeymap['variant']])
+		if layout:
+			subprocess.call(['/usr/bin/setxkbmap', '-display', ':0', '-layout', layout])
 		return True
 
 	def save(self, request):
@@ -504,25 +507,6 @@ class Instance(Base, ProgressMixin):
 		'''Return a list of all available locales.'''
 		return util.get_available_locales(pattern, category)
 
-	def lang_default_timezone(self, request):
-		'''Returns default timezone for given locale.'''
-		countrycode = request.options.get('countrycode', '')
-		timezone = None
-		file = open('/usr/share/univention-system-setup/locale/countrycode2timezone')
-
-		reader = csv.reader(file, delimiter=' ')
-		for row in reader:
-			if row[0].startswith("#"): continue
-			if len(row) > 1:
-				if countrycode.upper() == row[0].upper():
-					timezone = row[1]
-					break
-		file.close()
-
-		if timezone is None:
-			timezone = 'Europe/Berlin'
-		self.finished(request.id, timezone)
-
 	def lang_timezones(self, request):
 		'''Return a list of all available time zones.'''
 		try:
@@ -535,26 +519,6 @@ class Instance(Base, ProgressMixin):
 		timezones = [ i.strip('\n') for i in file if not i.startswith('#') ]
 
 		self.finished(request.id, timezones)
-
-	def lang_default_keymap(self, request):
-		'''Returns default timezone for given locale.'''
-		# use "or ''" to be sure to not get None
-		countrycode = (request.options.get('countrycode') or  '').upper()
-		keymap = None
-		file = open('/usr/share/univention-system-setup/locale/default-kmaps')
-
-		reader = csv.reader(file, delimiter=':')
-		for row in reader:
-			if row[0].startswith("#"): continue
-			if len(row) > 1:
-				if row[1].upper().startswith(countrycode):
-					keymap = row[1]
-					break
-		file.close()
-
-		if keymap is None:
-			keymap = 'us'
-		self.finished(request.id, keymap)
 
 	@simple_response
 	def lang_keyboard_model(self):
@@ -600,15 +564,13 @@ class Instance(Base, ProgressMixin):
 
 	def lang_countrycodes(self, request):
 		'''Return a list of all countries with their two letter chcountry codes.'''
-		try:
-			file = open('/usr/share/univention-system-setup/locale/country_codes')
-		except:
-			MODULE.error( 'Cannot find locale data for keymaps in /usr/share/univention-system-setup/locale' )
-			self.finished(request.id, None)
-			return
-
-		r = csv.reader(file, delimiter=':')
-		countries = [ { 'label': i[0], 'id': i[1] } for i in r if not i[0].startswith('#') ]
+		country_data = util.get_country_data()
+		countries = [{
+				'id': icountry,
+				'label': self._get_localized_label(idata.get('label', {})),
+			}
+			for icountry, idata in country_data.iteritems()
+			if idata.get('label')]
 
 		# add the value from ucr value to the list
 		# this is required because invalid values will be unset in frontend
@@ -716,9 +678,6 @@ class Instance(Base, ProgressMixin):
 
 		# add additional information about keyboard layout, time zone etc. and
 		# get the correct localized labels
-		def _get_lang(label_dict):
-			return label_dict.get(self.locale.language) or label_dict.get('en', '') or label_dict.get('', '')
-
 		country_data = util.get_country_data()
 		for imatch in matches:
 			match_country = country_data.get(imatch.get('country'))
@@ -727,8 +686,8 @@ class Instance(Base, ProgressMixin):
 				imatch.update(dict(
 					default_keyboard=match_country.get('default_keyboard'),
 					default_lang=match_country.get('default_lang'),
-					country_label=_get_lang(match_country.get('label', {})),
-					label=_get_lang(imatch.get('label')) or imatch.get('match'),
+					country_label=self._get_localized_label(match_country.get('label', {})),
+					label=self._get_localized_label(imatch.get('label')) or imatch.get('match'),
 				))
 
 		return matches

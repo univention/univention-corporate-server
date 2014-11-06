@@ -143,22 +143,6 @@ def load_values():
 
 	return values
 
-def _xkeymap(keymap):
-	'''Determine the x-keymap which belongs to 'keymap' by
-	parsing /usr/share/univention-system-setup/locale/all-kmaps'''
-
-	xkeymap = {'layout' : '', 'variant' : ''}
-	fp = open('/usr/share/univention-system-setup/locale/all-kmaps', 'r')
-	for line in fp:
-		line_split = line.strip('\n').split(':')
-		if line_split[1] == keymap:
-			xkeymap['layout'] = line_split[2].split(' ')[0]
-			if len(line_split[2].split(' ')) == 2:
-				xkeymap['variant'] = line_split[2].split(' ')[1]
-			break
-	fp.close()
-	return xkeymap
-
 def auto_complete_values_for_join(newValues, current_locale=None):
 	# try to automatically determine the domain
 	if newValues['server/role'] != 'domaincontroller_master' and not newValues.get('domainname'):
@@ -985,5 +969,4 @@ def get_random_nameserver(country):
 		ipv4_nameserver=random.choice(ipv4_servers),
 		ipv6_nameserver=random.choice(ipv6_servers),
 	)
-
 

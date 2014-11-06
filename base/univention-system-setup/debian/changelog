@@ -1,3 +1,17 @@
+univention-system-setup (8.1.52-1) unstable; urgency=medium
+
+  Bug #35709:
+  * fixed erroneous setting of keyboard layout for a chosen city
+  * use same data for setup/lang/countrycodes as for the city search
+    (used as ComboBox in the certificate settings)
+  * removed obsolete methods setup/lang/{default_timezone,default_keymap}
+  * removed unneeded data from usr/share/univention-system-setup/locale/
+  * removed method util::_xkeymap() as the layout can now directly been set
+    for the X-session in setup/keymap/save
+  * removed unneeded code in the city-data scripts
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 06 Nov 2014 17:07:10 +0100
+
 univention-system-setup (8.1.51-1) unstable; urgency=medium
 
   * Bug #36429: force a fixed grid height

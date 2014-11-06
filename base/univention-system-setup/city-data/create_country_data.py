@@ -51,13 +51,6 @@ if __name__ == '__main__':
 	for icountry, iservers in nameservers.iteritems():
 		country_data.setdefault(icountry, {}).update(iservers)
 
-	default_keyboard_layouts = _util.get_default_keyboard_layouts()
-	for icountry, idata in country_data.iteritems():
-		ilang = idata.get('default_lang')
-		idata['default_keyboard'] = default_keyboard_layouts.get(icountry, default_keyboard_layouts.get(ilang))
-	#for icountry, ikeyboard_layout in default_keyboard_layouts.iteritems():
-	#	country_data.setdefault(icountry, {})['default_keyboard'] = ikeyboard_layout
-
 	country_code_to_geonameid_map = _util.get_country_code_to_geonameid_map()
 	country_geonameids = country_code_to_geonameid_map.values()
 	for ilocale in locales + ['']:

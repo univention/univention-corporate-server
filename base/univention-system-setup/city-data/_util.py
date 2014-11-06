@@ -188,23 +188,3 @@ def get_country_code_to_nameserver_map():
 
 	return mapping
 
-def get_default_keyboard_layouts():
-	'''return mapping:
-	language code -> keyboard layout
-	and
-	country code -> keyboard layout.'''
-	mapping = {}
-	with open(_get_path('default-kmaps')) as infile:
-		for _line in infile:
-			line = _line.strip()
-			if not line:
-				continue
-			parts = line.split(':')
-			layout = parts[2]
-			lang_code = layout.split('-')[0][:2].lower()
-			mapping[lang_code] = layout
-			country = parts[1]
-			if country:
-				mapping[country] = layout
-	return mapping
-

@@ -1,12 +1,5 @@
-   * all-kmaps - Alle Layouts
-   * default-kmaps - StandardLayouts für eine Sprache
-   -> diese Dateien werden über getkeymaps.pl auf einem 3.0 System erzeugt
-
    * languagelist - Liste der unterstützen Sprachen (aus dem Debian Installer
      Paket localechooser)
-
-   * countrycode2timezone - Mapping von Countrycode und Zeitzone
-     (http://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 
    * timezone - alle Zeitzonen
 
@@ -14,6 +7,3 @@
      gesprochen wird eine Liste der Länder (short-list/de.short -> Belgium,
      Germany, Liechtenstein, Luxembourg, Austria, Switzerland)
      Aus dem Debian Installer
-
-   * country_codes - Mapping von Country zu Country-Code
-     (http://en.wikipedia.org/wiki/ISO_3166-1)

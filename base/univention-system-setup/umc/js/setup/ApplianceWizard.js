@@ -339,8 +339,8 @@ define([
 					umcpCommand: lang.hitch(this, 'umcpCommand'),
 					dynamicValues: 'setup/lang/keyboard/layout',
 					onChange: lang.hitch(this, function(value) {
-						if (this.local_mode) {
-							this.umcpCommand('setup/keymap/save', {keymap: value});
+						if (this.local_mode && value) {
+							this.umcpCommand('setup/keymap/save', {layout: value});
 						}
 					})
 				}]
@@ -1233,12 +1233,13 @@ define([
 			msg += _('<tr><td>Default locale:</td><td>%s</td></tr>', defaultLang);
 
 			var defaultKeyboardLabel = unknownStr;
-			if (city.default_keyboard) {
-				city.keyboard = city.default_lang;
+			if (city.country) {
+				var countryLowerCase = city.country.toLowerCase();
 				var layoutWidget = this.getWidget('locale', 'xorg/keyboard/options/XkbLayout');
 				array.some(layoutWidget.getAllItems(), function(ilayout) {
-					 if (ilayout.id == city.keyboard) {
+					 if (ilayout.id == countryLowerCase) {
 						// found matching layout -> break loop
+						city.keyboard = ilayout.id;
 						defaultKeyboardLabel = ilayout.label;
 						nSettingsConfigured++;
 						return true;
