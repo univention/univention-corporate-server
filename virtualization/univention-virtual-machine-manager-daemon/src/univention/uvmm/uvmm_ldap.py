@@ -231,7 +231,7 @@ def ldap_cloud_connections():
 					p_value = p.split('=', 1)[1]
 					c[p_name] = p_value
 				c['ucs_images'] = data['univentionVirtualMachineCloudConnectionIncludeUCSImages'][0]
-				c['search_pattern'] = data['univentionVirtualMachineCloudConnectionImageSearchPattern'][0]
+				c['search_pattern'] = data.get('univentionVirtualMachineCloudConnectionImageSearchPattern', [''])[0]
 				c['preselected_images'] = []
 				if 'univentionVirtualMachineCloudConnectionImageList' in data:
 					c['preselected_images'] = data['univentionVirtualMachineCloudConnectionImageList']
