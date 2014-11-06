@@ -1,10 +1,3 @@
-univention-ldap (10.0.17-42) unstable; urgency=low
-
-  * added new LDAP indices for shadowMax and shadowExpire
-    (Bug #35088, #36215)
-
- -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 16 Oct 2014 15:38:14 +0200
-
 univention-ldap (10.0.17-41) unstable; urgency=low
 
   * fixed ldap/sasl/secprops/maxssf (Bug #35513)

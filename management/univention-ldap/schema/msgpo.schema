@@ -76,6 +76,11 @@ attributetype ( 1.3.6.1.4.1.10176.4105.1.9 NAME 'msGPOWQLFilter'
 	EQUALITY caseExactMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
+attributetype ( 1.2.840.113556.1.2.281 NAME 'nTSecurityDescriptor'
+	DESC 'The Windows NT security descriptor for the schema object.'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
 objectclass ( 1.3.6.1.4.1.10176.4105.2.2 NAME 'msGPOContainer'
 	DESC 'MS GPO Policy Container'
 	SUP top STRUCTURAL
@@ -90,6 +95,7 @@ objectclass ( 1.3.6.1.4.1.10176.4105.2.2 NAME 'msGPOContainer'
 		msGPOFileSysPath $
 		msGPOUserExtensionNames $
 		msGPOMachineExtensionNames $
-		msGPOWQLFilter
+		msGPOWQLFilter $
+		nTSecurityDescriptor
 		)
 	)
