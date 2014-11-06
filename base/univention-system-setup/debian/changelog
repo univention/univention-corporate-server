@@ -1,3 +1,10 @@
+univention-system-setup (8.1.50-1) unstable; urgency=medium
+
+  * Define /var/cache/univention-system-setup/packages as trusted
+    (Bug #36038)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 06 Nov 2014 12:17:36 +0100
+
 univention-system-setup (8.1.49-2) unstable; urgency=low
 
   * Bug #36110: Apply changes in the network page immediately
