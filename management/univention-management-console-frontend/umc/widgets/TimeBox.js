@@ -43,15 +43,7 @@ define([
 
 		_timeBox: null,
 
-		sizeClass: null,
-
 		disabled: false,
-
-		postMixInProperties: function() {
-			this.inherited(arguments);
-
-			this.sizeClass = null;
-		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
