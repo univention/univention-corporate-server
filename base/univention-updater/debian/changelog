@@ -1,3 +1,9 @@
+univention-updater (10.0.36-3) unstable; urgency=medium
+
+  * Bug #36455: pre-update gcc-4.4 if it's installed
+
+ -- Arvid Requate <requate@univention.de>  Thu, 06 Nov 2014 16:23:45 +0100
+
 univention-updater (10.0.36-2) unstable; urgency=medium
 
   * Bug #36441: redirect output to log
