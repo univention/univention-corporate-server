@@ -4,15 +4,3 @@ File: etc/cron.d/univention-server-master
 Type: file
 File: etc/logrotate.d/univention-server-password-change
 Variables: logrotate/.*
-
-Type: file
-File: etc/cron.d/lock_expired_passwords
-Variables: server/role
-Variables: directory/manager/user/lock_expired_passwords/cron/enabled
-Variables: directory/manager/user/lock_expired_passwords/cron/entry
-
-Type: file
-File: etc/cron.d/lock_expired_accounts
-Variables: server/role
-Variables: directory/manager/user/lock_expired_accounts/cron/enabled
-Variables: directory/manager/user/lock_expired_accounts/cron/entry
