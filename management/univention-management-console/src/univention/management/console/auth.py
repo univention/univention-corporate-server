@@ -181,6 +181,8 @@ class PAM_Auth( Auth ):
 		try:
 			AUTH.info( 'PAM: trying to authenticate %s' % self._username )
 			self._pam.authenticate()
+			AUTH.info( 'PAM: running acct_mgmt' )
+			self._pam.acct_mgmt()
 		except PAM.error, e:
 			if not self.__workaround_pw_expired:
 				AUTH.error( "PAM: authentication error: %s" % str( e ) )
@@ -188,6 +190,7 @@ class PAM_Auth( Auth ):
 
 			## Start workaround for broken "defer_pwchange" implementation in pam_krb5
 			try:
+				## This may be the second time we run it, but ok..
 				self._pam.acct_mgmt()
 			except PAM.error as e:
 				if e[1] == PAM.PAM_NEW_AUTHTOK_REQD: # error: ('Authentication token is no longer valid; new one required', 12)
@@ -242,11 +245,6 @@ class PAM_Auth( Auth ):
 			return AuthenticationResult(False)
 		else:
 			self.__workaround_pw_expired = False
-			try:
-				self._pam.acct_mgmt()
-			except PAM.error as e:
-				AUTH.error( "PAM: acct_mgmt error: %s" % str( e ) )
-				return AuthenticationResult(False)
 
 		AUTH.info( 'Authentication for %s was successful' % self._username )
 		return AuthenticationResult(True)

@@ -1,3 +1,10 @@
+univention-management-console (6.0.24-30) unstable; urgency=medium
+
+  * Bug #36319: Fix case where posix authentication still works (not locked)
+    but acct_mgmt fails because something is expired.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 06 Nov 2014 13:00:57 +0100
+
 univention-management-console (6.0.24-29) unstable; urgency=low
 
   * Bug #32818: improved connection handling
