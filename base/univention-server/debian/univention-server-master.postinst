@@ -38,8 +38,6 @@ ldap/server/port?7389
 ldap/server/type=master
 server/password/interval?21
 server/role=domaincontroller_master
-directory/manager/user/lock_expired_passwords/cron/enabled?no
-directory/manager/user/lock_expired_accounts/cron/enabled?yes
 __UCR__
 
 mkdir -p /var/lib/samba/netlogon/scripts/

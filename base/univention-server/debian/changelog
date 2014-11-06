@@ -1,3 +1,10 @@
+univention-server (10.0.3-1) unstable; urgency=medium
+
+  * Removed lock_expired_passwords lock_expired_accounts cron job
+    (Bug #36215)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 06 Nov 2014 12:24:26 +0100
+
 univention-server (10.0.2-1) unstable; urgency=low
 
   * added cron job for automatic deactivation of expired user accounts
