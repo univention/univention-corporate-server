@@ -51,6 +51,7 @@ from univention.lib.i18n import Locale, Translation
 
 _ = Translation('univention.management.console').translate
 
+import errno
 import sys
 import traceback
 import socket
@@ -145,11 +146,22 @@ class ModuleServer(Server):
 		notifier.socket_add(self.__comm, self._recv)
 
 	def _recv(self, socket):
-		data = socket.recv(RECV_BUFFER_SIZE)
+		try:
+			data = socket.recv(RECV_BUFFER_SIZE)
+		except socket.error, ex:
+			MODULE.error('Failed connection: %s' % (errno.errorcode.get(ex.errno, ex.errno),))
+			data = None
 
 		# connection closed?
-		if not len(data):
+		if not data:
 			socket.close()
+			if socket == self.__comm:
+				MODULE.info('UMC server connection closed. This module is no longer in use.')
+				# the connection to UMC server connection has been closed/died/...
+				# so from now on this module is unused. Thus it is committing suicide right now.
+				self._timed_out()
+			else:
+				MODULE.info('Connection %r closed' % (socket,))
 			# remove socket from notifier
 			return False
 
@@ -306,7 +318,7 @@ class ModuleServer(Server):
 			try:
 				ret = self.__comm.send(self.__queue)
 			except socket.error as e:
-				if e[0] == 11:
+				if e[0] == errno.EWOULDBLOCK:
 					return True
 				raise
 

@@ -1,3 +1,13 @@
+univention-management-console (7.1.61-1) unstable; urgency=medium
+
+  * Bug #32818: improved connection handling
+    - catch errors on sockets while reading data
+    - in error situations the socket is closed and removed from notifier
+    - if the socket to UMC server has been closed or died, the UMC module
+      shuts down immediately
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 06 Nov 2014 09:47:48 +0100
+
 univention-management-console (7.1.60-1) unstable; urgency=medium
 
   * Bug #35654: cleanup import
