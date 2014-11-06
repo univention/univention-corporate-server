@@ -1862,31 +1862,42 @@ define([
 
 			// check dhcp config
 			if (pageName == 'network') {
-				if (this.getWidget('network', '_dhcp').get('value')) {
-					var fallbackDevices = this._getLinkLocalDHCPAddresses();
-					if (fallbackDevices.length) {
-						var devicesStr = array.map(fallbackDevices, function(idev) {
-							return lang.replace('<li><b>{name}:</b> {ip}</li>', idev);
-  						}).join('\n');
-	  					var msg = _('<p>One or more network interfaces could not obtain an IP address via DHCP. These interfaces will use automatic generated private addresses instead (APIPA).</p> <ul> %s </ul> <p>Please adjust your DHCP settings or confirm use of private address(es).</p>', devicesStr);
-						var buttonLabel = _('Continue with 169.254.*.* addresse(s)');
-						var allDevices = this._getNetworkDevices();
-						if (fallbackDevices.length === allDevices.length) {
-							msg = _('<p>With the current settings <b> no </b> internet access is available.</p><p>Because of this some functions like the Appcenter or software-updates will not be accessible</p>') + msg;
-							buttonLabel =  _('Continue without internet access');
-						}
-						return dialog.confirm(msg, [{
-							label: _('Cancel'),
-							name: pageName
-						}, {
-							label: buttonLabel,
-							'default': true,
-							name: nextPage
-						}], _('Warning')).then(lang.hitch(this, function(response) {
-							return this._forcePageTemporarily(response);
-						}));
+				var deferred = new Deferred();
+				deferred.resolve(nextPage);
+				var fallbackDevices = this._getLinkLocalDHCPAddresses();
+				if (fallbackDevices.length) {
+					var devicesStr = array.map(fallbackDevices, function(idev) {
+						return lang.replace('<li><b>{name}:</b> {ip}</li>', idev);
+					}).join('\n');
+					var msg = _('<p>One or more network interfaces could not obtain an IP address via DHCP. These interfaces will use automatic generated private addresses instead (APIPA).</p> <ul> %s </ul> <p>Please adjust your DHCP settings or confirm use of private address(es).</p>', devicesStr);
+					var buttonLabel = _('Continue with 169.254.*.* addresse(s)');
+					var allDevices = this._getNetworkDevices();
+					if (fallbackDevices.length === allDevices.length) {
+						msg = _('<p>With the current settings <b> no </b> internet access is available.</p><p>Because of this some functions like the Appcenter or software-updates will not be accessible</p>') + msg;
+						buttonLabel =  _('Continue without internet access');
 					}
+					deferred = dialog.confirm(msg, [{
+						label: _('Cancel'),
+						name: pageName
+					}, {
+						label: buttonLabel,
+						'default': true,
+						name: nextPage
+					}], _('Warning')).then(lang.hitch(this, function(response) {
+						return response;
+					}));
 				}
+				deferred = deferred.then(lang.hitch(this, function(page) {
+					if (page == 'network') {
+						// cancelled prior warning
+						return page;
+					}
+					values = this.getValues();
+					return this.standbyDuring(this.umcpCommand('setup/net/apply', {values: values}).then(function() {
+						return page;
+					}));
+				}));
+				return deferred;
 			}
 
 			if (pageName == 'role') {

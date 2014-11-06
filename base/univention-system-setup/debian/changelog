@@ -1,6 +1,12 @@
+univention-system-setup (8.1.49-2) unstable; urgency=low
+
+  * Bug #36110: Apply changes in the network page immediately
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 06 Nov 2014 11:11:41 +0100
+
 univention-system-setup (8.1.49-1) unstable; urgency=medium
 
-  * Running apt-get update before installing teh packages (Bug #36038)
+  * Running apt-get update before installing the packages (Bug #36038)
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 06 Nov 2014 10:38:38 +0100
 

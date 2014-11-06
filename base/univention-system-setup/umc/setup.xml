@@ -40,6 +40,7 @@
 		<command name="setup/lang/countrycodes" function="lang_countrycodes" />
 		<command name="setup/net/interfaces" function="net_interfaces" />
 		<command name="setup/net/dhclient" function="net_dhclient" />
+		<command name="setup/net/apply" function="net_apply" />
 		<!--TODO remove-->
 		<command name="setup/software/components" function="software_components" />
 		<command name="setup/keymap/save" function="save_keymap" />

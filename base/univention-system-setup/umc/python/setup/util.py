@@ -246,6 +246,39 @@ def write_profile(values):
 	finally:
 		os.umask(old_umask)
 
+def run_networkscrips():
+	# write header before executing scripts
+	f = open(LOG_FILE, 'a')
+	f.write('\n\n=== RUNNING NETWORK APPLY SCRIPTS (%s) ===\n\n' % timestamp())
+	f.flush()
+
+	# make sure that UMC servers and apache will not be restartet
+	subprocess.call( CMD_DISABLE_EXEC, stdout = f, stderr = f )
+
+	try:
+		for scriptpath in sorted( os.listdir( os.path.join( PATH_SETUP_SCRIPTS, '30_net' ) ) ):
+			scriptpath = os.path.join(PATH_SETUP_SCRIPTS, '30_net', scriptpath)
+			# launch script
+			MODULE.info('Running script %s\n' % scriptpath)
+			p = subprocess.Popen( scriptpath, stdout = f, stderr = subprocess.STDOUT )
+			p.wait()
+
+	finally:
+		# enable execution of servers again
+		subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f)
+
+	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
+	f.close()
+
+
+@contextmanager
+def written_profile(values):
+	write_profile(values)
+	try:
+		yield
+	finally:
+		os.remove(PATH_PROFILE)
+
 class ProgressState( object ):
 	def __init__( self ):
 		self.reset()
@@ -571,6 +604,7 @@ def run_scripts_in_path(path, logfile, category_name=""):
 			try:
 				subprocess.call(os.path.join(path, filename), stdout=logfile, stderr=logfile)
 			except (OSError, IOError):
+				import traceback
 				logfile.write('%s' % (traceback.format_exc(),))
 			logfile.flush()
 

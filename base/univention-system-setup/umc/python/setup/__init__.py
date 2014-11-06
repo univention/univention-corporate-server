@@ -622,6 +622,13 @@ class Instance(Base, ProgressMixin):
 		self.finished(request.id, countries)
 
 	@simple_response
+	def net_apply(self, values):
+		MODULE.process('Applying network settings')
+		with util.written_profile(values):
+			util.run_networkscrips()
+		return True
+
+	@simple_response
 	def net_interfaces(self):
 		'''Return a list of all available network interfaces.'''
 		return [ idev['name'] for idev in util.detect_interfaces() ]
