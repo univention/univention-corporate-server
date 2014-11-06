@@ -7,5 +7,5 @@ version: [3]
 desc: |
   * The broken timer handling in the qt backend of python-notifier
     has been fixed. This problem could lead e.g. to never stopping
-	UMC modules.
+    UMC modules.
 bug: [36472]
