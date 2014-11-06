@@ -1,3 +1,9 @@
+univention-pam (8.0.2-1) unstable; urgency=medium
+
+  * Bug #36436: add spaces to commatas in the description of auth/.*/restrict
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 06 Nov 2014 17:28:10 +0100
+
 univention-pam (8.0.1-3) unstable; urgency=low
 
   * fixed quoting (Bug #32415) 
