@@ -1,12 +1,3 @@
-univention-server (9.0.0-5) unstable; urgency=low
-
-  * added cron job for automatic deactivation of expired user accounts
-    (Bug #35088)
-  * added cron job for automatic deactivation of user accounts with
-    expired password (Bug #36215)
-
- -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 16 Oct 2014 15:41:07 +0200
-
 univention-server (9.0.0-4) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013
