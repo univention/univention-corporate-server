@@ -872,7 +872,7 @@ msgid ""
 "also available. \"*\" finds all images, but the list of available AMIs may "
 "get very long and take a considerable amount of time to load."
 msgstr ""
-"Optional. Standardmäig werden beim Anlegen einer neuen Cloud-Instanz alle UCS-Images angezeigt. Wird hier ein Suchmuster angegeben, stehen außerdem noch AMIs, die auf dieses Muster passen, zur Verfügung. \"*\" findet alle AMIs, allerdings kann dann die Liste der verfügbaren AMIs sehr lang werden und die Ladezeit beeinträchtigen."
+"Optional. Standardmässig werden beim Anlegen einer neuen Cloud-Instanz alle UCS-Images angezeigt. Wird hier ein Suchmuster angegeben, stehen außerdem noch AMIs, die auf dieses Muster passen, zur Verfügung. \"*\" findet alle AMIs, allerdings kann dann die Liste der verfügbaren AMIs sehr lang werden und die Ladezeit beeinträchtigen."
 
 #: umc/js/uvmm/types.js:196
 msgid "Paravirtual device (virtio)"
