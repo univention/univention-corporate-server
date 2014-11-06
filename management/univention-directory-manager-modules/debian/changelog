@@ -1,4 +1,4 @@
-univention-directory-manager-modules (9.0.76-32) unstable; urgency=medium
+univention-directory-manager-modules (9.0.76-34) unstable; urgency=medium
 
   * users/user: escape the share path filter (Bug #35953)
   * univention.admin.filter: escape \ with \\
