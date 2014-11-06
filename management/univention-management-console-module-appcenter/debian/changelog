@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (4.1.15-7) unstable; urgency=low
+
+  * Bug #36433: Text adjustments
+  * Bug #35781: Clear UDM extended attribute cache after App installation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 06 Nov 2014 14:09:05 +0100
+
 univention-management-console-module-appcenter (4.1.15-6) unstable; urgency=low
 
   * Bug #35825: Update all.tar.gz (2)

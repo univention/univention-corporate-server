@@ -670,17 +670,16 @@ define([
 
 		restartOrReload: function() {
 			// update the list of apps
-			// FIXME:
-			//var reloadPage = this.updateApplications().then(lang.hitch(this, function() {
-			//	return this.reloadPage();
-			//}));
-			//var reloadModules = UMCApplication.reloadModules();
-			//this.standbyDuring(all([reloadPage, reloadModules]));
-			this.updateApplications().then(lang.hitch(this, function() {
-				this.standbyDuring(this.reloadPage().then(function() {
-					return UMCApplication.reloadModules();
-				}));
+			if (this.udmAccessible) {
+				require(['umc/modules/udm/cache'], function(cache) {
+					cache.reset();
+				});
+			}
+			var reloadPage = this.updateApplications().then(lang.hitch(this, function() {
+				return this.reloadPage();
 			}));
+			var reloadModules = UMCApplication.reloadModules();
+			this.standbyDuring(all([reloadPage, reloadModules]));
 		},
 
 		_detailFieldCustomUsage: function() {

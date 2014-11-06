@@ -3,7 +3,7 @@
 	<module id="appcenter" priority="50" version="1.0">
 		<flavor priority="50" id="appcenter">
 			<name>App Center</name>
-			<description>Installation of apps</description>
+			<description>Install or remove applications</description>
 			<keywords>install,uninstall,software,update</keywords>
 			<categories>
 				<category name="software"/>

@@ -355,10 +355,10 @@ define([
 			//	5 ... repo not found, but encountered without commit
 			var txt = _("An unknown error with code %d occured.", result.status);
 			switch(result.status) {
-				case 1: txt = _("Please correct the corresponding input fields:");
+				case 1: txt = _("Please correct the corresponding input fields.");
 						break;
 				case 2:
-				case 3: txt = _("The data you entered could not be saved correctly:");
+				case 3: txt = _("The data you entered could not be saved correctly.");
 						break;
 				case 4: txt = _("Using the data you entered, no valid repository could be found.<br/>Since this may be a temporary server problem as well, your data was saved though.<br/>The problem was:");
 						break;

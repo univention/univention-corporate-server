@@ -93,13 +93,13 @@ define([
 		}),
 		must_have_valid_license: new Requirement({
 			reasonDescription: function() {
-				return _('For the installation of this application an updated UCS license key with a so-called key identification (Key ID) is required.');
+				return _('For the installation of this application, a UCS license key with a key identification (Key ID) is required.');
 			},
 			solutionDescription: function() {
-				return _('You need to request and install a new license in order to use the Univention App Center.');
+				return _('You receive such a license key within a couple of minutes via email after a free activation.');
 			},
 			solutionLabel: function() {
-				return _('Request a new license');
+				return _('Activate UCS now');
 			},
 			solution: function(opts) {
 				opts.appDetailsPage.showLicenseRequest(opts.action);

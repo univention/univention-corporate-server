@@ -55,12 +55,11 @@ define([
 
 		liveSearch: true,
 		addMissingAppButton: true,
-		standbyDuringUpdateApplications: true,
 		appQuery: null,
 
 		title: _("App management"),
 		headerText: _("Manage Applications for UCS"),
-		helpText: _("This page lets you install and remove applications that enhance your UCS installation."),
+		helpText: _("Install or remove applications on this or another UCS system."),
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -101,12 +100,12 @@ define([
 			});
 			this.addChild(this._grid);
 
-			when(this.getAppCenterSeen(), lang.hitch(this, function(appcenterSeen) {
+			this.standbyDuring(when(this.getAppCenterSeen()).then(lang.hitch(this, function(appcenterSeen) {
 				if (tools.isTrue(appcenterSeen)) {
 					// load apps
-					this.updateApplications();
+					return this.updateApplications();
 				} else {
-					dialog.confirmForm({
+					return dialog.confirmForm({
 						title: _('Univention App Center'),
 						widgets: [
 							{
@@ -128,16 +127,16 @@ define([
 					}).then(
 						lang.hitch(this, function(data) {
 							tools.setUserPreference({appcenterSeen: data.show_again ? 'false' : 'true'});
-							this.updateApplications();
+							return this.updateApplications();
 						}),
 						lang.hitch(this, function() {
-							this.updateApplications();
+							return this.updateApplications();
 						})
 					);
 				}
 			}), lang.hitch(this, function() {
-				this.updateApplications();
-			}));
+				return this.updateApplications();
+			})));
 		},
 
 		getAppCenterSeen: function() {
@@ -244,9 +243,6 @@ define([
 					this._searchSidebar.set('allCategory', categories[0]);
 				}
 			}));
-			if (this.standbyDuringUpdateApplications) {
-				this.standbyDuring(updating);
-			}
 			return updating;
 		},
 
