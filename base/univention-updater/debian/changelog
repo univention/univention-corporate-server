@@ -1,3 +1,9 @@
+univention-updater (10.0.37-1) unstable; urgency=low
+
+  * Bug #35656: Block update with xen-4.1 still installed.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 07 Nov 2014 11:45:36 +0100
+
 univention-updater (10.0.36-5) unstable; urgency=medium
 
   * Bug #36455: pre-update gcc-4.4-base if it's installed

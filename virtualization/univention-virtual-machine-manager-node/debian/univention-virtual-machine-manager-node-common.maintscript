@@ -1,0 +1,2 @@
+mv_conffile /etc/univention/templates/files/etc/default/libvirt-bin /etc/univention/templates/files/etc/default/libvirtd 3.0.2-2~
+mv_conffile /etc/univention/templates/files/etc/init.d/libvirt-bin /etc/univention/templates/files/etc/init.d/libvirtd 3.0.2-2~

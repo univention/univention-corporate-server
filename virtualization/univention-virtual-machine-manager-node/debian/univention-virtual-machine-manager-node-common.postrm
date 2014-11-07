@@ -32,9 +32,6 @@
 
 #DEBHELPER#
 
-dpkg-maintscript-helper mv_conffile /etc/univention/templates/files/etc/default/libvirt-bin /etc/univention/templates/files/etc/default/libvirtd 3.0.2-2~ -- "$@"
-dpkg-maintscript-helper mv_conffile /etc/univention/templates/files/etc/init.d/libvirt-bin /etc/univention/templates/files/etc/init.d/libvirtd 3.0.2-2~ -- "$@"
-
 case "$1" in
 purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
 	invoke-rc.d univention-directory-listener restart

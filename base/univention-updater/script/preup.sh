@@ -226,7 +226,9 @@ check_for_xen () {
 		echo "         virtual machines on those hosts."
 		echo ""
 	fi
-	echo "         The package 'xen-4.1' must be removed before the update can continue."
+	echo "         UCS-Xen must be removed before the update can continue. See"
+	echo "         <http://docs.univention.de/uvmm-4.0.html#uvmmext:xen> for more information and"
+	echo "         for instructions on how to proceed."
 	if is_ucr_true update40/ignore_xen
 	then
 		echo "WARNING: update40/ignore_xen is set to true. Skipped as requested."
