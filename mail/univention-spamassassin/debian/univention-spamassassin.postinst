@@ -43,6 +43,14 @@ univention-config-registry set mail/antivir/spam?yes \
 	mail/antispam/rules/autoupdate?yes \
 	mail/antispam/autostart?yes
 
+if [ "$1" = "configure" ]; then
+	if [ -n "$2" ]; then
+		if dpkg --compare-versions "$2" lt 6.0.1-1 ; then
+			univention-config-registry set mail/antivir/spam=yes
+		fi
+	fi
+fi
+
 if [ -x /etc/init.d/postfix ]; then
 	/etc/init.d/postfix reload || true
 fi

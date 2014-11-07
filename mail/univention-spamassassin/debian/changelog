@@ -1,3 +1,9 @@
+univention-spamassassin (6.0.1-1) unstable; urgency=low
+
+  * don't set mail/antivir/spam=no in postrm (Bug #36524)
+
+ -- Felix Botner <botner@univention.de>  Fri, 07 Nov 2014 16:12:40 +0100
+
 univention-spamassassin (6.0.0-1) unstable; urgency=medium
 
   * Update to UCS 4.0 (Bug #35264)

@@ -33,10 +33,9 @@
 
 #DEBHELPER#
 
-ucr set mail/antivir/spam=no
-
-if [ -x /etc/init.d/postfix ]; then
-	/etc/init.d/postfix restart
+if [ "$1" = "remove" ]; then
+	ucr unset mail/antivir/spam
+	test -x /etc/init.d/postfix && invoke-rc.d postfix restart
 fi
 
 exit 0
