@@ -1,3 +1,9 @@
+univention-system-setup (8.1.53-2) unstable; urgency=low
+
+  * Bug #36110: Fix sending interfaces to backend
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 07 Nov 2014 13:32:15 +0100
+
 univention-system-setup (8.1.53-1) unstable; urgency=medium
 
   * Bug #35499: adjust field widths for 800x600 resolution on the network page

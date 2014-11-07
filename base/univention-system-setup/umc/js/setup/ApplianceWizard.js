@@ -2103,7 +2103,7 @@ define([
 			var vals = {};
 			if (this._isDHCPPreConfigured() && _vals._dhcp) {
 				// nothing to do... leave the preconfigured settings
-			} else {
+			} else if (this.isPageVisible('network')) {
 				// prepare values for network interfaces
 				vals.interfaces = {};
 				array.forEach(this._getNetworkDevices(), function(idev, i) {
