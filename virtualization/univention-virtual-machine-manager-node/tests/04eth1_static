@@ -1,0 +1,28 @@
+#!/bin/bash
+echo 'Other interface eth1 != eth0'
+set -e -u
+
+tmp=$(mktemp -d)
+trap "rm -rf '$tmp'" EXIT
+
+export UNIVENTION_BASECONF="$tmp/base.conf"
+cat <<'__UCR__' >"$UNIVENTION_BASECONF"
+# univention_ base.conf
+
+interfaces/eth1/start: true
+interfaces/eth1/type: static
+interfaces/eth1/address: 192.168.43.2
+interfaces/eth1/netmask: 255.255.255.0
+interfaces/eth1/network: 192.168.43.0
+interfaces/eth1/broadcast: 192.168.43.255
+__UCR__
+
+mkdir -p "$tmp/eth0"
+"$(dirname "$0")/../ucs-kvm-setup-bridge" --dry-run --sys-root "$tmp" >"$tmp/out"
+
+diff -u "$tmp/out" - <<'__OUT__'
+interfaces/br0/options/0: 'bridge_fd 0'
+interfaces/br0/options/1: 'bridge_ports eth0'
+interfaces/eth0/start: 'true'
+interfaces/eth0/type: 'manual'
+__OUT__

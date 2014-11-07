@@ -1,0 +1,27 @@
+#!/bin/bash
+echo 'Interface by UCRV primary'
+set -e -u
+
+tmp=$(mktemp -d)
+trap "rm -rf '$tmp'" EXIT
+
+export UNIVENTION_BASECONF="$tmp/base.conf"
+cat <<'__UCR__' >"$UNIVENTION_BASECONF"
+# univention_ base.conf
+
+interfaces/primary: eth42
+interfaces/eth42/type: dynamic
+__UCR__
+
+mkdir -p "$tmp/eth42"
+ln -s /bin/true "$tmp/ip"
+PATH="$tmp:$PATH" "$(dirname "$0")/../ucs-kvm-setup-bridge" --dry-run --sys-root "$tmp" >"$tmp/out"
+
+diff -u "$tmp/out" - <<'__OUT__'
+interfaces/br0/options/0: 'bridge_fd 0'
+interfaces/br0/options/1: 'bridge_ports eth42'
+interfaces/br0/type: 'dynamic'
+interfaces/eth42/start: 'true'
+interfaces/eth42/type: 'manual'
+interfaces/primary: 'br0'
+__OUT__

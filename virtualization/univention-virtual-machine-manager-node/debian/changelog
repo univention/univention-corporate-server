@@ -1,6 +1,7 @@
 univention-virtual-machine-manager-node (3.0.3-1) unstable; urgency=low
 
   * Bug #36376: Remove broken symlink
+  * Bug #33694: Setup empty bridge
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 05 Nov 2014 20:50:23 +0100
 

@@ -1,0 +1,24 @@
+#!/bin/bash
+echo 'Dynamic eth0 configuration'
+set -e -u
+
+tmp=$(mktemp -d)
+trap "rm -rf '$tmp'" EXIT
+
+export UNIVENTION_BASECONF="$tmp/base.conf"
+cat <<'__UCR__' >"$UNIVENTION_BASECONF"
+# univention_ base.conf
+
+interfaces/eth0/type: dynamic
+__UCR__
+
+mkdir -p "$tmp/eth0"
+"$(dirname "$0")/../ucs-kvm-setup-bridge" --dry-run --sys-root "$tmp" >"$tmp/out"
+
+diff -u "$tmp/out" - <<'__OUT__'
+interfaces/br0/options/0: 'bridge_fd 0'
+interfaces/br0/options/1: 'bridge_ports eth0'
+interfaces/br0/type: 'dynamic'
+interfaces/eth0/start: 'true'
+interfaces/eth0/type: 'manual'
+__OUT__

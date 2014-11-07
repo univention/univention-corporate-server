@@ -1,0 +1,20 @@
+#!/bin/bash
+echo 'Invalid bridge nesting'
+set -e -u
+
+tmp=$(mktemp -d)
+trap "rm -rf '$tmp'" EXIT
+
+export UNIVENTION_BASECONF="$tmp/base.conf"
+cat <<'__UCR__' >"$UNIVENTION_BASECONF"
+# univention_ base.conf
+
+interfaces/br0/type: dynamic
+interfaces/br0/options/bridge_ports: eth0
+__UCR__
+
+mkdir -p "$tmp/br0/brport"
+"$(dirname "$0")/../ucs-kvm-setup-bridge" --dry-run --sys-root "$tmp" br1 br0 >"$tmp/out" && exit 1
+
+diff -u "$tmp/out" - <<'__OUT__'
+__OUT__

@@ -1,0 +1,20 @@
+#!/bin/bash
+echo 'Bridge br0 already exists'
+set -e -u
+
+tmp=$(mktemp -d)
+trap "rm -rf '$tmp'" EXIT
+
+export UNIVENTION_BASECONF="$tmp/base.conf"
+cat <<'__UCR__' >"$UNIVENTION_BASECONF"
+# univention_ base.conf
+
+interfaces/br0/type: dynamic
+__UCR__
+
+mkdir -p "$tmp/eth0"
+mkdir -p "$tmp/br0"
+"$(dirname "$0")/../ucs-kvm-setup-bridge" --dry-run --sys-root "$tmp" >"$tmp/out" && exit 1
+
+diff -u "$tmp/out" - <<'__OUT__'
+__OUT__

@@ -1,0 +1,18 @@
+#!/bin/bash
+echo 'Not existing interface name eth42'
+set -e -u
+
+tmp=$(mktemp -d)
+trap "rm -rf '$tmp'" EXIT
+
+export UNIVENTION_BASECONF="$tmp/base.conf"
+cat <<'__UCR__' >"$UNIVENTION_BASECONF"
+# univention_ base.conf
+
+__UCR__
+
+mkdir -p "$tmp/eth0"
+"$(dirname "$0")/../ucs-kvm-setup-bridge" --dry-run --sys-root "$tmp" br0 eth42 >"$tmp/out" && exit 1
+
+diff -u "$tmp/out" - <<'__OUT__'
+__OUT__

@@ -38,11 +38,20 @@ univention-config-registry set uvmm/kvm/bridge/autostart?no \
 	uvmm/libvirt/action/shutdown?suspend
 
 # Bug #33006: incompatible with bridge configuration through UMC
-case "$(univention-config-registry get uvmm/kvm/bridge/autostart)" in
-false|no) ;;
-manually) ;;
-*) univention-config-registry set umc/modules/setup/network/disabled/by=kvm ;;
-esac
+setup_bridge () {
+	# Only after successful installation
+	[ "$1" = configure ] || return 0
+	# Not when old script is used
+	case "$(univention-config-registry get uvmm/kvm/bridge/autostart)" in
+	false|no) ;;
+	manually) ;;
+	*) univention-config-registry set umc/modules/setup/network/disabled/by=kvm ; return 0 ;;
+	esac
+	# Only once after upgrade from UCS-3 or for new installation
+	dpkg --compare-versions "$2" lt 3.0.3 || return 0
+	/usr/lib/univention-virtual-machine-manager-node-kvm/ucs-kvm-setup-bridge || :
+}
+setup_bridge "$@"
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]
 then
