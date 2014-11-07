@@ -455,6 +455,8 @@
 		<title>Policies</title>
 		<itemizedlist>
 			<listitem><simpara>
+				Help text as well as a documentation link have been added to the policies module
+				(<ulink url="&ucsbug;36435">Bug 36435</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -533,6 +535,9 @@
 				Active Directory Connection and Active Directory Takeover
 				(<ulink url="&ucsbug;35837">Bug 35837</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				Several text refinements (<ulink url="&ucsbug;36435">Bug 36435</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
@@ -552,7 +557,7 @@
 		<itemizedlist>
 			<listitem><simpara>
 				UMC modules now may contain a help button which links to related article in the online documentation of UCS.
-				(<ulink url="&ucsbug;32026">Bug 32026</ulink>).
+				(<ulink url="&ucsbug;32026">Bug 32026</ulink>, <ulink url="&ucsbug;36435">Bug 36435</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The users/self module is no longer used for password changes. The module has been renamed into "User settings" and is deactivated by default.
