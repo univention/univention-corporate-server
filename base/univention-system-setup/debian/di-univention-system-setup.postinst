@@ -45,6 +45,7 @@ apt-install univention-grub
 db_progress SET 2
 db_progress INFO di-univention-system-setup/progress/ucr
 in-target /usr/sbin/ucr commit
+in-target /usr/sbin/ucr unset --force interfaces/restart/auto
 
 db_progress SET 3
 db_progress INFO di-univention-system-setup/progress/uss
@@ -60,7 +61,6 @@ rm -f /target/var/lib/univention-ldap/root.secret
 db_progress SET 4
 db_progress INFO di-univention-system-setup/progress/done
 in-target /usr/sbin/ucr set repository/online=yes
-in-target /usr/sbin/ucr unset --force interfaces/restart/auto
 db_progress STOP
 
 exit 0

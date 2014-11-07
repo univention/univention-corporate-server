@@ -1,3 +1,11 @@
+univention-system-setup (8.1.55-1) unstable; urgency=medium
+
+  * Reset interfaces/restart/auto before starting USS. In the meanwhile
+    the Admin can change the network setting in USS in case of an error
+    (Bug #36085)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Nov 2014 16:37:26 +0100
+
 univention-system-setup (8.1.54-1) unstable; urgency=medium
 
   Bug #35709:
