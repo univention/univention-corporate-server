@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.97-2) unstable; urgency=medium
+
+  * Bug #36435: fixed fuzzy entry
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Nov 2014 20:18:43 +0100
+
 univention-management-console-frontend (4.1.97-1) unstable; urgency=medium
 
   * Bug #36435: text adaptations
