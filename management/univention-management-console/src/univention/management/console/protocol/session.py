@@ -410,9 +410,15 @@ class Processor(signals.Provider):
 			userObj = self._get_user_obj()
 			if userObj:
 				favorites = dict(userObj.info.get('umcProperty', [])).setdefault('favorites', ucr.get('umc/web/favorites/default', '')).strip()
-				favorites.split(',')
+				favorites = set(favorites.split(','))
 			else:  # no LDAP user
-				favorites = ucr.get('umc/web/favorites/default', '').split(',')
+				favorites = set(ucr.get('umc/web/favorites/default', '').split(','))
+
+			# appcenter module has changed to appcenter:appcenter -> make sure
+			# that it will be in the favorites also after an update from
+			# UCS 3.2 to UCS 4.0 (cf. Bug #36416)
+			if 'appcenter' in favorites:
+				favorites.add('appcenter:appcenter')
 
 			modules = []
 			for id, module in self.__command_list.items():
@@ -422,6 +428,7 @@ class Processor(signals.Provider):
 						favcat = []
 						if '%s:%s' % (id, flavor.id) in favorites:
 							favcat.append('_favorites_')
+
 
 						translationId = flavor.translationId
 						if not translationId:
