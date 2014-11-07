@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (3.0.3-1) unstable; urgency=low
+
+  * Bug #36376: Remove broken symlink
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 05 Nov 2014 20:50:23 +0100
+
 univention-virtual-machine-manager-node (3.0.2-3) unstable; urgency=low
 
   * Bug #33694: Adapt bridge transfer to ifupdown change

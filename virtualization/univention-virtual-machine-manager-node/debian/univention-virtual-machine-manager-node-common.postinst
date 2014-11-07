@@ -36,9 +36,13 @@ eval "$(univention-config-registry shell server/role)"
 
 case "$1" in
 configure)
-	if dpkg --compare-versions "$2" lt 3.0.2-2~
+	if dpkg --compare-versions "$2" lt 3.0.3~
 	then
 		univention-config-registry update
+		[ -L /etc/init.d/univention-virtual-machine-manager-node-common ] &&
+			[ "$(readlink /etc/init.d/univention-virtual-machine-manager-node-common)" = libvirt-bin ] &&
+			rm -f /etc/init.d/univention-virtual-machine-manager-node-common
+		update-rc.d libvirt-bin remove >/dev/null || :
 	fi
 	# Setup firewall and backup directory
 	univention-config-registry set \
@@ -59,9 +63,9 @@ configure)
 	esac
 
 	# Setup runit
+	[ -x /etc/init.d/libvirtd.debian ] && invoke-rc.d libvirtd.debian stop
 	test -e /etc/runit/univention/univention-libvirt ||
 		ln -s ../univention-libvirt /etc/runit/univention/univention-libvirt
-
 	invoke-rc.d libvirtd restart
 	;;
 
