@@ -5,5 +5,5 @@ src: univention-radius
 fix: 1.0.0-6.7.201410291404
 version: [3]
 desc: |
-  This update fixes access for client in Samba AD domains.
+  This update fixes access for clients in Samba AD domains.
 bug: [35516]

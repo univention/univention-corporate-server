@@ -3,7 +3,7 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-lib
 fix: 3.0.26-68.278.201409161801
-version: [3,2]
+version: [3]
 desc: |
   This update fixes a problem with reading progress report lines from 'dpkg'
   while installing Apps, which lead to the installation getting stuck.

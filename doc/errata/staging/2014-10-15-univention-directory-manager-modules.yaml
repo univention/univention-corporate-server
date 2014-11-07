@@ -5,6 +5,6 @@ src: univention-directory-manager-modules
 fix: 9.0.76-34.1262.201411061334
 version: [3]
 desc: |
-  * A backslash in the home share of an user no longer results in a
+  * A backslash in the 'home share path' value of a user no longer results in a
     traceback.
 bug: [35953]

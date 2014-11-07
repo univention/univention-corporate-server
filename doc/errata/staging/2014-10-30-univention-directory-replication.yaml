@@ -6,6 +6,6 @@ fix: 7.0.1-13.91.201410301732
 version: [3]
 desc: |
   This update fixes the following issue:
-  * object replication needs to filter out operational ppolicy
+  * Object replication needs to filter out operational ppolicy
     LDAP attributes which may be found on a UCS 4.0 master.
 bug: [36353]
