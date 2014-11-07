@@ -1,3 +1,9 @@
+univention-updater (10.0.38-1) unstable; urgency=low
+
+  * Bug #36269: univention-repository-create is know able to handle UCS 4 DVDs
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 07 Nov 2014 16:02:38 +0100
+
 univention-updater (10.0.37-2) unstable; urgency=low
 
   * Bug #36372: Work-around broken UMC HTML escaping
