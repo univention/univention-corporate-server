@@ -376,7 +376,6 @@ define([
 					type: TextBox,
 					name: '_ip0',
 					label: _('IPv4/IPv6 address {interface}'),
-					size: 'Half',
 					inlineLabel: '',
 					value: '',
 					onChange: lang.hitch(this, '_updateNetwork', 0),
@@ -386,7 +385,6 @@ define([
 					type: TextBox,
 					name: '_netmask0',
 					label: _('IPv4 net mask/IPv6 prefix {interface}'),
-					size: 'Half',
 					inlineLabel: '',
 					invalidMessage: _invalidNetmaskAndPrefixMessage,
 					validator: _validateNetmaskAndPrefix
@@ -448,7 +446,6 @@ define([
 					type: TextBox,
 					name: 'gateway',
 					label: _('Gateway'),
-					size: 'Half',
 					required: true,
 					invalidMessage: _invalidIPAddressMessage,
 					validator: _validateIPAddress
@@ -456,14 +453,12 @@ define([
 					type: TextBox,
 					name: 'nameserver1',
 					label: _('Preferred DNS server'),
-					size: 'Half',
 					invalidMessage: _invalidIPAddressMessage,
 					validator: _validateIPAddress
 				}, {
 					type: TextBox,
 					name: 'nameserver2',
 					label: _('Alternate DNS server'),
-					size: 'Half',
 					invalidMessage: _invalidIPAddressMessage,
 					validator: _validateIPAddress
 				}, {
