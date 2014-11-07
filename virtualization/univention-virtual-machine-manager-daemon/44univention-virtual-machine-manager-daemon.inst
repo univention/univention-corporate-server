@@ -151,11 +151,6 @@ create_hvm_profile() {
 	fi
 }
 
-# http://support.microsoft.com/kb/314865/de
-#   Mindestens 64 MB RAM (128 MB werden empfohlen)
-#   Mindestens 1,5 GB Speicherplatz auf der Festplatte
-create_hvm_profile "Microsoft Windows XP" "winxp-" "kvm" "automatic" "512MB" "0" "0" "0" "10GB" "localtime"
-
 # http://windows.microsoft.com/de-DE/windows7/products/system-requirements
 #   1 GB RAM (32-Bit) oder 2 GB RAM (64-Bit)
 #   16 GB verfügbarer Festplattenspeicher (32-Bit) oder 20 GB (64-Bit)
@@ -212,9 +207,6 @@ create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "kvm" "x86_64"
 #   Disc Space
 #     Minimum: 32 GB or greater
 create_hvm_profile "Microsoft Windows 2012 (64 Bit)" "w2012-" "kvm" "x86_64" "2048MB" "0" "0" "0" "48GB" "localtime"
-
-create_hvm_profile "UCS 3.1" "ucs31-" "kvm" "automatic" "1024MB" "1" "0" "1" "20GB" "utc"
-create_hvm_profile "UCS 3.1 (64 Bit)" "ucs31-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
 
 create_hvm_profile "UCS 3.2" "ucs32-" "kvm" "automatic" "1024MB" "1" "0" "1" "20GB" "utc"
 create_hvm_profile "UCS 3.2 (64 Bit)" "ucs32-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
