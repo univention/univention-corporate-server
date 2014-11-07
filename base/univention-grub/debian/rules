@@ -39,4 +39,4 @@ override_dh_auto_install:
 	univention-install-config-registry
 
 %:
-	dh $@
+	dh $@ --with python_support

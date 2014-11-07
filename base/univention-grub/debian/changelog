@@ -1,3 +1,9 @@
+univention-grub (8.0.4-1) unstable; urgency=low
+
+  * Bug #36526: Fix Python dependencies
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 07 Nov 2014 18:13:50 +0100
+
 univention-grub (8.0.3-7) unstable; urgency=low
 
   * added grub/gfxmode=text for xen HVM installations (Bug #30978) 
