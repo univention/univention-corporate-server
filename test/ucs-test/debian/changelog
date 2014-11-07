@@ -1,3 +1,10 @@
+ucs-test (5.0.43-1) unstable; urgency=low
+
+  * 20_appcenter/31_ini_version_check: test to check different App versions
+    LDAP registration (Bug #35896).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 07 Nov 2014 10:22:39 +0100
+
 ucs-test (5.0.42-5) unstable; urgency=medium
 
   * Bug #35985: add dependency on curl
