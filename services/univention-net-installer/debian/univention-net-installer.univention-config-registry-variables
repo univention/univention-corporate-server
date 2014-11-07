@@ -5,14 +5,14 @@ Type=bool
 Categories=system-base
 
 [pxe/installer/initrd]
-Description[de]=Diese Variable konfiguriert den Namen der bei der PXE-Installation verwendeten Initial Ramdisk. Ist die Variable nicht gesetzt, wird 'linux.bin' verwendet.
-Description[en]=This variable configures the name of the initial ramdisk to be used during PXE installation. If the variable is unset, 'linux.bin' is used.
+Description[de]=Diese Variable konfiguriert den Namen der bei der PXE-Installation verwendeten Initial Ramdisk. Ist die Variable nicht gesetzt, wird 'initrd.gz' verwendet.
+Description[en]=This variable configures the name of the initial ramdisk to be used during PXE installation. If the variable is unset, 'initrd.gz' is used.
 Type=str
 Categories=system-base
 
 [pxe/installer/kernel]
-Description[de]=Diese Variable konfiguriert den Kernel der bei der PXE-Installation verwendet wird. Ist die Variable nicht gesetzt, wird 'debian-installer/amd64/linux' verwendet.
-Description[en]=This variable configures the name of the kernel to be used during PXE installation. If the variable is unset, 'debian-installer/amd64/linux' is used.
+Description[de]=Diese Variable konfiguriert den Kernel der bei der PXE-Installation verwendet wird. Ist die Variable nicht gesetzt, wird 'linux' verwendet.
+Description[en]=This variable configures the name of the kernel to be used during PXE installation. If the variable is unset, 'linux' is used.
 Type=str
 Categories=system-base
 

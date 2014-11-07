@@ -37,24 +37,18 @@
 eval "$(univention-config-registry shell server/role)"
 
 univention-config-registry set \
-	pxe/installer/initrd?"linux.bin" \
-	pxe/installer/ramdisksize?"250000" \
 	pxe/installer/quiet?"yes" \
 	pxe/installer/vga?"788" \
-	pxe/installer/loglevel?"0" \
-	pxe/installer/ipappend?"3"
+	pxe/installer/loglevel?"0"
 
-# increase ramdisksize for this update (Bug #25416)
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.4-1; then
-	if [ "$(univention-config-registry get pxe/installer/ramdisksize)" = "184696" ]; then
-		univention-config-registry set pxe/installer/ramdisksize=209272
+# Bug #35537: obsolete after UCS 4.0-0
+# switch to new names for PXE kernel and initrd
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.0-3; then
+	if [ "$(univention-config-registry get pxe/installer/kernel)" = "linux-server" ]; then
+		univention-config-registry unset pxe/installer/kernel
 	fi
-fi
-
-# increase ramdisksize for this update (Bug #28477)
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.0-1; then
-	if [ "$(univention-config-registry get pxe/installer/ramdisksize)" = "209272" ]; then
-		univention-config-registry set pxe/installer/ramdisksize=250000
+	if [ "$(univention-config-registry get pxe/installer/initrd)" = "linux.bin" ]; then
+		univention-config-registry unset pxe/installer/initrd
 	fi
 fi
 

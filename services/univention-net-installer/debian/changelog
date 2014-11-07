@@ -1,3 +1,9 @@
+univention-net-installer (8.0.0-3) unstable; urgency=low
+
+  * Bug #35537: several bugfixes
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 07 Nov 2014 16:23:24 +0100
+
 univention-net-installer (8.0.0-2) unstable; urgency=low
 
   * adapted listener module serverinstallerpxe.py for debian installer
