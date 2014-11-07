@@ -1,0 +1,46 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Test univention-samba4-backup parameters are used in a cron job"
+## exposure: safe
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+RETVAL=100
+CRON_JOB="/etc/cron.d/univention-samba4-backup"
+
+
+# skip the test if 'CRON_JOB' file does not exist:
+echo "Looking for the samba4 backup cron job: $CRON_JOB"
+[ -f $CRON_JOB ] || exit 137
+
+# if 'samba4/backup/cron' setting is empty the cron job should be disabled:
+echo "Checking if a UCR 'samba4/backup/cron' variable is set"
+if [ "$(ucr get samba4/backup/cron)" == '' ]; then
+    echo "Variable is unset, cron job at $CRON_JOB should be disabled"
+
+    if [ "$(grep -F "# disabled by" /etc/cron.d/univention-samba4-backup)" == '' ]; then
+            fail_fast 110 "The cron job at $CRON_JOB is not disabled, when the UCR backup variable is unset"
+    fi
+fi
+
+# check that '/etc/cron.d/univention-samba4-backup' has a line from 'samba4/backup/cron':
+echo "Checking if UCR 'samba4/backup/cron' settings are present in cron job at $CRON_JOB"
+if [ "$(grep -F "$(ucr get samba4/backup/cron)" /etc/cron.d/univention-samba4-backup)" == '' ]; then
+        fail_fast 110 "The UCR 'samba4/backup/cron' setting was not found in the cron job at $CRON_JOB"
+fi
+
+# if UCR 'samba4/backup/cron/options' are set, they should also be present in cron job:
+if [ "$(ucr get samba4/backup/cron/options)" != '' ]; then
+    echo "Checking if UCR 'samba4/backup/cron/options' are present in the cron job at $CRON_JOB"
+    
+    if [ "$(grep -F -e "$(ucr get samba4/backup/cron/options)" /etc/cron.d/univention-samba4-backup)" == '' ]; then
+            fail_fast 110 "The UCR 'samba4/backup/cron/options' were not found in the cron job at $CRON_JOB"
+    fi
+fi
+
+exit $RETVAL

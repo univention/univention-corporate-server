@@ -1,3 +1,10 @@
+ucs-test (5.0.44-1) unstable; urgency=low
+
+  * 51_samba4/20backup_parameters_usage: check that backup cron job
+    parameters are set (Bug #35906).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 07 Nov 2014 13:35:54 +0100
+
 ucs-test (5.0.43-1) unstable; urgency=low
 
   * 20_appcenter/31_ini_version_check: test to check different App versions
