@@ -1,3 +1,11 @@
+univention-directory-manager-modules (10.0.29-1) unstable; urgency=medium
+
+  Bug #36435:
+  * add help description + manual link to policies/policy
+  * add manual link to nagios/nagios
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Nov 2014 18:44:51 +0100
+
 univention-directory-manager-modules (10.0.28-1) unstable; urgency=medium
 
   * Bug #36304: Workaround for restrictive imghdr.test_jpeg

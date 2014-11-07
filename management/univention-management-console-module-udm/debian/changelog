@@ -1,3 +1,13 @@
+univention-management-console-module-udm (5.1.23-1) unstable; urgency=medium
+
+  Bug #36435:
+  * new UMCP command udm/meta_info for module variables help_link + help_text
+  * add call to udm/meta_info into udm/cache.js
+  * allow help_link/help_text also in the search view
+  * text adaptations
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Nov 2014 18:19:46 +0100
+
 univention-management-console-module-udm (5.1.22-1) unstable; urgency=medium
 
   * Bug #35654: fixed handling of ActivationPage

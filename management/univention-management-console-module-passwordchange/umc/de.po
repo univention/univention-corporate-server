@@ -15,5 +15,5 @@ msgstr ""
 msgid "Change password"
 msgstr "Passwort ändern"
 
-msgid "Password change for the user currently logged in"
-msgstr "Änderung des Passworts des angemeldeten Benutzers"
+msgid "Password change for the currently logged in user"
+msgstr "Änderung des Passworts für den angemeldeten Benutzer"

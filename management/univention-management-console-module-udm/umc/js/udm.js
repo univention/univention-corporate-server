@@ -299,10 +299,11 @@ define([
 					containers: moduleCache.getContainers(),
 					superordinates: moduleCache.getSuperordinates(),
 					reports: moduleCache.getReports(),
+					metaInfo: moduleCache.getMetaInfo(),
 					ucr: this._loadUCRVariables()
 				}).then(lang.hitch(this, function(results) {
 					this._reports = results.reports;
-					this.renderSearchPage(results.containers, results.superordinates);
+					this.renderSearchPage(results.containers, results.superordinates, results.metaInfo);
 				}), lang.hitch(this, function() {
 					this.standby(false);
 				}));
@@ -356,15 +357,28 @@ define([
 			}
 		},
 
-		renderSearchPage: function(containers, superordinates) {
+		renderSearchPage: function(containers, superordinates, metaInfo) {
 			// summary:
 			//		Render all GUI elements for the search formular, the grid, and the side-bar
 			//		for the LDAP-directory and objects with superordinates.
 
+			// show help icon if help_link is given for the module
+			var buttons = [];
+			if (metaInfo.help_link) {
+				buttons = [{name: 'help',
+					iconClass: 'umcHelpIconWhite',
+					label: _('Help'),
+					callback: lang.hitch(this, function() {
+						window.open(metaInfo.help_link);
+					})
+				}];
+			}
+
 			// setup search page
 			this._searchPage = new Page({
 				headerText: this.description,
-				helpText: ''
+				helpText: metaInfo.help_text || '',
+				headerButtons: buttons
 			});
 
 			// get the license information

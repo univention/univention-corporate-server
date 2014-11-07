@@ -436,10 +436,13 @@ class Instance( Base, ProgressMixin ):
 		thread.run()
 
 	@simple_response
-	def help_link(self, module):
-		module = UDM_Module(module)
+	def meta_info(self, objectType):
+		module = UDM_Module(objectType)
 		if module:
-			return module.help_link
+			return {
+				'help_link': module.help_link,
+				'help_text': module.help_text,
+			}
 
 	def get( self, request ):
 		"""Retrieves the given list of LDAP objects. Password property will be removed.

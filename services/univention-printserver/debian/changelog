@@ -1,24 +1,30 @@
+univention-printserver (8.0.5-1) unstable; urgency=medium
+
+  * Bug #36435: text adaptations
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Nov 2014 18:39:41 +0100
+
 univention-printserver (8.0.4-4) unstable; urgency=low
 
-  * Fixed last commit (Bug #36178) 
+  * Fixed last commit (Bug #36178)
 
  -- Felix Botner <botner@univention.de>  Fri, 24 Oct 2014 09:37:22 +0200
 
 univention-printserver (8.0.4-3) unstable; urgency=low
 
-  * Added dependencies to printer-driver packages (Bug #36178) 
+  * Added dependencies to printer-driver packages (Bug #36178)
 
  -- Felix Botner <botner@univention.de>  Fri, 24 Oct 2014 09:27:05 +0200
 
 univention-printserver (8.0.4-2) unstable; urgency=low
 
-  * fixed join script (Bug #35147) 
+  * fixed join script (Bug #35147)
 
  -- Felix Botner <botner@univention.de>  Thu, 16 Oct 2014 17:55:03 +0200
 
 univention-printserver (8.0.4-1) unstable; urgency=low
 
-  * updated config files (Bug #33278) 
+  * updated config files (Bug #33278)
 
  -- Felix Botner <botner@univention.de>  Thu, 16 Oct 2014 10:46:36 +0200
 
@@ -60,19 +66,19 @@ univention-printserver (8.0.0-4) unstable; urgency=medium
 
 univention-printserver (8.0.0-3) unstable; urgency=low
 
-  * updated printer models in join script (Bug #35147) 
+  * updated printer models in join script (Bug #35147)
 
  -- Felix Botner <botner@univention.de>  Tue, 19 Aug 2014 13:34:02 +0200
 
 univention-printserver (8.0.0-2) unstable; urgency=low
 
-  * fixed control file (Bug #35147) 
+  * fixed control file (Bug #35147)
 
  -- Felix Botner <botner@univention.de>  Mon, 18 Aug 2014 15:44:19 +0200
 
 univention-printserver (8.0.0-1) unstable; urgency=low
 
-  * Update to UCS 4.0 (Bug #35147)  
+  * Update to UCS 4.0 (Bug #35147)
 
  -- Felix Botner <botner@univention.de>  Thu, 10 Jul 2014 16:05:51 +0200
 
@@ -121,7 +127,7 @@ univention-printserver (7.0.8-1) unstable; urgency=low
 univention-printserver (7.0.7-4) unstable; urgency=low
 
   * fixed univentionPrinterUseClientDriver handling in
-    cups listener (Bug #32669) 
+    cups listener (Bug #32669)
 
  -- Felix Botner <botner@univention.de>  Tue, 24 Sep 2013 16:58:13 +0200
 

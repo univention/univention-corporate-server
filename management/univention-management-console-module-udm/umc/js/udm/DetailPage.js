@@ -188,10 +188,6 @@ define([
 
 			this.loadedDeferred = new Deferred();
 
-			this.umcpCommand('udm/help_link', {module: this.objectType}).then(lang.hitch(this, function(data) {
-				this.set('helpLink', data.result);
-			}));
-
 			// remember the objectType of the object we are going to edit
 			this._editedObjType = this.objectType;
 
@@ -203,7 +199,8 @@ define([
 			this.propertyQuery = moduleCache.getProperties(this.objectType, objectDN);
 			var commands = {
 				properties: this.propertyQuery,
-				layout: moduleCache.getLayout(this.objectType, objectDN)
+				layout: moduleCache.getLayout(this.objectType, objectDN),
+				metaInfo: moduleCache.getMetaInfo(this.objectType)
 			};
 			if (!this._multiEdit) {
 				// query policies for normal edit
@@ -232,7 +229,7 @@ define([
 				var properties = lang.clone(results.properties);
 				setTimeout(lang.hitch(this, function() {
 					this._prepareIndividualProperties(properties).then(lang.hitch(this, function(properties) {
-						this.renderDetailPage(properties, layout, policies, template).then(lang.hitch(this, function() {
+						this.renderDetailPage(properties, layout, policies, template, results.metaInfo).then(lang.hitch(this, function() {
 							this.loadedDeferred.resolve();
 						}), lang.hitch(this, function() {
 							this.loadedDeferred.resolve();
@@ -390,7 +387,7 @@ define([
 					title: _('[Policies]'),
 					noFooter: true,
 					headerText: _('Properties inherited from policies'),
-					helpText: _('List of all object properties that are inherited by policies. The values cannot be edited directly. In order to edit a policy, click on the "edit" button to open a particular policy in a new tab.')
+					helpText: _('List of all object properties that are inherited by policies. The values cannot be edited directly. By clicking on "Create new policy", a new tab with a new policy will be opened. If an attribute is already set, the corresponding policy can be edited in a new tab by clicking on the "edit" link.')
 				});
 				this._addSubTab(this._policiesTab);
 				this._policiesTab.watch('selected', lang.hitch(this, function(name, oldVal, newVal) {
@@ -800,18 +797,18 @@ define([
 			}
 		},
 
-		_renderSubTabs: function(widgets, layout) {
+		_renderSubTabs: function(widgets, layout, metaInfo) {
 			// render the layout for each subtab
 			this._propertySubTabMap = {}; // map to remember which form element is displayed on which subtab
 			this._detailPages = [];
 
-			return tools.forEachAsync(layout, function(ilayout) {
+			return tools.forEachAsync(layout, function(ilayout, idx) {
 				// create a new page, i.e., subtab
 				var subTab = new Page({
 					title: ilayout.label || ilayout.name, //TODO: 'name' should not be necessary
 					noFooter: true,
 					headerText: ilayout.description || ilayout.label || ilayout.name,
-					helpText: ''
+					helpText: idx === 0 && metaInfo.help_text ? metaInfo.help_text : ''
 				});
 
 				// add user photo into 'nav' area
@@ -909,7 +906,7 @@ define([
 			this.addChild(this._form);
 		},
 
-		renderDetailPage: function(properties, layout, policies, template) {
+		renderDetailPage: function(properties, layout, policies, template, metaInfo) {
 			// summary:
 			//		Render the form with subtabs containing all object properties that can
 			//		be edited by the user.
@@ -918,6 +915,7 @@ define([
 			this._policyDeferred = new Deferred();
 			var loadedDeferred = this._loadObject(formBuiltDeferred, this._policyDeferred);
 			loadedDeferred.then(lang.hitch(this, 'addActiveDirectoryWarning'));
+			loadedDeferred.then(lang.hitch(this, 'set', 'helpLink', metaInfo.help_link));
 
 			if (template && template.length > 0) {
 				template = template[0];
@@ -937,7 +935,7 @@ define([
 			// render widgets and full layout
 			var widgets = render.widgets(properties, this);
 			this._autoUpdateTabTitle(widgets);
-			this._renderSubTabs(widgets, layout).then(lang.hitch(this, function() {
+			this._renderSubTabs(widgets, layout, metaInfo).then(lang.hitch(this, function() {
 				this._renderPolicyTab(policies);
 				this._renderForm(widgets);
 				this._renderMultiEditCheckBoxes(widgets);

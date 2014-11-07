@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-quota\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-27 14:39+0100\n"
+"POT-Creation-Date: 2014-11-07 18:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/quota/DetailPage.js:172
+#: umc/js/quota/DetailPage.js:173
 msgid "A username needs to be specified."
 msgstr "Es muss ein Benutzername angegeben werden."
 
@@ -28,28 +28,30 @@ msgstr "Aktiviert"
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: umc/js/quota/DetailPage.js:157
+#: umc/js/quota/DetailPage.js:158
 msgid "Add quota"
 msgstr "Quota-Einstellungen hinzufügen"
 
-#: umc/js/quota/DetailPage.js:158
+#: umc/js/quota/DetailPage.js:159
 #, python-format
 msgid "Add quota settings for a new user on partition <i>%s</i>."
-msgstr "Hinzufügen von Quota-Einstellungen für einen neuen Benutzer auf Partition <i>%s</i>."
+msgstr ""
+"Hinzufügen von Quota-Einstellungen für einen neuen Benutzer auf Partition <i>"
+"%s</i>."
 
 #: umc/js/quota/PartitionPage.js:66
 msgid "Back to overview"
 msgstr "Zurück zur Übersicht"
 
-#: umc/js/quota/DetailPage.js:62
+#: umc/js/quota/DetailPage.js:63
 msgid "Back to partition"
 msgstr "Zurück zur Partition"
 
-#: umc/js/quota.js:201 umc/js/quota/PartitionPage.js:234
+#: umc/js/quota/PartitionPage.js:234 umc/js/quota.js:201
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/quota.js:89 umc/js/quota/PartitionPage.js:118
+#: umc/js/quota/PartitionPage.js:118 umc/js/quota.js:89
 msgid "Configure"
 msgstr "Konfigurieren"
 
@@ -58,11 +60,11 @@ msgstr "Konfigurieren"
 msgid "Could not remove the following user: %s"
 msgstr "Konnte folgenden Benutzer nicht entfernen: %s"
 
-#: umc/js/quota/DetailPage.js:107
+#: umc/js/quota/DetailPage.js:108
 msgid "Data size hard limit (MB)"
 msgstr "Datengröße Hard Limit (MB)"
 
-#: umc/js/quota/DetailPage.js:97
+#: umc/js/quota/DetailPage.js:98
 msgid "Data size soft limit (MB)"
 msgstr "Datengröße Soft Limit (MB)"
 
@@ -74,11 +76,11 @@ msgstr "Deaktivieren"
 msgid "Deactivated"
 msgstr "Deaktiviert"
 
-#: umc/js/quota.js:209
+#: umc/js/quota.js:213
 msgid "Failed to activate quota support: "
 msgstr "Aktivierung der Quota-Unterstützung ist fehlgeschlagen: "
 
-#: umc/js/quota.js:211
+#: umc/js/quota.js:215
 msgid "Failed to deactivate quota support: "
 msgstr "Deaktivierung der Quota-Unterstützung ist fehlgeschlagen: "
 
@@ -86,11 +88,11 @@ msgstr "Deaktivierung der Quota-Unterstützung ist fehlgeschlagen: "
 msgid "Files (used/soft/hard)"
 msgstr "Dateien (Benutzt/Soft/Hard)"
 
-#: umc/js/quota/DetailPage.js:127
+#: umc/js/quota/DetailPage.js:128
 msgid "Files hard limit"
 msgstr "Datei Hard Limit"
 
-#: umc/js/quota/DetailPage.js:117
+#: umc/js/quota/DetailPage.js:118
 msgid "Files soft limit"
 msgstr "Datei Soft Limit"
 
@@ -110,14 +112,16 @@ msgstr "Frist"
 msgid "List partitions"
 msgstr "Partitionen auflisten"
 
-#: umc/js/quota/DetailPage.js:163
+#: umc/js/quota/DetailPage.js:164
 msgid "Modify quota"
 msgstr "Quota-Einstellungen anpassen"
 
-#: umc/js/quota/DetailPage.js:164
+#: umc/js/quota/DetailPage.js:165
 #, python-format
 msgid "Modify the quota settings for user <i>%s</i> on partition <i>%s</i>."
-msgstr "Anpassung der Quota-Einstellungen für Benutzer <i>%s</i> auf Partition <i>%s</i>."
+msgstr ""
+"Anpassung der Quota-Einstellungen für Benutzer <i>%s</i> auf Partition <i>"
+"%s</i>."
 
 #: umc/js/quota.js:114
 msgid "Mount point"
@@ -127,12 +131,12 @@ msgstr "Mount-Point"
 msgid "Mount point: "
 msgstr "Mount-Point: "
 
-#: umc/js/quota/DetailPage.js:182
+#: umc/js/quota/DetailPage.js:183
 msgid "Not all limits can be set to zero."
 msgstr "Es können nicht alle Limits auf Null gesetzt sein."
 
-#: umc/js/quota.js:188 umc/js/quota.js:219 umc/js/quota/PartitionPage.js:211
-#: umc/js/quota/PartitionPage.js:228
+#: umc/js/quota/PartitionPage.js:211 umc/js/quota/PartitionPage.js:228
+#: umc/js/quota.js:188 umc/js/quota.js:223
 msgid "OK"
 msgstr "OK"
 
@@ -140,11 +144,11 @@ msgstr "OK"
 msgid "Options: "
 msgstr "Optionen: "
 
-#: umc/js/quota.js:110 umc/js/quota/DetailPage.js:91
+#: umc/js/quota/DetailPage.js:92 umc/js/quota.js:110
 msgid "Partition"
 msgstr "Partition"
 
-#: umc/js/quota.js:233
+#: umc/js/quota.js:239
 #, python-format
 msgid "Partition: %s"
 msgstr "Partition: %s"
@@ -191,11 +195,11 @@ msgstr "Aktualisieren"
 msgid "Remove"
 msgstr "Entfernen"
 
-#: umc/js/quota/DetailPage.js:67
+#: umc/js/quota/DetailPage.js:68
 msgid "Save changes"
 msgstr "Speichere Änderungen"
 
-#: umc/js/quota.js:70 umc/js/quota.js:234
+#: umc/js/quota.js:70 umc/js/quota.js:240
 msgid "Set, unset and modify filesystem quota"
 msgstr "Setzen, Entfernen und Bearbeiten von Quota-Einstellungen"
 
@@ -207,7 +211,7 @@ msgstr "Größe (GB)"
 msgid "Size (MB) (used/soft/hard)"
 msgstr "Größe (MB) (Benutzt/Soft/Hard)"
 
-#: umc/js/quota/DetailPage.js:191
+#: umc/js/quota/DetailPage.js:192
 msgid "The soft limit needs to be less than or equal to the hard limit"
 msgstr "Das Soft-Limit muss äquivalent oder kleiner als das Hard-Limit sein"
 
@@ -215,7 +219,7 @@ msgstr "Das Soft-Limit muss äquivalent oder kleiner als das Hard-Limit sein"
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: umc/js/quota/DetailPage.js:86 umc/js/quota/PartitionPage.js:139
+#: umc/js/quota/DetailPage.js:87 umc/js/quota/PartitionPage.js:139
 msgid "User"
 msgstr "Benutzer"
 

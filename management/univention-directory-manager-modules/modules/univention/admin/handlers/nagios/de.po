@@ -30,104 +30,113 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-25 15:03+0200\n"
+"POT-Creation-Date: 2014-11-07 18:43+0100\n"
 "PO-Revision-Date: 2005-10-18 13:52+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.5\n"
 
 #: nagios.py:47
+msgid ""
+"http://docs.univention.de/manual.html#nagios:"
+"Configuration_of_the_Nagios_monitoring"
+msgstr ""
+"http://docs.univention.de/handbuch.html#nagios:Konfiguration_der_Nagios-"
+"Überwachung"
+
+#: nagios.py:48
 msgid "Nagios"
 msgstr "Nagios"
 
-#: nagios.py:48
+#: nagios.py:49
 msgid "Add, edit, delete and search Nagios objects"
 msgstr "Hinzufügen, Bearbeiten, Löschen und Suchen von Nagios-Objekten"
 
-#: nagios.py:49
+#: nagios.py:50
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: nagios.py:49
+#: nagios.py:50
 msgid "Add new Nagios object"
 msgstr "Hinzufügen von neuen Nagios-Objekten"
 
-#: nagios.py:50
+#: nagios.py:51
 msgid "Search"
 msgstr "Suchen"
 
-#: nagios.py:50
+#: nagios.py:51
 msgid "Search Nagios objects"
 msgstr "Suchen von Nagios-Objekten"
 
-#: nagios.py:58
+#: nagios.py:59
 msgid "Nagios object"
 msgstr "Nagios-Objekt"
 
-#: nagios.py:67 service.py:60 timeperiod.py:79 timeperiod.py:80
+#: nagios.py:68 service.py:61 timeperiod.py:79 timeperiod.py:80
 msgid "Name"
 msgstr "Name"
 
-#: nagios.py:68
+#: nagios.py:69
 msgid "Nagios object name"
 msgstr "Nagios-Objekt Name"
 
-#: service.py:48
+#: service.py:49
 msgid "Nagios service"
 msgstr "Nagios-Dienst"
 
-#: service.py:61
+#: service.py:62
 msgid "Service name"
 msgstr "Name des Dienstes"
 
-#: service.py:70 timeperiod.py:89
+#: service.py:72 timeperiod.py:90
 msgid "Description"
 msgstr "Beschreibung"
 
-#: service.py:71
+#: service.py:73
 msgid "Service description"
 msgstr "Dienst-Beschreibung"
 
-#: service.py:80
+#: service.py:83
 msgid "Plugin command"
 msgstr "Plugin-Kommando"
 
-#: service.py:81
+#: service.py:84
 msgid "Command name of Nagios plugin"
 msgstr "Zu verwendendes Nagios-Plugin"
 
-#: service.py:90
+#: service.py:93
 msgid "Plugin command arguments"
 msgstr "Plugin-Kommando-Parameter"
 
-#: service.py:91
+#: service.py:94
 msgid "Arguments of used Nagios plugin"
 msgstr "Parameter für das verwendete Plugin-Kommando"
 
-#: service.py:100
+#: service.py:103
 msgid "Use NRPE"
 msgstr "NRPE benutzen"
 
-#: service.py:101
+#: service.py:104
 msgid "Use NRPE to check remote services"
 msgstr "NRPE benutzen, um entfernte Dienste zu überprüfen"
 
-#: service.py:110
+#: service.py:113
 msgid "Check period"
 msgstr "Prüfzeitraum"
 
-#: service.py:111
+#: service.py:114
 msgid "Check services within check period"
 msgstr "Dienste werden in diesem Zeitraum überwacht"
 
-#: service.py:120
+#: service.py:123
 msgid "Maximum number of check attempts"
 msgstr "Maximale Anzahl der Überprüfungen"
 
-#: service.py:121
+#: service.py:124
 msgid ""
 "Maximum number of check attempts with non-OK-result until contact will be "
 "notified"
@@ -135,87 +144,87 @@ msgstr ""
 "Maximale Anzahl an Prüfungswiederholungen, bis ein Nicht-OK-Zustand gemeldet "
 "wird"
 
-#: service.py:131
+#: service.py:135
 msgid "Check interval"
 msgstr "Prüfintervall"
 
-#: service.py:132
+#: service.py:136
 msgid "Interval between checks"
 msgstr "Zeit zwischen zwei Überprüfungen"
 
-#: service.py:142
+#: service.py:147
 msgid "Retry check interval"
 msgstr "Prüfintervall im Fehlerfall"
 
-#: service.py:143
+#: service.py:148
 msgid "Interval between re-checks if service is in non-OK-state"
 msgstr "Zeit zwischen zwei Überprüfungen, wenn Dienst im Nicht-OK-Zustand ist"
 
-#: service.py:153
+#: service.py:159
 msgid "Notification interval"
 msgstr "Benachrichtigungsintervall"
 
-#: service.py:154
+#: service.py:160
 msgid "Interval between notifications"
 msgstr "Zeit zwischen zwei Benachrichtigungen für das gleiche Problem"
 
-#: service.py:164
+#: service.py:171
 msgid "Notification period"
 msgstr "Benachrichtigungszeitraum"
 
-#: service.py:165
+#: service.py:172
 msgid "Send notifications during this period"
 msgstr "Benachrichtigungen werden in diesem Zeitraum versendet"
 
-#: service.py:174
+#: service.py:181
 msgid "Notify if service state changes to WARNING"
 msgstr "Benachrichtigen, wenn Zustand WARNING erreicht wird"
 
-#: service.py:184
+#: service.py:191
 msgid "Notify if service state changes to CRITICAL"
 msgstr "Benachrichtigen, wenn Zustand CRITICAL erreicht wird"
 
-#: service.py:194
+#: service.py:201
 msgid "Notify if service state changes to UNREACHABLE"
 msgstr "Benachrichtigen, wenn Zustand UNREACHABLE erreicht wird"
 
-#: service.py:204
+#: service.py:211
 msgid "Notify if service state changes to RECOVERED"
 msgstr "Benachrichtigen, wenn Zustand RECOVERED erreicht wird"
 
-#: service.py:214 service.py:243 service.py:244
+#: service.py:221 service.py:252 service.py:253
 msgid "Assigned hosts"
 msgstr "Zugeordnete Rechner"
 
-#: service.py:215
+#: service.py:222
 msgid "Check services on these hosts"
 msgstr "Rechner, auf denen der Dienst überprüft werden soll"
 
-#: service.py:227 service.py:228 timeperiod.py:172 timeperiod.py:173
+#: service.py:234 service.py:235 timeperiod.py:174 timeperiod.py:175
 msgid "General"
 msgstr "Allgemein"
 
-#: service.py:227
+#: service.py:234
 msgid "Basic settings"
 msgstr "Allgemein"
 
-#: service.py:234
+#: service.py:241
 msgid "Interval"
 msgstr "Intervall"
 
-#: service.py:234
+#: service.py:241
 msgid "Check settings"
 msgstr "Intervalle"
 
-#: service.py:238
+#: service.py:245
 msgid "Notification"
 msgstr "Benachrichtigungen"
 
-#: service.py:238
+#: service.py:245
 msgid "Notification settings"
 msgstr "Benachrichtigungseinstellungen"
 
-#: service.py:243
+#: service.py:252
 msgid "Hosts"
 msgstr "Rechner"
 
@@ -227,43 +236,43 @@ msgstr "Nagios-Zeitraum"
 msgid "No valid timeperiod list!"
 msgstr "Keine gültige Zeitraum-Liste!"
 
-#: timeperiod.py:90
+#: timeperiod.py:91
 msgid "Description of time period (eg. non-workhours)"
 msgstr "Beschreibung des Zeitraums (z.B. Wochenende)"
 
-#: timeperiod.py:99
+#: timeperiod.py:101
 msgid "Monday"
 msgstr "Montag"
 
-#: timeperiod.py:100 timeperiod.py:110 timeperiod.py:120 timeperiod.py:130
-#: timeperiod.py:140 timeperiod.py:150 timeperiod.py:160
+#: timeperiod.py:102 timeperiod.py:112 timeperiod.py:122 timeperiod.py:132
+#: timeperiod.py:142 timeperiod.py:152 timeperiod.py:162
 msgid "enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)"
 msgstr "Angabe von Zeiträumen (z.B. 00:00-07.15,23:12-24:00)"
 
-#: timeperiod.py:109
+#: timeperiod.py:111
 msgid "Tuesday"
 msgstr "Dienstag"
 
-#: timeperiod.py:119
+#: timeperiod.py:121
 msgid "Wednesday"
 msgstr "Mittwoch"
 
-#: timeperiod.py:129
+#: timeperiod.py:131
 msgid "Thursday"
 msgstr "Donnerstag"
 
-#: timeperiod.py:139
+#: timeperiod.py:141
 msgid "Friday"
 msgstr "Freitag"
 
-#: timeperiod.py:149
+#: timeperiod.py:151
 msgid "Saturday"
 msgstr "Samstag"
 
-#: timeperiod.py:159
+#: timeperiod.py:161
 msgid "Sunday"
 msgstr "Sonntag"
 
-#: timeperiod.py:172
+#: timeperiod.py:174
 msgid "Time Period Settings"
 msgstr "Zeitraum-Einstellungen"

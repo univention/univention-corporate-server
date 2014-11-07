@@ -520,6 +520,10 @@ class UDM_Module( object ):
 		return help_link
 
 	@property
+	def help_text(self):
+		return getattr(self.module, 'help_text', None)
+
+	@property
 	def name( self ):
 		"""Internal name of the UDM module"""
 		return self.module is not None and self.module.module

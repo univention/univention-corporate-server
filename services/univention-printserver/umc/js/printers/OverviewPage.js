@@ -46,7 +46,7 @@ define([
 
 		postMixInProperties: function() {
 			lang.mixin(this,{
-				helpText: _("This module lets you manage the printers defined on your machine"),
+				helpText: _("This module allows to manage print jobs of printers on your local machine."),
 				headerText: _("Printer administration")
 			});
 

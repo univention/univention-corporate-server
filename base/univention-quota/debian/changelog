@@ -1,3 +1,9 @@
+univention-quota (9.1.5-1) unstable; urgency=medium
+
+  * Bug #36435: text adaptations
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Nov 2014 18:18:16 +0100
+
 univention-quota (9.1.4-1) unstable; urgency=medium
 
   * Bug #36434: remove notifications when setting/removing user quota. Display

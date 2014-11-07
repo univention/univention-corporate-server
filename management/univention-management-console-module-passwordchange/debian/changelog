@@ -1,3 +1,9 @@
+univention-management-console-module-passwordchange (0.1.2-1) unstable; urgency=medium
+
+  * Bug #36435: text adaptations
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Nov 2014 18:31:36 +0100
+
 univention-management-console-module-passwordchange (0.1.1-1) unstable; urgency=medium
 
   * Bug #35847: add a standby animation while changing password

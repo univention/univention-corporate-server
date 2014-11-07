@@ -44,7 +44,7 @@ define([
 		widgets: [{
 			type: Text,
 			name: 'text',
-			content: _('<p>You may now enter a valid e-mail address in order to activate the UCS system to use the App Center. Within a short time, you will receive an updated license key. This key can then be uploaded via the license dialog in the settings menu (on the top right).</p>')
+			content: _('<p>You may now enter a valid e-mail address in order to activate the UCS system to use the App Center. Within a short time, you will receive an updated license key. This key can then be uploaded via the license dialog in the user menu (on the top right).</p>')
 		}, {
 			type: TextBox,
 			name: 'email',

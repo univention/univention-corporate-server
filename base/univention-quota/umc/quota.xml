@@ -2,7 +2,7 @@
 <umc version="2.0">
 	<module id="quota" priority="50" version="1.0">
 		<name>Filesystem quotas</name>
-		<description>Configuration of disk quotas for the local system</description>
+		<description>Configuration of disk space limitations on the local system</description>
 		<keywords>filesystem,quota,partition</keywords>
 		<categories>
 			<category name="users"/>

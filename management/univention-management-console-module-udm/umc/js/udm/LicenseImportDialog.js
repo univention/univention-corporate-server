@@ -73,7 +73,7 @@ define([
 			this._widgets = render.widgets([{
 				type: Text,
 				name: 'message',
-				content: '<p>' + _('New licenses that have been received after the activation of UCS or after a license purchase can be imported below. The license information can either be uploaded directly as file or it can be imported via copy and paste into the text field.') + '</p>'
+				content: '<p>' + _('New license keys can be imported here. You receive these keys after the activation of UCS or after a license purchase. The key can either be uploaded directly as file or it can be imported via copy and paste into the text field.') + '</p>'
 			}, {
 				type : TextArea,
 				name : 'licenseText',

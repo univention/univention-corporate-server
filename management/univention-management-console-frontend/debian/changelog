@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.97-1) unstable; urgency=medium
+
+  * Bug #36435: text adaptations
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Nov 2014 18:26:34 +0100
+
 univention-management-console-frontend (4.1.96-1) unstable; urgency=medium
 
   * Bug #35654: re-send requests that got an 401 error (i.e., authorization

@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-26 11:37+CEST\n"
+"POT-Creation-Date: 2014-11-07 17:37+0100\n"
 "PO-Revision-Date: 2011-10-29 22:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,7 +55,7 @@ msgstr "Univention Directory Manager Container Konfiguration"
 #: dhcp_dns.py:65 dhcp_dnsupdate.py:71 dhcp_leasetime.py:66 dhcp_netbios.py:66
 #: dhcp_routing.py:64 dhcp_scope.py:68 dhcp_statements.py:69 ldapserver.py:65
 #: mailquota.py:65 maintenance.py:66 masterpackages.py:66 memberpackages.py:66
-#: nfsmounts.py:65 policy.py:65 print_quota.py:69 printserver.py:64
+#: nfsmounts.py:65 policy.py:66 print_quota.py:69 printserver.py:64
 #: pwhistory.py:67 registry.py:66 release.py:65 repositoryserver.py:65
 #: repositorysync.py:66 share_userquota.py:69 slavepackages.py:66 umc.py:66
 msgid "Name"
@@ -111,10 +111,6 @@ msgstr "Festgelegte Attribute"
 msgid "Empty attributes"
 msgstr "Leere Attribute"
 
-#: admin_container.py:132
-msgid "Univention Directory Manager settings"
-msgstr "Univention Directory Manager Konfiguration"
-
 #: admin_container.py:132 admin_container.py:133 autostart.py:128
 #: autostart.py:129 desktop.py:159 desktop.py:160 dhcp_boot.py:140
 #: dhcp_dns.py:139 dhcp_dns.py:140 dhcp_dnsupdate.py:206 dhcp_leasetime.py:150
@@ -123,7 +119,7 @@ msgstr "Univention Directory Manager Konfiguration"
 #: ldapserver.py:129 mailquota.py:128 mailquota.py:129 maintenance.py:209
 #: maintenance.py:210 masterpackages.py:139 masterpackages.py:140
 #: memberpackages.py:139 memberpackages.py:140 nfsmounts.py:128
-#: nfsmounts.py:129 policy.py:76 print_quota.py:152 print_quota.py:153
+#: nfsmounts.py:129 policy.py:77 print_quota.py:152 print_quota.py:153
 #: printserver.py:128 printserver.py:129 pwhistory.py:160 pwhistory.py:161
 #: registry.py:129 registry.py:130 release.py:138 release.py:139
 #: repositoryserver.py:129 repositoryserver.py:130 repositorysync.py:169
@@ -131,6 +127,10 @@ msgstr "Univention Directory Manager Konfiguration"
 #: slavepackages.py:139 slavepackages.py:140 umc.py:129 umc.py:130
 msgid "General"
 msgstr "Allgemein"
+
+#: admin_container.py:132
+msgid "Univention Directory Manager settings"
+msgstr "Univention Directory Manager Konfiguration"
 
 #: admin_container.py:138 autostart.py:134 desktop.py:167 dhcp_boot.py:145
 #: dhcp_dns.py:145 dhcp_dnsupdate.py:214 dhcp_leasetime.py:157
@@ -370,12 +370,12 @@ msgid "Minimum granted lease time"
 msgstr "Minimal gewährte Lease-Zeit"
 
 #: dhcp_leasetime.py:149
-msgid "DHCP lease time"
-msgstr "DHCP Lease-Zeit"
-
-#: dhcp_leasetime.py:149
 msgid "Lease Time"
 msgstr "Lease-Zeit"
+
+#: dhcp_leasetime.py:149
+msgid "DHCP lease time"
+msgstr "DHCP Lease-Zeit"
 
 #: dhcp_netbios.py:45 dhcp_netbios.py:77
 msgid "NetBIOS name servers"
@@ -607,7 +607,7 @@ msgstr "Richtlinie: LDAP-Server"
 msgid "LDAP server"
 msgstr "LDAP-Server"
 
-#: ldapserver.py:128 nfsmounts.py:128 policy.py:76 printserver.py:128
+#: ldapserver.py:128 nfsmounts.py:128 policy.py:77 printserver.py:128
 #: umc.py:129
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
@@ -718,27 +718,45 @@ msgstr "NFS-Freigaben einbinden"
 msgid "Policy"
 msgstr "Richtlinie"
 
-#: policy.py:51
+#: policy.py:49
+msgid ""
+"<p>Policies are objects that can be connect with other objects in the "
+"directory tree. Connected policies allow to define object properties in a "
+"unified manner. Policies that are connected with containers or "
+"organizational units are inherited by all objects located below.</p><p>More "
+"information can be found in the <a href=\"http://docs.univention.de/manual."
+"html#central:policies\" target=\"_blank\">online documentation for UCS</a>.</"
+"p>"
+msgstr ""
+"<p>Richtlinien sind Objekte, die mit anderen Objekten im Verzeichnisbaum "
+"verbunden werden können, um die Eigenschaften dieser Objekte auf "
+"einheitliche Weise zu definieren. Wenn Sie an Containern oder "
+"organisatorische Einheiten gebunden sind, vererben Sie sich auf alle "
+"darunter liegenden Objekte.<p></p>Mehr Informationen zu Richtlinien finden "
+"Sie in der <a href=\"http://docs.univention.de/handbuch.html#central:policies"
+"\" target=\"_blank\">Online-Dokumentation zu UCS</a>.</p>"
+
+#: policy.py:52
 msgid "Policies"
 msgstr "Richtlinien"
 
-#: policy.py:52
+#: policy.py:53
 msgid "Add, edit and delete Policies"
 msgstr "Hinzufügen, bearbeiten und löschen von Richtlinien"
 
-#: policy.py:53
+#: policy.py:54
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: policy.py:53
+#: policy.py:54
 msgid "Add Policy Object"
 msgstr " Richtlinien-Objekt hinzufügen"
 
-#: policy.py:53
+#: policy.py:54
 msgid "Find"
 msgstr "Suchen"
 
-#: policy.py:53
+#: policy.py:54
 msgid "Find Policy Object(s)"
 msgstr "Richtlinien-Objekt(e) suchen"
 
@@ -783,6 +801,7 @@ msgid "Print quota"
 msgstr "Druck-Quota"
 
 #: print_quota.py:215 print_quota.py:221
+#, python-format
 msgid "%s is not valid. "
 msgstr "%s ist nicht erlaubt. "
 
@@ -946,8 +965,8 @@ msgid ""
 "of the following units as postfix: B (default), kB, MB, GB"
 msgstr ""
 "Soft limit. Wenn das Limit überschritten ist, können Benutzer gewarnt "
-"werden. Dem anzugebenden Wert kann eine der folgenden Einheiten folgen: "
-"B (Vorgabe), KB, MB, GB"
+"werden. Dem anzugebenden Wert kann eine der folgenden Einheiten folgen: B "
+"(Vorgabe), KB, MB, GB"
 
 #: share_userquota.py:91
 msgid ""

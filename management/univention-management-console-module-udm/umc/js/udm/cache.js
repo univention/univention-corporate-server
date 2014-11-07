@@ -81,6 +81,7 @@ define([
 				return;
 			}
 
+			this.getMetaInfo(this.superModule);
 			this.getContainers(this.superModule);
 			this.getSuperordinates(this.superModule);
 			this.getChildModules().then(lang.hitch(this, function(modules) {
@@ -183,6 +184,10 @@ define([
 			args.unshift(result);
 			this._set.apply(this, args);
 			return result;
+		},
+
+		getMetaInfo: function(module, forceLoad) {
+			return this._getInfo('meta_info', {}, this.superModule, module, forceLoad);
 		},
 
 		getContainers: function(module, forceLoad) {
