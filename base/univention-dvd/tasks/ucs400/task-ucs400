@@ -15,6 +15,7 @@ iceweasel
 firefox
 xinit
 kde-window-manager
+univention-cloud-init
 
 
 /* Role Packages */
