@@ -3,7 +3,7 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-mail-postfix
 fix: 8.0.13-7.229.201411071034
-version: [3,2]
+version: [3]
 desc: |
   Several UCR varibales have been added to univention-mail-postfix
   to allow better configuration of postfix's perfect forward secrecy.
