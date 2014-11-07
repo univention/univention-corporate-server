@@ -599,6 +599,37 @@ php-mail-mime
 php-net-dime
 php-soap
 
+/* PLUCS App */
+ejabberd
+erlang-runtime-tools
+erlang-asn1
+erlang-base
+erlang-crypto
+erlang-inets
+erlang-mnesia
+erlang-odbc
+erlang-public-key
+erlang-ssl
+erlang-syntax-tools
+
+/* odoo App */
+python-feedparser
+python-libxslt1
+python-mock
+python-openid
+python-passlib
+python-psycopg2
+python-pybabel
+python-pychart
+python-pydot
+python-pypdf
+python-unittest2
+python-vatnumber
+python-vobject
+python-werkzeug
+antiword
+python-babel
+
 /* xrdp App */
 pulseaudio
 

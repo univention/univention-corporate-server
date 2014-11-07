@@ -1,3 +1,9 @@
+univention-dvd (0.2.22-1) unstable; urgency=low
+
+  * Bug #36467 #36466: Added several packages to maintained
+
+ -- Felix Botner <botner@univention.de>  Fri, 07 Nov 2014 12:05:53 +0100
+
 univention-dvd (0.2.21-1) unstable; urgency=low
 
   * Bug #35974: Strip down menu titles
