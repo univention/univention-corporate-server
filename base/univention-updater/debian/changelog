@@ -1,3 +1,9 @@
+univention-updater (9.0.43-1) unstable; urgency=medium
+
+  * Adjust pre- and postup.sh for UCS 3.2-4 (Bug #36403)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Nov 2014 13:48:40 +0100
+
 univention-updater (9.0.42-5) unstable; urgency=low
 
   * Adjust postup.sh to new univention-check-templates return codes
