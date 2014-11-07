@@ -35,7 +35,7 @@
 
 if [ "$1" = "remove" ]; then
 	ucr unset mail/antivir/spam
-	test -x /etc/init.d/postfix && invoke-rc.d postfix restart
+	test -x /etc/init.d/amavis && invoke-rc.d amavis restart
 fi
 
 exit 0

@@ -51,9 +51,7 @@ if [ "$1" = "configure" ]; then
 	fi
 fi
 
-if [ -x /etc/init.d/postfix ]; then
-	/etc/init.d/postfix reload || true
-fi
+test -x /etc/init.d/amavis && invoke-rc.d amavis restart
 
 #DEBHELPER#
 

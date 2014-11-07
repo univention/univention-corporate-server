@@ -1,3 +1,9 @@
+univention-spamassassin (6.0.1-2) unstable; urgency=low
+
+  * restart amavis (not postfix) (Bug #36524) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 07 Nov 2014 16:29:30 +0100
+
 univention-spamassassin (6.0.1-1) unstable; urgency=low
 
   * don't set mail/antivir/spam=no in postrm (Bug #36524)
