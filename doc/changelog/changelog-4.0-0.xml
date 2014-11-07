@@ -639,6 +639,13 @@
 				to allow better configuration of postfix's perfect forward secrecy
 				(<ulink url="&ucsbug;35923">Bug 35923</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				If the package <package>univention-spamassassin</package> is installed, the 
+				email spam check is enabled during the update. The spam check can be disabled
+				by setting the &ucsUCRV; <envar>mail/antivir/spam</envar> to <emphasis>false</emphasis>
+				after the update
+				(<ulink url="&ucsbug;36524">Bug 36524</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
