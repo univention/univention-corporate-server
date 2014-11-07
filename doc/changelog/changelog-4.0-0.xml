@@ -888,7 +888,7 @@
 		<listitem><simpara>
 				The legacy debian package <package>firefox</package> has been replaced by the packages
 				<package>firefox-en</package> and <package>firefox-de</package> since quite some time.
-				during update to UCS 4.0 it will automatically get replaced by
+				During update to UCS 4.0 it will automatically get replaced by
 				<package>firefox-en</package>. If desired the german version can be installed instead
 				either before or after the update
 				(<ulink url="&ucsbug;36453">Bug 36453</ulink>).
