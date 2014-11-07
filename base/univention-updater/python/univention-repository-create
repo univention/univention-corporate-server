@@ -48,7 +48,7 @@ configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
 _mirror_base = configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
-_repo_base = "" # this path is set later in __main__ 
+_repo_base = "" # this path is set later in __main__
 
 def check_preconditions( options ):
 	""" Check for already existing mirror and for debmirror package """
@@ -114,35 +114,40 @@ def copy_repository( options ):
 		print 'done.'
 
 	# copy kernel and grub config
-	print '  copying kernel and boot configuration ...',
-	boot_dest = os.path.join( _mirror_base, 'boot' )
-	if os.path.isdir( boot_dest ):
-		shutil.rmtree( boot_dest )
-	try:
-		shutil.copytree( os.path.join( options.mount_point, 'boot' ), boot_dest )
-	except shutil.Error, ex:
-		print "failed (%s)." % (ex,)
-	else:
-		print 'done.'
+	if options.major_version < 4:
+		print '  copying kernel and boot configuration ...',
+		boot_dest = os.path.join( _mirror_base, 'boot' )
+		if os.path.isdir( boot_dest ):
+			shutil.rmtree( boot_dest )
+		try:
+			shutil.copytree( os.path.join( options.mount_point, 'boot' ), boot_dest )
+		except shutil.Error, ex:
+			print "failed (%s)." % (ex,)
+		else:
+			print 'done.'
 
-	# copy profiles
-	print '  copying profiles ...',
-	profiles_dest = os.path.join( _mirror_base, 'profiles' )
-	if os.path.isdir( profiles_dest ):
-		shutil.rmtree( profiles_dest )
-	try:
-		shutil.copytree( os.path.join( options.mount_point, 'profiles' ), profiles_dest )
-	except shutil.Error, ex:
-		print "failed (%s)." % (ex,)
-	else:
-		# everyone should be able to read the profiles
-		os.chmod( profiles_dest, 0555 )
-		print 'done.'
+		# copy profiles
+		if os.path.exists(os.path.join(options.mount_point, 'profiles')):
+			print '  copying profiles ...',
+			profiles_dest = os.path.join( _mirror_base, 'profiles' )
+			if os.path.isdir( profiles_dest ):
+				shutil.rmtree( profiles_dest )
+			try:
+				shutil.copytree(os.path.join(options.mount_point, 'profiles'), profiles_dest)
+			except shutil.Error, ex:
+				print "failed (%s)." % (ex,)
+			else:
+				# everyone should be able to read the profiles
+				os.chmod( profiles_dest, 0555 )
+				print 'done.'
 
 	# copy packages to new directory structure
 	print '  copying packages ...',
 	sys.stdout.flush()
-	urepo.copy_package_files( os.path.join( options.mount_point, 'packages' ), _repo_base )
+	for subdir in ('packages', 'all', 'amd64', 'i386'):
+		if os.path.exists(os.path.join(options.mount_point, subdir)):
+			urepo.copy_package_files(os.path.join(options.mount_point, subdir), _repo_base)
+			sys.stdout.flush()
 	print "done."
 
 	# copy dists directory structure
@@ -151,7 +156,10 @@ def copy_repository( options ):
 	if os.path.isdir( dists_dest ):
 		shutil.rmtree( dists_dest )
 	try:
-		shutil.copytree( os.path.join( options.mount_point, 'packages', 'dists' ), dists_dest )
+		# handle the different dists directories (UCS installer or d-i)
+		for dists_src in (os.path.join(options.mount_point, 'packages', 'dists'), os.path.join(options.mount_point, 'dists')):
+			if os.path.isdir(dists_src):
+				shutil.copytree(dists_src, dists_dest)
 	except shutil.Error, ex:
 		print "failed (%s)." % (ex,)
 	else:
@@ -161,7 +169,7 @@ def mount( options ):
 	""" Mount CDROM and check for valid medium """
 	if options.interactive:
 		# ask user to insert cdrom
-		print 'Please insert a UCS installation medium and press <Enter>',
+		print '\nPlease insert a UCS installation medium and press <Enter>',
 		sys.stdin.readline()
 	if options.mount:
 		print "Mounting %s ..." % options.mount_point,
@@ -182,7 +190,15 @@ def mount( options ):
 			return False
 
 	print "Checking medium in %s ..." % options.mount_point,
-	if not os.path.isdir( os.path.join( options.mount_point, 'packages' ) ) or not os.path.isdir( os.path.join( options.mount_point, 'profiles' ) ):
+	found_error = True
+	if os.path.isdir(os.path.join(options.mount_point, 'packages')) and os.path.isdir(os.path.join(options.mount_point, 'profiles')):
+		found_error = False
+	elif os.path.exists(os.path.join(options.mount_point, '.univention_install')) and \
+			os.path.isdir(os.path.join(options.mount_point, 'all')) and \
+			(os.path.isdir(os.path.join(options.mount_point, 'amd64')) or \
+				 os.path.isdir(os.path.join(options.mount_point, 'i386'))):
+		found_error = False
+	if found_error:
 		print 'failed.'
 		print >> sys.stderr, 'Error: This is not an UCS installation medium.'
 		return False
@@ -203,37 +219,59 @@ def setup_repository( options ):
 def setup_pxe( options ):
 	'''setup network installation (PXE)'''
 	pxedir = '/var/lib/univention-client-boot'
+	installerdir = os.path.join(pxedir, 'installer')
 	bootdir = '/var/lib/univention-repository/boot'
 
-	# Create symlinks
-	pxekernel = os.path.join(pxedir, 'linux-server')
-	pxeinitrd = os.path.join(pxedir, 'linux.bin')
-	for pxefile in [pxekernel, pxeinitrd]:
-		if os.path.islink(pxefile):
-			os.remove(pxefile)
-	# read the default kernel from the grub cfg
-	grubcfg = os.path.join(bootdir, 'grub/grub.cfg')
-	grubcfg_fd = open(grubcfg)
-	for line in grubcfg_fd.readlines():
-		line = line.strip()
-		if line.startswith('linux '):
-			kernel = line.split(' ')[1]
-			kernel = kernel.replace('/boot/', '')
-	if not kernel:
-		print 'Failed to search kernel'
-		return 1
-
 	if not os.path.exists(pxedir):
-		os.mkdir(pxedir)
+		os.makedirs(pxedir, mode=0511)
 
-	cdkernel = os.path.join(bootdir, kernel)
-	cdinitrd = os.path.join(bootdir, '%s.bin' % kernel)
-	if os.path.exists(cdkernel):
-		os.symlink(cdkernel, pxekernel)
-	if os.path.exists(cdinitrd):
-		os.symlink(cdinitrd, pxeinitrd)
+	if options.major_version >= 4:
+		installerdir = os.path.join(pxedir, 'installer', '%d.%d-%d' % (options.major_version, options.minor_version, options.patchlevel_version))
+		if not os.path.exists(installerdir):
+			os.makedirs(installerdir)
+
+		# copy kernel and initrd to /var/lib/univention-client-boot/installer/<major>.<minor>-<patchlevel>/
+		# and create/refresh symlinks in /var/lib/univention-client-boot/ to these files
+		for fn in ['linux', 'initrd.gz']:
+			srcfn = os.path.join(options.mount_point, 'netboot', fn)
+			dstfn = os.path.join(installerdir, fn)
+			symlinkfn = os.path.join(pxedir, fn)
+			if os.path.exists(srcfn):
+				shutil.copy2(srcfn, dstfn)
+				if os.path.islink(symlinkfn):
+					os.remove(symlinkfn)
+				os.symlink(dstfn, symlinkfn)
+
+	elif options.major_version < 4:
+		# Create symlinks
+		pxekernel = os.path.join(pxedir, 'linux-server')
+		pxeinitrd = os.path.join(pxedir, 'linux.bin')
+		for pxefile in [pxekernel, pxeinitrd]:
+			if os.path.islink(pxefile):
+				os.remove(pxefile)
+		# read the default kernel from the grub cfg
+		grubcfg = os.path.join(bootdir, 'grub/grub.cfg')
+		grubcfg_fd = open(grubcfg)
+		for line in grubcfg_fd.readlines():
+			line = line.strip()
+			if line.startswith('linux '):
+				kernel = line.split(' ')[1]
+				kernel = kernel.replace('/boot/', '')
+		if not kernel:
+			print 'Failed to search kernel'
+			return 1
+
+		cdkernel = os.path.join(bootdir, kernel)
+		cdinitrd = os.path.join(bootdir, '%s.bin' % kernel)
+		if os.path.exists(cdkernel):
+			os.symlink(cdkernel, pxekernel)
+		if os.path.exists(cdinitrd):
+			os.symlink(cdinitrd, pxeinitrd)
 
 if __name__ == '__main__':
+	for mount_point_default in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
+		if os.path.isdir(mount_point_default):
+			break
 	parser = OptionParser( usage = "usage: %prog [options]" )
 	parser.add_option( '-n', '--non-interactive', action = 'store_false',
 					   dest = 'interactive', default = True,
@@ -245,7 +283,7 @@ if __name__ == '__main__':
 					   dest = 'silent', default = False,
 					   help = 'do not print any information, just errors and warnings' )
 	parser.add_option( '-m', '--mount-point', action = 'store',
-					   dest = 'mount_point', default = '/cdrom',
+					   dest = 'mount_point', default = mount_point_default,
 					   help = 'devices mount point for CD-ROM drive' )
 	parser.add_option('-i', '--iso', action='store', dest='iso',
 	                  default=None, help='define filename of an ISO image')
@@ -271,13 +309,18 @@ if __name__ == '__main__':
 		installfile = os.path.join(options.mount_point, '.univention_install')
 		for line in open(installfile).readlines():
 			if line.startswith('VERSION='):
-				version = line[len('VERSION='):]
-				major_version = version.split('.', 1)[0].strip()
-				minor_version = version.split('.', 1)[1].strip()
-				break
+				version = line.split('=', 1)[1]
+				options.major_version = int(version.split('.', 1)[0].strip())
+				options.minor_version = int(version.split('.', 1)[1].strip())
+			elif line.startswith('PATCHLEVEL='):
+				options.patchlevel_version = int(line.split('=', 1)[1].strip())
 
-		_repo_base = os.path.join( _mirror_base, 'mirror', '%s.%s' % (major_version, minor_version), 'maintained', '%s.%s-0' % (major_version, minor_version) )
-		
+		_repo_base = os.path.join(_mirror_base,
+								  'mirror',
+								  '%s.%s' % (options.major_version, options.minor_version),
+								  'maintained',
+								  '%s.%s-0' % (options.major_version, options.minor_version))
+
 		prepare( options )
 
 		try:
@@ -297,8 +340,8 @@ if __name__ == '__main__':
 			ucr.handler_unset(['repository/local/old'])
 
 		# set start version for synchronsation of repository
-		if major_version:
-			ucr.handler_set( [ 'repository/mirror/version/start?%s.0-0' % major_version ] )
+		if options.major_version:
+			ucr.handler_set( [ 'repository/mirror/version/start?%s.0-0' % options.major_version ] )
 
 		# create symbolic link univention-repository
 		try:
@@ -341,12 +384,12 @@ if __name__ == '__main__':
 		    --policy-reference "cn=%(hostname)s repository,cn=repository,cn=update,cn=policies,%(ldap/base)s"
 		""" % configRegistry)
 
-		if not minor_version == '0':
+		if not options.minor_version == '0':
 			print dedent("""
 			An UCS repository must always start with minor version 0, for example
 			with UCS %(major)s.0. Please synchronize the repository from %(major)s.0 to %(major)s.%(minor)s
 			by using the tool univention-repository-update.
-			""" % {'major': major_version, 'minor': minor_version})
+			""" % {'major': options.major_version, 'minor': options.minor_version})
 
 	finally:
 		if not univention.updater.tools.updater_lock_release(lock):

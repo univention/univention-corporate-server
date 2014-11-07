@@ -21,6 +21,8 @@
 	<title>Univention Updater</title>
 	<itemizedlist>
 		<listitem><simpara>
+		  The tool <emphasis>univention-repository-create</emphasis> has been updated and is now
+		  able to handle UCS-4 DVDs (<ulink url="&ucsbug;36269">Bug 36269</ulink>).
 		</simpara></listitem>
 	</itemizedlist>
 </section>
