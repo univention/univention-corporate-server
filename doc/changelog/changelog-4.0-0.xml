@@ -595,6 +595,15 @@
 			the &ucsUCRV; <envar>update40/skip/autoremove</envar> to <emphasis>true</emphasis>.
 			(<ulink url="&ucsbug;36265">Bug 36265</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			With UCS 4.0 the data structure of UCS installation DVDs has
+			changed. The command <command>univention-repository-create</command> is still able to create a local
+			repository from any type of UCS DVD (old or new data structure). But as of UCS 4.0 the PXE
+			installation of UCS system prior to UCS 4 is no longer supported. Therefore
+			<command>univention-repository-create</command> will not copy PXE installation data from UCS DVDs
+			with old data structure (<ulink url="&ucsbug;36269">Bug 36269</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 
 	<section id="changelog:deployment:cli">
