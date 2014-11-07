@@ -1,9 +1,0 @@
-product: ucs
-release: "3.2"
-scope: ucs_3.2-0-errata3.2-3
-src: univention-pkgdb
-fix: 7.0.11-8.195.201410271620
-version: [3]
-desc: |
-  A traceback in the pkgdb listener has been fixed.
-bug: [35367]

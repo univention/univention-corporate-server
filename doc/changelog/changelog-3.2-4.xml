@@ -1,0 +1,489 @@
+<section id="changelog:general">
+	<title>General</title>
+	<itemizedlist>
+		<listitem><simpara>
+				All security updates issued for UCS 3.2-3 are included.
+		</simpara></listitem>
+	</itemizedlist>
+</section>
+
+
+<section id="changelog:installer">
+	<title>Univention Installer</title>
+	<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+	</itemizedlist>
+</section>
+
+
+<section id="changelog:updater">
+	<title>Univention Updater</title>
+	<itemizedlist>
+		<listitem><simpara>
+		</simpara></listitem>
+	</itemizedlist>
+</section>
+
+
+<section id="changelog:basic">
+	<title>Basic system services</title>
+
+	<!-- <section id="changelog:basic:kernel"> -->
+		<!-- 	<title>Linux kernel and firmware packages</title> -->
+		<!-- 	  <itemizedlist> -->
+			<!-- 		<listitem><simpara> -->
+					<!-- 		</simpara></listitem> -->
+			<!-- 	  </itemizedlist> -->
+		<!-- </section> -->
+
+	<!--	<section id="changelog:basis:ucr">
+	<title>Univention Configuration Registry</title>
+	<itemizedlist>
+		<listitem><simpara>
+		</simpara></listitem>
+	</itemizedlist>
+	</section>
+	-->
+	<section id="changelog:basic:nfs">
+		<title>NFS</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:basic:procps">
+		<title>procps</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:basic:rsync">
+		<title>rsync</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:basic:web">
+		<title>Web</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:basic:quota">
+		<title>Quota</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<!-- <section id="changelog:basis:ucr:template"> -->
+		<!--   <title>Changes to templates and modules</title> -->
+		<!-- 	<itemizedlist> -->
+			<!-- 	  <listitem><simpara> -->
+					<!-- 	  </simpara></listitem> -->
+			<!-- 	</itemizedlist> -->
+		<!-- </section> -->
+</section>
+
+
+<section id="changelog:domain">
+	<title>Domain services</title>
+
+	<section id="changelog:domain:udm">
+		<title>Univention Directory Manager</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:domain:openldap">
+		<title>OpenLDAP</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+		<section id="changelog:domain:openldap:acl">
+			<title>LDAP ACL changes</title>
+			<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:domain:openldap:schema">
+			<title>LDAP schema changes</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:domain:openldap:replication">
+			<title>Listener/Notifier domain replication</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:domain:join">
+		<title>Join</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+</section>
+
+
+<section id="changelog:umc">
+	<title>Univention Management Console</title>
+
+	<section id="changelog:umc:web">
+		<title>Univention Management Console web interface</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+	<section id="changelog:umc:server">
+		<title>Univention Management Console server</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+	<section id="changelog:umc:appcenter">
+		<title>Univention App Center</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+	<section id="changelog:umc:setup">
+		<title>Basic settings / Appliance mode</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+<!--
+	<section id="changelog:umc:user">
+		<title>Users module</title>
+		<itemizedlist>
+			<listitem><simpara>
+					FIXME
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+-->
+	<section id="changelog:umc:computers">
+		<title>Computers module</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+<!--
+	<section id="changelog:umc:license">
+		<title>License module</title>
+		<itemizedlist>
+			<listitem><simpara>
+					FIXME
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+	<section id="changelog:umc:join">
+		<title>Domain join module</title>
+		<itemizedlist>
+			<listitem><simpara>
+					FIXME
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:umc:update">
+		<title>Online update module</title>
+		<itemizedlist>
+			<listitem><simpara>
+					FIXME
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:umc:share">
+		<title>Shares module</title>
+		<itemizedlist>
+			<listitem><simpara>
+					FIXME
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:umc:policy">
+		<title>Policies</title>
+		<itemizedlist>
+			<listitem><simpara>
+					FIXME
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:umc:printer">
+		<title>Printers module</title>
+		<itemizedlist>
+			<listitem><simpara>
+					FIXME
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:umc:ucr">
+		<title>Univention Configuration Registry module</title>
+		<itemizedlist>
+			<listitem><simpara>
+					FIXME
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:umc:ldap">
+		<title>LDAP directory browser</title>
+		<itemizedlist>
+			<listitem><simpara>
+					FIXME
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+-->
+
+	<section id="changelog:umc:other">
+		<title>Other modules</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+	<section id="changelog:umc:udmcli">
+		<title>&ucsUDM; command line interface and related tools</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+<!--
+	<section id="changelog:umc:development">
+		<title>Development of modules for &ucsUMC;</title>
+		<itemizedlist>
+			<listitem><simpara>
+					FIXME
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+-->
+</section>
+
+
+<!--
+<section id="changelog:deployment">
+	<title>Software deployment</title>
+
+	<section id="changelog:deployment:cli">
+		<title>Software deployment command line tools</title>
+		<itemizedlist>
+			<listitem><simpara>
+					FIXME
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+</section>
+-->
+
+
+<section id="changelog:lib">
+	<title>Univention Library</title>
+	<itemizedlist>
+		<listitem><simpara>
+		</simpara></listitem>
+	</itemizedlist>
+</section>
+
+
+<section id="changelog:service">
+	<title>System services</title>
+
+<!--
+	<section id="changelog:service:mail">
+		<title>Mail services</title>
+		<itemizedlist>
+			<listitem><simpara>
+					FIXME
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+-->
+
+	<section id="changelog:service:virus">
+		<title>Spam/virus detection and countermeasures</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+<!--
+	<section id="changelog:service:print">
+		<title>Printing services</title>
+		<itemizedlist>
+			<listitem><simpara>
+					FIXME
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+-->
+
+	<section id="changelog:service:nagios">
+		<title>Nagios</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+<!--
+	<section id="changelog:service:ssl">
+		<title>SSL</title>
+		<itemizedlist>
+			<listitem><simpara>
+				FIXME
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+-->
+
+	<section id="changelog:service:proxy">
+		<title>Proxy services</title>
+		<itemizedlist>
+			<listitem><simpara>
+				The UCR variable <emphasis>squid/forwardedfor</emphasis> has been added to configure
+				Squid's <emphasis>forwarded_for</emphasis> configuration directive
+				(<ulink url="&ucsbug;34025">Bug 34025</ulink>).
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+	<section id="changelog:service:pam">
+		<title>PAM / Local group cache</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:service:other">
+		<title>Other services</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+</section>
+
+
+<section id="changelog:virt">
+	<title>Virtualisation</title>
+
+<!--
+	<section id="changelog:virt:uvmm">
+		<title>Univention Virtual Machine Manager</title>
+		<itemizedlist>
+			<listitem><simpara>
+					FIXME
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+-->
+	<section id="changelog:virt:xen">
+		<title>Xen</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+</section>
+
+
+<section id="changelog:win">
+	<title>Services for Windows</title>
+
+	<section id="changelog:win:nt">
+		<title>Samba NT domain support</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:win:ad">
+		<title>Samba AD domain support</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+	<section id="changelog:win:takeover">
+		<title>Univention AD Takeover</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+	<section id="changelog:win:s4c">
+		<title>Univention S4 Connector</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+	<section id="changelog:win:adc">
+		<title>Univention Active Directory Connector</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+</section>
+
+
+<section id="changelog:other">
+	<title>Other changes</title>
+	<itemizedlist>
+		<listitem>
+			<para>
+				The following packages have been moved to the maintained repository
+			</para>
+			<itemizedlist>
+				<listitem><simpara>
+						<package>test</package>,
+						(<ulink url="&ucsbug;99999">Bug 99999</ulink>)
+				</simpara></listitem>
+
+			</itemizedlist>
+		</listitem>
+		<listitem><simpara>
+		</simpara></listitem>
+	</itemizedlist>
+</section>
+
+<!-- vim: set ts=4 sw=2 noet: -->

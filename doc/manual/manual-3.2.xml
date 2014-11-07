@@ -24,7 +24,7 @@
 
   %entities;
 ]>
-<book lang="en" id="ucs-3.2-3">
+<book lang="en" id="ucs-3.2-4">
   <bookinfo>
     <title>
       Univention Corporate Server
@@ -34,8 +34,8 @@
     </subtitle>
     <legalnotice>
       <literallayout>
-Version 3.2-3
-Date: August 12, 2014
+Version 3.2-4
+Date: November 17, 2014
       </literallayout>
 
       <literallayout>

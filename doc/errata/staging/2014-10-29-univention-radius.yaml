@@ -1,9 +1,0 @@
-product: ucs
-release: "3.2"
-scope: ucs_3.2-0-errata3.2-3
-src: univention-radius
-fix: 1.0.0-6.7.201410291404
-version: [3]
-desc: |
-  This update fixes access for client in Samba AD domains.
-bug: [35516]
