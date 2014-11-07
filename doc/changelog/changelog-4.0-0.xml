@@ -634,6 +634,10 @@
 		<title>Mail services</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The &ucsUCRV;s <envar>mail/postfix/smtpd/tls/eecdh/grade</envar> and 
+				<envar>mail/postfix/tls/preempt/cipherlist</envar> have been added
+				to allow better configuration of postfix's perfect forward secrecy
+				(<ulink url="&ucsbug;35923">Bug 35923</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
