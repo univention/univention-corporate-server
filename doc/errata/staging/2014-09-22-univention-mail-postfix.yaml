@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-mail-postfix
-fix: 8.0.13-6.227.201410131336
+fix: 8.0.13-7.229.201411071034
 version: [3,2]
 desc: |
   Several UCR varibales have been added to univention-mail-postfix
@@ -10,8 +10,6 @@ desc: |
   (for detailed description please see -> ucr search variable_name).
   * mail/postfix/smtpd/tls/dh1024/param/file
   * mail/postfix/smtpd/tls/dh512/param/file
-  * mail/postfix/smtpd/tls/eecdh/grade
-  * mail/postfix/tls/preempt/cipherlist
   * mail/postfix/smtpd/tls/loglevel
   * mail/postfix/smtp/tls/loglevel
   * mail/postfix/cron/recreate/dh/parameter
