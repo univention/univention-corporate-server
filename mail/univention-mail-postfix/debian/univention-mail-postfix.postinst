@@ -81,10 +81,8 @@ univention-config-registry set \
 	mail/postfix/ldaptable/debuglevel?0 \
 	mail/postfix/smtpd/tls/dh1024/param/file?/etc/postfix/dh_2048.pem \
 	mail/postfix/smtpd/tls/dh512/param/file?/etc/postfix/dh_512.pem \
-	mail/postfix/smtpd/tls/eecdh/grade?strong \
-	mail/postfix/tls/preempt/cipherlist?yes \
-	mail/postfix/smtpd/tls/loglevel?1 \
-	mail/postfix/smtp/tls/loglevel?1 \
+	mail/postfix/smtpd/tls/loglevel?0 \
+	mail/postfix/smtp/tls/loglevel?0 \
 	mail/postfix/cron/recreate/dh/parameter?'0 4 * * 0'
 
 eval "$(univention-config-registry shell)"

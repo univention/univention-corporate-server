@@ -1,3 +1,9 @@
+univention-mail-postfix (8.0.13-7) unstable; urgency=low
+
+  * fixed TLS Forward Secrecy (Bug #35923) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 07 Nov 2014 10:33:24 +0100
+
 univention-mail-postfix (8.0.13-6) unstable; urgency=low
 
   * weekly rotate dh parameters (Bug #35923) 

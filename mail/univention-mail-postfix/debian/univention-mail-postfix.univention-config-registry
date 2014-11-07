@@ -73,8 +73,6 @@ Variables: mail/postfix/smtp/tls/loglevel
 Variables: mail/postfix/smtpd/tls/loglevel
 Variables: mail/postfix/smtpd/tls/dh1024/param/file
 Variables: mail/postfix/smtpd/tls/dh512/param/file
-Variables: mail/postfix/tls/preempt/cipherlist
-Variables: mail/postfix/smtpd/tls/eecdh/grade
 
 Type: subfile
 Multifile: etc/postfix/main.cf

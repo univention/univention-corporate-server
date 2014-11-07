@@ -257,18 +257,6 @@ Description[en]=What level to set for debugging in the OpenLDAP libraries.
 Type=int
 Categories=service-mail
 
-[mail/postfix/smtpd/tls/eecdh/grade]
-Description[de]=Sicherheitsstufe für den EECDH Schlüsselaustausch des Postfix SMTP-Server (>= UCS 4.0).
-Description[en]=The Postfix SMTP server security grade for ephemeral elliptic-curve Diffie-Hellman (EECDH) key exchange (>= UCS 4.0).
-Type=str
-Categories=service-mail
-
-[mail/postfix/tls/preempt/cipherlist]
-Description[de]=Falls auf 'yes' gesetzt, verwendet der Postfix SMTP-Server seine Chiffren Präferenzordnung anstelle die des Clients (>= SSLv3).
-Description[en]=If set to 'yes' the Postfix SMTP server uses its own cipher preference order instead of the remote client's cipher preference order (>= SSLv3). 
-Type=str
-Categories=service-mail
-
 [mail/postfix/smtpd/tls/dh512/param/file]
 Description[de]=DH Parameter Datei für non-export EDH Chiffren.
 Description[en]=File with DH parameters that the Postfix SMTP server should use with non-export EDH ciphers.
