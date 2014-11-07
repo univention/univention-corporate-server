@@ -173,9 +173,6 @@ class Instance(Base, ProgressMixin):
 			try:
 				self._progressParser.reset()
 
-				# write the profile file and run setup scripts
-				util.pre_save(values)
-
 				MODULE.info('saving profile values')
 				util.write_profile(values)
 
@@ -246,7 +243,6 @@ class Instance(Base, ProgressMixin):
 				# otherwise some strange python exceptions occur telling us
 				# about unsupported locale strings...
 				util.auto_complete_values_for_join(values, self._very_first_locale)
-				util.pre_save(values)
 
 				# on unjoined DC master the nameserver must be set to the external nameserver
 				if newrole == 'domaincontroller_master' and not orgValues.get('joined'):

@@ -1,3 +1,9 @@
+univention-system-setup (8.1.52-2) unstable; urgency=low
+
+  * Bug #36110: Fix sending interfaces to backend
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 07 Nov 2014 10:36:29 +0100
+
 univention-system-setup (8.1.52-1) unstable; urgency=medium
 
   Bug #35709:

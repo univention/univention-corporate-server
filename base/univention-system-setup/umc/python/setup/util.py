@@ -222,6 +222,7 @@ def pre_save(newValues):
 		newValues.update(dict((key, value or '') for key, value in interfaces.to_ucr().iteritems()))
 
 def write_profile(values):
+	pre_save(values)
 	old_umask = os.umask(0177)
 	try:
 		with open(PATH_PROFILE, "w+") as cache_file:
