@@ -1,3 +1,11 @@
+univention-management-console (7.1.62-1) unstable; urgency=medium
+
+  * Bug #36416: make sure that the appcenter module is also visible in the
+    favorites category after an update from UCS3 to UCS4
+	(missed changelog entry for SVN revision 55515)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Nov 2014 15:19:03 +0100
+
 univention-management-console (7.1.61-1) unstable; urgency=medium
 
   * Bug #32818: improved connection handling
