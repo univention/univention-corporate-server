@@ -178,6 +178,11 @@
 				(<ulink url="&ucsbug;35914">Bug 35914</ulink> <ulink url="&ucsbug;35915">Bug 35915</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
+				Patches for the security issues CVE-2014-3675,
+				CVE-2014-3676, and CVE-2014-3677 were added to the shim.
+				(<ulink url="&ucsbug;36167">Bug 36167</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
 				If UCS 4.0 is installed on an UEFI system, the boot
 				process includes a signed GRUB bootloader
 				to support boot on SecureBoot UEFI systems
