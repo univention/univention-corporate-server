@@ -351,18 +351,12 @@ define([
 			/*String?*/ flavor,
 			/*Object?*/ longPollingOptions) {
 
+			var _args = arguments;
+
 			// summary:
 			//		Encapsulates an AJAX call for a given UMCP command.
 			// returns:
 			//		A deferred object.
-
-			// when logging in, ignore all except the AUTH command
-			if (tools.status('loggingIn') && !(/^auth$/i).test(commandStr)) {
-				console.log(_('WARNING: Ignoring command "%s" since user is logging in', commandStr));
-				var deferred = new Deferred();
-				deferred.reject();
-				return deferred;
-			}
 
 			// set default values for parameters
 			dataObj = dataObj || {};
@@ -426,12 +420,19 @@ define([
 						}
 
 						return data; // Object
-					}, function(error) {
+					}, lang.hitch(this, function(error) {
 						// handle errors
-						tools.handleErrorStatus(error.response, handleErrors);
-						// propagate the error
-						throw error;
-					});
+						var deferred = tools.handleErrorStatus(error.response, handleErrors);
+						if (!deferred) {
+							// propagate the error
+							throw error;
+						}
+
+						// login error wait for the login and execute the request again
+						return deferred.then(lang.hitch(this, function() {
+							return this.umcpCommand.apply(this, _args);
+						}));
+					}));
 				}
 
 				// return the Deferred object
@@ -643,6 +644,7 @@ define([
 			var statusMessage = this._statusMessages[status];
 
 			// handle the different status codes
+			var deferred = null;
 			if (statusMessage) {
 				if (411 == status || 415 == status) {
 					// authentification failed, show a notification
@@ -651,7 +653,7 @@ define([
 				} else if(401 == status) {
 					// session has expired
 					topic.publish('/umc/actions', 'session', 'expired');
-					dialog.login();
+					deferred = dialog.login();
 					if (tools.status('setupGui')) {
 						// do not show on intial start
 						dialog._loginDialog.updateForm(false, statusMessage);
@@ -684,6 +686,7 @@ define([
 				// probably server timeout, could also be a different error
 				dialog.alert(_('An error occurred while connecting to the server, please try again later.'));
 			}
+			return deferred;
 		},
 
 		_handleTraceback: function(message, statusMessage) {
