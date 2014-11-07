@@ -1,13 +1,117 @@
 <section id="changelog:general">
 	<title>General</title>
+	All security updates issued for UCS 3.2-3 are included:
 	<itemizedlist>
 		<listitem><simpara>
-				All security updates issued for UCS 3.2-3 are included.
+			Package <package>apt</package>
+			CVE-2014-0487
+			CVE-2014-0488
+			CVE-2014-0489
+			CVE-2014-6273
+			(<ulink url="&ucsbug;35948">Bug 35948</ulink>,
+			<ulink url="&ucsbug;35986">Bug 35986</ulink>,
+			<ulink url="&ucsbug;36277">Bug 36277</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+			Package <package>bash</package>:
+			CVE-2014-6271
+			CVE-2014-7169
+			CVE-2014-7186
+			CVE-2014-7187
+			(<ulink url="&ucsbug;35992">Bug 35992</ulink>,
+			<ulink url="&ucsbug;36008">Bug 36008</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+			Package <package>curl</package>:
+			CVE-2014-3613
+			(<ulink url="&ucsbug;35874">Bug 35874</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+			Package <package>firefox-de</package>:
+			CVE-2014-1547
+			CVE-2014-1555
+			CVE-2014-1556
+			CVE-2014-1557
+			CVE-2014-1544
+			CVE-2014-1562
+			CVE-2014-1567
+			CVE-2014-1568
+			CVE-2014-1574
+			CVE-2014-1576
+			CVE-2014-1577
+			CVE-2014-1578
+			CVE-2014-1581
+			CVE-2014-1585
+			CVE-2014-1586
+			CVE-2014-1583
+			(<ulink url="&ucsbug;35807">Bug 35807</ulink>,
+			<ulink url="&ucsbug;35993">Bug 35993</ulink>,
+			<ulink url="&ucsbug;36175">Bug 36175</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+			Package <package>firefox-en</package>:
+			CVE-2014-1547
+			CVE-2014-1555
+			CVE-2014-1556
+			CVE-2014-1557
+			CVE-2014-1544
+			CVE-2014-1562
+			CVE-2014-1567
+			CVE-2014-1568
+			CVE-2014-1574
+			CVE-2014-1576
+			CVE-2014-1577
+			CVE-2014-1578
+			CVE-2014-1581
+			CVE-2014-1585
+			CVE-2014-1586
+			CVE-2014-1583
+			(<ulink url="&ucsbug;35807">Bug 35807</ulink>,
+			<ulink url="&ucsbug;35993">Bug 35993</ulink>,
+			<ulink url="&ucsbug;36175">Bug 36175</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+			Package <package>lua50</package>:
+			CVE-2014-5461
+			(<ulink url="&ucsbug;35770">Bug 35770</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+			Package <package>lua5.1</package>:
+			CVE-2014-5461
+			(<ulink url="&ucsbug;35771">Bug 35771</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+			Package <package>poppler</package>:
+			CVE-2010-5110
+			(<ulink url="&ucsbug;33265">Bug 33265</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+			Package <package>procmail</package>:
+			CVE-2014-3618
+			(<ulink url="&ucsbug;35817">Bug 35817</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+			Package <package>squid3</package>:
+			CVE-2014-3609
+			(<ulink url="&ucsbug;35732">Bug 35732</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+			Package <package>xen-4.1</package>:
+			CVE-2013-4368
+			CVE-2014-1950
+			CVE-2014-2599
+			CVE-2014-3124
+			CVE-2014-4021
+			CVE-2014-7154
+			CVE-2014-7155
+			CVE-2014-7156
+			CVE-2014-7188
+			(<ulink url="&ucsbug;34115">Bug 34115</ulink>).
 		</simpara></listitem>
 	</itemizedlist>
 </section>
 
-
+<!--
 <section id="changelog:installer">
 	<title>Univention Installer</title>
 	<itemizedlist>
@@ -15,14 +119,27 @@
 			</simpara></listitem>
 	</itemizedlist>
 </section>
+-->
 
 
 <section id="changelog:updater">
 	<title>Univention Updater</title>
 	<itemizedlist>
 		<listitem><simpara>
-		  The tool <emphasis>univention-repository-create</emphasis> has been updated and is now
-		  able to handle UCS-4 DVDs (<ulink url="&ucsbug;36269">Bug 36269</ulink>).
+			The HTTP HEAD query of the updater now also transfers the component
+			installation status (<ulink url="&ucsbug;35645">Bug 35645</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+			The tool <emphasis>univention-repository-create</emphasis> has been updated and is now
+			able to handle UCS-4 DVDs (<ulink url="&ucsbug;36269">Bug 36269</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+			The updater package is now limited to Python 2.6
+			(<ulink url="&ucsbug;34781">Bug 34781</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+		  	The postup.sh script was adapted to the univention-check-templates
+		  	return codes (<ulink url="&ucsbug;34972">Bug 34972</ulink>).
 		</simpara></listitem>
 	</itemizedlist>
 </section>
@@ -31,22 +148,35 @@
 <section id="changelog:basic">
 	<title>Basic system services</title>
 
-	<!-- <section id="changelog:basic:kernel"> -->
-		<!-- 	<title>Linux kernel and firmware packages</title> -->
-		<!-- 	  <itemizedlist> -->
-			<!-- 		<listitem><simpara> -->
-					<!-- 		</simpara></listitem> -->
-			<!-- 	  </itemizedlist> -->
-		<!-- </section> -->
+	<section id="changelog:basic:kernel">
+		<title>Linux kernel and firmware packages</title>
+		  <itemizedlist>
+		 		<listitem><simpara>
+ 					An overflow in the KVM time handling code prevented the start of a VM. This has
+					been fixed (<ulink url="&ucsbug;35808">Bug 35808</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+					In some situations the Xen netback driver caused an OOPS and prevented any VM
+					from accessing the network. This has been fixed
+					(<ulink url="&ucsbug;35826">Bug 35826</ulink>).
+			</simpara></listitem>
+			</itemizedlist>
+		</section>
 
-	<!--	<section id="changelog:basis:ucr">
+	<section id="changelog:basis:ucr">
 	<title>Univention Configuration Registry</title>
 	<itemizedlist>
 		<listitem><simpara>
+			Skip writing of internal cache during configHandlers.load() if the process has no write
+			permission (<ulink url="&ucsbug;35368">Bug 35368</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+			univention-check-templates has been fixed to correctly handle conffiles with spaces
+ 			(<ulink url="&ucsbug;35202">Bug 35202</ulink>).
 		</simpara></listitem>
 	</itemizedlist>
 	</section>
-	-->
+<!--
 	<section id="changelog:basic:nfs">
 		<title>NFS</title>
 		<itemizedlist>
@@ -86,6 +216,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+-->
 
 	<!-- <section id="changelog:basis:ucr:template"> -->
 		<!--   <title>Changes to templates and modules</title> -->
@@ -104,12 +235,31 @@
 		<title>Univention Directory Manager</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The modification of the alternative mail address is now allowed in AD member mode
+				(<ulink url="&ucsbug;35672">Bug 35672</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+				The syntax for group names has been adapted. The default group names of a French
+				Active Directory are allowed now (<ulink url="&ucsbug;35521">Bug 35521</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+				A traceback has been fixed if more than one colon is set in the
+				automountInformation attribute (<ulink url="&ucsbug;34541">Bug 34541</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+				The setting of the Kerberos principal name for computer/macos objects have been
+				fixed (<ulink url="&ucsbug;35526">Bug 35526</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+				A backslash in the <envar>home share path</envar> value of a user no longer results
+				in a traceback (<ulink url="&ucsbug;35953">Bug 35953</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
 	<section id="changelog:domain:openldap">
 		<title>OpenLDAP</title>
+<!--
 		<itemizedlist>
 			<listitem><simpara>
 			</simpara></listitem>
@@ -129,11 +279,34 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+-->
 
 		<section id="changelog:domain:openldap:replication">
 			<title>Listener/Notifier domain replication</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The notifier join script now waits for the first initialization of the listener
+					on a DC master. This avoids a race condition during the DC master installation
+					(<ulink url="&ucsbug;35723">Bug 35723</ulink>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A replication issue has been fixed which could occur when joining a UCS DC into
+					a domain which had the memberof LDAP overlay active at some point and later
+					deactivated it (<ulink url="&ucsbug;35480">Bug 35480</ulink>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Locking and signal handling of the univention-directory-listener has been improved
+					(<ulink url="&ucsbug;34013">Bug 34013</ulink>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Schema replication needs to filter out new operational (i.e. builtin) LDAP
+					attributes which will be activated in UCS 4.0
+					(<ulink url="&ucsbug;36113">Bug 36113</ulink>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Object replication needs to filter out operational ppolicy LDAP attributes
+					which may be found on a UCS 4.0 master
+					(<ulink url="&ucsbug;36353">Bug 36353</ulink>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -143,6 +316,8 @@
 		<title>Join</title>
 		<itemizedlist>
 			<listitem><simpara>
+				univention-join no longer overwrites the join.log on DC slave
+ 				(<ulink url="&ucsbug;34909">Bug 34909</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -157,6 +332,9 @@
 		<title>Univention Management Console web interface</title>
 		<itemizedlist>
 			<listitem><simpara>
+				If an email address is given during the system setup, the startup wizard won't ask
+				for an activation address. This prevents a possible double registration
+				(<ulink url="&ucsbug;35711">Bug 35711</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -164,9 +342,23 @@
 		<title>Univention Management Console server</title>
 		<itemizedlist>
 			<listitem><simpara>
+				Some displaying issues in UMC related to the new AD member mode have been fixed
+				(<ulink url="&ucsbug;35610">Bug 35610</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The handling of connections between the UMC parts has been improved. Faulty
+				connections will be closed and if the connection between UMC server and UMC module
+   				dies, the UMC module shuts down immediately
+				(<ulink url="&ucsbug;32818">Bug 32818</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The broken timer handling in the qt backend of python-notifier has been fixed.
+				This problem could lead e.g. to never stopping UMC modules
+				(<ulink url="&ucsbug;36472">Bug 36472</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+<!--
 	<section id="changelog:umc:appcenter">
 		<title>Univention App Center</title>
 		<itemizedlist>
@@ -174,24 +366,67 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+-->
 	<section id="changelog:umc:setup">
 		<title>Basic settings / Appliance mode</title>
 		<itemizedlist>
 			<listitem><simpara>
+				After deactivating DHCP in the appliance wizard and switching to manual
+				network configuration, the network interface remained in DHCP mode and
+				ignored the static network configuration
+				(<ulink url="&ucsbug;35601">Bug 35601</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Fixed suggestion of FQDN build from value entered in the organization field
+				in appliance mode (<ulink url="&ucsbug;34090">Bug 34090</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Moved setup of apache startsite on EC2 to an earlier stage in the boot
+				process (<ulink url="&ucsbug;35587">Bug 35587</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Do not show Firefox data submission policy popup during system setup
+				(<ulink url="&ucsbug;35721">Bug 35721</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The Windows NETBIOS domain name can now be up to 15 characters long
+				(<ulink url="&ucsbug;35605">Bug 35605</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Problems with reloading values and displaying messages after saving changes
+				have been corrected (<ulink url="&ucsbug;35599">Bug 35599</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The UMC now warns the user if DHCP is selected but a link-local IP address
+				is used. This can occur if DHCP is preconfigured but no DHCP lease could be obtained
+				(<ulink url="&ucsbug;35815">Bug 35815</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
-<!--
 	<section id="changelog:umc:user">
 		<title>Users module</title>
 		<itemizedlist>
 			<listitem><simpara>
-					FIXME
+				In AD/member mode users and clients syncronized from Active Directroy
+				are now ignored in the license count
+				(<ulink url="&ucsbug;35647">Bug 35647</ulink>).
+		  </simpara></listitem>
+		  <listitem><simpara>
+				Failures on report creation can not block UMC usage anymore
+				(<ulink url="&ucsbug;34333">Bug 34333</ulink>).
+		  </simpara></listitem>
+		  <listitem><simpara>
+				Long base DNs in license files are now handled correctly
+				(<ulink url="&ucsbug;35580">Bug 35580</ulink>).
+		  </simpara></listitem>
+		  <listitem><simpara>
+				A possible double registration is now prevented by a new ucr
+				variable (<ulink url="&ucsbug;35711">Bug 35711</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
--->
+<!--
 	<section id="changelog:umc:computers">
 		<title>Computers module</title>
 		<itemizedlist>
@@ -199,7 +434,6 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
-<!--
 	<section id="changelog:umc:license">
 		<title>License module</title>
 		<itemizedlist>
@@ -270,7 +504,6 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
--->
 
 	<section id="changelog:umc:other">
 		<title>Other modules</title>
@@ -286,7 +519,6 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
-<!--
 	<section id="changelog:umc:development">
 		<title>Development of modules for &ucsUMC;</title>
 		<itemizedlist>
@@ -299,10 +531,10 @@
 </section>
 
 
-<!--
 <section id="changelog:deployment">
 	<title>Software deployment</title>
 
+<!--
 	<section id="changelog:deployment:cli">
 		<title>Software deployment command line tools</title>
 		<itemizedlist>
@@ -311,14 +543,34 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
-</section>
 -->
+	<section id="changelog:deployment:monitor">
+		<title>Software monitor</title>
+		<itemizedlist>
+			<listitem><simpara>
+				A traceback in the pkgdb listener has been fixed
+				(<ulink url="&ucsbug;35367">Bug 35367</ulink>).
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+</section>
 
 
 <section id="changelog:lib">
 	<title>Univention Library</title>
 	<itemizedlist>
 		<listitem><simpara>
+			The AD member setup does now ignore the spelling of the domain name
+			(<ulink url="&ucsbug;35757">Bug 35757</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+			The python module atjobs is now EINTR-safe, i.e., for interrupted function
+			call signals (<ulink url="&ucsbug;31319">Bug 31319</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+			This update fixes a problem with reading progress report lines from 'dpkg'
+			while installing Apps, which lead to the installation getting stuck
+			(<ulink url="&ucsbug;35729">Bug 35729</ulink>).
 		</simpara></listitem>
 	</itemizedlist>
 </section>
@@ -327,17 +579,47 @@
 <section id="changelog:service">
 	<title>System services</title>
 
-<!--
 	<section id="changelog:service:mail">
 		<title>Mail services</title>
 		<itemizedlist>
 			<listitem><simpara>
-					FIXME
+				The listener module hosteddomains.py has been moved from
+    			univention-mail-server to univention-mail-postfix
+ 				(<ulink url="&ucsbug;35232">Bug 35232</ulink>).
+		  </simpara></listitem>
+		  <listitem><simpara>
+				Several UCR variables have been added to univention-mail-postfix
+				to allow better configuration of postfix's perfect forward secrecy.
+				(for detailed description please see -> ucr search variable_name).
+				<itemizedlist>
+					<listitem><simpara>
+						mail/postfix/smtpd/tls/dh1024/param/file
+					</simpara></listitem>
+					<listitem><simpara>
+						mail/postfix/smtpd/tls/dh512/param/file
+					</simpara></listitem>
+					<listitem><simpara>
+						mail/postfix/smtpd/tls/loglevel
+					</simpara></listitem>
+					<listitem><simpara>
+						mail/postfix/smtp/tls/loglevel
+					</simpara></listitem>
+					<listitem><simpara>
+						mail/postfix/cron/recreate/dh/parameter
+					</simpara></listitem>
+				</itemizedlist>
+				During installation and this update univention-mail-postfix creates 
+				a set of DH parameter files for EDH ciphers to use instead of the built-in
+				parameters. Also, a cronjob /etc/cron.d/univention-mail-postfix has been
+				added to weekly recreate the DH parameter files (creating/recreating
+				these parameter files can take a while, depending on the quality of
+				the systems random source)
+				(<ulink url="&ucsbug;35923">Bug 35923</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
--->
 
+<!--
 	<section id="changelog:service:virus">
 		<title>Spam/virus detection and countermeasures</title>
 		<itemizedlist>
@@ -345,35 +627,53 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+-->
 
-<!--
 	<section id="changelog:service:print">
 		<title>Printing services</title>
 		<itemizedlist>
 			<listitem><simpara>
-					FIXME
+				Assigning a Windows printer driver to a Samba print share renamed the
+				share to the name of the printer driver which may be confusing and could
+				trigger a Windows error message (code 0x0000007a). Test page printing
+				would fail in this case. Now the UCS management tools create Samba
+				printer shares with the option <envar>force printername</envar> which is provided by
+				Samba as a workaround for this issue. The option get's set while
+				creating new or modifying existing printer shares. The new default
+				can be reverted by settings the UCR variable samba/force_printername to
+				no or false. The following command can be run once on each UCS print
+				server to set the option for all print shares hosted locally:
+				<command>univention-directory-listener-ctrl resync cups-printers</command>
+ 				(<ulink url="&ucsbug;33505">Bug 33505</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
--->
 
 	<section id="changelog:service:nagios">
 		<title>Nagios</title>
 		<itemizedlist>
 			<listitem><simpara>
+ 				This update corrects problems in the apache configuration
+ 				due to a dead symlink during the package installation process.
+ 				In specific setups this could have led to installation errors
+ 				(<ulink url="&ucsbug;35078">Bug 35078</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
-<!--
 	<section id="changelog:service:ssl">
 		<title>SSL</title>
 		<itemizedlist>
 			<listitem><simpara>
-				FIXME
+				The default hash function has been changed to sha256. This is configurable via the
+				UCR variable ssl/default/hashfunction
+				(<ulink url="&ucsbug;35836">Bug 35836</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The default key size has been changed to 2048 bits. This is configurable via the
+				UCR variable ssl/default/bits (<ulink url="&ucsbug;30545">Bug 30545</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
--->
 
 	<section id="changelog:service:proxy">
 		<title>Proxy services</title>
@@ -383,12 +683,19 @@
 				Squid's <emphasis>forwarded_for</emphasis> configuration directive
 				(<ulink url="&ucsbug;34025">Bug 34025</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The update for squid3 to fix CVE-2014-3609 erroneously removed SSL support.
+ 				This update restores the SSL functionality
+				(<ulink url="&ucsbug;35980">Bug 35980</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 	<section id="changelog:service:pam">
 		<title>PAM / Local group cache</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The UCR default for the security limit max open files has been fixed (now 32768)
+ 				(<ulink url="&ucsbug;35362">Bug 35362</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -397,6 +704,14 @@
 		<title>Other services</title>
 		<itemizedlist>
 			<listitem><simpara>
+  				This update disables the insecure protocols SSL 2.0 and SSL 3.0 for the
+  				Apache Webserver.  It is possible to override this by setting the UCR variable
+  				apache2/ssl/v2 and/or apache2/ssl/v3 to "true" before or after the update
+ 				(<ulink url="&ucsbug;36173">Bug 36173</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+				This update fixes RADIUS access for clients in Samba AD domains
+				(<ulink url="&ucsbug;35516">Bug 35516</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -420,6 +735,10 @@
 		<title>Xen</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The code signing certificate for the GPLPV drivers expired and 
+				has been replaced with a new certificate valid until 10.10.2017. 
+				The new driver version is 0.11.0.373
+				(<ulink url="&ucsbug;35849">Bug 35849</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -429,18 +748,35 @@
 <section id="changelog:win">
 	<title>Services for Windows</title>
 
-	<section id="changelog:win:nt">
-		<title>Samba NT domain support</title>
-		<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
-
 	<section id="changelog:win:ad">
-		<title>Samba AD domain support</title>
+		<title>Samba</title>
 		<itemizedlist>
 			<listitem><simpara>
+				All winbind processes are stopped correctly during samba4 join
+				in 96univention-samba4.inst (<ulink url="&ucsbug;35600">Bug 35600</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The backup script univention-samba4-backup now
+				ignores the tar file changed as we read it warning
+				(<ulink url="&ucsbug;35392">Bug 35392</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				When installing broken printdrivers, samba returned a wrong error code
+				(access denied). This has been fixed
+				(<ulink url="&ucsbug;32771">Bug 32771</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				A bug has been fixed which could prevent a takeover of Windows 2012 servers
+				with enabled recycle bin (<ulink url="&ucsbug;35443">Bug 35443</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The main samba (not smbd) processes have been restricted to 1024 open files.
+				Now they use the value configured in the UCR variable samba/max_open_files
+				(<ulink url="&ucsbug;34514">Bug 34514</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				A smbd crash on filenames with non-ascii characters has been fixed
+				(<ulink url="&ucsbug;36162">Bug 36162</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -448,6 +784,14 @@
 		<title>Univention AD Takeover</title>
 		<itemizedlist>
 			<listitem><simpara>
+				When running AD takeover out of AD member mode its necessary to flush
+				samba caches to steer clear of IDMAP issues
+				(<ulink url="&ucsbug;35564">Bug 35564</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+				If the spelling case of the domain name differs between AD and UCS the GPO check
+				failed. This get's fixed now by renaming the domain specific directory in the sysvol
+				share (<ulink url="&ucsbug;35769">Bug 35769</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -455,6 +799,39 @@
 		<title>Univention S4 Connector</title>
 		<itemizedlist>
 			<listitem><simpara>
+				A traceback due to an undefined variable in the password synchronization module has
+				been fixed (<ulink url="&ucsbug;33263">Bug 33263</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The SID synchroniation from OpenLDAP to Samba 4 has been fixed. This is
+				used in UCS@school environments (<ulink url="&ucsbug;35626">Bug 35626</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				A locking table has been added to the S4 connector which is used to
+				avoid the synchronisation of incomplete objects
+				(<ulink url="&ucsbug;35391">Bug 35391</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				A synchronization error for the telephone number has been fixed
+				(<ulink url="&ucsbug;31172">Bug 31172</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The inital group membership sync has been fixed if the group exists
+				on both sides and the group members are different
+				(<ulink url="&ucsbug;33319">Bug 33319</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Objects which are deleted in Samba 4 are now recursively removed in
+				OpenLDAP (<ulink url="&ucsbug;27290">Bug 27290</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The sync_mode is now being checked in the post modify membership update 
+				functions (<ulink url="&ucsbug;35251">Bug 35251</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The S4 connector doesn't no longer delete the OpenLAD domain
+				controller object if the deleted Samba 4 object was a Windows
+				computer (<ulink url="&ucsbug;35563">Bug 35563</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -462,12 +839,29 @@
 		<title>Univention Active Directory Connector</title>
 		<itemizedlist>
 			<listitem><simpara>
+				A couple of messages have been improved in the UMC wizard
+				(<ulink url="&ucsbug;35602">Bug 35602</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The determination of the Active Directory language has been fixed. This
+				is needed for the group name mapping
+				(<ulink url="&ucsbug;35572">Bug 35572</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The password synchronization can now be disabled by setting the
+				UCR variable 'connector/ad/mapping/user/password/disabled' to
+				'true' (<ulink url="&ucsbug;35895">Bug 35895</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				A connection traceback has been fixed in the AD member mode wizard
+				(<ulink url="&ucsbug;35701">Bug 35701</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </section>
 
 
+<!--
 <section id="changelog:other">
 	<title>Other changes</title>
 	<itemizedlist>
@@ -487,5 +881,6 @@
 		</simpara></listitem>
 	</itemizedlist>
 </section>
+-->
 
 <!-- vim: set ts=4 sw=2 noet: -->

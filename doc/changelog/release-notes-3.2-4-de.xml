@@ -49,37 +49,11 @@
 	</bookinfo>
 
 	<chapter id="relnotes:highlights">
-		<title>Release-Highlights</title>
+		<title>UCS 3.2-4</title>
 
 		<para>
-			Mit &ucsUCS; 3.2-4 steht das dritte Point-Release für &ucsUCS; (UCS) zur Verfügung.
-			Es beinhaltet alle für UCS 3.2-2 veröffentlichten Errata-Updates:
-
-			<itemizedlist>
-				<listitem><para>
-					Das neue Modul <emphasis>Active Directory-Verbindung</emphasis> führt die durch UCS verwaltete Domäne und ein bestehendes Active Directory zusammen. UCS steht dann als Plattform für den integrierten Betrieb von Apps in einer Active Directory-Domäne zur Verfügung.
-				</para></listitem>
-
-				<listitem><para>
-					Der UCS-Einrichtungsassistent wurde komplett überarbeitet und führt den Nutzer nun deutlich komfortabler durch die Domänenkonfiguration von UCS, indem z.B. Konfigurationseinstellungen automatisch ermittelt und entsprechende Vorschläge gemacht werden.
-				</para></listitem>
-
-				<listitem><para>
-					PHP 5.4.4 wurde nach UCS 3.2 zurück portiert. Es kann aus einem separaten Repository installiert werden und wird darüber auch mit Sicherheitsupdates versorgt.
-				</para></listitem>
-
-				<listitem><para>
-					Die OpenLDAP-Replikation wurde deutlich verbessert, indem Änderungen im Verzeichnisdienst nun mit einer eindeutigen ID verfolgt werden. Das erhöht die Replikationsgeschwindigkeit und verringert Replikationsfehler.
-				</para></listitem>
-
-				<listitem><para>
-					Das Linux-Kernel-Paket wurde auf Version 3.10.11 aktualisiert. Dies verbessert neben vielen Bugfixes auch den Hardware-Support.
-				</para></listitem>
-
-				<listitem><para>
-					Die Active Directory-Kompatibilität wurde weiter verbessert, indem nun das Microsoft Data Protection Application Program Interface (DPAPI) unterstützt wird.
-				</para></listitem>
-			</itemizedlist>
+			Mit &ucsUCS; 3.2-4 steht das vierte Point-Release für &ucsUCS; (UCS) zur Verfügung.
+			Es beinhaltet alle für UCS 3.2-3 veröffentlichten Errata-Updates.
 		</para>
 
 	</chapter>
