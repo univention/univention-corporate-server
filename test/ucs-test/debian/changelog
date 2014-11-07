@@ -1,3 +1,10 @@
+ucs-test (4.0.175-1) unstable; urgency=medium
+
+  * Removed 61_udm-users/25_script_lock_expired_passwords and 61_udm-
+    users/25_script_lock_expired_passwords (Bug #36215)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Nov 2014 11:52:28 +0100
+
 ucs-test (4.0.174-2) unstable; urgency=medium
 
   * Depend on python-psutil instead of python-psutils (Bug #36108)
