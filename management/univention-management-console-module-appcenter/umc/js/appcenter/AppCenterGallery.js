@@ -48,7 +48,7 @@ define([
 		getIconClass: function(item) {
 			if (array.indexOf(item.unlocalised_categories, 'UCS components') >= 0) {
 				// do not display icon of UCS components
-				return null;
+				return tools.getIconClass('appcenter-ucs-component', 50, 'umcAppCenter');
 			}
 			return tools.getIconClass(item.icon, 50, 'umcAppCenter');
 		},

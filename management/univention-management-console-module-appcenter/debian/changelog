@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.16-1) unstable; urgency=medium
+
+  * Bug #36514: show default UCS icon for UCS components in the app center
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Nov 2014 20:11:37 +0100
+
 univention-management-console-module-appcenter (4.1.15-7) unstable; urgency=low
 
   * Bug #36433: Text adjustments

@@ -28,7 +28,7 @@ for app in apps:
 			name=app.name,
 			version=app.version,
 			description=app.get('description'),
-			icon='apps-%s' % app.component_id if 'UCS components' not in app._options['unlocalised_categories'] else '',
+			icon='apps-%s' % app.component_id if 'UCS components' not in app._options['unlocalised_categories'] else 'appcenter-ucs-component.svg',
 		)
 	print xml
 @!@
