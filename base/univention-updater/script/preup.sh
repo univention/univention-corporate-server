@@ -245,7 +245,7 @@ check_for_postgresql83 () {
 	*) return 0 ;;
 	esac
 	echo "WARNING: PostgreSQL-8.3 is no longer supported by UCS-4 and must be migrated to"
-	echo "         a newer version of PostgreSQL. See <http://sdb.univention.de/1249> for"
+	echo "         a newer version of PostgreSQL. See http://sdb.univention.de/1249 for"
 	echo "         more details."
 	if is_ucr_true update40/ignore_postgresql83; then
 		echo "WARNING: update40/ignore_postgresql83 is set to true. Skipped as requested."
@@ -262,7 +262,7 @@ check_for_cyrus22 () {
 	*) return 0 ;;
 	esac
 	echo "WARNING: Cyrus-2.2 is no longer supported by UCS-4 and must be migrated to a"
-	echo "         newer version of Cyrus-IMAPd. See <http://sdb.univention.de/1213> for"
+	echo "         newer version of Cyrus-IMAPd. See http://sdb.univention.de/1213 for"
 	echo "         more details."
 	if is_ucr_true update40/ignore_cyrus22; then
 		echo "WARNING: update40/ignore_cyrus22 is set to true. Skipped as requested."
