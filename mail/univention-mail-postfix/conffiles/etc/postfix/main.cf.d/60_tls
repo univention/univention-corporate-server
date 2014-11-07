@@ -42,6 +42,5 @@ smtpd_tls_dh512_param_file = @%@mail/postfix/smtpd/tls/dh512/param/file@%@
 tls_preempt_cipherlist = @%@mail/postfix/tls/preempt/cipherlist@%@
 
 # The Postfix SMTP server security grade for ephemeral elliptic-curve Diffie-Hellman (EECDH) key exchange
-# available in UCS 4.0
 smtpd_tls_eecdh_grade = @%@mail/postfix/smtpd/tls/eecdh/grade@%@
 

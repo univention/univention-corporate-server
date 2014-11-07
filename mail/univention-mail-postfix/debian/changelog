@@ -1,3 +1,9 @@
+univention-mail-postfix (9.0.0-9) unstable; urgency=low
+
+  * fixed tls debug level and dh parameter file creation (Bug #35923) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 07 Nov 2014 10:40:10 +0100
+
 univention-mail-postfix (9.0.0-8) unstable; urgency=low
 
   * weekly rotate dh parameters (Bug #35923) 

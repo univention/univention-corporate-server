@@ -258,14 +258,14 @@ Type=int
 Categories=service-mail
 
 [mail/postfix/smtpd/tls/eecdh/grade]
-Description[de]=Sicherheitsstufe für den EECDH Schlüsselaustausch des Postfix SMTP-Server (>= UCS 4.0).
-Description[en]=The Postfix SMTP server security grade for ephemeral elliptic-curve Diffie-Hellman (EECDH) key exchange (>= UCS 4.0).
+Description[de]=Sicherheitsstufe für den EECDH Schlüsselaustausch des Postfix SMTP-Server.
+Description[en]=The Postfix SMTP server security grade for ephemeral elliptic-curve Diffie-Hellman (EECDH) key exchange.
 Type=str
 Categories=service-mail
 
 [mail/postfix/tls/preempt/cipherlist]
-Description[de]=Falls auf 'yes' gesetzt, verwendet der Postfix SMTP-Server seine Chiffren Präferenzordnung anstelle die des Clients (>= SSLv3).
-Description[en]=If set to 'yes' the Postfix SMTP server uses its own cipher preference order instead of the remote client's cipher preference order (>= SSLv3). 
+Description[de]=Falls auf 'yes' gesetzt, verwendet der Postfix SMTP-Server seine Chiffren Präferenzordnung anstelle die des Clients.
+Description[en]=If set to 'yes' the Postfix SMTP server uses its own cipher preference order instead of the remote client's cipher preference order. 
 Type=str
 Categories=service-mail
 
