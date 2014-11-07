@@ -64,6 +64,7 @@ ucr.load()
 _translation = Translation('univention-management-console-module-setup')
 _ = _translation.translate
 
+i18nXKeyboard = Translation('xkeyboard-config')
 
 RE_IPV4 = re.compile(r'^interfaces/(([^/]+?)(_[0-9])?)/(address|netmask)$')
 RE_IPV6_DEFAULT = re.compile(r'^interfaces/([^/]+)/ipv6/default/(prefix|address)$')
@@ -523,7 +524,10 @@ class Instance(Base, ProgressMixin):
 		tree = lxml.etree.parse(file('/usr/share/X11/xkb/rules/base.xml'))
 		models = tree.xpath("//model")
 
-		model_result = [ { 'label': model.xpath('./configItem/description')[0].text, 'id': model.xpath('./configItem/name')[0].text } for model in models ]
+		model_result = [{
+			'label': i18nXKeyboard.translate(model.xpath('./configItem/description')[0].text),
+			'id': model.xpath('./configItem/name')[0].text
+		} for model in models]
 
 		return model_result
 
@@ -534,7 +538,12 @@ class Instance(Base, ProgressMixin):
 		tree = lxml.etree.parse(file('/usr/share/X11/xkb/rules/base.xml'))
 		layouts = tree.xpath("//layout")
 
-		layout_result = [ { 'label': layout.xpath('./configItem/description')[0].text, 'id': layout.xpath('./configItem/name')[0].text } for layout in layouts ]
+		layout_result = [{
+			'label': i18nXKeyboard.translate(layout.xpath('./configItem/description')[0].text),
+			'id': layout.xpath('./configItem/name')[0].text,
+			'language': layout.xpath('./configItem/shortDescription')[0].text,
+			'countries': ':'.join([icountry.text for icountry in layout.xpath('./configItem/countryList/*')]),
+		} for layout in layouts]
 
 		return layout_result
 
@@ -552,7 +561,10 @@ class Instance(Base, ProgressMixin):
 			if layoutID != keyboardlayout:
 				continue
 			variants = layout.xpath("./variantList/variant")
-			variante_result += [ { 'label': variant.xpath('./configItem/description')[0].text, 'id': variant.xpath('./configItem/name')[0].text } for variant in variants ]
+			variante_result += [{
+				'label': i18nXKeyboard.translate(variant.xpath('./configItem/description')[0].text),
+				'id': variant.xpath('./configItem/name')[0].text
+			} for variant in variants]
 
 		variante_result.insert(0, { 'label': '', 'id': '' })
 
@@ -615,6 +627,7 @@ class Instance(Base, ProgressMixin):
 
 		# dynamically change the translation methods
 		_translation.set_language(str(self.locale))
+		i18nXKeyboard.set_language(str(self.locale))
 		network._translation.set_language(str(self.locale))
 
 		# make sure that locale information is correctly reloaded
@@ -680,7 +693,6 @@ class Instance(Base, ProgressMixin):
 			if match_country:
 				imatch.update(util.get_random_nameserver(match_country))
 				imatch.update(dict(
-					default_keyboard=match_country.get('default_keyboard'),
 					default_lang=match_country.get('default_lang'),
 					country_label=self._get_localized_label(match_country.get('label', {})),
 					label=self._get_localized_label(imatch.get('label')) or imatch.get('match'),

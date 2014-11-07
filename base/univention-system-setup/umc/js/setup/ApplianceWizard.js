@@ -1232,7 +1232,8 @@ define([
 				var countryLowerCase = city.country.toLowerCase();
 				var layoutWidget = this.getWidget('locale', 'xorg/keyboard/options/XkbLayout');
 				array.some(layoutWidget.getAllItems(), function(ilayout) {
-					 if (ilayout.id == countryLowerCase) {
+					 var idxCountry = ilayout.countries.indexOf(city.country);
+					 if (ilayout.id == countryLowerCase || idxCountry >= 0) {
 						// found matching layout -> break loop
 						city.keyboard = ilayout.id;
 						defaultKeyboardLabel = ilayout.label;
@@ -1240,6 +1241,18 @@ define([
 						return true;
 					 }
 				});
+				if (!city.keyboard && city.default_lang) {
+					// match language
+					array.some(layoutWidget.getAllItems(), function(ilayout) {
+						 if (ilayout.language == city.default_lang) {
+							// found matching layout -> break loop
+							city.keyboard = ilayout.id;
+							defaultKeyboardLabel = ilayout.label;
+							nSettingsConfigured++;
+							return true;
+						 }
+					});
+				}
 			}
 			msg += _('<tr><td>Keyboard layout:</td><td>%s</td></tr>', defaultKeyboardLabel);
 			msg += '</table>';

@@ -1,3 +1,12 @@
+univention-system-setup (8.1.54-1) unstable; urgency=medium
+
+  Bug #35709:
+  * try to match language to determine the keyboard layout if the itself
+    cannot be matched
+  * add translations to keyboard information
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Nov 2014 13:51:51 +0100
+
 univention-system-setup (8.1.53-2) unstable; urgency=low
 
   * Bug #36110: Fix sending interfaces to backend
