@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.23-2) unstable; urgency=medium
+
+  * Bug #36435: fixed fuzzy entries
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 07 Nov 2014 20:21:59 +0100
+
 univention-management-console-module-udm (5.1.23-1) unstable; urgency=medium
 
   Bug #36435:
