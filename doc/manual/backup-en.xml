@@ -5,6 +5,13 @@
 Bacula is a network-enabled data backup solution with a client/server
 architecture. It allows data backup and restore in heterogeneous
 environments.
+<!--
+TODO: translation
+Die hier beschreibene Dokumentation bezieht sich auf das Paket
+<package>univention-bacula</package>, welches als Komponente von UCS
+ausgeliefert wird. Im Univention App Center können weitere
+Backup-Softwarelösungen ausgewählt und installiert werden.
+-->
 		</para>
 		<para>
 Bacula is composed of a range of individual services and programs,
@@ -491,7 +498,7 @@ websites:
 		<itemizedlist>
 			<listitem><simpara><ulink url="http://www.bacula.org"/></simpara></listitem>
 			<listitem><simpara><ulink url="http://wiki.bacula.org/doku.php"/></simpara></listitem>
-			<listitem><simpara><ulink url="http://www.bacula.org/5.0.x-manuals/en/main/main.pdf"/></simpara></listitem>
+			<listitem><simpara><ulink url="http://www.bacula.org/5.2.x-manuals/en/main/main.pdf"/></simpara></listitem>
 			<listitem><simpara><ulink url="http://en.wikipedia.org/wiki/Bacula"/></simpara></listitem>
 		</itemizedlist>
 	</section>
