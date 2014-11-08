@@ -1,3 +1,10 @@
+univention-system-setup (8.1.56-1) unstable; urgency=medium
+
+  * Install firefox-de if univention-kde should be installed and
+    locale/default is set to a german setup (Bug #36528)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Nov 2014 21:19:57 +0100
+
 univention-system-setup (8.1.55-1) unstable; urgency=medium
 
   * Reset interfaces/restart/auto before starting USS. In the meanwhile

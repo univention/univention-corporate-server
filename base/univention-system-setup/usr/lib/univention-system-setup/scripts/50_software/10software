@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 from univention.management.console.modules.setup.setup_script import AptScript, main, _
+import univention.config_registry
 
 
 class SoftwareScript(AptScript):
@@ -76,6 +77,12 @@ class SoftwareScript(AptScript):
 		self.finish_task('Autoremove')
 
 		for pkg in self.packages_install:
+			if pkg == 'univention-kde':
+				ucr = univention.config_registry.ConfigRegistry()
+				ucr.load()
+				default_locale = ucr.get('locale/default')
+				if default_locale and default_locale.startswith('de_'):
+					self.install('firefox-de')
 			# apt-get install pkg
 			self.install(pkg)
 			self.finish_task(pkg)
