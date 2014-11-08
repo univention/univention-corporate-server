@@ -393,6 +393,11 @@
 					it is automatically truncated to up to 15 characters to conform to netbios
 					restrictions (<ulink url="&ucsbug;35709">Bug 35709</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+					The German <package>firefox</package> package is installed if a desktop
+					environment should be installed and German has been chosen as system language
+					(<ulink url="&ucsbug;36528">Bug 36528</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
