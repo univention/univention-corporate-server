@@ -53,7 +53,10 @@
 
 		<para>
 			Mit &ucsUCS; 3.2-4 steht das vierte Point-Release für &ucsUCS; (UCS) zur Verfügung.
-			Es beinhaltet alle für UCS 3.2-3 veröffentlichten Errata-Updates.
+			Vorhandene UCS-Systeme können über das von Univention bereitgestellte Online
+			Repository aktualisiert werden. Alternativ können Updates über eine Update-DVD
+			eingespielt werden. Für Neuinstallationen stehen UCS 3.2-4 ISO-Images zur Verfügung.
+			UCS 3.2-4 beinhaltet alle für UCS 3.2-3 veröffentlichten Errata-Updates.
 		</para>
 
 	</chapter>
