@@ -52,55 +52,184 @@
 		<title>Release highlights</title>
 
 		<para>
-		  With &ucsUCS; 4.0
+<!--
+TODO: translation
+			Mit &ucsUCS; 4.0 steht das vierte Major Release für &ucsUCS; (UCS) zur Verfügung. Es
+			umfasst eine Reihe umfangreicher Funktionserweiterungen und -verbesserungen, neue
+			Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten
+			Änderungen im Überblick:
+-->
 		</para>
+
+<!--
+TODO: translation
+		<itemizedlist>
+			<listitem><para>
+				Das Design und die Usability der graphischen Administrationsoberfläche &ucsUMC;
+				wurde mit UCS 4.0 komplett überarbeitet. Durch ein responsives Design kann die
+				Administration auch bequem vom Tabelt oder Smartphone erfolgen.
+			</para></listitem>
+			<listitem><para>
+				UCS Virtual Machine Manger (UVMM) kann neben lokalen UCS-Virtualisierungsservern nun
+				auch OpenStack- oder Amazon EC2-Umgebungen administrieren. Dadurch sind hybride Cloud
+				Szenarien mit UCS Out-of-the-Box möglich.
+			</para></listitem>
+			<listitem><para>
+				UCS 4.0 basiert auf Debian GNU/Linux 7.7 (Wheezy). Mehr als 16.000 Source Pakete
+				wurden aktualisiert und an die Bedürfnisse der UCS-Administratoren angepasst. Einige
+				Kernkomponenten, wie OpenLDAP (2.4.40), Samba (4.2rc2) oder der Linux Kernel (3.16)
+				sind in UCS 4.0 aktueller als in Debian GNU/Linux 7.7.
+			</para></listitem>
+			<listitem><para>
+				Die Installation von UCS wurde deutlich vereinfacht. Die Basis-Installation erfolgt
+				auf Basis des Debian Installers, anschließend wird die Konfiguration des Systems
+				Web-basiert abgeschlossen. Die Web-basierte Konfiguration kommt auch bei der
+				manuellen Konfiguration von Cloud-Images oder anderen Appliances zum Einsatz.
+			</para></listitem>
+			<listitem><para>
+				Die Performance des OpenLDAP Verzeichnisdienst wurde deutlich verbessert.
+				standardmäßig wird als Backend für OpenLDAP nun die Memory-Mapped-Datenbank (mdb)
+				verwendet.
+			</para></listitem>
+			<listitem><para>
+				Die Administration von Applikationen innerhalb der UCS-Domäne wird durch ein
+				zentralisiertes App Center noch einfacher. Dadurch können Applikationen von einem
+				System innerhalb der gesamten Domäne installiert werden.
+			</para></listitem>
+			<listitem><para>
+				UCS unterstützt nun auch die Installation auf einem System mit aktiviertem UEFI
+				SecureBoot.
+			</para></listitem>
+		</itemizedlist>
+-->
 	</chapter>
 
-	<chapter id="relnotes:order">
-		<title>Recommended update order for environments with more than one UCS server</title>
+	<chapter id="relnotes:update">
+<!--
+TODO: translation
+		<title>Hinweise zum Update</title>
+			<para>
+				UCS unterstützt das Einspielen von Release Updates. Während der Aktualisierung kann es zu
+				Ausfällen von Diensten innerhalb der Domäne kommen. Aus diesem Grund sollte das Update
+				innerhalb eines Wartungsfensters erfolgen. Grundsätzlich ist es empfohlen das Update
+				zunächst in einer Testumgebung einzuspielen und zu testen. Die Testumgebung sollte
+				dabei identisch zur Produktivumgebung sein. Je nach Systemgeschwindigkeit,
+				Netzwerkanbindung und installierter Software kann das Update zwischen dreißig Minuten
+				und mehreren Stunden dauern.
+			</para>
 
-		<para>FIXME</para>
+		<section id="relnotes:order">
+			<title>Empfohlene Update-Reihenfolge</title>
+				<para>
+					In Umgebungen mit mehr als einem UCS-System muss die Update-Reihenfolge der
+					UCS-Systeme beachtet werden:
+				</para>
+
+				<para>
+					Auf dem &ucsMaster; wird die maßgebliche (authoritative) Version des
+					LDAP-Verzeichnisdienstes vorgehalten, die an alle übrigen LDAP-Server der
+					UCS-Domäne repliziert wird. Da bei Release-Updates Veränderungen an den
+					LDAP-Schemata auftreten können muss der &ucsMaster; bei einem Release-Update immer
+					als erstes System aktualisiert werden.
+				</para>
+		</section>
+		<section id="relnotes:mix">
+			<title>Mischbetrieb mit älteren UCS-Systemen</title>
+				<para>
+					UCS 4.0 unterstützt den Mischbetrieb mit UCS 3.2-4 Systemen. Aus diesem Grund müssen
+					nicht alle UCS-Systeme in einem Wartungsfenster auf UCS 4.0 aktualisiert werden. Ein
+					Mischbetrieb mit älteren UCS-Versionen, bspw. UCS 3.1 ist nicht unterstützt.
+				</para>
+		</section>
+		<section id="relnotes:apps">
+			<title>Univention App Center</title>
+				<para>
+					Sofern Applikationen aus dem App Center installiert sind, ist das Update erst
+					dann möglich, wenn alle lokal installierten Applikationen im App Center
+					verfügbar sind. Einige Applikationen werden beim Update ebenfalls auf neure
+					Versionen aktualisiert. Falls eine Applikation noch nicht verfügbar ist, so kann
+					der Zeitpunkt beim Applikationshersteller nachgefragt werden.
+				</para>
+		</section>
+		<section id="relnotes:samba">
+			<title>Ablösung von Windows NT DC Funktionalität</title>
+				<para>
+					Die Verwendung von Windows NT Domänendiensten, die klassisch durch Samba 3
+					bereitgestellt wurden, ist mit UCS 4.0 nicht mehr empfohlen. Eine Auswahl der
+					Windows NT Domänendienste ist deshalb während der Installation von UCS und durch
+					das App Center nicht mehr vorgesehen. Es wird empfohlen auf die Active Directory
+					Domänendienste von UCS (Samba 4) zu migrieren.
+				</para>
+		</section>
+-->
 	</chapter>
 
 	<chapter id="relnotes:prepare">
 		<title>Preparation of update</title>
 
-		<para>FIXME</para>
+		<para>
+			It must be checked whether sufficient disk space is available. A standard installation
+			requires a minimum of 6 GB of memory. Depending on the scope of the existing installation,
+			the update will require about another 4 GB of memory for the downloading and
+			installation of the packages.
+		</para>
+
+		<para>
+			For the update, a login should be performed on the console with the
+			<emphasis>root</emphasis> user and then the update started there. Alternatively, the
+			update can be initiated using the &ucsUMC;.
+		</para>
+
+		<para>
+			Remote updating via SSH is not recommended as this may result in the update procedure
+			being cancelled if the network connection is interrupted, for example, and this can affect
+			the system. If updating should occur over a network connection nevertheless, it must be
+			verified that the update continues despite disconnection from the network. This can be
+			done, for example, using the tools <command>screen</command> and <command>at</command>,
+			which are installed on all system roles.
+		</para>
 
 		<section id="relnotes:removed">
 			<title>Removed/unspported Components</title>
 			<para>
 				Some components have been removed and are not shipped any longer with UCS 4.0:
 			</para>
+<!--
+TODO: translation
 			<itemizedlist>
 				<listitem>
 					<para>
-						The <application>Xen</application> hypervisor has been removed and is no longer supported by UCS.
-						Details on migrating to <application>QEMU/KVM</application> is provided in <xref linkend="ext-doc-uvmm"/>.
+						Der <application>Xen</application> Hypervisor wurde entfernt und wird nicht
+						länger von UCS Virtual Machine Manager unterstützt. Details zur Migration zu
+						<application>KVM</application> befinden sich in <xref linkend="ext-doc-uvmm"/>.
 					</para>
 				</listitem>
 				<listitem>
 					<para>
-						The Scalix LDAP schema has been removed in UCS 4.0.
-						It is required to remove all Scalix related attributes
-						from LDAP prior to the update.
+						Das Scalix LDAP Schema wurde in UCS 4.0 entfernt. Alle Scalix spezifischen
+						Attribute müssen vor dem Update aus dem LDAP-Verzeichnis entfernt werden.
 					</para>
 				</listitem>
 				<listitem>
 					<para>
-						<application>PostgreSQL-8.3</application> has been removed in UCS 4.0.
-						The data must be migrated by hand to a newer version.
-						The procedure is described in the <ulink url="http://sdb.univention.de/1249">SDB article 1249</ulink>.
+						<application>PostgreSQL-8.3</application> wurde in UCS 4.0 entfernt.
+						Die Daten müssen von Hand in eine neuere Version migriert werden.
+						Das Vorgehen ist in dem
+						<ulink url="http://sdb.univention.de/1220">SDB-Artikel 1220</ulink>
+						beschrieben.
 					</para>
 				</listitem>
 				<listitem>
 					<para>
-						<application>Cyrus-2.2</application> has been removed in UCS 4.0.
-						Mail must be migrated by hand to a newer version.
-						The procedure is described in the <ulink url="http://sdb.univention.de/1213">SDB article 1213</ulink>.
+						<application>Cyrus-2.2</application> wurde in UCS 4.0 entfernt.
+						Die Mailserverdaten müssen von Hand in eine neuere Version migriert
+						werden. Das Vorgehen ist in dem
+						<ulink url="http://sdb.univention.de/1213">SDB-Artikel 1213</ulink>
+						beschrieben.
 					</para>
 				</listitem>
 			</itemizedlist>
+-->
 		</section>
 
 	</chapter>
@@ -108,44 +237,115 @@
 	<chapter id="relnotes:post">
 		<title>Postprocessing of the update</title>
 
-		<para>FIXME</para>
+		<para>
+			Following the update, new or updated join scripts need to be executed. This can be done in
+			two ways: Either using the UMC module  <guimenu>Domain join</guimenu> or by running the
+			command <command>univention-run-join-scripts</command> as the user
+			<emphasis>root</emphasis>.
+		</para>
+
+		<para>
+			Subsequently the UCS system should be restarted.
+		</para>
+
 	</chapter>
 
 	<chapter id="relnotes:packages">
 		<title>Further notes on selected packages</title>
 
-		<para>FIXME</para>
-
-		<section id="relnotes:kvm">
-			<title>Network connection for virtual machines</title>
+<!--
+TODO: translation
+		<section id="relnotes:instprofil">
+			<title>Netzwerkinstallation von UCS</title>
 			<para>
-				Newly installed host servers using <application>QEMU/KVM</application> no longer automatically create a bridge network interface by default.
-				This must be setup manually.
-				Further information can be found in Chapter 8 of the UCS manual <citation>UCS-Handbuch</citation> and in <citation>ext-doc-uvmm</citation>.
+				Die Profil-basierte Netzwerkinstallation von UCS steht mit UCS 4.0-0 noch nicht zur
+				Verfügung. Die Unterstützung wird zu einem späteren Zeitpunk nachgeliefert. Der
+				Status kann in unserem Issue Tracker nachvollzogen werden:
+				<ulink url="&ucsbug;35537">Bug 35537</ulink>.
+			</para>
+		</section>
+-->
+
+		<section id="relnotes:usage">
+			<title>Collection of usage statistics</title>
+			<para>
+				Anonymous usage statistics on the use of the &ucsUMC; are collected when using the
+				<emphasis>free for personal use</emphasis> version of UCS (which is generally used for
+				evaluating UCS). The modules opened are logged in an instance of the web traffic analysis
+				tool Piwik. This makes it possible for Univention to tailor the development of the
+				&ucsUMC; better to customer needs and carry out usability improvements.
+			</para>
+
+			<para>
+				This logging is only performed when the free-for-personal-use license is used. The license
+				status can be verified by clicking on the cog symbol in the top righthand corner of the
+				&ucsUMC; and selecting <guimenu>License information</guimenu>. If <emphasis>Free for personal use
+				edition</emphasis> is listed under <guimenu>LDAP base</guimenu>, this version is in
+				use. When a regular UCS license is used, no usage statistics are collected.
+			</para>
+
+			<para>
+				Indendepent of the licence used, the statistics generation can be deactivated by setting
+				the &ucsUCR; variable <envar>umc/web/piwik</envar> to <emphasis>false</emphasis>.
 			</para>
 		</section>
 
-		<section id="relnotes:samba">
-			<title>Windows NT DC functionality is deprecated with UCS 4.0</title>
+		<section id="relnotes:secbrowsers">
+			<title>Scope of security support for Webkit, Konqueror und QtWebKit</title>
 			<para>
-				The Windows NT domain services provided classically by Samba 3
-				have been superceeded by the Windows AD domain services provided
-				by Samba 4. It is recommended to choose Windows AD domain services
-				for the setup of new UCS domains.
+				Webkit, Konqueror and QtWebkit are shipped in the maintained branch of the UCS repository,
+				but not covered with security support. Webkit is primarily used for displaying HTML help
+				pages etc. Firefox should be used as the web browser.
+			</para>
+
+		</section>
+
+		<section id="relnotes:browsers">
+			<title>Recommeded browsers for the access to the Univention Management Console</title>
+
+			<para>
+				&ucsUMC; uses numerous Javascript and CSS functions to display the web interface. Cookies
+				need to be permitted in the browser. The following browsers are recommended:
+			</para>
+
+			<itemizedlist>
+				<listitem>
+					<para>Chrome as of version 33</para>
+				</listitem>
+
+				<listitem>
+					<para>Firefox as of version 24</para>
+				</listitem>
+
+				<listitem>
+				<para>Internet Explorer as of version 9</para>
+				</listitem>
+
+				<listitem>
+				<para>Safari and Safari Mobile as of version 7</para>
+				</listitem>
+			</itemizedlist>
+
+			<para>
+				Users with older browsers may experience display or performance problems.
 			</para>
 		</section>
+
+<!--
+TODO: translation
 		<section id="relnotes:ppolicy">
-			<title>Optional ppolicy LDAP overlay requires all DCs to be UCS 4.0</title>
+			<title>Automatische Kontosperrung</title>
 			<para>
-				On domain controllers using the MDB LDAP backend
-				(e.g. systems installed with UCS 4.0)
-				the ppolicy LDAP overlay can now optionally be activated
-				to implement account lockout in cases of repeated LDAP
-				authentication failures.
-				All domaincontrollers need to be updated to UCS 4.0 before activating this
-				on any UCS domaincontroller. This is required to avoid replication issues.
+				Auf Domänencontrollern mit MDB LDAP Backend (z.B. Systeme, die mit UCS 4.0
+				installiert worden sind) kann nun optional das ppolicy LDAP Overlay aktiviert werden,
+				um automatisierte Kontosperrungen bei wiederholten Authentisierungsfehlern zu
+				implementieren. Die Implementation dieser Funktionalität setzt voraus, dass alle
+				Domänencontroller auf UCS 4.0 aktualisiert sind. Dies ist notwendig um
+				Replikationsprobleme zu vermeiden.
 			</para>
 		</section>
+-->
+
 	</chapter>
 
 	<chapter id="relnotes:changelog">

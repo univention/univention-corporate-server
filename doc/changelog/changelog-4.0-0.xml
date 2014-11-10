@@ -2,7 +2,7 @@
 	<title>General</title>
 	<itemizedlist>
 		<listitem><simpara>
-				The underlying Debian version has been updated to Debian Wheezy 7.7
+				The underlying Debian version has been updated to Debian GNU/Linux 7.7 (Wheezy)
 				(<ulink url="&ucsbug;33835">Bug 33835</ulink>,
 				 <ulink url="&ucsbug;33836">Bug 33836</ulink>.
 				 <ulink url="&ucsbug;35688">Bug 35688</ulink>,
