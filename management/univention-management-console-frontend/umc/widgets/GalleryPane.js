@@ -337,12 +337,12 @@ define([
 			put(div, 'div.umcGalleryName', this.getItemName(item));
 			put(div, 'div.umcGalleryDescription', description);
 			if (this._contextMenu) {
-				put(div, 'div.umcGalleryContextIcon.' + tools.getIconClass('context-menu', 24));
+				put(div, 'div.umcGalleryContextIcon');
 			}
 
 			// create status icon
 			var statusIconClass = this.getStatusIconClass(item);
-			if (typeof statusIconClass === 'string') {
+			if (statusIconClass) {
 				var statusIconDiv = domConstruct.create('div', {'class': 'umcGalleryStatusIcon ' + statusIconClass}, div);
 				var statusIconLabel = this.getStatusIconTooltip(item);
 				if (statusIconLabel) {
