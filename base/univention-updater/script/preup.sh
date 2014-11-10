@@ -413,6 +413,18 @@ fi
 dpkg --purge pnm2ppa >>"$UPDATER_LOG" 2>&1
 # End Update to UCS 4.0-0 remove pnm2ppa, can be removed after 4.0.0
 
+# mark univention packages as manually installed
+# this needs to be changed after the update to 4.0 because 
+# apt-mark works differently in 4.0, or completely removed
+manually_packages="
+univention-antivir-mail
+univention-spamassassin
+univention-mail-cyrus-imap
+univention-mail-cyrus-pop"
+for p in $manually_packages; do
+	apt-mark unmarkauto "$p"
+done
+
 # autoremove before the update
 if ! is_ucr_true update40/skip/autoremove; then
     DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
