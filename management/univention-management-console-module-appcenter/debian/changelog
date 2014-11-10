@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.17-1) unstable; urgency=medium
+
+  * Bug #36408: adjust button positioning when showing installation conflicts
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 10 Nov 2014 12:52:43 +0100
+
 univention-management-console-module-appcenter (4.1.16-1) unstable; urgency=medium
 
   * Bug #36514: show default UCS icon for UCS components in the app center

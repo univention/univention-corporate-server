@@ -37,13 +37,14 @@ define([
 	"dojo/Deferred",
 	"umc/tools",
 	"umc/widgets/TitlePane",
+	"umc/widgets/Button",
 	"umc/widgets/Text",
 	"umc/widgets/Form",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Page",
 	"umc/modules/appcenter/requirements",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, topic, when, Deferred, tools, TitlePane, Text, Form, ContainerWidget, Page, requirements, _) {
+], function(declare, lang, array, topic, when, Deferred, tools, TitlePane, Button, Text, Form, ContainerWidget, Page, requirements, _) {
 	return declare("umc.modules.appcenter.AppDetailsDialog", [ Page ], {
 		app: null,
 		_container: null,
@@ -113,24 +114,21 @@ define([
 				}
 			}));
 			if (foundRequirements.length) {
-				var titlePane = new TitlePane({
-					open: true,
-					title: label
-				});
+				var container = new ContainerWidget({});
 				var navButtons = this.get('navButtons') || [];
 				array.forEach(foundRequirements, lang.hitch(this, function(foundRequirementArray, i) {
 					var foundRequirement = foundRequirementArray[0];
 					var details = foundRequirementArray[1];
-					var container = new ContainerWidget({});
+					container.addChild(new Text({
+						content: '<hr/>'
+					}));
 					container.addChild(new Text({
 						content: foundRequirement.toHTML(this.app, details)
 					}));
-					titlePane.addChild(container);
 					if (foundRequirement.solution) {
-						navButtons.push({
+						container.addChild(new Button({
 							name: 'solution' + i,
 							label: foundRequirement.buttonLabel(this.app, details),
-							defaultButton: true,
 							callback: lang.hitch(this, function() {
 								opts.action = this.actionLabel;
 								var deferred = foundRequirement.solution(opts, details);
@@ -138,11 +136,10 @@ define([
 									when(deferred).always(lang.hitch(this, 'onBack', false));
 								}
 							})
-						});
+						}));
 					}
 				}));
-				this.set('navButtons', navButtons);
-				this._container.addChild(titlePane);
+				this._container.addChild(container);
 			}
 		},
 
