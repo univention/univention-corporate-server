@@ -270,7 +270,7 @@
 	  <para>
 		For a domain join against a domain controller based on Samba 3, it must be ensured that the
 		NetBIOS name of the domain can be resolved. It may prove necessary to configure a WINS
-		server for this (see <xref linkend="windows:wins"/>).
+		server for this (see <biblioref linkend="ext-doc-windows-nt"/>).
 	  </para>
 
 	  <para>

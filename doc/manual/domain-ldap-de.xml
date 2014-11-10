@@ -279,7 +279,7 @@
 			Bei einem Domänenbeitritt gegen einen Domänencontroller auf Basis von
 			Samba 3 muss sichergestellt werden, dass der NetBIOS-Name der Domäne auflösbar
 			ist. Dazu ist unter Umständen ein WINS-Server zu konfigurieren (siehe
-			<xref linkend="windows:wins"/>).
+			<biblioref linkend="ext-doc-windows-nt"/>).
 		</para>
 		<para>
 			Bei einem Domänenbeitritt gegen einen Domänencontroller auf Basis von
