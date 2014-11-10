@@ -6,7 +6,8 @@
 				(<ulink url="&ucsbug;33835">Bug 33835</ulink>,
 				 <ulink url="&ucsbug;33836">Bug 33836</ulink>.
 				 <ulink url="&ucsbug;35688">Bug 35688</ulink>,
-				 <ulink url="&ucsbug;36241">Bug 36241</ulink>).
+				 <ulink url="&ucsbug;36241">Bug 36241</ulink>,
+				 <ulink url="&ucsbug;36481">Bug 36481</ulink>).
 		</simpara></listitem>
 		<listitem><simpara>
 				All Univention packages have been adapted to Dephelper 9 and to Python
@@ -39,7 +40,8 @@
 				<ulink url="&ucsbug;35890">Bug 35890</ulink>,
 				<ulink url="&ucsbug;36115">Bug 36115</ulink>,
 				<ulink url="&ucsbug;36177">Bug 36177</ulink>,
-				<ulink url="&ucsbug;36286">Bug 36286</ulink>).
+				<ulink url="&ucsbug;36286">Bug 36286</ulink>,
+				<ulink url="&ucsbug;36526">Bug 36526</ulink>).
 		</simpara></listitem>
 		<listitem><simpara>
 				The codename for UCS 4.0 has been set to <emphasis>Walle</emphasis>
