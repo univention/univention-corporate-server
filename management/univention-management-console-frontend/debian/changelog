@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.98-2) unstable; urgency=medium
+
+  * Bug #35654: adjust handling of empty modules loading
+
+ -- Florian Best <best@univention.de>  Mon, 10 Nov 2014 16:23:39 +0100
+
 univention-management-console-frontend (4.1.98-1) unstable; urgency=medium
 
   * Bug #36414: adjust handling of status icons in GalleryPane

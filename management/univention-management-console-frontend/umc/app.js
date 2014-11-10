@@ -1178,11 +1178,22 @@ define([
 		_tryLoadingModule: function(module) {
 			var deferred = new Deferred();
 			try {
-				require(['umc/modules/' + module.id], lang.hitch(this, function(baseClass) {
+				var path = 'umc/modules/' + module.id;
+				require([path], lang.hitch(this, function(baseClass) {
 					if (typeof baseClass == "function" && tools.inheritsFrom(baseClass.prototype, 'umc.widgets._ModuleMixin')) {
 						deferred.resolve(baseClass);
+					} else if (baseClass === null) {
+						deferred.cancel('');
+					} else if (typeof baseClass === 'object') {
+						require([lang.replace('{0}!{1}', [path, module.flavor || ''])], lang.hitch(this, function(baseClass) {
+							if (typeof baseClass == "function" && tools.inheritsFrom(baseClass.prototype, 'umc.widgets._ModuleMixin')) {
+								deferred.resolve(baseClass);
+							} else {
+								deferred.cancel(new Error(lang.replace('{0} is not a umc.widgets._ModuleMixin! (1}', [module.id, baseClass])));
+							}
+						}));
 					} else {
-						deferred.cancel(new Error(module.id + ' is not a umc.widgets._ModuleMixin!'));
+						deferred.cancel(new Error(lang.replace('{0} is not a umc.widgets._ModuleMixin! (1}', [module.id, baseClass])));
 					}
 				}));
 			} catch (err) {

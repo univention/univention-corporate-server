@@ -1,3 +1,9 @@
+univention-management-console-module-lib (4.0.2-1) unstable; urgency=medium
+
+  * Bug #35654: correctly initialize empty javascript UMC module definition
+
+ -- Florian Best <best@univention.de>  Mon, 10 Nov 2014 16:20:35 +0100
+
 univention-management-console-module-lib (4.0.1-1) unstable; urgency=medium
 
   * Bug #36281: add libServer.askShutdown()

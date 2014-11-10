@@ -31,7 +31,5 @@
 define([
 	"./lib/server"
 ], function(server) {
-	return {
-		server: server
-	};
+	return null;
 });
