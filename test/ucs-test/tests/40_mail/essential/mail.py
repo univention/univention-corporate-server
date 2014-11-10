@@ -212,16 +212,21 @@ def checkMail(token, user=None, mail_address=None, check_root=True):
 	delivered = False
 	if check_root:
 		_file = ('/var/mail/systemmail')
-		delivered = delivered or (token in _file)
+		if os.path.isfile(_file):
+			with open(_file) as fi:
+				delivered = delivered or (token in fi.read())
 	if user:
 		_file = os.path.join('/var/mail', user)
-		with open(_file) as fi:
-			delivered = delivered or (token in fi.read())
+		if os.path.isfile(_file):
+			with open(_file) as fi:
+				delivered = delivered or (token in fi.read())
 	if mail_address:
 		mail_dir = get_cyrus_maildir(mail_address)
 		for _file in get_dir_files(mail_dir, recursive=True):
 			with open(_file) as fi:
 				delivered = delivered or (token in fi.read())
+				if delivered:
+					break
 	return delivered
 
 
