@@ -53,8 +53,6 @@
 		transition-property: background-color, opacity, border;
 
 		// definitions in px instead of em due to size of image in px
-		//padding: 15px 20px;
-		//margin: 0 12px 10px 0;
 		height: 100px;
 		overflow: hidden;
 
@@ -94,10 +92,11 @@
 
 		.umcGalleryStatusIcon {
 			position: absolute;
+			width: 20px;
+			height: 20px;
 			top: 5px;
-			left: 66px;
-			width: 24px;
-			height: 24px;
+			left: auto;
+			right: 5px;
 		}
 
 		.umcFavoriteIconDefault,
@@ -121,8 +120,6 @@
 
 	.umcGalleryItemActive,
 	.umcGalleryItem:hover {
-	//	background-color: @grayAthens;
-	//	.border-radius(5px);
 		cursor: pointer;
 		.umcGalleryCategoryFavorite {
 			background-color: #ffffff!important;
@@ -153,23 +150,6 @@
 	.umcGalleryPane .umcGalleryWrapperItem {
 		padding-left: 0;
 		padding-right: 0;
-	}
-}
-
-
-/* UMC overview page icons */
-.umcOverviewPane {
-//	.umcGalleryItemActive .umcGalleryContextIcon,
-//	.umcGalleryItem:hover .umcGalleryContextIcon {
-//		visibility: visible!important;
-//	}
-//	.umcGalleryItem	.umcGalleryContextIcon {
-//		visibility: hidden;
-//	}
-
-	.umcGalleryName,
-	.umcGalleryDescription {
-		//padding-left: 60px !important;
 	}
 }
 

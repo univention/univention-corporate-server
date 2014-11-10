@@ -27,22 +27,30 @@
      inkscape:window-width="1229"
      inkscape:window-height="780"
      id="namedview493"
-     showgrid="false"
-     inkscape:zoom="14.523077"
-     inkscape:cx="10.412807"
-     inkscape:cy="180.19513"
+     showgrid="true"
+     inkscape:zoom="5.6568543"
+     inkscape:cx="245.2463"
+     inkscape:cy="203.46422"
      inkscape:window-x="65"
      inkscape:window-y="60"
      inkscape:window-maximized="0"
-     inkscape:current-layer="g5399" />
+     inkscape:current-layer="svg5837"
+     inkscape:object-nodes="true"
+     inkscape:snap-global="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3469" />
+  </sodipodi:namedview>
   <defs
      id="defs5839">
     <inkscape:path-effect
        effect="spiro"
-       id="path-effect3993" />
+       id="path-effect3993"
+       is_visible="true" />
     <inkscape:path-effect
        effect="spiro"
-       id="path-effect3989" />
+       id="path-effect3989"
+       is_visible="true" />
     <clipPath
        id="clipPath540">
       <path
@@ -208,10 +216,14 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
+  <path
+     style="opacity:1;color:#000000;fill:#282828;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.14999998000000003;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+     d="M 310 42.40625 C 305.79852 42.40625 302.40625 45.798524 302.40625 50 C 302.40625 54.201476 305.79852 57.59375 310 57.59375 L 310 55.125 C 307.16535 55.125 304.875 52.834643 304.875 50 C 304.875 47.165357 307.16535 44.875 310 44.875 C 312.82426 44.875 315.1083 47.14849 315.125 49.96875 C 314.5094 49.97173 313.57937 49.965561 313.15625 49.96875 L 316.40625 53.21875 L 319.65625 49.96875 C 318.88698 49.959948 318.36516 49.97015 317.59375 49.96875 C 317.57687 45.781806 314.19099 42.40625 310 42.40625 z "
+     id="path4249" />
   <g
      transform="matrix(0,0.94757038,0.94757038,0,-1078.4006,-1467.1765)"
      id="g5684"
@@ -1996,7 +2008,8 @@
      y="216.95937"
      id="text13350"
      xml:space="preserve"
-     style="font-size:13px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"><tspan
+     style="font-size:13px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+     sodipodi:linespacing="125%"><tspan
        x="78.096352"
        y="216.95937"
        id="tspan13352" /></text>
@@ -2071,7 +2084,8 @@
       <path
          d="M 0,0 -4.255,4.258 -8.51,0"
          id="path6399-7"
-         style="fill:none;stroke:#282828;stroke-width:1.2136302;stroke-miterlimit:4;stroke-dasharray:none" />
+         style="fill:none;stroke:#282828;stroke-width:1.2136302;stroke-miterlimit:4;stroke-dasharray:none"
+         inkscape:connector-curvature="0" />
     </g>
   </g>
   <g

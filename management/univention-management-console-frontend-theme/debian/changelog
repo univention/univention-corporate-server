@@ -1,3 +1,11 @@
+univention-management-console-frontend-theme (0.0.85-1) unstable; urgency=medium
+
+  Bug #36414:
+  * adjust GalleryPane style for status icons
+  * added update icon, added CSS class for error icon
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 10 Nov 2014 16:20:51 +0100
+
 univention-management-console-frontend-theme (0.0.84-2) unstable; urgency=medium
 
   * Bug #36408: adjust styling of hr element
