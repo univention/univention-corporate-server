@@ -52,16 +52,11 @@
 		<title>&ucsUCS; (UCS) 3.2-4</title>
 
 		<para>
-		  With &ucsUCS; 3.2-4, the fourth point release for &ucsUCS; (UCS) is now available. It
-		  includes all errata updates issued for UCS 3.2-3.
-<!--
-	TODO: translation
-Mit &ucsUCS; 3.2-4 steht das vierte Point-Release für &ucsUCS; (UCS) zur Verfügung.
-Vorhandene UCS-Systeme können über das von Univention bereitgestellten Online
-Repository aktualisiert werden.  Alternativ können Updates über eine Update-DVD
-eingespielt werden. Für Neuinstallationen stehen UCS 3.2-4 ISO-Images zur Verfügung.
-UCS 3.2-4 beinhaltet alle für UCS 3.2-3 veröffentlichten Errata-Updates.
--->
+			The fourth point release for &ucsUCS; (UCS) is now available in the form of &ucsUCS; 3.2-4.
+			The online repository provided by Univention can be used to update existing UCS systems
+			or, alternatively, updates can be installed from an update DVD. There are also UCS 3.2-4
+			ISO images available for new installations. UCS 3.2-4 includes all the errata updates
+			published for UCS 3.2-3.
 		</para>
 
 	</chapter>
