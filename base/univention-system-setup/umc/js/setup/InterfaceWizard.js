@@ -352,7 +352,7 @@ define([
 					widgets: [{
 						name: 'bridge_ports',
 						label: _('Bridge ports'),
-						description: _('Specifies the ports which will be added to the bridge.'),
+						description: _('Please specify the ports which will be added to the bridge.'),
 						type: MultiSelect,
 						dynamicValues: lang.hitch(this, function() {
 							return this.interfaces.getPossibleBridgeSubdevices(this.getDeviceName());

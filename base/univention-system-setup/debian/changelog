@@ -1,3 +1,9 @@
+univention-system-setup (8.1.56-2) unstable; urgency=low
+
+  * Bug #35653: Wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 10 Nov 2014 09:33:29 +0100
+
 univention-system-setup (8.1.56-1) unstable; urgency=medium
 
   * Install firefox-de if univention-kde should be installed and

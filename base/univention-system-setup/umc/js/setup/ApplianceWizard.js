@@ -507,7 +507,7 @@ define([
 				}, {
 					type: Text,
 					name: 'adDomainHelpText',
-					content: _('This system will become part of the existing Active Directory domain.'),
+					content: _('This system will become part of an existing Active Directory domain.'),
 					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
 					type: RadioButton,
@@ -551,7 +551,7 @@ define([
 				}, {
 					type: Text,
 					name: 'helpBackup',
-					content: _('A DC backup is the fallback system for the UCS DC master an can take over the role of the DC master permanently. It is recommended to use at least one DC backup in the domain.'),
+					content: _('A DC backup is the fallback system for the UCS DC master and can take over the role of the DC master permanently. It is recommended to use at least one DC backup in the domain.'),
 					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
 					type: RadioButton,
@@ -608,7 +608,7 @@ define([
 			}), lang.mixin({}, pageConf, {
 				name: 'credentials-ad',
 				headerText: _('Active Directory join information'),
-				helpText: _('Specify credentials to join into the Active Directory.'),
+				helpText: _('Specify credentials to join into the Active Directory domain.'),
 				widgets: [{
 					type: TextBox,
 					name: 'ad/address',
@@ -633,11 +633,11 @@ define([
 			}), lang.mixin({}, pageConf, {
 				name: 'credentials-nonmaster',
 				headerText: _('Domain join information'),
-				helpText: _('Specify credentials to join into the UCS Domain.'),
+				helpText: _('Specify credentials to join into the UCS domain.'),
 				widgets: [{
 					type: CheckBox,
 					name: 'start/join',
-					label: _('Start join at the end of installation'),
+					label: _('Start join at the end of the installation'),
 					value: true,
 					onChange: lang.hitch(this, function(value) {
 						this.getWidget('credentials-nonmaster', '_ucs_autosearch_master').set('disabled', !value);
@@ -1507,7 +1507,7 @@ define([
 			});
 			msg += '</ul>';
 
-			msg += '<p>' + _('You may reconfigure the settings and restart the process or you continue and close the wizard. You may resolve the the problems by using the appropriate modules of the Univention Management Console');
+			msg += '<p>' + _('You may reconfigure the settings and restart the process or you continue and close the wizard. You may resolve the the problems by using the appropriate modules of the Univention Management Console.');
 			if (!critical) {
 				msg += ' ' + _('The system can be joined later via the UMC module <i>Domain join</i>.');
 			}
@@ -1882,7 +1882,7 @@ define([
 					var buttonLabel = _('Continue with 169.254.*.* addresse(s)');
 					var allDevices = this._getNetworkDevices();
 					if (fallbackDevices.length === allDevices.length) {
-						msg = _('<p>With the current settings <b> no </b> internet access is available.</p><p>Because of this some functions like the Appcenter or software-updates will not be accessible</p>') + msg;
+						msg = _('<p>With the current settings <b> no </b> internet access is available.</p><p>Because of this some functions like the App Center or software-updates will not be accessible</p>') + msg;
 						buttonLabel =  _('Continue without internet access');
 					}
 					deferred = dialog.confirm(msg, [{

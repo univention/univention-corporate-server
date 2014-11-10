@@ -52,6 +52,8 @@ if [ -z "$gateway" ]; then
 	route del default
 else
 	univention-config-registry set gateway=$gateway
+	route del default
+	route add default gw "$gateway"
 fi
 
 if [ -d "/var/lib/univention-system-setup/gateway.post" ]; then
