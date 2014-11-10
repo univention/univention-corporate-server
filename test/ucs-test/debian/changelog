@@ -1,3 +1,10 @@
+ucs-test (5.0.45-1) unstable; urgency=low
+
+  * 20_appcenter/11_check_apps_ini_field_values: check that options in ini
+    files have values assigned (Bug #33902).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 10 Nov 2014 12:50:49 +0100
+
 ucs-test (5.0.44-1) unstable; urgency=low
 
   * 51_samba4/20backup_parameters_usage: check that backup cron job
