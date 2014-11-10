@@ -54,25 +54,26 @@
 		<para>
 			Mit &ucsUCS; 4.0 steht das vierte Major Release für &ucsUCS; (UCS) zur Verfügung. Es
 			umfasst eine Reihe umfangreicher Funktionserweiterungen und -verbesserungen, neue
-			Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen.
+			Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten
+			Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				Das Design und die Usability der gragfischen Administrationsoberfläche &ucsUMC;
+				Das Design und die Usability der graphischen Administrationsoberfläche &ucsUMC;
 				wurde mit UCS 4.0 komplett überarbeitet. Durch ein responsives Design kann die
-				Administration nun auch bequem vom Tabelt oder Smartphone erfolgen.
+				Administration auch bequem vom Tabelt oder Smartphone erfolgen.
 			</para></listitem>
 			<listitem><para>
-				UCS Virtual Machine Manger (UVMM) kann nun neben lokalen UCS-Virtualisierungsservern
+				UCS Virtual Machine Manger (UVMM) kann neben lokalen UCS-Virtualisierungsservern nun
 				auch OpenStack- oder Amazon EC2-Umgebungen administrieren. Dadurch sind hybride Cloud
 				Szenarien mit UCS Out-of-the-Box möglich.
 			</para></listitem>
 			<listitem><para>
 				UCS 4.0 basiert auf Debian GNU/Linux 7.7 (Wheezy). Mehr als 16.000 Source Pakete
 				wurden aktualisiert und an die Bedürfnisse der UCS-Administratoren angepasst. Einige
-				Kernkomponenten, wie OpenLDAP (2.4.40), Samba (4.2rc) oder der Linux Kernel (3.16)
-				sind in UCS 4 aktuellere als in Debian GNU/Linux 7.7.
+				Kernkomponenten, wie OpenLDAP (2.4.40), Samba (4.2rc2) oder der Linux Kernel (3.16)
+				sind in UCS 4.0 aktueller als in Debian GNU/Linux 7.7.
 			</para></listitem>
 			<listitem><para>
 				Die Installation von UCS wurde deutlich vereinfacht. Die Basis-Installation erfolgt
@@ -86,12 +87,13 @@
 				verwendet.
 			</para></listitem>
 			<listitem><para>
-				Die Administration des Univention App Centers wird durch ein zentralisiertes App
-				Center noch einfacher. Dadurch können Applikationen von einem System innerhalb der
-				gesamten Domäne installiert werden.
+				Die Administration von Applikationen innerhalb der UCS-Domäne wird durch ein
+				zentralisiertes App Center noch einfacher. Dadurch können Applikationen von einem
+				System innerhalb der gesamten Domäne installiert werden.
 			</para></listitem>
 			<listitem><para>
-				Die Installation von UCS unterstützt nun UEFI SecureBoot.
+				UCS unterstützt nun auch die Installation auf einem System mit aktiviertem UEFI
+				SecureBoot.
 			</para></listitem>
 		</itemizedlist>
 
@@ -100,7 +102,13 @@
 	<chapter id="relnotes:update">
 		<title>Hinweise zum Update</title>
 			<para>
-				UCS unterstützt das Einspielen des Updates, idealfall vorher clonen usw.
+				UCS unterstützt das Einspielen von Release Updates. Während der Aktualisierung kann es zu
+				Ausfällen von Diensten innerhalb der Domäne kommen. Aus diesem Grund sollte das Update
+				innerhalb eines Wartungsfensters erfolgen. Grundsätzlich ist es empfohlen das Update
+				zunächst in einer Testumgebung einzuspielen und zu testen. Die Testumgebung sollte
+				dabei identisch zur Produktivumgebung sein. Je nach Systemgeschwindigkeit,
+				Netzwerkanbindung und installierter Software kann das Update zwischen dreißig Minuten
+				und mehreren Stunden dauern.
 			</para>
 
 		<section id="relnotes:order">
@@ -132,17 +140,18 @@
 					Sofern Applikationen aus dem App Center installiert sind, ist das Update erst
 					dann möglich, wenn alle lokal installierten Applikationen im App Center
 					verfügbar sind. Einige Applikationen werden beim Update ebenfalls auf neure
-					Versionen aktualisiert.
+					Versionen aktualisiert. Falls eine Applikation noch nicht verfügbar ist, so kann
+					der Zeitpunkt beim Applikationshersteller nachgefragt werden.
 				</para>
 		</section>
 		<section id="relnotes:samba">
-			<title>Ablösung von Windows NT DC Funktionalität mit UCS 4.0</title>
+			<title>Ablösung von Windows NT DC Funktionalität</title>
 				<para>
 					Die Verwendung von Windows NT Domänendiensten, die klassisch durch Samba 3
-					bereitgestellt wurden, ist nicht mehr empfohlen. Eine Auswahl der Windows NT
-					Domänendienste ist deshalb über die Installation von UCS oder durch das App Center
-					nicht mehr vorgesehen. Es wird empfohlen auf die Active Directory Domänendienste von
-					UCS (Samba 4) zu migrieren.
+					bereitgestellt wurden, ist mit UCS 4.0 nicht mehr empfohlen. Eine Auswahl der
+					Windows NT Domänendienste ist deshalb während der Installation von UCS und durch
+					das App Center nicht mehr vorgesehen. Es wird empfohlen auf die Active Directory
+					Domänendienste von UCS (Samba 4) zu migrieren.
 				</para>
 		</section>
 
@@ -205,8 +214,8 @@
 				<listitem>
 					<para>
 						<application>Cyrus-2.2</application> wurde in UCS 4.0 entfernt.
-						Die Emails müssen von Hand in eine neuere Version migriert werden.
-						Das Vorgehen ist in dem
+						Die Mailserverdaten müssen von Hand in eine neuere Version migriert
+						werden. Das Vorgehen ist in dem
 						<ulink url="http://sdb.univention.de/1213">SDB-Artikel 1213</ulink>
 						beschrieben.
 					</para>
@@ -238,8 +247,9 @@
 			<title>Netzwerkinstallation von UCS</title>
 			<para>
 				Die Profil-basierte Netzwerkinstallation von UCS steht mit UCS 4.0-0 noch nicht zur
-				Verfügung. Die Unterstützung wird später nachgeliefert. Der Status kann in unserem
-				Issue Tracker nachvollzogen werden: <ulink url="&ucsbug;35537">Bug 35537</ulink>.
+				Verfügung. Die Unterstützung wird zu einem späteren Zeitpunk nachgeliefert. Der
+				Status kann in unserem Issue Tracker nachvollzogen werden:
+				<ulink url="&ucsbug;35537">Bug 35537</ulink>.
 			</para>
 		</section>
 
