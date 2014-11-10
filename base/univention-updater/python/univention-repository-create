@@ -159,7 +159,7 @@ def copy_repository( options ):
 		# handle the different dists directories (UCS installer or d-i)
 		for dists_src in (os.path.join(options.mount_point, 'packages', 'dists'), os.path.join(options.mount_point, 'dists')):
 			if os.path.isdir(dists_src):
-				shutil.copytree(dists_src, dists_dest)
+				shutil.copytree(dists_src, dists_dest, symlinks=True)
 	except shutil.Error, ex:
 		print "failed (%s)." % (ex,)
 	else:
@@ -223,7 +223,7 @@ def setup_pxe( options ):
 	bootdir = '/var/lib/univention-repository/boot'
 
 	if not os.path.exists(pxedir):
-		os.makedirs(pxedir, mode=0511)
+		os.makedirs(pxedir)
 
 	if options.major_version >= 4:
 		installerdir = os.path.join(pxedir, 'installer', '%d.%d-%d' % (options.major_version, options.minor_version, options.patchlevel_version))
@@ -384,7 +384,7 @@ if __name__ == '__main__':
 		    --policy-reference "cn=%(hostname)s repository,cn=repository,cn=update,cn=policies,%(ldap/base)s"
 		""" % configRegistry)
 
-		if not options.minor_version == '0':
+		if not options.minor_version == 0:
 			print dedent("""
 			An UCS repository must always start with minor version 0, for example
 			with UCS %(major)s.0. Please synchronize the repository from %(major)s.0 to %(major)s.%(minor)s

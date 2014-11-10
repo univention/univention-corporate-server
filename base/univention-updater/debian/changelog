@@ -1,3 +1,9 @@
+univention-updater (9.0.44-2) unstable; urgency=low
+
+  * Bug #36269: fixes for univention-repository-create
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 10 Nov 2014 13:39:24 +0100
+
 univention-updater (9.0.44-1) unstable; urgency=low
 
   * Bug #36269: univention-repository-create is now able to handle UCS-4 DVDs
