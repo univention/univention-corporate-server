@@ -1,0 +1,63 @@
+#!/usr/share/ucs-test/runner python
+## desc: Basic email delivery 
+## tags: apttest
+## exposure: dangerous
+## packages: [univention-config, univention-directory-manager-tools]
+## bugs: [23527]
+
+from essential.mail import checkMail, send_mail
+import time
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+def main():
+	TIMEOUT = 60
+	ucr = ucr_test.UCSTestConfigRegistry()
+	ucr.load()
+	with udm_test.UCSTestUDM() as udm:
+		mailsToTest = []
+		users = []
+		domain = ucr.get('domainname')
+		mails = [
+			'BIG%ssmall@%s' % (uts.random_string(), domain),
+			'%s.t.o.c@%s' % (uts.random_string(), domain),
+			'un_sc%s@%s'  % (uts.random_string(), domain)
+			]
+		for mail in mails:
+			userdn, username = udm.create_user(
+					set={
+						'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+						'mailPrimaryAddress': mail,
+						}
+					)
+			users.append(username)
+			mailsToTest.extend([mail, mail.upper(), mail.lower()])
+		print mailsToTest
+
+		test_cases1 = []
+		for mail in mailsToTest:
+			token = str(time.time())
+			test_cases1.append((token, mail))
+			print '\nTOKEN = %s\n' % token
+			send_mail(recipients=mail, msg=token, idstring=token, subject='Test')
+
+		test_cases2 = []
+		for user in users:
+			token = str(time.time())
+			test_cases2.append((token, user))
+			print '\nTOKEN = %s\n' % token
+			send_mail(recipients=user, msg=token, subject='Test')
+
+		time.sleep(TIMEOUT)
+		for token, mail in test_cases1:
+			if not checkMail(token, mail_address=mail):
+				utils.fail('mail sent to %s was not delivered' % mail)
+		for token, user in test_cases2:
+			if not checkMail(token, user=user):
+				utils.fail('mail sent to %s was not delivered' % user)
+
+
+if __name__ == '__main__':
+	main()
