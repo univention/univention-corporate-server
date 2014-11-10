@@ -234,6 +234,15 @@
 	<chapter id="relnotes:packages">
 		<title>Hinweise zum Einsatz einzelner Pakete</title>
 
+		<section id="relnotes:instprofil">
+			<title>Netzwerkinstallation von UCS</title>
+			<para>
+				Die Profil-basierte Netzwerkinstallation von UCS steht mit UCS 4.0-0 noch nicht zur
+				Verfügung. Die Unterstützung wird später nachgeliefert. Der Status kann in unserem
+				Issue Tracker nachvollzogen werden: <ulink url="&ucsbug;35537">Bug 35537</ulink>.
+			</para>
+		</section>
+
 		<section id="relnotes:usage">
 			<title>Erfassung von Nutzungsstatistiken</title>
 			<para>
@@ -305,7 +314,7 @@
 		</section>
 
 		<section id="relnotes:ppolicy">
-			<title>Optionales ppolicy LDAP Overlay setzt UCS 4.0 auf allen DCs voraus</title>
+			<title>Automatische Kontosperrung</title>
 			<para>
 				Auf Domänencontrollern mit MDB LDAP Backend (z.B. Systeme, die mit UCS 4.0
 				installiert worden sind) kann nun optional das ppolicy LDAP Overlay aktiviert werden,
