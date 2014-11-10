@@ -3,8 +3,8 @@
 <section id="introduction:Was_ist_Univention_Corporate_Server"><title>Was ist Univention Corporate Server?</title>
 
 <para>
-Univention Corporate Server (UCS) ist eine Linux-basierte Unternehmensplattform
-für den Betrieb und die Verwaltung von IT-Infrastruktur für Unternehmen und
+Univention Corporate Server (UCS) ist ein Linux-basiertes Serverbetriebssystem
+für den Betrieb und die Verwaltung von IT-Infrastruktur in Unternehmen und
 Behörden. UCS setzt ein durchgängiges Gesamtkonzept mit einheitlicher,
 zentraler Administration um und kann den Betrieb aller Komponenten in einem
 zusammenhängenden Sicherheits- und Vertrauenskontext, der so genannten
@@ -14,19 +14,24 @@ Managementwerkzeugen anderer Hersteller, so dass es sich leicht in vorhandene
 Umgebungen integrieren lässt.
 </para>
 <para>
-UCS beinhaltet und basiert auf zuverlässiger, in Organisationen
+UCS besteht aus zuverlässiger, in Organisationen
 unterschiedlicher Größe erprobter Open Source Software. Diese
-Softwarekomponenten werden durch das &ucsUMS; miteinander
+Software wird durch das &ucsUMS; zu einem einheitlichen Gesamtsystem 
 integriert. Damit ist das System nicht nur in einfachen, sondern auch in
-komplexen, verteilten oder virtualisierten Umgebungen einfach einsetz- und
+anspruchsvollen, verteilten oder virtualisierten Umgebungen einfach einsetz- und
 administrierbar.
 </para>
 <para>
 Dies sind die zentralen Funktionen von UCS:
 </para>
 <itemizedlist>
-<listitem><simpara>Flexibles und umfangreiches Identity-, Infrastruktur- und Virtualisierungsmanagementsystem</simpara></listitem>
-<listitem><simpara>Unterstützung für Microsoft Windows und Integration in Microsoft Active Directory Umgebungen</simpara></listitem>
+<listitem><simpara>Flexibles und umfangreiches Identity- und Infrastrukturmanagementsystem zur zentralen Administration von Servern, Computerarbeitsplätzen,
+Benutzern und deren Berechtigungen sowie verschiedener Serveranwendungen und Webdienste</simpara></listitem>
+<listitem><simpara>Dienste zur Integration des Managementsystems in vorhandene Microsoft Active Directory Domänen sowie - alternativ - für die Bereitstellung
+dieser Dienste als Alternative zu Microsoft-basierten Serversystemen</simpara></listitem>
+<listitem><simpara>App Center zur einfachen Installation und Verwaltung von Erweiterungen und Anwendungen</simpara></listitem>
+<listitem><simpara>Umfassende Funktionen für den Betrieb virtualisierter Rechnersysteme (beispielsweise mit Windows- oder Linux-Betriebssystem) in der Cloud
+oder direkt auf vorhandenen UCS-Systemen</simpara></listitem>
 <listitem><simpara>Netzwerk- und Intranetdienste zur Verwaltung von DHCP und DNS</simpara></listitem>
 <listitem><simpara>Datei- und Druckdienste</simpara></listitem>
 <listitem><simpara>Rechnerverwaltung und Monitoring</simpara></listitem>
@@ -40,9 +45,9 @@ den folgenden drei Hauptbestandteilen zuordnen:
 </para>
 
 <orderedlist>
-<listitem><simpara>UCS-Basissystem</simpara></listitem>
-<listitem><simpara>&ucsUMS;</simpara></listitem>
-<listitem><simpara>UCS-Komponenten</simpara></listitem>
+<listitem><simpara>Basissystem</simpara></listitem>
+<listitem><simpara>&ucsUMS; mit Univention Management Console</simpara></listitem>
+<listitem><simpara>Das App Center, über das sich zahlreiche weitere Komponenten und Anwendungen anderer Hersteller installieren lassen</simpara></listitem>
 </orderedlist>
 
 <para>
@@ -59,14 +64,15 @@ Managementsystems sind die Dienste OpenLDAP (Verzeichnisdienst), Samba
 (Bereitstellung von Domänen-, Datei- und Druckdiensten für Microsoft Windows), Kerberos
 (Authentifizierung und Single-Sign-On), DNS (Namensauflösung im Netzwerk) und
 SSL/TLS (sichere Datenübertragung zwischen Systemen). Es lässt sich sowohl über
-eine Webanwendung als auch an der Kommandozeile und in eigenen Skripten
+eine Webanwendung (&ucsUMC;) als auch an der Kommandozeile und in eigenen Skripten
 verwenden. Das &ucsUMS; ist über APIs (Application Programmers
 Interfaces) erweiterbar und besitzt eine flexible Client-Server-Architektur,
 durch die Änderungen auf die davon betroffenen Systeme übertragen und dort
 aktiviert werden.
 </para>
 <para>
-Zusätzliche <emphasis>UCS-Komponenten</emphasis> von Univention und anderen Herstellern erweitern
+Zusätzliche Komponenten von Univention und anderen Herstellern lassen sich bequem über das 
+<emphasis>App Center</emphasis> installieren und erweitern
 das System um zahlreiche Funktionen wie Groupware, Dokumentenmanagement oder
 Services für Microsoft Windows, so das sie ebenfalls von einem UCS-System ausgeführt und
 über das &ucsUMS; verwaltet werden können.
@@ -79,29 +85,31 @@ Als Betriebssystem, das von Anfang an für den Multiuser- und
 Multitasking-Einsatz vorgesehen war und bei dessen Entwicklung stets Wert auf
 Stabilität, Sicherheit und die Kompatibilität zu anderen Betriebssystemen
 gelegt wurde, ist Linux prädestiniert für den Einsatz als stabiles, sicheres
-und jederzeit verfügbares Serverbetriebssystem. Ohne UCS ist jedoch die
-Administration von Linux-Systemen gerade in Einsatzszenarien, bei denen eng mit
-der Benutzer- und Rechteverwaltung verküpfte Infrastrukturdienste für
-Unternehmen oder Behörden bereit gestellt werden, oft aufwendig, komplex und
-wenig standardisiert. An diesem Punkt setzt UCS an.
+und jederzeit verfügbares Serverbetriebssystem. 
+UCS ist ein auf dieser Basis aufbauendes Serverbetriebssystem, das besonders
+für den einfachen und sicheren Betrieb sowie die Verwaltung von Anwendungen
+und Infrastrukturdiensten in Unternehmen und Behörden optimiert wurde. Zur
+effizienten und sicheren Verwaltung brauchen solche Anwendungen die mit dem
+&ucsUMS; realisierte enge Integration mit der Benutzer- und Rechteverwaltung.
 </para>
 <para>
 UCS kann als die Basis für die IT-Infrastruktur von Unternehmen und Behörden
-eingesetzt werden und dafür die zentrale Steuerung bereitstellen. So leistet es
+eingesetzt werden und dafür die zentrale Steuerung übernehmen. So leistet es
 einen wichtigen Beitrag für den sicheren, effizienten und wirtschaftlichen
 IT-Betrieb. Unternehmenskritische Anwendungen sind in ein einheitliches Konzept
 integriert, aufeinander abgestimmt und für den professionellen Einsatz
-vorkonfiguriert.
+vorkonfiguriert. Alternativ lässt es sich auch als Bestandteil vorhandener
+Microsoft-Domänen betreiben.
 </para>
 
 <section id="introduction:Inbetriebnahme"><title>Inbetriebnahme</title>
 <para>
 Der Einsatz von UCS beginnt entweder mit einer klassischen
 Betriebssysteminstallation auf einem physikalischen Server oder als „virtuelle
-Maschine“, die ebenfalls durch eine Installation eingerichtet oder aus einer als
-Vorlage eingesetzten, vorhandenen virtuellen Maschine erzeugt werden kann. Die
-Installation kann interaktiv oder vollautomatisch entweder von CD-ROM/DVD
-oder über das Netzwerk/PXE erfolgen.
+Serverinstanz“, die ebenfalls durch eine Installation eingerichtet oder aus
+vorhandenen virtuellen Maschine erzeugt werden kann. Die Installation kann
+interaktiv oder vollautomatisch entweder von DVD oder über das Netzwerk/PXE
+erfolgen.
 </para>
 <para>
 Weiterführende Informationen finden sich in <xref linkend="installation:chapter"/>.
@@ -110,11 +118,11 @@ Weiterführende Informationen finden sich in <xref linkend="installation:chapter
 
 <section id="introduction:Domaenenkonzept"><title>Domänenkonzept</title>
 <para>
-Bei der Installation wird dem Rechner eine Systemrolle zugewiesen.
-Standardmäßig befinden sich bei UCS alle Server, Clients und Benutzer in einem
-Sicherheits- und Vertrauenskontext, der so genannten UCS-Domäne.
-Dementsprechend stehen als Systemrollen Domänencontroller, &ucsMember; und
-Clients zur Auswahl.
+In einer mit UCS verwalteten IT-Infrastrukture können sich alle Server,
+Clients und Benutzer in einem einheitlichen Sicherheits- und
+Vertrauenskontext, der UCS-Domäne, befinden. Jedem UCS-System wird dazu bei
+seiner Installation eine so genannte Systemrolle zugewiesen.  Mögliche
+Systemrollen sind Domänencontroller, &ucsMember; und Client.
 </para>
 
 <figure><title>UCS-Domänenkonzept</title>
@@ -126,8 +134,8 @@ Abhängig von der Systemrolle werden neben dem Betriebssystem grundlegende
 Dienste wie Kerberos, OpenLDAP, Samba, Module für den Domänenreplikationsmechanismus
 oder eine Root-CA (Zertifizierungsstelle) auf dem
 Rechner installiert und automatisch für die gewählte Systemrolle konfiguriert.
-Das manuelle Einrichten und Konfigurieren jedes einzelnen Dienstes und jeder
-einzelnen Anwendung erübrigt sich damit. Durch den modularen Aufbau und
+Eine manuelle Einrichtung jedes einzelnen Dienstes oder Anwendung ist deswegen
+normalerweise nicht notwendig. Durch den modularen Aufbau und
 umfangreiche Konfigurationsschnittstellen lassen sich dennoch auf
 individuelle Bedürfnisse zugeschnittene Lösungen umsetzen.
 </para>
@@ -137,23 +145,33 @@ Windows betriebene Clients und Server bereit stellt, ist Univention Corporate
 Server kompatibel zu Microsoft Active Directory (AD), so dass sich das System
 gegenüber Windows-basierten Systemen wie ein Active Directory Server verhält.
 Deswegen können beispielsweise Gruppenrichtlinien für Microsoft Windows-Systeme
-auf die gewohnte Art und Weise administriert werden und stehen durch UCS in der
-Samba 4-Domäne zur Verfügung.
+auf die gewohnte Art und Weise verwaltet werden.
 </para>
 <para>
-Ubuntu-Clients können ebenfalls in eine UCS-Umgebung integriert werden
-(siehe <xref linkend="computers:ubuntu"/>).
+Zusätzlich kann UCS auch als Teil einer vorhanden Microsoft Active Directory
+Domäne betrieben werden. Benutzer und Gruppen aus der Active Directory Domäne
+können dadurch Zugriff auf die Applikationen aus dem Univention App Center
+bekommen.
+</para>
+<para>
+Ubuntu- oder Mac OS X-Clients können ebenfalls in eine UCS-Umgebung integriert
+werden (siehe <xref linkend="computers:ubuntu"/>).
 </para>
 </section>
 
-<section id="introduction:Erweiterbarkeit_durch_Komponenten"><title>Erweiterbarkeit durch Komponenten</title>
+<section
+id="introduction:Erweiterbarkeit_durch_App_Center"><title>Erweiterbarkeit
+durch das Univention App Center</title>
 <para>
-Über die Auswahl verschiedener zusätzlicher Komponenten während der
-Installation oder durch ein Online-Repository lässt sich der
-Funktionsumfang eines Rechners gezielt erweitern. Die Komponenten
-können ebenfalls ohne aufwendige Konfigurationsarbeiten eingesetzt
-werden, denn sie sind auf das Gesamtkonzept von UCS abgestimmt und
-fügen sich nahtlos in das &ucsUMS; ein.
+Das Univention App Center bietet weitere UCS-Komponenten und Erweiterungen
+sowie eine umfangreiche Auswahl von Softwarelösungen für Business IT-Bereiche
+wie z. B: Groupware und Kollaboration, Datenaustausch, CRM oder Backup.
+Die Anwendungen lassen sich mit wenigen Klicks in bestehende Umgebungen
+installieren und sind in der Regel einsatzbereit vorkonfiguriert. Sie werden
+in vielen Fällen direkt in das &ucsUMS; integriert und stehen anschließend in
+der &ucsUMC; zur Verfügung. Damit ist eine zentrale Verwaltung von Daten auf
+Domänenebene gegeben und eine separate Verwaltung, z.B. von Nutzerdaten für
+unterschiedliche Dienste an unterschiedlichen Orten, entfällt.
 </para>
 </section>
 
@@ -164,7 +182,7 @@ Rechner-, Betriebssystem- und Standortgrenzen hinweg zentral verwaltet werden.
 Es steht somit ein echter Single-Point-of-Administration für die Domäne zur
 Verfügung. Ein tragendes Element des &ucsUMS;s ist ein
 LDAP-Verzeichnis, in dem die domänenweit benötigten, verwaltungsrelevanten
-Daten vorgehalten werden. Dort wird neben Benutzerkonten und Ähnlichem auch die
+Daten vorgehalten werden. Dort wird neben Benutzerkonten und ähnlichem auch die
 Datenbasis von Diensten wie DHCP gespeichert. Die zentrale Datenhaltung im
 LDAP-Verzeichnis erspart nicht nur die wiederholte Eingabe derselben
 Daten, sondern verringert auch die Wahrscheinlichkeit von Fehlern
@@ -183,10 +201,10 @@ sich dort mit ihrem Domänenpasswort anmelden.
 UCS setzt als Verzeichnisdienstserver OpenLDAP ein. Das Verzeichnis wird vom
 &ucsMaster; bereitgestellt und auf alle anderen Domänencontroller
 (DCs) in der Domäne repliziert. Weil ein DC Backup im Notfall den DC Master
-ersetzen soll, wird auf diesen immer das komplette LDAP-Verzeichnis repliziert.
+ersetzen können soll, wird auf diesen immer das komplette LDAP-Verzeichnis repliziert.
 Die Replikation auf DC Slaves kann dagegen mithilfe von ACLs (Access Control
 Lists) auf beliebige Bereiche des LDAP-Verzeichnisses beschränkt werden,
-wodurch eine selektive Replikation erreicht wird. Dies kann z.B. dann gewünscht
+wodurch eine selektive Replikation möglich wird. Dies kann z.B. dann gewünscht
 sein, wenn Daten aus Sicherheitsgründen auf möglichst wenigen Servern
 gespeichert werden sollen. Damit diese und andere Daten verschlüsselt
 übertragen werden können, ist in UCS eine Root-CA (Zertifizierungsstelle)
@@ -206,21 +224,18 @@ Weiterführende Informationen finden sich in <xref linkend="domain:ldap"/>.
 </para>
 
 <para>
-Der Zugang zum LDAP-Verzeichnis erfolgt über die webbasierte und
-modulare &ucsUMC; (UMC). Technisch wird der Zugang über das &ucsUMC;-Modul
-Univention Directory Manager durchgeführt. In &ucsUMC; werden sie unter
-„Domäne“ angezeigt.
+Der Zugang zum LDAP-Verzeichnis erfolgt über die webbasierte &ucsUMC; (UMC).
 </para>
 <para>
-Univention Directory Manager ermöglicht auch die Umsetzung aller
-domänenweiten administrativen Aufgaben über eine
-Kommandozeilen-Schnittstelle. Dies eignet sich besonders für die Integration in
-Skripte oder automatisierte administrative Schritte.
+Daneben ermöglicht &ucsUMC; auch die Umsetzung aller domänenweiten
+administrativen Aufgaben über eine Kommandozeilen-Schnittstelle. Dies eignet
+sich besonders für die Integration in Skripte oder automatisierte
+administrative Schritte.
 </para>
 <para>
 Mit &ucsUMC; können Daten in das LDAP-Verzeichnis eingetragen und dort angezeigt,
 bearbeitet und gelöscht werden. Auch die Suche – gefiltert nach einer Vielzahl
-von Kriterien – ist möglich. In der Webanwendung stehen Assistenten zur
+von Kriterien – ist möglich. In der Webanwendung stehen u.a. Assistenten zur
 Verwaltung von Benutzern, Gruppen, Netzwerken, Rechnern, Verzeichnisfreigaben
 und Druckern zur Verfügung. Die Rechnerverwaltung umfasst auch umfangreiche
 Funktionen zur Verteilung und Aktualisierung von Software.
@@ -280,15 +295,16 @@ Weiterführende Informationen finden sich in <xref linkend="central:policies"/>.
 
 <section id="introduction:Listener_Notifier-Replikation"><title>Listener/Notifier-Replikation</title>
 <para>
-Ein wichtiger technischer Bestandteil des &ucsUMS;s stellt der
-Listener/Notifier-Mechanismus dar. Mit ihm lösen das Anlegen, Verändern oder
+Ein wichtiger technischer Bestandteil des &ucsUMS;s stellt der so genannte
+"Listener/Notifier-Mechanismus" dar. Mit ihm lösen das Anlegen, Verändern oder
 Löschen frei definierbarer Einträge im LDAP-Verzeichnis definierte Aktionen auf
 betroffenen Rechnern aus.
 </para>
 <para>
 So führt zum Beispiel das Anlegen einer Verzeichnisfreigabe mit &ucsUMC; dazu, das die Freigabe
-zunächst in das LDAP-Verzeichnis eingetragen wird. Der Listener/Notifier-Mechanismus stellt dann sicher, dass beispielswese auch die NFS- und
-Samba-Konfigurationsdateien auf dem gewählten Server entsprechend erweitert
+zunächst in das LDAP-Verzeichnis eingetragen wird. Der
+Listener/Notifier-Mechanismus stellt dann sicher, dass die
+Konfigurationsdateien auf dem gewählten Server entsprechend erweitert
 werden und das Verzeichnis im Dateisystem des gewählten Servers
 erstellt wird, falls es noch nicht existiert.
 </para>
@@ -304,15 +320,15 @@ Weiterführende Informationen finden sich in <xref linkend="domain:listenernotif
 </section>
 
 
-<section id="introduction:Virtualisierungsmanagement"><title>Virtualisierungsmanagement</title>
+<section id="introduction:Virtualisierungsmanagement"><title>Virtualisierungs-
+und Cloudmanagement</title>
 <para>
-Mit dem UMC-Modul &ucsUVMM; (UVMM) verfügt UCS über ein
-umfangreiches und mächtiges Werkzeug zur Verwaltung virtualisierter
-Infrastrukturen. In der UCS-Domäne registrierte Virtualisierungsserver und
+Mit dem UMC-Modul &ucsUVMM; (UVMM) verfügt UCS über ein umfangreiches und
+mächtiges Werkzeug zur Verwaltung hybrider Cloud-Umgebungen.
+In der UCS-Domäne registrierte Virtualisierungsserver und
 darauf betriebene virtuelle Maschinen können zentral überwacht und
-administriert werden. Als Hypervisor-Technologie können mit UCS die Open Source
-Virtualisierungstechnologien KVM (Kernel Virtual Machine) und Xen eingesetzt
-werden.
+administriert werden. Zusätzlich bietet UVMM die Möglichkeit virtuelle
+Maschinen in OpenStack- oder EC2-Umgebungen zu administrieren.
 </para>
 <para>
 Weiterführende Informationen finden sich in <xref linkend="uvmm:chapter"/>.
@@ -328,16 +344,14 @@ UCS. UCS und auf UCS aufbauende Lösungen bieten unter anderem:
 </para>
 <itemizedlist>
 <listitem><simpara>Umfangreiche Unterstützung für komplexe Serverumgebungen und Replikationsszenarien</simpara></listitem>
-<listitem><simpara>Weitergehende Einsatzmöglichkeiten für Microsoft Windows-Umgebungen (u.a. automatische Windows-Client-Installationen)</simpara></listitem>
+<listitem><simpara>Weitergehende Einsatzmöglichkeiten für Microsoft Windows-Umgebungen</simpara></listitem>
 <listitem><simpara>Zentrales Netzmanagement mit DNS und DHCP</simpara></listitem>
 <listitem><simpara>System- und Netzüberwachung mit Nagios</simpara></listitem>
 <listitem><simpara>Druckserver-Funktionalität</simpara></listitem>
 <listitem><simpara>Thin-Client-Support</simpara></listitem>
-<listitem><simpara>Fax-Dienst</simpara></listitem>
 <listitem><simpara>Proxy-Server</simpara></listitem>
-<listitem><simpara>Virtualisierung mit Xen und KVM</simpara></listitem>
+<listitem><simpara>Virtualisierung</simpara></listitem>
 <listitem><simpara>Integriertes Backup</simpara></listitem>
-<listitem><simpara>Linux-Desktop für den Business-Einsatz</simpara></listitem>
 </itemizedlist>
 <para>
 Unter <biblioref linkend="ucs-dokumentationen"/> und im Univention Wiki
