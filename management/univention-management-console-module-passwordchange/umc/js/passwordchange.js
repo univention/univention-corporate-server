@@ -72,9 +72,9 @@ define([
 					type: PasswordInputBox,
 					twoRows: true,
 					label: _('New password')
-				}],
-				onSubmit: lang.hitch(this, 'save')
+				}]
 			});
+			this._form.on('submit', lang.hitch(this, 'save'));
 
 			this._page = new Page({
 				headerText: _('Change the password of user "%s"', tools.status('username')),
@@ -91,12 +91,19 @@ define([
 		},
 
 		save: function() {
+			if (!this._form.validate()) {
+				this._form.getWidget('new_password').focus();
+				return;
+			}
+
 			this.standbyDuring(tools.umcpCommand('set', {password: this._form.get('value')}, {
 				onValidationError: lang.hitch(this._form, 'onValidationError')
-			})).then(function() {
+			})).then(lang.hitch(this, function() {
+				this._form.clearFormValues();
 				this.closeModule();
-			});
-			return false;
+			}), lang.hitch(this, function() {
+				this._form.clearFormValues();
+			}));
 		}
 	});
 });
