@@ -42,6 +42,8 @@ from PAM import (
 	PAM_ERROR_MSG,
 	PAM_TEXT_INFO,
 	PAM_NEW_AUTHTOK_REQD,
+	PAM_AUTHTOK_RECOVER_ERR,
+	PAM_USER_UNKNOWN,
 	PAM_ACCT_EXPIRED,
 	PAM_AUTH_ERR,
 )
@@ -190,6 +192,8 @@ class PamAuth(object):
 		# most often the last prompt contains a error message
 		# prompts are localised, i.e. if the operating system uses German, the prompts are German!
 		# try to be exhaustive. otherwise the errors will not be presented to the user.
+		if pam_err[1] == PAM_AUTHTOK_RECOVER_ERR:  # error: ('Authentifizierungsinformationen k?nnen nicht wiederhergestellt werden', 21)
+			return self.error_message(pam_err)
 		if not prompts:
 			prompts = [str(pam_err[0])]
 		for prompt in prompts[::-1]:
@@ -205,6 +209,8 @@ class PamAuth(object):
 		errors = {
 			PAM_NEW_AUTHTOK_REQD: self._('The password has expired and must be renewed'),
 			PAM_ACCT_EXPIRED: self._('The account is expired and can not be used anymore'),
+			PAM_USER_UNKNOWN: self._('The authentication has failed, please login again'),
 			PAM_AUTH_ERR: self._('The authentication has failed, please login again'),
+			PAM_AUTHTOK_RECOVER_ERR: self._('The entered password does not match the current one.'),
 		}
 		return errors.get(pam_err[1], self._(str(pam_err[0])))
