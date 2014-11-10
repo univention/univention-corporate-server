@@ -67,7 +67,7 @@
 
 	<itemizedlist>
 	  <listitem><simpara>
-		<emphasis>Major Releases</emphasis> erscheinen ca. alle vier Jahre. Major
+		<emphasis>Major Releases</emphasis> erscheinen ca. alle drei bis vier Jahre. Major
 		Releases können sich von vorhergehenden Major Releases signifikant hinsichtlich
 		ihres Leistungsumfangs, ihrer Funktionsweise und der darin enthaltenen
 		Software unterscheiden.
@@ -75,7 +75,7 @@
 
 	  <listitem><simpara>
 		Während der Maintenance-Dauer eines Major Releases erscheinen <emphasis>Minor Releases</emphasis>
-		in einem Rhythmus von ca. 6-8 Monaten. Diese Updates beinhalten die Behebung
+		in einem Rhythmus von ca. 10-12 Monaten. Diese Updates beinhalten die Behebung
 		neu bekannt gewordener Fehler, sowie die Ergänzung des
 		Produkts um zusätzliche Funktionen. Dabei erhalten Minor Releases so weit wie
 		möglich die Kompatibilität zu vorhergehenden Versionen hinsichtlich
@@ -86,20 +86,20 @@
 
 	  <listitem><simpara>
 		<emphasis>Patchlevel Releases</emphasis> beinhalten gegenüber einem Minor Release
-		weniger Änderungen. Der Fokus liegt hier ausschließlich auf der Korrektur von
+		weniger Änderungen. Der Fokus liegt hier hauptsächlich auf der Korrektur von
 		Fehlern. Die Kompatibilität zur vorherigen Version hinsichtlich
 		Funktionsweise, Schnittstellen und Bedienung wird eingehalten, sofern eine
 		Änderung nicht aufgrund eines kritischen Fehlers und mit zumutbarem Aufwand
 		unumgänglich ist. Sollte eine Änderung indes unvermeidbar sein, so wird bei der
 		Veröffentlichung der neuen Version in Release Notes darauf hingewiesen.
-		Neue Patchlevelversionen werden ca. alle zwei Monate veröffentlicht.
+		Neue Patchlevelversionen werden ca. alle drei Monate veröffentlicht.
 	  </simpara> </listitem>
 
 	  <listitem><simpara>
 		Neben der geplanten, langfristigen Pflege und Weiterentwicklung von UCS
 		durch Major- , Minor- und Patchlevelversionen, veröffentlicht Univention nach
 		Bedarf <emphasis>Errata-Updates</emphasis>. Errata-Updates enthalten
-		Korrekturen für Sicherheitslücken oder kritische Programmfehler,
+		Korrekturen für Sicherheitslücken oder Programmfehler,
 		die zeitnah noch vor dem nächsten Patchlevel-Update behoben werden müssen.
 		Eine Aufstellung der Errata-Updates findet sich unter
 		<ulink url="http://errata.univention.de"/>. Errata-Updates können auch für
@@ -111,8 +111,8 @@
 	  Jede ausgelieferte UCS-Version besitzt eine eindeutige Versionsbezeichnung;
 	  sie besteht aus einer Zahl (der Majorversion), einem Punkt, einer zweiten Zahl (der Minorversion)
 	  einem Bindestrich und einer dritten Zahl (der Patchlevelversion). Mit der
-	  Version UCS 3.2-1 wird also das erste Patchlevel-Update für das zweite Minor
-	  Update für das Major-Release UCS 3 bezeichnet.
+	  Version UCS 4.2-1 wird also das erste Patchlevel-Update für das zweite Minor
+	  Update für das Major-Release UCS 4 bezeichnet.
 	</para>
 
 	<para>
@@ -123,7 +123,7 @@
 
 	<para>
 	  Errata-Updates beziehen sich immer auf bestimmte Minor-Releases, also
-	  beispielsweise für UCS 3.0. Errata-Updates können in der Regel für alle
+	  beispielsweise für UCS 4.1. Errata-Updates können in der Regel für alle
 	  Patchlevelversionen eines Minor Releases installiert werden.
 	</para>
 
@@ -195,7 +195,7 @@
 	</para>
 
 	<para>
-	  Viele Komponenten integrieren Pakete, die auf dem &ucsMaster; installiert werden müssen (in der
+	  Einige Komponenten integrieren Pakete, die auf dem &ucsMaster; installiert werden müssen (in der
 	  Regel LDAP-Schema-Erweiterungen oder Erweiterungen für das UCS-Managementsystem). Diese
 	  Pakete werden automatisch auf dem &ucsMaster; installiert. Ist dieser nicht erreichbar,
 	  wird die Installation abgebrochen. Außerdem werden die Pakete auf allen erreichbaren
@@ -286,11 +286,9 @@
 	<section id="computers:Konfiguration_ueber_die_Univention_Management_Console">
 	  <title>Konfiguration über die Univention Management Console</title>
 	  <para>
-		Im <guimenu>App Center</guimenu>-Modul der &ucsUMC; können die
-		Repository-Einstellungen angepasst werden. Im Reiter
-		<guimenu>Repository-Einstellungen</guimenu> kann der <guimenu>Repository-Server</guimenu>
-		festgelegt werden und die Verwendung der Maintained- und
-		Unmaintained-Sektionen festgelegt werden.
+		Im <guimenu>Repository-Einstellungen</guimenu>-Modul der &ucsUMC;
+		kann der <guimenu>Repository-Server</guimenu> und die Verwendung der
+		Maintained- und Unmaintained-Sektionen festgelegt werden.
 	  </para>
 	</section>
 
@@ -551,7 +549,7 @@ univention-repository-update -h
 	  <para>
 		Das Eingabefeld <guimenu>Release-Version</guimenu> enthält die
 		Versionsnummer, bis zu der das System aktualisiert werden soll,
-		z.B. <emphasis>3.2-1</emphasis>. Wird keine Angabe gemacht, aktualisiert sich das
+		z.B. <emphasis>4.2-1</emphasis>. Wird keine Angabe gemacht, aktualisiert sich das
 		System bis zur höchsten verfügbaren Versionsnummer.
 	  </para>
 
@@ -653,9 +651,8 @@ univention-repository-update -h
 		id="computers:Installation_Deinstallation_von_einzelnen_Paketen_in_der_Univention_Management_Console">
 	  <title>Installation/Deinstallation von einzelnen Paketen in der Univention Management Console</title>
 	  <para>
-		Mit dem &ucsUMC;-Modul <guimenu>App Center</guimenu> (Reiter: <guimenu>Erweiterte
-		Software-Verwaltung</guimenu>) können einzelne Softwarepakete installiert und
-		deinstalliert werden.
+		Mit dem &ucsUMC;-Modul <guimenu>Paket Verwaltung</guimenu> können einzelne Softwarepakete installiert
+		und deinstalliert werden.
 	  </para>
 
 	  <figure id="software-umcinstall"><title>Installation des Pakets univention-squid in der Univention Management Console</title>
@@ -903,8 +900,8 @@ apt-cache search fax
 		  <simpara>
 			Es werden automatisch
 			alle Versionen derselben Major-Version eingebunden. Ist z.B. aktuell UCS
-			2.3 installiert, so werden die Repositories für die Komponente in den Versionen
-			2.0, 2.1, 2.2 und 2.3 eingebunden, sofern diese existieren.
+			4.2 installiert, so werden die Repositories für die Komponente in den Versionen
+			4.0, 4.1 und 4.2 eingebunden, sofern diese existieren.
 		  </simpara>
 		</listitem>
 	  </varlistentry>
@@ -917,9 +914,9 @@ apt-cache search fax
 			wird aber ein Minor- oder Major-Upgrade des installierten UCS-Systems
 			solange verhindert, bis auch die so markierte Komponente für die neue
 			Version verfügbar ist; Patchlevel- oder Errata-Updates sind davon nicht
-			betroffen. Ist z.B. aktuell UCS-2.3 installiert, UCS-2.4 oder UCS-3.0
+			betroffen. Ist z.B. aktuell UCS-3.1 installiert, UCS-3.2 oder UCS-4.0
 			aber bereits verfügbar, so erfolgt dennoch solange kein Upgrade auf die
-			neue Version, bis auch die Komponente für die Version 2.4 bzw. 3.0
+			neue Version, bis auch die Komponente für die Version 3.2 bzw. 4.0
 			verfügbar ist.
 		  </simpara>
 		</listitem>
@@ -931,7 +928,7 @@ apt-cache search fax
 			Durch die Angabe einer expliziten Version wird die
 			Komponente nur in dieser Version eingebunden. UCS-Release-Updates werden
 			dadurch nicht blockiert. Mehrere Versionen können durch Komma getrennt
-			angegeben werden, z.B. <emphasis>2.0,2.3</emphasis>.
+			angegeben werden, z.B. <emphasis>3.2,4.0</emphasis>.
 		  </simpara>
 		</listitem>
 	  </varlistentry>
@@ -941,11 +938,11 @@ apt-cache search fax
 		id="computers:Integration_von_Repository-Komponenten_ueber_die_Univention_Management_Console">
 	  <title>Integration von Repository-Komponenten über die Univention Management Console</title>
 	  <para>
-		Im <guimenu>App Center</guimenu>-Modul der &ucsUMC; findet sich im Reiter
-		<guimenu>Repository-Einstellungen</guimenu> eine Aufstellung der eingebundenen
-		Repository-Komponenten. Applikationen, die über das Univention App Center eingebunden
-		wurden, werden hier weiterhin aufgeführt, sollten aber über den Reiter
-		<guimenu>App-Verwaltung</guimenu> verwaltet werden.
+		Im <guimenu>Repository-Einstellungen</guimenu>-Modul der &ucsUMC; ist
+		eine Aufstellung der eingebundenen Repository-Komponenten. Applikationen, die
+		über das Univention App Center eingebunden wurden, werden hier weiterhin
+		aufgeführt, sollten aber über das Modul <guimenu>App Center</guimenu>
+		verwaltet werden.
 	  </para>
 
 	  <para>

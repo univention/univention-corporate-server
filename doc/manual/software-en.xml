@@ -68,14 +68,14 @@
 
 	<itemizedlist>
 	  <listitem><simpara>
-		<emphasis>Major releases</emphasis> appear approximately every four
+		<emphasis>Major releases</emphasis> appear approximately every three to four
 		years. Major releases can differ significantly from previous major releases in
 		terms of their scope of services, functioning and the software they contain.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
 		During the maintenance period of a major release, <emphasis>minor
-		Releases</emphasis> are released approx. every 6-8 months. These updates
+		Releases</emphasis> are released approx. every 10-12 months. These updates
 		include corrections to recently identified errors and the expansion of the
 		product with additional features. At the same time and as far as this is
 		possible, the minor releases are compatible with the previous versions in terms
@@ -86,20 +86,20 @@
 
 	  <listitem><simpara>
 		<emphasis>Patchlevel releases</emphasis> include fewer changes than a
-		minor release. The focus here is exclusively on correcting
+		minor release. The focus here is mainly on correcting
 		errors. Compatibility with the previous version in terms of the functioning,
 		interfaces and operation is maintained insofar as a change cannot be avoided
 		without excessive efforts or corrects a critical error. Should a change,
 		however, prove unavoidable, this will be noted in the release notes when the
 		new version is published. New patch level versions are released approximately
-		every two months.
+		every three months.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
 		Alongside the planned, long-term maintenance and on-going development
 		of UCS via major, minor and patch level versions, Univention also publishes
 		<emphasis>errata updates</emphasis> as necessary. Errata updates include the
-		corrections for security vulnerabilities or critical program errors which need
+		corrections for security vulnerabilities or program errors which need
 		to be resolved quickly prior to the release of the next patch level update. A
 		list of the errata updates can be found at
 		<ulink url="http://errata.univention.de/"/>. Errata updates can also be provided
@@ -110,9 +110,9 @@
 	<para>
 	  Every released UCS version has an unambiguous version number; it is composed of
 	  a figure (the major version), a full stop, a second figure (the minor version),
-	  a hyphen and a third figure (the patch level version). The version UCS 3.2-1
+	  a hyphen and a third figure (the patch level version). The version UCS 4.2-1
 	  thus refers to the first patch level update for the second minor update for the
-	  major release UCS 3.x.
+	  major release UCS 4.
 	</para>
 
 	<para>
@@ -123,7 +123,7 @@
 
 	<para>
 	  Errata updates always refer to certain minor releases, e.g., for UCS
-	  3.0. Errata updates can generally be installed for all patch level versions of
+	  4.1. Errata updates can generally be installed for all patch level versions of
 	  a minor release.
 	</para>
 
@@ -194,7 +194,7 @@
 	</para>
 
 	<para>
-	  Many components integrate packages that need to be installed on the &ucsMaster; (usually LDAP
+	  Some components integrate packages that need to be installed on the &ucsMaster; (usually LDAP
 	  schema extensions or new modules for the UCS management system). These packages are
 	  automatically installed on the &ucsMaster;. If this is not possible, the installation is
 	  aborted. In addition, the packages are set up on all accessible &ucsBackup; systems.
@@ -283,10 +283,9 @@
 	<section id="computers:Configuration_via_the_Univention_Management_Console">
 	  <title>Configuration via the Univention Management Console</title>
 	  <para>
-		The repository settings can be adjusted in the <guimenu>App Center</guimenu>
-		module of the &ucsUMC;. The <guimenu>Repository server</guimenu> and the use of
+		The <guimenu>Repository server</guimenu> and the use of
 		the maintained and unmaintained sections can be specified in the
-		<guimenu>Repository Settings</guimenu> tab.
+		<guimenu>Repository Settings</guimenu> module of the &ucsUMC;.
 	  </para>
 	</section>
 
@@ -546,7 +545,7 @@ univention-repository-update -h
 
 	  <para>
 		The <guimenu>Release version</guimenu> input field includes the version number
-		up to which the system should be updated, e.g., <emphasis>3.2-1</emphasis>. If
+		up to which the system should be updated, e.g., <emphasis>4.2-1</emphasis>. If
 		no entry is made, the system continues updating to the highest available
 		version number.
 	  </para>
@@ -653,9 +652,8 @@ univention-repository-update -h
 	<section id="computers:Installation_removal_of_individual_packages_in_the_Univention_Management_Console">
 	  <title>Installation/removal of individual packages in the Univention Management Console</title>
 	  <para>
-		The &ucsUMC; module <guimenu>App Center</guimenu> (tab: <guimenu>Extended software
-		management</guimenu>) can be used to install and uninstall individual software
-		packages.
+		The &ucsUMC; module <guimenu>Package Management</guimenu> can be used to install and uninstall
+		individual software packages.
 	  </para>
 
 	  <figure id="software-umcinstall">
@@ -901,8 +899,8 @@ apt-cache search fax
 		<listitem>
 		  <simpara>
 			All versions of the same major
-			number will be used. If for example UCS-2.3 is installed, all repositories of the
-			component with version numbers 2.0, 2.1, 2.2 and 2.3 will be used if available.
+			number will be used. If for example UCS-4.2 is installed, all repositories of the
+			component with version numbers 4.0, 4.1 and 4.2 will be used if available.
 		  </simpara>
 		</listitem>
 	  </varlistentry>
@@ -914,9 +912,9 @@ apt-cache search fax
 			likewise include all versions of the same major version. Additionally it will block all
 			minor and major upgrades of the installed UCS system until the respective component is
 			also available for the new release. Patch level and errata updates are not affected. If
-			for example UCS-2.3 is currently installed and UCS-2.4 or UCS-3.0 is already available,
+			for example UCS-3.1 is currently installed and UCS-3.2 or UCS-4.0 is already available,
 			the release updated will be postponed until the component is also available for version
-			2.4 and 3.0 respectively.
+			3.2 and 4.0 respectively.
 		  </simpara>
 		</listitem>
 	  </varlistentry>
@@ -927,7 +925,7 @@ apt-cache search fax
 			By specifying an explicit version number only the
 			specified version of the component will be used. Release updates of the system will not
 			be hindered by such components. Multiple versions can be given using commas as
-			delimiters, for example <emphasis>2.0,2.3</emphasis>.
+			delimiters, for example <emphasis>3.2,4.0</emphasis>.
 		  </simpara>
 		</listitem>
 	  </varlistentry>
@@ -936,11 +934,10 @@ apt-cache search fax
 	<section id="computers:Integration_of_repository_components_via_the_Univention_Management_Console">
 	  <title>Integration of repository components via the Univention Management Console</title>
 	  <para>
-		A list of the integrated repository components can be found in the
-		<guimenu>Repository Settings</guimenu> tab in the <guimenu>App Center</guimenu> module of
-		the &ucsUMC;.
+		A list of the integrated repository components is  in the
+		<guimenu>Repository Settings</guimenu> module of the &ucsUMC;.
 		Applications which have been added via the Univention App Center are still listed
-		here, but should be managed via the <guimenu>App management</guimenu> tab.
+		here, but should be managed via the <guimenu>App Center</guimenu> module.
 	  </para>
 
 	  <para>
