@@ -363,6 +363,7 @@ define([
 			//		for the LDAP-directory and objects with superordinates.
 
 			// show help icon if help_link is given for the module
+			metaInfo = metaInfo || {};
 			var buttons = [];
 			if (metaInfo.help_link) {
 				buttons = [{name: 'help',

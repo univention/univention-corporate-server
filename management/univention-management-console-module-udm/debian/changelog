@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.24-1) unstable; urgency=medium
+
+  * Bug #36435: fixed error caused by an undefined reference
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 10 Nov 2014 14:37:57 +0100
+
 univention-management-console-module-udm (5.1.23-2) unstable; urgency=medium
 
   * Bug #36435: fixed fuzzy entries
