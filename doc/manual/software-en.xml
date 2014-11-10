@@ -154,7 +154,7 @@
 	<title>Univention App Center</title>
 	<para>
 	  The Univention App Center allows simple integration of software components in a UCS
-	  installation. The applications are provided both by third parties and by Univention itself
+	  domain. The applications are provided both by third parties and by Univention itself
 	  (e.g., ucs@School). The maintenance and support for the applications are provided by the
 	  respective manufacturer.
 	</para>
@@ -201,6 +201,11 @@
 	</para>
 
 	<para>
+	  If several UCS systems are available in the domain, it can be selected on which system the
+	  application is to be installed.
+	</para>
+
+	<para>
 	  Following installation of an application, ore or several new options are shown when clicking on the icon
 	  of an application: <guimenu>Uninstall</guimenu> removes an application.
 	  <guimenu>Open</guimenu> refers you to a website or a UMC module with which you can further configure or use
@@ -217,7 +222,7 @@
 	</para>
 
 	<para>
-	  An overview of the existing applications can be opened under <guimenu>Installed
+	  An overview of the installed applications in the domain can be opened under <guimenu>Installed
 	  applications</guimenu> on the UMC start page.
 	</para>
 

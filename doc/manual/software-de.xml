@@ -154,7 +154,7 @@
 	<title>Univention App Center</title>
 	<para>
 	  Das Univention App Center erlaubt die einfache Einbindung von Softwarekomponenten in eine
-	  UCS-Installation. Die Applikationen werden sowohl von Drittanbietern wie auch von
+	  UCS-Domäne. Die Applikationen werden sowohl von Drittanbietern wie auch von
 	  Univention selbst (z.B. UCS@school) bereitgestellt. Die Maintenance und der
 	  Support für die Applikationen erfolgt durch den jeweiligen Hersteller.
 	</para>
@@ -203,6 +203,11 @@
 	</para>
 
 	<para>
+	  Sofern mehrere UCS Systeme in der Domäne vorhanden sind kann ausgwählt werden, auf welchem
+	  der Systeme die Applikation installiert werden soll.
+	</para>
+
+	<para>
 	  Nach der Installation einer Applikation werden nach einem Klick auf das Icon einer Applikation
 	  eine oder mehrere neue Optionen angezeigt: <guimenu>Deinstallieren</guimenu> entfernt eine Applikation.
 	  <guimenu>Öffnen</guimenu> verweist auf eine Webseite oder ein UMC-Modul, mit dem die installierte Applikation
@@ -220,9 +225,8 @@
 	</para>
 
 	<para>
-	  Eine Übersicht über die
-	  vorhandenen Applikationen kann in der UMC-Startseite unter <guimenu>Installierte
-	  Applikationen</guimenu> abgerufen werden.
+	  Eine Übersicht über die installierten Applikationen in der Domäne kann auf der UMC-Startseite
+	  unter <guimenu>Installierte Applikationen</guimenu> abgerufen werden.
 	</para>
 
 	<para>
