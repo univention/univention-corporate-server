@@ -1083,7 +1083,7 @@ apt-cache search fax
 			<simpara>
 			  Über diese Variable
 			  kann eine leerzeichenseparierte Liste an Paketnamen angegeben
-			  werden. Im UMC-Modul <emphasis>App Center</emphasis> wird die
+			  werden. Im UMC-Modul <emphasis>Repository Einstellungen</emphasis> wird die
 			  Installation der Komponente angeboten, wenn mindestens eines der Pakete
 			  nicht installiert ist. Die Angabe der Paketliste vereinfacht dadurch die
 			  Nachinstallation von Komponenten.

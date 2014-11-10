@@ -1075,7 +1075,7 @@ apt-cache search fax
 		  <listitem>
 			<simpara>
 			  A list of package names separated by blanks.
-			  The UMC module <emphasis>App Center</emphasis>
+			  The UMC module <emphasis>Repository Settings</emphasis>
 			  offers the installation of this component if at least one of
 			  the packages is not installed. Specifying the package list eases the subsequent
 			  installation of components.
