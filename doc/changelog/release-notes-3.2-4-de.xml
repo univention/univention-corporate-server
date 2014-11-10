@@ -132,7 +132,7 @@
 			</para>
 
 			<programlisting language="sh">
-LOCAL_DIR="/var/lib//univention-repository/mirror"
+LOCAL_DIR="/var/lib/univention-repository/mirror"
 SERVER="http://updates.software-univention.de"
 for release in 3.2-0 3.2-1 3.2-2 3.2-3 3.2-4; do
 	for script in preup postup; do
@@ -144,7 +144,7 @@ done
 
 			<para>
 				Alternativ kann die Prüfung der Signaturen auch deaktiviert werden, was ein Sicherheitsrisiko darstellen kann.
-				Für dem Repository-Server kann dazu die &ucsUCRV; <envar>repository/mirror/verify</envar> auf <emphasis>false</emphasis> gesetzt werden.
+				Für den Repository-Server kann dazu die &ucsUCRV; <envar>repository/mirror/verify</envar> auf <emphasis>false</emphasis> gesetzt werden.
 				Für das Update muß auf allen Systemen die &ucsUCRV; <envar>repository/online/verify</envar> auf <emphasis>false</emphasis> gesetzt werden.
 			</para>
 		</section>
@@ -272,7 +272,7 @@ done
 			</para>
 
 			<para>
-				Als Workaround muß vor dem Neustart der UCS-VM entweder die Installations-DVD aus den Laufwerkseinstellungen der VirtualBox-VM entfernt werden oder beim Start der virtuellen Instanz <keycap>F12</keycap> gedrückt werden und die Festplatte als Bootpartition ausgewählt werden.
+				Als Workaround muß vor dem Neustart der UCS-VM entweder die Installations-DVD aus den Laufwerkseinstellungen der VirtualBox-VM entfernt werden oder beim Start der virtuellen Instanz <keycap>F12</keycap> gedrückt und die Festplatte als Bootpartition ausgewählt werden.
 				UCS startet danach dann problemlos.
 			</para>
 		</section>
