@@ -5,10 +5,10 @@
 Bacula ist ein netzwerkfähiges Datensicherungsprogramm mit
 einer Client/Server-Architektur. Es erlaubt die Datensicherung und
 -wiederherstellung in heterogenen Umgebungen.
-Die hier beschreibene Dokumentation bezieht sich auf das Paket
-<package>univention-bacula</package>, welches als Komponente von UCS
-ausgeliefert wird. Im Univention App Center können weitere
-Backup-Softwarelösungen ausgewählt und installiert werden.
+Dieses Kapitel bezieht sich auf das Paket <package>univention-bacula</package>,
+welches als Komponente von UCS ausgeliefert wird. Im Univention App Center können
+weitere Backup-Softwarelösungen ausgewählt und installiert werden, u.a. auch Bacula
+Enterprise.
 		</para>
 		<para>
 Bacula besteht aus einer Reihe von einzelnen Diensten und
