@@ -35,7 +35,8 @@
 . /usr/share/univention-lib/all.sh
 
 ucr set system/setup/cloud-init/datasources?"ConfigDrive, Ec2, CloudStack, AltCloud, MAAS, OVF, NoCloud, None" \
-	server/cloud-init?true
+	server/cloud-init?true \
+	system/setup/boot/start=false
 
 # Add serial console output, but spawn login console on tty0
 option="console=tty0 console=ttyS0"

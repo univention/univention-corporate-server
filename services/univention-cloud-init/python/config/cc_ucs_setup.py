@@ -29,11 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
-from cloudinit import util
-
 from cloudinit.settings import PER_INSTANCE
-
 
 frequency = PER_INSTANCE
 
@@ -48,7 +44,7 @@ def handle(name, cfg, cloud, log, args):
 		return
 
 	# read config options and write them to a profile
-	p = cfg["ucs_setup"]
+	p = dict((k, v) for k, v in cfg["ucs_setup"].iteritems() if v is not None)
 	hostname = p.get('hostname', 'ucs')
 	domainname = p.get('domainname', 'ucs.local')
 	windowsdomain = p.get('windowsdomain', 'UCS')

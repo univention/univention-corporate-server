@@ -1,3 +1,10 @@
+univention-cloud-init (2.0.1-2) unstable; urgency=low
+
+  * Bug #36092: Due to behavior change in UCS 4: Set UCRV
+    system/setup/boot/start=false upon installation
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 10 Nov 2014 13:19:04 +0100
+
 univention-cloud-init (2.0.1-1) unstable; urgency=medium
 
   * Bug #36092: fixed error noscript error message for Internet Explorer
