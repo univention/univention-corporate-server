@@ -1,0 +1,44 @@
+#!/usr/share/ucs-test/runner python
+## desc: Basic group email delivery 
+## tags: apttest
+## exposure: dangerous
+## packages: [univention-mail-server, univention-mail-postfix]
+## bugs: [23527]
+
+from essential.mail import checkMail, send_mail
+import time
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+def main():
+	TIMEOUT = 60
+	ucr = ucr_test.UCSTestConfigRegistry()
+	ucr.load()
+	with udm_test.UCSTestUDM() as udm:
+		domain = ucr.get('domainname')
+		group_mail = 'g%s@%s' % (uts.random_string(), domain)
+		mails = []
+		for i in xrange(3):
+			user = uts.random_name()
+			userdn, username = udm.create_user(username=user,
+					set={
+						'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+						'mailAlternativeAddress': group_mail,
+						'mailPrimaryAddress': '%s@%s' % (user, domain),
+						}
+					)
+			mails.append('%s@%s' % (user, domain))
+
+		token = str(time.time())
+		send_mail(recipients=group_mail, msg=token, idstring=token, subject='Test Group Send')
+
+		time.sleep(TIMEOUT)
+		for mail in mails:
+			if not checkMail(token, mail_address=mail):
+				utils.fail('mail sent to %s was not delivered' % mail)
+
+
+if __name__ == '__main__':
+	main()
