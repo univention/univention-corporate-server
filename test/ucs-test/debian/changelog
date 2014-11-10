@@ -1,3 +1,18 @@
+ucs-test (4.0.176-1) unstable; urgency=low
+
+  * Added new App center tests:
+    (Bug #30508) 20_appcenter/10_check_apps_ini: check if App instance can be created;
+    (Bug #33902) 20_appcenter/11_check_apps_ini_field_values: check if ini options
+                                                              have assigned values;
+    (Bug #35896) 20_appcenter/31_ini_version_check: check if App version can be
+                                                    registred in LDAP;
+    (Bug #32546, #35652) 20_appcenter/17_app_status: a new test version,
+                                                     performs check if App is allowed,
+                                                     checks packages,
+                                                     LDAP object and web interface registration.
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 10 Nov 2014 14:40:14 +0100
+
 ucs-test (4.0.175-1) unstable; urgency=medium
 
   * Removed 61_udm-users/25_script_lock_expired_passwords and 61_udm-
