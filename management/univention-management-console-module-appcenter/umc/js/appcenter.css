@@ -30,7 +30,8 @@
 .umcAppCenterGallery .umcGalleryItem {
 	background-color: #eaeaea;
 }
-.umcAppCenterGallery .umcGalleryItem .umcGalleryName {
-	/* there is no context menu icon */
-	margin-right: 0;
+.umcAppCenterGallery .umcGalleryItemActive .umcUpdateIcon,
+.umcAppCenterGallery .umcGalleryItem:hover .umcUpdateIcon {
+	/* change icon color to white on hover */
+	background-image: url("../../dijit/themes/umc/images/icons-white.svg");
 }

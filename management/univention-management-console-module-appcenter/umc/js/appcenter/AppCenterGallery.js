@@ -67,20 +67,15 @@ define([
 		getStatusIconClass: function(item) {
 			var iconClass = '';
 			if (item.endoflife) {
-				iconClass = tools.getIconClass('appcenter-warning', 24, 'umcAppCenter');
+				iconClass = 'umcErrorIcon';
 			} else if (item.is_installed && item.candidate_version) {
-				iconClass = tools.getIconClass('appcenter-can_update', 24, 'umcAppCenter');
-			} else if (item.is_installed) {
-				iconClass = tools.getIconClass('appcenter-is_installed', 24, 'umcAppCenter');
+				iconClass = 'umcUpdateIcon';
 			}
 			if (item.installations) {
 				tools.forIn(item.installations, function(server, info) {
-					if (info.version) {
-						iconClass = tools.getIconClass('appcenter-is_installed', 24, 'umcAppCenter');
-						if ((item.candidate_version || item.version) != info.version) {
-							iconClass = tools.getIconClass('appcenter-can_update', 24, 'umcAppCenter');
-							return false;
-						}
+					if (info.version && ((item.candidate_version || item.version) != info.version)) {
+						iconClass = 'umcUpdateIcon';
+						return false;
 					}
 				});
 			}
