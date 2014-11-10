@@ -1,3 +1,10 @@
+univention-system-setup (8.1.57-1) unstable; urgency=medium
+
+  * Bug #36543: call cleanup functionality via a separate script as at job;
+    this avoids the current module process being killed upon UMC restart
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 10 Nov 2014 17:50:18 +0100
+
 univention-system-setup (8.1.56-2) unstable; urgency=low
 
   * Bug #35653: Wording

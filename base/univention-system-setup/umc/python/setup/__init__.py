@@ -108,10 +108,8 @@ class Instance(Base, ProgressMixin):
 			# cleanup restarts umc, so MODULE.info will never
 			# be called. but leave it that way, maybe it can
 			# be called in the future.
-			if util.cleanup():
-				MODULE.info('... cleanup successful')
-			else:
-				MODULE.warn('... cleanup operation failed')
+			util.cleanup()
+			MODULE.info('... cleanup done')
 		return super(Instance, self).destroy()
 
 	def _check_thread_error( self, thread, result, request ):
@@ -331,10 +329,8 @@ class Instance(Base, ProgressMixin):
 		self.finished(request.id, True)
 		# put it here just in case destroy gets called during util
 		self._cleanup_required = False
-		if util.cleanup():
-			MODULE.info('... cleanup successful')
-		else:
-			MODULE.warn('... cleanup operation failed')
+		util.cleanup()
+		MODULE.info('... cleanup done')
 
 	@simple_response
 	def validate(self, values=None):

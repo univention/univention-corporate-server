@@ -40,7 +40,6 @@ import threading
 import univention.config_registry
 import time
 import re
-import psutil
 import csv
 import os.path
 import simplejson as json
@@ -49,6 +48,7 @@ import urllib2
 from contextlib import contextmanager
 
 from univention.lib.i18n import Translation, Locale
+from univention.lib import atjobs as atjobs
 from univention.management.console.log import MODULE
 from univention.management.console.modules import UMC_CommandError
 
@@ -71,20 +71,17 @@ ucr.load()
 
 PATH_SYS_CLASS_NET = '/sys/class/net'
 PATH_SETUP_SCRIPTS = '/usr/lib/univention-system-setup/scripts/'
-PATH_CLEANUP_PRE_SCRIPTS = '/usr/lib/univention-system-setup/cleanup-pre.d/'
-PATH_CLEANUP_POST_SCRIPTS = '/usr/lib/univention-system-setup/cleanup-post.d/'
 PATH_JOIN_SCRIPT = '/usr/lib/univention-system-setup/scripts/setup-join.sh'
 PATH_PROFILE = '/var/cache/univention-system-setup/profile'
 LOG_FILE = '/var/log/univention/setup.log'
-PATH_BROWSER_PID = '/var/cache/univention-system-setup/browser.pid'
 PATH_PASSWORD_FILE = '/var/cache/univention-system-setup/secret'
 CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-restart']
 CMD_ENABLE_EXEC_WITH_RESTART = '/usr/share/univention-updater/enable-apache2-umc'
 CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
+CMD_CLEANUP_SCRIPT = '/usr/lib/univention-system-setup/scripts/cleanup.py'
 CITY_DATA_PATH = '/usr/share/univention-system-setup/city_data.json'
 COUNTRY_DATA_PATH = '/usr/share/univention-system-setup/country_data.json'
 
-RE_IPV4_TYPE = re.compile('^interfaces/[^/]*/type$')
 RE_LOCALE = re.compile(r'([^.@ ]+).*')
 
 # list of all needed UCR variables
@@ -416,10 +413,6 @@ def sorted_files_in_subdirs( directory ):
 			for filename in sorted(os.listdir(path)):
 				yield os.path.join(path, filename)
 
-
-
-
-
 def run_scripts( progressParser, restartServer = False ):
 	# write header before executing scripts
 	f = open(LOG_FILE, 'a')
@@ -522,61 +515,8 @@ def run_joinscript( progressParser, _username, password ):
 	f.close()
 
 def cleanup():
-	# write header before executing scripts
-	f = open(LOG_FILE, 'a')
-	f.write('\n\n=== Cleanup (%s) ===\n\n' % timestamp())
-	f.flush()
-
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
-
-	# The browser was only started, if system/setup/boot/start is true
-	if ucr.is_true('system/setup/boot/start', False):
-		MODULE.info('Appliance mode: try to shut down the browser')
-		try:
-			fpid = open(PATH_BROWSER_PID)
-			strpid = fpid.readline().strip()
-			pid = int(strpid)
-			p = psutil.Process(pid)
-			p.kill()
-		except IOError:
-			MODULE.warn('cannot open browser PID file: %s' % PATH_BROWSER_PID)
-		except ValueError:
-			MODULE.error('browser PID is not a number: "%s"' % strpid)
-		except psutil.NoSuchProcess:
-			MODULE.error('cannot kill process with PID: %s' % pid)
-
-		# Maybe the system-setup CMD tool was started
-		for p in psutil.process_iter():
-			if p.name == 'python2.7' and '/usr/share/univention-system-setup/univention-system-setup' in p.cmdline:
-				p.kill()
-
-	# Run cleanup-pre scripts
-	run_scripts_in_path(PATH_CLEANUP_PRE_SCRIPTS, f, "cleanup-pre")
-
-	# unset the temporary interface if set
-	for var in ucr.keys():
-		if RE_IPV4_TYPE.match(var) and ucr.get(var) == 'appliance-mode-temporary':
-			f.write('unset %s' % var)
-			keys = [var]
-			for k in ['netmask', 'address', 'broadcast', 'network']:
-				keys.append(var.replace('/type', '/%s' % k))
-			univention.config_registry.handler_unset(keys)
-			# Shut down temporary interface
-			subprocess.call(['ifconfig', var.split('/')[1].replace('_', ':'), 'down'])
-
-	# force a restart of UMC servers and apache
-	subprocess.call( CMD_DISABLE_EXEC, stdout = f, stderr = f )
-	subprocess.call( CMD_ENABLE_EXEC_WITH_RESTART, stdout = f, stderr = f )
-
-	# Run cleanup-post scripts
-	run_scripts_in_path(PATH_CLEANUP_POST_SCRIPTS, f, "cleanup-post")
-
-	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
-	f.flush()
-	f.close()
-
-	return True
+	# start an at job in the background that will do the cleanup
+	atjobs.add(CMD_CLEANUP_SCRIPT)
 
 def run_scripts_in_path(path, logfile, category_name=""):
 	logfile.write('\n=== Running %s scripts (%s) ===\n' % (category_name, timestamp()))
