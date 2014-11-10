@@ -1,5 +1,7 @@
 @import "variables";
 
+$notification-transition ?= 0.75s
+
 .umc .umcNotificationContainer {
 	position: absolute;
 	width: 210px;
@@ -21,8 +23,8 @@
 	opacity: 1;
 	z-index: 20;
 
-	transition-duration: .75s;
-	transition-property: left, opacity;
+	transition-duration: $notification-transition;
+	transition-property: left, opacity, color;
 
 	a {
 		color: $grey-medium;
@@ -37,11 +39,13 @@
 		border-bottom: solid 1px white;
 		padding-bottom: 0.4em;
 		margin-bottom: 0.4em;
+		transition-duration: $notification-transition;
+		transition-property: border-color;
 	}
 
 	.umcNotificationMessage {
 		max-height: 500px;
-		transition-duration: .75s;
+		transition-duration: $notification-transition;
 		transition-property: max-height;
 		overflow: hidden;
 		word-wrap: break-word;
@@ -82,16 +86,24 @@
 	z-index: -1;
 }
 
-.umc .umcNotificationHidden {
+.umc .umcNotification.umcNotificationHidden {
 	left: 195px;
 	opacity: 0.66;
-	transition-duration: .75s;
-	transition-property: left, opacity;
+	color: transparent;
+	transition-duration: $notification-transition;
+	transition-property: left, opacity, color;
+	transition-delay: 0, 0, 0.5s;
 
 	.umcNotificationMessage {
 		max-height: 0 !important;
-		transition-duration: .75s;
 		transition-property: max-height;
+		transition-duration: $notification-transition;
+	}
+
+	.umcNotificationTitle {
+		border-color: transparent;
+		transition-property: border-color;
+		transition-duration: $notification-transition;
 	}
 }
 
@@ -101,7 +113,7 @@
 	margin: 0;
 	padding-bottom: 0;
 	padding-top: 0;
-	transition-duration: .75s;
+	transition-duration: $notification-transition;
 	transition-property: opacity, max-height, margin, padding-top, padding-bottom;
 }
 

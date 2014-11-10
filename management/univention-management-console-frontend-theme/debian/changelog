@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.83-1) unstable; urgency=medium
+
+  * Bug #35654: fade text colors of hidden notifications to transparent
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 10 Nov 2014 11:55:58 +0100
+
 univention-management-console-frontend-theme (0.0.82-1) unstable; urgency=medium
 
   * Bug #36435: add margin to module header buttons
