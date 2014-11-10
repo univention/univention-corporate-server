@@ -1,3 +1,12 @@
+univention-management-console (7.1.63-1) unstable; urgency=medium
+
+  * Bug #35847: fix error message in case the user entered a invalid old
+      password or the user does not exists
+  * Bug #35847: Fix case where posix authentication still works (not locked)
+      but acct_mgmt fails because something is expired.
+
+ -- Florian Best <best@univention.de>  Mon, 10 Nov 2014 12:56:40 +0100
+
 univention-management-console (7.1.62-1) unstable; urgency=medium
 
   * Bug #36416: make sure that the appcenter module is also visible in the

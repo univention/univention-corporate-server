@@ -124,6 +124,8 @@ class PamAuth(object):
 
 		try:
 			pam.authenticate()
+			# the following line should be moved to the else block of this exception handling (but POSIX is currently broken), Bug #36319 comment #3
+			self._validate_account(pam)
 		except PAMError as pam_err:
 			AUTH.error("PAM: authentication error: %s" % (pam_err,))
 
@@ -131,9 +133,8 @@ class PamAuth(object):
 				self._validate_account(pam)
 
 			raise AuthenticationFailed(self.error_message(pam_err))
-		self.__workaround_pw_expired = False
-
-		self._validate_account(pam)
+		else:
+			self.__workaround_pw_expired = False
 
 	def _validate_account(self, pam):
 		try:
@@ -175,6 +176,7 @@ class PamAuth(object):
 		def conversation(auth, query_list, data):
 			try:
 				if any(b == PAM_TEXT_INFO or b == PAM_ERROR_MSG for a, b in query_list):
+					# the user must change its password (see PAM_TEXT_INFO/PAM_TEXT_INFO comment above)
 					self.__workaround_pw_expired = True
 				if prompts is not None:
 					prompts.extend([query for query, qt in query_list])

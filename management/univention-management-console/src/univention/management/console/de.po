@@ -320,7 +320,7 @@ msgstr "Das Passwort ist zu einfach"
 
 #: univention/management/console/pam.py:58
 msgid "The password was already used"
-msgstr "Das Passwort wurde schon genutzt"
+msgstr "Das Passwort wurde bereits genutzt"
 
 #: univention/management/console/pam.py:199
 msgid "The reason could not be determined"
