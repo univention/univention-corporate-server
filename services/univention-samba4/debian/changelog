@@ -1,3 +1,9 @@
+univention-samba4 (4.0.1.1) unstable; urgency=medium
+
+  * Bug #36544: samba-ad-dc init script doesn't start/stop nmbd
+
+ -- Arvid Requate <requate@univention.de>  Mon, 10 Nov 2014 17:25:48 +0100
+
 univention-samba4 (4.0.0-8) unstable; urgency=medium
 
   * Make the joinscript fail on a DC Slave if no S4 Connector service

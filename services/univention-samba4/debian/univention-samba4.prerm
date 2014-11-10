@@ -52,8 +52,8 @@ if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
 
 	eval "$(univention-config-registry shell)"
 
-	if [ -x /etc/init.d/samba-ad-dc ]; then
-		/etc/init.d/samba-ad-dc stop
+	if [ -x /etc/init.d/samba ]; then
+		/etc/init.d/samba stop
 	fi
 
 	if [ -n "$slapd_port" ]; then

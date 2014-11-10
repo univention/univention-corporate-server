@@ -189,16 +189,16 @@ if [ "$1" = "configure" ]; then
 			univention-config-registry set samba/enable-msdfs=yes
 		fi
 
-		### The samba-ad-dc restart should always be done on updates
-		if [ -x /etc/init.d/samba-ad-dc ]; then
+		### The samba restart should always be done on updates
+		if [ -x /etc/init.d/samba ]; then
 			processes=$(pgrep -cfx '/usr/sbin/samba -D')
 			if [ "$processes" = 0 ]; then
-				/etc/init.d/samba-ad-dc start
+				/etc/init.d/samba start
 			elif [ "$processes" = 1 ]; then
 				pkill -9 -xf '/usr/sbin/samba -D'
-				/etc/init.d/samba-ad-dc start
+				/etc/init.d/samba start
 			else
-				/etc/init.d/samba-ad-dc restart
+				/etc/init.d/samba restart
 			fi
 		fi
 
@@ -225,7 +225,7 @@ replace: secret
 secret: $machine_secret
 -
 %EOF
-					/etc/init.d/samba-ad-dc restart
+					/etc/init.d/samba restart
 				fi
 			fi
 		fi
