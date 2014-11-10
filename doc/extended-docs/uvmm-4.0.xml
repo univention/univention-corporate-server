@@ -190,7 +190,7 @@
 					<listitem>
 						<simpara>
 							The UCS Linux kernel contained the module <package>blktap</package>, which was used to provide block devices for virtual machines.
-							This module is no longer included in the default kernel, but can be self-compiled using <application>DKSM</application> and the package <package>blktap-dkms</package>.
+							This module is no longer included in the default kernel, but can be self-compiled using <application>DKMS</application> and the package <package>blktap-dkms</package>.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -199,8 +199,8 @@
 					<listitem>
 						<simpara>
 							UCS-3 had its own source code package for <application>Xen</application>, which was used to build several binary packages.
-							They might break an automatic updates, as files might be moved between packages.
-							The package manager <application>dpkg</application> will refuse to install the Debian packages then.
+							This might break an automatic update, as files might be moved between packages.
+							The package manager <application>dpkg</application> will then refuse to install the Debian packages.
 							As such it is advisable to remove the old UCS packages before installing the new Debian based packages.
 						</simpara>
 						<programlisting language="sh">
@@ -228,7 +228,7 @@ univention-install xen
 			<itemizedlist>
 				<listitem>
 					<para>
-						Convert any reference to <application>Xen</application> specific block devices like <filename>/dev/xvd<replaceable>a1</replaceable></filename> in <filename>/etc/fstab</filename> into either a device name independent format using <filename>LABEL=</filename> or <filename>UUID=</filename>, or to <filename>/dev/vda<replaceable>a1</replaceable></filename>.
+						Convert any reference to <application>Xen</application> specific block devices like <filename>/dev/xvd<replaceable>a1</replaceable></filename> in <filename>/etc/fstab</filename> into either a device name independent format using <filename>LABEL=</filename> or <filename>UUID=</filename>, or to <filename>/dev/vd<replaceable>a1</replaceable></filename>.
 					</para>
 				</listitem>
 				<listitem>
@@ -240,7 +240,7 @@ univention-install xen
 				<listitem>
 					<para>
 						Make sure <application>GRUB</application> is installed in directory <filename class="directory">/boot/</filename> and the master boot record (<abbrev>MBR</abbrev>) of the first hard disk.
-						Use the commands <command>fdisk</command>, <command>gdisk></command>, <command>grub-install</command> and <command>update-grub</command> as needed.
+						Use the commands <command>fdisk</command>, <command>gdisk</command>, <command>grub-install</command> and <command>update-grub</command> as needed.
 					</para>
 				</listitem>
 				<listitem>
@@ -266,7 +266,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 				<listitem>
 					<para>
 						On Windows the <emphasis>GPLPV drivers for Xen</emphasis> must be replaced by the <emphasis>VirtIO drivers for QEMU/KVM</emphasis>.
-						They are provided by the package <package>univention-kvm-virtio</package> and available as an ISO image in <filename>/var/lib/livirt/images/</filename>.
+						They are provided by the package <package>univention-kvm-virtio</package> and are available as an ISO image in <filename>/var/lib/livirt/images/</filename>.
 						The exact procedure differs between Windows versions and is beyond the scope of this documentation.
 					</para>
 				</listitem>
@@ -281,10 +281,10 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 				If you have multiple servers it is best to just define a new virtual machine using <application>QEMU/KVM</application> on a new server reusing the existing image files.
 				This is easy if a shared storage is used.
 				Otherwise the image must be copied over to the new server.
-				The exact file path can be queries from &ucsUVMM; or by running the command <command>virsh domblklist "$VM"</command>, where <envar>VM</envar> is the name or UUID of one virtual machine.
+				The exact file path can be queries from &ucsUVMM; or by running the command <command>virsh domblklist "$VM"</command>, where <envar>$VM</envar> is the name or UUID of one virtual machine.
 			</para>
 			<para>
-				Alternatively the configuration files for the virtual machines can be re-usd to re-define the virtual machine on a different server or on the same server after it is updated to run <application>QEMU</application>.
+				Alternatively the configuration files for the virtual machines can be re-used to re-define the virtual machine on a different server or on the same server after it is updated to run <application>QEMU</application>.
 				The command <command>virsh dumpxml "$VM"</command> can be used to generate an XML file describing a single virtual machine.
 				This file must be updated, as there are several differences between <application>Xen</application> and <application>QEMU/KVM</application>:
 			</para>
