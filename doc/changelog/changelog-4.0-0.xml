@@ -401,7 +401,7 @@
 			<listitem><simpara>
 					When the &ucsUCRV; <envar>windows/domain</envar> is derived from the domainname
 					it is automatically truncated to up to 15 characters to conform to netbios
-					restrictions (<ulink url="&ucsbug;35709">Bug 35709</ulink>).
+					restrictions (<ulink url="&ucsbug;36459">Bug 36459</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 					The German <package>firefox</package> package is installed if a desktop
