@@ -840,7 +840,9 @@ END CATEGORY
 	</para>
 
   <para>
-		Der Einrichtungsassistent kann mit der Applikation <emphasis>Active Directory-Verbindung</emphasis>
+		Der Einrichtungsassistent kann direkt bei der UCS Installation durch die Auswahl
+		<emphasis>Einer bestehenden Active-Directory-Domäne beitreten</emphasis> gestartet werden.
+		Nachträglich kann der Einrichtungsassistent mit der Applikation <emphasis>Active Directory-Verbindung</emphasis>
 		aus dem Univention App Center installiert werden. Alternativ kann das Softwarepaket
 		<package>univention-ad-connector</package> installiert werden. Weitere Informationen finden sich in
 		<xref linkend="computers::softwaremanagement::installsoftware"/>.

@@ -790,7 +790,12 @@ END CATEGORY
 	</para>
 
   <para>
-		The set-up wizard can be installed with the app <emphasis>Active Directory Connection</emphasis> from the Univention App Center. Alternatively, the software package <package>univention-ad-connector</package> can be installed. Further information can be found in <xref linkend="computers::softwaremanagement::installsoftware"/>.
+		The set-up wizard can be started directly from the UCS installation by selecting
+		<emphasis>Join into an existing Active Directory domain</emphasis>. Subsequently, the set-up
+		wizard can be installed with the app <emphasis>Active Directory Connection</emphasis> from the
+		Univention App Center. Alternatively, the software package
+		<package>univention-ad-connector</package> can be installed. Further information can be found in
+		<xref linkend="computers::softwaremanagement::installsoftware"/>.
   </para>
 
   <note>
