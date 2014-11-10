@@ -2,7 +2,7 @@
 	<title>General</title>
 	<itemizedlist>
 		<listitem><simpara>
-				The underlying Debian version has been updated to Debian GNU/Linux 7.7 (Wheezy)
+				The underlying Debian version has been updated to Debian GNU/Linux 7.7 (Wheezy) <sbr/>
 				(<ulink url="&ucsbug;33835">Bug 33835</ulink>,
 				 <ulink url="&ucsbug;33836">Bug 33836</ulink>.
 				 <ulink url="&ucsbug;35688">Bug 35688</ulink>,
@@ -12,8 +12,8 @@
 		<listitem><simpara>
 				All Univention packages have been adapted to Dephelper 9 and to Python
 				2.7. In addition the UCR templates have been adapted to the new upstream
-				packages (
-				<ulink url="&ucsbug;33836">Bug 33836</ulink>,
+				packages <sbr/>
+				(<ulink url="&ucsbug;33836">Bug 33836</ulink>,
 				<ulink url="&ucsbug;35135">Bug 35135</ulink>,
 				<ulink url="&ucsbug;35138">Bug 35138</ulink>,
 				<ulink url="&ucsbug;35143">Bug 35143</ulink>,
@@ -69,7 +69,7 @@
 	<title>Univention Installer</title>
 	<itemizedlist>
 		<listitem><simpara>
-				The UCS installation DVD has been revised. The installation is now performed by an adapted version of the Debian installer
+				The UCS installation DVD has been revised. The installation is now performed by an adapted version of the Debian installer <sbr/>
 				(<ulink url="&ucsbug;30547">Bug 30547</ulink>,
 				<ulink url="&ucsbug;34994">Bug 34994</ulink>,
 				<ulink url="&ucsbug;35370">Bug 35370</ulink>,
@@ -117,13 +117,13 @@
 		<title>Linux kernel and firmware packages</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The Linux kernel was updated to 3.16.5 (<ulink url="&ucsbug;33844">Bug 33844</ulink>, <ulink url="&ucsbug;36279">Bug 36279</ulink>).
+				The Linux kernel has been updated to 3.16.5 <sbr/> (<ulink url="&ucsbug;33844">Bug 33844</ulink>, <ulink url="&ucsbug;36279">Bug 36279</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The packages <package>amd64-microcode</package> and <package>intel-microcode</package> were added and are installed by default to provide micro-code updates for AMD and Intel CPUs (<ulink url="&ucsbug;34437">Bug 34437</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The packages <package>virtualbox</package>, <package>open-vm-tools</package>, <package>iscsitarget</package>, <package>openafs</package>, <package>xtables-addons</package>, <package>ndiswrapper</package>, <package>blktap</package> have been updates to newer versions from Debian to support the newer Linux kernel 3.16.
+				The packages <package>virtualbox</package>, <package>open-vm-tools</package>, <package>iscsitarget</package>, <package>openafs</package>, <package>xtables-addons</package>, <package>ndiswrapper</package>, <package>blktap</package> have been updated to newer versions from Debian to support the Linux kernel 3.16.
 				The package <package>openswan</package> has been removed as it's incompatible with said kernel and is unmaintained (<ulink url="&ucsbug;35875">Bug #35875</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -134,6 +134,7 @@
 		</itemizedlist>
 	</section>
 
+<!--
 	<section id="changelog:basis:ucr">
 		<title>Univention Configuration Registry</title>
 		<itemizedlist>
@@ -149,6 +150,7 @@
 			</itemizedlist>
 		</section>
 	</section>
+-->
 
 	<section id="changelog:basis:boot">
 		<title>Boot Loader</title>
@@ -181,7 +183,7 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				Patches for the security issues CVE-2014-3675,
-				CVE-2014-3676, and CVE-2014-3677 were added to the shim.
+				CVE-2014-3676, and CVE-2014-3677 have been added to the shim
 				(<ulink url="&ucsbug;36167">Bug 36167</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -211,14 +213,14 @@
 				(<ulink url="&ucsbug;35697">Bug 35697</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-					MDB is the new default backend database for OpenLDAP (see &ucsUCRV;
-					<envar>ldap/database/type</envar> for OpenLDAP database settings,
-					(<ulink url="&ucsbug;34994">Bug 34994</ulink>).
+					MDB is the new default backend database for OpenLDAP. The backend database can
+					be configured via &ucsUCRV; <envar>ldap/database/type</envar>. The backend is
+					not changed during the update (<ulink url="&ucsbug;34994">Bug 34994</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 					The default search rule for the LDAP attribute
 					<emphasis>univentionInventoryNumber</emphasis> has been adjusted
-					to make searches case insensitive.
+					to make searches case insensitive
 					(<ulink url="&ucsbug;34262">Bug 34262</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -234,7 +236,7 @@
 					restarting the slapd daemon. The default policy is such that
 					5 repeated LDAP authentication failures within a monitoring interval
 					of 5 minutes causes the authenticating account to be locked in UDM.
-					A locked account can only be unlocked via UDM by a Domain Admin.
+					A locked account can only be unlocked via UDM by a Domain Admin
 					(<ulink url="&ucsbug;31907">Bug 31907</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -259,10 +261,13 @@
 			<title>LDAP ACL changes</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Domain controllers and member servers have now the permission to create LDAP
+					objects for cloud connections (<ulink url="&ucsbug;36323">Bug 36323</ulink>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
+<!--
 		<section id="changelog:domain:openldap:schema">
 			<title>LDAP schema changes</title>
 			<itemizedlist>
@@ -278,6 +283,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+-->
 	</section>
 
 	<section id="changelog:domain:dnsserver">
@@ -306,8 +312,10 @@
 			<listitem><simpara>
 				The web interface design has been completely revised also with respect to
 				its rendering on mobile devices (responsive design). Along with this change
-				many details of UMC have been adapted accordingly
-				(<ulink url="&ucsbug;35654">Bug 35654</ulink>, <ulink url="&ucsbug;35499">Bug 35499</ulink>, <ulink url="&ucsbug;36095">Bug 36095</ulink>).
+				many details of UMC have been adapted accordingly <sbr/>
+				(<ulink url="&ucsbug;35654">Bug 35654</ulink>,
+				<ulink url="&ucsbug;35499">Bug 35499</ulink>,
+				<ulink url="&ucsbug;36095">Bug 36095</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The browser compatibility list has been updated to Chrome as of version 33, Firefox
@@ -333,8 +341,8 @@
 			<listitem><simpara>
 					The module now ships an initial archive of the ini files which is
 					used in case no network connection is available when the App Center
-					is queried for the first time (<ulink url="&ucsbug;35683">Bug
-						35683</ulink>).
+					is queried for the first time
+					(<ulink url="&ucsbug;35683">Bug 35683</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 					The Univention App Center now allows to install, uninstall, update
@@ -424,6 +432,7 @@
 		</itemizedlist>
 	</section>
 
+<!--
 	<section id="changelog:umc:license">
 		<title>License module</title>
 		<itemizedlist>
@@ -447,6 +456,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+-->
 
 	<section id="changelog:umc:share">
 		<title>Shares module</title>
@@ -503,12 +513,13 @@
 				(<ulink url="&ucsbug;36207">Bug 36207</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The usability of the Filesystem quota module has been enhanced.
+				The usability of the Filesystem quota module has been enhanced
 				(<ulink url="&ucsbug;36434">Bug 36434</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
+<!--
 	<section id="changelog:umc:ucr">
 		<title>Univention Configuration Registry module</title>
 		<itemizedlist>
@@ -524,6 +535,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+-->
 
 	<section id="changelog:umc:other">
 		<title>Other modules</title>
@@ -563,17 +575,17 @@
 		<title>Development of modules for &ucsUMC;</title>
 		<itemizedlist>
 			<listitem><simpara>
-				UMC modules now may contain a help button which links to related article in the online documentation of UCS.
+				UMC modules now may contain a help button which links to related article in the online documentation of UCS
 				(<ulink url="&ucsbug;32026">Bug 32026</ulink>, <ulink url="&ucsbug;36435">Bug 36435</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The users/self module is no longer used for password changes. The module has been renamed into "User settings" and is deactivated by default.
 				Instead a new module "Change Password" has been added which uses the PAM stack to change user password.
-				Every UMC user is able to use this new module.
+				Every UMC user is able to use this new module
 				(<ulink url="&ucsbug;35847">Bug 35847</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-				A module <emphasis>System diagnostic</emphasis> has been added to UMC which is able to analyse the system for known problems and helps to resolve them.
+				A module <emphasis>System diagnostic</emphasis> has been added to UMC which is able to analyse the system for known problems and helps to resolve them <sbr/>
 				(<ulink url="&ucsbug;34765">Bug 34765</ulink>),
 				(<ulink url="&ucsbug;35866">Bug 35866</ulink>),
 				(<ulink url="&ucsbug;35864">Bug 35864</ulink>).
@@ -596,7 +608,8 @@
 		</simpara></listitem>
 		<listitem><simpara>
 				The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename>
-				have been adapted to the needs of UCS 4.0 (
+				have been adapted to the needs of UCS 4.0  <sbr/>
+				(
 				<ulink url="&ucsbug;36205">Bug 36205</ulink>,
 				<ulink url="&ucsbug;36218">Bug 36218</ulink>,
 				<ulink url="&ucsbug;36228">Bug 36228</ulink>,
@@ -623,6 +636,7 @@
 		</simpara></listitem>
 	</itemizedlist>
 
+<!--
 	<section id="changelog:deployment:cli">
 		<title>Software deployment command line tools</title>
 		<itemizedlist>
@@ -630,6 +644,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+-->
 </section>
 
 
@@ -680,6 +695,8 @@
 		<title>Spam/virus detection and countermeasures</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The freshclam postinst does not abort if the freshclam daemon start failed
+				(<ulink url="&ucsbug;36230">Bug 36230</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -688,10 +705,14 @@
 		<title>Printing services</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The printer models in the join script of
+				<package>univention-printserver</package>  have been updated
+				(<ulink url="&ucsbug;35147">Bug 35147</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
+<!--
 	<section id="changelog:service:nagios">
 		<title>Nagios</title>
 		<itemizedlist>
@@ -731,20 +752,21 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+-->
 </section>
 
 
 <section id="changelog:virt">
-	<title>Virtualisation</title>
+	<title>Virtualization</title>
 
 	<section id="changelog:virt:uvmm">
 		<title>Univention Virtual Machine Manager (UVMM)</title>
 		<itemizedlist>
 			<listitem><simpara>
 				Univention Virtual Machine Manager now supports connections to Cloud Service Providers.
-				Create and manage Amazon EC2 or Openstack connections and virtual machines 
+				Create and manage Amazon EC2 or OpenStack connections and virtual machines 
 				(<ulink url="&ucsbug;32842">Bug 32842</ulink>).
-				The following additional Bugs were discovered and fixed during UCS 4 &ucsUVMM; development: (
+				The following additional Bugs were discovered and fixed during UCS 4 &ucsUVMM; development: <sbr/>(
 					<ulink url="&ucsbug;36139">Bug 36139</ulink>,
 					<ulink url="&ucsbug;36145">Bug 36145</ulink>,
 					<ulink url="&ucsbug;35824">Bug 35824</ulink>,
@@ -785,11 +807,7 @@
 				The <package>VirtIO</package> drivers for Windows have been updated to version 0.1.81 (<ulink url="&ucsbug;36122">Bug 36122</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-				Support for <application>Xen</application> was removed from &ucsUVMM; (<ulink url="&ucsbug;35656">Bug 35656</ulink>).
-			</simpara></listitem>
-			<listitem><simpara>
-				Domain controllers and member servers have now the permission to create LDAP
-				objects for cloud connections (<ulink url="&ucsbug;36323">Bug 36323</ulink>).
+				Support for <application>Xen</application> has been removed from &ucsUVMM; (<ulink url="&ucsbug;35656">Bug 35656</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The notification message about the changeability of instance settings has been 
@@ -815,59 +833,41 @@
 		</itemizedlist>
 	</section>
 
-	<section id="changelog:virt:xen">
-		<title>Xen</title>
-		<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
 </section>
 
 
 <section id="changelog:win">
 	<title>Services for Windows</title>
-	<itemizedlist>
-		<listitem><simpara>
-				Samba has been updated to version 4.2rc2
-				(<ulink url="&ucsbug;35319">Bug 35319</ulink>,
-				 <ulink url="&ucsbug;36090">Bug 36090</ulink>,
-				 <ulink url="&ucsbug;36101">Bug 36101</ulink>).
-		</simpara></listitem>
-	</itemizedlist>
+		<section id="changelog:win:samba">
+		<title>Samba</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Samba has been updated to version 4.2rc2 <sbr/>
+					(<ulink url="&ucsbug;35319">Bug 35319</ulink>,
+					 <ulink url="&ucsbug;35766">Bug 35766</ulink>,
+					 <ulink url="&ucsbug;36090">Bug 36090</ulink>,
+					 <ulink url="&ucsbug;36101">Bug 36101</ulink>).
+				</simpara></listitem>
+				<listitem><simpara>
+						<command>net idmap secret</command> has been renamed to <command>net idmap set secret</command>
+						(<ulink url="&ucsbug;35765">Bug 35765</ulink>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Installation of univention-samba now doesn't any longer automatically run the joinscript.
+						This is because the join process requiresadministrative credentials
+						(<ulink url="&ucsbug;36284">Bug 36284</ulink>).
+				</simpara></listitem>
+				<listitem><simpara>
+						When installing the app Active Directory-compatible Domain Controller on a DC Slave
+						the joinscript aborts now if an S4 Connector has already been installed on
+						the DC Master or on a DC Backup. Additionally the S4 Connector package is installed
+						in this case for purely technical reasons but it is not activated
+						(<ulink url="&ucsbug;35983">Bug 35983</ulink>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
 
-	<section id="changelog:win:nt">
-		<title>Samba NT domain support</title>
-		<itemizedlist>
-			<listitem><simpara>
-					<command>net idmap secret</command> has been renamed to <command>net idmap set secret</command>
-					(<ulink url="&ucsbug;35765">Bug 35765</ulink>).
-			</simpara></listitem>
-			<listitem><simpara>
-					Joining BDCs with Samba 4.2 has been made possible
-					(<ulink url="&ucsbug;35766">Bug 35766</ulink>).
-			</simpara></listitem>
-			<listitem><simpara>
-					Installation of univention-samba now doesn't any longer automatically run the joinscript.
-					This is because the join process requiresadministrative credentials
-					(<ulink url="&ucsbug;36284">Bug 36284</ulink>).
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
-
-	<section id="changelog:win:ad">
-		<title>Samba AD domain support</title>
-		<itemizedlist>
-			<listitem><simpara>
-					When installing the app Active Directory-compatible Domain Controller on a DC Slave
-					the joinscript aborts now if an S4 Connector has already been installed on
-					the DC Master or on a DC Backup. Additionally the S4 Connector package is installed
-					in this case for purely technical reasons but it is not activated.
-					(<ulink url="&ucsbug;35983">Bug 35983</ulink>).
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
-
+<!--
 	<section id="changelog:win:takeover">
 		<title>Univention AD Takeover</title>
 		<itemizedlist>
@@ -875,9 +875,10 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+-->
 
 	<section id="changelog:win:s4c">
-		<title>Univention S4 Connector</title>
+	<title>Univention S4 Connector</title>
 		<itemizedlist>
 			<listitem><simpara>
 					A traceback in the cleanup code of the <emphasis>s4-connector</emphasis> listener
@@ -909,11 +910,6 @@
 				The packages for the deprecated system roles <emphasis>mobile client</emphasis> and <emphasis>managed client</emphasis> have been removed (<ulink url="&ucsbug;31751">Bug 31751</ulink>).
 		</simpara></listitem>
 		<listitem><simpara>
-				The printer models in the join script of
-				<package>univention-printserver</package>  have been updated
-				(<ulink url="&ucsbug;35147">Bug 35147</ulink>).
-		</simpara></listitem>
-		<listitem><simpara>
 				The web browser <package>firefox</package> is now shipped as 64 bit binary on
 				the amd64 platform. Previously it was always shipped as 32 bit application
 				(<ulink url="&ucsbug;35266">Bug 35266</ulink>).
@@ -943,10 +939,6 @@
 		<listitem><simpara>
 				Support for LanMan hashes has been removed in the &ucsUDM; Users module
 				(<ulink url="&ucsbug;32584">Bug 32584</ulink>).
-		</simpara></listitem>
-		<listitem><simpara>
-				The freshclam postinst does not abort if the freshclam daemon start failed
-				(<ulink url="&ucsbug;36230">Bug 36230</ulink>).
 		</simpara></listitem>
 		<listitem><simpara>
 				During the update the package <package>console-tools</package> is replaced with
