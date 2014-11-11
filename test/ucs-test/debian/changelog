@@ -1,3 +1,9 @@
+ucs-test (4.0.178-1) unstable; urgency=low
+
+  * bin/udm-test: pass --bind* credentials as early as possible (Bug #34389). 
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 11 Nov 2014 12:41:10 +0100
+
 ucs-test (4.0.177-1) unstable; urgency=low
 
   * 51_samba4/20backup_parameters_usage: check that backup cron job
