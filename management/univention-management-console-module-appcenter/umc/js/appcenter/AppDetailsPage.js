@@ -669,17 +669,20 @@ define([
 		},
 
 		restartOrReload: function() {
-			// update the list of apps
-			if (this.udmAccessible) {
-				require(['umc/modules/udm/cache'], function(cache) {
-					cache.reset();
-				});
-			}
-			var reloadPage = this.updateApplications().then(lang.hitch(this, function() {
-				return this.reloadPage();
-			}));
-			var reloadModules = UMCApplication.reloadModules();
-			this.standbyDuring(all([reloadPage, reloadModules]));
+			tools.defer(lang.hitch(this, function() {
+				// update the list of apps
+				if (this.udmAccessible) {
+					require(['umc/modules/udm/cache'], function(cache) {
+						cache.reset();
+					});
+				}
+				var reloadPage = this.updateApplications().then(lang.hitch(this, function() {
+					return this.reloadPage();
+				}));
+				var reloadModules = UMCApplication.reloadModules();
+				this.standbyDuring(all([reloadPage, reloadModules]));
+			}), 100);
+			tools.checkReloadRequired(true);
 		},
 
 		_detailFieldCustomUsage: function() {

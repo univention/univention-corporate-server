@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.18-2) unstable; urgency=low
+
+  * Bug #35781: Ask to reload after installing an app
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 11 Nov 2014 14:04:37 +0100
+
 univention-management-console-module-appcenter (4.1.18-1) unstable; urgency=medium
 
   * Bug #36414: adjust app status icons, remove obsolete icons
