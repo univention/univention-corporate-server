@@ -217,7 +217,7 @@
 	  <title>Windows domain joins</title>
 	  <para>
 		The procedure for joining a Windows system to a UCS domain made available via Samba is now
-		described for Windows 7/8, Windows 2012 and Windows XP Professional. The process is similar for other
+		described for Windows 7/8 and Windows 2012. The process is similar for other
 		Windows versions. In addition to the client versions, Windows server systems can also join
 		the domain. Windows servers join the domain as member servers; joining a Windows systems as
 		a domain controller is not supported.
@@ -361,25 +361,6 @@
 			<guimenu>Password</guimenu> input field. The process for joining the domain can then be
 			started by clicking on <mousebutton>OK</mousebutton>.
 		  </para>
-		</section>
-
-		<section id="domain-ldap:Windows_XP_Professional">
-			<title>Windows XP Professional</title>
-			<para>
-				The dialogue for joining domains can be reached by right clicking on the
-				<guimenu>Desktop</guimenu> entry in the start menu. <guimenu>Properties &ar;
-				Computer name &ar; Modify</guimenu> must be selected there.
-			</para>
-			<para>
-				The <guimenu>Domain</guimenu> option field must be ticked and the name of the
-				Samba domain entered in the input field for joining the domain. After clicking
-				on the <mousebutton>OK</mousebutton> button, <emphasis>Administrator</emphasis>
-				must be entered in the input field <guimenu>Name</guimenu> and the password
-				from <emphasis>uid=Administrator,cn=users,&lt;Base-DN&gt;</emphasis>
-				transferred to the <guimenu>Password</guimenu> input field.  The process for
-				joining the domain can then be started by clicking on
-				<mousebutton>OK</mousebutton>.
-			</para>
 		</section>
 	</section>
 
@@ -739,7 +720,7 @@ END
 			The &ucsUCRV; <envar>ldap/idletimeout</envar> is used to configure a time
 			period in seconds after which the LDAP connection is cut off on the server
 			side. When the value is set to 0, no expiry period is in use. The timeout
-			period has been set at six minutes as standard since UCS 3.0.
+			period has been set at six minutes as standard.
 		</para>
 	</section>
 
@@ -922,7 +903,7 @@ slapcat &gt; ldapdata.txt
 	<section id="domain-ldap:Configuration_of_the_directory_service_when_using_Samba_4">
 		<title>Configuration of the directory service when using Samba 4</title>
 		<para>
-			As standard, the OpenLDAP server is configured as of UCS 3.0 in such a way that
+			As standard, the OpenLDAP server is configured in such a way that
 			it also accepts requests from ports 7389 and 7636 in addition to the standard
 			ports 389 and 636.
 		</para>
@@ -933,11 +914,6 @@ slapcat &gt; ldapdata.txt
 			configuration of Syncrepl in particular (see <xref
 			linkend="domain:ldap:syncrepl"/>). <command>univention-ldapsearch</command>
 			uses the standard port automatically.
-		</para>
-		<para>
-			Managed/mobile clients or &ucsMember;s using UCS 2.4-4 continue to use the
-			ports 389/636. Such systems must either use a UCS 2.4-4 domain controller or a
-			UCS 3.x domain controller without Samba 4 as their LDAP server.
 		</para>
 	</section>
 

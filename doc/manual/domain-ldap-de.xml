@@ -225,8 +225,8 @@
 		<title>Windows-Domänenbeitritt</title>
 		<para>
 			Der Domänenbeitritt von Microsoft Windows-Systemen zu einer durch Samba
-			bereitgestellten UCS-Domäne wird nachfolgend für Windows 7/8, Windows 2012 und Windows XP
-			Professional beschrieben. Bei anderen Windows-Versionen funktioniert der
+			bereitgestellten UCS-Domäne wird nachfolgend für Windows 7/8 und Windows 2012
+			beschrieben. Bei anderen Windows-Versionen funktioniert der
 			Beitritt ähnlich. Neben den Client-Versionen können auch Windows Server-Systeme der
 			Domäne beitreten. Windows-Server treten der Domäne als Memberserver bei, ein Beitritt
 			eines Windows-Systems als Domänencontroller wird nicht unterstützt.
@@ -381,25 +381,6 @@
 		  </para>
 		</section>
 
-		<section id="domain-ldap:Windows_XP_Professional">
-			<title>Windows XP Professional</title>
-			<para>
-				Über einen Rechtsklick auf den Eintrag <guimenu>Arbeitsplatz</guimenu>
-				im Startmenü kann der Dialog zum Domänenbeitritt erreicht werden. Dort muss
-				<guimenu>Eigenschaften &ar; Computername &ar; Ändern</guimenu> ausgewählt werden.
-			</para>
-			<para>
-				Für den Domänenbeitritt muss das Optionsfeld <guimenu>Domäne</guimenu>
-				markiert und der Name der Samba-Domäne in das Eingabefeld eingetragen
-				werden. Nach einem Klick auf die Schaltfläche <mousebutton>OK</mousebutton>
-				muss in das Eingabefeld <guimenu>Name</guimenu> der Name
-				<emphasis>Administrator</emphasis> und in das Eingabefeld
-				<guimenu>Kennwort</guimenu> das Passwort von
-				<emphasis>uid=Administrator,cn=users,&lt;Basis-DN&gt;</emphasis> eingetragen
-				werden. Abschließend kann der Domänenbeitritt mit einem Klick auf
-				<mousebutton>OK</mousebutton> gestartet werden.
-			</para>
-		</section>
 	</section>
 
 	<section id="ubuntu-domaenenbeitritt">
@@ -763,7 +744,7 @@ END
 			Mit der &ucsUCRV; <envar>ldap/idletimeout</envar> kann ein Zeitraum in
 			Sekunden konfiguriert werden, nach dessen Ablauf eine LDAP-Verbindung
 			serverseitig geschlossen wird. Wenn der Wert auf 0 gesetzt wird, wird kein
-			Ablaufzeitraum angewendet. Seit UCS 3.0 beträgt der Ablaufzeitraum
+			Ablaufzeitraum angewendet. Der Ablaufzeitraum
 			standardmäßig sechs Minuten.
 		</para>
 	</section>
@@ -956,7 +937,7 @@ slapcat &gt; ldapdaten.txt
 	<section id="domain-ldap:Konfiguration_des_Verzeichnis-Dienstes_bei_Verwendung_von_Samba_4">
 		<title>Konfiguration des Verzeichnis-Dienstes bei Verwendung von Samba 4</title>
 		<para>
-			Standardmäßig ist der OpenLDAP-Server ab UCS 3.0 so konfiguriert, dass er
+			Standardmäßig ist der OpenLDAP-Server so konfiguriert, dass er
 			zusätzlich zu den Standard-Ports 389 und 636 auch auf den Ports 7389 und 7636
 			Anfragen entgegennimmt.
 		</para>
@@ -967,12 +948,6 @@ slapcat &gt; ldapdaten.txt
 			bei der Konfiguration von Syncrepl zu beachten (siehe <xref
 			linkend="domain:ldap:syncrepl"/>). <command>univention-ldapsearch</command>
 			verwendet automatisch den Standard-Port.
-		</para>
-		<para>
-			Managed/Mobile Clients oder &ucsMember; auf Basis von UCS 2.4-4 greifen
-			weiterhin auf Port 389/636 zu. Solche Systeme müssen als LDAP-Server entweder
-			einen Domänencontroller auf Basis von UCS 2.4-4 oder einen UCS
-			3.x-Domänencontroller ohne Samba 4 verwenden.
 		</para>
 	</section>
 
