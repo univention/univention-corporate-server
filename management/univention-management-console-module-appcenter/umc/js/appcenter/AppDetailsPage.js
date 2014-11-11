@@ -682,7 +682,7 @@ define([
 				var reloadModules = UMCApplication.reloadModules();
 				this.standbyDuring(all([reloadPage, reloadModules]));
 			}), 100);
-			tools.checkReloadRequired(true);
+			tools.askToReload();
 		},
 
 		_detailFieldCustomUsage: function() {
