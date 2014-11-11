@@ -60,7 +60,8 @@
 		</simpara></listitem>
 		<listitem><simpara>
 				UEFI SecureBoot support has been added
-				(<ulink url="&ucsbug;28191">Bug 28191</ulink>).
+				(<ulink url="&ucsbug;28191">Bug 28191</ulink>,
+				<ulink url="&ucsbug;35918">Bug 35918</ulink>).
 		</simpara></listitem>
 	</itemizedlist>
 </section>
