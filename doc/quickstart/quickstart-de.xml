@@ -74,7 +74,7 @@
 	beispielsweise ein Gateway und ein Nameserver angegeben wird, der Nameserver aber nicht
 	erreichbar ist, so kann es zu unnötigen Timeouts kommen. In solchen Fällen ist es sinnvoller,
 	kein Gateway anzugeben. Die Netzkonfiguration kann auch über DHCP erfolgen.
-	Sofern bereits ein Nameserver im loklalen Netzwerk vorhanden ist, sollte dieser verwendet
+	Sofern bereits ein Nameserver im lokalen Netzwerk vorhanden ist, sollte dieser verwendet
 	werden. Werden später weitere UCS-Systeme in der Domäne installiert, sollte der &ucsMaster; und
 	ggf. vorhandene &ucsBackup;-Systeme als Nameserver eingetragen werden.
   </para>
@@ -85,12 +85,12 @@
   </figure>
   
   <para>
-	Währen der Installation kann ausgewählt werden, ob das System das erste System in einer neuen
+	Während der Installation kann ausgewählt werden, ob das System das erste System in einer neuen
 	UCS-Domäne sein soll, ob das System einer vorhandenen Active Directory Domäne oder einer
 	UCS-Domäne beitreten soll.
-	Sofern das System das erste in einer neuen UCS-Domäne sein ist oder als erstes UCS-System einer
-	vorhandenen Active Directory-Domäne beitritt, wird als Systemrolle implizit ein &ucsMaster;
-	gewählt. Alle weiteren Systeme treten dann bei Ihrer Installation der UCS-Domne bei. Eine
+	Sofern das System das erste in einer neuen UCS-Domäne ist oder als erstes UCS-System einer
+	vorhandenen Active Directory-Domäne beitritt, wird als Systemrolle implizit &ucsMaster;
+	gewählt. Alle weiteren Systeme treten dann bei Ihrer Installation der UCS-Domäne bei. Eine
 	Ausnahme stellt das Basissystem dar, dieses System tritt keiner Domäne bei und bietet auch kein
 	Managementsystem. Es kommt daher nur in wenigen Szenarien eingesetzt, bspw. als Firewall-System.
 	Eine Übersicht über die verschiedenen weiteren Systemrollen findet sich in <biblioref
@@ -106,7 +106,7 @@
 	Wenn also beispielsweise das Rechnersystem <emphasis>mailserver</emphasis> in der DNS-Domäne
 	<emphasis>firma.local</emphasis> in Betrieb genommen werden soll, ist als vollständiger Rechnername
 	<emphasis>mailserver.firma.local</emphasis> einzutragen. Die <guimenu>LDAP-Basis</guimenu> wird auf
-	Basis des vollständigen Rechnernamens vorgeschlagen und müssen nur in Ausnahmefällen angepasst
+	Basis des vollständigen Rechnernamens vorgeschlagen und muss nur in Ausnahmefällen angepasst
 	werden.  Bei allen anderen Systemrollen reicht es in der Regel nur den Rechnernamen anzugeben. Der
 	Domänenname wird während des Domänenbeitritt vom &ucsMaster; bezogen.  Der Passwort muss min. acht
 	Zeichen umfassen und wird bei der Installation des ersten UCS-Servers (&ucsMaster;) auch als
@@ -124,7 +124,7 @@
   </para>
 
   <para>
-	Nach Bestätigung der Einstellungen startet die Installation. Nach Abschluß der
+	Nach Bestätigung der Einstellungen startet die Installation. Nach Abschluss der
 	Installation muss das System neu gestartet werden. Anschließend erfolgt die weitere
 	Konfiguration über die &ucsUMC; (UMC). Sie wird im folgenden Kapitel beschrieben.
   </para>
@@ -145,7 +145,7 @@
 	Die &ucsUMC; (UMC) ist das zentrale Werkzeug zur webbasierten Administration der
 	UCS-Domäne. Je nach Installations- und Systemrollenauswahl sind auf dem UCS-System
 	unterschiedliche Module verfügbar. Zentraler Bestandteil der UCS-Domäne ist das
-	LDAP-Verzeichnis. Dort werden Domäneninformationen vorgehalten, z.B. Benutzer, Gruppen oder
+	LDAP-Verzeichnis. Dort werden Domäneninformationen gespeichert, z.B. Benutzer, Gruppen oder
 	Rechnerkonten. Diese Informationen werden, je nach Einstellung, komplett oder selektiv auf die
 	anderen Domänencontroller in der Domäne repliziert. Die UMC-Module, die direkt das
 	LDAP-Verzeichnis bearbeiten lassen sich außerdem mit einem Kommandozeilen-Interface bedienen,
@@ -265,7 +265,7 @@
   </para>
 
   <para>
-	Darüberhinaus bietet UCS eine Vielfalt von weiteren Komponenten, die durch die UCS-Lizenz
+	Darüber hinaus bietet UCS eine Vielfalt von weiteren Komponenten, die durch die UCS-Lizenz
 	bereits abgedeckt sind und zu einem späteren Zeitpunkt integriert werden können, z.B.
 
 	<itemizedlist>
@@ -312,7 +312,7 @@
 
 	  <listitem><simpara>
 		Im Univention Wiki (<ulink url="http://wiki.univention.de/"/>) finden sich u.a. verschiedene
-		HOWTOs und Praxis-Tips.
+		HOWTOs und Praxis-Tipps.
 	  </simpara></listitem>
 
 	  <listitem><simpara>

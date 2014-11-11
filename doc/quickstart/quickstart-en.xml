@@ -75,7 +75,7 @@
 
 <!--
 TODO: translation
-	Sofern bereits ein Nameserver im loklalen Netzwerk vorhanden ist, sollte dieser verwendet
+	Sofern bereits ein Nameserver im lokalen Netzwerk vorhanden ist, sollte dieser verwendet
 	werden. Werden später weitere UCS-Systeme in der Domäne installiert, sollte der &ucsMaster; und
 	ggf. vorhandene &ucsBackup;-Systeme als Nameserver eingetragen werden.
 -->
@@ -89,12 +89,12 @@ TODO: translation
 <!--
 TODO: translation
   <para>
-	Währen der Installation kann ausgewählt werden, ob das System das erste System in einer neuen
+	Während der Installation kann ausgewählt werden, ob das System das erste System in einer neuen
 	UCS-Domäne sein soll, ob das System einer vorhandenen Active Directory Domäne oder einer
 	UCS-Domäne beitreten soll.
-	Sofern das System das erste in einer neuen UCS-Domäne sein ist oder als erstes UCS-System einer
-	vorhandenen Active Directory-Domäne beitritt, wird als Systemrolle implizit ein &ucsMaster;
-	gewählt. Alle weiteren Systeme treten dann bei Ihrer Installation der UCS-Domne bei. Eine
+	Sofern das System das erste in einer neuen UCS-Domäne ist oder als erstes UCS-System einer
+	vorhandenen Active Directory-Domäne beitritt, wird als Systemrolle implizit &ucsMaster;
+	gewählt. Alle weiteren Systeme treten dann bei Ihrer Installation der UCS-Domäne bei. Eine
 	Ausnahme stellt das Basissystem dar, dieses System tritt keiner Domäne bei und bietet auch kein
 	Managementsystem. Es kommt daher nur in wenigen Szenarien eingesetzt, bspw. als Firewall-System.
 	Eine Übersicht über die verschiedenen weiteren Systemrollen findet sich in <biblioref
@@ -154,7 +154,7 @@ TODO: translation
 	  Die &ucsUMC; (UMC) ist das zentrale Werkzeug zur webbasierten Administration der
 	  UCS-Domäne. Je nach Installations- und Systemrollenauswahl sind auf dem UCS-System
 	  unterschiedliche Module verfügbar. Zentraler Bestandteil der UCS-Domäne ist das
-	  LDAP-Verzeichnis. Dort werden Domäneninformationen vorgehalten, z.B. Benutzer, Gruppen oder
+	  LDAP-Verzeichnis. Dort werden Domäneninformationen gespeichert, z.B. Benutzer, Gruppen oder
 	  Rechnerkonten. Diese Informationen werden, je nach Einstellung, komplett oder selektiv auf die
 	  anderen Domänencontroller in der Domäne repliziert. Die UMC-Module, die direkt das
 	  LDAP-Verzeichnis bearbeiten lassen sich außerdem mit einem Kommandozeilen-Interface bedienen,
