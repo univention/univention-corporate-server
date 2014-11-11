@@ -34,6 +34,7 @@ __package__='' 	# workaround for PEP 366
 import listener
 import os
 import time
+import subprocess
 import univention.debug as ud
 import univention.config_registry
 ## for the ucr commit below in postrun we need ucr configHandlers
@@ -400,13 +401,21 @@ def reload_daemon(daemon, prefix):
 		ud.debug(ud.LISTENER, ud.INFO, "%s no %s to reload found" % (prefix, daemon) )
 
 def reload_smbd():
-	ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
-	if os.path.exists('/usr/bin/smbcontrol'):
-		listener.run('/usr/bin/smbcontrol', ['smbcontrol', 'smbd', 'reload-config'], uid=0)
-	elif os.path.exists('/usr/bin/pkill'):
-		listener.run('/usr/bin/pkill', ['pkill', '-HUP', 'smbd'], uid=0)
-	else:
-		ud.debug(ud.LISTENER, ud.ERROR, "cups-printers: Need either smbcontrol or pkill to reload smbd")
+	listener.setuid(0)
+	try:
+		ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
+		if os.path.exists('/usr/bin/smbcontrol'):
+			ud.debug(ud.LISTENER, ud.WARN, "cups-printers: running smbcontrol smbd reload-config")
+			subprocess.call(('/usr/bin/smbcontrol', 'smbd', 'reload-config')) 
+			ud.debug(ud.LISTENER, ud.WARN, "cups-printers: running smbcontrol smbd reload-printers")
+			subprocess.call(('/usr/bin/smbcontrol', 'smbd', 'reload-printers')) 
+		elif os.path.exists('/usr/bin/pkill'):
+			ud.debug(ud.LISTENER, ud.WARN, "cups-printers: reloading smb.conf via pkill -HUP smbd")
+			subprocess.call(('/usr/bin/pkill', '-HUP', 'smbd')) 
+		else:
+			ud.debug(ud.LISTENER, ud.ERROR, "cups-printers: Need either smbcontrol or pkill to reload smbd")
+	finally:
+		listener.unsetuid()
 
 def initialize():
 	if not os.path.exists('/etc/samba/printers.conf.d'):
@@ -431,9 +440,4 @@ def clean():
 		listener.unsetuid()
 
 def postrun():
-	global ucr_handlers
-	listener.setuid(0)
-	try:
-			reload_smbd()
-	finally:
-		listener.unsetuid()
+	reload_smbd()

@@ -1,3 +1,9 @@
+univention-printserver (8.0.6-2) unstable; urgency=medium
+
+  * Bug #36578: Improve reloading of smbd for samba4 and samba3 cases
+
+ -- Arvid Requate <requate@univention.de>  Tue, 11 Nov 2014 23:09:33 +0100
+
 univention-printserver (8.0.6-1) unstable; urgency=medium
 
   * Bug #36578: Fix reloading of smbd for samba4 and samba3 cases
