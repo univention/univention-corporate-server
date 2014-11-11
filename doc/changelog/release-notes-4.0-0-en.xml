@@ -52,184 +52,172 @@
 		<title>Release highlights</title>
 
 		<para>
-<!--
-TODO: translation
-			Mit &ucsUCS; 4.0 steht das vierte Major Release für &ucsUCS; (UCS) zur Verfügung. Es
-			umfasst eine Reihe umfangreicher Funktionserweiterungen und -verbesserungen, neue
-			Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten
-			Änderungen im Überblick:
--->
+		  With &ucsUCS; 4.0-0, the fourth major release of &ucsUCS; (UCS) is now available. It
+		  includes all errata updates issued for UCS 3.2-3. It provides an extensive range of new
+		  features and improvements and many bugfixes:
 		</para>
 
-<!--
-TODO: translation
 		<itemizedlist>
-			<listitem><para>
-				Das Design und die Usability der graphischen Administrationsoberfläche &ucsUMC;
-				wurde mit UCS 4.0 komplett überarbeitet. Durch ein responsives Design kann die
-				Administration auch bequem vom Tabelt oder Smartphone erfolgen.
-			</para></listitem>
-			<listitem><para>
-				UCS Virtual Machine Manger (UVMM) kann neben lokalen UCS-Virtualisierungsservern nun
-				auch OpenStack- oder Amazon EC2-Umgebungen administrieren. Dadurch sind hybride Cloud
-				Szenarien mit UCS Out-of-the-Box möglich.
-			</para></listitem>
-			<listitem><para>
-				UCS 4.0 basiert auf Debian GNU/Linux 7.7 (Wheezy). Mehr als 16.000 Source Pakete
-				wurden aktualisiert und an die Bedürfnisse der UCS-Administratoren angepasst. Einige
-				Kernkomponenten, wie OpenLDAP (2.4.40), Samba (4.2rc2) oder der Linux Kernel (3.16)
-				sind in UCS 4.0 aktueller als in Debian GNU/Linux 7.7.
-			</para></listitem>
-			<listitem><para>
-				Die Installation von UCS wurde deutlich vereinfacht. Die Basis-Installation erfolgt
-				auf Basis des Debian Installers, anschließend wird die Konfiguration des Systems
-				Web-basiert abgeschlossen. Die Web-basierte Konfiguration kommt auch bei der
-				manuellen Konfiguration von Cloud-Images oder anderen Appliances zum Einsatz.
-			</para></listitem>
-			<listitem><para>
-				Die Performance des OpenLDAP Verzeichnisdienst wurde deutlich verbessert.
-				standardmäßig wird als Backend für OpenLDAP nun die Memory-Mapped-Datenbank (mdb)
-				verwendet.
-			</para></listitem>
-			<listitem><para>
-				Die Administration von Applikationen innerhalb der UCS-Domäne wird durch ein
-				zentralisiertes App Center noch einfacher. Dadurch können Applikationen von einem
-				System innerhalb der gesamten Domäne installiert werden.
-			</para></listitem>
-			<listitem><para>
-				UCS unterstützt nun auch die Installation auf einem System mit aktiviertem UEFI
-				SecureBoot.
-			</para></listitem>
+		  <listitem><para>
+			The design and the usability of the graphical administration interface &ucsUMC; were
+			completely revamped. By using a responsive design the &ucsUMC; provides improved
+			compatibility to tablets and smartphones.
+		  </para></listitem>
+
+		  <listitem><para>
+			In addition to local virtualization servers the UCS Virtual Machine Manger (UVMM) can
+			now also managed OpenStack or Amazon EC2 environments. This allows the setup of hybrid cloud
+			scenarios.
+		  </para></listitem>
+
+		  <listitem><para>
+			UCS 4.0 is based on Debian GNU/Linux 7.7 (Wheezy). More than 16000 source packages were
+			updated. Selected core components, e.g. wie OpenLDAP (2.4.40), Samba (4.2rc2) or the
+			Linux kernel (3.16) are more recent in UCS compared to Debian GNU/Linux 7.7.
+		  </para></listitem>
+
+		  <listitem><para>
+			The installation of UCS has been simplified. The base installation is based on the
+			Debian installer and finalised using a web-based configuration system. The same system
+			is also used when manually configuration cloud images or other appliances.
+		  </para></listitem>
+
+		  <listitem><para>
+			The performance of the OpenLDAP directory service has been significantly improved. By
+			default the memory-mapped storage backend (mdb) is now used.
+		  </para></listitem>
+
+		  <listitem><para>
+			The management of applications in the UCS domain has been simplified through a
+			centralised App Center. This allows the installation of applications in the entire
+			domain from a single system.
+		  </para></listitem>
+
+		  <listitem><para>
+			UCS now also support the installation on systems using UEFI SecureBoot.
+		  </para></listitem>
 		</itemizedlist>
--->
 	</chapter>
 
-<!--
-TODO: translation
 	<chapter id="relnotes:update">
-		<title>Hinweise zum Update</title>
-			<para>
-				UCS unterstützt das Einspielen von Release Updates. Während der Aktualisierung kann es zu
-				Ausfällen von Diensten innerhalb der Domäne kommen. Aus diesem Grund sollte das Update
-				innerhalb eines Wartungsfensters erfolgen. Grundsätzlich ist es empfohlen das Update
-				zunächst in einer Testumgebung einzuspielen und zu testen. Die Testumgebung sollte
-				dabei identisch zur Produktivumgebung sein. Je nach Systemgeschwindigkeit,
-				Netzwerkanbindung und installierter Software kann das Update zwischen dreißig Minuten
-				und mehreren Stunden dauern.
-			</para>
+		<title>Notes on the update</title>
+		<para>
+		  During the update some services in the domain may not be available, i.e. the update should
+		  occur in a maintenance window. It is recommended to test the update in a separate test
+		  environment prior to the actual update. The test environment should be identical to the
+		  production environment. Depending on the system performance, network connection and the
+		  installed software the update takes between 30 minutes and several hours.
+		</para>
 
 		<section id="relnotes:order">
-			<title>Empfohlene Update-Reihenfolge</title>
-				<para>
-					In Umgebungen mit mehr als einem UCS-System muss die Update-Reihenfolge der
-					UCS-Systeme beachtet werden:
-				</para>
+		  <title>Recommended update order for environments with more than one UCS server</title>
+		  <para>
+			In environments with more than one UCS system, the update order of the UCS systems must
+			be borne in mind:
+		  </para>
 
-				<para>
-					Auf dem &ucsMaster; wird die maßgebliche (authoritative) Version des
-					LDAP-Verzeichnisdienstes vorgehalten, die an alle übrigen LDAP-Server der
-					UCS-Domäne repliziert wird. Da bei Release-Updates Veränderungen an den
-					LDAP-Schemata auftreten können muss der &ucsMaster; bei einem Release-Update immer
-					als erstes System aktualisiert werden.
-				</para>
+		  <para>
+			The authoritative version of the LDAP directory service is maintained on the &ucsMaster;
+			and replicated on all the remaining LDAP servers of the UCS domain. As changes to the
+			LDAP schemes can occur during release updates, the &ucsMaster; must always be the first
+			system to be updated during a release update.
+		  </para>
 		</section>
+
 		<section id="relnotes:mix">
-			<title>Mischbetrieb mit älteren UCS-Systemen</title>
-				<para>
-					UCS 4.0 unterstützt den Mischbetrieb mit UCS 3.2-4 Systemen. Aus diesem Grund müssen
-					nicht alle UCS-Systeme in einem Wartungsfenster auf UCS 4.0 aktualisiert werden. Ein
-					Mischbetrieb mit älteren UCS-Versionen, bspw. UCS 3.1 ist nicht unterstützt.
-				</para>
+		  <title>Mixed operation with older UCS installations</title>
+		  <para>
+			UCS 4.0 supports mixed operation with UCS 3.2-4 systems, i.e. not all systems must be
+			updated in one maintenance windows. Mixed operation with older UCS versions such as
+			UCS 3.1 is not supported.
+		  </para>
 		</section>
+
 		<section id="relnotes:apps">
-			<title>Univention App Center</title>
-				<para>
-					Sofern Applikationen aus dem App Center installiert sind, ist das Update erst
-					dann möglich, wenn alle lokal installierten Applikationen im App Center
-					verfügbar sind. Einige Applikationen werden beim Update ebenfalls auf neure
-					Versionen aktualisiert. Falls eine Applikation noch nicht verfügbar ist, so kann
-					der Zeitpunkt beim Applikationshersteller nachgefragt werden.
-				</para>
+		  <title>Univention App Center</title>
+		  <para>
+			If applications have been installed from the Univention App Center, the update can only
+			be performed once all installed applications are available in a version compatible
+			version. Some applications are updated to newer versions during the update. If an
+			application is not yet available in a compatible version, the release date can be
+			obtained from the company providing the application.
+		  </para>
 		</section>
+
 		<section id="relnotes:samba">
-			<title>Ablösung von Windows NT DC Funktionalität</title>
-				<para>
-					Die Verwendung von Windows NT Domänendiensten, die klassisch durch Samba 3
-					bereitgestellt wurden, ist mit UCS 4.0 nicht mehr empfohlen. Eine Auswahl der
-					Windows NT Domänendienste ist deshalb während der Installation von UCS und durch
-					das App Center nicht mehr vorgesehen. Es wird empfohlen auf die Active Directory
-					Domänendienste von UCS (Samba 4) zu migrieren.
-				</para>
+		  <title>Depreaction of Windows NT domain controller functionality</title>
+		  <para>
+			The use of Windows NT domain services - as traditionally provided by Samba 3 - is no
+			longer recommended with UCS 4.0. Windows NT domain services can no longer be selected
+			during the installation of UCS and in the Univention App Center. We recommend the
+			migration to the Active Directory domain services provided by Samba 4.
+		  </para>
 		</section>
 	</chapter>
--->
 
 	<chapter id="relnotes:prepare">
 		<title>Preparation of update</title>
 
 		<para>
-			It must be checked whether sufficient disk space is available. A standard installation
-			requires a minimum of 6 GB of memory. Depending on the scope of the existing installation,
-			the update will require about another 4 GB of memory for the downloading and
-			installation of the packages.
+		  It must be checked whether sufficient disk space is available. A standard installation
+		  requires a minimum of 6 GB of memory. Depending on the scope of the existing installation,
+		  the update will require about another 4 GB of memory for the downloading and
+		  installation of the packages.
 		</para>
 
 		<para>
-			For the update, a login should be performed on the console with the
-			<emphasis>root</emphasis> user and then the update started there. Alternatively, the
-			update can be initiated using the &ucsUMC;.
+		  For the update, a login should be performed on the console with the
+		  <emphasis>root</emphasis> user and then the update started there. Alternatively, the
+		  update can be initiated using the &ucsUMC;.
 		</para>
 
 		<para>
-			Remote updating via SSH is not recommended as this may result in the update procedure
-			being cancelled if the network connection is interrupted, for example, and this can affect
-			the system. If updating should occur over a network connection nevertheless, it must be
-			verified that the update continues despite disconnection from the network. This can be
-			done, for example, using the tools <command>screen</command> and <command>at</command>,
-			which are installed on all system roles.
+		  Remote updating via SSH is not recommended as this may result in the update procedure
+		  being cancelled if the network connection is interrupted, for example, and this can affect
+		  the system. If updating should occur over a network connection nevertheless, it must be
+		  verified that the update continues despite disconnection from the network. This can be
+		  done, for example, using the tools <command>screen</command> and <command>at</command>,
+		  which are installed on all system roles.
 		</para>
 
 		<section id="relnotes:removed">
-			<title>Removed/unspported Components</title>
-			<para>
-				Some components have been removed and are not shipped any longer with UCS 4.0:
-			</para>
-<!--
-TODO: translation
-			<itemizedlist>
-				<listitem>
-					<para>
-						Der <application>Xen</application> Hypervisor wurde entfernt und wird nicht
-						länger von UCS Virtual Machine Manager unterstützt. Details zur Migration zu
-						<application>KVM</application> befinden sich in <xref linkend="ext-doc-uvmm"/>.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Das Scalix LDAP Schema wurde in UCS 4.0 entfernt. Alle Scalix spezifischen
-						Attribute müssen vor dem Update aus dem LDAP-Verzeichnis entfernt werden.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						<application>PostgreSQL-8.3</application> wurde in UCS 4.0 entfernt.
-						Die Daten müssen von Hand in eine neuere Version migriert werden.
-						Das Vorgehen ist in dem
-						<ulink url="http://sdb.univention.de/1220">SDB-Artikel 1220</ulink>
-						beschrieben.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						<application>Cyrus-2.2</application> wurde in UCS 4.0 entfernt.
-						Die Mailserverdaten müssen von Hand in eine neuere Version migriert
-						werden. Das Vorgehen ist in dem
-						<ulink url="http://sdb.univention.de/1213">SDB-Artikel 1213</ulink>
-						beschrieben.
-					</para>
-				</listitem>
-			</itemizedlist>
--->
+		  <title>Removed/unspported Components</title>
+		  <para>
+			Some components have been removed and are not shipped any longer with UCS 4.0:
+		  </para>
+
+		  <itemizedlist>
+			<listitem>
+			  <para>
+				The <application>Xen</application> has been removed and is no longer supported in
+				the UCS Virtual Machine Manager. The migration to <application>KVM</application> is
+				described in <xref linkend="ext-doc-uvmm"/>.
+			  </para>
+			</listitem>
+
+			<listitem>
+			  <para>
+				The Scalix LDAP schema has been removed in UCS 4.0. All Scalix-specific attributes
+				need to be removed from the LDAP directory before updating.
+			  </para>
+			</listitem>
+
+			<listitem>
+			  <para>
+				<application>PostgreSQL 8.3</application> is no longer provided in UCS 4.0. The
+				migration of the databases to PostgreSQL 8.4 is described in <ulink
+				url="http://sdb.univention.de/1220">SDB article 1220</ulink>.
+			  </para>
+			</listitem>
+
+			<listitem>
+			  <para>
+				<application>Cyrus 2.2</application> is no longer provided in UCS 4.0. The migration
+				of the mail spool to Cyrus 2.4 is described in <ulink
+				url="http://sdb.univention.de/1213">SDB article 1213</ulink>.
+			  </para>
+			</listitem>
+		  </itemizedlist>
 		</section>
 
 	</chapter>
@@ -238,120 +226,111 @@ TODO: translation
 		<title>Postprocessing of the update</title>
 
 		<para>
-			Following the update, new or updated join scripts need to be executed. This can be done in
-			two ways: Either using the UMC module  <guimenu>Domain join</guimenu> or by running the
-			command <command>univention-run-join-scripts</command> as the user
-			<emphasis>root</emphasis>.
+		  Following the update, new or updated join scripts need to be executed. This can be done in
+		  two ways: Either using the UMC module  <guimenu>Domain join</guimenu> or by running the
+		  command <command>univention-run-join-scripts</command> as the user
+		  <emphasis>root</emphasis>.
 		</para>
 
 		<para>
-			Subsequently the UCS system should be restarted.
+		  Subsequently the UCS system should be restarted.
 		</para>
 
 	</chapter>
 
 	<chapter id="relnotes:packages">
-		<title>Further notes on selected packages</title>
+	  <title>Further notes on selected packages</title>
 
-<!--
-TODO: translation
-		<section id="relnotes:instprofil">
-			<title>Netzwerkinstallation von UCS</title>
-			<para>
-				Die Profil-basierte Netzwerkinstallation von UCS steht mit UCS 4.0-0 noch nicht zur
-				Verfügung. Die Unterstützung wird zu einem späteren Zeitpunk nachgeliefert. Der
-				Status kann in unserem Issue Tracker nachvollzogen werden:
-				<ulink url="&ucsbug;35537">Bug 35537</ulink>.
-			</para>
-		</section>
--->
+	  <section id="relnotes:instprofil">
+		<title>Network-based installation of UCS</title>
+		<para>
+		  The profile-based UCS network installation is not yet available in UCS 4.0-0. It will
+		  provided at a later date. Please refer to our issue tracker for furher details:
+		  <ulink url="&ucsbug;35537">Bug 35537</ulink>.
+		</para>
+	  </section>
 
-		<section id="relnotes:usage">
-			<title>Collection of usage statistics</title>
-			<para>
-				Anonymous usage statistics on the use of the &ucsUMC; are collected when using the
-				<emphasis>free for personal use</emphasis> version of UCS (which is generally used for
-				evaluating UCS). The modules opened are logged in an instance of the web traffic analysis
-				tool Piwik. This makes it possible for Univention to tailor the development of the
-				&ucsUMC; better to customer needs and carry out usability improvements.
-			</para>
+	  <section id="relnotes:usage">
+		<title>Collection of usage statistics</title>
+		<para>
+		  Anonymous usage statistics on the use of the &ucsUMC; are collected when using the
+		  <emphasis>free for personal use</emphasis> version of UCS (which is generally used for
+		  evaluating UCS). The modules opened are logged in an instance of the web traffic analysis
+		  tool Piwik. This makes it possible for Univention to tailor the development of the
+		  &ucsUMC; better to customer needs and carry out usability improvements.
+		</para>
+		
+		<para>
+		  This logging is only performed when the free-for-personal-use license is used. The license
+		  status can be verified by clicking on the cog symbol in the top righthand corner of the
+		  &ucsUMC; and selecting <guimenu>License information</guimenu>. If <emphasis>Free for personal use
+		  edition</emphasis> is listed under <guimenu>LDAP base</guimenu>, this version is in
+		  use. When a regular UCS license is used, no usage statistics are collected.
+		</para>
+		
+		<para>
+		  Indendepent of the licence used, the statistics generation can be deactivated by setting
+		  the &ucsUCR; variable <envar>umc/web/piwik</envar> to <emphasis>false</emphasis>.
+		</para>
+	  </section>
 
-			<para>
-				This logging is only performed when the free-for-personal-use license is used. The license
-				status can be verified by clicking on the cog symbol in the top righthand corner of the
-				&ucsUMC; and selecting <guimenu>License information</guimenu>. If <emphasis>Free for personal use
-				edition</emphasis> is listed under <guimenu>LDAP base</guimenu>, this version is in
-				use. When a regular UCS license is used, no usage statistics are collected.
-			</para>
+	  <section id="relnotes:secbrowsers">
+		<title>Scope of security support for Webkit, Konqueror und QtWebKit</title>
+		<para>
+		  Webkit, Konqueror and QtWebkit are shipped in the maintained branch of the UCS repository,
+		  but not covered with security support. Webkit is primarily used for displaying HTML help
+		  pages etc. Firefox should be used as the web browser.
+		</para>
+		
+	  </section>
 
-			<para>
-				Indendepent of the licence used, the statistics generation can be deactivated by setting
-				the &ucsUCR; variable <envar>umc/web/piwik</envar> to <emphasis>false</emphasis>.
-			</para>
-		</section>
+	  <section id="relnotes:browsers">
+		<title>Recommeded browsers for the access to the Univention Management Console</title>
 
-		<section id="relnotes:secbrowsers">
-			<title>Scope of security support for Webkit, Konqueror und QtWebKit</title>
-			<para>
-				Webkit, Konqueror and QtWebkit are shipped in the maintained branch of the UCS repository,
-				but not covered with security support. Webkit is primarily used for displaying HTML help
-				pages etc. Firefox should be used as the web browser.
-			</para>
+		<para>
+		  &ucsUMC; uses numerous Javascript and CSS functions to display the web interface. Cookies
+		  need to be permitted in the browser. The following browsers are recommended:
+		</para>
 
-		</section>
+		<itemizedlist>
+		  <listitem>
+			<para>Chrome as of version 33</para>
+		  </listitem>
 
-		<section id="relnotes:browsers">
-			<title>Recommeded browsers for the access to the Univention Management Console</title>
+		  <listitem>
+			<para>Firefox as of version 24</para>
+		  </listitem>
+		  
+		  <listitem>
+			<para>Internet Explorer as of version 9</para>
+		  </listitem>
+		  
+		  <listitem>
+			<para>Safari and Safari Mobile as of version 7</para>
+		  </listitem>
+		</itemizedlist>
 
-			<para>
-				&ucsUMC; uses numerous Javascript and CSS functions to display the web interface. Cookies
-				need to be permitted in the browser. The following browsers are recommended:
-			</para>
+		<para>
+		  Users with older browsers may experience display or performance problems.
+		</para>
+	  </section>
 
-			<itemizedlist>
-				<listitem>
-					<para>Chrome as of version 33</para>
-				</listitem>
-
-				<listitem>
-					<para>Firefox as of version 24</para>
-				</listitem>
-
-				<listitem>
-				<para>Internet Explorer as of version 9</para>
-				</listitem>
-
-				<listitem>
-				<para>Safari and Safari Mobile as of version 7</para>
-				</listitem>
-			</itemizedlist>
-
-			<para>
-				Users with older browsers may experience display or performance problems.
-			</para>
-		</section>
-
-<!--
-TODO: translation
-		<section id="relnotes:ppolicy">
-			<title>Automatische Kontosperrung</title>
-			<para>
-				Auf Domänencontrollern mit MDB LDAP Backend (z.B. Systeme, die mit UCS 4.0
-				installiert worden sind) kann nun optional das ppolicy LDAP Overlay aktiviert werden,
-				um automatisierte Kontosperrungen bei wiederholten Authentisierungsfehlern zu
-				implementieren. Die Implementation dieser Funktionalität setzt voraus, dass alle
-				Domänencontroller auf UCS 4.0 aktualisiert sind. Dies ist notwendig um
-				Replikationsprobleme zu vermeiden.
-			</para>
-		</section>
--->
+	  <section id="relnotes:ppolicy">
+		<title>Automatic account lockups</title>
+		<para>
+		  On domain controllers using the MDB LDAP backend (e.g. systems installed with UCS 4.0) the
+		  ppolicy LDAP overlay allows automatic account lockups in case of repeated authentication
+		  failures. This can only be used if all domain controllers have been updated to UCS 4.0;
+		  otherwise replication errors may occur.
+		</para>
+	  </section>
 
 	</chapter>
 
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS 3.2-4:
+		  Listed are the changes since UCS 3.2-4:
 		</para>
 
 		&changelog;
