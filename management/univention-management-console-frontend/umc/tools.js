@@ -209,19 +209,19 @@ define([
 					}]
 				});
 			}
-			this._reloadDialog.show();
-			this._reloadDialogOpened = true;
+			if (!this._reloadDialog.open && !this._reloadDialogOpened) {
+				this._reloadDialog.show();
+				this._reloadDialogOpened = true;
+			}
 		},
 
 		checkReloadRequired: function() {
-			if (!this._reloadDialog.open && !this._reloadDialogOpened) {
-				// check if UMC needs a browser reload and prompt the user to reload
-				return this.urlExists('umc/').then(undefined, lang.hitch(this, function(e) {
-					if (e.response.status === 404) {
-						this.askReload();
-					}
-				}));
-			}
+			// check if UMC needs a browser reload and prompt the user to reload
+			return this.urlExists('umc/').then(undefined, lang.hitch(this, function(e) {
+				if (e.response.status === 404) {
+					this.askReload();
+				}
+			}));
 		},
 
 		urlExists: function(moduleURL) {

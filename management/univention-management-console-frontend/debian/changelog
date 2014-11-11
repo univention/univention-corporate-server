@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.99-2) unstable; urgency=low
+
+  * Bug #35781: Add forcing to ask for reload (fix 3)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 11 Nov 2014 23:30:10 +0100
+
 univention-management-console-frontend (4.1.99-1) unstable; urgency=medium
 
   * Bug #35892: fix memory leak in ExpandingTitlePane
