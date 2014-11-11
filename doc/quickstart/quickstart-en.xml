@@ -78,8 +78,8 @@ TODO: translation
 	Sofern bereits ein Nameserver im loklalen Netzwerk vorhanden ist, sollte dieser verwendet
 	werden. Werden später weitere UCS-Systeme in der Domäne installiert, sollte der &ucsMaster; und
 	ggf. vorhandene &ucsBackup;-Systeme als Nameserver eingetragen werden.
-  </para>
 -->
+  </para>
 
   <figure id="quick-systemrole">
 	<title>Selecting the domain setup</title>
@@ -101,9 +101,6 @@ TODO: translation
 	linkend="ucs-systemrole"/>.
   </para>
 -->
-
-  <para>
-  </para>
 
   <para>
 <!--
