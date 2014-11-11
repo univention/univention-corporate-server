@@ -220,7 +220,7 @@ define([
 				var deferred;
 				if (force) {
 					deferred = new Deferred();
-					deferred.reject();
+					deferred.reject({response: {status: 404}});
 				} else {
 					deferred = this.urlExists('umc/');
 				}
