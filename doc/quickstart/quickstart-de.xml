@@ -177,7 +177,7 @@
 
   <para>
 	UCS-Updates (Sicherheits-Updates und kritische Bugfixes) können über das
-	&ucsUMC;-Modul <guimenu>Online Updates</guimenu> installiert werden.
+	&ucsUMC;-Modul <guimenu>Software Aktualisierung</guimenu> installiert werden.
   </para>
 
   <para>
@@ -330,7 +330,7 @@
 
 	  <listitem><simpara>
 		Antworten auf häufig gestellte Fragen gibt es in der Support und Knowledge Base (SDB) zu
-		finden (<ulink url="sdb.univention.de/"/>).
+		finden (<ulink url="http://sdb.univention.de/"/>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
