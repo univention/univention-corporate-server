@@ -321,8 +321,8 @@ if __name__ == '__main__':
 			ucr.handler_set( [ 'repository/mirror/version/start?%s.0-0' % options.major_version ] )
 
 		dvd_version = UCS_Version((options.major_version, options.minor_version, options.patchlevel_version))
-		if not ucr.get('repository/mirror/version/end', '').strip() or (UCS_Version(ucr.get('repository/mirror/version/end').strip()) < dvd_version):
-			ucr.handler_set(['repository/mirror/version/end?%d.%d-%d' % (options.major_version,
+		if not configRegistry.get('repository/mirror/version/end', '').strip() or (UCS_Version(configRegistry.get('repository/mirror/version/end').strip()) < dvd_version):
+			ucr.handler_set(['repository/mirror/version/end=%d.%d-%d' % (options.major_version,
 																		 options.minor_version,
 																		 options.patchlevel_version)])
 
