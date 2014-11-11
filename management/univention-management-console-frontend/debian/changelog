@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.98-3) unstable; urgency=low
+
+  * Bug #35781: Add forcing to ask for reload
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 11 Nov 2014 14:01:09 +0100
+
 univention-management-console-frontend (4.1.98-2) unstable; urgency=medium
 
   * Bug #35654: adjust handling of empty modules loading

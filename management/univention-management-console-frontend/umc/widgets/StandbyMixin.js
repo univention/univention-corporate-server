@@ -31,12 +31,13 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/array",
 	"dojo/has",
 	"dojo/Deferred",
 	"dojo/dom-construct",
 	"dijit/_WidgetBase",
 	"dojox/widget/Standby"
-], function(declare, lang, has, Deferred, construct, _WidgetBase, Standby) {
+], function(declare, lang, array, has, Deferred, construct, _WidgetBase, Standby) {
 	var animImage = Standby.prototype.image;
 	if (!has('ie')) {
 		// for browser != Internet Explorer, we can use an SVG animation
@@ -61,6 +62,8 @@ define([
 			this.inherited(arguments);
 
 			this._standbyStartedDeferred = new Deferred();
+			this._standbyDuringID = 0;
+			this._standbyDuringQueue = [];
 		},
 
 		buildRendering: function() {
@@ -150,15 +153,22 @@ define([
 		standbyDuring: function(deferred, content) {
 			if (!deferred.isFulfilled()) {
 				// dont standby if already finished
+				var id = this._standbyDuringID += 1;
+				var thisEntry = [id, content];
+				this._standbyDuringQueue.push(thisEntry);
 				this.standby(true, content);
-				deferred.then(
-					lang.hitch(this, function() {
+				var finish = lang.hitch(this, function() {
+					this._standbyDuringQueue = array.filter(this._standbyDuringQueue, function(entry) {
+						return id !== entry[0];
+					});
+					if (this._standbyDuringQueue.length) {
+						var oldContent = this._standbyDuringQueue[this._standbyDuringQueue.length - 1];
+						this.standby(true, oldContent);
+					} else {
 						this.standby(false);
-					}),
-					lang.hitch(this, function() {
-						this.standby(false);
-					})
-				);
+					}
+				});
+				deferred.then(finish, finish);
 			}
 			return deferred;
 		}
