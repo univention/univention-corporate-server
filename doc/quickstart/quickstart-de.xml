@@ -286,7 +286,7 @@
 	  </simpara></listitem>
 	  
 	  <listitem><simpara>
-		Virtualisierung mit KVM/Xen <biblioref linkend="ucs-uvmm"/>
+		Hybride Cloudumgebungen <biblioref linkend="ucs-uvmm"/>
 	  </simpara></listitem>
 	</itemizedlist>
   </para>

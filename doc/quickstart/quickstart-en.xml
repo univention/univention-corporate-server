@@ -292,7 +292,7 @@ TODO: translation
 	  </simpara></listitem>
 	  
 	  <listitem><simpara>
-		Virtualisation with KVM / Xen <biblioref linkend="ucs-uvmm"/>
+		Hybrid cloud setups <biblioref linkend="ucs-uvmm"/>
 	  </simpara></listitem>
 	</itemizedlist>
   </para>
