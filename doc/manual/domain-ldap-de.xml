@@ -144,21 +144,16 @@
 			<para>
 				Der Domänenbeitritt kann auch webbasiert über das Modul
 				<guimenu>Domänenbeitritt</guimenu> der &ucsUMC; erfolgen.
-			</para>
-			<para>
 				Da auf einem noch nicht der Domäne beigetretenen System der
 				Administrator-Benutzer noch nicht vorhanden ist, muss die Anmeldung an &ucsUMC;
 				als Benutzer <emphasis>root</emphasis> erfolgen.
 			</para>
 			<para>
-				Auch hier müssen der Benutzername und das Passwort eines Benutzers
-				eingetragen werden, der berechtigt ist, Rechner der Domäne hinzuzufügen.
-			</para>
-			<para>
-				Wie beim Domänenbeitritt über die Kommandozeile ist es auch bei der
-				&ucsUMC; erforderlich, dass ein DNS-Service-Record für den DC Master vorhanden
-				ist. Es besteht hier keine Möglichkeit, den Namen des DC Masters explizit
-				anzugeben.
+				Wie bei der Durchführung über die Kommandozeile sind für Domänenbeitritt
+				Benutzername und Passwort eines Benutzers notwendig, der berechtigt ist,
+				Rechner der Domäne hinzuzufügen.
+				Ebenfalls wird der &ucsMaster; über eine DNS-Abfrage automatisch ermittelt,
+				kann aber auch explizit im angezeigten Dialogfeld eingetragen werden.
 			</para>
 			<para>
 			  Mit der Option <guimenu>Erneut beitreten</guimenu> kann der Domänenbeitritt jederzeit

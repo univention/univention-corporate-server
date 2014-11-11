@@ -138,22 +138,17 @@
 		<section id="linux-domaenenbeitritt-umc">
 			<title>Joining domains with &ucsUMC;</title>
 			<para>
-				A domain can also be joined over the web via the <guimenu>Domain join</guimenu>
+				A domain join can also be carried out web based via the <guimenu>Domain join</guimenu>
 				module of the &ucsUMC;.
-			</para>
-			<para>
 				As the Administrator user does not yet exist on a system which has yet to join
-				the domain, the login to &ucsUMC; is done as the <emphasis>root</emphasis>
-				user.
+				the domain, the login to &ucsUMC; is done as user <emphasis>root</emphasis>.
 			</para>
 			<para>
-				The username and password of a user authorised to add computers to a domain
-				must now be entered in the resulting dialogue.
-			</para>
-			<para>
-				As for the domain joining procedure via the command line, a DNS service record
-				on the DC master is also required for the &ucsUMC;. There is no possibility
-				here of entering the nameof the DC master explicitly.
+				As for the domain joining procedure via the command line, username and password of a
+				user account authorised to add computers to a domain must be entered
+				in the resulting dialogue.
+				Likewise, the &ucsUMC; will be determined automatically via a DNS request, but
+				can also be entered manually.
 			</para>
 			<para>
 			  The <guimenu>Rejoin</guimenu> option can be used to repeat the domain join at any
@@ -171,7 +166,7 @@
 			In the same way, there are also <emphasis>unjoin scripts</emphasis>, which can reset
 			these changes following uninstallation of software components.
 		  </para>
-			
+
 		  <para>
 			Join scripts are stored in the <filename>/usr/lib/univention-install</filename>
 			directory and unjoin scripts in <filename>/usr/lib/univention-uninstall</filename>. Each
