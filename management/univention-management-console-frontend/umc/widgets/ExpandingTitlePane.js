@@ -90,6 +90,7 @@ define([
 			this.parentWidget = this.getParentWidget();
 			this.domNode.parentNode.removeChild(this.domNode);
 			this.domNode = null;
+			this.parentWidget.own(this);
 
 			// add all buffered child widgets to the DOM
 			array.forEach(this._widgets, lang.hitch(this, '__addChild'));
