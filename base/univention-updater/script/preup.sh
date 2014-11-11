@@ -465,6 +465,8 @@ if dpkg -l "firefox" 2>&3 | grep ^ii  >&3 ; then ## Bug #36453
 	echo "done."
 fi
 
+echo "** Starting: apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade" >&3 2>&3
+apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade >&3 2>&3
 
 echo ""
 echo "Starting update process, this may take a while."

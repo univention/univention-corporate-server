@@ -1,3 +1,10 @@
+univention-updater (10.0.41-1) unstable; urgency=medium
+
+  * Added simulated dist-upgrade with Debug::pkgProblemResolver=yes to
+    preup.sh (Bug #36554)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Nov 2014 09:27:11 +0100
+
 univention-updater (10.0.40-1) unstable; urgency=low
 
   * Bug #36269: fixes for univention-repository-create
