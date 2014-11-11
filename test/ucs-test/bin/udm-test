@@ -5,8 +5,16 @@ domaincontroller_master|domaincontroller_backup)
 	exec /usr/sbin/univention-directory-manager "$@"
 	;;
 *)
-	exec /usr/sbin/univention-directory-manager "$@" \
-		--binddn "$(ucr get tests/domainadmin/account)" \
-		--bindpwd "$(ucr get tests/domainadmin/pwd)"
+	module="$1"
+	action="$2"
+	if shift 2
+	then
+		exec /usr/sbin/univention-directory-manager "$module" "$action" \
+			--binddn "$(ucr get tests/domainadmin/account)" \
+			--bindpwd "$(ucr get tests/domainadmin/pwd)" \
+			"$@"
+	else
+		exec /usr/sbin/univention-directory-manager "$@"
+	fi
 	;;
 esac
