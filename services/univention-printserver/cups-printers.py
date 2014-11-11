@@ -375,7 +375,7 @@ def handler(dn, new, old):
 			reload_daemon ('cups', 'cups-printers: ')
 
 		if need_to_reload_samba:
-			reload_daemon ('samba', 'cups-printers: ')
+			reload_smbd()
 
 	if (filter_match(new) or filter_match(old)):
 
@@ -398,6 +398,15 @@ def reload_daemon(daemon, prefix):
 		listener.run(script, [daemon,'reload'], uid=0)
 	else:
 		ud.debug(ud.LISTENER, ud.INFO, "%s no %s to reload found" % (prefix, daemon) )
+
+def reload_smbd():
+	ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
+	if os.path.exists('/usr/bin/smbcontrol'):
+		listener.run('/usr/bin/smbcontrol', ['smbcontrol', 'smbd', 'reload-config'], uid=0)
+	elif os.path.exists('/usr/bin/pkill'):
+		listener.run('/usr/bin/pkill', ['pkill', '-HUP', 'smbd'], uid=0)
+	else:
+		ud.debug(ud.LISTENER, ud.ERROR, "cups-printers: Need either smbcontrol or pkill to reload smbd")
 
 def initialize():
 	if not os.path.exists('/etc/samba/printers.conf.d'):
@@ -425,16 +434,6 @@ def postrun():
 	global ucr_handlers
 	listener.setuid(0)
 	try:
-		run_ucs_commit = False
-		if not os.path.exists('/etc/samba/shares.conf'):
-			run_ucs_commit = True
-		if run_ucs_commit:
-			ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
-		if os.path.exists('/etc/init.d/samba-ad-dc'):
-			initscript = '/etc/init.d/samba-ad-dc'
-			os.spawnv(os.P_WAIT, initscript, ['samba-ad-dc', 'reload'])
-		if os.path.exists('/etc/init.d/samba'):
-			initscript = '/etc/init.d/samba'
-			os.spawnv(os.P_WAIT, initscript, ['samba', 'reload'])
+			reload_smbd()
 	finally:
 		listener.unsetuid()
