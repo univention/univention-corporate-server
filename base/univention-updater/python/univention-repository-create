@@ -43,6 +43,7 @@ from textwrap import dedent
 import univention.config_registry as ucr
 import univention.updater.repository as urepo
 import univention.updater.tools
+from univention.updater.tools import UCS_Version
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
@@ -318,6 +319,12 @@ if __name__ == '__main__':
 		# set start version for synchronsation of repository
 		if options.major_version:
 			ucr.handler_set( [ 'repository/mirror/version/start?%s.0-0' % options.major_version ] )
+
+		dvd_version = UCS_Version((options.major_version, options.minor_version, options.patchlevel_version))
+		if not ucr.get('repository/mirror/version/end', '').strip() or (UCS_Version(ucr.get('repository/mirror/version/end').strip()) < dvd_version):
+			ucr.handler_set(['repository/mirror/version/end?%d.%d-%d' % (options.major_version,
+																		 options.minor_version,
+																		 options.patchlevel_version)])
 
 		# create symbolic link univention-repository
 		try:
