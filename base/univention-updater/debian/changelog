@@ -1,3 +1,9 @@
+univention-updater (9.0.44-3) unstable; urgency=low
+
+  * Bug #36269: fixes for univention-repository-create
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 11 Nov 2014 10:22:45 +0100
+
 univention-updater (9.0.44-2) unstable; urgency=low
 
   * Bug #36269: fixes for univention-repository-create
