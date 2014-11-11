@@ -7,14 +7,14 @@
 
   %entities;
 ]>
-<book lang="de" id="quickstart-de-3.2">
+<book lang="de" id="quickstart-de-4.0">
 <bookinfo>
   <title>Univention Corporate Server</title>
   <subtitle>Quickstart Guide für Univention Corporate Server</subtitle>
   <revhistory>
      <revision>
-        <revnumber>3.2-2</revnumber>
-        <date>24 Jun 2014</date>
+        <revnumber>4.0-0</revnumber>
+        <date>18 Nov 2014</date>
      </revision>
   </revhistory>
 </bookinfo>
@@ -23,7 +23,7 @@
   <title>Einleitung</title>
 
   <para>
-	Univention Corporate Server (UCS) ist ein auf Debian basierendes Serverbetriebssystem
+	Univention Corporate Server (UCS) ist ein auf Debian GNU/Linux basierendes Serverbetriebssystem
 	mit integriertem Managementsystem für die zentrale Verwaltung von Servern, Diensten, Clients,
 	Desktops und Benutzern. 
   </para>
@@ -38,8 +38,8 @@
   <para>
 	Die UCS-Installations-DVD steht unter <ulink
 	url="http://www.univention.de/download-und-support/ucs-download/"/> zum Download bereit.
-	Installations-DVDs sind für die Rechnerarchitekturen amd64 (64 Bit) und i386 (32 Bit) verfügbar. Die Verwendung
-	der 64 Bit-Version wird empfohlen.
+	Die Installations-DVDs ist nur für die Rechnerarchitekturen amd64 (64 Bit). Sie unterstützt den
+	Unified Extensible Firmware Interface-Standard (UEFI) inkl. SecureBoot.
   </para>
 
   <para>
@@ -47,12 +47,6 @@
 	stehen unter <ulink
 	url="http://www.univention.de/download-und-support/ucs-download/vorinstallierte-vm-images/"/>
 	zum Download bereit.
-  </para>
-
-  <para>
-	Für amd64 steht neben der Standard-Installations-DVD auch ein Medium mit Unterstützung für den
-	Unified Extensible Firmware Interface-Standard (UEFI) bereit. Auf Systemen, die nur einen
-	UEFI-Start unterstützen, muss es anstelle der Standard-DVD verwendet werden.
   </para>
 
   <para>
@@ -66,57 +60,62 @@
   <title>Installation</title>
 
   <para>
-	Die Installation erfolgt per menügeführtem Text-Installer und kann sowohl interaktiv, als auch
+	Die Installation erfolgt per menügeführtem Installer und kann sowohl interaktiv, als auch
 	vollständig profilbasiert <biblioref linkend="ext-doc-inst"/> durchgeführt werden. 
   </para>
 
   <para>
-	Die Systemsprache, die Tastaturbelegung und die
-	Zeitzone können je nach lokalen Anforderungen gewählt werden.
-  </para>
-
-  <figure id="quick-systemrole">
-	<title>Auswahl der Systemrolle</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/systemrole-de.png"/>
-  </figure>
-  
-  <para>
-	Das erste System einer UCS-Umgebung ist immer der &ucsMaster;, dieser sollte als Systemrolle
-	ausgewählt werden. Alle anderen System treten dann bei ihrer Installation der UCS-Domäne bei.
-	Eine Übersicht über die verschiedenen weiteren Systemrollen findet sich in <biblioref linkend="ucs-systemrole"/>.
-  </para>
-
-  <para>
-	Im nächsten Dialog wird unter <guimenu>Vollständiger Rechnername</guimenu> der
-	vollqualifizierte Rechnername eingetragen, unter dem der Rechner im Netzwerk erreichbar sein
-	soll. Hier als Domänenname auch ein lokaler Name verwendet werden, z.B. <emphasis>firma.local</emphasis>. 
-	(Wenn das System etwa als Mailserver verwendet werden soll, können die Maildomänen unabhängig
-	vom Domänennamen verwendet werden).
-	Wenn also beispielsweise das Rechnersystem <emphasis>mailserver</emphasis> in der
-	DNS-Domäne <emphasis>firma.local</emphasis> in Betrieb genommen werden soll, ist als
-	vollständiger Rechnername <emphasis>mailserver.firma.local</emphasis> einzutragen. Die <guimenu>LDAP-Basis</guimenu>
-	und die <guimenu>Windows-Domäne</guimenu> werden auf Basis des vollständigen Rechnernamens
-	vorgeschlagen und müssen nur in Ausnahmefällen angepasst werden.
-	Der Root-Passwort muss min. acht Zeichen umfassen und wird bei der Installation des ersten
-	UCS-Servers (&ucsMaster;) auch als Passwort für den <emphasis>Administrator</emphasis>-Benutzer gesetzt.
-  </para>
-  
-  <para>
-	Während der Installation kann eine Autopartitionierung verwendet werden, die standardmäßig die
-	erste Festplatte im System als LVM erzeugt.
-	Falls eine Festplattenverschlüsselung oder Software-RAID verwendet werden soll, so ist die
-	Partitionierung im Experten-Modus durchzuführen. Dies ist in der erweiterten
-	Installations-Dokumentation geschrieben <biblioref linkend="ext-doc-inst"/>. 
-	Für den Einsatz von RAID empfehlen wir den Einsatz eines Hardware-RAID-Controllers. 
+	Die Systemsprache, die Tastaturbelegung und die Zeitzone können je nach lokalen Anforderungen
+	gewählt werden.
   </para>
 
   <para>
 	Während der Installation sollte eine korrekte Netzwerkkonfiguration eingestellt werden. Wenn
 	beispielsweise ein Gateway und ein Nameserver angegeben wird, der Nameserver aber nicht
 	erreichbar ist, so kann es zu unnötigen Timeouts kommen. In solchen Fällen ist es sinnvoller,
-	kein Gateway anzugeben.
-	Die Netzkonfiguration kann auch über DHCP erfolgen, etwa wenn UCS bei einem Cloud-Provider ohne
-	statische IP-Adresse eingesetzt wird.
+	kein Gateway anzugeben. Die Netzkonfiguration kann auch über DHCP erfolgen.
+	Sofern bereits ein Nameserver im loklalen Netzwerk vorhanden ist, sollte dieser verwendet
+	werden. Werden später weitere UCS-Systeme in der Domäne installiert, sollte der &ucsMaster; und
+	ggf. vorhandene &ucsBackup;-Systeme als Nameserver eingetragen werden.
+  </para>
+
+  <figure id="quick-systemrole">
+	<title>Auswahl der Domäneneinstellungen</title>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations/systemrole-de.png"/>
+  </figure>
+  
+  <para>
+	Währen der Installation kann ausgewählt werden, ob das System das erste System in einer neuen
+	UCS-Domäne sein soll, ob das System einer vorhandenen Active Directory Domäne oder einer
+	UCS-Domäne beitreten soll.
+	Sofern das System das erste in einer neuen UCS-Domäne sein ist oder als erstes UCS-System einer
+	vorhandenen Active Directory-Domäne beitritt, wird als Systemrolle implizit ein &ucsMaster;
+	gewählt. Alle weiteren Systeme treten dann bei Ihrer Installation der UCS-Domne bei. Eine
+	Ausnahme stellt das Basissystem dar, dieses System tritt keiner Domäne bei und bietet auch kein
+	Managementsystem. Es kommt daher nur in wenigen Szenarien eingesetzt, bspw. als Firewall-System.
+	Eine Übersicht über die verschiedenen weiteren Systemrollen findet sich in <biblioref
+	linkend="ucs-systemrole"/>.
+  </para>
+
+  <para>
+	Im weiteren Verlauf der Installation wird bei einem &ucsMaster; der vollqualifizierte
+	Rechnername eingetragen, unter dem der Rechner im Netzwerk erreichbar sein soll. Hier als
+	Domänenname auch ein lokaler Name verwendet werden, z.B. <emphasis>firma.local</emphasis>.  (Wenn
+	das System etwa als Mailserver verwendet werden soll, können die Maildomänen unabhängig vom
+	Domänennamen verwendet werden).
+	Wenn also beispielsweise das Rechnersystem <emphasis>mailserver</emphasis> in der DNS-Domäne
+	<emphasis>firma.local</emphasis> in Betrieb genommen werden soll, ist als vollständiger Rechnername
+	<emphasis>mailserver.firma.local</emphasis> einzutragen. Die <guimenu>LDAP-Basis</guimenu> wird auf
+	Basis des vollständigen Rechnernamens vorgeschlagen und müssen nur in Ausnahmefällen angepasst
+	werden.  Bei allen anderen Systemrollen reicht es in der Regel nur den Rechnernamen anzugeben. Der
+	Domänenname wird während des Domänenbeitritt vom &ucsMaster; bezogen.  Der Passwort muss min. acht
+	Zeichen umfassen und wird bei der Installation des ersten UCS-Servers (&ucsMaster;) auch als
+	Passwort für den <emphasis>Administrator</emphasis>-Benutzer gesetzt.
+  </para>
+  
+  <para>
+	Während der Installation kann eine Autopartitionierung verwendet werden, die standardmäßig die
+	erste Festplatte im System als LVM erzeugt.
   </para>
 
   <para>
@@ -144,30 +143,18 @@
 
   <para>
 	Die &ucsUMC; (UMC) ist das zentrale Werkzeug zur webbasierten Administration der
-	UCS-Domäne. UMC unterstützt zwei grundlegende Arten von Modulen:
-
-	<itemizedlist>
-	  <listitem><simpara>
-		<emphasis>Domänen-Module</emphasis> verwalten alle im LDAP-Verzeichnis vorgehaltenen
-		Daten, z.B. Benutzer, Gruppen oder Rechnerkonten. Alle hier vorgenommenen Änderungen
-		gelten für die gesamte Domäne und werden automatisch an alle anderen LDAP-Server der Domäne
-		repliziert. Domänen-Module werden nur bei der Anmeldung auf &ucsMaster;
-		und &ucsBackup; angezeigt. Alle Domänen-Module lassen sich außerdem mit einem
-		Kommandozeilen-Interface bedienen, dem &ucsUDM; <biblioref linkend="ucs-udm"/>.
-	  </simpara></listitem>
-
-	  <listitem><simpara>
-		<emphasis>System-Module</emphasis> erlauben die Konfiguration oder Verwaltung eines
-		einzelnen Systems, z.B. das Starten oder Stoppen von Diensten oder die Installation von
-		weiterer Software.
-	  </simpara></listitem>
-	</itemizedlist>
+	UCS-Domäne. Je nach Installations- und Systemrollenauswahl sind auf dem UCS-System
+	unterschiedliche Module verfügbar. Zentraler Bestandteil der UCS-Domäne ist das
+	LDAP-Verzeichnis. Dort werden Domäneninformationen vorgehalten, z.B. Benutzer, Gruppen oder
+	Rechnerkonten. Diese Informationen werden, je nach Einstellung, komplett oder selektiv auf die
+	anderen Domänencontroller in der Domäne repliziert. Die UMC-Module, die direkt das
+	LDAP-Verzeichnis bearbeiten lassen sich außerdem mit einem Kommandozeilen-Interface bedienen,
+	dem &ucsUDM; <biblioref linkend="ucs-udm"/>.
   </para>
-
 
   <figure id="quick-umclogin">
 	<title>Module in der UMC</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/umc-modules-de.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations/umc-modules-de.png"/>
   </figure>
 
 </chapter>
@@ -199,7 +186,7 @@
 
 	<figure id="quick-appcenter">
 	  <title>Nachträgliche Installation von UCS-Komponenten</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/appcenter-de.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations/appcenter-de.png"/>
 	</figure>
 
   </para>
@@ -224,7 +211,7 @@
 
   <figure id="quick-ucr">
 	<title>Verwaltung von &ucsUCR;-Variablen</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/ucr-de.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations/ucr-de.png"/>
   </figure>
 
 </chapter>
