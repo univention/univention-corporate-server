@@ -401,6 +401,11 @@
 					(<ulink url="&ucsbug;35709">Bug 35709</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
+					System setup cleanup scripts are now called via an at job in order
+					to avoid problems while UMC server components are restarted
+					(<ulink url="&ucsbug;36543">Bug 36543</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
 					When the &ucsUCRV; <envar>windows/domain</envar> is derived from the domainname
 					it is automatically truncated to up to 15 characters to conform to netbios
 					restrictions (<ulink url="&ucsbug;36459">Bug 36459</ulink>).
