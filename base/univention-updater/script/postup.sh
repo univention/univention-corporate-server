@@ -117,6 +117,15 @@ then
 	switch_to_openjdk7
 fi
 
+# reinstall apps
+for app in $update_ucs40_installedapps; do
+	case "$(dpkg-query -W -f '${Status}' $app 2>/dev/null)" in
+	"deinstall ok config-files") install "$app";;
+	esac
+done
+ucr unset update/ucs40/installedapps  >>"$UPDATER_LOG" 2>&1
+
+
 if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
 	install univention-basesystem
 elif [ "$server_role" = "domaincontroller_master" ]; then
@@ -189,8 +198,8 @@ fi
 
 # Move to mirror mode for previous errata component
 ucr set \
-	repository/online/component/3.2-3-errata=false \
-	repository/online/component/3.2-3-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
+	repository/online/component/3.2-4-errata=false \
+	repository/online/component/3.2-4-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
 
 # Set errata component for UCS 4.0-0
 ucr set \

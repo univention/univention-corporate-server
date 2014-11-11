@@ -1,3 +1,10 @@
+univention-updater (10.0.43-1) unstable; urgency=medium
+
+  * Reinstall Apps and components if they have been deinstalled during
+    the upgrade (Bug #36558)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Nov 2014 10:57:08 +0100
+
 univention-updater (10.0.42-2) unstable; urgency=low
 
   * Bug #36269: fixes for univention-repository-create
