@@ -373,7 +373,7 @@
 			<listitem><simpara>
 				After deactivating DHCP in the appliance wizard and switching to manual
 				network configuration, the network interface remained in DHCP mode and
-				ignored the static network configuration
+				ignored the static network configuration. This issue has been fixed
 				(<ulink url="&ucsbug;35601">Bug 35601</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -408,7 +408,7 @@
 		<title>Users module</title>
 		<itemizedlist>
 			<listitem><simpara>
-				In AD/member mode users and clients syncronized from Active Directroy
+				In AD member mode users and clients synchronized from Active Directory
 				are now ignored in the license count
 				(<ulink url="&ucsbug;35647">Bug 35647</ulink>).
 		  </simpara></listitem>
@@ -608,7 +608,7 @@
 						mail/postfix/cron/recreate/dh/parameter
 					</simpara></listitem>
 				</itemizedlist>
-				During installation and this update univention-mail-postfix creates 
+				During installation of this update univention-mail-postfix creates 
 				a set of DH parameter files for EDH ciphers to use instead of the built-in
 				parameters. Also, a cronjob /etc/cron.d/univention-mail-postfix has been
 				added to weekly recreate the DH parameter files (creating/recreating
@@ -757,7 +757,7 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				The backup script univention-samba4-backup now
-				ignores the tar file changed as we read it warning
+				ignores the tar file changed as we read its warning
 				(<ulink url="&ucsbug;35392">Bug 35392</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -784,7 +784,7 @@
 		<title>Univention AD Takeover</title>
 		<itemizedlist>
 			<listitem><simpara>
-				When running AD takeover out of AD member mode its necessary to flush
+				When running AD takeover out of AD member mode it's necessary to flush
 				samba caches to steer clear of IDMAP issues
 				(<ulink url="&ucsbug;35564">Bug 35564</ulink>).
 		</simpara></listitem>
@@ -803,7 +803,7 @@
 				been fixed (<ulink url="&ucsbug;33263">Bug 33263</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The SID synchroniation from OpenLDAP to Samba 4 has been fixed. This is
+				The SID synchronization from OpenLDAP to Samba 4 has been fixed. This is
 				used in UCS@school environments (<ulink url="&ucsbug;35626">Bug 35626</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -829,7 +829,7 @@
 				functions (<ulink url="&ucsbug;35251">Bug 35251</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The S4 connector doesn't no longer delete the OpenLAD domain
+				The S4 connector doesn't no longer delete the OpenLDAP domain
 				controller object if the deleted Samba 4 object was a Windows
 				computer (<ulink url="&ucsbug;35563">Bug 35563</ulink>).
 			</simpara></listitem>
