@@ -210,7 +210,7 @@ if [ $? -ne 1 ]; then
 			if [ -n "$dcaccount" -a -n "$password_file" ]; then
 				# Copy to a temporary password file, because univention-join
 				# will copy the file to the same directory on the master
-				# with the given user credentials. This won't work.
+				# with the given user credentials. This will not work.
 				pwd_file="$(mktemp)"
 				cp "$password_file" "$pwd_file"
 				/usr/share/univention-join/univention-join -dcaccount "$dcaccount" -dcpwd "$pwd_file"
@@ -263,6 +263,9 @@ fi
 
 # Restart NSCD
 test -x /etc/init.d/nscd && invoke-rc.d nscd restart
+
+# Start atd as the appliance cleanup script is started as at job
+test -x /etc/init.d/atd && invoke-rc.d atd start
 
 # Commit PAM files, workaround for
 #   https://forge.univention.org/bugzilla/show_bug.cgi?id=26846

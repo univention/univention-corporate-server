@@ -1,3 +1,9 @@
+univention-system-setup (8.1.57-2) unstable; urgency=medium
+
+  * Bug #36543: make sure that atd is running before performing cleanup
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 11 Nov 2014 13:34:02 +0100
+
 univention-system-setup (8.1.57-1) unstable; urgency=medium
 
   * Bug #36543: call cleanup functionality via a separate script as at job;
