@@ -35,7 +35,7 @@
   </para>
 
   <para>
-	The installation DVD can be downloaded from the Univention website at <ulink url="http://www.univention.com/download-and-support/ucs-download/"/>.
+	The installation DVD can be downloaded from the Univention website at <ulink url="https://www.univention.com/downloads/ucs-download/iso-installation-image/"/>.
 	Installation DVDs are available for the amd64 (64-bit) and i386 (32-bit) CPU
 	architectures. The installation of the 64 bit version is recommended.
   </para>
@@ -43,7 +43,7 @@
   <para>
 	Alternatively preinstalled images for VMWare and VirtualBox can be used. These are available for
 	download at <ulink
-	url="http://www.univention.de/download-und-support/ucs-download/vorinstallierte-vm-images/"/>..
+	url="https://www.univention.com/downloads/ucs-download/preinstalled-vm-images/"/>..
   </para>
 
   <para>
@@ -180,7 +180,7 @@
   <title>UCS updates / Installing additional software</title>
 
   <para>
-	UCS updates can be installed in the UMC module <guimenu>Online updates</guimenu>.
+	UCS updates can be installed in the UMC module <guimenu>Software update</guimenu>.
   </para>
 
   <para>
@@ -329,7 +329,7 @@
 
 	  <listitem><simpara>
 		Answers to frequently asked questions can be found in the support and knowledge database (SDB)
-		(<ulink url="sdb.univention.de/"/>).
+		(<ulink url="http://sdb.univention.de/"/>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
