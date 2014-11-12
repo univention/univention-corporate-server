@@ -475,7 +475,7 @@
 
 		<figure id="nagios-service">
 			<title>Configuring a Nagios service</title>
-			<graphic scalefit="1" width="60%" fileref="illustrations/nagios-object_EN.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations/nagios-object_EN.png"/>
 		</figure>
 
 		<para>
@@ -881,7 +881,7 @@
 
 		<figure id="nagios-assign">
 			<title>Assigning Nagios checks to a host</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/nagios-services_EN.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations/nagios-services_EN.png"/>
 		</figure>
 
 		<table>

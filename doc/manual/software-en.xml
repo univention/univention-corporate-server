@@ -453,7 +453,7 @@ univention-repository-update -h
 	  </para>
 
 	  <figure id="software-umcupdate"><title>Updating a UCS system in UMC</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/software_onlineupdate_en.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations/software_onlineupdate_en.png"/>
 	  </figure>
 
 	  <para>
@@ -540,7 +540,7 @@ univention-repository-update -h
 
 	  <figure id="software-policyupdate">
 		<title>Updating UCS systems using a release policy</title>
-		<graphic scalefit="1" width="50%" fileref="illustrations/software_policy_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations/software_policy_en.png"/>
 	  </figure>
 
 	  <para>
@@ -649,7 +649,7 @@ univention-repository-update -h
 
 	  <figure id="appcenter-ucscomponents">
 		<title>Selection of UCS components in the App Center</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/appcenter-ucs-en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations/appcenter-ucs-en.png"/>
 	  </figure>
 
 	</section>
@@ -663,7 +663,7 @@ univention-repository-update -h
 
 	  <figure id="software-umcinstall">
 		<title>Installing the package univention-squid in the Univention Management Console</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/software_install_en1.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations/software_install_en1.png"/>
 	  </figure>
 
 	  <para>
@@ -954,7 +954,7 @@ apt-cache search fax
 
 	  <figure id="software-repocomponent">
 		<title>Configuring a repository component in UMC</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/software_repository_en2.png"/>
+		<graphic scalefit="1" width="90%" align="center" fileref="illustrations/software_repository_en2.png"/>
 	  </figure>
 
 	  <para>
@@ -1167,7 +1167,7 @@ ucr set repository/online/component/ucsschool/description="UCS@School packages" 
 
 	<figure id="software-monitor">
 	  <title>Searching for packages in the software monitor</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/software_softwaremonitor_en.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations/software_softwaremonitor_en.png"/>
 	</figure>
 
 	<para>

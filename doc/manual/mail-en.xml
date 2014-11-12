@@ -226,7 +226,7 @@
 	  <para>
 		<figure id="mail-mailinglist">
 		  <title>Creating a mailing list</title>
-		  <graphic scalefit="1" width="90%" fileref="illustrations/mail_mailinglist_en.png"/>
+		  <graphic scalefit="1" width="90%" align="center" fileref="illustrations/mail_mailinglist_en.png"/>
 		</figure>
 	  </para>
 	  <para>
@@ -324,7 +324,7 @@
 	  <para>
 		<figure id="mail-sharedfolder">
 		  <title>Creating a shared IMAP folder</title>
-		  <graphic scalefit="1" width="80%" fileref="illustrations/mail_imapfolder_en.png"/>
+		  <graphic scalefit="1" width="100%" fileref="illustrations/mail_imapfolder_en.png"/>
 		</figure>
 	  </para>
 	  <para>

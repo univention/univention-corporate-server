@@ -117,7 +117,7 @@ eingetragen/modifiziert oder entfernt.
 </para>
 
 <figure><title>Anlegen einer Freigabe in UMC</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/projekt-freigabe_DE.png"/>
+ <graphic scalefit="1" width="100%" fileref="illustrations/projekt-freigabe_DE.png"/>
 </figure>
 
 <table>
@@ -1094,7 +1094,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 
 	<figure>
 	  <title>Aktivierung von Quota</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/quota-overview-en.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations/quota-overview-en.png"/>
 	</figure>
 
 	<para>

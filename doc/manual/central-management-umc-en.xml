@@ -88,7 +88,7 @@
 		</para>
 		<figure id="umc-login">
 		<title>UMC login mask</title>
-			<graphic scalefit="1" width="50%" fileref="illustrations/umc_login_en.png"/>
+			<graphic scalefit="1" width="25%" fileref="illustrations/umc_login_en.png"/>
 		</figure>
 		<para>
 			Once the URL has been opened, a login mask is displayed in which
@@ -148,7 +148,7 @@
 		</para>
 		<figure id="umc-license">
 			<title>Displaying the UCS license</title>
-			<graphic scalefit="1" width="40%" fileref="illustrations/umc_ffpu_en.png"/>
+			<graphic scalefit="1" width="70%" align="center" fileref="illustrations/umc_ffpu_en.png"/>
 		</figure>
 		<para>
 		  The <guimenu>Import new license</guimenu> menu entry can be used to activate a license key
@@ -187,7 +187,7 @@
 		</para>
 		<figure id="umc-modules">
 			<title>Module overview</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/umc_modules_en.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations/umc_modules_en.png"/>
 		</figure>
 		<para>
 			The configuration properties/possibilities of the domain
@@ -254,7 +254,7 @@
 
 			<figure id="umc-search">
 				<title>Searching for users</title>
-				<graphic scalefit="1" width="80%" fileref="illustrations/umc_user_en.png"/>
+				<graphic scalefit="1" width="100%" fileref="illustrations/umc_user_en.png"/>
 			</figure>
 		</section>
 
@@ -389,7 +389,7 @@
 	</para>
 	<figure id="umc-navigation">
 		<title>Navigating the LDAP directory</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/umc_navigation_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations/umc_navigation_en.png"/>
 	</figure>
 	<para>
 		The left half of the screen shows the LDAP directory as a tree
@@ -411,7 +411,7 @@
 	</para>
 	<figure id="umc-container-edit">
 		<title>Editing LDAP container settings</title>
-		<graphic scalefit="1" width="20%" fileref="illustrations/umc_navigation_edit_en.png"/>
+		<graphic scalefit="1" width="30%" fileref="illustrations/umc_navigation_edit_en.png"/>
 	</figure>
 	<para>
 		Right-clicking on an element in the tree structure allows edititing
@@ -599,7 +599,7 @@
 	</para>
 	<figure id="umc-extended-attr">
 		<title>Extended attribute for managing a car license</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/umc_extended_attribute_en.png"/>
+		<graphic scalefit="1" width="90%" align="center" fileref="illustrations/umc_extended_attribute_en.png"/>
 	</figure>
 	<para>
 		Extended attributes can be internationalized. In this case, the name
@@ -1766,7 +1766,7 @@ univention-directory-manager settings/extended_attribute create \
 
 	  <figure id="umc-report">
 		<title>Creating a report</title>
-		<graphic scalefit="1" width="20%" fileref="illustrations/umc_report_en2.png"/>
+		<graphic scalefit="1" width="45%" fileref="illustrations/umc_report_en2.png"/>
 	  </figure>
 	  
 	  <para>

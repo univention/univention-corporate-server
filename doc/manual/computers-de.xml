@@ -624,7 +624,7 @@
                     direkt gesetzt werden können. Die Variablen sind in den einzelnen Abschnitten
                     zusätzlich in Klammern aufgeführt.
                     <figure id="network-settings"><title>Konfiguration der Netzwerkeinstellungen</title>
-                        <graphic scalefit="1" width="80%" fileref="illustrations/computers_network_de.png"/>
+                        <graphic scalefit="1" width="90%" align="center" fileref="illustrations/computers_network_de.png"/>
                     </figure>
                     Unter <guimenu>IPv4-Netzwerkgeräte</guimenu> und
                     <guimenu>IPv6-Netzwerkgeräte</guimenu> werden alle im System verfügbaren
@@ -1114,7 +1114,7 @@ ucr unset umc/modules/setup/network/disabled/by
             <guimenu>NFS-Freigabe</guimenu>, die unter dem in <guimenu>Mount
             point</guimenu> angegebenen Dateipfad eingehängt wird.
             <figure id="nfs-mount"><title>Einbinden einer NFS-Freigabe</title>
-                <graphic scalefit="1" width="60%" fileref="illustrations/computers_policy_nfsshare_de.png"/>
+                <graphic scalefit="1" width="100%" fileref="illustrations/computers_policy_nfsshare_de.png"/>
             </figure>
 			</para>
         </section>
@@ -1502,7 +1502,7 @@ master.firma.de
                 werden.
             </para>
                 <figure id="policy-mailsize"><title>Konfiguration der maximalen Mailgröße über eine Richtlinie</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations/computers_policy_mailsize_de.png"/>
+                    <graphic scalefit="1" width="100%" fileref="illustrations/computers_policy_mailsize_de.png"/>
                 </figure>
             <para>
                 Zuerst muss für die anzulegende Richtlinie ein <guimenu>Name</guimenu>
@@ -1681,7 +1681,7 @@ if configRegistry.get('version/version') and \
                 festgelegt.
             </para>
                 <figure id="language-settings"><title>Konfiguration der Spracheinstellungen</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations/computers_timezone_de.png"/>
+                    <graphic scalefit="1" width="100%" fileref="illustrations/computers_timezone_de.png"/>
                 </figure>
             <para>
                 Das <guimenu>Tastaturlayout</guimenu> im Menüpunkt
@@ -1697,7 +1697,7 @@ if configRegistry.get('version/version') and \
                 gestoppt werden.
             </para>
                 <figure id="umc-services"><title>Übersicht der Systemdienste</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations/umc-systemservices.png"/>
+                    <graphic scalefit="1" width="90%" align="center" fileref="illustrations/umc-systemservices.png"/>
                 </figure>
             <para>
                 In der Liste aller auf dem System installierten Dienste ist unter

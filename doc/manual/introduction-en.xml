@@ -119,7 +119,7 @@ the system roles (domain controllers, &ucsMember;s and clients) are available.
 </para>
 <para>
 <figure><title>UCS domain concept</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/domainconcept.jpg"/>
+ <graphic scalefit="1" width="100%" fileref="illustrations/domainconcept.jpg"/>
  </figure>
 </para>
 <para>

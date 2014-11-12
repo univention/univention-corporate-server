@@ -477,7 +477,7 @@
 
 		<figure id="nagios-service">
 			<title>Konfiguration eines Nagios-Dienstes</title>
-			<graphic scalefit="1" width="60%" fileref="illustrations/nagios-object_DE.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations/nagios-object_DE.png"/>
 		</figure>
 
 		<para>
@@ -867,7 +867,7 @@
 
 		<figure id="nagios-assign">
 			<title>Zuweisung von Nagios-Prüfungen zu einem Rechner</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/nagios-services_DE.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations/nagios-services_DE.png"/>
 		</figure>
 
 		<table>

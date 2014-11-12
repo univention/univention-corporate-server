@@ -113,7 +113,7 @@
 	</para>
 	<figure id="create-printershare">
 	<title>Anlegen einer Druckerfreigabe</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/create_printershare_de.png"/>
+		<graphic scalefit="1" width="90%" align="center" fileref="illustrations/create_printershare_de.png"/>
 	</figure>
 	<para>
 		Beim Hinzufügen, Entfernen oder Bearbeiten einer Druckerfreigabe wird der
@@ -385,7 +385,7 @@
 	</para>
 	<figure id="printergroup">
 	<title>Konfiguration einer Druckergruppe</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/printer_group-de.png"/>
+		<graphic scalefit="1" width="90%" align="center" fileref="illustrations/printer_group-de.png"/>
 	</figure>
 	<para>
 		Eine Druckergruppe muss mindestens einen Drucker als Mitglied
@@ -524,7 +524,7 @@
 	</para>
 	<figure id="printer-admin">
 	<title>Drucker-Administration</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/umc-printer_administration-de.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations/umc-printer_administration-de.png"/>
 	</figure>
 	<para>
 		Auf der Startseite des Moduls befindet sich eine Suchmaske, mit der die

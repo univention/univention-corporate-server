@@ -23,11 +23,6 @@
         <para>
             Users are managed in the <emphasis>Users</emphasis> module of the &ucsUMC;.
         </para>
-        <figure id="user-create">
-            <title>Creating a user in UMC</title>
-            <graphic scalefit="1" width="80%" fileref="illustrations/users_user_en.png"/>
-        </figure>
-
         <para>
 		  In the default setting, a simplified wizard for creating a user is shown, which only
 		  requests the most important settings. All attributes can be shown by clicking on
@@ -41,6 +36,14 @@
             of the &ucsUMC; and on the adding, editing, searching for and
             deleting of objects can be found in <xref linkend="central:user-interface"/>.
         </para>
+		<figure id="user-create">
+			<title>Creating a user in UMC</title>
+			<graphic scalefit="1" width="65%" fileref="illustrations/users_user_en.png"/>
+		</figure>
+		<figure id="user-create-advanced">
+			<title>Advanced user settings</title>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations/users_user_advanced_de.png"/>
+		</figure>
         <table>
             <title>'General' tab</title>
             <tgroup cols="2">
@@ -855,7 +858,7 @@
 
             <figure id="password-policy">
                 <title>Configuring a password policy</title>
-                <graphic scalefit="1" width="80%" fileref="illustrations/users_policy_password_en.png"/>
+                <graphic scalefit="1" width="100%" fileref="illustrations/users_policy_password_en.png"/>
             </figure>
             <itemizedlist>
 			  <listitem> 
@@ -1110,7 +1113,7 @@
         </para>
         <figure id="user-create-template">
             <title>Selecting a user template</title>
-            <graphic scalefit="1" width="40%" fileref="illustrations/users_usertemplate_en.png"/>
+            <graphic scalefit="1" width="70%" align="center" fileref="illustrations/users_usertemplate_en.png"/>
         </figure>
         <para>
             User templates are administrated in the <guimenu>LDAP directory</guimenu>

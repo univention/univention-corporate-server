@@ -219,7 +219,7 @@ Weiterführende Informationen finden sich in <xref linkend="domain:ldap"/>.
 
 <para>
 <figure><title>Univention Management Console</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/umc-overview.png"/>
+ <graphic scalefit="1" width="100%" fileref="illustrations/umc-overview.png"/>
 </figure>
 </para>
 

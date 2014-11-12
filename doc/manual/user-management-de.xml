@@ -23,11 +23,6 @@
         <para>
             Benutzer werden im Modul <emphasis>Benutzer</emphasis> der &ucsUMC; verwaltet.
         </para>
-        <figure id="user-create">
-      	  <title>Anlegen eines Benutzers in UMC</title>
-          <graphic scalefit="1" width="80%" fileref="illustrations/users_user_de.png"/>
-        </figure>
-
         <para>
           In der Grundeinstellung wird zum Anlegen eines Benutzers ein vereinfachter Assistent
           angezeigt, der nur die wichtigsten Einstellungen abfragt. Durch einen Klick auf
@@ -36,12 +31,19 @@
           <envar>directory/manager/web/modules/users/user/wizard/disabled</envar> auf
           <emphasis>true</emphasis> gesetzt wird.
         </para>
-
         <para>
             Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
             der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
             Objekten finden sich in <xref linkend="central:user-interface"/>.
         </para>
+		<figure id="user-create">
+			<title>Anlegen eines Benutzers in UMC</title>
+			<graphic scalefit="1" width="65%" align="center" fileref="illustrations/users_user_de.png"/>
+		</figure>
+		<figure id="user-create-advanced">
+			<title>Erweiterte Benutzeransicht</title>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations/users_user_advanced_de.png"/>
+		</figure>
         <table>
             <title>Karteikarte 'Allgemein'</title>
             <tgroup cols="2">
@@ -880,7 +882,7 @@
 		</para>
             <figure id="password-policy">
                 <title>Konfiguration einer Passwort-Richtlinie</title>
-                <graphic scalefit="1" width="80%" fileref="illustrations/users_policy_password_de.png"/>
+                <graphic scalefit="1" width="100%" fileref="illustrations/users_policy_password_de.png"/>
             </figure>
             <itemizedlist>
                 <listitem>
@@ -1143,7 +1145,7 @@
         </para>
         <figure id="user-create-template">
             <title>Auswahl einer Benutzervorlage</title>
-            <graphic scalefit="1" width="40%" fileref="illustrations/users_usertemplate_de.png"/>
+            <graphic scalefit="1" width="70%" align="center" fileref="illustrations/users_usertemplate_de.png"/>
         </figure>
         <para>
             Benutzervorlagen werden im Modul <guimenu>LDAP-Verzeichnis</guimenu>

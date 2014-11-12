@@ -37,7 +37,7 @@
 		</para>
 		<figure id="create-group">
 			<title>Creating a group in UMC</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/create-group_EN.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations/create-group_EN.png"/>
 		</figure>
 		<para>
 			General information on the operation of the domain management modules

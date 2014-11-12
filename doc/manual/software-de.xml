@@ -456,7 +456,7 @@ univention-repository-update -h
 	  </para>
 
 	  <figure id="software-umcupdate"><title>Aktualisierung eines UCS-Systems über UMC</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/software_onlineupdate_de.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations/software_onlineupdate_de.png"/>
 	  </figure>
 
 	  <para>
@@ -542,7 +542,7 @@ univention-repository-update -h
 	  </para>
 
 	  <figure id="software-policyupdate"><title>Aktualisierung eines UCS-Systems über eine Release-Richtlinie</title>
-	  <graphic scalefit="1" width="50%" fileref="illustrations/software_policy_de.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations/software_policy_de.png"/>
 	  </figure>
 
 	  <para>
@@ -646,7 +646,7 @@ univention-repository-update -h
 
 	  <figure id="appcenter-ucscomponents">
 		<title>Auswahl von UCS-Komponenten im App Center</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/appcenter-ucs-de.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations/appcenter-ucs-de.png"/>
 	  </figure>
 
 	</section>
@@ -660,7 +660,7 @@ univention-repository-update -h
 	  </para>
 
 	  <figure id="software-umcinstall"><title>Installation des Pakets univention-squid in der Univention Management Console</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/software_install_de1.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations/software_install_de1.png"/>
 	  </figure>
 
 	  <para>
@@ -959,7 +959,7 @@ apt-cache search fax
 	  </para>
 
 	  <figure id="software-repocomponent"><title>Konfiguration einer Repository-Komponente in UMC</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/software_repository_de2.png"/>
+	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations/software_repository_de2.png"/>
 	  </figure>
 
 	  <para>
@@ -1176,7 +1176,7 @@ ucr set repository/online/component/ucsschool/description="UCS@school-Pakete" \
 
 	</itemizedlist>
 	<figure id="software-monitor"><title>Suche nach Paketen im Software-Monitor</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/software_softwaremonitor_de.png"/>
+	<graphic scalefit="1" width="100%" fileref="illustrations/software_softwaremonitor_de.png"/>
 	</figure>
 
 	<para>

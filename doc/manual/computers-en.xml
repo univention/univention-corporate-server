@@ -641,7 +641,7 @@
 			</para>
 			<figure id="network-settings">
 				<title>Configuring the network settings</title>
-				<graphic scalefit="1" width="80%" fileref="illustrations/computers_network_en.png"/>
+				<graphic scalefit="1" width="90%" align="center" fileref="illustrations/computers_network_en.png"/>
 			</figure>
 			<para>
 				All the network cards available in the system are listed under
@@ -1133,7 +1133,7 @@ ucr unset umc/modules/setup/network/disabled/by
 		</para>
 		<figure id="nfs-mount">
 			<title>Mounting a NFS share</title>
-			<graphic scalefit="1" width="60%" fileref="illustrations/computers_policy_nfsshare_en.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations/computers_policy_nfsshare_en.png"/>
 		</figure>
 	</section>
 
@@ -1516,7 +1516,7 @@ master.firma.de
 		</para>
 		<figure id="policy-mailsize">
 			<title>Policy-based configuration of the maximum mail size</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/computers_policy_mailsize_en.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations/computers_policy_mailsize_en.png"/>
 		</figure>
 		<para>
 			Firstly, a <guimenu>Name</guimenu> must be set for the policy which is to be
@@ -1692,7 +1692,7 @@ if configRegistry.get('version/version') and \
 		</para>
 		<figure id="language-settings">
 			<title>Configuring the language settings</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/computers_timezone_en.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations/computers_timezone_en.png"/>
 		</figure>
 		<para>
 			The <guimenu>Keyboard layout</guimenu> in the menu entry <guimenu>Time zone and
@@ -1708,7 +1708,7 @@ if configRegistry.get('version/version') and \
 		</para>
 		<figure id="umc-services">
 			<title>Overview of system services</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/umc-systemservices_en.png"/>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations/umc-systemservices_en.png"/>
 		</figure>
 		<para>
 			In this list of all the services installed on the system, the current running

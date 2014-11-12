@@ -86,7 +86,7 @@
 		</para>
 		<figure id="umc-login">
 			<title>UMC-Anmeldemaske</title>
-			<graphic scalefit="1" width="50%" fileref="illustrations/umc_login_de.png"/>
+			<graphic scalefit="1" width="25%" fileref="illustrations/umc_login_de.png"/>
 		</figure>
 		<para>
 			Nach Aufruf der URL erscheint die Anmeldemaske, in der
@@ -141,7 +141,7 @@
 		</para>
 		<figure id="umc-license">
 			<title>Anzeige der UCS-Lizenz</title>
-			<graphic scalefit="1" width="40%" fileref="illustrations/umc_ffpu_de.png"/>
+			<graphic scalefit="1" width="70%" align="center" fileref="illustrations/umc_ffpu_de.png"/>
 		</figure>
 
 		<para>
@@ -183,7 +183,7 @@
 
 		<figure id="umc-modules">
 			<title>Modulübersicht</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/umc_modules_de.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations/umc_modules_de.png"/>
 		</figure>
 		<para>
 			Die inhaltlichen Eigenschaften/Konfigurationsmöglichkeiten der
@@ -250,7 +250,7 @@
 			</para>
 			<figure id="umc-search">
 			<title>Suche nach Benutzern</title>
-				<graphic scalefit="1" width="80%" fileref="illustrations/umc_user_de.png"/>
+				<graphic scalefit="1" width="100%" fileref="illustrations/umc_user_de.png"/>
 			</figure>
 		</section>
 
@@ -391,7 +391,7 @@
 	</para>
 	<figure id="umc-navigation">
 		<title>Navigation im LDAP-Verzeichnis</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/umc_navigation_de.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations/umc_navigation_de.png"/>
 	</figure>
 	<para>
 		In der linken Bildschirmhälfte ist das LDAP-Verzeichnis in einer
@@ -413,7 +413,7 @@
 	</para>
 	<figure id="umc-container-edit">
 		<title>Bearbeiten von LDAP-Container-Einstellungen</title>
-		<graphic scalefit="1" width="20%" fileref="illustrations/umc_navigation_edit_de.png"/>
+		<graphic scalefit="1" width="30%" fileref="illustrations/umc_navigation_edit_de.png"/>
 	</figure>
 	<para>
 		Durch Rechtsklick auf ein Element der Baumstruktur können über
@@ -615,7 +615,7 @@
 
 	<figure id="umc-extended-attr">
 	  <title>Erweitertes Attribut zur Verwaltung von KFZ-Kennzeichen</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/umc_extended_attribute_de.png"/>
+	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations/umc_extended_attribute_de.png"/>
 	</figure>
 
 	<para>
@@ -1801,7 +1801,7 @@ univention-directory-manager settings/extended_attribute create \
 
 	  <figure id="umc-report">
 		<title>Erstellen eines Reports</title>
-		<graphic scalefit="1" width="30%" fileref="illustrations/umc_report_de2.png"/>
+		<graphic scalefit="1" width="45%" fileref="illustrations/umc_report_de2.png"/>
 	  </figure>
 
 	  <para>

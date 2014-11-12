@@ -247,7 +247,7 @@
 	  <para>
 		<figure id="mail-mailinglist">
 		  <title>Einrichtung einer Mailingliste</title>
-		  <graphic scalefit="1" width="90%" fileref="illustrations/mail_mailinglist_de.png"/>
+		  <graphic scalefit="1" width="90%" align="center" fileref="illustrations/mail_mailinglist_de.png"/>
 		</figure>
 	  </para>
 
@@ -359,7 +359,7 @@
 	  <para>
 		<figure id="mail-sharedfolder">
 		  <title>Einrichtung eines globalen IMAP-Ordners</title>
-		  <graphic scalefit="1" width="80%" fileref="illustrations/mail_imapfolder_de.png"/>
+		  <graphic scalefit="1" width="100%" fileref="illustrations/mail_imapfolder_de.png"/>
 		</figure>
 	  </para>
 

@@ -114,7 +114,7 @@
 	</para>
 	<figure id="create-printershare">
 	<title>Creating a printer share</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/create_printershare_en.png"/>
+		<graphic scalefit="1" width="90%" align="center" fileref="illustrations/create_printershare_en.png"/>
 	</figure>
 	<para>
 		When adding/deleting/editing a printer share, the printer is
@@ -384,7 +384,7 @@
 	</para>
 	<figure id="printergroup">
 	<title>Configuring a printer group</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/printer_group-en.png"/>
+		<graphic scalefit="1" width="90%" align="center" fileref="illustrations/printer_group-en.png"/>
 	</figure>
 	<para>
 		A printer group must have at least one printer as a member. Only
@@ -515,7 +515,7 @@
 	</para>
 	<figure id="printer-admin">
 	<title>Printer administration</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/umc-printer_administration-en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations/umc-printer_administration-en.png"/>
 	</figure>
 	<para>
 		The start page of the module contains a search mask with which the available
