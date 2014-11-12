@@ -1,3 +1,13 @@
+univention-system-setup (8.1.58-1) unstable; urgency=medium
+
+  Bug #36543:
+  * move steps from cleanup.py into cleanup scripts
+  * adjust order of cleaning up scripts, shut down browser at the very end
+    (as the Debian Installer will perform a reboot)
+  * wait indefinitely in UMC during local mode after sending cleanup command
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 12 Nov 2014 12:47:20 +0100
+
 univention-system-setup (8.1.57-2) unstable; urgency=medium
 
   * Bug #36543: make sure that atd is running before performing cleanup

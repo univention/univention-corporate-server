@@ -1,8 +1,10 @@
-#!/bin/sh
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
 #
-# Restart the Directory Notifier and Listener
+# Univention System Setup
+# cleanup script to shut down the local browser in the appliance scenario
 #
-# Copyright 2013-2014 Univention GmbH
+# Copyright 2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,20 +31,27 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/share/univention-lib/ucr.sh
+import re
+import subprocess
+import univention.config_registry
 
-if is_ucr_true system/setup/boot/installer; then
-	# debian installer is active -> a restart of the services is not necessary
-	# as the system is rebooted at the end
-	exit 0
-fi
+RE_IPV4_TYPE = re.compile('^interfaces/[^/]*/type$')
 
-if [ -x /etc/init.d/univention-directory-notifier ]; then
-	invoke-rc.d univention-directory-notifier crestart
-fi
+def unset_temporary_interfaces():
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
 
-if [ -x /etc/init.d/univention-directory-listener ]; then
-	invoke-rc.d univention-directory-listener crestart
-fi
+	# unset the temporary interface if set
+	for var in ucr.keys():
+		if RE_IPV4_TYPE.match(var) and ucr.get(var) == 'appliance-mode-temporary':
+			print 'unset %s' % var
+			keys = [var]
+			for k in ['netmask', 'address', 'broadcast', 'network']:
+				keys.append(var.replace('/type', '/%s' % k))
+			univention.config_registry.handler_unset(keys)
+			# Shut down temporary interface
+			subprocess.call(['ifconfig', var.split('/')[1].replace('_', ':'), 'down'])
 
-exit 0
+if __name__ == "__main__":
+	unset_temporary_interfaces()
+

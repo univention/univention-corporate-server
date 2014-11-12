@@ -1,8 +1,9 @@
 #!/bin/sh
 #
-# Restart the Directory Notifier and Listener
+# Univention System Setup
+# restart UMC server components
 #
-# Copyright 2013-2014 Univention GmbH
+# Copyright 2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,20 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/share/univention-lib/ucr.sh
-
-if is_ucr_true system/setup/boot/installer; then
-	# debian installer is active -> a restart of the services is not necessary
-	# as the system is rebooted at the end
-	exit 0
-fi
-
-if [ -x /etc/init.d/univention-directory-notifier ]; then
-	invoke-rc.d univention-directory-notifier crestart
-fi
-
-if [ -x /etc/init.d/univention-directory-listener ]; then
-	invoke-rc.d univention-directory-listener crestart
-fi
+/usr/share/univention-updater/disable-apache2-umc
+/usr/share/univention-updater/enable-apache2-umc
 
 exit 0

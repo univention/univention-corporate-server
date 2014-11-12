@@ -234,7 +234,11 @@ define([
 					messageInterval: 30,
 					xhrTimeout: 40
 				}).then(lang.hitch(this, function() {
-					this._redirectBrowser(newValues.interfaces, newValues['interfaces/primary']);
+					if (this.wizard.local_mode) {
+						this._showDummyProgressbar();
+					} else {
+						this._redirectBrowser(newValues.interfaces, newValues['interfaces/primary']);
+					}
 				}));
 			}));
 			this.wizard.on('Reload', lang.hitch(this, '_reloadWizard', values, ucr));
@@ -351,6 +355,12 @@ define([
 			return newIpAddress;
 		},
 
+		_showDummyProgressbar: function() {
+			this._progressBar.reset();
+			this._progressBar.setInfo(_('Restarting server components...'), _('This may take a few seconds...'), Number.POSITIVE_INFINITY);
+			this.standby(true, this._progressBar);
+		},
+
 		_redirectBrowser: function(interfaces, primary_interface) {
 			// redirect to new UMC address and set username to Administrator
 			this._progressBar.reset();
@@ -370,7 +380,7 @@ define([
 			// give the restart/services function 10 seconds time to restart the services
 			setTimeout(function () {
 				window.location.replace(target);
-			}, 12000);
+			}, 15000);
 		},
 
 		save: function() {

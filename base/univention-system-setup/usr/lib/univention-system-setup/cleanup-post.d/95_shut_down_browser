@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 #
 # Univention System Setup
-# cleanup script called after the appliance wizard setup
+# cleanup script to shut down the local browser in the appliance scenario
 #
-# Copyright 2011-2014 Univention GmbH
+# Copyright 2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,29 +31,36 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys
-
-from univention.management.console.modules.setup import util
 import univention.config_registry
+import psutil
 
-LOG_FILE = '/var/log/univention/setup.log'
-PATH_CLEANUP_PRE_SCRIPTS = '/usr/lib/univention-system-setup/cleanup-pre.d/'
-PATH_CLEANUP_POST_SCRIPTS = '/usr/lib/univention-system-setup/cleanup-post.d/'
+PATH_BROWSER_PID = '/var/cache/univention-system-setup/browser.pid'
 
-def cleanup():
-	# re-direct stdout to setup log file
-	sys.stdout = open(LOG_FILE, 'a')
-	sys.stderr = sys.stdout
+def shut_down_browser():
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
 
-	# Run cleanup-pre scripts
-	util.run_scripts_in_path(PATH_CLEANUP_PRE_SCRIPTS, sys.stdout, "cleanup-pre")
+	# The browser was only started, if system/setup/boot/start is true
+	if ucr.is_true('system/setup/boot/start', False):
+		print 'Appliance mode: try to shut down the browser'
+		try:
+			fpid = open(PATH_BROWSER_PID)
+			strpid = fpid.readline().strip()
+			pid = int(strpid)
+			p = psutil.Process(pid)
+			p.kill()
+		except IOError:
+			print 'WARN: cannot open browser PID file: %s' % PATH_BROWSER_PID
+		except ValueError:
+			print 'ERROR: browser PID is not a number: "%s"' % strpid
+		except psutil.NoSuchProcess:
+			print 'ERROR: cannot kill process with PID: %s' % pid
 
-	# Run cleanup-post scripts
-	util.run_scripts_in_path(PATH_CLEANUP_POST_SCRIPTS, sys.stdout, "cleanup-post")
-
-	sys.stdout.close()
-	sys.exit(0)
+		# Maybe the system-setup CMD tool was started
+		for p in psutil.process_iter():
+			if p.name == 'python2.7' and '/usr/share/univention-system-setup/univention-system-setup' in p.cmdline:
+				p.kill()
 
 if __name__ == "__main__":
-	cleanup()
+	shut_down_browser()
 
