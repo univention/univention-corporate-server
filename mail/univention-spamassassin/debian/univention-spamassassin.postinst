@@ -51,6 +51,11 @@ if [ "$1" = "configure" ]; then
 	fi
 fi
 
+# update spamassassin rules (installation, update)
+if [ -x /etc/cron.daily/spamassassin ]; then
+	/etc/cron.daily/spamassassin || true
+fi
+
 test -x /etc/init.d/amavis && invoke-rc.d amavis restart
 
 #DEBHELPER#
