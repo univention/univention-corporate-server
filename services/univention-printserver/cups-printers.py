@@ -450,5 +450,6 @@ def clean():
 		listener.unsetuid()
 
 def postrun():
+	global reload_samba_in_postrun
 	if reload_samba_in_postrun:
 		reload_smbd()
