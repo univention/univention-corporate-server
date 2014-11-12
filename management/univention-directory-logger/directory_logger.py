@@ -291,11 +291,11 @@ def initialize():
 	timestamp = time.strftime(timestampfmt, time.gmtime() )
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'init %s' % name)
 
-	if not os.path.exists( logname ):
-		createFile( logname )
-
 	listener.setuid(0)
 	try:
+		if not os.path.exists( logname ):
+			createFile( logname )
+
 		if not os.path.exists( cachename ):
 			createFile( cachename )
 		size = os.path.getsize(cachename)
@@ -337,13 +337,12 @@ def clean():
 	pass
 
 ##--- initialize on load:
-if not os.path.exists( logname ):
-	createFile( logname )
-if not os.path.exists( cachename ):
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: %s vanished, creating it' % (name, cachename) )
-	listener.setuid(0)
-	try:
+listener.setuid(0)
+try:
+	if not os.path.exists( logname ):
+		createFile( logname )
+	if not os.path.exists( cachename ):
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: %s vanished, creating it' % (name, cachename) )
 		createFile( cachename )
-	finally:
-		listener.unsetuid()
-
+finally:
+	listener.unsetuid()
