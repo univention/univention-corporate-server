@@ -335,9 +335,7 @@
 				ist pro UCS Domänencontroller zu aktivieren. Eine Sperrung erfolgt
 				domänenweit für alle Anmeldeverfahren des betreffenden Benutzerkontos
 				und kann nur durch Domänen-Administratoren wieder zurückgenommen werden.
-				Details zur
-				Aktivierung sind im Changelog in <xref linkend="changelog:domain:openldap"/>
-				für Bug 31907 beschieben.
+				Details zur Aktivierung sind unten im Changelog für Bug 31907 beschieben.
 			</para>
 		</section>
 

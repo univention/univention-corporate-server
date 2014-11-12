@@ -325,7 +325,7 @@
 		  activated separately per UCS domain controller. The lockout is domain wide for all
 		  methods of authentication for the specific user and can only be reverted by a domain
 		  administrator.
-		  For details see the changelog <xref linkend="changelog:domain:openldap"/> for Bug 31907.
+		  For details see the changelog for Bug 31907 below.
 		</para>
 	  </section>
 
