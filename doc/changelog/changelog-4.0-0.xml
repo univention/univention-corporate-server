@@ -697,6 +697,11 @@
 				after the update
 				(<ulink url="&ucsbug;36524">Bug 36524</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				A new &ucsUCRV; script has been added to update /etc/aliases.db if 
+				<envar>mail/alias/*</envar> variables have been set
+				(<ulink url="&ucsbug;31837">Bug 31837</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
