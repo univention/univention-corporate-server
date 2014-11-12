@@ -718,6 +718,10 @@
 				<package>univention-printserver</package>  have been updated
 				(<ulink url="&ucsbug;35147">Bug 35147</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				Reloading of Samba for configuration changes has been improved in the cups-printers listener
+				(<ulink url="&ucsbug;36578">Bug 36578</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
