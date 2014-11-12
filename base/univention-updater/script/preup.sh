@@ -149,7 +149,9 @@ check_scalix_schema_present() {
 		fi
 	done
 }
-check_scalix_schema_present
+if [ -n "$server_role" -a "$server_role" != "basesystem" ]; then
+	check_scalix_schema_present
+fi
 
 ## Check for univention-horde4 (UCS version), univention-horde4 has been
 ## moved to the appcenter, block update here if UCS version of univention-horde4 
@@ -236,7 +238,9 @@ check_for_xen () {
 	fi
 	exit 1
 }
-check_for_xen
+if [ -n "$server_role" -a "$server_role" != "basesystem" ]; then
+	check_for_xen
+fi
 
 ## Check for PostgreSQL-8.3 (Bug #36371)
 check_for_postgresql83 () {

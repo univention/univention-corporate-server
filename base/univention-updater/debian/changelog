@@ -1,3 +1,9 @@
+univention-updater (10.0.45-1) unstable; urgency=medium
+
+  * preup.sh: Skip ldapsearch commands on basesystem (Bug #36620)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 Nov 2014 21:38:32 +0100
+
 univention-updater (10.0.44-1) unstable; urgency=low
 
   * Bug #36618: pre-update mysql-server
