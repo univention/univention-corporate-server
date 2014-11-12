@@ -1,3 +1,9 @@
+univention-printserver (8.0.6-4) unstable; urgency=medium
+
+  * Bug #36578: samba reload works with Samba 4.2
+
+ -- Arvid Requate <requate@univention.de>  Wed, 12 Nov 2014 15:22:14 +0100
+
 univention-printserver (8.0.6-3) unstable; urgency=medium
 
   * Bug #36578: Avoid duplicate smbd reloads in postrun

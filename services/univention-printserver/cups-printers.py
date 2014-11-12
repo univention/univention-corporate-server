@@ -413,16 +413,13 @@ def reload_smbd():
 	listener.setuid(0)
 	try:
 		ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
-		if os.path.exists('/usr/bin/smbcontrol'):
-			ud.debug(ud.LISTENER, ud.WARN, "cups-printers: smbcontrol smbd reload-config")
-			subprocess.call(('/usr/bin/smbcontrol', 'smbd', 'reload-config')) 
-			ud.debug(ud.LISTENER, ud.WARN, "cups-printers: smbcontrol smbd reload-printers")
-			subprocess.call(('/usr/bin/smbcontrol', 'smbd', 'reload-printers')) 
+		if os.path.exists('/etc/init.d/samba'):
+			subprocess.call(('invoke-rc.d', 'samba', 'reload')) 
 		elif os.path.exists('/usr/bin/pkill'):
 			ud.debug(ud.LISTENER, ud.WARN, "cups-printers: pkill -HUP smbd")
 			subprocess.call(('/usr/bin/pkill', '-HUP', 'smbd')) 
 		else:
-			ud.debug(ud.LISTENER, ud.ERROR, "cups-printers: smbcontrol and pkill missing to reload smbd")
+			ud.debug(ud.LISTENER, ud.ERROR, "cups-printers: Cannot reload smbd: Both /etc/init.d/samba and pkill are missing")
 	finally:
 		listener.unsetuid()
 	reload_samba_in_postrun = False	## flag that this has been done.
