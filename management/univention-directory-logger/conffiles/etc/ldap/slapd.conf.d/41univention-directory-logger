@@ -1,6 +1,6 @@
 
 @!@
-dellogdir = configRegistry.get('ldap/logging/dellogdir'):
+dellogdir = configRegistry.get('ldap/logging/dellogdir')
 if dellogdir:
         print "moduleload\tdellog.so"
 
