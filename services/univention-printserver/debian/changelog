@@ -1,3 +1,10 @@
+univention-printserver (8.0.6-3) unstable; urgency=medium
+
+  * Bug #36578: Avoid duplicate smbd reloads in postrun
+  * Fix ignored reload despite need_to_reload_samba flag set deletions
+
+ -- Arvid Requate <requate@univention.de>  Wed, 12 Nov 2014 09:47:49 +0100
+
 univention-printserver (8.0.6-2) unstable; urgency=medium
 
   * Bug #36578: Improve reloading of smbd for samba4 and samba3 cases

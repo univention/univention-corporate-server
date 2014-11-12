@@ -97,10 +97,13 @@ def filter_match(object):
 	return False
 
 def handler(dn, new, old):
+	change_affects_this_host = False
 	need_to_reload_samba = False
 	need_to_reload_cups = False
 	printer_is_group = False
 	quota_support = False
+	global reload_samba_in_postrun
+	reload_samba_in_postrun = True
 
 	changes = []
 
@@ -140,6 +143,11 @@ def handler(dn, new, old):
 		'description': '-D',
 		'univentionPrinterModel': '-m'
 	}
+
+	if (filter_match(new) or filter_match(old)):
+		change_affects_this_host = True
+		reload_samba_in_postrun = True	## default, if it isn't done earlier
+
 
 	if filter_match(old):
 		if 'cn' in changes or not filter_match(new):
@@ -372,14 +380,8 @@ def handler(dn, new, old):
 			finally:
 				listener.unsetuid()
 
-		if need_to_reload_cups:
-			reload_daemon ('cups', 'cups-printers: ')
 
-		if need_to_reload_samba:
-			reload_smbd()
-
-	if (filter_match(new) or filter_match(old)):
-
+	if change_affects_this_host:
 		listener.setuid(0)
 		try:
 			fp = open('/etc/samba/printers.conf.temp', 'w')
@@ -391,6 +393,12 @@ def handler(dn, new, old):
 		finally:
 			listener.unsetuid()
 
+		if need_to_reload_cups:
+			reload_daemon ('cups', 'cups-printers: ')
+
+		if need_to_reload_samba:
+			reload_smbd()
+
 
 def reload_daemon(daemon, prefix):
 	script = os.path.join ('/etc/init.d', daemon)
@@ -401,21 +409,23 @@ def reload_daemon(daemon, prefix):
 		ud.debug(ud.LISTENER, ud.INFO, "%s no %s to reload found" % (prefix, daemon) )
 
 def reload_smbd():
+	global reload_samba_in_postrun
 	listener.setuid(0)
 	try:
 		ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
 		if os.path.exists('/usr/bin/smbcontrol'):
-			ud.debug(ud.LISTENER, ud.WARN, "cups-printers: running smbcontrol smbd reload-config")
+			ud.debug(ud.LISTENER, ud.WARN, "cups-printers: smbcontrol smbd reload-config")
 			subprocess.call(('/usr/bin/smbcontrol', 'smbd', 'reload-config')) 
-			ud.debug(ud.LISTENER, ud.WARN, "cups-printers: running smbcontrol smbd reload-printers")
+			ud.debug(ud.LISTENER, ud.WARN, "cups-printers: smbcontrol smbd reload-printers")
 			subprocess.call(('/usr/bin/smbcontrol', 'smbd', 'reload-printers')) 
 		elif os.path.exists('/usr/bin/pkill'):
-			ud.debug(ud.LISTENER, ud.WARN, "cups-printers: reloading smb.conf via pkill -HUP smbd")
+			ud.debug(ud.LISTENER, ud.WARN, "cups-printers: pkill -HUP smbd")
 			subprocess.call(('/usr/bin/pkill', '-HUP', 'smbd')) 
 		else:
-			ud.debug(ud.LISTENER, ud.ERROR, "cups-printers: Need either smbcontrol or pkill to reload smbd")
+			ud.debug(ud.LISTENER, ud.ERROR, "cups-printers: smbcontrol and pkill missing to reload smbd")
 	finally:
 		listener.unsetuid()
+	reload_samba_in_postrun = False	## flag that this has been done.
 
 def initialize():
 	if not os.path.exists('/etc/samba/printers.conf.d'):
@@ -440,4 +450,5 @@ def clean():
 		listener.unsetuid()
 
 def postrun():
-	reload_smbd()
+	if reload_samba_in_postrun:
+		reload_smbd()
