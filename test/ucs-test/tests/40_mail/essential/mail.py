@@ -208,6 +208,20 @@ def get_dir_files(dir_path, recursive=False):
 			result.extend(get_dir_files(f))
 	return result
 
+def check_spam(token, mail_address):
+	delivered = False
+	spam = False
+	mail_dir = os.path.join(get_cyrus_maildir(mail_address), 'Spam')
+	for _file in get_dir_files(mail_dir, recursive=True):
+		with open(_file) as fi:
+			content = fi.read()
+			delivered = delivered or (token in content)
+			if delivered:
+				if 'X-Spam-Flag: YES' in content:
+					spam = True
+				break
+	return delivered and spam
+
 def checkMail(token, user=None, mail_address=None, check_root=True):
 	delivered = False
 	if check_root:
