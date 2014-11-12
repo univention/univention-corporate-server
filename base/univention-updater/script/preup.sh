@@ -471,7 +471,7 @@ fi
 egrep -q '^supported-versions.*python2.7' /usr/share/python/debian_defaults ||\
 	sed -i 's|\(^supported-versions.*\)|\1, python2.7|' /usr/share/python/debian_defaults
 # Pre-upgrade
-preups="gcc-4.4-base univention-ldap-config python-support python-univention univention-config univention-samba"
+preups="gcc-4.4-base univention-ldap-config python-support python-univention univention-config univention-samba mysql-server"
 $update_commands_update >&3 2>&3
 for pkg in $preups; do
 	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then
@@ -485,6 +485,17 @@ for pkg in $preups; do
 		echo "done."
 	fi
 done
+
+if dpkg -l "mysql-server-5.1" 2>&3 | grep ^ii  >&3 ; then ##36618
+	echo -n "Starting pre-upgrade of mysql-server: "
+	if ! $update_commands_install "mysql-server-5.5" >&3 2>&3
+	then
+		echo "failed."
+		echo "ERROR: Failed to upgrade $pkg."
+        exit 1
+	fi
+	echo "done."
+fi
 
 if dpkg -l "firefox" 2>&3 | grep ^ii  >&3 ; then ## Bug #36453
 	echo -n "Starting pre-upgrade of firefox: "
