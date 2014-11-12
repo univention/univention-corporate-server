@@ -1,0 +1,63 @@
+#!/usr/share/ucs-test/runner python
+## desc: Basic spam email delivery 
+## tags: apttest
+## exposure: dangerous
+## packages: [univention-config, univention-directory-manager-tools]
+## bugs: [23527]
+
+from essential.mail import checkMail, send_mail, check_spam
+from univention.config_registry import handler_set
+import subprocess
+import time
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+SPAMTEXT = 'XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X'
+
+def deactivate_spam_detection():
+	handler_set(['mail/antispam=no', 'mail/antivir/spam=no'])
+
+def reload_amavis_postfix():
+	for cmd in (['/etc/init.d/amavis', 'force-reload'], ['/etc/init.d/postfix', 'force-reload']):
+		subprocess.Popen(cmd , stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+
+def main():
+	TIMEOUT = 60
+	with udm_test.UCSTestUDM() as udm:
+		try:
+			with ucr_test.UCSTestConfigRegistry() as ucr:
+				domain = ucr.get('domainname')
+				mail =  'spam%stest@%s' % (uts.random_string(), domain)
+				userdn, username = udm.create_user(
+						set={
+							'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+							'mailPrimaryAddress': mail,
+							}
+						)
+
+				token1 = str(time.time())
+				send_mail(recipients=mail, msg=token1, subject='Normal')
+				token2 = str(time.time())
+				send_mail(recipients=mail, msg=token2, gtube=True, subject='Filter')
+
+				deactivate_spam_detection()
+				reload_amavis_postfix()
+				token3 = str(time.time())
+				send_mail(recipients=mail, msg=token3, gtube=True, subject='No Filter')
+
+				time.sleep(TIMEOUT)
+
+				if not checkMail(token1, mail_address=mail):
+					utils.fail('Mail sent with token = %r to %s was not delivered' % (token1, mail))
+				if not check_spam(token2, mail_address=mail):
+					utils.fail('Spam sent with token = %r to %s sent with filter, was not delivered to spam folder, or does not have a spam flag' % (token2, mail))
+				if not checkMail(token3, mail_address=mail):
+					utils.fail('Spam sent with token = %r to %s sent without filter, was not delivered to main mail folder' % (token3,  mail))
+		finally:
+			reload_amavis_postfix()
+
+
+if __name__ == '__main__':
+	main()
