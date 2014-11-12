@@ -52,9 +52,8 @@ if [ "$1" = "configure" ]; then
 	# installation
 	else
 		# update spamassassin rules
-		if [ -x /etc/cron.daily/spamassassin ]; then
-			/etc/cron.daily/spamassassin || true
-		fi
+		umask 022
+		su debian-spamd -c "sa-update --gpghomedir /var/lib/spamassassin/sa-update-keys"
 	fi
 fi
 
