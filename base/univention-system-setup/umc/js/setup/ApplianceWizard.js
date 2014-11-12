@@ -814,6 +814,7 @@ define([
 				if (field == 'password') {
 					disable.push(['fqdn-nonmaster-all', 'root_password']);
 					disable.push(['credentials-master', 'root_password']);
+					this.getPage('credentials-master').set('helpText', _('<p>Enter the name of your organization and an e-mail address to activate UCS.</p>'));
 				} else if (field == 'network') {
 					disable.push(['network', '_dhcp']);
 					disable.push(['network', '_ip0']);

@@ -1,3 +1,9 @@
+univention-system-setup (8.1.59-1) unstable; urgency=medium
+
+  * Bug #36598: fix help text
+
+ -- Florian Best <best@univention.de>  Wed, 12 Nov 2014 13:57:05 +0100
+
 univention-system-setup (8.1.58-1) unstable; urgency=medium
 
   Bug #36543:
