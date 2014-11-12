@@ -1,3 +1,9 @@
+univention-mail-postfix (9.0.0-10) unstable; urgency=low
+
+  * run newaliases if /etc/aliases is modified (Bug #31837) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 12 Nov 2014 11:37:23 +0100
+
 univention-mail-postfix (9.0.0-9) unstable; urgency=low
 
   * fixed tls debug level and dh parameter file creation (Bug #35923) 

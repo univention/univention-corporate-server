@@ -1,1 +1,2 @@
 usr/share/univention-mail-postfix/postmap-transport.sh etc/univention/templates/scripts/etc/postfix/transport
+usr/share/univention-mail-postfix/share/aliases.sh etc/univention/templates/scripts/etc/aliases
