@@ -710,6 +710,11 @@
 				<envar>mail/alias/*</envar> variables have been set
 				(<ulink url="&ucsbug;31837">Bug 31837</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The spamassassin rules are now updated during the installation of the 
+				package <package>univention-spamassassin</package>
+				(<ulink url="&ucsbug;36607">Bug 36607</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
