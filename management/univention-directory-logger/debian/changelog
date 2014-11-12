@@ -1,3 +1,9 @@
+univention-directory-logger (6.0.1-2) unstable; urgency=medium
+
+  * Bug #36589: Update for UCS 4.0
+
+ -- Arvid Requate <requate@univention.de>  Wed, 12 Nov 2014 14:55:09 +0100
+
 univention-directory-logger (6.0.1-1) unstable; urgency=medium
 
   * Bug #36589: Copy from UCS 3.2-3 to UCS 4.0

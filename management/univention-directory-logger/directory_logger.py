@@ -3,7 +3,7 @@
 # Univention Directory Listener
 #  listener script for directory transaction logging
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -95,7 +95,7 @@ def ldapTime2string( timestamp ):
 def filterOutUnchangedAttributes(old_copy, new_copy):
 	keylist = old_copy.keys()
 	for key in keylist:
-		if not new_copy.has_key(key):
+		if not key in new_copy:
 			continue
 		if new_copy[key] == old_copy[key]:
 			del old_copy[key]
@@ -112,7 +112,7 @@ def filterOutUnchangedAttributes(old_copy, new_copy):
 			new_copy[key].remove(value)
 
 def process_dellog( dn ):
-	dellog = listener.baseConfig['ldap/logging/dellogdir']
+	dellog = listener.configRegistry['ldap/logging/dellogdir']
 	lockfilename = dellog + '.lock'
 	lock = open(lockfilename, "w")
 	fcntl.flock( lock, fcntl.LOCK_EX )
@@ -173,13 +173,13 @@ def handler(dn, new, old):
 	new_copy = copy.deepcopy(new)
 	old_copy = copy.deepcopy(old)
 
-	if listener.baseConfig['ldap/logging'] != 'yes':
+	if listener.configRegistry['ldap/logging'] != 'yes':
 		return
 
 	# check for exclusion
 	skip = 0
-	excludeKeys = [ key for key in listener.baseConfig.keys() if excludeKeyPattern.search(key)]
-	exclude = [ listener.baseConfig[key] for key in excludeKeys ]
+	excludeKeys = [ key for key in listener.configRegistry.keys() if excludeKeyPattern.search(key)]
+	exclude = [ listener.configRegistry[key] for key in excludeKeys ]
 	for base in exclude:
 		if dn.rfind(base) != -1:
 			skip = 1

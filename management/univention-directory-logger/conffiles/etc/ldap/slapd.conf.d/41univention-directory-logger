@@ -1,9 +1,10 @@
 
 @!@
-if baseConfig.has_key('ldap/logging/dellogdir') and baseConfig['ldap/logging/dellogdir']:
+dellogdir = configRegistry.get('ldap/logging/dellogdir'):
+if dellogdir:
         print "moduleload\tdellog.so"
 
 	print "overlay\t\tdellog"
-	print "dellog\t\t%s" % baseConfig['ldap/logging/dellogdir']
+	print "dellog\t\t%s" % dellogdir
 @!@
 
