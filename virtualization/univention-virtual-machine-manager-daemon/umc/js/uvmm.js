@@ -1451,9 +1451,11 @@ define([
 
 			if (isRunning(item)) {
 				// only show CPU info, if the machine is running
-				return new ProgressBar({
+				var progressBar = new ProgressBar({
 					value: percentage + '%'
 				});
+				this.own(progressBar);
+				return progressBar;
 			}
 
 			return '';
@@ -1523,6 +1525,7 @@ define([
 			});
 			// set content after creating the object because of HTTP404: Bug #25635
 			var widget = new Text({});
+			this.own(widget);
 			widget.set('content', html);
 
 			if ( undefined !== item.state ) {
