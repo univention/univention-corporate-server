@@ -13,7 +13,7 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 def main():
-	TIMEOUT = 60
+	TIMEOUT = 90
 	ucr = ucr_test.UCSTestConfigRegistry()
 	ucr.load()
 	with udm_test.UCSTestUDM() as udm:
@@ -23,7 +23,8 @@ def main():
 		mails = [
 			'BIG%ssmall@%s' % (uts.random_string(), domain),
 			'%s.t.o.c@%s' % (uts.random_string(), domain),
-			'un_sc%s@%s'  % (uts.random_string(), domain)
+			'un_sc%s@%s'  % (uts.random_string(), domain),
+			'1fo%so2bar3@%s'  % (uts.random_string(), domain)
 			]
 		for mail in mails:
 			userdn, username = udm.create_user(
@@ -53,10 +54,10 @@ def main():
 		time.sleep(TIMEOUT)
 		for token, mail in test_cases1:
 			if not checkMail(token, mail_address=mail):
-				utils.fail('mail sent to %s was not delivered' % mail)
+				utils.fail('Mail sent to %s was not delivered' % mail)
 		for token, user in test_cases2:
 			if not checkMail(token, user=user):
-				utils.fail('mail sent to %s was not delivered' % user)
+				utils.fail('Mail sent with token = %r, to %s was not delivered' % (token, user))
 
 
 if __name__ == '__main__':
