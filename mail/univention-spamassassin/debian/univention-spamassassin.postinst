@@ -44,16 +44,18 @@ univention-config-registry set mail/antivir/spam?yes \
 	mail/antispam/autostart?yes
 
 if [ "$1" = "configure" ]; then
+	# update
 	if [ -n "$2" ]; then
 		if dpkg --compare-versions "$2" lt 6.0.1-1 ; then
 			univention-config-registry set mail/antivir/spam=yes
 		fi
+	# installation
+	else
+		# update spamassassin rules
+		if [ -x /etc/cron.daily/spamassassin ]; then
+			/etc/cron.daily/spamassassin || true
+		fi
 	fi
-fi
-
-# update spamassassin rules (installation, update)
-if [ -x /etc/cron.daily/spamassassin ]; then
-	/etc/cron.daily/spamassassin || true
 fi
 
 test -x /etc/init.d/amavis && invoke-rc.d amavis restart
