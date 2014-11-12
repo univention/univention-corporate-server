@@ -2,7 +2,7 @@
 <title>Univention Management Console</title>
 
 <section id="central-management-umc:Introduction">
-	<title>Introduction</title>
+	<title>Introduction #TODO</title>
 	<para>
 		&ucsUMC; (UMC) is the central tool for web-based administration of
 		the UCS domain. UMC supports two basic module types:
@@ -61,7 +61,7 @@
 		</para>
 		<para>
 			&ucsUMC; is available in German and English; the language to be used
-			can be selected during login.
+			can be selected during login via the select list in the upper right corner.
 		</para>
 
 		<para>
@@ -69,26 +69,22 @@
 		  <uri>https://servername/</uri>. Alternatively, access is also possible via the server's
 		  IP address. All the services which are offered on a system are linked here. In the
 		  <guimenu>Administration</guimenu> tab, the &ucsUMC; can then be opened using the
-		  <guimenu>Univention Management Console</guimenu> link. If there are services installed on
+		  <guimenu>System and domain settings</guimenu> or the <guimenu>system settings</guimenu> link.
+		  If there are services installed on
 		  the system which include their own web service (e.g., Horde web mail), they are linked
 		  in the <guimenu>Installed web services</guimenu> tab.
 		</para>
 
 		<para>
-			The web interface of the &ucsUMC; can be opened via the
-			URL <uri>https://servername/umc/</uri>. Alternatively, access is also
-			possible via the server's IP address.
-		</para>
-		<para>
 			Under certain circumstances it may be necessary to access
-			the &ucsUMC; over an insecure connection (e.g., if no SSL
+			&ucsUMC; over an insecure connection (e.g., if no SSL
 			certificates have been created for the system yet). In this
 			case, <uri>http</uri> must be used instead of <uri>https</uri> in the
 			URL. In this case, passwords are sent over the network in plain text!
 		</para>
 		<figure id="umc-login">
 		<title>UMC login mask</title>
-			<graphic scalefit="1" width="25%" fileref="illustrations/umc_login_en.png"/>
+			<graphic align="center" width="35%" fileref="illustrations/umc_login_en.png"/>
 		</figure>
 		<para>
 			Once the URL has been opened, a login mask is displayed in which
@@ -99,19 +95,20 @@
 			<listitem>
 				<simpara>
 				When logging in with the system's local <emphasis>root</emphasis> account (see
-				<xref linkend="computers:rootaccount"/>) only the system modules of
-				the &ucsUMC; are displayed.
+				<xref linkend="computers:rootaccount"/>), only the UMC modules for the administration
+				and configuration of the local system are displayed.
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
 				When logging in with the <emphasis>Administrator</emphasis> account on
-				the &ucsMaster; or &ucsBackup; all domain modules are displayed.
+				the &ucsMaster; or &ucsBackup;, UMC modules for the administration of data
+				in the LDAP directory are displayed, as well.
 				</simpara>
 			</listitem>
 			<listitem>
 			  <simpara>
-				When logging on with another user account, the domain modules approved for the user
+				When logging on with another user account, the UMC modules approved for the user
 				are shown. Additional information on allowing further modules can be found in <xref
 				linkend="delegated-administration"/>.
 				</simpara>
@@ -141,21 +138,23 @@
 	<section id="central:license">
 		<title>Activation of UCS license / license overview</title>
 		<para>
-			The UCS license can be set up by clicking on the gear-wheel symbol in
-			the top right line of the screen. To do so, the <guimenu>License information</guimenu>
-			menu entry must be selected. The current license status is shown
-			under <guimenu>Current license</guimenu>.
+			The current license status can be shown on a &ucsMaster; of a
+			domain by clicking on the user menu in the top right line of the
+			screen. Below the menu item <guimenu>License</guimenu> the entry
+			<guimenu>License information</guimenu> can be selected to open a
+			corresponding information dialogue.
 		</para>
 		<figure id="umc-license">
 			<title>Displaying the UCS license</title>
 			<graphic scalefit="1" width="70%" align="center" fileref="illustrations/umc_ffpu_en.png"/>
 		</figure>
 		<para>
-		  The <guimenu>Import new license</guimenu> menu entry can be used to activate a license key
-		  (otherwise the free-for-personal-use license installed as standard is used). 
-		  <guimenu>Import license file</guimenu> can be used to select a license file. Alternatively, the
-		  license key can be copied into the <guimenu>Import license as text</guimenu> input field and
-		  activated with <guimenu>Import</guimenu>.
+		  The menu entry <guimenu>Import new license</guimenu> opens a dialogue in which
+		  a new license key can be activated (otherwise the free-for-personal-use license
+		  is used as default license).
+		  A license file can be selected and imported via the button <guimenu>Import from file...</guimenu>.
+		  Alternatively, the license key can also be copied into the input field below and
+		  activated with <guimenu>Import from text field</guimenu>.
 		</para>
 
 		<para>
@@ -176,9 +175,11 @@
 	</section>
 
 	<section id="central-management-umc:Operating_instructions_for_domain_modules">
-		<title>Operating instructions for domain modules</title>
+		<title>Operating instructions for modules to administrate LDAP directory data</title>
 		<para>
-			All of the domain modules in &ucsUMC; are controlled identically from
+			All UMC modules for managing LDAP directory objects such as user,
+			group and computer accounts or configurations for printers, shares,
+			mail, Nagios and policies are controlled identically from
 			a structural perspective. The following examples are presented using
 			the user management but apply equally for all modules.
 			The operation of the DNS and DHCP modules is slightly different. Further information can
@@ -190,7 +191,7 @@
 			<graphic scalefit="1" width="100%" fileref="illustrations/umc_modules_en.png"/>
 		</figure>
 		<para>
-			The configuration properties/possibilities of the domain
+			The configuration properties/possibilities of the
 			modules are described in the following chapters:
 		</para>
 		<itemizedlist>
@@ -276,10 +277,13 @@
 		<section id="central:user-interface:edit">
 			<title>Editing objects</title>
 			<para>
-			  Right-clicking on an LDAP object and selecting <guimenu>Edit</guimenu> allows to edit
-			  the object. The individual attributes are described in the individual documentation
-			  chapters. Clicking on <guimenu>Save changes</guimenu> accepts all the changes made in
-			  the LDAP directory; <guimenu>Back to search</guimenu> cancels the editing.
+				Right-clicking on an LDAP object and selecting
+				<guimenu>Edit</guimenu> allows to edit the object. The
+				individual attributes are described in the individual
+				documentation chapters. By clicking on the floppy disk symbol
+				in the coloured module bar, all changes are written into the
+				LDAP directory. The X symbol cancels the editing and returns to
+				the previous search view.
 			</para>
 
 			<para>
@@ -327,7 +331,7 @@
 	<section id="central-management-umc:Favorites">
 	  <title>Favorites</title>
 	  <para>
-		Commonly used UMC modules are shown in a submenu <guimenu>Favorites</guimenu>. Clicking on a
+		Commonly used UMC modules are shown in the category <guimenu>Favorites</guimenu>. Clicking on a
 		UMC module with the right mouse button opens a context menu. <guimenu>Add to favorites</guimenu>
 		and <guimenu>Remove from favorites</guimenu> can be used to mark a UMC module as a favourite
 		or remove it again.
@@ -336,10 +340,10 @@
 
 	<section id="central-management-umc:feedback">
 		<title>Feedback on UMC and UCS</title>
-	<para>
-	  The <guimenu>Feedback</guimenu> option can be reached by clicking on the question mark symbol
-	  in the top menu bar. Here you can provide feedback on UCS and the &ucsUMC; via a web form.
-	</para>
+		<para>
+			By choosing the <guimenu>Help / Feedback</guimenu> option in the upper right user menu
+			of &ucsUMC;, you can provide feedback on UCS and &ucsUMC; via a web form.
+		</para>
 	</section>
 
 	<section id="central-management-umc:notifications">
@@ -347,11 +351,7 @@
 	  <para>
 		UMC modules can deploy system messages to alert the user to potential errors - e.g., join
 		scripts which have not been run - or necessary actions such as available updates.
-	  </para>
-
-	  <para>
-		Clicking on the stylised 'i' in the upper navigation bar of the &ucsUMC; displays all system
-		notifications.
+		The messages are shown on the right side and can be dismissed with a mouse click.
 	  </para>
 	</section>
 </section>
@@ -367,11 +367,13 @@
   </para>
 
   <para>
-	This logging is only performed when the <emphasis>free-for-personal-use license</emphasis> is used. The license
-	status can be verified by clicking on the cog symbol in the top righthand corner of the &ucsUMC;
-	and selecting <guimenu>License</guimenu>. If <guimenu>Free for personal use edition</guimenu>
-	is listed under <guimenu>LDAP base</guimenu>, this version is in use. When a regular UCS license is
-	used, no usage statistics are collected.
+	This logging is only performed when the <emphasis>free-for-personal-use
+	license</emphasis> is used. The license status can be verified via the
+	menu entry <guimenu>License / License information</guimenu> of the user
+	menu in the upper right corner of &ucsUMC;.  If <guimenu>Free for personal
+	use edition</guimenu> is listed under <guimenu>LDAP base</guimenu>,
+	this version is in use. When a regular UCS license is used, no usage
+	statistics are collected.
   </para>
 
   <para>
@@ -383,7 +385,7 @@
 <section id="central:navigation">
 	<title>LDAP directory browser</title>
 	<para>
-		The <guimenu>LDAP directory</guimenu> domain module can be used to navigate
+		The <guimenu>LDAP directory</guimenu> UMC module can be used to navigate
 		through the LDAP directory. When doing so, new objects can be created,
 		modified or deleted in the LDAP directory.
 	</para>
@@ -526,9 +528,10 @@
 			</listitem>
 			<listitem>
 				<simpara>
-				A <guimenu>Policies</guimenu> tab is shown in the individual
-				domain modules for which there are policies, e.g., for users. A
-				different policy can be specified here for this user.
+				A <guimenu>Policies</guimenu> tab is shown in the UMC modules
+				of LDAP directory objects for which there are policies
+				available (e.g., for users). A particular policy for a user can
+				be specified at this place.
 				</simpara>
 			</listitem>
 		</itemizedlist>
@@ -559,7 +562,7 @@
 	<section id="central-management-umc:Editing_a_policy">
 		<title>Editing a policy</title>
 		<para>
-			Policies can be edited and deleted in the UMC domain module
+			Policies can be edited and deleted in the UMC module
 			<guimenu>Policies</guimenu>. The interface is described in
 			<xref linkend="central:user-interface"/>.
 		</para>
@@ -1129,50 +1132,30 @@
   <title>Delegated administration in the UMC</title>
   <para>
 	In the default setting, only the members of the <emphasis>Domain Admins</emphasis> group can
-	access all the UMC modules. Policies can be used to configure which modules are displayed for
+	access all UMC modules. Policies can be used to configure the access to UMC modules for
 	groups or individual users. For example, this can be used to assign a helpdesk team the
 	authority to manage printers without giving them complete access to the administration of the
 	domain.
   </para>
-  
-  <para>
-	UMC supports two basic module types: 
-
-	<itemizedlist>
-	  <listitem>
-		<simpara>
-		  <emphasis>Domain modules</emphasis> manage data saved in the LDAP directory. All the
-		  modifications made here apply to the whole domain. In the default setting, only members of
-		  the <emphasis>Domain Admins</emphasis> group and some internally used accounts have full access
-		  to the UCS LDAP. If a domain module is granted via a policy, the LDAP access must also be allowed
-		  for the user/group in the LDAP ACLs. Further information on LDAP ACLs can be found in
-		  Section <xref linkend="domain-ldap:acls"/>. The names of the domain modules begin with
-		  <emphasis>UDM</emphasis>.
-		</simpara>
-	  </listitem>
-
-	  <listitem>
-		<simpara>
-		  <emphasis>System modules</emphasis> allow the configuration or management of an individual
-		  system, e.g., for starting/stopping of services or the configuration of &ucsUCR;
-		  variables. System modules are run with root privileges. Consequently, in contrast to
-		  domain modules, there is no need for any further changes to the configuration if a UMC
-		  system module is granted via a policy.
-		</simpara>
-	  </listitem>
-	</itemizedlist>
-  </para>
 
   <para>
-	The UMC modules are assigned via a <guimenu>UMC</guimenu> policy, which can be assigned to user and
+	UMC modules are assigned via a <guimenu>UMC</guimenu> policy which can be assigned to user and
 	group objects. The evaluation is performed additively, i.e., general access rights can be
-	assigned via ACLs assigned to groups  and these rights can be extended to users via ACLs bound to
-	users.
-  </para>
-
-  <para>
+	assigned via ACLs assigned to groups and these rights can be extended via ACLs bound to users.
 	General information on policy management can be found in <xref linkend="central:policies"/>.
   </para>
+  
+  <para>
+	In addition to the assignment of UMC policies, LDAP access rights need to be taken
+	into account, as well, for modules that manage data in the LDAP directory.
+	All LDAP modifications are applied to the whole UCS domain.
+	Therefore, in the default setting, only members of the <emphasis>Domain Admins</emphasis>
+	group and some internally used accounts have full access to the UCS LDAP.
+	If a module is granted via a UMC policy, the LDAP access must also be allowed
+	for the user/group in the LDAP ACLs. Further information on LDAP ACLs can be found in
+	Section <xref linkend="domain-ldap:acls"/>.
+  </para>
+
 
   <para>
 	<table>
@@ -1756,7 +1739,7 @@ univention-directory-manager settings/extended_attribute create \
 	<section id="central:reports:create">
 	  <title>Creating reports in the Univention Management Console</title>
 	  <para>
-		To create a report, you need to switch to the domain module for users, groups or hosts. Then
+		To create a report, you need to switch to the UMC module for users, groups or hosts. Then
 		all the objects covered by the report must be selected (you can select all objects by
 		clicking the button on the left of <guimenu>Name</guimenu>).
 		Clicking on <guimenu>more &ar; Create report</guimenu> allows to choose between the
@@ -1766,7 +1749,7 @@ univention-directory-manager settings/extended_attribute create \
 
 	  <figure id="umc-report">
 		<title>Creating a report</title>
-		<graphic scalefit="1" width="45%" fileref="illustrations/umc_report_en2.png"/>
+			<graphic width="45%" align="center" fileref="illustrations/umc_report_en2.png"/>
 	  </figure>
 	  
 	  <para>

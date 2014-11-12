@@ -5,40 +5,35 @@
 	<title>Einführung</title>
 	<para>
 		&ucsUMC; (UMC) ist das zentrale Werkzeug zur webbasierten Administration
-		der UCS-Domäne. UMC unterstützt zwei grundlegende Arten von Modulen:
-	</para>
-	<itemizedlist>
-		<listitem>
-			<simpara>
-			<emphasis>Domänen-Module</emphasis> verwalten alle im LDAP-Verzeichnis
-			vorgehaltenen Daten, z.B. Benutzer, Gruppen oder
-			Rechnerkonten. Alle hier vorgenommenen Änderungen gelten für die
-			gesamte Domäne. Domänen-Module werden nur bei der Anmeldung auf &ucsMaster;
-			und &ucsBackup; angezeigt. Alle Domänen-Module lassen sich außerdem
-			mit einem Kommandozeilen-Interface bedienen, dem &ucsUDM;.
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>System-Module</emphasis> erlauben die Konfiguration oder
-			Verwaltung eines einzelnen Systems, z.B. das Starten oder Stoppen von
-			Diensten oder die Konfiguration von &ucsUCR;-Variablen.
-			</simpara>
-		</listitem>
-	</itemizedlist>
-	<para>
-		<xref linkend="central:user-interface"/> beschreibt die Bedienung
-		der &ucsUMC;. In <xref linkend="central:extendedattrs"/> wird
-		beschrieben, wie der Funktionsumfang der Domänenverwaltung durch erweiterte
-		Attribute ergänzt werden kann.
+		der UCS-Domäne. Für die Administration der unterschiedlichen Aspkete einer
+		Domäne werden verschiedene Module bereit gestellt, die je nach
+		Systemrolle verfügbar sind.
 	</para>
 	<para>
-		Die Domänendaten können durch Univention Directory Reports exportiert
-		und ausgewertet werden, siehe <xref linkend="central:reports"/>.
+		UMC-Module zur Verwaltung aller im LDAP-Verzeichnis vorgehaltenen Daten
+		(wie z.B. Benutzer, Gruppen oder Rechnerkonten) werden lediglich auf
+		&ucsMaster; und &ucsBackup; bereitgestellt.
+		Änderungen, die in diesen Modulen vorgenommen werden, gelten für die
+		gesamte Domäne.
 	</para>
 	<para>
-		Der Univention Directory Manager - die Kommandozeilenschnittstelle der
-		Domänenverwaltung - wird in <xref linkend="central:udm"/> beschrieben.
+		UMC-Module zur Konfiguration und Administration des lokalen Systems werden auf
+		allen Systemrollen bereitgestellt. Über diese Module können bspw. zusätzliche Applikationen
+		installiert, Aktualisierungen eingespielt, die lokale Konfiguration über &ucsUCR;
+		angepasst oder Dienste gestartet/gestoppt werden.
+	</para>
+	<para>
+		<xref linkend="central:user-interface"/> beschreibt zunächst die allgemeine
+		Bedienung von &ucsUMC;. Die darauffolgenden Abschnitte erläutern u.a. die
+		Arbeit mit dem LDPA-Verzeichnis-Browser (<xref linkend="central:navigation"/>),
+		das Anwenden von administrativen Einstellungen über Richtlinien
+		(<xref linkend="central:policies"/>), die Erweiterung des Funktionsumfangs der
+		Domänenverwaltung durch erweiterte Attribute (<xref linkend="central:extendedattrs"/>)
+		sowie das Deligieren von Administrationsrechten an weitere Benutzergruppen
+		(<xref linkend="delegated-administration"/>).
+		Zuletzt wird die Kommandozeilenschnittstelle der Domänenverwaltung dargestellt
+		(<xref linkend="central:udm"/>) und das Auswerten von Domänendaten über die
+		UCS-Reporting-Funktionalität erläutert (<xref linkend="central:reports"/>).
 	</para>
 </section>
 
@@ -63,7 +58,8 @@
 		</para>
 		<para>
 			&ucsUMC; ist in Deutsch und Englisch verfügbar, die Darstellungssprache
-			kann bei der Anmeldung ausgewählt werden.
+			kann bei der Anmeldung über die Auswahlliste in der rechten, oberen Ecke
+			ausgewählt werden.
 		</para>
 
 		<para>
@@ -71,14 +67,15 @@
 		  aufgerufen werden, alternativ ist der Zugriff auch über die IP-Adresse des Servers
 		  möglich. Hier sind alle Web-Dienste verlinkt, die auf dem System angeboten werden. Im
 		  Reiter <guimenu>Administration</guimenu> kann dann die &ucsUMC; über den Link
-		  <guimenu>Univention Management Console</guimenu> aufgerufen werden. Sind auf dem System
+		  <guimenu>System- und Domäneneinstellungen</guimenu>, bzw. über den Link
+		  <guimenu>Systemeinstellungen</guimenu> aufgerufen werden. Sind auf dem System
 		  Dienste installiert, die einen eigenen Webdienst mitbringen (z.B. Horde-Webmail)
 		  sind diese im Reiter <guimenu>Installierte Web-Dienste</guimenu> verlinkt.
 		</para>
 
 		<para>
 			Unter besonderen Umständen kann es nötig sein über eine
-			ungesicherte Verbindung auf die &ucsUMC; zuzugreifen (z.B. wenn für
+			ungesicherte Verbindung auf &ucsUMC; zuzugreifen (z.B. wenn für
 			das System noch keine SSL-Zertifikate erstellt worden sind). In diesem
 			Fall muss in der URL <uri>http</uri> statt <uri>https</uri> verwendet
 			werden. Passwörter werden in diesem Fall im Klartext über das Netzwerk
@@ -86,7 +83,7 @@
 		</para>
 		<figure id="umc-login">
 			<title>UMC-Anmeldemaske</title>
-			<graphic scalefit="1" width="25%" fileref="illustrations/umc_login_de.png"/>
+			<graphic align="center" width="35%" fileref="illustrations/umc_login_de.png"/>
 		</figure>
 		<para>
 			Nach Aufruf der URL erscheint die Anmeldemaske, in der
@@ -96,16 +93,19 @@
 		<itemizedlist>
 		  <listitem><simpara>
 			Bei Anmeldung mit dem lokalen <emphasis>root</emphasis>-Konto des Systems (siehe <xref
-			linkend="computers:rootaccount"/>) werden nur die System-Module der &ucsUMC; angezeigt.
+			linkend="computers:rootaccount"/>) werden lediglich UMC-Module zur Verwaltung und
+			Konfiguration des lokalen Systems angezeigt.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			Bei der Anmeldung mit dem <emphasis>Administrator</emphasis>-Konto auf &ucsMaster; oder &ucsBackup; werden alle Domänen-Module angezeigt.
+			Bei der Anmeldung mit dem <emphasis>Administrator</emphasis>-Konto auf &ucsMaster;
+			oder &ucsBackup; werden ebenfalls UMC-Module zur Verwaltung der Daten des
+			LDAP-Verzeichnisses bereitgestellt.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
 			Bei der Anmeldung mit einem anderen Benutzerkonto werden die für diesen Benutzer
-			freigeschalteten Domänen-Module angezeigt. Weitere Informationen zur Freigabe von
+			freigeschalteten UMC-Module angezeigt. Weitere Informationen zur Freigabe von
 			Modulen findet sich in <xref linkend="delegated-administration"/>.
 		  </simpara></listitem>
 		</itemizedlist>
@@ -133,11 +133,12 @@
 	<section id="central:license">
 		<title>Aktivierung der UCS-Lizenz / Lizenz-Übersicht</title>
 		<para>
-			Die UCS-Lizenz kann eingerichtet werden, indem in der oberen rechten
-			Bildschirmzeile auf das Zahnrad-Symbol geklickt wird. Hier muss der
-			Menüpunkt <guimenu>Lizenzinformationen</guimenu> ausgewählt werden. Unter
-			<guimenu>Aktuelle Lizenz</guimenu> ist der momentane Lizenzierungszustand
-			aufgeführt.
+			Der momentane Lizenzierungszustand kann auf dem &ucsMaster; einer
+			Domäne über das Benutzermenü in der oberen, rechten Bildschirmzeile
+			eingesehen werden. Unterhalb des Menüpunktes
+			<guimenu>Lizenz</guimenu> kann der Punkt
+			<guimenu>Lizenzinformation</guimenu> ausgewählt werden, um einen
+			entsprechenden Informationsdialog zu öffnen.
 		</para>
 		<figure id="umc-license">
 			<title>Anzeige der UCS-Lizenz</title>
@@ -145,12 +146,13 @@
 		</figure>
 
 		<para>
-		  Über den Menüpunkt <guimenu>Neue Lizenz einspielen</guimenu> kann ein Lizenzschlüssel
-		  aktiviert werden (ansonsten greift die standardmäßig installierte
-		  Free-for-Personal-Use-Lizenz). Mit <guimenu>Datei auswählen</guimenu> kann eine
-		  Lizenz-Datei ausgewählt werden, alternativ kann der Lizenz-Schlüssel in das Eingabefeld
-		  <guimenu>Lizenz als Text importieren</guimenu> kopiert und mit
-		  <guimenu>Importieren</guimenu> aktiviert werden.
+		  Der Menüpunkt <guimenu>Neue Lizenz importieren</guimenu> öffnet einen Dialog,
+		  über den ein neuer UCS-Lizenzschlüssel aktiviert werden kann (ansonsten greift die
+		  standardmäßig installierte Free-for-Personal-Use-Lizenz). Über die Schaltfläche
+		  <guimenu>Importieren aus Datei...</guimenu> kann eine Lizenz-Datei ausgewählt
+		  und importiert werden. Alternativ kann der Lizenz-Schlüssel auch in das darunter
+		  liegende Eingabefeld kopiert und dann über der Schaltfläche
+		  <guimenu>Importieren aus Textfeld</guimenu> eingspielt werden.
 		</para>
 
 		<para>
@@ -173,9 +175,12 @@
 	</section>
 
 	<section id="central-management-umc:Bedienung_der_Domaenen-Module">
-		<title>Bedienung der Domänen-Module</title>
+		<title>Bedienung der Module zur Verwaltung von LDAP-Verzeichnisdaten</title>
 		<para>
-		  Alle Domänen-Module der &ucsUMC; werden strukturell identisch bedient. Die folgenden
+		  Alle UMC-Module zur Verwaltung von LDAP-Objekten wie bspw.
+		  Benutzer-, Gruppen- und Rechnerkonten oder Einstellungen für Drucker,
+		  Freigaben, Mail, Nagios und Richtlinien werden strukturell identisch
+		  bedient. Die folgenden
 		  Beispiele werden anhand der Benutzerverwaltung dargestellt, gelten aber analog für alle
 		  Module. Die Bedienung der DNS- und DHCP-Module weicht etwas ab, weitere Hinweise finden
 		  sich in <xref linkend="ip-config:dns:umc"/> und <xref linkend="networks::dhcp::general"/>.
@@ -187,7 +192,7 @@
 		</figure>
 		<para>
 			Die inhaltlichen Eigenschaften/Konfigurationsmöglichkeiten der
-			Domänen-Module ist in folgenden Kapiteln beschrieben:
+			Module ist in folgenden Kapiteln beschrieben:
 		</para>
 		<itemizedlist>
 			<listitem><simpara>Benutzer - <xref linkend="users:general"/></simpara></listitem>
@@ -272,11 +277,14 @@
 		<section id="central:user-interface:edit">
 			<title>Bearbeiten von Objekten</title>
 			<para>
-			  Durch Rechtsklick auf ein LDAP-Objekt und Auswahl von <guimenu>Bearbeiten</guimenu>
-			  kann ein Objekt bearbeitet werden. Die einzelnen Attribute sind in den entsprechenden Dokumentations-Kapiteln
-			  beschrieben. Ein Klick auf <guimenu>Änderungen speichern</guimenu> übernimmt alle
-			  vorgenommenen Anpassungen in das LDAP-Verzeichnis, <guimenu>Zurück zur Suche</guimenu>
-			  bricht die Bearbeitung ab.
+				Durch Rechtsklick auf ein LDAP-Objekt und Auswahl von
+				<guimenu>Bearbeiten</guimenu> kann ein Objekt bearbeitet werden.
+				Die einzelnen Attribute sind in den entsprechenden
+				Dokumentations-Kapiteln beschrieben. Ein Klick auf das
+				Diskettensymbol in der farbigen Modulleiste übernimmt alle
+				vorgenommenen Anpassungen in das LDAP-Verzeichnis. Das X-Symbol
+				bricht die Bearbeitung ab und kehrt zur vorherigen Suchansicht
+				zurück.
 			</para>
 			<para>
 				Vor jedem Eintrag in der Ergebnisliste ist ein Auswahlfeld, mit dem einzelne Objekte
@@ -326,33 +334,30 @@
 	<section id="central-management-umc:Favoriten">
 	  <title>Favoriten</title>
 	  <para>
-		Häufig benutzte UMC-Module werden in einem eigenen Untermenü <guimenu>Favoriten</guimenu>
-		dargestellt. Über einen Klick mit der rechten Maustaste auf ein UMC-Modul wird ein
+		Häufig benutzte UMC-Module werden in der Kategorie <guimenu>Favoriten</guimenu>
+		angezeigt. Über einen Klick mit der rechten Maustaste auf ein UMC-Modul wird ein
 		Kontextmenü angezeigt. Mit <guimenu>Zu Favoriten hinzufügen</guimenu>, bzw. <guimenu>Aus
 		Favoriten entfernen</guimenu> kann ein UMC-Modul als Favorit markiert oder wieder entfernt
 		werden.
 	  </para>
 	</section>
-	
+
 	<section id="central-management-umc:feedback">
 		<title>Feedback zur UMC und zu UCS</title>
-	<para>
-	  Durch einen auf das Fragezeichensymbol in der oberen Navigationsleiste der &ucsUMC; kann die
-	  Option <guimenu>Feedback</guimenu> erreicht werden. Hier kann über ein Webformular Feedback zu
-	  UCS und zur &ucsUMC; gegeben werden.
-	</para>
+		<para>
+			Durch die Auswahl des Eintrages <guimenu>Hilfe / Feedback</guimenu>
+			in dem oberen, rechten Benutzermenü der &ucsUMC; kann über ein Webformular Feedback zu
+			UCS und &ucsUMC; gegeben werden.
+		</para>
 	</section>
 
 	<section id="central-management-umc:notifications">
 	  <title>Anzeige von Systembenachrichtigungen</title>
 	  <para>
 		UMC-Module können den Benutzer durch Systembenachrichtigungen auf potentielle Fehler -
-		z.B. nicht ausgeführte Join-Skripte - oder nötige Aktionen wie verfügbare Updates hinweisen.
-	  </para>
-
-	  <para>
-		Mit einem Klick auf das stilisierte 'i' in der oberen Navigationsleiste der &ucsUMC; werden
-		alle Systembenachtigungen angezeigt.
+		z.B. nicht ausgeführte Join-Skripte - oder nötige Aktionen wie verfügbare Aktualisierungen hinweisen.
+		Die Benachrichtigungen werden an der rechten Seite eingeblendet und können durch
+		einen Mausklick ausgeblendet werden.
 	</para>
 	</section>
 
@@ -370,11 +375,13 @@
 </para>
 <para>
   Diese Protokollierung erfolgt nur bei Verwendung der
-  <emphasis>Free-for-Personal-Use-Lizenz</emphasis>. Der Lizenzstatus kann durch einen Klick auf das Zahnrad-Symbol
-  in der rechten, oberen Ecke der &ucsUMC; und die Auswahl von <guimenu>Lizenz</guimenu> geprüft
-  werden. Steht hier unter <guimenu>LDAP-Basis</guimenu> <guimenu>Free for personal use
-  edition</guimenu> wird eine solche Version verwendet. Bei Einsatz einer regulären UCS-Lizenz
-  erfolgt keine Teilnahme an der Nutzungsstatistik.
+  <emphasis>Free-for-Personal-Use-Lizenz</emphasis>. Der Lizenzstatus kann
+  überprüft werden durch den Eintrag <guimenu>Lizenz /
+  Lizenzinformation</guimenu> des Benutzermenüs in der rechten, oberen Ecke
+  von &ucsUMC;.  Steht hier unter <guimenu>LDAP-Basis</guimenu> <guimenu>Free
+  for personal use edition</guimenu> wird eine solche Version verwendet.
+  Bei Einsatz einer regulären UCS-Lizenz erfolgt keine Teilnahme an der
+  Nutzungsstatistik.
 </para>
 <para>
   Die Protokollierung kann unabhängig von der verwendeten Lizenz durch Setzen der &ucsUCRV;
@@ -385,7 +392,7 @@
 <section id="central:navigation">
 	<title>LDAP-Verzeichnis-Browser</title>
 	<para>
-		Über das Domänen-Modul <guimenu>LDAP-Verzeichnis</guimenu> kann durch das
+		Über das UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu> kann durch das
 		LDAP-Verzeichnis navigiert werden. Dabei können auch Objekte im
 		LDAP-Verzeichnis erzeugt, modifiziert oder gelöscht werden.
 	</para>
@@ -538,10 +545,10 @@
 			</listitem>
 			<listitem>
 				<simpara>
-				In den einzelnen Domänen-Modulen - sofern es für den Typ
-				Richtlinien gibt, z.B. für Benutzer - wird ein Reiter
-				<guimenu>Richtlinien</guimenu> angezeigt, Hier kann für diesen
-				Benutzer eine abweichende Richtlinie festgelegt werden.
+				In den einzelnen UMC Modulen der LDAP-Verzeichnisobjekte - sofern es für den Typ
+				Richtlinien gibt (z.B. für Benutzer) - wird ein Reiter
+				<guimenu>Richtlinien</guimenu> angezeigt. Eine abweichende
+				Richtlinie für einen Benutzer kann an dieser Stelle festgelegt werden.
 				</simpara>
 			</listitem>
 		</itemizedlist>
@@ -574,7 +581,7 @@
 	<section id="central-management-umc:Bearbeiten_einer_Richtlinie">
 		<title>Bearbeiten einer Richtlinie</title>
 		<para>
-			Richtlinien können im UMC-Domänenmodul <guimenu>Richtlinien</guimenu>
+			Richtlinien können im UMC-Modul <guimenu>Richtlinien</guimenu>
 			bearbeitet und gelöscht werden. Die Bedienung ist in
 			<xref linkend="central:user-interface"/> beschrieben.
 		</para>
@@ -1155,39 +1162,11 @@
   <title>Delegierte Administration in der UMC</title>
   <para>
 	In der Grundeinstellung können nur die Mitglieder der Gruppe <emphasis>Domain Admins</emphasis> alle
-	UMC-Module aufrufen. Über Richtlinien kann für Gruppen oder einzelne Benutzer konfiguriert werden,
-	welche Module angezeigt werden. Dies kann beispielsweise verwendet werden, um einem Helpdesk-Team die
+	UMC-Module aufrufen.
+	Über Richtlinien kann für Gruppen oder einzelne Benutzer der Zugriff auf UMC-Module konfiguriert werden.
+	Dies kann beispielsweise verwendet werden, um einem Helpdesk-Team die
 	Berechtigung zu erteilen Drucker zu verwalten ohne ihnen Vollzugriff auf die Administration der Domäne
 	zu erteilen.
-  </para>
-  
-  <para>
-	UMC unterstützt zwei grundlegende Arten von Modulen: 
-
-	<itemizedlist>
-	  <listitem>
-		<simpara>
-		  <emphasis>Domänen-Module</emphasis> verwalten im LDAP-Verzeichnis gespeicherte
-		  Daten. Alle hier vorgenommenen Änderungen gelten für die gesamte
-		  Domäne. In der Grundeinstellung haben nur Mitglieder der Gruppe <emphasis>Domain
-		  Admins</emphasis> sowie einige intern genutzte Konten Vollzugriff auf das UCS-LDAP. Wird
-		  ein Domänen-Modul über eine Richtlinie freigegeben, muss für den Benutzer/Gruppe zusätzlich der
-		  Zugriff in den LDAP-ACLs freigegeben werden. Weitere Hinweis zu LDAP-ACLs finden sich in
-		  Kapitel <xref linkend="domain-ldap:acls"/>. Die
-		  Namen der Domänen-Module beginnen mit <emphasis>UDM</emphasis>.
-		</simpara>
-	  </listitem>
-
-	  <listitem>
-		<simpara>
-		  <emphasis>System-Module</emphasis> erlauben die Konfiguration oder Verwaltung eines
-		  einzelnen Systems, z.B. das Starten oder Stoppen von Diensten oder die Konfiguration von
-		  &ucsUCR;-Variablen. System-Module werden von der UMC mit Root-Rechten ausgeführt. Im
-		  Gegensatz zu Domänen-Modulen muss daher bei der Zuweisung über eine Richtlinie keine
-		  weitere Konfigurationsanpassung durchgeführt werden.
-		</simpara>
-	  </listitem>
-	</itemizedlist>
   </para>
 
   <para>
@@ -1195,10 +1174,18 @@
 	und Gruppenobjekten zugewiesen werden kann. Die Auswertung erfolgt dabei additiv, d.h. man kann
 	allgemeine Zugriffsrechte durch ACLs auf Gruppenmitgliedschaften erteilen und durch ACLs auf
 	Benutzer ergänzen.
+	Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
   </para>
 
   <para>
-	Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
+	Zusätzlich zu der Zuweisung von UMC-Richtlinien, müssen für UMC-Module, die Daten
+	des LDAP-Verzeichnisses verwalten, ebenfalls LDAP-Zugriffsrechte berücksichtig werden.
+	Alle im LDAP vorgenommenen Änderungen gelten für die gesamte UCS-Domäne.
+	Daher haben in der Grundeinstellung nur Mitglieder der Gruppe <emphasis>Domain
+	Admins</emphasis> sowie einige intern genutzte Konten Vollzugriff auf das UCS-LDAP. Wird
+	ein Modul über eine UMC-Richtlinie freigegeben, muss für den Benutzer/die Gruppe zusätzlich der
+	Zugriff in den LDAP-ACLs freigegeben werden. Weitere Hinweis zu LDAP-ACLs finden sich in
+	Kapitel <xref linkend="domain-ldap:acls"/>.
   </para>
 
   <para>
@@ -1790,7 +1777,7 @@ univention-directory-manager settings/extended_attribute create \
 	<section id="central:reports:create">
 	  <title>Erstellen von Reports in der Univention Management Console</title>
 	  <para>
-		Um einen Report zu erstellen, muss in die Domänen-Module für Benutzer, Gruppen oder Rechner
+		Um einen Report zu erstellen, muss in die UMC-Module für Benutzer, Gruppen oder Rechner
 		gewechselt werden. Anschließend müssen alle vom Report erfassten Objekte ausgewählt werden
 		(durch einen Klick auf den Button links von <guimenu>Name</guimenu> können alle Objekte
 		selektiert werden).
@@ -1801,7 +1788,7 @@ univention-directory-manager settings/extended_attribute create \
 
 	  <figure id="umc-report">
 		<title>Erstellen eines Reports</title>
-		<graphic scalefit="1" width="45%" fileref="illustrations/umc_report_de2.png"/>
+		<graphic width="45%" align="center" fileref="illustrations/umc_report_de2.png"/>
 	  </figure>
 
 	  <para>
