@@ -323,15 +323,21 @@
 			</para>
 		</section>
 
-		<section id="relnotes:ppolicy">
+		<section id="relnotes:ldap_bind_lockout">
 			<title>Automatische Kontosperrung</title>
 			<para>
 				Auf Domänencontrollern mit MDB LDAP Backend (z.B. Systeme, die mit UCS 4.0
-				installiert worden sind) kann nun optional das ppolicy LDAP Overlay aktiviert werden,
-				um automatisierte Kontosperrungen bei wiederholten Authentisierungsfehlern zu
-				implementieren. Die Implementation dieser Funktionalität setzt voraus, dass alle
+				installiert worden sind) kann nun eine automatisierte Kontosperrungen
+				bei wiederholten LDAP-Authentisierungsfehlern aktiviert werden.
+				Die Implementation dieser Funktionalität setzt voraus, dass alle
 				Domänencontroller auf UCS 4.0 aktualisiert sind. Dies ist notwendig um
-				Replikationsprobleme zu vermeiden.
+				Replikationsprobleme zu vermeiden. Die Überwachung der LDAP-Anmeldeversuche
+				ist pro UCS Domänencontroller zu aktivieren. Eine Sperrung erfolgt
+				domänenweit für alle Anmeldeverfahren des betreffenden Benutzerkontos
+				und kann nur durch Domänen-Administratoren wieder zurückgenommen werden.
+				Details zur
+				Aktivierung sind im Changelog in <xref linkend="changelog:domain:openldap"/>
+				für Bug 31907 beschieben.
 			</para>
 		</section>
 

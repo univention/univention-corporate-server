@@ -315,13 +315,17 @@
 		</para>
 	  </section>
 
-	  <section id="relnotes:ppolicy">
-		<title>Automatic account lockups</title>
+	  <section id="relnotes:ldap_bind_lockout">
+		<title>Automatic account lockout</title>
 		<para>
-		  On domain controllers using the MDB LDAP backend (e.g. systems installed with UCS 4.0) the
-		  ppolicy LDAP overlay allows automatic account lockups in case of repeated authentication
+		  On domain controllers using the MDB LDAP backend (e.g. systems installed with UCS 4.0)
+		  automatic account lockout can be activated in cases of repeated LDAP authentication
 		  failures. This can only be used if all domain controllers have been updated to UCS 4.0;
-		  otherwise replication errors may occur.
+		  otherwise replication errors may occur. The monitoring of LDAP auhtentication can be
+		  activated separately per UCS domain controller. The lockout is domain wide for all
+		  methods of authentication for the specific user and can only be reverted by a domain
+		  administrator.
+		  For details see the changelog <xref linkend="changelog:domain:openldap"/> for Bug 31907.
 		</para>
 	  </section>
 

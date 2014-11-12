@@ -228,8 +228,8 @@
 			<listitem><simpara>
 					On domain controllers using the MDB LDAP backend
 					(e.g. systems installed with UCS 4.0)
-					the ppolicy LDAP overlay can now optionally be activated
-					to implement account lockout in cases of repeated LDAP authentication failures.
+					automatic account lockout in cases of repeated LDAP authentication failures
+					can be activated.
 					All domaincontrollers need to be updated to UCS 4.0 before activating this.
 					An default configuration for this is stored in OpenLDAP. The overlay
 					and this default configuration can be activated on a per-DC basis
@@ -238,7 +238,14 @@
 					restarting the slapd daemon. The default policy is such that
 					5 repeated LDAP authentication failures within a monitoring interval
 					of 5 minutes causes the authenticating account to be locked in UDM.
-					A locked account can only be unlocked via UDM by a Domain Admin
+					A locked account can only be unlocked via UDM by a Domain Admin.
+					The number of repeated LDAP authentication failures can be adjusted
+					in the configuration object which has the objectClass <emphasis>pwdPolicy</emphasis>.
+					The attribute <emphasis>pwdMaxFailure</emphasis> determines the number of LDAP
+					authentication errors before lockout. The attribute <emphasis>pwdMaxFailure</emphasis>
+					determines the time interval in seconds which is considered: LDAP authentication
+					failures outside of that interval are neglected in the counting.
+					Other attributes of this objectclass should not be adjusted
 					(<ulink url="&ucsbug;31907">Bug 31907</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
