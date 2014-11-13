@@ -395,8 +395,8 @@
 					(<ulink url="&ucsbug;35716">Bug 35716</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-					Changed a misleading error message when joining the domain failed
-					(<ulink url="&ucsbug;35703">Bug 35703</ulink>).
+					Various typos text changes have been made
+					(<ulink url="&ucsbug;35703">Bug 35703</ulink>, <ulink url="&ucsbug;36666">Bug 36666</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 					An option to upgrade the system right after the configuration has been added
