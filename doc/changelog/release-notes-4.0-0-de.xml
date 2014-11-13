@@ -82,14 +82,14 @@
 				manuellen Konfiguration von Cloud-Images oder anderen Appliances zum Einsatz.
 			</para></listitem>
 			<listitem><para>
-				Die Performance des OpenLDAP Verzeichnisdienst wurde deutlich verbessert.
-				standardmäßig wird als Backend für OpenLDAP nun die Memory-Mapped-Datenbank (mdb)
+				Die Performance des OpenLDAP-Verzeichnisdienst wurde deutlich verbessert.
+				Standardmäßig wird als Backend für OpenLDAP nun die Memory-Mapped-Datenbank (mdb)
 				verwendet.
 			</para></listitem>
 			<listitem><para>
 				Die Administration von Applikationen innerhalb der UCS-Domäne wird durch ein
-				zentralisiertes App Center noch einfacher. Dadurch können Applikationen von einem
-				System innerhalb der gesamten Domäne installiert werden.
+				zentralisiertes App Center noch einfacher. Dadurch können Applikationen über das
+				App Center auf einem UCS-System innerhalb der gesamten Domäne installiert werden.
 			</para></listitem>
 			<listitem><para>
 				UCS unterstützt nun auch die Installation auf einem System mit aktiviertem UEFI
@@ -102,9 +102,9 @@
 	<chapter id="relnotes:update">
 		<title>Hinweise zum Update</title>
 			<para>
-				UCS unterstützt das Einspielen von Release Updates. Während der Aktualisierung kann es zu
+				UCS unterstützt das Einspielen von Release-Updates. Während der Aktualisierung kann es zu
 				Ausfällen von Diensten innerhalb der Domäne kommen. Aus diesem Grund sollte das Update
-				innerhalb eines Wartungsfensters erfolgen. Grundsätzlich ist es empfohlen das Update
+				innerhalb eines Wartungsfensters erfolgen. Grundsätzlich wird empfohlen das Update
 				zunächst in einer Testumgebung einzuspielen und zu testen. Die Testumgebung sollte
 				dabei identisch zur Produktivumgebung sein. Je nach Systemgeschwindigkeit,
 				Netzwerkanbindung und installierter Software kann das Update zwischen dreißig Minuten
@@ -122,7 +122,7 @@
 					Auf dem &ucsMaster; wird die maßgebliche (authoritative) Version des
 					LDAP-Verzeichnisdienstes vorgehalten, die an alle übrigen LDAP-Server der
 					UCS-Domäne repliziert wird. Da bei Release-Updates Veränderungen an den
-					LDAP-Schemata auftreten können muss der &ucsMaster; bei einem Release-Update immer
+					LDAP-Schemata auftreten können, muss der &ucsMaster; bei einem Release-Update immer
 					als erstes System aktualisiert werden.
 				</para>
 		</section>
@@ -131,7 +131,7 @@
 				<para>
 					UCS 4.0 unterstützt den Mischbetrieb mit UCS 3.2-4 Systemen. Aus diesem Grund müssen
 					nicht alle UCS-Systeme in einem Wartungsfenster auf UCS 4.0 aktualisiert werden. Ein
-					Mischbetrieb mit älteren UCS-Versionen, bspw. UCS 3.1 ist nicht unterstützt.
+					Mischbetrieb mit älteren UCS-Versionen, bspw. UCS 3.1 wird nicht unterstützt.
 				</para>
 		</section>
 		<section id="relnotes:apps">
@@ -139,7 +139,7 @@
 				<para>
 					Sofern Applikationen aus dem App Center installiert sind, ist das Update erst
 					dann möglich, wenn alle lokal installierten Applikationen im App Center
-					verfügbar sind. Einige Applikationen werden beim Update ebenfalls auf neure
+					verfügbar sind. Einige Applikationen werden beim Update ebenfalls auf neuere
 					Versionen aktualisiert. Falls eine Applikation noch nicht verfügbar ist, so kann
 					der Zeitpunkt beim Applikationshersteller nachgefragt werden.
 				</para>
@@ -148,10 +148,21 @@
 			<title>Ablösung von Windows NT DC Funktionalität</title>
 				<para>
 					Die Verwendung von Windows NT Domänendiensten, die klassisch durch Samba 3
-					bereitgestellt wurden, ist mit UCS 4.0 nicht mehr empfohlen. Eine Auswahl der
+					bereitgestellt wurden, wird mit UCS 4.0 nicht mehr empfohlen. Eine Auswahl der
 					Windows NT Domänendienste ist deshalb während der Installation von UCS und durch
 					das App Center nicht mehr vorgesehen. Es wird empfohlen auf die Active Directory
-					Domänendienste von UCS (Samba 4) zu migrieren.
+					Domänendienste von UCS (Samba 4) zu migrieren. Die Migration ist im Univention
+					Wiki dokumentiert:
+					<ulink url="http://wiki.univention.de/index.php?title=Migration_from_Samba_3_to_Samba_4"/>.
+				</para>
+		</section>
+		<section id="relnotes:32bit">
+			<title>UCS-Installations-DVDs nur noch als 64-Bit-Variante</title>
+				<para>
+					UCS-Installations-DVSs werden ab UCS 4 nur noch für 64-Bit-Archtitekturen
+					bereitgestellt. Vorhandene 32-Bit UCS 3 Systeme können weiterhin über das Online
+					Repository oder über Update DVDs auf UCS 4 aktualisiert werden. Die
+					32-Bit-Archtitektur wird für die gesamte UCS 4 Maintenance noch unterstützt.
 				</para>
 		</section>
 
@@ -248,7 +259,7 @@
 			<para>
 				Die Profil-basierte Netzwerkinstallation von UCS steht mit UCS 4.0-0 noch nicht zur
 				Verfügung. Die Unterstützung wird zu einem späteren Zeitpunk nachgeliefert. Der
-				Status kann in unserem Issue Tracker nachvollzogen werden:
+				Status kann in unserem Issue-Tracker nachvollzogen werden:
 				<ulink url="&ucsbug;35537">Bug 35537</ulink>.
 			</para>
 		</section>
@@ -328,14 +339,8 @@
 			<para>
 				Auf Domänencontrollern mit MDB LDAP Backend (z.B. Systeme, die mit UCS 4.0
 				installiert worden sind) kann nun eine automatisierte Kontosperrungen
-				bei wiederholten LDAP-Authentisierungsfehlern aktiviert werden.
-				Die Implementation dieser Funktionalität setzt voraus, dass alle
-				Domänencontroller auf UCS 4.0 aktualisiert sind. Dies ist notwendig um
-				Replikationsprobleme zu vermeiden. Die Überwachung der LDAP-Anmeldeversuche
-				ist pro UCS Domänencontroller zu aktivieren. Eine Sperrung erfolgt
-				domänenweit für alle Anmeldeverfahren des betreffenden Benutzerkontos
-				und kann nur durch Domänen-Administratoren wieder zurückgenommen werden.
-				Details zur Aktivierung sind unten im Changelog für Bug 31907 beschieben.
+				bei wiederholten LDAP-Authentisierungsfehlern aktiviert werden. Die Aktivierung ist
+				im SDB-Artikel beschrieben <ulink url="http://sdb.univention.de/1291"/>.
 			</para>
 		</section>
 

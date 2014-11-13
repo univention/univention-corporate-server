@@ -167,7 +167,7 @@
 					(<ulink url="&ucsbug;35935">Bug 35935</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-					The kernel boot options vga is deprecated and has been
+					The kernel boot option vga is deprecated and has been
 					replaced with grub's gfxpayload to control the video mode
 					in which the Linux kernel starts up
 					(<ulink url="&ucsbug;28604">Bug 28604</ulink>).
@@ -232,7 +232,7 @@
 					automatic account lockout in cases of repeated LDAP authentication failures
 					can be activated.
 					All domaincontrollers need to be updated to UCS 4.0 before activating this.
-					An default configuration for this is stored in OpenLDAP. The overlay
+					A default configuration for this is stored in OpenLDAP. The overlay
 					and this default configuration can be activated on a per-DC basis
 					by setting both &ucsUCRV;s <envar>ldap/ppolicy</envar>
 					and <envar>ldap/ppolicy/enabled</envar> to <emphasis>yes</emphasis> and
@@ -560,7 +560,7 @@
 				(<ulink url="&ucsbug;34029">Bug 34029</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The reboot module have been removed from the UMC overview.
+				The reboot module has been removed from the UMC overview.
 				The UMC menu now contains buttons for rebooting and shutting down the server.
 				(<ulink url="&ucsbug;36281">Bug 36281</ulink>).
 			</simpara></listitem>
@@ -796,7 +796,7 @@
 		<title>Univention Virtual Machine Manager (UVMM)</title>
 		<itemizedlist>
 			<listitem><simpara>
-				Univention Virtual Machine Manager now supports connections to Cloud Service Providers.
+				Univention Virtual Machine Manager now supports connections to Cloud Computing Environments.
 				Create and manage Amazon EC2 or OpenStack connections and virtual machines 
 				(<ulink url="&ucsbug;32842">Bug 32842</ulink>).
 				The following additional Bugs were discovered and fixed during UCS 4 &ucsUVMM; development: <sbr/>(
@@ -888,7 +888,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 						Installation of univention-samba now doesn't any longer automatically run the joinscript.
-						This is because the join process requiresadministrative credentials
+						This is because the join process requires administrative credentials
 						(<ulink url="&ucsbug;36284">Bug 36284</ulink>).
 				</simpara></listitem>
 				<listitem><simpara>

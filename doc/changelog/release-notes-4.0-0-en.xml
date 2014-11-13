@@ -66,20 +66,20 @@
 
 		  <listitem><para>
 			In addition to local virtualization servers the UCS Virtual Machine Manger (UVMM) can
-			now also managed OpenStack or Amazon EC2 environments. This allows the setup of hybrid cloud
+			now also manage OpenStack or Amazon EC2 environments. This allows the setup of hybrid cloud
 			scenarios.
 		  </para></listitem>
 
 		  <listitem><para>
-			UCS 4.0 is based on Debian GNU/Linux 7.7 (Wheezy). More than 16000 source packages were
-			updated. Selected core components, e.g. wie OpenLDAP (2.4.40), Samba (4.2rc2) or the
+			UCS 4.0 is based on Debian GNU/Linux 7.7 (Wheezy). More than 16,000 source packages were
+			updated. Selected core components, e.g. OpenLDAP (2.4.40), Samba (4.2rc2) or the
 			Linux kernel (3.16) are more recent in UCS compared to Debian GNU/Linux 7.7.
 		  </para></listitem>
 
 		  <listitem><para>
 			The installation of UCS has been simplified. The base installation is based on the
 			Debian installer and finalised using a web-based configuration system. The same system
-			is also used when manually configuration cloud images or other appliances.
+			is also used for the manual configuration of cloud images or other appliances.
 		  </para></listitem>
 
 		  <listitem><para>
@@ -94,7 +94,7 @@
 		  </para></listitem>
 
 		  <listitem><para>
-			UCS now also support the installation on systems using UEFI SecureBoot.
+			UCS now also supports the installation on systems using UEFI SecureBoot.
 		  </para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -137,22 +137,36 @@
 		  <title>Univention App Center</title>
 		  <para>
 			If applications have been installed from the Univention App Center, the update can only
-			be performed once all installed applications are available in a version compatible
+			be performed once all installed applications are available in a compatible
 			version. Some applications are updated to newer versions during the update. If an
 			application is not yet available in a compatible version, the release date can be
-			obtained from the company providing the application.
+			obtained from the application vendor.
 		  </para>
 		</section>
 
 		<section id="relnotes:samba">
-		  <title>Depreaction of Windows NT domain controller functionality</title>
+		  <title>Deprecation of Windows NT domain controller functionality</title>
 		  <para>
 			The use of Windows NT domain services - as traditionally provided by Samba 3 - is no
 			longer recommended with UCS 4.0. Windows NT domain services can no longer be selected
 			during the installation of UCS and in the Univention App Center. We recommend the
-			migration to the Active Directory domain services provided by Samba 4.
+			migration to the Active Directory domain services provided by Samba 4. The migration is
+			documented in the Univention Wiki:
+			<ulink url="http://wiki.univention.de/index.php?title=Migration_from_Samba_3_to_Samba_4"/>.
 		  </para>
 		</section>
+
+		<!-- TODO: translation
+		<section id="relnotes:32bit">
+			<title>UCS-Installations-DVDs nur noch als 64-Bit-Variante</title>
+				<para>
+					UCS-Installations-DVSs werden ab UCS 4 nur noch für 64-Bit-Archtitekturen
+					bereitgestellt. Vorhandene 32-Bit UCS 3 Systeme können weiterhin über das Online
+					Repository oder über Update DVDs auf UCS 4 aktualisiert werden. Die
+					32-Bit-Archtitektur wird für die gesamte UCS 4 Maintenance noch unterstützt.
+				</para>
+		</section>
+		-->
 	</chapter>
 
 	<chapter id="relnotes:prepare">
@@ -160,8 +174,8 @@
 
 		<para>
 		  It must be checked whether sufficient disk space is available. A standard installation
-		  requires a minimum of 6 GB of memory. Depending on the scope of the existing installation,
-		  the update will require about another 4 GB of memory for the downloading and
+		  requires a minimum of 6 GB of disk space. Depending on the scope of the existing installation,
+		  the update will require about another 4 GB of disk space for the downloading and
 		  installation of the packages.
 		</para>
 
@@ -189,7 +203,7 @@
 		  <itemizedlist>
 			<listitem>
 			  <para>
-				The <application>Xen</application> has been removed and is no longer supported in
+				The <application>Xen</application> hypervisor has been removed and is no longer supported in
 				the UCS Virtual Machine Manager. The migration to <application>KVM</application> is
 				described in <xref linkend="ext-doc-uvmm"/>.
 			  </para>
@@ -206,7 +220,7 @@
 			  <para>
 				<application>PostgreSQL 8.3</application> is no longer provided in UCS 4.0. The
 				migration of the databases to PostgreSQL 8.4 is described in <ulink
-				url="http://sdb.univention.de/1220">SDB article 1220</ulink>.
+				url="http://sdb.univention.de/1249">SDB article 1249</ulink>.
 			  </para>
 			</listitem>
 
@@ -244,8 +258,8 @@
 	  <section id="relnotes:instprofil">
 		<title>Network-based installation of UCS</title>
 		<para>
-		  The profile-based UCS network installation is not yet available in UCS 4.0-0. It will
-		  provided at a later date. Please refer to our issue tracker for furher details:
+		  The profile-based UCS network installation is not yet available in UCS 4.0-0. It will be
+		  provided at a later date. Please refer to our issue tracker for further details:
 		  <ulink url="&ucsbug;35537">Bug 35537</ulink>.
 		</para>
 	  </section>
@@ -320,12 +334,8 @@
 		<para>
 		  On domain controllers using the MDB LDAP backend (e.g. systems installed with UCS 4.0)
 		  automatic account lockout can be activated in cases of repeated LDAP authentication
-		  failures. This can only be used if all domain controllers have been updated to UCS 4.0;
-		  otherwise replication errors may occur. The monitoring of LDAP auhtentication can be
-		  activated separately per UCS domain controller. The lockout is domain wide for all
-		  methods of authentication for the specific user and can only be reverted by a domain
-		  administrator.
-		  For details see the changelog for Bug 31907 below.
+		  failures. The activation is described in the SDB article
+		  <ulink url="http://sdb.univention.de/1291"/>.
 		</para>
 	  </section>
 
