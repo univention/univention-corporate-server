@@ -1,0 +1,18 @@
+#!/usr/share/ucs-test/runner python
+## desc: Cyrus authentication
+## tags: apttest
+## exposure: safe
+## packages: [cyrus-common]
+## bugs: [23527]
+
+import subprocess
+import univention.testing.utils as utils
+
+def main():
+	cmd = ['/usr/bin/cyradm', '--server=localhost', '--password=univention', '--auth=login']
+	out, err = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+	if 'localhost>' not in out or err:
+		utils.fail(err)
+
+if __name__ == '__main__':
+	main()
