@@ -214,6 +214,7 @@ gdb
 patchutils
 subversion
 git
+deborphan
 
 /* Python */
 python-debian

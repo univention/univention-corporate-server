@@ -1,3 +1,9 @@
+univention-dvd (0.2.24-1) unstable; urgency=low
+
+  * Bug #36619: Add deborphan to maintained 
+
+ -- Felix Botner <botner@univention.de>  Thu, 13 Nov 2014 11:36:40 +0100
+
 univention-dvd (0.2.23-1) unstable; urgency=low
 
   * Bug #36092: Add univention-cloud-init to maintained 
