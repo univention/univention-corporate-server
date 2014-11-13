@@ -2,7 +2,7 @@
 
 <section id="introduction:What_is_Univention_Corporate_Server"><title>What is Univention Corporate Server?</title>
 <para>
-Univention Corporate Server (UCS) is a Linux-based corporate platform
+Univention Corporate Server (UCS) is a Linux-based server operating system
 for the operation and administration of IT infrastructures for
 companies and authorities. UCS implements an integrated, holistic
 concept with consistent, central administration and can ensure the
@@ -14,7 +14,7 @@ manufacturers, meaning it can be easily integrated in existing
 environments.
 </para>
 <para>
-UCS includes and is based on reliable Open Source software tried and
+UCS consists of reliable Open Source software tried and
 tested in organisations of different sizes. These software components
 are integrated together via the &ucsUMS;. This allows the easy
 integration and administration of the system in both simple and
@@ -24,8 +24,15 @@ complex distributed or virtualized environments.
 The central functions of UCS are:
 </para>
 <itemizedlist>
-<listitem><simpara>Flexible and extensive identity, infrastructure and virtualization management system</simpara></listitem>
-<listitem><simpara>Support for Microsoft Windows and integration in Microsoft Active Directory environments</simpara></listitem>
+<listitem><simpara>Flexible and extensive identity/infrastructure management for the central
+administration of servers, workstations, users and their permissions, server applications and web
+services</simpara></listitem>
+<listitem><simpara>Services for integrating the management of existing Microsoft Active Directory
+domains or alternatively the provision of suchs services as an alternative for Microsoft-based
+server systems</simpara></listitem>
+<listitem><simpara>App Center for simply installation and management of extensions and applications</simpara></listitem>
+<listitem><simpara>Comprehensive features for the operation of virtualized systems (e.g. running a
+Windows or Linux operating systems) in either the cloud of on locally running UCS systems</simpara></listitem>
 <listitem><simpara>Network and Intranet services for administration of DHCP and DNS</simpara></listitem>
 <listitem><simpara>File and print services</simpara></listitem>
 <listitem><simpara>Computer administration and monitoring</simpara></listitem>
@@ -38,9 +45,10 @@ this handbook. Basically, the software packages contained in UCS can
 be assigned to the following three main categories:
 </para>
 <orderedlist>
-<listitem><simpara>UCS basic system</simpara></listitem>
-<listitem><simpara>UCS management system</simpara></listitem>
-<listitem><simpara>UCS components</simpara></listitem>
+<listitem><simpara>Base system</simpara></listitem>
+<listitem><simpara>UCS management system with the Univention Management Console</simpara></listitem>
+<listitem><simpara>Univention App Center, allowing the installation of further components and
+applications of other software vendors</simpara></listitem>
 </orderedlist>
 <para>
 The <emphasis>base system</emphasis> encompasses the operating system, the UCS Linux
@@ -57,7 +65,7 @@ service. Core components of the management system are the services
 OpenLDAP (directory service), Samba (provision of domain, file and
 print services for Windows), Kerberos (authentication and single sign
 on), DNS (network name resolution) and SSL/TLS (secure transmission
-of data between systems). It can be used either via a web interface
+of data between systems). It can be used either via a web interface (&ucsUMC;)
 or in the command line and in individual scripts. The UCS management
 system can be extended with APIs (application programmers interfaces)
 and provides a flexible client-server architecture which allows
@@ -65,8 +73,8 @@ changes to be transferred to the involved systems and be activated
 there.
 </para>
 <para>
-Additional <emphasis>UCS components</emphasis> from Univention and other
-manufacturers expand the system with numerous functions such as
+Additional components from Univention and other manufacturers can easily be installed using the
+App Center expand the system with numerous functions such as
 groupware, document management and services for Windows, meaning that
 they can also be run from a UCS system and administrated via the UCS
 management system.
@@ -79,13 +87,11 @@ As an operating system designed for multi-user and multi-tasking
 application right from the start, where the focus in its development
 was always on stability, security and compatibility with other
 operating systems, Linux is predestined for being used in server
-operating systems that are stable, secure and available at all
-times. Without UCS, however, the administration of Linux systems is
-often time-consuming, complicated and largely unstandardised,
-particularly in application scenarios in which infrastructure services
-closely linked to user and computer administration are provided for
-companies and authorities. This is the point where UCS comes into
-play.
+operating systems that are stable, secure and highly available.
+UCS is a server operating system built on that base which is optimised
+for the simple and secure operation and management of applications and infrastructure services in
+enterprises and public authorities. For efficient and secure management such applications rely on
+the tight integration in the user and permission management of the &ucsUMS;.
 </para>
 <para>
 UCS can be employed as the basis for the IT infrastructure in
@@ -93,7 +99,8 @@ companies and authorities and provide the central control for it. This
 makes a considerable contribution to secure, efficient and
 cost-effective IT operation. The business-critical applications are
 integrated in a uniform concept, adapted to each other and
-pre-configured for professional utilisation.
+pre-configured for professional utilisation. Alternatively it can be operated as part of an existing
+Microsoft Active Directory domain.
 </para>
 
 <section id="introduction:Commissioning"><title>Commissioning</title>
@@ -112,10 +119,9 @@ Further information can be found in <xref linkend="installation:chapter"/>.
 
 <section id="introduction:Domain_concept"><title>Domain concept</title>
 <para>
-During installation each computer is assigned a system role. As
-standard in UCS, all servers, clients and users are stored in one
-security and trust context, the so-called UCS domain. Consequently, all
-the system roles (domain controllers, &ucsMember;s and clients) are available.
+In an IT infrastructure managed with UCS all servers, clients and users are contained in a common
+security and trust context; the UCS domain. Every UCS system is assigned a so-called server role
+during the installation. Possible system roles are domain controller, &ucsMember; and client.
 </para>
 <para>
 <figure><title>UCS domain concept</title>
@@ -138,23 +144,29 @@ clients and servers operated with Microsoft Windows, makes Univention
 Corporate Server compatible with Microsoft Active Directory (AD),
 whereby the system acts as an Active Directory server for
 Windows-based systems. Consequently, for example, group policies for
-Microsoft Windows systems can be administrated in the usual way and
-are available in the Samba 4 domain via UCS.
+Microsoft Windows systems can be administrated in the usual way.
 </para>
+
 <para>
-Ubuntu clients can be integrated in a UCS environment (see
+UCS can also be operated as part of an existing Microsoft Active Directory domain. This way, users and groups
+of the Active Directory domain can access applications from the Univention App Center.
+</para>
+
+<para>
+Ubuntu or Mac OS X clients can also be integrated in a UCS environment (see
 <xref linkend="computers:ubuntu"/>).
 </para>
 </section>
 
-<section id="introduction:Expandability_with_components"><title>Expandability with components</title>
+<section id="introduction:Expandability_with_components"><title>Expandability with the Univention
+App Center</title>
 <para>
-The functional scope of a computer can be expanded via the
-selection of different additional components during the installation
-or via an online repository. The components can be setup
-without time-consuming configuration work as they are coordinated for
-UCS's holistic concept and integrate seamlessly into the UCS
-management system.
+The Univention App Center offers additional UCS components and extensions and a broad selection of
+business IT software, e.g. groupware and collaboration, file exchange, CRM or backup. These
+applications can be installed in existing environments with a few clicks and are usually ready to
+use. In most cases they are directlry integrated into the &ucsUMS; and available in the
+&ucsUMC;. This provides a central management of data on the domain level and obsoletes the separate
+management of e.g. user data in multiple places.
 </para>
 </section>
 
@@ -205,9 +217,7 @@ Further information can be found in <xref linkend="domain:ldap"/>.
 </para>
 <para>
 Access to the LDAP directory is performed via the web-based and
-modular &ucsUMC; (UMC). Technically, the access is performed by the
-&ucsUMC; module &ucsUDM;. This is displayed as the <guimenu>Domain</guimenu>
-modules in &ucsUMC;.
+modular &ucsUMC; (UMC).
 </para>
 
 <para>
@@ -304,15 +314,14 @@ Further information can be found in <xref linkend="domain:listenernotifier"/>.
 </para>
 </section>
 
-<section id="introduction:Virtualization_management"><title>Virtualization management</title>
+<section id="introduction:Virtualization_management"><title>Virtualization and cloud management</title>
 <para>
 With the UMC module &ucsUVMM; (UVMM), UCS offers an extensive,
-powerful tool for the administration of virtualized
-infrastructures. Virtualization servers registered in the UCS domain
+powerful tool for the administration of hybrid cloud environments
+Virtualization servers registered in the UCS domain
 and virtual machines operated on it can be centrally monitored and
-administrated. The Open Source virtualization technologies KVM (Kernel
-Virtual Machine) and Xen can be used as hypervisor technology with
-UCS.
+administrated. In addition UVMM offers the possibility to manage virtual machines in OpenStack or
+EC2 environments.
 </para>
 <para>
 Further information can be found in <xref linkend="uvmm:chapter"/>.
@@ -328,14 +337,14 @@ UCS. Among other things, UCS and solutions based on UCS provide:
 </para>
 <itemizedlist>
 	<listitem><simpara>Comprehensive support for complex server environments and replication scenarios</simpara></listitem>
-	<listitem><simpara>Advanced capabilities for Windows environments (e. g. automatic Windows client installation)</simpara></listitem>
+	<listitem><simpara>Advanced capabilities for Windows environments</simpara></listitem>
 	<listitem><simpara>Central network management with DNS and DHCP</simpara></listitem>
 	<listitem><simpara>Monitoring systems and networks with Nagios</simpara></listitem>
 	<listitem><simpara>Print server functionalities</simpara></listitem>
 	<listitem><simpara>Thin Client support</simpara></listitem>
 	<listitem><simpara>Fax service</simpara></listitem>
 	<listitem><simpara>Proxy server</simpara></listitem>
-	<listitem><simpara>Virtualization with Xen and KVM</simpara></listitem>
+	<listitem><simpara>Virtualization</simpara></listitem>
 	<listitem><simpara>Integrated backup functions</simpara></listitem>
 	<listitem><simpara>Linux desktop for business operations</simpara></listitem>
 </itemizedlist>
