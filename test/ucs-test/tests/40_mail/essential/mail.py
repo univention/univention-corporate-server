@@ -208,7 +208,35 @@ def get_dir_files(dir_path, recursive=False):
 			result.extend(get_dir_files(f))
 	return result
 
-def check_spam(token, mail_address):
+def get_files_contain(token, _dir):
+	result = []
+	for _file in get_dir_files(_dir, recursive=True):
+		with open(_file) as fi:
+			if token in fi.read():
+				result.append(os.path.basename(_file))
+	return result
+
+def virus_delivered(token, mail_address):
+	virus_dir = '/var/lib/amavis/virusmails'
+	virus_files = get_files_contain(token, virus_dir)
+
+	found = 0
+	mail_dir = [get_cyrus_maildir(mail_address), '/var/mail']
+	for _dir in mail_dir:
+		for _file in get_dir_files(_dir, recursive=True):
+			with open(_file) as fi:
+				if token in fi.read():
+					found += 1
+	return found == 2
+
+def deactivate_spam_detection():
+	handler_set(['mail/antispam=no', 'mail/antivir/spam=no'])
+
+def reload_amavis_postfix():
+	for cmd in (['/etc/init.d/amavis', 'force-reload'], ['/etc/init.d/postfix', 'force-reload']):
+		subprocess.Popen(cmd , stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+
+def spam_delivered(token, mail_address):
 	delivered = False
 	spam = False
 	mail_dir = os.path.join(get_cyrus_maildir(mail_address), 'Spam')
@@ -222,7 +250,7 @@ def check_spam(token, mail_address):
 				break
 	return delivered and spam
 
-def checkMail(token, user=None, mail_address=None, check_root=True):
+def mail_delivered(token, user=None, mail_address=None, check_root=True):
 	delivered = False
 	if check_root:
 		_file = ('/var/mail/systemmail')
