@@ -143,7 +143,7 @@ TODO: translation
 
 	<para>
 	  The installed UCS system is configured via the web-based &ucsUMC; (reachable at https://server_ip or
-	  http://server_ip, HTTPS is recommended) which be reached under <guimenu>System and domain settings</guimenu>.
+	  http://server_ip, HTTPS is recommended) which can be reached under <guimenu>System and domain settings</guimenu>.
 	  The login to the &ucsUMC; is performed as the  <emphasis>Administrator</emphasis> with the
 	  password specified for the <emphasis>root</emphasis> user during the installation.
 	</para>
@@ -157,7 +157,7 @@ TODO: translation
 	  LDAP-Verzeichnis. Dort werden Domäneninformationen gespeichert, z.B. Benutzer, Gruppen oder
 	  Rechnerkonten. Diese Informationen werden, je nach Einstellung, komplett oder selektiv auf die
 	  anderen Domänencontroller in der Domäne repliziert. Die UMC-Module, die direkt das
-	  LDAP-Verzeichnis bearbeiten lassen sich außerdem mit einem Kommandozeilen-Interface bedienen,
+	  LDAP-Verzeichnis bearbeiten, lassen sich außerdem mit einem Kommandozeilen-Interface bedienen,
 	  dem &ucsUDM; <biblioref linkend="ucs-udm"/>.
 	</para>
 -->
@@ -241,7 +241,7 @@ TODO: translation
 
 		<listitem><simpara>
 		  Mac OS X systems are also integrated via a Samba-based, AD-compatible Windows
-		  domain. Further information on setting up Samba and the domain join of Windows clients can
+		  domain. Further information on setting up Samba and the domain join can
 		  be found in the UCS manual <biblioref linkend="ucs-macjoin"/>.
 		</simpara></listitem>
 
@@ -253,7 +253,7 @@ TODO: translation
 
 		<listitem><simpara>
 		  Ubuntu systems <biblioref linkend="ubuntu-join"/> and other Linux distributions like
-		  Debian, SuSE or Red Hat can also be integrated into the domain <biblioref linkend="integrate-other-linux"/>.
+		  Debian, SUSE or Red Hat can also be integrated into the domain <biblioref linkend="integrate-other-linux"/>.
 		</simpara></listitem>
 
 
@@ -316,7 +316,7 @@ TODO: translation
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		TheUnivention Wiki (<ulink url="http://wiki.univention.de/"/>) contains several HOWTOs and
+		The Univention Wiki (<ulink url="http://wiki.univention.de/"/>) contains several HOWTOs and
 		hands-on tips.
 	  </simpara></listitem>
 

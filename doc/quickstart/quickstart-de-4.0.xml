@@ -37,15 +37,15 @@
 
   <para>
 	Die UCS-Installations-DVD steht unter <ulink
-	url="http://www.univention.de/download-und-support/ucs-download/"/> zum Download bereit.
-	Die Installations-DVDs ist nur für die Rechnerarchitekturen amd64 (64 Bit). Sie unterstützt den
+	url="http://www.univention.de/download/ucs-download/"/> zum Download bereit.
+	Die Installations-DVD ist nur für die Rechnerarchitektur amd64 (64 Bit) verfügbar. Sie unterstützt den
 	Unified Extensible Firmware Interface-Standard (UEFI) inkl. SecureBoot.
   </para>
 
   <para>
 	Alternativ können auch vorinstallierte VMWare und VirtualBox-Images verwendet werden. Diese
 	stehen unter <ulink
-	url="http://www.univention.de/download-und-support/ucs-download/vorinstallierte-vm-images/"/>
+	url="http://www.univention.de/download/ucs-download/vorinstallierte-vm-images/"/>
 	zum Download bereit.
   </para>
 
@@ -92,14 +92,14 @@
 	vorhandenen Active Directory-Domäne beitritt, wird als Systemrolle implizit &ucsMaster;
 	gewählt. Alle weiteren Systeme treten dann bei Ihrer Installation der UCS-Domäne bei. Eine
 	Ausnahme stellt das Basissystem dar, dieses System tritt keiner Domäne bei und bietet auch kein
-	Managementsystem. Es kommt daher nur in wenigen Szenarien eingesetzt, bspw. als Firewall-System.
+	Managementsystem. Es kommt daher nur in wenigen Szenarien zum Einsatz, bspw. als Firewall-System.
 	Eine Übersicht über die verschiedenen weiteren Systemrollen findet sich in <biblioref
 	linkend="ucs-systemrole"/>.
   </para>
 
   <para>
 	Im weiteren Verlauf der Installation wird bei einem &ucsMaster; der vollqualifizierte
-	Rechnername eingetragen, unter dem der Rechner im Netzwerk erreichbar sein soll. Hier als
+	Rechnername eingetragen, unter dem der Rechner im Netzwerk erreichbar sein soll. Hier kann als
 	Domänenname auch ein lokaler Name verwendet werden, z.B. <emphasis>firma.local</emphasis>.  (Wenn
 	das System etwa als Mailserver verwendet werden soll, können die Maildomänen unabhängig vom
 	Domänennamen verwendet werden).
@@ -108,14 +108,14 @@
 	<emphasis>mailserver.firma.local</emphasis> einzutragen. Die <guimenu>LDAP-Basis</guimenu> wird auf
 	Basis des vollständigen Rechnernamens vorgeschlagen und muss nur in Ausnahmefällen angepasst
 	werden.  Bei allen anderen Systemrollen reicht es in der Regel nur den Rechnernamen anzugeben. Der
-	Domänenname wird während des Domänenbeitritt vom &ucsMaster; bezogen.  Der Passwort muss min. acht
+	Domänenname wird während des Domänenbeitritt vom &ucsMaster; bezogen.  Das Passwort muss mindestens acht
 	Zeichen umfassen und wird bei der Installation des ersten UCS-Servers (&ucsMaster;) auch als
 	Passwort für den <emphasis>Administrator</emphasis>-Benutzer gesetzt.
   </para>
   
   <para>
 	Während der Installation kann eine Autopartitionierung verwendet werden, die standardmäßig die
-	erste Festplatte im System als LVM erzeugt.
+	erste Festplatte im System als LVM nutzt.
   </para>
 
   <para>
@@ -148,7 +148,7 @@
 	LDAP-Verzeichnis. Dort werden Domäneninformationen gespeichert, z.B. Benutzer, Gruppen oder
 	Rechnerkonten. Diese Informationen werden, je nach Einstellung, komplett oder selektiv auf die
 	anderen Domänencontroller in der Domäne repliziert. Die UMC-Module, die direkt das
-	LDAP-Verzeichnis bearbeiten lassen sich außerdem mit einem Kommandozeilen-Interface bedienen,
+	LDAP-Verzeichnis bearbeiten, lassen sich außerdem mit einem Kommandozeilen-Interface bedienen,
 	dem &ucsUDM; <biblioref linkend="ucs-udm"/>.
   </para>
 
@@ -174,7 +174,7 @@
 	<itemizedlist>
 	  <listitem><simpara>
 		Weitere UCS-Software kann über die Kategorie <guimenu>UCS-Komponenten</guimenu>
-		nachträglich installiert und entfernt werden. 
+		nachträglich installiert oder entfernt werden. 
 	  </simpara></listitem>
 	  
 	  <listitem><simpara>
@@ -235,7 +235,7 @@
 	  <listitem><simpara>
 		Mac OS X-Systeme werden ebenfalls über eine AD-kompatible Windows-Domäne auf Basis von
 		Samba integriert. Weitere Informationen zur Einrichtung von Samba und dem Domänenbeitritt
-		von Windows-Clients findet sich im UCS-Handbuch <biblioref linkend="ucs-macjoin"/>.
+		findet sich im UCS-Handbuch <biblioref linkend="ucs-macjoin"/>.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -246,7 +246,7 @@
 
 	  <listitem><simpara>
 		Ubuntu-Systeme <biblioref linkend="ubuntu-join"/> und andere Linux-Distributionen wie
-		Debian, SuSE oder Red Hat können ebenfalls in die Domäne integriert werden <biblioref
+		Debian, SUSE oder Red Hat können ebenfalls in die Domäne integriert werden <biblioref
 		linkend="integrate-other-linux"/>.
 	  </simpara></listitem>
 
@@ -321,7 +321,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Fragen zu UCS können auch im Univention Forum <ulink url="http://forum.univention.de/"/>
+		Fragen zu UCS können auch im Univention-Forum <ulink url="http://forum.univention.de/"/>
 		gestellt werden.
 	  </simpara></listitem>
 	</itemizedlist>
