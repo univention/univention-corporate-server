@@ -188,9 +188,7 @@ else:
 lc1 = LDAPControl('1.2.840.113556.1.4.417',criticality=1)
 page_size = 1000
 
-lc2 = SimplePagedResultsControl(
-  ldap.LDAP_CONTROL_PAGE_OID,True,(page_size,'')
-)
+lc2 = SimplePagedResultsControl(True, page_size, '')
 
 filter = ""
 
@@ -212,12 +210,13 @@ while True:
 	pctrls = [
 		c
 		for c in serverctrls
-		if c.controlType == ldap.LDAP_CONTROL_PAGE_OID
+		if c.controlType == SimplePagedResultsControl.controlType
     ]
 	if pctrls:
-		est, cookie = pctrls[0].controlValue
+		cookie = pctrls[0].cookie
 		if cookie:
 			lc2.controlValue = (page_size, cookie)
+			lc2.cookie = cookie
 			if filter_attributes:
 				msgid = lo.search_ext(configRegistry['%s/ad/ldap/base' % CONFIGBASENAME], ldap.SCOPE_SUBTREE, filter.encode('utf8'), filter_attributes, serverctrls=[lc1,lc2])
 			else:

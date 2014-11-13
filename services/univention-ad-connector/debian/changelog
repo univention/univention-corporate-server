@@ -1,3 +1,10 @@
+univention-ad-connector (9.0.10-1) unstable; urgency=medium
+
+  * Bug #36653: Adjust univention-adsearch to python-ldap 2.4
+  * Bug #36654: Use sslv3 instead of sslv2
+
+ -- Arvid Requate <requate@univention.de>  Thu, 13 Nov 2014 16:48:37 +0100
+
 univention-ad-connector (9.0.9-1) unstable; urgency=medium
 
   * Bug #35837: adjust icon files
