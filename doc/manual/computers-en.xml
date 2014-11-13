@@ -50,11 +50,11 @@
 	  <emphasis>true</emphasis>.
 	</para>
 
-	<figure id="user-create">
+	<figure id="computers-create">
 		<title>Creating a computer in UMC</title>
 		<graphic scalefit="1" width="65%" align="center" fileref="illustrations/computers_computer_en.png"/>
 	</figure>
-	<figure id="user-create-advanced">
+	<figure id="computers-create-advanced">
 		<title>Advanced user settings</title>
 		<graphic scalefit="1" width="90%" align="center" fileref="illustrations/computers_computer_advanced_en.png"/>
 	</figure>
