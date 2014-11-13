@@ -1,3 +1,10 @@
+univention-ldap (11.0.8-1) unstable; urgency=medium
+
+  * Added univentionUDMOptionModule to the slapd eq index. It is
+    used by ucs-school import via python API (Bug #36671)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Nov 2014 20:13:01 +0100
+
 univention-ldap (11.0.7-7) unstable; urgency=medium
 
   * Add UCR description for ldap/ppolicy (Bug #31907)
