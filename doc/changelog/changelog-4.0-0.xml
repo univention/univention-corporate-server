@@ -342,6 +342,10 @@
 				Changing of an expired password via UMC has been fixed
 				(<ulink url="&ucsbug;35985">Bug 35985</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				Fix redirection when doing single sign on in &ucsUMC; to keep a secure https connection
+				(<ulink url="&ucsbug;36617">Bug 36617</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
