@@ -1292,7 +1292,8 @@ univention-directory-listener-ctrl resync cups-printers
 	<para>
 		The conversion primarily involves the changeover of the services relevant for
 		authentication such as LDAP, Kerberos and Samba. The installed software needs to be adjusted
-		manually (this can be done using the <guimenu>Basic settings</guimenu> module of the &ucsUMC;).
+		manually (this can be done using the &ucsUMC; modules <guimenu>App Center</guimenu>
+		or <guimenu>Package Management</guimenu>).
 		For example, if the mail component was installed on the previous DC
 		master, it is not automatically on the new DC master after the conversion.
 	</para>

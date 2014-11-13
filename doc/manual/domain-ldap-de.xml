@@ -1330,8 +1330,9 @@ univention-directory-listener-ctrl resync cups-printers
 	<para>
 		Die Umwandlung umfasst primär die Umstellung der für die Authentifizierung
 		relevanten Dienste wie LDAP, Kerberos oder Samba. Der Abgleich der
-		installierten Software muss manuell erfolgen (z.B. mit dem &ucsUMC;-Modul
-		<guimenu>Basis-Einstellungen</guimenu>). Wenn also z.B. auf dem vorherigen DC Master die
+		installierten Software muss manuell erfolgen (über die &ucsUMC;-Module
+		<guimenu>App Center</guimenu> und <guimenu>Paket-Verwaltung</guimenu>).
+		Wenn also z.B. auf dem vorherigen DC Master die
 		Mailkomponente installiert war, ist diese nach der Umwandlung nicht automatisch
 		auf dem neuen DC Master verfügbar.
 	</para>
