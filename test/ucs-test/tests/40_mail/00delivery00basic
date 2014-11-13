@@ -5,7 +5,17 @@
 ## packages: [univention-config, univention-directory-manager-tools]
 ## bugs: [23527]
 
-from essential.mail import checkMail, send_mail
+#################
+#  Information  #
+#################
+# This script tests the capability of the mail system to deliver mails to
+# recpients with special mail addresses and to local users, thereby also
+# testing the basic function of the mail system.
+# For every mail address one user is created and deleted at the end of
+# this script.
+#################
+
+from essential.mail import mail_delivered, send_mail
 import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -53,10 +63,10 @@ def main():
 
 		time.sleep(TIMEOUT)
 		for token, mail in test_cases1:
-			if not checkMail(token, mail_address=mail):
+			if not mail_delivered(token, mail_address=mail):
 				utils.fail('Mail sent to %s was not delivered' % mail)
 		for token, user in test_cases2:
-			if not checkMail(token, user=user):
+			if not mail_delivered(token, user=user):
 				utils.fail('Mail sent with token = %r, to %s was not delivered' % (token, user))
 
 
