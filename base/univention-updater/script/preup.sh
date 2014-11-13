@@ -532,6 +532,7 @@ if dpkg -l "wamerican-large" 2>&3 | grep ^ii  >&3 ; then ## Bug 36619
 		echo "ERROR: Failed to upgrade wamerican."
         exit 1
 	fi
+	$update_commands_remove wamerican-large >&3 2>&3
 	echo "done."
 fi
 
