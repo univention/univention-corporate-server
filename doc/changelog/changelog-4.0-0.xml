@@ -572,6 +572,23 @@
 			<listitem><simpara>
 				Several text refinements (<ulink url="&ucsbug;36435">Bug 36435</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The users/self module is no longer used for password changes. The module has been renamed into "User settings" and is deactivated by default.
+				Instead a new module "Change Password" has been added which uses the PAM stack to change user password.
+				Every UMC user is able to use this new module
+				(<ulink url="&ucsbug;35847">Bug 35847</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				A module <emphasis>System diagnostic</emphasis> has been added to UMC which is able to analyse the system for known problems and helps to resolve them <sbr/>
+				(<ulink url="&ucsbug;34765">Bug 34765</ulink>),
+				(<ulink url="&ucsbug;35866">Bug 35866</ulink>),
+				(<ulink url="&ucsbug;35864">Bug 35864</ulink>).
+			</simpara></listitem>
+
+			<listitem><simpara>
+				The functionality to reboot or shutdown the server has been added to the UMC menu
+				(<ulink url="&ucsbug;36281">Bug 36281</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
@@ -592,23 +609,6 @@
 			<listitem><simpara>
 				UMC modules now may contain a help button which links to related article in the online documentation of UCS
 				(<ulink url="&ucsbug;32026">Bug 32026</ulink>, <ulink url="&ucsbug;36435">Bug 36435</ulink>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The users/self module is no longer used for password changes. The module has been renamed into "User settings" and is deactivated by default.
-				Instead a new module "Change Password" has been added which uses the PAM stack to change user password.
-				Every UMC user is able to use this new module
-				(<ulink url="&ucsbug;35847">Bug 35847</ulink>).
-			</simpara></listitem>
-			<listitem><simpara>
-				A module <emphasis>System diagnostic</emphasis> has been added to UMC which is able to analyse the system for known problems and helps to resolve them <sbr/>
-				(<ulink url="&ucsbug;34765">Bug 34765</ulink>),
-				(<ulink url="&ucsbug;35866">Bug 35866</ulink>),
-				(<ulink url="&ucsbug;35864">Bug 35864</ulink>).
-			</simpara></listitem>
-
-			<listitem><simpara>
-				The functionality to reboot or shutdown the server has been added to the UMC menu
-				(<ulink url="&ucsbug;36281">Bug 36281</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -796,9 +796,8 @@
 		<title>Univention Virtual Machine Manager (UVMM)</title>
 		<itemizedlist>
 			<listitem><simpara>
-				Univention Virtual Machine Manager now supports connections to Cloud Computing Environments.
-				Create and manage Amazon EC2 or OpenStack connections and virtual machines 
-				(<ulink url="&ucsbug;32842">Bug 32842</ulink>).
+				Univention Virtual Machine Manager now supports connections to Cloud Computing
+				Environments e.g. to OpenStack (<ulink url="&ucsbug;32842">Bug 32842</ulink>).
 				The following additional Bugs were discovered and fixed during UCS 4 &ucsUVMM; development: <sbr/>(
 					<ulink url="&ucsbug;36139">Bug 36139</ulink>,
 					<ulink url="&ucsbug;36145">Bug 36145</ulink>,
