@@ -836,9 +836,6 @@
 					<package>usbredir</package> (0.6.2),
 					<package>spice-protocol</package> (0.12.6),
 					<package>spice</package> (0.12.4),
-					<package>seabios</package> (1.7.5),
-					<package>ipxe</package> (1.0.0),
-					<package>qemu</package> (2.1),
 					<package>libvirt</package> (1.2.7),
 					<package>libvirt-python</package> (1.2.6)
 					(<ulink url="&ucsbug;35768">Bug 35768</ulink>, <ulink url="&ucsbug;36388">Bug 36388</ulink>).
