@@ -1,3 +1,9 @@
+univention-updater (10.0.46-1) unstable; urgency=medium
+
+  * preup.sh: Don't run apt-mark on basesystems (Bug #36620)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Nov 2014 07:13:35 +0100
+
 univention-updater (10.0.45-1) unstable; urgency=medium
 
   * preup.sh: Skip ldapsearch commands on basesystem (Bug #36620)

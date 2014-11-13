@@ -462,9 +462,11 @@ univention-antivir-mail
 univention-spamassassin
 univention-mail-cyrus-imap
 univention-mail-cyrus-pop"
-for p in $manually_packages; do
-	apt-mark unmarkauto "$p"
-done
+if [ -n "$server_role" -a "$server_role" != "basesystem" ]; then
+	for p in $manually_packages; do
+		apt-mark unmarkauto "$p"
+	done
+fi
 
 # autoremove before the update
 if ! is_ucr_true update40/skip/autoremove; then
