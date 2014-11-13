@@ -905,15 +905,16 @@
 			</itemizedlist>
 		</section>
 
-<!--
 	<section id="changelog:win:takeover">
 		<title>Univention AD Takeover</title>
 		<itemizedlist>
 			<listitem><simpara>
+				An LDAP search timeout of the AD-Takeover has been fixed
+				which could occur in cases where the transfer of the AD objects takes a long time
+				(<ulink url="&ucsbug;36639">Bug 36639</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
--->
 
 	<section id="changelog:win:s4c">
 	<title>Univention S4 Connector</title>
