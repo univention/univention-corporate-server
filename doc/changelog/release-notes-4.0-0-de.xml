@@ -143,6 +143,20 @@
 					Versionen aktualisiert. Falls eine Applikation noch nicht verfügbar ist, so kann
 					der Zeitpunkt beim Applikationshersteller nachgefragt werden.
 				</para>
+				<para>
+					Falls &ucsUCC; 1.0 im Einsatz ist und ein Update auf &ucsUCC; 2.0 noch nicht
+					erfolgen soll, so sollte vor dem Update auf UCS 4.0 auf die letzte verfügbare
+					&ucsUCC; 1.0 Version aktualisiert werden. Dies kann mit dem folgenden Befehlen
+					durchgeführt werden:
+					<programlisting>
+eval "$(ucr shell version/version version/patchlevel)"
+univention-add-app ucc_20140115
+univention-upgrade --updateto $version_version-$version_patchlevel
+					</programlisting>
+					Eine detaillierte Übersicht zu den Änderungen ist in den UCC 1.0 rev3 Release
+					Notes beschrieben:
+					<ulink url="http://download.univention.de/doc/release-notes-ucc-1.0-rev3.pdf"/>.
+				</para>
 		</section>
 		<section id="relnotes:samba">
 			<title>Ablösung von Windows NT DC Funktionalität</title>
