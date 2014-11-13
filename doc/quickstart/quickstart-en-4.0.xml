@@ -72,13 +72,9 @@
 	gateway and a name server are specified, but the name server cannot be reached, this may
 	result in unnecessary timeouts. In these cases, it makes more sense not to specify a gateway.
 	The network configuration can be employed using DHCP.
-
-<!--
-TODO: translation
-	Sofern bereits ein Nameserver im lokalen Netzwerk vorhanden ist, sollte dieser verwendet
-	werden. Werden später weitere UCS-Systeme in der Domäne installiert, sollte der &ucsMaster; und
-	ggf. vorhandene &ucsBackup;-Systeme als Nameserver eingetragen werden.
--->
+	If there is already a name server available in the local network, it should be used. If
+	additional UCS systems are installed in the domain at a later point in time, the &ucsMaster; and
+	any &ucsBackup; systems should be entered as the name servers.
   </para>
 
   <figure id="quick-systemrole">
@@ -86,39 +82,33 @@ TODO: translation
 	<graphic scalefit="1" width="80%" align="center" fileref="illustrations/systemrole-en.png"/>
   </figure>
   
-<!--
-TODO: translation
-  <para>
-	Während der Installation kann ausgewählt werden, ob das System das erste System in einer neuen
-	UCS-Domäne sein soll, ob das System einer vorhandenen Active Directory Domäne oder einer
-	UCS-Domäne beitreten soll.
-	Sofern das System das erste in einer neuen UCS-Domäne ist oder als erstes UCS-System einer
-	vorhandenen Active Directory-Domäne beitritt, wird als Systemrolle implizit &ucsMaster;
-	gewählt. Alle weiteren Systeme treten dann bei Ihrer Installation der UCS-Domäne bei. Eine
-	Ausnahme stellt das Basissystem dar, dieses System tritt keiner Domäne bei und bietet auch kein
-	Managementsystem. Es kommt daher nur in wenigen Szenarien eingesetzt, bspw. als Firewall-System.
-	Eine Übersicht über die verschiedenen weiteren Systemrollen findet sich in <biblioref
-	linkend="ucs-systemrole"/>.
-  </para>
--->
 
   <para>
-<!--
-TODO: translation
-	Im weiteren Verlauf der Installation wird bei einem &ucsMaster; der vollqualifizierte
-	Rechnername eingetragen, unter dem der Rechner im Netzwerk erreichbar sein soll. Hier als
-	Domänenname auch ein lokaler Name verwendet werden, z.B. <emphasis>firma.local</emphasis>.  (Wenn
-	das System etwa als Mailserver verwendet werden soll, können die Maildomänen unabhängig vom
-	Domänennamen verwendet werden).
-	Wenn also beispielsweise das Rechnersystem <emphasis>mailserver</emphasis> in der DNS-Domäne
-	<emphasis>firma.local</emphasis> in Betrieb genommen werden soll, ist als vollständiger Rechnername
-	<emphasis>mailserver.firma.local</emphasis> einzutragen.
--->
-	The <guimenu>LDAP base</guimenu> and the <guimenu>Windows domain</guimenu> are suggested based
-	on the complete computer name and only need to be adjusted in exceptional cases.
-	The root password must be at least eight characters long and is also set as the password for the
-	<emphasis>Administrator</emphasis> user during the installation of the first UCS server
-	(&ucsMaster;).
+	During the installation, it is possible to select whether the system should be the first system
+	in a new UCS domain, whether the system should join an existing Active Directory domain or
+	whether it should join a UCS domain.
+	In cases where the system is the first in a new UCS domain or the first UCS system to join an
+	existing Active Directory domain, the &ucsMaster; system role is selected implicitly. All further
+	systems then join the UCS domain when they are installed. The base system is the exception here;
+	this system does not join any domain and also does not offer a management system. As such, it is
+	only used in a few scenarios – as a firewall system, for example. An overview of the other different
+	system roles can be found in <biblioref linkend="ucs-systemrole"/>.
+  </para>
+
+  <para>
+	In the subsequent course of the installation, the fully qualified host name, under which the
+	computer should be accessible in the network, is entered for a &ucsMaster;. A local
+	name should also be used as the domain name in this case, e.g.,
+	<emphasis>firma.local</emphasis>. (If the system is to used as a mail server, for example,
+	the mail domains can be used independently of the domain names).
+	For example, to commission the <emphasis>mailserver</emphasis> host system in the 
+	<emphasis>firma.local</emphasis> DNS domain,
+	<emphasis>mailserver.firma.local</emphasis> should be entered as the fully qualified host
+	name.
+	The <guimenu>LDAP base</guimenu> is suggested based on the fully qualified host name and
+	only need to be adjusted in exceptional cases. The root password must be at least eight
+	characters long and is also set as the password for the <emphasis>Administrator</emphasis>
+	user during the installation of the first UCS server (&ucsMaster;).
   </para>
 
   <para>
@@ -148,19 +138,16 @@ TODO: translation
 	  password specified for the <emphasis>root</emphasis> user during the installation.
 	</para>
 
-<!--
-TODO: translation
 	<para>
-	  &ucsUMC; (UMC) ist das zentrale Werkzeug zur webbasierten Administration der
-	  UCS-Domäne. Je nach Installations- und Systemrollenauswahl sind auf dem UCS-System
-	  unterschiedliche Module verfügbar. Zentraler Bestandteil der UCS-Domäne ist das
-	  LDAP-Verzeichnis. Dort werden Domäneninformationen gespeichert, z.B. Benutzer, Gruppen oder
-	  Rechnerkonten. Diese Informationen werden, je nach Einstellung, komplett oder selektiv auf die
-	  anderen Domänencontroller in der Domäne repliziert. Die UMC-Module, die direkt das
-	  LDAP-Verzeichnis bearbeiten, lassen sich außerdem mit einem Kommandozeilen-Interface bedienen,
-	  dem &ucsUDM; <biblioref linkend="ucs-udm"/>.
+	  &ucsUMC; (UMC) is the central tool for web-based administration of the UCS domain.
+	  There are different modules available on the UCS system depending on the installation and
+	  system role selected. The LDAP directory is a central component of the UCS domain. This is
+	  where domain information such as the users, groups and computer accounts is saved.
+	  Depending on the settings, this information is replicated to the other domain controllers
+	  in the domain either completely or selectively. The UMC modules which edit the LDAP
+	  directory directly can also be controlled using a command line interface: the &ucsUDM;
+	  <biblioref linkend="ucs-udm"/>.
 	</para>
--->
 
 	<figure id="quick-umclogin">
 	  <title>Modules in the UMC</title>
