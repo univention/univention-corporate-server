@@ -621,16 +621,16 @@ class AD_Connection():
 		self.username = username
 		self.password = password
 
-		creds = Credentials()
+		self.creds = Credentials()
 		# creds.guess(lp)
-		creds.set_domain("")
-		creds.set_workstation("")
-		creds.set_kerberos_state(DONT_USE_KERBEROS)
-		creds.set_username(self.username)
-		creds.set_password(self.password)
+		self.creds.set_domain("")
+		self.creds.set_workstation("")
+		self.creds.set_kerberos_state(DONT_USE_KERBEROS)
+		self.creds.set_username(self.username)
+		self.creds.set_password(self.password)
 
 		try:
-			self.samdb = SamDB(self.ldap_uri, credentials=creds, session_info=system_session(self.lp), lp=self.lp)
+			self.samdb = SamDB(self.ldap_uri, credentials=self.creds, session_info=system_session(self.lp), lp=self.lp)
 		except ldb.LdbError:
 			raise AuthenticationFailed()
 
@@ -638,7 +638,7 @@ class AD_Connection():
 		ntds_guid = self.samdb.get_ntds_GUID()
 		local_ntds_guid = None
 		try:
-			local_samdb = SamDB("ldap://127.0.0.1", credentials=creds, session_info=system_session(self.lp), lp=self.lp)
+			local_samdb = SamDB("ldap://127.0.0.1", credentials=self.creds, session_info=system_session(self.lp), lp=self.lp)
 			local_ntds_guid = local_samdb.get_ntds_GUID()
 		except ldb.LdbError:
 			pass
@@ -671,6 +671,12 @@ class AD_Connection():
 
 		self.domain_info = lookup_adds_dc(self.hostname_or_ip)
 		self.domain_info['ad_os'] = self.operatingSystem(self.domain_info["ad_netbios_name"])
+
+	def reconnect(self):
+		try:
+			self.samdb = SamDB(self.ldap_uri, credentials=self.creds, session_info=system_session(self.lp), lp=self.lp)
+		except ldb.LdbError:
+			raise AuthenticationFailed()
 
 	def operatingSystem(self, netbios_name):
 		msg = self.samdb.search(base=self.samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
@@ -1033,7 +1039,13 @@ class AD_Takeover():
 
 		## Fix some attributes in local SamDB
 		operatingSystem_attribute(self.ucr, self.samdb)
-		takeover_DC_Behavior_Version(self.ucr, self.AD.samdb, self.samdb, self.ad_server_name, self.AD.domain_info["ad_server_site"])
+		try:
+			takeover_DC_Behavior_Version(self.ucr, self.AD.samdb, self.samdb, self.ad_server_name, self.AD.domain_info["ad_server_site"])
+		except ldb.LdbError as ex:
+			log.debug('Exception during LDAP search of remote LDAP: %s' % (ex.args[0],))
+			log.debug('Might be due to a timeout, attempting to reconnect.')
+			self.AD.reconnect()
+			takeover_DC_Behavior_Version(self.ucr, self.AD.samdb, self.samdb, self.ad_server_name, self.AD.domain_info["ad_server_site"])
 
 		## Fix some attributes in SecretsDB
 		secretsdb = samba.Ldb(os.path.join(SAMBA_PRIVATE_DIR, "secrets.ldb"), session_info=system_session(self.lp), lp=self.lp)
