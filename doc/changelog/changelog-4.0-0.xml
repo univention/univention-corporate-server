@@ -263,9 +263,10 @@
 					of the UCS domain (<ulink url="&ucsbug;28693">Bug 28693</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-					LDAP indices for the attributes <envar>shadowMax</envar> and
-					<envar>shadowExpire</envar> have been added
-					(<ulink url="&ucsbug;36215">Bug 36215</ulink>).
+					LDAP indices for the attributes <envar>shadowMax</envar>, <envar>shadowExpire</envar>
+					and <envar>univentionUDMOptionModule</envar> have been added
+					(<ulink url="&ucsbug;36215">Bug 36215</ulink>,
+					<ulink url="&ucsbug;36671">Bug 36671</ulink>,).
 			</simpara></listitem>
 		</itemizedlist>
 
