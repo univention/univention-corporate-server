@@ -460,7 +460,7 @@ obsolete_packages="
          libpng10-0 libreadline4 libsensors1 libsoup2.0-0 libtasn1-0 libtiff3g
          libxaw6 libxft1 lynx-ssl symlinks t1lib1 libkrb53 apache-common
          univention-windows-installer-image-linux univention-windows-installer
-         univention-windows-installer-image wamerican-large bootsplash-theme-debian
+         univention-windows-installer-image bootsplash-theme-debian
          bootsplash courier-base courier-ssl courier-mta courier-ldap
          courier-imap-ssl courier-imap courier-authdaemon gimp1.2 libg2c0
          gcc-3.2-base gcc-3.3-base gcc-3.4-base gcc-4.1-base cpp-3.2 cpp-3.3
@@ -524,12 +524,23 @@ for pkg in $preups; do
 	fi
 done
 
-if dpkg -l "mysql-server-5.1" 2>&3 | grep ^ii  >&3 ; then ##36618
+if dpkg -l "wamerican-large" 2>&3 | grep ^ii  >&3 ; then ## Bug 36619
+	echo -n "Starting pre-upgrade of wamerican: "
+	if ! $update_commands_install "wamerican" >&3 2>&3
+	then
+		echo "failed."
+		echo "ERROR: Failed to upgrade wamerican."
+        exit 1
+	fi
+	echo "done."
+fi
+
+if dpkg -l "mysql-server-5.1" 2>&3 | grep ^ii  >&3 ; then ## Bug 36618
 	echo -n "Starting pre-upgrade of mysql-server: "
 	if ! $update_commands_install "mysql-server" >&3 2>&3
 	then
 		echo "failed."
-		echo "ERROR: Failed to upgrade $pkg."
+		echo "ERROR: Failed to upgrade mysql-server."
         exit 1
 	fi
 	echo "done."
