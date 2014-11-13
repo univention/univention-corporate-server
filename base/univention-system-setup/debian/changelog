@@ -1,3 +1,9 @@
+univention-system-setup (8.1.59-2) unstable; urgency=low
+
+  * Bug #36666: Typo in translation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 13 Nov 2014 20:59:06 +0100
+
 univention-system-setup (8.1.59-1) unstable; urgency=medium
 
   * Bug #36598: fix help text

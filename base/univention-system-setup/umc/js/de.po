@@ -442,7 +442,7 @@ msgid ""
 "can join the domain later."
 msgstr ""
 "Dieses System als erstes System einer neuen Domäne einrichten. Zusätzliche "
-"System können der Domäne später beitreten."
+"Systeme können der Domäne später beitreten."
 
 #: umc/js/setup/ApplianceWizard.js:744
 msgid "Confirm configuration settings"
