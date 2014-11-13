@@ -151,7 +151,7 @@ TODO: translation
 <!--
 TODO: translation
 	<para>
-	  Die &ucsUMC; (UMC) ist das zentrale Werkzeug zur webbasierten Administration der
+	  &ucsUMC; (UMC) ist das zentrale Werkzeug zur webbasierten Administration der
 	  UCS-Domäne. Je nach Installations- und Systemrollenauswahl sind auf dem UCS-System
 	  unterschiedliche Module verfügbar. Zentraler Bestandteil der UCS-Domäne ist das
 	  LDAP-Verzeichnis. Dort werden Domäneninformationen gespeichert, z.B. Benutzer, Gruppen oder
