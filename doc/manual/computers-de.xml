@@ -50,6 +50,14 @@
 		  <emphasis>true</emphasis> gesetzt wird.
 		</para>
 
+		<figure id="computer-create">
+			<title>Anlegen eines Rechners in UMC</title>
+			<graphic scalefit="1" width="65%" align="center" fileref="illustrations/computers_computer_de.png"/>
+		</figure>
+		<figure id="computer-create-advanced">
+			<title>Erweiterte Rechneransicht</title>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations/computers_computer_advanced_de.png"/>
+		</figure>
         <table>
             <title>Reiter 'Allgemein'</title>
             <tgroup cols="2">
