@@ -10,6 +10,7 @@ print 'ProxyPass /umcp/ http://%s:%s/ retry=0' % (interface, port)
 print 'ProxyPassReverse /umcp/ http://%s:%s/' % (interface, port)
 print 'ProxyTimeout %s' % int(configRegistry.get('umc/http/session/timeout', '300'))
 @!@
+RequestHeader set X-Forwarded-Proto %{HTTPS}s
 
 RedirectMatch ^/umc(/$|$) /univention-management-console/
 RedirectMatch ^/univention-management-console$ /univention-management-console/

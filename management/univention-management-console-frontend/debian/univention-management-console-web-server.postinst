@@ -38,6 +38,7 @@
 a2enmod proxy
 a2enmod proxy_connect
 a2enmod proxy_http
+a2enmod headers
 
 # activate site
 a2ensite univention-management-console

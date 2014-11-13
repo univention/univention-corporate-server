@@ -565,6 +565,9 @@ class CPSingleSignOn(CPgeneric):
 		if query_args:
 			targeturl += '?%s' % urllib.urlencode(query_args)
 
+		scheme = 'https' if cherrypy.request.headers.get('X-Forwarded-Proto') == 'on' else 'http'
+		targeturl = '%s://%s%s' % (scheme, cherrypy.request.base.split('://')[1], targeturl)
+
 		self._log('info', 'redirecting to %s' % targeturl)
 		raise cherrypy.HTTPRedirect(targeturl)
 

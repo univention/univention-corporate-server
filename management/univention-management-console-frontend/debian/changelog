@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.100-1) unstable; urgency=medium
+
+  * Bug #36617: keep the same request scheme when doing single sign on
+
+ -- Florian Best <best@univention.de>  Wed, 12 Nov 2014 23:57:25 +0100
+
 univention-management-console-frontend (4.1.99-2) unstable; urgency=low
 
   * Bug #35781: Add forcing to ask for reload (fix 3)
