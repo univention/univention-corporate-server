@@ -9,7 +9,7 @@
 		</para>
 		<para>
 			Auf jedem System gibt es darüberhinaus auch noch lokale
-			Benutzergruppen, die für allem für den Zugriff auf Hardware verwendet werden.
+			Benutzergruppen, die vor allem für den Zugriff auf Hardware verwendet werden.
 			Diese werden nicht durch das &ucsUMS; verwaltet, sondern in der Datei
 			<filename>/etc/group</filename> gespeichert.
 		</para>
