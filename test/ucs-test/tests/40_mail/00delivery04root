@@ -5,7 +5,16 @@
 ## packages: [univention-mail-server, univention-mail-postfix]
 ## bugs: [23527]
 
-from essential.mail import checkMail, send_mail
+#################
+#  Infomartion  #
+#################
+# This script creates a user and then sends an eMail to root.
+# It then set the user as reciever (alias [mail/alias/root]) for the eMail to root,
+# then sends an eMail to root, and resets "mail/alias/root".
+# Finally it checks that both eMail have arrived and deletes the user.
+#################
+
+from essential.mail import mail_delivered, send_mail
 from univention.config_registry import handler_set
 import subprocess
 import time
@@ -49,9 +58,9 @@ def main():
 				send_mail(recipients='root', msg=token2, idstring=token2, subject='Alias')
 
 				time.sleep(TIMEOUT)
-				if not checkMail(token1, check_root=True):
+				if not mail_delivered(token1, check_root=True):
 					utils.fail('Mail sent to %s was not delivered' % 'root')
-				if not checkMail(token2, mail_address=mail, check_root=False):
+				if not mail_delivered(token2, mail_address=mail, check_root=False):
 					utils.fail('Mail sent to %s was not delivered' % mail)
 		finally:
 			reload_postfix()

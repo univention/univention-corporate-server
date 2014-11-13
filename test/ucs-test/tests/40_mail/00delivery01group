@@ -5,7 +5,14 @@
 ## packages: [univention-mail-server, univention-mail-postfix]
 ## bugs: [23527]
 
-from essential.mail import checkMail, send_mail
+#################
+#  Infomartion  #
+#################
+# This script creates three users and gives each user the same alternative eMail address.
+# It then sends an eMail to the address and checks if all three user recieved it.
+#################
+
+from essential.mail import mail_delivered, send_mail
 import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -36,7 +43,7 @@ def main():
 
 		time.sleep(TIMEOUT)
 		for mail in mails:
-			if not checkMail(token, mail_address=mail):
+			if not mail_delivered(token, mail_address=mail):
 				utils.fail('mail sent to %s was not delivered' % mail)
 
 
