@@ -450,6 +450,38 @@ do
 	esac
 done
 
+# check obsolete packages
+obsolete_packages="
+         fileutils ipchains kernel-image-2.4.26 lesstif1 libcomerr1-kerberos4kth
+         libcurl2 libdb1-compat libdb2 libdb4.0 libdb4.1 libdb4.2++ libdns8
+         libgcrypt1 libgd1-xpm libgimp1.2 libgnutls11 libgnutls5 libgnutls7
+         libgtkxmhtml1 libidn9 libisc4 libisccfg0 libkdb-1-kerberos4kth libkeynote0
+         libkrb-1-kerberos4kth libmm13 libmpeg1 libmysqlclient10 libopencdk4
+         libpng10-0 libreadline4 libsensors1 libsoup2.0-0 libtasn1-0 libtiff3g
+         libxaw6 libxft1 lynx-ssl symlinks t1lib1 libkrb53 apache-common
+         univention-windows-installer-image-linux univention-windows-installer
+         univention-windows-installer-image wamerican-large bootsplash-theme-debian
+         bootsplash courier-base courier-ssl courier-mta courier-ldap
+         courier-imap-ssl courier-imap courier-authdaemon gimp1.2 libg2c0
+         gcc-3.2-base gcc-3.3-base gcc-3.4-base gcc-4.1-base cpp-3.2 cpp-3.3
+         cpp-4.1 univention-server-installer python2.1 libsasl7 sasl-bin
+         libsasl-modules-plain libunivention-chkpwhistory0
+"
+# autoremove before the update
+if ! is_ucr_true update40/skip/obsolete_packages; then
+	for p in $obsolete_packages; do
+		if dpkg -l "$p" 2>&3 | grep ^ii  >&3 ; then
+			echo "ERROR: The package \"$p\" is no longer supported in UCS."
+			echo "       The following packages have to be removed before the update!"
+			echo "       $obsolete_packages"
+			echo "       Further information how to remove software packages via"
+			echo "       UMC or commandline can be found in the manual:"
+			echo "       http://docs.univention.de/manual-3.2.html#computers::softwaremanagement::installsoftware"
+			exit 1
+		fi
+	done
+fi
+
 # Update to UCS 4.0-0 remove pnm2ppa as this breaks univention-printserver Bug #36365
 dpkg --purge pnm2ppa >>"$UPDATER_LOG" 2>&1
 # End Update to UCS 4.0-0 remove pnm2ppa, can be removed after 4.0.0
@@ -494,7 +526,7 @@ done
 
 if dpkg -l "mysql-server-5.1" 2>&3 | grep ^ii  >&3 ; then ##36618
 	echo -n "Starting pre-upgrade of mysql-server: "
-	if ! $update_commands_install "mysql-server-5.5" >&3 2>&3
+	if ! $update_commands_install "mysql-server" >&3 2>&3
 	then
 		echo "failed."
 		echo "ERROR: Failed to upgrade $pkg."

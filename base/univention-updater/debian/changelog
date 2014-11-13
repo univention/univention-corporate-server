@@ -1,3 +1,9 @@
+univention-updater (10.0.47-1) unstable; urgency=low
+
+  * block update if obsolete packages are installed (Bug #36619) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 13 Nov 2014 11:30:50 +0100
+
 univention-updater (10.0.46-1) unstable; urgency=medium
 
   * preup.sh: Don't run apt-mark on basesystems (Bug #36620)
