@@ -15,11 +15,11 @@
     <para>
         The domain-wide management of user data reduces the administrative
         efforts as changes do not need to be subsequently configured on
-        different individual systems and avoids subsequent errors arising from
-        inconsistencies between the individual databases.
+		different individual systems. Moreover, this also avoids subsequent errors
+		arising from inconsistencies between the individual datasets.
     </para>
     <section id="users::management">
-        <title>User management in the Univention Management Console</title>
+        <title>User management with Univention Management Console</title>
         <para>
             Users are managed in the <emphasis>Users</emphasis> module of the &ucsUMC;.
         </para>
@@ -1107,8 +1107,6 @@
         <title>User templates</title>
         <para>
             A user template can be used to preset settings when creating a user.
-        </para>
-        <para>
             If at least one user template is defined, it can be selected when creating a user.
         </para>
         <figure id="user-create-template">

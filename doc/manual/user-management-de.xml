@@ -15,11 +15,12 @@
     <para>
         Die domänenweite Verwaltung von Benutzerdaten verringert den
         administrativen Aufwand, da Änderungen nicht auf verschiedenen
-        Einzelsystemen nachkonfiguriert werden müssen und vermeidet
-        Folgefehler aus Inkonsistenzen zwischen den einzelnen Datenbasen.
+        Einzelsystemen nachkonfiguriert werden müssen. Darüber hinaus vermeidet
+		dies Folgefehler, die sich durch Inkonsistenzen zwischen den einzelnen
+		Datenbeständen ergeben können.
     </para>
     <section id="users::management">
-        <title>Verwaltung von Benutzern in der Univention Management Console</title>
+        <title>Verwaltung von Benutzern mit Univention Management Console</title>
         <para>
             Benutzer werden im Modul <emphasis>Benutzer</emphasis> der &ucsUMC; verwaltet.
         </para>
@@ -1062,7 +1063,7 @@
 	</section>
 
     <section id="user-management:Passwortwechsel_durch_Benutzer_ueber_die_UMC">
-        <title>Passwortwechsel durch Benutzer über die &ucsUMC;</title>
+        <title>Passwortwechsel durch Benutzer über &ucsUMC;</title>
         <para>
             Standardmäßig können Benutzer ihr Passwort nicht über die &ucsUMC; ändern.
             Um benutzerinitiierte Passwortwechsel zu erlauben, muss die Änderung
@@ -1138,8 +1139,6 @@
         <para>
             Mit einer Benutzervorlage können beim Anlegen eines Benutzers Einstellungen
             vorgegeben werden.
-        </para>
-        <para>
             Ist mindestens eine Benutzervorlage definiert, kann sie beim Anlegen eines
             Benutzer ausgewählt werden.
         </para>
