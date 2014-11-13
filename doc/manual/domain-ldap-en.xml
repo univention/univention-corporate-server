@@ -1124,8 +1124,7 @@ univention-directory-listener-ctrl resync cups-printers
 	<para>
 	  The properties of the CA are generated automatically during the installation based on system
 	  settings such as the locale. These settings can be subsequently adapted on the &ucsMaster; in
-	  the UMC module <guimenu>Basic settings</guimenu> on the <guimenu>Certificate</guimenu>
-	  tab.
+	  the UMC module <guimenu>Certificate settings</guimenu>.
 	</para>
 
 	<caution>

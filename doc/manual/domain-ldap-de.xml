@@ -1160,8 +1160,7 @@ univention-directory-listener-ctrl resync cups-printers
 	<para>
 	  Die Eigenschaften der CA werden bei der Installation basierend auf Systemeinstellungen wie der Locale
 	  automatisch festgelegt. Diese Einstellungen können auf dem &ucsMaster; im UMC-Modul
-	  <guimenu>Basis-Einstellungen</guimenu> unter dem Reiter <guimenu>Zertifikat</guimenu>
-	  nachträglich angepasst werden.
+	  <guimenu>Zertifikats-Einstellungen</guimenu> nachträglich angepasst werden.
 	</para>
 
 	<caution>
