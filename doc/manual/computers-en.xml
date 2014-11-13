@@ -430,7 +430,7 @@
 	<section id="computers:ubuntu">
 		<title>Integration of Ubuntu clients</title>
 		<para>
-			Ubuntu clients can be managed in the &ucsUMC; with their own system role. The
+			Ubuntu clients can be managed in &ucsUMC; with their own system role. The
 			network properties for DNS/DHCP can also be managed via the &ucsUMC;.
 		</para>
 		<para>
@@ -632,8 +632,8 @@
 		<section id="computers:Network_interfaces">
 			<title>Network interfaces</title>
 			<para>
-				The configuration of network interfaces can be adjusted in the &ucsUMC;
-				under <guimenu>Basic settings &ar; Network</guimenu>.
+				The configuration of network interfaces can be adjusted in &ucsUMC;
+				via the module <guimenu>Network settings</guimenu>.
 			</para>
 			<para>
 				The configuration is saved in &ucsUCR; variables, which can also be set
@@ -1007,7 +1007,7 @@ ucr unset umc/modules/setup/network/disabled/by
 				</itemizedlist>
 
 				<para>
-				  When configuring a VLAN in the &ucsUMC; it is possible to configure for a
+				  When configuring a VLAN in &ucsUMC; it is possible to configure for a
 				  computer which VLANs it wants to participate in. An example here would be an
 				  internal company web server, which should be available both to the employees and
 				  any users of the guest network.
@@ -1668,14 +1668,10 @@ if configRegistry.get('version/version') and \
 			local user accounts.
 		</para>
 		<para>
-			The password for the root user can be changed via the &ucsUMC; under
-			<guimenu>Basic settings &ar; General &ar; Root password</guimenu>. Alternatively,
-			the <command>passwd</command> command can be run in the command line.
-		</para>
-		<para>
+			The password for the root user can be changed via the command line
+			by using the <command>passwd</command> command.
 			It must be pointed out that this process does not include any checks regarding
-			either the length of the password or the passwords used in the past. To avoid
-			subsequent errors by misspelling, the password has to be entered twice.
+			either the length of the password or the passwords used in the past.
 		</para>
 	</section>
 
@@ -1686,7 +1682,7 @@ if configRegistry.get('version/version') and \
 			<emphasis>locales</emphasis>. Configuration includes, among other things,
 			settings for date and currency format, the set of characters in use and the
 			language used for internationalised programs. The installed locales can be
-			changed in the &ucsUMC; under <guimenu>Basic settings &ar; Language &ar; Installed
+			changed in &ucsUMC; under <guimenu>Language settings &ar; Installed
 			system locales</guimenu> The standard locale is set under <guimenu>Default
 			system locale</guimenu>.
 		</para>
@@ -1894,7 +1890,7 @@ auth/sshd/restrict: yes
 		</section>
 
 		<section id="computers:Querying_system_statistics_in_the_UMC">
-			<title>Querying system statistics in the &ucsUMC;</title>
+			<title>Querying system statistics in &ucsUMC;</title>
 			<para>
 				The UMC module <guimenu>Statistics</guimenu> displays the utilisation of system
 				resources. For this purpose, a graph is displayed for different periods:
@@ -1917,9 +1913,9 @@ auth/sshd/restrict: yes
 		</section>
 
 		<section id="computers:modules:top">
-			<title>Process overview in the &ucsUMC;</title>
+			<title>Process overview in &ucsUMC;</title>
 			<para>
-				The UMC system module <guimenu>Process overview</guimenu> displays a
+				The UMC module <guimenu>Process overview</guimenu> displays a
 				table of the current processes on the system. The processes can be sorted based
 				on the following properties by clicking on the corresponding table header:
 			</para>
@@ -1954,6 +1950,8 @@ auth/sshd/restrict: yes
 				as many programs then stop the program in a controlled manner and, for example,
 				save open files.
 			</para>
+		</section>
+		<section id="computers:modules:diagnostic"><title>System diagnostics in &ucsUMC; #TODO</title>
 		</section>
 	</section>
 
@@ -2053,7 +2051,7 @@ auth/sshd/restrict: yes
 	</section>
 
 	<section id="computers:nscd">
-		<title>Nameserver cache daemon</title>
+		<title>Name service cache daemon</title>
 		<para>
 			Data of the NSS service is cached by the <emphasis>Name Server Cache
 			Daemon</emphasis> (NSCD) in order to speed up frequently recurring requests for
@@ -2184,8 +2182,8 @@ nscd -i hosts
 	<section id="basicservices::ntp">
 		<title>Configuring the time zone / time synchronisation</title>
 		<para>
-			The time zone in which a system is located can be changed in the &ucsUMC; under
-			<guimenu>Basic settings &ar; Language &ar; Time zone</guimenu>.
+			The time zone in which a system is located can be changed in &ucsUMC; under
+			<guimenu>Language settings &ar; Time zone</guimenu>.
 		</para>
 		<para>
 			Asynchronous system times between individual hosts of a domain can be the

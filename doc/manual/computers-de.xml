@@ -438,7 +438,7 @@
 
         <section id="computers:ubuntu"><title>Integration von Ubuntu-Clients</title>
             <para>
-                Ubuntu-Clients können mit einer eigenen Rechnerrolle in der &ucsUMC;
+                Ubuntu-Clients können mit einer eigenen Rechnerrolle in &ucsUMC;
                 verwaltet werden. Die Netzwerkeigenschaften für DNS/DHCP können dabei
                 ebenfalls über die &ucsUMC; verwaltet werden.
             </para>
@@ -616,8 +616,8 @@
         <section id="hardware::networkconfiguration"><title>Netz-Konfiguration</title>
             <section id="computers:Netzwerk-Interfaces"><title>Netzwerk-Interfaces</title>
 				<para>
-                Die Konfiguration von Netzwerk-Interfaces kann in der &ucsUMC; unter
-                <guimenu>Basis-Einstellungen &ar; Netzwerk</guimenu> angepasst werden.
+                Die Konfiguration von Netzwerk-Interfaces kann in &ucsUMC; über das Modul
+                <guimenu>Netzwerk-Einstellungen</guimenu> angepasst werden.
 				</para>
                 <para>
                     Die Konfiguration wird in &ucsUCR;-Variablen gespeichert, die auch
@@ -652,8 +652,6 @@
                     <para>
                         Auch Server-Systeme können per DHCP konfiguriert werden. Dies ist
                         z.B. bei einigen Cloud-Anbietern notwendig.
-                    </para>
-                    <para>
                         Schlägt die Vergabe einer IP-Adresse für einen Server fehl, wird
                         ersatzweise eine zufällige Link-Local-Adresse (169.254.x.y) konfiguriert.
                     </para>
@@ -990,7 +988,7 @@ ucr unset umc/modules/setup/network/disabled/by
 					  </itemizedlist>
 
 					<para>
-					  Mit der Konfiguration eines VLANs in der &ucsUMC; kann für einen Rechner
+					  Mit der Konfiguration eines VLANs in &ucsUMC; kann für einen Rechner
 					  konfiguriert werden, an welchen VLANs er teilnehmen möchte. Ein Beispiel wäre
 					  ein interner Firmen-Webserver, der sowohl für die Mitarbeiter, als auch für
 					  die Benutzer des Gastnetzes verfügbar sein soll.
@@ -1656,16 +1654,11 @@ if configRegistry.get('version/version') and \
                 gespeichert, sondern in den lokalen Benutzerkonten.
             </para>
             <para>
-                Das Passwort für den lokalen root-Nutzer kann über die &ucsUMC;
-                unter <guimenu>Basis-Einstellungen &ar; Allgemein &ar; Root-Passwort</guimenu>
-                geändert werden. Alternativ kann auf der Kommandozeile der Befehl
-                <command>passwd</command> aufgerufen werden.
-            </para>
-            <para>
+				Das Passwort für den lokalen root-Nutzer kann über die Kommandozeile
+				mit den Befehl <command>passwd</command> geändert werden.
                 Es ist zu beachten, dass hierbei keine Prüfungen hinsichtlich der
                 Passwortlänge/-Stärke und bereits verwendeter Passwörter durchgeführt
-                wird. Um Folgefehler durch Tippfehler zu vermeiden, muss dass Passwort
-                doppelt eingegeben werden.
+                wird.
             </para>
         </section><!-- Administrativer Zugriff mit dem Root-Konto -->
 
@@ -1674,10 +1667,11 @@ if configRegistry.get('version/version') and \
                 Unter Linux werden Lokalisierungseigenschaften für Software in <emphasis>Locales</emphasis>
                 definiert. Konfiguriert werden u.a. Einstellungen wie Datums- sowie zu
                 nutzende Währungsformate, verwendete Zeichensätze und die
-                Sprachauswahl für internationalisierte Programme. Die installierten Locales können in der &ucsUMC; unter
-                <guimenu>Basis-Einstellungen &ar; Spracheinstellungen &ar; Verfügbare
-                System-Lokalisierungen</guimenu> geändert werden. Unter
-                <guimenu>Standard-System-Lokalisierung</guimenu> wird die Standard-Locale
+				Sprachauswahl für internationalisierte Programme.
+				Die installierten Locales können in &ucsUMC; unter
+                <guimenu>Sprach-Einstellungen &ar; Verfügbare
+                Systemsprachen</guimenu> geändert werden. Unter
+                <guimenu>Standard-System-Sprachdefinition</guimenu> wird die Standard-Locale
                 festgelegt.
             </para>
                 <figure id="language-settings"><title>Konfiguration der Spracheinstellungen</title>
@@ -1845,7 +1839,7 @@ auth/sshd/restrict: yes
                 </para>
             </section><!-- Protokollierung des Systemzustands -->
 
-            <section id="computers:Anzeige_von_Systemstatistiken_in_der_UMC"><title>Anzeige von Systemstatistiken in der &ucsUMC;</title>
+            <section id="computers:Anzeige_von_Systemstatistiken_in_der_UMC"><title>Anzeige von Systemstatistiken in &ucsUMC;</title>
                 <para>
                     Das UMC-Modul <guimenu>Statistiken</guimenu> zeigt die Auslastung des
                     Systems an. Dabei wird jeweils eine Grafik für die unterschiedlichen
@@ -1866,11 +1860,11 @@ auth/sshd/restrict: yes
 					<listitem><simpara>Die Anzahl der jeweils aktiven Terminalserver-Sitzungen</simpara></listitem>
 					<listitem><simpara>Die Auslastung der Auslagerungsdatei (Swap)</simpara></listitem>
                     </itemizedlist>
-            </section><!-- Anzeige von Systemstatistiken in der &ucsUMC; -->
+            </section><!-- Anzeige von Systemstatistiken in &ucsUMC; -->
 
-            <section id="computers:modules:top"><title>Prozessübersicht in der &ucsUMC;</title>
+            <section id="computers:modules:top"><title>Prozessübersicht in &ucsUMC;</title>
                 <para>
-                    Das UMC-System-Modul <guimenu>Prozessübersicht</guimenu> zeigt eine Tabelle der aktuellen
+                    Das UMC-Modul <guimenu>Prozessübersicht</guimenu> zeigt eine Tabelle der aktuellen
                     Prozesse auf dem System an. Die Prozesse können nach den folgenden
                     Eigenschaften sortiert werden, in dem auf den entsprechenden
                     Tabellenkopf geklickt wird:
@@ -1908,7 +1902,22 @@ auth/sshd/restrict: yes
                     Programme dann einen kontrollierten Programmabbruch einleiten und
                     z.B. ein Speichern von Dateien o.ä. durchführen.
                 </para>
-            </section><!-- Prozessübersicht in der &ucsUMC; -->
+            </section><!-- Prozessübersicht in &ucsUMC; -->
+
+            <section id="computers:modules:diagnostic"><title>System-Fehlerdiagnose in &ucsUMC;</title>
+                <para>
+					Um ein UCS-System auf verschiedene bekannte Probleme hin zu analysieren
+					biete das UMC-Modul <guimenu>System-Fehlerdiagnose</guimenu> eine
+					entsprechende Benutzerschnittstelle.
+				</para>
+				<para>
+					Das Modul wertet eine Reihe ihm bekannter Problemszenarien aus und bietet
+					Lösungsvorschläge an, wenn es in der Lage ist gefundene Probleme automatisch
+					zu beheben. Diese Funktion wird durch zusätzliche Schaltflächen dargestellt.
+					Darüber hinaus werden Links zu weiterführenden Artikeln und zu
+					entsprechenden UMC-Modulen angezeigt.
+				</para>
+            </section>
         </section><!-- Protokollierung/Abfrage von Systemmeldungen und -zuständen -->
 
         <section id="computers:Ausfuehren_von_wiederkehrenden_Aktionen_mit_Cron"><title>Ausführen von wiederkehrenden Aktionen mit Cron</title>
@@ -2002,10 +2011,10 @@ auth/sshd/restrict: yes
             </section>
         </section>
 
-        <section id="computers:nscd"><title>Name Server Cache Daemon</title>
+        <section id="computers:nscd"><title>Name Service Cache Daemon</title>
             <para>
                 Um häufige Anfragen unveränderter Daten zu beschleunigen, werden Namensauflösungen
-                durch den <emphasis>Name Server Cache Daemon</emphasis> (NSCD) zwischengespeichert. Werden diese erneut angefragt, muss so nicht eine
+                durch den <emphasis>Name Service Cache Daemon</emphasis> (NSCD) zwischengespeichert. Werden diese erneut angefragt, muss so nicht eine
                 vollständige neue LDAP-Anfrage durchgeführt werden, sondern die Daten können
                 direkt aus dem Cache bezogen werden.
             </para>
@@ -2083,7 +2092,7 @@ nscd -i hosts
                 Der Detailgrad der Logmeldungen kann mit der &ucsUCRV; <envar>nscd/debug/level</envar>
                 konfiguriert werden.
             </para>
-        </section><!-- Name Server Cache Daemon -->
+        </section><!-- Name Service Cache Daemon -->
 
         <section id="computers:SSH-Zugriff_auf_Systeme"><title>SSH-Zugriff auf Systeme</title>
             <para>
@@ -2133,8 +2142,8 @@ nscd -i hosts
 
         <section id="basicservices::ntp"><title>Konfiguration der Zeitzone / Zeitsynchronisation</title>
             <para>
-                Die Zeitzone, in der ein System angesiedelt ist, kann in der &ucsUMC;
-                unter <guimenu>Basis-Einstellungen &ar; Sprache &ar; Zeitzone</guimenu>
+                Die Zeitzone, in der ein System angesiedelt ist, kann in &ucsUMC;
+				unter <guimenu>Sprach-Einstellungen &ar; Zeitzone</guimenu>
                 geändert werden.
             </para>
             <para>
