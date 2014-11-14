@@ -119,10 +119,17 @@ define([
 		},
 
 		_translateDomElements: function() {
+			var isTitleSet = false;
 			query('*[data-i18n]').forEach(lang.hitch(this, function(inode) {
 				var value = domAttr.get(inode, 'data-i18n');
 				var translation = _(value, ucr);
 				domAttr.set(inode, 'innerHTML', translation);
+
+				// set the first h1 tag as the windows title
+				if ((inode.tagName || '').toLowerCase() == 'h1' && !isTitleSet) {
+					window.document.title = translation;
+					isTitleSet = true;
+				}
 			}));
 			query('a[href]').forEach(lang.hitch(this, function(inode) {
 				var href = domAttr.get(inode, 'href');
@@ -180,12 +187,17 @@ define([
 			return this._getTab('service') && this._getTab('admin');
 		},
 
+		_getFocusedTab: function() {
+			return this.servicesButton.selected ? 'service-tab' : 'admin-tab';
+		},
+
 		_focusTab: function(category) {
 			// set visibility of tabs through css and also set 'selectd' of category buttons
 			domClass.toggle("service-tab", "galleryTabInvisible", category != "service");
 			this.servicesButton.set('selected', category == "service");
 			domClass.toggle("admin-tab", "galleryTabInvisible", category == "service");
 			this.adminButton.set('selected', category != "service");
+			this._resizeItemNames();
 		},
 
 		_getLinkEntry: function(props, category, id) {
@@ -245,21 +257,9 @@ define([
 			this._updateNoServiceHint();
 		},
 
-//		_matchLocale: function(locale, /* Function? */ mapper) {
-//			mapper = mapper || function(i) { return i; };
-//			var result = null;
-//			array.some(this._availableLocales, function(ilocale) {
-//				if (mapper(locale) == mapper(ilocale.id)) {
-//					result = ilocale;
-//					return true;
-//				}
-//			});
-//			return result;
-//		},
-
 		_getAvailableLocales: function() {
 			if ('availableLocales' in window) {
-				return availableLocales;	
+				return availableLocales;
 			}
 			return this._availableLocales;
 		},
@@ -315,7 +315,7 @@ define([
 				domStyle.set(inode, 'fontSize', '');
 				var iheight = domGeometry.position(inode).h;
 				var fontSize = 1.5;
-				while (iheight > defaultHeight + 0.5 && fontSize > 0.5) {
+				while (iheight && iheight > defaultHeight + 0.5 && fontSize > 0.5) {
 					domStyle.set(inode, 'fontSize', fontSize + 'em');
 					iheight = domGeometry.position(inode).h;
 					fontSize *= 0.9;
@@ -330,7 +330,7 @@ define([
 				description: '*'
 			}, null, '_dummyEntry');
 			domClass.add(node, 'dijitOffScreen');
-			domConstruct.place(node, 'admin-tab');
+			domConstruct.place(node, this._getFocusedTab());
 			var height = this._getItemNameHeight('_dummyEntry');
 			domConstruct.destroy('_dummyEntry');
 			return height;

@@ -1,3 +1,11 @@
+univention-apache (7.0.15-1) unstable; urgency=medium
+
+  Bug #36587:
+  * adjust resize handling for entries on the hidden page
+  * set windows title to the content of the h1 element
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 14 Nov 2014 17:48:09 +0100
+
 univention-apache (7.0.14-3) unstable; urgency=low
 
   Bug #36316:
