@@ -665,7 +665,7 @@
 
   		<figure>
   		  <title>Error message during first access</title>
-  		  <graphic scalefit="1" width="40%" fileref="illustrations/windows-printerdriver-en.png"/>
+  		  <graphic scalefit="1" align="center" width="40%" fileref="illustrations/windows-printerdriver-en.png"/>
   		</figure>
   	  </simpara></listitem>
 

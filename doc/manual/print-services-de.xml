@@ -676,7 +676,7 @@
 
 		<figure>
 		  <title>Fehlermeldung beim ersten Zugriff</title>
-		  <graphic scalefit="1" width="40%" fileref="illustrations/windows-printerdriver-de.png"/>
+		  <graphic scalefit="1" align="center" width="40%" fileref="illustrations/windows-printerdriver-de.png"/>
 		</figure>
 	  </simpara></listitem>
 
