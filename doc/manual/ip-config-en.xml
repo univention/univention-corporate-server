@@ -45,12 +45,8 @@
 	  address is automatically reassigned.
 	</para>
 	<para>
-	  Network objects are managed in the UMC module <emphasis>Networks</emphasis>.
-	</para>
-	<para>
-	  General information on the operation of the domain management modules
-	  of the &ucsUMC; and on the adding, editing, searching for and
-	  deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		Network objects are managed in the UMC module <emphasis>Networks</emphasis>
+		(see <xref linkend="central:user-interface"/>)
 	</para>
 	  <table>
 		<title>'General' tab</title>
@@ -370,7 +366,8 @@
 		<title>Forward lookup zone</title>
 		<para>
 		  Forward lookup zones contain information which is used to resolve DNS
-		  names into IP addresses. They are managed in the UMC module <emphasis>DNS</emphasis>.
+		  names into IP addresses. They are managed in the UMC module <emphasis>DNS</emphasis>
+		  (see <xref linkend="central:user-interface"/>).
 		  To add another forward lookup zone, select <guimenu>All DNS
 		  zones</guimenu> and <guimenu>Add &ar; DNS: Forward lookup zone</guimenu>.
 		</para>
@@ -378,11 +375,6 @@
 		  <title>Configuring a forward lookup zone in UMC</title>
 		  <graphic fileref="illustrations/forward-lookup-zone_EN.png" scalefit="1" width="100%"/>
 		</figure>
-		<para>
-		  General information on the operation of the domain management modules
-		  of the &ucsUMC; and on the adding, editing, searching for and
-		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
-		</para>
 		<para>
 		  <table>
 			<title>'General' tab</title>
@@ -671,15 +663,11 @@
 	  <section id="ip-config:CNAME-Record_Alias-Records">
 		<title>CNAME-Record (Alias-Records)</title>
 		<para>
-		  CNAME records / alias records are managed in the UMC module <emphasis>DNS</emphasis>.
+		  CNAME records / alias records are managed in the UMC module <emphasis>DNS</emphasis>
+		  (see <xref linkend="central:user-interface"/>).
 		  To create another record, the forward lookup zone must be selected in
 		  the left column. <guimenu>Add &ar; DNS: Alias record</guimenu> can be used to create a new
 		  record.
-		</para>
-		<para>
-		  General information on the operation of the domain management modules
-		  of the &ucsUMC; and on the adding, editing, searching for and
-		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
 		</para>
 		<para>
 		  <table>
@@ -731,14 +719,10 @@
 	  <section id="networks::dns::hostrecord">
 		<title>A/AAAA records (host records)</title>
 		<para>
-		  Host records are managed in the UMC module <emphasis>DNS</emphasis>.
+		  Host records are managed in the UMC module <emphasis>DNS</emphasis>
+		  (see <xref linkend="central:user-interface"/>).
 		  To create another record, the forward lookup zone must be selected in the left
 		  column. <guimenu>Add &ar; DNS: Host record</guimenu> can be used to create a new record.
-		</para>
-		<para>
-		  General information on the operation of the domain management modules
-		  of the &ucsUMC; and on the adding, editing, searching for and
-		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
 		</para>
 		<para>
 		  When adding or editing a computer objekt a host record can be created
@@ -802,7 +786,8 @@
 	  <section id="ip-config:Service_records">
 		<title>Service records</title>
 		<para>
-		  Service records are managed in the UMC module <emphasis>DNS</emphasis>.
+		  Service records are managed in the UMC module <emphasis>DNS</emphasis>
+		  (see <xref linkend="central:user-interface"/>).
 		  To create another record, the forward lookup zone must be selected in the left
 		  column. <guimenu>Add &ar; DNS: Service record</guimenu> can be used to create a new
 		  record.
@@ -813,11 +798,6 @@
 		  </title>
 		  <graphic fileref="illustrations/srv-record_EN.png" scalefit="1" width="100%"/>
 		</figure>
-		<para>
-		  General information on the operation of the domain management modules
-		  of the &ucsUMC; and on the adding, editing, searching for and
-		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
-		</para>
 		<para>
 		  A service record must always be assigned to a forward lookup zone and
 		  can therefore only be added to a forward lookup zone or a subordinate
@@ -1105,15 +1085,11 @@
 	  <section id="ip-config:Pointer_record">
 		<title>Pointer record</title>
 		<para>
-		  Pointer records are managed in the UMC module <emphasis>DNS</emphasis>.
+		  Pointer records are managed in the UMC module <emphasis>DNS</emphasis>
+		  (see <xref linkend="central:user-interface"/>).
 		  To create another record, the reverse lookup zone must be
 		  selected in the left column. <guimenu>Add &ar; DNS: Pointer record</guimenu> can be used
 		  to create a new record.
-		</para>
-		<para>
-		  General information on the operation of the domain management modules
-		  of the &ucsUMC; and on the adding, editing, searching for and
-		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
 		</para>
 		  <table>
 			<title>'General' tab</title>
@@ -1275,7 +1251,8 @@ closest to the object always applies.
 	  <section id="networks::dhcp::services">
 		<title>Administration of DHCP services</title>
 		<para>
-		  DHCP services are managed in the UMC module <emphasis>DHCP</emphasis>.
+		  DHCP services are managed in the UMC module <emphasis>DHCP</emphasis>
+		  (see <xref linkend="central:user-interface"/>).
 		  To create a new DHCP service, <guimenu>All DHCP services</guimenu> needs to
 		  be selected. Clicking on <guimenu>Add</guimenu> then creates a new service.
 		</para>
@@ -1285,11 +1262,6 @@ closest to the object always applies.
 		  DHCP server must be set up (see <xref linkend="networks:dhcp:dhcpserver"/>).
 		</para>
 
-		<para>
-		  General information on the operation of the domain management modules
-		  of the &ucsUMC; and on the adding, editing, searching for and
-		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
-		</para>
 		<para>
 		  The following parameters are often set on the DHCP service object
 		  which then apply to all the computers which are served by this DHCP
@@ -1352,14 +1324,8 @@ closest to the object always applies.
 		  not normally need to be created manually, instead it is created by the
 		  join script of the <package>univention-dhcp</package> package.
 		  However, to create another record manually, a DHCP service must be selected in the left
-		  column of the UMC module <emphasis>DHCP</emphasis>. <guimenu>Add
-		  &ar; DHCP Server</guimenu> can then be used to register a new server.
-		</para>
-
-		<para>
-		  General information on the operation of the domain management modules
-		  of the &ucsUMC; and on the adding, editing, searching for and
-		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		  column of the UMC module <emphasis>DHCP</emphasis>.
+		  <guimenu>Add &ar; DHCP Server</guimenu> can then be used to register a new server.
 		</para>
 
 		  <table>
@@ -1403,15 +1369,10 @@ closest to the object always applies.
 	  <section id="ip-config:Administration_of_DHCP_subnets">
 		<title>Administration of DHCP subnets</title>
 		<para>
-		  DHCP subnets are managed in the UMC module <emphasis>DHCP</emphasis>.
+		  DHCP subnets are managed in the UMC module <emphasis>DHCP</emphasis>
+		  (see <xref linkend="central:user-interface"/>).
 		  To create another subnet, a DHCP service must be selected in the left
 		  column. <guimenu>Add &ar; DHCP: Subnet</guimenu> can be used to create a new subnet.
-		</para>
-
-		<para>
-		  General information on the operation of the domain management modules
-		  of the &ucsUMC; and on the adding, editing, searching for and
-		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
 		</para>
 
 		<para>
@@ -1659,15 +1620,11 @@ closest to the object always applies.
 		  created manually or automatically.
 		</para>
 		<para>
-		  DHCP host objects are managed in the UMC module <emphasis>DHCP</emphasis>.
+		  DHCP host objects are managed in the UMC module <emphasis>DHCP</emphasis>
+		  (see <xref linkend="central:user-interface"/>).
 		  To register a host in the DHCP manually, a DHCP service must be selected in
 		  the left column of the module. <guimenu>Add &ar; DHCP:
 		  Host</guimenu> can be used to register a host.
-		</para>
-		<para>
-		  General information on the operation of the domain management modules
-		  of the &ucsUMC; and on the adding, editing, searching for and
-		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
 		</para>
 		  <table>
 			<title>'General' tab</title>
@@ -1746,15 +1703,11 @@ closest to the object always applies.
 		  common physical network.
 		</para>
 		<para>
-		  DHCP shared network objects are managed in the UMC module <emphasis>DHCP</emphasis>.
+		  DHCP shared network objects are managed in the UMC module <emphasis>DHCP</emphasis>
+		  (see <xref linkend="central:user-interface"/>).
 		  To create a shared network, a DHCP service must be selected in the left
 		  column of the module. <guimenu>Add &ar; DHCP: Shared
 		  Network</guimenu> can be used to register a network.
-		</para>
-		<para>
-		  General information on the operation of the domain management modules
-		  of the &ucsUMC; and on the adding, editing, searching for and
-		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
 		</para>
 		<caution>
 			<para>
@@ -1815,10 +1768,8 @@ closest to the object always applies.
 		<title>Setting the gateway</title>
 		<para>
 		  The default gateway can be specified via DHCP with a <emphasis>DHCP routing</emphasis>
-		  policy, which is managed in the UMC module <guimenu>Policies</guimenu>.
-		</para>
-		<para>
-		  General information on policy management can be found in <xref linkend="central:policies"/>.
+		  policy, which is managed in the UMC module <guimenu>Policies</guimenu>
+		  (see <xref linkend="central:policies"/>)
 		</para>
 		  <table>
 			<title>'General' tab</title>
@@ -1859,11 +1810,8 @@ closest to the object always applies.
 		<para>
 		  The name servers to be used by a client can be specified via DHCP with
 		  a <emphasis>DHCP DNS</emphasis> policy, which is managed in
-		  the UMC module <guimenu>Policies</guimenu>.
-		</para>
-		<para>
-		  General information on policy management can be found in
-		  <xref linkend="central:policies"/>.
+		  the UMC module <guimenu>Policies</guimenu>
+		  (see <xref linkend="central:policies"/>)
 		</para>
 		  <table>
 			<title>'General' tab</title>
@@ -1917,11 +1865,8 @@ closest to the object always applies.
 		<para>
 		  The WINS server to be used can be specified via DHCP with
 		  a <emphasis>DHCP NetBIOS</emphasis> policy, which is managed in
-		  the UMC module <guimenu>Policies</guimenu>.
-		</para>
-		<para>
-		  General information on policy management can be found in
-		  <xref linkend="central:policies"/>.
+		  the UMC module <guimenu>Policies</guimenu>
+		  (see <xref linkend="central:policies"/>)
 		</para>
 		  <table>
 			<title>'General' tab</title>
@@ -2007,10 +1952,8 @@ closest to the object always applies.
 		<para>
 		  The validity of an assigned IP address - a so-called DHCP lease
 		  - can be specified with a <emphasis>DHCP lease time</emphasis> policy, which
-		  is managed in the UMC module <guimenu>Policies</guimenu>.
-		</para>
-		<para>
-		  General information on policy management can be found in <xref linkend="central:policies"/>.
+		  is managed in the UMC module <guimenu>Policies</guimenu>
+		  (see <xref linkend="central:policies"/>)
 		</para>
 		  <table>
 			<title>'General' tab</title>
@@ -2074,10 +2017,8 @@ closest to the object always applies.
 		<para>
 		  A <emphasis>DHCP Boot</emphasis> policy is used to assign computers configuration
 		  parameters for booting via BOOTP/PXE. They are managed in
-		  the UMC module <guimenu>Policies</guimenu>.
-		</para>
-		<para>
-		  General information on policy management can be found in <xref linkend="central:policies"/>.
+		  the UMC module <guimenu>Policies</guimenu>
+		  (see <xref linkend="central:policies"/>)
 		</para>
 		  <table>
 			<title>'Boot' tab</title>

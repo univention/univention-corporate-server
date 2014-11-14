@@ -146,13 +146,8 @@
 
 	  <para>
 		Mail-Domänen werden im UMC-Modul <emphasis>Mail</emphasis>
-		mit dem Objekttyp <guimenu>Mail-Domäne</guimenu> verwaltet.
-	  </para>
-
-	  <para>
-		Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		Objekten finden sich in <xref linkend="central:user-interface"/>.
+		mit dem Objekttyp <guimenu>Mail-Domäne</guimenu> verwaltet
+		(siehe auch <xref linkend="central:user-interface"/>).
 	  </para>
 
 	  <para>
@@ -214,22 +209,11 @@
 	  </para>
 
 	  <para>
-		E-Mail-Adressen werden im UMC-Modul <emphasis>Benutzer</emphasis> verwaltet.
-	  </para>
-
-	  <para>
-		Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		Objekten finden sich in <xref linkend="central:user-interface"/>.
-	  </para>
-
-	  <para>
+		E-Mail-Adressen werden im UMC-Modul <emphasis>Benutzer</emphasis> verwaltet
+		(siehe auch <xref linkend="central:user-interface"/>).
 		Die <guimenu>primäre E-Mail-Adresse</guimenu> wird im
 		Reiter <guimenu>Allgemein</guimenu> im Untermenü <guimenu>Benutzer-Konto</guimenu>
 		eingetragen.
-	  </para>
-
-	  <para>
 		<guimenu>Alternative E-Mail-Adressen</guimenu> können
 		unter <guimenu>Erweiterte Einstellungen &ar; Mail</guimenu> eingetragen werden.
 	  </para>
@@ -253,13 +237,8 @@
 
 	  <para>
 		Mail-Domänen werden im UMC-Modul <emphasis>Mail</emphasis>
-		mit dem Objekttyp <guimenu>Mailingliste</guimenu> verwaltet.
-	  </para>
-
-	  <para>
-		Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		Objekten finden sich in <xref linkend="central:user-interface"/>.
+		mit dem Objekttyp <guimenu>Mailingliste</guimenu> verwaltet
+		(siehe auch <xref linkend="central:user-interface"/>).
 	  </para>
 
 	  <para>
@@ -309,13 +288,8 @@
 	  </para>
 
 	  <para>
-		Mailgruppen werden im UMC-Modul <emphasis>Gruppen</emphasis> verwaltet.
-	  </para>
-
-	  <para>
-		Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		Objekten finden sich in <xref linkend="central:user-interface"/>.
+		  Mailgruppen werden im UMC-Modul <emphasis>Gruppen</emphasis> verwaltet
+		  (siehe auch <xref linkend="central:user-interface"/>).
 	  </para>
 
 	  <para>
@@ -365,15 +339,9 @@
 
 	  <para>
 		Globale IMAP-Ordner werden im UMC-Modul <emphasis>Mail</emphasis>
-		mit dem Objekttyp <guimenu>Mail-Ordner (IMAP)</guimenu> verwaltet.
+		mit dem Objekttyp <guimenu>Mail-Ordner (IMAP)</guimenu> verwaltet
+		(siehe auch <xref linkend="central:user-interface"/>).
 	  </para>
-
-	  <para>
-		Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		Objekten finden sich in <xref linkend="central:user-interface"/>.
-	  </para>
-
 
 	  <para>
 		<table>
@@ -538,12 +506,7 @@
 	  <para>
 		Die Grenze wird durch die Richtlinie <emphasis>Mail-Quota</emphasis> festgelegt, die im
 		UMC-Modul <emphasis>Benutzer</emphasis> unter <emphasis>Richtlinien</emphasis> verwaltet
-		wird.
-	  </para>
-
-	  <para>
-		Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref
-		linkend="central:policies"/>.
+		wird (siehe auch <xref linkend="central:policies"/>).
 	  </para>
 
 	  <para>

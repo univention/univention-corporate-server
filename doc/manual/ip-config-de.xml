@@ -51,12 +51,7 @@
 	</para>
 	<para>
 	  Netzwerk-Objekte werden im UMC-Modul <emphasis>Netzwerke</emphasis>
-	  verwaltet.
-	</para>
-	<para>
-	  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-	  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-	  Objekten finden sich in <xref linkend="central:user-interface"/>.
+	  verwaltet (siehe auch <xref linkend="central:user-interface"/>).
 	</para>
 	<table>
 	  <title>Reiter 'Allgemein'</title>
@@ -368,7 +363,8 @@
 		<para>
 		  Forward Lookup Zonen enthalten Informationen, die zum Auflösen von
 		  DNS-Namen in IP-Adressen verwendet werden. Sie werden im UMC-Modul
-		  <emphasis>DNS</emphasis> verwaltet. Um eine weitere Forward Lookup
+		  <emphasis>DNS</emphasis> verwaltet (siehe auch <xref linkend="central:user-interface"/>).
+		  Um eine weitere Forward Lookup
 		  Zone anzulegen, muss <guimenu>Alle DNS-Zonen</guimenu> selektiert werden und
 		  <guimenu>Hinzufügen &ar; DNS: Forward Lookup Zone</guimenu> ausgewählt werden.
 		</para>
@@ -376,11 +372,6 @@
 			<title>Konfiguration einer Forward Lookup Zone in UMC</title>
 			<graphic scalefit="1" width="100%" fileref="illustrations/forward-lookup-zone_DE.png"/>
 		  </figure>
-		  <para>
-			Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-			der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-			Objekten finden sich in <xref linkend="central:user-interface"/>.
-		  </para>
 		  <table>
 			<title>Reiter 'Allgemein'</title>
 			<tgroup cols="2">
@@ -602,16 +593,11 @@
 	  <section id="ip-config:CNAME-Record_Alias-Records">
 		<title>CNAME-Record (Alias-Records)</title>
 		<para>
-		  CNAME-Records / Alias-Records werden im Modul <emphasis>DNS</emphasis> der
-		  &ucsUMC; verwaltet. Um einen weiteren Record anzulegen, muss in der linken Spalte eine
+		  CNAME-Records / Alias-Records werden im UMC-Modul <emphasis>DNS</emphasis>
+		  verwaltet (siehe auch <xref linkend="central:user-interface"/>).
+		  Um einen weiteren Record anzulegen, muss in der linken Spalte eine
 		  Forward Lookup Zone ausgewählt werden. Mit <guimenu>Hinzufügen &ar; DNS: Alias
 		  Record</guimenu> kann dann ein neuer Record angelegt werden.
-		</para>
-
-		<para>
-		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		  Objekten finden sich in <xref linkend="central:user-interface"/>.
 		</para>
 		<table>
 		  <title>Reiter 'Allgemein'</title>
@@ -647,16 +633,11 @@
 	  <section id="networks::dns::hostrecord">
 		<title>A/AAAA-Records (Host Records)</title>
 		<para>
-		  Host-Records werden im Modul <emphasis>DNS</emphasis> der
-		  &ucsUMC; verwaltet. 
+		  Host-Records werden im UMC-Modul <emphasis>DNS</emphasis> verwaltet
+		  (siehe auch <xref linkend="central:user-interface"/>).
 		  Um einen weiteren Record anzulegen, muss in der linken Spalte eine
 		  Forward Lookup Zone ausgewählt werden. Mit <guimenu>Hinzufügen &ar; DNS: Host
 		  Record</guimenu> kann dann ein neuer Record angelegt werden.
-		</para>
-		<para>
-		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		  Objekten finden sich in <xref linkend="central:user-interface"/>.
 		</para>
 		<para>
 		  Beim Hinzufügen oder Bearbeiten eines Rechner-Objekts kann ein Host
@@ -702,8 +683,8 @@
 	  <section id="ip-config:Service_Records">
 		<title>Service Records</title>
 		<para>
-		  Service Records werden im Modul <emphasis>DNS</emphasis> der
-		  &ucsUMC; verwaltet. 
+		  Service Records werden im Modul <emphasis>DNS</emphasis> verwaltet
+		  (siehe auch <xref linkend="central:user-interface"/>).
 		  Um einen weiteren Record anzulegen, muss in der linken Spalte eine
 		  Forward Lookup Zone ausgewählt werden. Mit <guimenu>Hinzufügen &ar; DNS: Service
 		  Record</guimenu> kann dann ein neuer Record angelegt werden.
@@ -712,11 +693,6 @@
 		  <title>Konfiguration eines Service Records</title>
 		  <graphic scalefit="1" width="100%" fileref="illustrations/srv-record_DE.png"/>
 		</figure>
-		<para>
-		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		  Objekten finden sich in <xref linkend="central:user-interface"/>.
-		</para>
 		<table>
 		  <title>Reiter 'Allgemein'</title>
 		  <tgroup cols="2">
@@ -813,15 +789,10 @@
 		<title>Reverse Lookup Zonen</title>
 		<para>
 		  Eine Reverse Lookup Zone dient zur Umwandlung von IP-Adressen in Rechnernamen. Sie werden
-		  im UMC-Modul <emphasis>DNS</emphasis> verwaltet. Um eine weitere Reverse Lookup
+		  im UMC-Modul <emphasis>DNS</emphasis> verwaltet (siehe auch <xref linkend="central:user-interface"/>).
+		  Um eine weitere Reverse Lookup
 		  Zone anzulegen, muss <guimenu>Alle DNS-Zonen</guimenu> selektiert werden und
 		  <guimenu>Hinzufügen &ar; DNS: Reverse Lookup Zone</guimenu> ausgewählt werden.
-		</para>
-
-		<para>
-		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		  Objekten finden sich in <xref linkend="central:user-interface"/>.
 		</para>
 		<table>
 		  <title>Reiter 'Allgemein'</title>
@@ -924,15 +895,11 @@
 	  <section id="ip-config:Pointer_Records">
 		<title>Pointer Records</title>
 		<para>
-		  Pointer-Records werden im UMC-Modul <emphasis>DNS</emphasis> verwaltet.
+		  Pointer-Records werden im UMC-Modul <emphasis>DNS</emphasis> verwaltet
+		  (siehe auch <xref linkend="central:user-interface"/>).
 		  Um einen weiteren Record anzulegen, muss in der linken Spalte eine
 		  Reverse Lookup Zone ausgewählt werden. Mit <guimenu>Hinzufügen &ar; DNS: Pointer
 		  Record</guimenu> kann dann ein neuer Record angelegt werden.
-		</para>
-		<para>
-		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		  Objekten finden sich in <xref linkend="central:user-interface"/>.
 		</para>
 		<table>
 		  <title>Reiter 'Allgemein'</title>
@@ -1084,7 +1051,8 @@
 	  <section id="networks::dhcp::services">
 		<title>Verwaltung von DHCP-Services</title>
 		<para>
-		  DHCP-Services werden im UMC-Modul <emphasis>DHCP</emphasis> verwaltet. Um einen
+		  DHCP-Services werden im UMC-Modul <emphasis>DHCP</emphasis> verwaltet
+		  (siehe auch <xref linkend="central:user-interface"/>). Um einen
 		  neuen DHCP-Service anzulegen muss zuerst <guimenu>Alle DHCP-Dienste</guimenu> selektiert
 		  werden, der Klick auf <guimenu>Hinzufügen</guimenu> legt dann einen neue Service an.
 		</para>
@@ -1093,12 +1061,6 @@
 		  Ein DHCP-Server kann nur einen DHCP-Service bedienen; wenn ein weiterer DHCP-Service
 		  verwendet werden soll, muss dafür ein separater DHCP-Server eingerichtet werden (siehe
 		  <xref linkend="networks:dhcp:dhcpsever"/>).
-		</para>
-
-		<para>
-		  Allgemeine Hinweise zur Bedienung der Domänenmanagement-Module
-		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		  Objekten finden sich in <xref linkend="central:user-interface"/>.
 		</para>
 		<para>
 		  Am DHCP-Service-Objekt werden häufig folgende Parameter festgelegt,
@@ -1159,12 +1121,6 @@
 		  kann dann ein neuer Server registriert werden.
 		</para>
 
-		<para>
-		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		  Objekten finden sich in <xref linkend="central:user-interface"/>.
-		</para>
-
 		<table>
 		  <title>Reiter 'Allgemein'</title>
 		  <tgroup cols="2">
@@ -1197,16 +1153,11 @@
 	  <section id="ip-config:Verwaltung_von_DHCP-Subnetzen">
 		<title>Verwaltung von DHCP-Subnetzen</title>
 		<para>
-		  DHCP-Subnetze werden im UMC-Modul <emphasis>DHCP</emphasis> verwaltet. Um ein
+		  DHCP-Subnetze werden im UMC-Modul <emphasis>DHCP</emphasis> verwaltet
+		  (siehe auch <xref linkend="central:user-interface"/>). Um ein
 		  weiteres Subnetz anzulegen, muss in der linken Spalte ein DHCP-Service ausgewählt
 		  werden. Mit <guimenu>Hinzufügen &ar; DHCP: Subnetz</guimenu> kann dann ein neues Subnetz
 		  angelegt werden.
-		</para>
-
-		<para>
-		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		  Objekten finden sich in <xref linkend="central:user-interface"/>.
 		</para>
 
 		<para>
@@ -1427,17 +1378,13 @@
 		</para>
 
 		<para>
-		  DHCP-Rechner-Objekte werden im UMC-Modul <emphasis>DHCP</emphasis> verwaltet.
+		  DHCP-Rechner-Objekte werden im UMC-Modul <emphasis>DHCP</emphasis> verwaltet
+		  (siehe auch <xref linkend="central:user-interface"/>).
 		  Um einen Rechner manuell im DHCP zu registrieren, muss in der linken Spalte des
 		  Moduls ein DHCP-Service ausgewählt werden. Mit
 		  <guimenu>Hinzufügen &ar; DHCP: Rechner</guimenu> kann dann ein Rechner registriert werden.
 		</para>
 
-		<para>
-		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		  Objekten finden sich in <xref linkend="central:user-interface"/>.
-		</para>
 		<table>
 		  <title>Reiter 'Allgemein'</title>
 		  <tgroup cols="2">
@@ -1499,17 +1446,13 @@
 
 		<para>
 		  DHCP-Shared-Network-Objekte werden im UMC-Modul <emphasis>DHCP</emphasis>
-		  verwaltet. Um ein Shared Network anzulegen, muss in der linken Spalte des
+		  verwaltet (siehe auch <xref linkend="central:user-interface"/>).
+		  Um ein Shared Network anzulegen, muss in der linken Spalte des
 		  Moduls ein DHCP-Service ausgewählt werden. Mit
 		  <guimenu>Hinzufügen &ar; DHCP: Shared Network</guimenu> kann dann ein Netzwerk registriert
 		  werden.
 		</para>
 
-		<para>
-		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		  Objekten finden sich in <xref linkend="central:user-interface"/>.
-		</para>
 		<caution>
 			<para>
 				Ein Shared-Network muss mindestens einen Shared-Subnet-Eintrag enthalten.
@@ -1561,10 +1504,8 @@
 		<para>
 		  Das Default-Gateway kann per DHCP über eine Richtlinie vom Typ
 		  <emphasis>DHCP Routing</emphasis> festgelegt werden, die im
-		  UMC-Modul <guimenu>Richtlinien</guimenu> verwaltet wird.
-		</para>
-		<para>
-		  Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
+		  UMC-Modul <guimenu>Richtlinien</guimenu> verwaltet wird
+		  (siehe auch <xref linkend="central:policies"/>).
 		</para>
 		<table>
 		  <title>Reiter 'Allgemein'</title>
@@ -1597,10 +1538,7 @@
 		<para>
 		  Die von einem Client zu verwendenden Nameserver können per DHCP über
 		  eine Richtlinie vom Typ <emphasis>DHCP DNS</emphasis> festgelegt werden, die im
-		  UMC-Modul <guimenu>Richtlinien</guimenu> verwaltet wird.
-		</para>
-		<para>
-		  Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
+		  UMC-Modul <guimenu>Richtlinien</guimenu> verwaltet wird (siehe auch <xref linkend="central:policies"/>).
 		</para>
 		<table>
 		  <title>Reiter 'Allgemein'</title>
@@ -1643,10 +1581,8 @@
 		<para>
 		  Der zu verwendende WINS-Server kann per DHCP über eine Richtlinie vom Typ
 		  <emphasis>DHCP NetBIOS</emphasis> festgelegt werden, die im
-		  UMC-Modul <guimenu>Richtlinien</guimenu> verwaltet wird.
-		</para>
-		<para>
-		  Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
+		  UMC-Modul <guimenu>Richtlinien</guimenu> verwaltet wird
+		  (siehe auch <xref linkend="central:policies"/>).
 		</para>
 		<table>
 		  <title>Reiter 'NetBIOS'</title>
@@ -1716,10 +1652,7 @@
 		<para>
 		  Die Gültigkeit einer vergebenen IP-Adresse - ein sogenanntes
 		  DHCP-Lease - kann über eine Richtlinie vom Typ <emphasis>DHCP Lease-Zeit</emphasis> festgelegt werden, die im
-		  UMC-Modul <guimenu>Richtlinien</guimenu> verwaltet wird.
-		</para>
-		<para>
-		  Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
+		  UMC-Modul <guimenu>Richtlinien</guimenu> verwaltet wird (siehe auch <xref linkend="central:policies"/>).
 		</para>
 		<table>
 		  <title>Reiter 'Lease-Zeit'</title>
@@ -1767,10 +1700,7 @@
 		<para>
 		  Mit einer <emphasis>DHCP Boot</emphasis>-Richtlinie werden Rechnern
 		  Konfigurationsparameter für das Booten über über BOOTP/PXE zugewiesen. Sie wird im
-		  UMC-Modul <guimenu>Richtlinien</guimenu> verwaltet.
-		</para>
-		<para>
-		  Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
+		  UMC-Modul <guimenu>Richtlinien</guimenu> verwaltet (siehe auch <xref linkend="central:policies"/>).
 		</para>
 		<table>
 		  <title>Reiter 'Boot'</title>

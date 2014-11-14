@@ -104,12 +104,8 @@
 <title>Konfiguration von Druckerfreigaben</title>
 	<para>
 		Druckerfreigaben werden im UMC-Modul <emphasis>Drucker</emphasis>
-		mit dem Objekttyp <guimenu>Druckerfreigabe: Drucker</guimenu> verwaltet.
-	</para>
-	<para>
-		Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		Objekten finden sich in <xref linkend="central:user-interface"/>.
+		mit dem Objekttyp <guimenu>Druckerfreigabe: Drucker</guimenu> verwaltet
+		(siehe auch <xref linkend="central:user-interface"/>).
 	</para>
 	<figure id="create-printershare">
 	<title>Anlegen einer Druckerfreigabe</title>
@@ -403,12 +399,8 @@
 	</caution>
 	<para>
 		Druckergruppen werden im UMC-Modul <emphasis>Drucker</emphasis>
-		mit dem Objekttyp <guimenu>Druckerfreigabe: Druckergruppe</guimenu> verwaltet.
-	</para>
-	<para>
-		Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		Objekten finden sich in <xref linkend="central:user-interface"/>.
+		mit dem Objekttyp <guimenu>Druckerfreigabe: Druckergruppe</guimenu> verwaltet
+		(siehe auch <xref linkend="central:user-interface"/>).
 	</para>
 	<table>
 	<title>Karteikarte 'Allgemein'</title>

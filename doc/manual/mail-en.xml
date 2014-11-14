@@ -142,12 +142,8 @@
 	  </para>
 	  <para>
 		Mail domains are managed in the UMC module <emphasis>Mail</emphasis>
-		with the <guimenu>Mail domain</guimenu> object type.
-	  </para>
-	  <para>
-		General information on the operation of the domain management modules
-		of the &ucsUMC; and on the adding, editing, searching for and
-		deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		with the <guimenu>Mail domain</guimenu> object type
+		(see <xref linkend="central:user-interface"/>).
 	  </para>
 	  <para>
 		The name of a mail domain may only be composed of lowercase letters,
@@ -198,19 +194,11 @@
 		  </listitem>
 		</itemizedlist>
 	  <para>
-		E-mail addresses are managed in the UMC module <emphasis>Users</emphasis>.
-	  </para>
-	  <para>
-		General information on the operation of the domain management modules
-		of the &ucsUMC; and on the adding, editing, searching for and
-		deleting of objects can be found in <xref linkend="central:user-interface"/>.
-	  </para>
-	  <para>
+		E-mail addresses are managed in the UMC module <emphasis>Users</emphasis>
+		(see <xref linkend="central:user-interface"/>)
 		The <guimenu>primary e-mail address</guimenu> is entered in
 		the <guimenu>General</guimenu> tab in the <guimenu>User account</guimenu>
 		submenu.
-	  </para>
-	  <para>
 		<guimenu>Alternative e-mail addresses</guimenu> can be entered
 		under <guimenu>Advanced settings &ar; Mail</guimenu>.
 	  </para>
@@ -231,12 +219,8 @@
 	  </para>
 	  <para>
 		Mail domains are managed in the UMC module <emphasis>Mail</emphasis>
-		with the <guimenu>Mailing list</guimenu> object type.
-	  </para>
-	  <para>
-		General information on the operation of the domain management modules
-		of the &ucsUMC; and on the adding, editing, searching for and
-		deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		with the <guimenu>Mailing list</guimenu> object type
+		(see <xref linkend="central:user-interface"/>).
 	  </para>
 	  <para>
 		A name of your choice can be entered for the mailing list
@@ -280,12 +264,8 @@
 		delivered to the primary address of each of the group members.
 	  </para>
 	  <para>
-		Mail groups are managed in the UMC module <emphasis>Groups</emphasis>.
-	  </para>
-	  <para>
-		General information on the operation of the domain management modules
-		of the &ucsUMC; and on the adding, editing, searching for and
-		deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		Mail groups are managed in the UMC module <emphasis>Groups</emphasis>
+		(see <xref linkend="central:user-interface"/>).
 	  </para>
 	  <para>
 		The address of the mail group is specified in
@@ -328,12 +308,8 @@
 	  </para>
 	  <para>
 		Shared IMAP folders are managed in the UMC module <emphasis>Mail</emphasis>
-		with the <guimenu>Mail folder (IMAP)</guimenu> object type.
-	  </para>
-	  <para>
-		General information on the operation of the domain management modules
-		of the &ucsUMC; and on the adding, editing, searching for and
-		deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		with the <guimenu>Mail folder (IMAP)</guimenu> object type
+		(see <xref linkend="central:user-interface"/>).
 	  </para>
 
 	  <table>
@@ -498,11 +474,8 @@
 	  </para>
 	  <para>
 		The limit is specified by the <emphasis>Mail quota</emphasis> policy, which is
-		managed under <emphasis>Policies</emphasis> in the UMC module <emphasis>Users</emphasis>.
-	  </para>
-	  <para>
-		General information on policy management can be found in <xref
-		linkend="central:policies"/>.
+		managed under <emphasis>Policies</emphasis> in the UMC module <emphasis>Users</emphasis>
+		(see <xref linkend="central:policies"/>)
 	  </para>
 	  <para>
 		The maximum size of the mailbox of a user is specified in

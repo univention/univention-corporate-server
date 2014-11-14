@@ -317,11 +317,8 @@
 		Der zu verwendende Repository-Server kann auch über die Richtlinie
 		<guimenu>Repository-Server</guimenu> in der UMC-Rechnerverwaltung
 		festgelegt werden. In dem Auswahlfeld werden UCS-Server-Systeme
-		angezeigt, für die ein DNS-Eintrag hinterlegt ist.
-	  </para>
-
-	  <para>
-		Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
+		angezeigt, für die ein DNS-Eintrag hinterlegt ist
+		(siehe auch <xref linkend="central:policies"/>).
 	  </para>
 	</section>
 
@@ -534,11 +531,7 @@ univention-repository-update -h
 	  <para>
 		Mit einer <guimenu>Release-Richtlinie</guimenu> in den
 		UMC-Modulen zur Rechner- und Domänenverwaltung lässt sich ein Update für
-		mehrere Rechner konfigurieren.
-	  </para>
-
-	  <para>
-		Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
+		mehrere Rechner konfigurieren (siehe auch <xref linkend="central:policies"/>).
 	  </para>
 
 	  <figure id="software-policyupdate"><title>Aktualisierung eines UCS-Systems über eine Release-Richtlinie</title>
@@ -791,7 +784,8 @@ apt-cache search fax
   <section id="computers::softwaremanagement::maintenancepolicy">
 	<title>Festlegung eines Aktualisierungs-Zeitpunkts mit der Paketpflege-Richtlinie</title>
 	<para>
-	  Mit einer <guimenu>Paketpflege</guimenu>-Richtlinie in den
+	  Mit einer <guimenu>Paketpflege</guimenu>-Richtlinie
+	  (siehe auch <xref linkend="central:policies"/>) in den
 	  UMC-Modulen zur Rechner und Domänenverwaltung kann ein Zeitpunkt
 	  vorgegeben werden, an dem die folgenden Schritte durchgeführt werden:
 	</para>
@@ -819,10 +813,6 @@ apt-cache search fax
 	<para>
 	  Alternativ können die Aktualisierungen auch beim Systemstart oder
 	  beim Herunterfahren des Systems erfolgen.
-	</para>
-
-	<para>
-	  Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
 	</para>
 
 	<table>

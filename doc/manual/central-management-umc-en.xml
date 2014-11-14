@@ -1141,10 +1141,10 @@
   <para>
 	UMC modules are assigned via a <guimenu>UMC</guimenu> policy which can be assigned to user and
 	group objects. The evaluation is performed additively, i.e., general access rights can be
-	assigned via ACLs assigned to groups and these rights can be extended via ACLs bound to users.
-	General information on policy management can be found in <xref linkend="central:policies"/>.
+	assigned via ACLs assigned to groups and these rights can be extended via ACLs bound to user
+	(see <xref linkend="central:policies"/>).
   </para>
-  
+
   <para>
 	In addition to the assignment of UMC policies, LDAP access rights need to be taken
 	into account, as well, for modules that manage data in the LDAP directory.

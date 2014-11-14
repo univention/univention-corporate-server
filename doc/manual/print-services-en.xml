@@ -104,13 +104,8 @@
 <title>Creating a printer share</title>
 	<para>
 		Print shares are administrated in the UMC module <emphasis>Printers</emphasis>
-		with the <guimenu>Printer share</guimenu> object
-		type.
-	</para>
-	<para>
-		General information on the operation of the domain management modules
-		of the &ucsUMC; and on the adding, editing, searching for and
-		deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		with the <guimenu>Printer share</guimenu> object type
+		(see <xref linkend="central:user-interface"/>).
 	</para>
 	<figure id="create-printershare">
 	<title>Creating a printer share</title>
@@ -401,12 +396,8 @@
 	</caution>
 	<para>
 		Printer groups are administrated in the UMC module <emphasis>Printers</emphasis>
-		with the <guimenu>Printer share</guimenu> object type.
-	</para>
-	<para>
-		General information on the operation of the domain management modules
-		of the &ucsUMC; and on the adding, editing, searching for and
-		deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		with the <guimenu>Printer share</guimenu> object type
+		(see <xref linkend="central:user-interface"/>).
 	</para>
 	<table>
 	<title>'General' tab</title>

@@ -313,11 +313,8 @@
 		The repository server to be used can also be specified using the
 		<guimenu>Repository server</guimenu> policy in the computer management of the
 		&ucsUMC;. Only UCS server systems for which a DNS entry has been configured are
-		shown in the selection field.
-	  </para>
-
-	  <para>
-		General information on policy management can be found in <xref linkend="central:policies"/>.
+		shown in the selection field
+		(see <xref linkend="central:policies"/>).
 	  </para>
 	</section>
 
@@ -529,13 +526,8 @@ univention-repository-update -h
 	  <title>Updating systems via a policy</title>
 	  <para>
 		An update for more than one computer can be configured with a
-		<guimenu>Release</guimenu> policy in the computer/domain management of the
-		&ucsUMC;.
-	  </para>
-
-	  <para>
-		General information on policy management can be found in <xref
-		linkend="central:policies"/>.
+		<guimenu>Release</guimenu> policy in the UMC modules for computer
+		and domain management (see <xref linkend="central:policies"/>).
 	  </para>
 
 	  <figure id="software-policyupdate">
@@ -798,9 +790,9 @@ apt-cache search fax
   <section id="computers::softwaremanagement::maintenancepolicy">
 	<title>Specification of an update point using the package maintenance policy</title>
 	<para>
-	  A <guimenu>Maintenance</guimenu> policy in the computer/domain management of the
-	  &ucsUMC; can be used to specify a point at which the following steps should be
-	  performed:
+	  A <guimenu>Maintenance</guimenu> policy (see <xref linkend="central:policies"/>)
+	  in the UMC modules for computer and domain management can be used
+	  to specify a point at which the following steps should be performed:
 	</para>
 
 	<itemizedlist>
@@ -823,10 +815,6 @@ apt-cache search fax
 	<para>
 	  Alternatively, the updates can also be performed when the system is booting or
 	  shut down.
-	</para>
-
-	<para>
-	  General information on policy management can be found in <xref linkend="central:policies"/>.
 	</para>
 
 	<table>

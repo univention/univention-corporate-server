@@ -1170,11 +1170,11 @@
   </para>
 
   <para>
-	Die Zuweisung von UMC-Modulen erfolgt über eine <guimenu>UMC</guimenu>-Richtlinie, die Benutzer-
+	Die Zuweisung von UMC-Modulen erfolgt über eine <guimenu>UMC</guimenu>-Richtlinie
+	(siehe auch <xref linkend="central:policies"/>), die Benutzer-
 	und Gruppenobjekten zugewiesen werden kann. Die Auswertung erfolgt dabei additiv, d.h. man kann
 	allgemeine Zugriffsrechte durch ACLs auf Gruppenmitgliedschaften erteilen und durch ACLs auf
 	Benutzer ergänzen.
-	Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
   </para>
 
   <para>

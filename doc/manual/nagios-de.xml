@@ -482,13 +482,8 @@
 
 		<para>
 		Nagios-Dienste werden im UMC-Modul <emphasis>Nagios</emphasis>
-		mit dem Objekttyp <guimenu>Nagios-Dienst</guimenu> verwaltet.
-		</para>
-
-		<para>
-		Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		Objekten finden sich in <xref linkend="central:user-interface"/>.
+		mit dem Objekttyp <guimenu>Nagios-Dienst</guimenu> verwaltet
+		(siehe auch <xref linkend="central:user-interface"/>).
 		</para>
 
 		<para>
@@ -742,13 +737,8 @@
 
 		<para>
 		Nagios-Dienste werden im UMC-Modul <emphasis>Nagios</emphasis>
-		mit dem Objekttyp <guimenu>Nagios-Zeitraum</guimenu> verwaltet.
-		</para>
-
-		<para>
-		Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-		der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-		Objekten finden sich in <xref linkend="central:user-interface"/>.
+		mit dem Objekttyp <guimenu>Nagios-Zeitraum</guimenu> verwaltet
+		(siehe auch <xref linkend="central:user-interface"/>).
 		</para>
 
 		<para>

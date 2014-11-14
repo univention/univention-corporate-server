@@ -22,7 +22,8 @@
     <section id="users::management">
         <title>Verwaltung von Benutzern mit Univention Management Console</title>
         <para>
-            Benutzer werden im UMC-Modul <emphasis>Benutzer</emphasis> verwaltet.
+			Benutzer werden im UMC-Modul <emphasis>Benutzer</emphasis> verwaltet
+			(siehe auch <xref linkend="central:user-interface"/>).
         </para>
         <para>
           In der Grundeinstellung wird zum Anlegen eines Benutzers ein vereinfachter Assistent
@@ -31,11 +32,6 @@
           kann deaktiviert werden, indem die &ucsUCRV;
           <envar>directory/manager/web/modules/users/user/wizard/disabled</envar> auf
           <emphasis>true</emphasis> gesetzt wird.
-        </para>
-        <para>
-            Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-            der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
-            Objekten finden sich in <xref linkend="central:user-interface"/>.
         </para>
 		<figure id="user-create">
 			<title>Anlegen eines Benutzers in UMC</title>

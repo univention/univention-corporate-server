@@ -33,17 +33,13 @@
 	<section id="groups::management">
 		<title>Managing groups in the Univention Management Console</title>
 		<para>
-			Groups are managed in the UMC module <emphasis>Groups</emphasis>.
+			Groups are managed in the UMC module <emphasis>Groups</emphasis>
+			(see <xref linkend="central:user-interface"/>).
 		</para>
 		<figure id="create-group">
 			<title>Creating a group in UMC</title>
 			<graphic scalefit="1" width="100%" fileref="illustrations/create-group_EN.png"/>
 		</figure>
-		<para>
-			General information on the operation of the domain management modules
-			of the &ucsUMC; and on the adding, editing, searching for and
-			deleting of objects can be found in <xref linkend="central:user-interface"/>.
-		</para>
 		<table>
 			<title>'General' tab</title>
 			<tgroup cols="2">

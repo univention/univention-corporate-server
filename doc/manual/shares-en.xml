@@ -95,12 +95,8 @@
 
 <section id="shares::management"><title>Management of shares in the UMC</title>
 <para>
-File shares are managed in the UMC module <emphasis>Shares</emphasis>.
-</para>
-<para>
-General information on the operation of the domain management modules
-of the &ucsUMC; and on the adding, editing, searching for and
-deleting of objects can be found in <xref linkend="central:user-interface"/>.
+File shares are managed in the UMC module <emphasis>Shares</emphasis>
+(see <xref linkend="central:user-interface"/>).
 </para>
 <para>
 When adding/editing/deleting a share, it is entered, modified or removed

@@ -480,13 +480,8 @@
 
 		<para>
 		Nagios services are administrated in the UMC module <emphasis>Nagios</emphasis>
-		with the object type <guimenu>Nagios service</guimenu>.
-		</para>
-
-		<para>
-		General information on the operation of the domain management modules
-		of the &ucsUMC; and on the adding, editing, searching for and
-		deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		with the object type <guimenu>Nagios service</guimenu>
+		(see <xref linkend="central:user-interface"/>).
 		</para>
 
 		<para>
@@ -750,13 +745,8 @@
 
 		<para>
 		Nagios services are administrated in the UMC module <emphasis>Nagios</emphasis>
-		with the <guimenu>Nagios time period</guimenu> object type:
-		</para>
-
-		<para>
-		General information on the operation of the domain management modules
-		of the &ucsUMC; and on the adding, editing, searching for and
-		deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		with the <guimenu>Nagios time period</guimenu> object type
+		(see <xref linkend="central:user-interface"/>).
 		</para>
 
 		<para>
