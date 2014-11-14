@@ -27,6 +27,11 @@
 		  Additional information can be found in
 		  <xref linkend="computers::softwaremanagement::installsoftware"/>.
 		</para>
+<!-- TODO: Move figure into correct place -->
+			<figure id="uvmm-new-openstack-connection">
+				<title>Creating a new connection to an OpenStack instance</title>
+				<graphic scalefit="1" width="90%" fileref="illustrations/uvmm_new_openstack_connection_en.png"/>
+			</figure>
 
 <!-- TODO: translate
 		<para>
