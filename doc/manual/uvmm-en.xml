@@ -4,21 +4,11 @@
 	<section id="uvmm::introduction">
 		<title>Introduction</title>
 		<para>
-			&ucsUVMM; (UVMM) ist ein Managementsystem für virtuelle Maschinen, die auf Virtualisierungsservern vor Ort oder in einer Cloud Computing Architektur wie OpenStack oder Amazon EC2 betrieben werden.
-			Es bietet die Möglichkeit, alle in der UCS-Domäne registrierten Virtualisierungsserver sowie Verbindungen zu Cloud Computing Instanzen und die darauf betriebenen virtuellen Maschinen zentral zu überwachen und zu administrieren.
-		</para>
-		<para>
-			Die Managementoberfläche wird durch ein &ucsUMC;-Modul bereitgestellt.
-			Dort können alle Virtualisierungsserver und Cloud Computing Verbindungen zentral administriert werden (siehe <xref linkend="uvmm::management"/>).
-		</para>
-		<para>
-			<xref linkend="uvmm::installation"/> beschreibt die Installation des Managementsystems und der Virtualisierungsserver und die Funktionen des UMC-Moduls.
-		</para>
-		<para>
-			UCS benutzt die Virtualisierungstechnik KVM für vor Ort betriebene Virtualisierungsserver.
-		</para>
-		<para>
-			&ucsUVMM; unterstützt die Verwaltung von Cloudverbindungen und virtueller Maschinen für OpenStack und Amazon EC2.
+			&ucsUVMM; (UVMM) ist ein Werkzeug für die Verwaltung hybrider Cloud-Umgebungen. Es können
+			in der UCS-Domäne regiustrierte KVM-Virtualisierungsserver und darauf betriebene 
+			virtuelle Maschinenen zentral überwacht und administrtiert werden. Zusätzlich können
+			virtuelle Maschinen in OpenStack- oder EC2-Umgebungen administriert werden.
+			Die Administration erfolgt über das &ucsUMC;-Modul <emphasis>Virtuelle Maschinen</emphasis>.
 		</para>
 		<para>
 			In den virtualisierten Systemen kann im Prinzip jedes beliebige Betriebssystem verwendet werden.
@@ -47,7 +37,6 @@
 			Um vor Ort einen KVM Virtualisierungsserver für die Verwaltung durch &ucsUVMM; hinzuzufügen, muss die Applikation <emphasis>KVM Virtualisierungsserver</emphasis> aus dem Univention App Center auf einem Server der Domäne installiert werden.
 			Die Applikation kann auch direkt bei der Installation eines neuen UCS Servers ausgewählt werden.
 			Alternativ kann das Softwarepaket <package>univention-virtual-machine-manager-node-kvm</package> installiert werden.
-			Weitere Informationen finden sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
 		</para>
 		<para>
 			Zum Betrieb von KVM wird zwingend CPU-Virtualisierungunterstützung benötigt.
@@ -247,430 +236,6 @@ update-ca-certificates
 			</para>
 		</section>
 -->
-	</section>
-
-	<section id="uvmm:kvmfeatures">
-		<title>KVM related UVMM features</title>
-		<section id="uvmm:imagefiles">
-			<title>Image files of virtual machines</title>
-			<para>
-				If virtual hard drives are added to an instance, <emphasis>image files</emphasis> are usually used for the data keeping.
-				An image file can either be generated for this purpose or an existing image file can be assigned to a virtual machine.
-				Alternatively, a native block device (hard drive partition, logical volume, iSCSI volume) can be assigned to a virtual machine.
-				The direct use of block devices offers performance advantages and is less susceptible to computer crashes.
-			</para>
-			<para>
-				Hard drive images can be administrated in two ways on KVM systems;
-				by default images are saved in the <emphasis>Extended format (qcow2)</emphasis>.
-				This format supports Copy-on-write which means that changes do not overwrite the original version, but store new versions in different locations.
-				The internal references of the file administration are then updated to allow both access to the original and the new version.
-				Snapshots can only be created when using hard drive images in <emphasis>Extended format</emphasis>.
-				Alternatively, you can also access a hard drive image in <emphasis>Simple format (raw)</emphasis>.
-			</para>
-			<para>
-			  Operating systems use a so-called <emphasis>page cache</emphasis> to accelerate accesses
-			  to storage media. If data are accessed which have already been read off a hard drive and
-			  these data are still present in the cache, the comparatively slow access to the storage
-			  medium is not necessary and the request is answered directly from the page cache.
-			</para>
-
-			<para>
-			  Write accesses are generally also not directly written on the hard drive, but are usually
-			  bundled and, consequently, written more efficiently. However, this involves the risk of
-			  data loss, if, for example, a system crashes or the power supply is interrupted. The data
-			  which have been only saved in the write cache up to that point and have yet to be
-			  synchronised on the storage medium are lost. For this reasons, modern operating systems
-			  generally only keep pending write changes for a maximum of several seconds before writing
-			  them to the hard drive.
-			</para>
-
-			<para>
-			  In order to avoid data being stored doubly in the page cache of the host system and also
-			  of the guest system, cache strategies can be configured with the
-			  <guimenu>Caching</guimenu> option when using KVM, which influence the use of the host
-			  system's page cache:
-			</para>
-
-			<itemizedlist>
-				<listitem>
-					<simpara>
-				  The default setting since UCS-3.1 is <emphasis>none</emphasis>: in this setting, KVM
-				  accesses the hard drive directly and bypasses the page cache on the virtualization
-				  server.<!--footnote><para>This strategy does not work on file systems using <literal>tmpfs</literal> or with some <acronym>NFS</acronym> servers.</para></footnote--> Read accesses are answered directly by the hard drive every time and write
-				  accesses are passed directly on to the hard drive.
-					</simpara>
-				</listitem>
-
-				<listitem>
-					<simpara>
-				  The <emphasis>write-through</emphasis> strategy uses the page cache on the
-				  virtualization server, but every write access is also passed on directly to the
-				  storage medium. On virtualization servers with a lot of free system memory, read
-				  accesses can be more efficient than <emphasis>none</emphasis>. However, the double
-				  caching generally has a negative effect on the overall performance.
-
-				  <footnote><para>Instead, it is recommended to make the free memory directly available
-				  to the VMs so that they can use the additional memory more efficiently themselves, for
-				  instance for caching.</para></footnote>
-					</simpara>
-				</listitem>
-
-				<listitem>
-					<simpara>
-				  If the <emphasis>write-back</emphasis> strategy is used, the host's page cache will
-				  be used for both read and write accesses. Write accesses are initially only performed
-				  in the page cache, before they are then written to the hard drive at a later point in
-				  time. In this case, if the host system crashes, data may be lost.
-					</simpara>
-				</listitem>
-
-				<listitem>
-					<simpara>
-				  With the <emphasis>unsafe</emphasis> strategy, synchronisation requests sent by the
-				  guest system are ignored in order to force the writing of outstanding data on the
-				  storage medium explicitly. Compared with <emphasis>write-back</emphasis>, this once
-				  again increases the performance, but can result in data loss if the host system
-				  crashes. This version is only practical for test systems or comparable installations
-				  in which data loss due to the crashing of the host system is not dramatic.
-					</simpara>
-				</listitem>
-
-				<listitem>
-					<simpara>
-				  The <emphasis>directsync</emphasis> strategy corresponds to <emphasis>none</emphasis>,
-				  with the only difference being that here synchronisation is explicitly forced after
-				  every write access.
-					</simpara>
-				</listitem>
-
-				<listitem>
-					<simpara>
-				  The <emphasis>Hypervisor default</emphasis> option is dependent on the UCS version and
-				  the KVM version with which a guest system was installed: Originally, the standard
-				  value until UCS 3.0 was implicitly <emphasis>write-through</emphasis>, but KVM was
-				  modified to such an extent with UCS 3.1 that <emphasis>none</emphasis> is now used for
-				  all old VMs instead. For VMs resaved with UCS 3.1 the standard value is implicitly
-				  <emphasis>write-through</emphasis> again, but new VMs are explicitly saved with
-				  <emphasis>none</emphasis>.
-					</simpara>
-				</listitem>
-			</itemizedlist>
-			<para>
-				If a live migration of virtual machines between different virtualization servers is planned, the storage pool must be stored on a system which can be accessed by all virtualization servers (e.g., an NFS share or an iSCSI target).
-				This is described in <xref linkend="uvmm::storagepools"/>.
-			</para>
-			<para>
-				Image files are created as sparse files with the specified size, i.e., these files only grow when they are used and then up to the maximally specified size and thus initially require only minimal disk space.
-				As there is a risk here of the disk space being used up during operation, a Nagios monitoring should be integrated, see <xref linkend="nagios::general"/>.
-			</para>
-<!-- TODO: translation
-			<para>
-				Festplatten-Images sollten nach Möglichkeit paravirtualisiert angesprochen werden.
-				Bei UCS-Systemen, die virtualisiert unter KVM installiert werden, wird durch die Auswahl des UCS-Profils automatisch ein paravirtualisierter Zugriff aktiviert.
-				Die Konfiguration von Microsoft Windows-Systemen ist in <xref linkend="uvmm::gplpvvirtio"/> dokumentiert.
-			</para>
--->
-		</section>
-
-		<section id="uvmm::storagepools">
-		  <title>Storage pools</title>
-
-		  <para>
-			These image files are stored in so-called storage pools. They can either be stored locally
-			on the virtualization server or on a file share. The connection of a storage pool over iSCSI
-			is documented in <xref linkend="ext-doc-uvmm"/>.
-		  </para>
-
-		  <section id="uvmm::defaultpool">
-			<title>Accessing the default storage pool through a file share</title>
-			<para>
-			  Each virtualization server provides a storage pool with the name
-			  <emphasis>default</emphasis> in the standard configuration. It can be found on the
-			  virtualization servers in the <filename class="directory">/var/lib/libvirt/images/</filename> directory.
-			</para>
-
-			<para>
-			  To allow simple access to the storage pool, you can set up a share for the
-			  <filename class="directory">/var/lib/libvirt/images/</filename> directory. To do so, you need to create a
-			  share with the following options in the UMC module <guimenu>Shares</guimenu>. The share
-			  can then be accessed easily from Windows clients via a CIFS network share (or via an NFS
-			  mount).
-			</para>
-			<itemizedlist>
-				<listitem>
-					<para>General/General settings</para>
-					<itemizedlist>
-						<listitem><simpara>Name: UVMM-Pool</simpara></listitem>
-						<listitem><simpara>Host: The hostname of the UVMM server</simpara></listitem>
-						<listitem><simpara>Directory: /var/lib/libvirt/images</simpara></listitem>
-						<listitem><simpara>Directory owner, Directory owner group and Directory mode can remain in the default setting</simpara></listitem>
-					</itemizedlist>
-				</listitem>
-				<listitem>
-					<para>Advanced settings/Samba permissions</para>
-					<itemizedlist>
-						<listitem><simpara>Valid users or groups: Administrator</simpara></listitem>
-					</itemizedlist>
-				</listitem>
-			</itemizedlist>
-			<para>
-			  The image files of a virtual hard drive include all the user data of the virtualized
-			  system! The <guimenu>Valid users or groups</guimenu> option ensures that, irrespective
-			  of the file system permissions, only the Administrator user can access the share.
-			</para>
-		  </section>
-
-		  <section id="uvmm::addpool">
-			<title>Adding a storage pool</title>
-			<para>
-			  It is not possible to create an additional storage pool via &ucsUMC;. Instead, this
-			  must be done by logging in to the virtualization server as the <emphasis>root</emphasis>
-			  user. The following steps are required for this:
-
-			  <itemizedlist>
-				<listitem><simpara>
-				  The directory in which the data from the storage pool are to be saved must be created;
-				  in this case <filename>/mnt/storage</filename>. 
-				</simpara></listitem>
-
-				<listitem><simpara>
-				  The following command is used to create the new <emphasis>Testpool</emphasis> storage pool:
-				  <programlisting language="sh">
-	virsh pool-define-as Testpool dir - - - - "/mnt/storage"
-				  </programlisting>
-				</simpara></listitem>
-
-				<listitem><simpara>
-				  The libvirt library used by UVMM differentiates between active and inactive storage
-				  pools. To be able to use the storage pool directly, it must be activated:
-
-				  <programlisting language="sh">
-	virsh pool-start Testpool
-				  </programlisting>
-
-				  The following command ensures that the pool is activated automatically the next time
-				  the system is started:
-
-				  <programlisting language="sh">
-	virsh pool-autostart Testpool
-				  </programlisting>
-				</simpara></listitem>
-			  </itemizedlist>
-			</para>
-		  </section>
-
-		  <section id="uvmm::movepool">
-			<title>Moving the default storage pool</title>
-			<para>
-			  To change the underlying file path of the default storage pool at a later point in time,
-			  one must log in to the virtualization server as the <emphasis>root</emphasis> user. The
-			  following steps are required for this:
-
-			  <itemizedlist>
-				<listitem><simpara>
-				  The &ucsUCRV; <envar>uvmm/pool/default/path</envar> must be changed to the new directory.
-				</simpara></listitem>
-
-				<listitem><simpara>
-				  The following commands remove the old storage pool; the pool is changed over to the
-				  new path the next time the UVMM is restarted:
-				  <programlisting language="sh">
-	virsh pool-destroy default
-	virsh pool-undefine default
-	invoke-rc.d univention-virtual-machine-manager-daemon restart
-	invoke-rc.d univention-virtual-machine-manager-node-common restart
-				  </programlisting>
-				</simpara></listitem>
-			  </itemizedlist>
-			</para>
-		  </section>
-		</section>
-
-		<section id="uvmm::drives">
-			<title>CD/DVD/floppy drives in virtual machines</title>
-			<para>
-				CD-/DVD-ROM/floppy drives can be mounted in two ways:
-			</para>
-			<itemizedlist>
-				<listitem>
-					<simpara>
-					An ISO image can be assigned from a storage pool. If no additional storage pool has
-					been created, the files from the pool <emphasis>default</emphasis> are read from the
-					directory <filename class="directory">/var/lib/libvirt/images/</filename>.
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					Alternatively, a physical drive from the virtualization server can be connected with the virtual machine.
-					</simpara>
-				</listitem>
-			</itemizedlist>
-			<para>
-				It is also possible to provide a virtual machine with a disk drive via an image (in VFD format) or the pass-through of a physical drive.
-			</para>
-			<para>
-				If drives are defined for a new virtual machine, it must be ensured that it is possible to boot from the CD-ROM drive.
-				The UVMM profile (see <xref linkend="uvmm::profile"/>) specifies the boot order for the fully-virtualized instances in advance.
-				For the paravirtualized instances, it is defined by the order on the definition of the drives and can be adapted subsequently in the settings section.
-			</para>
-		</section>
-
-		<section id="uvmm:networkinterfaces">
-			<title>Network interfaces in virtual instances</title>
-			<para>
-				When a virtual machine is created, it is automatically assigned a network card with a randomly generated MAC address.
-				It can be subsequently changed.
-			</para>
-			<para>
-				Two types of network connections are possible:
-			</para>
-			<itemizedlist>
-				<listitem>
-					<simpara>
-					In the basic settings, a <emphasis>Bridge</emphasis> on the virtualization server is used to access the network directly.
-					The virtual machine uses its own IP address and can thus also be reached from other computers.
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					<emphasis>Network Address Translation (NAT)</emphasis> network cards are defined in a private network on the virtualization server.
-					To do so, the virtual machine(s) must be assigned an IP address from the 192.168.122.0/24 network.
-					This virtual instance is granted the access to the external network via NAT, so that the access is performed via the virtualization server's IP address.
-					The virtual machine can thus not be reached from other computers, but can create all outgoing connections itself.
-					</simpara>
-				</listitem>
-			</itemizedlist>
-			<figure id="uvmm-network">
-				<title>Adding a virtual network interface</title>
-				<graphic scalefit="1" width="40%" fileref="illustrations/uvmm_network_en.png"/>
-			</figure>
-			<para>
-				The UVMM servers are already preconfigured for bridging and NAT.
-				However, there are restrictions for bridged network cards which are described in <xref linkend="computers:networkcomplex:uvmm"/>.
-				For each virtual machine the desired network can be selected through the <guimenu>Source</guimenu> setting.
-			</para>
-			<para>
-				NAT network cards are only restricted by the IP addresses available in the 192.168.122.0/24 network.
-			</para>
-			<para>
-				The <guimenu>Driver</guimenu> can be used to select what type of card will be provided.
-				The <emphasis>Realteak RTL-8139</emphasis> is supported by almost all operating systems, the <emphasis>Intel Pro-1000</emphasis> offers advanced abilities and a <emphasis>Paravirtual device</emphasis> offers the best performance.
-			</para>
-		</section>
-
-		<section id="uvmm::gplpvvirtio">
-			<title>Paravirtualization/virtIO drivers for Microsoft Windows systems</title>
-<!-- TODO: translation
-			<para>
-				KVM unterstützt Paravirtualisierung über die virtIO Schnittstelle.
-				Durch die Verwendung von Paravirtualisierung können die virtualisierten Systeme einen direkten Zugriff auf die Ressourcen des Virtualisierungsservers erhalten.
-				Dies verbessert die Performance erheblich.
-				Die Verwendung von Paravirtualisierung/virtIO wird empfohlen.
-			</para>
-			<para>
-				Aktuelle Linux-Systeme unterstützen standardmäßig Paravirtualisierung.
-				Mit der Installation der KVM-Pakete werden passende Images bereitgestellt, die dann in der Laufwerksverwaltung in eine virtuelle Maschine eingebunden werden können.
-				Die Images werden in den mit der &ucsUCRV; <envar>uvmm/pool/default/path</envar> festgelegten Speicherbereich integriert:
-				Auf KVM-Virtualisierungsservern wird ein ISO-Image mit dem Namen <emphasis>KVM Windows drivers</emphasis> bereitgestellt, dass die virtIO-Virtualisierungstreiber für Microsoft Windows enthält.
-			</para>
--->
-			<section id="uvmm:virtio">
-				<title>Installation of the virtIO drivers for KVM instances</title>
-				<para>
-					In Windows systems installed under KVM, paravirtualization must be activated <emphasis>before</emphasis> beginning the Windows installation.
-				</para>
-				<para>
-					The virtIO interface allows the efficient usage of network and storage resources for a virtual machine on the KVM hypervisor.
-					The following steps describe the installation of the virtIO drivers on Windows 7.
-				</para>
-				<itemizedlist>
-					<listitem>
-						<simpara>
-						A CD/DVDy drive needs to be setup in the drive settings with the image <emphasis>KVM Windows drivers (virtio 1.1.65)</emphasis> assigned.
-						</simpara>
-					</listitem>
-					<listitem>
-						<simpara>
-						The hard disk drive has to be edited in the <guimenu>Devices</guimenu> menu in UVMM and the checkbox <guimenu>Paravirtual drive</guimenu> must be ticked.
-						</simpara>
-					</listitem>
-
-					<listitem><simpara>
-					  The <guimenu>Driver</guimenu> must be configured to <emphasis>Paravirtual device
-					  (virtio)</emphasis> for the network card(s).
-					</simpara></listitem>
-
-					<listitem>
-						<simpara>
-						The initial steps during the installation of the Windows system take place as usual.
-						A warning appears during hard disk partitioning and states that no mass storage could be found.
-						This is not an error because the virtIO drivers are necessary for a paravirtualized device.
-						The virtIO drivers can be installed in the same menu with <guimenu>Load drivers</guimenu>.
-						The <emphasis>Red Hat virtIO SCSI Controller</emphasis> has to be chosen for Windows 7 (and for Windows 2003 and Windows 2008 respectively) and the <emphasis>Red Hat virtIO Ethernet Adapter</emphasis> for Windows 2008/Windows 7.
-						After the device drivers have been installed, the mass storage is available in the Windows installer and the installation of Microsoft Windows can be continued.
-						</simpara>
-					</listitem>
-					<listitem>
-						<simpara>
-						After completing the installation the devices <emphasis>Red Hat virtIO SCSI Disk Device</emphasis> and <emphasis>Red Hat virtIO Ethernet Adapter</emphasis> can be found in the Windows device manager.
-						</simpara>
-					</listitem>
-				</itemizedlist>
-			</section>
-		</section>
-
-		<section id="uvmm::snapshots">
-			<title>Snapshots</title>
-			<para>
-				UVMM offers the possibility to save the contents of the main and hard drive memory of a virtual machine in snapshots.
-				This allows the administrator to revert to these snapshots at a later point in time, which makes them a useful "safety net" when installing software updates.
-			</para>
-			<para>
-				Snapshots can only be used with KVM instances which access all their hard drive images in Qcow2 format.
-				All snapshots are stored using copy-on-write (see <xref linkend="uvmm::instanz::erstellen"/>) directly in the hard drive image file.
-			</para>
-		</section>
-
-		<section id="uvmm:migration">
-			<title>Migration of virtual instances</title>
-			<para>
-				UVMM offers the the possibility of migrating a virtual machine to another virtualization server.
-				This works with both paused and running instances (live migration).
-				The option is only offered if at least two compatible virtualization servers are available in the domain.
-			</para>
-			<figure id="uvmm-migrate">
-				<title>Migrating a virtual instance</title>
-				<graphic scalefit="1" width="40%" fileref="illustrations/uvmm_migrate_en.png"/>
-			</figure>
-			<para>
-				During the migration it must be noted that the images of the mounted hard drives and CD-ROM drive must be accesible by both virtualization servers.
-				This can be achieved, for example, by storing the images in a central storage system.
-				Notes on the setting up of this type of environment can be found under <xref linkend="uvmm::storagepools"/>.
-			</para>
-			<section id="uvmm:Migration_of_virtual_machines_from_failed_virtualization_servers">
-				<title>Migration of virtual machines from failed virtualization servers</title>
-				<para>
-					Information about the virtual machines running on the virtualization servers is stored centrally in the &ucsUVMM;.
-					If a server fails (failure detection is performed periodically every 15 seconds), the server and the virtual instances operated on it are identified as unaccessible with a red symbol, a warning appears and <guimenu>Migrate</guimenu> is offered as the only operation in the menu.
-				</para>
-				<para>
-					Following the migration, the virtual instance is no longer displayed in the overview tree of the failed virtualization server in the UVMM.
-				</para>
-				<caution>
-					<para>
-					It must be ensured under all circumstances that the virtual machine on the original and the secondary server are not started in parallel; this would involve their both writing in the image files simultaneously, which would result in data loss.
-					If virtual machines are started automatically after startup, simultaneous access must be prohibited by disconnecting the network connection or restricting access to the storage pool.
-					</para>
-				</caution>
-				<para>
-					If the failed computer is reactivated - e.g., in the case of a temporary power failure - the virtual machines remain available on the system locally and are reported to UVMM; consequently, there are then two versions of the instance.
-				</para>
-				<para>
-					As such, one of the two instances should subsequently be deleted.
-					However, the employed image files for the drives should <emphasis>not</emphasis> be deleted at the same time.
-				</para>
-			</section>
-		</section>
 	</section>
 
 	<section id="uvmm::management">
@@ -1148,6 +713,430 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 					</tbody>
 				</tgroup>
 			</table>
+		</section>
+	</section>
+
+	<section id="uvmm:kvmfeatures">
+		<title>KVM related UVMM features</title>
+		<section id="uvmm:imagefiles">
+			<title>Image files of virtual machines</title>
+			<para>
+				If virtual hard drives are added to an instance, <emphasis>image files</emphasis> are usually used for the data keeping.
+				An image file can either be generated for this purpose or an existing image file can be assigned to a virtual machine.
+				Alternatively, a native block device (hard drive partition, logical volume, iSCSI volume) can be assigned to a virtual machine.
+				The direct use of block devices offers performance advantages and is less susceptible to computer crashes.
+			</para>
+			<para>
+				Hard drive images can be administrated in two ways on KVM systems;
+				by default images are saved in the <emphasis>Extended format (qcow2)</emphasis>.
+				This format supports Copy-on-write which means that changes do not overwrite the original version, but store new versions in different locations.
+				The internal references of the file administration are then updated to allow both access to the original and the new version.
+				Snapshots can only be created when using hard drive images in <emphasis>Extended format</emphasis>.
+				Alternatively, you can also access a hard drive image in <emphasis>Simple format (raw)</emphasis>.
+			</para>
+			<para>
+			  Operating systems use a so-called <emphasis>page cache</emphasis> to accelerate accesses
+			  to storage media. If data are accessed which have already been read off a hard drive and
+			  these data are still present in the cache, the comparatively slow access to the storage
+			  medium is not necessary and the request is answered directly from the page cache.
+			</para>
+
+			<para>
+			  Write accesses are generally also not directly written on the hard drive, but are usually
+			  bundled and, consequently, written more efficiently. However, this involves the risk of
+			  data loss, if, for example, a system crashes or the power supply is interrupted. The data
+			  which have been only saved in the write cache up to that point and have yet to be
+			  synchronised on the storage medium are lost. For this reasons, modern operating systems
+			  generally only keep pending write changes for a maximum of several seconds before writing
+			  them to the hard drive.
+			</para>
+
+			<para>
+			  In order to avoid data being stored doubly in the page cache of the host system and also
+			  of the guest system, cache strategies can be configured with the
+			  <guimenu>Caching</guimenu> option when using KVM, which influence the use of the host
+			  system's page cache:
+			</para>
+
+			<itemizedlist>
+				<listitem>
+					<simpara>
+				  The default setting since UCS-3.1 is <emphasis>none</emphasis>: in this setting, KVM
+				  accesses the hard drive directly and bypasses the page cache on the virtualization
+				  server.<!--footnote><para>This strategy does not work on file systems using <literal>tmpfs</literal> or with some <acronym>NFS</acronym> servers.</para></footnote--> Read accesses are answered directly by the hard drive every time and write
+				  accesses are passed directly on to the hard drive.
+					</simpara>
+				</listitem>
+
+				<listitem>
+					<simpara>
+				  The <emphasis>write-through</emphasis> strategy uses the page cache on the
+				  virtualization server, but every write access is also passed on directly to the
+				  storage medium. On virtualization servers with a lot of free system memory, read
+				  accesses can be more efficient than <emphasis>none</emphasis>. However, the double
+				  caching generally has a negative effect on the overall performance.
+
+				  <footnote><para>Instead, it is recommended to make the free memory directly available
+				  to the VMs so that they can use the additional memory more efficiently themselves, for
+				  instance for caching.</para></footnote>
+					</simpara>
+				</listitem>
+
+				<listitem>
+					<simpara>
+				  If the <emphasis>write-back</emphasis> strategy is used, the host's page cache will
+				  be used for both read and write accesses. Write accesses are initially only performed
+				  in the page cache, before they are then written to the hard drive at a later point in
+				  time. In this case, if the host system crashes, data may be lost.
+					</simpara>
+				</listitem>
+
+				<listitem>
+					<simpara>
+				  With the <emphasis>unsafe</emphasis> strategy, synchronisation requests sent by the
+				  guest system are ignored in order to force the writing of outstanding data on the
+				  storage medium explicitly. Compared with <emphasis>write-back</emphasis>, this once
+				  again increases the performance, but can result in data loss if the host system
+				  crashes. This version is only practical for test systems or comparable installations
+				  in which data loss due to the crashing of the host system is not dramatic.
+					</simpara>
+				</listitem>
+
+				<listitem>
+					<simpara>
+				  The <emphasis>directsync</emphasis> strategy corresponds to <emphasis>none</emphasis>,
+				  with the only difference being that here synchronisation is explicitly forced after
+				  every write access.
+					</simpara>
+				</listitem>
+
+				<listitem>
+					<simpara>
+				  The <emphasis>Hypervisor default</emphasis> option is dependent on the UCS version and
+				  the KVM version with which a guest system was installed: Originally, the standard
+				  value until UCS 3.0 was implicitly <emphasis>write-through</emphasis>, but KVM was
+				  modified to such an extent with UCS 3.1 that <emphasis>none</emphasis> is now used for
+				  all old VMs instead. For VMs resaved with UCS 3.1 the standard value is implicitly
+				  <emphasis>write-through</emphasis> again, but new VMs are explicitly saved with
+				  <emphasis>none</emphasis>.
+					</simpara>
+				</listitem>
+			</itemizedlist>
+			<para>
+				If a live migration of virtual machines between different virtualization servers is planned, the storage pool must be stored on a system which can be accessed by all virtualization servers (e.g., an NFS share or an iSCSI target).
+				This is described in <xref linkend="uvmm::storagepools"/>.
+			</para>
+			<para>
+				Image files are created as sparse files with the specified size, i.e., these files only grow when they are used and then up to the maximally specified size and thus initially require only minimal disk space.
+				As there is a risk here of the disk space being used up during operation, a Nagios monitoring should be integrated, see <xref linkend="nagios::general"/>.
+			</para>
+<!-- TODO: translation
+			<para>
+				Festplatten-Images sollten nach Möglichkeit paravirtualisiert angesprochen werden.
+				Bei UCS-Systemen, die virtualisiert unter KVM installiert werden, wird durch die Auswahl des UCS-Profils automatisch ein paravirtualisierter Zugriff aktiviert.
+				Die Konfiguration von Microsoft Windows-Systemen ist in <xref linkend="uvmm::gplpvvirtio"/> dokumentiert.
+			</para>
+-->
+		</section>
+
+		<section id="uvmm::storagepools">
+		  <title>Storage pools</title>
+
+		  <para>
+			These image files are stored in so-called storage pools. They can either be stored locally
+			on the virtualization server or on a file share. The connection of a storage pool over iSCSI
+			is documented in <xref linkend="ext-doc-uvmm"/>.
+		  </para>
+
+		  <section id="uvmm::defaultpool">
+			<title>Accessing the default storage pool through a file share</title>
+			<para>
+			  Each virtualization server provides a storage pool with the name
+			  <emphasis>default</emphasis> in the standard configuration. It can be found on the
+			  virtualization servers in the <filename class="directory">/var/lib/libvirt/images/</filename> directory.
+			</para>
+
+			<para>
+			  To allow simple access to the storage pool, you can set up a share for the
+			  <filename class="directory">/var/lib/libvirt/images/</filename> directory. To do so, you need to create a
+			  share with the following options in the UMC module <guimenu>Shares</guimenu>. The share
+			  can then be accessed easily from Windows clients via a CIFS network share (or via an NFS
+			  mount).
+			</para>
+			<itemizedlist>
+				<listitem>
+					<para>General/General settings</para>
+					<itemizedlist>
+						<listitem><simpara>Name: UVMM-Pool</simpara></listitem>
+						<listitem><simpara>Host: The hostname of the UVMM server</simpara></listitem>
+						<listitem><simpara>Directory: /var/lib/libvirt/images</simpara></listitem>
+						<listitem><simpara>Directory owner, Directory owner group and Directory mode can remain in the default setting</simpara></listitem>
+					</itemizedlist>
+				</listitem>
+				<listitem>
+					<para>Advanced settings/Samba permissions</para>
+					<itemizedlist>
+						<listitem><simpara>Valid users or groups: Administrator</simpara></listitem>
+					</itemizedlist>
+				</listitem>
+			</itemizedlist>
+			<para>
+			  The image files of a virtual hard drive include all the user data of the virtualized
+			  system! The <guimenu>Valid users or groups</guimenu> option ensures that, irrespective
+			  of the file system permissions, only the Administrator user can access the share.
+			</para>
+		  </section>
+
+		  <section id="uvmm::addpool">
+			<title>Adding a storage pool</title>
+			<para>
+			  It is not possible to create an additional storage pool via &ucsUMC;. Instead, this
+			  must be done by logging in to the virtualization server as the <emphasis>root</emphasis>
+			  user. The following steps are required for this:
+
+			  <itemizedlist>
+				<listitem><simpara>
+				  The directory in which the data from the storage pool are to be saved must be created;
+				  in this case <filename>/mnt/storage</filename>. 
+				</simpara></listitem>
+
+				<listitem><simpara>
+				  The following command is used to create the new <emphasis>Testpool</emphasis> storage pool:
+				  <programlisting language="sh">
+	virsh pool-define-as Testpool dir - - - - "/mnt/storage"
+				  </programlisting>
+				</simpara></listitem>
+
+				<listitem><simpara>
+				  The libvirt library used by UVMM differentiates between active and inactive storage
+				  pools. To be able to use the storage pool directly, it must be activated:
+
+				  <programlisting language="sh">
+	virsh pool-start Testpool
+				  </programlisting>
+
+				  The following command ensures that the pool is activated automatically the next time
+				  the system is started:
+
+				  <programlisting language="sh">
+	virsh pool-autostart Testpool
+				  </programlisting>
+				</simpara></listitem>
+			  </itemizedlist>
+			</para>
+		  </section>
+
+		  <section id="uvmm::movepool">
+			<title>Moving the default storage pool</title>
+			<para>
+			  To change the underlying file path of the default storage pool at a later point in time,
+			  one must log in to the virtualization server as the <emphasis>root</emphasis> user. The
+			  following steps are required for this:
+
+			  <itemizedlist>
+				<listitem><simpara>
+				  The &ucsUCRV; <envar>uvmm/pool/default/path</envar> must be changed to the new directory.
+				</simpara></listitem>
+
+				<listitem><simpara>
+				  The following commands remove the old storage pool; the pool is changed over to the
+				  new path the next time the UVMM is restarted:
+				  <programlisting language="sh">
+	virsh pool-destroy default
+	virsh pool-undefine default
+	invoke-rc.d univention-virtual-machine-manager-daemon restart
+	invoke-rc.d univention-virtual-machine-manager-node-common restart
+				  </programlisting>
+				</simpara></listitem>
+			  </itemizedlist>
+			</para>
+		  </section>
+		</section>
+
+		<section id="uvmm::drives">
+			<title>CD/DVD/floppy drives in virtual machines</title>
+			<para>
+				CD-/DVD-ROM/floppy drives can be mounted in two ways:
+			</para>
+			<itemizedlist>
+				<listitem>
+					<simpara>
+					An ISO image can be assigned from a storage pool. If no additional storage pool has
+					been created, the files from the pool <emphasis>default</emphasis> are read from the
+					directory <filename class="directory">/var/lib/libvirt/images/</filename>.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					Alternatively, a physical drive from the virtualization server can be connected with the virtual machine.
+					</simpara>
+				</listitem>
+			</itemizedlist>
+			<para>
+				It is also possible to provide a virtual machine with a disk drive via an image (in VFD format) or the pass-through of a physical drive.
+			</para>
+			<para>
+				If drives are defined for a new virtual machine, it must be ensured that it is possible to boot from the CD-ROM drive.
+				The UVMM profile (see <xref linkend="uvmm::profile"/>) specifies the boot order for the fully-virtualized instances in advance.
+				For the paravirtualized instances, it is defined by the order on the definition of the drives and can be adapted subsequently in the settings section.
+			</para>
+		</section>
+
+		<section id="uvmm:networkinterfaces">
+			<title>Network interfaces in virtual instances</title>
+			<para>
+				When a virtual machine is created, it is automatically assigned a network card with a randomly generated MAC address.
+				It can be subsequently changed.
+			</para>
+			<para>
+				Two types of network connections are possible:
+			</para>
+			<itemizedlist>
+				<listitem>
+					<simpara>
+					In the basic settings, a <emphasis>Bridge</emphasis> on the virtualization server is used to access the network directly.
+					The virtual machine uses its own IP address and can thus also be reached from other computers.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					<emphasis>Network Address Translation (NAT)</emphasis> network cards are defined in a private network on the virtualization server.
+					To do so, the virtual machine(s) must be assigned an IP address from the 192.168.122.0/24 network.
+					This virtual instance is granted the access to the external network via NAT, so that the access is performed via the virtualization server's IP address.
+					The virtual machine can thus not be reached from other computers, but can create all outgoing connections itself.
+					</simpara>
+				</listitem>
+			</itemizedlist>
+			<figure id="uvmm-network">
+				<title>Adding a virtual network interface</title>
+				<graphic scalefit="1" width="40%" fileref="illustrations/uvmm_network_en.png"/>
+			</figure>
+			<para>
+				The UVMM servers are already preconfigured for bridging and NAT.
+				However, there are restrictions for bridged network cards which are described in <xref linkend="computers:networkcomplex:uvmm"/>.
+				For each virtual machine the desired network can be selected through the <guimenu>Source</guimenu> setting.
+			</para>
+			<para>
+				NAT network cards are only restricted by the IP addresses available in the 192.168.122.0/24 network.
+			</para>
+			<para>
+				The <guimenu>Driver</guimenu> can be used to select what type of card will be provided.
+				The <emphasis>Realteak RTL-8139</emphasis> is supported by almost all operating systems, the <emphasis>Intel Pro-1000</emphasis> offers advanced abilities and a <emphasis>Paravirtual device</emphasis> offers the best performance.
+			</para>
+		</section>
+
+		<section id="uvmm::gplpvvirtio">
+			<title>Paravirtualization/virtIO drivers for Microsoft Windows systems</title>
+<!-- TODO: translation
+			<para>
+				KVM unterstützt Paravirtualisierung über die virtIO Schnittstelle.
+				Durch die Verwendung von Paravirtualisierung können die virtualisierten Systeme einen direkten Zugriff auf die Ressourcen des Virtualisierungsservers erhalten.
+				Dies verbessert die Performance erheblich.
+				Die Verwendung von Paravirtualisierung/virtIO wird empfohlen.
+			</para>
+			<para>
+				Aktuelle Linux-Systeme unterstützen standardmäßig Paravirtualisierung.
+				Mit der Installation der KVM-Pakete werden passende Images bereitgestellt, die dann in der Laufwerksverwaltung in eine virtuelle Maschine eingebunden werden können.
+				Die Images werden in den mit der &ucsUCRV; <envar>uvmm/pool/default/path</envar> festgelegten Speicherbereich integriert:
+				Auf KVM-Virtualisierungsservern wird ein ISO-Image mit dem Namen <emphasis>KVM Windows drivers</emphasis> bereitgestellt, dass die virtIO-Virtualisierungstreiber für Microsoft Windows enthält.
+			</para>
+-->
+			<section id="uvmm:virtio">
+				<title>Installation of the virtIO drivers for KVM instances</title>
+				<para>
+					In Windows systems installed under KVM, paravirtualization must be activated <emphasis>before</emphasis> beginning the Windows installation.
+				</para>
+				<para>
+					The virtIO interface allows the efficient usage of network and storage resources for a virtual machine on the KVM hypervisor.
+					The following steps describe the installation of the virtIO drivers on Windows 7.
+				</para>
+				<itemizedlist>
+					<listitem>
+						<simpara>
+						A CD/DVDy drive needs to be setup in the drive settings with the image <emphasis>KVM Windows drivers (virtio 1.1.65)</emphasis> assigned.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+						The hard disk drive has to be edited in the <guimenu>Devices</guimenu> menu in UVMM and the checkbox <guimenu>Paravirtual drive</guimenu> must be ticked.
+						</simpara>
+					</listitem>
+
+					<listitem><simpara>
+					  The <guimenu>Driver</guimenu> must be configured to <emphasis>Paravirtual device
+					  (virtio)</emphasis> for the network card(s).
+					</simpara></listitem>
+
+					<listitem>
+						<simpara>
+						The initial steps during the installation of the Windows system take place as usual.
+						A warning appears during hard disk partitioning and states that no mass storage could be found.
+						This is not an error because the virtIO drivers are necessary for a paravirtualized device.
+						The virtIO drivers can be installed in the same menu with <guimenu>Load drivers</guimenu>.
+						The <emphasis>Red Hat virtIO SCSI Controller</emphasis> has to be chosen for Windows 7 (and for Windows 2003 and Windows 2008 respectively) and the <emphasis>Red Hat virtIO Ethernet Adapter</emphasis> for Windows 2008/Windows 7.
+						After the device drivers have been installed, the mass storage is available in the Windows installer and the installation of Microsoft Windows can be continued.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+						After completing the installation the devices <emphasis>Red Hat virtIO SCSI Disk Device</emphasis> and <emphasis>Red Hat virtIO Ethernet Adapter</emphasis> can be found in the Windows device manager.
+						</simpara>
+					</listitem>
+				</itemizedlist>
+			</section>
+		</section>
+
+		<section id="uvmm::snapshots">
+			<title>Snapshots</title>
+			<para>
+				UVMM offers the possibility to save the contents of the main and hard drive memory of a virtual machine in snapshots.
+				This allows the administrator to revert to these snapshots at a later point in time, which makes them a useful "safety net" when installing software updates.
+			</para>
+			<para>
+				Snapshots can only be used with KVM instances which access all their hard drive images in Qcow2 format.
+				All snapshots are stored using copy-on-write (see <xref linkend="uvmm::instanz::erstellen"/>) directly in the hard drive image file.
+			</para>
+		</section>
+
+		<section id="uvmm:migration">
+			<title>Migration of virtual instances</title>
+			<para>
+				UVMM offers the the possibility of migrating a virtual machine to another virtualization server.
+				This works with both paused and running instances (live migration).
+				The option is only offered if at least two compatible virtualization servers are available in the domain.
+			</para>
+			<figure id="uvmm-migrate">
+				<title>Migrating a virtual instance</title>
+				<graphic scalefit="1" width="40%" fileref="illustrations/uvmm_migrate_en.png"/>
+			</figure>
+			<para>
+				During the migration it must be noted that the images of the mounted hard drives and CD-ROM drive must be accesible by both virtualization servers.
+				This can be achieved, for example, by storing the images in a central storage system.
+				Notes on the setting up of this type of environment can be found under <xref linkend="uvmm::storagepools"/>.
+			</para>
+			<section id="uvmm:Migration_of_virtual_machines_from_failed_virtualization_servers">
+				<title>Migration of virtual machines from failed virtualization servers</title>
+				<para>
+					Information about the virtual machines running on the virtualization servers is stored centrally in the &ucsUVMM;.
+					If a server fails (failure detection is performed periodically every 15 seconds), the server and the virtual instances operated on it are identified as unaccessible with a red symbol, a warning appears and <guimenu>Migrate</guimenu> is offered as the only operation in the menu.
+				</para>
+				<para>
+					Following the migration, the virtual instance is no longer displayed in the overview tree of the failed virtualization server in the UVMM.
+				</para>
+				<caution>
+					<para>
+					It must be ensured under all circumstances that the virtual machine on the original and the secondary server are not started in parallel; this would involve their both writing in the image files simultaneously, which would result in data loss.
+					If virtual machines are started automatically after startup, simultaneous access must be prohibited by disconnecting the network connection or restricting access to the storage pool.
+					</para>
+				</caution>
+				<para>
+					If the failed computer is reactivated - e.g., in the case of a temporary power failure - the virtual machines remain available on the system locally and are reported to UVMM; consequently, there are then two versions of the instance.
+				</para>
+				<para>
+					As such, one of the two instances should subsequently be deleted.
+					However, the employed image files for the drives should <emphasis>not</emphasis> be deleted at the same time.
+				</para>
+			</section>
 		</section>
 	</section>
 
