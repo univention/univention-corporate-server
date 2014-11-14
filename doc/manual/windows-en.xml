@@ -338,7 +338,7 @@ instanceType: 4
 
 		  <para>
 			In contrast to UCS policies (see <xref linkend="central:policies"/>), group policies are
-			not configured in the &ucsUMC;, but instead are configured in a separate editor, the
+			not configured in &ucsUMC;, but instead are configured in a separate editor, the
 			<emphasis>Group Policy Management</emphasis> editor, which is a component of the
 			<emphasis>Remote Server Administration Tools (RSAT)</emphasis>. The installation is described
 			in <xref linkend="gpo:install"/>.
@@ -694,13 +694,13 @@ END CATEGORY
 		<title>Configuration of the file server for the home directory</title>
 
 		<para>
-		  The home directory can  be defined user-specifically in the &ucsUMC;, see <xref
+		  The home directory can be defined user-specifically in &ucsUMC;, see <xref
 		  linkend="users::management"/>. This is performed with the setting <guimenu>Windows home
 		  path</guimenu>, e.g., <emphasis>\\ucs-file-server\smith</emphasis>.  
 		</para>
 
 		<para>
-		  The multi edit mode of the &ucsUMC; can be used to assign the home directory to multiple
+		  The multi edit mode of &ucsUMC; can be used to assign the home directory to multiple
 		  users at one time, see <xref linkend="central:user-interface:edit"/>.
 		</para>
 	  </section>
@@ -716,7 +716,7 @@ END CATEGORY
 		</para>
 
 		<para>
-		  If the profile path is changed in the &ucsUMC;, then a new profile directory will be
+		  If the profile path is changed in &ucsUMC;, then a new profile directory will be
 		  created. The data in the old profile directory will be kept. These data can be manually
 		  copied or moved to the new profile directory. Finally, the old profile directory can be
 		  deleted.
@@ -940,8 +940,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
 <section id="ad-connector:basicsetup">
   <title>Basic configuration of the UCS AD Connector</title>
   <para>
-	The UCS AD Connector is configured using the wizard <guimenu>Active Directory Connection</guimenu>
-	of the &ucsUMC;.
+	The UCS AD Connector is configured using the UMC wizard <guimenu>Active Directory Connection</guimenu>.
   </para>
 
   <para>
@@ -968,7 +967,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
   </warning>
 
   <para>
-	It is convenient to perform the following steps with a web browser from the AD domain controller, as the files need to be downloaded from the AD domain controller and uploaded into the &ucsUMC;.
+	It is convenient to perform the following steps with a web browser from the AD domain controller, as the files need to be downloaded from the AD domain controller and uploaded into &ucsUMC;.
   </para>
 
   <para>
@@ -989,7 +988,10 @@ echo -n "Administrator password" > /etc/univention/connector/password
   <para>
 	The address of an AD domain controller is requested in the next dialogue window.
 	Here you can specify the IP address of a fully qualified DNS name.
-	If the UCS system is not be able to resolve the computer name of the AD system, the AD DNS server can either be configured as the DNS forwarder under UCS or a DNS host record can be created for the AD system in the DNS management of the &ucsUMC; (see <xref linkend="networks::dns::hostrecord"/>).
+	If the UCS system is not be able to resolve the computer name of the AD
+	system, the AD DNS server can either be configured as the DNS forwarder
+	under UCS or a DNS host record can be created for the AD system in the UMC DNS
+	management (see <xref linkend="networks::dns::hostrecord"/>).
   </para>
 
   <para>
@@ -1185,7 +1187,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 <section id="windows:Copying_the_Active_Directory_certificate_to_the_UCS_system"><title>Copying the Active Directory certificate to the UCS system</title>
 <para>
 The SSL AD certificate should now be imported into the UCS
-system using the &ucsUMC; wizard.
+system using the UMC wizard.
 </para>
 <para>
 This is done by clicking on <mousebutton>Upload</mousebutton> in the sub menu

@@ -878,7 +878,7 @@
 	<para>
 		Univention provides an Amazon Machine Image (AMI) for the Amazon EC2
 		cloud for UCS. This generic image for all UCS system roles is used to derive an individual instance
-		which can be configured via the &ucsUMC; (domain name, software
+		which can be configured via &ucsUMC; (domain name, software
 		selection, etc.).
 	</para>
 	<para>

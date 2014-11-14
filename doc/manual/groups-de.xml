@@ -35,7 +35,7 @@
 	<section id="groups::management">
 		<title>Verwaltung von Gruppen in der Univention Management Console</title>
 		<para>
-			Gruppen werden im Modul <emphasis>Gruppen</emphasis> der &ucsUMC; verwaltet.
+			Gruppen werden im UMC-Modul <emphasis>Gruppen</emphasis> verwaltet.
 		</para>
 		<para>
 			<figure id="create-group">
@@ -44,8 +44,8 @@
 			</figure>
 		</para>
 		<para>
-			Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
-			der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
+			Allgemeine Hinweise zur Bedienung der UMC-Module für die Domänen-Verwaltung
+			sowie zum Hinzufügen, Bearbeiten, Suchen und Löschen von
 			Objekten finden sich in <xref linkend="central:user-interface"/>.
 		</para>
 		<table>
@@ -327,7 +327,7 @@
 		  Während des Generierens der Gruppencache-Datei prüft das
 		  Skript, ob die Gruppenmitglieder weiterhin im
 		  LDAP-Verzeichnis vorhanden sind. Wird für die Verwaltung der
-		  Verzeichnisdaten ausschließlich die &ucsUMC; eingesetzt ist,
+		  Verzeichnisdaten ausschließlich &ucsUMC; eingesetzt ist,
 		  ist diese zusätzliche Prüfung nicht nötig und kann durch Setzen der
 		  &ucsUCRV; <envar>nss/group/cachefile/check_member</envar>
 		  auf <emphasis>false</emphasis> deaktiviert werden.

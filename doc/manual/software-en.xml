@@ -19,7 +19,7 @@
 	</para>
 
 	<para>
-	  UCS systems can be updated via the &ucsUMC;, a command line tool and
+	  UCS systems can be updated via &ucsUMC;, a command line tool and
 	  policy-based. This is described in the <xref
 	  linkend="software::ucs-updates"/>.
 	</para>
@@ -290,7 +290,7 @@
 	  <para>
 		The <guimenu>Repository server</guimenu> and the use of
 		the maintained and unmaintained sections can be specified in the
-		<guimenu>Repository Settings</guimenu> module of the &ucsUMC;.
+		UMC module <guimenu>Repository Settings</guimenu>.
 	  </para>
 	</section>
 
@@ -440,7 +440,7 @@ univention-repository-update -h
 	</section>
 
 	<section id="computers:Updating_individual_systems_via_the_UMC">
-	  <title>Updating individual systems via the &ucsUMC;</title>
+	  <title>Updating individual systems via &ucsUMC;</title>
 	  <para>
 		The <guimenu>Software update</guimenu> module allows the installation of release
 		updates and errata updates.
@@ -657,7 +657,7 @@ univention-repository-update -h
 	<section id="computers:Installation_removal_of_individual_packages_in_the_Univention_Management_Console">
 	  <title>Installation/removal of individual packages in the Univention Management Console</title>
 	  <para>
-		The &ucsUMC; module <guimenu>Package Management</guimenu> can be used to install and uninstall
+		The UMC module <guimenu>Package Management</guimenu> can be used to install and uninstall
 		individual software packages.
 	  </para>
 
@@ -740,8 +740,8 @@ apt-cache search fax
 	  </para>
 
 	  <para>
-		Package policies are managed in the <emphasis>Policies</emphasis>
-		module of the &ucsUMC; with the <guimenu>Policy: Packages + system
+		Package policies are managed in the UMC module <emphasis>Policies</emphasis>
+		with the <guimenu>Policy: Packages + system
 		role</guimenu>.
 	  </para>
 
@@ -888,7 +888,7 @@ apt-cache search fax
 	</para>
 
 	<para>
-	  Additional components can be registered via the &ucsUMC; or in &ucsUCR;.
+	  Additional components can be registered via &ucsUMC; or in &ucsUCR;.
 	</para>
 
 	<para>
@@ -940,7 +940,7 @@ apt-cache search fax
 	  <title>Integration of repository components via the Univention Management Console</title>
 	  <para>
 		A list of the integrated repository components is  in the
-		<guimenu>Repository Settings</guimenu> module of the &ucsUMC;.
+		UMC module <guimenu>Repository Settings</guimenu>.
 		Applications which have been added via the Univention App Center are still listed
 		here, but should be managed via the <guimenu>App Center</guimenu> module.
 	  </para>
@@ -1120,7 +1120,7 @@ ucr set repository/online/component/ucsschool/description="UCS@School packages" 
 	</para>
 
 	<para>
-	  The software monitor's web-based interface integrates in the &ucsUMC; and can
+	  The software monitor's web-based interface integrates in &ucsUMC; and can
 	  be accessed via the <guimenu>Software monitor</guimenu> module. The following
 	  functions are available:
 	</para>

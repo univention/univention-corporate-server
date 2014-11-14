@@ -99,7 +99,7 @@
 	</itemizedlist>
 
 	<para>
-	Die Nagios-Konfiguration erfolgt in der &ucsUMC;, die
+	Die Nagios-Konfiguration erfolgt in &ucsUMC;, die
 	Nagios-Konfigurationsdateien werden automatisch aus den im
 	LDAP-Verzeichnis gespeicherten Informationen generiert.
 	</para>
@@ -431,7 +431,7 @@
 <section id="nagios:Konfiguration_der_Nagios-Überwachung">
 	<title>Konfiguration der Nagios-Überwachung</title>
 	<para>
-	Folgende Einstellungen können in der &ucsUMC; vorgenommen werden:
+	Folgende Einstellungen können in &ucsUMC; vorgenommen werden:
 	</para>
 
 	<itemizedlist>
@@ -481,7 +481,7 @@
 		</figure>
 
 		<para>
-		Nagios-Dienste werden im Modul <emphasis>Nagios</emphasis> der &ucsUMC;
+		Nagios-Dienste werden im UMC-Modul <emphasis>Nagios</emphasis>
 		mit dem Objekttyp <guimenu>Nagios-Dienst</guimenu> verwaltet.
 		</para>
 
@@ -741,7 +741,7 @@
 		</para>
 
 		<para>
-		Nagios-Dienste werden im Modul <emphasis>Nagios</emphasis> der &ucsUMC;
+		Nagios-Dienste werden im UMC-Modul <emphasis>Nagios</emphasis>
 		mit dem Objekttyp <guimenu>Nagios-Zeitraum</guimenu> verwaltet.
 		</para>
 
@@ -854,7 +854,7 @@
 	<section id="nagios::hostconfig">
 		<title>Zuordnung von Nagios-Prüfungen zu Rechnern</title>
 		<para>
-		Alle in der &ucsUMC; verwaltbaren Rechnerobjekte lassen sich mit
+		Alle in &ucsUMC; verwaltbaren Rechnerobjekte lassen sich mit
 		Nagios überwachen. Nagios-Dienste können nur dann an ein
 		Rechner-Objekt gebunden werden, wenn für diesen eine IP-Adresse sowie
 		ein entsprechender Eintrag für die DNS-Forward-Zone angegeben wurde.
@@ -1076,7 +1076,7 @@ define command{
 </programlisting>
 
   <para>
-	Abschließend muss das neue Plugin noch in der &ucsUMC; als <guimenu>Nagios-Dienst</guimenu>
+	Abschließend muss das neue Plugin noch in &ucsUMC; als <guimenu>Nagios-Dienst</guimenu>
 	registriert werden, siehe <xref linkend="Nagios:Dienst"/>. Als
 	<guimenu>Plugin-Kommando</guimenu> muss der unter <emphasis>command_name</emphasis>
 	in der Makro-Datei registriert Name angegeben werden, in diesem Beispiel

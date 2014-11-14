@@ -5,13 +5,13 @@
 	<para>
 		&ucsUCS; beinhaltet ein Drucksystem, mit dem sich auch komplexe
 		Umgebungen realisieren lassen. Drucker und Druckergruppen werden dabei
-		in der &ucsUMC; verwaltet.
+		in &ucsUMC; verwaltet.
 	</para>
 	<para>
 		Die Druckdienste basieren auf <emphasis>CUPS (Common Unix Printing
 		System)</emphasis>. Druckaufträge werden von CUPS in Warteschlangen verwaltet
 		und in die Druckformate der angeschlossenen Drucker umgewandelt.
-		Die Druckerwarteschlangen werden ebenfalls in der &ucsUMC; verwaltet,
+		Die Druckerwarteschlangen werden ebenfalls in &ucsUMC; verwaltet,
 		siehe <xref linkend="umc:modules:printer"/>.
 	</para>
 	<para>
@@ -47,7 +47,7 @@
 	</para>
 	<para>
 		Netzwerkdrucker mit eigener IP-Adresse sollten als IP-Managed-Client
-		in der Rechnerverwaltung der &ucsUMC; registriert werden (siehe
+		in der UMC-Rechnerverwaltung registriert werden (siehe
 		<xref linkend="systemrollen"/>).
 	</para>
 	<para>
@@ -103,7 +103,7 @@
 <section id="print::shares">
 <title>Konfiguration von Druckerfreigaben</title>
 	<para>
-		Druckerfreigaben werden im Modul <emphasis>Drucker</emphasis> der &ucsUMC;
+		Druckerfreigaben werden im UMC-Modul <emphasis>Drucker</emphasis>
 		mit dem Objekttyp <guimenu>Druckerfreigabe: Drucker</guimenu> verwaltet.
 	</para>
 	<para>
@@ -223,7 +223,7 @@
 						<para>
 							Mit dem Protokoll <uri>smb://</uri> kann eine Windows-Druckerfreigabe
 							eingebunden werden. Um beispielsweise die Druckerfreigabe <emphasis>laser01</emphasis> des
-							Windows-Systems <emphasis>win01</emphasis> über die &ucsUMC; einzubinden,
+							Windows-Systems <emphasis>win01</emphasis> über &ucsUMC; einzubinden,
 							muss als Ziel <emphasis>win01/laser01</emphasis> angegeben werden. Dabei sollten
 							Hersteller und Modell-Typ entsprechend des verwendeten Geräts gewählt
 							werden. Der Druckserver nutzt dabei die verwendeten
@@ -402,7 +402,7 @@
 		</para>
 	</caution>
 	<para>
-		Druckergruppen werden im Modul <emphasis>Drucker</emphasis> der &ucsUMC;
+		Druckergruppen werden im UMC-Modul <emphasis>Drucker</emphasis>
 		mit dem Objekttyp <guimenu>Druckerfreigabe: Druckergruppe</guimenu> verwaltet.
 	</para>
 	<para>
@@ -517,7 +517,7 @@
 <section id="umc:modules:printer">
 <title>Verwaltung von Druckaufträgen und Druckerwarteschlangen</title>
 	<para>
-		Das <guimenu>Drucker Administration</guimenu>-Modul der &ucsUMC; erlaubt
+		Das UMC-Modul <guimenu>Drucker Administration</guimenu> erlaubt
 		auf Druckservern den Status der angeschlossenen Drucker zu prüfen,
 		angehaltene Drucker neu zu starten oder Druckaufträge aus den
 		Warteschlagen zu entfernen.
@@ -562,7 +562,7 @@
   </para>
   
   <para>
-	Beim Anlegen eines PDF-Druckers in der &ucsUMC; (siehe <xref linkend="print::shares"/>) muss als
+	Beim Anlegen eines PDF-Druckers in &ucsUMC; (siehe <xref linkend="print::shares"/>) muss als
 	Protokoll <guimenu>cups-pdf:/</guimenu> ausgewählt werden, das Ziel-Feld bleibt leer.
   </para>
 
@@ -596,7 +596,7 @@
 <section id="print-services:winclients">
   <title>Einbinden von Druckerfreigaben auf Windows-Clients</title>
   <para>
-	Die in der &ucsUMC; eingerichteten Druckerfreigaben können auf Windows-Systemen als
+	Die in &ucsUMC; eingerichteten Druckerfreigaben können auf Windows-Systemen als
 	Netzwerkdrucker hinzugefügt werden. Dies erfolgt über die Systemsteuerung unter <guimenu>Drucker
 	&ar; Netzwerkdrucker hinzufügen</guimenu>. Die Druckertreiber müssen beim ersten Zugriff eingerichtet
 	werden. Wurden die Treiber serverseitig hinterlegt (siehe unten), erfolgt die Zuweisung des
@@ -729,13 +729,13 @@
 	</para>
 	<para>
 		Neben den bereits im Standardumfang enthaltenen PPD-Dateien können
-		weitere über die &ucsUMC; hinzugefügt werden. Die PPD wird in der
+		weitere über &ucsUMC; hinzugefügt werden. Die PPD wird in der
 		Regel vom Hersteller des Druckers bereitgestellt und muss auf den
 		Druckservern in das Verzeichnis <filename>/usr/share/ppd</filename> kopiert werden.
 	</para>
 	<para>
-		Die Druckertreiberlisten werden im Modul <guimenu>LDAP-Verzeichnis</guimenu>
-		der &ucsUMC; verwaltet. Dort muss in den
+		Die Druckertreiberlisten werden im UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu>
+		verwaltet. Dort muss in den
 		Container <emphasis>univention</emphasis> und dort in den
 		Untercontainer <emphasis>cups</emphasis> gewechselt werden. Für die meisten
 		Druckerhersteller existieren bereits Druckertreiberlisten. Diese

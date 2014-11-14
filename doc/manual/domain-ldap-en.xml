@@ -138,8 +138,7 @@
 		<section id="linux-domaenenbeitritt-umc">
 			<title>Joining domains with &ucsUMC;</title>
 			<para>
-				A domain join can also be carried out web based via the <guimenu>Domain join</guimenu>
-				module of the &ucsUMC;.
+				A domain join can also be carried out web based via the UMC module <guimenu>Domain join</guimenu>.
 				As the Administrator user does not yet exist on a system which has yet to join
 				the domain, the login to &ucsUMC; is done as user <emphasis>root</emphasis>.
 			</para>
@@ -147,7 +146,7 @@
 				As for the domain joining procedure via the command line, username and password of a
 				user account authorised to add computers to a domain must be entered
 				in the resulting dialogue.
-				Likewise, the &ucsUMC; will be determined automatically via a DNS request, but
+				Likewise, the &ucsMaster; will be determined automatically via a DNS request, but
 				can also be entered manually.
 			</para>
 			<para>
@@ -185,12 +184,12 @@
 			<title>Subsequent running of join scripts</title>
 			<para>
 			  If there are join/unjoin scripts on a system which have not yet been run or which can only be
-			  run for an older version, a warning message is shown on the &ucsUMC; start page.
+			  run for an older version, a warning message is shown upon login to &ucsUMC;.
 			</para>
 
 			<para>
 			  Join scripts that have not been run can be executed via the
-			  <guimenu>Domain join</guimenu> module in the &ucsUMC; by clicking on the menu entry
+			  UMC module <guimenu>Domain join</guimenu> by clicking on the menu entry
 			  <guimenu>Execute all pending join scripts</guimenu>.
 			</para>
 
@@ -727,7 +726,7 @@ END
 	<section id="domain-ldap:LDAP_command_line_tools">
 		<title>LDAP command line tools</title>
 		<para>
-			In addition to the &ucsUMC; web interface, there are also a range of programs
+			In addition to the UMC web interface, there are also a range of programs
 			with which one can access the LDAP directory from the command line.
 		</para>
 		<para>
@@ -814,7 +813,7 @@ slapcat &gt; ldapdata.txt
 			</para>
 
 			<para>
-			  Passwords can be reset via the &ucsUMC;. In the default setting, the &ucsUMC; only
+			  Passwords can be reset via &ucsUMC;. In the default setting, &ucsUMC; only
 			  offers the user wizard to the <emphasis>Administrator</emphasis> user, which
 			  allows the setting of new passwords. During the installation a new
 			  <emphasis>default-user-password-admins</emphasis> policy is created
@@ -979,7 +978,7 @@ slapcat &gt; ldapdata.txt
 	  &ucsUDL; modules can be used to communicate domain changes to services which are not
 	  LDAP-compatible. The print server CUPS is an example of this: The printer definitions are not
 	  read from the LDAP, but instead from the <filename>/etc/cups/printers.conf</filename>
-	  file. Now, if a printer is saved in the printer management of the &ucsUMC;, it is stored
+	  file. Now, if a printer is saved in the UMC printer management, it is stored
 	  in the LDAP directory. This change is detected by the &ucsUDL; module
 	  <emphasis>cups-printers</emphasis> and an entry added to, modified or deleted in
 	  <filename>/etc/cups/printers.conf</filename> based on the data in the LDAP.
@@ -1009,7 +1008,6 @@ slapcat &gt; ldapdata.txt
 
   <section id="domain:listenernotifier:erroranalysis">
 	<title>Analysis of listener/notifier problems</title>
-	  
 	  <section id="domain:listenernotifier:erroranalysis:debug">
 		<title>Log files/debug level of replication</title>
 
@@ -1035,7 +1033,7 @@ slapcat &gt; ldapdata.txt
 
 		<para>
 		  When the domain replication is running normally (normal system load, no network problems),
-		  the delay between the change being made in the &ucsUMC; and replicated to,
+		  the delay between the change being made in &ucsUMC; and replicated to,
 		  for example, a &ucsSlave; is barely noticeable. An incomplete replication can be
 		  identified by comparing the transaction IDs of the listener and notifier services.
 		</para>
@@ -1105,7 +1103,7 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 	<para>
 		For example, SSL/TLS is employed in the listener/notifier domain
-		replication or for HTTPS access to the &ucsUMC;.
+		replication or for HTTPS access to &ucsUMC;.
 	</para>
 	<para>
 		Both communication partners must be able to verify the authenticity of the
@@ -1169,7 +1167,7 @@ univention-directory-listener-ctrl resync cups-printers
 		It is thus necessary to verify the validity of the certificate regularly and to
 		renew the root certificate in time. A Nagios plugin is provided for the
 		monitoring of the validity period. In addition, a warning is shown when logging
-		on to the &ucsUMC; if the root certificate is going to expire soon (the warning
+		on to &ucsUMC; if the root certificate is going to expire soon (the warning
 		period can be specified with the &ucsUCRV; <envar>ssl/validity/warning</envar>;
 		the standard value is 30 days).
 	</para>
@@ -1188,9 +1186,8 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 
 	<para>
-	  On the &ucsUMC; overview page - which can be accessed by clicking on the question mark in
-	  the top toolbar - the effective expiry date of the computer and root certificate is also
-	  displayed under <guimenu>About UMC</guimenu>.
+	  In &ucsUMC;, the effective expiry date of the computer and root certificate can be
+	  accessed via the upper right user menu and the entry <guimenu>License &ar; License information</guimenu>.
 	</para>
 
 </section>
@@ -1292,7 +1289,7 @@ univention-directory-listener-ctrl resync cups-printers
 	<para>
 		The conversion primarily involves the changeover of the services relevant for
 		authentication such as LDAP, Kerberos and Samba. The installed software needs to be adjusted
-		manually (this can be done using the &ucsUMC; modules <guimenu>App Center</guimenu>
+		manually (this can be done using the UMC modules <guimenu>App Center</guimenu>
 		or <guimenu>Package Management</guimenu>).
 		For example, if the mail component was installed on the previous DC
 		master, it is not automatically on the new DC master after the conversion.

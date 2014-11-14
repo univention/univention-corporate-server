@@ -1,13 +1,13 @@
 <chapter id="shares::general">
   <title>Fileshare management</title>
   <para>
-	UCS supports the central management of directory shares. A share registered in the &ucsUMC; is
+	UCS supports the central management of directory shares. A share registered in &ucsUMC; is
 	created on an arbitrary UCS server system as part of the UCS domain replication.
   </para>
 
   <para>
 	Provision for accessing clients can occur via CIFS (supported by Windows/Linux clients) and/or
-	NFS (primarily supported by Linux/Unix). The NFS shares managed in the &ucsUMC; can be mounted
+	NFS (primarily supported by Linux/Unix). The NFS shares managed in &ucsUMC; can be mounted
 	by clients both via NFSv3 and via NFSv4.
   </para>
 
@@ -77,7 +77,7 @@
   <para>
 	Changes to the permissions of a shared directory performed directly
 	in the file system are not forwarded to the LDAP directory. If the
-	permissions/owners are edited within the &ucsUMC;, the changes in the file
+	permissions/owners are edited within &ucsUMC;, the changes in the file
 	system are overwritten. Settings to the root directory of a file share
 	should thus only be set and edited with &ucsUMC;. Additional adjustment of the access
 	permissions of the subordinate directories are then performed via the
@@ -95,7 +95,7 @@
 
 <section id="shares::management"><title>Management of shares in the UMC</title>
 <para>
-File shares are managed in the <emphasis>Shares</emphasis> module of the &ucsUMC;.
+File shares are managed in the UMC module <emphasis>Shares</emphasis>.
 </para>
 <para>
 General information on the operation of the domain management modules

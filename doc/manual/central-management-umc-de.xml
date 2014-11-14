@@ -38,7 +38,7 @@
 </section>
 
 <section id="central:user-interface">
-	<title>Bedienung der &ucsUMC;</title>
+	<title>Bedienung von &ucsUMC;</title>
 
 	<section id="central-management-umc:login">
 		<title>Anmeldung</title>
@@ -66,7 +66,7 @@
 		  Auf jedem UCS-System kann die Übersichtsseite über die URL <uri>https://servername/</uri>
 		  aufgerufen werden, alternativ ist der Zugriff auch über die IP-Adresse des Servers
 		  möglich. Hier sind alle Web-Dienste verlinkt, die auf dem System angeboten werden. Im
-		  Reiter <guimenu>Administration</guimenu> kann dann die &ucsUMC; über den Link
+		  Reiter <guimenu>Administration</guimenu> kann dann &ucsUMC; über den Link
 		  <guimenu>System- und Domäneneinstellungen</guimenu>, bzw. über den Link
 		  <guimenu>Systemeinstellungen</guimenu> aufgerufen werden. Sind auf dem System
 		  Dienste installiert, die einen eigenen Webdienst mitbringen (z.B. Horde-Webmail)
@@ -167,7 +167,7 @@
 
 		<para>
 		  Ist die Anzahl der lizenzierten Benutzer- oder Rechner-Objekte überschritten, können keine
-		  weiteren Objekte in der &ucsUMC; angelegt oder bestehende editiert werden, solange keine
+		  weiteren Objekte in &ucsUMC; angelegt oder bestehende editiert werden, solange keine
 		  erweiterte Lizenz eingespielt wird oder nicht mehr benötigte Benutzer oder Rechner
 		  entfernt werden. Auf der UMC-Startseite wird bei überschrittener Lizenz ein entsprechender
 		  Hinweis angezeigt.
@@ -345,8 +345,8 @@
 	<section id="central-management-umc:feedback">
 		<title>Feedback zur UMC und zu UCS</title>
 		<para>
-			Durch die Auswahl des Eintrages <guimenu>Hilfe / Feedback</guimenu>
-			in dem oberen, rechten Benutzermenü der &ucsUMC; kann über ein Webformular Feedback zu
+			Durch die Auswahl des Eintrages <guimenu>Hilfe &ar; Feedback</guimenu>
+			in dem oberen, rechten Benutzermenü von &ucsUMC; kann über ein Webformular Feedback zu
 			UCS und &ucsUMC; gegeben werden.
 		</para>
 	</section>
@@ -368,15 +368,15 @@
 <para>
   Bei Verwendung der <emphasis>Free for personal use</emphasis>-Version von UCS (die
   in der Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken
-  zur Verwendung der &ucsUMC; erzeugt. Die aufgerufenen Module werden dabei von einer
+  zur Verwendung von &ucsUMC; erzeugt. Die aufgerufenen Module werden dabei von einer
   Instanz des Web-Traffic-Analyse-Tools Piwik protokolliert. Dies ermöglicht es Univention die
-  Entwicklung der &ucsUMC; besser auf das Kundeninteresse zuzuschneiden und
+  Entwicklung von &ucsUMC; besser auf das Kundeninteresse zuzuschneiden und
   Usability-Verbesserungen vorzunehmen.
 </para>
 <para>
   Diese Protokollierung erfolgt nur bei Verwendung der
   <emphasis>Free-for-Personal-Use-Lizenz</emphasis>. Der Lizenzstatus kann
-  überprüft werden durch den Eintrag <guimenu>Lizenz /
+  überprüft werden durch den Eintrag <guimenu>Lizenz &ar;
   Lizenzinformation</guimenu> des Benutzermenüs in der rechten, oberen Ecke
   von &ucsUMC;.  Steht hier unter <guimenu>LDAP-Basis</guimenu> <guimenu>Free
   for personal use edition</guimenu> wird eine solche Version verwendet.
@@ -605,7 +605,7 @@
 <section id="central:extendedattrs">
 	<title>Erweiterung der UMC mit erweiterten Attributen</title>
 	<para>
-	  Die Domänenverwaltung der &ucsUMC; ermöglicht die umfassende Verwaltung der Daten einer
+	  Die Domänenverwaltung von &ucsUMC; ermöglicht die umfassende Verwaltung der Daten einer
 	  Domäne. <emphasis>Erweiterte Attribute</emphasis> bieten eine Möglichkeit, neue Attribute in
 	  die Domänenverwaltung zu integrieren, die durch den UCS-Standardumfang nicht abgedeckt
 	  sind. Erweiterte Attribute werden auch von Drittanbietern für die Integration von Lösungen in
@@ -613,8 +613,8 @@
 	</para>
 
 	<para>
-	  Erweiterte Attribute werden im Modul <guimenu>LDAP-Verzeichnis</guimenu> der &ucsUMC;
-	  verwaltet. Sie befinden sich im Container <emphasis>univention</emphasis> und dessen
+	  Erweiterte Attribute werden im Modul <guimenu>LDAP-Verzeichnis</guimenu>.
+	  Sie befinden sich im Container <emphasis>univention</emphasis> und dessen
 	  Untercontainer <emphasis>custom attributes</emphasis>. Hier können bestehende Attribute
 	  bearbeitet werden oder mit <guimenu>Hinzufügen</guimenu> ein Objekt vom Typ
 	  <guimenu>Einstellungen: Erweitertes Attribut</guimenu> angelegt werden.
@@ -662,7 +662,7 @@
 		  <row>
 			<entry>Kurzbeschreibung</entry>
 			<entry>
-			  Wird als Überschrift des Eingabefelds in der &ucsUMC;, bzw. als Attribut-Beschreibung
+			  Wird als Überschrift des Eingabefelds in &ucsUMC;, bzw. als Attribut-Beschreibung
 			  in der Kommandozeilenschnittstelle verwendet.
 			</entry>
 		  </row>
@@ -679,7 +679,7 @@
 		  <row>
 			<entry>Ausführliche Beschreibung</entry>
 			<entry>
-			  Diese erweiterte Beschreibung wird in Eingabefeldern der &ucsUMC; als Tooltip
+			  Diese erweiterte Beschreibung wird für die Eingabefelder in &ucsUMC; als Tooltip
 			  angezeigt.
 			</entry>
 		  </row>
@@ -787,7 +787,7 @@
 			<row>
 			  <entry>Objektklasse löschen, wenn das Attribut entfernt wird</entry>
 			  <entry>
-				Wird für ein erweitertes Attribut in der &ucsUMC; der Wert gelöscht, wird das
+				Wird für ein erweitertes Attribut in &ucsUMC; der Wert gelöscht, wird das
 				Attribut vom LDAP-Objekt entfernt. Werden an diesem LDAP-Objekt keine weiteren
 				Attribute der angegebenen <emphasis>Objektklasse</emphasis> verwendet, wird auch die
 				Objektklasse vom LDAP-Objekt entfernt, sofern diese Option aktiviert ist.
@@ -815,7 +815,7 @@
 				Wenn ein Attribut anstatt durch den Administrator nur intern verwaltet werden soll,
 				- z.B. indirekt durch Skripte - kann diese Option aktiviert werden. Das Attribut
 				kann dann nur über das Kommandozeilen-Interface &ucsUDM; gesetzt werden und wird in
-				der &ucsUMC; nicht angezeigt.
+				&ucsUMC; nicht angezeigt.
 			  </entry>
 			</row>
 
@@ -879,8 +879,8 @@
 			<row>
 			  <entry>Name der Karteikarte</entry>
 			  <entry>
-				<para> 
-				  Der Name der Karteikarte in der &ucsUMC;, auf der das erweiterte Attribut
+				<para>
+				  Der Name der Karteikarte in &ucsUMC;, auf der das erweiterte Attribut
 				  angezeigt werden soll. Hier können auch neue Karteikarten hinzugefügt werden.
 				</para>
 
@@ -972,7 +972,7 @@
 			  <entry>Syntax-Klasse</entry>
 			  <entry>
 				<para>
-				  Bei der Eingabe von Werten nimmt die &ucsUMC; eine Syntaxprüfung vor.
+				  Bei der Eingabe von Werten nimmt &ucsUMC; eine Syntaxprüfung vor.
 				</para>
 
 				<para>
@@ -1069,7 +1069,7 @@
 	</itemizedlist>
 	<para>
 		Container und Organisationseinheiten werden im Modul <guimenu>LDAP-Verzeichnis</guimenu>
-		der &ucsUMC; verwaltet und werden mit <guimenu>Hinzufügen</guimenu>
+		von &ucsUMC; verwaltet und werden mit <guimenu>Hinzufügen</guimenu>
 		und den Objekt-Typen <guimenu>Container: Container</guimenu>
 		und <guimenu>Container: Organisationseinheit</guimenu> angelegt.
 	</para>
@@ -1225,7 +1225,7 @@
 	<para>
 		Der &ucsUDM; ist die Kommandozeilenschnittstelle der
 		Domänenverwaltungsfunktionalität von &ucsUMC;. Er ergänzt die
-		webbasierte Schnittstelle der &ucsUMC; und dient als mächtiges
+		webbasierte Schnittstelle von &ucsUMC; und dient als mächtiges
 		Werkzeug für die Automatisierung administrativer Vorgängen in
 		Skripten und zur Integration in andere Programme.
 	</para>
@@ -1720,7 +1720,7 @@ univention-directory-manager dns/ptr_record create \
 	  <section id="central:udm:example:extendedattr">
 		<title>Erweiterte Attribute</title>
 		<para>
-		  Mit erweiterten Attributen lässt sich der Funktionsumfang der &ucsUMC; flexibel
+		  Mit erweiterten Attributen lässt sich der Funktionsumfang von &ucsUMC; flexibel
 		  erweitern, siehe <xref linkend="central:extendedattrs"/>. Im folgenden Beispiel wird ein
 		  neues Attribut eingefügt, an dem pro Benutzer das KFZ-Kennzeichen des Dienstwagens
 		  gespeichert wird. Die Werte werden in einer extra für diesen Zweck vorgesehenen Objektklasse
@@ -1771,7 +1771,7 @@ univention-directory-manager settings/extended_attribute create \
 	</para>
 	<para>
 		Reports können über ein Kommandozeilenprogramm oder über das
-		Web-Interface der &ucsUMC; erstellt werden.
+		Web-Interface von &ucsUMC; erstellt werden.
 	</para>
 
 	<section id="central:reports:create">

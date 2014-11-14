@@ -30,8 +30,7 @@
 		linkend="systemrollen"/>.
 	</para>
 	<para>
-		Computer accounts are managed in the <guimenu>Computers</guimenu> module of
-		the &ucsUMC;.
+		Computer accounts are managed in the UMC module <guimenu>Computers</guimenu>.
 	</para>
 
 	<para>
@@ -439,7 +438,7 @@
 		<title>Integration of Ubuntu clients</title>
 		<para>
 			Ubuntu clients can be managed in &ucsUMC; with their own system role. The
-			network properties for DNS/DHCP can also be managed via the &ucsUMC;.
+			network properties for DNS/DHCP can also be managed via &ucsUMC;.
 		</para>
 		<para>
 			The use of policies is not supported.
@@ -1134,8 +1133,8 @@ ucr unset umc/modules/setup/network/disabled/by
 	<section id="computers:Mounting_NFS_shares">
 		<title>Mounting NFS shares</title>
 		<para>
-			The <guimenu>NFS mounts</guimenu> policy of the computer management of
-			the &ucsUMC; can be used to configure NFS shares, which are mounted on the
+			The <guimenu>NFS mounts</guimenu> policy of the UMC computer management
+			can be used to configure NFS shares, which are mounted on the
 			system. There is a <guimenu>NFS share</guimenu> for selection, which is mounted
 			in the file path specified under <guimenu>Mount point</guimenu>.
 		</para>
@@ -1239,7 +1238,7 @@ ucr unset umc/modules/setup/network/disabled/by
 		<para>
 			&ucsUCR; variables can be configured in the command line using the
 			<command>univention-config-registry</command> command (short form:
-			<command>ucr</command> or via the &ucsUMC;.
+			<command>ucr</command> or via &ucsUMC;.
 		</para>
 		<para>
 			As the majority of packages perform their configuration via &ucsUCR; and the
@@ -1323,7 +1322,7 @@ univention-config-registry set --force mail/messagesizelimit=1000000
 	<section id="computers:Using_the_Univention_Management_Console_web_interface">
 		<title>Using the Univention Management Console web interface</title>
 		<para>
-			The <guimenu>Univention Configuration Registry</guimenu> module of the &ucsUMC;
+			The UMC module <guimenu>Univention Configuration Registry</guimenu>
 			can be used to display and adjust the variables of a system. There is also the
 			possibility of setting new variables using <guimenu>Add new variable</guimenu>.
 		</para>
@@ -1344,12 +1343,6 @@ univention-config-registry set --force mail/messagesizelimit=1000000
 		<para>
 			Clicking on the icon with the stylised pen edits the setting of a variable. The
 			icon with the stylised minus sign allows the deletion of a variable.
-		</para>
-		<para>
-			Some central variables - e.g., the domain name - cannot be changed directly in
-			&ucsUCR;. Instead they can only be changed indirectly via the basic settings in
-			the &ucsUMC;. These variables can be shown in grey. It is still possible to
-			edit them via the command line front-end.
 		</para>
 	</section>
 
@@ -1519,7 +1512,7 @@ master.firma.de
 			Part of the settings configured in &ucsUCR; are system-specific (e.g., the
 			computer name); many settings can, however, be used on more then one
 			computer. The <guimenu>Univention Configuration Registry</guimenu> policy
-			managed in the <guimenu>Policies</guimenu> module of the &ucsUMC; can be used
+			managed in the UMC module <guimenu>Policies</guimenu> can be used
 			to compile variables and apply them on more than one computer.
 		</para>
 		<figure id="policy-mailsize">
@@ -1783,7 +1776,7 @@ auth/sshd/restrict: yes
 
 		<para>
 		  Alternatively, the LDAP servers can also be specified via a <guimenu>LDAP
-		  server</guimenu> policy in the computer management of the &ucsUMC;. The order
+		  server</guimenu> policy in the UMC computer management. The order
 		  of the servers determines the order of the computer's requests to the server if
 		  a LDAP server cannot be reached.
 		</para>
@@ -1806,7 +1799,7 @@ auth/sshd/restrict: yes
 		</para>
 		<para>
 			Alternatively, the server can also be specified via the <guimenu>Print
-			server</guimenu> policy in the computer management of the &ucsUMC;.
+			server</guimenu> policy in the UMC computer management.
 		</para>
 	</section>
 

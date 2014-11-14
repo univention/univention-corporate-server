@@ -2,7 +2,7 @@
   <title>IP and network management</title>
   <para>
 	IP addresses for the computer systems managed in a UCS domain can be
-	centrally managed via the &ucsUMC; and and assigned via DHCP.
+	centrally managed via &ucsUMC; and and assigned via DHCP.
   </para>
   <para>
 	With <emphasis>network objects</emphasis> one can manage the features of a
@@ -45,7 +45,7 @@
 	  address is automatically reassigned.
 	</para>
 	<para>
-	  Network objects are managed in the <emphasis>Networks</emphasis> module of the &ucsUMC;.
+	  Network objects are managed in the UMC module <emphasis>Networks</emphasis>.
 	</para>
 	<para>
 	  General information on the operation of the domain management modules
@@ -125,7 +125,7 @@
 				  created automatically.
 				</para>
 				<para>
-				  The zones are also administrated in the &ucsUMC;, see
+				  The zones are also administrated in &ucsUMC;, see
 				  <xref linkend="networks::dns::forwardzone"/>.
 				</para>
 				<para>
@@ -164,7 +164,7 @@
 				  address will be created automatically in the selected DHCP service.
 				</para>
 				<para>
-				  The DHCP service settings are also administrated in the &ucsUMC;, see <xref linkend="networks::dhcp::general"/>.
+				  The DHCP service settings are also administrated in &ucsUMC;, see <xref linkend="networks::dhcp::general"/>.
 				</para>
 				<para>
 				  If no DHCP service is selected, no DHCP host record is created
@@ -283,7 +283,7 @@
 		<para>
 		  In a typical Bind installation on a non-UCS system, the configuration
 		  is performed by editing zone files. In UCS, Bind is completely
-		  configured via the &ucsUMC;, which saves its data in the LDAP
+		  configured via &ucsUMC;, which saves its data in the LDAP
 		  directory.
 		</para>
 		<para>
@@ -324,7 +324,7 @@
 		<para>
 		  The backend is configured via the &ucsUCRV; <envar>dns/backend</envar>. The DNS
 		  administration is not changed by the backend used and is performed via
-		  the &ucsUMC; in both cases.
+		  &ucsUMC; in both cases.
 		</para>
 	  </section>
 
@@ -370,8 +370,8 @@
 		<title>Forward lookup zone</title>
 		<para>
 		  Forward lookup zones contain information which is used to resolve DNS
-		  names into IP addresses. They are managed in the <emphasis>DNS</emphasis> module
-		  of the &ucsUMC;. To add another forward lookup zone, select <guimenu>All DNS
+		  names into IP addresses. They are managed in the UMC module <emphasis>DNS</emphasis>.
+		  To add another forward lookup zone, select <guimenu>All DNS
 		  zones</guimenu> and <guimenu>Add &ar; DNS: Forward lookup zone</guimenu>.
 		</para>
 		<figure id="net-dns-forward">
@@ -671,8 +671,8 @@
 	  <section id="ip-config:CNAME-Record_Alias-Records">
 		<title>CNAME-Record (Alias-Records)</title>
 		<para>
-		  CNAME records / alias records are managed in the <emphasis>DNS</emphasis> module
-		  of the &ucsUMC;.  To create another record, the forward lookup zone must be selected in
+		  CNAME records / alias records are managed in the UMC module <emphasis>DNS</emphasis>.
+		  To create another record, the forward lookup zone must be selected in
 		  the left column. <guimenu>Add &ar; DNS: Alias record</guimenu> can be used to create a new
 		  record.
 		</para>
@@ -731,8 +731,8 @@
 	  <section id="networks::dns::hostrecord">
 		<title>A/AAAA records (host records)</title>
 		<para>
-		  Host records are managed in the <emphasis>DNS</emphasis> module of the
-		  &ucsUMC;. To create another record, the forward lookup zone must be selected in the left
+		  Host records are managed in the UMC module <emphasis>DNS</emphasis>.
+		  To create another record, the forward lookup zone must be selected in the left
 		  column. <guimenu>Add &ar; DNS: Host record</guimenu> can be used to create a new record.
 		</para>
 		<para>
@@ -802,8 +802,8 @@
 	  <section id="ip-config:Service_records">
 		<title>Service records</title>
 		<para>
-		  Service records are managed in the <emphasis>DNS</emphasis> module of the
-		  &ucsUMC;. To create another record, the forward lookup zone must be selected in the left
+		  Service records are managed in the UMC module <emphasis>DNS</emphasis>.
+		  To create another record, the forward lookup zone must be selected in the left
 		  column. <guimenu>Add &ar; DNS: Service record</guimenu> can be used to create a new
 		  record.
 		</para>
@@ -951,7 +951,7 @@
 		<title>Reverse lookup zone</title>
 		<para>
 		  A reverse lookup zone is used to resolve IP address into host names.
-		  They are managed in the <emphasis>DNS</emphasis> module of the &ucsUMC;. 
+		  They are managed in the UMC module <emphasis>DNS</emphasis>.
 		  To add another reverse lookup zone, select <guimenu>All DNS zones</guimenu> and
 		  <guimenu>Add &ar; DNS: Reverse lookup zone</guimenu>.
 		</para>
@@ -1105,8 +1105,8 @@
 	  <section id="ip-config:Pointer_record">
 		<title>Pointer record</title>
 		<para>
-		  Pointer records are managed in the <emphasis>DNS</emphasis>
-		  module of the &ucsUMC;.  To create another record, the reverse lookup zone must be
+		  Pointer records are managed in the UMC module <emphasis>DNS</emphasis>.
+		  To create another record, the reverse lookup zone must be
 		  selected in the left column. <guimenu>Add &ar; DNS: Pointer record</guimenu> can be used
 		  to create a new record.
 		</para>
@@ -1275,8 +1275,8 @@ closest to the object always applies.
 	  <section id="networks::dhcp::services">
 		<title>Administration of DHCP services</title>
 		<para>
-		  DHCP services are managed in the <emphasis>DHCP</emphasis> module of
-		  the &ucsUMC;. To create a new DHCP service, <guimenu>All DHCP services</guimenu> needs to
+		  DHCP services are managed in the UMC module <emphasis>DHCP</emphasis>.
+		  To create a new DHCP service, <guimenu>All DHCP services</guimenu> needs to
 		  be selected. Clicking on <guimenu>Add</guimenu> then creates a new service.
 		</para>
 
@@ -1352,7 +1352,7 @@ closest to the object always applies.
 		  not normally need to be created manually, instead it is created by the
 		  join script of the <package>univention-dhcp</package> package.
 		  However, to create another record manually, a DHCP service must be selected in the left
-		  column of the <emphasis>DHCP</emphasis> module of the &ucsUMC;. <guimenu>Add
+		  column of the UMC module <emphasis>DHCP</emphasis>. <guimenu>Add
 		  &ar; DHCP Server</guimenu> can then be used to register a new server.
 		</para>
 
@@ -1403,8 +1403,8 @@ closest to the object always applies.
 	  <section id="ip-config:Administration_of_DHCP_subnets">
 		<title>Administration of DHCP subnets</title>
 		<para>
-		  DHCP subnets are managed in the <emphasis>DHCP</emphasis> module of
-		  the &ucsUMC;. To create another subnet, a DHCP service must be selected in the left
+		  DHCP subnets are managed in the UMC module <emphasis>DHCP</emphasis>.
+		  To create another subnet, a DHCP service must be selected in the left
 		  column. <guimenu>Add &ar; DHCP: Subnet</guimenu> can be used to create a new subnet.
 		</para>
 
@@ -1500,9 +1500,8 @@ closest to the object always applies.
 	  <section id="ip-config:Administration_of_DHCP_pools">
 		<title>Administration of DHCP pools</title>
 		<para>
-		  DHCP pools can only be managed via the <emphasis>LDAP directory</emphasis>
-		  module of
-		  the &ucsUMC;. To do so, one must always be in a DHCP subnet object
+		  DHCP pools can only be managed via the UMC module <emphasis>LDAP directory</emphasis>.
+		  To do so, one must always be in a DHCP subnet object
 		  - a DHCP pool object must always be created below a DHCP subnet
 		  object - and a <guimenu>DHCP: Pool</guimenu>
 		  object added with <guimenu>Add</guimenu>.
@@ -1660,9 +1659,9 @@ closest to the object always applies.
 		  created manually or automatically.
 		</para>
 		<para>
-		  DHCP host objects are managed in the <emphasis>DHCP</emphasis> module of
-		  the &ucsUMC;. To register a host in the DHCP manually, a DHCP service must be selected in
-		  the left column of the &ucsUMC; module <guimenu>DHCP</guimenu>. <guimenu>Add &ar; DHCP:
+		  DHCP host objects are managed in the UMC module <emphasis>DHCP</emphasis>.
+		  To register a host in the DHCP manually, a DHCP service must be selected in
+		  the left column of the module. <guimenu>Add &ar; DHCP:
 		  Host</guimenu> can be used to register a host.
 		</para>
 		<para>
@@ -1747,9 +1746,9 @@ closest to the object always applies.
 		  common physical network.
 		</para>
 		<para>
-		  DHCP shared network objects are managed in the <emphasis>DHCP</emphasis> module
-		  of the &ucsUMC;. To create a shared network, a DHCP service must be selected in the left
-		  column of the &ucsUMC; module <guimenu>DHCP</guimenu>. <guimenu>Add &ar; DHCP: Shared
+		  DHCP shared network objects are managed in the UMC module <emphasis>DHCP</emphasis>.
+		  To create a shared network, a DHCP service must be selected in the left
+		  column of the module. <guimenu>Add &ar; DHCP: Shared
 		  Network</guimenu> can be used to register a network.
 		</para>
 		<para>
@@ -1801,7 +1800,7 @@ closest to the object always applies.
 		</para>
 		<para>
 		  DHCP shared subnet objects can only be managed via
-		  the <emphasis>LDAP directory</emphasis> module of the &ucsUMC;. To do so, one must
+		  the UMC module <emphasis>LDAP directory</emphasis>. To do so, one must
 		  always be in a DHCP shared network object - a DHCP shared subnet object
 		  must always be created below a DHCP shared network object - and
 		  a <guimenu>DHCP shared subnet</guimenu> object added
@@ -1816,8 +1815,7 @@ closest to the object always applies.
 		<title>Setting the gateway</title>
 		<para>
 		  The default gateway can be specified via DHCP with a <emphasis>DHCP routing</emphasis>
-		  policy, which is managed in the <guimenu>Policies</guimenu>
-		  module of the &ucsUMC;.
+		  policy, which is managed in the UMC module <guimenu>Policies</guimenu>.
 		</para>
 		<para>
 		  General information on policy management can be found in <xref linkend="central:policies"/>.
@@ -1861,7 +1859,7 @@ closest to the object always applies.
 		<para>
 		  The name servers to be used by a client can be specified via DHCP with
 		  a <emphasis>DHCP DNS</emphasis> policy, which is managed in
-		  the <guimenu>Policies</guimenu> module of the &ucsUMC;.
+		  the UMC module <guimenu>Policies</guimenu>.
 		</para>
 		<para>
 		  General information on policy management can be found in
@@ -1919,7 +1917,7 @@ closest to the object always applies.
 		<para>
 		  The WINS server to be used can be specified via DHCP with
 		  a <emphasis>DHCP NetBIOS</emphasis> policy, which is managed in
-		  the <guimenu>Policies</guimenu> module of the &ucsUMC;.
+		  the UMC module <guimenu>Policies</guimenu>.
 		</para>
 		<para>
 		  General information on policy management can be found in
@@ -2009,7 +2007,7 @@ closest to the object always applies.
 		<para>
 		  The validity of an assigned IP address - a so-called DHCP lease
 		  - can be specified with a <emphasis>DHCP lease time</emphasis> policy, which
-		  is managed in the <guimenu>Policies</guimenu> module of the &ucsUMC;.
+		  is managed in the UMC module <guimenu>Policies</guimenu>.
 		</para>
 		<para>
 		  General information on policy management can be found in <xref linkend="central:policies"/>.
@@ -2076,7 +2074,7 @@ closest to the object always applies.
 		<para>
 		  A <emphasis>DHCP Boot</emphasis> policy is used to assign computers configuration
 		  parameters for booting via BOOTP/PXE. They are managed in
-		  the <guimenu>Policies</guimenu> module of the &ucsUMC;.
+		  the UMC module <guimenu>Policies</guimenu>.
 		</para>
 		<para>
 		  General information on policy management can be found in <xref linkend="central:policies"/>.
@@ -2251,7 +2249,7 @@ closest to the object always applies.
 	  </para>
 	  <para>
 		If changes are made to the configuration, Squid must be
-		restarted. This can be performed either via the &ucsUMC; or the
+		restarted. This can be performed either via &ucsUMC; or the
 		command line:
 	  </para>
 		<programlisting language="sh">
@@ -2502,7 +2500,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 
 	  <para>
 		For group changes to take effect, Dansguardian needs to be restarted. This can be done
-		either in the <guimenu>System services</guimenu> module of the &ucsUMC; or on the
+		either in the UMC module <guimenu>System services</guimenu> or on the
 		commandline using the command
 	  </para>
 <programlisting language="sh">

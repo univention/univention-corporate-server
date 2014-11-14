@@ -417,7 +417,7 @@ update-ca-certificates
 		  <section id="uvmm::addpool">
 			<title>Hinzufügen eines Speicherbereichs</title>
 			<para>
-			  Ein weiterer Speicherbereich kann nicht über die &ucsUMC; angelegt werden. Stattdessen muss eine
+			  Ein weiterer Speicherbereich kann nicht über &ucsUMC; angelegt werden. Stattdessen muss eine
 			  Anmeldung als Benutzer <emphasis>root</emphasis> auf einen Virtualisierungs-Server
 			  erfolgen. Die folgenden Schritte sind dafür nötig:
 
@@ -675,7 +675,7 @@ update-ca-certificates
 	<section id="uvmm::management">
 		<title>Verwaltung virtueller Maschinen mit der Univention Management Console</title>
 		<para>
-			Die Verwaltung virtueller Maschinen im &ucsUVMM; erfolgt über das Modul <emphasis>Virtuelle Maschinen (UVMM)</emphasis> der &ucsUMC;.
+			Die Verwaltung virtueller Maschinen im &ucsUVMM; erfolgt über das UMC-Modul <emphasis>Virtuelle Maschinen (UVMM)</emphasis>.
 			Es bietet die Möglichkeit virtuelle Maschinen anzulegen, zu bearbeiten, zu löschen und den Status zu ändern.
 			Diese Funktionen sind prinzipiell unabhängig von der eingesetzten Virtualisierungstechnik (vor Ort oder cloudbasiert), können sich aber im Detail unterscheiden.
 			Was dabei zu beachten ist, wird in den folgenden Abschnitten zu den Beschreibungen der Funktionen erläutert.
@@ -1144,7 +1144,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 		</itemizedlist>
 		<para>
 			Die UVMM-Profile werden aus dem <acronym>LDAP</acronym>-Verzeichnis gelesen und können dort auch angepasst werden.
-			Zu finden sind die Profile im Modul <guimenu>LDAP-Verzeichnis</guimenu> der &ucsUMC; im Container <emphasis>cn=Profiles,cn=Virtual Machine Manager</emphasis>.
+			Zu finden sind die Profile im UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu> im Container <emphasis>cn=Profiles,cn=Virtual Machine Manager</emphasis>.
 			Dort können auch weitere Profile hinzugefügt werden.
 		</para>
 		<section id="uvmm::profile::network">

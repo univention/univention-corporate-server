@@ -876,7 +876,7 @@
 	<para>
 		Univention stellt für UCS ein Amazon Machine Image (AMI) für die
 		Amazon EC2 Cloud bereit. Aus diesem generischen Image für alle UCS-Systemrollen wird eine eigene Instanz
-		abgeleitet, die über die &ucsUMC; konfiguriert wird (Domänenname,
+		abgeleitet, die über &ucsUMC; konfiguriert wird (Domänenname,
 		Softwareauswahl etc.).
 	</para>
 	<para>

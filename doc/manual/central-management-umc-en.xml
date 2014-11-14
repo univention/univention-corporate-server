@@ -27,7 +27,7 @@
 	</itemizedlist>
 	<para>
 		<xref linkend="central:user-interface"/> describes the user interface of
-		the &ucsUMC;. <xref linkend="central:extendedattrs"/> describes how the functions of the
+		&ucsUMC;. <xref linkend="central:extendedattrs"/> describes how the functions of the
 		domain management can be expanded with additional attributes.
 	</para>
 	<para>
@@ -68,7 +68,7 @@
 		  The overview page can be opened on any UCS system via the URL
 		  <uri>https://servername/</uri>. Alternatively, access is also possible via the server's
 		  IP address. All the services which are offered on a system are linked here. In the
-		  <guimenu>Administration</guimenu> tab, the &ucsUMC; can then be opened using the
+		  <guimenu>Administration</guimenu> tab, &ucsUMC; can then be opened using the
 		  <guimenu>System and domain settings</guimenu> or the <guimenu>system settings</guimenu> link.
 		  If there are services installed on
 		  the system which include their own web service (e.g., Horde web mail), they are linked
@@ -168,7 +168,7 @@
 
 		<para>
 		  If the number of licensed user or computer objects is exceeded, it is not possible to create
-		  any additional objects in the &ucsUMC; or edit any existing ones unless an extended
+		  any additional objects in &ucsUMC; or edit any existing ones unless an extended
 		  licence is imported or no longer required users or computers are deleted. A corresponding
 		  message is displayed on the UMC start page if the licence is exceeded.
 		</para>
@@ -341,7 +341,7 @@
 	<section id="central-management-umc:feedback">
 		<title>Feedback on UMC and UCS</title>
 		<para>
-			By choosing the <guimenu>Help / Feedback</guimenu> option in the upper right user menu
+			By choosing the <guimenu>Help &ar; Feedback</guimenu> option in the upper right user menu
 			of &ucsUMC;, you can provide feedback on UCS and &ucsUMC; via a web form.
 		</para>
 	</section>
@@ -359,17 +359,17 @@
 <section id="central-management-umc:piwik">
   <title>Collection of usage statistics</title>
   <para>
-	Anonymous usage statistics on the use of the &ucsUMC; are collected when using the <emphasis>free for
+	Anonymous usage statistics on the use of &ucsUMC; are collected when using the <emphasis>free for
 	personal use</emphasis> version of UCS (which is generally used for evaluating UCS). The modules
 	opened are logged in an instance of the web traffic analysis tool Piwik. This makes it
-	possible for Univention to tailor the development of the &ucsUMC; better to customer needs
+	possible for Univention to tailor the development of &ucsUMC; better to customer needs
 	and carry out usability improvements.
   </para>
 
   <para>
 	This logging is only performed when the <emphasis>free-for-personal-use
 	license</emphasis> is used. The license status can be verified via the
-	menu entry <guimenu>License / License information</guimenu> of the user
+	menu entry <guimenu>License &ar; License information</guimenu> of the user
 	menu in the upper right corner of &ucsUMC;.  If <guimenu>Free for personal
 	use edition</guimenu> is listed under <guimenu>LDAP base</guimenu>,
 	this version is in use. When a regular UCS license is used, no usage
@@ -457,8 +457,8 @@
 	<section id="central-management-umc:Creating_a_policy">
 		<title>Creating a policy</title>
 		<para>
-			Policies can be managed via the <guimenu>Policies</guimenu> module of
-			the &ucsUMC;. The operation is the same as for the functions
+			Policies can be managed via the UMC module <guimenu>Policies</guimenu>.
+			The operation is the same as for the functions
 			described in <xref linkend="central:user-interface"/>.
 		</para>
 		<para>
@@ -585,7 +585,7 @@
 <section id="central:extendedattrs">
 	<title>Expansion of UMC with extended attributes</title>
 	<para>
-		The domain management of the &ucsUMC; allows the comprehensive
+		The domain management of &ucsUMC; allows the comprehensive
 		management of the data in a domain. <emphasis>Extended attributes</emphasis>
 		offer the possibility of integrating new attributes in the domain
 		management which are not covered by the UCS standard scope. Extended
@@ -593,8 +593,8 @@
 		of solutions in UCS.
 	</para>
 	<para>
-		Extended attributes are managed in the <guimenu>LDAP directory</guimenu>
-		module of the &ucsUMC;. There one needs to switch to
+		Extended attributes are managed in the UMC module <guimenu>LDAP directory</guimenu>.
+		There one needs to switch to
 		the <emphasis>univention</emphasis> container and then to the <emphasis>custom attributes</emphasis>
 		subcontainer. Existing attributes can be edited here or a
 		new <guimenu>Settings: extended attribute</guimenu> object created
@@ -644,7 +644,7 @@
 		  <row>
 			<entry>Short description</entry>
 			<entry>
-			  Used as title of the input field in the &ucsUMC; or as the attribute description in
+			  Used as title of the input field in &ucsUMC; or as the attribute description in
 			  the command line interface.
 			</entry>
 		  </row>
@@ -846,7 +846,7 @@
 			  mandatory attribute.
 			</entry>
 		  </row>
-		  
+
 		  <row>
 			<entry>Span both columns</entry>
 			<entry>
@@ -854,12 +854,12 @@
 			  overlong input fields, which need the full width of the tab.
 			</entry>
 		  </row>
-		  
+
 		  <row>
 			<entry>Tab name</entry>
 			<entry>
 			  <para>
-				The name of the tab in the &ucsUMC; on which the extended attribute should be
+				The name of the tab in &ucsUMC; on which the extended attribute should be
 				displayed. New tabs can also be added here.
 			  </para>
 
@@ -948,7 +948,7 @@
 			<entry>Syntax class</entry>
 			<entry>
 			  <para>
-				When values are entered, the &ucsUMC; performs a syntax check.
+				When values are entered, &ucsUMC; performs a syntax check.
 			  </para>
 
 			  <para>
@@ -1041,7 +1041,7 @@
 	</itemizedlist>
 	<para>
 		Containers and organisational units are managed in
-		the <guimenu>LDAP directory</guimenu> module of the &ucsUMC; and are created
+		the UMC module <guimenu>LDAP directory</guimenu> and are created
 		with <guimenu>Add</guimenu> and the object
 		types <guimenu>Container: Container</guimenu> and
 		<guimenu>Container:	Organisational unit</guimenu>.
@@ -1683,7 +1683,7 @@ univention-directory-manager dns/ptr_record create \
 	  <section id="central:udm:example:extendedattr">
 		<title>Extended attributes</title>
 		<para>
-		  Extended attributes can be used to expand the functional scope of the &ucsUMC;,
+		  Extended attributes can be used to expand the functional scope of &ucsUMC;,
 		  see <xref linkend="central:extendedattrs"/>. In the following example, a new attribute is
 		  added, where the car license number of the company car can be saved for each user. The
 		  values are managed in the object class <emphasis>univentionFreeAttributes</emphasis> created specially for this purpose:
@@ -1721,7 +1721,7 @@ univention-directory-manager settings/extended_attribute create \
 	</para>
 	<para>
 		The creation of the reports is directly integrated in the web
-		interface of the &ucsUMC;. Alternatively, the command line program
+		interface of &ucsUMC;. Alternatively, the command line program
 		<command>univention-directory-reports</command> can be used.
 	</para>
 	<para>
@@ -1732,8 +1732,7 @@ univention-directory-manager settings/extended_attribute create \
 		templates can be created and registered.
 	</para>
 	<para>
-		Reports can be created via a command line program or via the &ucsUMC;
-		web interface.
+		Reports can be created via a command line program or via &ucsUMC;.
 	</para>
 
 	<section id="central:reports:create">

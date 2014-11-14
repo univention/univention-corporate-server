@@ -19,7 +19,7 @@
 	</para>
 
 	<para>
-	  UCS-Systeme können über die &ucsUMC;, über ein Kommandozeilen-Tool
+	  UCS-Systeme können über &ucsUMC;, über ein Kommandozeilen-Tool
 	  und richtliniengesteuert aktualisiert werden. Dies wird in
 	  <xref linkend="software::ucs-updates"/> beschrieben. Die UCS-Softwareverteilung
 	  unterstützt nicht die Aktualisierung von Microsoft
@@ -129,7 +129,7 @@
 
 	<para>
 	  Wenn neue Release- oder Errata-Updates verfügbar sind, wird bei der Anmeldung
-	  an der &ucsUMC; ein entsprechender Hinweis ausgegeben.
+	  an &ucsUMC; ein entsprechender Hinweis ausgegeben.
 	</para>
 
 	<para>
@@ -290,7 +290,7 @@
 	<section id="computers:Konfiguration_ueber_die_Univention_Management_Console">
 	  <title>Konfiguration über die Univention Management Console</title>
 	  <para>
-		Im <guimenu>Repository-Einstellungen</guimenu>-Modul der &ucsUMC;
+		Im UMC-Modul <guimenu>Repository-Einstellungen</guimenu>
 		kann der <guimenu>Repository-Server</guimenu> und die Verwendung der
 		Maintained- und Unmaintained-Sektionen festgelegt werden.
 	  </para>
@@ -315,7 +315,7 @@
 	  <title>Richtlinienbasierte Konfiguration des Repository-Servers</title>
 	  <para>
 		Der zu verwendende Repository-Server kann auch über die Richtlinie
-		<guimenu>Repository-Server</guimenu> in der Rechnerverwaltung der &ucsUMC;
+		<guimenu>Repository-Server</guimenu> in der UMC-Rechnerverwaltung
 		festgelegt werden. In dem Auswahlfeld werden UCS-Server-Systeme
 		angezeigt, für die ein DNS-Eintrag hinterlegt ist.
 	  </para>
@@ -407,8 +407,8 @@ univention-repository-update -h
 	<title>Aktualisierung von UCS-Systemen</title>
 	<para>
 	  UCS-Systeme können auf zwei Wegen aktualisiert werden; entweder pro einzelnem System
-	  (über die &ucsUMC; oder auf der Kommandozeile) oder für größere Gruppen von
-	  UCS-Systemen automatisiert über eine Rechner-Richtlinie der &ucsUMC;.
+	  (über &ucsUMC; oder auf der Kommandozeile) oder für größere Gruppen von
+	  UCS-Systemen automatisiert über eine UMC-Rechner-Richtlinie.
 	</para>
 
 	<section id="computers:Update-Strategie_in_Umgebungen_mit_mehr_als_einem_UCS-System">
@@ -442,9 +442,9 @@ univention-repository-update -h
 	</section>
 
 	<section id="computers:Aktualisierung_eines_einzelnen_Systems_in_der_UMC">
-	  <title>Aktualisierung eines einzelnen Systems in der &ucsUMC;</title>
+	  <title>Aktualisierung eines einzelnen Systems in &ucsUMC;</title>
 	  <para>
-		Mit dem <guimenu>Software-Aktualisierung</guimenu>-Modul der &ucsUMC; können Versions- und
+		Mit dem UMC-Modul <guimenu>Software-Aktualisierung</guimenu> können Versions- und
 		Errata-Updates installiert werden.
 	  </para>
 
@@ -532,8 +532,8 @@ univention-repository-update -h
 	<section id="computers::softwaremanagement::releasepolicy">
 	  <title>Aktualisierung von Systemen über eine Rechner-Richtlinie</title>
 	  <para>
-		Mit einer <guimenu>Release-Richtlinie</guimenu> in der
-		Rechner-/Domänenverwaltung der &ucsUMC; lässt sich ein Update für
+		Mit einer <guimenu>Release-Richtlinie</guimenu> in den
+		UMC-Modulen zur Rechner- und Domänenverwaltung lässt sich ein Update für
 		mehrere Rechner konfigurieren.
 	  </para>
 
@@ -737,7 +737,7 @@ apt-cache search fax
 	</para>
 
 	<para>
-	  Paketrichtlinien werden im Modul <emphasis>Richtlinien</emphasis> der &ucsUMC;
+	  Paketrichtlinien werden im UMC-Modul <emphasis>Richtlinien</emphasis>
 	  mit dem Objekttyp <guimenu>Richtlinie: Pakete + Systemrolle</guimenu>
 	  verwaltet.
 	</para>
@@ -791,8 +791,8 @@ apt-cache search fax
   <section id="computers::softwaremanagement::maintenancepolicy">
 	<title>Festlegung eines Aktualisierungs-Zeitpunkts mit der Paketpflege-Richtlinie</title>
 	<para>
-	  Mit einer <guimenu>Paketpflege</guimenu>-Richtlinie in der
-	  Rechner-/Domänenverwaltung der &ucsUMC; kann ein Zeitpunkt
+	  Mit einer <guimenu>Paketpflege</guimenu>-Richtlinie in den
+	  UMC-Modulen zur Rechner und Domänenverwaltung kann ein Zeitpunkt
 	  vorgegeben werden, an dem die folgenden Schritte durchgeführt werden:
 	</para>
 	<itemizedlist>
@@ -887,7 +887,7 @@ apt-cache search fax
 	</para>
 
 	<para>
-	  Weitere Komponenten können über die &ucsUMC; oder in der &ucsUCR;
+	  Weitere Komponenten können über &ucsUMC; oder in &ucsUCR;
 	  registriert werden.
 	</para>
 
@@ -942,7 +942,7 @@ apt-cache search fax
 		id="computers:Integration_von_Repository-Komponenten_ueber_die_Univention_Management_Console">
 	  <title>Integration von Repository-Komponenten über die Univention Management Console</title>
 	  <para>
-		Im <guimenu>Repository-Einstellungen</guimenu>-Modul der &ucsUMC; ist
+		Im UMC-Modul <guimenu>Repository-Einstellungen</guimenu> ist
 		eine Aufstellung der eingebundenen Repository-Komponenten. Applikationen, die
 		über das Univention App Center eingebunden wurden, werden hier weiterhin
 		aufgeführt, sollten aber über das Modul <guimenu>App Center</guimenu>

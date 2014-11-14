@@ -4,7 +4,7 @@
         UCS integrates central identity management according to the
         <emphasis>same user, same password</emphasis> principle.
         All user information are managed
-        centrally in UCS via the &ucsUMC; and stored in the LDAP directory
+        centrally in UCS via &ucsUMC; and stored in the LDAP directory
         service.
     </para>
     <para>
@@ -21,7 +21,7 @@
     <section id="users::management">
         <title>User management with Univention Management Console</title>
         <para>
-            Users are managed in the <emphasis>Users</emphasis> module of the &ucsUMC;.
+            Users are managed in the UMC module <emphasis>Users</emphasis>.
         </para>
         <para>
 		  In the default setting, a simplified wizard for creating a user is shown, which only
@@ -894,7 +894,7 @@
                 <listitem>
 					<simpara>
                     A <emphasis>password expiry interval</emphasis> demands regular password
-                    changes. A password change is demanded during logons to the &ucsUMC;, to Kerberos,
+                    changes. A password change is demanded during logons to &ucsUMC;, to Kerberos,
                     on Windows clients and on UCS systems following expiry of the period
                     in days. The remaining validity of the password is displayed in the
                     user management under <guimenu>Password expiry date</guimenu> in the
@@ -964,7 +964,7 @@
 
 	  <para>
 		The Samba domain object is managed via the
-		<emphasis>LDAP directory</emphasis> module of the &ucsUMC;. It can
+		UMC module <emphasis>LDAP directory</emphasis>. It can
 		be found in the <emphasis>samba</emphasis> container below
 		the LDAP base and carries the domain's NetBIOS name.
 	  </para>
@@ -1036,11 +1036,11 @@
 
 
     <section id="user-management:Password_changes_by_users_via_UMC">
-        <title>Password changes by users via &ucsUMC;</title>
+        <title>Password changes by users via &ucsUMC; #TODO:OUTDATED</title>
         <para>
-            As standard, users cannot change their password via the &ucsUMC;. To
+            As standard, users cannot change their password via &ucsUMC;. To
             allow user-initiated password changes, the modification must be allowed
-            in the LDAP ACLs and in the &ucsUMC;.
+            in the LDAP ACLs and in &ucsUMC;.
         </para>
         <para>
             To adapt the LDAP ACLs, the &ucsUCRV; <envar>ldap/acl/user/password/change</envar>
@@ -1048,7 +1048,7 @@
             restarted.
         </para>
         <para>
-            For simple activation in the UMC, the policy <emphasis>default-udm-self</emphasis>
+            For simple activation in UMC, the policy <emphasis>default-udm-self</emphasis>
             can be linked with an LDAP object (e.g., with the LDAP base or the group
             <emphasis>Domain Users</emphasis> (see <xref linkend="central:policies:assign"/>)).
         </para>
@@ -1114,8 +1114,8 @@
             <graphic scalefit="1" width="70%" align="center" fileref="illustrations/users_usertemplate_en.png"/>
         </figure>
         <para>
-            User templates are administrated in the <guimenu>LDAP directory</guimenu>
-            module of the &ucsUMC;. There one needs to switch to the
+            User templates are administrated in the UMC module <guimenu>LDAP directory</guimenu>.
+            There one needs to switch to the
             <emphasis>univention</emphasis> container and then to the <emphasis>templates</emphasis>
             subcontainer. A new user template can be created here via the
             <guimenu>Add</guimenu> with the object type

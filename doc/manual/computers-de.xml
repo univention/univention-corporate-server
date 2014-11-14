@@ -29,7 +29,7 @@
             <xref linkend="systemrollen"/>.
         </para>
         <para>
-            Rechnerkonten werden im Modul <guimenu>Rechner</guimenu> der &ucsUMC;
+            Rechnerkonten werden im Modul <guimenu>Rechner</guimenu> von &ucsUMC;
             verwaltet.
         </para>
 
@@ -448,7 +448,7 @@
             <para>
                 Ubuntu-Clients können mit einer eigenen Rechnerrolle in &ucsUMC;
                 verwaltet werden. Die Netzwerkeigenschaften für DNS/DHCP können dabei
-                ebenfalls über die &ucsUMC; verwaltet werden.
+                ebenfalls mit &ucsUMC; verwaltet werden.
             </para>
             <para>
                 Die Anwendung von Richtlinien wird nicht unterstützt.
@@ -1115,7 +1115,7 @@ ucr unset umc/modules/setup/network/disabled/by
         <section id="computers:Einbinden_von_NFS-Freigaben"><title>Einbinden von NFS-Freigaben</title>
 			<para>
             Mit der Richtlinie <guimenu>NFS-Freigaben</guimenu> der Rechnerverwaltung
-            der &ucsUMC; können NFS-Freigaben konfiguriert werden, die auf dem
+            in &ucsUMC; können NFS-Freigaben konfiguriert werden, die auf dem
             System gemountet werden. Zur Auswahl steht eine
             <guimenu>NFS-Freigabe</guimenu>, die unter dem in <guimenu>Mount
             point</guimenu> angegebenen Dateipfad eingehängt wird.
@@ -1218,7 +1218,7 @@ ucr unset umc/modules/setup/network/disabled/by
             <para>
                 &ucsUCR;-Variablen können auf der Kommandozeile über den
                 Befehl <command>univention-config-registry</command> (Kurzform: <command>ucr</command>)
-                oder über die &ucsUMC; konfiguriert werden.
+				oder über das UMC-Modul <guimenu>Univention Config Registry</guimenu> konfiguriert werden.
             </para>
             <para>
                 Da die meisten Pakete ihre Konfiguration über &ucsUCR; durchführen
@@ -1254,8 +1254,8 @@ ucr unset umc/modules/setup/network/disabled/by
                 Ein Teil der über &ucsUCR; konfigurierten Einstellungen sind
                 systemspezifisch (z.B. der Rechnername), viele Eigenschaften können
                 jedoch auch auf mehrere Rechner angewendet werden. Mithilfe der
-                <emphasis>Univention Configuration Registry-Richtlinie</emphasis> in der
-                Domänenverwaltung der &ucsUMC; können Variablen zusammengefasst und
+                <emphasis>Univention Configuration Registry-Richtlinie</emphasis> in den
+                UMC-Modulen zur Domänenverwaltung können Variablen zusammengefasst und
                 auf mehr als einen Rechner angewendet werden.
             </para>
             <para>
@@ -1333,13 +1333,7 @@ univention-config-registry set --force mail/messagesizelimit=1000000
                 Einstellung einer Variable bearbeitet. Das Icon mit dem stilisierten
                 Minuszeichen erlaubt das Löschen einer Variable.
             </para>
-            <para>
-                Einige zentrale Variablen - z.B. der Domänenname - können nicht direkt
-                in &ucsUCR; geändert werden, sondern nur indirekt über die Basiseinstellungen der &ucsUMC;.
-                Diese Variablen werden ausgegraut dargestellt. Eine
-                Bearbeitung über das Kommandozeilen-Frontend ist weiterhin möglich.
-            </para>
-        </section><!-- Verwendung des Web-Interface der Univention Management Console-->
+			</section><!-- Verwendung des Web-Interface der Univention Management Console-->
 
         <section id="computers:Verwendung_des_Kommandozeilenfrontends"><title>Verwendung des Kommandozeilenfrontends</title>
 			<para>
@@ -1502,7 +1496,7 @@ master.firma.de
                 Ein Teil der über &ucsUCR; konfigurierten Einstellungen sind
                 systemspezifisch (z.B. der Rechnername), viele Eigenschaften können
                 jedoch auch auf mehrere Rechner angewendet werden. Mithilfe der
-                im <guimenu>Richtlinien</guimenu>-Modul der &ucsUMC; verwalteten
+                im <guimenu>Richtlinien</guimenu>-Modul von &ucsUMC; verwalteten
                 <guimenu>Univention Configuration Registry</guimenu>-Richtlinie können
                 Variablen zusammengefasst und auf mehr als einen Rechner angewendet
                 werden.
@@ -1767,7 +1761,7 @@ auth/sshd/restrict: yes
 
 		  <para>
 			Alternativ können die LDAP-Server auch über die Richtlinie
-			<guimenu>LDAP-Server</guimenu> in der Rechnerverwaltung der &ucsUMC; festgelegt
+			<guimenu>LDAP-Server</guimenu> in der UMC-Rechnerverwaltung festgelegt
 			werden. Die Reihenfolge der Server bestimmt die Reihenfolge der Anfragen des Rechners an
 			die Server, falls ein LDAP-Server nicht erreichbar sein sollte.
 		  </para>
@@ -1790,7 +1784,7 @@ auth/sshd/restrict: yes
             </para>
             <para>
                 Alternativ kann der Server auch über die Richtlinie
-                <guimenu>Druckserver</guimenu> in der Rechnerverwaltung der &ucsUMC; festgelegt werden.
+                <guimenu>Druckserver</guimenu> in der UMC-Rechnerverwaltung festgelegt werden.
             </para>
         </section><!-- Konfiguration des verwendeten Druckservers -->
 

@@ -33,7 +33,7 @@
 	<section id="groups::management">
 		<title>Managing groups in the Univention Management Console</title>
 		<para>
-			Groups are managed in the module <emphasis>Groups</emphasis> of the &ucsUMC;.
+			Groups are managed in the UMC module <emphasis>Groups</emphasis>.
 		</para>
 		<figure id="create-group">
 			<title>Creating a group in UMC</title>
@@ -310,7 +310,7 @@
 
 		<para>
 		  When the group cache file is being generated, the script verifies whether the group
-		  members are still present in the LDAP directory. If only the &ucsUMC; is used for user
+		  members are still present in the LDAP directory. If only &ucsUMC; is used for user
 		  management, this additional check is not necessary and can be
 		  disabled by setting the &ucsUCRV; <envar>nss/group/cachefile/check_member</envar> to
 		  <emphasis>false</emphasis>.

@@ -64,7 +64,7 @@
 	</para>
 	<para>
 	  The management of the user data of the mail server (e.g., e-mail addresses or
-	  mailing list) is performed in the &ucsUMC; and is documented in the Chapter
+	  mailing list) is performed in &ucsUMC; and is documented in the Chapter
 	  <xref linkend="mail::management::general"/>. The configuration of the mail
 	  server is performed via &ucsUCR; (see <xref
 	  linkend="mail::serverconfig::general"/>).
@@ -141,7 +141,7 @@
 		by an Internet provider.
 	  </para>
 	  <para>
-		Mail domains are managed in the <emphasis>Mail</emphasis> module of the &ucsUMC;
+		Mail domains are managed in the UMC module <emphasis>Mail</emphasis>
 		with the <guimenu>Mail domain</guimenu> object type.
 	  </para>
 	  <para>
@@ -181,7 +181,7 @@
 			  address can be configured for every user. It also defines the user's IMAP mailbox. 
 			  If a mail home server is assigned to a user (see <xref linkend="mail::homeserver"/>),
 			  the IMAP inbox is automatically created by a Univention directory listener module.
-			  The domain part of the e-mail address must be registered in the &ucsUMC; (see
+			  The domain part of the e-mail address must be registered in &ucsUMC; (see
 			  <xref linkend="mail::management::domains"/>).
 			</para>
 		  </listitem>
@@ -192,13 +192,13 @@
 			  alternative e-mail addresses do not have to be unique: if two users
 			  have the same e-mail address, they both receive all the e-mails which
 			  are sent to this address. The domain part of the
-			  e-mail address must be registered in the &ucsUMC; (see
+			  e-mail address must be registered in &ucsUMC; (see
 			  <xref linkend="mail::management::domains"/>).
 			</para>
 		  </listitem>
 		</itemizedlist>
 	  <para>
-		E-mail addresses are managed in the <emphasis>Users</emphasis> module of the &ucsUMC;.
+		E-mail addresses are managed in the UMC module <emphasis>Users</emphasis>.
 	  </para>
 	  <para>
 		General information on the operation of the domain management modules
@@ -230,7 +230,7 @@
 		</figure>
 	  </para>
 	  <para>
-		Mail domains are managed in the <emphasis>Mail</emphasis> module of the &ucsUMC;
+		Mail domains are managed in the UMC module <emphasis>Mail</emphasis>
 		with the <guimenu>Mailing list</guimenu> object type.
 	  </para>
 	  <para>
@@ -280,8 +280,7 @@
 		delivered to the primary address of each of the group members.
 	  </para>
 	  <para>
-		Mail groups are managed in the <emphasis>Groups</emphasis> module of
-		the &ucsUMC;.
+		Mail groups are managed in the UMC module <emphasis>Groups</emphasis>.
 	  </para>
 	  <para>
 		General information on the operation of the domain management modules
@@ -328,8 +327,8 @@
 		</figure>
 	  </para>
 	  <para>
-		Shared IMAP folders are managed in the <emphasis>Mail</emphasis> module of
-		the &ucsUMC; with the <guimenu>Mail folder (IMAP)</guimenu> object type.
+		Shared IMAP folders are managed in the UMC module <emphasis>Mail</emphasis>
+		with the <guimenu>Mail folder (IMAP)</guimenu> object type.
 	  </para>
 	  <para>
 		General information on the operation of the domain management modules
@@ -390,7 +389,7 @@
 				  possible to write in the folder from e-mail clients.
 				</para>
 				<para>
-				  The domain part of the e-mail address must be registered in the &ucsUMC; (see
+				  The domain part of the e-mail address must be registered in &ucsUMC; (see
 				  <xref linkend="mail::management::domains"/>).
 				</para>
 				<para>
@@ -423,7 +422,7 @@
 				<para>
 				  Access permissions based on users or groups can be entered
 				  here. Users are entered with their primary e-mail addresses; the groups saved
-				  in the &ucsUMC; can be used as groups.
+				  in &ucsUMC; can be used as groups.
 				</para>
 				<para>
 				  The access permissions have the following consequences for individual
@@ -499,8 +498,7 @@
 	  </para>
 	  <para>
 		The limit is specified by the <emphasis>Mail quota</emphasis> policy, which is
-		managed under <emphasis>Policies</emphasis> in the <emphasis>Users</emphasis> module
-		of the &ucsUMC;.
+		managed under <emphasis>Policies</emphasis> in the UMC module <emphasis>Users</emphasis>.
 	  </para>
 	  <para>
 		General information on policy management can be found in <xref
@@ -724,7 +722,7 @@
 	  <para>
 		The mail is fetched every twenty minutes once at least one e-mail address is configured for
 		mail retrieval. After the initial configuration of a user Fetchmail needs to be started in the
-		<guimenu>System services</guimenu> module of the &ucsUMC;. In that module the fetching can
+		UMC module <guimenu>System services</guimenu>. In that module the fetching can
 		also be disabled (alternatively by setting the &ucsUCRV; <envar>fetchmail/autostart</envar>
 		to <emphasis>false</emphasis>).
 	  </para>

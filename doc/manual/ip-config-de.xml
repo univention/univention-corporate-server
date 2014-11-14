@@ -2,7 +2,7 @@
   <title>IP- und Netzverwaltung</title>
   <para>
 	IP-Adressen für die in einer UCS-Domäne verwalteten Rechnersysteme
-	können zentral über die &ucsUMC; verwaltet und per DHCP zugewiesen werden.
+	können zentral über &ucsUMC; verwaltet und per DHCP zugewiesen werden.
   </para>
   <para>
 	Mit <emphasis>Netzwerk-Objekten</emphasis> lassen sich verfügbare IP-Adressen
@@ -50,7 +50,7 @@
 	  verwendet werden.
 	</para>
 	<para>
-	  Netzwerk-Objekte werden im Modul <emphasis>Netzwerke</emphasis> der &ucsUMC;
+	  Netzwerk-Objekte werden im UMC-Modul <emphasis>Netzwerke</emphasis>
 	  verwaltet.
 	</para>
 	<para>
@@ -116,7 +116,7 @@
 				Lookup Zone angelegt.
 			  </para>
 			  <para>
-				Die Zonen werden ebenfalls in der &ucsUMC; verwaltet, siehe
+				Die Zonen werden ebenfalls in &ucsUMC; verwaltet, siehe
 				<xref linkend="networks::dns::forwardzone"/>.
 			  </para>
 			  <para>
@@ -149,7 +149,7 @@
 				IP-Adresse unterhalb des gewählten DHCP-Services angelegt.
 			  </para>
 			  <para>
-				Die DHCP-Service-Einstellungen werden ebenfalls in der &ucsUMC;
+				Die DHCP-Service-Einstellungen werden ebenfalls in &ucsUMC;
 				verwaltet, siehe <xref linkend="networks::dhcp::general"/>.
 			  </para>
 			  <para>
@@ -276,7 +276,7 @@
 		<para>
 		  In einer typischen Bind-Installation auf einem Nicht-UCS-System
 		  wird die Konfiguration durch das Bearbeiten von Zonen-Dateien
-		  durchgeführt. In UCS wird Bind komplett über die &ucsUMC;
+		  durchgeführt. In UCS wird Bind komplett über &ucsUMC;
 		  konfiguriert, das seine Daten im LDAP-Verzeichnis speichert.
 		</para>
 		<para>
@@ -318,7 +318,7 @@
 		<para>
 		  Das Backend wird über die &ucsUCRV; <envar>dns/backend</envar> konfiguriert. Die
 		  DNS-Verwaltung ändert sich durch das verwendete Backend nicht und erfolgt
-		  in beiden Fällen über die &ucsUMC;.
+		  in beiden Fällen über &ucsUMC;.
 		</para>
 	  </section>
 
@@ -367,8 +367,8 @@
 		<title>Forward Lookup Zonen</title>
 		<para>
 		  Forward Lookup Zonen enthalten Informationen, die zum Auflösen von
-		  DNS-Namen in IP-Adressen verwendet werden. Sie werden im Modul
-		  <emphasis>DNS</emphasis> der &ucsUMC; verwaltet. Um eine weitere Forward Lookup
+		  DNS-Namen in IP-Adressen verwendet werden. Sie werden im UMC-Modul
+		  <emphasis>DNS</emphasis> verwaltet. Um eine weitere Forward Lookup
 		  Zone anzulegen, muss <guimenu>Alle DNS-Zonen</guimenu> selektiert werden und
 		  <guimenu>Hinzufügen &ar; DNS: Forward Lookup Zone</guimenu> ausgewählt werden.
 		</para>
@@ -813,7 +813,7 @@
 		<title>Reverse Lookup Zonen</title>
 		<para>
 		  Eine Reverse Lookup Zone dient zur Umwandlung von IP-Adressen in Rechnernamen. Sie werden
-		  im Modul <emphasis>DNS</emphasis> der &ucsUMC; verwaltet. Um eine weitere Reverse Lookup
+		  im UMC-Modul <emphasis>DNS</emphasis> verwaltet. Um eine weitere Reverse Lookup
 		  Zone anzulegen, muss <guimenu>Alle DNS-Zonen</guimenu> selektiert werden und
 		  <guimenu>Hinzufügen &ar; DNS: Reverse Lookup Zone</guimenu> ausgewählt werden.
 		</para>
@@ -924,8 +924,7 @@
 	  <section id="ip-config:Pointer_Records">
 		<title>Pointer Records</title>
 		<para>
-		  Pointer-Records werden im Modul <emphasis>DNS</emphasis> der
-		  &ucsUMC; verwaltet. 
+		  Pointer-Records werden im UMC-Modul <emphasis>DNS</emphasis> verwaltet.
 		  Um einen weiteren Record anzulegen, muss in der linken Spalte eine
 		  Reverse Lookup Zone ausgewählt werden. Mit <guimenu>Hinzufügen &ar; DNS: Pointer
 		  Record</guimenu> kann dann ein neuer Record angelegt werden.
@@ -1085,7 +1084,7 @@
 	  <section id="networks::dhcp::services">
 		<title>Verwaltung von DHCP-Services</title>
 		<para>
-		  DHCP-Services werden im Modul <emphasis>DHCP</emphasis> der &ucsUMC; verwaltet. Um einen
+		  DHCP-Services werden im UMC-Modul <emphasis>DHCP</emphasis> verwaltet. Um einen
 		  neuen DHCP-Service anzulegen muss zuerst <guimenu>Alle DHCP-Dienste</guimenu> selektiert
 		  werden, der Klick auf <guimenu>Hinzufügen</guimenu> legt dann einen neue Service an.
 		</para>
@@ -1154,8 +1153,8 @@
 		  einen <emphasis>DHCP-Server</emphasis>-Eintrag im LDAP-Verzeichnis. Der Eintrag
 		  muss in der Regel nicht von Hand angelegt werden, sondern wird durch
 		  das Join-Skript des <package>univention-dhcp</package>-Pakets angelegt.
-		  Um dennoch manuell einen weiteren Record anzulegen, muss im Modul
-		  <emphasis>DHCP</emphasis> der &ucsUMC; in der linken Spalte ein
+		  Um dennoch manuell einen weiteren Record anzulegen, muss im UMC-Modul
+		  <emphasis>DHCP</emphasis> in der linken Spalte ein
 		  DHCP-Service ausgewählt werden. Mit <guimenu>Hinzufügen &ar; DHCP Server</guimenu>
 		  kann dann ein neuer Server registriert werden.
 		</para>
@@ -1198,7 +1197,7 @@
 	  <section id="ip-config:Verwaltung_von_DHCP-Subnetzen">
 		<title>Verwaltung von DHCP-Subnetzen</title>
 		<para>
-		  DHCP-Subnetze werden im Modul <emphasis>DHCP</emphasis> der &ucsUMC; verwaltet. Um ein
+		  DHCP-Subnetze werden im UMC-Modul <emphasis>DHCP</emphasis> verwaltet. Um ein
 		  weiteres Subnetz anzulegen, muss in der linken Spalte ein DHCP-Service ausgewählt
 		  werden. Mit <guimenu>Hinzufügen &ar; DHCP: Subnetz</guimenu> kann dann ein neues Subnetz
 		  angelegt werden.
@@ -1286,7 +1285,7 @@
 	  <section id="ip-config:Verwaltung_von_DHCP-Pools">
 		<title>Verwaltung von DHCP-Pools</title>
 		<para>
-		  DHCP-Pools können nur über das Modul <emphasis>LDAP-Verzeichnis</emphasis> der &ucsUMC;
+		  DHCP-Pools können nur über das UMC-Modul <emphasis>LDAP-Verzeichnis</emphasis>
 		  verwaltet werden. Dazu muss in ein DHCP-Subnetz-Objekt navigiert
 		  werden - ein DHCP-Pool-Objekt muss immer unterhalb eines
 		  DHCP-Subnetz-Objektes angelegt werden - und dort mit
@@ -1428,9 +1427,9 @@
 		</para>
 
 		<para>
-		  DHCP-Rechner-Objekte werden im Modul <emphasis>DHCP</emphasis> der &ucsUMC;
-		  verwaltet. Um einen Rechner manuell im DHCP zu registrieren, muss in der linken Spalte des
-		  &ucsUMC;-Moduls <guimenu>DHCP</guimenu> ein DHCP-Service ausgewählt werden. Mit
+		  DHCP-Rechner-Objekte werden im UMC-Modul <emphasis>DHCP</emphasis> verwaltet.
+		  Um einen Rechner manuell im DHCP zu registrieren, muss in der linken Spalte des
+		  Moduls ein DHCP-Service ausgewählt werden. Mit
 		  <guimenu>Hinzufügen &ar; DHCP: Rechner</guimenu> kann dann ein Rechner registriert werden.
 		</para>
 
@@ -1499,9 +1498,9 @@
 		</para>
 
 		<para>
-		  DHCP-Shared-Network-Objekte werden im Modul <emphasis>DHCP</emphasis> der &ucsUMC;
+		  DHCP-Shared-Network-Objekte werden im UMC-Modul <emphasis>DHCP</emphasis>
 		  verwaltet. Um ein Shared Network anzulegen, muss in der linken Spalte des
-		  &ucsUMC;-Moduls <guimenu>DHCP</guimenu> ein DHCP-Service ausgewählt werden. Mit
+		  Moduls ein DHCP-Service ausgewählt werden. Mit
 		  <guimenu>Hinzufügen &ar; DHCP: Shared Network</guimenu> kann dann ein Netzwerk registriert
 		  werden.
 		</para>
@@ -1546,7 +1545,7 @@
 		  <emphasis>DHCP:Shared Subnet</emphasis>-Objekt anzulegen.
 		</para>
 		<para>
-		  DHCP-Shared-Subnet-Objekte können nur über das Modul <emphasis>LDAP-Verzeichnis</emphasis> der &ucsUMC;
+		  DHCP-Shared-Subnet-Objekte können nur über das UMC-Modul <emphasis>LDAP-Verzeichnis</emphasis>
 		  verwaltet werden. Dazu muss in ein DHCP-Shared Network-Objekt navigiert
 		  werden - ein DHCP-Shared Subnet-Objekt muss immer unterhalb eines
 		  DHCP-Shared Network-Objektes angelegt werden - und dort mit
@@ -1562,7 +1561,7 @@
 		<para>
 		  Das Default-Gateway kann per DHCP über eine Richtlinie vom Typ
 		  <emphasis>DHCP Routing</emphasis> festgelegt werden, die im
-		  <guimenu>Richtlinien</guimenu>-Modul der &ucsUMC; verwaltet wird.
+		  UMC-Modul <guimenu>Richtlinien</guimenu> verwaltet wird.
 		</para>
 		<para>
 		  Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
@@ -1598,7 +1597,7 @@
 		<para>
 		  Die von einem Client zu verwendenden Nameserver können per DHCP über
 		  eine Richtlinie vom Typ <emphasis>DHCP DNS</emphasis> festgelegt werden, die im
-		  <guimenu>Richtlinien</guimenu>-Modul der &ucsUMC; verwaltet wird.
+		  UMC-Modul <guimenu>Richtlinien</guimenu> verwaltet wird.
 		</para>
 		<para>
 		  Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
@@ -1644,7 +1643,7 @@
 		<para>
 		  Der zu verwendende WINS-Server kann per DHCP über eine Richtlinie vom Typ
 		  <emphasis>DHCP NetBIOS</emphasis> festgelegt werden, die im
-		  <guimenu>Richtlinien</guimenu>-Modul der &ucsUMC; verwaltet wird.
+		  UMC-Modul <guimenu>Richtlinien</guimenu> verwaltet wird.
 		</para>
 		<para>
 		  Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
@@ -1717,7 +1716,7 @@
 		<para>
 		  Die Gültigkeit einer vergebenen IP-Adresse - ein sogenanntes
 		  DHCP-Lease - kann über eine Richtlinie vom Typ <emphasis>DHCP Lease-Zeit</emphasis> festgelegt werden, die im
-		  <guimenu>Richtlinien</guimenu>-Modul der &ucsUMC; verwaltet wird.
+		  UMC-Modul <guimenu>Richtlinien</guimenu> verwaltet wird.
 		</para>
 		<para>
 		  Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
@@ -1768,7 +1767,7 @@
 		<para>
 		  Mit einer <emphasis>DHCP Boot</emphasis>-Richtlinie werden Rechnern
 		  Konfigurationsparameter für das Booten über über BOOTP/PXE zugewiesen. Sie wird im
-		  <guimenu>Richtlinien</guimenu>-Modul der &ucsUMC; verwaltet.
+		  UMC-Modul <guimenu>Richtlinien</guimenu> verwaltet.
 		</para>
 		<para>
 		  Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
@@ -1925,7 +1924,7 @@
 	  </para>
 	  <para>
 		Werden Änderungen an der Konfiguration vorgenommen, muss Squid
-		neu gestartet werden. Dies kann entweder über die &ucsUMC;
+		neu gestartet werden. Dies kann entweder über &ucsUMC;
 		oder auf der Kommandozeile erfolgen:
 		<programlisting language="sh">
 /etc/init.d/squid3 restart
@@ -2182,7 +2181,7 @@ univention-config-registry set squid/webports="80 443"
 
 	  <para>
 		Gruppenänderungen werden erst nach einem Neustart von Dansguardian wirksam, entweder durch
-		das <guimenu>Systemdienste</guimenu>-Modul der &ucsUMC; oder auf der Kommandozeile durch den
+		das UMC-Modul <guimenu>Systemdienste</guimenu> oder auf der Kommandozeile durch den
 		Befehl:
 	  </para>
 <programlisting language="sh">

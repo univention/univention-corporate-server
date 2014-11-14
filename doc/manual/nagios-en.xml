@@ -97,7 +97,7 @@
 	</itemizedlist>
 
 	<para>
-	The Nagios configuration is performed in the &ucsUMC;, the Nagios
+	The Nagios configuration is performed in &ucsUMC;, the Nagios
 	configuration files are automatically generated from the information
 	stored in the LDAP directory.
 	</para>
@@ -429,7 +429,7 @@
 <section id="nagios:Configuration_of_the_Nagios_monitoring">
 	<title>Configuration of the Nagios monitoring</title>
 	<para>
-	The following settings can be performed in the &ucsUMC;:
+	The following settings can be performed in &ucsUMC;:
 	</para>
 
 	<itemizedlist>
@@ -479,8 +479,8 @@
 		</figure>
 
 		<para>
-		Nagios services are administrated in the <emphasis>Nagios</emphasis> module
-		of the &ucsUMC; with the object type <guimenu>Nagios service</guimenu>.
+		Nagios services are administrated in the UMC module <emphasis>Nagios</emphasis>
+		with the object type <guimenu>Nagios service</guimenu>.
 		</para>
 
 		<para>
@@ -749,8 +749,8 @@
 		</para>
 
 		<para>
-		Nagios services are administrated in the <emphasis>Nagios</emphasis> module of
-		the &ucsUMC; with the <guimenu>Nagios time period</guimenu> object type:
+		Nagios services are administrated in the UMC module <emphasis>Nagios</emphasis>
+		with the <guimenu>Nagios time period</guimenu> object type:
 		</para>
 
 		<para>
@@ -1084,7 +1084,7 @@ define command{
 </programlisting>
 
   <para>
-	The new plugin then only needs to be registered in the &ucsUMC; as a
+	The new plugin then only needs to be registered in &ucsUMC; as a
 	<guimenu>Nagios service</guimenu>, see <xref linkend="Nagios:Dienst"/>. The name registered under
 	<emphasis>command_name</emphasis> in the macro file must be entered as the
 	<guimenu>Plugin command</guimenu>, in this example <emphasis>check_fsck</emphasis>, and the

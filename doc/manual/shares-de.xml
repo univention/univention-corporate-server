@@ -1,7 +1,7 @@
 <chapter id="shares::general">
   <title>Freigaben-Verwaltung</title>
   <para>
-	UCS unterstützt die zentrale Verwaltung von Verzeichnisfreigaben. Eine in der &ucsUMC;
+	UCS unterstützt die zentrale Verwaltung von Verzeichnisfreigaben. Eine in &ucsUMC;
 	registrierte Freigabe wird im Rahmen der UCS-Domänenreplikation auf beliebigen Serversystemen
 	der UCS-Domäne angelegt.
   </para>
@@ -83,7 +83,7 @@
   <para>
 	Berechtigungsänderungen an einem freigegebenen Verzeichnis, die direkt im Dateisystem
 	vorgenommen wurden, werden nicht an das LDAP-Verzeichnis weitergeleitet.
-	Wird die Berechtigungen/Besitzer in der &ucsUMC; bearbeitet, werden die Änderungen im
+	Wird die Berechtigungen/Besitzer in &ucsUMC; bearbeitet, werden die Änderungen im
 	Dateisystem überschrieben. Einstellungen der Freigabewurzel sollten deshalb nur mit
 	&ucsUMC; gesetzt und bearbeitet werden. Die weitere Anpassung der
 	Zugriffsrechte der unterliegenden Verzeichnisses erfolgt dann von den
@@ -101,7 +101,7 @@
 
 <section id="shares::management"><title>Verwaltung von Freigaben in der UMC</title>
 <para>
-Verzeichnisfreigaben werden im Modul <emphasis>Freigaben</emphasis> der &ucsUMC; verwaltet.
+	Verzeichnisfreigaben werden im UMC-Modul <emphasis>Freigaben</emphasis> verwaltet.
 </para>
 
 <para>

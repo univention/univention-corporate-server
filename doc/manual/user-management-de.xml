@@ -3,7 +3,7 @@
     <para>
         UCS integriert ein zentrales Identity-Management nach dem <emphasis>Same
         User, Same Password</emphasis>-Prinzip. Alle Benutzerinformationen werden in UCS
-        zentral über die &ucsUMC; verwaltet und im LDAP-Verzeichnisdienst
+        zentral über &ucsUMC; verwaltet und im LDAP-Verzeichnisdienst
         gespeichert.
     </para>
     <para>
@@ -22,7 +22,7 @@
     <section id="users::management">
         <title>Verwaltung von Benutzern mit Univention Management Console</title>
         <para>
-            Benutzer werden im Modul <emphasis>Benutzer</emphasis> der &ucsUMC; verwaltet.
+            Benutzer werden im UMC-Modul <emphasis>Benutzer</emphasis> verwaltet.
         </para>
         <para>
           In der Grundeinstellung wird zum Anlegen eines Benutzers ein vereinfachter Assistent
@@ -992,8 +992,8 @@
 	  </para>
 
 	  <para>
-		Das Samba-Domänenobjekt wird über das Modul
-		<emphasis>LDAP-Verzeichnis</emphasis> der &ucsUMC; verwaltet. Es
+		Das Samba-Domänenobjekt wird über das UMC-Modul
+		<emphasis>LDAP-Verzeichnis</emphasis> verwaltet. Es
 		befindet sich im Container <emphasis>samba</emphasis>
 		unterhalb der LDAP-Basis und trägt den NetBIOS-Namen der Domäne.
 	  </para>
@@ -1065,9 +1065,9 @@
     <section id="user-management:Passwortwechsel_durch_Benutzer_ueber_die_UMC">
         <title>Passwortwechsel durch Benutzer über &ucsUMC;</title>
         <para>
-            Standardmäßig können Benutzer ihr Passwort nicht über die &ucsUMC; ändern.
+            Standardmäßig können Benutzer ihr Passwort nicht über &ucsUMC; ändern.
             Um benutzerinitiierte Passwortwechsel zu erlauben, muss die Änderung
-            in den LDAP-ACLs und in der &ucsUMC; erlaubt werden.
+            in den LDAP-ACLs und in &ucsUMC; erlaubt werden.
         </para>
         <para>
             Zur Anpassung der LDAP-ACLs muss auf dem &ucsMaster; die
@@ -1147,8 +1147,8 @@
             <graphic scalefit="1" width="70%" align="center" fileref="illustrations/users_usertemplate_de.png"/>
         </figure>
         <para>
-            Benutzervorlagen werden im Modul <guimenu>LDAP-Verzeichnis</guimenu>
-            der &ucsUMC; verwaltet. Dort muss in den Container <emphasis>univention</emphasis> und dort in den
+            Benutzervorlagen werden im UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu>
+            verwaltet. Dort muss in den Container <emphasis>univention</emphasis> und dort in den
             Untercontainer <emphasis>templates</emphasis> gewechselt werden. Hier kann
             über <guimenu>Hinzufügen</guimenu> mit dem
             Objekt-Typ <guimenu>Einstellungen: Benutzervorlage</guimenu> eine neue

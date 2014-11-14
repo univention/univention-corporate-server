@@ -81,7 +81,7 @@
 
 	<para>
 	  Die Verwaltung der Benutzerdaten des Mailservers (z.B. E-Mail-Adressen oder
-	  Verteiler) erfolgt über die &ucsUMC; und ist in
+	  Verteiler) erfolgt über &ucsUMC; und ist in
 	  <xref linkend="mail::management::general"/> dokumentiert. Die Daten werden dabei
 	  im LDAP gespeichert. Sobald einem Benutzer im LDAP-Verzeichnis eine primäre
 	  E-Mail-Adresse zugeordnet wird, legt ein Listener-Modul ein IMAP-Postfach auf
@@ -145,7 +145,7 @@
 	  </para>
 
 	  <para>
-		Mail-Domänen werden im Modul <emphasis>Mail</emphasis> der &ucsUMC;
+		Mail-Domänen werden im UMC-Modul <emphasis>Mail</emphasis>
 		mit dem Objekttyp <guimenu>Mail-Domäne</guimenu> verwaltet.
 	  </para>
 
@@ -194,7 +194,7 @@
 			  IMAP-Postfach des Benutzers. Wenn dem Benutzer ein Mail Home Server zugeordnet ist
 			  (siehe <xref linkend="mail::homeserver"/>), wird das IMAP-Postfach automatisch durch
 			  ein Univention Directory Listener-Modul erstellt. Der
-			  Domänenanteil der E-Mail-Adresse muss in der &ucsUMC; registriert sein (siehe
+			  Domänenanteil der E-Mail-Adresse muss in &ucsUMC; registriert sein (siehe
 			  <xref linkend="mail::management::domains"/>).
 			</simpara>
 		  </listitem>
@@ -206,7 +206,7 @@
 			  viele Adressen angegeben werden. Die alternativen E-Mail-Adressen müssen auch
 			  nicht eindeutig sein; besitzen zwei Benutzer die gleiche Adresse, erhalten
 			  beide Benutzer alle E-Mails, die an diese Adresse gesandt werden. Der
-			  Domänenanteil der E-Mail-Adresse muss in der &ucsUMC; registriert sein (siehe
+			  Domänenanteil der E-Mail-Adresse muss in &ucsUMC; registriert sein (siehe
 			  <xref linkend="mail::management::domains"/>).
 			</simpara>
 		  </listitem>
@@ -214,7 +214,7 @@
 	  </para>
 
 	  <para>
-		E-Mail-Adressen werden im Modul <emphasis>Benutzer</emphasis> der &ucsUMC; verwaltet.
+		E-Mail-Adressen werden im UMC-Modul <emphasis>Benutzer</emphasis> verwaltet.
 	  </para>
 
 	  <para>
@@ -252,7 +252,7 @@
 	  </para>
 
 	  <para>
-		Mail-Domänen werden im Modul <emphasis>Mail</emphasis> der &ucsUMC;
+		Mail-Domänen werden im UMC-Modul <emphasis>Mail</emphasis>
 		mit dem Objekttyp <guimenu>Mailingliste</guimenu> verwaltet.
 	  </para>
 
@@ -309,7 +309,7 @@
 	  </para>
 
 	  <para>
-		Mailgruppen werden im Modul <emphasis>Gruppen</emphasis> der &ucsUMC; verwaltet.
+		Mailgruppen werden im UMC-Modul <emphasis>Gruppen</emphasis> verwaltet.
 	  </para>
 
 	  <para>
@@ -364,7 +364,7 @@
 	  </para>
 
 	  <para>
-		Globale IMAP-Ordner werden im Modul <emphasis>Mail</emphasis> der &ucsUMC;
+		Globale IMAP-Ordner werden im UMC-Modul <emphasis>Mail</emphasis>
 		mit dem Objekttyp <guimenu>Mail-Ordner (IMAP)</guimenu> verwaltet.
 	  </para>
 
@@ -425,7 +425,7 @@
 					kann nur aus E-Mail-Clients heraus in den Ordner geschrieben werden.
 				  </para>
 				  <para>
-					Der Domänenanteil der E-Mail-Adresse muss in der &ucsUMC; registriert sein (siehe
+					Der Domänenanteil der E-Mail-Adresse muss in &ucsUMC; registriert sein (siehe
 					<xref linkend="mail::management::domains"/>).
 				  </para>
 				  <para>
@@ -460,7 +460,7 @@
 				  <para>
 					Hier können Zugriffsberechtigungen auf Basis von Benutzern oder Gruppen
 					vergeben werden. Benutzer werden mit Ihren primären E-Mail-Adressen
-					eingetragen, als Gruppen werden die in der &ucsUMC; angelegten Gruppen
+					eingetragen, als Gruppen werden die in &ucsUMC; angelegten Gruppen
 					verwendet.
 				  </para>
 				  <para>
@@ -537,7 +537,7 @@
 
 	  <para>
 		Die Grenze wird durch die Richtlinie <emphasis>Mail-Quota</emphasis> festgelegt, die im
-		Modul <emphasis>Benutzer</emphasis> der &ucsUMC; unter <emphasis>Richtlinien</emphasis> verwaltet
+		UMC-Modul <emphasis>Benutzer</emphasis> unter <emphasis>Richtlinien</emphasis> verwaltet
 		wird.
 	  </para>
 
@@ -783,7 +783,7 @@
 	  <para>
 		Der Abruf erfolgt alle zwanzig Minuten sobald mindestens ein Postfach für den Abruf
 		konfiguriert wurde. Nach der initialen Konfiguration eines Benutzers muss Fetchmail im
-		<guimenu>Systemdienste</guimenu>-Modul der &ucsUMC; gestartet werden. Dort kann der Start
+		UMC-Modul <guimenu>Systemdienste</guimenu> gestartet werden. Dort kann der Start
 		des Dienstes auch deaktiviert werden (alternativ durch Setzen der &ucsUCRV;
 		<envar>fetchmail/autostart</envar> auf <emphasis>false</emphasis>).
 	  </para>
@@ -917,7 +917,7 @@ postmap /etc/postfix/smtp_auth
 
 	  <para>
 		Mit der &ucsUCRV; <envar>mail/cyrus/mailbox/delete</envar> kann konfiguriert
-		werden, ob bei der Löschung eines Benutzerkontos in der &ucsUMC; auch das
+		werden, ob bei der Löschung eines Benutzerkontos in &ucsUMC; auch das
 		IMAP-Postfach gelöscht werden soll. In der Grundeinstellung bleiben die
 		Postfächer bei Löschung eines Benutzerkontos erhalten.
 	  </para>

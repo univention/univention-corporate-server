@@ -12,7 +12,7 @@
 			Dort können alle Virtualisierungsserver und Cloud Computing Verbindungen zentral administriert werden (siehe <xref linkend="uvmm::management"/>).
 		</para>
 		<para>
-			<xref linkend="uvmm::installation"/> beschreibt die Installation des Managementsystems und der Virtualisierungsserver und die Funktionen des &ucsUMC;-Moduls.
+			<xref linkend="uvmm::installation"/> beschreibt die Installation des Managementsystems und der Virtualisierungsserver und die Funktionen des UMC-Moduls.
 		</para>
 		<para>
 			UCS benutzt die Virtualisierungstechnik KVM für vor Ort betriebene Virtualisierungsserver.
@@ -423,7 +423,7 @@ update-ca-certificates
 		  <section id="uvmm::addpool">
 			<title>Adding a storage pool</title>
 			<para>
-			  It is not possible to create an additional storage pool via the &ucsUMC;. Instead, this
+			  It is not possible to create an additional storage pool via &ucsUMC;. Instead, this
 			  must be done by logging in to the virtualization server as the <emphasis>root</emphasis>
 			  user. The following steps are required for this:
 
@@ -676,7 +676,7 @@ update-ca-certificates
 	<section id="uvmm::management">
 		<title>Managing virtual machines with the Univention Management Console</title>
 		<para>
-			The &ucsUMC; module <emphasis>Virtual machines (UVMM)</emphasis> offers the possibility to create, edit and delete virtual instances/machines and to change their status.
+			The UMC module <emphasis>Virtual machines (UVMM)</emphasis> offers the possibility to create, edit and delete virtual instances/machines and to change their status.
 
 			In principle, these functions are independent of the virtualization technology employed (KVM or cloud-based), however they may vary slightly depending on the hypervisor in use.
 			The items that must be observed are illustrated in the following section on the description of the functions.
@@ -1169,7 +1169,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 		</itemizedlist>
 		<para>
 			The existing UVMM profiles are stored in the <acronym>LDAP</acronym> directory and can also be edited there.
-			The profiles can be found in the <guimenu>LDAP directory</guimenu> section of the &ucsUMC; in the container <emphasis>cn=Profiles,cn=Virtual Machine Manager</emphasis>.
+			The profiles can be found in the UMC module <guimenu>LDAP directory</guimenu> in the container <emphasis>cn=Profiles,cn=Virtual Machine Manager</emphasis>.
 			Additional profiles can also be added there.
 		</para>
 		<section id="uvmm::profile::network">

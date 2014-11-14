@@ -341,7 +341,7 @@ instanceType: 4
 
 		  <para>
 			Gruppenrichtlinien werden im Gegensatz zu den UCS-Richtlinien (siehe <xref
-			linkend="central:policies"/>) nicht in der &ucsUMC;, sondern mit einem  separaten Editor
+			linkend="central:policies"/>) nicht in &ucsUMC;, sondern mit einem  separaten Editor
 			konfiguriert, mit der <emphasis>Gruppenrichtlinienverwaltung</emphasis>, die Teil der
 			<emphasis>Remote Server Administration Tools</emphasis> (RSAT) ist. Die Einrichtung ist
 			in <xref linkend="gpo:install"/> dokumentiert.
@@ -643,7 +643,7 @@ END CATEGORY
 		  <para>
 			Die ADM-Datei kann anschließend in das ADMX-Format umgewandelt oder aber direkt über die Gruppenrichtlinienverwaltung importiert
 			werden. Dazu wird im Kontextmenü der <guimenu>Administrativen Vorlagen</guimenu> die
-			Option <guimenu>Vorlagen hinzufügen/entfernen</guimenu> aufgerufen. Mit
+			Option <guimenu>Vorlagen hinzufügen &ar; entfernen</guimenu> aufgerufen. Mit
 			<guimenu>Hinzufügen</guimenu> kann dann eine ADM-Datei importiert werden. Die
 			administrativen Vorlagen werden ebenfalls in der SYSVOL-Freigabe gespeichert und
 			repliziert, wodurch die Gruppenrichtlinienverwaltung von den Windows-Clients aus auf sie zugreifen kann.
@@ -704,7 +704,7 @@ END CATEGORY
 		<title>Konfiguration des Servers, auf dem das Heimatverzeichnis abgelegt wird</title>
 
 		<para>
-		  Das Heimatverzeichnis wird benutzerbezogen in der &ucsUMC; definiert siehe <xref
+		  Das Heimatverzeichnis wird benutzerbezogen in &ucsUMC; definiert siehe <xref
 		  linkend="users::management"/>. Dies erfolgt mit der Einstellung
 		  <guimenu>Windows-Heimatverzeichnis</guimenu>,
 		  z.B. <emphasis>\\ucs-file-server\meier</emphasis>.
@@ -712,7 +712,7 @@ END CATEGORY
 
 		<para>
 		  Für das Zuweisen des Heimatverzeichnis-Servers an mehrere Benutzer auf einmal kann der
-		  Mehrfachbearbeitungsmodus der &ucsUMC; verwendet  werden, siehe <xref
+		  Mehrfachbearbeitungsmodus von &ucsUMC; verwendet  werden, siehe <xref
 		  linkend="central:user-interface:edit"/>.
 		</para>
 	  </section>
@@ -730,7 +730,7 @@ END CATEGORY
 		</para>
 
 		<para>
-		  Wird der Profilpfad in der &ucsUMC; geändert, wird ein neues Profilverzeichnis
+		  Wird der Profilpfad in &ucsUMC; geändert, wird ein neues Profilverzeichnis
 		  angelegt. Die Daten aus dem alten Profilverzeichnis bleiben dabei erhalten und können
 		  manuell in das neue Profilverzeichnis kopiert beziehungsweise verschoben
 		  werden. Abschließend kann das alte Profilverzeichnis gelöscht werden.
@@ -1043,11 +1043,11 @@ echo -n "Administrator password" > /etc/univention/connector/password
 	</warning>
 
 	<para>
-	  Es ist zu empfehlen, die folgenden Schritte mit einem Webbrowser vom AD-Domänencontroller aus durchzuführen, da Dateien auf den AD-Domänencontroller herunter und in die &ucsUMC; hochgeladen werden müssen.
+	  Es ist zu empfehlen, die folgenden Schritte mit einem Webbrowser vom AD-Domänencontroller aus durchzuführen, da Dateien auf den AD-Domänencontroller herunter geladen und in &ucsUMC; hochgeladen werden müssen.
 	</para>
 
 	<para>
-	  Internet Explorer 6 - der auf Windows 2003-Systemen vorinstalliert ist - wird von der &ucsUMC;
+	  Internet Explorer 6 - der auf Windows 2003-Systemen vorinstalliert ist - wird durch &ucsUMC;
 	  nicht unterstützt. Hier sollte zuerst eine Aktualisierung des Browsers durchgeführt oder ein
 	  alternativer Browser installiert werden.
 	</para>
@@ -1065,7 +1065,10 @@ echo -n "Administrator password" > /etc/univention/connector/password
 	<para>
 	  Im nächsten Dialog wird die Adresse eines AD-Domänencontrollers abgefragt.
 	  Hier kann die IP-Adresse oder ein voll qualifizierter DNS-Name eingegeben werden.
-	  Wenn der Rechnername des AD-Systems für das UCS-System nicht auflösbar sein sollte, kann entweder unter UCS der AD DNS-Server als DNS-Forwarder konfiguriert werden oder es kann in der DNS-Verwaltung der &ucsUMC; ein DNS-Host-Record für das AD-System angelegt werden (siehe <xref linkend="networks::dns::hostrecord"/>).
+	  Wenn der Rechnername des AD-Systems für das UCS-System nicht auflösbar sein sollte,
+	  kann entweder unter UCS der AD DNS-Server als DNS-Forwarder konfiguriert werden
+	  oder es kann in der DNS-Verwaltung von &ucsUMC; ein DNS-Host-Record für das
+	  AD-System angelegt werden (siehe <xref linkend="networks::dns::hostrecord"/>).
 	</para>
 
 	<para>
@@ -1298,7 +1301,7 @@ Windows-Server erfordert.
 </para>
 <para>
 Die Installations-Pakete werden ebenfalls über den
-Einrichtungs-Assistenten der &ucsUMC; bereitgestellt:
+UMC-Einrichtungs-Assistenten bereitgestellt:
 </para>
 
 <itemizedlist>

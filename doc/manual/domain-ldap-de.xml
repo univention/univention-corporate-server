@@ -142,8 +142,8 @@
 		<section id="linux-domaenenbeitritt-umc">
 			<title>Domänenbeitritt mit &ucsUMC;</title>
 			<para>
-				Der Domänenbeitritt kann auch webbasiert über das Modul
-				<guimenu>Domänenbeitritt</guimenu> der &ucsUMC; erfolgen.
+				Der Domänenbeitritt kann auch webbasiert über das UMC-Modul
+				<guimenu>Domänenbeitritt</guimenu> erfolgen.
 				Da auf einem noch nicht der Domäne beigetretenen System der
 				Administrator-Benutzer noch nicht vorhanden ist, muss die Anmeldung an &ucsUMC;
 				als Benutzer <emphasis>root</emphasis> erfolgen.
@@ -185,18 +185,18 @@
 			Join- oder Unjoin-Skripte aufgerufen werden müssen (entweder weil sie noch nie oder in einer älteren
 			Version aufgerufen wurde).
 		  </para>
-		  
+
 		  <section id="domain-ldap:joinscripts:execlater">
 			<title>Nachträgliches Ausführen von Join-/Unjoin-Skripten</title>
 			<para>
 			  Gibt es auf einem System Join- oder Unjoin-Skripte, die noch nicht ausgeführt wurden oder die nur
-			  für eine ältere Version augeführt wurden, wird in der Startseite der &ucsUMC; eine
+			  für eine ältere Version augeführt wurden, wird bei der Anmeldung an &ucsUMC; eine
 			  Warnmeldung ausgegeben.
 			</para>
 
 			<para>
-			  Nicht ausgeführte Join-Skripte können über das Modul
-			  <guimenu>Domänenbeitritt</guimenu> der &ucsUMC; aufgerufen werden, in dem der
+			  Nicht ausgeführte Join-Skripte können über das UMC-Modul
+			  <guimenu>Domänenbeitritt</guimenu> aufgerufen werden, in dem der
 			  Menüpunkt <guimenu>Alle Skripte ausführen</guimenu> aufgerufen wird.
 			</para>
 
@@ -246,7 +246,7 @@
 			Beim Domänenbeitritt wird automatisch ein Rechnerkonto für den
 			Windows-Client erstellt (siehe <xref
 			linkend="computers::hostaccounts"/>). Angaben zu MAC- und IP-Adresse, Netzwerk,
-			DHCP oder DNS können vor oder nach dem Domänenbeitritt in der &ucsUMC; ergänzt
+			DHCP oder DNS können vor oder nach dem Domänenbeitritt in &ucsUMC; ergänzt
 			werden.
 		</para>
 		<para>
@@ -752,7 +752,7 @@ END
 	<section id="domain-ldap:LDAP-Kommandozeilen-Tools">
 		<title>LDAP-Kommandozeilen-Tools</title>
 		<para>
-			Neben dem &ucsUMC;-Webinterface gibt es auch eine Reihe von Programmen,
+			Neben dem UMC-Webinterface gibt es auch eine Reihe von Programmen,
 			mit denen auf der Kommandozeile auf das LDAP-Verzeichnis zugegriffen werden
 			kann.
 		</para>
@@ -845,8 +845,8 @@ slapcat &gt; ldapdaten.txt
 				erforderlich.
 			</para>
 			<para>
-				Das Zurücksetzen der Passwörter kann über die &ucsUMC; erfolgen. In der
-				Standardeinstellung bietet die &ucsUMC; nur dem Benutzer
+				Das Zurücksetzen der Passwörter kann über &ucsUMC; erfolgen. In der
+				Standardeinstellung bietet &ucsUMC; nur dem Benutzer
 				<emphasis>Administrator</emphasis> den Benutzer-Assistenten an, über den neue
 				Passwörter gesetzt werden können. Während der Installation wird automatisch
 				eine neue Richtlinie <package>default-user-password-admins</package> erstellt,
@@ -1013,9 +1013,9 @@ slapcat &gt; ldapdaten.txt
 		die selbst nicht LDAP-fähig sind. Ein Beispiel ist der Druckserver CUPS: Die
 		Druckerdefinitionen werden nicht aus dem LDAP ausgelesen, sondern aus der Datei
 		<filename>/etc/cups/printers.conf</filename>. Wird nun in der
-		Druckerverwaltung der &ucsUMC; ein Drucker angelegt, wird dieser im LDAP registriert. Diese
+		UMC-Druckerverwaltung ein Drucker angelegt, wird dieser im LDAP registriert. Diese
 		Änderung wird dann vom &ucsUDL;-Modul <emphasis>cups-printers</emphasis> erkannt und
-		basierend auf den Daten im LDAP ein Eintrag in 
+		basierend auf den Daten im LDAP ein Eintrag in
 		<filename>/etc/cups/printers.conf</filename> hinzugefügt, modifiziert oder gelöscht.
 	  </para>
 
@@ -1069,7 +1069,7 @@ slapcat &gt; ldapdaten.txt
 
 		<para>
 		  Im Regelbetrieb der Domänenreplikation (keine hohe Last auf den Systemen, keine Störungen
-		  im Netzwerk) ist die Verzögerung zwischen der Änderung in der &ucsUMC; bis zur
+		  im Netzwerk) ist die Verzögerung zwischen der Änderung in &ucsUMC; bis zur
 		  Replikation auf z.B. eines &ucsSlave; kaum merkbar. Eine möglicherweise unvollständige
 		  Replikation kann durch einen Vergleich der Transaktions-IDs von Listener- und
 		  Notifier-Dienst identifiziert werden.
@@ -1140,7 +1140,7 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 	<para>
 		SSL/TLS kommt beispielsweise bei der Listener/Notifier-Domänenreplikation
-		oder beim HTTPS-Zugriff auf die &ucsUMC; zum Einsatz.
+		oder beim HTTPS-Zugriff auf &ucsUMC; zum Einsatz.
 	</para>
 	<para>
 		Für eine verschlüsselte Kommunikation zwischen zwei Rechnern müssen beide
@@ -1203,7 +1203,7 @@ univention-directory-listener-ctrl resync cups-printers
 			nicht mehr. Es ist deshalb notwendig, die Gültigkeit der Zertifikate
 			regelmäßig zu überprüfen und rechtzeitig das Root-Zertifikat zu
 			erneuern. Für die Überwachung des Gültigkeitszeitraums wird ein Nagios-Plugin
-			bereitgestellt. Außerdem erfolgt bei der Anmeldung an der &ucsUMC; eine
+			bereitgestellt. Außerdem erfolgt bei der Anmeldung an &ucsUMC; eine
 			Warnmeldung, wenn das Root-Zertifikat bald abläuft (der Warnzeitraum kann mit
 			der &ucsUCRV; <envar>ssl/validity/warning</envar> festgelegt werden und beträgt
 			standardmäßig 30 Tage).
@@ -1223,9 +1223,8 @@ univention-directory-listener-ctrl resync cups-printers
 	  wieder.
 	</para>
 	<para>
-	  In der Übersichtsseite der &ucsUMC; - erreichbar durch einen Klick auf das Fragezeichen in
-	  der oberen Bildleiste - wird unter <guimenu>Über UMC</guimenu> auch das effektive Ablaufdatum
-	  des Rechner- und Root-Zertifikats angezeigt.
+		In &ucsUMC; wird das effektive Ablaufdatum des Rechner- und Root-Zertifikats angezeigt über
+		über das rechte, obere Benutzermenü und den Menüpunkt <guimenu>Lizenz &ar; Lizenzinformation</guimenu>.
 	</para>
 
 </section>
@@ -1330,7 +1329,7 @@ univention-directory-listener-ctrl resync cups-printers
 	<para>
 		Die Umwandlung umfasst primär die Umstellung der für die Authentifizierung
 		relevanten Dienste wie LDAP, Kerberos oder Samba. Der Abgleich der
-		installierten Software muss manuell erfolgen (über die &ucsUMC;-Module
+		installierten Software muss manuell erfolgen (über die UMC-Module
 		<guimenu>App Center</guimenu> und <guimenu>Paket-Verwaltung</guimenu>).
 		Wenn also z.B. auf dem vorherigen DC Master die
 		Mailkomponente installiert war, ist diese nach der Umwandlung nicht automatisch

@@ -14,7 +14,7 @@
 		The print services are based on <emphasis>CUPS (Common Unix Printing
 		System)</emphasis>. <emphasis>CUPS</emphasis> manages print jobs in print queues and
 		converts print jobs into the native formats of the connected printers.
-		The print queues are also administrated in the &ucsUMC;, see
+		The print queues are also administrated in &ucsUMC;, see
 		<xref linkend="umc:modules:printer"/>.
 	</para>
 	<para>
@@ -103,8 +103,8 @@
 <section id="print::shares">
 <title>Creating a printer share</title>
 	<para>
-		Print shares are administrated in the <emphasis>Printers</emphasis> module of
-		the &ucsUMC; with the <guimenu>Printer share</guimenu> object
+		Print shares are administrated in the UMC module <emphasis>Printers</emphasis>
+		with the <guimenu>Printer share</guimenu> object
 		type.
 	</para>
 	<para>
@@ -400,8 +400,8 @@
 		</para>
 	</caution>
 	<para>
-		Printer groups are administrated in the <emphasis>Printers</emphasis> module of
-		the &ucsUMC; with the <guimenu>Printer share</guimenu> object type.
+		Printer groups are administrated in the UMC module <emphasis>Printers</emphasis>
+		with the <guimenu>Printer share</guimenu> object type.
 	</para>
 	<para>
 		General information on the operation of the domain management modules
@@ -508,7 +508,7 @@
 <section id="umc:modules:printer">
 <title>Administration of print jobs and print queues</title>
 	<para>
-		The <guimenu>Printer Administration</guimenu> module of the &ucsUMC;
+		The UMC module <guimenu>Printer Administration</guimenu>
 		allows you to check the status of the connected printers, restart
 		paused printers and remove print jobs from the queues on printer
 		servers.
@@ -586,7 +586,7 @@
   <title>Mounting of print shares in Windows clients</title>
 
   <para>
-	The printer shares set up in the &ucsUMC; can be added as network printers on Windows
+	The printer shares set up in &ucsUMC; can be added as network printers on Windows
 	systems. This is done via the Control Panel under <guimenu>Add a device &ar; Add a
 	printer</guimenu>. The printer drivers need to be set up during the first access. If the
 	drivers are stored on the server side (see below), the drivers are assigned automatically.
@@ -715,13 +715,13 @@
 	</para>
 	<para>
 		In addition to the PPD files already included in the standard scope,
-		additional ones can be added via the &ucsUMC;. The PPDs are generally
+		additional ones can be added via &ucsUMC;. The PPDs are generally
 		provided by the printer manufacturer and need to be copied into
 		the <filename>/usr/share/ppd</filename> directory on the print servers.
 	</para>
 	<para>
 		The printer driver lists are administrated in
-		the <guimenu>LDAP directory</guimenu> module of the &ucsUMC;. There you need
+		the UMC module <guimenu>LDAP directory</guimenu>. There you need
 		to switch to the <emphasis>univention</emphasis> container and then to
 		the <emphasis>cups</emphasis> subcontainer. Printer driver lists already exist
 		for the majority of printer manufacturers. These can be expanded or
