@@ -45,7 +45,6 @@
 			requested attributes. For indexed attributes, a search is not performed via the
 			full database contents, but over an optimized subsection.
 		</para>
-<!-- TODO: translation
 		<para>
 			Mit neueren UCS Versionen werden die Indicies gelegentlich ergänzt und
 			automatisch aktiviert.  Die automatische Aktivierung kann über die UCR-Variable
@@ -65,12 +64,10 @@ invoke-rc.d slapd restart
 grep 'not indexed' /var/log/syslog
 			</programlisting>
 		</para>
--->
 	</section>
 
 	<section id="slapd:bdb">
 		<title>Configuration of the database backend</title>
-<!-- TODO: translation
 		<para>
 			Seit UCS 4.0 wird für Neuinstallationen die Memory-Mapped-Datenbank (MDB)
 			verwendet.  Sofern noch BDB verwendet wird, sollte auf MDB migriert werden. Das
@@ -86,7 +83,6 @@ slapadd -l ldif
 /etc/init.d/slapd start
 			</programlisting>
 		</para>
--->
 	</section>
 
 	<section id="slapd:acl">
@@ -323,7 +319,6 @@ slapadd -l ldif
 		</para>
 	</section>
 
-<!-- TODO: translation
 	<section id="systemstats">
 		<title>Systemstatisken</title>
 		<para>
@@ -333,7 +328,6 @@ slapadd -l ldif
 			kann dies über die UCR-Variable <envar>system/stats/cron</envar> gesteuert werden.
 		</para>
 	</section>
--->
 </chapter>
 <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
