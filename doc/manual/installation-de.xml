@@ -3,55 +3,19 @@
 <section id="installation:einfuerung">
 <title>Einführung</title>
 	<para>
-		Die folgende Dokumentation beschreibt die Installation von Univention Corporate Server. Mehrere Installationsvarianten werden unterstützt:
+		Die folgende Dokumentation beschreibt die Installation von Univention Corporate Server.
 	</para>
-	<itemizedlist>
-		<listitem>
-			<para>
-			&ucsUCS; kann <emphasis>von DVD installiert</emphasis> werden. Die Installation des ersten UCS-Systems einer
-			Domäne wird in der Regel von DVD vorgenommen. Dabei kann die Installation
-			interaktiv oder automatisiert durch ein vorbereitetes Installationsprofil erfolgen:
-			</para>
-			<itemizedlist>
-				<listitem>
-					<simpara>
-					Bei der interaktiven Installation werden alle System-Einstellungen eingegeben.
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					Bei der profilbasierten Installation werden System-Einstellungen in Textdateien, den so genannten
-					Installationsprofilen, gespeichert. Weiterführende Informationen zum
-					Format der Profildateien finden sich in der erweiterten
-					Installations-Dokumentation <biblioref linkend="ext-doc-inst"/>. Installationsprofile
-					lassen sich lokal über Disketten oder USB-Speichergeräte einbinden
-					oder im Rahmen einer angepassten Installations-DVD im Vorfeld auf dem
-					Installationsmedium speichern.
-					</simpara>
-				</listitem>
-			</itemizedlist>
-		</listitem>
-		<listitem>
-			<simpara>
-			Mit dem Univention Net Installer können <emphasis>netzbasierte</emphasis>
-			Installationen automatisiert über PXE durchgeführt werden. Die Einstellungen
-			werden dabei ebenfalls aus Installationsprofilen bezogen.
-			Die dafür notwendigen Schritte sind im der erweiterten
-			Installations-Dokumentation beschrieben <biblioref linkend="ext-doc-inst"/>
-			</simpara>
-		</listitem>
-	</itemizedlist>
-
 	<para>
-	  Installations-DVDs sind für die Rechnerarchitekturen <emphasis>amd64</emphasis> (64 Bit) und
-	  <emphasis>i386</emphasis> (32 Bit) verfügbar. Nahezu alle Serversysteme, die in den letzten
-	  Jahren verkauft wurden sind 64 Bit-Systeme. Die Verwendung der 64 Bit-Version wird empfohlen.
+	  &ucsUCS; kann von DVD installiert werden. Die Installation des ersten UCS-Systems einer
+	  Domäne wird in der Regel von DVD vorgenommen. Die Installation erfolgt interaktiv und fragt alle notwendigen System-Einstellungen
+	  in einer graphischen Oberfläche ab.
 	</para>
 
 	<para>
-	  Für amd64 steht neben der Standard-Installations-DVD auch ein Medium mit Unterstützung für den
-	  Unified Extensible Firmware Interface-Standard (UEFI) bereit. Einige Systeme unterstützen nur
-	  einen Boot über UEFI, auf solchen Systemen muss diese UEFI-DVD verwendet werden.
+	  Die Installations-DVD wird für die Rechnerarchitektur <emphasis>amd64</emphasis> (64 Bit) bereitgestellt.
+	  Die DVD bringt neben einer Unterstützung für die weit verbreiteten BIOS-Systeme auch eine Unterstützung
+	  für den Unified Extensible Firmware Interface-Standard (UEFI) mit. Die UEFI-Unterstützung auf der DVD
+	  ist auch in der Lage, auf Systemen mit aktiviertem SecureBoot zu starten und UCS dort zu installieren.
 	</para>
 
 	<para>
@@ -62,7 +26,7 @@
 	<section id="installation:bedienung-des-installers">
 	<title>Bedienung des Installers</title>
 		<para>
-			Die Eingabemasken des Univention Installers werden ausschließlich über die Tastatur bedient:
+			Die Eingabemasken des Installers können mit der Maus oder über die Tastatur bedient werden:
 		</para>
 		<itemizedlist>
 			<listitem>
@@ -85,37 +49,14 @@
 				Innerhalb einer Liste oder Tabelle kann mit den <emphasis>Pfeiltasten</emphasis> zwischen den Einträgen gewechselt werden.
 				</simpara>
 			</listitem>
-			<listitem>
-				<simpara>
-				Um nähere Informationen zum aktuellen Modul zu erhalten, kann über die Funktionstaste <keycap>F1</keycap> ein Hilfe-Dialog aufgerufen werden.
-				</simpara>
-			</listitem>
-
-			<listitem> 
-			  <simpara>
-				Umlaute werden in Eingabefeldern nicht akzeptiert.
-			  </simpara>
-			</listitem>
-
-			<listitem>
-				<simpara>
-				Das nächste Modul wird über die Funktionstaste <keycap>F12</keycap> aufgerufen,
-				über die Funktionstaste <keycap>F11</keycap> kann zu bereits bearbeiteten Modulen
-				zurückgekehrt werden. Alternativ zu den Tasten <keycap>F11</keycap> und <keycap>F12</keycap> können
-				die <emphasis>Schaltflächen</emphasis> betätigt werden.
-				</simpara>
-			</listitem>
 		</itemizedlist>
-		<para>
-			Weitere Belegungen von Funktionstasten sind in den folgenden Beschreibungen der
-			jeweiligen Module genannt.
-		</para>
 		<note>
 			<para>
-			Im linken Fenster der Installationsoberfläche ist die Liste der
-			einzelnen Module eingeblendet, das aktuelle Modul ist farblich hervorgehoben.
-			Diese Liste kann nicht zur Navigation verwendet werden, sie dient lediglich
-			zur Orientierung.
+			  Über die Schaltfläche <guimenu>Abbrechen</guimenu> kann der aktuelle
+			  Konfigurationsschritt abgebrochen werden. Im anschließend angezeigten Menü kann dann ein
+			  vorhergehender Konfigurationsschritt erneut ausgewählt werden. Nachfolgende Konfigurationsschritte
+			  sind unter Umständen nicht direkt auswählbar, wenn die vorhergehenden Schritte noch nicht
+			  vollständig durchlaufen wurden.
 			</para>
 		</note>
 	</section>
@@ -125,9 +66,9 @@
 	<para>
 		Nach dem Starten des Systems vom Installationsmedium erscheint der folgende Bootprompt:
 	</para>
-	<figure id="installation-grub">
+	<figure id="installation-isolinux">
 	<title>Bootprompt der Installation</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/grub.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations/installer-isolinux.png"/>
 	</figure>
 	<para>
 		Hier kann zwischen verschiedenen Installationsverfahren gewählt werden.
@@ -135,101 +76,54 @@
 	<itemizedlist>
 		<listitem>
 			<simpara>
-			<emphasis>Univention Installer</emphasis> startet die interaktive Installation
-			auf Grundlage des Linux-Kernels in Version 3.2. Bei der
+			<guimenu>Installation Univention Corporate Server</guimenu> startet die interaktive Installation
+			auf Grundlage des Linux-Kernels in Version 3.16. Bei der
 			Installation fragt das System nach einigen Parametern wie
-			Netzwerkeinstellungen, Festplattenpartitionierung, Systemrolle und ggf.
+			Netzwerkeinstellungen, Festplattenpartitionierung, Systemrolle und
 			Komponentenauswahl für den zu installierenden Rechner und führt anschließend
 			die Installation durch.
 			</simpara>
 		</listitem>
 		<listitem>
 			<para>
-			<emphasis>Additional options</emphasis> erlaubt die Auswahl fortgeschrittener
-			Optionen für den Installationsprozess. Zuerst erscheint eine Abfrage, die den
-			zu installierenden Linux-Kernel abfragt. Anschließend können verschiedene Installationsvarianten
-			ausgewählt werden:
+			<emphasis>Advanced options</emphasis> erlaubt die Auswahl fortgeschrittener
+			Optionen für den Installationsprozess:
 			</para>
 			<itemizedlist>
 				<listitem>
 					<simpara>
-					<guimenu>Univention Installer (normal mode)</guimenu> führt eine interaktive
-					Standardinstallation durch.
+					<guimenu>Install in text mode</guimenu> führt eine interaktive
+					Standardinstallation im Textmodus durch. Dies ist auf Systemen sinnvoll, die
+					Probleme mit der graphischen Variante des Installers zeigen.
 					</simpara>
 				</listitem>
 				<listitem>
-					<simpara>
-					<guimenu>Univention Installer expert partitioning (e.g. for crypto or software raid setups)</guimenu> startet
-					ebenso wie der vorherige Modus eine interaktive Installation. In dieser
-					Variante wird die Partitionierung jedoch nicht mit Unterstützung des Installer
-					durchgeführt, sondern manuell vorgenommen. Dafür stehen Programme wie
-					<command>cfdisk</command>, <command>mdadm</command> und <command>mkfs.ext3</command> und
-					weitere zur Verfügung. Dieser Modus kann beispielsweise genutzt werden, um
-					ein Software-RAID oder eine verschlüsselte Festplattenpartition
-					einzurichten. Nach der Partitionierung wird die interaktive Installation
-					fortgesetzt. Dieser Installations-Modus wird in der erweiterten
-					Installations-Dokumentation beschrieben <biblioref linkend="ext-doc-inst"/>.
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					<guimenu>Univention Installer MBR-Mode (deprecated)</guimenu> startet eine
-					interaktive Installation, bei der die Partitionierung nicht nach dem
-					GPT-Standard durchgeführt wird, sondern ein Master Boot Record geschrieben
-					wird. Weitere Hinweise finden sich in <xref linkend="installation:Partitionieren_der_Festplatten"/>.
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					<guimenu>Univention Installer Profil</guimenu> startet die profilbasierte
-					Installation. Bei der profilbasierten Installation wird ein vorbereitetes
-					Installationsprofil ausgewählt, aus dem das System die Installationsparameter
-					ausliest. Das zu verwendende Installationsprofil wird aus einem Verzeichnis
-					des Installationsmediums gelesen. Die profilbasierte Installation ist
-					in der erweiterten Installations-Dokumentation beschrieben <biblioref linkend="ext-doc-inst"/>.
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					<guimenu>Univention Installer Profil USB</guimenu> startet ebenfalls die
-					profilbasierte Installation. Das Installationsprofil wird dabei von einem
-					USB-Speichermedium gelesen.
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					<guimenu>Univention Installer Profil Floppy</guimenu> startet ebenfalls die
-					profilbasierte Installation. Das Installationsprofil wird von einer Diskette
-					gelesen.
-					</simpara>
+				  <simpara>
+					<guimenu>Boot from first hard drive</guimenu> startet nicht die
+					UCS-Installation, sondern das auf der ersten Festplatte installierte
+					Betriebssystem.
+				  </simpara>
 				</listitem>
 			</itemizedlist>
-		</listitem>
-		<listitem>
-			<simpara>
-			<guimenu>Boot from first harddisk partition</guimenu> startet nicht die
-			UCS-Installation, sondern das auf der ersten Festplatte installierte
-			Betriebssystem.
-			</simpara>
 		</listitem>
 	</itemizedlist>
 	<para>
 		Nun wird der Kernel vom Installationsmedium geladen. Die eigentliche Installation gliedert
-		sich in einzelne Module. In einem Modul werden inhaltlich zusammenhängende
-		Einstellungen getroffen, es gibt beispielsweise Module für die Netzkonfiguration
+		sich in einzelne Module, die bei Bedarf vom Installationsmedium nachgeladen werden.
+		In einem Modul werden inhaltlich zusammenhängende Einstellungen getroffen, es gibt beispielsweise Module für die Netzkonfiguration
 		oder die Auswahl der zu installierenden Software.
 	</para>
 </section>
 <section id="installation:Auswahl_der_Installationssprache">
 <title>Auswahl der Installationssprache</title>
 	<para>
-		In diesem Modul wird die Systemsprache ausgewählt, die verwendet werden soll. Die Auswahl
+		Im ersten Schritt wird die Systemsprache ausgewählt, die verwendet werden soll. Die Auswahl
 		beeinflusst die Verwendung von sprachspezifischen Schriftzeichen und ermöglicht
 		die Darstellung von Programmausgaben in den ausgewählten Sprachen.
 	</para>
 	<figure id="installation-languageeselection">
 	<title>Auswahl der Installationssprache</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/language.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations/installer-language.png"/>
 	</figure>
 	<para>
 		Wenn Univention Installer in die ausgewählte Sprache übersetzt ist (momentan
@@ -237,631 +131,472 @@
 		verwendet, anderenfalls erfolgt die Installation in englischer Sprache.
 	</para>
 </section>
-<section id="installation:Auswahl_des_Installationsmediums">
-<title>Auswahl des Installationsmediums</title>
+<section id="installation:Auswahl_des_Standorts">
+<title>Auswahl des Standorts</title>
 	<para>
-		Das aktuell verwendete Installationsmedium wird in der Regel automatisch ermittelt. Über die
-		Funktionstaste <keycap>F2</keycap> wird das zu verwendende Installationsmedium vorgegeben. Dieser
-		Parameter kann verwendet werden, wenn Probleme mit einem von mehreren
-		CD-Laufwerken festgestellt werden oder die netzwerkbasierte Installation von
-		einem anderen Installationsserver ausgeführt werden soll. Mit der Funktionstaste
-		<keycap>F4</keycap> kann die Liste der Installationsmedien erneut eingelesen werden.
+	  Nach der Auswahl der Systemsprache wird basierend auf der zuvor ausgewählten Sprache eine
+	  kleine Liste mit Standorten angezeigt. Wählen Sie aus der Liste einen passenden Standort aus. Der
+	  ausgewählte Standort wird verwendet, um z.B. die Zeitzone zu setzen. Falls kein angezeigter Standort
+	  passend sein sollte, kann über den Menüeintrag <guimenu>weitere</guimenu> eine umfangreichere Liste
+	  angezeigt werden.
 	</para>
-	<para>
-		Wird das Installationsmedium automatisch erkannt, wechselt der Univention
-		Installer selbstständig zum nächsten Modul. Über die Funktionstaste <keycap>F11</keycap> kann
-		später wieder auf dieses Modul zurückgewechselt werden.
-	</para>
-</section>
-<section id="installation:Festlegen_der_Zeitzone">
-<title>Festlegen der Zeitzone</title>
-	<para>
-		Die gewünschte Zeitzone kann in diesem Modul ausgewählt werden. Je nach ausgewählter
-		Systemsprache wird eine Auswahl von passenden Zeitzonen angeboten.
-		Durch Aktivierung der Option <guimenu>Alle verfügbaren Zeitzonen anzeigen</guimenu>
-		werden alle verfügbaren Zeitzonen aufgeführt.
-	</para>
-	<figure id="installation-timezoneselection">
-	<title>Auswahl der Zeitzone</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/timezone_de.png"/>
+	<figure id="installation-location">
+	<title>Auswahl der Tastaturbelegung</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/installer-location_de.png"/>
 	</figure>
 </section>
 <section id="installation:Auswahl_der_Tastaturbelegung">
 <title>Auswahl der Tastaturbelegung</title>
 	<para>
-		Hier wird die Tastaturbelegung der verwendeten Tastatur ausgewählt.
-		Je nach ausgewählter Systemsprache wird eine Auswahl von passenden Tastaturlayouts angeboten.
-		Durch Aktivierung der Option <guimenu>Alle verfügbaren Tastaturlayouts anzeigen</guimenu>
-		werden zuvor ausgeblendete Tastaturvarianten zusätzlich angezeigt.
+	  Unabhängig von der Systemsprache kann ein Tastaturlayout ausgewählt werden. Die hier
+	  ausgewählte Sprache sollte zur verwendeten Tastatur passen, das es sonst zu Bedienproblemen kommen
+	  kann.
 	</para>
 	<figure id="installation-keyboardselection">
 	<title>Auswahl der Tastaturbelegung</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/keyboard_de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations/installer-keyboardselection_de.png"/>
 	</figure>
 </section>
-<section id="installation:Auswahl_der_Systemrolle">
-<title>Auswahl der Systemrolle</title>
-	<para>
-		Hier wird die Systemrolle ausgewählt, als welche das spätere System
-		installiert werden soll.
-	</para>
-	<figure id="installation-systemroleselection">
-	<title>Auswahl der Systemrolle</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/systemrole_de.png"/>
-	</figure>
-	<para>
-		Zur Auswahl stehen:
-	</para>
-	<orderedlist>
-		<listitem><simpara>Domain Controller Master</simpara></listitem>
-		<listitem><simpara>Domain Controller Backup</simpara></listitem>
-		<listitem><simpara>Domain Controller Slave</simpara></listitem>
-		<listitem><simpara>&ucsMember;</simpara></listitem>
-		<listitem><simpara>Basissystem</simpara></listitem>
-	</orderedlist>
-	<para>
-		Das erste zu installierende System einer UCS-Domäne sollte immer ein
-		<emphasis>Domain Controller Master</emphasis> sein. Die Installation weiterer UCS-Systeme benötigt während
-		der Installation einen laufenden Domaincontroller Master. Die einzige Ausnahme
-		bildet die Systemrolle <guimenu>Basissystem</guimenu>, dieses kann ohne erreichbaren
-		&ucsMaster; installiert werden.
-	</para>
-	<para>
-		Die Eigenschaften der Systemrollen sind in <xref linkend="systemrollen"/>
-		beschrieben. Im Installationsdialog wird außerdem eine kurze
-		Beschreibung angezeigt.
-	</para>
-</section>
-<section id="installation:Domaeneneinstellungen">
-<title>Domäneneinstellungen</title>
-	<para>
-		Unter <guimenu>Vollständiger Rechnername</guimenu> wird der vollqualifizierte
-		Rechnername eingetragen, unter dem der Rechner im Netzwerk erreichbar sein
-		soll. Wenn also beispielsweise das Rechnersystem <emphasis>mailserver</emphasis> in der
-		DNS-Domäne <emphasis>firma.de</emphasis> in Betrieb genommen werden soll, ist
-		als vollständiger Rechnername <emphasis>mailserver.firma.de</emphasis> einzutragen.
-	</para>
-	<para>
-		Für Rechnernamen dürfen ausschließlich die Buchstaben a-z in
-		Kleinschreibung, die Ziffern 0-9 und Bindestriche verwendet werden. Der
-		Rechnername muss mit einem Buchstaben beginnen und darf maximal 13 Zeichen lang sein.
-	</para>
-	<para>
-		Nachdem der Domänenname gesetzt wurde, werden die Felder <guimenu>LDAP-Basis</guimenu> und
-		<guimenu>Windows-Domäne</guimenu> mit abgeleiteten Werten vorausgefüllt
-		(die Eingabefelder werden nur bei der Installation des &ucsMaster; angezeigt).
-		Wenn die LDAP-Basis geändert werden soll, müssen die Konventionen für die Benennung von DNs beachtet werden.
-		Die Basis-DN muss mit <emphasis>cn=</emphasis>, <emphasis>dc=</emphasis>, <emphasis>c=</emphasis>, <emphasis>l=</emphasis> oder <emphasis>o=</emphasis> beginnen.
-		Basis-DNs, die diese Konventionen verletzen, werden abgewiesen. Der Name der
-		Windows-Domäne darf maximal 13 Zeichen lang sein und nur aus Buchstaben, Zahlen
-		und Bindestrichen bestehen.
-	</para>
-	<para>
-		Unter <guimenu>Root-Passwort</guimenu> wird das Passwort für den Benutzer <emphasis>root</emphasis> eingetragen.
-		Wird ein &ucsMaster; installiert, wird dieses Passwort auch für den
-		Benutzer <emphasis>Administrator</emphasis> eingetragen.
-		Im späteren Betrieb können die Passworte der Benutzer <emphasis>root</emphasis> und <emphasis>Administrator</emphasis>
-		unabhängig voneinander verwaltet werden. Das Passwort wird im letzten Feld
-		erneut eingetragen. Die doppelte Eingabe ist erforderlich, um Tippfehler zu
-		vermeiden, da die eingegebenen Zeichen nicht angezeigt werden.
-	</para>
-	<para>
-		Das Root-Passwort muss aus Sicherheitsgründen mindestens acht Zeichen umfassen.
-	</para>
-	<figure id="installation-domainsettings">
-	<title>Domäneneinstellungen</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/domainsettings_de.png"/>
-	</figure>
-</section>
-
-<section id="installation:Partitionieren_der_Festplatten"><title>Partitionieren der Festplatten</title>
-<para>
-  In dieser Einstellungsmaske wird die Partitionierung der vorhandenen Festplatten
-  vorgenommen.
-</para>
-
-<para>
-  Ab UCS 3.1 führt der Univention Installer eine Partitionierung nach dem GUID Partition
-  Table-Standard (GPT) durch. Frühere UCS-Versionen verwendeten eine Partitionierung nach dem Master
-  Boot Record-Standard, bei dem die Partitionierung im ersten Datenblock eines Speichermediums
-  vorgehalten wurde.
-</para>
-
-<para>
-  Die GPT ist abwärtskompatibel zum MBR; der erste Datenblock wird weiterhin im MBR-Format
-  gespeichert. Dieser Block wird als <emphasis>Protective MBR</emphasis> bezeichnet und enthält eine
-  einzelne Schutzpartition. Sie verhindert beispielsweise, dass ältere Partitionierungstools die
-  GPT-Daten oder Daten innerhalb der Partitionen beschädigen.
-</para>
-
-<para>
-  Es können bis zu 127 Partitionen angelegt werden, die Größen im Zetabyte-Bereich annehmen können.
-</para>
-
-<para>
-  Das <emphasis>Unified Extensible Firmware Interface (UEFI)</emphasis> ersetzt auf aktuelleren
-  Systemen das PC-BIOS. UCS unterstützt ab Version 3.1 in der 64 Bit-Version (amd64) einen Boot über
-  UEFI.
-</para>
-
-<para>
-  Auf Systemen mit einem BIOS - also Systemen ohne UEFI - wird bei Verwendung
-  von GPT eine BIOS-Boot-Partition notwendig, in der der Grub-Bootloader den Großteil seiner
-  Funktionalität ablegen kann.
-</para>
-
-<para>
-  Findet der Univention Installer auf dem zu installierenden System schon einen Master Boot Record
-  vor, kann dieser ignoriert (die Platte wird dann in der GPT-Partitionierung nicht berücksichtigt)
-  oder die MBR-Partitionen in GPT-Partitionen konvertiert werden.
-</para>
-
-<para>
-  Ab UCS 3.1 optimiert der Univention Installer die Ausrichtung der Datenblöcke auf der Festplatte,
-  um eine optimale Performance auf Festplatten mit 4k-Sektoren oder Solid State Disks zu
-  erreichen. Bei der Umwandlung eines bestehenden Master Boot Records in eine GPT findet keine
-  Neuausrichtung der Datenblöcke statt, so dass diese möglicherweise nicht optimal platziert
-  sind. Eine Neupartitionierung ist daher vorzuziehen.
-</para>
-
-<para>
-  Die Umwandlung in eine GPT kann Auswirkungen auf andere installierte Betriebsysteme haben, insbesondere dann,
-  wenn diese oder deren Bootloader GPT nicht unterstützen (z.B. Windows 2000, die 32 Bit-Versionen von Windows XP oder
-  ältere Linux-Versionen).
-</para>
-
-<para>
-  Nach dem ersten Wechsel auf diese Einstellungsmaske bietet der Installer die
-  automatische Partitionierung des Systems an. Nach der Zustimmung zur
-  automatischen Partitionierung zeigt der Installer einen
-  Partitionierungsvorschlag an, der die erste Festplatte im System unter
-  Verwendung des Logical Volume Managers (LVM) neu partitioniert und formatiert.
-</para>
-<caution>
-	<para>
-	  Auch wenn nur die erste Festplatte in das LVM eingebunden wird, gehen bei diesem Schritt die Daten aller vorhandenen Festplatten verloren!
-  Sollte der Partitionierungsvorschlag unpassend sein, kann er durch die
-  Funktionstaste <keycap>F5</keycap> verworfen werden.
-	</para>
-</caution>
-
-<para>
-  Wird die Auto-Partitionierung verwendet, werden auf Nicht-UEFI-Systemen folgende Partitionen
-  angelegt:
-  <itemizedlist>
-	<listitem><simpara>eine 8 MB große BIOS-Boot-Partition</simpara></listitem>
-	<listitem><simpara>eine 512 MB große /boot-Partition</simpara></listitem>
-	<listitem><simpara>eine Swap-Partitition mit dem Doppelten des aktuellen RAMs (mind. 512MB; max. 10GB)</simpara></listitem>
-	<listitem><simpara>eine /-Partition mit dem restlichen Plattenplatz</simpara></listitem>
-  </itemizedlist>
-</para>
-
-<para>
-  Auf UEFI-Systemen werden von der Auto-Partitionierung folgende Partitionen angelegt:
-  <itemizedlist>
-	<listitem><simpara>eine 256 MB große EFI-System-Partition</simpara></listitem>
-	<listitem><simpara>eine 512 MB große /boot-Partition</simpara></listitem>
-	<listitem><simpara>eine Swap-Partitition mit dem Doppelten des aktuellen RAMs (mind. 512MB; max. 10GB)</simpara></listitem>
-	<listitem><simpara>eine /-Partition mit dem restlichen Plattenplatz</simpara></listitem>
-  </itemizedlist>
-</para>
-
-<para>
-  Die Eigenschaften der gefundenen Laufwerke, vorhandener Partitionen und
-  LVM-Medien (Name, Grenzen einer Partition, Typ, Formatierung, Verzeichnis,
-  unter dem die Partition eingebunden werden soll, und Größe in MB) werden in
-  einer Tabelle angezeigt.
-</para>
-<para>
-  Um eine neue Partition anzulegen, wird der Eintrag <guimenu>frei</guimenu> des gewünschten
-  Laufwerks ausgewählt und die Schaltfläche <mousebutton>F2-Erstellen</mousebutton> betätigt
-	(Funktionstaste <keycap>F2</keycap>). Im nächsten Dialog müssen das Verzeichnis, unter dem die
-  Partition eingebunden werden soll (Mount-Point), die Größe der anzulegenden
-  Partition in Megabyte, das Dateisystem, welches auf der Partition erzeugt werden
-  soll, und die Art der Partition (BIOS Boot, EFI, Daten, Swap oder LVM) angegeben werden. Wenn eine Partition für
-  den Swap-Bereich erzeugt werden soll, muss kein Verzeichnisname angegeben
-  werden, unter dem die Partition eingebunden werden soll. Wenn alle Einstellungen
-  getroffen sind, ist die Schaltfläche <mousebutton>Speichern</mousebutton> zum Sichern der Einstellungen
-  zu betätigen.
-</para>
-<figure id="installation-partition">
-  <title>Partitionierung der Festplatten</title>
-  <graphic scalefit="1" width="80%" fileref="illustrations/autopartitioning_de.png"/>
-</figure>
-<para>
-  Um Partitionen aus vorherigen Installationen einzubinden oder beim Anlegen neuer
-  Partitionen vorgenommene Einstellungen zu korrigieren, wird die gewünschte
-  Partition markiert und die Schaltfläche <mousebutton>F3-Editieren</mousebutton> betätigt (Funktionstaste
-  <keycap>F3</keycap>). Es kann das Verzeichnis angegeben werden, unter dem die Partition
-  eingebunden werden soll, das Dateisystem ausgewählt und festgelegt werden, ob
-  die Partition formatiert werden soll. Wenn die Option <guimenu>Formatieren</guimenu> aktiviert
-  wird, werden alle Daten auf dieser Partition gelöscht. Die Größe der Partition
-  kann nachträglich nicht verändert werden.
-</para>
-<para>
-  Um Partitionen aus vorherigen Installationen oder neu angelegte Partitionen zu
-  löschen, müssen die gewünschten Partitionen markiert und die Schaltfläche
-	<mousebutton>F4-Löschen</mousebutton> betätigt werden (Funktionstaste <keycap>F4</keycap>).
-</para>
-<para>
-  Die manuelle Partitionierung der Festplatten kann optional unter Verwendung
-  des Logical Volume Managers stattfinden. Vom Installer wird hierbei nur eine
-  einzelne LVM-Medien-Gruppe (Volume Group) unterstützt, die automatisch den
-  Namen <emphasis>vg_ucs</emphasis> trägt. Die Möglichkeit zum Anlegen von
-  physikalischen und logischen LVM-Medien (Physical/Logical Volume) steht nur
-  dann zur Verfügung, wenn die LVM-Unterstützung zuvor manuell aktiviert wurde
-  oder bereits ein physikalisches LVM-Medium auf einer der angeschlossenen
-  Festplatten vorhanden ist.
-</para>
-<para>
-  Beim Löschen von physikalischen LVM-Medien (Physical Volume) ist zu beachten,
-  dass der Installer diesen Vorgang nur dann unterstützt, wenn zuvor alle
-  logischen LVM-Medien über den Installer gelöscht wurden. Anderenfalls muss der
-  Inhalt des physikalischen LVM-Mediums manuell über den
-  Befehl <command>pvmove</command> auf andere physikalische LVM-Medien verschoben
-  und das physikalische LVM-Medium mittels <command>vgreduce</command>
-  und <command>pvremove</command> aus der LVM-Medien-Gruppe entfernt und gelöscht
-  werden.
-</para>
-<para>
-  Nachdem die Einstellungen für eine neue Partition vorgenommen wurden, werden
-  diese nicht umgehend aktiviert. Um die ursprünglichen Einstellungen
-  wiederherzustellen, kann die Schaltfläche <mousebutton>F5-Änderungen verwerfen</mousebutton> betätigt
-	werden (Funktionstaste <keycap>F5</keycap>). Erst über die Schaltfläche <mousebutton>F6-Änderungen
-	schreiben</mousebutton> (Funktionstaste <keycap>F6</keycap>) wird die neue Partitionstabelle auf die
-  Festplatte geschrieben und die Partitionen ggf. formatiert.
-</para>
-
-<para>
-  Ist mehr als eine Festplatte vorhanden, wird ein Dialog angezeigt, in dem ausgewählt werden kann,
-  in welches Gerät der Bootloader installiert werden soll. USB-Sticks werden dabei ausgeblendet. Um
-  die Auswahl zu erleichtern wird der Hersteller der Speichermedien angezeigt (bei Verwendung des
-  virtio-Treibers unter KVM wird '0x1af4: Unknown' angezeigt).
-</para>
-
-</section>
-
 <section id="installation:Netzwerkkonfiguration">
   <title>Netzwerkkonfiguration</title>
   <para>
-	Im oberen Bereich der Netzwerkkonfiguration werden alle im System verfügbaren Netzwerkkarten in
-	einem eigenen Reiter dargestellt (es werden nur Netzwerkinterfaces im Schema
-	<emphasis>ethX</emphasis> dargestellt). Mit <keycap>F2</keycap> und <keycap>F3</keycap> kann
-	zwischen den Netzwerkkarten gewechselt werden.
+	Initial versucht der Univention Installer eine automatische Konfiguration der Netzwerkschnittstellen vorzunehmen.
+	Dabei wird zunächst versucht, eine IPv6-Adresse über die Stateless Address Autoconfiguration (SLAAC) zu ermitteln.
+	Sollte dies nicht erfolgreich sein, versucht der Univention Installer eine IPv4-Adresse über das Dynamic Host Configuration
+	Protocol (DHCP) zu erfragen. Ist dies erfolgreich, wird die manuelle Netzwerkkonfiguration von Univention Installer übersprungen.
   </para>
-  
-  <para>
-	Sollte keine Netzwerkkarte erkannt werden, wird vom Installer eine virtuelle Netzwerkkarte
-	angelegt, mit der die Installation fortgesetzt werden kann.
-  </para>
-
-  <para>
-	Netzwerkschnittstellen können für IPv4 und/oder IPv6 konfiguriert werden. IPv4-Adressen haben 32
-	Bit Länge und werden in der Regel in vier Blöcken in Dezimalschrebweise dargestellt
-	(z.B. 192.168.0.10), während IPv6-Adressen vier Mal so lang sind und typischerweise hexadezimal
-	dargestellt werden (z.B. 2001:0DB8:FE29:DE27:0000:0000:0000:0001).
-  </para>
-
-  <figure id="installation-networksettings">
+  <figure id="installation-netcfg-dhcp">
 	<title>Netzwerkkonfiguration</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/network_de.png"/>
+	<graphic scalefit="1" width="80%" fileref="illustrations/installer-netcfg-dhcp_de.png"/>
   </figure>
-
   <para>
-	Ist die Option <guimenu>DHCP</guimenu> aktiviert, wird versucht die IP-Adresse - und je nach
-	Konfiguration auch Nameserver und/oder Standard-Gateway - über das Dynamic Host Configuration
-	Protocol (DHCP) zu beziehen und automatisch zu konfigurieren. Wenn die DHCP-Anfrage fehlschlägt,
-	wird eine zufällige Adresse aus dem Link-Local Netzwerk 169.254.0.0/16 verwendet.
+	Sollte kein DHCP-Server im lokalen Netz vorhanden sein oder es soll eine statische Konfiguration
+	der Netzwerkschnittstelle stattfinden, kann die Schaltfläche <guimenu>Abbrechen</guimenu> ausgewählt
+	werden. Der Univention Installer bietet dann an, die automatische Konfiguration zu wiederholen oder
+	die Schnittstelle manuell zu konfigurieren.
   </para>
-
+  <figure id="installation-netcfg-static">
+	<title>Netzwerkkonfiguration</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/installer-netcfg-static_de.png"/>
+  </figure>
   <para>
-	Wenn die Option <guimenu>DHCP</guimenu> nicht aktiviert wird, muss eine IPv4-Adresse eingegeben
-	werden, die an die Netzwerkkarte gebunden werden soll. Zusätzlich zur
-	<guimenu>IP-Adresse</guimenu> muss die <guimenu>Netzmaske</guimenu> angegeben werden. 
+	<note>
+	  Für die Installation von &ucsUCS; ist mindestens eine Netzwerkschnittstelle erforderlich. Wird
+	  keine unterstützte Netzwerkkarte erkannt, bietet Univention Installer eine Liste der unterstützten
+	  Treiber zur Auswahl an.
+	</note>
   </para>
-
   <para>
-	Die IPv6-Adresse kann auf zwei Arten konfiguriert werden:
+	Bei der manuellen Konfiguration kann für das System wahlweise eine statische IPv4- oder eine
+	IPv6-Adresse angegeben werden.  IPv4-Adressen haben 32 Bit Länge und werden in der Regel in vier
+	Blöcken in Dezimalschreibweise dargestellt (z.B. 192.168.0.10), während IPv6-Adressen vier Mal so
+	lang sind und typischerweise hexadezimal dargestellt werden (z.B. 2001:0DB8:FE29:DE27:0000:0000:0000:000A).
+	Neben der Angabe einer statischen IP-Adresse werden auch Werte für Netzmaske, Gateway und DNS-Server abgefragt.
   </para>
-
-  <itemizedlist>
-	<listitem> <simpara>
-	  Bei der <guimenu>dynamischen</guimenu> Konfiguration kommt Stateless Address Autoconfiguration
-	  (SLAAC) zum Einsatz. Dabei wird die IP-Adresse automatisch aus den von den IPv6-Routern
-	  verschickten Router Advertisements generiert.
-	</simpara></listitem>
-	
-	<listitem> <simpara>
-	  Alternativ kann die Adresse auch durch Angabe von <guimenu>IPv6-Adresse</guimenu> und
-	  <guimenu>IPv6-Prefix</guimenu> statisch konfiguriert werden. Im Gegensatz zu DHCP wird bei
-	  SLAAC keine Zuweisung von weitergehenden Daten wie dem zu verwendenden DNS-Server
-	  durchgeführt. Hierfür gibt es mit DHCPv6 ein Zusatzprotokoll, das bei der dynamischen
-	  Zuweisung aber nicht zum Einsatz kommt.
-	</simpara> </listitem>
-  </itemizedlist>
-
   <para>
-	Unter <guimenu>Globale Netzwerk-Einstellungen</guimenu> können weitere netzwerkbezogene
-	Einstellungen vorgenommen werden.
-  </para>
-
-  <para>
-	Unter <guimenu>IPv4-Gateway</guimenu> und <guimenu>IPv6-Gateway</guimenu> können die für die
-	IP-Adresse im Subnetz eingesetzten Standard-Gateways für IPv4 und IPv6 eingegeben werden. Für
-	IPv6 ist die Angabe eines Gateways bei statischer Konfiguration erforderlich; bei dynamischer
-	Konfiguration ist diese optional, wird jedoch empfohlen. Ein hier konfiguriertes IPv6-Gateway
-	hat Vorrang vor Router Advertisements, die ansonsten die Route ändern könnten.
-  </para>
-
-  <para>
-	Zwei Typen von DNS-Servern werden unterschieden:
-  </para>
-
-  <itemizedlist>
-	<listitem> <simpara>
-	  Ein <guimenu>externer DNS-Server</guimenu> wird für die Auflösung von Rechnernamen und
-	  Adressen außerhalb der UCS-Domäne verwendet, z.B. <emphasis>univention.de</emphasis>. Dies ist
-	  typischerweise ein Nameserver, der vom Internet Provider betrieben wird.
-	</simpara> </listitem>
-
-	<listitem> <simpara>
-	  Ein <guimenu>Domänen-DNS-Server</guimenu> ist ein lokaler Nameserver der UCS-Domäne. Dort
-	  werden ausschließlich Rechnernamen und IP-Adressen der UCS-Domäne verwaltet. Wird eine Adresse
-	  im lokalen Datenbestand nicht aufgefunden, wird automatisch ein externer DNS-Server
-	  angefragt. Die DNS-Daten werden im LDAP-Verzeichnisdienst gespeichert, d.h. alle
-	  Domänen-DNS-Server liefern identische Daten aus.
-	</simpara> </listitem>
-  </itemizedlist>
-
-  <para>
-	Bei der Installation eines &ucsMaster; wird nur ein <guimenu>externer DNS-Server</guimenu>
-	abgefragt, da im Rahmen der Installation immer ein Domänen-DNS-Server eingerichtet wird. Dieser
-	kann dann von den anderen Systemen der Domäne verwendet werden. Über die Schaltfläche
-	<mousebutton>Mehr</mousebutton> können weitere Nameserver aufgenommen werden.
-  </para>
-
-  <para>
-	Auch auf den Systemrollen &ucsBackup; und &ucsSlave; wird jeweils ein lokaler DNS-Server
-	eingerichtet. Hier kann durch Angabe von <guimenu>Domänen-DNS-Server</guimenu> konfiguriert
-	werden, welcher Server primär für die Namensauflösung verwendet wird. Während der Installation
-	muss hier der Domänen-DNS-Server eines bereits installierten Systems angegeben werden, z.B. den
-	des &ucsMaster;.
-  </para>
-
-  <para>
-	Auf &ucsMember;n und Basissystemen kann nur ein Domänen-DNS-Server angegeben werden.
-  </para>
-
-  <para>
-	Sollte außer einer virtuellen Netzwerkkarte keine Netzwerkkarte existieren, so sollte kein
-	Nameserver angegeben werden, um längere Wartezeiten während der Installation zu vermeiden. Wenn
-	der Nameserver während der Installation nicht erreicht werden kann, sollte dieser nicht im
-	Univention Installer angegeben, sondern erst nach erfolgter Installation konfiguriert
-	werden. Dies vermeidet längere Timeouts während der Installation.
-  </para>
-
-  <para>
-	Wenn das UCS-System keinen unmittelbaren Zugang zum Internet besitzt, kann unter <guimenu>HTTP-Proxy</guimenu> die
-	URL eines Proxy-Servers angegeben werden. Über diesen Proxy erfolgen die Downloads
-	von weiteren Updates vom Univention-Repository-Server (siehe <xref linkend="installation:overview"/>).
-	Das Format der URL lautet <uri>http://&lt;IP-Adresse-Proxy-Server&gt;:&lt;Port&gt;</uri>.
-  </para>
-
-  <para>
-	Da die Auflösung von Hostnamen während der Installation in Abhängigkeit von den installierten
-	Komponenten nicht zu jedem Zeitpunkt sichergestellt werden kann, sollte die IP-Adresse des
-	Proxy-Servers eingetragen werden.
-  </para>
-</section>
-
-<section id="installer_join"><title>Join-Optionen</title>
-	<para>
-		Dieses Modul erscheint nicht bei den Systemrollen &ucsMaster; und Basissystem.
-	</para>
-	<para>
-		Standardmäßig wird der Beitritt zu einer UCS-Domäne am Ende der Installation
-		vorgenommenen. Durch Deaktivierung der Option <guimenu>Starte den Join-Vorgang am Ende der
-		Installation</guimenu> kann der Beitritt unterbunden werden. Das System muss dann später
-		über das Kommando <command>univention-join</command> beitreten.
-	</para>
-	<para>
-		Wenn ein UCS-Server-System als Nameserver in der entsprechenden
-		Einstellungsmaske eingetragen wurde, kann der Name des &ucsMaster;
-		über eine DNS-Anfrage bestimmt werden. Anderenfalls muss die Option
-		<guimenu>DNS nach Domain Controller Master durchsuchen</guimenu>
-		deaktiviert und der vollständige Name (FQDN) des Domaincontroller Master in das Feld
-		<guimenu>Systemname des DC Master</guimenu> eingetragen werden.
-	</para>
-	<para>
-		Als <guimenu>Join-Account</guimenu> wird ein Benutzerkonto bezeichnet, das berechtigt ist,
-		Systeme der UCS-Domäne hinzuzufügen. In der Standardeinstellung ist dies der Benutzer Administrator,
-		der bei der Installation des Domaincontroller Master angelegt wurde. Unter
-		<guimenu>Passwort</guimenu> muss das entsprechende Passwort des Benutzerkontos angegeben werden.
-	</para>
-	<para>
-		Weitere Informationen zum Domänenbeitritt finden sich in <xref linkend="linux-domaenenbeitritt"/>.
-	</para>
-</section>
-<section id="installation::softwareselection">
-<title>Auswahl von Software-Komponenten</title>
-	<para>
-		Der Funktionsumfang eines Serversystems kann durch die Auswahl verschiedener
-		Komponenten festgelegt werden. Folgende Komponenten sind verfügbar:
-	</para>
-	<figure id="installation-softwareselection">
-	<title>Softwareauswahl</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/software_de.png"/>
-	</figure>
+	Bei der manuellen Angabe eines DNS-Server sind die folgenden Punkte zu beachten:
 	<itemizedlist>
-		<listitem>
-			<simpara>
-			<emphasis>Desktop-Umgebung</emphasis> - Eine für den Zugriff auf die webbasierten
-			Schnittstellen ausgelegte Desktop-Umgebung, bestehend aus der
-			X.org-Oberfläche, dem GDM-Login-Manager, KDE und dem Firefox-Browser.
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>Samba 3 Server</emphasis> - Ermöglicht den Einsatz von UCS als PDC, BDC und Fileserver
-			in einer Windows-Domäne auf Basis von NT-Domänentechnologie. Die parallele Installation
-			von <emphasis>Samba 3 Server</emphasis> und <emphasis>Samba 4 Server</emphasis> auf einem System ist nicht möglich.
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>Samba 4 Server</emphasis> - Ermöglicht den Einsatz von UCS als Active
-			Directory Domänencontroller.
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>Active Directory Connector</emphasis> - Lösung zur bidirektionalen Synchronisation
-			zwischen dem UCS-Verzeichnisdienst und Active Directory.
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>Management-Server für KVM oder Xen</emphasis> - UCS Virtual Machine Manager zur Verwaltung virtueller Maschinen
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>Xen Virtualisierungsserver</emphasis> - Virtualisierung von Systemen durch den Hypervisor Xen
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>KVM Virtualisierungsserver</emphasis> - Virtualisierung von Systemen durch KVM
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>Mail-Server (Postfix, Cyrus IMAPd)</emphasis> - Mailserver-Umgebung auf Basis von Postfix für den
-			Mail-Versand über SMTP und Cyrus für die Bereitstellung von Postfächern über IMAP und
-			POP3. Virenprüfungen über den Scanner ClamAV und Spam-Erkennung über
-			Spamassassin sind integriert.
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>DHCP-Server</emphasis> - Dienst zum dynamischen IP-Management für IPv4-Netze.
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>Druckserver (CUPS)</emphasis> - Druckserver auf Basis der Software
-			CUPS. PPD-Treiber für die meisten Druckermodelle werden mitgeliefert.
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>Web-Proxy-Server (Squid)</emphasis> - Dienst zum zentralen Caching und
-			Policy-Management abgerufener Web-Seiten
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>Bacula (Backup)</emphasis> - Backuplösung mit Client-/Server-Architektur für
-			die Sicherung und Wiederherstellung von Datenbeständen
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>Netzwerküberwachung (Nagios)</emphasis> - System- und Netzwerk-Überwachung
-			auf Basis der Software Nagios.
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>Paketstatus-Überwachung</emphasis> - Zentrale Erfassung von installierten Softwarepaketen auf UCS-Systemen.
-			</simpara>
-		</listitem>
+	  <listitem>
+		<simpara>
+		  Bei der Installation des ersten UCS-Systems sollte die IP-Adresse des lokalen Routers
+		  (sofern dieser den DNS-Dienst bereitstellt) oder der DNS-Server des Providers angegeben werden.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  Bei der Installation jedes weiteren UCS-Systems muss als DNS-Server die IP-Adresse eines
+		  UCS-Domänencontroller-Systems angegeben werden. Dies ist notwendig, damit die automatische Erkennung
+		  des Domänencontroller Masters funktioniert. Im Zweifelsfall sollte hier die IP-Adresse des
+		  UCS-Domänencontroller Master-Systems angegeben werden.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  Soll das UCS-System während der Installation einer Windows-AD-Domäne beitreten, muss als
+		  DNS-Server die IP-Adresse eines AD-Domänencontroller-Systems angegeben werden. Dies ist notwendig,
+		  damit die automatische Erkennung des Windows-AD-Domänencontroller funktioniert.
+		</simpara>
+	  </listitem>
 	</itemizedlist>
+  </para>
+  <figure id="installation-netcfg-ip">
+	<title>Netzwerkkonfiguration</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/installer-netcfg-ip_de.png"/>
+  </figure>
+</section>
+<section id="installation:rootpassword">
+  <title>Einrichtung des root-Passworts</title>
+  <para>
+	Für die Anmeldung am installierten System ist die Angabe eines Passworts für den Benutzer <emphasis>root</emphasis> notwendig.
+	Wird ein &ucsMaster; installiert, wird dieses Passwort auch für den
+	Benutzer <emphasis>Administrator</emphasis> eingetragen.
+	Im späteren Betrieb können die Passworte der Benutzer <emphasis>root</emphasis> und <emphasis>Administrator</emphasis>
+	unabhängig voneinander verwaltet werden. Das Passwort muss im zweiten Feld
+	erneut eingetragen. Die doppelte Eingabe ist erforderlich, um Tippfehler zu
+	minimieren, da die eingegebenen Zeichen nicht angezeigt werden.
+  </para>
+  <para>
+	Das Root-Passwort muss aus Sicherheitsgründen mindestens acht Zeichen umfassen.
+  </para>
+  <figure id="installation-password">
+	<title>root-Passwort einrichten</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/installer-password_de.png"/>
+  </figure>
+</section>
+
+
+<section id="installation:Partitionieren_der_Festplatten">
+  <title>Partitionieren der Festplatten</title>
+  <para>
+	Der Univention Installer unterstützt die Partitionierung von Festplatten und die Erstellung von
+	unterschiedlichen Dateisystemen (u.a. EXT4, XFS und FAT32). Darüber hinaus können auch Mechanismen
+	wie der Logical Volume Manager (LVM), RAID oder mit LUKS verschlüsselte Partitionen eingerichtet
+	werden.
+  </para>
+  <para>
+	Ab UCS 4.0 wählt der Univention Installer automatische einen passenden Partitionstyp (MBR oder
+	GPT) für die Größe der gewählten Festplatte aus.  Auf Systemen mit <emphasis>Unified Extensible
+	Firmware Interface (UEFI)</emphasis> wird automatisch die GUID Partition Table (GPT) verwendet.
+  </para>
+  <para>
+	Zur einfacheren Installation bietet der Univention Installer geführte Installationen an. Bei der
+	geführten Installation werden bestimmte Standardschemata bzgl. Partitionierung und Formatierung auf
+	die ausgewählte Festplatte angewendet. Darüber hinaus kann auch eine manuelle Partitionierung
+	vorgenommen werden.
+  </para>
+  <para>
+	Es stehen drei Varianten für eine geführte Partitionierung zur Auswahl:
+	<itemizedlist>
+	  <listitem>
+		<simpara>
+		  <guimenu>Geführt - vollständige Festplatte verwenden</guimenu>: in dieser Variante wird
+		  für jedes Dateisystem eine eigene Partition angelegt. Die Größe der Partitionen ist hierbei auf die
+		  Größe der jeweiligen Festplatte beschränkt. Alle Daten auf der ausgewählten Festplatte gehen dabei
+		  verloren!
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  <guimenu>Geführt - gesamte Platte verwenden und LVM einrichten</guimenu>: in dieser
+		  Variante wird auf der ausgewählten Festplatte zunächst eine LVM Volume Group
+		  eingerichtet. Anschließend wird für jedes Dateisystem ein eigenes Logical Volume innerhalb der
+		  Volume Group angelegt. Die Größe der Logical Volumes ist in dieser Variante durch die Größe der
+		  Volume Group beschränkt, die später auch durch weitere Festplatten vergrößert werden kann. Alle
+		  Daten auf der ausgewählten Festplatte gehen dabei verloren!
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  <guimenu>Geführt - gesamte Platte mit verschlüsseltem LVM</guimenu>: diese Variante
+		  entspricht der vorherigen Variante, allerdings wird zusätzlich die LVM Volume Group
+		  verschlüsselt. Dies macht die Angabe des Passwort für die verschlüsselte Volume Group bei jedem
+		  Start von &ucsUAS; notwendig.
+		</simpara>
+	  </listitem>
+	</itemizedlist>
+	<figure id="installation-partman-selectguided">
+	  <title>Festplatte partitionieren</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/installer-partman-selectguided_de.png"/>
+	</figure>
+  </para>
+  <caution>
+	Bei allen drei Varianten gehen die Daten auf der ausgewählten Festplatte während der Partitionierung verloren!
+  </caution>
+  <para>
+	Im Anschluss muss aus der Liste der erkannten Festplatte eine ausgewählt werden, auf die die
+	Partitionierungsvariante angewendet werden soll.
+  </para>
+  <para>
+	Für jede Partitionierungsvariante gibt es drei Untervarianten, die sich in der Anzahl der
+	erstellten Dateisysteme unterscheiden:
+	<itemizedlist>
+	  <listitem>
+		<simpara>
+		  <guimenu>Alle Dateien auf eine Partition</guimenu>: Bei dieser Variante wird nur eine
+		  Partition bzw. ein Logical Volume erstellt, auf dem das /-Dateisystem angelegt wird.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  <guimenu>Separate /home-Partition</guimenu>: Neben einem Dateisystem für / wird ein
+		  weiteres Dateisystem für /home angelegt.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  <guimenu>Separate /home-, /usr-, /var- und /tmp-Partition</guimenu>: Neben einem
+		  Dateisystem für / wird für /home, /usr, /var und /tmp jeweils ein eigenes Dateisystem angelegt.
+		</simpara>
+	  </listitem>
+	</itemizedlist>
+  </para>
+
+  <para>
+	Vor jeder aktiven Änderung auf der Festplatte wird diese noch einmal in einem zusätzlichen Dialog angezeigt und mit explizit bestätigt werden.
+	<figure id="installation-partman-writelvm">
+	  <title>Bestätigung von Änderungen auf der Festplatte</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/installer-partman-writelvm_de.png"/>
+	</figure>
+  </para>
+  <para>
+	Nach Abschluss der Partitionierung wird automatisch das Grundsystem sowie weitere Software
+	installiert. Dies kann je nach Geschwindigkeit der einzelnen Systemkomponenten einige Zeit
+	beanspruchen. Weiterhin wird das System durch die Installation des GRUB-Bootloaders bootfähig
+	gemacht.
+  </para>
+</section>
+<section id="installation:Domäneneinstellungen">
+  <title>Domäneneinstellungen</title>
+  <para>
+	Die abschließende Konfiguration des UCS-Systems beginnt mit der Auswahl eines Domänenmodus.
+	Es stehen vier Modi zur Verfügung, die Einfluss auf die nächsten Konfigurationsschritte haben:
+	<itemizedlist>
+	  <listitem>
+		<simpara>
+		  Im ersten Modus, <guimenu>Erstellen einer neuen UCS-Domäne</guimenu>, wird das erste
+		  System einer neuen UCS-Domäne konfiguriert: ein UCS-System mit der Systemrolle &ucsMaster;. In den
+		  folgenden Konfigurationsschritten werden die notwendigen Informationen zur Einrichtung eines eigenen
+		  Verzeichnisdienstes, Authentifikationsdienstes sowie DNS-Servers abgefragt. Eine UCS-Domäne kann aus
+		  einem einzelnen (oder mehreren UCS-Systemen bestehen. Zusätzliche UCS-Systeme können über den Modus
+		  <guimenu>Einer bestehenden UCS-Domäne beitreten</guimenu> nachträglich aufgenommen werden.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  <guimenu>Einer bestehenden Active-Directory-Domäne beitreten</guimenu>: Dieser Modus, in
+		  dem UCS als Mitglied einer Active Directory-Domäne betrieben wird, eignet sich, um eine Active
+		  Directory-Domäne um Applikationen zu erweitern, die auf der UCS-Plattform zur Verfügung stehen. Auf
+		  der UCS-Plattform installierte Apps sind dann für Benutzer der Active Directory-Domäne nutzbar. Die
+		  Authentifikation erfolgt dabei weiter gegen native Microsoft Active Directory
+		  Domänencontroller. Nach der Auswahl dieses Modus werden alle relevanten Informationen für den
+		  Beitritt zur Active Directory-Domäne abgefragt und das UCS-System entsprechend konfiguriert.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  Mit der Auswahl des Modus <guimenu>Einer bestehenden UCS-Domäne beitreten</guimenu> kann
+		  das zu konfigurierende UCS-System einer bereits existierenden UCS-Domäne beitreten. Die
+		  UCS-Systemrolle, die es in der Domäne einnehmen soll, wird in einem nachgelagerten Schritt
+		  abgefragt.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  Wird der Modus <guimenu>Keine Domäne benutzen</guimenu> ausgewählt, stehen auf dem
+		  UCS-System keinerlei webbasierte Verwaltungsfunktionen und keinerlei Domänenfunktionalität zur
+		  Verfügung. Das UCS-System kann auch nicht nachträglich Teil einer bestehenden UCS- oder AD-Domäne
+		  werden bzw. nachträglich eine neue UCS-Domäne gründen. Weiterhin steht in diesem Modus das
+		  Univention App Center nicht zur Verfügung. Dieser Modus wird daher nur selten und in speziellen
+		  Szenarien (z.B. als Firewall-System) verwendet.
+		</simpara>
+	  </listitem>
+	</itemizedlist>
+	<figure id="installation-domainrole">
+	  <title>Domäneneinstellungen</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/installer-domainrole_de.png"/>
+	</figure>
+  </para>
+  <section id="installation:Domäneneinstellungen:NeueDomäne">
+	<title>Modus "Erstellen einer neuen UCS-Domäne"</title>
 	<para>
-		Einige Software-Komponenten können nicht konfiguriert werden und werden auf
-		allen Systemrollen vorinstalliert, z.B. die Univention Management Console, ein
-		SSH-Server und verschiedene Kommandozeilen-Tools und Editoren.
+	  Nach der Auswahl des Modus <guimenu>Erstellen einer neuen UCS-Domäne</guimenu> wird in den
+	  folgenden zwei Schritten ein Organisationsname, eine E-Mail-Adresse, ein vollständiger Rechnername sowie
+	  eine LDAP-Basis abgefragt.
 	</para>
 	<para>
-		UCS basiert auf der im professionellen Umfeld am häufigsten eingesetzten
-		Linux-Distribution Debian. Zu den Vorzügen von Debian - und damit auch von UCS -
-		gehört ein äußerst flexibles und durchdachtes Paket-Management.
-		Die Installation weiterer Softwarepakete wird in
-		<xref linkend="computers::softwaremanagement::installsoftware"/>
-		ausführlich beschrieben.
+	  Die Angabe eines Organisationsnamens ist optional und wird im zweiten Schritt für die automatische Generierung eines Domänennamens sowie der LDAP-Basis verwendet.
 	</para>
+	<para>
+	  Wird eine gültige E-Mail-Adresse angegeben, wird diese verwendet, um einen personalisierten
+	  Lizenzschlüssel zu erzeugen, der für die Verwendung des Univention App Centers notwendig ist.  Der
+	  Lizenzschlüssel wird automatisch generiert und an die angegeben E-Mail-Adresse zugeschickt. Die
+	  Lizenz kann dann über den Lizenzdialog der &ucsUMC; eingespielt werden.
+	</para>
+	<para>
+	  Aus dem hier eingetragenen vollständigen Rechnernamen (ein Rechnername inkl. Domänenname) wird
+	  automatisch der Name des zu konfigurierenden UCS-Systems sowie der Name der DNS-Domäne ermittelt.
+	  Aus dem im vorigen Schritt angegebenen Organisationsnamen wird automatisch ein Vorschlag
+	  generiert. Es wird empfohlen, keine öffentlich verfügbare DNS-Domäne zu verwenden, da dies zu
+	  Problemen in der Namensauflösung führen kann.
+	</para>
+	<para>
+	  Für die Initialisierung des Verzeichnisdienstes wird die Angabe einer LDAP-Basis
+	  benötigt. Auch hier wird ein Vorschlag automatisch aus dem vollständigen Rechnernamen abgeleitet. In
+	  der Regel kann dieser Wert unverändert übernommen werden.
+	</para>
+	<figure id="installation-newdomain">
+	  <title>Angabe des Rechnernamens und der LDAP-Basis</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/installer-hostname_de.png"/>
+	</figure>
+  </section>
+  <section id="installation:Domäneneinstellungen:ADMember">
+	<title>Modus "Einer bestehenden Active-Directory-Domäne beitreten"</title>
+	<para>
+	  Wurde während der Netzwerkkonfiguration der DNS-Server einer Active-Directory-Domäne
+	  angegeben, wird im Schritt <guimenu>Active Directory-Kontoinformationen</guimenu> automatisch der
+	  Name des Active Directory-Domänencontrollers vorgeschlagen. Falls dieser Vorschlag nicht stimmen
+	  sollte, kann hier der Name eines anderen Active Directory-Domänencontrollers bzw. einer anderen
+	  Active Directory-Domäne angegeben werden.
+	</para>
+	<para>
+	  Für den Beitritt in die Active Directory-Domäne ist die Angabe eines Active Directory-Kontos
+	  sowie des zugehörigen Passworts notwendig. Das Benutzerkonto muss die Berechtigung besitzen, neue
+	  Systeme in die Active Directory-Domäne aufzunehmen.
+	</para>
+	<para>
+	  Zusätzlich muss ein Rechnername für das zu konfigurierende UCS-System angegeben werden. Dabei
+	  kann der vorgeschlagene Rechnername übernommen oder ein eigener Rechnername eingetragen werden.  Der
+	  Domänenname des Rechners wird automatisch aus dem Domänen-DNS-Server abgeleitet. In einigen
+	  Szenarien (z.B. ein öffentlicher Mailserver) kann es notwendig sein, einen bestimmten vollständigen
+	  Rechnernamen zu verwenden. Das UCS-System wird mit dem hier angegebenen Rechnernamen der Active
+	  Directory-Domäne beitreten. Der eingerichtete Domänenname kann nach Abschluss der Konfiguration
+	  <emphasis>nicht</emphasis> mehr verändert werden.
+	</para>
+	<figure id="installation-adjoin">
+	  <title>Informationen zum Domänenbeitritt</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/installer-adjoin_de.png"/>
+	</figure>
+  </section>
+  <section id="installation:Domäneneinstellungen:EinerUCSDomäneBeitreten">
+	<title>Modus "Einer bestehenden UCS-Domäne beitreten"</title>
+	<para>
+	  In einer UCS-Domäne können Systeme in unterschiedlichen <emphasis>Systemrollen</emphasis>
+	  installiert werden. Das erste System einer UCS-Domäne wird immer mit der Systemrolle &ucsMaster;
+	  installiert. Zusätzliche UCS-Systeme können der Domäne später beitreten und mit einer der folgenden
+	  Systemrollen konfiguriert werden:
+	  <itemizedlist>
+		<listitem>
+		  <simpara>
+			<guimenu>&ucsBackup;</guimenu>
+		  </simpara>
+		  <simpara>
+			Der &ucsBackup; dient als Fallback-System des DC Master. Sollte dieser
+			ausfallen, kann ein DC Backup die Rolle des DC Master dauerhaft übernehmen.
+			Auf Servern mit der Rolle &ucsBackup; werden alle
+			Domänendaten und SSL-Sicherheitszertifikate als Nur-Lese-Kopie gespeichert.
+		  </simpara>
+		</listitem>
+		<listitem>
+		  <simpara>
+			<guimenu>&ucsSlave;</guimenu>
+		  </simpara>
+		  <simpara>
+			Auf Servern mit der Rolle &ucsSlave; werden die Domänendaten als Nur-Lese-Kopie
+			gespeichert. Im Gegensatz zum &ucsBackup; werden jedoch nicht alle SSL-Sicherheitszertifikate
+			gespeichert. Da die Zugriffe der auf einem &ucsSlave; laufenden Dienste gegen den lokalen
+			LDAP-Verzeichnisdienst erfolgen, bieten sich DC Slave-System für Standortserver und für die Verteilung
+			lastintensiver Dienste an.
+		  </simpara>
+		</listitem>
+		<listitem>
+		  <simpara>
+			<guimenu>&ucsMember;</guimenu>
+		  </simpara>
+		  <simpara>
+			&ucsMember; sind Server-Systeme ohne lokalen LDAP-Verzeichnisdienst. Der Zugriff auf
+			Domänendaten erfolgt hierbei über andere Server der Domäne. Sie eignen sich daher für Dienste, die
+			keine lokale Datenbank für z.B. die Authentifizierung benötigen, beispielsweise Druck- und
+			Dateiserver.
+		  </simpara>
+		</listitem>
+	  </itemizedlist>
+	</para>
+	<para>
+	  Zusätzlich muss ein Rechnername für das zu konfigurierende UCS-System angegeben werden. Dabei
+	  kann der vorgeschlagene Rechnername übernommen oder ein eigener Rechnername eingetragen werden.  Der
+	  Domänenname des Rechners wird automatisch aus dem Domänen-DNS-Server abgeleitet. In einigen
+	  Szenarien (z.B. ein öffentlicher Mailserver) kann es notwendig sein, einen bestimmten vollständigen
+	  Rechnernamen zu verwenden. Der eingerichtete Domänenname kann nach Abschluss der Konfiguration
+	  <emphasis>nicht</emphasis> mehr verändert werden.
+	</para>
+	<para>
+	  FOO BAR BAZ FIXME
+	</para>
+	<figure id="installation-join">
+	  <title>Informationen zum Domänenbeitritt</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/installer-join_de.png"/>
+	</figure>
+  </section>
+  <section id="installation:Domäneneinstellungen:KeineDomäne">
+	<title>Modus "Keine Domäne benutzen"</title>
+	<para>
+	  Die Konfiguration des Modus <guimenu>Keine Domäne benutzen</guimenu> erfordert die Angabe
+	  eines Rechnernamens für das zu konfigurierende UCS-System. Dabei kann der vorgeschlagene Rechnername
+	  übernommen oder ein eigener Rechnername eingetragen werden.  Der Domänenname des Rechners wird
+	  automatisch aus dem Domänen-DNS-Server abgeleitet. In einigen Szenarien (z.B. ein öffentlicher
+	  Mailserver) kann es notwendig sein, einen bestimmten vollständigen Rechnernamen zu verwenden.
+	</para>
+  </section>
+</section>
+
+<section id="installation:software">
+  <title>Auswahl von UCS-Software-Komponenten</title>
+  <para>
+	Der Schritt <guimenu>Software-Konfiguration</guimenu> bietet die Möglichkeit bereits während der
+	Installation zusätzliche UCS-Komponenten zu installieren.  Diese stehen auch nach der Installation
+	über das Univention App Center in der Kategorie <guimenu>UCS-Komponenten</guimenu> zur Verfügung und
+	können dort nachträglich installiert und deinstalliert werden.
+  </para>
+	<figure id="installation-softwareselection">
+	  <title>Auswahl von UCS-Software-Komponenten</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/installer-softwareselection_de.png"/>
+	</figure>
 </section>
 
 <section id="installation:overview">
-<title>Installationsüberblick</title>
-	<para>
-		In diesem Dialog werden die wichtigsten vorgenommenen Einstellungen angezeigt.
-		Sind alle Einstellungen korrekt, kann über die
-		Schaltfläche <mousebutton>Installation starten</mousebutton> die Installation der Software
-		veranlasst werden, siehe Abbildung <xref linkend="installation-overview"/>.
-	</para>
-	<para>
-		Mit der Option <guimenu>System nach der Installation aktualisieren</guimenu>
-		werden verfügbare Errata-Updates automatisch installiert. Zusätzlich werden auf
-		einem &ucsMaster; alle verfügbaren Patch-Level-Updates und Errata-Updates
-		installiert. Auf allen übrigen Systemrollen werden alle Patch-Level-Updates
-		bis zum Installationsstand des &ucsMaster; eingerichtet. (Um den
-		Installationsstand zu prüfen, muss ein Login auf dem &ucsMaster;
-		erfolgen. Dazu werden die in den Join-Optionen angegebenen Anmeldedaten
-		verwendet).
-	</para>
-	<figure id="installation-overview">
+  <title>Bestätigen der Einstellungen</title>
+  <para>
+	In diesem Dialog werden die wichtigsten vorgenommenen Einstellungen angezeigt.
+	Sind alle Einstellungen korrekt, kann über die
+	Schaltfläche <guimenu>System konfigurieren</guimenu> die Konfiguration des UCS-Systems
+	veranlasst werden, siehe Abbildung <xref linkend="installation-overview"/>.
+  </para>
+  <para>
+	Mit der Option <guimenu>System nach der Installation aktualisieren</guimenu>
+	werden verfügbare Errata-Updates automatisch installiert. Zusätzlich werden auf
+	einem &ucsMaster; alle verfügbaren Patch-Level-Updates und Errata-Updates
+	installiert. Auf allen übrigen Systemrollen werden alle Patch-Level-Updates
+	bis zum Installationsstand des &ucsMaster; eingerichtet. (Um den
+	Installationsstand zu prüfen, muss ein Login auf dem &ucsMaster;
+	erfolgen. Dazu werden die in den Join-Optionen angegebenen Anmeldedaten
+	verwendet).
+  </para>
+  <figure id="installation-overview">
 	<title>Installationsüberblick</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/overview_de.png"/>
-	</figure>
-	<para>
-		Während der Installation zeigt ein Fortschrittsbalken den Verlauf der
-		Installation an. Im unteren Bildschirmbereich finden sich Links zu
-		weiterführenden Informationsquellen und Dokumentationen.
-	</para>
-	<figure id="installation-progress">
-	<title>Installationsfortschritt</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/installationprogress_de.png"/>
-	</figure>
-	<para>
-		Das System bindet die Partitionen in den Verzeichnisbaum ein und installiert
-		zuerst die UCS-Kernkomponenten und danach gegebenenfalls die zusätzlichen
-		Komponenten und Pakete.
-	</para>
-	<para>
-		Vorausgesetzt die Option <guimenu>Starte den Join Vorgang am Ende der
-		Installation</guimenu> wurde nicht deaktiviert, versuchen alle Rechner außer Basissysteme und
-		Domaincontroller Master, der UCS-Domäne beizutreten, Konfigurationseinstellungen
-		für ihre Dienste aus dem LDAP-Verzeichnis zu lesen und die Dienste entsprechend
-		zu konfigurieren. In <xref linkend="domaenenbeitritt"/> wird beschrieben, wie der Domänenbeitritt erneut
-		veranlasst werden kann, falls der Beitritt während der Installation fehlschlägt.
-	</para>
-	<para>
-		Das Installationsprotokoll des Univention Installers wird als
-		<filename>installer.log.gz</filename> und das Protokoll der Paketinstallation als
-		<filename>installation.log.gz</filename> im Verzeichnis <filename>/var/log/univention/</filename>
-		abgelegt.
-	</para>
-	<para>
-		Zum Abschluss der Installation muss die Eingabetaste gedrückt werden, um das
-		System neu zu starten. Die DVD sollte vor dem Neustarts entnommen werden,
-		damit nicht erneut von der Installations-DVD gebootet wird. Alternativ kann das
-		BIOS des Rechners so eingestellt werden, dass erst von Festplatte und danach von
-		DVD gebootet wird.
-	</para>
-	<para>
-		Das System startet nun von Festplatte. Nach dem Bootvorgang können sich der
-		Benutzer <emphasis>root</emphasis> und <emphasis>Administrator</emphasis> auf der Kommandozeile und
-		der Benutzer <emphasis>Administrator</emphasis> am GDM-Anmeldebildschirm mit dem während der Installation
-		angegebenen Passwort anmelden.
-	</para>
-	<para>
-		Wenn der Rechner als &ucsMaster; installiert wurde, kann nun die Lizenz
-		eingespielt werden (siehe <xref linkend="central:license"/>).
-	</para>
-	<para>
-		Zur Verwaltung des Systems steht unter anderem das Web-Frontend &ucsUMC; (siehe <xref linkend="central:general"/>) zur Verfügung.
-	</para>
+	<graphic scalefit="1" width="80%" fileref="illustrations/installer-overview_de.png"/>
+  </figure>
+  <para>
+	Während der Konfiguration zeigt ein Fortschrittsbalken den Verlauf der Installation an.
+  </para>
+  <para>
+	Das Installationsprotokoll des Univention Installers wird in den folgenden Dateien abgelegt:
+	<itemizedlist>
+	  <listitem>
+		<simpara>
+		  <filename>/var/log/installer/syslog</filename>
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  <filename>/var/log/univention/management-console-module-setup.log</filename>
+		</simpara>
+	  </listitem>
+	</itemizedlist>
+  </para>
+  <para>
+	Der Abschluss der Konfiguration muss über die Schaltfläche <guimenu>Fertigstellen</guimenu> bestätigt werden.
+	Das UCS-System wird anschließend auf den ersten Bootvorgang vorbereitet und neugestartet.
+  </para>
+  <para>
+	Das System startet nun von Festplatte. Nach dem Bootvorgang können sich die Benutzer
+	<emphasis>root</emphasis> und <emphasis>Administrator</emphasis> beim Web-Frontend &ucsUMC; anmelden
+	(siehe <xref linkend="central:general"/>), welche unter der während der Installation gesetzten
+	IP-Adresse bzw. unter dem Rechnernamen erreichbar ist.
+  </para>
+  <para>
+	Wenn der Rechner als erstes System der UCS-Domäne (&ucsMaster;) installiert wurde, kann nun die Lizenz
+	eingespielt werden (siehe <xref linkend="central:license"/>).
+  </para>
 </section>
 <section id="installation:Fehlersuche_bei_Installationsproblemen">
 <title>Fehlersuche bei Installationsproblemen</title>
