@@ -791,19 +791,18 @@
 				<section id="computers:networkcomplex:uvmm">
 					<title>Voraussetzungen bei Verwendung von &ucsUVMM;</title>
 					<para>
-						Falls Xen oder <acronym>KVM</acronym> installiert sind, sind die Einstellungen für die Netzwerkkonfiguration deaktiviert, weil zwei Init-Skripte standardmäßig aktiv sind:
-						Diese benennen die physische Netzwerkkarte <filename class="device">eth0</filename> in <filename class="device">peth0</filename> um und ersetzen diese durch eine Bridge mit dem Namen <filename class="device">eth0</filename>, in die die umbenannte physische Netzwerkkarte eingehängt wird.
+						Falls <acronym>KVM</acronym> installiert ist, sind die Einstellungen für die Netzwerkkonfiguration grundsätzlich verfügbar.
+						Bei der Installation der Applikation <program>KVM Virtualisierungsserver</program> wird die Netzwerkkonfiguration verändert:
+						Es wird eine Bridge mit dem Namen <filename class="device">br0</filename> angelegt, in die die Netzwerkkarte mit dem Namen <filename class="device">eth0</filename> eingehängt wird.
 						Zusätzliche Netzwerkkarten werden nicht adaptiert.
 					</para>
 					<para>
-						Diese Skripte verhindern die Verwendung der fortgeschrittenen Netzwerkkonfiguration.
-						Sie müssen durch das Setzen der folgenden <acronym>UCR</acronym>-Variablen deaktiviert werden:
+						Bei einem Update von UCS 3.2 verhindert die Konfiguration die Verwendung der fortgeschrittenen Netzwerkkonfiguration.
+						Sie kann durch das Setzen der folgenden <acronym>UCR</acronym>-Variablen deaktiviert werden:
 					</para>
 					<programlisting language="sh">
 # für KVM:
 ucr set uvmm/kvm/bridge/autostart=no
-# für Xen:
-ucr set xen/bridge/interface=none
 # Danach die UMC-Basiseinstellungen reaktivieren:
 ucr unset umc/modules/setup/network/disabled/by
 					</programlisting>
