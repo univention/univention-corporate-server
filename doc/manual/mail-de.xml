@@ -10,87 +10,74 @@
 	</para>
 
 	<para>
-	  Für den Mailversand wird Postfix verwendet. In der Grundinstallation wird auf
+	  Für den Mailempfang und -versand wird Postfix verwendet. In der Grundinstallation wird auf
 	  jedem UCS-System eine für die lokale Mailzustellung ausgelegte Konfiguration
 	  eingerichtet. Postfix nimmt in dieser Konfiguration E-Mails nur vom lokalen System
-	  entgegen und auch die Zustellung erfolgt nur für lokale Systembenutzer. Wenn
-	  E-Mails auch an externe Adressen verschickt werden sollen, muss in diesem
-	  Szenario ein Mail-Relay konfiguriert werden (siehe
-	  <xref linkend="mail::serverconfig::relay"/>).
-	</para>
+	  entgegen, und auch die Zustellung erfolgt nur für lokale Systembenutzer.
+    </para>
 
 	<para>
-	  Auf Serverrollen kann die Mailserver-Komponente installiert werden, die
-	  einen vollständigen Mailtransport über SMTP umsetzt (siehe <xref
-	  linkend="mail::installation"/>). Die nachfolgenden Funktionen stehen nur bei
-	  Verwendung der Mailserver-Komponente zur Verfügung.
-	</para>
-
-	<para>
-	  Postfix führt bei eingehenden E-Mails eine Gültigkeitsüberprüfung in Form einer
-	  Suche im LDAP-Verzeichnis durch. Das bedeutet, dass E-Mails nur für im
+	  Durch die Installation der Mailserver-Komponente wird ein vollständiger Mailtransport
+	  über SMTP umgesetzt (siehe <xref linkend="mail::installation"/>).
+	  <!--Die nachfolgenden Funktionen stehen nur bei Verwendung der Mailserver-Komponente zur Verfügung.-->
+	  Postfix wird bei der Installation der Komponente umkonfiguriert, so dass
+	  bei eingehenden E-Mails eine Gültigkeitsüberprüfung in Form einer
+	  Suche im LDAP-Verzeichnis durchgeführt wird. Das bedeutet, dass E-Mails nur für im
 	  LDAP-Verzeichnis eingetragene oder über einen Alias definierte E-Mail-Adressen
 	  akzeptiert werden.
 	</para>
 
 	<para>
-	  Nach der optionalen Spam- und Viren-Filterung werden die empfangenen E-Mails
-	  an den Cyrus-Server übergeben, der für die Bereitstellung von E-Mails per IMAP
-	  und POP3 integriert ist. Die Authentifizierung wird dabei
-	  anhand der primären E-Mail-Adresse durchgeführt, d.h. sie muss als
-	  Benutzername in Mail-Clients eingetragen werden.
-	</para>
-
-	<para>
+	  Mit der Mailserver-Komponente wird ebenfalls der IMAP-Dienst
+	  Cyrus auf dem System installiert. Dieser stellt E-Mailkonten für die Benutzer
+	  der Domäne bereit und bietet entsprechende Schnittstellen für den Zugriff
+	  durch E-Mail-Clients an.
 	  Cyrus ist für den Abruf von E-Mails über IMAP und POP3 vorkonfiguriert. Der
 	  Zugriff über POP3 kann durch Setzen der &ucsUCRV; <envar>mail/cyrus/pop</envar>
 	  auf <emphasis>no</emphasis> deaktiviert werden. Das gleiche gilt für IMAP und
 	  die &ucsUCRV; <envar>mail/cyrus/imap</envar>.
+	  Auch die weitere Konfiguration der Mailserver erfolgt über &ucsUCR; (siehe
+	  <xref linkend="mail::serverconfig::general"/>).
+    </para>
+
+	<para>
+	  Die Verwaltung der Benutzerdaten des Mailservers (z.B. E-Mail-Adressen oder
+	  Verteiler) erfolgt über &ucsUMC; und ist in
+	  <xref linkend="mail::management::general"/> dokumentiert. Benutzerdaten werden
+	  in LDAP gespeichert.
+	  Die Authentifizierung wird anhand der primären E-Mail-Adresse eines Benutzers
+	  durchgeführt, d.h. sie muss als Benutzername in Mail-Clients eingetragen werden.
+	  Sobald einem Benutzer im LDAP-Verzeichnis eine primäre E-Mail-Adresse zugeordnet wird,
+	  legt ein Listener-Modul ein IMAP-Postfach auf dem Mail Home Server an.
+	  Durch die Angabe eines Mail Home Servers können E-Mail-Konten der Benutzer
+	  auch auf mehrere Mailserver verteilt werden (siehe <xref linkend="mail::homeserver"/>).
 	</para>
 
 	<para>
-	  E-Mails an fremde Domänen werden in der Voreinstellung direkt an den
-	  zuständigen SMTP-Server versendet. Die Ermittlung erfolgt dabei durch die
+	  Optional können durch Postfix empfangene E-Mails vor der weiteren Verarbeitung
+	  durch Cyrus auf Spam-Inhalte und Viren hin untersucht werden.
+	  Spam-Mails werden über die Klassifizierungssoftware SpamAssassin erkannt
+	  (<xref linkend="mail::spam"/>), für die Erkennung von Viren und anderer
+	  Malware wird ClamAV eingesetzt (<xref linkend="mail::viren"/>).
+	</para>
+
+	<para>
+	  In der Voreinstellung werden E-Mails an fremde Domänen
+	  direkt dem zuständigen SMTP-Server der Domäne zugestellt.
+	  Die Ermittlung erfolgt dabei durch die
 	  Auflösung des MX-Records im DNS. Der Mailversand kann auch von einem
-	  Relay-Host z.B. beim Internet-Provider übernommen werden. Dies ist in
-	  <xref linkend="mail::serverconfig::relay"/> dokumentiert.
-	  Spam-Mails werden über die Klassifizierungssoftware SpamAssassin erkannt und
-	  durch Filterskripte aussortiert (siehe <xref linkend="mail::spam"/>).
-	  Für die Erkennung von Viren und anderer Malware wird ClamAV eingesetzt (siehe
-	  <xref linkend="mail::viren"/>).
+	  Relay-Host z.B. beim Internet-Provider übernommen werden
+	  (siehe <xref linkend="mail::serverconfig::relay"/>).
 	</para>
 
 	<para>
+	  Für den webbasierten Zugriff auf E-Mails steht das Horde-Framework in Version 5 zur
+	  Verfügung (siehe <xref linkend="mail::horde"/>).
 	  Das UCS-Mailsystem bietet keine Groupware-Funktionalität wie gemeinsam
 	  genutzte Kalender oder Termineinladungen. Es existieren aber auf UCS basierende
 	  Groupwaresysteme, die sich in das UCS-Managementsystem integrieren,
 	  bspw. Kolab, Zarafa oder Open-Xchange. Weiterführende Informationen finden
 	  sich auf der Univention-Webseite <biblioref linkend="univention-technologiepartner"/>.
-	</para>
-
-	<para>
-	  Für den webbasierten Zugriff auf E-Mails steht das Horde-Framework in Version 5 zur
-	  Verfügung (siehe <xref linkend="mail::horde"/>)
-	</para>
-
-	<para>
-	  Das UCS-Mailsystem bietet die Möglichkeit, die Benutzer auf mehrere
-	  Mailserver zu verteilen. Dazu dienen die Mail Home Server, die in
-	  <xref linkend="mail::homeserver"/> beschrieben werden.
-	</para>
-
-	<para>
-	  Die Verwaltung der Benutzerdaten des Mailservers (z.B. E-Mail-Adressen oder
-	  Verteiler) erfolgt über &ucsUMC; und ist in
-	  <xref linkend="mail::management::general"/> dokumentiert. Die Daten werden dabei
-	  im LDAP gespeichert. Sobald einem Benutzer im LDAP-Verzeichnis eine primäre
-	  E-Mail-Adresse zugeordnet wird, legt ein Listener-Modul ein IMAP-Postfach auf
-	  dem Mail Home Server an.
-	</para>
-
-	<para>
-	  Die Konfiguration der Mailserver erfolgt über &ucsUCR; (siehe
-	  <xref linkend="mail::serverconfig::general"/>).
 	</para>
   </section>
 
@@ -128,14 +115,16 @@
 		IMAP-Gruppen-Ordner. Postfix unterscheidet bei der Zustellung von E-Mails
 		zwischen lokalen und externen Domänen. Nur für E-Mail-Adressen lokaler Domänen
 		wird die Mailzustellung vorgenommen.
+		Der Name einer Mail-Domäne darf nur aus Kleinbuchstaben, den Ziffern
+		0-9, Punkten und Bindestrichen bestehen.
 	  </para>
-
 	  <para>
 		Mit UCS lassen sich mehrere Mail-Domänen verwalten. Die verwalteten Mail-Domänen
 		müssen dabei nicht der DNS-Domäne des Servers entsprechen, sondern sind
 		frei wählbar.
+		Die auf einem Mailserver registrierten Mail-Domänen werden automatisch in
+		der &ucsUCRV; <envar>mail/hosteddomains</envar> gespeichert.
 	  </para>
-
 	  <para>
 		Damit auch externe Absender E-Mails an die Mitglieder der Domäne versenden
 		können, müssen in der Konfiguration der autoritativen DNS-Nameserver MX-Records
@@ -143,21 +132,10 @@
 		ausweisen. Diese DNS-Anpassungen werden üblicherweise von Internet-Providern
 		vorgenommen.
 	  </para>
-
 	  <para>
 		Mail-Domänen werden im UMC-Modul <emphasis>Mail</emphasis>
 		mit dem Objekttyp <guimenu>Mail-Domäne</guimenu> verwaltet
 		(siehe auch <xref linkend="central:user-interface"/>).
-	  </para>
-
-	  <para>
-		Der Name einer Mail-Domäne darf nur aus Kleinbuchstaben, den Ziffern
-		0-9, Punkten und Bindestrichen bestehen.
-	  </para>
-
-	  <para>
-		Die auf einem Mailserver registrierten Mail-Domänen werden automatisch zusätzlich in
-		der &ucsUCRV; <envar>mail/hosteddomains</envar> gespeichert.
 	  </para>
 	</section>
 
@@ -168,17 +146,13 @@
 		Bindestriche und Unterstriche enthalten. Als weitere Vorgabe müssen die
 		E-Mail-Adressen mit einem Buchstaben beginnen und ein
 		<emphasis>@</emphasis>-Zeichen enthalten.
-	  </para>
-
-	  <para>
 		Um E-Mail-Adressen vergeben zu können, muss vorher mindestens eine Mail-Domäne
 		registriert werden (siehe <xref linkend="mail::management::domains"/>).
 	  </para>
 
 	  <para>
-		Einem Benutzer können zwei verschiedene Arten von E-Mail-Adressen zugeordnet werden.
+		Einem Benutzer können zwei verschiedene Arten von E-Mail-Adressen zugeordnet werden:
 	  </para>
-
 	  <para>
 		<itemizedlist>
 		  <listitem>
@@ -239,27 +213,15 @@
 		Mail-Domänen werden im UMC-Modul <emphasis>Mail</emphasis>
 		mit dem Objekttyp <guimenu>Mailingliste</guimenu> verwaltet
 		(siehe auch <xref linkend="central:user-interface"/>).
-	  </para>
-
-	  <para>
 		Unter <guimenu>Name</guimenu> ist ein frei wählbarer Name der Mailingliste
 		anzugeben, die Angabe einer <guimenu>Beschreibung</guimenu> ist optional.
-	  </para>
-
-	  <para>
 		Als <guimenu>Mail-Adresse</guimenu> ist die E-Mail-Adresse der Mailingliste
 		einzugeben. Der Domänenteil der Adresse muss dabei einer der verwalteten
 		Mail-Domänen entsprechen.
-	  </para>
-
-	  <para>
 		Unter <guimenu>Mitglieder</guimenu> können beliebig viele Adressen aufgenommen
 		werden, im Gegensatz zu Mailgruppen (siehe
 		<xref linkend="mail::management::mailgroups"/>) können hier auch externe
 		E-Mail-Adressen aufgenommen werden.
-	  </para>
-
-	  <para>
 		Nach dem Anlegen einer Mailingliste ist diese umgehend verfügbar.
 	  </para>
 
@@ -268,9 +230,6 @@
 		Missbrauch zu verhindern, besteht die Möglichkeit den Senderkreis
 		einzuschränken. Dazu muss die &ucsUCRV; <envar>mail/postfix/policy/listfilter</envar> auf
 		dem Mailserver auf <emphasis>yes</emphasis> gesetzt und Postfix neu gestartet werden.
-	  </para>
-
-	  <para>
 		Unter <guimenu>Erweiterte Einstellungen</guimenu> können
 		dann <guimenu>Benutzer, die berechtigt sind, E-Mails an diese Liste zu versenden</guimenu>
 		und <guimenu>Gruppen, die berechtigt sind, E-Mails an diese Liste zu versenden</guimenu>
@@ -328,6 +287,9 @@
 		Alternativ können eigene IMAP-Ordner für Benutzer oder
 		Benutzergruppen freigegeben werden. Ein solcher Ordner wird als globaler
 		IMAP-Ordner bezeichnet.
+		Globale IMAP-Ordner werden im UMC-Modul <emphasis>Mail</emphasis>
+		mit dem Objekttyp <guimenu>Mail-Ordner (IMAP)</guimenu> verwaltet
+		(siehe auch <xref linkend="central:user-interface"/>).
 	  </para>
 
 	  <para>
@@ -335,12 +297,6 @@
 		  <title>Einrichtung eines globalen IMAP-Ordners</title>
 		  <graphic scalefit="1" width="100%" fileref="illustrations/mail_imapfolder_de.png"/>
 		</figure>
-	  </para>
-
-	  <para>
-		Globale IMAP-Ordner werden im UMC-Modul <emphasis>Mail</emphasis>
-		mit dem Objekttyp <guimenu>Mail-Ordner (IMAP)</guimenu> verwaltet
-		(siehe auch <xref linkend="central:user-interface"/>).
 	  </para>
 
 	  <para>
@@ -501,15 +457,9 @@
 		werden, bei deren Erreichen vom Mailserver keine weiteren E-Mails für
 		das Postfach angenommen werden, bis der Benutzer alte Mails aus seinem
 		Konto entfernt hat.
-	  </para>
-
-	  <para>
 		Die Grenze wird durch die Richtlinie <emphasis>Mail-Quota</emphasis> festgelegt, die im
 		UMC-Modul <emphasis>Benutzer</emphasis> unter <emphasis>Richtlinien</emphasis> verwaltet
 		wird (siehe auch <xref linkend="central:policies"/>).
-	  </para>
-
-	  <para>
 		Die maximale Größe des Postfachs eines Benutzers wird im Feld
 		<guimenu>Quota-Limit (MB)</guimenu> festgelegt.
 	  </para>
@@ -519,13 +469,8 @@
 		und erhält dann bei jeder eingehenden Mail den Hinweis, dass seine
 		Speicherressourcen nahezu ausgelastet sind. Diese Warnmeldung wird durch die
 		E-Mail-Clients dargestellt und muss von diesen unterstützt werden.
-	  </para>
-
-	  <para>
 		Der Administrator kann den Schwellwert in Prozent oder verbleibendem
 		Speicherplatz in Kilobyte angeben:
-	  </para>
-
 		<itemizedlist>
 		  <listitem>
 			<simpara>
@@ -541,7 +486,8 @@
 			  Schwellwert auch in Kilobyte konfiguriert werden.
 			</simpara>
 		  </listitem>
-		</itemizedlist>
+	    </itemizedlist>
+	  </para>
 
 	  <para>
 		Die Quota wird bei der Authentifizierung am Mailserver in die
@@ -568,9 +514,6 @@
 	  automatisierten Erkennung solcher E-Mails integriert UCS die Software
 	  SpamAssassin. SpamAssassin versucht anhand von Heuristiken über Herkunft, Form
 	  und Inhalt einer E-Mail zu erkennen, ob sie erwünscht ist oder nicht.
-	</para>
-
-	<para>
 	  Die Integration erfolgt über das Paket <package>univention-spamassassin</package>, das
 	  bei der Einrichtung des Mailserver-Pakets automatisch eingerichtet wird.
 	</para>
@@ -580,15 +523,9 @@
 	  höhere Wahrscheinlichkeit für Spam ausdrückt. Punkte werden nach verschiedenen
 	  Kriterien vergeben, die beispielsweise auf Schlagworte innerhalb der E-Mail
 	  oder fehlerhafte Codierungen ansprechen.
-	</para>
-
-	<para>
 	  In der Grundeinstellung werden nur Mails bis zu einer Größe von 300 Kilobyte
 	  geprüft. Dies kann mit der &ucsUCRV; <envar>mail/antispam/bodysizelimit</envar>
 	  konfiguriert werden.
-	</para>
-
-	<para>
 	  E-Mails, die als Spam klassifiziert wurden - also eine bestimmte Anzahl
 	  Punkte überschreiten - werden bei der Auslieferung durch Cyrus nicht im
 	  Posteingang des Empfängers, sondern im darunter liegenden Ordner
@@ -627,9 +564,6 @@
 	  Die Spam-Filterung kann durch Setzen der &ucsUCRV;
 	  <envar>mail/antivir/spam</envar> auf <emphasis>no</emphasis> deaktiviert
 	  werden.
-	</para>
-
-	<para>
 	  Bei Änderungen an Univention Configuration Registry-Variablen, die die
 	  Spamerkennung betreffen, muss der Amavis-Dienst und Postfix neu gestartet
 	  werden.
@@ -666,9 +600,6 @@
 	<para>
 	  Alternativ oder zusätzlich können andere Virenscanner in Amavis eingebunden
 	  werden.
-	</para>
-
-	<para>
 	  Nach Änderungen an der Amavis- oder ClamAV-Konfiguration müssen Postfix und
 	  Amavis neu gestartet werden.
 	</para>
@@ -692,6 +623,13 @@
 		Eingabefelder, mit denen der Mailabruf von einem externen Server konfiguriert werden
 		kann. Die Mails werden dabei in die Postfächer der jeweiligen Benutzer eingeliefert (die
 		primäre E-Mail-Adresse muss dafür konfiguriert sein).
+	  </para>
+	  <para>
+		Der Abruf erfolgt alle zwanzig Minuten sobald mindestens ein Postfach für den Abruf
+		konfiguriert wurde. Nach der initialen Konfiguration eines Benutzers muss Fetchmail im
+		UMC-Modul <guimenu>Systemdienste</guimenu> gestartet werden. Dort kann der Start
+		des Dienstes auch deaktiviert werden (alternativ durch Setzen der &ucsUCRV;
+		<envar>fetchmail/autostart</envar> auf <emphasis>false</emphasis>).
 	  </para>
 
 		<table>
@@ -743,13 +681,6 @@
 			</tbody>
 		  </tgroup>
 		</table>
-	  <para>
-		Der Abruf erfolgt alle zwanzig Minuten sobald mindestens ein Postfach für den Abruf
-		konfiguriert wurde. Nach der initialen Konfiguration eines Benutzers muss Fetchmail im
-		UMC-Modul <guimenu>Systemdienste</guimenu> gestartet werden. Dort kann der Start
-		des Dienstes auch deaktiviert werden (alternativ durch Setzen der &ucsUCRV;
-		<envar>fetchmail/autostart</envar> auf <emphasis>false</emphasis>).
-	  </para>
   </section>
 
 
@@ -927,7 +858,7 @@ postmap /etc/postfix/smtp_auth
 	<para>
 	  <figure id="mail:clients:thunderbird">
 		<title>Einrichtung von Mozilla Thunderbird</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/thunderbird_de.png"/>
+		<graphic scalefit="1" align="center" width="80%" fileref="illustrations/thunderbird_de.png"/>
 	  </figure>
 	</para>
   </section>
@@ -954,7 +885,7 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		<figure id="horde-login">
 		  <title>Anmeldung an Horde</title>
-		  <graphic scalefit="1" width="35%" fileref="illustrations/login_de.png"/>
+		  <graphic scalefit="1" align="center" width="35%" fileref="illustrations/login_de.png"/>
 		</figure>
 	  </para>
 
