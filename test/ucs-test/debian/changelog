@@ -1,3 +1,10 @@
+ucs-test (5.0.47-1) unstable; urgency=low
+
+  * 51_samba4/47domain_user_lockout: check user is being locked out
+    after allowed authorisation attempts are exceeded (Bug #35898).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 14 Nov 2014 13:16:02 +0100
+
 ucs-test (5.0.46-1) unstable; urgency=low
 
   * bin/udm-test: pass --bind* credentials as early as possible (Bug #34389).
