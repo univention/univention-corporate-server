@@ -1,8 +1,8 @@
 <chapter id="uvmm:chapter">
 	<title>Virtualization</title>
+<!-- TODO: translation
 	<section id="uvmm::introduction">
 		<title>Introduction</title>
-<!-- TODO: translation
 		<para>
 			&ucsUVMM; (UVMM) ist ein Managementsystem für virtuelle Maschinen, die auf Virtualisierungsservern vor Ort oder in einer Cloud Computing Architektur wie OpenStack oder Amazon EC2 betrieben werden.
 			Es bietet die Möglichkeit, alle in der UCS-Domäne registrierten Virtualisierungsserver sowie Verbindungen zu Cloud Computing Instanzen und die darauf betriebenen virtuellen Maschinen zentral zu überwachen und zu administrieren.
@@ -24,8 +24,8 @@
 			In den virtualisierten Systemen kann im Prinzip jedes beliebige Betriebssystem verwendet werden.
 		</para>
 
--->
 	</section>
+-->
 
 	<section id="uvmm::installation">
 		<title>Installation</title>
@@ -246,8 +246,8 @@ update-ca-certificates
 				</table>
 			</para>
 		</section>
-	</section>
 -->
+	</section>
 
 	<section id="uvmm:kvmfeatures">
 		<title>KVM related UVMM features</title>
@@ -922,8 +922,8 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				Durch Auswahl einer virtuellen Maschine und einem Klick auf <guimenu>Bearbeiten</guimenu> können auf einer separaten Seite die konfigurierten Einstellungen der virtuellen Maschine eingesehen werden.
 				Insbesondere die IP-Adresse, über die die virtuelle Maschine erreichbar ist, ist hier einsehbar.
 			</para>
-		</section>
 -->
+		</section>
 		<section id="uvmm::instanz::erstellen">
 			<title>Creating a virtual instance</title>
 			<para>

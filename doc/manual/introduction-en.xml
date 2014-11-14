@@ -46,7 +46,7 @@ be assigned to the following three main categories:
 </para>
 <orderedlist>
 <listitem><simpara>Base system</simpara></listitem>
-<listitem><simpara>UCS management system with the Univention Management Console</simpara></listitem>
+<listitem><simpara>UCS management system with Univention Management Console</simpara></listitem>
 <listitem><simpara>Univention App Center, allowing the installation of further components and
 applications of other software vendors</simpara></listitem>
 </orderedlist>
@@ -109,7 +109,7 @@ The use of UCS begins either with a classic operating system
 installation on a physical server or as a virtual machine,
 which is also set up via an installation or can be generated from an
 existing virtual machine employed as a template. The installation can
-be interactive or fully automatic either from a CD-ROM/DVD or via the
+be interactive or fully automatic either from a DVD or via the
 network/PXE.
 </para>
 <para>
@@ -164,7 +164,7 @@ App Center</title>
 The Univention App Center offers additional UCS components and extensions and a broad selection of
 business IT software, e.g. groupware and collaboration, file exchange, CRM or backup. These
 applications can be installed in existing environments with a few clicks and are usually ready to
-use. In most cases they are directlry integrated into the &ucsUMS; and available in the
+use. In most cases they are directly integrated into the &ucsUMS; and available in the
 &ucsUMC;. This provides a central management of data on the domain level and obsoletes the separate
 management of e.g. user data in multiple places.
 </para>
@@ -216,8 +216,8 @@ Further information can be found in <xref linkend="domain:ldap"/>.
 </figure>
 </para>
 <para>
-Access to the LDAP directory is performed via the web-based and
-modular &ucsUMC; (UMC).
+Access to the LDAP directory is performed via the web-based
+&ucsUMC; (UMC).
 </para>
 
 <para>
@@ -417,7 +417,7 @@ Names are in <emphasis>bold</emphasis>.
 
 <para>
 <emphasis>Computer names, LDAP DNs</emphasis>, <command>program names</command>, <filename>file names, file paths</filename>,
-<uri>internet addresses</uri> und <emphasis>options</emphasis> are also optically accented.
+<uri>internet addresses</uri> and <emphasis>options</emphasis> are also optically accented.
 </para>
 
 <para>
