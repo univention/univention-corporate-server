@@ -51,9 +51,6 @@
 	<para>
 	Beim Wechsel eines Betriebszustands kann eine vorher festgelegte
 	Kontaktperson über die mögliche Fehlfunktion informiert werden.
-	</para>
-
-	<para>
 	Neben der reaktiven Benachrichtung im Fehlerfall kann der aktuelle
 	Status auch jederzeit laufend in einer webbasierten Oberfläche
 	abgefragt werden, in der die Status-Informationen übersichtlich
@@ -62,7 +59,7 @@
 
 	<figure id="service-detail">
 		<title>Nagios Status-Webinterface</title>
-		<graphic scalefit="1" width="82%" fileref="illustrations/nagios_service_detail.png"/>
+		<graphic scalefit="1" align="center" width="90%" fileref="illustrations/nagios_service_detail.png"/>
 	</figure>
 
 	<para>
@@ -117,9 +114,6 @@
 	  finden sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
 	  Der Nagios-Server kann auf beliebigen Systemrollen installiert werden, wobei die Verwendung
 	  eines Domänencontroller-Systems empfohlen wird. 
-	</para>
-
-	<para>
 	  Der Nagios-Client ist auf allen Systemrollen standardmäßig installiert.
 	</para>
 
@@ -475,23 +469,20 @@
 		werden kann.
 		</para>
 
-		<figure id="nagios-service">
-			<title>Konfiguration eines Nagios-Dienstes</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations/nagios-object_DE.png"/>
-		</figure>
-
 		<para>
 		Nagios-Dienste werden im UMC-Modul <emphasis>Nagios</emphasis>
 		mit dem Objekttyp <guimenu>Nagios-Dienst</guimenu> verwaltet
 		(siehe auch <xref linkend="central:user-interface"/>).
-		</para>
-
-		<para>
 		Nagios verfügt über keine LDAP-Schnittstelle für die
 		Monitoring-Konfiguration, stattdessen werden die Konfigurationsdateien
 		beim Hinzufügen/Entfernen/Bearbeiten eines Nagios-Dienstes durch ein
 		Listener-Modul generiert.
 		</para>
+
+		<figure id="nagios-service">
+			<title>Konfiguration eines Nagios-Dienstes</title>
+			<graphic scalefit="1" width="100%" fileref="illustrations/nagios-object_DE.png"/>
+		</figure>
 
 		<table>
 			<title>Reiter 'Allgemein'</title>
@@ -851,7 +842,8 @@
 		Zur Aktivierung der Nagios-Unterstützung muss am
 		betreffenden Rechnerobjekt die Option <guimenu>Nagios</guimenu>
 		eingeschaltet werden. Nach der Aktivierung sind zwei zusätzliche
-		Reiter verfügbar, die u.a. eine komfortable Zuordnung der
+		Eingabefeldgruppen unter dem Reiter <guimenu>Erweiterte Einstellungen</guimenu>
+		verfügbar, die u.a. eine komfortable Zuordnung der
 		Nagios-Dienste ermöglichen.
 		</para>
 
@@ -1046,14 +1038,8 @@ define command{
   <para>
 	Viele Plugins verwenden auch Parameter, um die Schwellwerte für Warnungen und Fehler zu
 	konfigurieren. Diese werden dann in der <emphasis>command_line</emphasis>-Zeile festgelegt.
-  </para>
-
-  <para>
 	Analog zu dem Plugin selbst muss die Makro-Datei bei Verwendung von NRPE auf alle zu
 	überwachenden Systeme kopiert werden.
-  </para>
-
-  <para>
 	Die Plugins, Makros und eventuellen Abhängigkeiten können auch in ein Debian-Paket paketiert
 	werden. Weitere Hinweise dazu finden sich in <biblioref linkend="developer-reference"/>.
   </para>
@@ -1072,9 +1058,6 @@ define command{
 	in der Makro-Datei registriert Name angegeben werden, in diesem Beispiel
 	<emphasis>check_fsck</emphasis> und die Option <guimenu>NRPE benutzen</guimenu> aktiviert
 	werden.
-  </para>
-
-  <para>
 	Der neu registrierte Dienst kann nun einzelnen Systemen zugewiesen werden, siehe <xref
 	linkend="nagios::hostconfig"/>.
   </para>
