@@ -99,7 +99,7 @@
   </para>
   </section>
 
-<section id="shares::management"><title>Verwaltung von Freigaben in der UMC</title>
+<section id="shares::management"><title>Verwaltung von Freigaben in UMC</title>
 <para>
 	Verzeichnisfreigaben werden im UMC-Modul <emphasis>Freigaben</emphasis> verwaltet
 	(siehe auch <xref linkend="central:user-interface"/>).

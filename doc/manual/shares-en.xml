@@ -93,7 +93,7 @@
   </para>
   </section>
 
-<section id="shares::management"><title>Management of shares in the UMC</title>
+<section id="shares::management"><title>Management of shares in UMC</title>
 <para>
 File shares are managed in the UMC module <emphasis>Shares</emphasis>
 (see <xref linkend="central:user-interface"/>).
