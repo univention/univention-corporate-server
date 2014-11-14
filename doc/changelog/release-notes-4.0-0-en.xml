@@ -53,11 +53,8 @@
 
 		<para>
 		  With &ucsUCS; 4.0-0, the fourth major release of &ucsUCS; (UCS) is now available.
-		  <!-- TODO: translation
-		  Es umfasst eine Reihe umfangreicher Funktionserweiterungen und -verbesserungen, neue
-		  Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten
-		  Änderungen im Überblick:
-		  -->
+		  It provides several substantial feature improvements and extensions and various
+		  improvements and bugfixes. An overview of the most important changes:
 		</para>
 
 		<itemizedlist>
@@ -145,22 +142,21 @@
 			application is not yet available in a compatible version, the release date can be
 			obtained from the application vendor.
 		  </para>
-		<!-- TODO: translation
+
 		  <para>
-			Falls &ucsUCC; 1.0 im Einsatz ist und ein Update auf &ucsUCC; 2.0 noch nicht
-			erfolgen soll, so sollte vor dem Update auf UCS 4.0 auf die letzte verfügbare
-			&ucsUCC; 1.0 Version aktualisiert werden. Dies kann mit dem folgenden Befehlen
-			durchgeführt werden:
+			If &ucsUCC; 1.0 is in use and the update to &ucsUCC; 2.0 should be performed at a later
+			time, the update to the latest available b&ucsUCC; 1.0 version should be made before
+			updating to UCS 4.0:
+
 			<programlisting>
 eval "$(ucr shell version/version version/patchlevel)"
 univention-add-app ucc_20140115
 univention-upgrade \-\-updateto $version_version-$version_patchlevel
 			</programlisting>
-			Eine detaillierte Übersicht zu den Änderungen ist in den UCC 1.0 rev3 Release
-			Notes beschrieben:
+
+			A detailed overview of the changes can be found in the UCC 1.0 rev3 release notes:
 			<ulink url="http://download.univention.de/doc/release-notes-ucc-1.0-rev3.pdf"/>.
 		  </para>
-		-->
 		</section>
 
 		<section id="relnotes:samba">
@@ -175,17 +171,15 @@ univention-upgrade \-\-updateto $version_version-$version_patchlevel
 		  </para>
 		</section>
 
-		<!-- TODO: translation
 		<section id="relnotes:32bit">
-			<title>UCS-Installations-DVDs nur noch als 64-Bit-Variante</title>
-				<para>
-					UCS-Installations-DVSs werden ab UCS 4 nur noch für 64-Bit-Archtitekturen
-					bereitgestellt. Vorhandene 32-Bit UCS 3 Systeme können weiterhin über das Online
-					Repository oder über Update DVDs auf UCS 4 aktualisiert werden. Die
-					32-Bit-Archtitektur wird für die gesamte UCS 4 Maintenance noch unterstützt.
-				</para>
+			<title>UCS installation DVDs only available for 64 bit</title>
+			<para>
+			  Starting with UCS 4.0 UCS installation DVDs are only provided for the x86 64 bit
+			  architecture (amd64). Existing 32 bit UCS 3 systems can still be updated to UCS 4.0 through the
+			  online repository or by using update DVDs. The 32 bit architectur will be supported
+			  over the entire UCS 4 maintenance.
+			</para>
 		</section>
-		-->
 	</chapter>
 
 	<chapter id="relnotes:prepare">
