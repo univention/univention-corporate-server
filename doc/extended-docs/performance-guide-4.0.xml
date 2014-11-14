@@ -51,16 +51,16 @@
 			automatisch aktiviert.  Die automatische Aktivierung kann über die UCR-Variable
 			<envar>ldap/index/autorebuild</envar> deaktiviert werden. In diesem Fall sollten die
 			Indizes manuell gesetzt werden, damit es zu keinen Performance-Verlusten
-			kommt. Gesteuert werden die Indizes durch die UCR-Variablen ldap/index/eq, ldap/index/pres
-			und ldap/index/sub. Nachdem die Variablen verändert wurden, muss der OpenLDAP-Server beendet und
+			kommt. Gesteuert werden die Indizes durch die UCR-Variablen ldap/index/eq, ldap/index/pres,
+			ldap/index/sub sowie ldap/index/approx. Nachdem die Variablen verändert wurden, muss der OpenLDAP-Server beendet und
 			das Kommando <command>slapindex</command> ausgeführt werden.
 		</para>
 		<para>
 			Um festzustellen, ob nicht indizierte Variablen verwendet werden, kann der
-			OpenLDAP Debug Level aktiviert werden und in der Logdatei /var/log/syslog nach der Zeichenkette 'not
+			OpenLDAP Debug Level -1 aktiviert werden und in der Logdatei /var/log/syslog nach der Zeichenkette 'not
 			indexed' gesucht werden.  Beispielsweise:
 			<programlisting>
-ucr set ldap/debug/level=256
+ucr set ldap/debug/level=-1
 invoke-rc.d slapd restart
 grep 'not indexed' /var/log/syslog
 			</programlisting>
@@ -109,11 +109,14 @@ slapadd -l ldif
 	<section id="listener">
 		<title>Univention Directory Listener</title>
 		<para>
-			In the default setting, the Univention Directory Listener performs safety
-			checks to prevent a user name being added into a group twice. These checks can
+			The Univention Directory Listener can perform safety
+			checks to prevent a user name being added into a group twice.
+			These checks add some overhead to replication and can
 			be deactivated by setting the &ucsUCR; variables
 			<envar>listener/memberuid/skip</envar> and
 			<envar>listener/uniquemember/skip</envar> to <literal>no</literal>.
+			Starting with UCS 3.1 the variables are not set and the checks are
+			not activated any longer by default.
 		</para>
 	</section>
 </chapter>
@@ -218,13 +221,12 @@ slapadd -l ldif
 	<section id="squid">
 		<title>Squid</title>
 		<para>
-			If the Squid proxy service is used with NTLM authentication, the authentication
-			is performed via the Winbind service. The communication with Winbind is
-			performed over a queue, as standard up to five running NTLM requests can be
-			processed in parallel. If the Winbind service answers slowly or many proxy
-			requests are received in parallel, the top limit of the queue may be reached
-			and the Squid user may receive an authentication error. The queue size can be
-			configured with the &ucsUCRV; <envar>squid/ntlmauth/children</envar>.
+			If the Squid proxy service is used with NTLM authentication,
+			up to five running NTLM requests can be processed in parallel.
+			If many proxy requests are received in parallel, the
+			Squid user may occasionally receive an authentication error. The number
+			of parallel NTLM authentication processes can be configured with
+			the &ucsUCRV; <envar>squid/ntlmauth/children</envar>.
 		</para>
 	</section>
 
