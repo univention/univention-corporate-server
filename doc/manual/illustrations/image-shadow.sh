@@ -8,4 +8,4 @@ if [[ $out == "" ]] ; then
 	out=${in%.*}-shadow.${in##*.}
 fi
 echo "Converting file : $in -> $in with shadow"
-convert $in \( +clone -background black -shadow 50x5+0+0 \) +swap -background transparent -layers merge +repage $in
+convert $in \( +clone -background black -shadow 40x5+0+0 \) +swap -background transparent -layers merge +repage $in
