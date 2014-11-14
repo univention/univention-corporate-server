@@ -14,7 +14,7 @@
 	<revhistory>
 		<revision>
 			<revnumber>4.0-0</revnumber>
-			<date>16 Oct 2014</date>
+			<date>18 Nov 2014</date>
 		</revision>
 	</revhistory>
 </bookinfo>
@@ -45,104 +45,65 @@
 			requested attributes. For indexed attributes, a search is not performed via the
 			full database contents, but over an optimized subsection.
 		</para>
+<!-- TODO: translation
 		<para>
-			The preset indices are often extended with new UCS releases. As of UCS 2.3-2,
-			it is possible to update the indices automatically. If the &ucsUCRV;
-			<envar>ldap/index/autorebuild</envar> is set to <literal>yes</literal> or
-			<literal>true</literal>, the LDAP indices configured on the system are
-			expanded automatically and the <command>slapindex</command> command is used to
-			rebuild the indices during release upgrades.
+			Mit neueren UCS Versionen werden die Indicies gelegentlich ergänzt und
+			automatisch aktiviert.  Die automatische Aktivierung kann über die UCR-Variable
+			<envar>ldap/index/autorebuild</envar> deaktiviert werden. In diesem Fall sollten die
+			Indizes manuell gesetzt werden, damit es zu keinen Performance-Verlusten
+			kommt. Gesteuert werden die Indizes durch die UCR-Variablen ldap/index/eq, ldap/index/pres
+			und ldap/index/sub. Nachdem die Variablen verändert wurden, muss der OpenLDAP-Server beendet und
+			das Kommando <command>slapindex</command> ausgeführt werden.
 		</para>
 		<para>
-			For the indexing of large directories, it must be taken into account that
-			<command>slapindex</command> running times can take several hours.
+			Um festzustellen, ob nicht indizierte Variablen verwendet werden, kann der
+			OpenLDAP Debug Level aktiviert werden und in der Logdatei /var/log/syslog nach der Zeichenkette 'not
+			indexed' gesucht werden.  Beispielsweise:
+			<programlisting>
+ucr set ldap/debug/level=256
+invoke-rc.d slapd restart
+grep 'not indexed' /var/log/syslog
+			</programlisting>
 		</para>
+-->
 	</section>
 
 	<section id="slapd:bdb">
-		<title>Configuration of the database backend (BDB)</title>
+		<title>Configuration of the database backend</title>
+<!-- TODO: translation
 		<para>
-			The data of the LDAP server are stored in a database in the Berkeley database
-			format (BDB).
+			Seit UCS 4.0 wird für Neuinstallationen die Memory-Mapped-Datenbank (MDB)
+			verwendet.  Sofern noch BDB verwendet wird, sollte auf MDB migriert werden. Das
+			Datenbankbackend kann über die UCR Variable <envar>ldap/database/backend</envar> gesteuert
+			werden.  Eine Migration kann wie folgt durchgeführet werden: 
+			<programlisting>
+/etc/init.d/slapd stop
+slapcat -l ldif
+mkdir /var/lib/univention-ldap/ldap.BACKUP
+mv /var/lib/univention-ldap/ldap/* /var/lib/univention-ldap/ldap.BACKUP
+ucr set ldap/database/backend=mdb
+slapadd -l ldif
+/etc/init.d/slapd start
+			</programlisting>
 		</para>
-		<para>
-			The BDB configuration is performed via &ucsUCR; variables, which configure the
-			<filename>/var/lib/univention-ldap/ldap/DB_CONFIG</filename> file.
-		</para>
-		<para>
-			The &ucsUCRV; <envar>ldap/database/bdb/set_cachesize</envar> defines the cache
-			size (default 90 MB). As a general rule, the cache should always be large
-			enough to be able to hold all indices.
-		</para>
-		<para>
-			The &ucsUCRV; <envar>ldap/database/bdb/set_lg_bsize</envar> controls the
-			maximum size of the BDB transaction log in bytes. These files are also stored
-			in the data directory and store requested modifications before being run. If
-			the transaction is cancelled or the LDAP server is not exited properly, the
-			last log files can be used to check the last transactions and restore a
-			consistent database status.
-		</para>
-		<para>
-			Following most changes to <filename>DB_CONFIG</filename>, the
-			<command>db_recover</command> tool must be run to adopt the new configuration
-			for the database. This tool also performs the replay of potentially missed
-			transactions.. To ensure problem-free OpenLDAP operation,
-			<command>db_recover</command> is run in the slapd init script. In other words,
-			when BDB-specific &ucsUCR; variables are changed, it suffices to restart the
-			LDAP server.
-		</para>
-		<para>
-			The <command>db4.8_stat</command> tool is provided to check the BDB database. On a
-			running LDAP server, it is possible, among other things, to request information
-			about the maximum cache size, cache utilisation and locking.
-		</para>
-		<para>
-			The following modifications may prove useful in larger environments:
-		</para>
-		<itemizedlist>
-			<listitem>
-				<para>
-					<emphasis>Increasing the size of the cache</emphasis>
-				</para>
-				<para>
-					A larger cache improves performance, particularly for commonly requested
-					objects. Statistics of the cache usage can be displayed with
-					<command>db4.8_stat -m -h /var/lib/univention-ldap/ldap/</command>.
-				</para>
-			</listitem>
-			<listitem>
-				<para>
-					<emphasis>Increasing the maximum number of locks</emphasis>
-				</para>
-				<para>
-					In the default setting, BDB allows a maximum of 1,000 locks for concurrent
-					accesses (locks), users (lockers) or objects. An evaluation of the actually
-					used locks can be viewed using <command>db4.8_stat -c -h
-					/var/lib/univention-ldap/ldap/</command>.
-				</para>
-				<para>
-					The locks can be set with the DB_config options <varname>set_lk_max_lockers</varname>,
-					<varname>set_lk_max_locks</varname> and <varname>set_lk_max_objects</varname>.
-				</para>
-			</listitem>
-		</itemizedlist>
+-->
+	</section>
 
-		<section id="slapd:acl">
-			<title>OpenLDAP ACLs</title>
-			<para>
-				Access to the information contained in the LDAP directory is controlled by
-				access control lists (ACLs) on the server side. General information on the
-				configuration of ACLs in UCS can be found in the LDAP chapter of the UCS
-				manual.
-			</para>
-			<para>
-				The default setting of the LDAP server does not allow anonymous access to the
-				LDAP directory. If the &ucsUCRV; <envar>ldap/acl/read/anonymous</envar> is set
-				to <literal>yes</literal>, these access restrictions do not apply and the
-				LDAP performance is increased. Access to sensitive attributes such as user
-				passwords remains protected via separate ACLs.
-			</para>
-		</section>
+	<section id="slapd:acl">
+		<title>OpenLDAP ACLs</title>
+		<para>
+			Access to the information contained in the LDAP directory is controlled by
+			access control lists (ACLs) on the server side. General information on the
+			configuration of ACLs in UCS can be found in the LDAP chapter of the UCS
+			manual.
+		</para>
+		<para>
+			The default setting of the LDAP server does not allow anonymous access to the
+			LDAP directory. If the &ucsUCRV; <envar>ldap/acl/read/anonymous</envar> is set
+			to <literal>yes</literal>, these access restrictions do not apply and the
+			LDAP performance is increased. Access to sensitive attributes such as user
+			passwords remains protected via separate ACLs.
+		</para>
 	</section>
 
 	<section id="listener">
@@ -360,6 +321,17 @@
 		</para>
 	</section>
 
+<!-- TODO: translation
+	<section id="systemstats">
+		<title>Systemstatisken</title>
+		<para>
+			Für weitere Performance Analysen kann die Logdatei
+			<filename>/var/log/univention/system-stats.log</filename> geprüft werden. Alle 30 Minuten
+			wird der Systemstatus protokolliert. Sofern die Protokollierung häufiger erfolgen soll,
+			kann dies über die UCR-Variable <envar>system/stats/cron</envar> gesteuert werden.
+		</para>
+	</section>
+-->
 </chapter>
 <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
