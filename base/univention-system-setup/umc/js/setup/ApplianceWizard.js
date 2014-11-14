@@ -578,7 +578,7 @@ define([
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'credentials-master',
-				headerText: _('Administrator account information'),
+				headerText: _('Account information'),
 				helpText: _('<p>Enter the name of your organization, an e-mail address to activate UCS and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>'),
 				layout: [
 					'organization',
@@ -1408,7 +1408,7 @@ define([
 
 			// administrator account
 			if (this._isRoleMaster()) {
-				msg += '<p><b>' + _('Administrator account information') + '</b></p>';
+				msg += '<p><b>' + _('Account information') + '</b></p>';
 				msg += '<ul>';
 				_append(_('Organization name'), vals.organization);
 				_append(_('E-mail address to activate UCS'), vals.email_address);

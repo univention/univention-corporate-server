@@ -1,3 +1,9 @@
+univention-system-setup (8.1.59-3) unstable; urgency=low
+
+  * Bug #36667: Changed misleading text on master account page
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 14 Nov 2014 09:46:17 +0100
+
 univention-system-setup (8.1.59-2) unstable; urgency=low
 
   * Bug #36666: Typo in translation
