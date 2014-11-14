@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (3.0.3-2) unstable; urgency=low
+
+  * Bug #36476: Forcibly remove initscript from all runlevels 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 14 Nov 2014 18:01:22 +0100
+
 univention-virtual-machine-manager-node (3.0.3-1) unstable; urgency=low
 
   * Bug #36376: Remove broken symlink

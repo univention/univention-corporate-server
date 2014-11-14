@@ -42,7 +42,7 @@ configure)
 		[ -L /etc/init.d/univention-virtual-machine-manager-node-common ] &&
 			[ "$(readlink /etc/init.d/univention-virtual-machine-manager-node-common)" = libvirt-bin ] &&
 			rm -f /etc/init.d/univention-virtual-machine-manager-node-common
-		update-rc.d libvirt-bin remove >/dev/null || :
+		update-rc.d -f libvirt-bin remove || :
 	fi
 	# Setup firewall and backup directory
 	univention-config-registry set \
