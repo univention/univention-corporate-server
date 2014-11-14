@@ -1,28 +1,26 @@
 <chapter id="networks::general">
   <title>IP- und Netzverwaltung</title>
   <para>
-	IP-Adressen für die in einer UCS-Domäne verwalteten Rechnersysteme
-	können zentral über &ucsUMC; verwaltet und per DHCP zugewiesen werden.
+	Dieses Kapitel beschreibt wie IP-Adressen für die in einer UCS-Domäne
+	verwalteten Rechnersysteme zentral über &ucsUMC; verwaltet und per DHCP
+	zugewiesen werden können.
   </para>
   <para>
-	Mit <emphasis>Netzwerk-Objekten</emphasis> lassen sich verfügbare IP-Adressen
-	eines Netzes zusammenfassen; bei der Zuweisung zu einem Rechner wird
-	dann automatisch die nächste verfügbare Adresse vorgegeben.
-  </para>
-  <para>
-	Die Vergabe von IP-Adressen über DHCP und die DNS-Auflösung sind
-	ebenfalls in UCS integriert. Die hierfür verwendeten Daten - wie
-	z.B. die MAC-Adresse - werden dabei aus dem LDAP-Verzeichnis bezogen.
+	<emphasis>Netzwerk-Objekte</emphasis> (<xref linkend="networks::introduction"/>)
+	fassen verfügbare IP-Adressbereiche eines Netzes zusammen.
+	Die DNS-Auflösung sowie die Vergabe von IP-Adressen über DHCP
+	sind in UCS integriert und werden genauer in <xref linkend="networks:dns"/>
+	sowie <xref linkend="module:dhcp:dhcp"/> erläutert.
   </para>
   <para>
 	Ein- und ausgehende Netzwerkverbindungen können über die in UCS
 	integrierte <emphasis>Univention Firewall</emphasis> auf Basis von iptables
-	begrenzt werden.
+	begrenzt werden (<xref linkend="ip-config:Paketfilter_mit_Univention_Firewall"/>).
   </para>
   <para>
 	Die Integration des Proxy-Servers Squid ermöglicht das Zwischenspeichern von
-	Web-Inhalten und die Umsetzung inhaltlicher Richtlinien für den
-	Web-Zugriff.
+	Web-Inhalten und die Umsetzung inhaltlicher Richtlinien für den Web-Zugriff
+	(<xref linkend="ip-config:Web-Proxy_fuer_Caching_und_Policy_Management_Virenscan"/>).
   </para>
   <section id="networks::introduction">
 	<title>Netzwerk-Objekte</title>
@@ -1053,8 +1051,9 @@
 		<para>
 		  DHCP-Services werden im UMC-Modul <emphasis>DHCP</emphasis> verwaltet
 		  (siehe auch <xref linkend="central:user-interface"/>). Um einen
-		  neuen DHCP-Service anzulegen muss zuerst <guimenu>Alle DHCP-Dienste</guimenu> selektiert
-		  werden, der Klick auf <guimenu>Hinzufügen</guimenu> legt dann einen neue Service an.
+		  neuen DHCP-Service anzulegen muss zuerst <guimenu>Alle DHCP-Dienste</guimenu>
+		  in der linken Spalte des UMC-Moduls selektiert werden.
+		  Ein Klick auf <guimenu>Hinzufügen</guimenu> legt dann einen neue Service an.
 		</para>
 
 		<para>

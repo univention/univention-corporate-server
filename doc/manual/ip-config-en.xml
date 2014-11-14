@@ -1,26 +1,25 @@
 <chapter id="networks::general">
   <title>IP and network management</title>
   <para>
-	IP addresses for the computer systems managed in a UCS domain can be
-	centrally managed via &ucsUMC; and and assigned via DHCP.
+	This chapter describes how IP addresses for computer systems in a UCS
+	domain can be centrally managed via &ucsUMC; and and assigned via DHCP.
   </para>
   <para>
-	With <emphasis>network objects</emphasis> one can manage the features of a
-	network centrally, e.g., the available IP addresses and the DNS and
-	DHCP zones in which a system is located.
-  </para>
-  <para>
-	The assignment of IP addresses via DHCP and the DNS resolution are also
-	integrated in UCS. The data used for this, e.g., the MAC address, are stored
-	in the LDAP directory.
+	<emphasis>Network objects</emphasis> (<xref linkend="networks::introduction"/>)
+	bundle available IP address segments of a network.
+	The DNS resolution as well as the assignment of IP addresses via DHCP are
+	integrated in UCS, as detailed in <xref linkend="networks:dns"/>
+	and <xref linkend="module:dhcp:dhcp"/>.
   </para>
   <para>
 	Incoming and outgoing network traffic can be restricted via the
-	<emphasis>Univention Firewall</emphasis> based on IPTables.
+	<emphasis>Univention Firewall</emphasis> based on iptables
+	(<xref linkend="ip-config:Packet_filter_with_Univention_Firewall"/>).
   </para>
   <para>
 	The integration of the proxy server Squid allows the caching of web
-	contents and the enforcement of content policies for web access.
+	contents and the enforcement of content policies for web access
+	(<xref linkend="ip-config:Web_proxy_for_caching_and_policy_management__virus_scan"/>).
   </para>
 
   <section id="networks::introduction">
@@ -1254,7 +1253,8 @@ closest to the object always applies.
 		  DHCP services are managed in the UMC module <emphasis>DHCP</emphasis>
 		  (see <xref linkend="central:user-interface"/>).
 		  To create a new DHCP service, <guimenu>All DHCP services</guimenu> needs to
-		  be selected. Clicking on <guimenu>Add</guimenu> then creates a new service.
+		  be selected in the left column of the UMC module.
+		  Clicking on <guimenu>Add</guimenu> then creates a new service.
 		</para>
 
 		<para>
