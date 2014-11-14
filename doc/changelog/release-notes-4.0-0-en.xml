@@ -52,9 +52,12 @@
 		<title>Release highlights</title>
 
 		<para>
-		  With &ucsUCS; 4.0-0, the fourth major release of &ucsUCS; (UCS) is now available. It
-		  includes all errata updates issued for UCS 3.2-3. It provides an extensive range of new
-		  features and improvements and many bugfixes:
+		  With &ucsUCS; 4.0-0, the fourth major release of &ucsUCS; (UCS) is now available.
+		  <!-- TODO: translation
+		  Es umfasst eine Reihe umfangreicher Funktionserweiterungen und -verbesserungen, neue
+		  Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten
+		  Änderungen im Überblick:
+		  -->
 		</para>
 
 		<itemizedlist>
