@@ -1,3 +1,9 @@
+univention-dvd (0.2.26-1) unstable; urgency=low
+
+  * Bug #36709: Add python-qt4 to maintained
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 14 Nov 2014 15:24:26 +0100
+
 univention-dvd (0.2.25-1) unstable; urgency=medium
 
   * Added libreoffice to maintained (Bug #36686)
@@ -12,7 +18,7 @@ univention-dvd (0.2.24-1) unstable; urgency=low
 
 univention-dvd (0.2.23-1) unstable; urgency=low
 
-  * Bug #36092: Add univention-cloud-init to maintained 
+  * Bug #36092: Add univention-cloud-init to maintained
 
  -- Erik Damrose <damrose@univention.de>  Fri, 07 Nov 2014 12:29:16 +0100
 
