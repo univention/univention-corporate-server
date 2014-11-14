@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.18-5) unstable; urgency=low
+
+  * Bug #35825: Update all.tar.gz (4)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 15 Nov 2014 00:20:27 +0100
+
 univention-management-console-module-appcenter (4.1.18-4) unstable; urgency=low
 
   * Bug #35825: Update all.tar.gz (3)
