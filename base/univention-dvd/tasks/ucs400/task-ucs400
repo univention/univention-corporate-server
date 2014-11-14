@@ -202,6 +202,7 @@ amarok
 gnome-session
 gnome-panel
 gnome-control-center
+libreoffice
 
 /* Development + Packaging Tools */
 univention-directory-manager-module-example

@@ -1,3 +1,9 @@
+univention-dvd (0.2.25-1) unstable; urgency=medium
+
+  * Added libreoffice to maintained (Bug #36686)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Nov 2014 11:39:30 +0100
+
 univention-dvd (0.2.24-1) unstable; urgency=low
 
   * Bug #36619: Add deborphan to maintained 
