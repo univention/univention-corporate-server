@@ -1,6 +1,6 @@
 <chapter id="computers:general"><title>Rechnerverwaltung</title>
 
-    <section id="computers::hostaccounts"><title>Verwaltung der Rechnerkonten in der Univention Management Console</title>
+    <section id="computers::hostaccounts"><title>Verwaltung der Rechnerkonten in Univention Management Console</title>
         <para>
             Alle UCS-, Linux- und Windowssysteme innerhalb einer UCS-Domäne verfügen über
             ein Rechner-Domänenkonto, mit dem sich die Systeme untereinander
@@ -1908,7 +1908,7 @@ auth/sshd/restrict: yes
             <section id="computers:modules:diagnostic"><title>System-Fehlerdiagnose in &ucsUMC;</title>
                 <para>
 					Um ein UCS-System auf verschiedene bekannte Probleme hin zu analysieren
-					biete das UMC-Modul <guimenu>System-Fehlerdiagnose</guimenu> eine
+					bietet das UMC-Modul <guimenu>System-Fehlerdiagnose</guimenu> eine
 					entsprechende Benutzerschnittstelle.
 				</para>
 				<para>
