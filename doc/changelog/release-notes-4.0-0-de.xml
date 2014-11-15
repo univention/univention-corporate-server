@@ -61,8 +61,8 @@
 		<itemizedlist>
 			<listitem><para>
 				Das Design und die Usability der graphischen Administrationsoberfläche &ucsUMC;
-				wurde mit UCS 4.0 komplett überarbeitet. Durch ein responsives Design kann die
-				Administration auch bequem vom Tabelt oder Smartphone erfolgen.
+				wurde mit UCS 4.0 komplett überarbeitet. Durch ein Responsive Design kann die
+				Administration auch bequem vom Tabelt oder Smartphone aus erfolgen.
 			</para></listitem>
 			<listitem><para>
 				UCS Virtual Machine Manger (UVMM) kann neben lokalen UCS-Virtualisierungsservern nun
@@ -77,22 +77,24 @@
 			</para></listitem>
 			<listitem><para>
 				Die Installation von UCS wurde deutlich vereinfacht. Die Basis-Installation erfolgt
-				auf Basis des Debian Installers, anschließend wird die Konfiguration des Systems
-				Web-basiert abgeschlossen. Die Web-basierte Konfiguration kommt auch bei der
+				mit Hilfe des Debian Installers und wird mit der Web-basierten Konfiguration des
+				Systems abgeschlossen. Die Web-basierte Konfiguration kommt auch bei der
 				manuellen Konfiguration von Cloud-Images oder anderen Appliances zum Einsatz.
 			</para></listitem>
 			<listitem><para>
-				Die Performance des OpenLDAP-Verzeichnisdienst wurde deutlich verbessert.
-				Standardmäßig wird als Backend für OpenLDAP nun die Memory-Mapped-Datenbank (mdb)
-				verwendet.
+				Die Performance des OpenLDAP-Verzeichnisdienstes wurde deutlich verbessert.
+				Standardmäßig wird bei einer Neuinstallation als Backend für OpenLDAP
+				nun die Memory-Mapped-Datenbank (mdb) verwendet.
+				Bei einer Aktualisierung von UCS kann das Backend nachträglich über die &ucsUCRV;
+				<envar>ldap/database/type</envar> geändert werden.
 			</para></listitem>
 			<listitem><para>
 				Die Administration von Applikationen innerhalb der UCS-Domäne wird durch ein
-				zentralisiertes App Center noch einfacher. Dadurch können Applikationen über das
-				App Center auf einem UCS-System innerhalb der gesamten Domäne installiert werden.
+				zentralisiertes App Center noch weiter vereinfacht. Applikationen können nun über das
+				App Center auf einem beliebigen UCS-System innerhalb der Domäne installiert werden.
 			</para></listitem>
 			<listitem><para>
-				UCS unterstützt nun auch die Installation auf einem System mit aktiviertem UEFI
+				UCS unterstützt nun auch die Installation auf Systemen mit aktiviertem UEFI
 				SecureBoot.
 			</para></listitem>
 		</itemizedlist>
@@ -102,7 +104,7 @@
 	<chapter id="relnotes:update">
 		<title>Hinweise zum Update</title>
 			<para>
-				UCS unterstützt das Einspielen von Release-Updates. Während der Aktualisierung kann es zu
+				<!--UCS unterstützt das Einspielen von Release-Updates.-->Während der Aktualisierung kann es zu
 				Ausfällen von Diensten innerhalb der Domäne kommen. Aus diesem Grund sollte das Update
 				innerhalb eines Wartungsfensters erfolgen. Grundsätzlich wird empfohlen das Update
 				zunächst in einer Testumgebung einzuspielen und zu testen. Die Testumgebung sollte
@@ -140,8 +142,8 @@
 					Sofern Applikationen aus dem App Center installiert sind, ist das Update erst
 					dann möglich, wenn alle lokal installierten Applikationen im App Center
 					verfügbar sind. Einige Applikationen werden beim Update ebenfalls auf neuere
-					Versionen aktualisiert. Falls eine Applikation noch nicht verfügbar ist, so kann
-					der Zeitpunkt beim Applikationshersteller nachgefragt werden.
+					Versionen aktualisiert. Sollte eine Applikation noch nicht für UCS 4.0 verfügbar sein,
+					kann der Zeitpunkt der Veröffentlichung beim Applikationshersteller nachgefragt werden.
 				</para>
 				<para>
 					Falls &ucsUCC; 1.0 im Einsatz ist und ein Update auf &ucsUCC; 2.0 noch nicht
@@ -193,9 +195,9 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 		</para>
 
 		<para>
-			Für das Update sollte eine Anmeldung auf der Console mit dem Benutzer
+			Für das Update sollte eine Anmeldung auf der lokalen Konsole des Systems mit dem Benutzer
 			<emphasis>root</emphasis> durchgeführt und das Update dort gestartet werden. Alternativ
-			kann das Update über die &ucsUMC; durchgeführt werden.
+			kann das Update über &ucsUMC; durchgeführt werden.
 		</para>
 
 		<para>
@@ -287,28 +289,26 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 		<section id="relnotes:usage">
 			<title>Erfassung von Nutzungsstatistiken</title>
 			<para>
-				Bei Verwendung der <emphasis>Free for personal use</emphasis>-Version von UCS (die in der
-				Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken zur
-				Verwendung der &ucsUMC; erzeugt. Die aufgerufenen Module werden dabei von einer Instanz
-				des Web-Traffic-Analyse-Tools Piwik protokolliert. Dies ermöglicht es Univention die
-				Entwicklung der &ucsUMC; besser auf das Kundeninteresse zuzuschneiden und
+				Bei Verwendung der <emphasis>Free for personal use</emphasis>-Version von UCS (die
+				in der Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken
+				zur Verwendung von &ucsUMC; erzeugt. Die aufgerufenen Module werden dabei von einer
+				Instanz des Web-Traffic-Analyse-Tools Piwik protokolliert. Dies ermöglicht es Univention die
+				Entwicklung von &ucsUMC; besser auf das Kundeninteresse zuzuschneiden und
 				Usability-Verbesserungen vorzunehmen.
 			</para>
-
 			<para>
-				Diese Protokollierung erfolgt nur bei Verwendung der Free-for-Personal-Use-Lizenz. Der
-				Lizenzstatus kann durch einen Klick auf das Benutzermenü in der rechten, oberen Ecke der
-				&ucsUMC; und die Auswahl von <guimenu>Lizenzinformationen</guimenu> geprüft werden. Steht
-				hier unter
-				<guimenu>LDAP-Basis</guimenu> <emphasis>Free for personal use edition</emphasis> wird eine
-				solche Version verwendet. Bei Einsatz einer regulären UCS-Lizenz erfolgt keine
+				Diese Protokollierung erfolgt nur bei Verwendung der
+				<emphasis>Free-for-Personal-Use-Lizenz</emphasis>. Der Lizenzstatus kann
+				überprüft werden durch den Eintrag <guimenu>Lizenz &ar;
+				Lizenzinformation</guimenu> des Benutzermenüs in der rechten, oberen Ecke
+				von &ucsUMC;.  Steht hier unter <guimenu>LDAP-Basis</guimenu> <guimenu>Free
+				for personal use edition</guimenu> wird eine solche Version verwendet.
+				Bei Einsatz einer regulären UCS-Lizenz erfolgt keine Teilnahme an der
 				Nutzungsstatistik.
 			</para>
-
 			<para>
-				Die Protokollierung kann unabhängig von der verwendeten Lizenz durch Setzen der
-				&ucsUCR;-Variable <envar>umc/web/piwik</envar> auf <emphasis>false</emphasis> deaktiviert
-				werden.
+				Die Protokollierung kann unabhängig von der verwendeten Lizenz durch Setzen der &ucsUCRV;
+				<envar>umc/web/piwik</envar> auf <emphasis>false</emphasis> deaktiviert werden.
 			</para>
 		</section>
 

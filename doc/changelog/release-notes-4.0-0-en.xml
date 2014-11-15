@@ -52,22 +52,23 @@
 		<title>Release highlights</title>
 
 		<para>
-		  With &ucsUCS; 4.0-0, the fourth major release of &ucsUCS; (UCS) is now available.
-		  It provides several substantial feature improvements and extensions and various
-		  improvements and bugfixes. An overview of the most important changes:
+		  With &ucsUCS; 4.0-0, the fourth major release of &ucsUCS; (UCS) is
+		  now available.  It provides several substantial feature improvements
+		  and extensions, new properties as well as various improvements and
+		  bugfixes. An overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 		  <listitem><para>
 			The design and the usability of the graphical administration interface &ucsUMC; were
-			completely revamped. By using a responsive design the &ucsUMC; provides improved
-			compatibility to tablets and smartphones.
+			completely revamped. By using a responsive design, &ucsUMC; provides improved
+			compatibility for tablets and smartphones.
 		  </para></listitem>
 
 		  <listitem><para>
-			In addition to local virtualization servers the UCS Virtual Machine Manger (UVMM) can
+			In addition to local virtualization servers, the UCS Virtual Machine Manger (UVMM) can
 			now also manage OpenStack or Amazon EC2 environments. This allows the setup of hybrid cloud
-			scenarios.
+			scenarios out-of-the-box with UCS.
 		  </para></listitem>
 
 		  <listitem><para>
@@ -77,14 +78,16 @@
 		  </para></listitem>
 
 		  <listitem><para>
-			The installation of UCS has been simplified. The base installation is based on the
-			Debian installer and finalised using a web-based configuration system. The same system
-			is also used for the manual configuration of cloud images or other appliances.
+			The installation of UCS has been simplified significantly. The base installation is now done
+			using the Debian installer and it is concluded with a web-based configuration of the system.
+			The same, web-based system is also used for the manual configuration of cloud images or other appliances.
 		  </para></listitem>
 
 		  <listitem><para>
 			The performance of the OpenLDAP directory service has been significantly improved. By
-			default the memory-mapped storage backend (mdb) is now used.
+			default the memory-mapped storage backend (mdb) is now used when installing UCS.
+			When updating a UCS system, the backend can be changed manually via the &ucsUCRV;
+			<envar>ldap/database/type</envar>.
 		  </para></listitem>
 
 		  <listitem><para>
@@ -128,7 +131,7 @@
 		  <title>Mixed operation with older UCS installations</title>
 		  <para>
 			UCS 4.0 supports mixed operation with UCS 3.2-4 systems, i.e. not all systems must be
-			updated in one maintenance windows. Mixed operation with older UCS versions such as
+			updated in the same maintenance windows. Mixed operation with older UCS versions such as
 			UCS 3.1 is not supported.
 		  </para>
 		</section>
@@ -139,19 +142,19 @@
 			If applications have been installed from the Univention App Center, the update can only
 			be performed once all installed applications are available in a compatible
 			version. Some applications are updated to newer versions during the update. If an
-			application is not yet available in a compatible version, the release date can be
+			application is not yet available for UCS 4.0, the release date can be
 			obtained from the application vendor.
 		  </para>
 
 		  <para>
 			If &ucsUCC; 1.0 is in use and the update to &ucsUCC; 2.0 should be performed at a later
-			time, the update to the latest available b&ucsUCC; 1.0 version should be made before
+			time, the update to the latest available &ucsUCC; 1.0 version should be made before
 			updating to UCS 4.0:
 
 			<programlisting>
 eval "$(ucr shell version/version version/patchlevel)"
 univention-add-app ucc_20140115
-univention-upgrade \-\-updateto $version_version-$version_patchlevel
+univention-upgrade --updateto $version_version-$version_patchlevel
 			</programlisting>
 
 			A detailed overview of the changes can be found in the UCC 1.0 rev3 release notes:
@@ -174,7 +177,7 @@ univention-upgrade \-\-updateto $version_version-$version_patchlevel
 		<section id="relnotes:32bit">
 			<title>UCS installation DVDs only available for 64 bit</title>
 			<para>
-			  Starting with UCS 4.0 UCS installation DVDs are only provided for the x86 64 bit
+			  Starting with UCS 4.0 UCS, installation DVDs are only provided for the x86 64 bit
 			  architecture (amd64). Existing 32 bit UCS 3 systems can still be updated to UCS 4.0 through the
 			  online repository or by using update DVDs. The 32 bit architectur will be supported
 			  over the entire UCS 4 maintenance.
@@ -188,23 +191,23 @@ univention-upgrade \-\-updateto $version_version-$version_patchlevel
 		<para>
 		  It must be checked whether sufficient disk space is available. A standard installation
 		  requires a minimum of 6 GB of disk space. Depending on the scope of the existing installation,
-		  the update will require about another 4 GB of disk space for the downloading and
-		  installation of the packages.
+		  the update will require about another 4 GB of disk space for downloading and
+		  installing all packages.
 		</para>
 
 		<para>
-		  For the update, a login should be performed on the console with the
-		  <emphasis>root</emphasis> user and then the update started there. Alternatively, the
-		  update can be initiated using the &ucsUMC;.
+		  For the update, a login should be performed on the system's local console as user
+		  <emphasis>root</emphasis>, and the update should be initiated there. Alternatively, the
+		  update can be conducted using &ucsUMC;.
 		</para>
 
 		<para>
 		  Remote updating via SSH is not recommended as this may result in the update procedure
-		  being cancelled if the network connection is interrupted, for example, and this can affect
-		  the system. If updating should occur over a network connection nevertheless, it must be
+		  being cancelled, e.g., if the network connection is interrupted. In consequence, this can affect
+		  the system severely. If updating should occur over a network connection nevertheless, it must be
 		  verified that the update continues despite disconnection from the network. This can be
-		  done, for example, using the tools <command>screen</command> and <command>at</command>,
-		  which are installed on all system roles.
+		  done, e.g., using the tools <command>screen</command> and <command>at</command>.
+		  These tools are installed on all system roles by default.
 		</para>
 
 		<section id="relnotes:removed">
@@ -255,7 +258,7 @@ univention-upgrade \-\-updateto $version_version-$version_patchlevel
 		<para>
 		  Following the update, new or updated join scripts need to be executed. This can be done in
 		  two ways: Either using the UMC module  <guimenu>Domain join</guimenu> or by running the
-		  command <command>univention-run-join-scripts</command> as the user
+		  command <command>univention-run-join-scripts</command> as user
 		  <emphasis>root</emphasis>.
 		</para>
 <!-- TODO: translate
@@ -268,7 +271,7 @@ univention-upgrade \-\-updateto $version_version-$version_patchlevel
 		</para>
 -->
 		<para>
-		  Subsequently the UCS system should be restarted.
+		  Subsequently the UCS system needs to be restarted.
 		</para>
 
 	</chapter>
@@ -288,24 +291,24 @@ univention-upgrade \-\-updateto $version_version-$version_patchlevel
 	  <section id="relnotes:usage">
 		<title>Collection of usage statistics</title>
 		<para>
-		  Anonymous usage statistics on the use of the &ucsUMC; are collected when using the
-		  <emphasis>free for personal use</emphasis> version of UCS (which is generally used for
-		  evaluating UCS). The modules opened are logged in an instance of the web traffic analysis
-		  tool Piwik. This makes it possible for Univention to tailor the development of the
-		  &ucsUMC; better to customer needs and carry out usability improvements.
+		  Anonymous usage statistics on the use of &ucsUMC; are collected when using the <emphasis>free for
+		  personal use</emphasis> version of UCS (which is generally used for evaluating UCS). The modules
+		  opened are logged in an instance of the web traffic analysis tool Piwik. This makes it
+		  possible for Univention to tailor the development of &ucsUMC; better to customer needs
+		  and carry out usability improvements.
 		</para>
-		
 		<para>
-		  This logging is only performed when the free-for-personal-use license is used. The license
-		  status can be verified by clicking on the cog symbol in the top righthand corner of the
-		  &ucsUMC; and selecting <guimenu>License information</guimenu>. If <emphasis>Free for personal use
-		  edition</emphasis> is listed under <guimenu>LDAP base</guimenu>, this version is in
-		  use. When a regular UCS license is used, no usage statistics are collected.
+		  This logging is only performed when the <emphasis>free-for-personal-use
+		  license</emphasis> is used. The license status can be verified via the
+		  menu entry <guimenu>License &ar; License information</guimenu> of the user
+		  menu in the upper right corner of &ucsUMC;.  If <guimenu>Free for personal
+		  use edition</guimenu> is listed under <guimenu>LDAP base</guimenu>,
+		  this version is in use. When a regular UCS license is used, no usage
+		  statistics are collected.
 		</para>
-		
 		<para>
-		  Indendepent of the licence used, the statistics generation can be deactivated by setting
-		  the &ucsUCR; variable <envar>umc/web/piwik</envar> to <emphasis>false</emphasis>.
+		  Independent of the license used, the statistics generation can be deactivated by setting the
+		  &ucsUCRV; <envar>umc/web/piwik</envar> to <emphasis>false</emphasis>.
 		</para>
 	  </section>
 
@@ -314,9 +317,9 @@ univention-upgrade \-\-updateto $version_version-$version_patchlevel
 		<para>
 		  Webkit, Konqueror and QtWebkit are shipped in the maintained branch of the UCS repository,
 		  but not covered with security support. Webkit is primarily used for displaying HTML help
-		  pages etc. Firefox should be used as the web browser.
+		  pages etc. Firefox should be used as web browser.
 		</para>
-		
+
 	  </section>
 
 	  <section id="relnotes:browsers">

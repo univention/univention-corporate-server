@@ -12,8 +12,7 @@
 		</simpara></listitem>
 		<listitem><simpara>
 				All Univention packages have been adapted to Dephelper 9 and to Python
-				2.7. In addition the UCR templates have been adapted to the new upstream
-				packages <sbr/>
+				2.7. UCR templates have been adapted to the new upstream packages <sbr/>
 				(<ulink url="&ucsbug;33836">Bug 33836</ulink>,
 				<ulink url="&ucsbug;35135">Bug 35135</ulink>,
 				<ulink url="&ucsbug;35138">Bug 35138</ulink>,
@@ -162,11 +161,11 @@
 		<title>Boot Loader</title>
 		<itemizedlist>
 			<listitem><simpara>
-					The boot loader design has been adapted to UCS 4.0
+					The boot loader design has been adapted for UCS 4.0
 					(<ulink url="&ucsbug;35934">Bug 35934</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-					The design of the bootsplash has been adapted to UCS 4.0
+					The design of the bootsplash has been adapted for UCS 4.0
 					(<ulink url="&ucsbug;35935">Bug 35935</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -343,11 +342,12 @@
 		<title>Univention Management Console server</title>
 		<itemizedlist>
 			<listitem><simpara>
-				Changing of an expired password via UMC has been fixed
+				The change of an expired password via UMC has been corrected
 				(<ulink url="&ucsbug;35985">Bug 35985</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-				Fix redirection when doing single sign on in &ucsUMC; to keep a secure https connection
+				The redirection when doing single sign on in &ucsUMC; has been
+				adapted to keep a secure https connection
 				(<ulink url="&ucsbug;36617">Bug 36617</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
@@ -807,7 +807,7 @@
 			<listitem><simpara>
 				Univention Virtual Machine Manager now supports connections to Cloud Computing
 				Environments e.g. to OpenStack (<ulink url="&ucsbug;32842">Bug 32842</ulink>).
-				The following additional Bugs were discovered and fixed during UCS 4 &ucsUVMM; development: <sbr/>(
+				The following additional changes and bug fixes were made during UCS 4 &ucsUVMM; development: <sbr/>(
 					<ulink url="&ucsbug;36139">Bug 36139</ulink>,
 					<ulink url="&ucsbug;36145">Bug 36145</ulink>,
 					<ulink url="&ucsbug;35824">Bug 35824</ulink>,
@@ -1007,7 +1007,7 @@
 				(<ulink url="&ucsbug;36377">Bug 36377</ulink>).
 		</simpara></listitem>
 		<listitem><simpara>
-				The KDE design has been adapted to UCS 4.0
+				The KDE design has been adapted for UCS 4.0
 				(<ulink url="&ucsbug;35936">Bug 35936</ulink>).
 		</simpara></listitem>
 		<listitem><simpara>
