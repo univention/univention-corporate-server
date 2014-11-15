@@ -85,9 +85,7 @@
 
 		  <listitem><para>
 			The performance of the OpenLDAP directory service has been significantly improved. By
-			default the memory-mapped storage backend (mdb) is now used when installing UCS.
-			When updating a UCS system, the backend can be changed manually via the &ucsUCRV;
-			<envar>ldap/database/type</envar>.
+			default the memory-mapped storage backend (MDB) is now used when installing UCS. 
 		  </para></listitem>
 
 		  <listitem><para>
@@ -378,6 +376,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 		<bibliomixed id="ucs-handbuch"/>
 		<bibliomixed id="ext-doc-uvmm"/>
 		<bibliomixed id="ucs-uvmm-profile"/>
+		<bibliomixed id="ucs-performance-guide"/>
 	</bibliography>
 
 	<?dbhtml-include href="../stylesheets/piwik.html"?>

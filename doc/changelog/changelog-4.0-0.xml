@@ -220,7 +220,9 @@
 			<listitem><simpara>
 					MDB is the new default backend database for OpenLDAP. The backend database can
 					be configured via &ucsUCRV; <envar>ldap/database/type</envar>. The backend is
-					not changed during the update (<ulink url="&ucsbug;34994">Bug 34994</ulink>).
+					not changed during the update. More information about MDB can be found in the
+					performance guide: <xref linkend="ucs-performance-guide"/>
+ 					(<ulink url="&ucsbug;34994">Bug 34994</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 					The default search rule for the LDAP attribute

@@ -84,9 +84,7 @@
 			<listitem><para>
 				Die Performance des OpenLDAP-Verzeichnisdienstes wurde deutlich verbessert.
 				Standardmäßig wird bei einer Neuinstallation als Backend für OpenLDAP
-				nun die Memory-Mapped-Datenbank (mdb) verwendet.
-				Bei einer Aktualisierung von UCS kann das Backend nachträglich über die &ucsUCRV;
-				<envar>ldap/database/type</envar> geändert werden.
+				nun die Memory-Mapped-Datenbank (MDB) verwendet.
 			</para></listitem>
 			<listitem><para>
 				Die Administration von Applikationen innerhalb der UCS-Domäne wird durch ein
@@ -104,13 +102,13 @@
 	<chapter id="relnotes:update">
 		<title>Hinweise zum Update</title>
 			<para>
-				<!--UCS unterstützt das Einspielen von Release-Updates.-->Während der Aktualisierung kann es zu
-				Ausfällen von Diensten innerhalb der Domäne kommen. Aus diesem Grund sollte das Update
-				innerhalb eines Wartungsfensters erfolgen. Grundsätzlich wird empfohlen das Update
-				zunächst in einer Testumgebung einzuspielen und zu testen. Die Testumgebung sollte
-				dabei identisch zur Produktivumgebung sein. Je nach Systemgeschwindigkeit,
-				Netzwerkanbindung und installierter Software kann das Update zwischen dreißig Minuten
-				und mehreren Stunden dauern.
+				Während der Aktualisierung kann es zu Ausfällen von Diensten innerhalb der Domäne
+				kommen. Aus diesem Grund sollte das Update innerhalb eines Wartungsfensters
+				erfolgen. Grundsätzlich wird empfohlen das Update zunächst in einer Testumgebung
+				einzuspielen und zu testen. Die Testumgebung sollte dabei identisch zur
+				Produktivumgebung sein. Je nach Systemgeschwindigkeit, Netzwerkanbindung und
+				installierter Software kann das Update zwischen dreißig Minuten und mehreren Stunden
+				dauern.
 			</para>
 
 		<section id="relnotes:order">
@@ -380,6 +378,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 		<bibliomixed id="ucs-handbuch"/>
 		<bibliomixed id="ext-doc-uvmm"/>
 		<bibliomixed id="ucs-uvmm-profile"/>
+		<bibliomixed id="ucs-performance-guide"/>
 	</bibliography>
 
 	<?dbhtml-include href="../stylesheets/piwik.html"?>
