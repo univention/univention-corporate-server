@@ -1061,20 +1061,14 @@
     <section id="user-management:Passwortwechsel_durch_Benutzer_ueber_die_UMC">
         <title>Passwortwechsel durch Benutzer über &ucsUMC;</title>
         <para>
-            Standardmäßig können Benutzer ihr Passwort nicht über &ucsUMC; ändern.
-            Um benutzerinitiierte Passwortwechsel zu erlauben, muss die Änderung
-            in den LDAP-ACLs und in &ucsUMC; erlaubt werden.
-        </para>
-        <para>
-            Zur Anpassung der LDAP-ACLs muss auf dem &ucsMaster; die
-            &ucsUCRV; <envar>ldap/acl/user/password/change</envar> auf <emphasis>yes</emphasis> gesetzt werden
-            und der LDAP-Server neu gestartet werden.
-        </para>
-        <para>
-            Zur einfachen Freigabe in der UMC kann die Richtlinie
-            <emphasis>default-udm-self</emphasis> mit einem LDAP-Objekt verknüpft werden (z.B.
-            mit der LDAP-Basis oder der Gruppe <emphasis>Domain Users</emphasis> (siehe
-            <xref linkend="central:policies:assign"/>)).
+			In &ucsUMC; kann jeder Benutzer sein Passwort über das Modul
+			<guimenu>Passwort ändern</guimenu> neu setzen. Dieses wird auch bei
+			Auswahl des Eintrages <guimenu>Einstellungen &ar; Passwort ändern</guimenu>
+			im oberen, rechten Benutzermenü aufgerufen.
+			Damit das Passwort geändert werden kann, muss zunächst das aktuelle
+			angegeben werden. Die Änderung wird dann direkt über den PAM-Stack
+			(siehe <xref linkend="computers:Authentifizierung__PAM"/>) durchgeführt
+			und ist danach zentral für alle Dienste verfügbar.
         </para>
     </section>
     <section id="users:faillog">
