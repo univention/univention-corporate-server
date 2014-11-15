@@ -1,3 +1,10 @@
+univention-ldap (11.0.10-1) unstable; urgency=medium
+
+  * Added ldap/database/mdb/envflags to the subfile register
+    (Bug #36725)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 15 Nov 2014 12:54:37 +0100
+
 univention-ldap (11.0.9-1) unstable; urgency=medium
 
   * Added ldap/database/mdb/envflags (Bug #36725)
