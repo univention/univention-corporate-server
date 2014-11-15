@@ -805,7 +805,7 @@
 					<title>Prerequisite when using &ucsUVMM;</title>
 					<para>
 						If <acronym>KVM</acronym> is installed the network configuration is enabled by default.
-						When the application <program>KVM virtualization server</program> is installed, the network configuration is changed:
+						When the application <emphasis>KVM virtualization server</emphasis> is installed, the network configuration is changed:
 						A bridge with the name <filename class="device">br0</filename> is configured, and the network device <filename class="device">eth0</filename> is added.
 						Additional network cards are not adapted accordingly.
 					</para>
