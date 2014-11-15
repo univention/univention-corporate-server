@@ -222,7 +222,8 @@
 					be configured via &ucsUCRV; <envar>ldap/database/type</envar>. The backend is
 					not changed during the update. More information about MDB can be found in the
 					performance guide: <xref linkend="ucs-performance-guide"/>
- 					(<ulink url="&ucsbug;34994">Bug 34994</ulink>).
+ 					(<ulink url="&ucsbug;34994">Bug 34994</ulink>,
+					<ulink url="&ucsbug;36725">Bug 36725</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 					The default search rule for the LDAP attribute
