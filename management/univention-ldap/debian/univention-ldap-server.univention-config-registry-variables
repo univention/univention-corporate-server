@@ -168,6 +168,12 @@ Description[en]=This variable configures the frequency for checkpointing the dat
 Type=str
 Categories=service-ldap
 
+[ldap/database/mdb/envflags]
+Description[de]=Mit dieser Variable können detailliertere Einstellungen zum MDB Datenbank-Backend konfiguriert werden. Mehrere Werte werden durch Komma getrennt. Mögliche Werte sind  nosync, nometasync, writemap, mapasync und nordahead. Weiter eInmformationen sind im UCS Performance Guide unter <http://docs.univention.de> zu finden.
+Description[en]=This variable specifies flags for finer-grained control of the mdb database backend handling. Multiple attributes are separated by commas. Possible values are nosync, nometasync, writemap, mapasync and nordahead. More details can be found in the UCS performance guide at <http://docs.univention.de>.
+Type=str
+Categories=service-ldap
+
 [ldap/ppolicy]
 Description[de]=Diese Variable legt fest, ob das LDAP Overlay ppolicy geladen wird. Dies sorgt dafür, dass der LDAP-Server einen Satz von benutzerspezifischen ppolicy Attributen läd. Wenn es einmal aktiviert wurde, sollte es nicht wieder deaktivert werden, um Probleme durch undefinierte Attribute zu vermeiden. Die Aktiviertung der Funktionalität des Overlays ist unabhängig davon über eine andere UCR Variable möglich (siehe UCR Variable ldap/ppolicy/enable).
 Description[en]=If this variable is set to yes, the LDAP server loads the LDAP overlay ppolicy on the next restart. In this case the LDAP server loads a set of ppolicy specific user attributes. Once the overlay has been activated, it should not be deactivated again to avoid problems due to undefined attributes. Loading and activation of the overlay are two different things, activation is controlled by a separate UCR variable (see UCR variable ldap/ppolicy/enable).

@@ -33,6 +33,7 @@ Variables: ldap/threads
 Variables: ldap/tool-threads
 Variables: ldap/database/mdb/maxsize
 Variables: ldap/database/mdb/checkpoint
+Variables: ldap/database/mdb/envflags
 Variables: ldap/ppolicy
 Variables: ldap/ppolicy/enabled
 Variables: ldap/ppolicy/default

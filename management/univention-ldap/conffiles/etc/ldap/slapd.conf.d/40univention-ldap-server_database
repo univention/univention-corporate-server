@@ -51,6 +51,8 @@ if configRegistry['ldap/database/type'] == "bdb":
 if configRegistry['ldap/database/type'] == "mdb":
 	if configRegistry.has_key('ldap/database/mdb/checkpoint') and configRegistry['ldap/database/mdb/checkpoint']:
 		print 'checkpoint %s'%configRegistry['ldap/database/mdb/checkpoint']
+	if configRegistry.get('ldap/database/mdb/envflags', None):
+		print 'envflags %s'%configRegistry['ldap/database/mdb/envflags']
 
 index_attrs={}
 indextypes=['pres','eq','sub','approx']

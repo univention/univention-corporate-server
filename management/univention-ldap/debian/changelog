@@ -1,3 +1,9 @@
+univention-ldap (11.0.9-1) unstable; urgency=medium
+
+  * Added ldap/database/mdb/envflags (Bug #36725)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 15 Nov 2014 12:48:08 +0100
+
 univention-ldap (11.0.8-1) unstable; urgency=medium
 
   * Added univentionUDMOptionModule to the slapd eq index. It is
