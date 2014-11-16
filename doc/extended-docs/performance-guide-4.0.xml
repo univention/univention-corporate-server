@@ -46,18 +46,19 @@
 			full database contents, but over an optimized subsection.
 		</para>
 		<para>
-			Mit neueren UCS Versionen werden die Indicies gelegentlich ergänzt und
-			automatisch aktiviert.  Die automatische Aktivierung kann über die UCR-Variable
-			<envar>ldap/index/autorebuild</envar> deaktiviert werden. In diesem Fall sollten die
-			Indizes manuell gesetzt werden, damit es zu keinen Performance-Verlusten
-			kommt. Gesteuert werden die Indizes durch die UCR-Variablen ldap/index/eq, ldap/index/pres,
-			ldap/index/sub sowie ldap/index/approx. Nachdem die Variablen verändert wurden, muss der OpenLDAP-Server beendet und
-			das Kommando <command>slapindex</command> ausgeführt werden.
+			With newer UCS versions, the indices are occasionally expanded and automatically
+			activated. The automatic activation can be deactivated using the UCR variable
+			<envar>ldap/index/autorebuild</envar>. In this case, the indices should be set
+			manually to ensure that there is no loss of performance as a result. The indices
+			are controlled by the UCR variables <envar>ldap/index/eq</envar>,
+			<envar>ldap/index/pres</envar>, <envar>ldap/index/sub</envar> and
+			<envar>ldap/index/approx</envar>. Once the variables have been changed, the
+			OpenLDAP server must be stopped and the <command>slapindex</command> command run.
 		</para>
 		<para>
-			Um festzustellen, ob nicht indizierte Variablen verwendet werden, kann der
-			OpenLDAP Debug Level -1 aktiviert werden und in der Logdatei /var/log/syslog nach der Zeichenkette 'not
-			indexed' gesucht werden.  Beispielsweise:
+			To determine whether not-indexed variables are used, you can activate OpenLDAP
+			debug level -1 and search for the string 'not indexed' in the log file
+			<filename>/var/log/syslog</filename>. For example:
 			<programlisting>
 ucr set ldap/debug/level=-1
 invoke-rc.d slapd restart
@@ -69,10 +70,10 @@ grep 'not indexed' /var/log/syslog
 	<section id="slapd:bdb">
 		<title>Configuration of the database backend</title>
 		<para>
-			Seit UCS 4.0 wird für Neuinstallationen die Memory-Mapped-Datenbank (MDB)
-			verwendet.  Sofern noch BDB verwendet wird, sollte auf MDB migriert werden. Das
-			Datenbankbackend kann über die UCR Variable <envar>ldap/database/backend</envar> gesteuert
-			werden.  Eine Migration kann wie folgt durchgeführet werden: 
+			The memory mapped database (MDB) has been used for new installations since UCS
+			4.0. If BDB is still in use, a migration to MDB should be performed. The
+			database backend can be controlled via the UCR variable
+			<envar>ldap/database/backend</envar>. A migration can be performed as follows: 
 			<programlisting>
 /etc/init.d/slapd stop
 slapcat -l ldif
@@ -354,17 +355,20 @@ slapadd -l ldif
 			The default is 32808.
 		</para>
 		<para>
-			If the log file <filename>/var/log/samba/log.smbd</filename> contains errors like <computeroutput>Failed to init inotify - Too many open files</computeroutput>, the kernel and Samba limits should be increased and the services should be restarted.
+			If the log file <filename>/var/log/samba/log.smbd</filename> contains errors
+			like <computeroutput>Failed to init inotify - Too many open
+			files</computeroutput>, the kernel and Samba limits should be increased and the
+			services should be restarted.
 		</para>
 	</section>
 
 	<section id="systemstats">
-		<title>Systemstatisken</title>
+		<title>System statistics</title>
 		<para>
-			Für weitere Performance Analysen kann die Logdatei
-			<filename>/var/log/univention/system-stats.log</filename> geprüft werden. Alle 30 Minuten
-			wird der Systemstatus protokolliert. Sofern die Protokollierung häufiger erfolgen soll,
-			kann dies über die UCR-Variable <envar>system/stats/cron</envar> gesteuert werden.
+			The log file <filename>/var/log/univention/system-stats.log</filename> can be
+			checked for further performance analyses. The system status is logged every 30
+			minutes. If more regular logging is required, it can be controlled via the UCR
+			variable <envar>system/stats/cron</envar>. 
 		</para>
 	</section>
 </chapter>
