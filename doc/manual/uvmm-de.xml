@@ -122,12 +122,13 @@
 								<entry>
 									Hier ist die URL einzutragen, unter der der Authentifizierungs-Endpunkt der OpenStack Instanz erreichbar ist.
 									Soll eine verschlüsselte Verbindung aufgebaut werden, ist die URL in der Form <emphasis>https://[...]</emphasis> anzugeben.
-									Da für die verschlüsselte Verbindung das öffentliche Zertifikat der OpenStack Instanz verwendet wird, muss dieses dem UVMM System bekannt gemacht werden.
-									Auf dem UCS System, auf dem die Applikation <emphasis>Management-Server für KVM und Cloud-Instanzen</emphasis> installiert ist, muss dieses Zertifikat verfügbar gemacht werden.
-									Dazu muss das öffentliche Zertifikat in PEM Kodierung auf dem UCS Server in das Verzeichnis <filename class="directory">/usr/local/share/ca-certificates/</filename> kopiert werden und mit der Endung .crt versehen sein.
+									Da für die verschlüsselte Verbindung das öffentliche Zertifikat der OpenStack Instanz verwendet wird, muss dieses dem UCS-System, 
+									auf dem die Applikation <emphasis>Management-Server für KVM und Cloud-Instanzen</emphasis> installiert ist, verfügbar gemacht werden.
+									Dazu muss das öffentliche Zertifikat in PEM Kodierung auf dem UCS-Server in das Verzeichnis <filename class="directory">/usr/local/share/ca-certificates/</filename> kopiert werden und mit der Endung .crt versehen sein.
 									Die folgenden Kommandos konvertieren ein Zertifikat in die korrekte Kodierung und machen das Zertifikat bekannt:
 									<programlisting language="sh">
-openssl x509 -in [pfad/zum/openstack-zertifikat] -outform pem -out /usr/local/share/ca-certificates/openstack.crt
+openssl x509 -in [pfad/zum/openstack-zertifikat] \
+	-outform pem -out /usr/local/share/ca-certificates/openstack.crt
 
 update-ca-certificates
 									</programlisting>
