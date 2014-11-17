@@ -2,93 +2,80 @@
   <title>Mail services</title>
 
   <section id="mail::introduction">
-	<title>Introduction #TODO</title>
-	<para>
-	  &ucsUCS; provides mail services that users can access both via standard mail
-	  clients like Mozilla Thunderbird and via the webmail solution Horde.
+    <title>Introduction</title>
+    <para>
+	  &ucsUCS; provides mail services that users can access both via standard
+	  mail clients such as Thunderbird and via the webmail interface Horde.
+    </para>
+
+    <para>
+	  Postfix is used for sending and receiving mails. In the basic
+	  installation, a configuration equipped for local mail delivery is set up
+	  on every UCS system. In this configuration, Postfix only accepts mails
+	  from the local server and they can also only be delivered to local system
+	  users.
+    </para>
+
+    <para>
+	  The installation of the mail server component implements a complete mail
+	  transport via SMTP (see <xref linkend="mail::installation"/>).
+	  Postfix is reconfigured during the installation of the component so that
+	  a validity test in the form of a search in the LDAP directory is
+	  performed for incoming e-mails. That means that e-mails are only accepted
+	  for e-mail addresses defined in the LDAP directory or via an alias.
+    </para>
+
+    <para>
+	  The IMAP service Cyrus is also installed on the system along with the mail
+	  server component. It provides e-mail accounts for the domain users and
+	  offers corresponding interfaces for access via e-mail clients.
+	  Cyrus is preconfigured for the fetching of e-mails via IMAP and POP3.
+	  Access via POP3 can be deactivated by setting the &ucsUCRV;
+	  <envar>mail/cyrus/pop</envar> to <emphasis>no</emphasis>. The same
+	  applies to IMAP and the &ucsUCRV; <envar>mail/cyrus/imap</envar>.
+	  The further configuration of the mail server is performed via &ucsUCR;,
+	  as well (see <xref linkend="mail::serverconfig::general"/>).
 	</para>
-	<para>
-	  Postfix is used for sending mails. In the basic installation, a Postfix
-	  configuration equipped for local mail delivery is set up on every UCS
-	  system. In this case, Postfix only accepts mails from the local server and they
-	  can also only be delivered to local system users. If e-mails also need to be
-	  sent to external addresses, a mail relay needs to be configured in this
-	  scenario (see <xref linkend="mail::serverconfig::relay"/>).
-	</para>
-	<para>
-	  The mail server component can be installed on server roles which realises
-	  complete mail transport via SMTP (see
-	  <xref linkend="mail::installation"/>). The following functions are only available
-	  when the mail server component is used.
-	</para>
-	<para>
-	  Postfix performs a validity test for incoming e-mails in the form of a search
-	  in the LDAP directory. That means that e-mails are only accepted for e-mail
-	  addresses defined in the LDAP directory or via an alias.
-	</para>
-	<para>
-	  Following the optional spam and virus filtering, the received e-mails are
-	  transferred to the Cyrus server for the provision of e-mails via IMAP and
-	  POP3. The authentication is performed using the primary e-mail address, i.e.,
-	  it must be entered as the user name in mail clients.
-	</para>
-	<para>
-	  Cyrus is preconfigured for the fetching of e-mails via IMAP and POP3. Access
-	  via POP3 can be deactivated by setting the &ucsUCRV;
-	  <envar>mail/cyrus/pop</envar> to <emphasis>no</emphasis>. The same applies to
-	  IMAP and the &ucsUCRV; <envar>mail/cyrus/imap</envar>.
-	</para>
-	<para>
-	  E-mails to foreign domains are sent directly to the responsible STMP server as
-	  standard. The location of the server is performed via the resolution of the MX
-	  record in the DNS. Mail sending can also be taken over by a relay host, e.g.,
-	  on the Internet provider. This is described in the <xref
-	  linkend="mail::serverconfig::relay"/>.
-	</para>
-	<para>
-	  Spam mails are identified via the classification software SpamAssassin and
-	  sorted out by filter scripts (see <xref linkend="mail::spam"/>). ClamAV
-	  is employed for the identification of viruses and other malware (see
-	  <xref linkend="mail::viren"/>).
-	</para>
-	<para>
-	  The UCS mail system does not offer any groupware functions such as shared
-	  calendars or invitations to appointments. There are further groupware systems
-	  based on UCS, which also offer integration into the UCS management system, for
-	  example: Kolab, Zarafa or Open-Xchange. More detailed information can be found
-	  on the Univention website <biblioref linkend="univention-technologypartners"/>.
-	</para>
-	<para>
-	  Version 5 of the Horde framework is provided for the web-based provision of
-	  e-mails (see <xref linkend="mail::horde"/>)
-	</para>
-	<para>
-	  The management of the user data of the mail server (e.g., e-mail addresses or
-	  mailing list) is performed in &ucsUMC; and is documented in the Chapter
-	  <xref linkend="mail::management::general"/>. The configuration of the mail
-	  server is performed via &ucsUCR; (see <xref
-	  linkend="mail::serverconfig::general"/>).
-	</para>
-	<para>
-	  The UCS mail system offers the possibility of distributing users across several
-	  mail servers. The mail home servers described in the <xref
-	  linkend="mail::homeserver"/> are used for this purpose.
-	</para>
-	<para>
-	  As soon as a user in the LDAP directory is assigned a primary e-mail
-	  address, a listener module creates an IMAP account on the user's mail home server.
-	</para>
-	<para>
-	  Mail servers are configured using &ucsUCR; (see
-	  <xref linkend="mail::serverconfig::general"/>).
-	</para>
-	<para>
-	  As the name of the mailbox is linked to the primary e-mail address and
-	  not the user name, a user can no longer access his old e-mails when
-	  changes are made to the primary e-mail address! If another user is
-	  assigned a previously used primary e-mail address, he receives access
-	  to the old IMAP structure of this mailbox.
-	</para>
+
+    <para>
+	  The management of the user data of the mail server (e.g., e-mail
+	  addresses or mailing list) is performed via &ucsUMC; and is documented in
+	  <xref linkend="mail::management::general"/> User data are stored in LDAP.
+	  The authentication is performed using a user's primary e-mail address,
+	  i.e., it must be entered as the user name in mail clients.
+	  As soon as a primary e-mail address is assigned to a user in the LDAP
+	  directory, a listener module creates an IMAP mailbox on the mail home
+	  server.
+	  By specifying the mail home server, user e-mail accounts can be
+	  distributed over several mail servers, as well
+	  (see <xref linkend="mail::homeserver"/>).
+    </para>
+
+    <para>
+	  Optionally, e-mails received via Postfix can be checked for spam content
+	  and viruses before further processing by Cyrus.
+	  Spam e-mails are detected by the classification software SpamAssassin
+	  (<xref linkend="mail::spam"/>); ClamAV is used for the detection of
+	  viruses and other malware (<xref linkend="mail::viren"/>).
+    </para>
+
+    <para>
+	  In the default setting, e-mails to external domains are delivered
+	  directly to the responsible STMP server of that domain.
+	  Its location is performed via the resolution of the MX record in the
+	  DNS. Mail sending can also be taken over by the relay host, e.g., on the
+	  Internet provider (see <xref linkend="mail::serverconfig::relay"/>).
+    </para>
+
+    <para>
+	  Version 5 of the Horde framework is available for web-based mail access
+	  (see <xref linkend="mail::horde"/>). The UCS mail system does not offer
+	  any groupware functionality such as shared calendars or invitations to
+	  appointments. However, there are groupware systems based on UCS which
+	  integrate in the UCS management system such as Kolab, Zarafa and
+	  Open-Xchange. Further information can be found on the Univention website
+	  <biblioref linkend="univention-technologiepartner"/>.
+    </para>
   </section>
 
   <section id="mail::installation">
