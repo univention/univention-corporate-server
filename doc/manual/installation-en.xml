@@ -458,6 +458,28 @@ see <xref linkend="installation-overview"/>.
 	</para>
 </section>
 
+<section id="installation:textmode">
+  <title>Installation im Textmodus</title>
+  <para>
+	On systems that showed problem with the graphic variant of Univention Installer, the installation may be also started in text mode.
+	To achieve this, in the DVD boot menu <guimenu>Advanced options</guimenu> the entry <guimenu>Install in text mode</guimenu> has to be selected.
+  </para>
+  <para>
+	During installation in text mode Univention Installer shows the same information and asks for the
+	same settings. After partitioning the hard drive, the system is prepared for the first boot and finally restarted.
+  </para>
+  <para>
+	After restart the configuration may be resumed by using a web browser. The URL
+	<uri>https://SERVER-IP-ADDRESS/</uri> or <uri>http://SERVER-IP-ADDRESS/</uri> has to be opened
+	within the browser (HTTPS is recommended). After loading the URI a login as user
+	<emphasis>root</emphasis> is required.
+  </para>
+  <para>
+	The configuration process asks for location and network setting and then resumes with the same
+	steps as the graphic variant of the installation, i.e. section <emphasis>domain settings</emphasis>.
+  </para>
+</section>
+
 <section id="installation:amazonec2">
 <title>Installation in the Amazon EC2 cloud</title>
 	<para>

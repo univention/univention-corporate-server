@@ -617,6 +617,30 @@
 	</para>
 </section>
 <section id="installation:amazonec2">
+  <title>Installation im Textmodus</title>
+  <para>
+	Auf Systemen, die Probleme mit der graphischen Variante des Installers zeigen, kann der Installer auch im Textmodus gestartet werden.
+	Im DVD-Bootmenu <guimenu>Advanced options</guimenu> muss dafür der Eintrag <guimenu>Install in text mode</guimenu> ausgewählt werden.
+  </para>
+  <para>
+	Während der Installation im Textmodus werden die gleichen Informationen wie im graphischen
+	Installer angezeigt bzw. abgefragt. Jedoch wird nach der Partitionierung der Festplatten das System
+	auf den ersten Neustart vorbereitet und schließlich neu gestartet.
+  </para>
+  <para>
+	Nach Abschluß des Neustarts kann die Konfiguration im Webbrowser fortgesetzt werden. Dafür muss
+	im Browser die URL <uri>https://SERVER-IP-ADRESSE</uri> oder <uri>http://SERVER-IP-ADRESSE</uri>
+	aufgerufen werden (HTTPS wird empfohlen). Nach dem Aufruf der Seite ist die Anmeldung mit dem
+	Benutzer <emphasis>root</emphasis> erforderlich.
+  </para>
+  <para>
+	Die Konfiguration im Browser erwartet zum Standort sowie
+	Netzwerkeinstellungen und fährt dann (wie in der graphischen Installation) mit dem Punkt
+	<emphasis>Domäneneinstellungen</emphasis> fort.
+  </para>
+</section>
+
+<section id="installation:amazonec2">
 <title>Installation in der Amazon EC2-Cloud</title>
 	<para>
 		Univention stellt für UCS ein Amazon Machine Image (AMI) für die
