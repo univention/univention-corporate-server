@@ -115,7 +115,7 @@
   
   <para>
 	Während der Installation kann eine Autopartitionierung verwendet werden, die standardmäßig die
-	erste Festplatte im System als LVM nutzt.
+	erste Festplatte im System als LVM Volume Group nutzt.
   </para>
 
   <para>
@@ -164,7 +164,7 @@
 
   <para>
 	UCS-Updates (Sicherheits-Updates und kritische Bugfixes) können über das
-	&ucsUMC;-Modul <guimenu>Software Aktualisierung</guimenu> installiert werden.
+	&ucsUMC;-Modul <guimenu>Software-Aktualisierung</guimenu> installiert werden.
   </para>
 
   <para>
@@ -178,7 +178,7 @@
 	  </simpara></listitem>
 	  
 	  <listitem><simpara>
-		Lösungen von Drittanbietern (z.B. verschiedene Groupwarelösungen) und UCS-kompatibe
+		Lösungen von Drittanbietern (z.B. verschiedene Groupwarelösungen) und UCS-kompatible
 		Zusatzprodukte (z.B. UCS@school für den Schuleinsatz) können ebenfalls über das App Center
 		installiert werden. 
 	  </simpara></listitem>
@@ -225,7 +225,7 @@
 
 	<itemizedlist>
 	  <listitem><simpara>
-		Windows-Clients können einer AD-kompatible Windows-Domäne beitreten, die durch die
+		Windows-Clients können einer AD-kompatiblen Windows-Domäne beitreten, die durch die
 		Komponente <emphasis>Active Directory-kompatibler Domänencontroller</emphasis> (umgesetzt
 		durch die Software Samba) bereitgestellt wird. Weitere Informationen zur Einrichtung von
 		Samba und dem Domänenbeitritt von Windows-Clients findet sich im UCS-Handbuch <biblioref

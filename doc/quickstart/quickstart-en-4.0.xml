@@ -31,13 +31,13 @@
   <para>
 	This quickstart guide offers a short introduction on how to get started with UCS. Several
 	featues of UCS are only mentioned briefly with a reference to further documentation. The
-	documention on UCS is available at <ulink url="http://docs.univention.de"/>.
+	documentation on UCS is available at <ulink url="http://docs.univention.de"/>.
   </para>
 
   <para>
 	The installation DVD can be downloaded from the Univention website at
 	<ulink url="https://www.univention.com/downloads/ucs-download/iso-installation-image/"/>.
-	The installation DVD is only available for the amd64 (64-bit). It has support or the Unified
+	The installation DVD is only available for the host architecture amd64 (64-bit). It has support for the Unified
 	Extensible Firmware Interface-Standard (UEFI) including SecureBoot.
   </para>
 
@@ -74,7 +74,7 @@
 	The network configuration can be employed using DHCP.
 	If there is already a name server available in the local network, it should be used. If
 	additional UCS systems are installed in the domain at a later point in time, the &ucsMaster; and
-	any &ucsBackup; systems should be entered as the name servers.
+	any &ucsBackup; systems should be entered as name servers.
   </para>
 
   <figure id="quick-systemrole">
@@ -99,20 +99,20 @@
 	In the subsequent course of the installation, the fully qualified host name, under which the
 	computer should be accessible in the network, is entered for a &ucsMaster;. A local
 	name should also be used as the domain name in this case, e.g.,
-	<emphasis>firma.local</emphasis>. (If the system is to used as a mail server, for example,
+	<emphasis>company.local</emphasis>. (If the system is used as a mail server, for example,
 	the mail domains can be used independently of the domain names).
 	For example, to commission the <emphasis>mailserver</emphasis> host system in the 
-	<emphasis>firma.local</emphasis> DNS domain,
-	<emphasis>mailserver.firma.local</emphasis> should be entered as the fully qualified host
+	<emphasis>company.local</emphasis> DNS domain,
+	<emphasis>mailserver.company.local</emphasis> should be entered as the fully qualified host
 	name.
 	The <guimenu>LDAP base</guimenu> is suggested based on the fully qualified host name and
-	only need to be adjusted in exceptional cases. The root password must be at least eight
-	characters long and is also set as the password for the <emphasis>Administrator</emphasis>
-	user during the installation of the first UCS server (&ucsMaster;).
+	only needs to be adjusted in exceptional cases. The root password must be at least eight
+	characters long and is also set as the password for the user <emphasis>Administrator</emphasis>
+	during the installation of the first UCS server (&ucsMaster;).
   </para>
 
   <para>
-	An autopartitioning feature can be used during the installation which creates an LVM partion on the first
+	An autopartitioning feature can be used during the installation which creates an LVM volume group on the first
 	hard drive by default.
   </para>
 
@@ -135,7 +135,7 @@
 	  The installed UCS system is configured via the web-based &ucsUMC; (reachable at https://server_ip or
 	  http://server_ip, HTTPS is recommended) which can be reached under <guimenu>System and domain settings</guimenu>.
 	  The login to the &ucsUMC; is performed as the  <emphasis>Administrator</emphasis> with the
-	  password specified for the <emphasis>root</emphasis> user during the installation.
+	  password specified for the user <emphasis>root</emphasis> during the installation.
 	</para>
 
 	<para>
@@ -144,8 +144,8 @@
 	  system role selected. The LDAP directory is a central component of the UCS domain. This is
 	  where domain information such as the users, groups and computer accounts is saved.
 	  Depending on the settings, this information is replicated to the other domain controllers
-	  in the domain either completely or selectively. The UMC modules which edit the LDAP
-	  directory directly can also be controlled using a command line interface: the &ucsUDM;
+	  in the domain either completely or selectively. The UMC modules, which edit the LDAP
+	  directory directly, can also be controlled using a command line interface: the &ucsUDM;
 	  <biblioref linkend="ucs-udm"/>.
 	</para>
 
