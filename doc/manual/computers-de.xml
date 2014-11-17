@@ -791,7 +791,6 @@
 				<section id="computers:networkcomplex:uvmm">
 					<title>Voraussetzungen bei Verwendung von &ucsUVMM;</title>
 					<para>
-						Falls <acronym>KVM</acronym> installiert ist, sind die Einstellungen für die Netzwerkkonfiguration grundsätzlich verfügbar.
 						Bei der Installation der Applikation <emphasis>KVM Virtualisierungsserver</emphasis> wird die Netzwerkkonfiguration verändert:
 						Es wird eine Bridge mit dem Namen <filename class="device">br0</filename> angelegt, in die die Netzwerkkarte mit dem Namen <filename class="device">eth0</filename> eingehängt wird.
 						Zusätzliche Netzwerkkarten werden nicht adaptiert.
