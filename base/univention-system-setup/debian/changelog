@@ -1,3 +1,10 @@
+univention-system-setup (8.1.61-2) unstable; urgency=low
+
+  * Bug #36770: Temporarily save old IP address when changing it on network
+    page
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 18 Nov 2014 00:11:16 +0100
+
 univention-system-setup (8.1.61-1) unstable; urgency=medium
 
   * Bug #36549: cleanup svg graphics that caused problems in IE

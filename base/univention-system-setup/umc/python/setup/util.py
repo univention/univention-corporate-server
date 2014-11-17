@@ -235,14 +235,17 @@ def run_networkscrips():
 	f.flush()
 
 	# make sure that UMC servers and apache will not be restartet
-	subprocess.call( CMD_DISABLE_EXEC, stdout = f, stderr = f )
+	subprocess.call(CMD_DISABLE_EXEC, stdout=f, stderr=f)
 
 	try:
-		for scriptpath in sorted( os.listdir( os.path.join( PATH_SETUP_SCRIPTS, '30_net' ) ) ):
-			scriptpath = os.path.join(PATH_SETUP_SCRIPTS, '30_net', scriptpath)
+		netpath = os.path.join(PATH_SETUP_SCRIPTS, '30_net')
+		for scriptpath in sorted(os.listdir(netpath)):
+			scriptpath = os.path.join(netpath, scriptpath)
 			# launch script
 			MODULE.info('Running script %s\n' % scriptpath)
-			p = subprocess.Popen( scriptpath, stdout = f, stderr = subprocess.STDOUT )
+			# appliance-mode for temporary saving the old ip address
+			# network-only for not restarting all those services (time consuming!)
+			p = subprocess.Popen([scriptpath, '--network-only', '--appliance-mode'], stdout = f, stderr = subprocess.STDOUT)
 			p.wait()
 
 	finally:
