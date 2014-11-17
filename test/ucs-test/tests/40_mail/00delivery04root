@@ -1,0 +1,70 @@
+#!/usr/share/ucs-test/runner python
+## desc: Basic group email delivery 
+## tags: apttest
+## exposure: dangerous
+## packages: [univention-mail-server, univention-mail-postfix]
+## bugs: [23527]
+
+#################
+#  Infomartion  #
+#################
+# This script creates a user and then sends an eMail to root.
+# It then set the user as reciever (alias [mail/alias/root]) for the eMail to root,
+# then sends an eMail to root, and resets "mail/alias/root".
+# Finally it checks that both eMail have arrived and deletes the user.
+#################
+
+from essential.mail import mail_delivered, send_mail
+from univention.config_registry import handler_set
+import subprocess
+import time
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+def reload_postfix():
+	print '** Reloading aliases and postfix'
+	for cmd in (['newaliases'], ['postfix', 'reload']):
+		pop = subprocess.Popen(cmd , stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+	time.sleep(5)
+
+def main():
+	TIMEOUT = 40
+	with udm_test.UCSTestUDM() as udm:
+		try:
+			with ucr_test.UCSTestConfigRegistry() as ucr:
+				token1 = str(time.time())
+				domain = ucr.get('domainname')
+				host = ucr.get('hostname')
+				handler_set(['mail/alias/root=systemmail@%s.%s' % (host, domain)])
+				reload_postfix()
+
+				user = uts.random_name()
+				mail = '%s@%s' % (user, domain)
+				userdn, username = udm.create_user(
+						username = user,
+						set={
+							'mailHomeServer': '%s.%s' % (host, domain),
+							'mailPrimaryAddress': mail,
+							}
+						)
+				send_mail(recipients='root', msg=token1, idstring=token1, subject='Normal')
+				time.sleep(5)
+				handler_set(['mail/alias/root=%s' % mail])
+				reload_postfix()
+
+				token2 = str(time.time())
+				send_mail(recipients='root', msg=token2, idstring=token2, subject='Alias')
+
+				time.sleep(TIMEOUT)
+				if not mail_delivered(token1, check_root=True):
+					utils.fail('Mail sent to %s was not delivered' % 'root')
+				if not mail_delivered(token2, mail_address=mail, check_root=False):
+					utils.fail('Mail sent to %s was not delivered' % mail)
+		finally:
+			reload_postfix()
+
+
+if __name__ == '__main__':
+	main()

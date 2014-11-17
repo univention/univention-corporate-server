@@ -1,0 +1,74 @@
+#!/usr/share/ucs-test/runner python
+## desc: Basic email delivery 
+## tags: apttest
+## exposure: dangerous
+## packages: [univention-config, univention-directory-manager-tools]
+## bugs: [23527]
+
+#################
+#  Information  #
+#################
+# This script tests the capability of the mail system to deliver mails to
+# recpients with special mail addresses and to local users, thereby also
+# testing the basic function of the mail system.
+# For every mail address one user is created and deleted at the end of
+# this script.
+#################
+
+from essential.mail import mail_delivered, send_mail
+import time
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+def main():
+	TIMEOUT = 90
+	ucr = ucr_test.UCSTestConfigRegistry()
+	ucr.load()
+	with udm_test.UCSTestUDM() as udm:
+		mailsToTest = []
+		users = []
+		domain = ucr.get('domainname')
+		mails = [
+			'BIG%ssmall@%s' % (uts.random_string(), domain),
+			'%s.t.o.c@%s' % (uts.random_string(), domain),
+			'un_sc%s@%s'  % (uts.random_string(), domain),
+			'1fo%so2bar3@%s'  % (uts.random_string(), domain)
+			]
+		for mail in mails:
+			userdn, username = udm.create_user(
+					set={
+						'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+						'mailPrimaryAddress': mail,
+						}
+					)
+			users.append(username)
+			mailsToTest.extend([mail, mail.upper(), mail.lower()])
+		print mailsToTest
+
+		test_cases1 = []
+		for mail in mailsToTest:
+			token = str(time.time())
+			test_cases1.append((token, mail))
+			print '\nTOKEN = %s\n' % token
+			send_mail(recipients=mail, msg=token, idstring=token, subject='Test')
+
+		test_cases2 = []
+		for user in users:
+			token = str(time.time())
+			test_cases2.append((token, user))
+			print '\nTOKEN = %s\n' % token
+			send_mail(recipients=user, msg=token, subject='Test')
+
+		time.sleep(TIMEOUT)
+		for token, mail in test_cases1:
+			if not mail_delivered(token, mail_address=mail):
+				utils.fail('Mail sent to %s was not delivered' % mail)
+		for token, user in test_cases2:
+			if not mail_delivered(token, user=user):
+				utils.fail('Mail sent with token = %r, to %s was not delivered' % (token, user))
+
+
+if __name__ == '__main__':
+	main()

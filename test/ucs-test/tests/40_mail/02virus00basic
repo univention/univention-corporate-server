@@ -1,0 +1,59 @@
+#!/usr/share/ucs-test/runner python
+## desc: Basic spam email delivery 
+## tags: apttest
+## exposure: dangerous
+## packages: [univention-config, univention-directory-manager-tools]
+## bugs: [23527]
+
+#################
+#  Infomartion  #
+#################
+# This script tests the eMail virus detection by sending viruses
+# to a newly created user both with spam detection on and off,
+# and then checking that the viruses were filtered and that the
+# user and root was warned.
+#################
+
+from essential.mail import deactivate_spam_detection, reload_amavis_postfix
+from essential.mail import send_mail, virus_delivered
+import time
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+def main():
+	TIMEOUT = 60
+	with udm_test.UCSTestUDM() as udm:
+		try:
+			with ucr_test.UCSTestConfigRegistry() as ucr:
+				domain = ucr.get('domainname')
+				mail =  'virus%stest@%s' % (uts.random_string(), domain)
+				userdn, username = udm.create_user(
+						set={
+							'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+							'mailPrimaryAddress': mail,
+							}
+						)
+
+				token1 = str(time.time())
+				send_mail(recipients=mail, msg=token1, virus=True, subject='Filter on')
+
+				deactivate_spam_detection()
+				reload_amavis_postfix()
+
+				token2 = str(time.time())
+				send_mail(recipients=mail, msg=token2, virus=True, subject='Filter off')
+
+				time.sleep(TIMEOUT)
+
+				for token in [token1, token2]:
+					if not virus_delivered(token, mail_address=mail):
+						utils.fail('Virus sent with token = %r was not delivered correctly with a warning' % token)
+
+		finally:
+			reload_amavis_postfix()
+
+
+if __name__ == '__main__':
+	main()
