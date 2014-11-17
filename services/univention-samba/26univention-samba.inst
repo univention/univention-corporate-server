@@ -270,6 +270,8 @@ else
 	JOIN_CMD="net rpc join"
 fi
 
+# net ads join doesn't use the default smb.conf. Make it explicit.
+export SMB_CONF_PATH=/etc/samba/smb.conf
 
 if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	if [ $JS_LAST_EXECUTED_VERSION -le 5 ]; then
