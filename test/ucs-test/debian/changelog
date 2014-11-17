@@ -1,3 +1,10 @@
+ucs-test (5.0.50-1) unstable; urgency=low
+
+  * univention/testing/data.py: add start time, end time and duration when
+    logging every test output (Bug #36714).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 17 Nov 2014 15:10:57 +0100
+
 ucs-test (5.0.49-1) unstable; urgency=low
 
   * Bug #27653: add new scripts and modify udm.py

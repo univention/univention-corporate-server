@@ -10,7 +10,8 @@ from univention.testing.utils import UCSVersion
 from operator import and_, or_
 from subprocess import call, Popen, PIPE
 import apt
-from time import time
+from time import time, localtime, strftime
+from datetime import timedelta
 import logging
 import signal
 import select
@@ -39,6 +40,7 @@ ILLEGAL_XML_UNICHR = (
 RE_ILLEGAL_XML = re.compile(u'[%s]' % u''.join((u'%s-%s' % \
 		(unichr(low), unichr(high)) for (low, high) in ILLEGAL_XML_UNICHR
 		if low < sys.maxunicode)))
+
 
 class TestEnvironment(object):
 	"""Test environment for running test cases.
@@ -644,9 +646,13 @@ class TestCase(object):
 					(cmd, self.exe, dirname))
 			try:
 				print >> result.environment.log, \
-						'*** BEGIN *** %r ***' % (cmd,)
+						'\n*** BEGIN *** %r ***' % (cmd,)
 				print >> result.environment.log, \
 						'*** %s *** %s ***' % (self.uid, self.description,)
+				print >> result.environment.log, \
+						'*** START TIME: %s ***' % (
+						strftime('%d-%m-%Y %H:%M:%S', localtime()))
+
 				result.environment.log.flush()
 				if result.environment.interactive:
 					proc = Popen(cmd, executable=self.exe.filename,
@@ -667,6 +673,13 @@ class TestCase(object):
 				TestCase._run_tee(proc, result, to_stdout, to_stderr)
 
 				result.result = proc.wait()
+
+				print >> result.environment.log, \
+						'*** END TIME: %s ***' % (
+						strftime('%d-%m-%Y %H:%M:%S', localtime()))
+				print >> result.environment.log, \
+						'*** TEST DURATION (H:MM:SS): %s ***' % timedelta(0,
+						int(time() - time_start))
 				print >> result.environment.log, '*** END *** %d ***' % \
 						(result.result,)
 				result.environment.log.flush()
