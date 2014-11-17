@@ -1,0 +1,19 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Perform a 'net rpc testjoin'"
+## exposure: safe
+## bugs: [35590]
+## packages:
+##  - winbind
+##  - univention-samba
+
+. "$TESTLIBPATH/base.sh" || exit 137
+RETVAL=100
+
+echo "Initiating a net rpc testjoin"
+win_dom="$(ucr get windows/domain)"
+
+if [ ! "$(net rpc testjoin)" = "Join to '$win_dom' is OK" ] ; then
+   fail_fast 110 "The testjoin did not report that join to $win_dom is OK"
+fi
+
+exit $RETVAL
