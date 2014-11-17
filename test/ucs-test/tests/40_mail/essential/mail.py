@@ -89,9 +89,28 @@ class ImapMail(Mail):
 	def send_and_receive(self, s, id, message):
 		self.send_message(s, '%s %s' % (id, message))
 		response = self.get_reply(s)
-		print response,
+		while True:
+			response2 =self.get_reply(s)
+			if response2:
+				response += response2
+			else:
+				break
+		print response
 		r = self.get_return_code(id, response)
 		return r
+
+	def send_and_receive_quota(self, s, id, message):
+		self.send_message(s, '%s %s' % (id, message))
+		response = self.get_reply(s)
+		while True:
+			response2 =self.get_reply(s)
+			if response2:
+				response += response2
+			else:
+				break
+		print response
+		r = self.get_return_code(id, response)
+		return (r, response)
 
 	def login_OK(self, username, password):
 		hostname = socket.gethostname()
@@ -104,6 +123,23 @@ class ImapMail(Mail):
 		s.close();
 		return (retval == 'OK')
 
+	def get_imap_quota(self, username, password):
+
+		hostname = socket.gethostname()
+		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		s.settimeout(10)
+		s.connect((hostname, 143))
+		r = self.send_and_receive_quota(s, 'a001', 'login %s %s\r\n' % (username, password))
+		retval = self.send_and_receive_quota(s, 'a002', 'GETQUOTAROOT INBOX\r\n')# user/%s\r\n' % username)
+		regex = '\(STORAGE 0 (.*)\)'
+		m = re.search (regex, retval[1])
+		try:
+				quota = int(m.group (1))
+		except:
+				quota = -1
+		self.send_and_receive_quota(s, 'a003', 'logout\r\n')
+		s.close()
+		return quota, retval[0]
 
 class PopMail(Mail):
 
@@ -134,61 +170,6 @@ class PopMail(Mail):
 		s.close()
 		return (retval == '+OK')
 
-def get_imap_quota(username, password):
-
-	def get_return_code(id, response):
-		regex = '%s(.*?) .*$' % id
-		m = re.search(regex, response)
-		try:
-			return m.group(1)
-		except:
-			return 'BAD'
-
-	def get_reply(s):
-		try:
-			buff_size=1024
-			reply = ''
-			while(True):
-				part = s.recv(buff_size)
-				reply += part
-				if len(part) < buff_size:
-					break
-			return reply
-		except:
-			return reply
-
-	def send_message(s, message):
-		print message,
-		s.send(message)
-
-	def send_and_receive(s, id, message):
-		send_message(s, '%s %s' % (id, message))
-		response = get_reply(s)
-		print response
-		r = get_return_code(id, response)
-		return (r, response)
-
-	hostname = socket.gethostname()
-	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	s.settimeout(10)
-	s.connect((hostname, 143))
-	send_and_receive(s, 'a001', 'login %s %s\r\n' % (username, password))
-	retval = send_and_receive(s, 'a002', 'GETQUOTAROOT user/%s\r\n' % username)
-
-	regex = '\(STORAGE 0 (.*)\)'
-	m = re.search(regex, retval[1])
-	try:
-		print int(m.group(1))
-	except:
-		print -1
-
-	send_and_receive(s, 'a003', 'logout\r\n')
-	s.close()
-
-	if (retval[0] == 'OK'):
-		return 0
-	else:
-		return 1
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -199,7 +180,7 @@ def random_email():
 def make_token():
 	return str(time.time())
 
-def get_dir_files(dir_path, recursive=False):
+def get_dir_files(dir_path, recursive=True):
 	result = []
 	for f in glob.glob('%s/*' % dir_path):
 		if os.path.isfile(f):
@@ -208,25 +189,23 @@ def get_dir_files(dir_path, recursive=False):
 			result.extend(get_dir_files(f))
 	return result
 
-def get_files_contain(token, _dir):
-	result = []
+def get_file_contain(token, _dir):
 	for _file in get_dir_files(_dir, recursive=True):
 		with open(_file) as fi:
 			if token in fi.read():
-				result.append(os.path.basename(_file))
-	return result
+				return os.path.basename(_file)
 
 def virus_delivered(token, mail_address):
 	virus_dir = '/var/lib/amavis/virusmails'
-	virus_files = get_files_contain(token, virus_dir)
-
-	found = 0
 	mail_dir = [get_cyrus_maildir(mail_address), '/var/mail']
+	virusarchive = get_file_contain(token, virus_dir)
+	found = 0
 	for _dir in mail_dir:
-		for _file in get_dir_files(_dir, recursive=True):
-			with open(_file) as fi:
-				if token in fi.read():
-					found += 1
+		if virusarchive:
+			for _file in get_dir_files(_dir):
+				with open(_file) as fi:
+					if virusarchive in fi.read():
+						found += 1
 	return found == 2
 
 def deactivate_spam_detection():

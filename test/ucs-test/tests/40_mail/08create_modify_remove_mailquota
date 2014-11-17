@@ -1,0 +1,122 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create modify remove mailquota
+## tags: apttest
+## exposure: dangerous
+## packages: [univention-config, univention-directory-manager-tools]
+## bugs: [23527]
+
+
+from essential.mail import mail_delivered, send_mail, ImapMail
+import time
+import subprocess
+from univention.config_registry import handler_set
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+def enable_mailquota_set_interval(interval):
+	handler_set(['mail/cyrus/imap/quota=yes','mail/cyrus/imap/quotainterval=%s' % interval])
+
+def restart_cyrus_saslauthd():
+	for cmd in [['/etc/init.d/cyrus-imapd', 'restart'], ['/etc/init.d/saslauthd', 'restart']]:
+		subprocess.call(cmd)
+
+
+def main():
+	with udm_test.UCSTestUDM() as udm:
+		try:
+			with ucr_test.UCSTestConfigRegistry() as ucr:
+				domain = ucr.get('domainname')
+				user = uts.random_name()
+				mail = '%s@%s' % (user, domain)
+				UDM_policies_mailquota_name = uts.random_name()
+				mailquota_dn = udm.create_object(
+						modulename='policies/mailquota',
+						name=UDM_policies_mailquota_name,
+						MailQuota=17,
+						position='cn=mail,cn=policies,%s' % ucr.get('ldap/base')
+						)
+				policy='cn=%s,cn=mail,cn=policies,%s' % (UDM_policies_mailquota_name, ucr.get('ldap/base'))
+				userdn, username = udm.create_user(
+						username=user,
+						passowrd='univention',
+						policy_reference=policy,
+						set={
+
+							'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+							'mailPrimaryAddress': mail,
+							},
+						options=['mail', 'person', 'posix', 'samba', 'groupware']
+						)
+				
+
+				enable_mailquota_set_interval(1)
+				restart_cyrus_saslauthd()
+
+				imap = ImapMail()
+				imap.login_OK(mail, 'univention')
+				quota, response = imap.get_imap_quota(username, 'univention')
+				if not response == 'OK':
+					utils.fail('Fail get imap quota')
+				if not quota == 17000:
+					utils.fail('Worng quota set = %r' % quota)
+				imap.login_OK(username, 'univention')
+				quota, response = imap.get_imap_quota(username, 'univention')
+				if not response == 'OK':
+					utils.fail('Fail get imap quota')
+				if not quota == 17000:
+					utils.fail('Worng quota set = %r' % quota)
+
+				udm.modify_object(
+						modulename='policies/mailquota',
+						dn=mailquota_dn,
+						MailQuota=42,
+						)
+
+				restart_cyrus_saslauthd()
+				imap.login_OK(username, 'univention')
+				time.sleep(60)
+				restart_cyrus_saslauthd()
+				imap.login_OK(username, 'univention')
+
+				quota, response = imap.get_imap_quota(username, 'univention')
+				if not response == 'OK':
+					utils.fail('Fail get imap quota')
+				if not quota == 42000:
+					utils.fail('Worng quota set = %r, correct =42000' % quota)
+				imap.login_OK(username, 'univention')
+				quota, response = imap.get_imap_quota(username, 'univention')
+				if not response == 'OK':
+					utils.fail('Fail get imap quota')
+				if not quota == 42000:
+					utils.fail('Worng quota set = %r, correct =42000' % quota)
+
+				udm.modify_object(
+						modulename='users/user',
+						dn=userdn,
+						policy_dereference=policy
+						)
+				udm.remove_object(
+						modulename='policies/mailquota',
+						dn=mailquota_dn
+						)
+				restart_cyrus_saslauthd()
+				imap.login_OK(username, 'univention')
+				time.sleep(60)
+				restart_cyrus_saslauthd()
+				imap.login_OK(username, 'univention')
+				quota, response = imap.get_imap_quota(username, 'univention')
+				if not response == 'OK':
+					utils.fail('Fail get imap quota')
+				if not quota == -1:
+					utils.fail('Worng quota set = %r, although it should not be set' % quota)
+				imap.login_OK(username, 'univention')
+				quota, response = imap.get_imap_quota(username, 'univention')
+				if not quota == -1:
+					utils.fail('Worng quota set = %r, although it should not be set' % quota)
+		finally:
+			restart_cyrus_saslauthd()
+
+if __name__ == '__main__':
+	main()
