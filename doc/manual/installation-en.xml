@@ -3,135 +3,58 @@
 <section id="installation:einfuehrung">
 <title>Introduction</title>
 	<para>
-		Several types of installation are supported:
-	</para>
-	<itemizedlist>
-		<listitem>
-			<para>
-			&ucsUCS; can be <emphasis>installed from a DVD</emphasis>.
-			The installation of the first UCS system of a domain usually occurs from DVD. There is either a text-based
-			installation or an automated installation via a pre-configured installation
-			profile:
-			</para>
-			<itemizedlist>
-				<listitem>
-					<simpara>
-					With the interactive installation, all system settings are to be entered
-					by the user.
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					With profile-based installation, system settings are stored in text
-					files, the so-called installation profiles. Further information on
-					the format of the installation profile files can be found in the
-					extended installation documentation <biblioref linkend="ext-doc-inst"/>. Installation profiles can be
-					integrated locally via floppy disks or USB storage media, or they can be
-					stored beforehand on the installation medium in the form of an adjusted
-					installation DVD.
-					</simpara>
-				</listitem>
-			</itemizedlist>
-		</listitem>
-		<listitem>
-			<simpara>
-			The Univention Net Installer can be used to perform <emphasis>network based
-			installation</emphasis> automatically via PXE. The settings are also taken from
-			installation profiles. This is documented in the extended
-			installation documentation <biblioref linkend="ext-doc-inst"/>
-			</simpara>
-		</listitem>
-	</itemizedlist>
-
-	<para>
-	  There are installation DVDs available for the computer architectures
-	  <emphasis>amd64</emphasis> (64-bit) and <emphasis>i386</emphasis> (32-bit). Almost all server
-	  systems sold in recent years are 64-bit systems. The use of the 64-bit version is recommended.
+The following documentation describes how to install Univention Corporate Server (UCS). The UCS system is installed from the DVD. The installation is interactive and prompts all the necessary system settings in a graphic interface.
 	</para>
 
 	<para>
-	  In addition to the standard installation DVD there is also a medium with support for the
-	  Unified Extensible Firmware Interface standard (UEFI) available for amd64. Some systems only
-	  support booting via UEFI; this UEFI DVD must be used on these systems.
+	  The installation DVD is available for the computer architecture <emphasis>amd64</emphasis> (64-bit). In addition to support for the widely distributed BIOS systems, the DVD also includes support for the Unified Extensible Firmware Interface (UEFI) standard. The EUFI support on the DVD is also capable of starting systems with activated SecureBoot and installing UCS there.
 	</para>
 
 	<para>
-	Aside from installation on hardware or in a virtualization solution, UCS can also be installed in the
-	Amazon EC2 cloud using an AMI image. Further information can be found
-	in <xref linkend="installation:amazonec2"/>.
+Following installation on hardware or in a virtualization solution, UCS can also be installed on the Amazon EC2 cloud using an AMI image. Further information can be found in <xref linkend="installation:amazonec2"/>.
 	</para>
 	<section id="installation:bedienung-des-installers">
-	<title>Operating the Installer</title>
+	<title>Operation of the installer</title>
 		<para>
-			The input screens of the Univention Installer are operated via keyboard exclusively:
+			The installer's input masks can be operated with the mouse or via the keyboard.
 		</para>
 		<itemizedlist>
 			<listitem>
 				<simpara>
-				The <keycap function="tab">TAB</keycap> key moves the cursor to the next entry field.
+					The <keycap function="tab">Tab</keycap> key can be used to proceed to the next field.
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
-					Use <keycombo action="simul"><keycap function="shift">Shift</keycap><keycap function="tab">TAB</keycap></keycombo> to go back to the previous entry field.
+					The key combination of <keycombo action="simul"><keycap function="shift">Shift</keycap><keycap function="tab">Tab</keycap></keycombo> can be used to return to the previous field.
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
-				The <keycap function="enter">RETURN</keycap> key is used for transmitting values entered into an
-				entry field, and for confirming buttons.
+				The <keycap function="enter">Enter</keycap> key is used to assign values to the input field and confirm buttons.
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
-				Within a list or table, the <emphasis>arrow keys</emphasis> can be used for navigating
-				between entries.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				For further information on a module, the <keycap>F1</keycap> function key may be
-				pressed for calling a help dialog.
-				</simpara>
-			</listitem>
-
-			<listitem> 
-			  <simpara>
-				Umlauts are not accepted in input fields.
-			  </simpara>
-			</listitem>
-
-			<listitem>
-				<simpara>
-				The next module is called via the <keycap>F12</keycap> function key, while
-				the <keycap>F11</keycap> function key lets you go back to modules already processed. As
-				an alternative to <keycap>F11</keycap> and <keycap>F12</keycap>, the buttons can also be used.
+				Within a list or table, the <emphasis>arrow keys</emphasis> can be used for navigating between entries.
 				</simpara>
 			</listitem>
 		</itemizedlist>
-		<para>
-			Further assignments of function keys are given below in the descriptions of
-			the individual modules.
-		</para>
 		<note>
 			<para>
-			In the left-hand window on the installation surface, a list of all the modules
-			is displayed. The active module is highlighted in colour. This list cannot be
-			used for navigation, it is only for orientation purposes.
+			  The <guimenu>Cancel</guimenu> button can be used to cancel the current configuration step. An earlier configuration step can then be selected again in the menu that is subsequently shown. Under certain circumstances, subsequent configuration steps cannot be directly selected if the earlier steps have not been completed.
 			</para>
 		</note>
 	</section>
 </section>
-
-<section id="installation:Selecting_the_installation_mode">
+<section id="installation:Auswahl_des_Installationsmodus">
 <title>Selecting the installation mode</title>
 	<para>
-		After booting the system from the installation medium, the following boot prompt is
-		displayed:
+		After booting the system from the installation medium, the following boot prompt is displayed:
 	</para>
-	<figure id="installation-grub">
-	<title>Selecting the boot prompt</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/grub.png"/>
+	<figure id="installation-isolinux">
+	<title>Installation boot prompt</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/installer-isolinux.png"/>
 	</figure>
 	<para>
 		Now you can choose between several installation procedures.
@@ -139,788 +62,387 @@
 	<itemizedlist>
 		<listitem>
 			<simpara>
-			<emphasis>Univention Installer</emphasis> starts the interactive installation routine
-			on the basis of the Linux kernel in version 3.2. During installation, the installer requests a number of parameters such as
-			network settings, hard drive partitions, system role, and the selection of
-			software components for the computer to be installed. Then the installation is
-			performed.
+			<guimenu>Installation of Univention Corporate Server</guimenu> starts the interactive, graphic installation based on Version 3.16 of the Linux kernel. During the installation, the system requests a number of parameters such as the network settings, hard drive partitions, domain settings and selection of software components for the UCS system to be installed and then performs the installation and the configuration.
 			</simpara>
 		</listitem>
 		<listitem>
 			<para>
-			<emphasis>Additional options</emphasis> allows the selection of advanced options for the
-			installation process. First a request appears, requesting the Linux kernel to be
-			installed.
-			Different installation variants can then be selected:
+			  The <emphasis>Advanced options</emphasis> submenu offers advanced options for the installation process for selection:
 			</para>
 			<itemizedlist>
 				<listitem>
 					<simpara>
-					<guimenu>Univention Installer (normal mode)</guimenu> performs an interactive
-					standard installation.
-					</simpara>
+					<guimenu>Install in text mode</guimenu> performs an interactive standard installation in text mode. This is practical on systems which display problems with the graphic version of the installer.	</simpara>
 				</listitem>
 				<listitem>
-					<simpara>
-					<guimenu>Univention Installer expert partitioning (e.g. for crypto or software raid setups)</guimenu> also
-					starts a interactive installation like the previous mode. In this version the
-					partitioning, however, is not performed with the support of the installer, but
-					effected manually. To do this a number of programs including
-					<command>cfdisk</command>, <command>mdadm</command> and <command>mkfs.ext3</command> are
-					available. This mode can, for example, be used to set up a software RAID or an
-					encrypted hard drive partition. After the partitioning, the interactive
-					installation is continued. This is documented in the extended
-					installation documentation <biblioref linkend="ext-doc-inst"/>
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					<guimenu>Univention Installer MBR-Mode (deprecated)</guimenu> starts an
-					interactive installation, during which the partitioning module writes a master
-					boot record instead of following the GPT standard. Further details can be found
-					in <xref linkend="installation:Hard_drive_partitioning"/>.
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					<guimenu>Univention Installer Profile</guimenu> starts the profile-based
-					installation. With
-					profile-based installation, a pre-arranged installation profile is selected
-					from which the system reads the installation parameters. The installation
-					profile to be used is taken from a directory on the installation
-					medium. Profile-based installation is described in the extended
-					installation documentation <biblioref linkend="ext-doc-inst"/>
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					<guimenu>Univention Installer Profile Floppy</guimenu> also starts a profile-based
-					installation. The installation profile is taken from a floppy disk.
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					<guimenu>Univention Installer Profile USB</guimenu> also starts a profile-based
-					installation. The installation profile is taken from a USB storage medium.
-					</simpara>
+				  <simpara>
+					<guimenu>Boot from first hard drive</guimenu> boots the operating system installed on the first hard drive instead of the UCS installation.
+				  </simpara>
 				</listitem>
 			</itemizedlist>
 		</listitem>
-		<listitem>
-			<simpara>
-			<guimenu>Boot from first hard drive partition</guimenu> does not start the UCS
-			installation, but the operating system installed on the first hard drive
-			instead.
-			</simpara>
-		</listitem>
 	</itemizedlist>
 	<para>
-		Now, the kernel is loaded from the installation medium and status messages
-		appear on the screen. The installation itself is divided into modules. Each
-		module contains settings which are connected as regards content. There are
-		modules for network configuration or for selecting the software to be
-		installed, among others.
+		Once one of the installation option is selected, the kernel is loaded from the installation medium. The actual installation is divided into separate modules, which can be loaded from the installation medium subsequently if necessary.
+		There are modules for network configuration or for selecting the software to be installed, among others.
 	</para>
 </section>
-
-<section id="installation:Selecting_the_system_language">
-<title>Selecting the system language</title>
+<section id="installation:Auswahl_der_Installationssprache">
+<title>Selecting the installation language</title>
 	<para>
-		Here you can select the system language you wish to use. The selection has an
-		influence on the use of language-specific characters and permits the
-		representation of program output in the selected languages.
+		In the first step, you can select the system language you wish to use. The selection has an influence on the use of language-specific characters and permits the representation of program output in the selected languages in the installed UCS system.
 	</para>
 	<figure id="installation-languageeselection">
-	<title>Selecting the system language</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/language.png"/>
+	<title>Selecting the installation language</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/installer-language.png"/>
 	</figure>
 	<para>
-		If Univention Installer has already been translated into the selected language
-		(currently German and English), the language is also used during the
-		installation; otherwise the installation is performed in English.
-	</para>
-	<para>
-		The language which is to be used during the installation process, is selected
-		here. Available languages are German and English.
+		If Univention Installer has been translated into the selected language (currently German and English), the selected language is also used during the installation, otherwise the installation is performed in English.
 	</para>
 </section>
-<section id="installation:Selecting_the_installation_medium">
-
-<title>Selecting the installation medium</title>
+<section id="installation:Auswahl_des_Standorts">
+<title>Selecting the location</title>
 	<para>
-		The installation medium is detected. The installation medium to be used is
-		specified via the <keycap>F2</keycap> function key. This parameter can be used in case
-		problems with one or several CD drives occur, or if the net-based installation
-		is to be executed from a different installation server.
-		The <keycap>F4</keycap> function key is used for rescanning the list of installation media.
+	  Once the system language has been selected, a small list of locations is displayed based on the selected language. Select a suitable location from the list. The selected location is used to set the time zone or the correct language variant, for example. Should none of the displayed locations be appropriate, a more extensive list can be displayed using the menu entry <guimenu>More</guimenu>.
 	</para>
-	<para>
-		If the installation medium is detected automatically, the Univention Installer
-		changes to the next module autonomously. The function key <keycap>F11</keycap> can be used to
-		return this module at a later point.
-	</para>
-</section>
-
-<section id="installation:Selecting_the_time_zone">
-<title>Selecting the time zone</title>
-	<para>
-		Here the desired time zone can be selected. Depending on the selected system
-		language, a selection of appropriate time zones is displayed. All the
-		available time zones can be listed by activating the option <guimenu>Show
-		all available time zones</guimenu>.
-	</para>
-	<figure id="installation-timezoneselection">
-	<title>Time zone selection</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/timezone_en.png"/>
+	<figure id="installation-location">
+	<title>Selecting the keyboard layout</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/installer-location_de.png"/>
 	</figure>
 </section>
-
-<section id="installation:Selecting_the_keyboard_layout">
+<section id="installation:Auswahl_der_Tastaturbelegung">
 <title>Selecting the keyboard layout</title>
 	<para>
-		Here the keyboard layout of the keyboard in use is selected.
-		Depending on the selected system language, a selection of appropriate keyboard
-		layouts is displayed. All the available keyboard versions can be listed by
-		activating the option <guimenu>Show all available keyboard layouts</guimenu>.
+	  The keyboard layout can be selected independently of the system language. The language selected here should be compatible with the keyboard used as it may otherwise cause operating problems.
 	</para>
-	<figure id="installation-keyboardeselection">
-	<title>Keyboard layout selection</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/keyboard_en.png"/>
+	<figure id="installation-keyboardselection">
+	<title>Selecting the keyboard layout</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/installer-keyboardselection_de.png"/>
 	</figure>
 </section>
-
-<section id="installation:Selecting_the_system_role">
-<title>Selecting the system role</title>
-	<figure id="installation-systemroleselection">
-	<title>System role selection</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/systemrole_en.png"/>
-	</figure>
-	<para>
-		The system role for the system to be installed is selected here. The
-		installation dialogue also includes a short description.
-	</para>
-	<para>
-		The following are available to choose from:
-	</para>
-	<orderedlist>
-		<listitem><simpara>Master domain controller</simpara></listitem>
-		<listitem><simpara>Backup domain controller</simpara></listitem>
-		<listitem><simpara>Slave domain controller</simpara></listitem>
-		<listitem><simpara>Member server</simpara></listitem>
-		<listitem><simpara>Base system</simpara></listitem>
-	</orderedlist>
-	<para>
-		The first system to be installed on a UCS domain should always be a
-		&ucsMaster;. The installation of further UCS systems
-		requires a domain controller master to be running during installation. The
-		sole exception to this is the <emphasis>base system</emphasis> system role, which
-		can be installed without a connection to a &ucsMaster;.
-	</para>
-	<para>
-		The properties of the system roles are described in <xref linkend="systemrollen"/>.
-		The installation dialogue also displays a short description.
-	</para>
-</section>
-
-<section id="installation:Domain_settings">
-<title>Domain settings</title>
-	<para>
-		The fully qualified domain name (FQDN) of the &ucsUCS; system under which the
-		computer should be accessible in the network should be entered
-		under <guimenu>Fully qualified domain name</guimenu> (e.g., mail.example.com).
-	</para>
-	<para>
-		Host names must consist of a combination of the following characters:
-		letters a-z in lower case, numerals 0-9 and hyphens. A host
-		name has to begin with a letter and must not be longer than 13 characters.
-	</para>
-	<para>
-	  Once the domain name is set, the fields <guimenu>LDAP base</guimenu> and <guimenu>Windows
-	  domain</guimenu> will be pre-filled with derived values (the entry fields are only displayed
-	  during installation of the &ucsMaster;). If the LDAP basis is to be changed, the name
-	  conventions for DNs have to be observed. The basis DN has to begin with
-	  <emphasis>cn=</emphasis>,<emphasis>dc=</emphasis>, <emphasis>c=</emphasis>,
-	  <emphasis>l=</emphasis>, or <emphasis>o=</emphasis>. Basis DNs violating these conventions
-	  will be rejected.
-	</para>
-	<para>
-		The name of the Windows domain may have a maximum length of 13
-		characters; it may consists of letters, numerals and hyphens exclusively.
-	</para>
-	<para>
-		<guimenu>Root password</guimenu> is the password for the user <emphasis>root</emphasis>.
-		If a &ucsMaster; is installed, this password is also entered for the user
-		<emphasis>Administrator</emphasis>. In subsequent operation, the
-		passwords of the users <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> can be managed
-		independently. The password is entered for a second time in the final entry
-		field. This double input is necessary to avoid spelling errors since the
-		entered characters are not displayed on the screen.
-	</para>
-	<para>
-		For security reasons, the root passwords needs to consist of at least eight characters.
-	</para>
-	<figure id="installation-domainsettings">
-	<title>Domain settings</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/domainsettings_en.png"/>
-	</figure>
-</section>
-
-<section id="installation:Hard_drive_partitioning">
-<title>Hard drive partitioning</title>
-<para>
-  This menu is used for partitioning the existing hard drives.
-</para>
-
-<para>
-  As of UCS 3.1, the Univention Installer performs a partitioning in accordance with the GUID
-  Partition Table standard (GPT). Earlier UCS versions used a partitioning in accordance with the
-  Master Boot Record standard, whereby the partitioning was stored in the first data block of a
-  storage device.
-</para>
-
-<para>
-  The GPT is downwardly compatible with the MBR; the first data block is still stored in MBR format. This
-  block is designated as the <emphasis>Protective MBR</emphasis> and contains a single protective
-  partition. It prevents, for example, that older partitioning tools damage the GPT data or data
-  within the partitions.
-</para>
-
-<para>
-  It is possible to create up to 127 partitions, which can take on sizes in the zettabyte range.
-</para>
-
-<para>
-  The <emphasis>Unified Extensible Firmware Interface (UEFI)</emphasis> replaces PC-BIOS on newer
-  systems. As of Version 3.1, UCS supports a boot via UEFI in the 64 bit version (amd64).
-</para>
-
-<para>
-  On systems with a BIOS - in other words systems without UEFI - a BIOS boot partition is necessary
-  when using GPT, in which the Grub boot loader can store the majority of its functions.
-</para>
-
-<para>
-  If the Univention Installer detects an existing master boot record on the system to be installed,
-  this can be ignored (the disk is then not taken into account in the GPT partitioning) or the MBR
-  partitions converted into GPT partitions.
-</para>
-
-<para>
-  As of UCS 3.1, the Univention Installer optimises the layout of the data blocks on the disk
-  in order to achieve optimal performance on hard drives with 4k sectors or solid-state disks. If an
-  existing master boot record is converted into a GPT, the data blocks are not reorganised and as
-  such they are possibly not optimally organised. Consequently, preference should be given to a new
-  partitioning.
-</para>
-
-<para>
-  The conversion to a GPT can affect other installed operating systems, especially if they or their
-  bootloaders do not support GPT (e.g., Windows 2000, the 32-bit versions of Window XP or older
-  Linux versions).
-</para>
-
-<para>
-  At the first opening of this menu, the installer offers automatic
-  partitioning of the system. On confirmation, the installer displays a
-  partitioning proposal in which the first hard drive is repartitioned
-  and formatted using the Logical Volume Manager (LVM).
-</para>
-
-<caution>
+<section id="installation:Netzwerkkonfiguration">
+  <title>Network configuration</title>
   <para>
-	Even though only the first hard drive is integrated in the LVM, the data on all the present hard
-	drives is lost in this step! Should the proposed partitioning be undesirable, it can be rejected
-	by pressing the <keycap>F5</keycap> function key.
+	Initially, the Univention Installer attempts to configure the network interfaces automatically.
+	Firstly, an attempt is made to determine an IPv6 address via the stateless address autoconfiguration (SLAAC).
+	If this is not successful, the Univention Installer attempts to request an IPv4 address via the Dynamic Host Configuration
+	Protocol (DHCP). If this is successful, the manual network configuration of Univention Installer is skipped.
   </para>
-</caution>
-
-<para>
-  If the auto-partitioning is used, the following partitions are created on non-UEFI systems:
-  <itemizedlist>
-	<listitem><simpara>an 8 MB BIOS boot partition</simpara></listitem>
-	<listitem><simpara>a 512 MB /boot partition</simpara></listitem>
-	<listitem><simpara>a swap partition with twice the current RAM (min. 512 MB; max. 10 GB)</simpara></listitem>
-	<listitem><simpara>a / partition with the remaining disk space</simpara></listitem>
-  </itemizedlist>
-</para>
-
-<para>
-  The following partitions are created on UEFI systems by the auto-partitioning:
-  <itemizedlist>
-	<listitem><simpara>a 256 MB EFI system partition</simpara></listitem>
-	<listitem><simpara>a 512 MB /boot partition</simpara></listitem>
-	<listitem><simpara>a swap partition with twice the current RAM (min. 512 MB; max. 10 GB)</simpara></listitem>
-	<listitem><simpara>a / partition with the disk drive space</simpara></listitem>
-  </itemizedlist>
-</para>
-
-<para>
-  The properties of the detected drives, existing partitions, and LVM media
-  (name, range of a partition, type, formatting, directory in which the
-  partition is to be mounted, and size in MB) are displayed in a table.
-</para>
-<para>
-  For creating a new partition, select the <guimenu>free</guimenu> entry of the desired
-  drive and select the <mousebutton>F2-Create</mousebutton> button. In the next
-  dialogue, enter the directory where the partition is to be mounted (mount
-  point), the size of the partition to be created in megabytes, the file system
-  which is to be created on the partition, and the type of partition (BIOS boot, EFI, data, swap,
-  LVM). If a partition
-  is to be created for the swap area, it is not necessary to give the name of a
-  directory where the partition is to be mounted. If all settings are made,
-  click the <mousebutton>F6-Write partitions</mousebutton> button to confirm and store the settings.
-</para>
-<figure id="installation-partition">
-  <title>Partitioning hard drives</title>
-  <graphic scalefit="1" width="80%" fileref="illustrations/autopartitioning_en.png"/>
-</figure>
-<para>
-  If you wish to include a partition from a former installation, or to correct
-  settings made during the creation of a new partition, just select the
-  appropriate partition and <mousebutton>F3-Edit</mousebutton>. The
-  following input can be made: the directory for the partition to be included
-  in, the file system, and whether the partition is to be formatted. If the
-  <mousebutton>Format</mousebutton> option is selected, all data in this partition will be deleted. The
-  size of the partition cannot be changed later.
-</para>
-<para>
-  New partitions, or partitions created during previous installation procedures,
-  can be deleted by selecting the partition and then selecting <mousebutton>F4-Delete</mousebutton>.
-</para>
-<para>
-  It is also possible to use the Logical Volume Manager during manual
-  partitioning of hard drives. The installer will only support a single LVM media group (volume
-  group) which is automatically named <emphasis>vg_ucs</emphasis>. The possibility of creating
-  physical and logical LVM media (volumes) will only be available if LVM support
-  was activated manually beforehand, or if a physical LVM medium is already
-  existing on one of the connected hard drives.
-</para>
-<para>
-  When deleting LVM media (physical volumes), it should be noted that the
-  installer will support this procedure only if all existing logical LVM media
-  were deleted via the installer beforehand. Otherwise the contents of the
-  physical LVM medium have to be manually moved to other physical LVM media via
-  the <command>pvmove</command> command, and the physical LVM medium then removed from the LVM
-  media group and deleted, via the <command>vgreduce</command>
-  and <command>pvremove</command> commands.
-</para>
-<para>
-  The settings for a new partition are not immediately activated. The
-  <mousebutton>F5-Reset changes</mousebutton> button (<keycap>F5</keycap> function key) can be used for restoring the
-  previous settings. Only if the <mousebutton>F6-Write partitions</mousebutton> button (<keycap>F6</keycap> function key) is
-  used, will the new partition table be written to the hard drive.
-</para>
-
-<para>
-  If there is more than one hard drive available, a dialogue is shown in which it is possible to
-  select in which partition the bootloader should be installed. USB sticks are not shown. In order
-  to facilitate the selection of the bootloader, the manufacturer of the storage devices is shown
-  ('0x1af4: Unknown' is shown when using the virtio driver in KVM).
-</para>
-</section>
-
-<section id="installation:Network_configuration">
-<title>Network configuration</title>
-	<para>
-		The upper section of the network configuration displays all the networks cards
-		available in the system as a single tab (only network interfaces with
-		the <emphasis>ethX</emphasis> scheme are displayed). <keycap>F2</keycap> and <keycap>F3</keycap>
-		can be used to switch between the network cards.
-	</para>
-	<para>
-		If no network card is detected, the installer creates a virtual network card
-		that can be used to continue the installation.
-	</para>
-	<para>
-		Network interfaces can be configured for IPv4 and/or IPv6. IPv4 addresses have
-		a 32-bit length and are generally written in four blocks in decimal form
-		(e.g., 192.168.0.10), whereas IPv6 addresses are four times as long and
-		typically written in hexadecimal form (e.g.,
-		2001:0DB8:FE29:DE27:0000:0000:0000:0001).
-	</para>
-	<figure id="installation-networksettings">
-	<title>Network interface configuration</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/network_en.png"/>
-	</figure>
-
-	  <para>
-		If the <guimenu>DHCP</guimenu> option is enabled, an attempt is made to retrieve the IP
-		address and configure it automatically via the Dynamic Host Configuration Protocol (DHCP)
-		(and also the name server and/or standard gateway depending on the DHCP configuration). If
-		the DHCP request fails, a random address from the link-local network 169.254.0.0/16 is used.
-	  </para>
-
-	  <para>
-		If the <guimenu>DHCP</guimenu> option is not chosen, the IP address to be bound to the
-		network card must be entered. In addition to the <guimenu>IP address</guimenu> the
-		<guimenu>netmask</guimenu> must also be entered.
-	  </para>
-
-		<para>
-			The IPv6 address can be configured in two ways:
-		</para>
-		<itemizedlist>
-			<listitem>
-				<simpara>
-				Stateless address autoconfiguration (SLAAC) is employed in
-				the <guimenu>Dynamic</guimenu> configuration, i.e. the IP address is automatically
-				generated from the router advertisements sent from the IPv6 routers.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				Alternatively, the address can also be configured statically by entering
-				the <guimenu>IPv6 address</guimenu> and <guimenu>IPv6 prefix</guimenu>. In contrast to
-				DHCP, in SLAAC there is no assignment of additional data such as the DNS
-				server to be used. There is an additional protocol for this (DHCPv6), which,
-				however, is not employed in the dynamic assignment.
-				</simpara>
-			</listitem>
-		</itemizedlist>
-		<para>
-			Further network settings can be performed under <emphasis>Global Network
-			Settings</emphasis>.
-		</para>
-		<para>
-			The IP addresses for the standard gateways in the subnetwork can be
-			entered under <guimenu>IPv4 Gateway</guimenu> and <guimenu>IPv6 Gateway</guimenu>.
-			For IPv6, a gateway must be entered in the static configuration; for the
-			dynamic configuration, it is optional, but recommended.
-			A gateway configured here has preference over router advertisements, which might
-			otherwise be able to change the route.
-		</para>
-		<para>
-			There are two types of DNS servers:
-		</para>
-		<itemizedlist>
-			<listitem>
-				<simpara>
-				An <guimenu>external DNS server</guimenu> is employed for the resolution of
-				host names and addresses outside of the UCS domain,
-				e.g., <emphasis>univention.de</emphasis>. This is typically a name server operated by the
-				Internet provider.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				A <guimenu>domain DNS server</guimenu> is a local name server in the UCS
-				domain. This name server only administrates host names and IP addresses
-				belonging to the UCS domain. If an address is not found in the local
-				inventory, an external DNS server is automatically requested. The DNS data are
-				saved in the LDAP directory service, i.e., all domain DNS servers deliver
-				identical data.
-				</simpara>
-			</listitem>
-		</itemizedlist>
-		<para>
-			During the installation of a &ucsMaster; only an <guimenu>external
-			DNS server</guimenu> is requested, as a domain DNS server is always set up in the scope
-			of the installation. This can then be used by the other systems in the
-			domain. The <mousebutton>More</mousebutton> button offers the possibility of entering
-			multiple name servers.
-		</para>
-		<para>
-			A local DNS server is also set up on the &ucsBackup; and &ucsSlave; system
-			roles respectively. Here, you can configure which server should be primarily
-			used for the name resolution by entering the <guimenu>Domain DNS Server</guimenu>.
-			During installation, the domain DNS server of an already installed system must
-			be specified here, e.g., that of the &ucsMaster;.
-		</para>
-		<para>
-			Only a domain DNS server can be entered on &ucsMember;s and base systems.
-		</para>
-		<para>
-			If there are no network cards apart from a virtual network card, no name
-			server should be specified in order to avoid longer waiting times during the
-			installation. If the name server cannot be reached during the installation,
-			this should not be entered in the Univention installer, but instead only
-			configured once the installation has been completed. This avoids longer
-			timeouts during the installation.
-		</para>
-		<para>
-		  Should the UCS system have no direct access to the internet, the URL of a proxy server can
-		  be entered in the <guimenu>HTTP Proxy</guimenu> field. This proxy is used to download
-		  additional updates from the Univention repository server (see <xref
-		  linkend="installation:overview"/>). The format of the URL is <uri>http://&lt;IP address of
-		  the proxy server&gt;:&lt;Port&gt;</uri>.
-		</para>
-		<para>
-			Since, depending on the installed components, the resolution of host names
-			during the installation procedure cannot be ensured at any time, the IP
-			address of the proxy server should be entered.
-		</para>
-	</section>
-
-
-<section id="installer_join">
-<title>Join options</title>
-	<para>
-		This input mask does not appear with the &ucsMaster; and base system system roles.
-	</para>
-	<para>
-		As standard the UCS domain is joined at the end of the
-		installation. Deactivating the <guimenu>Start join at the end of installation</guimenu> option can be
-		used to suppress the joining procedure. The system must then join the domain using
-		the <command>univention-join</command> command.
-	</para>
-	<para>
-		If a UCS server system was entered in the corresponding settings mask as a
-		name server, the name of the &ucsMaster; is located via a DNS
-		request. In all other cases, the <guimenu>Search Domain controller Master in DNS</guimenu>
-		option must be deactivated and the fully qualified domain name of the
-		domain controller master entered in the <guimenu>Hostname of Domain
-		controller Master</guimenu> field.
-	</para>
-	<para>
-		A user account which is authorised to add systems to the UCS domain is called
-		a <guimenu>join account</guimenu>. As standard this is the <emphasis>Administrator</emphasis> user,
-		which was created during installation of the domain controller master. The
-		corresponding password of the user account must be given under
-		<guimenu>Password</guimenu>.
-	</para>
-	<para>
-		Further information on joining a domain can be found in <xref linkend="linux-domaenenbeitritt"/>.
-	</para>
-</section>
-<section id="installation::softwareselection">
-<title>Selecting software components</title>
-	<para>
-		The functional scope of a server system can be determined by the selection of
-		different components. The following components are available:
-	</para>
-	<figure id="installation-softwareselection">
-	<title>Software selection</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/software_en.png"/>
-	</figure>
+  <figure id="installation-netcfg-dhcp">
+	<title>Automatic network configuration</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/installer-netcfg-dhcp_de.png"/>
+  </figure>
+  <para>
+	If there is no DHCP server present in the local network or static configuration of the network interface is required, the <guimenu>Cancel</guimenu> button can be selected. The Univention Installer then offers to repeat the automatic configuration or to configure the interface manually.
+  </para>
+  <para>
+	<note>
+	  At least one network interface is required for the installation of &ucsUCS;. If no supported network card is detected, Univention Installer opens a list of supported drivers for selection.
+	</note>
+  </para>
+  <figure id="installation-netcfg-static">
+	<title>Selecting the manual network configuration </title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/installer-netcfg-static_de.png"/>
+  </figure>
+  <para>
+	In manual configuration it is possible to specify either a static IPv4 or an IPv6 address for the system. IPv4 addresses have a 32-bit length and are generally written in four blocks in decimal form (e.g., 192.168.0.10), whereas IPv6 addresses are four times as long and typically written in hexadecimal form (e.g., 2001:0DFE:FE29:DE27:0000:0000:0000:0000).
+	In addition to entering a static IP address, values for network masks, gateways and DNS servers are also requested.
+  </para>
+  <figure id="installation-netcfg-ip">
+	<title>Specifying an IP address</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/installer-netcfg-ip_de.png"/>
+  </figure>
+  <para>
+	The following points must be taken into consideration when specifying a DNS server manually. They depend on the intended subsequent use of the UCS system.
 	<itemizedlist>
-			<listitem>
-				<simpara>
-				<emphasis>Desktop environment</emphasis> - A desktop environment equipped for access
-				to the web-based interfaces and comprising the X.org interface, the GDM login
-				manager, KDE and the Firefox browser.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				<emphasis>Active Directory-compatible domaincontroller (Samba 4)</emphasis> - Allows
-				the use of UCS as an Active Directory domain controller. It is not possible
-				to install <emphasis>Samba 3</emphasis> and <emphasis>Samba 4</emphasis> on one system in
-				parallel.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				<emphasis>NT-compatible domaincontroller (Samba 3)</emphasis> - Allows the use of UCS
-				as a PDC, BDC and file server in a Windows domain based on NT domain
-				technology
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				<emphasis>Active Directory Connector</emphasis> - Solution for bidirectional
-				synchronisation between the UCS directory service and Active Directory.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				<emphasis>Management server for KVM or Xen</emphasis> - UCS Virtual Machine Manager
-				for the management of virtual machines
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				<emphasis>Xen virtualization server</emphasis> - Virtualization of systems via the hypervisor Xen
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				<emphasis>KVM virtualization server</emphasis> - Virtualization of systems using KVM
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				<emphasis>Mail server (Postfix, Cyrus IMAPd</emphasis> - Mail server environment based
-				on Postfix for sending mail via SMTP and Cyrus for the provision of mail boxes
-				via IMAP and POP3. Virus checks via the scanner ClamAV and spam detection via
-				Spamassassin are integrated.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				<emphasis>DHCP server</emphasis> - Service for the dynamic IP management for IPv4 networks.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				<emphasis>Print server (CUPS)</emphasis> - Print server based on the software
-				CUPS. PPD drivers for most printer models are supplied.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				<emphasis>Web proxy server (Squid)</emphasis> - Service for central caching and policy
-				management of allowed websites
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				<emphasis>Bacula (Backup)</emphasis> - Backup solution with client/server architecture
-				for the backup and restoration of data.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				<emphasis>Network monitoring (Nagios)</emphasis> - System and network monitoring using
-				the software Nagios.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				<emphasis>Software installation monitor</emphasis> - Central collection of installed software packages on UCS systems.
-				</simpara>
-			</listitem>
-		</itemizedlist>
+	  <listitem>
+		<simpara>
+		  When installing the first UCS system in a new UCS domain, the IP address of the local router (if it provides the DNS service) or the DNS server of the Internet provider should be entered.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  When installing every additional UCS system, the IP address of a UCS domain controller system must be specified as the DNS server. This is essential for the automatic detection of the domain controller master to function. In case of doubt, the IP address of the UCS domain controller master system should be entered.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  If the UCS system is to join a Windows Active Directory domain during the installation, the IP address of an Active Directory domain controller system should be specified as the DNS server. This is essential for the automatic detection of the Windows Active Directory domain controller to function.
+		</simpara>
+	  </listitem>
+	</itemizedlist>
+  </para>
+</section>
+<section id="installation:rootpassword">
+  <title>Setting up the root password</title>
+  <para>
+	Setting of a password for the <emphasis>root</emphasis> user is required for logging on to the installed system.
+If a &ucsMaster; is installed, this password is also employed for the
+<emphasis>administrator</emphasis> user.
+In later operation, the passwords for the <emphasis>root</emphasis> and <emphasis>administrator</emphasis>
+users can be managed independently of each other. The password must be re-entered in the second entry field. This double input is necessary to minimise spelling errors, since the characters entered are not shown on the screen.
+  </para>
+  <para>
+	The root password must contain at least eight characters for security reasons.
+  </para>
+  <figure id="installation-password">
+	<title>Setting the root password</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/installer-password_de.png"/>
+  </figure>
+</section>
+
+
+<section id="installation:Partitionieren_der_Festplatten">
+  <title>Partitioning the hard drive</title>
+  <para>
+	The Univention Installer supports the partitioning of hard drives and the creation of different file systems (e.g., EXT4, XFS and FAT32). In addition, it is also possible to set up mechanisms such as the logical volume manager (LVM), RAID or partitions encrypted with LUKS.
+  </para>
+  <para>
+	As of UCS 4.0, the Univention Installer selects a suitable partition model (MBR or GPT) automatically depending on the size of the selected hard drive. On systems with the <emphasis>Unified Extensible Firmware Interface (UEFI)</emphasis>, the GUID Partition Table (GPT) is used automatically.
+  </para>
+  <para>
+	The Univention Installer offers guided installations to make installation simpler. In the guided installation, certain standard schemes with respect to the partitioning and formatting are applied to the selected hard drive. In addition, it is also possible to perform partitioning manually.
+  </para>
+  <para>
+	There are three schemes available for selection for guided partitioning:
+	<itemizedlist>
+	  <listitem>
+		<simpara>
+		  <guimenu>Guided - Use entire hard drive</guimenu>: In this scheme, an individual partition is created for each file system. The size of the partitions is restricted to
+the size of the respective hard drive.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  <guimenu>Guided - Use entire drive and set up LVM</guimenu>: If the second scheme is selected, an LVM volume group is set up on the selected hard drive first. A separate logical volume is then created within the volume group for each file system. In this scheme, the size of the logical volume is restricted by the size of the volume group, which can also be subsequently enlarged with additional hard drives. In case of doubt, select this partitioning scheme.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  <guimenu>Guided - Use entire drive with encrypted LVM</guimenu>: This version is the same as the previous version, with the addition that the LVM volume group is also encrypted. Consequently, the password for the encrypted volume group has to be entered every time the system is started up.
+		</simpara>
+	  </listitem>
+	</itemizedlist>
+	<caution>
+	  In all three versions, the data already on the selected hard drive are deleted during the partitioning!
+	</caution>
+	<figure id="installation-partman-selectguided">
+	  <title>Selecting the partitioning scheme</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/installer-partman-selectguided_de.png"/>
+	</figure>
+  </para>
+  <para>
+	The next step is to select a hard drive from the list of those detected to which the partitioning version should be applied.
+  </para>
+  <para>
+	There are three subversions for each partitioning version, which differ in the number of file systems created:
+	<itemizedlist>
+	  <listitem>
+		<simpara>
+		  <guimenu>All data on one partition</guimenu>: In this version, just one partition or logical volume is created and the / file system saved there.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  <guimenu>Separate /home partition</guimenu>: In addition to a file system for /, an additional file system is also created for /home.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  <guimenu>Separate /home, /usr, /var and /tmp partition</guimenu>: In addition to a file system for /,  an additional file system is also created each for /home, /usr, /var and /tmp.
+		</simpara>
+	  </listitem>
+	</itemizedlist>
+  </para>
+
+  <para>
+	Before every active change to the hard drive, the change is displayed again in an additional dialogue and must be confirmed explicitly.
+	<figure id="installation-partman-writelvm">
+	  <title>Confirmation of changes to the hard drive</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/installer-partman-writelvm_de.png"/>
+	</figure>
+  </para>
+  <para>
+	Once the partitioning is complete, the UCS basic system and additional software is installed automatically. This can take some time depending on the speed of the hardware used. The system is then made ready to boot via the installation of the GRUB bootloader.
+  </para>
+</section>
+<section id="installation:Domäneneinstellungen">
+  <title>Domain settings</title>
+  <para>
+	The final configuration of the UCS system is started by selecting a domain mode.
+	There are four modes available, which influence the following configuration steps:
+	<itemizedlist>
+	  <listitem>
+		<simpara>
+		  In the first mode, <guimenu>Create a new UCS domain</guimenu>, the first system in a new UCS domain is configured: a UCS system with the <emphasis>&ucsMaster;</emphasis> system role. In the following configuration steps, the information required for setting up a new directory service, authentication service and DNS server are requested. A UCS domain can comprise one single or several UCS systems. Additional UCS systems can be added at a later point in time using the <guimenu>Join an existing UCS domain</guimenu> mode.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  <guimenu>Join an existing  Active Directory domain</guimenu>: This mode, in which UCS is operated as a member of an Active Directory domain, is suitable for expanding an Active Directory domain with applications available on the UCS platform. Apps installed on the UCS platform are then available for the users of the Active Directory domain to use. Authentication is still against the native Active Directory domain controller. On selection of this mode, all the relevant information for the joining of the Active Directory domain is requested and the UCS system configured correspondingly.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  Selecting the <guimenu>Join an existing UCS domain</guimenu> mode allows the UCS system to be configured to join an existing UCS domain. What UCS system role it is to take on in the domain is queried at a later stage.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  If the <guimenu>Do not use any domain</guimenu> mode is selected, there are no web-based administration functions and no domain functions at all available on the system. The UCS system can also not subsequently become a member of an existing UCS or AD domain or found a new UCS domain at a later point in time. In addition, the Univention App Center is not available in this mode. For this reason, this mode is only used rarely and in special scenarios (e.g, as a firewall system).
+		</simpara>
+	  </listitem>
+	</itemizedlist>
+	<figure id="installation-domainrole">
+	  <title>Domain settings</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/installer-domainrole_de.png"/>
+	</figure>
+  </para>
+  <section id="installation:Domäneneinstellungen:NeueDomäne">
+	<title>"Create a new UCS domain" mode</title>
 	<para>
-		Some software components cannot be configured and are preinstalled on all system
-		roles, e.g., &ucsUMC;, an SSH server and different
-		commando line tools and editors.
+	  Once the <guimenu>Create a new UCS domain</guimenu> mode has been selected, an <emphasis>organisation name</emphasis>, an <emphasis>e-mail address</emphasis>, a <emphasis>fully qualified domain name</emphasis> and an <emphasis>LDAP base</emphasis> are requested in the following two steps.
 	</para>
 	<para>
-		UCS is based on Debian which is the most frequently used Linux distribution in
-		the professional sector. The advantages of Debian - and thus also of UCS -
-		include a very flexible and well thought-out package management.
-		The installation of further software packages is described in detail in
-		<xref linkend="computers::softwaremanagement::installsoftware"/>.
+	  Specification of an organisation name is optional and it is used in the second step to generate a domain name and the LDAP base automatically.
 	</para>
+	<para>
+	  If a valid e-mail address is specified, this is used to generate a personalised license key, which is required for the use of the Univention App Center. The license key is generated automatically and sent to the specified e-mail address immediately. The license can then be imported via the &ucsUMC; license dialogue.
+	</para>
+	<para>
+	  The name of the UCS system to be configured and the name of the DNS domain are determined from the fully qualified domain name (host name including domain name) entered here.
+	  A suggestion is generated automatically from the organisation name entered in the previous step. It is recommended not to use a publicly available DNS domain, as this can result in problems during the name resolution.
+	</para>
+	<para>
+	  A LDAP base needs to be specified for the initialisation of the directory service. A suggestion is also derived here automatically from the fully qualified domain name. This value can usually be adopted without any changes.
+	</para>
+	<figure id="installation-newdomain">
+	  <title>Specification of host name and LDAP base</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/installer-hostname_de.png"/>
+	</figure>
+  </section>
+  <section id="installation:Domäneneinstellungen:ADMember">
+	<title>"Join an existing Active Directory domain" mode</title>
+	<para>
+	  If the DNS server of an Active Directory domain was specified during the network configuration, the name of the Active Directory domain controller is suggested automatically in the <guimenu>Active Directory account information</guimenu> step. If the suggestion is incorrect, the name of another Active Directory domain controller or another Active Directory domain can be entered here.
+	</para>
+	<para>
+	  The specification of an Active Directory account and the corresponding password is required for joining the Active Directory domain. The user account must possess the right to join new systems in the Active Directory domain.
+	</para>
+	<para>
+	  In addition, a host name must be entered for the UCS system to be configured. The suggested host name can be adopted or a new host name entered.  The domain name of the computer is derived automatically from the domain DNS server. In some scenarios (e.g., a public mail server) it can prove necessary to use a specific fully qualified domain name. The UCS system will join the Active Directory domain with the host name specified here. Once set up, the domain name <emphasis>cannot</emphasis> be changed again once the configuration is completed.
+	</para>
+	<figure id="installation-adjoin">
+	  <title>Information on the Active Directory domain join</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/installer-adjoin_de.png"/>
+	</figure>
+  </section>
+  <section id="installation:Domäneneinstellungen:EinerUCSDomäneBeitreten">
+	<title>"Join an existing UCS domain domain" mode</title>
+	<para>
+	  In a UCS domain, systems can be installed in different <emphasis>system roles</emphasis>. The first system in a UCS domain is always installed with the &ucsMaster; system role. Additional UCS systems can join the domain at a later point in time and can be configured with one of the following system roles.
+	  <itemizedlist>
+		<listitem>
+		  <simpara>
+			<guimenu>&ucsBackup;</guimenu>
+		  </simpara>
+		  <simpara>
+			The &ucsBackup; is the fallback system for the DC master. If the latter should fail, a DC backup can adopt the role of the DC master permanently. All the domain data and SSL security certificates are saved as read-only copies on servers with the &ucsBackup; role.
+		  </simpara>
+		</listitem>
+		<listitem>
+		  <simpara>
+			<guimenu>&ucsSlave;</guimenu>
+		  </simpara>
+		  <simpara>
+			All the domain data are saved as read-only copies on servers with the &ucsSlave; role. In contrast to the &ucsBackup;, however, not all security certificates are saved. As accesses to the services running on a &ucsSlave; are performed against the local LDAP directory service, DC slave systems are ideal for site servers and the distribution of high-load services.
+		  </simpara>
+		</listitem>
+		<listitem>
+		  <simpara>
+			<guimenu>&ucsMember;</guimenu>
+		  </simpara>
+		  <simpara>
+			&ucsMember; are server systems without a local LDAP directory service. Access to domain data here is performed via other servers in the domain. They are therefore suitable for services which do not require a local database for authentication, for example, such as print and file servers.
+		  </simpara>
+		</listitem>
+	  </itemizedlist>
+	</para>
+	<para>
+	  Once the UCS system role has been selected, further information on the domain join is requested. If the domain join is not intended to occur automatically during the installation, the <guimenu>Start domain join at end of installation</guimenu> option can be disabled.
+	  If the correct DNS server was selected during the network configuration, Univention Installer can determine the name of the &ucsMaster; system automatically. If the decision is taken to join another UCS domain, the <guimenu>Find &ucsMaster; in DNS</guimenu> 
+option can be disabled and the fully qualified domain name of the preferred &ucsMaster; entered in the input field below. The access information required for the domain join must be entered in the <guimenu>Administrator account information</guimenu> and  <guimenu>Administrator password</guimenu> input fields. 
+	</para>
+	<figure id="installation-adjoin">
+	  <title>Information on the domain join</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/installer-join_de.png"/>
+	</figure>
+	<para>
+	  In addition, a host name must be entered for the UCS system to be configured in the next step. The suggested host name can be adopted or a new host name entered. The domain name of the computer is derived automatically from the domain DNS server. In some scenarios (e.g., a public mail server) it can prove necessary to use a certain fully qualified domain name. Once set up, the domain name <emphasis>cannot</emphasis> be changed again once the configuration is completed.
+	</para>
+  </section>
+  <section id="installation:Domäneneinstellungen:KeineDomäne">
+	<title>"Do not use any domain" mode</title>
+	<para>
+	  The configuration of the <guimenu>Do not use any domain</guimenu> mode requires the specification of a host name for the UCS system to be configured. The suggested host name can be adopted
+or a new host name entered. The domain name of the computer is derived automatically from the domain DNS server. In some scenarios (e.g., a public mail server) it can prove necessary to use a specific fully qualified domain name.
+	</para>
+  </section>
+</section>
+
+<section id="installation:software">
+  <title>Selecting UCS software components</title>
+  <para>
+	The <guimenu>software configuration</guimenu> step offers the possibility of installing additional UCS components during the installation. The applications are also available after the installation via the Univention App Center in the <guimenu>UCS components</guimenu> category and can be installed and uninstalled there subsequently.
+  </para>
+	<figure id="installation-softwareselection">
+	  <title>Selecting UCS software components</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/installer-softwareselection_de.png"/>
+	</figure>
 </section>
 
 <section id="installation:overview">
-<title>Installation overview</title>
-	<para>
-		This dialogue shows the major settings that were made. If all the settings are
-		correct, the installation of the software can be initiated by clicking the
-		<mousebutton>Start installation</mousebutton> button, see Illustration <xref linkend="installation-overview"/>.
-	</para>
-	<figure id="installation-overview">
+  <title>Confirming the settings</title>
+  <para>
+	This dialogue shows the major settings that were made.
+	If all the settings are correct, the <guimenu>Configure system</guimenu> button can be used to start the configuration of the UCS system,
+see <xref linkend="installation-overview"/>.
+  </para>
+  <para>
+	The <guimenu>Update system after installation</guimenu> option allows the automatic installation of available Errata updates. In addition, all patch level updates and Errata updates available are installed on a &ucsMaster;. On all other system roles, all the patch level updates are set up to the installation status of the &ucsMaster;. (You need to log on to the &ucsMaster; to check the installation status. This is done using the login data specified in the join options).
+  </para>
+  <figure id="installation-overview">
 	<title>Installation overview</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/overview_en.png"/>
-	</figure>
-	<para>
-		The <guimenu>Update system after installation</guimenu> option allows
-		the automatic installation of available errata updates.In addition, all patch
-		level updates available are installed on a &ucsMaster;. On
-		all other system roles, all the patch level updates are setup to the
-		installation status of the &ucsMaster;. (Univention Installer needs to login
-		the &ucsMaster; to check the installation status. This is done using the
-		credentials specified in the join options).
-	</para>
-	<figure id="installation-progress">
-	<title>Installation progress</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/installationprogress_en.png"/>
-	</figure>
-	<para>
-		During the installation, a progress bar displays the progress of the
-		installation. The lower section of the screen provides links to further
-		sources of information and documentation.
-	</para>
-	<para>
-		The system will mount the partitions to the directory tree, and install first the basic system and
-		afterwards, if necessary, additional components and packages.
-	</para>
-	<para>
-		With the prerequisite that the <guimenu>Start join at the end of installation</guimenu>
-		option has not been deactivated, all computers apart from
-		base systems and domain controller masters try to join the UCS domain, read
-		configuration settings for their services out of the LDAP directory and
-		configure their services accordingly. <xref linkend="linux-domaenenbeitritt"/> explains
-		how the domain join can be initiated anew if the attempt to join
-		during the installation failed.
-	</para>
-	<para>
-		The installation protocol of the Univention installer is stored as
-		<filename>installer.log.gz</filename> and the protocol of the package installation as <filename>installation.log.gz</filename>
-		in the <filename>/var/log/univention/</filename> directory.
-	</para>
-	<para>
-		For completing the installation, the Enter key is to be pressed for restarting
-		the system. The DVD should be ejected during restart to avoid the system
-		booting from the installation DVD again. Alternatively, the computer's BIOS
-		can be configured in such a way that the hard drive is the first boot drive,
-		and the CD drive the second.
-	</para>
-	<para>
-		The system will then boot from the hard drive. Following the boot procedure,
-		the <emphasis>root</emphasis> user and <emphasis>Administrator</emphasis> can log on with the password
-		specified during the installation via the command line and
-		the <emphasis>Administrator</emphasis> user can do the same via the GDM log on screen.
-	</para>
-	<para>
-		If the computer was installed as a &ucsMaster;, the
-		licence can now be entered (see <xref linkend="central:license"/>).
-	</para>
-	<para>
-		For managing the system, there is, among others, the web
-		front-end &ucsUMC; (see <xref linkend="central:general"/>) available.
-	</para>
-</section>
-
-<section id="installation:Troubleshooting_for_installation_problems">
-<title>Troubleshooting for installation problems</title>
-	<para>
-		Information on possible installation problems can be found in the Univention
-		Support database at <ulink url="http://sdb.univention.de"/> in the
-		subitem <emphasis>Installation</emphasis>.
-	</para>
-</section>
-
-<section id="installation:amazonec2">
-<title>Installation in the Amazon EC2 cloud</title>
-	<para>
-		Univention provides an Amazon Machine Image (AMI) for the Amazon EC2
-		cloud for UCS. This generic image for all UCS system roles is used to derive an individual instance
-		which can be configured via &ucsUMC; (domain name, software
-		selection, etc.).
-	</para>
-	<para>
-		The process for setting up a UCS instance based on Amazon EC2 is
-		documented in the Univention Wiki <biblioref linkend="ec2-quickstart"/>.
-	</para>
-</section>
-
-<section id="installation:vmware">
-  <title>Installation in VMware</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/installer-overview_de.png"/>
+  </figure>
   <para>
-	If UCS is installed as a guest in Vmware, the <guimenu>Linux &ar; Other Linux system</guimenu>
-	option must be selected as the <guimenu>Guest operating system</guimenu> (UCS is based on Debian but
-	the templates for Debian cannot be used).
+	During the configuration, a progress bar displays the progress of the installation.
   </para>
-
   <para>
-	The Linux kernel used in UCS includes all the support drivers necessary for operation in VMware
-	(vmw_balloon, vmw_pvsci, vmw_vmci, vmwgfx and vmxnet3).
+	The installation protocol of the Univention Installer is saved in the following files:
+	<itemizedlist>
+	  <listitem>
+		<simpara>
+		  <filename>/var/log/installer/syslog</filename>
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  <filename>/var/log/univention/management-console-module-setup.log</filename>
+		</simpara>
+	  </listitem>
+	</itemizedlist>
   </para>
-
   <para>
-	The open source version of the VMware Tools (Open VM Tools) is delivered with UCS. The tools can
-	be installed using the <package>open-vm-tools</package> package (they are not required
-	but do, for example, allow synchronisation of the time on the virtualization server with the
-	guest system).
+	Completion of the configuration must be confirmed with the <guimenu>Finish</guimenu> button.
+	The UCS system is then prepared for the first booting procedure and restarted.
   </para>
-</section>
-
-
-<section id="installation:xenserver">
-<title>Installation in Citrix XenServer</title>
-	<para>
-		The process for setting up a UCS instance in Citrix XenServer is
-		documented in the Univention Wiki <biblioref linkend="xenserver-installation"/>.
-	</para>
-
-	<para>
-	  To display the Grub menu correctly, an adaption to the XenServer configuration is necessary;
-	  this is described in <xref linkend="release-notes"/>.
-	</para>
-
-
+  <para>
+	The system will then boot from the hard drive. Following the boot procedure, the <emphasis>root</emphasis> and <emphasis>administrator</emphasis> users can log on via the web frontend &ucsUMC; (see <xref linkend="central:general"/>), which can be reached under the IP address set during the installation or the host name.
+</para>
+  <para>
+	If the computer was installed as the first system in the UCS domain (&ucsMaster;0), the license can now be imported (see <xref linkend="central:license"/>).
+  </para>
 </section>
 </chapter>
+
