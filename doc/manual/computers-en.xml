@@ -1950,7 +1950,19 @@ auth/sshd/restrict: yes
 				save open files.
 			</para>
 		</section>
-		<section id="computers:modules:diagnostic"><title>System diagnostics in &ucsUMC; #TODO</title>
+		<section id="computers:modules:diagnostic"><title>System error diagnosis in &ucsUMC;</title>
+			<para>
+				The <guimenu>System diagnostic</guimenu> UMC module offers a
+				corresponding user interface to analyse a UCS system for a
+				range of known problems.
+			</para>
+			<para>
+				The module evaluates a range of problem scenarios known to it
+				and suggests solutions if it is able to resolve the identified
+				solutions automatically. This function is displayed via
+				ancillary buttons. In addition, links are shown to further
+				articles and corresponding UMC modules.
+			</para>
 		</section>
 	</section>
 
