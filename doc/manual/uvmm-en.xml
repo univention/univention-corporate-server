@@ -244,7 +244,7 @@ update-ca-certificates
 	</section>
 
 	<section id="uvmm::management">
-		<title>Managing virtual machines with the Univention Management Console</title>
+		<title>Managing virtual machines with &ucsUMC;</title>
 		<para>
 			The UMC module <emphasis>Virtual machines (UVMM)</emphasis> offers the possibility to create, edit and delete virtual instances/machines and to change their status.
 

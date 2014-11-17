@@ -782,7 +782,7 @@
 		</itemizedlist>
 	<para>
 		Some software components cannot be configured and are preinstalled on all system
-		roles, e.g., the Univention Management Console, an SSH server and different
+		roles, e.g., &ucsUMC;, an SSH server and different
 		commando line tools and editors.
 	</para>
 	<para>

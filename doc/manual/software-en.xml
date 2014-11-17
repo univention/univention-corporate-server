@@ -286,7 +286,7 @@
 	</para>
 
 	<section id="computers:Configuration_via_the_Univention_Management_Console">
-	  <title>Configuration via the Univention Management Console</title>
+	  <title>Configuration via &ucsUMC;</title>
 	  <para>
 		The <guimenu>Repository server</guimenu> and the use of
 		the maintained and unmaintained sections can be specified in the
@@ -647,14 +647,14 @@ univention-repository-update -h
 	</section>
 
 	<section id="computers:Installation_removal_of_individual_packages_in_the_Univention_Management_Console">
-	  <title>Installation/removal of individual packages in the Univention Management Console</title>
+	  <title>Installation/removal of individual packages in &ucsUMC;</title>
 	  <para>
 		The UMC module <guimenu>Package Management</guimenu> can be used to install and uninstall
 		individual software packages.
 	  </para>
 
 	  <figure id="software-umcinstall">
-		<title>Installing the package univention-squid in the Univention Management Console</title>
+		<title>Installing the package univention-squid in &ucsUMC;</title>
 		<graphic scalefit="1" width="100%" fileref="illustrations/software_install_en1.png"/>
 	  </figure>
 
@@ -925,7 +925,7 @@ apt-cache search fax
 	</variablelist>
 
 	<section id="computers:Integration_of_repository_components_via_the_Univention_Management_Console">
-	  <title>Integration of repository components via the Univention Management Console</title>
+	  <title>Integration of repository components via &ucsUMC;</title>
 	  <para>
 		A list of the integrated repository components is  in the
 		UMC module <guimenu>Repository Settings</guimenu>.

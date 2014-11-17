@@ -329,7 +329,7 @@
 	</section>
 
 	<section id="ip-config:dns:umc">
-	  <title>Konfiguration der DNS-Daten in der Univention Management Console</title>
+	  <title>Konfiguration der DNS-Daten in &ucsUMC;</title>
 	  <para>
 		DNS-Daten werden standardmäßig im Container <emphasis>cn=dns,&lt;Basis-DN></emphasis>
 		abgelegt. Forward- und Reverse-Lookup-Zonen werden direkt in dem

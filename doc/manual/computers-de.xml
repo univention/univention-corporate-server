@@ -1303,9 +1303,9 @@ univention-config-registry set --force mail/messagesizelimit=1000000
             </para>
         </section><!--Einführung -->
 
-        <section id="computers:Verwendung_des_Web-Interface_der_Univention_Management_Console"><title>Verwendung des Web-Interface der Univention Management Console</title>
+        <section id="computers:Verwendung_des_Web-Interface_der_Univention_Management_Console"><title>Verwendung des Web-Interface in &ucsUMC;</title>
             <para>
-                Über das Modul <guimenu>Univention Configuration Registry</guimenu> der
+                Über das Modul <guimenu>Univention Configuration Registry</guimenu> von
                 &ucsUMC; können die Variablen eines Systems angezeigt und verändert
                 werden, außerdem besteht die Möglichkeit über
                 <guimenu>Hinzufügen</guimenu> neue Variablen zu setzen.

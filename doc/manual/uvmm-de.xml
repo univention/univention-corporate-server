@@ -237,7 +237,7 @@ update-ca-certificates
 		</section>
 	</section>
 	<section id="uvmm::management">
-		<title>Verwaltung virtueller Maschinen mit der Univention Management Console</title>
+		<title>Verwaltung virtueller Maschinen mit &ucsUMC;</title>
 		<para>
 			Die Verwaltung virtueller Maschinen im &ucsUVMM; erfolgt über das UMC-Modul <emphasis>Virtuelle Maschinen (UVMM)</emphasis>.
 			Es bietet die Möglichkeit virtuelle Maschinen anzulegen, zu bearbeiten, zu löschen und den Status zu ändern.

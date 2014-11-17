@@ -916,7 +916,7 @@
                 <listitem>
 					<simpara>
                     Ein <emphasis>Passwort-Ablaufintervall</emphasis> forciert regelmäßige
-                    Passwortänderungen. Bei der Anmeldung an der Univention Management Console, Kerberos, Windows-Clients und
+                    Passwortänderungen. Bei der Anmeldung an &ucsUMC;, Kerberos, Windows-Clients und
                     an UCS-Systemen wird nach Ablauf des Intervalls in Tagen ein
                     Passwortwechsel erzwungen. Die verbleibende Gültigkeit des Kennworts
                     wird in der Benutzerverwaltung unter <guimenu>Passwort-Ablaufdatum</guimenu>

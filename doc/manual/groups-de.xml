@@ -33,7 +33,7 @@
 
 
 	<section id="groups::management">
-		<title>Verwaltung von Gruppen in der Univention Management Console</title>
+		<title>Verwaltung von Gruppen in &ucsUMC;</title>
 		<para>
 			Gruppen werden im UMC-Modul <emphasis>Gruppen</emphasis> verwaltet
 			(siehe auch <xref linkend="central:user-interface"/>).

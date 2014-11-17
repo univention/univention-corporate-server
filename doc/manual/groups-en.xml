@@ -31,7 +31,7 @@
 		</para>
 
 	<section id="groups::management">
-		<title>Managing groups in the Univention Management Console</title>
+		<title>Managing groups in &ucsUMC;</title>
 		<para>
 			Groups are managed in the UMC module <emphasis>Groups</emphasis>
 			(see <xref linkend="central:user-interface"/>).

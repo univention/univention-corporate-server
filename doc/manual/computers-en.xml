@@ -1,7 +1,7 @@
 <chapter id="computers:general"><title>Computer management</title>
 
 <section id="computers::hostaccounts">
-	<title>Management of computer accounts in the Univention Management Console</title>
+	<title>Management of computer accounts in &ucsUMC;</title>
 	<para>
 		All UCS, Linux and Windows systems within a UCS domain each have a
 		computer domain account (also referred to as the host account) with which the
@@ -1318,7 +1318,7 @@ univention-config-registry set --force mail/messagesizelimit=1000000
 	</section>
 
 	<section id="computers:Using_the_Univention_Management_Console_web_interface">
-		<title>Using the Univention Management Console web interface</title>
+		<title>Using the &ucsUMC; web interface</title>
 		<para>
 			The UMC module <guimenu>Univention Configuration Registry</guimenu>
 			can be used to display and adjust the variables of a system. There is also the

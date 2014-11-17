@@ -408,7 +408,7 @@
 	  Wird eine gültige E-Mail-Adresse angegeben, wird diese verwendet, um einen personalisierten
 	  Lizenzschlüssel zu erzeugen, der für die Verwendung des Univention App Centers notwendig ist.  Der
 	  Lizenzschlüssel wird automatisch generiert und umgehend an die angegeben E-Mail-Adresse zugeschickt. Die
-	  Lizenz kann dann über den Lizenzdialog der &ucsUMC; eingespielt werden.
+	  Lizenz kann dann über den Lizenzdialog von &ucsUMC; eingespielt werden.
 	</para>
 	<para>
 	  Aus dem hier eingetragenen vollständigen Rechnernamen (ein Rechnername inkl. Domänenname) wird

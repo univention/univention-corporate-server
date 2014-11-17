@@ -1775,7 +1775,7 @@ univention-directory-manager settings/extended_attribute create \
 	</para>
 
 	<section id="central:reports:create">
-	  <title>Erstellen von Reports in der Univention Management Console</title>
+	  <title>Erstellen von Reports in &ucsUMC;</title>
 	  <para>
 		Um einen Report zu erstellen, muss in die UMC-Module für Benutzer, Gruppen oder Rechner
 		gewechselt werden. Anschließend müssen alle vom Report erfassten Objekte ausgewählt werden

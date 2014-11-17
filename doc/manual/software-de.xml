@@ -288,7 +288,7 @@
 	</para>
 
 	<section id="computers:Konfiguration_ueber_die_Univention_Management_Console">
-	  <title>Konfiguration über die Univention Management Console</title>
+	  <title>Konfiguration über &ucsUMC;</title>
 	  <para>
 		Im UMC-Modul <guimenu>Repository-Einstellungen</guimenu>
 		kann der <guimenu>Repository-Server</guimenu> und die Verwendung der
@@ -646,13 +646,13 @@ univention-repository-update -h
 
 	<section
 		id="computers:Installation_Deinstallation_von_einzelnen_Paketen_in_der_Univention_Management_Console">
-	  <title>Installation/Deinstallation von einzelnen Paketen in der Univention Management Console</title>
+	  <title>Installation/Deinstallation von einzelnen Paketen in &ucsUMC;</title>
 	  <para>
 		Mit dem &ucsUMC;-Modul <guimenu>Paket Verwaltung</guimenu> können einzelne Softwarepakete installiert
 		und deinstalliert werden.
 	  </para>
 
-	  <figure id="software-umcinstall"><title>Installation des Pakets univention-squid in der Univention Management Console</title>
+	  <figure id="software-umcinstall"><title>Installation des Pakets univention-squid in &ucsUMC;</title>
 	  <graphic scalefit="1" width="100%" fileref="illustrations/software_install_de1.png"/>
 	  </figure>
 
@@ -930,7 +930,7 @@ apt-cache search fax
 
 	<section
 		id="computers:Integration_von_Repository-Komponenten_ueber_die_Univention_Management_Console">
-	  <title>Integration von Repository-Komponenten über die Univention Management Console</title>
+	  <title>Integration von Repository-Komponenten über &ucsUMC;</title>
 	  <para>
 		Im UMC-Modul <guimenu>Repository-Einstellungen</guimenu> ist
 		eine Aufstellung der eingebundenen Repository-Komponenten. Applikationen, die

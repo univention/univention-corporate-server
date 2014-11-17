@@ -336,7 +336,7 @@
 	</section>
 
 	<section id="ip-config:dns:umc">
-	  <title>Administration of DNS data in the Univention Management Console</title>
+	  <title>Administration of DNS data in &ucsUMC;</title>
 	  <para>
 		DNS files are stored in the <emphasis>cn=dns,&lt;base-dn&gt;</emphasis> container as
 		standard. Forward and reverse lookup zones are stored directly in the

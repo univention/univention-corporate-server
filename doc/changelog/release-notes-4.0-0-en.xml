@@ -321,7 +321,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 	  </section>
 
 	  <section id="relnotes:browsers">
-		<title>Recommeded browsers for the access to the Univention Management Console</title>
+		<title>Recommeded browsers for the access to Univention Management Console</title>
 
 		<para>
 		  &ucsUMC; uses numerous Javascript and CSS functions to display the web interface. Cookies
