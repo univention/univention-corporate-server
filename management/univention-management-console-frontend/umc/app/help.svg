@@ -7,12 +7,35 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    version="1.1"
    width="124.74"
    height="117.7353"
    id="svg3759">
   <defs
      id="defs3761">
+    <linearGradient
+       id="linearGradient3892">
+      <stop
+         id="stop3894"
+         style="stop-color:#787878;stop-opacity:1"
+         offset="0" />
+      <stop
+         id="stop3896"
+         style="stop-color:#929292;stop-opacity:1"
+         offset="1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3884">
+      <stop
+         id="stop3886"
+         style="stop-color:#7bb51e;stop-opacity:1"
+         offset="0" />
+      <stop
+         id="stop3888"
+         style="stop-color:#94c449;stop-opacity:1"
+         offset="1" />
+    </linearGradient>
     <clipPath
        id="clipPath640">
       <path
@@ -119,6 +142,22 @@
          d="m 542.672,645.079 66.905,0 0,-101.447 -66.905,0 0,101.447 z"
          id="path718" />
     </clipPath>
+    <linearGradient
+       x1="90.816269"
+       y1="66.766022"
+       x2="90.816269"
+       y2="3.8187962"
+       id="linearGradient3890"
+       xlink:href="#linearGradient3884"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       x1="14.518282"
+       y1="115.40576"
+       x2="14.518282"
+       y2="22.115488"
+       id="linearGradient3898"
+       xlink:href="#linearGradient3892"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <metadata
      id="metadata3764">
@@ -132,68 +171,12 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     transform="translate(-297.0375,-488.2115)"
-     id="layer1">
-    <g
-       transform="matrix(1,0,0,-1,-246.6341,1150.5794)"
-       id="g636">
-      <g
-         clip-path="url(#clipPath640)"
-         id="g638">
-        <g
-           id="g644">
-          <g
-             id="g646" />
-          <g
-             mask="url(#mask658)"
-             id="g670">
-            <g
-               id="g672" />
-            <g
-               id="g678">
-              <g
-                 clip-path="url(#clipPath674)"
-                 id="g680">
-                <g
-                   transform="translate(634.6596,662.3679)"
-                   id="g682">
-                  <path
-                     d="m 0,0 c -18.64,0 -33.751,-15.111 -33.751,-33.752 0,-18.64 15.11,-33.751 33.751,-33.751 18.641,0 33.752,15.111 33.752,33.751 C 33.752,-15.111 18.641,0 0,0 m 0.369,-56.182 c -2.648,0 -4.795,2.148 -4.795,4.797 0,2.648 2.147,4.794 4.795,4.794 2.649,0 4.796,-2.146 4.796,-4.794 0,-2.649 -2.147,-4.797 -4.796,-4.797 m 3.77,14.175 0,-0.863 -7.904,0 0,0.863 c 0,2.441 0.356,5.572 3.19,8.295 2.833,2.723 6.375,4.972 6.375,8.373 0,3.761 -2.609,5.75 -5.899,5.75 -5.482,0 -5.841,-5.686 -5.976,-6.939 l -7.689,0 c 0.205,5.929 2.71,14.223 13.711,14.223 9.533,0 13.818,-6.384 13.818,-12.371 0,-9.529 -9.626,-11.185 -9.626,-17.331"
-                     id="path684"
-                     style="fill:#7ab51d;fill-opacity:1;fill-rule:nonzero;stroke:none" />
-                </g>
-              </g>
-            </g>
-          </g>
-        </g>
-        <g
-           id="g686">
-          <g
-             id="g688" />
-          <g
-             mask="url(#mask700)"
-             id="g712">
-            <g
-               id="g714" />
-            <g
-               id="g720">
-              <g
-                 clip-path="url(#clipPath716)"
-                 id="g722">
-                <g
-                   transform="translate(543.6716,644.0786)"
-                   id="g724">
-                  <path
-                     d="M 0,0 64.905,-50.878 37.176,-55.595 54.81,-91.544 38.641,-99.446 20.904,-63.155 0,-82.136 0,0 z"
-                     id="path726"
-                     style="fill:#787878;fill-opacity:1;fill-rule:nonzero;stroke:none" />
-                </g>
-              </g>
-            </g>
-          </g>
-        </g>
-      </g>
-    </g>
-  </g>
+  <path
+     d="m 90.988,0 c -18.64,0 -33.751,15.111 -33.751,33.752 0,18.64 15.11,33.751 33.751,33.751 18.641,0 33.752,-15.111 33.752,-33.751 C 124.74,15.111 109.629,0 90.988,0 m 0.369,56.182 c -2.648,0 -4.795,-2.148 -4.795,-4.797 0,-2.648 2.147,-4.794 4.795,-4.794 2.649,0 4.796,2.146 4.796,4.794 0,2.649 -2.147,4.797 -4.796,4.797 m 3.77,-14.175 0,0.863 -7.904,0 0,-0.863 c 0,-2.441 0.356,-5.572 3.19,-8.295 2.833,-2.723 6.375,-4.972 6.375,-8.373 0,-3.761 -2.609,-5.75 -5.899,-5.75 -5.482,0 -5.841,5.686 -5.976,6.939 l -7.689,0 c 0.205,-5.929 2.71,-14.223 13.711,-14.223 9.533,0 13.818,6.384 13.818,12.371 0,9.529 -9.626,11.185 -9.626,17.331"
+     id="path684"
+     style="fill:url(#linearGradient3890);fill-opacity:1;fill-rule:nonzero;stroke:none" />
+  <path
+     d="m 0,18.2893 64.905,50.878 -27.729,4.717 17.634,35.949 -16.169,7.902 L 20.904,81.4443 0,100.4253 0,18.2893 z"
+     id="path726"
+     style="fill:url(#linearGradient3898);fill-opacity:1;fill-rule:nonzero;stroke:none" />
 </svg>

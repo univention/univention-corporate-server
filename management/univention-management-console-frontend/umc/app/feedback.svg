@@ -7,12 +7,35 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    version="1.1"
    width="176.991"
    height="151.93201"
    id="svg5239">
   <defs
      id="defs5241">
+    <linearGradient
+       id="linearGradient4037">
+      <stop
+         id="stop4039"
+         style="stop-color:#787878;stop-opacity:1"
+         offset="0" />
+      <stop
+         id="stop4041"
+         style="stop-color:#929292;stop-opacity:1"
+         offset="1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4029">
+      <stop
+         id="stop4031"
+         style="stop-color:#7bb51e;stop-opacity:1"
+         offset="0" />
+      <stop
+         id="stop4033"
+         style="stop-color:#94c449;stop-opacity:1"
+         offset="1" />
+    </linearGradient>
     <clipPath
        id="clipPath658">
       <path
@@ -269,6 +292,22 @@
          d="m 516.546,511.332 178.991,0 0,-21.332 -178.991,0 0,21.332 z"
          id="path854" />
     </clipPath>
+    <linearGradient
+       x1="79.135857"
+       y1="117.17082"
+       x2="79.135857"
+       y2="3.7763882"
+       id="linearGradient4035"
+       xlink:href="#linearGradient4029"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       x1="97.162315"
+       y1="155.18233"
+       x2="97.162315"
+       y2="133.2531"
+       id="linearGradient4043"
+       xlink:href="#linearGradient4037"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <metadata
      id="metadata5244">
@@ -282,126 +321,12 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     transform="translate(-275.88512,-451.3537)"
-     id="layer1">
-    <g
-       transform="matrix(1,0,0,-1,-241.66088,1094.2857)"
-       id="g654">
-      <g
-         clip-path="url(#clipPath658)"
-         id="g656">
-        <g
-           id="g662">
-          <g
-             id="g664" />
-          <g
-             mask="url(#mask676)"
-             id="g688">
-            <g
-               id="g690" />
-            <g
-               id="g696">
-              <g
-                 clip-path="url(#clipPath692)"
-                 id="g698">
-                <path
-                   d="m 559.872,522.074 -28.865,0 0,59.713 28.865,0 0,-59.713 z"
-                   id="path700"
-                   style="fill:#7ab51d;fill-opacity:1;fill-rule:nonzero;stroke:none" />
-              </g>
-            </g>
-          </g>
-        </g>
-        <g
-           id="g702">
-          <g
-             id="g704" />
-          <g
-             mask="url(#mask716)"
-             id="g728">
-            <g
-               id="g730" />
-            <g
-               id="g736">
-              <g
-                 clip-path="url(#clipPath732)"
-                 id="g738">
-                <path
-                   d="m 600.254,522.074 -28.865,0 0,120.858 28.865,0 0,-120.858 z"
-                   id="path740"
-                   style="fill:#7ab51d;fill-opacity:1;fill-rule:nonzero;stroke:none" />
-              </g>
-            </g>
-          </g>
-        </g>
-        <g
-           id="g742">
-          <g
-             id="g744" />
-          <g
-             mask="url(#mask756)"
-             id="g768">
-            <g
-               id="g770" />
-            <g
-               id="g776">
-              <g
-                 clip-path="url(#clipPath772)"
-                 id="g778">
-                <path
-                   d="m 640.635,522.074 -28.866,0 0,84.128 28.866,0 0,-84.128 z"
-                   id="path780"
-                   style="fill:#7ab51d;fill-opacity:1;fill-rule:nonzero;stroke:none" />
-              </g>
-            </g>
-          </g>
-        </g>
-        <g
-           id="g782">
-          <g
-             id="g784" />
-          <g
-             mask="url(#mask796)"
-             id="g808">
-            <g
-               id="g810" />
-            <g
-               id="g816">
-              <g
-                 clip-path="url(#clipPath812)"
-                 id="g818">
-                <path
-                   d="m 681.017,522.074 -28.866,0 0,30.32 28.866,0 0,-30.32 z"
-                   id="path820"
-                   style="fill:#7ab51d;fill-opacity:1;fill-rule:nonzero;stroke:none" />
-              </g>
-            </g>
-          </g>
-        </g>
-        <g
-           id="g822">
-          <g
-             id="g824" />
-          <g
-             mask="url(#mask836)"
-             id="g848">
-            <g
-               id="g850" />
-            <g
-               id="g856">
-              <g
-                 clip-path="url(#clipPath852)"
-                 id="g858">
-                <path
-                   d="m 694.537,510.332 -176.991,0 0,-19.332 176.991,0 0,19.332 z"
-                   id="path860"
-                   style="fill:#787878;fill-opacity:1;fill-rule:nonzero;stroke:none" />
-              </g>
-            </g>
-          </g>
-        </g>
-      </g>
-    </g>
-  </g>
+  <path
+     d="m 163.471,120.858 -28.866,0 0,-30.32 28.866,0 0,30.32 z m -40.382,0 -28.866,0 0,-84.128 28.866,0 0,84.128 z m -40.381,0 -28.865,0 0,-120.858 28.865,0 0,120.858 z m -40.382,0 -28.865,0 0,-59.713 28.865,0 0,59.713 z"
+     id="path820"
+     style="fill:url(#linearGradient4035);fill-opacity:1;fill-rule:nonzero;stroke:none" />
+  <path
+     d="M 176.991,132.6 0,132.6 l 0,19.332 176.991,0 0,-19.332 z"
+     id="path860"
+     style="fill:url(#linearGradient4043);fill-opacity:1;fill-rule:nonzero;stroke:none" />
 </svg>
