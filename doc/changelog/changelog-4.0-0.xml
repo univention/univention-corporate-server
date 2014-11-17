@@ -906,6 +906,11 @@
 						in this case for purely technical reasons but it is not activated
 						(<ulink url="&ucsbug;35983">Bug 35983</ulink>).
 				</simpara></listitem>
+				<listitem><simpara>
+						The environement variable <envar>SMB_CONF_PATH</envar> is set during the
+						<package>univention-samba</package> join to ensure the right configuration is used
+						(<ulink url="&ucsbug;36734">Bug 36734</ulink>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
