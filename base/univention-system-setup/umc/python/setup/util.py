@@ -779,7 +779,7 @@ def is_ucs_domain(nameserver, domain):
 
 	# perform a SRV lookup
 	try:
-		resolver.query('_domaincontroller_master._tcp.%s' % domain, 'SRV')
+		resolver.query('_domaincontroller_master._tcp.%s.' % domain, 'SRV')
 		return True
 	except dns.resolver.NXDOMAIN:
 		MODULE.warn('No valid UCS domain (%s) at nameserver %s!' % (domain, nameserver))

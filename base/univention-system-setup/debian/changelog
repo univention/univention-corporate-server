@@ -1,3 +1,10 @@
+univention-system-setup (8.1.60-1) unstable; urgency=medium
+
+  * Added a '.' to the DNS query to define the end. Otherwise a join to
+    a W2K12 domain failed (Bug #36731)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Nov 2014 06:40:43 +0100
+
 univention-system-setup (8.1.59-3) unstable; urgency=low
 
   * Bug #36667: Changed misleading text on master account page
