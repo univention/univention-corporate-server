@@ -1,3 +1,9 @@
+univention-kde (9.0.2-7) unstable; urgency=low
+
+  * added Linux-Arbeitsplatz xsession (Bug #36744) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 Nov 2014 16:08:14 +0100
+
 univention-kde (9.0.2-6) unstable; urgency=low
 
   * make startkde the default session (Bug #36411) 

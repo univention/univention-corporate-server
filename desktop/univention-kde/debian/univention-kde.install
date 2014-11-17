@@ -74,3 +74,4 @@ profiles/* usr/share/univention-kde-profiles/
 univention.desktop usr/share/applications/
 usr/share/locale/*/LC_MESSAGES/*.mo
 univention-root-login-notification.desktop /usr/share/autostart/
+xsessions/Linux-Arbeitsplatz.desktop usr/share/xsessions/
