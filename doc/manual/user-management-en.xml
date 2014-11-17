@@ -1029,24 +1029,18 @@
 
 	</section>
 
-
     <section id="user-management:Password_changes_by_users_via_UMC">
-        <title>Password changes by users via &ucsUMC; #TODO:OUTDATED</title>
-        <para>
-            As standard, users cannot change their password via &ucsUMC;. To
-            allow user-initiated password changes, the modification must be allowed
-            in the LDAP ACLs and in &ucsUMC;.
-        </para>
-        <para>
-            To adapt the LDAP ACLs, the &ucsUCRV; <envar>ldap/acl/user/password/change</envar>
-            must be set to <emphasis>yes</emphasis> on the &ucsMaster; and the LDAP server
-            restarted.
-        </para>
-        <para>
-            For simple activation in UMC, the policy <emphasis>default-udm-self</emphasis>
-            can be linked with an LDAP object (e.g., with the LDAP base or the group
-            <emphasis>Domain Users</emphasis> (see <xref linkend="central:policies:assign"/>)).
-        </para>
+		<title>Password change by user via &ucsUMC;</title>
+		<para>
+			In &ucsUMC;, every user can reset his password via the
+			<guimenu>Change password</guimenu> module. The module can also be opened
+			by selecting the <guimenu>Settings &ar; Change password</guimenu>
+			entry in the top right user menu.
+			To change the password, the current password must be entered first.
+			The change is performed directly via the PAM stack
+			(see <xref linkend="computers:Authentifizierung__PAM"/>) and is
+			then available centrally for all services.
+		</para>
     </section>
 
     <section id="users:faillog">
