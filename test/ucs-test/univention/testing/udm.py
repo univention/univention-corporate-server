@@ -90,7 +90,7 @@ class UCSTestUDM(object):
 	PATH_UDM_CLI_SERVER = '/usr/share/univention-directory-manager-tools/univention-cli-server'
 	PATH_UDM_CLI_CLIENT = '/usr/sbin/udm'
 	PATH_UDM_CLI_CLIENT_WRAPPED = '/usr/sbin/udm-test'
-	
+
 	COMPUTER_MODULES = ('computers/ubuntu',
 						'computers/linux',
 						'computers/windows',
@@ -106,7 +106,7 @@ class UCSTestUDM(object):
 	LDAP_BASE = _ucr['ldap/base']
 	UNIVENTION_CONTAINER = 'cn=univention,%s' % LDAP_BASE
 	UNIVENTION_TEMPORARY_CONTAINER = 'cn=temporary,cn=univention,%s' % LDAP_BASE
-	
+
 
 	def __init__(self):
 		self._cleanup = {}
@@ -124,9 +124,9 @@ class UCSTestUDM(object):
 		cmd = [ UCSTestUDM.PATH_UDM_CLI_CLIENT_WRAPPED, modulename, action ]
 		args = copy.deepcopy(kwargs)
 
-		for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate', 'policy-reference', 'policy-dereference'):
+		for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate', 'policy_reference', 'policy_dereference'):
 			if arg in args:
-				cmd.extend(['--%s' % arg, args[arg]])
+				cmd.extend(['--%s' % arg.replace('_', '-'), args[arg]])
 				del args[arg]
 
 		if 'options' in args:
@@ -282,10 +282,10 @@ class UCSTestUDM(object):
 		print 'Removing %s object %r' % (modulename, kwargs)
 		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
 		(stdout, stderr) = child.communicate()
-		
+
 		if child.returncode:
 			raise UCSTestUDM_RemoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
-		
+
 		if dn in self._cleanup.get(modulename, []):
 			self._cleanup[modulename].remove(dn)
 
@@ -331,7 +331,7 @@ class UCSTestUDM(object):
 		"""
 		attr = self._set_module_default_attr(kwargs, (( 'position', 'cn=groups,%s' % self.LDAP_BASE ),
 											   ( 'name', uts.random_groupname() ) ))
-		
+
 		return (self.create_object('groups/group', wait_for_replication, **attr), attr['name'])
 
 	def _set_module_default_attr(self, attributes, defaults):
