@@ -1,3 +1,9 @@
+ucs-test (4.0.181-1) unstable; urgency=low
+
+  * Bug #27653: add new scripts and modify udm.py
+
+ -- Ammar Najjar <najjar@univention.de>  Mon, 17 Nov 2014 12:40:22 +0100
+
 ucs-test (4.0.180-1) unstable; urgency=low
 
   * 50_samba/11net_rpc_testjoin: perform a 'net rpc testjoin' (Bug #35590).
