@@ -4,7 +4,7 @@
 <title>Einführung</title>
 	<para>
 	  Die folgende Dokumentation beschreibt die Installation von Univention Corporate Server
-	  (UCS).  Die Installation von UCS-System erfolgt über die DVD als Installationsmedium. Die
+	  (UCS).  Als Installationsmedium wird eine DVD bereitgestellt. Die
 	  Installation erfolgt interaktiv und fragt alle notwendigen System-Einstellungen in einer graphischen
 	  Oberfläche ab.
 	</para>
@@ -17,48 +17,47 @@
 	  ist auch in der Lage, auf Systemen mit aktiviertem SecureBoot zu starten und UCS dort zu installieren.
 	</para>
 
+	<!-- TODO: Hinweise auf VMware Images -->
 	<para>
 		Neben einer Installation auf Hardware oder in einer Virtualisierungslösung kann UCS auch über ein AMI-Image
 		in der Amazon EC2-Cloud installiert werden. Hinweise dazu finden sich
 		in <xref linkend="installation:amazonec2"/>.
 	</para>
-	<section id="installation:bedienung-des-installers">
-	<title>Bedienung des Installers</title>
-		<para>
-			Die Eingabemasken des Installers können mit der Maus oder über die Tastatur bedient werden:
-		</para>
-		<itemizedlist>
-			<listitem>
-				<simpara>
-					Mit der <keycap function="tab">Tabulator</keycap>-Taste kann der Fokus auf das nächste Feld bewegt werden.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-					Auf das vorherige Feld wird mit der Tastenkombination <keycombo action="simul"><keycap function="shift">Shift</keycap><keycap function="tab">Tabulator</keycap></keycombo> gesprungen.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				Mit der <keycap function="enter">Eingabe</keycap>-Taste werden Werte im Eingabefeld übergeben und Schaltflächen betätigt.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				Innerhalb einer Liste oder Tabelle kann mit den <emphasis>Pfeiltasten</emphasis> zwischen den Einträgen gewechselt werden.
-				</simpara>
-			</listitem>
-		</itemizedlist>
-		<note>
-			<para>
-			  Über die Schaltfläche <guimenu>Abbrechen</guimenu> kann der aktuelle
-			  Konfigurationsschritt abgebrochen werden. Im anschließend angezeigten Menü kann dann ein
-			  vorhergehender Konfigurationsschritt erneut ausgewählt werden. Nachfolgende Konfigurationsschritte
-			  sind unter Umständen nicht direkt auswählbar, wenn die vorhergehenden Schritte noch nicht
-			  vollständig durchlaufen wurden.
-			</para>
-		</note>
-	</section>
+
+	<para>
+	  Die Eingabemasken des Installers können mit der Maus oder über die Tastatur bedient werden:
+	</para>
+	<itemizedlist>
+	  <listitem>
+		<simpara>
+		  Mit der <keycap function="tab">Tabulator</keycap>-Taste kann der Fokus auf das nächste Feld bewegt werden.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  Auf das vorherige Feld wird mit der Tastenkombination <keycombo action="simul"><keycap function="shift">Shift</keycap><keycap function="tab">Tabulator</keycap></keycombo> gesprungen.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  Mit der <keycap function="enter">Eingabe</keycap>-Taste werden Werte im Eingabefeld übergeben und Schaltflächen betätigt.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  Innerhalb einer Liste oder Tabelle kann mit den <emphasis>Pfeiltasten</emphasis> zwischen den Einträgen gewechselt werden.
+		</simpara>
+	  </listitem>
+	</itemizedlist>
+	<note>
+	  <para>
+		Über die Schaltfläche <guimenu>Abbrechen</guimenu> kann der aktuelle
+		Konfigurationsschritt abgebrochen werden. Im anschließend angezeigten Menü kann dann ein
+		vorhergehender Konfigurationsschritt erneut ausgewählt werden. Nachfolgende Konfigurationsschritte
+		sind unter Umständen nicht direkt auswählbar, wenn die vorhergehenden Schritte noch nicht
+		vollständig durchlaufen wurden.
+	  </para>
+	</note>
 </section>
 <section id="installation:Auswahl_des_Installationsmodus">
 <title>Auswahl des Installationsmodus</title>
@@ -76,7 +75,7 @@
 		<listitem>
 			<simpara>
 			<guimenu>Installation Univention Corporate Server</guimenu> startet die interaktive, graphische Installation
-			auf Grundlage des Linux-Kernels in Version 3.16. Bei der
+			von UCS. Bei der
 			Installation fragt das System nach einigen Parametern wie
 			Netzwerkeinstellungen, Festplattenpartitionierung, Domäneneinstellungen und
 			Komponentenauswahl für das zu installierende UCS-System und führt anschließend
@@ -125,9 +124,9 @@
 		<graphic scalefit="1" width="80%" fileref="illustrations/installer-language.png"/>
 	</figure>
 	<para>
-		Wenn Univention Installer in die ausgewählte Sprache übersetzt wurde (momentan
-		Deutsch und Englisch), wird die gewählte Sprache auch während der Installation
-		verwendet, anderenfalls erfolgt die Installation in englischer Sprache.
+		Sofern der Univention Installer die ausgewählte Sprache unterstützt, wird diese als
+		Installationssprache verwendet, andernfalls wird Englisch verwendet. Derzeit sind
+		Deutsch und Englisch vom Univention Installer unterstützt.
 	</para>
 </section>
 <section id="installation:Auswahl_des_Standorts">
@@ -140,7 +139,7 @@
 	  angezeigt werden.
 	</para>
 	<figure id="installation-location">
-	<title>Auswahl der Tastaturbelegung</title>
+	<title>Auswahl des Standorts</title>
 		<graphic scalefit="1" width="80%" fileref="illustrations/installer-location_de.png"/>
 	</figure>
 </section>
@@ -231,11 +230,10 @@
 	Benutzer <emphasis>Administrator</emphasis> eingetragen.
 	Im späteren Betrieb können die Passworte der Benutzer <emphasis>root</emphasis> und <emphasis>Administrator</emphasis>
 	unabhängig voneinander verwaltet werden. Das Passwort muss im zweiten Feld
-	erneut eingetragen. Die doppelte Eingabe ist erforderlich, um Tippfehler zu
-	minimieren, da die eingegebenen Zeichen nicht angezeigt werden.
+	erneut eingetragen.
   </para>
   <para>
-	Das Root-Passwort muss aus Sicherheitsgründen mindestens acht Zeichen umfassen.
+	Das Passwort muss aus Sicherheitsgründen mindestens acht Zeichen umfassen.
   </para>
   <figure id="installation-password">
 	<title>root-Passwort einrichten</title>
@@ -248,7 +246,7 @@
   <title>Partitionierung der Festplatten</title>
   <para>
 	Der Univention Installer unterstützt die Partitionierung von Festplatten und die Erstellung von
-	unterschiedlichen Dateisystemen (u.a. EXT4, XFS und FAT32). Darüber hinaus können auch Mechanismen
+	unterschiedlichen Dateisystemen (u.a. EXT4 und XFS). Darüber hinaus können auch Mechanismen
 	wie der Logical Volume Manager (LVM), RAID oder mit LUKS verschlüsselte Partitionen eingerichtet
 	werden.
   </para>
@@ -259,7 +257,7 @@
   </para>
   <para>
 	Zur einfacheren Installation bietet der Univention Installer geführte Installationen an. Bei der
-	geführten Installation werden bestimmte Standardschemata bzgl. Partitionierung und Formatierung auf
+	geführten Installation werden Standardschemata bzgl. Partitionierung und Formatierung auf
 	die ausgewählte Festplatte angewendet. Darüber hinaus kann auch eine manuelle Partitionierung
 	vorgenommen werden.
   </para>
@@ -269,8 +267,8 @@
 	  <listitem>
 		<simpara>
 		  <guimenu>Geführt - vollständige Festplatte verwenden</guimenu>: in diesem Schema wird
-		  für jedes Dateisystem eine eigene Partition angelegt. Die Größe der Partitionen ist hierbei auf die
-		  Größe der jeweiligen Festplatte beschränkt.
+		  für jedes Dateisystem eine eigene Partition angelegt. Abstraktionsschichten wie LVM werden nicht verwendet. Im nachfolgenden Schritt wird bestimmt, welche Dateisysteme/Partitionen erstellt werden sollen.
+		  Die Größe der Partitionen ist in diesem Schema auf die Größe der jeweiligen Festplatte beschränkt.
 		</simpara>
 	  </listitem>
 	  <listitem>
@@ -288,7 +286,7 @@
 		  <guimenu>Geführt - gesamte Platte mit verschlüsseltem LVM</guimenu>: diese Variante
 		  entspricht der vorherigen Variante, allerdings wird zusätzlich die LVM Volume Group
 		  verschlüsselt. Dies macht die Angabe des Passwort für die verschlüsselte Volume Group bei jedem
-		  Start von &ucsUAS; notwendig.
+		  Start von UCS notwendig.
 		</simpara>
 	  </listitem>
 	</itemizedlist>
@@ -355,7 +353,7 @@
 		  System einer neuen UCS-Domäne konfiguriert: ein UCS-System mit der Systemrolle <emphasis>&ucsMaster;</emphasis>. In den
 		  folgenden Konfigurationsschritten werden die notwendigen Informationen zur Einrichtung eines neuen
 		  Verzeichnisdienstes, Authentifikationsdienstes sowie DNS-Servers abgefragt. Eine UCS-Domäne kann aus
-		  einem einzelnen (oder mehreren UCS-Systemen bestehen. Zusätzliche UCS-Systeme können über den Modus
+		  einem einzelnen oder mehreren UCS-Systemen bestehen. Zusätzliche UCS-Systeme können über den Modus
 		  <guimenu>Einer bestehenden UCS-Domäne beitreten</guimenu> nachträglich aufgenommen werden.
 		</simpara>
 	  </listitem>
@@ -364,9 +362,8 @@
 		  <guimenu>Einer bestehenden Active-Directory-Domäne beitreten</guimenu>: Dieser Modus, in
 		  dem UCS als Mitglied einer Active Directory-Domäne betrieben wird, eignet sich, um eine Active
 		  Directory-Domäne um Applikationen zu erweitern, die auf der UCS-Plattform zur Verfügung stehen. Auf
-		  der UCS-Plattform installierte Apps sind dann für Benutzer der Active Directory-Domäne nutzbar. Die
-		  Authentifikation erfolgt dabei weiter gegen native Microsoft Active Directory
-		  Domänencontroller. Nach der Auswahl dieses Modus werden alle relevanten Informationen für den
+		  der UCS-Plattform installierte Apps sind dann für Benutzer der Active Directory-Domäne nutzbar. 
+		  Nach der Auswahl dieses Modus werden alle relevanten Informationen für den
 		  Beitritt zur Active Directory-Domäne abgefragt und das UCS-System entsprechend konfiguriert.
 		</simpara>
 	  </listitem>
@@ -382,7 +379,7 @@
 		<simpara>
 		  Wird der Modus <guimenu>Keine Domäne benutzen</guimenu> ausgewählt, stehen auf dem
 		  UCS-System keinerlei webbasierte Verwaltungsfunktionen und keinerlei Domänenfunktionalität zur
-		  Verfügung. Das UCS-System kann auch nicht nachträglich Teil einer bestehenden UCS- oder AD-Domäne
+		  Verfügung. Das UCS-System kann auch nicht nachträglich Teil einer bestehenden UCS- oder Active Directory-Domäne
 		  werden bzw. nachträglich eine neue UCS-Domäne gründen. Weiterhin steht in diesem Modus das
 		  Univention App Center nicht zur Verfügung. Dieser Modus wird daher nur selten und in speziellen
 		  Szenarien (z.B. als Firewall-System) verwendet.
@@ -405,9 +402,9 @@
 	  Die Angabe eines Organisationsnamens ist optional und wird im zweiten Schritt für die automatische Generierung eines Domänennamens sowie der LDAP-Basis verwendet.
 	</para>
 	<para>
-	  Wird eine gültige E-Mail-Adresse angegeben, wird diese verwendet, um einen personalisierten
-	  Lizenzschlüssel zu erzeugen, der für die Verwendung des Univention App Centers notwendig ist.  Der
-	  Lizenzschlüssel wird automatisch generiert und umgehend an die angegeben E-Mail-Adresse zugeschickt. Die
+	  Wird eine gültige E-Mail-Adresse angegeben, wird diese verwendet, um eine personalisierte
+	  Lizenz zu aktivieren, die für die Verwendung des Univention App Centers notwendig ist.  Die
+	  Lizenz wird automatisch generiert und umgehend an die angegeben E-Mail-Adresse zugeschickt. Die
 	  Lizenz kann dann über den Lizenzdialog von &ucsUMC; eingespielt werden.
 	</para>
 	<para>
@@ -449,6 +446,13 @@
 	  Rechnernamen zu verwenden. Das UCS-System wird mit dem hier angegebenen Rechnernamen der Active
 	  Directory-Domäne beitreten. Der eingerichtete Domänenname kann nach Abschluss der Konfiguration
 	  <emphasis>nicht</emphasis> mehr verändert werden.
+	</para>
+	<para>
+	  In einer UCS-Domäne können Systeme in unterschiedlichen <emphasis>Systemrollen</emphasis>
+	  installiert werden. Das erste UCS-System, das einer Active Directory-Domäne beitritt, wird
+	  automatisch mit der Systemrolle &ucsMaster; konfiguriert. Wird dieser Modus während der Installation
+	  eines weiteren UCS-Systems ausgewählt, wird der Dialog zur Auswahl einer Systemrolle angezeigt.
+	  Die einzelnen Systemrollen werden im folgenden Abschnitt genauer beschrieben.
 	</para>
 	<figure id="installation-adjoin">
 	  <title>Informationen zum Active Directory-Domänenbeitritt</title>
@@ -530,8 +534,7 @@
 	  Die Konfiguration des Modus <guimenu>Keine Domäne benutzen</guimenu> erfordert die Angabe
 	  eines Rechnernamens für das zu konfigurierende UCS-System. Dabei kann der vorgeschlagene Rechnername
 	  übernommen oder ein eigener Rechnername eingetragen werden.  Der Domänenname des Rechners wird
-	  automatisch aus dem Domänen-DNS-Server abgeleitet. In einigen Szenarien (z.B. ein öffentlicher
-	  Mailserver) kann es notwendig sein, einen bestimmten vollständigen Rechnernamen zu verwenden.
+	  automatisch aus dem Domänen-DNS-Server abgeleitet.
 	</para>
   </section>
 </section>

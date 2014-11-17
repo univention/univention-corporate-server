@@ -65,7 +65,7 @@
 		<para>
 			There are three possibilities for a UCS system to join an existing domain;
 			directly after installation in the Univention Installer (see <xref
-			linkend="installer_join"/>) or subsequently using the command
+			linkend="installation:Domäneneinstellungen:EinerUCSDomäneBeitreten"/>) or subsequently using the command
 			<command>univention-join</command> or using &ucsUMC;.
 		</para>
 		<para>

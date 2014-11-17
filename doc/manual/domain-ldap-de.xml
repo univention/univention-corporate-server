@@ -68,7 +68,7 @@
 		<para>
 			Es gibt drei Möglichkeiten ein UCS-System einer bestehenden Domäne
 			beitreten zu lassen; direkt am Ende der Installation im Univention Installer
-			(siehe <xref linkend="installer_join"/>) oder nachträglich durch den
+			(siehe <xref linkend="installation:Domäneneinstellungen:EinerUCSDomäneBeitreten"/>) oder nachträglich durch den
 			Befehl <command>univention-join</command> bzw. mit &ucsUMC;.
 		</para>
 		<para>
