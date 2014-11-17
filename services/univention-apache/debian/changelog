@@ -1,3 +1,9 @@
+univention-apache (7.0.16-1) unstable; urgency=medium
+
+  * Bug #36549: cleanup svg graphics that caused problems in IE
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 17 Nov 2014 17:55:49 +0100
+
 univention-apache (7.0.15-1) unstable; urgency=medium
 
   Bug #36587:

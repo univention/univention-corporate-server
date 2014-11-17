@@ -7,62 +7,32 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    version="1.1"
    width="16.5"
    height="16.5"
    id="svg4383">
   <defs
      id="defs4385">
-    <mask
-       id="mask296">
-      <g
-         id="g298">
-        <g
-           clip-path="url(#clipPath286)"
-           id="g300">
-          <g
-             id="g302">
-            <g
-               id="g304">
-              <path
-                 d="m -32143.3,32767 64910.3,0 0,-64776.5 -64910.3,0 0,64776.5 z"
-                 id="path306"
-                 style="fill:url(#linearGradient290);stroke:none" />
-            </g>
-          </g>
-        </g>
-      </g>
-    </mask>
-    <clipPath
-       id="clipPath286">
-      <path
-         d="m -32143.3,32767 64910.3,0 0,-64776.5 -64910.3,0 0,64776.5 z"
-         id="path288" />
-    </clipPath>
     <linearGradient
-       x1="0"
-       y1="0"
-       x2="1"
-       y2="0"
-       id="linearGradient290"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0,20,20,0,612.74815,757.77954)"
-       spreadMethod="pad">
+       id="linearGradient3798">
       <stop
-         id="stop292"
-         style="stop-color:#ffffff;stop-opacity:1"
+         id="stop3800"
+         style="stop-color:#7c7c7c;stop-opacity:0.94117647"
          offset="0" />
       <stop
-         id="stop294"
-         style="stop-color:#ffffff;stop-opacity:0.80000001"
+         id="stop3802"
+         style="stop-color:#929292;stop-opacity:1"
          offset="1" />
     </linearGradient>
-    <clipPath
-       id="clipPath312">
-      <path
-         d="m 611.748,778.28 18.504,0 0,-18.5 -18.504,0 0,18.5 z"
-         id="path314" />
-    </clipPath>
+    <linearGradient
+       x1="8.7388039"
+       y1="16.355312"
+       x2="8.7388039"
+       y2="0.73268008"
+       id="linearGradient3804"
+       xlink:href="#linearGradient3798"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <metadata
      id="metadata4388">
@@ -76,35 +46,8 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     transform="translate(-531.7515,-292.9336)"
-     id="layer1">
-    <g
-       transform="matrix(1,0,0,-1,-81.0004,1070.2131)"
-       id="g282">
-      <g
-         id="g284" />
-      <g
-         mask="url(#mask296)"
-         id="g308">
-        <g
-           id="g310" />
-        <g
-           id="g316">
-          <g
-             clip-path="url(#clipPath312)"
-             id="g318">
-            <g
-               transform="translate(623.5644,777.2795)"
-               id="g320">
-              <path
-                 d="m 0,0 0,-7.362 2.035,0 -4.6,-5.656 -4.599,5.656 2.035,0 0,7.362 m -5.187,-10.689 0,-5.311 15.504,0 0,5.311"
-                 id="path322"
-                 style="fill:none;stroke:#787878;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-            </g>
-          </g>
-        </g>
-      </g>
-    </g>
-  </g>
+  <path
+     d="m 10.8125,0 0,7.362 2.035,0 -4.6,5.656 -4.599,-5.656 2.035,0 0,-7.362 m -5.187,10.689 0,5.311 15.504,0 0,-5.311"
+     id="path322"
+     style="fill:none;stroke:url(#linearGradient3804);stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
 </svg>
