@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.86-1) unstable; urgency=medium
+
+  * Bug #36549: removed UCS4 feature branch, added UCS logo as SVG
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 17 Nov 2014 18:10:52 +0100
+
 univention-management-console-frontend-theme (0.0.85-1) unstable; urgency=medium
 
   Bug #36414:
