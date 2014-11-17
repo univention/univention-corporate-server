@@ -8,10 +8,12 @@ import logging
 import operator
 from time import time
 from optparse import OptionParser, OptionGroup
+
+import univention.testing.format
+from univention.testing.codes import TestCodes
 from univention.testing.utils import setup_environment, setup_debug, \
 		LOG_BASE, get_sections, get_tests
 from univention.testing.data import TestEnvironment, TestCase, TestResult
-import univention.testing.format
 
 
 def parse_options(sections):
@@ -36,6 +38,9 @@ def parse_options(sections):
 			dest="exposure", action="store",
 			choices=('safe', 'careful', 'dangerous'),
 			help="Run more dangerous tests")
+	selection_group.add_option("-H", "--hold",
+			dest="hold", action="store_true", default=False,
+			help="Stop execution after the first failed test")
 	parser.add_option_group(selection_group)
 
 	output_group = OptionGroup(parser, 'Output options')
@@ -94,7 +99,7 @@ class TestSet(object):
 		else:
 			self.prefix = ''
 
-	def run_tests(self, filter_condition=False, dry_run=False):
+	def run_tests(self, filter_condition=False, dry_run=False, stop_on_failure=False):
 		"""Run selected tests."""
 		self.format.begin_run(self.test_environment, self.max_count)
 		try:
@@ -118,6 +123,10 @@ class TestSet(object):
 						try:
 							if not dry_run:
 								test_result.run()
+								if stop_on_failure and \
+									test_result.result == TestCodes.RESULT_FAIL:
+									# stop execution, Bug #35988
+									return
 						finally:
 							self.format.end_test(test_result)
 				finally:
@@ -160,7 +169,8 @@ def main():
 	test_set.set_environment(test_environment)
 	test_set.set_prefix(options.count)
 	test_set.set_format(options.format)
-	test_set.run_tests(options.filter, options.dry)
+	test_set.run_tests(options.filter, options.dry, options.hold)
+
 
 if __name__ == '__main__':
 	try:
