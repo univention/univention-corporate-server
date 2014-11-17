@@ -2,41 +2,36 @@
 <title>Univention Management Console</title>
 
 <section id="central-management-umc:Introduction">
-	<title>Introduction #TODO</title>
+	<title>Introduction</title>
 	<para>
-		&ucsUMC; (UMC) is the central tool for web-based administration of
-		the UCS domain. UMC supports two basic module types:
-	</para>
-	<itemizedlist>
-		<listitem>
-			<simpara>
-			<emphasis>Domain modules</emphasis> manage all the data saved in the LDAP
-			directory, e.g., users, groups or host accounts. All the modifications
-			made here apply to the whole domain. Domain modules are only displayed
-			on the &ucsMaster; and &ucsBackup;. All the domain modules can also
-			be controlled with a command line interface, the &ucsUDM;.
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>System modules</emphasis> allow the configuration or management of
-			an individual system, e.g., the starting or stopping of services or
-			the configuration of &ucsUCR; variables.
-			</simpara>
-		</listitem>
-	</itemizedlist>
-	<para>
-		<xref linkend="central:user-interface"/> describes the user interface of
-		&ucsUMC;. <xref linkend="central:extendedattrs"/> describes how the functions of the
-		domain management can be expanded with additional attributes.
+		&ucsUMC; (UMC) is the central tool for web-based administration of the
+		UCS domain. There are various modules available for the
+		administration of the different aspects depending on the respective
+		system role.
 	</para>
 	<para>
-		The domain data can also be exported and evaluated with Univention
-		Directory reports, see <xref linkend="central:reports"/>.
+		UMC modules for the administration of all the data included in the LDAP
+		directory (such as users, groups and computer accounts) are only
+		provided on &ucsMaster; and &ucsBackup;. Changes made in these
+		modules apply for the whole domain.
 	</para>
 	<para>
-		The Univention Directory Manager - the command line interface of the
-		domain management is described in the <xref linkend="central:udm"/>.
+		UMC modules for the configuration and administration of the local
+		system are provided on all system roles. These modules can be used to
+		install additional applications and updates, adapt the local
+		configuration via &ucsUCR; or start/stop services, for example.
+	</para>
+	<para>
+		<xref linkend="central:user-interface"/> first describes the general
+		operation of &ucsUMC;. The following sections explain among other things
+		the work with the LDPA directory browser (<xref linkend="central:navigation"/>),
+		the use of administrative settings via policies (<xref linkend="central:policies"/>),
+		the extension of the scope of function of the domain administration with
+		extended attributes (<xref linkend="central:extendedattrs"/>) and delegating
+		administration rights to additional user groups (<xref linkend="delegated-administration"/>).
+		Lastly, the command line interface of the domain administration is displayed
+		(<xref linkend="central:udm"/>) and the evaluation of domain data via the
+		UCS reporting function are explained (<xref linkend="central:reports"/>).
 	</para>
 </section>
 
