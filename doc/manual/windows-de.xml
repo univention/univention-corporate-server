@@ -946,12 +946,6 @@ echo -n "Administrator password" > /etc/univention/connector/password
   </para>
   </section>
 
-  <para>
-    <figure><title>Administrationsdialog für die Active Directory-Verbindung</title>
-      <graphic scalefit="1" width="90%" align="center" fileref="illustrations/admember_3-de.png"/>
-    </figure>
-  </para>
-
   <section id="ad-connector:ad-connector-einrichtung">
   <title>Einrichtung des UCS AD-Connectors</title>
 
@@ -1137,6 +1131,12 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 			dies ist in <xref linkend="ext-doc-win"/> dokumentiert.
 	  </para>
 	</note>
+
+	<para>
+	 <figure><title>Administrationsdialog für die Active Directory-Verbindung</title>
+	 <graphic scalefit="1" width="90%" align="center" fileref="illustrations/adconnector_2-de.png"/>
+	 </figure>
+	</para>
 
 	</section>
 
@@ -1338,11 +1338,6 @@ In einer Standard-Installation unter Windows 2008 blockiert die
 Windows-Firewall die Zugriffe auf den UCS AD-Connector. Diese muss entweder
 in der <guimenu>Systemsteuerung</guimenu> deaktiviert werden oder Port
 6670/TCP freigegeben werden.
-</para>
-<para>
-<figure><title>Download der Pakete für den Passwortdienst</title>
- <graphic scalefit="1" width="90%" align="center" fileref="illustrations/adconnector_2-de.png"/>
- </figure>
 </para>
 </section>
 

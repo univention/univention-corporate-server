@@ -889,12 +889,6 @@ echo -n "Administrator password" > /etc/univention/connector/password
     If desired, the AD domain controller can also be replaced by the &ucsMaster; at a later point in time. This is possible via the <emphasis>Active Directory Takeover</emphasis> application (see <xref linkend="windows:adtakeover"/>).
   </para>
 
-  <para>
-    <figure><title>Administration dialogue for the Active Directory Connection</title>
-      <graphic scalefit="1" width="90%" align="center" fileref="illustrations/admember_3-en.png"/>
-    </figure>
-  </para>
-
   </section>
 
 <section id="ad-connector:ad-connector-einrichtung">
@@ -1048,6 +1042,12 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 		The connector can also synchronise several AD domains within one UCS domain; this is documented in <xref linkend="ext-doc-win"/>.
 	</para>
   </note>
+
+  <para>
+    <figure><title>Administration dialogue for the Active Directory Connection</title>
+      <graphic scalefit="1" width="90%" align="center" fileref="illustrations/adconnector_2-en.png"/>
+    </figure>
+  </para>
 
 </section>
 
@@ -1245,11 +1245,6 @@ The password service must then be restarted.
 During a standard installation in Windows 2008 the Windows firewall
 blocks the access to the UCS AD Connector. This must either be deactivated
 in <guimenu>System settings</guimenu> or Port 6670/TCP authorised.
-</para>
-<para>
-<figure><title>Packages for the password service</title>
- <graphic scalefit="1" width="90%" align="center" fileref="illustrations/adconnector_2-en.png"/>
- </figure>
 </para>
 </section>
 
