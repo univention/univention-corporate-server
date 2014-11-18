@@ -774,15 +774,18 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
-
+-->
 	<section id="changelog:service:proxy">
 		<title>Proxy services</title>
 		<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
+		  <listitem><simpara>
+			  The configuration file of Squid has been adapted for UCS 4.0 and UCS@school. E.g. the
+			  path to the squidguard configuration file has been changed to its new location
+			  <filename>/etc/squidguard/squidGuard.conf</filename>.  (<ulink url="&ucsbug;36780">Bug 36780</ulink>).
+		  </simpara></listitem>
 		</itemizedlist>
 	</section>
-
+<!--
 	<section id="changelog:service:pam">
 		<title>PAM / Local group cache</title>
 		<itemizedlist>
