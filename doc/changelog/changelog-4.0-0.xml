@@ -922,6 +922,11 @@
 						an empty value in smb.conf. This has been fixed
 						(<ulink url="&ucsbug;33261">Bug 33261</ulink>).
 				</simpara></listitem>
+				<listitem><simpara>
+						Samba3 to Samba4 in-place migration failed with Samba 4.2 because
+						the new smb.conf validation code complained about empty values in smb.conf
+						(<ulink url="&ucsbug;36814">Bug 36814</ulink>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
