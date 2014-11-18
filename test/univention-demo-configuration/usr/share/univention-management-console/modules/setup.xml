@@ -1,22 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="setup" priority="1" version="1.0">
-		<name>Basic settings</name>
-		<description>Configuration of basic settings of the local system</description>
-		<keywords>basic,system,setup,settings,configuration,locale,network,timezone,hostname</keywords>
+	<module id="setup" version="1.0">
+		<flavor priority="50" id="wizard">
+			<name>UCS setup wizard</name>
+			<description>Configuration of the UCS system</description>
+		</flavor>
+		<flavor priority="50" id="languages">
+			<name>Language settings</name>
+			<description>All language relevant configurations</description>
+			<keywords>timezone,locale,keyboard</keywords>
+		</flavor>
+		<flavor priority="50" id="network">
+			<name>Network settings</name>
+			<description>Specify IP addresses, name servers, gateways and HTTP proxies</description>
+			<keywords>ip,dhcp,dns,nameserver,forwarder,gateway,interface</keywords>
+		</flavor>
+		<flavor priority="50" id="certificate">
+			<name>Certificate settings</name>
+			<description>Create a new root certificate</description>
+			<keywords>SSL,organization</keywords>
+		</flavor>
 		<categories>
 			<category name="system"/>
 		</categories>
 		<command name="setup/load" function="load" />
 		<command name="setup/validate" function="validate" />
 		<command name="setup/finished" function="check_finished" />
-		<command name="setup/lang/default_timezone" function="lang_default_timezone" />
+		<command name="setup/ping" function="ping" />
 		<command name="setup/lang/timezones" function="lang_timezones" />
 		<command name="setup/lang/locales" function="lang_locales" />
-		<command name="setup/lang/default_keymap" function="lang_default_keymap" />
-		<command name="setup/lang/keymaps" function="lang_keymaps" />
+		<command name="setup/lang/keyboard/model" function="lang_keyboard_model" />
+		<command name="setup/lang/keyboard/layout" function="lang_keyboard_layout" />
+		<command name="setup/lang/keyboard/variant" function="lang_keyboard_variante" />
 		<command name="setup/lang/countrycodes" function="lang_countrycodes" />
 		<command name="setup/net/interfaces" function="net_interfaces" />
+		<!--TODO remove-->
 		<command name="setup/software/components" function="software_components" />
+		<command name="setup/keymap/save" function="save_keymap" />
+		<command name="setup/find_city" function="find_city"/>
+		<command name="setup/apps/query" function="apps_query"/>
+		<command name="setup/net/progress" function="progress"/>
 	</module>
 </umc>

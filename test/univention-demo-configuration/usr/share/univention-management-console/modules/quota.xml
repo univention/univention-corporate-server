@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="quota" priority="10" version="1.0">
+	<module id="quota" priority="50" version="1.0">
 		<name>Filesystem quotas</name>
-		<description>Configuration of disk quotas for the local system</description>
+		<description>Configuration of disk space limitations on the local system</description>
 		<keywords>filesystem,quota,partition</keywords>
 		<categories>
-			<category name="system"/>
+			<category name="users"/>
 		</categories>
+		<command name="quota/partitions/query" function="partitions_query" />
+		<command name="quota/partitions/info" function="partitions_info" />
+		<command name="quota/users/query" function="users_query" />
 	</module>
 </umc>

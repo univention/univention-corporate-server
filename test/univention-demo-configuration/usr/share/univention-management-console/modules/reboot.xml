@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="reboot" priority="9" version="1.0">
+	<module id="reboot" priority="50" version="1.0">
 		<name>Reboot</name>
 		<description>Shut down or reboot of the local system</description>
 		<keywords>reboot,shutdown,halt</keywords>
 		<categories>
-			<category name="system"/>
 		</categories>
 		<command name="reboot/show" function="show" />
 	</module>

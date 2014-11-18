@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="diagnostic" version="1.0">
+		<name>System diagnostic</name>
+		<description>Analyse the system for known problems</description>
+		<keywords>support</keywords>
+		<categories>
+			<category name="system"/>
+		</categories>
+		<command name="diagnostic/query" function="query"/>
+		<command name="diagnostic/get" function="get"/>
+		<command name="diagnostic/progress" function="progress"/>
+	</module>
+</umc>

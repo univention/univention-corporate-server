@@ -1,3 +1,9 @@
+univention-demo-configuration (3.0.1-1) unstable; urgency=medium
+
+  * Bug #36156: adjusted package for changes in UCS 4.0
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 18 Nov 2014 20:39:51 +0100
+
 univention-demo-configuration (3.0.0-2) unstable; urgency=low
 
   * removed ucr entry for umc-overview icon / added unset of ucr entry

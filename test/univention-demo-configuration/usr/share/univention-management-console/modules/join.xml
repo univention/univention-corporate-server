@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="join" priority="14" version="1.0">
+	<module id="join" priority="50" version="1.0">
 		<name>Domain join</name>
 		<description>Domain join of the local system</description>
 		<keywords>join scripts,domain join,join</keywords>
 		<categories>
-			<category name="system"/>
+			<category name="domain"/>
 		</categories>
 		<command name="join/locked" function="dpkg_locked"/>
-		<command name="join/scripts/query" function="query" />
+		<command name="join/scripts/query" function="query"/>
 		<command name="join/logview" function="logview"/>
 		<command name="join/joined" function="joined"/>
 		<command name="join/running" function="running"/>

@@ -40,13 +40,13 @@ case "$1" in
 	install|upgrade)
 		# create necessary diversions
 		for file in \
-			/usr/share/univention-management-console-frontend/js/umc/app/login.html \
+			/usr/share/univention-management-console-frontend/index.html \
 			/usr/share/univention-management-console-frontend/js/umc/i18n/de/branding.json \
 			/usr/share/univention-management-console-frontend/js/umc/i18n/en/branding.json
 		do
 			_divert  $file
 		done
-		for module in join packages quota reboot services setup sysinfo top ucr updater appcenter lib ipchange
+		for module in appcenter diagnostic ipchange join lib passwordchange quota reboot services setup sysinfo top ucr updater
 		do
 			_divert /usr/share/univention-management-console/modules/"$module".xml
 		done

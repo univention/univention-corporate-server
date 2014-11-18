@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="top" priority="12" version="1.0">
+	<module id="top" priority="50" version="1.0">
 		<name>Process overview</name>
 		<description>Overview of processes on the local system</description>
 		<keywords>process</keywords>
 		<categories>
-				<category name="system"/>
+			<category name="system"/>
 		</categories>
 		<command name="top/query" function="query" />
 	</module>

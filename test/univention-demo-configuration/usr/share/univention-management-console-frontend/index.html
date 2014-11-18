@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Univention Management Console</title>
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="js_$20141811192458$/dijit/themes/umc/umc.css" type="text/css"/>
+
+		<script type="text/javascript">
+			//<!--
+			function getQuery(/*String*/ param, /*mixed*/ defaultVal) {
+				// parse the URI query string
+				var query = window.location.search.substring(1);
+				var vars = query.split('&');
+				for (var i = 0; i < vars.length; i++) {
+					// parse the tuple
+					var tuple = vars[i].split('=');
+
+					// check whether we found the particular parameter we are interested in
+					if (2 == tuple.length && param == tuple[0]) {
+						return tuple[1];
+					}
+				}
+
+				// otherwise return the specified default value
+				return defaultVal;
+			}
+
+			function getCookie(/*String*/ param, /*mixed*/ defaultVal) {
+				// find the given parameter in the cookie string
+				var reg = new RegExp(param + '=([a-zA-Z_-]*)');
+				var m = reg.exec(document.cookie);
+				if (m && m[1]) {
+					return m[1];
+				}
+
+				// in case the parameter does not exist, return the default value
+				return defaultVal;
+			}
+
+			var locale = getQuery('lang') || getCookie('UMCLang');
+			if (locale) {
+				locale = locale.replace('_', '-');
+			}
+			var dojoConfig = {
+				has: {
+					'dojo-undef-api': true
+				},
+				isDebug: window.location.pathname.indexOf('/debug') != -1,
+				locale: locale,
+				async: true,
+				deps: [],
+				callback: function() {
+					require(["dojo/parser", "umc/app", "umc/tools", "umc/app/LanguageSwitch", "dojo/domReady!"], function(parser, app, tools) {
+						// parse the DOM tree
+						parser.parse();
+
+						// set the version of the UMC frontend
+						tools.status('version', '4.1.103-1.961.201411182017');
+
+						// start the application when everything has been loaded
+						app.start({
+							username: getQuery('username'),
+							password: getQuery('password'),
+							module: getQuery('module'),
+							flavor: getQuery('flavor'),
+							overview: getQuery('overview', true)
+						});
+					});
+				}
+			};
+			//-->
+		</script>
+		<script type="text/javascript" async src="js_$20141811192458$/dojo/dojo.js"></script>
+	</head>
+	<body class="umc umcOverviewShown">
+		<div id="umcLoginWrapper">
+			<div id="umcFakeLoginLogo"></div>
+			<div id="umcLanguageSwitch" data-dojo-type="umc/app/LanguageSwitch"></div>
+			<div id="umcLoginCenterer"></div>
+			<div id="umcLoginDialog" class="umcLoginLoading dijitDialog dojoxDialog umcLoginDialog">
+				<div id="umcLoginLogo" class="umcLoginLogo">
+					<img id="umcLoginLogo" src="js_$20141811192458$/dijit/themes/umc/images/login_logo.png"/>
+				</div>
+				<form id="umcLoginForm" name="umcLoginForm" action="login2.html" method="post" class="umcLoginForm" autocomplete="on">
+					<label for="umcLoginUsername">
+						<input placeholder="Username" id="umcLoginUsername" name="username" type="text" autocomplete="off" value="Administrator"/>
+					</label>
+					<label for="umcLoginPassword">
+						<input placeholder="Password" id="umcLoginPassword" name="password" type="password" autocomplete="off" value="univention"/>
+						<input id="umcLoginSubmit" type="submit" name="submit" value="Login"/>
+					</label>
+				</form>
+				<form id="umcNewPasswordForm" name="umcLoginForm" action="login2.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
+					<label for="umcLoginNewPassword">
+						<input placeholder="New Password" id="umcLoginNewPassword" name="new_password" type="password"/>
+					</label>
+					<label for="umcLoginNewPasswordRetype">
+						<input placeholder="New Password (retype)" id="umcLoginNewPasswordRetype" type="password"/>
+						<input type="submit" name="submit" value="Login"/>
+					</label>
+				</form>
+				<iframe id="umcLoginIframe" src="login.html"></iframe>
+				<img src="js_$20141811192458$/dijit/themes/umc/images/login_bg.gif" height="0" width="0">
+			</div>
+		</div>
+		<div id="umcTopContainer" class="umcTopContainer"></div>
+		<noscript style="margin: auto; padding-top: 50px; width: 50%; display: block;">
+			<h1>A browser with JavaScript enabled is needed in order to use Univention Management Console.</h1>
+			<h1 style="margin-top: 20px;">When using Internet Explorer, please check your security settings and add this address to your trusted sites.</h1>
+		</noscript>
+	</body>
+</html>

@@ -62,22 +62,16 @@ case "$1" in
 			update/reboot/required=false \
 			update/available=false
 
-		# hide the Administrator account by default
-		udm users/user modify --dn "uid=Administrator,cn=users,$ldap_base" --set objectFlag=hidden
+		# hide Administrator + machine account by default
+		udm "users/user" modify --dn "uid=Administrator,cn=users,$ldap_base" --set objectFlag=hidden
+		udm "computers/$server_role" modify --dn "$ldap_hostdn" --set objectFlag=hidden
 
 		# remove obsolete nagios template and allow anonymous access
 		_undivert /etc/univention/templates/files/etc/nagios3/apache2.conf
 		ucr set nagios/server/authenticate=no
 
-		if  [ -n "$2" ] && dpkg --compare-versions "$2" lt '2.0.0-0'; then
-				mkdir -p /etc/univention/templates/removed/
-				files="en.html.d/90sdb_en.html de.html.d/90sdb_de.html"
-				for file in $files; do
-						if [ -e "/etc/univention/templates/files/var/www/ucs-overview/$file" ]; then
-								mv "/etc/univention/templates/files/var/www/ucs-overview/$file" /etc/univention/templates/removed/
-						fi
-				done
-		fi
+		# in UCS 3.x login.html was diverted, not anymore in UCS 4.0
+		_undivert /usr/share/univention-management-console-frontend/js/umc/app/login.html
 
 		# reload services
 		umc_frontend_new_hash

@@ -4,6 +4,7 @@
 		<name>Server commands</name>
 		<description>Module lib containing low-lewel commands to control the UMC server</description>
 		<keywords></keywords>
+		<command name="lib/server/restart/isNeeded" function="restart_isNeeded"></command>
 		<command name="lib/server/ping" function="ping"></command>
 	</module>
 </umc>

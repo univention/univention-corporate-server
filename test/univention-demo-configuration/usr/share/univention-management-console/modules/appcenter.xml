@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="appcenter" priority="15" version="1.0">
-		<name>App Center</name>
-		<description>Installation of apps and software packages on the local system, repository server configuration</description>
-		<keywords>app center,install,packages,software,updates,components</keywords>
-		<categories>
-			<category name="system"/>
-		</categories>
-
+	<module id="appcenter" priority="50" version="1.0">
+		<flavor priority="50" id="appcenter">
+			<name>App Center</name>
+			<description>Install or remove applications</description>
+			<keywords>install,uninstall,software,update</keywords>
+			<categories>
+				<category name="software"/>
+			</categories>
+		</flavor>
+		<flavor priority="50" id="packages">
+			<name>Package Management</name>
+			<description>Installation of software packages</description>
+			<keywords>update,install,uninstall</keywords>
+			<categories>
+				<category name="software"/>
+			</categories>
+		</flavor>
+		<flavor priority="50" id="components">
+			<name>Repository Settings</name>
+			<description>Repository server configuration</description>
+			<keywords/>
+			<categories>
+				<category name="software"/>
+			</categories>
+		</flavor>
 		<command name="appcenter/working" function="working" />
 		<command name="appcenter/version" function="version" />
 		<command name="appcenter/get_by_component_id" function="get_by_component_id" />

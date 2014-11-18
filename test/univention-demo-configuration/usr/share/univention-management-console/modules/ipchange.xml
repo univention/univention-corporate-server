@@ -4,8 +4,5 @@
 		<name>IP change</name>
 		<description>Change ip for ucs servers</description>
 		<keywords></keywords>
-		<categories>
-			<category name="system"/>
-		</categories>
 	</module>
 </umc>
