@@ -582,7 +582,7 @@
 
 		<para>
 		  <figure id="grub-selection"><title>GRUB menu</title>
-		  <graphic scalefit="1" width="80%" fileref="illustrations/computers_grub.png"/>
+		  <graphic scalefit="1" width="80%" align="center" fileref="illustrations/computers_grub.png"/>
 		  </figure>
 		</para>
 
