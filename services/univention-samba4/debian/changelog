@@ -1,3 +1,10 @@
+univention-samba4 (4.0.3-2) unstable; urgency=medium
+
+  * Bug #36806: Unset SMB_CONF_PATH in joinscript, otherwise it breaks
+    setup-s4.sh inplace migration.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Nov 2014 17:57:32 +0100
+
 univention-samba4 (4.0.3-1) unstable; urgency=medium
 
   * Bug #36814: Fix undefined parameters in samba3upgrade/smb.conf

@@ -762,8 +762,8 @@ exit_on_slave_if_no_s4_connector_on_master_or_backup()
 
 ### --- END helper functions ---
 
-# lp.load('/dev'null') might have exported SMB_CONF_PATH, explicitly set it to the default here:
-export SMB_CONF_PATH=/etc/samba/smb.conf
+# lp.load('/dev'null') might have exported SMB_CONF_PATH, explicitly unset it here
+unset SMB_CONF_PATH
 
 exit_on_slave_if_no_s4_connector_on_master_or_backup
 
