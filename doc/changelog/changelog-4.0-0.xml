@@ -425,7 +425,7 @@
 					(<ulink url="&ucsbug;36543">Bug 36543</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-					When the &ucsUCRV; <envar>windows/domain</envar> is derived from the domainname
+					When the &ucsUCRV; <envar>windows/domain</envar> is derived from the domain name
 					it is automatically truncated to up to 15 characters to conform to netbios
 					restrictions (<ulink url="&ucsbug;36459">Bug 36459</ulink>).
 			</simpara></listitem>
@@ -901,7 +901,7 @@
 						(<ulink url="&ucsbug;36284">Bug 36284</ulink>).
 				</simpara></listitem>
 				<listitem><simpara>
-						When installing the app Active Directory-compatible Domain Controller on a DC Slave
+						When installing the App Active Directory-compatible Domain Controller on a DC Slave
 						the joinscript aborts now if an S4 Connector has already been installed on
 						the DC Master or on a DC Backup. Additionally the S4 Connector package is installed
 						in this case for purely technical reasons but it is not activated
@@ -984,10 +984,10 @@
 				<ulink url="&ucsbug;36374">Bug 36374</ulink>).
 		</simpara></listitem>
 		<listitem><simpara>
-				The legacy debian package <package>firefox</package> has been replaced by the packages
+				The legacy Debian package <package>firefox</package> has been replaced by the packages
 				<package>firefox-en</package> and <package>firefox-de</package> since quite some time.
 				During update to UCS 4.0 it will automatically get replaced by
-				<package>firefox-en</package>. If desired the german version can be installed instead
+				<package>firefox-en</package>. If desired the German version can be installed instead
 				either before or after the update
 				(<ulink url="&ucsbug;36453">Bug 36453</ulink>).
 		</simpara></listitem>
@@ -1046,6 +1046,10 @@
 			<package>mplayer</package>, <package>krdc</package>, <package>krfb</package>,
 			<package>kontact</package> and <package>nautilus</package>,
 			<ulink url="&ucsbug;36050">Bug 36050</ulink>)
+		</simpara></listitem>
+		<listitem><simpara>
+				<application>kdm</application> is not used as the display manager for graphical login.
+				The PAM configuration was updated to reflect this change (<ulink url="&ucsbug;35266">Bug 35266</ulink>, <ulink url="&ucsbug;36743">Bug 36743</ulink>)
 		</simpara></listitem>
 	</itemizedlist>
 </section>
