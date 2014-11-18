@@ -212,7 +212,7 @@ Further information can be found in <xref linkend="domain:ldap"/>.
 <section id="introduction:Domain_administration"><title>Domain administration</title>
 <para>
 <figure><title>Univention Management Console</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/umc-overview_en.png"/>
+ <graphic scalefit="1" width="90%" align="center" fileref="illustrations/umc-overview_en.png"/>
 </figure>
 </para>
 <para>
