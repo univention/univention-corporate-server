@@ -73,6 +73,10 @@ univention-config-registry set \
 	"auth/gdm/group/Domain Admins?yes" \
 	auth/gdm/group/Administrators?"yes" \
 	auth/gdm/user/root?"yes" \
+	auth/kdm/restrict?"yes" \
+	"auth/kdm/group/Domain Admins?yes" \
+	auth/kdm/group/Administrators?"yes" \
+	auth/kdm/user/root?"yes" \
  	auth/login/restrict?"yes" \
 	"auth/login/group/Domain Admins?yes" \
 	auth/login/group/Administrators?"yes" \

@@ -207,6 +207,19 @@ Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
+File: etc/pam.d/kdm
+Variables: auth/kdm/restrict
+Variables: auth/kdm/accessfile
+Variables: pamaccess/maxent
+
+Type: file
+File: etc/security/access-kdm.conf
+Variables: auth/kdm/group/.*
+Variables: auth/kdm/user/.*
+Variables: users/default/.*
+Variables: groups/default/.*
+
+Type: file
 File: etc/pam.d/kcheckpass
 Variables: auth/kcheckpass/accessfile
 Variables: auth/kcheckpass/restrict

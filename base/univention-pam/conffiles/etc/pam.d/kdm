@@ -1,0 +1,23 @@
+@%@UCRWARNING=# @%@
+
+@include common-auth
+@!@
+scope = "kdm"
+accessfileFlag = "auth/%s/restrict" % (scope,)
+if configRegistry.is_true(accessfileFlag, False):
+	accessfileDefault = "/etc/security/access-%s.conf" % (scope,)
+	accessfileKey = "auth/%s/accessfile" % (scope,)
+	accessfile = configRegistry.get(accessfileKey, accessfileDefault)
+	line =  [
+		'account required pam_access.so',
+		'accessfile=%s' % (accessfile,),
+		'listsep=,',
+		]
+	maxent = configRegistry.get('pamaccess/maxent', False)
+	if maxent:
+		line.append('maxent=%s' % (maxent,))
+	print ' '.join(line)
+@!@
+@include common-account
+@include common-session
+@include common-password

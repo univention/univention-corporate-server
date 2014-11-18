@@ -4,6 +4,7 @@
 0004-12: conffiles/etc/pam.d/su
 0004-12: conffiles/etc/pam.d/rsh
 0004-12: conffiles/etc/pam.d/gdm
+0004-12: conffiles/etc/pam.d/kdm
 0004-12: conffiles/etc/pam.d/kscreensaver
 0004-12: conffiles/etc/pam.d/screen
 0004-12: conffiles/etc/pam.d/kcheckpass
