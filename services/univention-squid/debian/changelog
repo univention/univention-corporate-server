@@ -1,3 +1,9 @@
+univention-squid (8.0.2-1) unstable; urgency=medium
+
+  * Bug #36780: fix squidguard config file path
+
+ -- Florian Best <best@univention.de>  Mon, 17 Nov 2014 22:29:11 +0100
+
 univention-squid (8.0.1-1) unstable; urgency=medium
 
   * Remove winbind4 from dependency list (Bug #35319)
