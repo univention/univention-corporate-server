@@ -44,7 +44,7 @@
 			installed.
 		</para>
 		<para>
-			CPU virtualization support is urgently required for the operation of KVM. This
+			CPU virtualization support is mandatory for the operation of KVM. This
 			is provided by almost all current x86 CPUs. For more information, consult the
 			KVM project website: <ulink url="http://www.linux-kvm.org/"/>.
 		</para>
@@ -52,7 +52,7 @@
 		<para>
 			Additionally, the architecture must also be taken into account during
 			installation of a virtualization server. 64-bit systems can only be virtualized
-			on UCS systems where are installed using the amd64 architecture. A 64-bit system
+			on UCS systems which are installed using the amd64 architecture. A 64-bit system
 			(amd64) is recommended for use as the virtualization server.
 		</para>
 	</section>
@@ -105,13 +105,13 @@
 								</entry>
 							</row>
 							<row>
-								<entry>User name</entry>
+								<entry>Username</entry>
 								<entry>
 									The user name to be used for authentication for OpenStack.
 								</entry>
 							</row>
 							<row>
-								<entry>Use following type of authentication</entry>
+								<entry>Use the following authentication type</entry>
 								<entry>
 									There are two options to choose from. The corresponding value is entered in the
 									field below.
@@ -136,22 +136,21 @@
 								</entry>
 							</row>
 							<row>
-								<entry>URL of the authentication end point</entry>
+								<entry>Authentication URL endpoint</entry>
 								<entry>
 									The URL under which the authentication end point of the OpenStack instance can
 									be reached should be entered here. If you want to establish an encrypted
 									connection, the URL should be entered in the form
 									<emphasis>https://[...]</emphasis>. As the public certificate for the OpenStack
-									instance is used for the encrypted connection, it needs to be made known to the
-									UVMM system. This certificate needs to be made available on the UCS system on
-									which the <emphasis>&ucsUVMM;</emphasis> application is installed. To this end,
-									the public certificate must be copied into the
+									instance is used for the encrypted connection, this certificate needs to be made
+									available on the UCS system on which the <emphasis>&ucsUVMM;</emphasis> application
+									is installed. To this end, the public certificate must be copied into the
 									<filename class="directory">/usr/local/share/ca-certificates/</filename> directory on the UCS
 									server in PEM encryption and furnished with the suffix .crt. The following
 									commands convert a certificate into the correct encryption and make the
 									certificate known.
 									<programlisting language="sh">
-openssl x509 -in [pfad/zum/openstack-zertifikat] \
+openssl x509 -in [path/to/openstack-certificate] \
 	-outform pem -out /usr/local/share/ca-certificates/openstack.crt
 
 update-ca-certificates
@@ -163,7 +162,7 @@ update-ca-certificates
 								</entry>
 							</row>
 							<row>
-								<entry>Search template for images</entry>
+								<entry>Search pattern for images</entry>
 								<entry>
 									To create a new virtual machine, only the images that correspond to the
 									configured search template are used as source images. The default value "*"
@@ -178,7 +177,7 @@ update-ca-certificates
 								</entry>
 							</row>
 							<row>
-								<entry>Name of service</entry>
+								<entry>Service region</entry>
 								<entry>
 									The name of the region in which the user should work. The OpenStack default
 									value is <emphasis>regionOne</emphasis>.
@@ -192,14 +191,14 @@ update-ca-certificates
 								</entry>
 							</row>
 							<row>
-								<entry>Name of service</entry>
+								<entry>Service</entry>
 								<entry>
 									The name of the service under which the cloud compute function is available. The
 									default value is <emphasis>nova</emphasis>.
 								</entry>
 							</row>
 							<row>
-								<entry>URL of the service end point</entry>
+								<entry>Service URL endpoint</entry>
 								<entry>
 									Optional value: The URL of the service end point is normally determined
 									automatically when the user logs on to OpenStack. Should automatically
@@ -245,21 +244,21 @@ update-ca-certificates
 								</entry>
 							</row>
 							<row>
-								<entry>Access key ID</entry>
+								<entry>Access Key ID</entry>
 								<entry>
 									The access key ID assigned to the Amazon EC2 account is comparable with a user
 									name.
 								</entry>
 							</row>
 							<row>
-								<entry>Secret access key</entry>
+								<entry>Secret Access Key</entry>
 								<entry>
 									The secret access key for access via the Amazon EC2 account is comparable with a
 									password.
 								</entry>
 							</row>
 							<row>
-								<entry>Search template for AMIs</entry>
+								<entry>Search pattern for AMIs</entry>
 								<entry>
 									Image files used as a source for new instances are referred to as AMIs. The
 									search filter specified here restricts the display of selectable AMIs when
@@ -296,15 +295,14 @@ update-ca-certificates
 				The search mask can also be used to search for individual virtual machines.
 			</para>
 			<para>
-				In the overview of the virtual machines, the computer icon shows the state this
+				In the overview of the virtual machines, the computer icon shows the state a virtual machine 
 				is in, e.g., whether it is running (computer symbol with green arrow), paused
 				(computer symbol with yellow line) or stopped (computer without additional
 				symbol).
 				Virtual machines in cloud computing environments can also be depicted as deleted
-				(computer with red cross) or as open (computer with hourglass).
+				(computer with red cross) or as pending (computer with hourglass).
 			</para>
 			<para>
-				Instances created via UVMM are turned off in the initial status.
 				The icon showing an arrow pointing right can be used to start a virtual instance.
 			</para>
 
@@ -438,7 +436,7 @@ update-ca-certificates
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Save and exit</term>
+					<term>Suspend</term>
 					<listitem>
 						<simpara>
 							Saves the contents of the machine's working memory on the hard drive memory and
@@ -491,7 +489,7 @@ update-ca-certificates
 							</entry>
 						</row>
 						<row>
-							<entry>Selection of source image / source AMI</entry>
+							<entry>Choose a source image / source AMI</entry>
 							<entry>
 								The initial status of a virtual machine when created is specified via a source
 								image (OpenStack) or source AMI (EC2). This type of image usually includes a
@@ -500,16 +498,16 @@ update-ca-certificates
 							</entry>
 						</row>
 						<row>
-							<entry>Selection of the instance size</entry>
+							<entry>Choose an instance size</entry>
 							<entry>
 								An instance size is assigned to a virtual machine when it is created. This is
 								composed of available memory and the size of the available hard drive memory.
 								When a virtual machine is created in an OpenStack environment, the number of the
-								CPU cores is also determined in addition to the size.
+								CPU cores is also determined when selecting the size.
 							</entry>
 						</row>
 						<row>
-							<entry>Selection of a key pair</entry>
+							<entry>Select a key pair</entry>
 							<entry>
 								To allow safe access to the virtual machine via ssh, an ssh key for
 								configuration of the root account is added to the machine the first time it is
@@ -518,12 +516,12 @@ update-ca-certificates
 								the key pair. The access to the instance can be performed with the following
 								command, for example, if the instance is running:
 								<programlisting language="sh">
-ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
+ssh -i [path/to/private/key] root@[instance-ip-address]
 								</programlisting>
 							</entry>
 						</row>
 						<row>
-							<entry>Configuring a security group</entry>
+							<entry>Configure security group</entry>
 							<entry>
 								This setting configures which security group is set for the new virtual machine.
 								A security group determines which TCP ports are approved for external access to
