@@ -1,79 +1,90 @@
 <chapter id="uvmm:chapter">
 	<title>Virtualization</title>
-<!-- TODO: translation
 	<section id="uvmm::introduction">
 		<title>Introduction</title>
 		<para>
-			&ucsUVMM; (UVMM) ist ein Werkzeug für die Verwaltung hybrider Cloud-Umgebungen. Es können
-			in der UCS-Domäne regiustrierte KVM-Virtualisierungsserver und darauf betriebene 
-			virtuelle Maschinenen zentral überwacht und administrtiert werden. Zusätzlich können
-			virtuelle Maschinen in OpenStack- oder EC2-Umgebungen administriert werden.
-			Die Administration erfolgt über das &ucsUMC;-Modul <emphasis>Virtuelle Maschinen</emphasis>.
+			&ucsUVMM; (UVMM) is a tool for the administration of hybrid cloud environments.
+			It allows central monitoring and administration of KVM virtualization servers
+			registered in the UCS domain and virtual machines operated on it. In addition,
+			virtual machines can be administered in OpenStack or EC2 environments. The
+			administration is performed via the &ucsUMC; module
+			<emphasis>Virtual machines</emphasis>.
 		</para>
 		<para>
-			In den virtualisierten Systemen kann im Prinzip jedes beliebige Betriebssystem verwendet werden.
+			In principle, any operating system can be used on the virtualized systems.
 		</para>
 
 	</section>
--->
 
 	<section id="uvmm::installation">
 		<title>Installation</title>
 
 		<para>
-		  Univention Virtual Machine Manager can be installed from the Univention App Center with the application
-		  <emphasis>Management server for KVM and cloud instances</emphasis>. Alternatively, the software package
+		  &ucsUVMM; can be installed from the Univention App Center with the application
+		  <emphasis>&ucsUVMM;</emphasis>. Alternatively, the software package
 		  <package>univention-virtual-machine-manager-daemon</package> can be installed.
 		  Additional information can be found in
 		  <xref linkend="computers::softwaremanagement::installsoftware"/>.
 		</para>
-<!-- TODO: Move figure into correct place -->
+
+		<para>
+			Administration of OpenStack cloud instances is possible directly after
+			installation of the application with the &ucsUMC; module <emphasis>Virtual
+			machines (UVMM)</emphasis>. The <emphasis>Amazon EC2 Cloud Connection</emphasis>
+			application needs to be installed for the administration of virtual machines in
+			the Amazon EC2 cloud.
+		</para>
+		<para>
+			To add a KVM virtualization server for the administration via &ucsUVMM; locally,
+			the <emphasis>KVM virtualization server</emphasis> application must be installed
+			on a server of the domain from the Univention App Center. The application can
+			also be selected directly during the installation of a new UCS server.
+			Alternatively, the software package
+			<package>univention-virtual-machine-manager-node-kvm</package> can be
+			installed.
+		</para>
+		<para>
+			CPU virtualization support is urgently required for the operation of KVM. This
+			is provided by almost all current x86 CPUs. For more information, consult the
+			KVM project website: <ulink url="http://www.linux-kvm.org/"/>.
+		</para>
+
+		<para>
+			Additionally, the architecture must also be taken into account during
+			installation of a virtualization server. 64-bit systems can only be virtualized
+			on UCS systems where are installed using the amd64 architecture. A 64-bit system
+			(amd64) is recommended for use as the virtualization server.
+		</para>
+	</section>
+	<section id="uvmm::cloudconnections">
+		<title>Creating connections to cloud computing instances</title>
+		<para>
+			&ucsUVMM; supports connections to OpenStack. Installation of the application
+			<emphasis>Amazon EC2 cloud connection</emphasis> makes administration of virtual
+			machines on the Amazon EC2 cloud possible.
+		</para>
+		<para>
+			To create a new connection, the &ucsUMC; module <emphasis>Virtual machines
+			(UVMM)</emphasis> must be opened. Clicking on <guimenu>Create</guimenu> opens a
+			wizard in which the <guimenu>Create a new cloud connection</guimenu> entry needs
+			to be selected. In the drop-down field that appears you can now select the type
+			of connection. Clicking on <guimenu>Next</guimenu> starts the set-up wizard.
+			Once you have made the settings, clicking on <guimenu>Finish</guimenu> creates
+			the connection. If an error occurs, it is displayed and the connection settings
+			can be corrected. If the connection is established successfully, a wait
+			animation is shown while the connection-specific information for the cloud
+			connection is loaded. This covers for example the existing instances and
+			available images for creating new instances.
+		</para>
+		<section id="uvmm:cloudconnections::openstack">
+			<title>Creating an OpenStack connection</title>
 			<figure id="uvmm-new-openstack-connection">
 				<title>Creating a new connection to an OpenStack instance</title>
 				<graphic scalefit="1" width="90%" fileref="illustrations/uvmm_new_openstack_connection_en.png"/>
 			</figure>
-
-<!-- TODO: translate
-		<para>
-			Die Verwaltung von OpenStack Cloud-Instanzen ist direkt nach der Installation der Applikation mit dem &ucsUMC; Modul <emphasis>Virtuelle Maschinen (UVMM)</emphasis> möglich.
-			Für die Verwaltung von virtuellen Maschinen in der Amazon EC2 Cloud muss die Applikation <emphasis>Amazon EC2 Cloud-Verbindung</emphasis> installiert werden.
-		</para>
-		<para>
-			Um vor Ort einen KVM Virtualisierungsserver für die Verwaltung durch &ucsUVMM; hinzuzufügen, muss die Applikation <emphasis>KVM Virtualisierungsserver</emphasis> aus dem Univention App Center auf einem Server der Domäne installiert werden.
-			Die Applikation kann auch direkt bei der Installation eines neuen UCS Servers ausgewählt werden.
-			Alternativ kann das Softwarepaket <package>univention-virtual-machine-manager-node-kvm</package> installiert werden.
-		</para>
-		<para>
-			Zum Betrieb von KVM wird zwingend CPU-Virtualisierungunterstützung benötigt.
-			Diese wird von nahezu allen aktuellen x86 CPUs bereitgestellt.
-			Zu Details kann die Webseite des KVM Projekts konsultiert werden:
-			<ulink url="http://www.linux-kvm.org/"/>.
-		</para>
-
-		<para>
-			Zusätzlich sollte bei der Installation eines Virtualisierungsservers die Architektur beachtet werden.
-			Nur auf UCS-Systemen, die mit der amd64-Architektur installiert sind, können auch 64-Bit-Systeme virtualisiert werden.
-			Für den Einsatz als Virtualisierungsserver wird die Verwendung eines 64-Bit-Systems (amd64) empfohlen.
-		</para>
-	<section id="uvmm::cloudconnections">
-		<title>Anlegen von Verbindungen zu Cloud Computing Instanzen</title>
-		<para>
-			&ucsUVMM; unterstützt Verbindungen zu OpenStack.
-			Durch die Installation der Applikation <emphasis>Amazon EC2 Cloud-Verbindung</emphasis> ist auch das Verwalten von virtuellen Maschinen in der Amazon EC2 Cloud möglich.
-		</para>
-		<para>
-			Um eine neue Verbindung anzulegen, muss das &ucsUMC; Modul <emphasis>Virtuelle Maschinen (UVMM)</emphasis> geöffnet werden.
-			Durch einen Klick auf <guimenu>Erstellen</guimenu> öffnet sich ein Assistent, in dem der Punkt <guimenu>Erstellen einer neuen Cloud-Verbindung</guimenu> gewählt werden muss.
-			Im nun verfügbaren Dropdown Feld kann die Art der Verbindung gewählt werden, mit einem Klick auf <guimenu>Weiter</guimenu> startet der Einrichtungsassistent.
-			Sind die Einstellungen getätigt, wird mit einem Klick auf <guimenu>Fertigstellen</guimenu> versucht, die Verbindung herzustellen.
-			Falls ein Fehler auftritt, wird dieser angezeigt und die Verbindungseinstellunge können korrigiert werden.
-			Wenn die Verbindung erfolgreich hergestellt wurde, wird eine Warteanimation angezeigt, während alle verbindungsspezifischen Informationen der Cloud Verbindung geladen werden.
-			Dies umfasst zum Beispiel die vorhandenen Instanzen und verfügbare Images, um neue Instanzen anlegen zu können.
-		</para>
-		<section id="uvmm:cloudconnections::openstack">
-			<title>Anlegen einer OpenStack Verbindung</title>
 			<para>
-				Um eine Verbindung zu einer OpenStack Instanz herzustellen, sind im Einrichtungsassistenten folgende Einstellungen vorzunehmen:
+				The following settings need to be made in the set-up wizard for creating a
+				connection to an OpenStack instance:
 				<table>
 					<title>Felder bei der Einrichtung einer OpenStack Verbindung</title>
 					<tgroup cols="2">
@@ -81,42 +92,43 @@
 						<colspec colnum="2" colname="col2" colwidth="2*"/>
 						<thead>
 							<row>
-								<entry>Attribut</entry>
-								<entry>Beschreibung</entry>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
 							</row>
 						</thead>
 						<tbody>
 							<row>
 								<entry>Name</entry>
 								<entry>
-									Definiert den Namen der Verbindung.
-									Dieser wird später in der Baumansicht des &ucsUMC; Moduls angezeigt.
+									Sets the name of the connection. This will later be shown in the tree view of the
+									&ucsUMC; module.
 								</entry>
 							</row>
 							<row>
-								<entry>Benutzername</entry>
+								<entry>User name</entry>
 								<entry>
-									Der Benutzername, der zur Authentifizierung an OpenStack benutzt werden soll.
+									The user name to be used for authentication for OpenStack.
 								</entry>
 							</row>
 							<row>
-								<entry>Folgenden Authentifizierungstyp nutzen</entry>
+								<entry>Use following type of authentication</entry>
 								<entry>
-									Es kann zwischen zwei Werten gewählt werden. Der zugehörige Wert wird im darunterliegenden Feld eingegeben.
+									There are two options to choose from. The corresponding value is entered in the
+									field below.
 									<variablelist>
 										<varlistentry>
-											<term>Passwort</term>
+											<term>Password</term>
 											<listitem>
 												<simpara>
-													Das zum Benutzernamen gehörige Passwort.
+													The password corresponding to the user name.
 												</simpara>
 											</listitem>
 										</varlistentry>
 										<varlistentry>
-											<term>API-Schlüssel</term>
+											<term>API key</term>
 											<listitem>
 												<simpara>
-													Der API-Schlüssel, der dem Benutzer Zugriff verschafft.
+													The API key that allows the user access.
 												</simpara>
 											</listitem>
 										</varlistentry>
@@ -124,58 +136,74 @@
 								</entry>
 							</row>
 							<row>
-								<entry>URL des Authentifizierungs-Endpunktes</entry>
+								<entry>URL of the authentication end point</entry>
 								<entry>
-									Hier ist die URL einzutragen, unter der der Authentifizierungs-Endpunkt der OpenStack Instanz erreichbar ist.
-									Soll eine verschlüsselte Verbindung aufgebaut werden, ist die URL in der Form <emphasis>https://[...]</emphasis> anzugeben.
-									Da für die verschlüsselte Verbindung das öffentliche Zertifikat der OpenStack Instanz verwendet wird, muss dieses dem UVMM System bekannt gemacht werden.
-									Auf dem UCS System, auf dem die Applikation <emphasis>Management-Server für KVM und Cloud-Instanzen</emphasis> installiert ist, muss dieses Zertifikat verfügbar gemacht werden.
-									Dazu muss das öffentliche Zertifikat in PEM Kodierung auf dem UCS Server in das Verzeichnis <filename class="directory">/usr/local/share/ca-certificates/</filename> kopiert werden und mit der Endung .crt versehen sein.
-									Die folgenden Kommandos konvertieren ein Zertifikat in die korrekte Kodierung und machen das Zertifikat bekannt:
+									The URL under which the authentication end point of the OpenStack instance can
+									be reached should be entered here. If you want to establish an encrypted
+									connection, the URL should be entered in the form
+									<emphasis>https://[...]</emphasis>. As the public certificate for the OpenStack
+									instance is used for the encrypted connection, it needs to be made known to the
+									UVMM system. This certificate needs to be made available on the UCS system on
+									which the <emphasis>&ucsUVMM;</emphasis> application is installed. To this end,
+									the public certificate must be copied into the
+									<filename class="directory">/usr/local/share/ca-certificates/</filename> directory on the UCS
+									server in PEM encryption and furnished with the suffix .crt. The following
+									commands convert a certificate into the correct encryption and make the
+									certificate known.
 									<programlisting language="sh">
-openssl x509 -in [pfad/zum/openstack-zertifikat] -outform pem -out /usr/local/share/ca-certificates/openstack.crt
+openssl x509 -in [pfad/zum/openstack-zertifikat] \
+	-outform pem -out /usr/local/share/ca-certificates/openstack.crt
 
 update-ca-certificates
 									</programlisting>
-									Das öffentliche Zertifikat des OpenStack Authentifizierungs-Endpunktes ist der Konfiguration der OpenStack Instanz zu entnehmen.
-									Der entsprechende Wert zum Pfad des Zertifikats ist in der <filename>keystone.conf</filename> unter <emphasis>ca_certs</emphasis> zu finden.
+									The public certificate of the OpenStack authentication end point should be taken
+									from the configuration of the OpenStack instance. The corresponding value to the
+									certificate's path can be found under <emphasis>ca_certs</emphasis> in
+									<filename>keystone.conf</filename>.
 								</entry>
 							</row>
 							<row>
-								<entry>Suchmuster für Images</entry>
+								<entry>Search template for images</entry>
 								<entry>
-									Wenn eine neue virtuelle Maschine erstellt werden soll, werden als Quell-Images nur solche Images angezeigt werden, die dem hier konfigurierten Suchmuster entsprechen.
-									Durch den Standardwert "*" (Sternchen) werden alle verfügbaren Images angezeigt.
+									To create a new virtual machine, only the images that correspond to the
+									configured search template are used as source images. The default value "*"
+									(asterisk) is used to show all available images.
 								</entry>
 							</row>
 							<row>
-								<entry>Projekt / Tenant</entry>
+								<entry>Project / tenant</entry>
 								<entry>
-									Der Projekt- oder Tenantname, der dem Benutzer innerhalb der OpenStack Umgebung zugewiesen ist.
+									The project or tenant name assigned to the user within the OpenStack
+									environment.
 								</entry>
 							</row>
 							<row>
-								<entry>Serviceregion</entry>
+								<entry>Name of service</entry>
 								<entry>
-									Der Name der Region, in der der Benutzer arbeiten soll. Der OpenStack Standardwert ist <emphasis>regionOne</emphasis>.
+									The name of the region in which the user should work. The OpenStack default
+									value is <emphasis>regionOne</emphasis>.
 								</entry>
 							</row>
 							<row>
-								<entry>Servicetyp</entry>
+								<entry>Service type</entry>
 								<entry>
-									Der Typ des Dienstes, unter dem die Cloud Compute Funktionalität zur Verfügung steht. Der Standardwert ist <emphasis>compute</emphasis>.
+									The type of the service under which the cloud compute function is available. The
+									default value is <emphasis>compute</emphasis>.
 								</entry>
 							</row>
 							<row>
-								<entry>Name des Dienstes</entry>
+								<entry>Name of service</entry>
 								<entry>
-									Der Name des Dienstes, unter dem die Cloud Compute Funktionalität zur Verfügung steht. Der Standardwert ist <emphasis>nova</emphasis>.
+									The name of the service under which the cloud compute function is available. The
+									default value is <emphasis>nova</emphasis>.
 								</entry>
 							</row>
 							<row>
-								<entry>URL des Service-Endpunktes</entry>
+								<entry>URL of the service end point</entry>
 								<entry>
-									Optionaler Wert: Normalerweise wird die URL des Service-Endpunktes automatisch ermittelt, wenn sich der Benutzer am OpenStack anmeldet. Sollte die automatische Ermittlung nicht möglich sein, kann hier die entsprechende URL angegeben werden.
+									Optional value: The URL of the service end point is normally determined
+									automatically when the user logs on to OpenStack. Should automatically
+									determination not be possible, the corresponding URL can be entered here.
 								</entry>
 							</row>
 						</tbody>
@@ -184,55 +212,59 @@ update-ca-certificates
 			</para>
 		</section>
 		<section id="uvmm:cloudconnections::amazonec2">
-			<title>Anlegen einer EC2 Verbindung</title>
+			<title>Creating an EC2 connection</title>
 			<para>
-				Um eine Verbindung zu Amazon EC2 herzustellen, sind im Einrichtungsassistenten folgende Einstellungen vorzunehmen:
+				The following settings need to be made in the set-up wizard for creating a
+				connection to Amazon EC2:
 				<table>
-					<title>Felder bei der Einrichtung einer Amazon EC2 Verbindung</title>
+					<title>Fields when setting up an Amazon EC2 connection</title>
 					<tgroup cols="2">
 						<colspec colnum="1" colname="col1" colwidth="1*"/>
 						<colspec colnum="2" colname="col2" colwidth="2*"/>
 						<thead>
 							<row>
-								<entry>Attribut</entry>
-								<entry>Beschreibung</entry>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
 							</row>
 						</thead>
 						<tbody>
 							<row>
 								<entry>Name</entry>
 								<entry>
-									Definiert den Namen der Verbindung.
-									Dieser wird später in der Baumansicht des &ucsUMC; Moduls angezeigt.
+									Sets the name of the connection This will later be shown in the tree view of the
+									&ucsUMC; module.
 								</entry>
 							</row>
 							<row>
-								<entry>EC2 Region</entry>
+								<entry>EC2 region</entry>
 								<entry>
-									Hier wird ausgewählt, zu welcher EC2 Region die Verbindung aufgebaut werden soll.
-									Virtuelle Maschinen sind immer genau einer Region zugeordnet und in anderen Regionen nicht sichtbar.
-									Auch die Auswahl der verfügbaren Images kann sich zwischen den Regionen unterscheiden.
-									Univention UCS Images sind in allen unterstützten Regionen verfügbar.
+									Here you select the EC2 region to which you want to create the connection.
+									Virtual machines are always assigned to precisely one region and not visible in
+									other regions. The selection of available images can also vary depending on the
+									region. Univention UCS images are available in all supported regions.
 								</entry>
 							</row>
 							<row>
-								<entry>Access Key ID</entry>
+								<entry>Access key ID</entry>
 								<entry>
-									Die Zugriffs-ID, die dem Amazon EC2 Konto zugeordnet ist, vergleichbar mit einem Benutzernamen.
+									The access key ID assigned to the Amazon EC2 account is comparable with a user
+									name.
 								</entry>
 							</row>
 							<row>
-								<entry>Geheimer Zugriffsschlüssel (Secret Access Key)</entry>
+								<entry>Secret access key</entry>
 								<entry>
-									Der geheime Schlüssel zum Zugriff über das Amazon EC2 Konto, vergleichbar mit einem Passwort.
+									The secret access key for access via the Amazon EC2 account is comparable with a
+									password.
 								</entry>
 							</row>
 							<row>
-								<entry>Suchmuster für AMIs</entry>
+								<entry>Search template for AMIs</entry>
 								<entry>
-									Imagedateien als Quelle für neue Instanzen werden als AMI bezeichnet.
-									Der hier angegebene Suchfilter beschränkt die Anzeige von auswählbaren AMIs beim anlegen einer neuen virtuellen Instanz.
-									Durch den Wert "*" (Sternchen) werden alle verfügbaren Images angezeigt.
+									Image files used as a source for new instances are referred to as AMIs. The
+									search filter specified here restricts the display of selectable AMIs when
+									creating a new virtual instance. The default value "*" (asterisk) is used to
+									show all available images.
 								</entry>
 							</row>
 						</tbody>
@@ -240,7 +272,6 @@ update-ca-certificates
 				</table>
 			</para>
 		</section>
--->
 	</section>
 
 	<section id="uvmm::management">
@@ -265,10 +296,12 @@ update-ca-certificates
 				The search mask can also be used to search for individual virtual machines.
 			</para>
 			<para>
-				In the overview of the virtual machines, the computer icon shows the state this is in, e.g., whether it is running (computer symbol with green arrow), paused (computer symbol with yellow line) or stopped (computer without additional symbol).
-<!-- TODO: translation
-				Virtuelle Maschinen in Cloud Computing Umgebungen können zusätzlich als gelöscht (Rechner mit rotem Kreuz) oder als ausstehend (Rechner mit Sanduhr) dargestellt werden.
--->
+				In the overview of the virtual machines, the computer icon shows the state this
+				is in, e.g., whether it is running (computer symbol with green arrow), paused
+				(computer symbol with yellow line) or stopped (computer without additional
+				symbol).
+				Virtual machines in cloud computing environments can also be depicted as deleted
+				(computer with red cross) or as open (computer with hourglass).
 			</para>
 			<para>
 				Instances created via UVMM are turned off in the initial status.
@@ -361,125 +394,140 @@ update-ca-certificates
 					</listitem>
 				</varlistentry>
 			</variablelist>
-<!-- TODO: translation
 			<para>
-				Folgende Operationen stehen für virtuelle Maschinen zur Verfügung, die in cloudbasierten Umgebungen betrieben werden:
+				The following operations are available for virtual machines operated in
+				cloud-based environments.
+
 			</para>
 			<variablelist>
 				<varlistentry>
-					<term>Neu starten (hard)</term>
+					<term>Restart (hard)</term>
 					<listitem>
 						<simpara>
-							Startet die virtuelle Maschine neu, als wäre der Reset-Knopf betätigt worden.
-							Hierbei kann es zu Datenverlust kommen.
+							Restarts the virtual machine as if the reset button had been pressed. This can
+							result in data loss.
 						</simpara>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Neu starten (soft)</term>
+					<term>Restart (soft)</term>
 					<listitem>
 						<simpara>
-							Sendet ein ACPI-Reset Event an die virtuelle Maschine.
-							Wenn das Betriebssystem der virtuellen Maschine dies korrekt interpretiert, wird ein geordneter Neustart durchgeführt.
+							Sends an ACPI reset event to the virtual machine. If the operating system of the
+							virtual machine interprets this correctly, a regular restart is performed.
 						</simpara>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Herunterfahren (soft)</term>
+					<term>Shutdown (soft)</term>
 					<listitem>
 						<simpara>
-							Sendet ein ACPI-Shutdown Event an die virtuelle Maschine
-							Wenn das Betriebssystem der virtuellen Maschine dies korrekt interpretiert, wird es geordnet heruntergefahren und ausgeschaltet.
+							Sends an ACPI shutdown event to the virtual machine. If the operating system of
+							the virtual machine interprets this correctly, it is shut down and turned off
+							regularly.
 						</simpara>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Pausieren</term>
+					<term>Pause</term>
 					<listitem>
 						<simpara>
-							Weist der Maschine keine weitere CPU-Zeit zu.
-							Dadurch wird weiterhin der Arbeitsspeicher auf dem physikalischen Rechner belegt, die Maschine an sich aber angehalten.
+							The machine is not assigned any more CPU time. This still uses the working
+							memory on the physical host, but the machine itself is paused.
 						</simpara>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Speichern und beenden</term>
+					<term>Save and exit</term>
 					<listitem>
 						<simpara>
-							Sichert den Inhalt des Arbeitsspeichers der Maschine auf Festplattenspeicher und weist der Maschine keine weitere CPU-Zeit zu, d.h. gegenüber <guimenu>Pausieren</guimenu> wird außerdem noch der Arbeitsspeicher freigegeben.
+							Saves the contents of the machine's working memory on the hard drive memory and
+							does not assign the machine further CPU time, i.e., compared with
+							<guimenu>Pause</guimenu>, the working memory is also freed.
 						</simpara>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Löschen</term>
+					<term>Delete</term>
 					<listitem>
 						<simpara>
-							Schaltet die virtuelle Maschine aus und löscht alle dazugehörigen Daten unwiederruflich.
+							Turns the virtual machine off and deletes all the corresponding data
+							permanently.
 						</simpara>
 					</listitem>
 				</varlistentry>
 			</variablelist>
 		</section>
 		<section id="uvmm::cloudinstanz::erstellen">
-			<title>Erstellen einer virtuellen Maschine über eine Cloud Verbindung</title>
+			<title>Creating a virtual machine via a cloud connection</title>
 			<para>
-				Virtuelle Maschinen in cloudbasierten Virtualisierungsumgebungen können in UVMM durch Klick auf <guimenu>Erstellen</guimenu> mit einem Assistenten in wenigen Schritten erstellt werden.
+				Virtual machines in cloud-based virtualization environments can be created in
+				just a few steps in UVMM using the wizard by clicking on <guimenu>Create</guimenu>.
 			</para>
 			<para>
-				In der Eingabemaske <guimenu>Erstellen einer virtuellen Maschine oder einer Cloud-Verbindung</guimenu> kann ausgewählt werden, auf über welche Cloud Verbindung die virtuelle Maschine angelegt werden soll.
-				Nach der Auswahl einer Verbindung und einem Klick auf <guimenu>Weiter</guimenu>, gelangt man zum Assistenten zum anlegen einer neuen virtuellen Maschine.
-				Nach dem Festlegen der Parameter wird die neue virtuelle Maschine nach einem Klick auf <guimenu>Fertigstellen</guimenu> angelegt.
+				In the <guimenu>Create a virtual machine or a cloud connection</guimenu> input
+				mask you can select the cloud connection via which you wish to create the
+				virtual machine. Once a connection has been selected and you have clicked on
+				<guimenu>Next</guimenu>, the wizard for creating a new virtual machine opens.
+				Once the parameters have been set, the new virtual machine is created by
+				clicking on <guimenu>Finish</guimenu>.
 			</para>
 			<table>
-				<title>Erstellen einer virtuellen Maschine über eine Cloud Verbindung</title>
+				<title>Creating a virtual machine via a cloud connection</title>
 				<tgroup cols="2">
 					<colspec colnum="1" colname="col1" colwidth="1*"/>
 					<colspec colnum="2" colname="col2" colwidth="2*"/>
 					<thead>
 						<row>
-							<entry>Attribut</entry>
-							<entry>Beschreibung</entry>
+							<entry>Attribute</entry>
+							<entry>Description</entry>
 						</row>
 					</thead>
 					<tbody>
 						<row>
 							<entry>Name</entry>
 							<entry>
-								Definiert den Namen der virtuellen Maschine.
+								Defines the name of the virtual machine
 							</entry>
 						</row>
 						<row>
-							<entry>Auswahl des Quell-Images / Quell-AMIs</entry>
+							<entry>Selection of source image / source AMI</entry>
 							<entry>
-								Der initiale Zustand einer virtuellen Maschine beim anlegen wird über ein Quell-Image (OpenStack) oder Quell-AMI (EC2) festgelegt.
-								Ein solches Image enthält meist ein vorbereitetes Betriebssystem, dass vom Nutzer nach dem Start individualisiert werden kann.
-								Es können beliebig viele virtuelle Maschinen aus einem Quell-Image erstellt werden.
+								The initial status of a virtual machine when created is specified via a source
+								image (OpenStack) or source AMI (EC2). This type of image usually includes a
+								prepared operating systems that the user can customise after the start-up. Any
+								number of virtual machines can be created from one source image.
 							</entry>
 						</row>
 						<row>
-							<entry>Wahl der Instanzgröße</entry>
+							<entry>Selection of the instance size</entry>
 							<entry>
-								Einer virtuellen Maschine wird beim anlegen eine Instanzgröße zugeordnet. Diese setzt sich zusammen aus verfügbarem Arbeitsspeicher und der Größe des verfügbaren Festplattenspeichers.
-								Beim anlegen einer virtuellen Maschine in einer OpenStack Umgebung wird über die Größe auch die Anzahl der CPU-Kerne bestimmt.
+								An instance size is assigned to a virtual machine when it is created. This is
+								composed of available memory and the size of the available hard drive memory.
+								When a virtual machine is created in an OpenStack environment, the number of the
+								CPU cores is also determined in addition to the size.
 							</entry>
 						</row>
 						<row>
-							<entry>Auswahl eines Schlüsselpaares</entry>
+							<entry>Selection of a key pair</entry>
 							<entry>
-								Um den sicheren Zugriff auf die virtuelle Maschine per ssh zu ermöglichen, wird der Maschine beim ersten Start ein ssh-Schlüssel zur Konfiguration des rootaccounts hinzugefügt.
-								Mit diesem Schlüssel ist der ssh Zugriff auf die Maschine ohne Passwort möglich.
-								Dazu muss der Zugriff auf den privaten Schlüsselteil des Schlüsselpaares bestehen.
-								Der Zugriff auf die Instanz kann z.b. mit folgendem Aufruf erfolgen, wenn die Instanz läuft:
+								To allow safe access to the virtual machine via ssh, an ssh key for
+								configuration of the root account is added to the machine the first time it is
+								started. With this key, it is possible to access the machine via ssh without a
+								password. For this to happen, there must be access to the private key part of
+								the key pair. The access to the instance can be performed with the following
+								command, for example, if the instance is running:
 								<programlisting language="sh">
 ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 								</programlisting>
 							</entry>
 						</row>
 						<row>
-							<entry>Konfigurieren einer Sicherheitsgruppe</entry>
+							<entry>Configuring a security group</entry>
 							<entry>
-								Diese Einstellung konfiguriert, welche Sicherheitsgruppe für die neue virtuelle Maschine gesetzt wird.
-								Eine Sicherheitsgruppe bestimmt, welche TCP-Ports für den externen Zugriff auf eine virtuelle Maschine freigegeben werden.
+								This setting configures which security group is set for the new virtual machine.
+								A security group determines which TCP ports are approved for external access to
+								a virtual machine.
 							</entry>
 						</row>
 					</tbody>
@@ -487,12 +535,13 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 			</table>
 		</section>
 		<section id="uvmm::cloudinstanz::bearbeiten">
-			<title>Bearbeiten einer virtuellen Maschine über eine Cloud Verbindung</title>
+			<title>Editing a virtual machine via a cloud connection</title>
 			<para>
-				Durch Auswahl einer virtuellen Maschine und einem Klick auf <guimenu>Bearbeiten</guimenu> können auf einer separaten Seite die konfigurierten Einstellungen der virtuellen Maschine eingesehen werden.
-				Insbesondere die IP-Adresse, über die die virtuelle Maschine erreichbar ist, ist hier einsehbar.
+				By selecting a virtual machine and clicking on <guimenu>Edit</guimenu> you can
+				view the configured settings of the virtual machine on a separate page. The IP
+				address via which the virtual machine can be reached is shown here in
+				particular.
 			</para>
--->
 		</section>
 		<section id="uvmm::instanz::erstellen">
 			<title>Creating a virtual instance</title>
@@ -500,11 +549,14 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				Virtual machines on local KVM servers can be created with the assistant in a few steps in UVMM by clicking on <guimenu>Create</guimenu>.
 			</para>
 			<para>
-<!-- TODO: translation
-				In der Eingabemaske <guimenu>Erstellen einer virtuellen Maschine oder einer Cloud-Verbindung</guimenu> kann ausgewählt werden, auf welchem Virtualisierungs-Server die virtuelle Maschine angelegt werden soll.
-				Wird hier ein KVM Virtualisierungsserver ausgewählt und <guimenu>Weiter</guimenu> gewählt, gelangt man zur Auswahl des Maschinenprofils.
--->
-				The selection of the <guimenu>Profile</guimenu> specifies some of the basic settings for the virtual instance (see <xref linkend="uvmm::profile"/>).
+				In the <guimenu>Create a virtual machine or a cloud connection</guimenu> input
+				mask you can select the virtualization server on which you wish to create the
+				virtual machine. If a KVM virtualization server is selected here and
+				<guimenu>Continue</guimenu> clicked, the machine profile selection page opens.
+
+				The selection of the <guimenu>Profile</guimenu> specifies some
+				of the basic settings for the virtual instance (see <xref
+				linkend="uvmm::profile"/>).
 			</para>
 			<para>
 				The virtual machine is now given a <guimenu>Name</guimenu> and an optional <guimenu>Description</guimenu> and assigned <guimenu>Memory</guimenu> and <guimenu>CPUs</guimenu>.
@@ -835,13 +887,12 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				Image files are created as sparse files with the specified size, i.e., these files only grow when they are used and then up to the maximally specified size and thus initially require only minimal disk space.
 				As there is a risk here of the disk space being used up during operation, a Nagios monitoring should be integrated, see <xref linkend="nagios::general"/>.
 			</para>
-<!-- TODO: translation
 			<para>
-				Festplatten-Images sollten nach Möglichkeit paravirtualisiert angesprochen werden.
-				Bei UCS-Systemen, die virtualisiert unter KVM installiert werden, wird durch die Auswahl des UCS-Profils automatisch ein paravirtualisierter Zugriff aktiviert.
-				Die Konfiguration von Microsoft Windows-Systemen ist in <xref linkend="uvmm::gplpvvirtio"/> dokumentiert.
+				Where possible, hard drive images should be configured paravirtualized. In the
+				case of UCS systems installed virtualized in KVM, a paravirtualized access is
+				activated automatically when the UCS profile is selected. The configuration of
+				Microsoft Windows systems is documented in <xref linkend="uvmm::gplpvvirtio"/>.
 			</para>
--->
 		</section>
 
 		<section id="uvmm::storagepools">
@@ -902,7 +953,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 			  <itemizedlist>
 				<listitem><simpara>
 				  The directory in which the data from the storage pool are to be saved must be created;
-				  in this case <filename>/mnt/storage</filename>. 
+				  in this case <filename>/mnt/storage</filename>.
 				</simpara></listitem>
 
 				<listitem><simpara>
@@ -1031,21 +1082,22 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 		</section>
 
 		<section id="uvmm::gplpvvirtio">
-			<title>Paravirtualization/virtIO drivers for Microsoft Windows systems</title>
-<!-- TODO: translation
+			<title>Paravirtualization (virtIO) drivers for Microsoft Windows systems</title>
 			<para>
-				KVM unterstützt Paravirtualisierung über die virtIO Schnittstelle.
-				Durch die Verwendung von Paravirtualisierung können die virtualisierten Systeme einen direkten Zugriff auf die Ressourcen des Virtualisierungsservers erhalten.
-				Dies verbessert die Performance erheblich.
-				Die Verwendung von Paravirtualisierung/virtIO wird empfohlen.
+				KVM supports paravirtualization via the virtIO interface. The use of
+				paravirtualization allows the virtualized systems direct access to the resources
+				of the virtualization server. This considerably improves performance. We
+				recommend the use of paravirtualization.
 			</para>
 			<para>
-				Aktuelle Linux-Systeme unterstützen standardmäßig Paravirtualisierung.
-				Mit der Installation der KVM-Pakete werden passende Images bereitgestellt, die dann in der Laufwerksverwaltung in eine virtuelle Maschine eingebunden werden können.
-				Die Images werden in den mit der &ucsUCRV; <envar>uvmm/pool/default/path</envar> festgelegten Speicherbereich integriert:
-				Auf KVM-Virtualisierungsservern wird ein ISO-Image mit dem Namen <emphasis>KVM Windows drivers</emphasis> bereitgestellt, dass die virtIO-Virtualisierungstreiber für Microsoft Windows enthält.
+				Current Linux systems support paravirtualization as standard. The installation
+				of the KVM packages provides suitable images which can then be mounted in a
+				virtual machine in the disk management. The images are integrated in the storage
+				area specified by the &ucsUCRV; <envar>uvmm/pool/default/patht</envar>. On KVM
+				virtualization servers, there is an ISO image with the name <emphasis>KVM
+				Windows drivers</emphasis>, which contains the virtIO virtualization drivers for
+				Microsoft Windows.
 			</para>
--->
 			<section id="uvmm:virtio">
 				<title>Installation of the virtIO drivers for KVM instances</title>
 				<para>

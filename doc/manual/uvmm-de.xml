@@ -17,7 +17,7 @@
 		<title>Installation</title>
 
 		<para>
-			Der &ucsUVMM; kann mit der Applikation <emphasis>Management-Server für KVM und Cloud-Instanzen</emphasis> aus dem Univention App Center installiert werden.
+			&ucsUVMM; kann mit der Applikation <emphasis>&ucsUVMM;</emphasis> aus dem Univention App Center installiert werden.
 			Die Applikation kann auch direkt bei der Installation eines neuen UCS Servers ausgewählt werden.
 			Alternativ kann das Softwarepaket <package>univention-virtual-machine-manager-daemon</package> installiert werden.
 			Weitere Informationen finden sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
@@ -55,7 +55,7 @@
 			Um eine neue Verbindung anzulegen, muss das &ucsUMC; Modul <emphasis>Virtuelle Maschinen (UVMM)</emphasis> geöffnet werden.
 			Durch einen Klick auf <guimenu>Erstellen</guimenu> öffnet sich ein Assistent, in dem der Punkt <guimenu>Erstellen einer neuen Cloud-Verbindung</guimenu> gewählt werden muss.
 			Im nun verfügbaren Dropdown Feld kann die Art der Verbindung gewählt werden, mit einem Klick auf <guimenu>Weiter</guimenu> startet der Einrichtungsassistent.
-			Sind die Einstellungen getätigt, wird mit einem Klick auf <guimenu>Fertigstellen</guimenu> versucht, die Verbindung herzustellen.
+			Sind die Einstellungen getätigt, wird mit einem Klick auf <guimenu>Fertigstellen</guimenu> die Verbindung hergestellt.
 			Falls ein Fehler auftritt, wird dieser angezeigt und die Verbindungseinstellunge können korrigiert werden.
 			Wenn die Verbindung erfolgreich hergestellt wurde, wird eine Warteanimation angezeigt, während alle verbindungsspezifischen Informationen der Cloud Verbindung geladen werden.
 			Dies umfasst zum Beispiel die vorhandenen Instanzen und verfügbare Images, um neue Instanzen anlegen zu können.
@@ -123,7 +123,7 @@
 									Hier ist die URL einzutragen, unter der der Authentifizierungs-Endpunkt der OpenStack Instanz erreichbar ist.
 									Soll eine verschlüsselte Verbindung aufgebaut werden, ist die URL in der Form <emphasis>https://[...]</emphasis> anzugeben.
 									Da für die verschlüsselte Verbindung das öffentliche Zertifikat der OpenStack Instanz verwendet wird, muss dieses dem UCS-System, 
-									auf dem die Applikation <emphasis>Management-Server für KVM und Cloud-Instanzen</emphasis> installiert ist, verfügbar gemacht werden.
+									auf dem die Applikation <emphasis>&ucsUVMM;</emphasis> installiert ist, verfügbar gemacht werden.
 									Dazu muss das öffentliche Zertifikat in PEM Kodierung auf dem UCS-Server in das Verzeichnis <filename class="directory">/usr/local/share/ca-certificates/</filename> kopiert werden und mit der Endung .crt versehen sein.
 									Die folgenden Kommandos konvertieren ein Zertifikat in die korrekte Kodierung und machen das Zertifikat bekannt:
 									<programlisting language="sh">
@@ -170,7 +170,7 @@ update-ca-certificates
 							<row>
 								<entry>URL des Service-Endpunktes</entry>
 								<entry>
-									Optionaler Wert: Normalerweise wird die URL des Service-Endpunktes automatisch ermittelt, wenn sich der Benutzer am OpenStack anmeldet. Sollte die automatische Ermittlung nicht möglich sein, kann hier die entsprechende URL angegeben werden.
+									Optionaler Wert: Normalerweise wird die URL des Service-Endpunktes automatisch ermittelt, wenn sich der Benutzer an OpenStack anmeldet. Sollte die automatische Ermittlung nicht möglich sein, kann hier die entsprechende URL angegeben werden.
 								</entry>
 							</row>
 						</tbody>
@@ -447,7 +447,7 @@ update-ca-certificates
 							<entry>Wahl der Instanzgröße</entry>
 							<entry>
 								Einer virtuellen Maschine wird beim anlegen eine Instanzgröße zugeordnet. Diese setzt sich zusammen aus verfügbarem Arbeitsspeicher und der Größe des verfügbaren Festplattenspeichers.
-								Beim anlegen einer virtuellen Maschine in einer OpenStack Umgebung wird über die Größe auch die Anzahl der CPU-Kerne bestimmt.
+								Beim Anlegen einer virtuellen Maschine in einer OpenStack Umgebung wird über die Größe auch die Anzahl der CPU-Kerne bestimmt.
 							</entry>
 						</row>
 						<row>
@@ -967,7 +967,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 		<section id="uvmm:networkinterfaces">
 			<title>Netzwerk-Karten virtueller Maschinen</title>
 			<para>
-				Beim anlegen einer virtuellen Maschine wird dieser automatisch eine Netzwerkkarte mit zufällig erstellter MAC-Adresse zugewiesen.
+				Beim Anlegen einer virtuellen Maschine wird dieser automatisch eine Netzwerkkarte mit zufällig erstellter MAC-Adresse zugewiesen.
 				Diese kann ggf. nachträglich verändert werden.
 			</para>
 			<para>
@@ -1007,12 +1007,12 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 			</para>
 		</section>
 		<section id="uvmm::gplpvvirtio">
-			<title>Paravirtualisierung/virtIO-Treiber für Microsoft Windows-Systeme</title>
+			<title>Paravirtualisierung (virtIO)-Treiber für Microsoft Windows-Systeme</title>
 			<para>
 				KVM unterstützt Paravirtualisierung über die virtIO Schnittstelle.
 				Durch die Verwendung von Paravirtualisierung können die virtualisierten Systeme einen direkten Zugriff auf die Ressourcen des Virtualisierungsservers erhalten.
 				Dies verbessert die Performance erheblich.
-				Die Verwendung von Paravirtualisierung/virtIO wird empfohlen.
+				Die Verwendung von Paravirtualisierung wird empfohlen.
 			</para>
 			<para>
 				Aktuelle Linux-Systeme unterstützen standardmäßig Paravirtualisierung.

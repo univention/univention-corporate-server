@@ -616,7 +616,7 @@
 		Unterpunkt <emphasis>Installation</emphasis>.
 	</para>
 </section>
-<section id="installation:amazonec2">
+<section id="installation:textmode">
   <title>Installation im Textmodus</title>
   <para>
 	Auf Systemen, die Probleme mit der graphischen Variante des Installers zeigen, kann der Installer auch im Textmodus gestartet werden.
