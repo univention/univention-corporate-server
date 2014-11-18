@@ -441,7 +441,7 @@ for app in 7i4ucs-123 7i4ucs-dokuwiki 7i4ucs-svn 7i4ucs-trac 7i4ucs-wordpress \
 	univention-nagios-server univention-openvpn-master univention-openvpn-schema \
 	univention-openvpn-server univention-ox-dependencies-master univention-ox-meta-singleserver \
 	univention-ox-text univention-pkgdb univention-printserver univention-printquota \
-	univention-printserver-pdf univention-pulse \
+	univention-printserver-pdf ucs-school-ucc-integration ucs-school-umc-printermoderation univention-pulse \
 	univention-radius univention-s4-connector univention-samba univention-samba4 \
 	univention-saml univention-saml-schema univention-squid univention-virtual-machine-manager-daemon \
 	univention-virtual-machine-manager-node-kvm univention-xrdp zarafa4ucs zarafa4ucs-udm z-push
