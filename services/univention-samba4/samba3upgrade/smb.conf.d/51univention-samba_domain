@@ -48,11 +48,16 @@ else:
 	print '\tdomain master = no'
 	print '\tpreferred master = no'
 	print '\tlocal master = no'
-@!@
 
-	os level = @%@samba/os/level@%@
-	wins support = @%@windows/wins-support@%@
-@!@
-if configRegistry['windows/wins-support'] != 'yes' and configRegistry['windows/wins-server']:
-	print '	wins server = %s' % configRegistry['windows/wins-server'],
+samba_os_level = configRegistry.get('samba/os/level')
+if samba_os_level:
+	print '\tos level = %s' % samba_os_level
+
+wins_support = configRegistry.get('windows/wins-support')
+if wins_support:
+	print '\twins support = %s' % wins_support
+
+wins_server = configRegistry.get('windows/wins-server')
+if wins_support != 'yes' and wins_server:
+	print '\twins server = %s' % wins_server,
 @!@
