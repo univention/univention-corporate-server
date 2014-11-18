@@ -14,7 +14,7 @@ def get_lines_containing(filename, string):
 
 def main():
 	SQUID_CONFIG = '/etc/squid3/squid.conf'
-	SQUID_GUARD_CONFIG = '/etc/squid/squidGuard.conf'
+	SQUID_GUARD_CONFIG = '/etc/squidguard/squidGuard.conf'
 	SQUID_GUARD_PATH = '/usr/bin/squidGuard'
 
 	with ucr_test.UCSTestConfigRegistry() as ucr:
