@@ -71,6 +71,7 @@ define([
 		_password: null,
 		_newPassword: null,
 		_updateFormDeferred: null,
+		_nLogins: 0,
 
 		id: 'umcLoginWrapper',
 
@@ -157,26 +158,24 @@ define([
 		},
 
 		_updateView: function(showNewPassword) {
-			//win.withGlobal(this._iframe.contentWindow, lang.hitch(this, function() {
-				query('#umcLoginForm').style('display', showNewPassword ? 'none' : 'block');
-				query('#umcNewPasswordForm').style('display', showNewPassword ? 'block' : 'none');
-				if (showNewPassword) {
-					if (this._username) {
-						attr.set(dom.byId('umcLoginUsername'), 'value', this._username);
-						tools.status('username', this._username); // already set status, otherwise _setInitialFocus may cause problems
-					}
-					if (this._password) {
-						attr.set(dom.byId('umcLoginPassword'), 'value', this._password);
-					}
-					attr.set(dom.byId('umcLoginNewPassword'), 'value', '');
-					attr.set(dom.byId('umcLoginNewPasswordRetype'), 'value', '');
-					if (!has('touch')) {
-						dom.byId('umcLoginNewPassword').focus();
-					}
-				} else {
-					attr.set(dom.byId('umcLoginPassword'), 'value', '');
+			query('#umcLoginForm').style('display', showNewPassword ? 'none' : 'block');
+			query('#umcNewPasswordForm').style('display', showNewPassword ? 'block' : 'none');
+			if (showNewPassword) {
+				if (this._username) {
+					attr.set(dom.byId('umcLoginUsername'), 'value', this._username);
+					tools.status('username', this._username); // already set status, otherwise _setInitialFocus may cause problems
 				}
-			//}));
+				if (this._password) {
+					attr.set(dom.byId('umcLoginPassword'), 'value', this._password);
+				}
+				attr.set(dom.byId('umcLoginNewPassword'), 'value', '');
+				attr.set(dom.byId('umcLoginNewPasswordRetype'), 'value', '');
+				if (!has('touch')) {
+					dom.byId('umcLoginNewPassword').focus();
+				}
+			} else if (this._nLogins || tools.status('setupGui')) {
+				attr.set(dom.byId('umcLoginPassword'), 'value', '');
+			}
 		},
 
 		_resetForm: function() {
@@ -211,36 +210,40 @@ define([
 				var form = ff[0];
 				var iform = ff[1];
 
-				this._connections.push(on(iform, 'submit', lang.hitch(this, function(evt) {
-					var username = usernameInput.value;
-					var password = passwordInput.value;
-					var newPassword;
+				if (iform) {
+					this._connections.push(on(iform, 'submit', lang.hitch(this, function(evt) {
+						var username = usernameInput.value;
+						var password = passwordInput.value;
+						var newPassword;
 
-					if (iform !== iframeLoginForm) {
-						if (newPasswordInput.value !== newPasswordRetypeInput.value) {
-							this.set('LoginMessage', _('The passwords do not match, please retype again.'));
-							evt.preventDefault();
-							return;
+						if (iform !== iframeLoginForm) {
+							if (newPasswordInput.value !== newPasswordRetypeInput.value) {
+								this.set('LoginMessage', _('The passwords do not match, please retype again.'));
+								evt.preventDefault();
+								return;
+							}
+							newPassword = newPasswordInput.value;
 						}
-						newPassword = newPasswordInput.value;
-					}
 
-					this._authenticate(username, password, newPassword);
-					this._isRendered = false;
-					this._initForm();
-				})));
+						this._authenticate(username, password, newPassword);
+						this._isRendered = false;
+						this._initForm();
+					})));
+				}
 
-				this._connections.push(on(form, 'submit', lang.hitch(this, function(evt) {
-					evt.preventDefault();
+				if (form) {
+					this._connections.push(on(form, 'submit', lang.hitch(this, function(evt) {
+						evt.preventDefault();
 
-					query('.umcLoginForm input').forEach(lang.hitch(this, function(node) {
-						var iframeNode = dom.byId(node.id, iframe);
-						if (iframeNode) {
-							iframeNode.value = node.value;
-						}
-					}));
-					iform.submit.click();
-				})));
+						query('.umcLoginForm input').forEach(lang.hitch(this, function(node) {
+							var iframeNode = dom.byId(node.id, iframe);
+							if (iframeNode) {
+								iframeNode.value = node.value;
+							}
+						}));
+						iform.submit.click();
+					})));
+				}
 			}));
 		},
 
@@ -284,6 +287,9 @@ define([
 		},
 
 		_authenticate: function(username, password, new_password) {
+			// count number of login trials
+			++this._nLogins;
+
 			// save in case password expired and username and password have to be sent again
 			this._username = username;
 			this._password = password;

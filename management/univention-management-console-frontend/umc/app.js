@@ -76,6 +76,7 @@ define([
 	"./widgets/Button",
 	"./widgets/Text",
 	"./app/CategoryButton",
+	"./i18n/tools",
 	"./i18n!",
 	"xstyle/css!./app.css",
 	"dojo/sniff" // has("ie"), has("ff")
@@ -83,7 +84,8 @@ define([
 		Evented, Deferred, when, all, cookie, topic, Memory, Observable,
 		dom, style, domAttr, domClass, domGeometry, domConstruct, locale, styles, entities, gfx, registry, tools, dialog, store,
 		Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
-		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, CategoryButton, _
+		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, CategoryButton,
+		i18nTools, _
 ) {
 	// cache UCR variables
 	var _ucr = {};
@@ -859,7 +861,9 @@ define([
 				// * session and username need to be set via cookie
 				// * if a username is given via the query string, it needs to match the
 				//   username saved in the cookie
-				tools.umcpCommand('set', {}, false).then(lang.hitch(this, function() {
+				tools.umcpCommand('set', {
+					locale: i18nTools.defaultLang().replace('-', '_')
+				}, false).then(lang.hitch(this, function() {
 					// session is still valid
 					this.onLogin(cookie('UMCUsername'));
 				}), lang.hitch(this, function() {

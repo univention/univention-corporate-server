@@ -38,7 +38,7 @@ buildDir:=$(CURDIR)/build
 tmpDir:=$(CURDIR)/tmp
 jsFiles:=$(shell find umc -name "*.js")
 
-.PHONY: build build-dev build-common install clean jslint i18n umc/package.json $(tmpDir)/umc/app/login.html $(buildDir)/index.html $(buildDir)/debug.html
+.PHONY: build build-dev build-common install clean jslint i18n umc/package.json $(buildDir)/login.html $(buildDir)/index.html $(buildDir)/debug.html
 
 build: build-common $(buildDir)/js/dojo/dojo.js.uncompressed.js
 
@@ -81,10 +81,10 @@ $(buildDir)/debug.html: $(buildDir) index.html
 	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%/.uncompressed.js/; s/%VERSION%/$(version)/;' index.html > $@
 
 # login page
-$(tmpDir)/umc/app/login.html: login.html
+$(buildDir)/login.html: login.html
 	mkdir -p $(dir $@)
-	sed 's/%HASH%/_$(timestamp)/;' login.html > $@
-	cp $@ $(dir $@)/blank.html
+	cp $< $(buildDir)
+	sed 's/login2.html/login.html/' $< > $(buildDir)/login2.html
 
 build-dev: build-common
 	# symlink javascript code
@@ -104,7 +104,7 @@ build-dev: build-common
 	fi
 
 
-build-common: i18n umc/widgets.js umc/package.json $(tmpDir) $(cssFiles) $(tmpDir)/umc/app/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
+build-common: i18n umc/widgets.js umc/package.json $(tmpDir) $(cssFiles) $(buildDir)/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
 	# symlink to javascript dir with timestamp
 	rm -f "$(buildDir)/js_"*
 	ln -s "js" "$(buildDir)/js_"'$(timestamp)'

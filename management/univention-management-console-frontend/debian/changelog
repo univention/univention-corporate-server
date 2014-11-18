@@ -1,3 +1,13 @@
+univention-management-console-frontend (4.1.103-1) unstable; urgency=medium
+
+  Bug #36156:
+  * allow username/password values to be set in index.html
+  * avoid exceptions if the iframe cannot be accessed
+  * remove obsolete blank.html, use login2.html instead, and save them in the
+    top level directory
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 18 Nov 2014 20:12:47 +0100
+
 univention-management-console-frontend (4.1.102-1) unstable; urgency=medium
 
   * Bug #36549: added a preload of the animated background
