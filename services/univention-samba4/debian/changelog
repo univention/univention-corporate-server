@@ -1,3 +1,9 @@
+univention-samba4 (4.0.2-1) unstable; urgency=medium
+
+  * Bug #36806: Fix SMB_CONF_PATH in joinscript
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Nov 2014 13:36:03 +0100
+
 univention-samba4 (4.0.1.1) unstable; urgency=medium
 
   * Bug #36544: samba-ad-dc init script doesn't start/stop nmbd

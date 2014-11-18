@@ -493,6 +493,9 @@ sysvol_fixup() {
 		/usr/share/univention-samba4/scripts/sysvol-sync.sh
 	fi
 
+	## flush cached SIDs, useful e.g. for sysvol problem solving via re-join
+	net cache flush
+
 	## set the default sysvol and GPO NTACLs
 	samba-tool ntacl sysvolreset
 
@@ -759,6 +762,9 @@ exit_on_slave_if_no_s4_connector_on_master_or_backup()
 
 ### --- END helper functions ---
 
+# lp.load('/dev'null') might have exported SMB_CONF_PATH, explicitly set it to the default here:
+export SMB_CONF_PATH=/etc/samba/smb.conf
+
 exit_on_slave_if_no_s4_connector_on_master_or_backup
 
 extract_binddn_and_bindpwd_from_args "$@"
@@ -1009,6 +1015,9 @@ elif [ "$samba4_role" = "RODC" ]; then
 		fi
 
 		samba_domain_join "${samba_join_options[@]}"
+
+		## write UCS posix IDs into the idmap.ldb
+		/usr/lib/univention-directory-listener/system/samba4-idmap.py --direct-resync 2>/dev/null
 
 		sysvol_fixup --overwrite-local
 
