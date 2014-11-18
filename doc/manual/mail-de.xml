@@ -71,13 +71,13 @@
 	</para>
 
 	<para>
-	  Für den webbasierten Zugriff auf E-Mails steht das Horde-Framework in Version 5 zur
+	  Für den webbasierten Zugriff auf E-Mails steht das Horde-Framework zur
 	  Verfügung (siehe <xref linkend="mail::horde"/>).
 	  Das UCS-Mailsystem bietet keine Groupware-Funktionalität wie gemeinsam
 	  genutzte Kalender oder Termineinladungen. Es existieren aber auf UCS basierende
 	  Groupwaresysteme, die sich in das UCS-Managementsystem integrieren,
 	  bspw. Kolab, Zarafa oder Open-Xchange. Weiterführende Informationen finden
-	  sich auf der Univention-Webseite <biblioref linkend="univention-technologiepartner"/>.
+	  sich im Univention App Center (siehe <xref linkend="software:appcenter"/>).
 	</para>
   </section>
 
