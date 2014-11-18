@@ -7,7 +7,8 @@
 		&ucsUMC; (UMC) is the central tool for web-based administration of the
 		UCS domain. There are various modules available for the
 		administration of the different aspects depending on the respective
-		system role.
+		system role. New UMC modules may be added to a system when installing
+		further software components.
 	</para>
 	<para>
 		UMC modules for the administration of all the data included in the LDAP

@@ -6,8 +6,9 @@
 	<para>
 		&ucsUMC; (UMC) ist das zentrale Werkzeug zur webbasierten Administration
 		der UCS-Domäne. Für die Administration der unterschiedlichen Aspkete einer
-		Domäne werden verschiedene Module bereit gestellt, die je nach
-		Systemrolle verfügbar sind.
+		Domäne werden verschiedene Module bereit gestellt. Diese sind je nach
+		Systemrolle verfügbar und werden bei Installation weiterer
+		Software-Komponenten durch neue UMC-Module ergänzt.
 	</para>
 	<para>
 		UMC-Module zur Verwaltung aller im LDAP-Verzeichnis vorgehaltenen Daten
