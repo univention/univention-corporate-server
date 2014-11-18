@@ -33,6 +33,7 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 case "$1" in
 	start)
+		ucr commit /etc/apt/sources.list.d/*
 		univention-upgrade --noninteractive
 		univention-config-registry set update/reboot/required=false
 		;;
