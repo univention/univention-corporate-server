@@ -410,7 +410,7 @@ instanceType: 4
 
 		  <para>
 			<figure><title>Activating the Group Policy Management tools</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-activate-en.png"/>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations/gpo-activate-en.png"/>
 			</figure>
 		  </para>
 
@@ -471,7 +471,7 @@ instanceType: 4
 
 		  <para>
 			<figure><title>Editing a policy</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-edit-policy-en.png"/>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations/gpo-edit-policy-en.png"/>
 			</figure>
 		  </para>
 
@@ -515,7 +515,7 @@ instanceType: 4
 
 		  <para>
 			<figure><title>Evaluating the GPO for the user user01</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-gpresult-en.png"/>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations/gpo-gpresult-en.png"/>
 			</figure>
 		  </para>
 
@@ -624,7 +624,7 @@ END CATEGORY
 
 		  <para>
 			<figure><title>The activated administrative template</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-adm-template-en.png"/>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations/gpo-adm-template-en.png"/>
 			</figure>
 		  </para>
 
@@ -808,7 +808,7 @@ END CATEGORY
 
   <para>
     <figure><title>Configuration of the operating mode as part of an AD domain</title>
-      <graphic scalefit="1" width="80%" fileref="illustrations/admember_1-en.png"/>
+      <graphic scalefit="1" width="100%" align="center" fileref="illustrations/admember_1-en.png"/>
     </figure>
   </para>
 
@@ -824,7 +824,7 @@ END CATEGORY
 
   <para>
     <figure><title>Domain join of an AD domain</title>
-      <graphic scalefit="1" width="80%" fileref="illustrations/admember_2-en.png"/>
+      <graphic scalefit="1" width="100%" align="center" fileref="illustrations/admember_2-en.png"/>
     </figure>
   </para>
 
@@ -891,7 +891,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
 
   <para>
     <figure><title>Administration dialogue for the Active Directory Connection</title>
-      <graphic scalefit="1" width="80%" fileref="illustrations/admember_3-en.png"/>
+      <graphic scalefit="1" width="90%" align="center" fileref="illustrations/admember_3-en.png"/>
     </figure>
   </para>
 
@@ -981,7 +981,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
 
   <para>
 	<figure><title>Configuration of the UCS AD Connector in UMC</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_1-en.png"/>
+	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations/adconnector_1-en.png"/>
 	</figure>
   </para>
 
@@ -1101,7 +1101,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 
 	<para>
 	  <figure><title>Exporting the root certificate on Windows 2008</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_23-en.png"/>
+	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations/adconnector_23-en.png"/>
 	  </figure>
 	</para>
 
@@ -1248,7 +1248,7 @@ in <guimenu>System settings</guimenu> or Port 6670/TCP authorised.
 </para>
 <para>
 <figure><title>Packages for the password service</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_2-en.png"/>
+ <graphic scalefit="1" width="90%" align="center" fileref="illustrations/adconnector_2-en.png"/>
  </figure>
 </para>
 </section>
@@ -1687,7 +1687,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	<figure>
 	  <title>First phase of domain migration</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/takeover1-en.png"/>
+	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations/takeover1-en.png"/>
 	</figure>
 
 	<para>
@@ -1696,7 +1696,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	<figure>
 	  <title>Overview of the data to be migrated</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/takeover2-en.png"/>
+	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations/takeover2-en.png"/>
 	</figure>
 	</para>
 
@@ -1739,7 +1739,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	  <figure>
 		<title>Copying the sysvol share</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/takeover3-en.png"/>
+		<graphic scalefit="1" width="100%" align="center" fileref="illustrations/takeover3-en.png"/>
 	  </figure>
 
 	  It may be necessary to install the required robocopy tool, which is part of the Windows Server
@@ -1760,7 +1760,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	  <figure>
 		<title>Shutdown of the AD server(s)</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/takeover4-en.png"/>
+		<graphic scalefit="1" width="100%" align="center" fileref="illustrations/takeover4-en.png"/>
 	  </figure>
 	</para>
 

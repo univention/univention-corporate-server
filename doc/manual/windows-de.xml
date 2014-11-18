@@ -413,7 +413,7 @@ instanceType: 4
 
 		  <para>
 			<figure><title>Aktivierung der Gruppenrichtlinienverwaltung</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-activate-de.png"/>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations/gpo-activate-de.png"/>
 			</figure>
 		  </para>
 
@@ -478,7 +478,7 @@ instanceType: 4
 
 		  <para>
 			<figure><title>Bearbeiten einer Richtlinie</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-edit-policy-de.png"/>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations/gpo-edit-policy-de.png"/>
 			</figure>
 		  </para>
 
@@ -525,7 +525,7 @@ instanceType: 4
 
 		  <para>
 			<figure><title>Auswertung der GPO für den Benutzer user01</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-gpresult-de.png"/>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations/gpo-gpresult-de.png"/>
 			</figure>
 		  </para>
 
@@ -636,7 +636,7 @@ END CATEGORY
 
 		  <para>
 			<figure><title>Die eingebundene administrative Vorlage</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-adm-template-de.png"/>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations/gpo-adm-template-de.png"/>
 			</figure>
 		  </para>
 
@@ -858,7 +858,7 @@ END CATEGORY
 
   <para>
     <figure><title>Konfiguration des Betriebsmodus als Teil einer AD-Domäne</title>
-      <graphic scalefit="1" width="80%" fileref="illustrations/admember_1-de.png"/>
+      <graphic scalefit="1" width="100%" align="center" fileref="illustrations/admember_1-de.png"/>
     </figure>
   </para>
 
@@ -880,7 +880,7 @@ END CATEGORY
 
   <para>
     <figure><title>Domänenbeitritt zu einer AD-Domäne</title>
-      <graphic scalefit="1" width="80%" fileref="illustrations/admember_2-de.png"/>
+      <graphic scalefit="1" width="100%" align="center" fileref="illustrations/admember_2-de.png"/>
     </figure>
   </para>
 
@@ -948,7 +948,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
 
   <para>
     <figure><title>Administrationsdialog für die Active Directory-Verbindung</title>
-      <graphic scalefit="1" width="80%" fileref="illustrations/admember_3-de.png"/>
+      <graphic scalefit="1" width="90%" align="center" fileref="illustrations/admember_3-de.png"/>
     </figure>
   </para>
 
@@ -1058,7 +1058,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
 
 	<para>
 	  <figure><title>Konfiguration des UCS AD-Connectors in UMC</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_1-de.png"/>
+	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations/adconnector_1-de.png"/>
 	  </figure>
 	</para>
 
@@ -1192,7 +1192,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 
 	<para>
 	  <figure><title>Export des Root-Zertifikats unter Windows 2008</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_23-de.png"/>
+	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations/adconnector_23-de.png"/>
 	  </figure>
 	</para>
 
@@ -1341,7 +1341,7 @@ in der <guimenu>Systemsteuerung</guimenu> deaktiviert werden oder Port
 </para>
 <para>
 <figure><title>Download der Pakete für den Passwortdienst</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_2-de.png"/>
+ <graphic scalefit="1" width="90%" align="center" fileref="illustrations/adconnector_2-de.png"/>
  </figure>
 </para>
 </section>
@@ -1763,7 +1763,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	<figure>
 	  <title>Erste Phase der Domänenmigration</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/takeover1-de.png"/>
+	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations/takeover1-de.png"/>
 	</figure>
 
 	<para>
@@ -1772,7 +1772,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	<figure>
 	  <title>Übersicht über die zu migrierenden Daten</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/takeover2-de.png"/>
+	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations/takeover2-de.png"/>
 	</figure>
 	</para>
 
@@ -1817,7 +1817,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	  <figure>
 		<title>Kopieren der Sysvol-Freigabe</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/takeover3-de.png"/>
+		<graphic scalefit="1" width="100%" align="center" fileref="illustrations/takeover3-de.png"/>
 	  </figure>
 	  
 	  Wenn <command>robocopy</command> nicht vorhanden ist, kann es mit den Windows Server 2003
@@ -1837,7 +1837,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	  <figure>
 		<title>Herunterfahren des/der AD-Systeme</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/takeover4-de.png"/>
+		<graphic scalefit="1" width="100%" align="center" fileref="illustrations/takeover4-de.png"/>
 	  </figure>
 	</para>
 
