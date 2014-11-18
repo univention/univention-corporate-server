@@ -1,0 +1,49 @@
+#!/usr/share/ucs-test/runner python
+## desc: create printer for every printer URI
+## tags: apttest
+## exposure: dangerous
+## packages: [univention-printserver]
+
+import re
+import subprocess
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+def get_uirs():
+	cmd = ['udm-test', 'settings/printeruri', 'list']
+	out, err = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+	uris = re.findall(r'printeruri:\s(\w*):', out)
+	return uris
+
+def printer_enabled(printer_name):
+	cmd = ['lpstat', '-p']
+	out, err = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+	return printer_name in out
+
+def main():
+	with udm_test.UCSTestUDM() as udm:
+		with ucr_test.UCSTestConfigRegistry() as ucr:
+			domainname = ucr.get('domainname')
+			hostname = ucr.get('hostname')
+			ldap_base = ucr.get('ldap/base')
+			for uri in get_uirs():
+				printer_name = uts.random_name()
+				udm.create_object(
+						modulename='shares/printer',
+						name=printer_name,
+						position='cn=printers,%s' % ldap_base,
+						binddn='uid=Administrator,cn=users,%s' % ldap_base,
+						bindpwd='univention',
+						set={
+							'spoolHost': '%s.%s' % (hostname, domainname),
+							'model': 'None',
+							'uri': '%s:// /tmp/%s' % (uri, printer_name)
+							}
+						)
+				if not printer_enabled(printer_name):
+					utils.fail('Printer (%s) is created but not enabled' % printer_name)
+
+if __name__ == '__main__':
+	main()
