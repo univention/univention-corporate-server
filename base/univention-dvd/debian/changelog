@@ -1,3 +1,9 @@
+univention-dvd (0.2.27-1) unstable; urgency=low
+
+  * Bug #36793: added squidguard to maintained
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Nov 2014 10:53:28 +0100
+
 univention-dvd (0.2.26-1) unstable; urgency=low
 
   * Bug #36709: Add python-qt4 to maintained

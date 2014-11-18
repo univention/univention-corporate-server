@@ -845,5 +845,6 @@ console-tools
 /* UCC 2 Bug 35891 */
 xorriso
 
-/* UCS@school Bug 36709 */
+/* UCS@school */
 python-qt4
+squidguard
