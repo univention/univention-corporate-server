@@ -119,8 +119,8 @@ fi
 
 # reinstall apps
 for app in $update_ucs40_installedapps; do
-	case "$(dpkg-query -W -f '${Status}' $app 2>/dev/null)" in
-	"deinstall ok config-files") install "$app";;
+	case "$(dpkg-query -W -f '${Status}' $app 2>/dev/null | awk '{print $3}')" in
+	"not-installed") install "$app";;
 	esac
 done
 ucr unset update/ucs40/installedapps  >>"$UPDATER_LOG" 2>&1
