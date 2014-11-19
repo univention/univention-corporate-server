@@ -46,6 +46,8 @@ import copy
 import inspect
 import locale
 import os.path
+import os
+import stat
 import re
 from threading import Thread
 import traceback
@@ -700,20 +702,16 @@ class Application(object):
 		# e.g. Name, Description
 		cls.update_conffiles()
 
-		# TODO: would be nice if vendors provided ${app}16.png
 		# special handling for icons
 		for png in glob(os.path.join(FRONTEND_ICONS_DIR, '**', 'apps-*.png')):
 			os.unlink(png)
-		# images are created as -rw-------
-		# change the mode to that every other image is installed with
-		# (normally -rw-r--r--)
-		template_png = glob(os.path.join(FRONTEND_ICONS_DIR, '**', '*.png'))[0]
 		for png in glob(os.path.join(CACHE_DIR, '*.png')):
 			app_id, ext = os.path.splitext(os.path.basename(png))
-			# 50x50
 			png_50 = os.path.join(FRONTEND_ICONS_DIR, '50x50', 'apps-%s.png' % app_id)
 			shutil.copy2(png, png_50)
-			shutil.copymode(template_png, png_50)
+			# images are created with UMC umask: -rw-------
+			# change the mode to UCS umask:      -rw-r--r--
+			os.chmod(png_50, stat.S_IREAD | stat.S_IWRITE | stat.S_IRGRP | stat.S_IROTH)
 
 	#@classmethod
 	#def set_server(cls, host=None, scheme=None):
