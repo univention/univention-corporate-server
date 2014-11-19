@@ -634,7 +634,7 @@
 	Benutzer <emphasis>root</emphasis> erforderlich.
   </para>
   <para>
-	Die Konfiguration im Browser erwartet zum Standort sowie
+	Die Konfiguration im Browser erfragt den Standort sowie die
 	Netzwerkeinstellungen und fährt dann (wie in der graphischen Installation) mit dem Punkt
 	<emphasis>Domäneneinstellungen</emphasis> fort.
   </para>

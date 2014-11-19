@@ -7,7 +7,7 @@ The following documentation describes how to install Univention Corporate Server
 	</para>
 
 	<para>
-	  The installation DVD is available for the computer architecture <emphasis>amd64</emphasis> (64-bit). In addition to support for the widely distributed BIOS systems, the DVD also includes support for the Unified Extensible Firmware Interface (UEFI) standard. The EUFI support on the DVD is also capable of starting systems with activated SecureBoot and installing UCS there.
+	  The installation DVD is available for the computer architecture <emphasis>amd64</emphasis> (64-bit). In addition to support for the widely distributed BIOS systems, the DVD also includes support for the Unified Extensible Firmware Interface (UEFI) standard. The UEFI support on the DVD is also capable of starting systems with activated SecureBoot and installing UCS there.
 	</para>
 
 	<para>
@@ -59,7 +59,7 @@ Following installation on hardware or in a virtualization solution, UCS can also
 	<itemizedlist>
 		<listitem>
 			<simpara>
-			<guimenu>Installation of Univention Corporate Server</guimenu> starts the interactive, graphic installation based on Version 3.16 of the Linux kernel. During the installation, the system requests a number of parameters such as the network settings, hard drive partitions, domain settings and selection of software components for the UCS system to be installed and then performs the installation and the configuration.
+			<guimenu>Installation of Univention Corporate Server</guimenu> starts the interactive, graphic installation. During the installation, the system requests a number of parameters such as the network settings, hard drive partitions, domain settings and selection of software components for the UCS system to be installed and then performs the installation and the configuration.
 			</simpara>
 		</listitem>
 		<listitem>
@@ -459,9 +459,9 @@ see <xref linkend="installation-overview"/>.
 </section>
 
 <section id="installation:textmode">
-  <title>Installation im Textmodus</title>
+  <title>Installation in text mode</title>
   <para>
-	On systems that showed problem with the graphic variant of Univention Installer, the installation may be also started in text mode.
+	On systems that showed a problem with the graphic variant of Univention Installer, the installation may be also started in text mode.
 	To achieve this, in the DVD boot menu <guimenu>Advanced options</guimenu> the entry <guimenu>Install in text mode</guimenu> has to be selected.
   </para>
   <para>
