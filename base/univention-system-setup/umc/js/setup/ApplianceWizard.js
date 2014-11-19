@@ -799,7 +799,10 @@ define([
 				this.getWidget('network', '_dhcp').set('value', isDHCP);
 				array.forEach(this._getNetworkDevices(), function(idev, i) {
 					var dev = this.values.interfaces[idev];
-					var old = dev.ip4[0] || dev.ip6[0] || ['', ''];
+					var old = ['', ''];
+					if (dev) {
+						old = dev.ip4[0] || dev.ip6[0] || ['', ''];
+					}
 					this.getWidget('network', '_ip' + i).set('value', old[0]);
 					this.getWidget('network', '_netmask' + i).set('value', old[1]);
 				}, this);
@@ -1071,6 +1074,7 @@ define([
 				console.error('No network interface could be detected! Assuming there is one interface named "eth0".');
 				devices = ['eth0'];
 			}
+			devices.sort();
 			return devices;
 		},
 
