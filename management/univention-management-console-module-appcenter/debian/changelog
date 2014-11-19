@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (4.1.19-1) unstable; urgency=medium
+
+  * Update local files after extracting the all.tar.gz. Otherwise we
+    don't see icons in the App Center (Bug #35825)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 19 Nov 2014 06:40:14 +0100
+
 univention-management-console-module-appcenter (4.1.18-6) unstable; urgency=low
 
   * Bug #35825: Update all.tar.gz (5)

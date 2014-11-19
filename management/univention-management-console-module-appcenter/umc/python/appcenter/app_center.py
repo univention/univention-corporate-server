@@ -572,6 +572,7 @@ class Application(object):
 				MODULE.info('Extracting %s' % filename)
 				archive.extract(filename, path=CACHE_DIR)
 		finally:
+			cls._update_local_files()
 			archive.close()
 		return True
 
