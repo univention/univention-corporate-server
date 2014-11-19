@@ -14,7 +14,7 @@
 		<revhistory>
 			<revision>
 				<revnumber>4.0-0</revnumber>
-				<date>16 Oct 2014</date>
+				<date>19 Nov 2014</date>
 			</revision>
 		</revhistory>
 	</bookinfo>
@@ -94,18 +94,18 @@
 				<emphasis>iqn.2010-08.local.ucs:sdb</emphasis> iSCSI target from the
 				<emphasis>xen6.ucs.local</emphasis> server: 
 
-				<programlisting language="sh">
-					&lt;pool type='iscsi'&gt;
-					&lt;name&gt;iscsi&lt;/name&gt;
-					&lt;source&gt;
-					&lt;host name='xen6.ucs.local' port='3260'/&gt;
-					&lt;device path='iqn.2010-08.local.ucs:sdb'/&gt;
-					&lt;/source&gt;
-					&lt;target&gt;
-					&lt;path&gt;/dev/disk/by-path&lt;/path&gt;
-					&lt;/target&gt;
-					&lt;/pool&gt;
-				</programlisting>
+				<programlisting language="xml"><![CDATA[
+<pool type='iscsi'>
+	<name>iscsi</name>
+	<source>
+		<host name='xen6.ucs.local' port='3260'/>
+		<device path='iqn.2010-08.local.ucs:sdb'/>
+	</source>
+	<target>
+		<path>/dev/disk/by-path</path>
+	</target>
+</pool>
+					]]></programlisting>
 			</para>
 
 			<para>
@@ -114,9 +114,9 @@
 				the following commands must be run:
 
 				<programlisting language="sh">
-					virsh pool-define iscsi-pool.xml
-					virsh pool-start iscsi
-					virsh pool-autostart iscsi
+virsh pool-define iscsi-pool.xml
+virsh pool-start iscsi
+virsh pool-autostart iscsi
 				</programlisting>
 
 				The UVMM service will detect the new storage pool automatically after a certain period of
@@ -124,7 +124,7 @@
 				information is detected immediately:
 
 				<programlisting language="sh">
-					/etc/init.d/univention-virtual-machine-manager-daemon restart
+/etc/init.d/univention-virtual-machine-manager-daemon restart
 				</programlisting>
 			</para>
 		</section>
@@ -142,13 +142,13 @@
 				present. This can be done using the following command:
 
 				<programlisting language="sh">
-					virsh pool-refresh "$pool_name"
+virsh pool-refresh "$pool_name"
 				</programlisting>
 
 				For the example above:
 
 				<programlisting language="sh">
-					virsh pool-refresh iscsi
+virsh pool-refresh iscsi
 				</programlisting>
 			</para>
 		</section>
@@ -158,9 +158,390 @@
 		<title>Xen deprecated in UCS-4</title>
 		<para>
 			For UCS-4.0 Univention decided to drop support for the <application>Xen</application> hypervisor in favour of <application>QEMU/KVM</application>.
-			UCS-4 no longer contains the package <package>xen-4.1</package> customized by Univention, but only the package <package>xen</package> as maintained by Debian.
-			Customers using <application>Xen</application> updating from UCS-3 must decide to either switch to that version or to migrate to a different hypervisor like <application>QEMU/KVM</application>.
+			UCS-4 no longer contains the package <package>xen-4.1</package> as previously provided by Univention, but only the package <package>xen</package> as maintained by Debian.
 		</para>
+		<para>
+			Managing Xen virtual machines in no longer possible using &ucsUVMM; from UCS-4.
+			Customers using <application>Xen</application> can continue using existing UCS-3 virtualization servers with an UCS-3 &ucsUVMM;, but should consider one of the following options longterm:
+		</para>
+		<itemizedlist>
+			<listitem><simpara>switch to the Hypervisor <application>QEMU/KVM</application>, which requires updating all virtual machines.</simpara></listitem>
+			<listitem><simpara>switch to the Debian based <application>Xen</application>.</simpara></listitem>
+		</itemizedlist>
+		<para>
+			Univention recommends to switch to <application>KVM</application>.
+		</para>
+
+		<section id="uvmmext:xen:qemu">
+			<title>Switch to QEMU/KVM</title>
+			<para>
+				When switching from <application>Xen</application> to <application>KVM</application> the drivers for para-virtual block and network devices must be changed.
+				This switch is easier for Linux based virtual machines, as the Linux kernel already contains drivers for both hypervisors and automatically uses the right one.
+				For Microsoft Windows bases systems the GPLPV drivers must be un-installed and replaced by the KVM-VirtIO drivers.
+			</para>
+			<para>
+				Univention recommends to setup a new server using <application>KVM</application> and to copy over the exiting image files to the new server.
+				This has the advantage that the new setup can be tested thoroughly and a fall-back to the old hypervisor using <application>Xen</application> is possible.
+			</para>
+			<procedure>
+				<title>Convert virtual machines from Xen to KVM</title>
+				<step performance="optional">
+					<para>
+						Backup all disk images of the virtual machine.
+							The exact file path can be queried from &ucsUVMM; or by running the command <command>virsh domblklist "$VM"</command>, where <envar>$VM</envar> is the name or UUID of one virtual machine.
+					</para>
+				</step>
+				<step>
+					<para>
+						Create a backup of the XML definition of the virtual machine using the command <command>virsh dumpxml "$VM"</command>.
+					</para>
+				</step>
+				<step>
+					<para>
+						Prepare the virtual machine for migration by performing the following actions inside the running virtual machine:
+					</para>
+					<stepalternatives>
+						<step>
+							<para>
+								For a Linux based virtual machine perform the following steps:
+							</para>
+							<substeps>
+								<step>
+									<para>
+										Convert any reference to <application>Xen</application> specific block devices like <filename>/dev/xvd<replaceable>a1</replaceable></filename> in <filename>/etc/fstab</filename>.
+										Use a device name independent format like <filename>LABEL=</filename> or <filename>UUID=</filename> as this is the most reliable format.
+										The use of fixed names like <filename>/dev/vd<replaceable>a1</replaceable></filename> should be avoided as the order of the devices might change between reboots.
+									</para>
+									<para>
+										The device name for CD-ROMs with <application>QEMU/KVM</application> is <filename>/dev/sr<replaceable>0</replaceable></filename> or also <filename>/dev/vd<replaceable>b</replaceable></filename>, depending on the exact setup of the virtual machine.
+									</para>
+								</step>
+								<step>
+									<para>
+										Make sure <application>GRUB</application> is installed in the directory <filename class="directory">/boot/</filename> and in the master boot record (<abbrev>MBR</abbrev>) of the first hard disk.
+										You can use commands like <command>fdisk /dev/xvd<replaceable>a</replaceable></command> for <abbrev>MBR</abbrev> or <command>gdisk /dev/xdv<replaceable>a</replaceable></command> for <abbrev>GPT</abbrev> based disks to check the partition layout.
+										Use <command>grub-install /dev/xdv<replaceable>a</replaceable></command> to install the boot loader into the <abbrev>MBR</abbrev>.
+									</para>
+								</step>
+								<step>
+									<para>
+										Run <command>update-grub</command> to create an up-to-date file <filename>/boot/grub/grub.cfg</filename>.
+										Check that file and modify it using your preferred editor if <application>Xen</application> specific block device are used.
+										Perform the same change as described in the first step.
+									</para>
+								</step>
+								<step>
+									<para>
+										Check the file <filename>/etc/inittab</filename> for any <application>getty</application> running on <filename class="devicefile">hvc0</filename> or any other <application>Xen</application> specific console.
+										Either remove those lines or convert them to a traditional serial console <filename class="devicefile">ttyS0</filename>, which is supported by <application>QEMU/KVM</application>.
+									</para>
+								</step>
+								<step>
+									<para>
+										Check all &ucsUCRV;s still referencing <application>Xen</application> specific devices and convert them to the appropriate equivalent:
+									</para>
+										<programlisting language="sh">
+ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
+										</programlisting>
+								</step>
+								<step>
+									<para>
+										Check the &ucsUCRV; <envar>kernel/modules</envar> for any <application>Xen</application> specific modules and remove them.
+										The variable is a list of semicolon separated values.
+									</para>
+								</step>
+							</substeps>
+						</step>
+						<step>
+							<para>
+								On Windows the <emphasis>GPLPV drivers for Xen</emphasis> must be replaced by the <emphasis>VirtIO drivers for QEMU/KVM</emphasis>.
+								The old drivers must be removed completely, otherwise Windows will crash.
+								The procedure is described in <ulink url="http://wiki.univention.de/index.php?title=Installing-signed-GPLPV-drivers">WIKI: Installing signed GPLPV drivers</ulink>
+							</para>
+							<para>
+								After a reboot the new VirtIO drivers can be installed.
+								They are provided by the package <package>univention-kvm-virtio</package> and are available as an ISO image in <filename>/var/lib/livirt/images/</filename>.
+								The exact procedure differs between Windows versions and is beyond the scope of this documentation.
+							</para>
+						</step>
+					</stepalternatives>
+				</step>
+				<step>
+					<para>
+						Shut down the virtual machine cleanly.
+						Suspending the machine is not enough!
+					</para>
+				</step>
+				<step performance="optional">
+					<para>
+						The image format for storing the virtual machine data can be changes now.
+						Xen only supports <quote>raw</quote> images, while QEMU/KVM supports more advanced formats like <quote>qcow2</quote>, which support snapshots.
+						If you plan to use those features, it's a good time to do the conversion now using <command>qemu-img convert -f raw -O qcow2 <replaceable>input.raw</replaceable> <replaceable>output.qcow2</replaceable></command>.
+						The conversation can also be done at any later time using the same command.
+					</para>
+					<para>
+						Remember to change the format from <quote>raw</quote> to <quote>qcow2</quote> in the domain definition as well.
+					</para>
+				</step>
+			</procedure>
+			<para>
+				After this the virtual machine can be migrated to <application>KVM</application>.
+				There are two alternatives:
+			</para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						The recommended upgrade path is to setup a <emphasis>new server</emphasis> using <application>KVM</application>.
+						This has the advantage that the old server is still available if anything goes wrong and the migration is aborted.
+					</para>
+					<para>
+						If you are using a shared storage, make sure that you have a backup and that you are using the correct image.
+						If you don't have a shared storage, copy the image file to the new server.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Otherwise the virtualization server must be upgraded <emphasis>in-place</emphasis>.
+					</para>
+					<warning>
+						<para>
+							This is a one-way upgrade path.
+							If anything goes wrong, the server has to be restored from backup!
+						</para>
+					</warning>
+					<procedure>
+						<title>Migrate server from Xen to KVM in-place</title>
+						<step>
+							<para>Shut down all virtual machines running on this server.</para>
+						</step>
+						<step>
+							<para>
+								Uninstall the App <quote>Xen virtualization server</quote>.
+							</para>
+						</step>
+						<step>
+							<para>
+								Run the <emphasis>un-join scripts</emphasis>.
+								Go to the &ucsUMC; UMC and opening the <emphasis>Join</emphasis> module.
+								Click the button to run all pending join scripts.
+							</para>
+						</step>
+						<step>
+							<para>
+								Perform the update to UCS-4.
+							</para>
+						</step>
+						<step>
+							<para>
+								Install the App <quote>KVM virtualization server</quote>.
+							</para>
+						</step>
+						<step>
+							<para>
+								Reboot the server.
+								This removed the Xen hypervisor below the currently running kernel and also loads the updated kernel from UCS-4.
+							</para>
+						</step>
+					</procedure>
+				</listitem>
+			</itemizedlist>
+			<para>
+				Now the virtual machines must be re-defined.
+				Depending on the number of virtual machines you need to migrate there are to alternatives:
+			</para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						If only a few virtual machines need migration, it's easier create new virtual machines, which re-use the old images.
+					</para>
+					<procedure>
+						<title>Re-define virtual machines only re-using images</title>
+						<step>
+							<para>
+								Go to the &ucsUMC; UMC and opening the <emphasis>&ucsUVMM;</emphasis> module.
+							</para>
+						</step>
+						<step>
+							<para>
+								Create a new virtual machine using the right profile.
+							</para>
+						</step>
+						<step>
+							<para>
+								When asked for the disk images, select <quote>Choose existing image</quote> as <quote>Drive type</quote> and select the existing image from the corresponding storage pool.
+							</para>
+							<para>
+								Repeat this step for all drives.
+							</para>
+							<para>
+								Pay special attention to the <quote>Image format</quote> if you performed the conversion from <quote>raw</quote> to <quote>qcow2</quote> mentioned above.
+							</para>
+						</step>
+						<step>
+							<para>
+								Finish creating the machine but do not start it yet.
+							</para>
+						</step>
+						<step>
+							<para>
+								Re-open the virtual machine and go to the <quote>Devices</quote> tab.
+								Open all network interfaces and change the <quote>MAC address</quote> back to the original one, which you can get from the XML definition file.
+								Otherwise the operating system will detect the change as a new network device and will require further manual updates like deleting <filename>/etc/udev/rules/70-persistent-net.rules</filename>.
+							</para>
+							<para>
+								Also verify that the <quote>Source</quote> setting matches the name of your bridge interface, as this might have changed from <filename class="devicefile">eth<replaceable>0</replaceable></filename> to <filename class="devicefile">br<replaceable>0</replaceable></filename>.
+								See <xref linkend="uvmmext:kvm"/> for more details.
+							</para>
+						</step>
+						<step>
+							<para>
+								Save the modification.
+							</para>
+						</step>
+					</procedure>
+				</listitem>
+				<listitem>
+					<para>
+						If many virtual machines need updating, the <abbrev>XML</abbrev> definition from <application>Xen</application> can be semi-automatically transformed into a <abbrev>XML</abbrev> definition for <application>KVM</application>.
+					</para>
+					<procedure>
+						<title>Re-define virtual machines convetting the Xen XML definition</title>
+						<step>
+							<para>
+								Use the command <command>virsh dumpxml "$VM"</command> to generate the XML file describing a single virtual machine on the <application>Xen</application> host.
+							</para>
+						</step>
+						<step>
+							<para>
+								Modify the XML file as follows:
+							</para>
+							<substeps>
+								<step>
+									<para>
+										Change the attribute <literal>/domain/@type</literal> from <literal>xen</literal> to <literal>kvm</literal>.
+									</para>
+								</step>
+								<step>
+									<para>
+										<application>QEMU/KVM</application> only supports full-virtualization (<abbrev>HVM</abbrev>).
+									</para>
+									<substeps>
+										<step>
+											<para>
+												Set the element <literal>/domain/os/type</literal> to <literal>hvm</literal>.
+											</para>
+										</step>
+										<step>
+											<para>
+												Remove the elements  <literal>/domain/bootloader</literal> and <literal>/domain/bootloader_args</literal>.
+											</para>
+										</step>
+									</substeps>
+								</step>
+								<step>
+									<para>
+										Remove the element <literal>/domain/os/loader</literal> for HVM domains.
+									</para>
+								</step>
+								<step>
+									<para>
+										The element <literal>/domain/devices/emulator</literal> should point to <filename>/usr/bin/kvm</filename>.
+									</para>
+								</step>
+								<step>
+									<para>
+										Update each block device <literal>/domain/devices/disk</literal>:
+									</para>
+									<substeps>
+										<step>
+											<para>
+												In the element <literal>driver</literal> change the following attributes:
+											</para>
+											<substeps>
+												<step>
+													<para>
+														Change <literal>@type='tap2'</literal> to <literal>qemu</literal>.
+													</para>
+												</step>
+												<step>
+													<para>
+														Change <literal>@name='aio'</literal> to <literal>raw</literal> or <literal>qcow2</literal> if you converted the image file as mentioned above.
+													</para>
+												</step>
+											</substeps>
+										</step>
+										<step>
+											<para>
+												In the element <literal>target</literal> change the following attributes:
+											</para>
+											<stepalternatives>
+												<step>
+													<para>
+														Replace any <literal>@bus='xen'</literal> with <literal>virtio</literal> and convert the attribute <literal>@dev</literal> from <literal>xvd<replaceable>X</replaceable></literal> to <literal>vd<replaceable>X</replaceable></literal>.
+													</para>
+												</step>
+												<step performance="optional">
+													<para>
+														You can also use <literal>@bus='ide'</literal> and <literal>@dev='hd<replaceable>X</replaceable>'</literal> if an emulated <abbrev>IDE</abbrev> device is preferred to the more efficient <abbrev>VirtIO</abbrev>.
+													</para>
+												</step>
+											</stepalternatives>
+										</step>
+									</substeps>
+								</step>
+								<step>
+									<para>
+										Update each network interface <literal>/domain/devices/interfaces</literal>:
+									</para>
+									<substeps>
+										<step>
+											<para>
+												Change <literal>model/@type</literal> to <literal>virtio</literal> or any other type supported by <application>QEMU/KVM</application> like <literal>e1000</literal> or <literal>rtl8139</literal>.
+											</para>
+										</step>
+										<step>
+											<para>
+												Remove any element <literal>/domain/devices/interfaces/script</literal>.
+											</para>
+										</step>
+										<step>
+											<para>
+												Check that the attribute <literal>source/@bridge</literal> references a valid bridge interface on the target host system.
+												See <xref linkend="uvmmext:kvm"/> for more details.
+											</para>
+										</step>
+									</substeps>
+								</step>
+								<step>
+									<para>
+										In any element <literal>/domain/devices/console/target</literal> changed the attribute from <literal>@type='xen'</literal> to <literal>@type='serial'</literal>.
+									</para>
+								</step>
+								<step>
+									<para>
+										In any element <literal>/domain/devices/input</literal> change the attribute from <literal>@bus='xen'</literal> to <literal>@bus='usb'</literal>.
+									</para>
+								</step>
+							</substeps>
+						</step>
+						<step>
+							<para>
+								On the target host define the virtual machine using <command>virsh define "$VM.xml"</command> where <replaceable>$VM.xml</replaceable> is the name of the XML file.
+							</para>
+						</step>
+					</procedure>
+					<para>
+						The following <abbrev>XSLT</abbrev> style sheet can be used to transform a <application>Xen</application> domain definition into a <application>QEMU/KVM</application> definition as a first step using a command like <command>xsltproc</command>:
+					</para>
+					<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="uvmm-4.0-xen2qemu.xsl" parse="text"/></programlisting>
+					<para>
+						The XML file should then be copied to the <application>QEMU/KVM</application> server.
+						It uses the <command>xsltproc</command> <abbrev>XSLT</abbrev> command line processor, which is provided by the package <package>xsltproc</package>.
+						The virtual machine can be re-defined using the command <command>virsh define "$FILENAME"</command>.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</section>
 
 		<section id="uvmmext:xen:debian">
 			<title>Switch to Debian-Xen</title>
@@ -169,11 +550,20 @@
 			</para>
 			<variablelist>
 				<varlistentry>
+					<term>No &ucsUVMM; integration</term>
+					<listitem>
+						<simpara>
+							Support for Xen was removed from UVMM.
+							Virtual machines can not be managed using UVMM.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
 					<term>Different Xen patch set</term>
 					<listitem>
 						<simpara>
 							The UCS version contained several patches on top of the Debian version, which fixed several issues (<ulink url="&ucsbug;18357">Bug 18357</ulink>, <ulink url="&ucsbug;23394">Bug 23394</ulink>, <ulink url="&ucsbug;23812">Bug 23812</ulink>, <ulink url="&ucsbug;36098">Bug 36098</ulink>).
-							They might not be fixed or fixed differently in the Debian version.
+							Their status in Debian is unknown.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -189,8 +579,19 @@
 					<term>No blktap Linux kernel module</term>
 					<listitem>
 						<simpara>
-							The UCS Linux kernel contained the module <package>blktap</package>, which was used to provide block devices for virtual machines.
+							The UCS Linux kernel contained the module <package>blktap</package> built-in, which was used to provide block devices for virtual machines.
 							This module is no longer included in the default kernel, but can be self-compiled using <application>DKMS</application> and the package <package>blktap-dkms</package>.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Different network setup</term>
+					<listitem>
+						<simpara>
+							UCS used a custom network script to setup bridging.
+							They are not used by Debian.
+							As such bridging must be setup manually.
+							See <xref linkend="uvmmext:kvm"/> and the chapter on configuring bridges in the <biblioref linkend="ucs-manual"/>.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -203,7 +604,20 @@
 							The package manager <application>dpkg</application> will then refuse to install the Debian packages.
 							As such it is advisable to remove the old UCS packages before installing the new Debian based packages.
 						</simpara>
-						<programlisting language="sh">
+					</listitem>
+				</varlistentry>
+			</variablelist>
+			<para>
+				The following commands can be used as a start to migrate to the Debian version of <application>Xen</application>.
+				After that many more things might need manual changes.
+			</para>
+			<warning>
+				<para>
+					This is a one-way upgrade path.
+					Backup the host and test the procedure in isolation before doing this on a production system!
+				</para>
+			</warning>
+			<programlisting language="sh">
 # Remove xen-4.1 before update
 apt-get remove xen-4.1 libxenstore3.0 libxen4.1 libxen-dev xen-4.1-dbg
 # Upgrade to UCS-4
@@ -211,140 +625,7 @@ univention-upgrade
 # Re-install xen
 ucr set repository/online/unmaintained=yes
 univention-install xen
-						</programlisting>
-					</listitem>
-				</varlistentry>
-			</variablelist>
-		</section>
-
-		<section id="uvmmext:xen:qemu">
-			<title>Switch to QEMU/KVM</title>
-			<para>
-				The switch from <application>Xen</application> to <application>KVM</application> is easier for UCS (or other Linux) based virtual machines, as they contain drivers for both hypervisors.
-			</para>
-			<para>
-				Inside the virtual machine perform the following actions:
-			</para>
-			<itemizedlist>
-				<listitem>
-					<para>
-						Convert any reference to <application>Xen</application> specific block devices like <filename>/dev/xvd<replaceable>a1</replaceable></filename> in <filename>/etc/fstab</filename> into either a device name independent format using <filename>LABEL=</filename> or <filename>UUID=</filename>, or to <filename>/dev/vd<replaceable>a1</replaceable></filename>.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Do the same for the <application>GRUB</application> boot loader.
-						Check that no <application>Xen</application> specific block device is mentioned in <filename>/boot/grub/grub.cfg</filename>.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Make sure <application>GRUB</application> is installed in directory <filename class="directory">/boot/</filename> and the master boot record (<abbrev>MBR</abbrev>) of the first hard disk.
-						Use the commands <command>fdisk</command>, <command>gdisk</command>, <command>grub-install</command> and <command>update-grub</command> as needed.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Check the file <filename>/etc/inittab</filename> for any <application>getty</application> running on <filename class="devicefile">hvc0</filename> or any other <application>Xen</application> specific console.
-						Either remove those lines or convert them to a traditional serial console <filename class="devicefile">ttyS0</filename>, which is supported by <application>QEMU</application>.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Check all &ucsUCRV;s still referencing <application>Xen</application> specific devices and convert them to the appropriate equivalent:
-					</para>
-						<programlisting language="sh">
-ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
-						</programlisting>
-				</listitem>
-				<listitem>
-					<para>
-						Check the &ucsUCRV; <envar>kernel/modules</envar> for any <application>Xen</application> specific modules and remove them.
-						The variable is a list of semicolon separated values.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						On Windows the <emphasis>GPLPV drivers for Xen</emphasis> must be replaced by the <emphasis>VirtIO drivers for QEMU/KVM</emphasis>.
-						They are provided by the package <package>univention-kvm-virtio</package> and are available as an ISO image in <filename>/var/lib/livirt/images/</filename>.
-						The exact procedure differs between Windows versions and is beyond the scope of this documentation.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Shut down the virtual machine cleanly.
-						Suspending the machine is not enough!
-					</para>
-				</listitem>
-			</itemizedlist>
-			<para>
-				If you have multiple servers it is best to just define a new virtual machine using <application>QEMU/KVM</application> on a new server reusing the existing image files.
-				This is easy if a shared storage is used.
-				Otherwise the image must be copied over to the new server.
-				The exact file path can be queries from &ucsUVMM; or by running the command <command>virsh domblklist "$VM"</command>, where <envar>$VM</envar> is the name or UUID of one virtual machine.
-			</para>
-			<para>
-				Alternatively the configuration files for the virtual machines can be re-used to re-define the virtual machine on a different server or on the same server after it is updated to run <application>QEMU</application>.
-				The command <command>virsh dumpxml "$VM"</command> can be used to generate an XML file describing a single virtual machine.
-				This file must be updated, as there are several differences between <application>Xen</application> and <application>QEMU/KVM</application>:
-			</para>
-			<itemizedlist>
-				<listitem>
-					<para>
-						The attribute <literal>/domain/@type</literal> must be changed from <literal>xen</literal> to <literal>kvm</literal>.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						<application>QEMU/KVM</application> only supports full-virtualization (<abbrev>HVM</abbrev>).
-						The element <literal>/domain/os/type</literal> must be set to <literal>hvm</literal>.
-						The elements  <literal>/domain/bootloader</literal> and <literal>/domain/bootloader_args</literal> must be removed.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Remove the element <literal>/domain/os/loader</literal> for HVM domains.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						The element <literal>/domain/devices/emulator</literal> should point to <filename>/usr/bin/kvm</filename>.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						For each block device <literal>/domain/devices/disk</literal> change <literal>driver/@type='tap2'</literal> to <literal>qemu</literal> and <literal>driver/@name='aio'</literal> to <literal>raw</literal>.
-						In the element <literal>target</literal> replace any <literal>@bus='xen'</literal> with <literal>virtio</literal> and convert the attribute <literal>@dev</literal> from <literal>xvd<replaceable>X</replaceable></literal> to <literal>vd<replaceable>X</replaceable></literal>.
-						You can also use <literal>@bus='ide'</literal> and <literal>@dev='hd<replaceable>X</replaceable>'</literal> if an emulated <abbrev>IDE</abbrev> device is preferred to the more efficient <abbrev>VirtIO</abbrev>.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						For each network interface <literal>/domain/devices/interfaces</literal> change <literal>model/@type</literal> to <literal>virtio</literal> or any other type supported by <application>QEMU/KVM</application> like <literal>e1000</literal> or <literal>rtl8139</literal>.
-						Remove any element <literal>/domain/devices/interfaces/script</literal>.
-						Check that the attribute <literal>source/@bridge</literal> references a valid bridge interface on the target host system.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						In any element <literal>/domain/devices/console/target</literal> the attribute <literal>@type='xen'</literal> should be changed to <literal>@type='serial'</literal>.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						In any element <literal>/domain/devices/input</literal> the attribute <literal>@bus='xen'</literal> should be changed to <literal>@bus='usb'</literal>.
-					</para>
-				</listitem>
-			</itemizedlist>
-			<para>
-				The following <abbrev>XSLT</abbrev> style sheet can be used to transform a <application>Xen</application> domain definition into a <application>QEMU/KVM</application> definition as a first step using a command like <command>xsltproc</command>:
-			</para>
-			<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="uvmm-4.0-xen2qemu.xsl" parse="text"/></programlisting>
-			<para>
-				The XML file should then be copied to the <application>QEMU/KVM</application> server.
-				It uses the <command>xsltproc</command> <abbrev>XSLT</abbrev> command line processor, which is provided by the package <package>xsltproc</package>.
-				The virtual machine can be re-defined using the command <command>virsh define "$FILENAME"</command>.
-			</para>
+			</programlisting>
 		</section>
 
 	</chapter>
@@ -476,11 +757,15 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 			<title>UVMM profiles</title>
 			<para>
 				In addition to that the UVMM profiles should be updated as well, as they name the network interface which is used to connect newly created virtual machines.
-				This is described in the main UCS manual in <emphasis>UVMM chapter</emphasis> in the section <emphasis>Changing default network</emphasis>.
+				This is described in the <biblioref linkend="ucs-manual"/> in <emphasis>UVMM chapter</emphasis> in the section <emphasis>Changing default network</emphasis>.
 			</para>
 		</section>
 
 	</chapter>
+
+	<bibliography>
+		<bibliomixed id="ucs-manual"/>
+	</bibliography>
 
 	<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
