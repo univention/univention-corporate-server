@@ -205,7 +205,7 @@
 	  <para>
 		<figure id="mail-mailinglist">
 		  <title>Einrichtung einer Mailingliste</title>
-		  <graphic scalefit="1" width="90%" align="center" fileref="illustrations/mail_mailinglist_de.png"/>
+		  <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/mail_mailinglist_de.png"/>
 		</figure>
 	  </para>
 
@@ -295,7 +295,7 @@
 	  <para>
 		<figure id="mail-sharedfolder">
 		  <title>Einrichtung eines globalen IMAP-Ordners</title>
-		  <graphic scalefit="1" width="100%" fileref="illustrations/mail_imapfolder_de.png"/>
+		  <graphic scalefit="1" width="100%" fileref="illustrations40/mail_imapfolder_de.png"/>
 		</figure>
 	  </para>
 
@@ -858,7 +858,7 @@ postmap /etc/postfix/smtp_auth
 	<para>
 	  <figure id="mail:clients:thunderbird">
 		<title>Einrichtung von Mozilla Thunderbird</title>
-		<graphic scalefit="1" align="center" width="80%" fileref="illustrations/thunderbird_de.png"/>
+		<graphic scalefit="1" align="center" width="80%" fileref="illustrations40/thunderbird_de.png"/>
 	  </figure>
 	</para>
   </section>
@@ -885,7 +885,7 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		<figure id="horde-login">
 		  <title>Anmeldung an Horde</title>
-		  <graphic scalefit="1" align="center" width="35%" fileref="illustrations/login_de.png"/>
+		  <graphic scalefit="1" align="center" width="35%" fileref="illustrations40/login_de.png"/>
 		</figure>
 	  </para>
 
@@ -925,7 +925,7 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		<figure id="horde-inbox">
 		  <title>Webmail (Posteingang)</title>
-		  <graphic scalefit="1" width="95%" fileref="illustrations/inbox_de.png"/>
+		  <graphic scalefit="1" width="95%" fileref="illustrations40/inbox_de.png"/>
 		</figure>
 	  </para>
 
@@ -949,7 +949,7 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		<figure id="horde-address">
 		  <title>Adressbuch für Webmail</title>
-		  <graphic scalefit="1" width="100%" fileref="illustrations/addressbook_de.png"/>
+		  <graphic scalefit="1" width="100%" fileref="illustrations40/addressbook_de.png"/>
 		</figure>
 	  </para>
 
@@ -987,7 +987,7 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		<figure id="horde-filter">
 		  <title>Filterverwaltung in Horde</title>
-		  <graphic scalefit="1" width="100%" fileref="illustrations/filter_de.png"/>
+		  <graphic scalefit="1" width="100%" fileref="illustrations40/filter_de.png"/>
 		</figure>
 	  </para>
 

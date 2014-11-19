@@ -1143,7 +1143,7 @@ partitioning configuration.
 </para>
 <figure id="GrubMenuPartitioning">
 	<title>Selecting Software Raid (expert mode) installation option in the Grub bootloader</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/screenshot_ucs_cd_bootloader_expert_mode.jpg"/>
+	<graphic scalefit="1" width="80%" fileref="illustrations40/screenshot_ucs_cd_bootloader_expert_mode.jpg"/>
 </figure>
 <para>
 This mode can, for example, be used to set up a software RAID or an

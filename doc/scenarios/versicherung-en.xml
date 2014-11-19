@@ -87,7 +87,7 @@
 	<para>
 	  <figure id="versicherung-gesamt">
 		<title>General overview (excluded: storage, DNS, DHCP, print services, virtualization, backup)</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/versicherung_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations40/versicherung_en.png"/>
 	  </figure>
 	</para>
 
@@ -100,7 +100,7 @@
 	<para>
 	  <figure id="versicherung-standort">
 		<title>Structure of a location</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/versicherung-standort_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations40/versicherung-standort_en.png"/>
 	  </figure>
 	</para>
   </section>
@@ -115,7 +115,7 @@
 	<para>
 	  <figure id="uvmm2">
 		<title>Managing virtual machines with UVMM</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/uvmm_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations40/uvmm_en.png"/>
 	  </figure>
 	</para>
 
@@ -314,7 +314,7 @@
 	<para>
 	  <figure id="nagios">
 		<title>System monitoring of a server</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/nagios_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations40/nagios_en.png"/>
 	  </figure>
 	</para>
 

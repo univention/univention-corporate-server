@@ -64,7 +64,7 @@
 			<title>Anlegen einer OpenStack Verbindung</title>
 			<figure id="uvmm-new-openstack-connection">
 				<title>Anlegen einer Verbindung zu einer OpenStack Instanz</title>
-				<graphic scalefit="1" width="90%" align="center" fileref="illustrations/uvmm_new_openstack_connection_de.png"/>
+				<graphic scalefit="1" width="90%" align="center" fileref="illustrations40/uvmm_new_openstack_connection_de.png"/>
 			</figure>
 			<para>
 				Um eine Verbindung zu einer OpenStack Instanz herzustellen, sind im Einrichtungsassistenten folgende Einstellungen vorzunehmen:
@@ -248,7 +248,7 @@ update-ca-certificates
 			<title>Operationen (Starten/Stoppen/Pausieren/Löschen/Migrieren/Klonen von virtuellen Maschinen)</title>
 			<figure id="uvmm-overview">
 				<title>Übersicht über die virtuellen Maschinen</title>
-				<graphic scalefit="1" width="90%" align="center" fileref="illustrations/uvmm_overview1_de.png"/>
+				<graphic scalefit="1" width="90%" align="center" fileref="illustrations40/uvmm_overview1_de.png"/>
 			</figure>
 			<para>
 				Im Hauptdialog des UMC-Moduls wird auf der linken Seite eine Liste angezeigt, die einen Überblick über die vorhandenen Virtualisierungsserver und die konfigurierten Verbindungen zu Cloud Computing Systemen anzeigt.
@@ -511,7 +511,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 			</para>
 			<figure id="uvmm-drive">
 				<title>Bearbeiten der Laufwerkseinstellung eines DVD-Laufwerks</title>
-				<graphic scalefit="1" width="70%" align="center" fileref="illustrations/uvmm_dvd_de.png"/>
+				<graphic scalefit="1" width="70%" align="center" fileref="illustrations40/uvmm_dvd_de.png"/>
 			</figure>
 			<table>
 				<title>Reiter 'Allgemein'</title>
@@ -991,7 +991,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 			</itemizedlist>
 			<figure id="uvmm-network">
 				<title>Hinzufügen einer virtuellen Netzwerkkarte</title>
-				<graphic scalefit="1" width="70%" align="center" fileref="illustrations/uvmm_network_de.png"/>
+				<graphic scalefit="1" width="70%" align="center" fileref="illustrations40/uvmm_network_de.png"/>
 			</figure>
 			<para>
 				Die UVMM-Server sind für NAT und Bridging vorkonfiguriert.
@@ -1087,7 +1087,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 			</para>
 			<figure id="uvmm-migrate">
 				<title>Migrieren einer virtuellen Maschine</title>
-				<graphic scalefit="1" width="40%" align="center" fileref="illustrations/uvmm_migrate_de.png"/>
+				<graphic scalefit="1" width="40%" align="center" fileref="illustrations40/uvmm_migrate_de.png"/>
 			</figure>
 
 			<para>

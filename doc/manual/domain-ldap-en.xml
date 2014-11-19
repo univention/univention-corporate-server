@@ -253,7 +253,7 @@
 
 	  <figure>
 		<title>Domain join of a Windows 7 system</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/win7-join_2-en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations40/win7-join_2-en.png"/>
 	  </figure>
 
 	  <para>
@@ -414,7 +414,7 @@
 
 		<figure>
 			<title>Domain join of a Mac OS X system</title>
-			<graphic scalefit="1" width="60%" fileref="illustrations/macosx-bind_en.png"/>
+			<graphic scalefit="1" width="60%" fileref="illustrations40/macosx-bind_en.png"/>
 		</figure>
 
 		  <para>
@@ -958,7 +958,7 @@ slapcat &gt; ldapdata.txt
 
 	<figure>
 	  <title>Listener/Notifier mechanism</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/administration-overview_en.png"/>
+	  <graphic scalefit="1" width="80%" fileref="illustrations40/administration-overview_en.png"/>
 	</figure>
 
 	<para>

@@ -254,7 +254,7 @@
 		</para>
 		<figure>
 			<title>Domänenbeitritt eines Windows 7-Systems</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/win7-join_2-de.png"/>
+			<graphic scalefit="1" width="80%" fileref="illustrations40/win7-join_2-de.png"/>
 		</figure>
 		<para>
 			Der Domänenbeitritt dauert einige Zeit und sollte nicht vorzeitig
@@ -435,7 +435,7 @@
 
 		<figure>
 			<title>Domänenbeitritt eines Mac OS X-Systems</title>
-			<graphic scalefit="1" width="60%" fileref="illustrations/macosx-bind_de.png"/>
+			<graphic scalefit="1" width="60%" fileref="illustrations40/macosx-bind_de.png"/>
 		</figure>
 
 		  <para>
@@ -991,7 +991,7 @@ slapcat &gt; ldapdaten.txt
 	
 	  <figure>
 		<title>Listener/Notifier-Mechanismus</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/administration-overview.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations40/administration-overview.png"/>
 	  </figure>
 
 	  <para>

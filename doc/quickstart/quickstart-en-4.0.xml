@@ -79,7 +79,7 @@
 
   <figure id="quick-systemrole">
 	<title>Selecting the domain setup</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations/systemrole-en.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/systemrole-en.png"/>
   </figure>
   
 
@@ -151,7 +151,7 @@
 
 	<figure id="quick-umclogin">
 	  <title>Modules in the UMC</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations/umc-modules-en.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations40/umc-modules-en.png"/>
 	</figure>
 
 </chapter>
@@ -181,7 +181,7 @@
 
 	<figure id="quick-appcenter">
 	  <title>Subsequent installation of UCS components</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations/appcenter-en.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations40/appcenter-en.png"/>
 	</figure>
 
   </para>
@@ -206,7 +206,7 @@
 
   <figure id="quick-ucr">
 	<title>Managing &ucsUCR; variables</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations/ucr-en.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/ucr-en.png"/>
   </figure>
 
 </chapter>

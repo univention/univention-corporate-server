@@ -59,7 +59,7 @@
 
 	<figure id="service-detail">
 		<title>Nagios Status-Webinterface</title>
-		<graphic scalefit="1" align="center" width="90%" fileref="illustrations/nagios_service_detail.png"/>
+		<graphic scalefit="1" align="center" width="90%" fileref="illustrations40/nagios_service_detail.png"/>
 	</figure>
 
 	<para>
@@ -481,7 +481,7 @@
 
 		<figure id="nagios-service">
 			<title>Konfiguration eines Nagios-Dienstes</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations/nagios-object_DE.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations40/nagios-object_DE.png"/>
 		</figure>
 
 		<table>
@@ -849,7 +849,7 @@
 
 		<figure id="nagios-assign">
 			<title>Zuweisung von Nagios-Prüfungen zu einem Rechner</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations/nagios-services_DE.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations40/nagios-services_DE.png"/>
 		</figure>
 
 		<table>
@@ -959,7 +959,7 @@
 
 	<figure id="nagios-tact-overview">
 		<title>Nagios-Statusübersicht</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/overview_EN.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations40/overview_EN.png"/>
 	</figure>
 
 	<para>

@@ -31,7 +31,7 @@
 	<para>
 	  <figure id="kanzlei">
 		<title>System overview of the lawyer's office Hemmerlein and Sons</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/kanzlei_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations40/kanzlei_en.png"/>
 	  </figure>
 	</para>
   </section>
@@ -47,7 +47,7 @@
 	<para>
 	  <figure id="umc-anlegen">
 		<title>Creating a user in Univention Directory Manager</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/umc-benutzeranlegen_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations40/umc-benutzeranlegen_en.png"/>
 	  </figure>
 	</para>
   </section>

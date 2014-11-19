@@ -90,7 +90,7 @@
 
 		<figure id="printquota-enable">
 		  <title>Enabling quota support</title>
-		  <graphic scalefit="1" width="80%" fileref="illustrations/enable-print-quota-support.png"/>
+		  <graphic scalefit="1" width="80%" fileref="illustrations40/enable-print-quota-support.png"/>
 		</figure>
 
 		<note>
@@ -157,7 +157,7 @@
 
 		  <figure id="printquota-listprinters">
 			<title>List of available printers</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations/printquota-umc1.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations40/printquota-umc1.png"/>
 		  </figure>
 
 		  <para>
@@ -172,7 +172,7 @@
 
 		  <figure id="printquota-listquota">
 			<title>List of configured print quotas</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations/printquota-umc2.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations40/printquota-umc2.png"/>
 		  </figure>
 
 		</section>

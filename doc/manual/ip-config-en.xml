@@ -31,7 +31,7 @@
 	</para>
 	<figure id="net-networks">
 	  <title>Creating a network object</title>
-	  <graphic fileref="illustrations/create-network_EN.png" scalefit="1" width="100%"/>
+	  <graphic fileref="illustrations40/create-network_EN.png" scalefit="1" width="100%"/>
 	</figure>
 	<para>
 	  For example, it is possible to define a network object <emphasis>Workstation network</emphasis>
@@ -372,7 +372,7 @@
 		</para>
 		<figure id="net-dns-forward">
 		  <title>Configuring a forward lookup zone in UMC</title>
-		  <graphic fileref="illustrations/forward-lookup-zone_EN.png" scalefit="1" width="100%"/>
+		  <graphic fileref="illustrations40/forward-lookup-zone_EN.png" scalefit="1" width="100%"/>
 		</figure>
 		<para>
 		  <table>
@@ -795,7 +795,7 @@
 		  <title>
 			Configuring a service record
 		  </title>
-		  <graphic fileref="illustrations/srv-record_EN.png" scalefit="1" width="100%"/>
+		  <graphic fileref="illustrations40/srv-record_EN.png" scalefit="1" width="100%"/>
 		</figure>
 		<para>
 		  A service record must always be assigned to a forward lookup zone and
@@ -2383,7 +2383,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 	  <para>
 		<figure id="net-dansguardian">
 		  <title>Dansguardian blocking a web site</title>
-		  <graphic fileref="illustrations/dansguardian_EN.png" scalefit="1" width="100%"/>
+		  <graphic fileref="illustrations40/dansguardian_EN.png" scalefit="1" width="100%"/>
 		</figure>
 	  </para>
 	  <para>

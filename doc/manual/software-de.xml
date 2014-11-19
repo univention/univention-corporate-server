@@ -160,7 +160,7 @@
 	</para>
 
 	<figure id="appcenter-overview"><title>Überblick der verfügbaren Applikationen im App Center</title>
-	<graphic scalefit="1" width="100%" fileref="illustrations/appcenter_overview_de.png"/>
+	<graphic scalefit="1" width="100%" fileref="illustrations40/appcenter_overview_de.png"/>
 	</figure>
 
 	<para>
@@ -183,7 +183,7 @@
 	</para>
 
 	<figure id="appcenter-details"><title>Details einer Applikation im App Center</title>
-	<graphic scalefit="1" width="100%" fileref="illustrations/appcenter_details_de.png"/>
+	<graphic scalefit="1" width="100%" fileref="illustrations40/appcenter_details_de.png"/>
 	</figure>
 
 	<para>
@@ -453,7 +453,7 @@ univention-repository-update -h
 	  </para>
 
 	  <figure id="software-umcupdate"><title>Aktualisierung eines UCS-Systems über UMC</title>
-	  <graphic scalefit="1" width="100%" fileref="illustrations/software_onlineupdate_de.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations40/software_onlineupdate_de.png"/>
 	  </figure>
 
 	  <para>
@@ -535,7 +535,7 @@ univention-repository-update -h
 	  </para>
 
 	  <figure id="software-policyupdate"><title>Aktualisierung eines UCS-Systems über eine Release-Richtlinie</title>
-	  <graphic scalefit="1" width="100%" fileref="illustrations/software_policy_de.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations40/software_policy_de.png"/>
 	  </figure>
 
 	  <para>
@@ -639,7 +639,7 @@ univention-repository-update -h
 
 	  <figure id="appcenter-ucscomponents">
 		<title>Auswahl von UCS-Komponenten im App Center</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/appcenter-ucs-de.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations40/appcenter-ucs-de.png"/>
 	  </figure>
 
 	</section>
@@ -653,7 +653,7 @@ univention-repository-update -h
 	  </para>
 
 	  <figure id="software-umcinstall"><title>Installation des Pakets univention-squid in &ucsUMC;</title>
-	  <graphic scalefit="1" width="100%" fileref="illustrations/software_install_de1.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations40/software_install_de1.png"/>
 	  </figure>
 
 	  <para>
@@ -949,7 +949,7 @@ apt-cache search fax
 	  </para>
 
 	  <figure id="software-repocomponent"><title>Konfiguration einer Repository-Komponente in UMC</title>
-	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations/software_repository_de2.png"/>
+	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/software_repository_de2.png"/>
 	  </figure>
 
 	  <para>
@@ -1166,7 +1166,7 @@ ucr set repository/online/component/ucsschool/description="UCS@school-Pakete" \
 
 	</itemizedlist>
 	<figure id="software-monitor"><title>Suche nach Paketen im Software-Monitor</title>
-	<graphic scalefit="1" width="100%" fileref="illustrations/software_softwaremonitor_de.png"/>
+	<graphic scalefit="1" width="100%" fileref="illustrations40/software_softwaremonitor_de.png"/>
 	</figure>
 
 	<para>

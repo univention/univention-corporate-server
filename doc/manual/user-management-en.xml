@@ -33,11 +33,11 @@
 		</para>
 		<figure id="user-create">
 			<title>Creating a user in UMC</title>
-			<graphic scalefit="1" width="65%" align="center" fileref="illustrations/users_user_en.png"/>
+			<graphic scalefit="1" width="65%" align="center" fileref="illustrations40/users_user_en.png"/>
 		</figure>
 		<figure id="user-create-advanced">
 			<title>Advanced user settings</title>
-			<graphic scalefit="1" width="90%" align="center" fileref="illustrations/users_user_advanced_en.png"/>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations40/users_user_advanced_en.png"/>
 		</figure>
         <table>
             <title>'General' tab</title>
@@ -853,7 +853,7 @@
 
             <figure id="password-policy">
                 <title>Configuring a password policy</title>
-                <graphic scalefit="1" width="100%" fileref="illustrations/users_policy_password_en.png"/>
+                <graphic scalefit="1" width="100%" fileref="illustrations40/users_policy_password_en.png"/>
             </figure>
             <itemizedlist>
 			  <listitem> 
@@ -1100,7 +1100,7 @@
         </para>
         <figure id="user-create-template">
             <title>Selecting a user template</title>
-            <graphic scalefit="1" width="70%" align="center" fileref="illustrations/users_usertemplate_en.png"/>
+            <graphic scalefit="1" width="70%" align="center" fileref="illustrations40/users_usertemplate_en.png"/>
         </figure>
         <para>
             User templates are administrated in the UMC module <guimenu>LDAP directory</guimenu>.

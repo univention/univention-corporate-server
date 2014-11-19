@@ -80,7 +80,7 @@
 			<title>Creating an OpenStack connection</title>
 			<figure id="uvmm-new-openstack-connection">
 				<title>Creating a new connection to an OpenStack instance</title>
-				<graphic scalefit="1" width="90%" align="center" fileref="illustrations/uvmm_new_openstack_connection_en.png"/>
+				<graphic scalefit="1" width="90%" align="center" fileref="illustrations40/uvmm_new_openstack_connection_en.png"/>
 			</figure>
 			<para>
 				The following settings need to be made in the set-up wizard for creating a
@@ -286,7 +286,7 @@ update-ca-certificates
 			<title>Operations (Starting/stopping/suspending/deleting/migrating/cloning virtual machines)</title>
 			<figure id="uvmm-overview">
 				<title>Overview of virtual machines</title>
-				<graphic scalefit="1" width="90%" align="center" fileref="illustrations/uvmm_overview1_en.png"/>
+				<graphic scalefit="1" width="90%" align="center" fileref="illustrations40/uvmm_overview1_en.png"/>
 			</figure>
 			<para>
 				In the main dialog of the UMC module, a tree structure is displayed on the left-hand side, which gives an overview of the existing virtualization servers.
@@ -578,7 +578,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 		</para>
 		<figure id="uvmm-drive">
 			<title>Modifying the settings of a DVD drive</title>
-			<graphic scalefit="1" width="70%" align="center" fileref="illustrations/uvmm_dvd_en.png"/>
+			<graphic scalefit="1" width="70%" align="center" fileref="illustrations40/uvmm_dvd_en.png"/>
 		</figure>
 			<table>
 				<title>'General' tab</title>
@@ -1063,7 +1063,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 			</itemizedlist>
 			<figure id="uvmm-network">
 				<title>Adding a virtual network interface</title>
-				<graphic scalefit="1" width="70%" align="center" fileref="illustrations/uvmm_network_en.png"/>
+				<graphic scalefit="1" width="70%" align="center" fileref="illustrations40/uvmm_network_en.png"/>
 			</figure>
 			<para>
 				The UVMM servers are already preconfigured for bridging and NAT.
@@ -1162,7 +1162,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 			</para>
 			<figure id="uvmm-migrate">
 				<title>Migrating a virtual instance</title>
-				<graphic scalefit="1" width="40%" align="center" fileref="illustrations/uvmm_migrate_en.png"/>
+				<graphic scalefit="1" width="40%" align="center" fileref="illustrations40/uvmm_migrate_en.png"/>
 			</figure>
 			<para>
 				During the migration it must be noted that the images of the mounted hard drives and CD-ROM drive must be accesible by both virtualization servers.

@@ -66,14 +66,14 @@
 	<para>
 	  <figure id="mittelstand">
 		<title>Systemübersicht von Ganupa Technologies am zentralen Standort (die Virtualisierung wird in diesem Schaubild nicht berücksichtigt)</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/mittelstand.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations40/mittelstand.png"/>
 	  </figure>
 	</para>
 
 	<para>
 	  <figure id="mittelstand-ueberblick">
 		<title>Globaler Systemaufbau von Ganupa Technologies</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/mittelstand-ueberblick.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations40/mittelstand-ueberblick.png"/>
 	  </figure>
 	</para>
   </section>
@@ -130,7 +130,7 @@
 	<para>
 	  <figure id="uvmm">
 		<title>Verwaltung virtueller Maschinen mit UVMM</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/uvmm_de.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations40/uvmm_de.png"/>
 	  </figure>
 	</para>
 
@@ -181,7 +181,7 @@
 	<para>
 	  <figure id="ucc">
 		<title>Zentral verwalteter Univention Corporate Client</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/ucc.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations40/ucc.png"/>
 	  </figure>
 	</para>
 
@@ -227,7 +227,7 @@
 	<para>
 	  <figure id="windowsts">
 		<title>Integration einer Windows-Applikation in den Univention Desktop Client</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/windows-ts.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations40/windows-ts.png"/>
 	  </figure>
 	</para>
 

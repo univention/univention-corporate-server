@@ -31,7 +31,7 @@
 	</para>
 	<figure id="net-networks">
 	  <title>Erstellen eines Netzwerk-Objekts</title>
-	  <graphic scalefit="1" width="100%" fileref="illustrations/create-network_DE.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations40/create-network_DE.png"/>
 	</figure>
 	<para>
 	  So kann beispielsweise ein Netzwerk-Objekt <emphasis>Produktivnetz</emphasis>
@@ -368,7 +368,7 @@
 		</para>
 		  <figure id="net-dns-forward">
 			<title>Konfiguration einer Forward Lookup Zone in UMC</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations/forward-lookup-zone_DE.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations40/forward-lookup-zone_DE.png"/>
 		  </figure>
 		  <table>
 			<title>Reiter 'Allgemein'</title>
@@ -689,7 +689,7 @@
 		</para>
 		<figure id="net-srv-record">
 		  <title>Konfiguration eines Service Records</title>
-		  <graphic scalefit="1" width="100%" fileref="illustrations/srv-record_DE.png"/>
+		  <graphic scalefit="1" width="100%" fileref="illustrations40/srv-record_DE.png"/>
 		</figure>
 		<table>
 		  <title>Reiter 'Allgemein'</title>
@@ -2048,7 +2048,7 @@ univention-config-registry set squid/webports="80 443"
 	  </para>
 	  <figure id="net-dansguardian">
 		<title>Sperrung einer Web-Seite durch Dansguardian</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/dansguardian_DE.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations40/dansguardian_DE.png"/>
 	  </figure>
 	  <para>
 		Angeforderte Dateien können außerdem auf Viren überprüft werden. Dabei kommt

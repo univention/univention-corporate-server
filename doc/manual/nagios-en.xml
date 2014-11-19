@@ -58,7 +58,7 @@
 
 	<figure id="service-detail">
 		<title>Nagios status webinterface</title>
-		<graphic scalefit="1" align="center" width="90%" fileref="illustrations/nagios_service_detail.png"/>
+		<graphic scalefit="1" align="center" width="90%" fileref="illustrations40/nagios_service_detail.png"/>
 	</figure>
 
 	<para>
@@ -478,7 +478,7 @@
 
 		<figure id="nagios-service">
 			<title>Configuring a Nagios service</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations/nagios-object_EN.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations40/nagios-object_EN.png"/>
 		</figure>
 
 		<table>
@@ -862,7 +862,7 @@
 
 		<figure id="nagios-assign">
 			<title>Assigning Nagios checks to a host</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations/nagios-services_EN.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations40/nagios-services_EN.png"/>
 		</figure>
 
 		<table>
@@ -971,7 +971,7 @@
 
   <figure id="nagios-tact-overview">
 	<title>Nagios status overview</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/overview_EN.png"/>
+	<graphic scalefit="1" width="80%" fileref="illustrations40/overview_EN.png"/>
   </figure>
 
   <para>
