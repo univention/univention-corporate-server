@@ -61,13 +61,18 @@ upgrade_to_latest_errata ()
 
 upgrade_to_latest_test_errata ()
 {
-	local current prev=DUMMY
+	local current prev=DUMMY rc=0
 	while current="$(ucr get version/version)-$(ucr get version/patchlevel)" && [ "$current" != "$prev" ]
 	do
-		/root/activate-3.2-errata-test-scope.sh
+		if [ -x /root/activate-$(ucr get version/version)-errata-test-scope.sh ]
+		then
+			/root/activate-$(ucr get version/version)-errata-test-scope.sh
+		fi
 		upgrade_to_latest
+		rc=$?
 		prev="$current"
 	done
+	return $rc
 }
 
 upgrade_to_testing ()
@@ -84,6 +89,7 @@ upgrade_to_latest ()
 	sleep 300
 	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@" && return 0
 	(echo "ERROR: univention-upgrade failed in attempt 2 with exitcode $?"; ps faxwww ; ucr search update/check)
+	return 1
 }
 
 run_setup_join ()

@@ -1,6 +1,7 @@
 ucs-ec2-tools (1.0.2-1) unstable; urgency=low
 
   * Bug #36886: Switch to UCS-4.0-0 AMIs.
+  * Bug #36889: Switch back to official repository.
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 20 Nov 2014 09:13:21 +0100
 
