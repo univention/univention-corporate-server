@@ -1,0 +1,9 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-4
+src: univention-management-console
+fix: 6.0.24-32.836.201411201829
+version: [4]
+desc: |
+  * fix an error introduced by errata 238 regarding the error handling of closed UMC module process sockets
+bug: [36561]
