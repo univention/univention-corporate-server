@@ -141,13 +141,13 @@ def _parseScript( job ):
 	job.command = ''
 	for line in out:
 		if script:
-			job.command += line
+			job.command = '%s%s\n' % (job.command, line)
 			continue
-		if line.startswith( COMMENT_PREFIX ):
-			line = line[ len( COMMENT_PREFIX ) : -1 ]
-			key, value = line.split( ':', 1 )
-			job.comments[ key ] = value
-		elif line.startswith( SCRIPT_PREFIX ):
+		if line.startswith(COMMENT_PREFIX):
+			line = line[len(COMMENT_PREFIX):]
+			key, value = line.split(':', 1)
+			job.comments[key] = value
+		elif line.startswith(SCRIPT_PREFIX):
 			script = True
 
 def _parseJob(string):
