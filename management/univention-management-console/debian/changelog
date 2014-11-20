@@ -1,3 +1,11 @@
+univention-management-console (7.1.63-2) unstable; urgency=medium
+
+  * Bug #36561: fix error handling when socket is closed
+  * Bug #35231: fix error when the UMC server and the UMC module want to close
+  	the module process at the same time
+
+ -- Florian Best <best@univention.de>  Thu, 20 Nov 2014 18:27:51 +0100
+
 univention-management-console (7.1.63-1) unstable; urgency=medium
 
   * Bug #35847: fix error message in case the user entered a invalid old
