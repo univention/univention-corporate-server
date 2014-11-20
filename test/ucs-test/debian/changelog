@@ -1,3 +1,9 @@
+ucs-test (5.0.53-1) unstable; urgency=low
+
+  * Bug #34081: skipping /etc/univention/ssl/unassigned-hostname.unassigned-domain until Bug #36557 is fixed.
+
+ -- Ammar Najjar <najjar@univention.de>  Thu, 20 Nov 2014 10:13:03 +0100
+
 ucs-test (5.0.52-1) unstable; urgency=medium
 
   * Bug #36780: fix squidguard config path
