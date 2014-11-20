@@ -1,9 +1,3 @@
-univention-lib (3.0.26-69) unstable; urgency=medium
-
-  * Bug #36815: fix parsing of at job comments
-
- -- Florian Best <best@univention.de>  Thu, 20 Nov 2014 16:20:39 +0100
-
 univention-lib (3.0.26-68) unstable; urgency=low
 
   * Bug #35729: Fix stall in dpkg status pipe reading code
