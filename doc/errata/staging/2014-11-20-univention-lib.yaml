@@ -3,8 +3,8 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-4
 src: univention-lib
 fix: 3.0.26-69.287.201411201633
-version: [3,2]
+version: [4]
 desc: |
   * Fix a bug introduced by errata 191 in the univention atjobs library which could cause failures.
     It prevented e.g. the removal of romm settings in the UCS@school computerroom UMC module.
-bug: [31319]
+bug: [36815]
