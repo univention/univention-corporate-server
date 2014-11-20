@@ -1774,7 +1774,9 @@ ucr set connector/s4/mapping/group/grouptype=false
 	<para>
 	  Nach einem Klick auf <guimenu>Weiter</guimenu> werden die folgenden Schritte automatisch
 	  durchgeführt. Zusätzliche Informationen werden nach
-	  <filename>/var/log/univention/ad-takeover.log</filename> protokolliert.
+	  <filename>/var/log/univention/ad-takeover.log</filename>
+	  sowie nach <filename>/var/log/univention/management-console-module-adtakeover.log</filename>
+	  protokolliert.
 
 	  <itemizedlist>
 		<listitem><simpara>
@@ -1791,6 +1793,17 @@ ucr set connector/s4/mapping/group/grouptype=false
 		  UCS-OpenLDAP-Verzeichnis
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  Wenn ein Benutzerkonto oder eine Gruppe mit einer "<emphasis>Well Known</emphasis>" RID
+		  nach UCS OpenLDAP synchronisiert wird, setzt ein Listener Modul auf jedem UCS system
+		  lokal eine &ucsUCR; Variable, die dem englischen Namen den nicht-englischen Namen
+		  zuordnet. Diese Variablen werden verwendet, um die in den UCS Konfigurationsdateien
+		  verwendeten englischen Begriffe in die Namen zu übersetzen, die in dem AD verwendet
+		  wurden. Wenn zum Beispiel <emphasis>Domain Admins</emphasis> einen anderen Namen
+		  im AD hat, dann wird die &ucsUCR; Variable <envvar>groups/default/domainadmins</envvar>
+		  auf den spezifischen Namen gesetzt
+		  (analog für Benutzer, z.B. <envvar>users/default/administrator</envvar>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
 	

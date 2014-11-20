@@ -1673,7 +1673,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	<para>
 	  The takeover is performed with the <guimenu>Active Directory Takeover</guimenu> &ucsUMC;
 	  module. The IP address of the AD system must be specified under <guimenu>Name or address of
-	  the Domain Controller</guimenu>. An account in the AD domain must be specified under
+	  the Domain Controller</guimenu>. An account from the AD domain must be specified under
 	  <guimenu>Active Directory Administrator account</guimenu> which is a member of the AD group
 	  <emphasis>Domain Admins</emphasis> (e.g., the <emphasis>Administrator</emphasis>) and the
 	  corresponding password entered under <guimenu>Active Directory Administrator
@@ -1697,7 +1697,8 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	<para>
 	  When <guimenu>Next</guimenu> is clicked, the following steps are performed automatically.
-	  Additional information is logged to <filename>/var/log/univention/ad-takeover.log</filename>.
+	  Additional information is logged to <filename>/var/log/univention/ad-takeover.log</filename>
+	  as well as to <filename>/var/log/univention/management-console-module-adtakeover.log</filename>.
 
 	  <itemizedlist>
 		<listitem><simpara>
@@ -1713,6 +1714,18 @@ ucr set connector/s4/mapping/group/grouptype=false
 		  Start Samba and the Univention S4 connector to replicate the Active Directory objects into
 		  the UCS OpenLDAP directory
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  When "<emphasis>Well Known</emphasis>" account and group objects
+		  (identified by their sepcial RIDs) are synchronized into
+		  the UCS OpenLDAP, a listener module running on each UCS system
+		  sets a &ucsUCR; variable locally to map the english name to the non-english AD name.
+		  These variables are used to translate the english names used in the UCS configuration
+		  files to the specific names used in AD.
+		  To give an example, if <emphasis>Domain Admins</emphasis> has a different name in the AD
+		  then the &ucsUCR; variable <envvar>groups/default/domainadmins</envvar> is set to that
+		  sepcific name (likewise for uses, e.g. <envvar>users/default/administrator</envvar>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
 
@@ -1724,7 +1737,8 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	<para>
 	  This phase requires to log onto the Active Directory domain controller as the
-	  <emphasis>Administrator</emphasis>. There a command needs to be started to copy the group
+	  <emphasis>Administrator</emphasis> (or the equivalent non-english name).
+	  There a command needs to be started to copy the group
 	  policy files from the Active Directory SYSVOL share to the UCS SYSVOL share.
 	</para>
 
