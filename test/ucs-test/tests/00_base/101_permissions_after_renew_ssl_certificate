@@ -17,6 +17,7 @@ import univention.testing.utils as utils
 
 UNIVENTION_DIR = '/etc/univention'
 SSLDIR = '/etc/univention/ssl'
+SKIP = '/etc/univention/ssl/unassigned-hostname.unassigned-domain'
 
 def backup_existing_certificate():
 	current_date = datetime.datetime.now().strftime("%d%m%Y-%H%M")
@@ -55,7 +56,9 @@ def get_dir_files(dir_path, recursive=False):
 		if os.path.isfile(f):
 			result.append(f)
 		if os.path.isdir(f) and	recursive:
-			result.extend(get_dir_files(f))
+			#TODO remove line 60 after fixing Bug #36557
+			if f != SKIP:
+				result.extend(get_dir_files(f))
 	return result
 
 def get_owner(file_path):
