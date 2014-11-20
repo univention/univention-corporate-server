@@ -52,6 +52,14 @@ define([
 
 		_instance: null,
 
+		_appendLinkToLabel: function(widget, url) {
+			label = widget.get('label');
+			widget.set('label', label + ' ' + lang.replace('<a href="{url}">{text}</a>', {
+				'url': url,
+				'text': url
+			}));
+		},
+
 		addNotification: dialog.notify,
 		headerText: _('General settings'),
 
@@ -173,8 +181,27 @@ define([
 					// set title
 					this.moduleWidget.set('titleDetail', this._instance.label);
 
+					// avoid duplicate public_ips
+					newArr = [];
+					array.forEach(this._instance.public_ips, function(item) {
+						if(array.indexOf(newArr, item)  == -1) {
+							newArr.push(item);
+						}
+					});
+					this._instance.public_ips = newArr;
+
 					// set values to form
 					this._generalForm.setFormValues(this._instance);
+
+					// append public/private https link
+					if (this._instance.public_ips[0]) {
+						widget = this._generalForm.getWidget('public_ips');
+						this._appendLinkToLabel(widget, 'https://' + this._instance.public_ips[0]);
+					}
+					if (this._instance.private_ips[0]) {
+						widget = this._generalForm.getWidget('private_ips');
+						this._appendLinkToLabel(widget, 'https://' + this._instance.private_ips[0]);
+					}
 
 					this.selectChild(this._generalPage, true);
 				}

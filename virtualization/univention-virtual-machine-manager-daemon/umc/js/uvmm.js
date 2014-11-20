@@ -111,7 +111,6 @@ define([
 
 		// internal reference to the detail page for editing an UDM object
 		_domainPage: null,
-		_instancePage: null,
 
 		// reference to a `umc.widgets.Tree` instance which is used to display the container
 		// hierarchy for the UDM navigation module
@@ -335,18 +334,6 @@ define([
 				addWarning: lang.hitch(this, 'addWarning')
 			});
 			this.addChild(this._domainPage);
-
-			// setup the instance page
-			this._instancePage = new InstancePage({
-				onClose: lang.hitch(this, function() {
-					this.selectChild(this._searchPage);
-					this.set('title', this.defaultTitle);
-				}),
-				moduleWidget: this,
-				addNotification: lang.hitch(this, 'addNotification'),
-				addWarning: lang.hitch(this, 'addWarning')
-			});
-			this.addChild(this._instancePage);
 
 			// register events
 			this._domainPage.on('UpdateProgress', lang.hitch(this, 'updateProgress'));
@@ -1094,8 +1081,21 @@ define([
 			if (!ids.length) {
 				return;
 			}
-			this._instancePage.load(ids[0]);
-			this.selectChild(this._instancePage);
+			var _instancePage = new InstancePage({
+				onClose: lang.hitch(this, function() {
+					this.selectChild(this._searchPage);
+					this.set('title', this.defaultTitle);
+					_instancePage.destroyRecursive();
+				}),
+				moduleWidget: this,
+				addNotification: lang.hitch(this, 'addNotification'),
+				addWarning: lang.hitch(this, 'addWarning')
+			});
+			this.own(_instancePage);
+			this.addChild(_instancePage);
+
+			_instancePage.load(ids[0]);
+			this.selectChild(_instancePage);
 		},
 
 		_getGridColumns: function(type) {

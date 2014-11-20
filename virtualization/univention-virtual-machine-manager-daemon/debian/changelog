@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.21-1) unstable; urgency=low
+
+  * Bug #36905: Show https link in cloud instances; remove duplicate public ips
+
+ -- Andreas Peichert <peichert@univention.de>  Thu, 20 Nov 2014 14:56:44 +0100
+
 univention-virtual-machine-manager-daemon (4.0.20-1) unstable; urgency=medium
 
   * Bug #36615: fix javascript memory leaks
