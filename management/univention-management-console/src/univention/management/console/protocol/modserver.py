@@ -141,23 +141,23 @@ class ModuleServer( Server ):
 		self.__client = client
 		notifier.socket_add( self.__comm, self._recv )
 
-	def _recv( self, socket ):
+	def _recv(self, sock):
 		try:
-			data = socket.recv( RECV_BUFFER_SIZE )
+			data = sock.recv(RECV_BUFFER_SIZE)
 		except socket.error, ex:
 			MODULE.error('Failed connection: %s' % (errno.errorcode.get(ex.errno, ex.errno),))
 			data = None
 
 		# connection closed?
 		if not data:
-			socket.close()
-			if socket == self.__comm:
+			sock.close()
+			if sock == self.__comm:
 				MODULE.info('UMC server connection closed. This module is no longer in use.')
 				# the connection to UMC server connection has been closed/died/...
 				# so from now on this module is unused. Thus it is committing suicide right now.
 				self._timed_out()
 			else:
-				MODULE.info('Connection %r closed' % (socket,))
+				MODULE.info('Connection %r closed' % (sock,))
 			# remove socket from notifier
 			return False
 
