@@ -1,0 +1,67 @@
+#!/bin/sh
+#
+# Change AMI in Jenkins configuration
+#
+set -e -u
+
+die () {
+	echo "$*" >&2
+	exit 1
+}
+check () {
+	command -v euca-describe-images >/dev/null 2>&1 || die "Missing euca2tools"
+	[ $# -eq 2 ] || die "Usage: src-ami dst-ami"
+}
+args () {
+	src_ami="$1"
+	dst_ami="$2"
+
+	src_desc="$(desc "$src_ami")"
+	dst_desc="$(desc "$dst_ami")"
+}
+desc () {
+	local ami="$1"
+	if [ -z "${tmp:-}" ]
+	then
+		tmp="$(mktemp)"
+		trap "rm -f '$tmp'" EXIT
+		euca-describe-images "$src_ami" "$dst_ami" >"$tmp"
+	fi
+	awk -F '\t' -v ami="$ami" '$1=="IMAGE" && $2==ami {print substr($3,index($3,"/")+1)}' "$tmp"
+}
+confirm () {
+	local answer
+	cat <<__TXT__
+Replacing
+  $src_ami
+  $src_desc
+with
+  $dst_ami
+  $dst_desc
+?
+__TXT__
+	while read answer
+	do
+		case "$answer" in
+		[yY]) return 0 ;;
+		[nN]) exit 0 ;;
+		esac
+	done
+}
+replace () {
+	local cfg
+	cd "$(dirname "$0")"
+	for cfg in examples/jenkins/*.cfg
+	do
+		[ -f "$cfg" ] || continue
+		grep -q -F "ec2_ami: $src_ami" "$cfg" || continue
+		sed -i -e "s|# AMI: .*|# AMI: $dst_desc - $dst_ami|;s|^ec2_ami: .*|ec2_ami: $dst_ami|" "$cfg"
+	done
+}
+main () {
+	check "$@"
+	args "$@"
+	confirm
+	replace
+}
+main "$@"

@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.2-1) unstable; urgency=low
+
+  * Bug #36886: Switch to UCS-4.0-0 AMIs.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 20 Nov 2014 09:13:21 +0100
+
 ucs-ec2-tools (1.0.1-12) unstable; urgency=low
 
   * examples/jenkins/autotest-220-ad-win2k8-master.cfg:
