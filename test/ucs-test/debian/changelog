@@ -1,3 +1,9 @@
+ucs-test (4.0.183-1) unstable; urgency=low
+
+  * Bug #34081:skipping /etc/univention/ssl/unassigned-hostname.unassigned-domain until Bug #36557 is fixed.
+
+ -- Ammar Najjar <najjar@univention.de>  Thu, 20 Nov 2014 12:37:20 +0100
+
 ucs-test (4.0.182-1) unstable; urgency=low
 
   * bin/ucs-test: added an option to stop tests execution after the first
