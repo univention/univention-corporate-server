@@ -2,11 +2,13 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-system-setup
-fix: 8.1.63-3.782.201411211554
+fix: 8.1.63-5.784.201411211621
 version: [0]
 desc: |
   This update addresses the following issues:
   * A DHCP lease may be now re-quested in the UCS setup wizard via unmarking
     and re-marking the DHCP checkbox on the network page.
   * The default keyboard layout for language German has been corrected.
-bug: [36665,36936]
+  * The package removal in appliance mode has been corrected
+  * Firefox address bar is always hidden in system setup
+bug: [36665,36936,35583,36874]
