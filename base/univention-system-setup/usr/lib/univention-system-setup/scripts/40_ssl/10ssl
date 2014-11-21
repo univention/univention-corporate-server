@@ -86,7 +86,7 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 	# try to set the clock before generating the root CA, otherwise it
 	# is possible that the certificate is not valid at the end of the
 	# installation Bug #13549
-	rdate time.fu-berlin.de || rdate 130.133.1.10 || true
+	timeout -k 20 15 ntpdate-debian || true
 
 	# set UCR variables
 	for var in "common" "locality" "organization" "country" "state" "organizationalunit" "email"; do

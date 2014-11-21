@@ -1,3 +1,9 @@
+univention-system-setup (8.1.64-1) unstable; urgency=low
+
+  * Bug #36937: Timeout ntpdate command after 15s
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 21 Nov 2014 16:13:45 +0100
+
 univention-system-setup (8.1.63-6) unstable; urgency=medium
 
   * Bug #35851: query progress info for DHCP query on network settings page
