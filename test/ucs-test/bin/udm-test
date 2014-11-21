@@ -1,20 +1,18 @@
 #!/bin/sh
 
 case "$(ucr get server/role)" in
-domaincontroller_master|domaincontroller_backup)
-	exec /usr/sbin/univention-directory-manager "$@"
-	;;
+domaincontroller_master|domaincontroller_backup) ;;
 *)
-	module="$1"
-	action="$2"
-	if shift 2
+	if [ $# -ge 2 ]
 	then
+		module="$1"
+		action="$2"
+		shift 2
 		exec /usr/sbin/univention-directory-manager "$module" "$action" \
 			--binddn "$(ucr get tests/domainadmin/account)" \
 			--bindpwd "$(ucr get tests/domainadmin/pwd)" \
 			"$@"
-	else
-		exec /usr/sbin/univention-directory-manager "$@"
 	fi
 	;;
 esac
+exec /usr/sbin/univention-directory-manager "$@"

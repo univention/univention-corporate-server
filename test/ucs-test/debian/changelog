@@ -1,3 +1,9 @@
+ucs-test (4.0.184-1) unstable; urgency=low
+
+  * bin/udm-test: make script "/bin/sh" compatible (Bug #34389). 
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 21 Nov 2014 11:12:26 +0100
+
 ucs-test (4.0.183-1) unstable; urgency=low
 
   * Bug #34081:skipping /etc/univention/ssl/unassigned-hostname.unassigned-domain until Bug #36557 is fixed.
