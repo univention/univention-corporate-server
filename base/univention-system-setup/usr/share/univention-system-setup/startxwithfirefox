@@ -180,7 +180,7 @@ echo 'user_pref("app.update.auto", false);' >> "$profilePath"/prefs.js
 # deactivate default browser check
 echo 'user_pref("browser.shell.checkDefaultBrowser", false);' >> "$profilePath"/prefs.js
 # hide nav bar and menu bar
-echo '<?xml version="1.0"?><RDF:RDF xmlns:NC="http://home.netscape.com/NC-rdf#" xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><RDF:Description RDF:about="chrome://browser/content/browser.xul"><NC:persist RDF:resource="chrome://browser/content/browser.xul#nav-bar"/><NC:persist RDF:resource="chrome://browser/content/browser.xul#toolbar-menubar"/></RDF:Description><RDF:Description RDF:about="chrome://browser/content/browser.xul#nav-bar" collapsed="true" /><RDF:Description RDF:about="chrome://browser/content/browser.xul#toolbar-menubar" autohide="true" /></RDF:RDF>' > "$profilePath"/localstore.rdf
+echo '<?xml version="1.0"?><RDF:RDF xmlns:NC="http://home.netscape.com/NC-rdf#" xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><RDF:Description RDF:about="chrome://browser/content/browser.xul"><NC:persist RDF:resource="chrome://browser/content/browser.xul#nav-bar"/><NC:persist RDF:resource="chrome://browser/content/browser.xul#toolbar-menubar"/></RDF:Description><RDF:Description RDF:about="chrome://browser/content/browser.xul#nav-bar" collapsed="true" hidden="true" /><RDF:Description RDF:about="chrome://browser/content/browser.xul#toolbar-menubar" autohide="true" /></RDF:RDF>' > "$profilePath"/localstore.rdf
 # start window manager so that firefox' menus work correctly
 
 openbox --config-file /etc/xdg/openbox/rc_no_shortcuts.xml &

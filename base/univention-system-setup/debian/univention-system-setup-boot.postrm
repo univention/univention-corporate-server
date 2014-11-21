@@ -54,10 +54,4 @@ update-rc.d urandom start 55 S . start 30 0 6 . || exit $?
 
 #DEBHELPER#
 
-if [ "$1" = remove -o "$1" = purge ]; then
-	rm -f /var/cache/univention-system-setup/packages/*.deb
-	rm -f /var/cache/univention-system-setup/packages/Packages
-	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
-fi
-
 exit 0

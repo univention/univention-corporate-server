@@ -83,4 +83,15 @@ update-rc.d univention-system-setup-boot-prepare defaults 15
 update-rc.d -f urandom remove
 rm /var/lib/urandom/random-seed
 
+# generate package removal appliance hook
+cat >/usr/lib/univention-system-setup/appliance-hooks.d/95_remove_package_cache <<__EOF__
+#!/bin/sh
+if [ -s /var/cache/univention-system-setup/profile ]; then
+	rm -f /var/cache/univention-system-setup/packages/*.deb
+	rm -f /var/cache/univention-system-setup/packages/Packages
+	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
+fi
+__EOF__
+chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/95_remove_package_cache
+
 exit 0

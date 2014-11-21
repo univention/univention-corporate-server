@@ -44,4 +44,9 @@ then
 		xargs -d '\n' --no-run-if-empty ucr set
 fi
 
+if dpkg --compare-versions "$2" lt-nl 8.1.63-2~ && [ -e /var/univention-join/joined ]
+then
+	ucr unset --force update/available
+fi
+
 exit 0

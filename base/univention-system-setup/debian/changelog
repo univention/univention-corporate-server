@@ -1,3 +1,10 @@
+univention-system-setup (8.1.63-5) unstable; urgency=low
+
+  * Bug #36874: Fix appliance mode package removal
+  * Bug #35583: Hide firefox address bar 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 21 Nov 2014 16:19:07 +0100
+
 univention-system-setup (8.1.63-4) unstable; urgency=medium
 
   * Bug #36936: adapt default keyboard layout for language German

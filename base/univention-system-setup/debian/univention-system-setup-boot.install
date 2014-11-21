@@ -1,6 +1,5 @@
 usr/share/univention-system-setup/startxwithfirefox
 usr/share/univention-system-setup/download-packages
-usr/lib/univention-system-setup/appliance-hooks.d
 etc/init.d
 usr/lib/univention-system-setup/addons
 var/www
