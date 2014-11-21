@@ -12,4 +12,5 @@ desc: |
   * The package removal in appliance mode has been corrected
   * Firefox address bar is always hidden in system setup
   * The DHCP query of "Network settings" is working now as it should.
-bug: [36665,36936,35851,35583,36874]
+  * Fix the configuration of primary devices and bond-miimon in bonding network devices
+bug: [36665,36936,35851,35583,36874,36340,36342]
