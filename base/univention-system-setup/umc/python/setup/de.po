@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-11-14 09:44+0100\n"
+"POT-Creation-Date: 2014-11-21 18:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr ""
 msgid "Already joined systems cannot be joined."
 msgstr "Bereits gejointe Systeme können nicht gejoint werden."
 
-#: umc/python/setup/network.py:694
+#: umc/python/setup/network.py:693
 msgid "Bond-primary must exist in bond-slaves"
 msgstr "Bond-primary muss in bond-slaves enthalten sein"
 
@@ -44,27 +44,27 @@ msgstr ""
 "Die Domäne kann nicht automatisch bestimmt werden. Bitte geben Sie den "
 "vollständigen Domänennamen des Systems an."
 
-#: umc/python/setup/network.py:788
+#: umc/python/setup/network.py:786
 #, python-format
 msgid "Cannot use bridge %r as bridge-port"
 msgstr "Kann Bridge %r nicht als bridge-port verwenden"
 
-#: umc/python/setup/network.py:690
+#: umc/python/setup/network.py:689
 #, python-format
 msgid "Cannot use device %s: Device must be unconfigured"
 msgstr "Kann Gerät %s nicht verwenden: Gerät muss unkonfiguriert sein"
 
-#: umc/python/setup/util.py:662
+#: umc/python/setup/util.py:665
 #, python-format
 msgid "Could not query App Center: %s"
 msgstr "App-Center-Daten konnten nicht abgefragt werden: %s"
 
-#: umc/python/setup/network.py:383
+#: umc/python/setup/network.py:379
 #, python-format
 msgid "Device %r is already in use by %r"
 msgstr "Device %r ist bereits von %r in Benutzung"
 
-#: umc/python/setup/network.py:685
+#: umc/python/setup/network.py:684
 #, python-format
 msgid "Devices used in a bonding must be physical: %s is not"
 msgstr ""
@@ -75,7 +75,7 @@ msgstr ""
 msgid "Domain name server"
 msgstr "Domänen-DNS-Server"
 
-#: umc/python/setup/network.py:153 umc/python/setup/network.py:163
+#: umc/python/setup/network.py:149 umc/python/setup/network.py:159
 #, python-format
 msgid "Duplicated IP address: %r"
 msgstr "Duplizierte IP-Addresse: %r"
@@ -102,41 +102,41 @@ msgstr "Es konnte kein Paket für die Rolle %s gefunden werden"
 msgid "Hostname is equal to domain name."
 msgstr "Systemname ist gleich dem Domänennamen."
 
-#: umc/python/setup/network.py:340
+#: umc/python/setup/network.py:336
 #, python-format
 msgid "Invalid IPv4 address: %r"
 msgstr "Ungültige IPv4 Adresse: %r"
 
-#: umc/python/setup/network.py:346
+#: umc/python/setup/network.py:342
 #, python-format
 msgid "Invalid IPv4 netmask: %r"
 msgstr "Ungültige IPv4 Netzmaske: %r"
 
-#: umc/python/setup/network.py:356
+#: umc/python/setup/network.py:352
 #, python-format
 msgid "Invalid IPv6 address: %r"
 msgstr "Ungültige IPv6 Addresse: %r"
 
-#: umc/python/setup/network.py:366
+#: umc/python/setup/network.py:362
 #, python-format
 msgid "Invalid IPv6 identifier: %r"
 msgstr "Ungültiger IPv6 Bezeichner: %r"
 
-#: umc/python/setup/network.py:362
+#: umc/python/setup/network.py:358
 #, python-format
 msgid "Invalid IPv6 netmask: %r"
 msgstr "Ungültige IPv6 Netzmaske: %r"
 
-#: umc/python/setup/network.py:602
+#: umc/python/setup/network.py:598
 msgid "Invalid VLAN ID. Must be between 1 and 4095."
 msgstr "Ungültige VLAN ID. Muss zwischen 1 und 4095 sein."
 
-#: umc/python/setup/network.py:705
+#: umc/python/setup/network.py:703
 #, python-format
 msgid "Invalid bond-mode: %r"
 msgstr "Ungültiger bond-mode: %r"
 
-#: umc/python/setup/network.py:330 umc/python/setup/network.py:600
+#: umc/python/setup/network.py:326 umc/python/setup/network.py:596
 #, python-format
 msgid "Invalid device name: %r"
 msgstr "Ungültiger Gerätename: %r"
@@ -161,21 +161,21 @@ msgstr ""
 msgid "Location"
 msgstr "Ort"
 
-#: umc/python/setup/network.py:370
+#: umc/python/setup/network.py:366
 msgid "Missing IPv6 default identifier"
 msgstr "Fehlender IPv6 default Bezeichner"
 
-#: umc/python/setup/network.py:676
+#: umc/python/setup/network.py:675
 msgid "Missing device for bond-slaves"
 msgstr "Fehlendes Gerät für bond-slaves"
 
-#: umc/python/setup/network.py:591 umc/python/setup/network.py:681
-#: umc/python/setup/network.py:784
+#: umc/python/setup/network.py:587 umc/python/setup/network.py:680
+#: umc/python/setup/network.py:782
 #, python-format
 msgid "Missing device: %r"
 msgstr "Fehlendes Gerät: %r"
 
-#: umc/python/setup/network.py:375
+#: umc/python/setup/network.py:371
 msgid "Multiple IPv4 addresses are not supported on this device."
 msgstr "Mehrere IPv4 Adressen sind an diesem Gerät nicht unterstützt."
 
@@ -296,7 +296,7 @@ msgstr "Der Windows-Domänenname darf nicht länger als 15 Zeichen sein."
 msgid "The windows domain name is not valid."
 msgstr "Die Windows-Domäne ist nicht gültig."
 
-#: umc/python/setup/network.py:142
+#: umc/python/setup/network.py:138
 msgid ""
 "There is no device configured. At least one IPv4 or IPv6 address or DHCP or "
 "SLAAC has to be specified."
