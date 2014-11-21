@@ -11,4 +11,5 @@ desc: |
   * The default keyboard layout for language German has been corrected.
   * The package removal in appliance mode has been corrected
   * Firefox address bar is always hidden in system setup
-bug: [36665,36936,35583,36874]
+  * The DHCP query of "Network settings" is working now as it should.
+bug: [36665,36936,35851,35583,36874]
