@@ -37,4 +37,11 @@ create_logfile /var/log/univention/setup.log "root:adm" 640
 
 chmod -R 700 /var/cache/univention-system-setup
 
+if dpkg --compare-versions "$2" lt-nl 7.0.69-62~
+then
+	ucr search --brief --non-empty '^interfaces/.*/options/' |
+		sed -rne 's,(interfaces/.*/options/.*): (miimon .*)$,\1=bond-\2,p' |
+		xargs -d '\n' --no-run-if-empty ucr set
+fi
+
 exit 0

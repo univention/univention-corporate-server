@@ -432,7 +432,7 @@ define([
 							label: 'balance-alb (6)'
 						}]
 					}, {
-						name: 'miimon',
+						name: 'bond_miimon',
 						label: _('MII link monitoring frequency'),
 						type: NumberSpinner,
 						constraints: { min: 0 },
@@ -455,7 +455,7 @@ define([
 						layout: [['bond_slaves', 'bond_primary']]
 					}, {
 						label: _('Advanced configuration'),
-						layout: ['bond_mode', 'miimon', 'bond_options']
+						layout: ['bond_mode', 'bond_miimon', 'bond_options']
 					}]
 				}]
 			});

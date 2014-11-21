@@ -152,7 +152,7 @@ define([
 				bond_slaves: [],
 				bond_primary: [],
 				bond_mode: 0,
-				miimon: null
+				bond_miimon: null
 			});
 		},
 		getSubdeviceNames: function() {
