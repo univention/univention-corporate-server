@@ -356,7 +356,6 @@ define([
 					['_ip3', '_netmask3'],
 					'gateway',
 					['nameserver1', 'nameserver2'],
-					'_nameserver_error',
 					'proxy/http',
 					'configureProxySettings'
 				],
@@ -461,11 +460,6 @@ define([
 					label: _('Alternate DNS server'),
 					invalidMessage: _invalidIPAddressMessage,
 					validator: _validateIPAddress
-				}, {
-					type: Text,
-					name: '_nameserver_error',
-					content: '<strong>' + _('No domain controller was found at the address of the name server.') + '</strong>',
-					visible: false
 				}, {
 					type: Text,
 					name: 'configureProxySettings',
@@ -1917,7 +1911,6 @@ define([
 			if (pageName == 'role') {
 				return this._checkDomain().then(
 					lang.hitch(this, function(info) {
-						this.getWidget('network', '_nameserver_error').set('visible', false);
 						var dcName = info.dc_name;
 						this.getWidget('credentials-ad', 'ad/address').set('value', dcName);
 						this.getWidget('credentials-nonmaster', '_ucs_address').set('value', dcName);
@@ -1932,7 +1925,7 @@ define([
 					}),
 					lang.hitch(this, function() {
 						if (this._isAdMember() || this._isRoleNonMaster()) {
-							this.getWidget('network', '_nameserver_error').set('visible', true);
+							dialog.alert(_('No domain controller was found at the address of the name server. Please adjust your network settings.'));
 							return this._forcePageTemporarily('network');
 						} else {
 							// alright, _checkDomain was not supposed to do anything meaningful

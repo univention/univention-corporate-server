@@ -1,3 +1,11 @@
+univention-system-setup (8.1.64-2) unstable; urgency=medium
+
+  * Bug #36940: adjust method names for DNS checks, add additional check for
+    UCS domain in check_domain()
+  * Bug #36440: prompt DNS error message as alert dialogue
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 21 Nov 2014 18:34:47 +0100
+
 univention-system-setup (8.1.64-1) unstable; urgency=low
 
   * Bug #36937: Timeout ntpdate command after 15s

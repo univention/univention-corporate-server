@@ -707,10 +707,12 @@ class Instance(Base, ProgressMixin):
 			dc = info['DC DNS Name']
 			has_ucs_master = util.is_ucs_domain(nameserver, info['Domain'])
 		elif role == 'nonmaster':
-			dc = util.get_master(nameserver)
+			# 'dc' is not really a DC, but in this case the FQDN of the nameserver
+			dc = util.get_fqdn(nameserver)
 			if dc is None:
 				raise Exception('No UCS master found at %s' % nameserver)
-			has_ucs_master = True
+			domain = '.'.join(dc.split('.')[1:])
+			has_ucs_master = util.is_ucs_domain(nameserver, domain)
 		else:
 			raise Exception('Not checking existing domain for role %s' % role)
 		return {'dc_name' : dc, 'ucs_master' : has_ucs_master}

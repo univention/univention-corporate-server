@@ -795,11 +795,11 @@ def get_ucs_domain(nameserver):
 	return domain
 
 def get_domain(nameserver):
-	master = get_master(nameserver)
-	if master:
-		return '.'.join(master.split('.')[1:])
+	fqdn = get_fqdn(nameserver)
+	if fqdn:
+		return '.'.join(fqdn.split('.')[1:])
 
-def get_master(nameserver):
+def get_fqdn(nameserver):
 	# register nameserver
 	resolver = _get_dns_resolver(nameserver)
 
