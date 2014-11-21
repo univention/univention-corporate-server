@@ -16,6 +16,10 @@ desc: |
     devices.
   * A timeout of 15 seconds has been added to the use of ntpdate to query the
     current time from a NTP time server, as this sometimes stalls endlessly.
+  * The UCS domain check when selecting a system role has been adjusted to
+    correctly determine an UCS domain.
+  * The DNS error message when selecting a system role is now been prompted as
+    an alert dialogue.
 bug:
  - 36665
  - 36936
@@ -25,3 +29,5 @@ bug:
  - 36340
  - 36342
  - 36937
+ - 36940
+ - 36440
