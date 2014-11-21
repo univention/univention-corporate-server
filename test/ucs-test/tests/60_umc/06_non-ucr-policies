@@ -202,7 +202,7 @@ class TestUMCnonUCRpolicies(object):
               "'base_test_container', checking correct inheritance:\n")
         self.UDM.modify_object('container/cn',
                                **{'dn': self.base_container_dn,
-                                  'policy-reference': self.base_policy_dn})
+                                  'policy_reference': self.base_policy_dn})
 
         # Second user should have inherited policy from the base container:
         self.check_policies('5', '5', self.test_user_2_dn)
@@ -215,7 +215,7 @@ class TestUMCnonUCRpolicies(object):
               "'intermediate_test_container', checking correct inheritance:\n")
         self.UDM.modify_object('container/cn',
                                **{'dn': self.intermediate_container_dn,
-                                  'policy-reference':
+                                  'policy_reference':
                                                  self.intermediate_policy_dn})
 
         # Second user should have inherited policy from the intermediate

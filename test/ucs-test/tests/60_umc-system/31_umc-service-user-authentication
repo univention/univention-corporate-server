@@ -69,7 +69,7 @@ class TestUMCUserAuthentication(TestUMCSystem):
         # **kwargs are as dict to pass the 'policy-reference'
         self.UDM.modify_object('groups/group',
                                **{'dn': test_group_dn,
-                                  'policy-reference': test_policy_dn})
+                                  'policy_reference': test_policy_dn})
 
     def restart_ldap_server(self):
         """

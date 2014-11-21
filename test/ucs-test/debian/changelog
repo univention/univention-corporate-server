@@ -1,3 +1,15 @@
+ucs-test (5.0.57-1) unstable; urgency=low
+
+  * 00_base/90change_user_pwd_via_udm,
+    60_umc-system/31_umc-service-user-authentication,
+    60_umc-system/30_umc-service-user-modules,
+    60_umc/04_policies,
+    60_umc/06_non-ucr-policies:
+    when modifying a 'policy-reference' via udm - pass it with an underscore
+    instead of dash (Bug #36893, #36894, #36895, #36900, #36901).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 21 Nov 2014 16:24:36 +0100
+
 ucs-test (5.0.56-1) unstable; urgency=low
 
   * univention/testing/data.py: use datetime instead of time (Bug #36714).
