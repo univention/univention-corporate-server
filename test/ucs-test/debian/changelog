@@ -1,3 +1,10 @@
+ucs-test (5.0.55-1) unstable; urgency=low
+
+  * bin/ucs-test: move the "--hold" argument to the main/general parser
+    section (Bug #35988).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 21 Nov 2014 11:27:11 +0100
+
 ucs-test (5.0.54-1) unstable; urgency=low
 
   * bin/udm-test: make script "/bin/sh" compatible (Bug #34389).
