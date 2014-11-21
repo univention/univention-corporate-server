@@ -9,8 +9,8 @@ Standards-Version: 3.5.5
 
 Package: univention-ssl
 Architecture: all
-Pre-Depends: rdate
 Depends: ${misc:Depends},
+ rdate,
  openssl,
  univention-directory-listener,
  openssl-blacklist,

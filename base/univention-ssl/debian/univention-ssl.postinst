@@ -73,7 +73,7 @@ if [ "$server_role" = "domaincontroller_master" ] || [ -z "$server_role" ] || [ 
 
 		# try to set the clock before generating the root CA, otherwise it is possible that the certificate is not valid at the end of the installation
 		# Bug #13549
-		rdate time.fu-berlin.de || rdate 130.133.1.10 || true
+		timeout -k 20 15 ntpdate-debian || true
 
 		. /usr/share/univention-ssl/make-certificates.sh
 		init

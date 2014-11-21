@@ -1,3 +1,9 @@
+univention-ssl (9.0.4-1) unstable; urgency=low
+
+  * Bug #36934: Timeout ntpdate command after 15s
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 21 Nov 2014 15:20:42 +0100
+
 univention-ssl (9.0.3-2) unstable; urgency=low
 
   * new default sha256 for ssl/default/hashfunction (Bug #30545) 
