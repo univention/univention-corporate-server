@@ -130,8 +130,7 @@ slapadd -l ldif
 		<para>
 			Access to the information contained in the LDAP directory is controlled by
 			access control lists (ACLs) on the server side. General information on the
-			configuration of ACLs in UCS can be found in the LDAP chapter of the UCS
-			manual.
+			configuration of ACLs in UCS can be found in the LDAP chapter of the <biblioref linkend="ucs-manual"/>.
 		</para>
 		<para>
 			The default setting of the LDAP server does not allow anonymous access to the
@@ -139,6 +138,12 @@ slapadd -l ldif
 			to <literal>yes</literal>, these access restrictions do not apply and the
 			LDAP performance is increased. Access to sensitive attributes such as user
 			passwords remains protected via separate ACLs.
+		</para>
+		<para>
+			Nested groups are also supported. The &ucsUCRV;
+			<envar>ldap/acl/nestedgroups</envar> can be used to deactivate the nested
+			groups function for LDAP ACLs, which will result in a speed increase for
+			directory requests.
 		</para>
 	</section>
 
@@ -372,5 +377,10 @@ slapadd -l ldif
 		</para>
 	</section>
 </chapter>
+
+	<bibliography>
+		<bibliomixed id="ucs-manual"/>
+	</bibliography>
+
 <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
