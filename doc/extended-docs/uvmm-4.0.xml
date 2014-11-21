@@ -274,7 +274,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 				</step>
 				<step performance="optional">
 					<para>
-						The image format for storing the virtual machine data can be changes optionally:
+						The image format for storing the virtual machine data can be changed optionally:
 						Xen only supports <quote>raw</quote> images, while QEMU/KVM supports more advanced formats like <quote>qcow2</quote>, which supports snapshots.
 						If you plan to use those features, the conversion can be done using a command like <command>qemu-img convert -f raw -O qcow2 <replaceable>input</replaceable>.raw <replaceable>output</replaceable>.qcow2</command>.
 					</para>
