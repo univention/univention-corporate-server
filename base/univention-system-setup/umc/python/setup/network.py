@@ -649,7 +649,7 @@ class Bond(Device):
 
 	def clear(self):
 		super(Bond, self).clear()
-		self.miimon = None
+		self.bond_miimon = None
 		self.bond_primary = []
 		self.bond_slaves = []
 		self.bond_mode = 0
@@ -729,9 +729,9 @@ class Bond(Device):
 						self.bond_mode = self.modes[value.strip()]
 					except KeyError:
 						pass  # invalid mode
-			elif name == 'miimon':
+			elif name in ('bond-miimon', 'miimon'):
 				try:
-					self.miimon = int(value)
+					self.bond_miimon = int(value)
 				except ValueError:
 					pass
 			else:
@@ -746,8 +746,8 @@ class Bond(Device):
 				]
 		if self.bond_mode == 1 and self.bond_primary:
 			options.append('bond-primary %s' % (' '.join(self.bond_primary),))
-		if self.miimon is not None:
-			options.append('miimon %s' % (self.miimon,))
+		if self.bond_miimon is not None:
+			options.append('bond-miimon %s' % (self.bond_miimon,))
 
 		return options
 

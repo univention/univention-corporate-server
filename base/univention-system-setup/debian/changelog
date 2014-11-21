@@ -1,3 +1,9 @@
+univention-system-setup (7.0.69-62) unstable; urgency=low
+
+  * Bug #3xxxx: Fix miimon UCR variable
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 29 Oct 2014 15:03:49 +0100
+
 univention-system-setup (7.0.69-61) unstable; urgency=low
 
   * Fixed translation error in ApplianceWizard.js (Bug #34090)
