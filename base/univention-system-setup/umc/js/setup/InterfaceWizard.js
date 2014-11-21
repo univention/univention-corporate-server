@@ -43,9 +43,10 @@ define([
 	'umc/widgets/MultiSelect',
 	'umc/widgets/CheckBox',
 	'umc/widgets/NumberSpinner',
-	"umc/modules/setup/types",
+	'umc/widgets/ProgressBar',
+	"./types",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, string, tools, dialog, Wizard, MultiInput, ComboBox, TextBox, Text, MultiSelect, CheckBox, NumberSpinner, types, _) {
+], function(declare, lang, array, string, tools, dialog, Wizard, MultiInput, ComboBox, TextBox, Text, MultiSelect, CheckBox, NumberSpinner, ProgressBar, types, _) {
 
 	return declare("umc.modules.setup.InterfaceWizard", [ Wizard ], {
 
@@ -57,6 +58,7 @@ define([
 		creation: null,
 
 		umcpCommand: lang.hitch(tools, 'umcpCommand'),
+		umcpProgressCommand: lang.hitch(tools, 'umcpProgressCommand'),
 
 		getDeviceName: function() {
 			try {
@@ -602,11 +604,12 @@ define([
 				dialog.alert(_('Please choose a network interface before querying a DHCP address.'));
 				return;
 			}
-			this.standbyDuring(tools.umcpCommand('setup/net/dhclient', {
+			// workaround: use umcpProgressCommand() to make the setup/net/dhclient threaded
+			var dummyProgressBar = new ProgressBar({});
+			var dhcpDeferred = this.umcpProgressCommand(dummyProgressBar, 'setup/net/dhclient', {
 				'interface': interfaceName
-			})).then(lang.hitch(this, function(data) {
+			}, false, 'network').then(lang.hitch(this, function(result) {
 
-				var result = data.result;
 				var netmask = result[interfaceName + '_netmask'];
 				var address = result[interfaceName + '_ip'];
 				if (!address && !netmask) {
@@ -638,6 +641,7 @@ define([
 			}), lang.hitch(this, function(error) {
 				dialog.alert(_('DHCP query failed.'));
 			}));
+			this.standbyDuring(dhcpDeferred);
 		}
 	});
 });
