@@ -1,3 +1,9 @@
+univention-system-setup (8.1.63-4) unstable; urgency=medium
+
+  * Bug #36936: adapt default keyboard layout for language German
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 21 Nov 2014 16:06:23 +0100
+
 univention-system-setup (8.1.63-3) unstable; urgency=medium
 
   Bug #36665:

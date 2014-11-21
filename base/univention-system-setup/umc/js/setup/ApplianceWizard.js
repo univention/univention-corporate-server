@@ -1121,7 +1121,7 @@ define([
 				'de-DE': {
 					timezone: 'Europe/Berlin',
 					locale: 'de_DE.UTF-8:UTF-8',
-					keyboard: 'de-latin1'
+					keyboard: 'de'
 				},
 				'en-US': {
 					timezone: 'America/New_York',
