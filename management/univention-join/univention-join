@@ -480,8 +480,12 @@ fi
 
 if [ -x /usr/bin/rdate ]; then
 	echo -n "Sync time: "
-	/usr/bin/rdate "$DCNAME" >/dev/null 2>&1
-	echo -e "\033[60Gdone"
+	if timeout -k 20 15 /usr/bin/rdate "$DCNAME" >>/var/log/univention/join.log 2>&1
+	then
+		echo -e "\033[60Gdone"
+	else
+		echo -e "\033[60Gfail"
+	fi
 fi
 
 args=()

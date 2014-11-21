@@ -1,3 +1,9 @@
+univention-join (7.1.1-1) unstable; urgency=low
+
+  * Bug #36935: Timeout ntpdate command after 15s
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 21 Nov 2014 16:24:47 +0100
+
 univention-join (7.1.0-6) unstable; urgency=medium
 
   * Bug #35654: use app.registerOnStartup instead of topic
