@@ -10,8 +10,7 @@ from univention.testing.utils import UCSVersion
 from operator import and_, or_
 from subprocess import call, Popen, PIPE
 import apt
-from time import time, localtime, strftime
-from datetime import timedelta
+from datetime import datetime
 import logging
 import signal
 import select
@@ -37,7 +36,7 @@ ILLEGAL_XML_UNICHR = (
 		(0xDFFFE, 0xDFFFF), (0xEFFFE, 0xEFFFF), (0xFFFFE, 0xFFFFF),
 		(0x10FFFE, 0x10FFFF),
 		)
-RE_ILLEGAL_XML = re.compile(u'[%s]' % u''.join((u'%s-%s' % \
+RE_ILLEGAL_XML = re.compile(u'[%s]' % u''.join((u'%s-%s' %
 		(unichr(low), unichr(high)) for (low, high) in ILLEGAL_XML_UNICHR
 		if low < sys.maxunicode)))
 
@@ -628,7 +627,15 @@ class TestCase(object):
 		dirname = os.path.dirname(self.filename)
 		cmd = [self.exe.filename, base] + self.args
 
-		time_start = time()
+		time_start = datetime.now()
+
+		print >> result.environment.log, '\n*** BEGIN *** %r ***' % (
+			cmd,)
+		print >> result.environment.log, '*** %s *** %s ***' % (
+			self.uid, self.description,)
+		print >> result.environment.log, '*** START TIME: %s ***' % (
+			time_start.strftime("%Y-%m-%d %H:%M:%S"))
+		result.environment.log.flush()
 
 		# Protect wrapper from Ctrl-C as long as test case is running
 		def handle_int(_signal, _frame):
@@ -642,18 +649,9 @@ class TestCase(object):
 			signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 		try:
-			TestCase.logger.debug('Running %r using %s in %s' % \
-					(cmd, self.exe, dirname))
+			TestCase.logger.debug('Running %r using %s in %s',
+					cmd, self.exe, dirname)
 			try:
-				print >> result.environment.log, \
-						'\n*** BEGIN *** %r ***' % (cmd,)
-				print >> result.environment.log, \
-						'*** %s *** %s ***' % (self.uid, self.description,)
-				print >> result.environment.log, \
-						'*** START TIME: %s ***' % (
-						strftime('%d-%m-%Y %H:%M:%S', localtime()))
-
-				result.environment.log.flush()
 				if result.environment.interactive:
 					proc = Popen(cmd, executable=self.exe.filename,
 							shell=False, stdout=PIPE, stderr=PIPE,
@@ -673,30 +671,29 @@ class TestCase(object):
 				TestCase._run_tee(proc, result, to_stdout, to_stderr)
 
 				result.result = proc.wait()
-
-				print >> result.environment.log, \
-						'*** END TIME: %s ***' % (
-						strftime('%d-%m-%Y %H:%M:%S', localtime()))
-				print >> result.environment.log, \
-						'*** TEST DURATION (H:MM:SS): %s ***' % timedelta(0,
-						int(time() - time_start))
-				print >> result.environment.log, '*** END *** %d ***' % \
-						(result.result,)
-				result.environment.log.flush()
 			except OSError:
-				TestCase.logger.error('Failed to execute %r using %s in %s' % \
-						(cmd, self.exe, dirname))
+				TestCase.logger.error('Failed to execute %r using %s in %s',
+						cmd, self.exe, dirname)
 				raise
 		finally:
 			signal.signal(signal.SIGINT, old_sig_int)
 			if result.reason == TestCodes.REASON_ABORT:
 				raise KeyboardInterrupt()  # pylint: disable-msg=W1010
 
-		time_end = time()
+		time_end = datetime.now()
+		time_delta = time_end - time_start
 
-		result.duration = int(time_end * 1000.0 - time_start * 1000.0)
-		TestCase.logger.info('Test %r using %s in %s returned %s in %s ms' % \
-				(cmd, self.exe, dirname, result.result, result.duration))
+		print >> result.environment.log, '*** END TIME: %s ***' % (
+			time_end.strftime("%Y-%m-%d %H:%M:%S"))
+		print >> result.environment.log, '*** TEST DURATION (H:MM:SS.ms): %s ***' % (
+			time_delta)
+		print >> result.environment.log, '*** END *** %d ***' % (
+			result.result,)
+		result.environment.log.flush()
+
+		result.duration = time_delta.total_seconds() * 1000
+		TestCase.logger.info('Test %r using %s in %s returned %s in %s ms',
+				cmd, self.exe, dirname, result.result, result.duration)
 
 		self._translate_result(result)
 
