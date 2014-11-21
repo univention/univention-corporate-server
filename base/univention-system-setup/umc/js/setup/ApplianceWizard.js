@@ -755,7 +755,7 @@ define([
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'error',
-				headerText: _('UCS setup - An error ocurred'),
+				headerText: _('UCS setup - An error occurred'),
 				helpText: '_',
 				widgets: [{
 					type: Text,

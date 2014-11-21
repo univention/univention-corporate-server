@@ -1,3 +1,11 @@
+univention-system-setup (8.1.63-3) unstable; urgency=medium
+
+  Bug #36665:
+  * allow all flavors of module 'setup' for __systemsetup__ user
+  * fixed typo
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 21 Nov 2014 15:48:51 +0100
+
 univention-system-setup (8.1.63-2) unstable; urgency=medium
 
   * Bug #36340: Fix miimon UCR variable

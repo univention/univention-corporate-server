@@ -1285,7 +1285,7 @@ msgid "UCS setup"
 msgstr "UCS-Einrichtung"
 
 #: umc/js/setup/ApplianceWizard.js:758
-msgid "UCS setup - An error ocurred"
+msgid "UCS setup - An error occurred"
 msgstr "UCS-Einrichtung - Ein Fehler ist aufgetreten"
 
 #: umc/js/setup/Interfaces.js:136
