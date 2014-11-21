@@ -20,6 +20,9 @@ def parse_options(sections):
 	"""Parse command line options."""
 	usage = "Usage: %prog [options]"
 	parser = OptionParser(usage=usage)
+	parser.add_option("-H", "--hold",
+			dest="hold", action="store_true", default=False,
+			help="Stop execution after the first failed test")
 
 	selection_group = OptionGroup(parser, 'Test selection')
 	selection_group.add_option("-s", "--section",
@@ -38,9 +41,6 @@ def parse_options(sections):
 			dest="exposure", action="store",
 			choices=('safe', 'careful', 'dangerous'),
 			help="Run more dangerous tests")
-	selection_group.add_option("-H", "--hold",
-			dest="hold", action="store_true", default=False,
-			help="Stop execution after the first failed test")
 	parser.add_option_group(selection_group)
 
 	output_group = OptionGroup(parser, 'Output options')
