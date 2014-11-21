@@ -109,10 +109,6 @@ class Interfaces(dict):
 			device = Device.from_dict(values, self)
 			self[device.name] = device
 
-#	def finalize(self):
-#		self.check_consistency()
-#		return self.to_ucr()
-
 	def to_ucr(self):
 		"""Returns a UCR representation of all interfaces"""
 		ucr.load()
@@ -636,7 +632,7 @@ class VLAN(Device):
 class Bond(Device):
 	"""A network bonding interface"""
 
-	modes = {
+	MODES = {
 		'balance-rr': 0,
 		'active-backup': 1,
 		'balance-xor': 2,
@@ -645,7 +641,7 @@ class Bond(Device):
 		'balance-tlb': 5,
 		'balance-alb': 6
 	}
-	modes_r = dict((v, k) for k, v in modes.iteritems())
+	MODES_R = dict((v, k) for k, v in MODES.iteritems())
 
 	def clear(self):
 		super(Bond, self).clear()
@@ -658,6 +654,9 @@ class Bond(Device):
 
 	def prepare_consistency(self):
 		super(Bond, self).prepare_consistency()
+
+		if self.bond_mode is None:
+		    self.bond_mode = 0
 
 		for idevice in self.subdevices:
 			# make sure that used interfaces does not have any IPv4 or IPv6 address
@@ -696,13 +695,12 @@ class Bond(Device):
 		self.check_unique_interface_usage()
 
 	def validate_bond_mode(self):
-		if self.bond_mode is not None:
-			try:
-				bond_mode = int(self.bond_mode)
-				if bond_mode not in self.modes_r and bond_mode not in self.modes:
-					raise ValueError
-			except ValueError:
-				raise DeviceError(_('Invalid bond-mode: %r') % (self.bond_mode), self.name)
+		if self.bond_mode in self.MODES:
+			return
+		try:
+			self.MODES_R[int(self.bond_mode)]
+		except (ValueError, KeyError, TypeError):
+			raise DeviceError(_('Invalid bond-mode: %r') % (self.bond_mode,), self.name)
 
 	@property
 	def subdevice_names(self):
@@ -726,7 +724,7 @@ class Bond(Device):
 					self.bond_mode = int(value)
 				except ValueError:
 					try:
-						self.bond_mode = self.modes[value.strip()]
+						self.bond_mode = self.MODES[value.strip()]
 					except KeyError:
 						pass  # invalid mode
 			elif name in ('bond-miimon', 'miimon'):
@@ -744,7 +742,7 @@ class Bond(Device):
 				'bond-slaves %s' % (' '.join(self.bond_slaves),),
 				'bond-mode %s' % (self.bond_mode,),
 				]
-		if self.bond_mode == 1 and self.bond_primary:
+		if int(self.bond_mode) == 1 and self.bond_primary:
 			options.append('bond-primary %s' % (' '.join(self.bond_primary),))
 		if self.bond_miimon is not None:
 			options.append('bond-miimon %s' % (self.bond_miimon,))

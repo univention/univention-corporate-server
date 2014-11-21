@@ -1,3 +1,10 @@
+univention-system-setup (8.1.63-2) unstable; urgency=medium
+
+  * Bug #36340: Fix miimon UCR variable
+  * Bug #36342: Fix bond-primary UCR variable
+
+ -- Florian Best <best@univention.de>  Fri, 21 Nov 2014 14:55:53 +0100
+
 univention-system-setup (8.1.63-1) unstable; urgency=medium
 
   * Bug #36880: fix exception due to undefined reference
