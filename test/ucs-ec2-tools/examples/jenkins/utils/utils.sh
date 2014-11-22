@@ -64,9 +64,9 @@ upgrade_to_latest_test_errata ()
 	local current prev=DUMMY rc=0
 	while current="$(ucr get version/version)-$(ucr get version/patchlevel)" && [ "$current" != "$prev" ]
 	do
-		if [ -x /root/activate-$(ucr get version/version)-errata-test-scope.sh ]
+		if [ -x /root/activate-errata-test-scope.sh ]
 		then
-			/root/activate-$(ucr get version/version)-errata-test-scope.sh
+			/root/activate-errata-test-scope.sh
 		fi
 		upgrade_to_latest
 		rc=$?
