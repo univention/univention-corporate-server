@@ -97,6 +97,7 @@ class expression:
 
 		>>> e = expression('objectClass', '*')
 		>>> e = expression('objectClass', '*', '!=')
+		>>> e = expression('uidNumber', '10', '<') # < <= > >=
 		'''
 		self.variable=variable
 		self.value=value
@@ -109,8 +110,18 @@ class expression:
 		'(objectClass=*)'
 		>>> str(expression('objectClass', '*', '!='))
 		'(!(objectClass=*))'
+		>>> str(expression('uidNumber', '10', '<'))
+		'(!(uidNumber>=10))'
 		'''
-		if self.operator == '!=':
+		if self.operator == '<=':
+			return '(%s<=%s)' % ( self.variable, self.value )
+		elif self.operator == '<':
+			return '(!(%s>=%s))' % ( self.variable, self.value )
+		elif self.operator == '>=':
+			return '(%s>=%s)' % ( self.variable, self.value )
+		elif self.operator == '>':
+			return '(!(%s<=%s))' % ( self.variable, self.value )
+		elif self.operator == '!=':
 			return '(!(%s=%s))' % ( self.variable, self.value )
 		else:
 			return '(%s=%s)' % ( self.variable, self.value )
@@ -134,6 +145,8 @@ def parse(filter_s, begin=0, end=-1):
 	>>> filter_s='(|(&(!(zone=univention.de))(soa=test))(nameserver=bar))'
 	>>> parse(filter_s)
 	conjunction('|', [conjunction('&', [conjunction('!', [expression('zone', 'univention.de', '=')]), expression('soa', 'test', '=')]), expression('nameserver', 'bar', '=')])
+	>>> parse('(!(key>=29))')
+	conjunction('!', [expression('key', '29', '>=')])
 	>>> parse('(&(key=va\\\\28!\\\\29ue))')
 	conjunction('&', [expression('key', 'va\\\\28!\\\\29ue', '=')])
 
@@ -184,8 +197,14 @@ def parse(filter_s, begin=0, end=-1):
 			raise univention.admin.uexceptions.valueInvalidSyntax ()
 
 		# new expression
-		variable, value=filter_s[begin:end+1].split('=', 1)
-		return expression(variable, value)
+		if '<=' in filter_s:
+			delim = '<='
+		elif '>=' in filter_s:
+			delim = '>='
+		else:
+			delim = '='
+		variable, value=filter_s[begin:end+1].split(delim, 1)
+		return expression(variable, value, operator=delim)
 
 def walk(filter, expression_walk_function=None, conjunction_walk_function=None, arg=None):
 	"""Walk LDAP filter expression tree.
