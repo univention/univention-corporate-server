@@ -55,6 +55,33 @@ in-target /usr/sbin/ucr set system/setup/boot/start=true
 if [ -n "$DISPLAY" ]; then
 	chroot /target /usr/share/univention-system-setup/startxwithfirefox --installer
 fi
+
+ussbootflag="$(in-target /usr/sbin/ucr get system/setup/boot/start)"
+if [ "$ussbootflag" = "true" -o "$ussbootflag" = "yes" ] ; then
+	tmpfn="$(mktemp /target/tmp/di-univention-system-setup.XXXXXXXX)"
+	cat > "$tmpfn" <<EOF
+#!/bin/sh
+. /usr/share/univention-lib/all.sh
+get_default_ip_address
+EOF
+	chmod u+x "$tmpfn"
+	ipaddress="$($tmpfn)"
+	if echo "$ipaddress" | grep -q ":" ; then
+		ipaddress="[${ipaddress}]"
+	fi
+	rm -f "$tmpfn"
+	if [ -n "$DISPLAY" ] ; then
+		db_subst di-univention-system-setup/note/graphicmode address "$ipaddress"
+		db_fset di-univention-system-setup/note/graphicmode seen false
+		db_input medium di-univention-system-setup/note/graphicmode || true
+	else
+		db_subst di-univention-system-setup/note/textmode address "$ipaddress"
+		db_fset di-univention-system-setup/note/textmode seen false
+		db_input medium di-univention-system-setup/note/textmode || true
+	fi
+	db_go || true
+fi
+
 # remove root.secret if startxwithfirefox didn't remove it
 rm -f /target/var/lib/univention-ldap/root.secret
 

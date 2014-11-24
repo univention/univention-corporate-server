@@ -21,3 +21,34 @@ _Description: Generating configuration files...
 Template: di-univention-system-setup/progress/done
 Type: text
 _Description: Done.
+
+Template: di-univention-system-setup/note/textmode
+Type: note
+_Description: Univention Corporate Server ready for configuration
+ Univention Corporate Server is now ready for configuration via web browser.
+ Open a web browser on a different system and visit the URL
+  https://${address}/
+ or
+  http://${address}/
+ 
+ When pressing "Next", the configuration of Univention Corporate Server is
+ omitted and the system will be configured for appliance mode. After an automatic reboot,
+ Univention System Setup is started automatically in graphics mode
+ and allows a subsequent configuration.
+ Alternatively the system may be configured via the web browser by visiting the URL
+  https://${address}/
+ or
+  http://${address}/
+
+Template: di-univention-system-setup/note/graphicmode
+Type: note
+_Description: Configuration of Univention Corporate Server defered
+ The configuration of Univention Corporate Server has been aborted.
+ 
+ When pressing "Next", Univention Corporate Server will be configured for appliance
+ mode. After an automatic reboot, Univention System Setup is started automatically
+ in graphics mode and allows a subsequent configuration.
+ Alternatively the system may be configured via the web browser by visiting the URL
+  https://${address}/
+ or
+  http://${address}/
