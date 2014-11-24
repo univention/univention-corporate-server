@@ -1,3 +1,9 @@
+univention-ldap (10.0.17-42) unstable; urgency=medium
+
+  * Bug #36978: New attribute msNTSecurityDescriptor
+
+ -- Arvid Requate <requate@univention.de>  Mon, 24 Nov 2014 19:17:27 +0100
+
 univention-ldap (10.0.17-41) unstable; urgency=low
 
   * fixed ldap/sasl/secprops/maxssf (Bug #35513)
