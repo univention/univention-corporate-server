@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-83) unstable; urgency=medium
+
+  * Bug #33768: Synchronize nTSecurityDescriptor.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 24 Nov 2014 19:24:21 +0100
+
 univention-s4-connector (8.0.33-82) unstable; urgency=low
 
   * fixed sync_mode check in post_con_modify_functions (Bug #35251) 

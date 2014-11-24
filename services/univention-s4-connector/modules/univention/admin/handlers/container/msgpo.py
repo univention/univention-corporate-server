@@ -159,6 +159,16 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'msNTSecurityDescriptor': univention.admin.property(
+			short_description=_('MS NT Security Descriptor'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 }
 
 layout = [
@@ -194,6 +204,7 @@ mapping.register('msGPOFileSysPath', 'msGPOFileSysPath',  None, univention.admin
 mapping.register('msGPOWQLFilter', 'msGPOWQLFilter',  None, univention.admin.mapping.ListToString)
 mapping.register('msGPOUserExtensionNames', 'msGPOUserExtensionNames',  None, univention.admin.mapping.ListToString)
 mapping.register('msGPOMachineExtensionNames', 'msGPOMachineExtensionNames',  None, univention.admin.mapping.ListToString)
+mapping.register('msNTSecurityDescriptor', 'msNTSecurityDescriptor',  None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
