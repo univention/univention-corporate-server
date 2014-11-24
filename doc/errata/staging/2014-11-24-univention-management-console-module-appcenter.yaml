@@ -5,6 +5,6 @@ src: univention-management-console-module-appcenter
 fix: 4.1.20-1.303.201411241223
 version: [0]
 desc: |
-  * The checkbox "Use unmaintained repositories" is now above the "Apply changes" button to avoid that 
-    someone will miss this setting
+  * The checkbox "Use unmaintained repositories" is now above the 
+    "Apply changes" button to avoid that someone will miss this setting
 bug: [36457]
