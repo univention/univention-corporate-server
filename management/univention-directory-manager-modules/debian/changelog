@@ -1,4 +1,4 @@
-univention-directory-manager-modules (9.0.77-1) unstable; urgency=low
+univention-directory-manager-modules (9.0.76-35) unstable; urgency=low
 
   * Bug #36439: Added support for >, <, >=, <= in admin.filter
 
