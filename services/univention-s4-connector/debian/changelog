@@ -1,3 +1,10 @@
+univention-s4-connector (9.0.16-4) unstable; urgency=medium
+
+  * Bug #36981: Don't sync cn=Subschema                                        
+  * Log error if entryUUID is missing in pickle file but continue
+
+ -- Arvid Requate <requate@univention.de>  Mon, 24 Nov 2014 20:22:04 +0100
+
 univention-s4-connector (9.0.16-3) unstable; urgency=medium
 
   * Bug #36980: Fix python version in ntsecurity_descriptor.py
