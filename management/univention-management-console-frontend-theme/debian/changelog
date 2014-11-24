@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.87-1) unstable; urgency=low
+
+  * Bug #36338: Adjusted styling if js disabled
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 24 Nov 2014 12:14:18 +0100
+
 univention-management-console-frontend-theme (0.0.86-1) unstable; urgency=medium
 
   * Bug #36549: removed UCS4 feature branch, added UCS logo as SVG

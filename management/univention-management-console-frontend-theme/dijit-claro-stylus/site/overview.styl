@@ -94,3 +94,50 @@
 }
 
 
+.warning {
+	color: white;
+	margin: 0 auto 20px auto;
+	max-width: 500px;
+	min-height: 165px;
+	height: auto;
+	vertical-gradient-and-filter($text-color-lighter, $text-color);
+	opacity: 0.8;
+	box-shadow: 0 0px 10px rgba(0,0,0,0.3)
+	padding: 20px;
+
+	a {
+		color: white;
+		text-decoration: underline;
+		opacity: 0.8;
+	}
+	a:hover {
+		opacity: 1;
+	}
+		
+	.title {
+		font-size: $font-size-medium;
+		line-height: 1em;
+		font-weight: bold;
+		margin-bottom: 1em;
+	}
+	.icon {
+		background-image: url(../images/info.svg);
+		background-repeat: no-repeat;
+		width: 110px;
+		height: 140px;
+		margin-right: 15px;
+		float: left;
+	}
+}
+
+
+.warningWrapper {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+}
+
+.warningCenterer {
+	height: 50%;
+	margin-bottom: -156px;
+}
