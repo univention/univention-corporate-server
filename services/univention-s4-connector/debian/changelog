@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.16-3) unstable; urgency=medium
+
+  * Bug #36980: Fix python version in ntsecurity_descriptor.py
+
+ -- Arvid Requate <requate@univention.de>  Mon, 24 Nov 2014 19:50:49 +0100
+
 univention-s4-connector (9.0.16-2) unstable; urgency=medium
 
   * Bug #36980: Synchronize nTSecurityDescriptor
