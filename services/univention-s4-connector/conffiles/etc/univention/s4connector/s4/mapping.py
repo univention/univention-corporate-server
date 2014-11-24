@@ -34,6 +34,7 @@ import univention.s4connector.s4
 import univention.s4connector.s4.mapping
 import univention.s4connector.s4.password
 import univention.s4connector.s4.sid_mapping
+import univention.s4connector.s4.ntsecurity_descriptor
 import univention.s4connector.s4.dns
 import univention.s4connector.s4.dc
 import univention.s4connector.s4.computer
@@ -721,6 +722,19 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 							con_attribute='gPCWQLFilter'
 						),
 				},
+
+			ucs_create_functions = [
+				univention.s4connector.s4.ntsecurity_descriptor.ntsd_to_ucs,
+			],
+			post_ucs_modify_functions=[
+				univention.s4connector.s4.ntsecurity_descriptor.ntsd_to_ucs,
+			],
+			post_con_create_functions = [
+				univention.s4connector.s4.ntsecurity_descriptor.ntsd_to_s4,
+			],
+			post_con_modify_functions=[
+				univention.s4connector.s4.ntsecurity_descriptor.ntsd_to_s4,
+			],
 
 		),
 ''' % {'ignore_filter': ignore_filter, 'sync_mode_ou': sync_mode_ou}

@@ -39,7 +39,7 @@ Depends: ${misc:Depends},
  attr,
  univention-directory-manager-tools (>> 7.0.251-1),
  univention-heimdal-common,
- univention-ldap-server (>> 8.0.79-1)
+ univention-ldap-server (>= 11.0.10-2)
 Recommends: sqlite3
 Description: UCS - Modules for sync UCS and Samba4 LDB directory
  This package contains the modules that implement the
