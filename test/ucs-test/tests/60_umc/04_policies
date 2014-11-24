@@ -78,7 +78,7 @@ def main():
 		# appending the created UMC policy
 		global USERNAME
 		userdn, USERNAME = udm.create_user(**{
-			'policy-reference': umc_policy_dn
+			'policy_reference': umc_policy_dn
 		})
 
 		# create empty policies
