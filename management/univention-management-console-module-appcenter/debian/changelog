@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-1) unstable; urgency=low
+
+  * Bug #36457: Checkbox is now above button
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 20 Nov 2014 08:03:13 +0100
+
 univention-management-console-module-appcenter (4.1.19-2) unstable; urgency=low
 
   * Bug #35825: Fixing umask in absence of any template file

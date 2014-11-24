@@ -78,8 +78,9 @@ define([
 			}];
 
 			var formLayout = [
-				['server', 'prefix', 'submit' ],
-				['unmaintained']
+				['server', 'prefix'],
+				['unmaintained'],
+				['submit']
 			];
 
 			var formButtons = [{
