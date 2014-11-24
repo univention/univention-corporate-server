@@ -661,6 +661,9 @@ class ucs:
 			
 		dn,new,old,old_dn=cPickle.load(f)
 
+		if dn == 'cn=Subschema':
+			return True
+
 		def recode_attribs(attribs):
 			nattribs={}
 			for key in attribs.keys():
@@ -712,11 +715,13 @@ class ucs:
 				if key:
 					break
 				
-			entryUUID = new.get('entryUUID')[0]
+			entryUUID = new.get('entryUUID', [None])[0]
 			if entryUUID:
 				if self.was_entryUUID_deleted(entryUUID):
 					ud.debug(ud.LDAP, ud.PROCESS, "__sync_file_from_ucs: Object with entryUUID %s was already deleted. Don't re-create." % entryUUID)
 					return True
+			else:
+				ud.debug(ud.LDAP, ud.ERROR, "__sync_file_from_ucs: Object without entryUUID: %s", (dn,))
 
 			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: old: %s" % old)
 			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new: %s" % new)
