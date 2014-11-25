@@ -32,6 +32,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  shell-univention-lib (>= 3.0.1-1),
  python-univention-lib (>= 3.0.1-1),
  univention-ipcalc (>= 5),
+Breaks: univention-system-setup-boot (<< 8.1.63-5)
 Recommends: univention-management-console-module-setup
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
