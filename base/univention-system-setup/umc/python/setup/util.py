@@ -224,6 +224,8 @@ def write_profile(values):
 	try:
 		with open(PATH_PROFILE, "w+") as cache_file:
 			for ikey, ival in values.iteritems():
+				if isinstance(ival, bool):
+					ival = str(ival)
 				cache_file.write('%s="%s"\n' % (ikey, ival or ''))
 	finally:
 		os.umask(old_umask)

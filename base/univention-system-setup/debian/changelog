@@ -1,3 +1,10 @@
+univention-system-setup (8.1.65-5) unstable; urgency=medium
+
+  * Bug #36701: fix evaluation of start/join and update/system/after/setup
+  * fixup for Bug #36665: duplicated 'allow' in setting of UMC ACL's
+
+ -- Florian Best <best@univention.de>  Tue, 25 Nov 2014 18:58:55 +0100
+
 univention-system-setup (8.1.65-4) unstable; urgency=low
 
   * Bug #36874: Declare 'Breaks' on earlier version 

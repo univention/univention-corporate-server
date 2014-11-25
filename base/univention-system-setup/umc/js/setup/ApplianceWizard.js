@@ -2193,7 +2193,7 @@ define([
 
 			// prepare the dictionary with final values
 			tools.forIn(_vals, function(ikey, ival) {
-				if (typeof ikey == "string" && ikey.indexOf('_') !== 0 && ival) {
+				if (typeof ikey == "string" && ikey.indexOf('_') !== 0 && (ival || ival === false)) {
 					// ignore values starting with '_'
 					vals[ikey] = ival;
 				}

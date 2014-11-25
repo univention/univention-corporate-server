@@ -34,11 +34,11 @@
 adduser --system --no-create-home --disabled-password --force-badname '__systemsetup__'
 
 # set UMC ACLs for special user
-/usr/sbin/univention-management-console-acls allow -u "__systemsetup__" -c "setup/*" -c "lib/server/*" "allow" -H "*"
+/usr/sbin/univention-management-console-acls allow -u "__systemsetup__" -c "setup/*" -c "lib/server/*" -H "*"
 
 # For remote configuration give root the permission to see this module. Normally the
 # ACL will be defined in the UMC package and can be removed here after UCS 3.0-2
-/usr/sbin/univention-management-console-acls -u "root" -c "setup/*" -c "lib/server/*" "allow" -H "*"
+/usr/sbin/univention-management-console-acls allow -u "root" -c "setup/*" -c "lib/server/*" -H "*"
 
 #DEBHELPER#
 
