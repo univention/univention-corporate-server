@@ -261,11 +261,11 @@ msgstr ""
 
 #: umc/js/setup/ApplianceWizard.js:659
 msgid "Administrator account"
-msgstr "Administrator-Konto"
+msgstr "Name des Administrator-Benutzerkontos"
 
 #: umc/js/setup/ApplianceWizard.js:665
 msgid "Administrator password"
-msgstr "Administrator-Passwort"
+msgstr "Passwort des Administrator-Benutzerkontos"
 
 #: umc/js/setup/InterfaceWizard.js:459
 msgid "Advanced configuration"
