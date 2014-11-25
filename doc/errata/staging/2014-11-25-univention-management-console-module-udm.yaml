@@ -1,0 +1,9 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-management-console-module-udm
+fix: 5.1.26-1.511.201411251011
+version: [0]
+desc: |
+  * A notification for AD objects will only be shown once per session
+bug: [36732]
