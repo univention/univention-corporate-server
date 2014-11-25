@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
 # -*- coding: utf-8 -*.
 ## desc: Test the UMC user authentication and password change
-## bugs: [34369]
+## bugs: [34369, 36901]
 ## roles:
 ##  - domaincontroller_master
 ## exposure: dangerous
