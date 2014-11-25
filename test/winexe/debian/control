@@ -5,10 +5,17 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper,
  build-essential,
  pkg-config,
+ libdcerpc-dev,
  libtalloc-dev,
  libtevent-dev,
  samba-dev,
+ libsamba-credentials-dev,
+ libsmbclient-raw-dev,
  gcc-mingw32,
+ libsamba-hostconfig-dev,
+ libndr-standard-dev,
+ libgensec0,
+ libnetapi0,
  libc6-dev,
  mingw32-runtime,
  mingw-w64,
@@ -17,9 +24,16 @@ Build-Depends: debhelper,
 Package: winexe
 Architecture: any
 Depends: libc6 (>= 2.8),
- libtalloc2 (>= 2.1.1),
- libtevent0 (>= 0.9.22),
- samba-libs (>= 4.2.0~rc2)
+ libdcerpc0 (>= 2:4.1.0-1.653.201408041143),
+ libndr-standard0 (>= 2:4.1.0-1.653.201408041143),
+ libndr0 (>= 2:4.1.0-1.653.201408041143),
+ libpopt0 (>= 1.16),
+ libsamba-credentials0 (>= 2:4.1.0-1.653.201408041143),
+ libsamba-hostconfig0 (>= 2:4.1.0-1.653.201408041143),
+ libsamba-util0 (>= 2:4.1.0-1.653.201408041143),
+ libsmbclient-raw0 (>= 2:4.1.0-1.653.201408041143),
+ libtalloc2 (>= 2.0.4~git20101213),
+ libtevent0 (>= 0.9.9)
 Description: Remote Windows®-command executor
  Winexe remotely executes commands on Windows® NT/2000/XP/2003 systems.
  .

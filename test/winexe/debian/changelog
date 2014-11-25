@@ -1,21 +1,8 @@
-winexe (1.1.0-9) ucs3-2-0-0; urgency=low
-
-  * Bug #36019: Adjust to Samba 4.2~rc2
-  * Convert to 3.0 (quilt) package format
-
- -- Arvid Requate <requate@univention.de>  Tue, 25 Nov 2014 18:42:28 +0100
-
-winexe (1.1.0-8.12.201409251652) ucs3-2-0-0; urgency=low
-
-  * UCS auto build. No patches were applied to the original source package
-
- -- Univention builddaemon <buildd@univention.de>  Thu, 25 Sep 2014 16:52:02 +0200
-
-winexe (1.1.0-8) unstable; urgency=low
+winexe (1.1.0-9) unstable; urgency=low
 
   * fixed dependencies (Bug #35999)
 
- -- Felix Botner <botner@univention.de>  Thu, 25 Sep 2014 16:50:12 +0200
+ -- Felix Botner <botner@univention.de>  Thu, 25 Sep 2014 16:57:04 +0200
 
 winexe (1.1.0-7) unstable; urgency=low
 

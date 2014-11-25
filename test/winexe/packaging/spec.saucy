@@ -1,1 +1,0 @@
-builddep="gcc gcc-mingw-w64 comerr-dev libbsd-dev zlib1g-dev python-dev libdcerpc-dev libtevent-dev samba4-dev libsamba-credentials-dev libsmbclient-raw-dev libndr-standard-dev libsamba-hostconfig-dev python-samba"
