@@ -1,4 +1,4 @@
-univention-virtual-machine-manager-daemon (4.0.21-1) unstable; urgency=low
+univention-virtual-machine-manager-daemon (4.0.20-2) unstable; urgency=low
 
   * Bug #36905: Show https link in cloud instances; remove duplicate public ips
 
