@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-85) unstable; urgency=medium
+
+  * Bug #33768: On updates trigger synchronization of GPO NTSDs
+  * Add --filter option to resync_object_from_ucs and resync_object_from_s4
+
+ -- Arvid Requate <requate@univention.de>  Tue, 25 Nov 2014 16:12:43 +0100
+
 univention-s4-connector (8.0.33-84) unstable; urgency=medium
 
   * Bug #35973: Don't sync cn=Subschema
