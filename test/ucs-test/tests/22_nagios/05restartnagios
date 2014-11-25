@@ -28,6 +28,8 @@ fi
 # restart Nagios
 echo "Restarting Nagios"
 invoke-rc.d nagios3 restart >/dev/null
+# give nagios a little time to restart
+sleep 2
 
 # Check that there is only one instance of Nagios left.
 if [ 1 -lt $(pgrep -c nagios3) ]
