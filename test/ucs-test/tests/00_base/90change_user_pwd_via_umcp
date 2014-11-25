@@ -1,0 +1,111 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test password change via UMC (/umcp/set) by the user itself.
+## bugs: [36900]
+## roles: [domaincontroller_master]
+## packages:
+##  - univention-directory-manager-tools
+## tags:
+##  - basic
+## exposure: dangerous
+
+from time import sleep
+import simplejson as json
+
+import univention.testing.utils as utils
+import univention.testing.strings as uts
+from univention.testing.udm import UCSTestUDM
+
+from univention.config_registry import ConfigRegistry
+from univention.lib.umc_connection import UMCConnection
+
+
+# the UMCConnection.request returns ['result'] which is not always
+# in the response, thus using the following function:
+def make_umcp_request(username, password, request_url, options):
+    """
+    Creates a 'localhost' UMC connection with a given 'username'
+    and 'password'. Makes a request with a given 'request_url' and
+    'options'. Returns the full response.
+    """
+    options = {"options": options}
+    options = json.dumps(options)
+
+    try:
+        connection = UMCConnection('localhost', username, password)
+        umc_connection = connection.get_connection()
+        umc_connection.request('POST',
+                               request_url,
+                               options,
+                               connection._headers)
+
+        request_result = umc_connection.getresponse()
+        request_result = request_result.read()
+        if not request_result:
+            utils.fail("UMCP Request '%s' with options '%s' failed."
+                       % (request_url, options))
+
+        return json.loads(request_result)
+    except Exception as exc:
+        utils.fail("Exception while making '%s' request: %s"
+                   % (request_url, exc))
+
+
+if __name__ == '__main__':
+    """
+    Creates a container in LDAP;
+    Creates a test user inside it;
+    Tries to change user's password to a new (complex) one;
+    Tries to change user's password to a new (simple) one;
+    Removes the test user and container.
+    """
+    UCR = ConfigRegistry()
+    UCR.load()
+
+    with UCSTestUDM() as UDM:
+        # create an ldap container:
+        container = UDM.create_object('container/cn',
+                                      position=UCR.get('ldap/base'),
+                                      name='ucs_test_' + uts.random_string())
+
+        # create a test user inside container:
+        user_name = 'ucs_test_' + uts.random_string()
+        user_password = uts.random_string()
+        user_kwargs = {'position': container,
+                       'lastname': user_name,
+                       'password': user_password,
+                       'username': user_name}
+
+        print "\nCreating a user for the test:"
+        user_dn = UDM.create_user('users/user', **user_kwargs)[0]
+        sleep(10)  # wait a bit before trying to authenticate
+
+        # generate new user passwords (complex and simple ones):
+        complex_password = 'Foo1_' + uts.random_string() + '_Bar2'
+        simple_password = 'foo'
+
+        # try to authenticate and change password of the user
+        # to the 'complex' one (should work):
+        print "\nTrying to change user password to '%s':" % complex_password
+        result = make_umcp_request(user_name, user_password,
+                                   '/umcp/set',
+                                   {'password': {'password': user_password,
+                                                 'new_password': complex_password}})
+        print "RESPONSE:", result
+        if result.get('status') != 200:
+            utils.fail("Changing user password did not work in the case it should")
+
+        # try to authenticate with a new user password
+        # and change it to a simple one (should not work):
+        print "\nTrying to change user password to '%s':" % simple_password
+        result = make_umcp_request(user_name, complex_password,
+                                   '/umcp/set',
+                                   {'password': {'password': complex_password,
+                                                 'new_password': simple_password}})
+        print "RESPONSE:", result
+        result_status = result.get('status')
+        if result_status != 400:
+            if result_status == 200:
+                utils.fail("Changing user password worked in the case it should not")
+
+            utils.fail("The expected response status code is 400, "
+                       "while %s is received" % result_status)

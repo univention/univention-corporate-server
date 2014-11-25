@@ -1,3 +1,10 @@
+ucs-test (5.0.58-1) unstable; urgency=low
+
+  * 00_base/90change_user_pwd_via_umcp: test user own password change via
+    '/umcp/set' command (Bug #36900).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 25 Nov 2014 13:20:15 +0100
+
 ucs-test (5.0.57-1) unstable; urgency=low
 
   * 00_base/90change_user_pwd_via_udm,
