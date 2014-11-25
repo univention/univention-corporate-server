@@ -1,3 +1,11 @@
+ucs-test (5.0.59-1) unstable; urgency=low
+
+  * 60_umc-system/31_umc-service-user-authentication: adapted the test for
+    UCS 4.0, removed the policy and acl change. The user password is modified
+    as Administrator via 'udm/put' request (Bug #36901).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 25 Nov 2014 16:12:56 +0100
+
 ucs-test (5.0.58-1) unstable; urgency=low
 
   * 00_base/90change_user_pwd_via_umcp: test user own password change via

@@ -11,13 +11,11 @@ sys.path.insert(0, '.')
 from TestUMCSystemModule import TestUMCSystem
 
 import simplejson as json
-from subprocess import Popen, PIPE
 from time import sleep, time, localtime, strftime
 
 import univention.testing.utils as utils
 from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_username
-from univention.config_registry import handler_set
 from univention.lib.umc_connection import UMCConnection
 
 
@@ -34,19 +32,11 @@ class TestUMCUserAuthentication(TestUMCSystem):
         self.test_password = ''
         self.test_password_unicode = ''
 
-        self.initial_ucr_password_setting = ''
-
-    def create_user_group_and_policy(self):
+    def create_user_and_group(self):
         """
-        Creates a group, a user in it and a policy (applied to group)
-        with 'udm-self' operation set for the test via UDM.
+        Creates a group and a user in it for the test.
         """
         test_groupname = 'umc_test_group_' + random_username(6)
-        test_policyname = 'umc_test_policy_' + random_username(6)
-
-        # operation set that allows users to change own password
-        test_operation_set = ["cn=udm-self,cn=operations,cn=UMC,cn=univention,"
-                              + self.UCR.get('ldap/base')]
 
         print("\nCreating a group '%s' and a user '%s' in it "
               "for the test:\n" % (test_groupname, self.test_username))
@@ -58,65 +48,13 @@ class TestUMCUserAuthentication(TestUMCSystem):
                                                  primaryGroup=test_group_dn)[0]
         utils.verify_ldap_object(self.test_user_dn)
 
-        print("\nCreating a custom policy '%s' with 'udm-self' operation "
-              "set for the test and adding it to the test group '%s':\n"
-              % (test_policyname, test_groupname))
-        test_policy_dn = self.UDM.create_object('policies/umc',
-                                                name=test_policyname,
-                                                allow=test_operation_set)
-        utils.verify_ldap_object(test_policy_dn)
-
-        # **kwargs are as dict to pass the 'policy-reference'
-        self.UDM.modify_object('groups/group',
-                               **{'dn': test_group_dn,
-                                  'policy_reference': test_policy_dn})
-
-    def restart_ldap_server(self):
-        """
-        Invokes the 'service slapd restart' to restart the LDAP server
-        (Needed for changes in the UCR to work).
-        """
-        print "\nRestarting the LDAP Server..."
-        try:
-            proc = Popen(("service", "slapd", "restart"),
-                         stdout=PIPE,
-                         stderr=PIPE)
-            stdout, stderr = proc.communicate()
-
-            if stderr:
-                utils.fail("An error occured while trying to restart LDAP "
-                           "server: '%s'" % stderr)
-        except (ValueError, OSError) as exc:
-            utils.fail("An exception occured during LDAP server restart: %r"
-                       % exc)
-
-    def save_reset_initial_ucr_password_setting(self):
-        """
-        Saves the 'ldap/acl/user/password/change' UCR setting to a global
-        variable to be restored after the test. Returns code 77 in case
-        setting is empty. Sets the setting to 'yes'.
-        """
-        print "\nSaving initial UCR user's password change setting"
-        self.initial_ucr_password_setting = self.UCR.get(
-                                            'ldap/acl/user/password/change')
-        if not self.initial_ucr_password_setting:
-            print("\nFailed to get 'ldap/acl/user/password/change' "
-                  "from the UCR or variable is unset, skipping test..")
-            self.return_code_result_skip()
-
-        if self.initial_ucr_password_setting != 'yes':
-            print "\nAllowing user password change in the UCR:"
-            handler_set(['ldap/acl/user/password/change=yes'])
-
-        self.restart_ldap_server()
-
-    def authenticate_to_umc(self, password):
+    def authenticate_to_umc(self, username, password):
         """
         Authenticates to UMC using 'self.Connection' and given
-        'password' with self.test_username. Updates the cookie.
+        'password' with 'username'. Updates the cookie.
         Returns 'True' on success and 'False' in any other case.
         """
-        options = {"options": {"username": self.test_username,
+        options = {"options": {"username": username,
                                "password": password}}
         try:
             umc_connection = self.Connection.get_connection()
@@ -148,12 +86,19 @@ class TestUMCUserAuthentication(TestUMCSystem):
         Makes a 'udm/put' UMC request with a 'new_password' and
         a 'user_dn' in options to change the password.
         """
+        # authenticate as 'Administrator' to be able to change user's password:
+        print("\nTrying to authenticate to UMC with username '%s' and "
+              "a password '%s':" % (self.username, self.password))
+        if not self.authenticate_to_umc(self.username, self.password):
+            utils.fail("Failed to authenticate as '%s' with password '%s'."
+                       % (self.username, self.password))
+
         print "\nChanging '%s' user password to '%s'" % (user_dn, new_password)
         options = [{"object": {"password": new_password,
                                "$dn$": user_dn},
-                    "options": None}]
+                    "options": {}}]
 
-        request_result = self.make_udm_request("put", options, "users/self")
+        request_result = self.make_udm_request("put", options, "users/user")
         if not request_result[0].get('success'):
             print "Change password UMC response: '%s'" % request_result
             utils.fail("The UMC request to change 'user'=%s password to '%s' "
@@ -168,14 +113,15 @@ class TestUMCUserAuthentication(TestUMCSystem):
         """
         print("\nTrying to authenticate to UMC with username '%s' and "
               "a random password:" % self.test_username)
-        if self.authenticate_to_umc(self.test_password + random_username(4)):
+        if self.authenticate_to_umc(self.test_username,
+                                    self.test_password + random_username(4)):
             utils.fail("Authentication with a valid 'username'=%s and "
                        "random password succeeded." % self.test_username)
 
         print("\nTrying to authenticate to UMC with username '%s' and "
               "a valid initial password '%s':"
               % (self.test_username, self.test_password))
-        if not self.authenticate_to_umc(self.test_password):
+        if not self.authenticate_to_umc(self.test_username, self.test_password):
             utils.fail("Authentication with a valid 'username'=%s and "
                        "'password'=%s failed."
                        % (self.test_username, self.test_password))
@@ -191,14 +137,15 @@ class TestUMCUserAuthentication(TestUMCSystem):
         print("\nTrying to authenticate to UMC with username '%s' and "
               "an old password '%s':"
               % (self.test_username, self.test_password))
-        if self.authenticate_to_umc(self.test_password):
+        if self.authenticate_to_umc(self.test_username, self.test_password):
             utils.fail("Authentication with old password '%s' succeeded "
                        "after password change." % self.test_password)
 
         print("\nTrying to authenticate to UMC with username '%s' and "
               "a new valid password '%s':"
               % (self.test_username, self.test_password + '1'))
-        if not self.authenticate_to_umc(self.test_password + '1'):
+        if not self.authenticate_to_umc(self.test_username,
+                                        self.test_password + '1'):
             utils.fail("Authentication with a 'username'=%s and a new "
                        "'password'=%s failed."
                        % (self.test_username, self.test_password + '1'))
@@ -211,7 +158,8 @@ class TestUMCUserAuthentication(TestUMCSystem):
         print("\nTrying to authenticate to UMC with username '%s' and "
               "a new valid unicode password '%s':"
               % (self.test_username, self.test_password_unicode))
-        if not self.authenticate_to_umc(self.test_password_unicode):
+        if not self.authenticate_to_umc(self.test_username,
+                                        self.test_password_unicode):
             utils.fail("Authentication with a new unicode password '%s' "
                        "did not succeeded." % self.test_password_unicode)
 
@@ -242,7 +190,8 @@ class TestUMCUserAuthentication(TestUMCSystem):
                                userexpiry=expiry_date)
 
         self.wait_for_samba_replication(self.test_username)
-        if self.authenticate_to_umc(self.test_password_unicode):
+        if self.authenticate_to_umc(self.test_username,
+                                    self.test_password_unicode):
             utils.fail("Authentication with an expired user account "
                        "succeeded.")
 
@@ -261,7 +210,8 @@ class TestUMCUserAuthentication(TestUMCSystem):
                                disabled="all")
 
         self.wait_for_samba_replication(self.test_username)
-        if self.authenticate_to_umc(self.test_password_unicode):
+        if self.authenticate_to_umc(self.test_username,
+                                    self.test_password_unicode):
             utils.fail("Authentication with a deactivated user account "
                        "succeeded.")
 
@@ -271,34 +221,29 @@ class TestUMCUserAuthentication(TestUMCSystem):
                                dn=self.test_user_dn)
 
         sleep(50)  # should be changed after Bug #35634 is resolved
-        if self.authenticate_to_umc(self.test_password_unicode):
+        if self.authenticate_to_umc(self.test_username,
+                                    self.test_password_unicode):
             utils.fail("Authentication with a removed user account "
                        "succeeded.")
 
     def main(self):
         """
-        Tests the UMC user authentication and various password change cases
+        Tests the UMC user authentication and various password change cases.
         """
         self.test_username = 'umc_test_user_' + random_username(6)
         self.test_password = 'univention'
 
+        self.reload_ucr()
+        self.get_ucr_credentials()
+
         with UCSTestUDM() as self.UDM:
-            self.reload_ucr()
-            self.create_user_group_and_policy()
+            self.create_user_and_group()
 
-            try:
-                self.save_reset_initial_ucr_password_setting()
-                self.Connection = UMCConnection(self.UCR['hostname'])
+            self.Connection = UMCConnection(self.UCR['hostname'])
 
-                self.check_random_and_valid_passwords()
-                self.check_change_old_new_unicode_passwords()
-                self.check_expired_deactivated_removed_account()
-            finally:
-                if self.initial_ucr_password_setting:
-                    print "\nRestoring initial UCR user password setting:"
-                    handler_set(['ldap/acl/user/password/change=' +
-                                 self.initial_ucr_password_setting])
-                    self.restart_ldap_server()
+            self.check_random_and_valid_passwords()
+            self.check_change_old_new_unicode_passwords()
+            self.check_expired_deactivated_removed_account()
 
 
 if __name__ == '__main__':
