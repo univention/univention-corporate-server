@@ -1,3 +1,9 @@
+winexe (1.1.0-11) unstable; urgency=medium
+
+  * Bug #36019: fix quilt return code
+
+ -- Arvid Requate <requate@univention.de>  Tue, 25 Nov 2014 19:23:36 +0100
+
 winexe (1.1.0-10) unstable; urgency=medium
 
   * Bug #36019: Adjust to Samba 4.2~rc2

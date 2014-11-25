@@ -50,7 +50,7 @@ override_dh_auto_build:
 	dh_auto_build
 
 override_dh_clean:
-	QUILT_PATCHES=debian/patches quilt pop -a
+	QUILT_PATCHES=debian/patches quilt pop -a || true
 	rm -rf winexe-winexe-waf
 	dh_clean
 
