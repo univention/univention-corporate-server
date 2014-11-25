@@ -20,6 +20,7 @@ desc: |
     correctly determine an UCS domain.
   * The DNS error message when selecting a system role is now been prompted as
     an alert dialogue.
+  * Some german text field descriptions has been adapted.
 bug:
  - 36665
  - 36936
@@ -31,3 +32,4 @@ bug:
  - 36937
  - 36940
  - 36440
+ - 36723
