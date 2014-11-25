@@ -1,3 +1,10 @@
+univention-system-setup (8.1.65-3) unstable; urgency=medium
+
+  * Bug #37001: fix an error which prevents loading of the setup wizard 
+    module if more than 4 network interfaces exists
+
+ -- Florian Best <best@univention.de>  Tue, 25 Nov 2014 15:22:34 +0100
+
 univention-system-setup (8.1.65-2) unstable; urgency=low
 
   * Bug #36723: Adapted misleading text field descriptions

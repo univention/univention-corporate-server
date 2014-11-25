@@ -1069,6 +1069,8 @@ define([
 				devices = ['eth0'];
 			}
 			devices.sort();
+			// return only the first 4 physical interfaces because we only have 4 ip widgets
+			devices = devices.slice(0, 4);
 			return devices;
 		},
 
