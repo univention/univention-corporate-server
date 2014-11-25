@@ -1,0 +1,25 @@
+Options have been added:
+
+$ diff -u 1.00 1.01
+--- 1.00	2011-12-13 21:48:46.133760005 +0100
++++ 1.01	2011-12-13 21:48:54.661760203 +0100
+@@ -1,6 +1,6 @@
+-winexe version 1.00
++winexe version 1.01
+ This program may be freely redistributed under the terms of the GNU GPLv3
+-Usage: winexe [-?] [-?] [-?] [-?NP] [-?NPV] [-?|--help] [--usage] [-d|--debuglevel DEBUGLEVEL]
++Usage: winexe [-?] [-?] [-?] [-?NPSe] [-?NPSeV] [-?|--help] [--usage] [-d|--debuglevel DEBUGLEVEL]
+         [--debug-stderr] [-s|--configfile CONFIGFILE] [--option=name=value]
+         [-l|--log-basename LOGFILEBASE] [--leak-report] [--leak-report-full]
+         [-R|--name-resolve NAME-RESOLVE-ORDER]
+@@ -9,7 +9,8 @@
+         [--realm=REALM] [-i|--scope SCOPE] [-m|--maxprotocol MAXPROTOCOL]
+         [-U|--user [DOMAIN/]USERNAME[%PASSWORD]] [-N|--no-pass]
+         [--password=STRING] [-A|--authentication-file FILE] [-P|--machine-pass]
+-        [--simple-bind-dn=STRING] [-k|--kerberos STRING] [-V|--version]
++        [--simple-bind-dn=STRING] [-k|--kerberos STRING]
++        [--krb5-ccache=STRING] [-S|--sign] [-e|--encrypt] [-V|--version]
+         [--uninstall] [--reinstall] [--system]
+         [--runas=[DOMAIN\]USERNAME%PASSWORD] [--runas-file=FILE]
+         [--interactive=0|1] [--ostype=0|1|2] //host command
+

@@ -3,7 +3,7 @@
 # winexe
 #  rules file for the debian package
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 get-orig-source:
-	rm -rf winexe-winexe-waf
+	[ -d winexe-winexe-waf ] && rm -rf winexe-winexe-waf
 	git clone git://git.code.sf.net/p/winexe/winexe-waf winexe-winexe-waf
 	cd winexe-winexe-waf; git archive  --format tar --output ../winexe-winexe-waf.tar master
 	rm winexe-winexe-waf.tar.gz
@@ -39,18 +39,15 @@ get-orig-source:
 	rm -rf winexe-winexe-waf
 
 override_dh_auto_configure:
-	mkdir winexe-winexe-waf || true
-	tar -xvf winexe-winexe-waf.tar.gz -C winexe-winexe-waf
-	cd winexe-winexe-waf/source/; ./waf configure
+	cd source/; ./waf configure
 	dh_auto_configure
 
 override_dh_auto_build:
-	cd winexe-winexe-waf/source; ./waf build
+	cd source; ./waf build -vv
 	dh_auto_build
 
 override_dh_clean:
-	#tar -xvf winexe-winexe-waf.tar.gz -C winexe-winexe-waf
-	#cd winexe-winexe-waf/source; ./waf clean
+	# cd source; ./waf clean
 	dh_clean
 
 %:

@@ -1,0 +1,1 @@
+builddep="gcc gcc-mingw-w64 pkg-config libtalloc-dev samba-dev libtevent-dev"

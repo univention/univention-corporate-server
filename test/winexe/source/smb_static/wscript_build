@@ -1,0 +1,52 @@
+#!/usr/bin/env python
+
+import os,sys
+from samba_utils import *
+
+# parse samba build scripts
+SAMBA_DIR = os.path.abspath(sys.argv[0] + '/../../..')
+
+# remove sasl dependency
+bld.env['HAVE_SASL'] = None
+
+bld.RECURSE(SAMBA_DIR)
+
+# remove unnecessary python dependency from ldbsamba
+try:
+    tg = bld.name_to_obj('ldbsamba', bld.env)
+    getattr(tg, 'samba_deps', None).remove('pyldb-util')
+except:
+    pass
+
+# parameters
+binname = 'smb_static'
+source=''
+deps='dcerpc POPT_SAMBA POPT_CREDENTIALS'
+obj_target=binname + '.objlist'
+
+# configure library as non-shared
+bld.env.NONSHARED_BINARIES.append(binname)
+
+SET_TARGET_TYPE(bld, binname, 'BINARY')
+
+# create target for object files
+bld.SAMBA_SUBSYSTEM(
+    obj_target,
+    source         = source,
+    deps           = deps,
+    group          = 'main',
+    )
+
+bld.SET_BUILD_GROUP('final')
+deps = TO_LIST(deps)
+deps.append(obj_target)
+
+# create static lib target
+bld(
+    features       = 'cc cstaticlib patch_bldpath',
+    source         = [],
+    target         = binname,
+    samba_deps     = deps,
+    samba_includes = '',
+    top            = True,
+    )

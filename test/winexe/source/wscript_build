@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+
+bld.install_files('${PREFIX}/share/man/man1', 'winexe.1')
+
+bld.program(target='winexesvc32.exe',
+    source='winexesvc_launch.c winexesvc_loop.c',
+    cflags="-Wall",
+    linkflags='-s',
+    lib='userenv',
+    env=bld.all_envs['win32'],
+    install_path=None)
+
+bld.program(target='winexesvc64.exe',
+    source='winexesvc_launch.c winexesvc_loop.c',
+    cflags="-Wall",
+    linkflags='-s',
+    lib='userenv',
+    env=bld.all_envs['win64'],
+    install_path=None)
+
+bld.program(target='bin2c',
+    source='bin2c.c',
+    cflags='',
+    install_path=None)
+
+bld(name="bin2c", rule='${SRC[0].abspath()} winexesvc32_exe ${SRC[1]} > ${TGT} 2>/dev/null',
+    target='winexesvc32_exe.c',
+    source='bin2c winexesvc32.exe')
+
+bld(name="bin2c", rule='${SRC[0].abspath()} winexesvc64_exe ${SRC[1]} > ${TGT} 2>/dev/null',
+    target='winexesvc64_exe.c',
+    source='bin2c winexesvc64.exe')
+
+if bld.env.ENABLE_SHARED:
+    bld.program(target='winexe',
+        source='winexe.c svcinstall.c async.c winexesvc32_exe.c winexesvc64_exe.c',
+        includes=bld.env.SAMBA_INCS,
+        cflags='-D_FORTIFY_SOURCE=2 -Wall',
+        linkflags=['-Wl,-z,relro', '-Wl,-z,now'],
+        libpath=bld.env.SAMBA_LIBS,
+        rpath=bld.env.SAMBA_LIBS,
+        lib=bld.env.LIBS,
+        use='TALLOC DCERPC',
+        )
+
+if bld.env.SAMBA_DIR:
+    bld.program(target='winexe-static',
+        source='winexe.c svcinstall.c async.c winexesvc32_exe.c winexesvc64_exe.c',
+        includes=bld.env.SAMBA_DIR + '/bin/default/include/public',
+        cflags='-pthread -include ' + bld.env.SAMBA_DIR + '/bin/default/include/config.h',
+        linkflags='-pthread',
+        stlibpath=bld.srcnode.abspath() + '/smb_static/build',
+        stlib='smb_static bsd z resolv rt',
+        lib='dl'
+        )

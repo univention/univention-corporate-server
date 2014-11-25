@@ -1,0 +1,11 @@
+--- winexe-1.1.0.orig/source/wscript	2014-11-12 18:03:22.129554000 +0100
++++ winexe-1.1.0/source/wscript	2014-11-12 18:07:54.085554000 +0100
+@@ -78,7 +78,7 @@ def configure(ctx):
+                 ''' % (h in 'smb_cli.h smb_cliraw.h smb_composite.h util/debug.h'.split(), h))
+ 
+             libs = []
+-            for l in 'cli-ldap dcerpc dcerpc-samba errors popt talloc ndr-standard samba-hostconfig samba-credentials smbclient-raw'.split():
++            for l in 'cli-ldap dcerpc dcerpc-samba errors popt talloc ndr-standard samba-hostconfig samba-credentials smbclient-raw samba-debug'.split():
+                 if ctx.check(lib=l, libpath=ctx.env.SAMBA_LIBS, mandatory=False):
+                     libs.append(l)
+                 else:

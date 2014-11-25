@@ -1,0 +1,110 @@
+#!/usr/bin/env python
+
+import os
+
+top = '.'
+out = 'build'
+AR32 = ['i386', 'i586', 'i686']
+AR64 = ['x86_64', 'amd64']
+TC = ['mingw32', 'mingw32msvc', 'w64-mingw32']
+
+def options(ctx):
+    ctx.load('compiler_c')
+    g = ctx.get_option_group('configure options')
+    g.add_option('--samba-dir', action='store', help='build winexe against the Samba source code tree at the given location instead of building it against Samba headers and shared libraries installed in standard locations', dest='SAMBA_DIR')
+    g.add_option('--enable-shared', action='store_true', default=False, help='build winexe against Samba headers and shared libraries installed in standard locations in addition to building winexe statically when the samba-dir option is given', dest='ENABLE_SHARED')
+    g.add_option('--samba-inc-dirs', action='store', help='build against Samba headers in the given location', dest='SAMBA_INCS')
+    g.add_option('--samba-lib-dirs', action='store', help='build against Samba shared libraries in the given location (which will be added to the rpath) in addition to shared libraries on the default path; default is /usr/lib/x86_64-linux-gnu/samba', dest='SAMBA_LIBS')
+
+def distclean(ctx):
+    try:
+        SAMBA_DIR = os.path.abspath(os.readlink('smb_static/.lock-wscript') + '/..')
+        os.system('cd smb_static && ' + SAMBA_DIR + '/buildtools/bin/waf distclean')
+    except:
+        pass
+    import waflib.Scripting
+    waflib.Scripting.distclean(ctx)
+
+def configure(ctx):
+    ctx.load('compiler_c')
+
+    if ctx.options.SAMBA_DIR:
+        ctx.env.SAMBA_DIR = os.path.abspath(ctx.options.SAMBA_DIR)
+        waf = ctx.env.SAMBA_DIR + '/buildtools/bin/waf'
+        ctx.find_program(waf)
+        if not os.path.exists('smb_static/build/libsmb_static.a'):
+            os.system('cd smb_static && %s configure --bundled-libraries=ALL && %s --targets=smb_static' % (waf, waf))
+        if ctx.options.ENABLE_SHARED:
+            ctx.env.ENABLE_SHARED = True
+        else:
+            ctx.env.ENABLE_SHARED = False
+    else:
+        ctx.env.ENABLE_SHARED = True
+
+    if ctx.env.ENABLE_SHARED:
+        ctx.check_cfg(package='dcerpc', uselib_store='DCERPC', args=['--cflags', '--libs'])
+        ctx.check_cfg(package='talloc', uselib_store='TALLOC', args=['--cflags', '--libs'])
+        if ctx.options.SAMBA_INCS:
+            ctx.env.SAMBA_INCS = ctx.options.SAMBA_INCS
+        else:
+            ctx.env.SAMBA_INCS = '/usr/include/samba-4.0'
+        ctx.msg('SAMBA_INCS set to', ctx.env.SAMBA_INCS)
+
+        if ctx.options.SAMBA_LIBS:
+            ctx.env.SAMBA_LIBS = ctx.options.SAMBA_LIBS
+        else:
+            import subprocess
+            for subdir in 'samba private'.split():
+                p = subprocess.Popen(['gcc', '-print-file-name=%s/libcli-ldap.so' % (subdir)], stdout=subprocess.PIPE).communicate()[0].rstrip()
+                if not os.path.exists(p):
+                    p = subprocess.Popen(['gcc', '-print-file-name=%s/libcli-ldap.so.0' % (subdir)], stdout=subprocess.PIPE).communicate()[0].rstrip()
+                if not os.path.exists(p):
+                    continue
+                ctx.env.SAMBA_LIBS = os.path.abspath(p + '/..')
+                break
+        ctx.msg('SAMBA_LIBS set to', ctx.env.SAMBA_LIBS)
+
+        try:
+            for h in 'samba_util.h core/error.h credentials.h dcerpc.h gen_ndr/ndr_svcctl_c.h popt.h smb_cli.h smb_cliraw.h smb_composite.h tevent.h util/debug.h'.split():
+                ctx.check(includes=ctx.env.SAMBA_INCS, msg='Checking for ' + h, fragment='''
+                #include <stdint.h>
+                #include <stdbool.h>
+                #if %d
+                #include <samba_util.h>
+                #include <core/error.h>
+                #endif
+                #include <%s>
+                int main() {return 0;}
+                ''' % (h in 'smb_cli.h smb_cliraw.h smb_composite.h util/debug.h'.split(), h))
+
+            libs = []
+            for l in 'cli-ldap dcerpc dcerpc-samba errors popt talloc ndr-standard samba-hostconfig samba-credentials smbclient-raw'.split():
+                if ctx.check(lib=l, libpath=ctx.env.SAMBA_LIBS, mandatory=False):
+                    libs.append(l)
+                else:
+                    ctx.check(lib=':lib'+l+'.so.0', libpath=ctx.env.SAMBA_LIBS)
+                    libs.append(':lib'+l+'.so.0')
+            ctx.env.LIBS = ' '.join(libs)
+        except:
+            ctx.msg('Build of shared winexe', 'disabled', 'YELLOW')
+            ctx.env.ENABLE_SHARED = False
+
+    if ctx.env.SAMBA_DIR:
+        try:
+            for l in 'smb_static popt com_err bsd z resolv rt dl'.split():
+               ctx.check(lib=l, libpath=ctx.srcnode.abspath() + '/smb_static/build')
+        except:
+            ctx.msg('Build of static winexe', 'disabled', 'YELLOW')
+            ctx.env.SAMBA_DIR = None
+
+    if not ctx.env.ENABLE_SHARED and not ctx.env.SAMBA_DIR:
+        ctx.fatal('Cannot continue! Please either install Samba shared libraries and re-run waf, or download the Samba source code and re-run waf with the "--samba-dir" option.')
+
+    ctx.setenv('win32', ctx.env)
+    ctx.find_program([ a + '-' + t + '-gcc' for a in AR32 for t in TC], var='CC_WIN32')
+    ctx.env.update({"CC": ctx.env.CC_WIN32, "LINK_CC": ctx.env.CC_WIN32})
+
+    ctx.setenv('win64', ctx.env)
+    ctx.find_program([ a + '-' + t + '-gcc' for a in AR64 for t in TC], var='CC_WIN64')
+    ctx.env.update({"CC": ctx.env.CC_WIN64, "LINK_CC": ctx.env.CC_WIN64})
+

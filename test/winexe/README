@@ -1,0 +1,174 @@
+                      winexe README
+                      =============
+
+Last updated 24 October 2013.
+
+
+Building
+========
+
+Winexe makes use of Samba version 4.
+
+Winexe can be built such that it is statically linked to Samba
+libraries, resulting in an executable that is several megabytes in
+size. The winexe binary is still dynamically linked to a number of
+shared libraries such as libc.  
+
+On some distributions winexe can be built such that it is linked to
+Samba shared libraries, resulting in an executable less than 100
+kilobytes in size.
+
+
+Instructions for Samba static library build
+-------------------------------------------
+
+On Debian install dependencies.
+
+    apt-get install \
+        gcc-mingw-w64 \
+        comerr-dev \
+        libpopt-dev \
+        libbsd-dev \            
+        zlib1g-dev \
+        libc6-dev \
+        python-dev
+
+On RedHat-like distros including those in the following list, install
+dependencies.
+
+    * Fedora 18
+    * CentOS 6 with added EPEL repo and lfarkas's repo
+      (http://www.lfarkas.org/linux/packages/centos/6/mingw-w64/)
+
+    yum install \
+        gcc \
+        perl \
+        mingw-binutils-generic \
+        mingw-filesystem-base \
+        mingw32-binutils \
+        mingw32-cpp \
+        mingw32-crt \
+        mingw32-filesystem \
+        mingw32-gcc \
+        mingw32-headers \
+        mingw64-binutils \
+        mingw64-cpp \
+        mingw64-crt \
+        mingw64-filesystem \
+        mingw64-gcc \
+        mingw64-headers \
+        libcom_err-devel \
+        popt-devel \
+        zlib-devel \
+        zlib-static \
+        glibc-devel \
+        glibc-static \
+        python-devel
+
+Important: make sure that libbsd-devel is *not* installed.
+
+    yum remove \
+        libbsd-devel
+
+Obtain the Samba source code.
+
+    git clone git://git.samba.org/samba.git samba
+
+Build. The argument of the "samba-dir" option is the path to the samba
+source tree that was just obtained. The "configure" step takes a long
+time because it builds Samba.
+
+    cd source
+    ./waf --samba-dir=../samba configure build
+
+Run.
+
+    build/winexe-static --help
+
+The build system tries to find paths to headers and libraries, but you
+can also specify these as follows.
+
+    ./waf configure --samba-dir=../samba --samba-inc-dirs=... --samba-lib-dirs=...
+
+
+Instructions for Samba shared library build
+-------------------------------------------
+
+The following instructions are for Debian Wheezy with Samba packages
+from unstable (Jessie pre-release), at the time of writing the only
+distribution that has packaged Samba 4 with shared libraries.  Even
+Jessie does not provide all the shared libraries needed by winexe
+as public libraries, but this can be worked around as explained below.
+
+On Debian install dependencies.
+
+    apt-get install \
+        python2.7 \
+        gcc-mingw-w64 \
+        libtevent-dev
+
+From Debian Jessie install dependencies.
+
+    apt-get -t unstable install samba-dev
+
+Build.
+
+    cd source
+    ./waf configure build
+
+Run.
+
+    build/winexe --help
+
+To build the shared-library version while building the static-library
+version, use the "--enable-shared" option.
+
+    ./waf configure --samba-dir=../samba --enable-shared
+
+
+Issues
+======
+1. Winexe blocked by Windows "simple file sharing" mode
+
+Some versions of Windows operate in so-called "simple file sharing" mode.
+In this mode, when an attempt is made to access the system over the
+network using credentials that are local to that server or client,
+Windows will only provide guest level access.
+
+To fix, you have to set the "Network Access: Sharing and security model
+for local accounts" to "Classic – local users authenticate as themselves".
+Access it via Start > Run > secpol.msc > Local Policies > Security Options,
+and change "Network Access: Sharing and security model for local accounts"
+to "Classic - local users authenticate as themselves".
+
+Ref: http://itbin.blogspot.com/2010/10/psexec-logon-failure-and-access-denied.html
+
+
+2. Winexe blocked by Windows Remote User Account Control
+
+The LocalAccountTokenFilterPolicy setting affects how administrator
+credentials are applied to remotely administer the computer.
+
+To use winexe with a Windows Vista or Windows 7 machine it is
+necessary to configure a registry setting as follows.
+
+Click on the Windows "Start" icon, enter "cmd" and then press
+CTRL-SHIFT-ENTER. In the console window that subsequently opens, enter
+the following command.
+
+  reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\system" /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
+
+Ref: http://support.microsoft.com/kb/942817
+
+
+Credits
+-------
+Written by Andrzej Hajda <andrzej.hajda@wp.pl>
+
+Contributions were made by:
+* Thomas Hood, RAAF Technology bv <thomas@raaftech.com>
+
+License
+-------
+Please see the COPYING file for the text of the GNU GPL version 3.
+

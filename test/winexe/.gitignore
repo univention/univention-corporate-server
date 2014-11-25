@@ -1,0 +1,4 @@
+.*
+packaging/*/
+source/build
+source/smb_static/build

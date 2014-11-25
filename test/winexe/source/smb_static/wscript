@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+
+import sys, os
+
+SCRIPT_DIR = os.path.abspath('.')
+SAMBA_DIR = os.path.abspath(sys.argv[0] + '/../../..')
+
+LOCK_FILE = '.lock-wscript'
+try:
+    os.unlink(LOCK_FILE)
+except:
+    pass
+os.symlink(SAMBA_DIR + '/' + LOCK_FILE, LOCK_FILE)
+
+os.chdir(SAMBA_DIR)
+execfile("wscript")
+Options.launch_dir = os.getcwd()
+Options.SCRIPT_DIR = SCRIPT_DIR
+Options.BUILD_DIR = Options.SCRIPT_DIR + '/build'
+
+def distclean(ctx):
+    try:
+        import shutil
+        shutil.rmtree(Options.BUILD_DIR, ignore_errors=True)
+        os.unlink(Options.SCRIPT_DIR + '/' + LOCK_FILE)
+    except:
+        pass
+    import Scripting
+    Scripting.distclean(ctx)
+
+from TaskGen import feature, after
+@feature('patch_bldpath')
+@after('apply_link')
+def patch_bldpath(self):
+    t = self.link_task.outputs[0]
+    try:
+        os.makedirs(Options.BUILD_DIR)
+    except:
+        pass
+    p = Options.BUILD_DIR + '/' + t.file()
+    t.bldpath = lambda e=None: p
+    t.abspath = lambda e=None: p
+    t.nice_path = lambda e=None: p

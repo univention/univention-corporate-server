@@ -1,0 +1,68 @@
+.TH WINEXE "1" "10 Dec 2012" "winexe" "winexe"
+.SH NAME
+winexe \- execute a remote Windows command
+.SH SYNOPSIS
+.B winexe
+[\fIOPTION\fR]... //\fIHOST\fR \fICOMMAND\fR
+.SH DESCRIPTION
+Execute \fICOMMAND\fR on remote Microsoft Windows \fIHOST\fR.
+.SH OPTIONS
+.TP
+\fB\-?\fR, \fB\-\-help
+Display help text.
+.TP
+\fB\-A\fR, \fB\-\-authentication\-file=\fR\fIFILE\fR
+Get credentials from \fIFILE\fR.
+.TP
+\fB\-d\fR, \fB\-\-debuglevel=\fR\fILOGLEVEL\fR
+Set the level of debug output to \fILOGLEVEL\fR.
+.TP
+\fB\-\-interactive=0\fR|\fB1\fR
+Allow (\fB1\fR) or disallow (\fB0\fR) interative mode.
+Note that Windows Vista does not support interactive mode.
+.TP
+\fB\-k\fR, \fB\-\-kerberos=\fR\fByes\fR|\fBno\fR
+Use Kerberos, \fByes\fR or \fBno\fR?
+.TP
+\fB\-N\fR, \fB\-\-no\-pass
+Do not prompt for a password.
+.TP
+\fB\-\-ostype=\fR\fB0\fR|\fB1\fR|\fB2\fR
+Install 32-bit (\fB0\fR); 64-bit (\fB1\fR); or automatically chosen (\fB2\fR) version of the winexe service.
+.TP
+\fB\-\-reinstall\fR
+Uninstall the winexe service from the remote machine and install it again before using it to execute the command.
+.TP
+\fB\-\-runas=\fR[\fIDOMAIN\fR/]\fIUSERNAME\fR[%\fIPASSWORD\fR]
+Run the desired command under Windows account \fIUSERNAME\fR
+with optional \fIDOMAIN\fR and \fIPASSWORD\fR.
+Beware: this password is sent over the network in cleartext!
+.TP
+\fB\-\-runas\-file=\fR\fIFILE\fR
+Run the desired command under the account defined in \fIFILE\fR.
+.TP
+\fB\-\-system\fR
+Use the "\fBSYSTEM\fR" account. If \fB\-\-runas\fR is given then this option is ignored.
+.TP
+\fB\-U\fR, \fB\-\-user=\fR[\fIDOMAIN\fR]\fIUSERNAME\fR[\fB%\fR\fIPASSWORD\fR]
+Set the login \fIUSERNAME\fR
+and optionally also \fIDOMAIN\fR and \fIPASSWORD\fR.
+The login account is used to log into the Windows host
+and start the winexe service which,
+in turn,
+executes the desired command.
+Beware: the password it sent in cleartext!
+.TP
+\fB\-\-uninstall\fR
+Uninstall the winexe service from the remote machine after using it to execute the command.
+.SH AUTHOR
+Winexe was written by Andrzej Hajda <andrzej.hajda@wp.pl>.
+This manual page was Written by Thomas Hood <thomas@raaftech.nl>.
+.SH COPYRIGHT
+Copyright © 2012 Thomas Hood
+.br
+This manual page is part of the Winexe software package.
+This is free software; see the source for copying conditions.  There is
+NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+.SH "SEE ALSO"
+.BR ssh (5).
