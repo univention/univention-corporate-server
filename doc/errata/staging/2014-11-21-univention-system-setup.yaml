@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-system-setup
-fix: 8.1.65-4.792.201411251716
+fix: 8.1.65-5.793.201411251903
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -23,6 +23,8 @@ desc: |
   * Some german text field descriptions has been adapted.
   * The UCS setup wizard UMC module could not be loaded when the system
     had more than four physical network devices.
+  * It is now possible to prevent joining. The profile variable start/join was
+    not evaluated.
 bug:
  - 36665
  - 36936
@@ -36,3 +38,4 @@ bug:
  - 36440
  - 36723
  - 37001
+ - 36701
