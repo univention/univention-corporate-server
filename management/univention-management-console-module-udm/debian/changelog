@@ -1,3 +1,11 @@
+univention-management-console-module-udm (5.1.26-1) unstable; urgency=low
+
+  Bug #36732:
+  * ActiveDirectoryWarning will displayed once per object and
+  * session
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 25 Nov 2014 10:05:54 +0100
+
 univention-management-console-module-udm (5.1.25-1) unstable; urgency=medium
 
   * Bug #36549: cleanup svg graphics that caused problems in IE

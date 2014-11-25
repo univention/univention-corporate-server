@@ -67,6 +67,7 @@ define([
 ], function(declare, lang, array, on, query, Deferred, all, style, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
 
 	var _StandbyPage = declare([Page, StandbyMixin], {});
+	var _nameMem = {}; // this name memory is used to avoid displaying ActiveDirectoryWarning twice per session 
 
 	return declare("umc.modules.udm.DetailPage", [ ContainerWidget, StandbyMixin ], {
 		// summary:
@@ -708,6 +709,10 @@ define([
 					}
 				}, this);
 				name = _('The %s "%s" is', this.objectNameSingular, value);
+				if(_nameMem[value]){ // check if the warning has already been displayed for this user
+					return;
+				}
+				_nameMem[value] = true;
 			}
 			this.addWarning(_('%s part of the Active Directory domain. UCS can only change certain attributes.', name));
 		},
