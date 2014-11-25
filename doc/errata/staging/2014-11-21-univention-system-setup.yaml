@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-system-setup
-fix: 8.1.65-2.790.201411251347
+fix: 8.1.65-3.791.201411251527
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -21,6 +21,8 @@ desc: |
   * The DNS error message when selecting a system role is now been prompted as
     an alert dialogue.
   * Some german text field descriptions has been adapted.
+  * The UCS setup wizard UMC module could not be loaded when the system
+    had more than four physical network devices.
 bug:
  - 36665
  - 36936
@@ -33,3 +35,4 @@ bug:
  - 36940
  - 36440
  - 36723
+ - 37001
