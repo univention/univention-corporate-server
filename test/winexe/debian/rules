@@ -41,6 +41,7 @@ get-orig-source:
 override_dh_auto_configure:
 	mkdir winexe-winexe-waf || true
 	tar -xvf winexe-winexe-waf.tar.gz -C winexe-winexe-waf
+	QUILT_PATCHES=debian/patches quilt push -a
 	cd winexe-winexe-waf/source/; ./waf configure
 	dh_auto_configure
 
@@ -49,8 +50,8 @@ override_dh_auto_build:
 	dh_auto_build
 
 override_dh_clean:
-	#tar -xvf winexe-winexe-waf.tar.gz -C winexe-winexe-waf
-	#cd winexe-winexe-waf/source; ./waf clean
+	QUILT_PATCHES=debian/patches quilt pop -a
+	rm -rf winexe-winexe-waf
 	dh_clean
 
 %:
