@@ -20,7 +20,7 @@ desc: |
     correctly determine an UCS domain.
   * The DNS error message when selecting a system role is now been prompted as
     an alert dialogue.
-  * SSome german text field descriptions has been adapted.
+  * Some german text field descriptions has been adapted.
 bug:
  - 36665
  - 36936
