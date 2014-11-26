@@ -5,6 +5,7 @@ src: univention-management-console
 fix: 7.1.63-2.837.201411201850
 version: [0]
 desc: |
-  * fix an error regarding the error handling of closed UMC module process sockets
-  * fix error when the UMC server and the UMC module want to close the module process at the same time
+  * fix an error regarding the error handling of closed UMC module process
+  sockets * fix error when the UMC server and the UMC module want to close the
+  module process at the same time
 bug: [37036, 35231]
