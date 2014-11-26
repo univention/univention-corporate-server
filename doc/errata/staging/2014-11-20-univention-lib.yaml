@@ -6,6 +6,6 @@ fix: 3.0.26-69.287.201411201633
 version: [4]
 desc: |
   * Fix a bug introduced by errata 191 in the univention atjobs library which
-  could cause failures.  It prevented e.g. the removal of romm settings in the
+  could cause failures.  It prevented e.g. the removal of room settings in the
   UCS@school computerroom UMC module.
 bug: [36815]
