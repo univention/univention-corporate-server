@@ -1,6 +1,6 @@
 product: ucs
 release: "3.2"
-scope: ucs_3.2-4-errata3.2-4
+scope: ucs_3.2-0-errata3.2-4
 src: univention-virtual-machine-manager-daemon
 fix: 3.0.18-2.562.201411262140
 version: [0]
