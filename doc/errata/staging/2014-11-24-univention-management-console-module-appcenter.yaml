@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-management-console-module-appcenter
-fix: 4.1.20-1.303.201411241223
+fix: 4.1.19-3.304.201411261055
 version: [0]
 desc: |
   * The checkbox "Use unmaintained repositories" is now above the 
