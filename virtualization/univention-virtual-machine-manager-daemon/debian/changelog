@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.20-3) unstable; urgency=low
+
+  * Bug #36988: Fix noVNC temporary file location
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 18 Nov 2014 20:00:58 +0100
+
 univention-virtual-machine-manager-daemon (4.0.20-2) unstable; urgency=low
 
   * Bug #36905: Show https link in cloud instances; remove duplicate public ips
