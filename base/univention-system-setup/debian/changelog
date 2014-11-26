@@ -1,6 +1,13 @@
+univention-system-setup (8.1.65-11) unstable; urgency=medium
+
+  * Bug #36586: adjust gatway field to be optional
+  * Bug #36884: ignore network page height for positioning of wizard buttons
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 26 Nov 2014 18:16:48 +0100
+
 univention-system-setup (8.1.65-10) unstable; urgency=low
 
-  * Bug #3687: Fix basesystem deployment if no domainname is specified
+  * Bug #36873: Fix basesystem deployment if no domainname is specified
 
  -- Erik Damrose <damrose@univention.de>  Wed, 26 Nov 2014 16:04:48 +0100
 

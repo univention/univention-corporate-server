@@ -445,7 +445,6 @@ define([
 					type: TextBox,
 					name: 'gateway',
 					label: _('Gateway'),
-					required: true,
 					invalidMessage: _invalidIPAddressMessage,
 					validator: _validateIPAddress
 				}, {
@@ -797,6 +796,20 @@ define([
 			}
 		},
 
+		_adjustWizardHeight: function() {
+			var _setInterfaceVisibility = lang.hitch(this, function(visible) {
+				array.forEach(this._getNetworkDevices(), function(idev, i) {
+					this.getWidget('network', '_ip' + i).set('visible', visible);
+					this.getWidget('network', '_netmask' + i).set('visible', visible);
+				}, this);
+			});
+
+			// ignore number of network interfaces when determining the auto height
+			_setInterfaceVisibility(false);
+			this.inherited(arguments);
+			_setInterfaceVisibility(true);
+		},
+
 		evaluateBlacklist: function() {
 			var disable = [];
 			array.forEach(this.disabledFields, lang.hitch(this, function(field) {
@@ -1063,6 +1076,7 @@ define([
 			devices.sort();
 			// return only the first 4 physical interfaces because we only have 4 ip widgets
 			devices = devices.slice(0, 4);
+
 			return devices;
 		},
 
@@ -1864,10 +1878,7 @@ define([
 
 			// check dhcp config
 			if (pageName == 'network') {
-				var deferred = new Deferred();
-				deferred.resolve(nextPage);
-				var fallbackDevices = this._getLinkLocalDHCPAddresses();
-				if (fallbackDevices.length) {
+				var _linkLocalAddressesWarning = lang.hitch(this, function(fallbackDevices) {
 					var devicesStr = array.map(fallbackDevices, function(idev) {
 						return lang.replace('<li><b>{name}:</b> {ip}</li>', idev);
 					}).join('\n');
@@ -1878,18 +1889,33 @@ define([
 						msg = _('<p>With the current settings <b> no </b> internet access is available.</p><p>Because of this some functions like the App Center or software-updates will not be accessible</p>') + msg;
 						buttonLabel =  _('Continue without internet access');
 					}
-					deferred = dialog.confirm(msg, [{
+					return dialog.confirm(msg, [{
 						label: _('Cancel'),
 						name: pageName
 					}, {
 						label: buttonLabel,
 						'default': true,
 						name: nextPage
-					}], _('Warning')).then(lang.hitch(this, function(response) {
-						return response;
-					}));
-				}
-				deferred = deferred.then(lang.hitch(this, function(page) {
+					}], _('Warning'));
+				});
+
+				var _noGatewayWarning = lang.hitch(this, function(page) {
+					if (page == 'network') {
+						// the prior warning has been canceled
+						return page;
+					}
+
+					return dialog.confirm(_('No gateway has been specified and thus no access to the internet is possible. As UCS requires internet access for its functionality, certain services (e.g., software updates, installation of further software components) will not be able to operate as expected.'), [{
+						label: _('Adjust settings'),
+						name: 'network'
+					}, {
+						label: _('Continue without internet access'),
+						'default': true,
+						name: nextPage
+					}], _('Warning'));
+				});
+
+				var _applyNetworkSettings = lang.hitch(this, function(page) {
 					if (page == 'network') {
 						// cancelled prior warning
 						return page;
@@ -1898,8 +1924,26 @@ define([
 					return this.standbyDuring(this.umcpCommand('setup/net/apply', {values: values}).then(function() {
 						return page;
 					}));
-				}));
-				return deferred;
+				});
+
+				// dummy Deferred
+				var deferred = new Deferred();
+				deferred.resolve(nextPage);
+
+				// check fallback devices
+				var fallbackDevices = this._getLinkLocalDHCPAddresses();
+				if (fallbackDevices.length) {
+					deferred = _linkLocalAddressesWarning(fallbackDevices);
+				}
+
+				// check gateway
+				var gateway = this.getWidget('network', 'gateway').get('value');
+				if (!gateway) {
+					deferred = deferred.then(_noGatewayWarning);
+				}
+
+				// apply network settings
+				return deferred.then(_applyNetworkSettings);
 			}
 
 			if (pageName == 'role') {
@@ -1910,12 +1954,12 @@ define([
 
 				var _noUcsDomainWarning = lang.hitch(this, function() {
 					return dialog.confirm(_('No domain controller was found at the address of the name server. It is recommended to verify that the network settings are correct.'), [{
-						label: _('Ignore'),
-						name: 'role-nonmaster-ad'
-					}, {
 						label: _('Adjust settings'),
-						'default': true,
 						name: 'network'
+					}, {
+						label: _('Continue with incomplete settings'),
+						'default': true,
+						name: 'role-nonmaster-ad'
 					}], _('Warning')).then(lang.hitch(this, function(response) {
 						return this._forcePageTemporarily(response);
 					}));
