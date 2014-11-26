@@ -1,3 +1,9 @@
+univention-dvd (0.2.27-2) unstable; urgency=low
+
+  * Bug #37008: Use copy as fallback for hard-linking
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 26 Nov 2014 14:21:42 +0100
+
 univention-dvd (0.2.27-1) unstable; urgency=low
 
   * Bug #36793: added squidguard to maintained

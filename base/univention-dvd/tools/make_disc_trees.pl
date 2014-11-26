@@ -1370,14 +1370,17 @@ sub add_packages {
                     }                        
                 }
                 $realfile = real_file ("$source/$file");
+                my $dstfile = "$dir/$file";
+                $dstfile =~ s,/\./|//+,/,g;
+                $dstfile =~ s,/+\.\./+(?!\.\.)[^/]+/,/, while ($dstfile =~ /\/\.\.\//);
 
-                if (! -e "$dir/$file") {
+                if (! -e "$dstfile") {
                     # Count how big the file is, for checking if the
                     # disc is full. ONLY do this if the file is not
                     # already linked in - consider binary-all packages
                     # on a multi-arch disc
                     $total_blocks += get_file_blocks($realfile);
-                    $total_blocks += good_link ($realfile, "$dir/$file");
+                    $total_blocks += good_link ($realfile, "$dstfile");
                     msg_ap(0, "  Linked $dir/$file\n");
                     if ($firmware_package{$pkgname}) {
                         msg_ap(0, "Symlink fw package $pkgname into /firmware\n");

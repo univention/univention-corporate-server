@@ -39,6 +39,9 @@ dpkg-divert --rename --quiet \
 dpkg-divert --rename --quiet \
    --divert /usr/share/debian-cd/tools/make_image.ORIG \
    --add    /usr/share/debian-cd/tools/make_image
+dpkg-divert --rename --quiet \
+   --divert /usr/share/debian-cd/tools/link.pl.ORIG \
+   --add    /usr/share/debian-cd/tools/link.pl
 
 #DEBHELPER#
 
