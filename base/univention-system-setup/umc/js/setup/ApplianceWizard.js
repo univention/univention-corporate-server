@@ -1505,10 +1505,6 @@ define([
 		},
 
 		_updateErrorPage: function(details, critical) {
-			//var wantsJoin = this._wantsToJoin();
-			//var isAdMember = this._isAdMember();
-			//var isNonMaster = this._isRoleNonMaster();
-			//var isAdMemberMaster = this._isAdMemberMaster();
 			var isMaster = this._isRoleMaster();
 			var isBaseSystem = this._isRoleBaseSystem();
 
