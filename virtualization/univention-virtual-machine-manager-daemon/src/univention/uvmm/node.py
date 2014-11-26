@@ -771,9 +771,10 @@ class Node(PersistentCached):
 			self.write_novnc_tokens()
 
 	def write_novnc_tokens(self):
-		path = os.path.join(self.cache_dir, 'novnc.tokens', uri_encode(self.pd.uri))
+		token_dir = os.path.join(self.cache_dir, 'novnc.tokens')
+		path = os.path.join(token_dir, uri_encode(self.pd.uri))
 		logger.debug("Writing noVNC tokens to '%s'", path)
-		with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+		with tempfile.NamedTemporaryFile(delete=False, dir=token_dir) as tmp_file:
 			for uuid, domStat in self.domains.iteritems():
 				try:
 					gfx = domStat.pd.graphics[0]
