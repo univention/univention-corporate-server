@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-4-errata3.2-4
+src: univention-virtual-machine-manager-daemon
+fix: 3.0.18-2.562.201411262140
+version: [0]
+desc: |
+  This update addresses the following issues:
+  - temporary files for noVNC token files are now created on the same partition
+    to fix a problem with cross-device renaming.
+bug:
+ - 34725
