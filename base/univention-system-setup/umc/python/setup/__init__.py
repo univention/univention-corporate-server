@@ -35,7 +35,6 @@ import threading
 import traceback
 import time
 import re
-import csv
 import os
 import copy
 import subprocess
@@ -708,20 +707,24 @@ class Instance(Base, ProgressMixin):
 
 	@simple_response
 	def check_domain(self, role, nameserver):
+		result = {}
 		if role == 'ad':
-			info = lookup_adds_dc(nameserver)
-			dc = info['DC DNS Name']
-			has_ucs_master = util.is_ucs_domain(nameserver, info['Domain'])
+			try:
+				info = lookup_adds_dc(nameserver)
+				dc = info['DC DNS Name']
+				if dc:
+					result['dc_name'] = dc
+					result['domain'] = info['Domain']
+					result['ucs_master'] = util.is_ucs_domain(nameserver, info['Domain'])
+			except (failedADConnect, connectionFailed) as e:
+				MODULE.warn('ADDS DC lookup failed: %s' % e)
 		elif role == 'nonmaster':
-			# 'dc' is not really a DC, but in this case the FQDN of the nameserver
-			dc = util.get_fqdn(nameserver)
-			if dc is None:
-				raise Exception('No UCS master found at %s' % nameserver)
-			domain = '.'.join(dc.split('.')[1:])
-			has_ucs_master = util.is_ucs_domain(nameserver, domain)
-		else:
-			raise Exception('Not checking existing domain for role %s' % role)
-		return {'dc_name' : dc, 'ucs_master' : has_ucs_master}
+			fqdn = util.get_fqdn(nameserver)
+			if fqdn:
+				result['dc_name'] = fqdn
+				domain = '.'.join(fqdn.split('.')[1:])
+				result['ucs_master'] = util.is_ucs_domain(nameserver, domain)
+		return result
 
 	@simple_response
 	def check_credentials(self, role, dns, nameserver, address, username, password):

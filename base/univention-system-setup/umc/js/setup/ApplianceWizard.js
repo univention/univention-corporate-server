@@ -1894,7 +1894,7 @@ define([
 						// cancelled prior warning
 						return page;
 					}
-					values = this.getValues();
+					var values = this.getValues();
 					return this.standbyDuring(this.umcpCommand('setup/net/apply', {values: values}).then(function() {
 						return page;
 					}));
@@ -1903,30 +1903,48 @@ define([
 			}
 
 			if (pageName == 'role') {
-				return this._checkDomain().then(
-					lang.hitch(this, function(info) {
-						var dcName = info.dc_name;
-						this.getWidget('credentials-ad', 'ad/address').set('value', dcName);
-						this.getWidget('credentials-nonmaster', '_ucs_address').set('value', dcName);
-						if (info.ucs_master) {
-							// Domain apparently already has a UCS DC Master
-							this._domainHasMaster = true;
-							return this._forcePageTemporarily('role-nonmaster-ad');
-						} else {
-							this._domainHasMaster = false;
-							return this._forcePageTemporarily('credentials-ad');
-						}
-					}),
-					lang.hitch(this, function() {
-						if (this._isAdMember() || this._isRoleNonMaster()) {
+				if (this._isRoleMaster() || this._isRoleBaseSystem()) {
+					// no further checks regarding the domain need to done
+					return this._forcePageTemporarily(nextPage);
+				}
+
+				var _noUcsDomainWarning = lang.hitch(this, function() {
+					return dialog.confirm(_('No domain controller was found at the address of the name server. It is recommended to verify that the network settings are correct.'), [{
+						label: _('Ignore'),
+						name: 'role-nonmaster-ad'
+					}, {
+						label: _('Adjust settings'),
+						'default': true,
+						name: 'network'
+					}], _('Warning')).then(lang.hitch(this, function(response) {
+						return this._forcePageTemporarily(response);
+					}));
+				});
+
+				return this._checkDomain().then(lang.hitch(this, function(info) {
+					if (this._isAdMember()) {
+						this._domainHasMaster = info.ucs_master;
+						if (!info.dc_name) {
 							dialog.alert(_('No domain controller was found at the address of the name server. Please adjust your network settings.'));
 							return this._forcePageTemporarily('network');
-						} else {
-							// alright, _checkDomain was not supposed to do anything meaningful
-							return this._forcePageTemporarily(nextPage);
 						}
-					})
-				);
+						this.getWidget('credentials-ad', 'ad/address').set('value', info.dc_name);
+						if (info.ucs_master) {
+							// UCS DC master already has joined into the AD domain
+							// let the user choose a system role
+							return this._forcePageTemporarily('role-nonmaster-ad');
+						}
+						return this._forcePageTemporarily('credentials-ad');
+					}
+					else {
+						this.getWidget('credentials-nonmaster', '_ucs_autosearch_master').set('value', info.ucs_master);
+						if (info.ucs_master) {
+							this.getWidget('credentials-nonmaster', '_ucs_address').set('value', info.dc_name || '');
+							return this._forcePageTemporarily('role-nonmaster-ad');
+						}
+						return _noUcsDomainWarning();
+					}
+				}));
 			}
 
 			if (pageName == 'credentials-ad' || pageName == 'credentials-nonmaster') {
