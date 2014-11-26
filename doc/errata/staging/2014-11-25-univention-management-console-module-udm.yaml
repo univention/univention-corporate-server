@@ -5,5 +5,6 @@ src: univention-management-console-module-udm
 fix: 5.1.25-2.512.201411260953
 version: [0]
 desc: |
-  * A notification for AD objects will only be shown once per session
+  * A notification for AD objects (e.g. user/groups) will only be
+    shown once per session
 bug: [36732]
