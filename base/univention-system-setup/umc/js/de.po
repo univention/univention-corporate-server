@@ -260,7 +260,7 @@ msgstr ""
 "Directory-Domäne"
 
 #: umc/js/setup/ApplianceWizard.js:659
-msgid "Administrator account"
+msgid "Username of the Administrator"
 msgstr "Name des Administrator-Benutzerkontos"
 
 #: umc/js/setup/ApplianceWizard.js:665

@@ -1,3 +1,9 @@
+univention-system-setup (8.1.65-8) unstable; urgency=low
+
+  * Bug #36723: Adapted misleading text field descriptions (engl)
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 26 Nov 2014 14:43:05 +0100
+
 univention-system-setup (8.1.65-7) unstable; urgency=medium
 
   * fixup! Bug #36876: reset credentials if they are wrong, display error
