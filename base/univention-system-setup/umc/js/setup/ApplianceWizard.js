@@ -1942,7 +1942,9 @@ define([
 						msg = _('Connection failed. Please recheck the address');
 						nextPage = pageName;
 					}
-					dialog.alert(msg);
+					if (msg) {
+						dialog.alert(msg);
+					}
 
 					if (nextPage == 'credentials-nonmaster') {
 						this.getWidget('credentials-nonmaster', '_ucs_password').reset();

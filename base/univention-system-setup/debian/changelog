@@ -1,3 +1,10 @@
+univention-system-setup (8.1.65-7) unstable; urgency=medium
+
+  * fixup! Bug #36876: reset credentials if they are wrong, display error
+  	message as popup
+
+ -- Florian Best <best@univention.de>  Wed, 26 Nov 2014 14:37:06 +0100
+
 univention-system-setup (8.1.65-6) unstable; urgency=medium
 
   * Bug #36939: Only system setup scripts belonging to the opened module are
