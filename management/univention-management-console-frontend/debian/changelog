@@ -1,4 +1,4 @@
-univention-management-console-frontend (4.1.104-1) unstable; urgency=low
+univention-management-console-frontend (4.1.103-2) unstable; urgency=low
 
   * Bug #36338: Adjusted styling if js disabled
 
