@@ -30,6 +30,10 @@ desc: |
     Network settings.
   * Reset credentials if they are wrong
   * Fix basesystem deployment if no domainname is specified
+  * The gateway input field is not required anymore. This allows to set up
+    systems without connection to the internet.
+  * The wizard now prevents scrollbars on every wizard page for systems with
+    many network interfaces.
 bug:
  - 36665
  - 36936
@@ -47,3 +51,5 @@ bug:
  - 36939
  - 36876
  - 36873
+ - 36586
+ - 36884
