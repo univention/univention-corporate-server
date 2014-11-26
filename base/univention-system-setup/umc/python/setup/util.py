@@ -141,8 +141,8 @@ def load_values():
 	return values
 
 def auto_complete_values_for_join(newValues, current_locale=None):
-	# try to automatically determine the domain
-	if newValues['server/role'] != 'domaincontroller_master' and not newValues.get('domainname'):
+	# try to automatically determine the domain, except on a dcmaster and basesystem
+	if newValues['server/role'] != 'domaincontroller_master' and not newValues.get('domainname') and newValues['server/role'] != 'basesystem':
 		ucr.load()
 		for nameserver in ('nameserver1', 'nameserver2', 'nameserver3'):
 			if newValues.get('domainname'):
@@ -150,6 +150,10 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 			newValues['domainname'] = get_ucs_domain(newValues.get(nameserver, ucr.get(nameserver)))
 		if not newValues['domainname']:
 			raise Exception(_('Cannot automatically determine the domain. Please specify the server\'s fully qualified domain name.'))
+
+	# The check "and 'domainname' in newValues" is solely for basesystems
+	if 'windows/domain' not in newValues and 'domainname' in newValues:
+		newValues['windows/domain'] = domain2windowdomain(newValues.get('domainname'))
 
 	# add lists with all packages that should be removed/installed on the system
 	if 'components' in newValues:
@@ -201,9 +205,6 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 		for ilocale in forcedLocales:
 			if ilocale not in newValues['locale']:
 				newValues['locale'] = '%s %s' % (newValues['locale'], ilocale)
-
-	if 'windows/domain' not in newValues:
-		newValues['windows/domain'] = domain2windowdomain(newValues.get('domainname'))
 
 	return newValues
 

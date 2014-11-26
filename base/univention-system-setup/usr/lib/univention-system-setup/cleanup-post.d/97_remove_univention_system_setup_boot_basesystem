@@ -29,15 +29,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# Package removal on basesystems is handled in cleanup-post
+# Package removal on basesystems
 role=$(ucr get server/role)
 if [ "${role}" = "basesystem" ]
 then
-	exit 0
+	# Remove univention-system-setup-boot after successful run
+	if [ -s /var/cache/univention-system-setup/profile ]
+	then
+		aptitude -q -y markauto univention-system-setup-boot- univention-management-console-web-server univention-management-console-module-setup </dev/null
+	fi
 fi
 
-# Remove univention-system-setup-boot after successful run
-if [ -s /var/cache/univention-system-setup/profile ]
-then
-	aptitude -q -y markauto univention-system-setup-boot- univention-management-console-web-server univention-management-console-module-setup </dev/null
-fi
