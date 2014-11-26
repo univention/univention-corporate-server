@@ -1,4 +1,4 @@
-univention-management-console-module-appcenter (4.1.20-1) unstable; urgency=low
+univention-management-console-module-appcenter (4.1.19-3) unstable; urgency=low
 
   * Bug #36457: Checkbox is now above button
 
