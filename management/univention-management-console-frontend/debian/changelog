@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.104-1) unstable; urgency=low
+
+  * Bug #36914. Adjusted index.html to show warning if IE <=8 is used
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 26 Nov 2014 18:45:46 +0100
+
 univention-management-console-frontend (4.1.103-2) unstable; urgency=low
 
   * Bug #36338: Adjusted styling if js disabled
