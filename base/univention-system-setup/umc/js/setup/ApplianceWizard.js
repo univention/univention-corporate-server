@@ -619,10 +619,6 @@ define([
 					name: 'ad/password',
 					label: _('Active Directory password'),
 					required: true
-				}, {
-					type: Text,
-					name: '_error',
-					content: ''
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'credentials-nonmaster',
@@ -664,10 +660,6 @@ define([
 					name: '_ucs_password',
 					label: _('Administrator password'),
 					required: true
-				}, {
-					type: Text,
-					name: '_error',
-					content: ''
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'warning-basesystem',
@@ -1950,7 +1942,14 @@ define([
 						msg = _('Connection failed. Please recheck the address');
 						nextPage = pageName;
 					}
-					this.getWidget(pageName, '_error').set('content', '<strong>' + msg + '</strong>');
+					dialog.alert(msg);
+
+					if (nextPage == 'credentials-nonmaster') {
+						this.getWidget('credentials-nonmaster', '_ucs_password').reset();
+					} else if (nextPage == 'credentials-ad') {
+						this.getWidget('credentials-ad', 'ad/password').reset();
+					}
+
 					return this._forcePageTemporarily(nextPage);
 				}));
 			}

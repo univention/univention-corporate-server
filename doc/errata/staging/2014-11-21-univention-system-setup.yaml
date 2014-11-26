@@ -28,6 +28,7 @@ desc: |
   * Only system setup scripts belonging to the opened module are now executed
     when changing settings via the modules for changing Certificate, Language and
     Network settings.
+  * Reset credentials if they are wrong
 bug:
  - 36665
  - 36936
@@ -43,3 +44,4 @@ bug:
  - 37001
  - 36701
  - 36939
+ - 36876

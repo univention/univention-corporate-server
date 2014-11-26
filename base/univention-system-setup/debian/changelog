@@ -3,6 +3,8 @@ univention-system-setup (8.1.65-6) unstable; urgency=medium
   * Bug #36939: Only system setup scripts belonging to the opened module are
    now executed when changing settings via the modules for changing Certificate,
    Language and Network settings.
+  * Bug #36876: reset credentials if they are wrong, display error message as
+  	popup
 
  -- Florian Best <best@univention.de>  Wed, 26 Nov 2014 11:26:52 +0100
 
