@@ -190,8 +190,14 @@ class Instance(Base, ProgressMixin):
 				MODULE.info('Restart servers: %s' % restart)
 
 				# on a joined system or on a basesystem, we can run the setup scripts
-				MODULE.info('runnning system setup scripts')
-				util.run_scripts( self._progressParser, restart )
+				MODULE.info('runnning system setup scripts (flavor %r)' % (request.flavor,))
+				subfolders = {
+					'network': ['30_net'],
+					'certificate': ['40_ssl'],
+					'languages': ['15_keyboard', '20_language', '35_timezone'],
+				}.get(request.flavor)
+
+				util.run_scripts(self._progressParser, restart, subfolders)
 
 				# done :)
 				self._finishedResult = True

@@ -411,14 +411,16 @@ class ProgressParser( object ):
 
 		return False
 
-def sorted_files_in_subdirs( directory ):
+def sorted_files_in_subdirs(directory, allowed_subdirs=None):
 	for entry in sorted(os.listdir(directory)):
+		if allowed_subdirs and entry not in allowed_subdirs:
+			continue
 		path = os.path.join(directory, entry)
 		if os.path.isdir(path):
 			for filename in sorted(os.listdir(path)):
 				yield os.path.join(path, filename)
 
-def run_scripts( progressParser, restartServer = False ):
+def run_scripts(progressParser, restartServer=False, allowed_subdirs=None):
 	# write header before executing scripts
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP SCRIPTS (%s) ===\n\n' % timestamp())
@@ -437,7 +439,7 @@ def run_scripts( progressParser, restartServer = False ):
 	# make sure that UMC servers and apache will not be restartet
 	subprocess.call( CMD_DISABLE_EXEC, stdout = f, stderr = f )
 
-	for scriptpath in sorted_files_in_subdirs( PATH_SETUP_SCRIPTS ):
+	for scriptpath in sorted_files_in_subdirs(PATH_SETUP_SCRIPTS, allowed_subdirs):
 			# launch script
 			MODULE.info('Running script %s\n' % scriptpath)
 			p = subprocess.Popen( scriptpath, stdout = f, stderr = subprocess.STDOUT )

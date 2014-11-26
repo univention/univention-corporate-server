@@ -25,6 +25,9 @@ desc: |
     had more than four physical network devices.
   * It is now possible to prevent joining. The profile variable start/join was
     not evaluated.
+  * Only system setup scripts belonging to the opened module are now executed
+    when changing settings via the modules for changing Certificate, Language and
+    Network settings.
 bug:
  - 36665
  - 36936
@@ -39,3 +42,4 @@ bug:
  - 36723
  - 37001
  - 36701
+ - 36939

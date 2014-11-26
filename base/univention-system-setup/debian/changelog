@@ -1,3 +1,11 @@
+univention-system-setup (8.1.65-6) unstable; urgency=medium
+
+  * Bug #36939: Only system setup scripts belonging to the opened module are
+   now executed when changing settings via the modules for changing Certificate,
+   Language and Network settings.
+
+ -- Florian Best <best@univention.de>  Wed, 26 Nov 2014 11:26:52 +0100
+
 univention-system-setup (8.1.65-5) unstable; urgency=medium
 
   * Bug #36701: fix evaluation of start/join and update/system/after/setup
