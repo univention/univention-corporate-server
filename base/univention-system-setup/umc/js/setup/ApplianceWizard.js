@@ -752,7 +752,7 @@ define([
 				name: 'done',
 				headerText: _('UCS has been set up successfully'),
 				helpTextRegion: 'main',
-				helpText: _('<p>UCS has been successfully set up with the specified settings.</p>') + _('<p>Click on the button <i>Finish</i> to complete the setup process.</p>'),
+				helpText: '_',
 				widgets: []
 			})];
 			array.forEach(this.pages, function(page) {
@@ -841,8 +841,6 @@ define([
 					disable.push(['locale', 'locale/default']);
 					disable.push(['locale', 'xorg/keyboard/options/XkbLayout']);
 					disable.push(['locale', 'timezone']);
-				} else if (field == 'reboot') {
-					this.getPage('done').set('helpText', _('<p>UCS has been successfully set up with the specified settings.</p>') + _('<p>After clicking on the button <i>Finish</i> the system will be prepared for the first boot procedure and will be rebooted.</p>'));
 				}
 			}));
 
@@ -1507,18 +1505,48 @@ define([
 		},
 
 		_updateErrorPage: function(details, critical) {
-			var helpText = '<p>' + _('The system configuration failed, the following errors occurred while applying the settings.') + '</p>';
-			var msg = '<ul>';
+			//var wantsJoin = this._wantsToJoin();
+			//var isAdMember = this._isAdMember();
+			//var isNonMaster = this._isRoleNonMaster();
+			//var isAdMemberMaster = this._isAdMemberMaster();
+			var isMaster = this._isRoleMaster();
+			var isBaseSystem = this._isRoleBaseSystem();
+
+			var helpText = '<p>' + _('The system configuration could not be completed. Please choose to retry the configuration process or finish the wizard.') + '</p>';
+			var msg = '<p>' + _('The following errors occurred while applying the settings.') + '</p>';
+			msg += '<ul>';
 			array.forEach(details, function(idetail) {
 				msg += '<li>' + idetail + '</li>';
 			});
 			msg += '</ul>';
 
-			msg += '<p>' + _('You may reconfigure the settings and restart the process or you continue and close the wizard. You may resolve the the problems by using the appropriate modules of the Univention Management Console.');
-			if (!critical) {
-				msg += ' ' + _('The system can be joined later via the UMC module <i>Domain join</i>.');
+			msg += '<p>' + _('You may restart the configuration process again with modified settings.') + '</p>';
+
+			// TODO: all these messages about joining are useless if (critical)? ... Maybe some hint about Univention support? Or sdb article how to deal with errors.
+			if (isMaster) {
+				msg += '<p>';
+				msg += _('Alternatively, you may click on the button <i>Finish</i> to exit the wizard and resolve the described problems via Univention Management Console.') + ' ';
+				msg += _('Failed join scripts can be executed via the UMC module <i>Domain join</i>.');
+				msg += '</p>';
+
+				msg += '<p>' + _('Connect to Univention Management Console on this system either as user <i>Administrator</i> or as user <i>root</i> in case the system has not yet created a new UCS domain:') + '</p>';
+				msg += this._getUMCLinks();
+			} else if (isBaseSystem) {
+				var fqdn = this._getFQDN();
+				var ips = this._getIPAdresses();
+				msg += '<p>';
+				msg += _('Alternatively, you may click on the button <i>Finish</i> to exit the wizard and resolve the described problems at a later point.') + ' ';
+				msg += _('The system is reachable at <i>%s</i> or via its IP address <i>%s</i>.', fqdn, ips.join(', '));
+				msg += '</p>';
+			} else { // if (isNonMaster || isAdMemberMaster || isAdMember) {
+				msg += '<p>';
+				msg += _('Alternatively, you may click on the button <i>Finish</i> to exit the wizard and resolve the described problems via Univention Management Console.') + ' ';
+				msg += _('Failed join scripts or a new join of the system can be executed via the UMC module <i>Domain join</i>.');
+				msg += '</p>';
+
+				msg += '<p>' + _('Connect to Univention Management Console on this system either as user <i>Administrator</i> or as user <i>root</i> in case the system has not yet joined the domain:') + '</p>';
+				msg += this._getUMCLinks();
 			}
-			msg += '</p>';
 
 			// display validation information
 			this.getPage('error').set('helpText', helpText);
@@ -1526,6 +1554,59 @@ define([
 
 			// save the state
 			this._criticalJoinErrorOccurred = critical;
+		},
+
+		_updateDonePage: function() {
+			var isBaseSystem = this._isRoleBaseSystem();
+
+			var fqdn = this._getFQDN();
+			var ips = this._getIPAdresses();
+
+			var msg = '';
+			msg += '<p>' + _('UCS has been successfully set up.') + '</p>';
+			if (!isBaseSystem) {
+				msg += '<p>' + _('It is now possible to login at Univention Management Console with the domain account <i>Administrator</i>:') + '</p>';
+				msg += this._getUMCLinks();
+				if (ips.length) {
+					msg += '<p>' + _('The system has been configured with the IP address %s.', ips.join(', ')) + '</p>';
+				}
+			} else {
+				if (ips.length) {
+					msg += '<p>' + _('The system is reachable at <i>%s</i> or via its IP address <i>%s</i>.', fqdn, ips.join(', ')) + '</p>';
+				} else {
+					msg += '<p>' + _('The system is reachable at <i>%s</i>.', fqdn) + '</p>';
+				}
+			}
+			if (array.indexOf(this.disabledFields, 'reboot') !== -1) {
+				msg += _('<p>After clicking on the button <i>Finish</i> the system will be prepared for the first boot procedure and will be rebooted.</p>');
+			} else {
+				msg += _('<p>Click now on the button <i>Finish</i> to complete the setup process.</p>');
+			}
+			this.getPage('done').set('helpText', msg);
+		},
+
+		_getUMCLinks: function() {
+			var fqdn = this._getFQDN();
+			var ips = this._getIPAdresses();
+			var msg = '<ul>';
+			if (fqdn) {
+				msg += lang.replace('<li>https://{0}/univention-management-console/</li>', [fqdn]);
+			}
+			array.forEach(ips, function(ip) {
+				msg += lang.replace('<li>https://{0}/univention-management-console/</li>', [ip]);
+			});
+			msg += '</ul>';
+			return msg;
+		},
+
+		_getFQDN: function() {
+			return this._gatherVisibleValues()._fqdn || this.getValues().hostname || '';
+		},
+
+		_getIPAdresses: function() {
+			return array.map(this._getNetworkDevices(), lang.hitch(this, function(idev, i) {
+				return this.getWidget('network', '_ip' + i).get('value');
+			}));
 		},
 
 		_validateWithServer: function() {
@@ -1715,7 +1796,7 @@ define([
 					// ... server cannot handle "undefined"
 					username: username || null,
 					password: password || null
-				}, false).then(lang.hitch(this, function() {
+				}).then(lang.hitch(this, function() {
 					// make sure the server process cannot die
 					this.umcpCommand('setup/ping', {keep_alive: true}, false);
 
@@ -2074,6 +2155,7 @@ define([
 			}
 			if (pageName == 'summary') {
 				return this.join().then(function(success) {
+					this._updateDonePage();
 					return success ? 'done' : 'error';
 				});
 			}

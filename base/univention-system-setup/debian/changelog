@@ -1,3 +1,9 @@
+univention-system-setup (8.1.65-13) unstable; urgency=medium
+
+  * Bug #36938: enhance error and success messages
+
+ -- Florian Best <best@univention.de>  Wed, 26 Nov 2014 20:53:37 +0100
+
 univention-system-setup (8.1.65-12) unstable; urgency=medium
 
   * Bug #36586: fixed fuzzy entries
