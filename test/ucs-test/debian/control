@@ -69,6 +69,17 @@ Provides: ucs-test-module
 Description: UCR tests
  This package includes some scripts to test the ucr.
 
+Package: ucs-test-univention-lib
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ python,
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: univention-lib tests
+ This package includes some scripts to test the python module univention.lib
+ and the univention shell library.
+
 #Package: ucs-test-login
 #Architecture: all
 #Recommends: ucs-test-framework

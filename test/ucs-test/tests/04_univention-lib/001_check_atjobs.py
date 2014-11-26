@@ -1,0 +1,73 @@
+#!/usr/share/ucs-test/runner python
+## desc: Basic check of univention.lib.atjobs
+## bugs: [36809]
+## tags: [basic]
+## packages:
+##   - python-univention-lib
+## exposure: dangerous
+
+import univention.testing.utils as utils
+import univention.testing.strings as strings
+import univention.lib.atjobs as atjobs
+from subprocess import Popen, PIPE
+import datetime
+
+def get_output(cmd):
+	p = Popen(cmd, stdout=PIPE, stderr=PIPE)
+	return '%s\n%s' % p.communicate()
+
+def print_job(job, msg=''):
+	print '%s%r\nNumber: %r\nCommand: %r\nComments: %r\nExecTime: %r\nOwner: %r' % (msg, job, job.nr, job.command, job.comments, job.execTime, job.owner)
+
+def main():
+	# save old job list
+	old_atq_output = get_output('atq')
+
+	job_number = None
+	job_command = 'echo %s' % (strings.random_name())
+	job_comments = {}
+	for i in xrange(10):
+		job_comments[strings.random_name()] = strings.random_string(length=30)
+
+	try:
+		job = atjobs.add(job_command, execTime=(datetime.datetime.now()+datetime.timedelta(days=3)), comments=job_comments)
+		job_number = job.nr
+		print_job(job, '\nCreated atjob ')
+
+		for testjob in atjobs.list(extended=True):
+			if testjob.nr == job.nr:
+				print_job(testjob, '\nFound job ')
+				if testjob.command.strip() != job_command:
+					utils.fail('Jobs differ: %r  <==>  %r' % (testjob.command, job_command))
+				if testjob.comments != job_comments:
+					utils.fail('Jobs differ: %r  <==>  %r' % (testjob.comments, job_comments))
+				if testjob.execTime != job.execTime:
+					utils.fail('Jobs differ: %r  <==>  %r' % (testjob.execTime, job.execTime))
+				if testjob.owner != job.owner:
+					utils.fail('Jobs differ: %r  <==>  %r' % (testjob.owner, job.owner))
+
+				testjob2 = atjobs.load(testjob.nr, extended=True)
+				print_job(testjob2, '\nExplicitely loaded job ')
+				if testjob2.command.strip() != job_command:
+					utils.fail('Jobs differ: %r  <==>  %r' % (testjob2.command, job_command))
+				if testjob2.comments != job_comments:
+					utils.fail('Jobs differ: %r  <==>  %r' % (testjob2.comments, job_comments))
+				if testjob2.execTime != job.execTime:
+					utils.fail('Jobs differ: %r  <==>  %r' % (testjob2.execTime, job.execTime))
+				if testjob2.owner != job.owner:
+					utils.fail('Jobs differ: %r  <==>  %r' % (testjob2.owner, job.owner))
+				break
+		else:
+			utils.fail('job %r not found in list' % (job.nr,))
+	finally:
+		atjobs.remove(job_number)
+
+		new_atq_output = get_output('atq')
+		if old_atq_output != new_atq_output:
+			print 'old_atq_output = %r' % (old_atq_output)
+			print 'new_atq_output = %r' % (new_atq_output)
+			utils.fail('old and new atq output differ! remove() may have failed')
+
+
+if __name__ == '__main__':
+	main()
