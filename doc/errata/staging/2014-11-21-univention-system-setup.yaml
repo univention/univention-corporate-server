@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-system-setup
-fix: 8.1.65-5.793.201411251903
+fix: 8.1.65-10.797.201411261607
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -29,6 +29,7 @@ desc: |
     when changing settings via the modules for changing Certificate, Language and
     Network settings.
   * Reset credentials if they are wrong
+  * Fix basesystem deployment if no domainname is specified
 bug:
  - 36665
  - 36936
@@ -45,3 +46,4 @@ bug:
  - 36701
  - 36939
  - 36876
+ - 36873
