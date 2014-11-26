@@ -94,6 +94,7 @@
 }
 
 
+
 .warning {
 	color: white;
 	margin: 0 auto 20px auto;
@@ -120,17 +121,23 @@
 		font-weight: bold;
 		margin-bottom: 1em;
 	}
+
 	.icon {
 		background-image: url(../images/info.svg);
 		background-repeat: no-repeat;
 		width: 110px;
-		height: 140px;
+		height: 130px;
 		margin-right: 15px;
 		float: left;
 	}
 }
 
-
+.warning.umc_ie {
+	min-height: 0px;
+	.icon {
+		background-image: url(../images/info.gif);
+	}
+}
 .warningWrapper {
 	position: absolute;
 	height: 100%;
