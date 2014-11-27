@@ -54,7 +54,7 @@ define([
 
 		_appendLinkToLabel: function(widget, url) {
 			label = widget.get('label');
-			widget.set('label', label + ' ' + lang.replace('<a href="{url}">{text}</a>', {
+			widget.set('label', label + ' ' + lang.replace('<a href="{url}" target="_blank">{text}</a>', {
 				'url': url,
 				'text': url
 			}));
