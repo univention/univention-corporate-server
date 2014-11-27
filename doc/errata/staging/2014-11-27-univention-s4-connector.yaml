@@ -6,5 +6,6 @@ fix: 8.0.33-86.533.201411271724
 version: [4]
 desc: |
   This update addresses the following issues:
-  * GPO Security Descriptors are now synchronized between OpenLDAP and Samba Directroy Service
+  * GPO Security Descriptors are now synchronized
+    between OpenLDAP and Samba Directroy Service
 bug: [33768]

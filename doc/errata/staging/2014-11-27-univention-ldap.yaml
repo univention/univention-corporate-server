@@ -6,5 +6,6 @@ fix: 10.0.17-42.728.201411241929
 version: [4]
 desc: |
   This update addresses the following issues:
-  * The objecclass msGPOContainer has been extended to support the new attribute msNTSecurityDescriptor
+  * The objecclass msGPOContainer has been extended
+    to support the new attribute msNTSecurityDescriptor
 bug: [36978]
