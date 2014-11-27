@@ -278,7 +278,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 			<title>Netzwerkinstallation von UCS</title>
 			<para>
 				Die Profil-basierte Netzwerkinstallation von UCS steht mit UCS 4.0-0 noch nicht zur
-				Verfügung. Die Unterstützung wird zu einem späteren Zeitpunk nachgeliefert. Der
+				Verfügung. Die Unterstützung wird zu einem späteren Zeitpunkt nachgeliefert. Der
 				Status kann in unserem Issue-Tracker nachvollzogen werden:
 				<ulink url="&ucsbug;35537">Bug 35537</ulink>.
 			</para>
