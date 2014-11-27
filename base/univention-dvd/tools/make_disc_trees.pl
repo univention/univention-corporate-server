@@ -929,6 +929,10 @@ sub add_Packages_entry {
         }
         $pdir = Packages_dir($dir, $file, $section) . "/binary-$arch";
         $pkgfile = "$pdir/Packages";
+
+        $file =~ s,/\./|//+,/,g;
+        $file =~ s,\.\./+(?!\.\.)[^/]+/,, while ($file =~ m,\.\./,);
+        s/^Filename: (\S+)/Filename: $file/im;
     }
 
     msg_ap(0, "  Adding $p to $pkgfile(.gz)\n");
