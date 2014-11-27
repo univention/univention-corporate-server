@@ -1,3 +1,10 @@
+univention-system-setup (8.1.65-15) unstable; urgency=medium
+
+  * Bug #36938: display fqdn instead of only the hostname in the links to
+  	UMC
+
+ -- Florian Best <best@univention.de>  Thu, 27 Nov 2014 11:32:24 +0100
+
 univention-system-setup (8.1.65-14) unstable; urgency=medium
 
   * Bug #36938: fix error in last commit

@@ -276,6 +276,8 @@ define([
 		disabledPages: null,
 		disabledFields: null,
 
+		_newFQDN: null, // temp variable for the guessed or actual FQDN; TODO: remove this
+
 		constructor: function(props) {
 			lang.mixin(this, props);
 			var pageConf = {
@@ -1425,12 +1427,16 @@ define([
 			_append(_('Fully qualified domain name'), _vals._fqdn);
 			if (_validateHostname(_vals.hostname) && guessedDomainName) {
 				// if the backend gave us a guess for the domain name, show it here
-				_append(_('Fully qualified domain name'), _vals.hostname + '.' + guessedDomainName);
+				var fqdn = _vals.hostname + '.' + guessedDomainName;
+				_append(_('Fully qualified domain name'), fqdn);
+				this._newFQDN = fqdn;
 			}
 			else {
 				// 'hostname' can be host name or FQDN... choose the correct label
-				var hostLabel = _validateFQDN(_vals.hostname) ? _('Fully qualified domain name') : _('Hostname');
+				var hostLabel = (_validateFQDN(_vals.hostname) ? _('Fully qualified domain name') : _('Hostname');
 				_append(hostLabel, _vals.hostname);
+				this._newFQDN = _vals.hostname;
+			}
 			}
 			_append(_('LDAP base'), vals['ldap/base']);
 
@@ -1596,7 +1602,7 @@ define([
 		},
 
 		_getFQDN: function() {
-			return this._gatherVisibleValues()._fqdn || this.getValues().hostname || '';
+			return this._newFQDN || this._gatherVisibleValues()._fqdn || this.getValues().hostname || '';
 		},
 
 		_getIPAdresses: function() {
@@ -1792,7 +1798,7 @@ define([
 					// ... server cannot handle "undefined"
 					username: username || null,
 					password: password || null
-				}).then(lang.hitch(this, function() {
+				}, false).then(lang.hitch(this, function() {
 					// make sure the server process cannot die
 					this.umcpCommand('setup/ping', {keep_alive: true}, false);
 
