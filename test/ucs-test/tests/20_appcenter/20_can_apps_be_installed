@@ -5,6 +5,8 @@
 ## exposure: safe
 ## packages:
 ##   - univention-management-console-module-appcenter
+## version:
+##  4.0-0: skip
 
 import sys
 import subprocess
