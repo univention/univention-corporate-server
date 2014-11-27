@@ -1,3 +1,9 @@
+univention-system-setup (8.1.65-16) unstable; urgency=medium
+
+  * Bug #36938: fix typo
+
+ -- Florian Best <best@univention.de>  Thu, 27 Nov 2014 12:28:55 +0100
+
 univention-system-setup (8.1.65-15) unstable; urgency=medium
 
   * Bug #36938: display fqdn instead of only the hostname in the links to

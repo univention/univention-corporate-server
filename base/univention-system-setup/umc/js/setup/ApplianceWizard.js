@@ -1433,10 +1433,9 @@ define([
 			}
 			else {
 				// 'hostname' can be host name or FQDN... choose the correct label
-				var hostLabel = (_validateFQDN(_vals.hostname) ? _('Fully qualified domain name') : _('Hostname');
+				var hostLabel = _validateFQDN(_vals.hostname) ? _('Fully qualified domain name') : _('Hostname');
 				_append(hostLabel, _vals.hostname);
 				this._newFQDN = _vals.hostname;
-			}
 			}
 			_append(_('LDAP base'), vals['ldap/base']);
 
