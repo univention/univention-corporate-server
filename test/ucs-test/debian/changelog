@@ -1,3 +1,9 @@
+ucs-test (4.0.186-1) unstable; urgency=medium
+
+  * Test for Bug #33768
+
+ -- Arvid Requate <requate@univention.de>  Thu, 27 Nov 2014 17:22:43 +0100
+
 ucs-test (4.0.185-1) unstable; urgency=low
 
   * bin/ucs-test: move the "--hold" argument to the main/general parser
