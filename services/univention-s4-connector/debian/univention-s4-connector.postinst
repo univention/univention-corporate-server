@@ -81,23 +81,35 @@ stop_udm_cli_server
 
 if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join/.joined ]; then
 	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.128-1  && is_ucr_true connector/s4/mapping/gpo; then
-		# Write the MS GPO settings from Samba 4 to UCS
+		## Write the MS GPO settings from Samba 4 to UCS
 		/etc/init.d/univention-s4-connector stop
+		# Sync the MS GPO Links from Samba 4 to UCS
 		/usr/share/univention-s4-connector/msgpo.py --write2ucs
-		# Added GPO objects to S4 rejected table, this will resync these objects
+		# Add existing GPO filter objects to S4 rejected table to resync these objects to UCS
 		/usr/share/univention-s4-connector/upgrade_groupPolicyContainer.py
 		/etc/init.d/univention-s4-connector start
-		restart=true
+		skip_final_restart=true
 	fi
 
 	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.3-1; then
 		/etc/init.d/univention-s4-connector stop
 		/usr/share/univention-s4-connector/write_password_settings.py --write2ucs
 		/etc/init.d/univention-s4-connector start
-		restart=true
+		skip_final_restart=true
 	fi
 
-	if [ "$restart" != "true" ]; then
+	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.16-5 && is_ucr_true connector/s4/mapping/gpo; then
+		## Write the GPO Security Descriptors from Samba 4 to UCS
+		if is_ucr_true 'connector/s4/allow/secondary'; then # Slave PDC
+			# First sync from UCS to S4 to avoid surprises for already upgraded Slave PDCs
+			/usr/share/univention-s4-connector/resync_object_from_ucs.py \
+				--filter "(&(objectClass=msGPOContainer)(msNTSecurityDescriptor=*))"
+		fi
+		/usr/share/univention-s4-connector/resync_object_from_s4.py \
+			--filter "(objectClass=groupPolicyContainer)"
+	fi
+
+	if [ "$skip_final_restart" != "true" ]; then
 		/etc/init.d/univention-s4-connector restart
 	fi
 fi
