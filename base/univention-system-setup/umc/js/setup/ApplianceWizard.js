@@ -1607,7 +1607,7 @@ define([
 		_getIPAdresses: function() {
 			return array.filter(array.map(this._getNetworkDevices(), lang.hitch(this, function(idev, i) {
 				return this.getWidget('network', '_ip' + i).get('value');
-			}), function(ip) { return ip; }));
+			})), function(ip) { return ip; });
 		},
 
 		_validateWithServer: function() {

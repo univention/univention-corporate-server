@@ -1,3 +1,9 @@
+univention-system-setup (8.1.65-20) unstable; urgency=medium
+
+  * Bug #36938: fix typo
+
+ -- Florian Best <best@univention.de>  Thu, 27 Nov 2014 17:27:24 +0100
+
 univention-system-setup (8.1.65-19) unstable; urgency=low
 
   * Bug #36723: Adapted misleading text field descriptions
