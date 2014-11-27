@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.105-1) unstable; urgency=low
+
+  * Bug #36914: version bump 
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 27 Nov 2014 14:37:36 +0100
+
 univention-management-console-frontend (4.1.104-1) unstable; urgency=low
 
   * Bug #36914. Adjusted index.html to show warning if IE <=8 is used
