@@ -8,4 +8,5 @@ desc: |
   This update addresses the following issues:
   * GPO Security Descriptors are now synchronized
     between OpenLDAP and Samba Directroy Service
-bug: [33768]
+  * Ignore cn=Subschema and warn but continue if listener didn't pass entryUUID
+bug: [33768,35973]
