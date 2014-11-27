@@ -28,7 +28,7 @@ desc: |
   * Only system setup scripts belonging to the opened module are now executed
     when changing settings via the modules for changing Certificate, Language and
     Network settings.
-  * Reset credentials if they are wrong
+  * Reset join credentials if they are incorrect
   * Fix basesystem deployment if no domainname is specified
   * The gateway input field is not required anymore. This allows to set up
     systems without connection to the internet.
