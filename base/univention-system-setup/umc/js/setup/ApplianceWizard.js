@@ -349,7 +349,7 @@ define([
 			}), lang.mixin({}, pageConf, {
 				name: 'network',
 				headerText: _('Domain and network configuration'),
-				helpText: _('Specify the network settings for this system.'),
+				helpText: _('Enter name and password of a user account which is authorised to join a system into this domain.'),
 				layout: [
 					'_dhcp',
 					['_ip0', '_netmask0'],
@@ -647,19 +647,19 @@ define([
 				}, {
 					type: TextBox,
 					name: '_ucs_address',
-					label: _('Hostname of Domain controller master'),
+					label: _('Hostname of the domain controller master'),
 					required: true,
 					disabled: true
 				}, {
 					type: TextBox,
 					name: '_ucs_user',
-					label: _('Username of the Administrator'),
+					label: _('Username'),
 					value: 'Administrator',
 					required: true
 				}, {
 					type: PasswordBox,
 					name: '_ucs_password',
-					label: _('Administrator password'),
+					label: _('Password'),
 					required: true
 				}]
 			}), lang.mixin({}, pageConf, {

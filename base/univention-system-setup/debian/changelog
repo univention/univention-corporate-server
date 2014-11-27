@@ -1,3 +1,9 @@
+univention-system-setup (8.1.65-19) unstable; urgency=low
+
+  * Bug #36723: Adapted misleading text field descriptions
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 27 Nov 2014 15:03:04 +0100
+
 univention-system-setup (8.1.65-18) unstable; urgency=low
 
   * Bug #36971: show special message of the day on ssh/console login if
