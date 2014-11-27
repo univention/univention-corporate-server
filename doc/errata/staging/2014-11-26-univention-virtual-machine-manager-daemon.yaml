@@ -2,13 +2,15 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-virtual-machine-manager-daemon
-fix: 4.0.20-4.564.201411271235
+fix: 4.0.20-5.565.201411271655
 version: [0]
 desc: |
   This update addresses the following issues:
   - temporary files for noVNC token files are now created on the same partition
     to fix a problem with cross-device renaming.
   - Display a https link in instances page for the first public and private ip.
+  - Add tooltip for security group and key pair in instance wizard.
 bug:
  - 36988
  - 36905
+ - 36906
