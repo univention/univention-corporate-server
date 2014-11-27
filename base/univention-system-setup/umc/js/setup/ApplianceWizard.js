@@ -651,7 +651,7 @@ define([
 				}, {
 					type: TextBox,
 					name: '_ucs_user',
-					label: _('Administrator account'),
+					label: _('Username of the Administrator'),
 					value: 'Administrator',
 					required: true
 				}, {
@@ -2150,10 +2150,10 @@ define([
 				return _validationFunction();
 			}
 			if (pageName == 'summary') {
-				return this.join().then(function(success) {
+				return this.join().then(lang.hitch(this, function(success) {
 					this._updateDonePage();
 					return success ? 'done' : 'error';
-				});
+				}));
 			}
 			return this._forcePageTemporarily(nextPage);
 		},

@@ -1,3 +1,9 @@
+univention-system-setup (8.1.65-14) unstable; urgency=medium
+
+  * Bug #36938: fix error in last commit
+
+ -- Florian Best <best@univention.de>  Thu, 27 Nov 2014 09:59:38 +0100
+
 univention-system-setup (8.1.65-13) unstable; urgency=medium
 
   * Bug #36938: enhance error and success messages

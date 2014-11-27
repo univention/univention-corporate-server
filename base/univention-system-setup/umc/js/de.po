@@ -260,8 +260,8 @@ msgid "Adjust settings"
 msgstr "Einstellungen anpassen"
 
 #: umc/js/setup/ApplianceWizard.js:654
-msgid "Administrator account"
-msgstr "Administrator-Konto"
+msgid "Username of the Administrator"
+msgstr "Name des Administrator-Benutzerkontos"
 
 #: umc/js/setup/ApplianceWizard.js:660
 msgid "Administrator password"
