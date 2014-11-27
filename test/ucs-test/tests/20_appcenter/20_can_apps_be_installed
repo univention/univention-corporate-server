@@ -1,12 +1,10 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Checks if apps are installable (except for apps/packages conflicting with installed apps)
-## tags: [basic]
+## tags: [basic, SKIP]
 ## roles-not: [basesystem]
 ## exposure: safe
 ## packages:
 ##   - univention-management-console-module-appcenter
-## version:
-##  4.0-0: skip
 
 import sys
 import subprocess
