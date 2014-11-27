@@ -1,3 +1,10 @@
+univention-system-setup (8.1.65-21) unstable; urgency=low
+
+  * Bug #36968: show message after USS has been aborted/failed; show
+    similar message during text mode installation
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 27 Nov 2014 21:20:56 +0100
+
 univention-system-setup (8.1.65-20) unstable; urgency=medium
 
   * Bug #36938: fix typo

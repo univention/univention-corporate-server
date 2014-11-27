@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup 4.0\n"
-"Report-Msgid-Bugs-To: Univention GmbH <packages@univention.de>\n"
-"POT-Creation-Date: 2014-11-24 11:24+0100\n"
-"PO-Revision-Date: 2014-11-24 12:14+0100\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2014-11-27 21:13+0100\n"
+"PO-Revision-Date: 2014-11-27 21:19+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: German\n"
@@ -53,37 +53,43 @@ msgstr "Fertig."
 #. Type: note
 #. Description
 #: ../di-univention-system-setup.templates:7001
-msgid "Univention Corporate Server ready for configuration"
-msgstr "Univention Corporate Server Setup"
+msgid "Univention Corporate Server is ready for configuration"
+msgstr "Konfiguration von Univention Corporate Server"
 
 #. Type: note
 #. Description
 #: ../di-univention-system-setup.templates:7001
 msgid ""
 "Univention Corporate Server is now ready for configuration via web browser. "
-"Open a web browser on a different system and visit the URL\n"
-" https://${address}/\n"
-"or\n"
-" http://${address}/\n"
+"Open a web browser on a different system and visit one of the following URLs:"
+msgstr "Univention Corporate Server ist jetzt bereit für die Konfiguration über einen Webbrowser. Öffnen Sie in einem Browser eine der folgenden URLs:"
+
+#. Type: note
+#. Description
+#. Type: note
+#. Description
+#: ../di-univention-system-setup.templates:7001
+#: ../di-univention-system-setup.templates:8001
+msgid "${addresslist}"
+msgstr "${addresslist}"
+
+#. Type: note
+#. Description
+#: ../di-univention-system-setup.templates:7001
+msgid ""
 "When pressing \"Next\", the configuration of Univention Corporate Server is "
 "omitted and the system will be configured for appliance mode. After an "
 "automatic reboot, Univention System Setup is started automatically in "
 "graphics mode and allows a subsequent configuration. Alternatively the "
-"system may be configured via the web browser by visiting the URL\n"
-" https://${address}/\n"
-"or\n"
-" http://${address}/"
+"system may be configured after reboot via the web browser by visiting one of "
+"the URLs above."
 msgstr ""
-"Univention Corporate Server ist jetzt bereit für die Konfiguration über einen Webbrowser. Öffnen Sie die folgende URL auf einem weiteren System in einem Webbrowser:\n"
-" https://${address}/\n"
-"oder\n"
-" http://${address}/\n"
-"\n"
-"Mit der Auswahl von \"Weiter\" wird die Konfiguration übersprungen, das System für den Appliance-Modus vorbereitet und automatischen neu gestartet. Beim anschließenden Bootvorgang startet das System automatisch die graphische Oberfläche von Univention System Setup, wo die Konfiguration des Systems abgeschlossen werden kann.\n"
+"Die Konfiguration von Univention Corporate Server wurde unterbrochen.\n"
+".\n"
+"Mit der Auswahl von \"Weiter\" wird das System für den Appliance-Modus vorbereitet und automatischen neu gestartet. Beim anschließenden Bootvorgang startet das System automatisch die graphische Oberfläche von Univention System Setup, wo die Konfiguration des Systems abgeschlossen werden kann.\n"
+".\n"
 "Alternativ kann das System nach dem Neustart auch über einen Webbrowser konfiguriert werden, indem eine der folgenden URLs aufgerufen wird:\n"
-" https://${address}/\n"
-"oder\n"
-" http://${address}/\n"
+"${addresslist}\n"
 
 #. Type: note
 #. Description
@@ -94,21 +100,20 @@ msgstr "Konfiguriere Univention Corporate Server..."
 #. Type: note
 #. Description
 #: ../di-univention-system-setup.templates:8001
+msgid "The configuration of Univention Corporate Server has been aborted."
+msgstr "Die Konfiguration von Univention Corporate Server wurde unterbrochen."
+
+#. Type: note
+#. Description
+#: ../di-univention-system-setup.templates:8001
 msgid ""
-"The configuration of Univention Corporate Server has been aborted.  When "
-"pressing \"Next\", Univention Corporate Server will be configured for "
+"When pressing \"Next\", Univention Corporate Server will be configured for "
 "appliance mode. After an automatic reboot, Univention System Setup is "
 "started automatically in graphics mode and allows a subsequent "
 "configuration. Alternatively the system may be configured via the web "
-"browser by visiting the URL\n"
-" https://${address}/\n"
-"or\n"
-" http://${address}/"
+"browser by visiting one of the following URLs:"
 msgstr ""
-"Die Konfiguration von Univention Corporate Server wurde unterbrochen.\n"
-"\n"
 "Mit der Auswahl von \"Weiter\" wird das System für den Appliance-Modus vorbereitet und automatischen neu gestartet. Beim anschließenden Bootvorgang startet das System automatisch die graphische Oberfläche von Univention System Setup, wo die Konfiguration des Systems abgeschlossen werden kann.\n"
+".\n"
 "Alternativ kann das System nach dem Neustart auch über einen Webbrowser konfiguriert werden, indem eine der folgenden URLs aufgerufen wird:\n"
-" https://${address}/\n"
-"oder\n"
-" http://${address}/\n"
+"${addresslist}\n"

@@ -56,31 +56,25 @@ if [ -n "$DISPLAY" ]; then
 	chroot /target /usr/share/univention-system-setup/startxwithfirefox --installer
 fi
 
-ussbootflag="$(in-target /usr/sbin/ucr get system/setup/boot/start)"
+ussbootflag="$(chroot /target /usr/sbin/ucr get system/setup/boot/start)"
 if [ "$ussbootflag" = "true" -o "$ussbootflag" = "yes" ] ; then
 	# activate special motd informing the user that USS has not been completed
 	in-target /usr/sbin/ucr set system/setup/showloginmessage=true
 
-	tmpfn="$(mktemp /target/tmp/di-univention-system-setup.XXXXXXXX)"
-	cat > "$tmpfn" <<EOF
-#!/bin/sh
-. /usr/share/univention-lib/all.sh
-get_default_ip_address
-EOF
-	chmod u+x "$tmpfn"
-	ipaddress="$($tmpfn)"
-	if echo "$ipaddress" | grep -q ":" ; then
-		ipaddress="[${ipaddress}]"
-	fi
-	rm -f "$tmpfn"
+	txt=""
+	ipaddresses="$(ip addr show scope global | sed -nre 's/^\s*inet ([^/]+).*$/\1/p') $(ip addr show scope global | sed -nre 's/^\s*inet6 ([^/]+).*$/[\1]/p')"
+	for ipaddress in $ipaddresses ; do
+		txt="$txt   https://$ipaddress/
+"
+	done
 	if [ -n "$DISPLAY" ] ; then
-		db_subst di-univention-system-setup/note/graphicmode address "$ipaddress"
+		db_subst di-univention-system-setup/note/graphicmode addresslist "$txt"
 		db_fset di-univention-system-setup/note/graphicmode seen false
-		db_input medium di-univention-system-setup/note/graphicmode || true
+		db_input high di-univention-system-setup/note/graphicmode || true
 	else
-		db_subst di-univention-system-setup/note/textmode address "$ipaddress"
+		db_subst di-univention-system-setup/note/textmode addresslist "$txt"
 		db_fset di-univention-system-setup/note/textmode seen false
-		db_input medium di-univention-system-setup/note/textmode || true
+		db_input high di-univention-system-setup/note/textmode || true
 	fi
 	db_go || true
 fi
