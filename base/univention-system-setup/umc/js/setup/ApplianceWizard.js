@@ -1537,7 +1537,7 @@ define([
 				var ips = this._getIPAdresses();
 				msg += '<p>';
 				msg += _('Alternatively, you may click on the button <i>Finish</i> to exit the wizard and resolve the described problems at a later point.') + ' ';
-				msg += _('The system is reachable at <i>%s</i> or via its IP address <i>%s</i>.', fqdn, ips.join(', '));
+				msg += _('The system is reachable at <i>%s</i> or via its IP address(es) <i>%s</i>.', fqdn, ips.join(', '));
 				msg += '</p>';
 			} else { // if (isNonMaster || isAdMemberMaster || isAdMember) {
 				msg += '<p>';
@@ -1569,11 +1569,11 @@ define([
 				msg += '<p>' + _('It is now possible to login at Univention Management Console with the domain account <i>Administrator</i>:') + '</p>';
 				msg += this._getUMCLinks();
 				if (ips.length) {
-					msg += '<p>' + _('The system has been configured with the IP address %s.', ips.join(', ')) + '</p>';
+					msg += '<p>' + _('The system has been configured with the IP address(es) %s.', ips.join(', ')) + '</p>';
 				}
 			} else {
 				if (ips.length) {
-					msg += '<p>' + _('The system is reachable at <i>%s</i> or via its IP address <i>%s</i>.', fqdn, ips.join(', ')) + '</p>';
+					msg += '<p>' + _('The system is reachable at <i>%s</i> or via its IP address(es) <i>%s</i>.', fqdn, ips.join(', ')) + '</p>';
 				} else {
 					msg += '<p>' + _('The system is reachable at <i>%s</i>.', fqdn) + '</p>';
 				}
@@ -1605,9 +1605,9 @@ define([
 		},
 
 		_getIPAdresses: function() {
-			return array.map(this._getNetworkDevices(), lang.hitch(this, function(idev, i) {
+			return array.filter(array.map(this._getNetworkDevices(), lang.hitch(this, function(idev, i) {
 				return this.getWidget('network', '_ip' + i).get('value');
-			}));
+			}), function(ip) { return ip; }));
 		},
 
 		_validateWithServer: function() {

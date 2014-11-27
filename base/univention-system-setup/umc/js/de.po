@@ -1296,13 +1296,13 @@ msgstr "Die Systemkonfiguration konnte nicht fertiggestellt werden. Bitte wähle
 
 #: umc/js/setup/ApplianceWizard.js:1571
 #, python-format
-msgid "The system has been configured with the IP address %s."
-msgstr "Das System wurde mit der IP-Adresse %s konfiguriert."
+msgid "The system has been configured with the IP address(es) %s."
+msgstr "Das System wurde mit den IP-Adresse(n) %s konfiguriert."
 
 #: umc/js/setup/ApplianceWizard.js:1539 umc/js/setup/ApplianceWizard.js:1575
 #, python-format
-msgid "The system is reachable at <i>%s</i> or via its IP address <i>%s</i>."
-msgstr "Das System ist unter <i>%s</i> oder seiner IP-Adresse <i>%s</i> erreichbar."
+msgid "The system is reachable at <i>%s</i> or via its IP address(es) <i>%s</i>."
+msgstr "Das System ist unter <i>%s</i> oder seinen IP-Adresse(n) <i>%s</i> erreichbar."
 
 #: umc/js/setup/ApplianceWizard.js:1577
 #, python-format
