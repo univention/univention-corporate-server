@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-s4-connector
+fix: 9.0.16-5.534.201411271810
+version: [0]
+desc: |
+  This update addresses the following issues:
+  * GPO Security Descriptors are now synchronized
+    between OpenLDAP and Samba Directroy Service
+bug: [36980]
