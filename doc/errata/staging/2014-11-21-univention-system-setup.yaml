@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-system-setup
-fix: 8.1.65-12.799.201411261840
+fix: 8.1.65-14.801.201411271007
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -34,6 +34,8 @@ desc: |
     systems without connection to the internet.
   * The wizard now prevents scrollbars on every wizard page for systems with
     many network interfaces.
+  * The wizard now shows information about how to reach the system and UMC after
+    the configuration process.
 bug:
  - 36665
  - 36936
@@ -53,3 +55,4 @@ bug:
  - 36873
  - 36586
  - 36884
+ - 36938
