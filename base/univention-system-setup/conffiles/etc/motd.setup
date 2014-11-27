@@ -1,4 +1,11 @@
+@!@
+import socket
+import fcntl
+import struct
+import urllib2
+from univention.config_registry.interfaces import Interfaces
 
+msg_amazon = '''
 ########################################################################
 
 Welcome to Univention Corporate Server (UCS)!
@@ -11,15 +18,53 @@ twice:
 
 This system is not completely configured yet. To finalise the configuration
 of this system you need to login to the web-based Univention Management
+Console which can be reached with a web browser via the following URL
+
+  %(url_list)s
+
+The login at the Univention Management Console needs to be done with
+the user "root" and the new password you entered in the above-mentioned
+password change.
+
+UMC uses numerous Javascript and CSS functions to display the web
+interface. Some of these features are unavailable in older browsers. The
+following web browsers are supported:
+ - Chrome as of version 33 or later
+ - Firefox as of version 24
+ - Internet Explorer as of version 9
+ - Safari and Safari Mobile as of version 7
+
+########################################################################
+
+'''
+
+msg_di_uss = '''
+########################################################################
+
+Welcome to Univention Corporate Server (UCS)!
+
+This system is not completely configured yet. To finalise the configuration
+of this system you need to login to the web-based Univention Management
 Console which can be reached with a web browser under the following URL
 
-@!@
-import os
-import socket
-import fcntl
-import struct
-import urllib2
-from univention.config_registry.interfaces import Interfaces
+  %(url_list)s
+
+The login at the Univention Management Console needs to be done with
+the user "root" and the password you entered during installation.
+
+UMC uses numerous Javascript and CSS functions to display the web
+interface. Some of these features are unavailable in older browsers. The
+following web browsers are supported:
+ - Chrome as of version 33 or later
+ - Firefox as of version 24
+ - Internet Explorer as of version 9
+ - Safari and Safari Mobile as of version 7
+
+########################################################################
+
+'''
+
+url_list = []
 
 def get_ip_address(ifname):
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -35,7 +80,7 @@ if configRegistry.is_true('server/amazon', False):
 	socket.setdefaulttimeout(2)
 	try:
 		res = urllib2.urlopen('http://169.254.169.254/latest/meta-data/public-hostname')
-		print '  https://%s' % res.read()
+		url_list.append('https://%s' % (res.read(),))
 	except urllib2.URLError:
 		pass
 
@@ -45,27 +90,21 @@ if not res:
 		#IPv4
 		if iface.type == 'dhcp':
 			addr = get_ip_address(ifname)
-			print '  https://%s/' % (addr,)
+			url_list.append('https://%s/' % (addr,))
 		else:
 			addr = iface.ipv4_address()
 			if addr:
-				print '  https://%s/' % (addr.ip,)
+				url_list.append('https://%s/' % (addr.ip,))
 		# IPv6
 		addr = iface.ipv6_address()
 		if addr:
-			print '  https://[%s]/' % (addr.ip,)
+			url_list.append('https://[%s]/' % (addr.ip,))
+
+msg = msg_di_uss
+if configRegistry.is_true('server/amazon', False):
+    msg = msg_amazon
+
+print msg % {
+    'url_list': '\n  '.join(url_list),
+}
 @!@
-The login at the Univention Management Console needs to be done with
-the user root and the new password you entered in the above-mentioned
-password change.
-  
-UMC uses numerous Javascript and CSS functions to display the web
-interface. Some of these features are unavailable in older browsers. The
-following web browsers are supported:
- - Chrome as of version 33 or later
- - Firefox as of version 24
- - Internet Explorer as of version 9
- - Safari and Safari Mobile as of version 7
-
-########################################################################
-

@@ -58,6 +58,9 @@ fi
 
 ussbootflag="$(in-target /usr/sbin/ucr get system/setup/boot/start)"
 if [ "$ussbootflag" = "true" -o "$ussbootflag" = "yes" ] ; then
+	# activate special motd informing the user that USS has not been completed
+	in-target /usr/sbin/ucr set system/setup/showloginmessage=true
+
 	tmpfn="$(mktemp /target/tmp/di-univention-system-setup.XXXXXXXX)"
 	cat > "$tmpfn" <<EOF
 #!/bin/sh

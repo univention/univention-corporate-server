@@ -1,3 +1,11 @@
+univention-system-setup (8.1.65-18) unstable; urgency=low
+
+  * Bug #36971: show special message of the day on ssh/console login if
+    system setup has been aborted or text mode installation has been
+    used.
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 24 Nov 2014 14:12:05 +0100
+
 univention-system-setup (8.1.65-17) unstable; urgency=medium
 
   *  Bug #36938: filter out empty IP addresses
