@@ -38,7 +38,7 @@ desc: |
     the configuration process.
   * If the UCS system has not been configured yet, a corresponding message is
     shown during login at console/via ssh asking the user to use the UMC to
-	complete configuration.
+    complete configuration.
 bug:
  - 36665
  - 36936
