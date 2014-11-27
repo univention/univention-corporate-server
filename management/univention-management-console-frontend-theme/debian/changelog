@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.88-1) unstable; urgency=low
+
+  * Bug #36914: version bump
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 27 Nov 2014 14:35:37 +0100
+
 univention-management-console-frontend-theme (0.0.87-1) unstable; urgency=low
 
   * Bug #36914: Added info.gif for IE <= 8 warning and adjusted styling slightly
