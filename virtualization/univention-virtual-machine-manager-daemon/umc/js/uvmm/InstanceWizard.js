@@ -33,7 +33,9 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/_base/event",
+	"dojo/on",
 	"dojo/keys",
+	"dijit/Tooltip",
 	"umc/widgets/TextBox",
 	"umc/widgets/Text",
 	"umc/widgets/ComboBox",
@@ -41,7 +43,18 @@ define([
 	"umc/widgets/Wizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, event, keys, TextBox, Text, ComboBox, HiddenInput, Wizard, types, _) {
+], function(declare, lang, array, dojoEvent, on, keys, Tooltip, TextBox, Text, ComboBox, HiddenInput, Wizard, types, _) {
+	
+	var _showTooltip = function(node, msg, evt) {
+		Tooltip.show(msg, node);
+		if (evt) {
+			dojoEvent.stop(evt);
+		}
+		on.once(dojo.body(), 'click', function(evt) {
+			Tooltip.hide(node);
+			dojoEvent.stop(evt);
+		});
+	};
 
 	return declare("umc.modules.uvmm.InstanceWizard", [ Wizard ], {
 		autoValidate: true,
@@ -73,6 +86,29 @@ define([
 			}
 		},
 
+		_setupJavaScriptLinks: function() {
+			array.forEach([
+					['details', 'keyname'],
+					['details', 'security_group_ids']
+				], function(iitem) {
+				var iwidget = this.getWidget(iitem[0], iitem[1]);
+				iwidget.set('label', lang.replace(iwidget.label, this));
+			}, this);
+		},
+
+		showTooltip: function(evt, type) {
+			var msg = '';
+			if (type == 'keyname') {
+				msg = _('A key pair consists of a public and private key to log in using SSH. The configuration of all keys takes place directly via the administration page of the cloud.');
+			}
+			else if (type == 'security_group_ids') {
+				msg = _('A security group acts as a virtual firewall that controls the traffic of the instance. To access a website in a secure way (for example via the edit page of the instance), a group rule should be used which allow incoming HTTPS traffic. The configuration of all security groups takes place directly via the administration page of the cloud.');
+			}
+			if (msg) {
+				_showTooltip(evt.target, msg, evt);
+			}
+		},
+
 		getPages: function() {
 			var content = this._getWidgets();
 			var helpText = this._getHelpText();
@@ -88,6 +124,7 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			this._setupJavaScriptLinks();
 			// store umcp response of "size_id" for updating "size_info_text"
 			var widget = this.getWidget('details', 'size_id');
 			widget.on('dynamicValuesLoaded', lang.hitch(this, function(value) {
@@ -147,7 +184,10 @@ define([
 					}, {
 						name: 'keyname',
 						type: ComboBox,
-						label: _('Select a key pair'),
+						label: _('Select a key pair') +
+						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showTooltip(event, \'keyname\');">' +
+						_('more information') +
+						'</a>)',
 						dynamicOptions: {conn_name: this.cloud.name},
 						dynamicValues: types.getCloudListKeypair,
 						required: true
@@ -181,7 +221,10 @@ define([
 					}, {
 						name: 'security_group_ids',
 						type: ComboBox,
-						label: _('Configure Security Group'),
+						label: _('Configure Security Group') +
+						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showTooltip(event, \'security_group_ids\');">' +
+						_('more information') +
+						'</a>)',
 						dynamicOptions: {conn_name: this.cloud.name},
 						dynamicValues: types.getCloudListSecgroup,
 						required: true
@@ -215,7 +258,10 @@ define([
 					}, {
 						name: 'keyname',
 						type: ComboBox,
-						label: _('Select a key pair'),
+						label: _('Select a key pair') +
+						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showTooltip(event, \'keyname\');">' +
+						_('more information') +
+						'</a>)',
 						dynamicOptions: {conn_name: this.cloud.name},
 						dynamicValues: types.getCloudListKeypair,
 						required: true
@@ -250,7 +296,10 @@ define([
 					}, {
 						name: 'security_group_ids',
 						type: ComboBox,
-						label: _('Configure Security Group'),
+						label: _('Configure Security Group') +
+						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showTooltip(event, \'security_group_ids\');">' +
+						_('more information') +
+						'</a>)',
 						dynamicOptions: {conn_name: this.cloud.name},
 						dynamicValues: types.getCloudListSecgroup,
 						required: true
