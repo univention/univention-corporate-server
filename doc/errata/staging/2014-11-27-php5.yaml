@@ -1,0 +1,37 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-4
+src: php5
+fix: 5.3.3-7.207.201411271302
+version: [4]
+desc: |
+ Multiple issues have been fixed in php5:
+ * Denial of service in the file classier (CVE-2014-1943)
+ * Denial of service in libmagic (CVE-2014-2270)
+ * Two additional denial of service bugs in the fileinfo classifier for CDF (CVE-2014-0237, CVE-2014-0238, CVE-2014-3480, CVE-2014-0207)
+ * Memory disclosure information leak in phpinfo() (CVE-2014-4721)
+ * Buffer overflow in the function to parse DNS TXT records (CVE-2014-4049, CVE-2014-3597)
+ * Buffer overflow in the CDF parsing in the filemagic module (CVE-2014-3587)
+ * Heap corruption issue in processing exif thumbnails (CVE-2014-3670)
+ * Integer overflow in unserialize() (CVE-2014-3669)
+ * Out of bounds read in mkgmtime() (CVE-2014-3668)
+ * Buffer overflow in the xmlrpc date_from_ISO8601() function (CVE-2014-8626)
+ * Out of bounds reads when parsing ELF section headers in the file extension (CVE-2014-3710)
+cve:
+ - CVE-2014-1943
+ - CVE-2014-2270
+ - CVE-2014-0237
+ - CVE-2014-0238
+ - CVE-2014-3480
+ - CVE-2014-0207
+ - CVE-2014-4721
+ - CVE-2014-4049
+ - CVE-2014-3597
+ - CVE-2014-3587
+ - CVE-2014-3670
+ - CVE-2014-3669
+ - CVE-2014-3668
+ - CVE-2014-8626
+ - CVE-2014-3710
+bug:
+ - 34256
