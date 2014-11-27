@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-86) unstable; urgency=medium
+
+  * Bug #33768: Fix script name in postinst
+
+ -- Arvid Requate <requate@univention.de>  Thu, 27 Nov 2014 17:23:44 +0100
+
 univention-s4-connector (8.0.33-85) unstable; urgency=medium
 
   * Bug #33768: On updates trigger synchronization of GPO NTSDs
