@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-system-setup
-fix: 8.1.65-22.809.201411281025
+fix: 8.1.65-23.810.201411281143
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -14,7 +14,7 @@ desc: |
   * The DHCP query of "Network settings" is working now as it should.
   * Fix the configuration of primary devices and bond-miimon in bonding network
     devices.
-  * A timeout of 15 seconds has been added to the use of ntpdate to query the
+  * A timeout of 15 seconds has been added to the use of rdate to query the
     current time from a NTP time server, as this sometimes stalls endlessly.
   * The UCS domain check when selecting a system role has been adjusted to
     correctly determine an UCS domain.
