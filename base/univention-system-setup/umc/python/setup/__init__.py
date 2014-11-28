@@ -500,7 +500,7 @@ class Instance(Base, ProgressMixin):
 
 		return messages
 
-	@sanitize(pattern=PatternSanitizer(default='.*', required=True, add_asterisks=False))
+	@sanitize(pattern=PatternSanitizer(default='.*', required=True, add_asterisks=True))
 	@simple_response
 	def lang_locales(self, pattern, category='language_en'):
 		'''Return a list of all available locales.'''

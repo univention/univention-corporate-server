@@ -1,3 +1,9 @@
+univention-system-setup (8.1.65-32) unstable; urgency=medium
+
+  * Bug #29922: search for locales with wildcards
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 28 Nov 2014 17:55:05 +0100
+
 univention-system-setup (8.1.65-31) unstable; urgency=medium
 
   * Bug #36939: fix progressbar percentage
