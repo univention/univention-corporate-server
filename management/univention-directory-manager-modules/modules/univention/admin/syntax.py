@@ -1174,11 +1174,11 @@ class date(simple):
 
 	@classmethod
 	def parse(self, text):
-		if self._re_iso.match(text) != None:
+		if text and self._re_iso.match(text):
 			year, month, day = map(lambda(x): int(x), text.split('-'))
 			if 1960 < year < 2100 and 1 <= month <= 12 and 1 <= day <= 31:
-				return '%02d.%02d.%s' % ( day, month, str( year )[ 2 : ] )
-		if self._re_de.match(text) != None:
+				return '%02d.%02d.%02d' % (day, month, year % 100)
+		if text and self._re_de.match(text):
 			day, month, year = map(lambda(x): int(x), text.split('.'))
 			if 0 <= year <= 99 and 1 <= month <= 12 and 1 <= day <= 31:
 				return text

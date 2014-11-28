@@ -1,6 +1,7 @@
 univention-directory-manager-modules (10.0.29-2) unstable; urgency=medium
 
   * Bug #36330: fix setting of userexpiry when account is disabled
+  * Bug #25279: fix date syntax: check for None so that unsetting is possible
 
  -- Florian Best <best@univention.de>  Fri, 28 Nov 2014 16:10:09 +0100
 
