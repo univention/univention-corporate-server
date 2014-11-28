@@ -2,10 +2,12 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-management-console-frontend
-fix: 4.1.105-1.964.201411271447
+fix: 4.1.105-2.965.201411281758
 version: [0]
 desc: |
   * Adjusted the styling of the notification if javascript is disabled
   * Internet Explorer now shows a warning message if a version <= 8 is 
   beeing used.
-bug: [36338, 36914]
+  * A exception was logged in the javascript console when the grid was resized.
+    This was disturbing and has therefore be removed.
+bug: [36338, 36914, 36645]
