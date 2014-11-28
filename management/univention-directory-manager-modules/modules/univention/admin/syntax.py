@@ -1182,7 +1182,9 @@ class date(simple):
 			day, month, year = map(lambda(x): int(x), text.split('.'))
 			if 0 <= year <= 99 and 1 <= month <= 12 and 1 <= day <= 31:
 				return text
-		raise univention.admin.uexceptions.valueError,_("Not a valid Date")
+		if text is not None:
+			raise univention.admin.uexceptions.valueError,_("Not a valid Date")
+		return ''
 
 class reverseLookupSubnet(simple):
 	#               <-                      0-255                     ->  *dot  <-                      0-255                     ->

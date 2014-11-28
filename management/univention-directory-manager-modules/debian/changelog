@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-3) unstable; urgency=medium
+
+  * Bug #25279: allow empty strings in date syntax
+
+ -- Florian Best <best@univention.de>  Fri, 28 Nov 2014 21:55:01 +0100
+
 univention-directory-manager-modules (10.0.29-2) unstable; urgency=medium
 
   * Bug #36330: fix setting of userexpiry when account is disabled
