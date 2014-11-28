@@ -39,6 +39,8 @@ desc: |
   * If the UCS system has not been configured yet, a corresponding message is
     shown during login at console/via ssh asking the user to use the UMC to
     complete configuration.
+  * In text mode or after aborting the configuration, a message is shown to the
+    user how the UMC can be accessed after reboot.
 bug:
  - 36665
  - 36936
@@ -60,3 +62,4 @@ bug:
  - 36884
  - 36938
  - 36971
+ - 36968
