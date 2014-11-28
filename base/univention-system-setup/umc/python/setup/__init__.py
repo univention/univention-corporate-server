@@ -169,7 +169,13 @@ class Instance(Base, ProgressMixin):
 			self._finishedResult = False
 			obj._finishedLock.acquire()
 			try:
-				self._progressParser.reset()
+				subfolders = {
+					'network': ['30_net'],
+					'certificate': ['40_ssl'],
+					'languages': ['15_keyboard', '20_language', '35_timezone'],
+				}.get(request.flavor)
+
+				self._progressParser.reset(subfolders)
 
 				MODULE.info('saving profile values')
 				util.write_profile(values)
@@ -190,11 +196,6 @@ class Instance(Base, ProgressMixin):
 
 				# on a joined system or on a basesystem, we can run the setup scripts
 				MODULE.info('runnning system setup scripts (flavor %r)' % (request.flavor,))
-				subfolders = {
-					'network': ['30_net'],
-					'certificate': ['40_ssl'],
-					'languages': ['15_keyboard', '20_language', '35_timezone'],
-				}.get(request.flavor)
 
 				util.run_scripts(self._progressParser, restart, subfolders)
 

@@ -44,6 +44,7 @@ UCR_IFACE_RESTART = "interfaces/restart/auto"
 
 
 class NetworkSetup(SetupScript):
+	name = _("Configuring IPvX network interfaces")
 
 	def __init__(self):
 		super(NetworkSetup, self).__init__()
@@ -55,7 +56,6 @@ class NetworkSetup(SetupScript):
 
 	def inner_run(self):
 		self.parse_options()
-		self.name = _("Configuring IPvX network interfaces")
 		self.setup_logging()
 		self.setup_ud_logging()
 		self.prepare_changeset()

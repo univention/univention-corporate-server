@@ -1,3 +1,9 @@
+univention-system-setup (8.1.65-31) unstable; urgency=medium
+
+  * Bug #36939: fix progressbar percentage
+
+ -- Florian Best <best@univention.de>  Fri, 28 Nov 2014 17:46:20 +0100
+
 univention-system-setup (8.1.65-30) unstable; urgency=medium
 
   * Bug #37105: load XkbVariant settings instead of XkbOptions

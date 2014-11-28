@@ -319,34 +319,30 @@ class ProgressParser( object ):
 	def __init__( self ):
 		self.current = ProgressState()
 		self.old = ProgressState()
+		self.allowed_subdirs = None
 		self.reset()
 
-	def reset( self ):
+	def reset(self, allowed_subdirs=None):
+		self.allowed_subdirs = allowed_subdirs
 		ucr.load()
 		self.current.reset()
 		self.old.reset()
 		self.fractions = copy.copy( ProgressParser.FRACTIONS )
-		system_role = ucr.get('server/role')
-		joined = is_system_joined()
-		wizard_mode = not system_role and not joined
-		if not wizard_mode:
-			# when not wizard_mode, the software page is not rendered
-			#   do not use more than 50% of the progress bar for something
-			#   that cannot happen
-			self.fractions.pop('50_software/10software', None)
 		self.calculateFractions()
 
 	def calculateFractions( self ):
-		MODULE.info( 'Calculating maximum value for fractions ...' )
-		for category in filter( lambda x: os.path.isdir( os.path.join( PATH_SETUP_SCRIPTS, x ) ), os.listdir( PATH_SETUP_SCRIPTS ) ):
-			cat_path = os.path.join( PATH_SETUP_SCRIPTS, category )
-			for script in filter( lambda x: os.path.isfile( os.path.join( cat_path, x ) ), os.listdir( cat_path ) ):
-				name = '%s/%s' % ( category, script )
+		MODULE.info('Calculating maximum value for fractions ...')
+		for category in [x for x in os.listdir(PATH_SETUP_SCRIPTS) if os.path.isdir(os.path.join(PATH_SETUP_SCRIPTS, x))]:
+			cat_path = os.path.join(PATH_SETUP_SCRIPTS, category)
+			for script in [x for x in os.listdir(cat_path) if os.path.isfile(os.path.join(cat_path, x))]:
+				name = '%s/%s' % (category, script)
 				if not name in self.fractions:
-					self.fractions[ name ] = 1
+					self.fractions[name] = 1
+				if self.allowed_subdirs and category not in self.allowed_subdirs:
+					self.fractions[name] = 0
 
-		self.current.max = sum( self.fractions.values() )
-		MODULE.info( 'Calculated a maximum value of %d' % self.current.max )
+		self.current.max = sum(self.fractions.values())
+		MODULE.info('Calculated a maximum value of %d' % self.current.max)
 
 	@property
 	def changed( self ):
