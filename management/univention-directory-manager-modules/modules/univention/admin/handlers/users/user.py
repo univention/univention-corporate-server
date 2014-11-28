@@ -2114,8 +2114,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				acctFlags.set('D')
 			if self.__is_kerberos_disabled():
 				krb_kdcflags='254'
-			if self.__is_posix_disabled():
-				shadowExpire='1'
 
 			if self["locked"] in ['all', 'windows']:
 				acctFlags.set('L')
@@ -2188,20 +2186,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						acctFlags.set("L")
 					if str(self.oldattr.get('sambaAcctFlags', [''])[0]) != str(acctFlags.decode()):
 						ml.append(('sambaAcctFlags', self.oldattr.get('sambaAcctFlags', [''])[0], acctFlags.decode()))
-			if 'posix' in self.options:
-				if self.__is_posix_disabled():
-					# disable posix account
-					shadowExpire=self.oldattr.get("shadowExpire", [''])[0]
-					ml.append(('shadowExpire', self.oldattr.get('shadowExpire', [''])[0], '1'))
-				else:
-					# enable posix account
-					shadowExpire=self.oldattr.get("shadowExpire", [''])[0]
-					if shadowExpire == '1':
-						if self['userexpiry']:
-							shadowExpire="%d" % long(time.mktime(time.strptime(self['userexpiry'],"%d.%m.%y"))/3600/24+1)
-						else:
-							shadowExpire=''
-						ml.append(('shadowExpire', self.oldattr.get('shadowExpire', [''])[0], shadowExpire))
 		if self.hasChanged('locked'):
 			if 'posix' in self.options or ('samba' in self.options and self['username'] == 'root'):
 				# if self.modifypassword is set the password was already locked
@@ -2232,14 +2216,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					ml.append(('sambaBadPasswordCount', self.oldattr.get('sambaBadPasswordCount', [''])[0], "0"))
 
 		if self.hasChanged(['userexpiry']):
-			if 'posix' in self.options or 'mail' in self.options:
-				shadowExpire=''
-				if self['userexpiry']:
-					shadowExpire="%d" % long(time.mktime(time.strptime(self['userexpiry'],"%d.%m.%y"))/3600/24+1)
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'shadowExpire: %s' % shadowExpire)
-				old_shadowExpire=self.oldattr.get('shadowExpire', '')
-				if old_shadowExpire != shadowExpire:
-					ml.append(('shadowExpire',self.oldattr.get('shadowExpire', [''])[0], shadowExpire))
 			if 'samba' in self.options:
 				sambaKickoffTime=''
 				if self['userexpiry']:
@@ -2260,7 +2236,19 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					else:
 						ml.append(('krb5ValidEnd',self.oldattr.get('krb5ValidEnd', [''])[0], krb5ValidEnd))
 
-
+		if self.hasChanged('disabled') or self.hasChanged('userexpiry'):
+			if 'posix' in self.options or ('mail' in self.options and self.hasChanged('userexpiry')):
+				if self.__is_posix_disabled():
+					# disable posix account
+					shadowExpire='1'
+				else:
+					if self['userexpiry']:
+						shadowExpire="%d" % long(time.mktime(time.strptime(self['userexpiry'],"%d.%m.%y"))/3600/24+1)
+					else: #if self.hasChanged('disabled'):
+						shadowExpire = ''
+				old_shadowExpire = self.oldattr.get('shadowExpire', '')
+				if old_shadowExpire != shadowExpire:
+					ml.append(('shadowExpire', old_shadowExpire, shadowExpire))
 
 		if pwd_change_next_login == 1:	# ! self.modifypassword or no pwhistoryPolicy['expiryInterval']
 			if 'posix' in self.options or 'mail' in self.options:
