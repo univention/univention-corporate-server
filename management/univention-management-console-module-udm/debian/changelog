@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-3) unstable; urgency=low
+
+  * Bug #35719: Adapted the error message
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 28 Nov 2014 12:43:35 +0100
+
 univention-management-console-module-udm (5.1.25-2) unstable; urgency=low
 
   Bug #36732:

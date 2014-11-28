@@ -108,6 +108,7 @@ class LDAP_ServerDown(UMC_Error):
 			fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 			yield _('Cannot connect to the LDAP service.')
 			yield _('The following steps can help to solve this problem:')
+			yield ' * ' + _('Check the available hard disk space and RAM on the domaincontroller master')
 			if not is_master:
 				yield ' * ' + _('Make sure the domaincontroller master is running and reachable from %s') % (fqdn,)
 			yield ' * ' + _('Restart the LDAP service on the domaincontroller master either via "invoke-rc.d slapd restart" on command line or with the UMC module "System services"')

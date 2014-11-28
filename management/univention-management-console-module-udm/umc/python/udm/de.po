@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-11-07 20:19+0100\n"
+"POT-Creation-Date: 2014-11-28 12:33+0100\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,13 +30,20 @@ msgstr "Konnte nicht zum LDAP-Dienst verbinden."
 msgid "Cannot parse License from LDAP"
 msgstr "Fehler beim Auslesen der Lizenz aus dem LDAP"
 
+#: umc/python/udm/udm_ldap.py:111
+msgid ""
+"Check the available hard disk space and RAM on the domaincontroller master"
+msgstr ""
+"Überprüfen Sie, ob dem Domänencontroller Master genügend Festplattenspeicher "
+"und RAM zur Verfügung steht"
+
 #: umc/python/udm/__init__.py:393
 #, python-format
 msgid "Could not find a matching UDM module for the LDAP object %s"
 msgstr ""
 "Es konnte kein passendes UDM-Modul für das LDAP-Object %s gefunden werden"
 
-#: umc/python/udm/udm_ldap.py:364 umc/python/udm/__init__.py:521
+#: umc/python/udm/__init__.py:521 umc/python/udm/udm_ldap.py:365
 #, python-format
 msgid "Could not find an UDM module for the superordinate object %s"
 msgstr ""
@@ -46,7 +53,7 @@ msgstr ""
 msgid "Could not identify the given LDAP object"
 msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
 
-#: umc/python/udm/udm_ldap.py:116
+#: umc/python/udm/udm_ldap.py:117
 msgid ""
 "If the problem persists additional hints about the cause can be found in the "
 "following log file:"
@@ -54,7 +61,7 @@ msgstr ""
 "Wenn das Problem bestehen bleibt, können weitere Hinweise zur Ursache in der "
 "folgenden Protokolldatei gefunden werden:"
 
-#: umc/python/udm/udm_ldap.py:115
+#: umc/python/udm/udm_ldap.py:116
 msgid "Install the latest software updates"
 msgstr "Installieren Sie alle Softwareaktualisierungen"
 
@@ -81,7 +88,7 @@ msgstr ""
 "Keine Lizenz gefunden. Während dieser Sitzung ist das Hinzufügen und "
 "Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/udm_ldap.py:112
+#: umc/python/udm/udm_ldap.py:113
 #, python-format
 msgid "Make sure the domaincontroller master is running and reachable from %s"
 msgstr ""
@@ -105,11 +112,11 @@ msgstr "Keine gültige Variante oder existierendes UDM-Modul wurden angegeben"
 msgid "No license has been found."
 msgstr "Es wurde keine Lizenz gefunden"
 
-#: umc/python/udm/udm_ldap.py:804
+#: umc/python/udm/udm_ldap.py:805
 msgid "None"
 msgstr "Keins"
 
-#: umc/python/udm/udm_ldap.py:607
+#: umc/python/udm/udm_ldap.py:608
 msgid "Objects referencing this policy object"
 msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
 
@@ -117,16 +124,16 @@ msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
 msgid "PDF document"
 msgstr "PDF Dokument"
 
-#: umc/python/udm/udm_ldap.py:303 umc/python/udm/__init__.py:863
+#: umc/python/udm/__init__.py:863 umc/python/udm/udm_ldap.py:304
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
 
-#: umc/python/udm/udm_ldap.py:607
+#: umc/python/udm/udm_ldap.py:608
 msgid "Referencing objects"
 msgstr "Referenzierende Objekte"
 
-#: umc/python/udm/udm_ldap.py:113
+#: umc/python/udm/udm_ldap.py:114
 msgid ""
 "Restart the LDAP service on the domaincontroller master either via \"invoke-"
 "rc.d slapd restart\" on command line or with the UMC module \"System services"
@@ -162,12 +169,12 @@ msgstr ""
 "Die Lizenz konnte nicht eingespielt werden. Die LDAP-Basis stimmt nicht "
 "überein (erwartet: %s, gefunden: %s)."
 
-#: umc/python/udm/udm_ldap.py:317 umc/python/udm/udm_ldap.py:331
+#: umc/python/udm/udm_ldap.py:318 umc/python/udm/udm_ldap.py:332
 #, python-format
 msgid "The property %s has an invalid value: %s"
 msgstr "Die Eigenschaft '%s' hat einen nicht gültigen Wert: %s"
 
-#: umc/python/udm/udm_ldap.py:475
+#: umc/python/udm/udm_ldap.py:476
 msgid ""
 "The query you have entered timed out. Please narrow down your search by "
 "specifiying more query parameters"
@@ -175,7 +182,7 @@ msgstr ""
 "Die angeforderte Suche lieferte zu viele Ergebnisse und wurde abgebrochen. "
 "Bitte schränken Sie die Suche durch weitere Suchparameter ein."
 
-#: umc/python/udm/udm_ldap.py:477
+#: umc/python/udm/udm_ldap.py:478
 #, python-format
 msgid ""
 "The query you have entered yields too many matching entries. Please narrow "
@@ -314,7 +321,7 @@ msgstr ""
 "Sie über eine Lizenz verfügen, wenden Sie sich bitte an Univention oder "
 "Ihren Univention Partner."
 
-#: umc/python/udm/udm_ldap.py:517
+#: umc/python/udm/udm_ldap.py:518
 msgid "manual"
 msgstr "handbuch"
 
