@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-ssl
-fix: 9.0.4-2.151.201411281139
+fix: 9.0.4-3.152.201411281214
 version: [0]
 desc: |
   This update addresses the following issues:
