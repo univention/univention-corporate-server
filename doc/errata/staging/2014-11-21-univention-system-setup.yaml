@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-system-setup
-fix: 8.1.65-21.808.201411272123
+fix: 8.1.65-22.809.201411281025
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -20,7 +20,7 @@ desc: |
     correctly determine an UCS domain.
   * The DNS error message when selecting a system role is now been prompted as
     an alert dialogue.
-  * Some German text field descriptions has been adapted.
+  * Some text field descriptions has been adapted.
   * The UCS setup wizard UMC module could not be loaded when the system
     had more than four physical network devices.
   * It is now possible to prevent joining. The profile variable start/join was
