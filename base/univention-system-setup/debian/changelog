@@ -1,3 +1,9 @@
+univention-system-setup (8.1.65-30) unstable; urgency=medium
+
+  * Bug #37105: load XkbVariant settings instead of XkbOptions
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 28 Nov 2014 15:58:34 +0100
+
 univention-system-setup (8.1.65-29) unstable; urgency=medium
 
   * Bug #37105: adjust 15_keyboard/10keyboard for handling of new UCR

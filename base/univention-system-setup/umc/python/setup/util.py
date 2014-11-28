@@ -92,7 +92,7 @@ UCR_VARIABLES = [
 	'locale', 'locale/default',
 	# keyboard
 	'xorg/keyboard/options/XkbLayout', 'xorg/keyboard/options/XkbModel',
-	'xorg/keyboard/options/XkbOptions',
+	'xorg/keyboard/options/XkbVariant',
 	# basis
 	'hostname', 'domainname', 'ldap/base', 'windows/domain',
 	# net: ipv4
