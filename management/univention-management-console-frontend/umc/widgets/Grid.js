@@ -345,6 +345,7 @@ define([
 			this._resizeDeferred = tools.defer(lang.hitch(this, function() {
 				this._grid.resize();
 			}), 200);
+			this._resizeDeferred.otherwise(function() { /* prevent logging of exception */ });
 		},
 
 		setColumnsAndActions: function(columns, actions) {

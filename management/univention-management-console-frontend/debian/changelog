@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.105-2) unstable; urgency=medium
+
+  * Bug #36645: don't print exception in javascript console when the grid is
+  	resized
+
+ -- Florian Best <best@univention.de>  Fri, 28 Nov 2014 17:56:13 +0100
+
 univention-management-console-frontend (4.1.105-1) unstable; urgency=low
 
   * Bug #36914: version bump 

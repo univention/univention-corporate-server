@@ -305,6 +305,7 @@ define([
 				this._resizeDeferred.cancel();
 			}
 			this._resizeDeferred = tools.defer(lang.hitch(this, '_resizeItemNames'), 200);
+			this._resizeDeferred.otherwise(function() { /* prevent logging of exception */ });
 		},
 
 		isLeftToRight: function() {
