@@ -6,6 +6,8 @@ fix: 0.0.88-1.64.201411271443
 version: [0]
 desc: |
   * Adjusted the styling of the notification if javascript is disabled
-  * Added info.gif for Internet Explorer <= 8 because svg fiels are not supported.
-  * Added an arrow to the UMC Grids that indicate what colums is used for sorting.
+  * Added info.gif for Internet Explorer <= 8 because svg files are 
+  not supported.
+  * Added an arrow to the UMC Grids that indicate what colums is used 
+  for sorting.
 bug: [36338, 36914, 36357]
