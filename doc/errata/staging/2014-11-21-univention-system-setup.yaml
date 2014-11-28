@@ -20,7 +20,7 @@ desc: |
     correctly determine an UCS domain.
   * The DNS error message when selecting a system role is now been prompted as
     an alert dialogue.
-  * Some german text field descriptions has been adapted.
+  * Some German text field descriptions has been adapted.
   * The UCS setup wizard UMC module could not be loaded when the system
     had more than four physical network devices.
   * It is now possible to prevent joining. The profile variable start/join was
