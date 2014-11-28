@@ -1,4 +1,4 @@
-w#!/bin/bash
+#!/bin/bash
 #
 # Univention System Setup
 #  start X server with browser
