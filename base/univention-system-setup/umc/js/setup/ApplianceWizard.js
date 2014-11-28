@@ -2040,6 +2040,7 @@ define([
 				}
 
 				var _noUcsDomainWarning = lang.hitch(this, function() {
+					this.getWidget('credentials-nonmaster', '_ucs_autosearch_master').set('value', false);
 					return dialog.confirm(_('No domain controller was found at the address of the name server. It is recommended to verify that the network settings are correct.'), [{
 						label: _('Adjust settings'),
 						name: 'network'
@@ -2052,12 +2053,16 @@ define([
 					}));
 				});
 
+				var _noAdDcFoundWarning = lang.hitch(this, function() {
+					dialog.alert(_('No domain controller was found at the address of the name server. Please adjust your network settings.'));
+					return this._forcePageTemporarily('network');
+				});
+
 				return this._checkDomain().then(lang.hitch(this, function(info) {
 					if (this._isAdMember()) {
 						this._domainHasMaster = info.ucs_master;
 						if (!info.dc_name) {
-							dialog.alert(_('No domain controller was found at the address of the name server. Please adjust your network settings.'));
-							return this._forcePageTemporarily('network');
+							return _noAdDcFoundWarning();
 						}
 						this.getWidget('credentials-ad', 'ad/address').set('value', info.dc_name);
 						if (info.ucs_master) {
@@ -2068,13 +2073,18 @@ define([
 						return this._forcePageTemporarily('credentials-ad');
 					}
 					else {
-						this.getWidget('credentials-nonmaster', '_ucs_autosearch_master').set('value', info.ucs_master);
 						if (info.ucs_master) {
+							this.getWidget('credentials-nonmaster', '_ucs_autosearch_master').set('value', true);
 							this.getWidget('credentials-nonmaster', '_ucs_address').set('value', info.dc_name || '');
 							return this._forcePageTemporarily('role-nonmaster-ad');
 						}
 						return _noUcsDomainWarning();
 					}
+				}), lang.hitch(this, function() {
+					if (this._isAdMember()) {
+						return _noAdDcFoundWarning();
+					}
+					return _noUcsDomainWarning();
 				}));
 			}
 

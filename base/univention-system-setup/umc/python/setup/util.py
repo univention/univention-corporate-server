@@ -791,6 +791,8 @@ def is_ucs_domain(nameserver, domain):
 		return True
 	except dns.resolver.NXDOMAIN:
 		MODULE.warn('No valid UCS domain (%s) at nameserver %s!' % (domain, nameserver))
+	except dns.exception.Timeout as exc:
+		MODULE.warn('Lookup for nameserver %s timed out: %s' % (nameserver, exc))
 	return False
 
 def get_ucs_domain(nameserver):

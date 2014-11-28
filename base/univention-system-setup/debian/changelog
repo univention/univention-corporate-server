@@ -1,3 +1,9 @@
+univention-system-setup (8.1.65-26) unstable; urgency=medium
+
+  * Bug #36940: adapted error handling for check_domain
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 28 Nov 2014 13:35:11 +0100
+
 univention-system-setup (8.1.65-25) unstable; urgency=medium
 
   * Bug #36938: adapt descriptions
