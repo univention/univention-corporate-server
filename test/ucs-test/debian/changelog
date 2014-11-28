@@ -1,3 +1,11 @@
+ucs-test (5.0.62-1) unstable; urgency=low
+
+  *  00_base/check_log_files_definitions.py: extended ignore patterns.
+     00_base/99check_log_files: added bug reference; test returns
+     codes as defined in the univention.testing.codes (Bug #36902).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 28 Nov 2014 11:12:50 +0100
+
 ucs-test (5.0.61-1) unstable; urgency=medium
 
   * Test for Bug #36980

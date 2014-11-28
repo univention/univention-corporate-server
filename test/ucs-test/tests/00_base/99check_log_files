@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check installation log files for errors, warnings and tracebacks
-## bugs: [30751, 36160]
+## bugs: [30751, 36160, 36902]
 ## tags: [basic]
 ## exposure: safe
 ## versions:
@@ -12,8 +12,9 @@ import gzip
 from os import path
 from sys import exit
 
-from univention.management.console.modules.setup.setup_script import Profile
 import univention.testing.utils as utils
+from univention.testing.codes import TestCodes
+from univention.management.console.modules.setup.setup_script import Profile
 from check_log_files_definitions import Errors, Tracebacks, Warnings
 
 
@@ -33,7 +34,7 @@ class CheckLogFiles(object):
         self.max_trace_lines = 40  # max length of a trace in lines
         self.last_trace_msg = ''
 
-        self.return_code = 100  # will be returned if no errors are found
+        self.return_code = TestCodes.RESULT_OKAY  # returned if no errors found
 
     def extract_traceback_message(self):
         """
@@ -215,8 +216,8 @@ class CheckLogFiles(object):
             errors, warnings = self.check_log_file(filename)
 
             if errors:
-                # Errors detected, test should fail with code 110
-                self.return_code = 110
+                # Errors detected, test should fail
+                self.return_code = TestCodes.RESULT_FAIL
                 print "\nErrors found in '%s':\n" % filename
                 for line in errors:
                     print " E: %s" % line

@@ -45,6 +45,10 @@ class Errors(LogMessage):
 		'.*error adding .*.pem',
 		'.*failed .*VM used: java-6-cacao.*',
 		'.*/etc/ca-certificates/update.d/.* exited with code 1',
+                '.*well-known-sid-name-mapping.d/univention-ldap-server.py: postrun: Initiating graceful reload of ldap server.*',
+                '.*connection to notifier was closed.*',
+                '.*failed to recv result.*',
+                '.*listener: 1'
 	]
 
 	# extra ignore patterns for case when line == 'failed.'
@@ -97,6 +101,7 @@ class Warnings(LogMessage):
 		'.*Permanently added .* to the list of known hosts.*',
 		'.*usr/sbin/grub-probe: warning: disk does not exist, so falling back to partition device.*',
 		'.*WARNING: cannot read /sys/block/vda.* (?:No such file or directory|Datei oder Verzeichnis nicht gefunden).*',
-		'.*warning: univention-directory-notifier: unable to open supervise/ok: .*']
+		'.*warning: univention-directory-notifier: unable to open supervise/ok: .*',
+                '.*No path in service .* - making it unavailable!']
 
 	extra_ignore_list = []
