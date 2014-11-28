@@ -2,9 +2,11 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-management-console-module-udm
-fix: 5.1.25-2.512.201411260953
+fix: 5.1.25-3.513.201411281246
 version: [0]
 desc: |
   * A notification for AD objects (e.g. user/groups) will only be
     shown once per session
-bug: [36732]
+  * The error message if the connection to the LDAP server fails
+    has been extended
+bug: [36732, 35719]
