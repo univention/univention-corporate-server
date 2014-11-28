@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.19-4) unstable; urgency=medium
+
+  * Bug #36868: fix installing of component packages
+
+ -- Florian Best <best@univention.de>  Fri, 28 Nov 2014 22:42:02 +0100
+
 univention-management-console-module-appcenter (4.1.19-3) unstable; urgency=low
 
   * Bug #36457: Checkbox is now above button

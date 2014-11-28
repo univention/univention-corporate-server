@@ -188,6 +188,8 @@ define([
 		},
 
 		_renderComponents: function() {
+			this._renderPackages();
+
 			this._componentsStore = store('name', 'appcenter/components');
 			this._components = new SettingsPage({
 				moduleID: this.moduleID,
