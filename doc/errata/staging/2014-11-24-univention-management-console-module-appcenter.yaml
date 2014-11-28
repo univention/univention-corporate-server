@@ -2,9 +2,11 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-management-console-module-appcenter
-fix: 4.1.19-3.304.201411261055
+fix: 4.1.19-4.305.201411282244
 version: [0]
 desc: |
   * The checkbox "Use unmaintained repositories" is now above the 
     "Apply changes" button to avoid that someone will miss this setting
-bug: [36457]
+  * After trying to install a software component in the repository settings
+    module a white page occurred which prevented installation.
+bug: [36457, 36868]
