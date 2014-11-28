@@ -258,7 +258,9 @@ define([
 				});
 			};
 
-			tools.umcpCommand('lib/server/shutdown').then(start_pinging);
+			tools.umcpCommand('lib/server/shutdown').then(start_pinging, function() {
+				progress.close();
+			});
 		},
 
 		ping: function() {
