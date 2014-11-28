@@ -1559,6 +1559,7 @@ define([
 
 		_updateDonePage: function() {
 			var isBaseSystem = this._isRoleBaseSystem();
+			var isMaster = this._isRoleMaster();
 
 			var fqdn = this._getFQDN();
 			var ips = this._getIPAdresses();
@@ -1566,11 +1567,15 @@ define([
 			var msg = '';
 			msg += '<p>' + _('UCS has been successfully set up.') + '</p>';
 			if (!isBaseSystem) {
-				msg += '<p>' + _('It is now possible to login at Univention Management Console with the domain account <i>Administrator</i>:') + '</p>';
-				msg += this._getUMCLinks();
 				if (ips.length) {
 					msg += '<p>' + _('The system has been configured with the IP address(es) %s.', ips.join(', ')) + '</p>';
 				}
+				if (isMaster) {
+					msg += '<p>' + _('To administrate the domain as well as the local system, login to Univention Management Console as user <i>Administrator</i>:') + '</p>';
+				} else {
+					msg += '<p>' + _('To administrate the local system, login to Univention Management Console with the domain account <i>Administrator</i>:') + '</p>';
+				}
+				msg += this._getUMCLinks();
 			} else {
 				if (ips.length) {
 					msg += '<p>' + _('The system is reachable at <i>%s</i> or via its IP address(es) <i>%s</i>.', fqdn, ips.join(', ')) + '</p>';

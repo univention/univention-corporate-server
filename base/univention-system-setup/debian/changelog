@@ -1,3 +1,9 @@
+univention-system-setup (8.1.65-25) unstable; urgency=medium
+
+  * Bug #36938: adapt descriptions
+
+ -- Florian Best <best@univention.de>  Fri, 28 Nov 2014 12:49:58 +0100
+
 univention-system-setup (8.1.65-24) unstable; urgency=low
 
   * Bug #36937: Timeout rdate command after 15+5s

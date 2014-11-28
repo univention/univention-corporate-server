@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-11-28 10:20+0100\n"
+"POT-Creation-Date: 2014-11-28 12:43+0100\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -58,7 +58,7 @@ msgstr ""
 "logisch mit nur einem oder mehreren physikalischen Netzwerkgeräten zu "
 "trennen."
 
-#: umc/js/setup/ApplianceWizard.js:1582
+#: umc/js/setup/ApplianceWizard.js:1587
 msgid ""
 "<p>After clicking on the button <i>Finish</i> the system will be prepared "
 "for the first boot procedure and will be rebooted.</p>"
@@ -66,7 +66,7 @@ msgstr ""
 "<p>Nach dem Klicken auf die Schaltfläche <i>Fertigstellen</i> wird das "
 "System auf den ersten Bootvorgang vorbereitet und neu gestartet.</p>"
 
-#: umc/js/setup/ApplianceWizard.js:1584
+#: umc/js/setup/ApplianceWizard.js:1589
 msgid ""
 "<p>Click now on the button <i>Finish</i> to complete the setup process.</p>"
 msgstr ""
@@ -94,7 +94,7 @@ msgstr ""
 "Administrator-Konto als auch für den lokalen Superuser <i>root</i> verwendet."
 "</p>"
 
-#: umc/js/setup/ApplianceWizard.js:1967
+#: umc/js/setup/ApplianceWizard.js:1972
 #, python-format
 msgid ""
 "<p>One or more network interfaces could not obtain an IP address via DHCP. "
@@ -129,7 +129,7 @@ msgstr ""
 "<p>Herzlich willkommen bei Univention Corporate Server (UCS). Ein paar "
 "Fragen sind notwendig, um die Einrichtung abzuschließen.</p>"
 
-#: umc/js/setup/ApplianceWizard.js:1971
+#: umc/js/setup/ApplianceWizard.js:1976
 msgid ""
 "<p>With the current settings <b> no </b> internet access is available.</"
 "p><p>Because of this some functions like the App Center or software-updates "
@@ -247,7 +247,7 @@ msgstr ""
 "Adresse des Active Directory-Domänencontrollers oder Name der Active "
 "Directory-Domäne"
 
-#: umc/js/setup/ApplianceWizard.js:1991 umc/js/setup/ApplianceWizard.js:2039
+#: umc/js/setup/ApplianceWizard.js:1996 umc/js/setup/ApplianceWizard.js:2044
 msgid "Adjust settings"
 msgstr "Einstellungen anpassen"
 
@@ -289,7 +289,7 @@ msgstr ""
 "Mindestens eine IP-Adresse muss angegeben werden oder DHCP oder SLAAC muss "
 "eingeschaltet sein."
 
-#: umc/js/setup/ApplianceWizard.js:1779
+#: umc/js/setup/ApplianceWizard.js:1784
 msgid "At least one network device needs to be properly configured."
 msgstr "Wenigstens ein Netzwerkgerät muss konfiguriert werden."
 
@@ -341,8 +341,9 @@ msgstr "Bridge ports"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/js/setup/ApplianceWizard.js:1975 umc/js/setup/ApplianceWizard.js:2137
-#: umc/js/setup/InterfaceGrid.js:131 umc/js/setup.js:144 umc/js/setup.js:492
+#: umc/js/setup/InterfaceGrid.js:131 umc/js/setup/ApplianceWizard.js:1980
+#: umc/js/setup/ApplianceWizard.js:2142 umc/js/setup.js:144
+#: umc/js/setup.js:492
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -425,7 +426,7 @@ msgstr "Allgemeiner Name (common name) für das Root-SSL-Zertifikat"
 msgid "Configuration"
 msgstr "Konfiguration"
 
-#: umc/js/setup/ApplianceWizard.js:1809 umc/js/setup.js:565
+#: umc/js/setup/ApplianceWizard.js:1814 umc/js/setup.js:565
 msgid "Configuration finished"
 msgstr "Konfiguration abgeschlossen"
 
@@ -469,27 +470,27 @@ msgstr ""
 "entweder als Benutzer <i>Administrator</i> oder als Benutzer <i>root</i> "
 "falls das System noch nicht der Domäne beigetreten ist:"
 
-#: umc/js/setup/ApplianceWizard.js:2086
+#: umc/js/setup/ApplianceWizard.js:2091
 msgid "Connection failed. Please recheck the address"
 msgstr "Verbindungsaufbau gescheitert. Bitte überprüfen Sie die Adresse"
 
-#: umc/js/setup/ApplianceWizard.js:2083
+#: umc/js/setup/ApplianceWizard.js:2088
 msgid "Connection refused. Please recheck the password"
 msgstr "Verbindungsaufbau abgelehnt. Bitte überprüfen Sie das Passwort"
 
-#: umc/js/setup/ApplianceWizard.js:2140
+#: umc/js/setup/ApplianceWizard.js:2145
 msgid "Continue"
 msgstr "Fortfahren"
 
-#: umc/js/setup/ApplianceWizard.js:1968
+#: umc/js/setup/ApplianceWizard.js:1973
 msgid "Continue with 169.254.*.* addresse(s)"
 msgstr "Fortfahren mit 169.254.*.* Adresse(n)"
 
-#: umc/js/setup/ApplianceWizard.js:2042
+#: umc/js/setup/ApplianceWizard.js:2047
 msgid "Continue with incomplete settings"
 msgstr "Fortfahren mit unvollständigen Einstellungen"
 
-#: umc/js/setup/ApplianceWizard.js:1972 umc/js/setup/ApplianceWizard.js:1994
+#: umc/js/setup/ApplianceWizard.js:1977 umc/js/setup/ApplianceWizard.js:1999
 msgid "Continue without internet access"
 msgstr "Ohne Internetzugriff fortfahren"
 
@@ -531,8 +532,8 @@ msgstr ""
 "Authetifizierungsdienste bereit. Lokale Dienste auf einem DC Slave haben "
 "Zugriff auf die lokale LDAP-Datenbank."
 
-#: umc/js/setup/ApplianceWizard.js:917 umc/js/setup/InterfaceWizard.js:616
-#: umc/js/setup/InterfaceWizard.js:642
+#: umc/js/setup/InterfaceWizard.js:616 umc/js/setup/InterfaceWizard.js:642
+#: umc/js/setup/ApplianceWizard.js:917
 msgid "DHCP query failed."
 msgstr "DHCP-Anfrage schlug fehl."
 
@@ -544,8 +545,8 @@ msgstr "DHCP-Anfrage"
 msgid "DNS server"
 msgstr "DNS-Server"
 
-#: umc/js/setup/ApplianceWizard.js:327 umc/js/setup/LanguagePage.js:149
-#: umc/js/setup/LanguagePage.js:229
+#: umc/js/setup/LanguagePage.js:149 umc/js/setup/LanguagePage.js:229
+#: umc/js/setup/ApplianceWizard.js:327
 msgid "Default system locale"
 msgstr "Standard-System-Sprachdefinition"
 
@@ -703,8 +704,8 @@ msgstr ""
 "handbuch-%s.html#computers:networkcomplex\" target=\"_blank\">UCS "
 "Dokumentation</a> gefunden werden."
 
-#: umc/js/setup/ApplianceWizard.js:449 umc/js/setup/ApplianceWizard.js:1455
-#: umc/js/setup/InterfaceWizard.js:627
+#: umc/js/setup/InterfaceWizard.js:627 umc/js/setup/ApplianceWizard.js:449
+#: umc/js/setup/ApplianceWizard.js:1455
 msgid "Gateway"
 msgstr "Gateway"
 
@@ -724,8 +725,8 @@ msgstr "Allgemeine Einstellungen"
 msgid "Global network settings"
 msgstr "Globale Netzwerk-Einstellungen"
 
-#: umc/js/setup/ApplianceWizard.js:474 umc/js/setup/ApplianceWizard.js:1467
 #: umc/js/setup/NetworkPage.js:125 umc/js/setup/NetworkPage.js:295
+#: umc/js/setup/ApplianceWizard.js:474 umc/js/setup/ApplianceWizard.js:1467
 msgid "HTTP proxy"
 msgstr "HTTP-Proxy"
 
@@ -759,6 +760,7 @@ msgstr "IPv4-Adresse"
 
 #: umc/js/setup/ApplianceWizard.js:388 umc/js/setup/ApplianceWizard.js:405
 #: umc/js/setup/ApplianceWizard.js:423 umc/js/setup/ApplianceWizard.js:441
+#, python-brace-format
 msgid "IPv4 net mask/IPv6 prefix {interface}"
 msgstr "IPv4-Netzmaske/IPv6-Präfix {interface}"
 
@@ -768,6 +770,7 @@ msgstr "IPv4-Netzwerkgerätkonfiguration"
 
 #: umc/js/setup/ApplianceWizard.js:379 umc/js/setup/ApplianceWizard.js:395
 #: umc/js/setup/ApplianceWizard.js:413 umc/js/setup/ApplianceWizard.js:431
+#, python-brace-format
 msgid "IPv4/IPv6 address {interface}"
 msgstr "IPv4/IPv6-Adresse {interface}"
 
@@ -799,7 +802,7 @@ msgstr ""
 "In den <i>Netzwerkeinstellungen</i> können IP-Adressen (IPv4 und IPv6) sowie "
 "DNS-Server, Gateways und HTTP-Proxy festgelegt werden."
 
-#: umc/js/setup/ApplianceWizard.js:1792 umc/js/setup.js:547
+#: umc/js/setup/ApplianceWizard.js:1797 umc/js/setup.js:547
 msgid "Initialize the configuration process ..."
 msgstr "Initialisiere den Konfigurationsvorgang ..."
 
@@ -870,7 +873,7 @@ msgstr ""
 "Ungültiger Rechnername oder vollständiger Domänenname!<br/>Erwartetes "
 "Format: <i>rechnername</i> oder <i>rechnername.meinedomaene.intranet</i>"
 
-#: umc/js/setup/ApplianceWizard.js:1737
+#: umc/js/setup/ApplianceWizard.js:1742
 msgid ""
 "It is not possible to install KVM and XEN components on one system. Please "
 "select only one of these components."
@@ -878,21 +881,13 @@ msgstr ""
 "Es ist nicht möglich KVM- und XEN-Komponenten auf einem System zu "
 "installieren. Bitte wählen Sie nur eine dieser Komponenten aus."
 
-#: umc/js/setup/ApplianceWizard.js:1733
+#: umc/js/setup/ApplianceWizard.js:1738
 msgid ""
 "It is not possible to install Samba 3 and Samba 4 on one system. Please "
 "select only one of these components."
 msgstr ""
 "Es ist nicht möglich Samba 3 und Samba 4 auf einem System zu installieren. "
 "Bitte wählen Sie nur eine dieser Komponenten aus."
-
-#: umc/js/setup/ApplianceWizard.js:1569
-msgid ""
-"It is now possible to login at Univention Management Console with the domain "
-"account <i>Administrator</i>:"
-msgstr ""
-"Ein Login auf Univention Management Console ist nun mit dem Domänenkonto "
-"<i>Administrator</i> möglich:"
 
 #: umc/js/setup/ApplianceWizard.js:500
 msgid "Join into an existing Active Directory domain"
@@ -902,8 +897,8 @@ msgstr "Einer bestehenden Active-Directory-Domäne beitreten"
 msgid "Join into an existing UCS domain"
 msgstr "Einer bestehenden UCS-Domäne beitreten"
 
-#: umc/js/setup/ApplianceWizard.js:340 umc/js/setup/LanguagePage.js:88
-#: umc/js/setup/LanguagePage.js:217
+#: umc/js/setup/LanguagePage.js:88 umc/js/setup/LanguagePage.js:217
+#: umc/js/setup/ApplianceWizard.js:340
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
@@ -1012,7 +1007,7 @@ msgstr "Netzwerkgerät"
 msgid "Network interface configuration"
 msgstr "Netzwerkgerätkonfiguration"
 
-#: umc/js/setup/ApplianceWizard.js:1332 umc/js/setup/NetworkPage.js:299
+#: umc/js/setup/NetworkPage.js:299 umc/js/setup/ApplianceWizard.js:1332
 msgid "Network interfaces"
 msgstr "Netzwerkgeräte"
 
@@ -1032,7 +1027,7 @@ msgstr "Keine zusätzliche Software-Komponenten werden installiert."
 msgid "No changes have been made."
 msgstr "Es wurden keine Änderungen durchgeführt."
 
-#: umc/js/setup/ApplianceWizard.js:2038
+#: umc/js/setup/ApplianceWizard.js:2043
 msgid ""
 "No domain controller was found at the address of the name server. It is "
 "recommended to verify that the network settings are correct."
@@ -1040,7 +1035,7 @@ msgstr ""
 "Unter der Adresse des DNS-Servers konnte kein Domänencontroller gefunden "
 "werden. Die Netzwerkeinstellungen sollten überprüft werden."
 
-#: umc/js/setup/ApplianceWizard.js:2054
+#: umc/js/setup/ApplianceWizard.js:2059
 msgid ""
 "No domain controller was found at the address of the name server. Please "
 "adjust your network settings."
@@ -1052,7 +1047,7 @@ msgstr ""
 msgid "No domain warning"
 msgstr "Warnung: Keine Domäne"
 
-#: umc/js/setup/ApplianceWizard.js:1990
+#: umc/js/setup/ApplianceWizard.js:1995
 msgid ""
 "No gateway has been specified and thus no access to the internet is "
 "possible. As UCS requires internet access for its functionality, certain "
@@ -1065,7 +1060,7 @@ msgstr ""
 "Aktualisierungen, Installation weiterer Software-Komponenten) nicht wie "
 "erwatet funtionieren werden."
 
-#: umc/js/setup/InterfaceWizard.js:627 umc/js/setup/NetworkPage.js:98
+#: umc/js/setup/NetworkPage.js:98 umc/js/setup/InterfaceWizard.js:627
 msgid "None"
 msgstr "Kein"
 
@@ -1137,8 +1132,8 @@ msgstr "Bitte geben Sie die Ports an, die zu der Bridge hinzugefügt werden."
 msgid "Preferred DNS server"
 msgstr "Bevorzugter DNS-Server"
 
-#: umc/js/setup/ApplianceWizard.js:1335 umc/js/setup/NetworkPage.js:101
-#: umc/js/setup/NetworkPage.js:303
+#: umc/js/setup/NetworkPage.js:101 umc/js/setup/NetworkPage.js:303
+#: umc/js/setup/ApplianceWizard.js:1335
 msgid "Primary network interface"
 msgstr "Primäres Netzwerkgerät"
 
@@ -1154,7 +1149,7 @@ msgstr "Gelöscht:"
 msgid "Restarting server components..."
 msgstr "Neustart der Server-Komponenten..."
 
-#: umc/js/setup/ApplianceWizard.js:2136
+#: umc/js/setup/ApplianceWizard.js:2141
 msgid "Root password empty. Continue?"
 msgstr "Root-Passwort ist leer. Möchten Sie fortfahren?"
 
@@ -1234,6 +1229,7 @@ msgid "The changes have been applied successfully."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
 #: umc/js/setup.js:560
+#, python-brace-format
 msgid ""
 "The connection to the server could not be established after {time} seconds. "
 "This problem can occur due to a change of the IP address. In this case, "
@@ -1277,7 +1273,7 @@ msgstr ""
 "anbieten und kein Mitglied einer Domäne werden. Solch ein UCS-System sollte "
 "nur in seltenen Fällen aufgesetzt werden, etwa als Firewall-System."
 
-#: umc/js/setup/ApplianceWizard.js:1765
+#: umc/js/setup/ApplianceWizard.js:1770
 msgid ""
 "The root password is too short. For security reasons, your password must "
 "contain at least 8 characters."
@@ -1294,12 +1290,12 @@ msgstr ""
 "den Konfigurationsvorgang zu wiederholen oder den Einrichtungsassistenten zu "
 "beenden."
 
-#: umc/js/setup/ApplianceWizard.js:1572
+#: umc/js/setup/ApplianceWizard.js:1571
 #, python-format
 msgid "The system has been configured with the IP address(es) %s."
 msgstr "Das System wurde mit den IP-Adresse(n) %s konfiguriert."
 
-#: umc/js/setup/ApplianceWizard.js:1540 umc/js/setup/ApplianceWizard.js:1576
+#: umc/js/setup/ApplianceWizard.js:1540 umc/js/setup/ApplianceWizard.js:1581
 #, python-format
 msgid ""
 "The system is reachable at <i>%s</i> or via its IP address(es) <i>%s</i>."
@@ -1307,7 +1303,7 @@ msgstr ""
 "Das System ist unter <i>%s</i> oder seinen IP-Adresse(n) <i>%s</i> "
 "erreichbar."
 
-#: umc/js/setup/ApplianceWizard.js:1578
+#: umc/js/setup/ApplianceWizard.js:1583
 #, python-format
 msgid "The system is reachable at <i>%s</i>."
 msgstr "Das System ist unter <i>%s</i> erreichbar."
@@ -1351,14 +1347,30 @@ msgid "This sytem will join an existing UCS domain with the role <i>%s</i>."
 msgstr ""
 "Das System tritt einer existierenden UCS-Domäne mit der Rolle <i>%s</i> bei."
 
-#: umc/js/setup/ApplianceWizard.js:334 umc/js/setup/LanguagePage.js:76
-#: umc/js/setup/LanguagePage.js:209
+#: umc/js/setup/LanguagePage.js:76 umc/js/setup/LanguagePage.js:209
+#: umc/js/setup/ApplianceWizard.js:334
 msgid "Time zone"
 msgstr "Zeitzone"
 
 #: umc/js/setup/LanguagePage.js:158
 msgid "Time zone and keyboard settings"
 msgstr "Zeitzonen- und Tastatureinstellungen"
+
+#: umc/js/setup/ApplianceWizard.js:1574
+msgid ""
+"To administrate the domain as well as the local system, login to Univention "
+"Management Console as user <i>Administrator</i>:"
+msgstr ""
+"Um die Domäne sowie das lokale System zu administrieren bitte mit dem Benutzer "
+"<i>Administrator</i> an Univention Management Console anmelden:"
+
+#: umc/js/setup/ApplianceWizard.js:1576
+msgid ""
+"To administrate the local system, login to Univention Management Console "
+"with the domain account <i>Administrator</i>:"
+msgstr ""
+"Um das lokale System zu administrieren bitte mit dem Domänenkonto "
+"<i>Administrator</i> an Univention Management Console anmelden:"
 
 #: umc/js/setup/InterfaceGrid.js:67
 msgid "Type"
@@ -1372,7 +1384,7 @@ msgstr "UCS-Konfiguration"
 msgid "UCS has been set up successfully"
 msgstr "UCS wurde erfolgreich eingerichtet"
 
-#: umc/js/setup/ApplianceWizard.js:1567
+#: umc/js/setup/ApplianceWizard.js:1568
 msgid "UCS has been successfully set up."
 msgstr "UCS wurde erfolgreich eingerichtet."
 
@@ -1417,8 +1429,8 @@ msgstr "Validierungsfehler"
 msgid "Virtual LAN"
 msgstr "Virtuelles LAN"
 
-#: umc/js/setup/ApplianceWizard.js:1981 umc/js/setup/ApplianceWizard.js:1997
-#: umc/js/setup/ApplianceWizard.js:2045 umc/js/setup/ApplianceWizard.js:2143
+#: umc/js/setup/ApplianceWizard.js:1986 umc/js/setup/ApplianceWizard.js:2002
+#: umc/js/setup/ApplianceWizard.js:2050 umc/js/setup/ApplianceWizard.js:2148
 msgid "Warning"
 msgstr "Warnung"
 
