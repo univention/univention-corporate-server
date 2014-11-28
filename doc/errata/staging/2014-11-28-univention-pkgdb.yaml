@@ -1,7 +1,7 @@
 product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
-src: univention-pkgsb
+src: univention-pkgdb
 fix: 8.1.1-2.196.201411290017
 version: [0]
 desc: |
