@@ -201,7 +201,8 @@ LABELS = {
 
 PAGES = ('systems', 'packages')
 
-SERVER_NOT_RUNNING_MSG = _('Maybe the PostgreSQL server is not running.\nIt can be started in the UMC module "System services".')
+def _server_not_running_msg():
+	return _('Maybe the PostgreSQL server is not running.\nIt can be started with the UMC module "System services".')
 
 class Instance(Base):
 	def init(self):
@@ -218,7 +219,7 @@ class Instance(Base):
 				self.connect()
 			else:
 				self.test_connection()
-			func(self, *args, **kwargs)
+			return func(self, *args, **kwargs)
 
 		return _connect
 
@@ -227,8 +228,8 @@ class Instance(Base):
 		try:
 			self.dbConnection = updb.open_database_connection(self.ucr, pkgdbu=True)
 		except pgdb.InternalError as ex:
-			MODULE.error('Could not establish connection to the PostgreSQL server: %s' % ex)
-			raise UMC_CommandError(_('Could not establish connection to the database.\n\n%s') % SERVER_NOT_RUNNING_MSG)
+			MODULE.error('Could not establish connection to the PostgreSQL server: %s' % (ex,))
+			raise UMC_CommandError(_('Could not establish connection to the database.\n\n%s') % (_server_not_running_msg(),))
 		else:
 			self.cursor = self.dbConnection.cursor()
 
@@ -237,9 +238,12 @@ class Instance(Base):
 		try:
 			self.cursor.execute('SELECT TRUE')
 		except pgdb.OperationalError as ex:
-			MODULE.error('Connection to the PostgreSQL server lost: %s' % ex)
+			MODULE.error('Connection to the PostgreSQL server lost: %s' % (ex,))
 			self.dbConnection = None
-			raise UMC_CommandError(_('Connection to the dabase lost.\n\n%s') % SERVER_NOT_RUNNING_MSG)
+			try:
+				self.connect()
+			except UMC_CommandError:
+				raise UMC_CommandError(_('Connection to the dabase lost.\n\n%s') % (_server_not_running_msg(),))
 
 	@simple_response
 	def reinit(self):

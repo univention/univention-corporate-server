@@ -1,3 +1,9 @@
+univention-pkgdb (8.1.1-2) unstable; urgency=medium
+
+  * Bug #35700: fix searching for packages
+
+ -- Florian Best <best@univention.de>  Sat, 29 Nov 2014 00:15:38 +0100
+
 univention-pkgdb (8.1.1-1) unstable; urgency=medium
 
   * Bug #35367: Fix import error

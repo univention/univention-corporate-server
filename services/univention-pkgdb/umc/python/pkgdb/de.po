@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-pkgdb\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-06-19 22:56+0200\n"
+"POT-Creation-Date: 2014-11-29 00:13+0100\n"
 "PO-Revision-Date: 2011-10-22 15:11+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr "Alle Eigenschaften"
 msgid "Config files only"
 msgstr "Nur Konfigurationsdateien"
 
-#: umc/python/pkgdb/__init__.py:242
+#: umc/python/pkgdb/__init__.py:246
 #, python-format
 msgid ""
 "Connection to the dabase lost.\n"
@@ -31,7 +31,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: umc/python/pkgdb/__init__.py:231
+#: umc/python/pkgdb/__init__.py:232
 #, python-format
 msgid ""
 "Could not establish connection to the database.\n"
@@ -98,13 +98,13 @@ msgstr "Installiert"
 msgid "Inventory date"
 msgstr "Erfassungsdatum"
 
-#: umc/python/pkgdb/__init__.py:204
+#: umc/python/pkgdb/__init__.py:205
 msgid ""
 "Maybe the PostgreSQL server is not running.\n"
-"It can be started in the UMC module \"System services\"."
+"It can be started with the UMC module \"System services\"."
 msgstr ""
 "Vielleicht läuft der PostgreSQL Server nicht.\n"
-"Er kann in dem UMC-Modul \"Systemdienste\" gestartet werden."
+"Er kann mithilfe des UMC-Moduls \"Systemdienste\" gestartet werden."
 
 #: umc/python/pkgdb/__init__.py:177
 msgid "Member Server"
