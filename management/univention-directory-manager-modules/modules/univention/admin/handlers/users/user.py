@@ -2198,7 +2198,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					shadowExpire=self.oldattr.get("shadowExpire", [''])[0]
 					if shadowExpire == '1':
 						if self['userexpiry']:
-							shadowExpire="%d" % long(time.mktime(time.strptime(self['userexpiry'],"%Y-%m-%d"))/3600/24+1)
+							shadowExpire="%d" % long(time.mktime(time.strptime(self['userexpiry'],"%d.%m.%y"))/3600/24+1)
 						else:
 							shadowExpire=''
 						ml.append(('shadowExpire', self.oldattr.get('shadowExpire', [''])[0], shadowExpire))
