@@ -10,6 +10,10 @@ Template: di-univention-system-setup/progress/uss
 Type: text
 _Description: Starting Univention System Setup...
 
+Template: di-univention-system-setup/progress/usstextmode
+Type: text
+_Description: Copying files for Univention System Setup... this may take some time...
+
 Template: di-univention-system-setup/progress/grub
 Type: text
 _Description: Setting up boot loader GRUB...
@@ -24,22 +28,21 @@ _Description: Done.
 
 Template: di-univention-system-setup/note/textmode
 Type: note
-_Description: Univention Corporate Server is ready for configuration
- Univention Corporate Server is now ready for configuration via web browser.
- Open a web browser on a different system and visit one of the following URLs:
+_Description: Configuration of Univention Corporate Server deferred
+ At this point Univention Corporate Server has been installed but the
+ configuration has been deferred.
+ .
+ When pressing "Next", the system will be configured for appliance mode. After
+ an automatic reboot, Univention System Setup is started automatically in
+ graphics mode and allows a subsequent configuration.
+ Alternatively the system may be configured after reboot via the web browser
+ by visiting one of the following URLs:
  .
  ${addresslist}
- .
- When pressing "Next", the configuration of Univention Corporate Server is
- omitted and the system will be configured for appliance mode. After an
- automatic reboot, Univention System Setup is started automatically in graphics
- mode and allows a subsequent configuration.
- Alternatively the system may be configured after reboot via the web browser
- by visiting one of the URLs above.
 
 Template: di-univention-system-setup/note/graphicmode
 Type: note
-_Description: Configuration of Univention Corporate Server defered
+_Description: Configuration of Univention Corporate Server deferred
  The configuration of Univention Corporate Server has been aborted.
  .
  When pressing "Next", Univention Corporate Server will be configured for appliance

@@ -36,7 +36,7 @@
 
 db_settitle di-univention-system-setup/progress/title
 
-db_progress START 0 4 di-univention-system-setup/progress/text
+db_progress START 0 5 di-univention-system-setup/progress/text
 db_progress SET 1
 db_progress INFO di-univention-system-setup/progress/grub
 in-target /usr/sbin/ucr set --force interfaces/restart/auto=no
@@ -54,6 +54,10 @@ in-target /usr/sbin/ucr set system/setup/boot/start=true
 # start univention-system-setup if in GTK mode
 if [ -n "$DISPLAY" ]; then
 	chroot /target /usr/share/univention-system-setup/startxwithfirefox --installer
+else
+	db_progress SET 4
+	db_progress INFO di-univention-system-setup/progress/usstextmode
+	chroot /target /usr/share/univention-system-setup/startxwithfirefox --installertext
 fi
 
 ussbootflag="$(chroot /target /usr/sbin/ucr get system/setup/boot/start)"
@@ -82,7 +86,7 @@ fi
 # remove root.secret if startxwithfirefox didn't remove it
 rm -f /target/var/lib/univention-ldap/root.secret
 
-db_progress SET 4
+db_progress SET 5
 db_progress INFO di-univention-system-setup/progress/done
 in-target /usr/sbin/ucr set repository/online=yes
 db_progress STOP
