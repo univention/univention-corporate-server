@@ -1,3 +1,9 @@
+univention-system-setup (8.1.65-27) unstable; urgency=medium
+
+  * Bug #36940: corrected log message
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 28 Nov 2014 13:47:16 +0100
+
 univention-system-setup (8.1.65-26) unstable; urgency=medium
 
   * Bug #36940: adapted error handling for check_domain
