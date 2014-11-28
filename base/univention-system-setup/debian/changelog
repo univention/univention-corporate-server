@@ -1,3 +1,10 @@
+univention-system-setup (8.1.65-29) unstable; urgency=medium
+
+  * Bug #37105: adjust 15_keyboard/10keyboard for handling of new UCR
+    variables for the keyboard configuration
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 28 Nov 2014 15:43:35 +0100
+
 univention-system-setup (8.1.65-28) unstable; urgency=low
 
   * Bug #36968: updated handling of text mode installation

@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash
 #
 # Univention Setup
 #  keyboard change script
@@ -34,10 +34,17 @@
 
 info_header "$0" "$(gettext "Setting keyboard layout")"
 
-xlayout=`get_profile_var xorg/keyboard/options/XkbLayout`
-xvariant=`get_profile_var xorg/keyboard/options/XkbVariant`
+ucr_vars=()
+for ikey in xorg/keyboard/options/XkbModel xorg/keyboard/options/XkbLayout xorg/keyboard/options/XkbVariant
+do
+	is_variable_set "$ikey"
+	if [ $? = 1 ]; then
+		ival=`get_profile_var $ikey`
+		ucr_vars+=("$ikey=$ival")
+	fi
+done
 
-if [ -z "$xlayout" ]; then
+if [ "${#ucr_vars[@]}" = "0" ]; then
 	exit 0
 fi
 
@@ -45,7 +52,6 @@ if [ "$check_ldap_access" = "1" ]; then
 	exit 0
 fi
 
-univention-config-registry set xorg/keyboard/options/XkbLayout="$xlayout" \
-	xorg/keyboard/options/XkbVariant="$xvariant"
+univention-config-registry set "${ucr_vars[@]}"
 
 exit 0
