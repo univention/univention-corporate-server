@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-directory-manager-modules
+fix: 10.0.29-1.1265.201411281913
+version: [0]
+desc: |
+  * Fixed setting of userexpiry when a user account is disabled.
+  * Fixed removal of the account expiry date of a user.
+bug: [36330, 25279]
