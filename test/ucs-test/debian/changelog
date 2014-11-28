@@ -1,3 +1,9 @@
+ucs-test (5.0.64-1) unstable; urgency=low
+
+  * 00_checks/20_pgrep_samba_nmbd: check that nmbd process exists (Bug #37022).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 28 Nov 2014 14:55:47 +0100
+
 ucs-test (5.0.63-1) unstable; urgency=low
 
   * 00_checks: added a new test section;
