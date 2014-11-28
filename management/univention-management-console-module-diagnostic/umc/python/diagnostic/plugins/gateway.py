@@ -24,7 +24,7 @@ umc_modules = [{
 def run():
 	ucr.load()
 	gateway = ucr.get('gateway')
-	process = Popen(['/bin/ping', '-c1', '-w500', gateway], stdout=PIPE, stderr=STDOUT)
+	process = Popen(['/bin/ping', '-c3', '-w4', '-W4', gateway], stdout=PIPE, stderr=STDOUT)
 	stdout, stderr = process.communicate()
 	if process.returncode:
 		raise Critical('\n'.join([description % (gateway,), '', stdout]))
