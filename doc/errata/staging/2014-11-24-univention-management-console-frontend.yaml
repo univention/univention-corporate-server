@@ -6,5 +6,5 @@ fix: 4.1.105-1.964.201411271447
 version: [0]
 desc: |
   * Adjusted the styling of the notification if javascript is disabled
-  * Shows a error message if Internet Explorer <= 8 is used
+  * Internet Explorer now shows a warning message if a version <= 8 is beeing used.
 bug: [36338, 36914]
