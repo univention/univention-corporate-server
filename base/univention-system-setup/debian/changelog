@@ -1,3 +1,9 @@
+univention-system-setup (8.1.65-24) unstable; urgency=low
+
+  * Bug #36937: Timeout rdate command after 15+5s
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 28 Nov 2014 12:12:03 +0100
+
 univention-system-setup (8.1.65-23) unstable; urgency=low
 
   * Bug #36937: Timeout rdate command after 15+5s

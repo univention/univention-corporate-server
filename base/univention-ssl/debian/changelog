@@ -1,3 +1,9 @@
+univention-ssl (9.0.4-3) unstable; urgency=low
+
+  * Bug #36934: Timeout rdate command after 15+5s
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 28 Nov 2014 12:12:13 +0100
+
 univention-ssl (9.0.4-2) unstable; urgency=low
 
   * Bug #36934: Timeout rdate command after 15+5s
