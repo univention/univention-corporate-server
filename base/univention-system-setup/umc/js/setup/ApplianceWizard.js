@@ -349,7 +349,7 @@ define([
 			}), lang.mixin({}, pageConf, {
 				name: 'network',
 				headerText: _('Domain and network configuration'),
-				helpText: _('Enter name and password of a user account which is authorised to join a system into this domain.'),
+				helpText: _('Specify the network settings for this system.'),
 				layout: [
 					'_dhcp',
 					['_ip0', '_netmask0'],
@@ -603,7 +603,7 @@ define([
 			}), lang.mixin({}, pageConf, {
 				name: 'credentials-ad',
 				headerText: _('Active Directory join information'),
-				helpText: _('Specify credentials to join into the Active Directory domain.'),
+				helpText: _('Enter name and password of a user account which is authorised to join a system into this domain.'),
 				widgets: [{
 					type: TextBox,
 					name: 'ad/address',
@@ -612,19 +612,19 @@ define([
 				}, {
 					type: TextBox,
 					name: 'ad/username',
-					label: _('Active Directory account'),
+					label: _('Username'),
 					value: 'Administrator',
 					required: true
 				}, {
 					type: PasswordBox,
 					name: 'ad/password',
-					label: _('Active Directory password'),
+					label: _('Password'),
 					required: true
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'credentials-nonmaster',
 				headerText: _('Domain join information'),
-				helpText: _('Specify credentials to join into the UCS domain.'),
+				helpText: _('Enter name and password of a user account which is authorised to join a system into this domain.'),
 				widgets: [{
 					type: CheckBox,
 					name: 'start/join',

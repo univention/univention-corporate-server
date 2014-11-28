@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-11-27 14:58+0100\n"
+"POT-Creation-Date: 2014-11-28 10:20+0100\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -202,17 +202,9 @@ msgstr ""
 msgid "Account information"
 msgstr "Kontoinformationen"
 
-#: umc/js/setup/ApplianceWizard.js:615
-msgid "Active Directory account"
-msgstr "Active Directory-Konto"
-
 #: umc/js/setup/ApplianceWizard.js:605
 msgid "Active Directory join information"
 msgstr "Active Directory-Kontoinformationen"
-
-#: umc/js/setup/ApplianceWizard.js:621
-msgid "Active Directory password"
-msgstr "Active Directory-Passwort"
 
 #: umc/js/setup/ApplianceWizard.js:1274
 msgid "Adapt settings"
@@ -630,7 +622,7 @@ msgstr ""
 "Geben Sie eine nahegelegene Stadt zur Einrichtung von Zeitzone, "
 "Systemsprache und Tastaturlayout ein."
 
-#: umc/js/setup/ApplianceWizard.js:352
+#: umc/js/setup/ApplianceWizard.js:606 umc/js/setup/ApplianceWizard.js:627
 msgid ""
 "Enter name and password of a user account which is authorised to join a "
 "system into this domain."
@@ -1105,7 +1097,8 @@ msgstr "Einstellungen der Organisation"
 msgid "Parent interface"
 msgstr "Übergeordnetes Netzwerkgerät"
 
-#: umc/js/setup/ApplianceWizard.js:601 umc/js/setup/ApplianceWizard.js:662
+#: umc/js/setup/ApplianceWizard.js:601 umc/js/setup/ApplianceWizard.js:621
+#: umc/js/setup/ApplianceWizard.js:662
 msgid "Password"
 msgstr "Passwort"
 
@@ -1204,17 +1197,13 @@ msgstr "Softwarekomponenten"
 msgid "Software configuration"
 msgstr "Software-Konfiguration"
 
-#: umc/js/setup/ApplianceWizard.js:606
-msgid "Specify credentials to join into the Active Directory domain."
-msgstr "Eingabe der Zugangsdaten für den Beitritt zur Active Directory-Domäne."
-
-#: umc/js/setup/ApplianceWizard.js:627
-msgid "Specify credentials to join into the UCS domain."
-msgstr "Eingabe der Zugangsdaten für den Beitritt zur UCS-Domäne."
-
 #: umc/js/setup/ApplianceWizard.js:672 umc/js/setup/ApplianceWizard.js:695
 msgid "Specify the name of this system."
 msgstr "Eingabe des Namens dieses Systems."
+
+#: umc/js/setup/ApplianceWizard.js:352
+msgid "Specify the network settings for this system."
+msgstr "Eingabe der Netzwerkeinstellungen dieses Systems."
 
 #: umc/js/setup/ApplianceWizard.js:538
 msgid "Specify the type of this system."
@@ -1408,7 +1397,7 @@ msgid "Use this option if you already have one or more UCS systems."
 msgstr ""
 "Wählen Sie diese Option, falls bereits mindestens ein UCS-System existiert."
 
-#: umc/js/setup/ApplianceWizard.js:656
+#: umc/js/setup/ApplianceWizard.js:615 umc/js/setup/ApplianceWizard.js:656
 msgid "Username"
 msgstr "Benutzername"
 
@@ -1542,6 +1531,12 @@ msgstr "setzen"
 
 #~ msgid "Account description"
 #~ msgstr "Beschreibung des Kontos"
+
+#~ msgid "Active Directory account"
+#~ msgstr "Active Directory-Konto"
+
+#~ msgid "Active Directory password"
+#~ msgstr "Active Directory-Passwort"
 
 #~ msgid "Administrator password"
 #~ msgstr "Passwort des Administrator-Benutzerkontos"
@@ -1701,6 +1696,13 @@ msgstr "setzen"
 #~ msgid "Software settings"
 #~ msgstr "Software-Einstellungen"
 
+#~ msgid "Specify credentials to join into the Active Directory domain."
+#~ msgstr ""
+#~ "Eingabe der Zugangsdaten für den Beitritt zur Active Directory-Domäne."
+
+#~ msgid "Specify credentials to join into the UCS domain."
+#~ msgstr "Eingabe der Zugangsdaten für den Beitritt zur UCS-Domäne."
+
 #~ msgid "Specify hostname and configure network settings for this system."
 #~ msgstr ""
 #~ "Eingabe von Rechnername und Konfiguration der Netzwerkeinstellungen "
@@ -1712,9 +1714,6 @@ msgstr "setzen"
 #~ msgstr ""
 #~ "Eingabe von Rechnername und einem Passwort für den lokalen Superuser "
 #~ "<i>root</i> sowie Konfiguration der Netzwerkeinstellungen dieses Systems."
-
-#~ msgid "Specify the network settings for this system."
-#~ msgstr "Eingabe der Netzwerkeinstellungen dieses Systems."
 
 #~ msgid ""
 #~ "Specify the type of the system to join into an existing UCS domain. For "
