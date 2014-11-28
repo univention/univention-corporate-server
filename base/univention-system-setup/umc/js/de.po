@@ -264,7 +264,7 @@ msgid ""
 "Alternatively, you may click on the button <i>Finish</i> to exit the wizard "
 "and resolve the described problems at a later point."
 msgstr ""
-"Alternativ können Sie auf den Button <i>Fertigstellen</i> klicken um den "
+"Alternativ können Sie auf den Button <i>Fertigstellen</i> klicken, um den "
 "Einrichtungsassistenten zu beenden und die beschriebenen Probleme zu einem "
 "späteren Zeitpunkt zu beheben."
 
@@ -273,7 +273,7 @@ msgid ""
 "Alternatively, you may click on the button <i>Finish</i> to exit the wizard "
 "and resolve the described problems via Univention Management Console."
 msgstr ""
-"Alternativ können Sie auf den Button <i>Fertigstellen</i> klicken um den "
+"Alternativ können Sie auf den Button <i>Fertigstellen</i> klicken, um den "
 "Einrichtungsassistenten zu beenden und die beschriebenen Probleme mittels "
 "Univention Management Console zu beheben."
 
@@ -457,7 +457,7 @@ msgid ""
 "created a new UCS domain:"
 msgstr ""
 "Verbinden Sie sich auf diesem System zur Univention Management Console "
-"entweder als Benutzer <i>Administrator</i> oder als Benutzer <i>root</i> "
+"entweder als Benutzer <i>Administrator</i> oder als Benutzer <i>root</i>, "
 "falls das System noch keine neue UCS-Domäne erstellt hat:"
 
 #: umc/js/setup/ApplianceWizard.js:1548
@@ -467,7 +467,7 @@ msgid ""
 "joined the domain:"
 msgstr ""
 "Verbinden Sie sich auf diesem System zur Univention Management Console "
-"entweder als Benutzer <i>Administrator</i> oder als Benutzer <i>root</i> "
+"entweder als Benutzer <i>Administrator</i> oder als Benutzer <i>root</i>, "
 "falls das System noch nicht der Domäne beigetreten ist:"
 
 #: umc/js/setup/ApplianceWizard.js:2091
@@ -1252,7 +1252,7 @@ msgstr "Die folgenden Einträge konnten nicht validiert werden:"
 #: umc/js/setup/ApplianceWizard.js:1517
 msgid "The following errors occurred while applying the settings."
 msgstr ""
-"Die die folgenden Fehler sind beim Setzen der Konfigurationseinstellungen "
+"Die folgenden Fehler sind beim Setzen der Konfigurationseinstellungen "
 "aufgetreten."
 
 #: umc/js/setup/InterfaceGrid.js:143
@@ -1293,14 +1293,14 @@ msgstr ""
 #: umc/js/setup/ApplianceWizard.js:1571
 #, python-format
 msgid "The system has been configured with the IP address(es) %s."
-msgstr "Das System wurde mit den IP-Adresse(n) %s konfiguriert."
+msgstr "Das System wurde mit der/den IP-Adresse(n) %s konfiguriert."
 
 #: umc/js/setup/ApplianceWizard.js:1540 umc/js/setup/ApplianceWizard.js:1581
 #, python-format
 msgid ""
 "The system is reachable at <i>%s</i> or via its IP address(es) <i>%s</i>."
 msgstr ""
-"Das System ist unter <i>%s</i> oder seinen IP-Adresse(n) <i>%s</i> "
+"Das System ist unter <i>%s</i> oder seiner/seinen IP-Adresse(n) <i>%s</i> "
 "erreichbar."
 
 #: umc/js/setup/ApplianceWizard.js:1583
@@ -1361,7 +1361,7 @@ msgid ""
 "To administrate the domain as well as the local system, login to Univention "
 "Management Console as user <i>Administrator</i>:"
 msgstr ""
-"Um die Domäne sowie das lokale System zu administrieren bitte mit dem Benutzer "
+"Um die Domäne sowie das lokale System zu administrieren, können Sie sich mit dem Benutzer "
 "<i>Administrator</i> an Univention Management Console anmelden:"
 
 #: umc/js/setup/ApplianceWizard.js:1576
@@ -1369,7 +1369,7 @@ msgid ""
 "To administrate the local system, login to Univention Management Console "
 "with the domain account <i>Administrator</i>:"
 msgstr ""
-"Um das lokale System zu administrieren bitte mit dem Domänenkonto "
+"Um das lokale System zu administrieren, können Sie sich mit dem Domänenkonto "
 "<i>Administrator</i> an Univention Management Console anmelden:"
 
 #: umc/js/setup/InterfaceGrid.js:67

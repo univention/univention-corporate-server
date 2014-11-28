@@ -1,3 +1,9 @@
+univention-system-setup (8.1.65-33) unstable; urgency=medium
+
+  * Bug #36938: adjusted German translations
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 28 Nov 2014 21:02:31 +0100
+
 univention-system-setup (8.1.65-32) unstable; urgency=medium
 
   * Bug #29922: search for locales with wildcards
