@@ -42,6 +42,8 @@ desc: |
   * In text mode or after aborting the configuration, a message is shown to the
     user how the UMC can be accessed after reboot.
   * The configuration of keyboard model and keyboard variant has been corrected.
+  * The search for system locales has been adjusted such that wildcards are
+    implictely used.
 bug:
  - 36665
  - 36936
@@ -65,3 +67,4 @@ bug:
  - 36971
  - 36968
  - 37105
+ - 29922
