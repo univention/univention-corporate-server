@@ -1,3 +1,14 @@
+ucs-test (5.0.63-1) unstable; urgency=low
+
+  * 00_checks: added a new test section;
+    00_checks/10_s4_connector_rejects: moved the test from ucs-school;
+    debian/control: added new section for '00_checks';
+    debian/ucslint.overrides: adjusted pattern to '01_base';
+    debian/ucs-test-base.install: adjusted path to '01_base';
+    debian/ucs-test-checks.install: added new file (Bug #37011).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 28 Nov 2014 11:58:30 +0100
+
 ucs-test (5.0.62-1) unstable; urgency=low
 
   *  00_base/check_log_files_definitions.py: extended ignore patterns.

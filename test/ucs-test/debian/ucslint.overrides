@@ -10,4 +10,4 @@
 # Copyright
 0010-2
 # Depcreated univention-*
-0016-2: tests/00_base/check_log_files_definitions.py
+0016-2: tests/01_base/check_log_files_definitions.py

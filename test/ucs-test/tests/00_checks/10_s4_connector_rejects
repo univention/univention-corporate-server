@@ -1,0 +1,23 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: Check for rejected objects
+## exposure: safe
+## bugs: [37011]
+## packages:
+## - univention-s4-connector
+
+RETVAL=0
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+eval "$(ucr shell)"
+
+test -n "$connector_s4_ldap_host" || exit 137
+
+univention-s4connector-list-rejected | egrep -q "(UCS DN|S4 DN)"
+if [ $? = 0 ]; then
+	univention-s4connector-list-rejected
+	fail_test 1 "Rejects found"
+fi
+
+exit $RETVAL
+

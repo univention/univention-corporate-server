@@ -41,6 +41,15 @@ Description: UCS test environment
  .
  This package contains the top-level ucs-test program.
 
+Package: ucs-test-checks
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Basic checks
+ This package includes checks that do not modify the system.
+
 Package: ucs-test-base
 Architecture: all
 Recommends: ucs-test-framework
@@ -460,6 +469,7 @@ Description: Test scripts to test basic and ntlm authentications
 Package: ucs-test-modules-all
 Architecture: all
 Depends:
+ ucs-test-checks,
  ucs-test-base,
 # ucs-test-quota,
  ucs-test-ldap,
