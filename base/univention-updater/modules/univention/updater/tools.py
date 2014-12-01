@@ -1721,10 +1721,15 @@ class UniventionUpdater:
 				ud.debug(ud.ADMIN, ud.ALL, "Accessing %s" % path)
 				try:
 					_code, _size, script = server.access(path, get=True)
+					# Bug #37031: dansguarding is lying and returns 200 even for blocked content
+					if not script.startswith('#!'):
+						raise ProxyError("Failed to fetch '%s' - maybe blocked by a proxy?")
 					if verify and struct >= UCS_Version((3, 2, 0)):
 						path_gpg = path + '.gpg'
 						try:
 							_code, _size, signature = server.access(path_gpg, get=True)
+							if not signature.startswith("-----BEGIN PGP SIGNATURE-----"):
+								raise ProxyError("Failed to fetch '%s' - maybe blocked by a proxy?")
 						except DownloadError:
 							raise VerificationError(path_gpg, "Signature download failed")
 						error = verify_script(script, signature)

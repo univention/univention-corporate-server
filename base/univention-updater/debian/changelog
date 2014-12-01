@@ -1,3 +1,9 @@
+univention-updater (10.0.51-2) unstable; urgency=low
+
+  * Bug #37031: Detect broken Dansguardian proxy
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Dec 2014 12:14:10 +0100
+
 univention-updater (10.0.51-1) unstable; urgency=medium
 
   * Once again the app/component list. Install in any case (Bug #36769)
