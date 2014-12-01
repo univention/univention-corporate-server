@@ -503,7 +503,7 @@ define([
 					if (data.result.finished) {
 						deferred.resolve();
 					} else {
-						setTimeout(lang.hitch(this, 'umcpProgressSubCommand', lang.mixin({}, props, {deferred: deferred}), 200);
+						setTimeout(lang.hitch(this, 'umcpProgressSubCommand', lang.mixin({}, props, {deferred: deferred}), 200));
 					}
 				}),
 				function() {

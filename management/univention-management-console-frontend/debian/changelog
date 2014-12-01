@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.105-4) unstable; urgency=medium
+
+  * Bug #36875: fix typo
+
+ -- Florian Best <best@univention.de>  Mon, 01 Dec 2014 11:55:17 +0100
+
 univention-management-console-frontend (4.1.105-3) unstable; urgency=medium
 
   * Bug #36875: use the correct flavor in umcpSubProgressCommand
