@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.105-3) unstable; urgency=medium
+
+  * Bug #36875: use the correct flavor in umcpSubProgressCommand
+
+ -- Florian Best <best@univention.de>  Mon, 01 Dec 2014 11:41:03 +0100
+
 univention-management-console-frontend (4.1.105-2) unstable; urgency=medium
 
   * Bug #36645: don't print exception in javascript console when the grid is

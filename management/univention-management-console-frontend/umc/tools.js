@@ -450,7 +450,7 @@ define([
 			/*Object?*/ dataObj,
 			/*Boolean?*/ handleErrors,
 			/*String?*/ flavor,
-			/*Object?*/ longPollingOptions ) {
+			/*Object?*/ longPollingOptions) {
 
 			// summary:
 			//		Sends an initial request and expects a "../progress" function
@@ -465,23 +465,25 @@ define([
 					var allData = [];
 					var splitIdx = commandStr.lastIndexOf('/');
 					var progressCmd = commandStr.slice(0, splitIdx) + '/progress';
-					this.umcpProgressSubCommand(progressCmd, progressID).then(
-						function() {
+					this.umcpProgressSubCommand({
+						progressCmd: progressCmd,
+						progressID: progressID,
+						flavor: flavor
+					}).then(function() {
 							deferred.resolve(allData);
-						}, function() {
-							deferred.reject();
-						}, function(result) {
-							allData = allData.concat(result.intermediate);
-							if (result.percentage === 'Infinity') { // FIXME: JSON cannot handle Infinity
-								result.percentage = Infinity;
-							}
-							progressBar.setInfo(result.title, result.message, result.percentage);
-							deferred.progress(result);
-							if ('result' in result) {
-								deferred.resolve(result.result);
-							}
+					}, function() {
+						deferred.reject();
+					}, function(result) {
+						allData = allData.concat(result.intermediate);
+						if (result.percentage === 'Infinity') { // FIXME: JSON cannot handle Infinity
+							result.percentage = Infinity;
 						}
-					);
+						progressBar.setInfo(result.title, result.message, result.percentage);
+						deferred.progress(result);
+						if ('result' in result) {
+							deferred.resolve(result.result);
+						}
+					});
 				}),
 				function() {
 					deferred.reject(arguments);
@@ -490,17 +492,18 @@ define([
 			return deferred;
 		},
 
-		umcpProgressSubCommand: function(progressCmd, progressID, deferred) {
+		umcpProgressSubCommand: function(props) {
+			var deferred = props.deferred;
 			if (deferred === undefined) {
 				deferred = new Deferred();
 			}
-			this.umcpCommand(progressCmd, {'progress_id' : progressID}).then(
+			this.umcpCommand(props.progressCmd, {'progress_id' : props.progressID}, props.handleErrors, props.flavor).then(
 				lang.hitch(this, function(data) {
 					deferred.progress(data.result);
 					if (data.result.finished) {
 						deferred.resolve();
 					} else {
-						setTimeout(lang.hitch(this, 'umcpProgressSubCommand', progressCmd, progressID, deferred), 200);
+						setTimeout(lang.hitch(this, 'umcpProgressSubCommand', lang.mixin({}, props, {deferred: deferred}), 200);
 					}
 				}),
 				function() {
