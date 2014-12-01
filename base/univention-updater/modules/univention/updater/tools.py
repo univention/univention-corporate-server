@@ -650,17 +650,20 @@ class UniventionUpdater:
 			try:
 				assert self.server.access(repo.path())
 				self.log.info('Found version %s', repo.path())
+				failed = set()
 				for component in components:
 					self.log.info('Checking for component %s', component)
 					mm_version = UCS_Version.FORMAT % ver
 					if not self.get_component_repositories(component, [mm_version], clean=False, debug=debug):
 						self.log.error('Missing component %s', component)
-						ex = RequiredComponentError(mm_version, component)
 						if errorsto == 'stderr':
-							print >> sys.stderr, ex
+							print >> sys.stderr, RequiredComponentError(mm_version, [component])
 						elif errorsto == 'exception':
-							raise ex
-						return None
+							failed.add(component)
+						else:
+							return None
+				if failed:
+					raise RequiredComponentError(mm_version, failed)
 				else:
 					self.log.info('Going for version %s', ver)
 					return UCS_Version.FULLFORMAT % ver
@@ -687,10 +690,10 @@ class UniventionUpdater:
 		while ucs_version:
 			try:
 				ucs_version = self.get_next_version(UCS_Version(ucs_version), components, errorsto='exception')
-			except RequiredComponentError, e:
-				self.log.warn('Update blocked by component %s', e.component)
+			except RequiredComponentError as ex:
+				self.log.warn('Update blocked by components %s', ', '.join(ex.components))
 				# e.component blocks update to next version ==> return current list and blocking component
-				return result, e.component
+				return result, ex.components
 
 			if ucs_version:
 				result.append(ucs_version)
@@ -1209,7 +1212,7 @@ class UniventionUpdater:
 								valid = True
 						if not valid:
 							break
-						
+
 
 	def print_version_repositories( self, clean = False, dists = False, start = None, end = None ):
 		'''Return a string of Debian repository statements for all UCS versions
@@ -1604,7 +1607,7 @@ class UniventionUpdater:
 		# USER_AGENT='updater/identify - version/version-version/patchlevel errata version/erratalevel - uuid/system - uuid/license'
 		# USER_AGENT='UCS upater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 4c52d2da-d04d-4b05-a593-1974ee851fc8'
 		# USER_AGENT='UCS upater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 00000000-0000-0000-0000-000000000000'
-		return '%s - %s-%s errata%s - %s - %s - %s' % ( self.configRegistry.get('updater/identify', 'UCS'), 
+		return '%s - %s-%s errata%s - %s - %s - %s' % ( self.configRegistry.get('updater/identify', 'UCS'),
 								self.configRegistry.get('version/version'), self.configRegistry.get('version/patchlevel'),
 								self.configRegistry.get('version/erratalevel'),
 								self.configRegistry.get('uuid/system', '00000000-0000-0000-0000-000000000000'),

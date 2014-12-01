@@ -122,7 +122,7 @@ define([
 				},
 				{
 					type:			'HiddenInput',
-					name:			'release_update_blocking_component'
+					name:			'release_update_blocking_components'
 				},
 				{
 					type:			'ComboBox',
@@ -155,8 +155,10 @@ define([
 
 							var componentQueryDeferred = new Deferred();
 							var appliance_mode = (this._form.getWidget('appliance_mode').get('value') === 'true');
-							var blocking_component = this._form.getWidget('release_update_blocking_component').get('value');
-							if ((blocking_component) && (! appliance_mode)) {
+							var blocking_components = this._form.getWidget('release_update_blocking_components').get('value');
+							if ((blocking_components) && (! appliance_mode)) {
+								// FIXME iterate through all components
+								var blocking_component = blocking_components[0];
 								tools.umcpCommand('appcenter/get_by_component_id', {component_id: blocking_component}, false).then(
 									lang.hitch(this, function(data) {
 										var app = data.result;
@@ -452,7 +454,7 @@ define([
 					var element = this._form.getWidget('easy_available_text');
 					var ava = ((values.easy_update_available === true) || (values.easy_update_available === 'true'));
 					var appliance_mode = ((values.appliance_mode === true) || (values.appliance_mode === 'true'));
-					var blocking_component = this._form.getWidget('release_update_blocking_component').get('value');
+					var blocking_component = this._form.getWidget('release_update_blocking_components').get('value');
 					if (ava) {
 						element.set('content', _("There are updates available."));
 					} else if ((blocking_component) && (! appliance_mode)) {

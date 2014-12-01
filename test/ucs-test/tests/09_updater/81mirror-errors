@@ -91,7 +91,7 @@ run_tests () { # execute all updater programs
 
 	ucr set "${comp}DUMMY=yes" "${comp}DUMMY/parts=maintained" "${comp}DUMMY/version=current"
 	grep -F "Configuration error: component not found" /etc/apt/mirror.list
-	univention-repository-update net 2>&1 | grep -F " is marked as required."
+	univention-repository-update net 2>&1 | grep -F " marked as required."
 	ucr unset "${comp}DUMMY" "${comp}DUMMY/parts" "${comp}DUMMY/version"
 
 	ucr set proxy/http="http://${username}:${password}@DUMMY:${proxy_port}"

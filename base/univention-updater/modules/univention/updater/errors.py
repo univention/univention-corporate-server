@@ -35,13 +35,19 @@ class UpdaterException(Exception):
 	"""The root of all updater excptions."""
 	pass
 
+
 class RequiredComponentError(UpdaterException):
 	"""Signal required component not available."""
-	def __init__(self, version, component):
+	def __init__(self, version, components):
 		self.version = version
-		self.component = component
+		self.components = components
+
 	def __str__(self):
-		return "An update to UCS %s without the component '%s' is not possible because the component '%s' is marked as required." % (self.version, self.component, self.component)
+		if len(self.components) == 1:
+			return "The update to UCS %s is blocked because the component '%s' is marked as required." % (
+				self.version, self.component[0])
+		return "The update to UCS %s is blocked because the components %s are marked as required." % (
+			self.version, ', '.join("'%s'" for _ in self.component))
 
 class PreconditionError(UpdaterException):
     """Signal abort by release or component pre-/post-update script.
