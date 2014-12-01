@@ -1,3 +1,9 @@
+univention-updater (9.0.44-5) unstable; urgency=low
+
+  * Bug #37031: Detect broken Dansguardian proxy
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Dec 2014 14:57:53 +0100
+
 univention-updater (9.0.44-4) unstable; urgency=low
 
   * Bug #36269: fixes for univention-repository-create

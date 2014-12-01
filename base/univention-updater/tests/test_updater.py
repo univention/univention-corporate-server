@@ -869,15 +869,15 @@ class TestUniventionUpdater(unittest.TestCase):
         server = MockUCSHttpServer('server')
         struct = U.UCSRepoPool(major=MAJOR, minor=MINOR, part=PART, patchlevel=PATCH, arch=ARCH)
         preup_path = struct.path('preup.sh')
-        server.mock_add(preup_path, 'preup_content')
+        server.mock_add(preup_path, '#!preup_content')
         postup_path = struct.path('postup.sh')
-        server.mock_add(postup_path, 'postup_content')
+        server.mock_add(postup_path, '#!postup_content')
         repo = ((server, struct),)
 
         gen = U.UniventionUpdater.get_sh_files(repo)
 
-        self.assertEqual((server, struct, 'preup', preup_path, 'preup_content'), gen.next())
-        self.assertEqual((server, struct, 'postup', postup_path, 'postup_content'), gen.next())
+        self.assertEqual((server, struct, 'preup', preup_path, '#!preup_content'), gen.next())
+        self.assertEqual((server, struct, 'postup', postup_path, '#!postup_content'), gen.next())
         self.assertRaises(StopIteration, gen.next)
 
     def test_get_sh_files_bug27149(self):
@@ -885,15 +885,15 @@ class TestUniventionUpdater(unittest.TestCase):
         server = MockUCSHttpServer('server')
         struct = U.UCSRepoPoolNoArch(major=MAJOR, minor=MINOR, part='%s/component' % (PART,), patch='a')
         preup_path = struct.path('preup.sh')
-        server.mock_add(preup_path, 'preup_content')
+        server.mock_add(preup_path, '#!preup_content')
         postup_path = struct.path('postup.sh')
-        server.mock_add(postup_path, 'postup_content')
+        server.mock_add(postup_path, '#!postup_content')
         repo = ((server, struct),)
 
         gen = U.UniventionUpdater.get_sh_files(repo)
 
-        self.assertEqual((server, struct, 'preup', preup_path, 'preup_content'), gen.next())
-        self.assertEqual((server, struct, 'postup', postup_path, 'postup_content'), gen.next())
+        self.assertEqual((server, struct, 'preup', preup_path, '#!preup_content'), gen.next())
+        self.assertEqual((server, struct, 'postup', postup_path, '#!postup_content'), gen.next())
         self.assertRaises(StopIteration, gen.next)
 
 if __name__ == '__main__':

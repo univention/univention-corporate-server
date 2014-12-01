@@ -98,17 +98,17 @@ class TestUniventionMirror(unittest.TestCase):
             })
         uris = {
             '%d.%d/maintained/%d.%d-%d/%s/Packages.gz' % (MAJOR, 0, MAJOR, 0, 0, 'all'): DATA,
-            '%d.%d/maintained/%d.%d-%d/%s/preup.sh' % (MAJOR, 0, MAJOR, 0, 0, 'all'): 'r_pre',
-            '%d.%d/maintained/%d.%d-%d/%s/postup.sh' % (MAJOR, 0, MAJOR, 0, 0, 'all'): 'r_post',
+            '%d.%d/maintained/%d.%d-%d/%s/preup.sh' % (MAJOR, 0, MAJOR, 0, 0, 'all'): '#!r_pre',
+            '%d.%d/maintained/%d.%d-%d/%s/postup.sh' % (MAJOR, 0, MAJOR, 0, 0, 'all'): '#!r_post',
             '%d.%d/maintained/%d.%d-%d/%s/Packages.gz' % (MAJOR, 0, MAJOR, 0, 0, ARCH): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', 'all'): DATA,
-            '%d.%d/maintained/component/%s/%s/preup.sh' % (MAJOR, 0, 'a', 'all'): 'a_pre',
-            '%d.%d/maintained/component/%s/%s/postup.sh' % (MAJOR, 0, 'a', 'all'): 'a_post',
+            '%d.%d/maintained/component/%s/%s/preup.sh' % (MAJOR, 0, 'a', 'all'): '#!a_pre',
+            '%d.%d/maintained/component/%s/%s/postup.sh' % (MAJOR, 0, 'a', 'all'): '#!a_post',
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', ARCH): DATA,
             '%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): DATA,
             '%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): DATA,
-            '%d.%d/maintained/component/%s/preup.sh' % (MAJOR, 0, 'b'): 'b_pre',
-            '%d.%d/maintained/component/%s/postup.sh' % (MAJOR, 0, 'b'): 'b_post',
+            '%d.%d/maintained/component/%s/preup.sh' % (MAJOR, 0, 'b'): '#!b_pre',
+            '%d.%d/maintained/component/%s/postup.sh' % (MAJOR, 0, 'b'): '#!b_post',
             }
         self._uri(uris)
         self.m.mirror_update_scripts()
