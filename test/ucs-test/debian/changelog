@@ -1,3 +1,9 @@
+ucs-test (5.0.66-1) unstable; urgency=medium
+
+  * Bug #36980: Fix __del__ cleanup issue in 100sync_gpo_ntsecurity_descriptor
+
+ -- Arvid Requate <requate@univention.de>  Mon, 01 Dec 2014 13:53:47 +0100
+
 ucs-test (5.0.65-1) unstable; urgency=low
 
   * 20_appcenter/12_check_apps_ini_all_fields: check .ini files for description

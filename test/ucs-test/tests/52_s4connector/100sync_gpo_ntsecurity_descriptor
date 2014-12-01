@@ -68,15 +68,13 @@ class Testclass_GPO_Security_Descriptor(object):
 		self.admin_samdb = SamDB(url="ldap://%s" % self.fqdn, session_info=system_session(), credentials=self.samba_admin_creds, lp=self.lp)
 		self.admin_samdb_sdutil = SDUtils(self.admin_samdb)
 
-	def __del__(self):
-		self.remove_gpo()
-
 	def __enter__(self):
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
 		if exc_type:
 			print 'GPO Cleanup after exception: %s %s' % (exc_type, exc_value)
+		self.remove_gpo()
 
 	def get_ldb_object(self, dn=None, ldap_filter=None, attrs=None):
 		if not attrs:
@@ -312,8 +310,8 @@ if __name__ == "__main__":
 	s4connector.exit_if_connector_not_running()
 
 	with udm_test.UCSTestUDM() as udm:
-		test = Testcase_GPO_Security_Descriptor_SAM_to_UDM(udm)
-		test.run()
+		with Testcase_GPO_Security_Descriptor_SAM_to_UDM(udm) as test:
+			test.run()
 
-		test = Testcase_GPO_Security_Descriptor_UDM_to_SAM(udm)
-		test.run()
+		with Testcase_GPO_Security_Descriptor_UDM_to_SAM(udm) as test:
+			test.run()
