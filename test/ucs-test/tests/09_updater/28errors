@@ -120,7 +120,7 @@ run_tests () { # execute all updater programs
 	msg="Configuration error: component not found"
 	ucr set "${comp}DUMMY=yes" "${comp}DUMMY/parts=maintained" "${comp}DUMMY/version=current"
 	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list
-	/usr/share/univention-updater/univention-updater net 2>&1 | grep -F " is marked as required."
+	/usr/share/univention-updater/univention-updater net 2>&1 | grep -F " marked as required."
 	grep -F "status=DONE" /var/lib/univention-updater/univention-updater.status
 	[ ! -e /var/lib/univention-updater/update-failed ]
 	ucr search --brief ^update/available

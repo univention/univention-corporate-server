@@ -131,9 +131,9 @@ class TestUniventionUpdater(unittest.TestCase):
             '%d.%d/maintained/component/%s/all/Packages.gz' % (MAJOR, MINOR + 1, 'a'): DATA,
             '%d.%d/maintained/%d.%d-%d/all/Packages.gz' % (MAJOR + 1, 0, MAJOR + 1, 0, 0): DATA,
             })
-        versions, component = self.u.get_all_available_release_updates()
+        versions, components = self.u.get_all_available_release_updates()
         self.assertEqual(['%d.%d-%d' % (MAJOR, MINOR + 1, 0)], versions)
-        self.assertEqual('a', component)
+        self.assertEqual(set(('a',)), components)
 
     def test_release_update_available_NO(self):
         """Test no update available."""

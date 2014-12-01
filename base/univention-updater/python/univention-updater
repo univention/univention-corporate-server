@@ -261,9 +261,12 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 				if not updater:
 					updater = LocalUpdater()
 				components = updater.get_current_components()
+				failed = set()
 				for component in components:
 					if not updater.get_component_repositories(component, [mm_version], False):
-						raise RequiredComponentError(mm_version, component)
+						failed.add(component)
+				if failed:
+					raise RequiredComponentError(mm_version, failed)
 
 	elif mode == 'net':
 		dprint('Checking network repository')
@@ -390,9 +393,9 @@ def main():
 				dprint("Error: %s" % msg)
 				print >>sys.stderr, 'Error: Please check "%s" for details.' % LOGNAME
 				# Errors are handles as "update currently no available"
-			except RequiredComponentError, ex:
-				dprint('The required component %s is missing for version %s.' % \
-						(ex.component, ex.version))
+			except RequiredComponentError as ex:
+				dprint('The required components %s are missing for version %s.' % \
+						(', '.join(ex.components), ex.version))
 			else:
 				dprint('System is up to date') # Sync with /etc/cron.d/univention-maintenance
 			sys.exit(0)

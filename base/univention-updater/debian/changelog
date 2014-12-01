@@ -1,3 +1,9 @@
+univention-updater (10.0.51-3) unstable; urgency=low
+
+  * Bug #37030: Show all blocking components
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Dec 2014 15:57:18 +0100
+
 univention-updater (10.0.51-2) unstable; urgency=low
 
   * Bug #37031: Detect broken Dansguardian proxy

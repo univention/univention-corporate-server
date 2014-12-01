@@ -261,7 +261,7 @@ class Instance(umcm.Base):
 		result = []
 		try:
 			request.status = SUCCESS
-			available_versions, blocking_component = self.uu.get_all_available_release_updates()
+			available_versions, blocking_components = self.uu.get_all_available_release_updates()
 			for rel in available_versions:
 				entry = {}
 				entry['id'] = rel
@@ -273,7 +273,7 @@ class Instance(umcm.Base):
 			# appliance_mode=yes; blocking_comp=no  → add "latest version"
 			# appliance_mode=yes; blocking_comp=yes → add "latest version"
 			#
-			if len(result) and (appliance_mode or not blocking_component):
+			if len(result) and (appliance_mode or not blocking_components):
 				# UniventionUpdater returns available version in ascending order, so
 				# the last returned entry is the one to be flagged as 'latest' if there's
 				# no blocking component.
@@ -472,10 +472,10 @@ class Instance(umcm.Base):
 				result['release_update_available'] = ''
 
 			what = 'querying update-blocking components'
-			blocking_component = self.uu.get_all_available_release_updates()[1]
-			if not blocking_component:
-				blocking_component = ''
-			result['release_update_blocking_component'] = blocking_component
+			blocking_components = self.uu.get_all_available_release_updates()[1]
+			if not blocking_components:
+				blocking_components = []
+			result['release_update_blocking_components'] = list(blocking_components)
 
 			what = 'querying appliance mode'
 			result['appliance_mode'] = self.ucr.is_true('server/appliance')
@@ -700,7 +700,7 @@ class Instance(umcm.Base):
 				if inst == '':
 					result['running'] = False
 			else:
-				# no job running but status for release was asked? 
+				# no job running but status for release was asked?
 				# maybe the server restarted after job finished
 				# and the frontend did not get that information
 				# Bug #26318
