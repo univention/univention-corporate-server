@@ -66,7 +66,9 @@ if [ "$ussbootflag" = "true" -o "$ussbootflag" = "yes" ] ; then
 	in-target /usr/sbin/ucr set system/setup/showloginmessage=true
 
 	txt=""
+	ip addr show scope global | logger
 	ipaddresses="$(ip addr show scope global | sed -nre 's/^\s*inet ([^/]+).*$/\1/p') $(ip addr show scope global | sed -nre 's/^\s*inet6 ([^/]+).*$/[\1]/p')"
+	echo "IP ADDRESSES: $ipaddresses" | logger
 	for ipaddress in $ipaddresses ; do
 		txt="$txt   https://$ipaddress
 "

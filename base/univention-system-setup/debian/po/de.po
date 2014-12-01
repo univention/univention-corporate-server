@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup 4.0\n"
 "Report-Msgid-Bugs-To: univention-system-setup@packages.debian.org\n"
-"POT-Creation-Date: 2014-12-01 11:28+0100\n"
-"PO-Revision-Date: 2014-12-01 11:38+0100\n"
+"POT-Creation-Date: 2014-12-01 14:14+0100\n"
+"PO-Revision-Date: 2014-12-01 13:12+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: German\n"
@@ -58,9 +58,14 @@ msgstr "Fertig."
 
 #. Type: note
 #. Description
+#. Type: note
+#. Description
 #: ../di-univention-system-setup.templates:8001
+#: ../di-univention-system-setup.templates:9001
 msgid "Configuration of Univention Corporate Server is not completed yet"
-msgstr "Die Konfiguration von Univention Corporate Server ist noch nicht abgeschlossen"
+msgstr ""
+"Die Konfiguration von Univention Corporate Server ist noch nicht "
+"abgeschlossen"
 
 #. Type: note
 #. Description
@@ -68,7 +73,9 @@ msgstr "Die Konfiguration von Univention Corporate Server ist noch nicht abgesch
 msgid ""
 "At this point Univention Corporate Server has been installed but the "
 "configuration is not completed yet."
-msgstr "An diesem Punkt wurde Univention Corporate Server bereits installiert, aber die notwendige Konfiguration ist noch nicht abgeschlossen."
+msgstr ""
+"An diesem Punkt wurde Univention Corporate Server bereits installiert, aber "
+"die notwendige Konfiguration ist noch nicht abgeschlossen."
 
 #. Type: note
 #. Description
@@ -80,11 +87,14 @@ msgid ""
 "configuration. Alternatively the system may be configured after reboot via "
 "the web browser by visiting one of the following URLs:"
 msgstr ""
-"Mit der Auswahl von \"Weiter\" wird Univention Corporate Server für den Appliance-Modus vorbereitet und automatischen neu gestartet. Während des Bootvorgang startet das System automatisch die graphische Oberfläche von Univention System Setup, in der die Konfiguration des Systems abgeschlossen werden kann.\n"
+"Mit der Auswahl von \"Weiter\" wird Univention Corporate Server für den "
+"Appliance-Modus vorbereitet und automatischen neu gestartet. Während des "
+"Bootvorgang startet das System automatisch die graphische Oberfläche von "
+"Univention System Setup, in der die Konfiguration des Systems abgeschlossen "
+"werden kann.\n"
 ".\n"
-"Alternativ kann das System nach dem Neustart auch über einen Webbrowser konfiguriert werden, indem eine der folgenden URLs aufgerufen wird:\n"
-".\n"
-"${addresslist}\n"
+"Alternativ kann das System nach dem Neustart auch über einen Webbrowser "
+"konfiguriert werden, indem eine der folgenden URLs aufgerufen wird:\n"
 
 #. Type: note
 #. Description
@@ -98,14 +108,10 @@ msgstr "${addresslist}"
 #. Type: note
 #. Description
 #: ../di-univention-system-setup.templates:9001
-msgid "Configuration of Univention Corporate Server deferred"
-msgstr "Konfiguration von Univention Corporate Server verzögert"
-
-#. Type: note
-#. Description
-#: ../di-univention-system-setup.templates:9001
 msgid "The configuration of Univention Corporate Server is not completed yet."
-msgstr "Die Konfiguration von Univention Corporate Server ist noch nicht abgeschlossen."
+msgstr ""
+"Die Konfiguration von Univention Corporate Server ist noch nicht "
+"abgeschlossen."
 
 #. Type: note
 #. Description
@@ -124,4 +130,4 @@ msgstr ""
 ".\n"
 "Alternativ kann das System nach dem Neustart auch über einen Webbrowser "
 "konfiguriert werden, indem eine der folgenden URLs aufgerufen wird:\n"
-"${addresslist}\n"
+
