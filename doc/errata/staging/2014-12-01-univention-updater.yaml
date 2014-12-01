@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-4
+src: univention-updater
+fix: 9.0.44-5.1340.201412011502
+version: [4]
+desc: |
+  This update addresses the following issues:
+  - detect broken HTTP proxies like DansGuardian, which block downloading the
+    updater scripts while still signalling success.
+bug:
+ - 37031
