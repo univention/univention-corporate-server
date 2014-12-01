@@ -6,4 +6,7 @@ fix: 8.1.1-2.196.201411290017
 version: [0]
 desc: |
   * It is possible to use the search for UCS systems again.
+  * Translations of some error messages have been fixed.
+  * The reconnection to the postgresql server is now done in any case after
+    a failure.
 bug: [35700]
