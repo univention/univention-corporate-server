@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-4
 src: univention-kernel-image
-fix: 
+fix: 7.0.0-16.67.201412010901
 version: [4]
 desc: |
  The Linux kernel in Univention Corporate Server 3.2 has been updated to 
@@ -33,6 +33,7 @@ desc: |
  * Privilege escalation in ftrace syscall tracing (CVE-2014-7826)
  * Denial of service in SCTP (CVE-2014-7841)
  * Buffer overflow in ttusb-dec (CVE-2014-8884)
+ In addition a bug in ACL handling when using NFS file shares has been fixed.
 note: This is the second part of the fix, which updates the meta package.
 cve:
  - CVE-2014-0131
