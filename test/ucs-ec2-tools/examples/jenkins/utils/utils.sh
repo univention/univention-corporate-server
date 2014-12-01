@@ -56,8 +56,8 @@ basic_setup ()
 upgrade_to_latest_errata ()
 {
 	# Bug #34336: needs further discussion if release or only errata updates are expected
-	#local current="$(ucr get version/version)-$(ucr get version/patchlevel)"
-	upgrade_to_latest # --updateto "$current"
+	local current="$(ucr get version/version)-$(ucr get version/patchlevel)"
+	upgrade_to_latest --updateto "$current"
 }
 
 upgrade_to_latest_test_errata ()
