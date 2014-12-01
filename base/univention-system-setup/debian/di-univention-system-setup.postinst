@@ -68,7 +68,7 @@ if [ "$ussbootflag" = "true" -o "$ussbootflag" = "yes" ] ; then
 	txt=""
 	ipaddresses="$(ip addr show scope global | sed -nre 's/^\s*inet ([^/]+).*$/\1/p') $(ip addr show scope global | sed -nre 's/^\s*inet6 ([^/]+).*$/[\1]/p')"
 	for ipaddress in $ipaddresses ; do
-		txt="$txt   https://$ipaddress/
+		txt="$txt   https://$ipaddress
 "
 	done
 	if [ -n "$DISPLAY" ] ; then

@@ -28,13 +28,13 @@ _Description: Done.
 
 Template: di-univention-system-setup/note/textmode
 Type: note
-_Description: Configuration of Univention Corporate Server deferred
+_Description: Configuration of Univention Corporate Server is not completed yet
  At this point Univention Corporate Server has been installed but the
- configuration has been deferred.
+ configuration is not completed yet.
  .
- When pressing "Next", the system will be configured for appliance mode. After
- an automatic reboot, Univention System Setup is started automatically in
- graphics mode and allows a subsequent configuration.
+ When pressing "Next", Univention Corporate Server will be configured for appliance
+ mode. After an automatic reboot, Univention System Setup is started automatically
+ in graphics mode and allows a subsequent configuration.
  Alternatively the system may be configured after reboot via the web browser
  by visiting one of the following URLs:
  .
@@ -43,7 +43,7 @@ _Description: Configuration of Univention Corporate Server deferred
 Template: di-univention-system-setup/note/graphicmode
 Type: note
 _Description: Configuration of Univention Corporate Server deferred
- The configuration of Univention Corporate Server has been aborted.
+ The configuration of Univention Corporate Server is not completed yet.
  .
  When pressing "Next", Univention Corporate Server will be configured for appliance
  mode. After an automatic reboot, Univention System Setup is started automatically
