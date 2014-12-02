@@ -1,0 +1,13 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-4
+src: openvpn
+fix: 2.1.3-2.30.201412021349
+version: [4]
+desc: |
+  OpenVPN clients using TLS authentication could crash the server by sending 
+  a malicious control channel packet to the server, resulting in denial 
+  of service.
+bug: [37138]
+cve:
+ - CVE-2014-8104
