@@ -1,3 +1,9 @@
+univention-system-setup (8.1.65-36) unstable; urgency=low
+
+  * Bug #36968: updated template for text mode installation
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 02 Dec 2014 09:52:17 +0100
+
 univention-system-setup (8.1.65-35) unstable; urgency=low
 
   * Bug #36968: updated translations for text mode installation

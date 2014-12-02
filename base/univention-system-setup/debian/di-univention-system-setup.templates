@@ -29,7 +29,6 @@ _Description: Done.
 Template: di-univention-system-setup/note/textmode
 Type: note
 _Description: Configuration of Univention Corporate Server is not completed yet
- .
  At this point Univention Corporate Server has been installed but the
  configuration is not completed yet.
  .
@@ -44,7 +43,6 @@ _Description: Configuration of Univention Corporate Server is not completed yet
 Template: di-univention-system-setup/note/graphicmode
 Type: note
 _Description: Configuration of Univention Corporate Server is not completed yet
- .
  The configuration of Univention Corporate Server is not completed yet.
  .
  When pressing "Next", Univention Corporate Server will be configured for appliance
