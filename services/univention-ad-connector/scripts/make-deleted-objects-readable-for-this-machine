@@ -235,7 +235,7 @@ class AD_DSACL_modifier():
 
 		if new_ace in desc_sddl:
 			print "INFO: DSACL of Deleted Objects is already OK."
-			sys.exit(1)
+			sys.exit(0)
 			
 		if desc_sddl.find("(") >= 0:
 			desc_sddl = desc_sddl[:desc_sddl.index("(")] + new_ace + desc_sddl[desc_sddl.index("("):]

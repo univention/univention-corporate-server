@@ -1,3 +1,11 @@
+univention-ad-connector (9.0.11-1) unstable; urgency=medium
+
+  * admember: check that joining account has RID 500 in AD (Bug #35562)
+  * Adjust return code of well-known-sid-object-rename in case nothing has
+    to be done (don't report this as failure).
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Dec 2014 17:02:22 +0100
+
 univention-ad-connector (9.0.10-1) unstable; urgency=medium
 
   * Bug #36653: Adjust univention-adsearch to python-ldap 2.4

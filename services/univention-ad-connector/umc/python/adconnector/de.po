@@ -113,6 +113,15 @@ msgstr ""
 "Eine Verbindung zum AD-Server %s konnte nicht hergestellt werden. Bitte "
 "überprüfen Sie Benutzername und Password."
 
+#: umc/python/adconnector/__init__.py:384
+#: umc/python/adconnector/__init__.py:503
+msgid ""
+"The given account is not the standard Administrator of the Active "
+"Directory server."
+msgstr ""
+"Das angegebene Konto entspricht nicht dem standard Administrator des "
+"Active Directory Servers."
+
 #: umc/python/adconnector/__init__.py:537
 #, python-format
 msgid ""

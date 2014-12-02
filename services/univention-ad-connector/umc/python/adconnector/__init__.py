@@ -386,6 +386,9 @@ class Instance(Base, ProgressMixin):
 		except admember.connectionFailed as exc: # check_connection()
 			MODULE.warn('Failure: %s' % exc)
 			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info.get('DC DNS Name'))
+		except admember.notDefaultADAdmin as exc: # check_connection()
+			MODULE.warn('Failure: %s' % exc)
+			raise UMC_CommandError(_('The given account is not the standard Administrator of the Active Directory server.'))
 
 		# final info dict that is returned... replace spaces in the keys with '_'
 		MODULE.info('Preparing info dict...')
