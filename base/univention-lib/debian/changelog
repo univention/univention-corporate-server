@@ -1,3 +1,9 @@
+univention-lib (4.0.5-1) unstable; urgency=medium
+
+  * admember: check that joining account has RID 500 in AD (Bug #35562)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Dec 2014 16:50:16 +0100
+
 univention-lib (4.0.4-1) unstable; urgency=medium
 
   * Bug #36809: fix parsing of at job comments

@@ -39,9 +39,10 @@ import socket
 import tempfile
 import ipaddr
 from datetime import datetime, timedelta
-from samba.dcerpc import nbt
+from samba.dcerpc import nbt, security
 from samba.net import Net
 from samba.param import LoadParm
+from samba.ndr import ndr_unpack
 import univention.config_registry
 import univention.uldap
 import univention.lib.package_manager
@@ -64,6 +65,9 @@ class domainnameMismatch(Exception):
 
 class connectionFailed(Exception):
 	'''Connection to AD failed'''
+
+class notDefaultADAdmin(Exception):
+	'''The given account is not the standard AD administrator'''
 
 class univentionSambaWrongVersion(Exception):
 	'''univention-samba candiate has wrong version'''
@@ -110,11 +114,26 @@ def is_domain_in_admember_mode(ucr=None):
 		return True
 	return False
 
-def check_connection(ad_server_ip, username, password):
-	p1 = subprocess.Popen(['smbclient', '-U', '%s%%%s' % (username, password), '-c', 'quit', '//%s/sysvol' % ad_server_ip], close_fds=True)
-	stdout, stderr = p1.communicate()
-	if p1.returncode != 0:
+def check_connection(ad_server_ip, username, password, ucr=None):
+	if not ucr:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+
+	try:
+		lo_ad = univention.uldap.access(uri="ldap://%s" % ad_server_ip, base=ucr.get("ldap/base"), binddn="%s@%s" % (username, ucr.get("kerberos/realm")), bindpw=password, start_tls=False, reconnect=False)
+	except ldap.INVALID_CREDENTIALS:
 		raise connectionFailed()
+	except ldap.UNWILLING_TO_PERFORM:
+		raise connectionFailed()
+
+	lo_ad.lo.set_option(ldap.OPT_REFERRALS,0)
+	res = lo_ad.search(filter="(sAMAccountName=%s)" % username, attr=["objectSid"])
+
+	if not res:
+		raise connectionFailed()
+	objectSid = ndr_unpack(security.dom_sid, res[0][1]["objectSid"][0])
+	if not str(objectSid).endswith("-500"):
+		raise notDefaultADAdmin()
 
 def prepare_administrator(username, password, ucr=None):
 	if not ucr:
