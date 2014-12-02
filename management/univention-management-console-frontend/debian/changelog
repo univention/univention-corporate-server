@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-3) unstable; urgency=low
+
+  * Bug #36291: fixed typo in index.html
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 02 Dec 2014 15:37:55 +0100
+
 univention-management-console-frontend (4.1.106-2ubuntu1) unstable; urgency=low
 
   * Bug #36291: show icon in policy reference button
