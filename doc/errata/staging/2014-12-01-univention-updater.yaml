@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-4
 src: univention-updater
-fix: 9.0.44-6.1342.201412021715
+fix: 9.0.44-7.1343.201412021821
 version: [4]
 desc: |
   This update addresses the following issues:
