@@ -1,3 +1,9 @@
+ucs-test (4.0.186-4) unstable; urgency=low
+
+  * Bug #37030: Show all blocking components
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 02 Dec 2014 18:17:06 +0100
+
 ucs-test (4.0.186-3) unstable; urgency=low
 
   * Bug #37030: Show all blocking components

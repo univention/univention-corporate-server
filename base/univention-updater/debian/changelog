@@ -1,3 +1,9 @@
+univention-updater (9.0.44-7) unstable; urgency=low
+
+  * Bug #37030: Show all blocking components
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 02 Dec 2014 17:53:39 +0100
+
 univention-updater (9.0.44-6) unstable; urgency=low
 
   * Bug #37030: Show all blocking components
