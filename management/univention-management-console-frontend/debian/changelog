@@ -1,3 +1,13 @@
+univention-management-console-frontend (4.1.106-1) unstable; urgency=low
+
+  Bug #36914:
+  * Changed text of the IE <= 8 warning
+  * Added notification of unsupported brwosers to the login-dialog
+  * Added a translation for the unsupported browser notification-
+  	header in the login-dialog
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 02 Dec 2014 11:36:44 +0100
+
 univention-management-console-frontend (4.1.105-4) unstable; urgency=medium
 
   * Bug #36875: fix typo

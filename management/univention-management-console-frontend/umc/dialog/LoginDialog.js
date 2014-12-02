@@ -351,6 +351,18 @@ define([
 				msg += '<h1>' + _('Insecure Connection') + '</h1>';
 				msg += '<p>' + _('This network connection is not encrypted. All personal or sensitive data will be transmitted in plain text. Please follow %s this link</a> to use a secure SSL connection.', link) + '</p>';
 			}
+			
+			if (has('ie') < 9 || has('ff') < 24) {
+			// supported browsers are Chrome >= 33, FF >= 24, IE >=9 and Safari >= 7
+			// they should work with UMC. albeit, they are
+			// VERY slow and escpecially IE 8 may take minutes (!)
+			// to load a heavy UDM object (on a slow computer at least).
+			// IE 8 is also known to cause timeouts when under heavy load
+			// (presumably because of many async requests to the server
+			// during UDM-Form loading)
+			msg += '<h1>' + _('Your Browser is outdated') + '</h1>';
+			msg += '<p>' + _('Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you          may experience performance issues and other problems.') + '</p>';
+			}
 
 			if (tools.status('setupGui')) {
 				// user has already logged in before, show message for relogin

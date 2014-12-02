@@ -769,6 +769,12 @@ msgstr "Schreiben"
 msgid "You are not authorized to perform this action."
 msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen."
 
+#: umc/LoginDialog.js:362
+msgid ""
+"Your Browser is outdated"
+msgstr ""
+"Ihr Browser ist veraltet"
+
 #: umc/app.js:449
 msgid ""
 "Your Browser is outdated and should be updated. You may continue to use "

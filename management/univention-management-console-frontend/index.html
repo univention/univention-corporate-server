@@ -81,41 +81,47 @@
 				<div class="warningCenterer"></div>
 				<div class="warning umc_ie">
 					<div class="icon"></div>
-					<div class="title">Higher version required</div>
-					<p>Internet Explorer version 9 or higher is required to use this service.</p>
+					<div class="title">Browser upgrade required</div>
+					<p>To use this service on of the following browser version is required:</p>
+					<p>
+						Internet Explorer (version 9 or higher),<br>
+						Firefox ( >= 24 ),<br>
+						Google Chrome ( >= 33 ),<br>
+						Safari ( >= 7 ).
+					</p>
 				</div>
 			</div>
 		<![endif]-->
 		<!--[if gte IE 9]><!-->
 		<div id="umcLoginWrapper">
-				<div id="umcFakeLoginLogo"></div>
-				<div id="umcLanguageSwitch" data-dojo-type="umc/app/LanguageSwitch"></div>
-				<div id="umcLoginCenterer"></div>
-				<div id="umcLoginDialog" class="umcLoginLoading dijitDialog dojoxDialog umcLoginDialog">
-					<div id="umcLoginLogo" class="umcLoginLogo">
-						<img id="umcLoginLogo" src="js%HASH%/dijit/themes/umc/images/login_logo.png"/>
-					</div>
-					<form id="umcLoginForm" name="umcLoginForm" action="login2.html" method="post" class="umcLoginForm" autocomplete="on">
-						<label for="umcLoginUsername">
-							<input placeholder="Username" id="umcLoginUsername" name="username" type="text" autocomplete="on"/>
-						</label>
-						<label for="umcLoginPassword">
-							<input placeholder="Password" id="umcLoginPassword" name="password" type="password" autocomplete="on"/>
-							<input id="umcLoginSubmit" type="submit" name="submit" value="Login"/>
-						</label>
-					</form>
-					<form id="umcNewPasswordForm" name="umcLoginForm" action="login2.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
-						<label for="umcLoginNewPassword">
-							<input placeholder="New Password" id="umcLoginNewPassword" name="new_password" type="password"/>
-						</label>
-						<label for="umcLoginNewPasswordRetype">
-							<input placeholder="New Password (retype)" id="umcLoginNewPasswordRetype" type="password"/>
-							<input type="submit" name="submit" value="Login"/>
-						</label>
-					</form>
-					<iframe id="umcLoginIframe" src="login.html"></iframe>
-					<img src="js%HASH%/dijit/themes/umc/images/login_bg.gif" height="0" width="0">
+			<div id="umcFakeLoginLogo"></div>
+			<div id="umcLanguageSwitch" data-dojo-type="umc/app/LanguageSwitch"></div>
+			<div id="umcLoginCenterer"></div>
+			<div id="umcLoginDialog" class="umcLoginLoading dijitDialog dojoxDialog umcLoginDialog">
+				<div id="umcLoginLogo" class="umcLoginLogo">
+					<img id="umcLoginLogo" src="js%HASH%/dijit/themes/umc/images/login_logo.png"/>
 				</div>
+				<form id="umcLoginForm" name="umcLoginForm" action="login2.html" method="post" class="umcLoginForm" autocomplete="on">
+					<label for="umcLoginUsername">
+						<input placeholder="Username" id="umcLoginUsername" name="username" type="text" autocomplete="on"/>
+					</label>
+					<label for="umcLoginPassword">
+						<input placeholder="Password" id="umcLoginPassword" name="password" type="password" autocomplete="on"/>
+						<input id="umcLoginSubmit" type="submit" name="submit" value="Login"/>
+					</label>
+				</form>
+				<form id="umcNewPasswordForm" name="umcLoginForm" action="login2.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
+					<label for="umcLoginNewPassword">
+						<input placeholder="New Password" id="umcLoginNewPassword" name="new_password" type="password"/>
+					</label>
+					<label for="umcLoginNewPasswordRetype">
+						<input placeholder="New Password (retype)" id="umcLoginNewPasswordRetype" type="password"/>
+						<input type="submit" name="submit" value="Login"/>
+					</label>
+				</form>
+				<iframe id="umcLoginIframe" src="login.html"></iframe>
+				<img src="js%HASH%/dijit/themes/umc/images/login_bg.gif" height="0" width="0">
+			</div>
 		</div>
 		<!--<![endif]-->
 		<div id="umcTopContainer" class="umcTopContainer"></div>
