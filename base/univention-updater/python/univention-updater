@@ -394,8 +394,7 @@ def main():
 				print >>sys.stderr, 'Error: Please check "%s" for details.' % LOGNAME
 				# Errors are handles as "update currently no available"
 			except RequiredComponentError as ex:
-				dprint('The required components %s are missing for version %s.' % \
-						(', '.join(ex.components), ex.version))
+				dprint("%s" % ex)
 			else:
 				dprint('System is up to date') # Sync with /etc/cron.d/univention-maintenance
 			sys.exit(0)
@@ -599,7 +598,7 @@ if __name__ == '__main__':
 				raise UpdateError(msg, errorsource='SETTINGS')
 			except RequiredComponentError, ex:
 				update_status(status='DONE', errorsource='PREPARATION')
-				dprint(ex)
+				dprint("%s" % ex)
 			except PreconditionError, (phase, order, component, script):
 				if phase == 'preup':
 					phase = 'pre-update'

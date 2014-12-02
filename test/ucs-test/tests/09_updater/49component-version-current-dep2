@@ -1,0 +1,61 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Update multiple localhost components with current version
+##  1. setup local repository for maintained component with current version
+##  2. check if the component is installable
+##  3. newer version is blocked by release version
+## roles-not: [basesystem]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+compname1="test1${RANDOM}"
+compname2="test2${RANDOM}"
+
+setup_apache "${repoprefix}"
+
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkpkg "${DIR}"
+
+mkpdir "${major}.${minor}--component/${compname1}" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+mkpdir "${major}.${minor}--component/${compname2}" maintained "${ARCH}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+minor+=1
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkpkg "${DIR}"
+
+comp1="repository/online/component/${compname1}"
+comp2="repository/online/component/${compname2}"
+config_repo \
+	"${comp1}=yes" "${comp1}/parts=maintained" "${comp1}/version=current" \
+	"${comp2}=yes" "${comp2}/parts=maintained" "${comp2}/version=current"
+UP_LOG="${BASEDIR}/up.log"
+
+(
+	set -e
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[1]}"
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	2"
+	checkdeb "${pkgname}" 2
+	/usr/share/univention-updater/univention-updater net </dev/null 2>&1 >"$UP_LOG"
+	grep " is blocked because the components .*\<$compname1\>.* are marked as required" "$UP_LOG"
+	grep " is blocked because the components .*\<$compname2\>.* are marked as required" "$UP_LOG"
+	univention-upgrade </dev/null >"$UP_LOG" 2>&1 || :
+	grep " is blocked because the component .*\<$compname1\>.* is marked as required" "$UP_LOG"
+	grep " is blocked because the component .*\<$compname2\>.* is marked as required" "$UP_LOG"
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:

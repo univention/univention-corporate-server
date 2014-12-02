@@ -692,7 +692,7 @@ class UniventionUpdater:
 				ucs_version = self.get_next_version(UCS_Version(ucs_version), components, errorsto='exception')
 			except RequiredComponentError as ex:
 				self.log.warn('Update blocked by components %s', ', '.join(ex.components))
-				# e.component blocks update to next version ==> return current list and blocking component
+				# ex.components blocks update to next version ==> return current list and blocking component
 				return result, ex.components
 
 			if ucs_version:
