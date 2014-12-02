@@ -439,19 +439,6 @@ define([
 			}
 		};
 
-		var checkBrowser = function() {
-			if (has('ie') < 9 || has('ff') < 24) {
-				// supported browsers are Chrome >= 33, FF >= 24, IE >=9 and Safari >= 7
-				// they should work with UMC. albeit, they are
-				// VERY slow and escpecially IE 8 may take minutes (!)
-				// to load a heavy UDM object (on a slow computer at least).
-				// IE 8 is also known to cause timeouts when under heavy load
-				// (presumably because of many async requests to the server
-				// during UDM-Form loading)
-				dialog.warn(_('Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.'));
-			}
-		};
-
 		var checkShowStartupDialog = function() {
 			var isUserAdmin = tools.status('username').toLowerCase() == 'administrator';
 			var isUCRVariableEmpty = !Boolean(_ucr['umc/web/startupdialog']);
@@ -478,7 +465,6 @@ define([
 
 		// run several checks
 		checkCertificateValidity();
-		checkBrowser();
 		checkShowStartupDialog();
 	});
 

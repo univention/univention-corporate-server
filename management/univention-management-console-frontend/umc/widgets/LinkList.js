@@ -83,7 +83,7 @@ define([
 					var btn = new Button( {
 						name : 'close',
 						label : item.label,
-						iconClass: tools.getIconClass( item.icon, 16 ),
+						iconClass: tools.getIconClass( item.icon, 20 ),
 						callback: function() {
 							// open referenced UDM object
 							topic.publish( "/umc/modules/open", moduleProps.module, moduleProps.flavor, moduleProps );

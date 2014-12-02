@@ -361,7 +361,7 @@ define([
 			// (presumably because of many async requests to the server
 			// during UDM-Form loading)
 			msg += '<h1>' + _('Your Browser is outdated') + '</h1>';
-			msg += '<p>' + _('Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you          may experience performance issues and other problems.') + '</p>';
+			msg += '<p>' + _('Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.') + '</p>';
 			}
 
 			if (tools.status('setupGui')) {

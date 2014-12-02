@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-2) unstable; urgency=low
+
+  * Bug #36914: removed outdated browser notification within the umc
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 02 Dec 2014 14:36:02 +0100
+
 univention-management-console-frontend (4.1.106-1) unstable; urgency=low
 
   Bug #36914:

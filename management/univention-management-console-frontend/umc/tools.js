@@ -1077,7 +1077,8 @@ define([
 					var css = lang.replace(
 						'background: no-repeat;' +
 						'width: {s}px; height: {s}px;' +
-						'background-image: url("{url}");',
+						'background-image: url("{url}");' +
+						'background-size: contain;',
 						values);
 					styles.insertCssRule('.' + iconClass, css);
 
