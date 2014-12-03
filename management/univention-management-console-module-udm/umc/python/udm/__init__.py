@@ -363,7 +363,7 @@ class Instance(Base, ProgressMixin):
 					dn = module.create(properties, container=options.get('container'), superordinate=options.get('superordinate'))
 					result.append({'$dn$': dn, 'success': True})
 				except UDM_Error as e:
-					result.append({'$dn$': e.args[1], 'success': False, 'details': str(e.args[0])})
+					result.append({'$dn$': e.dn, 'success': False, 'details': str(e)})
 
 			return result
 

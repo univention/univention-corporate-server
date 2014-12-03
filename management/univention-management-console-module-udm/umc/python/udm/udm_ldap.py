@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import sys
 import copy
 import re
 import threading
@@ -72,15 +73,6 @@ _password = None
 _ldap_connection = None
 _ldap_position = None
 _licenseCheck = 0
-
-
-def get_exception_msg(e):
-	msg = getattr(e, 'message', '')
-	if getattr(e, 'args', False):
-		if e.args[0] != msg or len(e.args) != 1:
-			for arg in e.args:
-				msg += ' ' + arg
-	return msg
 
 
 def set_credentials(dn, passwd):
@@ -221,7 +213,17 @@ def LDAP_Connection(func):
 
 
 class UDM_Error(Exception):
-	pass
+	def __init__(self, exc, dn=None):
+		self.exc = exc
+		self.dn = dn
+		# if this exception is raised in a exception context we will have the original traceback
+		self.exc_info = sys.exc_info()
+		Exception.__init__(self, str(exc))
+		if self.exc_info:
+			raise self.__class__, self, self.exc_info[2]
+
+	def __str__(self):
+		return str(self.exc)
 
 # module cache
 
@@ -388,7 +390,7 @@ class UDM_Module(object):
 			obj.create()
 		except udm_errors.base as e:
 			MODULE.warn('Failed to create LDAP object: %s: %s' % (e.__class__.__name__, str(e)))
-			raise UDM_Error(get_exception_msg(e), obj.dn)
+			raise UDM_Error(e, obj.dn)
 
 		return obj.dn
 
@@ -407,7 +409,7 @@ class UDM_Module(object):
 			return dest
 		except udm_errors.base as e:
 			MODULE.warn('Failed to move LDAP object %s: %s: %s' % (ldap_dn, e.__class__.__name__, str(e)))
-			raise UDM_Error(get_exception_msg(e))
+			raise UDM_Error(e)
 
 	@LDAP_Connection
 	def remove(self, ldap_dn, cleanup=False, recursive=False, ldap_connection=None, ldap_position=None):
@@ -422,7 +424,7 @@ class UDM_Module(object):
 				udm_objects.performCleanup(obj)
 		except udm_errors.base as e:
 			MODULE.warn('Failed to remove LDAP object %s: %s: %s' % (ldap_dn, e.__class__.__name__, str(e)))
-			raise UDM_Error(get_exception_msg(e))
+			raise UDM_Error(e)
 
 	@LDAP_Connection
 	def modify(self, ldap_object, ldap_connection=None, ldap_position=None):
@@ -448,7 +450,7 @@ class UDM_Module(object):
 			obj.modify()
 		except udm_errors.base as e:
 			MODULE.warn('Failed to modify LDAP object %s: %s: %s' % (obj.dn, e.__class__.__name__, str(e)))
-			raise UDM_Error(get_exception_msg(e))
+			raise UDM_Error(e)
 
 	@LDAP_Connection
 	def search(self, container=None, attribute=None, value=None, superordinate=None, scope='sub', filter='', simple=False, simple_attrs=None, ldap_connection=None, ldap_position=None, hidden=True):
@@ -485,7 +487,7 @@ class UDM_Module(object):
 		except (LDAPError, udm_errors.ldapError) as e:
 			raise e
 		except udm_errors.base as e:
-			raise UDM_Error(get_exception_msg(e))
+			raise UDM_Error(e)
 
 		# call the garbage collector manually as many parallel request may cause the
 		# process to use too much memory
@@ -510,7 +512,7 @@ class UDM_Module(object):
 			raise e
 		except Exception as e:
 			MODULE.info('Failed to retrieve LDAP object: %s' % str(e))
-			raise UDM_Error(get_exception_msg(e))
+			raise UDM_Error(e)
 		return obj
 
 	def get_property(self, property_name):
@@ -1063,7 +1065,7 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
 	except (LDAPError, udm_errors.ldapError) as e:
 		raise e
 	except udm_errors.base as e:
-		raise UDM_Error(get_exception_msg(e))
+		raise UDM_Error(e)
 	objects = []
 	for dn, attrs in result:
 		modules = udm_modules.objectType(None, ldap_connection, dn, attrs)
