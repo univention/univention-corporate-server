@@ -562,11 +562,14 @@ class Support( object ):
 				if value & 0x0400:
 					self[ 'CtxBrokenSession' ] = '0400'
 			except ValueError:
-				self[ 'CtxBrokenSession' ] = '0000'
-				self[ 'CtxReconnectSession' ] = '0000'
+				pass
 
 		if self.info['CtxKeyboardLayout'] == '00000000':
 			self.info['CtxKeyboardLayout']=None
+
+		for key in ('CtxBrokenSession', 'CtxReconnectSession'):
+			if not self[key]:
+				self[key] = '0000'
 
 		if not self[ 'CtxShadow' ]:
 			self[ 'CtxShadow' ] = '00000000'
