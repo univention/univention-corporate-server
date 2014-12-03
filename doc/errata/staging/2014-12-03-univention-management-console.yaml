@@ -7,4 +7,4 @@ version: [3]
 desc: |
   * Fix an error introduced by errata 238 regarding the error handling of
     closed UMC module process sockets.
-bug: [36561]
+bug: [37167]
