@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-4
+src: xen-4.1
+fix: 4.1.3-17.43.201412031229
+version: [4]
+desc: |
+  This update addresses the following issues:
+  - Fix decoding of hexadecimal escaped characters in description.
+bug:
+ - 33974
