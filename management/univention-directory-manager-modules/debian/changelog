@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-5) unstable; urgency=medium
+
+  * Bug #30088: add more information to noObject exceptions
+
+ -- Florian Best <best@univention.de>  Wed, 03 Dec 2014 13:38:43 +0100
+
 univention-directory-manager-modules (10.0.29-4) unstable; urgency=medium
 
   * Bug #29884: always set the value for 'CtxBrokenSession' and

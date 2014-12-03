@@ -1,3 +1,13 @@
+univention-management-console-module-udm (5.1.25-4) unstable; urgency=medium
+
+  * Bug #35280: fix udm/layout and udm/properties call for certain users
+  * Bug #29231: check if there exists a UDM module for a given LDAP DN in
+  	udm/layout
+  * Bug #35273: remove get_exception_msg()
+  * Bug #32979: Do not reraise exceptions
+
+ -- Florian Best <best@univention.de>  Wed, 03 Dec 2014 13:36:41 +0100
+
 univention-management-console-module-udm (5.1.25-3) unstable; urgency=low
 
   * Bug #35719: Adapted the error message
