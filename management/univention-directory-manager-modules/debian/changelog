@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-7) unstable; urgency=medium
+
+  * Bug #30088: improove exception information
+
+ -- Florian Best <best@univention.de>  Thu, 04 Dec 2014 00:13:16 +0100
+
 univention-directory-manager-modules (10.0.29-6) unstable; urgency=medium
 
   * Bug #36330: fix setting of userexpiry when account is disabled

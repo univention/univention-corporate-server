@@ -43,9 +43,9 @@ class base(Exception):
 	def __str__(self):
 		msg = self.message
 		for arg in self.args:
-			if arg != self.message:
-				if isinstance(arg, unicode):
-					arg = arg.encode('utf-8')
+			if isinstance(arg, unicode):
+				arg = arg.encode('utf-8')
+			if str(arg) not in msg:
 				msg = '%s %s' % (msg, arg)
 		return msg
 

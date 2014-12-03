@@ -344,7 +344,7 @@ class access:
 		try:
 			return self.lo.search(filter, base, scope, attr, unique, required, timeout, sizelimit)
 		except ldap.NO_SUCH_OBJECT, msg:
-			raise univention.admin.uexceptions.noObject('%s filter=%r' % (_err2str(msg), filter))
+			raise univention.admin.uexceptions.noObject(_err2str(msg), 'filter=%r' % (filter,))
 		except ldap.INAPPROPRIATE_MATCHING, msg:
 			raise univention.admin.uexceptions.insufficientInformation, _err2str(msg)
 		except (ldap.TIMEOUT, ldap.TIMELIMIT_EXCEEDED), msg:
@@ -358,7 +358,7 @@ class access:
 		try:
 			return self.lo.searchDn(filter, base, scope, unique, required, timeout, sizelimit)
 		except ldap.NO_SUCH_OBJECT, msg:
-			raise univention.admin.uexceptions.noObject('%s filter=%r' % (_err2str(msg), filter))
+			raise univention.admin.uexceptions.noObject(_err2str(msg), 'filter=%r' % (filter,))
 		except ldap.INAPPROPRIATE_MATCHING, msg:
 			raise univention.admin.uexceptions.insufficientInformation, _err2str(msg)
 		except (ldap.TIMEOUT, ldap.TIMELIMIT_EXCEEDED), msg:
