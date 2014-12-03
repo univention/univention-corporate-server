@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-system-setup
-fix: 8.1.65-37.824.201412031233
+fix: 8.1.65-39.826.201412031409
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -44,6 +44,7 @@ desc: |
   * The configuration of keyboard model and keyboard variant has been corrected.
   * The search for system locales has been adjusted such that wildcards are
     implicitly used.
+  * The syntax check for the LDAP base has been adjusted to be more specific.
 bug:
  - 36665
  - 36936
@@ -68,3 +69,4 @@ bug:
  - 36968
  - 37105
  - 29922
+ - 36334
