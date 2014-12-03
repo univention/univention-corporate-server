@@ -1,3 +1,10 @@
+univention-system-setup (8.1.66-1) unstable; urgency=medium
+
+  * Check that joining account is member of "Domain Admins" in AD
+    before starting admember setup (Bug #37168)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Dec 2014 20:58:03 +0100
+
 univention-system-setup (8.1.65-39) unstable; urgency=medium
 
   * Bug #36334: corrected regular expression for LDAP base

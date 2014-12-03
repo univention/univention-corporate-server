@@ -52,7 +52,8 @@ from univention.management.console.modules.sanitizers import PatternSanitizer, S
 from univention.management.console.modules.decorators import sanitize, simple_response
 from univention.lib.i18n import Translation, Locale
 import univention.config_registry
-from univention.lib.admember import lookup_adds_dc, check_connection, connectionFailed, failedADConnect
+from univention.lib.admember import lookup_adds_dc, check_connection, check_ad_account, connectionFailed, failedADConnect, notDomainAdminInAD
+from univention.management.console.modules import UMC_Error
 
 import util
 from . import network
@@ -447,11 +448,11 @@ class Instance(Base, ProgressMixin):
 				if nameserver:
 					if obj.get('ad/member') and obj.get('ad/address'):
 						try:
-							info = lookup_adds_dc(obj.get('ad/address'), ucr={'nameserver1' : nameserver})
+							ad_domain_info = lookup_adds_dc(obj.get('ad/address'), ucr={'nameserver1' : nameserver})
 						except failedADConnect:
 							pass
 						else:
-							guessed_domain = info['Domain']
+							guessed_domain = ad_domain_info['Domain']
 					else:
 						guessed_domain = util.get_ucs_domain(nameserver)
 					if guessed_domain:
@@ -711,12 +712,12 @@ class Instance(Base, ProgressMixin):
 		result = {}
 		if role == 'ad':
 			try:
-				info = lookup_adds_dc(nameserver)
-				dc = info['DC DNS Name']
+				ad_domain_info = lookup_adds_dc(nameserver)
+				dc = ad_domain_info['DC DNS Name']
 				if dc:
 					result['dc_name'] = dc
-					result['domain'] = info['Domain']
-					result['ucs_master'] = util.is_ucs_domain(nameserver, info['Domain'])
+					result['domain'] = ad_domain_info['Domain']
+					result['ucs_master'] = util.is_ucs_domain(nameserver, ad_domain_info['Domain'])
 			except (failedADConnect, connectionFailed) as e:
 				MODULE.warn('ADDS DC lookup failed: %s' % e)
 		elif role == 'nonmaster':
@@ -731,16 +732,20 @@ class Instance(Base, ProgressMixin):
 	def check_credentials(self, role, dns, nameserver, address, username, password):
 		if role == 'ad':
 			try:
-				info = lookup_adds_dc(address, ucr={'nameserver1' : nameserver})
-				check_connection(info['DC IP'], username, password)
+				ad_domain_info = lookup_adds_dc(address, ucr={'nameserver1' : nameserver})
+				check_connection(ad_domain_info, username, password)
+				check_ad_account(ad_domain_info, username, password)
 			except failedADConnect:
 				# Not checked... no AD!
 				return None
 			except connectionFailed:
 				# checked: failed!
 				return False
+			except notDomainAdminInAD: # check_ad_account()
+				# checked: Not a Domain Administrator!
+				raise UMC_Error(_("The given user is not member of the Domain Admins group in AD."))
 			else:
-				return info['Domain']
+				return ad_domain_info['Domain']
 		elif role == 'nonmaster':
 			if dns:
 				domain = util.get_ucs_domain(nameserver)
