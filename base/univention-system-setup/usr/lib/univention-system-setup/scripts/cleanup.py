@@ -32,28 +32,39 @@
 # <http://www.gnu.org/licenses/>.
 
 import sys
-
+import shutil
+import os.path
+from tempfile import mkdtemp
 from univention.management.console.modules.setup import util
-import univention.config_registry
 
 LOG_FILE = '/var/log/univention/setup.log'
 PATH_CLEANUP_PRE_SCRIPTS = '/usr/lib/univention-system-setup/cleanup-pre.d/'
 PATH_CLEANUP_POST_SCRIPTS = '/usr/lib/univention-system-setup/cleanup-post.d/'
+
 
 def cleanup():
 	# re-direct stdout to setup log file
 	sys.stdout = open(LOG_FILE, 'a')
 	sys.stderr = sys.stdout
 
+	temp_dir = mkdtemp()
+
+	pre_dir = os.path.join(temp_dir, 'pre')
+	post_dir = os.path.join(temp_dir, 'post')
+
+	shutil.copytree(PATH_CLEANUP_PRE_SCRIPTS, pre_dir)
+	shutil.copytree(PATH_CLEANUP_POST_SCRIPTS, post_dir)
+
 	# Run cleanup-pre scripts
-	util.run_scripts_in_path(PATH_CLEANUP_PRE_SCRIPTS, sys.stdout, "cleanup-pre")
+	util.run_scripts_in_path(pre_dir, sys.stdout, "cleanup-pre")
 
 	# Run cleanup-post scripts
-	util.run_scripts_in_path(PATH_CLEANUP_POST_SCRIPTS, sys.stdout, "cleanup-post")
+	util.run_scripts_in_path(post_dir, sys.stdout, "cleanup-post")
+
+	shutil.rmtree(temp_dir)
 
 	sys.stdout.close()
 	sys.exit(0)
 
 if __name__ == "__main__":
 	cleanup()
-

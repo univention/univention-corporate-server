@@ -1,3 +1,9 @@
+univention-system-setup (8.1.65-37) unstable; urgency=low
+
+  * Bug #36874: Fix basesystem package removal
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 03 Dec 2014 12:29:15 +0100
+
 univention-system-setup (8.1.65-36) unstable; urgency=low
 
   * Bug #36968: updated template for text mode installation
