@@ -147,35 +147,23 @@ class Instance(Base, ProgressMixin):
 			object_type = request.options.get('objectType')
 		return self._get_module(object_type, request.flavor)
 
-	def _check_thread_error(self, thread, result, request):
-		"""Checks if the thread returned an exception. In that case an
-		error response is send and the function returns True. Otherwise
-		False is returned."""
+	def _thread_finished(self, thread, result, request):
 		if not isinstance(result, BaseException):
-			return False
+			self.finished(request.id, result)
+			return
 
 		if isinstance(result, (udm_errors.ldapSizelimitExceeded, udm_errors.ldapTimeout)):
-			self.finished(request.id, None, result.args[0], success=False, status=MODULE_ERR_COMMAND_FAILED)
-			return True
+			self.finished(request.id, None, result.args[0], status=MODULE_ERR_COMMAND_FAILED)
+			return
 
-		msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
+		msg = ''.join(traceback.format_exception(*thread.exc_info))
 		MODULE.process('An internal error occurred: %s' % msg)
 
 		if isinstance(result, LDAP_ServerDown):
-			self.finished(request.id, None, str(result), success=False, status=result.status)
-			return True
-
-		self.finished(request.id, None, msg, False)
-		return True
-
-	def _thread_finished(self, thread, result, request):
-		"""This method is invoked when a threaded request function is
-		finished. The result is send back to the client. If the result
-		is an instance of BaseException an error is returned."""
-		if self._check_thread_error(thread, result, request):
+			self.finished(request.id, None, str(result), status=result.status)
 			return
 
-		self.finished(request.id, result)
+		self.finished(request.id, None, msg, False)
 
 	@LDAP_Connection
 	def license(self, request, ldap_connection=None, ldap_position=None):

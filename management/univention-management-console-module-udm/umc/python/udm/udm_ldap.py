@@ -36,8 +36,10 @@ import copy
 import re
 import threading
 import gc
+import traceback
 
 from univention.management.console import Translation
+from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
 from univention.management.console.modules import UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError, UMC_Error
 
 import univention.admin as udm
@@ -112,14 +114,39 @@ class LDAP_ServerDown(UMC_Error):
 		return '\n'.join(_message())
 
 
+class LDAP_AuthenticationFailed(UMC_Error):
+	def __init__(self):
+		super(LDAP_AuthenticationFailed, self).__init__(_('Authentication failed'), status=BAD_REQUEST_UNAUTH)
+
+
+def error_handler(func):
+	def _decorated(*args, **kwargs):
+		try:
+			return func(*args, **kwargs)
+		except SERVER_DOWN:
+			raise LDAP_ServerDown()
+		except udm_errors.authFail:
+			raise LDAP_AuthenticationFailed()
+		except (udm_errors.ldapSizelimitExceeded, udm_errors.ldapTimeout):
+			raise
+		except udm_errors.base as exc:
+			MODULE.info('LDAP operation for user %s has failed' % (_user_dn,))
+			if _ldap_connection is None:
+				MODULE.error(traceback.format_exc())
+			raise
+		except LDAPError as exc:
+			MODULE.error(traceback.format_exc())
+			if _ldap_connection is None:
+				raise LDAP_ConnectionError('Opening LDAP connection failed: %s' % str(exc))
+			raise
+	return _decorated
+
+
 def LDAP_Connection(func):
 	"""This decorator function provides an open LDAP connection that can
 	be accessed via the variable ldap_connection and a vaild position
 	within the LDAP directory in the variable ldap_position. It reuses
-	an already open connection or creates a new one. If the function
-	fails with an LDAP error the decorator tries to reopen the LDAP
-	connection and invokes the function again. if it still fails an
-	LDAP_ConnectionError is raised.
+	an already open connection or creates a new one.
 
 	When using the decorator the method get two additional keyword arguments.
 
@@ -133,43 +160,36 @@ def LDAP_Connection(func):
 	def wrapper_func(*args, **kwargs):
 		global _ldap_connection, _ldap_position, _user_dn, _password, _licenseCheck
 
-		if _ldap_connection is not None:
+		if _ldap_connection is None:
+			MODULE.info('Opening LDAP connection for user %s' % _user_dn)
+			lo = udm_uldap.access(host=ucr.get('ldap/master'), base=ucr.get('ldap/base'), binddn=_user_dn, bindpw=_password)
+
+			# license check (see also univention.admin.uldap.access.bind())
+			if not GPLversion:
+				try:
+					_licenseCheck = univention.admin.license.init_select(lo, 'admin')
+					if _licenseCheck in range(1, 5) or _licenseCheck in range(6, 12):
+						lo.allow_modify = 0
+					if _licenseCheck is not None:
+						lo.requireLicense()
+				except univention.admin.uexceptions.licenseInvalid:
+					lo.allow_modify = 0
+					lo.requireLicense()
+				except univention.admin.uexceptions.licenseNotFound:
+					lo.allow_modify = 0
+					lo.requireLicense()
+				except univention.admin.uexceptions.licenseExpired:
+					lo.allow_modify = 0
+					lo.requireLicense()
+				except univention.admin.uexceptions.licenseWrongBaseDn:
+					lo.allow_modify = 0
+					lo.requireLicense()
+
+			po = udm_uldap.position(lo.base)
+		else:
 			MODULE.info('Using open LDAP connection for user %s' % _user_dn)
 			lo = _ldap_connection
 			po = _ldap_position
-		else:
-			MODULE.info('Opening LDAP connection for user %s' % _user_dn)
-			try:
-				lo = udm_uldap.access(host=ucr.get('ldap/master'), base=ucr.get('ldap/base'), binddn=_user_dn, bindpw=_password)
-
-				# license check (see also univention.admin.uldap.access.bind())
-				if not GPLversion:
-					try:
-						_licenseCheck = univention.admin.license.init_select(lo, 'admin')
-						if _licenseCheck in range(1, 5) or _licenseCheck in range(6, 12):
-							lo.allow_modify = 0
-						if _licenseCheck is not None:
-							lo.requireLicense()
-					except univention.admin.uexceptions.licenseInvalid:
-						lo.allow_modify = 0
-						lo.requireLicense()
-					except univention.admin.uexceptions.licenseNotFound:
-						lo.allow_modify = 0
-						lo.requireLicense()
-					except univention.admin.uexceptions.licenseExpired:
-						lo.allow_modify = 0
-						lo.requireLicense()
-					except univention.admin.uexceptions.licenseWrongBaseDn:
-						lo.allow_modify = 0
-						lo.requireLicense()
-
-				po = udm_uldap.position(lo.base)
-			except udm_errors.noObject as e:
-				raise e
-			except SERVER_DOWN:
-				raise LDAP_ServerDown()
-			except LDAPError as e:
-				raise LDAP_ConnectionError('Opening LDAP connection failed: %s' % str(e))
 
 		kwargs['ldap_connection'] = lo
 		kwargs['ldap_position'] = po
@@ -177,39 +197,13 @@ def LDAP_Connection(func):
 			ret = func(*args, **kwargs)
 			_ldap_connection = lo
 			_ldap_position = po
-			return ret
-		except (udm_errors.ldapSizelimitExceeded, udm_errors.ldapTimeout) as e:
-			raise e
-		except (LDAPError, udm_errors.base) as e:
-			MODULE.info('LDAP operation for user %s has failed' % _user_dn)
-			try:
-				lo = udm_uldap.access(host=ucr.get('ldap/master'), base=ucr.get('ldap/base'), binddn=_user_dn, bindpw=_password)
-				lo.requireLicense()
-				po = udm_uldap.position(lo.base)
-			except udm_errors.noObject as e:
-				raise e
-			except SERVER_DOWN:
-				raise LDAP_ServerDown()
-			except (LDAPError, udm_errors.base) as e:
-				raise LDAP_ConnectionError('Opening LDAP connection failed: %s' % str(e))
+		except LDAPError:
+			_ldap_connection = None
+			_ldap_position = None
+			raise
+		return ret
 
-			kwargs['ldap_connection'] = lo
-			kwargs['ldap_position'] = po
-			try:
-				ret = func(*args, **kwargs)
-				_ldap_connection = lo
-				_ldap_position = po
-				return ret
-			except (udm_errors.ldapSizelimitExceeded, udm_errors.ldapTimeout) as e:
-				raise e
-			except udm_errors.base as e:
-				raise LDAP_ConnectionError(str(e))
-
-		return []
-
-	return wrapper_func
-
-# exceptions
+	return error_handler(wrapper_func)
 
 
 class UDM_Error(Exception):
@@ -224,8 +218,6 @@ class UDM_Error(Exception):
 
 	def __str__(self):
 		return str(self.exc)
-
-# module cache
 
 
 class UDM_ModuleCache(dict):
@@ -485,7 +477,7 @@ class UDM_Module(object):
 		except udm_errors.ldapSizelimitExceeded as e:
 			raise udm_errors.ldapSizelimitExceeded(_('The query you have entered yields too many matching entries. Please narrow down your search by specifiying more query parameters. The current size limit of %s can be configured with the UCR variable directory/manager/web/sizelimit.') % ucr.get('directory/manager/web/sizelimit', '2000'))
 		except (LDAPError, udm_errors.ldapError) as e:
-			raise e
+			raise
 		except udm_errors.base as e:
 			raise UDM_Error(e)
 
@@ -509,7 +501,7 @@ class UDM_Module(object):
 			else:
 				obj = self.module.object(None, ldap_connection, None, '', superordinate, attributes=attributes)
 		except (LDAPError, udm_errors.ldapError) as e:
-			raise e
+			raise
 		except Exception as e:
 			MODULE.info('Failed to retrieve LDAP object: %s' % str(e))
 			raise UDM_Error(e)
@@ -914,10 +906,9 @@ class UDM_Settings(object):
 	def _read_directories(self, ldap_connection=None, ldap_position=None):
 		try:
 			directories = udm_modules.lookup('settings/directory', None, ldap_connection, scope='sub')
-		except (LDAPError, udm_errors.ldapError) as e:
-			raise e
 		except udm_errors.noObject:
 			directories = None
+
 		if not directories:
 			self.directory = None
 		else:
@@ -927,10 +918,9 @@ class UDM_Settings(object):
 	def _read_groups(self, ldap_connection=None, ldap_position=None):
 		try:
 			groups = udm_modules.lookup('settings/default', None, ldap_connection, scope='sub')
-		except (LDAPError, udm_errors.ldapError) as e:
-			raise e
 		except udm_errors.noObject:
 			groups = None
+
 		if not groups:
 			self.groups = None
 		else:
@@ -1063,7 +1053,7 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
 	try:
 		result = ldap_connection.search(base=container, scope='one')
 	except (LDAPError, udm_errors.ldapError) as e:
-		raise e
+		raise
 	except udm_errors.base as e:
 		raise UDM_Error(e)
 	objects = []
@@ -1161,7 +1151,7 @@ def search_syntax_choices_by_key(syntax_name, key):
 			module_search_options = {'scope': 'base', 'container': key}
 			try:
 				return read_syntax_choices(syntax_name, {}, module_search_options)
-			except LDAP_ConnectionError:
+			except udm_errors.base:#LDAP_ConnectionError:
 				# invalid DN
 				return []
 		if syn.key is not None:
