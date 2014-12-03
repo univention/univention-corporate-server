@@ -1186,6 +1186,24 @@ class date(simple):
 			raise univention.admin.uexceptions.valueError,_("Not a valid Date")
 		return ''
 
+
+class date2(date):  # fixes the century
+
+	@classmethod
+	def parse(self, text):
+		if text is None:
+			return ''
+		if self._re_iso.match(text):
+			year, month, day = map(lambda(x): int(x), text.split('-'))
+			if 1960 < year < 2100 and 1 <= month <= 12 and 1 <= day <= 31:
+				return text
+		if text and self._re_de.match(text):
+			day, month, year = map(lambda(x): int(x), text.split('.'))
+			if 0 <= year <= 99 and 1 <= month <= 12 and 1 <= day <= 31:
+				return '20%02d-%02d-%02d' % (year, month, day)
+		raise univention.admin.uexceptions.valueError,_("Not a valid Date")
+
+
 class reverseLookupSubnet(simple):
 	#               <-                      0-255                     ->  *dot  <-                      0-255                     ->
 	regex_IPv4 = r'((([1-9]?[0-9])|(1[0-9]{0,2})|(2([0-4][0-9]|5[0-5])))\.){1,2}(([1-9]?[0-9])|(1[0-9]{0,2})|(2([0-4][0-9]|5[0-5])))'

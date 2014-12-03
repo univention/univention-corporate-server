@@ -253,7 +253,7 @@ property_descriptions={
 	'userexpiry': univention.admin.property(
 			short_description=_('Account expiry date'),
 			long_description=_('Enter date as day.month.year.'),
-			syntax=univention.admin.syntax.date,
+			syntax=univention.admin.syntax.date2,
 			multivalue=0,
 			options=['posix', 'samba', 'kerberos', 'mail'],
 			required=0,
@@ -1371,12 +1371,12 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				krb5validend=self.oldattr['krb5ValidEnd'][0]
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5validend is: %s' %
 						       krb5validend)
-				self.info['userexpiry']="%s-%s-%s"%(krb5validend[0:4],krb5validend[4:6],krb5validend[6:8])
+				self.info['userexpiry'] = "%s-%s-%s" % (krb5validend[0:4], krb5validend[4:6], krb5validend[6:8])
 		elif 'samba' in self.options:
 			if self.oldattr.has_key('sambaKickoffTime'):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaKickoffTime is: %s' %
 						       self.oldattr['sambaKickoffTime'][0])
-				self.info['userexpiry']=time.strftime("%Y-%m-%d",time.gmtime(long(self.oldattr['sambaKickoffTime'][0])+(3600*24)))
+				self.info['userexpiry'] = time.strftime("%Y-%m-%d", time.gmtime(long(self.oldattr['sambaKickoffTime'][0])+(3600*24)))
 
 		try:
 			givenName=self.oldattr.get('givenName',[''])[0]
@@ -2219,7 +2219,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			if 'samba' in self.options:
 				sambaKickoffTime=''
 				if self['userexpiry']:
-					sambaKickoffTime="%d" % long(time.mktime(time.strptime(self['userexpiry'],"%d.%m.%y")))
+					sambaKickoffTime="%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")))
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaKickoffTime: %s' % sambaKickoffTime)
 				old_sambaKickoffTime=self.oldattr.get('sambaKickoffTime', '')
 				if old_sambaKickoffTime != sambaKickoffTime:
@@ -2227,7 +2227,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			if 'kerberos' in self.options:
 				krb5ValidEnd=''
 				if self['userexpiry']:
-					krb5ValidEnd="%s" % "20"+self['userexpiry'][6:8]+self['userexpiry'][3:5]+self['userexpiry'][0:2]+"000000Z"
+					krb5ValidEnd = "%s%s%s000000Z" % (self['userexpiry'][0:4], self['userexpiry'][5:7], self['userexpiry'][8:10])
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5ValidEnd: %s' % krb5ValidEnd)
 				old_krb5ValidEnd=self.oldattr.get('krb5ValidEnd', '')
 				if old_krb5ValidEnd != krb5ValidEnd:
@@ -2238,14 +2238,15 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		if self.hasChanged('disabled') or self.hasChanged('userexpiry'):
 			if 'posix' in self.options or ('mail' in self.options and self.hasChanged('userexpiry')):
-				if self.__is_posix_disabled():
-					# disable posix account
+				if self.__is_posix_disabled() and self.hasChanged('disabled') and not self.hasChanged('userexpiry'):
+					shadowExpire='1'
+				elif self['userexpiry']:
+					shadowExpire="%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d"))/3600/24+1)
+				elif self.__is_posix_disabled():
 					shadowExpire='1'
 				else:
-					if self['userexpiry']:
-						shadowExpire="%d" % long(time.mktime(time.strptime(self['userexpiry'],"%d.%m.%y"))/3600/24+1)
-					else: #if self.hasChanged('disabled'):
-						shadowExpire = ''
+					shadowExpire = ''
+
 				old_shadowExpire = self.oldattr.get('shadowExpire', '')
 				if old_shadowExpire != shadowExpire:
 					ml.append(('shadowExpire', old_shadowExpire, shadowExpire))

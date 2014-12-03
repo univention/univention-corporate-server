@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-6) unstable; urgency=medium
+
+  * Bug #36330: fix setting of userexpiry when account is disabled
+
+ -- Florian Best <best@univention.de>  Wed, 03 Dec 2014 18:38:37 +0100
+
 univention-directory-manager-modules (10.0.29-5) unstable; urgency=medium
 
   * Bug #30088: add more information to noObject exceptions
