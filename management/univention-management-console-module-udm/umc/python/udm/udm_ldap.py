@@ -609,7 +609,7 @@ class UDM_Module(object):
 		layout = getattr(self.module, 'layout', [])
 		if ldap_dn is not None:
 			mod = get_module(None, ldap_dn)
-			if self.name == mod.name and self.is_policy_module():
+			if mod is not None and self.name == mod.name and self.is_policy_module():
 				layout = copy.copy(layout)
 				tab = udm_layout.Tab(_('Referencing objects'), _('Objects referencing this policy object'),
 					layout=['_view_referencing_objects']
