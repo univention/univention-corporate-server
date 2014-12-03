@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-system-setup
-fix: 8.1.65-33.820.201411282103
+fix: 8.1.65-36.823.201412021000
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -43,7 +43,7 @@ desc: |
     user how the UMC can be accessed after reboot.
   * The configuration of keyboard model and keyboard variant has been corrected.
   * The search for system locales has been adjusted such that wildcards are
-    implictely used.
+    implicitly used.
 bug:
  - 36665
  - 36936
