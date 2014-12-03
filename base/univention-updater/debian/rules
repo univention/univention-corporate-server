@@ -85,6 +85,7 @@ override_dh_auto_test:
 	# doctest
 	python modules/univention/updater/tools.py -v
 	python modules/univention/updater/mirror.py -v
+	python modules/univention/updater/errors.py -v
 	# unittest
 	python tests/test_updater.py -v
 	python tests/test_mirror.py -v
