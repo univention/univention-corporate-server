@@ -43,11 +43,17 @@ class RequiredComponentError(UpdaterException):
 		self.components = components
 
 	def __str__(self):
-		if len(self.components) == 1:
-			return "The update to UCS %s is blocked because the component '%s' is marked as required." % (
-				self.version, self.components[0])
-		return "The update to UCS %s is blocked because the components %s are marked as required." % (
-			self.version, ', '.join("'%s'" % (_,) for _ in self.components))
+		"""
+		>>> '%s' % RequiredComponentError('4.0-0', set(('a',)))
+		"The update to UCS 4.0-0 is blocked because the component 'a' is marked as required."
+		>>> '%s' % RequiredComponentError('4.0-0', set(('a', 'b'))) #doctest: +ELLIPSIS
+		"The update to UCS 4.0-0 is blocked because the components '...', '...' are marked as required."
+		"""
+		return (
+			"The update to UCS %s is blocked because the component %s is marked as required."
+			if len(self.components) == 1
+			else "The update to UCS %s is blocked because the components %s are marked as required."
+		) % (self.version, ', '.join("'%s'" % (_,) for _ in self.components))
 
 class PreconditionError(UpdaterException):
     """Signal abort by release or component pre-/post-update script.
@@ -87,3 +93,8 @@ class LockingError(UpdaterException):
 	"""Signal other updater process running."""
 	def __str__(self):
 		return "Another updater process is currently running - abort\n%s" % self.args[0]
+
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()
