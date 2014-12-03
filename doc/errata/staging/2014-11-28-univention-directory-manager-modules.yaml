@@ -7,4 +7,12 @@ version: [0]
 desc: |
   * Fixed setting of userexpiry when a user account is disabled.
   * Fixed removal of the account expiry date of a user.
-bug: [36330, 25279]
+  * The user properties ctxBrokenSession and ctxReconnectSession now
+    have default values. They prevented changes via UMC when not having
+    sufficient LDAP permission to change these attributes. Especially
+    affected were User Password Admins and the users/self module.
+  * The internal method get_exception_msg() has been moved into the base
+    class of UDM exceptions.
+  * Error handling of UDM modules has been improoved by adding default methods
+    which contain information about the current edited object type.
+bug: [36330, 25279, 29884, 30088, 34985]

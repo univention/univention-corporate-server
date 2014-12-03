@@ -1,3 +1,12 @@
+univention-directory-manager-modules (10.0.29-4) unstable; urgency=medium
+
+  * Bug #29884: always set the value for 'CtxBrokenSession' and
+  	'CtxReconnectSession'
+  * Bug #34985: add default methods to handlers.base class
+  * Bug #30088: move get_exception_msg() logic into uexceptions.base.__str__
+
+ -- Florian Best <best@univention.de>  Wed, 03 Dec 2014 11:05:03 +0100
+
 univention-directory-manager-modules (10.0.29-3) unstable; urgency=medium
 
   * Bug #25279: allow empty strings in date syntax
