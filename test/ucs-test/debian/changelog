@@ -1,3 +1,9 @@
+ucs-test (4.0.187-1) unstable; urgency=low
+
+  * Bug #34081: restrict roles to domaincontroller_master only.
+
+ -- Ammar Najjar <najjar@univention.de>  Wed, 03 Dec 2014 11:26:49 +0100
+
 ucs-test (4.0.186-4) unstable; urgency=low
 
   * Bug #37030: Show all blocking components
