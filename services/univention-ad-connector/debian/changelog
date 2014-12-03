@@ -1,3 +1,11 @@
+univention-ad-connector (9.0.11-2) unstable; urgency=medium
+
+  * Check that joining account is member of "Domain Admins" in AD
+    before starting admember setup (Bug #35562)
+  * Allow UMC Administrator to be renamed before admember setup (Bug #36778)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Dec 2014 19:31:05 +0100
+
 univention-ad-connector (9.0.11-1) unstable; urgency=medium
 
   * admember: check that joining account has RID 500 in AD (Bug #35562)

@@ -373,7 +373,8 @@ class Instance(Base, ProgressMixin):
 			ad_server_ip = ad_domain_info['DC IP']
 			if mode == 'admember':
 				admember.check_domain(ad_domain_info)
-			admember.check_connection(ad_server_ip, username, password)
+			admember.check_connection(ad_domain_info, username, password)
+			admember.check_ad_account(ad_domain_info, username, password)
 		except admember.invalidUCSServerRole as exc: # check_server_role()
 			MODULE.warn('Failure: %s' % exc)
 			raise UMC_CommandError(_('The AD member mode can only be configured on a DC master server.'))
@@ -386,9 +387,9 @@ class Instance(Base, ProgressMixin):
 		except admember.connectionFailed as exc: # check_connection()
 			MODULE.warn('Failure: %s' % exc)
 			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info.get('DC DNS Name'))
-		except admember.notDefaultADAdmin as exc: # check_connection()
+		except admember.notDomainAdminInAD as exc: # check_ad_account()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_CommandError(_('The given account is not the standard Administrator of the Active Directory server.'))
+			raise UMC_CommandError(_('The given user is not member of the Domain Admins group in AD.'))
 
 		# final info dict that is returned... replace spaces in the keys with '_'
 		MODULE.info('Preparing info dict...')
@@ -453,13 +454,10 @@ class Instance(Base, ProgressMixin):
 			admember.disable_local_heimdal()
 			admember.disable_local_samba4()
 
-			_progress(20, _('Configuring Administrator account...'))
-			admember.prepare_administrator(username, password)
+			_progress(20, _('Configuring reverse DNS settings...'))
+			admember.prepare_dns_reverse_settings(ad_domain_info)
 
-			_progress(25, _('Configuring reverse DNS settings...'))
-			admember.prepare_dns_reverse_settings(ad_server_ip, ad_domain_info)
-
-			_progress(30, _('Configuring software components...'))
+			_progress(25, _('Configuring software components...'))
 
 			_step_offset = 30.0
 			_nsteps = 35.0
@@ -475,12 +473,15 @@ class Instance(Base, ProgressMixin):
 			if not success:
 				raise RuntimeError(_('An error occurred while installing necessary software components.'))
 
-			_progress(70, _('Configuring synchronization from AD...'))
+			_progress(65, _('Configuring synchronization from AD...'))
 			admember.prepare_connector_settings(username, password, ad_domain_info)
 			admember.disable_ssl()
 
-			_progress(75, _('Renaming well known SID objects...'))
+			_progress(70, _('Renaming well known SID objects...'))
 			admember.rename_well_known_sid_objects(username, password)
+
+			_progress(75, _('Configuring Administrator account...'))
+			admember.prepare_administrator(username, password)
 
 			_progress(80, _('Running Samba join script...'))
 			admember.run_samba_join_script(username, password)
@@ -489,6 +490,7 @@ class Instance(Base, ProgressMixin):
 			admember.add_domaincontroller_srv_record_in_ad(ad_server_ip)
 
 			admember.make_deleted_objects_readable_for_this_machine(username, password)
+			admember.synchronize_account_position(ad_domain_info, username, password)
 
 			_progress(90, _('Starting Active Directory connection service...'))
 			admember.start_service('univention-ad-connector')

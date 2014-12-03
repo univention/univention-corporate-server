@@ -116,11 +116,9 @@ msgstr ""
 #: umc/python/adconnector/__init__.py:384
 #: umc/python/adconnector/__init__.py:503
 msgid ""
-"The given account is not the standard Administrator of the Active "
-"Directory server."
+"The given user is not member of the Domain Admins group in AD."
 msgstr ""
-"Das angegebene Konto entspricht nicht dem standard Administrator des "
-"Active Directory Servers."
+"Das angegebene Konto ist nicht Mitglied der Gruppe Domain Admins in AD."
 
 #: umc/python/adconnector/__init__.py:537
 #, python-format
