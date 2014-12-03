@@ -528,6 +528,18 @@ class base(object):
 		return self._remove(remove_childs)
 
 
+def _not_implemented_method(attr):
+	def _not_implemented_error(self, *args, **kwargs):
+		raise NotImplementedError('%s() not implemented by %s.%s().' % (attr, self.__module__, self.__class__.__name__))
+	return _not_implemented_error
+
+
+# add some default abstract methods
+for _attr in ('_ldap_addlist', '_ldap_modlist', '_ldap_dellist', 'exists', '_move', 'cancel', '_remove', '_create', '_modify'):
+	if not hasattr(base, _attr):
+		setattr(base, _attr, _not_implemented_method(_attr))
+
+
 class simpleLdap(base):
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
