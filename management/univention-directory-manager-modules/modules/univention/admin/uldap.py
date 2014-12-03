@@ -344,7 +344,7 @@ class access:
 		try:
 			return self.lo.search(filter, base, scope, attr, unique, required, timeout, sizelimit)
 		except ldap.NO_SUCH_OBJECT, msg:
-			raise univention.admin.uexceptions.noObject, _err2str(msg)
+			raise univention.admin.uexceptions.noObject('%s filter=%r' % (_err2str(msg), filter))
 		except ldap.INAPPROPRIATE_MATCHING, msg:
 			raise univention.admin.uexceptions.insufficientInformation, _err2str(msg)
 		except (ldap.TIMEOUT, ldap.TIMELIMIT_EXCEEDED), msg:
@@ -358,7 +358,7 @@ class access:
 		try:
 			return self.lo.searchDn(filter, base, scope, unique, required, timeout, sizelimit)
 		except ldap.NO_SUCH_OBJECT, msg:
-			raise univention.admin.uexceptions.noObject, _err2str(msg)
+			raise univention.admin.uexceptions.noObject('%s filter=%r' % (_err2str(msg), filter))
 		except ldap.INAPPROPRIATE_MATCHING, msg:
 			raise univention.admin.uexceptions.insufficientInformation, _err2str(msg)
 		except (ldap.TIMEOUT, ldap.TIMELIMIT_EXCEEDED), msg:
@@ -410,7 +410,7 @@ class access:
 			return self.lo.modify(dn, changes)
 		except ldap.NO_SUCH_OBJECT, msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'mod dn=%s err=%s' % (dn, msg))
-			raise univention.admin.uexceptions.noObject
+			raise univention.admin.uexceptions.noObject(dn)
 		except ldap.INSUFFICIENT_ACCESS, msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'mod dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.permissionDenied
@@ -431,7 +431,7 @@ class access:
 			return self.lo.rename(dn, newdn)
 		except ldap.NO_SUCH_OBJECT, msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'ren dn=%s err=%s' % (dn, msg))
-			raise univention.admin.uexceptions.noObject
+			raise univention.admin.uexceptions.noObject(dn)
 		except ldap.INSUFFICIENT_ACCESS, msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'ren dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.permissionDenied
@@ -451,7 +451,7 @@ class access:
 			return self.lo.delete(dn)
 		except ldap.NO_SUCH_OBJECT, msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'del dn=%s err=%s' % (dn, msg))
-			raise univention.admin.uexceptions.noObject
+			raise univention.admin.uexceptions.noObject(dn)
 		except ldap.INSUFFICIENT_ACCESS, msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'del dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.permissionDenied
