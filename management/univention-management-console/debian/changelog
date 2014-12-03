@@ -1,3 +1,9 @@
+univention-management-console (6.0.24-32) unstable; urgency=medium
+
+  * Bug #37167: fix error handling when socket is closed
+
+ -- Florian Best <best@univention.de>  Thu, 20 Nov 2014 18:27:16 +0100
+
 univention-management-console (6.0.24-31) unstable; urgency=medium
 
   * Bug #36319: Revert all changes, will not get fixed in errata3.2-3
