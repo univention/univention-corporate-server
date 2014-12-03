@@ -1,0 +1,79 @@
+From 448c34dfcd211976f9cd5a97a82c2cd77e97aba2 Mon Sep 17 00:00:00 2001
+Message-Id: <448c34dfcd211976f9cd5a97a82c2cd77e97aba2.1413399377.git.hahn@univention.de>
+From: Philipp Hahn <hahn@univention.de>
+Date: Wed, 15 Oct 2014 20:54:47 +0200
+Subject: [PATCH] xend: Fix hex decoding in sxp.Parser
+Organization: Univention GmbH, Bremen, Germany
+To: xen-devel@lists.xen.org
+
+"xm list" sometimes failes with the following traceback:
+> Traceback (most recent call last):
+>   File "/root/36098_xend-expat.py", line 84, in <module>
+>     main_xmlrpc()
+>   File "/root/36098_xend-expat.py", line 50, in main_xmlrpc
+>     result = xend.xend.domain(UUID)
+>   File "/usr/lib/python2.6/xmlrpclib.py", line 1199, in __call__
+>     return self.__send(self.__name, args)
+>   File "/usr/lib/python2.6/xmlrpclib.py", line 1489, in __request
+>     verbose=self.__verbose
+>   File "/usr/lib/python2.6/xmlrpclib.py", line 1253, in request
+>     return self._parse_response(h.getfile(), sock)
+>   File "/usr/lib/python2.6/xmlrpclib.py", line 1387, in _parse_response
+>     p.feed(response)
+>   File "/usr/lib/python2.6/xmlrpclib.py", line 601, in feed
+>     self._parser.Parse(data, 0)
+> xml.parsers.expat.ExpatError: not well-formed (invalid token): line 45, column 18
+
+This happens when the descriptive text for a VM contains
+non-ASCII-characters, which xen.xend.sxp.show() converts to Python
+hex-escapes:
+> print repr(unichr(8364).encode('UTF-8'))
+> '\xe2\x82\xac'
+
+On read-back those are processed by xen.xend.sxp.Parser.state_hex(),
+which is broken: 'a'..'f' respective 'A'..'F' are converted to 0..5
+instead of 10..15. Thus the above sequence gets read back as:
+'B\x82\x02'. When converted to XML this produces invalid XML, which
+breaks expat.
+
+Use Pythont int(..., 16) instead.
+
+Signed-off-by: Philipp Hahn <hahn@univention.de>
+---
+ tools/python/xen/xend/sxp.py | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/tools/python/xen/xend/sxp.py b/tools/python/xen/xend/sxp.py
+index c87270f..d585218 100644
+--- a/tools/python/xen/xend/sxp.py
++++ b/tools/python/xen/xend/sxp.py
+@@ -305,9 +305,9 @@ class Parser:
+             self.state.parent.buf += d
+             self.pop_state()
+             
+-        def hexdigit(c, d):
++        def hexdigit(c):
+             self.state.val *= 16
+-            self.state.val += ord(c) - ord(d)
++            self.state.val += int(c, 16)
+             self.state.buf += c
+             if self.state.val < 0 or self.state.val > 0xff:
+                 raise ParseError(self, "invalid hex escape: out of range " + self.state.buf)
+@@ -317,11 +317,11 @@ class Parser:
+         if self.at_eof():
+             raise ParseError(self, "unexpected EOF")
+         elif '0' <= c <= '9':
+-            hexdigit(c, '0')
++            hexdigit(c)
+         elif 'A' <= c <= 'F':
+-            hexdigit(c, 'A')
++            hexdigit(c)
+         elif 'a' <= c <= 'f':
+-            hexdigit(c, 'a')
++            hexdigit(c)
+         elif len(buf):
+             hexdone()
+             self.input_char(c)
+-- 
+1.9.1
+
