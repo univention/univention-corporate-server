@@ -5,6 +5,6 @@ src: univention-management-console
 fix: 6.0.24-32.836.201411201829
 version: [4]
 desc: |
-  * fix an error introduced by errata 238 regarding the error handling of
-    closed UMC module process sockets
+  * Fix an error introduced by errata 238 regarding the error handling of
+    closed UMC module process sockets.
 bug: [36561]
