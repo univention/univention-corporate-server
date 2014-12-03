@@ -760,6 +760,10 @@ def is_domaincontroller(domaincontroller):
 	return is_domaincontroller.RE.match(domaincontroller) is not None
 is_domaincontroller.RE = re.compile("^[a-zA-Z].*\..*$")
 
+def is_ldap_base(ldap_base):
+	return is_ldap_base.RE.match(ldap_base) is not None
+is_ldap_base.RE = re.compile('^(dc|cn|c|o|l)=[a-zA-Z0-9-]+,((dc|cn|c|o|l)=[a-zA-Z0-9-]+)+$')
+
 # new defined methods
 def is_ascii(str):
 	try:

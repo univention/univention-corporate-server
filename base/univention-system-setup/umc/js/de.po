@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-11-28 12:43+0100\n"
+"POT-Creation-Date: 2014-12-03 13:55+0100\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -247,7 +247,7 @@ msgstr ""
 "Adresse des Active Directory-Domänencontrollers oder Name der Active "
 "Directory-Domäne"
 
-#: umc/js/setup/ApplianceWizard.js:1996 umc/js/setup/ApplianceWizard.js:2044
+#: umc/js/setup/ApplianceWizard.js:1996 umc/js/setup/ApplianceWizard.js:2045
 msgid "Adjust settings"
 msgstr "Einstellungen anpassen"
 
@@ -293,7 +293,7 @@ msgstr ""
 msgid "At least one network device needs to be properly configured."
 msgstr "Wenigstens ein Netzwerkgerät muss konfiguriert werden."
 
-#: umc/js/setup/Interfaces.js:119 umc/js/setup/InterfaceWizard.js:312
+#: umc/js/setup/InterfaceWizard.js:312 umc/js/setup/Interfaces.js:119
 msgid "Autoconfiguration (SLAAC)"
 msgstr "Automatische Konfiguration (SLAAC)"
 
@@ -313,7 +313,7 @@ msgstr "Bond Netzwerkkonfiguration"
 msgid "Bond primary"
 msgstr "Primäre Bond-Netzwerkschnittstellen"
 
-#: umc/js/setup/Interfaces.js:167 umc/js/setup/InterfaceWizard.js:391
+#: umc/js/setup/InterfaceWizard.js:391 umc/js/setup/Interfaces.js:167
 msgid "Bond slaves"
 msgstr "Bond Kindnetzwerkschnittstellen"
 
@@ -333,7 +333,7 @@ msgstr "Bridge-Konfiguration"
 msgid "Bridge interface configuration"
 msgstr "Bridge Netzwerkkonfiguration"
 
-#: umc/js/setup/Interfaces.js:189 umc/js/setup/InterfaceWizard.js:356
+#: umc/js/setup/InterfaceWizard.js:356 umc/js/setup/Interfaces.js:189
 msgid "Bridge ports"
 msgstr "Bridge ports"
 
@@ -342,7 +342,7 @@ msgid "Business unit"
 msgstr "Abteilung"
 
 #: umc/js/setup/InterfaceGrid.js:131 umc/js/setup/ApplianceWizard.js:1980
-#: umc/js/setup/ApplianceWizard.js:2142 umc/js/setup.js:144
+#: umc/js/setup/ApplianceWizard.js:2152 umc/js/setup.js:144
 #: umc/js/setup.js:492
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -470,15 +470,15 @@ msgstr ""
 "entweder als Benutzer <i>Administrator</i> oder als Benutzer <i>root</i>, "
 "falls das System noch nicht der Domäne beigetreten ist:"
 
-#: umc/js/setup/ApplianceWizard.js:2091
+#: umc/js/setup/ApplianceWizard.js:2101
 msgid "Connection failed. Please recheck the address"
 msgstr "Verbindungsaufbau gescheitert. Bitte überprüfen Sie die Adresse"
 
-#: umc/js/setup/ApplianceWizard.js:2088
+#: umc/js/setup/ApplianceWizard.js:2098
 msgid "Connection refused. Please recheck the password"
 msgstr "Verbindungsaufbau abgelehnt. Bitte überprüfen Sie das Passwort"
 
-#: umc/js/setup/ApplianceWizard.js:2145
+#: umc/js/setup/ApplianceWizard.js:2155
 msgid "Continue"
 msgstr "Fortfahren"
 
@@ -486,7 +486,7 @@ msgstr "Fortfahren"
 msgid "Continue with 169.254.*.* addresse(s)"
 msgstr "Fortfahren mit 169.254.*.* Adresse(n)"
 
-#: umc/js/setup/ApplianceWizard.js:2047
+#: umc/js/setup/ApplianceWizard.js:2048
 msgid "Continue with incomplete settings"
 msgstr "Fortfahren mit unvollständigen Einstellungen"
 
@@ -545,8 +545,8 @@ msgstr "DHCP-Anfrage"
 msgid "DNS server"
 msgstr "DNS-Server"
 
-#: umc/js/setup/LanguagePage.js:149 umc/js/setup/LanguagePage.js:229
-#: umc/js/setup/ApplianceWizard.js:327
+#: umc/js/setup/ApplianceWizard.js:327 umc/js/setup/LanguagePage.js:149
+#: umc/js/setup/LanguagePage.js:229
 msgid "Default system locale"
 msgstr "Standard-System-Sprachdefinition"
 
@@ -590,7 +590,7 @@ msgstr "Domänen-DNS-Server (max. 3)"
 msgid "Domain setup"
 msgstr "Domäneneinstellungen"
 
-#: umc/js/setup/Interfaces.js:116 umc/js/setup/InterfaceWizard.js:280
+#: umc/js/setup/InterfaceWizard.js:280 umc/js/setup/Interfaces.js:116
 msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
@@ -848,9 +848,16 @@ msgstr ""
 "0 und 128."
 
 #: umc/js/setup/ApplianceWizard.js:206
-msgid "Invalid LDAP base!<br/>Expected format: dc=mydomain,dc=intranet"
+msgid ""
+"Invalid LDAP base!<br/>The LDAP base may neither contain blanks nor any "
+"special characters. Its structure needs to consist of at least two relative "
+"distinguished names (RDN) with attribute tags 'dc', 'cn', 'c', 'o', or "
+"'l' (e.g., dc=test,dc=net)."
 msgstr ""
-"Ungültige LDAP-Basis!<br/>Erwartetes Format: dc=meinedomaene,dc=intranet"
+"Ungültige LDAP-Basis!<br/>Die LDAP-Basis darf weder Leer- noch Sonderzeichen enthalten. "
+"Ihre Struktur muss aus mindestens zwei Relative Distinguished Names (RDN) "
+"bestehen, die eines der Attribut-Tags 'dc', 'cn', 'c', 'o', or 'l' verwenden "
+"(z.B. dc=test,dc=net)."
 
 #: umc/js/setup/ApplianceWizard.js:126
 msgid "Invalid e-mail address!<br/>Expected format is:<i>mail@example.com</i>"
@@ -897,8 +904,8 @@ msgstr "Einer bestehenden Active-Directory-Domäne beitreten"
 msgid "Join into an existing UCS domain"
 msgstr "Einer bestehenden UCS-Domäne beitreten"
 
-#: umc/js/setup/LanguagePage.js:88 umc/js/setup/LanguagePage.js:217
-#: umc/js/setup/ApplianceWizard.js:340
+#: umc/js/setup/ApplianceWizard.js:340 umc/js/setup/LanguagePage.js:88
+#: umc/js/setup/LanguagePage.js:217
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
@@ -1027,7 +1034,7 @@ msgstr "Keine zusätzliche Software-Komponenten werden installiert."
 msgid "No changes have been made."
 msgstr "Es wurden keine Änderungen durchgeführt."
 
-#: umc/js/setup/ApplianceWizard.js:2043
+#: umc/js/setup/ApplianceWizard.js:2044
 msgid ""
 "No domain controller was found at the address of the name server. It is "
 "recommended to verify that the network settings are correct."
@@ -1035,7 +1042,7 @@ msgstr ""
 "Unter der Adresse des DNS-Servers konnte kein Domänencontroller gefunden "
 "werden. Die Netzwerkeinstellungen sollten überprüft werden."
 
-#: umc/js/setup/ApplianceWizard.js:2059
+#: umc/js/setup/ApplianceWizard.js:2057
 msgid ""
 "No domain controller was found at the address of the name server. Please "
 "adjust your network settings."
@@ -1060,7 +1067,7 @@ msgstr ""
 "Aktualisierungen, Installation weiterer Software-Komponenten) nicht wie "
 "erwatet funtionieren werden."
 
-#: umc/js/setup/NetworkPage.js:98 umc/js/setup/InterfaceWizard.js:627
+#: umc/js/setup/InterfaceWizard.js:627 umc/js/setup/NetworkPage.js:98
 msgid "None"
 msgstr "Kein"
 
@@ -1149,7 +1156,7 @@ msgstr "Gelöscht:"
 msgid "Restarting server components..."
 msgstr "Neustart der Server-Komponenten..."
 
-#: umc/js/setup/ApplianceWizard.js:2141
+#: umc/js/setup/ApplianceWizard.js:2151
 msgid "Root password empty. Continue?"
 msgstr "Root-Passwort ist leer. Möchten Sie fortfahren?"
 
@@ -1347,8 +1354,8 @@ msgid "This sytem will join an existing UCS domain with the role <i>%s</i>."
 msgstr ""
 "Das System tritt einer existierenden UCS-Domäne mit der Rolle <i>%s</i> bei."
 
-#: umc/js/setup/LanguagePage.js:76 umc/js/setup/LanguagePage.js:209
-#: umc/js/setup/ApplianceWizard.js:334
+#: umc/js/setup/ApplianceWizard.js:334 umc/js/setup/LanguagePage.js:76
+#: umc/js/setup/LanguagePage.js:209
 msgid "Time zone"
 msgstr "Zeitzone"
 
@@ -1361,8 +1368,8 @@ msgid ""
 "To administrate the domain as well as the local system, login to Univention "
 "Management Console as user <i>Administrator</i>:"
 msgstr ""
-"Um die Domäne sowie das lokale System zu administrieren, können Sie sich mit dem Benutzer "
-"<i>Administrator</i> an Univention Management Console anmelden:"
+"Um die Domäne sowie das lokale System zu administrieren, können Sie sich mit "
+"dem Benutzer <i>Administrator</i> an Univention Management Console anmelden:"
 
 #: umc/js/setup/ApplianceWizard.js:1576
 msgid ""
@@ -1430,7 +1437,7 @@ msgid "Virtual LAN"
 msgstr "Virtuelles LAN"
 
 #: umc/js/setup/ApplianceWizard.js:1986 umc/js/setup/ApplianceWizard.js:2002
-#: umc/js/setup/ApplianceWizard.js:2050 umc/js/setup/ApplianceWizard.js:2148
+#: umc/js/setup/ApplianceWizard.js:2051 umc/js/setup/ApplianceWizard.js:2158
 msgid "Warning"
 msgstr "Warnung"
 
@@ -1648,6 +1655,10 @@ msgstr "setzen"
 #~ "Die Installation oder das Entfernen von Softwarekomponenten kann Neustart "
 #~ "oder Anhalten von diversen Diensten zur Folge haben. Dies kann ernsthafte "
 #~ "Auswirkungen haben, sollte sich das System im Produktiveinsatz befinden."
+
+#~ msgid "Invalid LDAP base!<br/>Expected format: dc=mydomain,dc=intranet"
+#~ msgstr ""
+#~ "Ungültige LDAP-Basis!<br/>Erwartetes Format: dc=meinedomaene,dc=intranet"
 
 #~ msgid ""
 #~ "It is not possible to mix NT and Active Directory compatible "

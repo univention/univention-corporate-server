@@ -202,8 +202,8 @@ define([
 		return acceptEmtpy || _validateFQDN(hostOrFQDN) || _validateHostname(hostOrFQDN);
 	};
 
-	var _regDN = /^([^=, ]+=[^=, ]+,)*[^=, ]+=[^=, ]+$/;
-	var _invalidLDAPBase = _('Invalid LDAP base!<br/>Expected format: dc=mydomain,dc=intranet');
+	var _regDN = /^(dc|cn|c|o|l)=[a-zA-Z0-9-]+,((dc|cn|c|o|l)=[a-zA-Z0-9-]+)+$/;
+	var _invalidLDAPBase = _("Invalid LDAP base!<br/>The LDAP base may neither contain blanks nor any special characters. Its structure needs to consist of at least two relative distinguished names (RDN) with attribute tags 'dc', 'cn', 'c', 'o', or 'l' (e.g., dc=test,dc=net).");
 	var _validateLDAPBase = function(ldapBase) {
 		ldapBase = ldapBase || '';
 		var acceptEmtpy = !ldapBase && !this.required;

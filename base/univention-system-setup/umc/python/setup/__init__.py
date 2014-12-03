@@ -406,7 +406,7 @@ class Instance(Base, ProgressMixin):
 		_check('windows/domain', util.is_windowsdomainname, _("The windows domain name is not valid."))
 
 		# LDAP base
-		_check('ldap/base', lambda x: x.find(' ') == -1, _("The LDAP base may not contain any blanks (e.g., dc=test,dc=net)."))
+		_check('ldap/base', util.is_ldap_base, _("The LDAP base may neither contain blanks nor any special characters. Its structure needs to consist of at least two relative distinguished names (RDN) which may only use the attribute tags 'dc', 'cn', 'c', 'o', or 'l' (e.g., dc=test,dc=net)."))
 
 		# root password
 		_check('root_password', lambda x: len(x) >= 8, _("The root password is too short. For security reasons, your password must contain at least 8 characters."))
