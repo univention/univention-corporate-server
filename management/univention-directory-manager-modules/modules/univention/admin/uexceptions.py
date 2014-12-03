@@ -30,7 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import exceptions
 import univention.admin.localization
 from univention.admin import configRegistry
 
@@ -38,8 +37,17 @@ translation=univention.admin.localization.translation('univention/admin')
 _=translation.translate
 
 
-class base(exceptions.Exception):
-	pass
+class base(Exception):
+	message = ''
+
+	def __str__(self):
+		msg = self.message
+		for arg in self.args:
+			if arg != self.message:
+				if isinstance(arg, unicode):
+					arg = arg.encode('utf-8')
+				msg = '%s %s' % (msg, arg)
+		return msg
 
 class objectExists(base):
 	message=_('Object exists.')
