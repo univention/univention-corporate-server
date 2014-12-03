@@ -1,3 +1,14 @@
+univention-lib (4.0.5-2) unstable; urgency=medium
+
+  * Check that joining account is member of "Domain Admins" in AD
+    before starting admember setup (Bug #35562)
+  * Wait for slapd restart when Domain Admins has been renamed during
+    admember setup (Bug #36776)
+  * Allow UMC Administrator to be renamed before admember setup (Bug #36778)
+  * Flush nscd hosts cache after adding a static entry to /etc/hosts
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Dec 2014 19:28:29 +0100
+
 univention-lib (4.0.5-1) unstable; urgency=medium
 
   * admember: check that joining account has RID 500 in AD (Bug #35562)
