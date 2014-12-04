@@ -1,0 +1,12 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-management-console
+fix: 
+version: [0]
+desc: |
+ This update addresses the following issues:
+  * Allows UMC modules to set the response status when the module
+    initialization fails. This is required to show the login dialog after a
+    password change.
+bug: [34353]
