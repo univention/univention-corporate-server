@@ -351,8 +351,10 @@ class access:
 			raise univention.admin.uexceptions.ldapTimeout, _err2str(msg)
 		except ldap.SIZELIMIT_EXCEEDED, msg:
 			raise univention.admin.uexceptions.ldapSizelimitExceeded, _err2str(msg)
+		except ldap.FILTER_ERROR:
+			raise univention.admin.uexceptions.ldapError(_err2str(msg), 'filter=%r' % (filter,))
 		except ldap.LDAPError, msg:
-			raise univention.admin.uexceptions.ldapError, _err2str(msg)
+			raise univention.admin.uexceptions.ldapError(_err2str(msg))
 
 	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 		try:
@@ -365,12 +367,14 @@ class access:
 			raise univention.admin.uexceptions.ldapTimeout, _err2str(msg)
 		except ldap.SIZELIMIT_EXCEEDED, msg:
 			raise univention.admin.uexceptions.ldapSizelimitExceeded, _err2str(msg)
+		except ldap.FILTER_ERROR:
+			raise univention.admin.uexceptions.ldapError(_err2str(msg), 'filter=%r' % (filter,))
 		except ldap.LDAPError, msg:
 			# workaround for bug 14827 ==> msg tuple seems to be empty
 			if not msg:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'uldap.searchDn: ldapError occured: msg=' % str(msg))
 				raise univention.admin.uexceptions.ldapError, str(msg)
-			raise univention.admin.uexceptions.ldapError, _err2str(msg)
+			raise univention.admin.uexceptions.ldapError(_err2str(msg))
 
 	def getPolicies( self, dn, policies = None, attrs = None, result = None, fixedattrs = None ):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'getPolicies modules dn %s result' % dn)
