@@ -42,6 +42,9 @@ dpkg-divert --rename --quiet \
 dpkg-divert --rename --quiet \
    --divert /usr/share/debian-cd/tools/link.pl.ORIG \
    --remove /usr/share/debian-cd/tools/link.pl
+dpkg-divert --rename --quiet \
+   --divert /usr/share/debian-cd/tools/update_tasks.ORIG \
+   --remove /usr/share/debian-cd/tools/update_tasks
 
 #DEBHELPER#
 

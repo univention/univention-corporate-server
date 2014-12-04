@@ -1,3 +1,9 @@
+univention-dvd (0.2.27-4) unstable; urgency=low
+
+  * Bug #37164: Disable Debian-task rebuilding
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 04 Dec 2014 13:40:14 +0100
+
 univention-dvd (0.2.27-3) unstable; urgency=low
 
   * Bug #37008: Fix relative paths
