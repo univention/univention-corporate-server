@@ -1,3 +1,9 @@
+univention-system-setup (8.1.66-2) unstable; urgency=medium
+
+  * Bug #37186: revert last commit (patch for Bug #37168) for DVD release.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 04 Dec 2014 16:05:06 +0100
+
 univention-system-setup (8.1.66-1) unstable; urgency=medium
 
   * Check that joining account is member of "Domain Admins" in AD

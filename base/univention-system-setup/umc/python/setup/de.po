@@ -229,12 +229,6 @@ msgstr "Der folgende Wert ist zu lang, es sind nur 128 Zeichen erlaubt: %s"
 msgid "The following value is too long, only 64 characters allowed: %s"
 msgstr "Der folgende Wert ist zu lang, es sind nur 64 Zeichen erlaubt: %s"
 
-#: umc/python/setup/__init__.py:737
-msgid ""
-"The given user is not member of the Domain Admins group in AD."
-msgstr ""
-"Das angegebene Konto ist nicht Mitglied der Gruppe Domain Admins in AD."
-
 #: umc/python/setup/__init__.py:388
 msgid ""
 "The hostname is not a valid fully qualified domain name in lowercase (e.g. "
