@@ -1,3 +1,9 @@
+ucs-test (5.0.67-2) unstable; urgency=medium
+
+  * Bug #35985: Improved reporting of test failure
+
+ -- Arvid Requate <requate@univention.de>  Thu, 04 Dec 2014 12:28:05 +0100
+
 ucs-test (5.0.67-1) unstable; urgency=low
 
   * Bug #34081: restrict roles to domaincontroller_master only.
