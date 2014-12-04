@@ -979,10 +979,11 @@ define([
 			// chain all UMCP commands
 			var deferred = new Deferred();
 			deferred.resolve();
+			var stateFailed = false;
+			this.showProgress();
 
 			array.forEach(ids, function(iid, i) {
 				deferred = deferred.then(lang.hitch(this, function() {
-					this.updateProgress(i, ids.length);
 					return tools.umcpCommand('uvmm/instance/state', {
 						uri: iid,
 						state: newState
@@ -990,14 +991,50 @@ define([
 				}));
 			}, this);
 
-			// finish the progress bar and add error handler
+			// finish UMCP and add error handler
 			deferred = deferred.then(lang.hitch(this, function() {
 				this.moduleStore.onChange();
-				this.updateProgress(ids.length, ids.length);
 			}), lang.hitch(this, function(error) {
 				this.moduleStore.onChange();
-				this.updateProgress(ids.length, ids.length);
+				this.hideProgress();
+				stateFailed = true;
 			}));
+
+			// wait for changed instance state
+			var max = 60;
+			var counter = 1;
+			array.forEach(ids, function(iid, i) {
+				var node = iid.slice(0,iid.indexOf('#'));
+				var uuid = iid.slice(iid.indexOf('#') + 1);
+				var deferred = new Deferred();
+				var wait = lang.hitch(this, function() {
+					tools.umcpCommand('uvmm/instance/query', {"nodePattern": node, "domainPattern": uuid}, false).then(lang.hitch(this, function(result) {
+						var connection = array.filter(result.result, function(item) {
+							return item.id.slice(item.id.indexOf('#') + 1) == uuid;
+						});
+						counter += 1;
+						if (connection[0] && connection[0].state != items[i].state) {
+							if (i + 1 == ids.length) { // last item finished
+								this.hideProgress();
+							}
+							deferred.resolve();
+						}
+						if (stateFailed) {
+							this.hideProgress();
+							deferred.resolve();
+						}
+						if (counter >= max) {
+							this.hideProgress();
+							deferred.resolve();
+						}
+						if (!deferred.isResolved()) {
+							tools.defer(wait, 1000);
+						}
+						this.filter();
+					}));
+				});
+				tools.defer(wait, 1000);
+			}, this);
 		},
 
 		_cloneDomain: function( ids ) {
