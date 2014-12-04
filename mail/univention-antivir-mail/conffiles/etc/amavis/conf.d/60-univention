@@ -1175,6 +1175,12 @@ $sa_kill_level_deflt = $sa_tag2_level_deflt; # triggers spam evasive actions
 #$sa_spam_subject_tag = '***SPAM*** ';   # (defaults to undef, disables)
                                 # (only seen when spam is not to be rejected
                                 # and recipient is in local_domains*)
+@!@
+if configRegistry.get('mail/antispam/headertag'):
+	print "$sa_spam_subject_tag = '%s';" % configRegistry['mail/antispam/headertag']
+else:
+	print '$sa_spam_subject_tag = undef;'
+@!@
 
 # don't add ***UNCHECKED*** to the subject
 $undecipherable_subject_tag = undef;

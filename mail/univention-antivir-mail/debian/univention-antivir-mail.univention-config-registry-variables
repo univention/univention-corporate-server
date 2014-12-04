@@ -51,3 +51,9 @@ Description[de]=Der Port des zu verwendenden HTTP-Proxyservers für den Download
 Description[en]=The port of the HTTP proxy server to be used for downloading the virus signatures through Freshclam, e.g. 3128. If the variable is unset, the settings from 'http/proxy' apply.
 Type=int
 Categories=service-mail
+
+[mail/antispam/headertag]
+Description[de]=Zeichenkette die dem Mail-Subject für SPAM Mails vorangestellt wird. Ist die Variable nicht gesetzt, wird der Subject nicht verändert.
+Description[en]=String to prepend to subject header field for SPAM messages. If the variable is unset, the subject is not modified.
+Type=str
+Categories=service-mail
