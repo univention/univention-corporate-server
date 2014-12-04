@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.106-4) unstable; urgency=low
+
+  * Bug #36291: added 'cssStyle' as parameter to tools/getIconClass
+  for extra css styles
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 04 Dec 2014 15:47:34 +0100
+
 univention-management-console-frontend (4.1.106-3) unstable; urgency=low
 
   * Bug #36291: fixed typo in index.html
