@@ -6,6 +6,7 @@ fix: 8.1.66-2.828.201412041606
 version: [0]
 desc: |
   This update addresses the following issues:
-  * Revert a patch for Bug 37168, which already sneaked into erratum 2 prior to quality assurance.
+  * Revert a patch for Bug 37168, which already sneaked into erratum 2
+    prior to quality assurance.
 bug:
  - 37186
