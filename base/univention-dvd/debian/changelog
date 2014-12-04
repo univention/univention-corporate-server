@@ -1,3 +1,9 @@
+univention-dvd (0.2.27-7) unstable; urgency=low
+
+  * Bug #37008: Fix relative paths
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 04 Dec 2014 15:59:09 +0100
+
 univention-dvd (0.2.27-6) unstable; urgency=low
 
   * Bug #37008: Fix relative paths
