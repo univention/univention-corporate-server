@@ -632,6 +632,12 @@ python-vobject
 python-werkzeug
 antiword
 python-babel
+libart-2.0-2
+docutils-doc
+python-jinja2
+python-renderpm
+python-reportlab-accel
+python-utidylib
 
 /* xrdp App */
 pulseaudio
