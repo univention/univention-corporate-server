@@ -87,6 +87,7 @@ class ModuleServer(Server):
 		self.__user_dn = None
 		self.__password = None
 		self.__init_error_message = None
+		self.__init_error_status = MODULE_ERR_INIT_FAILED
 		self.__handler = None
 		self._load_module()
 		Server.__init__(self, ssl=False, unix=socket, magic=False, load_ressources=False)
@@ -212,7 +213,7 @@ class ModuleServer(Server):
 
 		if not self.__handler:
 			resp = Response(msg)
-			resp.status = MODULE_ERR_INIT_FAILED
+			resp.status = self.__init_error_status
 			resp.message = self.__init_error_message
 			self.response(resp)
 			notifier.timer_add(10000, self._timed_out)
@@ -269,12 +270,14 @@ class ModuleServer(Server):
 					trace = traceback.format_exc()
 
 					MODULE.error('The init function of the module failed\n%s: %s' % (exc, trace,))
-					resp.status = MODULE_ERR_INIT_FAILED
 
 					from ..modules import UMC_Error
 					if not isinstance(exc, UMC_Error):
 						error = trace
+					else:
+						self.__init_error_status = exc.status or MODULE_ERR_INIT_FAILED
 
+					resp.status = self.__init_error_status
 					self.__init_error_message = error
 					resp.message = error
 

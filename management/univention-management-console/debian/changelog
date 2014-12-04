@@ -1,3 +1,10 @@
+univention-management-console (7.1.63-3) unstable; urgency=medium
+
+  * Bug #34353: allow UMC_Error exceptions to overwrite the status when they
+  	are raised on module initialization
+
+ -- Florian Best <best@univention.de>  Thu, 04 Dec 2014 14:41:55 +0100
+
 univention-management-console (7.1.63-2) unstable; urgency=medium
 
   * Bug #36561: fix error handling when socket is closed
