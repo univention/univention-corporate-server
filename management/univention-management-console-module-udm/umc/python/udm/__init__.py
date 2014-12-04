@@ -760,11 +760,7 @@ class Instance(Base, ProgressMixin):
 		ret = []
 		for options in request.options:
 			module = self._get_module_by_request(request, options.get('objectType'))
-			try:
-				module.load(force_reload=True)  # reload for instant extended attributes
-			except udm_errors.noObject:
-				# users which can't read the full LDAP
-				pass
+			module.load(force_reload=True)  # reload for instant extended attributes
 			if request.flavor == 'users/self':
 				object_dn = None
 			else:
@@ -789,11 +785,7 @@ class Instance(Base, ProgressMixin):
 			all_options = [request.options]
 		for options in all_options:
 			module = self._get_module_by_request(request, options.get('objectType'))
-			try:
-				module.load(force_reload=True)  # reload for instant extended attributes
-			except udm_errors.noObject:
-				# users which can't read the full LDAP
-				pass
+			module.load(force_reload=True)  # reload for instant extended attributes
 			object_dn = options.get('objectDN')
 			properties = module.get_properties(object_dn)
 			if options.get('searchable', False):
