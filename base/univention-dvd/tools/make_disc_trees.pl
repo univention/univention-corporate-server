@@ -930,8 +930,7 @@ sub add_Packages_entry {
         $pdir = Packages_dir($dir, $file, $section) . "/binary-$arch";
         $pkgfile = "$pdir/Packages";
 
-        $file =~ s,/\./|//+,/,g;
-        $file =~ s,\.\./+(?!\.\.)[^/]+/,, while ($file =~ m,\.\./,);
+        $file =~ s,.*(/(?:amd64|i386|all)/[^/]+),$1,;
         s/^Filename: (\S+)/Filename: $file/im;
     }
 
@@ -1374,9 +1373,8 @@ sub add_packages {
                     }                        
                 }
                 $realfile = real_file ("$source/$file");
-                my $dstfile = "$dir/$file";
-                $dstfile =~ s,/\./|//+,/,g;
-                $dstfile =~ s,/+\.\./+(?!\.\.)[^/]+/,/, while ($dstfile =~ /\/\.\.\//);
+                my $dstfile = "$file";
+                $dstfile =~ s,.*(/(?:amd64|i386|all)/[^/]+),$dir/$1,;
 
                 if (! -e "$dstfile") {
                     # Count how big the file is, for checking if the
