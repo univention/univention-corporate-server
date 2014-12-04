@@ -38,12 +38,24 @@ import univention.info_tools as uit
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import *
+from univention.management.console.protocol.definitions import SUCCESS, MODULE_ERR
 
 from univention.management.console.modules.decorators import sanitize
 from univention.management.console.modules.sanitizers import PatternSanitizer
 
 _ = umc.Translation('univention-management-console-module-top').translate
+
+def kill(process):
+	if hasattr(process, 'terminate'):
+		process.kill()
+		return
+	process.kill(15)
+
+def terminate(process):
+	if hasattr(process, 'terminate'):
+		process.terminate()
+		return
+	process.kill(9)
 
 class Instance(umcm.Base):
 	@sanitize(pattern=PatternSanitizer(default='.*'))
@@ -108,9 +120,9 @@ class Instance(umcm.Base):
 			try:
 				process = psutil.Process(int(pid))
 				if signal == 'SIGTERM':
-					process.kill(15)
+					kill(process)
 				elif signal == 'SIGKILL':
-					process.kill(9)
+					terminate(process)
 			except psutil.NoSuchProcess, error:
 				failed.append(pid)
 				MODULE.error(str(error))

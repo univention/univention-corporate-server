@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-4
+src: univention-management-console-module-top
+fix: 
+version: [4]
+desc: |
+  * Fix killing and terminating of processes if a python-psutil version from
+    debian backports is used. Some applications install such a python-psutil
+    version.
+bug:
+ - 36358

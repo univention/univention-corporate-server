@@ -1,3 +1,9 @@
+univention-management-console-module-top (3.0.3-2) unstable; urgency=medium
+
+  * Bug #36358: fix psutil usage if psutil from debian backports is used
+
+ -- Florian Best <best@univention.de>  Thu, 04 Dec 2014 11:16:17 +0100
+
 univention-management-console-module-top (3.0.3-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)
