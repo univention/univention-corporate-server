@@ -21,75 +21,70 @@
 <chapter id="appliance:use">
   <title>Verwendung einer UCS Appliance </title>
 
-  <section id="appliance:use:intro">
-	<title>Einleitung</title>
-	
-	<para> 
-	  Neben der traditionellen Installation besteht auch die Möglichkeit UCS über ein
-	  Appliance-Image bereitzustellen. Diese Appliance-Images können sowohl zur einfachen
-	  Inbetriebnahme in einer Virtualisierungslösung wie VMware verwendet werden, wie auch zur
-	  Provisionierung einer Cloud-Instanz verwendet werden.
-	</para>
+  <para> 
+	Neben der traditionellen Installation besteht auch die Möglichkeit UCS über ein
+	Appliance-Image bereitzustellen. Diese Appliance-Images können sowohl zur einfachen
+	Inbetriebnahme in einer Virtualisierungslösung wie VMware verwendet werden, wie auch zur
+	Provisionierung einer Cloud-Instanz verwendet werden.
+  </para>
 
-	<para> 
-	  Appliances können mit geringem Aufwand selbst erstellt werden. Dies ist in  <xref
-	  linkend="appliance:create"/> beschrieben.
-	</para>
+  <para> 
+	Appliances können mit geringem Aufwand selbst erstellt werden. Dies ist in  <xref
+	linkend="appliance:create"/> beschrieben.
+  </para>
 
-	<para> 
-	  Während ein Teil der Einstellungen global im Image vorkonfiguriert werden kann, besteht immer
-	  noch die Notwendigkeit einer finalen Anpassung der Konfiguration durch den Endkunden, z.B. zur
-	  Festlegung des Rechnernamens oder der eingesetzten Domäne. Für das Appliance-Image wird daher
-	  ein Grundsystem installiert und eine Komponente eingerichtet, die dem Enduser die Finalisierung
-	  der Konfiguration ermöglicht. Alternativ kann die Konfiguration auch automatisiert ohne
-	  Nutzerinteraktion erfolgen. Dies wird in Kapitel <xref linkend="appliance:use:auto"/>
-	  beschrieben.
-	</para>
+  <para> 
+	Während ein Teil der Einstellungen global im Image vorkonfiguriert werden kann, besteht immer
+	noch die Notwendigkeit einer finalen Anpassung der Konfiguration durch den Endkunden, z.B. zur
+	Festlegung des Rechnernamens oder der eingesetzten Domäne. Für das Appliance-Image wird daher
+	ein Grundsystem installiert und eine Komponente eingerichtet, die dem Enduser die Finalisierung
+	der Konfiguration ermöglicht. Alternativ kann die Konfiguration auch automatisiert ohne
+	Nutzerinteraktion erfolgen. Dies wird in Kapitel <xref linkend="appliance:use:auto"/>
+	beschrieben.
+  </para>
 
-	<para> 
-	  Die interaktive Konfiguration kann auf zwei Wegen erfolgen:
+  <para> 
+	Die interaktive Konfiguration kann auf zwei Wegen erfolgen:
 
-	  <itemizedlist>
-		<listitem><simpara>
-		  Auf dem System startet eine grafische Oberfläche, in der der Webbrowser Firefox im
-		  Vollbild-Modus gestartet wird, der dann automatisch auf die Konfigurations-URL
-		  zugreift. Diese Option ist besonders für Images in Virtualisierungslösungen geeignet.
-		</simpara></listitem>
+	<itemizedlist>
+	  <listitem><simpara>
+		Auf dem System startet eine grafische Oberfläche, in der der Webbrowser Firefox im
+		Vollbild-Modus gestartet wird, der dann automatisch auf die Konfigurations-URL
+		zugreift. Diese Option ist besonders für Images in Virtualisierungslösungen geeignet.
+	  </simpara></listitem>
 
-		<listitem><simpara>
-		  Die Konfiguration kann auch direkt durch einen externen Webbrowser durchgeführt
-		  werden. In diesem Fall muss dem Benutzer die IP-Adresse des System bekannt sein (z.B. wenn
-		  ihm diese im Rahmen der Provisionierung eines Cloud-Images genannt wurde).
-		</simpara></listitem>
+	  <listitem><simpara>
+		Die Konfiguration kann auch direkt durch einen externen Webbrowser durchgeführt
+		werden. In diesem Fall muss dem Benutzer die IP-Adresse des System bekannt sein (z.B. wenn
+		ihm diese im Rahmen der Provisionierung eines Cloud-Images genannt wurde).
+	  </simpara></listitem>
+	  
+	</itemizedlist>
+  </para>
 
-	  </itemizedlist>
-	</para>
+  <para> 
+	Im Rahmen der initialen Konfiguration kann der Benutzer in der Grundeinstellung die folgenden
+	Einstellungen vornehmen:
 
-	<para> 
-	  Im Rahmen der initialen Konfiguration kann der Benutzer in der Grundeinstellung die folgenden
-	  Einstellungen vornehmen:
+	<itemizedlist>
+	  <listitem><simpara>
+		Auswahl der Sprache, Zeitzone und Tastaturlayout
+	  </simpara></listitem>
 
-	  <itemizedlist>
-		<listitem><simpara>
-		  Auswahl der Sprache, Zeitzone und Tastaturlayout
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Konfiguration der Netzwerkeinstellungen
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Einrichtung einer neuen UCS-Domäne oder Beitritt zu einer UCS- oder AD-Domäne
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Software-Konfiguration von UCS-Kernkomponenten. Software von Drittherstellern kann vom
-		  Benutzer später aus dem Univention App Center installiert werden.
-		</simpara></listitem>
-	  </itemizedlist>
-	</para>
-  </section>
-
+	  <listitem><simpara>
+		Konfiguration der Netzwerkeinstellungen
+	  </simpara></listitem>
+	  
+	  <listitem><simpara>
+		Einrichtung einer neuen UCS-Domäne oder Beitritt zu einer UCS- oder AD-Domäne
+	  </simpara></listitem>
+	  
+	  <listitem><simpara>
+		Software-Konfiguration von UCS-Kernkomponenten. Software von Drittherstellern kann vom
+		Benutzer später aus dem Univention App Center installiert werden.
+	  </simpara></listitem>
+	</itemizedlist>
+  </para>
 
 </chapter>
 
@@ -264,6 +259,60 @@ ucr unset dns/forwarder2 dns/forwarder3
 	  </para>
 	</section>
 
+	<section id="appliance:create:openstack">
+	  <title>Bereitstellung eines Images für OpenStack</title>
+	  <para>
+		Für OpenStack-Images erfolgt die Provisionierung über Cloud-Init (siehe <xref
+		linkend="appliance:use:cloudinit"/>), darüberhinaus sind keine weiteren Anpassungen nötig.
+	  </para>
+	</section>
+
+	<section id="appliance:create:virt">
+	  <title>Bereitstellung eines Images für VMWare / VirtualBox</title>
+	  <para>
+		Auf Basis des oben erstellten QCOW-Images können auch Virtualisierungs-Images für
+		VirtualBox, VMware Player und Vmware ESX(i) erstellt werden. Hierzu stellt Univention ein
+		Tool bereit, das über das Paket <package>generate-appliance</package> installiert werden kann
+		(die Bereitstellung für UCS 4.0 kann über Bug 37137 verfolgt werden).
+	  </para>
+
+	  <para>
+		Das Tool <command>generate_appliance</command> muss als Benutzer root gestartet werden, mit
+		dem Parameter <emphasis>-s</emphasis> muss das QCOW-Image übergeben werden:
+
+		<programlisting>
+generate_appliance -s appliance.qcow2
+		</programlisting>
+
+		Standardmässig bekommt die virtuelle Maschine eine CPU und ein Gigabyte RAM zugewiesen. Wenn
+		die Appliance einen höheren Speicher- oder CPU-Power-Bedarf hat, kann mit dem Parameter
+		<emphasis>-m</emphasis> eine abweichende RAM-Menge in Megabyte und mit
+		<emphasis>-c</emphasis> eine andere CPU-Anzahl zugewiesen werden.
+	  </para>
+
+	  <para>
+		In der Grundeinstellung werden aus dem QCOW-Image drei verschiedene Virtualisierungs-Images
+		erzeugt. Mit der hier jeweils angegebenen Option kann die Erzeugung für einen Typ
+		unterbunden werden:
+
+		<itemizedlist>
+		  <listitem><simpara>
+			Zipped VMware-compatible images (e.g. for VMWare Player), can be suppressed with <emphasis>no-vmware</emphasis>
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			VirtualBox OVA image, can be suppressed with <emphasis>no-ova-virtualbox</emphasis>
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			VMWare ESX(i) OVA image, can be suppressed with <emphasis>--no-ova-esxi</emphasis>
+		  </simpara></listitem>
+		</itemizedlist>
+	  </para>
+
+	</section>
+
+
 
 
   </section>
@@ -391,50 +440,86 @@ simplesamlphp
 	  </para>
 	</section>
 
-	<section id="appliance:create:virt">
-	  <title>Bereitstellung eines Images für VMWare / VirtualBox</title>
+	<section id="appliance:license">
+	  <title>Lizenz-Management in Cloud-Instanzen</title>
 	  <para>
-		Auf Basis des oben erstellten QCOW-Images können auch Virtualisierungs-Images für
-		VirtualBox, VMware Player und Vmware ESX(i) erstellt werden. Hierzu stellt Univention ein
-		Tool bereit, das über das Paket <package>generate-appliance</package> installiert werden kann
-		(die Bereitstellung für UCS 4.0 kann über Bug 37137 verfolgt werden).
+		In der Grundinstallation verfügt eine UCS-Installation über die sogenannte
+		Free-for-Personal-Use-Lizenz (bis zu fünf Benutzer). Für den produktiven Einsatz einer
+		UCS-Installation muss eine Lizenz von Univention bezogen werden. Bei Standard-Installationen
+		wird sie dem Benutzer per E-Mail zugesandt und dann in der &ucsUMC; eingerichtet.
 	  </para>
 
 	  <para>
-		Das Tool <command>generate_appliance</command> muss als Benutzer root gestartet werden, mit
-		dem Parameter <emphasis>-s</emphasis> muss das QCOW-Image übergeben werden:
-
-		<programlisting>
-generate_appliance -s appliance.qcow2
-		</programlisting>
-
-		Standardmässig bekommt die virtuelle Maschine eine CPU und ein Gigabyte RAM zugewiesen. Wenn
-		die Appliance einen höheren Speicher- oder CPU-Power-Bedarf hat, kann mit dem Parameter
-		<emphasis>-m</emphasis> eine abweichende RAM-Menge in Megabyte und mit
-		<emphasis>-c</emphasis> eine andere CPU-Anzahl zugewiesen werden.
+		Für Cloud Service Provider besteht die Möglichkeit UCS-Lizenzen über eine API abzurufen,
+		d.h. wenn für einen Kunden eine neue Instanz angelegt werden soll, kann die Lizenz durch
+		eine API abgerufen werden und dann direkt in die provisionierte Instanz installiert werden.
 	  </para>
 
 	  <para>
-		In der Grundeinstellung werden aus dem QCOW-Image drei verschiedene Virtualisierungs-Images
-		erzeugt. Mit der hier jeweils angegebenen Option kann die Erzeugung für einen Typ
-		unterbunden werden:
-
-		<itemizedlist>
-		  <listitem><simpara>
-			Zipped VMware-compatible images (e.g. for VMWare Player), can be suppressed with <emphasis>no-vmware</emphasis>
-		  </simpara></listitem>
-
-		  <listitem><simpara>
-			VirtualBox OVA image, can be suppressed with <emphasis>no-ova-virtualbox</emphasis>
-		  </simpara></listitem>
-
-		  <listitem><simpara>
-			VMWare ESX(i) OVA image, can be suppressed with <emphasis>--no-ova-esxi</emphasis>
-		  </simpara></listitem>
-		</itemizedlist>
+		Der Zugriff auf den Lizenz-Server erfordert einen Benutzernamen und ein Passwort. Diese
+		können bei Univention unter sales@univention.de angefragt werden.
 	  </para>
 
+	  <section id="appliance:license:api">
+		<title>Schnittstelle für den Abruf von UCS-Lizenzen</title>
+		<para>
+		  Der Abruf der Lizenzen erfolgt über HTTPS mit dem Univention-Lizenz-Server
+		  <uri>license.univention.de</uri>. Der Abruf kann komplett mit <command>wget</command>
+		  erfolgen.
+		</para>
+
+		<para>
+		  Zuerst muss eine Session zum Lizenzserver aufgebaut werden, hier mit dem Usernamen
+		  <emphasis>univention</emphasis> und dem Passwort <emphasis>secret</emphasis> als Beispiel:
+
+		  <programlisting>
+wget --keep-session-cookies --save-cookies cookie.db --load-cookies cookie.db \
+ --post-data='username=univention&amp;password=secret' \
+ https://license.univention.de/shop/testing/ -SO-
+		  </programlisting>
+		</para>
+
+		<para>
+		  Eine Lizenz kann ebenfalls über wget mit einer POST-Anfrage bestellt werden. Es ist zu
+		  beachten, dass Sonderzeichen wie Leerzeichen in HTML-Syntax escapt werden müssen.
+
+		  <programlisting>
+wget --keep-session-cookies --save-cookies cookie.db --load-cookies cookie.db \
+--post-data='kundeEmail=customer@example&amp;'\
+'kundeUnternehmen=New%20Customern&amp;'\
+'EndDate=27.11.2015&amp;'\
+'BaseDN=dc%3Ddrei%2Cdc%3Dzwei%2Cdc%3Dtest&amp;'\
+'Servers=0&amp;'\
+'Support=0&amp;'\
+'PremiumSupport=0&amp;'\
+'Users=100&amp;'\
+'ManagedClients=0&amp;'\
+'CorporateClients=0&amp;'\
+'VirtualDesktopUsers=0&amp;'\
+'VirtualDesktopClients=0&amp;'\
+'Type=UCS' \
+https://license.univention.de/shop/testing/order -SO-
+		  </programlisting>
+
+		  Als Rückgabe wird eine Bestellnummer zurückgeliefert.
+
+		</para>
+
+		<para>
+		  Nach der Bestellung einer Lizenz dauert es einige Sekunden, bis die Lizenz erstellt
+		  wurde. Abschließend kann sie mit anhand der Bestellnummer im LDIF-Format abgerufen
+		  werden. Lieferte der obige Aufruf die Bestellnummer 465 zurück, lautet der Dateiname
+		  465.ldif:
+
+		  <programlisting>
+wget --keep-session-cookies --save-cookies cookie.db --load-cookies cookie.db \
+https://license.univention.de/shop/testing/orders/465.ldif -SO-
+		  </programlisting>
+		</para>
+
+	  </section>
 	</section>
+
 
   </section>
 
