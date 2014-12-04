@@ -6,30 +6,30 @@ fix: 8.1.65-39.826.201412031409
 version: [0]
 desc: |
   This update addresses the following issues:
-  * A DHCP lease may be now re-quested in the UCS setup wizard via unmarking
-    and re-marking the DHCP checkbox on the network page.
-  * The default keyboard layout for language German has been corrected.
+  * A DHCP lease may be now requested in the UCS setup wizard via unmarking
+    and remarking the DHCP checkbox on the network page.
+  * The default keyboard layout for German has been corrected.
   * The package removal in appliance mode has been corrected.
-  * Firefox address bar is always hidden in system setup.
-  * The DHCP query of "Network settings" is working now as it should.
+  * The Firefox address bar is now always hidden in system setup.
+  * The DHCP query in the "Network settings" dialogue has been fixed.
   * Fix the configuration of primary devices and bond-miimon in bonding network
     devices.
   * A timeout of 15 seconds has been added to the use of rdate to query the
     current time from a NTP time server, as this sometimes stalls endlessly.
   * The UCS domain check when selecting a system role has been adjusted to
     correctly determine an UCS domain.
-  * The DNS error message when selecting a system role is now been prompted as
+  * The DNS error message when selecting a system role is now prompted as
     an alert dialogue.
   * Some text field descriptions have been adapted.
   * The UCS setup wizard UMC module could not be loaded when the system
     had more than four physical network devices.
   * It is now possible to prevent joining. The profile variable start/join was
-    not evaluated.
-  * Only system setup scripts belonging to the opened module are now executed
+    previously not evaluated.
+  * Only system setup scripts belonging to the current module are now executed
     when changing settings via the modules for changing Certificate, Language and
     Network settings.
   * Reset join credentials if they are incorrect
-  * Fix basesystem deployment if no domainname is specified
+  * Fix base system deployment if no domainname is specified
   * The gateway input field is not required anymore. This allows to set up
     systems without connection to the internet.
   * The wizard now prevents scrollbars on every wizard page for systems with

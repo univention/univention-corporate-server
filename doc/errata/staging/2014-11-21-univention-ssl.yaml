@@ -5,7 +5,7 @@ src: univention-ssl
 fix: 9.0.4-3.152.201411281214
 version: [0]
 desc: |
-  This update addresses the following issues:
+  This update addresses the following issue:
   * A timeout of 15 seconds has been added to the use of rdate to query the
     current time from a NTP time server, as this sometimes stalls endlessly.
 bug: [36934]
