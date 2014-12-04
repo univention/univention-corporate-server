@@ -1028,8 +1028,10 @@ define([
 
 		_existingIconClasses: {},
 
-		getIconClass: function(icon, size, prefix) {
+		getIconClass: function(icon, size, prefix, cssStyle) {
 			icon = icon || '';
+			cssStyle = cssStyle || '';
+
 			// check whether the css rule for the given icon has already been added
 			var values = {
 				s: size || 16,
@@ -1078,7 +1080,7 @@ define([
 						'background: no-repeat;' +
 						'width: {s}px; height: {s}px;' +
 						'background-image: url("{url}");' +
-						'background-size: contain;',
+						cssStyle,
 						values);
 					styles.insertCssRule('.' + iconClass, css);
 
