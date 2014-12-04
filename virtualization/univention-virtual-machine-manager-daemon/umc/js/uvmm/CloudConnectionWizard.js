@@ -53,6 +53,17 @@ define([
 			this.inherited(arguments);
 		},
 
+		postMixInProperties: function() {
+			this.inherited(arguments);
+
+			this.headerButtons = [{
+				name: 'close',
+				iconClass: 'umcCloseIconWhite',
+				label: _('Back to overview'),
+				callback: lang.hitch(this, 'onCancel')
+			}];
+		},
+
 		getFooterButtons: function(pageName) {
 			var buttons = this.inherited(arguments);
 			var pages = this.pages;

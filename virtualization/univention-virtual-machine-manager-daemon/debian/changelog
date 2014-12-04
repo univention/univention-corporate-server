@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.20-6) unstable; urgency=low
+
+  * Bug #36585: Fix header button to close only cloud connection wizard
+
+ -- Andreas Peichert <peichert@univention.de>  Thu, 04 Dec 2014 13:05:42 +0100
+
 univention-virtual-machine-manager-daemon (4.0.20-5) unstable; urgency=low
 
   * Bug #36906: add tooltip for security group and key pair in instance wizard
