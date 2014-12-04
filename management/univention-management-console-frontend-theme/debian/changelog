@@ -1,3 +1,11 @@
+univention-management-console-frontend-theme (0.0.88-2) unstable; urgency=low
+
+  Bug #36291:
+  * Added max-height to the software update dialog
+  * aligned buttons with inputfields in LabelPanes
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 04 Dec 2014 16:34:28 +0100
+
 univention-management-console-frontend-theme (0.0.88-1) unstable; urgency=low
 
   * Bug #36914: version bump

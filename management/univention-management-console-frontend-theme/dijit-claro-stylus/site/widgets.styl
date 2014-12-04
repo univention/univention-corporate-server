@@ -43,8 +43,6 @@
 
 	/* move the removal button over the last element of the row */
 	.umcMultiInputRemoveButton {
-		position: relative;
-		top: -2.3em;
 		margin: 0 0 0 -35px;
 
 		.dijitButtonNode {
@@ -53,6 +51,11 @@
 			padding-left: 2px;
 			padding-right: @padding-left;
 		}
+	}
+	
+	/* Buttons were cut off a little to the left - this fixes it*/
+	.umcMultiInputAddButton {
+		margin: 0 0 0 6px;
 	}
 }
 
