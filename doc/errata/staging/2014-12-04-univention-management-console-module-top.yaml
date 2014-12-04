@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-4
 src: univention-management-console-module-top
-fix: 
+fix: 3.0.3-2.34.201412041123
 version: [4]
 desc: |
   * Fix killing and terminating of processes if a python-psutil version from
