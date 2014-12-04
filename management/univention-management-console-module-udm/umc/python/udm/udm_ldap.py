@@ -84,10 +84,6 @@ def set_credentials(dn, passwd):
 	MODULE.info('Saved LDAP DN for user %s' % _user_dn)
 
 
-class LDAP_ConnectionError(Exception):
-	pass
-
-
 class LDAP_ServerDown(UMC_Error):
 
 	def __init__(self):
@@ -136,8 +132,6 @@ def error_handler(func):
 			raise
 		except LDAPError as exc:
 			MODULE.error(traceback.format_exc())
-			if _ldap_connection is None:
-				raise LDAP_ConnectionError('Opening LDAP connection failed: %s' % str(exc))
 			raise
 	return _decorated
 
@@ -1151,7 +1145,7 @@ def search_syntax_choices_by_key(syntax_name, key):
 			module_search_options = {'scope': 'base', 'container': key}
 			try:
 				return read_syntax_choices(syntax_name, {}, module_search_options)
-			except udm_errors.base:#LDAP_ConnectionError:
+			except udm_errors.base:  # TODO: which exception is raised here exactly?
 				# invalid DN
 				return []
 		if syn.key is not None:
