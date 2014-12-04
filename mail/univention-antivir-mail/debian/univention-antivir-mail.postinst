@@ -64,11 +64,20 @@ if [ "$1" = "configure" -a -z "$2" ]; then
 fi
 
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-1; then
-	ucr set clamav/freshclam/autostart="$(ucr get mail/antivir/clamav-freshclam/autostart)"
-	ucr set clamav/daemon/autostart="$(ucr get mail/antivir/clamav-daemon/autostart)"
-	ucr unset mail/antivir/clamav-freshclam/autostart
-	ucr unset mail/antivir/clamav-daemon/autostart
+if [ "$1" = configure -a -n "$2" ]; then
+
+	if dpkg --compare-versions "$2" lt 6.0.0-4; then
+		# Bug 36928
+		mv /etc/cron.daily/amavisd-new /etc/univention/templates/removed/amavisd-new.cron.daily
+		service cron reload
+	fi
+
+	if dpkg --compare-versions "$2" lt 4.0.3-1; then
+		ucr set clamav/freshclam/autostart="$(ucr get mail/antivir/clamav-freshclam/autostart)"
+		ucr set clamav/daemon/autostart="$(ucr get mail/antivir/clamav-daemon/autostart)"
+		ucr unset mail/antivir/clamav-freshclam/autostart
+		ucr unset mail/antivir/clamav-daemon/autostart
+	fi
 fi
 
 #DEBHELPER#

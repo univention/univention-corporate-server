@@ -1,3 +1,9 @@
+univention-antivir-mail (6.0.0-4) unstable; urgency=low
+
+  * remove obsolte cron job (Bug #36928) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 04 Dec 2014 15:27:03 +0100
+
 univention-antivir-mail (6.0.0-3) unstable; urgency=low
 
   * removed retired variables $sa_spam_modifies_subj and
