@@ -66,7 +66,7 @@ upgrade_to_latest_test_errata ()
 	while current="$(ucr get version/version)-$(ucr get version/patchlevel)" && [ "$current" != "$prev" ]
 	do
 		/root/activate-3.2-errata-test-scope.sh
-		upgrade_to_latest
+		upgrade_to_latest_errata
 		prev="$current"
 	done
 }
