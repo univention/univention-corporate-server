@@ -854,3 +854,7 @@ xorriso
 /* UCS@school */
 python-qt4
 squidguard
+
+/* UCS 4.0-0 errata (Bug #37164) */
+netcat
+bozohttpd

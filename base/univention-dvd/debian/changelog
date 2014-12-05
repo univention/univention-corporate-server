@@ -1,3 +1,9 @@
+univention-dvd (0.2.27-9) unstable; urgency=low
+
+  * Bug #37164: Re-add netcat and bozohttpd for errata4.0-0 DVD
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 05 Dec 2014 13:26:03 +0100
+
 univention-dvd (0.2.27-8) unstable; urgency=low
 
   * Bug #36467: Added several packages to maintained 
