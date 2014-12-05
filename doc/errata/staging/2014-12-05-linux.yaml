@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0
+src: linux
+fix: 3.16.5-1.102.201411021943
+version: [0]
+desc: |
+ Re-release the latest version of this package due to an error in the release
+ announcement process.
+bug: [37192]

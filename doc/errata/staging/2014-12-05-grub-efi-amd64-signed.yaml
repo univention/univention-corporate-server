@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0
+src: grub-efi-amd64-signed
+fix: 1.1-5.15.201411041611
+version: [0]
+desc: |
+ Re-release the latest version of this package due to an error in the release
+ announcement process.
+bug: [37191]
