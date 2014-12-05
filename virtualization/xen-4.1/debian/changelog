@@ -1,9 +1,13 @@
 xen-4.1 (4.1.3-18) unstable; urgency=low
 
   * Multiple security fixes: (Bug #36872)
-    Missing privilege level checks in x86 emulation of far branches (CVE-2014-8595)
-    Insufficient restrictions on certain MMU update hypercalls (CVE-2014-8594)
-    Page reference leak in MMU_MACHPHYS_UPDATE handling (CVE-2014-9030)
+    - Missing privilege level checks in x86 emulation of far branches (CVE-2014-8595)
+    - Insufficient restrictions on certain MMU update hypercalls (CVE-2014-8594)
+    - Page reference leak in MMU_MACHPHYS_UPDATE handling (CVE-2014-9030)
+    - Insufficient bounding of "REP MOVS" to MMIO emulated inside the hypervisor 
+      allows denial of service (CVE-2014-8867)
+    - Excessive checking in compatibility mode hypercall argument translation allows 
+      denial of service (CVE-2014-8866)
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 05 Dec 2014 14:32:54 +0100
 
