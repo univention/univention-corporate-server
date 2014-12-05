@@ -9,7 +9,7 @@ desc: |
   * Internet Explorer now shows a warning message if a version <= 8 is
     being used.
   * A exception was logged in the JavaScript console when the grid was resized.
-    This was disturbing and has therefore be removed.
+    This was disturbing and has therefore been removed.
   * The JavaScript method umc.tools.umcpProgressSubCommand did not send the
     UMCP flavor along with a request and could therefore fail due to
     insufficient permissions.
