@@ -187,112 +187,112 @@ class Value(object):
 
 class Section(object):
 
-        APPLICATION = {
-            'ADMemberIssueHide': ('optional',),
-            'ADMemberIssuePassword': ('optional',),
-            'Categories': ('optional',),
-            'Code': ('required',),
-            'ConflictedApps': ('optional',),
-            'ConflictedSystemPackages': ('optional',),
-            'Contact': ('required', 'is_email',),
-            'DefaultPackagesMaster': ('optional',),
-            'DefaultPackages': ('required',),
-            'Description': ('required', 'is_60c',),
-            'EmailRequired': ('optional',),
-            'EndOfLife': ('optional', 'is_bool',),
-            'ID': ('required',),
-            'LicenseFile': ('optional',),
-            'LongDescription': ('required', 'is_500c'),
-            'Maintainer': ('optional',),
-            'MinPhysicalRAM': ('optional', 'is_capacity',),
-            'Name': ('required',),
-            'NotificationEmail': ('optional', 'is_email',),
-            'NotifyVendor': ('optional', 'is_bool',),
-            'RequiredApps': ('optional',),
-            'Screenshot': ('optional',),
-            'ServerRole': ('optional', 'is_role',),
-            'ShopURL': ('optional', 'is_www',),
-            'SupportedArchitectures': ('optional', 'is_arch',),
-            'SupportURL': ('optional', 'is_www',),
-            'UCSOverviewCategory': ('optional', 'is_category',),
-            'UMCModuleFlavor': ('optional',),
-            'UMCModuleName': ('optional',),
-            'UserActivationRequired': ('optional', 'is_bool',),
-            'UseShop': ('optional', 'is_bool',),
-            'UseShop': ('optional', 'is_bool',),
-            'Vendor': ('optional',),
-            'Version': ('required',),
-            'VisibleInAppCatalogue': ('optional', 'is_bool',),
-            'WebInterfaceName': ('optional',),
-            'WebInterface': ('optional', 'is_url',),
-            'WebsiteMaintainer': ('optional', 'is_www',),
-            'Website': ('optional', 'is_www',),
-            'Websitevendor': ('optional', 'is_www',),
-            'WithoutRepository': ('optional', 'is_bool',)}
+    APPLICATION = {
+        'ADMemberIssueHide': ('optional',),
+        'ADMemberIssuePassword': ('optional',),
+        'Categories': ('optional',),
+        'Code': ('required',),
+        'ConflictedApps': ('optional',),
+        'ConflictedSystemPackages': ('optional',),
+        'Contact': ('required', 'is_email',),
+        'DefaultPackagesMaster': ('optional',),
+        'DefaultPackages': ('required',),
+        'Description': ('required', 'is_60c',),
+        'EmailRequired': ('optional',),
+        'EndOfLife': ('optional', 'is_bool',),
+        'ID': ('required',),
+        'LicenseFile': ('optional',),
+        'LongDescription': ('required', 'is_500c'),
+        'Maintainer': ('optional',),
+        'MinPhysicalRAM': ('optional', 'is_capacity',),
+        'Name': ('required',),
+        'NotificationEmail': ('optional', 'is_email',),
+        'NotifyVendor': ('optional', 'is_bool',),
+        'RequiredApps': ('optional',),
+        'Screenshot': ('optional',),
+        'ServerRole': ('optional', 'is_role',),
+        'ShopURL': ('optional', 'is_www',),
+        'SupportedArchitectures': ('optional', 'is_arch',),
+        'SupportURL': ('optional', 'is_www',),
+        'UCSOverviewCategory': ('optional', 'is_category',),
+        'UMCModuleFlavor': ('optional',),
+        'UMCModuleName': ('optional',),
+        'UserActivationRequired': ('optional', 'is_bool',),
+        'UseShop': ('optional', 'is_bool',),
+        'UseShop': ('optional', 'is_bool',),
+        'Vendor': ('optional',),
+        'Version': ('required',),
+        'VisibleInAppCatalogue': ('optional', 'is_bool',),
+        'WebInterfaceName': ('optional',),
+        'WebInterface': ('optional', 'is_url',),
+        'WebsiteMaintainer': ('optional', 'is_www',),
+        'Website': ('optional', 'is_www',),
+        'Websitevendor': ('optional', 'is_www',),
+        'WithoutRepository': ('optional', 'is_bool',)}
 
-        SIZING = {
-            'CPU': ('optional',),
-            'RAM': ('optional', 'is_capacity',),
-            'Disk': ('optional', 'is_capacity',)}
+    SIZING = {
+        'CPU': ('optional',),
+        'RAM': ('optional', 'is_capacity',),
+        'Disk': ('optional', 'is_capacity',)}
 
-        TRANSLATION = {
-            'Name': ('optional',) + APPLICATION['Name'],
-            'Website': APPLICATION['Website'],
-            'SupportURL': APPLICATION['SupportURL'],
-            'ShopURL': APPLICATION['ShopURL'],
-            'Description': APPLICATION['Description'],
-            'LongDescription': APPLICATION['LongDescription']}
+    TRANSLATION = {
+        'Name': ('optional',) + APPLICATION['Name'],
+        'Website': APPLICATION['Website'],
+        'SupportURL': APPLICATION['SupportURL'],
+        'ShopURL': APPLICATION['ShopURL'],
+        'Description': APPLICATION['Description'],
+        'LongDescription': APPLICATION['LongDescription']}
 
-        def __init__(self, check, section):
-            self.config = check.config
-            self.section = section
-            self.log = check.log
+    def __init__(self, check, section):
+        self.config = check.config
+        self.section = section
+        self.log = check.log
 
-        def __enter__(self):
-            return self
+    def __enter__(self):
+        return self
 
-        def __exit__(self, exc_type, exc_value, traceback):
-            if not exc_type:
+    def __exit__(self, exc_type, exc_value, traceback):
+        if not exc_type:
+            return
+
+        if issubclass(exc_type, NoSectionError):
+            self.log('[%s] missing', self.section)
+
+    def check_all(self, options):
+        for option, checks in options.iteritems():
+            self.check(option, *checks)
+            self.config.remove_option(self.section, option)
+
+        for option, value in self.config.items(self.section):
+            self.log('[%s].%s: Remaining %s', self.section, option, value)
+
+    def check(self, option, *checks):
+        value = self.get(option)
+        for cname in checks:
+            try:
+                check = getattr(value, cname)
+                check()
+            except Fatal as exc:
+                self.log('\nSECTION: [%s].%s %s\n',
+                         self.section, option, exc)
                 return
 
-            if issubclass(exc_type, NoSectionError):
-                self.log('[%s] missing', self.section)
+            except Error as exc:
+                self.log('\nSECTION: [%s].%s %s\n',
+                         self.section, option, exc)
 
-        def check_all(self, options):
-            for option, checks in options.iteritems():
-                self.check(option, *checks)
-                self.config.remove_option(self.section, option)
+            except Optional:
+                # not a real error, just stops futher checks
+                return
 
-            for option, value in self.config.items(self.section):
-                self.log('[%s].%s: Remaining %s', self.section, option, value)
-
-        def check(self, option, *checks):
-            value = self.get(option)
-            for cname in checks:
-                try:
-                    check = getattr(value, cname)
-                    check()
-                except Fatal as exc:
-                    self.log('\nSECTION: [%s].%s %s\n',
-                             self.section, option, exc)
-                    return
-
-                except Error as exc:
-                    self.log('\nSECTION: [%s].%s %s\n',
-                             self.section, option, exc)
-
-                except Optional:
-                    # not a real error, just stops futher checks
-                    return
-
-        def get(self, option):
-            try:
-                value = self.config.get(self.section, option)
-            except NoOptionError as exc:
-                if not parsed.quiet:
-                    print >> stderr, exc
-                value = None
-            return Value(value)
+    def get(self, option):
+        try:
+            value = self.config.get(self.section, option)
+        except NoOptionError as exc:
+            if not parsed.quiet:
+                print >> stderr, exc
+            value = None
+        return Value(value)
 
 
 def exclude_ignored(names, remove):
@@ -349,69 +349,69 @@ def get_installed_apps():
 
 
 def parse_args():
-        """
-        Creates an instance of OptionParser and parses arguments.
-        The App Center's 'CACHE_DIR' will be used by default.
-        To use args run interactively via: python filename ...
-        """
-        parser = OptionParser(description=("Check Apps .ini files "
-                              "(Optional values, description length, "
-                              "allowed values, allowed chars)"))
+    """
+    Creates an instance of OptionParser and parses arguments.
+    The App Center's 'CACHE_DIR' will be used by default.
+    To use args run interactively via: python filename ...
+    """
+    parser = OptionParser(description=("Check Apps .ini files "
+                          "(Optional values, description length, "
+                          "allowed values, allowed chars)"))
 
-        parser.add_option("-q", "--quiet",
-                          default=False,
-                          dest="quiet",
-                          action="store_true",
-                          help="Decrease the verbosity.")
+    parser.add_option("-q", "--quiet",
+                      default=False,
+                      dest="quiet",
+                      action="store_true",
+                      help="Decrease the verbosity.")
 
-        parser.add_option("-p", "--path",
-                          default=CACHE_DIR,
-                          dest="path",
-                          action="store",
-                          type="string",
-                          help=("An .ini file to check or a folder with *.ini."
-                                " Will check the '%s' if not specified."
-                                % CACHE_DIR))
+    parser.add_option("-p", "--path",
+                      default=CACHE_DIR,
+                      dest="path",
+                      action="store",
+                      type="string",
+                      help=("An .ini file to check or a folder with *.ini."
+                            " Will check the '%s' if not specified."
+                            % CACHE_DIR))
 
-        parser.add_option("-a", "--all",
-                          default=False,
-                          dest="check_all",
-                          action="store_true",
-                          help=("Force check of all Apps .ini. By default "
-                                "checks only currently installed Apps."))
+    parser.add_option("-a", "--all",
+                      default=False,
+                      dest="check_all",
+                      action="store_true",
+                      help=("Force check of all Apps .ini. By default "
+                            "checks only currently installed Apps."))
 
-        options, args = parser.parse_args()
-        return options
+    options, args = parser.parse_args()
+    return options
 
 
 if __name__ == '__main__':
-        """
-        Parses the given arguments or uses defaults.
-        Checks either a specified single file or a folder with .ini files.
-        By default checks only the installed (accoding to APPCENTER_FILE) apps.
+    """
+    Parses the given arguments or uses defaults.
+    Checks either a specified single file or a folder with .ini files.
+    By default checks only the installed (accoding to APPCENTER_FILE) apps.
 
-        WARNING: make sure the App center cache dir has only the most recent
-        .ini files, otherwise test might fail when old versions are incorrect.
+    WARNING: make sure the App center cache dir has only the most recent
+    .ini files, otherwise test might fail when old versions are incorrect.
 
-        (Won't happen with Jenkins instances as those are 'freshly' spawned)
-        """
-        parsed = parse_args()
-        if not parsed.check_all:
-            # check only .ini of the apps that are installed
-            get_installed_apps()
+    (Won't happen with Jenkins instances as those are 'freshly' spawned)
+    """
+    parsed = parse_args()
+    if not parsed.check_all:
+        # check only .ini of the apps that are installed
+        get_installed_apps()
 
-        if os.path.isfile(parsed.path):
-            # check parsed file
-            AppCheck(parsed.path).check()
-        elif os.path.isdir(parsed.path):
-            for path_name in select_ini_files(parsed.path):
-                # or check .ini files in a parsed path
-                AppCheck(path_name).check()
-        else:
-            print "\nSKIPPED: '%s'" % parsed.path
-            exit(TestCodes.RESULT_SKIP)
+    if os.path.isfile(parsed.path):
+        # check parsed file
+        AppCheck(parsed.path).check()
+    elif os.path.isdir(parsed.path):
+        for path_name in select_ini_files(parsed.path):
+            # or check .ini files in a parsed path
+            AppCheck(path_name).check()
+    else:
+        print "\nSKIPPED: '%s'" % parsed.path
+        exit(TestCodes.RESULT_SKIP)
 
-        if failures:
-            utils.fail("\nThere were %d error(s) detected. Please check "
-                       "the complete test output.\n" % failures)
-        print "\nNo errors were detected.\n"
+    if failures:
+        utils.fail("\nThere were %d error(s) detected. Please check "
+                   "the complete test output.\n" % failures)
+    print "\nNo errors were detected.\n"
