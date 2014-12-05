@@ -27,7 +27,7 @@ Dies sind die zentralen Funktionen von UCS:
 <itemizedlist>
 <listitem><simpara>Flexibles und umfangreiches Identity- und Infrastrukturmanagementsystem zur zentralen Administration von Servern, Computerarbeitsplätzen,
 Benutzern und deren Berechtigungen sowie verschiedener Serveranwendungen und Webdienste</simpara></listitem>
-<listitem><simpara>Dienste zur Integration des Managementsystems in vorhandene Microsoft Active Directory Domänen sowie - alternativ - für die Bereitstellung
+<listitem><simpara>Dienste zur Integration des Managementsystems in vorhandene Microsoft Active Directory Domänen oder auch für die Bereitstellung
 dieser Dienste als Alternative zu Microsoft-basierten Serversystemen</simpara></listitem>
 <listitem><simpara>App Center zur einfachen Installation und Verwaltung von Erweiterungen und Anwendungen</simpara></listitem>
 <listitem><simpara>Umfassende Funktionen für den Betrieb virtualisierter Rechnersysteme (beispielsweise mit Windows- oder Linux-Betriebssystem) in der Cloud
@@ -51,9 +51,9 @@ den folgenden drei Hauptbestandteilen zuordnen:
 </orderedlist>
 
 <para>
-Das <emphasis>Basissystem</emphasis> umfasst das Betriebssystem, die auf Debian GNU/Linux basierende
-und von Univention gepflegte UCS-Linux-Distribution und beinhaltet weitgehend
-die selbe Software-Auswahl wie Debian GNU/Linux sowie Werkzeuge zur
+Das <emphasis>Basissystem</emphasis> umfasst das Betriebssystem der auf der Debian GNU/Linux basierenden
+und von Univention gepflegten UCS-Linux-Distribution. Es beinhaltet weitgehend
+die selbe Software-Auswahl wie Debian GNU/Linux sowie zusätzliche Werkzeuge zur
 Installation, zur Aktualisierung und zur Konfiguration von Clients und Servern.
 </para>
 <para>
@@ -74,17 +74,17 @@ aktiviert werden.
 Zusätzliche Komponenten von Univention und anderen Herstellern lassen sich bequem über das 
 <emphasis>App Center</emphasis> installieren und erweitern
 das System um zahlreiche Funktionen wie Groupware, Dokumentenmanagement oder
-Services für Microsoft Windows, so das sie ebenfalls von einem UCS-System ausgeführt und
+Services für Microsoft Windows, so dass sie ebenfalls von einem UCS-System ausgeführt und
 über das &ucsUMS; verwaltet werden können.
 </para>
 </section>
 
 <section id="introduction:Überblick_ueber_UCS"><title>Überblick über UCS</title>
 <para>
-Als Betriebssystem, das von Anfang an für den Multiuser- und
+Linux ist ein Betriebssystem, das von Anfang an für den Multiuser- und
 Multitasking-Einsatz vorgesehen war und bei dessen Entwicklung stets Wert auf
 Stabilität, Sicherheit und die Kompatibilität zu anderen Betriebssystemen
-gelegt wurde, ist Linux prädestiniert für den Einsatz als stabiles, sicheres
+gelegt wurde. Dadurch ist es prädestiniert für den Einsatz als stabiles, sicheres
 und jederzeit verfügbares Serverbetriebssystem. 
 UCS ist ein auf dieser Basis aufbauendes Serverbetriebssystem, das besonders
 für den einfachen und sicheren Betrieb sowie die Verwaltung von Anwendungen
@@ -150,8 +150,7 @@ auf die gewohnte Art und Weise verwaltet werden.
 <para>
 Zusätzlich kann UCS auch als Teil einer vorhanden Microsoft Active Directory
 Domäne betrieben werden. Benutzer und Gruppen aus der Active Directory Domäne
-können dadurch Zugriff auf die Applikationen aus dem Univention App Center
-bekommen.
+können dadurch auf Applikationen des Univention App Centers zugreifen.
 </para>
 <para>
 Ubuntu- oder Mac OS X-Clients können ebenfalls in eine UCS-Umgebung integriert
@@ -194,8 +193,8 @@ genannte Basis der UCS-Domäne bildet. Die UCS-Domäne realisiert den gemeinsame
 Sicherheits- und Vertrauenskontext für ihre Mitglieder. Bei Benutzern begründet
 ein Konto im LDAP-Verzeichnis die Mitgliedschaft in der UCS-Domäne. Rechner
 erhalten bei Beitritt in die Domäne ein Rechnerkonto. Auch Microsoft
-Windows-Systeme können in die Domäne aufgenommen werden und Benutzer
-sich dort mit ihrem Domänenpasswort anmelden.
+Windows-Systeme können in die Domäne aufgenommen werden, so dass sich Benutzer
+dort mit ihrem Domänenpasswort anmelden können.
 </para>
 <para>
 UCS setzt als Verzeichnisdienstserver OpenLDAP ein. Das Verzeichnis wird vom
@@ -204,11 +203,10 @@ UCS setzt als Verzeichnisdienstserver OpenLDAP ein. Das Verzeichnis wird vom
 ersetzen können soll, wird auf diesen immer das komplette LDAP-Verzeichnis repliziert.
 Die Replikation auf DC Slaves kann dagegen mithilfe von ACLs (Access Control
 Lists) auf beliebige Bereiche des LDAP-Verzeichnisses beschränkt werden,
-wodurch eine selektive Replikation möglich wird. Dies kann z.B. dann gewünscht
+um eine selektive Replikation zu ermöglichen. Dies kann z.B. dann gewünscht
 sein, wenn Daten aus Sicherheitsgründen auf möglichst wenigen Servern
-gespeichert werden sollen. Damit diese und andere Daten verschlüsselt
-übertragen werden können, ist in UCS eine Root-CA (Zertifizierungsstelle)
-integriert.
+gespeichert werden sollen. Zur sicheren Kommunikation der Systeme innerhalb
+der Domäne ist in UCS eine Root-CA (Zertifizierungsstelle) integriert.
 </para>
 <para>
 Weiterführende Informationen finden sich in <xref linkend="domain:ldap"/>.
@@ -224,25 +222,21 @@ Weiterführende Informationen finden sich in <xref linkend="domain:ldap"/>.
 </para>
 
 <para>
-Der Zugang zum LDAP-Verzeichnis erfolgt über die webbasierte &ucsUMC; (UMC).
-</para>
-<para>
-Daneben ermöglicht &ucsUMC; auch die Umsetzung aller domänenweiten
+Der Zugang zum LDAP-Verzeichnis erfolgt über die webbasierte Benutzerschnittstelle &ucsUMC; (UMC).
+Daneben ermöglicht Univention Directory Manager auch die Umsetzung aller domänenweiten
 administrativen Aufgaben über eine Kommandozeilen-Schnittstelle. Dies eignet
 sich besonders für die Integration in Skripte oder automatisierte
 administrative Schritte.
 </para>
 <para>
-Mit &ucsUMC; können Daten in das LDAP-Verzeichnis eingetragen und dort angezeigt,
-bearbeitet und gelöscht werden. Auch die Suche – gefiltert nach einer Vielzahl
-von Kriterien – ist möglich. In der Webanwendung stehen u.a. Assistenten zur
+Mit &ucsUMC; können Daten des LDAP-Verzeichnisses angezeigt, bearbeitet,
+gelöscht sowie über eine Suche nach unterschiedlichen Kriterien gefiltert werden.
+Die Web-Oberfläche stellt Assistenten bereit u.a. zur
 Verwaltung von Benutzern, Gruppen, Netzwerken, Rechnern, Verzeichnisfreigaben
 und Druckern zur Verfügung. Die Rechnerverwaltung umfasst auch umfangreiche
 Funktionen zur Verteilung und Aktualisierung von Software.
-</para>
-<para>
 Über den integrierten LDAP-Verzeichnis-Browser können weitergehende
-Einstellungen vorgenommen und kundenspezifische Objektklassen
+Einstellungen vorgenommen sowie kundenspezifische Objektklassen
 und Attribute hinzugefügt werden.
 </para>
 <para>
@@ -254,30 +248,30 @@ Weiterführende Informationen finden sich in <xref linkend="central:general"/>.
 <section id="introduction:Rechneradministration"><title>Rechneradministration</title>
 <para>
 &ucsUMC; ermöglicht nicht nur den Zugriff auf das
-LDAP-Verzeichnis mit den Domänendaten, sondern auch die webbasierte
-Konfiguration und Administration einzelner Rechner, wie die Anpassung von
-Konfigurationsdaten, die Installation von Software und die Überwachung und
-Steuerung von Diensten und Betriebssystem. Mit dem &ucsUMS; ist also
+LDAP-Verzeichnis, sondern auch die webbasierte
+Konfiguration und Administration einzelner Rechner. Dazu gehören die Anpassung von
+Konfigurationsdaten, die Installation von Software sowie die Überwachung und
+Steuerung von Diensten und dem Betriebssystem an sich. Mit dem &ucsUMS; ist
 die Domänenverwaltung sowie die Rechner-, bzw. Serverkonfiguration von
-jedem beliebigen Ort über eine komfortable graphische Web-Oberfläche
+jedem beliebigen Ort aus über eine komfortable, graphische Web-Oberfläche
 möglich.
 </para>
 </section>
 
 <section id="introduction:Richtlinienkonzept"><title>Richtlinienkonzept</title>
 <para>
-Die baumartige Struktur von LDAP-Verzeichnissen stellt – ähnlich wie bei einem
-Dateisystem – sicher, dass sich alle Objekte (wie z.B. Benutzer, Rechner etc.)
-in einem Container befinden und diese Container wieder von anderen Containern
-aufgenommen werden können. Die Basis bildet der so genannte Wurzelcontainer,
-oft auch als LDAP-Basis-Objekt bezeichnet.
+Die baumartige Struktur von LDAP-Verzeichnissen ist ähnlich der eines Dateisystems.
+Sie stellt sicher, dass Objekte (wie z.B. Benutzer, Rechner etc.)
+sich in einem Container befinden, der wieder in anderen Containern
+enthalten sein kann.
+Der Wurzelcontainer wird auch als LDAP-Basis-Objekt bezeichnet.
 </para>
 <para>
 Richtlinien beschreiben bestimmte administrative Einstellungen, die
-sinnvoll auf mehr als ein Objekt angewendet werden können. Sie erleichtern
+auf mehr als ein Objekt angewendet werden können. Sie erleichtern
 die Administration, weil sie an Container gebunden werden können und dann für
 alle in dem betreffenden Container befindlichen Objekte, sowie die in
-Unterordner befindlichen Objekte gelten.
+Unterordnern befindlichen Objekte gelten.
 </para>
 <para>
 Beispielsweise können Benutzer nach Abteilungszugehörigkeit in unterschiedliche
@@ -297,10 +291,8 @@ Weiterführende Informationen finden sich in <xref linkend="central:policies"/>.
 <para>
 Ein wichtiger technischer Bestandteil des &ucsUMS;s stellt der so genannte
 "Listener/Notifier-Mechanismus" dar. Mit ihm lösen das Anlegen, Verändern oder
-Löschen frei definierbarer Einträge im LDAP-Verzeichnis definierte Aktionen auf
+Löschen von Einträge im LDAP-Verzeichnis definierte Aktionen auf
 betroffenen Rechnern aus.
-</para>
-<para>
 So führt zum Beispiel das Anlegen einer Verzeichnisfreigabe mit &ucsUMC; dazu, das die Freigabe
 zunächst in das LDAP-Verzeichnis eingetragen wird. Der
 Listener/Notifier-Mechanismus stellt dann sicher, dass die

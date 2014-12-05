@@ -28,9 +28,9 @@ The central functions of UCS are:
 administration of servers, workstations, users and their permissions, server applications and web
 services</simpara></listitem>
 <listitem><simpara>Services for integrating the management of existing Microsoft Active Directory
-domains or alternatively the provision of suchs services as an alternative for Microsoft-based
+domains or even the provision of suchs services as an alternative for Microsoft-based
 server systems</simpara></listitem>
-<listitem><simpara>App Center for simply installation and management of extensions and applications</simpara></listitem>
+<listitem><simpara>App Center for simple installation and management of extensions and applications</simpara></listitem>
 <listitem><simpara>Comprehensive features for the operation of virtualized systems (e.g. running a
 Windows or Linux operating systems) in either the cloud of on locally running UCS systems</simpara></listitem>
 <listitem><simpara>Network and Intranet services for administration of DHCP and DNS</simpara></listitem>
@@ -51,10 +51,10 @@ be assigned to the following three main categories:
 applications of other software vendors</simpara></listitem>
 </orderedlist>
 <para>
-The <emphasis>base system</emphasis> encompasses the operating system, the UCS Linux
-distribution maintained by Univention and based on Debian GNU/Linux
-and largely includes the same software selection as Debian GNU/Linux
-as well as tools for the installation, updating and configuration of
+The <emphasis>base system</emphasis> encompasses the operating system of the UCS Linux
+distribution maintained by Univention and based on Debian GNU/Linux.
+It largely includes the same software selection as Debian GNU/Linux
+as well as additional tools for the installation, updating and configuration of
 clients and servers.
 </para>
 <para>
@@ -74,7 +74,7 @@ there.
 </para>
 <para>
 Additional components from Univention and other manufacturers can easily be installed using the
-App Center expand the system with numerous functions such as
+App Center. They expand the system with numerous functions such as
 groupware, document management and services for Windows, meaning that
 they can also be run from a UCS system and administrated via the UCS
 management system.
@@ -83,12 +83,12 @@ management system.
 
 <section id="introduction:Overview_of_UCS"><title>Overview of UCS</title>
 <para>
-As an operating system designed for multi-user and multi-tasking
-application right from the start, where the focus in its development
+Linux is an operating system which was designed for multi-user and multi-tasking
+application right from the start. The focus in its development
 was always on stability, security and compatibility with other
-operating systems, Linux is predestined for being used in server
+operating systems. Therefore Linux is predestined for being used in server
 operating systems that are stable, secure and highly available.
-UCS is a server operating system built on that base which is optimised
+Built on that base, UCS is a server operating system which is optimised
 for the simple and secure operation and management of applications and infrastructure services in
 enterprises and public authorities. For efficient and secure management such applications rely on
 the tight integration in the user and permission management of the &ucsUMS;.
@@ -107,7 +107,7 @@ Microsoft Active Directory domain.
 <para>
 The use of UCS begins either with a classic operating system
 installation on a physical server or as a virtual machine,
-which is also set up via an installation or can be generated from an
+set up via an installation or generated from an
 existing virtual machine employed as a template. The installation can
 be interactive or fully automatic either from a DVD or via the
 network/PXE.
@@ -119,8 +119,8 @@ Further information can be found in <xref linkend="installation:chapter"/>.
 
 <section id="introduction:Domain_concept"><title>Domain concept</title>
 <para>
-In an IT infrastructure managed with UCS all servers, clients and users are contained in a common
-security and trust context; the UCS domain. Every UCS system is assigned a so-called server role
+In an IT infrastructure managed with UCS, all servers, clients and users are contained in a common
+security and trust context, referred to as the UCS domain. Every UCS system is assigned a so-called server role
 during the installation. Possible system roles are domain controller, &ucsMember; and client.
 </para>
 <para>
@@ -129,12 +129,12 @@ during the installation. Possible system roles are domain controller, &ucsMember
  </figure>
 </para>
 <para>
-Depending on the system role the computer is to play within the
+Depending on the system role within the
 domain, such services as Kerberos, OpenLDAP, Samba, modules for domain
 replication or a Root CA (certification authority) are installed on
-the computer and are automatically configured for the selected role
-within the system. Thus manual implementation and configuration of
-every single service and application are not required. Due to the
+the computer. These are automatically configured for the selected system role.
+The manual implementation and configuration of
+every single service and application is therefore not required. Due to the
 modular design and extensive configuration interfaces, tailor-made
 solutions to individual requirements can nevertheless be realised.
 </para>
@@ -153,7 +153,7 @@ of the Active Directory domain can access applications from the Univention App C
 </para>
 
 <para>
-Ubuntu or Mac OS X clients can also be integrated in a UCS environment (see
+Ubuntu or Mac OS X clients can be integrated in a UCS environment, as well (see
 <xref linkend="computers:ubuntu"/>).
 </para>
 </section>
@@ -162,11 +162,11 @@ Ubuntu or Mac OS X clients can also be integrated in a UCS environment (see
 App Center</title>
 <para>
 The Univention App Center offers additional UCS components and extensions and a broad selection of
-business IT software, e.g. groupware and collaboration, file exchange, CRM or backup. These
+business IT software, e.g., groupware and collaboration, file exchange, CRM or backup. These
 applications can be installed in existing environments with a few clicks and are usually ready to
-use. In most cases they are directly integrated into the &ucsUMS; and available in the
+use. In most cases they are directly integrated into the &ucsUMS; such that they are available in
 &ucsUMC;. This provides a central management of data on the domain level and obsoletes the separate
-management of e.g. user data in multiple places.
+management of, e.g., user data in multiple places.
 </para>
 </section>
 
@@ -179,7 +179,7 @@ the domain. One primary element of the UCS management system is an
 LDAP directory in which the data required across the domain for the
 administration are stored. In addition to the user accounts and
 similar elements, the data basis of services such as DHCP is also
-saved. The central data management in the LDAP directory avoids not
+saved there. The central data management in the LDAP directory avoids not
 only the repeated entry of the same data, but also reduces the
 probability of errors and inconsistencies.
 </para>
@@ -189,7 +189,7 @@ the so-called basis of the UCS domain. The UCS domain forms the common
 security and trust context for its members. An account in the LDAP
 directory establishes the membership in the UCS domain for
 users. Computers receive a computer account when they join the
-domain. Microsoft Windows systems can also join the domain and users
+domain. Microsoft Windows systems can also join the domain such that users
 can log in there with their domain passport.
 </para>
 <para>
@@ -198,11 +198,11 @@ provided by the &ucsMaster; and replicated on all domain controllers
 (DCs) in the domain. The complete LDAP directory is also replicated on
 a DC backup as this can replace the DC master in an emergency. In
 contrast, the replication on DC slaves can be restricted to certain
-areas of the LDAP directory using ACLs (access control lists), which
-allows selective replication. For example, this may be desirable if
+areas of the LDAP directory using ACLs (access control lists) in order to realize
+a selective replication. For example, this may be desirable if
 data should only be stored on as few servers as possible for security
-reasons. A root CA (certification authority) is integrated in UCS so
-that these and other data can be transmitted encrypted.
+reasons. For secure communication of all systems within the domain,
+UCS integrates a root CA (certification authority).
 </para>
 <para>
 Further information can be found in <xref linkend="domain:ldap"/>.
@@ -216,30 +216,22 @@ Further information can be found in <xref linkend="domain:ldap"/>.
 </figure>
 </para>
 <para>
-Access to the LDAP directory is performed via the web-based
-&ucsUMC; (UMC).
-</para>
-
-<para>
-Univention Directory Manager also allows the realisation of all
+Access to the LDAP directory is performed via the web-based user interface &ucsUMC; (UMC).
+In addition to this, Univention Directory Manager allows the realisation of all
 domain-wide administrative tasks via a command line interface. This
 is particularly suitable for the integration in scripts or automated
 administrative steps.
 </para>
 
 <para>
-&ucsUMC; makes it possible to enter data into the LDAP directory and
-then display, edit and delete them there. It is also possible to
-search - filtered according to a wide range of criteria - for
-data. The web interface offers a range of wizards for the
+&ucsUMC; allows to display, edit, delete, and search the data in
+the LDAP directory via various filter criterions.
+The web interface offers a range of wizards for the
 administration of user, groups, networks, computers, directory shares
 and printers. The administration of computers also comprises
 comprehensive functions for distributing and updating software.
-</para>
-
-<para>
 The integrated LDAP directory browser can be used to make further
-settings and add customer-specific object classes and attributes.
+settings and add customer-specific object classes or attributes.
 </para>
 <para>
 Further information can be found in <xref linkend="central:general"/>.
@@ -249,37 +241,35 @@ Further information can be found in <xref linkend="central:general"/>.
 
 <section id="introduction:Computer_administration"><title>Computer administration</title>
 <para>
-&ucsUMC; allows not only the access to the LDAP directory with the
-domain data, but also the web-based configuration and administration
-of individual computers, such as the adaptation of configuration data,
-the installation of software and the monitoring and control of
-services and operating system. With &ucsUMS;, domain administration
-and computer and server configuration is also possible from any place
+&ucsUMC; allows not only the access to the LDAP directory,
+but also the web-based configuration and administration
+of individual computers. These include the adaptation of configuration data,
+the installation of software as well as the monitoring and control of
+services and the operating system itself. With the &ucsUMS;, domain administration
+as well as computer and server configuration is possible from any place
 via a comfortable graphic web interface.
 </para>
 </section>
 
 <section id="introduction:Policy_concept"><title>Policy concept</title>
 <para>
-The tree-like structure of LDAP directories ensures - similar to in a
-file system - that all objects (such as users, computers, etc.) are in
-one container and that these containers can also be adopted by other
-containers. The so-called root container forms the basis for this and
-is often also called the LDAP base object.
+The tree-like structure of LDAP directories is similar to that of a file system
+It ensures that objects (such as users, computers, etc.) are in
+one container which itself can be adopted by other containers.
+The root container is also called the LDAP base object.
 </para>
 <para>
-Policies describe certain administrative settings which can be
-practically be used on more than one object. They facilitate the
-administration as they can be linked to containers and then apply
-to all the objects in the container in question and the objects in
-subfolders.
+Policies describe certain administrative settings which are
+applied to more than one object. Linked to containers, they facilitate the
+administration as they are effective for all objects in the container
+in question as well as the objects in subfolders.
 </para>
 <para>
 For example, users can be organised in different containers or
 organisational units (which are a form of containers) depending on
 which department they belong to. Settings such as the desktop
-background or programs that can be run can then be connected to these
-organisational units using policies and subsequently apply for all
+background or accessible programs can then be connected to these
+organisational units using policies. Subsequently, they apply for all
 users within the organisational unit in question.
 </para>
 <para>
@@ -290,11 +280,9 @@ Further information can be found in <xref linkend="central:policies"/>.
 <section id="introduction:Listener_notifier_replication"><title>Listener/notifier replication</title>
 <para>
 The listener/notifier mechanism is an important technical component of
-the &ucsUMS;. With this, the creation, editing or deleting of freely
-definable entries in the LDAP directory triggers defined actions on
+the &ucsUMS;. With this, the creation, editing or deleting of
+entries in the LDAP directory triggers defined actions on
 the computers in question.
-</para>
-<para>
 For example, the creation of a directory share with &ucsUMC; leads to
 the share firstly being entered in the LDAP directory. The
 listener/notifier mechanism then ensures that the NFS
@@ -304,8 +292,8 @@ of the selected server if it does not already exist.
 </para>
 <para>
 The listener/notifier mechanism can be easily expanded with modules
-for further - even customer-specific - procedures and is
-consequently used by numerous technology partners for the integration
+for further - also customer-specific - procedures.
+Consequently, it is used by numerous technology partners for the integration
 of their products in the LDAP directory service and the &ucsUMS; for
 example.
 </para>
