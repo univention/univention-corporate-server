@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-directory-manager-modules
-fix: 
+fix: 10.0.29-8.1270.201412041625
 version: [0]
 desc: |
   * Fixed setting of userexpiry when a user account is disabled.
