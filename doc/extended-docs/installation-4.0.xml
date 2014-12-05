@@ -279,6 +279,8 @@ ucr unset dns/forwarder2 dns/forwarder3
 	  <para>
 		Das Tool <command>generate_appliance</command> muss als Benutzer root gestartet werden, mit
 		dem Parameter <emphasis>-s</emphasis> muss das QCOW-Image übergeben werden:
+		FIXME: Nicht als root
+		
 
 		<programlisting>
 generate_appliance -s appliance.qcow2
@@ -288,6 +290,8 @@ generate_appliance -s appliance.qcow2
 		die Appliance einen höheren Speicher- oder CPU-Power-Bedarf hat, kann mit dem Parameter
 		<emphasis>-m</emphasis> eine abweichende RAM-Menge in Megabyte und mit
 		<emphasis>-c</emphasis> eine andere CPU-Anzahl zugewiesen werden.
+		Mit den Parametern <emphasis>--vendor</emphasis> und <emphasis>--product</emphasis> kann ein
+		Hersteller- und Produktname spezifiziert werden.
 	  </para>
 
 	  <para>
@@ -297,11 +301,11 @@ generate_appliance -s appliance.qcow2
 
 		<itemizedlist>
 		  <listitem><simpara>
-			Zipped VMware-compatible images (e.g. for VMWare Player), can be suppressed with <emphasis>no-vmware</emphasis>
+			Zipped VMware-compatible images (e.g. for VMWare Player), can be suppressed with <emphasis>--no-vmware</emphasis>
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			VirtualBox OVA image, can be suppressed with <emphasis>no-ova-virtualbox</emphasis>
+			VirtualBox OVA image, can be suppressed with <emphasis>--no-ova-virtualbox</emphasis>
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -457,7 +461,8 @@ simplesamlphp
 
 	  <para>
 		Der Zugriff auf den Lizenz-Server erfordert einen Benutzernamen und ein Passwort. Diese
-		können bei Univention unter sales@univention.de angefragt werden.
+		können bei Univention unter sales@univention.de angefragt werden. In diesem Dokument wird
+		als Beispiel-URL für den Lizenzserver https://license.univention.de/shop/example/ verwendet.
 	  </para>
 
 	  <section id="appliance:license:api">
@@ -466,22 +471,25 @@ simplesamlphp
 		  Der Abruf der Lizenzen erfolgt über HTTPS mit dem Univention-Lizenz-Server
 		  <uri>license.univention.de</uri>. Der Abruf kann komplett mit <command>wget</command>
 		  erfolgen.
+		  FIXME: Nur manuell über wget erfolgen
 		</para>
 
 		<para>
 		  Zuerst muss eine Session zum Lizenzserver aufgebaut werden, hier mit dem Usernamen
-		  <emphasis>univention</emphasis> und dem Passwort <emphasis>secret</emphasis> als Beispiel:
+		  <emphasis>univention</emphasis> und dem Passwort <emphasis>secret</emphasis> als
+		  Beispiel. Innerhalb einer Session können auch mehrere Lizenzen abgefragt werden.
 
 		  <programlisting>
 wget --keep-session-cookies --save-cookies cookie.db --load-cookies cookie.db \
  --post-data='username=univention&amp;password=secret' \
- https://license.univention.de/shop/testing/ -SO-
+ https://license.univention.de/shop/example/
 		  </programlisting>
 		</para>
 
 		<para>
 		  Eine Lizenz kann ebenfalls über wget mit einer POST-Anfrage bestellt werden. Es ist zu
-		  beachten, dass Sonderzeichen wie Leerzeichen in HTML-Syntax escapt werden müssen.
+		  beachten, dass Sonderzeichen wie Leerzeichen in HTML-Syntax escapt werden müssen:
+		  FIXME: URL-Encoding, see http://en.wikipedia.org/wiki/Percent-encoding for details
 
 		  <programlisting>
 wget --keep-session-cookies --save-cookies cookie.db --load-cookies cookie.db \
@@ -498,23 +506,48 @@ wget --keep-session-cookies --save-cookies cookie.db --load-cookies cookie.db \
 'VirtualDesktopUsers=0&amp;'\
 'VirtualDesktopClients=0&amp;'\
 'Type=UCS' \
-https://license.univention.de/shop/testing/order -SO-
+https://license.univention.de/shop/example/order
 		  </programlisting>
+		</para>
 
-		  Als Rückgabe wird eine Bestellnummer zurückgeliefert.
+		<para>
+		  Im Fall eine erfolgreichen Bestellung wird der Return Code 202 zurückgeliefert. In den
+		  erhaltenen HTML-Daten findet sich der Tag orderid, der die Bestellnummer einer
+		  erfolgreichen Bestellung nennt:
 
+		  <programlisting>-.
+... <span id="orderid">21</span> ...
+		  </programlisting>
+		</para>
+
+		<para>
+		  Schlug die Bestellung fehlt, wird ein Return Code 4xx zurückgeliefert, im Tag
+		  <emphasis>details</emphasis> finden sich weitere Informationen, z.B:
+
+		  <programlisting>-.
+... <span id="details">Not a valid date: u'27.11.201'</span> ...
+		  </programlisting>
+		</para>
+
+		<para>
+		  Kann die Bestellung durch einen Serverfehler nicht verarbeitet werden, wird 5xx als Return
+		  Code ausgegeben. Die Bestellung kann dann zu einem späteren Zeitpunkt wiederholt werden.
 		</para>
 
 		<para>
 		  Nach der Bestellung einer Lizenz dauert es einige Sekunden, bis die Lizenz erstellt
-		  wurde. Abschließend kann sie mit anhand der Bestellnummer im LDIF-Format abgerufen
+		  wurde. Der unten angebene Aufruf wartet bis zu sechzig Sekunden auf die Verfügbarkeit der
+		  Lizenz. Abschließend kann sie mit anhand der Bestellnummer im LDIF-Format abgerufen
 		  werden. Lieferte der obige Aufruf die Bestellnummer 465 zurück, lautet der Dateiname
 		  465.ldif:
 
 		  <programlisting>
 wget --keep-session-cookies --save-cookies cookie.db --load-cookies cookie.db \
-https://license.univention.de/shop/testing/orders/465.ldif -SO-
+https://license.univention.de/shop/example/orders/465.ldif 
 		  </programlisting>
+
+		  Liefert der Lizenzabruf den Return Code 4xx ist die Bestellnummer ungültig, bei 5xx konnte
+		  die Bestellung noch nicht erfolgreich bearbeitet werden.
 		</para>
 
 	  </section>
