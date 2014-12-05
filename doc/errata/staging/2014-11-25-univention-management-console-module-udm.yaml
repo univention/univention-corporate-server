@@ -15,6 +15,6 @@ desc: |
     be identified as UDM object
   * The get_exception_method has been removed. Error information are now
     provided by the UDM base exception itself
-  * Exceptions are not reraised anymore as this hides important error
+  * Exceptions are not re-raised anymore as this hides important error
     information in traceback feedback reports
 bug: [36732, 35719, 35280, 29231, 35273, 32979]

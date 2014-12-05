@@ -11,5 +11,5 @@ desc: |
   * Display a https link in instances page for the first public and private ip.
   * Add tooltip for security group and key pair in instance wizard.
   * Fix header button to close only cloud connection wizard.
-  * Add progressbar while waiting for changed instance state.
+  * Add progress bar while waiting for changed instance state.
 bug: [36988, 36905, 36906, 36585, 36380]

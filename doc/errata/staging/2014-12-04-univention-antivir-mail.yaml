@@ -6,7 +6,7 @@ fix: 6.0.0-5.121.201412041624
 version: [0]
 desc: |
  This update addresses the following issues:
-  * An obsolte cron job (/etc/cron.daily/amavisd-new) will be removed.
+  * An obsolete cron job (/etc/cron.daily/amavisd-new) will be removed.
   * The new UCR variable mail/antispam/headertag can be used to define
     a string to prepend to subject header field for SPAM messages. 
     If the variable is unset (default), the subject is not modified.

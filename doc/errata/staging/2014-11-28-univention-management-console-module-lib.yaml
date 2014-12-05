@@ -5,6 +5,6 @@ src: univention-management-console-module-lib
 fix: 4.0.2-2.30.201411281331
 version: [0]
 desc: |
-  * Close the progressbar for server shutdown if no permission exists to
+  * Close the progress bar for server shutdown if no permission exists to
     shutdown the server.
 bug: [36992]
