@@ -53,9 +53,11 @@ def simple_handler(f):
 	return _simple_handler
 
 if __name__ == '__main__':
-	usage = '%prog <component> [-a] [-m] [-l] [<package> ...]'
+	usage = '%prog --list # OR:\n%prog <component> [-a] [-m] [-l] [<package> ...]'
 	description = '%prog prepares the corresponding repository settings for the specified component and installs the given packages.'
 	parser = OptionParser(usage=usage, description=description)
+	parser.add_option("--list", action="store_true", dest="list_apps", default=False,
+			help="Lists all available apps. If <component> is given, lists all versions of the app with that ID.")
 	parser.add_option("-a", "--all", action="store_true", dest="install_all", default=False,
 			help="Installs all DefaultPackages of the app. If DC master or backup, also installs DefaultPackagesMaster. Performs dist-upgrade when upgrading an existing app!")
 	parser.add_option("-m", "--master", action="store_true", dest="install_master", default=False,
@@ -63,11 +65,28 @@ if __name__ == '__main__':
 	parser.add_option("-l", "--latest", action="store_true", dest="install_latest", default=False,
 			help="<component> is not the component's name but the ID of the application. And always the latest available gets added.")
 	options, args = parser.parse_args()
+	component_id = None
 	try:
 		component_id = args[0]
 	except IndexError:
-		parser.print_usage()
-		sys.exit(1)
+		if not options.list_apps:
+			parser.print_usage()
+			sys.exit(1)
+
+	if options.list_apps:
+		if component_id is None:
+			sys.stdout.write('Available App IDs:\n')
+			for app in Application.all():
+				sys.stdout.write('  %s (%s %s)\n' % (app.id, app.name, app.version))
+		else:
+			app = Application.find(component_id)
+			sys.stdout.write('Available components for App %s:\n' % component_id)
+			if app is None:
+				sys.stderr.write('App "%s" not found\n' % component_id)
+				sys.exit(1)
+			for version in app.versions:
+				sys.stdout.write('  %s (%s)\n' % (app.component_id, app.version))
+		sys.exit(0)
 
 	# for compatibility with 3.1-0. may be removed with 3.2-0
 	packages = args[1:]
@@ -77,7 +96,7 @@ if __name__ == '__main__':
 	install_opener(ucr)
 	updater = UniventionUpdater(False)
 	component_manager = ComponentManager(ucr, updater)
-	package_manager = PackageManager(info_handler=simple_handler(sys.stdout), error_handler=simple_handler(sys.stderr), always_noninteractive=True)
+	package_manager = PackageManager(info_handler=simple_handler(sys.stdout), error_handler=simple_handler(sys.stderr))
 	requested_app = None
 	function = 'install'
 	if options.install_latest:

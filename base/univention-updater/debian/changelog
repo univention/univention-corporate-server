@@ -1,3 +1,9 @@
+univention-updater (10.0.51-6) unstable; urgency=low
+
+  * Bug #37153: Add option to --list apps in univention-add-app
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 06 Dec 2014 22:45:03 +0100
+
 univention-updater (10.0.51-5) unstable; urgency=low
 
   * Bug #37030: Show all blocking components
