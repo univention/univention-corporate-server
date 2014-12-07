@@ -6,39 +6,19 @@
 	<para>
 	  The software deployment integrated in UCS offers extensive possibilities for
 	  the rollout and updating of UCS installations. Security and version updates can
-	  be installed via an online update.
-	</para>
-
-	<para>
-	  For larger installations, there is the possibility of establishing a local
-	  repository server from which all further updates can then be performed. This
-	  repository server either procures its packages from the Univention online
-	  repository or, in environments without Internet access, also from offline
-	  updates in the form of ISO images (see <xref
-	  linkend="software::configrepo"/>).
-	</para>
-
-	<para>
-	  UCS systems can be updated via &ucsUMC;, a command line tool and
-	  policy-based. This is described in the <xref
-	  linkend="software::ucs-updates"/>.
-	</para>
-
-	<para>
+	  be installed via &ucsUMC;, a command line tool and
+	  policy-based. This is described in the <xref linkend="software::ucs-updates"/>.
 	  The UCS software deployment does not support the updating of Microsoft Windows
 	  systems. An additional Windows software distribution is required for this.
 	</para>
 
 	<para>
-	  The initial installation of UCS systems is not covered in this chapter and is
-	  documented in <xref linkend="installation:chapter"/> instead.
-	</para>
-
-	<para>
-	  The functional scope of a UCS installation can be expanded by integrating
-	  further repository components, see <xref linkend="computers::softwaremanagement::repoadd"/>. These components are
-	  provided both by Univention (e.g., for the UCS-based UCS DVS) and by third
-	  parties.
+	  For larger installations, there is the possibility of establishing a local
+	  repository server from which all further updates can be performed
+	  (see <xref linkend="software::configrepo"/>). This
+	  repository server either procures its packages from the Univention online
+	  repository or, in environments without Internet access, also from offline
+	  updates in the form of ISO images.
 	</para>
 
 	<para>
@@ -46,11 +26,14 @@
 	  management tools, which are expanded through UCS-specific tools. The different
 	  tools for the installation of software are introduced in <xref
 	  linkend="computers::softwaremanagement::installsoftware"/>.
+	  The installation of version and errata updates can be automated via policies,
+	  see <xref linkend="computers::softwaremanagement::maintenancepolicy"/>
 	</para>
 
 	<para>
-	  The installation of version and errata updates can be automated via policies,
-	  see <xref linkend="computers::softwaremanagement::maintenancepolicy"/>
+	  The functional scope of a UCS installation can be expanded by integrating
+	  further repository components, see <xref linkend="computers::softwaremanagement::repoadd"/>.
+	  These components are provided both by Univention and by third parties.
 	</para>
 
 	<para>
@@ -58,12 +41,17 @@
 	  statuses can be centrally stored in a database, see <xref
 	  linkend="computers::softwaremonitor"/>.
 	</para>
+
+	<para>
+	  The initial installation of UCS systems is not covered in this chapter, but
+	  is documented in <xref linkend="installation:chapter"/> instead.
+	</para>
   </section>
 
   <section id="computers:Differentiation_of_update_variants__UCS_versions">
 	<title>Differentiation of update variants / UCS versions</title>
 	<para>
-	  Four different types of UCS updates are differentiated:
+	  Four types of UCS updates are differentiated:
 	</para>
 
 	<itemizedlist>
@@ -100,8 +88,8 @@
 		of UCS via major, minor and patch level versions, Univention also publishes
 		<emphasis>errata updates</emphasis> as necessary. Errata updates include the
 		corrections for security vulnerabilities or program errors which need
-		to be resolved quickly prior to the release of the next patch level update. A
-		list of the errata updates can be found at
+		to be resolved quickly prior to the release of the next patch level update. An
+		overview of all errata updates can be found at
 		<ulink url="http://errata.univention.de/"/>. Errata updates can also be provided
 		for components.
 	  </simpara></listitem>
@@ -117,8 +105,8 @@
 
 	<para>
 	  The <emphasis>pre-update script</emphasis> <filename>preup.sh</filename> is run before every release update.
-	  This checks for example whether there are any problems, in which case the update is cancelled in a controlled way.
-	  The <emphasis>post-update script</emphasis> <filename>postup.sh</filename> is run at the end of the update, which performs for example additional cleanups.
+	  It checks for example whether any problems exist, in which case the update is cancelled in a controlled manner.
+	  The <emphasis>post-update script</emphasis> <filename>postup.sh</filename> is run at the end of the update to perform additional cleanups, if necessary.
 	</para>
 
 	<para>
@@ -130,20 +118,9 @@
 	<para>
 	  If new release or errata updates are available, a corresponding notification is
 	  given when a user logs on to &ucsUMC;.
-	</para>
-
-	<para>
 	  The availability of new updates is also notified via e-mail; the corresponding
 	  newsletters - separated into release and error updates - can be subscribed on
 	  the Univention website.
-	</para>
-
-	<para>
-	  An overview of all the errata updates can be found under
-	  <ulink url="http://errata.univention.de/"/>.
-	</para>
-
-	<para>
 	  A changelog document is published for every release update listing the updated
 	  packages, information on error corrections and new functions and references to
 	  the Univention Bugzilla.
@@ -155,7 +132,7 @@
 	<para>
 	  The Univention App Center allows simple integration of software components in a UCS
 	  domain. The applications are provided both by third parties and by Univention itself
-	  (e.g., ucs@School). The maintenance and support for the applications are provided by the
+	  (e.g., UCS@School). The maintenance and support for the applications are provided by the
 	  respective manufacturer.
 	</para>
 
@@ -165,8 +142,8 @@
 
 	<para>
 	  The Univention App Center can be opened via the UMC module <emphasis>App
-	  Center</emphasis>. The available software components are listed under
-	  <guimenu>Applications</guimenu>. <guimenu>Search term</guimenu> can be used to filter the
+	  Center</emphasis>. It shows by default all installed as well as available software components.
+	  <guimenu>Search term</guimenu> can be used to filter the
 	  list of displayed applications. The applications can also be sorted using the
 	  <guimenu>Categories</guimenu>.
 	</para>
@@ -174,7 +151,7 @@
 	<para>
 	  If you click on one of the displayed applications, further details on it are shown (e.g.,
 	  description, manufacturer, contact information and a screenshot). The <guimenu>Notification</guimenu>
-	  field shows whether the manufacturer of the software component is
+	  field displays whether the manufacturer of the software component is
 	  notified when it is installed/uninstalled. Some applications provide a
 	  <guimenu>Buy</guimenu> button in the bottom toolbar with a link to licensing
 	  information. For all other applications, the manufacturer of the application
@@ -198,15 +175,12 @@
 	  schema extensions or new modules for the UCS management system). These packages are
 	  automatically installed on the &ucsMaster;. If this is not possible, the installation is
 	  aborted. In addition, the packages are set up on all accessible &ucsBackup; systems.
-	</para>
-
-	<para>
 	  If several UCS systems are available in the domain, it can be selected on which system the
 	  application is to be installed.
 	</para>
 
 	<para>
-	  Following installation of an application, ore or several new options are shown when clicking on the icon
+	  After its installation, one or several new options are shown when clicking on the icon
 	  of an application: <guimenu>Uninstall</guimenu> removes an application.
 	  <guimenu>Open</guimenu> refers you to a website or a UMC module with which you can further configure or use
 	  the installed application. For example, if you install the Horde application, this link takes
@@ -219,9 +193,6 @@
 	  version of an application is available, the <guimenu>Upgrade</guimenu> menu item is
 	  shown, which starts the installation of the new version. If updates are available, a
 	  corresponding message is also shown in the UMC module <guimenu>Software update</guimenu>.
-	</para>
-
-	<para>
 	  An overview of the installed applications in the domain can be opened under <guimenu>Installed
 	  applications</guimenu> on the UMC start page.
 	</para>
@@ -328,12 +299,9 @@
 
 	  <para>
 		In the basic setting, the packages to be updated are loaded from a repository
-		via the network. If a local repository is used (see <xref linkend="software::createrepo"/>), release updates can alternatively also be
-		installed via update DVD images, which are either imported as ISO files or from
-		a drive.
-	  </para>
-
-	  <para>
+		via the network. If a local repository is used (see <xref linkend="software::createrepo"/>),
+		release updates can alternatively also be installed via update DVD
+		images, which are either imported as ISO files or from a drive.
 		This is done by running <command>univention-upgrade</command> with the
 		parameters <command>--iso=ISOIMAGEFILE</command> or
 		<command>--cdrom=DRIVE</command>.
@@ -437,7 +405,7 @@
 	<para>
 	  Using the registered settings, apt package sources are automatically generated
 	  in the <filename>/etc/apt/sources.list.d</filename> directory for release and
-	  errata updates and addon components. If further repositories are required on a
+	  errata updates as well as addon components. If further repositories are required on a
 	  system, these can be entered in the <filename>/etc/apt/sources.list</filename>
 	  file.
 	</para>
@@ -461,8 +429,8 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Additional packages, e.g., other mail servers than Postfix can be found
-		under <emphasis>unmaintained</emphasis>. These packages are not covered by
+		Additional packages can be found under <emphasis>unmaintained</emphasis>,
+		e.g., other mail servers than Postfix. These packages are not covered by
 		security updates or ulterior maintenance. In the default setting,
 		<emphasis>unmaintained</emphasis> is not mounted, but can be integrated by
 		setting the &ucsUCRV; <envar>repository/online/unmaintained</envar> to
@@ -599,20 +567,11 @@ univention-repository-update -h
 	  relative to the functions, whereby e.g. the <emphasis>Proxy server</emphasis>
 	  component is selected, which then procures the actual software packages via a
 	  meta package. The administrator does not need to know the actual package names.
-	</para>
-
-	<para>
 	  However, individual packages can also be specifically installed and removed for
 	  further tasks.
-	</para>
-
-	<para>
 	  When installing a package, it is sometimes necessary to install additional
 	  packages, which are required for the proper functioning of the package. These
 	  are called packages dependencies.
-	</para>
-
-	<para>
 	  All software components are loaded from a repository (see <xref
 	  linkend="software::configrepo"/>).
 	</para>

@@ -5,38 +5,20 @@
 	<para>
 	  Die in UCS integrierte Softwareverteilung bietet umfangreiche
 	  Möglichkeiten für den Rollout und die Aktualisierung von UCS-Installationen.
-	  Sicherheits- und Versionsupdates können dabei über ein Online-Update installiert
-	  werden.
+	  Sicherheits- und Versionsupdates können über &ucsUMC;, über ein Kommandozeilen-Tool
+	  und richtliniengesteuert installiert werden. Dies wird in
+	  <xref linkend="software::ucs-updates"/> beschrieben. Die UCS-Softwareverteilung
+	  unterstützt nicht die Aktualisierung von Microsoft Windows-Systemen.
+	  Hierfür ist eine zusätzliche Windows-Softwareverteilung nötig.
 	</para>
 
 	<para>
 	  Für größere Installationen besteht die Möglichkeit, einen lokalen
-	  Repository-Server einzurichten, von dem dann alle weiteren Aktualisierungen
-	  durchgeführt werden. Dieser Repository-Server bezieht seine Pakete entweder
+	  Repository-Server einzurichten, von dem aus alle weiteren Aktualisierungen
+	  durchgeführt werden (siehe <xref linkend="software::configrepo"/>).
+	  Dieser Repository-Server bezieht seine Pakete entweder
 	  vom Univention-Online-Repository oder in Umgebungen ohne
-	  Internetzugriff auch durch Offline-Updates in Form von ISO-Images
-	  (siehe <xref linkend="software::configrepo"/>).
-	</para>
-
-	<para>
-	  UCS-Systeme können über &ucsUMC;, über ein Kommandozeilen-Tool
-	  und richtliniengesteuert aktualisiert werden. Dies wird in
-	  <xref linkend="software::ucs-updates"/> beschrieben. Die UCS-Softwareverteilung
-	  unterstützt nicht die Aktualisierung von Microsoft
-	  Windows-Systemen. Hierfür ist eine zusätzliche
-	  Windows-Softwareverteilung nötig.
-	</para>
-
-	<para>
-	  Die Erstinstallation von UCS-Systemen ist nicht Bestandteil dieses Kapitels
-	  und wird stattdessen in <xref linkend="installation:chapter"/> beschrieben.
-	</para>
-
-	<para>
-	  Der Funktionsumfang einer UCS-Installation kann durch die Einbindung weiterer
-	  Repository-Komponenten erweitert werden, siehe <xref linkend="computers::softwaremanagement::repoadd"/>.
-	  Solche Komponenten werden sowohl von Univention (z.B. für das auf UCS
-	  aufbauende UCS DVS), wie auch von Drittanbietern bereitgestellt.
+	  Internetzugriff auch durch Offline-Updates in Form von ISO-Images.
 	</para>
 
 	<para>
@@ -44,11 +26,14 @@
 	  Debian-Paketmanagement-Tools, wird aber durch UCS-spezifische Werkzeuge
 	  ergänzt. Die verschiedenen Werkzeuge zur Installation von Software werden in
 	  <xref linkend="computers::softwaremanagement::installsoftware"/> vorgestellt.
+	  Die Installation von Versions- und Sicherheitsupdates kann über Richtlinien
+	  automatisiert werden, siehe <xref linkend="computers::softwaremanagement::maintenancepolicy"/>
 	</para>
 
 	<para>
-	  Die Installation von Versions- und Sicherheitsupdates kann über Richtlinien
-	  automatisiert werden, siehe <xref linkend="computers::softwaremanagement::maintenancepolicy"/>
+	  Der Funktionsumfang einer UCS-Installation kann durch die Einbindung weiterer
+	  Repository-Komponenten erweitert werden, siehe <xref linkend="computers::softwaremanagement::repoadd"/>.
+	  Solche Komponenten werden sowohl von Univention wie auch von Drittanbietern bereitgestellt.
 	</para>
 
 	<para>
@@ -57,6 +42,10 @@
 	  werden, siehe <xref linkend="computers::softwaremonitor"/>.
 	</para>
 
+	<para>
+	  Die Erstinstallation von UCS-Systemen ist nicht Bestandteil dieses Kapitels,
+	  sie wird stattdessen in <xref linkend="installation:chapter"/> beschrieben.
+	</para>
   </section>
 
   <section id="computers:Unterscheidung_der_Update-Varianten_Aufbau_der_UCS-Versionen">
@@ -101,7 +90,7 @@
 		Bedarf <emphasis>Errata-Updates</emphasis>. Errata-Updates enthalten
 		Korrekturen für Sicherheitslücken oder Programmfehler,
 		die zeitnah noch vor dem nächsten Patchlevel-Update behoben werden müssen.
-		Eine Aufstellung der Errata-Updates findet sich unter
+		Eine Aufstellung aller Errata-Updates findet sich unter
 		<ulink url="http://errata.univention.de"/>. Errata-Updates können auch für
 		Komponenten bereitgestellt werden.
 	  </simpara></listitem>
@@ -130,20 +119,9 @@
 	<para>
 	  Wenn neue Release- oder Errata-Updates verfügbar sind, wird bei der Anmeldung
 	  an &ucsUMC; ein entsprechender Hinweis ausgegeben.
-	</para>
-
-	<para>
 	  Die Verfügbarkeit neuer Updates wird außerdem per E-Mail angekündigt,
 	  entsprechende Newsletter - getrennt nach Release- und Errata-Updates - können
 	  auf der Univention-Webseite abonniert werden.
-	</para>
-
-	<para>
-	  Unter <ulink url="http://errata.univention.de/"/> wird zusätzlich eine
-	  Übersicht aller Errata-Updates bereitgestellt.
-	</para>
-
-	<para>
 	  Zu jedem Release-Update wird ein Release-Notes-Dokument veröffentlicht, in
 	  dem die aktualisierten Pakete, Hinweise zu Fehlerkorrekturen und neuen
 	  Funktionen aufgeführt sind.
@@ -165,8 +143,8 @@
 
 	<para>
 	  Das Univention App Center kann über das UMC-Modul <emphasis>App Center</emphasis>
-	  aufgerufen werden. Unter <guimenu>Applikationen</guimenu> werden die verfügbaren
-	  Softwarekomponenten aufgeführt. Mit <guimenu>Suchbegriff</guimenu> kann die Liste der
+	  aufgerufen werden. Es zeigt standardmäßig alle installierten sowie verfügbare
+	  Softwarekomponenten an. Mit <guimenu>Suchbegriff</guimenu> kann die Liste der
 	  angezeigten Applikationen eingeschränkt werden, außerdem können die Applikationen anhand
 	  der <guimenu>Kategorien</guimenu> geordnet werden.
 	</para>
@@ -200,15 +178,12 @@
 	  Pakete werden automatisch auf dem &ucsMaster; installiert. Ist dieser nicht erreichbar,
 	  wird die Installation abgebrochen. Außerdem werden die Pakete auf allen erreichbaren
 	  &ucsBackup;-Systemen eingerichtet.
-	</para>
-
-	<para>
-	  Sofern mehrere UCS Systeme in der Domäne vorhanden sind kann ausgwählt werden, auf welchem
+	  Sofern mehrere UCS Systeme in der Domäne vorhanden sind, kann ausgewählt werden, auf welchem
 	  der Systeme die Applikation installiert werden soll.
 	</para>
 
 	<para>
-	  Nach der Installation einer Applikation werden nach einem Klick auf das Icon einer Applikation
+	  Nach der Installation einer Applikation werden beim Klick auf das Icon einer Applikation
 	  eine oder mehrere neue Optionen angezeigt: <guimenu>Deinstallieren</guimenu> entfernt eine Applikation.
 	  <guimenu>Öffnen</guimenu> verweist auf eine Webseite oder ein UMC-Modul, mit dem die installierte Applikation
 	  weitergehend konfiguriert oder verwendet werden kann. Installiert man beispielsweise die
@@ -227,9 +202,6 @@
 	<para>
 	  Eine Übersicht über die installierten Applikationen in der Domäne kann auf der UMC-Startseite
 	  unter <guimenu>Installierte Applikationen</guimenu> abgerufen werden.
-	</para>
-
-	<para>
 	  Installationen und das Entfernen von Paketen werden in der Logdatei
 	  <filename>/var/log/univention/management-console-module-appcenter.log</filename>
 	  protokolliert.
@@ -261,7 +233,7 @@
 	  </para>
 
 	  <para>
-		Generell ist es empfehlenswert alle UCS-Systeme möglichst in einem
+		Generell ist es empfehlenswert, alle UCS-Systeme möglichst in einem
 		Wartungsfenster zu aktualisieren. Wo dies nicht möglich ist, sollten
 		die nicht-aktualisierten UCS-Systeme gegenüber dem &ucsMaster; nur
 		eine Release-Version älter sein.
@@ -339,9 +311,6 @@
 		eingesetzt (siehe <xref linkend="software::createrepo"/>), können
 		Release-Updates alternativ auch über Update-DVD-Images installiert werden, die
 		entweder als ISO-Datei oder von einem Laufwerk eingelesen werden.
-	  </para>
-
-	  <para>
 		Dazu muss <command>univention-upgrade</command> mit den Parametern
 		<command>--iso=ISOIMAGEDATEI</command> oder
 		<command>--cdrom=LAUFWERK</command> aufgerufen werden.
@@ -442,7 +411,7 @@
 
 	<para>
 	  Anhand der registrierten Einstellungen werden apt-Paketquellen für Release- und
-	  Errata-Updates und Addon-Komponenten im Verzeichnis
+	  Errata-Updates sowie Addon-Komponenten im Verzeichnis
 	  <filename>/etc/apt/sources.list.d</filename> automatisch generiert.
 	  Sollten auf einem System weitere Repositorys benötigt werden, können diese in
 	  die Datei <filename>/etc/apt/sources.list</filename> eingetragen werden.
@@ -603,15 +572,9 @@ univention-repository-update -h
 	  Administrator muss dazu die eigentlichen Paketnamen nicht kennen.
 	  Für weitergehende Aufgaben können aber auch einzelne Pakete gezielt
 	  installiert und entfernt werden.
-	</para>
-
-	<para>
 	  Bei der Installation eines Pakets werden unter Umständen Pakete
 	  mitinstalliert, die für die Funktion des angegebenen Pakets
 	  erforderlich sind, die sogenannten Paketabhängigkeiten.
-	</para>
-
-	<para>
 	  Alle Softwarekomponenten werden aus einem Repository geladen (siehe
 	  <xref linkend="software::configrepo"/>).
 	</para>
