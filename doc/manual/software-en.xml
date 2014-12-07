@@ -233,174 +233,6 @@
 
   </section>
 
-  <section id="software::configrepo">
-	<title>Configuration of the repository server for updates and package installations</title>
-	<para>
-	  Package installations and updates can either be performed from the Univention
-	  update server or from a locally maintained repository. A local repository is
-	  practical if there are a lot of UCS systems to update as the updates only need
-	  to be downloaded once in this case. As repositories can also be updated
-	  offline, a local repository also allows the updating of UCS environments
-	  without Internet access.
-	</para>
-
-	<para>
-	  Using the registered settings, apt package sources are automatically generated
-	  in the <filename>/etc/apt/sources.list.d</filename> directory for release and
-	  errata updates and addon components. If further repositories are required on a
-	  system, these can be entered in the <filename>/etc/apt/sources.list</filename>
-	  file.
-	</para>
-
-	<para>
-	  In the default setting, the Univention repository
-	  <uri>updates.software-univention.de</uri> is used for a new installation.
-	</para>
-
-	<para>
-	  The Univention repository and repository components differentiate between two
-	  component parts:
-	</para>
-
-	<itemizedlist>
-	  <listitem><simpara>
-		The UCS standard package scope covered by maintenance can be found in
-		the <emphasis>maintained</emphasis> area. In the default setting, only access
-		to these packages is activated. Security updates are only provided for
-		<emphasis>maintained</emphasis> packages.
-	  </simpara></listitem>
-
-	  <listitem><simpara>
-		Additional packages, e.g., other mail servers than Postfix can be found
-		under <emphasis>unmaintained</emphasis>. These packages are not covered by
-		security updates or ulterior maintenance. In the default setting,
-		<emphasis>unmaintained</emphasis> is not mounted, but can be integrated by
-		setting the &ucsUCRV; <envar>repository/online/unmaintained</envar> to
-		<emphasis>yes</emphasis>.
-	  </simpara></listitem>
-	</itemizedlist>
-
-	<para>
-	  A local repository can require a lot of disk space - particularly if the
-	  unmaintained branch is activated.
-	</para>
-
-	<section id="computers:Configuration_via_the_Univention_Management_Console">
-	  <title>Configuration via &ucsUMC;</title>
-	  <para>
-		The <guimenu>Repository server</guimenu> and the use of
-		the maintained and unmaintained sections can be specified in the
-		UMC module <guimenu>Repository Settings</guimenu>.
-	  </para>
-	</section>
-
-	<section id="computers:Configuration_via_Univention_Configuration_Registry">
-	  <title>Configuration via Univention Configuration Registry</title>
-	  <para>
-		The repository server to be used can be entered in the &ucsUCRV;
-		<envar>repository/online/server</envar> and is preset to
-		<uri>updates.software-univention.de</uri> for a new installation.
-	  </para>
-	  <para>
-		The unmaintained repository can be integrated by setting the &ucsUCRV;
-		<envar>repository/online/unmaintained</envar> to <emphasis>yes</emphasis>.
-	  </para>
-	</section>
-
-	<section id="computers:Policy-based_configuration_of_the_repository_server">
-	  <title>Policy-based configuration of the repository server</title>
-	  <para>
-		The repository server to be used can also be specified using the
-		<guimenu>Repository server</guimenu> policy in the computer management of the
-		&ucsUMC;. Only UCS server systems for which a DNS entry has been configured are
-		shown in the selection field
-		(see <xref linkend="central:policies"/>).
-	  </para>
-	</section>
-
-	<section id="software::createrepo">
-	  <title>Creating and updating a local repository</title>
-	  <para>
-		Package installations and updates can either be performed from the Univention
-		update server or from a locally maintained repository. A local repository is
-		practical if there are a lot of UCS systems to update as the updates only need
-		to be downloaded once in this case. As repositories can also be updated
-		offline, a local repository also allows the updating of UCS environments
-		without Internet access.
-	  </para>
-
-	  <para>
-		There is also the possibility of synchronising local repositories, which means,
-		for example, a main repository is maintained at the company headquarters and
-		then synchronised to local repositories at the individual locations.
-	  </para>
-
-	  <para>
-		To set up a repository, the <command>univention-repository-create</command> command
-		must be run as the <emphasis>root</emphasis> user. The initial package inventory is
-		imported from an installation DVD. The parameter <emphasis>--iso</emphasis> allows
-		importing from an ISO image. UCS is available as a 32-bit and a 64-bit DVD. The
-		repository is created by <command>univention-repository-create</command> with the
-		architecture of the specified installation medium. If an environment is operated in
-		which both 32-bit and 64-bit packages are needed, the following commands must be
-		executed on the repository server:
-
-		<programlisting language="sh">
-ucr set repository/online/architectures="i386 amd64"
-univention-repository-update net
-		</programlisting>
-	  </para>
-
-	  <para>
-		Access to the Univention online repository is cryptographically secured via the
-		use of Secure Apt employing signatures. This feature is not currently available
-		for local repositories and so a message appears when creating a repository
-		explaining how Secure Apt can be deactivated using the &ucsUCRV;
-		<envar>update/secure_apt</envar>. This setting must be set on all UCS systems
-		that access the repository.
-	  </para>
-
-	  <para>
-		The packages in the repository can be updated using the
-		<command>univention-repository-update</command> tool. It supports two modes:
-	  </para>
-
-	  <itemizedlist>
-		<listitem><simpara>
-		  <command>univention-repository-update cdrom</command>Here the
-		  repository is updated with an update DVD or an ISO image.
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  <command>univention-repository-update net</command> Here the
-		  repository is synchronised with another specified repository server. This is
-		  defined in the &ucsUCRV; <envar>repository/mirror/server</envar> and typically
-		  points to <uri>updates.software-univention.de</uri>.
-		</simpara></listitem>
-	  </itemizedlist>
-
-	  <para>
-		An overview of the possible options is displayed with the following
-		command:
-	  </para>
-
-	  <programlisting language="sh">
-univention-repository-update -h
-	  </programlisting>
-
-	  <para>
-		The repository is stored in the
-		<filename>/var/lib/univention-repository/mirror</filename> directory.
-	  </para>
-
-	  <para>
-		The local repository can be activated/deactivated using the &ucsUCRV;
-		<envar>local/repository</envar>.
-	  </para>
-
-	</section>
-  </section>
-
   <section id="software::ucs-updates">
 	<title>Updates of UCS systems</title>
 	<para>
@@ -588,6 +420,174 @@ univention-repository-update -h
 		directory. This can then be used to check whether and which variables have been changed
 		during the update.
 	  </para>
+	</section>
+  </section>
+
+  <section id="software::configrepo">
+	<title>Configuration of the repository server for updates and package installations</title>
+	<para>
+	  Package installations and updates can either be performed from the Univention
+	  update server or from a locally maintained repository. A local repository is
+	  practical if there are a lot of UCS systems to update as the updates only need
+	  to be downloaded once in this case. As repositories can also be updated
+	  offline, a local repository also allows the updating of UCS environments
+	  without Internet access.
+	</para>
+
+	<para>
+	  Using the registered settings, apt package sources are automatically generated
+	  in the <filename>/etc/apt/sources.list.d</filename> directory for release and
+	  errata updates and addon components. If further repositories are required on a
+	  system, these can be entered in the <filename>/etc/apt/sources.list</filename>
+	  file.
+	</para>
+
+	<para>
+	  In the default setting, the Univention repository
+	  <uri>updates.software-univention.de</uri> is used for a new installation.
+	</para>
+
+	<para>
+	  The Univention repository and repository components differentiate between two
+	  component parts:
+	</para>
+
+	<itemizedlist>
+	  <listitem><simpara>
+		The UCS standard package scope covered by maintenance can be found in
+		the <emphasis>maintained</emphasis> area. In the default setting, only access
+		to these packages is activated. Security updates are only provided for
+		<emphasis>maintained</emphasis> packages.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Additional packages, e.g., other mail servers than Postfix can be found
+		under <emphasis>unmaintained</emphasis>. These packages are not covered by
+		security updates or ulterior maintenance. In the default setting,
+		<emphasis>unmaintained</emphasis> is not mounted, but can be integrated by
+		setting the &ucsUCRV; <envar>repository/online/unmaintained</envar> to
+		<emphasis>yes</emphasis>.
+	  </simpara></listitem>
+	</itemizedlist>
+
+	<para>
+	  A local repository can require a lot of disk space - particularly if the
+	  unmaintained branch is activated.
+	</para>
+
+	<section id="computers:Configuration_via_the_Univention_Management_Console">
+	  <title>Configuration via &ucsUMC;</title>
+	  <para>
+		The <guimenu>Repository server</guimenu> and the use of
+		the maintained and unmaintained sections can be specified in the
+		UMC module <guimenu>Repository Settings</guimenu>.
+	  </para>
+	</section>
+
+	<section id="computers:Configuration_via_Univention_Configuration_Registry">
+	  <title>Configuration via Univention Configuration Registry</title>
+	  <para>
+		The repository server to be used can be entered in the &ucsUCRV;
+		<envar>repository/online/server</envar> and is preset to
+		<uri>updates.software-univention.de</uri> for a new installation.
+	  </para>
+	  <para>
+		The unmaintained repository can be integrated by setting the &ucsUCRV;
+		<envar>repository/online/unmaintained</envar> to <emphasis>yes</emphasis>.
+	  </para>
+	</section>
+
+	<section id="computers:Policy-based_configuration_of_the_repository_server">
+	  <title>Policy-based configuration of the repository server</title>
+	  <para>
+		The repository server to be used can also be specified using the
+		<guimenu>Repository server</guimenu> policy in the computer management of the
+		&ucsUMC;. Only UCS server systems for which a DNS entry has been configured are
+		shown in the selection field
+		(see <xref linkend="central:policies"/>).
+	  </para>
+	</section>
+
+	<section id="software::createrepo">
+	  <title>Creating and updating a local repository</title>
+	  <para>
+		Package installations and updates can either be performed from the Univention
+		update server or from a locally maintained repository. A local repository is
+		practical if there are a lot of UCS systems to update as the updates only need
+		to be downloaded once in this case. As repositories can also be updated
+		offline, a local repository also allows the updating of UCS environments
+		without Internet access.
+	  </para>
+
+	  <para>
+		There is also the possibility of synchronising local repositories, which means,
+		for example, a main repository is maintained at the company headquarters and
+		then synchronised to local repositories at the individual locations.
+	  </para>
+
+	  <para>
+		To set up a repository, the <command>univention-repository-create</command> command
+		must be run as the <emphasis>root</emphasis> user. The initial package inventory is
+		imported from an installation DVD. The parameter <emphasis>--iso</emphasis> allows
+		importing from an ISO image. UCS is available as a 32-bit and a 64-bit DVD. The
+		repository is created by <command>univention-repository-create</command> with the
+		architecture of the specified installation medium. If an environment is operated in
+		which both 32-bit and 64-bit packages are needed, the following commands must be
+		executed on the repository server:
+
+		<programlisting language="sh">
+ucr set repository/online/architectures="i386 amd64"
+univention-repository-update net
+		</programlisting>
+	  </para>
+
+	  <para>
+		Access to the Univention online repository is cryptographically secured via the
+		use of Secure Apt employing signatures. This feature is not currently available
+		for local repositories and so a message appears when creating a repository
+		explaining how Secure Apt can be deactivated using the &ucsUCRV;
+		<envar>update/secure_apt</envar>. This setting must be set on all UCS systems
+		that access the repository.
+	  </para>
+
+	  <para>
+		The packages in the repository can be updated using the
+		<command>univention-repository-update</command> tool. It supports two modes:
+	  </para>
+
+	  <itemizedlist>
+		<listitem><simpara>
+		  <command>univention-repository-update cdrom</command>Here the
+		  repository is updated with an update DVD or an ISO image.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  <command>univention-repository-update net</command> Here the
+		  repository is synchronised with another specified repository server. This is
+		  defined in the &ucsUCRV; <envar>repository/mirror/server</envar> and typically
+		  points to <uri>updates.software-univention.de</uri>.
+		</simpara></listitem>
+	  </itemizedlist>
+
+	  <para>
+		An overview of the possible options is displayed with the following
+		command:
+	  </para>
+
+	  <programlisting language="sh">
+univention-repository-update -h
+	  </programlisting>
+
+	  <para>
+		The repository is stored in the
+		<filename>/var/lib/univention-repository/mirror</filename> directory.
+	  </para>
+
+	  <para>
+		The local repository can be activated/deactivated using the &ucsUCRV;
+		<envar>local/repository</envar>.
+	  </para>
+
 	</section>
   </section>
 
