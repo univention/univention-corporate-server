@@ -32,7 +32,7 @@ class Errors(LogMessage):
 		'Error: There are no (?:services|hosts|host groups|contacts|contact groups) defined!',
 		'Total Errors:\s+\d+',
 		'Cannot find nagios object .*',
-		'invoke-rc.d: initscript udev, action "reload" failed.',			# Bug 19227
+		'invoke-rc.d: initscript udev, action "reload" failed.',  # Bug 19227
 		'yes: write error',
 		'.*Update aborted by pre-update script of release.*',
 		'.*update failed. Please check /var/log/univention/.*',
@@ -48,7 +48,17 @@ class Errors(LogMessage):
                 '.*well-known-sid-name-mapping.d/univention-ldap-server.py: postrun: Initiating graceful reload of ldap server.*',
                 '.*connection to notifier was closed.*',
                 '.*failed to recv result.*',
-                '.*listener: 1'
+                '.*listener: 1',
+                '.*error searching DN.*',  # Bug 37225 
+                ".*Can't contact LDAP server.*",  # Bug 37225
+                '.*nagios3 reported an error in configfile .* Please restart nagios3 manually.*',
+                '.*failed to download keytab for memberserver, retry.*',  # Bug 37225
+                '.*your request could not be fulfilled.*',  # Bug 37226
+                '.*Starting ldap server(s): slapd ...failed.*',  # Bug 37226
+                '.*rsync: change_dir "/var/lib/samba/account-policy" failed: No such file or directory.*',  # Bug 37226
+                '.*rsync error: some files/attrs were not transferred (see previous errors) (code 23) at.*',  # Bug 37226
+                '.*rsync: opendir "/etc/univention/ssl/unassigned-hostname.unassigned-domain" failed: Permission denied.*',  # Bug 37226
+                '.*Failed to join domain: failed to find DC for domain.*'  # Bug 37226
 	]
 
 	# extra ignore patterns for case when line == 'failed.'
