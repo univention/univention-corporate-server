@@ -50,12 +50,11 @@ __TXT__
 }
 replace () {
 	local cfg
-	cd "$(dirname "$0")"
 	for cfg in examples/jenkins/*.cfg
 	do
 		[ -f "$cfg" ] || continue
 		grep -q -F "ec2_ami: $src_ami" "$cfg" || continue
-		sed -i -e "s|# AMI: .*|# AMI: $dst_desc - $dst_ami|;s|^ec2_ami: .*|ec2_ami: $dst_ami|" "$cfg"
+		sed -i -e "s|# AMI: .*$src_ami|# AMI: $dst_desc - $dst_ami|;s|^ec2_ami: $src_ami|ec2_ami: $dst_ami|" "$cfg"
 	done
 }
 main () {
