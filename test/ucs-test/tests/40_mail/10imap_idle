@@ -1,0 +1,87 @@
+#!/usr/share/ucs-test/runner python
+## desc: Imap idle test
+## tags: [mail]
+## exposure: dangerous
+## packages: [univention-mail-server]
+## bugs: [36907]
+
+from essential.mail import send_mail
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+import imaplib
+import os
+import time
+import sys
+import signal
+
+def main():
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		
+		timeout = 5
+		username = uts.random_name()
+		password = uts.random_string()
+		udm = udm_test.UCSTestUDM()
+		mailPrimaryAddress = '%s@%s' % (username, ucr.get('mail/hosteddomains'))
+		mailHomeServer = '%s.%s' % (ucr.get('hostname'),  ucr.get('domainname'))
+
+		userdn, username = udm.create_user(
+			username=username,
+			password=password,
+			set={
+				'mailHomeServer': mailHomeServer,
+				'mailPrimaryAddress': mailPrimaryAddress,
+			}
+		)
+
+		newpid = os.fork()
+		if newpid == 0:
+			print 'idle-client: starting imap idle'
+			c = imaplib.IMAP4_SSL(mailHomeServer)
+			c.login(mailPrimaryAddress, password)
+			c.select('INBOX', readonly=True)
+			c.send("%s IDLE\r\n"%(c._new_tag()))
+			while True:
+				line = c.readline().strip();
+				print 'idle-client: got line %s' % line
+				if line.endswith('EXISTS'):
+					print 'idle-client: OK, we are good'
+					sys.exit(0)
+			sys.exit(1)
+		else:
+			time.sleep(3)
+			pid = None
+			status = None
+			try:
+				print 'observer: sending mail'
+				send_mail(recipients=mailPrimaryAddress)
+				# wait for child
+				for i in range(0, timeout):
+					pid, status = os.waitpid(newpid, os.WNOHANG)
+					print 'observer: checking status -> pid:%d status:%d' % (pid, os.WEXITSTATUS(status))
+					if pid:
+						if os.WEXITSTATUS(status) == 0:
+							print 'observer: child finished successfully'
+						else:
+							print 'observer: child failed with %d' % os.WEXITSTATUS(status)
+						break
+					else:
+						print 'observer: waiting for child (timeout=%s)' % i
+						time.sleep(1)
+			finally:
+				udm.cleanup()
+				if not pid:
+					print "observer: timeout!, killing child"
+					os.kill(newpid, signal.SIGKILL)
+					utils.fail('imap idle check failed with timeout (%ds)' % timeout)
+				elif status and os.WEXITSTATUS(status) != 0:
+					print 'observer: child failed with %d' % os.WEXITSTATUS(status)
+					utils.fail('imap idle client check failed with %d') % os.WEXITSTATUS(status)
+				else:
+					pass
+
+if __name__ == '__main__':
+	main()
+	pass

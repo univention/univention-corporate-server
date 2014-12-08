@@ -1,0 +1,69 @@
+#!/usr/share/ucs-test/runner python
+## desc: SPAM header tag test
+## tags: [mail]
+## exposure: dangerous
+## packages: [univention-mail-server]
+## bugs: [36907]
+
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+import essential.mail
+
+import time
+
+def main():
+	with udm_test.UCSTestUDM() as udm:
+		try:
+			with ucr_test.UCSTestConfigRegistry() as ucr:
+				username = uts.random_name()
+				password = uts.random_string()
+				udm = udm_test.UCSTestUDM()
+				mailPrimaryAddress = '%s@%s' % (username, ucr.get('mail/hosteddomains'))
+				mailHomeServer = '%s.%s' % (ucr.get('hostname'),  ucr.get('domainname'))
+	
+				userdn, username = udm.create_user(
+					username=username,
+					password=password,
+					set={
+						'mailHomeServer': mailHomeServer,
+						'mailPrimaryAddress': mailPrimaryAddress,
+					}
+				)
+
+				imap = essential.mail.ImapMail()
+				imap.get_connection(mailHomeServer, username, password)
+
+				# no subject tag test
+				print 'check default behaviour, no subject tag'
+				subject = 'my subject %s' % time.ctime()
+				essential.mail.send_mail(recipients=mailPrimaryAddress, gtube=True, subject=subject)
+				time.sleep(5)
+				msg = imap.get_mails(filter='(SUBJECT "%s")' % subject, mailbox='INBOX/Spam')
+				if len(msg) != 1:
+					utils.fail('got multiple/none mails with subject: %s' % subject)
+				print '%s == %s ?' % (subject, msg[0]['Subject'])
+				if subject != msg[0]['Subject']:
+					utils.fail('received subject "%s" differs from sent subject "%s"' % (msg[0]['Subject'], subject))
+
+				# subject tag test
+				print 'check if subject is modified if mail/antispam/headertag is set'
+				tag = '*** UCS_TEST ***'
+				essential.mail.activate_spam_header_tag(tag)
+				essential.mail.reload_amavis_postfix()
+				subject = 'my subject %s' % time.ctime()
+				wanted = tag + subject
+				essential.mail.send_mail(recipients=mailPrimaryAddress, gtube=True, subject=subject)
+				time.sleep(5)
+				msg = imap.get_mails(filter='(SUBJECT "%s")' % subject, mailbox='INBOX/Spam')
+				if len(msg) != 1:
+					utils.fail('got multiple/none mails with subject: %s' % subject)
+				print '%s == %s ?' % (wanted, msg[0]['Subject'])
+				if wanted != msg[0]['Subject']:
+					utils.fail('received subject "%s" differs from what we want "%s"' % (msg[0]['Subject'], wanted))
+		finally:
+			essential.mail.reload_amavis_postfix()
+
+if __name__ == '__main__':
+	main()

@@ -1,3 +1,10 @@
+ucs-test (5.0.69-1) unstable; urgency=low
+
+  * added tests/40_mail/11spam_header_tag and
+    tests/40_mail/10imap_idle (Bug #36907 #37228)
+
+ -- Felix Botner <botner@univention.de>  Mon, 08 Dec 2014 11:44:51 +0100
+
 ucs-test (5.0.68-1) unstable; urgency=low
 
   * 01_base/check_log_files_definitions.py:
