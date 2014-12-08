@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-management-console-module-udm
-fix: 5.1.25-6.516.201412041658
+fix: 5.1.25-7.517.201412081223
 version: [0]
 desc: |
   * A notification for AD objects (e.g. user/groups) will only be
