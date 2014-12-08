@@ -6,5 +6,6 @@ fix: 2:4.1.0-1.710.201412081316
 version: [2,3,4]
 desc: |
   This update fixes the following issue:
-  * Sharepoint document search showed no results due to failing group membership check.
+  * Sharepoint document search showed no results due to failing group
+    membership check.
 bug: [37205]
