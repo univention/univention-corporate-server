@@ -224,4 +224,20 @@ win.shutdown_remote_win_host()
 "
 }
 
+set_gateway ()
+{
+	local HOST="$1"
+	local DOMAIN="$2"
+	local GATEWAY="$3"
+	if [[ ! -z "$HOST" ]] && [[ ! -z "$GATEWAY" ]]; then
+	python -c "
+import univention.winexe
+win=univention.winexe.WinExe('$DOMAIN', 'administrator', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
+win.set_gateway('$GATEWAY')
+"
+	else
+		echo "You must specify an host address domain name and a gateway."
+	fi
+}
+
 # vim:set filetype=sh ts=4:
