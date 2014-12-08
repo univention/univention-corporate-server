@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-dvd
-fix: 0.2.27-8.64.201412041645
+fix: 0.2.27-9.65.201412051331
 version: [0]
 desc: |
  This update addresses the following issues:
