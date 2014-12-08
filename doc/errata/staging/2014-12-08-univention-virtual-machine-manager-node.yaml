@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-virtual-machine-manager-node
+fix: 3.0.3-3.86.201412081208
+version: [0]
+desc: |
+  This update addresses the following issues:
+  * Fix loading the kernel module 'bridge' during initial installation.
+bug:
+ - 37215
