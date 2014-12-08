@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (3.0.3-3) unstable; urgency=low
+
+  * Bug #37215: Load kernel module 'bridge'
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 08 Dec 2014 12:02:07 +0100
+
 univention-virtual-machine-manager-node (3.0.3-2) unstable; urgency=low
 
   * Bug #36476: Forcibly remove initscript from all runlevels 

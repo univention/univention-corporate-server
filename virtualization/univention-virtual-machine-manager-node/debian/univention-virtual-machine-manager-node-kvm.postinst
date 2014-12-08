@@ -49,6 +49,7 @@ setup_bridge () {
 	esac
 	# Only once after upgrade from UCS-3 or for new installation
 	dpkg --compare-versions "$2" lt 3.0.3 || return 0
+	modprobe bridge || :
 	/usr/lib/univention-virtual-machine-manager-node-kvm/ucs-kvm-setup-bridge || :
 }
 setup_bridge "$@"
