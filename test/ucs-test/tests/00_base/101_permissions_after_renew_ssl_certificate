@@ -1,5 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Permissions after renewing ssl certificate
+## versions:
+##  3.2-4: skip
 ## tags: apttest
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
