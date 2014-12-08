@@ -1,9 +1,15 @@
+univention-system-setup (8.1.66-4) unstable; urgency=medium
+
+  * Depend on heimdal-clients for kinit (Bug #37168)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 08 Dec 2014 14:13:47 +0100
+
 univention-system-setup (8.1.66-3) unstable; urgency=medium
 
   * Check that joining account is member of "Domain Admins" in AD
     before starting admember setup (Bug #37168)
 
- -- Arvid Requate <requate@univention.de>  Mon, 08 Dec 2014 13:25:56 +0100
+ -- Arvid Requate <requate@univention.de>  Mon, 08 Dec 2014 14:13:24 +0100
 
 univention-system-setup (8.1.66-2) unstable; urgency=medium
 
