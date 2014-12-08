@@ -78,13 +78,10 @@ class AdMemberScript(SetupScript):
 			admember.disable_local_heimdal()
 			admember.disable_local_samba4()
 
-			_progress(20, _('Configuring Administrator account...'))
-			admember.prepare_administrator(username, password)
+			_progress(20, _('Configuring reverse DNS settings...'))
+			admember.prepare_dns_reverse_settings(ad_domain_info)
 
-			_progress(25, _('Configuring reverse DNS settings...'))
-			admember.prepare_dns_reverse_settings(ad_server_ip, ad_domain_info)
-
-			_progress(30, _('Configuring software components...'))
+			_progress(25, _('Configuring software components...'))
 
 			_step_offset = 30.0
 			_nsteps = 35.0
@@ -97,12 +94,16 @@ class AdMemberScript(SetupScript):
 			success = admember.remove_install_univention_samba(info_handler=self.message, error_handler=self.error, step_handler=_step_handler)
 			if not success:
 				raise RuntimeError(_('An error occurred while installing necessary software components.'))
-			_progress(70, _('Configuring synchronization from AD...'))
+
+			_progress(65, _('Configuring synchronization from AD...'))
 			admember.prepare_connector_settings(username, password, ad_domain_info)
 			admember.disable_ssl()
 
-			_progress(75, _('Renaming well known SID objects...'))
+			_progress(70, _('Renaming well known SID objects...'))
 			admember.rename_well_known_sid_objects(username, password)
+
+			_progress(75, _('Configuring Administrator account...'))
+			admember.prepare_administrator(username, password)
 
 			_progress(80, _('Running Samba join script...'))
 			admember.run_samba_join_script(username, password)
@@ -111,6 +112,7 @@ class AdMemberScript(SetupScript):
 			admember.add_domaincontroller_srv_record_in_ad(ad_server_ip)
 
 			admember.make_deleted_objects_readable_for_this_machine(username, password)
+			admember.synchronize_account_position(ad_domain_info, username, password)
 
 			_progress(90, _('Starting Active Directory connection service...'))
 			admember.start_service('univention-ad-connector')
