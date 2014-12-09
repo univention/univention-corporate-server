@@ -1,4 +1,4 @@
-univention-management-console-module-udm (5.1.26-1) unstable; urgency=medium
+univention-management-console-module-udm (5.1.25-8) unstable; urgency=medium
 
   * Bug #31828; Bug #37178: block module usage if the user has no LDAP DN
   * Bug #28383: prevent search filter injection
