@@ -1,3 +1,10 @@
+univention-lib (4.0.5-4) unstable; urgency=medium
+
+  * AD Member: Don't fail adding the SRV record _domaincontroller_master._tcp
+    in case it's already present (Bug #35870)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Dec 2014 12:56:18 +0100
+
 univention-lib (4.0.5-3) unstable; urgency=medium
 
   * Add support for unconfigured kerberos/realm during system setup

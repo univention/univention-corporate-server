@@ -50,6 +50,7 @@ import univention.uldap
 import univention.lib.package_manager
 from univention.lib.misc import custom_groupname
 import univention.debug as ud
+import dns.resolver
 
 KRB5CCNAME = '/var/cache/univention-ad-connector/krb5.cc'
 
@@ -1064,17 +1065,43 @@ def run_samba_join_script(username, password, ucr=None):
 		ud.debug(ud.MODULE, ud.ERROR, "26univention-samba.inst failed with %d" % (p1.returncode,))
 		raise sambaJoinScriptFailed()
 
+def get_domaincontroller_srv_record(domain, nameserver=None):
+	if not domain:
+		return False
+
+	resolver = dns.resolver.Resolver()
+	resolver.lifetime = 10  # make sure that we get an early timeout
+	if nameserver:
+		resolver.nameservers = [nameserver]
+
+	# perform a SRV lookup
+	try:
+		response = resolver.query('_domaincontroller_master._tcp.%s.' % domain, 'SRV')
+		return str(response.canonical_name)
+	except dns.resolver.NXDOMAIN:
+		ud.debug(ud.MODULE, ud.WARN, 'Domain (%s) not resolvable!' % (domain,))
+	except dns.exception.Timeout as exc:
+		ud.debug(ud.MODULE, ud.WARN, 'Lookup for DC master record timed out: %s' % (exc,))
+	return None
+
 def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 	
 	ud.debug(ud.MODULE, ud.PROCESS, "Create _domaincontroller_master SRV record on %s" % ad_ip)
+	hostname = ucr.get('hostname')
+	domainname = ucr.get('domainname')
+	fqdn = "%s.%s" % (hostname, domainname)
+	srv_record = "_domaincontroller_master._tcp.%s" % (domainname,)
+	if get_domaincontroller_srv_record(domainname) == fqdn:
+		ud.debug(ud.MODULE, ud.PROCESS, "Ok, SRV record %s already points to this server" % (srv_record,))
+		return
 	
 	fd = tempfile.NamedTemporaryFile(delete=False)
 	fd.write('server %s\n' % ad_ip)
-	fd.write('update add _domaincontroller_master._tcp.%s. 10800 SRV 0 0 0 %s.%s.\n' %
-		(ucr.get('domainname'), ucr.get('hostname'), ucr.get('domainname')))
+	fd.write('update add %s. 10800 SRV 0 0 0 %s.\n' %
+		(srv_record, fqdn))
 	fd.write('send\n')
 	fd.write('quit\n')
 	fd.close()
@@ -1082,13 +1109,15 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 	cmd = ['kinit', '--password-file=/etc/machine.secret']
 	cmd += ['%s\$' % ucr.get('hostname')]
 	cmd += ['nsupdate', '-v', '-g', fd.name]
-	p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	stdout, stderr = p1.communicate()
-	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
-	if p1.returncode:
-		ud.debug(ud.MODULE, ud.ERROR, "%s failed with %d (%s)" % (cmd, p1.returncode, stderr))
-		raise failedToAddServiceRecordToAD("failed to add SRV record to %s" % ad_ip)
-	os.unlink(fd.name)
+	try:
+		p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		stdout, stderr = p1.communicate()
+		ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
+		if p1.returncode:
+			ud.debug(ud.MODULE, ud.ERROR, "%s failed with %d (%s)" % (cmd, p1.returncode, stderr))
+			raise failedToAddServiceRecordToAD("failed to add SRV record to %s" % ad_ip)
+	finally:
+		os.unlink(fd.name)
 
 
 def get_ucr_variable_from_ucs(host, server, var):
