@@ -119,7 +119,7 @@ def is_domain_in_admember_mode(ucr=None):
 		return True
 	return False
 
-def _get_kerberos_ticket(username, password, ucr=None):
+def _get_kerberos_ticket(principal, password, ucr=None):
 	ud.debug(ud.MODULE, ud.INFO, "running _get_kerberos_ticket")
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
@@ -142,16 +142,16 @@ def _get_kerberos_ticket(username, password, ucr=None):
 		f.write(password)
 		f.close()
 
-		principal = "%s@%s" % (username, ucr.get("kerberos/realm"))
 		cmd = ("/usr/bin/kinit", "--no-addresses", "--password-file=%s" % (f.name,), principal)
 		p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 		stdout, stderr = p1.communicate()
-		if stdout:
-			ud.debug(ud.MODULE, ud.INFO, "kinit output:\n%s" % stdout)
 		if 'KRB5CCNAME' in os.environ and default_krb5_cc:
 			os.rename(backup_default_krb5_cc.name, default_krb5_cc_path)
 		if p1.returncode != 0:
+			ud.debug(ud.MODULE, ud.ERROR, "kinit failed:\n%s" % stdout)
 			raise connectionFailed()
+		if stdout:
+			ud.debug(ud.MODULE, ud.WARN, "kinit output:\n%s" % stdout)
 	finally:
 		if os.path.exists(f.name):
 			os.unlink(f.name)
@@ -188,7 +188,8 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 
 	try:
 		os.environ['KRB5CCNAME'] = KRB5CCNAME
-		_get_kerberos_ticket(username, password, ucr)
+		principal = "%s@%s" % (username, ad_domain_info["Domain"])
+		_get_kerberos_ticket(principal, password, ucr)
 		auth = ldap.sasl.gssapi("")
 		prepare_dns_reverse_settings(ad_domain_info)
 	except Exception:
@@ -451,7 +452,8 @@ def synchronize_account_position(ad_domain_info, username, password, ucr=None):
 		os.environ['KRB5CCNAME'] = KRB5CCNAME
 		if not os.path.exists(KRB5CCNAME):
 			## should have been created by check_ad_account, but just in case..
-			_get_kerberos_ticket(username, password, ucr)
+			principal = "%s@%s" % (username, ad_domain_info["Domain"])
+			_get_kerberos_ticket(principal, password, ucr)
 		auth = ldap.sasl.gssapi("")
 		lo_ad.lo.sasl_interactive_bind_s("", auth)
 	except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM):

@@ -1,3 +1,10 @@
+univention-lib (4.0.5-3) unstable; urgency=medium
+
+  * Add support for unconfigured kerberos/realm during system setup
+    (Bug #35562)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Dec 2014 12:27:03 +0100
+
 univention-lib (4.0.5-2) unstable; urgency=medium
 
   * Check that joining account is member of "Domain Admins" in AD
