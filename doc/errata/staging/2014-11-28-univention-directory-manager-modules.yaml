@@ -2,12 +2,12 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-directory-manager-modules
-fix: 10.0.29-8.1270.201412041625
+fix: 10.0.29-9.1271.201412091240
 version: [0]
 desc: |
   * Fixed setting of userexpiry when a user account is disabled.
   * Fixed removal of the account expiry date of a user.
-  * The user properties ctxBrokenSession and ctxReconnectSession now
+  * The user properties CtxBrokenSession and CtxReconnectSession now
     have default values. They prevented changes via UMC when not having
     sufficient LDAP permission to change these attributes. Especially
     affected were User Password Admins and the users/self module.

@@ -2,17 +2,24 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-management-console-module-udm
-fix: 5.1.25-7.517.201412081223
+fix: 5.1.25-8.518.201412091249
 version: [0]
 desc: |
   * A notification for AD objects (e.g. user/groups) will only be
     shown once per session
   * The error message if the connection to the LDAP server fails
-    has been extended
+    has been extended.
   * The UMCP command udm/layout failed if a DN was given which could not
-    be identified as UDM object
+    be identified as UDM object.
   * The get_exception_method has been removed. Error information are now
-    provided by the UDM base exception itself
+    provided by the UDM base exception itself.
   * Exceptions are not re-raised anymore as this hides important error
-    information in traceback feedback reports
-bug: [36732, 35719, 29231, 35273, 32979]
+    information in traceback feedback reports.
+  * After changing the own password a login dialog is shown if a LDAP
+    connection needs to be reestablished.
+  * It is now prevented that a search with a given attribute name can raise
+    a bad search filter exception.
+  * The search form does not allow invalid values to be submitted anymore.
+  * Users without posix option are now able to use the UMC module.
+  * A error message is now shown if the DN of a user could not be determined.
+bug: [36732, 35719, 29231, 35273, 32979, 34353, 28383, 37178, 31828]
