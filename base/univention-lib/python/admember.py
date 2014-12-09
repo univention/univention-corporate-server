@@ -52,8 +52,6 @@ from univention.lib.misc import custom_groupname
 import univention.debug as ud
 import dns.resolver
 
-KRB5CCNAME = '/var/cache/univention-ad-connector/krb5.cc'
-
 class failedToSetService(Exception):
 	'''ucs_addServiceToLocalhost failed'''
 
@@ -188,16 +186,11 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 	(previous_krb_ucr_set, previous_krb_ucr_unset) = prepare_kerberos_ucr_settings(ucr)
 
 	try:
-		os.environ['KRB5CCNAME'] = KRB5CCNAME
 		principal = "%s@%s" % (username, ad_domain_info["Domain"])
 		_get_kerberos_ticket(principal, password, ucr)
 		auth = ldap.sasl.gssapi("")
 		prepare_dns_reverse_settings(ad_domain_info)
 	except Exception:
-		if 'KRB5CCNAME' in os.environ:
-			del os.environ['KRB5CCNAME']
-		if os.path.exists(KRB5CCNAME):
-			os.unlink(KRB5CCNAME)
 		set_ucr(previous_dns_ucr_set, previous_dns_ucr_unset)
 		set_ucr(previous_krb_ucr_set, previous_krb_ucr_unset)
 		raise
@@ -211,10 +204,6 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 	except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM):
 		raise connectionFailed()
 	finally:
-		if 'KRB5CCNAME' in os.environ:
-			del os.environ['KRB5CCNAME']
-		if os.path.exists(KRB5CCNAME):
-			os.unlink(KRB5CCNAME)
 		set_ucr(previous_dns_ucr_set, previous_dns_ucr_unset)
 		set_ucr(previous_krb_ucr_set, previous_krb_ucr_unset)
 
@@ -450,8 +439,13 @@ def synchronize_account_position(ad_domain_info, username, password, ucr=None):
 		lo_ad.lo.set_option(ldap.OPT_PROTOCOL_VERSION, ldap.VERSION3)
 		lo_ad.lo.set_option(ldap.OPT_REFERRALS,0)
 
-		os.environ['KRB5CCNAME'] = KRB5CCNAME
-		if not os.path.exists(KRB5CCNAME):
+		if 'KRB5CCNAME' in os.environ:
+			krb5_cc_path = os.environ['KRB5CCNAME']
+		else:
+			uid = os.geteuid()
+			krb5_cc_path = '/tmp/krb5cc_%d' % uid
+
+		if not os.path.exists(krb5_cc_path):
 			## should have been created by check_ad_account, but just in case..
 			principal = "%s@%s" % (username, ad_domain_info["Domain"])
 			_get_kerberos_ticket(principal, password, ucr)
@@ -459,11 +453,6 @@ def synchronize_account_position(ad_domain_info, username, password, ucr=None):
 		lo_ad.lo.sasl_interactive_bind_s("", auth)
 	except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM):
 		return False ## Massive failure, but no issue to be raised here.
-	finally:
-		if 'KRB5CCNAME' in os.environ:
-			del os.environ['KRB5CCNAME']
-		if os.path.exists(KRB5CCNAME):
-			os.unlink(KRB5CCNAME)
 
 	res = lo_ad.searchDn(filter="(sAMAccountName=%s)" % username)
 	if not res:

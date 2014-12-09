@@ -1,3 +1,9 @@
+univention-lib (4.0.5-5) unstable; urgency=medium
+
+  * AD Member: Don't use special KRB5CCNAME (Bug #35562)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Dec 2014 13:50:11 +0100
+
 univention-lib (4.0.5-4) unstable; urgency=medium
 
   * AD Member: Don't fail adding the SRV record _domaincontroller_master._tcp
