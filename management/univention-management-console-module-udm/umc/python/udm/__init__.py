@@ -387,7 +387,6 @@ class Instance(Base, ProgressMixin):
 		object=DictSanitizer({
 			'$dn$': StringSanitizer(required=True)
 		}, required=True),
-		options=DictSanitizer(dict(), required=True)
 	)), required=True)
 	def put(self, request):
 		"""Modifies the given list of LDAP objects.
@@ -400,7 +399,6 @@ class Instance(Base, ProgressMixin):
 		def _thread(request):
 			result = []
 			for obj in request.options:
-				options = obj.get('options') or {}
 				properties = obj.get('object') or {}
 				ldap_dn = properties['$dn$']
 				module = get_module(request.flavor, ldap_dn)
