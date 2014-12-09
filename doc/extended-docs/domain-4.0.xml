@@ -784,16 +784,18 @@ openssl ca -batch -config /etc/univention/ssl/openssl.cnf \
 
 	  <section>
 		<title>Activation of Syncrepl on the master domain controller</title>
-		Can be trimmed drastically once 33709 is fixed
+		<!-- Can be trimmed drastically once 33709 is fixed -->
 		<para>
 		  Now a Syncrepl proxy needs to be set up on the &ucsMaster;. The required configuration
-		  files are downloaded from FIXME as a Tar archive.
+		  files are downloaded from
+		  <uri>http://apt.univention.de/download/syncrepl/ucs4-syncrepl-proxy-setup.tar.bz2</uri> as
+		  a Tar archive.
 		</para>
 
 		<para>
 		  The downloaded archive must firstly be extracted on the &ucsMaster;:
 		  <programlisting language="sh">
-tar -xvf ucs3-syncrepl-proxy-setup.tar.bz2
+tar -xvf ucs4-syncrepl-proxy-setup.tar.bz2
 		  </programlisting>
 		</para>
 
@@ -927,15 +929,15 @@ ldapsearch -x -H ldaps://extldap.univention.test -b cn=Subschema -s base
 		  Whenever schema files are added on the UCS Master, the following steps
 		  have to be repeated.
 		  First an updated slapd.conf needs to be generated for the remote LDAP server
-		  which includes all UCS schema files. Then all required files need to be copied to
-		  Then all required files need to be copied to the remote LDAP server:
+		  which includes all UCS schema files. Then all required files need to be copied to the
+		  remote LDAP server:
 		  <programlisting language="sh">
 cat remote_system/template-slapd.conf | ucr filter > remote_system/slapd.conf
 scp remote_system/slapd.conf extldap.univention.test:
 rsync -aR /usr/share/univention-ldap/schema extldap.univention.test:/
 rsync -aR /var/lib/univention-ldap/local-schema extldap.univention.test:/
 		  </programlisting>
-		  And after that the follwing steps need to be repeated on the external LDAP server:
+		  And after that the following steps need to be repeated on the external LDAP server:
 		  <programlisting language="sh">
 /etc/init.d/slapd stop
 cp /etc/ldap/slapd.conf /root/backup-slapd.conf
@@ -947,8 +949,8 @@ chgrp openldap /etc/ldap/slapd.conf
 
 		<para>
 		  If the external system is a Debian system, the 'SLAPD_SERVICES' variable may need to be
-		  adapted in /etc/default/slapd. In addition, the 'SLAPD_CONF' variable can be used to
-		  specify the "/etc/ldap/slapd.conf" file as the configuration file for the SLAPD, if this
+		  adapted in <filename>/etc/default/slapd</filename>. In addition, the 'SLAPD_CONF' variable can be used to
+		  specify the <filename>/etc/ldap/slapd.conf</filename> file as the configuration file for the SLAPD, if this
 		  is not the standard for the OpenLDAP version used.
 		</para>
 	  </section>
@@ -956,7 +958,7 @@ chgrp openldap /etc/ldap/slapd.conf
 	  <section>
 		<title>Activation of the Syncrepl proxy</title>
 		<para>
-		  If the LDAPS connection functions, the configuration of the Syncrepl proxy can be
+		  If the LDAPS connection works, the configuration of the Syncrepl proxy can be
 		  activated on the &ucsMaster;. This is done by saving the 'REMOTE_UPDATE_PASSWORD' password
 		  configured above in the <filename>/etc/replica-001.secret</filename> file and entering the
 		  address of the external LDAP server in the form of a LDAP-URI in the &ucsUCRV;
@@ -985,8 +987,8 @@ ucr commit /etc/ldap/syncrepl-proxy.conf
 		</para>
 
 		<para>
-		  To allow convenient LDAP search via "ldapsearch -x expression" on the external LDAP server
-		  the file "/etc/ldap/ldap.conf" may be configured like this:
+		  To allow convenient LDAP search via <command>ldapsearch -x expression</command> on the external LDAP server
+		  the file <filename>/etc/ldap/ldap.conf</filename> may be configured like this:
 		  <programlisting language="sh">
 TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem
 HOST FQDN
