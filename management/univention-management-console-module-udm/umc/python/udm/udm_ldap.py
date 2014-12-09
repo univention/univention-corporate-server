@@ -1127,15 +1127,16 @@ def _object_property_filter(module, object_property, object_property_value, show
 			ret = ''
 	else:
 		ret = '%s=%s' % (object_property, object_property_value)
-	hidden_flag_attribute = 'objectFlag'
-	has_hidden_flag = module.get_property(hidden_flag_attribute) is not None
-	if has_hidden_flag and not show_hidden:
-		if ret:
-			if not ret.startswith('('):
-				ret = '(%s)' % ret
-			ret = '(&(!(%s=hidden))%s)' % (hidden_flag_attribute, ret)
-		else:
-			ret = '!(%s=hidden)' % hidden_flag_attribute
+	if module is not None:
+		hidden_flag_attribute = 'objectFlag'
+		has_hidden_flag = module.get_property(hidden_flag_attribute) is not None
+		if has_hidden_flag and not show_hidden:
+			if ret:
+				if not ret.startswith('('):
+					ret = '(%s)' % ret
+				ret = '(&(!(%s=hidden))%s)' % (hidden_flag_attribute, ret)
+			else:
+				ret = '!(%s=hidden)' % hidden_flag_attribute
 	return ret
 
 
@@ -1368,7 +1369,7 @@ def read_syntax_choices(syntax_name, options={}, module_search_options={}, ldap_
 		if syn.udm_filter == 'dn':
 			syn.choices = map_choice(module.get(options[syn.depends]))
 		else:
-			filter_s = _create_ldap_filter(syn, options)
+			filter_s = _create_ldap_filter(syn, options, module)
 			if filter_s is None:
 				syn.choices = []
 			else:
