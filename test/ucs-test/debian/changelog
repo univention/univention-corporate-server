@@ -1,3 +1,10 @@
+ucs-test (4.0.188-2) unstable; urgency=medium
+
+  * 53_samba-common/50quota: disable the ext2 quota test due to
+    Bug #37250
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Dec 2014 07:44:02 +0100
+
 ucs-test (4.0.188-1) unstable; urgency=low
 
   * Bug #34081: disabling this test until bug #36904 is fixed.

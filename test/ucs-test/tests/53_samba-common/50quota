@@ -21,7 +21,7 @@ account="$(echo ${tests_domainadmin_account} | sed -e 's|uid=||;s|,.*||')"
 SOFTLIMIT=10485760
 HARDLIMIT=15728640
 
-for FS in xfs ext2 ext3 ext4; do
+for FS in xfs ext3 ext4; do
 
 	echo "* $FS quota tests *"
 
