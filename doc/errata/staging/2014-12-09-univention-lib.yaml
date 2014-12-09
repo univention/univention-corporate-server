@@ -1,0 +1,19 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-lib
+fix: 4.0.5-4.289.201412091313
+version: [0]
+desc: |
+  This update addresses the following issues:
+  * Check that joining account is member of Domain Admins in Active Directory
+    before starting admember setup
+  * Don't fail AD member setup if the SRV record _domainctonroller_master is already present.
+  * Wait for slapd restart when Domain Admins has been renamed during
+    admember setup
+  * Allow UMC Administrator to be renamed before admember setup
+bug:
+ - 35562
+ - 35870
+ - 36776
+ - 36778

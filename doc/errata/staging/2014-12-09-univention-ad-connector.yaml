@@ -1,0 +1,14 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-ad-connector
+fix: 9.0.11-2.457.201412032110
+version: [0]
+desc: |
+  This update addresses the following issues:
+  * Check that joining account is member of "Domain Admins" in AD
+    before starting admember setup
+  * Allow UMC Administrator to be renamed before admember setup
+bug:
+ - 35562
+ - 36778
