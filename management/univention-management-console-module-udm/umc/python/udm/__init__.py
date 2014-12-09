@@ -71,7 +71,7 @@ from .udm_ldap import (
 	ldap_dn2path, get_module, read_syntax_choices, list_objects,
 	LDAP_Connection, set_credentials, container_modules,
 	info_syntax_choices, search_syntax_choices_by_key,
-	UserWithoutDN, ObjectDoesNotExist, SuperordinateDoesNotExist
+	UserWithoutDN, ObjectDoesNotExists, SuperordinateDoesNotExists
 )
 from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license
 

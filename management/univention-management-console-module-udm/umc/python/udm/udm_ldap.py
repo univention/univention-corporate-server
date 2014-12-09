@@ -1465,20 +1465,21 @@ class LDAP_AuthenticationFailed(UMCError):
 		super(LDAP_AuthenticationFailed, self).__init__(status=BAD_REQUEST_UNAUTH)
 
 	def _error_msg(self):
--               yield _('Authentication failed')
+		yield _('Authentication failed')
 
 
 class ObjectDoesNotExists(UMCError):
 	def __init__(self, ldap_dn):
 		self.ldap_dn = ldap_dn
 		self.msg = None
-		super(ObjectDoesNotExistis, self).__init__()
+		super(ObjectDoesNotExists, self).__init__()
 
 	@LDAP_Connection
 	def _unexistent_or_unreadable(self, ldap_connection = None, ldap_position = None ):
-		dn_part = explodeDn( self.ldap_dn )[ 0 ]
-		control_dn_list = ldap_connection.searchDn(dn_part)
-		if self.ldap_dn in control_dn_list:
+		#dn_part = explodeDn( self.ldap_dn )[ 0 ]
+		#control_dn_list = ldap_connection.searchDn(dn_part)
+		#if self.ldap_dn in control_dn_list:
+		if ldap_connection.searchDn(self.ldap_dn):
 			self.msg = _('LDAP object exists, but cannot be opened: %s') % (self.ldap_dn)
 		else:
 			self.msg = _('Could not find LDAP object %s') % (self.ldap_dn)

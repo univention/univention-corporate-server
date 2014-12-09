@@ -1,3 +1,11 @@
+univention-management-console-module-udm (5.1.25-12) unstable; urgency=low
+
+  * Bug #34246:
+    -fixed typos
+    -slimmed ldap_search in umc/python/udm/udm_ldap.py _unexistent_or_unreadable
+
+ -- Drees Dormann <dormann@univention.de>  Tue, 09 Dec 2014 16:56:44 +0100
+
 univention-management-console-module-udm (5.1.25-11) unstable; urgency=low
 
   * Bug #34246:
