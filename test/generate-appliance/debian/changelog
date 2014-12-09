@@ -1,0 +1,82 @@
+generate-appliance (1.2.5-1) unstable; urgency=medium
+
+  * Update to UCS 4.0 (Bug #37137)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 09 Dec 2014 17:50:21 +0100
+
+generate-appliance (0.2.5-1) unstable; urgency=medium
+
+  * simplify virtualbox hardware (Bug #36023)
+  * simplify ESX hardware (Bug #36023)
+  * simplify VMPlayer hardware (Bug #36023)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 07 Oct 2014 13:16:38 +0200
+
+generate-appliance (0.2.4-1) unstable; urgency=medium
+
+  * add --memory-size option (Bug #35998)
+  * cleanup OVA metadata
+  * add --cpu-count option (Bug #35998)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 25 Sep 2014 16:15:12 +0200
+
+generate-appliance (0.2.3-1) unstable; urgency=low
+
+  * Cleanup of virtualbox xml to support import on MS Windows (Bug #35756) 
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 18 Sep 2014 10:40:09 +0200
+
+generate-appliance (0.2.2-1) unstable; urgency=medium
+
+  * VirtualBox: Change to USB default disabled (Bug #35756)
+  * ESXi: Change filename
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 17 Sep 2014 17:27:16 +0200
+
+generate-appliance (0.2.1-1) unstable; urgency=medium
+
+  * VirtualBox: Debian_64 instead of Linux_64 (Bug #35756)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 12 Sep 2014 14:32:46 +0200
+
+generate-appliance (0.2.1-0) unstable; urgency=medium
+
+  * Make metadata configurable (Bug #35756)
+  * fix install path
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 12 Sep 2014 13:26:54 +0200
+
+generate-appliance (0.1.2-0) unstable; urgency=medium
+
+  * Generate amd64 metadata (Bug #35756)
+  * Check tempdir is directory
+  * Revert OVA VMDK unification
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 12 Sep 2014 12:07:53 +0200
+
+generate-appliance (0.1.1-0) unstable; urgency=medium
+
+  * Add --tempdir (Bug #35756)
+  * Unify OVA VMDKs
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 08 Sep 2014 15:51:06 +0200
+
+generate-appliance (0.1.0-0) unstable; urgency=medium
+
+  * Add ESXi support (Bug #35756)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 04 Sep 2014 18:49:02 +0200
+
+generate-appliance (0.0.2-0) unstable; urgency=medium
+
+  * Add progress output (Bug #35756)
+  * Fix ZIP issue
+  * Add --product option
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 03 Sep 2014 19:20:21 +0200
+
+generate-appliance (0.0.1-0) unstable; urgency=medium
+
+  * Initial release. (Bug #35756)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 29 Aug 2014 18:36:07 +0200
