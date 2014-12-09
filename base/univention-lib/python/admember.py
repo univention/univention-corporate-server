@@ -50,7 +50,13 @@ import univention.uldap
 import univention.lib.package_manager
 from univention.lib.misc import custom_groupname
 import univention.debug as ud
-import dns.resolver
+try:
+		# execute imports in try/except block as during build test scripts are
+		# triggered that refer to the netconf python submodules... and this
+		# reference triggers the import below
+		import dns.resolver
+except ImportError as e:
+		ud.debug(ud.MODULE, ud.WARN, 'Ignoring import error: %s' % e)
 
 class failedToSetService(Exception):
 	'''ucs_addServiceToLocalhost failed'''

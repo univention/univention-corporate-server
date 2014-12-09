@@ -1,3 +1,9 @@
+univention-lib (4.0.5-7) unstable; urgency=medium
+
+  * AD Member: Try to workaround system setup test suite error (Bug #35562)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Dec 2014 15:59:22 +0100
+
 univention-lib (4.0.5-6) unstable; urgency=medium
 
   * AD Member: ucr set kerberos/realm to AD realm (Bug #35562)
