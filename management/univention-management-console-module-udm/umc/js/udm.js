@@ -679,6 +679,13 @@ define([
 				umcpCommand: umcpCmd,
 				depends: objTypeDependencies,
 				onChange: lang.hitch(this, function(newObjType) {
+					var widget = this._searchForm.getWidget('objectType');
+					if (!newObjType) {
+						// object type is ''
+						//   -> leads to traceback in the backend (module is None)
+						widget.set('value', 'None'); // 'Default properties'
+						return;
+					}
 					// update the object property depending on the updated object type
 					var newObjProperty = this._ucr['directory/manager/web/modules/' + newObjType + '/search/default'] || '';
 					var objPropertyWidget = this._searchForm._widgets.objectProperty;
@@ -703,7 +710,6 @@ define([
 				depends: 'objectType',
 				value: autoObjProperty,
 				onChange: lang.hitch(this, function(newVal) {
-					// get the current label of objectPropertyValue
 					var widget = this._searchForm.getWidget('objectProperty');
 					if (!newVal) {
 						// object property is ''
@@ -712,6 +718,7 @@ define([
 						widget.set('value', 'None'); // 'Default properties'
 						return;
 					}
+					// get the current label of objectPropertyValue
 					var label = _( 'Property value' );
 					array.some(widget.getAllItems(), function(iitem) {
 						if (newVal == iitem.id) {
