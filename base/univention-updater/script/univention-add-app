@@ -35,13 +35,14 @@
 import sys
 from optparse import OptionParser
 import subprocess
+import logging
 
 from univention.lib.package_manager import PackageManager
 from univention.config_registry import ConfigRegistry
 from univention.updater import UniventionUpdater
 try:
 	from univention.management.console.modules.appcenter.util import ComponentManager, install_opener
-	from univention.management.console.modules.appcenter.app_center import Application, LICENSE
+	from univention.management.console.modules.appcenter.app_center import Application, LICENSE, MODULE
 except ImportError:
 	sys.stderr.write('univention-management-console-module-appcenter must be installed\n')
 	sys.exit(2)
@@ -74,6 +75,7 @@ if __name__ == '__main__':
 			sys.exit(1)
 
 	if options.list_apps:
+		MODULE._fallbackLogger.setLevel(logging.ERROR)
 		if component_id is None:
 			sys.stdout.write('Available App IDs:\n')
 			for app in Application.all():
@@ -85,7 +87,7 @@ if __name__ == '__main__':
 				sys.stderr.write('App "%s" not found\n' % component_id)
 				sys.exit(1)
 			for version in app.versions:
-				sys.stdout.write('  %s (%s)\n' % (app.component_id, app.version))
+				sys.stdout.write('  %s (%s)\n' % (version.component_id, version.version))
 		sys.exit(0)
 
 	# for compatibility with 3.1-0. may be removed with 3.2-0

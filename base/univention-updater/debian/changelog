@@ -1,3 +1,9 @@
+univention-updater (10.0.51-7) unstable; urgency=low
+
+  * Bug #37153: Disable general UMC logging in --list
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 09 Dec 2014 12:35:22 +0100
+
 univention-updater (10.0.51-6) unstable; urgency=low
 
   * Bug #37153: Add option to --list apps in univention-add-app
