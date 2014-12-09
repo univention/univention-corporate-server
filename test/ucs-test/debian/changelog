@@ -1,3 +1,10 @@
+ucs-test (4.0.188-3) unstable; urgency=low
+
+  * 51_samba4/46machine_secret_access_sysvol: perform only one attempt
+    (Bug #30818).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 09 Dec 2014 14:28:06 +0100
+
 ucs-test (4.0.188-2) unstable; urgency=medium
 
   * 53_samba-common/50quota: disable the ext2 quota test due to
