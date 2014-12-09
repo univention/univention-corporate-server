@@ -52,7 +52,7 @@ from univention.management.console.modules import Base, UMC_OptionTypeError, UMC
 from univention.management.console.modules.decorators import simple_response, sanitize, multi_response
 from univention.management.console.modules.sanitizers import (
 	LDAPSearchSanitizer, EmailSanitizer, ChoicesSanitizer,
-	ListSanitizer, StringSanitizer
+	ListSanitizer, StringSanitizer, DictSanitizer
 )
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.log import MODULE
@@ -159,7 +159,7 @@ class Instance(Base, ProgressMixin):
 		return UDM_Module(module_name)
 
 	def _get_module_by_request(self, request, object_type=None):
-		"""Tries to determine to UDM module to use. If no specific
+		"""Tries to determine the UDM module to use. If no specific
 		object type is given the request option 'objectType' is used. In
 		case none if this leads to a valid object type the request
 		flavor is chosen. Failing all this will raise in
@@ -349,6 +349,12 @@ class Instance(Base, ProgressMixin):
 				except UDM_Error as e:
 					yield {'$dn$': object, 'success': False, 'details': str(e)}
 
+	@sanitize(DictSanitizer(dict(
+		object=DictSanitizer(dict(), required=True),
+		options=DictSanitizer(dict(
+			objectType=StringSanitizer(required=True)
+		), required=True)
+	), required=True))
 	def add(self, request):
 		"""Creates LDAP objects.
 
@@ -360,9 +366,6 @@ class Instance(Base, ProgressMixin):
 		def _thread(request):
 			result = []
 			for obj in request.options:
-				if not isinstance(obj, dict):
-					raise UMC_OptionTypeError(_('Invalid object definition'))
-
 				options = obj.get('options', {})
 				properties = obj.get('object', {})
 
@@ -380,6 +383,12 @@ class Instance(Base, ProgressMixin):
 		thread = notifier.threads.Simple('Get', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
 		thread.run()
 
+	@sanitize(DictSanitizer(dict(
+		object=DictSanitizer({
+			'$dn$': StringSanitizer(required=True)
+		}, required=True),
+		options=DictSanitizer(dict(), required=True)
+	)), required=True)
 	def put(self, request):
 		"""Modifies the given list of LDAP objects.
 
@@ -391,14 +400,8 @@ class Instance(Base, ProgressMixin):
 		def _thread(request):
 			result = []
 			for obj in request.options:
-				if not isinstance(obj, dict):
-					raise UMC_OptionTypeError(_('Invalid object definition'))
-				options = obj.get('options', {})
-				if options is None:
-					options = {}
-				properties = obj.get('object', {})
-				if not properties.get('$dn$'):
-					raise UMC_OptionMissing(_('LDAP DN of object missing'))
+				options = obj.get('options') or {}
+				properties = obj.get('object') or {}
 				ldap_dn = properties['$dn$']
 				module = get_module(request.flavor, ldap_dn)
 				if module is None:
