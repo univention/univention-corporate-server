@@ -1,3 +1,9 @@
+univention-lib (4.0.5-6) unstable; urgency=medium
+
+  * AD Member: ucr set kerberos/realm to AD realm (Bug #35562)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Dec 2014 14:46:54 +0100
+
 univention-lib (4.0.5-5) unstable; urgency=medium
 
   * AD Member: Don't use special KRB5CCNAME (Bug #35562)

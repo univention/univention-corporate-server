@@ -176,6 +176,8 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 	ad_server_ip = ad_domain_info["DC IP"]
 	ad_server_name = ad_domain_info["DC DNS Name"]
 	ad_ldap_base = ad_domain_info["LDAP Base"]
+	ad_domain = ad_domain_info["Domain"]
+	ad_realm = ad_domain.upper()
 
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
@@ -183,10 +185,10 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 
 	time_sync(ad_server_ip)
 	(previous_dns_ucr_set, previous_dns_ucr_unset) = set_nameserver([ad_server_ip], ucr)
-	(previous_krb_ucr_set, previous_krb_ucr_unset) = prepare_kerberos_ucr_settings(ucr)
+	(previous_krb_ucr_set, previous_krb_ucr_unset) = prepare_kerberos_ucr_settings(realm=ad_realm, ucr=ucr)
 
 	try:
-		principal = "%s@%s" % (username, ad_domain_info["Domain"])
+		principal = "%s@%s" % (username, ad_realm)
 		_get_kerberos_ticket(principal, password, ucr)
 		auth = ldap.sasl.gssapi("")
 		prepare_dns_reverse_settings(ad_domain_info)
@@ -434,6 +436,8 @@ def synchronize_account_position(ad_domain_info, username, password, ucr=None):
 	### First determine target position from AD:
 	ad_server_name = ad_domain_info["DC DNS Name"]
 	ad_ldap_base = ad_domain_info["LDAP Base"]
+	ad_domain = ad_domain_info["Domain"]
+	ad_realm = ad_domain.upper()
 	try:
 		lo_ad = univention.uldap.access(host=ad_server_name, port=389, base=ad_ldap_base, binddn=None, bindpw=None, start_tls=0, use_ldaps=False, decode_ignorelist=["objectSid"])
 		lo_ad.lo.set_option(ldap.OPT_PROTOCOL_VERSION, ldap.VERSION3)
@@ -447,7 +451,7 @@ def synchronize_account_position(ad_domain_info, username, password, ucr=None):
 
 		if not os.path.exists(krb5_cc_path):
 			## should have been created by check_ad_account, but just in case..
-			principal = "%s@%s" % (username, ad_domain_info["Domain"])
+			principal = "%s@%s" % (username, ad_realm)
 			_get_kerberos_ticket(principal, password, ucr)
 		auth = ldap.sasl.gssapi("")
 		lo_ad.lo.sasl_interactive_bind_s("", auth)
@@ -889,7 +893,7 @@ def prepare_dns_reverse_settings(ad_domain_info):
 		p1.communicate()
 	
 
-def prepare_kerberos_ucr_settings(ucr=None):
+def prepare_kerberos_ucr_settings(realm=None, ucr=None):
 	ud.debug(ud.MODULE, ud.PROCESS, "Prepare Kerberos UCR settings")
 
 	if not ucr:
@@ -902,12 +906,14 @@ def prepare_kerberos_ucr_settings(ucr=None):
 	ucr_set = [
 		u'kerberos/defaults/dns_lookup_kdc=true',
 	]
+	if realm and realm != ucr.get('kerberos/realm'):
+		ucr_set.append(u'kerberos/realm=%s' % realm)
 
 	for setting in ucr_set:
 		var = setting.split("=", 1)[0]
-		val = ucr.get(var)
-		if val != None:
-			previous_ucr_set.append(u'%s=%s' % (var, val))
+		old_val = ucr.get(var)
+		if old_val != None:
+			previous_ucr_set.append(u'%s=%s' % (var, old_val))
 		else:
 			previous_ucr_unset.append(u'%s' % (var,))
 
