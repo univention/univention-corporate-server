@@ -209,7 +209,7 @@ class UDM_Error(Exception):
 		# if this exception is raised in a exception context we will have the original traceback
 		self.exc_info = sys.exc_info()
 		Exception.__init__(self, str(exc))
-		if self.exc_info:
+		if self.exc_info and self.exc_info != (None, None, None):
 			raise self.__class__, self, self.exc_info[2]
 
 	def __str__(self):
