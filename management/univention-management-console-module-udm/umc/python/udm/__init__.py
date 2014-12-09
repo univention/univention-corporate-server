@@ -464,7 +464,7 @@ class Instance(Base, ProgressMixin):
 					ldap_dn = self._user_dn
 				module = get_module(request.flavor, ldap_dn)
 				if module is None:
-					raise ObjectDoesNotExist(ldap_dn)
+					raise ObjectDoesNotExists(ldap_dn)
 				else:
 					obj = module.get( ldap_dn )
 					if obj:
@@ -525,7 +525,7 @@ class Instance(Base, ProgressMixin):
 					superordinate = mod.get(superordinate)
 					request.options['container'] = superordinate.dn
 				else:
-					raise SuperordinateDoesNotExist(superordinate)
+					raise SuperordinateDoesNotExists(superordinate)
 
 			container = request.options.get('container')
 			objectProperty = request.options['objectProperty']
@@ -576,18 +576,6 @@ class Instance(Base, ProgressMixin):
 			objects=ListSanitizer(StringSanitizer(minimum=1), required=True, min_elements=1)
 		)
 
-
-
-	def reports_query(self, request):
-		"""Returns a list of reports for the given object type"""
-		self.finished(request.id, self.reports_cfg.get_report_names(request.flavor))
-
-	def sanitize_reports_create(self, request):
-		choices = self.reports_cfg.get_report_names(request.flavor)
-		return dict(
-			report=ChoicesSanitizer(choices=choices, required=True),
-			objects=ListSanitizer(StringSanitizer(minimum=1), required=True, min_elements=1)
-		)
 
 	@sanitize_func(sanitize_reports_create)
 	def reports_create(self, request):

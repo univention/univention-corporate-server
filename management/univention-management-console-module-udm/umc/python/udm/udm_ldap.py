@@ -1464,12 +1464,15 @@ class LDAP_AuthenticationFailed(UMCError):
 	def __init__(self):
 		super(LDAP_AuthenticationFailed, self).__init__(status=BAD_REQUEST_UNAUTH)
 
+	def _error_msg(self):
+-               yield _('Authentication failed')
 
-class ObjectDoesNotExist(UMCError):
+
+class ObjectDoesNotExists(UMCError):
 	def __init__(self, ldap_dn):
 		self.ldap_dn = ldap_dn
 		self.msg = None
-		super(ObjectDoesNotExist, self).__init__()
+		super(ObjectDoesNotExistis, self).__init__()
 
 	@LDAP_Connection
 	def _unexistent_or_unreadable(self, ldap_connection = None, ldap_position = None ):
@@ -1487,6 +1490,6 @@ class ObjectDoesNotExist(UMCError):
 		yield self.msg
 
 
-class SuperordinateDoesNotExist(ObjectDoesNotExist):
+class SuperordinateDoesNotExists(ObjectDoesNotExists):
 	def _error_msg(self):
 		yield _('Could not find an UDM module for the superordinate object %s') % (self.ldap_dn,)

@@ -1,3 +1,11 @@
+univention-management-console-module-udm (5.1.25-11) unstable; urgency=low
+
+  * Bug #34246:
+   -removed duplicated code
+   -reinserted accidentally removed code
+
+ -- Drees Dormann <dormann@univention.de>  Tue, 09 Dec 2014 16:36:12 +0100
+
 univention-management-console-module-udm (5.1.25-10) unstable; urgency=medium
 
   * Bug #34353: also catch INVALID_CREDENTIALS exception from LDAP
