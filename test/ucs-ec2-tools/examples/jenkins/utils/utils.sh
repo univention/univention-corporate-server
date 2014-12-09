@@ -165,6 +165,11 @@ run_apptests ()
 	run_tests -r apptest "$@"
 }
 
+run_minimal_apptests ()
+{
+	run_apptests -s checks -s appcenter "$@"
+}
+
 run_tests ()
 {
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
