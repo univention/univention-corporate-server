@@ -57,7 +57,7 @@ from univention.admin.uldap import explodeDn
 
 from .syntax import widget, default_value
 
-from ldap import LDAPError, SERVER_DOWN
+from ldap import LDAPError, SERVER_DOWN, INVALID_CREDENTIALS
 
 try:
 	import univention.admin.license
@@ -93,7 +93,7 @@ class UMCError(UMC_Error):
 		self._is_master = ucr.get('server/role') == 'domaincontroller_master'
 		self._updates_available = ucr.is_true('update/available')
 		self._fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
-		super(UMC_Error, self).__init__('\n'.join(self._error_msg()), **kwargs)
+		super(UMCError, self).__init__('\n'.join(self._error_msg()), **kwargs)
 
 	def _error_msg(self):
 		yield ''
@@ -147,16 +147,16 @@ def error_handler(func):
 			return func(*args, **kwargs)
 		except SERVER_DOWN:
 			raise LDAP_ServerDown()
-		except udm_errors.authFail:
+		except (udm_errors.authFail, INVALID_CREDENTIALS):
 			raise LDAP_AuthenticationFailed()
 		except (udm_errors.ldapSizelimitExceeded, udm_errors.ldapTimeout):
 			raise
-		except udm_errors.base as exc:
+		except udm_errors.base:
 			MODULE.info('LDAP operation for user %s has failed' % (_user_dn,))
 			if _ldap_connection is None:
 				MODULE.error(traceback.format_exc())
 			raise
-		except LDAPError as exc:
+		except LDAPError:
 			MODULE.error(traceback.format_exc())
 			raise
 	return _decorated

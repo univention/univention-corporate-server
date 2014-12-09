@@ -1,9 +1,13 @@
+univention-management-console-module-udm (5.1.25-10) unstable; urgency=medium
+
+  * Bug #34353: also catch INVALID_CREDENTIALS exception from LDAP
+  * Bug #34353: handle errors in threads the same as UMC errors
+
+ -- Florian Best <best@univention.de>  Tue, 09 Dec 2014 14:34:03 +0100
 univention-management-console-module-udm (5.1.25-9) unstable; urgency=low
 
-  * Bug #34246: 
-    - implemented Error Handling from Florian
-    - adaped error Message
-    - adapted DetailPage to close if Object could not be opened
+  * Bug #34246: adapted error messages
+  * Bug #34246: adapted DetailPage to close if Object could not be opened
 
  -- Drees Dormann <dormann@univention.de>  Tue, 09 Dec 2014 13:42:24 +0100
 

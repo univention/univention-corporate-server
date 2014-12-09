@@ -42,13 +42,11 @@ import pwd
 import tempfile
 import urllib
 import urllib2
-import traceback
-import ldap.filter
 
 from ldap import LDAPError
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
-from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
+from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError, error_handling
 from univention.management.console.modules.decorators import simple_response, sanitize, multi_response
 from univention.management.console.modules.sanitizers import (
 	LDAPSearchSanitizer, EmailSanitizer, ChoicesSanitizer,
@@ -61,7 +59,6 @@ from univention.management.console.protocol.session import TEMPUPLOADDIR
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.uexceptions as udm_errors
-import univention.admin.uldap
 
 from univention.config_registry import handler_set
 
@@ -74,7 +71,7 @@ from .udm_ldap import (
 	ldap_dn2path, get_module, read_syntax_choices, list_objects,
 	LDAP_Connection, set_credentials, container_modules,
 	info_syntax_choices, search_syntax_choices_by_key,
-	LDAP_ServerDown, UserWithoutDN, ObjectDoesNotExist, SuperordinateDoesNotExist
+	UserWithoutDN, ObjectDoesNotExist, SuperordinateDoesNotExist
 )
 from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license
 
@@ -178,14 +175,10 @@ class Instance(Base, ProgressMixin):
 			self.finished(request.id, None, result.args[0], status=MODULE_ERR_COMMAND_FAILED)
 			return
 
-		msg = ''.join(traceback.format_exception(*thread.exc_info))
-		MODULE.process('An internal error occurred: %s' % msg)
-
-		if isinstance(result, LDAP_ServerDown):
-			self.finished(request.id, None, str(result), status=result.status)
-			return
-
-		self.finished(request.id, None, msg, False)
+		def fake_func(self, request):
+			raise thread.exc_info[0], thread.exc_info[1], thread.exc_info[2]
+		fake_func.__name__ = 'thread %s' % (request.arguments[0],)
+		error_handling(fake_func)(self, request)
 
 	@LDAP_Connection
 	def license(self, request, ldap_connection=None, ldap_position=None):
@@ -404,15 +397,15 @@ class Instance(Base, ProgressMixin):
 				module = get_module(request.flavor, ldap_dn)
 				if module is None:
 					raise ObjectDoesNotExists(ldap_dn)
-				else:
-					MODULE.info( 'Modifying LDAP object %s' % ldap_dn )
-					if '$labelObjectType$' in properties:
-						del properties[ '$labelObjectType$' ]
-					try:
-						module.modify( properties )
-						result.append( { '$dn$' : ldap_dn, 'success' : True } )
-					except UDM_Error, e:
-						result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( e ) } )
+
+				MODULE.info('Modifying LDAP object %s' % (ldap_dn,))
+				if '$labelObjectType$' in properties:
+					del properties['$labelObjectType$']
+				try:
+					module.modify(properties)
+					result.append({'$dn$': ldap_dn, 'success': True})
+				except UDM_Error as exc:
+					result.append({'$dn$': ldap_dn, 'success': False, 'details': str(exc)})
 
 			return result
 
