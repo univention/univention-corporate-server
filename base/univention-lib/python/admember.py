@@ -1077,7 +1077,10 @@ def get_domaincontroller_srv_record(domain, nameserver=None):
 	# perform a SRV lookup
 	try:
 		response = resolver.query('_domaincontroller_master._tcp.%s.' % domain, 'SRV')
-		return str(response.canonical_name)
+		if len(response) != 1:
+			ud.debug(ud.MODULE, ud.ERROR, 'Non-unique SRV record: %s!' % (response.rrset,))
+			return None
+		return str(response[0].target)
 	except dns.resolver.NXDOMAIN:
 		ud.debug(ud.MODULE, ud.WARN, 'Domain (%s) not resolvable!' % (domain,))
 	except dns.exception.Timeout as exc:
@@ -1092,22 +1095,22 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 	ud.debug(ud.MODULE, ud.PROCESS, "Create _domaincontroller_master SRV record on %s" % ad_ip)
 	hostname = ucr.get('hostname')
 	domainname = ucr.get('domainname')
-	fqdn = "%s.%s" % (hostname, domainname)
+	fqdn_with_trailing_dot = "%s.%s." % (hostname, domainname)
 	srv_record = "_domaincontroller_master._tcp.%s" % (domainname,)
-	if get_domaincontroller_srv_record(domainname) == fqdn:
+	if get_domaincontroller_srv_record(domainname) == fqdn_with_trailing_dot:
 		ud.debug(ud.MODULE, ud.PROCESS, "Ok, SRV record %s already points to this server" % (srv_record,))
 		return
 	
 	fd = tempfile.NamedTemporaryFile(delete=False)
 	fd.write('server %s\n' % ad_ip)
-	fd.write('update add %s. 10800 SRV 0 0 0 %s.\n' %
-		(srv_record, fqdn))
+	fd.write('update add %s. 10800 SRV 0 0 0 %s\n' %
+		(srv_record, fqdn_with_trailing_dot))
 	fd.write('send\n')
 	fd.write('quit\n')
 	fd.close()
 
 	cmd = ['kinit', '--password-file=/etc/machine.secret']
-	cmd += ['%s\$' % ucr.get('hostname')]
+	cmd += ['%s\$' % hostname]
 	cmd += ['nsupdate', '-v', '-g', fd.name]
 	try:
 		p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
