@@ -1,3 +1,9 @@
+ucs-test (5.0.69-3) unstable; urgency=low
+
+  * Bug #37078: Reenable 20_appcenter.20_can_apps_be_installed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 10 Dec 2014 00:07:57 +0100
+
 ucs-test (5.0.69-2) unstable; urgency=low
 
   * fixed last commit (Bug #36907 #37228) 
