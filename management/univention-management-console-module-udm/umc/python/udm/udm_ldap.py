@@ -84,37 +84,68 @@ def set_credentials(dn, passwd):
 	MODULE.info('Saved LDAP DN for user %s' % _user_dn)
 
 
-class LDAP_ServerDown(UMC_Error):
+class UMCError(UMC_Error):
+
+	def __init__(self, **kwargs):
+		ucr.load()
+		self._is_master = ucr.get('server/role') == 'domaincontroller_master'
+		self._updates_available = ucr.is_true('update/available')
+		self._fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+		super(UMC_Error, self).__init__('\n'.join(self._error_msg()), **kwargs)
+
+	def _error_msg(self):
+		yield ''
+
+
+class LDAP_ServerDown(UMCError):
 
 	def __init__(self):
-		super(LDAP_ServerDown, self).__init__(self.ldap_server_down_error_message())
-		self.status = 503
+		super(LDAP_ServerDown, self).__init__(status=503)
 
-	def ldap_server_down_error_message(self):
-		def _message():
-			ucr.load()
-			is_master = ucr.get('server/role') == 'domaincontroller_master'
-			updates_available = ucr.is_true('update/available')
-			fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
-			yield _('Cannot connect to the LDAP service.')
-			yield _('The following steps can help to solve this problem:')
-			if is_master:
-			    yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server or free some resources')
-			else:
-			    yield ' * ' + _('Make sure the domaincontroller master is running and reachable from %s') % (fqdn,)
-			    yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server and on the domaincontroller master or free some resources')
-			yield ' * ' + _('Restart the LDAP service on the domaincontroller master either via "invoke-rc.d slapd restart" on command line or with the UMC module "System services"')
-			if updates_available:
-				yield ' * ' + _('Install the latest software updates')
-			yield _('If the problem persists additional hints about the cause can be found in the following log file:')
-			yield ' * /var/log/univention/management-console-module-udm.log'
-
-		return '\n'.join(_message())
+	def _error_msg(self):
+		yield _('Cannot connect to the LDAP service.')
+		yield _('The following steps can help to solve this problem:')
+		yield ' * ' + _('Check the available hard disk space and RAM on the domaincontroller master')
+		if self._is_master:
+			yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server or free some resources')
+		else:
+			yield ' * ' + _('Make sure the domaincontroller master is running and reachable from %s') % (self._fqdn,)
+			yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server and on the domaincontroller master or free some resources')
+		yield ' * ' + _('Restart the LDAP service on the domaincontroller master either via "invoke-rc.d slapd restart" on command line or with the UMC module "System services"')
+		if self._updates_available:
+			yield ' * ' + _('Install the latest software updates')
+		yield _('If the problem persists additional hints about the cause can be found in the following log file(s):')
+		yield ' * /var/log/univention/management-console-module-udm.log'
 
 
-class LDAP_AuthenticationFailed(UMC_Error):
+class UserWithoutDN(UMCError):
+
+	def __init__(self, username):
+		self._username = username
+		super(UserWithoutDN, self).__init__()
+
+	def _error_msg(self):
+		yield _('The LDAP DN of the user %s could not be determined.') % (self._username,)
+		yield _('The following steps can help to solve this problem:')
+		yield ' * ' + _('Ensure that the LDAP server on this system is running and responsive')
+		yield ' * ' + _('Make sure the DNS settings of this server are correctly set up and the DNS server is responsive')
+		if not self._is_master:
+			yield ' * ' + _('Check the join status of this system by using the domain join UMC module')
+		yield ' * ' + _('Make sure all join scripts were successfully executed')
+		if self._updates_available:
+			yield ' * ' + _('Install the latest software updates')
+		yield _('If the problem persists additional hints about the cause can be found in the following log file(s):')
+		yield ' * /var/log/univention/management-console-module-udm.log'
+		yield ' * /var/log/univention/management-console-server.log'
+
+
+class LDAP_AuthenticationFailed(UMCError):
+
 	def __init__(self):
-		super(LDAP_AuthenticationFailed, self).__init__(_('Authentication failed'), status=BAD_REQUEST_UNAUTH)
+		super(LDAP_AuthenticationFailed, self).__init__(status=BAD_REQUEST_UNAUTH)
+
+	def _error_msg(self):
+		yield _('Authentication failed')
 
 
 def error_handler(func):

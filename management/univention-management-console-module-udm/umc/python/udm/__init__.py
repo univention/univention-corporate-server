@@ -74,7 +74,7 @@ from .udm_ldap import (
 	ldap_dn2path, get_module, read_syntax_choices, list_objects,
 	LDAP_Connection, set_credentials, container_modules,
 	info_syntax_choices, search_syntax_choices_by_key,
-	LDAP_ServerDown
+	LDAP_ServerDown, UserWithoutDN
 )
 from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license
 
@@ -115,9 +115,8 @@ class Instance(Base, ProgressMixin):
 		'''Initialize the module. Invoked when ACLs, commands and
 		credentials are available'''
 		if not self._user_dn:
-			self._search_user_dn()
-		if not self._user_dn:
-			raise Exception(_('The LDAP DN of the user %s could not be determined.') % (self._username,))
+			raise UserWithoutDN(self._username)
+
 		set_credentials(self._user_dn, self._password)
 
 		# read user settings and initial UDR
@@ -125,18 +124,6 @@ class Instance(Base, ProgressMixin):
 		self.settings.user(self._user_dn)
 		self.reports_cfg = udr.Config()
 		self.modules_with_childs = container_modules()
-
-	def _search_user_dn(self):
-		users_module = udm_modules.get('users/user')
-		user_filter = None
-		if users_module:
-			user_filter = unicode(users_module.lookup_filter('uid=%s' % (ldap.filter.escape_filter_chars(self._username),)))
-		if user_filter:
-			lo, po = univention.admin.uldap.getMachineConnection()
-			dns = lo.searchDn(user_filter)
-			if dns:
-				self._user_dn = dns[0]
-				MODULE.error('The UMC server did not pass the LDAP DN for user %s (%s)' % (self._username, self._user_dn))
 
 	def _get_module(self, object_type, flavor=None):
 		"""Tries to determine to UDM module to use. If no specific
