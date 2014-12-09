@@ -122,6 +122,9 @@ define([
 		// internal reference to the detail page for editing an LDAP object
 		_detailPage: null,
 
+		// internal reference if Page is fully rendered
+		_pageRenderedDeferred: null,
+
 		// reference to a `umc/widgets/Tree` instance which is used to display the container
 		// hierarchy for the UDM navigation module
 		_tree: null,
@@ -208,6 +211,7 @@ define([
 				// finish standby
 				this.standby(false);
 			}));
+			this._pageRenderedDeferred = new Deferred();
 
 			this._wizardStandby = new Deferred();
 
@@ -304,10 +308,17 @@ define([
 				}).then(lang.hitch(this, function(results) {
 					this._reports = results.reports;
 					this.renderSearchPage(results.containers, results.superordinates, results.metaInfo);
+					this._pageRenderedDeferred.resolve();
 				}), lang.hitch(this, function() {
 					this.standby(false);
+					this._pageRenderedDeferred.reject();
 				}));
 			}
+		},
+
+		ready: function() {
+			//return this._finishedDeferred;
+			return this._pageRenderedDeferred;
 		},
 
 		postCreate: function() {
@@ -1559,6 +1570,10 @@ define([
 			} else {
 				this.selectChild(this._detailPage);
 			}
+			this._detailPage.ready().then(function() { 
+			}, lang.hitch(this, function() {
+				this.closeDetailPage();
+			}));
 		},
 
 		closeDetailPage: function() {

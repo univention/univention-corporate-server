@@ -122,6 +122,9 @@ define([
 		// internal reference to the page containing the subtabs for object properties
 		_tabs: null,
 
+		// internal reference if Page is fully rendered
+		_pageRenderedDeferred: null,
+
 		// internal reference to a dict with entries of the form: policy-type -> widgets
 		_policyWidgets: null,
 
@@ -175,6 +178,7 @@ define([
 
 			this._multiEdit = this.ldapName instanceof Array;
 			this._tabControllers = [];
+			this._pageRenderedDeferred = new Deferred();
 		},
 
 		buildRendering: function() {
@@ -186,8 +190,6 @@ define([
 			this.headerButtons = this.getButtonDefinitions();
 
 			this.standby(true);
-
-			this.loadedDeferred = new Deferred();
 
 			// remember the objectType of the object we are going to edit
 			this._editedObjType = this.objectType;
@@ -231,17 +233,16 @@ define([
 				setTimeout(lang.hitch(this, function() {
 					this._prepareIndividualProperties(properties).then(lang.hitch(this, function(properties) {
 						this.renderDetailPage(properties, layout, policies, template, results.metaInfo).then(lang.hitch(this, function() {
-							this.loadedDeferred.resolve();
+							this._pageRenderedDeferred.resolve();
 						}), lang.hitch(this, function() {
-							this.loadedDeferred.resolve();
+							this._pageRenderedDeferred.reject();
 						}));
 					}), lang.hitch(this, function() {
-						this.loadedDeferred.resolve();
 					}));
 				}), 50);
 			}), lang.hitch(this, function() {
-				this.loadedDeferred.resolve();
 				this.standby(false);
+				this._pageRenderedDeferred.reject();
 			}));
 		},
 
@@ -314,6 +315,10 @@ define([
 
 				return this._form.ready();
 			}));
+		},
+
+		ready: function() {
+			return this._pageRenderedDeferred;
 		},
 
 		_setNonEmptyValues: function(properties) {

@@ -97,7 +97,7 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			this._mayFinishDeferred = this.detailPage.loadedDeferred;
+			this._mayFinishDeferred = this.detailPage.ready();
 			this._detailButtons = this.detailPage.getButtonDefinitions();
 			this._multiValuesWidgets = [];
 			this._identifyingAttribute = null;

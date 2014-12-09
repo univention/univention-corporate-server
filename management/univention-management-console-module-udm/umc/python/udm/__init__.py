@@ -74,7 +74,7 @@ from .udm_ldap import (
 	ldap_dn2path, get_module, read_syntax_choices, list_objects,
 	LDAP_Connection, set_credentials, container_modules,
 	info_syntax_choices, search_syntax_choices_by_key,
-	LDAP_ServerDown, UserWithoutDN
+	LDAP_ServerDown, UserWithoutDN, ObjectDoesNotExist, SuperordinateDoesNotExist
 )
 from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license
 
@@ -405,15 +405,16 @@ class Instance(Base, ProgressMixin):
 				ldap_dn = properties['$dn$']
 				module = get_module(request.flavor, ldap_dn)
 				if module is None:
-					raise UMC_OptionTypeError(_('Could not find a matching UDM module for the LDAP object %s') % ldap_dn)
-				MODULE.info('Modifying LDAP object %s' % ldap_dn)
-				if '$labelObjectType$' in properties:
-					del properties['$labelObjectType$']
-				try:
-					module.modify(properties)
-					result.append({'$dn$': ldap_dn, 'success': True})
-				except UDM_Error as e:
-					result.append({'$dn$': ldap_dn, 'success': False, 'details': str(e)})
+					raise ObjectDoesNotExists(ldap_dn)
+				else:
+					MODULE.info( 'Modifying LDAP object %s' % ldap_dn )
+					if '$labelObjectType$' in properties:
+						del properties[ '$labelObjectType$' ]
+					try:
+						module.modify( properties )
+						result.append( { '$dn$' : ldap_dn, 'success' : True } )
+					except UDM_Error, e:
+						result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( e ) } )
 
 			return result
 
@@ -472,28 +473,28 @@ class Instance(Base, ProgressMixin):
 					ldap_dn = self._user_dn
 				module = get_module(request.flavor, ldap_dn)
 				if module is None:
-					MODULE.process('A module for the LDAP DN %s could not be found' % ldap_dn)
-					continue
-				obj = module.get(ldap_dn)
-				if obj:
-					props = obj.info
-					for passwd in module.password_properties:
-						if passwd in props:
-							del props[passwd]
-					props['$dn$'] = obj.dn
-					props['$options$'] = {}
-					for opt in module.get_options(udm_object=obj):
-						props['$options$'][opt['id']] = opt['value']
-					props['$policies$'] = {}
-					for policy in obj.policies:
-						pol_mod = get_module(None, policy)
-						if pol_mod and pol_mod.name:
-							props['$policies$'][pol_mod.name] = policy
-					props['$labelObjectType$'] = module.title
-					props['$flags$'] = obj.oldattr.get('univentionObjectFlag', []),
-					result.append(props)
+					raise ObjectDoesNotExist(ldap_dn)
 				else:
-					MODULE.process('The LDAP object for the LDAP DN %s could not be found' % ldap_dn)
+					obj = module.get( ldap_dn )
+					if obj:
+						props = obj.info
+						for passwd in module.password_properties:
+							if passwd in props:
+								del props[ passwd ]
+						props[ '$dn$' ] = obj.dn
+						props[ '$options$' ] = {}
+						for opt in module.get_options( udm_object = obj ):
+							props[ '$options$' ][ opt[ 'id' ] ] = opt[ 'value' ]
+						props[ '$policies$' ] = {}
+						for policy in obj.policies:
+							pol_mod = get_module( None, policy )
+							if pol_mod and pol_mod.name:
+								props[ '$policies$' ][ pol_mod.name ] = policy
+						props[ '$labelObjectType$' ] = module.title;
+						props['$flags$'] = obj.oldattr.get('univentionObjectFlag', []),
+						result.append( props )
+					else:
+						MODULE.process( 'The LDAP object for the LDAP DN %s could not be found' % ldap_dn )
 			return result
 
 		MODULE.info('Starting thread for udm/get request')
@@ -533,7 +534,7 @@ class Instance(Base, ProgressMixin):
 					superordinate = mod.get(superordinate)
 					request.options['container'] = superordinate.dn
 				else:
-					raise UMC_OptionTypeError(_('Could not find an UDM module for the superordinate object %s') % superordinate)
+					raise SuperordinateDoesNotExist(superordinate)
 
 			container = request.options.get('container')
 			objectProperty = request.options['objectProperty']
@@ -571,6 +572,20 @@ class Instance(Base, ProgressMixin):
 
 		thread = notifier.threads.Simple('Query', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
 		thread.run()
+
+
+	def reports_query( self, request ):
+		"""Returns a list of reports for the given object type"""
+		self.finished( request.id, self.reports_cfg.get_report_names( request.flavor ) )
+
+	def sanitize_reports_create(self, request):
+		choices = self.reports_cfg.get_report_names(request.flavor)
+		return dict(
+			report=ChoicesSanitizer(choices=choices, required=True),
+			objects=ListSanitizer(StringSanitizer(minimum=1), required=True, min_elements=1)
+		)
+
+
 
 	def reports_query(self, request):
 		"""Returns a list of reports for the given object type"""
@@ -1191,3 +1206,5 @@ class Instance(Base, ProgressMixin):
 			# creating a new ucr variable to prevent double registration (Bug #35711)
 			handler_set(['ucs/web/license/requested=true'])
 			return True
+
+

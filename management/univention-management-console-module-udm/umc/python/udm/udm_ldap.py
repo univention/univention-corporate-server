@@ -53,6 +53,8 @@ import univention.admin.uexceptions as udm_errors
 from ...config import ucr
 from ...log import MODULE
 
+from univention.admin.uldap import explodeDn
+
 from .syntax import widget, default_value
 
 from ldap import LDAPError, SERVER_DOWN
@@ -137,15 +139,6 @@ class UserWithoutDN(UMCError):
 		yield _('If the problem persists additional hints about the cause can be found in the following log file(s):')
 		yield ' * /var/log/univention/management-console-module-udm.log'
 		yield ' * /var/log/univention/management-console-server.log'
-
-
-class LDAP_AuthenticationFailed(UMCError):
-
-	def __init__(self):
-		super(LDAP_AuthenticationFailed, self).__init__(status=BAD_REQUEST_UNAUTH)
-
-	def _error_msg(self):
-		yield _('Authentication failed')
 
 
 def error_handler(func):
@@ -1465,3 +1458,35 @@ def read_syntax_choices(syntax_name, options={}, module_search_options={}, ldap_
 		return syntax.choices
 
 	return map(lambda x: {'id': x[0], 'label': x[1]}, getattr(syn, 'choices', []))
+
+class LDAP_AuthenticationFailed(UMCError):
+
+	def __init__(self):
+		super(LDAP_AuthenticationFailed, self).__init__(status=BAD_REQUEST_UNAUTH)
+
+
+class ObjectDoesNotExist(UMCError):
+	def __init__(self, ldap_dn):
+		self.ldap_dn = ldap_dn
+		self.msg = None
+		super(ObjectDoesNotExist, self).__init__()
+
+	@LDAP_Connection
+	def _unexistent_or_unreadable(self, ldap_connection = None, ldap_position = None ):
+		dn_part = explodeDn( self.ldap_dn )[ 0 ]
+		control_dn_list = ldap_connection.searchDn(dn_part)
+		if self.ldap_dn in control_dn_list:
+			self.msg = _('LDAP object exists, but cannot be opened: %s') % (self.ldap_dn)
+		else:
+			self.msg = _('Could not find LDAP object %s') % (self.ldap_dn)
+
+	def _error_msg(self):
+		# TODO: adapt error message with hints about that the object may be deleted in meantime, suggest a reload of UMC, ..., etc.
+		# TODO: if the DN exists raise a more critical error, that no handler could be found
+		self._unexistent_or_unreadable()
+		yield self.msg
+
+
+class SuperordinateDoesNotExist(ObjectDoesNotExist):
+	def _error_msg(self):
+		yield _('Could not find an UDM module for the superordinate object %s') % (self.ldap_dn,)

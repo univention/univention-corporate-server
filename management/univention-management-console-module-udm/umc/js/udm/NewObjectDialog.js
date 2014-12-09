@@ -208,7 +208,7 @@ define([
 						this._wizardContainer.selectChild(createWizard);
 						this.createWizardAdded.resolve();
 						var finishWizard = lang.hitch(this, function(wizardFormValues, submit) {
-							createWizard.standbyDuring(detailsValues.detailPage.loadedDeferred).then(lang.hitch(this, function() {
+							createWizard.standbyDuring(detailsValues.detailPage.ready()).then(lang.hitch(this, function() {
 								lang.mixin(detailsValues.detailPage.templateObject._userChanges, createWizard.templateObject._userChanges);
 								tools.forIn(wizardFormValues, lang.hitch(this, function(key, val) {
 									detailsValues.detailPage._form.getWidget(key).set('value', val);

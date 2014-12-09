@@ -1,3 +1,12 @@
+univention-management-console-module-udm (5.1.25-9) unstable; urgency=low
+
+  * Bug #34246: 
+    - implemented Error Handling from Florian
+    - adaped error Message
+    - adapted DetailPage to close if Object could not be opened
+
+ -- Drees Dormann <dormann@univention.de>  Tue, 09 Dec 2014 13:42:24 +0100
+
 univention-management-console-module-udm (5.1.25-8) unstable; urgency=medium
 
   * Bug #31828; Bug #37178: block module usage if the user has no LDAP DN
