@@ -60,6 +60,7 @@ from httplib import HTTPException
 from socket import error as SocketError
 from ldap import LDAPError
 from ldap.filter import escape_filter_chars
+from operator import attrgetter
 
 # related third party
 from simplejson import loads
@@ -814,6 +815,7 @@ class Application(object):
 			used_app.versions = iapps
 			final_applications.append(used_app)
 
+		final_applications.sort(key=attrgetter('id'))
 		return final_applications
 
 	def is_registered(self, ucr):

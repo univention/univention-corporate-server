@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.19-5) unstable; urgency=low
+
+  * Bug #37153: Sort apps by their ID
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 09 Dec 2014 12:37:21 +0100
+
 univention-management-console-module-appcenter (4.1.19-4) unstable; urgency=medium
 
   * Bug #36868: fix installing of component packages
