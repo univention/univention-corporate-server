@@ -1,3 +1,10 @@
+univention-management-console (7.1.63-4) unstable; urgency=medium
+
+  * Bug #37178: fix the LDAP DN search filter for a user. This leads to
+  	multiple errors e.g. for users without posix option.
+
+ -- Florian Best <best@univention.de>  Mon, 08 Dec 2014 19:19:04 +0100
+
 univention-management-console (7.1.63-3) unstable; urgency=medium
 
   * Bug #34353: allow UMC_Error exceptions to overwrite the status when they

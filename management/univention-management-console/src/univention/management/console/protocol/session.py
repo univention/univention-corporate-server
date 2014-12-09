@@ -42,6 +42,8 @@ import time
 import json
 import traceback
 
+import ldap.filter
+
 import notifier
 import notifier.signals as signals
 import notifier.popen as popen
@@ -225,19 +227,23 @@ class Processor(signals.Provider):
 		self.__killtimer = {}
 
 		self._init_ldap_connection()
-		if self.lo is not None:
-			# get the LDAP DN of the authorized user
-			ldap_dn = self.lo.searchDn('(&(uid=%s)(objectClass=posixAccount))' % self.__username)
-			if ldap_dn:
-				self.__user_dn = ldap_dn[0]
-				CORE.info('The LDAP DN for user %s is %s' % (self.__username, self.__user_dn))
-			else:
-				CORE.info('The LDAP DN for user %s could not be found' % self.__username)
+		self._set_user_dn()
 
 		# read the ACLs
 		self._reload_acls_and_permitted_commands()
 
 		self.signal_new('response')
+
+	def _set_user_dn(self):
+		if self.lo is not None:
+			# get the LDAP DN of the authorized user
+			ldap_dn = self.lo.searchDn('(uid=%s)' % ldap.filter.escape_filter_chars(self.__username))
+			if ldap_dn:
+				self.__user_dn = ldap_dn[0]
+				CORE.info('The LDAP DN for user %s is %s' % (self.__username, self.__user_dn))
+
+		if not self.__user_dn and self.__username not in ('root', '__systemsetup__'):
+			CORE.error('The LDAP DN for user %s could not be found (lo=%r)' % (self.__username, self.lo))
 
 	def _reload_acls_and_permitted_commands(self):
 		self.acls = LDAP_ACLs(self.lo, self.__username, ucr['ldap/base'])
