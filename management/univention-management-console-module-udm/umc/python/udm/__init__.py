@@ -97,6 +97,24 @@ def sanitize_func(sanitizer_func):
 	return _decorated
 
 
+class ObjectPropertySanitizer(StringSanitizer):
+
+	def __init__(self, **kwargs):
+		"""A LDAP attribute name.
+			must at least be 1 character long.
+
+			This sanitizer prevents LDAP search filter injections in the attribute name.
+
+			TODO: in theory we should only allow existing attributes for the request object(/object type)
+		"""
+		args = dict(
+			minimum=1,
+			regex_pattern=r'^[\w\d]+$'
+		)
+		args.update(kwargs)
+		StringSanitizer.__init__(self, **args)
+
+
 class Instance(Base, ProgressMixin):
 
 	def __init__(self):
@@ -479,7 +497,10 @@ class Instance(Base, ProgressMixin):
 		thread = notifier.threads.Simple('Get', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
 		thread.run()
 
-	@sanitize(objectPropertyValue=LDAPSearchSanitizer())
+	@sanitize(
+		objectPropertyValue=LDAPSearchSanitizer(),
+		objectProperty=ObjectPropertySanitizer(required=True)
+	)
 	def query(self, request):
 		"""Searches for LDAP objects and returns a few properties of the found objects
 
@@ -511,7 +532,12 @@ class Instance(Base, ProgressMixin):
 				else:
 					raise UMC_OptionTypeError(_('Could not find an UDM module for the superordinate object %s') % superordinate)
 
-			result = module.search(request.options.get('container'), request.options['objectProperty'], request.options['objectPropertyValue'], superordinate, scope=request.options.get('scope', 'sub'), hidden=request.options.get('hidden'))
+			container = request.options.get('container')
+			objectProperty = request.options['objectProperty']
+			objectPropertyValue = request.options['objectPropertyValue']
+			scope = request.options.get('scope', 'sub')
+			hidden = request.options.get('hidden')
+			result = module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden)
 
 			entries = []
 			object_type = request.options.get('objectType', request.flavor)
@@ -885,7 +911,11 @@ class Instance(Base, ProgressMixin):
 	def syntax_choices_info(self, syntax):
 		return info_syntax_choices(syntax)
 
-	@sanitize(objectPropertyValue=LDAPSearchSanitizer())
+	@sanitize(
+		objectPropertyValue=LDAPSearchSanitizer(),
+		objectProperty=ObjectPropertySanitizer(),
+		syntax=StringSanitizer(required=True)
+	)
 	def syntax_choices(self, request):
 		"""Dynamically determine valid values for a given syntax class
 
@@ -894,9 +924,6 @@ class Instance(Base, ProgressMixin):
 
 		return: [ { 'id' : <name>, 'label' : <text> }, ... ]
 		"""
-
-		if 'syntax' not in request.options:
-			raise UMC_OptionMissing("The option 'syntax' is required")
 
 		def _thread(request):
 			return read_syntax_choices(request.options['syntax'], request.options)
@@ -961,6 +988,9 @@ class Instance(Base, ProgressMixin):
 		thread = notifier.threads.Simple('NavContainerQuery', notifier.Callback(_thread, request.options['container']), notifier.Callback(_finish, request))
 		thread.run()
 
+	@sanitize(
+		container=StringSanitizer(required=True)
+	)
 	@LDAP_Connection
 	def nav_object_query(self, request, ldap_connection=None, ldap_position=None):
 		"""Returns a list of objects in a LDAP container (scope: one)
@@ -973,9 +1003,6 @@ class Instance(Base, ProgressMixin):
 
 		return: [ { '$dn$' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
 		"""
-		if 'container' not in request.options:
-			raise UMC_OptionMissing("The option 'container' is required")
-
 		object_type = request.options.get('objectType', '')
 		if object_type not in ('None', '$containers$'):
 			# we need to search for a specific objectType, then we should call the standard query
