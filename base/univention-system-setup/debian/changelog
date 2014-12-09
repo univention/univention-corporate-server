@@ -1,3 +1,10 @@
+univention-system-setup (8.1.66-5) unstable; urgency=medium
+
+  * Depend on univention-heimdal-commong and libsasl2-modules-gssapi-heimdal
+    for SASL ldapsearch (Bug #37168)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Dec 2014 14:20:45 +0100
+
 univention-system-setup (8.1.66-4) unstable; urgency=medium
 
   * Depend on heimdal-clients for kinit (Bug #37168)
