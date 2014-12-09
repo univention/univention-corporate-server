@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-system-setup
-fix: 8.1.66-5.831.201412091452
+fix: 8.1.66-6.833.201412091605
 version: [0]
 desc: |
   This update addresses the following issue:
