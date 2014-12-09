@@ -60,7 +60,7 @@ msgstr ""
 #: umc/python/udm/udm_ldap.py:133
 msgid ""
 "Check the join status of this system by using the domain join UMC module"
-msgstr ""
+msgstr "Überprüfen Sie den Domänenbeitritt-Status dieses Systems durch Benutzung des Domänenbeitritt UMC-Moduls"
 
 #: umc/python/udm/udm_ldap.py:160
 #, python-format
@@ -80,7 +80,7 @@ msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
 
 #: umc/python/udm/udm_ldap.py:130
 msgid "Ensure that the LDAP server on this system is running and responsive"
-msgstr ""
+msgstr "Stellen Sie sicher, dass der LDAP-Server auf diesem System läuft und ansprechbar ist"
 
 #: umc/python/udm/udm_ldap.py:117 umc/python/udm/udm_ldap.py:137
 msgid ""
@@ -111,13 +111,13 @@ msgstr ""
 
 #: umc/python/udm/udm_ldap.py:134
 msgid "Make sure all join scripts were successfully executed"
-msgstr ""
+msgstr "Stellen Sie sicher, dass alle Domänenbeitritt-Skripte erfolgreich ausgeführt wurden"
 
 #: umc/python/udm/udm_ldap.py:131
 msgid ""
 "Make sure the DNS settings of this server are correctly set up and the DNS "
 "server is responsive"
-msgstr ""
+msgstr "Stellen Sie sicher, dass die DNS-Einstellungen dieses Servers korrekt eingestellt sind und der DNS-Server ansprechbar ist"
 
 #: umc/python/udm/udm_ldap.py:112
 #, python-format

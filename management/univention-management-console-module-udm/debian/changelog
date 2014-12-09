@@ -1,3 +1,12 @@
+univention-management-console-module-udm (5.1.26-1) unstable; urgency=medium
+
+  * Bug #31828; Bug #37178: block module usage if the user has no LDAP DN
+  * Bug #28383: prevent search filter injection
+  * Bug #28383: don't accept invalid values in form to be submitted as this
+  	may lead to tracebacks
+
+ -- Florian Best <best@univention.de>  Tue, 09 Dec 2014 12:05:04 +0100
+
 univention-management-console-module-udm (5.1.25-7) unstable; urgency=low
 
   * Bug #35719: Adapted error message
