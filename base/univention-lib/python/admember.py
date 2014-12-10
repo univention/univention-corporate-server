@@ -50,13 +50,22 @@ import univention.uldap
 import univention.lib.package_manager
 from univention.lib.misc import custom_groupname
 import univention.debug as ud
+## Workaround for local module "dns" in s4connector:
+import sys
+orig_path = None
+if sys.path[0] == '':
+	orig_path = sys.path
+	sys.path.append(sys.path.pop(0))
 try:
-		# execute imports in try/except block as during build test scripts are
-		# triggered that refer to the netconf python submodules... and this
-		# reference triggers the import below
-		import dns.resolver
+	# execute imports in try/except block as during build test scripts are
+	# triggered that refer to the netconf python submodules... and this
+	# reference triggers the import below
+	import dns.resolver
 except ImportError as e:
-		ud.debug(ud.MODULE, ud.WARN, 'Ignoring import error: %s' % e)
+	ud.debug(ud.MODULE, ud.WARN, 'Ignoring import error: %s' % e)
+finally:
+	if orig_path:
+		sys.path = orig_path
 
 class failedToSetService(Exception):
 	'''ucs_addServiceToLocalhost failed'''
