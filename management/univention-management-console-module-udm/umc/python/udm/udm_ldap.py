@@ -243,8 +243,7 @@ class ObjectDoesNotExists(UMCError):
 		_ldap_dn_parts = udm_uldap.explodeDn(self.ldap_dn)
 		_ldap_object_name = _ldap_dn_parts[0]
 		_ldap_object_base = ','.join(_ldap_dn_parts[1:])
-		return ldap_connection.searchDn(_ldap_object_name, scope='one', base=_ldap_object_base)
-
+		return any(self.ldap_dn.lower() == dn.lower() for dn in ldap_connection.searchDn(_ldap_object_name, scope='one', base=_ldap_object_base))
 
 	def _error_msg(self):
 		if self._ldap_object_exists():
