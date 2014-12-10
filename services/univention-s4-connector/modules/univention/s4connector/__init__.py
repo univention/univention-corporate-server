@@ -722,6 +722,7 @@ class ucs:
 					return True
 			else:
 				ud.debug(ud.LDAP, ud.ERROR, "__sync_file_from_ucs: Object without entryUUID: %s", (dn,))
+				return False
 
 			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: old: %s" % old)
 			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new: %s" % new)
