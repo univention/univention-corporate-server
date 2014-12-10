@@ -6,10 +6,13 @@ fix: 9.0.44-8.1345.201412030844
 version: [4]
 desc: |
   This update addresses the following issues:
-  - when using the command line tool 'univention-upgrade' all components
+  - When using the command line tool 'univention-upgrade' all components
     blocking an update are now displayed.
-  - detect broken HTTP proxies like DansGuardian, which block downloading the
+  - Detect broken HTTP proxies like DansGuardian, which block downloading the
     updater scripts while still signalling success.
+  - The hints and warning messages before or during the execution of a UCS
+    update have been clarified.
 bug:
  - 37030
  - 37031
+ - 37254
