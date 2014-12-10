@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-45) unstable; urgency=medium
+
+  * Bug #35838: suppress scrollbars in search widget on Chromium 37
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 10 Dec 2014 14:22:56 +0100
+
 univention-management-console-frontend (3.0.152-44) unstable; urgency=low
 
   * Bug #35711: fix checking for ucs/web/license/requested
