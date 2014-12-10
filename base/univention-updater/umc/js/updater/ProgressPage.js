@@ -80,15 +80,9 @@ define([
 			this.inherited(arguments);
 
 			this._pane = new ExpandingTitlePane({
-				title:		_("Log file view")
+				title:		_("Updating...")
 			});
 			this.addChild(this._pane);
-
-			this._head = new Text({
-				region:		'top',
-				content:	_("... please wait ...")
-			});
-			this._pane.addChild(this._head);
 
 			this._log = new _LogViewer({
 				region:			'center',
@@ -181,23 +175,7 @@ define([
 					// is finished.
 					this._last_job = data.result;	// remember for later
 
-					// FIXME Making margins by adding empty lines before and after the text; should
-					//		be done by a style or style class.
-					var msg = "&nbsp;<br/>";
-					msg = msg + lang.replace(_("The job <b>{label}</b> (started {elapsed} ago) is currently running."), this._last_job);
-
-					if (this._last_job.logfile)
-					{
-						msg = msg + ('<br/>' + lang.replace(_("You're currently watching its log file <b>{logfile}</b>"), this._last_job));
-					}
-					msg = msg + "<br/>&nbsp;<br/>";
-
-
-					this._head.set('content', msg);
-
-					// if (! data.result['running'])
-					// {
-					// }
+					this._pane.set('title', this._last_job.label);
 
 					if (data.result.running)
 					{
@@ -269,8 +247,8 @@ define([
 		// Additionally, changes some labels to reflect the current situation.
 		_allow_close: function(yes) {
 			domClass.toggle(this._close.domNode, 'dijitHidden', ! yes);
-			// While the button is hidden, the polling callback maintains the content
-			// of this._head. Only if Close is enabled -> set to a different text.
+			// While the button is hidden, the polling callback maintains the content.
+			// Only if Close is enabled -> set to a different text.
 			if (yes)
 			{
 				if ((this._job_key !== '') && (this._last_job))
@@ -278,19 +256,6 @@ define([
 					// First thing to do: notify the Module that the job is finished. So it can already
 					// refresh the 'Updates' and 'Components' pages before the user gets back there.
 					this.onJobFinished();
-
-					// FIXME Manually making empty lines before and after this text; should better be done
-					//		by a style or a style class.
-					var msg = "&nbsp;<br/>";
-					msg = msg + lang.replace(_("The current job (<b>{label}</b>) is now finished.<br/>"), this._last_job);
-					if (this._last_job.elapsed !== undefined)
-					{
-						msg = msg + lang.replace(_("It took {elapsed} to complete.<br/>"), this._last_job);
-					}
-					msg = msg + _("You may return to the overview by clicking the 'back' button now.");
-					msg = msg + "<br/>&nbsp;<br/>";
-
-					this._head.set('content', msg);
 
 					// set headers according to the outcome
 					var status = 'success';
@@ -329,7 +294,7 @@ define([
 		startWatching: function() {
 
 			// ensure a clean look (and not some stale text from last job)
-			this._head.set('content', _("... loading job data ..."));
+			this._pane.set('title', _('Updating...'));
 
 			this._allow_close(false);					// forbid closing this tab.
 			this._log.startWatching(this._interval);	// start logfile tail
@@ -372,19 +337,18 @@ define([
 
 			var headings = {
 				'running': {
-					// title:			_("Update in progress"),
-					headerText:		_("Univention Updater is working"),
-					helpText:		_("As long as the Univention Updater is updating your system, you're not allowed to manage settings. You may watch the progress, or close the module.")
+					headerText:		_('UCS is being updated'),
+					helpText: '<p>' + _('The update is being executed.') +
+						' ' + _('<b>Leave the system up and running</b> at any moment during the update!') + '</p>' +
+						'<p>' + _('It is expected that the system may not respond (via web browser, SSH, etc.) during a period of up to several minutes during the update as services are stopped, updated, and restarted.') + '</p>'
 				},
 				'success': {
-					// title:			_("Update finished"),
-					headerText:		_("Univention Updater job completed"),
-					helpText:		_("Univention Updater has successfully finished the current job. You may read through the log file. If you're finished you may press the 'back' button to close this view.")
+					headerText:		_('UCS update successful'),
+					helpText:		_('The update has been successfully finished. Press the "back" button to close this view.')
 				},
 				'failed': {
-					// title:			_("Update failed"),
-					headerText:		_("Univention Updater job failed"),
-					helpText:		_("Univention Updater could not successfully complete the current job. The log file should show the cause of the failure. If you're finished examining the log file you may press the 'back' button to close this view.")
+					headerText:		_('UCS update failed'),
+					helpText:		_('The update failed, please examine the log file for the exact cause. Press the "back" button to close this view.')
 				}
 			};
 

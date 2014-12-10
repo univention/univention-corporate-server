@@ -1,3 +1,9 @@
+univention-updater (9.0.44-9) unstable; urgency=medium
+
+  * Bug #37254: clarified hints before and during updates
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 10 Dec 2014 20:05:52 +0100
+
 univention-updater (9.0.44-8) unstable; urgency=low
 
   * Bug #37030: Show all blocking components

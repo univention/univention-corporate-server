@@ -122,7 +122,7 @@ define([
 				this._call_installer({
 					job:		'release',
 					detail:		release,
-					confirm:	lang.replace(_("Do you really want to install release updates up to version {release}?"), {release: release})
+					confirm:	lang.replace(_("Update to {release}"), {release: release})
 				});
 			}));
 
@@ -135,7 +135,7 @@ define([
 			this._updates.on('runeasyupgrade', lang.hitch(this, function() {
 				this._call_installer({
 					job:		'easyupgrade',
-					confirm:	_("Do you really want to upgrade your system?")
+					confirm:	_("Upgrade system")
 				});
 			}));
 
@@ -286,40 +286,22 @@ define([
 		//		any string ... the confirmation text to ask.
 		_call_installer: function(args) {
 
+			var msg = '';
 			if (args.confirm)
 			{
-				var msg = "<h1>" + _("Attention!") + "</h1><br/>";
-				msg = msg + "<p>" +
-					_("Installing a system update is a significant change to this system and could have impact to other systems. ") +
-					_("In normal case, trouble-free use by users is not possible during the update, since system services may need to be restarted. ") +
-					_("Thus, updates shouldn't be installed on a live system. ") +
-					_("It is also recommended to evaluate the update in a test environment and to create a backup of the system.") +
-					"</p>";
-				msg = msg + "<p>" +
-					_("During setup, the web server may be stopped, leading to a termination of the HTTP connection. ") +
-					_("Nonetheless, the update proceeds and the update can be monitored from a new UMC session. ") +
-					_("Logfiles can be found in the directory /var/log/univention/.") +
-					"</p>";
-				msg = msg + "<p>" +
-					_("Please also consider the release notes, changelogs and references posted in the <a href='http://forum.univention.de'>Univention Forum</a>.") +
-					"</p>";
-				msg = msg + "<p><strong>" +
-					_("DO NOT power off the system during the update.") +
-					"</strong> " +
-					_("The update can take a long time and the system may respond slowly. You may be temporarily unable to log in.") +
-					" <strong>" +
-					_("Again, DO NOT power off the system even in these cases!") +
-					"</strong></p>";
-				if (typeof(args.confirm) == 'string')
-				{
-					msg = msg + "<p>" + args.confirm + "</p>";
+				msg = '<p>' + _('Please respect the following guidelines for UCS updates:') + '</p>';
+				msg += '<ul>';
+				msg += '<li>' + _('<b>Leave the system up and running</b> at any moment during the update!') + ' ' + _('It is expected that the system may not respond (via web browser, SSH, etc.) during a period of up to several minutes during the update as services are stopped, updated, and restarted.') + '</li>';
+				msg += '<li>' + _('The update should occur in a <b>maintenance window</b> as some services in the domain may not be available during the update.') + '</li>';
+				msg += '<li>' + _('It is recommended to <b>test the update</b> in a separate test environment prior to the actual update.') + '</li>';
+				if (args.detail) {
+					msg += '<li>' + _('Consider <a href="http://docs.univention.de/release-notes-%s-en.html" target="_blank">release notes and changelogs</a> as well as references posted in the <a href="http://forum.univention.de/viewforum.php?f=54" targe="_blank">Univention Forum</a>.', args.detail) + '</li>';
 				}
-				else
-				{
-					msg = msg + "<p>" +
-						_("Do you really wish to proceed?") +
-						"</p>";
+				else {
+					msg += '<li>' + _('Consider <a href="http://docs.univention.de" target="_blank">release notes and changelogs</a> as well as references posted in the <a href="http://forum.univention.de/viewforum.php?f=54" targe="_blank">Univention Forum</a>.') + '</li>';
 				}
+				msg += '</ul>';
+				msg += '<p>' + _('Depending on the system performance, network connection and the installed software the update may take from 30 minutes up to several hours.') + '</p>';
 
 				dialog.confirm(msg,
 				[
@@ -327,14 +309,14 @@ define([
 						label:		_('Cancel')
 					},
 					{
-						label:		_('Install'),
+						label:		args.confirm,
 						'default':	true,
 						callback:	lang.hitch(this, function() {
 							args.confirm = false;
 							this._call_installer(args);
 						})
 					}
-				]);
+				], _('Update notes'));
 
 				return;
 			}
@@ -343,7 +325,7 @@ define([
 
 			this.umcpCommand('updater/installer/execute', {
 				job:	args.job,
-				detail:		args.detail ? args.detail : ''
+				detail:		args.detail || ''
 			}).then(lang.hitch(this, function(data) {
 				this.standby(false);
 				if (data.result.status === 0)
@@ -452,9 +434,6 @@ define([
 							this._progress.startPolling();
 						})
 						);
-
-
-						this.addNotification(_("Your current session has expired, or the connection to the server was lost. You must authenticate yourself again."));
 					}
 	//				else
 	//				{
@@ -466,26 +445,19 @@ define([
 					this._connection_status = 1;
 
 					this._error_count = this._error_count + 1;
-					if (this._error_count < 5)
+					if (this._error_count >= 5 && this._busy_dialog === null)
 					{
-						// this toaster thingy is not really usable!
-						//this.addNotification(_("Connection to server lost. Trying to reconnect."));
-					}
-					else
-					{
-						if (this._busy_dialog === null)
-						{
-							this._busy_dialog = new Dialog({
-								title:		_("Connection lost!"),
-								closable:	false,
-								style:		"width: 300px",
-								'class':	'umcConfirmDialog'
-							});
-							this._busy_dialog.attr("content",
-									'<p>' + _("The connection to the server was lost, trying to reconnect. You may need to re-authenticate when the connection is restored.") + '</p>' +
-									'<p>' + _("Alternatively, you may close the current Management Console window, wait some time, and try to open it again.") + '</p>');
-							this._busy_dialog.show();
-						}
+						this._busy_dialog = new Dialog({
+							title:		_('Update notes'),
+							closable:	false,
+							style:		"width: 300px",
+							'class':	'umcConfirmDialog'
+						});
+						this._busy_dialog.attr("content",
+							'<p>' + _('The update is being executed.') + '</p>' +
+							'<p>' + _('<b>Leave the system up and running</b> at any moment during the update!') + '</p>' +
+							'<p>' + _('It is expected that the system may not respond (via web browser, SSH, etc.) during a period of up to several minutes during the update as services are stopped, updated, and restarted.') + '</p>');
+						this._busy_dialog.show();
 					}
 				}
 			}

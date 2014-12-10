@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-updater\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-11-05 09:45+0100\n"
+"POT-Creation-Date: 2014-12-10 20:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,30 +12,33 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/updater/__init__.py:108
-msgid "Install all available updates for the current release"
-msgstr "Alle verfügbaren Aktualisierungen installieren"
+#: umc/python/updater/__init__.py:102
+msgid "Package update"
+msgstr "Paket-Aktualisierung"
 
-#: umc/python/updater/__init__.py:101
-msgid "Install all package updates"
-msgstr "Alle Paket-Aktualisierungen installieren"
+#: umc/python/updater/__init__.py:109
+msgid "Release update"
+msgstr "Release-Aktualisierung"
 
-#: umc/python/updater/__init__.py:95
+#: umc/python/updater/__init__.py:96
 #, python-format
-msgid "Perform release update up to version '%s'"
-msgstr "Release auf Version '%s' aktualisieren"
+msgid "Release update to version %s"
+msgstr "Release-Aktualisierung nach %s"
 
-#: umc/python/updater/__init__.py:705
+#: umc/python/updater/__init__.py:710
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: umc/python/updater/__init__.py:275
+#: umc/python/updater/__init__.py:280
 msgid "latest version"
 msgstr "neueste Version"
 
-#: umc/python/updater/__init__.py:382
+#: umc/python/updater/__init__.py:387
 msgid "unknown"
 msgstr "unbekannt"
+
+#~ msgid "Install all available updates for the current release"
+#~ msgstr "Alle verfügbaren Aktualisierungen installieren"
 
 #~ msgid "Install all errata updates"
 #~ msgstr "Alle Errata-Aktualisierungen installieren"
