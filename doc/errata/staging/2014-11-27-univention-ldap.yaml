@@ -5,7 +5,7 @@ src: univention-ldap
 fix: 11.0.10-2.729.201411241941
 version: [0]
 desc: |
-  This update addresses the following issues:
+  This update addresses the following issue:
   * The objecclass msGPOContainer has been extended
     to support the new attribute msNTSecurityDescriptor
 bug: [36979]
