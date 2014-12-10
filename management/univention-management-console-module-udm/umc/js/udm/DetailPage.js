@@ -67,7 +67,6 @@ define([
 ], function(declare, lang, array, on, query, Deferred, all, style, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
 
 	var _StandbyPage = declare([Page, StandbyMixin], {});
-	var _nameMem = {}; // this name memory is used to avoid displaying ActiveDirectoryWarning twice per session 
 
 	return declare("umc.modules.udm.DetailPage", [ ContainerWidget, StandbyMixin ], {
 		// summary:
@@ -703,7 +702,7 @@ define([
 			}
 			var name;
 			if (this._multiEdit) {
-				name = _('The %s are', this.objectNamePlural);
+				name = _('<b>Attention:</b> The %s are', this.objectNamePlural);
 			} else {
 				var value = '';
 				tools.forIn(this._form._widgets, function(name, widget) {
@@ -713,13 +712,18 @@ define([
 						return false; // break out of forIn
 					}
 				}, this);
-				name = _('The %s "%s" is', this.objectNameSingular, value);
-				if(_nameMem[value]){ // check if the warning has already been displayed for this user
-					return;
-				}
-				_nameMem[value] = true;
+				name = _('<b>Attention:</b> The %s "%s" is', this.objectNameSingular, value);
 			}
-			this.addWarning(_('%s part of the Active Directory domain. UCS can only change certain attributes.', name));
+			if (!this.adInformation) {
+				this.adInformation = new Text({
+					content: _('%s part of the Active Directory domain. UCS can only change certain attributes.', name),
+					'class': 'umcUDMDetailPageWarning'
+				});
+				this.own(this.adInformation);
+
+				var page = this._tabs.getChildren()[0];
+				page.addChild(this.adInformation, 0);
+			}
 		},
 
 		_prepareOptions: function(properties, layout, template, formBuiltDeferred) {

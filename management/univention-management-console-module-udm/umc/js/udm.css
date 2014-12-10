@@ -16,6 +16,12 @@
 	margin-top: 35px;
 }
 
+.umc .umcUDMDetailPageWarning {
+	border-top: 2px black solid;
+	margin-bottom: -2em;
+	padding-top: 1em;
+}
+
 @media (max-width: 549px) {
 	.umc .umcUDMLicenseImportIcon {
 		margin-top: 0px;

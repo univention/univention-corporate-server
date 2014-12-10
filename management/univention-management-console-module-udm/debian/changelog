@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.26-1) unstable; urgency=low
+
+  * Bug #36732: Replaced AD notification with fixed text
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 10 Dec 2014 12:32:45 +0100
+
 univention-management-console-module-udm (5.1.25-15) unstable; urgency=low
 
   * Bug #34246: fixed translation
