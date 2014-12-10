@@ -1,3 +1,9 @@
+univention-lib (4.0.5-9) unstable; urgency=medium
+
+  * AD Member: Check if nscd exists (Bug #35562)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Dec 2014 13:24:57 +0100
+
 univention-lib (4.0.5-8) unstable; urgency=medium
 
   * Workaround for module shadowing (Bug #35562)

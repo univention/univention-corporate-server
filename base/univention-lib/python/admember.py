@@ -903,9 +903,10 @@ def prepare_dns_reverse_settings(ad_domain_info):
 		ucr_key = u'hosts/static/%s' % (ip,)
 		ucr_set = [ u'%s=%s' % (ucr_key, ad_server_name), ]
 		univention.config_registry.handler_set(ucr_set)
-		cmd = ("nscd", "--invalidate=hosts")
-		p1 = subprocess.Popen(cmd, close_fds=True)
-		p1.communicate()
+		if os.path.exists("/usr/sbin/nscd"):
+			cmd = ("/usr/sbin/nscd", "--invalidate=hosts")
+			p1 = subprocess.Popen(cmd, close_fds=True)
+			p1.communicate()
 	
 
 def prepare_kerberos_ucr_settings(realm=None, ucr=None):
