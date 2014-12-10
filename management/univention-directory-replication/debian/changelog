@@ -1,3 +1,9 @@
+univention-directory-replication (7.0.1-14) unstable; urgency=low
+
+  * Bug #34761: Prevent recursive listener restart
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 09 Dec 2014 07:34:31 +0100
+
 univention-directory-replication (7.0.1-13) unstable; urgency=medium
 
   * Bug #36353: Fix whitespace

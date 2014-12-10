@@ -3,7 +3,7 @@
 # Univention Directory Replication
 #  re-synchronize the local LDAP directory
 #
-# Copyright 2001-2013 Univention GmbH
+# Copyright 2001-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,9 +32,13 @@
 # Univention LDAP Listener replication module
 
 eval "$(univention-config-registry shell)"
-export faileddns=`tempfile`
 
-
+UDL='univention-directory-listener'
+LOG='/var/log/univention/ldap-replication-resync.log'
+die () {
+	echo "$1" >&2
+	exit ${2:-1}
+}
 
 display_header() {
         echo ""
@@ -42,6 +46,7 @@ display_header() {
         echo "copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany"
 		echo "usage: $0 <failed.ldif>"
         echo ""
+		exit ${1:-0}
 }
 
 
@@ -72,10 +77,12 @@ getdns()
 	}
 }
 
-if [ -z "$1" ] || [ "$1" = "-h" -o "$1" = "--help" ]; then
-	display_header
-	exit 1
-fi
+case "${1:-}" in
+-h|--help) display_header 0 ;;
+esac
+[ -n "${1:-}" ] || die "Missing argument: failed.ldif"
+[ -f "$1" ] || die "Not a regular file: $1"
+[ -r "$1" ] || die "File not readable: $1"
 
 if ! pidof slapd > /dev/null 2>&1
 	then
@@ -84,33 +91,59 @@ if ! pidof slapd > /dev/null 2>&1
 	exit 1
 fi
 
-if ! test -f $1
-	then
-	echo "Input $1 is no regular file"
-	exit 1
+date >>"$LOG"
+echo "Try to sync changes stored in $1 into local LDAP" | tee -a "$LOG"
+
+try_stop_listener () {
+	local pid=$$ lpid pfile="/etc/runit/$UDL/supervise/pid"
+	[ -s "$pfile" ] || return 0
+	lpid=$(cat "$pfile")
+	while pid="$(ps -o ppid:1= "$pid")"
+	do
+		case "$pid" in
+		""|1) break ;;
+		"$lpid")
+			echo "Running from $UDL (PID $lpid) itself - skipping shutdown."
+			return 0
+			;;
+		esac
+	done
+	echo -n "Shutting down ${UDL}."
+	for ((i=0; i<60; i++))
+	do
+		[ "$i" = "${i%0}" ] && sv down "$UDL"
+		sleep 1
+		if sv status "$UDL" | grep -q ^down:
+		then
+			echo " DONE."
+			return 0
+		fi
+		echo -n " ."
+	done
+	die " FAILED."
+}
+try_stop_listener
+fuser -v "$1" && die "File still in use: $1"
+if [ ! -s "$1" ]
+then
+	rm -f "$1"
+	/etc/init.d/univention-directory-listener start
+	die "Empty file removed: $1" 0
 fi
 
-date >> /var/log/univention/ldap-replication-resync.log
-echo "Try to sync changes stored in $1 into local LDAP" | tee -a /var/log/univention/ldap-replication-resync.log
-sv down univention-directory-listener
-echo -n "waiting for listener-shutdown "
-while ! sv status univention-directory-listener | grep ^down: >/dev/null
-  do sleep 1
-  echo -n " ."
-done
-echo " shutdown done"
-
 echo "replay stored changes ..."
-if ldapmodify -x -w`cat /etc/ldap/rootpw.conf |cut -d'"' -f 2` -D "cn=update,${ldap_base}" -c -S"${faileddns}" -f "$1" >> /var/log/univention/ldap-replication-resync.log 2>&1
+faileddns="$(tempfile)"
+if ldapmodify -x -w "$(cut -d\" -f2 /etc/ldap/rootpw.conf)" -D "cn=update,${ldap_base}" -c -S "${faileddns}" -f "$1" >>"$LOG" 2>&1
 then
 	echo ""
-	d=`date +%F-%X`
-	echo "Restored modifies sucessfuly, the ldif-file will be moved to /tmp/replayed.ldif_$d"
+	dst="/var/lib/univention-directory-replication/replayed.ldif_$(date +%F-%X)"
+	echo "Restored modifications successfully, the LDIF file will be moved to $dst"
 	rm "${faileddns}"
 	if [ ! -d /var/lib/univention-directory-replication ]; then
 		mkdir -p /var/lib/univention-directory-replication; chmod -R 700 /var/lib/univention-directory-replication
 	fi
-	mv $1 "/var/lib/univention-directory-replication/replayed.ldif_$d"; chmod 600 "/var/lib/univention-directory-replication/replayed.ldif_$d"
+	mv "$1" "$dst"
+	chmod 600 "$dst"
 	/etc/init.d/univention-directory-listener start
 	exit 0
 else
@@ -122,4 +155,3 @@ else
 	echo "/etc/init.d/univention-directory-listener start"
 	exit 1
 fi
-
