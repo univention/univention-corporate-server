@@ -2,11 +2,11 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-management-console-module-udm
-fix: 5.1.25-1.524.201412101232
+fix: 5.1.25-16.526.201412101241
 version: [0]
 desc: |
-  * A notification for AD objects (e.g. user/groups) will only be
-    shown once per session
+  * The notification for AD objects is replaced by a fixed text to
+    inform the user that the objects belongs to the AD
   * The error message if the connection to the LDAP server fails
     has been extended.
   * The UMCP command udm/layout failed if a DN was given which could not
