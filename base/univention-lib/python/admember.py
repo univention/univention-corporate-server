@@ -52,9 +52,10 @@ from univention.lib.misc import custom_groupname
 import univention.debug as ud
 ## Workaround for local module "dns" in s4connector:
 import sys
+import copy
 orig_path = None
 if sys.path[0] == '':
-	orig_path = sys.path
+	orig_path = copy.deepcopy(sys.path)
 	sys.path.append(sys.path.pop(0))
 try:
 	# execute imports in try/except block as during build test scripts are
