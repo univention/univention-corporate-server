@@ -1,3 +1,9 @@
+univention-directory-replication (8.0.2-5) unstable; urgency=low
+
+  * Bug #34761: Prevent recursive listener restart
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 09 Dec 2014 07:34:31 +0100
+
 univention-directory-replication (8.0.2-4) unstable; urgency=medium
 
   * Bug #36353: Update replication.py to filter out ppolicy attributes         
