@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-12-10 12:17+0100\n"
+"POT-Creation-Date: 2014-12-10 13:39+0100\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -68,6 +68,7 @@ msgid "(multi-edit)"
 msgstr "(Mehrfachbearbeitung)"
 
 #: umc/js/udm/DetailPage.js:715
+#, python-format
 msgid "<b>Attention:</b> The %s \"%s\" is"
 msgstr "<b>Hinweis:</b> Der %s \"%s\" ist"
 
@@ -222,8 +223,8 @@ msgstr "Zurück zur Suche"
 msgid "Boot"
 msgstr "Boot"
 
-#: umc/js/udm/startup.js:91 umc/js/udm/CreateReportDialog.js:114
-#: umc/js/udm/DetailPage.js:1039 umc/js/udm/LicenseImportDialog.js:138
+#: umc/js/udm/CreateReportDialog.js:114 umc/js/udm/startup.js:91
+#: umc/js/udm/LicenseImportDialog.js:138 umc/js/udm/DetailPage.js:1039
 #: umc/js/udm.js:1141 umc/js/udm.js:1432
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -240,8 +241,8 @@ msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 msgid "Clients"
 msgstr "Clients"
 
-#: umc/js/udm/CreateReportDialog.js:165 umc/js/udm/LicenseImportDialog.js:109
-#: umc/js/udm/LicenseDialog.js:72
+#: umc/js/udm/CreateReportDialog.js:165 umc/js/udm/LicenseDialog.js:72
+#: umc/js/udm/LicenseImportDialog.js:109
 msgid "Close"
 msgstr "Schließen"
 
@@ -493,7 +494,7 @@ msgstr ""
 "\" die gesetzte Richtlinie in einem neuen Reiter geöffnet und bearbeitet "
 "werden."
 
-#: umc/js/udm/DetailPage.js:381 umc/js/udm/wizards/CreateWizard.js:137
+#: umc/js/udm/wizards/CreateWizard.js:137 umc/js/udm/DetailPage.js:381
 #, python-format
 msgid "Loading %s..."
 msgstr "Lade %s..."
@@ -998,6 +999,7 @@ msgid "groups"
 msgstr "Gruppen"
 
 #: umc/js/udm/ComboBox.js:336
+#, python-brace-format
 msgid "in {size} objects"
 msgstr "insgesamt {size} Objekte"
 

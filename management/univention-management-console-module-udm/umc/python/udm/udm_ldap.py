@@ -53,8 +53,6 @@ import univention.admin.uexceptions as udm_errors
 from ...config import ucr
 from ...log import MODULE
 
-from univention.admin.uldap import explodeDn
-
 from .syntax import widget, default_value
 
 from ldap import LDAPError, SERVER_DOWN, INVALID_CREDENTIALS
@@ -107,7 +105,6 @@ class LDAP_ServerDown(UMCError):
 	def _error_msg(self):
 		yield _('Cannot connect to the LDAP service.')
 		yield _('The following steps can help to solve this problem:')
-		yield ' * ' + _('Check the available hard disk space and RAM on the domaincontroller master')
 		if self._is_master:
 			yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server or free some resources')
 		else:
@@ -139,6 +136,42 @@ class UserWithoutDN(UMCError):
 		yield _('If the problem persists additional hints about the cause can be found in the following log file(s):')
 		yield ' * /var/log/univention/management-console-module-udm.log'
 		yield ' * /var/log/univention/management-console-server.log'
+
+
+class LDAP_AuthenticationFailed(UMCError):
+
+	def __init__(self):
+		super(LDAP_AuthenticationFailed, self).__init__(status=BAD_REQUEST_UNAUTH)
+
+	def _error_msg(self):
+		yield _('Authentication failed')
+
+
+class ObjectDoesNotExists(UMCError):
+
+	def __init__(self, ldap_dn):
+		self.ldap_dn = ldap_dn
+		super(ObjectDoesNotExists, self).__init__()
+
+	@LDAP_Connection
+	def _ldap_object_exists(self, ldap_connection=None, ldap_position=None):
+		_ldap_dn_parts = udm_uldap.explodeDn(self.ldap_dn)
+		_ldap_object_name = _ldap_dn_parts[0]
+		_ldap_object_base = ','.join(_ldap_dn_parts[1:])
+		return ldap_connection.searchDn(_ldap_object_name, scope='one', base=_ldap_object_base)
+
+	def _error_msg(self):
+		if self._ldap_object_exists():
+			yield _('Could not identify the LDAP object type for %s.') % (self.ldap_dn,)
+		else:
+			yield _('LDAP object %s could not be opened.') % (self.ldap_dn,)
+			yield _('It possibly has been deleted or moved. Please update your search results and open the object again.')
+			yield _('If the problem persists please try reloading the Univention Management Console.')
+
+
+class SuperordinateDoesNotExists(ObjectDoesNotExists):
+	def _error_msg(self):
+		yield _('Could not find an UDM module for the superordinate object %s') % (self.ldap_dn,)
 
 
 def error_handler(func):
@@ -1461,34 +1494,3 @@ def read_syntax_choices(syntax_name, options={}, module_search_options={}, ldap_
 		return syntax.choices
 
 	return map(lambda x: {'id': x[0], 'label': x[1]}, getattr(syn, 'choices', []))
-
-class LDAP_AuthenticationFailed(UMCError):
-	def __init__(self):
-		super(LDAP_AuthenticationFailed, self).__init__(status=BAD_REQUEST_UNAUTH)
-
-	def _error_msg(self):
-		yield _('Authentication failed')
-
-class ObjectDoesNotExists(UMCError):
-	def __init__(self, ldap_dn):
-		self.ldap_dn = ldap_dn
-		super(ObjectDoesNotExists, self).__init__()
-
-	@LDAP_Connection
-	def _ldap_object_exists(self, ldap_connection=None, ldap_position=None):
-		_ldap_dn_parts = explodeDn(self.ldap_dn)
-		_ldap_object_name = _ldap_dn_parts[0]
-		_ldap_object_base = ','.join(_ldap_dn_parts[1:])
-		return ldap_connection.searchDn(_ldap_object_name, scope='one', base=_ldap_object_base)
-
-	def _error_msg(self):
-		if self._ldap_object_exists():
-			yield _('Could not identify the LDAP object type for %s.') % (self.ldap_dn,)
-		else:
-			yield _('LDAP object %s could not be opened.') % (self.ldap_dn,)
-			yield _('It possibly has been deleted or moved. Please update your search results and open the object again.')
-			yield _('If the problem persists please try reloading the Univention Management Console.')
-
-class SuperordinateDoesNotExists(ObjectDoesNotExists):
-	def _error_msg(self):
-		yield _('Could not find an UDM module for the superordinate object %s') % (self.ldap_dn,)
