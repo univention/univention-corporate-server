@@ -1,3 +1,12 @@
+univention-management-console-module-udm (5.1.25-18) unstable; urgency=low
+
+  * Bug #34246: 
+    -fixed translation
+    -fixed wrong order in umc/python/udm/udm_ldap.py
+    - update error message for SuperordinateDoesNotExists
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 10 Dec 2014 15:35:42 +0100
+
 univention-management-console-module-udm (5.1.25-17) unstable; urgency=medium
 
   * Bug #35719: Bug #34246: fix some merge conflicts

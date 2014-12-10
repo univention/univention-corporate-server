@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-12-10 13:39+0100\n"
+"POT-Creation-Date: 2014-12-10 15:28+0100\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -169,7 +169,7 @@ msgstr "UCS-Aktivierung"
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: umc/js/udm/NewObjectDialog.js:89 umc/js/udm.js:496
+#: umc/js/udm.js:496 umc/js/udm/NewObjectDialog.js:89
 #, python-format
 msgid "Add a new %s"
 msgstr "%s neu hinzufügen"
@@ -223,9 +223,9 @@ msgstr "Zurück zur Suche"
 msgid "Boot"
 msgstr "Boot"
 
-#: umc/js/udm/CreateReportDialog.js:114 umc/js/udm/startup.js:91
-#: umc/js/udm/LicenseImportDialog.js:138 umc/js/udm/DetailPage.js:1039
-#: umc/js/udm.js:1141 umc/js/udm.js:1432
+#: umc/js/udm.js:1141 umc/js/udm.js:1432 umc/js/udm/startup.js:91
+#: umc/js/udm/LicenseImportDialog.js:138 umc/js/udm/CreateReportDialog.js:114
+#: umc/js/udm/DetailPage.js:1039
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -241,8 +241,8 @@ msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 msgid "Clients"
 msgstr "Clients"
 
-#: umc/js/udm/CreateReportDialog.js:165 umc/js/udm/LicenseDialog.js:72
-#: umc/js/udm/LicenseImportDialog.js:109
+#: umc/js/udm/LicenseDialog.js:72 umc/js/udm/LicenseImportDialog.js:109
+#: umc/js/udm/CreateReportDialog.js:165
 msgid "Close"
 msgstr "Schließen"
 
@@ -323,7 +323,7 @@ msgstr "DVS Benutzer"
 msgid "Data type"
 msgstr "Datentyp"
 
-#: umc/js/udm/MultiObjectSelect.js:108 umc/js/udm.js:671
+#: umc/js/udm.js:671 umc/js/udm/MultiObjectSelect.js:108
 msgid "Default properties"
 msgstr "Standardeigenschaften"
 
@@ -393,7 +393,7 @@ msgstr "Allgemein"
 msgid "Groups"
 msgstr "Gruppen"
 
-#: umc/js/udm/DetailPage.js:1054 umc/js/udm.js:382
+#: umc/js/udm.js:382 umc/js/udm/DetailPage.js:1054
 msgid "Help"
 msgstr "Hilfe"
 
@@ -461,7 +461,7 @@ msgstr "LDAP-Objekte"
 msgid "Lease Time"
 msgstr "Lease-Zeit"
 
-#: umc/js/udm/startup.js:129 umc/js/udm.js:1637
+#: umc/js/udm.js:1637 umc/js/udm/startup.js:129
 msgid "License"
 msgstr "Lizenz"
 
@@ -720,8 +720,8 @@ msgstr "Durch Richtlinien ererbte Eigenschaften"
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: umc/js/udm/MultiObjectSelect.js:116 umc/js/udm/MultiObjectSelect.js:131
-#: umc/js/udm.js:733 umc/js/udm.js:753
+#: umc/js/udm.js:733 umc/js/udm.js:753 umc/js/udm/MultiObjectSelect.js:116
+#: umc/js/udm/MultiObjectSelect.js:131
 msgid "Property value"
 msgstr "Eigenschaftswert"
 
@@ -802,7 +802,7 @@ msgstr "Vereinfachte Optionen"
 msgid "Start of authority"
 msgstr "Start of Authority Eintrag"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:313 umc/js/udm.js:648
+#: umc/js/udm.js:648 umc/js/udm/wizards/FirstPageWizard.js:313
 msgid "Superordinate"
 msgstr "Übergeordnetes Objekt"
 
@@ -893,10 +893,10 @@ msgstr "Die zuverwendende Reportvorlage"
 msgid "This UCS system is part of an Active Directory domain"
 msgstr "Dieses UCS-System ist Teil einer Active Directory-Domäne"
 
+#: umc/js/udm.js:683 umc/js/udm.js:1300 umc/js/udm.js:1313
 #: umc/js/udm/wizards/FirstPageWizard.js:324
 #: umc/js/udm/wizards/FirstPageWizard.js:343
-#: umc/js/udm/wizards/FirstPageWizard.js:381 umc/js/udm.js:683
-#: umc/js/udm.js:1300 umc/js/udm.js:1313
+#: umc/js/udm/wizards/FirstPageWizard.js:381
 msgid "Type"
 msgstr "Typ"
 
@@ -999,7 +999,6 @@ msgid "groups"
 msgstr "Gruppen"
 
 #: umc/js/udm/ComboBox.js:336
-#, python-brace-format
 msgid "in {size} objects"
 msgstr "insgesamt {size} Objekte"
 
