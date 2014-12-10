@@ -6,6 +6,9 @@ Variables: cups/quota/admin/mail
 Variables: cups/quota/inform
 
 Type: file
+User: pykota
+Group: pykota
+Mode: 640
 File: etc/pykota/pykotadmin.conf
 Variables: cups/quota/account
 Variables: cups/quota/secret

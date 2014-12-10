@@ -32,7 +32,6 @@
 
 . /usr/share/univention-lib/all.sh
 
-chmod 0600 /etc/univention/templates/files/etc/pykota/pykotadmin.conf
 #DEBHELPER#
 
 chown -R pykota.pykota /etc/pykota
@@ -41,7 +40,7 @@ chmod -R g+rw /etc/pykota
 # should be enabled for cups 1.2
 # chmod o+r /etc/pykota/pykotadmin.conf /etc/pykota/pykota.conf
 
-# if all users have access to /usr/share/pykota/cupspykota thenn 
+# if all users have access to /usr/share/pykota/cupspykota then 
 # pykota will run as user lp
 dpkg-statoverride --update --add root root 700 /usr/share/pykota/cupspykota >/dev/null || true
 
@@ -66,6 +65,12 @@ fi
 if [ "$1" = "configure" ]; then
 	uinst=/usr/lib/univention-install/20univention-printquota.uinst
 	[ -e "$uinst" ] && rm "$uinst"
+fi
+
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.0-3; then
+	if [ -f "/etc/univention/templates/files/etc/pykota/pykotadmin.conf" ]; then
+		chmod 644 /etc/univention/templates/files/etc/pykota/pykotadmin.conf
+	fi
 fi
 
 call_joinscript 80univention-printquota.inst
