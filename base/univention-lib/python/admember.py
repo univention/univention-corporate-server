@@ -50,11 +50,12 @@ import univention.uldap
 import univention.lib.package_manager
 from univention.lib.misc import custom_groupname
 import univention.debug as ud
+
 ## Workaround for local module "dns" in s4connector:
 import sys
 import copy
 orig_path = None
-if sys.path[0] == '':
+if sys.path[0] == '/usr/share/pyshared/univention/s4connector/s4':
 	orig_path = copy.deepcopy(sys.path)
 	sys.path.append(sys.path.pop(0))
 try:

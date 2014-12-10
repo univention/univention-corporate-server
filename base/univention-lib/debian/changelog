@@ -1,3 +1,9 @@
+univention-lib (4.0.5-11) unstable; urgency=medium
+
+  * AD Member: Fixed++ workaround for module shadowing (Bug #35562)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Dec 2014 15:39:57 +0100
+
 univention-lib (4.0.5-10) unstable; urgency=medium
 
   * AD Member: Fixed workaround for module shadowing (Bug #35562)
