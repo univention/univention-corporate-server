@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-printquota
+fix: 7.0.0-3.65.201412101801
+version: [0]
+desc: |
+ This update addresses the following issues:
+  * The permissions for the pykotadmin.conf UCR template
+    have been fixed.
+bug: [36859]
