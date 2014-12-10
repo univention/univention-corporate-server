@@ -118,9 +118,9 @@ msgid "LDAP error: %s."
 msgstr "LDAP-Fehler: %s."
 
 #: umc/python/udm/udm_ldap.py:1484
-#, fuzzy, python-format
+#, python-format
 msgid "LDAP object %s could not be opened."
-msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
+msgstr "Das LDAP-Objekt %s konnte nicht geöffnet werden"
 
 #: umc/python/udm/__init__.py:430
 msgid "LDAP object could not be identified"
