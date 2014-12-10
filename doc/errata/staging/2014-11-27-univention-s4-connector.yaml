@@ -2,11 +2,11 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-4
 src: univention-s4-connector
-fix: 8.0.33-86.533.201411271724
+fix: 8.0.33-87.535.201412101617
 version: [4]
 desc: |
   This update addresses the following issues:
   * GPO Security Descriptors are now synchronized
     between OpenLDAP and Samba Directroy Service
-  * Ignore cn=Subschema and warn but continue if listener didn't pass entryUUID
+  * Ignore cn=Subschema and warn if listener didn't pass entryUUID
 bug: [33768,35973]
