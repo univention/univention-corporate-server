@@ -1,0 +1,24 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: Check AD member mode
+## exposure: safe
+## packages:
+## - univention-ad-connector
+
+RETVAL=0
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. /usr/share/univention-lib/ucr.sh
+
+eval "$(ucr shell)"
+
+is_ucr_true ad/member || exit 137
+
+univention-connector-list-rejected | grep -q 'last synced USN:'
+
+if [ $? != 0 ]; then
+	univention-connector-list-rejected
+	fail_test 1 "last synced USN not found"
+fi
+
+exit $RETVAL
+

@@ -1,3 +1,10 @@
+ucs-test (5.0.69-4) unstable; urgency=medium
+
+  * Added some basic AD member tests and consider connector/ad/ldap/ssl
+    (Bug #37290)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Dec 2014 22:01:22 +0100
+
 ucs-test (5.0.69-3) unstable; urgency=low
 
   * Bug #37078: Reenable 20_appcenter.20_can_apps_be_installed

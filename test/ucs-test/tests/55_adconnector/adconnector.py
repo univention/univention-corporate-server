@@ -12,7 +12,7 @@ baseConfig.load()
 class ADConnection(ldap_glue.LDAPConnection):
 	'''helper functions to modify AD-objects'''
 
-	def __init__(self, configbase='connector', no_starttls=False):
+	def __init__(self, configbase='connector'):
 		self.configbase = configbase
 		self.adldapbase = baseConfig['%s/ad/ldap/base' % configbase]
 		self.addomain = self.adldapbase.replace (',DC=', '.').replace ('DC=', '')
@@ -21,6 +21,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 		self.host = baseConfig['%s/ad/ldap/host' % configbase]
 		self.port = baseConfig['%s/ad/ldap/port' % configbase]
 		self.ca_file = baseConfig['%s/ad/ldap/certificate' % configbase]
+		no_starttls = baseConfig.is_false('%s/ad/ldap/ssl' % configbase)
 		self.connect (no_starttls)
 
 	def createuser(self, username, position=None, cn=None, sn=None, description=None):
