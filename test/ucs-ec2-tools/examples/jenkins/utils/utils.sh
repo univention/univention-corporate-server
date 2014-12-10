@@ -189,35 +189,47 @@ do_reboot () {
 	reboot
 }
 
-promote_ad_w2k12 ()
+_promote_ad ()
 {
 	local HOST="$1"
 	local DOMAIN="$2"
+	local MODE="$3"
 	if [[ ! -z "$HOST" ]] && [[ ! -z "$DOMAIN" ]]; then
 	python -c "
 import univention.winexe
 win=univention.winexe.WinExe('$DOMAIN', 'administrator', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
-win.promote_ad('Win2008R2', 'Win2008R2')
+win.promote_ad('$MODE', '$MODE')
 "
 	else
 		echo "You must specify an host address domain name."
 	fi
 }
 
+promote_ad_w2k12r2 ()
+{
+	_promote_ad "$1" "$2" "Win2012R2"
+}
+
+promote_ad_w2k12 ()
+{
+	_promote_ad "$1" "$2" "Win2012"
+}
+
+promote_ad_w2k8r2 ()
+{
+	_promote_ad "$1" "$2" "Win2008R2"
+}
+
 promote_ad_w2k8 ()
 {
-	local HOST="$1"
-	local DOMAIN="$2"
-	if [[ ! -z "$HOST" ]] && [[ ! -z "$DOMAIN" ]]; then
-	python -c "
-import univention.winexe
-win=univention.winexe.WinExe('$DOMAIN', 'administrator', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
-win.promote_ad('Win2008', 'Win2008')
-"
-	else
-		echo "You must specify an host address domain name."
-	fi
+	_promote_ad "$1" "$2" "Win2008"
 }
+
+promote_ad_w2k3r2 ()
+{
+	_promote_ad "$1" "$2" "Win2003R2"
+}
+
 
 shutdown_windows_host ()
 {
@@ -229,7 +241,7 @@ win.shutdown_remote_win_host()
 "
 }
 
-set_gateway ()
+set_windows_gateway ()
 {
 	local HOST="$1"
 	local DOMAIN="$2"
@@ -244,5 +256,20 @@ win.set_gateway('$GATEWAY')
 		echo "You must specify an host address domain name and a gateway."
 	fi
 }
+
+set_administrator_dn_for_ucs_test ()
+{
+	local dn="$(univention-ldapsearch sambaSid=*-500 -LLL dn | sed -ne 's|dn: ||p')"
+	ucr set tests/domainadmin/account="$dn"
+}
+
+set_administrator_password_for_ucs_test ()
+{
+	local password="$1"
+
+	ucr set tests/domainadmin/pwd="$password"
+	echo -n "$password" >/var/lib/ucs-test/pwdfile
+}
+
 
 # vim:set filetype=sh ts=4:
