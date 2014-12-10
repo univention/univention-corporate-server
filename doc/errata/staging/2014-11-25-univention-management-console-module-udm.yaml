@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-management-console-module-udm
-fix: 5.1.25-8.518.201412091249
+fix: 5.1.25-1.523.201412101206
 version: [0]
 desc: |
   * A notification for AD objects (e.g. user/groups) will only be
@@ -22,4 +22,8 @@ desc: |
   * The search form does not allow invalid values to be submitted anymore.
   * Users without posix option are now able to use the UMC module.
   * A error message is now shown if the DN of a user could not be determined.
-bug: [36732, 35719, 29231, 35273, 32979, 34353, 28383, 37178, 31828]
+  * Searching with an invalid object type will not raise an exception
+    anymore.
+  * Opening a nonexistent object (e.g. object was moved / deleted)
+    now shows an error message instead of raising an exception.
+bug: [36732, 35719, 29231, 35273, 32979, 34353, 28383, 37178, 31828, 34246]
