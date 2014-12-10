@@ -5,8 +5,8 @@ src: univention-management-console-module-udm
 fix: 5.1.25-16.526.201412101241
 version: [0]
 desc: |
-  * The notification for AD objects is replaced by a fixed text to
-    inform the user that the objects belongs to the AD
+  * The notification while changing objects which are part of a Active
+    Directory domain has been placed in a more visible area.
   * The error message if the connection to the LDAP server fails
     has been extended.
   * The UMCP command udm/layout failed if a DN was given which could not
