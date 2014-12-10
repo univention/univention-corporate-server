@@ -1,3 +1,9 @@
+univention-updater (9.0.44-10) unstable; urgency=medium
+
+  * Bug #37254: fixed fuzzy entry
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 10 Dec 2014 20:25:48 +0100
+
 univention-updater (9.0.44-9) unstable; urgency=medium
 
   * Bug #37254: clarified hints before and during updates

@@ -403,7 +403,6 @@ msgstr "{count} Pakete werden aktualisiert"
 #~ msgid "... please wait ..."
 #~ msgstr "... bitte warten ..."
 
-#, fuzzy
 #~ msgid ""
 #~ "<b>Leave the system up and running</b> at any moment during the update."
 #~ msgstr ""
