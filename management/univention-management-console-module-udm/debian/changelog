@@ -1,3 +1,12 @@
+univention-management-console-module-udm (5.1.25-13) unstable; urgency=low
+
+  * Bug #34246:
+    -corrected ldap search in umc/python/udm/udm_ldap.py
+    -cleaned up umc/python/udm/udm_ldap.py
+    -adapted translation
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 10 Dec 2014 11:22:28 +0100
+
 univention-management-console-module-udm (5.1.25-12) unstable; urgency=low
 
   * Bug #34246:

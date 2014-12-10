@@ -1460,36 +1460,31 @@ def read_syntax_choices(syntax_name, options={}, module_search_options={}, ldap_
 	return map(lambda x: {'id': x[0], 'label': x[1]}, getattr(syn, 'choices', []))
 
 class LDAP_AuthenticationFailed(UMCError):
-
 	def __init__(self):
 		super(LDAP_AuthenticationFailed, self).__init__(status=BAD_REQUEST_UNAUTH)
 
 	def _error_msg(self):
 		yield _('Authentication failed')
 
-
 class ObjectDoesNotExists(UMCError):
 	def __init__(self, ldap_dn):
 		self.ldap_dn = ldap_dn
-		self.msg = None
 		super(ObjectDoesNotExists, self).__init__()
 
 	@LDAP_Connection
-	def _unexistent_or_unreadable(self, ldap_connection = None, ldap_position = None ):
-		#dn_part = explodeDn( self.ldap_dn )[ 0 ]
-		#control_dn_list = ldap_connection.searchDn(dn_part)
-		#if self.ldap_dn in control_dn_list:
-		if ldap_connection.searchDn(self.ldap_dn):
-			self.msg = _('LDAP object exists, but cannot be opened: %s') % (self.ldap_dn)
-		else:
-			self.msg = _('Could not find LDAP object %s') % (self.ldap_dn)
+	def _ldap_object_exists(self, ldap_connection=None, ldap_position=None):
+		_ldap_dn_parts = explodeDn(self.ldap_dn)
+		_ldap_object_name = _ldap_dn_parts[0]
+		_ldap_object_base = ','.join(_ldap_dn_parts[1:])
+		return ldap_connection.searchDn(_ldap_object_name, scope='one', base=_ldap_object_base)
 
 	def _error_msg(self):
-		# TODO: adapt error message with hints about that the object may be deleted in meantime, suggest a reload of UMC, ..., etc.
-		# TODO: if the DN exists raise a more critical error, that no handler could be found
-		self._unexistent_or_unreadable()
-		yield self.msg
-
+		if self._ldap_object_exists():
+			yield _('Could not identify the LDAP object type for %s.') % (self.ldap_dn,)
+		else:
+			yield _('LDAP object %s could not be opened.') % (self.ldap_dn,)
+			yield _('It possibly has been deleted or moved. Please update your search results and open the object again.')
+			yield _('If the problem persists please try reloading the Univention Management Console.')
 
 class SuperordinateDoesNotExists(ObjectDoesNotExists):
 	def _error_msg(self):
