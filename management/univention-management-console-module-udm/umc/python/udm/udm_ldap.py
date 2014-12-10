@@ -489,7 +489,10 @@ class UDM_Module(object):
 					else:
 						result = ldap_connection.searchDn(filter=unicode(lookup_filter), base=container, scope=scope, sizelimit=sizelimit)
 			else:
-				result = self.module.lookup(None, ldap_connection, filter_s, base=container, superordinate=superordinate, scope=scope, sizelimit=sizelimit)
+				if self.module:
+					result = self.module.lookup(None, ldap_connection, filter_s, base=container, superordinate=superordinate, scope=scope, sizelimit=sizelimit)
+				else:
+					result = None
 		except udm_errors.insufficientInformation as e:
 			return []
 		except udm_errors.ldapTimeout as e:

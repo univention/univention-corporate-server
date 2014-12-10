@@ -397,7 +397,6 @@ class Instance(Base, ProgressMixin):
 				module = get_module(request.flavor, ldap_dn)
 				if module is None:
 					raise ObjectDoesNotExists(ldap_dn)
-
 				MODULE.info('Modifying LDAP object %s' % (ldap_dn,))
 				if '$labelObjectType$' in properties:
 					del properties['$labelObjectType$']
@@ -536,30 +535,31 @@ class Instance(Base, ProgressMixin):
 
 			entries = []
 			object_type = request.options.get('objectType', request.flavor)
-			for obj in result:
-				if obj is None:
-					continue
-				module = get_module(object_type, obj.dn)
-				if module is None:
-					# This happens when concurrent a object is removed between the module.search() and get_module() call
-					MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
-					continue
-				if module.module is None:
-					MODULE.warn('Could not identify LDAP object %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
-					continue
-				entry = {
-					'$dn$': obj.dn,
-					'$childs$': module.childs,
-					'$flags$': obj.oldattr.get('univentionObjectFlag', []),
-					'objectType': module.name,
-					'labelObjectType': module.subtitle,
-					'name': module.obj_description(obj) or udm_objects.description(obj),
-					'path': ldap_dn2path(obj.dn, include_rdn=False)
-				}
-				if request.options['objectProperty'] not in ('name', 'None'):
-					entry[request.options['objectProperty']] = obj[request.options['objectProperty']]
-				entries.append(entry)
-			return entries
+			if result:
+				for obj in result:
+					if obj is None:
+						continue
+					module = get_module(object_type, obj.dn)
+					if module is None:
+						# This happens when concurrent a object is removed between the module.search() and get_module() call
+						MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
+						continue
+					if module.module is None:
+						MODULE.warn('Could not identify LDAP object %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
+						continue
+					entry = {
+						'$dn$': obj.dn,
+						'$childs$': module.childs,
+						'$flags$': obj.oldattr.get('univentionObjectFlag', []),
+						'objectType': module.name,
+						'labelObjectType': module.subtitle,
+						'name': module.obj_description(obj) or udm_objects.description(obj),
+						'path': ldap_dn2path(obj.dn, include_rdn=False)
+					}
+					if request.options['objectProperty'] not in ('name', 'None'):
+						entry[request.options['objectProperty']] = obj[request.options['objectProperty']]
+					entries.append(entry)
+				return entries
 
 		thread = notifier.threads.Simple('Query', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
 		thread.run()
