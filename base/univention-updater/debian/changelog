@@ -1,6 +1,7 @@
 univention-updater (10.0.51-8) unstable; urgency=low
 
   * Bug #37231: Reboot only after all updates are performed.
+  * Bug #37031: Detect broken Dansguardian proxy
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 10 Dec 2014 14:20:43 +0100
 
