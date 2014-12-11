@@ -1003,38 +1003,44 @@ define([
 			// wait for changed instance state
 			var max = 60;
 			var counter = 1;
-			array.forEach(ids, function(iid, i) {
-				var node = iid.slice(0,iid.indexOf('#'));
-				var uuid = iid.slice(iid.indexOf('#') + 1);
-				var deferred = new Deferred();
-				var wait = lang.hitch(this, function() {
-					tools.umcpCommand('uvmm/instance/query', {"nodePattern": node, "domainPattern": uuid}, false).then(lang.hitch(this, function(result) {
-						var connection = array.filter(result.result, function(item) {
-							return item.id.slice(item.id.indexOf('#') + 1) == uuid;
+			var deferred = new Deferred();
+			var wait = lang.hitch(this, function() {
+				tools.umcpCommand('uvmm/instance/query', {}, false).then(lang.hitch(this, function(data) {
+					var items_update = array.filter(data.result, function(item) {
+						return array.some(items, function(_item) {
+							return item.id == _item.id;
 						});
-						counter += 1;
-						if (connection[0] && connection[0].state != items[i].state) {
-							if (i + 1 == ids.length) { // last item finished
-								this.hideProgress();
-							}
-							deferred.resolve();
+					});
+					counter += 1;
+					var items_update_d = {};
+					array.forEach(items_update, function(item) {
+						items_update_d[item.id] = item
+					} );
+					var items_changed = 0;
+					array.forEach(items, function(item) {
+						if (item.state != items_update_d[item.id].state) {
+							items_changed++;
 						}
-						if (stateFailed) {
-							this.hideProgress();
-							deferred.resolve();
-						}
-						if (counter >= max) {
-							this.hideProgress();
-							deferred.resolve();
-						}
-						if (!deferred.isResolved()) {
-							tools.defer(wait, 1000);
-						}
-						this.filter();
-					}));
-				});
-				tools.defer(wait, 1000);
-			}, this);
+					});
+					if (items_changed == ids.length) {
+						this.hideProgress();
+						deferred.resolve();
+					}
+					if (stateFailed) {
+						this.hideProgress();
+						deferred.resolve();
+					}
+					if (counter >= max) {
+						this.hideProgress();
+						deferred.resolve();
+					}
+					if (!deferred.isResolved()) {
+						tools.defer(wait, 1000);
+					}
+					this.filter();
+				}));
+			});
+			tools.defer(wait, 1000);
 		},
 
 		_cloneDomain: function( ids ) {

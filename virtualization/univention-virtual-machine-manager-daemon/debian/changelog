@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.20-9) unstable; urgency=low
+
+  * Bug #36380: Update processing of wait for changed instance state 
+
+ -- Andreas Peichert <peichert@univention.de>  Thu, 11 Dec 2014 17:07:04 +0100
+
 univention-virtual-machine-manager-daemon (4.0.20-8) unstable; urgency=low
 
   * Bug #36105: Fix VNC running on localhost only.
