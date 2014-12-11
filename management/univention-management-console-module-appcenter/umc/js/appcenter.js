@@ -208,6 +208,8 @@ define([
 			this.addChild(this._details);
 			this.selectChild(this._components);
 
+			this._packages.on('installed', lang.hitch(this._components, 'refresh', true));
+
 			// install default component
 			this._components.on('installcomponent', lang.hitch(this, function(ids) {
 				this.standby(true);
@@ -227,7 +229,6 @@ define([
 					}));
 					when(deferred, lang.hitch(this, function() {
 						this.standby(false);
-						this.selectChild(this._packages);
 						this._packages._call_installer('install', pkgs, true);
 					}));
 				} catch(error) {

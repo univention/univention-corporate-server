@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (4.1.19-6) unstable; urgency=medium
+
+  * Bug #36868: refresh view after installing of compontents, don't display
+  	the repository page while installing components
+
+ -- Florian Best <best@univention.de>  Thu, 11 Dec 2014 11:45:01 +0100
+
 univention-management-console-module-appcenter (4.1.19-5) unstable; urgency=low
 
   * Bug #37153: Sort apps by their ID

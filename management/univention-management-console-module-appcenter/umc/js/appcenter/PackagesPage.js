@@ -466,6 +466,7 @@ define([
 
 		_restartOrReload: function() {
 			// TODO: only if necessary! only minority will require a restart!
+			this.onInstalled();
 			this.standby(true);
 			libServer.askRestart(_('A restart of the UMC server components may be necessary for the software changes to take effect.')).then(
 			lang.hitch(this, function() {
@@ -478,6 +479,10 @@ define([
 				this.standby(false);
 				this._refresh_grid();
 			}));
+		},
+
+		onInstalled: function() {
+			// event stub
 		}
 
 	});
