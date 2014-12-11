@@ -194,10 +194,11 @@ _promote_ad ()
 	local HOST="$1"
 	local DOMAIN="$2"
 	local MODE="$3"
+	local ADMIN_ACCOUNT="${4:-administrator}"
 	if [[ ! -z "$HOST" ]] && [[ ! -z "$DOMAIN" ]]; then
 	python -c "
 import univention.winexe
-win=univention.winexe.WinExe('$DOMAIN', 'administrator', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
+win=univention.winexe.WinExe('$DOMAIN', '$ADMIN_ACCOUNT', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
 win.promote_ad('$MODE', '$MODE')
 "
 	else
@@ -207,36 +208,37 @@ win.promote_ad('$MODE', '$MODE')
 
 promote_ad_w2k12r2 ()
 {
-	_promote_ad "$1" "$2" "Win2012R2"
+	_promote_ad "$1" "$2" "Win2012R2" "$3"
 }
 
 promote_ad_w2k12 ()
 {
-	_promote_ad "$1" "$2" "Win2012"
+	_promote_ad "$1" "$2" "Win2012" "$3"
 }
 
 promote_ad_w2k8r2 ()
 {
-	_promote_ad "$1" "$2" "Win2008R2"
+	_promote_ad "$1" "$2" "Win2008R2" "$3"
 }
 
 promote_ad_w2k8 ()
 {
-	_promote_ad "$1" "$2" "Win2008"
+	_promote_ad "$1" "$2" "Win2008" "$3"
 }
 
 promote_ad_w2k3r2 ()
 {
-	_promote_ad "$1" "$2" "Win2003R2"
+	_promote_ad "$1" "$2" "Win2003R2" "$3"
 }
 
 
 shutdown_windows_host ()
 {
 	local HOST="$1"
+	local ADMIN_ACCOUNT="${2:-administrator}"
 	python -c "
 import univention.winexe
-win=univention.winexe.WinExe('dummydomain', 'administrator', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
+win=univention.winexe.WinExe('dummydomain', '$ADMIN_ACCOUNT', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
 win.shutdown_remote_win_host()
 "
 }
@@ -246,10 +248,11 @@ set_windows_gateway ()
 	local HOST="$1"
 	local DOMAIN="$2"
 	local GATEWAY="$3"
+	local ADMIN_ACCOUNT="${4:-administrator}"
 	if [[ ! -z "$HOST" ]] && [[ ! -z "$GATEWAY" ]]; then
 	python -c "
 import univention.winexe
-win=univention.winexe.WinExe('$DOMAIN', 'administrator', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
+win=univention.winexe.WinExe('$DOMAIN', '$ADMIN_ACCOUNT', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
 win.set_gateway('$GATEWAY')
 "
 	else
