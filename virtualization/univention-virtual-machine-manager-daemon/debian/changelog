@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.20-8) unstable; urgency=low
+
+  * Bug #36105: Fix VNC running on localhost only.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 11 Dec 2014 09:26:54 +0100
+
 univention-virtual-machine-manager-daemon (4.0.20-7) unstable; urgency=low
 
   * Bug #36380: Add progressbar while waiting for changed instance state

@@ -40,7 +40,7 @@ import logging
 from xml.dom.minidom import parseString
 from xml.parsers.expat import ExpatError
 import math
-from helpers import TranslatableException, ms, tuple2version, N_ as _, uri_encode
+from helpers import TranslatableException, ms, tuple2version, N_ as _, uri_encode, FQDN
 from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify
 import univention.admin.uexceptions
 import threading
@@ -748,11 +748,15 @@ class Node(PersistentCached):
 					continue
 				if gfx.type != Graphic.TYPE_VNC:
 					continue
-				if gfx.listen != '0.0.0.0':
-					continue
 				if gfx.port <= 0:
 					continue
-				print >> tmp_file, '%s: %s:%d' % (uuid, self.pd.name, gfx.port)
+				if gfx.listen == '0.0.0.0':
+					vnc_addr = self.pd.name
+				elif gfx.listen is None and self.pd.name == FQDN:
+					vnc_addr = '127.0.0.1'
+				else:
+					continue
+				print >> tmp_file, '%s: %s:%d' % (uuid, vnc_addr, gfx.port)
 		os.rename(tmp_file.name, path)
 
 	def wait_update(self, domain, state_key, timeout=10):

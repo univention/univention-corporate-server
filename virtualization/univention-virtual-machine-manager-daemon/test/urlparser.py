@@ -30,6 +30,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+from univention.uvmm.helpers import urlparse
 
 def __test():
 	URIS = filter(None, map(lambda u: u.lstrip(), """\
