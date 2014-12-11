@@ -8,4 +8,4 @@ desc: |
   This update addresses the following issues:
   * Fix shutdown of univention-directiry-listener when failed.ldif exists.
 bug:
- - 34761
+ - 37291
