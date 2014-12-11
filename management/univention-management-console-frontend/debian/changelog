@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-46) unstable; urgency=medium
+
+  * Bug #34071: Fix appearance of the login button
+
+ -- Florian Best <best@univention.de>  Thu, 11 Dec 2014 12:51:49 +0100
+
 univention-management-console-frontend (3.0.152-45) unstable; urgency=medium
 
   * Bug #35838: suppress scrollbars in search widget on Chromium 37
