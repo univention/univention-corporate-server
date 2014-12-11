@@ -1,3 +1,11 @@
+univention-management-console-module-udm (5.1.25-20) unstable; urgency=low
+
+  * Bug #34246:
+    - some changes in error messages
+    - updated translation
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 11 Dec 2014 09:05:55 +0100
+
 univention-management-console-module-udm (5.1.25-19) unstable; urgency=low
 
   * Bug #34246:

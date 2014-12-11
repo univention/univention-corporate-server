@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-12-10 15:28+0100\n"
+"POT-Creation-Date: 2014-12-11 09:02+0100\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,12 +57,13 @@ msgstr ""
 "Überprüfen Sie den Domänenbeitritt-Status dieses Systems durch Benutzung des "
 "Domänenbeitritt UMC-Moduls"
 
-#: umc/python/udm/udm_ldap.py:425
+#: umc/python/udm/udm_ldap.py:424
 #, python-format
-msgid "Could not find an UDM module for the superordinate object %s."
-msgstr "Es konnte kein UDM-Modul für das übergeordnete Objekt %s gefunden werden."
+msgid "Could not find an UDM module for the superordinate object %s"
+msgstr ""
+"Es konnte kein UDM-Modul für das übergeordnete Objekt %s gefunden werden."
 
-#: umc/python/udm/udm_ldap.py:251
+#: umc/python/udm/udm_ldap.py:250
 #, python-format
 msgid "Could not identify the LDAP object type for %s."
 msgstr "Der LDAP-Objekttyp von %s konnte nicht identifiziert werden."
@@ -71,10 +72,10 @@ msgstr "Der LDAP-Objekttyp von %s konnte nicht identifiziert werden."
 msgid "Could not identify the given LDAP object"
 msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
 
-#: umc/python/udm/udm_ldap.py:262
+#: umc/python/udm/udm_ldap.py:261
 #, python-format
-msgid "Could not identify the superordinate %s"
-msgstr "Das übergeordnete Objekt konnte nicht gefunden werden"
+msgid "Could not identify the superordinate %s."
+msgstr "Das übergeordnete Objekt konnte nicht identifiziert werden"
 
 #: umc/python/udm/udm_ldap.py:214
 msgid "Ensure that the LDAP server on this system is running and responsive"
@@ -90,9 +91,10 @@ msgstr ""
 "Wenn das Problem bestehen bleibt, können weitere Hinweise zur Ursache in der/"
 "den folgenden Protokolldatei(en) gefunden werden:"
 
-#: umc/python/udm/udm_ldap.py:252 umc/python/udm/udm_ldap.py:263
+#: umc/python/udm/udm_ldap.py:251 umc/python/udm/udm_ldap.py:262
+#,
 msgid ""
-"If the problem persists please try to re-login into Univention Management "
+"If the problem persists please try to relogin into Univention Management "
 "Console."
 msgstr ""
 "Wenn das Problem bestehen bleibt melden Sie sich bitte erneut an der "
@@ -102,23 +104,23 @@ msgstr ""
 msgid "Install the latest software updates"
 msgstr "Installieren Sie alle Softwareaktualisierungen"
 
-#: umc/python/udm/udm_ldap.py:255 umc/python/udm/udm_ldap.py:266
+#: umc/python/udm/udm_ldap.py:254 umc/python/udm/udm_ldap.py:265
 msgid ""
 "It possibly has been deleted or moved. Please update your search results and "
 "open the object again."
 msgstr ""
-"Es wurde vermutlich gelöscht oder verschoben. Bitte erneuern Sie "
-"ihre Suchergebnisse und versuchen Sie das Objekt erneut zu öffnen."
+"Es wurde vermutlich gelöscht oder verschoben. Bitte erneuern Sie ihre "
+"Suchergebnisse und versuchen Sie das Objekt erneut zu öffnen."
 
 #: umc/python/udm/__init__.py:315
 #, python-format
 msgid "LDAP error: %s."
 msgstr "LDAP-Fehler: %s."
 
-#: umc/python/udm/udm_ldap.py:254
+#: umc/python/udm/udm_ldap.py:253
 #, python-format
-msgid "LDAP object %s could not be opened."
-msgstr "Das LDAP-Objekt %s konnte nicht geöffnet werden."
+msgid "LDAP object %s could not be found."
+msgstr "Das LDAP-Objekt %s konnte nicht gefunden werden."
 
 #: umc/python/udm/__init__.py:429
 msgid "LDAP object could not be identified"
@@ -168,11 +170,11 @@ msgstr "Keine gültige Variante oder existierendes UDM-Modul wurden angegeben"
 msgid "No license has been found."
 msgstr "Es wurde keine Lizenz gefunden"
 
-#: umc/python/udm/udm_ldap.py:870
+#: umc/python/udm/udm_ldap.py:869
 msgid "None"
 msgstr "Keins"
 
-#: umc/python/udm/udm_ldap.py:671
+#: umc/python/udm/udm_ldap.py:670
 msgid "Objects referencing this policy object"
 msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
 
@@ -180,12 +182,12 @@ msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
 msgid "PDF document"
 msgstr "PDF Dokument"
 
-#: umc/python/udm/udm_ldap.py:364 umc/python/udm/__init__.py:874
+#: umc/python/udm/udm_ldap.py:363 umc/python/udm/__init__.py:874
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
 
-#: umc/python/udm/udm_ldap.py:671
+#: umc/python/udm/udm_ldap.py:670
 msgid "Referencing objects"
 msgstr "Referenzierende Objekte"
 
@@ -199,10 +201,10 @@ msgstr ""
 "Kommandozeile oder mit dem UMC Modul \"Systemdienste\" auf dem "
 "Domänencontroller Master neu"
 
-#: umc/python/udm/udm_ldap.py:265
+#: umc/python/udm/udm_ldap.py:264
 #, python-format
-msgid "Superordinate %s could not be opened."
-msgstr "Das übergeordnete Objekt %s konnte nicht geöffnet werden"
+msgid "Superordinate %s could not be found."
+msgstr "Das übergeordnete Objekt %s konnte nicht gefunden werden"
 
 #: umc/python/udm/udm_ldap.py:212
 #, python-format
@@ -235,12 +237,12 @@ msgstr ""
 "Die Lizenz konnte nicht eingespielt werden. Die LDAP-Basis stimmt nicht "
 "überein (erwartet: %s, gefunden: %s)."
 
-#: umc/python/udm/udm_ldap.py:378 umc/python/udm/udm_ldap.py:392
+#: umc/python/udm/udm_ldap.py:377 umc/python/udm/udm_ldap.py:391
 #, python-format
 msgid "The property %s has an invalid value: %s"
 msgstr "Die Eigenschaft '%s' hat einen nicht gültigen Wert: %s"
 
-#: umc/python/udm/udm_ldap.py:539
+#: umc/python/udm/udm_ldap.py:538
 msgid ""
 "The query you have entered timed out. Please narrow down your search by "
 "specifiying more query parameters"
@@ -248,7 +250,7 @@ msgstr ""
 "Die angeforderte Suche lieferte zu viele Ergebnisse und wurde abgebrochen. "
 "Bitte schränken Sie die Suche durch weitere Suchparameter ein."
 
-#: umc/python/udm/udm_ldap.py:541
+#: umc/python/udm/udm_ldap.py:540
 #, python-format
 msgid ""
 "The query you have entered yields too many matching entries. Please narrow "
@@ -387,7 +389,7 @@ msgstr ""
 "Sie über eine Lizenz verfügen, wenden Sie sich bitte an Univention oder "
 "Ihren Univention Partner."
 
-#: umc/python/udm/udm_ldap.py:581
+#: umc/python/udm/udm_ldap.py:580
 msgid "manual"
 msgstr "handbuch"
 

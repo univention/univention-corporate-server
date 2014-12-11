@@ -248,9 +248,9 @@ class ObjectDoesNotExists(UMCError):
 	def _error_msg(self):
 		if self._ldap_object_exists():
 			yield _('Could not identify the LDAP object type for %s.') % (self.ldap_dn,)
-			yield _('If the problem persists please try to re-login into Univention Management Console.')
+			yield _('If the problem persists please try to relogin into Univention Management Console.')
 		else:
-			yield _('LDAP object %s could not be opened.') % (self.ldap_dn,)
+			yield _('LDAP object %s could not be found.') % (self.ldap_dn,)
 			yield _('It possibly has been deleted or moved. Please update your search results and open the object again.')
 
 
@@ -258,10 +258,10 @@ class SuperordinateDoesNotExists(ObjectDoesNotExists):
 
 	def _error_msg(self):
 		if self._ldap_object_exists():
-			yield _('Could not identify the superordinate %s') % (self.ldap_dn,)
-			yield _('If the problem persists please try to re-login into Univention Management Console.')
+			yield _('Could not identify the superordinate %s.') % (self.ldap_dn,)
+			yield _('If the problem persists please try to relogin into Univention Management Console.')
 		else:
-			yield _('Superordinate %s could not be opened.') % (self.ldap_dn,)
+			yield _('Superordinate %s could not be found.') % (self.ldap_dn,)
 			yield _('It possibly has been deleted or moved. Please update your search results and open the object again.')
 
 
