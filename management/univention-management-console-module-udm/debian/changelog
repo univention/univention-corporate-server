@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-21) unstable; urgency=medium
+
+  * Bug #28383: adapt regex for allowed attribute names
+
+ -- Florian Best <best@univention.de>  Thu, 11 Dec 2014 14:48:12 +0100
+
 univention-management-console-module-udm (5.1.25-20) unstable; urgency=low
 
   * Bug #34246:

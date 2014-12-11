@@ -106,7 +106,7 @@ class ObjectPropertySanitizer(StringSanitizer):
 		"""
 		args = dict(
 			minimum=1,
-			regex_pattern=r'^[\w\d]+$'
+			regex_pattern=r'^[\w\d\-;]+$'
 		)
 		args.update(kwargs)
 		StringSanitizer.__init__(self, **args)
