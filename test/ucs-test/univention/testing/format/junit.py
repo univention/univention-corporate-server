@@ -103,14 +103,15 @@ class Junit(TestFormatInterface):
 				})
 
 			if skipped:
-				xml.startElement('skipped', {})
 				try:
 					mime, content = result.artifacts['check']
 				except KeyError:
-					pass
+					msg = '';
 				else:
 					msg = '\n'.join(['%s' % (c,) for c in content])
-					xml.characters(msg)
+				xml.startElement('skipped', {
+					'message': msg,
+				})
 				xml.endElement('skipped')
 			elif errors:
 				xml.startElement('error', {

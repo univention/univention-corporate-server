@@ -1,3 +1,9 @@
+ucs-test (5.0.70-1) unstable; urgency=low
+
+  * Bug #32423: Provide message for skipped tests
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 27 Nov 2014 12:36:34 +0100
+
 ucs-test (5.0.69-4) unstable; urgency=medium
 
   * Added some basic AD member tests and consider connector/ad/ldap/ssl
