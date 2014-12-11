@@ -1,0 +1,45 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check package status
+## tags: [appuninstalltest]
+## roles-not: [basesystem]
+## packages:
+##   - univention-directory-manager-tools
+##   - univention-management-console-module-appcenter
+## exposure: safe
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+eval "$(ucr shell)"
+
+RETVAL=100
+
+apt-get update || fail_test 110 "apt-get update failed"
+
+apt-get check || fail_test 110 "apt-get check failed"
+
+apt-get -s -f install || fail_test 110 "simulated apt-get -f install failed"
+
+if LC_ALL=C apt-get -s -f install | grep -q 'not fully'; then
+	fail_test 110 "simulated apt-get -f install found not fully installed/removed packages"
+fi
+
+apt-get -s dist-upgrade || fail_test 110 "simulated dist-upgrade failed"
+
+dpkg --configure -a --simulate || fail_test 110 "simulated dpkg --configure -a failed"
+
+PACKAGES="
+univention-base-files
+univention-base-packages
+univention-base-packages
+univention-role-server-common
+"
+
+for package in $PACKAGES; do
+	if ! checkpkg "$package"; then
+		fail_test 110 "$package is not installed"
+	fi
+done
+
+exit $RETVAL

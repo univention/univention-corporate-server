@@ -437,6 +437,18 @@ Provides: ucs-test-module
 Description: Test scripts to test the app center
  This package includes test-cases for the app center.
 
+Package: ucs-test-appcenter-deinstall
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+ ucs-test-udm-groups,
+ ucs-test-udm-users,
+ ucs-test-ldap
+Provides: ucs-test-module
+Description: Test scripts to test the app removal
+ This package includes test-cases for the app removal.
+
 Package: ucs-test-umc-system
 Architecture: all
 Recommends: ucs-test-framework

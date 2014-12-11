@@ -1,0 +1,3 @@
+usr/share/ucs-test/61_udm-users/00_user_creation usr/share/ucs-test/21_appcenter_deinstall/10_user_creation
+usr/share/ucs-test/62_udm-groups/00_group_creation usr/share/ucs-test/21_appcenter_deinstall/15_group_creation
+usr/share/ucs-test/10_ldap/40replication usr/share/ucs-test/21_appcenter_deinstall/20_replication

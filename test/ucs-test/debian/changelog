@@ -1,3 +1,9 @@
+ucs-test (5.0.71-1) unstable; urgency=low
+
+  * Added ucs-test-appcenter-deinstall (Bug #31876) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 11 Dec 2014 13:20:50 +0100
+
 ucs-test (5.0.70-1) unstable; urgency=low
 
   * Bug #32423: Provide message for skipped tests

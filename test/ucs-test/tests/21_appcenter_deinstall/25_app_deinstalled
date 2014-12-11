@@ -1,0 +1,81 @@
+#!/usr/share/ucs-test/runner python
+## desc: Checks if apps are deinstalled
+## tags: [appuninstalltest]
+## roles-not: [basesystem]
+## packages:
+##   - univention-directory-manager-tools
+##   - univention-management-console-module-appcenter
+## exposure: safe
+
+from os import path
+from sys import exit
+
+import univention.testing.utils as utils
+from univention.testing.codes import TestCodes
+
+from univention.config_registry import ConfigRegistry
+from univention.lib.package_manager import PackageManager, LockError
+from univention.management.console.modules.appcenter.app_center import Application
+
+
+APPCENTER_FILE = "/var/cache/appcenter-removed.txt"
+
+def check_app_webinterface(App, UCR):
+	print 'Checking webinterface for app %s' % App.id
+	if App.get('webinterface') and App.get('ucsoverviewcategory'):
+		var = 'ucs/web/overview/entries/%s%s/link' % (App.get('ucsoverviewcategory'), App.get('webinterface'))
+		if UCR.get(var):
+			utils.fail('%s - webinterface still configured' % App.id)
+
+def check_app_component(App, UCR):
+	print 'Checking component for app %s' % App.id
+	if UCR.is_true('repository/online/component/%s' % App.component_id, False):
+		utils.fail('%s - component still active' % App.id)	
+
+def check_app_ldap_object(App):
+	print 'Checking ldap object for app %s' % App.id
+	app_dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (App.id, App.version, App.id, UCR.get('ldap/base'))
+	try:
+		utils.verify_ldap_object(app_dn, should_exist=False)
+	except utils.LDAPUnexpectedObjectFound as e:
+		utils.fail('%s - ldap object still exists' % App.id)
+
+def check_app_packages_deinstalled(App, server_role):
+	print 'Checking packages for app %s' % App.id
+	package_manager = PackageManager()
+	packages = []
+	for package in App.get('defaultpackages'):
+		packages.append(package)
+	if server_role in ('domaincontroller_master', 'domaincontroller_backup'):
+		for package in App.get('defaultpackagesmaster'):
+			packages.append(package)
+	package_manager = PackageManager()
+	for package in packages:
+		if package_manager.is_installed(package):
+			utils.fail("%s - package %s is still installed" % (App.id, package))
+
+if __name__ == '__main__':
+
+	# skip the test if there are no Apps deinstalled (in 'APPCENTER_FILE'):
+	if not path.exists(APPCENTER_FILE):
+		print "The '%s' file does not exist, skipping test." % APPCENTER_FILE
+		exit(TestCodes.RESULT_SKIP)
+
+	# load UCR, prepare PackageManager:
+	UCR = ConfigRegistry()
+	UCR.load()
+
+	# perform checks for all deinstalled apps:
+	deinstalled_apps = open(APPCENTER_FILE)
+	for app_id in deinstalled_apps:
+		app_id = app_id.strip()
+		if not app_id:
+			continue
+		App = Application.find(app_id)
+		if not App:
+			utils.fail('Requested app %s was not found.' % app_id)
+		check_app_packages_deinstalled(App, UCR)
+		check_app_ldap_object(App)
+		check_app_component(App, UCR)
+		check_app_webinterface(App, UCR)
+	deinstalled_apps.close()
