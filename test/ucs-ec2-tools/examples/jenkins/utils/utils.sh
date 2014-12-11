@@ -132,6 +132,14 @@ install_apps ()
 	for app in "$@"; do univention-add-app -a --latest "$app"; done
 }
 
+remove_apps ()
+{
+
+	local app
+	for app in "$@"; do echo "$app" >>/var/cache/appcenter-removed.txt; done
+	for app in "$@"; do /root/remove-app.py -a "$app"; done
+}
+
 install_apps_master_packages ()
 {
 	local app
@@ -153,6 +161,13 @@ install_apps_test_packages ()
 	ucr set repository/online/unmaintained=no
 }
 
+install_ucs_test_appcenter_deinstall ()
+{
+	ucr set repository/online/unmaintained=yes
+	univention-install --yes ucs-test-appcenter-deinstall
+	ucr set repository/online/unmaintained=no
+}
+
 install_ucs_windows_tools ()
 {
 	ucr set repository/online/unmaintained=yes
@@ -168,6 +183,11 @@ run_apptests ()
 run_minimal_apptests ()
 {
 	run_apptests -s checks -s appcenter "$@"
+}
+
+run_appcenter_deinstall_tests ()
+{
+	run_tests -s appcenter_deinstall "$@"
 }
 
 run_tests ()
