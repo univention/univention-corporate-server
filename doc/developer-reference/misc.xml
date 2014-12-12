@@ -161,6 +161,14 @@ override_dh_auto_test:
 			</para>
 			<variablelist>
 				<varlistentry>
+					<term><filename>/usr/share/univention-lib/admember.sh</filename></term>
+					<listitem>
+						<para>
+							This file contains some helpers to test for and to manage hosts in AD member mode.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
 					<term><filename>/usr/share/univention-lib/base.sh</filename></term>
 					<listitem>
 						<para>
@@ -173,6 +181,14 @@ override_dh_auto_test:
 					<listitem>
 						<para>
 							This file contains some helpers to query data from LDAP, register and unregister service entries, LDAP schema and LDAP ACL extensions.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>/usr/share/univention-lib/samba.sh</filename></term>
+					<listitem>
+						<para>
+							This file contains a helper to check is Samba4 is used.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -209,6 +225,14 @@ override_dh_auto_test:
 				This package provides several Python libraries located in the module <package>univention.lib</package>.
 			</para>
 			<variablelist>
+				<varlistentry>
+					<term><package>univention.lib.admember</package></term>
+					<listitem>
+						<para>
+							This module contains functions to test for and to manage hosts in AD member mode.
+						</para>
+					</listitem>
+				</varlistentry>
 				<varlistentry>
 					<term><package>univention.lib.atjobs</package></term>
 					<listitem>
@@ -258,6 +282,14 @@ override_dh_auto_test:
 					</listitem>
 				</varlistentry>
 				<varlistentry>
+					<term><package>univention.lib.ldap_extension</package></term>
+					<listitem>
+						<para>
+							This module provides some helper functions internally used to register LDAP extension as described in <xref linkend="app:ucs_registerLDAPExtension"/>.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
 					<term><package>univention.lib.listenerSharePath</package></term>
 					<listitem>
 						<para>
@@ -275,10 +307,26 @@ override_dh_auto_test:
 					</listitem>
 				</varlistentry>
 				<varlistentry>
+					<term><package>univention.lib.misc</package></term>
+					<listitem>
+						<para>
+							This module provides miscellaneous functions to query the set of configured LDAP servers, localized domain user names, and other functions.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
 					<term><package>univention.lib.package_manager</package></term>
 					<listitem>
 						<para>
 							This module provides some wrappers for <command>dpkg</command> and <application>APT</application>, which add functions for progress reporting.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><package>univention.lib.s4</package></term>
+					<listitem>
+						<para>
+							This module provides some well known <abbrev>SID</abbrev>s and <abbrev>RID</abbrev>s.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -298,6 +346,38 @@ override_dh_auto_test:
 						</para>
 					</listitem>
 				</varlistentry>
+				<varlistentry>
+					<term><package>univention.lib.ucs</package></term>
+					<listitem>
+						<para>
+							This module provides the class <classname>UCS_Version</classname> to more easily handle UCS version strings.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><package>univention.lib.umc_connection</package></term>
+					<listitem>
+						<para>
+							This module provides the class <classname>UMCConnection</classname> to handle connections to remote <abbrev>UMC</abbrev> servers.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><package>univention.lib.umc_module</package></term>
+					<listitem>
+						<para>
+							This module provides some functions for handling icons.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><package>univention.lib.urllib2_ssl</package></term>
+					<listitem>
+						<para>
+							This module provides a pack-port of <package>urllib2</package> from Python-3.3, which implements proper certificate checking.
+						</para>
+					</listitem>
+				</varlistentry>
 			</variablelist>
 		</section>
 	</section>
@@ -305,7 +385,10 @@ override_dh_auto_test:
 	<section id="misc:acl">
 		<title>Login Access Control</title>
 		<para>
-			<filename>/etc/security/access-*.conf</filename>
+			Access control to services can be configured for individual services by setting certain &ucsUCRV;s.
+			Setting <envar>auth/<replaceable>SERVICE</replaceable>/restrict</envar> to <literal>true</literal> enables access control for that service.
+			This will include the file <filename>/etc/security/access-<replaceable>SERVICE</replaceable>.conf</filename>, which contains the list of allowed users and groups permitted to login to the service.
+			Users and groups can be added to that file by setting <envar>auth/<replaceable>SERVICE</replaceable>/user/<replaceable>USER</replaceable></envar> and <envar>auth/<replaceable>SERVICE</replaceable>/group/<replaceable>GROUP</replaceable></envar> to <literal>true</literal> respectively.
 		</para>
 	</section>
 

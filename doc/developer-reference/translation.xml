@@ -53,12 +53,12 @@ univention-install univention-ucs-translation-template dpkg-dev
 								<programlisting language="sh">
 mkdir ~/translation
 cd ~/translation
-svn co http://forge.univention.org/svn/dev/branches/ucs-3.2/ucs-3.2-0
+svn co http://forge.univention.org/svn/dev/branches/ucs-4.0/ucs-4.0-0
 								</programlisting>
 								<!-- TODO: Use &websvn; after it has been updated -->
 							<para>
 								Changes made to the &ucsUMC; should be synchronized regularly to the local Subversion checkout.
-								This can be done by executing <command>svn up ~/translation/ucs-3.2-0</command>.
+								This can be done by executing <command>svn up ~/translation/ucs-4.0-0</command>.
 							</para>
 						</listitem>
 					</varlistentry>
@@ -72,7 +72,7 @@ svn co http://forge.univention.org/svn/dev/branches/ucs-3.2/ucs-3.2-0
 				<programlisting language="sh">
 cd ~/translation
 univention-ucs-translation-build-package \
-	-s ~/translation/ucs-3.2-0 -c fr -l fr_FR.UTF-8:UTF-8 -n French
+	-s ~/translation/ucs-4.0-0 -c fr -l fr_FR.UTF-8:UTF-8 -n French
 				</programlisting>
 				This creates a new directory <filename class="directory">univention-ucs-translation-fr/</filename>, which contains a Debian source package of the same name.
 				It includes all source and target files for the translation.
@@ -164,7 +164,7 @@ msgstr ""
 							<programlisting language="sh">
 cd ~/translation/univention-ucs-translation-fr
 univention-ucs-translation-update-source-files \
-	-s ~/translation/ucs-3.2-0 -c fr
+	-s ~/translation/ucs-4.0-0 -c fr
 							</programlisting>
 						</listitem>
 					</varlistentry>
@@ -185,7 +185,7 @@ univention-ucs-translation-update-source-files \
 							<programlisting language="sh">
 cd ~/translation/univention-ucs-translation-fr
 univention-ucs-translation-update-target-files \
-	-s ~/translation/ucs-3.2-0 -c fr
+	-s ~/translation/ucs-4.0-0 -c fr
 							</programlisting>
 						</listitem>
 					</varlistentry>

@@ -79,7 +79,7 @@ Icons: umc/icons
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term><literal>Icons</literal></term>
+					<term><literal>Icons</literal> (deprecated)</term>
 					<listitem>
 						<para>
 							Directory containing the Icons relative to top-level directory.
@@ -100,7 +100,7 @@ Icons: umc/icons
 			</para>
 			<programlisting><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DOCTYPE umc SYSTEM "branches/ucs-3.2/ucs/management/univention-management-console/doc/module.dtd"-->
+<!--DOCTYPE umc SYSTEM "branches/ucs-4.0/ucs-4.0-0/management/univention-management-console/doc/module.dtd"-->
 <umc version="2.0">
 	<module id="udm" icon="udm-MODULE" version="1.0" translationId="MODULE">
 		<name>...</name>
@@ -111,6 +111,17 @@ Icons: umc/icons
 		</categories>
 		<command>...</command>
 	</module>
+</umc>
+			]]></programlisting>
+			<para>
+				<filename>umc/categories/<replaceable>category</replaceable>.xml</filename>
+			</para>
+			<programlisting><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<categories>
+		<category id="category" priority="..." icon="....svg" color="#xxxxxx"/>
+	</categories>
 </umc>
 			]]></programlisting>
 		</section>
@@ -151,7 +162,6 @@ Icons: umc/icons
 		<para>
 			Must use <uri>/umc/module/category/@name="domain"</uri>!
 			Must use <uri>/umc/module/@translationId</uri> to specify alternative translation file, which must be installed as <filename>/usr/share/univention-management-console/i18n/<replaceable>language</replaceable>/<replaceable>module</replaceable>.mo</filename>.
-			Icons must be named "udm-MODULE-SUBMODULE.png".
 		</para>
 	</section>
 

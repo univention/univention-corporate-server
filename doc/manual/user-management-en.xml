@@ -1038,7 +1038,7 @@
 			entry in the top right user menu.
 			To change the password, the current password must be entered first.
 			The change is performed directly via the PAM stack
-			(see <xref linkend="computers:Authentifizierung__PAM"/>) and is
+			(see <xref linkend="computers:Authentication__PAM"/>) and is
 			then available centrally for all services.
 		</para>
     </section>

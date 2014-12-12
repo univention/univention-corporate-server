@@ -346,6 +346,15 @@ or add --createorig to create one.
 					</para>
 				</listitem>
 			</varlistentry>
+			<varlistentry><term><filename><replaceable>package</replaceable>.maintscript</filename></term>
+				<listitem>
+					<para>
+						Control file to simplify the handling of <firstterm>conffile</firstterm>s.
+						See <citerefentry><refentrytitle>dpkg-maintscript-helper</refentrytitle><manvolnum>1</manvolnum></citerefentry> and <citerefentry><refentrytitle>dh_installdeb</refentrytitle><manvolnum>1</manvolnum></citerefentry> for more information.
+					</para>
+				</listitem>
+			</varlistentry>
+			Paket.maintscript
 		</variablelist>
 		<para>
 			Other <application>debhelper</application> programs use additional files, which are described in the respective manual pages.
@@ -672,7 +681,7 @@ Upstream-Contact: <package@univention.de>
 Source: http://docs.univention.de/
 
 Files: *
-Copyright: 2013 Univention GmbH
+Copyright: 2013-2014 Univention GmbH
 License: AGPL
 			]]></programlisting>
 		</section>

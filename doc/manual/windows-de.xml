@@ -1800,9 +1800,9 @@ ucr set connector/s4/mapping/group/grouptype=false
 		  zuordnet. Diese Variablen werden verwendet, um die in den UCS Konfigurationsdateien
 		  verwendeten englischen Begriffe in die Namen zu übersetzen, die in dem AD verwendet
 		  wurden. Wenn zum Beispiel <emphasis>Domain Admins</emphasis> einen anderen Namen
-		  im AD hat, dann wird die &ucsUCR; Variable <envvar>groups/default/domainadmins</envvar>
+		  im AD hat, dann wird die &ucsUCR; Variable <envar>groups/default/domainadmins</envar>
 		  auf den spezifischen Namen gesetzt
-		  (analog für Benutzer, z.B. <envvar>users/default/administrator</envvar>).
+		  (analog für Benutzer, z.B. <envar>users/default/administrator</envar>).
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>

@@ -1723,8 +1723,8 @@ ucr set connector/s4/mapping/group/grouptype=false
 		  These variables are used to translate the english names used in the UCS configuration
 		  files to the specific names used in AD.
 		  To give an example, if <emphasis>Domain Admins</emphasis> has a different name in the AD
-		  then the &ucsUCR; variable <envvar>groups/default/domainadmins</envvar> is set to that
-		  sepcific name (likewise for uses, e.g. <envvar>users/default/administrator</envvar>).
+		  then the &ucsUCR; variable <envar>groups/default/domainadmins</envar> is set to that
+		  sepcific name (likewise for uses, e.g. <envar>users/default/administrator</envar>).
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>

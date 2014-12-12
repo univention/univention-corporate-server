@@ -4,7 +4,7 @@
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<book lang="en" id="developer-reference-3.2">
+<book lang="en" id="developer-reference-4.0">
 	<bookinfo>
 		<title>Univention Developer Reference</title>
 		<subtitle>Manual for developers</subtitle>
@@ -17,6 +17,7 @@
 		</address>
 		<copyright>
 			<year>2013</year>
+			<year>2014</year>
 		</copyright>
 		<legalnotice>
 			<para>
@@ -33,8 +34,8 @@
 		</legalnotice>
 		<revhistory>
 			<revision>
-				<revnumber>3.2-1</revnumber>
-				<date>25th of March 2014</date>
+				<revnumber>4.0-0</revnumber>
+				<date>12th of December 2014</date>
 			</revision>
 		</revhistory>
 	</bookinfo>
