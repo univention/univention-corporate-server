@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.152-48) unstable; urgency=medium
+
+  * Bug #37159: Bug #37316: register signal handler for reloading of logfile
+  * version bump
+
+ -- Florian Best <best@univention.de>  Fri, 12 Dec 2014 17:02:27 +0100
+
 univention-management-console-frontend (3.0.152-44) unstable; urgency=low
 
   * Bug #35711: fix checking for ucs/web/license/requested
