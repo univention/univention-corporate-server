@@ -83,6 +83,10 @@ def log_set_level( level = 0 ):
 	for component in COMPONENTS:
 		ud.set_level( component, level )
 
+def log_reopen():
+	if _debug_ready:
+		ud.reopen()
+
 class ILogger( object ):
 	"""This class provides a simple interface to access the univention
 	debug function for the given component.

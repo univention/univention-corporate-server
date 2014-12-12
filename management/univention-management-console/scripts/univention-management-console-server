@@ -46,7 +46,7 @@ import notifier.signals as signals
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
 from daemon.daemon import set_signal_handlers
 
-from univention.management.console.log import CORE, log_init
+from univention.management.console.log import CORE, log_init, log_reopen
 from univention.management.console.config import SERVER_DEBUG_LEVEL, ucr
 
 server = None
@@ -194,6 +194,7 @@ class UMC_Daemon( DaemonRunner ):
 	def signal_hang_up( self, signal, frame ):
 		if hasattr( self, 'server' ):
 			self.server.reload()
+		log_reopen()
 
 	def signal_user1( self, signal, frame ):
 		if hasattr( self, 'server' ):
