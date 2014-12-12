@@ -1,3 +1,9 @@
+univention-debug (6.0.0-3) unstable; urgency=medium
+
+  * Bug #36603: Bug #37159: Bug #37316: fixup
+
+ -- Florian Best <best@univention.de>  Fri, 12 Dec 2014 15:22:19 +0100
+
 univention-debug (6.0.0-2) unstable; urgency=medium
 
   * Bug #36603: Bug #37159: Bug #37316: Fix a segfault which occurred
