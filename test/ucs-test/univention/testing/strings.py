@@ -34,7 +34,7 @@ STR_ALPHA = u'abcdefghijklmnopqrstuvwxyz'
 STR_ALPHANUM = STR_ALPHA + STR_NUMERIC
 STR_ALPHANUMDOTDASH = STR_ALPHANUM + '.-'
 
-STR_SPECIAL_CHARACTER = u' !#$%&*-/:?@[]^_`{|}~´€Ω®½'
+STR_SPECIAL_CHARACTER = u' !#$%&-/:?@[]^_`{|}~´€Ω®½'
 STR_UMLAUT = u'äöüßâêôûŵẑŝĝĵŷĉ'
 STR_UMLAUTNUM = STR_UMLAUT + STR_NUMERIC
 
