@@ -54,9 +54,9 @@ class Errors(LogMessage):
                 '.*nagios3 reported an error in configfile .* Please restart nagios3 manually.*',
                 '.*failed to download keytab for memberserver, retry.*',  # Bug 37225
                 '.*your request could not be fulfilled.*',  # Bug 37226
-                '.*Starting ldap server(s): slapd ...failed.*',  # Bug 37226
+                '.*Starting ldap server.* slapd ...failed.*',  # Bug 37226
                 '.*rsync: change_dir "/var/lib/samba/account-policy" failed: No such file or directory.*',  # Bug 37226
-                '.*rsync error: some files/attrs were not transferred (see previous errors) (code 23) at.*',  # Bug 37226
+                '.*rsync error: some files/attrs were not transferred.*',  # Bug 37226
                 '.*rsync: opendir "/etc/univention/ssl/unassigned-hostname.unassigned-domain" failed: Permission denied.*',  # Bug 37226
                 '.*Failed to join domain: failed to find DC for domain.*'  # Bug 37226
 	]
