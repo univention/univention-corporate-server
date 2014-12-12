@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-4
+src: univention-debug
+fix: 6.0.0-2.88.201412121334
+version: [3,4]
+desc: |
+  * Fix a segmentation fault in univention-debug when reloading the logfile.
+bug:
+ - 36603
+ - 37159
+ - 37316

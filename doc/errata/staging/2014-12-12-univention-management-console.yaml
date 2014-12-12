@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-4
+src: univention-management-console
+fix: 6.0.24-33.840.201412121331
+version: [3,4]
+desc: |
+  * Fixed a bug which prevented that UMC components could write into their
+    logfiles.
+bug:
+ - 37159
+ - 37316
