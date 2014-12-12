@@ -86,6 +86,7 @@ def log_set_level( level = 0 ):
 def log_reopen():
 	if _debug_ready:
 		ud.reopen()
+		CORE.info('Reopened logfile')
 
 class ILogger( object ):
 	"""This class provides a simple interface to access the univention

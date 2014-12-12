@@ -1,3 +1,10 @@
+univention-management-console (6.0.24-34) unstable; urgency=medium
+
+  * Bug #37315: fix error when the UMC server and the UMC module want to
+  	close the module process at the same time
+
+ -- Florian Best <best@univention.de>  Fri, 12 Dec 2014 15:31:54 +0100
+
 univention-management-console (6.0.24-33) unstable; urgency=medium
 
   * Bug #37159: Bug #37316: reload logfile on SIGHUB
