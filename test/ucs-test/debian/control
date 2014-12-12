@@ -45,6 +45,9 @@ Package: ucs-test-checks
 Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
+ python,
+ python-apt,
+ python-lxml,
  ${misc:Depends}
 Provides: ucs-test-module
 Description: Basic checks

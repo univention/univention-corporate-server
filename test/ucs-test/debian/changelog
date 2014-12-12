@@ -1,3 +1,10 @@
+ucs-test (5.0.73-1) unstable; urgency=low
+
+  * 00_checks/30_compare_package_versions: test that package versions of
+    the current release are higher than for the previous (Bug #36369).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 12 Dec 2014 13:22:04 +0100
+
 ucs-test (5.0.72-1) unstable; urgency=low
 
   * Bug #8052: remove * form special characters used for ldap object naming
