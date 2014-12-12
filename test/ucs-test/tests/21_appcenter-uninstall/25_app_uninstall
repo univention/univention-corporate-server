@@ -18,7 +18,7 @@ from univention.lib.package_manager import PackageManager, LockError
 from univention.management.console.modules.appcenter.app_center import Application
 
 
-APPCENTER_FILE = "/var/cache/appcenter-removed.txt"
+APPCENTER_FILE = "/var/cache/appcenter-uninstalled.txt"
 
 def check_app_webinterface(App, UCR):
 	print 'Checking webinterface for app %s' % App.id
