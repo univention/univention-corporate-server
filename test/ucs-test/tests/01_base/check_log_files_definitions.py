@@ -64,7 +64,9 @@ class Errors(LogMessage):
 	# extra ignore patterns for case when line == 'failed.'
 	extra_ignore_list = (
 		'Starting Univention Directory Notifier daemon.*',
-		'warning: univention-directory-notifier: unable to open supervise/ok: file does not exist.*'
+		'warning: univention-directory-notifier: unable to open supervise/ok: file does not exist.*',
+                'Terminating running univention-cli-server processes.*',
+                'Stopping univention-s4-connector daemon.*'
 	)
 
 
