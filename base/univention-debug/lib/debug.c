@@ -116,7 +116,7 @@ FILE * univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush
 			return NULL;
 		}
 	}
-	univention_debug_filename = logfile;
+	univention_debug_filename = logfile ? strdup(logfile) : NULL;
 
 	univention_debug_flush = flush;
 	univention_debug_function = function;
@@ -218,6 +218,9 @@ void univention_debug_exit(void)
 	fflush(univention_debug_file);
 	fclose(univention_debug_file);
 	univention_debug_file = NULL;
+
+	free(univention_debug_filename);
+	univention_debug_filename = NULL;
 
 	free(univention_debug_level);
 	univention_debug_level = NULL;
