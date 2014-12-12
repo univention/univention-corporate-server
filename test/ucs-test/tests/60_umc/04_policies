@@ -78,7 +78,7 @@ def main():
 		# appending the created UMC policy
 		global USERNAME
 		userdn, USERNAME = udm.create_user(**{
-			'policy-reference': umc_policy_dn
+			'policy_reference': umc_policy_dn
 		})
 
 		# create empty policies
@@ -135,7 +135,7 @@ def main():
 		# assign policy to root container
 		udm.modify_object('container/cn', **{
 			'dn': root_dn,
-			'policy-reference': root_policy_dn
+			'policy_reference': root_policy_dn
 		})
 
 		_assert(
@@ -152,7 +152,7 @@ def main():
 		# assign policy to computer container
 		udm.modify_object('container/cn', **{
 			'dn': container_dn,
-			'policy-reference': container_policy_dn
+			'policy_reference': container_policy_dn
 		})
 
 		_assert(
@@ -183,7 +183,7 @@ def main():
 		# assign policy to computer
 		udm.modify_object('computers/domaincontroller_slave', **{
 			'dn': computer_dn,
-			'policy-reference': computer_policy_dn
+			'policy_reference': computer_policy_dn
 		})
 
 		_assert(

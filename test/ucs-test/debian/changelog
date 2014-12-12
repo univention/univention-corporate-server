@@ -1,3 +1,17 @@
+ucs-test (4.0.189-1) unstable; urgency=medium
+
+  * Changed 'policy-reference' to 'policy_reference' when modifying via UDM in:
+    60_umc/04_policies,
+    60_umc/06_non-ucr-policies,
+    00_base/90change_user_pwd_via_udm,
+    60_umc-system/30_umc-service-user-modules (Bug #35276).
+    
+    60_umc/05_get_client_ip_address: added executable flag;
+    60_umc-system/31_umc-service-user-authentication: merged the updates
+    from UCS 4.0 (Bug #36901).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 12 Dec 2014 11:22:49 +0100
+
 ucs-test (4.0.188-3) unstable; urgency=low
 
   * 51_samba4/46machine_secret_access_sysvol: perform only one attempt

@@ -60,7 +60,7 @@ if __name__ == '__main__':
 			container_name = uts.random_string()
 			container = udm.create_object('container/cn', position = ldapbase, name = container_name)
 			policy = udm.create_object('policies/umc', name = policy_name, allow = 'cn=udm-self,cn=operations,cn=UMC,cn=univention,%s'%ldapbase)
-			modify_args = {'dn' : container, 'policy-reference' : policy}
+			modify_args = {'dn' : container, 'policy_reference' : policy}
 			udm.modify_object('container/cn', **modify_args )
 
 			#create random user

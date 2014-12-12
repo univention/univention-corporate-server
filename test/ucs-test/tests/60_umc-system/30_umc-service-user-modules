@@ -109,7 +109,7 @@ class TestUMCUserModules(TestUMCSystem):
             # **kwargs are as dict to pass a 'policy-reference'
             UDM.modify_object('groups/group',
                               **{'dn': test_group_dn,
-                                 'policy-reference': test_policy_dn})
+                                 'policy_reference': test_policy_dn})
 
             # recreating connection to obtain an updated module list:
             self.create_user_umc_connection(test_username, test_password)
