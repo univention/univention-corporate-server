@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.152-47) unstable; urgency=medium
+
+  * Bug #37255: Show warning message during UMC login when a releasae update
+    is currently performed.
+
+ -- Florian Best <best@univention.de>  Thu, 11 Dec 2014 17:33:12 +0100
+
 univention-management-console-frontend (3.0.152-46) unstable; urgency=medium
 
   * Bug #34071: Fix appearance of the login button

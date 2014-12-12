@@ -1256,6 +1256,7 @@ define([
 
 		_runChecks: function() {
 			// run several checks
+			this._checkUpdateIsRunning();
 			this._checkCertificateValidity();
 			this._checkLicense();
 			this._checkUpdateAvailable();
@@ -1300,6 +1301,17 @@ define([
 			if (this.getModule('updater') && tools.isTrue(_ucr['update/available'])) {
 				var link = this.linkToModule('updater');
 				dialog.notify(_( 'An update for UCS is available. Please visit the %s to install the updates.', link));
+			}
+		},
+
+		_checkUpdateIsRunning: function() {
+			if (this.getModule('updater')) {
+				tools.umcpCommand('updater/installer/running', {}, false).then(lang.hitch(this, function(data) {
+					if (data.result == 'release') {
+						this.openModule('updater');
+						dialog.alert(_('<p><b>Caution!</b> Currently a release update is performed!</p>') + ' ' +  _('<p>Leave the system up and running until the update is completed!</p>'), _('Release update'));
+					}
+				}));
 			}
 		},
 
