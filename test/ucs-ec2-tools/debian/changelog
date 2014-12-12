@@ -1,3 +1,12 @@
+ucs-ec2-tools (1.0.2-2) unstable; urgency=low
+
+  * Bug #35856, examples/jenkins/utils/ad-join.py:
+    ad-join will now wait until the join is finished, also checks
+    domain admin passwords and username stored for ucs-test and 
+    corrects them if needed
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 12 Dec 2014 11:19:42 +0100
+
 ucs-ec2-tools (1.0.2-1) unstable; urgency=low
 
   * Bug #36886: Switch to UCS-4.0-0 AMIs.
