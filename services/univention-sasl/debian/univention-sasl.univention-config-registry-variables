@@ -3,3 +3,9 @@ Description[de]=Konfiguriert die Anzahl der gestarteten saslauthd-Threads. Wird 
 Description[en]=Configures the number of saslauthd threads to be started. If the variable is set to 0, a new process is forked for every connection.
 Type=int
 Categories=system-services
+
+[mail/saslauthd/cache/timeout]
+Description[de]=Timeout für den Authentifizierungs-Cache in Sekunden.
+Description[en]=Use timeout as the expiration time of the authentication cache (in seconds).
+Type=int
+Categories=system-services

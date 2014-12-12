@@ -31,7 +31,9 @@
 
 eval "$(ucr shell)"
 
-univention-config-registry set mail/saslauthd/threads?5
+univention-config-registry set \
+	mail/saslauthd/cache/timeout?1800 \
+	mail/saslauthd/threads?5
 
 if [ -x /etc/init.d/saslauthd ]; then
 	/etc/init.d/saslauthd restart

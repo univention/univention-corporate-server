@@ -54,4 +54,8 @@ THREADS=@%@mail/saslauthd/threads@%@
 # information about these options.
 #
 # Example for postfix users: "-c -m /var/spool/postfix/var/run/saslauthd"
-OPTIONS="-c -r -m /var/run/saslauthd"
+@!@
+timeout = configRegistry.get('mail/saslauthd/cache/timeout', '1800')
+options = '-c -r -m /var/run/saslauthd -t ' + timeout
+print 'OPTIONS="%s"' % options
+@!@
