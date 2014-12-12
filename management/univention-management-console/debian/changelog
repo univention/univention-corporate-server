@@ -1,6 +1,12 @@
+univention-management-console (6.0.24-33) unstable; urgency=medium
+
+  * Bug #37159: Bug #37316: reload logfile on SIGHUB
+
+ -- Florian Best <best@univention.de>  Fri, 12 Dec 2014 12:05:26 +0100
+
 univention-management-console (6.0.24-32) unstable; urgency=medium
 
-  * Bug #37167: fix error handling when socket is closed
+  * Bug #36561: fix error handling when socket is closed
 
  -- Florian Best <best@univention.de>  Thu, 20 Nov 2014 18:27:16 +0100
 
