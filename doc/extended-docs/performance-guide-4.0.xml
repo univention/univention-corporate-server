@@ -380,12 +380,12 @@ slapadd -l ldif
 	<section id="mailserver">
 		<title>Mailserver</title>
 		<para>
-			In the default configuration the UCS mailstack uses the SASL authentication server
-			for user authentication. The SASL server has its own authentication credentials
+			In the default configuration the UCS mail stack uses the SASL authentication daemon
+			for authentication. The SASL daemon has its own authentication credentials
 			cache to reduce the need for rechecking the credentials via PAM (LDAP). The default
 			timeout for this cache is 1800s but can be increased by setting the &ucsUCRV;
 			<envar>mail/saslauthd/cache/timeout</envar> in case of too much authentication
-			request.
+			requests.
 		</para>
 	</section>
 </chapter>
