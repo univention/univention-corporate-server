@@ -1,3 +1,10 @@
+univention-debug (6.0.0-2) unstable; urgency=medium
+
+  * Bug #36603: Bug #37159: Bug #37316: Fix a segfault which occurred
+  	when trying to reload the logfile
+
+ -- Florian Best <best@univention.de>  Fri, 12 Dec 2014 13:15:14 +0100
+
 univention-debug (6.0.0-1) unstable; urgency=low
 
   * do not log ERROR to syslog (Bug #25469) 
