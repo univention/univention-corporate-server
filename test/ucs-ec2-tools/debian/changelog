@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.2-3) unstable; urgency=low
+
+  * Bug #37323: Remove univention-bacula from profiles
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 12 Dec 2014 15:39:08 +0100
+
 ucs-ec2-tools (1.0.2-2) unstable; urgency=low
 
   * Bug #35856, examples/jenkins/utils/ad-join.py:
