@@ -1,4 +1,4 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
 # Copyright 2013 Univention GmbH
@@ -38,6 +38,7 @@ except ImportError:
 	# with 3.2
 	from univention.lib.umc_connection import UMCConnection
 
+from time import sleep
 from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()
 ucr.load()
@@ -61,22 +62,73 @@ parser.add_option('-P', '--domain_password', dest='domain_password', default='Un
 if not options.domain_host:
 	parser.error('Please specify a domain controller host address!')
 
-connection = UMCConnection(options.host)
-connection.auth(options.username, options.password)
 
-data = {
+def join_ad():
+	connection = UMCConnection(options.host)
+	connection.auth(options.username, options.password)
+
+	send_data = {
 		'ad_server_address': options.domain_host,
 		'password': options.domain_password,
 		'username': options.domain_admin
 		}
 
-result = connection.request("adconnector/admember/join", data)
+	result = connection.request("adconnector/admember/join", data=send_data)
 
-if not result:
-	print 'ERROR: Failed to join ad domain!'
-	print 'output: %s' % result
-	sys.exit(1)
+	if not result:
+		print 'ERROR: Failed to join ad domain!'
+		print 'output: %s' % result
+		sys.exit(1)
+
+	progress_id = result['id']
+	progress_data = {
+			'progress_id':progress_id
+			}
+
+	print '=== AD-JOIN STARTED ==='
+	status = {'finished': False}
+	while not status['finished']:
+		status = connection.request('adconnector/admember/progress', data=progress_data)
+		percentage = status['percentage']
+		print percentage
+		sleep(2)
+
+	if not status['result']['success']:
+		print status['result']['error']
+		print '=== AD-JOIN FINISHED WITH ERROR ==='
+		sys.exit(1)
+
+	print '=== AD-JOIN FINISHED ==='
 
 
+def correct_passwords():
+	"""Check domain password and admin name saved for ucs-test and
+	correct them if needed"""
+
+	print '=== Correcting ucs-test passwords ==='
+
+	ucr_domainadmin = ucr['tests/domainadmin/account']
+	ucr_domainadminparts = ucr_domainadmin.split(',')
+	if ucr_domainadminparts[0].split('=')[1] != options.domain_admin:
+		ucr_domainadminparts[0] = 'uid=%s' % options.domain_admin
+		ucr['tests/domainadmin/account'] = ','.join(ucr_domainadminparts)
+
+
+	ucr_domain_pw = ucr['tests/domainadmin/pwd']
+	if  ucr_domain_pw != options.domain_password:
+		ucr['tests/domainadmin/pwd']=options.domain_password
+
+	ucr.save()
+
+	with open ("/var/lib/ucs-test/pwdfile", "r") as pwfile:
+		pwfile_pw = pwfile.read().replace('\n', '')
+	if pwfile_pw != options.domain_password:
+		with open ("/var/lib/ucs-test/pwdfile", "w") as pwfile:
+			pwfile.write(options.domain_password)
+
+
+
+join_ad()
+correct_passwords()
 
 sys.exit(0)
