@@ -187,7 +187,7 @@ run_minimal_apptests ()
 
 run_appcenter_uninstall_tests ()
 {
-	run_tests -s appcenter_uninstall "$@"
+	run_tests -s appcenter-uninstall "$@"
 }
 
 run_tests ()
