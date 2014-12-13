@@ -475,7 +475,7 @@ class Instance(umcm.Base):
 			blocking_components = self.uu.get_all_available_release_updates()[1]
 			if not blocking_components:
 				blocking_components = []
-			result['release_update_blocking_components'] = list(blocking_components)
+			result['release_update_blocking_components'] = ' '.join(blocking_components)
 
 			what = 'querying appliance mode'
 			result['appliance_mode'] = self.ucr.is_true('server/appliance')

@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define console setTimeout*/
 
 define([
 	"dojo/_base/declare",
@@ -118,6 +118,10 @@ define([
 				// -------------------- Release updates --------------------------
 				{
 					type:			'HiddenInput',
+					name:			'release_update_available'
+				},
+				{
+					type:			'HiddenInput',
 					name:			'appliance_mode'
 				},
 				{
@@ -155,26 +159,67 @@ define([
 
 							var componentQueryDeferred = new Deferred();
 							var appliance_mode = (this._form.getWidget('appliance_mode').get('value') === 'true');
-							var blocking_components = this._form.getWidget('release_update_blocking_components').get('value');
-							if ((blocking_components) && (! appliance_mode)) {
-								// FIXME iterate through all components
-								var blocking_component = blocking_components[0];
-								tools.umcpCommand('appcenter/get_by_component_id', {component_id: blocking_component}, false).then(
-									lang.hitch(this, function(data) {
-										var app = data.result;
-										// further updates are available but blocked by an app not yet updated
-										element_updatestext.set('content', _('Version %(version)s of the application %(name)s is not available for the new release. Use the %(module)s to upgrade this application if possible.', lang.mixin({module: UMCApplication.linkToModule('apps', app.id)}, app)));
-										this._form.showWidget('ucs_updates_text', true);
-										componentQueryDeferred.resolve();
-									}),
-									lang.hitch(this, function() {
-										// further updates are available but blocked by specified component which is required for update
-										element_updatestext.set('content', lang.replace(_("Further release updates are available but cannot be installed because the component '{0}' is not available for newer release versions."), [blocking_component]));
-										this._form.showWidget('ucs_updates_text', true);
-										componentQueryDeferred.resolve();
-
-									})
-								);
+							var theoreticalReleaseUpdate = this._form.getWidget('release_update_available').get('value');
+							var blockingComponents = this._form.getWidget('release_update_blocking_components').get('value');
+							if (blockingComponents === '') {
+								blockingComponents = [];
+							} else {
+								blockingComponents = blockingComponents.split(' ');
+							}
+							var updatestext = '';
+							if (blockingComponents.length && !appliance_mode) {
+								updatestext = _('Version %(version)s is available but cannot be installed.', {version: theoreticalReleaseUpdate});
+								var updatesTextComponentsApps = '';
+								var updatesTextComponentsUnknown = '';
+								var askAppCenter = tools.umcpCommand('appcenter/get_by_component_id', {component_id: blockingComponents}, false).then(lang.hitch(this, function(data) {
+									var apps = data.result;
+									var componentsUnknown = [];
+									var componentApps = [];
+									array.forEach(apps, function(app, i) {
+										if (app) {
+											componentApps.push(app);
+										} else {
+											componentsUnknown.push(blockingComponents[i]);
+										}
+									});
+									if (componentApps.length) {
+										var firstApp = componentApps[0];
+										var otherApps = componentApps.slice(1);
+										updatesTextComponentsApps = _('For UCS %(theoretical_release_update)s the application %(name)s is not available in the currently installed version.', {theoretical_release_update: theoreticalReleaseUpdate, name: componentApps[0].name});
+										if (firstApp.is_installed && firstApp.candidate_version) {
+											updatesTextComponentsApps += ' ' + _('An update for the app is available which may solve this issue.');
+										} else {
+											updatesTextComponentsApps += ' ' + _('You may wait for the app to be released for the new UCS version.');
+										}
+										updatesTextComponentsApps += ' ' + _('Using the %(app_center)s, you may also search for alternative apps or uninstall the application.', {app_center: UMCApplication.linkToModule('appcenter')});
+										if (otherApps.length) {
+											updatesTextComponentsApps += '<br />' + _('This also holds for:') + '<ul><li>';
+											array.forEach(otherApps, function(app) {
+												var updateHint = null;
+												if (app.is_installed && app.candidate_version) {
+													updateHint = _('update available');
+												} else {
+													updateHint = _('no update available');
+												}
+												updatesTextComponentsApps += lang.replace('{name} ({updateHint})', {name: app.name, updateHint: updateHint});
+											});
+											updatesTextComponentsApps += '</li></ul>';
+										}
+									}
+									if (componentsUnknown.length) {
+										if (componentsUnknown.length === 1) {
+											updatesTextComponentsUnknown = _('Component \'%(component)s\' is not yet available for newer release versions.', {component: componentsUnknown[0]});
+										} else {
+											updatesTextComponentsUnknown = _('The components \'%(components)s\' are not yet available for newer release versions.', {components: componentsUnknown.join('\', \'')});
+										}
+									}
+								}));
+								askAppCenter.then(lang.hitch(componentQueryDeferred, 'resolve'), lang.hitch(componentQueryDeferred, 'resolve'));
+								componentQueryDeferred.then(lang.hitch(this, function() {
+									updatestext = updatestext + ' ' + updatesTextComponentsApps + ' ' + updatesTextComponentsUnknown;
+									element_updatestext.set('content', updatestext);
+									this._form.showWidget('ucs_updates_text', true);
+								}));
 							} else {
 								componentQueryDeferred.resolve();
 							}
@@ -454,7 +499,7 @@ define([
 					var element = this._form.getWidget('easy_available_text');
 					var ava = ((values.easy_update_available === true) || (values.easy_update_available === 'true'));
 					var appliance_mode = ((values.appliance_mode === true) || (values.appliance_mode === 'true'));
-					var blocking_component = this._form.getWidget('release_update_blocking_components').get('value');
+					var blocking_component = this._form.getWidget('release_update_blocking_components').get('value').split(' ')[0];
 					if (ava) {
 						element.set('content', _("There are updates available."));
 					} else if ((blocking_component) && (! appliance_mode)) {
