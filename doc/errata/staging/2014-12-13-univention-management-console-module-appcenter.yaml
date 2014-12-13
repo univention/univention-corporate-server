@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-4
+src: univention-management-console-module-appcenter
+fix: 3.0.51-26.308.201412132324
+version: [4]
+desc: |
+  This errata update extends one command to allow searching for multiple
+  components at once (needed for updater module)
+bug:
+ - 37029
