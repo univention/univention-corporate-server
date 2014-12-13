@@ -286,6 +286,25 @@ win.set_gateway('$GATEWAY')
 	fi
 }
 
+create_ad_user_and_add_the_user_to_the_group ()
+{
+	local HOST="$1"
+	local DOMAIN="$2"
+	local NEW_ADMIN_USERNAME="$3"
+	local NEW_ADMIN_PASSWORD="$4"
+	local NEW_ADMIN_GROUP="$5"
+	local ADMIN_ACCOUNT="${6:-administrator}"
+	if [ -n "$HOST" -a -n "$NEW_ADMIN_USERNAME" -a -n "$NEW_ADMIN_PASSWORD" -a -n "$NEW_ADMIN_GROUP" ]; then
+	python -c "
+import univention.winexe
+win=univention.winexe.WinExe('$DOMAIN', '$ADMIN_ACCOUNT', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
+win.create_user_and_add_to_group('$NEW_ADMIN_USERNAME', '$NEW_ADMIN_PASSWORD', '$NEW_ADMIN_GROUP')
+"
+	else
+		echo "Please specify an host address, a domain name, an admin username, an admin password and a group name."
+	fi
+}
+
 set_administrator_dn_for_ucs_test ()
 {
 	local dn="$(univention-ldapsearch sambaSid=*-500 -LLL dn | sed -ne 's|dn: ||p')"
