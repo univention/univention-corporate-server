@@ -190,6 +190,11 @@ run_appcenter_uninstall_tests ()
 	run_tests -s appcenter-uninstall "$@"
 }
 
+run_admember_tests ()
+{
+	run_tests -p skip_admember "$@"
+}
+
 run_tests ()
 {
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
