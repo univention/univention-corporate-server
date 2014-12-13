@@ -320,6 +320,11 @@ class WinExe:
 
 		return self.winexec("add-users-to-group", username, users, groupname, groups)
 
+	def create_user_and_add_to_group(self, username, password, groupname):
+		''' create a user with the given username and add the user to the group '''
+
+		return self.winexec("create-user-and-add-to-group", username, password, groupname)
+
 	def add_certificate_authority(self):
 		''' install and setup certificate authority '''
 
