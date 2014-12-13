@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.51-26) unstable; urgency=low
+
+  * Bug #37029: Allow searching for multiple components at once (needed for
+    updater module)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 13 Dec 2014 23:23:02 +0100
+
 univention-management-console-module-appcenter (3.0.51-25) unstable; urgency=low
 
   * Bug #35565: commit installed apps files upon UCRV
