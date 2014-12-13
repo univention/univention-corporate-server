@@ -6,7 +6,7 @@
 ## roles-not: 
 ## - basesystem
 ## - memberserver
-## tags: [basic]
+## tags: [basic, skip_admember]
 
 . "$TESTLIBPATH/user.sh" || exit 137
 . "$TESTLIBPATH/samba.sh" || exit 137

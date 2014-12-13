@@ -7,6 +7,7 @@
 ## - basesystem
 ## tags:
 ##  - basic
+##  - skip_admember
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137

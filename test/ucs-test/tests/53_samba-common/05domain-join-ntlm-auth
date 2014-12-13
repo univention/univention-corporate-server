@@ -11,6 +11,7 @@
 ## tags:
 ##  - basic
 ##  - apptest
+##  - skip_admember
 ## join: true
 
 . "$TESTLIBPATH/base.sh" || exit 137

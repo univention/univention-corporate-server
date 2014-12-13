@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Test account locking via shadow/ldap, smb, krb
 ## roles: [domaincontroller_master]
-## tags: [basic, univention]
+## tags: [basic, univention, skip_admember]
 ## packages: [univention-directory-manager-tools, openssh-server, smbclient, heimdal-clients]
 ## exposure: dangerous
 ## versions:
@@ -83,7 +83,8 @@ krb_login () {
 }
 
 user_create "$NAME" \
-	--set groups="cn=Administrators,cn=groups,$ldap_base"
+	--set password="$(<$tests_domainadmin_pwdfile)" \
+	--set primaryGroup="$(get_domain_admins_dn)"
 
 while read udm windows kerberos posix comment
 do

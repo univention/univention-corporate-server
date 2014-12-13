@@ -3,6 +3,7 @@
 ## tags:
 ##  - basic
 ##  - rename_default_account
+##  - skip_admember
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup

@@ -1,3 +1,10 @@
+ucs-test (5.0.73-2) unstable; urgency=medium
+
+  * Added the tag skip_admember which skips the test cases in admember
+    mode (Bug #37289)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 13 Dec 2014 14:45:40 +0100
+
 ucs-test (5.0.73-1) unstable; urgency=low
 
   * 00_checks/30_compare_package_versions: test that package versions of

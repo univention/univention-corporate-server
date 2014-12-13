@@ -34,8 +34,8 @@ ssh_login () {
 
 udm mail/domain create --set name="$domainname"
 user_create "$NAME" \
-	--set primaryGroup="cn=Domain Admins,cn=groups,$ldap_base" \
-	--set groups="cn=Administrators,cn=groups,$ldap_base"
+	--set password="$(<$tests_domainadmin_pwdfile)" \
+	--set primaryGroup="$(get_domain_admins_dn)"
 /usr/lib/univention-pam/ldap-group-to-file.py
 
 # univention-ssh tries it 3 times

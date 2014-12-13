@@ -8,6 +8,8 @@
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 ## - memberserver
+## tags:
+## - skip_admember
 
 . "$TESTLIBPATH/user.sh" || exit 137
 . "$TESTLIBPATH/shares.sh" || exit 137

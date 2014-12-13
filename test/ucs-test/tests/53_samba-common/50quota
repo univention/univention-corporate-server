@@ -9,6 +9,8 @@
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave
 ##  - memberserver
+## tags: 
+##  - skip_admember
 ## exposure: dangerous
 
 eval "$(ucr shell)"

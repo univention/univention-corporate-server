@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: "Perform a 'net rpc testjoin'"
 ## exposure: safe
+## tags:
+##  - skip_admember
 ## bugs: [35590]
 ## packages:
 ##  - winbind

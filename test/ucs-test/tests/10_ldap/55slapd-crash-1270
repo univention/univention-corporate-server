@@ -5,6 +5,8 @@
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave
+## tags:
+##  - skip_admember
 ## packages:
 ##  - univention-config
 ##  - univention-directory-manager-tools
