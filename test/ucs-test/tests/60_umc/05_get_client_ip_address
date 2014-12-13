@@ -8,6 +8,7 @@ from univention.lib.umc_connection import UMCConnection
 import univention.testing.utils as utils
 import univention.testing.network as network
 from json import loads
+import univention.config_registry as configRegistry
 
 
 def get_ip_address(host, username, password):
@@ -19,8 +20,12 @@ def get_ip_address(host, username, password):
 
 
 def main():
-	username = 'Administrator'  # FIXME: currently there is no UCR variable containing the admin username
-	password = 'univention'  # FIXME: if username is fixed, then use the UCR variable tests/domainadmin/{pwd,pwdfile} here
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+
+	password = ucr.get('tests/domainadmin/pwd', 'univention')
+	usernamd_dn = ucr.get('tests/domainadmin/account', 'uid=Administrator,dc=foo')
+	username = ldap.explode_rdn(usernamd_dn)[0].split('=', 1)[-1]
 
 	with network.NetworkRedirector() as nethelper:
 		print '*** Check with different remote addresses'
