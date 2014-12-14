@@ -129,6 +129,6 @@ def correct_passwords():
 
 
 join_ad()
-correct_passwords()
+# correct_passwords()
 
 sys.exit(0)
