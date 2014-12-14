@@ -183,6 +183,15 @@ define([
 										}
 									});
 									if (componentApps.length) {
+										componentApps.sort(function(app1, app2) {
+											if (app1.is_installed && app1.candidate_version) {
+												return -1;
+											}
+											if (app2.is_installed && app2.candidate_version) {
+												return 1;
+											}
+											return 0;
+										});
 										var firstApp = componentApps[0];
 										var otherApps = componentApps.slice(1);
 										updatesTextComponentsApps = _('For UCS %(theoretical_release_update)s the application %(name)s is not available in the currently installed version.', {theoretical_release_update: theoreticalReleaseUpdate, name: componentApps[0].name});
@@ -199,7 +208,7 @@ define([
 												if (app.is_installed && app.candidate_version) {
 													updateHint = _('update available');
 												} else {
-													updateHint = _('no update available');
+													updateHint = _('no update available yet');
 												}
 												updatesTextComponentsApps += lang.replace('{name} ({updateHint})', {name: app.name, updateHint: updateHint});
 											});
