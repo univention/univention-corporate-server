@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-07 17:37+0100\n"
+"POT-Creation-Date: 2014-12-15 09:49+0100\n"
 "PO-Revision-Date: 2011-10-29 22:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,7 +55,7 @@ msgstr "Univention Directory Manager Container Konfiguration"
 #: dhcp_dns.py:65 dhcp_dnsupdate.py:71 dhcp_leasetime.py:66 dhcp_netbios.py:66
 #: dhcp_routing.py:64 dhcp_scope.py:68 dhcp_statements.py:69 ldapserver.py:65
 #: mailquota.py:65 maintenance.py:66 masterpackages.py:66 memberpackages.py:66
-#: nfsmounts.py:65 policy.py:66 print_quota.py:69 printserver.py:64
+#: nfsmounts.py:65 policy.py:67 print_quota.py:69 printserver.py:64
 #: pwhistory.py:67 registry.py:66 release.py:65 repositoryserver.py:65
 #: repositorysync.py:66 share_userquota.py:69 slavepackages.py:66 umc.py:66
 msgid "Name"
@@ -119,7 +119,7 @@ msgstr "Leere Attribute"
 #: ldapserver.py:129 mailquota.py:128 mailquota.py:129 maintenance.py:209
 #: maintenance.py:210 masterpackages.py:139 masterpackages.py:140
 #: memberpackages.py:139 memberpackages.py:140 nfsmounts.py:128
-#: nfsmounts.py:129 policy.py:77 print_quota.py:152 print_quota.py:153
+#: nfsmounts.py:129 policy.py:78 print_quota.py:152 print_quota.py:153
 #: printserver.py:128 printserver.py:129 pwhistory.py:160 pwhistory.py:161
 #: registry.py:129 registry.py:130 release.py:138 release.py:139
 #: repositoryserver.py:129 repositoryserver.py:130 repositorysync.py:169
@@ -138,7 +138,7 @@ msgstr "Univention Directory Manager Konfiguration"
 #: dhcp_statements.py:190 ldapserver.py:134 mailquota.py:134
 #: maintenance.py:221 masterpackages.py:146 memberpackages.py:146
 #: nfsmounts.py:134 print_quota.py:159 printserver.py:134 pwhistory.py:169
-#: registry.py:135 release.py:144 repositoryserver.py:135
+#: registry.py:135 release.py:145 repositoryserver.py:135
 #: repositorysync.py:177 share_userquota.py:181 slavepackages.py:146
 #: umc.py:135
 msgid "Object"
@@ -607,7 +607,7 @@ msgstr "Richtlinie: LDAP-Server"
 msgid "LDAP server"
 msgstr "LDAP-Server"
 
-#: ldapserver.py:128 nfsmounts.py:128 policy.py:77 printserver.py:128
+#: ldapserver.py:128 nfsmounts.py:128 policy.py:78 printserver.py:128
 #: umc.py:129
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
@@ -719,6 +719,10 @@ msgid "Policy"
 msgstr "Richtlinie"
 
 #: policy.py:49
+msgid "http://docs.univention.de/manual.html#central:policies"
+msgstr ""
+
+#: policy.py:50
 msgid ""
 "<p>Policies are objects that can be connect with other objects in the "
 "directory tree. Connected policies allow to define object properties in a "
@@ -736,27 +740,27 @@ msgstr ""
 "Sie in der <a href=\"http://docs.univention.de/handbuch.html#central:policies"
 "\" target=\"_blank\">Online-Dokumentation zu UCS</a>.</p>"
 
-#: policy.py:52
+#: policy.py:53
 msgid "Policies"
 msgstr "Richtlinien"
 
-#: policy.py:53
+#: policy.py:54
 msgid "Add, edit and delete Policies"
 msgstr "Hinzufügen, bearbeiten und löschen von Richtlinien"
 
-#: policy.py:54
+#: policy.py:55
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: policy.py:54
+#: policy.py:55
 msgid "Add Policy Object"
 msgstr " Richtlinien-Objekt hinzufügen"
 
-#: policy.py:54
+#: policy.py:55
 msgid "Find"
 msgstr "Suchen"
 
-#: policy.py:54
+#: policy.py:55
 msgid "Find Policy Object(s)"
 msgstr "Richtlinien-Objekt(e) suchen"
 
@@ -884,24 +888,20 @@ msgid "Release Version"
 msgstr "Release Version"
 
 #: release.py:58
-msgid "Policy: Release"
-msgstr "Richtlinie: Release"
+msgid "Policy: Update"
+msgstr "Richtlinie: Updates"
 
-#: release.py:59
-msgid "Release"
-msgstr "Release"
+#: release.py:59 release.py:138
+msgid "Automatic updates"
+msgstr "Automatische Updates"
 
 #: release.py:76
-msgid "Activate policy"
-msgstr "Aktiviere die Richtlinie"
+msgid "Activate release updates. (Errata updates are activated by default)"
+msgstr "Aktiviere Release-Updates. (Errata Updates sind per Default aktiviert)"
 
 #: release.py:86
-msgid "Release version"
-msgstr "Release Version"
-
-#: release.py:138
-msgid "Release updates"
-msgstr "Client Aktualisierungen"
+msgid "Update to this UCS version"
+msgstr "Bis zu dieser UCS-Version aktualisieren"
 
 #: repositoryserver.py:47 repositoryserver.py:59 repositoryserver.py:76
 msgid "Repository server"
@@ -1022,6 +1022,21 @@ msgstr "Definiert eine Liste von erlaubten UMC Operationen"
 msgid "List of allowed UMC operation sets"
 msgstr "Liste der erlaubten UMC Operationen"
 
+#~ msgid "Policy: Release"
+#~ msgstr "Richtlinie: Release"
+
+#~ msgid "Release"
+#~ msgstr "Release"
+
+#~ msgid "Activate policy"
+#~ msgstr "Aktiviere die Richtlinie"
+
+#~ msgid "Release version"
+#~ msgstr "Release Version"
+
+#~ msgid "Release updates"
+#~ msgstr "Client Aktualisierungen"
+
 #~ msgid "Allowed Groups"
 #~ msgstr "Berechtigte Gruppen"
 
@@ -1108,9 +1123,6 @@ msgstr "Liste der erlaubten UMC Operationen"
 
 #~ msgid "Servers to use"
 #~ msgstr "Zu nutzende Server"
-
-#~ msgid "Automatic detection"
-#~ msgstr "Automatische Erkennung"
 
 #~ msgid "Resolution of primary display"
 #~ msgstr "Auflösung des primären Monitors"

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (10.0.29-10) unstable; urgency=low
+
+  * Bug #33190: Changed the release policy to update policy and adapted
+  	the layout
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 15 Dec 2014 09:51:56 +0100
+
 univention-directory-manager-modules (10.0.29-9) unstable; urgency=medium
 
   * Bug #33928: Bug #30088: add more information to Bad Search Filter

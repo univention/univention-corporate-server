@@ -55,8 +55,8 @@ policy_apply_to=["computers/domaincontroller_master", "computers/domaincontrolle
 policy_position_dn_prefix="cn=update"
 
 childs=0
-short_description=_('Policy: Release')
-policy_short_description=_('Release')
+short_description=_('Policy: Update')
+policy_short_description=_('Automatic updates')
 long_description=''
 options={
 }
@@ -73,7 +73,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'activate': univention.admin.property(
-			short_description=_('Activate policy'),
+			short_description=_('Activate release updates. (Errata updates are activated by default)'),
 			long_description='',
 			syntax=univention.admin.syntax.TrueFalseUp,
 			multivalue=0,
@@ -83,8 +83,8 @@ property_descriptions={
 			identifies=0
 		),
 	'releaseVersion': univention.admin.property(
-			short_description=_('Release version'),
-			long_description='',
+			short_description=_('Update to this UCS version'),
+			long_description='Without specifying the most recent version will be used',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -135,10 +135,11 @@ property_descriptions={
 }
 
 layout = [
-	Tab(_('General'),_('Release updates'), layout = [
+	Tab(_('General'),_('Automatic updates'), layout = [
 		Group( _( 'General' ), layout = [
 			'name',
-			[ 'activate', 'releaseVersion' ]
+			'activate',
+			'releaseVersion'
 		] ),
 	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
