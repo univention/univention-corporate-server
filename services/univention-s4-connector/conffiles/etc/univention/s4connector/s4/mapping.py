@@ -644,7 +644,7 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 		sync_mode_ou=configRegistry.get('connector/s4/mapping/ou/syncmode')
 	else:
 		sync_mode_ou=configRegistry.get('connector/s4/mapping/syncmode')
-	print '''
+	section = '''
 	'msGPO': univention.s4connector.property (
 			ucs_module='container/msgpo',
 
@@ -722,7 +722,10 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 							con_attribute='gPCWQLFilter'
 						),
 				},
+''' % {'ignore_filter': ignore_filter, 'sync_mode_ou': sync_mode_ou}
 
+	if configRegistry.is_true('connector/s4/mapping/gpo/ntsd', False):
+		section = section + '''
 			ucs_create_functions = [
 				univention.s4connector.s4.ntsecurity_descriptor.ntsd_to_ucs,
 			],
@@ -735,9 +738,12 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 			post_con_modify_functions=[
 				univention.s4connector.s4.ntsecurity_descriptor.ntsd_to_s4,
 			],
+'''
 
+	section = section + '''
 		),
-''' % {'ignore_filter': ignore_filter, 'sync_mode_ou': sync_mode_ou}
+'''
+	print section
 
 if configRegistry.is_true('connector/s4/mapping/wmifilter', False):
 	ignore_filter = ''

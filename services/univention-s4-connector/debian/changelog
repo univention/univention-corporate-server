@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-88) unstable; urgency=medium
+
+  * Bug #33768: New UCR variable connector/s4/mapping/gpo/ntsd
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Dec 2014 16:53:04 +0100
+
 univention-s4-connector (8.0.33-87) unstable; urgency=medium
 
   * Bug #35973: Treat objects without entryUUID as rejected
