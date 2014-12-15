@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-5) unstable; urgency=medium
+
+  * Bug #37317: register signal handler for reloading of logfile
+
+ -- Florian Best <best@univention.de>  Mon, 15 Dec 2014 12:49:51 +0100
+
 univention-management-console-frontend (4.1.106-4) unstable; urgency=low
 
   * Bug #36291: added 'cssStyle' as parameter to tools/getIconClass

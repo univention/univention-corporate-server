@@ -53,7 +53,11 @@ import notifier
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
 
 import univention.management.console.protocol as umcp
-from univention.management.console.log import *
+from univention.management.console.log import CORE, log_init, log_reopen
+try:
+	from univention.management.console.log import log_reopen
+except ImportError:
+	log_reopen = lambda: None  # remove! errata-cross-dependency
 import univention.config_registry as ucr
 
 configRegistry = ucr.ConfigRegistry()
@@ -907,6 +911,10 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		_thread_http = threading.Thread(target=run_cherrypy)
 		_thread_http.deamon = True
 		_thread_http.start()
+
+		# cherrypy runs in a thread. signals can only be registered in the main thread
+		cherrypy.engine.signal_handler.handlers['SIGHUP'] = log_reopen
+		cherrypy.engine.signal_handler.subscribe()
 
 		try:
 			# start notifier loop
