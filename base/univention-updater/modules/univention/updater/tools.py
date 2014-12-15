@@ -654,14 +654,14 @@ class UniventionUpdater:
 					mm_version = UCS_Version.FORMAT % ver
 					if not self.get_component_repositories(component, [mm_version], clean=False, debug=debug):
 						self.log.error('Missing component %s', component)
-						if errorsto == 'stderr':
-							print >> sys.stderr, RequiredComponentError(mm_version, [component])
-						elif errorsto == 'exception':
-							failed.add(component)
-						else:
-							return None
+						failed.add(component)
 				if failed:
-					raise RequiredComponentError(mm_version, failed)
+					ex = RequiredComponentError(mm_version, failed)
+					if errorsto == 'exception':
+						raise ex
+					elif errorsto == 'stderr':
+						print >> sys.stderr, ex
+					return None
 				else:
 					self.log.info('Going for version %s', ver)
 					return UCS_Version.FULLFORMAT % ver
