@@ -1,3 +1,9 @@
+univention-management-console (6.0.24-36) unstable; urgency=medium
+
+  * Bug #37317: fix permissions and exit code of postrotate script
+
+ -- Florian Best <best@univention.de>  Mon, 15 Dec 2014 17:34:57 +0100
+
 univention-management-console (6.0.24-35) unstable; urgency=medium
 
   * Bug #37159: Bug #37316: Also sent SIGHUP to running UMC modules
