@@ -261,3 +261,9 @@ Description[de]=Wenn die Synchronisation von WMI-Filtern aktiviert wurde (siehe 
 Description[en]=If the synchronisation of WMI filters has been activated (see 'connector/s4/mapping/wmifilter'), WMI filter IDs can be specified here which shall not be synchronised by the connector. Multiple values need to be separated by commas.
 Type=str
 Categories=service-s4con
+
+[connector/s4/mapping/gpo/ntsd]
+Description[de]=Gruppenrichtlinien werden in Group Policy Objects (GPOs) gespeichert, die auf Samba 4-Domänencontrollern im Verzeichnis /var/lib/samba/sysvol/ gespeichert werden. Diese GPOs werden im Samba 4-LDAP referenziert und haben dort bestimmte Zugriffsrechte. Ist diese Option aktiviert, werden die Zugriffsrechte der GPO-Referenzen auch in das UCS-LDAP synchronisiert. Ist die Variable nicht gesetzt, werden die Referenzen nicht synchronisiert.
+Description[en]=Group policies are stored in Group Policy Objects (GPOs) in the directory /var/lib/samba/sysvol/ on all Samba 4 domain controllers. The GPOs and the corresponding access rights are referenced in Samba 4 LDAP. If this option is activated, the access rights of the GPO references are synchronised to the UCS LDAP along with the references. If the variable is unset, the references are not synchronised.
+Type=bool
+Categories=service-s4con
