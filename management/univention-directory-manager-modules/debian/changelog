@@ -1,4 +1,4 @@
-univention-directory-manager-modules (10.0.30-1) unstable; urgency=low
+univention-directory-manager-modules (10.0.29-11) unstable; urgency=low
 
   * Bug #33190: Added missing translation
 
