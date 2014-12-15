@@ -19,69 +19,67 @@
 </bookinfo>
 
 <chapter id="appliance:use">
-  <title>Verwendung einer UCS Appliance </title>
+  <title>Using a UCS appliance</title>
 
   <para> 
-	Neben der traditionellen Installation besteht auch die Möglichkeit UCS über ein
-	Appliance-Image bereitzustellen. Diese Appliance-Images können sowohl zur einfachen
-	Inbetriebnahme in einer Virtualisierungslösung wie VMware verwendet werden, wie auch zur
-	Provisionierung einer Cloud-Instanz verwendet werden.
+	In addition to the traditional installation, there is also the possibility of providing UCS via
+	an appliance image. These appliance images can be used both for simple commissioning in a
+	virtualization solution such as VMware and for providing a cloud instance.
   </para>
 
   <para> 
-	Appliances können mit geringem Aufwand selbst erstellt werden. Dies ist in  <xref
-	linkend="appliance:create"/> beschrieben.
+	Appliances can be created with minimal effort. This is described in <xref
+	linkend="appliance:create"/>.
   </para>
 
   <para> 
-	Während ein Teil der Einstellungen global im Image vorkonfiguriert werden kann, besteht immer
-	noch die Notwendigkeit einer finalen Anpassung der Konfiguration durch den Endkunden, z.B. zur
-	Festlegung des Rechnernamens oder der eingesetzten Domäne. Für das Appliance-Image wird daher
-	ein Grundsystem installiert und eine Komponente eingerichtet, die dem Enduser die Finalisierung
-	der Konfiguration ermöglicht. Alternativ kann die Konfiguration auch automatisiert ohne
-	Nutzerinteraktion erfolgen. Dies wird in Kapitel <xref linkend="appliance:use:auto"/>
-	beschrieben.
+	Whilst some of the settings can be preconfigured globally in the image, it is still necessary
+	for the end user to make final adjustments to the configuration, e.g., to set the computer name
+	or the domain used. For this reason, a basic system is installed for the appliance image and a
+	component set up, which then allows the end user to finalise the configuration. Alternatively,
+	the configuration can also be performed automatically without user interaction. This is
+	described in <xref linkend="appliance:use:auto"/>.
   </para>
 
   <para> 
-	Die interaktive Konfiguration kann auf zwei Wegen erfolgen:
+	The interactive configuration can be performed in two ways:
 
 	<itemizedlist>
 	  <listitem><simpara>
-		Auf dem System startet eine grafische Oberfläche, in der der Webbrowser Firefox im
-		Vollbild-Modus gestartet wird, der dann automatisch auf die Konfigurations-URL
-		zugreift. Diese Option ist besonders für Images in Virtualisierungslösungen geeignet.
+		A graphic interface starts on the system, in which the web browser Firefox is started in
+		full-screen mode and automatically accesses the configuration URL. This option is
+		particularly suitable for images in virtualization solutions.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Die Konfiguration kann auch direkt durch einen externen Webbrowser durchgeführt
-		werden. In diesem Fall muss dem Benutzer die IP-Adresse des System bekannt sein (z.B. wenn
-		ihm diese im Rahmen der Provisionierung eines Cloud-Images genannt wurde).
+		The configuration can also be performed directly via an external web browser. In this case,
+		the system's IP address must be known to the user (e.g., if it has been notified to him in
+		advance in the scope of the provision of a cloud image).
 	  </simpara></listitem>
 	  
 	</itemizedlist>
   </para>
 
   <para> 
-	Im Rahmen der initialen Konfiguration kann der Benutzer in der Grundeinstellung die folgenden
-	Einstellungen vornehmen:
+	In the scope of the initial configuration, the user can change the following settings in the
+	default setting:
 
 	<itemizedlist>
 	  <listitem><simpara>
-		Auswahl der Sprache, Zeitzone und Tastaturlayout
+		Selection of the language, time zone and keyboard layout
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Konfiguration der Netzwerkeinstellungen
+		Configuration of the network settings
 	  </simpara></listitem>
 	  
 	  <listitem><simpara>
-		Einrichtung einer neuen UCS-Domäne oder Beitritt zu einer UCS- oder AD-Domäne
+		Setup of a new UCS domain or joining a UCS or Microsoft Active Directory domain
 	  </simpara></listitem>
 	  
 	  <listitem><simpara>
-		Software-Konfiguration von UCS-Kernkomponenten. Software von Drittherstellern kann vom
-		Benutzer später aus dem Univention App Center installiert werden.
+		Software selection of UCS key components. The user can install software from other
+		vendors at a later point in time via the Univention App Center.
 	  </simpara></listitem>
 	</itemizedlist>
   </para>
@@ -91,102 +89,98 @@
 
 
 <chapter id="appliance:create">
-  <title>Erstellung einer UCS Appliance / Cloud Image</title>
+  <title>Creating a UCS appliance/cloud image</title>
 
   <section id="appliance:intro">
-	<title>Einleitung</title>
+	<title>Introduction</title>
 
 	<para> 
-	  Dieser Artikel beschreibt die Einrichtung einer Appliance auf Basis von UCS 4.0. Eine solche
-	  Appliance kann z.B. verwendet werden um als Cloud Servicer Provider vorkonfigurierte Instanzen
-	  zur Verfügung zu stellen. Eine andere Einsatzmöglichkeit ist die Erstellung von Images für
-	  typische Virtualisierungslösungen.
+	  This article describes how to set up an appliance based on UCS 4.0. This type of appliance can
+	  also be used to provide preconfigured instances as a cloud service provider. The
+	  creation of images for typical virtualization solutions is another possible application
+	  scenario, see <xref linkend="appliance:create:virt"/>.
 	</para>
 
   </section>
 
   <section id="appliance:installbase">
-	<title>Durchführung der Basis-Installation</title>
+	<title>Performing the basic installation</title>
 
 	<para> 
-	  Das Basis-Image wird über den Standard-UCS-Installer durchgeführt. Weiterführende
-	  Informationen zu einzelnen Optionen finden sich im UCS-Handbuch. Die Installation sollte in
-	  einer Virtualisierungslösung erfolgen. In diesem Beispiel erfolgt die Installation in
-	  UVMM. Als Festplatte der virtuellen Maschine sollte ein QCOW2-Image ausgewählt
-	  werden. QCOW2-Images können durch ein Tool (TODOREF) in weitere Virtualisierungsformate wie
-	  VirtualBox oder VMWare konvertiert werden.
+	  The basic installation is performed using the standard UCS installer. Further information on
+	  the individual options can be found in the UCS manual. The installation should be performed in
+	  a virtualization solution. In this example, the installation is performed in UVMM. A QCOW2
+	  image should be selected for the hard drive for the virtual machine.  QCOW2 images can be
+	  converted to different virtualization formats such as VirtualBox or VMWare using a tool
+	  provided by Univention, see <xref linkend="appliance:create:virt"/>.
 	</para>
 
 	<para> 
-	  Die folgenden Einstellungen werden für das Basis-Image konfiguriert:
+	  The following settings are configured for the basic image:
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Die Installationssprache kann beliebig ausgewählt werden. Anhand der ausgewählten Sprache
-		  wird die Locale des Systems festgelegt. Soll die Appliance mehrsprachig einsetzbar sein,
-		  kann in einem späteren Schritt eine weitere Locale hinzugefügt werden.
+		  The installation language can be selected as required. The locale of the system is set
+		  based on the selected language. If you want to be able to use the appliance in more than
+		  one language, you can add another locale at a later point in time.
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Für die Zeitzone kann eine Vorauswahl getroffen werden, diese kann von den Benutzern der
-		  Appliance im Nachhinein angepasst werden.
+		  A preselection is made for the time zone which is then adapted subsequently by the users
+		  of the appliance.
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Das Tastaturlayout ist nur für lokale Anmeldungen relevant, bei einer web-basierten
-		  Konfiguration ist sie nicht weiter wichtig.
+		  The keyboard layout is only relevant for local logins; it is not important for the web-based
+		  configuration.
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Für Appliance-Images ist eine Konfiguration über DHCP die sinnvollste
-		  Voreinstellung. Der Univention Installer versucht im Rahmen der Netzwerkkonfiguration eine
-		  DHCP-Anfrage durchzuführen. Nur wenn diese erfolgreich ist, erfolgt die
-		  Netzwerkkonfiguration über DHCP, d.h. es ist notwendig für die Dauer der Einrichtung der
-		  Appliance eine IP-Adresse über DHCP zuzuweisen. Dies kann z.B. mit einem <emphasis>IP
-		  managed client</emphasis> Objekt in der &ucsUMC; erfolgen.
+		  A configuration via DHCP is the most practical presetting for appliance images. The
+		  Univention Installer attempts to perform a DHCP request in the scope of the network
+		  configuration. The network configuration is only performed via DHCP if this is successful,
+		  i.e., an IP address must be assigned to the appliance for the duration of the setup. This
+		  can be done with an <emphasis>IP managed client</emphasis> object in the &ucsUMC;.
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Im nächsten Schritt wird das initiale Passwort für den root-Benutzer festgelegt. Dieses
-		  Root-Passwort wird bei der Inbetriebnahme durch den Enduser angepasst.
+		  In the next step, the initial password is set for the root user. This root password is
+		  changed by the end user during the commissioning of the appliance image.
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Die Partitionierung kann beliebig erfolgen, z.B. durch Einbindung der kompletten
-		  Festplatte und Integration in ein LVM, bei der alle Dateien in einer Partition gespeichert
-		  werden.
+		  The partitioning can be performed as required, e.g., by using an LVM.
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
 
 	<para> 
-	  Im Anschluß an die Basis-Installation wird ein Dialog angezeigt, in dem ausgewählt werden kann
-	  ob eine neue UCS-Domäne erstellt oder einer bestehenden Domäne beigetreten werden soll. Zur
-	  Erstellung des Appliance-Modus muss an dieser Stelle abgebrochen werden, in dem CTRL+Q
-	  gedrückt wird. Die Installation läuft noch kurze Zeit weiter, währendddessen wird die Meldung
-	  <guimenu>Starting Univention System Setup</guimenu> eingeblendet und das System startet
-	  anschließend neu. 
+	  Once the basic installation is complete, a dialogue is shown in which you can select whether
+	  to create a new UCS domain or join an existing domain. To create the appliance, CTRL+q
+	  must be pressed at this point to interrupt the process. The installation continues for a short
+	  period of time, during which the <guimenu>Starting Univention System Setup</guimenu> message
+	  appears and the systems then restarts. 
 	</para>
 
 	<para> 
-	  Die Installation des Basis-Images ist nun abgeschlossen. Nach einem Reboot würden dem Benutzer der Appliance
-	  die Dialoge zur Anpassung der Konfiguration angezeigt, siehe <xref linkend="appliance:use"/>.
+	  The installation of the basic image is now complete. Following a reboot, the user of the
+	  appliance is shown the dialogue for adjusting the configuration, see <xref
+	  linkend="appliance:use"/>.
 	</para>
 
 	<para> 
-	  In vielen Fällen soll die Appliance mit einer bestimmten Software-Auswahl vorkonfiguriert
-	  werden. Die Installation erfolgt normalerweise aus dem Univention App Center, das zu diesem
-	  Zeitpunkt aber noch nicht verfügbar ist. Die Installation erfolgt daher auf der
-	  Kommandozeile. UCS-Standard-Komponenten können über die entsprechenden Paketnamen installiert
-	  werden, z.B.
+	  In most cases, the appliance needs to be preconfigured with a certain selection of
+	  software. The installation is usually performed via the Univention App Center, which, however,
+	  is not yet available at this point in time. The installation is thus performed via the command
+	  line. UCS standard components can be installed using the corresponding package names, e.g.
 
 	  <programlisting>
 univention-install univention-printserver
 	  </programlisting>
 
-	  Pakete aus dem Univention App Center werden mit dem Befehl
-	  <command>univention-add-app</command> installiert.
-	  The ID of an application can be retrieved with the command <command>univention-add-app --list</command>.
+	  Packages from the Univention App Center are installed with the command
+	  <command>univention-add-app</command>.  The ID of an application can be retrieved with the
+	  command <command>univention-add-app --list</command>:
 
 	  <programlisting>
 univention-add-app -l APPID
@@ -194,33 +188,34 @@ univention-add-app -l APPID
 	</para>
 
 	<para> 
-	  Das System muss nun sauber heruntergefahren werden, d.h. während keine Dateisysteme gemounted
-	  sind. Das kann z.B. erreicht werden, indem das System neu gestartet wird und dann während das
-	  System das Grub-Menü anzeigt, in UVMM heruntergefahren wird.
+	  The system now needs to be shut down cleanly without filesystems still being mounted. This can
+	  be done by restarting the system and then shutting it down in UVMM when the
+	  system displays the Grub menu.
 	</para>
 
 	<para> 
-	  Nun wird das QCOW-Image (d.h. die Festplatte der virtuellen Maschine) kopiert. Wurde der
-	  Storage Pool <emphasis>default</emphasis> verwendet, erfolgt die Speicherung im Verzeichnis
-	  <filename>/var/lib/libvirt/images</filename>.
+	  The QCOW image (i.e., the hard drive of the virtual machine) is now copied. If the
+	  <emphasis>default</emphasis> storage pool of UVMM was used, the image is stored in the
+	  directory <filename>/var/lib/libvirt/images</filename>.
 	</para>
 
 	<para> 
-	  Soll das Image in Amazon EC2 eingesetzt werden, sind einige weitere Schritte nötig, diese sind in 
+	  Additional steps are required if the image is to be used in Amazon EC2, see <xref
+		linkend="appliance:create:ec2"/>.
 	</para>
 
 	<section id="appliance:create:ec2">
-	  <title>Bereitstellung eines Images für Amazon EC2</title>
+	  <title>Providing an image for Amazon EC2</title>
 	  <para>
-		Für ein Image, dass in Amazon EC2 verwendet werden soll müssen zusätzliche die folgenden
-		Anpassungen durchgeführt werden:
+		The following adjustments need to be made for an image that is to be used in Amazon
+		EC2.
 	  </para>
 
 	  <para>
-		Amazon EC2 verwendet eine PyGrub-Version, die nur Datenformat aus Grub 1 lesen kann
-		(menu.lst), während UCS standardmässig Grub 2 als Bootloader verwendet. Die folgende
-		&ucsUCR;-Variable führt dazu, dass die Grub-Konfiguration in diesem Format zusätzlich
-		generiert wird. Außerdem wird die Bootloader-Konfiguration angepasst:
+		Amazon EC2 uses a PyGrub version which can only read the data format from Grub 1 (menu.lst),
+		whilst UCS uses Grub 2 as the bootloader. The following &ucsUCR; variables can be
+		used to generate the Grub configuration in this format additionally. The bootloader
+		configuration is also adapted:
 
 		<programlisting>
 append="$(ucr get grub/append)"
@@ -234,10 +229,9 @@ univention-grub-generate-menu-lst
 	  </para>
 
 	  <para>
-		Die initiale Anmeldung auf der EC2-Instanz erfolgt durch einen SSH-Host-Key. Um zu
-		verhindern, dass während der Inbetriebnahme der Instanz SSH-Anmeldungen mit dem
-		Default-Root-Passwort des Standard-Images erfolgen, wird das initiale Root-Passwort
-		entfernt. Die beiden zu setzenden &ucsUCR;-Variablen konfigurieren diesen Startmodus:
+		The initial login to the EC2 instance is performed via a SSH host key. To prevent SSH logins
+		from occurring with the default root password of the standard image during commissioning of
+		the instance, the initial root password is removed. The two &ucsUCR; variables configure this start mode:
 
 		<programlisting>
 usermod -p \* root
@@ -247,7 +241,7 @@ ucr set apache2/startsite="ucs-overview/initialsetup.html"
 	  </para>
 
 	  <para>
-		Der Nameserver sollte gesetzt werden, in diesem Beispiel auf OpenDNS:
+		The name server should be set; in this example to OpenDNS:
  
 		<programlisting>
 ucr set nameserver1=208.67.222.222 dns/forwarder1=208.67.222.222
@@ -258,44 +252,42 @@ ucr unset dns/forwarder2 dns/forwarder3
 	</section>
 
 	<section id="appliance:create:openstack">
-	  <title>Bereitstellung eines Images für OpenStack</title>
+	  <title>Providing an image for OpenStack</title>
 	  <para>
-		Für OpenStack-Images erfolgt die Provisionierung über Cloud-Init (siehe <xref
-		linkend="appliance:use:cloudinit"/>), darüberhinaus sind keine weiteren Anpassungen nötig.
+		The provisioning for OpenStack images occurs via Cloud-Init  (see
+		<xref linkend="appliance:use:cloudinit"/>). No additional adjustments are necessary.
 	  </para>
 	</section>
 
 	<section id="appliance:create:virt">
-	  <title>Bereitstellung eines Images für VMWare / VirtualBox</title>
+	  <title>Providing an image for VMWare/VirtualBox</title>
 	  <para>
-		Auf Basis des oben erstellten QCOW-Images können auch Virtualisierungs-Images für
-		VirtualBox, VMware Player und Vmware ESX(i) erstellt werden. Hierzu stellt Univention ein
-		Tool bereit, das über das Paket <package>generate-appliance</package> installiert werden kann
-		(die Bereitstellung für UCS 4.0 kann über Bug 37137 verfolgt werden).
+		Virtualization images for VirtualBox, VMware Player and Vmware ESX(i) can also be created on
+		the basis of the QCOW images above. To this end, Univention offers a tool, which can be
+		installed via the <package>generate-appliance</package> package (the integration in UCS 4.0
+		can be followed via Bug 37137).
 	  </para>
 
 	  <para>
-		Das Tool <command>generate_appliance</command> muss als Benutzer root gestartet werden, mit
-		dem Parameter <emphasis>-s</emphasis> muss das QCOW-Image übergeben werden:
-		FIXME: Nicht als root
-		
+		The <command>generate_appliance</command> tool must be started and the QCOW
+		image selected with the parameter <emphasis>-s</emphasis>:
 
 		<programlisting>
 generate_appliance -s appliance.qcow2
 		</programlisting>
 
-		Standardmässig bekommt die virtuelle Maschine eine CPU und ein Gigabyte RAM zugewiesen. Wenn
-		die Appliance einen höheren Speicher- oder CPU-Power-Bedarf hat, kann mit dem Parameter
-		<emphasis>-m</emphasis> eine abweichende RAM-Menge in Megabyte und mit
-		<emphasis>-c</emphasis> eine andere CPU-Anzahl zugewiesen werden.
-		Mit den Parametern <emphasis>--vendor</emphasis> und <emphasis>--product</emphasis> kann ein
-		Hersteller- und Produktname spezifiziert werden.
+		The virtual machine is assigned one CPU and a gigabyte of RAM as standard. If the appliance
+		has a higher storage or CPU power requirement, the parameter <emphasis>-m</emphasis> can be
+		used to specify a different quantity of RAM in megabytes and <emphasis>-c</emphasis> can be
+		used to assign a different number of CPUs.
+
+		The parameters <emphasis>--vendor</emphasis> and <emphasis>--product</emphasis> can be used
+		to specify a vendor and product name.
 	  </para>
 
 	  <para>
-		In der Grundeinstellung werden aus dem QCOW-Image drei verschiedene Virtualisierungs-Images
-		erzeugt. Mit der hier jeweils angegebenen Option kann die Erzeugung für einen Typ
-		unterbunden werden:
+		In the default setting, three different virtualization images are generated from the QCOW
+		image. The generation for a type can be suppressed using the respectively given option:
 
 		<itemizedlist>
 		  <listitem><simpara>
@@ -321,21 +313,20 @@ generate_appliance -s appliance.qcow2
 
 
   <section id="appliance:use:auto">
-	<title>Automatische Konfiguration einer Appliance</title>
+	<title>Automatic configuration of an appliance</title>
 	<para>
-	  Anstelle einer interaktiven Konfiguration der Appliance durch den Benutzer kann diese auch
-	  automatisiert erfolgen. Die automatische Konfiguration kann entweder durch cloud-init (ein
-	  allgemeines Tool zur Provisionierung von Cloud-Images) oder durch eine Profildatei des
-	  Univention Appliance-Modus erfolgen.
+	  Instead of an interactive configuration of the appliance by the user,
+	  it can also be performed automatically. The automatic configuration can either be performed
+	  via Cloud-Init (a general tool for the provision of cloud images) or a Univention appliance
+	  mode profile file.
 	</para>
 
 	<section id="appliance:use:auto:profile">
-	  <title>Automatische Konfiguration mit einer Profildatei des UCS-Appliance-Modus</title>
+	  <title>Automatic configuration with a UCS appliance mode profile file</title>
 	  
 	  <para>
-		Für eine automatische Konfiguration mit dem UCS-Appliance-Modus muss eine Profildatei
-		<filename>/var/cache/univention-system-setup/profile</filename> angelegt werden. Hier eine
-		Beispielkonfiguration:
+		Automatic configuration with the UCS appliance mode requires creating a profile file
+		<filename>/var/cache/univention-system-setup/profile</filename>. Example configuration:
 
 		<programlisting>
 hostname="ucs"
@@ -360,45 +351,44 @@ dns/forwarder1="10.201.74.2"
 gateway="10.201.0.1"
 		</programlisting>
 
-		Wird <emphasis>interfaces/eth0/type</emphasis> auf <emphasis>dynamic</emphasis> gesetzt, wird
-		zur Netzwerkkonfiguration DHCP verwendet.
+		If <emphasis>interfaces/eth0/type</emphasis> is set to <emphasis>dynamic</emphasis>, DHCP is
+		used for the network configuration.
 	  </para>
 
 	  <para>
-		Anschließend muss das Tool
-		<command>/usr/lib/univention-system-setup/scripts/setup-join.sh</command> einmalig aufgerufen
-		werden. Anschließend müssen Apache und der UMC-Server neu gestartet werden:
+		Then the <command>/usr/lib/univention-system-setup/scripts/setup-join.sh</command> tool
+		needs to be run once. Then Apache and the UMC server need to be restarted:
 
 		<programlisting>
-		  invoke-rc.d apache2 restart
-		  invoke-rc.d univention-management-console-server restart
+invoke-rc.d apache2 restart
+invoke-rc.d univention-management-console-server restart
 		</programlisting>
 	  </para>
 	</section>
 
 	<section id="appliance:use:cloudinit">
-	  <title>Automatische Konfiguration einer Appliance mit Cloud-Init</title>
+	  <title>Automatic configuration of an appliance with Cloud-Init</title>
 	  <para>
-		Cloud-Init ist eine standardisierte Lösung zur Konfiguration eines Images. Cloud-Init prüft
-		verschiedene Datenquellen nach einer eventuell vorhandenen Konfiguration. Um ein Image für
-		eine Provisionierung durch Cloud-Init vorzubereiten muss das Paket
-		<package>cloud-init</package> installiert werden:
+		Cloud-Init is a standardised solution for configuration of an image. Cloud-Init checks a
+		range of data sources for an existing configuration. The <package>cloud-init</package>
+		package must be installed to prepare an image for provisioning via Cloud-Init:
 
 		<programlisting>
 univention-install cloud-init
 		</programlisting>
 
-		Die Konfigurationsdatei wird durch den jeweiligen Cloud-Dienst bereitgestellt; die Art der
-		Bereitstellung unterscheidet sich von Cloud-Lösung zu Cloud-Lösung. Aktuell wird nur die
-		Provisionierung eines &ucsMaster; unterstützt.
+		The configuration file is provided by the respective cloud service; the type of provision
+		differs from cloud solution to cloud solution. It is currently only possible to provide a
+		&ucsMaster;.
 	  </para>
 
 	  <para>
-		Im folgenden findet sich eine Beispieldatei, mit der ein &ucsMaster; provisioniert
-		wird. Zusätzlich werden auf dem System zwei Dateien erzeugt; einmal die zu installierende
-		UCS-Lizenz und eine Datei mit zu installierenden Apps aus dem Univention App Center. Die
-		angegebenen Dateien sind base64-codiert. Mit den Befehlen <command>base64</command> und 
-		<command>base64 --decode</command> können Dateien codiert/decodiert werden:
+		The following includes an example file with which a &ucsMaster; can be provided. In
+		addition, two files are generated on the system: the UCS license to be installed and a file
+		with the apps to be installed from the Univention App Center. The files specified are base64-encoded
+		The <command>base64</command> and <command>base64 --decode</command> commands can
+		be used to encode and decode files. The <emphasis>content</emphasis> entry needs to be
+		specified as a consecutive line:
 
 		<programlisting>
 ucs_setup:
@@ -414,7 +404,28 @@ ucs_setup:
 write_files:
 -   encoding: b64
     content:
-	ZG46IGNuPWFkbWluLGNuPWxpY2Vuc2UsY249dW5pdmVudGlvbixkYz11Y3MsZGM9bG9jYWwKY246IGFkbWluCm9iamVjdENsYXNzOiB0b3AKb2JqZWN0Q2xhc3M6IHVuaXZlbnRpb25MaWNlbnNlCm9iamVjdENsYXNzOiB1bml2ZW50aW9uT2JqZWN0CnVuaXZlbnRpb25MaWNlbnNlQmFzZUROOiBGcmVlIGZvciBwZXJzb25hbCB1c2UgZWRpdGlvbgp1bml2ZW50aW9uTGljZW5zZUNvcnBvcmF0ZUNsaWVudHM6IHVubGltaXRlZAp1bml2ZW50aW9uTGljZW5zZUVuZERhdGU6IHVubGltaXRlZAp1bml2ZW50aW9uTGljZW5zZUtleUlEOiA0MDBkM2IzMS02YWMxLTQwNTgtOTc2Ny1jNTY5Zjk4Mzc1YmEKdW5pdmVudGlvbkxpY2Vuc2VNYW5hZ2VkQ2xpZW50czogNQp1bml2ZW50aW9uTGljZW5zZU1vZHVsZTogYWRtaW4KdW5pdmVudGlvbkxpY2Vuc2VQcmVtaXVtU3VwcG9ydDogMAp1bml2ZW50aW9uTGljZW5zZVNlcnZlcnM6IHVubGltaXRlZAp1bml2ZW50aW9uTGljZW5zZVNpZ25hdHVyZTogWllwVmVLWkhXSkVIVFdMTEhYZTB0ZS9NZTh6cis5SnpCMUYvNFV5RkxPc3JQa3hLCiArS0I3Q0tFbmpGVFg3NnBRN1BMYmhHWHR4VEJDOUlXdzV1T0EzTzdUNEd1ZzU3c1ROTVRnR0FMTzF0Vldxa1cxaFQ5OE9NSW5yUFcKIHlIZmVsVmZGa2hjNEJxQVhCOTlSc1MxY1h0Rm1tWE0xQWF1ekNkOUFqVEFQZm9NSFBmTE9HL1JRVXdGSVU2SjZWaUlMd2p0dGZ1YQogZnZKOWpLNGR1REliTXNSRWxSejNZQkk3M1FwSy9CcG04WXZTd0ZvVGF0RW9kSmJ0RzRIUTNkL2kxV2dPd20wVUdaK3BtNWl1Vm45CiBTN0RnOXorTXdVZ05TUmk2dmdud2F2cVl0NHVtMGhTTHZJOUsvaWVia3BoRW52RVlOb2NFN0xSKy9MSjBBT21XMm5CeXc9PQp1bml2ZW50aW9uTGljZW5zZVN1cHBvcnQ6IDAKdW5pdmVudGlvbkxpY2Vuc2VUeXBlOiBVQ1MKdW5pdmVudGlvbkxpY2Vuc2VVc2VyczogNQp1bml2ZW50aW9uTGljZW5zZVZlcnNpb246IDIKdW5pdmVudGlvbkxpY2Vuc2VWaXJ0dWFsRGVza3RvcENsaWVudHM6IHVubGltaXRlZAp1bml2ZW50aW9uTGljZW5zZVZpcnR1YWxEZXNrdG9wVXNlcnM6IHVubGltaXRlZAp1bml2ZW50aW9uT2JqZWN0VHlwZTogc2V0dGluZ3MvbGljZW5zZQoK
+	ZG46IGNuPWFkbWluLGNuPWxpY2Vuc2UsY249dW5pdmVudGlvbixkYz11Y3MsZGM9bG9\
+    jYWwKY246IGFkbWluCm9iamVjdENsYXNzOiB0b3AKb2JqZWN0Q2xhc3M6IHVuaXZlbn\
+    Rpb25MaWNlbnNlCm9iamVjdENsYXNzOiB1bml2ZW50aW9uT2JqZWN0CnVuaXZlbnRpb\
+    25MaWNlbnNlQmFzZUROOiBGcmVlIGZvciBwZXJzb25hbCB1c2UgZWRpdGlvbgp1bml2\
+    ZW50aW9uTGljZW5zZUNvcnBvcmF0ZUNsaWVudHM6IHVubGltaXRlZAp1bml2ZW50aW9\
+    uTGljZW5zZUVuZERhdGU6IHVubGltaXRlZAp1bml2ZW50aW9uTGljZW5zZUtleUlEOi\
+    A0MDBkM2IzMS02YWMxLTQwNTgtOTc2Ny1jNTY5Zjk4Mzc1YmEKdW5pdmVudGlvbkxpY\
+    2Vuc2VNYW5hZ2VkQ2xpZW50czogNQp1bml2ZW50aW9uTGljZW5zZU1vZHVsZTogYWRt\
+    aW4KdW5pdmVudGlvbkxpY2Vuc2VQcmVtaXVtU3VwcG9ydDogMAp1bml2ZW50aW9uTGl\
+    jZW5zZVNlcnZlcnM6IHVubGltaXRlZAp1bml2ZW50aW9uTGljZW5zZVNpZ25hdHVyZT\
+    ogWllwVmVLWkhXSkVIVFdMTEhYZTB0ZS9NZTh6cis5SnpCMUYvNFV5RkxPc3JQa3hLC\
+    iArS0I3Q0tFbmpGVFg3NnBRN1BMYmhHWHR4VEJDOUlXdzV1T0EzTzdUNEd1ZzU3c1RO\
+    TVRnR0FMTzF0Vldxa1cxaFQ5OE9NSW5yUFcKIHlIZmVsVmZGa2hjNEJxQVhCOTlSc1M\
+    xY1h0Rm1tWE0xQWF1ekNkOUFqVEFQZm9NSFBmTE9HL1JRVXdGSVU2SjZWaUlMd2p0dG\
+    Z1YQogZnZKOWpLNGR1REliTXNSRWxSejNZQkk3M1FwSy9CcG04WXZTd0ZvVGF0RW9kS\
+    mJ0RzRIUTNkL2kxV2dPd20wVUdaK3BtNWl1Vm45CiBTN0RnOXorTXdVZ05TUmk2dmdu\
+    d2F2cVl0NHVtMGhTTHZJOUsvaWVia3BoRW52RVlOb2NFN0xSKy9MSjBBT21XMm5CeXc\
+    9PQp1bml2ZW50aW9uTGljZW5zZVN1cHBvcnQ6IDAKdW5pdmVudGlvbkxpY2Vuc2VUeX\
+    BlOiBVQ1MKdW5pdmVudGlvbkxpY2Vuc2VVc2VyczogNQp1bml2ZW50aW9uTGljZW5zZ\
+    VZlcnNpb246IDIKdW5pdmVudGlvbkxpY2Vuc2VWaXJ0dWFsRGVza3RvcENsaWVudHM6\
+    IHVubGltaXRlZAp1bml2ZW50aW9uTGljZW5zZVZpcnR1YWxEZXNrdG9wVXNlcnM6IHV\
+    ubGltaXRlZAp1bml2ZW50aW9uT2JqZWN0VHlwZTogc2V0dGluZ3MvbGljZW5zZQoK
     owner: root:root
     path: /var/cache/univention-system-setup/license
     permissions: '0400'
@@ -427,13 +438,10 @@ write_files:
 	  </para>
 
 	  <para>
-		Die Datei mit den zu installierenden Apps enthält eine Liste von IDs von Applikationen aus dem Univention App
-		Center.  Die ID wird im App Center aktuell nicht angezeigt, diese Funktion wird in Kürze
-		implementiert werden, weitere Details finden sich unter
-		<uri>https://forge.univention.org/bugzilla/show_bug.cgi?id=37153</uri>. Die ID einer
-		Applikation kann auch unter feedback@univention.de angefragt werden. Die Liste aus dem
-		obigen Beispiel sieht decodiert folgendermassen aus, d.h. auf dem provisionierten Master
-		wird der Univention AD Connector und die SAML-Integration installiert:
+		The file with the apps to be installed contains a list of IDs of applications from the
+		Univention App Center, see <xref linkend="appliance:installbase"/>. The list in the example
+		above looks like this when decoded, i.e., the Univention AD Connector and the SAML
+		integration are installed on the provided &ucsMaster;:
 
 		<programlisting>
 adconnector
@@ -443,51 +451,51 @@ simplesamlphp
 	</section>
 
 	<section id="appliance:license">
-	  <title>Lizenz-Management in Cloud-Instanzen</title>
+	  <title>License management in cloud instances</title>	
 	  <para>
-		In der Grundinstallation verfügt eine UCS-Installation über die sogenannte
-		Free-for-Personal-Use-Lizenz (bis zu fünf Benutzer). Für den produktiven Einsatz einer
-		UCS-Installation muss eine Lizenz von Univention bezogen werden. Bei Standard-Installationen
-		wird sie dem Benutzer per E-Mail zugesandt und dann in der &ucsUMC; eingerichtet.
+		In the default installation, a UCS installation has a so-called <emphasis>free for personal
+		use license</emphasis> (up to five users). A license from Univention is required for the
+		productive use of a UCS installation. For standard installations it is sent to the user by
+		e-mail and then set up in the &ucsUMC;.
 	  </para>
 
 	  <para>
-		Für Cloud Service Provider besteht die Möglichkeit UCS-Lizenzen über eine API abzurufen,
-		d.h. wenn für einen Kunden eine neue Instanz angelegt werden soll, kann die Lizenz durch
-		eine API abgerufen werden und dann direkt in die provisionierte Instanz installiert werden.
+		Cloud service providers have the possibility of retrieving UCS licenses via an API, i.e., if
+		a new instance is to be created for a customer, the license can be retrieved via the API and
+		then installed in the provided instance directly.
 	  </para>
 
 	  <para>
-		Der Zugriff auf den Lizenz-Server erfordert einen Benutzernamen und ein Passwort. Diese
-		können bei Univention unter sales@univention.de angefragt werden. In diesem Dokument wird
-		als Beispiel-URL für den Lizenzserver https://license.univention.de/shop/example/ verwendet.
+		Access to the license server requires a user name and a password. These can be requested
+		from Univention at sales@univention.de. In this document,
+		<uri>https://license.univention.de/shop/example/</uri> is used as an example URL for the
+		license server.
 	  </para>
 
 	  <section id="appliance:license:api">
-		<title>Schnittstelle für den Abruf von UCS-Lizenzen</title>
+		<title>API for retrieving UCS licenses</title>
 		<para>
-		  Der Abruf der Lizenzen erfolgt über HTTPS mit dem Univention-Lizenz-Server
-		  <uri>license.univention.de</uri>. Der Abruf kann komplett mit <command>wget</command>
-		  erfolgen.
-		  FIXME: Nur manuell über wget erfolgen
+		  The licenses are retrieved via HTTPS from the Univention license server
+		  <uri>license.univention.de</uri>. The retrieval can be performed completely with
+		  <command>wget</command>.
 		</para>
 
 		<para>
-		  Zuerst muss eine Session zum Lizenzserver aufgebaut werden, hier mit dem Usernamen
-		  <emphasis>univention</emphasis> und dem Passwort <emphasis>secret</emphasis> als
-		  Beispiel. Innerhalb einer Session können auch mehrere Lizenzen abgefragt werden.
+		  Firstly, a session with the license server must be opened, in this case with the user name
+		  <emphasis>univention</emphasis> and the password <emphasis>secret</emphasis> as an
+		  example. It is also possible to request more than one license in one session.
 
 		  <programlisting>
-wget --keep-session-cookies --save-cookies cookie.db --load-cookies cookie.db \
- --post-data='username=univention&amp;password=secret' \
+wget --keep-session-cookies --save-cookies cookie.db --load-cookies \ 
+ cookie.db --post-data='username=univention&amp;password=secret' \
  https://license.univention.de/shop/example/
 		  </programlisting>
 		</para>
 
 		<para>
-		  Eine Lizenz kann ebenfalls über wget mit einer POST-Anfrage bestellt werden. Es ist zu
-		  beachten, dass Sonderzeichen wie Leerzeichen in HTML-Syntax escapt werden müssen:
-		  FIXME: URL-Encoding, see http://en.wikipedia.org/wiki/Percent-encoding for details
+		  A license can also be ordered with a POST request via wget. Please note that special
+		  characters such as blank spaces must be escaped in URL-encoded syntax, see
+		  <uri>http://en.wikipedia.org/wiki/Percent-encoding</uri> for details.
 
 		  <programlisting>
 wget --keep-session-cookies --save-cookies cookie.db --load-cookies cookie.db \
@@ -509,43 +517,43 @@ https://license.univention.de/shop/example/order
 		</para>
 
 		<para>
-		  Im Fall eine erfolgreichen Bestellung wird der Return Code 202 zurückgeliefert. In den
-		  erhaltenen HTML-Daten findet sich der Tag orderid, der die Bestellnummer einer
-		  erfolgreichen Bestellung nennt:
+		  If the order is successful, the return code 202 is returned. The HTML data includes the tag
+		  <emphasis>orderid</emphasis>, which identifies the order number of a successful order:
 
-		  <programlisting>-.
-... <span id="orderid">21</span> ...
+		  <programlisting>
+...
+&lt;span id="orderid"&gt;21&lt;/span&gt;
+...
 		  </programlisting>
 		</para>
 
 		<para>
-		  Schlug die Bestellung fehlt, wird ein Return Code 4xx zurückgeliefert, im Tag
-		  <emphasis>details</emphasis> finden sich weitere Informationen, z.B:
+		  If the order fails, a return code 4xx is returned and the <emphasis>details</emphasis> tag
+		  includes additional information, e.g.:
 
-		  <programlisting>-.
-... <span id="details">Not a valid date: u'27.11.201'</span> ...
+		  <programlisting>
+...
+&lt;span id="details"&gt;Not a valid date: u'27.11.201'&lt;/span&gt;
+...
 		  </programlisting>
 		</para>
 
 		<para>
-		  Kann die Bestellung durch einen Serverfehler nicht verarbeitet werden, wird 5xx als Return
-		  Code ausgegeben. Die Bestellung kann dann zu einem späteren Zeitpunkt wiederholt werden.
+		  Should it not be possible to process an order due to a server error, 5xx is output as the
+		  return code. The order can then be repeated at a later point in time.
 		</para>
 
 		<para>
-		  Nach der Bestellung einer Lizenz dauert es einige Sekunden, bis die Lizenz erstellt
-		  wurde. Der unten angebene Aufruf wartet bis zu sechzig Sekunden auf die Verfügbarkeit der
-		  Lizenz. Abschließend kann sie mit anhand der Bestellnummer im LDIF-Format abgerufen
-		  werden. Lieferte der obige Aufruf die Bestellnummer 465 zurück, lautet der Dateiname
-		  465.ldif:
+		  Following ordering of a license, it takes a few seconds before the license is
+		  generated. It can then be retrieved in LDIF format using the order number. If the request
+		  above returns e.g. the order number 465, the file name is thus <filename>465.ldif</filename>.
+		  The request specified below waits for the availability of the license for up to sixty seconds:
 
 		  <programlisting>
 wget --keep-session-cookies --save-cookies cookie.db --load-cookies cookie.db \
 https://license.univention.de/shop/example/orders/465.ldif 
 		  </programlisting>
 
-		  Liefert der Lizenzabruf den Return Code 4xx ist die Bestellnummer ungültig, bei 5xx konnte
-		  die Bestellung noch nicht erfolgreich bearbeitet werden.
 		</para>
 
 	  </section>
@@ -558,10 +566,10 @@ https://license.univention.de/shop/example/orders/465.ldif
 
 </chapter>
 
-	<bibliography>
-		<bibliomixed id="ucs-handbuch"/>
-		<bibliomixed id="locales"/>
-	</bibliography>
+<!-- <bibliography> -->
+<!--   <bibliomixed id="ucs-handbuch"/> -->
+<!--   <bibliomixed id="locales"/> -->
+<!-- </bibliography> -->
 
 <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
