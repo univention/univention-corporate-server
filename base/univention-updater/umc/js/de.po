@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-updater\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-12-14 12:40+0100\n"
+"POT-Creation-Date: 2014-12-15 22:39+0100\n"
 "PO-Revision-Date: 2012-02-27 16:03+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -272,15 +272,15 @@ msgstr ""
 msgid "The computer is now rebooting. "
 msgstr "Der Computer wird jetzt neu gestartet. "
 
-#: umc/js/updater/UpdatesPage.js:500
-msgid "The currently installed release version is {ucs_version}"
-msgstr "Die momentan installierte Version ist {ucs_version}"
-
 #: umc/js/updater/UpdatesPage.js:498
 msgid ""
-"The currently installed release version is {ucs_version} errata{erratalevel}"
+"The currently installed release version is {ucs_version} errata{erratalevel}."
 msgstr ""
-"Die momentan installierte Version ist {ucs_version} errata{erratalevel}"
+"Die momentan installierte Version ist {ucs_version} errata{erratalevel}."
+
+#: umc/js/updater/UpdatesPage.js:500
+msgid "The currently installed release version is {ucs_version}."
+msgstr "Die momentan installierte Version ist {ucs_version}."
 
 #: umc/js/updater/_LogViewer.js:151
 msgid ""

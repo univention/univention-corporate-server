@@ -167,13 +167,14 @@ define([
 								blockingComponents = blockingComponents.split(' ');
 							}
 							var updatestext = '';
+							var updatesTextComponentsUnknown = '';
+							var componentsUnknown = blockingComponents;
 							if (blockingComponents.length && !appliance_mode) {
 								updatestext = _('Version %(version)s is available but cannot be installed.', {version: theoreticalReleaseUpdate});
 								var updatesTextComponentsApps = '';
-								var updatesTextComponentsUnknown = '';
 								var askAppCenter = tools.umcpCommand('appcenter/get_by_component_id', {component_id: blockingComponents}, false).then(lang.hitch(this, function(data) {
 									var apps = data.result;
-									var componentsUnknown = [];
+									componentsUnknown = [];
 									var componentApps = [];
 									array.forEach(apps, function(app, i) {
 										if (app) {
@@ -215,6 +216,9 @@ define([
 											updatesTextComponentsApps += '</li></ul>';
 										}
 									}
+								}));
+								askAppCenter.then(lang.hitch(componentQueryDeferred, 'resolve'), lang.hitch(componentQueryDeferred, 'resolve'));
+								componentQueryDeferred.then(lang.hitch(this, function() {
 									if (componentsUnknown.length) {
 										if (componentsUnknown.length === 1) {
 											updatesTextComponentsUnknown = _('Component \'%(component)s\' is not yet available for newer release versions.', {component: componentsUnknown[0]});
@@ -222,9 +226,6 @@ define([
 											updatesTextComponentsUnknown = _('The components \'%(components)s\' are not yet available for newer release versions.', {components: componentsUnknown.join('\', \'')});
 										}
 									}
-								}));
-								askAppCenter.then(lang.hitch(componentQueryDeferred, 'resolve'), lang.hitch(componentQueryDeferred, 'resolve'));
-								componentQueryDeferred.then(lang.hitch(this, function() {
 									updatestext = updatestext + ' ' + updatesTextComponentsApps + ' ' + updatesTextComponentsUnknown;
 									element_updatestext.set('content', updatestext);
 									this._form.showWidget('ucs_updates_text', true);
@@ -495,9 +496,9 @@ define([
 					//				combobox.
 					var vtxt;
 					if (values.erratalevel !== 0 && values.erratalevel !== '0') {
-						vtxt = lang.replace(_("The currently installed release version is {ucs_version} errata{erratalevel}"), values);
+						vtxt = lang.replace(_("The currently installed release version is {ucs_version} errata{erratalevel}."), values);
 					} else {
-						vtxt = lang.replace(_("The currently installed release version is {ucs_version}"), values);
+						vtxt = lang.replace(_("The currently installed release version is {ucs_version}."), values);
 					}
 					this._form.getWidget('ucs_version_text').set('content', vtxt);
 
