@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-directory-manager-modules
-fix: 10.0.29-9.1271.201412091240
+fix: 10.0.29-10.1272.201412150955
 version: [0]
 desc: |
   * Fixed setting of userexpiry when a user account is disabled.
@@ -16,4 +16,6 @@ desc: |
     detailed information.
   * Error handling of UDM modules has been improved by adding default methods
     which contain information about the current edited object type.
-bug: [36330, 25279, 29884, 30088, 34985]
+  * The release policy is renamed to update policy. The layout is also
+    adapted to make clear what this policy is good for.
+bug: [36330, 25279, 29884, 30088, 34985, 33190]
