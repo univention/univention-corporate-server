@@ -1,3 +1,10 @@
+ucs-test (4.0.190-2) unstable; urgency=low
+
+  * 00_base/52proofuniquemember: removed the '--quiet' when grep'ing the 
+    univention-directory-manager-tools/proof_uniqueMembers output (Bug #36799).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 15 Dec 2014 12:40:26 +0100
+
 ucs-test (4.0.190-1) unstable; urgency=low
 
   * Bug #8052: remove * from special characters used for ldap object naming
