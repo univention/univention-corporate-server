@@ -277,7 +277,6 @@ else
 	cat /usr/share/univention-samba4/samba3upgrade/smb.conf.d/* | ucr filter > /var/lib/samba3/etc/samba/smb.conf
 	## fix up /var/lib/samba3/smb.conf for samba-tool
 	touch /etc/samba/base.conf /etc/samba/installs.conf /etc/samba/printers.conf /etc/samba/shares.conf
-	echo -e "[global]\n\trealm = $kerberos_realm" >> /var/lib/samba3/etc/samba/smb.conf
 
 	# The upgrade tool uses /var/lib/samba3/ for these files
 	#  https://forge.univention.org/bugzilla/show_bug.cgi?id=33251

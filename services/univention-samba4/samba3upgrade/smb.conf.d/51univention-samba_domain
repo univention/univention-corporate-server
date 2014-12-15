@@ -39,8 +39,6 @@ if configRegistry['server/role'] != 'memberserver':
 else:
 	print '\tsecurity = %s' % configRegistry.get('samba/domain/security', 'domain')
 
-	if configRegistry.get('samba/domain/security', 'domain') == 'ads':
-		print '\trealm = %s' % configRegistry.get('kerberos/realm')
 	if not domain_logons in [ 'yes', 'no' ]:
 		domain_logons = 'no'
 	print '\tdomain logons = %s' % domain_logons
@@ -48,6 +46,10 @@ else:
 	print '\tdomain master = no'
 	print '\tpreferred master = no'
 	print '\tlocal master = no'
+
+kerberos_realm = configRegistry.get('kerberos/realm')
+if kerberos_realm:
+	print '\trealm = %s' % kerberos_realm
 
 samba_os_level = configRegistry.get('samba/os/level')
 if samba_os_level:

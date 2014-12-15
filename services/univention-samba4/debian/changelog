@@ -1,3 +1,9 @@
+univention-samba4 (4.0.3-3) unstable; urgency=medium
+
+  * Bug #36395: Ensure that includes and realm are ok for samba3upgrade
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Dec 2014 16:00:35 +0100
+
 univention-samba4 (4.0.3-2) unstable; urgency=medium
 
   * Bug #36806: Unset SMB_CONF_PATH in joinscript, otherwise it breaks
