@@ -49,11 +49,9 @@ import copy
 import httplib
 import socket
 import univention.config_registry
-import traceback
 import urllib2
 from urllib import quote
 import subprocess
-from operator import attrgetter, itemgetter
 import new
 import tempfile
 import shutil
@@ -1091,6 +1089,9 @@ class UniventionUpdater:
 										self.log.info('Found content: code=%d size=%d', code, size)
 										if size >= MIN_GZIP:
 											yield ver
+										elif size == 0 and server.proxy_handler.proxies:
+											uri = server.join(ver.path())
+											raise ProxyError(uri, "download blocked by proxy?")
 									except DownloadError, e:
 										ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 								del ver.arch
@@ -1725,14 +1726,16 @@ class UniventionUpdater:
 				try:
 					_code, _size, script = server.access(path, get=True)
 					# Bug #37031: dansguarding is lying and returns 200 even for blocked content
-					if not script.startswith('#!'):
-						raise ProxyError("Failed to fetch '%s' - maybe blocked by a proxy?")
+					if not script.startswith('#!') and server.proxy_handler.proxies:
+						uri = server.join(path)
+						raise ProxyError(uri, "download blocked by proxy?")
 					if verify and struct >= UCS_Version((3, 2, 0)):
 						path_gpg = path + '.gpg'
 						try:
 							_code, _size, signature = server.access(path_gpg, get=True)
-							if not signature.startswith("-----BEGIN PGP SIGNATURE-----"):
-								raise ProxyError("Failed to fetch '%s' - maybe blocked by a proxy?")
+							if not signature.startswith("-----BEGIN PGP SIGNATURE-----") and server.proxy_handler.proxies:
+								uri = server.join(path_gpg)
+								raise ProxyError(uri, "download blocked by proxy?")
 						except DownloadError:
 							raise VerificationError(path_gpg, "Signature download failed")
 						error = verify_script(script, signature)

@@ -1,3 +1,9 @@
+univention-updater (9.0.44-13) unstable; urgency=low
+
+  * Bug #37031: Detect broken DansGuardian proxy
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Dec 2014 11:19:50 +0100
+
 univention-updater (9.0.44-12) unstable; urgency=low
 
   * Bug #37028: Improved wording
