@@ -112,10 +112,11 @@ FILE * univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush
 		if ((univention_debug_file = fopen(logfile, "a+")) == NULL) {
 			free(univention_debug_level);
 			univention_debug_level = NULL;
-			fprintf(stderr, "Could not open logfile \"%s\"\n", univention_debug_filename);
+			fprintf(stderr, "Could not open logfile \"%s\"\n", logfile);
 			return NULL;
 		}
 	}
+	univention_debug_filename = logfile ? strdup(logfile) : NULL;
 
 	univention_debug_flush = flush;
 	univention_debug_function = function;
@@ -178,6 +179,10 @@ void univention_debug_end(const char *s)
 
 void univention_debug_reopen(void)
 {
+	if (!univention_debug_ready) {
+		return;
+	}
+
 	if (univention_debug_file == stderr || univention_debug_file == stdout)
 		return;
 	if (univention_debug_file != NULL) {
@@ -213,6 +218,9 @@ void univention_debug_exit(void)
 	fflush(univention_debug_file);
 	fclose(univention_debug_file);
 	univention_debug_file = NULL;
+
+	free(univention_debug_filename);
+	univention_debug_filename = NULL;
 
 	free(univention_debug_level);
 	univention_debug_level = NULL;
