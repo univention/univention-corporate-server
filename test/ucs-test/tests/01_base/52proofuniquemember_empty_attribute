@@ -1,0 +1,51 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Checking how proof_uniqueMembers handles the empty 'uniqueMember'
+## bugs: [35911]
+## roles:
+##  - domaincontroller_master
+## packages:
+##  - ldap-utils
+##  - univention-directory-manager-tools
+##  - univention-s4-connector | univention-ad-connector 
+## exposure: dangerous
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/ldap.sh" || exit 137
+
+username="$(random_chars)"
+group="$(random_chars)"
+
+info "Creating a group and a member inside it:"
+
+udm groups/group create \
+	--position="cn=groups,$ldap_base" \
+	--set name="$group" \
+	--set users="uid=$username,cn=users,$ldap_base" || fail_test 110
+
+udm users/user create \
+	--position="cn=users,$ldap_base" \
+	--set username="$username" \
+	--set firstname="Bodo2" \
+	--set lastname="der Baggerfahrer2" \
+	--set password="univention" \
+	--set primaryGroup="cn=$group,cn=groups,$ldap_base" || fail_test 110
+
+info "Making the 'uniqueMember' attribute empty for the group: $group"
+ldap_set_attribute "cn=$group,cn=groups,$ldap_base" "uniqueMember" "" || fail_test 110
+
+info "Let's see if proof_uniqueMembers finds that the 'uniqueMember' attribute is empty now:"
+
+if ! /usr/share/univention-directory-manager-tools/proof_uniqueMembers |\
+	grep -F "Adding uniqueMember and memberUid entry for 'uid=$username"
+then
+	fail_test 110 "It seems that proof_uniqueMembers didn't find the empty 'uniqueMember' attribute"
+fi
+
+info "Removing test user:"
+udm users/user remove --dn="uid=$username,cn=users,$ldap_base" || fail_test 110
+info "Removing test group:"
+udm groups/group remove --dn="cn=$group,cn=groups,$ldap_base" || fail_test 110
+
+exit $RETVAL
+# vim: set ft=sh :
