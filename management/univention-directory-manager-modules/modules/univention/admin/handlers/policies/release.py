@@ -84,7 +84,7 @@ property_descriptions={
 		),
 	'releaseVersion': univention.admin.property(
 			short_description=_('Update to this UCS version'),
-			long_description='Without specifying the most recent version will be used',
+			long_description=_('Without specifying the most recent version will be used'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],

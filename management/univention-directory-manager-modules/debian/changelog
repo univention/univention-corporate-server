@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.30-1) unstable; urgency=low
+
+  * Bug #33190: Added missing translation
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 15 Dec 2014 12:08:16 +0100
+
 univention-directory-manager-modules (10.0.29-10) unstable; urgency=low
 
   * Bug #33190: Changed the release policy to update policy and adapted

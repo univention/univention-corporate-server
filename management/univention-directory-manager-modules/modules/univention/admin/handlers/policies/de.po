@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-15 09:49+0100\n"
+"POT-Creation-Date: 2014-12-15 11:59+0100\n"
 "PO-Revision-Date: 2011-10-29 22:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -902,6 +902,10 @@ msgstr "Aktiviere Release-Updates. (Errata Updates sind per Default aktiviert)"
 #: release.py:86
 msgid "Update to this UCS version"
 msgstr "Bis zu dieser UCS-Version aktualisieren"
+
+#: release.py:87
+msgid "Without specifying the most recent version will be used"
+msgstr "Ohne Angabe wird die aktuelleste Version verwendet"
 
 #: repositoryserver.py:47 repositoryserver.py:59 repositoryserver.py:76
 msgid "Repository server"
