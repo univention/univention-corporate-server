@@ -191,6 +191,15 @@
 		<guimenu>Alternative E-Mail-Adressen</guimenu> können
 		unter <guimenu>Erweiterte Einstellungen &ar; Mail</guimenu> eingetragen werden.
 	  </para>
+	  <note>
+		Sobald der Account konfiguriert ist, ist die Anmeldung am UCS Mail Stack (IMAP/SMTP)
+		möglich. Nachdem der Account deaktiviert wird (oder das Passwort geändert wurde) ist
+		eine Anmeldung am Mail Stack für eine Dauer von 30min weiterhin möglich. Grund hierfür
+		ist der Authentifizierungs-Cache des Mail Stack.
+		Um den Cache zu invalidieren, muss der <emphasis>saslauthd</emphasis> Dienst auf dem 
+		Mailserver neu gestartet werden. Die Ablaufzeit des Cache kann auf dem Mailserver mit
+		der &ucsUCRV; <envar>mail/saslauthd/cache/timeout</envar> konfiguriert werden.
+	  </note>
 	</section>
 
 	<section id="mail::management::mailinglists">
