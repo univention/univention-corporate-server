@@ -2,13 +2,20 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-4
 src: univention-management-console-frontend
-fix: 3.0.152-46.974.201412111255
+fix: 3.0.153-2.978.201412151140
 version: [4]
 desc: |
   * A display bug was resolved which showed scrollbars in the search input
     field in the user module when using chromium.
   * A display but was resolved which causes the login button to be
     dispositioned when using Firefox.
+  * Fixed a bug which prevented that UMC components could write into their
+    logfiles.
+  * Open the Software Update UMC module upon UMC startup during release updates
+    and show a information dialog about the current update process.
 bug:
  - 35838
  - 34071
+ - 37159
+ - 37316
+ - 37255
