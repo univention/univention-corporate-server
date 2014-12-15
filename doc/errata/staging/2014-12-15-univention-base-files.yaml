@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-base-files
+fix: 4.0.5-2.177.201412151250
+version: [0]
+desc: |
+  * The MySQL server is added to the system service module. It is
+    now possible to start, stop and restart the service from the UMC.
+bug: [13811]
