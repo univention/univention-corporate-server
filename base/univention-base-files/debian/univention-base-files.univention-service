@@ -39,3 +39,9 @@ Description[en]=SSH Server
 programs=/usr/sbin/sshd
 start_type=sshd/autostart
 icon=service/ssh
+
+[mysql]
+Description[de]=MySQL-Server
+Description[en]=MySQL Server
+programs=/usr/sbin/mysqld
+start_type=mysql/autostart

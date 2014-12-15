@@ -1,3 +1,9 @@
+univention-base-files (4.0.5-2) unstable; urgency=low
+
+  * Bug #13811: Added MySQL to univention-service
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 15 Dec 2014 12:46:37 +0100
+
 univention-base-files (4.0.5-1) unstable; urgency=low
 
   * Remove deprecated keyboard layout handling (Bug #35709)
