@@ -1,3 +1,9 @@
+univention-updater (10.0.51-9) unstable; urgency=low
+
+  * Bug #33539: Adapted the link for the errata overview page
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 15 Dec 2014 09:13:13 +0100
+
 univention-updater (10.0.51-8) unstable; urgency=low
 
   * Bug #37231: Reboot only after all updates are performed.
