@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-samba4
+fix: 4.0.3-3.601.201412151601
+version: [0]
+desc: |
+  This update fixes a potential issue during Samba3 to Samba4 inplace migration.
+bug:
+ - 36395
