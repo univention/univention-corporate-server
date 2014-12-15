@@ -2,14 +2,14 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-4
 src: univention-updater
-fix: 9.0.44-12.1353.201412141241
+fix: 9.0.44-13.1356.201412151335
 version: [4]
 desc: |
   This update addresses the following issues:
   - When using the command line tool 'univention-upgrade' all components
     blocking an update are now displayed.
   - Detect broken HTTP proxies like DansGuardian, which block downloading the
-    updater scripts while still signalling success.
+    Packages files and updater scripts while still signalling success.
   - The hints and warning messages before or during the execution of a UCS
     update have been clarified.
   - Extended the message shown in the UMC module if an app is blocking the update
