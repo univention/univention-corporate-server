@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-management-console-frontend
-fix: 4.1.106-4.972.201412041603
+fix: 4.1.106-5.979.201412151341
 version: [0]
 desc: |
   * Adjusted the styling of the notification if JavaScript is disabled.
@@ -17,4 +17,6 @@ desc: |
     If an outdated browser is being used a message will be shown in the
     login dialog. A notification after the login will no longer show up.
   * The icon on the policy reference button is now shown
-bug: [36338, 36914, 36645, 36875, 36291]
+  * Fixed a bug which prevented that UMC components could write into their
+    logfiles.
+bug: [36338, 36914, 36645, 36875, 36291, 37317]

@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-management-console
-fix: 7.1.63-4.839.201412091244
+fix: 7.1.63-5.842.201412151333
 version: [0]
 desc: |
  This update addresses the following issues:
@@ -10,4 +10,6 @@ desc: |
     initialization fails. This is required to show the login dialog after a
     password change.
   * UMC identifies now also users without posix account as LDAP users.
-bug: [34353, 37178]
+  * Fixed a bug which prevented that UMC components could write into their
+    logfiles.
+bug: [34353, 37178, 37317]
