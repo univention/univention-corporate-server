@@ -2,14 +2,14 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-updater
-fix: 10.0.51-9.1354.201412150917
+fix: 10.0.51-10.1355.201412151124
 version: [0]
 desc: |
   This update addresses the following issues:
   - when using the command line tool 'univention-upgrade' all components
     blocking an update are now displayed.
   - detect broken HTTP proxies like DansGuardian, which block downloading the
-    updater scripts while still signalling success.
+    Packages files and updater scripts while still signalling success.
   - univention-add-app now has an option to list all available App IDs using
     univention-add-app --list
   - Delay requested reboot after all updates have been performed.
