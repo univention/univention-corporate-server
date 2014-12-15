@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.management.console.log import MODULE, log_init
+from univention.management.console.log import MODULE, log_init, log_reopen
 from univention.management.console.config import MODULE_DEBUG_LEVEL, ucr
 from univention.lib.i18n import Locale, Translation
 
@@ -41,6 +41,7 @@ from optparse import OptionParser
 import locale
 import os
 import sys
+import signal
 
 import notifier
 import notifier.log as nflog
@@ -68,6 +69,9 @@ if __name__ == '__main__':
 	( options, arguments ) = parser.parse_args()
 
 	daemon = DaemonContext( detach_process = False, umask = 0077 )
+	daemon.signal_map = {
+		signal.SIGHUP: lambda signal, frame: log_reopen(),
+	}
 	daemon.open()
 
 	# MUST be called after initializing the deamon
