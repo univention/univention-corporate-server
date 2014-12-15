@@ -1,3 +1,10 @@
+ucs-test (5.0.74-1) unstable; urgency=low
+
+  * 01_base/52proofuniquemember: removed the '--quiet' when grep'ing the 
+    univention-directory-manager-tools/proof_uniqueMembers output (Bug #36799).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 15 Dec 2014 12:27:27 +0100
+
 ucs-test (5.0.73-4) unstable; urgency=medium
 
   * 60_umc/05_get_client_ip_addres: fixed typo from last commit

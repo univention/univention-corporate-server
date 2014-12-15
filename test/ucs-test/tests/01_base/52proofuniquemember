@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Checking for Problems using proof_uniqueMembers
-## bugs: [12061]
+## bugs: [12061, 36799]
 ## roles:
 ##  - domaincontroller_master
 ## packages: [ldap-utils, univention-directory-manager-tools]
@@ -33,10 +33,10 @@ In a sane environment both of them would contain all the members of the group"
 
 ldap_delete_attribute "cn=$group,cn=groups,$ldap_base" "uniqueMember" || fail_test 110
 
-info "Let's see if proof_uniqueMembers finds it"
+info "Let's see if proof_uniqueMembers finds it:"
 
 if ! /usr/share/univention-directory-manager-tools/proof_uniqueMembers |\
-	grep -Fq "Adding uniqueMember and memberUid entry for 'uid=$username"
+	grep -F "Adding uniqueMember and memberUid entry for 'uid=$username"
 then
 	fail_test 110 "It seems that proof_uniqueMembers didn't find the attribute inconsistency we just created"
 fi
@@ -46,10 +46,10 @@ In a sane environment all the group members would exist"
 
 ldap_delete "uid=$username,cn=users,$ldap_base" || fail_test 110
 
-info "Let's see if proof_uniqueMembers finds it"
+info "Let's see if proof_uniqueMembers finds it:"
 
 if ! /usr/share/univention-directory-manager-tools/proof_uniqueMembers |\
-	grep -Fq "Removing member DN 'uid=$username"
+	grep -F "Removing member DN 'uid=$username"
 then
 	fail_test 110 "It seems that proof_uniqueMembers didn't find the object inconsistency we just created"
 fi
