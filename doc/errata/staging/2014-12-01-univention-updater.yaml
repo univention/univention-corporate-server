@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-updater
-fix: 10.0.51-8.1351.201412110837
+fix: 10.0.51-9.1354.201412150917
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -13,8 +13,10 @@ desc: |
   - univention-add-app now has an option to list all available App IDs using
     univention-add-app --list
   - Delay requested reboot after all updates have been performed.
+  - Adapted the link to the new errata overview page inside the updater module. 
 bug:
  - 37030
  - 37031
  - 37153
  - 37231
+ - 33539
