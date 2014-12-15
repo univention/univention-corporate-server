@@ -30,11 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# SIGHUP for UMC-server and UMC-web-server
 for file in "/var/run/umc-server.pid" "/var/run/umc-web-server.pid"; do
 	if [ -e "$file" ]; then
-		pid="$(/usr/bin/pgrep -F "$file")"
-		if [ -n "$pid" ]; then
-			/bin/kill -s 1 "$pid"
-		fi
+		pkill -1 -F "$file"
 	fi
 done
+
+# SIGHUP for all running UMC modules
+pkill -1 -f /usr/sbin/univention-management-console-module
