@@ -1,4 +1,11 @@
-ucs-test (5.0.73-3) UNRELEASED; urgency=medium
+ucs-test (5.0.73-4) unstable; urgency=medium
+
+  * 60_umc/05_get_client_ip_addres: fixed typo from last commit
+    (Bug #37289)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 15 Dec 2014 09:39:20 +0100
+
+ucs-test (5.0.73-3) unstable; urgency=medium
 
   * 60_umc/05_get_client_ip_addres: make test independent from
     Administrator / univention (Bug #37289)

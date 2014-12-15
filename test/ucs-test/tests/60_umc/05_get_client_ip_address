@@ -20,7 +20,7 @@ def get_ip_address(host, username, password):
 
 
 def main():
-	ucr = univention.config_registry.ConfigRegistry()
+	ucr = configRegistry.ConfigRegistry()
 	ucr.load()
 
 	password = ucr.get('tests/domainadmin/pwd', 'univention')
