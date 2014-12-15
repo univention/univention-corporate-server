@@ -39,3 +39,5 @@ done
 
 # SIGHUP for all running UMC modules
 pkill -1 -f /usr/sbin/univention-management-console-module
+
+exit 0
