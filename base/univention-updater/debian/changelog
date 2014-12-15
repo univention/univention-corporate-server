@@ -1,3 +1,9 @@
+univention-updater (10.0.51-10) unstable; urgency=low
+
+  * Bug #37031: Detect broken DansGuardian proxy
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Dec 2014 11:19:50 +0100
+
 univention-updater (10.0.51-9) unstable; urgency=low
 
   * Bug #33539: Adapted the link for the errata overview page
@@ -7,7 +13,7 @@ univention-updater (10.0.51-9) unstable; urgency=low
 univention-updater (10.0.51-8) unstable; urgency=low
 
   * Bug #37231: Reboot only after all updates are performed.
-  * Bug #37031: Detect broken Dansguardian proxy
+  * Bug #37031: Detect broken DansGuardian proxy
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 10 Dec 2014 14:20:43 +0100
 

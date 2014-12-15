@@ -1089,6 +1089,9 @@ class UniventionUpdater:
 										self.log.info('Found content: code=%d size=%d', code, size)
 										if size >= MIN_GZIP:
 											yield ver
+										elif size == 0 and server.proxy_handler.proxies:
+											uri = server.join(ver.path())
+											raise ProxyError(uri, "download blocked by proxy?")
 									except DownloadError, e:
 										ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 								del ver.arch
@@ -1723,14 +1726,14 @@ class UniventionUpdater:
 				try:
 					_code, _size, script = server.access(path, get=True)
 					# Bug #37031: dansguarding is lying and returns 200 even for blocked content
-					if not script.startswith('#!'):
+					if not script.startswith('#!') and server.proxy_handler.proxies:
 						uri = server.join(path)
 						raise ProxyError(uri, "download blocked by proxy?")
 					if verify and struct >= UCS_Version((3, 2, 0)):
 						path_gpg = path + '.gpg'
 						try:
 							_code, _size, signature = server.access(path_gpg, get=True)
-							if not signature.startswith("-----BEGIN PGP SIGNATURE-----"):
+							if not signature.startswith("-----BEGIN PGP SIGNATURE-----") and server.proxy_handler.proxies:
 								uri = server.join(path_gpg)
 								raise ProxyError(uri, "download blocked by proxy?")
 						except DownloadError:
