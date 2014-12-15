@@ -1,3 +1,9 @@
+univention-management-console (7.1.63-5) unstable; urgency=medium
+
+  * Bug #37317: reload logfile on SIGHUB
+
+ -- Florian Best <best@univention.de>  Mon, 15 Dec 2014 13:29:45 +0100
+
 univention-management-console (7.1.63-4) unstable; urgency=medium
 
   * Bug #37178: fix the LDAP DN search filter for a user. This leads to

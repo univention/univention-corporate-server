@@ -5,3 +5,4 @@ debian/tmp/usr/sbin/univention-management-console-server
 debian/tmp/usr/share/univention-management-console/*
 debian/tmp/usr/share/locale/*
 data/categories/icon/*.svg	usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable
+scripts/postrotate /usr/share/univention-management-console/

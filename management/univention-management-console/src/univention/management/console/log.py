@@ -51,9 +51,13 @@ logging.raiseExceptions = 0
 COMPONENTS = (ud.MAIN, ud.NETWORK, ud.SSL, ud.ADMIN, ud.MODULE, ud.AUTH, ud.PARSER, ud.LOCALE, ud.ACL, ud.RESOURCES, ud.PROTOCOL)
 
 _ucr = ConfigRegistry()
-_ucr.load()
 _debug_ready = False
-_debug_loglevel = max(int(_ucr.get('umc/server/debug/level', 2)), int(_ucr.get('umc/module/debug/level', 2)))
+_debug_loglevel = 2
+def _reset_debug_loglevel():
+	global _debug_loglevel
+	_ucr.load()
+	_debug_loglevel = max(int(_ucr.get('umc/server/debug/level', 2)), int(_ucr.get('umc/module/debug/level', 2)))
+_reset_debug_loglevel()
 
 
 def log_init(filename, log_level=2):
@@ -84,6 +88,14 @@ def log_set_level(level=0):
 	"""
 	for component in COMPONENTS:
 		ud.set_level(component, level)
+
+def log_reopen():
+	"""Reopenes the logfile and reset the current loglevel"""
+	if not _debug_ready:
+		return
+	ud.reopen()
+	_reset_debug_loglevel()
+	log_set_level(_debug_loglevel)
 
 
 class ILogger(object):
