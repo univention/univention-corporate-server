@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-updater
-fix: 10.0.51-11.1358.201412151526
+fix: 10.0.51-12.1360.201412161115
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -13,10 +13,13 @@ desc: |
   - univention-add-app now has an option to list all available App IDs using
     univention-add-app --list
   - Delay requested reboot after all updates have been performed.
-  - Adapted the link to the new errata overview page inside the updater module. 
+  - Adapted the link to the new errata overview page inside the updater module.
+  - Open the Software Update UMC module upon UMC startup during release updates
+    and show a information dialog about the current update process.
 bug:
  - 37349
  - 37345
  - 37153
  - 37231
  - 33539
+ - 37357
