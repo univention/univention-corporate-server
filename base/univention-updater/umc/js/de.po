@@ -308,7 +308,7 @@ msgstr ""
 
 #: umc/js/updater/ProgressPage.js:341 umc/js/updater.js:457
 msgid "The update is being executed."
-msgstr "Die Aktualisierung wurd durchgeführt."
+msgstr "Die Aktualisierung wird durchgeführt."
 
 #: umc/js/updater.js:295
 msgid ""
@@ -368,7 +368,7 @@ msgstr "Verfügbarkeit von Aktualisierungen konnte nicht geprüft werden."
 
 #: umc/js/updater.js:319 umc/js/updater.js:451
 msgid "Update notes"
-msgstr "Hinweise zur Aktulisierungs"
+msgstr "Hinweise zur Aktualisierung"
 
 #: umc/js/updater/ProgressPage.js:74
 msgid "Update progress"

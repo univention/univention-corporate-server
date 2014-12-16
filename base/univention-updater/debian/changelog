@@ -1,3 +1,9 @@
+univention-updater (9.0.44-16) unstable; urgency=medium
+
+  * Bug #37254: adjusted typos
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 16 Dec 2014 12:09:09 +0100
+
 univention-updater (9.0.44-15) unstable; urgency=low
 
   * Bug #37028: Fixed getting blocked version
