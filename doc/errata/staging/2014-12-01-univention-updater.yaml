@@ -12,8 +12,8 @@ desc: |
     Packages files and updater scripts while still signalling success.
   - The hints and warning messages before or during the execution of a UCS
     update have been clarified.
-  - Extended the message shown in the UMC module if an app is blocking the update
-  - List all blocking apps (or other components) in the UMC module
+  - Extended the message shown in the UMC module if an app is blocking the update.
+  - List all blocking apps (or other components) in the UMC module.
 bug:
  - 37030
  - 37031
