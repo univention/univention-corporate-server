@@ -10,6 +10,8 @@ desc: |
     blocking an update are now displayed.
   - Detect broken HTTP proxies like DansGuardian, which block downloading the
     Packages files and updater scripts while still signalling success.
+  - The hints and warning messages before or during the execution of a UCS
+    update have been clarified.
   - univention-add-app now has an option to list all available App IDs using
     univention-add-app --list
   - Delay requested reboot after all updates have been performed.
@@ -19,6 +21,7 @@ desc: |
 bug:
  - 37349
  - 37345
+ - 37360
  - 37153
  - 37231
  - 33539
