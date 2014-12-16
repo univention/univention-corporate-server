@@ -1,3 +1,10 @@
+univention-management-console-module-udm (5.1.25-22) unstable; urgency=low
+
+  * Bug #34246: adapted udm_ldap.py/ObjectDoesNotExists/_ldap_object_exists
+    to be less error prone like suggested
+
+ -- Drees Dormann <dormann@univention.de>  Tue, 16 Dec 2014 09:54:13 +0100
+
 univention-management-console-module-udm (5.1.25-21) unstable; urgency=medium
 
   * Bug #28383: adapt regex for allowed attribute names

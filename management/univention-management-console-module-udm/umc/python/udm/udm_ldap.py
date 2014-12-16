@@ -55,7 +55,7 @@ from ...log import MODULE
 
 from .syntax import widget, default_value
 
-from ldap import LDAPError, SERVER_DOWN, INVALID_CREDENTIALS
+from ldap import LDAPError, SERVER_DOWN, INVALID_CREDENTIALS, NO_SUCH_OBJECT
 
 try:
 	import univention.admin.license
@@ -240,10 +240,12 @@ class ObjectDoesNotExists(UMCError):
 
 	@LDAP_Connection
 	def _ldap_object_exists(self, ldap_connection=None, ldap_position=None):
-		_ldap_dn_parts = udm_uldap.explodeDn(self.ldap_dn)
-		_ldap_object_name = _ldap_dn_parts[0]
-		_ldap_object_base = ','.join(_ldap_dn_parts[1:])
-		return any(self.ldap_dn.lower() == dn.lower() for dn in ldap_connection.searchDn(_ldap_object_name, scope='one', base=_ldap_object_base))
+		try:
+			ldap_connection.get(self.ldap_dn, required=True)
+		except NO_SUCH_OBJECT:
+			return False
+		else:
+			return True
 
 	def _error_msg(self):
 		if self._ldap_object_exists():
