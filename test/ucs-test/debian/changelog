@@ -1,3 +1,9 @@
+ucs-test (4.0.191-1) unstable; urgency=medium
+
+  * Bug #33768: Consider new UCR in 100sync_gpo_ntsecurity_descriptor
+
+ -- Arvid Requate <requate@univention.de>  Tue, 16 Dec 2014 18:14:52 +0100
+
 ucs-test (4.0.190-2) unstable; urgency=low
 
   * 00_base/52proofuniquemember: removed the '--quiet' when grep'ing the 

@@ -22,14 +22,53 @@ from samba.auth import system_session
 from univention.config_registry import ConfigRegistry
 from univention.s4connector import configdb
 from samba.sd_utils import SDUtils
-from samba.ndr import ndr_pack, ndr_unpack
+from samba.ndr import ndr_unpack
 from samba.dcerpc import security
 import univention.uldap
-import sys
 import time
 import ldb
 import subprocess
 import re
+
+def set_ucr(ucr_set, ucr_unset=None, ucr=None):
+	if not ucr:
+		ucr = ConfigRegistry()
+		ucr.load()
+
+	previous_ucr_set = []
+	previous_ucr_unset = []
+
+	if ucr_set:
+		if type(ucr_set) == type(""):
+			ucr_set = (ucr_set,)
+
+		for setting in ucr_set:
+			var = setting.split("=", 1)[0]
+			new_val = setting.split("=", 1)[1]
+			old_val = ucr.get(var)
+			if new_val == old_val:
+				continue
+
+			if old_val != None:
+				previous_ucr_set.append(u'%s=%s' % (var, old_val))
+			else:
+				previous_ucr_unset.append(u'%s' % (var,))
+
+		univention.config_registry.handler_set(ucr_set)
+
+	if ucr_unset:
+		if type(ucr_unset) == type(""):
+			ucr_unset = (ucr_unset,)
+
+		for var in ucr_unset:
+			val = ucr.get(var)
+			if val != None:
+				previous_ucr_set.append(u'%s=%s' % (var, val))
+		
+		univention.config_registry.handler_unset(ucr_unset)
+
+	return (previous_ucr_set, previous_ucr_unset)
+
 
 class Testclass_GPO_Security_Descriptor(object):
 	def __init__(self, udm, ucr=None):
@@ -69,11 +108,14 @@ class Testclass_GPO_Security_Descriptor(object):
 		self.admin_samdb_sdutil = SDUtils(self.admin_samdb)
 
 	def __enter__(self):
+		ucr_set = ["connector/s4/mapping/gpo/ntsd=true",]
+		self.previous_ucr_set, self.previous_ucr_unset = set_ucr(ucr_set, ucr=self.ucr)
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
 		if exc_type:
 			print 'GPO Cleanup after exception: %s %s' % (exc_type, exc_value)
+		set_ucr(self.previous_ucr_set, self.previous_ucr_unset, ucr=self.ucr)
 		self.remove_gpo()
 
 	def get_ldb_object(self, dn=None, ldap_filter=None, attrs=None):
