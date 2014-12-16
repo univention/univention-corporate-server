@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-6) unstable; urgency=medium
+
+  * Bug #37317: fix cross dependency
+
+ -- Florian Best <best@univention.de>  Tue, 16 Dec 2014 13:15:26 +0100
+
 univention-management-console-frontend (4.1.106-5) unstable; urgency=medium
 
   * Bug #37317: register signal handler for reloading of logfile
