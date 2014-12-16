@@ -93,20 +93,20 @@ RUN_PROCESSING_ERROR	= 2
 
 INSTALLERS = {
 	'release': {
-		'purpose':	_("Perform release update up to version '%s'"),
+		'purpose':	_("Release update to version %s"),
 		'command':	"/usr/share/univention-updater/univention-updater net --updateto %s --ignoressh --ignoreterm",
 		'logfile':	'/var/log/univention/updater.log',
 		'statusfile':	'/var/lib/univention-updater/univention-updater.status',
 	},
 	'distupgrade': {
-		'purpose':	_("Install all package updates"),
+		'purpose':	_("Package update"),
 		'command':	"/usr/share/univention-updater/univention-updater-umc-dist-upgrade; /usr/share/univention-updater/univention-updater-check",
 		'logfile':	'/var/log/univention/updater.log',
 		'statusfile':	'/var/lib/univention-updater/umc-dist-upgrade.status',
 	},
 	# This is the call to be invoked when EASY mode is switched on.
 	'easyupgrade': {
-		'purpose':	_("Install all available updates for the current release"),
+		'purpose':	_("Release update"),
 		'command':	'/usr/sbin/univention-upgrade --noninteractive --ignoressh --ignoreterm',
 		'logfile':	'/var/log/univention/updater.log',
 		'statusfile':	'/var/lib/univention-updater/univention-upgrade.status',

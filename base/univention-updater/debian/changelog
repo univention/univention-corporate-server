@@ -1,3 +1,9 @@
+univention-updater (10.0.51-13) unstable; urgency=medium
+
+  * Bug #37254: clarified hints before and during updates
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 16 Dec 2014 12:11:37 +0100
+
 univention-updater (10.0.51-12) unstable; urgency=medium
 
   * Bug #37357: Show warning message during UMC login when a releasae update
