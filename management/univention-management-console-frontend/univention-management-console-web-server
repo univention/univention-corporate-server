@@ -53,7 +53,7 @@ import notifier
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
 
 import univention.management.console.protocol as umcp
-from univention.management.console.log import CORE, log_init, log_reopen
+from univention.management.console.log import CORE, log_init
 try:
 	from univention.management.console.log import log_reopen
 except ImportError:
