@@ -1,3 +1,10 @@
+univention-updater (10.0.51-12) unstable; urgency=medium
+
+  * Bug #37357: Show warning message during UMC login when a releasae update
+  	is currently performed.
+
+ -- Florian Best <best@univention.de>  Tue, 16 Dec 2014 11:10:54 +0100
+
 univention-updater (10.0.51-11) unstable; urgency=low
 
   * Bug #37349: Show all blocking components

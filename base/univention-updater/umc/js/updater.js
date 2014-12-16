@@ -44,6 +44,14 @@ define([
 ], function(declare, lang, array, Dialog, dialog, app, tools, ConfirmDialog, Module, UpdatesPage, ProgressPage, _) {
 
 	app.registerOnStartup(function() {
+		var checkUpdateIsRunning = function() {
+			tools.umcpCommand('updater/installer/running', {}, false).then(function(data) {
+				if (data.result == 'release') {
+					app.openModule('updater');
+					dialog.alert(_('<p><b>Caution!</b> Currently a release update is performed!</p>') + ' ' +  _('<p>Leave the system up and running until the update is completed!</p>'), _('Release update'));
+				}
+			});
+		};
 		var checkUpdateAvailable = function() {
 			tools.ucr(['update/available']).then(function(_ucr) {
 				if (tools.isTrue(_ucr['update/available'])) {
@@ -52,6 +60,7 @@ define([
 				}
 			});
 		};
+		checkUpdateIsRunning();
 		checkUpdateAvailable();
 	});
 
