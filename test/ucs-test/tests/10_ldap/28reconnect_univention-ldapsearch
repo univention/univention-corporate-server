@@ -7,10 +7,8 @@
 ##  - memberserver
 ## packages:
 ##  - univention-config
-## bugs:
-##  - 34293
+## bugs: [34293, 37299]
 ## exposure: dangerous
-
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/undo.sh" || exit 137
@@ -21,7 +19,8 @@ undo ucr_restore
 stop_and_start_slapd_with_delay()
 {
 	delay=$1
-	{ /etc/init.d/slapd stop; sleep $delay; /etc/init.d/slapd start; } &
+        # wait a bit after slapd start (Bug #37299)
+	{ /etc/init.d/slapd stop; sleep $delay; /etc/init.d/slapd start; sleep 2;} &
 }
 
 do_search ()

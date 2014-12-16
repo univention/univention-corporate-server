@@ -1,3 +1,10 @@
+ucs-test (5.0.75-1) unstable; urgency=medium
+
+  * 10_ldap/28reconnect_univention-ldapsearch: wait a bit for slapd
+    to be started (Bug #37299).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 16 Dec 2014 14:52:45 +0100
+
 ucs-test (5.0.74-2) unstable; urgency=low
 
   * 01_base/52proofuniquemember_empty_attribute: test how 
