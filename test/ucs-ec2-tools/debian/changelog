@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.2-4) unstable; urgency=low
+
+  * Bug #35096: corrected check_correct_* functions in
+    examples/jenkins/utils/ad-join.py
+
+ -- Drees Dormann <dormann@univention.de>  Tue, 16 Dec 2014 12:07:33 +0100
+
 ucs-ec2-tools (1.0.2-3) unstable; urgency=low
 
   * Bug #37323: Remove univention-bacula from profiles

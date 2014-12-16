@@ -41,7 +41,6 @@ except ImportError:
 from time import sleep
 from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()
-ucr.load()
 
 parser = OptionParser()
 parser.add_option('-H', '--host', dest='host', default='localhost',
@@ -64,6 +63,8 @@ if not options.domain_host:
 
 
 def join_ad():
+	""" Function for joining an AD domain, mimicking a join from umc"""
+
 	connection = UMCConnection(options.host)
 	connection.auth(options.username, options.password)
 
@@ -101,22 +102,16 @@ def join_ad():
 	print '=== AD-JOIN FINISHED ==='
 
 
-def correct_passwords():
-	"""Check domain password and admin name saved for ucs-test and
-	correct them if needed"""
+def check_correct_passwords():
+	"""Check domain password saved for ucs-test and
+	correct if needed"""
 
-	print '=== Correcting ucs-test passwords ==='
+	print '=== Checking / Correcting ucs-test passwords ==='
 
-	ucr_domainadmin = ucr['tests/domainadmin/account']
-	ucr_domainadminparts = ucr_domainadmin.split(',')
-	if ucr_domainadminparts[0].split('=')[1] != options.domain_admin:
-		ucr_domainadminparts[0] = 'uid=%s' % options.domain_admin
-		ucr['tests/domainadmin/account'] = ','.join(ucr_domainadminparts)
-
-
+	ucr.load()
 	ucr_domain_pw = ucr['tests/domainadmin/pwd']
 	if  ucr_domain_pw != options.domain_password:
-		ucr['tests/domainadmin/pwd']=options.domain_password
+		ucr.get('tests/domainadmin/pwd') = options.domain_password
 
 	ucr.save()
 
@@ -127,8 +122,36 @@ def correct_passwords():
 			pwfile.write(options.domain_password)
 
 
+def check_correct_domain_admin():
+	"""Check domain administrator saved for ucs-test and
+	correct if needed"""
+
+	print '=== Checking / Correcting ucs-test domain administrator ==='
+
+	ucr.load()
+	ucr_domain_admin = ucr['tests/domainadmin/account']
+	if ucr_domain_admin:
+		ucr_domain_admin_parts = ucr_domain_admin.split(',')
+		if ucr_domain_admin_parts[0].split('=')[1] != options.domain_admin:
+			ucr_domain_admin_parts[0] = 'uid=%s' % options.domain_admin
+			ucr['tests/domainadmin/account'] = ','.join(ucr_domain_admin_parts)
+	else:
+		print "=== tests/domainadmin/account is not set, trying to create it ==="
+		ucr_domain_name = ucr['domainname']
+		if ucr_domain_name:
+			ucr_domain_parts = ucr_domain_name.split('.')
+			ucr_domain_admin_parts = ['uid=%s' % options.domain_admin, 'cn=users']
+			for part in ucr_domain_parts:
+				ucr_domain_admin_parts.append('dc=%s'%part)
+			ucr['tests/domainadmin/account'] = ','.join(ucr_domain_admin_parts)
+
+	ucr.save()
+
+
+
 
 join_ad()
-# correct_passwords()
+check_correct_passwords()
+check_correct_domain_admin()
 
 sys.exit(0)
