@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-management-console-frontend
-fix: 3.0.152-48.976.201412121716
+fix: 3.0.152-49.982.201412161324
 version: [3]
 desc: |
   * Fixed a bug which prevented that UMC components could write into their
