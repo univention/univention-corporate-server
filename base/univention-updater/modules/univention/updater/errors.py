@@ -95,7 +95,7 @@ class CannotResolveComponentServerError(ConfigurationError):
 class ProxyError(ConfigurationError):
 	"""Signal permanent error in proxy configuration."""
 	def __str__(self):
-		return "Proxy configuration error: %s %s" % self.args
+		return "Proxy configuration error: %s %s" % (self.args[1], self.args[0])
 
 
 class LockingError(UpdaterException):

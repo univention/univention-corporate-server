@@ -1,3 +1,9 @@
+univention-updater (9.0.44-17) unstable; urgency=low
+
+  * Bug #37030: Show all blocking components
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 16 Dec 2014 12:34:14 +0100
+
 univention-updater (9.0.44-16) unstable; urgency=medium
 
   * Bug #37254: adjusted typos
