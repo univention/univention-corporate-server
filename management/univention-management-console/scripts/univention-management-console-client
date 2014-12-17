@@ -69,6 +69,7 @@ class CLI_Client( umcp.Client ):
 		self.signal_connect( 'response', self._response )
 		self.signal_connect( 'authenticated', self._authenticated )
 		self.signal_connect( 'closed', self._closed )
+		self.signal_connect( 'error', self._error )
 		if arguments:
 			self.__wait = self.create( arguments[ 0 ], arguments[ 1 : ], options )
 		if options.authenticate:
@@ -81,7 +82,7 @@ class CLI_Client( umcp.Client ):
 				self.__wait = None
 		if options.exit:
 			if not self._options.quiet:
-				print 'existing without waiting for response'
+				print >> sys.stderr, 'existing without waiting for response'
 			sys.exit( 0 )
 
 	def create( self, command, args = [], options = [], flavor = None ):
@@ -111,7 +112,12 @@ class CLI_Client( umcp.Client ):
 				msg.options[ key ] = value
 		return msg
 
+	def _error(self, error):
+		print >> sys.stderr, "Error: %s" % (error,)
+		sys.exit(1)
+
 	def _closed( self ):
+		print >> sys.stderr, "Error: The connection to UMC was closed unexpectedly. Make sure the server is running"
 		sys.exit( 1 )
 
 	def print_timing( self, response = None ):
@@ -139,7 +145,8 @@ class CLI_Client( umcp.Client ):
 				self.request( self.__wait )
 				self.__wait = None
 		else:
-			raise Exception( 'error: authentication failed' )
+			print >> sys.stderr, 'error: authentication failed'
+			sys.exit(1)
 
 	def _response( self, msg ):
 		if self._options.timing:
