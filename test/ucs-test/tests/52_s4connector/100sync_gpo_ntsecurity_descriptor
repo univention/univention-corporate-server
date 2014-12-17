@@ -107,15 +107,30 @@ class Testclass_GPO_Security_Descriptor(object):
 		self.admin_samdb = SamDB(url="ldap://%s" % self.fqdn, session_info=system_session(), credentials=self.samba_admin_creds, lp=self.lp)
 		self.admin_samdb_sdutil = SDUtils(self.admin_samdb)
 
-	def __enter__(self):
+	def restart_s4_connector(self):
+		cmd = ("/etc/init.d/univention-s4-connector", "restart")
+		p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+		stdout, stderr = p1.communicate()
+		if p1.returncode != 0:
+            		utils.fail("Error restarting S4 Connector: %s"
+				"\nCommand was: %s"% (stdout, cmd))
+
+	def activate_ntsd_sync(self):
 		ucr_set = ["connector/s4/mapping/gpo/ntsd=true",]
 		self.previous_ucr_set, self.previous_ucr_unset = set_ucr(ucr_set, ucr=self.ucr)
+		if self.previous_ucr_unset or self.previous_ucr_set:
+			self.restart_s4_connector()
+
+	def __enter__(self):
+		self.activate_ntsd_sync()
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
 		if exc_type:
 			print 'GPO Cleanup after exception: %s %s' % (exc_type, exc_value)
-		set_ucr(self.previous_ucr_set, self.previous_ucr_unset, ucr=self.ucr)
+		if self.previous_ucr_unset or self.previous_ucr_set:
+			set_ucr(self.previous_ucr_set, self.previous_ucr_unset, ucr=self.ucr)
+			self.restart_s4_connector()
 		self.remove_gpo()
 
 	def get_ldb_object(self, dn=None, ldap_filter=None, attrs=None):
@@ -144,12 +159,14 @@ class Testclass_GPO_Security_Descriptor(object):
 			ntsd_ndr = obj["nTSecurityDescriptor"][0]
 			ntsd = ndr_unpack(security.descriptor, ntsd_ndr)
 		elif isinstance(obj, tuple):
-			ntsd_sddl = obj[1]["msNTSecurityDescriptor"][0]
+			ntsd_sddl = obj[1].get("msNTSecurityDescriptor", [None])[0]
+			if not ntsd_sddl:
+				raise ValueError("No msNTSecurityDescriptor synchronized")
 			ntsd = security.descriptor.from_sddl(ntsd_sddl, self.domain_sid)
 		elif isinstance(obj, str):
 			ntsd = security.descriptor.from_sddl(obj, self.domain_sid)
 		else:
-			raise ValueError()
+			raise ValueError("General ValueError")
 
 		return ntsd
 
@@ -254,7 +271,10 @@ class Testcase_GPO_Security_Descriptor_UDM_to_SAM(Testclass_GPO_Security_Descrip
 
 		ucs_dn = str(ldb_msg.dn).replace(self.ucr["samba4/ldap/base"], self.ucr["ldap/base"]).lower()
 		uldap_msg = self.get_ucs_ldap_object(ucs_dn)
-		ucs_ntsd = self.get_ntsd(uldap_msg)
+		try:
+			ucs_ntsd = self.get_ntsd(uldap_msg)
+		except ValueError as ex:
+			utils.fail("ERROR: %s: %s" % (PHASE, ex.args[0]))
 		if ucs_ntsd.as_sddl() != sam_ntsd.as_sddl():
             		utils.fail("ERROR: %s: NT Security descriptor differs between %s and %s" % (PHASE,  sync_from, sync_to))
 
@@ -264,7 +284,10 @@ class Testcase_GPO_Security_Descriptor_UDM_to_SAM(Testclass_GPO_Security_Descrip
 		self.modify_sd_on_ucs_ldap_gpo(ucs_dn, ucs_ntsd)
 
 		uldap_msg = self.get_ucs_ldap_object(ucs_dn)
-		ucs_ntsd = self.get_ntsd(uldap_msg)
+		try:
+			ucs_ntsd = self.get_ntsd(uldap_msg)
+		except ValueError as ex:
+			utils.fail("ERROR: %s: %s" % (PHASE, ex.args[0]))
 		self.assert_owner(ucs_ntsd, self.DU_SID, logtag=PHASE)
 
 		self.wait_for_object_usn_change(ldb_msg, logtag=PHASE)
@@ -281,7 +304,10 @@ class Testcase_GPO_Security_Descriptor_UDM_to_SAM(Testclass_GPO_Security_Descrip
 		self.modify_sd_on_ucs_ldap_gpo(ucs_dn, ucs_ntsd)
 
 		uldap_msg = self.get_ucs_ldap_object(ucs_dn)
-		ucs_ntsd = self.get_ntsd(uldap_msg)
+		try:
+			ucs_ntsd = self.get_ntsd(uldap_msg)
+		except ValueError as ex:
+			utils.fail("ERROR: %s: %s" % (PHASE, ex.args[0]))
 		self.assert_owner(ucs_ntsd, self.DA_SID, logtag=PHASE)
 
 		self.wait_for_object_usn_change(ldb_msg, logtag=PHASE)
@@ -310,7 +336,10 @@ class Testcase_GPO_Security_Descriptor_SAM_to_UDM(Testclass_GPO_Security_Descrip
 
 		ucs_dn = str(ldb_msg.dn).replace(self.ucr["samba4/ldap/base"], self.ucr["ldap/base"]).lower()
 		uldap_msg = self.get_ucs_ldap_object(ucs_dn)
-		ucs_ntsd = self.get_ntsd(uldap_msg)
+		try:
+			ucs_ntsd = self.get_ntsd(uldap_msg)
+		except ValueError as ex:
+			utils.fail("ERROR: %s: %s" % (PHASE, ex.args[0]))
 		if ucs_ntsd.as_sddl() != sam_ntsd.as_sddl():
             		utils.fail("ERROR: %s: NT Security descriptor differs between %s and %s" % (PHASE,  sync_from, sync_to))
 
@@ -326,7 +355,10 @@ class Testcase_GPO_Security_Descriptor_SAM_to_UDM(Testclass_GPO_Security_Descrip
 		self.wait_for_s4connector_sync_to_ucs(ldb_msg, logtag=PHASE)
 
 		uldap_msg = self.get_ucs_ldap_object(ucs_dn)
-		ucs_ntsd = self.get_ntsd(uldap_msg)
+		try:
+			ucs_ntsd = self.get_ntsd(uldap_msg)
+		except ValueError as ex:
+			utils.fail("ERROR: %s: %s" % (PHASE, ex.args[0]))
 
 		if ucs_ntsd.as_sddl() != sam_ntsd.as_sddl():
             		utils.fail("ERROR: %s: NT Security descriptor not synchronized from %s to %s" % (PHASE,  sync_from, sync_to))
@@ -342,7 +374,10 @@ class Testcase_GPO_Security_Descriptor_SAM_to_UDM(Testclass_GPO_Security_Descrip
 
 		self.wait_for_s4connector_sync_to_ucs(ldb_msg, logtag=PHASE)
 		uldap_msg = self.get_ucs_ldap_object(ucs_dn)
-		ucs_ntsd = self.get_ntsd(uldap_msg)
+		try:
+			ucs_ntsd = self.get_ntsd(uldap_msg)
+		except ValueError as ex:
+			utils.fail("ERROR: %s: %s" % (PHASE, ex.args[0]))
 
 		if ucs_ntsd.as_sddl() != sam_ntsd.as_sddl():
             		utils.fail("ERROR: %s: NT Security descriptor not re-synchronized from %s to %s" % (PHASE,  sync_from, sync_to))
