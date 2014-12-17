@@ -6,9 +6,9 @@ fix: 5.3.3-7.207.201411271302
 version: [4]
 desc: |
  Multiple issues have been fixed in php5:
- * Denial of service in the file classier (CVE-2014-1943)
+ * Denial of service in the file classifier (CVE-2014-1943)
  * Denial of service in libmagic (CVE-2014-2270)
- * Two additional denial of service bugs in the fileinfo classifier for CDF
+ * Denial of service in the fileinfo classifier for CDF
    (CVE-2014-0237, CVE-2014-0238, CVE-2014-3480, CVE-2014-0207)
  * Memory disclosure information leak in phpinfo() (CVE-2014-4721)
  * Buffer overflow in the function to parse DNS TXT records
