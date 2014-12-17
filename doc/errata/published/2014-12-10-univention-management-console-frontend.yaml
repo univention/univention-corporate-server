@@ -6,9 +6,9 @@ fix: 3.0.153-5.984.201412161356
 version: [4]
 desc: |
   * A display bug was resolved which showed scrollbars in the search input
-    field in the user module when using the Chromium browser
-  * A display but was resolved which caused the login button to be
-    dispositioned when using the Firefox browser.
+    field in the user module when using chromium.
+  * A display but was resolved which causes the login button to be
+    dispositioned when using Firefox.
   * Fixed a bug which prevented that UMC components could write into their
     logfiles.
   * Open the Software Update UMC module upon UMC startup during release updates
