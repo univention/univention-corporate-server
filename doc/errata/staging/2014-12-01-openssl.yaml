@@ -6,8 +6,10 @@ fix: 0.9.8o-4.83.201412111155
 version: [4]
 desc: |
  Multiple issues have been fixed in openssl:
- * Denial of service through memory leak in session ticket validation (CVE-2014-3567)
- * A a mechanism to counter downgrade attacks to SSL3 (TLS_FALLBACK_SCSV) (CVE-2014-3566)
+ * Denial of service through memory leak in session ticket validation
+   (CVE-2014-3567)
+ * A mechanism to counter downgrade attacks to SSL3 (TLS_FALLBACK_SCSV)
+   (CVE-2014-3566)
  * The build option no-ssl3 didn't work as expected (CVE-2014-3568)
 cve:
  - CVE-2014-3566
