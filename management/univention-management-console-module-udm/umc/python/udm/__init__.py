@@ -71,7 +71,7 @@ from .udm_ldap import (
 	ldap_dn2path, get_module, read_syntax_choices, list_objects,
 	LDAP_Connection, set_credentials, container_modules,
 	info_syntax_choices, search_syntax_choices_by_key,
-	UserWithoutDN, ObjectDoesNotExists, SuperordinateDoesNotExists
+	UserWithoutDN, ObjectDoesNotExists, SuperordinateDoesNotExists, NoIpLeft
 )
 from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license
 
@@ -659,7 +659,10 @@ class Instance(Base, ProgressMixin):
 
 		if not obj:
 			raise UMC_OptionTypeError('Could not find network object')
-		obj.refreshNextIp()
+		try:
+			obj.refreshNextIp()
+		except udm_errors.nextFreeIp:
+			raise NoIpLeft(request.options['networkDN'])
 
 		result = {'ip': obj['nextIp'], 'dnsEntryZoneForward': obj['dnsEntryZoneForward'], 'dhcpEntryZone': obj['dhcpEntryZone'], 'dnsEntryZoneReverse': obj['dnsEntryZoneReverse']}
 		self.finished(request.id, result)

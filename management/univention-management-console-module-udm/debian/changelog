@@ -1,3 +1,12 @@
+univention-management-console-module-udm (5.1.25-23) unstable; urgency=low
+
+  * Bug #33527:
+    - automatic asigning of ip address when no free ip is available
+      now displays errror message instead of traceback
+    - updated translation
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 17 Dec 2014 12:37:27 +0100
+
 univention-management-console-module-udm (5.1.25-22) unstable; urgency=low
 
   * Bug #34246: adapted udm_ldap.py/ObjectDoesNotExists/_ldap_object_exists
