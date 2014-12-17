@@ -1,3 +1,9 @@
+univention-kernel-image (8.0.6-3) unstable; urgency=low
+
+  * Update to latest kernel (Bug #36969)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 17 Dec 2014 10:43:50 +0100
+
 univention-kernel-image (8.0.6-2) unstable; urgency=medium
 
   * Change depedency to -signed (Bug #35916)
