@@ -397,6 +397,9 @@ define([
 			var mod = this._createModuleItem(_mod, '_favorites_');
 			this.add(mod);
 
+			var favoritesButton = this.getCategory('_favorites_')._button;
+			domClass.toggle(favoritesButton.domNode, 'favoritesHidden', (this.getModules('_favorites_').length == 0));
+
 			// save settings
 			this._saveFavorites();
 		},
@@ -414,7 +417,8 @@ define([
 				mod.categories = array.filter(mod.categories, function(cat) { return cat !== '_favorites_'; });
 				this.put(mod);
 			}
-
+			var favoritesButton = this.getCategory('_favorites_')._button;
+			domClass.toggle(favoritesButton.domNode, 'favoritesHidden', (this.getModules('_favorites_').length == 0));
 			// save settings
 			this._saveFavorites();
 		}
@@ -1319,6 +1323,9 @@ define([
 					iconClass: iconClass
 				});
 				category._button = button;
+				if (category.id === '_favorites_' && this.getModules('_favorites_').length == 0) {
+					domClass.add(button.domNode, 'favoritesHidden');
+				}
 				this._categoryButtons.addChild(button);
 			}));
 

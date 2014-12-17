@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-7) unstable; urgency=low
+
+  * Bug #36787: hide empty favorites category
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 17 Dec 2014 12:34:11 +0100
+
 univention-management-console-frontend (4.1.106-6) unstable; urgency=medium
 
   * Bug #37317: fix cross dependency
