@@ -1,3 +1,10 @@
+univention-management-console (7.1.63-8) unstable; urgency=medium
+
+  * Bug #37367: fix error when answering to requests where the module
+    processes are dead.
+
+ -- Florian Best <best@univention.de>  Wed, 17 Dec 2014 15:48:29 +0100
+
 univention-management-console (7.1.63-7) unstable; urgency=medium
 
   * Bug #37317: fix permissions and exit code of postrotate script
