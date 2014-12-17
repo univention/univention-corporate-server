@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.106-8) unstable; urgency=medium
+
+  * Bug #37367: invalidate all requests if a error occurs when speaking with
+    the UMC-server
+
+ -- Florian Best <best@univention.de>  Wed, 17 Dec 2014 15:51:33 +0100
+
 univention-management-console-frontend (4.1.106-7) unstable; urgency=low
 
   * Bug #36787: hide empty favorites category
