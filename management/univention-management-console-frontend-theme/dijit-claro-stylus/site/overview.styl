@@ -148,3 +148,17 @@
 	height: 50%;
 	margin-bottom: -156px;
 }
+
+/*no favorites modules*/
+.umcCategoryBar .umcCategory-_favorites_.favoritesHidden {
+	opacity: 0;
+	max-width: 0 !important;
+	min-width: 0;
+	transform: translate(30%, 0);
+	transition: max-width 2.5s, min-width 2.5s ease-in-out, opacity 1s ease-in-out, transform 1.5s;
+}
+
+.umcCategory-_favorites_ {
+	opacity: 1;
+	transition: max-width 2s, min-width 2s, opacity 3.5s ease-in 0.5s, transform 3s ease-in;
+}
