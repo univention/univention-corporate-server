@@ -108,7 +108,7 @@ class Client( signals.Provider, Translation ):
 		self._init_socket()
 
 		self.__buffer = ''
-		self.__unfinishedRequests = []
+		self.__unfinishedRequests = {}
 		self.signal_new( 'response' )
 		self.signal_new( 'authenticated' )
 		self.signal_new( 'error' )
@@ -117,7 +117,7 @@ class Client( signals.Provider, Translation ):
 	@property
 	def openRequests( self ):
 		"""Returns a list of open UMCP requests"""
-		return self.__unfinishedRequests
+		return self.__unfinishedRequests.keys()
 
 	def __nonzero__( self ):
 		if self.__ssl and not self.__crypto_context:
@@ -258,20 +258,18 @@ class Client( signals.Provider, Translation ):
 		if self._resend( sock ):
 			notifier.socket_add( sock, self._resend, notifier.IO_WRITE )
 
-		self.__unfinishedRequests.append( msg.id )
+		self.__unfinishedRequests[msg.id] = msg
 
 	def invalidate_all_requests(self):
 		"""Checks for open UMCP requests and invalidates these by faking
 		a response with status code SERVER_ERR_MODULE_DIED"""
 
 		if self.__unfinishedRequests:
-			CORE.warn( 'Invalidating all pending requests %s' % ', '.join( self.__unfinishedRequests ) )
+			CORE.warn('Invalidating all pending requests %s' % ', '.join(self.__unfinishedRequests.keys()))
 		else:
 			CORE.info( 'No pending requests found' )
-		for reqid in self.__unfinishedRequests:
-			response = Response()
-			response._id = reqid
-			response._command = 'COMMAND'
+		for req in self.__unfinishedRequests.values():
+			response = Response(req)
 			response.status = SERVER_ERR_MODULE_DIED
 			self.signal_emit( 'response', response )
 		self._unfinishedRequests = []
@@ -320,8 +318,9 @@ class Client( signals.Provider, Translation ):
 		except IncompleteMessageError:
 			self.__buffer = recv
 			# waiting for the rest
-		except ( ParseError, UnknownCommandError ), e:
-			self.signal_emit( 'error', e )
+		except (ParseError, UnknownCommandError) as exc:
+			CORE.warn('Client: _recv: error parsing message: %s' % (exc,))
+			self.signal_emit('error', exc)
 
 		return True
 
@@ -330,7 +329,7 @@ class Client( signals.Provider, Translation ):
 		if response.command == 'AUTH' and response.id == self.__auth_id:
 			if response.status == SUCCESS:
 				self.__authenticated = True
-				self.__unfinishedRequests.remove( response.id )
+				self.__unfinishedRequests.pop(response.id)
 			message = response.message or status_description( response.status )
 			self.signal_emit( 'authenticated', self.__authenticated,
 							  response.status,
@@ -338,8 +337,9 @@ class Client( signals.Provider, Translation ):
 		elif response.id in self.__unfinishedRequests:
 			self.signal_emit( 'response', response )
 			if response.is_final():
-				self.__unfinishedRequests.remove( response.id )
+				self.__unfinishedRequests.pop(response.id)
 		else:
+			CORE.warn('Client: _handle: received an unknown response: %s' % (response.id,))
 			self.signal_emit( 'error', UnknownRequestError() )
 
 	def authenticate( self, username, password, new_password=None ):
