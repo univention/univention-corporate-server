@@ -7,6 +7,9 @@ version: [3,4]
 desc: |
   * Fixed a bug which prevented that UMC components could write into their
     logfiles.
+  * Fix error when the UMC server and the UMC module want to close the module
+    process at the same time.
 bug:
  - 37159
  - 37316
+ - 37315
