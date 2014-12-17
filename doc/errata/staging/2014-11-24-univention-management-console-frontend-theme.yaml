@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-management-console-frontend-theme
-fix: 0.0.88-2.65.201412041644
+fix: 0.0.88-3.66.201412171251
 version: [0]
 desc: |
   * Adjusted the styling of the notification if JavaScript is disabled.
@@ -13,4 +13,6 @@ desc: |
   * The Upgrade dialog in the "Software update" module now has an
     maximum height.
   * Buttons are now properly aligned to corresponding input fields.
-bug: [36338, 36914, 36357, 36291]
+  * The "Favorites" category button now fades in and out, depending on whether
+    favorite modules are chosen or not.
+bug: [36338, 36914, 36357, 36291, 36787]
