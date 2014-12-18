@@ -50,7 +50,7 @@ from univention.management.console.modules import Base, UMC_OptionTypeError, UMC
 from univention.management.console.modules.decorators import simple_response, sanitize, multi_response
 from univention.management.console.modules.sanitizers import (
 	LDAPSearchSanitizer, EmailSanitizer, ChoicesSanitizer,
-	ListSanitizer, StringSanitizer, DictSanitizer
+	ListSanitizer, StringSanitizer, DictSanitizer, BooleanSanitizer
 )
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.log import MODULE
@@ -644,6 +644,10 @@ class Instance(Base, ProgressMixin):
 			result = module.get_default_values(property_name)
 		self.finished(request.id, result)
 
+	@sanitize(
+		networkDN=StringSanitizer(required=True),
+		increaseCounter=BooleanSanitizer(default=False)
+	)
 	def network(self, request):
 		"""Returns the next IP configuration based on the given network object
 
@@ -653,12 +657,11 @@ class Instance(Base, ProgressMixin):
 
 		return: {}
 		"""
-		self.required_options(request, 'networkDN')
 		module = self._get_module('networks/network')
 		obj = module.get(request.options['networkDN'])
 
 		if not obj:
-			raise UMC_OptionTypeError('Could not find network object')
+			raise ObjectDoesNotExists(request.options['networkDN'])
 		try:
 			obj.refreshNextIp()
 		except udm_errors.nextFreeIp:
@@ -667,7 +670,7 @@ class Instance(Base, ProgressMixin):
 		result = {'ip': obj['nextIp'], 'dnsEntryZoneForward': obj['dnsEntryZoneForward'], 'dhcpEntryZone': obj['dhcpEntryZone'], 'dnsEntryZoneReverse': obj['dnsEntryZoneReverse']}
 		self.finished(request.id, result)
 
-		if request.options.get('increaseCounter', False) == True:
+		if request.options.['increaseCounter']:
 			# increase the next free IP address
 			obj.stepIp()
 			obj.modify()

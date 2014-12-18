@@ -269,11 +269,13 @@ class SuperordinateDoesNotExists(ObjectDoesNotExists):
 class NoIpLeft(UMCError):
 
 	def __init__(self, networkDN):
-		self.networkName = (udm.uldap.explodeDn(networkDN)[0]).split('=')[1]
+		try:
+			self.networkName = (udm.uldap.explodeDn(networkDN)[0])
+		except IndexError:
+			self.network_name = ldap_dn
 		super(NoIpLeft, self).__init__()
 	
 	def _error_msg(self):
-
 			yield _('Failed to automatically assign an IP address.')
 			yield _('All IP addresses in the specified network "%s" are already in use.') % (self.networkName,)
 			yield _('Please specify a different network or make sure that free IP addresses are available.')

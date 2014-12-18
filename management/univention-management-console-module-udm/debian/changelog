@@ -1,3 +1,10 @@
+univention-management-console-module-udm (5.1.25-24) unstable; urgency=low
+
+  * Bug #33527:
+    - applied minor tweaks
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 18 Dec 2014 09:10:40 +0100
+
 univention-management-console-module-udm (5.1.25-23) unstable; urgency=low
 
   * Bug #33527:
