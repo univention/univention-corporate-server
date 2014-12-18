@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.152-51) unstable; urgency=medium
+
+  * Revert "Bug #37367: invalidate all requests if a error occurs when
+  	speaking with the UMC-server"
+
+ -- Florian Best <best@univention.de>  Thu, 18 Dec 2014 12:30:43 +0100
+
 univention-management-console-frontend (3.0.152-50) unstable; urgency=medium
 
   * Bug #37367: invalidate all requests if a error occurs when speaking with
