@@ -1,0 +1,14 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-4
+src: libksba
+fix: 1.0.7-2.20.201412181730
+version: [4]
+desc: |
+ An issue has been fixed in libksba:
+ * A buffer overflow has been found in the ksba_oid_to_str() function
+   (CVE-2014-9087)
+cve:
+ - CVE-2014-9087
+bug:
+ - 37034
