@@ -39,6 +39,7 @@ import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import MODULE_ERR, SUCCESS
+from univention.management.console.modules import UMC_Error
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import StringSanitizer
 
@@ -46,15 +47,19 @@ from urllib import urlencode
 from urlparse import urlunparse
 
 # local module that overrides functions in urllib2
-import upload
+import univention.management.console.modules.sysinfo.upload
+
 import urllib2
+import httplib
 
 import univention.config_registry
 ucr = univention.config_registry.ConfigRegistry()
 
 _ = umc.Translation('univention-management-console-module-sysinfo').translate
 
+
 class Instance(umcm.Base):
+
 	def __init__(self):
 		umcm.Base.__init__(self)
 		self.mem_regex = re.compile('([0-9]*) kB')
@@ -130,39 +135,39 @@ class Instance(umcm.Base):
 
 		self.finished(request.id, result)
 
-	def get_mail_info(self, request):
+	@simple_response
+	def get_mail_info(self):
 		ucr.load()
 		ADDRESS_VALUE = ucr.get('umc/sysinfo/mail/address', 'feedback@univention.de')
 		SUBJECT_VALUE = ucr.get('umc/sysinfo/mail/subject', 'Univention System Info')
 
-		url = urlunparse(('mailto', '', ADDRESS_VALUE, '',
-		                  urlencode({'subject': SUBJECT_VALUE, }), ''))
+		url = urlunparse(('mailto', '', ADDRESS_VALUE, '', urlencode({'subject': SUBJECT_VALUE, }), ''))
 		result = {}
 		result['url'] = url.replace('+', '%20')
-		request.status = SUCCESS
-		self.finished(request.id, result)
+		return result
 
-	def upload_archive(self, request):
+	@sanitize(archive=StringSanitizer(required=True))
+	@simple_response
+	def upload_archive(self, archive):
 		ucr.load()
 		url = ucr.get('umc/sysinfo/upload/url', 'https://forge.univention.org/cgi-bin/system-info-upload.py')
 
 		SYSINFO_PATH = '/var/www/univention-management-console/system-info/'
-		fd = open(os.path.join(SYSINFO_PATH, request.options['archive']), 'r')
+		path = os.path.abspath(os.path.join(SYSINFO_PATH, archive))
+		if not path.startswith(SYSINFO_PATH):
+			raise UMC_Error('Archive path invalid.')
+
+		fd = open(os.path.join(SYSINFO_PATH, archive), 'r')
 		data = {'filename': fd, }
 		req = urllib2.Request(url, data, {})
 		try:
 			u = urllib2.urlopen(req)
 			answer = u.read()
-			success = True
-		except:
-			success = False
-
-		if not success or answer.startswith('ERROR:'):
-			request.status = MODULE_ERR
+		except (urllib2.HTTPError, urllib2.URLError, httplib.HTTPException) as exc:
+			raise UMC_Error('Archive upload failed: %s' % (exc,))
 		else:
-			request.status = SUCCESS
-
-		self.finished(request.id, None)
+			if answer.startswith('ERROR:'):
+				raise UMC_Error(answer)
 
 	@sanitize(traceback=StringSanitizer(), remark=StringSanitizer(), email=StringSanitizer())
 	@simple_response
