@@ -559,6 +559,11 @@ class UDM_Module(object):
 		except (LDAPError, udm_errors.ldapError) as e:
 			raise
 		except udm_errors.base as e:
+			if isinstance(e, udm_errors.noObject):
+				if superordinate and not ldap_connection.get(superordinate):
+					raise SuperordinateDoesNotExists(superordinate)
+				if container and not ldap_connection.get(container):
+					raise ObjectDoesNotExists(container)
 			raise UDM_Error(e)
 
 		# call the garbage collector manually as many parallel request may cause the

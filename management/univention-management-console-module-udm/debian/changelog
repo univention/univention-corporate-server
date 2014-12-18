@@ -1,3 +1,10 @@
+univention-management-console-module-udm (5.1.25-25) unstable; urgency=medium
+
+  * Bug #35350: display error message when searching underneath of not existing
+    containers or superordinates.
+
+ -- Florian Best <best@univention.de>  Thu, 18 Dec 2014 14:48:39 +0100
+
 univention-management-console-module-udm (5.1.25-24) unstable; urgency=low
 
   * Bug #33527:
