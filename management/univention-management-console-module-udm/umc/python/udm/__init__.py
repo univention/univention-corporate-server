@@ -670,7 +670,7 @@ class Instance(Base, ProgressMixin):
 		result = {'ip': obj['nextIp'], 'dnsEntryZoneForward': obj['dnsEntryZoneForward'], 'dhcpEntryZone': obj['dhcpEntryZone'], 'dnsEntryZoneReverse': obj['dnsEntryZoneReverse']}
 		self.finished(request.id, result)
 
-		if request.options.['increaseCounter']:
+		if request.options['increaseCounter']:
 			# increase the next free IP address
 			obj.stepIp()
 			obj.modify()

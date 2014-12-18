@@ -266,21 +266,20 @@ class SuperordinateDoesNotExists(ObjectDoesNotExists):
 			yield _('Superordinate %s could not be found.') % (self.ldap_dn,)
 			yield _('It possibly has been deleted or moved. Please update your search results and open the object again.')
 
+
 class NoIpLeft(UMCError):
 
-	def __init__(self, networkDN):
+	def __init__(self, ldap_dn):
 		try:
-			self.networkName = (udm.uldap.explodeDn(networkDN)[0])
+			self.network_name = udm.uldap.explodeDn(ldap_dn, True)[0]
 		except IndexError:
 			self.network_name = ldap_dn
 		super(NoIpLeft, self).__init__()
 	
 	def _error_msg(self):
-			yield _('Failed to automatically assign an IP address.')
-			yield _('All IP addresses in the specified network "%s" are already in use.') % (self.networkName,)
-			yield _('Please specify a different network or make sure that free IP addresses are available.')
-
-
+		yield _('Failed to automatically assign an IP address.')
+		yield _('All IP addresses in the specified network "%s" are already in use.') % (self.network_name,)
+		yield _('Please specify a different network or make sure that free IP addresses are available.')
 
 
 class UDM_Error(Exception):
