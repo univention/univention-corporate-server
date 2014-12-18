@@ -1,0 +1,48 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: linux
+fix: 3.16.5-1.109.201412161258
+version: [0]
+desc: |
+ The Linux kernel in Univention Corporate Server 4.0 has been updated to 
+ 3.16.7-ckt2. It provides many bugfixes and fixes several vulnerabilities:
+ * Denial of service in handling on MSR registers in KVM (CVE-2014-3610)
+ * Race condition in the PIT handler in KVM (CVE-2014-3611)
+ * Denial of service in VMX handling in KVM (CVE-2014-3646)
+ * Denial of service in KVM instruction emulation (CVE-2014-3647)
+ * Denial of service or privilege escalation in amd64 register 
+   handling (CVE-2014-9090, CVE-2014-9322)
+ * Three denial of service vulnerabilities in SCTP (CVE-2014-3673, 
+   CVE-2014-3687, CVE-2014-3688)
+ * Denial of service in the VMX handling in KVM (CVE-2014-3690)
+ * Local denial of service in syscall perf profiling (CVE-2014-7825)
+ * Privilege escalation in ftrace syscall tracing (CVE-2014-7826)
+ * Denial of service in SCTP (CVE-2014-7841)
+ * Denial of service in KVM (CVE-2014-7842)
+ * Denial of service in VFS and user namespaces (CVE-2014-7970)
+ * Denial of service in umount() and user namespaces (CVE-2014-7975)
+ * Race condition in ext4 permission handling (CVE-2014-8086)
+ * Buffer overflow in ttusb-dec (CVE-2014-8884)
+note: This is the first part of the fix, which provides the new kernel package.
+cve:
+ - CVE-2014-3610
+ - CVE-2014-3611
+ - CVE-2014-3646
+ - CVE-2014-3647
+ - CVE-2014-3673
+ - CVE-2014-3687
+ - CVE-2014-3688
+ - CVE-2014-3690
+ - CVE-2014-7825
+ - CVE-2014-7826
+ - CVE-2014-7841
+ - CVE-2014-7842
+ - CVE-2014-7970
+ - CVE-2014-7975
+ - CVE-2014-8086
+ - CVE-2014-8884
+ - CVE-2014-9090
+ - CVE-2014-9322
+bug:
+ - 36969
