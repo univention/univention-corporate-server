@@ -281,7 +281,7 @@ class Client(signals.Provider, Translation):
 			response = Response(req)
 			response.status = SERVER_ERR_MODULE_DIED
 			self.signal_emit('response', response)
-		self._unfinishedRequests = []
+		self.__unfinishedRequests = {}
 
 	def _recv(self, sock):
 		try:
