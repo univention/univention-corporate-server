@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Rename a container/ou with subobjects
-## tags: [udm,apptest]
+## tags: [udm,apptest,SKIP-UCSSCHOOL]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
