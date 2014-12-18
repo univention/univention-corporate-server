@@ -112,21 +112,20 @@ class Instance(umcm.Base):
 			result = {}
 			for line in stdout.splitlines():
 				try:
-					info, value = line.split(':')
+					info, value = line.split(':', 1)
 					result[info] = value
-				except:
+				except ValueError:
 					pass
-			if result['mem']:
+			if result.get('mem'):
 				match = self.mem_regex.match(result['mem'])
 				if match:
 					try:
 						converted_mem = (float(match.groups()[0]) / 1048576)
 						result['mem'] = '%.2f GB' % converted_mem
-						result['mem'] = request['mem'].replace('.', ',')
-					except:
+						result['mem'] = result['mem'].replace('.', ',')
+					except (IndexError, ValueError):
 						pass
-			if result['Temp']:
-				del result['Temp'] # remove unnecessary entry
+			result.pop('Temp', None) # remove unnecessary entry
 			request.status = SUCCESS
 
 		self.finished(request.id, result)
