@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test setting network during modification for all computer roles
-## tags: [udm-computers]
+## tags: [udm-computers, SKIP]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## bugs: [15758]
@@ -31,10 +31,17 @@ if __name__ == '__main__':
 		}
 
 		with udm_test.UCSTestUDM() as udm:
+
+			domainname = ucr.get('domainname')
+			dNSCn = 'cn=dns,dc='+(',dc=').join(domainname.split('.'))
+
 			forwardZoneName = '%s.%s' % (uts.random_name(), uts.random_name())
-			forwardZone = udm.create_object('dns/forward_zone', zone = forwardZoneName, nameserver = uts.random_string())
-			reverseZone = udm.create_object('dns/reverse_zone', subnet = '10.20.30', nameserver = uts.random_string())
+
+			forwardZone = udm.create_object('dns/forward_zone', zone = forwardZoneName, position = dNSCn, nameserver = uts.random_string())
+			reverseZone = udm.create_object('dns/reverse_zone', subnet = '10.20.30', position = dNSCn, nameserver = uts.random_string())
 			dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
+
+
 			networkProperties = {
 				'name': uts.random_name(),
 				'network': '10.20.30.0',
@@ -45,7 +52,6 @@ if __name__ == '__main__':
 				'ipRange': '10.20.30.2 10.20.30.254'
 			}
 			network = udm.create_object('networks/network', **networkProperties)
-
 
 			computer = udm.create_object(role, **computerProperties)
 			udm.modify_object(role, dn = computer, network = network)
@@ -61,5 +67,3 @@ if __name__ == '__main__':
 			utils.verify_ldap_object('relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone), {'aRecord': [aRecord]})
 			utils.verify_ldap_object('relativeDomainName=%s,%s' % (aRecord.split(".")[-1], reverseZone), {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZoneName)]})
 			utils.verify_ldap_object('cn=%s,%s' % (computerProperties['name'], dhcpService), {'univentionDhcpFixedAddress': [aRecord]})
-
-
