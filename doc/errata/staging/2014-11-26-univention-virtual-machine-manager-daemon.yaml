@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-virtual-machine-manager-daemon
-fix: 4.0.20-9.569.201412111708
+fix: 4.0.20-10.570.201412181550
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -13,6 +13,7 @@ desc: |
   * Fix header button to close only cloud connection wizard.
   * Add progress bar while waiting for changed instance state.
   * Fix noVNC for localhost VMs.
+  * Update cloud instance info more often after changed instance state.
 bug:
  - 36988
  - 36905
@@ -20,3 +21,4 @@ bug:
  - 36585
  - 36380
  - 36105
+ - 37301
