@@ -1,0 +1,13 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-system-info
+fix: 5.1.0-4.54.201412181332
+version: [0]
+desc: |
+ This update addresses the following issues:
+  * Fix error during parsing of univention-system-info output.
+  * Fix the domain where archive uploads are sent to.
+  * Improve error handling.
+  * Fix uploading of archive for specific dmidecode versions.
+bug: [36923, 31192, 33092, 37384]
