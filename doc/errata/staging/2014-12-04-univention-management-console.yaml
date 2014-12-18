@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-management-console
-fix: 7.1.63-7.846.201412151739
+fix: 7.1.63-9.850.201412181202
 version: [0]
 desc: |
  This update addresses the following issues:
@@ -12,4 +12,5 @@ desc: |
   * UMC identifies now also users without posix account as LDAP users.
   * Fixed a bug which prevented that UMC components could write into their
     logfiles.
-bug: [34353, 37178, 37317]
+  * Fixed handling of crashed UMC module processes.
+bug: [34353, 37178, 37317, 37367]
