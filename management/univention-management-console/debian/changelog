@@ -1,3 +1,9 @@
+univention-management-console (6.0.24-38) unstable; urgency=medium
+
+  * Bug #37367: fix wrong variable name
+
+ -- Florian Best <best@univention.de>  Thu, 18 Dec 2014 11:59:57 +0100
+
 univention-management-console (6.0.24-37) unstable; urgency=medium
 
   * Bug #37367: fix error when answering to requests where the module
