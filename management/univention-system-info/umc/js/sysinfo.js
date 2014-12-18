@@ -243,12 +243,7 @@ define([
 		next: function() {
 			var nextPage = this.inherited(arguments);
 			if (nextPage == 'general') {
-				this.standby(true);
-				this.getGeneralInfo().then(
-					lang.hitch(this, function() {
-						this.standby(false);
-					})
-				);
+				this.getGeneralInfo();
 			}
 			if (nextPage == 'support') {
 				if (this.getWidget('general', 'supportBox').get('value') === false) {
@@ -256,32 +251,17 @@ define([
 				}
 			}
 			if (nextPage == 'collect') {
-				this.standby(true);
-				this.getSystemInfo().then(
-					lang.hitch(this, function() {
-						this.standby(false);
-					})
-				);
+				this.getSystemInfo();
 			}
 			if (nextPage == 'uploaded') {
 				if (this.getWidget('transfer', 'method') == 'mail') {
 					nextPage = 'mail';
 				} else {
-					this.standby(true);
-					this.uploadArchive().then(
-						lang.hitch(this, function() {
-							this.standby(false);
-						})
-					);
+					this.uploadArchive();
 				}
 			}
 			if (nextPage == 'mail') {
-				this.standby(true);
-				this.getMailInfo().then(
-					lang.hitch(this, function() {
-						this.standby(false);
-					})
-				);
+				this.getMailInfo();
 			}
 			return nextPage;
 		},
@@ -310,13 +290,12 @@ define([
 		},
 
 		getGeneralInfo: function() {
-			var deferred = tools.umcpCommand('sysinfo/general').then(
+			this.standbyDuring(tools.umcpCommand('sysinfo/general')).then(
 				lang.hitch(this, function(data) {
 					var generalPage = this.getPage('general');
 					generalPage._form.setFormValues(data.result);
 				})
 			);
-			return deferred;
 		},
 
 		getSystemInfo: function() {
@@ -328,7 +307,7 @@ define([
 				'comment': generalValues.comment,
 				'ticket': supportValues.ticket
 			};
-			var deferred = tools.umcpCommand('sysinfo/system', requestValues).then(
+			this.standbyDuring(tools.umcpCommand('sysinfo/system', requestValues)).then(
 				lang.hitch(this, function(data) {
 					this._archiveFilename = data.result.archive;
 					this._archiveLink = lang.replace('<a href="{url}">{text}</a>', {
@@ -343,11 +322,10 @@ define([
 					this.getWidget('mail', 'download').set('content', this._archiveLink);
 				})
 			);
-			return deferred;
 		},
 
 		getMailInfo: function() {
-			var deferred = tools.umcpCommand('sysinfo/mail').then(
+			this.standbyDuring(tools.umcpCommand('sysinfo/mail')).then(
 				lang.hitch(this, function(data) {
 					this._mailLink = lang.replace('<a href="{url}">{text}</a>', {
 						'url': data.result.url,
@@ -357,13 +335,11 @@ define([
 					this.getWidget('mail', 'mail').set('content', this._mailLink);
 				})
 			);
-			return deferred;
 		},
 
 		uploadArchive: function() {
 			var values = {'archive': this._archiveFilename};
-			var deferred = tools.umcpCommand('sysinfo/upload', values);
-			return deferred;
+			this.standbyDuring(tools.umcpCommand('sysinfo/upload', values));
 		}
 	});
 
