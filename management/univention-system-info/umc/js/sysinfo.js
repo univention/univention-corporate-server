@@ -87,7 +87,7 @@ define([
 			}, {
 				name: 'support',
 				headerText: _('Support information'),
-				helpText: _(''),
+				helpText: '',
 				widgets: [{
 					type: Text,
 					name: 'firstText',
@@ -108,7 +108,7 @@ define([
 			}, {
 				name: 'collect',
 				headerText: _('Collected data'),
-				helpText: _(''),
+				helpText: '',
 				widgets: [{
 					type: Text,
 					name: 'firstText',
@@ -182,7 +182,7 @@ define([
 			}, {
 				name: 'uploaded',
 				headerText: _('Transfered successfully'),
-				helpText: _(''),
+				helpText: '',
 				widgets: [{
 					type: Text,
 					name: 'firstText',
@@ -192,7 +192,7 @@ define([
 			}, {
 				name: 'mail',
 				headerText: _('Transfer via mail'),
-				helpText: _(''),
+				helpText: '',
 				widgets: [{
 					type: Text,
 					name: 'firstText',
@@ -257,7 +257,13 @@ define([
 				if (this.getWidget('transfer', 'method') == 'mail') {
 					nextPage = 'mail';
 				} else {
-					this.uploadArchive();
+					return this.uploadArchive().then(function() {
+						return nextPage;
+					}, lang.hitch(this, function() {
+						this.getPage('uploaded').set('headerText', _('Uploading failed'));
+						this.getWidget('uploaded', 'firstText').set('content', _('<p>The information could not be transfered to Univention.</p><p>You can send them as email!</p>'));
+						return nextPage;
+					}));
 				}
 			}
 			if (nextPage == 'mail') {
@@ -339,7 +345,7 @@ define([
 
 		uploadArchive: function() {
 			var values = {'archive': this._archiveFilename};
-			this.standbyDuring(tools.umcpCommand('sysinfo/upload', values));
+			return this.standbyDuring(tools.umcpCommand('sysinfo/upload', values));
 		}
 	});
 

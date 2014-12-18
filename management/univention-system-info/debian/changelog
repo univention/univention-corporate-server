@@ -1,3 +1,9 @@
+univention-system-info (5.1.0-5) unstable; urgency=medium
+
+  * Bug #33092: display error page when uploading failed
+
+ -- Florian Best <best@univention.de>  Thu, 18 Dec 2014 16:15:51 +0100
+
 univention-system-info (5.1.0-4) unstable; urgency=medium
 
   * Bug #37384: fix uploading of archive for some version of dmidecode
