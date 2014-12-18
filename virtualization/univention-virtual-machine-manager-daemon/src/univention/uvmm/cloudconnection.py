@@ -60,6 +60,7 @@ class CloudConnection(object):
 		self.DEFAULT_FREQUENCY = 15 * 1000  # ms
 		self.MAX_UPDATE_INTERVAL = 5 * 60 * 1000  # ms
 		self.EXPENSIVE_UPDATE_INTERVAL = 5 * 60 * 1000  # ms
+		self.FAST_UPDATE_FREQUENCY = 2 * 1000  # ms
 
 		self._cache_dir = cache_dir
 		self._cache_hash = ""
@@ -67,6 +68,8 @@ class CloudConnection(object):
 		self.updatethread = None
 		self.config_default_frequency = self.DEFAULT_FREQUENCY
 		self.current_frequency = self.DEFAULT_FREQUENCY
+		self.fast_update_config_default_frequency = 0
+		self.fast_update_time = 0
 		self.timerEvent = threading.Event()
 
 		self.publicdata = Cloud_Data_Connection()
@@ -126,6 +129,12 @@ class CloudConnection(object):
 		self.current_frequency = freq
 		self.timerEvent.set()
 
+	def set_frequency_fast_update(self):
+		if self.fast_update_time == 0:
+			self.fast_update_time = time.time()
+			self.fast_update_config_default_frequency = self.config_default_frequency
+			self.set_frequency(self.FAST_UPDATE_FREQUENCY)
+
 	def run(self):
 		logger.info("Starting update thread for %s: %s" % (self.publicdata.name, self.publicdata.url))
 		while self.updatethread is not None:
@@ -148,6 +157,12 @@ class CloudConnection(object):
 
 			self.publicdata.last_update_try = time.time()
 			self._instances = self._exec_libcloud(lambda: self.driver.list_nodes())
+
+			# Fast update if
+			# reset self.config_default_frequency if fast update was more than self.DEFAULT_FREQUENCY
+			if self.fast_update_time > 0 and (self.publicdata.last_update_try - self.fast_update_time) * 1000 > self.DEFAULT_FREQUENCY:
+				self.fast_update_time = 0
+				self.config_default_frequency = self.fast_update_config_default_frequency
 
 			# Expensive update if
 			# last expensive update was more than self.EXPENSIVE_UPDATE_INTERVAL ago

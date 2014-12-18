@@ -348,7 +348,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		except Exception, e:
 			raise EC2CloudConnectionError("Error trying to %s instance %s (id:%s): %s" % (state, instance.name, instance_id, e))
 		logger.debug("STATE: done")
-		self.timerEvent.set()
+		self.set_frequency_fast_update()
 
 	def instance_terminate(self, instance_id):
 		# instance is a libcloud.Node object

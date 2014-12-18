@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.20-10) unstable; urgency=low
+
+  * Bug #37301: Update cloud instance info more often after changed state
+
+ -- Andreas Peichert <peichert@univention.de>  Thu, 18 Dec 2014 15:44:32 +0100
+
 univention-virtual-machine-manager-daemon (4.0.20-9) unstable; urgency=low
 
   * Bug #36380: Update processing of wait for changed instance state 
