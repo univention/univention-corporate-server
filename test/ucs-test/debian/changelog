@@ -1,3 +1,9 @@
+ucs-test (5.0.78-1) unstable; urgency=low
+
+  * Bug #37157: skipping test if ucsschool is installed by adding a new tag 'SKIP-UCSSCHOOL'
+
+ -- Ammar Najjar <najjar@univention.de>  Thu, 18 Dec 2014 12:31:32 +0100
+
 ucs-test (5.0.77-1) unstable; urgency=medium
 
   * Bug #35985: Adjust test case to support non-Samba4 DCs
