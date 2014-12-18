@@ -172,14 +172,14 @@ echo " Comment     : "$comment >> "$TEMPDIR/info"
 echo " Ticket No   : "$support >> "$TEMPDIR/info"
 
 # find unique ID for the computer
-uuid=$(dmidecode -s system-uuid)
+uuid=$(dmidecode -s system-uuid | grep -v '^#' | tr -cd '[:alnum:][=-=]')
 if [ -z "$uuid" ]; then
 	# fallback 1
 	if [ -f /sys/hypervisor/uuid -a $(cat /sys/hypervisor/uuid) != "00000000-0000-0000-0000-000000000000" -a $(cat /sys/hypervisor/type) != "xen" ]; then
-		uuid=$(cat /sys/hypervisor/uuid)
+		uuid=$(cat /sys/hypervisor/uuid | tr -cd '[:alnum:][=-=]')
 	else
 		# fallback 2
-		uuid=$(ip -o -f link addr show up | grep -v lo: | head -n 1 | sed 's|.*link/ether \([0-9a-f:]*\) .*|\1|;s|:|-|g' | md5sum)
+		uuid=$(ip -o -f link addr show up | grep -v lo: | head -n 1 | sed 's|.*link/ether \([0-9a-f:]*\) .*|\1|;s|:|-|g' | md5sum | cut -d ' ' -f1)
 	fi
 fi
 

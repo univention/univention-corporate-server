@@ -1,3 +1,12 @@
+univention-system-info (5.1.0-4) unstable; urgency=medium
+
+  * Bug #37384: fix uploading of archive for some version of dmidecode
+  * Bug #33092: improve the error handling, fix security leaks
+  * Bug #31192: fix URL where the archive upload goes to
+  * Bug #36923: fix output parsing of univention-system-info
+
+ -- Florian Best <best@univention.de>  Thu, 18 Dec 2014 12:36:38 +0100
+
 univention-system-info (5.1.0-3) unstable; urgency=low
 
   * Bug #35654: UMC design adaptions
