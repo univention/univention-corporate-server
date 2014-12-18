@@ -96,7 +96,6 @@ class SessionClient(object):
 		self.client = umcp.Client()
 		self.client.signal_connect('authenticated', self._authenticated)
 		self.client.signal_connect('response', self._response)
-		self.client.signal_connect('error', self._error)
 		try:
 			self.client.connect()
 			CORE.info('SessionClient(0x%x): connected to UMC server' % (id(self),))
@@ -180,10 +179,6 @@ class SessionClient(object):
 		# shutdown connection when the session is expired and there are no open requests
 		if self._timeout == 0 and not self._requestid2response_queue:
 			self.client.disconnect()
-
-	def _error(self, error):
-		CORE.info('SessionClient(0x%x): invalidating all requests due to error (%s)' % (id(self), error))
-		self.client.invalidate_all_requests()
 
 	def send_request(self, request, response_queue):
 		"""Send request to UMC server."""
