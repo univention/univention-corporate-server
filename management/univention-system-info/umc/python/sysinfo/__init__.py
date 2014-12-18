@@ -144,7 +144,7 @@ class Instance(umcm.Base):
 
 	def upload_archive(self, request):
 		ucr.load()
-		url = ucr.get('umc/sysinfo/upload/url', 'https://forge.univention.de/cgi-bin/system-info-upload.py')
+		url = ucr.get('umc/sysinfo/upload/url', 'https://forge.univention.org/cgi-bin/system-info-upload.py')
 
 		SYSINFO_PATH = '/var/www/univention-management-console/system-info/'
 		fd = open(os.path.join(SYSINFO_PATH, request.options['archive']), 'r')
@@ -171,7 +171,7 @@ class Instance(umcm.Base):
 		ucs_version = '{0}-{1} errata{2} ({3})'.format( ucr.get( 'version/version', '' ), ucr.get( 'version/patchlevel', '' ), ucr.get( 'version/erratalevel', '0' ), ucr.get( 'version/releasename', '' ) )
 		# anonymised id of localhost
 		uuid_system = ucr.get('uuid/system', '')
-		url = ucr.get('umc/sysinfo/traceback/url', 'https://forge.univention.de/cgi-bin/system-info-traceback.py')
+		url = ucr.get('umc/sysinfo/traceback/url', 'https://forge.univention.org/cgi-bin/system-info-traceback.py')
 		MODULE.process('Sending %s to %s' % (traceback, url))
 		request_data = {
 			'traceback' : traceback,
