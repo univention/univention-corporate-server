@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-4
 src: openjdk-6
-fix: 
+fix: 6b33-1.13.5-2.74.201412171318
 version: [4]
 desc: |
   Multiple security issues have been fixed in OpenJDK:
