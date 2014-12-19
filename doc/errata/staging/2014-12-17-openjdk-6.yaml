@@ -8,12 +8,14 @@ desc: |
   Multiple security issues have been fixed in OpenJDK:
    Format string error in event logger (CVE-2014-2490)
    Insufficient access checks in SubjectDelegator (CVE-2014-4209)
-   Bypass of sandbox restrictions (CVE-2014-4216, CVE-2014-4218, CVE-2014-4219, CVE-2014-4262)
+   Bypass of sandbox restrictions
+   (CVE-2014-4216, CVE-2014-4218, CVE-2014-4219, CVE-2014-4262)
    Information leak in RSA key handling (CVE-2014-4244)
    Information disclosure in security services (CVE-2014-4252)
    Insecure Diffie-Hellman handling (CVE-2014-4263)
    Denial of service in InfoBuilder (CVE-2014-4266)
-   Insufficient access restrictions in Swing file dialog (CVE-2014-4268)TLS/SSL handshake attack (CVE-2014-6457)
+   Insufficient access restrictions in Swing file dialog (CVE-2014-4268)
+   TLS/SSL handshake attack (CVE-2014-6457)
    Insecure logging (CVE-2014-6502)
    Information disclosure in Hotspot (CVE-2014-6504)
    Insufficient permission checks in system logging (CVE-2014-6506)
