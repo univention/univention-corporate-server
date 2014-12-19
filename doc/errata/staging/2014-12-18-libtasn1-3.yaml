@@ -5,7 +5,8 @@ src: libtasn1-3
 fix: 2.7-1.17.201412171926
 version: [4]
 desc: |
- Multiple issues have been fixed in libtasn1-3:
+ Multiple issues have been fixed in libtasn, which might result in
+ denial of service:
  * Memory overreads in ASN1 parsing (CVE-2014-3467)
  * NULL dereferences in ASN1 parsing (CVE-2014-3468, CVE-2014-3469)
 cve:
