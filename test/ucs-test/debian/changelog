@@ -1,3 +1,10 @@
+ucs-test (5.0.79-1) unstable; urgency=low
+
+  * 10_ldap/28reconnect_univention-ldapsearch: added pgrep for slapd after
+    its restart (Bug #37299).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 19 Dec 2014 11:47:40 +0100
+
 ucs-test (5.0.78-1) unstable; urgency=low
 
   * Bug #37157: skipping test if ucsschool is installed by adding a new tag 'SKIP-UCSSCHOOL'
