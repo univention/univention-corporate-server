@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-27) unstable; urgency=low
+
+  * Bug #33527: changed error handling for multiedit mode
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 19 Dec 2014 14:22:29 +0100
+
 univention-management-console-module-udm (5.1.25-26) unstable; urgency=medium
 
   * Bug #33527: fix some typos from svn r56948

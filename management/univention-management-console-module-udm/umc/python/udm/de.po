@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-12-17 12:31+0100\n"
+"POT-Creation-Date: 2014-12-19 14:07+0100\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,12 +17,13 @@ msgstr ""
 msgid "%($dn$)s moved"
 msgstr "%($dn$)s verschoben"
 
-#: umc/python/udm/udm_ldap.py:278
+#: umc/python/udm/udm_ldap.py:281
 #, python-format
 msgid "All IP addresses in the specified network \"%s\" are already in use."
-msgstr "Alle IP Adressen in dem gewählten Netzwerk \"%s\" sind schon in Benutzung."
+msgstr ""
+"Alle IP Adressen in dem gewählten Netzwerk \"%s\" sind schon in Benutzung."
 
-#: umc/python/udm/__init__.py:1186
+#: umc/python/udm/__init__.py:1191
 #, python-format
 msgid "An error occurred while sending the request: %s"
 msgstr "Ein Fehler ist während des Anforderns aufgetreten: %s"
@@ -35,7 +36,7 @@ msgstr "Authentifikation fehlgeschlagen"
 msgid "Cannot connect to the LDAP service."
 msgstr "Konnte nicht zum LDAP-Dienst verbinden."
 
-#: umc/python/udm/__init__.py:1170
+#: umc/python/udm/__init__.py:1175
 msgid "Cannot parse License from LDAP"
 msgstr "Fehler beim Auslesen der Lizenz aus dem LDAP"
 
@@ -62,7 +63,7 @@ msgstr ""
 "Überprüfen Sie den Domänenbeitritt-Status dieses Systems durch Benutzung des "
 "Domänenbeitritt UMC-Moduls"
 
-#: umc/python/udm/udm_ldap.py:440
+#: umc/python/udm/udm_ldap.py:441
 #, python-format
 msgid "Could not find an UDM module for the superordinate object %s"
 msgstr ""
@@ -88,7 +89,7 @@ msgstr ""
 "Stellen Sie sicher, dass der LDAP-Server auf diesem System läuft und "
 "ansprechbar ist"
 
-#: umc/python/udm/udm_ldap.py:277
+#: umc/python/udm/udm_ldap.py:280
 msgid "Failed to automatically assign an IP address."
 msgstr "Fehler beim der automatischen IP Adressen Zuweisung."
 
@@ -130,7 +131,11 @@ msgstr "LDAP-Fehler: %s."
 msgid "LDAP object %s could not be found."
 msgstr "Das LDAP-Objekt %s konnte nicht gefunden werden."
 
-#: umc/python/udm/__init__.py:429
+#: umc/python/udm/__init__.py:399
+msgid "LDAP object could not be found."
+msgstr "Das LDAP-Objekt konnte nicht gefunden werden."
+
+#: umc/python/udm/__init__.py:431
 msgid "LDAP object could not be identified"
 msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
 
@@ -178,31 +183,32 @@ msgstr "Keine gültige Variante oder existierendes UDM-Modul wurden angegeben"
 msgid "No license has been found."
 msgstr "Es wurde keine Lizenz gefunden"
 
-#: umc/python/udm/udm_ldap.py:885
+#: umc/python/udm/udm_ldap.py:891
 msgid "None"
 msgstr "Keins"
 
-#: umc/python/udm/udm_ldap.py:686
+#: umc/python/udm/udm_ldap.py:692
 msgid "Objects referencing this policy object"
 msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
 
-#: umc/python/udm/__init__.py:600
+#: umc/python/udm/__init__.py:602
 msgid "PDF document"
 msgstr "PDF Dokument"
 
-#: umc/python/udm/udm_ldap.py:279
+#: umc/python/udm/udm_ldap.py:282
 msgid ""
 "Please specify a different network or make sure that free IP addresses are "
 "available."
-msgstr "Bitte wählen Sie ein anderes Netzwerk oder stellen Sie sicher das "
-"ungenutzte IP Adressen zur Verfügung stehen."
+msgstr ""
+"Bitte wählen Sie ein anderes Netzwerk oder stellen Sie sicher das ungenutzte "
+"IP Adressen zur Verfügung stehen."
 
-#: umc/python/udm/udm_ldap.py:379 umc/python/udm/__init__.py:877
+#: umc/python/udm/udm_ldap.py:380 umc/python/udm/__init__.py:882
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
 
-#: umc/python/udm/udm_ldap.py:686
+#: umc/python/udm/udm_ldap.py:692
 msgid "Referencing objects"
 msgstr "Referenzierende Objekte"
 
@@ -252,12 +258,12 @@ msgstr ""
 "Die Lizenz konnte nicht eingespielt werden. Die LDAP-Basis stimmt nicht "
 "überein (erwartet: %s, gefunden: %s)."
 
-#: umc/python/udm/udm_ldap.py:393 umc/python/udm/udm_ldap.py:407
+#: umc/python/udm/udm_ldap.py:394 umc/python/udm/udm_ldap.py:408
 #, python-format
 msgid "The property %s has an invalid value: %s"
 msgstr "Die Eigenschaft '%s' hat einen nicht gültigen Wert: %s"
 
-#: umc/python/udm/udm_ldap.py:554
+#: umc/python/udm/udm_ldap.py:555
 msgid ""
 "The query you have entered timed out. Please narrow down your search by "
 "specifiying more query parameters"
@@ -265,7 +271,7 @@ msgstr ""
 "Die angeforderte Suche lieferte zu viele Ergebnisse und wurde abgebrochen. "
 "Bitte schränken Sie die Suche durch weitere Suchparameter ein."
 
-#: umc/python/udm/udm_ldap.py:556
+#: umc/python/udm/udm_ldap.py:557
 #, python-format
 msgid ""
 "The query you have entered yields too many matching entries. Please narrow "
@@ -404,11 +410,11 @@ msgstr ""
 "Sie über eine Lizenz verfügen, wenden Sie sich bitte an Univention oder "
 "Ihren Univention Partner."
 
-#: umc/python/udm/udm_ldap.py:596
+#: umc/python/udm/udm_ldap.py:602
 msgid "manual"
 msgstr "handbuch"
 
-#: umc/python/udm/__init__.py:604
+#: umc/python/udm/__init__.py:606
 msgid "text file"
 msgstr "Textdatei"
 

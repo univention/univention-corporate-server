@@ -396,7 +396,8 @@ class Instance(Base, ProgressMixin):
 				ldap_dn = properties['$dn$']
 				module = get_module(request.flavor, ldap_dn)
 				if module is None:
-					raise ObjectDoesNotExists(ldap_dn)
+					result.append({'$dn$': ldap_dn, 'success': False, 'details': _('LDAP object could not be found.')})
+					continue
 				MODULE.info('Modifying LDAP object %s' % (ldap_dn,))
 				if '$labelObjectType$' in properties:
 					del properties['$labelObjectType$']
