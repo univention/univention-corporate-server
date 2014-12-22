@@ -1,3 +1,9 @@
+ucs-test (5.0.80-1) unstable; urgency=medium
+
+  * Bug #35985: Fix test cleanup
+
+ -- Arvid Requate <requate@univention.de>  Mon, 22 Dec 2014 11:09:33 +0100
+
 ucs-test (5.0.79-1) unstable; urgency=low
 
   * 10_ldap/28reconnect_univention-ldapsearch: added pgrep for slapd after
