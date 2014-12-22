@@ -1,0 +1,19 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: ntp
+fix: 1:4.2.6.p5+dfsg-2.29.201412221005
+version: [0]
+desc: |
+  Multiple issues have been found in the ISC NTP time server:
+  * An insecure default key could lead to an attacker being able to 
+    reconfigure ntpd (CVE-2014-9293)
+  * ntp-keygen generated weak keys (CVE-2014-9294)
+  * Multiple buffer overflows (CVE-2014-9295)
+  * Incorrect error handling in processing NTP packets (CVE-2014-9296)
+cve:
+ - CVE-2014-9293
+ - CVE-2014-9294
+ - CVE-2014-9295
+ - CVE-2014-9296
+bug: [37408]
