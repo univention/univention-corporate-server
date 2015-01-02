@@ -1,3 +1,9 @@
+ucs-test (5.0.81-1) unstable; urgency=low
+
+  * Bug #37401: replace time.sleep with active functions
+
+ -- Ammar Najjar <najjar@univention.de>  Fri, 02 Jan 2015 11:30:44 +0100
+
 ucs-test (5.0.80-1) unstable; urgency=medium
 
   * Bug #35985: Fix test cleanup
