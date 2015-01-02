@@ -28,13 +28,28 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.testing.strings import random_name, random_int
 from univention.config_registry import ConfigRegistry
-import subprocess
-import time
+from univention.testing.strings import random_name, random_int
 import ldap
 import ldap.schema
+import psutil
+import subprocess
+import time
 import univention.uldap
+
+WAIT_FOR_LDAP_TIME = 30 #seconds
+
+def wait_for_ldap():
+	print "\n** Waiting for slapd"
+	for count in xrange(WAIT_FOR_LDAP_TIME):
+		try:
+			pinfo = [proc.name for proc in psutil.process_iter() if proc.name == 'slapd']
+		except psutil.NoSuchProcess:
+			time.sleep(1)
+			print count
+		else:
+			print "(%s) process is running now.\n" % pinfo[0]
+			break
 
 def get_package_name():
 	return random_name()
