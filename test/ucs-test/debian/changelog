@@ -1,3 +1,9 @@
+ucs-test (4.0.193-1) unstable; urgency=low
+
+  * Bug #37401: replace time.sleep with active functions
+
+ -- Ammar Najjar <najjar@univention.de>  Fri, 02 Jan 2015 11:29:32 +0100
+
 ucs-test (4.0.192-1) unstable; urgency=low
 
   * Bug #37157: skipping test if ucsschool is installed by adding a new tag 'SKIP-UCSSCHOOL'
