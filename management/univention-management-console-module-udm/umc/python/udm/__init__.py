@@ -94,6 +94,13 @@ def sanitize_func(sanitizer_func):
 	return _decorated
 
 
+def module_from_request(func):
+	def _decorated(self, request, *a, **kw):
+		request.options['module'] = self._get_module_by_request(request)
+		return func(self, request, *a, **kw)
+	return _decorated
+
+
 class ObjectPropertySanitizer(StringSanitizer):
 
 	def __init__(self, **kwargs):
@@ -140,21 +147,6 @@ class Instance(Base, ProgressMixin):
 		self.reports_cfg = udr.Config()
 		self.modules_with_childs = container_modules()
 
-	def _get_module(self, object_type, flavor=None):
-		"""Tries to determine to UDM module to use. If no specific
-		object type is given or is 'all', the request
-		flavor is chosen. Failing all this will raise in
-		UMC_OptionMissing exception. On success a UMC_Module object is
-		returned."""
-		module_name = object_type
-		if not module_name or 'all' == module_name:
-			module_name = flavor
-
-		if not module_name:
-			raise UMC_OptionMissing(_('No flavor or valid UDM module name specified'))
-
-		return UDM_Module(module_name)
-
 	def _get_module_by_request(self, request, object_type=None):
 		"""Tries to determine the UDM module to use. If no specific
 		object type is given the request option 'objectType' is used. In
@@ -164,7 +156,15 @@ class Instance(Base, ProgressMixin):
 		returned."""
 		if object_type is None:
 			object_type = request.options.get('objectType')
-		return self._get_module(object_type, request.flavor)
+
+		module_name = object_type
+		if not module_name or 'all' == module_name:
+			module_name = request.flavor
+
+		if not module_name:
+			raise UMC_OptionMissing(_('No flavor or valid UDM module name specified'))
+
+		return UDM_Module(module_name)
 
 	def _thread_finished(self, thread, result, request):
 		if not isinstance(result, BaseException):
@@ -654,7 +654,7 @@ class Instance(Base, ProgressMixin):
 
 		return: {}
 		"""
-		module = self._get_module('networks/network')
+		module = UDM_Module('networks/network')
 		obj = module.get(request.options['networkDN'])
 
 		if not obj:
@@ -672,8 +672,9 @@ class Instance(Base, ProgressMixin):
 			obj.stepIp()
 			obj.modify()
 
+	@module_from_request
 	@simple_response(with_flavor=True)
-	def containers(self, flavor, objectType=None):
+	def containers(self, module, flavor):
 		"""Returns the list of default containers for the given object
 		type. Therefor the python module and the default object in the
 		LDAP directory are searched.
@@ -683,8 +684,6 @@ class Instance(Base, ProgressMixin):
 
 		return: [ { 'id' : <LDAP DN of container>, 'label' : <name> }, ... ]
 		"""
-		module = self._get_module(objectType, flavor)
-
 		containers = module.containers
 
 		if self.settings is not None:
@@ -693,7 +692,9 @@ class Instance(Base, ProgressMixin):
 		containers.sort(cmp=lambda x, y: cmp(x['label'].lower(), y['label'].lower()))
 		return containers
 
-	def superordinates(self, request):
+	@module_from_request
+	@simple_response
+	def superordinates(self, module):
 		"""Returns the list of superordinate containers for the given
 		object type.
 
@@ -702,10 +703,11 @@ class Instance(Base, ProgressMixin):
 
 		return: [ { 'id' : <LDAP DN of container or None>, 'label' : <name> }, ... ]
 		"""
-		module = self._get_module_by_request(request)
-		self.finished(request.id, module.superordinates)
+		return module.superordinates
 
-	def templates(self, request):
+	@module_from_request
+	@simple_response
+	def templates(self, module):
 		"""Returns the list of template objects for the given object
 		type.
 
@@ -714,7 +716,6 @@ class Instance(Base, ProgressMixin):
 
 		return: [ { 'id' : <LDAP DN of container or None>, 'label' : <name> }, ... ]
 		"""
-		module = self._get_module_by_request(request)
 
 		result = []
 		if module.template:
@@ -724,7 +725,7 @@ class Instance(Base, ProgressMixin):
 				obj.open()
 				result.append({'id': obj.dn, 'label': obj[template.identifies]})
 
-		self.finished(request.id, result)
+		return result
 
 	@LDAP_Connection
 	def types(self, request, ldap_connection=None, ldap_position=None):
@@ -827,7 +828,9 @@ class Instance(Base, ProgressMixin):
 			ret = ret[0]
 		self.finished(request.id, ret)
 
-	def options(self, request):
+	@module_from_request
+	@simple_response
+	def options(self, module):
 		"""Returns the options specified for the given object type
 
 		requests.options = {}
@@ -835,8 +838,7 @@ class Instance(Base, ProgressMixin):
 
 		return: [ {}, ... ]
 		"""
-		module = self._get_module_by_request(request)
-		self.finished(request.id, module.options)
+		return module.options
 
 	def policies(self, request):
 		"""Returns a list of policy types that apply to the given object type"""
