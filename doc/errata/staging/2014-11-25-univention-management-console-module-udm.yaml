@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-management-console-module-udm
-fix: 5.1.25-1.539.201501051722
+fix: 5.1.25-30.540.201501051738
 version: [0]
 desc: |
   * The notification while changing objects which are part of a Active
@@ -28,4 +28,7 @@ desc: |
     now shows an error message instead of raising an exception.
   * Automatic ip assignment for a network will show an error message if there
     is no more IP available to use instead of a traceback.
-bug: [36732, 35719, 29231, 35273, 32979, 34353, 28383, 37178, 31828, 34246, 33527. 35350]
+  * A Free for personal use license can now be imported via the UMC module
+    without specifying the LDAP base.
+  * Error handling has been improved in case a UDM module could not be identified.
+bug: [36732, 35719, 29231, 35273, 32979, 34353, 28383, 37178, 31828, 34246, 33527. 35350, 37449, 34680]
