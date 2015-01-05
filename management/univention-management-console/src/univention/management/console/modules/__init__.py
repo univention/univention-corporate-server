@@ -188,7 +188,10 @@ def error_handling(function, method=None):
 		except:
 			status = MODULE_ERR_COMMAND_FAILED
 			message = _("Execution of command '%(command)s' has failed:\n\n%(text)s")
-			message = message % {'command': request.arguments[0], 'text': unicode(traceback.format_exc())}
+			message = message % {
+				'command': ('%s %s' % (request.arguments[0], request.flavor or '')).strip(),
+				'text': unicode(traceback.format_exc())
+			}
 		MODULE.process(str(message))
 		self.finished(request.id, result, message, status=status)
 	return _decorated
