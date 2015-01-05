@@ -307,9 +307,11 @@ class UDM_ModuleCache(dict):
 			if name in self and not force_reload:
 				return self[name]
 
-			self[name] = udm_modules.get(name)
-			if self[name] is None:
+			module = udm_modules.get(name)
+			if module is None:
 				return None
+
+			self[name] = module
 
 			udm_modules.init(ldap_connection, ldap_position, self[name], template_object, force_reload=force_reload)
 
@@ -1133,7 +1135,11 @@ def get_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
 	if not modules:
 		return None
 
-	return UDM_Module(modules[0])
+	module = UDM_Module(modules[0])
+	if module.module is None:
+		MODULE.error('Idenfified module %s for %s (flavor=%s) does not have a relating UDM module.' % (ldap_dn, flavor, modules[0]))
+		return None
+	return module
 
 
 @LDAP_Connection
@@ -1268,7 +1274,7 @@ def info_syntax_choices(syntax_name, options={}):
 			size += len(syn.static_values)
 		for udm_module in syn.udm_modules:
 			module = UDM_Module(udm_module)
-			if module is None:
+			if module.module is None:
 				continue
 			filter_s = _create_ldap_filter(syn, options, module)
 			if filter_s is not None:
@@ -1349,7 +1355,7 @@ def read_syntax_choices(syntax_name, options={}, module_search_options={}, ldap_
 
 			for udm_module in syn.udm_modules:
 				module = UDM_Module(udm_module)
-				if module is None:
+				if module.module is None:
 					continue
 				filter_s = _create_ldap_filter(syn, options, module)
 				if filter_s is None:
@@ -1361,7 +1367,7 @@ def read_syntax_choices(syntax_name, options={}, module_search_options={}, ldap_
 		else:
 			for udm_module in syn.udm_modules:
 				module = UDM_Module(udm_module)
-				if module is None:
+				if module.module is None:
 					continue
 				filter_s = _create_ldap_filter(syn, options, module)
 				if filter_s is not None:
@@ -1425,7 +1431,7 @@ def read_syntax_choices(syntax_name, options={}, module_search_options={}, ldap_
 				return []
 
 		module = UDM_Module(syn.udm_module)
-		if module is None:
+		if module.module is None:
 			return
 		MODULE.info('Found syntax %s with udm_module property' % syntax_name)
 		if syn.udm_filter == 'dn':

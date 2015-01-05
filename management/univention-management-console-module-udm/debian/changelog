@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-28) unstable; urgency=medium
+
+  * Bug #34680: Fix errors when no module for specific ldap objects exists.
+
+ -- Florian Best <best@univention.de>  Mon, 05 Jan 2015 14:06:56 +0100
+
 univention-management-console-module-udm (5.1.25-27) unstable; urgency=low
 
   * Bug #33527: changed error handling for multiedit mode

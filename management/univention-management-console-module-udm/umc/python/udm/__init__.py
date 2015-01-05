@@ -328,10 +328,10 @@ class Instance(Base, ProgressMixin):
 	@multi_response(progress=[_('Moving %d object(s)'), _('%($dn$)s moved')])
 	def move(self, iterator, object, options):
 		for object, options in iterator:
-			module = get_module(None, object)
 			if 'container' not in options:
 				yield {'$dn$': object, 'success': False, 'details': _('The destination is missing')}
-			elif not module:
+			module = get_module(None, object)
+			if not module:
 				yield {'$dn$': object, 'success': False, 'details': _('Could not identify the given LDAP object')}
 			elif 'move' not in module.operations:
 				yield {'$dn$': object, 'success': False, 'details': _('This object can not be moved')}
@@ -545,9 +545,6 @@ class Instance(Base, ProgressMixin):
 						# This happens when concurrent a object is removed between the module.search() and get_module() call
 						MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
 						continue
-					if module.module is None:
-						MODULE.warn('Could not identify LDAP object %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
-						continue
 					entry = {
 						'$dn$': obj.dn,
 						'$childs$': module.childs,
@@ -743,8 +740,10 @@ class Instance(Base, ProgressMixin):
 			superordinate = request.options.get('superordinate')
 			if superordinate:
 				self.finished(request.id, module.types4superordinate(request.flavor, superordinate))
+				return
 			else:
 				self.finished(request.id, module.child_modules)
+				return
 		else:
 			container = request.options.get('container')
 			if not container:
@@ -1052,7 +1051,7 @@ class Instance(Base, ProgressMixin):
 
 			def _get_object(_dn, _module):
 				'''Get existing UDM object and corresponding module. Verify user input.'''
-				if _module.module is None:
+				if _module is None or _module.module:
 					raise UMC_OptionTypeError('The given object type is not valid')
 				_obj = _module.get(_dn)
 				if _obj is None:
