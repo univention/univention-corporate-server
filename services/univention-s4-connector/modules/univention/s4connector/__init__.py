@@ -444,6 +444,13 @@ class ucs:
 	def __del__(self):
 		self.close_debug()
 
+	def dn_mapped_to_ucr_ldap_base_case(self, dn):
+		ucr_ldap_base = self.baseConfig['ldap/base']
+		if dn.lower().endswith(ucr_ldap_base.lower()):
+			return ''.join((dn[:-len(ucr_ldap_base)], ucr_ldap_base))
+		else:
+			return dn
+
 	def open_ucs( self ):
 		bindpw_file = self.baseConfig.get('%s/ldap/bindpw' % self.CONFIGBASENAME, '/etc/ldap.secret')
 		binddn = self.baseConfig.get('%s/ldap/binddn' % self.CONFIGBASENAME, 'cn=admin,'+self.baseConfig['ldap/base'])
@@ -1028,7 +1035,7 @@ class ucs:
 
 					ucs_module = self.modules[property_type]
 					position=univention.admin.uldap.position(self.lo.base)
-					position.setDn(object['dn'])
+					position.setDn(self.dn_mapped_to_ucr_ldap_base_case(object['dn']))
 					univention.admin.modules.init(self.lo,position,ucs_module)
 					
 					if hasattr(ucs_module, 'ldap_extra_objectclasses'):
@@ -1088,7 +1095,7 @@ class ucs:
 				if ucs_object.has_key(ucs_key):
 					ucs_module = self.modules[property_type]
 					position=univention.admin.uldap.position(self.lo.base)
-					position.setDn(object['dn'])
+					position.setDn(self.dn_mapped_to_ucr_ldap_base_case(object['dn']))
 					univention.admin.modules.init(self.lo,position,ucs_module)
 
 					# Special handling for con other attributes, see Bug #20599
@@ -1353,11 +1360,13 @@ class ucs:
 		module = self.modules[property_type]
 		position=univention.admin.uldap.position(self.baseConfig['ldap/base'])
 
-		if object['dn'].lower() != self.baseConfig['ldap/base'].lower():
+		object_dn_mapped_to_ucr_ldap_base_case = self.dn_mapped_to_ucr_ldap_base_case(object['dn'])
+		if object_dn_mapped_to_ucr_ldap_base_case != self.baseConfig['ldap/base']:
 			try:
-				position.setDn( string.join( ldap.explode_dn( object['dn'] )[1:], "," ) ) 
+				parent_dn = string.join(ldap.explode_dn(object_dn_mapped_to_ucr_ldap_base_case)[1:], ",")
+				position.setDn(parent_dn)
 				ud.debug(ud.LDAP, ud.INFO,
-							   'sync_to_ucs: set position to %s' % string.join( ldap.explode_dn( object['dn'] )[1:], "," ) )
+							   'sync_to_ucs: set position to %s' % parent_dn)
 			except univention.admin.uexceptions.noObject:
 				# In this case we use the base DN
 				pass
