@@ -63,11 +63,15 @@ class LicenseImport(ldif.LDIFParser):
 		except binascii.Error:
 			raise LicenseError(_("No license has been found."))
 
-		# there should exactly one object in the the ldif file
+		# there should be exactly one object in the the ldif file
 		if self.dncount == 0:
 			raise LicenseError(_("No license has been found."))
 		elif self.dncount > 1:
 			raise LicenseError(_("More than one object has been found."))
+
+		# FFPU license don't need to have the ldap base in the dn
+		if not self.dn.endswith(base) and self.base.lower() == 'free for personal use edition':
+			self.dn = '%s,%s' % (self.dn, base)
 
 		# check whether DN matches the LDAP base
 		dnWithoutBase = self.dn[:-len(base)]

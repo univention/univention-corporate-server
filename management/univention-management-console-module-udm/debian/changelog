@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-30) unstable; urgency=medium
+
+  * Bug #37449: allow a free for personal use license to be imported via UMC
+
+ -- Florian Best <best@univention.de>  Mon, 05 Jan 2015 17:36:10 +0100
+
 univention-management-console-module-udm (5.1.25-29) unstable; urgency=low
 
   * Bug #33527: changed behaviour of error handling for multiedit mode
