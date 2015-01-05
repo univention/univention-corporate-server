@@ -1,3 +1,9 @@
+univention-ad-connector (9.0.11-3) unstable; urgency=medium
+
+  * Bug #37450: Map DNs to UCR LDAP base case before calling position.setDn
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Jan 2015 20:54:54 +0100
+
 univention-ad-connector (9.0.11-2) unstable; urgency=medium
 
   * Check that joining account is member of "Domain Admins" in AD

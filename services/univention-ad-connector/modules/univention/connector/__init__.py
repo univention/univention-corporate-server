@@ -403,6 +403,13 @@ class ucs:
 	def __del__(self):
 		self.close_debug()
 
+	def dn_mapped_to_ucr_ldap_base_case(self, dn):
+		ucr_ldap_base = self.baseConfig['ldap/base']
+		if dn.lower().endswith(ucr_ldap_base.lower()):
+			return ''.join((dn[:-len(ucr_ldap_base)], ucr_ldap_base))
+		else:
+			return dn
+
 	def open_ucs( self ):
 		bindpw_file = self.baseConfig.get('%s/ldap/bindpw' % self.CONFIGBASENAME, '/etc/ldap.secret')
 		binddn = self.baseConfig.get('%s/ldap/binddn' % self.CONFIGBASENAME, 'cn=admin,'+self.baseConfig['ldap/base'])
@@ -1243,9 +1250,11 @@ class ucs:
 		module = self.modules[property_type]
 		position=univention.admin.uldap.position(self.baseConfig['ldap/base'])
 
+		parent_dn = string.join(ldap.explode_dn(object['dn'])[1:], ",")
+		parent_dn_mapped_to_ucr_ldap_base_case = self.dn_mapped_to_ucr_ldap_base_case(parent_dn)
 		ud.debug(ud.LDAP, ud.INFO,
-				       'sync_to_ucs: set position to %s' % string.join( ldap.explode_dn( object['dn'] )[1:], "," ) )
-		position.setDn( string.join( ldap.explode_dn( object['dn'] )[1:], "," ) ) 
+				       'sync_to_ucs: set position to %s' % parent_dn_mapped_to_ucr_ldap_base_case)
+		position.setDn(parent_dn_mapped_to_ucr_ldap_base_case)
 
 		try:
 			result = False
