@@ -396,7 +396,9 @@ class Instance(Base, ProgressMixin):
 				ldap_dn = properties['$dn$']
 				module = get_module(request.flavor, ldap_dn)
 				if module is None:
-					result.append({'$dn$': ldap_dn, 'success': False, 'details': _('LDAP object could not be found.')})
+					if len(request.options) == 1:
+						raise ObjectDoesNotExists(ldap_dn)
+					result.append({'$dn$': ldap_dn, 'success': False, 'details': _('LDAP object does not exist.')})
 					continue
 				MODULE.info('Modifying LDAP object %s' % (ldap_dn,))
 				if '$labelObjectType$' in properties:
@@ -406,7 +408,6 @@ class Instance(Base, ProgressMixin):
 					result.append({'$dn$': ldap_dn, 'success': True})
 				except UDM_Error as exc:
 					result.append({'$dn$': ldap_dn, 'success': False, 'details': str(exc)})
-
 			return result
 
 		thread = notifier.threads.Simple('Get', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
