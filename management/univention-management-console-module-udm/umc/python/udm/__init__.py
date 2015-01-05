@@ -1051,7 +1051,7 @@ class Instance(Base, ProgressMixin):
 
 			def _get_object(_dn, _module):
 				'''Get existing UDM object and corresponding module. Verify user input.'''
-				if _module is None or _module.module:
+				if _module is None or _module.module is None:
 					raise UMC_OptionTypeError('The given object type is not valid')
 				_obj = _module.get(_dn)
 				if _obj is None:
