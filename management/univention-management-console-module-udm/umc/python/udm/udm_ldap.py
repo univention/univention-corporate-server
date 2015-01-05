@@ -40,7 +40,7 @@ import traceback
 
 from univention.management.console import Translation
 from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
-from univention.management.console.modules import UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError, UMC_Error
+from univention.management.console.modules import UMC_OptionTypeError, UMC_OptionMissing, UMC_Error
 
 import univention.admin as udm
 import univention.admin.layout as udm_layout
@@ -179,6 +179,7 @@ class UMCError(UMC_Error):
 		super(UMCError, self).__init__('\n'.join(self._error_msg()), **kwargs)
 
 	def _error_msg(self):
+		# return a generator or a list of strings which are concatenated by a newline
 		yield ''
 
 
@@ -275,7 +276,7 @@ class NoIpLeft(UMCError):
 		except IndexError:
 			self.network_name = ldap_dn
 		super(NoIpLeft, self).__init__()
-	
+
 	def _error_msg(self):
 		yield _('Failed to automatically assign an IP address.')
 		yield _('All IP addresses in the specified network "%s" are already in use.') % (self.network_name,)
@@ -416,12 +417,12 @@ class UDM_Module(object):
 			try:
 				ldap_position.setDn(superordinate)
 			except udm_errors.noObject as e:
-				raise UMC_CommandError(str(e))
+				raise SuperordinateDoesNotExists(superordinate)
 		elif container is not None:
 			try:
 				ldap_position.setDn(container)
 			except udm_errors.noObject as e:
-				raise UMC_CommandError(str(e))
+				raise ObjectDoesNotExists(container)
 		else:
 			if hasattr(self.module, 'policy_position_dn_prefix'):
 				container = '%s,cn=policies,%s' % (self.module.policy_position_dn_prefix, ldap_position.getBase())
@@ -438,7 +439,8 @@ class UDM_Module(object):
 				MODULE.info('Found UDM module for superordinate')
 				superordinate = mod.get(superordinate)
 			else:
-				raise UMC_OptionTypeError(_('Could not find an UDM module for the superordinate object %s') % superordinate)
+				MODULE.error('Superordinate module not found: %s' % (superordinate,))
+				raise SuperordinateDoesNotExists(superordinate)
 		else:
 			superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection, container)
 
@@ -584,11 +586,14 @@ class UDM_Module(object):
 				obj.open()
 			else:
 				obj = self.module.object(None, ldap_connection, None, '', superordinate, attributes=attributes)
-		except (LDAPError, udm_errors.ldapError) as e:
+		except (LDAPError, udm_errors.ldapError):
 			raise
-		except Exception as e:
-			MODULE.info('Failed to retrieve LDAP object: %s' % str(e))
-			raise UDM_Error(e)
+		except udm_errors.base as exc:
+			MODULE.info('Failed to retrieve LDAP object: %s' % (exc,))
+			if isinstance(exc, udm_errors.noObject):
+				if superordinate and not ldap_connection.get(superordinate):
+					raise SuperordinateDoesNotExists(superordinate)
+			raise UDM_Error(exc)
 		return obj
 
 	def get_property(self, property_name):
@@ -822,7 +827,7 @@ class UDM_Module(object):
 			# read UCR configuration
 			item.update(widget(prop.syntax, item))
 			props.append(item)
-		props.append({	'id': '$options$', 'type': 'WidgetGroup', 'widgets': self.get_options()})
+		props.append({'id': '$options$', 'type': 'WidgetGroup', 'widgets': self.get_options()})
 
 		return props
 

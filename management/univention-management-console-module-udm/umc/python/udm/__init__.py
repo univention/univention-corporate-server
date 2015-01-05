@@ -466,26 +466,26 @@ class Instance(Base, ProgressMixin):
 				if module is None:
 					raise ObjectDoesNotExists(ldap_dn)
 				else:
-					obj = module.get( ldap_dn )
+					obj = module.get(ldap_dn)
 					if obj:
 						props = obj.info
 						for passwd in module.password_properties:
 							if passwd in props:
-								del props[ passwd ]
-						props[ '$dn$' ] = obj.dn
-						props[ '$options$' ] = {}
-						for opt in module.get_options( udm_object = obj ):
-							props[ '$options$' ][ opt[ 'id' ] ] = opt[ 'value' ]
-						props[ '$policies$' ] = {}
+								del props[passwd]
+						props['$dn$'] = obj.dn
+						props['$options$'] = {}
+						for opt in module.get_options(udm_object=obj):
+							props['$options$'][opt['id']] = opt['value']
+						props['$policies$'] = {}
 						for policy in obj.policies:
-							pol_mod = get_module( None, policy )
+							pol_mod = get_module(None, policy)
 							if pol_mod and pol_mod.name:
-								props[ '$policies$' ][ pol_mod.name ] = policy
-						props[ '$labelObjectType$' ] = module.title;
+								props['$policies$'][pol_mod.name] = policy
+						props['$labelObjectType$'] = module.title
 						props['$flags$'] = obj.oldattr.get('univentionObjectFlag', []),
-						result.append( props )
+						result.append(props)
 					else:
-						MODULE.process( 'The LDAP object for the LDAP DN %s could not be found' % ldap_dn )
+						MODULE.process('The LDAP object for the LDAP DN %s could not be found' % ldap_dn)
 			return result
 
 		MODULE.info('Starting thread for udm/get request')
@@ -565,10 +565,9 @@ class Instance(Base, ProgressMixin):
 		thread = notifier.threads.Simple('Query', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
 		thread.run()
 
-
-	def reports_query( self, request ):
+	def reports_query(self, request):
 		"""Returns a list of reports for the given object type"""
-		self.finished( request.id, self.reports_cfg.get_report_names( request.flavor ) )
+		self.finished(request.id, self.reports_cfg.get_report_names(request.flavor))
 
 	def sanitize_reports_create(self, request):
 		choices = self.reports_cfg.get_report_names(request.flavor)
@@ -576,7 +575,6 @@ class Instance(Base, ProgressMixin):
 			report=ChoicesSanitizer(choices=choices, required=True),
 			objects=ListSanitizer(StringSanitizer(minimum=1), required=True, min_elements=1)
 		)
-
 
 	@sanitize_func(sanitize_reports_create)
 	def reports_create(self, request):
@@ -1192,5 +1190,3 @@ class Instance(Base, ProgressMixin):
 			# creating a new ucr variable to prevent double registration (Bug #35711)
 			handler_set(['ucs/web/license/requested=true'])
 			return True
-
-
