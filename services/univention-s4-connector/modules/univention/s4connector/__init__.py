@@ -444,10 +444,11 @@ class ucs:
 	def __del__(self):
 		self.close_debug()
 
-	def dn_mapped_to_ucr_ldap_base_case(self, dn):
-		ucr_ldap_base = self.baseConfig['ldap/base']
-		if dn.lower().endswith(ucr_ldap_base.lower()):
-			return ''.join((dn[:-len(ucr_ldap_base)], ucr_ldap_base))
+	def dn_mapped_to_base(self, dn, base):
+		if dn.endswith(base):
+			return dn
+		elif dn.lower().endswith(base.lower()):
+			return ''.join((dn[:-len(base)], base))
 		else:
 			return dn
 
@@ -587,7 +588,8 @@ class ucs:
 	def get_dn_by_ucs(self, dn_ucs):
 		if not dn_ucs:
 			return dn_ucs
-		return 	self._get_dn_by_ucs(dn_ucs)
+		dn = self._get_dn_by_ucs(dn_ucs)
+		return self.dn_mapped_to_base(dn, self.lo_s4.base)
 
 	def _get_dn_by_con(self, dn_con):
 		_d=ud.function('ldap._get_dn_by_con')
@@ -596,7 +598,8 @@ class ucs:
 		return self._decode_dn_from_config_option(self._get_config_option('DN Mapping CON', self._encode_dn_as_config_option(dn_con.lower())))
 
 	def get_dn_by_con(self, dn_con):
-		return 	self._get_dn_by_con(dn_con)
+		dn = self._get_dn_by_con(dn_con)
+		return 	self.dn_mapped_to_base(dn, self.lo.base)
 
 	def _check_dn_mapping(self, dn_ucs, dn_con):
 		_d=ud.function('ldap._check_dn_mapping')
@@ -1035,7 +1038,7 @@ class ucs:
 
 					ucs_module = self.modules[property_type]
 					position=univention.admin.uldap.position(self.lo.base)
-					position.setDn(self.dn_mapped_to_ucr_ldap_base_case(object['dn']))
+					position.setDn(object['dn'])
 					univention.admin.modules.init(self.lo,position,ucs_module)
 					
 					if hasattr(ucs_module, 'ldap_extra_objectclasses'):
@@ -1095,7 +1098,7 @@ class ucs:
 				if ucs_object.has_key(ucs_key):
 					ucs_module = self.modules[property_type]
 					position=univention.admin.uldap.position(self.lo.base)
-					position.setDn(self.dn_mapped_to_ucr_ldap_base_case(object['dn']))
+					position.setDn(object['dn'])
 					univention.admin.modules.init(self.lo,position,ucs_module)
 
 					# Special handling for con other attributes, see Bug #20599
@@ -1201,10 +1204,14 @@ class ucs:
 	def modify_in_ucs(self, property_type, object, module, position):
 		_d=ud.function('ldap.modify_in_ucs')
 		module = self.modules[property_type]
+
 		if object.has_key('olddn'):
-			ucs_object=univention.admin.objects.get(module, None, self.lo, dn=object['olddn'], position='')
+			dntype = 'olddn'
 		else:
-			ucs_object=univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
+			dntype = 'dn'
+
+		ucs_object_dn = object[dntype]
+		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=ucs_object_dn, position='')
 		self.__set_values(property_type,object,ucs_object)
 		return ucs_object.modify() and self.__modify_custom_attributes(property_type, object, ucs_object, module, position)
 
@@ -1222,6 +1229,7 @@ class ucs:
 			raise
 		except: # FIXME: which exception is to be caught?
 			ud.debug(ud.LDAP, ud.INFO,"move_in_ucs: move object in UCS")			
+
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['olddn'], position='')
 		ucs_object.open()
 		ucs_object.move(object['dn'])
@@ -1360,10 +1368,10 @@ class ucs:
 		module = self.modules[property_type]
 		position=univention.admin.uldap.position(self.baseConfig['ldap/base'])
 
-		object_dn_mapped_to_ucr_ldap_base_case = self.dn_mapped_to_ucr_ldap_base_case(object['dn'])
-		if object_dn_mapped_to_ucr_ldap_base_case != self.baseConfig['ldap/base']:
+		if object['dn'] != self.baseConfig['ldap/base']:
 			try:
-				parent_dn = string.join(ldap.explode_dn(object_dn_mapped_to_ucr_ldap_base_case)[1:], ",")
+				# parent_dn = string.join(ldap.explode_dn(object_dn_mapped_to_ucr_ldap_base_case)[1:], ",")
+				parent_dn = string.join(ldap.explode_dn(object['dn'])[1:], ",")
 				position.setDn(parent_dn)
 				ud.debug(ud.LDAP, ud.INFO,
 							   'sync_to_ucs: set position to %s' % parent_dn)
@@ -1689,9 +1697,11 @@ class ucs:
 
 				if (object_type == 'ucs' and self._get_dn_by_ucs(object[dntype]) != ''):
 					object[dntype] = self._get_dn_by_ucs(object[dntype])
+					object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo_s4.base)
 					dn_mapping_stored.append(dntype)
 				if (object_type != 'ucs' and self._get_dn_by_con(object[dntype]) != ''):
 					object[dntype] = self._get_dn_by_con(object[dntype])
+					object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo.base)
 					dn_mapping_stored.append(dntype)		
 		
 		if self.property.has_key(key):
@@ -1708,12 +1718,12 @@ class ucs:
 							# save the old rdn with the correct upper and lower case
 							rdn_store = self._get_rdn(object[dntype])
 							for mapping in self.property[key].position_mapping:
-								object[dntype]=self._subtree_replace(object[dntype].lower(),mapping[0].lower(),mapping[1].lower())
+								object[dntype]=self._subtree_replace(object[dntype].lower(),mapping[0].lower(),mapping[1])
 
-							if self.lo_s4.base.lower() == object[dntype][len(object[dntype])-len(self.lo_s4.base):].lower() and len(self.lo_s4.base) > len(self.lo.base):
+							if self.lo_s4.base == object[dntype][len(object[dntype])-len(self.lo_s4.base):] and len(self.lo_s4.base) > len(self.lo.base):
 								ud.debug(ud.LDAP, ud.INFO,"The dn %s is already converted to the S4 base, don't do this again." % object[dntype])
 							else:	
-								object[dntype] = self._subtree_replace(object[dntype].lower(),self.lo.base.lower(),self.lo_s4.base.lower()) # FIXME: lo_s4 may change with other connectors
+								object[dntype] = self._subtree_replace(object[dntype].lower(),self.lo.base.lower(),self.lo_s4.base) # FIXME: lo_s4 may change with other connectors
 							# write the correct upper and lower case back to the DN
 							object[dntype] = object[dntype].replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
 		else:
@@ -1724,12 +1734,12 @@ class ucs:
 							# save the old rdn with the correct upper and lower case
 							rdn_store = self._get_rdn(object[dntype])
 							for mapping in self.property[key].position_mapping:
-								object[dntype]=self._subtree_replace(object[dntype].lower(),mapping[1].lower(),mapping[0].lower())
+								object[dntype]=self._subtree_replace(object[dntype].lower(),mapping[1].lower(),mapping[0])
 
-							if self.lo.base.lower() == object[dntype][len(object[dntype])-len(self.lo.base):].lower() and len(self.lo.base) > len(self.lo_s4.base):
+							if self.lo.base == object[dntype][len(object[dntype])-len(self.lo.base):] and len(self.lo.base) > len(self.lo_s4.base):
 								ud.debug(ud.LDAP, ud.INFO,"The dn %s is already converted to the UCS base, don't do this again." % object[dntype])
 							else:
-								object[dntype] = self._subtree_replace(object[dntype].lower(),self.lo_s4.base.lower(),self.lo.base.lower()) # FIXME: lo_s4 may change with other connectors
+								object[dntype] = self._subtree_replace(object[dntype].lower(),self.lo_s4.base.lower(),self.lo.base) # FIXME: lo_s4 may change with other connectors
 							# write the correct upper and lower case back to the DN
 							object[dntype] = object[dntype].replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
 

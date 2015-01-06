@@ -1,3 +1,10 @@
+univention-s4-connector (9.0.16-9) unstable; urgency=medium
+
+  * Bug #33110: Make object mapping to return properly cased LDAP base in DNs
+  * Lookup S4 LDAP base from S4 Root DSE to get properly cased S4 LDAP base
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Jan 2015 13:23:55 +0100
+
 univention-s4-connector (9.0.16-8) unstable; urgency=medium
 
   * Bug #33110: Map DNs to UCR LDAP base case before calling position.setDn
