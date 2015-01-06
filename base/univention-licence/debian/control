@@ -79,6 +79,7 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-config-registry,
  univention-config (>= 1.20),
+ tofrodos,
  ldap-utils
 Description: UCS - tool to import new licenses
  This package contains the tool to import new UCS
