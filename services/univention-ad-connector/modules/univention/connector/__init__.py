@@ -546,7 +546,7 @@ class ucs:
 		if not dn_ucs:
 			return dn_ucs
 		dn = self._get_dn_by_ucs(dn_ucs)
-		return self.dn_mapped_to_base(dn, self.lo_s4.base)
+		return self.dn_mapped_to_base(dn, self.lo_ad.base)
 
 	def _get_dn_by_con(self, dn_con):
 		_d=ud.function('ldap._get_dn_by_con')
@@ -1540,7 +1540,7 @@ class ucs:
 
 				if (object_type == 'ucs' and self._get_dn_by_ucs(object[dntype]) != ''):
 					object[dntype] = self._get_dn_by_ucs(object[dntype])
-					object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo_s4.base)
+					object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo_ad.base)
 					dn_mapping_stored.append(dntype)
 				if (object_type != 'ucs' and self._get_dn_by_con(object[dntype]) != ''):
 					object[dntype] = self._get_dn_by_con(object[dntype])

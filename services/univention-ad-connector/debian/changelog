@@ -1,3 +1,9 @@
+univention-ad-connector (9.0.11-5) unstable; urgency=medium
+
+  * Bug #37450: Fix variable names
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Jan 2015 17:02:55 +0100
+
 univention-ad-connector (9.0.11-4) unstable; urgency=medium
 
   * Bug #37450: Make object mapping to return properly cased LDAP base in DNs  
