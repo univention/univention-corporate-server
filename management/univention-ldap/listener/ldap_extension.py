@@ -3,7 +3,7 @@
 # Univention LDAP
 """listener script for ldap schema extensions."""
 #
-# Copyright 2013-2014 Univention GmbH
+# Copyright 2013-2015 Univention GmbH
 #
 # http://www.univention.de/
 #

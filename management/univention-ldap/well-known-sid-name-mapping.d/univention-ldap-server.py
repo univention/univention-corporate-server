@@ -2,7 +2,7 @@
 # Univention LDAP
 #  restart the slapd server after well-known-sid-name-mapping made UCR changes
 #
-# Copyright 2014 Univention GmbH
+# Copyright 2014-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
