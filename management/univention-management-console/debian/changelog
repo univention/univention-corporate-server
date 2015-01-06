@@ -1,3 +1,10 @@
+univention-management-console (7.1.63-11) unstable; urgency=medium
+
+  * Bug #37453: Fix cleanup of connections. Especially connections
+    to the LDAP server weren't closed after session timeout.
+
+ -- Florian Best <best@univention.de>  Tue, 06 Jan 2015 14:28:53 +0100
+
 univention-management-console (7.1.63-10) unstable; urgency=medium
 
   * Bug #37169: Add flavor to error handling function

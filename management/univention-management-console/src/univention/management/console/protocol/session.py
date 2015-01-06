@@ -119,6 +119,8 @@ class State(signals.Provider):
 
 	def __del__(self):
 		CORE.info('The session is shutting down')
+		if self.processor:
+			self.processor.__del__()
 		del self.processor
 
 	def _authenticated(self, result):
@@ -175,10 +177,12 @@ class ModuleProcess(Client):
 
 	def __del__(self):
 		CORE.process('ModuleProcess: dying')
-		self.disconnect()
-		self.__process.signal_disconnect('killed', self._died)
-		self.__process.stop()
-		CORE.process('ModuleProcess: child stopped')
+		if self.__process:
+			self.disconnect()
+			self.__process.signal_disconnect('killed', self._died)
+			self.__process.stop()
+			self.__process = None
+			CORE.process('ModuleProcess: child stopped')
 
 	def _died(self, pid, status):
 		CORE.process('ModuleProcess: child died')
@@ -272,7 +276,10 @@ class Processor(signals.Provider):
 	def __del__(self):
 		CORE.process('Processor: dying')
 		for process in self.__processes.values():
+			#process.__del__()  # calling this will cause python notifier to fail hard! Bug #37457
 			del process
+		if self.lo:
+			self.lo.lo.lo.unbind()  # close the connection to LDAP
 
 	def get_module_name(self, command):
 		"""Returns the name of the module that provides the given command
@@ -836,6 +843,7 @@ class Processor(signals.Provider):
 			mod.signal_disconnect('result', notifier.Callback(self._mod_result))
 			mod.signal_disconnect('finished', notifier.Callback(self._mod_died))
 			if mod.name in self.__processes:
+				self.__processes[mod.name].__del__()
 				del self.__processes[mod.name]
 
 		try:

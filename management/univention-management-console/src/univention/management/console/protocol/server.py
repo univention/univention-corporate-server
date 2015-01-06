@@ -132,7 +132,6 @@ class MagicBucket(object):
 
 		:param fd socket: file descriptor or socket object that reported incoming data
 		"""
-		state = self.__states[socket]
 		data = ''
 
 		try:
@@ -141,23 +140,15 @@ class MagicBucket(object):
 			# this error can be ignored (SSL need to do something)
 			return True
 		except (SSL.SysCallError, SSL.Error) as error:
-			statistics.connections.inactive()
-			if self.__states[socket].username in statistics.users:
-				statistics.users.remove(self.__states[socket].username)
 			CRYPT.warn('SSL error in _receive: %s. Probably the socket was closed by the client.' % str(error))
-			if self.__states[socket].processor is not None:
-				self.__states[socket].processor.shutdown()
-			notifier.socket_remove(socket)
-			del self.__states[socket]
-			socket.close()
+			self._cleanup(socket)
 			return False
 
-		if not len(data):
-			notifier.socket_remove(socket)
-			del self.__states[socket]
-			socket.close()
+		if not data:
+			self._cleanup(socket)
 			return False
 
+		state = self.__states[socket]
 		state.buffer += data
 
 		msg = None
@@ -300,15 +291,8 @@ class MagicBucket(object):
 			state.resend_queue.insert(0, (id, first))
 			return True
 		except (SSL.SysCallError, SSL.Error) as error:
-			statistics.connections.inactive()
-			if self.__states[socket].username in statistics.users:
-				statistics.users.remove(self.__states[socket].username)
 			CRYPT.warn('SSL error in _do_send: %s. Probably the socket was closed by the client.' % str(error))
-			if self.__states[socket].processor is not None:
-				self.__states[socket].processor.shutdown()
-			notifier.socket_remove(socket)
-			del self.__states[socket]
-			socket.close()
+			self._cleanup(socket)
 			return False
 
 		return (len(state.resend_queue) > 0)
@@ -340,20 +324,8 @@ class MagicBucket(object):
 			notifier.socket_add(state.socket, self._do_send, notifier.IO_WRITE)
 			state.resend_queue.append(data)
 		except (SSL.SysCallError, SSL.Error, socket.error) as error:
-			statistics.connections.inactive()
-			# clean up if not already done
-			if state.socket in self.__states:
-				if state.username in statistics.users:
-					statistics.users.remove(state.username)
-					CRYPT.warn('SSL error in _response: %s. Probably the socket was closed by the client.' % str(error))
-					if state.processor is not None:
-						state.processor.shutdown()
-					notifier.socket_remove(state.socket)
-					del self.__states[state.socket]
-					try:
-						state.socket.close()
-					except:
-						pass
+			CRYPT.warn('SSL error in _response: %s. Probably the socket was closed by the client.' % str(error))
+			self._cleanup(state.socket)
 			return
 
 		# module process wants to exit
@@ -361,6 +333,26 @@ class MagicBucket(object):
 			module_name = state.processor.get_module_name(msg.arguments[0])
 			if module_name:
 				state.processor._purge_child(module_name)
+
+	def _cleanup(self, socket):
+		if socket not in self.__states:
+			return
+
+		statistics.connections.inactive()
+		if self.__states[socket].username in statistics.users:
+			statistics.users.remove(self.__states[socket].username)
+
+		if self.__states[socket].processor is not None:
+			self.__states[socket].processor.shutdown()
+
+		notifier.socket_remove(socket)
+		self.__states[socket].__del__()
+		del self.__states[socket]
+
+		try:
+			socket.close()
+		except:
+			pass
 
 
 class Server(signals.Provider):
