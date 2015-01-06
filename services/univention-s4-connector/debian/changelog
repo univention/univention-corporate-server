@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.16-10) unstable; urgency=medium
+
+  * Bug #33110: Cleanup S4 LDAP base lookup code
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Jan 2015 14:37:44 +0100
+
 univention-s4-connector (9.0.16-9) unstable; urgency=medium
 
   * Bug #33110: Make object mapping to return properly cased LDAP base in DNs

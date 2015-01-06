@@ -850,9 +850,16 @@ class s4(univention.s4connector.ucs):
 			ldapuri = "%s://%s:%d" % (protocol, self.baseConfig['%s/s4/ldap/host' % self.CONFIGBASENAME],int(self.baseConfig['%s/s4/ldap/port' % self.CONFIGBASENAME]))
 
 		## Determine s4_ldap_base with exact case
-		self.lo_s4=univention.uldap.access(host=self.s4_ldap_host, port=int(self.s4_ldap_port), base='', binddn=self.s4_ldap_binddn, bindpw=self.s4_ldap_bindpw, start_tls=tls_mode, ca_certfile=self.s4_ldap_certificate, uri=ldapuri, reconnect=False)
-		self.s4_ldap_base = self.lo_s4.lo.search_ext_s('',ldap.SCOPE_BASE, 'objectclass=*',[],
-							timeout=-1, sizelimit=0)[0][1]['defaultNamingContext'][0]
+		try:
+			self.lo_s4 = univention.uldap.access(host=self.s4_ldap_host, port=int(self.s4_ldap_port),
+							base='', binddn=None, bindpw=None,
+							start_tls=tls_mode, ca_certfile=self.s4_ldap_certificate,
+							uri=ldapuri, reconnect=False)
+			self.s4_ldap_base = self.lo_s4.lo.search_ext_s('', ldap.SCOPE_BASE,
+								'objectclass=*', ['defaultNamingContext'],
+								timeout=-1, sizelimit=0)[0][1]['defaultNamingContext'][0]
+		except Exception:
+			ud.debug(ud.LDAP, ud.ERROR, 'Failed to lookup S4 LDAP base, using UCR value.')
 
 		self.lo_s4=univention.uldap.access(host=self.s4_ldap_host, port=int(self.s4_ldap_port), base=self.s4_ldap_base, binddn=self.s4_ldap_binddn, bindpw=self.s4_ldap_bindpw, start_tls=tls_mode, ca_certfile=self.s4_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'], uri=ldapuri, reconnect=False)
 
