@@ -184,9 +184,47 @@ fi
 
 test -f /var/lib/univention-ldap/ldap/DB_CONFIG || univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
 
+upgrade_ffpu () {
+	case "$server_role" in
+	domaincontroller_master)
+		;;
+	*)
+		echo "Not the DC master: skipping upgrade."
+		return 0
+		;;
+	esac
+
+	tmp=$(mktemp)
+	trap "rm -f '$tmp'" EXIT
+	dn="cn=admin,cn=license,cn=univention,$ldap_base"
+	univention-ldapsearch -xLLLo ldif-wrap=no -b "$dn" -s base >"$tmp" ||
+		{ echo "Failed to retrieve UCS license: '$dn'"; return 1; }
+
+	if ! grep -Fxq 'univentionLicenseBaseDN: Free for personal use edition' "$tmp"
+	then
+		echo "No 'Free for personal use edition' found: nothing to do."
+		return 0
+	elif grep -Fxq 'univentionLicenseUsers: 50' "$tmp"
+	then
+		echo "New 'Free for personal use edition' found: nothing to do."
+		return 0
+	elif grep -q '^univentionLicenseKeyID: ' "$tmp"
+	then
+		echo "Activated 'Free for personal use edition' found: see <http://sdb.univention.de/1295>."
+		return 1
+	else
+		echo "Old 'Free for personal use edition' found: performing upgrade..."
+		univention-config-registry filter </usr/fhare/univention-ldap/ffpu.ldif >"$tmp" &&
+		univention-license-import "$tmp" ||
+		echo "Failed to import new license: see <http://sdb.univention.de/1295>."
+		return 1
+	fi
+}
+
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/01univention-ldap-server-init.inst || true
 	/usr/lib/univention-install/10univention-ldap-server.inst || true
+	[ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 11.0.11-1 && upgrade_ffpu || :
 fi
 
 ## after this line slapd.conf is expected to be updated properly and slapd may restart
