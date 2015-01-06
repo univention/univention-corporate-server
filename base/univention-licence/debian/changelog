@@ -1,9 +1,3 @@
-univention-licence (6.0.2-1) unstable; urgency=low
-
-  * Bug #37448: Allow FFPU license import
-
- -- Philipp Hahn <hahn@univention.de>  Tue, 06 Jan 2015 12:23:38 +0100
-
 univention-licence (6.0.1-1) unstable; urgency=low
 
   * Fixed multiarch build (Bug #35138)

@@ -29,7 +29,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-set -e -u
 
 PATH="/usr/sbin:/usr/bin:/sbin:/bin"
 
@@ -58,19 +57,14 @@ display_version() {
 	echo "univention-license-import @VERSION@"
 }
 
-fail () {
-	echo "E: $*" >&2
-	exit 1
-}
-
-append_ffpu_base () {
-	sed -i "/^dn: /s|\$|,$ldap_base|" "$file"
-}
-
 #if [ "`id -u`" != "0" ]; then
 #	echo "You need to be root to install a new license." >&2
 #	exit 1
-case "${1:-}" in
+if [ -z "$1" ]; then
+	display_help
+	exit 1
+else
+	case $1 in
 		--version)
 			display_version
 			exit 0
@@ -79,36 +73,36 @@ case "${1:-}" in
 			display_help
 			exit 0
 			;;
-		"")
-			display_help
-			exit 1
-			;;
 		*)
-			[ -s "$1" ] || fail "'$1' is not a valid file"
+			if ! [ -f "$1" ]; then
+				echo "E: '$1' is not a valid file" >&2
+				exit 1
+			fi
 			;;
-esac
+	esac
+fi
 
 # extract DN and check that only one DN has been found
-file="$(mktemp)"
-trap "rm -f '$file'" EXIT
-fromdos <"$1" | ldapsearch-wrapper | ldapsearch-decode64 > "$file"
-
-case "$(grep -c '^dn: ' "$file")" in
-0) fail "License file does not contain a DN." ;;
-1) ;;
-*) fail "License file contains more than one DN." ;;
-esac
+file="$1"
+for i in $(fromdos <"$file" | \
+		ldapsearch-wrapper | sed -n "s/^dn: //p"); do
+	if [ "$dn" ]; then
+		echo "E: License file contains more than one DN." >&2
+		exit 1
+	fi
+	dn="$i"
+done
+if [ -z "$dn" ]; then
+	echo "E: License file does not contain DN." >&2
+	exit 1
+fi
 
 eval "$(univention-config-registry shell ldap/base ldap/master ldap/master/port)"
-if [ -z "${ldap_master_port:-}" ]; then
+if [ -z "$ldap_master_port" ]; then
 	ldap_master_port=7389
 fi
 
-dn="$(sed -n 's/^dn: //p' "$file")"
-case "$dn" in
-"$ldap_base"|*,"$ldap_base") ;;
-cn=admin,cn=license,cn=univention) append_ffpu_base ;;
-*)
+if ! echo "$dn" | grep -i -q "$ldap_base\$"; then
 	echo "E: Your system is configured to use the LDAP base DN" >&2
 	echo "E:   $ldap_base" >&2
 	echo "E: but the given license file was created for" >&2
@@ -120,13 +114,12 @@ cn=admin,cn=license,cn=univention) append_ffpu_base ;;
 	echo "Univention to request a new license file matching your" >&2
 	echo "system's LDAP base DN." >&2
 	exit 1
-esac
+fi
 
 # ldapadd and ldapmodify work correctly with DOS linebreaks
-err=$(ldapadd -x -h "$ldap_master" -p "$ldap_master_port" -ZZ -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" -f "$file" 2>&1) ||
+err=$(ldapadd -x -h "$ldap_master" -p "$ldap_master_port" -ZZ -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" -f "$file" 2>&1)
 rv=$?
-case "${rv:-0}" in
-68)
+if [ "$rv" = "68" ]; then
 	mkdir -p "/var/univention-backup"
 	backupfile="/var/univention-backup/univention_license_replaced_at_$(date +%Y_%m_%d_%H_%M_%S)"
 	echo "Backing up old license to $backupfile"
@@ -142,12 +135,9 @@ case "${rv:-0}" in
 	ldapadd -x -h "$ldap_master" -p "$ldap_master_port" -ZZ -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" -f "$file"
 
 	echo "Replaced license."
-	;;
-0|89)
-	echo "Added license."
-	;;
-*)
+elif [ "$rv" != 0 ] && [ "$rv" != 89 ]; then
 	echo "$err" >&2
 	exit 1
-	;;
-esac
+else
+	echo "Added license."
+fi
