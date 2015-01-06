@@ -20,15 +20,17 @@ desc: |
   * It is now prevented that a search with a given attribute name can raise
     a bad search filter exception.
   * The search form does not allow invalid values to be submitted anymore.
-  * Users without posix option are now able to use the UMC module.
-  * A error message is now shown when doing operations with non existing objects.
+  * Users without POSIX option are now able to use the UMC module.
+  * A error message is now shown when doing operations with non existing
+    objects.
   * Searching for an invalid object type will not raise an exception
     anymore.
   * Opening a nonexistent object (e.g. object was moved / deleted)
     now shows an error message instead of raising an exception.
-  * Automatic ip assignment for a network will show an error message if there
+  * Automatic IP assignment for a network will show an error message if there
     is no more IP available to use instead of a traceback.
   * A Free for personal use license can now be imported via the UMC module
     without specifying the LDAP base.
-  * Error handling has been improved in case a UDM module could not be identified.
-bug: [36732, 35719, 29231, 35273, 32979, 34353, 28383, 37178, 31828, 34246, 33527. 35350, 37449, 34680]
+  * Error handling has been improved in case a UDM module could not be
+    identified.
+bug: [36732, 35719, 29231, 35273, 32979, 34353, 28383, 37178, 31828, 34246, 33527, 35350, 37449, 34680]
