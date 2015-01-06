@@ -2,10 +2,14 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-ldap
-fix: 11.0.10-2.729.201411241941
+fix: 11.0.11-1.730.201501061538
 version: [0]
 desc: |
   This update addresses the following issue:
   * The objecclass msGPOContainer has been extended
     to support the new attribute msNTSecurityDescriptor
-bug: [36979]
+  * Provide new "Free for personal use edition" license for 50 users
+    and 50 clients. See <http://sdb.univention.de/1295> for details.
+bug:
+ - 36979
+ - 37448
