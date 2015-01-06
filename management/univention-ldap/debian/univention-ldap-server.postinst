@@ -214,7 +214,7 @@ upgrade_ffpu () {
 		return 1
 	else
 		echo "Old 'Free for personal use edition' found: performing upgrade..."
-		univention-config-registry filter </usr/fhare/univention-ldap/ffpu.ldif >"$tmp" &&
+		univention-config-registry filter </usr/share/univention-ldap/ffpu.ldif >"$tmp" &&
 		univention-license-import "$tmp" ||
 		echo "Failed to import new license: see <http://sdb.univention.de/1295>."
 		return 1
