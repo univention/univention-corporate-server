@@ -30,9 +30,49 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
+
+fail () {
+	echo "$*"
+	exit 1
+}
+upgrade_ffpu () {
+	case "$server_role" in
+	domaincontroller_master)
+		;;
+	*)
+		echo "Not the DC master; skipping upgrade."
+		return 0
+		;;
+	esac
+
+	tmp=$(mktemp)
+	trap "rm -f '$tmp'" EXIT
+	dn="cn=admin,cn=license,cn=univention,$ldap_base"
+	univention-ldapsearch -xLLLo ldif-wrap=no -b "$dn" -s base >"$tmp" ||
+		fail "Failed to retrieve UCS license: '$dn'"
+
+	if ! grep -Fxq 'univentionLicenseBaseDN: Free for personal use edition' "$tmp"
+	then
+		echo "No 'Free for personal use edition' found: nothing to do."
+		return 0
+	elif grep -Fxq 'univentionLicenseUsers: 50' "$tmp"
+	then
+		echo "New 'Free for personal use edition' found: nothing to do."
+		return 0
+	elif grep -q '^univentionLicenseKeyID: ' "$tmp"
+	then
+		echo "Activated 'Free for personal use edition' found: see <http://sdb.univention.de/1295>."
+		return 1
+	else
+		echo "Old 'Free for personal use edition' found: performing upgrade..."
+		univention-config-registry filter </usr/fhare/univention-ldap/ffpu.ldif >"$tmp" &&
+		univention-license-import "$tmp" ||
+		fail "Failed to import new license: see <http://sdb.univention.de/1295>."
+	fi
+}
 
 eval "$(univention-config-registry shell)"
 
@@ -92,11 +132,10 @@ if [ -z "$files" ] ; then
 	realm=$(echo "$domainname" | sed -e 's/dc=//g;s/,/./g;s/[a-z]/\u&/g')
 	sid=$(/usr/sbin/univention-newsid)
 	Domain=$domainname
-	cat /usr/share/univention-ldap/base.ldif | \
+	cat /usr/share/univention-ldap/base.ldif /usr/share/univention-ldap/ffpu.ldif |
 		 sed -e \
 		"s|@@%%@@ldap\.pw@@%%@@|$pw_crypt|;s|@@%%@@backup\.pw@@%%@@|$backup_crypt|;s|@@%%@@sambadomain@@%%@@|$sambadomain|;s|@@%%@@firstdc@@%%@@|$firstdc|;s|@@%%@@realm@@%%@@|$realm|;s|@@%%@@sid@@%%@@|$sid|;s|@@%@@domain@@%@@|$Domain|" | \
 		univention-config-registry filter | slapadd >>/var/log/univention/join.log 2>&1
-
 
 	univention-config-registry set windows/domain?"$sambadomain" \
 		kerberos/realm?"$realm"
@@ -104,6 +143,8 @@ if [ -z "$files" ] ; then
 
 	test -x /usr/sbin/nscd && /usr/sbin/nscd -i passwd
 	test -x /usr/sbin/nscd && /usr/sbin/nscd -i group
+else
+	upgrade_ffpu
 fi
 
 joinscript_save_current_version

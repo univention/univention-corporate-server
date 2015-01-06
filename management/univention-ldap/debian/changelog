@@ -1,3 +1,9 @@
+univention-ldap (11.0.11-1) unstable; urgency=low
+
+  * Bug #37448 LDAP: New FFPU license
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 Jan 2015 13:04:39 +0100
+
 univention-ldap (11.0.10-2) unstable; urgency=medium
 
   * Bug #36979: Add msNTSecurityDescriptor
