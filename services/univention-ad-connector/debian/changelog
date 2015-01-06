@@ -1,3 +1,10 @@
+univention-ad-connector (9.0.11-4) unstable; urgency=medium
+
+  * Bug #37450: Make object mapping to return properly cased LDAP base in DNs  
+  * Lookup AD LDAP base from AD Root DSE to get properly cased AD LDAP base
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Jan 2015 14:38:30 +0100
+
 univention-ad-connector (9.0.11-3) unstable; urgency=medium
 
   * Bug #37450: Map DNs to UCR LDAP base case before calling position.setDn
