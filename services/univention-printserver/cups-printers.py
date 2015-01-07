@@ -95,6 +95,22 @@ def filter_match(object):
 			return True
 	return False
 
+def get_testparm_var(smbconf, sectionname, varname):
+	if not os.path.exists("/usr/bin/testparm"):
+		return
+
+	cmd = ["/usr/bin/testparm", "-s", "-l",
+		"--section-name=%s" % sectionname,
+		"--parameter-name=%s" % varname,
+		smbconf]
+	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+	(out, err) = p1.communicate()
+	return out.strip()
+
+def testparm_is_true(smbconf, sectionname, varname):
+	testpram_output = get_testparm_var(smbconf, sectionname, varname)
+	return testpram_output.lower() in ('yes', 'true', '1', 'on')
+
 def handler(dn, new, old):
 	need_to_reload_samba = False
 	need_to_reload_cups = False
@@ -104,17 +120,29 @@ def handler(dn, new, old):
 	changes = []
 
 	if old:
+		if filter_match(old):
+			if old.get('univentionPrinterSambaName'):
+				old_sharename = old['univentionPrinterSambaName'][0]
+			else:
+				old_sharename = old['cn'][0]
+			old_filename = '/etc/samba/printers.conf.d/%s' % old_sharename
+			samba_force_printername = testparm_is_true(old_filename, old_sharename, 'force printername')
+
 		if 'univentionPrinterGroup' in old.get('objectClass', ()):
 			printer_is_group = True
 		if old.get('univentionPrinterQuotaSupport', EMPTY)[0] == "1":
 			quota_support = True
+
 	if new:
+		samba_force_printername = listener.baseConfig.is_true('samba/force_printername', True)
+
 		if 'univentionPrinterGroup' in new.get('objectClass', ()):
 			printer_is_group = True
 		if new.get('univentionPrinterQuotaSupport', EMPTY)[0] == "1":
 			quota_support = True
 		else:
 			quota_support = False
+
 	modified_uri = ''
 	for n in new.keys():
 		if new.get(n, []) != old.get(n, []):
@@ -351,7 +379,7 @@ def handler(dn, new, old):
 				print >>fp, 'path = /tmp'
 				print >>fp, 'guest ok = yes'
 				print >>fp, 'printable = yes'
-				if listener.baseConfig.is_true('samba/force_printername', True):
+				if samba_force_printername:
 					print >>fp, 'force printername = yes'
 				if perm:
 					if new['univentionPrinterACLtype'][0] == 'allow':
