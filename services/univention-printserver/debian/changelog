@@ -1,12 +1,18 @@
+univention-printserver (7.0.11-6) UNRELEASED; urgency=medium
+
+  * Bug #37475: Fix Bug number in changelog
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Jan 2015 18:10:37 +0100
+
 univention-printserver (7.0.11-5) unstable; urgency=medium
 
-  * Bug #37123: Bump version
+  * Bug #37475: Bump version
 
  -- Arvid Requate <requate@univention.de>  Wed, 07 Jan 2015 18:08:58 +0100
 
 univention-printserver (7.0.11-4) unstable; urgency=medium
 
-  * Bug #37123: Make value of "force printername" dependend on previous
+  * Bug #37475: Make value of "force printername" dependend on previous
     value during modifications.
 
  -- Arvid Requate <requate@univention.de>  Wed, 07 Jan 2015 18:07:44 +0100
