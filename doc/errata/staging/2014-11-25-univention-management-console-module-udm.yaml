@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-management-console-module-udm
-fix: 5.1.25-30.540.201501051738
+fix: 5.1.25-31.541.201501071005
 version: [0]
 desc: |
   * The notification while changing objects which are part of a Active
