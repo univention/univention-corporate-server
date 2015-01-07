@@ -7,4 +7,12 @@ if configRegistry.get('cups/server') in ['127.0.0.1','localhost','%s' % configRe
     print '\tprintcap name = cups '
 if configRegistry.get('samba/cups/encrypt'):
 	print '\tcups encrypt = %s' % configRegistry.get('samba/cups/encrypt')
+
+spoolss_architecture = configRegistry.get('samba/spoolss/architecture')
+if spoolss_architecture:
+	print '\tspoolss: architecture = %s' % spoolss_architecture
+else:
+	import sys
+	if sys.maxsize > 2**32:
+		print '\tspoolss: architecture = Windows x64'
 @!@
