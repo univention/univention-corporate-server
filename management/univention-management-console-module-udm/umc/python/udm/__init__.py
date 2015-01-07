@@ -535,31 +535,33 @@ class Instance(Base, ProgressMixin):
 			scope = request.options.get('scope', 'sub')
 			hidden = request.options.get('hidden')
 			result = module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden)
+			if result is None:
+				return []
 
 			entries = []
 			object_type = request.options.get('objectType', request.flavor)
-			if result:
-				for obj in result:
-					if obj is None:
-						continue
-					module = get_module(object_type, obj.dn)
-					if module is None:
-						# This happens when concurrent a object is removed between the module.search() and get_module() call
-						MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
-						continue
-					entry = {
-						'$dn$': obj.dn,
-						'$childs$': module.childs,
-						'$flags$': obj.oldattr.get('univentionObjectFlag', []),
-						'objectType': module.name,
-						'labelObjectType': module.subtitle,
-						'name': module.obj_description(obj) or udm_objects.description(obj),
-						'path': ldap_dn2path(obj.dn, include_rdn=False)
-					}
-					if request.options['objectProperty'] not in ('name', 'None'):
-						entry[request.options['objectProperty']] = obj[request.options['objectProperty']]
-					entries.append(entry)
-				return entries
+
+			for obj in result:
+				if obj is None:
+					continue
+				module = get_module(object_type, obj.dn)
+				if module is None:
+					# This happens when concurrent a object is removed between the module.search() and get_module() call
+					MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
+					continue
+				entry = {
+					'$dn$': obj.dn,
+					'$childs$': module.childs,
+					'$flags$': obj.oldattr.get('univentionObjectFlag', []),
+					'objectType': module.name,
+					'labelObjectType': module.subtitle,
+					'name': module.obj_description(obj) or udm_objects.description(obj),
+					'path': ldap_dn2path(obj.dn, include_rdn=False)
+				}
+				if request.options['objectProperty'] not in ('name', 'None'):
+					entry[request.options['objectProperty']] = obj[request.options['objectProperty']]
+				entries.append(entry)
+			return entries
 
 		thread = notifier.threads.Simple('Query', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
 		thread.run()
