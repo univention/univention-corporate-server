@@ -2,10 +2,12 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: samba
-fix: 2:4.2.0~rc2-1.712.201412081407
+fix: 2:4.2.0~rc2-1.716.201501071353
 version: [0]
 desc: |
   This update fixes the following issue:
   * Sharepoint document search showed no results due to failing group
     membership check.
-bug: [37233]
+  * Quick successions of samba init script restart could leave behind
+    a single unresponsive samba process.
+bug: [37233, 37343]
