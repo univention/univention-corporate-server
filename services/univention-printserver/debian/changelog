@@ -1,3 +1,9 @@
+univention-printserver (7.0.11-5) unstable; urgency=medium
+
+  * Bug #37123: Bump version
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Jan 2015 18:08:58 +0100
+
 univention-printserver (7.0.11-4) unstable; urgency=medium
 
   * Bug #37123: Make value of "force printername" dependend on previous
