@@ -139,6 +139,11 @@ def LDAP_Connection(func):
 			ret = func(*args, **kwargs)
 			_ldap_connection = lo
 			_ldap_position = po
+		except udm_errors.ldapError:
+			# workaround to keep the behavior from the past to trigger ldap.SERVER_DOWN exception as admin.uldap maskes it
+			_lo = udm_uldap.access(host=ucr.get('ldap/master'), base=ucr.get('ldap/base'), binddn=_user_dn, bindpw=_password)
+			del _lo
+			raise
 		except LDAPError:
 			_ldap_connection = None
 			_ldap_position = None
@@ -563,7 +568,7 @@ class UDM_Module(object):
 			raise udm_errors.ldapTimeout(_('The query you have entered timed out. Please narrow down your search by specifiying more query parameters'))
 		except udm_errors.ldapSizelimitExceeded as e:
 			raise udm_errors.ldapSizelimitExceeded(_('The query you have entered yields too many matching entries. Please narrow down your search by specifiying more query parameters. The current size limit of %s can be configured with the UCR variable directory/manager/web/sizelimit.') % ucr.get('directory/manager/web/sizelimit', '2000'))
-		except (LDAPError, udm_errors.ldapError) as e:
+		except (LDAPError, udm_errors.ldapError):
 			raise
 		except udm_errors.base as e:
 			if isinstance(e, udm_errors.noObject):
