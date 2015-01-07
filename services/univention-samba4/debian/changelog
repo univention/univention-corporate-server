@@ -1,3 +1,9 @@
+univention-samba4 (4.0.3-4) unstable; urgency=medium
+
+  * Bug #34068: New UCR variable samba/spoolss/architecture
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Jan 2015 18:46:45 +0100
+
 univention-samba4 (4.0.3-3) unstable; urgency=medium
 
   * Bug #36395: Ensure that includes and realm are ok for samba3upgrade

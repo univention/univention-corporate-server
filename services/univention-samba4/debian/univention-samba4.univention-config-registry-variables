@@ -458,3 +458,8 @@ Description[en]=If this parameter is activated or unset, Samba does not check ex
 Type=bool
 Categories=service-samba
 
+[samba/spoolss/architecture]
+Description[de]=Mit dieser Variable lässt sich der Wert des Parameters "spoolss: architecture" in smb.conf anpassen.
+Description[en]=This variable can be used to manually override the value of the smb.conf parameter "spoolss: architecture".
+Type=str
+Categories=service-samba
