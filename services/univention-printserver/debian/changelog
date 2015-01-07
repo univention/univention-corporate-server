@@ -1,3 +1,10 @@
+univention-printserver (7.0.11-4) unstable; urgency=medium
+
+  * Bug #37475: Make value of "force printername" dependend on previous
+    value during modifications.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Jan 2015 17:57:30 +0100
+
 univention-printserver (7.0.11-3) unstable; urgency=medium
 
   * New UCR Variable samba/force_printername (Bug #33505)
