@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-33) unstable; urgency=medium
+
+  * Bug #35350, Bug #34680, Bug #33527: fixups
+
+ -- Florian Best <best@univention.de>  Wed, 07 Jan 2015 10:51:53 +0100
+
 univention-management-console-module-udm (5.1.25-32) unstable; urgency=low
 
   * Bug #33527: adapted error message and fixed translation

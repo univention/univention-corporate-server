@@ -280,7 +280,7 @@ class NoIpLeft(UMCError):
 	def _error_msg(self):
 		yield _('Failed to automatically assign an IP address.')
 		yield _('All IP addresses in the specified network "%s" are already in use.') % (self.network_name,)
-		yield _('Please specify a different network or make sure that free IP addresses are available for the choosen network.')
+		yield _('Please specify a different network or make sure that free IP addresses are available for the chosen network.')
 
 
 class UDM_Error(Exception):
@@ -1137,7 +1137,7 @@ def get_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
 
 	module = UDM_Module(modules[0])
 	if module.module is None:
-		MODULE.error('Idenfified module %s for %s (flavor=%s) does not have a relating UDM module.' % (ldap_dn, flavor, modules[0]))
+		MODULE.error('Identified module %s for %s (flavor=%s) does not have a relating UDM module.' % (ldap_dn, modules[0], flavor))
 		return None
 	return module
 
@@ -1149,8 +1149,10 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
 		result = ldap_connection.search(base=container, scope='one')
 	except (LDAPError, udm_errors.ldapError) as e:
 		raise
-	except udm_errors.base as e:
-		raise UDM_Error(e)
+	except udm_errors.base as exc:
+		if isinstance(exc, udm_errors.noObject) and not ldap_connection.get(container):
+			raise ObjectDoesNotExists(container)
+		raise UDM_Error(exc)
 	objects = []
 	for dn, attrs in result:
 		modules = udm_modules.objectType(None, ldap_connection, dn, attrs)

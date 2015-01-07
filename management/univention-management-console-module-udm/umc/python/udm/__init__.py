@@ -330,6 +330,7 @@ class Instance(Base, ProgressMixin):
 		for object, options in iterator:
 			if 'container' not in options:
 				yield {'$dn$': object, 'success': False, 'details': _('The destination is missing')}
+				continue
 			module = get_module(None, object)
 			if not module:
 				yield {'$dn$': object, 'success': False, 'details': _('Could not identify the given LDAP object')}

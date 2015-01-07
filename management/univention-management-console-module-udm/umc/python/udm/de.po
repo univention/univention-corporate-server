@@ -192,9 +192,9 @@ msgstr "PDF Dokument"
 #: umc/python/udm/udm_ldap.py:283
 msgid ""
 "Please specify a different network or make sure that free IP addresses are "
-"available for the choosen network."
+"available for the chosen network."
 msgstr ""
-"Bitte wählen Sie ein anderes Netzwerk oder stellen Sie sicher dass ungenutzte "
+"Bitte wählen Sie ein anderes Netzwerk oder stellen Sie sicher, dass ungenutzte "
 "IP Adressen für das gewählte Netzwerk zur Verfügung stehen."
 
 #: umc/python/udm/udm_ldap.py:383 umc/python/udm/__init__.py:881
@@ -219,7 +219,7 @@ msgstr ""
 #: umc/python/udm/udm_ldap.py:267
 #, python-format
 msgid "Superordinate %s could not be found."
-msgstr "Das übergeordnete Objekt %s konnte nicht gefunden werden"
+msgstr "Das übergeordnete Objekt %s konnte nicht gefunden werden."
 
 #: umc/python/udm/udm_ldap.py:213
 #, python-format
@@ -411,56 +411,3 @@ msgstr "handbuch"
 #: umc/python/udm/__init__.py:601
 msgid "text file"
 msgstr "Textdatei"
-
-#~ msgid ""
-#~ "Check the available hard disk space and RAM on the domaincontroller master"
-#~ msgstr ""
-#~ "Überprüfen Sie, ob auf dem Domänencontroller Master genügend "
-#~ "Festplattenspeicher und Arbeitsspeicher (RAM) verfügbar sind"
-
-#~ msgid "Could not find LDAP object, it has probably been deleted or renamed"
-#~ msgstr ""
-#~ "Das LDAP-Objekt konnte nicht gefunden werden, es wurde wahrscheinlich "
-#~ "gelöscht oder umbenannt"
-
-#~ msgid "Could not find LDAP object, it has probably been moved"
-#~ msgstr ""
-#~ "Das LDAP-Objekt konnte nicht gefunden werden, es wurde wahrscheinlich "
-#~ "verschoben"
-
-#~ msgid "Could not find LDAP object: %s"
-#~ msgstr "Das LDAP-Objekt konnte nicht gefunden werden: %s"
-
-#~ msgid "Could not find a matching UDM module for the LDAP object %s"
-#~ msgstr ""
-#~ "Es konnte kein passendes UDM-Modul für das LDAP-Object %s gefunden werden"
-
-#~ msgid "Could not find an UDM module for the superordinate object %s"
-#~ msgstr ""
-#~ "Es konnte kein UDM-Modul für das übergeordnete Objekt %s gefunden werden."
-
-#~ msgid "Failed to open LDAP object"
-#~ msgstr "Fehler beim öffnen des LDAP-Objekts"
-
-#~ msgid "Following LDAP objects could not be found :"
-#~ msgstr "Die folgenden LDAP-Objekte konnten nicht gefunden werden :"
-
-#~ msgid "Invalid object definition"
-#~ msgstr "Ungültige Objektdefinition"
-
-#~ msgid "LDAP DN of object missing"
-#~ msgstr "Die LDAP-DN des Objektes fehlt"
-
-#~ msgid "LDAP object exists, but cannot be opened: %s"
-#~ msgstr "Das LDAP-Objekt existiert, konnte aber nicht geöffnet werden: %s"
-
-#~ msgid "The license could not be imported: malformed LDIF format"
-#~ msgstr ""
-#~ "Die Lizenz konnte nich importiert werden: missgestaltetes LDIF-Format"
-
-#~ msgid ""
-#~ "They possibly have been deleted or moved. Please update your search "
-#~ "results and open the objects again."
-#~ msgstr ""
-#~ "Sie wurden vermutlich gelöscht oder verschoben. Bitte erneuern Sie ihre "
-#~ "Suchergebnisse und versuchen Sie die Objekte erneut zu öffnen."
