@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-01-05 17:11+0100\n"
+"POT-Creation-Date: 2015-01-07 10:02+0100\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,7 @@ msgid "All IP addresses in the specified network \"%s\" are already in use."
 msgstr ""
 "Alle IP Adressen in dem gewählten Netzwerk \"%s\" sind schon in Benutzung."
 
-#: umc/python/udm/__init__.py:1188
+#: umc/python/udm/__init__.py:1190
 #, python-format
 msgid "An error occurred while sending the request: %s"
 msgstr "Ein Fehler ist während des Anforderns aufgetreten: %s"
@@ -36,7 +36,7 @@ msgstr "Authentifikation fehlgeschlagen"
 msgid "Cannot connect to the LDAP service."
 msgstr "Konnte nicht zum LDAP-Dienst verbinden."
 
-#: umc/python/udm/__init__.py:1172
+#: umc/python/udm/__init__.py:1174
 msgid "Cannot parse License from LDAP"
 msgstr "Fehler beim Auslesen der Lizenz aus dem LDAP"
 
@@ -169,7 +169,7 @@ msgstr "Es wurde mehr als ein Objekt gefunden"
 msgid "Moving %d object(s)"
 msgstr "Verschiebe %d Objekt(e)"
 
-#: umc/python/udm/__init__.py:154
+#: umc/python/udm/__init__.py:165
 msgid "No flavor or valid UDM module name specified"
 msgstr "Keine gültige Variante oder existierendes UDM-Modul wurden angegeben"
 
@@ -197,7 +197,7 @@ msgstr ""
 "Bitte wählen Sie ein anderes Netzwerk oder stellen Sie sicher das ungenutzte "
 "IP Adressen zur Verfügung stehen."
 
-#: umc/python/udm/udm_ldap.py:383 umc/python/udm/__init__.py:879
+#: umc/python/udm/udm_ldap.py:383 umc/python/udm/__init__.py:881
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
@@ -226,7 +226,7 @@ msgstr "Das übergeordnete Objekt %s konnte nicht gefunden werden"
 msgid "The LDAP DN of the user %s could not be determined."
 msgstr "Die LDAP-DN des Benutzers %s konnte nicht ermittelt werden."
 
-#: umc/python/udm/tools.py:75
+#: umc/python/udm/tools.py:79
 #, python-format
 msgid ""
 "The LDAP base of the license does not match the LDAP base of the UCS domain "
@@ -243,7 +243,7 @@ msgstr "Das Ziel fehlt"
 msgid "The following steps can help to solve this problem:"
 msgstr "Die folgenden Schritte können helfen, das Problem zu beheben:"
 
-#: umc/python/udm/tools.py:79
+#: umc/python/udm/tools.py:83
 #, python-format
 msgid ""
 "The license can not be applied. The LDAP base does not match (expected %s, "

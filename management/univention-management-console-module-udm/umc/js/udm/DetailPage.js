@@ -1545,11 +1545,15 @@ define([
 							if (msg) {
 								dialog.alert(msg);
 							}
-							this.onCloseTab();
+							if (this._multiEdit) {
+								this.onCloseTab();
+							}
 						}
 					}), lang.hitch(this, function() {
 						saveDeferred.reject();
-						this.onCloseTab();
+						if (this._multiEdit) {
+							this.onCloseTab();
+						}
 					}));
 				} else {
 					saveDeferred.reject();
