@@ -1523,8 +1523,8 @@ define([
 							}, this);
 							msg += '</ul>';
 						} else {
-							success = result && result.success;
-							if (!success && result !== undefined) {
+							success = result.success;
+							if (!result.success) {
 								msg = _('The LDAP object could not be saved: %(details)s', result);
 							}
 						}
@@ -1542,18 +1542,10 @@ define([
 						} else {
 							// print error message to user
 							saveDeferred.reject();
-							if (msg) {
-								dialog.alert(msg);
-							}
-							if (this._multiEdit) {
-								this.onCloseTab();
-							}
+							dialog.alert(msg);
 						}
 					}), lang.hitch(this, function() {
 						saveDeferred.reject();
-						if (this._multiEdit) {
-							this.onCloseTab();
-						}
 					}));
 				} else {
 					saveDeferred.reject();

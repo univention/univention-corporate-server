@@ -71,7 +71,7 @@ from .udm_ldap import (
 	ldap_dn2path, get_module, read_syntax_choices, list_objects,
 	LDAP_Connection, set_credentials, container_modules,
 	info_syntax_choices, search_syntax_choices_by_key,
-	UserWithoutDN, ObjectDoesNotExists, SuperordinateDoesNotExists, NoIpLeft
+	UserWithoutDN, ObjectDoesNotExist, SuperordinateDoesNotExist, NoIpLeft
 )
 from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license
 
@@ -398,7 +398,7 @@ class Instance(Base, ProgressMixin):
 				module = get_module(request.flavor, ldap_dn)
 				if module is None:
 					if len(request.options) == 1:
-						raise ObjectDoesNotExists(ldap_dn)
+						raise ObjectDoesNotExist(ldap_dn)
 					result.append({'$dn$': ldap_dn, 'success': False, 'details': _('LDAP object does not exist.')})
 					continue
 				MODULE.info('Modifying LDAP object %s' % (ldap_dn,))
@@ -466,7 +466,7 @@ class Instance(Base, ProgressMixin):
 					ldap_dn = self._user_dn
 				module = get_module(request.flavor, ldap_dn)
 				if module is None:
-					raise ObjectDoesNotExists(ldap_dn)
+					raise ObjectDoesNotExist(ldap_dn)
 				else:
 					obj = module.get(ldap_dn)
 					if obj:
@@ -527,7 +527,7 @@ class Instance(Base, ProgressMixin):
 					superordinate = mod.get(superordinate)
 					request.options['container'] = superordinate.dn
 				else:
-					raise SuperordinateDoesNotExists(superordinate)
+					raise SuperordinateDoesNotExist(superordinate)
 
 			container = request.options.get('container')
 			objectProperty = request.options['objectProperty']
@@ -661,7 +661,7 @@ class Instance(Base, ProgressMixin):
 		obj = module.get(request.options['networkDN'])
 
 		if not obj:
-			raise ObjectDoesNotExists(request.options['networkDN'])
+			raise ObjectDoesNotExist(request.options['networkDN'])
 		try:
 			obj.refreshNextIp()
 		except udm_errors.nextFreeIp:

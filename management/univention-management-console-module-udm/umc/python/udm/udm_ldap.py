@@ -233,11 +233,11 @@ class LDAP_AuthenticationFailed(UMCError):
 		yield _('Authentication failed')
 
 
-class ObjectDoesNotExists(UMCError):
+class ObjectDoesNotExist(UMCError):
 
 	def __init__(self, ldap_dn):
 		self.ldap_dn = ldap_dn
-		super(ObjectDoesNotExists, self).__init__()
+		super(ObjectDoesNotExist, self).__init__()
 
 	@LDAP_Connection
 	def _ldap_object_exists(self, ldap_connection=None, ldap_position=None):
@@ -257,7 +257,7 @@ class ObjectDoesNotExists(UMCError):
 			yield _('It possibly has been deleted or moved. Please update your search results and open the object again.')
 
 
-class SuperordinateDoesNotExists(ObjectDoesNotExists):
+class SuperordinateDoesNotExist(ObjectDoesNotExist):
 
 	def _error_msg(self):
 		if self._ldap_object_exists():
@@ -284,14 +284,18 @@ class NoIpLeft(UMCError):
 
 
 class UDM_Error(Exception):
+
 	def __init__(self, exc, dn=None):
 		self.exc = exc
 		self.dn = dn
 		# if this exception is raised in a exception context we will have the original traceback
 		self.exc_info = sys.exc_info()
 		Exception.__init__(self, str(exc))
+
+	def reraise(self):
 		if self.exc_info and self.exc_info != (None, None, None):
 			raise self.__class__, self, self.exc_info[2]
+		raise self
 
 	def __str__(self):
 		return str(self.exc)
@@ -419,12 +423,12 @@ class UDM_Module(object):
 			try:
 				ldap_position.setDn(superordinate)
 			except udm_errors.noObject as e:
-				raise SuperordinateDoesNotExists(superordinate)
+				raise SuperordinateDoesNotExist(superordinate)
 		elif container is not None:
 			try:
 				ldap_position.setDn(container)
 			except udm_errors.noObject as e:
-				raise ObjectDoesNotExists(container)
+				raise ObjectDoesNotExist(container)
 		else:
 			if hasattr(self.module, 'policy_position_dn_prefix'):
 				container = '%s,cn=policies,%s' % (self.module.policy_position_dn_prefix, ldap_position.getBase())
@@ -442,7 +446,7 @@ class UDM_Module(object):
 				superordinate = mod.get(superordinate)
 			else:
 				MODULE.error('Superordinate module not found: %s' % (superordinate,))
-				raise SuperordinateDoesNotExists(superordinate)
+				raise SuperordinateDoesNotExist(superordinate)
 		else:
 			superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection, container)
 
@@ -462,7 +466,7 @@ class UDM_Module(object):
 			obj.create()
 		except udm_errors.base as e:
 			MODULE.warn('Failed to create LDAP object: %s: %s' % (e.__class__.__name__, str(e)))
-			raise UDM_Error(e, obj.dn)
+			UDM_Error(e, obj.dn).reraise()
 
 		return obj.dn
 
@@ -481,7 +485,7 @@ class UDM_Module(object):
 			return dest
 		except udm_errors.base as e:
 			MODULE.warn('Failed to move LDAP object %s: %s: %s' % (ldap_dn, e.__class__.__name__, str(e)))
-			raise UDM_Error(e)
+			UDM_Error(e).reraise()
 
 	@LDAP_Connection
 	def remove(self, ldap_dn, cleanup=False, recursive=False, ldap_connection=None, ldap_position=None):
@@ -496,7 +500,7 @@ class UDM_Module(object):
 				udm_objects.performCleanup(obj)
 		except udm_errors.base as e:
 			MODULE.warn('Failed to remove LDAP object %s: %s: %s' % (ldap_dn, e.__class__.__name__, str(e)))
-			raise UDM_Error(e)
+			UDM_Error(e).reraise()
 
 	@LDAP_Connection
 	def modify(self, ldap_object, ldap_connection=None, ldap_position=None):
@@ -522,7 +526,7 @@ class UDM_Module(object):
 			obj.modify()
 		except udm_errors.base as e:
 			MODULE.warn('Failed to modify LDAP object %s: %s: %s' % (obj.dn, e.__class__.__name__, str(e)))
-			raise UDM_Error(e)
+			UDM_Error(e).reraise()
 
 	@LDAP_Connection
 	def search(self, container=None, attribute=None, value=None, superordinate=None, scope='sub', filter='', simple=False, simple_attrs=None, ldap_connection=None, ldap_position=None, hidden=True):
@@ -564,10 +568,10 @@ class UDM_Module(object):
 		except udm_errors.base as e:
 			if isinstance(e, udm_errors.noObject):
 				if superordinate and not ldap_connection.get(superordinate):
-					raise SuperordinateDoesNotExists(superordinate)
+					raise SuperordinateDoesNotExist(superordinate)
 				if container and not ldap_connection.get(container):
-					raise ObjectDoesNotExists(container)
-			raise UDM_Error(e)
+					raise ObjectDoesNotExist(container)
+			UDM_Error(e).reraise()
 
 		# call the garbage collector manually as many parallel request may cause the
 		# process to use too much memory
@@ -594,8 +598,8 @@ class UDM_Module(object):
 			MODULE.info('Failed to retrieve LDAP object: %s' % (exc,))
 			if isinstance(exc, udm_errors.noObject):
 				if superordinate and not ldap_connection.get(superordinate):
-					raise SuperordinateDoesNotExists(superordinate)
-			raise UDM_Error(exc)
+					raise SuperordinateDoesNotExist(superordinate)
+			UDM_Error(exc).reraise()
 		return obj
 
 	def get_property(self, property_name):
@@ -1137,7 +1141,7 @@ def get_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
 
 	module = UDM_Module(modules[0])
 	if module.module is None:
-		MODULE.error('Identified module %s for %s (flavor=%s) does not have a relating UDM module.' % (ldap_dn, modules[0], flavor))
+		MODULE.error('Identified module %s for %s (flavor=%s) does not have a relating UDM module.' % (modules[0], ldap_dn, flavor))
 		return None
 	return module
 
@@ -1147,12 +1151,12 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
 	"""Returns a list of UDM objects"""
 	try:
 		result = ldap_connection.search(base=container, scope='one')
-	except (LDAPError, udm_errors.ldapError) as e:
+	except (LDAPError, udm_errors.ldapError):
 		raise
+	except udm_errors.noObject:
+		raise ObjectDoesNotExist(container)
 	except udm_errors.base as exc:
-		if isinstance(exc, udm_errors.noObject) and not ldap_connection.get(container):
-			raise ObjectDoesNotExists(container)
-		raise UDM_Error(exc)
+		UDM_Error(exc).reraise()
 	objects = []
 	for dn, attrs in result:
 		modules = udm_modules.objectType(None, ldap_connection, dn, attrs)

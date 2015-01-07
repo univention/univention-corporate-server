@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-34) unstable; urgency=medium
+
+  * Bug #34246, Bug #34680: fixups + code cleanup
+
+ -- Florian Best <best@univention.de>  Wed, 07 Jan 2015 12:25:54 +0100
+
 univention-management-console-module-udm (5.1.25-33) unstable; urgency=medium
 
   * Bug #35350, Bug #34680, Bug #33527: fixups
