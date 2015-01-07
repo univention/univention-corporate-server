@@ -2,9 +2,16 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-samba4
-fix: 4.0.3-3.601.201412151601
+fix: 4.0.3-4.602.201501071848
 version: [0]
 desc: |
-  This update fixes a potential issue during Samba3 to Samba4 inplace migration.
+  This update addresses the following issues:
+  * The default for the Samba print server architecture was 32 bit.
+    Now the server architecture is taken as default to determine it.
+    Additionally the smb.conf parameter "spoolss: architecture" can
+    be adjusted manually by setting the new UCR variable
+    "samba/spoolss/architecture" (see man smb.conf).
+  * A potential issue during Samba3 to Samba4 inplace migration.
 bug:
+ - 34068
  - 36395
