@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-32) unstable; urgency=low
+
+  * Bug #33527: adapted error message and fixed translation
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 07 Jan 2015 10:25:01 +0100
+
 univention-management-console-module-udm (5.1.25-31) unstable; urgency=low
 
   * Bug #33527: upon error only DetailPage in multiedit mode will be closed

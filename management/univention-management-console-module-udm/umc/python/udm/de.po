@@ -21,7 +21,7 @@ msgstr "%($dn$)s verschoben"
 #, python-format
 msgid "All IP addresses in the specified network \"%s\" are already in use."
 msgstr ""
-"Alle IP Adressen in dem gewählten Netzwerk \"%s\" sind schon in Benutzung."
+"Alle IP Adressen im gewählten Netzwerk \"%s\" sind schon in Benutzung."
 
 #: umc/python/udm/__init__.py:1190
 #, python-format
@@ -85,7 +85,7 @@ msgstr ""
 
 #: umc/python/udm/udm_ldap.py:281
 msgid "Failed to automatically assign an IP address."
-msgstr "Fehler beim der automatischen IP Adressen Zuweisung."
+msgstr "Fehler bei der automatischen IP Adresszuweisung."
 
 #: umc/python/udm/udm_ldap.py:202 umc/python/udm/udm_ldap.py:222
 msgid ""
@@ -192,10 +192,10 @@ msgstr "PDF Dokument"
 #: umc/python/udm/udm_ldap.py:283
 msgid ""
 "Please specify a different network or make sure that free IP addresses are "
-"available."
+"available for the choosen network."
 msgstr ""
-"Bitte wählen Sie ein anderes Netzwerk oder stellen Sie sicher das ungenutzte "
-"IP Adressen zur Verfügung stehen."
+"Bitte wählen Sie ein anderes Netzwerk oder stellen Sie sicher dass ungenutzte "
+"IP Adressen für das gewählte Netzwerk zur Verfügung stehen."
 
 #: umc/python/udm/udm_ldap.py:383 umc/python/udm/__init__.py:881
 #, python-format

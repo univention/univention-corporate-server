@@ -280,7 +280,7 @@ class NoIpLeft(UMCError):
 	def _error_msg(self):
 		yield _('Failed to automatically assign an IP address.')
 		yield _('All IP addresses in the specified network "%s" are already in use.') % (self.network_name,)
-		yield _('Please specify a different network or make sure that free IP addresses are available.')
+		yield _('Please specify a different network or make sure that free IP addresses are available for the choosen network.')
 
 
 class UDM_Error(Exception):
