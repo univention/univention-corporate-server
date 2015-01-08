@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-36) unstable; urgency=medium
+
+  * Bug #36700: disable the save button until changes are done
+
+ -- Florian Best <best@univention.de>  Thu, 08 Jan 2015 17:18:14 +0100
+
 univention-management-console-module-udm (5.1.25-35) unstable; urgency=medium
 
   * Bug #32979: fix ldap server down error message

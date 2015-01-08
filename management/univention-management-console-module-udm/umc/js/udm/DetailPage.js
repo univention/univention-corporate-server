@@ -252,14 +252,16 @@ define([
 
 		_setHelpLinkAttr: function(helpLink) {
 			this._set('helpLink', helpLink);
-			query('[widgetid=' + this.id + '_HelpButton' + ']').forEach(function(node) {
-				domClass.toggle(node, 'dijitHidden', !helpLink);
-			});
+			domClass.toggle(this._headerButtons.help.domNode, 'dijitHidden', !helpLink);
 		},
 
 		_loadObject: function(formBuiltDeferred, policyDeferred) {
 			formBuiltDeferred.then(lang.hitch(this, function() {
 				this._displayProgressOnSubmitButton();
+				this._form.watch('value', lang.hitch(this, function(name, oldV, newValues) {
+					var valuesChanged = this.haveValuesChanged() || this.havePolicyReferencesChanged();
+					this._headerButtons.submit.set('disabled', !valuesChanged);
+				}));
 			}));
 
 			if (!this.ldapName || this._multiEdit) {
@@ -369,13 +371,12 @@ define([
 		},
 
 		_displayProgressOnSubmitButton: function() {
-			var submitButton = dijit.byId(this.id + '_SubmitButton');
+			var submitButton = this._headerButtons.submit;
 			var origLabel = submitButton.get('label');
 			submitButton.set('disabled', true);
 			this._form.ready().then(lang.hitch(this, function() {
 				// reset label of submit button
 				submitButton.set('label', origLabel);
-				submitButton.set('disabled', false);
 			}), null, lang.hitch(this, function(progress) {
 				// output loading progress as button label
 				var label = _('Loading %s...', progress.message);
@@ -1041,7 +1042,6 @@ define([
 
 			return [{
 				name: 'submit',
-				id: this.id + '_SubmitButton',
 				iconClass: 'umcSaveIconWhite',
 				label: createLabel,
 				callback: lang.hitch(this, function() {
@@ -1049,7 +1049,6 @@ define([
 				})
 			}, {
 				name: 'help',
-				id: this.id + '_HelpButton',
 				iconClass: 'umcHelpIconWhite',
 				label: _('Help'),
 				'class': 'dijitHidden',
@@ -1448,11 +1447,6 @@ define([
 				}
 			}, this);
 			errMessage += '</ul>';
-
-			if (!this.haveValuesChanged() && !this.havePolicyReferencesChanged()) {
-				dialog.alert(_('No changes have been made.'));
-				return;
-			}
 
 			// print out an error message if not all required properties are given
 			if (!allValuesGiven) {
