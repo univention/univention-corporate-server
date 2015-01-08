@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Node
 #  libvirtd check script
 #
-# Copyright 2014-2014 Univention GmbH
+# Copyright 2014-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
