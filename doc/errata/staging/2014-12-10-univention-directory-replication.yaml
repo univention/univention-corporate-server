@@ -6,6 +6,6 @@ fix: 8.0.2-5.93.201412101307
 version: [0]
 desc: |
   This update addresses the following issues:
-  * Fix shutdown of univention-directiry-listener when failed.ldif exists.
+  * Fix shutdown of univention-directory-listener when failed.ldif exists.
 bug:
  - 37291
