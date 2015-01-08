@@ -30,15 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-logfile="/var/log/univention/virtual-machine-manager-node-errors.log"
-
 if [ -c /dev/kvm ]; then
 	uri="qemu:///system"
 else
 	exit 0
 fi
 
-if sv status /etc/runit/univention-libvirt | grep -qs ^run:
+exec >>/var/log/univention/virtual-machine-manager-node-errors.log
+
+if sv status /etc/runit/univention-libvirt | grep -q ^run:
 then
 	tempfile="$(mktemp)"
 	trap "rm -f '$tempfile'" EXIT
@@ -46,9 +46,11 @@ then
 	eval "$(univention-config-registry shell libvirt/check/timeout)"
 	timeout -k 1s ${libvirt_check_timeout:-30s} virsh -c "$uri" "list;echo CHECK$$" >"$tempfile" 2>&1
 
-	if [ ! -s "$tempfile" ]; then
-		echo "libvirt-check.sh: libvirt does not response like expected. Restarting libvirt now." >>"$logfile"
-		invoke-rc.d libvirtd restart >>"$logfile" 2>&1
+	if ! grep -Fxq "CHECK$$" "$tempfile"
+	then
+		echo "$(LC_ALL=C date +'%b %e %H:%M:%S') $(hostname) libvirtd: does not response, restarting"
+		cat "$tempfile"
+		invoke-rc.d libvirtd restart 2>&1
 	fi
 fi
 
