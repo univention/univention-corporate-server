@@ -1,3 +1,9 @@
+ucs-test (4.0.195-6) unstable; urgency=medium
+
+  * Bug #37475: Fix "force printername" modification check
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Jan 2015 15:46:48 +0100
+
 ucs-test (4.0.195-5) unstable; urgency=low
 
   * Bug #37475: Check behaviour of "force printername" during UDM modify
