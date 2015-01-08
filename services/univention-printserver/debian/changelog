@@ -1,3 +1,9 @@
+univention-printserver (8.0.6-6) unstable; urgency=medium
+
+  * Bug #37123: Fix object modification case
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Jan 2015 15:43:05 +0100
+
 univention-printserver (8.0.6-5) unstable; urgency=medium
 
   * Bug #37123: Make value of "force printername" dependend on previous

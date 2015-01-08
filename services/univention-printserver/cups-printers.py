@@ -118,6 +118,7 @@ def handler(dn, new, old):
 	need_to_reload_cups = False
 	printer_is_group = False
 	quota_support = False
+	samba_force_printername = listener.baseConfig.is_true('samba/force_printername', True)
 	global reload_samba_in_postrun
 	reload_samba_in_postrun = True
 
@@ -138,8 +139,6 @@ def handler(dn, new, old):
 			quota_support = True
 
 	if new:
-		samba_force_printername = listener.baseConfig.is_true('samba/force_printername', True)
-
 		if 'univentionPrinterGroup' in new.get('objectClass', ()):
 			printer_is_group = True
 		if new.get('univentionPrinterQuotaSupport', EMPTY)[0] == "1":
