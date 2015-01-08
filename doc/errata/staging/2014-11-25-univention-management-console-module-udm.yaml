@@ -2,10 +2,10 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-management-console-module-udm
-fix: 5.1.25-32.542.201501071026
+fix: 5.1.25-35.545.201501071849
 version: [0]
 desc: |
-  * The notification while changing objects which are part of a Active
+  * The notification while changing objects which are part of an Active
     Directory domain has been placed in a more visible area.
   * The error message if the connection to the LDAP server fails
     has been extended.
@@ -21,7 +21,7 @@ desc: |
     a bad search filter exception.
   * The search form does not allow invalid values to be submitted anymore.
   * Users without POSIX option are now able to use the UMC module.
-  * A error message is now shown when doing operations with non existing
+  * An error message is now shown when trying to operations on non existing
     objects.
   * Searching for an invalid object type will not raise an exception
     anymore.
