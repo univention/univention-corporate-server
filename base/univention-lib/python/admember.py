@@ -730,6 +730,14 @@ def invoke_service(service, cmd):
 
 	ud.debug(ud.MODULE, ud.PROCESS, "invoke-rc.d %s %s: %s" % (service, cmd, stdout)) 
 
+def do_time_sync(ad_ip):
+	ud.debug(ud.MODULE, ud.PROCESS, "Synchronizing time to %s" % ad_ip)
+	p1 = subprocess.Popen(["rdate", "-s", "-n", ad_ip],
+		close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	stdout, stderr = p1.communicate()
+	if p1.returncode:
+		ud.debug(ud.MODULE, ud.ERROR, "rdate -s -p failed (%d)" % (p1.returncode,))
+		raise timeSyncronizationFailed("rdate -s -p failed (%d)" % (p1.returncode,))
 
 def time_sync(ad_ip, tolerance=180, critical_difference=360):
 	'''Try to sync the local time with an AD server'''
@@ -771,15 +779,8 @@ def time_sync(ad_ip, tolerance=180, critical_difference=360):
 			ud.debug(ud.MODULE, ud.WARN, "Remote clock is behind local clock by more than %s seconds, refusing to turn back time." % (tolerance,))
 			return False
 	else:
-		ud.debug(ud.MODULE, ud.PROCESS, "Syncronizing time to %s" % ad_ip)
-		p1 = subprocess.Popen(["rdate", "-s", "-n", ad_ip],
-			close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-		stdout, stderr = p1.communicate()
-		if p1.returncode:
-			ud.debug(ud.MODULE, ud.ERROR, "rdate -s -p failed (%d)" % (p1.returncode,))
-			raise timeSyncronizationFailed("rdate -s -p failed (%d)" % (p1.returncode,))
+		do_time_sync(ad_ip)
 	return True
-
 
 def check_server_role(ucr=None):
 	if not ucr:

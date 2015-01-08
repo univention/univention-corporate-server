@@ -1,3 +1,9 @@
+univention-lib (4.0.5-12) unstable; urgency=medium
+
+  * Bug #37481: New admember.do_time_sync(ad_ip)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Jan 2015 12:47:52 +0100
+
 univention-lib (4.0.5-11) unstable; urgency=medium
 
   * AD Member: Fixed++ workaround for module shadowing (Bug #35562)
