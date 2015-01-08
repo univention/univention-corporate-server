@@ -32,23 +32,17 @@
 
 logfile="/var/log/univention/virtual-machine-manager-daemon-errors.log"
 
-if sv status /etc/runit/univention-virtual-machine-manager-daemon | grep ^run: > /dev/null 2>&1; then
+if sv status univention-virtual-machine-manager-daemon | grep -q ^run:
+then
 	tempfile="$(mktemp)"
 	trap "rm -f '$tempfile'" EXIT
 
-	uvmm groups >"$tempfile" 2>&1 &
-	pid=$!
-
 	eval "$(univention-config-registry shell uvmm/check/timeout)"
-	sleep ${uvmm_check_timeout:-5}s
+	timeout -k 1s "${uvmm_check_timeout:-10s}" uvmm groups >"$tempfile" 2>&1
 
 	if ! grep -q "^DATA:" "$tempfile"
 	then
-		# Kill the uvmm process
-		kill $pid >/dev/null 2>&1
-		wait $pid >/dev/null 2>&1
-
-		echo "uvmm-check.sh: uvmm does not response like expected. Restarting uvmmd now." >>"$logfile"
+		echo "$(LC_ALL=C date +'%b %e %H:%M:%S') $(hostname) UVMMd: does not response, restarting" >>"$logfile"
 		cat "$tempfile" >> "$logfile"
 		invoke-rc.d univention-virtual-machine-manager-daemon restart >/dev/null 2>&1
 	fi

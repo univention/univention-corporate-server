@@ -1,6 +1,7 @@
 univention-virtual-machine-manager-daemon (4.0.21-1) unstable; urgency=low
 
   * Bug #36927: Fix upgrade problem.
+  * Bug #37040: Improve uvmm-check script.
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 07 Jan 2015 18:13:16 +0100
 
