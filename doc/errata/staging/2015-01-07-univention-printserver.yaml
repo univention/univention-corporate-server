@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-printserver
-fix: 8.0.6-5.656.201501071624
+fix: 8.0.6-6.661.201501081552
 version: [0]
 desc: |
     This update addresses the following issue:
