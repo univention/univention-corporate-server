@@ -1,0 +1,15 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-4
+src: unzip
+fix: 6.0-4.29.201501071322
+version: [4]
+desc: |
+  Multiple heap overflows in unzip tool allow the execution of
+  arbitrary code if a malformed ZIP archive is processed.
+bug:
+ - 37411
+cve:
+ - CVE-2014-8139
+ - CVE-2014-8140
+ - CVE-2014-8141
