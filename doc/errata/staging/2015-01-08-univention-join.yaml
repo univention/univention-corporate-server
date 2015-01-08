@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-join
+fix: 7.1.2-2.488.201501081614
+version: [0]
+desc: |
+  Timestamps were added to store the start and end times
+  of individual join scripts in join.log
+bug:
+ - 36290
