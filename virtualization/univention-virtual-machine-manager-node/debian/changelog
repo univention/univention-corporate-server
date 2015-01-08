@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (3.0.4-1) unstable; urgency=low
+
+  * Bug #36605: Increase timeout in check script
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Jan 2015 10:33:36 +0100
+
 univention-virtual-machine-manager-node (3.0.3-3) unstable; urgency=low
 
   * Bug #37215: Load kernel module 'bridge'

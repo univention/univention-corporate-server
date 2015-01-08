@@ -43,16 +43,10 @@ then
 	tempfile="$(mktemp)"
 	trap "rm -f '$tempfile'" EXIT
 
-	virsh -c "$uri" list >"$tempfile" &
-	pid=$!
-
 	eval "$(univention-config-registry shell libvirt/check/timeout)"
-	sleep ${libvirt_check_timeout:-5}s
+	timeout -k 1s ${libvirt_check_timeout:-30s} virsh -c "$uri" "list;echo CHECK$$" >"$tempfile" 2>&1
 
 	if [ ! -s "$tempfile" ]; then
-		kill $pid >/dev/null 2>&1
-		wait $pid >/dev/null 2>&1
-
 		echo "libvirt-check.sh: libvirt does not response like expected. Restarting libvirt now." >>"$logfile"
 		invoke-rc.d libvirtd restart >>"$logfile" 2>&1
 	fi

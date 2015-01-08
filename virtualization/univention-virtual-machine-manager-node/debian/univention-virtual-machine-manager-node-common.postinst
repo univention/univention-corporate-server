@@ -50,8 +50,12 @@ configure)
 		security/packetfilter/package/univention-virtual-machine-manager-node-common/tcp/16514/all/en="libvirt" \
 		uvmm/backup/directory\?/var/backups/univention-virtual-machine-manager-daemon \
 		libvirt/check/interval?2 \
-		libvirt/check/timeout?5 \
+		libvirt/check/timeout?30 \
 		libvirt/log/level?4
+	if dpkg --compare-versions "$2" lt-nl 3.0.4~ && [ 5 -eq "$(ucr get libvirt/check/timeout)" ]
+	then
+		univention-config-registry set libvirt/check/timeout=30
+	fi
 
 	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
