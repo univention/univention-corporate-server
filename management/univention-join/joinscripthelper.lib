@@ -108,7 +108,7 @@ joinscript_check_version_in_range_executed () {
 #Permanently stores the current execution of the script
 joinscript_save_current_version () {
 
-	date --rfc-3339=ns
+	echo "$(date --rfc-3339=ns) (in joinscript_save_current_version)"
 
 	if ! joinscript_check_specific_version_executed "$VERSION"; then
 	    echo "$JS_PACKAGE v$VERSION successful" >>"$JS_STATUSFILE"
@@ -222,7 +222,7 @@ joinscript_extern_init () {
 joinscript_init () {
 	JS_SCRIPT_FULLNAME="$(readlink -f "$JS_RUNNING_FILENAME")"
 
-	date --rfc-3339=ns
+	echo "$(date --rfc-3339=ns) (in joinscript_init)"
 
 	if ! joinscript_get_package_name; then
 		joinscript_abort "Unable to determine package name from file \"$JS_SCRIPT_FULLNAME\""

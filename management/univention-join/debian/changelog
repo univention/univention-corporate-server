@@ -1,9 +1,9 @@
-univention-join (7.1.2-1) unstable; urgency=medium
+univention-join (7.1.2-2) unstable; urgency=medium
 
   * Add timestamps to log files from joinscript_init and
     joinscript_save_current_version (Bug #36290)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 08 Jan 2015 13:51:49 +0100
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 08 Jan 2015 16:12:26 +0100
 
 univention-join (7.1.1-1) unstable; urgency=low
 
