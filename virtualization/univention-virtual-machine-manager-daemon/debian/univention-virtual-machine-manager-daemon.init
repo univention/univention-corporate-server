@@ -42,94 +42,89 @@
 ### END INIT INFO
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DESC="UCS Virtual Machine Manager"
+NAME=univention-virtual-machine-manager-daemon
+DAEMON=/usr/sbin/$NAME
+PIDFILE=/etc/runit/univention/$NAME/supervise/pid
+SCRIPTNAME=/etc/init.d/$NAME
 
-DAEMON=/usr/sbin/univention-virtual-machine-manager-daemon  # Introduce the server's location here
-NAME="uvmmd"              # Introduce the short server's name here
-DESC="UCS Virtual Machine Manager" # Introduce a short description here
-LOGDIR=/var/log/univention # Log directory to use
+[ -x "$DAEMON" ] || exit 0
 
-PIDFILE=/var/run/$NAME.pid
-
-test -x "$DAEMON" || exit 0
-
-if [ ! -e /etc/runit/univention/univention-virtual-machine-manager-daemon ]; then
+if [ ! -e "/etc/runit/univention/$NAME" ]; then
 	exit 0
 fi
 
-
+. /lib/init/vars.sh
 . /lib/lsb/init-functions
 
-DIETIME=10              # Time to wait for the server to die, in seconds
-                        # If this value is set too low you might not
-                        # let some servers to die gracefully and
-                        # 'restart' will not work
-
-running() {
-	sv status /etc/runit/univention-virtual-machine-manager-daemon | grep -q ^run
+running () {
+	sv status "$NAME" | grep -q ^run
 }
-
 
 case "$1" in
 	start)
 		# check ucr autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart "$NAME" "$NAME/autostart"
+			check_autostart "$DESC" "uvmmd/autostart"
 		fi
 
-		log_daemon_msg "Starting $DESC " "$NAME"
-		sv up univention-virtual-machine-manager-daemon
-		log_action_end_msg 0
+		[ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC " "$NAME"
+		sv start "$NAME" >/dev/null
+		if running; then
+			[ "$VERBOSE" != no ] && log_end_msg 0
+		else
+			[ "$VERBOSE" != no ] && log_end_msg 1
+		fi
 		;;
 	stop)
-		log_daemon_msg "Stopping $DESC" "$NAME"
-		sv force-stop univention-virtual-machine-manager-daemon
-		log_action_end_msg 0
+		[ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
+		if ! running; then
+			[ "$VERBOSE" != no ] && log_progress_msg "not running"
+			[ "$VERBOSE" != no ] && log_end_msg 0
+			exit 0
+		fi
+		sv force-stop "$NAME" >/dev/null
+		[ "$VERBOSE" != no ] && log_end_msg 0
 		;;
 	restart|force-reload)
 		# check ucr autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart "$NAME" "$NAME/autostart"
+			check_autostart "$DESC" "uvmmd/autostart"
 		fi
 		log_daemon_msg "Restarting $DESC" "$NAME"
-		sv force-restart univention-virtual-machine-manager-daemon
-		log_action_end_msg 0
+		sv force-restart "$NAME" >/dev/null
+		if running; then
+			 log_end_msg 0
+		else
+			 log_end_msg 1
+		fi
 		;;
-    crestart)
-        # check ucr autostart setting
-        if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-            . "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart "$NAME" "$NAME/autostart"
-        fi
+	crestart)
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+			. "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart "$DESC" "uvmmd/autostart"
+		fi
 		if running ; then
-            "$0" restart
-        else
-            log_action_msg "sv status return no running $NAME, don't need to restart."
-        fi
-        ;;
+			exec "$SCRIPTNAME" restart
+		else
+			log_action_msg "sv status return no running $NAME, don't need to restart."
+		fi
+		;;
 	status)
-        log_daemon_msg "Checking status of $DESC" "$NAME"
-        if running ;  then
-            log_progress_msg "running"
-            log_end_msg 0
-        else
-            log_progress_msg "apparently not running"
-            log_end_msg 1
-            exit 1
-        fi
-        ;;
-	# Use this if the daemon cannot reload
+		status_of_proc -p "$PIDFILE" "$DAEMON" "$NAME" && exit 0 || exit $?
+		;;
 	reload)
-		log_warning_msg "Reloading $NAME daemon: not implemented, as the daemon"
-		log_warning_msg "cannot re-read the config file (use restart)."
+		log_warning_msg "Reloading $NAME daemon: not implemented,"
+		log_warning_msg "as the daemon cannot re-read the config file (use restart)."
 		;;
 	*)
-		N=/etc/init.d/$NAME
-		echo "Usage: $N {start|stop|force-stop|restart|force-reload|status}" >&2
-		exit 1
+		echo "Usage: $SCRIPTNAME {start|stop|force-stop|restart|force-reload|status}" >&2
+		exit 3
 		;;
 esac
 
-exit 0
+:
 # vim:set ft=sh:
