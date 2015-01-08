@@ -1,3 +1,9 @@
+univention-samba (9.0.5-3) unstable; urgency=medium
+
+  * Bug #37476: Set samba/spoolss/architecture to old default on updates
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Jan 2015 10:46:01 +0100
+
 univention-samba (9.0.5-2) unstable; urgency=medium
 
   * Bug #37476: New UCR variable samba/spoolss/architecture
