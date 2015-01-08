@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-logfile="/var/log/univention/virtual-machine-manager-daemon-errors.log"
+exec >>/var/log/univention/virtual-machine-manager-daemon-errors.log
 
 if sv status univention-virtual-machine-manager-daemon | grep -q ^run:
 then
@@ -42,9 +42,9 @@ then
 
 	if ! grep -q "^DATA:" "$tempfile"
 	then
-		echo "$(LC_ALL=C date +'%b %e %H:%M:%S') $(hostname) UVMMd: does not response, restarting" >>"$logfile"
-		cat "$tempfile" >> "$logfile"
-		invoke-rc.d univention-virtual-machine-manager-daemon restart >/dev/null 2>&1
+		echo "$(LC_ALL=C date +'%b %e %H:%M:%S') $(hostname) UVMMd: does not response, restarting"
+		cat "$tempfile"
+		invoke-rc.d univention-virtual-machine-manager-daemon restart 2>&1
 	fi
 fi
 
