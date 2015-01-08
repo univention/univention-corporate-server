@@ -13,10 +13,11 @@ desc: |
   * The JavaScript method umc.tools.umcpProgressSubCommand did not send the
     UMCP flavor along with a request and could therefore fail due to
     insufficient permissions.
-  * The warning if IE <= 8 is being used now lists all supported browsers.
-    If an outdated browser is being used a message will be shown in the
-    login dialog. A notification after the login will no longer show up.
-  * The icon on the policy reference button is now shown
+  * A warning is displayed when using Internet Explorer in version <= 8
+    along with a list of all supported browsers.
+  * If an outdated browser is being used, a message will be shown in the 
+    login dialogue. A notification after the login will no longer show up.
+  * The icon on the policy reference button is now shown.
   * Fixed a bug which prevented that UMC components could write into their
     logfiles.
   * The "Favorites" category now toggles visibilty, depending on whether
