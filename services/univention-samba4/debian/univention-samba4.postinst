@@ -76,6 +76,10 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.39-8
 	fi
 fi
 
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-4 ; then
+	univention-config-registry set samba/spoolss/architecture?"Windows NT x86"
+fi
+
 ## samba3 defaults copied from univention-samba
 univention-config-registry set \
 	samba/share/home?yes \
