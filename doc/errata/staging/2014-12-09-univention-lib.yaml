@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-lib
-fix: 4.0.5-11.295.201412101540
+fix: 4.0.5-12.296.201501081256
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -12,8 +12,10 @@ desc: |
   * Wait for slapd restart when Domain Admins has been renamed during
     admember setup
   * Allow UMC Administrator to be renamed before admember setup
+  * Support direct unconditional clock synchronization to AD server
 bug:
  - 35562
  - 35870
  - 36776
  - 36778
+ - 37481
