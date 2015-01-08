@@ -1,3 +1,10 @@
+univention-join (7.1.2-1) unstable; urgency=medium
+
+  * Add timestamps to log files from joinscript_init and
+    joinscript_save_current_version (Bug #36290)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 08 Jan 2015 13:51:49 +0100
+
 univention-join (7.1.1-1) unstable; urgency=low
 
   * Bug #36935: Timeout ntpdate command after 15s
