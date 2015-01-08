@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Daemon
 #  cloud connection to EC2 instances
 #
-# Copyright 2014 Univention GmbH
+# Copyright 2014-2015 Univention GmbH
 #
 # http://www.univention.de/
 #

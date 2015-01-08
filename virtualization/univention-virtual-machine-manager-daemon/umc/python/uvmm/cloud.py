@@ -3,7 +3,7 @@
 # Univention Management Console
 #  UVMM cloud commands
 #
-# Copyright 2014 Univention GmbH
+# Copyright 2014-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
