@@ -3,6 +3,7 @@ univention-virtual-machine-manager-daemon (4.0.21-1) unstable; urgency=low
   * Bug #36927: Fix upgrade problem.
   * Bug #37040: Improve uvmm-check script.
   * Bug #34352: Log restart output.
+  * Bug #34542: Catch error reading profiles.
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 07 Jan 2015 18:13:16 +0100
 
