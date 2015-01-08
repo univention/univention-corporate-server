@@ -1,4 +1,10 @@
-univention-printserver (7.0.11-6) UNRELEASED; urgency=medium
+univention-printserver (7.0.11-7) unstable; urgency=medium
+
+  * Bug #37475: Fix object modification case
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Jan 2015 15:45:47 +0100
+
+univention-printserver (7.0.11-6) unstable; urgency=medium
 
   * Bug #37475: Fix Bug number in changelog
 
