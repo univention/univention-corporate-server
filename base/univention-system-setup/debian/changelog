@@ -1,4 +1,10 @@
-univention-system-setup (8.1.66-6) UNRELEASED; urgency=medium
+univention-system-setup (8.1.66-7) unstable; urgency=medium
+
+  * Bug #36406: Synchronize the time during AD credential check
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Jan 2015 12:54:57 +0100
+
+univention-system-setup (8.1.66-6) unstable; urgency=medium
 
   * Adjust dependencies (Bug #37168)
 

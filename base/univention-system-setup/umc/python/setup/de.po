@@ -235,6 +235,12 @@ msgid ""
 msgstr ""
 "Das angegebene Konto ist nicht Mitglied der Gruppe Domain Admins in AD."
 
+#: umc/python/setup/__init__.py:737
+msgid ""
+"Time synchronization with AD server failed."
+msgstr ""
+"Die Synchronisation der Systemzeit mit dem AD-Server schlug fehl."
+
 #: umc/python/setup/__init__.py:388
 msgid ""
 "The hostname is not a valid fully qualified domain name in lowercase (e.g. "
