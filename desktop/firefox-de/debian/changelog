@@ -1,3 +1,9 @@
+firefox-de (1:31.2.0esr-3) unstable; urgency=medium
+
+  * Update to Firefox 31.3.0 ESR (Bug #37141)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 08 Jan 2015 18:01:43 +0100
+
 firefox-de (1:31.2.0esr-2) unstable; urgency=medium
 
   * Update to Firefox 31.2.0 ESR (Bug #36374)
