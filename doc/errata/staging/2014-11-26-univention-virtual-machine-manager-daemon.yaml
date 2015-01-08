@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-virtual-machine-manager-daemon
-fix: 4.0.21-1.571.2015010814220
+fix: 4.0.21-1.571.201501081422
 version: [0]
 desc: |
   This update addresses the following issues:
