@@ -1,3 +1,10 @@
+univention-management-console-frontend-theme (0.0.88-4) unstable; urgency=low
+
+  * Bug #36291: adjusted styling of the MultiObjectSelect so it adapts to
+    to the width of the screen
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 08 Jan 2015 17:31:28 +0100
+
 univention-management-console-frontend-theme (0.0.88-3) unstable; urgency=low
 
   * Bug #36787: adjusted styling of the visibility toggle for the favorites

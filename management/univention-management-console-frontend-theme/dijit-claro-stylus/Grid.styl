@@ -1,8 +1,25 @@
 @import "variables";
 
-.umcGrid .dojoxGridScrollbox {
-  overflow-y: scroll;
-  overflow-x: hidden;
+.umc .umcMultiObjectSelect .dojoxGridView {
+	min-width: 100%;
+	max-width: 100%;
+	
+	.dojoxGridContent {
+		min-width: 100%;
+		max-width: 100%;
+
+		div[role="presentation"] {
+			max-width: 100%;
+
+			.dojoxGridRow {
+				max-width: 100%;
+				
+				.dojoxGridRowTable {
+					width: 100% !important;
+				}
+			}
+		}
+	}
 }
 
 .umc .umcGridHeader {
