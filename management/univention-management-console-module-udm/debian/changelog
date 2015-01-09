@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-37) unstable; urgency=medium
+
+  * Bug #36591: fix typo
+
+ -- Florian Best <best@univention.de>  Fri, 09 Jan 2015 11:33:15 +0100
+
 univention-management-console-module-udm (5.1.25-36) unstable; urgency=medium
 
   * Bug #36700: disable the save button until changes are done

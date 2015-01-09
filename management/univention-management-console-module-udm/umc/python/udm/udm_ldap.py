@@ -389,7 +389,7 @@ class UDM_Module(object):
 			if property_name in password_properties:
 				MODULE.info('Setting password property %s' % (property_name,))
 			else:
-				MODULE.info('Setting property %s to %s' % (property_name, logvalue))
+				MODULE.info('Setting property %s to %s' % (property_name, value))
 
 			property_obj = self.get_property(property_name)
 			if property_obj is None:
