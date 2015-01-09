@@ -67,7 +67,7 @@ def test_run(ucr, test_ucr_value):
 		univention.config_registry.handler_set([keyval.encode()])
 
 	if test_ucr_value != previous_value:
-		p1 = subprocess.Popen(["/usr/init.d/univention-directory-listener", "restart"],
+		p1 = subprocess.Popen(["/etc/init.d/univention-directory-listener", "restart"],
 					close_fds=True)
 		p1.wait()
 
@@ -112,7 +112,7 @@ def test_run(ucr, test_ucr_value):
 			keyval = "%s=%s" % (ucr_var, "no")
 			univention.config_registry.handler_set([keyval.encode()])
 
-		p1 = subprocess.Popen(["/usr/init.d/univention-directory-listener", "restart"],
+		p1 = subprocess.Popen(["/etc/init.d/univention-directory-listener", "restart"],
 					close_fds=True)
 		p1.wait()
 
@@ -125,6 +125,6 @@ if __name__ == '__main__':
 		test_run(ucr, "false")
 
 	## restart listener with original UCR values:
-	p1 = subprocess.Popen(["/usr/init.d/univention-directory-listener", "restart"],
+	p1 = subprocess.Popen(["/etc/init.d/univention-directory-listener", "restart"],
 				close_fds=True)
 	p1.wait()
