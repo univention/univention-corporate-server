@@ -9,6 +9,7 @@ import univention.testing.utils as utils
 import univention.testing.network as network
 from json import loads
 import univention.config_registry as configRegistry
+import ldap
 
 
 def get_ip_address(host, username, password):
