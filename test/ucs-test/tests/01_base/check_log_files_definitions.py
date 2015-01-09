@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*.
+# vim:set noexpandtab fileencoding=utf-8:
 import re
 
 
@@ -45,28 +45,33 @@ class Errors(LogMessage):
 		'.*error adding .*.pem',
 		'.*failed .*VM used: java-6-cacao.*',
 		'.*/etc/ca-certificates/update.d/.* exited with code 1',
-                '.*well-known-sid-name-mapping.d/univention-ldap-server.py: postrun: Initiating graceful reload of ldap server.*',
-                '.*connection to notifier was closed.*',
-                '.*failed to recv result.*',
-                '.*listener: 1',
-                '.*error searching DN.*',  # Bug 37225 
-                ".*Can't contact LDAP server.*",  # Bug 37225
-                '.*nagios3 reported an error in configfile .* Please restart nagios3 manually.*',
-                '.*failed to download keytab for memberserver, retry.*',  # Bug 37225
-                '.*your request could not be fulfilled.*',  # Bug 37226
-                '.*Starting ldap server.* slapd ...failed.*',  # Bug 37226
-                '.*rsync: change_dir "/var/lib/samba/account-policy" failed: No such file or directory.*',  # Bug 37226
-                '.*rsync error: some files/attrs were not transferred.*',  # Bug 37226
-                '.*rsync: opendir "/etc/univention/ssl/unassigned-hostname.unassigned-domain" failed: Permission denied.*',  # Bug 37226
-                '.*Failed to join domain: failed to find DC for domain.*'  # Bug 37226
+		'.*well-known-sid-name-mapping.d/univention-ldap-server.py: postrun: Initiating graceful reload of ldap server.*',
+		'.*connection to notifier was closed.*',
+		'.*failed to recv result.*',
+		'.*listener: 1',
+		'.*error searching DN.*',  # Bug 37225
+		".*Can't contact LDAP server.*",  # Bug 37225
+		'.*nagios3 reported an error in configfile .* Please restart nagios3 manually.*',
+		'.*failed to download keytab for memberserver, retry.*',  # Bug 37225
+		'.*your request could not be fulfilled.*',  # Bug 37226
+		'.*Starting ldap server.* slapd ...failed.*',  # Bug 37226
+		'.*rsync: change_dir "/var/lib/samba/account-policy" failed: No such file or directory.*',  # Bug 37226
+		'.*rsync error: some files/attrs were not transferred.*',  # Bug 37226
+		'.*rsync: opendir "/etc/univention/ssl/unassigned-hostname.unassigned-domain" failed: Permission denied.*',  # Bug 37226
+		'.*Failed to join domain: failed to find DC for domain.*',  # Bug 37226
+		r".*statoverride: error: an override for '/var/log/dpkg\.log' already exists",  # Bug 37502
+		r".*statoverride: error: an override for '/var/log/bootstrap\.log' already exists",  # Bug 37502
+		r".*statoverride: error: an override for '/var/log/lastlog' already exists",  # Bug 37502
+		r".*statoverride: error: an override for '/var/log/faillog' already exists",  # Bug 37502
+		r".*ln: failed to create symbolic link `java': File exists",  # Bug 37503
 	]
 
 	# extra ignore patterns for case when line == 'failed.'
 	extra_ignore_list = (
 		'Starting Univention Directory Notifier daemon.*',
 		'warning: univention-directory-notifier: unable to open supervise/ok: file does not exist.*',
-                'Terminating running univention-cli-server processes.*',
-                'Stopping univention-s4-connector daemon.*'
+		'Terminating running univention-cli-server processes.*',
+		'Stopping univention-s4-connector daemon.*',
 	)
 
 
@@ -114,6 +119,7 @@ class Warnings(LogMessage):
 		'.*usr/sbin/grub-probe: warning: disk does not exist, so falling back to partition device.*',
 		'.*WARNING: cannot read /sys/block/vda.* (?:No such file or directory|Datei oder Verzeichnis nicht gefunden).*',
 		'.*warning: univention-directory-notifier: unable to open supervise/ok: .*',
-                '.*No path in service .* - making it unavailable!']
+		'.*No path in service .* - making it unavailable!',
+	]
 
 	extra_ignore_list = []
