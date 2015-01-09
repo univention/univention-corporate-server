@@ -338,6 +338,7 @@ class UDM_Module(object):
 	def __init__(self, module, force_reload=False):
 		"""Initializes the object"""
 		self._initialized_with_module = module
+		self.module = None
 		self.load(force_reload=force_reload)
 		self.settings = UDM_Settings()
 
@@ -350,7 +351,12 @@ class UDM_Module(object):
 
 		if module is None:
 			module = self._initialized_with_module
-		self.module = _module_cache.get(module, force_reload=force_reload)
+		try:
+			self.module = _module_cache.get(module, force_reload=force_reload)
+		except udm_errors.noObject:
+			# can happen if the ldap connection is not bound to any user
+			# e.g. due to a rename of the current logged in user
+			pass  # keep the old module (if only reloaded)
 
 	def allows_simple_lookup(self):
 		return hasattr(self.module, 'lookup_filter')
@@ -636,7 +642,7 @@ class UDM_Module(object):
 	@property
 	def subtitle(self):
 		"""Returns the descriptive name of the UDM module without the part for the module group"""
-		descr = getattr(self.module, 'short_description', self.module.module)
+		descr = getattr(self.module, 'short_description', getattr(self.module, 'module', ''))
 		colon = descr.find(':')
 		if colon > 0:
 			return descr[colon + 1:].strip()
@@ -645,7 +651,7 @@ class UDM_Module(object):
 	@property
 	def title(self):
 		"""Descriptive name of the UDM module"""
-		return getattr(self.module, 'short_description', self.module.module)
+		return getattr(self.module, 'short_description', getattr(self.module, 'module', ''))
 
 	@property
 	def description(self):
@@ -1045,6 +1051,8 @@ class UDM_Settings(object):
 
 		self._read_directories()
 
+		if self.directory is None:
+			return []
 		return map(lambda x: {'id': x, 'label': ldap_dn2path(x)}, self.directory.info.get(base, []))
 
 	def resultColumns(self, module_name):

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-38) unstable; urgency=medium
+
+  * Bug #35280: fix umcp commands when renaming the currently logged in user
+
+ -- Florian Best <best@univention.de>  Fri, 09 Jan 2015 13:02:42 +0100
+
 univention-management-console-module-udm (5.1.25-37) unstable; urgency=medium
 
   * Bug #36591: fix typo
