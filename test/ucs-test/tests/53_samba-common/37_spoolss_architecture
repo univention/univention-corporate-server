@@ -20,7 +20,7 @@ import sys
 
 def get_testparm_var(sectionname, varname):
 	path_testparm = "/usr/bin/testparm"
-	if not os.path.exists(path_testparm)
+	if not os.path.exists(path_testparm):
 		utils.fail("ERROR: %s missing" % (path_testparm,))
 
 	cmd = [path_testparm, "-slv",
