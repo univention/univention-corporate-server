@@ -10,10 +10,13 @@
 ##  - domaincontroller_slave
 ##  - memberserver
 ## exposure: dangerous
+## bugs:
+##  - 37509
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
 . "$TESTLIBPATH/group.sh" || exit 137
+. /usr/share/univention-lib/base.sh || exit 137
 
 eval "$(ucr shell)"
 
@@ -42,43 +45,39 @@ done
 
 # Search for new admin name
 for file in /etc/security/access-*.conf; do
-	[ "$file" = /etc/security/access-chfn.conf ] && continue # ignore this file
-	[ "$file" = /etc/security/access-chsh.conf ] && continue # ignore this file
-	[ "$file" = /etc/security/access-cron.conf ] && continue # ignore this file
-	[ "$file" = /etc/security/access-kcheckpass.conf ] && continue # ignore this file
-	[ "$file" = /etc/security/access-kde.conf ] && continue # ignore this file
-	[ "$file" = /etc/security/access-kscreensaver.conf ] && continue # ignore this file
-	[ "$file" = /etc/security/access-passwd.conf ] && continue # ignore this file
-	[ "$file" = /etc/security/access-rsh.conf ] && continue # ignore this file
-	[ "$file" = /etc/security/access-su.conf ] && continue # ignore this file
-	[ "$file" = /etc/security/access-sudo.conf ] && continue # ignore this file
+	case "${file##*/}" in  # ignore some files
+	access-chfn.conf) continue ;;
+	access-chsh.conf) continue ;;
+	access-cron.conf) continue ;;
+	access-kcheckpass.conf) continue ;;
+	access-kde.conf) continue ;;
+	access-kscreensaver.conf) continue ;;
+	access-passwd.conf) continue ;;
+	access-rsh.conf) continue ;;
+	access-su.conf) continue ;;
+	access-sudo.conf) continue ;;
+	access-sshd.conf) is_domain_controller || continue ;;  # Bug #37509
+	esac
 
 	echo -n "Checking whether new admin group name ($GROUPNAME) is set to $file: "
-	if egrep -q "($GROUPNAME,|,$GROUPNAME)" $file; then
+	if egrep -q "($GROUPNAME,|,$GROUPNAME)" "$file"; then
 		echo "done"
 	else
-		echo "failed"
-		echo "************** $file ***************"
-		cat $file
-		echo "****************************************"
-		exit 1
+		fail_test 1 "failed $file"
+		grep '^[^#]|/' "$file"
 	fi
 done
 
 if [ "$server_role" != "memberserver" ]; then
 	for file in /etc/ldap/slapd.conf; do
 		echo -n "Checking if new admin group name is set to $file: "
-		if grep -q "$GROUPNAME" $file; then
+		if grep -q "$GROUPNAME" "$file"; then
 			echo "done"
 		else
-			echo "failed"
-			echo "************** $file ***************"
-			cat $file
-			echo "****************************************"
-			exit 1
+			fail_test 1 "failed $file"
+			grep '^[^#]|/' "$file"
 		fi
 	done
 fi
 
 exit "$RETVAL"
-

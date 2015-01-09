@@ -1,3 +1,9 @@
+ucs-test (5.0.82-5) unstable; urgency=low
+
+  * Bug #37509: 01/96admins: Skip sshd on non-DCs
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 Jan 2015 16:38:02 +0100
+
 ucs-test (5.0.82-4) unstable; urgency=medium
 
   * Bug #37123: Fix "force printername" modification check
