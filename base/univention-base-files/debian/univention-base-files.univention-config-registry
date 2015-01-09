@@ -280,3 +280,7 @@ Variables: logrotate/.*
 Type: file
 File: etc/cron.d/univention-config-registry-backup
 Variables: ucr/backup/enabled
+
+Type: file
+File: etc/e2fsck.conf
+Variables: e2fsck/.*/.*

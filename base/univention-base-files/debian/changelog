@@ -1,3 +1,9 @@
+univention-base-files (4.0.6-1) unstable; urgency=low
+
+  * Bug #36233: ignore clock skew between install and reboot after join
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Jan 2015 17:05:56 +0100
+
 univention-base-files (4.0.5-2) unstable; urgency=low
 
   * Bug #13811: Added MySQL to univention-service

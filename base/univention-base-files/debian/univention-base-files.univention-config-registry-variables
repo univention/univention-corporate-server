@@ -625,3 +625,9 @@ Description[de]=Die Maschinenpasswörter werden mit dem pwgen-Tool erzeugt. Dies
 Description[en]=The machine passwords are generated with the tool pwgen. This variable configures the parameters used during generation (see 'man pwgen'). If the variable is unset, 'scn' applies.
 Type=str
 Categories=service-base
+
+[e2fsck/.*/.*]
+Description[de]=Einstellungen für e2fsck im Format 'e2fsck/SECTION/TAG=VALUE'.
+Description[en]=Settings for e2fsck in the format 'e2fsck/SECTION/TAG=VALUE'.
+Type=str
+Categories=service-base
