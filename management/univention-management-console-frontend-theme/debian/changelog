@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.88-5) unstable; urgency=low
+
+  * Bug #36787: Adjusted styling of the favorites category button fade in/out
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 09 Jan 2015 11:56:52 +0100
+
 univention-management-console-frontend-theme (0.0.88-4) unstable; urgency=low
 
   * Bug #36291: adjusted styling of the MultiObjectSelect so it adapts to
