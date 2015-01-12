@@ -1,0 +1,15 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: bsd-mailx
+fix: 8.1.2-0.20111106cvs-1.9.201501120858
+version: [0]
+desc: |
+ An undocumented feature in mailx (the implementation of the mail 
+ command) allows the execution of arbitrary commands if the email
+ address is obtained from a remote source.
+cve:
+ - CVE-2014-7844
+bug:
+ - 37370
+
