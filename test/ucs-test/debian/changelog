@@ -1,3 +1,10 @@
+ucs-test (4.0.199-2) unstable; urgency=low
+
+  * Bug #35590: 50_samba/12net_testjoin_memberserver: use net ads if it's a
+    Samba 4 domain and net rpc in other case.
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 12 Jan 2015 16:08:00 +0100
+
 ucs-test (4.0.199-1) unstable; urgency=low
 
   * Bug #37520 : add new script 101_initial_ssl_certificate_permissions
