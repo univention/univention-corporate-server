@@ -1,0 +1,102 @@
+#!/usr/share/ucs-test/runner python
+# -*- coding: utf-8 -*.
+## desc: Test querying UDM with a non-posix UMC user
+## bugs: [37178]
+## roles:
+##  - domaincontroller_master
+## exposure: dangerous
+
+import sys
+sys.path.insert(0, '.')
+from TestUMCSystemModule import TestUMCSystem
+
+import simplejson as json
+from time import sleep, time, localtime, strftime
+
+import univention.testing.utils as utils
+from univention.testing.udm import UCSTestUDM
+from univention.testing.strings import random_username
+from univention.lib.umc_connection import UMCConnection
+
+
+class TestUMCUserAuthentication(TestUMCSystem):
+
+	def __init__(self):
+		"""Test Class constructor"""
+		super(TestUMCUserAuthentication, self).__init__()
+
+		self.UDM = None
+
+		self.test_user_dn = ''
+		self.test_username = ''
+		self.test_password = ''
+
+	def create_user(self):
+		"""
+		Creates a group and a user in it for the test.
+		"""
+		print("\nCreating a user '%s' without posix" % (self.test_username,))
+
+		self.test_user_dn = self.UDM.create_user(password=self.test_password,
+						 username=self.test_username,
+						 options=['ldap_pwd'],
+						 policy_reference='cn=default-umc-all,cn=UMC,cn=policies,%s' % self.UCR['ldap/base'])[0]
+		utils.verify_ldap_object(self.test_user_dn)
+
+	def query_udm(self):
+		"""
+		Queries UDM's users/user from UMC
+		"""
+		response = self.make_query_request('udm', {'objectType': 'users/user', 'objectProperty': 'username', 'objectPropertyValue': self.test_username}, 'users/user')
+		if not response: # udm/query not rejected but does not work
+			utils.fail("Cannot find myself with udm/query!")
+
+	def authenticate_to_umc(self, username, password):
+		"""
+		Authenticates to UMC using 'self.Connection' and given
+		'password' with 'username'. Updates the cookie.
+		Returns 'True' on success and 'False' in any other case.
+		"""
+		options = {"options": {"username": username, "password": password}}
+		try:
+			umc_connection = self.Connection.get_connection()
+			umc_connection.request('POST', '/umcp/auth', json.dumps(options), self.Connection._headers)
+
+			request_result = umc_connection.getresponse()
+			cookie = request_result.getheader('set-cookie')
+			status_code = request_result.status
+
+			print "Response Code:", status_code
+			print "Response Cookie:", cookie
+			print "Response Message:", request_result.read()
+
+			self.Connection._headers['Cookie'] = cookie
+			if cookie and status_code == 200:
+				return True
+
+			return False
+		except Exception as exc:
+			utils.fail("An exception while trying to authenticate to UMC "
+					   "with a 'username'=%s and 'password'=%s: %r"
+					   % (self.test_username, password, exc))
+
+	def main(self):
+		"""
+		Tests the UMC user authentication and various password change cases.
+		"""
+		self.test_username = 'umc_test_user_' + random_username(6)
+		self.test_password = 'univention'
+
+		self.reload_ucr()
+		self.get_ucr_credentials()
+
+		with UCSTestUDM() as self.UDM:
+			self.create_user()
+			self.Connection = UMCConnection(self.UCR['hostname'])
+			self.authenticate_to_umc(self.test_username, self.test_password)
+			self.query_udm()
+
+
+if __name__ == '__main__':
+	TestUMC = TestUMCUserAuthentication()
+	sys.exit(TestUMC.main())
