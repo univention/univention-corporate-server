@@ -13,6 +13,7 @@ from univention.testing.debian_package import DebianPackage
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import fail, wait_for_replication_and_postrun
 import ldap
+import time
 
 def main():
 	with UCSTestUDM() as udm:
@@ -74,6 +75,9 @@ access to dn.base="%(container)s"
 
 		# Waiting for the postrun
 		wait_for_replication_and_postrun()
+
+		#TODO remove when bug #37516 is fixed
+		time.sleep(60)
 
 		try:
 			set_container_description(user_dn, container)
