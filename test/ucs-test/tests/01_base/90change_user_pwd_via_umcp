@@ -1,11 +1,10 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test password change via UMC (/umcp/set) by the user itself.
-## bugs: [36900]
+## bugs: [35276, 36900]
 ## roles: [domaincontroller_master]
 ## packages:
 ##  - univention-directory-manager-tools
-## tags:
-##  - basic
+## tags: [basic, apptest]
 ## exposure: dangerous
 
 from time import sleep
