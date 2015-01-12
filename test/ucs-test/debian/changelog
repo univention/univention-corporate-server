@@ -1,3 +1,9 @@
+ucs-test (5.0.87-3) unstable; urgency=low
+
+  * Bug #36330: 61_udm-users/25_password_expire_date
+
+ -- Arvid Requate <requate@univention.de>  Mon, 12 Jan 2015 15:06:11 +0100
+
 ucs-test (5.0.87-2) unstable; urgency=low
 
   * Bug #37178: Import fix
