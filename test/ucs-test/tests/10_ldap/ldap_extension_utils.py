@@ -1,4 +1,4 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
 # Copyright 2013-2014 Univention GmbH
@@ -45,11 +45,14 @@ def wait_for_ldap():
 		try:
 			pinfo = [proc.name for proc in psutil.process_iter() if proc.name == 'slapd']
 		except psutil.NoSuchProcess:
-			time.sleep(1)
-			print count
+			pass
 		else:
-			print "(%s) process is running now.\n" % pinfo[0]
-			break
+			if pinfo:
+				print "(%s) process is running now.\n" % pinfo[0]
+				break
+			else:
+				time.sleep(1)
+				print count
 
 def get_package_name():
 	return random_name()
