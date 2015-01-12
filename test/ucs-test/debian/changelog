@@ -1,3 +1,9 @@
+ucs-test (5.0.83-1) unstable; urgency=low
+
+  * Bug #37401: correct a logical error
+
+ -- Ammar Najjar <najjar@univention.de>  Mon, 12 Jan 2015 09:45:41 +0100
+
 ucs-test (5.0.82-5) unstable; urgency=low
 
   * Bug #37509: 01/96admins: Skip sshd on non-DCs
