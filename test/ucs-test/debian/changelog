@@ -1,3 +1,10 @@
+ucs-test (5.0.88-1) unstable; urgency=low
+
+  * Bug #37523: 60_umc-system/70_umc-service-network-functionality: 
+    changed error code and message when no free IP addresses left.
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 12 Jan 2015 15:22:34 +0100
+
 ucs-test (5.0.87-3) unstable; urgency=low
 
   * Bug #36330: 61_udm-users/25_password_expire_date

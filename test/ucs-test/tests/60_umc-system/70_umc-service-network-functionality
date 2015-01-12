@@ -255,16 +255,20 @@ class TestUMCNetworkFunctionality(TestUMCSystem):
                    "increaseCounter": True}
         network_config = self.make_custom_request(
                               '/umcp/command/udm/network', options)
-        if network_config.get('status') != 591:
+        if network_config.get('status') != 400:
             utils.fail("The '%s' network configuration reported '%s', "
-                       "status other than '591', i.e. possibly has "
+                       "status other than '400', i.e. possibly has "
                        "options for IP addresses in the test range: "
                        "'%s', while should not" % (self.test_network_name,
                        network_config, self.test_ip_range))
-        if 'nextFreeIp' not in network_config.get('message'):
-            utils.fail("The response message '%s' does not include "
-                       "'nextFreeIp', possibly another error with the "
-                       "status code 591 " % network_config)
+
+        error_messages = ("Fehler bei der automatischen IP Adresszuweisung",
+                          "Failed to automatically assign an IP address")
+
+        if not any(msg in network_config.get('message') for msg in error_messages):
+            utils.fail("The response message '%s' does not include any of "
+                       "'%s' messages, possibly another error with the "
+                       "status code 400 " % (network_config, error_messages))
 
     def run_checks_with_computers(self):
         """
