@@ -4,6 +4,7 @@
 ## tags:
 ##  - skip_admember
 ## bugs: [35590]
+## roles-not: [memberserver]
 ## packages:
 ##  - winbind
 ##  - univention-samba
@@ -15,7 +16,7 @@ echo "Initiating a net rpc testjoin"
 win_dom="$(ucr get windows/domain)"
 
 if [ ! "$(net rpc testjoin)" = "Join to '$win_dom' is OK" ] ; then
-   fail_fast 110 "The testjoin did not report that join to $win_dom is OK"
+   fail_fast 110 "The RPC testjoin did not report that join to $win_dom is OK"
 fi
 
 exit $RETVAL

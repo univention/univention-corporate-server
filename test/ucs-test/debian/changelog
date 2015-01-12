@@ -1,3 +1,10 @@
+ucs-test (5.0.84-1) unstable; urgency=low
+
+  * Bug #35590: 50_samba/12net_ads_testjoin: testjoin for memberserver;
+    50_samba/11net_rpc_testjoin: don't run the test on memberserver.
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 12 Jan 2015 10:51:52 +0100
+
 ucs-test (5.0.83-1) unstable; urgency=low
 
   * Bug #37401: correct a logical error
