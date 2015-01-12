@@ -1,3 +1,9 @@
+ucs-test (5.0.87-2) unstable; urgency=low
+
+  * Bug #37178: Import fix
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Jan 2015 13:23:47 +0100
+
 ucs-test (5.0.87-1) unstable; urgency=low
 
   * Bug #37178: Test non-posix users

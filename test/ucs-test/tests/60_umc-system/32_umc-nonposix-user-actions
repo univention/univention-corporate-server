@@ -10,8 +10,7 @@ import sys
 sys.path.insert(0, '.')
 from TestUMCSystemModule import TestUMCSystem
 
-import simplejson as json
-from time import sleep, time, localtime, strftime
+import json
 
 import univention.testing.utils as utils
 from univention.testing.udm import UCSTestUDM
