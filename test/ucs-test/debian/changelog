@@ -1,3 +1,10 @@
+ucs-test (5.0.86-1) unstable; urgency=low
+
+  * Bug #37520 : add new script 101_initial_ssl_certificate_permissions
+  * Bug #34081 : restict roles to domaincontroller_master only
+
+ -- Ammar Najjar <najjar@univention.de>  Mon, 12 Jan 2015 12:43:24 +0100
+
 ucs-test (5.0.85-1) unstable; urgency=low
 
   * Bug #37401: time.sleep is added untill bug #37516 is fixed.
