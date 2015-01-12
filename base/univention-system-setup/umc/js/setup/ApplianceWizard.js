@@ -45,6 +45,7 @@ define([
 	"dijit/Tooltip",
 	"dijit/focus",
 	"dojox/timing/_base",
+	"dojox/html/styles",
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/TextBox",
@@ -63,7 +64,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, Select, Tooltip, focusUtil, timing, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, Select, Tooltip, focusUtil, timing, styles, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
 
 	var _Grid = declare(Grid, {
 		_onRowClick: function(evt) {
@@ -266,6 +267,8 @@ define([
 		autoValidate: false,
 		autoFocus: true,
 
+		ucr: {},
+
 		_gallery: null,
 		_appGalleryUpdated: null,
 		_nLocaleSettingsConfigured: false,
@@ -285,10 +288,32 @@ define([
 				mainBootstrapClasses: 'col-xs-12 col-sm-8 col-md-8 col-lg-8'
 			};
 
+			// customize some texts for an app appliance case
+			var welcomeMessage = _('Welcome to Univention Corporate Server (UCS).');
+			var welcomeHeader = _('UCS setup');
+			var doneHeader = _('UCS setup successful');
+			var errorHeader = _('UCS setup - An error occurred');
+			if (this.ucr['umc/web/appliance/name']) {
+				welcomeMessage = _('Welcome to the %s appliance with Univention Corporate Server (UCS).', this.ucr['umc/web/appliance/name']);
+				welcomeHeader = _('%s setup', this.ucr['umc/web/appliance/name']);
+				doneHeader = _('%s setup successful', this.ucr['umc/web/appliance/name']);
+				errorHeader = _('%s setup - An error occurred', this.ucr['umc/web/appliance/name']);
+			}
+			welcomeMessage += ' ' + _('A few questions are needed to complete the configuration process.');
+			if (this.ucr['umc/web/appliance/logo']) {
+				// override UCS logo with app logo on welcome page
+				var logoURL = this.ucr['umc/web/appliance/logo'];
+				if (logoURL.indexOf('/') != 0) {
+					// use path relative to dijit/themes/umc
+					logoURL = require.toUrl('dijit/themes/umc/' + logoURL);
+				}
+				styles.insertCssRule('.umc-setup-page-welcome .umcPageIcon', lang.replace('background-image: url({0}) !important;', [logoURL]));
+			}
+
 			this.pages = [lang.mixin({}, pageConf, {
 				name: 'welcome',
-				headerText: _('UCS setup'),
-				helpText: _('<p>Welcome to Univention Corporate Server (UCS).</p><p>A few questions are needed to complete the configuration process.</p>'),
+				headerText: welcomeHeader,
+				helpText: welcomeMessage,
 				widgets: [{
 					type: Select,
 					name: '_language',
@@ -351,7 +376,7 @@ define([
 				headerText: _('Domain and network configuration'),
 				helpText: _('Specify the network settings for this system.'),
 				layout: [
-					'_dhcp',
+					['_dhcp', '_renewLease'],
 					['_ip0', '_netmask0'],
 					['_ip1', '_netmask1'],
 					['_ip2', '_netmask2'],
@@ -362,15 +387,22 @@ define([
 					'configureProxySettings'
 				],
 				widgets: [{
+					type: Text,
+					name: '_renewLease',
+					label: '<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').dhclient();">' + _('(Request address again)') + '</a>',
+					content: '',
+					visible: false
+				}, {
 					type: CheckBox,
 					name: '_dhcp',
 					label: _('Obtain IP address automatically (DHCP)'),
 					onChange: lang.hitch(this, function(value) {
 						this._disableNetworkAddressWidgets(value);
+						this.getWidget('network', '_renewLease').set('visible', value);
 						var focused = this.getWidget('network', '_dhcp').focused;
 						if (value && focused) {
 							// see whether DHCP is working
-							this._dhclient();
+							this.dhclient();
 						}
 					})
 				}, {
@@ -729,7 +761,7 @@ define([
 			}), lang.mixin({}, pageConf, {
 				name: 'summary',
 				headerText: _('Confirm configuration settings'),
-				helpText: _('Please confirm the chosen configuration settings which are summarized below.'),
+				helpText: _('Please confirm the chosen configuration settings which are summarized in the following.'),
 				widgets: [{
 					type: Text,
 					name: 'info',
@@ -742,7 +774,7 @@ define([
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'error',
-				headerText: _('UCS setup - An error occurred'),
+				headerText: errorHeader,
 				helpText: '_',
 				widgets: [{
 					type: Text,
@@ -752,7 +784,7 @@ define([
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'done',
-				headerText: _('UCS has been set up successfully'),
+				headerText: doneHeader,
 				helpTextRegion: 'main',
 				helpText: '_',
 				widgets: []
@@ -855,7 +887,7 @@ define([
 			}));
 		},
 
-		_dhclient: function() {
+		dhclient: function() {
 			// send out queries for each network device
 			var queries = {};
 			var dev2index = {};
@@ -970,6 +1002,7 @@ define([
 		_setupJavaScriptLinks: function() {
 			array.forEach([
 					['network', 'configureProxySettings'],
+					['network', '_renewLease'],
 					['credentials-master', 'email_address'],
 					['fqdn-nonmaster-all', 'hostname'],
 					['network', 'proxy/http']
@@ -1565,7 +1598,11 @@ define([
 			var ips = this._getIPAdresses();
 
 			var msg = '';
-			msg += '<p>' + _('UCS has been successfully set up.') + '</p>';
+			if (this.ucr['umc/web/appliance/name']) {
+				msg += '<p>' + _('The %s appliance has been successfully set up.', this.ucr['umc/web/appliance/name']) + '</p>';
+			} else {
+				msg += '<p>' + _('UCS has been successfully set up.') + '</p>';
+			}
 			if (!isBaseSystem) {
 				if (ips.length) {
 					msg += '<p>' + _('The system has been configured with the IP address(es) %s.', ips.join(', ')) + '</p>';
@@ -1586,7 +1623,7 @@ define([
 			if (array.indexOf(this.disabledFields, 'reboot') !== -1) {
 				msg += _('<p>After clicking on the button <i>Finish</i> the system will be prepared for the first boot procedure and will be rebooted.</p>');
 			} else {
-				msg += _('<p>Click now on the button <i>Finish</i> to complete the setup process.</p>');
+				msg += _('<p>It is mandatory to click on <i>Finish</i> for putting UCS into operation and completing the setup process.</p>');
 			}
 			this.getPage('done').set('helpText', msg);
 		},

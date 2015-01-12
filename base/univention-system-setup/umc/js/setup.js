@@ -90,7 +90,8 @@ define([
 				'system/setup/boot/pages/blacklist',
 				'system/setup/boot/fields/blacklist',
 				'system/setup/boot/installer',
-				'umc/modules/setup/network/disabled/by'
+				'umc/modules/setup/network/disabled/by',
+				'umc/web/appliance/*'
 			]);
 
 			all({
@@ -216,7 +217,8 @@ define([
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				umcpProgressCommand: lang.hitch(this, 'umcpProgressCommand'),
 				partOfInstaller: partOfInstaller,
-				values: values
+				values: values,
+				ucr: ucr
 			});
 			this.addChild(this.wizard);
 			if (!tools.status('overview')) {

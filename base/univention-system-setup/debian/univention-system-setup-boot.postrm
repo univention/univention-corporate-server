@@ -42,7 +42,7 @@ if [ "$startsite" = "$initialsetup_startsite" -o "$startsite" = "$system_setup_b
 	ucr set apache2/startsite="$system_setup_prev_apache2_startsite"
 	ucr unset system/setup/prev/apache2/startsite
 	if [ -x /etc/init.d/apache2 ]; then
-		/etc/init.d/apache2 restart
+		/etc/init.d/apache2 reload
 	fi
 fi
 

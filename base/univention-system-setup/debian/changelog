@@ -1,3 +1,15 @@
+univention-system-setup (8.1.66-8) unstable; urgency=medium
+
+  Bug #37488:
+  * A branding for the appliance wizard has been implemented via the UCR
+    variables umc/web/appliance/name and umc/web/appliance/logo
+  * A DHCP button/link has been added for sending a DHCP request anew
+  * A few minor text adjustments have been done
+  * Unneeded code for resetting the UCR variable apache2/startsite has been
+    removed from the setup-join.sh script
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 12 Jan 2015 13:01:02 +0100
+
 univention-system-setup (8.1.66-7) unstable; urgency=medium
 
   * Bug #36406: Synchronize the time during AD credential check

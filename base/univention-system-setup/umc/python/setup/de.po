@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-12-03 13:52+0100\n"
+"POT-Creation-Date: 2015-01-08 15:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,11 +12,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/setup/__init__.py:464
+#: umc/python/setup/__init__.py:465
 msgid "A domain name server needs to be specified."
 msgstr "Ein Domänen-DNS-Server muss angegeben werden."
 
-#: umc/python/setup/__init__.py:389
+#: umc/python/setup/__init__.py:390
 msgid ""
 "A valid NetBIOS name can not be longer than 13 characters. If Samba is "
 "installed, the hostname should be shortened."
@@ -24,7 +24,7 @@ msgstr ""
 "Ein gültiger NetBIOS Name darf nicht länger als 13 Zeichen sein. Wenn Samba "
 "installiert wird, sollte der Rechnername gekürzt werden."
 
-#: umc/python/setup/__init__.py:237
+#: umc/python/setup/__init__.py:238
 msgid "Already joined systems cannot be joined."
 msgstr "Bereits gejointe Systeme können nicht gejoint werden."
 
@@ -32,11 +32,11 @@ msgstr "Bereits gejointe Systeme können nicht gejoint werden."
 msgid "Bond-primary must exist in bond-slaves"
 msgstr "Bond-primary muss in bond-slaves enthalten sein"
 
-#: umc/python/setup/__init__.py:418
+#: umc/python/setup/__init__.py:419
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/python/setup/util.py:152 umc/python/setup/__init__.py:481
+#: umc/python/setup/util.py:152 umc/python/setup/__init__.py:482
 msgid ""
 "Cannot automatically determine the domain. Please specify the server's fully "
 "qualified domain name."
@@ -71,7 +71,7 @@ msgstr ""
 "Geräte, die in einem Bond-Gerät verwendet werden, müssen physikalisch sein: "
 "%s ist nicht"
 
-#: umc/python/setup/__init__.py:435
+#: umc/python/setup/__init__.py:436
 msgid "Domain name server"
 msgstr "Domänen-DNS-Server"
 
@@ -80,16 +80,16 @@ msgstr "Domänen-DNS-Server"
 msgid "Duplicated IP address: %r"
 msgstr "Duplizierte IP-Addresse: %r"
 
-#: umc/python/setup/__init__.py:418
+#: umc/python/setup/__init__.py:419
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
-#: umc/python/setup/__init__.py:214 umc/python/setup/__init__.py:284
+#: umc/python/setup/__init__.py:215 umc/python/setup/__init__.py:285
 #, python-format
 msgid "Encountered unexpected error during setup process: %s"
 msgstr "Ein unerwarteter Fehler trat während des Einrichtungsprozesses auf: %s"
 
-#: umc/python/setup/__init__.py:435
+#: umc/python/setup/__init__.py:436
 msgid "External name server"
 msgstr "Externer DNS-Server"
 
@@ -98,7 +98,7 @@ msgstr "Externer DNS-Server"
 msgid "Failed to get package for Role %s"
 msgstr "Es konnte kein Paket für die Rolle %s gefunden werden"
 
-#: umc/python/setup/__init__.py:396
+#: umc/python/setup/__init__.py:397
 msgid "Hostname is equal to domain name."
 msgstr "Systemname ist gleich dem Domänennamen."
 
@@ -141,7 +141,7 @@ msgstr "Ungültiger bond-mode: %r"
 msgid "Invalid device name: %r"
 msgstr "Ungültiger Gerätename: %r"
 
-#: umc/python/setup/__init__.py:497
+#: umc/python/setup/__init__.py:498
 msgid ""
 "It is not possible to install KVM and XEN components on one system. Please "
 "select only one of these components."
@@ -149,7 +149,7 @@ msgstr ""
 "Es ist nicht möglich KVM- und XEN-Komponenten auf einem System zu "
 "installieren. Bitte wählen Sie nur eine dieser Komponenten aus."
 
-#: umc/python/setup/__init__.py:499
+#: umc/python/setup/__init__.py:500
 msgid ""
 "It is not possible to install Samba 3 and Samba 4 on one system. Please "
 "select only one of these components."
@@ -157,7 +157,7 @@ msgstr ""
 "Es ist nicht möglich Samba 3 und Samba 4 auf einem System zu installieren. "
 "Bitte wählen Sie nur eine dieser Komponenten aus."
 
-#: umc/python/setup/__init__.py:416
+#: umc/python/setup/__init__.py:417
 msgid "Location"
 msgstr "Ort"
 
@@ -179,23 +179,23 @@ msgstr "Fehlendes Gerät: %r"
 msgid "Multiple IPv4 addresses are not supported on this device."
 msgstr "Mehrere IPv4 Adressen sind an diesem Gerät nicht unterstützt."
 
-#: umc/python/setup/__init__.py:399
+#: umc/python/setup/__init__.py:400
 msgid "No fully qualified domain name has been specified for the system."
 msgstr "Es wurde kein vollständiger Domänenname für das System angegeben."
 
-#: umc/python/setup/__init__.py:401
+#: umc/python/setup/__init__.py:402
 msgid "No hostname has been specified for the system."
 msgstr "Es wurde kein Rechnername für das System angegeben."
 
-#: umc/python/setup/__init__.py:418
+#: umc/python/setup/__init__.py:419
 msgid "Organization"
 msgstr "Organisation"
 
-#: umc/python/setup/__init__.py:421
+#: umc/python/setup/__init__.py:422
 msgid "Please enter a valid email address"
 msgstr "Bitte geben Sie eine gültige E-Mail-Adresse ein"
 
-#: umc/python/setup/__init__.py:390
+#: umc/python/setup/__init__.py:391
 msgid ""
 "Please enter a valid fully qualified domain name in lowercase (e.g. host."
 "example.com)."
@@ -203,45 +203,38 @@ msgstr ""
 "Bitte geben Sie einen klein-geschriebenen und vollständigen Rechnernamen an "
 "(z.B. host.example.com)."
 
-#: umc/python/setup/__init__.py:416
+#: umc/python/setup/__init__.py:417
 msgid "State"
 msgstr "Land"
 
-#: umc/python/setup/__init__.py:409
+#: umc/python/setup/__init__.py:410
 msgid ""
 "The LDAP base may neither contain blanks nor any special characters. Its "
-"structure needs to consist of at least two relative distinguished names (RDN) "
-"which may only use the attribute tags 'dc', 'cn', 'c', 'o', or 'l' (e.g., "
-"dc=test,dc=net)."
+"structure needs to consist of at least two relative distinguished names "
+"(RDN) which may only use the attribute tags 'dc', 'cn', 'c', 'o', or 'l' (e."
+"g., dc=test,dc=net)."
 msgstr ""
-"Die LDAP-Basis darf weder Leer- noch Sonderzeichen enthalten. "
-"Ihre Struktur muss aus mindestens zwei Relative Distinguished Names (RDN) "
-"bestehen, die eines der Attribut-Tags 'dc', 'cn', 'c', 'o', or 'l' verwenden "
-"(z.B. dc=test,dc=net)."
+"Die LDAP-Basis darf weder Leer- noch Sonderzeichen enthalten. Ihre Struktur "
+"muss aus mindestens zwei Relative Distinguished Names (RDN) bestehen, die "
+"eines der Attribut-Tags 'dc', 'cn', 'c', 'o', or 'l' verwenden (z.B. dc=test,"
+"dc=net)."
 
-#: umc/python/setup/__init__.py:417
+#: umc/python/setup/__init__.py:418
 #, python-format
 msgid "The following value is too long, only 128 characters allowed: %s"
 msgstr "Der folgende Wert ist zu lang, es sind nur 128 Zeichen erlaubt: %s"
 
-#: umc/python/setup/__init__.py:419
+#: umc/python/setup/__init__.py:420
 #, python-format
 msgid "The following value is too long, only 64 characters allowed: %s"
 msgstr "Der folgende Wert ist zu lang, es sind nur 64 Zeichen erlaubt: %s"
 
-#: umc/python/setup/__init__.py:737
-msgid ""
-"The given user is not member of the Domain Admins group in AD."
+#: umc/python/setup/__init__.py:747
+msgid "The given user is not member of the Domain Admins group in AD."
 msgstr ""
 "Das angegebene Konto ist nicht Mitglied der Gruppe Domain Admins in AD."
 
-#: umc/python/setup/__init__.py:737
-msgid ""
-"Time synchronization with AD server failed."
-msgstr ""
-"Die Synchronisation der Systemzeit mit dem AD-Server schlug fehl."
-
-#: umc/python/setup/__init__.py:388
+#: umc/python/setup/__init__.py:389
 msgid ""
 "The hostname is not a valid fully qualified domain name in lowercase (e.g. "
 "host.example.com)."
@@ -249,16 +242,16 @@ msgstr ""
 "Der Rechnernamen muss vollständig und klein geschrieben sein (z.B. host."
 "example.com)."
 
-#: umc/python/setup/__init__.py:394
+#: umc/python/setup/__init__.py:395
 msgid ""
 "The length of fully qualified domain name is greater than 63 characters."
 msgstr "Die Länge von System- und Domänennamen ist größer als 63 Zeichen."
 
-#: umc/python/setup/__init__.py:432
+#: umc/python/setup/__init__.py:433
 msgid "The primary network device must exist."
 msgstr "Das primäre Netzwerkgerät muss existieren."
 
-#: umc/python/setup/__init__.py:412
+#: umc/python/setup/__init__.py:413
 msgid ""
 "The root password is too short. For security reasons, your password must "
 "contain at least 8 characters."
@@ -266,52 +259,52 @@ msgstr ""
 "Das Root-Passwort ist zu kurz, aus Sicherheitsgründen sollte es mindestens 8 "
 "Zeichen lang sein."
 
-#: umc/python/setup/__init__.py:413
+#: umc/python/setup/__init__.py:414
 msgid "The root password may only contain ascii characters."
 msgstr "Für das Root-Passwort sind nur ASCII-Zeichen erlaubt."
 
-#: umc/python/setup/__init__.py:442
+#: umc/python/setup/__init__.py:443
 #, python-format
 msgid "The specified IP address (%s) is not valid: %s"
 msgstr "Die angegebenen IP-Adresse (%s) ist nicht gültig: %s"
 
-#: umc/python/setup/__init__.py:488
+#: umc/python/setup/__init__.py:489
 #, python-format
 msgid "The specified gateway IPv4 address is not valid: %s"
 msgstr "Die angegebene Gateway-IPv4-Adresse ist nicht gültig: %s"
 
-#: umc/python/setup/__init__.py:490
+#: umc/python/setup/__init__.py:491
 #, python-format
 msgid "The specified gateway IPv6 address is not valid: %s"
 msgstr "Die angegebene Gateway-IPv6-Adresse is nicht gültig: %s"
 
-#: umc/python/setup/__init__.py:484
+#: umc/python/setup/__init__.py:485
 #, python-format
 msgid "The specified nameserver %s is not part of a valid UCS domain."
 msgstr "Der angegebene DNS-Server %s ist nicht Teil einer gültigen UCS-Domäne."
 
-#: umc/python/setup/__init__.py:493
+#: umc/python/setup/__init__.py:494
 #, python-format
 msgid ""
 "The specified proxy address is not valid (e.g., http://10.201.1.1:8080): %s"
 msgstr "Die Proxy-Adresse ist nicht gültig (z.B. http://10.201.1.1:8080): %s"
 
-#: umc/python/setup/__init__.py:384
+#: umc/python/setup/__init__.py:385
 msgid ""
 "The system role may not change on a system that has already joined to domain."
 msgstr ""
 "Die Systemrolle darf sich auf einem bereits gejointen System nicht mehr "
 "ändern."
 
-#: umc/python/setup/__init__.py:404
+#: umc/python/setup/__init__.py:405
 msgid "The windows domain name can only consist of upper case characters."
 msgstr "Die Windows-Domäne kann nur aus Großbuchstaben bestehen."
 
-#: umc/python/setup/__init__.py:405
+#: umc/python/setup/__init__.py:406
 msgid "The windows domain name cannot be longer than 15 characters."
 msgstr "Der Windows-Domänenname darf nicht länger als 15 Zeichen sein."
 
-#: umc/python/setup/__init__.py:406
+#: umc/python/setup/__init__.py:407
 msgid "The windows domain name is not valid."
 msgstr "Die Windows-Domäne ist nicht gültig."
 
@@ -322,6 +315,10 @@ msgid ""
 msgstr ""
 "Es ist kein Gerät konfiguriert. Mindestens eine IPv4 oder IPv6-Adresse oder "
 "DHCP oder SLAAC muss angegeben werden."
+
+#: umc/python/setup/__init__.py:749
+msgid "Time synchronization with AD server failed."
+msgstr "Die Synchronisation der Systemzeit mit dem AD-Server schlug fehl."
 
 #~ msgid ""
 #~ "At least one domain name server needs to be given if DHCP or SLAAC is not "
