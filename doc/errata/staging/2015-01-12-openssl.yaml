@@ -1,0 +1,28 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: openssl
+fix: 1.0.1e-2.85.201501120731
+version: [0]
+desc: |
+  Multiple security vulnerabilities have been found in OpenSSL: 
+  * Denial of service in DTLS (2014-3571, CVE-2015-0206)
+  * ECDHE can be downgraded to ECDH, resulting in a loss of 
+    forward secrecy (CVE-2014-3572)
+  * Weaker RSA keys can be negotiated by the SSL/TLS server
+    (CVE-2015-0204)
+  * An OpenSSL server will accept a DH certificate for client
+    authentication without the certificate verify message 
+   (CVE-2015-0205)
+  * Certificate fingerprints can be modified (CVE-2014-8275)
+  * Bignum squaring may produce incorrect results (CVE-2014-3570)
+bug:
+ - 37494
+cve:
+ - CVE-2014-3570
+ - CVE-2014-3571
+ - CVE-2014-3572
+ - CVE-2014-8275
+ - CVE-2015-0204
+ - CVE-2015-0205
+ - CVE-2015-0206
