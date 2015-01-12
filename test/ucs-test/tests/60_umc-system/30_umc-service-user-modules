@@ -106,7 +106,6 @@ class TestUMCUserModules(TestUMCSystem):
                                                allow=test_operation_set)
             utils.verify_ldap_object(test_policy_dn)
 
-            # **kwargs are as dict to pass a 'policy-reference'
             UDM.modify_object('groups/group',
                               **{'dn': test_group_dn,
                                  'policy_reference': test_policy_dn})
