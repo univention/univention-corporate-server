@@ -1,3 +1,9 @@
+ucs-test (5.0.89-2) unstable; urgency=medium
+
+  * Bug #36330: Improved 61_udm-users/26_password_expire_date
+
+ -- Arvid Requate <requate@univention.de>  Mon, 12 Jan 2015 16:43:00 +0100
+
 ucs-test (5.0.89-1) unstable; urgency=low
 
   * Bug #35590: 50_samba/12net_testjoin_memberserver: use net ads if it's a
