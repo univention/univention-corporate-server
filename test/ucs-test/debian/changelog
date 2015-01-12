@@ -1,3 +1,9 @@
+ucs-test (5.0.89-3) unstable; urgency=medium
+
+  * Bug #25279: 60_umc-system/33_umc_users_user_unset_userexpiry
+
+ -- Arvid Requate <requate@univention.de>  Mon, 12 Jan 2015 17:56:20 +0100
+
 ucs-test (5.0.89-2) unstable; urgency=medium
 
   * Bug #36330: Improved 61_udm-users/26_password_expire_date
