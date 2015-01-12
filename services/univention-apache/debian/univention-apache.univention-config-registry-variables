@@ -96,7 +96,7 @@ Categories=service-apache
 
 [apache2/ssl/v3]
 Description[de]=Aktiviert das unsichere Protokoll SSL 3.0 (Standard: no)
-Description[en]=Enables the insecure protocoll SSL 3.0 (Default: no)
+Description[en]=Enables the insecure protocol SSL 3.0 (Default: no)
 Type=bool
 Categories=service-apache
 
