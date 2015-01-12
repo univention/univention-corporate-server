@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash 
 ## desc: Check for rejected objects
 ## exposure: safe
-## bugs: [37011]
+## bugs: [37011, 37324]
 ## packages:
 ## - univention-s4-connector
 
@@ -20,4 +20,3 @@ if [ $? = 0 ]; then
 fi
 
 exit $RETVAL
-

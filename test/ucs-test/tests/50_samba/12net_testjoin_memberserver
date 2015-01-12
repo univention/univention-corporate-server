@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: "Perform a 'net rpc/ads testjoin' for memberserver"
+## desc: "Perform a 'net rpc/ads testjoin' on memberserver"
 ## exposure: safe
 ## roles: [memberserver]
 ## bugs: [35590]
