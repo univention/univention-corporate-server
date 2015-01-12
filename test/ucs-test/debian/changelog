@@ -1,3 +1,15 @@
+ucs-test (4.0.199-1) unstable; urgency=low
+
+  * Bug #37520 : add new script 101_initial_ssl_certificate_permissions
+
+ -- Ammar Najjar <najjar@univention.de>  Mon, 12 Jan 2015 12:41:07 +0100
+
+ucs-test (4.0.198-1) unstable; urgency=low
+
+  * Bug #37401: add time.sleep untill bug #37516 is fixed.
+
+ -- Ammar Najjar <najjar@univention.de>  Mon, 12 Jan 2015 11:42:10 +0100
+
 ucs-test (4.0.197-2) unstable; urgency=medium
 
   * Bug #37401: revert python version to 2.6 in ldap_extension_utils.py
