@@ -13,6 +13,7 @@ Variables: apache2/ssl/certificate
 Variables: apache2/ssl/key
 Variables: apache2/ssl/ca
 Variables: apache2/ssl/certificatechain
+Variables: apache2/ssl/v3
 
 Type: module
 Module: extension.py

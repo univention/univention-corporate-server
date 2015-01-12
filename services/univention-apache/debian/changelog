@@ -1,3 +1,11 @@
+univention-apache (7.0.16-2) unstable; urgency=low
+
+  * Disable SSLv2 and SSLv3. These are legacy protocols with known security
+    problems. Support can be re-enabled by setting the UCR variable
+    apache2/ssl/v3 to "true" (Bug #36232).
+	
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 12 Jan 2015 11:41:45 +0100
+
 univention-apache (7.0.16-1) unstable; urgency=medium
 
   * Bug #36549: cleanup svg graphics that caused problems in IE

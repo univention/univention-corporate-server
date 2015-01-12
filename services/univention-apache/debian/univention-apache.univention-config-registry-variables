@@ -94,6 +94,12 @@ Description[en]=The path to a file containing CA certificates. They are sent to 
 Type=str
 Categories=service-apache
 
+[apache2/ssl/v3]
+Description[de]=Aktiviert das unsichere Protokoll SSL 3.0 (Standard: no)
+Description[en]=Enables the insecure protocoll SSL 3.0 (Default: no)
+Type=bool
+Categories=service-apache
+
 [apache2/documentroot]
 Description[de]=Das Wurzelverzeichnis für die von Apache bereitgestellten Daten.
 Description[en]=The root directory for the data served by Apache.
