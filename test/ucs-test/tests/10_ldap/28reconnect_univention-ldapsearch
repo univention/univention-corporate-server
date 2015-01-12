@@ -16,36 +16,23 @@
 
 undo ucr_restore
 
-check_slapd_process_exists()
-{
-while ! output="$(pgrep "slapd" 2>&1)"
-do
-    echo "Looking for slapd process after restart"
-    let counter=$counter+1
-    if [ "$counter" = 5 ]; then
-        fail_test 1 "Could not find slapd process after restart in 15 seconds"
-        break
-    fi
-    sleep 3
-done
-}
-
 stop_and_start_slapd_with_delay()
 {
 	delay=$1
-        # Check the slapd exists after restart (Bug #37299)
-	{ /etc/init.d/slapd stop; sleep $delay; /etc/init.d/slapd start; sleep 2; counter=0; check_slapd_process_exists;} &
+        debug "Stopping and starting slapd with $delay seconds delay\n"
+	{ /etc/init.d/slapd stop; sleep $delay; /etc/init.d/slapd start;} &
 }
 
 do_search ()
 {
-	univention-ldapsearch -s base dn -LLL | grep ^dn
+	debug "Performing univention-ldapsearch\n"
+        univention-ldapsearch -s base dn -LLL | grep ^dn
 }
 
 wait_for_slapd()
 {
-	# sleep for a short moment otherwise the tests may get confused
-	sleep 3
+	debug "Waiting for slapd\n"
+        sleep 3
 }
 
 stop_and_start_slapd_with_delay 5
