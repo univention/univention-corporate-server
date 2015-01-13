@@ -5,7 +5,7 @@ src: univention-directory-replication
 fix: 8.0.2-5.93.201412101307
 version: [0]
 desc: |
-  This update addresses the following issues:
-  * Fix shutdown of univention-directory-listener when failed.ldif exists.
+  This update addresses the following issue:
+  * Fix shutdown of univention-directory-listener if failed.ldif exists.
 bug:
  - 37291
