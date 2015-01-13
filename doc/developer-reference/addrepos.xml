@@ -1,0 +1,210 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
+]>
+<chapter id="chap:repoadd">
+  <title>Integration of external repositories</title>
+
+  <para>
+	Sometimes it might be necessary to add external repositories, e.g. when testing an application
+	which is developed for the the &ucsUAS;. Such components can be registered via &ucsUMC; or in
+	&ucsUCR;.
+  </para>
+
+  <para>
+	Components can be versioned. This ensures that only components are installed that are compatible
+	with a UCS version.
+  </para>
+
+  <variablelist>
+	<varlistentry>
+	  <term>empty or unset</term>
+	  <listitem>
+		<simpara>
+		  All versions of the same major
+		  number will be used. If for example UCS-4.2 is installed, all repositories of the
+		  component with version numbers 4.0, 4.1 and 4.2 will be used if available.
+		</simpara>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><literal>current</literal></term>
+	  <listitem>
+		<simpara>
+		  <emphasis>current</emphasis> Using the keyword <emphasis>current</emphasis> will
+		  likewise include all versions of the same major version. Additionally it will block all
+		  minor and major upgrades of the installed UCS system until the respective component is
+		  also available for the new release. Patch level and errata updates are not affected. If
+		  for example UCS-3.1 is currently installed and UCS-3.2 or UCS-4.0 is already available,
+		  the release updated will be postponed until the component is also available for version
+		  3.2 and 4.0 respectively.
+		</simpara>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><emphasis>major.minor</emphasis></term>
+	  <listitem>
+		<simpara>
+		  By specifying an explicit version number only the
+		  specified version of the component will be used. Release updates of the system will not
+		  be hindered by such components. Multiple versions can be given using commas as
+		  delimiters, for example <emphasis>3.2,4.0</emphasis>.
+		</simpara>
+	  </listitem>
+	</varlistentry>
+  </variablelist>
+  
+  <section id="computers:Integration_of_repository_components_via_the_Univention_Management_Console">
+	<title>Integration of repository components via &ucsUMC;</title>
+	<para>
+	  A list of the integrated repository components is  in the
+	  UMC module <guimenu>Repository Settings</guimenu>.
+	  Applications which have been added via the Univention App Center are still listed
+	  here, but should be managed via the <guimenu>App Center</guimenu> module.
+	</para>
+	
+	<para>
+	  A further component can be set up with <guimenu>Add</guimenu>. The
+	  <guimenu>Component name</guimenu> identifies the component on the repository
+	  server. A free text can be entered under <guimenu>Description</guimenu>, for
+	  example, for describing the functions of the component in more detail.
+	</para>
+	
+	<para>
+	  The host name of the download server is to be entered in the input field
+	  <guimenu>Repository server</guimenu>, and, if necessary, an additional file
+	  path in <guimenu>Repository prefix</guimenu>.
+	</para>
+
+	<para>
+	  A <guimenu>Username</guimenu> and <guimenu>Password</guimenu> can be configured
+	  for repository servers which require authentication.
+	</para>
+
+	<para>
+	  A software component is only available once <guimenu>Enable this
+	  component</guimenu> has been activated.
+	</para>
+
+	<para>
+	  A differentiation is also made for components between
+	  <emphasis>maintained</emphasis> and <emphasis>unmaintained</emphasis>
+	  components.
+	</para>
+  </section>
+
+  <section id="computers::softwaremanagement::repoadducr">
+	<title>Integration of repository components via Univention Configuration Registry</title>
+	<para>
+	  The following &ucsUCR; variables can be used to register a repository
+	  component. It is also possible to activate further functions here which cannot
+	  be configured via the UMC module. <emphasis>NAME</emphasis> stands for the
+	  component's name:
+	</para>
+	<variablelist>
+	  <varlistentry>
+		<term><command>repository/online/component/NAME/server</command></term>
+		<listitem>
+		  <simpara>
+			The repository server on which the components are available.
+			If this variable is
+			not set, the server from the &ucsUCRV; <envar>repository/online/server</envar>
+			uses.
+		  </simpara>
+		</listitem>
+	  </varlistentry>
+	  <varlistentry>
+		<term><command>repository/online/component/NAME</command></term>
+		<listitem>
+		  <simpara>
+			This
+			variable must be set to <emphasis>enabled</emphasis> if the components are to
+			be mounted.
+		  </simpara>
+		</listitem>
+	  </varlistentry>
+	  <varlistentry>
+		<term><command>repository/online/component/NAME/localmirror</command></term>
+		<listitem>
+		  <simpara>
+			This variable can be used to configure whether the component is mirrored locally.
+			In combination with the &ucsUCRV;
+			<envar>repository/online/component/NAME/server</envar>, a configuration
+			can be set up so that the component is mirrored, but not activated, or that it
+			is activated, but not mirrored.
+		  </simpara>
+		</listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+		<term><command>repository/online/component/NAME/description</command></term>
+		<listitem>
+		  <simpara>
+			A descriptive name for the repository.
+		  </simpara>
+		</listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+		<term><command>repository/online/component/NAME/prefix</command></term>
+		<listitem>
+		  <simpara>
+			Defines the URL prefix which is used on the repository server.
+			This variable is usually not set.
+		  </simpara>
+		</listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+		<term><command>repository/online/component/NAME/username</command></term>
+		<listitem>
+		  <simpara>
+			If the
+			repository server requires authentication, the user name can be entered in this
+			variable.
+		  </simpara>
+		</listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+		<term><command>repository/online/component/NAME/password</command></term>
+		<listitem>
+		  <simpara>
+			If the
+			repository server requires authentication, the password can be entered in this
+			variable.
+		  </simpara>
+		</listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+		<term>
+		  <command>repository/online/component/NAME/version</command>
+		</term>
+		<listitem>
+		  <simpara>
+			This variable controls the versions to include, see
+			<xref linkend="chap:repoadd"/> for details.
+		  </simpara>
+		</listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+		<term><command>repository/online/component/NAME/defaultpackages</command></term>
+		<listitem>
+		  <simpara>
+			A list of package names separated by blanks.
+			The UMC module <emphasis>Repository Settings</emphasis>
+			offers the installation of this component if at least one of
+			the packages is not installed. Specifying the package list eases the subsequent
+			installation of components.
+		  </simpara>
+		</listitem>
+	  </varlistentry>
+	</variablelist>
+
+  </section>
+</chapter>
