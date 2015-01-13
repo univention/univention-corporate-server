@@ -43,10 +43,12 @@ enable_sysvol_sync() {
 ### Cleanup function
 cleanup() {
 	[ -n "$gpo_cn" ] || exit 0
-	samba-tool gpo del "$gpo_name" -U "$admin_account%$tests_domainadmin_pwd"
+	samba-tool gpo del "$gpo_cn" -U "$admin_account%$tests_domainadmin_pwd"
 	[ -n "$gpo_path" ] && rm -rf "$gpo_path"
 
+	ucr set repository/online/unmaintained=yes
 	univention-install cifs-utils >/dev/null
+	ucr set repository/online/unmaintained=no
 	tmp_dir=$(mktemp -d)
 	mount -t cifs -o user="$admin_account" -o password="$tests_domainadmin_pwd" \
 		"//$samba4_sysvol_sync_host/sysvol" "$tmp_dir"
