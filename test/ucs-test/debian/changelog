@@ -1,3 +1,9 @@
+ucs-test (5.0.90-2) unstable; urgency=low
+
+  * Bug #33751: Workaround for occasional timing issue
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Jan 2015 23:17:46 +0100
+
 ucs-test (5.0.90-1) unstable; urgency=low
 
   * Bug #37331: 61_udm-users/22_execute_udm_users_list_as_administrator:

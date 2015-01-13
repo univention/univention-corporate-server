@@ -98,6 +98,11 @@ start_gpo_ntacl=$(samba-tool ntacl get --as-sddl "$gpo_path")
 test_account=join-backup
 test_account_sid=$(univention-s4search samaccountname="$test_account" objectSid | ldapsearch-wrapper | sed -n 's/^objectSid: //p')
 
+## This sleep 1 seems necessary to avoid occasional test failures where rsync
+## is not considering the local modification time to be more recent than the
+## remote one due to a "same second" issue
+sleep 1
+
 ### Update the NTACLs on the local SYSVOL share via SMB
 test_ntace="(A;OICI;0x001200a9;;;$test_account_sid)"
 tmp_gpo_ntacl="${start_gpo_ntacl}$test_ntace"
