@@ -1,0 +1,31 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: openjdk-7
+fix: 7u71-2.5.3-2.11.201501120921
+version: [0]
+desc: |
+ Multiple security issues have been fixed in OpenJDK:
+  TLS/SSL handshake attack (CVE-2014-6457)
+  Insecure logging (CVE-2014-6502)
+  Information disclosure in Hotspot (CVE-2014-6504)
+  Insufficient permission checks in system logging (CVE-2014-6506)
+  Information disclosure in ICU/2D (CVE-2014-6511)
+  Missing source checks in datagram sockets (CVE-2014-6512)
+  XEE in the Stax parser (CVE-2014-6517)
+  Memmory corruption in the JVM (CVE-2014-6519)
+  Insufficient name checks for resource bundles (CVE-2014-6531)
+  Incorrect exception handling in CipherInputStream (CVE-2014-6558)
+bug:
+ - 36985
+cve:
+ - CVE-2014-6457
+ - CVE-2014-6502
+ - CVE-2014-6504
+ - CVE-2014-6506
+ - CVE-2014-6511
+ - CVE-2014-6512
+ - CVE-2014-6517
+ - CVE-2014-6519
+ - CVE-2014-6531
+ - CVE-2014-6558
