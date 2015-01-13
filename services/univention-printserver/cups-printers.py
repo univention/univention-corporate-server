@@ -34,6 +34,7 @@ __package__='' 	# workaround for PEP 366
 import listener
 import os
 import time
+import subprocess
 import univention.debug as ud
 import univention.config_registry
 ## for the ucr commit below in postrun we need ucr configHandlers
