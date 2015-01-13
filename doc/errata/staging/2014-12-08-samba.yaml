@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: samba
-fix: 2:4.2.0~rc2-1.716.201501071353
+fix: 2:4.2.0~rc2-1.717.201501091014
 version: [0]
 desc: |
   This update fixes the following issue:
@@ -10,4 +10,4 @@ desc: |
     membership check.
   * Quick successions of samba init script restart could leave behind
     a single unresponsive samba process.
-bug: [37233, 37343]
+bug: [37233, 37343, 37496]
