@@ -5,7 +5,7 @@
 	<para>
 	  Die in UCS integrierte Softwareverteilung bietet umfangreiche
 	  Möglichkeiten für den Rollout und die Aktualisierung von UCS-Installationen.
-	  Sicherheits- und Versionsupdates können über &ucsUMC;, über ein Kommandozeilen-Tool
+	  Sicherheits- und Versionsupdates können über die &ucsUMC;, über ein Kommandozeilen-Tool
 	  und richtliniengesteuert installiert werden. Dies wird in
 	  <xref linkend="software::ucs-updates"/> beschrieben. Die UCS-Softwareverteilung
 	  unterstützt nicht die Aktualisierung von Microsoft Windows-Systemen.
@@ -28,12 +28,6 @@
 	  <xref linkend="computers::softwaremanagement::installsoftware"/> vorgestellt.
 	  Die Installation von Versions- und Sicherheitsupdates kann über Richtlinien
 	  automatisiert werden, siehe <xref linkend="computers::softwaremanagement::maintenancepolicy"/>
-	</para>
-
-	<para>
-	  Der Funktionsumfang einer UCS-Installation kann durch die Einbindung weiterer
-	  Repository-Komponenten erweitert werden, siehe <xref linkend="computers::softwaremanagement::repoadd"/>.
-	  Solche Komponenten werden sowohl von Univention wie auch von Drittanbietern bereitgestellt.
 	</para>
 
 	<para>
@@ -74,26 +68,17 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		<emphasis>Patchlevel Releases</emphasis> beinhalten gegenüber einem Minor Release
-		weniger Änderungen. Der Fokus liegt hier hauptsächlich auf der Korrektur von
-		Fehlern. Die Kompatibilität zur vorherigen Version hinsichtlich
-		Funktionsweise, Schnittstellen und Bedienung wird eingehalten, sofern eine
-		Änderung nicht aufgrund eines kritischen Fehlers und mit zumutbarem Aufwand
-		unumgänglich ist. Sollte eine Änderung indes unvermeidbar sein, so wird bei der
-		Veröffentlichung der neuen Version in Release Notes darauf hingewiesen.
-		Neue Patchlevelversionen werden ca. alle drei Monate veröffentlicht.
-	  </simpara> </listitem>
+		Univention veröffentlicht fortlaufend <emphasis>Errata-Updates</emphasis>. Errata-Updates
+		enthalten Korrekturen für Sicherheitslücken und Bugfixes/kleinere Erweiterungen, die
+		zeitnah für Kundensysteme zur Verfügung gestellt werden sollen. Eine Aufstellung aller
+		Errata-Updates findet sich unter <ulink url="http://errata.univention.de"/>.
+	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Neben der geplanten, langfristigen Pflege und Weiterentwicklung von UCS
-		durch Major- , Minor- und Patchlevelversionen, veröffentlicht Univention nach
-		Bedarf <emphasis>Errata-Updates</emphasis>. Errata-Updates enthalten
-		Korrekturen für Sicherheitslücken oder Programmfehler,
-		die zeitnah noch vor dem nächsten Patchlevel-Update behoben werden müssen.
-		Eine Aufstellung aller Errata-Updates findet sich unter
-		<ulink url="http://errata.univention.de"/>. Errata-Updates können auch für
-		Komponenten bereitgestellt werden.
-	  </simpara></listitem>
+		<emphasis>Patchlevel Releases</emphasis> fassen ca. alle drei Monate die bis dahin
+		veröffentlichten Errata-Updates zusammen.
+	  </simpara> </listitem>
+
 	</itemizedlist>
 
 	<para>
@@ -213,7 +198,7 @@
 	<title>Aktualisierung von UCS-Systemen</title>
 	<para>
 	  UCS-Systeme können auf zwei Wegen aktualisiert werden; entweder pro einzelnem System
-	  (über &ucsUMC; oder auf der Kommandozeile) oder für größere Gruppen von
+	  (über die &ucsUMC; oder auf der Kommandozeile) oder für größere Gruppen von
 	  UCS-Systemen automatisiert über eine UMC-Rechner-Richtlinie.
 	</para>
 
@@ -239,16 +224,10 @@
 		eine Release-Version älter sein.
 	  </para>
 
-	  <para>
-		Es ist zu beachten, daß durch als kritisch markierte Komponenten
-		ggf. ein Upgrade auf das nächste Minor- oder Major-Release verhindert
-		werden kann. Weiterführende Hinweise finden sich im
-		<xref linkend="computers::softwaremanagement::repoadd"/>
-	  </para>
 	</section>
 
 	<section id="computers:Aktualisierung_eines_einzelnen_Systems_in_der_UMC">
-	  <title>Aktualisierung eines einzelnen Systems in &ucsUMC;</title>
+	  <title>Aktualisierung eines einzelnen Systems in der &ucsUMC;</title>
 	  <para>
 		Mit dem UMC-Modul <guimenu>Software-Aktualisierung</guimenu> können Versions- und
 		Errata-Updates installiert werden.
@@ -501,7 +480,7 @@
 		einzurichten, muss der Befehl <command>univention-repository-create</command> als
 		Benutzer <emphasis>root</emphasis> aufgerufen werden. Der initiale Paketbestand wird
 		von einer Installations-DVD eingelesen, mit dem Parameter <emphasis>--iso</emphasis>
-		kann hier auch ein ISO-Image übergeben werden. UCS ist als 32 und 64 Bit-DVD
+		kann hier auch ein ISO-Image übergeben werden. UCS ist nur als 64 Bit-DVD
 		verfügbar. Das Repository wird von <command>univention-repository-create</command>
 		mit der Architektur des angegebenen Installationsmediums erzeugt. Wird eine Umgebung
 		betrieben, in der sowohl 32-, als auch 64 Bit-Pakete bereitgestellt werden sollen,
@@ -684,8 +663,8 @@ apt-cache search fax
 	<section id="computers::softwaremanagement::packagelists"><title>Richtlinienbasierte Installation/Deinstallation von einzelnen Paketen über Paketlisten</title>
 	<para>
 	  Mit Paketlisten kann richtlinienbasiert Software installiert und
-	  entfernt werden. Dadurch lassen sich auf große Stückzahlen an
-	  Rechnersystemen zentral mit neuer Software bestücken.
+	  entfernt werden. Dadurch lassen sich auch große Stückzahlen an
+	  Rechnersystemen zentral mit neuer Software versehen.
 	</para>
 
 	<para>
@@ -826,236 +805,6 @@ apt-cache search fax
 	</table>
   </section>
 
-  <section id="computers::softwaremanagement::repoadd">
-	<title>Integration von Komponenten, die nicht über das Univention App Center bereitgestellt werden</title>
-	<para>
-	  Ein Repository enthält in der Grundeinstellung nur die Pakete des
-	  Standard-UCS-Umfangs. Weitere Komponenten können eingebunden werden,
-	  sowohl von Univention - etwa die Komponente &ucsUAS; - oder von Drittanbietern
-	  wie Groupware-Herstellern.
-	  Zusätzliche Komponenten werden in der Regel über das Univention App Center integriert
-	  (siehe <xref linkend="software:appcenter"/>). Die
-	  folgenden Schritte sind nur notwendig für Komponenten,
-	  die nicht über das Univention App Center bereitgestellt werden.
-	</para>
-
-	<para>
-	  Weitere Komponenten können über &ucsUMC; oder in &ucsUCR;
-	  registriert werden.
-	</para>
-
-	<para>
-	  Komponenten können versioniert werden. Dies stellt sicher, dass nur zu einer
-	  UCS-Version kompatible Komponenten installiert werden. Bei der Installation über das
-	  Univention App Center wird die Versionskompatibilität automatisch sichergestellt.
-	</para>
-
-	<variablelist>
-	  <varlistentry>
-		<term>leer bzw. nicht gesetzt</term>
-		<listitem>
-		  <simpara>
-			Es werden automatisch
-			alle Versionen derselben Major-Version eingebunden. Ist z.B. aktuell UCS
-			4.2 installiert, so werden die Repositories für die Komponente in den Versionen
-			4.0, 4.1 und 4.2 eingebunden, sofern diese existieren.
-		  </simpara>
-		</listitem>
-	  </varlistentry>
-	  <varlistentry>
-		<term><literal>current</literal></term>
-		<listitem>
-		  <simpara>
-			Durch das Schlüsselwort <emphasis>current</emphasis> werden
-			ebenfalls alle Versionen der selben Major-Version eingebunden. Zusätzlich
-			wird aber ein Minor- oder Major-Upgrade des installierten UCS-Systems
-			solange verhindert, bis auch die so markierte Komponente für die neue
-			Version verfügbar ist; Patchlevel- oder Errata-Updates sind davon nicht
-			betroffen. Ist z.B. aktuell UCS-3.1 installiert, UCS-3.2 oder UCS-4.0
-			aber bereits verfügbar, so erfolgt dennoch solange kein Upgrade auf die
-			neue Version, bis auch die Komponente für die Version 3.2 bzw. 4.0
-			verfügbar ist.
-		  </simpara>
-		</listitem>
-	  </varlistentry>
-	  <varlistentry>
-		<term><emphasis>major.minor</emphasis></term>
-		<listitem>
-		  <simpara>
-			Durch die Angabe einer expliziten Version wird die
-			Komponente nur in dieser Version eingebunden. UCS-Release-Updates werden
-			dadurch nicht blockiert. Mehrere Versionen können durch Komma getrennt
-			angegeben werden, z.B. <emphasis>3.2,4.0</emphasis>.
-		  </simpara>
-		</listitem>
-	  </varlistentry>
-	</variablelist>
-
-	<section
-		id="computers:Integration_von_Repository-Komponenten_ueber_die_Univention_Management_Console">
-	  <title>Integration von Repository-Komponenten über &ucsUMC;</title>
-	  <para>
-		Im UMC-Modul <guimenu>Repository-Einstellungen</guimenu> ist
-		eine Aufstellung der eingebundenen Repository-Komponenten. Applikationen, die
-		über das Univention App Center eingebunden wurden, werden hier weiterhin
-		aufgeführt, sollten aber über das Modul <guimenu>App Center</guimenu>
-		verwaltet werden.
-	  </para>
-
-	  <para>
-		Mit <guimenu>Neu</guimenu> kann eine weitere Komponente eingerichtet
-		werden. Der <guimenu>Name der Komponente</guimenu> identifiziert die
-		Komponente auf dem Repository-Server. Unter
-		<guimenu>Beschreibung</guimenu> kann ein frei wählbarer Text angegeben
-		werden, der z.B. detaillierter auf die Funktion der Komponente
-		eingeht.
-	  </para>
-
-	  <figure id="software-repocomponent"><title>Konfiguration einer Repository-Komponente in UMC</title>
-	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/software_repository_de2.png"/>
-	  </figure>
-
-	  <para>
-		Der Rechnername des Download-Servers ist im Eingabefeld
-		<guimenu>Repository-Server</guimenu> anzugeben und, sofern notwendig,
-		unter <guimenu>Repository-Präfix</guimenu> ein eventueller zusätzlicher
-		Dateipfad.
-	  </para>
-
-	  <para>
-		Für Repository-Server, die eine Authentifizierung erfordern, können
-		<guimenu>Benutzername</guimenu> und <guimenu>Passwort</guimenu> konfiguriert
-		werden.
-	  </para>
-
-	  <para>
-		Eine Software-Komponente ist erst verfügbar, wenn sie mit
-		<guimenu>Diese Komponenten aktivieren</guimenu> aktiviert wurde.
-	  </para>
-
-	  <para>
-		Auch für Komponenten wird zwischen <emphasis>maintained</emphasis> und
-		<emphasis>unmaintained</emphasis>-Komponenten unterschieden, siehe
-		<xref linkend="software::configrepo"/>.
-	  </para>
-	</section>
-
-	<section id="computers::softwaremanagement::repoadducr">
-	  <title>Integration von Repository-Komponenten über Univention Configuration Registry</title>
-	  <para>
-		Mit den folgenden &ucsUCR;-Variablen kann eine Repository-Komponente
-		registriert werden. Hier können auch einige weitergehende Funktionen
-		aktiviert werden, die über das UMC-Modul nicht konfiguriert werden
-		können. <emphasis>NAME</emphasis> steht für den Namen der Komponente.
-	  </para>
-
-	  <variablelist>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME/server</command></term>
-		  <listitem>
-			<simpara>
-			  Der Repository-Server auf
-			  dem die Komponente zur Verfügung gestellt wird. Wird diese Variable nicht
-			  gesetzt, dann wird der Server aus der &ucsUCRV; <envar>repository/online/server</envar> verwendet.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME</command></term>
-		  <listitem>
-			<simpara>
-			  Diese Variable muss auf
-			  <emphasis>enabled</emphasis> gesetzt werden, wenn die Komponente eingebunden werden
-			  soll.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME/localmirror</command></term>
-		  <listitem>
-			<simpara>
-			  Mit dieser Variable kann
-			  konfiguriert werden, ob die Komponente lokal gespiegelt wird. In Verbindung
-			  mit der &ucsUCRV; <envar>repository/online/component/NAME/server</envar> kann so
-			  konfiguriert werden, dass eine Komponente zwar gespiegelt, aber nicht
-			  aktiviert wird oder dass sie zwar aktiviert, aber nicht gespiegelt wird.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME/description</command></term>
-		  <listitem>
-			<simpara>
-			  Ein beschreibender Name für das Repository.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME/prefix</command></term>
-		  <listitem>
-			<simpara>
-			  Definiert die URL-Präfix, die
-			  auf dem Repository-Server verwendet wird. In der Regel muss diese Variable
-			  nicht gesetzt werden.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME/username</command></term>
-		  <listitem>
-			<simpara>
-			  Wenn der Repository-Server
-			  eine Authentifizierung erfordert, kann in dieser Variable der Benutzername
-			  eingetragen werden.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME/password</command></term>
-		  <listitem>
-			<simpara>
-			  Wenn der Repository-Server
-			  eine Authentifizierung erfordert, kann in dieser Variable das der Passwort
-			  eingetragen werden.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME/version</command></term>
-		  <listitem>
-			<simpara>
-			  Über diese Variable kann die
-			  einzubindende Version angegeben werden, siehe
-			  <xref linkend="computers::softwaremanagement::repoadd"/>.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME/defaultpackages</command></term>
-		  <listitem>
-			<simpara>
-			  Über diese Variable
-			  kann eine leerzeichenseparierte Liste an Paketnamen angegeben
-			  werden. Im UMC-Modul <emphasis>Repository Einstellungen</emphasis> wird die
-			  Installation der Komponente angeboten, wenn mindestens eines der Pakete
-			  nicht installiert ist. Die Angabe der Paketliste vereinfacht dadurch die
-			  Nachinstallation von Komponenten.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-	  </variablelist>
-	  <para>
-		Um beispielsweise die UCS@school-Komponente einzubinden müssen
-		folgende Variablen gesetzt werden:
-	  </para>
-	  <programlisting language="sh">
-ucr set repository/online/component/ucsschool/description="UCS@school-Pakete" \
- repository/online/component/ucsschool/server=updates.software-univention.de \
- repository/online/component/ucsschool=yes
-	  </programlisting>
-	</section>
-  </section>
-
   <section id="computers::softwaremonitor">
 	<title>Zentrale Überwachung von Softwareinstallationsständen mit dem Software-Monitor</title>
 	<para>
@@ -1075,7 +824,7 @@ ucr set repository/online/component/ucsschool/description="UCS@school-Pakete" \
 
 	<para>
 	  UCS-Systeme aktualisieren ihre Einträge bei der Installation, Entfernung und
-	  Aktualisierung von Software selbsttätig. Das System, auf dem der Software-Monitor
+	  Aktualisierung von Software automatisch. Das System, auf dem der Software-Monitor
 	  betrieben wird, wird dabei durch den DNS-Service-Record <command>_pkgdb._tcp</command>
 	  lokalisiert.
 	</para>

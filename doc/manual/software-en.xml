@@ -31,12 +31,6 @@
 	</para>
 
 	<para>
-	  The functional scope of a UCS installation can be expanded by integrating
-	  further repository components, see <xref linkend="computers::softwaremanagement::repoadd"/>.
-	  These components are provided both by Univention and by third parties.
-	</para>
-
-	<para>
 	  The software monitor provides a tool with which all package installations
 	  statuses can be centrally stored in a database, see <xref
 	  linkend="computers::softwaremonitor"/>.
@@ -72,27 +66,19 @@
 		the new version is published.
 	  </simpara></listitem>
 
+
 	  <listitem><simpara>
-		<emphasis>Patchlevel releases</emphasis> include fewer changes than a
-		minor release. The focus here is mainly on correcting
-		errors. Compatibility with the previous version in terms of the functioning,
-		interfaces and operation is maintained insofar as a change cannot be avoided
-		without excessive efforts or corrects a critical error. Should a change,
-		however, prove unavoidable, this will be noted in the release notes when the
-		new version is published. New patch level versions are released approximately
-		every three months.
+		Univention continuously releases <emphasis>errata updates</emphasis>. Errata updates
+		provide fixes for security vulnerabilities and bugfixes/smaller enhancements to make them
+		available to customer systems quickly. An overview of all errata updates can be found at
+		<ulink url="http://errata.univention.de/"/>.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Alongside the planned, long-term maintenance and on-going development
-		of UCS via major, minor and patch level versions, Univention also publishes
-		<emphasis>errata updates</emphasis> as necessary. Errata updates include the
-		corrections for security vulnerabilities or program errors which need
-		to be resolved quickly prior to the release of the next patch level update. An
-		overview of all errata updates can be found at
-		<ulink url="http://errata.univention.de/"/>. Errata updates can also be provided
-		for components.
-	  </simpara></listitem>
+		<emphasis>patchlevel releases</emphasis> are released approx. every three months and combine
+		all errata updates published until then.
+	  </simpara> </listitem>
+
 	</itemizedlist>
 
 	<para>
@@ -233,10 +219,6 @@
 		only be one release version older compared with the &ucsMaster;.
 	  </para>
 
-	  <para>
-		It should be noted, that components marked as critical can block an upgrade to
-		the next minor or major release. More information can be found in <xref linkend="computers::softwaremanagement::repoadd"/>.
-	  </para>
 	</section>
 
 	<section id="computers:Updating_individual_systems_via_the_UMC">
@@ -497,7 +479,7 @@
 		To set up a repository, the <command>univention-repository-create</command> command
 		must be run as the <emphasis>root</emphasis> user. The initial package inventory is
 		imported from an installation DVD. The parameter <emphasis>--iso</emphasis> allows
-		importing from an ISO image. UCS is available as a 32-bit and a 64-bit DVD. The
+		importing from an ISO image. UCS is only available as a 64-bit DVD. The
 		repository is created by <command>univention-repository-create</command> with the
 		architecture of the specified installation medium. If an environment is operated in
 		which both 32-bit and 64-bit packages are needed, the following commands must be
@@ -823,225 +805,6 @@ apt-cache search fax
 	</table>
   </section>
 
-  <section id="computers::softwaremanagement::repoadd">
-	<title>Integration of components not provided through the Univention App Center</title>
-	<para>
-	  In the default setting, a repository only includes the packages of the standard
-	  UCS scope. Further components can be added both from Univention - e.g.,
-	  &ucsUAS; - or from third parties such as groupware manufacturers.
-	  Additional components are generally integrated via the Univention App Center (see <xref
-	  linkend="software:appcenter"/>). The following steps are only necessary for components
-	  which are not available from the Univention App Center.
-	</para>
-
-	<para>
-	  Additional components can be registered via &ucsUMC; or in &ucsUCR;.
-	</para>
-
-	<para>
-	  Components can be versioned. This ensures that only components are installed
-	  that are compatible with a UCS version.
-	  The version compatibility is automatically ensured during installation via the Univention
-	  App Center.
-	</para>
-
-	<variablelist>
-	  <varlistentry>
-		<term>empty or unset</term>
-		<listitem>
-		  <simpara>
-			All versions of the same major
-			number will be used. If for example UCS-4.2 is installed, all repositories of the
-			component with version numbers 4.0, 4.1 and 4.2 will be used if available.
-		  </simpara>
-		</listitem>
-	  </varlistentry>
-	  <varlistentry>
-		<term><literal>current</literal></term>
-		<listitem>
-		  <simpara>
-			<emphasis>current</emphasis> Using the keyword <emphasis>current</emphasis> will
-			likewise include all versions of the same major version. Additionally it will block all
-			minor and major upgrades of the installed UCS system until the respective component is
-			also available for the new release. Patch level and errata updates are not affected. If
-			for example UCS-3.1 is currently installed and UCS-3.2 or UCS-4.0 is already available,
-			the release updated will be postponed until the component is also available for version
-			3.2 and 4.0 respectively.
-		  </simpara>
-		</listitem>
-	  </varlistentry>
-	  <varlistentry>
-		<term><emphasis>major.minor</emphasis></term>
-		<listitem>
-		  <simpara>
-			By specifying an explicit version number only the
-			specified version of the component will be used. Release updates of the system will not
-			be hindered by such components. Multiple versions can be given using commas as
-			delimiters, for example <emphasis>3.2,4.0</emphasis>.
-		  </simpara>
-		</listitem>
-	  </varlistentry>
-	</variablelist>
-
-	<section id="computers:Integration_of_repository_components_via_the_Univention_Management_Console">
-	  <title>Integration of repository components via &ucsUMC;</title>
-	  <para>
-		A list of the integrated repository components is  in the
-		UMC module <guimenu>Repository Settings</guimenu>.
-		Applications which have been added via the Univention App Center are still listed
-		here, but should be managed via the <guimenu>App Center</guimenu> module.
-	  </para>
-
-	  <para>
-		A further component can be set up with <guimenu>Add</guimenu>. The
-		<guimenu>Component name</guimenu> identifies the component on the repository
-		server. A free text can be entered under <guimenu>Description</guimenu>, for
-		example, for describing the functions of the component in more detail.
-	  </para>
-
-	  <figure id="software-repocomponent">
-		<title>Configuring a repository component in UMC</title>
-		<graphic scalefit="1" width="90%" align="center" fileref="illustrations40/software_repository_en2.png"/>
-	  </figure>
-
-	  <para>
-		The host name of the download server is to be entered in the input field
-		<guimenu>Repository server</guimenu>, and, if necessary, an additional file
-		path in <guimenu>Repository prefix</guimenu>.
-	  </para>
-
-	  <para>
-		A <guimenu>Username</guimenu> and <guimenu>Password</guimenu> can be configured
-		for repository servers which require authentication.
-	  </para>
-
-	  <para>
-		A software component is only available once <guimenu>Enable this
-		component</guimenu> has been activated.
-	  </para>
-
-	  <para>
-		A differentiation is also made for components between
-		<emphasis>maintained</emphasis> and <emphasis>unmaintained</emphasis>
-		components, see <xref linkend="software::configrepo"/>.
-	  </para>
-	</section>
-
-	<section id="computers::softwaremanagement::repoadducr">
-	  <title>Integration of repository components via Univention Configuration Registry</title>
-	  <para>
-		The following &ucsUCR; variables can be used to register a repository
-		component. It is also possible to activate further functions here which cannot
-		be configured via the UMC module. <emphasis>NAME</emphasis> stands for the
-		component's name:
-	  </para>
-	  <variablelist>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME/server</command></term>
-		  <listitem>
-			<simpara>
-			  The repository server on which the components are available.
-			  If this variable is
-			  not set, the server from the &ucsUCRV; <envar>repository/online/server</envar>
-			  uses.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME</command></term>
-		  <listitem>
-			<simpara>
-			  This
-			  variable must be set to <emphasis>enabled</emphasis> if the components are to
-			  be mounted.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME/localmirror</command></term>
-		  <listitem>
-			<simpara>
-			  This variable can be used to configure whether the component is mirrored locally.
-			  In combination with the &ucsUCRV;
-			  <envar>repository/online/component/NAME/server</envar>, a configuration
-			  can be set up so that the component is mirrored, but not activated, or that it
-			  is activated, but not mirrored.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME/description</command></term>
-		  <listitem>
-			<simpara>
-			  A descriptive name for the repository.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME/prefix</command></term>
-		  <listitem>
-			<simpara>
-			  Defines the URL prefix which is used on the repository server.
-			  This variable is usually not set.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME/username</command></term>
-		  <listitem>
-			<simpara>
-			  If the
-			  repository server requires authentication, the user name can be entered in this
-			  variable.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME/password</command></term>
-		  <listitem>
-			<simpara>
-			  If the
-			  repository server requires authentication, the password can be entered in this
-			  variable.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-		<varlistentry>
-		  <term>
-			<command>repository/online/component/NAME/version</command>
-		  </term>
-		  <listitem>
-			<simpara>
-			  This variable controls the versions to include, see
-			  <xref linkend="computers::softwaremanagement::repoadd"/> for details.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-		<varlistentry>
-		  <term><command>repository/online/component/NAME/defaultpackages</command></term>
-		  <listitem>
-			<simpara>
-			  A list of package names separated by blanks.
-			  The UMC module <emphasis>Repository Settings</emphasis>
-			  offers the installation of this component if at least one of
-			  the packages is not installed. Specifying the package list eases the subsequent
-			  installation of components.
-			</simpara>
-		  </listitem>
-		</varlistentry>
-	  </variablelist>
-
-	  <para>
-		For example, to integrate the UCS@School component, the following variables
-		must be set:
-	  </para>
-	  <programlisting language="sh">
-ucr set repository/online/component/ucsschool/description="UCS@School packages" \
- repository/online/component/ucsschool/server=updates.software-univention.de \
- repository/online/component/ucsschool=yes
-	  </programlisting>
-	</section>
-  </section>
 
   <section id="computers::softwaremonitor">
 	<title>Central monitoring of software installation statuses with the software monitor</title>
