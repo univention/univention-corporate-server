@@ -1,0 +1,12 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-ldap
+fix: 11.0.11-2.731.201501141228
+version: [0]
+desc: |
+  This update addresses the following issue:
+  * The univentionUserTemplate object class has been adapted to include all
+    attributes from person, organizationalPerson and inetOrgPerson.
+bug:
+ - 35775

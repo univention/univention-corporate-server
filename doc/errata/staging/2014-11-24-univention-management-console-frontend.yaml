@@ -2,14 +2,15 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-management-console-frontend
-fix: 4.1.106-9.989.201412181228
+fix: 4.1.106-10.992.201501141148
 version: [0]
 desc: |
   * Adjusted the styling of the notification if JavaScript is disabled.
   * Internet Explorer now shows a warning message if a version <= 8 is
     being used.
-  * A exception was logged in the JavaScript console when the grid was resized.
-    This was disturbing and has therefore been removed.
+  * A exception was logged in the JavaScript console when the grid was resized
+    and when notification get hidden. This was disturbing and has therefore
+    been removed.
   * The JavaScript method umc.tools.umcpProgressSubCommand did not send the
     UMCP flavor along with a request and could therefore fail due to
     insufficient permissions.
