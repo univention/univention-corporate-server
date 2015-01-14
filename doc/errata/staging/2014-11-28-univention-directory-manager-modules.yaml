@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-directory-manager-modules
-fix: 10.0.29-11.1273.201412151212
+fix: 10.0.29-12.1274.201501141512
 version: [0]
 desc: |
   * Fixed setting of userexpiry when a user account is disabled.
@@ -11,9 +11,8 @@ desc: |
     have default values. They prevented changes via UMC when not having
     sufficient LDAP permission to change these attributes. Especially
     affected were User Password Admins and the users/self module.
-  * The internal method get_exception_msg() has been moved into the base
-    class of UDM exceptions. Additionally some exceptions now provide more
-    detailed information.
+  * The univention.admin.uexception.base class provides now more detailed
+    information about the error cause.
   * Error handling of UDM modules has been improved by adding default methods
     which contain information about the current edited object type.
   * The release policy is renamed to update policy. The layout is also
