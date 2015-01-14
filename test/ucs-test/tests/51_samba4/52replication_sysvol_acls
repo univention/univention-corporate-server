@@ -47,7 +47,7 @@ cleanup() {
 	[ -n "$gpo_path" ] && rm -rf "$gpo_path"
 
 	ucr set repository/online/unmaintained=yes
-	univention-install cifs-utils >/dev/null
+	univention-install -y cifs-utils >/dev/null
 	ucr set repository/online/unmaintained=no
 	tmp_dir=$(mktemp -d)
 	mount -t cifs -o user="$admin_account" -o password="$tests_domainadmin_pwd" \
