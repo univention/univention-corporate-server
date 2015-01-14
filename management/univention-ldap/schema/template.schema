@@ -65,10 +65,15 @@ objectclass ( 1.3.6.1.4.1.10176.1001.12.2.1 NAME 'univentionUserTemplate'
 	SUP top STRUCTURAL
 	MUST ( cn )
 	MAY ( description $ title $ o $ mail $ homeDirectory $ displayName $ gecos $ sambaHomePath $ sambaHomeDrive $ sambaLogonScript $
-          sambaProfilepath $ sambaAcctFlags $ sambaKickoffTime $ sambaPwdMustChange $ shadowMax $ shadowLastChange $ shadowExpire $
+	  sambaProfilepath $ sambaAcctFlags $ sambaKickoffTime $ sambaPwdMustChange $ shadowMax $ shadowLastChange $ shadowExpire $
 	  loginShell $ userDisabledPreset $ userHomeSharePreset $ userPrimaryGroupPreset $ userGroupsPreset $
-	  userPwdMustChangePreset $ userHomeSharePathPreset $ street $ postalCode $ l $ mail $ telephoneNumber $
+	  userPwdMustChangePreset $ userHomeSharePathPreset $ street $ postalCode $ l $ telephoneNumber $
 	  employeeType $ secretary $ mailPrimaryAddress $ mailAlternativeAddress $ mailGlobalSpamFolder $
-	  univentionMailHomeServer $ userOptionsPreset $ sambaMungedDial
-        )
+	  univentionMailHomeServer $ userOptionsPreset $ sambaMungedDial $ userPassword $ seeAlso $ x121Address $ registeredAddress $
+	  destinationIndicator $ preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $ internationaliSDNNumber $
+	  facsimileTelephoneNumber $ postOfficeBox $ postalAddress $ physicalDeliveryOfficeName $ ou $ st $ audio $ businessCategory $
+	  carLicense $ departmentNumber $ $ employeeNumber $ givenName $ homePhone $ homePostalAddress $ initials $ jpegPhoto $
+	  labeledURI $ mail $ manager $ mobile $ pager $ photo $ roomNumber $ uid $ userCertificate $
+	  x500uniqueIdentifier $ preferredLanguage $ userSMIMECertificate $ userPKCS12
 	)
+)
