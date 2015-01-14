@@ -72,8 +72,7 @@ objectclass ( 1.3.6.1.4.1.10176.1001.12.2.1 NAME 'univentionUserTemplate'
 	  univentionMailHomeServer $ userOptionsPreset $ sambaMungedDial $ userPassword $ seeAlso $ x121Address $ registeredAddress $
 	  destinationIndicator $ preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $ internationaliSDNNumber $
 	  facsimileTelephoneNumber $ postOfficeBox $ postalAddress $ physicalDeliveryOfficeName $ ou $ st $ audio $ businessCategory $
-	  carLicense $ departmentNumber $ $ employeeNumber $ givenName $ homePhone $ homePostalAddress $ initials $ jpegPhoto $
+	  carLicense $ departmentNumber $ employeeNumber $ givenName $ homePhone $ homePostalAddress $ initials $ jpegPhoto $
 	  labeledURI $ mail $ manager $ mobile $ pager $ photo $ roomNumber $ uid $ userCertificate $
-	  x500uniqueIdentifier $ preferredLanguage $ userSMIMECertificate $ userPKCS12
+	  x500uniqueIdentifier $ preferredLanguage $ userSMIMECertificate $ userPKCS12 )
 	)
-)
