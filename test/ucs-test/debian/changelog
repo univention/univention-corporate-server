@@ -1,3 +1,9 @@
+ucs-test (5.0.90-4) unstable; urgency=medium
+
+  * Bug #25279: Add two cases to 61_udm-users/26_password_expire_date
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Jan 2015 16:09:20 +0100
+
 ucs-test (5.0.90-3) unstable; urgency=medium
 
   * Bug #33751: Fix blocking fetch of cifs-utils
