@@ -208,6 +208,7 @@ class Testclass_GPO_Security_Descriptor(object):
 		if self.gponame:
 			cmd = ("samba-tool", "gpo", "del", self.gponame,
 				"-k", "no",
+				"-H", "ldap://%s" % (self.fqdn,),
 				"--username", self.adminaccount.username,
 				"--password", self.adminaccount.bindpw)
 
@@ -225,6 +226,7 @@ class Testclass_GPO_Security_Descriptor(object):
 
 		cmd = ("samba-tool", "gpo", "create", display_name,
 			"-k", "no",
+			"-H", "ldap://%s" % (self.fqdn,),
 			"--username", self.adminaccount.username,
 			"--password", self.adminaccount.bindpw)
 

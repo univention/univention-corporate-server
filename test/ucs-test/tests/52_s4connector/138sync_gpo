@@ -25,13 +25,22 @@ admin_account="$(ucs_convertDN2UID "$tests_domainadmin_account")"
 gpo_display_name="$(random_chars)"
 
 # create GPO
-samba-tool gpo create "$gpo_display_name" -U $admin_account%$tests_domainadmin_pwd || fail_bool 0 110
+samba-tool gpo create "$gpo_display_name" \
+		-k no \
+		-H ldap://"$hostname.$domainname" \
+		-U "$admin_account%$tests_domainadmin_pwd" || fail_bool 0 110
 UDM_container_msgpo_name="$(univention-s4search "(&(displayName=$gpo_display_name)(objectClass=groupPolicyContainer))" cn | sed -ne 's|^cn: ||p')"
+if [ -z "$UDM_container_msgpo_name" ]; then
+	fail_fast 110 "New GPO not found in local Samba Directory service"
+fi
 ad_wait_for_synchronization; fail_bool 0 110
 udm_exists "container/msgpo" "" "" "cn=Policies,cn=System,$ldap_base"; fail_bool 0 110
 
 # delete GPO
-samba-tool gpo del "$UDM_container_msgpo_name" -U $admin_account%$tests_domainadmin_pwd || fail_bool 0 110
+samba-tool gpo del "$UDM_container_msgpo_name" \
+		-k no \
+		-H ldap://"$hostname.$domainname" \
+		-U "$admin_account%$tests_domainadmin_pwd" || fail_bool 0 110
 ad_wait_for_synchronization; fail_bool 0 110
 udm_exists "container/msgpo" "" "" "cn=Policies,cn=System,$ldap_base"; fail_bool 1 110
 

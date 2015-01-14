@@ -1,3 +1,10 @@
+ucs-test (5.0.90-5) unstable; urgency=medium
+
+  * Bug #36980: specify that samba-tool shall create the GPO on the local host
+  * Bug #27290: specify that samba-tool shall create the GPO on the local host
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Jan 2015 18:57:38 +0100
+
 ucs-test (5.0.90-4) unstable; urgency=medium
 
   * Bug #25279: Add two cases to 61_udm-users/26_password_expire_date
