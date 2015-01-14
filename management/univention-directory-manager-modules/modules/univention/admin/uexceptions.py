@@ -40,15 +40,6 @@ _=translation.translate
 class base(Exception):
 	message = ''
 
-	def __str__(self):
-		msg = self.message
-		for arg in self.args:
-			if isinstance(arg, unicode):
-				arg = arg.encode('utf-8')
-			if str(arg) not in msg:
-				msg = '%s %s' % (msg, arg)
-		return msg
-
 class objectExists(base):
 	message=_('Object exists.')
 
@@ -60,6 +51,10 @@ class permissionDenied(base):
 
 class ldapError(base):
 	message=_('LDAP Error')
+
+	def __init__(self, *args, **kwargs):
+		self.original_exception = kwargs.pop('original_exception', None)
+		super(ldapError, self).__init__(*args, **kwargs)
 
 class ldapTimeout(base):
 	message=_('The specified timeout for the LDAP search has been exceeded.')

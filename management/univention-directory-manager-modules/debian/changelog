@@ -1,3 +1,10 @@
+univention-directory-manager-modules (10.0.29-12) unstable; urgency=medium
+
+  * Bug #30088: revert using __str__() for pretty error message due to too 
+  	many side effects. Pass the original exception to masked ldapError.
+
+ -- Florian Best <best@univention.de>  Wed, 14 Jan 2015 14:57:57 +0100
+
 univention-directory-manager-modules (10.0.29-11) unstable; urgency=low
 
   * Bug #33190: Added missing translation
