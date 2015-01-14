@@ -3,7 +3,7 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-4
 src: samba
 fix: 2:4.1.0-1.719.201501121304
-version: [2,3,4]
+version: [3,4]
 desc: |
   This update fixes the following issue:
   * Sharepoint document search showed no results due to failing group
