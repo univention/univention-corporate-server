@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.76-36) unstable; urgency=medium
+
+  * Bug #35099: remove referring objects from networks.
+
+ -- Florian Best <best@univention.de>  Wed, 14 Jan 2015 13:51:30 +0100
+
 univention-directory-manager-modules (9.0.76-35) unstable; urgency=low
 
   * Bug #36439: Added support for >, <, >=, <= in admin.filter

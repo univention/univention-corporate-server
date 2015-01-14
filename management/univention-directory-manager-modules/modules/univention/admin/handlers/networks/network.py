@@ -32,10 +32,12 @@
 
 import ipaddr
 import string
+import ldap
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
+import univention.admin.uexceptions
 import univention.admin.localization
 
 import univention.debug
@@ -237,6 +239,15 @@ class object(univention.admin.handlers.simpleLdap):
 				raise univention.admin.uexceptions.nextFreeIp
 		self.modify()
 
+	def _ldap_post_remove(self):
+		import univention.admin.handlers.computers.computer
+		filter_ = univention.admin.filter.expression('univentionNetworkLink', self.dn)
+		for computer in univention.admin.handlers.computers.computer.lookup(self.co, self.lo, filter_s=filter_):
+			try:
+				self.lo.modify(computer.dn, [('univentionNetworkLink', self.dn, '')])
+			except (univention.admin.uexceptions.base, ldap.LDAPError):
+				import traceback
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Failed to remove network %s from %s: %s' % (self.dn, computer.dn, traceback.format_exc()))
 
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
