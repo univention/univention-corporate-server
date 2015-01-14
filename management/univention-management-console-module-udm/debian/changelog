@@ -1,3 +1,10 @@
+univention-management-console-module-udm (5.1.25-39) unstable; urgency=medium
+
+  * Bug #30088: don't expect uexceptions.base.__str__ to print pretty error
+  	messages
+
+ -- Florian Best <best@univention.de>  Wed, 14 Jan 2015 14:56:28 +0100
+
 univention-management-console-module-udm (5.1.25-38) unstable; urgency=medium
 
   * Bug #35280: fix umcp commands when renaming the currently logged in user

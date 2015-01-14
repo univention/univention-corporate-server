@@ -303,7 +303,13 @@ class UDM_Error(Exception):
 		raise self
 
 	def __str__(self):
-		return str(self.exc)
+		msg = getattr(self.exc, 'message', '')
+		for arg in self.exc.args:
+			if isinstance(arg, unicode):
+				arg = arg.encode('utf-8')
+			if str(arg) not in msg:
+				msg = '%s %s' % (msg, arg)
+		return msg
 
 
 class UDM_ModuleCache(dict):
