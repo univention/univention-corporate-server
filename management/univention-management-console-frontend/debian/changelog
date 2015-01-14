@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.106-10) unstable; urgency=medium
+
+  * Bug #36645: don't print exception in javascript console when notifications
+  	get hide
+
+ -- Florian Best <best@univention.de>  Tue, 13 Jan 2015 15:47:09 +0100
+
 univention-management-console-frontend (4.1.106-9) unstable; urgency=medium
 
   * Revert "Bug #37367: invalidate all requests if a error occurs when

@@ -105,6 +105,7 @@ define([
 				this._hideDeferred.cancel();
 			}
 			this._hideDeferred = tools.defer(lang.hitch(this, 'hide'), this.timeout * 1000);
+			this._hideDeferred.otherwise(function() { /* prevent logging of exception */ });
 		},
 
 		show: function() {
