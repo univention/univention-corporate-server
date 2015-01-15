@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-4
 src: univention-virtual-machine-manager-daemon
-fix: 3.0.18-2.562.201411262140
+fix: 3.0.18-3.572.201501151536
 version: [4]
 desc: |
   This update addresses the following issues:
@@ -10,6 +10,8 @@ desc: |
     to fix a problem with cross-device renaming.
   * Paused VMs are now handled more similar to running VMs, which allows, for
     exmaple, VNC to be used for paused VMs, too.
+  * Ignore errors reading UVMM profiles.
 bug:
  - 34725
  - 35107
+ - 34542
