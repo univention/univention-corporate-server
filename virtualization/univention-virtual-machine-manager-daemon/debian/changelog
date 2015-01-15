@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (3.0.18-3) unstable; urgency=low
+
+  * Bug #37552: Catch error reading profiles
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 15 Jan 2015 15:33:03 +0100
+
 univention-virtual-machine-manager-daemon (3.0.18-2) unstable; urgency=low
 
   * Bug #34725: Fix noVNC temporary file location

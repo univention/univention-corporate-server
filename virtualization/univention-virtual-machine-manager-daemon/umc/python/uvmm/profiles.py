@@ -31,10 +31,12 @@
 # <http://www.gnu.org/licenses/>.
 
 import univention.admin.modules  # required for UDM
+from univention.admin.uexceptions import base as udm_error
 import univention.admin.handlers.uvmm.profile as uvmm_profile
 
 from univention.lib.i18n import Translation
 
+from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 from urlparse import urlsplit
@@ -78,7 +80,8 @@ class Profiles(object):
 		Read all profiles from LDAP.
 		"""
 		base = "%s,%s" % (Profiles.PROFILE_RDN, ldap_position.getDn())
-		res = uvmm_profile.lookup(
+		try:
+			res = uvmm_profile.lookup(
 				None,
 				ldap_connection,
 				'',
@@ -86,7 +89,10 @@ class Profiles(object):
 				scope='sub',
 				required=False,
 				unique=False
-				)
+			)
+		except udm_error as ex:
+			MODULE.error("Failed to read profiles: %s" % (ex,))
+			res = ()
 		self.profiles = [(obj.dn, Profile(obj.info)) for obj in res]
 
 	def _filter_profiles(self, node_pd):
