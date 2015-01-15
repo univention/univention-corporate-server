@@ -10,4 +10,9 @@ desc: |
     membership check.
   * Quick successions of samba init script restart could leave behind
     a single unresponsive samba process.
+  * If Samba is acting as an Active Directory domain controller, Samba
+    didn't implement permissions checks for the UF_SERVER_TRUST_ACCOUNT
+    bit of the userAccountControl attribute (CVE-2014-8143)
 bug: [37233, 37343, 37496]
+cve:
+ - CVE-2014-8143
