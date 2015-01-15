@@ -81,16 +81,18 @@ Services für Microsoft Windows, so dass sie ebenfalls von einem UCS-System ausg
 
 <section id="introduction:Überblick_ueber_UCS"><title>Überblick über UCS</title>
 <para>
-Linux ist ein Betriebssystem, das von Anfang an für den Multiuser- und
-Multitasking-Einsatz vorgesehen war und bei dessen Entwicklung stets Wert auf
-Stabilität, Sicherheit und die Kompatibilität zu anderen Betriebssystemen
-gelegt wurde. Dadurch ist es prädestiniert für den Einsatz als stabiles, sicheres
-und jederzeit verfügbares Serverbetriebssystem. 
-UCS ist ein auf dieser Basis aufbauendes Serverbetriebssystem, das besonders
-für den einfachen und sicheren Betrieb sowie die Verwaltung von Anwendungen
-und Infrastrukturdiensten in Unternehmen und Behörden optimiert wurde. Zur
-effizienten und sicheren Verwaltung brauchen solche Anwendungen die mit dem
-&ucsUMS; realisierte enge Integration mit der Benutzer- und Rechteverwaltung.
+  Linux ist ein Betriebssystem, bei dessen Entwicklung stets Wert auf
+  Stabilität, Sicherheit und die Kompatibilität zu anderen Betriebssystemen
+  gelegt wurde. Dadurch ist es prädestiniert für den Einsatz als stabiles, sicheres
+  und jederzeit verfügbares Serverbetriebssystem. 
+</para>
+
+<para>
+  UCS ist ein auf dieser Basis aufbauendes Serverbetriebssystem, das besonders
+  für den einfachen und sicheren Betrieb sowie die Verwaltung von Anwendungen
+  und Infrastrukturdiensten in Unternehmen und Behörden optimiert wurde. Zur
+  effizienten und sicheren Verwaltung brauchen solche Anwendungen die mit dem
+  &ucsUMS; realisierte enge Integration mit der Benutzer- und Rechteverwaltung.
 </para>
 <para>
 UCS kann als die Basis für die IT-Infrastruktur von Unternehmen und Behörden
@@ -105,14 +107,8 @@ Microsoft-Domänen betreiben.
 <section id="introduction:Inbetriebnahme"><title>Inbetriebnahme</title>
 <para>
 Der Einsatz von UCS beginnt entweder mit einer klassischen
-Betriebssysteminstallation auf einem physikalischen Server oder als „virtuelle
-Serverinstanz“, die ebenfalls durch eine Installation eingerichtet oder aus
-vorhandenen virtuellen Maschine erzeugt werden kann. Die Installation kann
-interaktiv oder vollautomatisch entweder von DVD oder über das Netzwerk/PXE
-erfolgen.
-</para>
-<para>
-Weiterführende Informationen finden sich in <xref linkend="installation:chapter"/>.
+Betriebssysteminstallation auf einem physikalischen Server oder als virtuelle
+Instanz. Weiterführende Informationen finden sich in <xref linkend="installation:chapter"/>.
 </para>
 </section>
 
@@ -164,10 +160,10 @@ durch das Univention App Center</title>
 <para>
 Das Univention App Center bietet weitere UCS-Komponenten und Erweiterungen
 sowie eine umfangreiche Auswahl von Softwarelösungen für Business IT-Bereiche
-wie z. B: Groupware und Kollaboration, Datenaustausch, CRM oder Backup.
+wie Groupware, Datenaustausch, CRM oder Backup.
 Die Anwendungen lassen sich mit wenigen Klicks in bestehende Umgebungen
 installieren und sind in der Regel einsatzbereit vorkonfiguriert. Sie werden
-in vielen Fällen direkt in das &ucsUMS; integriert und stehen anschließend in
+in vielen Fällen direkt in das &ucsUMS; integriert und stehen anschließend in der
 &ucsUMC; zur Verfügung. Damit ist eine zentrale Verwaltung von Daten auf
 Domänenebene gegeben und eine separate Verwaltung, z.B. von Nutzerdaten für
 unterschiedliche Dienste an unterschiedlichen Orten, entfällt.

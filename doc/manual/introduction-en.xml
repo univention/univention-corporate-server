@@ -83,16 +83,18 @@ management system.
 
 <section id="introduction:Overview_of_UCS"><title>Overview of UCS</title>
 <para>
-Linux is an operating system which was designed for multi-user and multi-tasking
-application right from the start. The focus in its development
-was always on stability, security and compatibility with other
-operating systems. Therefore Linux is predestined for being used in server
-operating systems that are stable, secure and highly available.
-Built on that base, UCS is a server operating system which is optimised
-for the simple and secure operation and management of applications and infrastructure services in
-enterprises and public authorities. For efficient and secure management such applications rely on
-the tight integration in the user and permission management of the &ucsUMS;.
+  Linux is an operating system which always had a focus on stability, security and compatibility with other
+  operating systems. Therefore Linux is predestined for being used in server
+  operating systems that are stable, secure and highly available.
 </para>
+
+<para>
+  Built on that base, UCS is a server operating system which is optimised
+  for the simple and secure operation and management of applications and infrastructure services in
+  enterprises and public authorities. For efficient and secure management such applications rely on
+  the tight integration in the user and permission management of the &ucsUMS;.
+</para>
+
 <para>
 UCS can be employed as the basis for the IT infrastructure in
 companies and authorities and provide the central control for it. This
@@ -106,13 +108,7 @@ Microsoft Active Directory domain.
 <section id="introduction:Commissioning"><title>Commissioning</title>
 <para>
 The use of UCS begins either with a classic operating system
-installation on a physical server or as a virtual machine,
-set up via an installation or generated from an
-existing virtual machine employed as a template. The installation can
-be interactive or fully automatic either from a DVD or via the
-network/PXE.
-</para>
-<para>
+installation on a physical server or as a virtual machine.
 Further information can be found in <xref linkend="installation:chapter"/>.
 </para>
 </section>
