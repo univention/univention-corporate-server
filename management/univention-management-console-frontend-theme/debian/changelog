@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.88-6) unstable; urgency=low
+
+  * Bug #36291: Changed margin-top for Titlepanes to margin-bottom
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 15 Jan 2015 12:45:13 +0100
+
 univention-management-console-frontend-theme (0.0.88-5) unstable; urgency=low
 
   * Bug #36787: Adjusted styling of the favorites category button fade in/out
