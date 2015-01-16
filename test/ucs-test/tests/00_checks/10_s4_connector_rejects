@@ -1,22 +1,29 @@
-#!/usr/share/ucs-test/runner bash 
-## desc: Check for rejected objects
+#!/usr/share/ucs-test/runner python
+## desc: Check for S4 connector rejected objects
 ## exposure: safe
 ## bugs: [37011, 37324]
 ## packages:
 ## - univention-s4-connector
 
-RETVAL=0
+from subprocess import Popen, PIPE
 
-. "$TESTLIBPATH/base.sh" || exit 137
+import univention.testing.utils as utils
 
-eval "$(ucr shell)"
 
-test -n "$connector_s4_ldap_host" || exit 137
+print "Looking for S4 connector rejects:"
 
-univention-s4connector-list-rejected | egrep -q "(UCS DN|S4 DN)"
-if [ $? = 0 ]; then
-	univention-s4connector-list-rejected
-	fail_test 1 "Rejects found"
-fi
+proc = Popen('univention-s4connector-list-rejected', stdout=PIPE, stderr=PIPE)
+stdout, stderr = proc.communicate()
 
-exit $RETVAL
+if stderr.strip():
+    utils.fail("An error occured while running "
+               " 'univention-s4connector-list-rejected'. STDERR: %r" % stderr)
+
+if not stdout.strip():
+    utils.fail("The 'univention-s4connector-list-rejected' did not produce "
+               "any output to STDOUT.")
+
+print stdout
+
+if ("UCS DN" in stdout) or ("S4 DN" in stdout):
+    utils.fail("S4 Connector rejects were found.")
