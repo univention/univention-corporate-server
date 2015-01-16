@@ -1,47 +1,171 @@
-#!/usr/share/ucs-test/runner bash
-## desc: Check if the User 'Administrator' is in the right Groups
+#!/usr/share/ucs-test/runner python
+## desc: Check if 'Administrator' is in the right Groups and respective SIDs
 ## roles-not: [basesystem]
-## tags:
-##  - basic
-##  - apptest
+## bugs: [37331]
+## tags: [basic, apptest]
 ## exposure: safe
 
-RETVAL=100
+from subprocess import Popen, PIPE
 
-#define username - here always Administrator
-username="Administrator"
+from univention.config_registry import ConfigRegistry
+import univention.testing.utils as utils
 
-## check if the user belongs to all of this Groups
-old_ifs=$IFS
-while read should_be_in_group
-do
-	IFS=: read group_name password gid user_list < <(getent group "$should_be_in_group")
-	IFS=,; set -- $user_list; IFS=$old_ifs
-	found=false
-	for user_in_group in "$@"
-	do
-		if [ "$user_in_group" = "$username" ]
-		then
-			found=true
-			break
-		fi
-	done
 
-	if "$found"
-	then
-		echo -e "Check if '$username' is in Group '$should_be_in_group'   \tOK"
-	else
-		echo -e "Check if '$username' is in Group '$should_be_in_group'   \tFailed"
-		RETVAL=110
-	fi
-done <<__GROUPS__
-Domain Admins
-Domain Users
-Windows Hosts
-DC Backup Hosts
-DC Slave Hosts
-Computers
-__GROUPS__
+UCR = ConfigRegistry()
+UCR.load()
 
-exit $RETVAL
-# vim: set ft=sh :
+errors = 0
+
+
+def increase_errors_counter():
+    """
+    Increments the global 'errors' counter.
+    """
+    global errors
+    errors += 1
+
+
+def check_user_groups_sids():
+    """
+    Checks that 'test_username' and 'test_groups' have correct SIDs
+    when applicable.
+    """
+    print "\nChecking SIDs where applicable:"
+
+    # following SIDs should be 'S-1-5-21-' + domainSID + specific ending
+    sid_check_dict = {"uid=" + test_username: "-500",  # Administrator
+                      "cn=" + test_groups[0]: "-512",  # Domain Admin
+                      "cn=" + test_groups[1]: "-513"}  # Domain Users
+    # more on well-known-sids: http://support.microsoft.com/kb/243330/en-us
+
+    for key, sid_ending in sid_check_dict.iteritems():
+        sid_in_ldap = get_sid_for_user_group(key)
+        if not sid_in_ldap:
+            utils.fail("The 'sambaSID' for '%s' is empty." % key)
+
+        print "\nRecord:", key
+        print "SID:", sid_in_ldap
+
+        if not (sid_in_ldap.startswith('S-1-5-21-') and sid_in_ldap.endswith(sid_ending)):
+            print("\nThe SID '%s' for '%s' is incorrect. Expected to start "
+                  "with 'S-1-5-21-' and to end with '%s'"
+                  % (sid_in_ldap, key, sid_ending))
+            increase_errors_counter()
+
+
+def check_user_in_groups():
+    """
+    Checks if 'test_username' user is a member of test_groups.
+    """
+    print "\nChecking group members:"
+
+    for group in test_groups:
+        if test_username not in get_members_in_group(group):
+            print ("\nFAIL: the '%s' user is not a memeber of the '%s' group.\n"
+                   % (test_username, group))
+            increase_errors_counter()
+
+
+def get_localized_translations():
+    """
+    Returns the Administrator username and groups in localazed translation
+    or in English if there are no translations found in the UCR.
+    """
+    print "Determining Administrator username and group translations if any."
+
+    # Administrator username translation:
+    translated_username = UCR.get('users/default/administrator') or "Administrator"
+
+    # the UCR vars for groups translation:
+    ucr_translations = ('domainadmins', 'domainusers', 'windowshosts',
+                        'dcbackuphosts', 'dcslavehosts', 'computers')
+
+    # respective default English names:
+    default_english = ("Domain Admins", "Domain Users", "Windows Hosts",
+                       "DC Backup Hosts", "DC Slave Hosts", "Computers")
+
+    translated_groups = []
+
+    for num, val in enumerate(ucr_translations):
+        # get a translation or pick a default English name:
+        translated_groups.append(UCR.get('groups/default/' + val,
+                                         default_english[num]))
+
+    return translated_username, translated_groups
+
+
+def create_and_run_process(cmd,
+                           stdin=None, std_input=None,
+                           shell=False, stdout=PIPE):
+    """
+    Creates a process as a Popen instance with a given 'cmd'
+    and executes it. When stdin is needed, it can be provided as kwarg.
+    To write to a file an istance can be provided to stdout.
+    """
+    proc = Popen(cmd,
+                 stdin=stdin, stdout=stdout, stderr=PIPE,
+                 shell=shell, close_fds=True)
+
+    return proc.communicate(input=std_input)
+
+
+def get_sid_for_user_group(name):
+    """
+    Returns a SID for a given 'name'.
+    Name should include the uid=... or cn=...
+    """
+    cmd = ('univention-ldapsearch', name)
+    stdout, stderr = create_and_run_process(cmd)
+
+    if stderr:
+        print "\nThe following message occured in stderr:", stderr
+
+    sed_cmd = ("sed", "-n", "s/^sambaSID: //p")
+    sed_stdout, sed_stderr = create_and_run_process(sed_cmd, PIPE, stdout)
+
+    if sed_stderr:
+        print "\nThe following message occured in stderr:", stderr
+
+    return sed_stdout.strip('\n')
+
+
+def get_members_in_group(group_name):
+    """
+    Returns a list of members as found via 'getent' for a given 'group_name'.
+    """
+    cmd = ('getent', 'group', group_name)
+    stdout, stderr = create_and_run_process(cmd)
+
+    if stderr:
+        print "\nThe following message occured in stderr while using 'getent':"
+        print stderr
+
+    stdout = stdout.strip()
+    if not stdout:
+        print ("\nNo stdout from 'getent' for a '%s' group." % group_name)
+        return list()
+
+    # remove the group name, password, gid and separate members by commas:
+    members = stdout[(stdout.rfind(':') + 1):].split(',')
+
+    print "\nGroup:", group_name
+    print "Members of the group:", members
+    return members
+
+
+if __name__ == '__main__':
+    """
+    Get Administrator and Groups translations in case of a non-english AD;
+    Check that Administrator is a member of specific Groups;
+    Check SIDs for Administrator and groups where applicable.
+    """
+    test_username, test_groups = get_localized_translations()
+    print "\nUser name to be tested:", test_username
+    print("Groups where %s should be a member: %s" % (test_username, test_groups))
+
+    check_user_in_groups()
+    check_user_groups_sids()
+
+    if errors:
+        utils.fail("There were %d error(s) detected during the test execution."
+                   " Please check the complete test output." % errors)
