@@ -1,0 +1,15 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: libevent
+fix: 2.0.19-stable-3.16.201501151853
+version: [0]
+desc: |
+ The evbuffer API in libevent is affected by an integer overflow
+ which potentially allows a heap overflow or denial of service
+ (ATM no existing application is known which uses the API in an
+ affected manner). (CVE-2014-6272)
+bug:
+ - 37452
+cve:
+ - CVE-2014-6272
