@@ -1,3 +1,10 @@
+ucs-test (5.0.92-1) unstable; urgency=low
+
+  * Bug #37299: 10_ldap/28reconnect_univention-ldapsearch: don't perform
+    univention-ldapsearch before slapd being stopped. Timings adjustement.
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 16 Jan 2015 12:39:11 +0100
+
 ucs-test (5.0.91-1) unstable; urgency=low
 
   * Bug #37331: 01_base/26check_admin_user: use translations for Administrator
