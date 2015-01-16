@@ -1,3 +1,9 @@
+univention-antivir-mail (6.0.0-6) unstable; urgency=medium
+
+  * fix amavis service definition (Bug #36998)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 16 Jan 2015 19:06:53 +0100
+
 univention-antivir-mail (6.0.0-5) unstable; urgency=low
 
   * added mail/antispam/headertag (Bug #36664) 

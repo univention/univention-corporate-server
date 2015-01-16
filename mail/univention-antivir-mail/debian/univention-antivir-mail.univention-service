@@ -2,7 +2,7 @@
 Description[de]=Schnittstelle zwischen Mail-Server und Mail-Filter
 Description[en]=Interface between MTA and Virus Scanner/Content Filters
 icon=service/amavis
-programs=amavisd (master)
+programs=/usr/sbin/amavisd-new (master)
 start_type=mail/antivir/amavis/autostart
 
 [clamav-daemon]
