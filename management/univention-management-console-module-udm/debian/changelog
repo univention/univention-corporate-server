@@ -1,3 +1,10 @@
+univention-management-console-module-udm (5.1.25-40) unstable; urgency=medium
+
+  * Bug #36700: display automatically set default values. Ask for closing
+  	detailpage which has changed values.
+
+ -- Florian Best <best@univention.de>  Mon, 19 Jan 2015 15:58:24 +0100
+
 univention-management-console-module-udm (5.1.25-39) unstable; urgency=medium
 
   * Bug #30088: don't expect uexceptions.base.__str__ to print pretty error

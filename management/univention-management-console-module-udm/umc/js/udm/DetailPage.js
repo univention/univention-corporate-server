@@ -26,17 +26,15 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define,setTimeout,dijit*/
+/*global define,setTimeout,dijit,window,console*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/on",
-	"dojo/query",
 	"dojo/Deferred",
 	"dojo/promise/all",
-	"dojo/dom-style",
 	"dojo/dom-construct",
 	"dojo/dom-class",
 	"dojo/topic",
@@ -55,7 +53,6 @@ define([
 	"dijit/layout/StackContainer",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
-	"umc/widgets/ComboBox",
 	"umc/widgets/LabelPane",
 	"umc/modules/udm/Template",
 	"umc/modules/udm/OverwriteLabel",
@@ -64,7 +61,7 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/widgets"
-], function(declare, lang, array, on, query, Deferred, all, style, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
+], function(declare, lang, array, on, Deferred, all, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
 
 	var _StandbyPage = declare([Page, StandbyMixin], {});
 
@@ -258,10 +255,6 @@ define([
 		_loadObject: function(formBuiltDeferred, policyDeferred) {
 			formBuiltDeferred.then(lang.hitch(this, function() {
 				this._displayProgressOnSubmitButton();
-				this._form.watch('value', lang.hitch(this, function(name, oldV, newValues) {
-					var valuesChanged = this.haveValuesChanged() || this.havePolicyReferencesChanged();
-					this._headerButtons.submit.set('disabled', !valuesChanged);
-				}));
 			}));
 
 			if (!this.ldapName || this._multiEdit) {
@@ -377,10 +370,46 @@ define([
 			this._form.ready().then(lang.hitch(this, function() {
 				// reset label of submit button
 				submitButton.set('label', origLabel);
+				submitButton.set('disabled', false);
 			}), null, lang.hitch(this, function(progress) {
 				// output loading progress as button label
 				var label = _('Loading %s...', progress.message);
 				submitButton.set('label', label);
+			}));
+		},
+
+		_notifyAboutAutomaticChanges: function() {
+			this._form.ready().then(lang.hitch(this, function() {
+				var valuesChanged = this.haveValuesChanged() || this.havePolicyReferencesChanged();
+				if (valuesChanged) {
+					var changes = '\n<ul>';
+					tools.forIn(this.getAlteredValues(), lang.hitch(this, function(key, value) {
+						if (key === '$dn$') {
+							return;
+						}
+						var widget = this._form.getWidget(key);
+						if (widget) {
+							value = widget.get('value');
+							if (value instanceof Array) {
+								value = value.join(', ');
+							}
+							if (widget.isInstanceOf(ComboBox)) {
+								array.forEach(widget.getAllItems(), function(item) {
+									if (item.id == value) {
+										value = item.label;
+									}
+								});
+							}
+							changes += lang.replace('<li>{tabName} - {groupName} - {widgetName}: {value}</li>', {
+								tabName: widget.$refTab$.label,
+								groupName: widget.$refTitlePane$.label,
+								widgetName: widget.get('label') || key,
+								value: value});
+						}
+					}));
+					changes += '</ul>';
+					dialog.alert(_('The following empty properties were set to default values in the form. These values will be applied when saving.') + changes);
+				}
 			}));
 		},
 
@@ -861,6 +890,31 @@ define([
 			}));
 		},
 
+		_addReferencesToWidgets: function() {
+			var _walk = lang.hitch(this, function(something, group, page) {
+				if (typeof something == 'string') {
+					var widget = this._form.getWidget(something);
+					if (widget) {
+						widget.$refTitlePane$ = group;
+						widget.$refTab$ = page;
+					}
+				} else if (something instanceof Array) {
+					array.forEach(something, function(something2) {
+						_walk(something2, group, page);
+					});
+				} else if (typeof something == 'object') {
+					_walk(something.layout, group, page);
+				}
+			});
+			array.forEach(this._layoutMap, function(page) {
+				array.forEach(page.layout, function(group) {
+					array.forEach(group.layout, function(something) {
+						_walk(something, group, page);
+					});
+				});
+			});
+		},
+
 		_setTabVisibility: function(page, visible) {
 			array.forEach(this._tabControllers, lang.hitch(this, function(itabController) {
 				itabController.setVisibilityOfChild(page, visible);
@@ -917,6 +971,7 @@ define([
 				style: 'margin: 0'
 			});
 			this.own(this._form);
+			this._addReferencesToWidgets();
 
 			this.addChild(this._form);
 		},
@@ -931,6 +986,7 @@ define([
 			var loadedDeferred = this._loadObject(formBuiltDeferred, this._policyDeferred);
 			loadedDeferred.then(lang.hitch(this, 'addActiveDirectoryWarning'));
 			loadedDeferred.then(lang.hitch(this, 'set', 'helpLink', metaInfo.help_link));
+			loadedDeferred.then(lang.hitch(this, '_notifyAboutAutomaticChanges'));
 
 			if (template && template.length > 0) {
 				template = template[0];
@@ -1059,10 +1115,7 @@ define([
 				name: 'close',
 				label: closeLabel,
 				iconClass: 'umcCloseIconWhite',
-				callback: lang.hitch(this, function() {
-					topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'cancel');
-					this.onCloseTab();
-				})
+				callback: lang.hitch(this, 'confirmClose')
 			}];
 		},
 
@@ -1448,6 +1501,11 @@ define([
 			}, this);
 			errMessage += '</ul>';
 
+			if (!this.haveValuesChanged() && !this.havePolicyReferencesChanged()) {
+				this.onCloseTab();
+				return;  // no changes are made, no need to save an empty dict
+			}
+
 			// print out an error message if not all required properties are given
 			if (!allValuesGiven) {
 				dialog.alert(errMessage);
@@ -1660,6 +1718,23 @@ define([
 			return newVals;
 		},
 
+		confirmClose: function() {
+			topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'cancel');
+
+			if (!this.newObjectOptions && (this.haveValuesChanged() || this.havePolicyReferencesChanged())) {
+				return dialog.confirm(_('There are unsaved changes. Are you sure to cancel?'), [{
+					label: _('Discard changes'),
+					name: 'quit',
+					callback: lang.hitch(this, 'onCloseTab')
+				}, {
+					label: _('Continue editing'),
+					name: 'cancel',
+					'default': true
+				}]);
+			}
+			this.onCloseTab();
+		},
+
 		onCloseTab: function() {
 			// summary:
 			//		Event is called when the page should be closed.
@@ -1671,5 +1746,3 @@ define([
 		}
 	});
 });
-
-
