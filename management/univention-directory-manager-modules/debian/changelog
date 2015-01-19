@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-13) unstable; urgency=medium
+
+  * Bug #35099: remove referring objects from networks.
+
+ -- Florian Best <best@univention.de>  Mon, 19 Jan 2015 13:27:44 +0100
+
 univention-directory-manager-modules (10.0.29-12) unstable; urgency=medium
 
   * Bug #30088: revert using __str__() for pretty error message due to too 
