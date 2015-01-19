@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: libtasn1-3
-fix: 
+fix: 2.13-2.18.201501151131
 version: [0]
 desc: |
  Multiple issues have been fixed in libtasn, which might result in
