@@ -6,6 +6,6 @@ fix: 6.0.0-6.122.201501161909
 version: [0]
 desc: |
   This update addresses the following issue:
-  * The amavis service is always listed as stopped in UMC
+  * The amavis service was always listed as stopped in UMC.
 bug:
  - 36998
