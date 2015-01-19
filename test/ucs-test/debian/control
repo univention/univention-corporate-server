@@ -140,16 +140,16 @@ Description: Test scripts for LDAP and replication
 #Description: Test scripts for DHCP
 # This package includes some scripts for testing DHCP.
 
-#Package: ucs-test-mail
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# swaks,
-# pytho,
-# ${misc:Depends}n
-#Provides: ucs-test-module
-#Description: Test scripts for mail
-# This package includes some scripts for testing mail.
+Package: ucs-test-mail
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ swaks,
+ python,
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts for mail
+ This package includes some scripts for testing mail.
 
 #Package: ucs-test-iptables
 #Architecture: all
@@ -489,7 +489,7 @@ Depends:
 # ucs-test-quota,
  ucs-test-ldap,
 # ucs-test-dns,
-# ucs-test-mail,
+ ucs-test-mail,
  ucs-test-umc,
 # ucs-test-iptables,
  ucs-test-samba,
