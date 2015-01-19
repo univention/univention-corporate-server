@@ -78,7 +78,7 @@ define([
 				'class': 'umc-adtakeover-page-start umc-adtakeover-page',
 				name: 'start',
 				headerText: _('Windows domain authentication'),
-				helpText: _('This module guides the migration from a Windows Active Directory domain to Univention Corporate Server. All user, group and computer accounts along with their passwords and group policies are transfered. After the migration, the Windows clients are directly operable without the need of a domain rejoin.'),
+				helpText: _('This module guides through the migration from a Windows Active Directory domain to Univention Corporate Server. All user, group and computer accounts along with their passwords and group policies are transferred. After the migration, the Windows clients are directly operable without the need of a domain rejoin.'),
 				widgets: [{
 					type: TextBox,
 					name: 'ip',
@@ -115,7 +115,7 @@ define([
 					type: Text,
 					name: 'text',
 					content: 'TBA',
-					textTemplate: _('<p>All Windows domain accounts have been successfully transfered.</p><p>As next step, group policies must be copied from the Active Directory SYSVOL share to Univention Corporate Server. We recommend using robocopy from a Windows client or Windows server which is joined to the domain:</p>') + '<pre>robocopy /mir /sec /z \\\\{ad_hostname}\\sysvol \\\\{ucs_hostname}\\sysvol</pre>'
+					textTemplate: _('<p>All Windows domain accounts have been successfully transferred.</p><p>As next step, group policies must be copied from the Active Directory SYSVOL share to Univention Corporate Server. We recommend using robocopy from a Windows client or Windows server which is joined to the domain:</p>') + '<pre>robocopy /mir /sec /z \\\\{ad_hostname}\\sysvol \\\\{ucs_hostname}\\sysvol</pre>'
 				}]
 			}, {
 				'class': 'umc-adtakeover-page-takeover umc-adtakeover-page',
@@ -124,7 +124,7 @@ define([
 				widgets: [{
 					type: Text,
 					name: 'text',
-					content: _('<p>The group policies have been transfered successfully.</p><p>In order to complete the takeover process, all previous Active Directory Domain Controllers need to be switched off now. Click "Next" as soon as all Domain Controllers are shutdown completely.</p>')
+					content: _('<p>The group policies have been transferred successfully.</p><p>In order to complete the takeover process, all previous Active Directory Domain Controllers need to be switched off now. Click "Next" as soon as all Domain Controllers are shutdown completely.</p>')
 				}]
 			}, {
 				'class': 'umc-adtakeover-page-finished umc-adtakeover-page',
@@ -133,7 +133,7 @@ define([
 				widgets: [{
 					type: Text,
 					name: 'text',
-					content: _('<p>Congratulations, the Active Directory Takeover wizard has been successfully completed and all Windows domain accounts have been transfered to Univention Corporate Server.</p><p>The domain is now ready for usage without any further changes.</p>')
+					content: _('<p>Congratulations, the Active Directory Takeover wizard has been successfully completed and all Windows domain accounts have been transferred to Univention Corporate Server.</p><p>The domain is now ready for usage without any further changes.</p>')
 				}]
 			}];
 		},

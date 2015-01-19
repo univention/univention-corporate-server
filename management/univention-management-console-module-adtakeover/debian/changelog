@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (2.0.6-2) unstable; urgency=low
+
+  * Bug #35199: Spelling mistakes
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 20 Jan 2015 00:43:16 +0100
+
 univention-management-console-module-adtakeover (2.0.6-1) unstable; urgency=medium
 
   * Bug #36639: Reconnect to AD in case Lsearch fails after long join delay

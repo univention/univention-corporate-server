@@ -270,7 +270,7 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	progress.percentage(0.7)
 	ad.authenticate(username, password)
 
-	progress.headline(_('Synchronizing System Clock'))
+	progress.headline(_('Synchronizing system clock'))
 	progress.percentage(1)
 	takeover = AD_Takeover(ucr, ad)
 	takeover.time_sync()
@@ -300,7 +300,7 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	progress.headline(_('Rebuilding IDMAP'))
 	progress.percentage(98)
 	takeover.rebuild_idmap()
-	progress.message(_('Reset sysvol ACLs'))
+	progress.message(_('Reset SYSVOL ACLs'))
 	progress.percentage(99)
 	takeover.reset_sysvol_ntacls()
 	takeover.set_nameserver1_to_local_default_ip()

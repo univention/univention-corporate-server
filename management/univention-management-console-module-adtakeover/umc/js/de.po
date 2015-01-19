@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-07-30 15:11+0200\n"
+"POT-Creation-Date: 2015-01-20 00:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,22 +12,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/adtakeover.js:111
-#, python-brace-format
+#: umc/js/adtakeover.js:107
 msgid ""
-"<p>A <i>{ad_os}</i> Active Directory domain with the domainname "
-"<i>{ad_domain}</i> has been found. The server <i>{ad_hostname} ({ad_ip})</i> "
+"<p>A <i>{ad_os}</i> Active Directory domain with the domainname <i>"
+"{ad_domain}</i> has been found. The server <i>{ad_hostname} ({ad_ip})</i> "
 "will be used as Active Directory Domain Controller for the takeover.</"
 "p><p>The following accounts have been found in the Active Directory domain:"
 "<ul><li>{users} users</li><li>{groups} groups</li><li>{computers} computers</"
 "li></ul>Click \"Next\" to start with the migration.</p>"
 msgstr ""
-"Es wurde eine <i>{ad_os}</i> Active Directory-Domäne mit dem Domänennamen "
-"<i>{ad_domain}</i> gefunden. Der Server <i>{ad_hostname} ({ad_ip})</i> wird "
-"für die Übernahme als Active Directory Domänencontroller benutzt werden. Die "
-"folgenden Konten wurden in der Active Directory-Domäne gefunden:"
-"<ul><li>{users} Benutzer</li><li>{groups} Gruppen</li><li>{computers} "
-"Rechner</li></ul>Klicken Sie auf \"Weiter\", um die Übernahme zu starten."
+"Es wurde eine <i>{ad_os}</i> Active Directory-Domäne mit dem Domänennamen <i>"
+"{ad_domain}</i> gefunden. Der Server <i>{ad_hostname} ({ad_ip})</i> wird für "
+"die Übernahme als Active Directory Domänencontroller benutzt werden. Die "
+"folgenden Konten wurden in der Active Directory-Domäne gefunden:<ul><li>"
+"{users} Benutzer</li><li>{groups} Gruppen</li><li>{computers} Rechner</li></"
+"ul>Klicken Sie auf \"Weiter\", um die Übernahme zu starten.</p>"
 
 #: umc/js/adtakeover.js:75
 msgid ""
@@ -37,9 +36,9 @@ msgstr ""
 "<p>Ein bereits durchgeführter Active Directory Takeover wurde erkannt. Um "
 "eine neue Übernahme zu starten, klicken Sie auf \"Weiter\".</p>"
 
-#: umc/js/adtakeover.js:122
+#: umc/js/adtakeover.js:118
 msgid ""
-"<p>All Windows domain accounts have been successfully transfered.</p><p>As "
+"<p>All Windows domain accounts have been successfully transferred.</p><p>As "
 "next step, group policies must be copied from the Active Directory SYSVOL "
 "share to Univention Corporate Server. We recommend using robocopy from a "
 "Windows client or Windows server which is joined to the domain:</p>"
@@ -48,12 +47,12 @@ msgstr ""
 "nächster Schritt müssen nun die Gruppenrichtlinien von der Active Directory "
 "SYSVOL-Freigabe auf Univention Corporate Server kopiert werden. Wir "
 "empfehlen dafür robocopy von einem Windows Client oder einem Windows Server "
-"aus zu nutzen, der der Domäne beigetreten ist:"
+"aus zu nutzen, der der Domäne beigetreten ist:</p>"
 
-#: umc/js/adtakeover.js:140
+#: umc/js/adtakeover.js:136
 msgid ""
 "<p>Congratulations, the Active Directory Takeover wizard has been "
-"successfully completed and all Windows domain accounts have been transfered "
+"successfully completed and all Windows domain accounts have been transferred "
 "to Univention Corporate Server.</p><p>The domain is now ready for usage "
 "without any further changes.</p>"
 msgstr ""
@@ -62,9 +61,9 @@ msgstr ""
 "Univention Corporate Server übernommen.</p><p>Die Domäne kann nun ohne "
 "weitere Änderung in Gebrauch genommen werden.</p>"
 
-#: umc/js/adtakeover.js:131
+#: umc/js/adtakeover.js:127
 msgid ""
-"<p>The group policies have been transfered successfully.</p><p>In order to "
+"<p>The group policies have been transferred successfully.</p><p>In order to "
 "complete the takeover process, all previous Active Directory Domain "
 "Controllers need to be switched off now. Click \"Next\" as soon as all "
 "Domain Controllers are shutdown completely.</p>"
@@ -74,23 +73,23 @@ msgstr ""
 "Domänencontroller ausgeschaltet werden. Klicken Sie auf \"Weiter\", sobald "
 "alle Domänencontroller komplett herunter gefahren sind.</p>"
 
-#: umc/js/adtakeover.js:95
+#: umc/js/adtakeover.js:91
 msgid "Active Directory Administrator account"
 msgstr "Active Directory Administratorkonto"
 
-#: umc/js/adtakeover.js:101
+#: umc/js/adtakeover.js:97
 msgid "Active Directory Administrator password"
 msgstr "Active Directory Administratorpasswort"
 
-#: umc/js/adtakeover.js:136
+#: umc/js/adtakeover.js:132
 msgid "Completion of the Active Directory Takeover"
 msgstr "Ende des Active Directory Takeover"
 
-#: umc/js/adtakeover.js:106
+#: umc/js/adtakeover.js:102
 msgid "Import statistics"
 msgstr "Importstatistiken"
 
-#: umc/js/adtakeover.js:90
+#: umc/js/adtakeover.js:86
 msgid "Name or address of the Domain Controller"
 msgstr "Name oder Adresse des Domänencontrollers"
 
@@ -98,17 +97,17 @@ msgstr "Name oder Adresse des Domänencontrollers"
 msgid "Previous takeover detected"
 msgstr "Vorherige Übernahme erkannt"
 
-#: umc/js/adtakeover.js:127
+#: umc/js/adtakeover.js:123
 msgid "Takeover of the Windows domain"
 msgstr "Übernahme der Windows-Domäne"
 
-#: umc/js/adtakeover.js:85
+#: umc/js/adtakeover.js:81
 msgid ""
-"This module guides the migration from a Windows Active Directory domain to "
+"This module guides through the migration from a Windows Active Directory domain to "
 "Univention Corporate Server. All user, group and computer accounts along "
-"with their passwords and group policies are transfered. After the migration, "
-"the Windows clients are directly operable without the need of a domain "
-"rejoin."
+"with their passwords and group policies are transferred. After the "
+"migration, the Windows clients are directly operable without the need of a "
+"domain rejoin."
 msgstr ""
 "Dieses Modul führt durch die Migration einer Active Directory-Domäne hin zu "
 "Univention Corporate Server. Alle Benutzer-, Gruppen- und Rechnerkonten "
@@ -116,7 +115,7 @@ msgstr ""
 "Nach der Migration werden die Windows-Clients direkt funktionsfähig sein, "
 "ohne der Domäne noch einmal beitreten zu müssen."
 
-#: umc/js/adtakeover.js:117
+#: umc/js/adtakeover.js:113
 msgid "Transfer of group policies"
 msgstr "Übernahme der Gruppenrichtlinien"
 
