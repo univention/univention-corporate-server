@@ -55,7 +55,7 @@ policy_apply_to=["computers/domaincontroller_master", "computers/domaincontrolle
 policy_position_dn_prefix="cn=update"
 
 childs=0
-short_description=_('Policy: Update')
+short_description=_('Policy: Automatic updates')
 policy_short_description=_('Automatic updates')
 long_description=''
 options={
@@ -73,7 +73,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'activate': univention.admin.property(
-			short_description=_('Activate release updates. (Errata updates are activated by default)'),
+			short_description=_('Activate release updates (Errata updates are activated by default).'),
 			long_description='',
 			syntax=univention.admin.syntax.TrueFalseUp,
 			multivalue=0,

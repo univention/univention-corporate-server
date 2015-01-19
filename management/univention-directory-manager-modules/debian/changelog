@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-14) unstable; urgency=medium
+
+  * Bug #33190: fix some texts in the release update policy
+
+ -- Florian Best <best@univention.de>  Mon, 19 Jan 2015 16:49:16 +0100
+
 univention-directory-manager-modules (10.0.29-13) unstable; urgency=medium
 
   * Bug #35099: remove referring objects from networks.

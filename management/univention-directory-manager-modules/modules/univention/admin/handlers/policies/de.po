@@ -888,16 +888,16 @@ msgid "Release Version"
 msgstr "Release Version"
 
 #: release.py:58
-msgid "Policy: Update"
-msgstr "Richtlinie: Updates"
+msgid "Policy: Automatic updates"
+msgstr "Richtlinie: Automatische Updates"
 
 #: release.py:59 release.py:138
 msgid "Automatic updates"
 msgstr "Automatische Updates"
 
 #: release.py:76
-msgid "Activate release updates. (Errata updates are activated by default)"
-msgstr "Aktiviere Release-Updates. (Errata Updates sind per Default aktiviert)"
+msgid "Activate release updates (Errata updates are activated by default)."
+msgstr "Aktiviere Release-Updates (Errata-Updates sind standardmäßig aktiviert)."
 
 #: release.py:86
 msgid "Update to this UCS version"
