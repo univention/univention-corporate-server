@@ -1,0 +1,13 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: qemu-kvm
+fix: 1.1.2+dfsg-6.43.201501191249
+version: [0]
+desc: |
+ Missing access checks in the Cirrus VGA emulator may result in 
+ privilege escalation. ()
+bug:
+ - 37212
+cve:
+ - CVE-2014-8106
