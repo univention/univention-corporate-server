@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-directory-manager-modules
-fix: 10.0.29-12.1274.201501141512
+fix: 10.0.29-13.1276.201501191442
 version: [0]
 desc: |
   * Fixed setting of userexpiry when a user account is disabled.
@@ -17,4 +17,5 @@ desc: |
     which contain information about the current edited object type.
   * The release policy is renamed to update policy. The layout is also
     adapted to make clear what this policy is good for.
-bug: [36330, 25279, 29884, 30088, 34985, 33190]
+  * Remove references to the network object when deleting it.
+bug: [36330, 25279, 29884, 30088, 34985, 33190, 35099]
