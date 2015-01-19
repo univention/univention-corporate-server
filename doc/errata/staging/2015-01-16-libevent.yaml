@@ -6,9 +6,7 @@ fix: 2.0.19-stable-3.16.201501151853
 version: [0]
 desc: |
  The evbuffer API in libevent is affected by an integer overflow
- which potentially allows a heap overflow or denial of service
- (ATM no existing application is known which uses the API in an
- affected manner). (CVE-2014-6272)
+ which potentially allows a heap overflow or denial of service.
 bug:
  - 37452
 cve:
