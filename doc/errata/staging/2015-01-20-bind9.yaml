@@ -1,0 +1,13 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: bind9
+fix: 1:9.8.4.dfsg.P1-6+nmu2.109.201501200840
+version: [0]
+desc: |
+ Missing error handling in delegation handling could lead to denial 
+ of service against named.
+bug:
+ - 37248
+cve:
+ - CVE-2014-8500
