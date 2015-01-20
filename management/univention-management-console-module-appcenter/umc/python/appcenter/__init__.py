@@ -69,7 +69,7 @@ class NoneCandidate(object):
 	(may happen without network connection)
 	'''
 	def __init__(self):
-		self.summary = self.version = self.description = _('Package not found in repository')
+		self.summary = self.version = self.description, self.section = _('Package not found in repository')
 		self.installed_size = 0
 
 class Instance(umcm.Base):

@@ -1,3 +1,12 @@
+univention-management-console-module-appcenter (4.1.19-7) unstable; urgency=low
+
+  * Bug #37403: Fix a problem with packages not found anymore in the package
+    cache
+  * Bug #36657: Translation file is correctly generated even when an
+    ImportError happens
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 20 Jan 2015 01:08:40 +0100
+
 univention-management-console-module-appcenter (4.1.19-6) unstable; urgency=medium
 
   * Bug #36868: refresh view after installing of compontents, don't display
