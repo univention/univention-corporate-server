@@ -200,7 +200,11 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-	time_sync(ad_server_ip)
+	try:
+		time_sync(ad_server_ip)
+	except timeSyncronizationFailed as ex:
+		ud.debug(ud.MODULE, ud.WARN, "Time sync failed, trying to authenticate anyway. Original exception: %s" % (ex,))
+
 	(previous_dns_ucr_set, previous_dns_ucr_unset) = set_nameserver([ad_server_ip], ucr)
 	(previous_krb_ucr_set, previous_krb_ucr_unset) = prepare_kerberos_ucr_settings(realm=ad_realm, ucr=ucr)
 
@@ -737,7 +741,8 @@ def do_time_sync(ad_ip):
 	stdout, stderr = p1.communicate()
 	if p1.returncode:
 		ud.debug(ud.MODULE, ud.ERROR, "rdate -s -p failed (%d)" % (p1.returncode,))
-		raise timeSyncronizationFailed("rdate -s -p failed (%d)" % (p1.returncode,))
+		return False
+	return True
 
 def time_sync(ad_ip, tolerance=180, critical_difference=360):
 	'''Try to sync the local time with an AD server'''
@@ -776,10 +781,11 @@ def time_sync(ad_ip, tolerance=180, critical_difference=360):
 		if abs(delta_t) >= timedelta(0, critical_difference):
 			raise manualTimeSyncronizationRequired("Remote clock is behind local clock by more than %s seconds, refusing to turn back time." % critical_difference)
 		else:
-			ud.debug(ud.MODULE, ud.WARN, "Remote clock is behind local clock by more than %s seconds, refusing to turn back time." % (tolerance,))
+			ud.debug(ud.MODULE, ud.WARN, "Remote clock is behind local clock by more than %s seconds, refusing to turn back time, should be accurate enough." % (tolerance,))
 			return False
 	else:
-		do_time_sync(ad_ip)
+		if not do_time_sync(ad_ip):
+			raise timeSyncronizationFailed("Time synchronization failed")
 	return True
 
 def check_server_role(ucr=None):
