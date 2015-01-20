@@ -52,7 +52,7 @@ from univention.management.console.modules.sanitizers import PatternSanitizer, S
 from univention.management.console.modules.decorators import sanitize, simple_response
 from univention.lib.i18n import Translation, Locale
 import univention.config_registry
-from univention.lib.admember import lookup_adds_dc, check_connection, check_ad_account, do_time_sync, connectionFailed, failedADConnect, notDomainAdminInAD, timeSyncronizationFailed
+from univention.lib.admember import lookup_adds_dc, check_connection, check_ad_account, do_time_sync, connectionFailed, failedADConnect, notDomainAdminInAD
 from univention.management.console.modules import UMC_Error
 
 import util
@@ -745,8 +745,6 @@ class Instance(Base, ProgressMixin):
 			except notDomainAdminInAD: # check_ad_account()
 				# checked: Not a Domain Administrator!
 				raise UMC_Error(_("The given user is not member of the Domain Admins group in AD."))
-			except timeSyncronizationFailed:
-				raise UMC_Error(_("Time synchronization with AD server failed."))
 			else:
 				return ad_domain_info['Domain']
 		elif role == 'nonmaster':

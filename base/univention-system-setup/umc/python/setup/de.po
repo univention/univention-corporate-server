@@ -316,10 +316,6 @@ msgstr ""
 "Es ist kein Gerät konfiguriert. Mindestens eine IPv4 oder IPv6-Adresse oder "
 "DHCP oder SLAAC muss angegeben werden."
 
-#: umc/python/setup/__init__.py:749
-msgid "Time synchronization with AD server failed."
-msgstr "Die Synchronisation der Systemzeit mit dem AD-Server schlug fehl."
-
 #~ msgid ""
 #~ "At least one domain name server needs to be given if DHCP or SLAAC is not "
 #~ "specified."
