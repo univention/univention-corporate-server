@@ -15,7 +15,7 @@ desc: |
     information about the error cause.
   * Error handling of UDM modules has been improved by adding default methods
     which contain information about the current edited object type.
-  * The "Release" policy have been renamed into "Automatic updates" and its
-    property descriptions have been adapted to be more understandable.
+  * The "Release" policy has been renamed into "Automatic updates" and its
+    property descriptions have been improved.
   * Remove references to the network object when deleting it.
 bug: [36330, 25279, 29884, 30088, 34985, 33190, 35099]
