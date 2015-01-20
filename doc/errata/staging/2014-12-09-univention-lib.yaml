@@ -6,13 +6,13 @@ fix: 4.0.5-13.297.201501201315
 version: [0]
 desc: |
   This update addresses the following issues:
-  * Check that joining account is member of Domain Admins in Active Directory
-    before starting AD member setup
+  * Check that joining account is member of "Domain Admins" in Active
+    Directory before starting the Active Directory join
   * Don't fail AD member setup if the SRV record _domainctonroller_master is
     already present.
   * Wait for slapd restart when Domain Admins has been renamed during
-    AD member setup
-  * Allow UMC Administrator to be renamed before AD member setup
+    Active Directory join
+  * Allow UMC Administrator to be renamed before Active Directory join
   * Support direct unconditional clock synchronization to AD server
 bug:
  - 35562

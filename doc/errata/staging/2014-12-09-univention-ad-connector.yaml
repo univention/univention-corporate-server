@@ -6,9 +6,9 @@ fix: 9.0.11-5.460.201501061703
 version: [0]
 desc: |
   This update addresses the following issues:
-  * Check that joining account is member of "Domain Admins" in AD
-    before starting admember setup
-  * Allow UMC Administrator to be renamed before admember setup
+  * Check that joining account is member of "Domain Admins" in Active
+    Directory before starting the Active Directory join
+  * Allow UMC Administrator to be renamed before Active Directory join
   * LDAP base DNs with uppercase letters caused synchronization rejects.
 bug:
  - 35562
