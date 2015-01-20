@@ -3,7 +3,7 @@
 ## tags: apttest
 ## exposure: dangerous
 ## packages: [univention-config, univention-directory-manager-tools]
-## bugs: [23527]
+## bugs: [23527, 35924]
 
 #################
 #  Information  #
@@ -23,7 +23,7 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 def main():
-	TIMEOUT = 90
+	TIMEOUT = 120
 	ucr = ucr_test.UCSTestConfigRegistry()
 	ucr.load()
 	with udm_test.UCSTestUDM() as udm:
@@ -61,13 +61,26 @@ def main():
 			print '\nTOKEN = %s\n' % token
 			send_mail(recipients=user, msg=token, subject='Test')
 
+		test_cases3 = []
+		for user in users:
+			token = str(time.time())
+			test_cases3.append((token, user))
+			print '\nTOKEN = %s\n' % token
+			# tls:
+			send_mail(recipients=user, msg=token, subject='TestTLS', tls=True)
+
+		print "\nWaiting %d seconds...\n" % TIMEOUT
 		time.sleep(TIMEOUT)
+
 		for token, mail in test_cases1:
 			if not mail_delivered(token, mail_address=mail):
 				utils.fail('Mail sent to %s was not delivered' % mail)
 		for token, user in test_cases2:
 			if not mail_delivered(token, user=user):
 				utils.fail('Mail sent with token = %r, to %s was not delivered' % (token, user))
+		for token, user in test_cases3:
+			if not mail_delivered(token, user=user):
+				utils.fail('Mail sent with token = %r, to %s was not delivered (TLS used)' % (token, user))
 
 
 if __name__ == '__main__':
