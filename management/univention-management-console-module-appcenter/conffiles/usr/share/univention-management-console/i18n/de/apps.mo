@@ -23,17 +23,17 @@ try:
 	from univention.management.console.modules.appcenter.app_center import Application
 	from univention.lib.package_manager import PackageManager
 	package_manager = PackageManager(lock=False)
+	apps = Application.all_installed(package_manager, only_local=True, localize=False)
 except ImportError:
 	# this happens sometimes during release updates
 	# ... an empty file is fine then
 	apps = []
 except:
 	# well THIS is weird. Probably PackageManager cannot open the cache (broken sources list?)
+	# or some corrupt ini files.
 	# Anyway, just use an empty file. The problem will be visible as soon as the UMC module
 	# is opened
 	apps = []
-else:
-	apps = Application.all_installed(package_manager, only_local=True, localize=False)
 for app in apps:
 	for attr in ('Name', 'Description'):
 		try:
