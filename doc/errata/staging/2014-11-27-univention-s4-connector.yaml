@@ -6,9 +6,8 @@ fix: 8.0.33-88.537.201412151702
 version: [4]
 desc: |
   This update addresses the following issues:
-  * GPO Security Descriptors can now be synchronized
-    between OpenLDAP and Samba Directroy Service.
-    By default this is not activated, an upcoming errata update for
-    UCS@school 4.0 will make use of this feature.
+  * GPO Security Descriptors can now be synchronized between OpenLDAP and
+    Samba Directroy Service.  By default this is not activated, an upcoming
+    errata update for UCS@school 4.0 will make use of this feature.
   * Ignore cn=Subschema and warn if listener didn't pass entryUUID
 bug: [33768,35973]
