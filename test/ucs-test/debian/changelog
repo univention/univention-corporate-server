@@ -1,3 +1,10 @@
+ucs-test (4.0.200-1) unstable; urgency=low
+
+  * Bug #35924: 40_mail/00check_forward_secrecy: check if Perfect Forward
+    Secrecy is enabled.
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 20 Jan 2015 11:37:19 +0100
+
 ucs-test (4.0.199-4) unstable; urgency=low
 
   * Bug #27653: 40_mail/essential/__init__.py: added file to allow imports.
