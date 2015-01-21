@@ -1,0 +1,12 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-join
+fix: 7.1.2-3.489.201501211440
+version: [0]
+desc: |
+  * If an error occurs during the automatic DNS lookup of the DC 
+  master for guessing the fully qualified domain name,
+  a warning message with a link to the network settings
+  will be displayed.
+bug: [34238]
