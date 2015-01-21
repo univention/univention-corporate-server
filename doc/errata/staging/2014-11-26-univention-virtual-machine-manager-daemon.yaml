@@ -6,11 +6,11 @@ fix: 3.0.18-3.572.201501151536
 version: [4]
 desc: |
   This update addresses the following issues:
-  * temporary files for noVNC token files are now created on the same partition
+  * Temporary files for noVNC token files are now created on the same partition
     to fix a problem with cross-device renaming.
   * Paused VMs are now handled more similar to running VMs, which allows, for
     exmaple, VNC to be used for paused VMs, too.
-  * Ignore errors reading UVMM profiles.
+  * Ignore errors when reading UVMM profiles.
 bug:
  - 34725
  - 35107
