@@ -351,8 +351,8 @@ class access:
 			raise univention.admin.uexceptions.ldapTimeout, _err2str(msg)
 		except ldap.SIZELIMIT_EXCEEDED, msg:
 			raise univention.admin.uexceptions.ldapSizelimitExceeded, _err2str(msg)
-		except ldap.FILTER_ERROR, msg:
-			raise univention.admin.uexceptions.ldapError(_err2str(msg), 'filter=%r' % (filter,))
+		except ldap.FILTER_ERROR as msg:
+			raise univention.admin.uexceptions.ldapError('%s filter=%r' % (_err2str(msg), filter))
 		except ldap.LDAPError, msg:
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
@@ -367,8 +367,8 @@ class access:
 			raise univention.admin.uexceptions.ldapTimeout, _err2str(msg)
 		except ldap.SIZELIMIT_EXCEEDED, msg:
 			raise univention.admin.uexceptions.ldapSizelimitExceeded, _err2str(msg)
-		except ldap.FILTER_ERROR, msg:
-			raise univention.admin.uexceptions.ldapError(_err2str(msg), 'filter=%r' % (filter,))
+		except ldap.FILTER_ERROR as msg:
+			raise univention.admin.uexceptions.ldapError('%s filter=%r' % (_err2str(msg), filter))
 		except ldap.LDAPError, msg:
 			# workaround for bug 14827 ==> msg tuple seems to be empty
 			if not msg:

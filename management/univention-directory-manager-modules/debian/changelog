@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-15) unstable; urgency=medium
+
+  * Bug #30088: cosmetic
+
+ -- Florian Best <best@univention.de>  Wed, 21 Jan 2015 14:48:39 +0100
+
 univention-directory-manager-modules (10.0.29-14) unstable; urgency=medium
 
   * Bug #33190: fix some texts in the release update policy
