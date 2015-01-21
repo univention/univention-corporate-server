@@ -31,13 +31,15 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/dom-class",
+	"umc/app",
 	"umc/tools",
 	"umc/widgets/Form",
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
 	"umc/widgets/PasswordBox",
 	"umc/i18n!umc/modules/join"
-], function(declare, lang, tools, Form, Text, TextBox, PasswordBox, _) {
+], function(declare, lang, domClass, app, tools, Form, Text, TextBox, PasswordBox, _) {
 
 	return declare("umc.modules.join.Form", [ Form ], {
 		constructor: function() {
@@ -47,11 +49,6 @@ define([
 			}];
 
 			this.widgets = [{
-				type:			Text,
-				name:			'text',
-				style:			'margin-bottom:1em;',
-				content:		_("Please enter credentials of a user account with administrator rights to join the system.")
-			}, {
 				type:			TextBox,
 				name:			'username',
 				value:			tools.status('username') == 'root' ? 'Administrator' : tools.status('username'),
@@ -69,14 +66,32 @@ define([
 				value:			'',
 				label:			_('Hostname of domain controller master'),
 				description:	_('The hostname of the domain controller master of the domain')
+			}, {
+				type:			Text,
+				name:			'warning',
+				style:			'margin-bottom:1em;',
+				content:		'',
+				visible:		false
 			}];
+
 		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
 			tools.umcpCommand('join/master').then(lang.hitch(this, function(data) {
 				// guess the master hostname
-				this._widgets.hostname.set('value', data.result);
+				if (data.result.master){
+					this._widgets.hostname.set('value', data.result.master);
+				}else{
+					//notify user in case of a dns lookup error
+					var _warningMessage =
+						'<b>' + _('Warning: ') + '</b>'
+						+ data.result.error_message
+						+ _(' There might be a problem with your selected DNS server. The DNS server settings can be adjusted in the ')
+						+ tools.linkToModule({module: 'setup', flavor: 'network'});
+					this._widgets.warning.set('content', _warningMessage);
+					this._widgets.warning.set('visible', true);
+				}
 			}));
 		}
 	});

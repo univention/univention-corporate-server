@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-24 13:12+0200\n"
+"POT-Creation-Date: 2015-01-21 14:00+0100\n"
 "PO-Revision-Date: 2012-04-23 16:17+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,6 +11,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: umc/js/join/Form.js:90
+msgid ""
+" There might be a problem with your selected DNS server. The DNS server "
+"settings can be adjusted in the "
+msgstr "Es könnte ein Problem mit dem ausgewählten DNS Server vorliegen. Die DNS Server-"
+"Einstellungen können angepasst werden im "
 
 #: umc/js/join/Grid.js:174
 #, python-format
@@ -125,7 +132,7 @@ msgstr "Ausführen erzwingen"
 msgid "Forces execution of selected join scripts"
 msgstr "Erzwingt Ausführung der ausgewählten join-Skripte."
 
-#: umc/js/join/Form.js:70
+#: umc/js/join/Form.js:67
 msgid "Hostname of domain controller master"
 msgstr "Rechnername des Domänencontroller Master"
 
@@ -149,7 +156,7 @@ msgstr "Join-Status"
 msgid "Join status ok, nothing to do."
 msgstr "Join-Status OK, es gibt nichts zu tun."
 
-#: umc/js/join/Form.js:46
+#: umc/js/join/Form.js:48
 msgid "Join system"
 msgstr "Domänenbeitritt"
 
@@ -159,6 +166,8 @@ msgid ""
 "Not all installed components have been registered. Please visit the %s to "
 "register the remaining components."
 msgstr ""
+"Nicht alle installierten Componenten wurden registriert. Bitte rufen sSie das %s auf um "
+"alle verbliebenen Komponenten zu registrieren."
 
 #: umc/js/join/Grid.js:174
 msgid "One script is pending to be run."
@@ -174,7 +183,7 @@ msgstr ""
 "werden. Um die gewählten Skripte trotzdem auszuführen muss die Ausführung "
 "erzwingen Option benutzt werden."
 
-#: umc/js/join/Form.js:64 umc/js/join.js:473
+#: umc/js/join/Form.js:61 umc/js/join.js:473
 msgid "Password"
 msgstr "Passwort"
 
@@ -182,11 +191,11 @@ msgstr "Passwort"
 msgid "Password invalid"
 msgstr "Passwort ungültig"
 
-#: umc/js/join/Form.js:65
+#: umc/js/join/Form.js:62
 msgid "Password of the domain administrator"
 msgstr "Passwort des Domänen-Administrators"
 
-#: umc/js/join/Form.js:53
+#: umc/js/join.js:106
 msgid ""
 "Please enter credentials of a user account with administrator rights to join "
 "the system."
@@ -246,7 +255,7 @@ msgstr "Status dieses Paketes"
 msgid "The following join scripts will be executed: "
 msgstr "Die folgenden Join-Skripte werden ausgeführt: "
 
-#: umc/js/join/Form.js:71
+#: umc/js/join/Form.js:68
 msgid "The hostname of the domain controller master of the domain"
 msgstr "Der Computername des Master-Domaincontrollers der Domäne"
 
@@ -268,12 +277,14 @@ msgid ""
 "The system has not been joined into a domain so far. Please visit the %s to "
 "join the system."
 msgstr ""
+"Das System wurde bisher noch nicht in eine Domäne Gejoined. Bitte rufen Sie das %s auf um "
+"das System zu joinen."
 
 #: umc/js/join.js:485
 msgid "The username may not be empty."
 msgstr "Es muss ein Benutzername angegeben werden."
 
-#: umc/js/join/Form.js:59
+#: umc/js/join/Form.js:56
 msgid "The username of the domain administrator"
 msgstr "Benutzername des Domänen-Administrators"
 
@@ -289,7 +300,7 @@ msgstr ""
 "Diese Seite zeigt den Status aller verfügbaren Join-Skripte auf diesem "
 "System, zusammen mit allen zugehörigen Aktionen."
 
-#: umc/js/join/Form.js:58 umc/js/join.js:468
+#: umc/js/join/Form.js:55 umc/js/join.js:468
 msgid "Username"
 msgstr "Benutzername"
 
@@ -301,9 +312,9 @@ msgstr "Benutzername ungültig"
 msgid "View join log"
 msgstr "Join-Protokoll ansehen"
 
-#: umc/js/join.js:106
-msgid "credentials"
-msgstr "Zugangsdaten"
+#: umc/js/join/Form.js:88
+msgid "Warning: "
+msgstr "Warnung: "
 
 #: umc/js/join.js:365
 msgid "hostname"
@@ -330,3 +341,6 @@ msgstr "Benutzername"
 #~ msgstr ""
 #~ "Ein Neustart der UMC-Server-Komponenten ist notwendig nach einem "
 #~ "erstmaligen Domänenbeitritt."
+
+#~ msgid "credentials"
+#~ msgstr "Zugangsdaten"

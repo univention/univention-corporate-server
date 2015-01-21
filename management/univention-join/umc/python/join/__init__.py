@@ -58,14 +58,24 @@ RE_HOSTNAME = re.compile('^[a-z]([a-z0-9-]*[a-z0-9])*(\.([a-z0-9]([a-z0-9-]*[a-z
 
 def get_master_dns_lookup():
 	# DNS lookup for the DC master entry
+	_msg = None
+	_fqdn = None
 	try:
-		query = '_domaincontroller_master._tcp.%s.' % ucr.get('domainname')
+		domainname = ucr.get('domainname')
+		query = '_domaincontroller_master._tcp.%s.' % domainname
 		result = dns.resolver.query(query, 'SRV')
 		if result:
-			return result[0].target.canonicalize().split(1)[0].to_text()
-	except dns.resolver.NXDOMAIN:
-		MODULE.error('Error to perform a DNS query for service record: %s' % query)
-	return ''
+			_fqdn = result[0].target.canonicalize().split(1)[0].to_text()
+	except dns.resolver.NXDOMAIN as ex:
+		_msg=_('Error while performing automatic lookup of DC master.')
+		MODULE.error('Error while performing a DNS query for service record %s: %s' % (query, ex))
+	except dns.resolver.Timeout as ex:
+		_msg=_('The automatic lookup of the DC master timed out.')
+		MODULE.error('Lookup of "%s" in domain "%s" timed out: %s' % (query, domainname, ex))
+	except dns.resolver.NoAnswer as ex:
+		_msg=_('The DNS server could not answer the automatic lookup of the DC master.')
+		MODULE.error('DNS server lookup for domain %s returned no or invalid answer: %s'% (domainname, ex))
+	return {'master': _fqdn, 'error_message': _msg}
 
 class HostSanitizer(StringSanitizer):
 	def _sanitize(self, value, name, further_args):

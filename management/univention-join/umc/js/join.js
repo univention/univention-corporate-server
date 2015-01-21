@@ -103,7 +103,7 @@ define([
 		_joining: null, // flag for the last executed action
 
 		headerText: _("Initial system join"),
-		//helpText: _('credentials') TODO: add something?
+		helpText: _("Please enter credentials of a user account with administrator rights to join the system."),
 
 		buildRendering: function() {
 			this.inherited(arguments);
