@@ -1,3 +1,9 @@
+univention-system-setup (8.1.66-12) unstable; urgency=medium
+
+  * Bug #36406: In ad/member mode avoid sync to external time source in 10ssl
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Jan 2015 22:50:26 +0100
+
 univention-system-setup (8.1.66-11) unstable; urgency=medium
 
   * Bug #36406: Don't abort if the time sync fails
