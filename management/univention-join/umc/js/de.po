@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-01-21 14:00+0100\n"
+"POT-Creation-Date: 2015-01-21 15:12+0100\n"
 "PO-Revision-Date: 2012-04-23 16:17+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,12 +12,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/join/Form.js:90
+#: umc/js/join/Form.js:91
 msgid ""
 " There might be a problem with your selected DNS server. The DNS server "
-"settings can be adjusted in the "
-msgstr "Es könnte ein Problem mit dem ausgewählten DNS Server vorliegen. Die DNS Server-"
-"Einstellungen können angepasst werden im "
+"settings can be adjusted in the {0}"
+msgstr ""
+"Es könnte ein Problem mit dem ausgewählten DNS Server vorliegen. Die DNS "
+"Server-Einstellungen können angepasst werden im {0}."
 
 #: umc/js/join/Grid.js:174
 #, python-format
@@ -166,8 +167,8 @@ msgid ""
 "Not all installed components have been registered. Please visit the %s to "
 "register the remaining components."
 msgstr ""
-"Nicht alle installierten Componenten wurden registriert. Bitte rufen sSie das %s auf um "
-"alle verbliebenen Komponenten zu registrieren."
+"Nicht alle installierten Componenten wurden registriert. Bitte rufen Sie das "
+"%s auf um alle verbliebenen Komponenten zu registrieren."
 
 #: umc/js/join/Grid.js:174
 msgid "One script is pending to be run."
@@ -277,8 +278,8 @@ msgid ""
 "The system has not been joined into a domain so far. Please visit the %s to "
 "join the system."
 msgstr ""
-"Das System wurde bisher noch nicht in eine Domäne Gejoined. Bitte rufen Sie das %s auf um "
-"das System zu joinen."
+"Das System ist bisher noch keiner Domäne beigetreten. Bitte rufen Sie das %s "
+"auf um das System zu joinen."
 
 #: umc/js/join.js:485
 msgid "The username may not be empty."

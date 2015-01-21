@@ -87,8 +87,10 @@ define([
 					var _warningMessage =
 						'<b>' + _('Warning: ') + '</b>'
 						+ data.result.error_message
-						+ _(' There might be a problem with your selected DNS server. The DNS server settings can be adjusted in the ')
-						+ tools.linkToModule({module: 'setup', flavor: 'network'});
+						+ lang.replace(
+							_(' There might be a problem with your selected DNS server. The DNS server settings can be adjusted in the {0}'),
+							[tools.linkToModule({module: 'setup', flavor: 'network'})]
+						  );
 					this._widgets.warning.set('content', _warningMessage);
 					this._widgets.warning.set('visible', true);
 				}

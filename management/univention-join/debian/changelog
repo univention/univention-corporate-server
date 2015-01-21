@@ -1,3 +1,9 @@
+univention-join (7.1.2-4) unstable; urgency=low
+
+  *Bug #34238: fixed translation, corrected warning message
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 21 Jan 2015 15:15:08 +0100
+
 univention-join (7.1.2-3) unstable; urgency=low
 
   * Bug #34238: added error handling for failed dns querys during
