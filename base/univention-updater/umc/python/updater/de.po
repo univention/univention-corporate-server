@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-updater\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-12-16 12:32+0100\n"
+"POT-Creation-Date: 2015-01-21 00:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,28 +12,28 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/updater/__init__.py:102
+#: umc/python/updater/__init__.py:103
 msgid "Package update"
 msgstr "Paket-Aktualisierung"
 
-#: umc/python/updater/__init__.py:109
+#: umc/python/updater/__init__.py:110
 msgid "Release update"
 msgstr "Release-Aktualisierung"
 
-#: umc/python/updater/__init__.py:96
+#: umc/python/updater/__init__.py:97
 #, python-format
 msgid "Release update to version %s"
 msgstr "Release-Aktualisierung nach %s"
 
-#: umc/python/updater/__init__.py:710
+#: umc/python/updater/__init__.py:714
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: umc/python/updater/__init__.py:280
+#: umc/python/updater/__init__.py:281
 msgid "latest version"
 msgstr "neueste Version"
 
-#: umc/python/updater/__init__.py:387
+#: umc/python/updater/__init__.py:388
 msgid "unknown"
 msgstr "unbekannt"
 

@@ -1,3 +1,11 @@
+univention-updater (10.0.51-15) unstable; urgency=low
+
+  * Bug #37029: List all blocking components (or apps) not only one
+  * Bug #37028: Extended the message shown in the UMC module when an app is
+    blocking the update
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 21 Jan 2015 01:01:37 +0100
+
 univention-updater (10.0.51-14) unstable; urgency=low
 
   * Bug #37349: Show all blocking components

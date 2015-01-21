@@ -147,7 +147,7 @@ if __name__ == '__main__':
 	elif manually:
 		component_manager.put_app(requested_app)
 		package_manager.update()
-		sys.stderr.write('WARNING: Using neither --all nor --master is deprecated. Applications may not be registerd properly\n')
+		sys.stderr.write('WARNING: Using neither --all nor --master is deprecated. Applications may not be registered properly\n')
 
 	if success:
 		sys.exit(0)

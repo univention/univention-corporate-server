@@ -52,6 +52,7 @@ from univention.management.console.modules.decorators import simple_response
 from univention.management.console.protocol.definitions import SUCCESS, MODULE_ERR
 
 from univention.updater import UniventionUpdater
+from univention.updater.errors import RequiredComponentError
 
 _ = umc.Translation('univention-management-console-module-updater').translate
 
@@ -467,7 +468,10 @@ class Instance(umcm.Base):
 
 			# if nothing is returned -> convert to empty string.
 			what = 'querying available release updates'
-			result['release_update_available'] = self.uu.release_update_available()
+			try:
+				result['release_update_available'] = self.uu.release_update_available(errorsto='exception')
+			except RequiredComponentError as exc:
+				result['release_update_available'] = exc.version
 			if result['release_update_available'] is None:
 				result['release_update_available'] = ''
 
@@ -475,7 +479,7 @@ class Instance(umcm.Base):
 			blocking_components = self.uu.get_all_available_release_updates()[1]
 			if not blocking_components:
 				blocking_components = []
-			result['release_update_blocking_components'] = list(blocking_components)
+			result['release_update_blocking_components'] = ' '.join(blocking_components)
 
 			what = 'querying appliance mode'
 			result['appliance_mode'] = self.ucr.is_true('server/appliance')
