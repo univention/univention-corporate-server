@@ -1,3 +1,9 @@
+univention-join (7.1.2-5) unstable; urgency=low
+
+  *Bug #34238: minor correction
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 21 Jan 2015 15:29:16 +0100
+
 univention-join (7.1.2-4) unstable; urgency=low
 
   *Bug #34238: fixed translation, corrected warning message

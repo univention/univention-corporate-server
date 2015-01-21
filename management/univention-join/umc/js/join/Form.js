@@ -82,7 +82,7 @@ define([
 				// guess the master hostname
 				if (data.result.master){
 					this._widgets.hostname.set('value', data.result.master);
-				}else{
+				} else {
 					//notify user in case of a dns lookup error
 					var _warningMessage =
 						'<b>' + _('Warning: ') + '</b>'
