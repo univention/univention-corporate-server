@@ -1,3 +1,9 @@
+univention-system-setup (8.1.66-11) unstable; urgency=medium
+
+  * Bug #36406: Don't abort if the time sync fails
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Jan 2015 14:30:10 +0100
+
 univention-system-setup (8.1.66-10) unstable; urgency=medium
 
   * Bug #37168: Improved wording for error message

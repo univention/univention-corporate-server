@@ -67,7 +67,10 @@ class AdMemberScript(SetupScript):
 
 		try:
 			_progress(5, _('Configuring time synchronization...'))
-			admember.time_sync(ad_server_ip)
+			try:
+				admember.time_sync(ad_server_ip)
+			except admember.timeSyncronizationFailed:
+				pass
 			admember.set_timeserver(ad_server_ip)
 
 			_progress(10, _('Configuring DNS server...'))
