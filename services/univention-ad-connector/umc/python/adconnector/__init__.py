@@ -389,7 +389,7 @@ class Instance(Base, ProgressMixin):
 			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info.get('DC DNS Name'))
 		except admember.notDomainAdminInAD as exc: # check_ad_account()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_CommandError(_('The given user is not member of the Domain Admins group in AD.'))
+			raise UMC_CommandError(_('The given user is not member of the Domain Admins group in Active Directory. This is a requirement for the Active Directory domain join.'))
 
 		# final info dict that is returned... replace spaces in the keys with '_'
 		MODULE.info('Preparing info dict...')

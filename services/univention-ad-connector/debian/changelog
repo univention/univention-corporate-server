@@ -1,3 +1,9 @@
+univention-ad-connector (9.0.11-6) unstable; urgency=medium
+
+  * Bug #35562: Improved wording for error message
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Jan 2015 11:33:37 +0100
+
 univention-ad-connector (9.0.11-5) unstable; urgency=medium
 
   * Bug #37450: Fix variable names
