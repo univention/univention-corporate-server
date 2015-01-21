@@ -1128,7 +1128,7 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 	srv_record = "_domaincontroller_master._tcp.%s" % (domainname,)
 	if get_domaincontroller_srv_record(domainname) == fqdn_with_trailing_dot:
 		ud.debug(ud.MODULE, ud.PROCESS, "Ok, SRV record %s already points to this server" % (srv_record,))
-		return
+		return True
 	
 	fd = tempfile.NamedTemporaryFile(delete=False)
 	fd.write('server %s\n' % ad_ip)
@@ -1147,9 +1147,13 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 		ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
 		if p1.returncode:
 			ud.debug(ud.MODULE, ud.ERROR, "%s failed with %d (%s)" % (cmd, p1.returncode, stderr))
-			raise failedToAddServiceRecordToAD("failed to add SRV record to %s" % ad_ip)
+			ud.debug(ud.MODULE, ud.ERROR, "failed to add SRV record to %s" % ad_ip)
+			# raise failedToAddServiceRecordToAD("failed to add SRV record to %s" % ad_ip)
+			return False
 	finally:
 		os.unlink(fd.name)
+
+	return True
 
 
 def get_ucr_variable_from_ucs(host, server, var):
@@ -1212,7 +1216,6 @@ def configure_ad_member(ad_server_ip, username, password):
 	run_samba_join_script(username, password)
 
 	add_domaincontroller_srv_record_in_ad(ad_server_ip)
-
 	
 	if server_supports_ssl(server=ad_domain_info["DC DNS Name"]):
 		enable_ssl()

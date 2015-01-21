@@ -1,3 +1,10 @@
+univention-lib (4.0.5-15) unstable; urgency=medium
+
+  * AD Member: Continue if adding the DNS SRV RR _domaincontroller_master._tcp
+    fails (Bug #35870)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Jan 2015 20:02:22 +0100
+
 univention-lib (4.0.5-14) unstable; urgency=medium
 
   * Bug #37481: Attempt to work around kinit "clock skew" problem.
