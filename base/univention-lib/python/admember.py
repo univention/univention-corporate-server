@@ -141,11 +141,20 @@ def _get_kerberos_ticket(principal, password, ucr=None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
+	## We need to remove the target credential cache first,
+	## otherwise kinit may use an old ticket and run into "krb5_get_init_creds: Clock skew too great".
+	cmd = ("/usr/bin/kdestroy",)
+	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+	stdout, stderr = p1.communicate()
+	if p1.returncode != 0:
+		ud.debug(ud.MODULE, ud.ERROR, "kdestroy failed:\n%s" % stdout)
+
 	if 'KRB5CCNAME' in os.environ:
 		uid = os.geteuid()
 		default_krb5_cc_path = '/tmp/krb5cc_%d' % uid
 		## get the default "/tmp/krb5cc_$uid" key cache out of the way,
 		## otherwise kinit doesn't generate one in the specified location
+		## Note: Could also above run "kdestroy -A" instead
 		default_krb5_cc = None
 		if os.path.exists(default_krb5_cc_path):
 			backup_default_krb5_cc = tempfile.NamedTemporaryFile(delete=False)

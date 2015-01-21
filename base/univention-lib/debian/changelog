@@ -1,3 +1,9 @@
+univention-lib (4.0.5-14) unstable; urgency=medium
+
+  * Bug #37481: Attempt to work around kinit "clock skew" problem.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Jan 2015 19:38:13 +0100
+
 univention-lib (4.0.5-13) unstable; urgency=medium
 
   * Bug #37481: Don't abort if the time sync fails
