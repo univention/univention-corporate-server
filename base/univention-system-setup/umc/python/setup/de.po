@@ -230,9 +230,13 @@ msgid "The following value is too long, only 64 characters allowed: %s"
 msgstr "Der folgende Wert ist zu lang, es sind nur 64 Zeichen erlaubt: %s"
 
 #: umc/python/setup/__init__.py:747
-msgid "The given user is not member of the Domain Admins group in AD."
+msgid ""
+"The given user is not member of the Domain Admins group in Active Directory. "
+"This is a requirement for the Active Directory domain join."
 msgstr ""
-"Das angegebene Konto ist nicht Mitglied der Gruppe Domain Admins in AD."
+"Der angegebene Benutzer ist kein Mitglied der Gruppe Domain Admins im Active "
+"Directory. Dies ist eine Voraussetzung für den Active Directory "
+"Domänenbeitritt."
 
 #: umc/python/setup/__init__.py:389
 msgid ""

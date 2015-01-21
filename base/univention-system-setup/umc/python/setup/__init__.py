@@ -744,7 +744,7 @@ class Instance(Base, ProgressMixin):
 				return False
 			except notDomainAdminInAD: # check_ad_account()
 				# checked: Not a Domain Administrator!
-				raise UMC_Error(_("The given user is not member of the Domain Admins group in AD."))
+				raise UMC_Error(_("The given user is not member of the Domain Admins group in Active Directory. This is a requirement for the Active Directory domain join."))
 			else:
 				return ad_domain_info['Domain']
 		elif role == 'nonmaster':
