@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (4.1.19-9) unstable; urgency=low
+
+  * Bug #37364: Allow searching for multiple components at once (needed for
+    updater module)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 21 Jan 2015 01:07:02 +0100
+
 univention-management-console-module-appcenter (4.1.19-8) unstable; urgency=low
 
   * Bug #37403: Fix a problem with packages not found anymore in the package
