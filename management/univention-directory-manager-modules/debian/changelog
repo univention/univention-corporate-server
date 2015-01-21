@@ -1,6 +1,6 @@
-univention-directory-manager-modules (10.0.29-15) unstable; urgency=medium
+univention-directory-manager-modules (10.0.29-16) unstable; urgency=medium
 
-  * Bug #30088: cosmetic
+  * Bug #30088: cosmetic, version bump
 
  -- Florian Best <best@univention.de>  Wed, 21 Jan 2015 14:48:39 +0100
 
