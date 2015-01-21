@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-lib
-fix: 4.0.5-14.298.201501211938
+fix: 4.0.5-15.299.201501212002
 version: [0]
 desc: |
   This update addresses the following issues:
