@@ -1,3 +1,9 @@
+univention-system-setup (8.1.66-13) unstable; urgency=medium
+
+  * Bug #37049: Log debug messages from admember.py to setup.log
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Jan 2015 22:51:44 +0100
+
 univention-system-setup (8.1.66-12) unstable; urgency=medium
 
   * Bug #36406: In ad/member mode avoid sync to external time source in 10ssl

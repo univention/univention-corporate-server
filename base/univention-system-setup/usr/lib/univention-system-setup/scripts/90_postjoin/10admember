@@ -35,6 +35,8 @@ from univention.lib import admember
 
 from univention.management.console.modules.setup.setup_script import SetupScript, main, _
 
+import univention.debug as ud
+
 class AdMemberScript(SetupScript):
 	name = _('Configuring Active Directory connection')
 
@@ -57,6 +59,9 @@ class AdMemberScript(SetupScript):
 
 		def _err(exc, msg=None):
 			self.error(msg or str(exc))
+
+		ud.init("stdout", 1, 0)
+		ud.set_level(ud.MODULE, int(self.ucr.get('umc/module/debug/level', '2')))
 
 		ad_server_address = self.profile.get('ad/address')
 		ad_domain_info = admember.lookup_adds_dc(ad_server_address)
