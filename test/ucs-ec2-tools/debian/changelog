@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.2-5) unstable; urgency=medium
+
+  * Bug #37450: Test CamelCase base DN in autotest-*-admember-*-w2k8r2-english
+  * Bug #33110: Test CamelCase base DN in autotest-091-master-s4
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Jan 2015 11:16:50 +0100
+
 ucs-ec2-tools (1.0.2-4) unstable; urgency=low
 
   * Bug #35856: corrected check_correct_* functions in
