@@ -111,7 +111,7 @@ def check_correct_passwords():
 	ucr.load()
 	ucr_domain_pw = ucr['tests/domainadmin/pwd']
 	if  ucr_domain_pw != options.domain_password:
-		ucr.get('tests/domainadmin/pwd') = options.domain_password
+		ucr['tests/domainadmin/pwd'] = options.domain_password
 
 	ucr.save()
 

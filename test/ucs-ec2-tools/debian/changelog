@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.2-6) unstable; urgency=low
+
+  * Bug #35096: fixed setting new password after 
+    domain admin password check in examples/jenkins/utils/ad-join.py
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 21 Jan 2015 16:33:48 +0100
+
 ucs-ec2-tools (1.0.2-5) unstable; urgency=medium
 
   * Bug #37450: Test CamelCase base DN in autotest-*-admember-*-w2k8r2-english
