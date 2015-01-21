@@ -2,11 +2,12 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-system-setup
-fix: 8.1.66-11.838.201501211431
+fix: 8.1.66-13.839.201501212252
 version: [0]
 desc: |
   This update addresses the following issues:
   * Setup as AD member could fail if the AD system time was behind the UCS time
+  * setup.log did not capture log messages from the Active Directory join
   * Check that joining account is member of "Domain Admins" in AD
     before starting admember setup
   * A branding for the appliance wizard has been implemented via the UCR
@@ -14,5 +15,6 @@ desc: |
   * A DHCP button/link has been added for sending a DHCP request anew.
 bug:
  - 36406
+ - 37049
  - 37168
  - 37488
