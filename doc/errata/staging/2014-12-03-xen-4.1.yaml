@@ -17,8 +17,8 @@ desc: |
   This update addresses the following issues:
   - Fix decoding of hexadecimal escaped characters in description.
 bug:
- - 33974
  - 36872
+ - 36098
 cve:
  - CVE-2014-8595
  - CVE-2014-8594
