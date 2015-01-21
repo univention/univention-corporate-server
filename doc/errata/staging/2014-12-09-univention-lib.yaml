@@ -8,8 +8,8 @@ desc: |
   This update addresses the following issues:
   * Check that joining account is member of "Domain Admins" in Active
     Directory before starting the Active Directory join
-  * Don't fail AD member setup if the SRV record _domainctonroller_master is
-    already present.
+  * Don't fail Active Directory join if the SRV record
+    _domainctonroller_master is already present.
   * Wait for slapd restart when Domain Admins has been renamed during
     Active Directory join
   * Allow UMC Administrator to be renamed before Active Directory join
