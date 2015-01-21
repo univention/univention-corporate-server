@@ -548,17 +548,35 @@ if dpkg -l "mysql-server-5.1" 2>&3 | grep ^ii  >&3 ; then ## Bug 36618
 	echo "done."
 fi
 
+## firefox pre update
+firefox_de=false
+firefox_en=false
 if dpkg -l "firefox" 2>&3 | grep ^ii  >&3 ; then ## Bug #36453
-	echo -n "Starting pre-upgrade of firefox: "
 	if [ "${LANG#de_*}" != "$LANG" ]; then
-		pkg="firefox-de"
+		firefox_de=true
 	else
-		pkg="firefox-en"
+		firefox_en=true
 	fi
-	if ! $update_commands_install "$pkg" >&3 2>&3
-	then
+fi
+if dpkg -l "firefox-de" 2>&3 | grep ^ii  >&3 ; then ## Bug #37410
+	firefox_de=true
+fi
+if dpkg -l "firefox-en" 2>&3 | grep ^ii  >&3 ; then ## Bug #37410
+	firefox_en=true
+fi
+if [ "true" == "$firefox_de" ]; then
+	echo -n "Starting pre-upgrade of firefox: "
+	if ! $update_commands_install --force-yes firefox-de="1:31.2.0esr-2.50.201410312309" >&3 2>&3; then
 		echo "failed."
-		echo "ERROR: Failed to upgrade $pkg."
+		echo "ERROR: Failed to upgrade firefox-de."
+		exit 1
+	fi
+	echo "done."
+elif [ "true" == "$firefox_en" ]; then
+	echo -n "Starting pre-upgrade of firefox: "
+	if ! $update_commands_install --force-yes firefox-en="1:31.2.0esr-3.46.201410312332" >&3 2>&3; then
+		echo "failed."
+		echo "ERROR: Failed to upgrade firefox-en."
 		exit 1
 	fi
 	echo "done."
