@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-updater
-fix: 10.0.51-14.1364.201412161253
+fix: 10.0.51-15.1365.201501210102
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -18,6 +18,8 @@ desc: |
   - Adapted the link to the new errata overview page inside the updater module.
   - Open the Software Update UMC module upon UMC startup during release updates
     and show a information dialog about the current update process.
+  - Extended the message shown in the UMC module if an app is blocking the update.
+  - List all blocking apps (or other components) in the UMC module.
 bug:
  - 37349
  - 37345
@@ -26,3 +28,5 @@ bug:
  - 37231
  - 33539
  - 37357
+ - 37363
+ - 37364
