@@ -2,15 +2,17 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-ad-connector
-fix: 9.0.11-6.461.201501211134
+fix: 9.0.11-8.463.201501221536
 version: [0]
 desc: |
   This update addresses the following issues:
   * Check that joining account is member of "Domain Admins" in Active
     Directory before starting the Active Directory join
+  * Show warning if the SRV record _domainctonroller_master is missing.
   * Allow UMC Administrator to be renamed before Active Directory join
   * LDAP base DNs with uppercase letters caused synchronization rejects.
 bug:
  - 35562
+ - 35870
  - 36778
  - 37450
