@@ -5,5 +5,5 @@ src: univention-management-console-module-adtakeover
 fix: 2.0.6-2.60.201501200044
 version: [0]
 desc: |
-    * Fixed several spelling mistakes
+    * Several spelling mistakes have been fixed.
 bug: [35199]
