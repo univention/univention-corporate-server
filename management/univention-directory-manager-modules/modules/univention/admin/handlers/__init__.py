@@ -519,11 +519,8 @@ class base(object):
 	def remove(self, remove_childs=0):
 		'''remove object'''
 
-		# FIXME: the following check doesn't work anymore if we set _exists in open()
-		# as an object naturally doesn't need to open to be removed; for now, let's
-		# see what happens without it
-		#if not self.exists():
-		#	raise univention.admin.uexceptions.noObject
+		if not self.dn or not self.lo.get(self.dn):
+			raise univention.admin.uexceptions.noObject(self.dn)
 
 		return self._remove(remove_childs)
 
@@ -791,13 +788,19 @@ class simpleLdap(base):
 			# if anything goes wrong we need to remove the already created object, otherwise we run into 'already exists' errors
 			try:
 				self._ldap_post_create()
-			except Exception, e:
+			except:
 				# ensure that there is no lock left
-				import sys, traceback
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.ERROR, "Post-modify operation failed: %s" % '\n'.join( traceback.format_tb( sys.exc_info()[ 2 ] ) ) )
-				self.cancel()
-				self.remove()
-				raise e
+				import traceback
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-Create operation failed: %s" % (traceback.format_exc(),))
+				try:
+					self.cancel()
+				except:
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, "Post-create: cancel() failed: %s" % (traceback.format_exc(),))
+				try:
+					self.remove()
+				except:
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, "Post-create: remove() failed: %s" % (traceback.format_exc(),))
+				raise
 
 		self.call_udm_property_hook('hook_ldap_post_create', self)
 
@@ -1014,8 +1017,6 @@ class simpleLdap(base):
 		self.call_udm_property_hook('hook_ldap_pre_remove', self)
 
 		if remove_childs:
-			if not self.dn:
-				raise univention.admin.uexceptions.noObject
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,'handlers/__init__._remove() childs of base dn %s' % self.dn)
 			subelements = self.lo.search(base=self.dn, scope='one', attr=[])
 			if subelements:
