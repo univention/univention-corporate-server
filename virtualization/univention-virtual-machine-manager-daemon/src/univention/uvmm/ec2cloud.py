@@ -357,7 +357,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		try:
 			self._exec_libcloud(lambda: self.driver.destroy_node(instance))
 			# Update instance information
-			self.timerEvent.set()
+			self.set_frequency_fast_update()
 		except Exception, e:  # Unfortunately, libcloud only throws "Exception"
 			raise EC2CloudConnectionError("Error while destroying instance %s (id:%s): %s" % (name, instance_id, e))
 		logger.info("Destroyed instance %s (id:%s), using connection %s" % (name, instance_id, self.publicdata.name))
@@ -466,6 +466,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		try:
 			logger.debug("CREATE INSTANCE, connection:%s ARGS: %s" % (self.publicdata.name, kwargs))
 			self._exec_libcloud(lambda: self.driver.create_node(**kwargs))
+			self.set_frequency_fast_update()
 		except Exception, e:
 			raise EC2CloudConnectionError("Instance could not be created: %s" % e)
 
