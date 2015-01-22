@@ -31,10 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 ucs_ignore_interface () {
-	case "${IFACE:-}" in
-	lo|--all) exit 0 ;;
-	esac
-	case "${ADDRFAM:-}" in
-	meta) exit 0 ;;
-	esac
+	if [ "$IFACE" = "lo" -o "$IFACE" = "all" ]; then
+		exit 0
+	fi
 }
