@@ -573,3 +573,7 @@ class Support( object ):
 
 		if not self[ 'CtxShadow' ]:
 			self[ 'CtxShadow' ] = '00000000'
+
+		if not self['CtxRASDialin']:
+			self['CtxRASDialin'] = 'E'
+

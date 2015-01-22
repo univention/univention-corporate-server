@@ -2,6 +2,7 @@ univention-directory-manager-modules (10.0.29-19) unstable; urgency=medium
 
   * Bug #36273: allow to upload a PNG photo which will be converted into JPEG
   	by the jpegPhoto syntax.
+  * Bug #37592: set default value for CtxRASDialin property
 
  -- Florian Best <best@univention.de>  Thu, 22 Jan 2015 16:22:51 +0100
 
