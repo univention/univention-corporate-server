@@ -12,6 +12,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: umc/js/adconnector.js:46
+msgid ""
+"<p><b>Caution!</b> The DNS service record for the UCS Master was not found "
+"in the DNS server.</p>"
+msgstr ""
+"<p><b>Achtung!</b> Der DNS Service Record für den UCS Master wurde nicht 
+im DNS Server gefunden.</p>"
+
+#: umc/js/adconnector.js:46
+msgid ""
+"<p>Details are explained in the <a href=\"http://sdb.univention."
+"de/1287\">Support Database</a>.</p>"
+msgstr ""
+"<p>Details sind in der <a href=\"http://sdb.univention."
+"de/1287\">Support Database</a> erklärt.</p>"
+
+#: umc/js/adconnector.js:46
+msgid "DNS Check"
+msgstr "DNS-Check"
+
 #: umc/js/adconnector/DownloadInfo.js:68
 msgid ""
 "<br />Please verify that the file has been downloaded as <b>cert.pem</b>, "
