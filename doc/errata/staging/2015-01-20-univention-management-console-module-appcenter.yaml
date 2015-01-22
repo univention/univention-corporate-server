@@ -6,7 +6,7 @@ fix: 4.1.19-9.311.201501210112
 version: [0]
 desc: |
   * If the details of a package are opened which is not longer available (e.g.
-    the reporitory has been removed), an error occurred. This has been fixed.
+    the repository has been removed), an error occurred. This has been fixed.
   * The translation file for installed apps modules may have been corrupt when
     generated during a release update. This has been fixed.
   * Extended one command to allow searching for multiple components at once
