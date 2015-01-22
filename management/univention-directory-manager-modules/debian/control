@@ -21,6 +21,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-m2crypto,
  python-smbpasswd,
  shell-univention-lib,
+ python-imaging,
  python-univention-lib (>= 3.0.26-50),
  python-univention-directory-manager-cli (= ${binary:Version})
 Provides: ${python:Provides}

@@ -1486,8 +1486,11 @@ msgid "Value must be 0 or 1"
 msgstr "Der Wert muss 0 oder 1 sein."
 
 #: syntax.py:447
-msgid "Value must be Base64 encoded jpeg"
-msgstr "Der Wert muss eine Base64-kodierte JPEG Datei sein"
+msgid "Value must be Base64 encoded jpeg."
+msgstr "Der Wert muss eine Base64-kodierte JPEG Datei sein."
+
+msgid "Failed to convert PNG file into JPEG format."
+msgstr "Konvertierung der PNG-Datei ins JPEG-Format ist fehlgeschlagen."
 
 #: syntax.py:531
 msgid "Value must be a number!"

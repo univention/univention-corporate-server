@@ -30,7 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import re, operator
+import re
+import operator
 import ipaddr
 import inspect
 import univention.debug
@@ -46,8 +47,13 @@ import base64
 import zlib
 import bz2
 import copy
-import sys, os
+import sys
+import os
 import shlex
+import imghdr
+import PIL
+import traceback
+from io import BytesIO
 
 translation=univention.admin.localization.translation('univention/admin')
 _=translation.translate
@@ -444,13 +450,30 @@ class jpegPhoto( Upload ):
 	@classmethod
 	def parse(self, text):
 		try:
+			raw = base64.b64decode(text)
+			if imghdr.what(None, raw) == 'png':
+				# convert from PNG to JPEG
+				try:
+					fp = BytesIO(raw)
+					text = BytesIO()
+					image = PIL.Image.open(fp)
+					def _fileno(*a,**k):
+						raise AttributeError()  # workaround for an old PIL lib which can't handle BytesIO
+					text.fileno = _fileno
+					image.save(open('/tmp/test', 'w'), format='jpeg')
+					image.save(text, format='jpeg')
+					raw = text.getvalue()
+					text = base64.b64encode(raw)
+				except (KeyError, IOError):
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Failed to convert PNG file into JPEG: %s' % (traceback.format_exc(),))
+					raise univention.admin.uexceptions.valueError(_('Failed to convert PNG file into JPEG format.'))
 			# imghdr.what(None, base64.b64dcode(text)) == 'jpeg'  # See Bug #36304
 			## this is what imghdr.py probably does in  the future:
-			if base64.b64decode(text)[0:2] != b'\xff\xd8':
+			if raw[0:2] != b'\xff\xd8':
 				raise ValueError
 			return text
 		except (base64.binascii.Error, ValueError, TypeError):
-			raise univention.admin.uexceptions.valueError(_('Value must be Base64 encoded jpeg'))
+			raise univention.admin.uexceptions.valueError(_('Value must be Base64 encoded jpeg.'))
 
 class Base64Bzip2XML( TextArea ):
 	@classmethod
