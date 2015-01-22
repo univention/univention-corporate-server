@@ -1,3 +1,9 @@
+univention-updater (10.0.51-17) unstable; urgency=medium
+
+  * Bug #37534: preup remove blocking legacy samba tdb files
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Jan 2015 19:52:38 +0100
+
 univention-updater (10.0.51-16) unstable; urgency=low
 
   * Bug #37410: preup firefox to UCS 4.0-0 version 

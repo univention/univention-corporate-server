@@ -582,6 +582,18 @@ elif [ "true" == "$firefox_en" ]; then
 	echo "done."
 fi
 
+# Bug #37534
+for file in passdb.tdb secrets.tdb schannel_store.tdb idmap2.tdb; do
+	if [ -e "/var/lib/samba/$file" ] &&
+	   [ -e "/var/lib/samba/private/$file" ] &&
+	   [ ! "/var/lib/samba/$file" -ef "/var/lib/samba/private/$file" ]; then
+		new_filename="$file.bak_$(date +%y%m%d)"
+		echo "$file exists in /var/lib/samba and /var/lib/samba/private,"
+		echo "renaming /var/lib/samba/$file to /var/lib/samba/$new_filename"
+		mv "/var/lib/samba/$file" "/var/lib/samba/$new_filename"
+	fi
+done
+
 echo "** Starting: apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade" >&3 2>&3
 apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade >&3 2>&3
 
