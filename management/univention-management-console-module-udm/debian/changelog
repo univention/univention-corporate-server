@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-41) unstable; urgency=medium
+
+  * Bug #36700: Change order of buttons
+
+ -- Florian Best <best@univention.de>  Thu, 22 Jan 2015 15:14:13 +0100
+
 univention-management-console-module-udm (5.1.25-40) unstable; urgency=medium
 
   * Bug #36700: display automatically set default values. Ask for closing

@@ -1723,13 +1723,13 @@ define([
 
 			if (!this.newObjectOptions && (this.haveValuesChanged() || this.havePolicyReferencesChanged())) {
 				return dialog.confirm(_('There are unsaved changes. Are you sure to cancel?'), [{
+					label: _('Continue editing'),
+					name: 'cancel'
+				}, {
 					label: _('Discard changes'),
 					name: 'quit',
+					'default': true,
 					callback: lang.hitch(this, 'onCloseTab')
-				}, {
-					label: _('Continue editing'),
-					name: 'cancel',
-					'default': true
 				}]);
 			}
 			this.onCloseTab();
