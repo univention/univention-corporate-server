@@ -1,3 +1,9 @@
+univention-ad-connector (9.0.11-8) unstable; urgency=medium
+
+  * Bug #35870: Fix translation file
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Jan 2015 15:35:26 +0100
+
 univention-ad-connector (9.0.11-7) unstable; urgency=medium
 
   * Bug #35870: UMC notification if _domaincontroler_master SRV RR is missing
