@@ -18,7 +18,8 @@ desc: |
   - Adapted the link to the new errata overview page inside the updater module.
   - Open the Software Update UMC module upon UMC startup during release updates
     and show a information dialog about the current update process.
-  - Extended the message shown in the UMC module if an app is blocking the update.
+  - Extended the message shown in the UMC module if an app is blocking the
+    update.
   - List all blocking apps (or other components) in the UMC module.
 bug:
  - 37349

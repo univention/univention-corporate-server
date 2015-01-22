@@ -3,7 +3,7 @@ release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-samba
 fix: 9.0.5-3.493.201501081047
-version: [2,3,4]
+version: [0]
 desc: |
   This update addresses the following issues:
   * The default for the Samba print server architecture was 32 bit.
