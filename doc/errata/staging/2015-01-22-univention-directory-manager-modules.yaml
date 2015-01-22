@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-directory-manager-modules
+fix: 10.0.29-17.1280.201501221313
+version: [0]
+desc: |
+  This update addresses the following issue:
+  * Added support for the following operators in a UDM filter: <, >, <=, >=
+bug: [36970]
