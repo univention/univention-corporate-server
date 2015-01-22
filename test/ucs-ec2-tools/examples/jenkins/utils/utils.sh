@@ -203,10 +203,12 @@ run_tests ()
 
 run_join_scripts ()
 {
+	local admin_password="${1:-univention}"
+
 	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
 		univention-run-join-scripts
 	else
- 		echo -n "univention" >/tmp/univention
+ 		echo -n "$admin_password" >/tmp/univention
 		univention-run-join-scripts -dcaccount Administrator -dcpwd /tmp/univention
 	fi
 }
