@@ -99,10 +99,10 @@ define([
 		showTooltip: function(evt, type) {
 			var msg = '';
 			if (type == 'keyname') {
-				msg = _('A key pair consists of a public and private key to log in using SSH. The configuration of all keys takes place directly via the administration page of the cloud.');
+				msg = _('A key pair consists of a public and private key to log in using SSH. The configuration of all keys takes place directly via the administration page of the cloud. The key creation or upload has to be done at the provider\'s administration interface.');
 			}
 			else if (type == 'security_group_ids') {
-				msg = _('A security group acts as a virtual firewall that controls the traffic of the instance. To access a website in a secure way (for example via the edit page of the instance), a group rule should be used which allow incoming HTTPS traffic. The configuration of all security groups takes place directly via the administration page of the cloud.');
+				msg = _('A security group acts as a virtual firewall that controls the traffic of the instance. To enable access, correct rules have to be configured (for example, a UCS instance needs at least TCP ports 22 (ssh) and 443 (https)). The configuration of all security groups takes place directly via the administration page of the cloud. The security group configuration has to be done at the provider\'s administration interface.');
 			}
 			if (msg) {
 				_showTooltip(evt.target, msg, evt);

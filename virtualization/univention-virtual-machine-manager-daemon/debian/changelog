@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (4.0.21-2) unstable; urgency=low
+
+  * Bug #36906: Update tooltips in instance wizard
+  * Bug #37301: Update cloud instance info more often after create or delete
+
+ -- Andreas Peichert <peichert@univention.de>  Thu, 22 Jan 2015 15:13:57 +0100
+
 univention-virtual-machine-manager-daemon (4.0.21-1) unstable; urgency=low
 
   * Bug #36927: Fix upgrade problem.
