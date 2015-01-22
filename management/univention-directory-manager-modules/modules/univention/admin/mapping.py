@@ -57,6 +57,14 @@ def ListToString(list):
 	else:
 		return ''
 
+def ListToIntToString(_list):
+	if _list:
+		try:
+			return int(_list[0])
+		except (ValueError, TypeError):
+			pass
+	return '0'
+
 def ListToLowerString(list):
 	return StringToLower(ListToString(list))
 
@@ -73,11 +81,17 @@ def IgnoreNone(list):
 	if list != 'None':
 		return list
 
-def unmapUNIX_TimeInterval( value ):
+def _stringToInt(value):
+	try:
+		return int(value)
+	except (ValueError, TypeError):
+		return 0
+
+def unmapUNIX_TimeInterval(value):
 	if type(value) == types.ListType:
-		value = int(value[0])
+		value = _stringToInt(value[0])
 	else:
-		value = int(value)
+		value = _stringToInt(value)
 	unit = 'seconds'
 	if value % 60 == 0:
 		value /= 60
@@ -88,23 +102,23 @@ def unmapUNIX_TimeInterval( value ):
 			if value % 24 == 0:
 				value /= 24
 				unit = 'days'
-	return [ unicode( value ), unit ]
+	return [unicode(value), unit]
 
-def mapUNIX_TimeInterval( value ):
+def mapUNIX_TimeInterval(value):
 	unit = 'seconds'
-	if isinstance( value, ( tuple, list ) ):
-		if len( value ) > 1:
-			unit = value[ 1 ]
-		value = int( value[ 0 ] )
+	if isinstance(value, (tuple, list)):
+		if len(value) > 1:
+			unit = value[1]
+		value = _stringToInt(value[0])
 	else:
-		value = int( value )
+		value = _stringToInt(value)
 	if unit == 'days':
 		value *= 24 * 60 * 60
 	elif unit == 'hours':
 		value *= 60 * 60
 	elif unit == 'minutes':
 		value *= 60
-	return unicode( value )
+	return unicode(value)
 
 def unmapBase64( value ):
 	'''mapBase64 converts binary data (as found in LDAP) to Base64 encoded UDM propertry values'''
@@ -115,12 +129,12 @@ def unmapBase64( value ):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in unmapBase64: %s' % e)
 	else:
 		try:
-			return base64.b64encode( value[ 0 ] )
+			return base64.b64encode(value[0])
 		except Exception, e:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in unmapBase64: %s' % e)
 	return ""
 
-def mapBase64( value ):
+def mapBase64(value):
 	'''mapBase64 converts Base64 encoded UDM propertry values to binary data (for storage in LDAP)'''
 	if value == '*':
 		# special case for filter pattern '*'
@@ -132,7 +146,7 @@ def mapBase64( value ):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in mapBase64: %s' % e)
 	else:
 		try:
-			return base64.b64decode( value )
+			return base64.b64decode(value)
 		except Exception, e:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in mapBase64: %s' % e)
 	return ""

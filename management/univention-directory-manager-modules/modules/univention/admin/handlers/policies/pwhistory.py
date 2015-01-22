@@ -174,9 +174,9 @@ layout = [
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('length', 'univentionPWHistoryLen', None, univention.admin.mapping.ListToString)
-mapping.register('expiryInterval', 'univentionPWExpiryInterval', None, univention.admin.mapping.ListToString)
-mapping.register('pwLength', 'univentionPWLength', None, univention.admin.mapping.ListToString)
+mapping.register('length', 'univentionPWHistoryLen', None, univention.admin.mapping.ListToIntToString)
+mapping.register('expiryInterval', 'univentionPWExpiryInterval', None, univention.admin.mapping.ListToIntToString)
+mapping.register('pwLength', 'univentionPWLength', None, univention.admin.mapping.ListToIntToString)
 mapping.register('pwQualityCheck', 'univentionPWQualityCheck', None, univention.admin.mapping.ListToString)
 mapping.register('requiredObjectClasses', 'requiredObjectClasses')
 mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')

@@ -1,3 +1,13 @@
+univention-directory-manager-modules (10.0.29-18) unstable; urgency=low
+
+  * added conversion from string to int method with failsafe mapping.py 
+    (defaults to 0 if conversion fails)
+  * Bug #33256: added function catch errors in string to int conversion
+  * Bug #8429: changed mapping pwLength,expiryInterval and length to new
+    ListToIntToString function
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 22 Jan 2015 14:32:48 +0100
+
 univention-directory-manager-modules (10.0.29-17) unstable; urgency=low
 
   * Bug #36970: Added support for >, <, >=, <= in admin.filter
