@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-17) unstable; urgency=low
+
+  * Bug #36970: Added support for >, <, >=, <= in admin.filter
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 22 Jan 2015 13:46:37 +0100
+
 univention-directory-manager-modules (10.0.29-16) unstable; urgency=medium
 
   * Bug #30088: cosmetic, version bump
