@@ -1,3 +1,9 @@
+univention-ad-connector (9.0.11-7) unstable; urgency=medium
+
+  * Bug #35870: UMC notification if _domaincontroler_master SRV RR is missing
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Jan 2015 14:42:00 +0100
+
 univention-ad-connector (9.0.11-6) unstable; urgency=medium
 
   * Bug #35562: Improved wording for error message

@@ -563,3 +563,13 @@ class Instance(Base, ProgressMixin):
 		univention.config_registry.handler_set(['connector/ad/mapping/user/password/kinit=%s' % value])
 		return subprocess.call(['invoke-rc.d', 'univention-ad-connector', 'restart'])
 
+	def _check_dcmaster_srv_rec(self):
+		if admember.get_domaincontroller_srv_record(ucr.get('domainname')):
+			return True
+		else:
+			return False
+
+	@simple_response
+	def check_dcmaster_srv_rec(self):
+		result = self._check_dcmaster_srv_rec()
+		return {'success': result}

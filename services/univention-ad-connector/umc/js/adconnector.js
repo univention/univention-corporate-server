@@ -32,11 +32,22 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/topic",
+	"umc/app",
 	"umc/tools",
+	"umc/dialog",
 	"umc/widgets/Module",
 	"./adconnector/SetupWizard",
 	"./adconnector/ConfigPage",
-], function(declare, lang, topic, tools, Module, SetupWizard, ConfigPage) {
+	"umc/i18n!umc/modules/adconnector",
+], function(declare, lang, topic, app, tools, dialog, Module, SetupWizard, ConfigPage, _) {
+	app.registerOnStartup(function() {
+		tools.umcpCommand('adconnector/admember/check_dcmaster_srv_rec').then(function(response) {
+			if (!response.result.success) {
+				dialog.notify(_('<p><b>Caution!</b> The DNS service record for the UCS Master was not found in the DNS server.</p>') + ' ' +  _('<p>Details are explained in the <a href="http://sdb.univention.de/1287">Support Database</a>.</p>'), _('DNS Check'));
+			}
+		});
+	});
+
 	return declare("umc.modules.adconnector", Module, {
 
 		standbyOpacity: 1.00,

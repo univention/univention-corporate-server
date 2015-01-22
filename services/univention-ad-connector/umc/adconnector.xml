@@ -21,5 +21,6 @@
 		<command name="adconnector/adconnector/save" function="adconnector_save" />
 		<command name="adconnector/admember/join" function="admember_join" />
 		<command name="adconnector/admember/progress" function="progress" />
+		<command name="adconnector/admember/check_dcmaster_srv_rec" function="check_dcmaster_srv_rec" />
 	</module>
 </umc>
