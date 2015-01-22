@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.51-27) unstable; urgency=low
+
+  * Bug #36657: Translation file is correctly generated even when an
+    ImportError happens
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 22 Jan 2015 13:05:30 +0100
+
 univention-management-console-module-appcenter (3.0.51-26) unstable; urgency=low
 
   * Bug #37029: Allow searching for multiple components at once (needed for
