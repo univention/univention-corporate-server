@@ -2,12 +2,11 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-base-files
-fix: 4.0.6-1.178.201501091016
+fix: 4.0.6-2.179.201501231530
 version: [0]
 desc: |
   This update fixed the following issues:
-  * The MySQL server is added to the system service module. It is
-    now possible to start, stop and restart the service from the UMC.
+  * The MySQL server can now be configured via the UMC system services module.
   * The file system check now ignores clock skew problems, which previously
     required manual interaction.
 bug:
