@@ -460,11 +460,10 @@ class jpegPhoto( Upload ):
 					def _fileno(*a,**k):
 						raise AttributeError()  # workaround for an old PIL lib which can't handle BytesIO
 					text.fileno = _fileno
-					image.save(open('/tmp/test', 'w'), format='jpeg')
 					image.save(text, format='jpeg')
 					raw = text.getvalue()
 					text = base64.b64encode(raw)
-				except (KeyError, IOError):
+				except (KeyError, IOError, IndexError):
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Failed to convert PNG file into JPEG: %s' % (traceback.format_exc(),))
 					raise univention.admin.uexceptions.valueError(_('Failed to convert PNG file into JPEG format.'))
 			# imghdr.what(None, base64.b64dcode(text)) == 'jpeg'  # See Bug #36304
