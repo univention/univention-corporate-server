@@ -1,3 +1,9 @@
+ucs-test (4.0.200-2) unstable; urgency=low
+
+  * Bug #27653: sed -i 's/apttest/apptest/' 40_mail/*
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 23 Jan 2015 13:20:10 +0100
+
 ucs-test (4.0.200-1) unstable; urgency=low
 
   * Bug #35924: 40_mail/00check_forward_secrecy: check if Perfect Forward

@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Permissions for /etc/cyrus.secret
-## tags: apttest
+## tags: apptest
 ## exposure: safe
 ## packages: [cyrus-common]
 ## bugs: [23527]

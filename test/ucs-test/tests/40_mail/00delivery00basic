@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Basic email delivery 
-## tags: apttest
+## tags: apptest
 ## exposure: dangerous
 ## packages: [univention-config, univention-directory-manager-tools]
 ## bugs: [23527]
