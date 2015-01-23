@@ -57,13 +57,13 @@ def ListToString(list):
 	else:
 		return ''
 
-def ListToIntToString(_list):
-	if _list:
+def ListToIntToString(list_):
+	if list_:
 		try:
-			return int(_list[0])
+			return str(int(list_[0]))
 		except (ValueError, TypeError):
 			pass
-	return '0'
+	return ''
 
 def ListToLowerString(list):
 	return StringToLower(ListToString(list))
@@ -88,10 +88,9 @@ def _stringToInt(value):
 		return 0
 
 def unmapUNIX_TimeInterval(value):
-	if type(value) == types.ListType:
-		value = _stringToInt(value[0])
-	else:
-		value = _stringToInt(value)
+	if isinstance(value, (list, tuple)):
+		value = value[0]
+	value = _stringToInt(value)
 	unit = 'seconds'
 	if value % 60 == 0:
 		value /= 60
@@ -109,9 +108,8 @@ def mapUNIX_TimeInterval(value):
 	if isinstance(value, (tuple, list)):
 		if len(value) > 1:
 			unit = value[1]
-		value = _stringToInt(value[0])
-	else:
-		value = _stringToInt(value)
+		value = value[0]
+	value = _stringToInt(value)
 	if unit == 'days':
 		value *= 24 * 60 * 60
 	elif unit == 'hours':

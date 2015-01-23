@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-20) unstable; urgency=low
+
+  * Bug #8429: fixed bug in mapping.py/ListToIntToString
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 23 Jan 2015 12:27:05 +0100
+
 univention-directory-manager-modules (10.0.29-19) unstable; urgency=medium
 
   * Bug #36273: allow to upload a PNG photo which will be converted into JPEG
