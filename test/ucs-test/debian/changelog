@@ -1,3 +1,10 @@
+ucs-test (5.0.98-1) unstable; urgency=low
+
+  * Bug #30508: 20_appcenter/10_check_apps_ini: changed appcenter default
+    to 'https://appcenter.test.software-univention.de/'
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 23 Jan 2015 11:22:54 +0100
+
 ucs-test (5.0.97-1) unstable; urgency=low
 
   * Bug #35924: 40_mail/00delivery00basic: added delivery test case with tls.

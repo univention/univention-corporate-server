@@ -85,7 +85,10 @@ def print_all_apps_versions(number_of_files):
 
     for app_id in sorted(app_ids):
         App = Application.find(app_id)
-        print(" %s %r" % (App.id, list(reversed([a.version for a in App.versions]))))
+        if App:
+            print(" %s %r" % (App.id, list(reversed([a.version for a in App.versions]))))
+        else:
+            print "The App with ID '%s' was not found." % app_id
 
 
 def check_ini_files(original_server_used):
@@ -112,15 +115,15 @@ def parse_options():
     """
     Creates an OptionParser to allow specifying the appcenter server url
     if running the test interactively (via python ... --server)
-    By default url is https://appcenter.software-univention.de/
+    By default url is https://appcenter.test.software-univention.de/
     """
     Parser = OptionParser()
     Parser.add_option("-s", "--server",
                       dest="appcenter",
-                      default="https://appcenter.software-univention.de/",
+                      default="https://appcenter.test.software-univention.de/",
                       help=("External Univention App Center Server "
                             "(defaults to %default. May also be: "
-                            "http://appcenter.test.software-univention.de/ "
+                            "http://appcenter.software-univention.de/ "
                             "or http://appcenter.knut.univention.de/)"),
                       metavar="APPCENTER")
 
