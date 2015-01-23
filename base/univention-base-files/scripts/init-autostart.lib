@@ -3,7 +3,7 @@
 # if variable eq false or no and (b) if var eq manually
 # and system boot is in progress
 check_autostart () {
-    local service variable ucr
+    local service variable ucr autostart
 
     service=$1
     variable=$2
@@ -23,7 +23,7 @@ check_autostart () {
         ;;
     # manually start of service
     manually)
-        if [ -n "$INIT_VERSION" ]; then
+        if [ -n "${INIT_VERSION:-}" ]; then
             echo "$service disabled by ucr var $variable=$autostart"
             exit 0
         fi

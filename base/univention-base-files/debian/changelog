@@ -1,3 +1,9 @@
+univention-base-files (4.0.6-2) unstable; urgency=medium
+
+  * Bug #13811: register mysql/autostart UCR variable
+
+ -- Florian Best <best@univention.de>  Fri, 23 Jan 2015 15:27:27 +0100
+
 univention-base-files (4.0.6-1) unstable; urgency=low
 
   * Bug #36233: ignore clock skew between install and reboot after join

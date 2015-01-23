@@ -614,6 +614,12 @@ Description[en]=This variable configures the start mode of the RPC registry daem
 Type=str
 Categories=service-base
 
+[mysql/autostart]
+Description[de]=Die Variable konfiguriert den Startmodus des MySQL-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the MySQL daemon. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
+Type=str
+Categories=service-base
+
 [machine/password/length]
 Description[de]=Das Passwort des Rechnerkontos wird in der Regel automatisch erstellt und rotiert. Es wird in der Datei /etc/machine.secret gespeichert. Diese Variable konfiguriert die Länge des generierten Passworts. Ist die Variable nicht gesetzt, ist das Passwort 20 Zeichen lang.
 Description[en]=The password for the computer account is usually automatically created and rotated. It is stored in the file /etc/machine.secret. This variable configures the length of the generated password. If the variable is unset, the password consists of 20 characters.
