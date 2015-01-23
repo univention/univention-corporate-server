@@ -318,8 +318,8 @@ class TestUMCnonUCRpolicies(object):
         obj_policy = self.get_user_policy(user_dn, user_policy_dn)
 
         in_fact = set()
-        in_fact.add(('length', obj_policy[0].get('length').get('value')))
-        in_fact.add(('pwLength', obj_policy[0].get('pwLength').get('value')))
+        in_fact.add(('length', str(obj_policy[0].get('length').get('value'))))
+        in_fact.add(('pwLength', str(obj_policy[0].get('pwLength').get('value'))))
 
         self.assert_policies(should_be, in_fact)
 
