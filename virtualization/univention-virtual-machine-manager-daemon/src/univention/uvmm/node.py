@@ -752,7 +752,7 @@ class Node(PersistentCached):
 					continue
 				if gfx.listen == '0.0.0.0':
 					vnc_addr = self.pd.name
-				elif gfx.listen is None and self.pd.name == FQDN:
+				elif (gfx.listen is None or gfx.listen == '127.0.0.1') and self.pd.name == FQDN:
 					vnc_addr = '127.0.0.1'
 				else:
 					continue
