@@ -1,3 +1,9 @@
+ucs-test (5.0.99-2) unstable; urgency=low
+
+  * Bug #27653: 40_mail/* changed tag from 'apttest' to 'apptest'.
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 23 Jan 2015 12:08:40 +0100
+
 ucs-test (5.0.99-1) unstable; urgency=low
 
   * Bug #36730: 20_appcenter/12_check_apps_ini_all_fields: removed duplicated

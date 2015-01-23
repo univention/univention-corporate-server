@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check if perfect forward secrecy (PFS) is enabled.
-## tags: [apttest]
+## tags: [apptest]
 ## exposure: safe
 ## packages: [openssl, univention-mail-server, univention-mail-postfix]
 ## bugs: [35924]
