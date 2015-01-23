@@ -219,7 +219,6 @@ class Section(object):
         'UMCModuleName': ('optional',),
         'UserActivationRequired': ('optional', 'is_bool',),
         'UseShop': ('optional', 'is_bool',),
-        'UseShop': ('optional', 'is_bool',),
         'Vendor': ('optional',),
         'Version': ('required',),
         'VisibleInAppCatalogue': ('optional', 'is_bool',),

@@ -1,3 +1,10 @@
+ucs-test (5.0.99-1) unstable; urgency=low
+
+  * Bug #36730: 20_appcenter/12_check_apps_ini_all_fields: removed duplicated
+    check of 'UseShop' entry.
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 23 Jan 2015 11:36:27 +0100
+
 ucs-test (5.0.98-1) unstable; urgency=low
 
   * Bug #30508: 20_appcenter/10_check_apps_ini: changed appcenter default
