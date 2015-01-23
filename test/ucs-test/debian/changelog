@@ -1,3 +1,9 @@
+ucs-test (5.0.99-3) unstable; urgency=low
+
+  * Bug #37603: 60_umc/06_non-ucr-policies: added missing import. 
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 23 Jan 2015 15:15:20 +0100
+
 ucs-test (5.0.99-2) unstable; urgency=low
 
   * Bug #27653: 40_mail/* changed tag from 'apttest' to 'apptest'.

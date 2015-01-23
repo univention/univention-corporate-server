@@ -8,6 +8,7 @@
 
 from sys import exit
 from time import sleep
+from httplib import HTTPException
 
 import univention.testing.utils as utils
 from univention.testing.codes import TestCodes
