@@ -73,7 +73,7 @@ if [ "$1" = "configure" ]; then
 			esac
 		fi
 
-		if dpkg --compare-versions "$2" lt 6.0.37-1 ; then
+		if dpkg --compare-versions "$2" lt 9.0.5-2 ; then
 			univention-config-registry set samba/spoolss/architecture?"Windows NT x86"
 		fi
 	fi
