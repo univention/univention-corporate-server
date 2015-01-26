@@ -125,8 +125,9 @@ class Document( object ):
 		cmd = ['pdflatex', '-interaction=nonstopmode', '-halt-on-error', '-output-directory=%s' % os.path.dirname(latex_file), latex_file]
 		devnull = open(os.path.devnull, 'w')
 		try:
-			if not subprocess.call(cmd, stdout=devnull, stderr=devnull):
-				if not subprocess.call(cmd, stdout=devnull, stderr=devnull):
+			env_vars = {'HOME': '/var/cache/univention-directory-reports'}
+			if not subprocess.call(cmd, stdout=devnull, stderr=devnull, env=env_vars):
+				if not subprocess.call(cmd, stdout=devnull, stderr=devnull, env=env_vars):
 					return '%s.pdf' % latex_file.rsplit('.', 1)[0]
 			print >>sys.stderr, "error: failed to create PDF file"
 			return None

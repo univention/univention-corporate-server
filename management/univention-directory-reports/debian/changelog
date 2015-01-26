@@ -1,3 +1,9 @@
+univention-directory-reports (7.0.0-2) unstable; urgency=low
+
+  * added home directory for pdflatex (Bug #36234)
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 26 Jan 2015 15:48:08 +0100
+
 univention-directory-reports (7.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35144) 
