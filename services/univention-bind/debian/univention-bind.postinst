@@ -64,7 +64,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.10; th
 	update-rc.d -f univention-bind disable
 	update-rc.d bind9 defaults 15 85
 fi
-if [ "$1" = configure ] && dpkg --compare-versions "$2" lt 9.0.5~
+if [ "$1" = configure ] && [ -z "$2" ]
 then
 	univention-config-registry set dns/allow/query/cache?'localhost; 10.0.0.0/8; 169.254.0.0/16; 172.16.0.0/12; 192.168.0.0/16; fc00::/7; fe80::/10; localnets'
 fi
