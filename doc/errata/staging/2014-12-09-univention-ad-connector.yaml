@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-ad-connector
-fix: 9.0.11-8.463.201501221536
+fix: 9.0.11-9.464.201501261347
 version: [0]
 desc: |
   This update addresses the following issues:
