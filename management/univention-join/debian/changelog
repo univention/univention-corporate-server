@@ -1,3 +1,10 @@
+univention-join (7.1.2-6) unstable; urgency=low
+
+  * Bug #32525: Add univention-install-joinscripts to work as a debhelper for
+    packages that contain join scripts
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 26 Jan 2015 10:04:26 +0100
+
 univention-join (7.1.2-5) unstable; urgency=low
 
   *Bug #34238: minor correction

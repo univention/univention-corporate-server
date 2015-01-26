@@ -2,5 +2,6 @@ univention-server-join usr/share/univention-join/
 univention-join usr/share/univention-join/
 univention-run-join-scripts usr/share/univention-join/
 joinscripthelper.lib usr/share/univention-join/
+univention-install-joinscript usr/bin
 check_join_status.sh usr/share/univention-join/
 20univention-join.inst usr/lib/univention-install/
