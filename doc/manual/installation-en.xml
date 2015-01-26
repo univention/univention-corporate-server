@@ -69,7 +69,13 @@ Following installation on hardware or in a virtualization solution, UCS can also
 			<itemizedlist>
 				<listitem>
 					<simpara>
-					<guimenu>Install in text mode</guimenu> performs an interactive standard installation in text mode. This is practical on systems which display problems with the graphic version of the installer.	</simpara>
+						<guimenu>Install with DHCP disabled</guimenu> performs a standard installation, where the network is not configured automatically through DHCP.
+						This is practical on systems, where the network must be configured manually.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					<guimenu>Install in text mode</guimenu> performs an interactive standard installation in text mode. This is practical on systems which display problems with the graphic version of the installer.</simpara>
 				</listitem>
 				<listitem>
 				  <simpara>
@@ -121,6 +127,7 @@ Following installation on hardware or in a virtualization solution, UCS can also
   <title>Network configuration</title>
   <para>
 	Initially, the Univention Installer attempts to configure the network interfaces automatically.
+	This can be disabled by selecting the menu item <guimenuitem>Install with DHCP disabled</guimenuitem> from the <guimenu>Advanced options</guimenu> menu in the GRUB bootloader.
 	Firstly, an attempt is made to determine an IPv6 address via the stateless address autoconfiguration (SLAAC).
 	If this is not successful, the Univention Installer attempts to request an IPv4 address via the Dynamic Host Configuration
 	Protocol (DHCP). If this is successful, the manual network configuration of Univention Installer is skipped.
@@ -497,7 +504,7 @@ see <xref linkend="installation-overview"/>.
 <section id="installation:vmware">
   <title>Installation in VMware</title>
   <para>
-	If UCS is installed as a guest in Vmware, the <guimenu>Linux &ar; Other Linux system</guimenu>
+	If UCS is installed as a guest in VMware, the <guimenu>Linux &ar; Other Linux system</guimenu>
 	option must be selected as the <guimenu>Guest operating system</guimenu> (UCS is based on Debian but
 	the templates for Debian cannot be used).
   </para>
@@ -523,7 +530,7 @@ see <xref linkend="installation-overview"/>.
 	</para>
 
 	<para>
-	  To display the Grub menu correctly, an adaption to the XenServer configuration is necessary;
+	  To display the GRUB menu correctly, an adaption to the XenServer configuration is necessary;
 	  this is described in <xref linkend="release-notes"/>.
 	</para>
 </section>

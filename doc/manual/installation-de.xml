@@ -90,6 +90,12 @@
 			<itemizedlist>
 				<listitem>
 					<simpara>
+						<guimenu>Install with DHCP disabled</guimenu> führt eine Standardinstallation im durch, bei der das Netzwerk nicht automatisch per DHCP konfiguriert wird.
+						Dies ist auf Systemen sinnvoll, wo das Netzwerk manuell konfiguriert werden muß.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
 					<guimenu>Install in text mode</guimenu> führt eine interaktive
 					Standardinstallation im Textmodus durch. Dies ist auf Systemen sinnvoll, die
 					Probleme mit der graphischen Variante des Installers zeigen.
@@ -159,6 +165,7 @@
   <title>Netzwerkkonfiguration</title>
   <para>
 	Initial versucht der Univention Installer eine automatische Konfiguration der Netzwerkschnittstellen vorzunehmen.
+	Dies kann durch die Auswahl des Menüeintrags <guimenuitem>Install with DHCP disabled</guimenuitem> im <guimenu>Advanced options</guimenu> Menü im GRUB-Bootloader deaktiviert werden.
 	Dabei wird zunächst versucht, eine IPv6-Adresse über die Stateless Address Autoconfiguration (SLAAC) zu ermitteln.
 	Sollte dies nicht erfolgreich sein, versucht der Univention Installer eine IPv4-Adresse über das Dynamic Host Configuration
 	Protocol (DHCP) zu erfragen. Ist dies erfolgreich, wird die manuelle Netzwerkkonfiguration von Univention Installer übersprungen.
