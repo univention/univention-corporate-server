@@ -413,7 +413,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 		<itemizedlist>
 			<listitem>
 				<simpara>
-				On Xen virtualization servers an ISO image named <emphasis>Xen Windows drivers (gplpv 372)</emphasis> is provided, which contains the GPLPV virtualization driver for Microsoft Windows.
+				On Xen virtualization servers an ISO image named <emphasis>Xen Windows drivers (gplpv 373)</emphasis> is provided, which contains the GPLPV virtualization driver for Microsoft Windows.
 				</simpara>
 			</listitem>
 			<listitem>
@@ -451,7 +451,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 					<tbody>
 						<row>
 							<entry>Windows Server 2012 (64 Bit)</entry>
-							<entry morerows="5">gplpv_Vista2008x64_signed_0.11.0.372.msi</entry>
+							<entry morerows="5">gplpv_Vista2008x64_signed_0.11.0.373.msi</entry>
 						</row>
 						<row>
 							<entry>Windows Server 2008 R2 (64 Bit)</entry>
@@ -471,7 +471,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 
 						<row>
 							<entry>Windows Server 2008 (32 Bit)</entry>
-							<entry morerows="3">gplpv_Vista2008x32_signed_0.11.0.372.msi</entry>
+							<entry morerows="3">gplpv_Vista2008x32_signed_0.11.0.373.msi</entry>
 						</row>
 						<row>
 							<entry>Windows 8 (32 Bit)</entry>
@@ -485,22 +485,22 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 
 						<row>
 							<entry>Windows Server 2003 (64 Bit)</entry>
-							<entry>gplpv_2003x64_signed_0.11.0.372.msi</entry>
+							<entry>gplpv_2003x64_signed_0.11.0.373.msi</entry>
 						</row>
 
 						<row>
 							<entry>Windows Server 2003 (32 Bit)</entry>
-							<entry>gplpv_2003x32_signed_0.11.0.372.msi</entry>
+							<entry>gplpv_2003x32_signed_0.11.0.373.msi</entry>
 						</row>
 
 						<row>
 							<entry>Windows Server 2000</entry>
-							<entry>gplpv_2000_signed_0.11.0.372.msi</entry>
+							<entry>gplpv_2000_signed_0.11.0.373.msi</entry>
 						</row>
 
 						<row>
 							<entry>Windows XP SP3 (32 Bit)</entry>
-							<entry>gplpv_XP_signed_0.11.0.372.msi</entry>
+							<entry>gplpv_XP_signed_0.11.0.373.msi</entry>
 						</row>
 					</tbody>
 				</tgroup>
