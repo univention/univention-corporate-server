@@ -291,12 +291,12 @@ slapadd -l ldif
 		<title>Kernel</title>
 		<para>
 			In medium and larger environments the maximum number of open files allowed by the Linux kernel may be set too low by default.
-			As each instance requires some unswappable memory in the Linux kernel, too many objects may lead to a resource and denial-of-service problems in multi-user environments.
+			As each instance requires some unswappable memory in the Linux kernel, too many objects may lead to a resource depletion and denial-of-service problems in multi-user environments.
 			Because of that the number of allowed file objects is limited by default.
 		</para>
 		<para>
 			The maximum number of open files can be configured on a per-user or per-group basis.
-			The default for all users can set through the following &ucsUCRV;s:
+			The default for all users can be set through the following &ucsUCRV;s:
 		</para>
 		<variablelist>
 			<varlistentry>
