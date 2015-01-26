@@ -23,10 +23,10 @@ msgstr ""
 #: umc/js/adconnector.js:46
 msgid ""
 "<p>Details are explained in the <a href=\"http://sdb.univention."
-"de/1287\">Support Database</a>.</p>"
+"de/1299\">Support Database</a>.</p>"
 msgstr ""
 "<p>Details sind in der <a href=\"http://sdb.univention."
-"de/1287\">Support Database</a> erklärt.</p>"
+"de/1299\">Support Database</a> erklärt.</p>"
 
 #: umc/js/adconnector.js:46
 msgid "DNS Check"

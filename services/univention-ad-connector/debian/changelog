@@ -1,3 +1,9 @@
+univention-ad-connector (9.0.11-9) unstable; urgency=medium
+
+  * Bug #35870: Adjust SDB link URL
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Jan 2015 13:46:47 +0100
+
 univention-ad-connector (9.0.11-8) unstable; urgency=medium
 
   * Bug #35870: Fix translation file
