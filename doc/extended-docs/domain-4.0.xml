@@ -55,7 +55,7 @@ sudo bash
 export MASTER_IP=192.168.0.3
 
 mkdir /etc/univention
-ssh root@${MASTER_IP} ucr shell | 
+ssh root@${MASTER_IP} ucr shell |
  grep -v ^hostname= >/etc/univention/ucr_master
 echo "master_ip=${MASTER_IP}" >>/etc/univention/ucr_master
 chmod 660 /etc/univention/ucr_master
@@ -98,7 +98,8 @@ else
         --set operatingSystem="$(lsb_release -is)" \
         --set operatingSystemVersion="$(lsb_release -rs)"
 fi
-echo "${password}" > /etc/ldap.secret
+printf '%s' "$password" >/etc/ldap.secret
+chmod 0400 /etc/ldap.secret
 
 # Create ldap.conf
 cat >/etc/ldap/ldap.conf <<__EOF__
@@ -234,6 +235,7 @@ __EOF__
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update
 
+# Exit sudo bash
 exit
 ]]></programlisting>
 
@@ -258,6 +260,7 @@ __EOF__
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update
 
+# Exit sudo bash
 exit
 ]]></programlisting>
 
@@ -277,6 +280,7 @@ greeter-show-manual-login=true
 greeter-hide-users=true
 __EOF__
 
+# Exit sudo bash
 exit
 ]]></programlisting>
 
@@ -342,6 +346,7 @@ krsh Administrator@$ldap_master ls /etc/univention
 # Destroy the kerberos ticket
 kdestroy
 
+# Exit sudo bash
 exit
 ]]></programlisting>
 		</section>
@@ -747,14 +752,14 @@ openssl ca -batch -config /etc/univention/ssl/openssl.cnf \
 
 
     <chapter id="ext-dom-syncrepl">
-	  <title>Connecting an external OpenLDAP server via Syncrepl</title>
+	  <title>Connecting an external OpenLDAP server via syncrepl</title>
 
 	  <section>
 	  	<title>Introduction</title>
 
 	  	<para>
 		  This chapter describes the read-only integration of an external OpenLDAP server via a
-		  Syncrepl proxy. This allows the external system to access the LDAP data of the UCS domain
+		  syncrepl proxy. This allows the external system to access the LDAP data of the UCS domain
 		  without being a member of the domain itself. This guide principally applies to any Unix
 		  system with OpenLDAP. The guide has been tested with Debian 7 Wheezy. Syncrepl is part of
 		  OpenLDAP starting with version 2.2.
@@ -783,10 +788,10 @@ openssl ca -batch -config /etc/univention/ssl/openssl.cnf \
 	  </section>
 
 	  <section>
-		<title>Activation of Syncrepl on the master domain controller</title>
+		<title>Activation of syncrepl on the master domain controller</title>
 		<!-- Can be trimmed drastically once 33709 is fixed -->
 		<para>
-		  Now a Syncrepl proxy needs to be set up on the &ucsMaster;. The required configuration
+		  Now a syncrepl proxy needs to be set up on the &ucsMaster;. The required configuration
 		  files are downloaded from
 		  <uri>http://apt.univention.de/download/syncrepl/ucs4-syncrepl-proxy-setup.tar.bz2</uri> as
 		  a Tar archive.
@@ -956,9 +961,9 @@ chgrp openldap /etc/ldap/slapd.conf
 	  </section>
 
 	  <section>
-		<title>Activation of the Syncrepl proxy</title>
+		<title>Activation of the syncrepl proxy</title>
 		<para>
-		  If the LDAPS connection works, the configuration of the Syncrepl proxy can be
+		  If the LDAPS connection works, the configuration of the syncrepl proxy can be
 		  activated on the &ucsMaster;. This is done by saving the 'REMOTE_UPDATE_PASSWORD' password
 		  configured above in the <filename>/etc/replica-001.secret</filename> file and entering the
 		  address of the external LDAP server in the form of a LDAP-URI in the &ucsUCRV;
@@ -1000,7 +1005,7 @@ BASE LDAPBASE
 	  <section>
 		<title>Testing the replication</title>
 		<para>
-		  The replication via SyncRepl can be tested by changing the description of an existing user
+		  The replication via syncrepl can be tested by changing the description of an existing user
 		  for example. When an LDAP search is performed on the external server, the changed
 		  description should then be displayed.
 		</para>
