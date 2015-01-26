@@ -46,9 +46,7 @@
 		</para>
 
 		<para>
-		  Im Univention Wiki (<ulink url="http://wiki.univention.de/"/>) findet sich eine
-		  Schritt-für-Schritt-Kurzanleitung zur Inbetriebnahme von UVMM <biblioref
-		  linkend="uvmm-quickstart"/>. Weiterführende Informationen finden sich in der erweiterten
+		  Weiterführende Informationen finden sich in der erweiterten
 		  Dokumentation zur Virtualisierung <biblioref linkend="ext-doc-uvmm"/>.
 		</para>
 
