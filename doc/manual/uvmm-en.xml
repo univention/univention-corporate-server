@@ -46,7 +46,8 @@
 		</para>
 
 		<para>
-		  Further documentation can be
+		  Univention Wiki (<ulink url="http://wiki.univention.de/"/>) includes a step-by-step
+		  quickstart guide <biblioref linkend="uvmm-quickstart"/>. Further documentation can be
 		  found in the extended virtualization documentation <biblioref linkend="ext-doc-uvmm"/>.
 		</para>
 	</section>
