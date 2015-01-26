@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-bind
-fix: 9.0.5-1.205.201501261011
+fix: 9.0.5-1.206.201501261058
 version: [0]
 desc: |
   The configuration of the UCS DNS name server BIND9 is prone to Open Resolver
