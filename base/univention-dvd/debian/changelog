@@ -1,3 +1,9 @@
+univention-dvd (0.2.28-1) unstable; urgency=low
+
+  * Bug #37613: UCS 4.0-1 DVD
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 26 Jan 2015 13:58:38 +0100
+
 univention-dvd (0.2.27-9) unstable; urgency=low
 
   * Bug #37164: Re-add netcat and bozohttpd for errata4.0-0 DVD
