@@ -153,12 +153,12 @@ def main():
         wait_for_slapd_to_be_started()
 
         set_ucr_retry_count(1)
-        print_test_header("Case 2: Stop and start slapd with 4 secs "
+        print_test_header("Case 2: Stop and start slapd with 5 secs "
                           "delay. Perform search. Retry count is 1.")
         print("Expecting that search case won't work, as retry count is 1 "
-             "and start delay is 4.")
+             "and start delay is 5.")
         stop_slapd()
-        start_with_delay(4)
+        start_with_delay(5)
         perform_univention_ldapsearch(True)  # fail on success
         wait_for_slapd_to_be_started()
 
@@ -175,12 +175,12 @@ def main():
                           "Perform search. Retry count is 0.")
         perform_univention_ldapsearch()
 
-        print_test_header("Case 5: Stop and start slapd with 4 secs "
+        print_test_header("Case 5: Stop and start slapd with 5 secs "
                           "delay. Perform search. Retry count is 0.")
         print("Expecting that search case won't work, as retry count is 0 "
-              "and start delay is 4.")
+              "and start delay is 5.")
         stop_slapd()
-        start_with_delay(4)
+        start_with_delay(5)
         perform_univention_ldapsearch(True)  # fail on success
     finally:
         restore_retry_count()
