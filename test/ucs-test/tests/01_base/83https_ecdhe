@@ -1,0 +1,21 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check that ECDHE is supported by Apache2
+## packages: [apache2 | apache2-mpm-prefork]
+## exposure: safe
+## bugs: [34391]
+
+tmp=$(mktemp)
+trap "rm -f '$tmp'" EXIT
+
+LANG=C
+LC_ALL=C
+export LANG LC_ALL
+
+printf 'GET / HTTP/1.1\nHost: %s\n\n' "$(hostname -f)" |
+	openssl s_client -tls1 -cipher ECDH -connect 127.0.0.1:443 >"$tmp"
+
+if ! grep 'Cipher.*\<ECDHE-' "$tmp"
+then
+	cat "$tmp"
+	exit 1
+fi

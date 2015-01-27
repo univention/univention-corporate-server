@@ -1,3 +1,9 @@
+ucs-test (5.0.100-1) unstable; urgency=low
+
+  * Bug #34391: Check Apache for ECDHE support
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 27 Jan 2015 09:45:13 +0100
+
 ucs-test (5.0.99-4) unstable; urgency=low
 
   * Bug #37299: 10_ldap/26reconnect_univention_ldapsearch: switched test to
