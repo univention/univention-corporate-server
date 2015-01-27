@@ -1,3 +1,10 @@
+ucs-test (4.0.201-1) unstable; urgency=low
+
+  * Bug #37599: using domainname instead of mail/hosteddomains
+  * Adding univention-mail-server package dependency to all mail scripts
+
+ -- Ammar Najjar <najjar@univention.de>  Tue, 27 Jan 2015 11:46:06 +0100
+
 ucs-test (4.0.200-2) unstable; urgency=low
 
   * Bug #27653: sed -i 's/apttest/apptest/' 40_mail/*

@@ -2,7 +2,7 @@
 ## desc: Cyrus authentication
 ## tags: apptest
 ## exposure: safe
-## packages: [cyrus-common]
+## packages: [univention-mail-server, cyrus-common]
 ## bugs: [23527]
 
 import subprocess
