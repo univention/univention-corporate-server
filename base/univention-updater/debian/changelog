@@ -1,3 +1,9 @@
+univention-updater (10.0.51-19) unstable; urgency=medium
+
+  * Bug #37534: additional logging in preup
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Jan 2015 11:51:19 +0100
+
 univention-updater (10.0.51-18) unstable; urgency=low
 
   * Bug #37364: Fix a display bug in listing all blocking components

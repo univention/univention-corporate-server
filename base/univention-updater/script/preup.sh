@@ -584,13 +584,16 @@ fi
 
 # Bug #37534
 for file in passdb.tdb secrets.tdb schannel_store.tdb idmap2.tdb; do
-	if [ -e "/var/lib/samba/$file" ] &&
-	   [ -e "/var/lib/samba/private/$file" ] &&
-	   [ ! "/var/lib/samba/$file" -ef "/var/lib/samba/private/$file" ]; then
-		new_filename="$file.bak_$(date +%y%m%d)"
+	oldpath="/var/lib/samba/$file"
+	newpath="/var/lib/samba/private/$file"
+	if [ -e "$oldpath" ] &&
+	   [ -e "$newpath" ] &&
+	   [ ! "$oldpath" -ef "$newpath" ]; then
+		ls -l "$oldpath" "$newpath"
+		backuppath="$oldpath.bak_$(date +%y%m%d)"
 		echo "$file exists in /var/lib/samba and /var/lib/samba/private,"
-		echo "renaming /var/lib/samba/$file to /var/lib/samba/$new_filename"
-		mv "/var/lib/samba/$file" "/var/lib/samba/$new_filename"
+		echo "renaming $oldpath to $backuppath"
+		mv "$oldpath" "$backuppath"
 	fi
 done
 
