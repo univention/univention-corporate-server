@@ -1,3 +1,10 @@
+ucs-test (5.0.101-1) unstable; urgency=low
+
+  * Bug #37599: using domainname instead of mail/hosteddomains
+  * Adding univention-mail-server package dependency to all mail scripts
+
+ -- Ammar Najjar <najjar@univention.de>  Tue, 27 Jan 2015 11:42:12 +0100
+
 ucs-test (5.0.100-1) unstable; urgency=low
 
   * Bug #34391: Check Apache for ECDHE support
