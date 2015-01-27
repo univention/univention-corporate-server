@@ -10,7 +10,7 @@ import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-	
+
 def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		with udm_test.UCSTestUDM() as udm:
@@ -19,7 +19,7 @@ def main():
 			userdn, username = udm.create_user(
 					username=username,
 					password=password,
-					mailPrimaryAddress='%s@%s' % (username, ucr.get('mail/hosteddomains')),
+					mailPrimaryAddress='%s@%s' % (username, ucr.get('domainname')),
 					option=['mail', 'person', 'posix', 'samba', 'pki']
 					)
 

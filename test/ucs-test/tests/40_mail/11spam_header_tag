@@ -19,9 +19,9 @@ def main():
 			with ucr_test.UCSTestConfigRegistry() as ucr:
 				username = uts.random_name()
 				password = uts.random_string()
-				mailPrimaryAddress = '%s@%s' % (username, ucr.get('mail/hosteddomains'))
+				mailPrimaryAddress = '%s@%s' % (username, ucr.get('domainname'))
 				mailHomeServer = '%s.%s' % (ucr.get('hostname'),  ucr.get('domainname'))
-	
+
 				userdn, username = udm.create_user(
 					username=username,
 					password=password,

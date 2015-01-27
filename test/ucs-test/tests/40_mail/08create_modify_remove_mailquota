@@ -2,7 +2,7 @@
 ## desc: Create modify remove mailquota
 ## tags: apptest
 ## exposure: dangerous
-## packages: [univention-config, univention-directory-manager-tools]
+## packages: [univention-mail-server, univention-config, univention-directory-manager-tools]
 ## bugs: [23527]
 
 
@@ -49,7 +49,7 @@ def main():
 							},
 						options=['mail', 'person', 'posix', 'samba', 'groupware']
 						)
-				
+
 
 				enable_mailquota_set_interval(1)
 				restart_cyrus_saslauthd()
