@@ -50,7 +50,7 @@ define([
 
 		// umcpCommand: Function
 		//		Reference to the module specific umcpCommand function.
-		ucmpCommand: null,
+		umcpCommand: null,
 
 		// moduleFlavor: String
 		//		Specifies the flavor of the module. This property is necessary to decide what

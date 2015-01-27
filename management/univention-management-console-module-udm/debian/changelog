@@ -1,3 +1,10 @@
+univention-management-console-module-udm (5.1.25-42) unstable; urgency=low
+
+  * Bug #36291: Adjusted margin for UDMDetailPageWarning to accommodate to
+    style changes for TitlePane
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 27 Jan 2015 12:10:35 +0100
+
 univention-management-console-module-udm (5.1.25-41) unstable; urgency=medium
 
   * Bug #36700: Change order of buttons
