@@ -111,8 +111,9 @@ def start_slapd():
     Starts the slapd and wait for it to be started.
     """
     ret_code = Popen(('invoke-rc.d', 'slapd', 'start')).wait()
-    if ret_code != 0:
-        fail("Expecting the return code to be 0, while it is: %s" % ret_code)
+    if ret_code not in (0, 2):
+        fail("Expecting the return code to be 0 or 2, while it is: %s"
+             % ret_code)
 
 
 def start_with_delay(delay):

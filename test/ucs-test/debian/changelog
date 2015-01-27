@@ -1,3 +1,10 @@
+ucs-test (5.0.102-1) unstable; urgency=low
+
+  * Bug #37299: 10_ldap/26reconnect_univention_ldapsearch: return code can
+    be different when slapd is running.
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 27 Jan 2015 11:46:36 +0100
+
 ucs-test (5.0.101-1) unstable; urgency=low
 
   * Bug #37599: using domainname instead of mail/hosteddomains
