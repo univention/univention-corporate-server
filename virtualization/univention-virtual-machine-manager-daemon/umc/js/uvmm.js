@@ -86,7 +86,7 @@ define([
 	};
 
 	var canVNC = function(item) {
-		return isRunning(item) && item.vnc_port;
+		return isRunning(item) && item.vnc;
 	};
 
 	var isTerminated = function(item) {
@@ -485,7 +485,6 @@ define([
 		_removeDomain: function( ids, items ) {
 			var _dialog = null, form = null;
 			var domain = items[ 0 ];
-			var domain_details = null;
 			var domainURI = ids[ 0 ];
 			var widgets = [
 				{
@@ -532,7 +531,6 @@ define([
 			} ) );
 			// find the default for the drive checkboxes;
 			deferred = deferred.then( lang.hitch( this, function( response ) {
-				domain_details = response.result;
 				var drive_list = array.map( response.result.disks, function( disk ) {
 					return {
 						domainURI: domainURI,
@@ -607,7 +605,6 @@ define([
 		_removeInstance: function( ids, items ) {
 			var _dialog = null, form = null;
 			var domain = items[ 0 ];
-			var domain_details = null;
 			var domainURI = ids[ 0 ];
 			var widgets = [
 				{
@@ -1014,7 +1011,7 @@ define([
 					counter += 1;
 					var items_update_d = {};
 					array.forEach(items_update, function(item) {
-						items_update_d[item.id] = item
+						items_update_d[item.id] = item;
 					} );
 					var items_changed = 0;
 					array.forEach(items, function(item) {

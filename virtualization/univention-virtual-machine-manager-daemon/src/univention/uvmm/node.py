@@ -479,6 +479,26 @@ class Domain(PersistentCached):
 			key ^= hash(gfx.port)
 		return key
 
+	def _vnc(self):
+		"""
+		Return (host, port) tuple for VNC connection, or None.
+		"""
+		try:
+			gfx = self.pd.graphics[0]
+		except (AttributeError, IndexError):
+			return None
+		if gfx.type != Graphic.TYPE_VNC:
+			return None
+		if gfx.port <= 0:
+			return None
+		if gfx.listen == '0.0.0.0':
+			vnc_addr = self.node.pd.name
+		elif (gfx.listen is None or gfx.listen == '127.0.0.1') and self.node.pd.name == FQDN:
+			vnc_addr = '127.0.0.1'
+		else:
+			return None
+		return (vnc_addr, gfx.port)
+
 
 class _DomainDict(dict):
 	"""Dictionary for handling domains of a node and their persistent cache."""
@@ -743,20 +763,10 @@ class Node(PersistentCached):
 		with tempfile.NamedTemporaryFile(delete=False, dir=token_dir) as tmp_file:
 			for uuid, domStat in self.domains.iteritems():
 				try:
-					gfx = domStat.pd.graphics[0]
-				except (AttributeError, IndexError):
+					host, port = domStat._vnc()
+					print >> tmp_file, '%s: %s:%d' % (uuid, host, port)
+				except TypeError:
 					continue
-				if gfx.type != Graphic.TYPE_VNC:
-					continue
-				if gfx.port <= 0:
-					continue
-				if gfx.listen == '0.0.0.0':
-					vnc_addr = self.pd.name
-				elif (gfx.listen is None or gfx.listen == '127.0.0.1') and self.pd.name == FQDN:
-					vnc_addr = '127.0.0.1'
-				else:
-					continue
-				print >> tmp_file, '%s: %s:%d' % (uuid, vnc_addr, gfx.port)
 		os.rename(tmp_file.name, path)
 
 	def wait_update(self, domain, state_key, timeout=10):
@@ -799,14 +809,15 @@ class Node(PersistentCached):
 			name = pd.name
 			descr = pd.annotations.get( 'description', '' )
 			if regex.match( name ) is not None or regex.match( contact )  is not None or regex.match( descr ) is not None:
+				vnc = self.domains[dom]._vnc()
 				domains.append({
 					'uuid': pd.uuid,
 					'name': pd.name,
 					'state': STATES[pd.state],
 					'mem': pd.maxMem,
 					'cpu_usage': pd.cputime[0],
-					'vnc': pd.graphics and pd.graphics[0].type == Graphic.TYPE_VNC and pd.graphics[0].listen == '0.0.0.0',
-					'vnc_port': pd.graphics[0].port if pd.graphics else -1,
+					'vnc': bool(vnc),
+					'vnc_port': vnc[1] if vnc else -1,
 					'suspended': pd.suspended,
 					'description': descr,
 					'node_available': self.pd.last_try == self.pd.last_update
