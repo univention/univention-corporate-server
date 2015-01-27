@@ -790,17 +790,18 @@ class simpleLdap(base):
 				self._ldap_post_create()
 			except:
 				# ensure that there is no lock left
-				import traceback
+				import traceback, sys
+				exc = sys.exc_info()
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-Create operation failed: %s" % (traceback.format_exc(),))
 				try:
 					self.cancel()
 				except:
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, "Post-create: cancel() failed: %s" % (traceback.format_exc(),))
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-create: cancel() failed: %s" % (traceback.format_exc(),))
 				try:
 					self.remove()
 				except:
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, "Post-create: remove() failed: %s" % (traceback.format_exc(),))
-				raise
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-create: remove() failed: %s" % (traceback.format_exc(),))
+				raise exc[0], exc[1], exc[2]
 
 		self.call_udm_property_hook('hook_ldap_post_create', self)
 
