@@ -203,7 +203,7 @@ define([
 										}
 										updatesTextComponentsApps += ' ' + _('Using the %(app_center)s, you may also search for alternative apps or uninstall the application.', {app_center: UMCApplication.linkToModule('appcenter', 'appcenter')});
 										if (otherApps.length) {
-											updatesTextComponentsApps += '<br />' + _('This also holds for:') + '<ul><li>';
+											updatesTextComponentsApps += '<br />' + _('This also holds for:') + '<ul>';
 											array.forEach(otherApps, function(app) {
 												var updateHint = null;
 												if (app.is_installed && app.candidate_version) {
@@ -211,9 +211,9 @@ define([
 												} else {
 													updateHint = _('no update available yet');
 												}
-												updatesTextComponentsApps += lang.replace('{name} ({updateHint})', {name: app.name, updateHint: updateHint});
+												updatesTextComponentsApps += lang.replace('<li>{name} ({updateHint})</li>', {name: app.name, updateHint: updateHint});
 											});
-											updatesTextComponentsApps += '</li></ul>';
+											updatesTextComponentsApps += '</ul>';
 										}
 									}
 								}));
