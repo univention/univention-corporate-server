@@ -1,3 +1,10 @@
+univention-management-console-module-udm (5.1.25-43) unstable; urgency=medium
+
+  * Bug #36700: handle also single arrays which have no group when displaying
+  	automatic changes
+
+ -- Florian Best <best@univention.de>  Tue, 27 Jan 2015 13:10:05 +0100
+
 univention-management-console-module-udm (5.1.25-42) unstable; urgency=low
 
   * Bug #36291: Adjusted margin for UDMDetailPageWarning to accommodate to

@@ -400,9 +400,9 @@ define([
 									}
 								});
 							}
-							changes += lang.replace('<li>{tabName} - {groupName} - {widgetName}: {value}</li>', {
-								tabName: widget.$refTab$.label,
-								groupName: widget.$refTitlePane$.label,
+							changes += lang.replace('<li>{tabName}{groupName} - {widgetName}: {value}</li>', {
+								tabName: widget.$refTab$ ? widget.$refTab$.label: '',
+								groupName: widget.$refTitlePane$ ? ' - ' + widget.$refTitlePane$.label: '',
 								widgetName: widget.get('label') || key,
 								value: value});
 						}
@@ -908,6 +908,10 @@ define([
 			});
 			array.forEach(this._layoutMap, function(page) {
 				array.forEach(page.layout, function(group) {
+					if (group instanceof Array) {
+						_walk(group, undefined, page);
+						return;
+					}
 					array.forEach(group.layout, function(something) {
 						_walk(something, group, page);
 					});
