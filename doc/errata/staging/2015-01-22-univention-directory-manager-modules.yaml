@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-directory-manager-modules
-fix: 10.0.29-21.1285.201501261356
+fix: 10.0.29-22.1286.201501271450
 version: [0]
 desc: |
   This update addresses the following issue:
