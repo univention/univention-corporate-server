@@ -1,3 +1,10 @@
+univention-management-console-frontend-theme (0.0.88-8) unstable; urgency=low
+
+  * Bug #36291: removed redundant style for the scrollbox in
+    umcMultiObjectSelect since it already existed for umcMultiSelect
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 27 Jan 2015 12:56:51 +0100
+
 univention-management-console-frontend-theme (0.0.88-7) unstable; urgency=low
 
   Bug #36291:
