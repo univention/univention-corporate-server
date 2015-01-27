@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2010-2014 Univention GmbH
+# Copyright (C) 2010-2015 Univention GmbH
 #
 # http://www.univention.de/
 #

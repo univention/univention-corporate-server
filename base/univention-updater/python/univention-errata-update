@@ -4,7 +4,7 @@
 # Univention Updater
 #  errata update
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -65,7 +65,7 @@ def dprint(str, fd=[]):
 
 def usage(fd=sys.stdout):
 	print >> fd, 'univention-errata-update: tool for installing errata updates'
-	print >> fd, 'copyright (c) 2004-2014 Univention GmbH, Germany'
+	print >> fd, 'copyright (c) 2004-2015 Univention GmbH, Germany'
 	print >> fd, ''
 	print >> fd, 'Syntax:'
 	print >> fd, '  univention-errata-update <net,local> [--file <update.tar.gz>] [--silent] [--noupdate] [--check] [--no-repository-update]'
