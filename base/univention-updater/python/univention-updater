@@ -63,7 +63,7 @@ import univention.updater.tools
 
 FN_STATUS = '/var/lib/univention-updater/univention-updater.status'
 failure = '/var/lib/univention-updater/update-failed'
-reboot_required = '/var/lib/univention-updater/reboot-required'
+reboot_required = '/var/run/univention-updater-reboot'
 TMPSOURCE = '/etc/apt/sources.list.d/00_ucs_temporary_installation.list'
 
 LOGNAME = '/var/log/univention/updater.log'
@@ -84,9 +84,7 @@ class UpdateError(Exception):
 
 class UpToDateNoError(Exception):
 	""" Exception to signal when no update needs to be done """
-	def __init__(self, value=None):
-		Exception.__init__(self, value)
-		self.reboot = value
+	pass
 
 def log(str):
 	""" Log message to LOGNAME. """
@@ -138,12 +136,11 @@ def usage(fd=sys.stdout):
 	print >>fd, 'Copyright (c) 2005-2014 Univention GmbH, Germany'
 	print >>fd, ''
 	print >>fd, 'Syntax:'
-	print >>fd, '  univention-updater <local,net,cdrom> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--iso <iso-image>] [--updateto <UCS-Release>] [--reboot <timespec>] [--no-clean] [--silent] [--check]'
+	print >>fd, '  univention-updater <local,net,cdrom> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--iso <iso-image>] [--updateto <UCS-Release>] [--no-clean] [--silent] [--check]'
 	print >>fd, '  univention-updater [--help] '
 	print >>fd, ''
 	print >>fd, 'Options:'
 	print >>fd, '  --updateto <release>  Upper limit for version'
-	print >>fd, '  --reboot <time>       Reboot at given time'
 	print >>fd, '  --no-clean            Skip cleaning downloaded package file'
 	print >>fd, '  --silent              No output to STDOUT'
 	print >>fd, '  --check               Check if system is up-to-date'
@@ -343,7 +340,6 @@ def main():
 
 	updateto = None
 	updateto_args = []
-	reboot = None
 	clean  = True
 	ignoressh = False
 	ignoreterm = False
@@ -376,10 +372,7 @@ def main():
 				dprint("%s" % e)
 				sys.exit(2)
 		elif opt == '--reboot':
-			if val:
-				reboot = val
-			else:
-				reboot = 'now'
+			dprint('Warning: --reboot is deprecated; value is ignored.')
 		elif opt == "--no-clean":
 			clean = False
 			dprint("Running updater without apt-get clean")
@@ -470,12 +463,12 @@ def main():
 	if not nextversion:
 		dprint('System is up to date (UCS %s)' % lastversion)
 		fp_debug.close()
-		raise UpToDateNoError(reboot)
+		raise UpToDateNoError()
 	new_version = UCS_Version(nextversion)
 	if updateto and new_version > updateto:
 		dprint('Update hold at %s, next %s is after %s' % (lastversion, new_version, updateto))
 		fp_debug.close()
-		raise UpToDateNoError(reboot)
+		raise UpToDateNoError()
 
 	dprint('Update to = %s' % nextversion)
 	update_status(next_version=nextversion)
@@ -641,10 +634,6 @@ if __name__ == '__main__':
 			update_status( status='DONE' )
 			if os.path.exists(failure):
 				os.unlink(failure)
-			if os.path.exists(reboot_required):
-				os.unlink(reboot_required)
-				if error.reboot is not None:
-					subprocess.call(['at', '-f', '/var/lib/univention-updater/reboot.at', '--', '%s' % error.reboot])
 			sys.exit(0)
 		except SystemExit:
 			# disable update of UCR variable update/available to prevent call loop of univention-updater

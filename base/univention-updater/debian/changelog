@@ -1,3 +1,9 @@
+univention-updater (9.0.45-1) unstable; urgency=low
+
+  * Bug #37298: Reboot only after all updates are performed.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 10 Dec 2014 14:20:43 +0100
+
 univention-updater (9.0.44-17) unstable; urgency=low
 
   * Bug #37030: Show all blocking components
