@@ -18,6 +18,7 @@ echo gponame "$gponame"
 check_domainadmin_credentials || fail_fast 77 "UCR variables for admin credentials are not set"
 ADMINISTRATOR_NAME="$(univention-ldapsearch -b "$tests_domainadmin_account" uid | grep uid | sed -ne 's/^uid: //p')"
 
+s4_domainname=$(samba-tool domain info 127.0.0.1 | sed -n 's/^Domain *: //p') ## Samba's idea of spelling
 
 ## general sanity check: wait for the samba-share.py Listener to synchronize /etc/samba/shares.conf and /etc/samba/shares.conf.d (Bug #29399)
 i=0
@@ -62,7 +63,7 @@ done
 ##check whether the directory for the GPO has been created
 echo "----check whether the directory for the GPO has been created"
 i=0
-while ! [ -d "/var/lib/samba/sysvol/$domainname/Policies/$gpo_cn" ]
+while ! [ -d "/var/lib/samba/sysvol/$s4_domainname/Policies/$gpo_cn" ]
 do
 	let i="$i"+1
 	if [ "$i" = 20 ]; then
