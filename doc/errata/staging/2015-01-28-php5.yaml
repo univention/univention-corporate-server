@@ -1,0 +1,12 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: php5
+fix: 5.4.4-14.208.201501280731
+version: [0]
+desc: |
+ This update silences the PHP cron job, which is cleaning up old PHP session
+ files. Due to a mis-configuration from previous upgrades it was sending emails
+ containing error messages every 30 minutes.
+bug:
+ - 36621
