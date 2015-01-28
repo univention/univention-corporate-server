@@ -32,6 +32,8 @@
 from univention.config_registry import handler_set
 import glob
 import smtplib
+import imaplib
+import email
 import os
 import re
 import socket
@@ -77,6 +79,23 @@ class Mail(object):
 
 
 class ImapMail(Mail):
+
+	def get_mails(self, filter='ALL', mailbox='INBOX'):
+		msgs = []
+		rv, data = self.connection.select(mailbox)
+		assert rv == "OK"
+		rv, msg_ids = self.connection.search(None, filter)
+		assert rv == "OK"
+		for num in msg_ids[0].split():
+			rv, msg = self.connection.fetch(num, '(RFC822)')
+			assert rv == "OK"
+			msgs.append(email.message_from_string(msg[0][1]))
+		return msgs
+
+	def get_connection(self, host, user, password):
+		self.connection = imaplib.IMAP4_SSL(host)
+		rv, data = self.connection.login(user, password)
+		assert rv == "OK"
 
 	def get_return_code(self, id, response):
 		regex = '%s (.*?) .*$' % id
@@ -210,6 +229,9 @@ def virus_delivered(token, mail_address):
 
 def deactivate_spam_detection():
 	handler_set(['mail/antispam=no', 'mail/antivir/spam=no'])
+
+def activate_spam_header_tag(tag):
+	handler_set(['mail/antispam/headertag=%s' % tag])
 
 def reload_amavis_postfix():
 	for cmd in (['/etc/init.d/amavis', 'force-reload'], ['/etc/init.d/postfix', 'force-reload']):
@@ -411,7 +433,7 @@ Regards,
 	mimemsg = MIMEMultipart()
 	mimemsg['From'] = m_sender
 	mimemsg['To'] = COMMASPACE.join(m_recipients)
-	# mimemsg['Date'] = formatdate(localtime=True)
+	mimemsg['Date'] = time.strftime("%a, %d %b %Y %H:%M:%S +0000")
 	mimemsg['Subject'] = m_subject
 	mimemsg['UCS-TEST'] = idstring
 
