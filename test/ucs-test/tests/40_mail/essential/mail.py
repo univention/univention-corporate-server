@@ -433,7 +433,7 @@ Regards,
 	mimemsg = MIMEMultipart()
 	mimemsg['From'] = m_sender
 	mimemsg['To'] = COMMASPACE.join(m_recipients)
-	# mimemsg['Date'] = formatdate(localtime=True)
+	mimemsg['Date'] = time.strftime("%a, %d %b %Y %H:%M:%S +0000")
 	mimemsg['Subject'] = m_subject
 	mimemsg['UCS-TEST'] = idstring
 
