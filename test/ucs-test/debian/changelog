@@ -1,3 +1,10 @@
+ucs-test (5.0.104-1) unstable; urgency=low
+
+  * Bug #37602: increasing virus detection waiting time to 120sec
+  * Adding date field to sent mail
+
+ -- Ammar Najjar <najjar@univention.de>  Wed, 28 Jan 2015 10:05:50 +0100
+
 ucs-test (5.0.103-1) unstable; urgency=medium
 
   * Bug #37595: Workaround for CamelCase domainname vs S4 lowercase dnsName
