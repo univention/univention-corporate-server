@@ -1508,7 +1508,7 @@ The <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> users are e
   <emphasis>Change password on next login</emphasis> user option occurs on the
   UCS side on the Samba level alone. If a password change is initiated
   by &ucsUDM;, but the password changed in Active Directory, the
-  expiration details for the Kerberos and Posix passwords are not
+  expiration details for the Kerberos and POSIX passwords are not
   changed, so that the user must change his password again if he, for
   example, logs on to a thin client.
 </para>
@@ -1717,14 +1717,14 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 		<listitem><simpara>
 		  When "<emphasis>Well Known</emphasis>" account and group objects
-		  (identified by their sepcial RIDs) are synchronized into
+		  (identified by their special RIDs) are synchronized into
 		  the UCS OpenLDAP, a listener module running on each UCS system
 		  sets a &ucsUCR; variable locally to map the english name to the non-english AD name.
 		  These variables are used to translate the english names used in the UCS configuration
 		  files to the specific names used in AD.
 		  To give an example, if <emphasis>Domain Admins</emphasis> has a different name in the AD
 		  then the &ucsUCR; variable <envar>groups/default/domainadmins</envar> is set to that
-		  sepcific name (likewise for uses, e.g. <envar>users/default/administrator</envar>).
+		  specific name (likewise for uses, e.g. <envar>users/default/administrator</envar>).
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>

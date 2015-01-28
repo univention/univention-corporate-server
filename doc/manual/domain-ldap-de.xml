@@ -9,7 +9,7 @@
 		&ucsUMS; hinterlegten Benutzernamen und Passwort auf allen Systemen bekannt,
 		und kann für ihn freigeschaltete Dienste nutzen. Das Konto wird über das
 		Managementsystem sowohl für die Windows-Anmeldung als auch für
-		Linux/Posix-Systeme und Kerberos synchron gehalten. Die Verwaltung von
+		Linux/POSIX-Systeme und Kerberos synchron gehalten. Die Verwaltung von
 		Benutzerkonten ist in <xref linkend="users:general"/> beschrieben.
 	</para>
 	<para>

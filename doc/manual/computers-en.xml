@@ -705,7 +705,7 @@
 				<para>
 				  The IPv6 address can be configured in two ways: Stateless address
 				  autoconfiguration (SLAAC) is employed in the <guimenu>Autoconfiguration
-				  (SLAAS)</guimenu> configuration. In this, the IP address is assigned from the
+				  (SLAAC)</guimenu> configuration. In this, the IP address is assigned from the
 				  routers of the local network segment. Alternatively, the address can also be
 				  configured statically by entering the <guimenu>IPv6 address</guimenu> and
 				  <guimenu>IPv6 prefix</guimenu>. In contrast to DHCP, in SLAAC there is no
@@ -1557,7 +1557,7 @@ master.firma.de
 			not be overwritten. Instead a new version will be created in the same directory
 			with the ending <emphasis>.debian.dpkg-new</emphasis>. If changes are to be
 			made on the &ucsUCR; templates, these templates are also not overwritten during
-			the update and are instead resaved in the same directory with the ending
+			the update and are instead re-saved in the same directory with the ending
 			<emphasis>.dpkg-new</emphasis> or
 			<emphasis>.dpkg-dist</emphasis>. Corresponding notes are written in the
 			<filename>/var/log/univention/actualise.log</filename> log file. This only

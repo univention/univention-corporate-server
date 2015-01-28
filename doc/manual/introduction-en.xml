@@ -28,7 +28,7 @@ The central functions of UCS are:
 administration of servers, workstations, users and their permissions, server applications and web
 services</simpara></listitem>
 <listitem><simpara>Services for integrating the management of existing Microsoft Active Directory
-domains or even the provision of suchs services as an alternative for Microsoft-based
+domains or even the provision of such services as an alternative for Microsoft-based
 server systems</simpara></listitem>
 <listitem><simpara>App Center for simple installation and management of extensions and applications</simpara></listitem>
 <listitem><simpara>Comprehensive features for the operation of virtualized systems (e.g. running a
@@ -221,7 +221,7 @@ administrative steps.
 
 <para>
 &ucsUMC; allows to display, edit, delete, and search the data in
-the LDAP directory via various filter criterions.
+the LDAP directory via various filter criteria.
 The web interface offers a range of wizards for the
 administration of user, groups, networks, computers, directory shares
 and printers. The administration of computers also comprises

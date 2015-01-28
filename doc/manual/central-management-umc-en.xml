@@ -25,7 +25,7 @@
 	<para>
 		<xref linkend="central:user-interface"/> first describes the general
 		operation of &ucsUMC;. The following sections explain among other things
-		the work with the LDPA directory browser (<xref linkend="central:navigation"/>),
+		the work with the LDAP directory browser (<xref linkend="central:navigation"/>),
 		the use of administrative settings via policies (<xref linkend="central:policies"/>),
 		the extension of the scope of function of the domain administration with
 		extended attributes (<xref linkend="central:extendedattrs"/>) and delegating
@@ -42,7 +42,7 @@
 	<section id="central-management-umc:login">
 		<title>Login</title>
 		<para>
-		&ucsUMC; uses numerous Javascript and CSS functions to display the
+		&ucsUMC; uses numerous JavaScript and CSS functions to display the
 		web interface. Cookies need to be permitted in the browser.
 		The following browsers are supported.
 		</para>
@@ -869,7 +869,7 @@
 			<entry>Translations of tab name</entry>
 			<entry>
 			  Translated tab names can be assigned to the corresponding language code
-			  (z.B. <emphasis>de_DE</emphasis> oder <emphasis>fr_FR</emphasis>) in this input field.
+			  (z.B. <emphasis>de_DE</emphasis> or <emphasis>fr_FR</emphasis>) in this input field.
 			</entry>
 		  </row>
 

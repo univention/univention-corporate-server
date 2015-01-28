@@ -331,13 +331,13 @@
 
 	  <para>
 		The point at which the update should be performed is configured via a
-		<guimenu>Paketpflege</guimenu> policy (see <xref
+		<guimenu>Maintenance</guimenu> policy (see <xref
 		linkend="computers::softwaremanagement::maintenancepolicy"/>).
 	  </para>
 
 	  <para>
 		The messages created during the update are written to the file
-		<filename>/var/log/univention/updater.log</filename>
+		<filename>/var/log/univention/updater.log</filename>.
 	  </para>
 	</section>
 
@@ -721,7 +721,7 @@ apt-cache search fax
 	  </para>
 
 	  <para>
-		The softwares assignable in the package policies are also registered in the
+		The software assignable in the package policies are also registered in the
 		LDAP.
 	  </para>
 	  <!-- This is documented in Univention Wiki under WIKIREF-24368. -->

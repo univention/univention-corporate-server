@@ -1588,7 +1588,7 @@ Verhalten gilt wie bei Gruppen.
 beim nächsten Login</emphasis> erfolgt UCS-seitig nur auf Samba-Ebene. Wird die Passwortänderung
 durch &ucsUMC; ausgelöst, dass Passwort dann aber im Active Directory
 geändert, werden die Ablaufdaten bzgl. des Kerberos- und
-Posix- Kennworts nicht geändert, so dass der User z.B. bei Thin Client-Anmeldung
+POSIX- Kennworts nicht geändert, so dass der User z.B. bei Thin Client-Anmeldung
 sein Passwort erneut ändern muss.
 </simpara>
 </listitem>

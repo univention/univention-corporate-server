@@ -38,7 +38,7 @@ Version 4.0-0
 Date: November 18, 2014
       </literallayout>
 
-      <literallayout>
+      <literallayout lang="">
 Alle Rechte vorbehalten./ All rights reserved.
 (c) 2002-2014
 Univention GmbH
@@ -48,7 +48,7 @@ Deutschland
 feedback@univention.de
       </literallayout>
 
-      <para>
+      <para lang="de">
 	Jede aufgeführte Marke und jedes Warenzeichen steht im Eigentum ihrer jeweiligen eingetragenen Rechtsinhaber.
 	Linux ist ein eingetragenes Warenzeichen von Linus Torvalds.
       </para>

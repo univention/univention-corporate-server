@@ -267,17 +267,17 @@
                                     </listitem>
                                     <listitem>
 										<simpara>
-                                        <guimenu>Windows und POSIX disabled</guimenu>
+                                        <guimenu>Windows and POSIX disabled</guimenu>
 										</simpara>
                                     </listitem>
                                     <listitem>
 										<simpara>
-                                        <guimenu>Windows und Kerberos disabled</guimenu>
+                                        <guimenu>Windows and Kerberos disabled</guimenu>
 										</simpara>
                                     </listitem>
                                     <listitem>
 										<simpara>
-                                        <guimenu>POSIX und Kerberos disabled</guimenu>
+                                        <guimenu>POSIX and Kerberos disabled</guimenu>
 										</simpara>
                                     </listitem>
                                 </itemizedlist>

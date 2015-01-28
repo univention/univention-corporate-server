@@ -61,7 +61,7 @@
 
     <para>
 	  In the default setting, e-mails to external domains are delivered
-	  directly to the responsible STMP server of that domain.
+	  directly to the responsible SMTP server of that domain.
 	  Its location is performed via the resolution of the MX record in the
 	  DNS. Mail sending can also be taken over by the relay host, e.g., on the
 	  Internet provider (see <xref linkend="mail::serverconfig::relay"/>).
@@ -153,7 +153,7 @@
 		<itemizedlist>
 		  <listitem>
 			<para>
-			  The <emphasis>primay e-mail address</emphasis> is used for authentication on Postfix
+			  The <emphasis>primary e-mail address</emphasis> is used for authentication on Postfix
 			  and Cyrus. Primary e-mail addresses must always be unique. Only one primary e-mail
 			  address can be configured for every user. It also defines the user's IMAP mailbox. 
 			  If a mail home server is assigned to a user (see <xref linkend="mail::homeserver"/>),
@@ -670,7 +670,7 @@
 	  <title>Configuration of a relay host for sending the e-mails</title>
 
 	  <para>
-		In the default setting, Postfix creates a direct STMP connection to
+		In the default setting, Postfix creates a direct SMTP connection to
 		the mail server responsible for the domain when an e-mail is sent to
 		a non-local address. This server is determined by querying the MX
 		record in the DNS.
@@ -935,7 +935,7 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		The <guimenu>Spam</guimenu> filter can be used user-specifically to set which spam
 		threshold should apply. The specified <guimenu>Spam Level</guimenu> is the
-		SpamAssassin threshhold. An e-mail which returns this value will be sent to
+		SpamAssassin threshold. An e-mail which returns this value will be sent to
 		the specified folder.
 	  </para>
 	  <para>

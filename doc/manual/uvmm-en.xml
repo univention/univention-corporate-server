@@ -86,7 +86,7 @@
 				The following settings need to be made in the set-up wizard for creating a
 				connection to an OpenStack instance:
 				<table>
-					<title>Felder bei der Einrichtung einer OpenStack Verbindung</title>
+					<title>Fields when setting up an OpenStack connection</title>
 					<tgroup cols="2">
 						<colspec colnum="1" colname="col1" colwidth="1*"/>
 						<colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -871,7 +871,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 				  the KVM version with which a guest system was installed: Originally, the standard
 				  value until UCS 3.0 was implicitly <emphasis>write-through</emphasis>, but KVM was
 				  modified to such an extent with UCS 3.1 that <emphasis>none</emphasis> is now used for
-				  all old VMs instead. For VMs resaved with UCS 3.1 the standard value is implicitly
+				  all old VMs instead. For VMs re-saved with UCS 3.1 the standard value is implicitly
 				  <emphasis>write-through</emphasis> again, but new VMs are explicitly saved with
 				  <emphasis>none</emphasis>.
 					</simpara>
@@ -1108,7 +1108,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 				<itemizedlist>
 					<listitem>
 						<simpara>
-						A CD/DVDy drive needs to be setup in the drive settings with the image <emphasis>KVM Windows drivers (virtio 1.1.65)</emphasis> assigned.
+						A CD/DVD drive needs to be setup in the drive settings with the image <emphasis>KVM Windows drivers (virtio 1.1.65)</emphasis> assigned.
 						</simpara>
 					</listitem>
 					<listitem>
@@ -1165,7 +1165,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 				<graphic scalefit="1" width="40%" align="center" fileref="illustrations40/uvmm_migrate_en.png"/>
 			</figure>
 			<para>
-				During the migration it must be noted that the images of the mounted hard drives and CD-ROM drive must be accesible by both virtualization servers.
+				During the migration it must be noted that the images of the mounted hard drives and CD-ROM drive must be accessible by both virtualization servers.
 				This can be achieved, for example, by storing the images in a central storage system.
 				Notes on the setting up of this type of environment can be found under <xref linkend="uvmm::storagepools"/>.
 			</para>

@@ -7,7 +7,7 @@
 		common trust context between Linux and/or Windows systems. Within this domain
 		a user is known to all systems via his username and password stored in the
 		&ucsUMS; and can use all services which are authorised for him. The management
-		system keeps the account synchronised for the windows log-in, Linux/Posix
+		system keeps the account synchronised for the windows log-in, Linux/POSIX
 		systems and Kerberos. The management of user accounts is described in
 		<xref linkend="users:general"/>.
 	</para>

@@ -26,7 +26,7 @@
 	<para>
 		<xref linkend="central:user-interface"/> beschreibt zunächst die allgemeine
 		Bedienung von &ucsUMC;. Die darauffolgenden Abschnitte erläutern u.a. die
-		Arbeit mit dem LDPA-Verzeichnis-Browser (<xref linkend="central:navigation"/>),
+		Arbeit mit dem LDAP-Verzeichnis-Browser (<xref linkend="central:navigation"/>),
 		das Anwenden von administrativen Einstellungen über Richtlinien
 		(<xref linkend="central:policies"/>), die Erweiterung des Funktionsumfangs der
 		Domänenverwaltung durch erweiterte Attribute (<xref linkend="central:extendedattrs"/>)
@@ -45,7 +45,7 @@
 		<title>Anmeldung</title>
 		<para>
 			&ucsUMC; verwendet für die Darstellung der Web-Oberfläche zahlreiche
-			Javascript- und CSS-Funktionen. Cookies müssen im Browser zugelassen sein.
+			JavaScript- und CSS-Funktionen. Cookies müssen im Browser zugelassen sein.
 			Die folgenden Browser werden unterstützt:
 		</para>
 		<itemizedlist>

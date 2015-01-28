@@ -552,7 +552,7 @@
 			</tgroup>
 		  </table>
 		  <table>
-			<title>Reiter 'IP addresses'</title>
+			<title>'IP addresses' tab</title>
 			<tgroup cols="2">
 			  <colspec colname="col1" colnum="1" colwidth="1*"/>
 			  <colspec colname="col2" colnum="2" colwidth="2*"/>
@@ -724,7 +724,7 @@
 		  column. <guimenu>Add &ar; DNS: Host record</guimenu> can be used to create a new record.
 		</para>
 		<para>
-		  When adding or editing a computer objekt a host record can be created
+		  When adding or editing a computer object a host record can be created
 		  automatically or edited.
 		</para>
 		<para>
@@ -771,7 +771,7 @@
 				  </entry>
 				  <entry>
 					<para>
-					  The time to live specifies in seocnds how long these files may be cached by other
+					  The time to live specifies in seconds how long these files may be cached by other
 					  DNS servers.
 					</para>
 				  </entry>
@@ -2358,9 +2358,9 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 	  <para>
 		If NTLM is used an NTLM authentication is performed for every HTTP query as standard. If for example the
 		website <uri>http://www.univention.de</uri> is opened, the subpages and images are loaded in
-		addition to the actual HTML page. The NTML authentication can be cached per domain: If the
+		addition to the actual HTML page. The NTLM authentication can be cached per domain: If the
 		&ucsUCRV; <envar>squid/ntlmauth/keepalive</envar> is set to <emphasis>yes</emphasis>, no
-		further NTLM authentication is performed for subsequent HMTL queries in the same
+		further NTLM authentication is performed for subsequent HTML queries in the same
 		domain.
 	  </para>
 
