@@ -583,6 +583,7 @@ elif [ "true" == "$firefox_en" ]; then
 fi
 
 # Bug #37534
+{
 for file in passdb.tdb secrets.tdb schannel_store.tdb idmap2.tdb; do
 	oldpath="/var/lib/samba/$file"
 	newpath="/var/lib/samba/private/$file"
@@ -596,6 +597,7 @@ for file in passdb.tdb secrets.tdb schannel_store.tdb idmap2.tdb; do
 		mv "$oldpath" "$backuppath"
 	fi
 done
+} >&3 2>&3
 
 echo "** Starting: apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade" >&3 2>&3
 apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade >&3 2>&3
