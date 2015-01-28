@@ -5,11 +5,11 @@ src: univention-directory-manager-modules
 fix: 10.0.29-22.1286.201501271450
 version: [0]
 desc: |
-  This update addresses the following issue:
+  This update addresses the following issues:
   * Added support for the following operators in a UDM filter: <, >, <=, >=.
   * Changing the attribute DNS time to live from an empty value does
     not trigger an error anymore.
-  * It is now possible to change the password of an user after setting
+  * It is now possible to change the password of a user after setting
     an empty password length in the referenced password policy.
   * Set a default value for the property "CtxRASDialin".
   * A PNG file can now be specified as user photo. It will be internally

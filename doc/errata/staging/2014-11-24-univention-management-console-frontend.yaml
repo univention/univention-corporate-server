@@ -6,16 +6,14 @@ fix: 4.1.106-10.992.201501141148
 version: [0]
 desc: |
   * Adjusted the styling of the notification if JavaScript is disabled.
-  * Internet Explorer now shows a warning message if a version <= 8 is
-    being used.
+  * A warning is displayed when using Internet Explorer in version <= 8
+    along with a list of all supported browsers.
   * A exception was logged in the JavaScript console when the grid was resized
-    and when notification get hidden. This was disturbing and has therefore
+    and when notifications got hidden. This was disturbing and has therefore
     been removed.
   * The JavaScript method umc.tools.umcpProgressSubCommand did not send the
     UMCP flavor along with a request and could therefore fail due to
     insufficient permissions.
-  * A warning is displayed when using Internet Explorer in version <= 8
-    along with a list of all supported browsers.
   * If an outdated browser is being used, a message will be shown in the 
     login dialogue. A notification after the login will no longer show up.
   * The icon on the policy reference button is now shown.

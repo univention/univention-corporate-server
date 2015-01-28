@@ -12,7 +12,7 @@ desc: |
     Additionally the smb.conf parameter "spoolss: architecture" can
     be adjusted manually by setting the new UCR variable
     "samba/spoolss/architecture" (see man smb.conf). On updated
-    systems this UCR variable is maintain to keep the old default.
+    systems this UCR variable is maintained to keep the old default.
   * A potential issue during Samba3 to Samba4 inplace migration.
 bug:
  - 34068
