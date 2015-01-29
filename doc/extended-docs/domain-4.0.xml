@@ -23,7 +23,7 @@
         <title>Integration of Ubuntu clients into a UCS domain</title>
         <para>
 		  Univention Corporate Server allows the integration of Ubuntu clients. Initially a
-		  standard Ubuntu installation needs to be performed. The following section describe the
+		  standard Ubuntu installation needs to be performed. The following section describes the
 		  configuration changes, which need to be made to integrate the Ubuntu client into the UCS
 		  domain. After successful integration users can authenticate on the Ubuntu clients with
 		  their standard UCS domain password and user name.
@@ -285,7 +285,7 @@ exit
 ]]></programlisting>
 
             <para>
-			  Kubuntu 14.04 uses AccountService, a D-Bus interface for use account management, which
+			  Kubuntu 14.04 uses AccountService, a D-Bus interface for user account management, which
 			  ignores the <filename>/etc/lightdm.conf</filename> file.  Since there is no config
 			  file for AccountService the login theme needs to be changed to
 			  <emphasis>classic</emphasis> under <guimenu>System Settings -> Login Screen (LightDM)</guimenu>.
