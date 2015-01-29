@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: eglibc
-fix: 2.11.3-4.18.201501281259
+fix: 2.13-38.19.201501281258
 version: [0]
 desc: |
   Multiple security vulnerabilities have been found in eglibc:
