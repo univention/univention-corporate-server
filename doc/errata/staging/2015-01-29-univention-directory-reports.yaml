@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata-4.0-0
+src: univention-directory-reports
+fix: 7.0.0-3.73.201501291314
+version: [0]
+desc: |
+  * Fixed a problem which caused that in some circumstances no reports
+    could be created.
+bug: [36234]
