@@ -65,7 +65,7 @@ def ldap_filter_not_objectflag(flag_string_list):
 	else:
 		return '(!(|%s))' % ''.join(ldap_filter_parts)
 
-user_exclude_objectflags = ['temporary', 'functional']
+user_exclude_objectflags = ['temporary', 'functional', 'hidden']
 managedclient_exclude_objectflags = []
 if configRegistry.is_true('ad/member'):
 	user_exclude_objectflags.append('synced')

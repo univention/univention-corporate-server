@@ -3008,6 +3008,7 @@ class ObjectFlag( select ):
 	choices = [
 		( 'hidden', _( 'Mark this object as hidden' ) ),
 		( 'temporary', _( 'Mark this object as temporary' ) ),
+		( 'functional', _( 'Ignore this object in standard UDM modules' ) ),
 	]
 
 if __name__ == '__main__':

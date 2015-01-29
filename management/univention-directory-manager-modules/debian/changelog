@@ -1,3 +1,10 @@
+univention-directory-manager-modules (10.0.29-23) unstable; urgency=low
+
+  * Bug #37654: add "functional" to UDM syntax ObjectFlag
+  * Bug #37654: ignore "hidden" objects in license check
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 29 Jan 2015 17:55:59 +0100
+
 univention-directory-manager-modules (10.0.29-22) unstable; urgency=medium
 
   * Bug #20044: fix reraising, log errors always

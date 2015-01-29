@@ -15,4 +15,6 @@ desc: |
   * A PNG file can now be specified as user photo. It will be internally
     converted into JPEG.
   * Exceptions during the creation of UDM objects are now handled.
-bug: [36970,8429,33256,37592,36273,20044]
+  * Added syntax support for the UDM object flag "functional"
+  * Update of the license check: internal "hidden" users are now ignored
+bug: [36970,8429,33256,37592,36273,20044,37654]
