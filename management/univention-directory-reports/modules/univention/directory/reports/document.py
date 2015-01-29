@@ -122,10 +122,10 @@ class Document( object ):
 
 	def create_pdf( self, latex_file ):
 		"""Run pdflatex on latex_file and return path to generated file or None on errors."""
-		cmd = ['pdflatex', '-interaction=nonstopmode', '-halt-on-error', '-output-directory=%s' % os.path.dirname(latex_file), latex_file]
+		cmd = ['/usr/bin/pdflatex', '-interaction=nonstopmode', '-halt-on-error', '-output-directory=%s' % os.path.dirname(latex_file), latex_file]
 		devnull = open(os.path.devnull, 'w')
 		try:
-			env_vars = {'HOME': '/var/cache/univention-directory-reports'}
+			env_vars = {'PATH': '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin', 'HOME':'/var/cache/univention-directory-reports'}
 			if not subprocess.call(cmd, stdout=devnull, stderr=devnull, env=env_vars):
 				if not subprocess.call(cmd, stdout=devnull, stderr=devnull, env=env_vars):
 					return '%s.pdf' % latex_file.rsplit('.', 1)[0]

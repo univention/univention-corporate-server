@@ -1,3 +1,9 @@
+univention-directory-reports (7.0.0-3) unstable; urgency=low
+
+  * added PATH for pdflatex command (Bug #36234)
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 29 Jan 2015 13:11:48 +0100
+
 univention-directory-reports (7.0.0-2) unstable; urgency=low
 
   * added home directory for pdflatex (Bug #36234)
