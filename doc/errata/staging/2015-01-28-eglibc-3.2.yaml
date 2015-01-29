@@ -3,7 +3,7 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-4
 src: eglibc
 fix: 2.11.3-4.18.201501281259
-version: [4]
+version: [3,4]
 desc: |
   Multiple security vulnerabilities have been found in eglibc:
   * Directory traversal in locale-related environment variables
