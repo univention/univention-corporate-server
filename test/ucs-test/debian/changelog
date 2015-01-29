@@ -1,3 +1,10 @@
+ucs-test (4.0.203-1) unstable; urgency=low
+
+  * Bug #37602 setting the ucr variable "mail/alias/root" manually and call
+  * newaliases before running the test.
+
+ -- Ammar Najjar <najjar@univention.de>  Thu, 29 Jan 2015 11:13:36 +0100
+
 ucs-test (4.0.202-1) unstable; urgency=low
 
   * Bug #37602: increasing virus detection waiting time to 120sec
