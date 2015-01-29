@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Basic virus email delivery
+## desc: Basic virus email delivery 
 ## tags: apttest
 ## exposure: dangerous
 ## packages: [univention-mail-server, univention-config, univention-directory-manager-tools]
@@ -16,6 +16,7 @@
 
 from essential.mail import deactivate_spam_detection, reload_amavis_postfix
 from essential.mail import send_mail, virus_delivered
+from univention.config_registry import handler_set
 import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -23,15 +24,21 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 def main():
-	TIMEOUT = 120
+	TIMEOUT = 60
 	with udm_test.UCSTestUDM() as udm:
 		try:
 			with ucr_test.UCSTestConfigRegistry() as ucr:
 				domain = ucr.get('domainname')
+				host = ucr.get('hostname')
+				handler_set([
+					'mail/alias/root=systemmail@%s.%s' % (
+						host, domain)
+					])
+				reload_amavis_postfix()
 				mail =  'virus%stest@%s' % (uts.random_string(), domain)
 				userdn, username = udm.create_user(
 						set={
-							'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+							'mailHomeServer': '%s.%s' % (host, domain),
 							'mailPrimaryAddress': mail,
 							}
 						)

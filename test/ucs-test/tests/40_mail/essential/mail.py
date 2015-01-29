@@ -233,8 +233,12 @@ def deactivate_spam_detection():
 def activate_spam_header_tag(tag):
 	handler_set(['mail/antispam/headertag=%s' % tag])
 
+def reload_postfix():
+	cmd = ['/etc/init.d/postfix', 'force-reload']
+	subprocess.Popen(cmd , stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+
 def reload_amavis_postfix():
-	for cmd in (['/etc/init.d/amavis', 'force-reload'], ['/etc/init.d/postfix', 'force-reload']):
+	for cmd in (['newaliases'],['/etc/init.d/amavis', 'force-reload'], ['/etc/init.d/postfix', 'force-reload']):
 		subprocess.Popen(cmd , stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 
 def spam_delivered(token, mail_address):
