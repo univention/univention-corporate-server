@@ -84,7 +84,7 @@ $(buildDir)/debug.html: $(buildDir) index.html
 $(buildDir)/login.html: login.html
 	mkdir -p $(dir $@)
 	cp $< $(buildDir)
-	sed 's/login2.html/login.html/' $< > $(buildDir)/login2.html
+	cp blank.html $(dir $@)/blank.html
 
 build-dev: build-common
 	# symlink javascript code
