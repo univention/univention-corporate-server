@@ -685,7 +685,7 @@ define([
 					topic.publish('/umc/actions', 'error', status);
 					dialog.alert('<p>' + statusMessage + '</p>' + (message ? '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + message + '</p>' : ''), _('An error occurred'));
 				}
-			} else if (undefined !== status) {
+			} else if (status) {
 				// unknown status code .. should not happen
 				topic.publish('/umc/actions', 'error', 'unknown');
 				dialog.alert(_('An unknown error with status code %s occurred while connecting to the server, please try again later.', status));
