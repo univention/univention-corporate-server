@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (1.0.14-4) unstable; urgency=medium
+
+  * Bug #35861: add plugin which checks package status
+
+ -- Florian Best <best@univention.de>  Wed, 14 Jan 2015 09:49:15 +0100
+
 univention-management-console-module-diagnostic (1.0.14-3) unstable; urgency=medium
 
   * Bug #37032: fix the ping timeout when trying to reach the gateway
