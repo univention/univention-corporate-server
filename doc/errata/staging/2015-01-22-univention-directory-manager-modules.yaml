@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-directory-manager-modules
+fix: 10.0.29-23.1287.201501300932
+version: [0]
+desc: |
+  This update addresses the following issues:
+  * Added syntax support for the UDM object flag "functional"
+  * Update of the license check: internal "hidden" users are now ignored
+bug: [37654]
