@@ -1,0 +1,14 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-management-console-frontend
+fix: 4.1.106-11.993.201501301040
+version: [0]
+desc: |
+  * UMC specific apache configuration has been put into a LocationMatch directive to not disturb other services usiong apache.
+  * Don't let firefox ask for resending POST form data when logging out of UMC.
+  * Fix an endless login animation if the login fails due to not running UMC server.
+  * Fix the error message which is shown when no network connection is possible on client side.
+  * Fix visibility of error messages when a login dialog is opened.
+  * Add more detailed error messages if no connection to UMC server components is possible.
+bug: [37518, 36445, 36636,36680, 36400]
