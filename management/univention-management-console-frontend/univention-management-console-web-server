@@ -284,10 +284,18 @@ class UMCP_Dispatcher(object):
 				# add a small offset to the timeout in order to avoid a mismatch between frontend and backend
 				try:
 					client = SessionClient(timeout=_session_timeout + 5, ip=queuerequest.ip, cookie=queuerequest.cookie)
-				except Exception as e:
-					CORE.process('Failed to create UMC connection: %s' % str(e))
+				except Exception as exc:
+					CORE.process('Failed to create UMC connection: %s' % (exc,))
 					response = umcp.Response(queuerequest.request)
-					response.status = httplib.UNAUTHORIZED  # set status to unauthorized
+					response.status = httplib.SERVICE_UNAVAILABLE
+					response.message = '\n'.join((
+						'The Univention Management Console Server is currently not running. ',
+						'If you have root permissions on the system you can restart it by executing the following command:',
+						' * invoke-rc.d univention-management-console-server restart',
+						'The following logfile may contain information why the server is not running:',
+						' * /var/log/univention/management-console-server.log',
+						'Otherwise please contact an administrator or try again later.'
+					))
 					queuerequest.response_queue.put(response)
 					continue
 

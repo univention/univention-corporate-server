@@ -82,6 +82,7 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+			this._connections = [];
 			this._replaceLabels();
 			this.containerNode = dom.byId('umcLoginDialog');
 			this.domNode = dom.byId('umcLoginWrapper');
@@ -197,7 +198,7 @@ define([
 		},
 
 		_connectEvents: function() {
-			//this._disconnectEvents();
+			var oldEvents = this._connections;
 			this._connections = [];
 			var iframeLoginForm, usernameInput, passwordInput, newPasswordInput, newPasswordRetypeInput;
 
@@ -209,12 +210,10 @@ define([
 				newPasswordRetypeInput = dom.byId('umcLoginNewPasswordRetype');
 			}));
 
-			var iframe = this._iframe.contentWindow.document;
-			var forms = [[dom.byId('umcLoginForm'), dom.byId('umcLoginForm', iframe)], [dom.byId('umcNewPasswordForm'), dom.byId('umcNewPasswordForm', iframe)]];
 			// register all events
-			array.forEach(forms, lang.hitch(this, function(ff) {
-				var form = ff[0];
-				var iform = ff[1];
+			array.forEach(['umcLoginForm', 'umcNewPasswordForm'], lang.hitch(this, function(name) {
+				var form = dom.byId(name);
+				var iform = dom.byId(name, this._iframe.contentWindow.document);
 
 				if (iform) {
 					this._connections.push(on(iform, 'submit', lang.hitch(this, function(evt) {
@@ -242,22 +241,24 @@ define([
 						evt.preventDefault();
 
 						query('.umcLoginForm input').forEach(lang.hitch(this, function(node) {
-							var iframeNode = dom.byId(node.id, iframe);
+							var iframeNode = dom.byId(node.id, this._iframe.contentWindow.document);
 							if (iframeNode) {
 								iframeNode.value = node.value;
 							}
 						}));
+						// don't use iform (if the page was reloaded the old iframe does not exists anymore)
+						iform = dom.byId(name, this._iframe.contentWindow.document);
 						iform.submit.click();
 					})));
 				}
 			}));
+			this._disconnectEvents(oldEvents);
 		},
 
-		_disconnectEvents: function() {
-			array.forEach(this._connections, function(con) {
+		_disconnectEvents: function(connections) {
+			array.forEach(connections, function(con) {
 				con.remove();
 			});
-			this._connections = [];
 		},
 
 		_replaceLabels: function() {

@@ -680,6 +680,12 @@ define([
 				else if(message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
 					topic.publish('/umc/actions', 'error', 'traceback');
 					tools._handleTraceback(message, statusMessage);
+				} else if (503 == status && dialog._loginDialog && dialog._loginDialog.get('open')) {
+					// either the UMC-server or the UMC-Web-Server is not runnning
+					dialog._loginDialog.updateForm(false, statusMessage);
+					if (message) {
+						dialog.alert(message, statusMessage);
+					}
 				} else {
 					// all other cases
 					topic.publish('/umc/actions', 'error', status);

@@ -215,7 +215,11 @@ define([
 			// update title
 			this._alertDialog.set('title', title || _('Notification'));
 			//this._alertDialog.startup();
-			this._alertDialog.show();
+			if (this._loginDialog && this._loginDialog.get('open')) {
+				setTimeout(lang.hitch(this, function() { this._alertDialog.show(); }), 200);
+			} else {
+				this._alertDialog.show();
+			}
 		},
 
 		centerAlertDialog: function() {
