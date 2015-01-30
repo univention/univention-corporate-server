@@ -1,3 +1,16 @@
+univention-management-console-frontend (4.1.106-11) unstable; urgency=medium
+
+  * Bug #37518: put UMC apache configuration into LocationMatch variable to
+  	not disturb other services which are using apache.
+  * Bug #36445: reintegrate blank.html to don't show a reload dialog in
+  	Firefox
+  * Bug #36636: fix endless login animation when login fails
+  * Bug #36680: fix error message if no network connection is possible
+  * Bug #36400: fix visibility of error message if no connection to UMC is
+  	possible
+
+ -- Florian Best <best@univention.de>  Thu, 29 Jan 2015 15:37:56 +0100
+
 univention-management-console-frontend (4.1.106-10) unstable; urgency=medium
 
   * Bug #36645: don't print exception in javascript console when notifications
