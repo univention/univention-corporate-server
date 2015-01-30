@@ -190,7 +190,7 @@ class WinExe:
 
 	def winexec(self, *args, **kwarg):
 		''' run args via winexe on self.client '''
- 
+
 		domain_mode = kwarg.get("domain_mode", True)
 		dont_fail = kwarg.get("dont_fail", False)
 		runas_user = kwarg.get("runas_user", self.domain_admin)
@@ -306,7 +306,7 @@ class WinExe:
 
 	def create_ad_users(self, username, password, users):
 		''' creates users users with prefix username and password password '''
-		
+
 		return self.winexec("create-ad-users", username, password, users)
 
 
@@ -357,7 +357,7 @@ class WinExe:
 			with open(destination, 'w') as f:
 				f.write(content)
 		return content
-		
+
 	def get_root_certificate(self, filename="/tmp/ad-cert.cer"):
 		''' export root certificate to filename (/tmp/ad-cert.cer) '''
 
@@ -386,7 +386,11 @@ class WinExe:
 		''' Changes the password of a local windows user '''
 		self.winexec("cmd /C net user %s" % (user + " " + password ), domain_mode=False)
 
-	def shutdown_remote_win_host(self):
+	def reboot_remote_win_host(self):
+		''' Reboots this windows host'''
+		self.winexec("reboot", domain_mode=False)
+
+        def shutdown_remote_win_host(self):
 		''' Shuts down this windows host'''
 		self.winexec("shutdown", domain_mode=False)
 

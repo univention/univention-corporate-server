@@ -1,3 +1,9 @@
+ucs-windows-tools (2.0.1-8) unstable; urgency=medium
+
+  * Added function to reboot a remote windows host (Bug #37568)
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 30 Jan 2015 15:50:58 +0100
+
 ucs-windows-tools (2.0.1-7) unstable; urgency=medium
 
   * Added a VBS script to create a user and add the user to a specific
