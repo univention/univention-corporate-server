@@ -217,6 +217,24 @@ do_reboot () {
 	reboot
 }
 
+join_windows_memberserver ()
+{
+	local HOST="$1"
+	local DOMAIN="$2"
+	local DNS_SERVER="$3"
+	local ADMIN_ACCOUNT="${4:-administrator}"
+	
+        if [[ ! -z "$HOST" ]] && [[ ! -z "$DOMAIN" ]] && [[ ! -z "$DNS_SERVER" ]]; then
+	python -c "
+import univention.winexe
+win=univention.winexe.WinExe('$DOMAIN', '$ADMIN_ACCOUNT', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
+win.domain_join('$DNS_SERVER')
+"
+	else
+		echo "You must specify a host address, domain name, dns server address."
+	fi
+}
+
 _promote_ad ()
 {
 	local HOST="$1"
@@ -259,6 +277,16 @@ promote_ad_w2k3r2 ()
 	_promote_ad "$1" "$2" "Win2003R2" "$3"
 }
 
+reboot_windows_host ()
+{
+	local HOST="$1"
+	local ADMIN_ACCOUNT="${2:-administrator}"
+	python -c "
+import univention.winexe
+win=univention.winexe.WinExe('dummydomain', '$ADMIN_ACCOUNT', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
+win.reboot_remote_win_host()
+"
+}
 
 shutdown_windows_host ()
 {

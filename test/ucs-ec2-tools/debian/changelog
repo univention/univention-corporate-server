@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.2-7) unstable; urgency=low
+
+  * Bug #37568: added functions to reboot a remote windows host and
+    to join a remote windows server as a memberserver.
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 30 Jan 2015 15:56:22 +0100
+
 ucs-ec2-tools (1.0.2-6) unstable; urgency=low
 
   * Bug #35096: fixed setting new password after 
