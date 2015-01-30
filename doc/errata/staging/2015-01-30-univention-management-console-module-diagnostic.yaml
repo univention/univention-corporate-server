@@ -1,0 +1,9 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-management-console-module-diagnostic
+fix: 1.0.14-4.19.201501301157
+version: [0]
+desc: |
+  * Added a plugin which checks the package status.
+bug: [35861]
