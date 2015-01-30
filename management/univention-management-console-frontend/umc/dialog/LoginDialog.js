@@ -130,8 +130,14 @@ define([
 
 		_setLoginMessageAttr: function(message) {
 			this._text.set('content', '<h1>' + _('Authentication failure') + '</h1><p>' + message + '</p>');
+			this._wipeInMessage();
+		},
+
+		_wipeInMessage: function() {
 			setTimeout(function() {
-				fx.wipeIn({node: 'umcLoginMessages'}).play();
+				fx.wipeIn({node: 'umcLoginMessages', onEnd: function() {
+					query('#umcLoginMessages').style('display', 'block');
+				}}).play();
 			}, 200);
 		},
 
@@ -392,9 +398,7 @@ define([
 			this._setInitialFocus();
 			Dialog._DialogLevelManager.show(this, this.underlayAttrs);
 			if (this._text.get('content')) {
-				setTimeout(function() {
-					fx.wipeIn({node: 'umcLoginMessages'}).play();
-				}, 200);
+				this._wipeInMessage();
 			}
 			// display the body background (hides rendering of GUI) the first time
 			if (!tools.status('setupGui')) {
