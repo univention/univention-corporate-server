@@ -3,17 +3,16 @@
 ProxyPreserveHost on
 
 @!@
-port = int( configRegistry.get('umc/http/port', 8090) )
+port = int(configRegistry.get('umc/http/port', 8090))
 interface = configRegistry.get('umc/http/interface', '127.0.0.1')
 
 print 'ProxyPass /umcp/ http://%s:%s/ retry=0' % (interface, port)
 print 'ProxyPassReverse /umcp/ http://%s:%s/' % (interface, port)
 print 'ProxyTimeout %s' % int(configRegistry.get('umc/http/session/timeout', '300'))
 @!@
-RequestHeader set X-Forwarded-Proto %{HTTPS}s
-
 RedirectMatch ^/umc(/$|$) /univention-management-console/
 RedirectMatch ^/univention-management-console$ /univention-management-console/
+
 RewriteEngine On
 RewriteRule ^/univention-management-console/style/(.*) /style/$1 [L]
 
@@ -36,10 +35,12 @@ RewriteCond %{DOCUMENT_ROOT}/%1 !-d
 RewriteCond %{REQUEST_METHOD} ^GET
 RewriteRule ^(/univention-management-console/js)_[^/]*/(.*) $1/$2 [R=301]
 
-# fix for bug in cherrypy returnin 408/409 errors out of the blue:
-#   http://cherrypy.org/ticket/853
-SetEnv proxy-nokeepalive 1
+<LocationMatch "^/umcp/">
+	RequestHeader set X-Forwarded-Proto %{HTTPS}s
+	# fix for bug in cherrypy returnin 408/409 errors out of the blue:
+	#   http://cherrypy.org/ticket/853
+	SetEnv proxy-nokeepalive 1
+</LocationMatch>
 
-<Directory /var/www/univention-management-console>
+<Directory "/var/www/univention-management-console">
 </Directory>
-
