@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-virtual-machine-manager-daemon
+fix: 4.0.23-1.577.201502021347
+version: [0]
+desc: |
+  This update addresses the following issues:
+  * If no connection to the UVMM daemon is possible show a error message.
+bug: [33963]
