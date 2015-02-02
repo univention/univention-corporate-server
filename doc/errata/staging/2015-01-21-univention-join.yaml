@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-join
-fix: 7.1.2-10.496.201502021532
+fix: 7.1.2-11.497.201502021701
 version: [0]
 desc: |
   * If an error occurs during the automatic DNS lookup of the DC 
