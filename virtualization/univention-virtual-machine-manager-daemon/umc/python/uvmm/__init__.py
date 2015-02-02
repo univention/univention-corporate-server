@@ -30,10 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import traceback
-
 from univention.lib.i18n import Translation
-from univention.management.console.modules import Base, UMC_OptionTypeError
+from univention.management.console.modules import Base, UMC_OptionTypeError, error_handling
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
@@ -68,20 +66,17 @@ class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots, Cloud):
 
 	def _check_thread_error(self, thread, result, request):
 		"""
-		Checks if the thread returned an exception. In that case in
+		Checks if the thread returned an exception. In that case an
 		error response is send and the function returns True. Otherwise
 		False is returned.
 		"""
 		if not isinstance(result, BaseException):
 			return False
 
-		msg = '%s\n%s: %s\n' % (
-				''.join(traceback.format_tb(thread.exc_info[2])),
-				thread.exc_info[ 0 ].__name__,
-				thread.exc_info[1],
-				)
-		MODULE.process('An internal error occurred: %s' % msg)
-		self.finished(request.id, None, msg, False)
+		def fake_func(self, request):
+			raise thread.exc_info[0], thread.exc_info[1], thread.exc_info[2]
+		fake_func.__name__ = 'thread %s' % (request.arguments[0],)
+		error_handling(fake_func)(self, request)
 		return True
 
 	def _thread_finish(self, thread, result, request):

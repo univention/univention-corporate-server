@@ -85,21 +85,8 @@ def LDAP_Connection(func):
 			_ldap_connection = lo
 			_ldap_position = po
 			return ret
-		except udm_errors.base:
-			try:
-				lo, po = udm_uldap.getMachineConnection(ldap_master=False)
-			except LDAPError, ex:
-				raise LDAP_ConnectionError('Opening LDAP connection failed: %s' % (ex,))
-
-			kwargs['ldap_connection'] = lo
-			kwargs['ldap_position'] = po
-			try:
-				ret = func(*args, **kwargs)
-				_ldap_connection = lo
-				_ldap_position = po
-				return ret
-			except udm_errors.base, ex:
-				raise LDAP_ConnectionError(str(ex))
+		except udm_errors.base as ex:
+			raise LDAP_ConnectionError(str(ex))
 
 		return []
 

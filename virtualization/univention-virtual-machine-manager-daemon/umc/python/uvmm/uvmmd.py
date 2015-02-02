@@ -33,6 +33,7 @@
 import copy
 
 from univention.management.console.log import MODULE
+from univention.management.console.modules import UMC_Error
 
 from notifier import Callback
 from notifier.threads import Simple
@@ -45,11 +46,25 @@ _ = Translation('univention-management-console-module-uvmm').translate
 _uvmm_locale = Translation('univention-virtual-machine-manager').translate
 
 
-class UVMM_Error(Exception):
+class UVMM_Error(UMC_Error):
 	"""
 	UVMM request was not successful.
 	"""
-	pass
+	def __init__(self, message, errno=None):
+		if errno in (2, 104, 111):  # UVMM daemon is down
+			status = 503
+			message = '\n'.join([
+				_('The connection to the univention-virtual-machine-manager-daemon service failed.'),
+				_('This might be a temporary problem. Please wait some minutes for the connection to reestablish or restart the UVMM service.'),
+				_('More detailed information can be found in the following logfiles:'),
+				' * /var/log/univention/management-console-module-uvmm.log',
+				' * /var/log/univention/virtual-machine-manager-daemon.log',
+				' * /var/log/univention/virtual-machine-manager-daemon-errors.log'
+			])
+		else:
+			status = 500
+			message = _('The connection to the univention-virtual-machine-manager-daemon service failed: %s') % (message,),
+		super(UVMM_Error, self).__init__(message, status=status)
 
 
 class UVMM_Request(object):
@@ -79,9 +94,9 @@ class UVMM_Request(object):
 			MODULE.info('Received response: %s' % (data,))
 			uvmm_client.close()
 			MODULE.info('Connection to UVMMd is closed')
-		except client.ClientError, ex:
-			MODULE.info('The UVMM client raised an exception: %s' % (ex,))
-			raise UVMM_Error(str(ex))
+		except client.ClientError as exc:
+			MODULE.info('The UVMM client raised an exception: %s' % (exc,))
+			raise UVMM_Error(str(exc), errno=exc.args[1].get('errno'))
 
 		MODULE.info('Returning result from UVMMd')
 		return self.response(data)
