@@ -77,7 +77,7 @@ def get_master_dns_lookup():
 		MODULE.error('Timeout when looking up %s.' % (query,))
 		msg = _('The lookup of the domaincontroller master record timed out. There might be a problem with the configured DNS server. Make sure the DNS server is up and running or check the network settings.')
 	except dns.resolver.NoAnswer as exc:
-		MODULE.error('Non-Authoritative answer during lookup of %s.' % (query,)
+		MODULE.error('Non-Authoritative answer during lookup of %s.' % (query,))
 	except dns.exception.DNSException as exc:
 		MODULE.error('Exception during lookup: %s' % (traceback.format_exc(),))
 		msg = '%s.' % (exc,)
