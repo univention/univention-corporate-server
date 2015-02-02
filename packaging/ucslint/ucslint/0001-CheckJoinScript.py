@@ -177,21 +177,18 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		except IOError:
 			self.addmsg( '0001-9', 'failed to open and read file', fn )
 		else:
-			print 'XXX', UniventionPackageCheck.RE_DH_JOIN
 			if UniventionPackageCheck.RE_DH_JOIN.search(content):
 				self.debug('Detected use of univention-install-joinscript')
 				try:
 					fn_control = os.path.join(path, 'debian', 'control')
 					parser = uub.ParserDebianControl(fn_control)
 				except uub.UCSLintException:
-					print 'XXX error'
 					self.debug('Errors in debian/control. Skipping here')
 					pass
 				else:
 					for binary_package in parser.binary_sections:
 						package = binary_package.get('Package')
 						for js in fnlist_joinscripts.keys():
-							print 'XXX', package, js
 							if re.match(r'^\./\d\d%s.inst$' % re.escape(package), js):
 								self.debug('univention-install-joinscript will take care of %s' % js)
 								fnlist_joinscripts[js] = True
