@@ -1,3 +1,9 @@
+univention-join (7.1.2-9) unstable; urgency=low
+
+  * Bug #34238: small fix, updated translation
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 02 Feb 2015 14:58:22 +0100
+
 univention-join (7.1.2-8) unstable; urgency=low
 
   * Bug #32525: Fixes for univention-install-joinscript
@@ -6,9 +12,7 @@ univention-join (7.1.2-8) unstable; urgency=low
 
 univention-join (7.1.2-7) unstable; urgency=low
 
-  * Bug #34238: changes in dns error handling,
-                set dns lookup timeout to 3 seconds,
-                corrected error messages
+  * Bug #34238: Fix DNS error handling, add maximum timeout of 3 seconds
 
  -- Drees Dormann <dormann@univention.de>  Mon, 02 Feb 2015 12:23:34 +0100
 

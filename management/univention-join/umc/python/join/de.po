@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-02-02 12:15+0100\n"
+"POT-Creation-Date: 2015-02-02 14:41+0100\n"
 "PO-Revision-Date: 2012-04-23 15:37+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,20 +12,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/join/__init__.py:385 umc/python/join/__init__.py:439
+#: umc/python/join/__init__.py:389 umc/python/join/__init__.py:443
 msgid "A join process is already running."
 msgstr "Ein Join-Vorgang läuft bereits."
 
-#: umc/python/join/__init__.py:416 umc/python/join/__init__.py:472
+#: umc/python/join/__init__.py:420 umc/python/join/__init__.py:476
 #, python-format
 msgid "An unexpected error occurred: %s"
 msgstr "Ein unerwarteter Fehler ist aufgetreten: %s"
 
-#: umc/python/join/__init__.py:453
+#: umc/python/join/__init__.py:457
 msgid "Authentication"
 msgstr "Authentifizierung"
 
-#: umc/python/join/__init__.py:393 umc/python/join/__init__.py:443
+#: umc/python/join/__init__.py:397 umc/python/join/__init__.py:447
 msgid ""
 "Currently, software is being installed or uninstalled. Join scripts should "
 "not be run right now."
@@ -33,44 +33,45 @@ msgstr ""
 "Momentan wird Software installiert oder deinstalliert. Join-Skripte sollten "
 "jetzt nicht ausgeführt werden."
 
-#: umc/python/join/__init__.py:397
+#: umc/python/join/__init__.py:401
 msgid "Domain join"
 msgstr "Domänenbeitritt"
 
-#: umc/python/join/__init__.py:311
+#: umc/python/join/__init__.py:315
 #, python-format
 msgid "Error: %s"
 msgstr "Fehler: %s"
 
-#: umc/python/join/__init__.py:220
+#: umc/python/join/__init__.py:224
 #, python-format
 msgid "Executing join script %s"
 msgstr "Ausführung des Join-Skripts %s"
 
-#: umc/python/join/__init__.py:219
+#: umc/python/join/__init__.py:223
 msgid "Executing join scripts"
 msgstr "Ausführung der Join-Skripte"
 
-#: umc/python/join/__init__.py:101
+#: umc/python/join/__init__.py:105
 msgid "Initializing"
 msgstr "Initialisiere"
 
-#: umc/python/join/__init__.py:389
+#: umc/python/join/__init__.py:393
 msgid "Invalid server role! A master domain controller can not be joined."
 msgstr ""
 "Ungültige Serverrolle. Ein Master-Domänencontroller kann nicht gejoined "
 "werden."
 
-#: umc/python/join/__init__.py:72
+#: umc/python/join/__init__.py:75
 msgid ""
 "No DNS record for the domaincontroller master was found. This might be a "
-"problem with your selected DNS server. Please check your network settings. "
+"problem with the configured DNS server. Please make sure the network "
+"settings are correct."
 msgstr ""
 "Es wurde kein DNS Eintrag für den Domänencontroller Master gefunden. Dies "
-"könnte ein Problem mit Ihrem DNS Server sein. Bitte überprüfen Sie Ihre "
-"Netzwerkeinstellungen. "
+"könnte ein Problem mit dem konfigurierten DNS-Server sein. Bitte stellen Sie sicher, "
+"dass die Netzwerkeinstellungen korrekt sind."
 
-#: umc/python/join/__init__.py:247
+#: umc/python/join/__init__.py:251
 msgid ""
 "Some join scripts could not be executed. More details can be found in the "
 "log file <i>/var/log/univention/join.log</i>.<br/>Please retry to execute "
@@ -81,22 +82,22 @@ msgstr ""
 "gefunden werden.<br/>Bitte die Ausführung der Join-Skripte nach Lösen aller "
 "Konflikte erneut durchführen."
 
-#: umc/python/join/__init__.py:91
+#: umc/python/join/__init__.py:94
 msgid "The entered FQDN is not a valid value"
 msgstr "Die eingegebene FQDN ist kein gültiger Wert."
 
 #
-#: umc/python/join/__init__.py:75
+#: umc/python/join/__init__.py:78
 msgid ""
 "The lookup of the domaincontroller master record timed out. There might be a "
-"problem with your selected DNS server. Please check your network settings "
-"and the DNS server status. "
+"problem with the configured DNS server. Make sure the DNS server is up and "
+"running or check the network settings."
 msgstr ""
 "Die Zeit für das Nachschlagen des Master Records vom Domänencontroller ist "
-"abgelaufen. Dies könnte ein Problem mit Ihrem DNS Server sein. Bitte prüfen "
-"Sie Ihre Netzwerkeinstellungen und den Status Ihres DNS Servers. "
+"abgelaufen. Dies könnte ein Problem mit dem gewählten DNS-Server sein. Bitte stellen Sie "
+"sicher, dass der DNS-Server erreichbar ist oder überprüfen Sie die Netzwerkeinstellungen."
 
-#: umc/python/join/__init__.py:208
+#: umc/python/join/__init__.py:212
 #, python-format
 msgid ""
 "The system join process could not be completed:<br/><br/><i>%s</i><br/><br/> "
@@ -108,6 +109,6 @@ msgstr ""
 "join.log</i> gefunden werden.<br/>Bitte den Join-Vorgang nach Lösen aller "
 "Konflikte erneut durchführen."
 
-#: umc/python/join/__init__.py:411 umc/python/join/__init__.py:467
+#: umc/python/join/__init__.py:415 umc/python/join/__init__.py:471
 msgid "finished..."
 msgstr "beendet..."

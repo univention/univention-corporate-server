@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-02-02 09:51+0100\n"
+"POT-Creation-Date: 2015-02-02 14:41+0100\n"
 "PO-Revision-Date: 2012-04-23 16:17+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,11 +11,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: umc/js/join/Form.js:88
-#, python-format
-msgid " The network settings can be adjusted in the %s."
-msgstr " Die Netzwerkeinstellungen können im %s angepasst werden."
 
 #: umc/js/join/Grid.js:174
 #, python-format
@@ -265,6 +260,11 @@ msgstr "Der Join-Vorgang war erfolgreich."
 msgid "The join scripts have successfully been executed."
 msgstr "Die Join-Skripte wurden erfolgreich ausgeführt"
 
+#: umc/js/join/Form.js:88
+#, python-format
+msgid "The network settings can be adjusted in the %s."
+msgstr "Die Netzwerkeinstellungen können im %s angepasst werden."
+
 #: umc/js/join.js:481
 msgid "The password may not be empty."
 msgstr "Es muss ein Passwort angegeben werden."
@@ -333,19 +333,3 @@ msgstr "erfolgreich"
 #: umc/js/join.js:365
 msgid "username"
 msgstr "Benutzername"
-
-#~ msgid ""
-#~ "A restart of the UMC server components is necessary after an initial join."
-#~ msgstr ""
-#~ "Ein Neustart der UMC-Server-Komponenten ist notwendig nach einem "
-#~ "erstmaligen Domänenbeitritt."
-
-#~ msgid ""
-#~ "There might be a problem with your selected DNS server. The DNS server "
-#~ "settings can be adjusted in the %s."
-#~ msgstr ""
-#~ "Es könnte ein Problem mit dem ausgewählten DNS Server vorliegen. Die DNS "
-#~ "Server-Einstellungen können angepasst werden im %s."
-
-#~ msgid "credentials"
-#~ msgstr "Zugangsdaten"

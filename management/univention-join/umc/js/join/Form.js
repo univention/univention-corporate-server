@@ -85,11 +85,11 @@ define([
 					//notify user in case of a dns lookup error
 					var _warningMessage = lang.replace('<b>{0}</b>{1} {2}', [
 						_('Warning: '), data.result.error_message || '',
-						_(' The network settings can be adjusted in the %s.', tools.linkToModule({module: 'setup', flavor: 'network'}))
+						_('The network settings can be adjusted in the %s.', tools.linkToModule({module: 'setup', flavor: 'network'}))
 					]);
+					this._widgets.warning.set('content', _warningMessage);
+					this._widgets.warning.set('visible', true);
 				}
-				this._widgets.warning.set('content', _warningMessage);
-				this._widgets.warning.set('visible', true);
 			}));
 		}
 	});

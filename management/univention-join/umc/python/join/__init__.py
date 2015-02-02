@@ -39,6 +39,7 @@ import socket
 import glob
 import re
 import dns.resolver
+import dns.exception
 
 import notifier.threads
 import apt_pkg
@@ -70,16 +71,16 @@ def get_master_dns_lookup():
 		if result:
 			fqdn = result[0].target.canonicalize().split(1)[0].to_text()
 	except dns.resolver.NXDOMAIN as exc:
-		msg = _('No DNS record for the domaincontroller master was found. This might be a problem with your selected DNS server. Please check your network settings. ')
-		MODULE.error('Error while performing a DNS query for service record %s: %s' % (query, exc))
+		MODULE.error('No record found for %s.' % (query,))
+		msg = _('No DNS record for the domaincontroller master was found. This might be a problem with the configured DNS server. Please make sure the network settings are correct.')
 	except dns.resolver.Timeout as exc:
-		msg = _('The lookup of the domaincontroller master record timed out. There might be a problem with your selected DNS server. Please check your network settings and the DNS server status. ')
-		MODULE.error('Lookup of "%s" in domain "%s" timed out: %s' % (query, domainname, exc))
+		MODULE.error('Timeout when looking up %s.' % (query,))
+		msg = _('The lookup of the domaincontroller master record timed out. There might be a problem with the configured DNS server. Make sure the DNS server is up and running or check the network settings.')
 	except dns.resolver.NoAnswer as exc:
-		MODULE.error('DNS server lookup for domain %s returned a non-authorative answer: %s' % (domainname, exc))
+		MODULE.error('Non-Authoritative answer during lookup of %s.' % (query,)
 	except dns.exception.DNSException as exc:
 		MODULE.error('Exception during lookup: %s' % (traceback.format_exc(),))
-		msg = str(exc)
+		msg = '%s.' % (exc,)
 	return {'master': fqdn, 'error_message': msg}
 
 
