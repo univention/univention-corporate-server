@@ -5,7 +5,7 @@ Type=int
 Categories=system-services
 
 [mail/saslauthd/cache/timeout]
-Description[de]=Timeout für den Authentifizierungs-Cache in Sekunden.
-Description[en]=Use timeout as the expiration time of the authentication cache (in seconds).
+Description[de]=Timeout für den Authentifizierungs-Cache in Sekunden
+Description[en]=Timeout of the authentication cache in seconds
 Type=int
 Categories=system-services
