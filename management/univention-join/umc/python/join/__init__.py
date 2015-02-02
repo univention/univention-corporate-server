@@ -56,26 +56,32 @@ CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-res
 CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
 RE_HOSTNAME = re.compile('^[a-z]([a-z0-9-]*[a-z0-9])*(\.([a-z0-9]([a-z0-9-]*[a-z0-9])*[.])*[a-z0-9]([a-z0-9-]*[a-z0-9])*)?$')
 
+
 def get_master_dns_lookup():
 	# DNS lookup for the DC master entry
-	_msg = None
-	_fqdn = None
+	msg = None
+	fqdn = None
 	try:
 		domainname = ucr.get('domainname')
 		query = '_domaincontroller_master._tcp.%s.' % domainname
-		result = dns.resolver.query(query, 'SRV')
+		resolver = dns.resolver.Resolver()
+		resolver.lifetime = 3.0  # max. 3 seconds
+		result = resolver.query(query, 'SRV')
 		if result:
-			_fqdn = result[0].target.canonicalize().split(1)[0].to_text()
-	except dns.resolver.NXDOMAIN as ex:
-		_msg=_('Error while performing automatic lookup of DC master.')
-		MODULE.error('Error while performing a DNS query for service record %s: %s' % (query, ex))
-	except dns.resolver.Timeout as ex:
-		_msg=_('The automatic lookup of the DC master timed out.')
-		MODULE.error('Lookup of "%s" in domain "%s" timed out: %s' % (query, domainname, ex))
-	except dns.resolver.NoAnswer as ex:
-		_msg=_('The DNS server could not answer the automatic lookup of the DC master.')
-		MODULE.error('DNS server lookup for domain %s returned no or invalid answer: %s'% (domainname, ex))
-	return {'master': _fqdn, 'error_message': _msg}
+			fqdn = result[0].target.canonicalize().split(1)[0].to_text()
+	except dns.resolver.NXDOMAIN as exc:
+		msg = _('No DNS record for the domaincontroller master was found. This might be a problem with your selected DNS server. Please check your network settings. ')
+		MODULE.error('Error while performing a DNS query for service record %s: %s' % (query, exc))
+	except dns.resolver.Timeout as exc:
+		msg = _('The lookup of the domaincontroller master record timed out. There might be a problem with your selected DNS server. Please check your network settings and the DNS server status. ')
+		MODULE.error('Lookup of "%s" in domain "%s" timed out: %s' % (query, domainname, exc))
+	except dns.resolver.NoAnswer as exc:
+		MODULE.error('DNS server lookup for domain %s returned a non-authorative answer: %s' % (domainname, exc))
+	except dns.exception.DNSException as exc:
+		MODULE.error('Exception during lookup: %s' % (traceback.format_exc(),))
+		msg = str(exc)
+	return {'master': fqdn, 'error_message': msg}
+
 
 class HostSanitizer(StringSanitizer):
 	def _sanitize(self, value, name, further_args):
@@ -85,6 +91,7 @@ class HostSanitizer(StringSanitizer):
 		except socket.gaierror:
 			# invalid FQDN
 			self.raise_validation_error(_('The entered FQDN is not a valid value'))
+
 
 class Progress(object):
 	def __init__(self, max_steps=100):

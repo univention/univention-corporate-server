@@ -1,3 +1,11 @@
+univention-join (7.1.2-7) unstable; urgency=low
+
+  * Bug #34238: changes in dns error handling,
+                set dns lookup timeout to 3 seconds,
+                corrected error messages
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 02 Feb 2015 12:23:34 +0100
+
 univention-join (7.1.2-6) unstable; urgency=low
 
   * Bug #32525: Add univention-install-joinscripts to work as a debhelper for

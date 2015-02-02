@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-01-21 15:12+0100\n"
+"POT-Creation-Date: 2015-02-02 09:51+0100\n"
 "PO-Revision-Date: 2012-04-23 16:17+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,13 +12,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/join/Form.js:91
-msgid ""
-" There might be a problem with your selected DNS server. The DNS server "
-"settings can be adjusted in the {0}"
-msgstr ""
-"Es könnte ein Problem mit dem ausgewählten DNS Server vorliegen. Die DNS "
-"Server-Einstellungen können angepasst werden im {0}."
+#: umc/js/join/Form.js:88
+#, python-format
+msgid " The network settings can be adjusted in the %s."
+msgstr " Die Netzwerkeinstellungen können im %s angepasst werden."
 
 #: umc/js/join/Grid.js:174
 #, python-format
@@ -133,7 +130,7 @@ msgstr "Ausführen erzwingen"
 msgid "Forces execution of selected join scripts"
 msgstr "Erzwingt Ausführung der ausgewählten join-Skripte."
 
-#: umc/js/join/Form.js:67
+#: umc/js/join/Form.js:65
 msgid "Hostname of domain controller master"
 msgstr "Rechnername des Domänencontroller Master"
 
@@ -157,7 +154,7 @@ msgstr "Join-Status"
 msgid "Join status ok, nothing to do."
 msgstr "Join-Status OK, es gibt nichts zu tun."
 
-#: umc/js/join/Form.js:48
+#: umc/js/join/Form.js:46
 msgid "Join system"
 msgstr "Domänenbeitritt"
 
@@ -184,7 +181,7 @@ msgstr ""
 "werden. Um die gewählten Skripte trotzdem auszuführen muss die Ausführung "
 "erzwingen Option benutzt werden."
 
-#: umc/js/join/Form.js:61 umc/js/join.js:473
+#: umc/js/join/Form.js:59 umc/js/join.js:473
 msgid "Password"
 msgstr "Passwort"
 
@@ -192,7 +189,7 @@ msgstr "Passwort"
 msgid "Password invalid"
 msgstr "Passwort ungültig"
 
-#: umc/js/join/Form.js:62
+#: umc/js/join/Form.js:60
 msgid "Password of the domain administrator"
 msgstr "Passwort des Domänen-Administrators"
 
@@ -256,7 +253,7 @@ msgstr "Status dieses Paketes"
 msgid "The following join scripts will be executed: "
 msgstr "Die folgenden Join-Skripte werden ausgeführt: "
 
-#: umc/js/join/Form.js:68
+#: umc/js/join/Form.js:66
 msgid "The hostname of the domain controller master of the domain"
 msgstr "Der Computername des Master-Domaincontrollers der Domäne"
 
@@ -285,7 +282,7 @@ msgstr ""
 msgid "The username may not be empty."
 msgstr "Es muss ein Benutzername angegeben werden."
 
-#: umc/js/join/Form.js:56
+#: umc/js/join/Form.js:54
 msgid "The username of the domain administrator"
 msgstr "Benutzername des Domänen-Administrators"
 
@@ -301,7 +298,7 @@ msgstr ""
 "Diese Seite zeigt den Status aller verfügbaren Join-Skripte auf diesem "
 "System, zusammen mit allen zugehörigen Aktionen."
 
-#: umc/js/join/Form.js:55 umc/js/join.js:468
+#: umc/js/join/Form.js:53 umc/js/join.js:468
 msgid "Username"
 msgstr "Benutzername"
 
@@ -313,7 +310,7 @@ msgstr "Benutzername ungültig"
 msgid "View join log"
 msgstr "Join-Protokoll ansehen"
 
-#: umc/js/join/Form.js:88
+#: umc/js/join/Form.js:87
 msgid "Warning: "
 msgstr "Warnung: "
 
@@ -342,6 +339,13 @@ msgstr "Benutzername"
 #~ msgstr ""
 #~ "Ein Neustart der UMC-Server-Komponenten ist notwendig nach einem "
 #~ "erstmaligen Domänenbeitritt."
+
+#~ msgid ""
+#~ "There might be a problem with your selected DNS server. The DNS server "
+#~ "settings can be adjusted in the %s."
+#~ msgstr ""
+#~ "Es könnte ein Problem mit dem ausgewählten DNS Server vorliegen. Die DNS "
+#~ "Server-Einstellungen können angepasst werden im %s."
 
 #~ msgid "credentials"
 #~ msgstr "Zugangsdaten"

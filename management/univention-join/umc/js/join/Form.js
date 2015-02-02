@@ -31,15 +31,13 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/dom-class",
-	"umc/app",
 	"umc/tools",
 	"umc/widgets/Form",
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
 	"umc/widgets/PasswordBox",
 	"umc/i18n!umc/modules/join"
-], function(declare, lang, domClass, app, tools, Form, Text, TextBox, PasswordBox, _) {
+], function(declare, lang, tools, Form, Text, TextBox, PasswordBox, _) {
 
 	return declare("umc.modules.join.Form", [ Form ], {
 		constructor: function() {
@@ -69,7 +67,7 @@ define([
 			}, {
 				type:			Text,
 				name:			'warning',
-				style:			'margin-bottom:1em;',
+				style:			'margin-bottom: 1em;',
 				content:		'',
 				visible:		false
 			}];
@@ -78,22 +76,20 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+
 			tools.umcpCommand('join/master').then(lang.hitch(this, function(data) {
 				// guess the master hostname
-				if (data.result.master){
+				if (data.result.master) {
 					this._widgets.hostname.set('value', data.result.master);
 				} else {
 					//notify user in case of a dns lookup error
-					var _warningMessage =
-						'<b>' + _('Warning: ') + '</b>'
-						+ data.result.error_message
-						+ lang.replace(
-							_(' There might be a problem with your selected DNS server. The DNS server settings can be adjusted in the {0}'),
-							[tools.linkToModule({module: 'setup', flavor: 'network'})]
-						  );
-					this._widgets.warning.set('content', _warningMessage);
-					this._widgets.warning.set('visible', true);
+					var _warningMessage = lang.replace('<b>{0}</b>{1} {2}', [
+						_('Warning: '), data.result.error_message || '',
+						_(' The network settings can be adjusted in the %s.', tools.linkToModule({module: 'setup', flavor: 'network'}))
+					]);
 				}
+				this._widgets.warning.set('content', _warningMessage);
+				this._widgets.warning.set('visible', true);
 			}));
 		}
 	});

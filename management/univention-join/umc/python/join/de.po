@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-01-21 14:00+0100\n"
+"POT-Creation-Date: 2015-02-02 12:15+0100\n"
 "PO-Revision-Date: 2012-04-23 15:37+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,20 +12,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/join/__init__.py:381 umc/python/join/__init__.py:435
+#: umc/python/join/__init__.py:385 umc/python/join/__init__.py:439
 msgid "A join process is already running."
 msgstr "Ein Join-Vorgang läuft bereits."
 
-#: umc/python/join/__init__.py:412 umc/python/join/__init__.py:468
+#: umc/python/join/__init__.py:416 umc/python/join/__init__.py:472
 #, python-format
 msgid "An unexpected error occurred: %s"
 msgstr "Ein unerwarteter Fehler ist aufgetreten: %s"
 
-#: umc/python/join/__init__.py:449
+#: umc/python/join/__init__.py:453
 msgid "Authentication"
 msgstr "Authentifizierung"
 
-#: umc/python/join/__init__.py:389 umc/python/join/__init__.py:439
+#: umc/python/join/__init__.py:393 umc/python/join/__init__.py:443
 msgid ""
 "Currently, software is being installed or uninstalled. Join scripts should "
 "not be run right now."
@@ -33,39 +33,44 @@ msgstr ""
 "Momentan wird Software installiert oder deinstalliert. Join-Skripte sollten "
 "jetzt nicht ausgeführt werden."
 
-#: umc/python/join/__init__.py:393
+#: umc/python/join/__init__.py:397
 msgid "Domain join"
 msgstr "Domänenbeitritt"
 
-#: umc/python/join/__init__.py:70
-msgid "Error while performing automatic lookup of DC master."
-msgstr "Fehler beim automatischen Nachschlagen des DC Masters"
-
-#: umc/python/join/__init__.py:307
+#: umc/python/join/__init__.py:311
 #, python-format
 msgid "Error: %s"
 msgstr "Fehler: %s"
 
-#: umc/python/join/__init__.py:216
+#: umc/python/join/__init__.py:220
 #, python-format
 msgid "Executing join script %s"
 msgstr "Ausführung des Join-Skripts %s"
 
-#: umc/python/join/__init__.py:215
+#: umc/python/join/__init__.py:219
 msgid "Executing join scripts"
 msgstr "Ausführung der Join-Skripte"
 
-#: umc/python/join/__init__.py:97
+#: umc/python/join/__init__.py:101
 msgid "Initializing"
 msgstr "Initialisiere"
 
-#: umc/python/join/__init__.py:385
+#: umc/python/join/__init__.py:389
 msgid "Invalid server role! A master domain controller can not be joined."
 msgstr ""
 "Ungültige Serverrolle. Ein Master-Domänencontroller kann nicht gejoined "
 "werden."
 
-#: umc/python/join/__init__.py:243
+#: umc/python/join/__init__.py:72
+msgid ""
+"No DNS record for the domaincontroller master was found. This might be a "
+"problem with your selected DNS server. Please check your network settings. "
+msgstr ""
+"Es wurde kein DNS Eintrag für den Domänencontroller Master gefunden. Dies "
+"könnte ein Problem mit Ihrem DNS Server sein. Bitte überprüfen Sie Ihre "
+"Netzwerkeinstellungen. "
+
+#: umc/python/join/__init__.py:247
 msgid ""
 "Some join scripts could not be executed. More details can be found in the "
 "log file <i>/var/log/univention/join.log</i>.<br/>Please retry to execute "
@@ -76,19 +81,22 @@ msgstr ""
 "gefunden werden.<br/>Bitte die Ausführung der Join-Skripte nach Lösen aller "
 "Konflikte erneut durchführen."
 
-#: umc/python/join/__init__.py:76
-msgid "The DNS server could not answer the automatic lookup of the DC master."
-msgstr "Der DNS Server konnte die automatische Anfrage nach dem DC Master nicht beantworten."
-
-#: umc/python/join/__init__.py:73
-msgid "The automatic lookup of the DC master timed out."
-msgstr "Die maximale Zeit für die automatischen Anfrage nach dem DC Master wurde überschritten."
-
-#: umc/python/join/__init__.py:87
+#: umc/python/join/__init__.py:91
 msgid "The entered FQDN is not a valid value"
 msgstr "Die eingegebene FQDN ist kein gültiger Wert."
 
-#: umc/python/join/__init__.py:204
+#
+#: umc/python/join/__init__.py:75
+msgid ""
+"The lookup of the domaincontroller master record timed out. There might be a "
+"problem with your selected DNS server. Please check your network settings "
+"and the DNS server status. "
+msgstr ""
+"Die Zeit für das Nachschlagen des Master Records vom Domänencontroller ist "
+"abgelaufen. Dies könnte ein Problem mit Ihrem DNS Server sein. Bitte prüfen "
+"Sie Ihre Netzwerkeinstellungen und den Status Ihres DNS Servers. "
+
+#: umc/python/join/__init__.py:208
 #, python-format
 msgid ""
 "The system join process could not be completed:<br/><br/><i>%s</i><br/><br/> "
@@ -100,6 +108,6 @@ msgstr ""
 "join.log</i> gefunden werden.<br/>Bitte den Join-Vorgang nach Lösen aller "
 "Konflikte erneut durchführen."
 
-#: umc/python/join/__init__.py:407 umc/python/join/__init__.py:463
+#: umc/python/join/__init__.py:411 umc/python/join/__init__.py:467
 msgid "finished..."
 msgstr "beendet..."
