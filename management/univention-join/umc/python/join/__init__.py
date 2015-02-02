@@ -79,7 +79,7 @@ def get_master_dns_lookup():
 	except dns.resolver.NoAnswer as exc:
 		MODULE.error('Non-Authoritative answer during lookup of %s.' % (query,))
 	except dns.exception.DNSException as exc:
-		MODULE.error('Exception during lookup: %s' % (traceback.format_exc(),))
+		MODULE.error('Error during DC master lookup: %s' % (traceback.format_exc(),))
 		msg = '%s.' % (exc,)
 	return {'master': fqdn, 'error_message': msg}
 

@@ -67,8 +67,8 @@ msgid ""
 "problem with the configured DNS server. Please make sure the network "
 "settings are correct."
 msgstr ""
-"Es wurde kein DNS Eintrag für den Domänencontroller Master gefunden. Dies "
-"könnte ein Problem mit dem konfigurierten DNS-Server sein. Bitte stellen Sie sicher, "
+"Es wurde kein DNS Eintrag für den Domänencontroller Master gefunden. Es "
+"könnte ein Problem mit den konfigurierten DNS-Servern vorliegen. Bitte stellen Sie sicher, "
 "dass die Netzwerkeinstellungen korrekt sind."
 
 #: umc/python/join/__init__.py:251
@@ -93,9 +93,9 @@ msgid ""
 "problem with the configured DNS server. Make sure the DNS server is up and "
 "running or check the network settings."
 msgstr ""
-"Die Zeit für das Nachschlagen des Master Records vom Domänencontroller ist "
-"abgelaufen. Dies könnte ein Problem mit dem gewählten DNS-Server sein. Bitte stellen Sie "
-"sicher, dass der DNS-Server erreichbar ist oder überprüfen Sie die Netzwerkeinstellungen."
+"Eine Zeitüberschreitung beim Suchen des Domänencontroller Master DNS-Eintrages ist "
+"aufgetreten. Es könnte ein Problem mit den konfigurierten DNS-Servern vorliegen. Bitte stellen Sie "
+"sicher, dass die DNS-Server erreichbar sind oder überprüfen Sie die Netzwerkeinstellungen."
 
 #: umc/python/join/__init__.py:212
 #, python-format
