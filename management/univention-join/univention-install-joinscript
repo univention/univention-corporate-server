@@ -76,11 +76,11 @@ def install_joinscript(package, unjoinscript_name=None):
 		with open(debhelper_file(package, 'postinst'), 'a') as postinst:
 			postinst.write('# Automatically added by univention-install-joinscript\n')
 			postinst.write('. /usr/share/univention-lib/all.sh\n')
-			postinst.write('call_joinscript %s\n' % joinscript_name)
+			postinst.write('call_joinscript "%s" || true\n' % joinscript_name)
 			if unjoinscript_name:
 				postinst.write('\n')
 				postinst.write('if [ "$1" = "configure" ]; then\n')
-				postinst.write('  uinst="%s/%s"\n' % (UNJOINSCRIPT_DIR, unjoinscript_name))
+				postinst.write('  uinst="%s/%s"\n' % (JOINSCRIPT_DIR, unjoinscript_name))
 				postinst.write('  [ -e "$uinst" ] && rm "$uinst"\n')
 				postinst.write('fi\n')
 			postinst.write('# End automatically added section\n')
@@ -90,17 +90,10 @@ def install_joinscript(package, unjoinscript_name=None):
 def install_unjoinscript(package):
 	unjoinscript_name = _install_script(package, '%s.uinst' % package, UNJOINSCRIPT_DIR) or _install_script(package, '%s-uninstall.uinst' % package, UNJOINSCRIPT_DIR)
 	if unjoinscript_name:
-		with open(debhelper_file(package, 'preinst'), 'a') as preinst:
-			preinst.write('# Automatically added by univention-install-joinscript\n')
-			preinst.write('if [ "$1" = "install" ]; then\n')
-			preinst.write('  test -e %s/%s && rm %s/%s\n' % (JOINSCRIPT_DIR, unjoinscript_name, JOINSCRIPT_DIR, unjoinscript_name))
-			preinst.write('fi\n')
-			preinst.write('# End automatically added section\n')
-
 		with open(debhelper_file(package, 'prerm'), 'a') as prerm:
 			prerm.write('# Automatically added by univention-install-joinscript\n')
 			prerm.write('if [ "$1" = "remove" ]; then\n')
-			prerm.write('  cp %s/%s %s\n' % (UNJOINSCRIPT_DIR, unjoinscript_name, JOINSCRIPT_DIR))
+			prerm.write('  cp "%s/%s" "%s"\n' % (UNJOINSCRIPT_DIR, unjoinscript_name, JOINSCRIPT_DIR))
 			prerm.write('fi\n')
 			prerm.write('# End automatically added section\n')
 
@@ -108,8 +101,7 @@ def install_unjoinscript(package):
 			postrm.write('# Automatically added by univention-install-joinscript\n')
 			postrm.write('if [ "$1" = "remove" ]; then\n')
 			postrm.write('  . /usr/share/univention-lib/all.sh\n')
-			postrm.write('  . /usr/share/univention-join/joinscripthelper.lib\n')
-			postrm.write('  call_unjoinscript %s\n' % unjoinscript_name)
+			postrm.write('  call_unjoinscript "%s" || true\n' % unjoinscript_name)
 			postrm.write('fi\n')
 			postrm.write('# End automatically added section\n')
 
