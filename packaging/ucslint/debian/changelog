@@ -1,3 +1,9 @@
+ucslint (4.0.0-5) unstable; urgency=low
+
+  * Bug #32525: univention-install-joinscript takes care of some joinscripts
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 02 Feb 2015 14:12:16 +0100
+
 ucslint (4.0.0-4) unstable; urgency=low
 
   * Bug #35135: fix XS-Python-Version
