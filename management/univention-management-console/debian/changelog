@@ -1,3 +1,10 @@
+univention-management-console (7.1.63-12) unstable; urgency=medium
+
+  * Bug #36658: don't let the UMC-server crash if translation files are
+  	corrupt
+
+ -- Florian Best <best@univention.de>  Mon, 02 Feb 2015 10:49:35 +0100
+
 univention-management-console (7.1.63-11) unstable; urgency=medium
 
   * Bug #37453: Fix cleanup of connections. Especially connections

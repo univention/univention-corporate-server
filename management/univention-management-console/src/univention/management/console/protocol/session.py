@@ -41,6 +41,7 @@ import sys
 import time
 import json
 import traceback
+from struct import error as StructError
 
 import ldap.filter
 
@@ -393,6 +394,15 @@ class Processor(signals.Provider):
 			CORE.warn('Failed to open UDM user object %s: %s' % (self.__user_dn, e))
 		return None
 
+	def _translate(self, message, translationId):
+		try:
+			return self.i18n._(message, translationId)
+		except (StructError, IOError) as exc:
+			# StructError: empty .mo file
+			# IOError raised by polib if the file is no .mo file
+			CORE.error('Corrupted .mo file detected for translation domain %r: %s' % (translationId, exc))
+			return message
+
 	def handle_request_get(self, msg):
 		"""Handles a GET request. The following possible variants are supported:
 
@@ -449,12 +459,12 @@ class Processor(signals.Provider):
 						modules.append({
 							'id': id,
 							'flavor': flavor.id,
-							'name': self.i18n._(flavor.name, translationId),
-							'description': self.i18n._(flavor.description, translationId),
+							'name': self._translate(flavor.name, translationId),
+							'description': self._translate(flavor.description, translationId),
 							'icon': flavor.icon,
 							'categories': (flavor.categories or module.categories) + favcat,
 							'priority': flavor.priority,
-							'keywords': list(set(flavor.keywords + [self.i18n._(keyword, translationId) for keyword in flavor.keywords]))
+							'keywords': list(set(flavor.keywords + [self._translate(keyword, translationId) for keyword in flavor.keywords]))
 						})
 				else:
 					favcat = []
@@ -462,12 +472,12 @@ class Processor(signals.Provider):
 						favcat.append('_favorites_')
 					modules.append({
 						'id': id,
-						'name': self.i18n._(module.name, id),
-						'description': self.i18n._(module.description, id),
+						'name': self._translate(module.name, id),
+						'description': self._translate(module.description, id),
 						'icon': module.icon,
 						'categories': module.categories + favcat,
 						'priority': module.priority,
-						'keywords': list(set(module.keywords + [self.i18n._(keyword, id) for keyword in module.keywords]))
+						'keywords': list(set(module.keywords + [self._translate(keyword, id) for keyword in module.keywords]))
 					})
 			res.body['modules'] = modules
 			CORE.info('Modules: %s' % (modules,))
@@ -482,7 +492,7 @@ class Processor(signals.Provider):
 					'id': catID,
 					'icon': category.icon,
 					'color': category.color,
-					'name': self.i18n._(category.name, category.domain).format(**_ucr_dict),
+					'name': self._translate(category.name, category.domain).format(**_ucr_dict),
 					'priority': category.priority
 				})
 			res.body['categories'] = categories
