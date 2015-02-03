@@ -86,7 +86,7 @@ define([
 
 		getChildren: function(parentItem, onComplete) {
 			if (parentItem.type == 'root') {
-				this.umcpCommand('uvmm/group/query', {}, false).then(lang.hitch(this, function(data) {
+				this.umcpCommand('uvmm/group/query', {}).then(lang.hitch(this, function(data) {
 					var results = data.result instanceof Array ? data.result : [];
 					//results.sort();
 					onComplete(array.map(results, lang.hitch(this, function(groupname) {
@@ -103,9 +103,7 @@ define([
 					if (err.status == 503 && !this.__workaround_uvmm_down) {
 						this.__workaround_uvmm_down = true;
 						dialog.notify(_('The UVMM service is currently not available. Please trigger a search to refresh the view.'));
-						return;
 					}
-					tools.handleErrorStatus(error);
 				}));
 			} else if (parentItem.type == 'group' && parentItem.id == 'default') {
 				this.umcpCommand('uvmm/node/query', {
