@@ -5,10 +5,8 @@ src: univention-join
 fix: 7.1.2-11.497.201502021701
 version: [0]
 desc: |
-  * If an error occurs during the automatic DNS lookup of the DC 
-  master for guessing the fully qualified domain name,
-  a warning message with a link to the network settings
-  will be displayed.
+  * The UMC module for joining into a domain shows a warning message if the 
+    DNS lookup of the DC master fails.
   * A new script univention-install-joinscript has been added. It can be used
     when developing packages for UCS that ship with a join script.
 bug: [34238, 32525]
