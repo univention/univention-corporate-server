@@ -83,9 +83,10 @@ define([
 					this._widgets.hostname.set('value', data.result.master);
 				} else if (data.result.error_message) {
 					//notify user in case of a dns lookup error
+					var networkLink = tools.linkToModule({module: 'setup', flavor: 'network'});
 					var _warningMessage = lang.replace('<b>{0}</b>{1} {2}', [
 						_('Warning: '), data.result.error_message,
-						_('The DNS settings can be adjusted in the %s.', tools.linkToModule({module: 'setup', flavor: 'network'}))
+						networkLink ? _('The DNS settings can be adjusted in the %s.', networkLink) : ''
 					]);
 					this._widgets.warning.set('content', _warningMessage);
 					this._widgets.warning.set('visible', true);

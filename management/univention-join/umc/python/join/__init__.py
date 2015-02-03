@@ -72,15 +72,15 @@ def get_master_dns_lookup():
 			fqdn = result[0].target.canonicalize().split(1)[0].to_text()
 	except dns.resolver.NXDOMAIN as exc:
 		MODULE.error('No record found for %s.' % (query,))
-		msg = _('No DNS record for the domaincontroller master was found. This might be a problem with the configured DNS server. Please make sure the network settings are correct.')
+		msg = _('No DNS record for the domaincontroller master was found. This might be a problem with the configured DNS server. Please make sure the DNS settings are correct.')
 	except dns.resolver.Timeout as exc:
 		MODULE.error('Timeout when looking up %s.' % (query,))
-		msg = _('The lookup of the domaincontroller master record timed out. There might be a problem with the configured DNS server. Make sure the DNS server is up and running or check the network settings.')
+		msg = _('The lookup of the domaincontroller master record timed out. There might be a problem with the configured DNS server. Make sure the DNS server is up and running or check the DNS settings.')
 	except dns.resolver.NoAnswer as exc:
 		MODULE.error('Non-Authoritative answer during lookup of %s.' % (query,))
 	except dns.exception.DNSException as exc:
 		MODULE.error('Error during DC master lookup: %s' % (traceback.format_exc(),))
-		msg = '%s.' % (exc,)
+		msg = 'Error during DC master lookup: %s.' % (exc,)
 	return {'master': fqdn, 'error_message': msg}
 
 
