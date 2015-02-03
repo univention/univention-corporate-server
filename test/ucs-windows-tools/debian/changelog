@@ -1,3 +1,13 @@
+ucs-windows-tools (2.0.2-1) unstable; urgency=medium
+
+  * Added powershell scripts to work with GPOs (Bug #37568).
+    windows-scripts/powershell-apply-gpo.ps1
+    windows-scripts/powershell-remove-gpo.ps1
+    windows-scripts/powershell-link-gpo.ps1
+    windows-scripts/powershell-create-gpo.ps1
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 03 Feb 2015 17:05:15 +0100
+
 ucs-windows-tools (2.0.1-8) unstable; urgency=medium
 
   * Added function to reboot a remote windows host (Bug #37568)
