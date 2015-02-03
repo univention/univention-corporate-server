@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.23-4) unstable; urgency=medium
+
+  * Bug #33963: fixup
+
+ -- Florian Best <best@univention.de>  Tue, 03 Feb 2015 14:58:54 +0100
+
 univention-virtual-machine-manager-daemon (4.0.23-3) unstable; urgency=medium
 
   * Bug #33963: fixup
