@@ -7,5 +7,5 @@ version: [0]
 desc: |
  This update addresses the following issue:
   * Do not complain about join scripts when using the new build script
-    univention-install-joinscript
+    univention-install-joinscript.
 bug: [32525]
