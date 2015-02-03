@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (4.0.23-2) unstable; urgency=medium
+
+  * Bug #33963: workarounds for the tree reload if UVMM doesn't run at module
+  	startup
+
+ -- Florian Best <best@univention.de>  Tue, 03 Feb 2015 12:54:45 +0100
+
 univention-virtual-machine-manager-daemon (4.0.23-1) unstable; urgency=medium
 
   * Bug #33963: show error message if the UVMM daemon is not running

@@ -222,6 +222,7 @@ define([
 				// setup autoUpdater
 				this._gridUpdater = new GridUpdater({
 					grid: this._grid,
+					tree: this._tree,
 					interval: parseInt(ucr['uvmm/umc/autoupdate/interval'], 10),
 					onItemCountChanged: lang.hitch(this, function() {
 						if (!this._itemCountChangedNoteShowed) {
