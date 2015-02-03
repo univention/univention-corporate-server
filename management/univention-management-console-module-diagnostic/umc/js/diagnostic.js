@@ -63,7 +63,7 @@ define([
 		success: _('Success: '),
 		problem: _('Problem: ')
 	}, function(key, value) {
-		styles.insertCssRule(lang.replace('.umc-diagnostic .{0} span.dijitTitlePaneTextNode::before', [key]), lang.replace('content: "{0}";', [value]));
+		styles.insertCssRule(lang.replace('.umc-diagnostic .diagnostic-{0} span.dijitTitlePaneTextNode::before', [key]), lang.replace('content: "{0}";', [value]));
 	});
 
 	var Grid = declare([List, DijitRegistry, Destroyable, Selection], {
@@ -154,7 +154,7 @@ define([
 
 			var titlePane = new TitlePane({
 				title: item.title,
-				'class': '' + item.type,
+				'class': 'diagnostic-' + item.type,
 				open: item.status == 'reloading',
 				toggleable: item.plugin !== '_success_',
 				content: div

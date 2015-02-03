@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-01-30 11:34+0100\n"
+"POT-Creation-Date: 2015-02-03 10:46+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,7 +60,8 @@ msgid ""
 "Login to the system as root via ssh and run the command \"dpkg --configure -a"
 "\" in order to correct the packages status."
 msgstr ""
-"Um den Paketstatus zu korrigieren loggen Sie sich am System per ssh als root ein und führen Sie das Kommando \"dpkg --configure -a\" aus."
+"Um den Paketstatus zu korrigieren loggen Sie sich am System per ssh als root "
+"ein und führen Sie das Kommando \"dpkg --configure -a\" aus."
 
 #: umc/python/diagnostic/plugins/gateway.py:15
 msgid "Make sure the hardware of the gateway device is working properly."
@@ -71,7 +72,9 @@ msgstr ""
 #: umc/python/diagnostic/plugins/package_status.py:15
 msgid ""
 "More information about the cause can be gained by executing \"dpkg --audit\"."
-msgstr "Weitere Informationen über die Ursache können durch Ausführen von \"dpkg --audit\" erhalten werden."
+msgstr ""
+"Weitere Informationen über die Ursache können durch Ausführen von \"dpkg --"
+"audit\" erhalten werden."
 
 #: umc/python/diagnostic/plugins/nameserver.py:13
 msgid "Nameserver(s) are not responsive"
@@ -130,8 +133,8 @@ msgid "The nameserver %s (UCR variable %r) is not responsive:"
 msgstr "Der Nameserver %s (UCR Variable %r) ist nicht ansprechbar:"
 
 #: umc/python/diagnostic/plugins/package_status.py:13
-msgid "The package status is corrupt."
-msgstr "Der Paketstatus ist korrupt."
+msgid "The package status of %s packages is corrupt."
+msgstr "Der Paketstatus von %s Paketen ist korrupt."
 
 #: umc/python/diagnostic/plugins/proxy.py:65
 #, python-format
@@ -196,3 +199,7 @@ msgstr ""
 "Diese Warnung könnte harmlos sein. Trotzdem sollte sichergestellt werden, "
 "dass Authentifikations-Zugangsdaten (falls existierend) korrekt sind und die "
 "ACL's des Proxy-Servers nicht verbieten, Anfragen an %s zu stellen."
+
+#: umc/python/diagnostic/plugins/package_status.py:28
+msgid "some"
+msgstr "einigen"

@@ -25,21 +25,21 @@
 .umc-diagnostic .dijitButtonText {
 	font-size: 1em;
 }
-.umc-diagnostic .critical span.dijitTitlePaneTextNode::before {
+.umc-diagnostic .diagnostic-critical span.dijitTitlePaneTextNode::before {
 	color: red;
 }
-.umc-diagnostic .conflict span.dijitTitlePaneTextNode::before {
+.umc-diagnostic .diagnostic-conflict span.dijitTitlePaneTextNode::before {
 	color: darkorange;
 }
-.umc-diagnostic .warning  span.dijitTitlePaneTextNode::before {
+.umc-diagnostic .diagnostic-warning  span.dijitTitlePaneTextNode::before {
 	color: orange;
 }
-.umc-diagnostic .problemfixed span.dijitTitlePaneTextNode::before {
+.umc-diagnostic .diagnostic-problemfixed span.dijitTitlePaneTextNode::before {
 	color: green;
 }
-.umc-diagnostic .success span.dijitTitlePaneTextNode::before {
+.umc-diagnostic .diagnostic-success span.dijitTitlePaneTextNode::before {
 	color: green;
 }
-.umc-diagnostic .problem span.dijitTitlePaneTextNode::before {
+.umc-diagnostic .diagnostic-problem span.dijitTitlePaneTextNode::before {
 	color: orange;
 }
