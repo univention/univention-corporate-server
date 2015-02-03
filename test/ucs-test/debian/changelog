@@ -1,3 +1,9 @@
+ucs-test (5.0.106-1) unstable; urgency=low
+
+  * Bug #35909: add a check to see if squid is running.
+
+ -- Ammar Najjar <najjar@univention.de>  Tue, 03 Feb 2015 09:35:45 +0100
+
 ucs-test (5.0.105-1) unstable; urgency=low
 
   * Bug #37602 setting the ucr variable "mail/alias/root" manually and call
