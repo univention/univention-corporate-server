@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: univention-join
-fix: 7.1.2-11.497.201502021701
+fix: 7.1.2-13.499.201502031332
 version: [0]
 desc: |
   * The UMC module for joining into a domain shows a warning message if the 
