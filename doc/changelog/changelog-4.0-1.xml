@@ -499,6 +499,11 @@
   <title>Other changes</title>
   <itemizedlist>
 	<listitem><simpara>
+		The following packages have been added to the maintained package repository:
+		<package>libart-2.0-2</package>, <package>docutils-doc</package>, <package>python-jinja2</package>,
+		<package>python-renderpm</package>, <package>python-reportlab-accel</package>, <package>python-utidylib</package>
+		<!-- <package></package>, <package></package>, <package></package>, -->
+        (<ulink url="&ucsbug;36467">Bug 36467</ulink>)
 	</simpara></listitem>
   </itemizedlist>
 </section>
