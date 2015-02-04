@@ -1,6 +1,6 @@
 product: ucs
 release: "4.0"
-scope: ucs_4.0-0-errata-4.0-0
+scope: ucs_4.0-0-errata4.0-0
 src: univention-directory-reports
 fix: 7.0.0-3.73.201501291314
 version: [0]
