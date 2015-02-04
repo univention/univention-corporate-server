@@ -1,38 +1,29 @@
 #!/usr/share/ucs-test/runner python
-## desc: Check squid redirecor written to gonfig file
+## desc: Check squid redirector written to gonfig file
 ## tags: apttest
 ## exposure: safe
 ## bugs: [32429]
 ## packages: [univention-squid]
 
-import univention.testing.utils as utils
+from essential.simplesquid import SimpleSquid
+from univention.config_registry import handler_set
 import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
 
-def get_lines_containing(filename, string):
-	with open(filename) as input_file:
-		return [line for line in input_file if string in line]
 
 def main():
-	SQUID_CONFIG = '/etc/squid3/squid.conf'
-	SQUID_GUARD_CONFIG = '/etc/squidguard/squidGuard.conf'
-	SQUID_GUARD_PATH = '/usr/bin/squidGuard'
+	squid_guard_config = '/etc/squid/squidGuard.conf'
+	squid_guard_path = '/usr/bin/squidGuard'
+	squid = SimpleSquid()
 
 	with ucr_test.UCSTestConfigRegistry() as ucr:
-		redirector = ucr.get('squid/redirect')
-		config_lines = get_lines_containing(SQUID_CONFIG, 'url_rewrite_program')
-		config_line = ''
-		if config_lines:
-			# in config file the first line setting the redirector is activated
-			config_line = config_lines[0]
-			if redirector == 'squidguard':
-				config_written = ('url_rewrite_program %s -c %s' % (SQUID_GUARD_PATH, SQUID_GUARD_CONFIG) == config_line)
-			elif redirector is not None:
-				config_written = ('url_rewrite_program %s' % (redirector) == config_line)
-			else:
-				utils.fail('Squid config incorrectly written:\nRedirector = %s, config line = %s' % (redirector, config_line))
-		else:
-			if redirector:
-				utils.fail('Squid config incorrectly written:\nRedirector = %s, config line = %s' % (redirector, config_line))
+		redirector = "pyredir"
+		handler_set(['squid/redirect=%s' % redirector])
+		squid.redirector_is(redirector)
+
+		redirector = "squidguard"
+		handler_set(['squid/redirect=%s' % redirector])
+		squid.redirector_is("%s -c %s" % (squid_guard_path, squid_guard_config))
 
 
 if __name__ == '__main__':
