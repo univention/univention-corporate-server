@@ -1,3 +1,9 @@
+ucs-test (5.0.108-2) unstable; urgency=low
+
+  * added 04_http_proxy_ntlm_auth_performance_check Bug #26452 
+
+ -- Felix Botner <botner@univention.de>  Wed, 04 Feb 2015 15:30:38 +0100
+
 ucs-test (5.0.108-1) unstable; urgency=low
 
   * added 04_http_proxy_ntlm_auth_performance_check Bug #26452

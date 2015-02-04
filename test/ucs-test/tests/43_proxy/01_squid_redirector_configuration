@@ -8,7 +8,6 @@
 from essential.simplesquid import SimpleSquid
 from univention.config_registry import handler_set
 import univention.testing.ucr as ucr_test
-import univention.testing.utils as utils
 
 
 def main():

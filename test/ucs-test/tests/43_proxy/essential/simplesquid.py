@@ -8,6 +8,7 @@ import os
 import subprocess
 import time
 import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
 
 def returncode(cmd):
 	pop = subprocess.Popen(cmd)

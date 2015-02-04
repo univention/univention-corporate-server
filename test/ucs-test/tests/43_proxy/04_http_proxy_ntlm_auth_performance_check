@@ -49,7 +49,8 @@ def main():
 	handler_unset(['squid/basicauth'])
 	handler_unset(['squid/krb5auth'])
 	handler_set(['squid/ntlmauth=yes'])
-	subprocess.call(["/etc/init.d/squid3", "restart"])
+	time.sleep(3)
+	subprocess.call(['/etc/init.d/squid3', 'restart'])
 	time.sleep(3)
 	
 	# set up curl
@@ -82,6 +83,7 @@ def main():
 			print 'Test took %s seconds' % str(duration)
 			print 'Cleanup ... '
 			ucr.revert_to_original_registry()
+			time.sleep(3)
 			subprocess.call(["/etc/init.d/squid3", "restart"])
 			if duration > MAX_DURATION:
 				utils.fail('test took to long (max %s)' % MAX_DURATION)
