@@ -1,3 +1,9 @@
+ucs-test (4.0.205-1) unstable; urgency=low
+
+  * Bug #35908 & #35909: improve the code, use essential/simplesquid
+
+ -- Ammar Najjar <najjar@univention.de>  Wed, 04 Feb 2015 10:19:06 +0100
+
 ucs-test (4.0.204-1) unstable; urgency=low
 
   * Bug #35909: add a check to see if squid is running.
