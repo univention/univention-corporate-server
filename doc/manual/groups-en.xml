@@ -288,7 +288,7 @@
 		<para>
 		  Since UCS 3.1, the groups are no longer cached via the NSCD for performance and
 		  stability reasons; instead they are now cached by the NSS module
-		  <emphasis>libnss-extrausers</emphasis>. The group information is automatically exported to
+		  <package>libnss-extrausers</package>. The group information is automatically exported to
 		  the <filename>/var/lib/extrausers/group</filename> file by the
 		  <filename>/usr/lib/univention-pam/ldap-group-to-file.py</filename> script and read
 		  from there by the NSS module.
@@ -301,7 +301,7 @@
 		  linkend="cron:local"/>) by the &ucsUCRV;
 		  <envar>nss/group/cachefile/invalidate_interval</envar>. This listener module can be
 		  activated/deactivated via the &ucsUCRV;
-		  <envar>nss/group/invalidate_cache_on_changes</envar> (<emphasis>true/false</emphasis>).
+		  <envar>nss/group/invalidate_cache_on_changes</envar> (<literal>true</literal>/<literal>false</literal>).
 		</para>
 
 		<para>
@@ -387,19 +387,19 @@
 		In the UCS directory service, group membership properties are only saved in the group
 		objects and not in the respective user objects. However, some applications expect group
 		membership properties at the user objects (e.g., in the attribute
-		<emphasis>memberOf</emphasis>). An optional overlay module in the LDAP server makes it
+		<property>memberOf</property>). An optional overlay module in the LDAP server makes it
 		possible to present these attributes automatically based on the group information. The
 		additional attributes are not written to the LDAP, but displayed on the fly by the
 		overlay module if a user object is queried.
 	  </para>
 
 	  <para>
-		To this end, the <emphasis>univention-ldap-overlay-memberof</emphasis> package must be
+		To this end, the <package>univention-ldap-overlay-memberof</package> package must be
 		installed on all LDAP servers.
 	  </para>
 
 	  <para>
-		In the default setting, the user attribute <emphasis>memberOf</emphasis> is shown. The
+		In the default setting, the user attribute <property>memberOf</property> is shown. The
 		&ucsUCRV; <envar>ldap/overlay/memberof/memberof</envar> can be used to configure
 		a different attribute.
 	  </para>

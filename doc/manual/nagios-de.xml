@@ -51,7 +51,7 @@
 	<para>
 	Beim Wechsel eines Betriebszustands kann eine vorher festgelegte
 	Kontaktperson über die mögliche Fehlfunktion informiert werden.
-	Neben der reaktiven Benachrichtung im Fehlerfall kann der aktuelle
+	Neben der reaktiven Benachrichtigung im Fehlerfall kann der aktuelle
 	Status auch jederzeit laufend in einer webbasierten Oberfläche
 	abgefragt werden, in der die Status-Informationen übersichtlich
 	dargestellt werden.
@@ -281,7 +281,7 @@
 						<entry>UNIVENTION_NMBD</entry>
 						<entry>
 							Testet die Verfügbarkeit des NMBD-Dienstes,
-							der in Samba für den Netbios-Dienst zuständig ist.
+							der in Samba für den NetBIOS-Dienst zuständig ist.
 							Läuft kein Prozess, wird ein CRITICAL-Event ausgelöst.
 						</entry>
 					</row>
@@ -391,7 +391,7 @@
 						<entry>UNIVENTION_SMART_SDA</entry>
 						<entry>
 							Prüft den S.M.A.R.T.-Status der Festplatte <filename class="devicefile">/dev/sda</filename>.
-							Für die Festplatten sdb, sdc und sdd existieren entsprechende Nagios-Dienste.
+							Für die Festplatten <filename class="partition">sdb</filename>, <filename class="partition">sdc</filename> und <filename class="partition">sdd</filename> existieren entsprechende Nagios-Dienste.
 						</entry>
 					</row>
 					<row>
@@ -515,7 +515,7 @@
 							vordefinierten Plugin-Aufruf fest. Diese werden in den
 							Konfigurationsdateien im
 							Verzeichnis <filename class="directory">/etc/nagios-plugins/config/</filename> festgelegt,
-							z.B. <emphasis>check_disk</emphasis>.
+							z.B. <command>check_disk</command>.
 						</entry>
 					</row>
 					<row>
@@ -743,7 +743,7 @@
 		Bei der Installation werden drei Standard-Zeiträume eingerichtet. Die
 		automatisch angelegten Zeitrahmen können manuell verändert oder
 		gelöscht werden. Sie werden jedoch teilweise von den ebenfalls
-		automatisch angelegten Nagios-Dienst verwendet. Es ist zu beachten, daß
+		automatisch angelegten Nagios-Dienst verwendet. Es ist zu beachten, dass
 		das Löschen eines Nagios-Zeitraums nur dann möglich ist, wenn es nicht
 		mehr von Nagios-Diensten verwendet wird:
 		</para>
@@ -984,7 +984,7 @@
   </para>
 
   <para>
-	Dieser Abschnitt beschreibt am Beispiel des Plugins check_e2fs_next_fsck die Einbindung eines
+	Dieser Abschnitt beschreibt am Beispiel des Plugins <command>check_e2fs_next_fsck</command> die Einbindung eines
 	externen Plugins. Das Plugin prüft, ob ein Filesystem-Check ansteht und liefert eine Warnung wenn
 	dieser sieben oder weniger Tage bevorsteht und einen Fehlerzustand, wenn beim nächsten Reboot
 	ein Filesystem-Check stattfindet.
@@ -1025,7 +1025,7 @@
 	Verzeichnis <filename class="directory">/etc/nagios-plugins/config/</filename>. Hierbei kann z.B. eine Datei wie
 	<emphasis>local.cfg</emphasis> verwendet werden, in der dann alle lokal registrierten Plugins
 	eingetragen werden. Das folgende Beispiel registriert das
-	Plugin check_e2fs_next_fsck:
+	Plugin <command>check_e2fs_next_fsck</command>:
   </para>
 
 <programlisting language="sh">
@@ -1056,7 +1056,7 @@ define command{
 	registriert werden, siehe <xref linkend="Nagios:Dienst"/>. Als
 	<guimenu>Plugin-Kommando</guimenu> muss der unter <emphasis>command_name</emphasis>
 	in der Makro-Datei registriert Name angegeben werden, in diesem Beispiel
-	<emphasis>check_fsck</emphasis> und die Option <guimenu>NRPE benutzen</guimenu> aktiviert
+	<command>check_fsck</command> und die Option <guimenu>NRPE benutzen</guimenu> aktiviert
 	werden.
 	Der neu registrierte Dienst kann nun einzelnen Systemen zugewiesen werden, siehe <xref
 	linkend="nagios::hostconfig"/>.

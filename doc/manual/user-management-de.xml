@@ -31,7 +31,7 @@
           <guimenu>Erweitert</guimenu> werden alle Attribute angezeigt. Der vereinfachte Assistent
           kann deaktiviert werden, indem die &ucsUCRV;
           <envar>directory/manager/web/modules/users/user/wizard/disabled</envar> auf
-          <emphasis>true</emphasis> gesetzt wird.
+          <literal>true</literal> gesetzt wird.
         </para>
 		<figure id="user-create">
 			<title>Anlegen eines Benutzers in UMC</title>
@@ -71,7 +71,7 @@
                             <para>
 							  In der Grundeinstellung kann kein Benutzer mit dem Namen einer existierenden
 							  Gruppe angelegt werden. Wird die &ucsUCRV; <envar>directory/manager/user_group/uniqueness</envar>
-							  auf <emphasis>false</emphasis> gesetzt, wird diese Prüfung aufgehoben.
+							  auf <literal>false</literal> gesetzt, wird diese Prüfung aufgehoben.
 							</para>
                         </entry>
                     </row>
@@ -535,7 +535,7 @@
                         <entry>
                             Hier können weitere E-Mail-Adressen hinterlegt werden. Diese werden
                             nicht vom Mailserver ausgewertet. Die Werte werden im LDAP-Attribut
-                            <emphasis>mail</emphasis> gespeichert. Die meisten Adressbuch-Applikationen suchen
+                            <property>mail</property> gespeichert. Die meisten Adressbuch-Applikationen suchen
                             im LDAP nach diesem Attribut.
                         </entry>
                     </row>
@@ -780,42 +780,42 @@
                         <entry>Mail-Konto</entry>
                         <entry>
                             Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklasse <emphasis>univentionMail</emphasis> nicht.
+                            Objektklasse <classname>univentionMail</classname> nicht.
                         </entry>
                     </row>
                     <row>
                         <entry>Kerberos Prinzipal</entry>
                         <entry>
                             Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklassen <emphasis>krb5Principal</emphasis> und <emphasis>krb5KDCEntry</emphasis> nicht.
+                            Objektklassen <classname>krb5Principal</classname> und <classname>krb5KDCEntry</classname> nicht.
                         </entry>
                     </row>
                     <row>
                         <entry>Samba-Konto</entry>
                         <entry>
                             Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklasse <emphasis>sambaSamAccount</emphasis> nicht.
+                            Objektklasse <classname>sambaSamAccount</classname> nicht.
                         </entry>
                     </row>
                     <row>
                         <entry>POSIX-Konto</entry>
                         <entry>
                             Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklassen <emphasis>posixAccount</emphasis> und <emphasis>shadowAccount</emphasis> nicht.
+                            Objektklassen <classname>posixAccount</classname> und <classname>shadowAccount</classname> nicht.
                         </entry>
                     </row>
                     <row>
                         <entry>Persönliche Informationen</entry>
                         <entry>
                             Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklassen <emphasis>organizationalPerson</emphasis> und <emphasis>inetOrgPerson</emphasis> nicht.
+                            Objektklassen <classname>organizationalPerson</classname> und <classname>inetOrgPerson</classname> nicht.
                         </entry>
                     </row>
                     <row>
                         <entry>Public Key Infrastruktur-Konto</entry>
                         <entry>
                             Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklasse <emphasis>pkiUser</emphasis> nicht.
+                            Objektklasse <classname>pkiUser</classname> nicht.
                         </entry>
                     </row>
                     <row>
@@ -825,8 +825,8 @@
                             ausschließlich einen Benutzernamen und ein Passwort haben. Mit diesen
                             Benutzern ist ausschließlich eine Authentisierung gegen den LDAP-Verzeichnisdienst
                             möglich, aber keine Anmeldung an UCS- oder Windows-Systemen. Wird diese
-                            Option gesetzt, dann werden die Objektklassen <emphasis>uidObject</emphasis> und
-                            <emphasis>simpleSecurityObject</emphasis> verwendet.
+                            Option gesetzt, dann werden die Objektklassen <classname>uidObject</classname> und
+                            <classname>simpleSecurityObject</classname> verwendet.
                         </entry>
                     </row>
                 </tbody>
@@ -856,20 +856,20 @@
 		  <itemizedlist>
 			<listitem>
 				<simpara>
-					Das Attribut <emphasis>krb5Key</emphasis> speichert das
+					Das Attribut <property>krb5Key</property> speichert das
 					Kerberos-Passwort
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
-			Das Attribut <emphasis>userPassword</emphasis> speichert das
+			Das Attribut <property>userPassword</property> speichert das
 			Unix-Passwort (das in anderen Linux-Distributionen in <filename>/etc/shadow</filename>
 			gespeichert wird
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
-			Das Attribut <emphasis>sambaNTPassword</emphasis> enthält den von Samba
+			Das Attribut <property>sambaNTPassword</property> enthält den von Samba
 			verwendeten NT-Passwort-Hash
 				</simpara>
 			</listitem>
@@ -990,7 +990,7 @@
 	  <para>
 		Das Samba-Domänenobjekt wird über das UMC-Modul
 		<emphasis>LDAP-Verzeichnis</emphasis> verwaltet. Es
-		befindet sich im Container <emphasis>samba</emphasis>
+		befindet sich im Container <uri>samba</uri>
 		unterhalb der LDAP-Basis und trägt den NetBIOS-Namen der Domäne.
 	  </para>
 
@@ -1097,7 +1097,7 @@
         </caution>
         <para>
             Das automatische Sperren von Benutzern nach fehlgeschlagenen Anmeldungen kann
-            durch Setzen der &ucsUCRV; <envar>auth/faillog</envar> auf <emphasis>yes</emphasis> aktiviert werden.
+            durch Setzen der &ucsUCRV; <envar>auth/faillog</envar> auf <literal>yes</literal> aktiviert werden.
             Die Obergrenze an fehlerhaften Passworteingaben, bei der eine Kontosperre
             aktiviert wird, wird in der &ucsUCRV; <envar>auth/faillog/limit</envar> konfiguriert.
             Nach einer korrekten Passworteingabe wird der Zähler jedesmal wieder
@@ -1105,7 +1105,7 @@
         </para>
         <para>
             Der <emphasis>root</emphasis>-Benutzer ist standardmäßig von der Passwort-Sperre ausgenommen, kann
-            aber durch Setzen der &ucsUCRV; <envar>auth/faillog/root</envar> auf <emphasis>yes</emphasis> ebenfalls
+            aber durch Setzen der &ucsUCRV; <envar>auth/faillog/root</envar> auf <literal>yes</literal> ebenfalls
             aufgenommen werden.
         </para>
         <para>
@@ -1138,8 +1138,8 @@
         </figure>
         <para>
             Benutzervorlagen werden im UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu>
-            verwaltet. Dort muss in den Container <emphasis>univention</emphasis> und dort in den
-            Untercontainer <emphasis>templates</emphasis> gewechselt werden. Hier kann
+            verwaltet. Dort muss in den Container <uri>univention</uri> und dort in den
+            Untercontainer <uri>templates</uri> gewechselt werden. Hier kann
             über <guimenu>Hinzufügen</guimenu> mit dem
             Objekt-Typ <guimenu>Einstellungen: Benutzervorlage</guimenu> eine neue
             Benutzervorlage angelegt werden.

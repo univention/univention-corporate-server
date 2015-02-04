@@ -285,8 +285,8 @@
 		release updates can alternatively also be installed via update DVD
 		images, which are either imported as ISO files or from a drive.
 		This is done by running <command>univention-upgrade</command> with the
-		parameters <command>--iso=ISOIMAGEFILE</command> or
-		<command>--cdrom=DRIVE</command>.
+		parameters <option>--iso=ISOIMAGEFILE</option> or
+		<option>--cdrom=DRIVE</option>.
 	  </para>
 
 	  <para>
@@ -478,7 +478,7 @@
 	  <para>
 		To set up a repository, the <command>univention-repository-create</command> command
 		must be run as the <emphasis>root</emphasis> user. The initial package inventory is
-		imported from an installation DVD. The parameter <emphasis>--iso</emphasis> allows
+		imported from an installation DVD. The parameter <option>--iso</option> allows
 		importing from an ISO image. UCS is only available as a 64-bit DVD. The
 		repository is created by <command>univention-repository-create</command> with the
 		architecture of the specified installation medium. If an environment is operated in
@@ -493,9 +493,9 @@ univention-repository-update net
 
 	  <para>
 		Access to the Univention online repository is cryptographically secured via the
-		use of Secure Apt employing signatures. This feature is not currently available
+		use of Secure APT employing signatures. This feature is not currently available
 		for local repositories and so a message appears when creating a repository
-		explaining how Secure Apt can be deactivated using the &ucsUCRV;
+		explaining how Secure APT can be deactivated using the &ucsUCRV;
 		<envar>update/secure_apt</envar>. This setting must be set on all UCS systems
 		that access the repository.
 	  </para>
@@ -849,27 +849,27 @@ apt-cache search fax
 
 	  <listitem><simpara>
 		The <emphasis>Selection state</emphasis> influences the action taken
-		when updating a package. <emphasis>Install</emphasis> is used to select a
+		when updating a package. <literal>Install</literal> is used to select a
 		package for installation. If a package is configured to
-		<emphasis>Hold</emphasis> it will be excluded from further updates. There are
+		<literal>Hold</literal> it will be excluded from further updates. There are
 		two possibilities for uninstalling a package: A package removed with
-		<emphasis>DeInstall</emphasis> keeps locally created configuration data, whilst
-		a package removed with <emphasis>Purge</emphasis><emphasis>Purge</emphasis> is
+		<literal>DeInstall</literal> keeps locally created configuration data, whilst
+		a package removed with <literal>Purge</literal> is
 		completely deleted.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
 		The <emphasis>Installation state</emphasis> describes the status of
 		an installed package in relation to upcoming updates. The normal status is
-		<emphasis>Ok</emphasis>, which leads to a package being updated when a newer
-		version exists. If a package is configured to <emphasis>Hold</emphasis> it will
+		<literal>Ok</literal>, which leads to a package being updated when a newer
+		version exists. If a package is configured to <literal>Hold</literal> it will
 		be excluded from the update.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
 		The <emphasis>Package state</emphasis> describes the status of a
-		set-up package. The normal status here is <emphasis>Installed</emphasis> for
-		installed packages and <emphasis>ConfigFiles</emphasis> for removed
+		set-up package. The normal status here is <literal>Installed</literal> for
+		installed packages and <literal>ConfigFiles</literal> for removed
 		packages. All other statuses appear when the package's installation was
 		cancelled in different phases.
 	  </simpara> </listitem>
@@ -884,7 +884,7 @@ apt-cache search fax
 	  If you do not wish UCS systems to store installation processes in the software
 	  monitor (e.g., when there is no network connection to the database), this can
 	  be arranged by setting the &ucsUCRV; <envar>pkgdb/scan</envar> to
-	  <emphasis>no</emphasis>.
+	  <literal>no</literal>.
 	</para>
 
 	<para>

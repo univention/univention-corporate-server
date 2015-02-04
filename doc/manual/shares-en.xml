@@ -63,7 +63,7 @@
   </para>
   <para>
 	In the Unix permission model - and thus under UCS - write permission
-	is not sufficient to change the permissions of a file. Tis iss limited
+	is not sufficient to change the permissions of a file. This is limited
 	to the owner/owner group of a file. In contrast, under Microsoft Windows
 	all users with write permissions also have the permission to change
 	the permissions. This scheme can be adjusted for CIFS shares (see

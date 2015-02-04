@@ -25,12 +25,12 @@
 		festgehalten, ob ein Drucker farbig drucken kann, ob ein beidseitiger
 		Druck möglich ist, welche Papierschächte vorhanden sind, welche
 		Auflösungen unterstützt und welche Druckerbefehlssprachen unterstützt
-		werden (z.B. PCL oder Postscript).
+		werden (z.B. PCL oder PostScript).
 	</para>
 	<para>
 		Druckaufträge werden von CUPS mit Hilfe von Filtern in ein Format
 		umgewandelt, das der jeweilige Drucker interpretieren kann, also
-		z.B. in Postscript für einen Postscript-fähigen Drucker.
+		z.B. in PostScript für einen PostScript-fähigen Drucker.
 	</para>
 	<para>
 		UCS bringt eine Vielzahl von Filtern und PPD-Dateien direkt mit, so
@@ -600,7 +600,7 @@
 	betrieben. Der Netzwerkdrucker kann auf Windows-Seite alternativ mit einem
 	Standard-PostScript-Druckertreiber eingerichtet werden. Wenn auf einen Farbdrucker zugegriffen
 	werden soll, sollte auf Windows-Seite ein Treiber für einen PostScript-fähigen Farbdrucker
-	verwendet werden, z.B. HP Color Laserjet 8550.
+	verwendet werden, z.B. HP Color LaserJet 8550.
   </para>
 
   <caution>
@@ -723,7 +723,7 @@
 		Neben den bereits im Standardumfang enthaltenen PPD-Dateien können
 		weitere über &ucsUMC; hinzugefügt werden. Die PPD wird in der
 		Regel vom Hersteller des Druckers bereitgestellt und muss auf den
-		Druckservern in das Verzeichnis <filename>/usr/share/ppd</filename> kopiert werden.
+		Druckservern in das Verzeichnis <filename class="directory">/usr/share/ppd/</filename> kopiert werden.
 	</para>
 	<para>
 		Die Druckertreiberlisten werden im UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu>
@@ -757,10 +757,10 @@
 					<entry>Treiber</entry>
 					<entry>
 						Der Pfad zur PPD-Datei, relativ zu dem Verzeichnis
-						<filename>/usr/share/ppd/</filename>. Soll beispielweise die Datei
+						<filename class="directory">/usr/share/ppd/</filename>. Soll beispielweise die Datei
 						<filename>/usr/share/ppd/laserjet.ppd</filename> verwendet werden, so ist
-						hier <emphasis>laserjet.ppd</emphasis> einzutragen. Es können auch gzip-komprimierte
-						Dateien (Dateiendung .gz) angegeben werden.
+						hier <emphasis>laserjet.ppd</emphasis> einzutragen. Es können auch <command>gzip</command>-komprimierte
+						Dateien (Dateiendung <filename class="extension">.gz</filename>) angegeben werden.
 					</entry>
 				</row>
 				<row>

@@ -316,19 +316,19 @@
 	  <listitem>
 		<simpara>
 		  <guimenu>Alle Dateien auf eine Partition</guimenu>: Bei dieser Variante wird nur eine
-		  Partition bzw. ein Logical Volume erstellt, auf dem das /-Dateisystem angelegt wird.
+		  Partition bzw. ein Logical Volume erstellt, auf dem das <filename class="directory">/</filename>-Dateisystem angelegt wird.
 		</simpara>
 	  </listitem>
 	  <listitem>
 		<simpara>
-		  <guimenu>Separate /home-Partition</guimenu>: Neben einem Dateisystem für / wird ein
-		  weiteres Dateisystem für /home angelegt.
+		  <guimenu>Separate /home-Partition</guimenu>: Neben einem Dateisystem für <filename class="directory">/</filename> wird ein
+		  weiteres Dateisystem für <filename class="directory">/home/</filename> angelegt.
 		</simpara>
 	  </listitem>
 	  <listitem>
 		<simpara>
 		  <guimenu>Separate /home-, /usr-, /var- und /tmp-Partition</guimenu>: Neben einem
-		  Dateisystem für / wird für /home, /usr, /var und /tmp jeweils ein eigenes Dateisystem angelegt.
+		  Dateisystem für <filename class="directory">/</filename> wird für <filename class="directory">/home/</filename>, <filename class="directory">/usr/</filename>, <filename class="directory">/var/</filename> und <filename class="directory">/tmp/</filename> jeweils ein eigenes Dateisystem angelegt.
 		</simpara>
 	  </listitem>
 	</itemizedlist>

@@ -366,7 +366,7 @@
 				  <para>
 					Sobald eine E-Mail-Adresse an einem Ordner angegeben wird, werden für den
 					Benutzer <emphasis>anyone</emphasis> mindestens die IMAP-Rechte
-					<emphasis>lrsp</emphasis> gesetzt, damit der IMAP-Server E-Mails in dem IMAP-Ordner
+					<literal>lrsp</literal> gesetzt, damit der IMAP-Server E-Mails in dem IMAP-Ordner
 					ablegen kann.
 				  </para>
 				</entry>

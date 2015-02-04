@@ -349,7 +349,7 @@
 				</para>
 				<para>
 				  As soon as an e-mail address is entered for a folder, at least the
-				  IMAP rights <emphasis>lrsp</emphasis> are set for the user <emphasis>anyone</emphasis> so that the
+				  IMAP rights <literal>lrsp</literal> are set for the user <emphasis>anyone</emphasis> so that the
 				  IMAP server can save e-mails in the IMAP folder.
 				</para>
 			  </entry>
@@ -500,7 +500,7 @@
 	<para>
 	  Undesirable and unsolicited e-mails are designated as spam. The software
 	  SpamAssassin is integrated in UCS for the automatic identification of these
-	  e-mails. Spamassassin attempts to identify whether an e-mail is desirable or
+	  e-mails. SpamAssassin attempts to identify whether an e-mail is desirable or
 	  not based on heuristics concerning its origin, form and content.
 	  Integration occurs via the <package>univention-spamassassin</package>
 	  package, which is automatically set up during the installation of the mail

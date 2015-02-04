@@ -67,7 +67,7 @@
 	beschrieben <biblioref linkend="sdb-acls"/>.
   </para>
   <para>
-	Im Unix-Berechtigungsmodell - und somit unter UCS - reicht das Schreibreicht
+	Im Unix-Berechtigungsmodell - und somit unter UCS - reicht das Schreibrecht
 	auf eine Datei nicht aus, um die Berechtigungen einer Datei zu verändern. Dies
 	bleibt den Besitzern/der Besitzergruppe einer Datei vorbehalten.
 	Unter Microsoft Windows hingegen verfügen alle Benutzer mit Schreibrechten
@@ -159,11 +159,11 @@ eingetragen/modifiziert oder entfernt.
 
 		  <para>
 			Ist die &ucsUCRV; <envar>listener/shares/rename</envar> auf <emphasis>yes</emphasis> gesetzt, wird
-			bei der Änderung des Pfads der Inhalt eines bestehenden Verzeichnises verschoben.
+			bei der Änderung des Pfads der Inhalt eines bestehenden Verzeichnisses verschoben.
 		  </para>
 		  <para>
-			Auf und unterhalb von <filename>/proc</filename>, <filename>/tmp</filename>, <filename>/root</filename>, <filename>/dev</filename>
-			und <filename>/sys</filename> können keine Freigaben angelegt oder dorthin
+			Auf und unterhalb von <filename class="directory">/proc</filename>, <filename class="directory">/tmp</filename>, <filename class="directory">/root</filename>, <filename class="directory">/dev</filename>
+			und <filename class="directory">/sys</filename> können keine Freigaben angelegt oder dorthin
 			verschoben werden.
 		  </para>
 		</entry>
@@ -222,7 +222,7 @@ eingetragen/modifiziert oder entfernt.
 		<entry>Subtree-Überprüfung</entry>
 		<entry>
 		  Wird nur ein Unterverzeichnis eines Dateisystems exportiert, muss der
-		  NFS-Server bei jedem Zugriff überprüfen, ob die zugriffene Datei auf dem
+		  NFS-Server bei jedem Zugriff überprüfen, ob die zugegriffene Datei auf dem
 		  exportierten Dateisystem und in dem exportierten Pfad liegt. Für diese Prüfung
 		  werden Pfad-Informationen an den Client übergeben. Die Aktivierung dieser
 		  Funktion kann zu Problemen führen, wenn eine auf dem Client geöffnete Datei

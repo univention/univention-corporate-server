@@ -587,7 +587,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 					<colspec colnum="2" colname="col2" colwidth="2*"/>
 					<thead>
 						<row>
-							<entry>Attribut</entry>
+							<entry>Attribute</entry>
 							<entry>Description</entry>
 						</row>
 					</thead>
@@ -689,7 +689,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 					<thead>
 						<row>
 							<entry>Attribute</entry>
-							<entry>Descrition</entry>
+							<entry>Description</entry>
 						</row>
 					</thead>
 					<tbody>
@@ -1173,7 +1173,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 				<title>Migration of virtual machines from failed virtualization servers</title>
 				<para>
 					Information about the virtual machines running on the virtualization servers is stored centrally in the &ucsUVMM;.
-					If a server fails (failure detection is performed periodically every 15 seconds), the server and the virtual instances operated on it are identified as unaccessible with a red symbol, a warning appears and <guimenu>Migrate</guimenu> is offered as the only operation in the menu.
+					If a server fails (failure detection is performed periodically every 15 seconds), the server and the virtual instances operated on it are identified as inaccessible with a red symbol, a warning appears and <guimenu>Migrate</guimenu> is offered as the only operation in the menu.
 				</para>
 				<para>
 					Following the migration, the virtual instance is no longer displayed in the overview tree of the failed virtualization server in the UVMM.

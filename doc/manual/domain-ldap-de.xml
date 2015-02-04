@@ -778,7 +778,7 @@ slapcat &gt; ldapdaten.txt
 		<para>
 			Der Zugriff auf die Informationen im LDAP-Verzeichnis wird serverseitig
 			durch Access Control Lists (ACLs) geregelt. Die ACLs werden in der zentralen
-			Konfigurations-Datei <filename>/etc/ldap/slapd.conf</filename> definiert und
+			Konfigurationsdatei <filename>/etc/ldap/slapd.conf</filename> definiert und
 			über &ucsUCR; verwaltet. Die <filename>slapd.conf</filename> wird dabei durch
 			ein Multifile-Template verwaltet; weitere ACL-Elemente können unterhalb von
 			<filename>/etc/univention/templates/files/etc/ldap/slapd.conf.d/</filename>

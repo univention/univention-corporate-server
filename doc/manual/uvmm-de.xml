@@ -5,7 +5,7 @@
 		<para>
 			&ucsUVMM; (UVMM) ist ein Werkzeug für die Verwaltung hybrider Cloud-Umgebungen. Es können
 			in der UCS-Domäne regiustrierte KVM-Virtualisierungsserver und darauf betriebene 
-			virtuelle Maschinenen zentral überwacht und administrtiert werden. Zusätzlich können
+			virtuelle Maschinen zentral überwacht und administriert werden. Zusätzlich können
 			virtuelle Maschinen in OpenStack- oder EC2-Umgebungen administriert werden.
 			Die Administration erfolgt über das &ucsUMC;-Modul <emphasis>Virtuelle Maschinen</emphasis>.
 		</para>
@@ -707,7 +707,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				Auf KVM-Systemen können Image-Dateien in zwei Formaten verwaltet werden:
 				Standardmäßig werden sie im <emphasis>Erweiterten Format (qcow2)</emphasis> angelegt.
 				Dieses unterstützt Copy-on-write, was bedeutet, dass eine Änderung nicht das Original überschreibt, sondern die neue Version stattdessen an einer anderen Position abgelegt wird.
-				Die interne Referenzierung wird dann so aktualisiert, daß wahlweise sowohl die Originalversion als auch die neue Version zugreifbar sind.
+				Die interne Referenzierung wird dann so aktualisiert, dass wahlweise sowohl die Originalversion als auch die neue Version zugreifbar sind.
 				Nur bei Verwendung von Festplatten-Images im <emphasis>Erweiterten Format</emphasis> können Sicherungspunkte erstellt werden.
 				Alternativ kann auch im <emphasis>Einfachen Format (raw)</emphasis> auf ein Festplatten-Image zugegriffen werden.
 			</para>
@@ -726,7 +726,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 			  Gefahr eines Datenverlustes, wenn z.B. ein System abstürzt oder die Stromversorgung
 			  unterbrochen wird: Die Daten, die bis dahin nur im Schreibcache vorgehalten wurden und
 			  noch nicht auf das Speichermedium synchronisiert wurden, sind dann verloren. Bei modernen
-			  Betriebsystemen wird in der Regel dafür gesorgt, dass anstehende Schreibänderungen nach
+			  Betriebssystemen wird in der Regel dafür gesorgt, dass anstehende Schreibänderungen nach
 			  maximal einigen Sekunden auf die Festplatte geschrieben werden.
 			</para>
 
@@ -755,7 +755,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				  Lesezugriffe gegenüber <emphasis>none</emphasis> effizienter sein. I.d.R. wirkt sich das doppelte Caching
 				  aber eher negativ auf die Gesamtperformance aus
 
-				  <footnote><para>Es empfiehlt sich eher, den freien Speicher den VMs direkt zur Verfügung zu stellen, so daß diese diesen zusätzlichen Speicher selbst effizienter nutzen können, u.a. auch zum Cachen.</para></footnote>.
+				  <footnote><para>Es empfiehlt sich eher, den freien Speicher den VMs direkt zur Verfügung zu stellen, so dass diese diesen zusätzlichen Speicher selbst effizienter nutzen können, u.a. auch zum Cachen.</para></footnote>.
 					</simpara>
 				</listitem>
 
@@ -784,7 +784,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				<listitem>
 					<simpara>
 				  Die Strategie <emphasis>directsync</emphasis> entspricht <emphasis>none</emphasis>,
-				  nur daß hier nach jedem Schreibzugriff nochmals explizit eine Synchronisation
+				  nur dass hier nach jedem Schreibzugriff nochmals explizit eine Synchronisation
 				  erzwungen wird.
 					</simpara>
 				</listitem>
@@ -794,7 +794,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				  Die Option <emphasis>Hypervisor-Standard</emphasis> ist abhängig von der UCS-Version
 				  und der KVM-Version, mit der ein Gastsystem installiert wurde: Ursprünglich war der
 				  Standardwert bis UCS 3.0 implizit <emphasis>write-through</emphasis>, aber mit UCS 3.1 wurde KVM so
-				  modifiziert, daß für alte VMs jetzt statt dessen <emphasis>none</emphasis> verwendet wird. Bei mit
+				  modifiziert, dass für alte VMs jetzt statt dessen <emphasis>none</emphasis> verwendet wird. Bei mit
 				  UCS 3.1 neu angelegten VMs entspricht der Standadrwert wieder implizit
 				  <emphasis>write-through</emphasis>, allerdings werden neue VMs explizit mit <emphasis>none</emphasis> angelegt.
 					</simpara>

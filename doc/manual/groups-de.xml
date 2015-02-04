@@ -300,7 +300,7 @@
 		  Die Zwischenspeicherung der Gruppen erfolgt seit UCS 3.1 aus
 		  Performance- und Stabilitätsgründen nicht mehr über den
 		  NSCD, sondern durch das NSS-Modul
-		  <emphasis>libnss-extrausers</emphasis>. Die
+		  <package>libnss-extrausers</package>. Die
 		  Gruppeninformationen werden automatisch durch das Skript
 		  <filename>/usr/lib/univention-pam/ldap-group-to-file.py</filename>
 		  in die Datei <filename>/var/lib/extrausers/group</filename>
@@ -316,7 +316,7 @@
 		  Cron-Syntax (siehe <xref linkend="cron:local"/>) festgelegt
 		  Das Listener-Modul kann über die &ucsUCRV;
 		  <envar>nss/group/invalidate_cache_on_changes</envar> aktiviert/deaktiviert werden
-		  (<emphasis>true/false</emphasis>).
+		  (<literal>true</literal>/<literal>false</literal>).
 		</para>
 
 		<para>
@@ -407,7 +407,7 @@
 		Im UCS-Verzeichnisdienst werden Gruppenmitgliedschaften nur an den Gruppenobjekten und nicht
 		am jeweiligen Benutzerobjekt gespeichert. Einige Applikationen erwarten jedoch die
 		Gruppenmitgliedschaften an den Benutzerobjekten (z.B. im Attribut
-		<emphasis>memberOf</emphasis>). Durch ein optionales Overlay-Modul im LDAP-Server können
+		<property>memberOf</property>). Durch ein optionales Overlay-Modul im LDAP-Server können
 		diese Attribute automatisch anhand der Gruppeninformationen angezeigt werden. Die
 		zusätzlichen Attribute werden nicht in das LDAP geschrieben, sondern bei einer Anfrage durch
 		das Overlay-Modul ermittelt und angezeigt.
@@ -415,11 +415,11 @@
 
 	  <para>
 		Dazu muss auf allen LDAP-Servern das Paket
-		<emphasis>univention-ldap-overlay-memberof</emphasis> installiert werden.
+		<package>univention-ldap-overlay-memberof</package> installiert werden.
 	  </para>
 
 	  <para>
-		In der Grundeinstellung wird das Benutzerattribut <emphasis>memberOf</emphasis>
+		In der Grundeinstellung wird das Benutzerattribut <property>memberOf</property>
 		dargestellt. Mit der &ucsUCRV; <envar>ldap/overlay/memberof/memberof</envar> kann auch ein
 		anderes Attribut konfiguriert werden.
 	  </para>

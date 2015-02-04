@@ -13,7 +13,7 @@
   </para>
   <para>
 	Incoming and outgoing network traffic can be restricted via the
-	<emphasis>Univention Firewall</emphasis> based on iptables
+	<emphasis>Univention Firewall</emphasis> based on <command>iptable</command>
 	(<xref linkend="ip-config:Packet_filter_with_Univention_Firewall"/>).
   </para>
   <para>
@@ -55,7 +55,7 @@
 		  <thead>
 			<row>
 			  <entry>
-				Attribut
+				Attribute
 			  </entry>
 			  <entry>
 				Description
@@ -383,7 +383,7 @@
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -439,7 +439,7 @@
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -559,7 +559,7 @@
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -591,7 +591,7 @@
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -634,7 +634,7 @@
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -677,7 +677,7 @@
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -736,7 +736,7 @@
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -811,7 +811,7 @@
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -942,7 +942,7 @@
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -991,7 +991,7 @@
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -1098,7 +1098,7 @@
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -1220,7 +1220,7 @@
 		range. DHCP pools can only be created below DHCP subnet objects.
 	  </para>
 	  <para>
-		If several IP subnets are used in a physical ethernet network, this should
+		If several IP subnets are used in a physical Ethernet network, this should
 		be entered as a <emphasis>DHCP shared subnet</emphasis> below
 		a <guimenu>DHCP shared network</guimenu>.
 		<guimenu>DHCP shared subnet</guimenu> objects can only be created below
@@ -1292,7 +1292,7 @@ closest to the object always applies.
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -1319,7 +1319,7 @@ closest to the object always applies.
 	  <section id="networks:dhcp:dhcpserver">
 		<title>Administration of DHCP server entries</title>
 		<para>
-		  Each server which should offer the DCHP service requires
+		  Each server which should offer the DHCP service requires
 		  a <emphasis>DHCP server</emphasis> entry in the LDAP directory. The entry does
 		  not normally need to be created manually, instead it is created by the
 		  join script of the <package>univention-dhcp</package> package.
@@ -1338,7 +1338,7 @@ closest to the object always applies.
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -1394,7 +1394,7 @@ closest to the object always applies.
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -1480,7 +1480,7 @@ closest to the object always applies.
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -1495,7 +1495,7 @@ closest to the object always applies.
 				  <entry>
 					<para>
 					  An unambiguous name for the DHCP pool must be entered in this input
-					  field, e.g., <emphasis>testnet.compaby.example</emphasis>.
+					  field, e.g., <uri>testnet.compaby.example</uri>.
 					</para>
 				  </entry>
 				</row>
@@ -1521,7 +1521,7 @@ closest to the object always applies.
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -1634,7 +1634,7 @@ closest to the object always applies.
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -1723,7 +1723,7 @@ closest to the object always applies.
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -1779,7 +1779,7 @@ closest to the object always applies.
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -1821,7 +1821,7 @@ closest to the object always applies.
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -1876,7 +1876,7 @@ closest to the object always applies.
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -1963,7 +1963,7 @@ closest to the object always applies.
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -2028,7 +2028,7 @@ closest to the object always applies.
 			  <thead>
 				<row>
 				  <entry>
-					Attribut
+					Attribute
 				  </entry>
 				  <entry>
 					Description
@@ -2388,7 +2388,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 	  </para>
 	  <para>
 		It is also possible to scan requested files for viruses. In the
-		default setting, the free virus scanner <emphasis>Clamav</emphasis> is used.
+		default setting, the free virus scanner <application>ClamAV</application> is used.
 		The setup is documented in the extended network management documentation <biblioref linkend="ext-doc-net"/>.
 	  </para>
 	  <caution>

@@ -29,7 +29,7 @@
 		  requests the most important settings. All attributes can be shown by clicking on
 		  <guimenu>Advanced</guimenu>. The simplified wizard can be deactivated by setting the
 		  &ucsUCRV; <envar>directory/manager/web/modules/users/user/wizard/disabled</envar> to
-		  <emphasis>true</emphasis>.
+		  <literal>true</literal>.
 		</para>
 		<figure id="user-create">
 			<title>Creating a user in UMC</title>
@@ -68,7 +68,7 @@
                             <para>
 							  In the default setting, it is not possible to create a user with the same name as an
 							  existing group. If the &ucsUCRV; <envar>directory/manager/user_group/uniqueness</envar>
-							  is set to <emphasis>false</emphasis>, this check is removed.
+							  is set to <literal>false</literal>, this check is removed.
 							</para>
                         </entry>
                     </row>
@@ -525,7 +525,7 @@
                                 by the mail server.
                             </para>
                             <para>
-                                The values of this attribute are stored in the LDAP attribute <emphasis>mail</emphasis>.
+                                The values of this attribute are stored in the LDAP attribute <property>mail</property>.
                                 Most address books applications using an LDAP search function will search for
                                 an e-mail address by this attribute.
                             </para>
@@ -769,42 +769,42 @@
                         <entry>Mail account</entry>
                         <entry>
                             If this checkbox is not ticked, the user will not be assigned the object class
-                            <emphasis>univentionMail</emphasis>.
+                            <classname>univentionMail</classname>.
                         </entry>
                     </row>
                     <row>
                         <entry>Kerberos principal</entry>
                         <entry>
                             If this checkbox is not ticked, the user will not be assigned the object
-                            classes <emphasis>krb5Principal</emphasis> and <emphasis>krb5KDCEntry</emphasis>.
+                            classes <classname>krb5Principal</classname> and <classname>krb5KDCEntry</classname>.
                         </entry>
                     </row>
                     <row>
                         <entry>Samba account</entry>
                         <entry>
                             If this checkbox is not ticked, the user will not be assigned the object class
-                            <emphasis>sambaSamAccount</emphasis>.
+                            <classname>sambaSamAccount</classname>.
                         </entry>
                     </row>
                     <row>
                         <entry>POSIX account</entry>
                         <entry>
                             If this checkbox is not ticked, the user will not be assigned the object
-                            classes <emphasis>posixAccount</emphasis> and <emphasis>shadowAccount</emphasis>.
+                            classes <classname>posixAccount</classname> and <classname>shadowAccount</classname>.
                         </entry>
                     </row>
                     <row>
                         <entry>Personal information</entry>
                         <entry>
                             If this checkbox is not ticked, the user will not be assigned the object
-                            classes <emphasis>organizationalPerson</emphasis> and <emphasis>inetOrgPerson</emphasis>.
+                            classes <classname>organizationalPerson</classname> and <classname>inetOrgPerson</classname>.
                         </entry>
                     </row>
                     <row>
                         <entry>Public key infrastructure account</entry>
                         <entry>
                             If this checkbox is not ticked, the user will not be assigned the object class
-                            <emphasis>pkiUser</emphasis>.
+                            <classname>pkiUser</classname>.
                         </entry>
                     </row>
                     <row>
@@ -813,8 +813,8 @@
                             This option can be used for creating user objects which have only a username
                             and a password. With these users, authentication is possible against the
                             LDAP directory service exclusively; logging into UCS or Windows systems is not
-                            possible. If this option is activated, the object classes <emphasis>uidObject</emphasis> and
-                            <emphasis>simpleSecurityObject</emphasis> will be used.
+                            possible. If this option is activated, the object classes <classname>uidObject</classname> and
+                            <classname>simpleSecurityObject</classname> will be used.
                         </entry>
                     </row>
                 </tbody>
@@ -840,11 +840,11 @@
 		  system:
 		</para>
 		  <itemizedlist>
-			<listitem><simpara>The <emphasis>krb5Key</emphasis> attribute stores the Kerberos
+			<listitem><simpara>The <property>krb5Key</property> attribute stores the Kerberos
 			password.</simpara></listitem>
-			<listitem><simpara>The <emphasis>userPassword</emphasis> attribute stores the Unix password
+			<listitem><simpara>The <property>userPassword</property> attribute stores the Unix password
 			(In other Linux distributions present in <filename>/etc/shadow</filename>).</simpara></listitem>
-			<listitem><simpara>The <emphasis>sambaNTPassword</emphasis> attribute stores the NT
+			<listitem><simpara>The <property>sambaNTPassword</property> attribute stores the NT
 			password hash used by Samba.</simpara></listitem>
 		  </itemizedlist>
         <para>
@@ -960,7 +960,7 @@
 	  <para>
 		The Samba domain object is managed via the
 		UMC module <emphasis>LDAP directory</emphasis>. It can
-		be found in the <emphasis>samba</emphasis> container below
+		be found in the <uri>samba</uri> container below
 		the LDAP base and carries the domain's NetBIOS name.
 	  </para>
 
@@ -992,7 +992,7 @@
 			  </row>
 
 			  <row>
-				<entry>Passwort history</entry>
+				<entry>Password history</entry>
 				<entry>
 				  The latest password changes are saved in the form of
 				  hashes. These passwords can then not be used by the
@@ -1068,14 +1068,14 @@
         </caution>
         <para>
             The automatic lockout of users following failed logins can be activated by
-            setting the &ucsUCRV; <envar>auth/faillog</envar> to <emphasis>yes</emphasis>. The upper limit of failed log-in
+            setting the &ucsUCRV; <envar>auth/faillog</envar> to <literal>yes</literal>. The upper limit of failed log-in
             attempts at which an account lockout is activated is configured
             in the &ucsUCRV; <envar>auth/faillog/limit</envar>. The counter is reset each time the password
             is entered correctly.
         </para>
         <para>
             As standard, the <emphasis>root</emphasis> user is excluded from the password lock, but can also be
-            subjected to it by setting the &ucsUCRV; <envar>auth/faillog/root</envar> to <emphasis>yes</emphasis>.
+            subjected to it by setting the &ucsUCRV; <envar>auth/faillog/root</envar> to <literal>yes</literal>.
         </para>
         <para>
             As standard, the lockout is not subject to time limitations and must be reset by
@@ -1105,7 +1105,7 @@
         <para>
             User templates are administrated in the UMC module <guimenu>LDAP directory</guimenu>.
             There one needs to switch to the
-            <emphasis>univention</emphasis> container and then to the <emphasis>templates</emphasis>
+            <uri>univention</uri> container and then to the <uri>templates</uri>
             subcontainer. A new user template can be created here via the
             <guimenu>Add</guimenu> with the object type
             <guimenu>Settings: User template</guimenu>.
@@ -1138,7 +1138,7 @@ univention-director-manager users/user
 		  For example, the UNIX home directory can be stored under
 		  <filename>/home/&lt;title&gt;.&lt;lastname&gt;</filename> or the primary e-mail address
 		  can be predefined with
-		  <emphasis>&lt;firstname&gt;.&lt;lastname&gt;@firma.com</emphasis>. Substitutions are
+		  <emphasis>&lt;firstname&gt;.&lt;lastname&gt;@company.com</emphasis>. Substitutions are
 		  generally possibly for any value, but there is no syntax or semantics check. So, if no
 		  first name is specified when creating a user, the above e-mail address would begin with a
 		  dot and would thus be invalid according to the e-mail standard. Similar sources of error
@@ -1151,7 +1151,7 @@ univention-director-manager users/user
 		  value, the index of the required character can be entered in the user template in square
 		  brackets after the name of the attribute. The count of characters of the attribute begins
 		  with 0, so that index 1 corresponds to the second character of the attribute
-		  value. Accordingly, <emphasis>&lt;firstname&gt;[0].&lt;lastname&gt;@firma.com</emphasis>
+		  value. Accordingly, <emphasis>&lt;firstname&gt;[0].&lt;lastname&gt;@company.com</emphasis>
 		  means an e-mail address will consist of the first letter of the first name plus the lastname.
 		</para>
 
@@ -1166,7 +1166,7 @@ univention-director-manager users/user
         <para>
 		  Adding <emphasis>&lt;:lower&gt;</emphasis> or <emphasis>&lt;:upper&gt;</emphasis> to the
 		  attribute name converts the attribute value to lowercase or uppercase, e.g.,
-		  <emphasis>&lt;firstname:lower&gt;</emphasis>. If a modificator like
+		  <emphasis>&lt;firstname:lower&gt;</emphasis>. If a modifier like
 		  <emphasis>&lt;:lower&gt;</emphasis> is appended to the entire field, the complete value is
 		  transformed, e.g. <emphasis>&lt;lastname&gt;@company.com&lt;:lower&gt;</emphasis>.
 		</para>

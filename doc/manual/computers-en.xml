@@ -248,7 +248,7 @@
 					<entry>
 						A different input field for the host account can be entered
 						here. The automatically created default value for the home directory is
-						<filename>/dev/null</filename>
+						<filename class="device">/dev/null</filename>
 					</entry>
 				</row>
 				<row>
@@ -545,7 +545,7 @@
 		<para>
 			The drivers to be used are recognised automatically during system start and
 			loaded via the udev device manager. At this point, the necessary device links
-			are also created under <filename>/dev/</filename>. If drivers are not
+			are also created under <filename class="directory">/dev/</filename>. If drivers are not
 			recognised (which can occur if no respective hardware IDs are registered or
 			hardware is employed which cannot be recognised automatically, e.g., ISA
 			boards), kernel modules to be loaded can be added via &ucsUCRV;
@@ -565,8 +565,8 @@
 		  DKMS framework (Dynamic Kernel Module Support). This provides a standardised interface for
 		  kernel sources, which are then built automatically for every installed kernel (insofar as
 		  the source package is compatible with the respective kernel). For this to happen, the
-		  kernel header package <emphasis>univention-kernel-headers</emphasis> must be
-		  installed in addition to the <emphasis>dkms</emphasis> package. Please note that not all
+		  kernel header package <package>univention-kernel-headers</package> must be
+		  installed in addition to the <package>dkms</package> package. Please note that not all
 		  the external kernel modules are compatible with all kernels.
 		</para>
 	</section>
@@ -587,7 +587,7 @@
 		</para>
 
 		<para>
-			GRUB gets loades in a two-step procedure; in the Master
+			GRUB gets loaded in a two-step procedure; in the Master
 			Boot Record of the hard drive, the Stage 1 loader is written which refers to
 			the data of Stage 2, which in turn manages the rest of the boot procedure.
 		</para>
@@ -595,7 +595,7 @@
 			The selection of kernels to be started in the boot menu is stored in the
 			file <filename>/boot/grub/grub.cfg</filename>. This file is generated
 			automatically; all installed kernel packages are available for selection. The
-			memory test program Memtest86+ can be started by selecting the option
+			memory test program <command>Memtest86+</command> can be started by selecting the option
 			<guimenu>Memory test</guimenu> and performs a consistency check for the main
 			memory.
 		</para>
@@ -612,7 +612,7 @@
 			<ulink url="http://en.wikipedia.org/wiki/VESA_BIOS_Extensions"/>. The input must
 			be specified in the format
 			<emphasis>HORIZONTALxVERTICAL@COLOURDEPTHBIT</emphasis>, so for example
-			<emphasis>1024x768@16</emphasis>.
+			<literal>1024x768@16</literal>.
 		</para>
 		<para>
 			Kernel options for the started Linux kernel can be passed with the
@@ -622,14 +622,14 @@
 		<para>
 			The graphic representation of the boot procedure - the so-called splash
 			screen - can be deactivated by setting &ucsUCRV; <envar>grub/bootsplash</envar>
-			to <emphasis>nosplash</emphasis>.
+			to <literal>nosplash</literal>.
 		</para>
 		<para>
 			Older Xen environments might use a version of PyGrub, which still
 			requires the GRUB 1 configuration file <filename>/goot/grub/menu.lst</filename>
 			to boot paravirtualized Xen systems. This file is generated automatically if
 			it does not yet exist. This behaviour can be deactivated by setting the
-			&ucsUCRV; <envar>grub/generate-menu-lst</envar> to <emphasis>no</emphasis>.
+			&ucsUCRV; <envar>grub/generate-menu-lst</envar> to <literal>no</literal>.
 		</para>
 	</section>
 
@@ -852,7 +852,7 @@ ucr unset umc/modules/setup/network/disabled/by
 				  The physical network card intended to act as the uplink can be selected under
 				  <guimenu>Bridge ports</guimenu>. In the typical scenario of connecting
 				  virtual machines via just one network card, there is no risk of a network loop.
-				  If the bridge is used to connect two ethernet networks, the spanning tree
+				  If the bridge is used to connect two Ethernet networks, the spanning tree
 				  protocol (STP) is employed to avoid network loops
 				  <footnote><para>
 					The Linux kernel only implements STP, not the Rapid STP or Multiple STP versions.
@@ -1100,7 +1100,7 @@ ucr unset umc/modules/setup/network/disabled/by
 				The screen resolution of the main monitor should be entered under
 				<guimenu>Resolution of primary monitor</guimenu>. The values for width and
 				height in pixels should be separated by an 'x', e.g.,
-				<emphasis>1024x768</emphasis> (<envar>xorg/resolution</envar>).
+				<literal>1024x768</literal> (<envar>xorg/resolution</envar>).
 				</simpara>
 			</listitem>
 			<listitem>
@@ -1419,9 +1419,9 @@ univention-config-registry set dns/forwarder1?192.168.0.2
 			<section id="computers:Searching_for_variables_and_set_values">
 				<title>Searching for variables and set values</title>
 				<para>
-					The <emphasis>search</emphasis> parameter can be used to search for a
+					The <parameter class="command">search</parameter> parameter can be used to search for a
 					variable. This command searches for variable names which contain
-					<emphasis>nscd</emphasis> and displays these with their current assignments:
+					<wordasword>nscd</wordasword> and displays these with their current assignments:
 				</para>
 				<programlisting language="sh">
 univention-config-registry search nscd
@@ -1429,7 +1429,7 @@ univention-config-registry search nscd
 				<para>
 					Alternatively, searches can also be performed for set variable values. This
 					request searches for all variables set to
-					<emphasis>master.example.com</emphasis>:
+					<literal>master.example.com</literal>:
 				</para>
 				<programlisting language="sh">
 univention-config-registry search --value master.example.com
@@ -1444,8 +1444,8 @@ univention-config-registry search --value master.example.com
 			<section id="computers:Deleting_UCR_variables">
 				<title>Deleting UCR variables</title>
 				<para>
-					The parameter <emphasis>unset</emphasis> is used to delete a variable. The
-					following example deletes the variable <emphasis>dns/forwarder2</emphasis>. It
+					The parameter <parameter class="command">unset</parameter> is used to delete a variable. The
+					following example deletes the variable <envar>dns/forwarder2</envar>. It
 					is also possible here to specify several variables to be deleted:
 				</para>
 				<programlisting language="sh">
@@ -1456,7 +1456,7 @@ univention-config-registry unset dns/forwarder2
 			<section id="computers:Regeneration_of_configuration_files_from_their_template">
 				<title>Regeneration of configuration files from their template</title>
 				<para>
-					The <emphasis>commit</emphasis> parameter is used to regenerate a configuration
+					The <parameter class="command">commit</parameter> parameter is used to regenerate a configuration
 					file from its template. The name of the configuration file is entered as a
 					parameter, e.g.:
 				</para>
@@ -1492,7 +1492,7 @@ univention-config-registry shell ldap/server/name
 				</para>
 				<para>
 					The &ucsUCR; output must be executed via the command
-					<emphasis>eval</emphasis> for &ucsUCR; variables to be able to be read in a
+					<command>eval</command> for &ucsUCR; variables to be able to be read in a
 					shell script as environment variables:
 				</para>
 				<programlisting language="sh">
@@ -1555,11 +1555,11 @@ master.firma.de
 			whether any changes have been made to the configuration files. If configuration
 			files are no longer there in the form in which they were delivered, they will
 			not be overwritten. Instead a new version will be created in the same directory
-			with the ending <emphasis>.debian.dpkg-new</emphasis>. If changes are to be
+			with the ending <filename class="extension">.debian.dpkg-new</filename>. If changes are to be
 			made on the &ucsUCR; templates, these templates are also not overwritten during
 			the update and are instead re-saved in the same directory with the ending
-			<emphasis>.dpkg-new</emphasis> or
-			<emphasis>.dpkg-dist</emphasis>. Corresponding notes are written in the
+			<filename class="extension">.dpkg-new</filename> or
+			<filename class="extension">.dpkg-dist</filename>. Corresponding notes are written in the
 			<filename>/var/log/univention/actualise.log</filename> log file. This only
 			occurs if UCR templates have been locally modified.
 			</para>
@@ -1830,7 +1830,7 @@ auth/sshd/restrict: yes
 			</para>
 			<para>
 				The &ucsUCRV; <envar>logrotate/compress</envar> is used to configure whether
-				the older log files are additionally zipped with Gzip.
+				the older log files are additionally zipped with <command>gzip</command>.
 			</para>
 		</section>
 

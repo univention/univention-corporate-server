@@ -102,21 +102,21 @@ Zusätzlich werden Meta-Information zu den Backups über den
 	  </para>
 
 	  <para>
-		Die Verzeichnisse <filename>/dev/</filename>, <filename>/proc/</filename> und <filename>/sys/</filename> enthalten nur
+		Die Verzeichnisse <filename class="directory">/dev/</filename>, <filename class="directory">/proc/</filename> und <filename class="directory">/sys/</filename> enthalten nur
 		Dateien, die vom Kernel automatisch generiert werden, sie brauchen nicht gesichert werden.
 	  </para>
 
 	  <para>
 		Diese Daten sollten in der Regel immer gesichert werden: Die Verzeichnisse
-		<filename>/home</filename> und <filename>/root</filename> enthalten Benutzerdaten, in
-		<filename>/etc/</filename> wird die Konfiguration des UCS-Systems gespeichert und das
-		Verzeichnis <filename>/var</filename> enthält Laufzeitdaten wie etwa die Mails eines
+		<filename class="directory">/home/</filename> und <filename class="directory">/root/</filename> enthalten Benutzerdaten, in
+		<filename class="directory">/etc/</filename> wird die Konfiguration des UCS-Systems gespeichert und das
+		Verzeichnis <filename class="directory">/var/</filename> enthält Laufzeitdaten wie etwa die Mails eines
 		Mailservers.
 	  </para>
 
 	  <para>
-		Die Verzeichnisse <filename>/bin/</filename>, <filename>/boot</filename>,
-		<filename>/lib/</filename>, <filename>/usr/</filename> und <filename>/sbin</filename>
+		Die Verzeichnisse <filename class="directory">/bin/</filename>, <filename class="directory">/boot</filename>,
+		<filename class="directory">/lib/</filename>, <filename class="directory">/usr/</filename> und <filename class="directory">/sbin/</filename>
 		enthalten im Normalfall nur Programme/Daten, die durch die UCS-Installation mitgeliefert
 		werden.
 	  </para>
@@ -143,8 +143,8 @@ die während der Installation angelegt und eingerichtet wird. Die
 Zugriffsinformationen dieser Datenbank (Datenbankname, Name/Passwort des
 Datenbankbenutzers) stehen anschließend in der Datei
 <filename>/etc/dbconfig-common/bacula-director-pgsql.conf</filename> in
-den Feldern <emphasis>dbc_dbpass</emphasis> und
-<emphasis>dbc_dbuser</emphasis>.
+den Feldern <varname>dbc_dbpass</varname> und
+<varname>dbc_dbuser</varname>.
 		</para>
 	</section>
 
@@ -163,10 +163,10 @@ Der Directory Daemon wird über den Abschnitt
 			</para>
 			<para>
 Die Standardwerte können beibehalten werden, lediglich die Option
-<emphasis>DirAddress</emphasis> sollte von
-<emphasis>127.0.0.1</emphasis>, also localhost, auf die IP-Adresse des
+<varname>DirAddress</varname> sollte von
+<literal>127.0.0.1</literal>, also <constant>localhost</constant>, auf die IP-Adresse des
 Bacula-Servers geändert werden. Außerdem sollte das
-<emphasis>Password</emphasis>-Feld gesetzt werden:
+<varname>Password</varname>-Feld gesetzt werden:
 			</para>
 			<programlisting>
 Director {
@@ -190,7 +190,7 @@ verwaltet.
 			</para>
 			<para>
 Hier können die Vorgabewerte weitgehend beibehalten werden; nur die
-Option <emphasis>SDAddress</emphasis> sollte auf die IP-Adresse des
+Option <varname>SDAddress</varname> sollte auf die IP-Adresse des
 Storage Daemons angepasst werden.
 			</para>
 			<programlisting>
@@ -223,11 +223,11 @@ allen Systemen eingerichtet werden, die gesichert werden sollen.
 			</para>
 			<para>
 Im Abschnitt <emphasis>Director</emphasis> muss die Option
-<emphasis>Name</emphasis> auf den Namen des
+<varname>Name</varname> auf den Namen des
 <emphasis>Directors</emphasis> gesetzt werden (siehe <xref
 linkend="bacula:directory"/>). Pro System muss ein Client-Passwort
 festgelegt werden. Außerdem muss hier die Option
-<emphasis>FDAddress</emphasis> im Abschnitt
+<varname>FDAddress</varname> im Abschnitt
 <emphasis>FileDaemon</emphasis> auf die IP-Adresse des Rechners gesetzt
 werden.
 			</para>
@@ -292,7 +292,7 @@ Die für Bacula verwendeten Ports müssen entsprechend freigegeben werden.
 Auf allen Systemen muss der Zugriff auf den Filedaemon freigegeben
 werden. Dies erfolgt durch Setzen der &ucsUCRV;
 <envar>security/packetfilter/package/bacula/tcp/9102/all</envar> auf
-<emphasis>ACCEPT</emphasis> und einen anschließenden Neustart von
+<literal>ACCEPT</literal> und einen anschließenden Neustart von
 Univention Firewall.
 			</para>
 			<para>
@@ -487,8 +487,8 @@ FileSet {
 }
 		</programlisting>
 		<para>
-Über die Anweisungen <emphasis>RunBeforeJob</emphasis> und
-<emphasis>RunAfterJob</emphasis> werden vor bzw. nach der eigentlichen
+Über die Anweisungen <varname>RunBeforeJob</varname> und
+<varname>RunAfterJob</varname> werden vor bzw. nach der eigentlichen
 Sicherung Skripte ausgeführt. Im Falle des Catalogs wird mit
 <filename>make_catalog_backup</filename> vor der Sicherung ein SQL-Dump
 der Catalog-Datenbank erzeugt und unter
@@ -496,8 +496,8 @@ der Catalog-Datenbank erzeugt und unter
 erfolgter Sicherung wird diese Datei wieder entfernt.
 		</para>
 		<para>
-Zusätzlich wird für das Backup des Catalogs mit <emphasis>Write
-Bootstrap</emphasis> eine Bootstrap-Datei erzeugt. In dieser Datei wird
+Zusätzlich wird für das Backup des Catalogs mit <varname>Write
+Bootstrap</varname> eine Bootstrap-Datei erzeugt. In dieser Datei wird
 protokolliert, wie die Daten wiederhergestellt werden können, d.h. auf
 welchem Volume sie gespeichert sind und wo auf dem Volume sie sich
 befinden. Normalerweise übernimmt dies der Catalog selbst, für den Fall

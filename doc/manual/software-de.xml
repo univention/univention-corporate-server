@@ -291,8 +291,8 @@
 		Release-Updates alternativ auch über Update-DVD-Images installiert werden, die
 		entweder als ISO-Datei oder von einem Laufwerk eingelesen werden.
 		Dazu muss <command>univention-upgrade</command> mit den Parametern
-		<command>--iso=ISOIMAGEDATEI</command> oder
-		<command>--cdrom=LAUFWERK</command> aufgerufen werden.
+		<option>--iso=ISOIMAGEDATEI</option> oder
+		<option>--cdrom=LAUFWERK</option> aufgerufen werden.
 	  </para>
 
 	  <para>
@@ -479,7 +479,7 @@
 		lokale Repositorys der einzelnen Standorte synchronisiert wird. Um ein Repository
 		einzurichten, muss der Befehl <command>univention-repository-create</command> als
 		Benutzer <emphasis>root</emphasis> aufgerufen werden. Der initiale Paketbestand wird
-		von einer Installations-DVD eingelesen, mit dem Parameter <emphasis>--iso</emphasis>
+		von einer Installations-DVD eingelesen, mit dem Parameter <option>--iso</option>
 		kann hier auch ein ISO-Image übergeben werden. UCS ist nur als 64 Bit-DVD
 		verfügbar. Das Repository wird von <command>univention-repository-create</command>
 		mit der Architektur des angegebenen Installationsmediums erzeugt. Wird eine Umgebung
@@ -493,10 +493,10 @@ univention-repository-update net
 	  </para>
 
 	  <para>
-		Der Zugriff auf das Univention Online-Repository wird durch Verwendung von Secure Apt
+		Der Zugriff auf das Univention Online-Repository wird durch Verwendung von Secure APT
 		über Signaturen kryptografisch gesichert. Für lokale Repositorys besteht diese
 		Möglichkeit aktuell noch nicht, so dass beim Erstellen eines Repositorys ein Hinweis
-		ausgegeben wird, wie Secure Apt mit der &ucsUCRV; <envar>update/secure_apt</envar>
+		ausgegeben wird, wie Secure APT mit der &ucsUCRV; <envar>update/secure_apt</envar>
 		deaktiviert werden kann. Diese Einstellung muss auf allen UCS-Systemen gesetzt werden,
 		die auf das Repository zugreifen.
 	  </para>
@@ -514,7 +514,7 @@ univention-repository-update net
 
 		<listitem><simpara>
 		  <command>univention-repository-update net</command> Bei dieser Variante wird das
-		  Repository mit einem angebenen anderen Repository-Server synchronisiert. Dieser ist
+		  Repository mit einem angegebenen anderen Repository-Server synchronisiert. Dieser ist
 		  in der &ucsUCRV; <envar>repository/mirror/server</envar> definiert (typischerweise
 		  <uri>updates.software-univention.de</uri>).
 		</simpara></listitem>
@@ -850,26 +850,26 @@ apt-cache search fax
 	  <itemizedlist>
 		<listitem> <simpara>
 		  Der <emphasis>Selektionsstatus</emphasis> beeinflusst das Verhalten bei der
-		  Aktualisierung eines Pakets. Durch <emphasis>Install</emphasis> wird ein Paket zur
-		  Installation ausgewählt. Ist ein Paket auf <emphasis>Hold</emphasis> konfiguriert,
+		  Aktualisierung eines Pakets. Durch <literal>Install</literal> wird ein Paket zur
+		  Installation ausgewählt. Ist ein Paket auf <literal>Hold</literal> konfiguriert,
 		  so wird es von weiterer Aktualisierung ausgenommen. Es existieren zwei Möglichkeiten
-		  ein Paket zu deinstallieren: Ein mit <emphasis>DeInstall</emphasis> entferntes Paket
+		  ein Paket zu deinstallieren: Ein mit <literal>DeInstall</literal> entferntes Paket
 		  hält lokal erzeugte Konfigurations-Daten weiterhin vor, während ein mit
-		  <emphasis>Purge</emphasis> entferntesPaket komplett gelöscht wird.
+		  <literal>Purge</literal> entferntesPaket komplett gelöscht wird.
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  Der <emphasis>Installationsstatus</emphasis> beschreibt den Status eines
 		  installierten Pakets im Hinblick auf kommende Aktualisierungen. Der Normalfall ist
-		  <emphasis>Ok</emphasis>, was dazu führt, dass ein Paket bei Vorhandensein einer
-		  aktuelleren Version aktualisiert würde. Ist ein Paket auf <emphasis>Hold</emphasis>
+		  <literal>Ok</literal>, was dazu führt, dass ein Paket bei Vorhandensein einer
+		  aktuelleren Version aktualisiert würde. Ist ein Paket auf <literal>Hold</literal>
 		  konfiguriert, so wird es von der Aktualisierung ausgenommen.
 		</simpara> </listitem>
 
 		<listitem><simpara>
 		  Der <emphasis>Paketstatus</emphasis> beschreibt den Zustand eines eingerichteten
-		  Pakets. Der Normalfall ist <emphasis>Installed</emphasis> für installierte und
-		  <emphasis>ConfigFiles</emphasis> für entfernte Pakete, alle übrigen Zustände
+		  Pakets. Der Normalfall ist <literal>Installed</literal> für installierte und
+		  <literal>ConfigFiles</literal> für entfernte Pakete, alle übrigen Zustände
 		  entstehen, wenn die Installation des Pakets in verschiedenen Phasen abgebrochen wurde.
 		</simpara></listitem>
 
@@ -884,7 +884,7 @@ apt-cache search fax
 	<para>
 	  Wenn verhindert werden soll, dass UCS-Systeme Installations-Vorgänge im Software-Monitor
 	  aufzeichnen (etwa weil keine Netzwerkverbindung zur Datenbank besteht), kann dies durch
-	  Setzen der &ucsUCRV; <envar>pkgdb/scan</envar> auf <emphasis>no</emphasis> abgeschaltet
+	  Setzen der &ucsUCRV; <envar>pkgdb/scan</envar> auf <literal>no</literal> abgeschaltet
 	  werden. Wenn die Aufzeichnungen danach wieder aktiviert werden, muss das Kommando
 	  <command>univention-pkgdb-scan</command> ausgeführt werden, damit die in der
 	  Zwischenzeit installierten Paketversionen in die Datenbank übernommen werden.

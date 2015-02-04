@@ -10,7 +10,7 @@
 	</para>
 
 	<para>
-	Nagios has a comprehensive collection of monitoring modulesg, the
+	Nagios has a comprehensive collection of monitoring modules, the
 	so-called Nagios plugins. In addition to polling system indicators
 	(e.g., CPU and memory utilisation, free disk space), they also allow
 	to test the availability and function of different services
@@ -275,7 +275,7 @@
 						<entry>UNIVENTION_NMBD</entry>
 						<entry>
 							tests the availability of the NMBD service,
-							which is responsible for the Netbios service in Samba.
+							which is responsible for the NetBIOS service in Samba.
 							If no process is running, a CRITICAL event is triggered.
 						</entry>
 					</row>
@@ -386,7 +386,7 @@
 						<entry>
 							<para>
 							tests the S.M.A.R.T. status of the hard drive <filename class="devicefile">/dev/sda</filename>.
-							Corresponding Nagios services exist for the hard drives sdb, sdc and sdd.
+							Corresponding Nagios services exist for the hard drives <filename class="partition">sdb</filename>, <filename class="partition">sdc</filename> and <filename class="partition">sdd</filename>.
 							</para>
 						</entry>
 					</row>
@@ -516,7 +516,7 @@
 							The plugin command to be requested. Each plugin command specifies a
 							predefined plugin execution. These are defined in the configuration
 							files in the <filename class="directory">/etc/nagios-plugins/config/</filename> directory,
-							e.g., <emphasis>check_disk</emphasis>.
+							e.g., <command>check_disk</command>.
 							</para>
 						</entry>
 					</row>
@@ -995,7 +995,7 @@
 
   <para>
 	This section describes the integration of an external plugin taking the plugin
-	<emphasis>check_e2fs_next_fsck</emphasis> as an example. The plugin checks whether a file system
+	<command>check_e2fs_next_fsck</command> as an example. The plugin checks whether a file system
 	check is scheduled and emits a warning if one is scheduled within seven days and an error status
 	if a file system check is scheduled for the next reboot.
   </para>
@@ -1033,7 +1033,7 @@
 	The Nagios plugin must now be registered. This is done using a macro in the
 	<filename>/etc/nagios-plugins/config/</filename> directory. For this, a file such as
 	<emphasis>local.cfg</emphasis> can be used, in which all the locally registered plugins are
-	entered. The following example registers the plugin <emphasis>check_e2fs_next_fsck</emphasis>:
+	entered. The following example registers the plugin <command>check_e2fs_next_fsck</command>:
   </para>
 <programlisting language="sh">
 define command{
@@ -1062,7 +1062,7 @@ define command{
 	The new plugin then only needs to be registered in &ucsUMC; as a
 	<guimenu>Nagios service</guimenu>, see <xref linkend="Nagios:Dienst"/>. The name registered under
 	<emphasis>command_name</emphasis> in the macro file must be entered as the
-	<guimenu>Plugin command</guimenu>, in this example <emphasis>check_fsck</emphasis>, and the
+	<guimenu>Plugin command</guimenu>, in this example <command>check_fsck</command>, and the
 	option <guimenu>Use NRPE</guimenu> enabled.
 	The newly registered service can now be assigned to individual systems, see <xref
 	linkend="nagios::hostconfig"/>.

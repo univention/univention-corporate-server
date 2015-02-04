@@ -14,7 +14,7 @@
   </para>
   <para>
 	Ein- und ausgehende Netzwerkverbindungen können über die in UCS
-	integrierte <emphasis>Univention Firewall</emphasis> auf Basis von iptables
+	integrierte <emphasis>Univention Firewall</emphasis> auf Basis von <command>iptable</command>
 	begrenzt werden (<xref linkend="ip-config:Paketfilter_mit_Univention_Firewall"/>).
   </para>
   <para>
@@ -1262,7 +1262,7 @@
 				<entry>Name</entry>
 				<entry>
 				  In dieses Eingabefeld muss ein beliebiger, aber eindeutiger Name für den
-				  DHCP-Pool eingetragen werden, z.B. <emphasis>testnetz.firma.com</emphasis>.
+				  DHCP-Pool eingetragen werden, z.B. <uri>testnetz.firma.com</uri>.
 				</entry>
 			  </row>
 			  <row>
@@ -1982,7 +1982,7 @@ univention-config-registry set squid/webports="80 443"
 
 	  <caution>
 		  <para>
-		Um zur verhindern, dass nicht authorisierte Benutzer trotzdem Webseiten abrufen können,
+		Um zur verhindern, dass nicht autorisierte Benutzer trotzdem Webseiten abrufen können,
 		sind weitere Maßnahmen erforderlich, damit diese Benutzer nicht am Proxy-Server vorbei auf
 		das Internet zugreifen können. Dies kann z.B. erreicht werden,
 		in dem in der Firewall alle HTTP-Anfragen mit Ausnahme des Proxys unterbunden werden.
@@ -2010,7 +2010,7 @@ univention-config-registry set squid/webports="80 443"
 
 		  <listitem><simpara>
 			Die Authentifizierung erfolgt über Kerberos. Benutzer, die an einem Windows-Client
-			angemeldet sind, der Mitglied einer Samba 4-Domäne ist, authentifzieren sich am Proxy mit
+			angemeldet sind, der Mitglied einer Samba 4-Domäne ist, authentifizieren sich am Proxy mit
 			dem Ticket, das sie im Rahmen der Domänenanmeldung erhalten haben. Um
 			Kerberos-Authentifizierung zu aktivieren muss das Paket
 			<emphasis>univention-squid-kerberos</emphasis> auf jedem Proxyserver installiert
@@ -2023,7 +2023,7 @@ univention-config-registry set squid/webports="80 443"
 	  <para>
 		Bei Verwendung von NTLM-Authentifizierung wird standardmäßig für jede HTTP-Anfrage eine NTLM-Authentifizierung durchgeführt. Wird beispielsweise die
 		Webseite <uri>http://www.univention.de</uri> aufgerufen, werden neben der eigentlichen
-		HTML-Seite auch weitere Unterseiten und Bilder nachgeladen. Die NTLM-Authentifierung kann
+		HTML-Seite auch weitere Unterseiten und Bilder nachgeladen. Die NTLM-Authentifizierung kann
 		domänenbezogenen zwischengespeichert werden: Wird die &ucsUCRV;
 		<envar>squid/ntlmauth/keepalive</envar> auf <emphasis>yes</emphasis> gesetzt, wird für
 		nachgelagerte HTTP-Anfragen derselben Domäne keine weitere NTLM-Authentifizierung
@@ -2052,7 +2052,7 @@ univention-config-registry set squid/webports="80 443"
 	  </figure>
 	  <para>
 		Angeforderte Dateien können außerdem auf Viren überprüft werden. Dabei kommt
-		in der Standardeinstellung der freie Virenscanner <emphasis>Clamav</emphasis> zum
+		in der Standardeinstellung der freie Virenscanner <application>ClamAV</application> zum
 		Einsatz. Die Integration weiterer Virenscanner ist möglich. Dies ist in der
 		erweiterten Netzwerk-Dokumentation beschrieben <biblioref linkend="ext-doc-net"/>.
 	  </para>

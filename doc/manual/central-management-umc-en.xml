@@ -412,7 +412,7 @@
 		<graphic scalefit="1" width="30%" fileref="illustrations40/umc_navigation_edit_en.png"/>
 	</figure>
 	<para>
-		Right-clicking on an element in the tree structure allows edititing
+		Right-clicking on an element in the tree structure allows editing
 		the properties of the container or the LDAP base with <guimenu>Edit</guimenu>.
 	</para>
 </section>
@@ -651,7 +651,7 @@
 			  Translated short descriptions can be saved in several languages so that the title of
 			  extended attributes is also output with other language settings in the respective
 			  national language. This can be done by assigning the respective short description to a
-			  language code (e.g., <emphasis>de_DE</emphasis> or <emphasis>fr_FR</emphasis>) in this
+			  language code (e.g., <literal>de_DE</literal> or <literal>fr_FR</literal>) in this
 			  input field.
 			</entry>
 		  </row>
@@ -668,8 +668,8 @@
 			<entry>
 			  Additional information displayed in the tool tip for an extended attribute can also be
 			  saved for several languages. This can be done by assigning the respective long
-			  description to a language code (e.g., <emphasis>de_DE</emphasis> or
-			  <emphasis>fr_FR</emphasis>) in this input field.
+			  description to a language code (e.g., <literal>de_DE</literal> or
+			  <literal>fr_FR</literal>) in this input field.
 			</entry>
 		  </row>
 		</tbody>
@@ -683,7 +683,7 @@
 		  <colspec colnum="2" colname="col2" colwidth="2*"/>
 		  <thead>
 			<row>
-			  <entry>Attribut</entry>
+			  <entry>Attribute</entry>
 			  <entry>Description</entry>
 			</row>
 		  </thead>
@@ -726,7 +726,7 @@
 		<colspec colnum="2" colname="col2" colwidth="2*"/>
 		<thead>
 		  <row>
-			<entry>Attribut</entry>
+			<entry>Attribute</entry>
 			<entry>Description</entry>
 		  </row>
 		</thead>
@@ -782,7 +782,7 @@
 		<colspec colnum="2" colname="col2" colwidth="2*"/>
 		<thead>
 		  <row>
-			<entry>Attribut</entry>
+			<entry>Attribute</entry>
 			<entry>Description</entry>
 		  </row>
 		</thead>
@@ -869,7 +869,7 @@
 			<entry>Translations of tab name</entry>
 			<entry>
 			  Translated tab names can be assigned to the corresponding language code
-			  (z.B. <emphasis>de_DE</emphasis> or <emphasis>fr_FR</emphasis>) in this input field.
+			  (z.B. <literal>de_DE</literal> or <literal>fr_FR</literal>) in this input field.
 			</entry>
 		  </row>
 
@@ -911,8 +911,8 @@
 			<entry>Translations of group name</entry>
 			<entry>
 			  To translate the name of the group, translated group names for the corresponding
-			  language code can be saved in this input field (e.g., <emphasis>de_DE</emphasis> or
-			  <emphasis>fr_FR</emphasis>).
+			  language code can be saved in this input field (e.g., <literal>de_DE</literal> or
+			  <literal>fr_FR</literal>).
 			</entry>
 		  </row>
 
@@ -1054,7 +1054,7 @@
 			<colspec colnum="2" colname="col2" colwidth="2*"/>
 			<thead>
 				<row>
-					<entry>Attribut</entry>
+					<entry>Attribute</entry>
 					<entry>Description</entry>
 				</row>
 			</thead>
@@ -1082,7 +1082,7 @@
 			<colspec colnum="2" colname="col2" colwidth="2*"/>
 			<thead>
 				<row>
-					<entry>Attribut</entry>
+					<entry>Attribute</entry>
 					<entry>Description</entry>
 				</row>
 			</thead>
@@ -1107,7 +1107,7 @@
 			<colspec colnum="2" colname="col2" colwidth="2*"/>
 			<thead>
 				<row>
-					<entry>Attribut</entry>
+					<entry>Attribute</entry>
 					<entry>Description</entry>
 				</row>
 			</thead>
@@ -1620,7 +1620,7 @@ univention-directory-manager shares/printer create \
 		<note>
 			<para>
 		  There must be a blank space between the print protocol and the URL target path in the
-		  parameter <emphasis>uri</emphasis>. A list of the print protocols can be found in <xref
+		  parameter <parameter class="option">uri</parameter>. A list of the print protocols can be found in <xref
 		  linkend="print::shares"/>
 			</para>
 		</note>
@@ -1656,7 +1656,7 @@ univention-directory-manager dhcp/host create \
 
 		<para>
 		  If it should be possible for a computer name to be resolved via DNS, the following
-		  commands can be used to configure a forward (host record) and reverse resolution (ptr
+		  commands can be used to configure a forward (host record) and reverse resolution (PTR
 		  record).
 		</para>
 		<programlisting language="sh">

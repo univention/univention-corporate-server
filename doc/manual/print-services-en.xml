@@ -27,12 +27,12 @@
 		files. These files include for example whether a printer can print in
 		colour, whether duplex printing is possible, whether there are several
 		paper trays, which resolutions are supported and which printer control
-		languages are supported (e.g., PCL or Postscript).
+		languages are supported (e.g., PCL or PostScript).
 	</para>
 	<para>
 		Print jobs are transformed by CUPS with the help of filters into a
 		format that the respective printer can interpret, for example into
-		Postscript for a Postscript-compatible printer.
+		PostScript for a PostScript-compatible printer.
 	</para>
 	<para>
 		UCS already includes a wide variety of filters and PPD
@@ -224,7 +224,7 @@
 							<uri>smb://win01/laser01</uri>. No Windows drivers are used in this.
 						</para>
 						<para>
-							Independant of these settings, the printer share can be mounted by other
+							Independent of these settings, the printer share can be mounted by other
 							Windows systems with the corresponding printer drivers.
 						</para>
 					</entry>
@@ -586,10 +586,10 @@
   <para>
 	Printer shares are usually operated using the Windows printer drivers
 	provided. The network printer can alternatively be set up on the
-	Windows side with a standard Postscript printer driver. If a colour
-	printer should be accessed, a driver for a Postscript-compatible
+	Windows side with a standard PostScript printer driver. If a colour
+	printer should be accessed, a driver for a PostScript-compatible
 	colour printer should be used on the Windows side, e.g., HP Color
-	Laserjet 8550.
+	LaserJet 8550.
   </para>
 
   <caution>
@@ -702,13 +702,13 @@
 		files. These files include for example whether a printer can print in
 		colour, whether duplex printing is possible, whether there are several
 		paper trays, which resolutions are supported and which printer control
-		languages are supported (e.g., PCL or Postscript).
+		languages are supported (e.g., PCL or PostScript).
 	</para>
 	<para>
 		In addition to the PPD files already included in the standard scope,
 		additional ones can be added via &ucsUMC;. The PPDs are generally
 		provided by the printer manufacturer and need to be copied into
-		the <filename>/usr/share/ppd</filename> directory on the print servers.
+		the <filename class="directory">/usr/share/ppd/</filename> directory on the print servers.
 	</para>
 	<para>
 		The printer driver lists are administrated in
@@ -742,10 +742,10 @@
 				<row>
 					<entry>Driver</entry>
 					<entry>
-						The path to the ppd file or to the <filename>/usr/share/ppd/</filename>
+						The path to the ppd file or to the <filename class="directory">/usr/share/ppd/</filename>
 						directory. For example, if the <filename>/usr/share/ppd/laserjet.ppd</filename>
-						should be used, <filename>laserjet.ppd</filename> must be entered here. gzip
-						compressed files (file ending .gz) can also be entered here.
+						should be used, <filename>laserjet.ppd</filename> must be entered here. <command>gzip</command>
+						compressed files (file ending <filename class="extension">.gz</filename>) can also be entered here.
 					</entry>
 				</row>
 				<row>

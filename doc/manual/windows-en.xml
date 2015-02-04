@@ -1351,7 +1351,7 @@ under the <emphasis>global_ignore_subtree</emphasis> setting.
 <section id="ad-connector:container-und-organisationseinheiten"><title>Containers and organisational units</title>
 <para>
 Containers and organisational units are synchronised together with their
-description. In addition, the <emphasis>cn=mail</emphasis> and <emphasis>cn=kerberos</emphasis>
+description. In addition, the <uri>cn=mail</uri> and <uri>cn=kerberos</uri>
 containers are ignored on both sides. Some particularities must be
 noted for containers on the AD side. In the <guimenu>User
   manager</guimenu> Active Directory offers no possibility to create
@@ -1411,14 +1411,14 @@ Active Directory can appear under a different name from in UCS.
   members are synchronised, but not the position in LDAP. If one of
   these groups is migrated on one side, the target container on the
   other side is identical, so that the DNs of the groups can no longer
-  be differentiated from this point onwards.
+  be differentiated from this point onward.
 </para>
 </listitem>
 <listitem>
 <para>Certain group names are converted using a mapping table so that,
   for example in a German language setup, the UCS group <emphasis>Domain
     Users</emphasis> is synchronised with the AD group
-  <emphasis>Domänen-Benutzer</emphasis>. When used in anglophone AD domains, this
+  <foreignphrase>Domänen-Benutzer</foreignphrase>. When used in anglophone AD domains, this
   mapping can result in germanophone groups' being created and
   should thus be deactivated in this case. This can be done using the
   &ucsUCRV; <envar>connector/ad/mapping/group/language</envar>
@@ -1441,15 +1441,15 @@ The complete table is:
 <tbody>
 <row>
 <entry>Domain Users</entry>
-<entry>Domänen-Benutzer</entry>
+<entry lang="de">Domänen-Benutzer</entry>
 </row>
 <row>
 <entry>Domain Admins</entry>
-<entry>Domänen-Admins</entry>
+<entry lang="de">Domänen-Admins</entry>
 </row>
 <row>
 <entry>Windows Hosts</entry>
-<entry>Domänencomputer</entry>
+<entry lang="de">Domänencomputer</entry>
 </row>
 </tbody>
 </tgroup>
@@ -1527,7 +1527,7 @@ The <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> users are e
 </listitem>
 <listitem>
 <para>AD and UCS create new users in a specific primary group (usually
-  <emphasis>Domain Users</emphasis> or <emphasis>Domänen-Benutzer</emphasis>) depending on the
+  <emphasis>Domain Users</emphasis> or <emphasis lang="de">Domänen-Benutzer</emphasis>) depending on the
   presetting. During the first synchronisation from UCS to AD the
   users are therefore always a member in this group.
   </para>
@@ -1559,7 +1559,7 @@ The <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> users are e
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Deactivation of the AD server und assignment of all FSMO roles to the UCS DC 
+		  Deactivation of the AD server and assignment of all FSMO roles to the UCS DC
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
@@ -1719,8 +1719,8 @@ ucr set connector/s4/mapping/group/grouptype=false
 		  When "<emphasis>Well Known</emphasis>" account and group objects
 		  (identified by their special RIDs) are synchronized into
 		  the UCS OpenLDAP, a listener module running on each UCS system
-		  sets a &ucsUCR; variable locally to map the english name to the non-english AD name.
-		  These variables are used to translate the english names used in the UCS configuration
+		  sets a &ucsUCR; variable locally to map the English name to the non-English AD name.
+		  These variables are used to translate the English names used in the UCS configuration
 		  files to the specific names used in AD.
 		  To give an example, if <emphasis>Domain Admins</emphasis> has a different name in the AD
 		  then the &ucsUCR; variable <envar>groups/default/domainadmins</envar> is set to that
@@ -1737,7 +1737,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	<para>
 	  This phase requires to log onto the Active Directory domain controller as the
-	  <emphasis>Administrator</emphasis> (or the equivalent non-english name).
+	  <emphasis>Administrator</emphasis> (or the equivalent non-English name).
 	  There a command needs to be started to copy the group
 	  policy files from the Active Directory SYSVOL share to the UCS SYSVOL share.
 	</para>
@@ -1751,12 +1751,12 @@ ucr set connector/s4/mapping/group/grouptype=false
 		<graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover3-en.png"/>
 	  </figure>
 
-	  It may be necessary to install the required robocopy tool, which is part of the Windows Server
+	  It may be necessary to install the required <command>robocopy</command> tool, which is part of the Windows Server
 	  2003 Resource Kit Tools. Starting with Windows 2008 the tool is already installed.
 	</para>
 
 	<para>
-	  Note: The <emphasis>/mir</emphasis> option of robocopy mirrors the specified source
+        Note: The <parameter class="option">/mir</parameter> option of <command>robocopy</command> mirrors the specified source
 	  directory to the destination directory. Please be aware that if you delete data in the
 	  source directory and execute this command a second time, this data will also be deleted in
 	  the destination directory.
@@ -1788,7 +1788,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Configure the IP address of the Active Directory domain controller as a virtual ethernet
+		  Configure the IP address of the Active Directory domain controller as a virtual Ethernet
 		  interface
 		</simpara></listitem>
 

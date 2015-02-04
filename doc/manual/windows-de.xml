@@ -313,10 +313,10 @@ instanceType: 4
 		  </para>
 
 		  <para>
-			Grundsätzlich sind die <emphasis>Gruppenrichtlinien</emphasis> (<emphasis>Group
-			Policies</emphasis> (GPO)) von den sehr ähnlich benannten
-			<emphasis>Gruppenrichtlinieneinstellungen</emphasis> (<emphasis>Group Policy
-			Preferences</emphasis> (GPP)) zu unterscheiden:
+			Grundsätzlich sind die <emphasis>Gruppenrichtlinien</emphasis> (<foreignphrase>Group
+			Policies</foreignphrase> (GPO)) von den sehr ähnlich benannten
+			<emphasis>Gruppenrichtlinieneinstellungen</emphasis> (<foreignphrase>Group Policy
+			Preferences</foreignphrase> (GPP)) zu unterscheiden:
 			<itemizedlist>
 			  <listitem><simpara>
 		        Die über <emphasis>Gruppenrichtlinien</emphasis> (GPOs) getroffenen Vorgaben sind
@@ -330,7 +330,7 @@ instanceType: 4
 				zudem dynamisch auf die Zielobjekte angewendet, wo hingegen die über
 				<emphasis>Gruppenrichtlinieneinstellungen</emphasis> (GPPs) getroffenen
 				Einstellungen statisch in die Registry von Windows-Clients eintragen werden (man
-				spricht hier auch von <emphasis>Tattooing</emphasis>).
+				spricht hier auch von <phrase>Tattooing</phrase>).
 			  </simpara></listitem>
 			</itemizedlist>
 		    Aus diesen Gründen sind <emphasis>Gruppenrichtlinien</emphasis> (GPOs) in den meisten
@@ -343,7 +343,7 @@ instanceType: 4
 			Gruppenrichtlinien werden im Gegensatz zu den UCS-Richtlinien (siehe <xref
 			linkend="central:policies"/>) nicht in &ucsUMC;, sondern mit einem  separaten Editor
 			konfiguriert, mit der <emphasis>Gruppenrichtlinienverwaltung</emphasis>, die Teil der
-			<emphasis>Remote Server Administration Tools</emphasis> (RSAT) ist. Die Einrichtung ist
+			<foreignphrase>Remote Server Administration Tools</foreignphrase> (RSAT) ist. Die Einrichtung ist
 			in <xref linkend="gpo:install"/> dokumentiert.
 		  </para>
 
@@ -1435,7 +1435,7 @@ unter der Einstellung <emphasis>global_ignore_subtree</emphasis>.
 <section id="ad-connector:container-und-organisationseinheiten"><title>Container und Organisationseinheiten</title>
 <para>
 Container und Organisationseinheiten werden zusammen mit ihrer Beschreibung
-synchronisiert. Die Container <emphasis>cn=mail</emphasis> und <emphasis>cn=kerberos</emphasis> werden auf beiden
+synchronisiert. Die Container <uri>cn=mail</uri> und <uri>cn=kerberos</uri> werden auf beiden
 Seiten ignoriert. Bei
 Containern sind einige Besonderheiten auf AD-Seite zu beachten. Active
 Directory bietet im <guimenu>Manager für Benutzer und Gruppen</guimenu> keine
@@ -1833,7 +1833,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	</para>
 
 	<para>
-	  Hinweis: Die robocopy-Option <emphasis>/mir</emphasis> spiegelt das Quellverzeichnis mit dem
+	  Hinweis: Die <command>robocopy</command>-Option <parameter class="option">/mir</parameter> spiegelt das Quellverzeichnis mit dem
 	  Zielverzeichnis. Es muss beachtet werden das bei einem erneuten Aufruf des Tools Dateien, die
 	  im Quellverzeichnis gelöscht wurden auch im Zielverzeichnis gelöscht werden.
 	</para>
@@ -1894,8 +1894,8 @@ ucr set connector/s4/mapping/group/grouptype=false
 samba-tool domain level show
 		  </programlisting>
 
-		  Wenn das Kommando die Meldung <guimenu>ATTENTION: You run SAMBA 4 on a forest function
-		  level lower than Windows 2000 (Native)</guimenu> anzeigt müssen die folgenden Befehle
+		  Wenn das Kommando die Meldung <foreignphrase>ATTENTION: You run SAMBA 4 on a forest function
+		  level lower than Windows 2000 (Native)</foreignphrase> anzeigt müssen die folgenden Befehle
 		  aufgerufen werden:
 
 		  <programlisting language="sh">

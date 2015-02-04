@@ -256,7 +256,7 @@
                         <entry>
                             In diesem Eingabefeld kann ein abweichendes Heimatverzeichnis für das
                             Rechner-Konto eingetragen werden. Der automatisch eingestellte
-                            Vorgabewert für das Heimatverzeichnis lautet <filename>/dev/null</filename>.
+                            Vorgabewert für das Heimatverzeichnis lautet <filename class="device">/dev/null</filename>.
                         </entry>
                     </row>
                     <row>
@@ -534,7 +534,7 @@
             <para>
                 Die zu verwendenden Treiber werden beim Systemstart automatisch erkannt und
                 durch den Device Manager udev geladen. Dabei werden außerdem die notwendigen
-                System-Verknüpfungen unter <filename>/dev/</filename> angelegt. Wenn Treiber nicht erkannt
+                System-Verknüpfungen unter <filename class="directory">/dev/</filename> angelegt. Wenn Treiber nicht erkannt
                 werden (was vorkommen kann, wenn keine entsprechenden Hardware-IDs registriert
                 sind oder Hardware verwendet wird, die nicht automatisch erkannt werden
                 kann, etwa ISA-Steckkarten), so können zu ladende Kernel-Module
@@ -555,7 +555,7 @@
             <para>
                 Wenn doch externe Treiber oder Kernelmodule benötigt werden, können diese über <emphasis>Dynamic Kernel Module Support</emphasis> (DKMS) eingebunden werden.
                 Es stellt eine standardisierte Schnittstelle für Kernelquellen bereit und erlaubt es, Module automatisch für jeden installierten Kernel zu übersetzen.
-                Dazu müssen neben dem Paket <emphasis>dkms</emphasis> auch die Kernel-Header-Pakete <emphasis>univention-kernel-headers</emphasis> für die gewünschten Kernel installiert werden.
+                Dazu müssen neben dem Paket <package>dkms</package> auch die Kernel-Header-Pakete <package>univention-kernel-headers</package> für die gewünschten Kernel installiert werden.
                 Zu beachten ist, dass nicht alle externen Kernelmodule mit allen Kerneln kompatibel sind.
             </para>
         </section>
@@ -584,7 +584,7 @@
                 <filename>/boot/grub/grub.cfg</filename> abgelegt. Diese Datei wird automatisch generiert,
                 es stehen alle installierten Kernel-Pakete zur Auswahl.
                 Durch Auswahl der Option <guimenu>Memory test</guimenu> kann das
-                Speicher-Testprogramm Memtest86+ gestartet werden, das Konsistenzprüfungen auf
+                Speicher-Testprogramm <command>Memtest86+</command> gestartet werden, das Konsistenzprüfungen auf
                 dem Arbeitsspeicher durchführt.
             </para>
             <para>
@@ -595,11 +595,11 @@
             <para>
                 In der Grundeinstellung wird in einen 800x600 Pixel großen Bildschirm unter
                 16 Bit Farbtiefe gewechselt. Durch die &ucsUCRV; <envar>grub/gfxmode</envar> kann ein anderer Modus ausgewählt
-                werden. Es werden nur Auflösungen unterstützt, die über VESA Bios Extentions
+                werden. Es werden nur Auflösungen unterstützt, die über VESA BIOS Extentions
                 gesetzte werden können. Eine Liste der verfügbaren Modi findet sich unter
                 <ulink url="http://en.wikipedia.org/wiki/VESA_BIOS_Extensions"/>. Die Eingabe
                 erfolgt im Format <emphasis>HORIZONTALxVERTIKAL@FARBTIEFEBIT</emphasis>, also
-                z.B. <emphasis>1024x768@16</emphasis>.
+                z.B. <literal>1024x768@16</literal>.
             </para>
             <para>
                 Kernel-Optionen für die gestarteten Linux-Kernel können mit
@@ -609,15 +609,15 @@
             <para>
                 Die grafische Darstellung während des Bootvorgangs - der sogenannte
                 Splash-Screen - kann durch Setzen der &ucsUCRV; <envar>grub/bootsplash</envar> auf
-                <emphasis>nosplash</emphasis> deaktiviert werden.
+                <literal>nosplash</literal> deaktiviert werden.
             </para>
             <para>
                 In älteren Xen-Umgebungen wird zum Booten paravirtualisierter Systeme
                 noch eine Version von PyGrub verwendet, die
-                auf die ältere GRUB 1-Konfigurationsdatei <filename>/goot/grub/menu.lst</filename>
+                auf die ältere GRUB 1-Konfigurationsdatei <filename>/boot/grub/menu.lst</filename>
                 angewiesen ist. Diese wird automatisch erzeugt, sofern sie noch nicht existiert.
                 Dieses Verhalten kann durch Setzen der
-                &ucsUCRV; <envar>grub/generate-menu-lst</envar> auf <emphasis>no</emphasis> deaktiviert werden.
+                &ucsUCRV; <envar>grub/generate-menu-lst</envar> auf <literal>no</literal> deaktiviert werden.
             </para>
         </section>
 
@@ -1013,7 +1013,7 @@ ucr unset umc/modules/setup/network/disabled/by
 					  Nach einem Klick auf <guimenu>Weiter</guimenu> kann dem VLAN-Interface eine
 					  IP-Adresse zugewiesen werden. Die Einstellungsmöglichkeiten sind dieselben wie in <xref
 					  linkend="computers:ipv4"/> und <xref linkend="computers:ipv6"/> beschrieben.
-					  Bei der Vergabe einer IP-Adresse muß darauf geachtet werden, daß die Adresse zum zugeordneten VLAN-Adressbereich passt.
+					  Bei der Vergabe einer IP-Adresse muss darauf geachtet werden, dass die Adresse zum zugeordneten VLAN-Adressbereich passt.
 					</para>
 				  </section>
 				</section>
@@ -1082,7 +1082,7 @@ ucr unset umc/modules/setup/network/disabled/by
 					Unter <guimenu>Auflösung des primären Monitors</guimenu> ist die
                     Bildschirmauflösung des Hauptmonitors einzutragen. Die Angabe von
                     Breite und Höhe in Pixeln ist durch ein "x" zu trennen,
-					z.B. <emphasis>1024x768</emphasis> (<envar>xorg/resolution</envar>).
+					z.B. <literal>1024x768</literal> (<envar>xorg/resolution</envar>).
 					</simpara>
 				</listitem>
 				<listitem>
@@ -1407,9 +1407,9 @@ univention-config-registry set dns/forwarder1?192.168.0.2
 
             <section id="computers:Suche_nach_Variablen_und_gesetzten_Werten"><title>Suche nach Variablen und gesetzten Werten</title>
                 <para>
-                    Mit dem Parameter <emphasis>search</emphasis> kann nach einer Variable gesucht
+                    Mit dem Parameter <parameter class="command">search</parameter> kann nach einer Variable gesucht
                     werden. Dieser Befehl sucht nach Variablennamen, welche die Zeichenkette
-                    <emphasis>nscd</emphasis> enthalten und gibt diese mit den aktuellen Belegungen aus:
+                    <wordasword>nscd</wordasword> enthalten und gibt diese mit den aktuellen Belegungen aus:
                 </para>
                     <programlisting language="sh">
 univention-config-registry search nscd
@@ -1417,7 +1417,7 @@ univention-config-registry search nscd
                 <para>
                     Es kann alternativ auch nach gesetzten Variablen-Werten gesucht
                     werden. Dieser Aufruf sucht nach allen Variablen, die auf
-                    <emphasis>master.example.com</emphasis> gesetzt sind:
+                    <literal>master.example.com</literal> gesetzt sind:
                 </para>
                     <programlisting language="sh">
 univention-config-registry search --value master.example.com
@@ -1431,8 +1431,8 @@ univention-config-registry search --value master.example.com
 
             <section id="computers:Loeschen_von_UCR-Variablen"><title>Löschen von UCR-Variablen</title>
                 <para>
-                    Mit dem Aufrufparameter <emphasis>unset</emphasis> kann eine Variable entfernt werden.
-                    Das folgende Beispiel löscht die Variable <emphasis>dns/forwarder2</emphasis>. Auch hier
+                    Mit dem Aufrufparameter <parameter class="command">unset</parameter> kann eine Variable entfernt werden.
+                    Das folgende Beispiel löscht die Variable <envar>dns/forwarder2</envar>. Auch hier
                     können mehrere zu löschende Variablen übergeben werden:
                 </para>
                     <programlisting language="sh">
@@ -1442,7 +1442,7 @@ univention-config-registry unset dns/forwarder2
 
             <section id="computers:Neuerzeugung_von_Konfigurationsdateien_aus_ihrem_Template"><title>Neuerzeugung von Konfigurationsdateien aus ihrem Template</title>
                 <para>
-                    Mit dem Aufrufparameter <emphasis>commit</emphasis> wird eine Konfigurationsdatei
+                    Mit dem Aufrufparameter <parameter class="command">commit</parameter> wird eine Konfigurationsdatei
                     aus ihrem Template neu erzeugt. Der Name der Konfigurationsdatei ist
                     als Parameter anzugeben, z.B.:
                 </para>
@@ -1479,7 +1479,7 @@ univention-config-registry shell ldap/server/name
                 <para>
                     Damit &ucsUCR;-Variablen als Umgebungsvariablen in einem
                     Shell-Skript eingelesen werden, muss die Ausgabe von &ucsUCR;
-                    durch den Befehl <emphasis>eval</emphasis> ausgeführt werden:
+                    durch den Befehl <command>eval</command> ausgeführt werden:
                 </para>
                     <programlisting language="sh">
 # eval "$(univention-config-registry shell ldap/server/name)"
@@ -1541,11 +1541,11 @@ master.firma.de
                     vorgenommen wurden. Wenn Konfigurationsdateien nicht mehr im
                     Auslieferungszustand vorliegen, werden diese nicht
                     überschrieben. Stattdessen wird eine neue Version im selben
-                    Verzeichnis mit der Endung <emphasis>.debian.dpkg-new</emphasis> abgelegt. Sollen
+                    Verzeichnis mit der Endung <filename class="extension">.debian.dpkg-new</filename> abgelegt. Sollen
                     Änderungen an &ucsUCR;-Templates vorgenommen werden, werden diese
                     Templates bei der Aktualisierung ebenfalls nicht überschrieben und im
-                    selben Verzeichnis mit der Endung <emphasis>.dpkg-new</emphasis> oder
-                    <emphasis>.dpkg-dist</emphasis> abgelegt. Entsprechenden Hinweise werden in die
+                    selben Verzeichnis mit der Endung <filename class="extension">.dpkg-new</filename> oder
+                    <filename class="extension">.dpkg-dist</filename> abgelegt. Entsprechenden Hinweise werden in die
                     Log-Datei <filename>/var/log/univention/updater.log</filename> geschrieben.
                     Dies tritt nur auf, wenn UCR-Templates lokal angepasst werden.
 				</para>
@@ -1810,7 +1810,7 @@ auth/sshd/restrict: yes
                 </para>
                 <para>
                     Über die &ucsUCRV; <envar>logrotate/compress</envar> kann konfiguriert werden, ob
-                    die älteren Logdateien zusätzlich mit Gzip komprimiert werden sollen.
+                    die älteren Logdateien zusätzlich mit <command>gzip</command> komprimiert werden sollen.
                 </para>
             </section><!-- Logdateien -->
 
@@ -1990,7 +1990,7 @@ auth/sshd/restrict: yes
 						</listitem>
 						<listitem>
 							<simpara>
-							Standardmäßig wird der Crob-Job als Benutzer <emphasis>root</emphasis> ausgeführt. Mit
+							Standardmäßig wird der Cron-Job als Benutzer <emphasis>root</emphasis> ausgeführt. Mit
                             <command>cron/JOBNAME/user</command> kann ein abweichender Benutzer
 							angegeben werden.
 							</simpara>

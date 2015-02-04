@@ -673,7 +673,7 @@
 			  Damit der Titel von erweiterten Attributen auch mit anderen Spracheinstellungen in der
 			  jeweiligen Landessprache ausgegeben wird, können übersetzte Kurzbeschreibungen für
 			  mehrere Sprachen hinterlegt werden. Dazu kann in diesem Eingabefeld einem Sprachcode
-			  (z.B. <emphasis>de_DE</emphasis> oder <emphasis>fr_FR</emphasis>) die entsprechend
+			  (z.B. <literal>de_DE</literal> oder <literal>fr_FR</literal>) die entsprechend
 			  übersetzte Kurzbeschreibung zugeordnet werden.
 			</entry>
 		  </row>
@@ -689,8 +689,8 @@
 			<entry>
 			  Zusätzliche Hinweise, die im Tooltip für ein erweitertes Attribut angezeigt werden,
 			  können ebenfalls für mehrere Sprachen hinterlegt werden. Dazu kann in diesem
-			  Eingabefeld einem Sprachcode (z.B. <emphasis>de_DE</emphasis> oder
-			  <emphasis>fr_FR</emphasis>) die entsprechend übersetzte Langbeschreibung zugeordnet werden.
+			  Eingabefeld einem Sprachcode (z.B. <literal>de_DE</literal> oder
+			  <literal>fr_FR</literal>) die entsprechend übersetzte Langbeschreibung zugeordnet werden.
 			</entry>
 		  </row>
 		</tbody>
@@ -863,7 +863,7 @@
 				konfiguriert, wird dessen Eingabefeld von diesem erweiterten Attribut
 				überschrieben. Der UDM-Attributname kann mit dem Befehl
 				<command>univention-directory-manager</command> ermittelt werden (siehe <xref
-				linkend="central:udm"/>). Es ist zu beachten, daß diese Option bei Pflichtfeldern zu
+				linkend="central:udm"/>). Es ist zu beachten, dass diese Option bei Pflichtfeldern zu
 				Problemen führen kann.
 			  </entry>
 			</row>
@@ -896,8 +896,8 @@
 			  <entry>Übersetzung des Karteikartennamens</entry>
 			  <entry>
 				Um den Namen der Karteikarte zu übersetzen, können in diesem Eingabefeld übersetzte
-				Karteikartennamen zum entsprechenden Sprachcode (z.B. <emphasis>de_DE</emphasis>
-				oder <emphasis>fr_FR</emphasis>) hinterlegt werden.
+				Karteikartennamen zum entsprechenden Sprachcode (z.B. <literal>de_DE</literal>
+				oder <literal>fr_FR</literal>) hinterlegt werden.
 			  </entry>
 			</row>
 
@@ -907,7 +907,7 @@
 				Ist diese Option aktiviert, wird die betreffende Karteikarte überschrieben, bevor
 				erweiterte Attribute darauf platziert werden. Mit Hilfe dieser Option können alle
 				vorhandenen Eingabefelder auf einer vorgegebenen Karteikarte ausgeblendet werden. Es
-				ist zu beachten, daß diese Option bei Pflichtfeldern zu Problemen führen
+				ist zu beachten, dass diese Option bei Pflichtfeldern zu Problemen führen
 				kann. Verwendet die zu überschreibende Karteikarte Übersetzungen muss die
 				überschreibende Karteikarte ebenfalls identische Übersetzungen mitbringen.
 			  </entry>
@@ -940,8 +940,8 @@
 			  <entry>Übersetzung des Gruppennamens</entry>
 			  <entry>
 				Um den Namen der Gruppe zu übersetzen, können in diesem Eingabefeld übersetzte
-				Gruppennamen zum entsprechenden Sprachcode (z.B. <emphasis>de_DE</emphasis> oder
-				<emphasis>fr_FR</emphasis>) hinterlegt werden.
+				Gruppennamen zum entsprechenden Sprachcode (z.B. <literal>de_DE</literal> oder
+				<literal>fr_FR</literal>) hinterlegt werden.
 			  </entry>
 			</row>
 
