@@ -4,18 +4,18 @@
 
   <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
   <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
-  <!ENTITY changelog SYSTEM "changelog-4.0-0.xml">
+  <!ENTITY changelog SYSTEM "changelog-4.0-1.xml">
 
   %entities;
 ]>
-<book lang="en" id="releasenotes-4.0-0-en">
+<book lang="en" id="releasenotes-4.0-1-en">
 	<bookinfo>
-		<title>UCS 4.0-0 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.0-0</subtitle>
+		<title>UCS 4.0-1 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.0-1</subtitle>
 		<revhistory>
 			<revision>
-				<revnumber>4.0-0</revnumber>
-				<date> November 2014</date>
+				<revnumber>4.0-1</revnumber>
+				<date>January 2015</date>
 			</revision>
 		</revhistory>
 
@@ -25,7 +25,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2014 Univention GmbH
+				(c) 2002-2015 Univention GmbH
 			</para>
 
 			<para>
@@ -52,51 +52,15 @@
 		<title>Release highlights</title>
 
 		<para>
-		  With &ucsUCS; 4.0-0, the fourth major release of &ucsUCS; (UCS) is
-		  now available.  It provides several substantial feature improvements
-		  and extensions, new properties as well as various improvements and
+		  With &ucsUCS; 4.0-1, the first point release of &ucsUCS; (UCS) 4.0 is
+		  now available.  It provides various improvements and
 		  bugfixes. An overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 		  <listitem><para>
-			The design and the usability of the graphical administration interface &ucsUMC; were
-			completely revamped. By using a responsive design, &ucsUMC; provides improved
-			compatibility for tablets and smartphones.
 		  </para></listitem>
 
-		  <listitem><para>
-			In addition to local virtualization servers, the UCS Virtual Machine Manger (UVMM) can
-			now also manage OpenStack or Amazon EC2 environments. This allows the setup of hybrid cloud
-			scenarios out-of-the-box with UCS.
-		  </para></listitem>
-
-		  <listitem><para>
-			UCS 4.0 is based on Debian GNU/Linux 7.7 (Wheezy). More than 16,000 source packages were
-			updated. Selected core components, e.g. OpenLDAP (2.4.40), Samba (4.2rc2) or the
-			Linux kernel (3.16) are more recent in UCS compared to Debian GNU/Linux 7.7.
-		  </para></listitem>
-
-		  <listitem><para>
-			The installation of UCS has been simplified significantly. The base installation is now done
-			using the Debian installer and it is concluded with a web-based configuration of the system.
-			The same, web-based system is also used for the manual configuration of cloud images or other appliances.
-		  </para></listitem>
-
-		  <listitem><para>
-			The performance of the OpenLDAP directory service has been significantly improved. By
-			default the memory-mapped storage backend (MDB) is now used when installing UCS. 
-		  </para></listitem>
-
-		  <listitem><para>
-			The management of applications in the UCS domain has been simplified through a
-			centralised App Center. This allows the installation of applications in the entire
-			domain from a single system.
-		  </para></listitem>
-
-		  <listitem><para>
-			UCS now also supports the installation on systems using UEFI SecureBoot.
-		  </para></listitem>
 		</itemizedlist>
 	</chapter>
 
@@ -125,52 +89,16 @@
 		  </para>
 		</section>
 
-		<section id="relnotes:mix">
-		  <title>Mixed operation with older UCS installations</title>
-		  <para>
-			UCS 4.0 supports mixed operation with UCS 3.2-4 systems, i.e. not all systems must be
-			updated in the same maintenance windows. Mixed operation with older UCS versions such as
-			UCS 3.1 is not supported.
-		  </para>
-		</section>
-
-		<section id="relnotes:apps">
-		  <title>Univention App Center</title>
-		  <para>
-			If applications have been installed from the Univention App Center, the update can only
-			be performed once all installed applications are available in a compatible
-			version. Some applications are updated to newer versions during the update. If an
-			application is not yet available for UCS 4.0, the release date can be
-			obtained from the application vendor.
-		  </para>
-
-		  <para>
-			If &ucsUCC; 1.0 is in use and the update to &ucsUCC; 2.0 should be performed at a later
-			time, the update to the latest available &ucsUCC; 1.0 version should be made before
-			updating to UCS 4.0:
-
-			<programlisting>
-eval "$(ucr shell version/version version/patchlevel)"
-univention-add-app ucc_20140115
-univention-upgrade --updateto $version_version-$version_patchlevel
-			</programlisting>
-
-			A detailed overview of the changes can be found in the UCC 1.0 rev3 release notes:
-			<ulink url="http://download.univention.de/doc/release-notes-ucc-1.0-rev3.pdf"/>.
-		  </para>
-		</section>
-
-		<section id="relnotes:samba">
-		  <title>Deprecation of Windows NT domain controller functionality</title>
-		  <para>
-			The use of Windows NT domain services - as traditionally provided by Samba 3 - is no
-			longer recommended with UCS 4.0. Windows NT domain services can no longer be selected
-			during the installation of UCS and in the Univention App Center. We recommend the
-			migration to the Active Directory domain services provided by Samba 4. The migration is
-			documented in the Univention Wiki:
-			<ulink url="http://wiki.univention.de/index.php?title=Migration_from_Samba_3_to_Samba_4"/>.
-		  </para>
-		</section>
+		<!-- <section id="relnotes:apps"> -->
+		<!--   <title>Univention App Center</title> -->
+		<!--   <para> -->
+		<!-- 	If applications have been installed from the Univention App Center, the update can only -->
+		<!-- 	be performed once all installed applications are available in a compatible -->
+		<!-- 	version. Some applications are updated to newer versions during the update. If an -->
+		<!-- 	application is not yet available for UCS 4.0, the release date can be -->
+		<!-- 	obtained from the application vendor. -->
+		<!--   </para> -->
+		<!-- </section> -->
 
 		<section id="relnotes:32bit">
 			<title>UCS installation DVDs only available for 64 bit</title>
@@ -208,46 +136,6 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 		  These tools are installed on all system roles by default.
 		</para>
 
-		<section id="relnotes:removed">
-		  <title>Removed/unspported Components</title>
-		  <para>
-			Some components have been removed and are not shipped any longer with UCS 4.0:
-		  </para>
-
-		  <itemizedlist>
-			<listitem>
-			  <para>
-				The <application>Xen</application> hypervisor has been removed and is no longer supported in
-				the UCS Virtual Machine Manager. The migration to <application>KVM</application> is
-				described in <xref linkend="ext-doc-uvmm"/>.
-			  </para>
-			</listitem>
-
-			<listitem>
-			  <para>
-				The Scalix LDAP schema has been removed in UCS 4.0. All Scalix-specific attributes
-				need to be removed from the LDAP directory before updating.
-			  </para>
-			</listitem>
-
-			<listitem>
-			  <para>
-				<application>PostgreSQL 8.3</application> is no longer provided in UCS 4.0. The
-				migration of the databases to PostgreSQL 8.4 is described in <ulink
-				url="http://sdb.univention.de/1249">SDB article 1249</ulink>.
-			  </para>
-			</listitem>
-
-			<listitem>
-			  <para>
-				<application>Cyrus 2.2</application> is no longer provided in UCS 4.0. The migration
-				of the mail spool to Cyrus 2.4 is described in <ulink
-				url="http://sdb.univention.de/1213">SDB article 1213</ulink>.
-			  </para>
-			</listitem>
-		  </itemizedlist>
-		</section>
-
 	</chapter>
 
 	<chapter id="relnotes:post">
@@ -259,15 +147,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 		  command <command>univention-run-join-scripts</command> as user
 		  <emphasis>root</emphasis>.
 		</para>
-<!-- TODO: translate
-		<para>
-			Wenn die Applikation <emphasis>Management-Server für KVM und Cloud-Instanzen</emphasis>
-			zusammen mit KVM Virtualisierungsservern vor dem Update in der Domäne betrieben wurden,
-			müssen die mit dem Update hinzugekommenen Profile für virtuelle Maschinen mit UCS-4.0
-			angepasst werden. Wenn das Bridge-Interface auf den KVM Servern nicht <emphasis>br0</emphasis>
-			ist, sollte das Profil entsprechend der Beschreibung in <xref linkend="ucs-uvmm-profile"/> angepasst werden.
-		</para>
--->
+
 		<para>
 		  Subsequently the UCS system needs to be restarted.
 		</para>
@@ -280,7 +160,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 	  <section id="relnotes:instprofil">
 		<title>Network-based installation of UCS</title>
 		<para>
-		  The profile-based UCS network installation is not yet available in UCS 4.0-0. It will be
+		  The profile-based UCS network installation is not yet available in UCS 4.0-1. It will be
 		  provided at a later date. Please refer to our issue tracker for further details:
 		  <ulink url="&ucsbug;35537">Bug 35537</ulink>.
 		</para>
@@ -366,7 +246,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-		  Listed are the changes since UCS 3.2-4:
+		  Listed are the changes since UCS 4.0-0:
 		</para>
 
 		&changelog;
