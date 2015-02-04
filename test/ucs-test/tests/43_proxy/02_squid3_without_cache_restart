@@ -5,44 +5,25 @@
 ## packages: [univention-squid]
 ## bugs: [33332, 35421]
 
+from essential.simplesquid import SimpleSquid
 from univention.config_registry import handler_set
-import subprocess
-import time
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 
 
-def returncode(cmd):
-	pop = subprocess.Popen(cmd)
-	pop.communicate()
-	return pop.returncode
-
-def restart_squid():
-	return returncode(["/etc/init.d/squid3", "restart"])
-
-def squid_not_running():
-	return returncode(["squid3", "-k", "check"])
-
 def main():
 	fail = False
+	squid = SimpleSquid()
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		handler_set(['squid/cache=false'])
-		restart_squid()
-
-		# Give 5 seconds max for squid to be ready
-		for interval in xrange(5):
-			if squid_not_running():
-				fail = True
-				time.sleep(1)
-			else:
-				fail = False
-				break
+		squid.restart()
+		fail = not squid.is_running()
 
 	utils.wait_for_replication_and_postrun()
-	restart_squid()
+	squid.restart()
 
 	if fail:
-		utils.fail('quid/cache=false, squid3 is not able to restart')
+		utils.fail('quid/cache=false, %s is not able to restart' % (squid.basename,))
 
 
 if __name__ == '__main__':
