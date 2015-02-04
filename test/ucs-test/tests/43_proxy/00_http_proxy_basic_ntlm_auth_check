@@ -78,5 +78,7 @@ def main():
 				# Perform the checks
 				checkAuths(host, passwd, url, state, expect_wrong_password)
 
+	subprocess.call(["/etc/init.d/squid3", "restart"])
+
 if __name__ == '__main__':
 	main()

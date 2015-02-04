@@ -1,0 +1,90 @@
+#!/usr/share/ucs-test/runner python
+## desc: http-proxy-ntlm-auth-perfomance-check
+## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave]
+## tags: [apptest]
+## exposure: dangerous
+## packages: [univention-squid]
+
+from univention.config_registry import handler_set, handler_unset
+import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
+
+import pycurl
+import os
+import sys
+import subprocess
+import time
+
+MAX_DURATION = 60
+
+def doJobs(c, num):
+	children = []
+	for job in range(num):
+		child = os.fork()
+		if child:
+			children.append(child)
+		else:
+			# run the job and exit
+			c.perform()
+			# check if ntlm auth is available
+			if c.getinfo(pycurl.PROXYAUTH_AVAIL) is not pycurl.HTTPAUTH_NTLM:
+				sys.exit(2)
+			# check http code
+			if c.getinfo(pycurl.HTTP_CODE) is not 200:
+				sys.exit(1)
+			sys.exit(0)
+	# wait for the children and check the status
+	for child in children:
+		pid, status = os.waitpid(child, 0)
+		if not pid or os.WEXITSTATUS(status) != 0:
+			utils.fail('job failed with %s' % os.WEXITSTATUS(status))
+
+def main():
+
+	print 
+	ucr = ucr_test.UCSTestConfigRegistry()
+	ucr.load()
+
+	# set up squid
+	handler_unset(['squid/basicauth'])
+	handler_unset(['squid/krb5auth'])
+	handler_set(['squid/ntlmauth=yes'])
+	subprocess.call(["/etc/init.d/squid3", "restart"])
+	time.sleep(3)
+	
+	# set up curl
+	host = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+	url = 'http://' + host + '/ucs-overview/'
+	account = utils.UCSTestDomainAdminCredentials()
+	c = pycurl.Curl()
+	c.setopt(pycurl.PROXY, host)
+	c.setopt(pycurl.PROXYPORT, 3128)
+	c.setopt(pycurl.PROXYAUTH, pycurl.HTTPAUTH_NTLM)
+	c.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (account.username, account.bindpw))
+	c.setopt(pycurl.URL, url)
+	c.setopt(pycurl.NOBODY, 1)
+
+	master_pid = os.getpid()
+	start = int(time.time())
+	try:
+		# aftert squid restart the ntlm help needs to 
+		# get the NT hashes via ldap, this takes a while
+		# so fewer tests for this first run
+		for job in range(1):
+			doJobs(c, 30)
+		# now the password is chached
+		for job in range(60):
+			doJobs(c, 40)
+	finally:
+		if master_pid == os.getpid():
+			end = int(time.time())
+			duration = end - start
+			print 'Test took %s seconds' % str(duration)
+			print 'Cleanup ... '
+			ucr.revert_to_original_registry()
+			subprocess.call(["/etc/init.d/squid3", "restart"])
+			if duration > MAX_DURATION:
+				utils.fail('test took to long (max %s)' % MAX_DURATION)
+
+if __name__ == '__main__':
+	main()
