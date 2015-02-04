@@ -203,6 +203,7 @@ gnome-session
 gnome-panel
 gnome-control-center
 libreoffice
+openjdk-7-jdk
 
 /* Development + Packaging Tools */
 univention-directory-manager-module-example
@@ -566,6 +567,41 @@ imapsync
 attr
 lsb-core
 
+/* 7i App*/
+libapache2-mod-python
+php5-sqlite
+python-clearsilver
+python-genshi
+libapache2-svn
+trac
+
+/* asterisk4ucs App */
+asterisk
+fxload
+asterisk-modules
+asterisk-core-sounds-en-gsm
+asterisk-config
+asterisk-voicemail
+asterisk-moh-opsound-gsm
+libfile-fcntllock-perl
+libid3tag0
+dahdi
+sox
+vpb-driver-source
+autopoint
+freetds-common
+dahdi-linux
+libalgorithm-diff-xs-perl
+libcorosync4
+libopenais3
+libopenr2-3
+libpri1.4
+libsox-fmt-mp3
+libss7-1
+libalgorithm-diff-perl
+libalgorithm-merge-perl
+libmail-sendmail-perl
+
 /* Horde App */
 libssh2-php
 pear-horde-channel
@@ -692,10 +728,9 @@ rsyslog-relp
 /* kivitendo: texlive-generic-extra (Bug #33611) */
 texlive-generic-extra
 
-/* kolab-enterprise (Bug #34260) */
+/* kolab-enterprise App (Bug #34260) */
 python-dateutil
 python-tz
-libboost-thread1.42.0
 libossp-uuid16
 libxerces-c3.1
 php-auth
@@ -707,6 +742,14 @@ libmail-spf-perl
 manpages-dev
 re2c
 zendframework
+altermime
+libboost-thread1.49.0
+libjansson4
+php-mdb2-driver-mysql
+php-net-ldap2
+php-net-url2
+ripole
+smarty3
 
 /* pulse App */
 fonts-arphic-bkai00mp

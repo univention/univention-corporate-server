@@ -1,3 +1,10 @@
+univention-dvd (0.2.29-1) unstable; urgency=low
+
+  * added several packages to maintained
+    Bug #36583, Bug #36609, Bug #36735, Bug #37669 
+
+ -- Felix Botner <botner@univention.de>  Wed, 04 Feb 2015 15:23:40 +0100
+
 univention-dvd (0.2.28-2) unstable; urgency=low
 
   * Bug #37613: Fix net installer hook script
