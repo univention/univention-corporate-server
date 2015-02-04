@@ -85,11 +85,17 @@ case "$1" in
 	;;
 esac
 
+update-python-modules -p
+
 uinst=/usr/lib/univention-install/56univention-virtual-machine-manager-daemon.uinst
 [ -e "$uinst" ] && rm "$uinst"
 
 . /usr/share/univention-lib/base.sh
 call_joinscript 44univention-virtual-machine-manager-daemon.inst || true
+
+error_restart () {
+	sv start univention-virtual-machine-manager-daemon || :
+}
 
 #DEBHELPER#
 

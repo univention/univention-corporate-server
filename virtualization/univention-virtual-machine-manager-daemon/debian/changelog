@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (3.0.19-1) unstable; urgency=low
+
+  * Bug #37609: Fix upgrade problem.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 07 Jan 2015 18:13:16 +0100
+
 univention-virtual-machine-manager-daemon (3.0.18-3) unstable; urgency=low
 
   * Bug #37552: Catch error reading profiles

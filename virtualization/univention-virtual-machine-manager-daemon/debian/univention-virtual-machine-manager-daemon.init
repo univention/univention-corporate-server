@@ -64,8 +64,6 @@ DIETIME=10              # Time to wait for the server to die, in seconds
                         # let some servers to die gracefully and
                         # 'restart' will not work
 
-set -e
-
 running() {
 	sv status /etc/runit/univention-virtual-machine-manager-daemon | grep -q ^run
 }
