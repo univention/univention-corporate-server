@@ -499,11 +499,60 @@
   <title>Other changes</title>
   <itemizedlist>
 	<listitem><simpara>
-		The following packages have been added to the maintained package repository:
-		<package>libart-2.0-2</package>, <package>docutils-doc</package>, <package>python-jinja2</package>,
-		<package>python-renderpm</package>, <package>python-reportlab-accel</package>, <package>python-utidylib</package>
-		<!-- <package></package>, <package></package>, <package></package>, -->
-        (<ulink url="&ucsbug;36467">Bug 36467</ulink>)
+		The following packages have been added to the maintained package repository
+        (<ulink url="&ucsbug;36467">Bug 36467</ulink>, 
+		<ulink url="&ucsbug;36735">Bug 36735</ulink>, 
+		<ulink url="&ucsbug;36609">Bug 36609</ulink>, 
+		<ulink url="&ucsbug;37669">Bug 37669</ulink>, 
+		<ulink url="&ucsbug;36583">Bug 36583</ulink>):
+		<itemizedlist spacing="compact">
+			<listitem>libart-2.0-2</listitem>
+			<listitem>docutils-doc</listitem>
+			<listitem>python-jinja2</listitem>
+			<listitem>python-renderpm</listitem>
+			<listitem>python-reportlab-accel</listitem>
+			<listitem>python-utidylib</listitem>
+			<listitem>altermime</listitem>
+			<listitem>libboost-thread1.49.0</listitem>
+			<listitem>libjansson4</listitem>
+			<listitem>php-mdb2-driver-mysql</listitem>
+			<listitem>php-net-ldap2</listitem>
+			<listitem>php-net-url2</listitem>
+			<listitem>ripole</listitem>
+			<listitem>smarty3</listitem>
+			<listitem>asterisk</listitem>
+			<listitem>fxload</listitem>
+			<listitem>asterisk-modules</listitem>
+			<listitem>asterisk-core-sounds-en-gsm</listitem>
+			<listitem>asterisk-config</listitem>
+			<listitem>asterisk-voicemail</listitem>
+			<listitem>asterisk-moh-opsound-gsm</listitem>
+			<listitem>libfile-fcntllock-perl</listitem>
+			<listitem>libid3tag0</listitem>
+			<listitem>dahdi</listitem>
+			<listitem>sox</listitem>
+			<listitem>vpb-driver-source</listitem>
+			<listitem>autopoint</listitem>
+			<listitem>freetds-common</listitem>
+			<listitem>dahdi-linux</listitem>
+			<listitem>libalgorithm-diff-xs-perl</listitem>
+			<listitem>libcorosync4</listitem>
+			<listitem>libopenais3</listitem>
+			<listitem>libopenr2-3</listitem>
+			<listitem>libpri1.4</listitem>
+			<listitem>libsox-fmt-mp3</listitem>
+			<listitem>libss7-1</listitem>
+			<listitem>libalgorithm-diff-perl</listitem>
+			<listitem>libalgorithm-merge-perl</listitem>
+			<listitem>libmail-sendmail-perl</listitem>
+			<listitem>libapache2-mod-python</listitem>
+			<listitem>php5-sqlite</listitem>
+			<listitem>python-clearsilver</listitem>
+			<listitem>python-genshi</listitem>
+			<listitem>libapache2-svn</listitem>
+			<listitem>trac</listitem>
+			<listitem>openjdk-7-jdk</listitem>
+		</itemizedlist>
 	</simpara></listitem>
   </itemizedlist>
 </section>
