@@ -59,7 +59,18 @@
 
 		<itemizedlist>
 		  <listitem><para>
+			The Debian Wheezy point update 7.8 has been integrated. It fixes several bugfixes.
 		  </para></listitem>
+
+		  <listitem><para>
+			The <emphasis>Free for personal use edition</emphasis> license has been extended to 50 users
+			and 50 clients.
+		  </para></listitem>
+
+		  <listitem><para>
+			Many bugfixes in the &ucsUMC; and in the appliance setup mode have been made.
+		  </para></listitem>
+
 		</itemizedlist>
 
 	</chapter>
@@ -146,6 +157,18 @@
 		  two ways: Either using the UMC module  <guimenu>Domain join</guimenu> or by running the
 		  command <command>univention-run-join-scripts</command> as user
 		  <emphasis>root</emphasis>.
+		</para>
+
+		<para>
+		  The configuration of the UCS DNS name server BIND is prone to open resolver attacks,
+		  which are used to launch Distributed Denial of Service (DDoS) attacks against other hosts
+		  of the internet. To prevent such abuse the default configuration will be changed to allow
+		  'recursive queries' only from IP addresses of the private address ranges, link-local
+		  address ranges, localhost and local networks. If the name servers need to be queried from
+		  any other hosts outside those network, they must be configured using the Univention
+		  Configuration Registry variable 'dns/allow/query/cache'. This change gets only applied for
+		  newly installed domain controllers. See <ulink url="http://sdb.univention.de/1298"/> for
+		  additional details to convert existing installations.
 		</para>
 
 		<para>

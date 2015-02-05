@@ -7,20 +7,12 @@
 	</simpara></listitem>
 
 	<listitem><simpara>
-	  The <emphasis>Free for personal use edition</emphasis> license has been extended to 50 users
-	  and 50 clients. Existing license keys need to be updated, please see <ulink
-	  url="http://sdb.univention.de/1295"/> for details (<ulink url="&ucsbug;37448">Bug 37448</ulink>).
-	</simpara></listitem>
-
-	<listitem><simpara>
 	  All security updates issued for UCS 4.0-0 are included.
 	</simpara></listitem>
 
   </itemizedlist>
 </section>
 
-
-<!-- (<ulink url="&ucsbug;">Bug </ulink>). -->
 
 <!-- <section id="changelog:installer"> -->
 <!-- 	<title>Univention Installer</title> -->
@@ -120,7 +112,7 @@
 	  <title>Listener/Notifier domain replication</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  Fix the shutdown of Univention Directory Listener if <filename>failed.ldif</filename>
+		  Fix the shutdown of Univention Directory Listener if a <filename>failed.ldif</filename> file
 		  exists (<ulink url="&ucsbug;37291">Bug 37291</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
@@ -403,6 +395,10 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
+		If the DNS lookup of the DC master fails during joining a UCS domain, a warning message is now displayed (<ulink url="&ucsbug;34238">Bug 34238</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
 		When joining into an Active Directory domain, log messages from the Active Directory join
 		were not logged (<ulink url="&ucsbug;37049">Bug 37049</ulink>).
   	  </simpara></listitem>
@@ -574,8 +570,6 @@
 		available to use instead of a traceback (<ulink url="&ucsbug;33527">Bug 33527</ulink>).
   	  </simpara></listitem>
 
-  	  <listitem><simpara>
-  	  </simpara></listitem>
   	</itemizedlist>
   </section>
 
@@ -597,6 +591,13 @@
 		Internal "hidden" users are now ignored in the license check (<ulink url="&ucsbug;37654">Bug
 		37654</ulink>).
   	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The <emphasis>Free for personal use edition</emphasis> license has been extended to 50 users
+		and 50 clients. Existing license keys need to be updated, please see <ulink
+		url="http://sdb.univention.de/1295"/> for details (<ulink url="&ucsbug;37448">Bug 37448</ulink>).
+	  </simpara></listitem>
+
   	</itemizedlist>
   </section>
 
@@ -617,21 +618,13 @@
   </section>
 
 
-  <section id="changelog:umc:join">
-  	<title>Domain join module</title>
-  	<itemizedlist>
-  	  <listitem><simpara>
-		If the DNS lookup of the DC master fails, a warning message is now displayed (<ulink url="&ucsbug;34238">Bug 34238</ulink>).
-  	  </simpara></listitem>
-  	</itemizedlist>
-  </section>
-
   <section id="changelog:umc:update">
   	<title>Online update module</title>
   	<itemizedlist>
   	  <listitem><simpara>
 		List all App Center apps (or other components) blocking a release update (<ulink
-		url="&ucsbug;37364">Bug 37364</ulink>).
+		url="&ucsbug;37364">Bug 37364</ulink>). The message shown has been improved (<ulink
+		url="&ucsbug;37363">Bug 37363</ulink>).
   	  </simpara></listitem>
 
   	  <listitem><simpara>
@@ -651,8 +644,6 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		Extended the message shown if an app is blocking the update	(<ulink url="&ucsbug;37363">Bug
-		37363</ulink>).
   	  </simpara></listitem>
 
   	  <listitem><simpara>
@@ -703,7 +694,7 @@
 	  <listitem><simpara>
 		The Samba share option <emphasis>force printername</emphasis> was activated implictly during
 		modifications of existing print shares. Now it only gets activated on new print shares and if
-		the UCR variable samba/force_printername is not set to <emphasis>no</emphasis> or
+		the UCR variable <envar>samba/force_printername</envar> is not set to <emphasis>no</emphasis> or
 		<emphasis>false</emphasis> (<ulink url="&ucsbug;37123">Bug 37123</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
@@ -886,7 +877,7 @@
 	<title>Spam/virus detection and countermeasures</title>
 	<itemizedlist>
 	  <listitem><simpara>
-		An obsolete cron job (<filename>/etc/cron.daily/amavisd-new</filename> has been removed
+		An obsolete cron job (<filename>/etc/cron.daily/amavisd-new</filename>) has been removed
 		(<ulink url="&ucsbug;36928">Bug 36928</ulink>).
 	  </simpara></listitem>
 
@@ -1036,7 +1027,8 @@
 
 	  <listitem><simpara>
 		Temporary files for noVNC token files are now created on the same partition to fix a problem
-		with cross-device renaming (<ulink url="&ucsbug;36988">Bug 36988</ulink>).
+		with cross-device renaming (<ulink url="&ucsbug;36988">Bug 36988</ulink>). Also, fix the
+		noVNC links for VMs running on localhost (<ulink url="&ucsbug;36105">Bug 36105</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -1057,11 +1049,6 @@
 	  <listitem><simpara>
 		Add a progress bar while waiting for changed state of a virtual instance (<ulink
 		url="&ucsbug;36380">Bug 36380</ulink>).
-	  </simpara></listitem>
-
-	  <listitem><simpara>
-		Fix the noVNC links for VMs running on localhost (<ulink url="&ucsbug;36105">Bug
-		36105</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -1086,13 +1073,13 @@
 	</itemizedlist>
   </section>
 
-  <section id="changelog:virt:operation">
-	<title>Operate UCS as virtual machine</title>
-	<itemizedlist>
-	  <listitem><simpara>
-	  </simpara></listitem>
-	</itemizedlist>
-  </section>
+  <!-- <section id="changelog:virt:operation"> -->
+  <!-- 	<title>Operate UCS as virtual machine</title> -->
+  <!-- 	<itemizedlist> -->
+  <!-- 	  <listitem><simpara> -->
+  <!-- 	  </simpara></listitem> -->
+  <!-- 	</itemizedlist> -->
+  <!-- </section> -->
 </section>
 
 
@@ -1136,8 +1123,6 @@
 	  </simpara></listitem>
 	</itemizedlist>
   </section>
-
-(<ulink url="&ucsbug;">Bug </ulink>).
 
   <section id="changelog:win:s4c">
 	<title>Univention S4 Connector</title>
