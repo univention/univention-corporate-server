@@ -59,7 +59,18 @@
 
 		<itemizedlist>
 		  <listitem><para>
+			Das Debian Wheezy 7.8 Update wurde integriert. Es bringt viele Fehlerkorrekten mit sich.
 		  </para></listitem>
+
+		  <listitem><para>
+			Die Lizenz der <emphasis>Free for personal use edition</emphasis>-Edition wurde auf 50
+			Benutzer und Clients erweitert.
+		  </para></listitem>
+
+		  <listitem><para>
+			Viele Fehlerkorrekturen in der &ucsUMC; und anderen UCS-Komponenten.
+		  </para></listitem>
+
 		</itemizedlist>
 
 	</chapter>
