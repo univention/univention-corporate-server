@@ -175,7 +175,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		try:
 			content = open(fn_rules, 'r').read()
 		except IOError:
-			self.addmsg( '0001-9', 'failed to open and read file', fn )
+			self.addmsg( '0001-9', 'failed to open and read file', fn_rules )
 		else:
 			if UniventionPackageCheck.RE_DH_JOIN.search(content):
 				self.debug('Detected use of univention-install-joinscript')
