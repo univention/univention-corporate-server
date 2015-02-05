@@ -150,21 +150,218 @@
 <section id="changelog:umc">
   <title>Univention Management Console</title>
 
-  <!-- <section id="changelog:umc:web"> -->
-  <!-- 	<title>Univention Management Console web interface</title> -->
-  <!-- 	<itemizedlist> -->
-  <!-- 	  <listitem><simpara> -->
-  <!-- 	  </simpara></listitem> -->
-  <!-- 	</itemizedlist> -->
-  <!-- </section> -->
+  <section id="changelog:umc:web">
+  	<title>Univention Management Console web interface</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		The UMC requires JavaScript. If it is disabled in the web browser, a warning message is
+		displayed. The styling of the notification has been improved (<ulink url="&ucsbug;36338">Bug
+		36338</ulink>).
+  	  </simpara></listitem>
 
-  <!-- <section id="changelog:umc:server"> -->
-  <!-- 	<title>Univention Management Console server</title> -->
-  <!-- 	<itemizedlist> -->
-  <!-- 	  <listitem><simpara> -->
-  <!-- 	  </simpara></listitem> -->
-  <!-- 	</itemizedlist> -->
-  <!-- </section> -->
+  	  <listitem><simpara>
+		Display a warning if an Internet Explorer version earlier than version 9 is used (it
+		misrenders SVG graphics) (<ulink url="&ucsbug;36914">Bug 36914</ulink>)
+	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Added an arrow to the UMC grids that indicates which column is used for sorting (<ulink
+		url="&ucsbug;36357">Bug 36357</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Several buttons are now properly aligned to corresponding input fields (<ulink
+		url="&ucsbug;36291">Bug 36291</ulink>).
+	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The <guimenu>Favorites</guimenu> category button now fades in and out, depending on whether
+		favorite modules are chosen or not  (<ulink url="&ucsbug;36787">Bug 36787</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		A exception was logged in the JavaScript console when the grid was resized and when
+		notifications got hidden. This has been removed (<ulink url="&ucsbug;36645">Bug
+		36645</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The JavaScript method umc.tools.umcpProgressSubCommand did not send the UMCP flavour along
+		with a request and could therefore fail due to insufficient permissions (<ulink
+		url="&ucsbug;36875">Bug 36875</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Fixed a bug which prevented that UMC components could write into their logfiles (<ulink
+		url="&ucsbug;37317">Bug 37317</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The icon on the policy reference button is now shown (<ulink url="&ucsbug;36291">Bug
+		36291</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The LocationMatch directive of Apache is now only configured for the UMC (<ulink
+		url="&ucsbug;37518">Bug 37518</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Don't let Firefox ask for resending POST form data when logging out of UMC (<ulink
+		url="&ucsbug;36445">Bug 36445</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Fix an endless login animation if the login fails due to not running UMC server (<ulink
+		url="&ucsbug;36636">Bug 36636</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Fix the error message which is shown when no network connection is possible on client side
+		(<ulink url="&ucsbug;36680">Bug 36680</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Fix the visibility of error messages when a login dialog is opened (<ulink
+		url="&ucsbug;36400">Bug 36400</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The notification while changing objects which are part of an Active Directory domain has
+		been placed in a more visible area (<ulink url="&ucsbug;36732">Bug 36732</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The error message if the connection to the LDAP server fails has been extended  (<ulink
+		url="&ucsbug;35719">Bug 35719</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The get_exception_method() has been removed. Error information are now provided by the UDM
+		base exception itself (<ulink url="&ucsbug;35273">Bug 35273</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Exceptions are not re-raised anymore as this hides important error information in traceback
+		feedback reports (<ulink url="&ucsbug;32979">Bug 32979</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		It is now prevented that a search with a given attribute name can raise a bad search filter
+		exception (<ulink url="&ucsbug;28383">Bug 28383</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		An error message is now shown when trying to operations on non existing objects (<ulink
+		url="&ucsbug;34246">Bug 34246</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Searching for an invalid object type will not raise an exception anymore.Opening a
+		nonexistent object (e.g. object was moved / deleted) now shows an error message instead of
+		raising an exception (<ulink url="&ucsbug;35350">Bug 35350</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Error handling has been improved in case a UDM module could not be identified (<ulink
+		url="&ucsbug;34680">Bug 34680</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Inform about automatically set default values when opening a object (<ulink
+		url="&ucsbug;36700">Bug 36700</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The univention.admin.uexception.base class provides now more detailed information about the
+		error cause (<ulink url="&ucsbug;30088">Bug 30088</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Error handling of UDM modules has been improved by adding default methods which contain
+		information about the current edited object type (<ulink url="&ucsbug;34985">Bug
+		34985</ulink>).
+  	  </simpara></listitem>
+
+  	</itemizedlist>
+  </section>
+
+  <section id="changelog:umc:server">
+  	<title>Univention Management Console server</title>
+  	<itemizedlist>
+ 	  <listitem><simpara>
+		Fix an error regarding the error handling of closed UMC module process sockets (<ulink
+		url="&ucsbug;37036">Bug 37036</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Fix error when the UMC server and the UMC module try to close the module process at the same
+		time (<ulink url="&ucsbug;35231">Bug 35231</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Fix a UMC-server crash if a translation file is corrupt (<ulink url="&ucsbug;36658">Bug
+		36658</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The UMCP command <emphasis>udm/layout</emphasis> failed if a DN was given which could not be
+		identified as a UDM object (<ulink url="&ucsbug;29231">Bug 29231</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Allows UMC modules to set the response status when the module initialization fails. This is
+		required to show the login dialog after a password change (<ulink url="&ucsbug;34353">Bug
+		34353</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The query of the LDAP DN of the user logging into the UMC has been fixed. Previously users
+		without a POSIX account were not detected before (<ulink url="&ucsbug;37178">Bug
+		37178</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Fixed the handling of crashed UMC module processes (<ulink url="&ucsbug;37367">Bug
+		37367</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Add the UMCP flavor to error information when a traceback occurs (<ulink
+		url="&ucsbug;37169">Bug 37169</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Connections to the LDAP server weren't closed after the session timeout. This caused a UMC
+		server crash due to max open file limits (<ulink url="&ucsbug;37453">Bug 37453</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Mask passwords when logging changed properties at debug level 4 (<ulink
+		url="&ucsbug;36591">Bug 36591</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Enhance the look of various error messages (<ulink url="&ucsbug;36291">Bug 36291</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Fixed error handling when renaming the currently logged in user (<ulink
+		url="&ucsbug;35280">Bug 35280</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>       
+		Additional exceptions during the creation of UDM objects are now handled (<ulink
+		url="&ucsbug;20044">Bug 20044</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Ask for closing the detail page if changes to the object have been done (<ulink
+		url="&ucsbug;30088">Bug 30088</ulink>).
+  	  </simpara></listitem>
+
+  	</itemizedlist>
+  </section>
 
   <section id="changelog:umc:appcenter">
   	<title>Univention App Center</title>
@@ -195,30 +392,169 @@
 		occurred which prevented installation (<ulink url="&ucsbug;36868">Bug 36868</ulink>).
 	  </simpara></listitem>
 
+  	</itemizedlist>
+  </section>
+
+  <section id="changelog:umc:setup">
+  	<title>Basic settings / Appliance mode</title>
+  	<itemizedlist>
   	  <listitem><simpara>
-		The available apps can now be queried on the command line by running
-		<command>univention-add-app</command> with the parameter <emphasis>--list</emphasis> (<ulink
-		url="&ucsbug;37153">Bug 37153</ulink>).
-	  </simpara></listitem>
+		The Firefox address bar is now always hidden (<ulink url="&ucsbug;35583">Bug 35583</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		When joining into an Active Directory domain, log messages from the Active Directory join
+		were not logged (<ulink url="&ucsbug;37049">Bug 37049</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The default keyboard layout for German has been corrected (<ulink url="&ucsbug;36936">Bug 36936</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		A branding for the appliance wizard has been implemented via the &ucsUCR; variables
+		<envar>umc/web/appliance/name</envar> and <envar>umc/web/appliance/logo</envar> (<ulink
+		url="&ucsbug;37488">Bug 37488</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The UMC module could not be loaded when the system had more than four physical network
+		devices (<ulink url="&ucsbug;37001">Bug 37001</ulink>). The wizard now also prevents
+		scrollbars on every wizard page for such systems (<ulink url="&ucsbug;36884">Bug 36884</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The wizard now shows information about how to reach the system and UMC after the
+		configuration process (<ulink url="&ucsbug;36938">Bug 36938</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		In text mode or after aborting the configuration, a message is shown to the user how the UMC
+		can be accessed after reboot (<ulink url="&ucsbug;36968">Bug 36968</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The DNS error message when selecting a system role is now prompted as an alert dialogue
+		(<ulink url="&ucsbug;36940">Bug 36940</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The UCS DNSdomain check when selecting a system role has been adjusted to correctly
+		determine an UCS domain (<ulink url="&ucsbug;36440">Bug 36440</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		If the UCS system has not been configured yet, a corresponding message is shown during login
+		at console/via ssh asking the user to use the UMC to complete configuration.
+		 (<ulink url="&ucsbug;36971">Bug 36971</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Some text field descriptions have been adapted (<ulink url="&ucsbug;36723">Bug
+		36723</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Only system setup scripts belonging to the current module are now executed when changing
+		settings via the modules for changing certificate, language and network settings (<ulink
+		url="&ucsbug;36939">Bug 36939</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		A DHCP lease may be now requested in the UCS setup wizard via unmarking and remarking the
+		DHCP checkbox on the network page (<ulink url="&ucsbug;36665">Bug 36665</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The syntax check for the LDAP base has been adjusted to be more specific (<ulink
+		url="&ucsbug;36334">Bug 36334</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The search for system locales has been adjusted such that wildcards are implicitly used
+		(<ulink url="&ucsbug;29922">Bug 29922</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The configuration of keyboard model and keyboard variant has been corrected (<ulink
+		url="&ucsbug;37105">Bug 37105</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		It is now possible to prevent domain joining. The profile variable
+		<emphasis>start/join</emphasis> was previously not evaluated (<ulink url="&ucsbug;36701">Bug
+		36701</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Reset join credentials if they are incorrect (<ulink url="&ucsbug;36876">Bug 36876</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The DHCP query in the <guimenu>Network settings</guimenu> dialogue has been fixed (<ulink
+		url="&ucsbug;35851">Bug 35851</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The package removal in appliance mode has been corrected (<ulink url="&ucsbug;36874">Bug
+		36874</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Fix the configuration of primary devices and bond-miimon in bonding network devices (<ulink
+		url="&ucsbug;36340">Bug 36340</ulink>, <ulink url="&ucsbug;36342">Bug 36342</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The gateway input field is not required anymore. This allows to set up systems without
+		connection to the internet (<ulink url="&ucsbug;36586">Bug 36586</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Fix base system deployment if no domainname is specified (<ulink url="&ucsbug;36873">Bug
+		36873</ulink>).
+  	  </simpara></listitem>
+
 
   	</itemizedlist>
   </section>
 
-  <!-- <section id="changelog:umc:setup"> -->
-  <!-- 	<title>Basic settings / Appliance mode</title> -->
-  <!-- 	<itemizedlist> -->
-  <!-- 	  <listitem><simpara> -->
-  <!-- 	  </simpara></listitem> -->
-  <!-- 	</itemizedlist> -->
-  <!-- </section> -->
 
-  <!-- <section id="changelog:umc:user"> -->
-  <!-- 	<title>Users module</title> -->
-  <!-- 	<itemizedlist> -->
-  <!-- 	  <listitem><simpara> -->
-  <!-- 	  </simpara></listitem> -->
-  <!-- 	</itemizedlist> -->
-  <!-- </section> -->
+
+
+  <section id="changelog:umc:user">
+  	<title>Users module</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		Users without the POSIX option are now able to use the UMC module (<ulink
+		url="&ucsbug;31828">Bug 31828</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Fixed setting of the use rexpiry date if a user account is disabled (<ulink
+		url="&ucsbug;36330">Bug 36330</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Fixed removal of the account expiry date of a user (<ulink url="&ucsbug;25279">Bug
+		25279</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		A PNG file can now be specified as user photo. It will be internally converted into JPEG
+		(<ulink url="&ucsbug;36273">Bug 36273</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The user properties CtxBrokenSession, CtxReconnectSession and CtxRASDialin now have default values. They
+		prevented changes via UMC when not having sufficient LDAP permission to change these
+		attributes (<ulink url="&ucsbug;29884">Bug 29884</ulink>, <ulink url="&ucsbug;37592">Bug 37592</ulink>).
+  	  </simpara></listitem>
+
+  	</itemizedlist>
+  </section>
+
+
 
   <section id="changelog:umc:reports">
   	<title>Univention Directory Reports</title>
@@ -230,21 +566,56 @@
   	</itemizedlist>
   </section>
 
-  <!-- <section id="changelog:umc:computers"> -->
-  <!-- 	<title>Computers module</title> -->
-  <!-- 	<itemizedlist> -->
-  <!-- 	  <listitem><simpara> -->
-  <!-- 	  </simpara></listitem> -->
-  <!-- 	</itemizedlist> -->
-  <!-- </section> -->
+  <section id="changelog:umc:computers">
+  	<title>Computers module</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		Automatic IP assignment for a network will show an error message if there is no more IP
+		available to use instead of a traceback (<ulink url="&ucsbug;33527">Bug 33527</ulink>).
+  	  </simpara></listitem>
 
-  <!-- <section id="changelog:umc:license"> -->
-  <!-- 	<title>License module</title> -->
-  <!-- 	<itemizedlist> -->
-  <!-- 	  <listitem><simpara> -->
-  <!-- 	  </simpara></listitem> -->
-  <!-- 	</itemizedlist> -->
-  <!-- </section> -->
+  	  <listitem><simpara>
+  	  </simpara></listitem>
+  	</itemizedlist>
+  </section>
+
+
+  <section id="changelog:umc:dns">
+  	<title>DNS module</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		Setting the attribute DNS time to an empty value does not trigger an error anymore (<ulink
+		url="&ucsbug;33256">Bug 33256</ulink>).
+  	  </simpara></listitem>
+  	</itemizedlist>
+  </section>
+
+  <section id="changelog:umc:license">
+  	<title>License module</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		Internal "hidden" users are now ignored in the license check (<ulink url="&ucsbug;37654">Bug
+		37654</ulink>).
+  	  </simpara></listitem>
+  	</itemizedlist>
+  </section>
+
+  <section id="changelog:umc:diag">
+  	<title>System diagnostic module</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		Added a plugin which checks the package status (<ulink url="&ucsbug;35861">Bug
+		35861</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Fixed the timeout value for pinging the gateway. It blocked the diagnosis if the gateway was
+		not reachable (<ulink url="&ucsbug;37032">Bug 37032</ulink>).
+	  </simpara></listitem>
+
+  	</itemizedlist>
+  </section>
+
 
   <section id="changelog:umc:join">
   	<title>Domain join module</title>
@@ -255,13 +626,48 @@
   	</itemizedlist>
   </section>
 
-  <!-- <section id="changelog:umc:update"> -->
-  <!-- 	<title>Online update module</title> -->
-  <!-- 	<itemizedlist> -->
-  <!-- 	  <listitem><simpara> -->
-  <!-- 	  </simpara></listitem> -->
-  <!-- 	</itemizedlist> -->
-  <!-- </section> -->
+  <section id="changelog:umc:update">
+  	<title>Online update module</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		List all App Center apps (or other components) blocking a release update (<ulink
+		url="&ucsbug;37364">Bug 37364</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The dialogue showing the list of packages to be updated/installed is now limited in its
+		maximum height (<ulink url="&ucsbug;36291">Bug 36291</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Adapted the link to the new errata overview page (<ulink url="&ucsbug;33539">Bug
+		33539</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Open the <guimenu>Software update</guimenu> module upon UMC startup during release updates
+		and show a information dialog about the current update process (<ulink
+		url="&ucsbug;37357">Bug 37357</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Extended the message shown if an app is blocking the update	(<ulink url="&ucsbug;37363">Bug
+		37363</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The hints and warning messages before or during the execution of a UCS update have been
+		clarified (<ulink url="&ucsbug;37360">Bug 37360</ulink>).
+  	  </simpara></listitem>
+
+  	</itemizedlist>
+  </section>
+
+
+
+
+
+
 
   <!-- <section id="changelog:umc:share"> -->
   <!-- 	<title>Shares module</title> -->
@@ -271,13 +677,25 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
   
-  <!-- <section id="changelog:umc:policy"> -->
-  <!-- 	<title>Policies</title> -->
-  <!-- 	<itemizedlist> -->
-  <!-- 	  <listitem><simpara> -->
-  <!-- 	  </simpara></listitem> -->
-  <!-- 	</itemizedlist> -->
-  <!-- </section> -->
+  <section id="changelog:umc:policy">
+  	<title>Policies</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		The <guimenu>Release</guimenu> policy has been renamed into <guimenu>Automatic
+		updates</guimenu> and its property descriptions have been improved (<ulink
+		url="&ucsbug;33190">Bug 33190</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		It is now possible to change the password of a user after setting an empty password length
+		in the referenced password policy (<ulink url="&ucsbug;8429">Bug 8429</ulink>).
+  	  </simpara></listitem>
+
+	</itemizedlist>
+  </section>
+
+
+
   
   <section id="changelog:umc:printer">
 	<title>Printers module</title>
@@ -331,17 +749,31 @@
 		Close the progress bar for server shutdown if no permission exists to shutdown the server
 		(<ulink url="&ucsbug;36992">Bug 36992</ulink>).
   	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		After changing the own password a login dialog is shown if a LDAP connection needs to be
+		reestablished (<ulink url="&ucsbug;34353">Bug 34353</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Remove references to the network object when deleting it (<ulink url="&ucsbug;35099">Bug
+		35099</ulink>).
+  	  </simpara></listitem>
   	</itemizedlist>
   </section>
 
 
-  <!-- <section id="changelog:umc:udmcli"> -->
-  <!-- 	<title>&ucsUDM; command line interface and related tools</title> -->
-  <!-- 	<itemizedlist> -->
-  <!-- 	  <listitem><simpara> -->
-  <!-- 	  </simpara></listitem> -->
-  <!-- 	</itemizedlist> -->
-  <!-- </section> -->
+  <section id="changelog:umc:udmcli">
+  	<title>&ucsUDM; command line interface and related tools</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		Added support for the following operators in a UDM filter: &lt;, &lt;, &lt;=, &gt;=. (<ulink
+		url="&ucsbug;36970">Bug 36970</ulink>).
+  	  </simpara></listitem>
+  	</itemizedlist>
+  </section>
+
+
   
   <!-- <section id="changelog:umc:development"> -->
   <!-- 	<title>Development of modules for &ucsUMC;</title> -->
@@ -359,6 +791,18 @@
   <title>Software deployment</title>
   <itemizedlist>
 	<listitem><simpara>
+	  When executing a maintaince or release policy, a requested reboot is now only performed once
+	  all updates have been performed (<ulink url="&ucsbug;37231">Bug 37231</ulink>).
+	</simpara></listitem>
+
+	<listitem><simpara>
+	  Detect broken HTTP proxies like DansGuardian, which block downloading the Packages files and
+	  updater scripts while still signalling success (<ulink url="&ucsbug;37345">Bug 37345</ulink>).
+	</simpara></listitem>
+
+	<listitem><simpara>
+	  Old Samba TDB files are now handled in the pre-update script (<ulink url="&ucsbug;37534">Bug
+	  37534</ulink>).
 	</simpara></listitem>
   </itemizedlist>
 
@@ -383,14 +827,26 @@
 	</itemizedlist>
   </section>
 
-  <!-- <section id="changelog:deployment:cli"> -->
-  <!-- 	<title>Software deployment command line tools</title> -->
-  <!-- 	<itemizedlist> -->
-  <!-- 	  <listitem><simpara> -->
-  <!-- 	  </simpara></listitem> -->
-  <!-- 	</itemizedlist> -->
-  <!-- </section> -->
+  <section id="changelog:deployment:cli">
+  	<title>Software deployment command line tools</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		When using <command>univention-upgrade</command> all components blocking an update are now
+		displayed (<ulink url="&ucsbug;37349">Bug 37349</ulink>).
+  	  </simpara></listitem>
 
+  	  <listitem><simpara>
+		The available Univention App Center apps can now be queried on the command line by running
+		<command>univention-add-app</command> with the parameter <emphasis>--list</emphasis> (<ulink
+		url="&ucsbug;37153">Bug 37153</ulink>).
+	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		(<ulink url="&ucsbug;">Bug </ulink>).
+  	  </simpara></listitem>
+
+  	</itemizedlist>
+  </section>
 
 </section>
 
@@ -467,13 +923,17 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
 
-  <!-- <section id="changelog:service:ssl"> -->
-  <!-- 	<title>SSL</title> -->
-  <!-- 	<itemizedlist> -->
-  <!-- 	  <listitem><simpara> -->
-  <!-- 	  </simpara></listitem> -->
-  <!-- 	</itemizedlist> -->
-  <!-- </section> -->
+  <section id="changelog:service:ssl">
+  	<title>SSL</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		Prior to the generation of the CA, the system time is updated. A timeout of 15 seconds has
+		been added to the use of rdate to query the current time from a NTP time server, as this
+		sometimes stalls endlessly (<ulink url="&ucsbug;36934">Bug 36934</ulink>, <ulink
+		url="&ucsbug;36935">Bug 36935</ulink>, <ulink url="&ucsbug;36937">Bug 36937</ulink>).
+  	  </simpara></listitem>
+  	</itemizedlist>
+  </section>
 
   <!-- <section id="changelog:service:proxy"> -->
   <!-- 	<title>Proxy services</title> -->
@@ -482,6 +942,31 @@
   <!-- 	  </simpara></listitem> -->
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
+
+  <section id="changelog:service:systeminfo">
+  	<title>Univention System Info</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		Fix error during parsing of <command>univention-system-info</command> output (<ulink
+		url="&ucsbug;36923">Bug 36923</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Fix the domain where archive uploads are sent to (<ulink url="&ucsbug;31192">Bug
+		31192</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Improve error handling (<ulink url="&ucsbug;33092">Bug 33092</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Fix uploading of archive for specific dmidecode versions (<ulink url="&ucsbug;37384">Bug
+		37384</ulink>).
+  	  </simpara></listitem>
+
+  	</itemizedlist>
+  </section>
 
   <section id="changelog:service:apache">
 	<title>Apache</title>
@@ -681,7 +1166,7 @@
 	<itemizedlist>
 	  <listitem><simpara>
 		Check that the join account is member of the <emphasis>Domain Admins</emphasis> group in
-		Active Directory (<ulink url="&ucsbug;35562">Bug 35562</ulink>).
+		Active Directory (<ulink url="&ucsbug;35562">Bug 35562</ulink>, <ulink url="&ucsbug;37168">Bug 37168</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -697,7 +1182,7 @@
 
 	  <listitem><simpara>
 		Support direct unconditional clock synchronization with the Active Directory server (<ulink
-		url="&ucsbug;37481">Bug 37481</ulink>).
+		url="&ucsbug;37481">Bug 37481</ulink>, <ulink url="&ucsbug;36406">Bug 36406</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -774,7 +1259,12 @@
 	<listitem><simpara>
 	  This update silences the PHP cron job, which is cleaning up old PHP session files. Due to a
 	  mis-configuration from previous upgrades it was sending emails containing error messages every
-	  30 minutes (<ulink url="&ucsbug;36621">Bug 36621</ulink>)
+	  30 minutes (<ulink url="&ucsbug;36621">Bug 36621</ulink>).
+	</simpara></listitem>
+
+	<listitem><simpara>
+	  Timestamps were added to store the start and end times of individual join scripts in
+	  <filename>join.log</filename> (<ulink url="&ucsbug;36290">Bug 36290</ulink>).
 	</simpara></listitem>
 
   </itemizedlist>
