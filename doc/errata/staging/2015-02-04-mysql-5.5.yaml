@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: mysql-5.5
-fix: 5.5.40-TOBEDEFINED
+fix: 5.5.40-0.14.201502051002
 version: [0]
 desc: |
  - The last mysql errata package lacks in an important patch that changes
