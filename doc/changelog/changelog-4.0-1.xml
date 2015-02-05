@@ -7,12 +7,20 @@
 	</simpara></listitem>
 
 	<listitem><simpara>
+	  The <emphasis>Free for personal use edition</emphasis> license has been extended to 50 users
+	  and 50 clients. Existing license keys need to be updated, please see <ulink
+	  url="http://sdb.univention.de/1295"/> for details (<ulink url="&ucsbug;37448">Bug 37448</ulink>).
+	</simpara></listitem>
+
+	<listitem><simpara>
 	  All security updates issued for UCS 4.0-0 are included.
 	</simpara></listitem>
 
   </itemizedlist>
 </section>
 
+
+<!-- (<ulink url="&ucsbug;">Bug </ulink>). -->
 
 <!-- <section id="changelog:installer"> -->
 <!-- 	<title>Univention Installer</title> -->
@@ -62,11 +70,20 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
 
+  <section id="changelog:basis:other">
+  	<title>Other system services</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		The file system check now ignores clock skew problems, which previously required manual user
+		interaction (<ulink url="&ucsbug;36233">Bug 36233</ulink>).
+  	  </simpara></listitem>
+  	</itemizedlist>
+  </section>
+
 </section>
 
-
-<!-- <section id="changelog:domain"> -->
-<!--   <title>Domain services</title> -->
+<section id="changelog:domain">
+  <title>Domain services</title>
 
 <!--   <section id="changelog:domain:openldap"> -->
 <!-- 	<title>OpenLDAP</title> -->
@@ -81,31 +98,53 @@
 <!-- 	  </itemizedlist> -->
 <!-- 	</section> -->
 
-<!-- 	<section id="changelog:domain:openldap:schema"> -->
-<!-- 	  <title>LDAP schema changes</title> -->
-<!-- 	  <itemizedlist> -->
-<!-- 		<listitem><simpara> -->
-<!-- 		</simpara></listitem> -->
-<!-- 	  </itemizedlist> -->
-<!-- 	</section> -->
+	<section id="changelog:domain:openldap:schema">
+	  <title>LDAP schema changes</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  The object class <emphasis>msGPOContainer</emphasis> has been extended to support the new
+		  attribute <emphasis>msNTSecurityDescriptor</emphasis> (<ulink url="&ucsbug;36979">Bug 36979</ulink>).
+		</simpara></listitem>
 
-<!-- 	<section id="changelog:domain:openldap:replication"> -->
-<!-- 	  <title>Listener/Notifier domain replication</title> -->
-<!-- 	  <itemizedlist> -->
-<!-- 		<listitem><simpara> -->
-<!-- 		</simpara></listitem> -->
-<!-- 	  </itemizedlist> -->
-<!-- 	</section> -->
-<!--   </section> -->
-  
-<!--   <section id="changelog:domain:dnsserver"> -->
-<!-- 	<title>DNS server</title> -->
-<!-- 	<itemizedlist> -->
-<!-- 		<listitem><simpara> -->
-<!-- 		</simpara></listitem> -->
-<!-- 	</itemizedlist> -->
-<!--   </section> -->
-<!-- </section> -->
+		<listitem><simpara>
+		  The <emphasis>univentionUserTemplate</emphasis> object class has been adapted to include
+		  all attributes from the <emphasis>person</emphasis>,
+		  <emphasis>organizationalPerson</emphasis> and <emphasis>inetOrgPerson</emphasis> standard
+		  LDAP schemas (<ulink url="&ucsbug;35775">Bug 35775</ulink>).
+		</simpara></listitem>
+
+	  </itemizedlist>
+	</section>
+
+	<section id="changelog:domain:openldap:replication">
+	  <title>Listener/Notifier domain replication</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  Fix the shutdown of Univention Directory Listener if <filename>failed.ldif</filename>
+		  exists (<ulink url="&ucsbug;37291">Bug 37291</ulink>).
+		</simpara></listitem>
+	  </itemizedlist>
+	</section>
+
+	<section id="changelog:domain:dnsserver">
+	  <title>DNS server</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  The configuration of the UCS DNS name server BIND9 is prone to open resolver attacks,
+		  which are used to launch Distributed Denial of Service (DDoS) attacks against other hosts
+		  of the internet. To prevent such abuse the default configuration will be changed to allow
+		  'recursive queries' only from IP addresses of the private address ranges, link-local
+		  address ranges, localhost and local networks. If the name servers need to be queried from
+		  any other hosts outside those network, they must be configured using the Univention
+		  Configuration Registry variable 'dns/allow/query/cache'. This change gets only applied for
+		  newly installed domain controllers. See <ulink url="http://sdb.univention.de/1298"/> for
+		  additional details (<ulink url="&ucsbug;37553">Bug 37553</ulink>).
+		</simpara></listitem>
+	  </itemizedlist>
+	</section>
+
+
+</section>
 
 
 <section id="changelog:umc">
@@ -127,13 +166,43 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
 
-  <!-- <section id="changelog:umc:appcenter"> -->
-  <!-- 	<title>Univention App Center</title> -->
-  <!-- 	<itemizedlist> -->
-  <!-- 	  <listitem><simpara> -->
-  <!-- 	  </simpara></listitem> -->
-  <!-- 	</itemizedlist> -->
-  <!-- </section> -->
+  <section id="changelog:umc:appcenter">
+  	<title>Univention App Center</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		If the details of a package are opened which is not longer available (e.g. the repository
+		has been removed), an error occurred. This has been fixed (<ulink url="&ucsbug;37403">Bug
+		37403</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The translation file for installed apps modules may have been corrupted during a release
+		update. This has been fixed (<ulink url="&ucsbug;37571">Bug 37571</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Extended one command to allow searching for multiple components at once (needed for updater
+		module) (<ulink url="&ucsbug;37364">Bug 37364</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The checkbox <guimenu>Use unmaintained repositories</guimenu> is now placed above the
+		<guimenu>Apply changes</guimenu> button (<ulink url="&ucsbug;36457">Bug 36457</ulink>).
+	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		After trying to install a software component in the repository settings module a white page
+		occurred which prevented installation (<ulink url="&ucsbug;36868">Bug 36868</ulink>).
+	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The available apps can now be queried on the command line by running
+		<command>univention-add-app</command> with the parameter <emphasis>--list</emphasis> (<ulink
+		url="&ucsbug;37153">Bug 37153</ulink>).
+	  </simpara></listitem>
+
+  	</itemizedlist>
+  </section>
 
   <!-- <section id="changelog:umc:setup"> -->
   <!-- 	<title>Basic settings / Appliance mode</title> -->
@@ -151,6 +220,16 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
 
+  <section id="changelog:umc:reports">
+  	<title>Univention Directory Reports</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		Fixed a problem which prevented the creation of reports in some circumstances (<ulink
+		url="&ucsbug;36234">Bug 36234</ulink>).
+  	  </simpara></listitem>
+  	</itemizedlist>
+  </section>
+
   <!-- <section id="changelog:umc:computers"> -->
   <!-- 	<title>Computers module</title> -->
   <!-- 	<itemizedlist> -->
@@ -167,13 +246,14 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
 
-  <!-- <section id="changelog:umc:join"> -->
-  <!-- 	<title>Domain join module</title> -->
-  <!-- 	<itemizedlist> -->
-  <!-- 	  <listitem><simpara> -->
-  <!-- 	  </simpara></listitem> -->
-  <!-- 	</itemizedlist> -->
-  <!-- </section> -->
+  <section id="changelog:umc:join">
+  	<title>Domain join module</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		If the DNS lookup of the DC master fails, a warning message is now displayed (<ulink url="&ucsbug;34238">Bug 34238</ulink>).
+  	  </simpara></listitem>
+  	</itemizedlist>
+  </section>
 
   <!-- <section id="changelog:umc:update"> -->
   <!-- 	<title>Online update module</title> -->
@@ -244,13 +324,16 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
 
-  <!-- <section id="changelog:umc:other"> -->
-  <!-- 	<title>Other modules</title> -->
-  <!-- 	<itemizedlist> -->
-  <!-- 	  <listitem><simpara> -->
-  <!-- 	  </simpara></listitem> -->
-  <!-- 	</itemizedlist> -->
-  <!-- </section> -->
+  <section id="changelog:umc:other">
+  	<title>Other modules</title>
+  	<itemizedlist>
+  	  <listitem><simpara>
+		Close the progress bar for server shutdown if no permission exists to shutdown the server
+		(<ulink url="&ucsbug;36992">Bug 36992</ulink>).
+  	  </simpara></listitem>
+  	</itemizedlist>
+  </section>
+
 
   <!-- <section id="changelog:umc:udmcli"> -->
   <!-- 	<title>&ucsUDM; command line interface and related tools</title> -->
@@ -268,33 +351,68 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
 
+
 </section>
 
 
-<!-- <section id="changelog:deployment"> -->
-<!--   <title>Software deployment</title> -->
-<!--   <itemizedlist> -->
-<!-- 	<listitem><simpara> -->
-<!-- 	</simpara></listitem> -->
-<!--   </itemizedlist> -->
+<section id="changelog:deployment">
+  <title>Software deployment</title>
+  <itemizedlist>
+	<listitem><simpara>
+	</simpara></listitem>
+  </itemizedlist>
 
-<!--   <section id="changelog:deployment:cli"> -->
-<!-- 	<title>Software deployment command line tools</title> -->
-<!-- 	<itemizedlist> -->
-<!-- 	  <listitem><simpara> -->
-<!-- 	  </simpara></listitem> -->
-<!-- 	</itemizedlist> -->
-<!--   </section> -->
-<!-- </section> -->
+  <section id="changelog:deployment:pkgdb">
+	<title>Software monitor</title>
+	<itemizedlist>
+	  <listitem><simpara>
+		It is now possible again to search for UCS systems (<ulink url="&ucsbug;35700">Bug
+		35700</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Translations of some error messages have been fixed (<ulink url="&ucsbug;35700">Bug
+		35700</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The connection to the Postgresql server is re-established in case of an error (<ulink
+		url="&ucsbug;35700">Bug 35700</ulink>).
+	  </simpara></listitem>
+
+	</itemizedlist>
+  </section>
+
+  <!-- <section id="changelog:deployment:cli"> -->
+  <!-- 	<title>Software deployment command line tools</title> -->
+  <!-- 	<itemizedlist> -->
+  <!-- 	  <listitem><simpara> -->
+  <!-- 	  </simpara></listitem> -->
+  <!-- 	</itemizedlist> -->
+  <!-- </section> -->
 
 
-<!-- <section id="changelog:lib"> -->
-<!--   <title>Univention Library</title> -->
-<!--   <itemizedlist> -->
-<!-- 	<listitem><simpara> -->
-<!-- 	</simpara></listitem> -->
-<!--   </itemizedlist> -->
-<!-- </section> -->
+</section>
+
+
+<section id="changelog:lib">
+  <title>Univention base libraries</title>
+  <itemizedlist>
+	<listitem><simpara>
+	  A new script <filename>univention-install-joinscript</filename> has been added. It can be used
+	  when developing packages for UCS that ship with a join script (<ulink url="&ucsbug;32525">Bug
+	  32525</ulink>).
+	</simpara></listitem>
+
+	<listitem><simpara>
+	  Fix a segmentation fault in univention-debug when reopening the logfile (<ulink
+	  url="&ucsbug;37317">Bug 37317</ulink>).
+	</simpara></listitem>
+
+
+  </itemizedlist>
+</section>
+
 
 <section id="changelog:service">
   <title>System services</title>
@@ -307,6 +425,7 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
   
+
   <section id="changelog:service:virus">
 	<title>Spam/virus detection and countermeasures</title>
 	<itemizedlist>
@@ -390,31 +509,106 @@
 		The startup mode of the MySQL database can now be configured via the &ucsUCRV;
 		<envar>mysql/autostart</envar> (<ulink url="&ucsbug;13811">Bug 13811</ulink>).
   	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		The new &ucsUCRV; <envar>mail/saslauthd/cache/timeout</envar> (default 1800) has been added
+		to define the saslauthd expiration time of the authentication cache (in seconds) (<ulink
+		url="&ucsbug;36949">Bug 36949</ulink>).
+	  </simpara></listitem>
+
   	</itemizedlist>
   </section>
 
 </section>
 
 
-<!-- <section id="changelog:virt"> -->
-<!--   <title>Virtualization</title> -->
+<section id="changelog:virt">
+  <title>Virtualization</title>
 
-<!--   <section id="changelog:virt:uvmm"> -->
-<!-- 	<title>Univention Virtual Machine Manager (UVMM)</title> -->
-<!-- 	<itemizedlist> -->
-<!-- 	  <listitem><simpara> -->
-<!-- 	  </simpara></listitem> -->
-<!-- 	</itemizedlist> -->
-<!--   </section> -->
+  <section id="changelog:virt:uvmm">
+	<title>Univention Virtual Machine Manager (UVMM)</title>
+	<itemizedlist>
+	  <listitem><simpara>
+		If no connection to the UVMM daemon is possible, an error message is now displayed instead
+		of a traceback (<ulink url="&ucsbug;33963">Bug 33963</ulink>).
+	  </simpara></listitem>
 
-<!--   <section id="changelog:virt:operation"> -->
-<!-- 	<title>Operate UCS as virtual machine</title> -->
-<!-- 	<itemizedlist> -->
-<!-- 	  <listitem><simpara> -->
-<!-- 	  </simpara></listitem> -->
-<!-- 	</itemizedlist> -->
-<!--   </section> -->
-<!-- </section> -->
+	  <listitem><simpara>
+		Fix loading the kernel module <emphasis>bridge</emphasis> during initial installation
+		(<ulink url="&ucsbug;37215">Bug 37215</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The timeout for the libvirtd liveness check has been raised to 30 seconds (if the &ucsUCRV;
+		<envar>libvirt/check/timeout</envar> hadn't been modified locally (<ulink
+		url="&ucsbug;36605">Bug 36605</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Add a time stamp to the output of the <command>libvirt-check.sh</command> script output
+		(<ulink url="&ucsbug;35069">Bug 35069</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Temporary files for noVNC token files are now created on the same partition to fix a problem
+		with cross-device renaming (<ulink url="&ucsbug;36988">Bug 36988</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Display a https link in instances page for the first public and private IP of cloud
+		instances (<ulink url="&ucsbug;36905">Bug 36905</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Add tooltip for security group and key pair in the instance wizard (<ulink
+		url="&ucsbug;36906">Bug 36906</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Fix header button of the cloud connection wizard to close only wizard and not the full
+		module (<ulink url="&ucsbug;36585">Bug 36585</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Add a progress bar while waiting for changed state of a virtual instance (<ulink
+		url="&ucsbug;36380">Bug 36380</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Fix the noVNC links for VMs running on localhost (<ulink url="&ucsbug;36105">Bug
+		36105</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Update cloud instance info more often after adding, changing the state or deleting an
+		instance (<ulink url="&ucsbug;37301">Bug 37301</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Handle failure to stop UVMMd during update more gracefully (<ulink url="&ucsbug;36927">Bug
+		36927</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Add a time stamp to the UVMMd check script output (<ulink url="&ucsbug;37040">Bug
+		37040</ulink>) and log the complete output (<ulink url="&ucsbug;34352">Bug 34352</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Ignore errors reading UVMM profiles (<ulink url="&ucsbug;34542">Bug 34542</ulink>).
+	  </simpara></listitem>
+
+	</itemizedlist>
+  </section>
+
+  <section id="changelog:virt:operation">
+	<title>Operate UCS as virtual machine</title>
+	<itemizedlist>
+	  <listitem><simpara>
+	  </simpara></listitem>
+	</itemizedlist>
+  </section>
+</section>
 
 
 <section id="changelog:win">
@@ -453,17 +647,34 @@
 	<title>Univention AD Takeover</title>
 	<itemizedlist>
 	  <listitem><simpara>
+		Several spelling mistakes have been fixed (<ulink url="&ucsbug;35199">Bug 35199</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
   </section>
-  
+
+(<ulink url="&ucsbug;">Bug </ulink>).
+
   <section id="changelog:win:s4c">
 	<title>Univention S4 Connector</title>
 	<itemizedlist>
 	  <listitem><simpara>
+		LDAP base DNs with uppercase letters caused synchronization rejects (<ulink
+		url="&ucsbug;33110">Bug 33110</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		GPO Security Descriptors can now be synchronized between OpenLDAP and the Samba directory
+		service. By default this is not activated, an upcoming errata update for UCS@school 4.0 will
+		make use of this feature (<ulink url="&ucsbug;36980">Bug 36980</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Ignore <emphasis>cn=Subschema</emphasis> and warn if Univention Directory Listener didn't
+		pass a entryUUID (<ulink url="&ucsbug;36981">Bug 36981</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
   </section>
+
 
   <section id="changelog:win:adc">
 	<title>Univention Active Directory Connection</title>
@@ -487,6 +698,11 @@
 	  <listitem><simpara>
 		Support direct unconditional clock synchronization with the Active Directory server (<ulink
 		url="&ucsbug;37481">Bug 37481</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		LDAP base DNs with uppercase letters caused synchronization rejects (<ulink
+		url="&ucsbug;37450">Bug 37450</ulink>).
 	  </simpara></listitem>
 
 	</itemizedlist>
@@ -554,6 +770,13 @@
 			<listitem>openjdk-7-jdk</listitem>
 		</itemizedlist>
 	</simpara></listitem>
+
+	<listitem><simpara>
+	  This update silences the PHP cron job, which is cleaning up old PHP session files. Due to a
+	  mis-configuration from previous upgrades it was sending emails containing error messages every
+	  30 minutes (<ulink url="&ucsbug;36621">Bug 36621</ulink>)
+	</simpara></listitem>
+
   </itemizedlist>
 </section>
 
