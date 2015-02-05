@@ -1,3 +1,9 @@
+ucslint (4.0.0-7) unstable; urgency=low
+
+  * Bug #37688: fixed traceback in 0001-CheckJoinScript.py
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 04 Feb 2015 15:50:27 +0100
+
 ucslint (4.0.0-6) unstable; urgency=low
 
   * Bug #32525: univention-install-joinscript: remove debug output
