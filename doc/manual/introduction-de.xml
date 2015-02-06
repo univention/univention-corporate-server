@@ -114,7 +114,7 @@ Instanz. Weiterführende Informationen finden sich in <xref linkend="installatio
 
 <section id="introduction:Domaenenkonzept"><title>Domänenkonzept</title>
 <para>
-In einer mit UCS verwalteten IT-Infrastrukture können sich alle Server,
+In einer mit UCS verwalteten IT-Infrastruktur können sich alle Server,
 Clients und Benutzer in einem einheitlichen Sicherheits- und
 Vertrauenskontext, der UCS-Domäne, befinden. Jedem UCS-System wird dazu bei
 seiner Installation eine so genannte Systemrolle zugewiesen.  Mögliche

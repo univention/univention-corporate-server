@@ -67,7 +67,7 @@
                             <para>
 							  In der Grundeinstellung kann keine Gruppe mit dem Namen eines existierenden
 							  Benutzers angelegt werden. Wird die &ucsUCRV; <envar>directory/manager/user_group/uniqueness</envar>
-							  auf <emphasis>false</emphasis> gesetzt, wird diese Prüfung aufgehoben.
+							  auf <literal>false</literal> gesetzt, wird diese Prüfung aufgehoben.
 							</para>
 						</entry>
 					</row>
@@ -326,7 +326,7 @@
 		  Verzeichnisdaten ausschließlich &ucsUMC; eingesetzt ist,
 		  ist diese zusätzliche Prüfung nicht nötig und kann durch Setzen der
 		  &ucsUCRV; <envar>nss/group/cachefile/check_member</envar>
-		  auf <emphasis>false</emphasis> deaktiviert werden.
+		  auf <literal>false</literal> deaktiviert werden.
 		</para>
 	</section>
 

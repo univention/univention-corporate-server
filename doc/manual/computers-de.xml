@@ -47,7 +47,7 @@
 		<para>
 		  Der vereinfachte Assistent kann für alle Systemrollen deaktiviert werden, indem die &ucsUCRV;
 		  <envar>directory/manager/web/modules/computers/computer/wizard/disabled</envar> auf
-		  <emphasis>true</emphasis> gesetzt wird.
+		  <literal>true</literal> gesetzt wird.
 		</para>
 
 		<figure id="computer-create">
@@ -533,7 +533,7 @@
             </para>
             <para>
                 Die zu verwendenden Treiber werden beim Systemstart automatisch erkannt und
-                durch den Device Manager udev geladen. Dabei werden außerdem die notwendigen
+				durch den Device Manager <application>udev</application> geladen. Dabei werden außerdem die notwendigen
                 System-Verknüpfungen unter <filename class="directory">/dev/</filename> angelegt. Wenn Treiber nicht erkannt
                 werden (was vorkommen kann, wenn keine entsprechenden Hardware-IDs registriert
                 sind oder Hardware verwendet wird, die nicht automatisch erkannt werden
@@ -556,7 +556,7 @@
                 Wenn doch externe Treiber oder Kernelmodule benötigt werden, können diese über <emphasis>Dynamic Kernel Module Support</emphasis> (DKMS) eingebunden werden.
                 Es stellt eine standardisierte Schnittstelle für Kernelquellen bereit und erlaubt es, Module automatisch für jeden installierten Kernel zu übersetzen.
                 Dazu müssen neben dem Paket <package>dkms</package> auch die Kernel-Header-Pakete <package>univention-kernel-headers</package> für die gewünschten Kernel installiert werden.
-                Zu beachten ist, dass nicht alle externen Kernelmodule mit allen Kerneln kompatibel sind.
+                Zu beachten ist, dass nicht alle externen Kernelmodule mit allen Kernel kompatibel sind.
             </para>
         </section>
 
@@ -642,7 +642,7 @@
                 <para>
                     Netzwerkschnittstellen können für IPv4 und/oder IPv6 konfiguriert
                     werden. IPv4-Adressen haben 32 Bit Länge und werden in der Regel in vier
-                    Blöcken in Dezimalschrebweise dargestellt (z.B. 192.168.0.10), während
+                    Blöcken in Dezimalschreibweise dargestellt (z.B. 192.168.0.10), während
                     IPv6-Adressen vier Mal so lang sind und typischerweise hexadezimal dargestellt
                     werden (z.B. 2222:0DFE:FE29:DE27:0000:0000:0000:0000).
                 </para>
@@ -806,7 +806,7 @@ ucr set uvmm/kvm/bridge/autostart=no
 ucr unset umc/modules/setup/network/disabled/by
 					</programlisting>
 					<para>
-						Danach muß der Server neu gestartet werden.
+						Danach muss der Server neu gestartet werden.
 						Bei existierenden virtuellen Maschinen müssen danach die Namen der Netzwerkinterfaces angepasst werden, was in <xref linkend="uvmm:networkinterfaces"/> beschrieben ist.
 						Weiterhin wird empfohlen, die <acronym>UVMM</acronym>-Profile für neue virtuelle Maschinen anzupassen, was in  <xref linkend="uvmm::profile::network"/> beschrieben ist.
 					</para>
@@ -902,7 +902,7 @@ ucr unset umc/modules/setup/network/disabled/by
 
 					  <itemizedlist>
 						<listitem><simpara>
-						  <emphasis>balance-rr (0)</emphasis> verteilt die Pakete der Reihe nach
+						  <guimenuitem>balance-rr (0)</guimenuitem> verteilt die Pakete der Reihe nach
 						  gleichmässig auf die verfügbaren Netzwerkschnittstellen innerhalb des
 						  Bondings. Dies erhöht den Durchsatz und verbessert die Ausfallsicherheit.
 						  Zur Verwendung dieser Variante müssen die verwendeten Netzwerk-Switches
@@ -910,7 +910,7 @@ ucr unset umc/modules/setup/network/disabled/by
 						</simpara></listitem>
 
 						<listitem><simpara>
-						  Bei Verwendung von <emphasis>active-backup (1)</emphasis> ist nur jeweils
+						  Bei Verwendung von <guimenuitem>active-backup (1)</guimenuitem> ist nur jeweils
 						  eine Netzwerkkarte des Bonding-Interfaces aktiv (in der Grundeinstellung
 						  die Netzwerkschnittstelle aus <guimenu>Bond primary</guimenu>). Fällt die
 						  primäre Netzwerkkarte aus, wird dies durch den Linux-Kernel erkannt und
@@ -919,7 +919,7 @@ ucr unset umc/modules/setup/network/disabled/by
 						</simpara></listitem>
 					  </itemizedlist>
 
-					  Darüberhinaus existieren noch weitere Bonding-Methoden. Diese sind in der
+					  Darüber hinaus existieren noch weitere Bonding-Methoden. Diese sind in der
 					  Regel nur für Sonderfälle relevant und sind unter <xref linkend="bonding"/>
 					  beschrieben.
 					</para>
@@ -1066,7 +1066,7 @@ ucr unset umc/modules/setup/network/disabled/by
             </para>
             <para>
                 Die Einstellungen können auch über eine &ucsUCR;-Richtlinie gesetzt werden.
-                Die manuelle Konfguration ist auch nötig, wenn ein Dual-Monitor-Betrieb verwendet
+                Die manuelle Konfiguration ist auch nötig, wenn ein Dual-Monitor-Betrieb verwendet
                 werden soll. Im folgenden eine Auswahl der wichtigen Einstellungen
                 und die dazugehörigen UCR-Variablen in Klammern:
             </para>
@@ -1552,7 +1552,7 @@ master.firma.de
 			</note>
             <para>
                 Die UCR-Templates werden im Verzeichnis
-                <filename>/etc/univention/templates/files</filename> abgelegt. Der Pfad zu den
+				<filename class="directory">/etc/univention/templates/files/</filename> abgelegt. Der Pfad zu den
                 Vorlagen entspricht dem absoluten Pfad zu der Konfigurationsdatei mit
                 vorangestelltem Pfad zum Vorlagenverzeichnis. So findet sich zum Beispiel
                 die Vorlage für die Konfigurationsdatei <filename>/etc/issue</filename> unter
@@ -1624,7 +1624,7 @@ if configRegistry.get('version/version') and \
                 <para>
                     Die in Konfigurationsdateien verwendeten &ucsUCR;-Variablen werden
                     unterhalb des Verzeichnisses
-                    <filename>/etc/univention/templates/info</filename> in <emphasis>info</emphasis>-Dateien
+					<filename class="directory">/etc/univention/templates/info/</filename> in <emphasis>info</emphasis>-Dateien
                     registriert, die in der Regel nach dem Paketnamen mit der
                     Dateiendung <emphasis>.info</emphasis> benannt werden. Wird neuer Python-Code in die Vorlagen eingefügt oder bestehender Code
                     so verändert, dass er zusätzliche oder andere Variablen nutzt, so muss
@@ -1729,7 +1729,7 @@ if configRegistry.get('version/version') and \
                     Diese Einschränkung kann mit der &ucsUCRV; <envar>auth/DIENST/restrict</envar>
                     konfiguriert werden. Der Zugriff auf diesen Dienst kann durch Setzen
                     der Variablen <envar>auth/DIENST/user/BENUTZERNAME</envar> und
-                    <envar>auth/DIENST/group/GRUPPENNAME</envar> auf <emphasis>yes</emphasis> freigegeben
+                    <envar>auth/DIENST/group/GRUPPENNAME</envar> auf <literal>yes</literal> freigegeben
                     werden.
                 </para>
                 <para>
@@ -1790,7 +1790,7 @@ auth/sshd/restrict: yes
             <section id="computers:Logdateien"><title>Logdateien</title>
                 <para>
                     Alle UCS-spezifischen Logdateien (z.B. für die Listener/Notifier-Replikation)
-                    werden im Verzeichnis <filename>/var/log/univention</filename> abgelegt. Serverdienste
+					werden im Verzeichnis <filename class="directory">/var/log/univention/</filename> abgelegt. Serverdienste
                     protokollieren in ihre jeweilige Standard-Logdateien; Apache beispielsweise in
                     die Datei <filename>/var/log/apache2/error.log</filename>.
                 </para>
@@ -1822,7 +1822,7 @@ auth/sshd/restrict: yes
                 </para>
                     <itemizedlist>
 						<listitem><simpara>Der freie Speicherplatz auf den Systempartitionen (<command>df -lhT</command>)</simpara></listitem>
-						<listitem><simpara>Die aktuelle Prozeßliste (<command>ps auxf</command>)</simpara></listitem>
+						<listitem><simpara>Die aktuelle Prozessliste (<command>ps auxf</command>)</simpara></listitem>
 						<listitem><simpara>Zwei <command>top</command>-Aufstellungen der aktuellen Prozesse und Auslastung (<command>top -b -n2</command>)</simpara></listitem>
 						<listitem><simpara>Den aktuell freien Arbeitsspeicher (<command>free</command>)</simpara></listitem>
 						<listitem><simpara>Die Zeit, die seit dem Start des Systems vergangen ist (<command>uptime</command>)</simpara></listitem>
@@ -1834,7 +1834,7 @@ auth/sshd/restrict: yes
                     durch die &ucsUCRV; <envar>system/stats/cron</envar> in Cron-Syntax definiert werden,
                     z.B. <emphasis>0,30 * * * *</emphasis> für eine Protokollierung jeweils zu jeder vollen und
                     halben Stunde. Die Protokollierung wird durch Setzen
-                    der &ucsUCRV; <envar>system/stats</envar> auf <emphasis>yes</emphasis> aktiviert und ist bei
+                    der &ucsUCRV; <envar>system/stats</envar> auf <literal>yes</literal> aktiviert und ist bei
                     Neuinstallationen ab UCS 3.0 die Grundeinstellung.
                 </para>
             </section><!-- Protokollierung des Systemzustands -->
@@ -1930,8 +1930,8 @@ auth/sshd/restrict: yes
             <section id="computers:Stündliches_tägliches_wöchentliches_monatliches_Ausführen_von_Skripten"><title>Stündliches/tägliches/wöchentliches/monatliches Ausführen von Skripten</title>
                 <para>
                     Auf jedem UCS-System sind vier Verzeichnisse
-                    vordefiniert, <filename>/etc/cron.hourly/</filename>, <filename>/etc/cron.daily/</filename>, <filename>/etc/cron.weekly/</filename>
-                    und <filename>/etc/cron.monthly/</filename>. Shell-Skripte, die in diesen Verzeichnissen
+                    vordefiniert, <filename class="directory">/etc/cron.hourly/</filename>, <filename class="directory">/etc/cron.daily/</filename>, <filename class="directory">/etc/cron.weekly/</filename>
+                    und <filename class="directory">/etc/cron.monthly/</filename>. Shell-Skripte, die in diesen Verzeichnissen
                     abgelegt werden und als ausführbar markiert sind, werden automatisch
                     stündlich, täglich, wöchentlich oder monatlich ausgeführt.
                 </para>
@@ -2038,7 +2038,7 @@ auth/sshd/restrict: yes
                 führt die Standardwerte der Variablen auf:
             </para>
                 <table>
-                    <title>Standardgrößen der NSCD Hash-Tablellen</title>
+                    <title>Standardgrößen der NSCD Hash-Tabellen</title>
                     <tgroup cols="2">
                         <colspec colnum="1" colname="col1" colwidth="1*"/>
                         <colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -2120,7 +2120,7 @@ nscd -i hosts
 				<listitem>
 					<simpara>
 					Soll für den <emphasis>root</emphasis>-Benutzer überhaupt keine SSH-Anmeldung mehr möglich sein, kann dies
-                    durch Setzen der &ucsUCRV; <envar>auth/sshd/user/root</envar> auf <emphasis>no</emphasis>
+                    durch Setzen der &ucsUCRV; <envar>auth/sshd/user/root</envar> auf <literal>no</literal>
 					deaktiviert werden.
 					</simpara>
 				</listitem>
@@ -2131,7 +2131,7 @@ nscd -i hosts
                 soll. Dies ist u.a. nötig, um einem Benutzer die Möglichkeit zu geben durch
                 einen Login mit <command>ssh -X ZIELRECHNER</command> ein Programm mit grafischer
                 Ausgabe auf einem entfernten Rechner zu starten. Die möglichen Einstellungen
-                sind <emphasis>yes</emphasis> und <emphasis>no</emphasis>.
+                sind <literal>yes</literal> und <literal>no</literal>.
             </para>
             <para>
                 Der Standard-Port für SSH-Verbindungen ist Port 22 über TCP. Wenn ein
@@ -2148,7 +2148,7 @@ nscd -i hosts
             </para>
             <para>
                 Asynchrone Systemzeiten zwischen den einzelnen Rechnern einer Domäne
-                können die Quelle vielfältiger Fehler bedeuten: Sie verringern beispielweise die
+                können die Quelle vielfältiger Fehler bedeuten: Sie verringern beispielsweise die
                 Verlässlichkeit von Log-Dateien, stören den Kerberos-Betrieb und können die
                 korrekte Auswertung von Passwortablaufintervallen stören.
             </para>
@@ -2165,7 +2165,7 @@ nscd -i hosts
             <para>
                 Windows-Clients, die in eine Samba 4-Domäne gejoint wurden,
                 akzeptieren nur signierte NTP-Zeitanfragen. Wird die
-                &ucsUCRV; <envar>ntp/signed</envar> auf <emphasis>yes</emphasis> gesetzt, werden die NTP-Pakete
+                &ucsUCRV; <envar>ntp/signed</envar> auf <literal>yes</literal> gesetzt, werden die NTP-Pakete
                 durch Samba 4 signiert.
             </para>
         </section>

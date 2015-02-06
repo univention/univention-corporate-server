@@ -417,7 +417,7 @@ Mit dem Kommando <command>restore</command> können Daten
 zurückgesichert werden. Nun kann mit <command>3 (Enter list of comma
 separated JobIds to select)</command> ein Backup-Job ausgewählt werden,
 von dem Daten zurückgesichert werden sollen. Dann erscheint ein
-Dateibrowser, in dem mit den Standardkommdos <command>cd</command> und
+Dateibrowser, in dem mit den Standardkommandos <command>cd</command> und
 <command>ls</command> navigiert werden kann. Hier können mittels
 <command>mark FILE</command> bzw. <command>mark -r DIR</command>
 Dateien bzw. Verzeichnisse für die Rücksicherung markiert werden. Sind
@@ -425,7 +425,7 @@ alle gewünschten Daten markiert, wird der Dateibrowser mit
 <command>done</command> beendet. Nach der Angabe des Clients und der
 Bestätigung einiger Optionen für den Restore-Job (z.B. wohin die Daten
 kopiert werden sollen) kann der Restore-Job mit <command>yes</command>
-gestartet werden. Nach Abschluß befinden sich die ausgewählten Daten im
+gestartet werden. Nach Abschluss befinden sich die ausgewählten Daten im
 konfigurierten Rücksicherungsverzeichnis. Falls für ein Backup oder
 Restore ein Tape benötigt wird, das sich nicht im Laufwerk befindet,
 fordert Bacula dieses Tape explizit an.
@@ -490,7 +490,7 @@ FileSet {
 Über die Anweisungen <varname>RunBeforeJob</varname> und
 <varname>RunAfterJob</varname> werden vor bzw. nach der eigentlichen
 Sicherung Skripte ausgeführt. Im Falle des Catalogs wird mit
-<filename>make_catalog_backup</filename> vor der Sicherung ein SQL-Dump
+<command>make_catalog_backup</command> vor der Sicherung ein SQL-Dump
 der Catalog-Datenbank erzeugt und unter
 <filename>/var/lib/bacula/bacula.sql</filename> gespeichert. Nach
 erfolgter Sicherung wird diese Datei wieder entfernt.

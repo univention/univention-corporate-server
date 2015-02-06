@@ -20,7 +20,7 @@
 	POSIX ACLs. In UCS the file systems ext3, ext4 and XFS support POSIX ACLs. The Samba
 	configuration also allows storing DOS file attributes in extended attributes of the Unix file
 	system. To use extended attributes, the partition must be mounted using the mount option
-	<emphasis>user_xattr</emphasis>.
+	<option>user_xattr</option>.
   </para>
 
   <section id="shares::permissions"><title>Access rights to data in shares</title>
@@ -150,13 +150,13 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 			server.
 		  </para>
 		  <para>
-			If the &ucsUCRV; <envar>listener/shares/rename</envar> is set to <emphasis>yes</emphasis>, the
+			If the &ucsUCRV; <envar>listener/shares/rename</envar> is set to <literal>yes</literal>, the
 			contents of the existing directory are moved when the path is
 			modified.
 		  </para>
 		  <para>
-			No shares can be created in and below <filename>/proc</filename>, <filename>/tmp</filename>,
-			<filename>/root</filename>, <filename>/dev</filename> and <filename>/sys</filename> and no files can be moved there.
+			No shares can be created in and below <filename class="directory">/proc</filename>, <filename class="directory">/tmp</filename>,
+			<filename class="directory">/root</filename>, <filename class="directory">/dev</filename> and <filename class="directory">/sys</filename> and no files can be moved there.
 		  </para>
 		</entry>
 	  </row>
@@ -1092,7 +1092,7 @@ Microsoft Distributed File System Tree'.
 		Filesystem quotas always apply to a full partition.
 		Even if the policies are defined for shares, they are used on complete partitions. If, for
 		example, three shares are provided on one server which are all saved on the separate
-		<filename>/var</filename> partition and three different policies are configured and used,
+		<filename class="directory">/var/</filename> partition and three different policies are configured and used,
 		the most restrictive setting applies for the complete partition. If different quotas are used, it
 		is recommended to distribute the data over individual partitions.
 	  </para>

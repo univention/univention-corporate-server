@@ -1136,7 +1136,7 @@ univention-director-manager users/user
 
         <para>
 		  For example, the UNIX home directory can be stored under
-		  <filename>/home/&lt;title&gt;.&lt;lastname&gt;</filename> or the primary e-mail address
+		  <filename class="directory">/home/&lt;title&gt;.&lt;lastname&gt;</filename> or the primary e-mail address
 		  can be predefined with
 		  <emphasis>&lt;firstname&gt;.&lt;lastname&gt;@company.com</emphasis>. Substitutions are
 		  generally possibly for any value, but there is no syntax or semantics check. So, if no

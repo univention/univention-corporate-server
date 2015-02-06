@@ -183,7 +183,7 @@
 		  Eine <emphasis>Forward Lookup Zone</emphasis> enthält Informationen, die zum Auflösen
 		  von DNS-Namen in IP-Adressen herangezogen werden. Jede DNS-Zone
 		  verfügt über mindestens einen authoritativen, primären Nameserver,
-		  dessen Informationen für eine Zone massgeblich sind. Untergeordnete
+		  dessen Informationen für eine Zone maßgeblich sind. Untergeordnete
 		  Server synchronisieren sich mit dem authoritativen Server über
 		  Zonentransfers. Der Eintrag, der eine solche Zone auszeichnet, ist
 		  der <emphasis>SOA-Record</emphasis>.
@@ -321,7 +321,7 @@
 		  In der Grundeinstellung erlaubt der UCS-Nameserver Zonentransfers
 		  der DNS-Daten. Ist der UCS-Server aus dem Internet erreichbar, kann dadurch eine Liste
 		  aller Rechnernamen und IP-Adressen abgefragt werden. Der Zonentransfer kann bei Verwendung des OpenLDAP-Backends durch Setzen
-		  der &ucsUCRV; <envar>dns/allow/transfer</envar> auf <emphasis>none</emphasis> deaktiviert
+		  der &ucsUCRV; <envar>dns/allow/transfer</envar> auf <literal>none</literal> deaktiviert
 		  werden.
 		</para>
 	  </section>
@@ -498,7 +498,7 @@
 				  <entry>Minimum Time-to-Live</entry>
 				  <entry>
 					Die Minimum Time-to-Live gibt in Sekunden an, wie lange andere Server
-					No-such-Domain-Antworten (NXDOMAIN) im Cache behalten dürfen. Der Wert
+					<foreignphrase>No-such-Domain</foreignphrase>-Antworten (<acronym>NXDOMAIN</acronym>) im Cache behalten dürfen. Der Wert
 					darf nicht mehr als 3 Stunden betragen.
 				  </entry>
 				</row>
@@ -914,7 +914,7 @@
 			  <row>
 				<entry>Adresse</entry>
 				<entry>
-				  Die letzten Oktette der IP-Adresse des Rechners (abhängig vom Netz-Präfix, siehe unten).
+				  Die letzten Oktett der IP-Adresse des Rechners (abhängig vom Netz-Präfix, siehe unten).
 				</entry>
 			  </row>
 			  <row>
@@ -1791,7 +1791,7 @@
 	</para>
 	<para>
 	  Darüber hinaus werden die im Verzeichnis
-	  <filename>/etc/security/packetfilter.d/</filename> liegenden
+	  <filename class="directory">/etc/security/packetfilter.d/</filename> liegenden
 	  Konfigurations-Skripte in alphabetischer Reihenfolge
 	  ausgeführt. Standardmäßig sind alle Skripte mit zwei führenden Ziffern
 	  benannt, so dass eine einfache Festlegung der Reihenfolge möglich
@@ -1803,7 +1803,7 @@
 	</para>
 	<para>
 	  Die Univention Firewall kann durch Setzen der
-	  &ucsUCRV; <envar>security/packetfilter/disabled</envar> auf <emphasis>true</emphasis> deaktiviert werden.
+	  &ucsUCRV; <envar>security/packetfilter/disabled</envar> auf <literal>true</literal> deaktiviert werden.
 	</para>
   </section>
 
@@ -1825,7 +1825,7 @@
 	  Internetzugang verringert werden.
 	</para>
 	<para>
-	  Als zusätzliche Komponente kann die Software Dansguardian
+	  Als zusätzliche Komponente kann die Software DansGuardian
 	  installiert werden. Damit ist es möglich,
 	  dass Internetinhalte vor der Auslieferung an den Anwender überprüft und gefiltert
 	  werden, um so Dateien auf Viren zu scannen oder den Zugriff auf unerwünschte
@@ -1865,7 +1865,7 @@
 		weitere Squid-Optionen gesetzt werden.
 	  </para>
 	  <para>
-		<emphasis>Dansguardian</emphasis> kann über das Paket
+		<emphasis>DansGuardian</emphasis> kann über das Paket
 		<package>univention-dansguardian</package> installiert werden, siehe
 		<xref linkend="proxy:contentfilter"/>.
 	  </para>
@@ -1890,7 +1890,7 @@
 		In manchen Umgebungen ist diese Caching-Funktionalität allerdings nicht
 		notwendig bzw. muss bei kaskadierten Proxys nicht bei allen aktiviert
 		sein. Für diese Szenarien kann die Caching-Funktion des Squid mit der
-		&ucsUCRV; <envar>squid/cache</envar> deaktiviert werden, indem diese auf den Wert <emphasis>no</emphasis>
+		&ucsUCRV; <envar>squid/cache</envar> deaktiviert werden, indem diese auf den Wert <literal>no</literal>
 		gesetzt wird. Anschließend muss Squid neu gestartet werden.
 	  </para>
 	</section>
@@ -1904,7 +1904,7 @@
 		zugegriffen wurde.
 	  </para>
 	  <para>
-		Bei Verwendung von Dansguardian werden sämtliche Zugriffe
+		Bei Verwendung von DansGuardian werden sämtliche Zugriffe
 		in der Datei <filename>/var/log/dansguardian/access.log</filename> protokolliert.
 	  </para>
 	</section>
@@ -1926,10 +1926,10 @@ univention-config-registry set squid/allowfrom="192.168.2.0/24 192.168.3.0/24"
 		192.168.2.0/24 und 192.168.3.0/24 erlaubt. Durch Angabe von <emphasis>all</emphasis> kann der Zugriff auch aus allen Netzen erlaubt werden.
 	  </para>
 	  <para>
-		Wenn Squid zusammen mit Dansguardian eingesetzt wird, d.h. die Viren- oder
+		Wenn Squid zusammen mit DansGuardian eingesetzt wird, d.h. die Viren- oder
 		Webinhaltsfilterung aktiviert wird, kann Squid den Zugriff nicht prüfen,
-		da die Verbindungen über Dansguardian erfolgen. In diesem Fall kann der
-		Zugriff über Dansguardian eingeschränkt werden.
+		da die Verbindungen über DansGuardian erfolgen. In diesem Fall kann der
+		Zugriff über DansGuardian eingeschränkt werden.
 	  </para>
 	</section>
 
@@ -1996,7 +1996,7 @@ univention-config-registry set squid/webports="80 443"
 		<itemizedlist>
 		  <listitem><simpara>
 			Die Authentifizierung erfolgt direkt gegen den LDAP-Server. Dazu muss die
-			&ucsUCRV; <envar>squid/basicauth</envar> auf <emphasis>yes</emphasis> gesetzt werden und
+			&ucsUCRV; <envar>squid/basicauth</envar> auf <literal>yes</literal> gesetzt werden und
 			Squid neu gestartet werden.
 		  </simpara></listitem>
 
@@ -2004,7 +2004,7 @@ univention-config-registry set squid/webports="80 443"
 			Die Authentifizierung wird über die NTLM-Schnittstelle durchgeführt. Benutzer, die an
 			einem Windows-Client angemeldet sind, müssen dann beim Zugriff auf den Proxy keine
 			weitere Authentifizierung durchführen. Um NTLM-Authentifizierung zu aktivieren muss die 
-			&ucsUCRV; <envar>squid/ntlmauth</envar> auf <emphasis>yes</emphasis> gesetzt werden und
+			&ucsUCRV; <envar>squid/ntlmauth</envar> auf <literal>yes</literal> gesetzt werden und
 			Squid neu gestartet werden.
 		  </simpara></listitem>
 
@@ -2013,9 +2013,9 @@ univention-config-registry set squid/webports="80 443"
 			angemeldet sind, der Mitglied einer Samba 4-Domäne ist, authentifizieren sich am Proxy mit
 			dem Ticket, das sie im Rahmen der Domänenanmeldung erhalten haben. Um
 			Kerberos-Authentifizierung zu aktivieren muss das Paket
-			<emphasis>univention-squid-kerberos</emphasis> auf jedem Proxyserver installiert
+			<package>univention-squid-kerberos</package> auf jedem Proxyserver installiert
 			werden. Anschließend muss die &ucsUCRV; <envar>squid/krb5auth</envar> auf
-			<emphasis>yes</emphasis> gesetzt werden und Squid neu gestartet werden.
+			<literal>yes</literal> gesetzt werden und Squid neu gestartet werden.
 		  </simpara></listitem>
 		</itemizedlist>
 	  </para>
@@ -2025,7 +2025,7 @@ univention-config-registry set squid/webports="80 443"
 		Webseite <uri>http://www.univention.de</uri> aufgerufen, werden neben der eigentlichen
 		HTML-Seite auch weitere Unterseiten und Bilder nachgeladen. Die NTLM-Authentifizierung kann
 		domänenbezogenen zwischengespeichert werden: Wird die &ucsUCRV;
-		<envar>squid/ntlmauth/keepalive</envar> auf <emphasis>yes</emphasis> gesetzt, wird für
+		<envar>squid/ntlmauth/keepalive</envar> auf <literal>yes</literal> gesetzt, wird für
 		nachgelagerte HTTP-Anfragen derselben Domäne keine weitere NTLM-Authentifizierung
 		durchgeführt.
 	  </para>
@@ -2038,16 +2038,16 @@ univention-config-registry set squid/webports="80 443"
 	</section>
 
 	<section id="proxy:contentfilter">
-	  <title>Filterung/Prüfung von Webinhalten mit Dansguardian</title>
+	  <title>Filterung/Prüfung von Webinhalten mit DansGuardian</title>
 	  <para>
-		Dansguardian nimmt Webseiten-Anforderungen aus dem Netzwerk entgegen und
+		DansGuardian nimmt Webseiten-Anforderungen aus dem Netzwerk entgegen und
 		prüft, ob diese Zugriffe erlaubt sind. Falls ja, wird die
-		Anfrage an den Proxy-Server Squid weitergeleitet. Dansguardian erlaubt
+		Anfrage an den Proxy-Server Squid weitergeleitet. DansGuardian erlaubt
 		beispielsweise die Sperrung einzelner Dateiarten und -endungen oder des
 		Zugriffs auf Webseiten oder Domains.
 	  </para>
 	  <figure id="net-dansguardian">
-		<title>Sperrung einer Web-Seite durch Dansguardian</title>
+		<title>Sperrung einer Web-Seite durch DansGuardian</title>
 		<graphic scalefit="1" width="100%" fileref="illustrations40/dansguardian_DE.png"/>
 	  </figure>
 	  <para>
@@ -2061,9 +2061,9 @@ univention-config-registry set squid/webports="80 443"
 		  Der direkte Zugriff auf den Proxy-Server Squid
 		  ist hierbei auf Zugriffe vom lokalen Rechner ('localhost')
 		  eingeschränkt. Anwender, die auf dem System arbeiten, auf dem Squid und
-		  Dansguardian installiert sind, haben so die Möglichkeit, die
+		  DansGuardian installiert sind, haben so die Möglichkeit, die
 		  Filterfunktionen zu umgehen, indem Sie direkt auf Squid zugreifen. Der
-		  Web-Proxy und Dansguardian sollten deshalb nur auf
+		  Web-Proxy und DansGuardian sollten deshalb nur auf
 		  dedizierten Systemen installiert werden, auf denen Anwender sich nicht
 		  anmelden können.
 		  </para>
@@ -2075,16 +2075,16 @@ univention-config-registry set squid/webports="80 443"
 	  <para>
 		Das Filtern von Web-Inhalten und der Virenscanner können getrennt voneinander
 		konfiguriert werden. Um den Inhaltsfilter zu deaktivieren, muss die
-		&ucsUCRV; <envar>squid/contentscan</envar> auf <emphasis>no</emphasis> gesetzt und Squid neu gestartet
+		&ucsUCRV; <envar>squid/contentscan</envar> auf <literal>no</literal> gesetzt und Squid neu gestartet
 		werden. Um den Virenscanner abzuschalten, ist
-		&ucsUCRV; <envar>squid/virusscan</envar> auf <emphasis>no</emphasis> zu setzen. Ist keine
-		der beiden Variablen auf <emphasis>yes</emphasis> gesetzt, wird Dansguardian nicht
-		verwendet. Nach Änderungen an den Variablen muss Squid und - sofern installiert - Dansguardian neu gestartet werden.
+		&ucsUCRV; <envar>squid/virusscan</envar> auf <literal>no</literal> zu setzen. Ist keine
+		der beiden Variablen auf <literal>yes</literal> gesetzt, wird DansGuardian nicht
+		verwendet. Nach Änderungen an den Variablen muss Squid und - sofern installiert - DansGuardian neu gestartet werden.
 	  </para>
 	</section>
 
 	<section id="proxy:contentfilter-configuration">
-	  <title>Definition von Inhaltsfiltern für Dansguardian</title>
+	  <title>Definition von Inhaltsfiltern für DansGuardian</title>
 	  <para>
 		Webinhalte können anhand von Dateiendungen, MIME-Typen, Webseiten sowie einzelnen URLs
 		gefiltert werden. Es ist dabei möglich, einzelne Rechner oder Nutzer aus der Filterung
@@ -2094,10 +2094,10 @@ univention-config-registry set squid/webports="80 443"
 	  <para>
 		Die Filterfunktion kann über die folgenden &ucsUCR;-Variablen konfiguriert
 		werden. Sollen dabei mehrere Werte angegeben werden, sind diese jeweils durch
-		Leerzeichen zu trennen. Die Filterung wird bei Dansguardian auf Basis von
+		Leerzeichen zu trennen. Die Filterung wird bei DansGuardian auf Basis von
 		Gruppenzugehörigkeiten durchgeführt, d.h. es können pro Gruppe verschiedene
 		Regeln definiert und dadurch verschiedene Berechtigungen beim Zugriff auf das Web
-		realisiert werden. Welche Gruppen von Dansguardian betrachtet werden,
+		realisiert werden. Welche Gruppen von DansGuardian betrachtet werden,
 		wird in der &ucsUCRV; <envar>dansguardian/groups</envar> definiert.
 	  </para>
 
@@ -2109,7 +2109,7 @@ univention-config-registry set squid/webports="80 443"
 	  </para>
 
 	  <para>
-		Gruppenänderungen werden erst nach einem Neustart von Dansguardian wirksam, entweder durch
+		Gruppenänderungen werden erst nach einem Neustart von DansGuardian wirksam, entweder durch
 		das UMC-Modul <guimenu>Systemdienste</guimenu> oder auf der Kommandozeile durch den
 		Befehl:
 	  </para>
@@ -2178,7 +2178,7 @@ dansguardian -g
 				</entry>
 				<entry>
 				  Hiermit können komplette Webseiten gesperrt werden. Beispiel:
-				  <emphasis>illegal-example-website.com</emphasis>
+				  <uri>illegal-example-website.com</uri>
 				</entry>
 			  </row>
 
@@ -2197,7 +2197,7 @@ dansguardian -g
 				  <envar>dansguardian/&lt;group&gt;/exception/urls</envar>
 				</entry>
 				<entry>
-				  Der Zugriff auf die hier angegebenen URLs wird nicht durch Dansguardian geprüft.
+				  Der Zugriff auf die hier angegebenen URLs wird nicht durch DansGuardian geprüft.
 				</entry>
 			  </row>
 
@@ -2206,7 +2206,7 @@ dansguardian -g
 				  <envar>dansguardian/&lt;group&gt;/exception/sites</envar>
 				</entry>
 				<entry>
-				  Der Zugriff auf die hier angegebenen Webseiten wird nicht durch Dansguardian geprüft.
+				  Der Zugriff auf die hier angegebenen Webseiten wird nicht durch DansGuardian geprüft.
 				</entry>
 			  </row>
 

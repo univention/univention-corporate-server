@@ -306,9 +306,9 @@
 					<row>
 						<entry>UNIVENTION_DANSGUARDIAN</entry>
 						<entry>
-							monitors the Dansguardian web filter.
-							If no Dansguardian process is running
-							or the Dansguardian proxy is not accessible,
+							monitors the DansGuardian web filter.
+							If no DansGuardian process is running
+							or the DansGuardian proxy is not accessible,
 							the CRITICAL status is returned.
 						</entry>
 					</row>
@@ -1007,14 +1007,14 @@
 	  <listitem>
 		<simpara>
 		  If the plugin is run via NRPE, it must be copied into the
-		  <filename>/usr/lib/nagios/plugins</filename> directory on all Nagios servers and on all
+		  <filename class="directory">/usr/lib/nagios/plugins/</filename> directory on all Nagios servers and on all
 		  the systems to be checked.
 		</simpara>
 	  </listitem>
 	  <listitem>
 		<simpara>
 		  If the plugin does not require local access, it need only be copied into the
-		  <filename>/usr/lib/nagios/plugins</filename> directory on the Nagios server(s).
+		  <filename class="directory">/usr/lib/nagios/plugins/</filename> directory on the Nagios server(s).
 		</simpara>
 	  </listitem>
 	</itemizedlist>
@@ -1031,7 +1031,7 @@
 
   <para>
 	The Nagios plugin must now be registered. This is done using a macro in the
-	<filename>/etc/nagios-plugins/config/</filename> directory. For this, a file such as
+	<filename class="directory">/etc/nagios-plugins/config/</filename> directory. For this, a file such as
 	<emphasis>local.cfg</emphasis> can be used, in which all the locally registered plugins are
 	entered. The following example registers the plugin <command>check_e2fs_next_fsck</command>:
   </para>

@@ -167,8 +167,8 @@
 		  </para>
 
 		  <para>
-			Join scripts are stored in the <filename>/usr/lib/univention-install</filename>
-			directory and unjoin scripts in <filename>/usr/lib/univention-uninstall</filename>. Each
+			Join scripts are stored in the <filename class="directory">/usr/lib/univention-install/</filename>
+			directory and unjoin scripts in <filename class="directory">/usr/lib/univention-uninstall/</filename>. Each
 			join/unjoin script has a version. An example: A package has already been installed and
 			the join script already run. The new version of the package now requires additional
 			changes and the version number of the join script is increased.
@@ -618,10 +618,10 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 			<para>
 				To keep the efforts required for small extensions in LDAP as low as possible,
 				&ucsUCS; provides its own LDAP scheme for customer extensions. The LDAP object
-				class <emphasis>univentionFreeAttributes</emphasis> can be used for extended
+				class <classname>univentionFreeAttributes</classname> can be used for extended
 				attributes without restrictions. It offers 20 freely usable attributes
-				(<emphasis>univentionFreeAttribute1</emphasis> to
-				<emphasis>univentionFreeAttribute20</emphasis>) and can be used in connection
+				(<varname>univentionFreeAttribute1</varname> to
+				<varname>univentionFreeAttribute20</varname>) and can be used in connection
 				with any LDAP object (e.g., a user object).
 			</para>
 
@@ -755,7 +755,7 @@ slapcat &gt; ldapdata.txt
 			central configuration file <filename>/etc/ldap/slapd.conf</filename> and
 			managed using &ucsUCR;. The <filename>slapd.conf</filename> is managed using a
 			multifile template; further ACL elements can be added below
-			<filename>/etc/univention/templates/files/etc/ldap/slapd.conf.d/</filename>
+			<filename class="directory">/etc/univention/templates/files/etc/ldap/slapd.conf.d/</filename>
 			between the <filename>60univention-ldap-server_acl-master</filename> and
 			<filename>70univention-ldap-server_acl-master-end</filename> files or the
 			existing templates expanded upon.
@@ -924,7 +924,7 @@ slapcat &gt; ldapdata.txt
 	  </para>
 
 	  <para>
-		The LDAP data are stored in the <filename>/var/univention-backup/</filename> directory in
+		The LDAP data are stored in the <filename class="directory">/var/univention-backup/</filename> directory in
 		the naming scheme <filename>ldap-backup_DATE.ldif.gz</filename> in LDIF format. They can
 		only be read by the <emphasis>root</emphasis> user.
 	  </para>
@@ -1076,7 +1076,7 @@ root@dcslave1:~# cat /var/lib/univention-directory-listener/notifier_id
 		<para>
 		  The name of the listener module must be supplied to the command for the renewed
 		  initialisation. The installed listener modules can be found in the
-		  <filename>/var/lib/univention-directory-listener/handlers/system</filename> directory.
+		  <filename class="directory">/var/lib/univention-directory-listener/handlers/system/</filename> directory.
 		</para>
 
 		<para>

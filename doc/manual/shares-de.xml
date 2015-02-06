@@ -23,7 +23,7 @@
 	POSIX-ACLs unterstützen. In UCS unterstützen die Dateisysteme ext3, ext4 und XFS POSIX-ACLs. Die
 	Samba-Konfiguration erlaubt außerdem die Speicherung von DOS-Datei-Attributen in erweiterten
 	Attributen des Unix-Dateisystems. Um erweiterte Attribute zu nutzen, muss die Partition mit der
-	Mount-Option <emphasis>user_xattr</emphasis> eingebunden werden.
+	Mount-Option <option>user_xattr</option> eingebunden werden.
   </para>
 
   <section id="shares::permissions"><title>Zugriffsrechte auf Daten in Freigaben</title>
@@ -158,7 +158,7 @@ eingetragen/modifiziert oder entfernt.
 		  </para>
 
 		  <para>
-			Ist die &ucsUCRV; <envar>listener/shares/rename</envar> auf <emphasis>yes</emphasis> gesetzt, wird
+			Ist die &ucsUCRV; <envar>listener/shares/rename</envar> auf <literal>yes</literal> gesetzt, wird
 			bei der Änderung des Pfads der Inhalt eines bestehenden Verzeichnisses verschoben.
 		  </para>
 		  <para>
@@ -1005,7 +1005,7 @@ angezeigt, andernfalls werden diese ausgeblendet.
 </para>
 <para>
 Um die Funktionen eines verteilten Dateisystem nutzen zu können, muss auf dem
-Fileserver die &ucsUCRV; <envar>samba/enable-msdfs</envar> auf <emphasis>yes</emphasis> gesetzt
+Fileserver die &ucsUCRV; <envar>samba/enable-msdfs</envar> auf <literal>yes</literal> gesetzt
 werden. Anschließend muss der Samba-Dienst neu gestartet werden.
 </para>
 <para>
@@ -1138,7 +1138,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 		Dateisystem-Quota können immer nur auf vollständige Partitionen angewendet werden.
 		Auch wenn die Richtlinien für Freigaben definiert werden, werden sie auf vollständige
 		Partitionen angewendet. Wenn also beispielsweise auf einem Server drei Freigaben
-		bereitgestellt werden, die alle auf der separaten <filename>/var</filename>-Partition abgelegt werden und werden
+		bereitgestellt werden, die alle auf der separaten <filename class="directory">/var/</filename>-Partition abgelegt werden und werden
 		drei verschiedene Richtlinien konfiguriert und angewendet, so gilt die restriktivste
 		Einstellung für die komplette Partition. Wenn unterschiedliche Quota verwendet werden
 		sollen, wird empfohlen die Daten auf individuelle Partitionen zu verteilen.
@@ -1156,7 +1156,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 
 	<para>
 	  Wenn keine Quota eingesetzt werden soll, kann die Auswertung durch Setzen der &ucsUCRV;
-	  <envar>quota/userdefault</envar> auf <emphasis>no</emphasis> deaktiviert werden.
+	  <envar>quota/userdefault</envar> auf <literal>no</literal> deaktiviert werden.
 	</para>
 
 	<para>

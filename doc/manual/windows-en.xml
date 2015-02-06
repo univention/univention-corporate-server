@@ -269,7 +269,7 @@ instanceType: 4
 		<para>
 		  The SYSVOL share is a share which provides group policies and logon scripts in Active
 		  Directory / Samba 4. It is synchronised among all domain controllers and stored in the
-		  <filename>/var/lib/samba/sysvol</filename> directory.
+		  <filename class="directory">/var/lib/samba/sysvol/</filename> directory.
 		</para>
 
 		<para>
@@ -672,7 +672,7 @@ END CATEGORY
 
 		<para>
 		  The logon scripts are stored in
-		  <filename>/var/lib/samba/sysvol/&lt;Domainname&gt;/scripts/</filename> and provided under
+		  <filename class="directory">/var/lib/samba/sysvol/&lt;Domainname&gt;/scripts/</filename> and provided under
 		  the share name <emphasis>NETLOGON</emphasis>.
 		</para>
 
@@ -1064,7 +1064,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
   <para>
 	The encrypted communication between the UCS system and Active Directory
 	can also be deactivated by setting the &ucsUCRV; <envar>connector/ad/ldap/ssl</envar>
-	to <emphasis>no</emphasis>. This setting does not concern the communication with the
+	to <literal>no</literal>. This setting does not concern the communication with the
 	password service (see <xref linkend="ad-connector:password-dienst"/>);
 	this is always encrypted.
   </para>
@@ -1294,7 +1294,7 @@ echo -n "Current AD Syncuser password" > "${connector_ad_ldap_bindpw?}"
 The UCS AD Connector provides the following tools and log files for diagnosis:
 </para>
 
-<section id="ad-connector:univention-adsearch"><title>univention-adsearch</title>
+<section id="ad-connector:univention-adsearch"><title><command>univention-adsearch</command></title>
 <para>
 This tool facilitates a simple LDAP search in Active Directory.
 Objects deleted in AD are always shown (they are still kept in
@@ -1419,7 +1419,7 @@ Active Directory can appear under a different name from in UCS.
   for example in a German language setup, the UCS group <emphasis>Domain
     Users</emphasis> is synchronised with the AD group
   <foreignphrase>Domänen-Benutzer</foreignphrase>. When used in anglophone AD domains, this
-  mapping can result in germanophone groups' being created and
+  mapping can result in <foreignphrase>germanophone</foreignphrase> groups' being created and
   should thus be deactivated in this case. This can be done using the
   &ucsUCRV; <envar>connector/ad/mapping/group/language</envar>
 </para>

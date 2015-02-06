@@ -951,7 +951,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 			  <itemizedlist>
 				<listitem><simpara>
 				  The directory in which the data from the storage pool are to be saved must be created;
-				  in this case <filename>/mnt/storage</filename>.
+				  in this case <filename class="directory">/mnt/storage/</filename>.
 				</simpara></listitem>
 
 				<listitem><simpara>
@@ -1108,18 +1108,18 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 				<itemizedlist>
 					<listitem>
 						<simpara>
-						A CD/DVD drive needs to be setup in the drive settings with the image <emphasis>KVM Windows drivers (virtio 1.1.65)</emphasis> assigned.
+						A CD/DVD drive needs to be setup in the drive settings with the image <guimenuitem>KVM Windows drivers</guimenuitem> assigned.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-						The hard disk drive has to be edited in the <guimenu>Devices</guimenu> menu in UVMM and the checkbox <guimenu>Paravirtual drive</guimenu> must be ticked.
+						The hard disk drive has to be edited in the <guimenu>Devices</guimenu> menu in UVMM and the checkbox <guimenuitem>Paravirtual drive</guimenuitem> must be ticked.
 						</simpara>
 					</listitem>
 
 					<listitem><simpara>
-					  The <guimenu>Driver</guimenu> must be configured to <emphasis>Paravirtual device
-					  (virtio)</emphasis> for the network card(s).
+					  The <guimenu>Driver</guimenu> must be configured to <guimenuitem>Paravirtual device
+					  (virtio)</guimenuitem> for the network card(s).
 					</simpara></listitem>
 
 					<listitem>
@@ -1128,13 +1128,13 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 						A warning appears during hard disk partitioning and states that no mass storage could be found.
 						This is not an error because the virtIO drivers are necessary for a paravirtualized device.
 						The virtIO drivers can be installed in the same menu with <guimenu>Load drivers</guimenu>.
-						The <emphasis>Red Hat virtIO SCSI Controller</emphasis> has to be chosen for Windows 7 (and for Windows 2003 and Windows 2008 respectively) and the <emphasis>Red Hat virtIO Ethernet Adapter</emphasis> for Windows 2008/Windows 7.
+						The <guimenuitem>Red Hat virtIO SCSI Controller</guimenuitem> has to be chosen for Windows 7 (and for Windows 2003 and Windows 2008 respectively) and the <guimenuitem>Red Hat virtIO Ethernet Adapter</guimenuitem> for Windows 2008/Windows 7.
 						After the device drivers have been installed, the mass storage is available in the Windows installer and the installation of Microsoft Windows can be continued.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-						After completing the installation the devices <emphasis>Red Hat virtIO SCSI Disk Device</emphasis> and <emphasis>Red Hat virtIO Ethernet Adapter</emphasis> can be found in the Windows device manager.
+						After completing the installation the devices <computeroutput>Red Hat virtIO SCSI Disk Device</computeroutput> and <computeroutput>Red Hat virtIO Ethernet Adapter</computeroutput> can be found in the Windows device manager.
 						</simpara>
 					</listitem>
 				</itemizedlist>

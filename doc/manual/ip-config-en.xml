@@ -329,7 +329,7 @@
 		  In the default setting, the UCS name server allows zone transfers of the
 		  DNS data. If the UCS server can be reached from the Internet, a list of all computer names
 		  and IP addresses can be requested. The zone transfer can be deactivated when using the OpenLDAP backend by setting the
-		  &ucsUCRV; <envar>dns/allow/transfer</envar> to <emphasis>none</emphasis>.
+		  &ucsUCRV; <envar>dns/allow/transfer</envar> to <literal>none</literal>.
 		</para>
 	  </section>
 
@@ -2104,7 +2104,7 @@ closest to the object always applies.
   <section id="ip-config:Packet_filter_with_Univention_Firewall">
 	<title>Packet filter with Univention Firewall</title>
 	<para>
-	  Univention Firewall integrates a packet filter based on iptables in
+		Univention Firewall integrates a packet filter based on <package>iptables</package> in
 	  Univention Corporate Server.
 	</para>
 	<para>
@@ -2125,7 +2125,7 @@ closest to the object always applies.
 	</para>
 	<para>
 	  In addition, the configuration scripts in the
-	  <filename>/etc/security/packetfilter.d/</filename> directory are listed in
+	  <filename class="directory">/etc/security/packetfilter.d/</filename> directory are listed in
 	  alphabetic order. The names of all scripts begin with two digits,
 	  which makes it easy to create a numbered order. The scripts must be
 	  marked as executable.
@@ -2136,7 +2136,7 @@ closest to the object always applies.
 	</para>
 	<para>
 	  Univention Firewall can be deactivated by setting the
-	  &ucsUCRV; <envar>security/packetfilter/disabled</envar> to <emphasis>true</emphasis>
+	  &ucsUCRV; <envar>security/packetfilter/disabled</envar> to <literal>true</literal>
 	</para>
   </section>
 
@@ -2158,7 +2158,7 @@ closest to the object always applies.
 	  volume via the Internet access.
 	</para>
 	<para>
-	  The software Dansguardian can be installed as an additional component
+	  The software DansGuardian can be installed as an additional component
 	  with the package <package>univention-dansguardian</package>. This makes it
 	  possible to check and filter the Internet contents prior to delivery
 	  to the user in order to scan files for viruses or prevent access to
@@ -2202,7 +2202,7 @@ closest to the object always applies.
 		configuration options in the <filename>/etc/squid3/local.conf</filename>.
 	  </para>
 	  <para>
-		<emphasis>Dansguardian</emphasis> can be installed via the
+		<emphasis>DansGuardian</emphasis> can be installed via the
 		package <package>univention-dansguardian</package>,
 		see <xref linkend="proxy:contentfilter"/>.
 	  </para>
@@ -2220,7 +2220,7 @@ closest to the object always applies.
 		However, this caching function is not necessary for some environments
 		or, in the case of cascaded proxies, it should not be activated for
 		all of them. For these scenarios, the caching function of the Squid
-		can be deactivated with the &ucsUCRV; <envar>squid/cache</envar> by setting this to <emphasis>no</emphasis>.
+		can be deactivated with the &ucsUCRV; <envar>squid/cache</envar> by setting this to <literal>no</literal>.
 		Squid must then be restarted.
 	  </para>
 	</section>
@@ -2233,7 +2233,7 @@ closest to the object always applies.
 		It can be used to follow which websites have been accessed by the users.
 	  </para>
 	  <para>
-		When Dansguardian is used, all accesses are documented in
+		When DansGuardian is used, all accesses are documented in
 		<filename>/var/log/dansguardian/access.log</filename>.
 	  </para>
 	</section>
@@ -2262,10 +2262,10 @@ univention-config-registry set squid/allowfrom=&quot;192.168.2.0/24 192.168.3.0/
 		in granted from all networks.
 	  </para>
 	  <para>
-		If Squid is used together with Dansguardian, i.e., the virus or web
+		If Squid is used together with DansGuardian, i.e., the virus or web
 		content filter is activated, Squid cannot verify the access as the
-		connections are performed via Dansguardian. In this case, the access
-		can be restricted via Dansguardian.
+		connections are performed via DansGuardian. In this case, the access
+		can be restricted via DansGuardian.
 	  </para>
 	</section>
 
@@ -2282,7 +2282,7 @@ univention-config-registry set squid/allowfrom=&quot;192.168.2.0/24 192.168.3.0/
 		<para>
 		  When using the content and virus scanner
 		  (see <xref linkend="proxy:contentfilter"/>)
-		  Dansguardian is accessible at the configured port instead of
+		  DansGuardian is accessible at the configured port instead of
 		  Squid. Squid then occupies the next-highest port. This must be borne
 		  in mind if there are other applications which are supposed to offer
 		  services via this port.
@@ -2333,23 +2333,23 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 	  	<itemizedlist>
 	  	  <listitem><simpara>
 			Direct authentication against the LDAP server. This is done by setting the &ucsUCRV;
-			<envar>squid/basicauth</envar> to <emphasis>yes</emphasis> and restarting Squid.
+			<envar>squid/basicauth</envar> to <literal>yes</literal> and restarting Squid.
 	  	  </simpara></listitem>
 
 	  	  <listitem><simpara>
 			Authentication is performed via the NTLM interface. Users logged in on a Windows client
 			then do not need to authenticate themselves again when accessing the proxy. NTLM
 			authentication is enabled by setting the &ucsUCRV; <envar>squid/ntlmauth</envar> to
-			<emphasis>yes</emphasis> and restarting Squid.
+			<literal>yes</literal> and restarting Squid.
 	  	  </simpara></listitem>
 
 	  	  <listitem><simpara>
 			Authentication is performed via Kerberos. Users logged in on a Windows client which is a
 			member of a Samba 4 domain authenticate themselves on the proxy with the ticket that
 			they received when they logged in to the domain. The
-			<emphasis>univention-squid-kerberos</emphasis> package must be installed on every proxy
+			<package>univention-squid-kerberos</package> package must be installed on every proxy
 			server for it to be possible to enable Kerberos authentication. Then the &ucsUCRV;
-			<envar>squid/krb5auth</envar> must be set to <emphasis>yes</emphasis> and Squid
+			<envar>squid/krb5auth</envar> must be set to <literal>yes</literal> and Squid
 			restarted.
 	  	  </simpara></listitem>
 	  	</itemizedlist>
@@ -2359,7 +2359,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 		If NTLM is used an NTLM authentication is performed for every HTTP query as standard. If for example the
 		website <uri>http://www.univention.de</uri> is opened, the subpages and images are loaded in
 		addition to the actual HTML page. The NTLM authentication can be cached per domain: If the
-		&ucsUCRV; <envar>squid/ntlmauth/keepalive</envar> is set to <emphasis>yes</emphasis>, no
+		&ucsUCRV; <envar>squid/ntlmauth/keepalive</envar> is set to <literal>yes</literal>, no
 		further NTLM authentication is performed for subsequent HTML queries in the same
 		domain.
 	  </para>
@@ -2372,17 +2372,17 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 	</section>
 
 	<section id="proxy:contentfilter">
-	  <title>Filtering/policy enforcement of web content with Dansguardian</title>
+	  <title>Filtering/policy enforcement of web content with DansGuardian</title>
 	  <para>
-		Dansguardian accepts website requests from the network and checks
+		DansGuardian accepts website requests from the network and checks
 		whether access by the request's sender is permitted. If so, the
 		request is forwarded to the proxy server, Squid. For example,
-		Dansguardian allows the blocking of individual file types and suffixes
+		DansGuardian allows the blocking of individual file types and suffixes
 		or access to websites or domains.
 	  </para>
 	  <para>
 		<figure id="net-dansguardian">
-		  <title>Dansguardian blocking a web site</title>
+		  <title>DansGuardian blocking a web site</title>
 		  <graphic fileref="illustrations40/dansguardian_EN.png" scalefit="1" width="100%"/>
 		</figure>
 	  </para>
@@ -2395,9 +2395,9 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 		<para>
 		  Direct access to the proxy server Squid is restricted to access from the
 		  local host. Users working on the system on which Squid
-		  and Dansguardian are installed have the possibility of bypassing the
+		  and DansGuardian are installed have the possibility of bypassing the
 		  filter functions by accessing Squid directly. The web proxy and
-		  Dansguardian should thus only be installed on
+		  DansGuardian should thus only be installed on
 		  dedicated systems which users cannot log in to.
 		</para>
 	  </caution>
@@ -2408,17 +2408,17 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 	  <para>
 		The filtering of web content and the virus scanner can be activated
 		separately. In order to deactivate the content filter, the
-		&ucsUCRV; <envar>squid/contentscan</envar> must be set to <emphasis>no</emphasis> and Squid
+		&ucsUCRV; <envar>squid/contentscan</envar> must be set to <literal>no</literal> and Squid
 		restarted. To disable the virus scanner, the
-		&ucsUCRV; <envar>squid/virusscan</envar> must be set to <emphasis>no</emphasis>.
-		If neither of the two variables is set to <emphasis>yes</emphasis>,
-		Dansguardian is not used. After changes to the variables Squid and - if available - Dansguardian
+		&ucsUCRV; <envar>squid/virusscan</envar> must be set to <literal>no</literal>.
+		If neither of the two variables is set to <literal>yes</literal>,
+		DansGuardian is not used. After changes to the variables Squid and - if available - DansGuardian
 		must be restarted.
 	  </para>
 	</section>
 
 	<section id="proxy:contentfilter-configuration">
-	  <title>Definition of content filters for Dansguardian</title>
+	  <title>Definition of content filters for DansGuardian</title>
 	  <para>
 		Web content can be filtered based on file suffixes, MIME types, websites and individual
 		URLs. It is possible to exempt individual computers or users from the filtering.
@@ -2429,7 +2429,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 		values are to be added, these must each be separated by blank spaces. The filtering is
 		performed on the basis of group memberships, i.e., different rules can be
 		defined per group and as such it is possible to realise different rights when accessing the
-		Internet. Which groups are taken into account by Dansguardian can be defined in the
+		Internet. Which groups are taken into account by DansGuardian can be defined in the
 		&ucsUCRV; <envar>dansguardian/groups</envar>.
 	  </para>
 
@@ -2440,7 +2440,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 	  </para>
 
 	  <para>
-		For group changes to take effect, Dansguardian needs to be restarted. This can be done
+		For group changes to take effect, DansGuardian needs to be restarted. This can be done
 		either in the UMC module <guimenu>System services</guimenu> or on the
 		commandline using the command
 	  </para>
@@ -2504,7 +2504,7 @@ dansguardian -g
 				  <envar>dansguardian/groups/&lt;group&gt;/banned/sites</envar>
 				</entry>
 				<entry>
-				  This can be used to block complete web sites. Example: <emphasis>illegal-example-website.com</emphasis>
+				  This can be used to block complete web sites. Example: <uri>illegal-example-website.com</uri>
 				</entry>
 			  </row>
 
@@ -2523,7 +2523,7 @@ dansguardian -g
 				  <envar>dansguardian/&lt;group&gt;/exception/urls</envar>
 				</entry>
 				<entry>
-				  The access to the URLs specified here is not filtered by Dansguardian.
+				  The access to the URLs specified here is not filtered by DansGuardian.
 				</entry>
 			  </row>
 
@@ -2532,7 +2532,7 @@ dansguardian -g
 				  <envar>dansguardian/&lt;group&gt;/exception/sites</envar>
 				</entry>
 				<entry>
-				  The access to the web sites specified here is not filtered by Dansguardian.
+				  The access to the web sites specified here is not filtered by DansGuardian.
 				</entry>
 			  </row>
 

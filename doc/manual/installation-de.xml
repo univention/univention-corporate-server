@@ -74,7 +74,7 @@
 	<itemizedlist>
 		<listitem>
 			<simpara>
-			<guimenu>Installation Univention Corporate Server</guimenu> startet die interaktive, graphische Installation
+			<guimenuitem>Installation Univention Corporate Server</guimenuitem> startet die interaktive, graphische Installation
 			von UCS. Bei der
 			Installation fragt das System nach einigen Parametern wie
 			Netzwerkeinstellungen, Festplattenpartitionierung, Domäneneinstellungen und
@@ -84,26 +84,26 @@
 		</listitem>
 		<listitem>
 			<para>
-			  Das Untermenü <emphasis>Advanced options</emphasis> bietet die Auswahl
+			  Das Untermenü <guisubmenu>Advanced options</guisubmenu> bietet die Auswahl
 			  fortgeschrittener Optionen für den Installationsprozess:
 			</para>
 			<itemizedlist>
 				<listitem>
 					<simpara>
-						<guimenu>Install with DHCP disabled</guimenu> führt eine Standardinstallation im durch, bei der das Netzwerk nicht automatisch per DHCP konfiguriert wird.
-						Dies ist auf Systemen sinnvoll, wo das Netzwerk manuell konfiguriert werden muß.
+						<guimenuitem>Install with DHCP disabled</guimenuitem> führt eine Standardinstallation im durch, bei der das Netzwerk nicht automatisch per DHCP konfiguriert wird.
+						Dies ist auf Systemen sinnvoll, wo das Netzwerk manuell konfiguriert werden muss.
 					</simpara>
 				</listitem>
 				<listitem>
 					<simpara>
-					<guimenu>Install in text mode</guimenu> führt eine interaktive
+					<guimenuitem>Install in text mode</guimenuitem> führt eine interaktive
 					Standardinstallation im Textmodus durch. Dies ist auf Systemen sinnvoll, die
 					Probleme mit der graphischen Variante des Installers zeigen.
 					</simpara>
 				</listitem>
 				<listitem>
 				  <simpara>
-					<guimenu>Boot from first hard drive</guimenu> startet nicht die
+					<guimenuitem>Boot from first hard drive</guimenuitem> startet nicht die
 					UCS-Installation, sondern das auf der ersten Festplatte installierte
 					Betriebssystem.
 				  </simpara>
@@ -635,7 +635,7 @@
 	auf den ersten Neustart vorbereitet und schließlich neu gestartet.
   </para>
   <para>
-	Nach Abschluß des Neustarts kann die Konfiguration im Webbrowser fortgesetzt werden. Dafür muss
+	Nach Abschluss des Neustarts kann die Konfiguration im Webbrowser fortgesetzt werden. Dafür muss
 	im Browser die URL <uri>https://SERVER-IP-ADRESSE</uri> oder <uri>http://SERVER-IP-ADRESSE</uri>
 	aufgerufen werden (HTTPS wird empfohlen). Nach dem Aufruf der Seite ist die Anmeldung mit dem
 	Benutzer <emphasis>root</emphasis> erforderlich.

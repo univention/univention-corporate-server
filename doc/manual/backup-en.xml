@@ -466,7 +466,7 @@ FileSet {
 The instructions <varname>RunBeforeJob</varname> and
 <varname>RunAfterJob</varname> are run before and after the actual
 backing up of the scripts respectively. In the case of the catalog,
-<filename>make_catalog_backup</filename> is used prior to the backup
+<command>make_catalog_backup</command> is used prior to the backup
 to create an SQL dump of the catalog database and saved under
 <filename>/var/lib/bacula/bacula.sql</filename>. This file is then
 deleted again following successful backup.

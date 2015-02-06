@@ -59,27 +59,27 @@ Following installation on hardware or in a virtualization solution, UCS can also
 	<itemizedlist>
 		<listitem>
 			<simpara>
-			<guimenu>Installation of Univention Corporate Server</guimenu> starts the interactive, graphic installation. During the installation, the system requests a number of parameters such as the network settings, hard drive partitions, domain settings and selection of software components for the UCS system to be installed and then performs the installation and the configuration.
+			<guimenuitem>Installation of Univention Corporate Server</guimenuitem> starts the interactive, graphic installation. During the installation, the system requests a number of parameters such as the network settings, hard drive partitions, domain settings and selection of software components for the UCS system to be installed and then performs the installation and the configuration.
 			</simpara>
 		</listitem>
 		<listitem>
 			<para>
-			  The <emphasis>Advanced options</emphasis> submenu offers advanced options for the installation process for selection:
+			  The <guisubmenu>Advanced options</guisubmenu> submenu offers advanced options for the installation process for selection:
 			</para>
 			<itemizedlist>
 				<listitem>
 					<simpara>
-						<guimenu>Install with DHCP disabled</guimenu> performs a standard installation, where the network is not configured automatically through DHCP.
+						<guimenuitem>Install with DHCP disabled</guimenuitem> performs a standard installation, where the network is not configured automatically through DHCP.
 						This is practical on systems, where the network must be configured manually.
 					</simpara>
 				</listitem>
 				<listitem>
 					<simpara>
-					<guimenu>Install in text mode</guimenu> performs an interactive standard installation in text mode. This is practical on systems which display problems with the graphic version of the installer.</simpara>
+					<guimenuitem>Install in text mode</guimenuitem> performs an interactive standard installation in text mode. This is practical on systems which display problems with the graphic version of the installer.</simpara>
 				</listitem>
 				<listitem>
 				  <simpara>
-					<guimenu>Boot from first hard drive</guimenu> boots the operating system installed on the first hard drive instead of the UCS installation.
+					<guimenuitem>Boot from first hard drive</guimenuitem> boots the operating system installed on the first hard drive instead of the UCS installation.
 				  </simpara>
 				</listitem>
 			</itemizedlist>

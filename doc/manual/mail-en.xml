@@ -31,7 +31,7 @@
 	  offers corresponding interfaces for access via e-mail clients.
 	  Cyrus is preconfigured for the fetching of e-mails via IMAP and POP3.
 	  Access via POP3 can be deactivated by setting the &ucsUCRV;
-	  <envar>mail/cyrus/pop</envar> to <emphasis>no</emphasis>. The same
+	  <envar>mail/cyrus/pop</envar> to <literal>no</literal>. The same
 	  applies to IMAP and the &ucsUCRV; <envar>mail/cyrus/imap</envar>.
 	  The further configuration of the mail server is performed via &ucsUCR;,
 	  as well (see <xref linkend="mail::serverconfig::general"/>).
@@ -92,7 +92,7 @@
 
 	<para>
 	  The runtime data of the Cyrus server are stored in the
-	  <filename>/var/spool/cyrus</filename> directory. This directory
+	  <filename class="directory">/var/spool/cyrus/</filename> directory. This directory
 	  should not be operated on a NFS share.
 	</para>
 
@@ -229,7 +229,7 @@
 		prevent misuse, there is the possibility of restricting the circle of
 		people who can send mails. To do so,
 		the &ucsUCRV; <envar>mail/postfix/policy/listfilter</envar> on the mail server must
-		be set to <emphasis>yes</emphasis> and Postfix restarted.
+		be set to <literal>yes</literal> and Postfix restarted.
 		<guimenu>Users that are allowed to send e-mails to the list</guimenu>
 		and <guimenu>Groups that are allowed to send e-mails to the list</guimenu>
 		can be specified under <guimenu>Advanced settings</guimenu>. If a field is set
@@ -259,7 +259,7 @@
 		prevent misuse, there is the possibility of restricting the circle of
 		people who can send mails. To do so,
 		the &ucsUCRV; <envar>mail/postfix/policy/listfilter</envar> on the mail server must
-		be set to <emphasis>yes</emphasis> and Postfix restarted.
+		be set to <literal>yes</literal> and Postfix restarted.
 	  </para>
 	  <para>
 		<guimenu>Users that are allowed to send e-mails to the group</guimenu>
@@ -547,9 +547,9 @@
 	</para>
 	<para>
 	  The spam filtering can be deactivated by setting
-	  the &ucsUCRV; <envar>mail/antivir/spam</envar> to <emphasis>no</emphasis>.
+	  the &ucsUCRV; <envar>mail/antivir/spam</envar> to <literal>no</literal>.
 	  When modifying Univention Configuration Registry variables concerning spam
-	  detection, the Amavis service und Postfix must be restarted subsequently.
+	  detection, the Amavis service and Postfix must be restarted subsequently.
 	</para>
   </section>
 
@@ -568,7 +568,7 @@
 	  it is not accessible to the user. The original recipient receives a
 	  message per e-mail stating that this measure has been taken. If
 	  necessary, the administrator can restore or delete this from
-	  the <filename>/var/lib/amavis/virusmails</filename> directory. Automatic deletion
+	  the <filename class="directory">/var/lib/amavis/virusmails/</filename> directory. Automatic deletion
 	  is not performed.
 	</para>
 	<para>
@@ -611,7 +611,7 @@
 	  mail retrieval. After the initial configuration of a user Fetchmail needs to be started in the
 	  UMC module <guimenu>System services</guimenu>. In that module the fetching can
 	  also be disabled (alternatively by setting the &ucsUCRV; <envar>fetchmail/autostart</envar>
-	  to <emphasis>false</emphasis>).
+	  to <literal>false</literal>).
 	</para>
 	  <table>
 		<title>'Remote mail retrieval' tab'</title>
@@ -685,7 +685,7 @@
 	  </para>
 	  <para>
 		If authentication is necessary on the relay host for sending,
-		the &ucsUCRV; <envar>mail/relayauth</envar> must be set to <emphasis>yes</emphasis> and
+		the &ucsUCRV; <envar>mail/relayauth</envar> must be set to <literal>yes</literal> and
 		the <filename>/etc/postfix/smtp_auth</filename> file edited. The relay host,
 		user name and password must be saved in this file in one line.
 	  </para>
@@ -745,7 +745,7 @@ postmap /etc/postfix/smtp_auth
 		If a number of error situations (e.g., for non-existent users) the
 		result may be a mail bounce, i.e., the mail cannot be delivered and is
 		returned to the sender. When &ucsUCRV; <envar>mail/postfix/softbounce</envar> is set
-		to <emphasis>yes</emphasis> e-mails are never returned after a bounce, but instead
+		to <literal>yes</literal> e-mails are never returned after a bounce, but instead
 		are held in the queue. This setting is particularly useful during
 		configuration work on the mail server.
 	  </para>
@@ -761,13 +761,13 @@ postmap /etc/postfix/smtp_auth
 		<itemizedlist>
 		  <listitem>
 			<para>
-			  If the variable is set to <emphasis>yes</emphasis>, the name of
+			  If the variable is set to <literal>yes</literal>, the name of
 			  the user's IMAP mailbox is changed. This is the standard setting since UCS 3.0.
 			</para>
 		  </listitem>
 		  <listitem>
 			<para>
-			  If the setting is <emphasis>no</emphasis>, it will not be
+			  If the setting is <literal>no</literal>, it will not be
 			  possible to read previous e-mails any more once the user's primary e-mail
 			  address is changed! If another user is assigned a previously used primary
 			  e-mail address, she receives access to the old IMAP structure of this mailbox.

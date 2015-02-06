@@ -85,7 +85,7 @@
   <para>
 	Die Konfiguration von CUPS als Druckserver erfolgt über Einstellungen aus dem
 	LDAP-Verzeichnisdienst und &ucsUCR;. Wird die &ucsUCRV; <envar>cups/include/local</envar> auf
-	<emphasis>true</emphasis> gesetzt, wird zusätzlich die Datei
+	<literal>true</literal> gesetzt, wird zusätzlich die Datei
 	<filename>/etc/cups/cupsd.local.conf</filename> eingebunden, in der beliebige weitere Optionen
 	hinterlegt werden können.
   </para>
@@ -574,12 +574,12 @@
   <para>
 	Anonym eingegangene Druckaufträge werden in das durch die &ucsUCRV;
 	<envar>cups/cups-pdf/anonymous</envar> vorgegebene Verzeichnis ausgegeben (Standardeinstellung:
-	<filename>/var/spool/cups-pdf</filename>).
+	<filename class="directory">/var/spool/cups-pdf/</filename>).
   </para>
 
   <para>
 	In der Grundeinstellung werden die generierten PDF-Dokumente unbegrenzt aufbewahrt. Wird die
-	&ucsUCRV; <envar>cups/cups-pdf/cleanup/enabled</envar> auf <emphasis>true</emphasis> gesetzt
+	&ucsUCRV; <envar>cups/cups-pdf/cleanup/enabled</envar> auf <literal>true</literal> gesetzt
 	werden alte PDF-Druckaufträge über einen Cron-Job gelöscht. Die Aufbewahrungszeit in Tagen kann
 	mit der &ucsUCRV; <envar>cups/cups-pdf/cleanup/keep</envar> konfiguriert werden.
   </para>
@@ -651,7 +651,7 @@
 	  </simpara></listitem> 
 
  	  <listitem><simpara>
-		Nach diesen Schritten sind die Treiber auf dem Druckserver im Verzeichnis <filename>/var/lib/samba/drivers</filename> gespeichert.
+		Nach diesen Schritten sind die Treiber auf dem Druckserver im Verzeichnis <filename class="directory">/var/lib/samba/drivers/</filename> gespeichert.
  	  </simpara></listitem>
 
 	</orderedlist>
@@ -692,7 +692,7 @@
 		auf <guimenu>OK</guimenu> geklickt werden, sondern es muss auf den Reiter
 		<guimenu>Allgemein</guimenu> gewechselt werden. In dem Reiter muss weiterhin der alte Name
 		der Druckerfreigabe angezeigt werden. Es kann vorkommen, dass die Druckerfreigabe umbenannt
-		wurde, damit ist sie dann nicht mehr mit der Freigabe assoziert! Ist das der Fall, muss der
+		wurde, damit ist sie dann nicht mehr mit der Freigabe assoziiert! Ist das der Fall, muss der
 		Name des Druckers im Reiter <guimenu>Allgemein</guimenu> (das erste Eingabefeld, neben dem
 		stilisierten Druckersymbol) wieder auf den Namen der Druckerfreigabe geändert werden. Hier
 		ist das in der Druckerverwaltung der UMC konfigurierte Feld <guimenu>Samba-Name</guimenu> zu
@@ -717,7 +717,7 @@
 		festgehalten, ob ein Drucker farbig drucken kann, ob ein beidseitiger
 		Druck möglich ist, welche Papierschächte vorhanden sind, welche
 		Auflösungen unterstützt und welche Druckerbefehlssprachen unterstützt
-		werden (z.B. PCL oder Postscript).
+		werden (z.B. PCL oder PostScript).
 	</para>
 	<para>
 		Neben den bereits im Standardumfang enthaltenen PPD-Dateien können
@@ -759,7 +759,7 @@
 						Der Pfad zur PPD-Datei, relativ zu dem Verzeichnis
 						<filename class="directory">/usr/share/ppd/</filename>. Soll beispielweise die Datei
 						<filename>/usr/share/ppd/laserjet.ppd</filename> verwendet werden, so ist
-						hier <emphasis>laserjet.ppd</emphasis> einzutragen. Es können auch <command>gzip</command>-komprimierte
+						hier <filename>laserjet.ppd</filename> einzutragen. Es können auch <command>gzip</command>-komprimierte
 						Dateien (Dateiendung <filename class="extension">.gz</filename>) angegeben werden.
 					</entry>
 				</row>

@@ -370,7 +370,7 @@
 
 	  <para>
 		Der Stand der &ucsUCR;-Variablen vor der Release-Aktualisierung wird in dem Verzeichnis
-		<filename>/var/univention-backup/update-to-ZIELRELEASEVERSION</filename>
+		<filename class="directory">/var/univention-backup/update-to-ZIELRELEASEVERSION/</filename>
 		gesichert. Damit kann geprüft werden, ob und welche Variablen im Rahmen des Updates
 		verändert wurden.
 	  </para>
@@ -389,9 +389,9 @@
 	</para>
 
 	<para>
-	  Anhand der registrierten Einstellungen werden apt-Paketquellen für Release- und
+	  Anhand der registrierten Einstellungen werden APT-Paketquellen für Release- und
 	  Errata-Updates sowie Addon-Komponenten im Verzeichnis
-	  <filename>/etc/apt/sources.list.d</filename> automatisch generiert.
+	  <filename class="directory">/etc/apt/sources.list.d/</filename> automatisch generiert.
 	  Sollten auf einem System weitere Repositorys benötigt werden, können diese in
 	  die Datei <filename>/etc/apt/sources.list</filename> eingetragen werden.
 	</para>
@@ -446,7 +446,7 @@
 
 	  <para>
 		Das unmaintained-Repository kann durch Setzen der
-		&ucsUCRV; <envar>repository/online/unmaintained</envar> auf <emphasis>yes</emphasis> integriert
+		&ucsUCRV; <envar>repository/online/unmaintained</envar> auf <literal>yes</literal> integriert
 		werden.
 	  </para>
 	</section>
@@ -529,7 +529,7 @@ univention-repository-update -h
 	  </programlisting>
 
 	  <para>
-		Das Repository wird im Verzeichnis <filename>/var/lib/univention-repository/mirror</filename> vorgehalten.
+		  Das Repository wird im Verzeichnis <filename class="directory">/var/lib/univention-repository/mirror/</filename> vorgehalten.
 	  </para>
 
 	  <para>
@@ -560,7 +560,7 @@ univention-repository-update -h
 
 	<para>
 	  Fremdsoftware, die nicht im Debian-Paketformat vorliegt, sollte in
-	  die Verzeichnisse <filename>/opt</filename> oder <filename>/usr/local</filename> installiert
+	  die Verzeichnisse <filename class="directory">/opt/</filename> oder <filename class="directory">/usr/local/</filename> installiert
 	  werden. UCS-Pakete nutzen diese Verzeichnisse nicht, so dass eine
 	  saubere Trennung von UCS- und Fremdsoftware gewährleistet ist.
 	</para>
@@ -594,7 +594,7 @@ univention-repository-update -h
 		und deinstalliert werden.
 	  </para>
 
-	  <figure id="software-umcinstall"><title>Installation des Pakets univention-squid in &ucsUMC;</title>
+	  <figure id="software-umcinstall"><title>Installation des Pakets <package>univention-squid</package> in &ucsUMC;</title>
 	  <graphic scalefit="1" width="100%" fileref="illustrations40/software_install_de1.png"/>
 	  </figure>
 
@@ -855,7 +855,7 @@ apt-cache search fax
 		  so wird es von weiterer Aktualisierung ausgenommen. Es existieren zwei Möglichkeiten
 		  ein Paket zu deinstallieren: Ein mit <literal>DeInstall</literal> entferntes Paket
 		  hält lokal erzeugte Konfigurations-Daten weiterhin vor, während ein mit
-		  <literal>Purge</literal> entferntesPaket komplett gelöscht wird.
+		  <literal>Purge</literal> entferntes Paket komplett gelöscht wird.
 		</simpara></listitem>
 
 		<listitem><simpara>

@@ -5,7 +5,7 @@
 	<title>Einführung</title>
 	<para>
 		&ucsUMC; (UMC) ist das zentrale Werkzeug zur webbasierten Administration
-		der UCS-Domäne. Für die Administration der unterschiedlichen Aspkete einer
+		der UCS-Domäne. Für die Administration der unterschiedlichen Aspekte einer
 		Domäne werden verschiedene Module bereit gestellt. Diese sind je nach
 		Systemrolle verfügbar und werden bei Installation weiterer
 		Software-Komponenten durch neue UMC-Module ergänzt.
@@ -30,7 +30,7 @@
 		das Anwenden von administrativen Einstellungen über Richtlinien
 		(<xref linkend="central:policies"/>), die Erweiterung des Funktionsumfangs der
 		Domänenverwaltung durch erweiterte Attribute (<xref linkend="central:extendedattrs"/>)
-		sowie das Deligieren von Administrationsrechten an weitere Benutzergruppen
+		sowie das Delegieren von Administrationsrechten an weitere Benutzergruppen
 		(<xref linkend="delegated-administration"/>).
 		Zuletzt wird die Kommandozeilenschnittstelle der Domänenverwaltung dargestellt
 		(<xref linkend="central:udm"/>) und das Auswerten von Domänendaten über die
@@ -49,10 +49,10 @@
 			Die folgenden Browser werden unterstützt:
 		</para>
 		<itemizedlist>
-			<listitem><simpara>Chrome ab Version 33</simpara></listitem>
-			<listitem><simpara>Firefox ab Version 24</simpara></listitem>
-			<listitem><simpara>Internet Explorer ab Version 9</simpara></listitem>
-			<listitem><simpara>Safari und Safari Mobile ab Version 7</simpara></listitem>
+			<listitem><simpara><application>Chrome</application> ab Version 33</simpara></listitem>
+			<listitem><simpara><application>Firefox</application> ab Version 24</simpara></listitem>
+			<listitem><simpara><application>Internet Explorer</application> ab Version 9</simpara></listitem>
+			<listitem><simpara><application>Safari</application> und <application>Safari Mobile</application> ab Version 7</simpara></listitem>
 		</itemizedlist>
 		<para>
 			Auf älteren Browsern können Darstellungsprobleme auftreten.
@@ -153,7 +153,7 @@
 		  <guimenu>Importieren aus Datei...</guimenu> kann eine Lizenz-Datei ausgewählt
 		  und importiert werden. Alternativ kann der Lizenz-Schlüssel auch in das darunter
 		  liegende Eingabefeld kopiert und dann über der Schaltfläche
-		  <guimenu>Importieren aus Textfeld</guimenu> eingspielt werden.
+		  <guimenu>Importieren aus Textfeld</guimenu> eingespielt werden.
 		</para>
 
 		<para>
@@ -232,7 +232,7 @@
 				  Mit dem Auswahlfeld <guimenu>Suche in</guimenu> kann bestimmt werden, ob bei der
 				  Suche nach LDAP-Objekten das komplette LDAP-Verzeichnis oder nur einzelne
 				  LDAP-Container/OUs durchsucht werden. Weitere Informationen zur Strukturierung des
-				  LDAP-Verzeichisdienstes finden sich in <xref linkend="central:cn-and-ous"/>.
+				  LDAP-Verzeichnisdienstes finden sich in <xref linkend="central:cn-and-ous"/>.
 				</simpara></listitem>
 
 				<listitem><simpara>
@@ -367,7 +367,7 @@
 <section id="central-management-umc:piwik">
 	<title>Erfassung von Nutzungsstatistiken</title>
 <para>
-  Bei Verwendung der <emphasis>Free for personal use</emphasis>-Version von UCS (die
+  Bei Verwendung der <foreignphrase>Free for personal use</foreignphrase>-Version von UCS (die
   in der Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken
   zur Verwendung von &ucsUMC; erzeugt. Die aufgerufenen Module werden dabei von einer
   Instanz des Web-Traffic-Analyse-Tools Piwik protokolliert. Dies ermöglicht es Univention die
@@ -376,7 +376,7 @@
 </para>
 <para>
   Diese Protokollierung erfolgt nur bei Verwendung der
-  <emphasis>Free-for-Personal-Use-Lizenz</emphasis>. Der Lizenzstatus kann
+  <foreignphrase>Free-for-Personal-Use-Lizenz</foreignphrase>. Der Lizenzstatus kann
   überprüft werden durch den Eintrag <guimenu>Lizenz &ar;
   Lizenzinformation</guimenu> des Benutzermenüs in der rechten, oberen Ecke
   von &ucsUMC;.  Steht hier unter <guimenu>LDAP-Basis</guimenu> <guimenu>Free
@@ -386,7 +386,7 @@
 </para>
 <para>
   Die Protokollierung kann unabhängig von der verwendeten Lizenz durch Setzen der &ucsUCRV;
-  <envar>umc/web/piwik</envar> auf <emphasis>false</emphasis> deaktiviert werden.
+  <envar>umc/web/piwik</envar> auf <literal>false</literal> deaktiviert werden.
 </para>
 </section>
 
@@ -615,8 +615,8 @@
 
 	<para>
 	  Erweiterte Attribute werden im Modul <guimenu>LDAP-Verzeichnis</guimenu>.
-	  Sie befinden sich im Container <emphasis>univention</emphasis> und dessen
-	  Untercontainer <emphasis>custom attributes</emphasis>. Hier können bestehende Attribute
+	  Sie befinden sich im Container <uri>univention</uri> und dessen
+	  Untercontainer <uri>custom attributes</uri>. Hier können bestehende Attribute
 	  bearbeitet werden oder mit <guimenu>Hinzufügen</guimenu> ein Objekt vom Typ
 	  <guimenu>Einstellungen: Erweitertes Attribut</guimenu> angelegt werden.
 	</para>
@@ -821,7 +821,7 @@
 			</row>
 
 			<row>
-			  <entry>Von der UMC-Suche aussschließen</entry>
+			  <entry>Von der UMC-Suche ausschließen</entry>
 			  <entry>
 				<para>
 				  Soll im Suchdialog eines Assistenten nicht nach einem erweiterten Attribut gesucht
@@ -849,7 +849,7 @@
 				<para>
 				  Fortlaufend vergebene Positionsnummern führen dazu, dass die Attribute jeweils
 				  abwechselnd links und rechts zweispaltig angeordnet werden. Ansonsten beginnt die
-				  Plazierung in der linken Spalte. Weisen erweiterte Attribute die gleiche
+				  Platzierung in der linken Spalte. Weisen erweiterte Attribute die gleiche
 				  Positionsnummer auf, ist deren Reihenfolge zufällig.
 				</para>
 			  </entry>
@@ -931,7 +931,7 @@
 
 				<para>
 				  Wird bei einem erweiterten Attribute kein Gruppenname angegeben, wird das
-				  erweiterte Attribut oberhalb der ersten Gruppe plaziert.
+				  erweiterte Attribut oberhalb der ersten Gruppe platziert.
 				</para>
 			  </entry>
 			</row>
@@ -946,7 +946,7 @@
 			</row>
 
 			<row>
-			  <entry>Gruppen-Ordnungsnnummer</entry>
+			  <entry>Gruppen-Ordnungsnummer</entry>
 			  <entry>
 				Sollen mehrere Gruppen auf einer Karteikarte verwaltet werden, kann anhand dieser
 				Positionsnummer die Darstellungsreihenfolge beeinflusst werden. Sie werden in
@@ -977,19 +977,19 @@
 				</para>
 
 				<para>
-				  Neben Standard-Syntaxdefinitionen für Zeichenketten (<emphasis>string</emphasis>),
-				  Zahlen (<emphasis>integer</emphasis>) gibt es drei Möglichkeiten einen binären
-				  Zustand auszudrücken: Die Syntax <emphasis>TrueFalse</emphasis> wird auf
-				  LDAP-Ebene durch die Zeichenketten <emphasis>true</emphasis> und
-				  <emphasis>false</emphasis> abgebildet, die Syntax
-				  <emphasis>TrueFalseUpper</emphasis> verwendet dagegen die Werte
-				  <emphasis>TRUE</emphasis> und <emphasis>FALSE</emphasis>. Die Syntax
-				  <emphasis>boolean</emphasis> dagegen speichert keinen Wert bzw. die Zeichenkette
-				  <emphasis>1</emphasis>.
+				  Neben Standard-Syntaxdefinitionen für Zeichenketten (<classname>string</classname>),
+				  Zahlen (<classname>integer</classname>) gibt es drei Möglichkeiten einen binären
+				  Zustand auszudrücken: Die Syntax <classname>TrueFalse</classname> wird auf
+				  LDAP-Ebene durch die Zeichenketten <true>true</true> und
+				  <true>false</true> abgebildet, die Syntax
+				  <classname>TrueFalseUpper</classname> verwendet dagegen die Werte
+				  <literal>TRUE</literal> und <literal>FALSE</literal>. Die Syntax
+				  <classname>boolean</classname> dagegen speichert keinen Wert bzw. die Zeichenkette
+				  <literal>1</literal>.
 				</para>
 
 				<para>
-				  Standardmäßig wird die Syntax <emphasis>string</emphasis> verwendet. Eine
+				  Standardmäßig wird die Syntax <classname>string</classname> verwendet. Eine
 				  Übersicht über die weiteren verfügbaren Syntax-Definitionen und eine Anleitung zur
 				  Integration eigener Syntaxen sind in <xref linkend="developer-reference"/> zu
 				  finden.
@@ -1010,7 +1010,7 @@
 			  <entry>Mehrfachwert</entry>
 			  <entry>
 				Diese Option legt fest, ob ein einzelner Wert oder mehrere Werte in der Eingabemaske
-				eingetragen werden können. Die Einstellung muß zur Schema-Definition passen, in der
+				eingetragen werden können. Die Einstellung muss zur Schema-Definition passen, in der
 				für das verwendete LDAP-Attributes festgelegt ist, ob nur eine oder mehrere
 				Instanzen des Attributs an einem LDAP-Objekt verwendet werden dürfen.
 			  </entry>
@@ -1180,7 +1180,7 @@
 
   <para>
 	Zusätzlich zu der Zuweisung von UMC-Richtlinien, müssen für UMC-Module, die Daten
-	des LDAP-Verzeichnisses verwalten, ebenfalls LDAP-Zugriffsrechte berücksichtig werden.
+	des LDAP-Verzeichnisses verwalten, ebenfalls LDAP-Zugriffsrechte berücksichtigt werden.
 	Alle im LDAP vorgenommenen Änderungen gelten für die gesamte UCS-Domäne.
 	Daher haben in der Grundeinstellung nur Mitglieder der Gruppe <emphasis>Domain
 	Admins</emphasis> sowie einige intern genutzte Konten Vollzugriff auf das UCS-LDAP. Wird
@@ -1497,7 +1497,7 @@ univention-directory-manager users/user remove \
 		<para>
 		  Eine Firma hat zwei Standorte mit eigens dafür angelegten Containern. Mit dem folgenden
 		  Befehl wird ein Benutzer aus dem Container für den Standort "Hamburg" in den Container für
-		  den Standort "Bremen" verschoeben:
+		  den Standort "Bremen" verschoben:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager users/user move \
@@ -1662,7 +1662,7 @@ univention-directory-manager shares/printer create \
 		<note>
 			<para>
 				Im Parameter <emphasis>uri</emphasis> muss ein Leerzeichen zwischen dem Druckprotokoll
-				und dem URL-Zielpfad verwendet werden. Eine Auftstellung der Druckprotokolle findet sich
+				und dem URL-Zielpfad verwendet werden. Eine Aufstellung der Druckprotokolle findet sich
 				in <xref linkend="print::shares"/>
 			</para>
 		</note>
@@ -1714,7 +1714,7 @@ univention-directory-manager dns/ptr_record create \
     --set ptr_record="Client222.example.com."
 </programlisting>
 		<para>
-		Weitere Informationn zu DNS finden sich in <xref linkend="networks:dns"/>.
+		Weitere Informationen zu DNS finden sich in <xref linkend="networks:dns"/>.
 		</para>
 	</section>
 

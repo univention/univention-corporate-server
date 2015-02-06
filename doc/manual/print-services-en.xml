@@ -86,7 +86,7 @@
   <para>
 	The configuration of the CUPS print server is performed via settings from the LDAP directory
 	service and &ucsUCR;. If the &ucsUCRV; <envar>cups/include/local</envar> is set to
-	<emphasis>true</emphasis>, the <filename>/etc/cups/cupsd.local.conf</filename> file is included,
+	<literal>true</literal>, the <filename>/etc/cups/cupsd.local.conf</filename> file is included,
 	in which arbitrary options can be defined.
   </para>
 
@@ -561,12 +561,12 @@
 	<para>
 		Print jobs coming in anonymously are printed in the directory
 		specified by the &ucsUCRV; <envar>cups/cups-pdf/anonymous</envar> (standard setting:
-		<filename>/var/spool/cups-pdf</filename>).
+		<filename class="directory">/var/spool/cups-pdf/</filename>).
 	</para>
 
 	<para>
 	  In the default setting, generated PDF documents are kept without any restrictions. If the
-	  &ucsUCRV; <envar>cups/cups-pdf/cleanup/enabled</envar> is set to <emphasis>true</emphasis>,
+	  &ucsUCRV; <envar>cups/cups-pdf/cleanup/enabled</envar> is set to <literal>true</literal>,
 	  old PDF print jobs are deleted via a Cron job. The storage time in days can be configured
 	  using the &ucsUCRV; <envar>cups/cups-pdf/cleanup/keep</envar>.
 	</para>
@@ -638,7 +638,7 @@
 
  	  <listitem><simpara>
 		After these steps the drivers are stored in the directory
-		<filename>/var/lib/samba/drivers</filename> on the print server.
+		<filename class="directory">/var/lib/samba/drivers/</filename> on the print server.
  	  </simpara></listitem>
 
 

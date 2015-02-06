@@ -206,7 +206,7 @@
 		<para>
 		  Samba stellt einen separaten LDAP-Verzeichnisdienst bereit. Die Synchronisation zwischen
 		  dem UCS-LDAP und dem Samba-LDAP erfolgt durch einen internen Systemdienst, den Univention
-		  S4 Connector. Der Connector ist standardmässig auf dem &ucsMaster; aktiviert und benötigt
+		  S4 Connector. Der Connector ist standardmäßig auf dem &ucsMaster; aktiviert und benötigt
 		  normalerweise keine weitere Konfiguration.
 		</para>
 
@@ -267,7 +267,7 @@ instanceType: 4
 		<para>
 		  Die SYSVOL-Freigabe ist eine Freigabe, die in Active Directory/Samba Gruppenrichtlinien
 		  und Anmeldeskripte bereitstellt. Sie wird zwischen allen Domänencontrollern synchronisiert
-		  und im Verzeichnis <filename>/var/lib/samba/sysvol</filename> gespeichert.
+		  und im Verzeichnis <filename class="directory">/var/lib/samba/sysvol/</filename> gespeichert.
 		</para>
 
 		<para>
@@ -299,7 +299,7 @@ instanceType: 4
 		  </para>
 		
 		  <para>
-			Gruppenrichtlinien werden ausgehend von der englischen Bezeichung <emphasis>Group policy
+			Gruppenrichtlinien werden ausgehend von der englischen Bezeichnung <emphasis>Group policy
 			objects</emphasis> auch oft als GPOs bezeichnet. Genauer gesagt kann ein
 			Gruppenrichtlinienobjekt eine Reihe von Richtlinien beinhalten. Trotz ihres Namens
 			lassen sich Gruppenrichtlinienobjekte nicht direkt bestimmten Benutzergruppen zuweisen,
@@ -470,7 +470,7 @@ instanceType: 4
 			Eine Richtlinie kann drei Zustände annehmen; sie kann aktiviert,
 			deaktiviert oder nicht gesetzt sein. Die Auswirkung bezieht sich immer auf die
 			Formulierung der Richtlinie. Wenn diese beispielsweise <guimenu>Deaktiviere Feature
-			xy</guimenu> heisst, muss die Richtlinie aktiviert werden um das Feature
+			xy</guimenu> heißt, muss die Richtlinie aktiviert werden um das Feature
 			abzuschalten. Einige Richtlinien haben zusätzliche Optionen, z.B. könnte die Richtlinie
 			<guimenu>Aktiviere Mail-Quota</guimenu> eine zusätzliche Option mitbringen um die
 			Speichermenge zu verwalten.
@@ -566,7 +566,7 @@ instanceType: 4
 			Ein Beispiel: Eine Firma verbietet allgemein den Zugriff auf den Windows Task
 			Manager. Dazu wird im <emphasis>Default Domain Policy</emphasis>-Objekt die Richtlinie
 			<guimenu>Zugriff auf Task Manager unterbinden</guimenu> aktiviert. Für einige technisch
-			versiertere Benutzer soll der Task Manager dennoch verfügbar sein. Diese Benutzer sind
+			versierte Benutzer soll der Task Manager dennoch verfügbar sein. Diese Benutzer sind
 			in der OU <emphasis>Technik</emphasis> abgelegt. Nun wird ein zusätzliches
 			Gruppenrichtlinienobjekt angelegt, in dem Richtlinie <guimenu>Zugriff auf Task Manager
 			unterbinden</guimenu> auf <emphasis>deaktiviert</emphasis> gesetzt wird. Dieses neue GPO
@@ -685,7 +685,7 @@ END CATEGORY
 
 		<para>
 		  Die Anmeldeskripte werden unter
-		  <filename>/var/lib/samba/sysvol/&lt;Domänenname&gt;/scripts/</filename> abgelegt und
+		  <filename class="directory">/var/lib/samba/sysvol/&lt;Domänenname&gt;/scripts/</filename> abgelegt und
 		  werden unter dem Freigabennamen <emphasis>NETLOGON</emphasis> bereitgestellt. Die
 		  NETLOGON-Freigabe wird im Rahmen der SYSVOL-Replikation repliziert.
 		</para>
@@ -927,7 +927,12 @@ END CATEGORY
   </para>
 
   <para>
-  	Im <emphasis>AD member</emphasis>-Modus liest der UCS AD-Connector Objektdaten per Voreinstellung mit den Berechtigungen des Maschinenkontos des &ucsMaster;s aus dem AD. Für das Auslesen von verschlüsselten Passwortdaten sind dessen Berechtigungen nicht ausreichend. Daher muss für die Einrichtung des Passwortdienstes zusätzlich manuell die LDAP-DN eines privilegierten Replikationsbenutzers in die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> eingetragen werden. Dieser muss im AD Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Das entsprechende Kennwort muss auf dem &ucsMaster; in eine Datei gespeichert werden und ihr Dateiname muss in die &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen werden. Falls zu einem späteren Zeitpunkt das Zugriffspasswort geändet wurde, muss das neue Passwort in diese Datei eingetragen werden. Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <emphasis>root</emphasis> Zugriff hat.
+	  Im <emphasis>AD member</emphasis>-Modus liest der UCS AD-Connector Objektdaten per Voreinstellung mit den Berechtigungen des Maschinenkontos des &ucsMaster;s aus dem AD. Für das Auslesen von verschlüsselten Passwortdaten sind dessen Berechtigungen nicht ausreichend.
+	  Daher muss für die Einrichtung des Passwortdienstes zusätzlich manuell die LDAP-DN eines privilegierten Replikationsbenutzers in die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> eingetragen werden.
+	  Dieser muss im AD Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein.
+	  Das entsprechende Kennwort muss auf dem &ucsMaster; in eine Datei gespeichert werden und ihr Dateiname muss in die &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen werden.
+	  Falls zu einem späteren Zeitpunkt das Zugriffspasswort geändert wurde, muss das neue Passwort in diese Datei eingetragen werden.
+	  Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <emphasis>root</emphasis> Zugriff hat.
   </para>
   <para>
   	Die folgenden Kommandos zeigen die Schritte beispielhaft:
@@ -1102,7 +1107,9 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	</para>
 
 	<para>
-	  Falls der AD-Domänencontroller SSL/TLS-verschüsselte Verbindungen unterstützt, bietet der Einrichtungsassistent im nächsten Schritt das <guimenu>Hochladen des AD-Root-Zertifikats</guimenu> an. Dieses Zertifikat muss vorher aus der AD-Zertifizierungsstelle exportiert werden (siehe <xref linkend="ad-connector:ad-zertifikat"/>). Falls dieser Schritt hingegen übersprungen wird, kann das Zertifikat auch zu einem späteren Zeitpunkt über das UMC-Modul hochgeladen und die SSL/TLS-Verschlüsselung aktiviert werden (bis dahin werden dann aber alle Verzeichnisdaten unverschlüsselt synchronisiert).
+		Falls der AD-Domänencontroller SSL/TLS-verschlüsselte Verbindungen unterstützt, bietet der Einrichtungsassistent im nächsten Schritt das <guimenu>Hochladen des AD-Root-Zertifikats</guimenu> an.
+		Dieses Zertifikat muss vorher aus der AD-Zertifizierungsstelle exportiert werden (siehe <xref linkend="ad-connector:ad-zertifikat"/>).
+		Falls dieser Schritt hingegen übersprungen wird, kann das Zertifikat auch zu einem späteren Zeitpunkt über das UMC-Modul hochgeladen und die SSL/TLS-Verschlüsselung aktiviert werden (bis dahin werden dann aber alle Verzeichnisdaten unverschlüsselt synchronisiert).
 	</para>
 
 	<para>
@@ -1155,7 +1162,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
   <para>
 	Die verschlüsselte Verbindung zwischen UCS-System und Active Directory
 	kann auch deaktiviert werden, indem die
-	&ucsUCRV; <envar>connector/ad/ldap/ssl</envar> auf <emphasis>no</emphasis> gesetzt wird. Diese
+	&ucsUCRV; <envar>connector/ad/ldap/ssl</envar> auf <literal>no</literal> gesetzt wird. Diese
 	Einstellung betrifft nicht die Kommunikation mit dem
 	Passwort-Dienst (siehe <xref linkend="ad-connector:password-dienst"/>);
 	diese ist immer verschlüsselt.
@@ -1245,7 +1252,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	  hinzufügen</guimenu> die Rolle <guimenu>Active Directory-Zertifikatsdienste</guimenu>
 	  auswählen. Bei der Auswahl der Rollendienste reicht es aus, nur die
 	  <guimenu>Zertifizierungsstelle</guimenu> auszuwählen. Anschließend wird im Server-Manager in
-	  der oberen Leiste ein gelbes Warndreieick angezeigt. Hier muss die Option <guimenu>Active
+	  der oberen Leiste ein gelbes Warndreieck angezeigt. Hier muss die Option <guimenu>Active
 	  Directory-Zertifikatsdienste auf dem Zielserver konfigurieren</guimenu> ausgewählt werden. Als
 	  zu konfigurierender Rollendienst wird <guimenu>Zertifizierungsstelle</guimenu> ausgewählt. Der
 	  Installationstyp ist <guimenu>Unternehmenszertifizierungsstelle &ar;
@@ -1341,7 +1348,7 @@ in der <guimenu>Systemsteuerung</guimenu> deaktiviert werden oder Port
 </para>
 </section>
 
-<section id="ad-connector:neustart"><title>Start/Stop des Active Directory Connectors</title>
+<section id="ad-connector:neustart"><title>Start/Stopp des Active Directory Connectors</title>
 <para>
 	Abschließend kann der Connector über <mousebutton>Active Directory-Verbindungsdienst starten</mousebutton>
 	gestartet werden und bei Bedarf über <mousebutton>Active Directory-Verbindungsdienst stoppen</mousebutton>
@@ -1368,7 +1375,13 @@ werden.
 
 <section id="ad-connector:ad-passwort"><title>Änderung des AD-Zugriffspassworts</title>
   <para>
-  	Die vom UCS AD-Connector benötigten Zugangsdaten zum Active Directory werden über die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> und <envar>connector/ad/ldap/bindpw</envar> konfiguriert. Falls das Passwort sich geändert hat oder ein anderes Benutzerkonto verwendet werden soll, können diese Variablen manuell andepasst werden. Über die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> wird die LDAP-DN eines privilegierten Replikationsbenutzers konfiguriert. Dieser muss im AD Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Das entsprechende Kennwort muss lokal auf dem UCS-System in eine Datei gespeichert werden, deren Dateiname in der &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen sein muss. Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <emphasis>root</emphasis> Zugriff hat. Die folgenden Kommandos zeigen dies beispielhaft:
+	  Die vom UCS AD-Connector benötigten Zugangsdaten zum Active Directory werden über die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> und <envar>connector/ad/ldap/bindpw</envar> konfiguriert.
+	  Falls das Passwort sich geändert hat oder ein anderes Benutzerkonto verwendet werden soll, können diese Variablen manuell angepasst werden.
+	  Über die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> wird die LDAP-DN eines privilegierten Replikationsbenutzers konfiguriert.
+	  Dieser muss im AD Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein.
+	  Das entsprechende Kennwort muss lokal auf dem UCS-System in eine Datei gespeichert werden, deren Dateiname in der &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen sein muss.
+	  Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <emphasis>root</emphasis> Zugriff hat.
+	  Die folgenden Kommandos zeigen dies beispielhaft:
   </para>
 
   <programlisting language="sh">
@@ -1386,7 +1399,7 @@ echo -n "Current AD Syncuser password" > "${connector_ad_ldap_bindpw?}"
 <para>
 Mit dem UCS AD-Connector werden einige Tools und Logdateien bereitgestellt:
 </para>
-<section id="ad-connector:univention-adsearch"><title>univention-adsearch</title>
+<section id="ad-connector:univention-adsearch"><title><command>univention-adsearch</command></title>
 <para>
 Dieses Tool ermöglicht die einfache LDAP-Suche im Active Directory.
 In AD gelöschte Objekte werden immer mit angezeigt (diese werden in AD
@@ -1548,7 +1561,7 @@ Einschränkungen immer nur dort zugewiesen werden.
 </listitem>
 <listitem><simpara>Wird im &ucsUDM; eine globale Gruppe A als Mitglied einer
   anderen globalen Gruppe B aufgenommen, so erscheint diese Mitgliedschaft aufgrund von
-AD-internen Beschänkungen unter Windows 2000/2003 nicht im Active
+AD-internen Beschränkungen unter Windows 2000/2003 nicht im Active
 Directory. Wird Gruppe A anschließend umbenannt, geht die
 Gruppenmitgliedschaft in Gruppe B verloren. Ab Windows 2008 besteht
 diese Einschränkung nicht mehr, dort können im Active Directory auch
@@ -1729,7 +1742,7 @@ net user administrator PASSWORT
 
 	<para>
 	  Andere Samba-Systeme können gestoppt werden, indem auf jedem UCS-Domänencontroller als
-	  Benutzer <emphasis>root</emphasis> folgender Befehl ausfgeführt wird:
+	  Benutzer <emphasis>root</emphasis> folgender Befehl ausgeführt wird:
 
 	  <programlisting language="sh">
 /etc/init.d/samba4 stop
@@ -1750,7 +1763,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	  Die Übernahme erfolgt mit dem &ucsUMC;-Modul <guimenu>Active Directory
 	  Takeover</guimenu>. Unter <guimenu>Name oder Adresse des Domänencontrollers</guimenu> muss die
 	  IP-Adresse des AD-Systems angegeben werden. Unter <guimenu>Active Directory
-	  Administratorkonto</guimenu> muss ein Konto der AD-Domäne angegebe werden, das Mitglied der
+	  Administratorkonto</guimenu> muss ein Konto der AD-Domäne angegeben werden, das Mitglied der
 	  AD-Gruppe  <emphasis>Domain Admins</emphasis> ist (z.B. der
 	  <emphasis>Administrator</emphasis>) und unter <guimenu>Active Directory
 	  Administratorpasswort</guimenu> das dazugehörige Passwort.
@@ -1795,7 +1808,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 		<listitem><simpara>
 		  Wenn ein Benutzerkonto oder eine Gruppe mit einer "<emphasis>Well Known</emphasis>" RID
-		  nach UCS OpenLDAP synchronisiert wird, setzt ein Listener Modul auf jedem UCS system
+		  nach UCS OpenLDAP synchronisiert wird, setzt ein Listener Modul auf jedem UCS System
 		  lokal eine &ucsUCR; Variable, die dem englischen Namen den nicht-englischen Namen
 		  zuordnet. Diese Variablen werden verwendet, um die in den UCS Konfigurationsdateien
 		  verwendeten englischen Begriffe in die Namen zu übersetzen, die in dem AD verwendet

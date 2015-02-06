@@ -313,8 +313,8 @@
 					<row>
 						<entry>UNIVENTION_DANSGUARDIAN</entry>
 						<entry>
-							Überwacht den Webfilter Dansguardian.
-							Läuft kein Dansguardian-Prozess oder ist der Dansguardian-Proxy
+							Überwacht den Webfilter DansGuardian.
+							Läuft kein DansGuardian-Prozess oder ist der DansGuardian-Proxy
 							ist nicht erreichbar, wird der Status CRITICAL zurückgegeben.
 						</entry>
 					</row>
@@ -918,7 +918,7 @@
 							<note>
 								<para>
 							Es dürfen keine Schleifen bei der Angabe der übergeordneten Rechner entstehen.
-							Der Nagios-Server würde in diesem Fall die neue Konfigration nicht übernehmen
+							Der Nagios-Server würde in diesem Fall die neue Konfiguration nicht übernehmen
 							bzw. sich nicht starten lassen.
 								</para>
 							</note>

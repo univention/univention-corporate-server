@@ -172,8 +172,8 @@
 		  </para>
 
 		  <para>
-			Join-Skripte werden im Verzeichnis <filename>/usr/lib/univention-install</filename>
-			und Unjoin-Skripte in <filename>/usr/lib/univention-uninstall</filename> gespeichert.
+			Join-Skripte werden im Verzeichnis <filename class="directory">/usr/lib/univention-install/</filename>
+			und Unjoin-Skripte in <filename class="directory">/usr/lib/univention-uninstall/</filename> gespeichert.
 			Jedes Join/Unjoin-Skript verfügt über eine Version. Ein Beispiel: Ein Paket ist bereits installiert
 			und das Join-Skript schon aufgerufen. In der neuen Version des Pakets sind nun
 			zusätzliche Änderungen nötig und die Versionsnummer des Join-Skripts wird erhöht.
@@ -189,7 +189,7 @@
 			<title>Nachträgliches Ausführen von Join-/Unjoin-Skripten</title>
 			<para>
 			  Gibt es auf einem System Join- oder Unjoin-Skripte, die noch nicht ausgeführt wurden oder die nur
-			  für eine ältere Version augeführt wurden, wird bei der Anmeldung an &ucsUMC; eine
+			  für eine ältere Version ausgeführt wurden, wird bei der Anmeldung an &ucsUMC; eine
 			  Warnmeldung ausgegeben.
 			</para>
 
@@ -639,10 +639,10 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 			<para>
 				Um den Aufwand für kleine Erweiterungen im LDAP möglichst gering zu
 				halten, bringt UCS ein eigenes LDAP-Schema für Kundenerweiterungen mit. Die
-				LDAP-Objektklasse <emphasis>univentionFreeAttributes</emphasis> kann ohne
+				LDAP-Objektklasse <classname>univentionFreeAttributes</classname> kann ohne
 				Einschränkungen für erweiterte Attribute verwendet werden. Sie bringt 20 frei
-				zu verwendende Attribute (<emphasis>univentionFreeAttribute1</emphasis> bis
-				<emphasis>univentionFreeAttribute20</emphasis>) mit und kann in Verbindung mit
+				zu verwendende Attribute (<varname>univentionFreeAttribute1</varname> bis
+				<varname>univentionFreeAttribute20</varname>) mit und kann in Verbindung mit
 				jedem beliebigen LDAP-Objekt (z.B. einem Benutzerobjekt) verwendet werden.
 			</para>
 
@@ -676,7 +676,7 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 
 			<para>
 				Die eigentliche Replikation der Schema-Definitionen wird vom Univention
-				Directory Listener initiiert. Vor jeder Abfrage einer neuen Transaktions-ID
+				Directory Listener initiiert. Vor jeder Abfrage einer neuen Transaktion-ID
 				durch den Univention Directory Notifier wird dessen aktuelle Schema-ID
 				abgefragt. Ist diese höher als die Schema-ID auf der Listener-Seite, wird über
 				eine LDAP-Suche vom LDAP-Server des Notifier-Systems dessen aktuell verwendetes
@@ -706,7 +706,7 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 		  werden. Diese Zweige können durch die &ucsUCR;-Variablen
 		  <envar>ldap/logging/exclude1</envar>, <envar>ldap/logging/exclude2</envar>
 		  etc. konfiguriert werden. Standardmässig ist der Container exkludiert, in dem die
-		  temporären Objekte gespeichert werden (cn=temporary,cn=univention).
+		  temporären Objekte gespeichert werden (<uri>cn=temporary,cn=univention</uri>).
 		  Die Protokollierung der LDAP-Änderungen erfolgt durch ein Univention Directory
 		  Listener-Modul, nach &ucsUCR;-Änderungen muss der Univention Directory Listener-Dienst neu
 		  gestartet werden.
@@ -781,7 +781,7 @@ slapcat &gt; ldapdaten.txt
 			Konfigurationsdatei <filename>/etc/ldap/slapd.conf</filename> definiert und
 			über &ucsUCR; verwaltet. Die <filename>slapd.conf</filename> wird dabei durch
 			ein Multifile-Template verwaltet; weitere ACL-Elemente können unterhalb von
-			<filename>/etc/univention/templates/files/etc/ldap/slapd.conf.d/</filename>
+			<filename class="directory">/etc/univention/templates/files/etc/ldap/slapd.conf.d/</filename>
 			zwischen den Dateien <filename>60univention-ldap-server_acl-master</filename>
 			und <filename>70univention-ldap-server_acl-master-end</filename> eingefügt
 			werden oder die bestehenden Templates erweitert werden.
@@ -807,7 +807,7 @@ slapcat &gt; ldapdaten.txt
 			eines Benutzerkontos von diesem Benutzer ausgelesen werden.
 		</para>
 		<para>
-			Ein zusätzlicher, interner Account, der Root-DN, besitzt darüberhinaus
+			Ein zusätzlicher, interner Account, der Root-DN, besitzt darüber hinaus
 			auch schreibenden Vollzugriff.
 		</para>
 		<para>
@@ -896,7 +896,7 @@ slapcat &gt; ldapdaten.txt
 		<title>Name Service Switch / LDAP-NSS-Modul</title>
 		<para>
 			Die in Univention Corporate Server verwendete GNU C-Standardbibliothek
-			(glibc) bietet eine modulare Schnittstelle zur Auflösung von Namen von
+			(<package>glibc</package>) bietet eine modulare Schnittstelle zur Auflösung von Namen von
 			Benutzern, Gruppen und Rechnern, den <emphasis>Name Service Switch</emphasis>.
 		</para>
 		<para>
@@ -958,7 +958,7 @@ slapcat &gt; ldapdaten.txt
 	  </para>
 
 	  <para>
-		Die LDAP-Daten werden im LDIF-Format im Verzeichnis <filename>/var/univention-backup/</filename> im
+		Die LDAP-Daten werden im LDIF-Format im Verzeichnis <filename class="directory">/var/univention-backup/</filename> im
 		Namensschema <filename>ldap-backup_DATUM.ldif.gz</filename> gespeichert. Sie sind nur für
 		den Benutzer <emphasis>root</emphasis> lesbar.
 	  </para>
@@ -1111,7 +1111,7 @@ root@dcslave1:~# cat /var/lib/univention-directory-listener/notifier_id
 		<para>
 		  Dem Befehl zum erneuten Initialisieren muss der Name des Listener-Moduls übergeben
 		  werden. Die installierten Listener-Module sind im Verzeichnis
-		  <filename>/var/lib/univention-directory-listener/handlers/system</filename> zu finden.
+		  <filename class="directory">/var/lib/univention-directory-listener/handlers/system/</filename> zu finden.
 		</para>
 
 		<para>
@@ -1345,7 +1345,7 @@ univention-directory-listener-ctrl resync cups-printers
 COLUMNS=200 dpkg --list &gt; dateiliste.txt
 	  </programlisting>
 	<para>
-	  Darüberhinaus sollte der &ucsUCR;-Datenbestand gespeichert werden, um
+	  Darüber hinaus sollte der &ucsUCR;-Datenbestand gespeichert werden, um
 	  Konfigurationsanpassungen auch auf dem neuen &ucsMaster; abgleichen zu können. Dies kann mit
 	  dem folgenden Befehl erfolgen:
 	</para>

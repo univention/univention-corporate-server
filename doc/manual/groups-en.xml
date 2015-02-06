@@ -62,7 +62,7 @@
 							</para>
                             <para>
 							  In the default setting, it is not possible to create a group with the same name as an existing user.
-							  If the &ucsUCRV; <envar>directory/manager/user_group/uniqueness</envar> is set to <emphasis>false</emphasis>,
+							  If the &ucsUCRV; <envar>directory/manager/user_group/uniqueness</envar> is set to <literal>false</literal>,
 							  this check is removed.
 							</para>
 						</entry>
@@ -309,7 +309,7 @@
 		  members are still present in the LDAP directory. If only &ucsUMC; is used for user
 		  management, this additional check is not necessary and can be
 		  disabled by setting the &ucsUCRV; <envar>nss/group/cachefile/check_member</envar> to
-		  <emphasis>false</emphasis>.
+		  <literal>false</literal>.
 		</para>
 	</section>
 

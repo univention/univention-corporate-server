@@ -4,7 +4,7 @@
 		<title>Einführung</title>
 		<para>
 			&ucsUVMM; (UVMM) ist ein Werkzeug für die Verwaltung hybrider Cloud-Umgebungen. Es können
-			in der UCS-Domäne regiustrierte KVM-Virtualisierungsserver und darauf betriebene 
+			in der UCS-Domäne registrierte KVM-Virtualisierungsserver und darauf betriebene 
 			virtuelle Maschinen zentral überwacht und administriert werden. Zusätzlich können
 			virtuelle Maschinen in OpenStack- oder EC2-Umgebungen administriert werden.
 			Die Administration erfolgt über das &ucsUMC;-Modul <emphasis>Virtuelle Maschinen</emphasis>.
@@ -56,7 +56,7 @@
 			Durch einen Klick auf <guimenu>Erstellen</guimenu> öffnet sich ein Assistent, in dem der Punkt <guimenu>Erstellen einer neuen Cloud-Verbindung</guimenu> gewählt werden muss.
 			Im nun verfügbaren Dropdown Feld kann die Art der Verbindung gewählt werden, mit einem Klick auf <guimenu>Weiter</guimenu> startet der Einrichtungsassistent.
 			Sind die Einstellungen getätigt, wird mit einem Klick auf <guimenu>Fertigstellen</guimenu> die Verbindung hergestellt.
-			Falls ein Fehler auftritt, wird dieser angezeigt und die Verbindungseinstellunge können korrigiert werden.
+			Falls ein Fehler auftritt, wird dieser angezeigt und die Verbindungseinstellungen können korrigiert werden.
 			Wenn die Verbindung erfolgreich hergestellt wurde, wird eine Warteanimation angezeigt, während alle verbindungsspezifischen Informationen der Cloud Verbindung geladen werden.
 			Dies umfasst zum Beispiel die vorhandenen Instanzen und verfügbare Images, um neue Instanzen anlegen zu können.
 		</para>
@@ -312,7 +312,7 @@ update-ca-certificates
 				</varlistentry>
 			</variablelist>
 			<para>
-				Folgende Operationen stehen auf gespeicherten oder ausgeschaltenen Maschinen zur Verfügung:
+				Folgende Operationen stehen auf gespeicherten oder ausgeschalteten Maschinen zur Verfügung:
 			</para>
 			<variablelist>
 				<varlistentry>
@@ -401,7 +401,7 @@ update-ca-certificates
 					<term>Löschen</term>
 					<listitem>
 						<simpara>
-							Schaltet die virtuelle Maschine aus und löscht alle dazugehörigen Daten unwiederruflich.
+							Schaltet die virtuelle Maschine aus und löscht alle dazugehörigen Daten unwiderruflich.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -795,7 +795,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				  und der KVM-Version, mit der ein Gastsystem installiert wurde: Ursprünglich war der
 				  Standardwert bis UCS 3.0 implizit <emphasis>write-through</emphasis>, aber mit UCS 3.1 wurde KVM so
 				  modifiziert, dass für alte VMs jetzt statt dessen <emphasis>none</emphasis> verwendet wird. Bei mit
-				  UCS 3.1 neu angelegten VMs entspricht der Standadrwert wieder implizit
+				  UCS 3.1 neu angelegten VMs entspricht der Standardwert wieder implizit
 				  <emphasis>write-through</emphasis>, allerdings werden neue VMs explizit mit <emphasis>none</emphasis> angelegt.
 					</simpara>
 				</listitem>
@@ -875,7 +875,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 			  <itemizedlist>
 				<listitem><simpara>
 				  Das Verzeichnis, in dem die Daten des Speicherbereichs abgelegt werden sollen, muss
-				  angelegt werden, in diesem Beispiel <filename>/mnt/storage</filename>.
+				  angelegt werden, in diesem Beispiel <filename class="directory">/mnt/storage/</filename>.
 				</simpara></listitem>
 
 				<listitem><simpara>
@@ -1034,17 +1034,17 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 
 			  <itemizedlist>
 				<listitem><simpara>
-				  Ein CDROM/DVD-Laufwerk muss eingerichtet und das Image <emphasis>KVM Windows drivers</emphasis> zugewiesen werden.
+				  Ein CDROM/DVD-Laufwerk muss eingerichtet und das Image <guimenuitem>KVM Windows drivers</guimenuitem> zugewiesen werden.
 				</simpara></listitem>
 
 				<listitem><simpara>
 				  Für die Festplatten-Laufwerke muss im <guimenu>Geräte</guimenu>-Dialog des &ucsUVMM;
-				  die Option <guimenu>Paravirtualisiertes Laufwerk</guimenu> aktiviert werden.
+				  die Option <guimenuitem>Paravirtualisiertes Laufwerk</guimenuitem> aktiviert werden.
 				</simpara></listitem>
 
 				<listitem><simpara>
 				  Für die Netzwerkkarte(n) muss der <guimenu>Treiber</guimenu> auf
-				  <emphasis>Paravirtualisiert (virtio)</emphasis> konfiguriert werden.
+				  <guimenuitem>Paravirtualisiert (virtio)</guimenuitem> konfiguriert werden.
 				</simpara></listitem>
 
 				<listitem><simpara>
@@ -1052,15 +1052,15 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				  Partitionierungs-Dialog erscheint die Warnung, dass nicht auf Massenspeicher
 				  zugegriffen werden kann; dies stellt keinen Fehler dar. Im selben Menü können die
 				  virtIO-Treiber mit <guimenu>Treiber laden</guimenu> eingerichtet werden. Unter Windows
-				  7 (und ebenso Windows 2003/2008) muss <emphasis>Red Hat virtIO SCSI
-				  Controller</emphasis> und <emphasis>Red Hat virtIO Ethernet Adapter</emphasis>
+				  7 (und ebenso Windows 2003/2008) muss <guimenuitem>Red Hat virtIO SCSI
+				  Controller</guimenuitem> und <guimenuitem>Red Hat virtIO Ethernet Adapter</guimenuitem>
 				  ausgewählt werden. Nach der Treiber-Installation ist die Festplatte im
 				  Windows-Installationsdialog sichtbar und die Installation kann fortgesetzt werden.
 				</simpara></listitem>
 
 				<listitem><simpara>
-				  Nach Abschluß der Installation werden die Geräte <emphasis>Red Hat virtIO SCSI Disk
-				  Device</emphasis> und <emphasis>Red Hat virtIO Ethernet Adapter</emphasis> im
+				  Nach Abschluss der Installation werden die Geräte <computeroutput>Red Hat virtIO SCSI Disk
+				  Device</computeroutput> und <computeroutput>Red Hat virtIO Ethernet Adapter</computeroutput> im
 				  Windows-Gerätemanager angezeigt.
 				</simpara></listitem>
 			  </itemizedlist>
@@ -1142,7 +1142,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 		</itemizedlist>
 		<para>
 			Die UVMM-Profile werden aus dem <acronym>LDAP</acronym>-Verzeichnis gelesen und können dort auch angepasst werden.
-			Zu finden sind die Profile im UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu> im Container <emphasis>cn=Profiles,cn=Virtual Machine Manager</emphasis>.
+			Zu finden sind die Profile im UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu> im Container <uri>cn=Profiles,cn=Virtual Machine Manager</uri>.
 			Dort können auch weitere Profile hinzugefügt werden.
 		</para>
 		<section id="uvmm::profile::network">

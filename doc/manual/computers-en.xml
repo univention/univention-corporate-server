@@ -46,7 +46,7 @@
 	<para>
 	  The simplified wizard can be disabled for all system roles by setting the &ucsUCRV;
 	  <envar>directory/manager/web/modules/computers/computer/wizard/disabled</envar> to
-	  <emphasis>true</emphasis>.
+	  <literal>true</literal>.
 	</para>
 
 	<figure id="computers-create">
@@ -544,7 +544,7 @@
 		</para>
 		<para>
 			The drivers to be used are recognised automatically during system start and
-			loaded via the udev device manager. At this point, the necessary device links
+			loaded via the <application>udev</application> device manager. At this point, the necessary device links
 			are also created under <filename class="directory">/dev/</filename>. If drivers are not
 			recognised (which can occur if no respective hardware IDs are registered or
 			hardware is employed which cannot be recognised automatically, e.g., ISA
@@ -916,14 +916,14 @@ ucr unset umc/modules/setup/network/disabled/by
 
 				  <itemizedlist>
 					<listitem><simpara>
-					  <emphasis>balance-rr (0)</emphasis> distributes the packets equally over the
+					  <guimenuitem>balance-rr (0)</guimenuitem> distributes the packets equally over the
 					  available network interfaces within the bonding one after the other. This
 					  increases performance and improves redundancy. In order to use this mode, the
 					  network switches used must support <emphasis>link aggregation</emphasis>.
 					</simpara></listitem>
 
 					<listitem><simpara>
-					  When <emphasis>active-backup (1)</emphasis> is used, only one network card is
+					  When <guimenuitem>active-backup (1)</guimenuitem> is used, only one network card is
 					  active for each bonding interface (in the default setting this is the network
 					  interface configured in <guimenu>Bond primary</guimenu>). If the primary network card
 					  fails, this is detected by the Linux kernel, which switches to another card in
@@ -1566,7 +1566,7 @@ master.firma.de
 		</note>
 		<para>
 			The UCR templates are stored in the
-			<filename>/etc/univention/templates/files</filename> directory. The path to the
+			<filename class="directory">/etc/univention/templates/files/</filename> directory. The path to the
 			templates is the absolute path to the configuration file with the prefixed path
 			to the template directory. For example, the template for the
 			<filename>/etc/issue</filename> configuration file can be found under
@@ -1636,7 +1636,7 @@ if configRegistry.get('version/version') and \
 			<para>
 				The &ucsUCR; variables used in the configuration files are registered in
 				<emphasis>info</emphasis> files in the
-				<filename>/etc/univention/templates/info</filename> directory which are usually
+				<filename class="directory">/etc/univention/templates/info/</filename> directory which are usually
 				named after the package name with the file ending
 				<emphasis>.info</emphasis>. If new Python code is entered into the templates or
 				the existing code changed in such a way that it requires additional or
@@ -1742,7 +1742,7 @@ if configRegistry.get('version/version') and \
 				This restriction can be configured with the &ucsUCRV;
 				<envar>auth/SERVICE/restrict</envar>. Access to this service can be authorised
 				by setting the variables <envar>auth/SERVICE/user/USERNAME</envar> and
-				<envar>auth/SERVICE/group/GROUPNAME</envar> to <emphasis>yes</emphasis>.
+				<envar>auth/SERVICE/group/GROUPNAME</envar> to <literal>yes</literal>.
 			</para>
 			<para>
 				Login restrictions are supported for SSH (<emphasis>sshd</emphasis>), FTP
@@ -1808,7 +1808,7 @@ auth/sshd/restrict: yes
 			<title>Log files</title>
 			<para>
 				All UCS-specific log files (e.g., for the listener/notifier replication) are
-				stored in the <filename>/var/log/univention</filename> directory. Services log
+				stored in the <filename class="directory">/var/log/univention/</filename> directory. Services log
 				in their own standard log files: for example, Apache to the file
 				<filename>/var/log/apache2/error.log</filename>.
 			</para>
@@ -1884,7 +1884,7 @@ auth/sshd/restrict: yes
 				syntax via the &ucsUCRV; <envar>system/stats/cron</envar>, e.g., <emphasis>0,30
 				* * * *</emphasis> for logging every half and full hour. The logging is
 				activated by setting the &ucsUCRV; <envar>system/stats</envar> to
-				<emphasis>yes</emphasis>. This is the default since UCS 3.0.
+				<literal>yes</literal>. This is the default since UCS 3.0.
 			</para>
 		</section>
 
@@ -1977,9 +1977,9 @@ auth/sshd/restrict: yes
 			<title>Hourly/daily/weekly/monthly execution of scripts</title>
 			<para>
 				Four directories are predefined on every UCS system,
-				<filename>/etc/cron.hourly/</filename>, <filename>/etc/cron.daily/</filename>,
-				<filename>/etc/cron.weekly/</filename> and
-				<filename>/etc/cron.monthly/</filename>. Shell scripts which are placed in
+				<filename class="directory">/etc/cron.hourly/</filename>, <filename class="directory">/etc/cron.daily/</filename>,
+				<filename class="directory">/etc/cron.weekly/</filename> and
+				<filename class="directory">/etc/cron.monthly/</filename>. Shell scripts which are placed in
 				these directories and marked as executable are run automatically every hour,
 				day, week or month.
 			</para>
@@ -2173,7 +2173,7 @@ nscd -i hosts
 			<listitem>
 				<simpara>
 				To prohibit SSH login completely, this can be deactivated by setting
-				the &ucsUCRV; <envar>auth/sshd/user/root</envar> to <emphasis>no</emphasis>.
+				the &ucsUCRV; <envar>auth/sshd/user/root</envar> to <literal>no</literal>.
 				</simpara>
 			</listitem>
 		</itemizedlist>
@@ -2182,7 +2182,7 @@ nscd -i hosts
 			an X11 output should be passed on via SSH. This is necessary, for example, for
 			allowing a user to start a program with graphic output on a remote computer by
 			logging in with <command>ssh -X TARGETHOST</command>. Valid settings are
-			<emphasis>yes</emphasis> and <emphasis>no</emphasis>.
+			<literal>yes</literal> and <literal>no</literal>.
 		</para>
 		<para>
 			The standard port for SSH connections is port 22 via TCP. If a different port
@@ -2215,7 +2215,7 @@ nscd -i hosts
 		<para>
 			Windows clients joined in a Samba 4 domain only accept signed NTP time
 			requests. If the &ucsUCRV; <envar>ntp/signed</envar> is set to
-			<emphasis>yes</emphasis>, the NTP replies are signed by Samba 4.
+			<literal>yes</literal>, the NTP replies are signed by Samba 4.
 		</para>
 	</section>
 </section>

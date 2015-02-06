@@ -47,10 +47,10 @@
 		The following browsers are supported.
 		</para>
 		<itemizedlist>
-			<listitem><simpara>Chrome as of version 33</simpara></listitem>
-			<listitem><simpara>Firefox as of version 24</simpara></listitem>
-			<listitem><simpara>Internet Explorer as of version 9</simpara></listitem>
-			<listitem><simpara>Safari and Safari Mobile as of version 7</simpara></listitem>
+			<listitem><simpara><application>Chrome</application> as of version 33</simpara></listitem>
+			<listitem><simpara><application>Firefox</application> as of version 24</simpara></listitem>
+			<listitem><simpara><application>Internet Explorer</application> as of version 9</simpara></listitem>
+			<listitem><simpara><application>Safari</application> and <application>Safari Mobile</application> as of version 7</simpara></listitem>
 		</itemizedlist>
 		<para>
 			Users with older browsers may experience display problems.
@@ -374,7 +374,7 @@
 
   <para>
 	Independent of the license used, the statistics generation can be deactivated by setting the
-	&ucsUCRV; <envar>umc/web/piwik</envar> to <emphasis>false</emphasis>.
+	&ucsUCRV; <envar>umc/web/piwik</envar> to <literal>false</literal>.
   </para>
 </section>
 
@@ -591,7 +591,7 @@
 	<para>
 		Extended attributes are managed in the UMC module <guimenu>LDAP directory</guimenu>.
 		There one needs to switch to
-		the <emphasis>univention</emphasis> container and then to the <emphasis>custom attributes</emphasis>
+		the <uri>univention</uri> container and then to the <uri>custom attributes</uri>
 		subcontainer. Existing attributes can be edited here or a
 		new <guimenu>Settings: extended attribute</guimenu> object created
 		here with <guimenu>Add</guimenu>.
@@ -948,18 +948,18 @@
 			  </para>
 
 			  <para>
-				Apart from standard syntax definitions (<emphasis>string</emphasis>) and
-				(<emphasis>integer</emphasis>), there are three possibilities for expressing a
-				binary condition. The syntax <emphasis>TrueFalse</emphasis> is represented at LDAP
-				level using the strings <emphasis>true</emphasis> and <emphasis>false</emphasis>,
-				the syntax <emphasis>TrueFalseUpper</emphasis>corresponds to the OpenLDAP boolean
-				values <emphasis>TRUE</emphasis> and <emphasis>FALSE</emphasis> and the syntax
-				<emphasis>boolean</emphasis> does not save any value or the string
+				Apart from standard syntax definitions (<classname>string</classname>) and
+				(<classname>integer</classname>), there are three possibilities for expressing a
+				binary condition. The syntax <classname>TrueFalse</classname> is represented at LDAP
+				level using the strings <literal>true</literal> and <literal>false</literal>,
+				the syntax <classname>TrueFalseUpper</classname>corresponds to the OpenLDAP boolean
+				values <literal>TRUE</literal> and <literal>FALSE</literal> and the syntax
+				<classname>boolean</classname> does not save any value or the string
 				<emphasis>1</emphasis>.
 			  </para>
 
 			  <para>
-				The syntax <emphasis>string</emphasis> is the default. An overview of the
+				The syntax <classname>string</classname> is the default. An overview of the
 				additionally available syntax definitions and instructions on integrating your own
 				syntaxes can be found in <xref linkend="developer-reference"/>.
 			  </para>

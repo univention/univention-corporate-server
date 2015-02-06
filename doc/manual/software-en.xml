@@ -366,7 +366,7 @@
 
 	  <para>
 		The status of the &ucsUCR; variables before the release update is saved in the
-		<filename>/var/univention-backup/update-to-TARGETRELEASEVERSION</filename>
+		<filename class="directory">/var/univention-backup/update-to-TARGETRELEASEVERSION/</filename>
 		directory. This can then be used to check whether and which variables have been changed
 		during the update.
 	  </para>
@@ -385,8 +385,8 @@
 	</para>
 
 	<para>
-	  Using the registered settings, apt package sources are automatically generated
-	  in the <filename>/etc/apt/sources.list.d</filename> directory for release and
+	  Using the registered settings, APT package sources are automatically generated
+	  in the <filename class="directory">/etc/apt/sources.list.d/</filename> directory for release and
 	  errata updates as well as addon components. If further repositories are required on a
 	  system, these can be entered in the <filename>/etc/apt/sources.list</filename>
 	  file.
@@ -416,7 +416,7 @@
 		security updates or ulterior maintenance. In the default setting,
 		<emphasis>unmaintained</emphasis> is not mounted, but can be integrated by
 		setting the &ucsUCRV; <envar>repository/online/unmaintained</envar> to
-		<emphasis>yes</emphasis>.
+		<literal>yes</literal>.
 	  </simpara></listitem>
 	</itemizedlist>
 
@@ -443,7 +443,7 @@
 	  </para>
 	  <para>
 		The unmaintained repository can be integrated by setting the &ucsUCRV;
-		<envar>repository/online/unmaintained</envar> to <emphasis>yes</emphasis>.
+		<envar>repository/online/unmaintained</envar> to <literal>yes</literal>.
 	  </para>
 	</section>
 
@@ -530,7 +530,7 @@ univention-repository-update -h
 
 	  <para>
 		The repository is stored in the
-		<filename>/var/lib/univention-repository/mirror</filename> directory.
+		<filename class="directory">/var/lib/univention-repository/mirror/</filename> directory.
 	  </para>
 
 	  <para>
@@ -560,7 +560,7 @@ univention-repository-update -h
 
 	<para>
 	  Software which is not available in the Debian package format should be
-	  installed into the <filename>/opt</filename> or <filename>/usr/local</filename>
+	  installed into the <filename class="directory">/opt/</filename> or <filename class="directory">/usr/local/</filename>
 	  directories. These directories are not used for installing UCS packages, thus a
 	  clean separation between UCS packages and other software is ensured.
 	</para>

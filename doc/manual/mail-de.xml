@@ -34,7 +34,7 @@
 	  durch E-Mail-Clients an.
 	  Cyrus ist für den Abruf von E-Mails über IMAP und POP3 vorkonfiguriert. Der
 	  Zugriff über POP3 kann durch Setzen der &ucsUCRV; <envar>mail/cyrus/pop</envar>
-	  auf <emphasis>no</emphasis> deaktiviert werden. Das gleiche gilt für IMAP und
+	  auf <literal>no</literal> deaktiviert werden. Das gleiche gilt für IMAP und
 	  die &ucsUCRV; <envar>mail/cyrus/imap</envar>.
 	  Auch die weitere Konfiguration der Mailserver erfolgt über &ucsUCR; (siehe
 	  <xref linkend="mail::serverconfig::general"/>).
@@ -93,7 +93,7 @@
 	</para>
 
 	<para>
-	  Die Laufzeitdaten des Cyrus-Servers werden im Verzeichnis <filename>/var/spool/cyrus</filename>
+	  Die Laufzeitdaten des Cyrus-Servers werden im Verzeichnis <filename class="directory">/var/spool/cyrus/</filename>
 	  abgelegt. Dieses Verzeichnis sollte nicht auf einer NFS-Freigabe betrieben werden.
 	</para>
 
@@ -240,7 +240,7 @@
 		In der Grundeinstellungen kann jeder Benutzer an die Mailingliste schreiben. Um
 		Missbrauch zu verhindern, besteht die Möglichkeit den Senderkreis
 		einzuschränken. Dazu muss die &ucsUCRV; <envar>mail/postfix/policy/listfilter</envar> auf
-		dem Mailserver auf <emphasis>yes</emphasis> gesetzt und Postfix neu gestartet werden.
+		dem Mailserver auf <literal>yes</literal> gesetzt und Postfix neu gestartet werden.
 		Unter <guimenu>Erweiterte Einstellungen</guimenu> können
 		dann <guimenu>Benutzer, die berechtigt sind, E-Mails an diese Liste zu versenden</guimenu>
 		und <guimenu>Gruppen, die berechtigt sind, E-Mails an diese Liste zu versenden</guimenu>
@@ -272,7 +272,7 @@
 		In der Grundeinstellungen kann jeder an die Mailgruppe schreiben. Um
 		Missbrauch zu verhindern, besteht die Möglichkeit den Senderkreis
 		einzuschränken. Dazu muss die &ucsUCRV; <envar>mail/postfix/policy/listfilter</envar> auf
-		dem Mailserver auf <emphasis>yes</emphasis> gesetzt und Postfix neu gestartet werden.
+		dem Mailserver auf <literal>yes</literal> gesetzt und Postfix neu gestartet werden.
 	  </para>
 
 	  <para>
@@ -573,7 +573,7 @@
 
 	<para>
 	  Die Spam-Filterung kann durch Setzen der &ucsUCRV;
-	  <envar>mail/antivir/spam</envar> auf <emphasis>no</emphasis> deaktiviert
+	  <envar>mail/antivir/spam</envar> auf <literal>no</literal> deaktiviert
 	  werden.
 	  Bei Änderungen an Univention Configuration Registry-Variablen, die die
 	  Spamerkennung betreffen, muss der Amavis-Dienst und Postfix neu gestartet
@@ -596,12 +596,12 @@
 	  unerreichbar für den Benutzer abgelegt. Der ursprüngliche Empfänger erhält eine
 	  Benachrichtigung per E-Mail über diese Maßnahme. Bei Bedarf kann der
 	  Administrator die E-Mail aus dem Verzeichnis
-	  <filename>/var/lib/amavis/virusmails</filename> wiederherstellen oder
+	  <filename class="directory">/var/lib/amavis/virusmails/</filename> wiederherstellen oder
 	  löschen. Eine automatische Löschung erfolgt nicht.
 	</para>
 
 	<para>
-	  Die Software Amavisd-new dient als Schnittstelle zwischen dem Mailserver und
+	  Die Software <application>Amavisd-new</application> dient als Schnittstelle zwischen dem Mailserver und
 	  verschiedenen Virenscannern. Der freie Virenscanner ClamAV ist im Paket
 	  enthalten und nach der Installation sofort einsatzbereit. Die für die
 	  Virenerkennung nötigen Signaturen werden automatisch und kostenfrei durch den
@@ -640,7 +640,7 @@
 		konfiguriert wurde. Nach der initialen Konfiguration eines Benutzers muss Fetchmail im
 		UMC-Modul <guimenu>Systemdienste</guimenu> gestartet werden. Dort kann der Start
 		des Dienstes auch deaktiviert werden (alternativ durch Setzen der &ucsUCRV;
-		<envar>fetchmail/autostart</envar> auf <emphasis>false</emphasis>).
+		<envar>fetchmail/autostart</envar> auf <literal>false</literal>).
 	  </para>
 
 		<table>
@@ -719,7 +719,7 @@
 
 	  <para>
 		Ist für den Versand die Authentifizierung gegenüber dem Relay-Host notwendig,
-		muss die &ucsUCRV; <envar>mail/relayauth</envar> auf <emphasis>yes</emphasis>
+		muss die &ucsUCRV; <envar>mail/relayauth</envar> auf <literal>yes</literal>
 		gesetzt und die Datei <filename>/etc/postfix/smtp_auth</filename> bearbeitet
 		werden. In dieser Datei muss der Relay-Host, der Benutzername und das Passwort
 		in einer Zeile hinterlegt werden:
@@ -783,7 +783,7 @@ postmap /etc/postfix/smtp_auth
 		Bei einer Reihe von Fehlersituationen (z.B. bei nicht vorhandenen
 		Benutzern) kann es zu einem Bounce der betroffenen Mail kommen, d.h. die Mail
 		wird an den Absender zurückgesendet. Mit dem Setzen der &ucsUCRV;
-		<envar>mail/postfix/softbounce</envar> auf <emphasis>yes</emphasis> werden
+		<envar>mail/postfix/softbounce</envar> auf <literal>yes</literal> werden
 		Mails nie mit einem Bounce zurückgesendet, sondern immer weiterhin in der Queue
 		vorgehalten. Diese Einstellung ist insbesondere für Konfigurationsarbeiten am
 		Mailserver sehr nützlich.
@@ -804,14 +804,14 @@ postmap /etc/postfix/smtp_auth
 		<itemizedlist>
 		  <listitem>
 			<simpara>
-			  Ist die Variable auf <emphasis>yes</emphasis> gesetzt, wird das
+			  Ist die Variable auf <literal>yes</literal> gesetzt, wird das
 			  IMAP-Postfach des Benutzers umbenannt. Dies ist seit UCS 3.0 die
 			  Standardeinstellung.
 			</simpara>
 		  </listitem>
 		  <listitem>
 			<simpara>
-			  Bei der Einstellung <emphasis>no</emphasis>, sind nach dem
+			  Bei der Einstellung <literal>no</literal>, sind nach dem
 			  Ändern der primären E-Mail-Adresse eines Benutzers seine bisherigen E-Mails
 			  nicht mehr erreichbar! Wird einem anderen Benutzer eine ehemals vergebene
 			  primäre E-Mail-Adresse zugewiesen, bekommt dieser Zugriff auf die alte
