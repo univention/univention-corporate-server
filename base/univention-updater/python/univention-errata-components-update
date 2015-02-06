@@ -4,7 +4,7 @@
 # Univention Updater
 #  errata update fpor components
 #
-# Copyright 2011-2014 Univention GmbH
+# Copyright 2011-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -97,7 +97,7 @@ def remove_temporary_sources_list ():
 
 def usage(fd=sys.stdout):
 	print >> fd, 'univention-errata-components-update: tool for installing errata updates for components'
-	print >> fd, 'copyright (c) 2011-2014 Univention GmbH, Germany'
+	print >> fd, 'copyright (c) 2011-2015 Univention GmbH, Germany'
 	print >> fd, ''
 	print >> fd, 'Syntax:'
 	print >> fd, '  univention-errata-compoents-update <net,local> [--file <update.tar.gz>] [--silent] [--noupdate] [--check] [--no-repository-update] [--component <component>]'

@@ -2,7 +2,7 @@
 #
 # Enable secure APT package verification (Bug #24172)
 #
-# Copyright (C) 2011-2014 Univention GmbH
+# Copyright (C) 2011-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
