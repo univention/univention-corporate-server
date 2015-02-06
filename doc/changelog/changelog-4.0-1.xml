@@ -16,7 +16,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  apache2 (CVE-2013-5704) (<ulink url="&ucsbug;36984 ">Bug 36984 </ulink>)
+		  apache2 (CVE-2013-5704) (<ulink url="&ucsbug;36984">Bug 36984 </ulink>)
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -924,9 +924,11 @@
 		url="&ucsbug;37153">Bug 37153</ulink>).
 	  </simpara></listitem>
 
+	  <!--
   	  <listitem><simpara>
 		(<ulink url="&ucsbug;">Bug </ulink>).
   	  </simpara></listitem>
+	  -->
 
   	</itemizedlist>
   </section>

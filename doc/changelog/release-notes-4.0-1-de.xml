@@ -171,7 +171,7 @@
 		  werden können. Die Standard-Konfiguration wird daher verändert, so dass rekursive Anfragen
 		  nur von IP-Adressen privater Adressbereichte, link-lokaler Andressen, localhost und
 		  lokalen Netzen durchgeführt werden können. Wenn die Nameserver auch von anderen Systemen
-		  angefragt werden können sollen, müssen diese über die &ucrUCRV;
+		  angefragt werden können sollen, müssen diese über die &ucsUCRV;
 		  <envar>dns/allow/query/cache</envar> freigegeben werden. Diese Änderung wird nur bei
 		  Neuinstallationen durchgeführt. Weitere Hinweise zur Umstellung bestehender Systemen
 		  finden sich unter <ulink url="http://sdb.univention.de/1298"/>.
