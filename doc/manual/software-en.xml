@@ -307,8 +307,8 @@
 	<section id="computers::softwaremanagement::releasepolicy">
 	  <title>Updating systems via a policy</title>
 	  <para>
-		An update for more than one computer can be configured with a
-		<guimenu>Release</guimenu> policy in the UMC modules for computer
+		An update for more than one computer can be configured with an
+		<guimenu>Automatic updates</guimenu> policy in the UMC modules for computer
 		and domain management (see <xref linkend="central:policies"/>).
 	  </para>
 
@@ -318,12 +318,12 @@
 	  </figure>
 
 	  <para>
-		A release update is only run when the <guimenu>Activate policy</guimenu>
+		A release update is only run when the <guimenu>Activate release updates</guimenu>
 		selection field is activated.
 	  </para>
 
 	  <para>
-		The <guimenu>Release version</guimenu> input field includes the version number
+		The <guimenu>Update to this UCS version</guimenu> input field includes the version number
 		up to which the system should be updated, e.g., <emphasis>4.2-1</emphasis>. If
 		no entry is made, the system continues updating to the highest available
 		version number.

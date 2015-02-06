@@ -314,7 +314,7 @@
 	<section id="computers::softwaremanagement::releasepolicy">
 	  <title>Aktualisierung von Systemen über eine Rechner-Richtlinie</title>
 	  <para>
-		Mit einer <guimenu>Release-Richtlinie</guimenu> in den
+		Mit einer <guimenu>Automatische Updates</guimenu>-Richtlinien in den
 		UMC-Modulen zur Rechner- und Domänenverwaltung lässt sich ein Update für
 		mehrere Rechner konfigurieren (siehe auch <xref linkend="central:policies"/>).
 	  </para>
@@ -324,12 +324,12 @@
 	  </figure>
 
 	  <para>
-		Nur wenn das Auswahlfeld <guimenu>Aktiviere die Richtlinie</guimenu>
+		Nur wenn das Auswahlfeld <guimenu>Aktiviere Release-Updates</guimenu>
 		aktiviert ist, wird eine Release-Aktualisierung durchgeführt.
 	  </para>
 
 	  <para>
-		Das Eingabefeld <guimenu>Release-Version</guimenu> enthält die
+		Das Eingabefeld <guimenu>Bis zu dieser UCS-Version aktualisieren</guimenu> enthält die
 		Versionsnummer, bis zu der das System aktualisiert werden soll,
 		z.B. <emphasis>4.2-1</emphasis>. Wird keine Angabe gemacht, aktualisiert sich das
 		System bis zur höchsten verfügbaren Versionsnummer.
