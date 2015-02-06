@@ -27,13 +27,29 @@ test_username = ''
 hostname = ''
 
 
+def remove_samba_warnings(input_str):
+    """
+    Removes the Samba Warning/Note from the given input_str.
+    """
+    # ignoring following messages (Bug #37362):
+    input_str = input_str.replace('WARNING: No path in service IPC$ - making it unavailable!', '')
+    return input_str.replace('NOTE: Service IPC$ is flagged unavailable.', '').strip()
+
+
 def create_and_run_process(cmd, stdout=PIPE):
     """
     Creates a process as a Popen instance with a given 'cmd'
     and 'communicates' with it. Returns (stdout, stderr).
     """
     proc = Popen(cmd, stdout=stdout, stderr=PIPE)
-    return proc.communicate()
+    stdout, stderr = proc.communicate()
+
+    if stderr:
+        stderr = remove_samba_warnings(stderr)
+    if stdout:
+        stdout = remove_samba_warnings(stdout)
+
+    return stdout, stderr
 
 
 def try_to_authenticate(password):
@@ -68,11 +84,9 @@ def set_reset_lockout_settings(lock_duration, lock_threshold):
 
     stdout, stderr = create_and_run_process(cmd)
     if stderr:
-        # just print the stderr, as ofter there are warnings occur,
-        # for instance (Bug #34056)
-        print("An error/warning occured while trying to set/reset "
-              "account lockout settings via samba-tool command '%s':\n%r"
-              % (" ".join(cmd), stderr))
+        utils.fail("An error/warning occured while trying to set/reset "
+                   "account lockout settings via samba-tool command '%s':\n%r"
+                   % (" ".join(cmd), stderr))
     if stdout:
         print stdout
 
@@ -98,11 +112,9 @@ def create_delete_test_user(should_exist):
 
     stdout, stderr = create_and_run_process(cmd)
     if stderr:
-        # just print the stderr, as ofter there are warnings occur,
-        # for instance (Bug #34056)
-        print("An error/warning occured while trying to create or remove a "
-              "user with a username '%s' via command: '%s'.\nSTDERR: '%s'."
-              % (test_username, " ".join(cmd), stderr))
+        utils.fail("An error/warning occured while trying to create or remove "
+                   "a user with a username '%s' via command: %s'."
+                   "\nSTDERR: '%s'." % (test_username, " ".join(cmd), stderr))
     if stdout:
         print stdout
 
@@ -159,6 +171,9 @@ if __name__ == '__main__':
         print("Failed to obtain Administrator credentials or a hostname "
               "for the test from UCR. Skipping the test.")
         exit(TestCodes.REASON_INSTALL)
+
+    # extract the 'Administrator' username:
+    admin_username = admin_username.split(',')[0][len('uid='):]
 
     test_username = 'ucs_test_samba4_user_' + random_username(4)
     try:

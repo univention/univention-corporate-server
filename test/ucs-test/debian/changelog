@@ -1,3 +1,10 @@
+ucs-test (5.0.108-4) unstable; urgency=low
+
+  * 51_samba4/47domain_user_lockout: fail on any message in stderr;
+    use administrator username instead of DN (Bug #35898).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 06 Feb 2015 16:54:55 +0100
+
 ucs-test (5.0.108-3) unstable; urgency=low
 
   * 10_ldap/26reconnect_univention_ldapsearch: skip test in ucs 4.0-0 (Bug #37299).
