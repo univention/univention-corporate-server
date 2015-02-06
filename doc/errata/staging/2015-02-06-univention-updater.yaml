@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: univention-updater
+fix: 10.0.51-21.1371.201502061242
+version: [0]
+desc: |
+  This update addresses the following issue:
+  * Fix displaying the content of the logfile during package updates.
+bug: [37564]
