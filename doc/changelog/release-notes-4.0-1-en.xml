@@ -68,8 +68,24 @@
 		  </para></listitem>
 
 		  <listitem><para>
-			Many bugfixes in the &ucsUMC; and other UCS components have been made.
+			Several improvements in the appliance mode allow a simpler installation and setup of
+			cloud setups
 		  </para></listitem>
+
+		  <listitem><para>
+			Joining an Active Directory domain (aka "AD member mode") has been simplified
+		  </para></listitem>
+
+		  <listitem><para>
+			Multiple bugfixes and improvements related to Samna, e.g. in the printer support and
+			when using  Microsoft Sharepoint
+		  </para></listitem>
+
+		  <listitem><para>
+			Several enhancements and bugfixes in design and usability of the &ucsUMC;
+		  </para></listitem>
+
+
 		</itemizedlist>
 
 	</chapter>

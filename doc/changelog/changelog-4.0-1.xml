@@ -214,7 +214,7 @@
 	  <title>DNS server</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The configuration of the UCS DNS name server BIND9 is prone to open resolver attacks,
+		  The configuration of the UCS DNS name server BIND9 was prone to open resolver attacks,
 		  which are used to launch Distributed Denial of Service (DDoS) attacks against other hosts
 		  of the internet. To prevent such abuse the default configuration will be changed to allow
 		  'recursive queries' only from IP addresses of the private address ranges, link-local
@@ -240,11 +240,7 @@
   	  <listitem><simpara>
 		The UMC requires JavaScript. If it is disabled in the web browser, a warning message is
 		displayed. The styling of the notification has been improved (<ulink url="&ucsbug;36338">Bug
-		36338</ulink>).
-  	  </simpara></listitem>
-
-  	  <listitem><simpara>
-		Display a warning if an Internet Explorer version earlier than version 9 is used (it
+		36338</ulink>). Also, display a warning if an Internet Explorer version earlier than version 9 is used (it
 		misrenders SVG graphics) (<ulink url="&ucsbug;36914">Bug 36914</ulink>)
 	  </simpara></listitem>
 
@@ -264,15 +260,9 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		A exception was logged in the JavaScript console when the grid was resized and when
-		notifications got hidden. This has been removed (<ulink url="&ucsbug;36645">Bug
+		A exception was logged in the JavaScript console if the grid was resized and if
+		notifications were hidden. This has been removed (<ulink url="&ucsbug;36645">Bug
 		36645</ulink>).
-  	  </simpara></listitem>
-
-  	  <listitem><simpara>
-		The JavaScript method umc.tools.umcpProgressSubCommand did not send the UMCP flavour along
-		with a request and could therefore fail due to insufficient permissions (<ulink
-		url="&ucsbug;36875">Bug 36875</ulink>).
   	  </simpara></listitem>
 
   	  <listitem><simpara>
@@ -286,7 +276,7 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		The LocationMatch directive of Apache is now only configured for the UMC (<ulink
+		The <emphasis>LocationMatch</emphasis> directive of Apache is now only configured for the UMC (<ulink
 		url="&ucsbug;37518">Bug 37518</ulink>).
   	  </simpara></listitem>
 
@@ -296,12 +286,12 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		Fix an endless login animation if the login fails due to not running UMC server (<ulink
+		Fix an endless login animation if the login fails due to a stopped UMC server (<ulink
 		url="&ucsbug;36636">Bug 36636</ulink>).
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		Fix the error message which is shown when no network connection is possible on client side
+		Fix the error message which is shown if no network connection is possible on client side
 		(<ulink url="&ucsbug;36680">Bug 36680</ulink>).
   	  </simpara></listitem>
 
@@ -322,10 +312,7 @@
 
   	  <listitem><simpara>
 		The get_exception_method() has been removed. Error information are now provided by the UDM
-		base exception itself (<ulink url="&ucsbug;35273">Bug 35273</ulink>).
-  	  </simpara></listitem>
-
-  	  <listitem><simpara>
+		base exception itself (<ulink url="&ucsbug;35273">Bug 35273</ulink>, <ulink url="&ucsbug;30088">Bug 30088</ulink>).
 		Exceptions are not re-raised anymore as this hides important error information in traceback
 		feedback reports (<ulink url="&ucsbug;32979">Bug 32979</ulink>).
   	  </simpara></listitem>
@@ -336,7 +323,7 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		An error message is now shown when trying to operations on non existing objects (<ulink
+		An error message is now shown when trying to operate on non-existing objects (<ulink
 		url="&ucsbug;34246">Bug 34246</ulink>).
   	  </simpara></listitem>
 
@@ -357,11 +344,6 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		The univention.admin.uexception.base class provides now more detailed information about the
-		error cause (<ulink url="&ucsbug;30088">Bug 30088</ulink>).
-  	  </simpara></listitem>
-
-  	  <listitem><simpara>
 		Error handling of UDM modules has been improved by adding default methods which contain
 		information about the current edited object type (<ulink url="&ucsbug;34985">Bug
 		34985</ulink>).
@@ -379,12 +361,18 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		Fix error when the UMC server and the UMC module try to close the module process at the same
+		The JavaScript method umc.tools.umcpProgressSubCommand did not send the UMCP flavour along
+		with a request and could therefore fail due to insufficient permissions (<ulink
+		url="&ucsbug;36875">Bug 36875</ulink>).
+  	  </simpara></listitem>
+
+  	  <listitem><simpara>
+		Fix error if the UMC server and the UMC module try to close the module process at the same
 		time (<ulink url="&ucsbug;35231">Bug 35231</ulink>).
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		Fix a UMC-server crash if a translation file is corrupt (<ulink url="&ucsbug;36658">Bug
+		Fix a server crash caused by corrupted translation files (<ulink url="&ucsbug;36658">Bug
 		36658</ulink>).
   	  </simpara></listitem>
 
@@ -401,7 +389,7 @@
 
   	  <listitem><simpara>
 		The query of the LDAP DN of the user logging into the UMC has been fixed. Previously users
-		without a POSIX account were not detected before (<ulink url="&ucsbug;37178">Bug
+		without a POSIX account were not found (<ulink url="&ucsbug;37178">Bug
 		37178</ulink>).
   	  </simpara></listitem>
 
@@ -487,7 +475,7 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		If the DNS lookup of the DC master fails during joining a UCS domain, a warning message is now displayed (<ulink url="&ucsbug;34238">Bug 34238</ulink>).
+		If the DNS lookup of the &ucsMaster; fails during a UCS domain join, a warning message is now displayed (<ulink url="&ucsbug;34238">Bug 34238</ulink>).
   	  </simpara></listitem>
 
   	  <listitem><simpara>
@@ -500,15 +488,14 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		A branding for the appliance wizard has been implemented via the &ucsUCR; variables
+		The branding of the appliance wizard can now be customised via the &ucsUCR; variables
 		<envar>umc/web/appliance/name</envar> and <envar>umc/web/appliance/logo</envar> (<ulink
 		url="&ucsbug;37488">Bug 37488</ulink>).
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		The UMC module could not be loaded when the system had more than four physical network
-		devices (<ulink url="&ucsbug;37001">Bug 37001</ulink>). The wizard now also prevents
-		scrollbars on every wizard page for such systems (<ulink url="&ucsbug;36884">Bug 36884</ulink>).
+		The wizard failed if the system had more than four physical network
+		devices (<ulink url="&ucsbug;37001">Bug 37001</ulink>, <ulink url="&ucsbug;36884">Bug 36884</ulink>).
   	  </simpara></listitem>
 
   	  <listitem><simpara>
@@ -527,13 +514,13 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		The UCS DNSdomain check when selecting a system role has been adjusted to correctly
+		The DNS domain check when selecting a system role has been adjusted to correctly
 		determine an UCS domain (<ulink url="&ucsbug;36440">Bug 36440</ulink>).
   	  </simpara></listitem>
 
   	  <listitem><simpara>
 		If the UCS system has not been configured yet, a corresponding message is shown during login
-		at console/via ssh asking the user to use the UMC to complete configuration.
+		at console/via SSH asking the user to use the UMC to complete configuration.
 		 (<ulink url="&ucsbug;36971">Bug 36971</ulink>).
   	  </simpara></listitem>
 
@@ -614,17 +601,17 @@
   	<title>Users module</title>
   	<itemizedlist>
   	  <listitem><simpara>
-		Users without the POSIX option are now able to use the UMC module (<ulink
+		Users without the POSIX option are now able to change their password in the &ucsUMC; (<ulink
 		url="&ucsbug;31828">Bug 31828</ulink>).
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		Fixed setting of the use rexpiry date if a user account is disabled (<ulink
+		Fixed setting of the user expiry date if a user account is disabled (<ulink
 		url="&ucsbug;36330">Bug 36330</ulink>).
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		Fixed removal of the account expiry date of a user (<ulink url="&ucsbug;25279">Bug
+		Fixed the removal of the account expiry date of a user (<ulink url="&ucsbug;25279">Bug
 		25279</ulink>).
   	  </simpara></listitem>
 
@@ -658,7 +645,7 @@
   	<title>Computers module</title>
   	<itemizedlist>
   	  <listitem><simpara>
-		Automatic IP assignment for a network will show an error message if there is no more IP
+		Automatic IP assignment for a network will now show an error message if there is no more IP
 		available to use instead of a traceback (<ulink url="&ucsbug;33527">Bug 33527</ulink>).
   	  </simpara></listitem>
 
@@ -982,7 +969,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The amavis service was always listed as stopped in the <guimenu>System services</guimenu>
+		The Amavis service was always listed as stopped in the <guimenu>System services</guimenu>
 		module of the &ucsUMC; (<ulink url="&ucsbug;36998">Bug 36998</ulink>).
 	  </simpara></listitem>
 
@@ -1046,7 +1033,7 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		Fix uploading of archive for specific dmidecode versions (<ulink url="&ucsbug;37384">Bug
+		Fix uploading of archive for specific <command>dmidecode</command> versions (<ulink url="&ucsbug;37384">Bug
 		37384</ulink>).
   	  </simpara></listitem>
 
@@ -1126,12 +1113,12 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Display a https link in instances page for the first public and private IP of cloud
-		instances (<ulink url="&ucsbug;36905">Bug 36905</ulink>).
+		Display a HTTPS link for the first public and private IP of cloud instances (<ulink
+		url="&ucsbug;36905">Bug 36905</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Add tooltip for security group and key pair in the instance wizard (<ulink
+		Add tooltips displaying the security group and key pair in the instance wizard (<ulink
 		url="&ucsbug;36906">Bug 36906</ulink>).
 	  </simpara></listitem>
 
@@ -1141,12 +1128,12 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Add a progress bar while waiting for changed state of a virtual instance (<ulink
+		Add a progress bar while waiting for modifications of the state of a virtual instance (<ulink
 		url="&ucsbug;36380">Bug 36380</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Update cloud instance info more often after adding, changing the state or deleting an
+		Update the information of running cloud instances more often after adding, changing the state or deleting an
 		instance (<ulink url="&ucsbug;37301">Bug 37301</ulink>).
 	  </simpara></listitem>
 
@@ -1286,52 +1273,52 @@
 		<ulink url="&ucsbug;37669">Bug 37669</ulink>, 
 		<ulink url="&ucsbug;36583">Bug 36583</ulink>):
 		<itemizedlist spacing="compact">
-			<listitem>libart-2.0-2</listitem>
-			<listitem>docutils-doc</listitem>
-			<listitem>python-jinja2</listitem>
-			<listitem>python-renderpm</listitem>
-			<listitem>python-reportlab-accel</listitem>
-			<listitem>python-utidylib</listitem>
 			<listitem>altermime</listitem>
-			<listitem>libboost-thread1.49.0</listitem>
-			<listitem>libjansson4</listitem>
-			<listitem>php-mdb2-driver-mysql</listitem>
-			<listitem>php-net-ldap2</listitem>
-			<listitem>php-net-url2</listitem>
-			<listitem>ripole</listitem>
-			<listitem>smarty3</listitem>
-			<listitem>asterisk</listitem>
-			<listitem>fxload</listitem>
-			<listitem>asterisk-modules</listitem>
-			<listitem>asterisk-core-sounds-en-gsm</listitem>
 			<listitem>asterisk-config</listitem>
-			<listitem>asterisk-voicemail</listitem>
+			<listitem>asterisk-core-sounds-en-gsm</listitem>
+			<listitem>asterisk-modules</listitem>
 			<listitem>asterisk-moh-opsound-gsm</listitem>
+			<listitem>asterisk-voicemail</listitem>
+			<listitem>asterisk</listitem>
+			<listitem>autopoint</listitem>
+			<listitem>dahdi-linux</listitem>
+			<listitem>dahdi</listitem>
+			<listitem>docutils-doc</listitem>
+			<listitem>freetds-common</listitem>
+			<listitem>fxload</listitem>
+			<listitem>libalgorithm-diff-perl</listitem>
+			<listitem>libalgorithm-diff-xs-perl</listitem>
+			<listitem>libalgorithm-merge-perl</listitem>
+			<listitem>libapache2-mod-python</listitem>
+			<listitem>libapache2-svn</listitem>
+			<listitem>libart-2.0-2</listitem>
+			<listitem>libboost-thread1.49.0</listitem>
+			<listitem>libcorosync4</listitem>
 			<listitem>libfile-fcntllock-perl</listitem>
 			<listitem>libid3tag0</listitem>
-			<listitem>dahdi</listitem>
-			<listitem>sox</listitem>
-			<listitem>vpb-driver-source</listitem>
-			<listitem>autopoint</listitem>
-			<listitem>freetds-common</listitem>
-			<listitem>dahdi-linux</listitem>
-			<listitem>libalgorithm-diff-xs-perl</listitem>
-			<listitem>libcorosync4</listitem>
+			<listitem>libjansson4</listitem>
+			<listitem>libmail-sendmail-perl</listitem>
 			<listitem>libopenais3</listitem>
 			<listitem>libopenr2-3</listitem>
 			<listitem>libpri1.4</listitem>
 			<listitem>libsox-fmt-mp3</listitem>
 			<listitem>libss7-1</listitem>
-			<listitem>libalgorithm-diff-perl</listitem>
-			<listitem>libalgorithm-merge-perl</listitem>
-			<listitem>libmail-sendmail-perl</listitem>
-			<listitem>libapache2-mod-python</listitem>
+			<listitem>openjdk-7-jdk</listitem>
+			<listitem>php-mdb2-driver-mysql</listitem>
+			<listitem>php-net-ldap2</listitem>
+			<listitem>php-net-url2</listitem>
 			<listitem>php5-sqlite</listitem>
 			<listitem>python-clearsilver</listitem>
 			<listitem>python-genshi</listitem>
-			<listitem>libapache2-svn</listitem>
+			<listitem>python-jinja2</listitem>
+			<listitem>python-renderpm</listitem>
+			<listitem>python-reportlab-accel</listitem>
+			<listitem>python-utidylib</listitem>
+			<listitem>ripole</listitem>
+			<listitem>smarty3</listitem>
+			<listitem>sox</listitem>
 			<listitem>trac</listitem>
-			<listitem>openjdk-7-jdk</listitem>
+			<listitem>vpb-driver-source</listitem>
 		</itemizedlist>
 	</simpara></listitem>
 

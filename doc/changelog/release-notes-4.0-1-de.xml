@@ -59,18 +59,30 @@
 
 		<itemizedlist>
 		  <listitem><para>
-			Das Debian Wheezy 7.8 Update wurde integriert. Es bringt viele Fehlerkorrekten mit sich.
+			Das Debian Wheezy 7.8 Point-Update wurde integriert.
 		  </para></listitem>
 
 		  <listitem><para>
 			Die Lizenz der <emphasis>Free for personal use edition</emphasis>-Edition wurde auf 50
-			Benutzer und Clients erweitert.
+			Benutzer und 50 Clients erweitert.
 		  </para></listitem>
 
 		  <listitem><para>
-			Viele Fehlerkorrekturen in der &ucsUMC; und anderen UCS-Komponenten.
+			Viele Verbesserungen im Appliance-Modus ermöglichen eine einfachere Inbetriebnahme von UCS-Systemen
 		  </para></listitem>
 
+		  <listitem><para>
+			Der Beitritt zu einer Active Directory-Domäne (aka “AD Member Mode”) wurde vereinfacht.
+		  </para></listitem>
+
+		  <listitem><para>
+			Zahlreiche Fehlerkorrekturen und Verbesserungen in Samba, u.a. in der Druckeranbindung
+			und bei der Verwendung von Microsoft Sharepoint
+		  </para></listitem>
+
+		  <listitem><para>
+			Zahlreiche Verbesserungen in Design und Usability der &ucsUMC;
+		  </para></listitem>
 		</itemizedlist>
 
 	</chapter>
