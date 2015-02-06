@@ -1,3 +1,11 @@
+univention-updater (10.0.52-1) unstable; urgency=medium
+
+  * Adjust pre- and postup.sh to UCS 4.0-1 (Bug #37661)
+  * Remove Scalix schema check from preup.sh (Bug #37145)
+  * Adjust copyright to 2015
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 Feb 2015 07:53:35 +0100
+
 univention-updater (10.0.51-20) unstable; urgency=medium
 
   * Bug #37534: redirect log messages

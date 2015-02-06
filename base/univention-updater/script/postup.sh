@@ -72,56 +72,11 @@ is_ucr_true () {
     esac
 }
 
-switch_to_openjdk7 ()
-{
-	for p in openjdk-6-dbg \
-            openjdk-6-demo \
-            openjdk-6-doc \
-            openjdk-6-jdk \
-            openjdk-6-jre-headless \
-            openjdk-6-jre-lib \
-            openjdk-6-jre-zero \
-            openjdk-6-jre \
-            openjdk-6-source \
-            icedtea6-plugin \
-			icedtea-6-jre-jamvm \
-			icedtea-6-jre-cacao \
-			icedtea-6-plugin; do
-		state="$(dpkg --get-selections "$p" 2>/dev/null | awk '{print $2}')"
-		if [ "$state" = "install" ]; then
-			if [ "$p" = icedtea6-plugin ]; then	
-				 install --no-install-recommends icedtea-7-plugin
-			else
-				install --no-install-recommends "$(echo $p | sed -e 's|6|7|')"
-			fi
-		fi
-	done
-
-	dpkg -r openjdk-6-dbg \
-            openjdk-6-demo \
-            openjdk-6-doc \
-            openjdk-6-jdk \
-            openjdk-6-jre-headless \
-            openjdk-6-jre-lib \
-            openjdk-6-jre-zero \
-            openjdk-6-jre \
-            openjdk-6-source \
-            icedtea6-plugin \
-			icedtea-6-jre-jamvm \
-			icedtea-6-jre-cacao \
-			icedtea-6-plugin >>"$UPDATER_LOG" 2>&1
-}
-
-if ! is_ucr_true update40/skip/openjdk7
-then
-	switch_to_openjdk7
-fi
-
 # reinstall apps
-for app in $update_ucs40_installedapps; do
+for app in $update_ucs401_installedapps; do
 	install "$app"
 done
-ucr unset update/ucs40/installedapps  >>"$UPDATER_LOG" 2>&1
+ucr unset update/ucs401/installedapps  >>"$UPDATER_LOG" 2>&1
 
 
 if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
@@ -140,31 +95,10 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	install univention-managed-client
 fi
 
-# Update to UCS 4.0-0 remove php5-suhosin Bug #35203
-dpkg --purge php5-suhosin >>"$UPDATER_LOG" 2>&1
-# End Update to UCS 4.0-0 remove php5-suhosin, can be removed after 4.0.0
-
-# Update to UCS 4.0-0 replace console-tools with kbd Bug #36224
-install kbd >>"$UPDATER_LOG" 2>&1
-# End Update to UCS 4.0-0 replace console-tools with kbd, can be removed after 4.0.0
-
-# Update to UCS 4.0-0 remove gdm packages and favour kdm Bug #35936
-dpkg --purge univention-gdm-sessions univention-gdm gdm >>"$UPDATER_LOG" 2>&1
-if [ "$(dpkg-query -W -f '${Status}' kdm 2>/dev/null)" = "install ok installed" ]; then 
-	dpkg-reconfigure kdm >>"$UPDATER_LOG" 2>&1
-fi
-# End Update to UCS 4.0-0 remove gdm packages and favour kdm, can be removed after 4.0.0
-
-# Update to UCS 4.0-0 autoremove Bug #36265
+# Update to UCS 4.0-1 autoremove
 if ! is_ucr_true update40/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
 fi
-
-# Update to UCS 4.0-0, update univention-xrdp if installed (kept back during update) Bug #35885
-if [ "$(dpkg-query -W -f '${Status}' univention-xrdp 2>/dev/null)" = "install ok installed" ]; then
-	install univention-xrdp xrdp >>"$UPDATER_LOG" 2>&1
-fi
-# End Update to UCS 4.0-0 , update univention-xrdp if installed, can be removed after 4.0.0
 
 # removes temporary sources list (always required)
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
@@ -196,14 +130,14 @@ fi
 
 # Move to mirror mode for previous errata component
 ucr set \
-	repository/online/component/3.2-4-errata=false \
-	repository/online/component/3.2-4-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
+	repository/online/component/4.0-0-errata=false \
+	repository/online/component/4.0-0-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
 
-# Set errata component for UCS 4.0-0
+# Set errata component for UCS 4.0-1
 ucr set \
-	repository/online/component/4.0-0-errata=enabled \
-	repository/online/component/4.0-0-errata/description="Errata updates for UCS 4.0-0" \
-	repository/online/component/4.0-0-errata/version="4.0" >>"$UPDATER_LOG" 2>&1
+	repository/online/component/4.0-1-errata=enabled \
+	repository/online/component/4.0-1-errata/description="Errata updates for UCS 4.0-1" \
+	repository/online/component/4.0-1-errata/version="4.0" >>"$UPDATER_LOG" 2>&1
 
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then
