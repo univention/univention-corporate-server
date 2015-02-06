@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.3-1) unstable; urgency=low
+
+  * Bug #37659: UCS-4.0-1 Tests
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 06 Feb 2015 14:48:41 +0100
+
 ucs-ec2-tools (1.0.2-7) unstable; urgency=low
 
   * Bug #37568: added functions to reboot a remote windows host and
@@ -23,7 +29,6 @@ ucs-ec2-tools (1.0.2-4) unstable; urgency=low
 
   * Bug #35856: corrected check_correct_* functions in
     examples/jenkins/utils/ad-join.py
-
 
  -- Drees Dormann <dormann@univention.de>  Tue, 16 Dec 2014 12:08:30 +0100
 
