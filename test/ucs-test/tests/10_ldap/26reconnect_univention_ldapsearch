@@ -7,6 +7,9 @@
 ## packages: [python-psutil]
 ## bugs: [34293, 37299]
 ## exposure: dangerous
+## versions:
+##  4.0-0: skip
+##  4.0-1: fixed
 
 import psutil
 from time import sleep
