@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-0
 src: ucslint
-fix: 4.0.0-TODO
+fix: 4.0.0-7.66.201502051248
 version: [0]
 desc: |
  This update addresses the following issue:
