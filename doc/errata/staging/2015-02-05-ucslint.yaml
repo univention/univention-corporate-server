@@ -6,5 +6,7 @@ fix: 4.0.0-7.66.201502051248
 version: [0]
 desc: |
  This update addresses the following issue:
-  * Fixed a traceback in ucslint module 0001.
+  * Fixed a traceback in ucslint module 0001 that could appear if
+    there were problems while reading the join scripts of the
+	source package.
 bug: [37688]
