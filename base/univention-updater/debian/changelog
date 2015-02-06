@@ -1,3 +1,9 @@
+univention-updater (10.0.52-2) unstable; urgency=medium
+
+  * Bug #37564: fix displaying of logfile when doing a dist-upgrade
+
+ -- Florian Best <best@univention.de>  Fri, 06 Feb 2015 12:33:14 +0100
+
 univention-updater (10.0.52-1) unstable; urgency=medium
 
   * Adjust pre- and postup.sh to UCS 4.0-1 (Bug #37661)
