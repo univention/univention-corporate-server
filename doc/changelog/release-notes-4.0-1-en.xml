@@ -59,7 +59,7 @@
 
 		<itemizedlist>
 		  <listitem><para>
-			The Debian Wheezy point update 7.8 has been integrated. It fixes several bugfixes.
+			The Debian Wheezy point update 7.8 has been integrated.
 		  </para></listitem>
 
 		  <listitem><para>
@@ -68,21 +68,21 @@
 		  </para></listitem>
 
 		  <listitem><para>
-			Several improvements in the appliance mode allow a simpler installation and setup of
-			cloud setups
+			Several improvements in the appliance mode allow a simpler system installation and setup of
+			cloud instances.
 		  </para></listitem>
 
 		  <listitem><para>
-			Joining an Active Directory domain (aka "AD member mode") has been simplified
+			Joining an Active Directory domain (aka "AD member mode") has been simplified.
 		  </para></listitem>
 
 		  <listitem><para>
 			Multiple bugfixes and improvements related to Samna, e.g. in the printer support and
-			when using  Microsoft Sharepoint
+			when using  Microsoft Sharepoint.
 		  </para></listitem>
 
 		  <listitem><para>
-			Several enhancements and bugfixes in design and usability of the &ucsUMC;
+			Several enhancements and bugfixes in design and usability of the &ucsUMC;.
 		  </para></listitem>
 
 
@@ -175,7 +175,7 @@
 		</para>
 
 		<para>
-		  The configuration of the UCS DNS name server BIND is prone to open resolver attacks,
+		  The configuration of the UCS DNS name server BIND was prone to open resolver attacks,
 		  which are used to launch Distributed Denial of Service (DDoS) attacks against other hosts
 		  of the internet. To prevent such abuse the default configuration will be changed to allow
 		  'recursive queries' only from IP addresses of the private address ranges, link-local
