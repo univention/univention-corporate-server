@@ -874,6 +874,14 @@
 	  Old Samba TDB files are now handled in the pre-update script (<ulink url="&ucsbug;37534">Bug
 	  37534</ulink>).
 	</simpara></listitem>
+
+	<listitem><simpara>
+	  The update scipts have been adjusted to UCS 4.0-1 (<ulink url="&ucsbug;37661">Bug 37661</ulink>).
+	</simpara></listitem>
+
+	<listitem><simpara>
+	  The sclix schema check have been removed from the pre-update script (<ulink url="&ucsbug;37145">Bug 37145</ulink>).
+	</simpara></listitem>
   </itemizedlist>
 
   <section id="changelog:deployment:pkgdb">
