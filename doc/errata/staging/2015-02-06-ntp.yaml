@@ -1,0 +1,16 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: ntp
+fix: 1:4.2.6.p5+dfsg-2.30.201502060725
+version: [0]
+desc: |
+  Multiple issues have been found in the ISC NTP time server:
+  * Information leak/denial of service in autokey crypto 
+    handling (CVE-2014-9297)
+  * ACLs restricting the access to control mode queries can be 
+    bypassed on IPv6 networks(CVE-2014-9298)
+cve:
+ - CVE-2014-9297
+ - CVE-2014-9298
+bug: [37693]
