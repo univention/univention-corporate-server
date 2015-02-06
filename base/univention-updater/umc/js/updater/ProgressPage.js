@@ -158,7 +158,6 @@ define([
 					// This knows about all details of the job, and it will know when the job
 					// is finished.
 					this._last_job = data.result;	// remember for later
-					this._pane.set('title', this._last_job.label);
 
 					if (data.result.running) {
 						// reschedule this as long as the job runs.
@@ -182,7 +181,6 @@ define([
 					}), this._interval);
 				}
 			}
-
 		},
 
 		// queries job status. As long as we know a job key -> ask for full
@@ -263,9 +261,6 @@ define([
 
 		// updater Module calls this when the ProgressPage is to be opened.
 		startWatching: function() {
-			// ensure a clean look (and not some stale text from last job)
-			this._pane.set('title', _('Updating...'));
-
 			this._allow_close(false);					// forbid closing this tab.
 			this._log.startWatching(this._interval);	// start logfile tail
 		},
