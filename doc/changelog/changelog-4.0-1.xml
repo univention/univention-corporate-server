@@ -3,12 +3,104 @@
   <itemizedlist>
 
 	<listitem><simpara>
-	  The Debian Wheezy update 7.8 has been integrated. It fixes several security issues
+	  All security updates issued for UCS 4.0-0 are included.
 	</simpara></listitem>
 
 	<listitem><simpara>
-	  All security updates issued for UCS 4.0-0 are included.
+	  The Debian Wheezy update 7.8 has been integrated. It fixes several security issues in addition
+	  to the errata security issues already issued:
+
+	  <itemizedlist>
+		<listitem><simpara>
+		  curl (CVE-2014-3707, CVE-2014-8150) (<ulink url="&ucsbug;36967">Bug 36967</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  apache2 (CVE-2013-5704) (<ulink url="&ucsbug;36984 ">Bug 36984 </ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  tcpdump (CVE-2014-8769, CVE-2014-8767, CVE-2014-9140) (<ulink url="&ucsbug;37042">Bug
+		  37042</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  wpa (CVE-2014-3686) (<ulink url="&ucsbug;37051">Bug 37051</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  wget (CVE-2014-4877) (<ulink url="&ucsbug;37052">Bug 37052</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  ppp (CVE-2014-3158) (<ulink url="&ucsbug;37066">Bug 37066</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  flac (CVE-2014-8962, CVE-2014-9028) (<ulink url="&ucsbug;37096">Bug 37096</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  jasper (CVE-2014-8137, CVE-2014-8138, CVE-2014-8157, CVE-2014-8158, CVE-2014-9029) (<ulink
+		  url="&ucsbug;37210">Bug 37210</ulink>)
+		</simpara></listitem>
+
+
+		<listitem><simpara>
+		  heirloom-mailx (CVE-2014-7844, CVE-2004-2771) (<ulink url="&ucsbug;37373">Bug
+		  37373</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  wireshark (CVE-2014-8710, CVE-2014-8711, CVE-2014-8712, CVE-2014-8713, CVE-2014-8714,
+		  CVE-2015-0562, CVE-2015-0564) (<ulink url="&ucsbug;36995">Bug 36995</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  subversion (CVE-2014-0032, CVE-2014-3580) (<ulink url="&ucsbug;37043">Bug 37043</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  dbus (CVE-2014-7824) (<ulink url="&ucsbug;37048">Bug 37048</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  libgcrypt11 (CVE-2014-5270) (<ulink url="&ucsbug;37057">Bug 37057</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  mutt (CVE-2014-9116) (<ulink url="&ucsbug;37074">Bug 37074</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  libyaml-libyaml-perl (CVE-2014-9130) (<ulink url="&ucsbug;37113">Bug 37113</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  pyyaml (CVE-2014-9130) (<ulink url="&ucsbug;37115">Bug 37115</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  libyaml (CVE-2014-9130) (<ulink url="&ucsbug;37117">Bug 37117</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  graphviz (CVE-2014-9157) (<ulink url="&ucsbug;37293">Bug 37293</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  mime-support (CVE-2014-7209) (<ulink url="&ucsbug;37429">Bug 37429</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  file (CVE-2014-3710, CVE-2014-8116, CVE-2014-8117, CVE-2014-9620) (<ulink
+		  url="&ucsbug;37053">Bug 37053</ulink>)
+		</simpara></listitem>
+
+	  </itemizedlist>
+
 	</simpara></listitem>
+
 
   </itemizedlist>
 </section>
