@@ -65,8 +65,8 @@ Managementsystems sind die Dienste OpenLDAP (Verzeichnisdienst), Samba
 (Authentifizierung und Single-Sign-On), DNS (Namensauflösung im Netzwerk) und
 SSL/TLS (sichere Datenübertragung zwischen Systemen). Es lässt sich sowohl über
 eine Webanwendung (&ucsUMC;) als auch an der Kommandozeile und in eigenen Skripten
-verwenden. Das &ucsUMS; ist über APIs (Application Programmers
-Interfaces) erweiterbar und besitzt eine flexible Client-Server-Architektur,
+verwenden. Das &ucsUMS; ist über APIs (<foreignphrase>Application Programming
+Interfaces</foreignphrase>) erweiterbar und besitzt eine flexible Client-Server-Architektur,
 durch die Änderungen auf die davon betroffenen Systeme übertragen und dort
 aktiviert werden.
 </para>

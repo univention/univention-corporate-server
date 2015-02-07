@@ -67,7 +67,7 @@ print services for Windows), Kerberos (authentication and single sign
 on), DNS (network name resolution) and SSL/TLS (secure transmission
 of data between systems). It can be used either via a web interface (&ucsUMC;)
 or in the command line and in individual scripts. The UCS management
-system can be extended with APIs (application programmers interfaces)
+system can be extended with APIs (application programming interfaces)
 and provides a flexible client-server architecture which allows
 changes to be transferred to the involved systems and be activated
 there.
