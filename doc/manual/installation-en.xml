@@ -70,7 +70,7 @@ Following installation on hardware or in a virtualization solution, UCS can also
 				<listitem>
 					<simpara>
 						<guimenuitem>Install with DHCP disabled</guimenuitem> performs a standard installation, where the network is not configured automatically through DHCP.
-						This is practical on systems, where the network must be configured manually.
+						This is practical on systems, where the network must be setup manually.
 					</simpara>
 				</listitem>
 				<listitem>

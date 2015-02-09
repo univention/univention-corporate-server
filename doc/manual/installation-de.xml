@@ -90,8 +90,8 @@
 			<itemizedlist>
 				<listitem>
 					<simpara>
-						<guimenuitem>Install with DHCP disabled</guimenuitem> führt eine Standardinstallation im durch, bei der das Netzwerk nicht automatisch per DHCP konfiguriert wird.
-						Dies ist auf Systemen sinnvoll, wo das Netzwerk manuell konfiguriert werden muss.
+						<guimenuitem>Install with DHCP disabled</guimenuitem> führt eine Standardinstallation durch, bei der das Netzwerk nicht automatisch per DHCP konfiguriert wird.
+						Dies ist auf Systemen sinnvoll, wo das Netzwerk manuell eingerichtet werden muss.
 					</simpara>
 				</listitem>
 				<listitem>
