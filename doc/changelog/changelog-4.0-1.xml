@@ -1456,6 +1456,7 @@
 			<listitem>python-vobject</listitem>
 			<listitem>python-werkzeug</listitem>
 			<listitem>antiword</listitem>
+			<listitem>python-babel</listitem>
 		</itemizedlist>
 	</simpara></listitem>
 
