@@ -68,12 +68,12 @@
 		  </para></listitem>
 
 		  <listitem><para>
-			Several improvements in the appliance mode allow a simpler system installation and setup of
+			Improvements in the appliance mode allow a simpler system installation and setup of
 			cloud instances.
 		  </para></listitem>
 
 		  <listitem><para>
-			Joining an Active Directory domain (aka "AD member mode") has been simplified.
+			Joining an Active Directory domain has been simplified.
 		  </para></listitem>
 
 		  <listitem><para>
@@ -97,7 +97,7 @@
 		  occur in a maintenance window. It is recommended to test the update in a separate test
 		  environment prior to the actual update. The test environment should be identical to the
 		  production environment. Depending on the system performance, network connection and the
-		  installed software the update takes between 30 minutes and several hours.
+		  installed software the update takes between 20 minutes and several hours.
 		</para>
 
 		<section id="relnotes:order">
@@ -143,7 +143,7 @@
 		<para>
 		  It must be checked whether sufficient disk space is available. A standard installation
 		  requires a minimum of 6 GB of disk space. Depending on the scope of the existing installation,
-		  the update will require about another 4 GB of disk space for downloading and
+		  the update will require about another 2 GB of disk space for downloading and
 		  installing all packages.
 		</para>
 
@@ -266,16 +266,6 @@
 
 		<para>
 		  Users with older browsers may experience display or performance problems.
-		</para>
-	  </section>
-
-	  <section id="relnotes:ldap_bind_lockout">
-		<title>Automatic account lockout</title>
-		<para>
-		  On domain controllers using the MDB LDAP backend (e.g. systems installed with UCS 4.0)
-		  automatic account lockout can be activated in cases of repeated LDAP authentication
-		  failures. The activation is described in the SDB article
-		  <ulink url="http://sdb.univention.de/1291"/>.
 		</para>
 	  </section>
 

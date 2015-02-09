@@ -585,7 +585,8 @@
 
   	  <listitem><simpara>
 		The wizard failed if the system had more than four physical network
-		devices (<ulink url="&ucsbug;37001">Bug 37001</ulink>, <ulink url="&ucsbug;36884">Bug 36884</ulink>).
+		devices. This has been fixed (<ulink url="&ucsbug;37001">Bug 37001</ulink>, <ulink
+		url="&ucsbug;36884">Bug 36884</ulink>).
   	  </simpara></listitem>
 
   	  <listitem><simpara>
@@ -813,11 +814,13 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
+		The hints and warning messages before or during the execution of a UCS update have been
+		clarified (<ulink url="&ucsbug;37360">Bug 37360</ulink>).
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		The hints and warning messages before or during the execution of a UCS update have been
-		clarified (<ulink url="&ucsbug;37360">Bug 37360</ulink>).
+		In some situations the software upgrade didn't show any update progress. This has been fixed
+		(<ulink url="&ucsbug;37564">Bug 37564</ulink>).
   	  </simpara></listitem>
 
   	</itemizedlist>
@@ -966,7 +969,7 @@
 	</simpara></listitem>
 
 	<listitem><simpara>
-	  The update scipts have been adjusted to UCS 4.0-1 (<ulink url="&ucsbug;37661">Bug 37661</ulink>).
+	  The update scripts have been adjusted to UCS 4.0-1 (<ulink url="&ucsbug;37661">Bug 37661</ulink>).
 	</simpara></listitem>
 
 	<listitem><simpara>
@@ -1068,7 +1071,7 @@
 
 	  <listitem><simpara>
 		The Amavis service was always listed as stopped in the <guimenu>System services</guimenu>
-		module of the &ucsUMC; (<ulink url="&ucsbug;36998">Bug 36998</ulink>).
+		module of the &ucsUMC;. This has been fixed (<ulink url="&ucsbug;36998">Bug 36998</ulink>).
 	  </simpara></listitem>
 
 	</itemizedlist>
@@ -1269,12 +1272,13 @@
 	<itemizedlist>
 	  <listitem><simpara>
 		The Sharepoint document search showed no results due to failing group membership check
-		(<ulink url="&ucsbug;37233">Bug 37233</ulink>).
+		This has been fixed (<ulink url="&ucsbug;37233">Bug 37233</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
 		Quick successions of restarting Samba through init script restart could leave behind a
-		single unresponsive samba process (<ulink url="&ucsbug;37343">Bug 37343</ulink>).
+		single unresponsive samba process. This has been fixed (<ulink url="&ucsbug;37343">Bug
+		37343</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -1307,7 +1311,7 @@
 	<title>Univention S4 Connector</title>
 	<itemizedlist>
 	  <listitem><simpara>
-		LDAP base DNs with uppercase letters caused synchronization rejects (<ulink
+		LDAP base DNs with uppercase letters caused synchronization rejects. This has been fixed (<ulink
 		url="&ucsbug;33110">Bug 33110</ulink>).
 	  </simpara></listitem>
 
@@ -1350,7 +1354,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		LDAP base DNs with uppercase letters caused synchronization rejects (<ulink
+		LDAP base DNs with uppercase letters caused synchronization rejects. This has been fixed (<ulink
 		url="&ucsbug;37450">Bug 37450</ulink>).
 	  </simpara></listitem>
 
@@ -1423,12 +1427,18 @@
 	<listitem><simpara>
 	  This update silences the PHP cron job, which is cleaning up old PHP session files. Due to a
 	  mis-configuration from previous upgrades it was sending emails containing error messages every
-	  30 minutes (<ulink url="&ucsbug;36621">Bug 36621</ulink>).
+	  30 minutes. This has been fixed (<ulink url="&ucsbug;36621">Bug 36621</ulink>).
 	</simpara></listitem>
 
 	<listitem><simpara>
 	  Timestamps were added to store the start and end times of individual join scripts in
 	  <filename>join.log</filename> (<ulink url="&ucsbug;36290">Bug 36290</ulink>).
+	</simpara></listitem>
+
+	<listitem><simpara>
+	  A traceback in ucslint module 0001 has been fixed. This traceback could appear if there were
+	  problems while reading the join scripts of the source package (<ulink url="&ucsbug;37688">Bug
+	  37688</ulink>).
 	</simpara></listitem>
 
   </itemizedlist>

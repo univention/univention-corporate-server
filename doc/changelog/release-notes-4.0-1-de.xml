@@ -52,7 +52,7 @@
 		<title>Release-Highlights</title>
 
 		<para>
-		  Mit &ucsUCS; 4.0 steht das erste Point-Release für &ucsUCS; (UCS) 4.0 zur Verfügung. Es
+		  Mit &ucsUCS; 4.0-1 steht das erste Point-Release für &ucsUCS; (UCS) 4.0 zur Verfügung. Es
 		  umfasst diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten Änderungen im
 		  Überblick:
 		</para>
@@ -68,11 +68,11 @@
 		  </para></listitem>
 
 		  <listitem><para>
-			Viele Verbesserungen im Appliance-Modus ermöglichen eine einfachere Inbetriebnahme von UCS-Systemen
+			Verbesserungen im Appliance-Modus ermöglichen eine einfachere Inbetriebnahme von UCS-Systemen
 		  </para></listitem>
 
 		  <listitem><para>
-			Der Beitritt zu einer Active Directory-Domäne (aka “AD Member Mode”) wurde vereinfacht.
+			Der Beitritt zu einer Active Directory-Domäne wurde vereinfacht.
 		  </para></listitem>
 
 		  <listitem><para>
@@ -95,7 +95,7 @@
 				erfolgen. Grundsätzlich wird empfohlen das Update zunächst in einer Testumgebung
 				einzuspielen und zu testen. Die Testumgebung sollte dabei identisch zur
 				Produktivumgebung sein. Je nach Systemgeschwindigkeit, Netzwerkanbindung und
-				installierter Software kann das Update zwischen dreißig Minuten und mehreren Stunden
+				installierter Software kann das Update zwischen 20 Minuten und mehreren Stunden
 				dauern.
 			</para>
 
@@ -145,7 +145,7 @@
 		<para>
 			Es sollte geprüft werden, ob ausreichend Festplattenplatz verfügbar ist. Eine
 			Standard-Installation benötigt min. 6 GB Speicherplatz. Das Update benötigt je nach Umfang
-			der vorhanden Installation ungefähr 4 GB weiteren Speicherplatz zum Herunterladen und
+			der vorhanden Installation ungefähr 2 GB weiteren Speicherplatz zum Herunterladen und
 			Installieren der Pakete.
 		</para>
 
@@ -273,16 +273,6 @@
 
 			<para>
 				Auf älteren Browsern können Darstellungs- oder Performanceprobleme auftreten.
-			</para>
-		</section>
-
-		<section id="relnotes:ldap_bind_lockout">
-			<title>Automatische Kontosperrung</title>
-			<para>
-				Auf Domänencontrollern mit MDB LDAP Backend (z.B. Systeme, die mit UCS 4.0
-				installiert worden sind) kann nun eine automatisierte Kontosperrungen
-				bei wiederholten LDAP-Authentisierungsfehlern aktiviert werden. Die Aktivierung ist
-				im SDB-Artikel beschrieben <ulink url="http://sdb.univention.de/1291"/>.
 			</para>
 		</section>
 
