@@ -1,3 +1,10 @@
+univention-management-console-frontend-theme (0.0.89-1) unstable; urgency=medium
+
+  * Bug #37730: revert removal of a CSS rule for Grid scrollbars (introduced by
+  	Bug #36291)
+
+ -- Florian Best <best@univention.de>  Mon, 09 Feb 2015 15:02:22 +0100
+
 univention-management-console-frontend-theme (0.0.88-8) unstable; urgency=low
 
   * Bug #36291: removed redundant style for the scrollbox in
