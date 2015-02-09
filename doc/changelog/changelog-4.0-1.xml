@@ -1373,6 +1373,7 @@
 		<ulink url="&ucsbug;36735">Bug 36735</ulink>, 
 		<ulink url="&ucsbug;36609">Bug 36609</ulink>, 
 		<ulink url="&ucsbug;37669">Bug 37669</ulink>, 
+		<ulink url="&ucsbug;37288">Bug 37288</ulink>, 
 		<ulink url="&ucsbug;36583">Bug 36583</ulink>):
 		<itemizedlist spacing="compact">
 			<listitem>altermime</listitem>
@@ -1440,6 +1441,21 @@
 			<listitem>libsybdb5</listitem>
 			<listitem>libtonezone2.0</listitem>
 			<listitem>libvpb0</listitem>
+			<listitem>python-feedparser</listitem>
+			<listitem>python-libxslt1</listitem>
+			<listitem>python-mock</listitem>
+			<listitem>python-openid</listitem>
+			<listitem>python-passlib</listitem>
+			<listitem>python-psycopg2</listitem>
+			<listitem>python-pybabel</listitem>
+			<listitem>python-pychart</listitem>
+			<listitem>python-pydot</listitem>
+			<listitem>python-pypdf</listitem>
+			<listitem>python-unittest2</listitem>
+			<listitem>python-vatnumber</listitem>
+			<listitem>python-vobject</listitem>
+			<listitem>python-werkzeug</listitem>
+			<listitem>antiword</listitem>
 		</itemizedlist>
 	</simpara></listitem>
 
