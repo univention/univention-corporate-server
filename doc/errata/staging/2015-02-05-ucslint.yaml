@@ -8,5 +8,5 @@ desc: |
  This update addresses the following issue:
   * Fixed a traceback in ucslint module 0001 that could appear if
     there were problems while reading the join scripts of the
-	source package.
+    source package.
 bug: [37688]
