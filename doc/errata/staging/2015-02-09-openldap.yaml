@@ -1,0 +1,18 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: openldap
+fix: 2.4.40-1.180.201502091254
+version: [0,1]
+desc: |
+ Two vulnerabilities have been fixed in OpenLDAP:
+ * If the slapo-deref overlay is used (which is not the case in 
+   a standard UCS installation) and if the list of attributes 
+   to be dereferenced is left empty, slapd can be crashed 
+ * Malformed search filters could result in a crash of the
+   slapd
+bug:
+ - 37729
+cve:
+ - CVE-2015-1545
+ - CVE-2015-1546
