@@ -6,6 +6,6 @@ fix: 9.0.45-1.1368.201501271556
 version: [4]
 desc: |
   This update addresses the following issues:
-  - Delay requested reboot after all updates have been performed.
+  - Delay requested reboot until all updates have been performed.
 bug:
  - 37298
