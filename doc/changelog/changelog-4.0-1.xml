@@ -1421,6 +1421,25 @@
 			<listitem>sox</listitem>
 			<listitem>trac</listitem>
 			<listitem>vpb-driver-source</listitem>
+			<listitem>asterisk-modules</listitem>
+			<listitem>libcoroipcc4</listitem>
+			<listitem>libfile-fcntllock-perl</listitem>
+			<listitem>libgmime-2.6-0</listitem>
+			<listitem>libiksemel3</listitem>
+			<listitem>libmail-sendmail-perl</listitem>
+			<listitem>libopencore-amrnb0</listitem>
+			<listitem>libopencore-amrwb0</listitem>
+			<listitem>libpri1.4</listitem>
+			<listitem>libresample1</listitem>
+			<listitem>libsaclm3</listitem>
+			<listitem>libsaevt3</listitem>
+			<listitem>libsox2</listitem>
+			<listitem>libsox-fmt-alsa</listitem>
+			<listitem>libsox-fmt-base</listitem>
+			<listitem>libsox-fmt-mp3</listitem>
+			<listitem>libsybdb5</listitem>
+			<listitem>libtonezone2.0</listitem>
+			<listitem>libvpb0</listitem>
 		</itemizedlist>
 	</simpara></listitem>
 
