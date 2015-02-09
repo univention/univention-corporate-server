@@ -1,3 +1,9 @@
+univention-updater (10.0.53-1) unstable; urgency=medium
+
+  * Set version/patchlevel to 1 (Bug #37661)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Feb 2015 15:23:01 +0100
+
 univention-updater (10.0.52-2) unstable; urgency=medium
 
   * Bug #37564: fix displaying of logfile when doing a dist-upgrade
