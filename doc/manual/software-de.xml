@@ -319,7 +319,7 @@
 		mehrere Rechner konfigurieren (siehe auch <xref linkend="central:policies"/>).
 	  </para>
 
-	  <figure id="software-policyupdate"><title>Aktualisierung eines UCS-Systems über eine Release-Richtlinie</title>
+	  <figure id="software-policyupdate"><title>Aktualisierung eines UCS-Systems über eine Update-Richtlinie</title>
 	  <graphic scalefit="1" width="100%" fileref="illustrations40/software_policy_de.png"/>
 	  </figure>
 

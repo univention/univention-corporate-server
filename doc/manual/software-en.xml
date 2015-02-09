@@ -313,7 +313,7 @@
 	  </para>
 
 	  <figure id="software-policyupdate">
-		<title>Updating UCS systems using a release policy</title>
+		<title>Updating UCS systems using an update policy</title>
 		<graphic scalefit="1" width="100%" fileref="illustrations40/software_policy_en.png"/>
 	  </figure>
 
