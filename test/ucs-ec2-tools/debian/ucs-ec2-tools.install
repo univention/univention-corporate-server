@@ -5,3 +5,4 @@ ucs-ec2-list usr/bin/
 ucs-ec2-terminate usr/bin/
 examples/*.cfg usr/share/ucs-ec2-tools/examples/
 examples/jenkins/*.cfg usr/share/ucs-ec2-tools/examples/jenkins/
+ucs usr/share/ucs-ec2-tools/

@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.3-2) unstable; urgency=low
+
+  * Bug #37659: UCS-4.0-1 Tests
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 09 Feb 2015 09:39:28 +0100
+
 ucs-ec2-tools (1.0.3-1) unstable; urgency=low
 
   * Bug #37659: UCS-4.0-1 Tests
