@@ -77,7 +77,7 @@
 		  </para></listitem>
 
 		  <listitem><para>
-			Multiple bugfixes and improvements related to Samna, e.g. in the printer support and
+			Multiple bugfixes and improvements related to Samba, e.g. in the printer support and
 			when using  Microsoft Sharepoint.
 		  </para></listitem>
 
@@ -131,7 +131,7 @@
 			<para>
 			  Starting with UCS 4.0 UCS, installation DVDs are only provided for the x86 64 bit
 			  architecture (amd64). Existing 32 bit UCS 3 systems can still be updated to UCS 4.0 through the
-			  online repository or by using update DVDs. The 32 bit architectur will be supported
+			  online repository or by using update DVDs. The 32 bit architecture will be supported
 			  over the entire UCS 4 maintenance.
 			</para>
 		</section>
