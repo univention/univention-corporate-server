@@ -1,0 +1,29 @@
+#!/usr/share/ucs-test/runner bash 
+# -*- coding: utf-8 -*.
+## desc: Check univention-samba4-backup warnings are supressed.
+## exposure: dangerous
+## bugs: [35907]
+## packages:
+## - univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+
+RETVAL=0
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+
+# univention-samba4-backup STDERR:
+BACKUP_STDERR="$((univention-samba4-backup) 2>&1)"
+
+# grep STDERR for messages apeared in Bug #35392:
+OUTPUT="$(echo $BACKUP_STDERR | grep -i -E "(Socket ignoriert|socket ignored|Datei hat sich beim Lesen geändert|file changed as we read it)")"
+
+if [ "$OUTPUT" != '' ]; then
+        echo $OUTPUT
+        fail_test 1 "univention-samba4-backup produced one of the messages that should be supressed."
+fi
+
+exit $RETVAL
