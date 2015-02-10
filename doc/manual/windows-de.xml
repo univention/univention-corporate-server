@@ -1811,11 +1811,11 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 		<listitem><simpara>
 		  Wenn ein Benutzerkonto oder eine Gruppe mit einer "<emphasis>Well Known</emphasis>" RID
-		  nach UCS OpenLDAP synchronisiert wird, setzt ein Listener Modul auf jedem UCS System
+		  nach UCS OpenLDAP synchronisiert wird, setzt ein Listener-Modul auf jedem UCS-System
 		  lokal eine &ucsUCR; Variable, die dem englischen Namen den nicht-englischen Namen
-		  zuordnet. Diese Variablen werden verwendet, um die in den UCS Konfigurationsdateien
-		  verwendeten englischen Begriffe in die Namen zu übersetzen, die in dem AD verwendet
-		  wurden. Wenn zum Beispiel <systemitem class="groupname">Domain Admins</systemitem> einen anderen Namen
+		  zuordnet. Diese Variablen werden verwendet, um die in den UCS-Konfigurationsdateien
+		  verwendeten englischen Begriffe in die im Active Directory verwendeten Namen zu übersetzen.
+		  Wenn zum Beispiel <systemitem class="groupname">Domain Admins</systemitem> einen anderen Namen
 		  im AD hat, dann wird die &ucsUCR; Variable <envar>groups/default/domainadmins</envar>
 		  auf den spezifischen Namen gesetzt
 		  (analog für Benutzer, z.B. <envar>users/default/administrator</envar>).
