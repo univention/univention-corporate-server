@@ -39,6 +39,7 @@ case "$1" in
 		uvmm/umc/vnc \
 		uvmm/umc/show/pause \
 		uvmm/umc/autosearch \
+		uvmm/umc/autoupdate/interval \
 		uvmm/check/interval \
 		uvmm/check/timeout \
 		uvmm/debug \
