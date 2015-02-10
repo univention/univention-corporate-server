@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.3-3) unstable; urgency=low
+
+  * Bug #37659: Rename UCS-4.0-1 tests
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 10 Feb 2015 09:23:28 +0100
+
 ucs-ec2-tools (1.0.3-2) unstable; urgency=low
 
   * Bug #37659: UCS-4.0-1 Tests
