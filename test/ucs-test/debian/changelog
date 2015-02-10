@@ -1,3 +1,10 @@
+ucs-test (5.0.110-1) unstable; urgency=low
+
+  * 51_samba4/20backup_parameters_usage:
+    force UCR vars settings for the test (Bug #35906).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 10 Feb 2015 11:05:35 +0100
+
 ucs-test (5.0.109-1) unstable; urgency=medium
 
   * Update 22_listener_version_change to 4.0-1 (Bug #35275)
