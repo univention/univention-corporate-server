@@ -219,7 +219,7 @@ define([
 			// check if UMC needs a browser reload and prompt the user to reload
 			return this.urlExists('umc/').then(undefined, lang.hitch(this, function(e) {
 				if (e.response.status === 404) {
-					this.askReload();
+					this.askToReload();
 				}
 			}));
 		},

@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-13) unstable; urgency=medium
+
+  * Bug #37565: fix reference to askToReload() method
+
+ -- Florian Best <best@univention.de>  Tue, 10 Feb 2015 14:21:25 +0100
+
 univention-management-console-frontend (4.1.106-12) unstable; urgency=medium
 
   * Bug #36400: rename X-Forwarded-Proto in X-UMC-HTTPS as it contains non
