@@ -197,7 +197,7 @@
 		erfolgen. Wurde das Benutzerkonto deaktiviert (oder das Passwort geändert), ist
 		eine Anmeldung am Mail-Stack für eine Dauer von 30min weiterhin möglich. Der Grund hierfür
 		ist der Authentifizierungscache des Mail-Stacks.
-		Um den Cache zu invalidieren, muss der Dienst <emphasis>saslauthd</emphasis> auf dem
+		Um den Cache zu invalidieren, muss der Dienst <systemitem class="service">saslauthd</systemitem> auf dem
 		Mailserver neu gestartet werden. Die Ablaufzeit des Caches kann auf dem Mailserver mit
 		der &ucsUCRV; <envar>mail/saslauthd/cache/timeout</envar> konfiguriert werden.
 		</para>
@@ -365,7 +365,7 @@
 				  </para>
 				  <para>
 					Sobald eine E-Mail-Adresse an einem Ordner angegeben wird, werden für den
-					Benutzer <emphasis>anyone</emphasis> mindestens die IMAP-Rechte
+					Benutzer <systemitem class="username">anyone</systemitem> mindestens die IMAP-Rechte
 					<literal>lrsp</literal> gesetzt, damit der IMAP-Server E-Mails in dem IMAP-Ordner
 					ablegen kann.
 				  </para>
@@ -747,7 +747,7 @@ postmap /etc/postfix/smtp_auth
 		Mit der &ucsUCRV; <envar>mail/messagesizelimit</envar> kann die maximale Größe
 		in Byte für ein- und ausgehende E-Mails festgelegt werden. Die voreingestellte
 		Maximalgröße beträgt 10240000 Byte. Nach Änderung der Einstellung muss Postfix neu gestartet werden.
-		Wird <emphasis>0</emphasis> als Wert konfiguriert, so wird die Begrenzung aufgehoben. Es ist
+		Wird <literal>0</literal> als Wert konfiguriert, so wird die Begrenzung aufgehoben. Es ist
 		zu beachten, dass Emailanhänge durch die Base64-Kodierung um ca. ein Drittel vergrössert
 		werden.
 	  </para>

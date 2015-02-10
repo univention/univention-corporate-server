@@ -713,8 +713,8 @@
 	<para>
 		The printer driver lists are administrated in
 		the UMC module <guimenu>LDAP directory</guimenu>. There you need
-		to switch to the <emphasis>univention</emphasis> container and then to
-		the <emphasis>cups</emphasis> subcontainer. Printer driver lists already exist
+		to switch to the <uri>univention</uri> container and then to
+		the <uri>cups</uri> subcontainer. Printer driver lists already exist
 		for the majority of printer manufacturers. These can be expanded or
 		new ones can be added.
 	</para>

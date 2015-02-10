@@ -109,29 +109,29 @@
 					Der &ucsMaster; wird im Regelfall durch eine DNS-Abfrage
 					ermittelt. Wenn das nicht möglich sein sollte (z.B. weil ein Standortserver mit
 					einer abweichenden DNS-Domäne beitreten soll), lässt sich der Rechnername des
-					DC Master auch durch den Parameter <command>-dcname HOSTNAME</command> direkt
+					DC Master auch durch den Parameter <option>-dcname <replaceable>HOSTNAME</replaceable></option> direkt
 					angegeben werden. Der Rechnername muss dabei als vollqualifizierter Name
-					angeben werden, also beispielsweise <emphasis>master.firma.de</emphasis>.
+					angeben werden, also beispielsweise <systemitem class="fqdomainname">master.firma.de</systemitem>.
 					</simpara>
 				</listitem>
 				<listitem>
 					<simpara>
 					Als Join-Account wird ein Benutzerkonto bezeichnet, das berechtigt
 					ist, Systeme der UCS-Domäne hinzuzufügen. Standardmäßig ist dies der Benutzer
-					<emphasis>Administrator</emphasis> oder ein Mitglied der Gruppe
-					<emphasis>Domain Admins</emphasis>. Der Join-Account kann durch den Parameter
-					<command>-dcaccount ACCOUNTNAME</command> übergeben werden.
+					<systemitem class="username">Administrator</systemitem> oder ein Mitglied der Gruppe
+					<systemitem class="groupname">Domain Admins</systemitem>. Der Join-Account kann durch den Parameter
+					<option>-dcaccount <replaceable>ACCOUNTNAME</replaceable></option> übergeben werden.
 					</simpara>
 				</listitem>
 				<listitem>
 					<simpara>
-					Das Passwort kann durch den Parameter <command>-dcpwd DATEI</command>
+					Das Passwort kann durch den Parameter <option>-dcpwd <replaceable>DATEI</replaceable></option>
 					übergeben werden. Das Passwort wird dabei aus der angegebenen Datei ausgelesen.
 					</simpara>
 				</listitem>
 				<listitem>
 					<simpara>
-				  Mit dem Parameter <emphasis>-verbose</emphasis> werden zusätzliche Debugausgaben
+				  Mit dem Parameter <option>-verbose</option> werden zusätzliche Debugausgaben
 				  in die Logdateien geschrieben, die die Analyse im Fehlerfall vereinfachen.
 					</simpara>
 				</listitem>
@@ -145,7 +145,7 @@
 				<guimenu>Domänenbeitritt</guimenu> erfolgen.
 				Da auf einem noch nicht der Domäne beigetretenen System der
 				Administrator-Benutzer noch nicht vorhanden ist, muss die Anmeldung an &ucsUMC;
-				als Benutzer <emphasis>root</emphasis> erfolgen.
+				als Benutzer <systemitem class="username">root</systemitem> erfolgen.
 			</para>
 			<para>
 				Wie bei der Durchführung über die Kommandozeile sind für Domänenbeitritt
@@ -214,7 +214,7 @@
 			  Wird <command>univention-run-join-scripts</command> auf einer anderen Systemrolle als
 			  &ucsMaster; ausgeführt, so wird der Benutzer nach einem Benutzernamen
 			  und einem Passwort gefragt. Auf dem &ucsMaster; kann dies durch die Option
-			  <emphasis>--ask-pass</emphasis> erreicht werden.
+			  <option>--ask-pass</option> erreicht werden.
 			</para>
 		  </section>
 		</section>
@@ -308,9 +308,9 @@
 			  markiert und der Name der Samba-Domäne in das Eingabefeld eingetragen
 			  werden. Nach einem Klick auf die Schaltfläche <mousebutton>OK</mousebutton>
 			  muss in das Eingabefeld <guimenu>Name</guimenu> der Name
-			  <emphasis>Administrator</emphasis> und in das Eingabefeld
+			  <systemitem class="username">Administrator</systemitem> und in das Eingabefeld
 			  <guimenu>Kennwort</guimenu> das Passwort von
-			  <emphasis>uid=Administrator,cn=users,&lt;Basis-DN&gt;</emphasis> eingetragen
+			  <uri>uid=Administrator,cn=users,&lt;Basis-DN&gt;</uri> eingetragen
 			  werden. Abschließend kann der Domänenbeitritt mit einem Klick auf
 			  <mousebutton>OK</mousebutton> gestartet werden.
 			</para>
@@ -342,9 +342,9 @@
 				markiert und der Name der Samba-Domäne in das Eingabefeld eingetragen
 				werden. Nach einem Klick auf die Schaltfläche <mousebutton>OK</mousebutton>
 				muss in das Eingabefeld <guimenu>Name</guimenu> der Name
-				<emphasis>Administrator</emphasis> und in das Eingabefeld
+				<systemitem class="username">Administrator</systemitem> und in das Eingabefeld
 				<guimenu>Kennwort</guimenu> das Passwort von
-				<emphasis>uid=Administrator,cn=users,&lt;Basis-DN&gt;</emphasis> eingetragen
+				<uri>uid=Administrator,cn=users,&lt;Basis-DN&gt;</uri> eingetragen
 				werden. Abschließend kann der Domänenbeitritt mit einem Klick auf
 				<mousebutton>OK</mousebutton> gestartet werden.
 			</para>
@@ -372,9 +372,9 @@
 			Für den Domänenbeitritt muss das Optionsfeld <guimenu>Domäne</guimenu> markiert und der
 			Name der Samba-Domäne in das Eingabefeld eingetragen werden. Nach einem Klick auf die
 			Schaltfläche <mousebutton>OK</mousebutton> muss in das Eingabefeld
-			<guimenu>Name</guimenu> der Name <emphasis>Administrator</emphasis> und in das
+			<guimenu>Name</guimenu> der Name <systemitem class="username">Administrator</systemitem> und in das
 			Eingabefeld <guimenu>Kennwort</guimenu> das Passwort von
-			<emphasis>uid=Administrator,cn=users,&lt;Basis-DN&gt;</emphasis> eingetragen
+			<uri>uid=Administrator,cn=users,&lt;Basis-DN&gt;</uri> eingetragen
 			werden. Abschließend kann der Domänenbeitritt mit einem Klick auf
 			<mousebutton>OK</mousebutton> gestartet werden.
 		  </para>
@@ -448,8 +448,8 @@
 			Der Domänenname muss nun im Feld <guimenu>Active Directory Domain</guimenu> und der
 			Rechnername des Mac OS X-Clients in das Feld <guimenu>Computer-ID</guimenu> eingetragen
 			werden. Der Domänenbeitritt erfolgt nach einem Klick auf <guimenu>OK</guimenu>. Für den
-			Domänenbeitritt muss ein Konto aus der Gruppen <emphasis>Domain Admins</emphasis>
-			verwendet werden, z.B. <emphasis>Administrator</emphasis>.
+			Domänenbeitritt muss ein Konto aus der Gruppen <systemitem class="groupname">Domain Admins</systemitem>
+			verwendet werden, z.B. <systemitem class="username">Administrator</systemitem>.
 		  </para>
 		</section>
 
@@ -815,8 +815,8 @@ slapcat &gt; ldapdaten.txt
 			die den Zugriff auf sensitive Daten unterbinden (z.B. auf das Benutzerpasswort)
 			und für den Betrieb notwendige Regeln setzen (etwa nötige Zugriffe auf
 			Rechnerkonten für Anmeldungen). Der lesende und schreibende Zugriff auf diese
-			sensitiven Daten ist nur für die Mitglieder der Gruppe <emphasis>Domain
-			Admins</emphasis> vorgesehen. Dabei werden auch enthaltene Gruppen
+			sensitiven Daten ist nur für die Mitglieder der Gruppe <systemitem class="groupname">Domain
+			Admins</systemitem> vorgesehen. Dabei werden auch enthaltene Gruppen
 			unterstützt. Mit der &ucsUCRV; <envar>ldap/acl/nestedgroups</envar> kann diese
 			Gruppen-in-Gruppen-Funktionalität für die LDAP-ACLs deaktiviert werden, wodurch
 			eine Geschwindigkeitssteigerung bei den Verzeichnisdienstanfragen zu erwarten
@@ -830,15 +830,15 @@ slapcat &gt; ldapdaten.txt
 				z.B. einem Helpdesk, das Zurücksetzen von Benutzerpasswörtern zu ermöglichen,
 				kann das Paket <package>univention-admingrp-user-passwordreset</package>
 				installiert werden. Es legt über ein Joinskript die Benutzergruppe
-				<emphasis>User Password Admins</emphasis> an, sofern diese noch nicht
+				<systemitem class="groupname">User Password Admins</systemitem> an, sofern diese noch nicht
 				existiert.
 			</para>
 			<para>
 				Mitglieder dieser Gruppe erhalten über zusätzliche LDAP-ACLs die
 				Berechtigung, Passwörter von anderen Benutzern zurückzusetzen. Diese LDAP-ACLs
 				werden bei der Paketinstallation automatisch aktiviert. Um eine andere
-				ggf. schon existierende Gruppe statt der Gruppe <emphasis>User Password
-				Admins</emphasis> zu verwenden, kann der DN der zu verwendenden Gruppe in die
+				ggf. schon existierende Gruppe statt der Gruppe <systemitem class="groupname">User Password
+				Admins</systemitem> zu verwenden, kann der DN der zu verwendenden Gruppe in die
 				&ucsUCRV; <envar>ldap/acl/user/passwordreset/accesslist/groups/dn</envar>
 				eingetragen werden. Nach der Änderung ist ein Neustart des LDAP-Servers
 				erforderlich.
@@ -846,7 +846,7 @@ slapcat &gt; ldapdaten.txt
 			<para>
 				Das Zurücksetzen der Passwörter kann über &ucsUMC; erfolgen. In der
 				Standardeinstellung bietet &ucsUMC; nur dem Benutzer
-				<emphasis>Administrator</emphasis> den Benutzer-Assistenten an, über den neue
+				<systemitem class="username">Administrator</systemitem> den Benutzer-Assistenten an, über den neue
 				Passwörter gesetzt werden können. Während der Installation wird automatisch
 				eine neue Richtlinie <package>default-user-password-admins</package> erstellt,
 				die den Mitgliedern der Gruppe <emphasis>User Password Admins</emphasis>
@@ -877,8 +877,8 @@ slapcat &gt; ldapdaten.txt
 			  konfiguriert werden. Mehrere Werte müssen durch Kommas getrennt werden. Nach
 			  Änderungen an den Variable ist es erforderlich, den LDAP-Server über den Befehl
 			  <command>/etc/init.d/slapd restart</command> neu zu starten. In der
-			  Standardeinstellung werden die Mitglieder der Gruppe <emphasis>Domain
-			  Admins</emphasis> vor Passwortänderungen geschützt.
+			  Standardeinstellung werden die Mitglieder der Gruppe <systemitem class="groupname">Domain
+			  Admins</systemitem> vor Passwortänderungen geschützt.
 			</para>
 
 			<para>
@@ -909,7 +909,7 @@ slapcat &gt; ldapdaten.txt
 			Das Verhalten bei nicht erreichbarem LDAP-Server kann durch die &ucsUCRV;
 			<envar>nssldap/bindpolicy</envar> festgelegt werden. Standardmäßig wird bei
 			nicht erreichbarem Server eine erneute Verbindung aufgebaut. Wird die Variable
-			auf <emphasis>soft</emphasis> gesetzt, wird kein erneuter Verbindungsaufbau
+			auf <literal>soft</literal> gesetzt, wird kein erneuter Verbindungsaufbau
 			durchgeführt. Dies kann den Boot eines Systems mit nicht erreichbarem
 			LDAP-Server - z.B. in einer abgeschottenen Testumgebung - deutlich
 			beschleunigen.
@@ -960,7 +960,7 @@ slapcat &gt; ldapdaten.txt
 	  <para>
 		Die LDAP-Daten werden im LDIF-Format im Verzeichnis <filename class="directory">/var/univention-backup/</filename> im
 		Namensschema <filename>ldap-backup_DATUM.ldif.gz</filename> gespeichert. Sie sind nur für
-		den Benutzer <emphasis>root</emphasis> lesbar.
+		den Benutzer <systemitem class="username">root</systemitem> lesbar.
 	  </para>
 	</section>
 

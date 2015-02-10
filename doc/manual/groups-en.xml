@@ -185,7 +185,7 @@
 						  <listitem><simpara>
 							<emphasis>Well-known group</emphasis>: This group type covers groups
 							preconfigured by Samba/Windows servers which generally have special
-							privileges, e.g., <emphasis>Power Users</emphasis>.
+							privileges, e.g., <systemitem class="groupname">Power Users</systemitem>.
 						  </simpara> </listitem>
 						</itemizedlist>
 					  </entry>
@@ -235,14 +235,14 @@
 						<entry>Samba group</entry>
 						<entry>
 							This checkbox indicates whether the group contains the object class
-							<emphasis>sambaGroupMapping</emphasis>.
+							<classname>sambaGroupMapping</classname>.
 						</entry>
 					</row>
 					<row>
 						<entry>Posix group</entry>
 						<entry>
 							This checkbox indicates whether the group contains the object class
-							<emphasis>posixGroup</emphasis>.
+							<classname>posixGroup</classname>.
 						</entry>
 					</row>
 				</tbody>
@@ -255,13 +255,13 @@
 		<para>
 			UCS supports group nesting (also known as "groups in groups"). This
 			simplifies the management of the groups. For example, if two locations
-			are managed in one domain, two groups can be formed <emphasis>IT staff location A</emphasis>
-			and <emphasis>IT staff location B</emphasis>), to which the user
+			are managed in one domain, two groups can be formed <systemitem class="groupname">IT staff location A</systemitem>
+			and <systemitem class="groupname">IT staff location B</systemitem>), to which the user
 			accounts of the location's IT staff can be assigned respectively.
 		</para>
 		<para>
 			To create a cross-location group, it is then sufficient to
-			define the groups <emphasis>IT staff location A</emphasis> and <emphasis>IT staff location B</emphasis>
+			define the groups <systemitem class="groupname">IT staff location A</systemitem> and <systemitem class="groupname">IT staff location B</systemitem>
 			as members.
 		</para>
 		<para>
@@ -325,20 +325,20 @@
 	  <para>
 		Some exceptions are formed by the <emphasis>pseudo groups</emphasis> (sometimes also called
 		system groups). These are only managed internally by Active Directory/Samba 4, e.g., the
-		<emphasis>Authenticated Users</emphasis> group includes a list of all the users currently
+		<systemitem class="groupname">Authenticated Users</systemitem> group includes a list of all the users currently
 		logged on to the system. Pseudo groups are stored in the UCS directory service, but they are
 		not synchronised by the Univention S4 connector and should usually not be edited. This
 		applies to the following groups:
 
 		<itemizedlist>
-		  <listitem><simpara>Anonymous Logon, Authenticated Users, Batch, Creator Group</simpara></listitem>
-		  <listitem><simpara>Creator Owner, Dialup, Digest Authentication</simpara></listitem>
-		  <listitem><simpara>Enterprise Domain Controllers, Everyone, IUSR, Interactive</simpara></listitem>
-		  <listitem><simpara>Local Service, NTLM Authentication, Network Service, Network</simpara></listitem>
-		  <listitem><simpara>Nobody, Null Authority, Other Organization, Owner Rights</simpara></listitem>
-		  <listitem><simpara>Proxy, Remote Interactive Logon, Restricted, SChannel Authentication</simpara></listitem>
-		  <listitem><simpara>Self, Service, System, Terminal Server User, This Organization</simpara></listitem>
-		  <listitem><simpara>World Authority</simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Anonymous Logon</systemitem>, <systemitem class="groupname">Authenticated Users</systemitem>, <systemitem class="groupname">Batch</systemitem>, <systemitem class="groupname">Creator Group</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Creator Owner</systemitem>, <systemitem class="groupname">Dialup</systemitem>, <systemitem class="groupname">Digest Authentication</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Enterprise Domain Controllers</systemitem>, <systemitem class="groupname">Everyone</systemitem>, <systemitem class="groupname">IUSR</systemitem>, <systemitem class="groupname">Interactive</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Local Service</systemitem>, <systemitem class="groupname">NTLM Authentication</systemitem>, <systemitem class="groupname">Network Service</systemitem>, <systemitem class="groupname">Network</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Nobody</systemitem>, <systemitem class="groupname">Null Authority</systemitem>, <systemitem class="groupname">Other Organization</systemitem>, <systemitem class="groupname">Owner Rights</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Proxy</systemitem>, <systemitem class="groupname">Remote Interactive Logon</systemitem>, <systemitem class="groupname">Restricted</systemitem>, <systemitem class="groupname">SChannel Authentication</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Self</systemitem>, <systemitem class="groupname">Service</systemitem>, <systemitem class="groupname">System</systemitem>, <systemitem class="groupname">Terminal Server User</systemitem>, <systemitem class="groupname">This Organization</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">World Authority</systemitem></simpara></listitem>
 		</itemizedlist>
 	  </para>
 

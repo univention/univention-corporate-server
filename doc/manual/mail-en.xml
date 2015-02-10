@@ -189,7 +189,7 @@
 		is possible (IMAP/SMTP). Please keep in mind that after disabling the account
 		or changing the password the login to the mail stack is still possible for 30min
 		due to authentication cache of the mail stack.
-		To invalidate the authentication cache restart the <emphasis>saslauthd</emphasis> 
+		To invalidate the authentication cache restart the <systemitem class="service">saslauthd</systemitem>
 		service on the mail server. The expiration time of the authentication cache can be 
 		configured with the &ucsUCRV; <envar>mail/saslauthd/cache/timeout</envar> on
 		the mail server.
@@ -351,7 +351,7 @@
 				</para>
 				<para>
 				  As soon as an e-mail address is entered for a folder, at least the
-				  IMAP rights <literal>lrsp</literal> are set for the user <emphasis>anyone</emphasis> so that the
+				  IMAP rights <literal>lrsp</literal> are set for the user <systemitem class="username">anyone</systemitem> so that the
 				  IMAP server can save e-mails in the IMAP folder.
 				</para>
 			  </entry>
@@ -712,7 +712,7 @@ postmap /etc/postfix/smtp_auth
 		The &ucsUCRV; <envar>mail/messagesizelimit</envar> can be used to set the maximum
 		size in bytes for incoming and outgoing e-mails. Postfix must be restarted after modifying the setting.
 		The preset maximum size is 10240000 bytes. If the value is configured to
-		<emphasis>0</emphasis> the limit is effectively removed.
+		<literal>0</literal> the limit is effectively removed.
 		Please note that e-mail attachments are enlarged by approximately a third due to the base64
 		encoding.
 	  </para>

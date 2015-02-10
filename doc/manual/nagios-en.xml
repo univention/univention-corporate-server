@@ -116,29 +116,29 @@
 
 	<para>
 	In addition to the standard plugins provided with the installation of
-	the <emphasis>univention-nagios-client</emphasis> package, additional plugins can
+	the <package>univention-nagios-client</package> package, additional plugins can
 	be subsequently installed with the following packages:
 	</para>
 
 	<itemizedlist>
 		<listitem>
 			<simpara>
-			<emphasis>univention-nagios-raid</emphasis> Monitoring of the software RAID status
+			<package>univention-nagios-raid</package> Monitoring of the software RAID status
 			</simpara>
 		</listitem>
 		<listitem>
 			<simpara>
-			<emphasis>univention-nagios-smart</emphasis> Test of the S.M.A.R.T. status of hard drives
+			<package>univention-nagios-smart</package> Test of the S.M.A.R.T. status of hard drives
 			</simpara>
 		</listitem>
 		<listitem>
 			<simpara>
-			<emphasis>univention-nagios-opsi</emphasis> Test of software distribution OPSI
+			<package>univention-nagios-opsi</package> Test of software distribution OPSI
 			</simpara>
 		</listitem>
 		<listitem>
 			<simpara>
-			<emphasis>univention-nagios-ad-connector</emphasis> Test of the AD Connector
+			<package>univention-nagios-ad-connector</package> Test of the AD Connector
 			</simpara>
 		</listitem>
 	</itemizedlist>
@@ -192,9 +192,9 @@
 						<entry>
 							tests the function of the local DNS server and the
 							accessibility of the public DNS server by querying the hostname
-							<emphasis>www.univention.de</emphasis>.
+							<systemitem class="fqdomainname">www.univention.de</systemitem>.
 							If no DNS forwarder is defined for the UCS domain, this request fails.
-							In this case, <emphasis>www.univention.de</emphasis> can be replaced
+							In this case, <systemitem class="fqdomainname">www.univention.de</systemitem> can be replaced
 							with the FQDN of the domain controller master for example,
 							in order to test the function of the name resolution.
 						</entry>
@@ -527,7 +527,7 @@
 							As not all parameters of the Nagios plugins are predefined in the
 							plugin commands, it often proves necessary to enter additional
 							parameters. The parameters specified here are separated by exclamation
-							marks, e.g., <emphasis>20%!10%!/home</emphasis>.
+							marks, e.g., <userinput>20%!10%!/home</userinput>.
 							</para>
 						</entry>
 					</row>
@@ -539,7 +539,7 @@
 							available drive space on the root partition), the plugin can be
 							executed on a distant UCS system via the Nagios Remote Plugin
 							Executor Daemon (NRPED). To do so,
-							the <emphasis>univention-nagios-client</emphasis> package must be installed.
+							the <package>univention-nagios-client</package> package must be installed.
 							</para>
 						</entry>
 					</row>
@@ -913,7 +913,7 @@
 							<para>
 							This list contains the e-mail address of contact persons who should be
 							notified in the case of a problem. If no e-mail addresses are
-							specified here, the local <emphasis>root</emphasis> user is notified.
+							specified here, the local <systemitem class="username">root</systemitem> user is notified.
 							</para>
 						</entry>
 					</row>
@@ -975,7 +975,7 @@
   </figure>
 
   <para>
-	Access is only granted for users in the <emphasis>Domain Admins</emphasis>
+	Access is only granted for users in the <systemitem class="groupname">Domain Admins</systemitem>
 	group (e.g., the Administrator) in the default setting. There is also
 	the possibility of expanding the circle of those authorised to log in.
   </para>
@@ -1032,7 +1032,7 @@
   <para>
 	The Nagios plugin must now be registered. This is done using a macro in the
 	<filename class="directory">/etc/nagios-plugins/config/</filename> directory. For this, a file such as
-	<emphasis>local.cfg</emphasis> can be used, in which all the locally registered plugins are
+	<filename>local.cfg</filename> can be used, in which all the locally registered plugins are
 	entered. The following example registers the plugin <command>check_e2fs_next_fsck</command>:
   </para>
 <programlisting language="sh">

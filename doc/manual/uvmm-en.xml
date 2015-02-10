@@ -141,12 +141,12 @@
 									The URL under which the authentication end point of the OpenStack instance can
 									be reached should be entered here. If you want to establish an encrypted
 									connection, the URL should be entered in the form
-									<emphasis>https://[...]</emphasis>. As the public certificate for the OpenStack
+									<uri>https://[...]</uri>. As the public certificate for the OpenStack
 									instance is used for the encrypted connection, this certificate needs to be made
 									available on the UCS system on which the <emphasis>&ucsUVMM;</emphasis> application
 									is installed. To this end, the public certificate must be copied into the
 									<filename class="directory">/usr/local/share/ca-certificates/</filename> directory on the UCS
-									server in PEM encryption and furnished with the suffix .crt. The following
+									server in PEM encryption and furnished with the suffix <filename class="extension">.crt</filename>. The following
 									commands convert a certificate into the correct encryption and make the
 									certificate known.
 									<programlisting language="sh">
@@ -945,7 +945,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 			<title>Adding a storage pool</title>
 			<para>
 			  It is not possible to create an additional storage pool via &ucsUMC;. Instead, this
-			  must be done by logging in to the virtualization server as the <emphasis>root</emphasis>
+			  must be done by logging in to the virtualization server as the <systemitem class="username">root</systemitem>
 			  user. The following steps are required for this:
 
 			  <itemizedlist>
@@ -958,7 +958,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 				  The following command is used to create the new <emphasis>Testpool</emphasis> storage pool:
 				  </simpara>
 				  <programlisting language="sh">
-	virsh pool-define-as Testpool dir - - - - "/mnt/storage"
+virsh pool-define-as Testpool dir - - - - "/mnt/storage"
 				  </programlisting>
 				</listitem>
 
@@ -967,14 +967,14 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 				  pools. To be able to use the storage pool directly, it must be activated:
 				  </simpara>
 				  <programlisting language="sh">
-	virsh pool-start Testpool
+virsh pool-start Testpool
 				  </programlisting>
 				  <simpara>
 				  The following command ensures that the pool is activated automatically the next time
 				  the system is started:
 				  </simpara>
 				  <programlisting language="sh">
-	virsh pool-autostart Testpool
+virsh pool-autostart Testpool
 				  </programlisting>
 				</listitem>
 			  </itemizedlist>
@@ -985,7 +985,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 			<title>Moving the default storage pool</title>
 			<para>
 			  To change the underlying file path of the default storage pool at a later point in time,
-			  one must log in to the virtualization server as the <emphasis>root</emphasis> user. The
+			  one must log in to the virtualization server as the <systemitem class="username">root</systemitem> user. The
 			  following steps are required for this:
 
 			  <itemizedlist>
@@ -998,10 +998,10 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 				  new path the next time the UVMM is restarted:
 				  </simpara>
 				  <programlisting language="sh">
-	virsh pool-destroy default
-	virsh pool-undefine default
-	invoke-rc.d univention-virtual-machine-manager-daemon restart
-	invoke-rc.d univention-virtual-machine-manager-node-common restart
+virsh pool-destroy default
+virsh pool-undefine default
+invoke-rc.d univention-virtual-machine-manager-daemon restart
+invoke-rc.d univention-virtual-machine-manager-node-common restart
 				  </programlisting>
 				</listitem>
 			  </itemizedlist>
@@ -1057,7 +1057,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 				<listitem>
 					<simpara>
 					<emphasis>Network Address Translation (NAT)</emphasis> network cards are defined in a private network on the virtualization server.
-					To do so, the virtual machine(s) must be assigned an IP address from the 192.168.122.0/24 network.
+					To do so, the virtual machine(s) must be assigned an IP address from the <systemitem class="ipaddress">192.168.122.0/24</systemitem> network.
 					This virtual instance is granted the access to the external network via NAT, so that the access is performed via the virtualization server's IP address.
 					The virtual machine can thus not be reached from other computers, but can create all outgoing connections itself.
 					</simpara>
@@ -1073,7 +1073,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 				For each virtual machine the desired network can be selected through the <guimenu>Source</guimenu> setting.
 			</para>
 			<para>
-				NAT network cards are only restricted by the IP addresses available in the 192.168.122.0/24 network.
+				NAT network cards are only restricted by the IP addresses available in the <systemitem class="ipaddress">192.168.122.0/24</systemitem> network.
 			</para>
 			<para>
 				The <guimenu>Driver</guimenu> can be used to select what type of card will be provided.
@@ -1215,7 +1215,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 		</itemizedlist>
 		<para>
 			The existing UVMM profiles are stored in the <acronym>LDAP</acronym> directory and can also be edited there.
-			The profiles can be found in the UMC module <guimenu>LDAP directory</guimenu> in the container <emphasis>cn=Profiles,cn=Virtual Machine Manager</emphasis>.
+			The profiles can be found in the UMC module <guimenu>LDAP directory</guimenu> in the container <uri>cn=Profiles,cn=Virtual Machine Manager</uri>.
 			Additional profiles can also be added there.
 		</para>
 		<section id="uvmm::profile::network">

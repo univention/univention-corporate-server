@@ -164,7 +164,7 @@ Der Directory Daemon wird über den Abschnitt
 			<para>
 Die Standardwerte können beibehalten werden, lediglich die Option
 <varname>DirAddress</varname> sollte von
-<literal>127.0.0.1</literal>, also <constant>localhost</constant>, auf die IP-Adresse des
+<systemitem class="ipaddress">127.0.0.1</systemitem>, also <systemitem class="systemname">localhost</systemitem>, auf die IP-Adresse des
 Bacula-Servers geändert werden. Außerdem sollte das
 <varname>Password</varname>-Feld gesetzt werden:
 			</para>
@@ -408,7 +408,7 @@ werden. Es wird daraufhin ein Liste der verfügbaren Jobs angezeigt, aus
 denen der gewünschte Job ausgewählt werden muss. Mit dem Kommando
 <command>mod</command> können Optionen wie der Sicherungstyp für den
 Job gesetzt bzw. geändert werden. Nach Bestätigung durch
-<emphasis>yes</emphasis> wird der Job gestartet.
+<userinput>yes</userinput> wird der Job gestartet.
 				</simpara>
 			</listitem>
 			<listitem>
@@ -424,7 +424,7 @@ Dateien bzw. Verzeichnisse für die Rücksicherung markiert werden. Sind
 alle gewünschten Daten markiert, wird der Dateibrowser mit
 <command>done</command> beendet. Nach der Angabe des Clients und der
 Bestätigung einiger Optionen für den Restore-Job (z.B. wohin die Daten
-kopiert werden sollen) kann der Restore-Job mit <command>yes</command>
+kopiert werden sollen) kann der Restore-Job mit <userinput>yes</userinput>
 gestartet werden. Nach Abschluss befinden sich die ausgewählten Daten im
 konfigurierten Rücksicherungsverzeichnis. Falls für ein Backup oder
 Restore ein Tape benötigt wird, das sich nicht im Laufwerk befindet,

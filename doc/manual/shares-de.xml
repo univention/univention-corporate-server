@@ -20,7 +20,7 @@
 
   <para>
 	Um auf einer Freigabe Access Control Lists einzusetzen, muss das unterliegende Linux-Dateisystem
-	POSIX-ACLs unterstützen. In UCS unterstützen die Dateisysteme ext3, ext4 und XFS POSIX-ACLs. Die
+	POSIX-ACLs unterstützen. In UCS unterstützen die Dateisysteme <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> und <systemitem class="filesystem">XFS</systemitem> POSIX-ACLs. Die
 	Samba-Konfiguration erlaubt außerdem die Speicherung von DOS-Datei-Attributen in erweiterten
 	Attributen des Unix-Dateisystems. Um erweiterte Attribute zu nutzen, muss die Partition mit der
 	Mount-Option <option>user_xattr</option> eingebunden werden.
@@ -241,8 +241,8 @@ eingetragen/modifiziert oder entfernt.
 		  </para>
 
 		  <para>
-			Die standardmäßig leere lokale Gruppe <emphasis>staff</emphasis> verfügt über Privilegien, die
-			<emphasis>root</emphasis>-Rechten recht nahe kommen, wird aber vom Umlenkungs-Mechanismus
+			Die standardmäßig leere lokale Gruppe <systemitem class="groupname">staff</systemitem> verfügt über Privilegien, die
+			<systemitem class="username">root</systemitem>-Rechten recht nahe kommen, wird aber vom Umlenkungs-Mechanismus
 			nicht berücksichtigt. Dies sollte bei der Aufnahme von Nutzern in diese Gruppe
 			berücksichtigt werden!
 		  </para>
@@ -318,7 +318,7 @@ eingetragen/modifiziert oder entfernt.
 		<entry>Anonymen Nur-Lese-Zugriff mit Gastbenutzer erlauben</entry>
 		<entry>
 		  Erlaubt den Zugriff auf diese Freigabe ohne Passwortabfrage. Alle Zugriffe
-		  werden dabei über einen gemeinsamen Gast-Nutzer <emphasis>nobody</emphasis> durchgeführt.
+		  werden dabei über einen gemeinsamen Gast-Nutzer <systemitem class="username">nobody</systemitem> durchgeführt.
 		</entry>
 	  </row>
 
@@ -476,7 +476,7 @@ eingetragen/modifiziert oder entfernt.
 		  Namen von Rechnern, die auf diese Samba-Freigabe zugreifen dürfen. Allen
 		  anderen Rechnern wird der Zugriff verweigert.
 		  Neben Rechnernamen können auch IP- oder Netzwerkadressen angegeben werden, bspw.
-		  <command>192.168.0.0/255.255.255.0</command>.
+		  <userinput>192.168.0.0/255.255.255.0</userinput>.
 		</entry>
 	  </row>
 
@@ -1074,7 +1074,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
   </para>
 
   <para>
-	Dateisystem-Quota können nur auf Partitionen mit den Dateisystemen ext2, ext3, ext4 und xfs
+	Dateisystem-Quota können nur auf Partitionen mit den Dateisystemen <systemitem class="filesystem">ext2</systemitem>, <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> und <systemitem class="filesystem">xfs</systemitem>
 	angelegt werden. Bevor Dateisystem-Quota konfiguriert werden, muss der Quota-Support pro
 	Partition aktiviert werden, siehe <xref linkend="shares::quota::umc"/>.
   </para>
@@ -1232,8 +1232,8 @@ Generating legacy menu.lst from current kernels
 
 		<listitem>
 			<para>
-		  Bei ext2, ext3 und ext4-Dateisystemen muss der Parameter <emphasis>usrquota</emphasis> für die root-Partition
-		  in der Datei <filename>/etc/fstab</filename> ergänzt werden. Für XFS-Dateisysteme ist dies
+		  Bei <systemitem class="filesystem">ext2</systemitem>, <systemitem class="filesystem">ext3</systemitem> und <systemitem class="filesystem">ext4</systemitem>-Dateisystemen muss der Parameter <option>usrquota</option> für die root-Partition
+		  in der Datei <filename>/etc/fstab</filename> ergänzt werden. Für <systemitem class="filesystem">XFS</systemitem>-Dateisysteme ist dies
 		  nicht notwendig. Ein Beispiel:
 			</para>
 			<programlisting><![CDATA[

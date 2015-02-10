@@ -194,8 +194,8 @@
   <para>
 	Bei der manuellen Konfiguration kann für das System wahlweise eine statische IPv4- oder eine
 	IPv6-Adresse angegeben werden.  IPv4-Adressen haben 32 Bit Länge und werden in der Regel in vier
-	Blöcken in Dezimalschreibweise dargestellt (z.B. 192.168.0.10), während IPv6-Adressen vier Mal so
-	lang sind und typischerweise hexadezimal dargestellt werden (z.B. 2001:0DB8:FE29:DE27:0000:0000:0000:000A).
+	Blöcken in Dezimalschreibweise dargestellt (z.B. <systemitem class="ipaddress">192.168.0.10</systemitem>), während IPv6-Adressen vier Mal so
+	lang sind und typischerweise hexadezimal dargestellt werden (z.B. <systemitem class="ipaddress">2001:0DB8:FE29:DE27:0000:0000:0000:000A</systemitem>).
 	Neben der Angabe einer statischen IP-Adresse werden auch Werte für Netzmaske, Gateway und DNS-Server abgefragt.
   </para>
   <figure id="installation-netcfg-ip">
@@ -232,10 +232,10 @@
 <section id="installation:rootpassword">
   <title>Einrichtung des root-Passworts</title>
   <para>
-	Für die Anmeldung am installierten System ist die Angabe eines Passworts für den Benutzer <emphasis>root</emphasis> notwendig.
+	Für die Anmeldung am installierten System ist die Angabe eines Passworts für den Benutzer <systemitem class="username">root</systemitem> notwendig.
 	Wird ein &ucsMaster; installiert, wird dieses Passwort auch für den
-	Benutzer <emphasis>Administrator</emphasis> eingetragen.
-	Im späteren Betrieb können die Passworte der Benutzer <emphasis>root</emphasis> und <emphasis>Administrator</emphasis>
+	Benutzer <systemitem class="username">Administrator</systemitem> eingetragen.
+	Im späteren Betrieb können die Passworte der Benutzer <systemitem class="username">root</systemitem> und <systemitem class="username">Administrator</systemitem>
 	unabhängig voneinander verwaltet werden. Das Passwort muss im zweiten Feld
 	erneut eingetragen.
   </para>
@@ -608,7 +608,7 @@
   </para>
   <para>
 	Das System startet nun von Festplatte. Nach dem Bootvorgang können sich die Benutzer
-	<emphasis>root</emphasis> und <emphasis>Administrator</emphasis> beim Web-Frontend &ucsUMC; anmelden
+	<systemitem class="username">root</systemitem> und <systemitem class="username">Administrator</systemitem> beim Web-Frontend &ucsUMC; anmelden
 	(siehe <xref linkend="central:general"/>), welche unter der während der Installation gesetzten
 	IP-Adresse bzw. unter dem Rechnernamen erreichbar ist.
   </para>
@@ -640,7 +640,7 @@
 	Nach Abschluss des Neustarts kann die Konfiguration im Webbrowser fortgesetzt werden. Dafür muss
 	im Browser die URL <uri>https://SERVER-IP-ADRESSE</uri> oder <uri>http://SERVER-IP-ADRESSE</uri>
 	aufgerufen werden (HTTPS wird empfohlen). Nach dem Aufruf der Seite ist die Anmeldung mit dem
-	Benutzer <emphasis>root</emphasis> erforderlich.
+	Benutzer <systemitem class="username">root</systemitem> erforderlich.
   </para>
   <para>
 	Die Konfiguration im Browser erfragt den Standort sowie die

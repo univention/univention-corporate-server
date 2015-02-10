@@ -273,7 +273,7 @@
 	<section id="computers:Aktualisierung_eines_einzelnen_Systems_auf_der_Kommandozeile">
 	  <title>Aktualisierung eines einzelnen Systems auf der Kommandozeile</title>
 	  <para>
-		Die folgenden Schritte müssen mit <emphasis>root</emphasis>-Rechten durchgeführt werden.
+		Die folgenden Schritte müssen mit <systemitem class="username">root</systemitem>-Rechten durchgeführt werden.
 	  </para>
 
 	  <para>
@@ -291,8 +291,8 @@
 		Release-Updates alternativ auch über Update-DVD-Images installiert werden, die
 		entweder als ISO-Datei oder von einem Laufwerk eingelesen werden.
 		Dazu muss <command>univention-upgrade</command> mit den Parametern
-		<option>--iso=ISOIMAGEDATEI</option> oder
-		<option>--cdrom=LAUFWERK</option> aufgerufen werden.
+		<option>--iso=<replaceable>ISOIMAGEDATEI</replaceable></option> oder
+		<option>--cdrom=<replaceable>LAUFWERK</replaceable></option> aufgerufen werden.
 	  </para>
 
 	  <para>
@@ -478,7 +478,7 @@
 		beispielsweise in der Firmenzentrale ein Haupt-Repository gepflegt wird, das dann in
 		lokale Repositorys der einzelnen Standorte synchronisiert wird. Um ein Repository
 		einzurichten, muss der Befehl <command>univention-repository-create</command> als
-		Benutzer <emphasis>root</emphasis> aufgerufen werden. Der initiale Paketbestand wird
+		Benutzer <systemitem class="username">root</systemitem> aufgerufen werden. Der initiale Paketbestand wird
 		von einer Installations-DVD eingelesen, mit dem Parameter <option>--iso</option>
 		kann hier auch ein ISO-Image übergeben werden. UCS ist nur als 64 Bit-DVD
 		verfügbar. Das Repository wird von <command>univention-repository-create</command>
@@ -629,7 +629,7 @@ univention-repository-update -h
 	<section id="computers:Installation_Deinstallation_von_einzelnen_Paketen_auf_der_Kommandozeile">
 	  <title>Installation/Deinstallation von einzelnen Paketen auf der Kommandozeile</title>
 	  <para>
-		Die folgenden Schritte müssen mit <emphasis>root</emphasis>-Rechten durchgeführt werden.
+		Die folgenden Schritte müssen mit <systemitem class="username">root</systemitem>-Rechten durchgeführt werden.
 	  </para>
 
 	  <para>

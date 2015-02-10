@@ -125,7 +125,7 @@
                         <entry>MAC-Adresse</entry>
                         <entry>
                             An dieser Stelle kann die MAC-Adresse des Rechners eingetragen
-                            werden, z.B. <emphasis>2e:44:56:3f:12:32</emphasis>. Soll der Rechner einen
+                            werden, z.B. <systemitem class="etheraddress">2e:44:56:3f:12:32</systemitem>. Soll der Rechner einen
                             DHCP-Eintrag erhalten, ist die Angabe der MAC-Adresse zwingend
                             erforderlich.
                         </entry>
@@ -232,8 +232,8 @@
                             In diesem Auswahlfeld kann die primäre Gruppe des Rechners selektiert
                             werden. Das ist nur notwendig, wenn von den automatisch eingestellten
                             Vorgabewerten abgewichen werden soll. Der Vorgabewert für einen
-                            DC Master oder DC Backup lautet <emphasis>DC Backup Hosts</emphasis>, für einen
-                            DC Slave <emphasis>DC Slave Hosts</emphasis> und für &ucsMember; <emphasis>Computers</emphasis>.
+                            DC Master oder DC Backup lautet <systemitem class="groupname">DC Backup Hosts</systemitem>, für einen
+                            DC Slave <systemitem class="groupname">DC Slave Hosts</systemitem> und für &ucsMember; <systemitem class="groupname">Computers</systemitem>.
                         </entry>
                     </row>
                 </tbody>
@@ -416,21 +416,21 @@
                         <entry>Kerberos Prinzipal</entry>
                         <entry>
                             Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die
-                            Objektklassen <emphasis>krb5Principal</emphasis> und <emphasis>krb5KDCEntry</emphasis> nicht.
+                            Objektklassen <classname>krb5Principal</classname> und <classname>krb5KDCEntry</classname> nicht.
                         </entry>
                     </row>
                     <row>
                         <entry>Posix Konto</entry>
                         <entry>
                             Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die
-                            Objektklasse <emphasis>posixAccount</emphasis> nicht.
+                            Objektklasse <classname>posixAccount</classname> nicht.
                         </entry>
                     </row>
                     <row>
                         <entry>Samba-Konto</entry>
                         <entry>
                             Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die
-                            Objektklasse <emphasis>sambaSamAccount</emphasis> nicht.
+                            Objektklasse <classname>sambaSamAccount</classname> nicht.
                         </entry>
                     </row>
                     <row>
@@ -637,14 +637,14 @@
                     Unter <guimenu>IPv4-Netzwerkgeräte</guimenu> und
                     <guimenu>IPv6-Netzwerkgeräte</guimenu> werden alle im System verfügbaren
                     Netzwerkkarten aufgeführt (es werden nur Netzwerkinterfaces im Schema
-                    <emphasis>ethX</emphasis> dargestellt).
+                    <filename class="devicefile">ethX</filename> dargestellt).
                 </para>
                 <para>
                     Netzwerkschnittstellen können für IPv4 und/oder IPv6 konfiguriert
                     werden. IPv4-Adressen haben 32 Bit Länge und werden in der Regel in vier
-                    Blöcken in Dezimalschreibweise dargestellt (z.B. 192.168.0.10), während
+					Blöcken in Dezimalschreibweise dargestellt (z.B. <systemitem class="ipaddress">192.168.0.10</systemitem>), während
                     IPv6-Adressen vier Mal so lang sind und typischerweise hexadezimal dargestellt
-                    werden (z.B. 2222:0DFE:FE29:DE27:0000:0000:0000:0000).
+					werden (z.B. <systemitem class="ipaddress">2222:0DFE:FE29:DE27:0000:0000:0000:0000</systemitem>).
                 </para>
 
                 <section id="computers:ipv4"><title>Konfiguration von IPv4-Adressen</title>
@@ -661,7 +661,7 @@
                         Auch Server-Systeme können per DHCP konfiguriert werden. Dies ist
                         z.B. bei einigen Cloud-Anbietern notwendig.
                         Schlägt die Vergabe einer IP-Adresse für einen Server fehl, wird
-                        ersatzweise eine zufällige Link-Local-Adresse (169.254.x.y) konfiguriert.
+                        ersatzweise eine zufällige Link-Local-Adresse (<systemitem class="ipaddress">169.254.<replaceable>x</replaceable>.<replaceable>y</replaceable></systemitem>) konfiguriert.
                     </para>
                     <para>
                         Die über DHCP erhaltene Adresse wird für UCS-Serversysteme auch in das
@@ -730,7 +730,7 @@
 							<simpara>
 							Ein <guimenu>externer DNS-Server</guimenu> wird für die Auflösung von
                             Rechnernamen und Adressen außerhalb der UCS-Domäne verwendet,
-                            z.B. <emphasis>univention.de</emphasis>. Dies ist typischerweise ein Nameserver, der vom
+                            z.B. <systemitem class="domainname">univention.de</systemitem>. Dies ist typischerweise ein Nameserver, der vom
 							Internet Provider betrieben wird.
 							</simpara>
 						</listitem>
@@ -1274,7 +1274,7 @@ ucr unset umc/modules/setup/network/disabled/by
 					</listitem>
 					<listitem>
 						<simpara>
-						Die Option <emphasis>--schedule</emphasis> dient zum Setzen lokaler
+						Die Option <option>--schedule</option> dient zum Setzen lokaler
                         Variablen, die nur für einen gewissen Zeitraum gelten sollen. Diese
                         Ebene der &ucsUCR; ist reserviert für lokale Einstellungen, die
                         durch zeitgesteuerte Mechanismen in &ucsUCS; automatisiert
@@ -1283,7 +1283,7 @@ ucr unset umc/modules/setup/network/disabled/by
 					</listitem>
 					<listitem>
 						<para>
-						Durch Verwendung der Option <emphasis>--force</emphasis> beim Setzen einer
+						Durch Verwendung der Option <option>--force</option> beim Setzen einer
                         lokalen Variable werden aus den Verzeichnisdienst übernommene
                         Einstellung ebenso wie Variablen der Schedule-Ebene überstimmt und
                         statt dessen der angegebene Wert für das lokale System festgelegt. Beispiel:
@@ -1343,13 +1343,13 @@ univention-config-registry set --force mail/messagesizelimit=1000000
             <section id="computers:Abfrage_einer_UCR-Variable"><title>Abfrage einer UCR-Variable</title>
                 <para>
                     Eine einzelne &ucsUCR;-Variable kann mit dem Aufrufparameter
-                    <emphasis>get</emphasis> ausgelesen werden:
+                    <option>get</option> ausgelesen werden:
                 </para>
                     <programlisting language="sh">
 univention-config-registry get ldap/server/ip
                     </programlisting>
                 <para>
-                    Mit dem Aufrufparameter <emphasis>dump</emphasis> können auch alle aktuell
+                    Mit dem Aufrufparameter <option>dump</option> können auch alle aktuell
                     gesetzten Variablen ausgegeben werden:
                 </para>
                     <programlisting language="sh">
@@ -1359,7 +1359,7 @@ univention-config-registry dump
 
             <section id="computers:Setzen_von_UCR-Variablen"><title>Setzen von UCR-Variablen</title>
                 <para>
-                    Mit dem Aufrufparameter <emphasis>set</emphasis> kann eine Variable gesetzt
+                    Mit dem Aufrufparameter <option>set</option> kann eine Variable gesetzt
                     werden. Der Name der Variable kann frei gewählt werden, darf aber
                     ausschließlich aus Buchstaben, Punkten, Zahlen, Binde- und
                     Schrägstrichen bestehen.
@@ -1463,7 +1463,7 @@ univention-config-registry commit /etc/samba/smb.conf
 
             <section id="computers:Übernahme_von_Variablen_in_Shell-Skripte"><title>Übernahme von Variablen in Shell-Skripte</title>
                 <para>
-                    Über den Aufrufparameter <emphasis>shell</emphasis> werden &ucsUCR;-Variablen
+                    Über den Aufrufparameter <option>shell</option> werden &ucsUCR;-Variablen
                     und ihre aktuellen Belegungen in einem Format ausgegeben, das in
                     Shell-Skripten verwendet werden kann:
                 </para>
@@ -1570,7 +1570,7 @@ master.firma.de
                 <para>
                     Im einfachsten Fall kann eine UCR-Variable im Template direkt
                     referenziert werden. Als Platzhalter dient der Variablenname, der von der
-                    Zeichenkette <emphasis>@%@</emphasis> eingefasst wird. Als Beispiel die Option für
+                    Zeichenkette <literal>@%@</literal> eingefasst wird. Als Beispiel die Option für
                     die Aktivierung von X11-Forwarding in der Konfigurationsdatei
                     <filename>/etc/ssh/sshd_config</filename> des OpenSSH-Servers:
                 </para>
@@ -1587,7 +1587,7 @@ X11Forwarding @%@sshd/xforwarding@%@
             <section id="ucr::templates::extend::python"><title>Integration von Inline-Python-Code in Templates</title>
                 <para>
                     In UCR-Templates kann beliebiger Python-Code eingebettet werden, in
-                    dem ein von der Zeichenkette <emphasis>@!@</emphasis> eingefasster Codeblock
+                    dem ein von der Zeichenkette <literal>@!@</literal> eingefasster Codeblock
                     eingefügt wird. Mit solchen Blöcken können z.B. bedingte Abfragen
                     umgesetzt werden, so dass beim Ändern eines Parameters über eine
                     Variable weitere abhängige Einstellungen automatisch in die
@@ -1626,13 +1626,13 @@ if configRegistry.get('version/version') and \
                     unterhalb des Verzeichnisses
 					<filename class="directory">/etc/univention/templates/info/</filename> in <emphasis>info</emphasis>-Dateien
                     registriert, die in der Regel nach dem Paketnamen mit der
-                    Dateiendung <emphasis>.info</emphasis> benannt werden. Wird neuer Python-Code in die Vorlagen eingefügt oder bestehender Code
+                    Dateiendung <filename class="extension">.info</filename> benannt werden. Wird neuer Python-Code in die Vorlagen eingefügt oder bestehender Code
                     so verändert, dass er zusätzliche oder andere Variablen nutzt, so muss
-                    einer der bestehenden <emphasis>.info</emphasis>-Dateien modifiziert oder eine neue
+                    einer der bestehenden <filename class="extension">.info</filename>-Dateien modifiziert oder eine neue
                     hinzugefügt werden.
                 </para>
                 <para>
-                    Nach der Änderung von <emphasis>.info</emphasis>-Dateien muss der Befehl
+                    Nach der Änderung von <filename class="extension">.info</filename>-Dateien muss der Befehl
                     <command>ucr update</command> aufgerufen werden.
                 </para>
             </section>
@@ -1649,7 +1649,7 @@ if configRegistry.get('version/version') and \
         <section id="computers:rootaccount"><title>Administrativer Zugriff mit dem Root-Konto</title>
             <para>
                 Für den administrativen Vollzugriff existiert auf jedem UCS-System
-                das <emphasis>root</emphasis>-Konto. Das Passwort wird beim Installieren des Systems
+                das <systemitem class="username">root</systemitem>-Konto. Das Passwort wird beim Installieren des Systems
                 festgelegt. Der root-Benutzer wird nicht im LDAP-Verzeichnis
                 gespeichert, sondern in den lokalen Benutzerkonten.
             </para>
@@ -1721,8 +1721,8 @@ if configRegistry.get('version/version') and \
 
             <section id="computers:Anmeldebeschraenkungen_fuer_ausgewaehlte_Benutzer"><title>Anmeldebeschränkungen für ausgewählte Benutzer</title>
                 <para>
-                    In der Grundeinstellung können sich nur der <emphasis>root</emphasis>-Benutzer und Mitglieder der
-                    Gruppe <emphasis>Domain Admins</emphasis> remote über SSH und lokal auf einem
+                    In der Grundeinstellung können sich nur der <systemitem class="username">root</systemitem>-Benutzer und Mitglieder der
+                    Gruppe <systemitem class="groupname">Domain Admins</systemitem> remote über SSH und lokal auf einem
                     tty anmelden.
                 </para>
                 <para>
@@ -1733,10 +1733,10 @@ if configRegistry.get('version/version') and \
                     werden.
                 </para>
                 <para>
-                    Anmeldebeschränkungen werden unterstützt für SSH (<emphasis>sshd</emphasis>), FTP
-                    (<emphasis>ftp</emphasis>), die Anmeldung am Login-Manager GDM (<emphasis>gdm</emphasis>), die
-                    Anmeldung an einem tty (<emphasis>login</emphasis>), rlogin (<emphasis>rlogin</emphasis>), PPP
-                    (<emphasis>ppp</emphasis>) und andere Dienste (<emphasis>other</emphasis>). Ein Beispiel für SSH:
+					Anmeldebeschränkungen werden unterstützt für SSH (<systemitem class="service">sshd</systemitem>), FTP
+					(<systemitem class="service">ftp</systemitem>), die Anmeldung am Login-Manager GDM (<systemitem class="service">gdm</systemitem>), die
+					Anmeldung an einem tty (<systemitem class="service">login</systemitem>), rlogin (<systemitem class="service">rlogin</systemitem>), PPP
+					(<systemitem class="service">ppp</systemitem>) und andere Dienste (<systemitem class="service">other</systemitem>). Ein Beispiel für SSH:
                 </para>
                     <programlisting>
 auth/sshd/group/Administrators: yes
@@ -1805,7 +1805,7 @@ auth/sshd/restrict: yes
                 <para>
                     Alternativ können Logdateien auch erst beim Erreichen einer bestimmten Größe rotiert
                     werden. Soll beispielsweise erst ab einer Größe von 50 MB rotiert werden, kann dazu
-                    die &ucsUCRV; <envar>logrotate/rotates</envar> auf <emphasis>size 50M</emphasis>
+                    die &ucsUCRV; <envar>logrotate/rotates</envar> auf <literal>size 50M</literal>
                     gesetzt werden.
                 </para>
                 <para>
@@ -1832,7 +1832,7 @@ auth/sshd/restrict: yes
                 <para>
                     Die Laufzeiten in denen der Systemzustand protokolliert werden soll, können
                     durch die &ucsUCRV; <envar>system/stats/cron</envar> in Cron-Syntax definiert werden,
-                    z.B. <emphasis>0,30 * * * *</emphasis> für eine Protokollierung jeweils zu jeder vollen und
+                    z.B. <literal>0,30 * * * *</literal> für eine Protokollierung jeweils zu jeder vollen und
                     halben Stunde. Die Protokollierung wird durch Setzen
                     der &ucsUCRV; <envar>system/stats</envar> auf <literal>yes</literal> aktiviert und ist bei
                     Neuinstallationen ab UCS 3.0 die Grundeinstellung.
@@ -1883,7 +1883,7 @@ auth/sshd/restrict: yes
 						<listitem>
 							<simpara>
 							Die Aktion <guimenu>Beenden</guimenu> schickt dem Prozess eine
-                            Benachrichtigung vom Typ SIGTERM, dies ist der Regelfall bei der
+							Benachrichtigung vom Typ <systemitem class="event">SIGTERM</systemitem>, dies ist der Regelfall bei der
 							kontrollierten Beendigung von Programmen.
 							</simpara>
 						</listitem>
@@ -1892,13 +1892,13 @@ auth/sshd/restrict: yes
 							In Einzelfällen kann es vorkommen, dass sich ein Programm
                             - z.B. nach einem Absturz - nicht
                             mehr über dieses Verfahren beenden lässt. In diesem Fall kann mit der Aktion
-                            <guimenu>Beenden erzwingen</guimenu> das Signal SIGKILL geschickt werden
+							<guimenu>Beenden erzwingen</guimenu> das Signal <systemitem class="event">SIGKILL</systemitem> geschickt werden
 							um den Prozess forciert zu beenden.
 							</simpara>
 						</listitem>
                     </itemizedlist>
                 <para>
-                    Das Beenden über SIGTERM ist in der Regel vorzuziehen, da viele
+					Das Beenden über <systemitem class="event">SIGTERM</systemitem> ist in der Regel vorzuziehen, da viele
                     Programme dann einen kontrollierten Programmabbruch einleiten und
                     z.B. ein Speichern von Dateien o.ä. durchführen.
                 </para>
@@ -1990,7 +1990,7 @@ auth/sshd/restrict: yes
 						</listitem>
 						<listitem>
 							<simpara>
-							Standardmäßig wird der Cron-Job als Benutzer <emphasis>root</emphasis> ausgeführt. Mit
+							Standardmäßig wird der Cron-Job als Benutzer <systemitem class="username">root</systemitem> ausgeführt. Mit
                             <command>cron/JOBNAME/user</command> kann ein abweichender Benutzer
 							angegeben werden.
 							</simpara>
@@ -2103,15 +2103,15 @@ nscd -i hosts
                 des SSH-Servers lassen sich über &ucsUCR; anpassen:
             </para>
             <para>
-                Standardmäßig ist der Login des privilegierten <emphasis>root</emphasis>-Benutzers per SSH
+                Standardmäßig ist der Login des privilegierten <systemitem class="username">root</systemitem>-Benutzers per SSH
                 erlaubt (etwa um ein neu installiertes System an einem entfernten Standort zu
                 konfigurieren, auf dem noch keine weiteren Benutzer angelegt wurden).
             </para>
             <itemizedlist>
 				<listitem>
 					<simpara>
-					Wird die &ucsUCRV; <envar>sshd/permitroot</envar> auf <emphasis>without-password</emphasis>
-                    gesetzt, so wird für den <emphasis>root</emphasis>-Benutzer keine interaktive
+					Wird die &ucsUCRV; <envar>sshd/permitroot</envar> auf <literal>without-password</literal>
+                    gesetzt, so wird für den <systemitem class="username">root</systemitem>-Benutzer keine interaktive
                     Passwort-Abfrage mehr durchgeführt, sondern beispielsweise nur eine
                     Public-Key-basierte Anmeldung, was Brute-Force-Attacken auf
 					Passwörter vermeidet.
@@ -2119,7 +2119,7 @@ nscd -i hosts
 				</listitem>
 				<listitem>
 					<simpara>
-					Soll für den <emphasis>root</emphasis>-Benutzer überhaupt keine SSH-Anmeldung mehr möglich sein, kann dies
+					Soll für den <systemitem class="username">root</systemitem>-Benutzer überhaupt keine SSH-Anmeldung mehr möglich sein, kann dies
                     durch Setzen der &ucsUCRV; <envar>auth/sshd/user/root</envar> auf <literal>no</literal>
 					deaktiviert werden.
 					</simpara>

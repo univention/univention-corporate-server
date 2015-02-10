@@ -194,7 +194,7 @@
 							<emphasis>Bekannte Gruppe:</emphasis> Unter diesem Gruppentyp werden von
 							Samba- bzw. Windows-Servern vorkonfigurierte Gruppen zusammengefasst,
 							die in der Regel über besondere Berechtigungen verfügen,
-							z.B. <emphasis>Power Users</emphasis>.
+							z.B. <systemitem class="groupname">Power Users</systemitem>.
 						  </simpara></listitem>
 						</itemizedlist>
 					  </entry>
@@ -245,14 +245,14 @@
 						<entry>Samba-Gruppe</entry>
 						<entry>
 							Dieses Auswahlkästchen gibt an, ob die Gruppe die Objektklasse
-							<emphasis>sambaGroupMapping</emphasis> erhält.
+							<classname>sambaGroupMapping</classname> erhält.
 						</entry>
 					</row>
 					<row>
 						<entry>Posix-Gruppe</entry>
 						<entry>
 							Dieses Auswahlkästchen gibt an, ob die Gruppe die Objektklasse
-							<emphasis>posixGroup</emphasis> erhält.
+							<classname>posixGroup</classname> erhält.
 						</entry>
 					</row>
 				</tbody>
@@ -266,12 +266,12 @@
 			UCS unterstützt die Verschachtelung von Gruppen (auch bekannt als
 			"Gruppen in Gruppen"). Dies vereinfacht die Verwaltung der
 			Gruppen: Werden in einer Domäne beispielsweise zwei Standorte
-			verwaltet, können zwei Gruppen <emphasis>Techniker Standort A</emphasis> und
-			<emphasis>Techniker Standort B</emphasis> gebildet werden, denen jeweils die
+			verwaltet, können zwei Gruppen <systemitem class="groupname">Techniker Standort A</systemitem> und
+			<systemitem class="groupname">Techniker Standort B</systemitem> gebildet werden, denen jeweils die
 			Benutzerkonten der Standort-Techniker zugewiesen werden.
 			Um eine standortübergreifende Techniker-Gruppe zu bilden, reicht es
-			dann aus, die Gruppen <emphasis>Techniker Standort A</emphasis> und <emphasis>Techniker
-			Standort B</emphasis> als Mitglieder dieser Gruppe zu definieren.
+			dann aus, die Gruppen <systemitem class="groupname">Techniker Standort A</systemitem> und <systemitem class="groupname">Techniker
+			Standort B</systemitem> als Mitglieder dieser Gruppe zu definieren.
 		</para>
 		<para>
 			Zyklische Abhängigkeiten von Gruppen in Gruppen werden erkannt und
@@ -342,20 +342,20 @@
 	  <para>
 		Einzige Ausnahme sind die <emphasis>Pseudo-Gruppen</emphasis> (manchmal auch als
 		Systemgruppen bezeichnet). Diese werden nur intern von Active Directory/Samba 4 verwaltet,
-		z.B. enthält die Gruppe <emphasis>Authenticated Users</emphasis> eine Liste aller aktuell an
+		z.B. enthält die Gruppe <systemitem class="groupname" lang="en">Authenticated Users</systemitem> eine Liste aller aktuell an
 		einem System angemeldeten Benutzer. Pseudo-Gruppen sind im UCS-Verzeichnisdienst vorhanden;
 		sie werden aber nicht durch den Univention S4 Connector synchronisiert und müssen
 		normalerweise nicht bearbeitet werden. Dies betrifft die folgenden Gruppen:
 
 		<itemizedlist>
-		  <listitem><simpara>Anonymous Logon, Authenticated Users, Batch, Creator Group</simpara></listitem>
-		  <listitem><simpara>Creator Owner, Dialup, Digest Authentication</simpara></listitem>
-		  <listitem><simpara>Enterprise Domain Controllers, Everyone, IUSR, Interactive</simpara></listitem>
-		  <listitem><simpara>Local Service, NTLM Authentication, Network Service, Network</simpara></listitem>
-		  <listitem><simpara>Nobody, Null Authority, Other Organization, Owner Rights</simpara></listitem>
-		  <listitem><simpara>Proxy, Remote Interactive Logon, Restricted, SChannel Authentication</simpara></listitem>
-		  <listitem><simpara>Self, Service, System, Terminal Server User, This Organization</simpara></listitem>
-		  <listitem><simpara>World Authority</simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Anonymous Logon</systemitem>, <systemitem class="groupname">Authenticated Users</systemitem>, <systemitem class="groupname">Batch</systemitem>, <systemitem class="groupname">Creator Group</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Creator Owner</systemitem>, <systemitem class="groupname">Dialup</systemitem>, <systemitem class="groupname">Digest Authentication</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Enterprise Domain Controllers</systemitem>, <systemitem class="groupname">Everyone</systemitem>, <systemitem class="groupname">IUSR</systemitem>, <systemitem class="groupname">Interactive</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Local Service</systemitem>, <systemitem class="groupname">NTLM Authentication</systemitem>, <systemitem class="groupname">Network Service</systemitem>, <systemitem class="groupname">Network</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Nobody</systemitem>, <systemitem class="groupname">Null Authority</systemitem>, <systemitem class="groupname">Other Organization</systemitem>, <systemitem class="groupname">Owner Rights</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Proxy</systemitem>, <systemitem class="groupname">Remote Interactive Logon</systemitem>, <systemitem class="groupname">Restricted</systemitem>, <systemitem class="groupname">SChannel Authentication</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Self</systemitem>, <systemitem class="groupname">Service</systemitem>, <systemitem class="groupname">System</systemitem>, <systemitem class="groupname">Terminal Server User</systemitem>, <systemitem class="groupname">This Organization</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">World Authority</systemitem></simpara></listitem>
 		</itemizedlist>
 	  </para>
 

@@ -120,7 +120,7 @@
 					<entry>MAC address</entry>
 					<entry>
 						The MAC address of the computer can be entered here e.g.,
-						<emphasis>2e:44:56:3f:12:32</emphasis>. If the computer is to receive a DHCP
+						<systemitem class="etheraddress">2e:44:56:3f:12:32</systemitem>. If the computer is to receive a DHCP
 						entry, the entry of the MAC address is essential.
 					</entry>
 				</row>
@@ -223,9 +223,9 @@
 					<entry>
 						The primary group of the host can be selected in this selection
 						field. This is only necessary when they deviate from the automatically created
-						default values. The default value for a DC master or DC backup is <emphasis>DC
-						Backup Hosts</emphasis>, for a DC slave <emphasis>DC Slave Hosts</emphasis> and
-						for member servers <emphasis>Computers</emphasis>.
+						default values. The default value for a DC master or DC backup is <systemitem class="groupname">DC
+						Backup Hosts</systemitem>, for a DC slave <systemitem class="groupname">DC Slave Hosts</systemitem> and
+						for member servers <systemitem class="groupname">Computers</systemitem>.
 					</entry>
 				</row>
 			</tbody>
@@ -406,7 +406,7 @@
 					<entry>Kerberos principal</entry>
 					<entry>
 						If this checkbox is not selected the host does not receive the
-						<emphasis>krb5Principal</emphasis> and <emphasis>krb5KDCEntry</emphasis> object
+						<classname>krb5Principal</classname> and <classname>krb5KDCEntry</classname> object
 						classes.
 					</entry>
 				</row>
@@ -414,7 +414,7 @@
 					<entry>Posix account</entry>
 					<entry>
 						If this checkbox is not selected the host does not receive the
-						<emphasis>posixAccount</emphasis> object class.
+						<classname>posixAccount</classname> object class.
 					</entry>
 				</row>
 				<row>
@@ -427,7 +427,7 @@
 					<entry>Samba account</entry>
 					<entry>
 						If this checkbox is not selected the host does not receive the
-						<emphasis>sambaSamAccount</emphasis> object class.
+						<classname>sambaSamAccount</classname> object class.
 					</entry>
 				</row>
 			</tbody>
@@ -653,15 +653,15 @@
 			<para>
 				All the network cards available in the system are listed under
 				<guimenu>IPv4 network devices</guimenu> and <guimenu>IPv6 network
-				devices</guimenu> (only network interfaces in the <emphasis>ethX</emphasis>
+				devices</guimenu> (only network interfaces in the <filename class="devicefile">ethX</filename>
 				scheme are shown).
 			</para>
 			<para>
 				Network interfaces can be configured for IPv4 and/or IPv6. IPv4
 				addresses have a 32-bit length and are generally written in four blocks in
-				decimal form (e.g., 192.168.0.10), whereas IPv6 addresses are four times as
+				decimal form (e.g., <systemitem class="ipaddress">192.168.0.10</systemitem>), whereas IPv6 addresses are four times as
 				long and typically written in hexadecimal form (e.g.,
-				2222:0DFE:FE29:DE27:0000:0000:0000:0000).
+				<systemitem class="ipaddress">2222:0DFE:FE29:DE27:0000:0000:0000:0000</systemitem>).
 			</para>
 
 			<section id="computers:ipv4">
@@ -677,7 +677,7 @@
 				<para>
 					Server systems can also be configured via DHCP. This is necessary for
 					some cloud providers, for example. If the assignment of an IP address for a
-					server fails, a random link local address (169.254.x.y) is configured as a
+					server fails, a random link local address (<systemitem class="ipaddress">169.254.<replaceable>x</replaceable>.<replaceable>y</replaceable></systemitem>) is configured as a
 					replacement.
 				</para>
 				<para>
@@ -748,7 +748,7 @@
 						<simpara>
 						An <guimenu>External DNS Server</guimenu> is employed for the
 						resolution of host names and addresses outside of the UCS domain, e.g.,
-						<emphasis>univention.de</emphasis>. This is typically a name server operated by
+						<systemitem class="domainname">univention.de</systemitem>. This is typically a name server operated by
 						the Internet provider.
 						</simpara>
 					</listitem>
@@ -1289,7 +1289,7 @@ ucr unset umc/modules/setup/network/disabled/by
 			</listitem>
 			<listitem>
 				<simpara>
-				The <emphasis>--schedule</emphasis> option is used to set local
+				The <option>--schedule</option> option is used to set local
 				variables which are only intended to apply for a certain period of time. This
 				level of the &ucsUCR; is reserved for local settings which are automated by
 				time-controlled mechanisms in &ucsUCS;.
@@ -1297,7 +1297,7 @@ ucr unset umc/modules/setup/network/disabled/by
 			</listitem>
 			<listitem>
 				<para>
-				When the <emphasis>--force</emphasis> option is used in setting a
+				When the <option>--force</option> option is used in setting a
 				local variable, settings adopted from the directory service and variables from
 				the schedule level are overruled and the given value for the local system fixed
 				instead. An example:
@@ -1356,13 +1356,13 @@ univention-config-registry set --force mail/messagesizelimit=1000000
 			<title>Querying a UCR variable</title>
 			<para>
 				A single &ucsUCR; variable can be queried with the parameter
-				<emphasis>get</emphasis>:
+				<option>get</option>:
 			</para>
 			<programlisting language="sh">
 univention-config-registry get ldap/server/ip
 			</programlisting>
 			<para>
-				The parameter <emphasis>dump</emphasis> can also be used to display all
+				The parameter <option>dump</option> can also be used to display all
 				currently set variables:
 			</para>
 			<programlisting language="sh">
@@ -1372,7 +1372,7 @@ univention-config-registry dump
 			<section id="computers:Setting_UCR_variables">
 				<title>Setting UCR variables</title>
 				<para>
-					The parameter <emphasis>set</emphasis> is used to set a variable. The variable
+					The parameter <option>set</option> is used to set a variable. The variable
 					can be given any name consisting exclusively of letters, full stops, figures,
 					hyphens and forward slashes.
 				</para>
@@ -1477,7 +1477,7 @@ univention-config-registry commit /etc/samba/smb.conf
 			<section id="computers:Sourcing_variables_in_shell_scripts">
 				<title>Sourcing variables in shell scripts</title>
 				<para>
-					The parameter <emphasis>shell</emphasis> is used to display &ucsUCR;
+					The parameter <option>shell</option> is used to display &ucsUCR;
 					variables and their current assignments in a format that can be used in shell
 					scripts.
 				</para>
@@ -1583,7 +1583,7 @@ master.firma.de
 			<title>Referencing of UCR variables in templates</title>
 			<para>
 				In the simplest case, a UCR variable can be directly referenced in the
-				template. The variable name framed by the string <emphasis>@\%@</emphasis>
+				template. The variable name framed by the string <literal>@%@</literal>
 				represents the wildcard. As an example the option for the activation of X11
 				forwarding in the configuration file <filename>/etc/ssh/sshd_config</filename>
 				of the OpenSSH server:
@@ -1602,7 +1602,7 @@ X11Forwarding @%@sshd/xforwarding@%@
 			<title>Integration of inline Python code in templates</title>
 			<para>
 				Any type of Python code can be embedded in UCR templates by entering a code
-				block framed by the string <emphasis>@!@</emphasis>. For example, these blocks
+				block framed by the string <literal>@!@</literal>. For example, these blocks
 				can be used to realise conditional requests so that when a parameter is changed
 				via a variable, further dependent settings are automatically adopted in the
 				configuration file. The following code sequence configures for example network
@@ -1638,13 +1638,13 @@ if configRegistry.get('version/version') and \
 				<emphasis>info</emphasis> files in the
 				<filename class="directory">/etc/univention/templates/info/</filename> directory which are usually
 				named after the package name with the file ending
-				<emphasis>.info</emphasis>. If new Python code is entered into the templates or
+				<filename class="extension">.info</filename>. If new Python code is entered into the templates or
 				the existing code changed in such a way that it requires additional or
-				different variables, one of the existing <emphasis>.info</emphasis> files will
+				different variables, one of the existing <filename class="extension">.info</filename> files will
 				need to be modified or a new one added.
 			</para>
 			<para>
-				Following the changing of <emphasis>.info</emphasis> files, the
+				Following the changing of <filename class="extension">.info</filename> files, the
 				<command>ucr update</command> command must be run.
 			</para>
 		</section>
@@ -1661,7 +1661,7 @@ if configRegistry.get('version/version') and \
 	<section id="computers:rootaccount">
 		<title>Administrative access with the root account</title>
 		<para>
-			There is a <emphasis>root</emphasis> account on every UCS system for complete
+			There is a <systemitem class="username">root</systemitem> account on every UCS system for complete
 			administrative access. The password is set during installation of the
 			system. The root user is not stored in the LDAP directory, but instead in the
 			local user accounts.
@@ -1734,8 +1734,8 @@ if configRegistry.get('version/version') and \
 		<section id="computers:Limiting_authentication_to_selected_users">
 			<title>Limiting authentication to selected users</title>
 			<para>
-				In the default setting, only the <emphasis>root</emphasis> user and members of
-				the <emphasis>Domain Admins</emphasis> group can login remotely via SSH and
+				In the default setting, only the <systemitem class="username">root</systemitem> user and members of
+				the <systemitem class="groupname">Domain Admins</systemitem> group can login remotely via SSH and
 				locally on a tty.
 			</para>
 			<para>
@@ -1745,11 +1745,11 @@ if configRegistry.get('version/version') and \
 				<envar>auth/SERVICE/group/GROUPNAME</envar> to <literal>yes</literal>.
 			</para>
 			<para>
-				Login restrictions are supported for SSH (<emphasis>sshd</emphasis>), FTP
-				(<emphasis>ftp</emphasis>), the login manager GDM (<emphasis>gdm</emphasis>),
-				login on a tty (<emphasis>login</emphasis>), rlogin
-				(<emphasis>rlogin</emphasis>), PPP (<emphasis>ppp</emphasis>) and other
-				services (<emphasis>other</emphasis>). An example for SSH:
+				Login restrictions are supported for SSH (<systemitem class="service">sshd</systemitem>), FTP
+				(<systemitem class="service">ftp</systemitem>), the login manager GDM (<systemitem class="service">gdm</systemitem>),
+				login on a tty (<systemitem class="service">login</systemitem>), rlogin
+				(<systemitem class="service">rlogin</systemitem>), PPP (<systemitem class="service">ppp</systemitem>) and other
+				services (<systemitem class="service">other</systemitem>). An example for SSH:
 			</para>
 			<programlisting>
 auth/sshd/group/Administrators: yes
@@ -1826,7 +1826,7 @@ auth/sshd/restrict: yes
 			  they have reached a certain size. For example, if they
 			  are only to be rotated once they reach a size of 50 MB,
 			  the &ucsUCRV; <envar>logrotate/rotates</envar> can be
-			  set to <emphasis>size 50M</emphasis>.
+			  set to <literal>size 50M</literal>.
 			</para>
 			<para>
 				The &ucsUCRV; <envar>logrotate/compress</envar> is used to configure whether
@@ -1881,8 +1881,8 @@ auth/sshd/restrict: yes
 			</itemizedlist>
 			<para>
 				The runtimes in which the system status should be logged can be defined in Cron
-				syntax via the &ucsUCRV; <envar>system/stats/cron</envar>, e.g., <emphasis>0,30
-				* * * *</emphasis> for logging every half and full hour. The logging is
+				syntax via the &ucsUCRV; <envar>system/stats/cron</envar>, e.g., <literal>0,30
+				* * * *</literal> for logging every half and full hour. The logging is
 				activated by setting the &ucsUCRV; <envar>system/stats</envar> to
 				<literal>yes</literal>. This is the default since UCS 3.0.
 			</para>
@@ -1931,7 +1931,7 @@ auth/sshd/restrict: yes
 			<itemizedlist>
 				<listitem>
 					<simpara>
-					The action <guimenu>Terminate</guimenu> sends the process a SIGTERM
+					The action <guimenu>Terminate</guimenu> sends the process a <systemitem class="event">SIGTERM</systemitem>
 					signal; this is the standard method for the controlled termination of programs.
 					</simpara>
 				</listitem>
@@ -1940,12 +1940,12 @@ auth/sshd/restrict: yes
 					Sometimes, it may be the case that a program - e.g., after
 				crashing - can no longer be terminated with this procedure. In this case, the
 				action <guimenu>Force terminate</guimenu> can be used to send the signal
-				SIGKILL and force the process to terminate.
+				<systemitem class="event">SIGKILL</systemitem> and force the process to terminate.
 					</simpara>
 				</listitem>
 			</itemizedlist>
 			<para>
-				As a general rule, terminating the program with SIGTERM is preferable
+				As a general rule, terminating the program with <systemitem class="event">SIGTERM</systemitem> is preferable
 				as many programs then stop the program in a controlled manner and, for example,
 				save open files.
 			</para>
@@ -2040,7 +2040,7 @@ auth/sshd/restrict: yes
 				<listitem>
 					<simpara>
 					As standard, the cron job is run as a user
-					<emphasis>root</emphasis>. <command>cron/JOBNAME/user</command> can be used to
+					<systemitem class="username">root</systemitem>. <command>cron/JOBNAME/user</command> can be used to
 					specify a different user.
 					</simpara>
 				</listitem>
@@ -2156,7 +2156,7 @@ nscd -i hosts
 			aspects of the SSH server's configuration can be adjusted in &ucsUCR;.
 		</para>
 		<para>
-			By default the login of the privileged <emphasis>root</emphasis> user is
+			By default the login of the privileged <systemitem class="username">root</systemitem> user is
 			permitted by SSH (e.g. for configuring a newly installed system where no users
 			have been created yet, from a remote location).
 		</para>
@@ -2164,8 +2164,8 @@ nscd -i hosts
 			<listitem>
 				<simpara>
 				If the &ucsUCRV; <envar>sshd/permitroot</envar> is set to
-				<emphasis>without-password</emphasis>, then no interactive password request
-				will be performed for the <emphasis>root</emphasis> user, but only a login
+				<literal>without-password</literal>, then no interactive password request
+				will be performed for the <systemitem class="username">root</systemitem> user, but only a login
 				based on a public key. By this means brute force attacks to passwords can be
 				avoided.
 				</simpara>

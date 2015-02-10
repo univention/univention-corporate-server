@@ -142,7 +142,7 @@
 		<para>
 		  Die in UCS integrierten Dateidienste unterstützen eine Bereitstellung von Freigaben auf
 		  Basis von CIFS/SMB (siehe <xref linkend="shares::general"/>). Sofern das unterliegende
-		  Dateisystem Access Control Lists (ACLs) unterstützt (verwendbar bei ext3, ext4 und XFS)
+		  Dateisystem Access Control Lists (ACLs) unterstützt (verwendbar bei <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> und <systemitem class="filesystem">XFS</systemitem>)
 		  sind ACLs auch von Windows-Clients verwendbar.
 		</para>
 
@@ -218,7 +218,7 @@
 
 		<para>
 		  Mit dem Befehl <command>univention-s4search</command> kann im Samba-Verzeichnisdienst
-		  gesucht werden. Wird es als Benutzer <emphasis>root</emphasis> aufgerufen,
+		  gesucht werden. Wird es als Benutzer <systemitem class="username">root</systemitem> aufgerufen,
 		  werden automatisch die nötigen Credentials des Maschinenkontos verwendet:
 
 		  <programlisting>
@@ -437,8 +437,8 @@ instanceType: 4
 
 		  <para>
 			Gruppenrichtlinien können nur von Benutzern konfiguriert werden, die Mitglied der Gruppe
-			<emphasis>Domain Admins</emphasis> sind (z.B. der
-			<emphasis>Administrator</emphasis>). Bei der Anmeldung muss beachtet werden, dass keine
+			<systemitem class="groupname">Domain Admins</systemitem> sind (z.B. der
+			<systemitem class="username">Administrator</systemitem>). Bei der Anmeldung muss beachtet werden, dass keine
 			Anmeldung mit dem lokalen Administrator-Konto erfolgt, sondern mit dem
 			Administrator-Konto der Domäne. Die Gruppenrichtlinienverwaltung kann auf einem beliebigen
 			System der Domäne aufgerufen werden.
@@ -618,7 +618,7 @@ instanceType: 4
 			ADM-Dateien können über Third-Party-Werkzeuge in das neuere ADMX-Format umgewandelt werden.
 			Weiterführende Informationen zum Format von ADM-Dateien sind unter <biblioref
 			linkend="microsoft-adm-templates"/> und <biblioref linkend="adm-templates-howto"/> zu
-			finden. Die administrativen Vorlagen müssen die Dateiendung <emphasis>.adm</emphasis> verwenden:
+			finden. Die administrativen Vorlagen müssen die Dateiendung <filename class="extension">.adm</filename> verwenden:
 
 			<programlisting language="sh">
 CLASS MACHINE
@@ -680,7 +680,7 @@ END CATEGORY
 		  Die NETLOGON-Freigabe dient der Bereitstellung von Anmeldeskripten in Windows-Domänen. Die
 		  Anmeldeskripte werden nach der erfolgreichen Anmeldung eines Benutzers ausgeführt und
 		  ermöglichen die Anpassung der Arbeitsumgebung des Benutzers. Die Skripte müssen in einem
-		  für Windows ausführbaren Format gespeichert werden, wie z.B. <emphasis>bat</emphasis>.
+		  für Windows ausführbaren Format gespeichert werden, wie z.B. <filename class="extension">bat</filename>.
 		</para>
 
 		<para>
@@ -707,7 +707,7 @@ END CATEGORY
 		  Das Heimatverzeichnis wird benutzerbezogen in &ucsUMC; definiert siehe <xref
 		  linkend="users::management"/>. Dies erfolgt mit der Einstellung
 		  <guimenu>Windows-Heimatverzeichnis</guimenu>,
-		  z.B. <emphasis>\\ucs-file-server\meier</emphasis>.
+		  z.B. <filename class="directory">\\ucs-file-server\meier</filename>.
 		</para>
 
 		<para>
@@ -896,7 +896,10 @@ END CATEGORY
 
   <note>
     <para>
-			Nach Einrichtung des <emphasis>AD member</emphasis>-Modus findet die Authentifikation gegen den AD-Domänencontroller statt. <emphasis>Daher gilt für den Administrator jetzt das Passwort aus der AD-Domäne.</emphasis> Falls einer AD-Domäne mit nicht-englischsprachiger Sprachkonvention beigetreten wurde, dann wird das <emphasis>Administrator</emphasis>-Konto aus UCS während des Domänenbeitritts automatisch in die Schreibweise des AD umbenannt. Gleiches gilt für alle Benutzer- und Gruppenobjekte mit <emphasis>Well Known SID</emphasis> (z.B. <emphasis>Domain Admins</emphasis>).
+		Nach Einrichtung des <emphasis>AD member</emphasis>-Modus findet die Authentifikation gegen den AD-Domänencontroller statt.
+		<emphasis>Daher gilt für den Administrator jetzt das Passwort aus der AD-Domäne.</emphasis>
+		Falls einer AD-Domäne mit nicht-englischsprachiger Sprachkonvention beigetreten wurde, dann wird das <systemitem class="username">Administrator</systemitem>-Konto aus UCS während des Domänenbeitritts automatisch in die Schreibweise des AD umbenannt.
+		Gleiches gilt für alle Benutzer- und Gruppenobjekte mit <emphasis>Well Known SID</emphasis> (z.B. <systemitem class="groupname">Domain Admins</systemitem>).
     </para>
   </note>
 
@@ -929,10 +932,10 @@ END CATEGORY
   <para>
 	  Im <emphasis>AD member</emphasis>-Modus liest der UCS AD-Connector Objektdaten per Voreinstellung mit den Berechtigungen des Maschinenkontos des &ucsMaster;s aus dem AD. Für das Auslesen von verschlüsselten Passwortdaten sind dessen Berechtigungen nicht ausreichend.
 	  Daher muss für die Einrichtung des Passwortdienstes zusätzlich manuell die LDAP-DN eines privilegierten Replikationsbenutzers in die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> eingetragen werden.
-	  Dieser muss im AD Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein.
+	  Dieser muss im AD Mitglied der Gruppe <systemitem class="groupname">Domänen-Admins</systemitem> sein.
 	  Das entsprechende Kennwort muss auf dem &ucsMaster; in eine Datei gespeichert werden und ihr Dateiname muss in die &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen werden.
 	  Falls zu einem späteren Zeitpunkt das Zugriffspasswort geändert wurde, muss das neue Passwort in diese Datei eingetragen werden.
-	  Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <emphasis>root</emphasis> Zugriff hat.
+	  Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <systemitem class="username">root</systemitem> Zugriff hat.
   </para>
   <para>
   	Die folgenden Kommandos zeigen die Schritte beispielhaft:
@@ -1083,7 +1086,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	  Im Feld <guimenu>Active Directory-Konto</guimenu> wird der Benutzer konfiguriert, der für
 	  den Zugriff auf das AD verwendet wird. Die Einstellung wird in der
 	  &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> gespeichert. Der Replikationsbenutzer muss im
-	  AD Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Synchronisiert
+	  AD Mitglied der Gruppe <systemitem class="groupname">Domänen-Admins</systemitem> sein. Synchronisiert
 	  der Connector nur lesend von AD zu UCS, kann auch ein Standardbenutzerkonto
 	  angegeben werden.
 	</para>
@@ -1091,7 +1094,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	<para>
 	  Das verwendete Kennwort für den Zugriff muss im Feld <guimenu>Active Directory-Passwort</guimenu>
 	  eingetragen werden. Es wird auf dem UCS-System lokal in einer Datei gespeichert,
-	  die nur für den Benutzer <emphasis>root</emphasis> lesbar ist.
+	  die nur für den Benutzer <systemitem class="username">root</systemitem> lesbar ist.
 	</para>
 
 	<para>
@@ -1328,14 +1331,14 @@ Die MSI-Pakete sind die Installations-Dateien für den
 Passwortdienst und können durch einen Doppelklick gestartet werden.
 </para>
 <para>
-Das Paket wird automatisch in das Verzeichnis <command>C:\Windows\UCS-AD-Connector</command> installiert. Zusätzlich wird der
+Das Paket wird automatisch in das Verzeichnis <filename class="directory">C:\Windows\UCS-AD-Connector\</filename> installiert. Zusätzlich wird der
 Passwort-Dienst als Systemdienst in die Windows-Umgebung integriert,
 wodurch der Dienst automatisch oder manuell gestartet werden kann.
 Nach der Installation ist der Passwort-Dienst für den automatischen
 Start konfiguriert.
 </para>
 <para>
-Die Dateien <emphasis>private.key</emphasis> und <emphasis>cert.pem</emphasis> beinhalten unter UCS erzeugte
+Die Dateien <filename>private.key</filename> und <filename>cert.pem</filename> beinhalten unter UCS erzeugte
 SSL-Zertifikate für die gesicherte Kommunikation des Passwort-Dienstes. Sie müssen ebenfalls
 in das Installationsverzeichnis des Passwort-Dienstes kopiert werden.
 Anschließend muss der Passwort-Dienst neu gestartet werden.
@@ -1378,9 +1381,9 @@ werden.
 	  Die vom UCS AD-Connector benötigten Zugangsdaten zum Active Directory werden über die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> und <envar>connector/ad/ldap/bindpw</envar> konfiguriert.
 	  Falls das Passwort sich geändert hat oder ein anderes Benutzerkonto verwendet werden soll, können diese Variablen manuell angepasst werden.
 	  Über die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> wird die LDAP-DN eines privilegierten Replikationsbenutzers konfiguriert.
-	  Dieser muss im AD Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein.
+	  Dieser muss im AD Mitglied der Gruppe <systemitem class="groupname">Domänen-Admins</systemitem> sein.
 	  Das entsprechende Kennwort muss lokal auf dem UCS-System in eine Datei gespeichert werden, deren Dateiname in der &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen sein muss.
-	  Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <emphasis>root</emphasis> Zugriff hat.
+	  Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <systemitem class="username">root</systemitem> Zugriff hat.
 	  Die folgenden Kommandos zeigen dies beispielhaft:
   </para>
 
@@ -1512,8 +1515,8 @@ der Gruppen ab diesem Zeitpunkt nicht mehr unterscheiden.
 </listitem>
 <listitem>
 	<para>Bestimmte Gruppennamen werden anhand einer Mapping-Tabelle umgesetzt, so
-dass z.B. die UCS-Gruppe <emphasis>Domain Users</emphasis> mit der AD-Gruppe
-<emphasis>Domänen-Benutzer</emphasis>. synchronisiert wird. Dieses Mapping kann in
+dass z.B. die UCS-Gruppe <systemitem class="groupname">Domain Users</systemitem> mit der AD-Gruppe
+<systemitem class="groupname">Domänen-Benutzer</systemitem>. synchronisiert wird. Dieses Mapping kann in
 englischsprachigen AD-Domänen dazu führen, das die deutschsprachigen
 Gruppen angelegt werden und sollte in diesem Fall deaktiviert
 werden. Dazu kann die &ucsUCRV; <envar>connector/ad/mapping/group/language</envar>
@@ -1536,16 +1539,16 @@ Die vollständige Tabelle ist:
 </thead>
 <tbody>
 <row>
-<entry>Domain Users</entry>
-<entry>Domänen-Benutzer</entry>
+	<entry><systemitem class="groupname" lang="en">Domain Users</systemitem></entry>
+	<entry><systemitem class="groupname" lang="de">Domänen-Benutzer</systemitem></entry>
 </row>
 <row>
-<entry>Domain Admins</entry>
-<entry>Domänen-Admins</entry>
+	<entry><systemitem class="groupname" lang="en">Domain Admins</systemitem></entry>
+	<entry><systemitem class="groupname" lang="de">Domänen-Admins</systemitem></entry>
 </row>
 <row>
-<entry>Windows Hosts</entry>
-<entry>Domänencomputer</entry>
+	<entry><systemitem class="groupname" lang="en">Windows Hosts</systemitem></entry>
+	<entry><systemitem class="groupname" lang="de">Domänencomputer</systemitem></entry>
 </row>
 </tbody>
 </tgroup>
@@ -1586,7 +1589,7 @@ der Mapping-Konfiguration auskommentiert, sind <emphasis>Primäre Mail-Adresse</
 <emphasis>Telefonnummer</emphasis>.
 </para>
 <para>
-Ausgenommen werden die Benutzer <emphasis>root</emphasis> und <emphasis>Administrator</emphasis>.
+Ausgenommen werden die Benutzer <systemitem class="username">root</systemitem> und <systemitem class="username">Administrator</systemitem>.
 </para>
 
 <section id="windows:benutzer:Besonderheiten"><title>Besonderheiten</title>
@@ -1617,7 +1620,7 @@ eingestellten Polling-Intervall des Connectors.
 </simpara>
 </listitem>
 <listitem><simpara>AD und UCS legen neue Benutzer per Voreinstellung in eine bestimmte
-primäre Gruppe (meist <emphasis>Domain Users</emphasis> bzw. <emphasis>Domänen Benutzer</emphasis>). Während
+primäre Gruppe (meist <systemitem class="groupname">Domain Users</systemitem> bzw. <systemitem class="groupname">Domänen Benutzer</systemitem>). Während
 der ersten Synchronisation von UCS nach AD werden die Benutzer daher
 immer in dieser Gruppe Mitglied.
 </simpara>
@@ -1704,13 +1707,13 @@ immer in dieser Gruppe Mitglied.
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Es wird empfohlen auf dem AD-Server dasselbe <emphasis>Administrator</emphasis>-Passwort zu verwenden wie in
+		  Es wird empfohlen auf dem AD-Server dasselbe <systemitem class="username">Administrator</systemitem>-Passwort zu verwenden wie in
 		  der UCS-Domäne. Werden verschiedene Passwörter verwendet, wird anhand der Zeitstempel
 		  verglichen welches Passwort aktueller ist und dieses verwendet.
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  In der Grundeinstellung ist das lokale <emphasis>Administrator</emphasis> Konto auf dem
+		  In der Grundeinstellung ist das lokale <systemitem class="username">Administrator</systemitem> Konto auf dem
 		  AD-Server deaktiviert. Es sollte in der lokalen Benutzerverwaltung aktiviert werden.
 		</simpara></listitem>
 
@@ -1718,7 +1721,7 @@ immer in dieser Gruppe Mitglied.
 	</para>
 
 	<para>
-	  Die Aktivierung des <emphasis>Administrator</emphasis>-Kontos wird empfohlen weil dieses Konto
+	  Die Aktivierung des <systemitem class="username">Administrator</systemitem>-Kontos wird empfohlen weil dieses Konto
 	  über die nötigen Berechtigungen verfügt um die Gruppenrichtlinien-Dateien in der SYSVOL-Freigabe zu
 	  kopieren. Der Benutzer kann entweder im AD-Verwaltungs-Tool für Benutzer und Gruppen
 	  oder mit den folgenden Kommandos auf der Kommandozeile aktiviert werden:
@@ -1742,7 +1745,7 @@ net user administrator PASSWORT
 
 	<para>
 	  Andere Samba-Systeme können gestoppt werden, indem auf jedem UCS-Domänencontroller als
-	  Benutzer <emphasis>root</emphasis> folgender Befehl ausgeführt wird:
+	  Benutzer <systemitem class="username">root</systemitem> folgender Befehl ausgeführt wird:
 
 	  <programlisting language="sh">
 /etc/init.d/samba4 stop
@@ -1764,8 +1767,8 @@ ucr set connector/s4/mapping/group/grouptype=false
 	  Takeover</guimenu>. Unter <guimenu>Name oder Adresse des Domänencontrollers</guimenu> muss die
 	  IP-Adresse des AD-Systems angegeben werden. Unter <guimenu>Active Directory
 	  Administratorkonto</guimenu> muss ein Konto der AD-Domäne angegeben werden, das Mitglied der
-	  AD-Gruppe  <emphasis>Domain Admins</emphasis> ist (z.B. der
-	  <emphasis>Administrator</emphasis>) und unter <guimenu>Active Directory
+	  AD-Gruppe  <systemitem class="groupname">Domain Admins</systemitem> ist (z.B. der
+	  <systemitem class="username">Administrator</systemitem>) und unter <guimenu>Active Directory
 	  Administratorpasswort</guimenu> das dazugehörige Passwort.
 	</para>
 
@@ -1812,7 +1815,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 		  lokal eine &ucsUCR; Variable, die dem englischen Namen den nicht-englischen Namen
 		  zuordnet. Diese Variablen werden verwendet, um die in den UCS Konfigurationsdateien
 		  verwendeten englischen Begriffe in die Namen zu übersetzen, die in dem AD verwendet
-		  wurden. Wenn zum Beispiel <emphasis>Domain Admins</emphasis> einen anderen Namen
+		  wurden. Wenn zum Beispiel <systemitem class="groupname">Domain Admins</systemitem> einen anderen Namen
 		  im AD hat, dann wird die &ucsUCR; Variable <envar>groups/default/domainadmins</envar>
 		  auf den spezifischen Namen gesetzt
 		  (analog für Benutzer, z.B. <envar>users/default/administrator</envar>).
@@ -1827,7 +1830,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	</para>
 
 	<para>
-	  Nun muss eine Anmeldung als <emphasis>Administrator</emphasis> am Active
+	  Nun muss eine Anmeldung als <systemitem class="username">Administrator</systemitem> am Active
 	  Directory-Domänencontroller erfolgen und dort die Dateien mit den Gruppenrichtlinien aus der
 	  SYSVOL-Freigabe des AD-Servers auf den UCS-Server kopiert werden.
 	</para>
@@ -1922,7 +1925,7 @@ samba-tool dbcheck --fix --yes
 		  Rechnerkonten der weiteren Domänencontroller in der Rechnerverwaltung der UMC gelöscht
 		  werden. Außerdem müssen sie aus der Samba SAM-Datenbank gelöscht werden. Dies kann
 		  erfolgen, indem von einem migrierten Windows-Client eine Anmeldung als Mitglied der Gruppe
-		  <emphasis>Domain Admins</emphasis> erfolgt und das AD-Verwaltungstool für Benutzer und
+		  <systemitem class="groupname">Domain Admins</systemitem> erfolgt und das AD-Verwaltungstool für Benutzer und
 		  Computer aufgerufen wird.
 		</simpara></listitem>
 

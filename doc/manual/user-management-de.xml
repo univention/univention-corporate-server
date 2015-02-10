@@ -205,7 +205,7 @@
                         <entry>
                             In dieser Auswahlliste kann die primäre Gruppe für den Benutzer festgelegt
                             werden. Zur Auswahl stehen alle in der Domäne eingetragenen Gruppen.
-                            Standardmäßig ist die Gruppe <emphasis>Domain Users</emphasis> als Vorgabe eingestellt.
+                            Standardmäßig ist die Gruppe <systemitem class="groupname">Domain Users</systemitem> als Vorgabe eingestellt.
                         </entry>
                     </row>
                     <row>
@@ -397,7 +397,7 @@
                         <entry>
                             Wenn das Windows-Heimatverzeichnis bei diesem Benutzer auf einem anderen
                             Windows-Laufwerk erscheinen soll, als in der Samba-Konfiguration vorgegeben,
-                            so kann hier ein Laufwerksbuchstabe eingetragen werden, z.B. <emphasis>M:</emphasis>.
+                            so kann hier ein Laufwerksbuchstabe eingetragen werden, z.B. <filename class="partition">M:</filename>.
                         </entry>
                     </row>
                     <row>
@@ -405,21 +405,21 @@
                         <entry>
                             Hier wird der Pfad zu dem Verzeichnis angegeben, das als
                             Windows-Heimatverzeichnis für den Benutzer dienen soll,
-                            z.B. <emphasis>\\ucs-file-server\meier</emphasis>.
+                            z.B. <filename class="directory">\\ucs-file-server\meier</filename>.
                         </entry>
                     </row>
                     <row>
                         <entry>Anmeldeskript</entry>
                         <entry>
                             Hier wird das benutzerspezifische Anmeldeskript relativ zur Netlogon-Freigabe
-                            eingetragen, z.B. <emphasis>scripts\user.bat</emphasis>.
+                            eingetragen, z.B. <filename>scripts\user.bat</filename>.
                         </entry>
                     </row>
                     <row>
                         <entry>Profilverzeichnis</entry>
                         <entry>
                             Das Profilverzeichnis für den Benutzer kann hier angegeben werden,
-                            e.g. <emphasis>\\ucs-file-server\user\profile</emphasis>.
+                            e.g. <filename class="directory">\\ucs-file-server\user\profile</filename>.
                         </entry>
                     </row>
                     <row>
@@ -643,7 +643,7 @@
                         <entry>
                             Hier kann der Pfad zu einem Verzeichnis angegeben werden, das als
                             Windows-Heimatverzeichnis für den Benutzer am Terminalserver dienen
-                            soll, z.B <emphasis>\\ucs-file-server\ts\user</emphasis>.
+                            soll, z.B <filename class="directory">\\ucs-file-server\ts\user</filename>.
                         </entry>
                     </row>
                     <row>
@@ -652,7 +652,7 @@
                             Wenn das Windows-Heimatverzeichnis bei diesem Benutzer auf einem anderen
                             Windows-Laufwerk erscheinen soll, als in der Samba-Konfiguration vorgegeben,
                             so kann der entsprechende Laufwerksbuchstabe mit anschließendem Doppelpunkt
-                            hier eingetragen werden, z.B: <emphasis>M:</emphasis>.
+                            hier eingetragen werden, z.B: <filename class="partition">M:</filename>.
                         </entry>
                     </row>
                     <row>
@@ -1104,7 +1104,7 @@
             zurückgesetzt.
         </para>
         <para>
-            Der <emphasis>root</emphasis>-Benutzer ist standardmäßig von der Passwort-Sperre ausgenommen, kann
+            Der <systemitem class="username">root</systemitem>-Benutzer ist standardmäßig von der Passwort-Sperre ausgenommen, kann
             aber durch Setzen der &ucsUCRV; <envar>auth/faillog/root</envar> auf <literal>yes</literal> ebenfalls
             aufgenommen werden.
         </para>

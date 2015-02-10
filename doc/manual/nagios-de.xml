@@ -119,28 +119,28 @@
 
 	<para>
 	Neben den Standard-Plugins, die mit der Installation des
-	Pakets <emphasis>univention-nagios-client</emphasis> mitgebracht werden, können
+	Pakets <package>univention-nagios-client</package> mitgebracht werden, können
 	zusätzliche Plugins über folgende Pakete nachinstalliert werden:
 	</para>
 	<itemizedlist>
 		<listitem>
 			<simpara>
-			<emphasis>univention-nagios-raid</emphasis> Überwachung des Software-RAID-Status
+			<package>univention-nagios-raid</package> Überwachung des Software-RAID-Status
 			</simpara>
 		</listitem>
 		<listitem>
 			<simpara>
-			<emphasis>univention-nagios-smart</emphasis> Prüfung des S.M.A.R.T.-Status von Festplatten
+			<package>univention-nagios-smart</package> Prüfung des S.M.A.R.T.-Status von Festplatten
 			</simpara>
 		</listitem>
 		<listitem>
 			<simpara>
-			<emphasis>univention-nagios-opsi</emphasis> Prüfung der Softwareverteilung OPSI
+			<package>univention-nagios-opsi</package> Prüfung der Softwareverteilung OPSI
 			</simpara>
 		</listitem>
 		<listitem>
 			<simpara>
-			<emphasis>univention-nagios-ad-connector</emphasis> Prüfung des AD Connectors
+			<package>univention-nagios-ad-connector</package> Prüfung des AD Connectors
 			</simpara>
 		</listitem>
 	</itemizedlist>
@@ -149,7 +149,7 @@
 	Einige der Pakete werden bei der Installation der entsprechenden
 	Dienste automatisch mit eingerichtet.
 	Wird beispielsweise der UCS AD Connector eingerichtet, bringt dieser
-	das Überwachungs-Plugin <emphasis>univention-nagios-ad-connector</emphasis> mit.
+	das Überwachungs-Plugin <package>univention-nagios-ad-connector</package> mit.
 	</para>
 
 	<section id="nagios:preconfiguredchecks">
@@ -198,10 +198,10 @@
 						<entry>
 							Testet die Funktion des lokalen DNS-Servers und die
 							Erreichbarkeit der öffentlichen DNS-Server durch die Abfrage
-							des Rechnernamens <emphasis>www.univention.de</emphasis>.
+							des Rechnernamens <systemitem class="fqdomainname">www.univention.de</systemitem>.
 							Ist für die UCS-Domäne kein DNS-Forwarder definiert,
 							schlägt diese Abfrage fehl.
-							In diesem Fall kann <emphasis>www.univention.de</emphasis> z.B. gegen den FQDN
+							In diesem Fall kann <systemitem class="fqdomainname">www.univention.de</systemitem> z.B. gegen den FQDN
 							des Domaincontroller Master ersetzt werden, um die Funktion
 							des Namensauflösung zu testen.
 						</entry>
@@ -524,8 +524,8 @@
 							Da nicht alle Parameter der Nagios-Plugins in den Plugin-Kommandos
 							vordefiniert werden können, ist oft die Angabe zusätzlicher Parameter
 							notwendig. Die hier angegeben Parameter werden durch Ausrufungszeichen
-							("<emphasis>!</emphasis>") getrennt.
-							(z.B. <emphasis>20%!10%!/home</emphasis>).
+							("<literal>!</literal>") getrennt.
+							(z.B. <userinput>20%!10%!/home</userinput>).
 						</entry>
 					</row>
 					<row>
@@ -535,7 +535,7 @@
 							(z.B. Prüfung des verfügbaren Plattenplatzes auf der Root-Partition), kann über den
 							Nagios Remote Plugin Executor Daemon (NRPED) das Plugin auf einem entfernten
 							UCS-System aufgerufen werden. Dazu muss dort das
-							Paket <emphasis>univention-nagios-client</emphasis> installiert sein.
+							Paket <package>univention-nagios-client</package> installiert sein.
 						</entry>
 					</row>
 				</tbody>
@@ -900,7 +900,7 @@
 							Diese Liste enthält die Email-Adressen von Kontaktpersonen,
 							die beim Feststellen einer Störung per Email benachrichtigt
 							werden sollen. Werden hier keine Email-Adressen angegeben,
-							wird der lokale <emphasis>root</emphasis>-Benutzer benachrichtigt.
+							wird der lokale <systemitem class="username">root</systemitem>-Benutzer benachrichtigt.
 						</entry>
 					</row>
 					<row>
@@ -964,7 +964,7 @@
 
 	<para>
 	Der Zugriff wird in der Standardeinstellung ausschließlich Benutzern der
-	Gruppe <emphasis>Domain Admins</emphasis> (z.B. der Benutzer Administrator) gewährt.
+	Gruppe <systemitem class="groupname">Domain Admins</systemitem> (z.B. der Benutzer Administrator) gewährt.
 	Es besteht auch die Möglichkeit den Kreis der Anmeldeberechtigten zu erweitern.
 	</para>
 	<!--
@@ -1023,7 +1023,7 @@
   <para>
 	Das Nagios-Plugin muss nun registriert werden. Dies erfolgt durch ein Makro im
 	Verzeichnis <filename class="directory">/etc/nagios-plugins/config/</filename>. Hierbei kann z.B. eine Datei wie
-	<emphasis>local.cfg</emphasis> verwendet werden, in der dann alle lokal registrierten Plugins
+	<filename>local.cfg</filename> verwendet werden, in der dann alle lokal registrierten Plugins
 	eingetragen werden. Das folgende Beispiel registriert das
 	Plugin <command>check_e2fs_next_fsck</command>:
   </para>

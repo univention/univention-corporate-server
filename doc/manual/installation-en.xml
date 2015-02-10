@@ -149,7 +149,7 @@ Following installation on hardware or in a virtualization solution, UCS can also
 	<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/installer-netcfg-static_en.png"/>
   </figure>
   <para>
-	In manual configuration it is possible to specify either a static IPv4 or an IPv6 address for the system. IPv4 addresses have a 32-bit length and are generally written in four blocks in decimal form (e.g., 192.168.0.10), whereas IPv6 addresses are four times as long and typically written in hexadecimal form (e.g., 2001:0DFE:FE29:DE27:0000:0000:0000:0000).
+	In manual configuration it is possible to specify either a static IPv4 or an IPv6 address for the system. IPv4 addresses have a 32-bit length and are generally written in four blocks in decimal form (e.g., <systemitem class="ipaddress">192.168.0.10</systemitem>), whereas IPv6 addresses are four times as long and typically written in hexadecimal form (e.g., <systemitem class="ipaddress">2001:0DFE:FE29:DE27:0000:0000:0000:0000</systemitem>).
 	In addition to entering a static IP address, values for network masks, gateways and DNS servers are also requested.
   </para>
   <figure id="installation-netcfg-ip">
@@ -180,10 +180,10 @@ Following installation on hardware or in a virtualization solution, UCS can also
 <section id="installation:rootpassword">
   <title>Setting up the root password</title>
   <para>
-	Setting of a password for the <emphasis>root</emphasis> user is required for logging on to the installed system.
+	Setting of a password for the <systemitem class="username">root</systemitem> user is required for logging on to the installed system.
 If a &ucsMaster; is installed, this password is also employed for the
-<emphasis>administrator</emphasis> user.
-In later operation, the passwords for the <emphasis>root</emphasis> and <emphasis>administrator</emphasis>
+<systemitem class="username">administrator</systemitem> user.
+In later operation, the passwords for the <systemitem class="username">root</systemitem> and <systemitem class="username">administrator</systemitem>
 users can be managed independently of each other. The password must be re-entered in the second entry field.
   </para>
   <para>
@@ -451,7 +451,7 @@ see <xref linkend="installation-overview"/>.
 	The UCS system is then prepared for the first booting procedure and restarted.
   </para>
   <para>
-	The system will then boot from the hard drive. Following the boot procedure, the <emphasis>root</emphasis> and <emphasis>administrator</emphasis> users can log on via the web frontend &ucsUMC; (see <xref linkend="central:general"/>), which can be reached under the IP address set during the installation or the host name.
+	The system will then boot from the hard drive. Following the boot procedure, the <systemitem class="username">root</systemitem> and <systemitem class="username">administrator</systemitem> users can log on via the web frontend &ucsUMC; (see <xref linkend="central:general"/>), which can be reached under the IP address set during the installation or the host name.
 </para>
   <para>
 	If the computer was installed as the first system in the UCS domain (&ucsMaster;0), the license can now be imported (see <xref linkend="central:license"/>).
@@ -479,9 +479,9 @@ see <xref linkend="installation-overview"/>.
   </para>
   <para>
 	After restart the configuration may be resumed by using a web browser. The URL
-	<uri>https://SERVER-IP-ADDRESS/</uri> or <uri>http://SERVER-IP-ADDRESS/</uri> has to be opened
+	<uri>https://<replaceable>SERVER-IP-ADDRESS</replaceable></uri> or <uri>http://<replaceable>SERVER-IP-ADDRESS</replaceable></uri> has to be opened
 	within the browser (HTTPS is recommended). After loading the URI a login as user
-	<emphasis>root</emphasis> is required.
+	<systemitem class="username">root</systemitem> is required.
   </para>
   <para>
 	The configuration process asks for location and network setting and then resumes with the same

@@ -35,8 +35,8 @@
 	</figure>
 	<para>
 	  So kann beispielsweise ein Netzwerk-Objekt <emphasis>Produktivnetz</emphasis>
-	  definiert werden, das sich über die IP-Adressen von 192.168.2.0 bis
-	  192.168.2.254 erstreckt. Wird nun ein Windows-Rechnerobjekt angelegt, muss nun nur
+	  definiert werden, das sich über die IP-Adressen von <systemitem class="ipaddress">192.168.2.0</systemitem> bis
+	  <systemitem class="ipaddress">192.168.2.254</systemitem> erstreckt. Wird nun ein Windows-Rechnerobjekt angelegt, muss nun nur
 	  das Netzwerk-Objekt ausgewählt werden. Es wird dann intern
 	  geprüft, welche der IP-Adressen des Netzes bereits vergeben sind und die nächste
 	  freie ausgewählt. Wird ein Rechnerobjekt entfernt, wird die Adresse
@@ -74,7 +74,7 @@
 			<entry>Netzwerk</entry>
 			<entry>
 			  In diesem Eingabefeld muss die Netzwerk-Adresse in Oktettschreibweise
-			  eingetragen werden, z.B. <emphasis>192.168.1.0</emphasis>
+			  eingetragen werden, z.B. <systemitem class="ipaddress">192.168.1.0</systemitem>
 			</entry>
 		  </row>
 		  <row>
@@ -331,7 +331,7 @@
 	<section id="ip-config:dns:umc">
 	  <title>Konfiguration der DNS-Daten in &ucsUMC;</title>
 	  <para>
-		DNS-Daten werden standardmäßig im Container <emphasis>cn=dns,&lt;Basis-DN></emphasis>
+		DNS-Daten werden standardmäßig im Container <uri>cn=dns,&lt;Basis-DN></uri>
 		abgelegt. Forward- und Reverse-Lookup-Zonen werden direkt in dem
 		Container abgelegt. In den jeweiligen Zonen können
 		zusätzliche DNS-Objekte wie z.B. Pointer-Records angelegt werden.
@@ -809,8 +809,8 @@
 				<entry>
 				  Die IP-Adresse des Netzwerkes, für das die Reverse Lookup Zone gültig
 				  sein soll. Wenn beispielsweise das betreffende Netz aus den
-				  IP-Adressen <emphasis>192.168.1.0</emphasis> bis <emphasis>192.168.1.255</emphasis> besteht, wäre
-				  <emphasis>192.168.1</emphasis> einzutragen.
+				  IP-Adressen <systemitem class="ipaddress">192.168.1.0</systemitem> bis <systemitem class="ipaddress">192.168.1.255</systemitem> besteht, wäre
+				  <systemitem class="ipaddress">192.168.1</systemitem> einzutragen.
 				</entry>
 			  </row>
 			  <row>
@@ -925,16 +925,16 @@
 				  </para>
 				  <para>
 					Ein Beispiel: In einem Netzwerk mit 24 Bit langem Netz-Präfix (Netzmaske
-					255.255.255.0) soll für den Rechner <emphasis>client001</emphasis> mit der
-					IP-Adresse 192.168.1.101 ein Pointer angelegt werden. In das Feld
-					<guimenu>Adresse</guimenu> ist dann <emphasis>101</emphasis> und in
-					<guimenu>Pointer</guimenu> <emphasis>client001.firma.com.</emphasis> einzutragen.
+					<systemitem class="netmask">255.255.255.0</systemitem>) soll für den Rechner <systemitem class="systemname">client001</systemitem> mit der
+					IP-Adresse <systemitem class="ipaddress">192.168.1.101</systemitem> ein Pointer angelegt werden. In das Feld
+					<guimenu>Adresse</guimenu> ist dann <userinput>101</userinput> und in
+					<guimenu>Pointer</guimenu> <userinput>client001.firma.com.</userinput> einzutragen.
 				  </para>
 				  <para>
 					Bei einem Netzwerk mit 16 Bit langem Netz-Präfix (Netzmaske
-					255.255.0.0) müssten für diesen Rechner die letzten zwei Oktette in
-					umgekehrter Reihenfolge (hier <emphasis>101.1</emphasis>) eingetragen werden. In das
-					Feld <guimenu>Pointer</guimenu> wäre auch hier <emphasis>client001.firma.com.</emphasis>
+					<systemitem class="netmask">255.255.0.0</systemitem>) müssten für diesen Rechner die letzten zwei Oktette in
+					umgekehrter Reihenfolge (hier <userinput>101.1</userinput>) eingetragen werden. In das
+					Feld <guimenu>Pointer</guimenu> wäre auch hier <userinput>client001.firma.com.</userinput>
 					einzutragen.
 				  </para>
 				</entry>
@@ -1099,7 +1099,7 @@
 				<entry>Service-Name</entry>
 				<entry>
 				  In dieses Eingabefeld muss ein beliebiger, aber eindeutiger Name für den
-				  DHCP-Service eingetragen werden, z.B. <emphasis>firma.com</emphasis>.
+				  DHCP-Service eingetragen werden, z.B. <userinput>firma.com</userinput>.
 				</entry>
 			  </row>
 			</tbody>
@@ -1137,7 +1137,7 @@
 				<entry>
 				  <para>
 					In diesem Eingabefeld ist der Rechnername, der den DHCP-Dienst anbieten soll,
-					einzutragen, z.B. <emphasis>ucs-master</emphasis>.
+					einzutragen, z.B. <systemitem class="systemname">ucs-master</systemitem>.
 				  </para>
 				  <para>
 					Ein Server kann immer nur einen einzigen DHCP-Dienst anbieten und kann deshalb nicht gleichzeitig in mehreren DHCP-Services eingetragen sein.
@@ -1189,7 +1189,7 @@
 				<entry>Subnetz-Adresse</entry>
 				<entry>
 				  In diesem Eingabefeld ist die IP-Adresse des Subnetzes in
-				  Oktettschreibweise einzutragen, z.B. <emphasis>192.168.1.0</emphasis>.
+				  Oktettschreibweise einzutragen, z.B. <systemitem class="ipaddress">192.168.1.0</systemitem>.
 				</entry>
 			  </row>
 			  <row>
@@ -1418,8 +1418,8 @@
 				<entry>Adresse</entry>
 				<entry>
 				  In diesem Eingabefeld ist die MAC-Adresse der Netzwerkkarte
-				  einzutragen, z.B. <emphasis>2e:44:56:3f:12:32</emphasis> oder
-				  <emphasis>2e-44-56-3f-12-32</emphasis>.
+				  einzutragen, z.B. <systemitem class="etheraddress">2e:44:56:3f:12:32</systemitem> oder
+				  <systemitem class="etheraddress">2e-44-56-3f-12-32</systemitem>.
 				</entry>
 			  </row>
 			  <row>
@@ -1914,8 +1914,8 @@
 	  <para>
 		Standardmäßig darf nur aus lokalen Netzwerken auf den Proxy-Server zugegriffen
 		werden. Ist z.B. an dem Rechner, auf dem Squid installiert wurde, ein
-		Netzwerkinterface mit der Adresse 192.168.1.10 und der Netzmaske 255.255.255.0
-		vorhanden, dürfen nur Rechner aus dem Netzwerk 192.168.1.0/24 auf den
+		Netzwerkinterface mit der Adresse <systemitem class="ipaddress">192.168.1.10</systemitem> und der Netzmaske <systemitem class="netmask">255.255.255.0</systemitem>
+		vorhanden, dürfen nur Rechner aus dem Netzwerk <systemitem class="ipaddress">192.168.1.0/24</systemitem> auf den
 		Proxy-Server zugreifen. Weitere Netzwerke können über die
 		&ucsUCRV; <envar>squid/allowfrom</envar> angegeben werden. Dabei muss die CIDR-Notation
 		verwendet werden, mehrere Netzwerke sind durch Leerzeichen zu trennen.
@@ -1923,7 +1923,7 @@
 univention-config-registry set squid/allowfrom="192.168.2.0/24 192.168.3.0/24"
 		</programlisting>
 		Nach einem Neustart von Squid ist jetzt der Zugriff aus den Netzwerken
-		192.168.2.0/24 und 192.168.3.0/24 erlaubt. Durch Angabe von <emphasis>all</emphasis> kann der Zugriff auch aus allen Netzen erlaubt werden.
+		<systemitem class="ipaddress">192.168.2.0/24</systemitem> und <systemitem class="ipaddress">192.168.3.0/24</systemitem> erlaubt. Durch Angabe von <literal>all</literal> kann der Zugriff auch aus allen Netzen erlaubt werden.
 	  </para>
 	  <para>
 		Wenn Squid zusammen mit DansGuardian eingesetzt wird, d.h. die Viren- oder

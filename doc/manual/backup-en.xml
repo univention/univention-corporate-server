@@ -156,8 +156,8 @@ section of the <filename>/etc/bacula/bacula-dir.conf</filename> file.
 			</para>
 			<para>
 The default values can be kept, only the <varname>DirAddress</varname>
-option should be changed from <literal>127.0.0.1</literal>, in other
-words <constant>localhost</constant>, to the IP address of the Bacula server. In
+option should be changed from <systemitem class="ipaddress">127.0.0.1</systemitem>, in other
+words <systemitem class="systemname">localhost</systemitem>, to the IP address of the Bacula server. In
 addition, the <varname>Password</varname> field should be configured
 			</para>
 			<programlisting>
@@ -388,7 +388,7 @@ The <command>run</command> command can be used to start a job. In
 addition, a list of available jobs is displayed from which one has to
 select the required job. The <command>mod</command> command can be used
 to set and change options such as the backup type for the job.
-Confirming with <command>yes</command> starts the job.
+Confirming with <userinput>yes</userinput> starts the job.
 				</simpara>
 			</listitem>
 			<listitem>
@@ -403,7 +403,7 @@ files and directories respectively for the restore. Once all the
 required data are selected, the file browser is exited with
 <command>done</command>. Once the client is specified and some options
 for the restore job confirmed (e.g., where the data should be copied
-to), the job can be started with <command>yes</command>. The selected
+to), the job can be started with <userinput>yes</userinput>. The selected
 data will be saved in the configured restore directory. If a tape is
 required for a backup or restore and it is not in the drive, Bacula
 requests the tape explicitly

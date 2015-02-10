@@ -106,29 +106,29 @@
 					The &ucsMaster; is usually detected via a DNS request. If that is not
 					possible (e.g., a DC slave server with a different DNS domain is set to join),
 					the computer name of the DC master can also be entered directly using the
-					<command>-dcname HOSTNAME</command> parameter. The computer name must then be
+					<option>-dcname <replaceable>HOSTNAME</replaceable></option> parameter. The computer name must then be
 					entered as a fully qualified name, e.g.,
-					<emphasis>master.company.com</emphasis>.
+					<systemitem class="fqdomainname">master.company.com</systemitem>.
 					</simpara>
 				</listitem>
 				<listitem>
 					<simpara>
 					A user account which is authorised to add systems to the UCS domains
 					is called a join account. By default, this is the
-					<emphasis>Administrator</emphasis> user or a member of the <emphasis>Domain
-					Admins</emphasis> group. The join account can be assigned using the
-					<command>-dcaccount ACCOUNTNAME</command> parameter.
+					<systemitem class="username">Administrator</systemitem> user or a member of the <systemitem class="groupname">Domain
+					Admins</systemitem> group. The join account can be assigned using the
+					<option>-dcaccount <replaceable>ACCOUNTNAME</replaceable></option> parameter.
 					</simpara>
 				</listitem>
 				<listitem>
 					<simpara>
-					The password can be set using the <command>-dcpwd FILE</command>
+					The password can be set using the <option>-dcpwd <replaceable>FILE</replaceable></option>
 					parameter. The password is then read out of the specified file.
 					</simpara>
 				</listitem>
 				<listitem>
 					<simpara>
-				  The <emphasis>-verbose</emphasis> parameter is used to add additional debug
+				  The <option>-verbose</option> parameter is used to add additional debug
 				  output to the log files, which simplify the analysis in case of errors.
 					</simpara>
 				</listitem>
@@ -140,7 +140,7 @@
 			<para>
 				A domain join can also be carried out web based via the UMC module <guimenu>Domain join</guimenu>.
 				As the Administrator user does not yet exist on a system which has yet to join
-				the domain, the login to &ucsUMC; is done as user <emphasis>root</emphasis>.
+				the domain, the login to &ucsUMC; is done as user <systemitem class="username">root</systemitem>.
 			</para>
 			<para>
 				As for the domain joining procedure via the command line, username and password of a
@@ -206,7 +206,7 @@
 				If <command>univention-run-join-scripts</command> is run on another system role
 				than the &ucsMaster;, the user will be asked to input a username and
 				password. This can be performed on the &ucsMaster; via the
-				<emphasis>--ask-pass</emphasis> option.
+				<option>--ask-pass</option> option.
 			</para>
 		  </section>
 		</section>
@@ -296,9 +296,9 @@
 			  The <guimenu>Domain</guimenu> option field must be ticked and the name of the
 			  Samba domain entered in the input field for the domain join. After clicking on
 			  the <mousebutton>OK</mousebutton> button, the
-			  <emphasis>Administrator</emphasis> must be entered in the input field
+			  <systemitem class="username">Administrator</systemitem> must be entered in the input field
 			  <guimenu>Name</guimenu> and the password from
-			  <emphasis>uid=Administrator,cn=users,&lt;Basis-DN&gt;</emphasis> transferred to
+			  <uri>uid=Administrator,cn=users,&lt;Basis-DN&gt;</uri> transferred to
 			  the <guimenu>Password</guimenu> input field. The process for joining the domain
 			  can then be started by clicking on <mousebutton>OK</mousebutton>.
 			</para>
@@ -327,9 +327,9 @@
 				The <guimenu>Domain</guimenu> option field must be ticked and the name of the
 				Samba domain entered in the input field for the domain join. After clicking on
 				the <mousebutton>OK</mousebutton> button, the
-				<emphasis>Administrator</emphasis> must be entered in the input field
+				<systemitem class="username">Administrator</systemitem> must be entered in the input field
 				<guimenu>Name</guimenu> and the password from
-				<emphasis>uid=Administrator,cn=users,&lt;Basis-DN&gt;</emphasis> transferred to
+				<uri>uid=Administrator,cn=users,&lt;Basis-DN&gt;</uri> transferred to
 				the <guimenu>Password</guimenu> input field. The process for joining the domain
 				can then be started by clicking on <mousebutton>OK</mousebutton>.
 			</para>
@@ -354,9 +354,9 @@
 		  <para>
 			The <guimenu>Domain</guimenu> option field must be ticked and the name of the Samba
 			domain entered in the input field for the domain join. After clicking on the
-			<mousebutton>OK</mousebutton> button, the <emphasis>Administrator</emphasis> must be
+			<mousebutton>OK</mousebutton> button, the <systemitem class="username">Administrator</systemitem> must be
 			entered in the input field <guimenu>Name</guimenu> and the password from
-			<emphasis>uid=Administrator,cn=users,&lt;Basis-DN&gt;</emphasis> transferred to the
+			<uri>uid=Administrator,cn=users,&lt;Basis-DN&gt;</uri> transferred to the
 			<guimenu>Password</guimenu> input field. The process for joining the domain can then be
 			started by clicking on <mousebutton>OK</mousebutton>.
 		  </para>
@@ -428,8 +428,8 @@
 			After filling in the domainname in the field <guimenu>Active Directory Domain</guimenu>
 			and the hostname of the Mac OS X client in the field <guimenu>Computer ID</guimenu>, the
 			join process is initiated after clicking the button <guimenu>Bind...</guimenu>. The
-			username and password of an account in the <emphasis>Domain Admins</emphasis> group
-			needs to be entered, e.g. <emphasis>Administrator</emphasis>.
+			username and password of an account in the <systemitem class="groupname">Domain Admins</systemitem> group
+			needs to be entered, e.g. <systemitem class="username">Administrator</systemitem>.
 		  </para>
 		</section>
 
@@ -787,7 +787,7 @@ slapcat &gt; ldapdata.txt
 			suppress access to sensitive files (e.g., the user password) and establish
 			rules which are necessary for operation (e.g., necessary accesses to computer
 			accounts for log-ins). The read and write access to this sensitive information
-			if only intended for members of the <emphasis>Domain Admins</emphasis>
+			if only intended for members of the <systemitem class="groupname">Domain Admins</systemitem>
 			group. Nested groups are also supported. The &ucsUCRV;
 			<envar>ldap/acl/nestedgroups</envar> can be used to deactivate the nested
 			groups function for LDAP ACLs, which will result in a speed increase for
@@ -799,14 +799,14 @@ slapcat &gt; ldapdata.txt
 			<para>
 				To facilitate the delegation of the privilege to reset user passwords, the
 				<package>univention-admingrp-user-passwordreset</package> package can be
-				installed. It uses a join script to create the <emphasis>User Password
-				Admins</emphasis> user group, in so far as this does not already exist.
+				installed. It uses a join script to create the <systemitem class="groupname">User Password
+				Admins</systemitem> user group, in so far as this does not already exist.
 			</para>
 			<para>
 				Members of this group receive the permission via additional LDAP ACLs to reset
 				the passwords of other users. These LDAP ACLs are activated automatically
 				during the package installation. To use another group, or a group that already
-				exists, instead of the <emphasis>User Password Admins</emphasis> group, the DN
+				exists, instead of the <systemitem class="groupname">User Password Admins</systemitem> group, the DN
 				of the group to be used can be entered in the &ucsUCRV;
 				<envar>ldap/acl/user/passwordreset/accesslist/groups/dn</envar>. The LDAP
 				server must be restarted after making changes.
@@ -814,7 +814,7 @@ slapcat &gt; ldapdata.txt
 
 			<para>
 			  Passwords can be reset via &ucsUMC;. In the default setting, &ucsUMC; only
-			  offers the user wizard to the <emphasis>Administrator</emphasis> user, which
+			  offers the user wizard to the <systemitem class="username">Administrator</systemitem> user, which
 			  allows the setting of new passwords. During the installation a new
 			  <emphasis>default-user-password-admins</emphasis> policy is created
 			  automatically, which is linked to the members of the <emphasis>User
@@ -846,7 +846,7 @@ slapcat &gt; ldapdata.txt
 			  users and groups. Multiple values must be separated by commas.
 			  After changes to the variables, it is necessary to restart the LDAP server using the
 			  <command>/etc/init.d/slapd restart</command> command. In the default setting, the
-			  members of the <emphasis>Domain Admins</emphasis> group are protected against having
+			  members of the <systemitem class="groupname">Domain Admins</systemitem> group are protected against having
 			  theirs password changed.
 			</para>
 
@@ -877,7 +877,7 @@ slapcat &gt; ldapdata.txt
 			What measures should be taken if the LDAP server cannot be reached can be
 			specified by the &ucsUCRV; <envar>nssldap/bindpolicy</envar>. As standard, if
 			the server cannot be reached, a new connection attempt is made. If the variable
-			is set to <emphasis>soft</emphasis>, then no new attempt is made to
+			is set to <literal>soft</literal>, then no new attempt is made to
 			connect. This can considerably accelerate the boot of a system if the LDAP
 			server cannot be reached, e.g., in an isolated test environment.
 		</para>
@@ -926,7 +926,7 @@ slapcat &gt; ldapdata.txt
 	  <para>
 		The LDAP data are stored in the <filename class="directory">/var/univention-backup/</filename> directory in
 		the naming scheme <filename>ldap-backup_DATE.ldif.gz</filename> in LDIF format. They can
-		only be read by the <emphasis>root</emphasis> user.
+		only be read by the <systemitem class="username">root</systemitem> user.
 	  </para>
 	</section>
 

@@ -36,7 +36,7 @@
 	<para>
 	  For example, it is possible to define a network object <emphasis>Workstation network</emphasis>
 	  which encompasses the IP addresses from
-	  192.168.2.0 to 192.168.2.254. If a Windows computer object is now
+	  <systemitem class="ipaddress">192.168.2.0</systemitem> to <systemitem class="ipaddress">192.168.2.254</systemitem>. If a Windows computer object is now
 	  created and only the network object selected, an internal check is
 	  performed for which IP addresses are already assigned and the next
 	  free one selected. This saves the administrator having to compile the
@@ -81,7 +81,7 @@
 			  <entry>
 				<para>
 				  The network address is entered in dot-decimal form in this input
-				  field, e.g., <emphasis>192.168.1.0</emphasis>.
+				  field, e.g., <systemitem class="ipaddress">192.168.1.0</systemitem>.
 				</para>
 			  </entry>
 			</row>
@@ -338,7 +338,7 @@
 	<section id="ip-config:dns:umc">
 	  <title>Administration of DNS data in &ucsUMC;</title>
 	  <para>
-		DNS files are stored in the <emphasis>cn=dns,&lt;base-dn&gt;</emphasis> container as
+		DNS files are stored in the <uri>cn=dns,&lt;base-dn&gt;</uri> container as
 		standard. Forward and reverse lookup zones are stored directly in the
 		container. Additional DNS objects such as pointer records can be stored in
 		the respective zones.
@@ -958,8 +958,8 @@
 					<para>
 					  The IP address of the network for which the reverse lookup zone shall
 					  apply. For example, if the network in question consisted of the IP
-					  addresses <emphasis>192.168.1.0</emphasis> to <emphasis>192.168.1.255</emphasis>,
-					  <emphasis>192.168.1</emphasis> should be entered.
+					  addresses <systemitem class="ipaddress">192.168.1.0</systemitem> to <systemitem class="ipaddress">192.168.1.255</systemitem>,
+					  <userinput>192.168.1</userinput> should be entered.
 					</para>
 				  </entry>
 				</row>
@@ -1126,20 +1126,20 @@
 					  The computer's fully qualified domain name with a full stop at the end.
 					</para>
 					<para>
-					  In a network with a 24-bit network prefix (subnet mask 255.255.255.0)
-					  a pointer should be created for the <emphasis>client001</emphasis>
-					  computer with the IP address 192.168.1.101.
-					  <emphasis>101</emphasis> must then be entered in the
-					  <guimenu>Address field</guimenu> and <emphasis>client001.company.com.</emphasis> in <guimenu>Pointer</guimenu>.
+					  In a network with a 24-bit network prefix (subnet mask <systemitem class="netmask">255.255.255.0</systemitem>)
+					  a pointer should be created for the <systemitem class="systemname">client001</systemitem>
+					  computer with the IP address <systemitem class="ipaddress">192.168.1.101</systemitem>.
+					  <userinput>101</userinput> must then be entered in the
+					  <guimenu>Address field</guimenu> and <userinput>client001.company.com.</userinput> in <guimenu>Pointer</guimenu>.
 					</para>
 					<para>
 					  Example:
 					</para>
 					<para>
-					  For a network with a 16-bit network prefix (subnet mask 255.255.0.0)
+					  For a network with a 16-bit network prefix (subnet mask <systemitem class="netmask">255.255.0.0</systemitem>)
 					  the last two octets should be entered in reverse order for this
-					  computer (here <emphasis>101.1</emphasis>).
-					  <emphasis>client001.company.com.</emphasis>also needs
+					  computer (here <userinput>101.1</userinput>).
+					  <userinput>client001.company.com.</userinput>also needs
 					  to be entered in the <guimenu>Pointer</guimenu>field here.
 					</para>
 				  </entry>
@@ -1307,7 +1307,7 @@ closest to the object always applies.
 				  <entry>
 					<para>
 					  An unambiguous name for the DHCP service must be entered in this input
-					  field, e.g., <emphasis>company.example</emphasis>.
+					  field, e.g., <userinput>company.example</userinput>.
 					</para>
 				  </entry>
 				</row>
@@ -1353,7 +1353,7 @@ closest to the object always applies.
 				  <entry>
 					<para>
 					  The computer name that the DHCP service should offer is entered in
-					  this input field, e.g., <emphasis>ucs-master</emphasis>.
+					  this input field, e.g., <systemitem class="systemname">ucs-master</systemitem>.
 					</para>
 					<para>
 					  A server can only ever provide a single DHCP service and therefore cannot be entered in more than one DHCP service at the same
@@ -1409,7 +1409,7 @@ closest to the object always applies.
 				  <entry>
 					<para>
 					  The IP address of the subnet must be entered in dot-decimal form in
-					  this input field, e.g., <emphasis>192.168.1.0</emphasis>.
+					  this input field, e.g., <systemitem class="ipaddress">192.168.1.0</systemitem>.
 					</para>
 				  </entry>
 				</row>
@@ -1673,7 +1673,7 @@ closest to the object always applies.
 				  <entry>
 					<para>
 					  The MAC address of the network card needs to be entered here,
-					  e.g., <emphasis>2e:44:56:3f:12:32</emphasis> or <emphasis>2e-44-56-3f-12-32</emphasis>.
+					  e.g., <systemitem class="etheraddress">2e:44:56:3f:12:32</systemitem> or <systemitem class="etheraddress">2e-44-56-3f-12-32</systemitem>.
 					</para>
 				  </entry>
 				</row>
@@ -2243,9 +2243,9 @@ closest to the object always applies.
 	  <para>
 		As standard, the proxy server can only be accessed from local
 		networks. If, for example, a network interface with the address
-		192.168.1.10 and the network mask 255.255.255.0 is available on the
+		<systemitem class="ipaddress">192.168.1.10</systemitem> and the network mask <systemitem class="netmask">255.255.255.0</systemitem> is available on the
 		computer on which Squid is installed, only computers from the network
-		192.168.1.0/24 can access the proxy server. Additional networks can be
+		<systemitem class="ipaddress">192.168.1.0/24</systemitem> can access the proxy server. Additional networks can be
 		specified via the &ucsUCRV; <envar>squid/allowfrom</envar>. When doing so, the CIDR
 		notation must be used; several networks should be separated by blank
 		spaces.
@@ -2258,7 +2258,7 @@ univention-config-registry set squid/allowfrom=&quot;192.168.2.0/24 192.168.3.0/
 		</programlisting>
 	  <para>
 		Once Squid has been restarted, access is now permitted from the networks
-		192.168.2.0/24 and 192.168.3.0/24. If configured to <emphasis>all</emphasis>, proxy access
+		<systemitem class="ipaddress">192.168.2.0/24</systemitem> and <systemitem class="ipaddress">192.168.3.0/24</systemitem>. If configured to <literal>all</literal>, proxy access
 		in granted from all networks.
 	  </para>
 	  <para>

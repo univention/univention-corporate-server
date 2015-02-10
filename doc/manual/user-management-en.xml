@@ -201,7 +201,7 @@
                         <entry>
                             This select list can be used for specifying the user's primary
                             group. All the groups registered in the domain are open for selection. By
-                            default, the group <emphasis>Domain Users</emphasis> is preset.
+                            default, the group <systemitem class="groupname">Domain Users</systemitem> is preset.
                         </entry>
                     </row>
                     <row>
@@ -391,28 +391,28 @@
                         <entry>
                             If the Windows home directory for this user is to show up on a different
                             Windows drive than that specified by the Samba configuration, then the
-                            corresponding drive letter can be entered here, e.g. <emphasis>M:</emphasis>.
+                            corresponding drive letter can be entered here, e.g. <filename class="partition">M:</filename>.
                         </entry>
                     </row>
                     <row>
                         <entry>Windows home path</entry>
                         <entry>
                             The path of the directory which is to be the user's Windows home directory, is
-                            to be entered here, e.g. <emphasis>\\ucs-file-server\smith</emphasis>
+                            to be entered here, e.g. <filename class="directory">\\ucs-file-server\smith</filename>
                         </entry>
                     </row>
                     <row>
                         <entry>Windows logon script</entry>
                         <entry>
                             The user-specific logon script relative to the Netlogon share is entered here, e.g.
-                            <emphasis>scripts\user.bat</emphasis>.
+                            <filename>scripts\user.bat</filename>.
                         </entry>
                     </row>
                     <row>
                         <entry>Windows profile directory</entry>
                         <entry>
                             The profile directory for the user can be entered here, e.g.
-                            <emphasis>\\ucs-file-server\user\profile</emphasis>.
+                            <filename class="directory">\\ucs-file-server\user\profile</filename>.
                         </entry>
                     </row>
                     <row>
@@ -635,7 +635,7 @@
                         <entry>
                             The directory path which is to be the user's Windows home directory on
                             the terminal server can be entered here, e.g.
-                            <emphasis>\\ucs-file-server\ts\user</emphasis>.
+                            <filename class="directory">\\ucs-file-server\ts\user</filename>.
                         </entry>
                     </row>
                     <row>
@@ -643,7 +643,7 @@
                         <entry>
                             If the Windows home directory for this user is to appear on a different Windows
                             drive than specified in the Samba configuration, the respective letter of
-                            the drive can be entered here followed by a colon, e.g. <emphasis>M:</emphasis>.
+                            the drive can be entered here followed by a colon, e.g. <filename class="partition">M:</filename>.
                         </entry>
                     </row>
                     <row>
@@ -1074,7 +1074,7 @@
             is entered correctly.
         </para>
         <para>
-            As standard, the <emphasis>root</emphasis> user is excluded from the password lock, but can also be
+            As standard, the <systemitem class="username">root</systemitem> user is excluded from the password lock, but can also be
             subjected to it by setting the &ucsUCRV; <envar>auth/faillog/root</envar> to <literal>yes</literal>.
         </para>
         <para>

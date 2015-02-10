@@ -17,7 +17,7 @@
 
   <para>
 	To be able to use access control lists on a share, the underlying Linux file system must support
-	POSIX ACLs. In UCS the file systems ext3, ext4 and XFS support POSIX ACLs. The Samba
+	POSIX ACLs. In UCS the file systems <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> and <systemitem class="filesystem">XFS</systemitem> support POSIX ACLs. The Samba
 	configuration also allows storing DOS file attributes in extended attributes of the Unix file
 	system. To use extended attributes, the partition must be mounted using the mount option
 	<option>user_xattr</option>.
@@ -229,12 +229,12 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 			In the NFS standard procedure, identification of users is achieved via user
 			IDs. To prevent a local root user from working with root permissions on
 			other shares, root access can be redirected. If this option is activated,
-			access operations are executed as user <emphasis>nobody</emphasis>.
+			access operations are executed as user <systemitem class="username">nobody</systemitem>.
 		  </para>
 
 		  <para>
-			The local group <emphasis>staff</emphasis>, which is by default empty, owns privileges which come
-			quite close to <emphasis>root</emphasis> permissions, yet this group is not considered by the
+			The local group <systemitem class="groupname">staff</systemitem>, which is by default empty, owns privileges which come
+			quite close to <systemitem class="username">root</systemitem> permissions, yet this group is not considered by the
 			redirection mechanism. This fact should be borne in mind when adding users to
 			this group.
 		  </para>
@@ -312,7 +312,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 		<entry>Allow anonymous read-only access with a guest user</entry>
 		<entry>
 		  Permits access to this share without a password. Every access is carried out
-		  by means of the common guest user <emphasis>nobody</emphasis>.
+		  by means of the common guest user <systemitem class="username">nobody</systemitem>.
 		</entry>
 	  </row>
 
@@ -451,7 +451,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 		<entry>
 		  Names of computers which are authorised to access this Samba share. All other computers are denied
 		  access. In addition to computer names, it is also possible to specify IP or network addresses, e.g.,
-		  <command>192.168.0.0/255.255.255.0</command>.
+		  <userinput>192.168.0.0/255.255.255.0</userinput>.
 		</entry>
 	  </row>
 
@@ -959,7 +959,7 @@ elsewhere they are hidden.
 </para>
 <para>
 To be able to utilise the functions of a distributed file system, the
-&ucsUCRV; <envar>samba/enable-msdfs</envar> has to be set to <emphasis>yes</emphasis> on a file
+&ucsUCRV; <envar>samba/enable-msdfs</envar> has to be set to <literal>yes</literal> on a file
 server. Afterwards Samba has to be restarted.
 </para>
 <para>
@@ -1027,8 +1027,8 @@ Microsoft Distributed File System Tree'.
   </para>
 
   <para>
-	File system quotas can only be applied on partitions with the file systems ext2, ext3, ext4 and
-	xfs. Before filesystem quotas can be configured, the use of file system quotas needs to be
+	File system quotas can only be applied on partitions with the file systems <systemitem class="filesystem">ext2</systemitem>, <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> and
+	<systemitem class="filesystem">XFS</systemitem>. Before filesystem quotas can be configured, the use of file system quotas needs to be
 	activated per partition, see <xref linkend="shares::quota::umc"/>.
   </para>
 
@@ -1108,7 +1108,7 @@ Microsoft Distributed File System Tree'.
 
 	<para>
 	  If no quota are needed, the evaluation can be disabled by setting the &ucsUCRV;
-	  <envar>quota/userdefault</envar> to <emphasis>no</emphasis>.
+	  <envar>quota/userdefault</envar> to <literal>no</literal>.
 	</para>
 
 	<para>
@@ -1183,9 +1183,9 @@ Generating legacy menu.lst from current kernels
 
 		<listitem>
 			<para>
-		  On ext2, ext3 and ext4 file systems, the <emphasis>usrquota</emphasis> parameter for the
+		  On <systemitem class="filesystem">ext2</systemitem>, <systemitem class="filesystem">ext3</systemitem> and <systemitem class="filesystem">ext4</systemitem> file systems, the <option>usrquota</option> parameter for the
 		  root partition must be expanded in the file <filename>/etc/fstab</filename>. This is not
-		  necessary on XFS file systems, e.g:
+		  necessary on <systemitem class="filesystem">XFS</systemitem> file systems, e.g:
 			</para>
 			<programlisting><![CDATA[
 # /etc/fstab: static file system information.

@@ -90,14 +90,14 @@
 		<itemizedlist>
 			<listitem>
 				<simpara>
-				When logging in with the system's local <emphasis>root</emphasis> account (see
+				When logging in with the system's local <systemitem class="username">root</systemitem> account (see
 				<xref linkend="computers:rootaccount"/>), only the UMC modules for the administration
 				and configuration of the local system are displayed.
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
-				When logging in with the <emphasis>Administrator</emphasis> account on
+				When logging in with the <systemitem class="username">Administrator</systemitem> account on
 				the &ucsMaster; or &ucsBackup;, UMC modules for the administration of data
 				in the LDAP directory are displayed, as well.
 				</simpara>
@@ -742,7 +742,7 @@
 			
 			  <para>
 				Predefined LDAP schema extensions for extended attributes are provided with the
-				object class <emphasis>univentionFreeAttributes</emphasis>. Further information can
+				object class <classname>univentionFreeAttributes</classname>. Further information can
 				be found in <xref linkend="domain:ldap:extensions"/>.
 			  </para>
 
@@ -1127,7 +1127,7 @@
 <section id="delegated-administration">
   <title>Delegated administration in the UMC</title>
   <para>
-	In the default setting, only the members of the <emphasis>Domain Admins</emphasis> group can
+	In the default setting, only the members of the <systemitem class="groupname">Domain Admins</systemitem> group can
 	access all UMC modules. Policies can be used to configure the access to UMC modules for
 	groups or individual users. For example, this can be used to assign a helpdesk team the
 	authority to manage printers without giving them complete access to the administration of the
@@ -1145,7 +1145,7 @@
 	In addition to the assignment of UMC policies, LDAP access rights need to be taken
 	into account, as well, for modules that manage data in the LDAP directory.
 	All LDAP modifications are applied to the whole UCS domain.
-	Therefore, in the default setting, only members of the <emphasis>Domain Admins</emphasis>
+	Therefore, in the default setting, only members of the <systemitem class="groupname">Domain Admins</systemitem>
 	group and some internally used accounts have full access to the UCS LDAP.
 	If a module is granted via a UMC policy, the LDAP access must also be allowed
 	for the user/group in the LDAP ACLs. Further information on LDAP ACLs can be found in
@@ -1195,7 +1195,7 @@
 	<para>
 		&ucsUDM; can be started with the
 		<command>univention-directory-manager</command> command (short form
-		<command>udm</command>) as the <emphasis>root</emphasis> user on the &ucsMaster;.
+		<command>udm</command>) as the <systemitem class="username">root</systemitem> user on the &ucsMaster;.
 	</para>
 	<para>
 		&ucsUMC; and &ucsUDM; use the same domain management modules, i.e.,
@@ -1207,7 +1207,7 @@
 	  <title>Parameters of the command line interface</title>
 	<para>
 		A complete list of available modules is displayed if the
-		<command>udm</command> is run with the <command>modules</command> parameter:
+		<command>udm</command> is run with the <option>modules</option> parameter:
 	</para>
 	<screen>
 # univention-directory-manager modules
@@ -1223,11 +1223,11 @@ Available Modules are:
 		There are up to five operations for every module:
 	</para>
 	<itemizedlist>
-		<listitem><simpara><emphasis>list</emphasis> lists all existing objects of this type</simpara></listitem>
-		<listitem><simpara><emphasis>create</emphasis> creates a new object</simpara></listitem>
-		<listitem><simpara><emphasis>modify</emphasis> for the editing of existing objects</simpara></listitem>
-		<listitem><simpara><emphasis>remove</emphasis> deletes an object</simpara></listitem>
-		<listitem><simpara><emphasis>move</emphasis> is used to move an object to another position in the LDAP directory</simpara></listitem>
+		<listitem><simpara><option>list</option> lists all existing objects of this type</simpara></listitem>
+		<listitem><simpara><option>create</option> creates a new object</simpara></listitem>
+		<listitem><simpara><option>modify</option> for the editing of existing objects</simpara></listitem>
+		<listitem><simpara><option>remove</option> deletes an object</simpara></listitem>
+		<listitem><simpara><option>move</option> is used to move an object to another position in the LDAP directory</simpara></listitem>
 	</itemizedlist>
 	<para>
 		The possible options of a UDM module and the operations which can be
@@ -1268,7 +1268,7 @@ move options:
 univention-directory-manager &lt;category/modulename&gt;
 	</programlisting>
 	<para>
-		With the <emphasis>create</emphasis> operation, the attributes marked with
+		With the <option>create</option> operation, the attributes marked with
 		<command>(*)</command> must be specified when creating a new object.
 	</para>
 	<para>
@@ -1312,7 +1312,7 @@ univention-directory-manager users/user remove \
 				The <option>--position</option> parameter is used to specify at
 				which LDAP position an object should be created. If no
 				<option>--position</option> is entered, the object is created below the
-				LDAP base! In the <emphasis>move</emphasis> operation, this parameter specifies
+				LDAP base! In the <option>move</option> operation, this parameter specifies
 				to which position an object should be moved, e.g:
 			</para>
 			<programlisting language="sh">
@@ -1438,7 +1438,7 @@ univention-directory-manager users/user list \
 		<para>
 		  Searching for objects with the <option>--filter</option> can also be limited to a
 		  position in the LDAP directory; in this case, to all users in the container
-		  <emphasis>cn=bremen,cn=users,dc=example,dc=com</emphasis>:
+		  <uri>cn=bremen,cn=users,dc=example,dc=com</uri>:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager users/user list \
@@ -1447,7 +1447,7 @@ univention-directory-manager users/user list \
 </programlisting>
 
 		<para>
-		  This call removes the user <emphasis>user04</emphasis>:
+		  This call removes the user <systemitem class="username">user04</systemitem>:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager users/user remove \
@@ -1469,8 +1469,8 @@ univention-directory-manager users/user move \
 	  <section id="central:udm:example:groups">
 		<title>Groups</title>
 		<para>
-		  Creating a group <emphasis>Example Users</emphasis> and adding the user
-		  <emphasis>user01</emphasis> to this group:
+		  Creating a group <systemitem class="groupname">Example Users</systemitem> and adding the user
+		  <systemitem class="username">user01</systemitem> to this group:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager groups/group create \
@@ -1480,7 +1480,7 @@ univention-directory-manager groups/group create \
 </programlisting>
 
 		<para>
-		  Subsequent addition of the user <emphasis>user02</emphasis> to the existing group:
+		  Subsequent addition of the user <systemitem class="username">user02</systemitem> to the existing group:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager groups/group modify \
@@ -1496,7 +1496,7 @@ univention-directory-manager groups/group modify \
 		</caution>
 
 		<para>
-		  Subsequent removal of the user <emphasis>user01</emphasis> from the group:
+			Subsequent removal of the user <systemitem class="username">>user01</systemitem> from the group:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager groups/group modify \
@@ -1508,8 +1508,8 @@ univention-directory-manager groups/group modify \
 	  <section id="central:udm:example:cn-policies">
 		<title>Container / Policies</title>
 		<para>
-		  This call creates a container <emphasis>cn=Bremen</emphasis> beneath the standard
-		  container <emphasis>cn=computers</emphasis> for the computers at the "Bremen" site. The
+		  This call creates a container <uri>cn=Bremen</uri> beneath the standard
+		  container <uri>cn=computers</uri> for the computers at the "Bremen" site. The
 		  additional option <emphasis>computerPath</emphasis> also registers this container directly
 		  as the standard container for computer objects (see <xref linkend="central:cn-and-ous"/>):
 		</para>
@@ -1532,7 +1532,7 @@ univention-directory-manager policies/mailquota create \
 </programlisting>
 
 		<para>
-		  This policy is now linked to the user container <emphasis>cn=users</emphasis>:
+		  This policy is now linked to the user container <uri>cn=users</uri>:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager container/cn modify \
@@ -1582,7 +1582,7 @@ univention-directory-manager computers/windows create \
 		<title>Shares</title>
 		<para>
 		  The following command creates a share <emphasis>Documentation</emphasis> on the server
-		  <emphasis>fileserver.example.com</emphasis>. As long as
+		  <systemitem class="server">>fileserver.example.com</systemitem>. As long as
 		  <filename class="directory">/var/shares/documentation/</filename> does not yet exist on the server, it is
 		  also created automatically:
 		</para>
@@ -1599,7 +1599,7 @@ univention-directory-manager shares/share create \
 		<title>Printers</title>
 		<para>
 		  Creating a printer share <emphasis>LaserPrinter01</emphasis> on the print server
-		  <emphasis>printserver.example.com</emphasis>. The properties of the printer are specified
+		  <systemitem class="server">printserver.example.com</systemitem>. The properties of the printer are specified
 		  in the PPD file, the name of which is given relative to the directory
 		  <filename class="directory">/usr/share/ppd/</filename>. The connected printer is network-compatible and is
 		  connected via the IPP protocol.
@@ -1680,7 +1680,7 @@ univention-directory-manager dns/ptr_record create \
 		  Extended attributes can be used to expand the functional scope of &ucsUMC;,
 		  see <xref linkend="central:extendedattrs"/>. In the following example, a new attribute is
 		  added, where the car license number of the company car can be saved for each user. The
-		  values are managed in the object class <emphasis>univentionFreeAttributes</emphasis> created specially for this purpose:
+		  values are managed in the object class <classname>univentionFreeAttributes</classname> created specially for this purpose:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager settings/extended_attribute create \
@@ -1769,7 +1769,7 @@ univention-directory-manager settings/extended_attribute create \
 		<para>
 			Reports can also be created via the command line with the
 			<command>univention-directory-reports</command> program. Information on the
-			use of the program can be viewed using the <command>--help</command> option.
+			use of the program can be viewed using the <option>--help</option> option.
 		</para>
 		<para>
 			The following command can be used to list the report templates

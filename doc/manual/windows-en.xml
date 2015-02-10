@@ -139,7 +139,7 @@
 		<para>
 		  The file services integrated in UCS support the provision of shares using the CIFS
 		  protocol (see  <xref linkend="shares::general"/>). Insofar as the underlying file system
-		  supports Access Control Lists (ACLs) (can be used with ext3, ext4 and XFS), the ACLs can
+		  supports Access Control Lists (ACLs) (can be used with <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> and <systemitem class="filesystem">XFS</systemitem>), the ACLs can
 		  also be used by Windows clients.
 		</para>
 
@@ -215,7 +215,7 @@
 
 		<para>
 		  The <command>univention-s4search</command> command can be used to search in the Samba
-		  directory service. If it is run as the <emphasis>root</emphasis> user, the
+		  directory service. If it is run as the <systemitem class="username">root</systemitem> user, the
 		  required credentials of the machine account are used automatically:
 
 		  <programlisting>
@@ -432,8 +432,8 @@ instanceType: 4
 		  <title>Configuration of policies with Group Policy Management</title>
 
 		  <para>
-			Group policies can only be configured by users who are members of the <emphasis>Domain
-			Admins</emphasis> group (e.g., the <emphasis>Administrator</emphasis>). When logging in,
+			Group policies can only be configured by users who are members of the <systemitem class="groupname">Domain
+			Admins</systemitem> group (e.g., the <systemitem class="username">Administrator</systemitem>). When logging in,
 			attention must be paid to logging in with the domain Administrator account and not the
 			local Administrator account. Group Policy Management can be run on any system in the
 			domain.
@@ -606,7 +606,7 @@ instanceType: 4
 			converted to the newer ADMX format using third-party tools. Further information on the
 			format of ADM files can be found under <biblioref linkend="microsoft-adm-templates"/>
 			and <biblioref linkend="adm-templates-howto"/>. The administrative template must have
-			the file suffix <emphasis>.adm</emphasis>:
+			the file suffix <filename class="extension">.adm</filename>:
 
 			<programlisting language="sh">
 CLASS MACHINE
@@ -667,7 +667,7 @@ END CATEGORY
 		  The NETLOGON share serves the purpose of providing logon scripts in Windows domains. The
 		  logon scripts are executed following after the user login and allow the adaptation of the
 		  user's working environment. Scripts have to be saved in a format which can be executed by
-		  Windows, such as <emphasis>bat</emphasis>.
+		  Windows, such as <filename class="extension">bat</filename>.
 		</para>
 
 		<para>
@@ -696,7 +696,7 @@ END CATEGORY
 		<para>
 		  The home directory can be defined user-specifically in &ucsUMC;, see <xref
 		  linkend="users::management"/>. This is performed with the setting <guimenu>Windows home
-		  path</guimenu>, e.g., <emphasis>\\ucs-file-server\smith</emphasis>.  
+		  path</guimenu>, e.g., <filename class="directory">\\ucs-file-server\smith</filename>.
 		</para>
 
 		<para>
@@ -840,7 +840,10 @@ END CATEGORY
 
   <note>
     <para>
-			Once the <emphasis>AD member</emphasis> mode has been set up, the authentication is performed against the AD domain controller. <emphasis>Consequently, the password from the AD domain now applies for the administrator.</emphasis> If an AD domain with a non-English language convention has been joined, the <emphasis>administrator</emphasis> account from UCS is automatically changed to the spelling of the AD during the domain join. The same applies for all user and group objects with <emphasis>Well Known SID</emphasis> (e.g., <emphasis>Domain Admins</emphasis>).
+		Once the <emphasis>AD member</emphasis> mode has been set up, the authentication is performed against the AD domain controller.
+		<emphasis>Consequently, the password from the AD domain now applies for the administrator.</emphasis>
+		If an AD domain with a non-English language convention has been joined, the <systemitem class="username">administrator</systemitem> account from UCS is automatically changed to the spelling of the AD during the domain join.
+		The same applies for all user and group objects with <emphasis>Well Known SID</emphasis> (e.g., <systemitem class="groupname">Domain Admins</systemitem>).
     </para>
   </note>
 
@@ -871,7 +874,13 @@ END CATEGORY
   </para>
 
   <para>
-  	In <emphasis>AD member</emphasis> mode, in the default setting, the UCS AD Connector exports object data from the AD with the authorisations of the &ucsMaster;'s machine account. These authorisations are not sufficient for exporting encrypted password data. As such, the LDAP DN of a privileged replication user can also be manually entered in the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> for the setting up of the password service. This must be a member of the <emphasis>Domain Admins</emphasis> group in the AD. The corresponding password must be saved in a file on the &ucsMaster; and the file name entered in the &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar>. If the access password is changed at a later point in time, the new password must be entered in this file. The access rights for the file should be restricted so that only the <emphasis>root</emphasis> owner has access.
+	  In <emphasis>AD member</emphasis> mode, in the default setting, the UCS AD Connector exports object data from the AD with the authorisations of the &ucsMaster;'s machine account.
+	  These authorisations are not sufficient for exporting encrypted password data.
+	  As such, the LDAP DN of a privileged replication user can also be manually entered in the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> for the setting up of the password service.
+	  This must be a member of the <systemitem class="groupname">Domain Admins</systemitem> group in the AD.
+	  The corresponding password must be saved in a file on the &ucsMaster; and the file name entered in the &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar>.
+	  If the access password is changed at a later point in time, the new password must be entered in this file.
+	  The access rights for the file should be restricted so that only the <systemitem class="username">root</systemitem> owner has access.
   </para>
   <para>
   	The following commands demonstrate the steps in an example:
@@ -999,11 +1008,11 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
   </para>
 
   <para>
-	In the <guimenu>Active Directory account</guimenu> field, the user is configured which is used for the access on the AD. The setting is saved in the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar>. The replication user must be a member of the <emphasis>Domain Admins</emphasis> group in the AD. If the connector performs read only synchronisation from AD to UCS, a standard user account can also be specified.
+	In the <guimenu>Active Directory account</guimenu> field, the user is configured which is used for the access on the AD. The setting is saved in the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar>. The replication user must be a member of the <systemitem class="groupname">Domain Admins</systemitem> group in the AD. If the connector performs read only synchronisation from AD to UCS, a standard user account can also be specified.
   </para>
 
   <para>
-	The password used for the access must be entered in the <guimenu>Active Directory password</guimenu> field. On the UCS system it is only saved locally in a file which only the <emphasis>root</emphasis> user can read.
+	The password used for the access must be entered in the <guimenu>Active Directory password</guimenu> field. On the UCS system it is only saved locally in a file which only the <systemitem class="username">root</systemitem> user can read.
   </para>
 
   <para>
@@ -1228,7 +1237,7 @@ The MSI files are the installation files for the
 password service and can be started by double clicking on it.
 </para>
 <para>
-The package is installed in the <command>C:\Windows\UCS-AD-Connector</command> directory automatically.
+The package is installed in the <filename class="directory">C:\Windows\UCS-AD-Connector\</filename> directory automatically.
 Additionally, the
 password service is integrated into the Windows environment as a
 system service, which means the service can be started automatically
@@ -1274,7 +1283,13 @@ of the Active Directory access.
 
 <section id="ad-connector:ad-passwort"><title>Changing the AD access password</title>
   <para>
-  	The access data required by the UCS AD Connector for Active Directory are configured via the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> and <envar>connector/ad/ldap/bindpw</envar>. If the password has changed or you wish to use another user account, these variables must be adapted manually. The &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> is used to configure the LDAP DN of a privileged replication user. This must be a member of the <emphasis>Domain Admins</emphasis> group in the AD. The corresponding password must be saved locally in a file on the UCS system, the name of which must be entered in the &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar>. The access rights for the file should be restricted so that only the <emphasis>root</emphasis> owner has access. The following commands show this as an example:
+	  The access data required by the UCS AD Connector for Active Directory are configured via the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> and <envar>connector/ad/ldap/bindpw</envar>.
+	  If the password has changed or you wish to use another user account, these variables must be adapted manually.
+	  The &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> is used to configure the LDAP DN of a privileged replication user.
+	  This must be a member of the <systemitem class="groupname">Domain Admins</systemitem> group in the AD.
+	  The corresponding password must be saved locally in a file on the UCS system, the name of which must be entered in the &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar>.
+	  The access rights for the file should be restricted so that only the <systemitem class="username">root</systemitem> owner has access.
+	  The following commands show this as an example:
   </para>
 
   <programlisting language="sh">
@@ -1416,8 +1431,8 @@ Active Directory can appear under a different name from in UCS.
 </listitem>
 <listitem>
 <para>Certain group names are converted using a mapping table so that,
-  for example in a German language setup, the UCS group <emphasis>Domain
-    Users</emphasis> is synchronised with the AD group
+  for example in a German language setup, the UCS group <systemitem class="groupname">Domain
+    Users</systemitem> is synchronised with the AD group
   <foreignphrase>Domänen-Benutzer</foreignphrase>. When used in anglophone AD domains, this
   mapping can result in <foreignphrase>germanophone</foreignphrase> groups' being created and
   should thus be deactivated in this case. This can be done using the
@@ -1440,16 +1455,16 @@ The complete table is:
 </thead>
 <tbody>
 <row>
-<entry>Domain Users</entry>
-<entry lang="de">Domänen-Benutzer</entry>
+	<entry><systemitem class="groupname" lang="en">Domain Users</systemitem></entry>
+	<entry><systemitem class="groupname" lang="de">Domänen-Benutzer</systemitem></entry>
 </row>
 <row>
-<entry>Domain Admins</entry>
-<entry lang="de">Domänen-Admins</entry>
+	<entry><systemitem class="groupname" lang="en">Domain Admins</systemitem></entry>
+	<entry><systemitem class="groupname" lang="de">Domänen-Admins</systemitem></entry>
 </row>
 <row>
-<entry>Windows Hosts</entry>
-<entry lang="de">Domänencomputer</entry>
+	<entry><systemitem class="groupname" lang="en">Windows Hosts</systemitem></entry>
+	<entry><systemitem class="groupname" lang="de">Domänencomputer</systemitem></entry>
 </row>
 </tbody>
 </tgroup>
@@ -1492,7 +1507,7 @@ prepared but commented out due to differing syntax in the mapping
 configuration.
 </para>
 <para>
-The <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> users are exempted.
+The <systemitem class="username">root</systemitem> and <systemitem class="username">Administrator</systemitem> users are exempted.
 </para>
 
 <section id="windows:user:Particularities"><title>Particularities</title>
@@ -1527,7 +1542,7 @@ The <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> users are e
 </listitem>
 <listitem>
 <para>AD and UCS create new users in a specific primary group (usually
-  <emphasis>Domain Users</emphasis> or <emphasis lang="de">Domänen-Benutzer</emphasis>) depending on the
+  <systemitem class="groupname">Domain Users</systemitem> or <systemitem class="groupname" lang="de">Domänen-Benutzer</systemitem>) depending on the
   presetting. During the first synchronisation from UCS to AD the
   users are therefore always a member in this group.
   </para>
@@ -1613,14 +1628,14 @@ The <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> users are e
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  It is recommended to set the same password for the <emphasis>Administrator</emphasis>
+		  It is recommended to set the same password for the <systemitem class="username">Administrator</systemitem>
 		  account on the AD server as the corresponding account in the UCS domain. In case different
 		  passwords are used, the password that was set last, will be the one that is finally valid
 		  after the takeover process (timestamps are compared for this).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  In a default installation the <emphasis>Administrator</emphasis> account of the AD server
+		  In a default installation the <systemitem class="username">Administrator</systemitem> account of the AD server
 		  is deactivated. It should be activated in the local user management module. 
 		</simpara></listitem>
 
@@ -1628,7 +1643,7 @@ The <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> users are e
 	</para>
 
 	<para>
-	  The activation of the <emphasis>Administrator</emphasis> account on the AD server is
+	  The activation of the <systemitem class="username">Administrator</systemitem> account on the AD server is
 	  recommended because this account has all the required privileges to copy the GPO sysvol
 	  files. The activation can be achieved by means of the <guimenu>Active Directory Users and
 	  Computers</guimenu> module or by running the following two commands:
@@ -1653,7 +1668,7 @@ net user administrator PASSWORD
 
 	<para>
 	  Other Samba systems can be stopped by logging into each of the other UCS domain controllers as the
-	  <emphasis>root</emphasis>user and running
+	  <systemitem class="username">root</systemitem>user and running
 
 	  <programlisting language="sh">
 /etc/init.d/samba4 stop
@@ -1675,7 +1690,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	  module. The IP address of the AD system must be specified under <guimenu>Name or address of
 	  the Domain Controller</guimenu>. An account from the AD domain must be specified under
 	  <guimenu>Active Directory Administrator account</guimenu> which is a member of the AD group
-	  <emphasis>Domain Admins</emphasis> (e.g., the <emphasis>Administrator</emphasis>) and the
+	  <systemitem class="groupname">Domain Admins</systemitem> (e.g., the <systemitem class="username">Administrator</systemitem>) and the
 	  corresponding password entered under <guimenu>Active Directory Administrator
 	  password</guimenu>.
 	</para>
@@ -1722,7 +1737,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 		  sets a &ucsUCR; variable locally to map the English name to the non-English AD name.
 		  These variables are used to translate the English names used in the UCS configuration
 		  files to the specific names used in AD.
-		  To give an example, if <emphasis>Domain Admins</emphasis> has a different name in the AD
+		  To give an example, if <systemitem class="groupname">Domain Admins</systemitem> has a different name in the AD
 		  then the &ucsUCR; variable <envar>groups/default/domainadmins</envar> is set to that
 		  specific name (likewise for uses, e.g. <envar>users/default/administrator</envar>).
 		</simpara></listitem>
@@ -1737,7 +1752,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	<para>
 	  This phase requires to log onto the Active Directory domain controller as the
-	  <emphasis>Administrator</emphasis> (or the equivalent non-English name).
+	  <systemitem class="username">Administrator</systemitem> (or the equivalent non-English name).
 	  There a command needs to be started to copy the group
 	  policy files from the Active Directory SYSVOL share to the UCS SYSVOL share.
 	</para>
@@ -1835,7 +1850,7 @@ samba-tool dbcheck --fix --yes
 		  removed in the computers management module of the Univention Management Console.
 		  In addition their accounts must be removed from the Samba SAM database. This may be done
 		  by logging on to a migrated Windows client as member of the group
-		  <emphasis>Domain Admins</emphasis> and running the tool
+		  <systemitem class="groupname">Domain Admins</systemitem> and running the tool
 		  <guimenu>Active Directory Users and Computers</guimenu>.
 		</simpara></listitem>
 

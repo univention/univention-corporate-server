@@ -268,7 +268,7 @@
 	<section id="computers:Updating_individual_systems_via_the_command_line">
 	  <title>Updating individual systems via the command line</title>
 	  <para>
-		The following steps must be performed with <emphasis>root</emphasis> rights.
+		The following steps must be performed with <systemitem class="username">root</systemitem> rights.
 	  </para>
 
 	  <para>
@@ -285,8 +285,8 @@
 		release updates can alternatively also be installed via update DVD
 		images, which are either imported as ISO files or from a drive.
 		This is done by running <command>univention-upgrade</command> with the
-		parameters <option>--iso=ISOIMAGEFILE</option> or
-		<option>--cdrom=DRIVE</option>.
+		parameters <option>--iso=<replaceable>ISOIMAGEFILE</replaceable></option> or
+		<option>--cdrom=<replaceable>DRIVE</replaceable></option>.
 	  </para>
 
 	  <para>
@@ -477,7 +477,7 @@
 
 	  <para>
 		To set up a repository, the <command>univention-repository-create</command> command
-		must be run as the <emphasis>root</emphasis> user. The initial package inventory is
+		must be run as the <systemitem class="username">root</systemitem> user. The initial package inventory is
 		imported from an installation DVD. The parameter <option>--iso</option> allows
 		importing from an ISO image. UCS is only available as a 64-bit DVD. The
 		repository is created by <command>univention-repository-create</command> with the
@@ -629,7 +629,7 @@ univention-repository-update -h
 	<section id="computers:Installation_removal_of_individual_packages_in_the_command_line">
 	  <title>Installation/removal of individual packages in the command line</title>
 	  <para>
-		The following steps must be performed with <emphasis>root</emphasis> rights.
+		The following steps must be performed with <systemitem class="username">root</systemitem> rights.
 	  </para>
 
 	  <para>

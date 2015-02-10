@@ -156,7 +156,7 @@
 						</para>
 						<para>
 							Nur Domänencontroller und &ucsMember;, auf denen das
-							Paket <emphasis>univention-printserver</emphasis> installiert wurde, werden in
+							Paket <package>univention-printserver</package> installiert wurde, werden in
 							der Liste angezeigt.
 						</para>
 					</entry>
@@ -728,8 +728,8 @@
 	<para>
 		Die Druckertreiberlisten werden im UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu>
 		verwaltet. Dort muss in den
-		Container <emphasis>univention</emphasis> und dort in den
-		Untercontainer <emphasis>cups</emphasis> gewechselt werden. Für die meisten
+		Container <uri>univention</uri> und dort in den
+		Untercontainer <uri>cups</uri> gewechselt werden. Für die meisten
 		Druckerhersteller existieren bereits Druckertreiberlisten. Diese
 		können ergänzt werden oder eine neue hinzugefügt werden.
 	</para>

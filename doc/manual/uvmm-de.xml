@@ -121,7 +121,7 @@
 								<entry>URL des Authentifizierungs-Endpunktes</entry>
 								<entry>
 									Hier ist die URL einzutragen, unter der der Authentifizierungs-Endpunkt der OpenStack Instanz erreichbar ist.
-									Soll eine verschlüsselte Verbindung aufgebaut werden, ist die URL in der Form <emphasis>https://[...]</emphasis> anzugeben.
+									Soll eine verschlüsselte Verbindung aufgebaut werden, ist die URL in der Form <uri>https://[...]</uri> anzugeben.
 									Da für die verschlüsselte Verbindung das öffentliche Zertifikat der OpenStack Instanz verwendet wird, muss dieses dem UCS-System, 
 									auf dem die Applikation <emphasis>&ucsUVMM;</emphasis> installiert ist, verfügbar gemacht werden.
 									Dazu muss das öffentliche Zertifikat in PEM Kodierung auf dem UCS-Server in das Verzeichnis <filename class="directory">/usr/local/share/ca-certificates/</filename> kopiert werden und mit der Endung .crt versehen sein.
@@ -705,11 +705,11 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 			</para>
 			<para>
 				Auf KVM-Systemen können Image-Dateien in zwei Formaten verwaltet werden:
-				Standardmäßig werden sie im <emphasis>Erweiterten Format (qcow2)</emphasis> angelegt.
+				Standardmäßig werden sie im <guimenuitem>Erweiterten Format (qcow2)</guimenuitem> angelegt.
 				Dieses unterstützt Copy-on-write, was bedeutet, dass eine Änderung nicht das Original überschreibt, sondern die neue Version stattdessen an einer anderen Position abgelegt wird.
 				Die interne Referenzierung wird dann so aktualisiert, dass wahlweise sowohl die Originalversion als auch die neue Version zugreifbar sind.
-				Nur bei Verwendung von Festplatten-Images im <emphasis>Erweiterten Format</emphasis> können Sicherungspunkte erstellt werden.
-				Alternativ kann auch im <emphasis>Einfachen Format (raw)</emphasis> auf ein Festplatten-Image zugegriffen werden.
+				Nur bei Verwendung von Festplatten-Images im <guimenuitem>Erweiterten Format</guimenuitem> können Sicherungspunkte erstellt werden.
+				Alternativ kann auch im <guimenuitem>Einfachen Format (raw)</guimenuitem> auf ein Festplatten-Image zugegriffen werden.
 			</para>
 
 			<para>
@@ -869,7 +869,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 			<title>Hinzufügen eines Speicherbereichs</title>
 			<para>
 			  Ein weiterer Speicherbereich kann nicht über &ucsUMC; angelegt werden. Stattdessen muss eine
-			  Anmeldung als Benutzer <emphasis>root</emphasis> auf einen Virtualisierungs-Server
+			  Anmeldung als Benutzer <systemitem class="username">root</systemitem> auf einen Virtualisierungs-Server
 			  erfolgen. Die folgenden Schritte sind dafür nötig:
 
 			  <itemizedlist>
@@ -882,7 +882,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				  Mit dem folgenden Befehl wird der neue Speicherbereich <emphasis>Testpool</emphasis> erstellt:
 				  </simpara>
 				  <programlisting language="sh">
-	virsh pool-define-as Testpool dir - - - - "/mnt/storage"
+virsh pool-define-as Testpool dir - - - - "/mnt/storage"
 				  </programlisting>
 				</listitem>
 
@@ -892,14 +892,14 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				  aktiviert werden:
 				  </simpara>
 				  <programlisting language="sh">
-	virsh pool-start Testpool
+virsh pool-start Testpool
 				  </programlisting>
 				  <simpara>
 				  Der folgende Befehl stellt sicher, dass der Pool automatisch beim nächsten Systemstart
 				  aktiviert wird:
 				  </simpara>
 				  <programlisting language="sh">
-	virsh pool-autostart Testpool
+virsh pool-autostart Testpool
 				  </programlisting>
 				</listitem>
 			  </itemizedlist>
@@ -910,7 +910,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 			<title>Verschieben des default-Speicherbereichs</title>
 			<para>
 			  Um den unterliegenden Dateipfad eines Speicherbereichs nachträglich zu ändern, muss eine
-			  Anmeldung als Benutzer <emphasis>root</emphasis> auf dem Virtualisierungs-Server
+			  Anmeldung als Benutzer <systemitem class="username">root</systemitem> auf dem Virtualisierungs-Server
 			  erfolgen. Die folgenden Schritte sind dafür nötig:
 
 			  <itemizedlist>
@@ -923,10 +923,10 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				  UVMM wird der Speicherbereich unter dem neuen Pfad angelegt:
 				  </simpara>
 				  <programlisting language="sh">
-	virsh pool-destroy default
-	virsh pool-undefine default
-	invoke-rc.d univention-virtual-machine-manager-daemon restart
-	invoke-rc.d univention-virtual-machine-manager-node-common restart
+virsh pool-destroy default
+virsh pool-undefine default
+invoke-rc.d univention-virtual-machine-manager-daemon restart
+invoke-rc.d univention-virtual-machine-manager-node-common restart
 				  </programlisting>
 				</listitem>
 			  </itemizedlist>
@@ -985,7 +985,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				<listitem>
 					<simpara>
 					Netzwerkkarten vom Typ <emphasis>Network Address Translation (NAT)</emphasis> werden in einem privaten Netz auf dem Virtualisierungsserver definiert.
-					Dabei muss der virtuellen Maschine eine IP-Adresse aus dem Netz 192.168.122.0/24 gegeben werden.
+					Dabei muss der virtuellen Maschine eine IP-Adresse aus dem Netz <systemitem class="ipaddress">192.168.122.0/24</systemitem> gegeben werden.
 					Über NAT wird dieser virtuellen Maschine der Zugang zum externen Netz erteilt, so dass der Zugriff über die IP-Adresse des Virtualisierungsservers erfolgt.
 					Die virtuelle Maschine ist damit nicht von anderen Rechnern erreichbar, kann aber selber beliebige ausgehende Verbindungen aufbauen.
 					</simpara>
@@ -1001,7 +1001,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				Für jede virtuelle Maschine kann das zu verwendende Netzwerk über die Option <guimenu>Quelle</guimenu> ausgewählt werden.
 			</para>
 			<para>
-				Netzwerkkarten vom Typ NAT sind nur durch die im Netz 192.168.122.0/24 verfügbaren IP-Adressen begrenzt.
+				Netzwerkkarten vom Typ NAT sind nur durch die im Netz <systemitem class="ipaddress">192.168.122.0/24</systemitem> verfügbaren IP-Adressen begrenzt.
 			</para>
 			<para>
 				Über die Option <guimenu>Treiber</guimenu> kann ausgewählt werden, welche Art von Netzwerkkarte bereitgestellt wird.
