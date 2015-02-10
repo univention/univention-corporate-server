@@ -203,7 +203,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
-		if self.dn:
+		if self.exists():
 			if self.oldattr.get('univentionNagiosTimeperiod', []):
 				periods = self.oldattr.get('univentionNagiosTimeperiod', [])[0].split('#')
 				self[ 'periodMonday' ] = periods[0]

@@ -1192,7 +1192,7 @@ class simpleComputer( simpleLdap ):
 		self[ 'dnsAlias' ] = [ ]	# defined here to avoid pseudo non-None value of [''] in modwizard search
 		self.oldinfo['ip'] = []
 		self.info['ip'] = []
-		if self.dn:
+		if self.exists():
 			if 'aRecord' in self.oldattr:
 				self.oldinfo['ip'].extend(self.oldattr['aRecord'])
 				self.info['ip'].extend(   self.oldattr['aRecord'])
@@ -1381,7 +1381,7 @@ class simpleComputer( simpleLdap ):
 					except univention.admin.uexceptions.insufficientInformation, msg:
 						raise univention.admin.uexceptions.insufficientInformation, msg
 
-		if self.dn:
+		if self.exists():
 			if self.has_key( 'network' ):
 				self.old_network = self[ 'network' ]
 

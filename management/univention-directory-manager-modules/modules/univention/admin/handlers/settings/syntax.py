@@ -207,7 +207,7 @@ class object( univention.admin.handlers.simpleLdap ):
 
 	def open( self ):
 		univention.admin.handlers.simpleLdap.open( self )
-		if self.dn:
+		if self.exists():
 			# initialize items
 			self[ 'attribute' ] = []
 			self[ 'ldapattribute' ] = []

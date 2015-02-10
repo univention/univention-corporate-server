@@ -119,7 +119,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.options=['samba']
 		self.modifypassword=1
-		if self.dn:
+		if self.exists():
 			self['password']='********'
 			self.modifypassword=0
 

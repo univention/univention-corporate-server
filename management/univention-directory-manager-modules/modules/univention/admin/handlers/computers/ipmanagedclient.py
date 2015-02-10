@@ -261,7 +261,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		univention.admin.handlers.simpleComputer.open( self )
 		self.nagios_open()
 
-		if not self.dn:
+		if not self.exists():
 			return
 
 		self.save()

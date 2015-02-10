@@ -403,7 +403,7 @@ class object(univention.admin.handlers.simpleLdap):
 			pos = sid.rfind('-')
 			self.info['sambaRID'] = sid[pos+1:]
 
-		if self.dn:
+		if self.exists():
 			self['memberOf']=self.lo.searchDn(filter='(&(objectClass=posixGroup)(uniqueMember=%s))' % univention.admin.filter.escapeForLdapFilter(self.dn))
 
 			time_start = time.time()

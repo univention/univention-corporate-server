@@ -196,7 +196,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
-		if self.dn:
+		if self.exists():
 			self['name']=ldap.explode_dn(self.dn,1)[0]
 
 			

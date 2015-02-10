@@ -378,7 +378,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.nagios_open()
 
 		self.modifypassword=0
-		if self.dn:
+		if self.exists():
 			userPassword=self.oldattr.get('userPassword',[''])[0]
 			if userPassword:
 				self.info['password']=userPassword
@@ -389,7 +389,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		tmppos=univention.admin.uldap.position(self.position.getDomain())
 
-		if self.dn:
+		if self.exists():
 
 			if 'posix' in self.options and not self.info.get( 'primaryGroup' ):
 				primaryGroupNumber=self.oldattr.get('gidNumber',[''])[0]

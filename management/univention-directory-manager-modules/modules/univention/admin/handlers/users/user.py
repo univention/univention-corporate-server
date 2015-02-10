@@ -1408,7 +1408,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		self.save()
 
-		if self.dn:
+		if self.exists():
 			self.modifypassword=0
 			self['password']='********'
 			if 'posix' in self.options or 'mail' in self.options or 'ldap_pwd' in self.options:

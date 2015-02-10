@@ -287,7 +287,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
-		if self.dn:
+		if self.exists():
 			if self.oldattr.get('univentionNagiosNotificationOptions', []):
 				options = self.oldattr.get('univentionNagiosNotificationOptions', [])[0].split(',')
 				if 'w' in options:

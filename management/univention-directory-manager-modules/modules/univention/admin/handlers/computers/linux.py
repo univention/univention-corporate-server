@@ -374,7 +374,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.modifypassword=0
 
 
-		if self.dn:
+		if self.exists():
 
 			if 'posix' in self.options and not self.info.get( 'primaryGroup' ):
 				primaryGroupNumber=self.oldattr.get('gidNumber',[''])[0]
@@ -397,7 +397,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				pos = sid.rfind('-')
 				self.info['sambaRID'] = sid[pos+1:]
 
-		if self.dn:
+		if self.exists():
 			userPassword=self.oldattr.get('userPassword',[''])[0]
 			if userPassword:
 				self.info['password']=userPassword

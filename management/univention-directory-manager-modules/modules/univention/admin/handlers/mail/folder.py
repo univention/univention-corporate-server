@@ -173,7 +173,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
-		if self.dn:
+		if self.exists():
 			cn=self.oldattr.get('cn',[])
 			if cn:
 				# 'name' is not a ldap attribute and oldinfo['name'] is
