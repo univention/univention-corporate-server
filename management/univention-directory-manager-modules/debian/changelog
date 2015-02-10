@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-24) unstable; urgency=medium
+
+  * Bug #37560: remove "reinstalltext" from layout and mapping
+
+ -- Florian Best <best@univention.de>  Tue, 10 Feb 2015 14:49:31 +0100
+
 univention-directory-manager-modules (10.0.29-23) unstable; urgency=low
 
   * Bug #37654: add "functional" to UDM syntax ObjectFlag
