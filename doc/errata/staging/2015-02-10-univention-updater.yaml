@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-updater
+fix: 10.0.53-2.1374.201502101632
+version: [1]
+desc: |
+  This update addresses the following issue:
+  * Hide the "Back" button during upgrading the system.
+bug: [37741]

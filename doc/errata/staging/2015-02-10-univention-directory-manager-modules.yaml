@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-directory-manager-modules
+fix: 10.0.29-24.1288.201502101629
+version: [1]
+desc: |
+  This update addresses the following issues:
+  * Remove the property "reinstalltext" from layout and LDAP mapping of various
+    computer modules as the property no longer exists.
+bug: [37560]

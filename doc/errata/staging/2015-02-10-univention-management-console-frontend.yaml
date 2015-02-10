@@ -1,0 +1,9 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-management-console-frontend
+fix: 4.1.106-13.995.201502101621
+version: [1]
+desc: |
+  * Fix displaying of the UMC reload dialog.
+bug: [37565]
