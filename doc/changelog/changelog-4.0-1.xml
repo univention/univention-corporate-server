@@ -439,10 +439,10 @@
 		34985</ulink>).
   	  </simpara></listitem>
 
-	  <listitem><simpara>
+  	  <listitem><simpara>
 		Unnecessary scrollbars have been removed from the UCS installer software selection
 		(<ulink url="&ucsbug;37730">Bug 37730</ulink>).
-	  </listitem></simpara>
+  	  </simpara></listitem>
 
   	</itemizedlist>
   </section>
