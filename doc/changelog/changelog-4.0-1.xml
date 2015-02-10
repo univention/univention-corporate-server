@@ -440,7 +440,7 @@
   	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Horizontal scrollbars in the software selection grid of the UCS installer are not shown anymore.
+		Unnecessary scrollbars have been removed from the UCS installer software selection
 		(<ulink url="&ucsbug;37730">Bug 37730</ulink>).
 	  </listitem></simpara>
 
