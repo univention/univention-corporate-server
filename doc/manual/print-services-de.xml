@@ -673,12 +673,12 @@
 	  <listitem><simpara>
 		Ist noch kein Druckertreiber hinterlegt, wird die folgende Fehlermeldung angezeigt, die mit
 		<guimenu>Nein</guimenu> bestätigt werden muss.
-
+		</simpara>
 		<figure>
 		  <title>Fehlermeldung beim ersten Zugriff</title>
 		  <graphic scalefit="1" align="center" width="40%" fileref="illustrations40/windows-printerdriver-de.png"/>
 		</figure>
-	  </simpara></listitem>
+	  </listitem>
 
 	  <listitem><simpara>
 		Nun muss im Reiter <guimenu>Erweitert</guimenu> unter <guimenu>Treiber</guimenu> der

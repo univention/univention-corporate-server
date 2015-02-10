@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-	  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"[
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"[
 
 	  <!ENTITY introduction SYSTEM "introduction-de.xml">
 	  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-de.xml">
@@ -20,10 +20,9 @@
 	  <!ENTITY backup SYSTEM "backup-de.xml">
 	  <!ENTITY mail SYSTEM "mail-de.xml">
 
-	  <!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
-
-	  %entities;
-	  ]>
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%entities;
+]>
 <book lang="de" id="ucs-4.0">
   <bookinfo>
     <title>

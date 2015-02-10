@@ -880,27 +880,28 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 
 				<listitem><simpara>
 				  Mit dem folgenden Befehl wird der neue Speicherbereich <emphasis>Testpool</emphasis> erstellt:
+				  </simpara>
 				  <programlisting language="sh">
 	virsh pool-define-as Testpool dir - - - - "/mnt/storage"
 				  </programlisting>
-				</simpara></listitem>
+				</listitem>
 
 				<listitem><simpara>
 				  Die von UVMM verwendete Bibliothek libvirt unterscheidet zwischen aktiven und
 				  inaktiven Speicherbereichen. Um den Speicherbereich direkt verwenden zu können, muss er
 				  aktiviert werden:
-
+				  </simpara>
 				  <programlisting language="sh">
 	virsh pool-start Testpool
 				  </programlisting>
-
+				  <simpara>
 				  Der folgende Befehl stellt sicher, dass der Pool automatisch beim nächsten Systemstart
 				  aktiviert wird:
-
+				  </simpara>
 				  <programlisting language="sh">
 	virsh pool-autostart Testpool
 				  </programlisting>
-				</simpara></listitem>
+				</listitem>
 			  </itemizedlist>
 			</para>
 		  </section>
@@ -920,13 +921,14 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				<listitem><simpara>
 				  Die folgenden Befehle entfernen den alten Speicherbereich; durch einen Neustart des
 				  UVMM wird der Speicherbereich unter dem neuen Pfad angelegt:
+				  </simpara>
 				  <programlisting language="sh">
 	virsh pool-destroy default
 	virsh pool-undefine default
 	invoke-rc.d univention-virtual-machine-manager-daemon restart
 	invoke-rc.d univention-virtual-machine-manager-node-common restart
 				  </programlisting>
-				</simpara></listitem>
+				</listitem>
 			  </itemizedlist>
 			</para>
 		  </section>
@@ -1149,8 +1151,8 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 			<title>Ändern des Standardnetzwerkes</title>
 			<para>
 				Der Name der Bridge für das Standardnetzwerk ist in den <acronym>UVMM</acronym>-Profilen gespeichert.
-				Wenn das Standardnetzwerk <filename class="device">br0</filename> geändert wird, müssen diese angepasst werden.
-				Der folgende Befehl aktualisiert alle Profile auf die Bridge <filename class="device">eth0</filename>, die momentan <filename class="device">br0</filename> als Netzwerkschnittstelle benutzen:
+				Wenn das Standardnetzwerk <filename class="devicefile">br0</filename> geändert wird, müssen diese angepasst werden.
+				Der folgende Befehl aktualisiert alle Profile auf die Bridge <filename class="devicefile">eth0</filename>, die momentan <filename class="devicefile">br0</filename> als Netzwerkschnittstelle benutzen:
 			</para>
 			<programlisting language="sh">
 udm uvmm/profile list --filter interface=br0 |

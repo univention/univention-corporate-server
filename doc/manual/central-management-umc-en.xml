@@ -1426,7 +1426,6 @@ univention-directory-manager users/user modify \
     --set city="Bremen"
 </programlisting>
 
-
 		<para>
 		  This command can be used to display all the users whose user name begins with
 		  <emphasis>user</emphasis>:
@@ -1652,7 +1651,6 @@ univention-directory-manager dhcp/host create \
     --set fixedaddress="192.168.0.110" \
     --set hwaddress="ethernet 00:11:22:33:44:55"
 </programlisting>
-	  </section>
 
 		<para>
 		  If it should be possible for a computer name to be resolved via DNS, the following
@@ -1674,7 +1672,7 @@ univention-directory-manager dns/ptr_record create \
 		<para>
 		Further information on DNS can be found in <xref linkend="networks:dns"/>.
 		</para>
-	</section>
+	  </section>
 
 	  <section id="central:udm:example:extendedattr">
 		<title>Extended attributes</title>
@@ -1698,6 +1696,7 @@ univention-directory-manager settings/extended_attribute create \
     --set shortDescription="Car license"
 </programlisting>
 	  </section>
+	</section>
 </section>
 
 <section id="central:reports">

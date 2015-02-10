@@ -65,8 +65,8 @@
                             <para>
                                 Um die Kompatibilität mit Nicht-UCS-Systemen zu gewährleisten, wird
                                 das Anlegen von Benutzern, die sich lediglich in der Groß- und Kleinschreibung
-                                unterscheiden, verhindert. Wenn beispielsweise der Benutzername <wordadword>meier</wordadword>
-                                bereits existiert, wird der Benutzername <wordadword>Meier</wordadword> nicht mehr zugelassen.
+                                unterscheiden, verhindert. Wenn beispielsweise der Benutzername <wordasword>meier</wordasword>
+                                bereits existiert, wird der Benutzername <wordasword>Meier</wordasword> nicht mehr zugelassen.
                             </para>
                             <para>
 							  In der Grundeinstellung kann kein Benutzer mit dem Namen einer existierenden

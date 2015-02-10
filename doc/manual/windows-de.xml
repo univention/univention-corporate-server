@@ -543,7 +543,7 @@ instanceType: 4
 				Policy. Sind OUs weiter verschachtelt, greifen im Konfliktfall die jeweils "untersten"
 				Richtlinien, d.h. die, die näher am Zielobjekt verknüpft sind. Es gilt folgende
 				Auswertungsreihenfolge:
-
+				</simpara>
 				<itemizedlist>
 				  <listitem><simpara>
 					Zuweisung einer Richtlinie zu einer Active Directory-Site
@@ -558,7 +558,7 @@ instanceType: 4
 					unterliegende OU überstimmt wiederum Richtlinien aus übergeordneten OUs)
 				  </simpara></listitem>
 				</itemizedlist>
-			  </simpara></listitem>
+			  </listitem>
 			</itemizedlist>
 		  </para>
 
@@ -1902,20 +1902,20 @@ ucr set connector/s4/mapping/group/grouptype=false
 		<listitem><simpara>
 		  Der Domänenfunktionslevel der migrierten AD-Domäne muss mit dem folgenden Kommando geprüft
 		  werden:
-
+		  </simpara>
 		  <programlisting language="sh">
 samba-tool domain level show
 		  </programlisting>
-
+		  <simpara>
 		  Wenn das Kommando die Meldung <foreignphrase>ATTENTION: You run SAMBA 4 on a forest function
 		  level lower than Windows 2000 (Native)</foreignphrase> anzeigt müssen die folgenden Befehle
 		  aufgerufen werden:
-
+		  </simpara>
 		  <programlisting language="sh">
 samba-tool domain level raise --forest-level=2003 --domain-level=2003
 samba-tool dbcheck --fix --yes
 		  </programlisting>
-		</simpara></listitem>
+		</listitem>
 
 		<listitem><simpara>
 		  Gab es in der migrierten AD-Domäne mehr als einen Domänencontroller, müssen die

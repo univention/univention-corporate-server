@@ -980,8 +980,8 @@
 				  Neben Standard-Syntaxdefinitionen für Zeichenketten (<classname>string</classname>),
 				  Zahlen (<classname>integer</classname>) gibt es drei Möglichkeiten einen binären
 				  Zustand auszudrücken: Die Syntax <classname>TrueFalse</classname> wird auf
-				  LDAP-Ebene durch die Zeichenketten <true>true</true> und
-				  <true>false</true> abgebildet, die Syntax
+				  LDAP-Ebene durch die Zeichenketten <literal>true</literal> und
+				  <literal>false</literal> abgebildet, die Syntax
 				  <classname>TrueFalseUpper</classname> verwendet dagegen die Werte
 				  <literal>TRUE</literal> und <literal>FALSE</literal>. Die Syntax
 				  <classname>boolean</classname> dagegen speichert keinen Wert bzw. die Zeichenkette
@@ -1695,7 +1695,6 @@ univention-directory-manager dhcp/host create \
     --set fixedaddress="192.168.0.110" \
     --set hwaddress="ethernet 00:11:22:33:44:55"
 </programlisting>
-	  </section>
 
 		<para>
 		  Soll ein Rechnername über DNS auflösbar sein, kann mit den folgenden Befehlen eine
@@ -1716,7 +1715,7 @@ univention-directory-manager dns/ptr_record create \
 		<para>
 		Weitere Informationen zu DNS finden sich in <xref linkend="networks:dns"/>.
 		</para>
-	</section>
+	  </section>
 
 	  <section id="central:udm:example:extendedattr">
 		<title>Erweiterte Attribute</title>
@@ -1741,6 +1740,7 @@ univention-directory-manager settings/extended_attribute create \
     --set shortDescription="Car license"
 </programlisting>
 	  </section>
+	</section>
 </section>
 
 <section id="central:reports">

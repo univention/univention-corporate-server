@@ -139,11 +139,11 @@ Following installation on hardware or in a virtualization solution, UCS can also
   <para>
 	If there is no DHCP server present in the local network or static configuration of the network interface is required, the <guimenu>Cancel</guimenu> button can be selected. The Univention Installer then offers to repeat the automatic configuration or to configure the interface manually.
   </para>
-  <para>
-	<note>
+  <note>
+	  <para>
 	  At least one network interface is required for the installation of &ucsUCS;. If no supported network card is detected, Univention Installer opens a list of supported drivers for selection.
-	</note>
-  </para>
+	  </para>
+  </note>
   <figure id="installation-netcfg-static">
 	<title>Selecting the manual network configuration </title>
 	<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/installer-netcfg-static_en.png"/>
@@ -228,7 +228,9 @@ the size of the respective hard drive.
 	  </listitem>
 	</itemizedlist>
 	<caution>
+		<para>
 	  In all three versions, the data already on the selected hard drive are deleted during the partitioning!
+		</para>
 	</caution>
 	<figure id="installation-partman-selectguided">
 	  <title>Selecting the partitioning scheme</title>

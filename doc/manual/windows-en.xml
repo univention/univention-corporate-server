@@ -533,7 +533,7 @@ instanceType: 4
 				OUs are nested further, in the case of conflict, the "most subordinate" policies in
 				each case, in other words the one most closely linked to the target object,
 				apply. The following evaluation order applies:
-
+				</simpara>
 				<itemizedlist>
 				  <listitem><simpara>
 					Assignment of a policy to an Active Directory site
@@ -548,7 +548,7 @@ instanceType: 4
 					OU overrules policies from superordinate OUs).
 				  </simpara></listitem>
 				</itemizedlist>
-			  </simpara></listitem>
+			  </listitem>
 			</itemizedlist>
 		  </para>
 
@@ -1814,20 +1814,20 @@ ucr set connector/s4/mapping/group/grouptype=false
 		<listitem><simpara>
 		  The domain function level of the migrated Active Directory domain needs to be checked by
 		  running the following command:
-
+		  </simpara>
 		  <programlisting language="sh">
 samba-tool domain level show
 		  </programlisting>
-
+		  <simpara>
 		  In case this command returns the message <guimenu>ATTENTION: You run SAMBA 4 on a forest
 		  function level lower than Windows 2000 (Native).</guimenu> the following commands should
 		  be run to fix this:
-
+		  </simpara>
 		  <programlisting language="sh">
 samba-tool domain level raise --forest-level=2003 --domain-level=2003
 samba-tool dbcheck --fix --yes
 		  </programlisting>
-		</simpara></listitem>
+		</listitem>
 
 		<listitem><simpara>
 		  In case there has been more than one Active Directory domain controller in the original

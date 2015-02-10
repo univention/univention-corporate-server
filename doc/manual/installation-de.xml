@@ -180,13 +180,13 @@
 	werden. Der Univention Installer bietet dann an, die automatische Konfiguration zu wiederholen oder
 	die Schnittstelle manuell zu konfigurieren.
   </para>
-  <para>
-	<note>
+  <note>
+	  <para>
 	  Für die Installation von &ucsUCS; ist mindestens eine Netzwerkschnittstelle erforderlich. Wird
 	  keine unterstützte Netzwerkkarte erkannt, bietet Univention Installer eine Liste der unterstützten
 	  Treiber zur Auswahl an.
-	</note>
-  </para>
+	  </para>
+  </note>
   <figure id="installation-netcfg-static">
 	<title>Auswahl der manuellen Netzwerkkonfiguration</title>
 	<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/installer-netcfg-static_de.png"/>
@@ -298,7 +298,9 @@
 	  </listitem>
 	</itemizedlist>
 	<caution>
+		<para>
 	  Bei allen drei Varianten gehen die Daten auf der ausgewählten Festplatte während der Partitionierung verloren!
+		</para>
 	</caution>
 	<figure id="installation-partman-selectguided">
 	  <title>Auswahl des Partitionierungsschemas</title>

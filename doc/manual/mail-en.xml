@@ -184,6 +184,7 @@
 		under <guimenu>Advanced settings &ar; Mail</guimenu>.
 	  </para>
 	  <note>
+		<para>
 		Once the user account is properly configured authentication to the mail stack 
 		is possible (IMAP/SMTP). Please keep in mind that after disabling the account
 		or changing the password the login to the mail stack is still possible for 30min
@@ -192,6 +193,7 @@
 		service on the mail server. The expiration time of the authentication cache can be 
 		configured with the &ucsUCRV; <envar>mail/saslauthd/cache/timeout</envar> on
 		the mail server.
+		</para>
 	  </note>
 	</section>
 
