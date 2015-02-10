@@ -1,3 +1,9 @@
+univention-updater (10.0.53-2) unstable; urgency=medium
+
+  * Bug #37741: don't display back button during upgrade
+
+ -- Florian Best <best@univention.de>  Tue, 10 Feb 2015 16:10:56 +0100
+
 univention-updater (10.0.53-1) unstable; urgency=medium
 
   * Set version/patchlevel to 1 (Bug #37661)

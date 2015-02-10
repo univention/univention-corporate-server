@@ -66,6 +66,12 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
+			this._orgNavButtons = [{
+				name: 'close',
+				label: _("Back"),
+				onClick: lang.hitch(this, '_closeLogView')
+			}];
+
 			// If I don't do that -> the page will switch 'show module help description' off
 			lang.mixin(this, {
 				helpText: ' ',
@@ -75,11 +81,7 @@ define([
 					label: _('Back'),
 					callback: lang.hitch(this, '_closeLogView')
 				}],
-				navButtons: [{
-					name: 'close',
-					label: _("Back"),
-					onClick: lang.hitch(this, '_closeLogView')
-				}],
+				navButtons: this._orgNavButtons,
 				title: _("Update progress")
 			});
 		},
@@ -216,6 +218,7 @@ define([
 		// Additionally, changes some labels to reflect the current situation.
 		_allow_close: function(yes) {
 			this._allow_closing = yes;
+			this.set('navButtons', this._allow_closing ? this._orgNavButtons : []);
 			// While the button is hidden, the polling callback maintains the content.
 			// Only if Close is enabled -> set to a different text.
 			if (yes)
