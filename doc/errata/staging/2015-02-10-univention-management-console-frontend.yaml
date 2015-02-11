@@ -9,4 +9,5 @@ desc: |
   * Displaying of the UMC reload dialogue has been adjusted.
   * The automatic selection of the first item in a list widget (e.g., in
     the installed system locales in language settings) has been removed.
-bug: [37565,33199]
+  * The positioning of the "back to overview" header button has been adjusted.
+bug: [37565,33199,37780]
