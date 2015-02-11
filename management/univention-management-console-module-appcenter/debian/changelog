@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.19-10) unstable; urgency=low
+
+  * Bug #36822: Run joinscripts after installing an app
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 11 Feb 2015 12:38:14 +0100
+
 univention-management-console-module-appcenter (4.1.19-9) unstable; urgency=low
 
   * Bug #37364: Allow searching for multiple components at once (needed for

@@ -315,7 +315,7 @@ class Instance(umcm.Base):
 										# dont have to add component: already added during dry_run
 										return application.install(module.package_manager, module.component_manager, add_component=only_master_packages, send_as=send_as, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, previously_registered_by_dry_run=previously_registered_by_dry_run)
 									else:
-										return application.uninstall(module.package_manager, module.component_manager)
+										return application.uninstall(module.package_manager, module.component_manager, self._username, self._password)
 						def _finished(thread, result):
 							if isinstance(result, BaseException):
 								MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))

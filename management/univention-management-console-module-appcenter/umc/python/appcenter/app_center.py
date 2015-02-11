@@ -61,6 +61,8 @@ from socket import error as SocketError
 from ldap import LDAPError
 from ldap.filter import escape_filter_chars
 from operator import attrgetter
+import subprocess
+from tempfile import NamedTemporaryFile
 
 # related third party
 from simplejson import loads
@@ -78,7 +80,7 @@ import univention.admin.handlers.container.cn as container_udm_module
 import univention.admin.uexceptions as udm_errors
 
 # local application
-from util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5
+from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5
 
 CACHE_DIR = '/var/cache/univention-management-console/appcenter'
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/local/all.tar.gz'
@@ -1107,7 +1109,7 @@ class Application(object):
 						return False
 			return True
 
-	def uninstall(self, package_manager, component_manager):
+	def uninstall(self, package_manager, component_manager, username=None, password=None):
 		# reload ucr variables
 		ucr.load()
 
@@ -1130,7 +1132,7 @@ class Application(object):
 			status = 200
 		except:
 			status = 500
-		self._finished('uninstall', status, component_manager.ucr, package_manager)
+		self._finished('uninstall', status, component_manager.ucr, package_manager, username, password)
 		return status == 200
 
 	def install_dry_run(self, package_manager, component_manager, remove_component=True, username=None, password=None, only_master_packages=False, dont_remote_install=False, function='install', force=False):
@@ -1579,12 +1581,38 @@ class Application(object):
 			except (LDAPError, udm_errors.base):
 				pass
 			status = 500
-		self._finished(send_as, status, component_manager.ucr, package_manager)
+		self._finished(send_as, status, component_manager.ucr, package_manager, username, password)
 		return status == 200
 
-	def _finished(self, action, status, ucr, package_manager):
+	def _finished(self, action, status, ucr, package_manager, username, password):
 		self._set_ucr_codes_variable(ucr, package_manager)
+		self._run_joinscripts(package_manager, username, password, ucr)
 		self._send_information(action, status)
+
+	def _run_joinscripts(self, package_manager, username, password, ucr):
+		with NamedTemporaryFile() as pwd_file:
+			args = ['/usr/sbin/univention-run-join-scripts']
+			MODULE.process('Running join scripts')
+			if ucr.get('server/role') != 'domaincontroller_master':
+				if username is not None and password is not None:
+					args.extend(['-dcaccount', username])
+					pwd_file.write(password)
+					pwd_file.flush()
+					args.extend(['-dcpwd', pwd_file.name])
+			run_join_scripts = Thread(target=subprocess.call, args=[args])
+			run_join_scripts.start()
+			while run_join_scripts.is_alive():
+				# i did not find anything nearly as efficient as this one
+				# open().readlines() works, but not very good for big log files
+				# working with f.seek() is a hassle
+				try:
+					line = subprocess.check_output(['tail', '-n', '1', '/var/log/univention/join.log'])
+				except subprocess.CalledProcessError as e:
+					MODULE.warn('Watching join.log failed: %s' % str(e))
+				else:
+					package_manager.progress_state.info(line)
+				time.sleep(1)
+			run_join_scripts.join()
 
 	def _send_information(self, action, status):
 		if not self.get('notifyvendor'):
