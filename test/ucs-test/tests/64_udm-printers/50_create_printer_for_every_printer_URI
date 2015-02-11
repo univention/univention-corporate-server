@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: create printer for every printer URI
-## tags: apttest
+## tags: apptest
 ## exposure: dangerous
 ## packages: [univention-printserver]
 
