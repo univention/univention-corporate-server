@@ -1,3 +1,9 @@
+ucs-test (4.0.206-1) unstable; urgency=low
+
+  * Bug #27653: pass terminal parameters to Popen object in 04check_login
+
+ -- Ammar Najjar <najjar@univention.de>  Wed, 11 Feb 2015 11:18:16 +0100
+
 ucs-test (4.0.205-1) unstable; urgency=low
 
   * Bug #35908 & #35909: improve the code, use essential/simplesquid
@@ -156,7 +162,7 @@ ucs-test (4.0.191-1) unstable; urgency=medium
 
 ucs-test (4.0.190-2) unstable; urgency=low
 
-  * 00_base/52proofuniquemember: removed the '--quiet' when grep'ing the 
+  * 00_base/52proofuniquemember: removed the '--quiet' when grep'ing the
     univention-directory-manager-tools/proof_uniqueMembers output (Bug #36799).
 
  -- Dmitry Galkin <galkin@univention.de>  Mon, 15 Dec 2014 12:40:26 +0100
@@ -174,7 +180,7 @@ ucs-test (4.0.189-1) unstable; urgency=medium
     60_umc/06_non-ucr-policies,
     00_base/90change_user_pwd_via_udm,
     60_umc-system/30_umc-service-user-modules (Bug #35276).
-    
+
     60_umc/05_get_client_ip_address: added executable flag;
     60_umc-system/31_umc-service-user-authentication: merged the updates
     from UCS 4.0 (Bug #36901).
@@ -240,7 +246,7 @@ ucs-test (4.0.185-1) unstable; urgency=low
 
 ucs-test (4.0.184-1) unstable; urgency=low
 
-  * bin/udm-test: make script "/bin/sh" compatible (Bug #34389). 
+  * bin/udm-test: make script "/bin/sh" compatible (Bug #34389).
 
  -- Dmitry Galkin <galkin@univention.de>  Fri, 21 Nov 2014 11:12:26 +0100
 
@@ -278,7 +284,7 @@ ucs-test (4.0.179-1) unstable; urgency=low
 
 ucs-test (4.0.178-1) unstable; urgency=low
 
-  * bin/udm-test: pass --bind* credentials as early as possible (Bug #34389). 
+  * bin/udm-test: pass --bind* credentials as early as possible (Bug #34389).
 
  -- Dmitry Galkin <galkin@univention.de>  Tue, 11 Nov 2014 12:41:10 +0100
 
@@ -388,7 +394,7 @@ ucs-test (4.0.168-1) unstable; urgency=low
   * Bug #15219: add new script 102_Standard_Paketliste_installation
   * Bug #35909: add new script 43_proxy/02_squid3_without_cache_restart
   * Bug #35908: add new script 43_proxy/01_squid_redirector_configuration
-  * Bug #26452: add new script 43_proxy/00_http_proxy_basic_ntlm_auth_check  
+  * Bug #26452: add new script 43_proxy/00_http_proxy_basic_ntlm_auth_check
 
  -- Ammar Najjar <najjar@univention.de>  Thu, 09 Oct 2014 12:12:16 +0200
 
