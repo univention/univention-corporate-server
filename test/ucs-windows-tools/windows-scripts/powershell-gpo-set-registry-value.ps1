@@ -2,11 +2,11 @@ Param(
 # arguments:
         [string]$domain,
         [string]$gpo_name,  # GpoName (aka DisplayName)
-        [string]$permission_level,  # GpoRead|GpoApply|GpoEdit|GpoEditDeleteModifySecurity|None
-        [string]$target_name,  # Object in LDAP
-        [string]$target_type,  # Computer|User|Group
-	[string]$server,  # Domain controller
-        [string]$replace # force GpoPermissions overwrite True|False
+        [string]$reg_key,  # for ex: HKLM\Software\Policies\Microsoft\Windows NT\DNSClien
+        [string]$value_name,  # a value name or array of value names
+        [string]$value,  # a value(-s)
+        [string]$type,  # Unknown|String|ExpandString|Binary|DWord|MultiString|QWord
+        [string]$server  # Domain controller
 )
 
 ##################
@@ -41,14 +41,14 @@ if (!(gwmi win32_computersystem).partofdomain -eq $true) {
 }
 
     try {
-            Set-GPPermissions `
+            Set-GPRegistryValue `
                 -Name "$gpo_name" `
-                -PermissionLevel "$permission_level" `
-                -TargetName "$target_name" `
-                -TargetType "$target_type" `
+                -Key "$reg_key" `
+                -ValueName "$value_name" `
+                -Value "$value" `
+                -Type "$type" `
                 -Domain "$domain" `
                 -Server "$server" `
-                -Replace:([System.Convert]::ToBoolean($replace)) `
 }
     Catch {
             error("$_")

@@ -1,3 +1,10 @@
+ucs-windows-tools (2.0.2-2) unstable; urgency=low
+
+  * powershell-gpo-set-registry-value.ps1: script to modify GPOs;
+    powershell-apply-gpo.ps1: add '-Replace' functionality (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Wed, 11 Feb 2015 17:17:28 +0100
+
 ucs-windows-tools (2.0.2-1) unstable; urgency=medium
 
   * Added powershell scripts to work with GPOs (Bug #37568).
