@@ -18,14 +18,38 @@
 	.umcHeaderLeft {
 		background: url(../images/univention.svg) no-repeat 10px 12px;
 		height: 50px;
+		padding-right: 25px;
+	}
+
+	.umcHeaderCenter {
+		width: 150px;
+		position: absolute;
+		left: 50%;
+		margin-left: -(@width / 2);
 	}
 
 	.umcHeaderRight {
 		padding-top: 5px;
+		padding-left: 25px;
 	}
 
 	.umcHeaderRight {
 		text-align: right;
+
+		/* enable text-overflow=ellipsis for hostname */
+		.dijitDropDownButton {
+			max-width: 100%;
+			.dijitButtonNode {
+				max-width: 100%;
+				.dijitButtonText {
+					max-width: 100%;
+					text-overflow: ellipsis;
+					overflow: hidden;
+					margin-right: -20px;
+					padding-right: 24px;
+				}
+			}
+		}
 
 		/* style for user and host information */
 		.umcHeaderText {
@@ -76,10 +100,6 @@
 			opacity: 1;
 		}
 	}
-
-//	.dijitButton .dijitButtonNode {
-//		padding-right: 7px;
-//	}
 
 	.dijitButtonNode {
 		height: auto !important;
@@ -139,7 +159,7 @@
 		display: block;
 
 		.dijitButtonNode {
-			padding-top: 16px;
+			padding-top: 6px;
 			display: block;
 
 			.dijitButtonText {
@@ -157,15 +177,6 @@
 		}
 	}
 }
-
-//.dj_ie8 .umc .umcHeader,
-//.has-mozilla .umc .umcHeader {
-//	.umcHeaderRight {
-//		.umcHeaderText {
-//			padding: 10px 0 5px 0;
-//		}
-//	}
-//}
 
 /* special stylings depending on device class */
 
@@ -187,12 +198,6 @@
 	}
 }
 
-@media (max-width: 768px) {
-	.umc .umcHeader .dijitButton.umcBackToOverview .dijitButtonNode {
-		padding-top: 0;
-	}
-}
-
 /**
  * style the main container of UMC
  */
@@ -200,116 +205,3 @@
 	clear: both;
 }
 
-//.umc .umcTopContainer {
-////	height: 100%;
-////	width: 960px;
-////	width: 100%;
-////	margin: 0 auto;
-//
-//	.SingleChild-child {
-//		border: none !important;
-//	}
-//
-//	.dijitTabContainerTabListNested {
-//		background-color: #ededee;
-//		border: none;
-//		border-top: 1px solid #fff;
-//		display: block;
-//
-//		.dijitTabChecked {
-//			background-color: #000000;
-//		}
-//	}
-//
-//	.dijitTabContainerNested .dijitTabContainerTop-container {
-//		float: left;
-//		max-width: 80%!important;
-//		position: static!important;
-//	}
-//	.dijitTabContainerNested .dijitTabContainerTop-tabs {
-//		float: left;
-//		width: auto!important;
-//		position: static!important;
-//		.dijitTabInnerDiv {
-//			background: none;
-//			border-right: 1px solid #fff;
-//		}
-//
-//		.dijitTabContent {
-//			display: block;
-//			padding: 5px 7px;
-//			border-bottom: thin solid #000000;
-//		}
-//		.dijitTabChecked .dijitTabContent {
-//			//padding: 5px 7px;
-//			background-color: #000000;
-//		}
-//
-//		.dijitTabChecked .dijitTabContent .tabLabel {
-//			color: #fff;
-//		}
-//
-//		.dijitTabHover .dijitTabContent {
-//			border: none;
-//		}
-//
-//		.dijitTabHover .dijitTabInnerDiv {
-//			background-color: #ddd;
-//		}
-//
-//		.dijitTabActive .dijitTabContent {
-//			border: none;
-//		}
-//
-//		.dijitTabContainerTop-tabs {
-//			border: none;
-//		}
-//	}
-//}
-//
-//.umc .umcBackToOverview {
-//	background: none;
-//	border: 0 none;
-//	box-shadow: none;
-//}
-//.umc .umcBackToOverview .dijitButtonNode {
-//	background-image: url('../icons/24x24/up.png');
-//	background-repeat: no-repeat;
-//	background-size: 16px;
-//	padding-top: 16px;
-//	background-position: top center;
-//}
-//.umc .umcBackToOverview .dijitButtonText {
-//	visibility: hidden;
-//}
-//.umc .umcBackToOverview.dijitFocus .dijitButtonText,
-//.umc .umcBackToOverview.dijitHover .dijitButtonText {
-//	visibility: visible;
-//}
-//
-//.umc .umcMainTabController {
-//	height: 30px;
-//	z-index: 3;
-//	background-color: #e5e5e5;
-//
-//	.dijitTab {
-//		padding: 7px;
-//		padding-left: 2em;
-//		height: 16px;
-//		float: left;
-//		background-image: url('layout/images/bg-tab.svg');
-//		background-repeat: repeat-x;
-////		background-size: ;
-//		border: 0 none;
-//		border-left: thin solid #d3d3d3;
-//		border-right: thin solid #d3d3d3;
-//		.dijitTabCloseButton {
-//			visibility: hidden;
-//		}
-//	}
-//	.dijitTab.dijitTabHover, .dijitTab.dijitTabChecked {
-//		background-image: none;
-//		.dijitTabCloseButton {
-//			visibility: visible;
-//		}
-//	}
