@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check squid redirecor written to gonfig file
-## tags: apttest
+## tags: apptest
 ## exposure: careful
 ## packages: [univention-squid]
 ## bugs: [33332, 35421]
