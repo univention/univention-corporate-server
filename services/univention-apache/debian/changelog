@@ -1,3 +1,9 @@
+univention-apache (7.0.16-3) unstable; urgency=medium
+
+  * Bug #37780: The UCS overview background image has been adjusted.
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 11 Feb 2015 19:34:05 +0100
+
 univention-apache (7.0.16-2) unstable; urgency=low
 
   * Disable SSLv2 and SSLv3. These are legacy protocols with known security
