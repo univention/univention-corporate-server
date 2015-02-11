@@ -118,6 +118,13 @@ define([
 			this._registerAtParentOnShowEvents(lang.hitch(this, 'resize'));
 		},
 
+		_setCustomValue: function() {
+			// overwrite handling of _SelectMixin
+			this.value = null; // force notification of watch handlers
+			this.set('value', this._initialValue);
+			this._resetValue = this._initialValue;
+		},
+
 		_getSizeAttr: function() {
 			return this.get('autoHeight');
 		},
