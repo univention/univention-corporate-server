@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-15) unstable; urgency=medium
+
+  * Bug #37780: The UMC background image has been adjusted.
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 11 Feb 2015 19:33:14 +0100
+
 univention-management-console-frontend (4.1.106-14) unstable; urgency=medium
 
   * Bug #33199: remove auto selection of first item in MultiSelect widget

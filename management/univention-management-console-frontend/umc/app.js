@@ -492,17 +492,17 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 			this._headerLeft = new ContainerWidget({
-				'class': 'umcHeaderLeft col-xxs-12 col-xs-6 col-sm-4 col-md-5'
+				'class': 'umcHeaderLeft col-xxs-12 col-xs-6'
 			});
 			this.addChild(this._headerLeft);
 
 			this._headerRight = new ContainerWidget({
-				'class': 'umcHeaderRight col-xxs-12 col-xs-6 col-sm-4 col-sm-push-4 col-md-5 col-md-push-2 col-lg-5 col-lg-push-2 col-xlg-4 col-xlg-push-3'
+				'class': 'umcHeaderRight col-xxs-12 col-xs-6'
 			});
 			this.addChild(this._headerRight);
 
 			this._headerCenter = new ContainerWidget({
-				'class': 'umcHeaderCenter col-xxs-12 col-xs-12 col-sm-4 col-sm-pull-4 col-md-2 col-md-pull-5 col-lg-pull-5 col-xlg-pull-4'
+				'class': 'umcHeaderCenter'
 			});
 			this.addChild(this._headerCenter);
 		},
