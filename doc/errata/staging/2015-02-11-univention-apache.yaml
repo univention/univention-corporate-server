@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-apache
-fix: 7.0.16-2.224.201501121200
+fix: 7.0.16-3.225.201502111949
 version: [1]
 desc: |
   The following issues are addressed by this erratum update:
