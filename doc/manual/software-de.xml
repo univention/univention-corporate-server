@@ -5,7 +5,7 @@
 	<para>
 	  Die in UCS integrierte Softwareverteilung bietet umfangreiche
 	  Möglichkeiten für den Rollout und die Aktualisierung von UCS-Installationen.
-	  Sicherheits- und Versionsupdates können über die &ucsUMC;, über ein Kommandozeilen-Tool
+	  Sicherheits- und Versionsupdates können über &ucsUMC;, über ein Kommandozeilen-Tool
 	  und richtliniengesteuert installiert werden. Dies wird in
 	  <xref linkend="software::ucs-updates"/> beschrieben. Die UCS-Softwareverteilung
 	  unterstützt nicht die Aktualisierung von Microsoft Windows-Systemen.
@@ -198,7 +198,7 @@
 	<title>Aktualisierung von UCS-Systemen</title>
 	<para>
 	  UCS-Systeme können auf zwei Wegen aktualisiert werden; entweder pro einzelnem System
-	  (über die &ucsUMC; oder auf der Kommandozeile) oder für größere Gruppen von
+	  (über &ucsUMC; oder auf der Kommandozeile) oder für größere Gruppen von
 	  UCS-Systemen automatisiert über eine UMC-Rechner-Richtlinie.
 	</para>
 
@@ -227,7 +227,7 @@
 	</section>
 
 	<section id="computers:Aktualisierung_eines_einzelnen_Systems_in_der_UMC">
-	  <title>Aktualisierung eines einzelnen Systems in der &ucsUMC;</title>
+	  <title>Aktualisierung eines einzelnen Systems in &ucsUMC;</title>
 	  <para>
 		Mit dem UMC-Modul <guimenu>Software-Aktualisierung</guimenu> können Versions- und
 		Errata-Updates installiert werden.

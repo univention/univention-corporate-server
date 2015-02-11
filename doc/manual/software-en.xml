@@ -75,7 +75,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		<emphasis>patchlevel releases</emphasis> are released approx. every three months and combine
+		<emphasis>Patchlevel releases</emphasis> are released approx. every three months and combine
 		all errata updates published until then.
 	  </simpara> </listitem>
 
@@ -193,7 +193,7 @@
   <section id="software::ucs-updates">
 	<title>Updates of UCS systems</title>
 	<para>
-	  There are two ways to update UCS systems; either on individual systems (via the
+	  There are two ways to update UCS systems; either on individual systems (via
 	  &ucsUMC; or command line) or via a &ucsUMC; computer policy for larger groups
 	  of UCS systems.
 	</para>
