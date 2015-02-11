@@ -1,8 +1,8 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Permissions after renewing ssl certificate
 ## versions:
-##  3.2-4: skip
-## tags: apttest
+##  4.0-0: skip
+## tags: apptest
 ## roles-not: []
 ## exposure: dangerous
 ## bugs: [36557, 31941, 34082, 34080, 32988]
@@ -123,7 +123,7 @@ def check_others_readability(ssl_files):
 def main():
 	ssl_files = get_dir_files(SSLDIR, recursive=True)
 
-	# Fails because of Bug #36557 
+	# Fails because of Bug #36557
 	check_dc_backup_hosts_readability(ssl_files)
 	#TODO uncomment next line after Bug #34082 is closed
 	# check_dc_backup_hosts_writability(ssl_files)
