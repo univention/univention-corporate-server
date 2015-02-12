@@ -35,7 +35,7 @@ import signal
 import fcntl
 import os
 import struct
-import cPickle
+import json
 import sys
 import grp
 
@@ -46,8 +46,8 @@ from OpenSSL import SSL
 
 from univention.debug import MAIN, init, set_level, debug, reopen, FLUSH, NO_FUNCTION, ERROR, WARN, PROCESS, INFO
 
-MAX_PICKLE_ID = 999999
-MIN_PICKLE_ID = 1
+MAX_JSON_ID = 999999
+MIN_JSON_ID = 1
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -188,7 +188,7 @@ class LogCollectorServer(object):
 			plen = struct.unpack('!I', state['inbuffer'][0:4])[0]
 			if plen + 4 <= len(state['inbuffer']):
 				# unpickle data
-				packet = cPickle.loads(state['inbuffer'][4:4 + plen])
+				packet = json.loads(state['inbuffer'][4:4 + plen])
 				# remove data from buffer
 				state['inbuffer'] = state['inbuffer'][4 + plen:]
 
@@ -207,7 +207,7 @@ class LogCollectorServer(object):
 		# send ACKs
 		if self._ack_queue:
 			packet = {'id': 0, 'action': 'ACK', 'data': self._ack_queue}
-			self._send_pickled(sock, packet)
+			self._send_serialized(sock, packet)
 			self._ack_queue = []
 
 		return True
@@ -257,7 +257,7 @@ class LogCollectorServer(object):
 
 		response = {'id': 0, 'action': 'SETUP', 'data': 'OK'}
 		log(INFO, 'Sending SETUP:OK')
-		self._send_pickled(sock, response)
+		self._send_serialized(sock, response)
 
 	def _rotate_file(self, fn):
 		if os.path.exists('%s.%d.gz' % (fn, self._logrot_keepcnt)):
@@ -291,18 +291,18 @@ class LogCollectorServer(object):
 		self._connectionstates[sock]['outbuffer'] += data
 		notifier.socket_add(sock, self._send_outbuffer, condition=notifier.IO_WRITE)
 
-	def _send_pickled(self, sock, data):
+	def _send_serialized(self, sock, data):
 		# set correct id
 		state = self._connectionstates[sock]
 		data['id'] = state['nextId']
 
 		# bump id
 		state['nextId'] += 1
-		if state['nextId'] > MAX_PICKLE_ID:
-			state['nextId'] = MIN_PICKLE_ID
+		if state['nextId'] > MAX_JSON_ID:
+			state['nextId'] = MIN_JSON_ID
 
 		# create network data
-		buf = cPickle.dumps(data, -1)
+		buf = json.dumps(data, -1)
 		buflen = struct.pack('!I', len(buf))
 		buf = buflen + buf
 

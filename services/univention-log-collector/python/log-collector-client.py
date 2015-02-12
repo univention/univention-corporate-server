@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 # python packages
-import socket, fcntl, os, sys, random, errno, stat, struct, cPickle, time
+import socket, fcntl, os, sys, random, errno, stat, struct, json, time
 
 # external packages
 from optparse import OptionParser
@@ -40,8 +40,8 @@ import inspect
 import notifier
 from OpenSSL import *
 
-MAX_PICKLE_ID = 999999
-MIN_PICKLE_ID = 1
+MAX_JSON_ID = 999999
+MIN_JSON_ID = 1
 MAX_LENGTH_RESEND_QUEUE = 20
 
 LOGERROR = 0
@@ -155,7 +155,7 @@ class LogCollectorClient( object ):
 				   'data': filelist,
 				   'rotate': (fdict['pos'] == -1) }     # rotate on startup, not on reconnect
 		debug( LOGDEBUG, 'Sending SETUP')
-		self._send_pickled( packet, resendQueue = False )
+		self._send_serialized( packet, resendQueue = False )
 
 	def _receive_data( self, sock ):
 		debug( LOGDEBUG, 'GOT NEW DATA' )
@@ -192,7 +192,7 @@ class LogCollectorClient( object ):
 			plen = struct.unpack('!I', self._inbuffer[0:4])[0]
 			if plen+4 <= len(self._inbuffer):
 				# unpickle data
-				packet = cPickle.loads( self._inbuffer[4:4+plen] )
+				packet = json.loads( self._inbuffer[4:4+plen] )
 				# remove data from buffer
 				self._inbuffer = self._inbuffer[4+plen:]
 
@@ -303,7 +303,7 @@ class LogCollectorClient( object ):
 						   'filename': self._config[ sock ][ 'filename' ],
 						   'data': data }
 
-				self._send_pickled( packet )
+				self._send_serialized( packet )
 
 		return True
 
@@ -333,13 +333,13 @@ class LogCollectorClient( object ):
 			self._add_to_outbuffer( buf )
 
 
-	def _send_pickled( self, data, resendQueue = True ):
+	def _send_serialized( self, data, resendQueue = True ):
 		if resendQueue:
 			# set valid id
 			data['id'] = self._nextId
 
 		# create network data
-		buf = cPickle.dumps(data,-1)
+		buf = json.dumps(data,-1)
 		buflen = struct.pack('!I', len(buf))
 		buf = buflen + buf
 
@@ -349,8 +349,8 @@ class LogCollectorClient( object ):
 
 			# bump id
 			self._nextId += 1
-			if self._nextId > MAX_PICKLE_ID:
-				self._nextId = MIN_PICKLE_ID
+			if self._nextId > MAX_JSON_ID:
+				self._nextId = MIN_JSON_ID
 
 		self._add_to_outbuffer( buf )
 
