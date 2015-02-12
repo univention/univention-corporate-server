@@ -61,6 +61,10 @@ def log(level, msg):
 		debug(MAIN, level, repr(msg))
 
 
+class HackingAttempt(Exception):
+	pass
+
+
 class LogCollectorServer(object):
 
 	def __init__(self, port=7450):
@@ -218,7 +222,7 @@ class LogCollectorServer(object):
 		log(INFO, 'PACKET_DATA: len=%s' % len(packet['data']))
 		state = self._connectionstates[sock]
 		basename = os.path.basename(packet['filename'])
-		fn = os.path.join(state['targetdir'], state['filelist'][packet['filename']], basename)
+		fn = self._secure_path_join(state['targetdir'], state['filelist'][packet['filename']], basename)
 		logfd = open(fn, 'ab')
 		logfd.write(packet['data'])
 		logfd.seek(0, 2)  # seek to end of file
@@ -234,7 +238,7 @@ class LogCollectorServer(object):
 		log(INFO, 'Got SETUP')
 		addr = state['clientaddr']
 		addr = addr[: addr.rfind(':')]
-		targetdir = os.path.join(self._targetdir, addr)
+		targetdir = self._secure_path_join(self._targetdir, addr)
 		if not os.path.exists(targetdir):
 			os.makedirs(targetdir, 0o700)
 			log(WARN, 'INFO: created %s' % targetdir)
@@ -242,21 +246,25 @@ class LogCollectorServer(object):
 		log(ERROR, 'Client %s:' % addr)
 
 		state['targetdir'] = targetdir
-		for fn, fdir in packet['data']:
-			state['filelist'][fn] = fdir
-			absfdir = os.path.join(targetdir, fdir)
-			if not os.path.exists(absfdir):
-				os.makedirs(absfdir, 0o700)
-				log(PROCESS, 'INFO: created %s' % absfdir)
+		try:
+			for fn, fdir in packet['data']:
+				absfdir = self._secure_path_join(targetdir, fdir)
+				state['filelist'][fn] = fdir
+				if not os.path.exists(absfdir):
+					os.makedirs(absfdir, 0o700)
+					log(PROCESS, 'INFO: created %s' % absfdir)
 
-			basename = os.path.basename(fn)
-			logfn = os.path.join(absfdir, basename)
-			if os.path.exists(logfn) and packet['rotate']:
-				self._rotate_file(logfn)
-			log(ERROR, '  added %s' % logfn)
-
-		response = {'id': 0, 'action': 'SETUP', 'data': 'OK'}
-		log(INFO, 'Sending SETUP:OK')
+				basename = os.path.basename(fn)
+				logfn = self._secure_path_join(absfdir, basename)
+				if os.path.exists(logfn) and packet['rotate']:
+					self._rotate_file(logfn)
+				log(ERROR, '  added %s' % logfn)
+		except HackingAttempt as exc:
+			response = {'id': 0, 'action': 'SETUP', 'data': 'FAIL'}
+			log(ERROR, 'Hacking attempt: %s' % (exc,))
+		else:
+			response = {'id': 0, 'action': 'SETUP', 'data': 'OK'}
+			log(INFO, 'Sending SETUP:OK')
 		self._send_serialized(sock, response)
 
 	def _rotate_file(self, fn):
@@ -307,6 +315,12 @@ class LogCollectorServer(object):
 		buf = buflen + buf
 
 		self._add_to_outbuffer(sock, buf)
+
+	def _secure_path_join(self, a, *p):
+		path = os.path.join(a, *p)
+		if not os.path.realpath(path).startswith(self._targetdir):
+			raise HackingAttempt('%r not underneath of %r' % (path, self._targetdir))
+		return path
 
 
 def main():
