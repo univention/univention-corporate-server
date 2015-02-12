@@ -1,3 +1,12 @@
+univention-management-console-frontend-theme (0.0.89-3) unstable; urgency=medium
+
+  Bug #37780:
+  * added CSS rules for the default search button in SearchForm
+  * some new icons have been added
+  * margins for the '-' button in MultiInput have been slightly adjusted
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 12 Feb 2015 18:52:22 +0100
+
 univention-management-console-frontend-theme (0.0.89-2) unstable; urgency=medium
 
   Bug #37780:
