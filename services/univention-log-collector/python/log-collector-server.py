@@ -68,30 +68,16 @@ class LogCollectorServer(object):
 		self._connectionstates = {}
 		self._ack_queue = []
 
-		self._targetdir = '/root/log/'
-		if 'logcollector/targetdir' in ucr:
-			self._targetdir = ucr['logcollector/targetdir']
-		else:
-			log(ERROR, 'WARNING: ucr variable "logcollector/targetdir" is not set')
-			log(ERROR, 'WARNING: using "logcollector/targetdir=%s" as default' % self._targetdir)
+		self._targetdir = ucr.get('logcollector/targetdir', '/root/log/')
 
 		self._logrot_keepcnt = 99
-		if 'logcollector/logrotation/keepcount' in ucr:
-			try:
-				self._logrot_keepcnt = int(ucr['logcollector/logrotation/keepcount'])
-			except:
-				log(ERROR, 'WARNING: ucr variable "logcollector/logrotation/keepcount" contains invalid value')
-				sys.exit(1)
-		else:
-			log(ERROR, 'WARNING: ucr variable "logcollector/logrotation/keepcount" is not set')
-			log(ERROR, 'WARNING: using "logcollector/logrotation/keepcount=%s" as default' % self._logrot_keepcnt)
+		try:
+			self._logrot_keepcnt = int(ucr.get('logcollector/logrotation/keepcount', 99))
+		except ValueError:
+			log(ERROR, 'WARNING: ucr variable "logcollector/logrotation/keepcount" contains invalid value')
+			sys.exit(1)
 
-		self._logrot_maxsize = ''
-		if 'logcollector/logrotation/maxsize' in ucr:
-			try:
-				self._logrot_maxsize = ucr['logcollector/logrotation/maxsize']
-			except:
-				pass
+		self._logrot_maxsize = ucr.get('logcollector/logrotation/maxsize', '')
 		if not self._logrot_maxsize:
 			self._logrot_maxsize = '10M'
 			log(ERROR, 'WARNING: ucr variable "logcollector/logrotation/maxsize" is not set')
@@ -103,8 +89,8 @@ class LogCollectorServer(object):
 			self._logrot_maxsize = self._logrot_maxsize[:-1]
 
 		try:
-			val = int(self._logrot_maxsize[:-1])
-		except:
+			val = int(self._logrot_maxsize)
+		except ValueError:
 			val = 10
 			multi = 'M'
 		if multi == 'K':
@@ -185,12 +171,8 @@ class LogCollectorServer(object):
 			return True
 		except (SSL.SysCallError, SSL.Error) as error:
 			log(PROCESS, 'SSL error: %s. Probably the socket was closed by the client.' % (error,))
-			notifier.socket_remove(sock)
-			del self._connectionstates[sock]
-			sock.close()
-			return False
 
-		if not len(data):
+		if not data:
 			notifier.socket_remove(sock)
 			del self._connectionstates[sock]
 			sock.close()
@@ -212,11 +194,12 @@ class LogCollectorServer(object):
 
 				# handle packet
 				if isinstance(packet, dict):
-					if 'action' in packet:
-						if packet['action'] == 'SETUP':
-							self._handle_packet_setup(sock, state, packet)
-						elif packet['action'] == 'DATA':
-							self._handle_packet_data(sock, state, packet)
+					action = {
+						'SETUP': self._handle_packet_setup,
+						'DATA': self._handle_packet_data
+					}.get(packet.get('action'))
+					if action:
+						action(sock, state, packet)
 			else:
 				# not enough data
 				break
@@ -326,7 +309,7 @@ class LogCollectorServer(object):
 		self._add_to_outbuffer(sock, buf)
 
 
-if __name__ == '__main__':
+def main():
 	parser = OptionParser()
 	parser.add_option('-d', '--debug', action='store', type='int', dest='debug', default=0, help='if given then debugging is activated and set to the specified level')
 
@@ -345,5 +328,16 @@ if __name__ == '__main__':
 	signal.signal(signal.SIGHUP, lambda signum, frame: reopen())
 
 	notifier.init()
-	logserver = LogCollectorServer()
+	LogCollectorServer()
 	notifier.loop()
+
+
+if __name__ == '__main__':
+	try:
+		main()
+	except (SystemExit, KeyboardInterrupt):
+		raise
+	except:
+		import traceback
+		log(ERROR, traceback.format_exc())
+		raise
