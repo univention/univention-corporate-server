@@ -760,19 +760,16 @@ define([
 			}]);
 			layout[0].push('objectType');
 			if (superordinates && superordinates.length) {
-				layout[0].push('objectProperty');
 				layout[0].push('hidden');
-				layout[1].push('objectPropertyValue');
+				layout[1].push('objectProperty', 'objectPropertyValue');
 			} else {
 				layout[0].push('hidden');
 				layout[1].push('objectProperty', 'objectPropertyValue');
 			}
 
 			// add also the buttons (specified by the search form itself) to the layout
-			var buttons = [{
-				name: 'submit',
-				label: _('Search')
-			}];
+			var buttons = [];
+			console.log('layout: ', layout);
 			if ('navigation' == this.moduleFlavor) {
 				// put the buttons in the first row for the navigation
 				layout[0].push('submit');
@@ -783,8 +780,12 @@ define([
 				// add an additional button to toggle between advanced and simplified search
 				buttons.push({
 					name: 'toggleSearch',
+					showLabel: false,
+					labelConf: {
+						'class': 'umcSearchFormSubmitButton'
+					},
+					iconClass: '', // label will be set in toggleSearch
 					label: '',  // label will be set in toggleSearch
-					style: 'margin-right: 0',
 					callback: lang.hitch(this, function() {
 						this._isAdvancedSearch = !this._isAdvancedSearch;
 						var search = this._isAdvancedSearch ? 'toggle-search-advanced' : 'toggle-search-simple';
@@ -798,6 +799,7 @@ define([
 			// generate the search widget
 			this._searchForm = new SearchForm({
 				region: 'nav',
+				'class': 'umcUDMSearchForm',
 				widgets: widgets,
 				layout: layout,
 				buttons: buttons,
@@ -809,8 +811,8 @@ define([
 			// generate the navigation pane for the navigation module
 			if ('navigation' == this.moduleFlavor) {
 				this._navUpButton = this.own(new Button({
-					label: _( 'Parent container' ),
-					iconClass: 'umcIconUp',
+					label: _('Parent container'),
+					iconClass: 'umcDoubleUpIcon',
 					callback: lang.hitch(this, function() {
 						var path = this._tree.get( 'path' );
 						var ldapDN = path[ path.length - 2 ].id;
@@ -1048,6 +1050,7 @@ define([
 					widgets.hidden.set('visible', true);
 					//widgets.objectPropertyValue.set('visible', true);
 					toggleButton.set('label', _('Simplified options'));
+					toggleButton.set('iconClass', 'umcDoubleUpIcon');
 				} else {
 					widgets.objectType.set('visible', false);
 					if ('container' in widgets) {
@@ -1056,6 +1059,7 @@ define([
 					widgets.objectProperty.set('visible', false);
 					widgets.hidden.set('visible', false);
 					toggleButton.set('label', _('Advanced options'));
+					toggleButton.set('iconClass', 'umcSimpleContextMenuIcon');
 				}
 				this.layout();
 			}

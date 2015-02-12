@@ -1,3 +1,12 @@
+.umc .umcUDMSearchForm .umcLabelPane.umcSearchFormElementBeforeSubmitButton {
+	margin-right: -6.5em;
+	padding-right: 6.5em;
+}
+.umc .umcUDMSearchForm .umcLabelPane.umcSearchFormSubmitButton {
+	padding-right: 0;
+	width: 3.2em;
+}
+
 .umc .umcUDMLicenseIcon,
 .umc .umcUDMLicenseImportIcon {
 	height: 150px;

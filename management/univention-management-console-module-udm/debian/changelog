@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-44) unstable; urgency=medium
+
+  * Bug #37780: adjust design of search and advanced search button
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 12 Feb 2015 18:45:28 +0100
+
 univention-management-console-module-udm (5.1.25-43) unstable; urgency=medium
 
   * Bug #36700: handle also single arrays which have no group when displaying
