@@ -11,4 +11,8 @@ print "/var/log/univention/%s.log {" % name
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
 @!@
+
+postrotate
+	pkill -1 -f /usr/sbin/log-collector-server.py
+endscript
 }

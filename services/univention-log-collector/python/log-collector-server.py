@@ -30,52 +30,35 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# python packages
 import socket
+import signal
 import fcntl
 import os
 import struct
 import cPickle
-import time
 import sys
+import grp
 
-# external packages
 from optparse import OptionParser
 from univention.config_registry import ConfigRegistry
-import inspect
 import notifier
 from OpenSSL import SSL
+
+from univention.debug import MAIN, init, set_level, debug, reopen, FLUSH, NO_FUNCTION, ERROR, WARN, PROCESS, INFO
 
 MAX_PICKLE_ID = 999999
 MIN_PICKLE_ID = 1
 
-LOGERROR = 0
-LOGWARN = 1
-LOGINFO = 2
-LOGDEBUG = 4
-
-loglevel = 0
-logobj = None
-
-
-def debug(level, msg):
-	global logobj, loglevel
-	if level <= loglevel:
-		if not logobj:
-			logobj = open('/var/log/univention/log-collector-server.log', 'a')
-
-		info = inspect.getframeinfo(inspect.currentframe().f_back)[0:3]
-		printInfo = []
-		if len(info[0]) > 30:
-			printInfo.append('...' + info[0][-27:])
-		else:
-			printInfo.append(info[0])
-		printInfo.extend(info[1:3])
-		logobj.write("%s [L%s]: %s\n" % (time.asctime(time.localtime()), printInfo[1], msg))
-		logobj.flush()
-
 ucr = ConfigRegistry()
 ucr.load()
+
+
+def log(level, msg):
+	try:
+		debug(MAIN, level, msg)
+	except TypeError:
+		# null byte
+		debug(MAIN, level, repr(msg))
 
 
 class LogCollectorServer(object):
@@ -89,19 +72,19 @@ class LogCollectorServer(object):
 		if 'logcollector/targetdir' in ucr:
 			self._targetdir = ucr['logcollector/targetdir']
 		else:
-			debug(LOGERROR, 'WARNING: ucr variable "logcollector/targetdir" is not set')
-			debug(LOGERROR, 'WARNING: using "logcollector/targetdir=%s" as default' % self._targetdir)
+			log(ERROR, 'WARNING: ucr variable "logcollector/targetdir" is not set')
+			log(ERROR, 'WARNING: using "logcollector/targetdir=%s" as default' % self._targetdir)
 
 		self._logrot_keepcnt = 99
 		if 'logcollector/logrotation/keepcount' in ucr:
 			try:
 				self._logrot_keepcnt = int(ucr['logcollector/logrotation/keepcount'])
 			except:
-				debug(LOGERROR, 'WARNING: ucr variable "logcollector/logrotation/keepcount" contains invalid value')
+				log(ERROR, 'WARNING: ucr variable "logcollector/logrotation/keepcount" contains invalid value')
 				sys.exit(1)
 		else:
-			debug(LOGERROR, 'WARNING: ucr variable "logcollector/logrotation/keepcount" is not set')
-			debug(LOGERROR, 'WARNING: using "logcollector/logrotation/keepcount=%s" as default' % self._logrot_keepcnt)
+			log(ERROR, 'WARNING: ucr variable "logcollector/logrotation/keepcount" is not set')
+			log(ERROR, 'WARNING: using "logcollector/logrotation/keepcount=%s" as default' % self._logrot_keepcnt)
 
 		self._logrot_maxsize = ''
 		if 'logcollector/logrotation/maxsize' in ucr:
@@ -111,8 +94,8 @@ class LogCollectorServer(object):
 				pass
 		if not self._logrot_maxsize:
 			self._logrot_maxsize = '10M'
-			debug(LOGERROR, 'WARNING: ucr variable "logcollector/logrotation/maxsize" is not set')
-			debug(LOGERROR, 'WARNING: using "logcollector/logrotation/maxsize=%s" as default' % self._logrot_maxsize)
+			log(ERROR, 'WARNING: ucr variable "logcollector/logrotation/maxsize" is not set')
+			log(ERROR, 'WARNING: using "logcollector/logrotation/maxsize=%s" as default' % self._logrot_maxsize)
 
 		multi = ''
 		if self._logrot_maxsize[-1].upper() in 'KMG':
@@ -149,15 +132,15 @@ class LogCollectorServer(object):
 		self.connection = SSL.Connection(self.crypto_context, self._realsocket)
 		self.connection.setblocking(0)
 		self.connection.bind(('', self._port))
-		debug(LOGDEBUG, 'Server listening to SSL connects')
+		log(INFO, 'Server listening to SSL connects')
 		self.connection.listen(20)
 
 		notifier.socket_add(self.connection, self._incoming_connection)
 
 	def _verify_cert_cb(self, conn, cert, errnum, depth, ok):
-		debug(LOGDEBUG, 'Got certificate: %s' % cert.get_subject())
-		debug(LOGDEBUG, 'Got certificate issuer: %s' % cert.get_issuer())
-		debug(LOGDEBUG, 'errnum=%d  depth=%d  ok=%d' % (errnum, depth, ok))
+		log(INFO, 'Got certificate: %s' % cert.get_subject())
+		log(INFO, 'Got certificate issuer: %s' % cert.get_issuer())
+		log(INFO, 'errnum=%d  depth=%d  ok=%d' % (errnum, depth, ok))
 		return ok
 
 	def _incoming_connection(self, socket):
@@ -168,7 +151,7 @@ class LogCollectorServer(object):
 		else:
 			client = ''
 
-		debug(LOGERROR, 'incoming connection: %s' % client)
+		log(ERROR, 'incoming connection: %s' % client)
 
 		# create new state
 		state = {
@@ -185,10 +168,10 @@ class LogCollectorServer(object):
 		return True
 
 	def _receive_data(self, sock):
-		debug(LOGDEBUG, 'GOT NEW DATA')
+		log(INFO, 'GOT NEW DATA')
 
 		if sock not in self._connectionstates:
-			debug(LOGERROR, 'unknown socket')
+			log(ERROR, 'unknown socket')
 			return True
 
 		state = self._connectionstates[sock]
@@ -198,10 +181,10 @@ class LogCollectorServer(object):
 			data = sock.recv(16384)
 		except SSL.WantReadError:
 			# this error can be ignored (SSL need to do something)
-			debug(LOGDEBUG, 'SSL.WantReadError')
+			log(INFO, 'SSL.WantReadError')
 			return True
 		except (SSL.SysCallError, SSL.Error) as error:
-			debug(LOGINFO, 'SSL error: %s. Probably the socket was closed by the client.' % str(error))
+			log(PROCESS, 'SSL error: %s. Probably the socket was closed by the client.' % (error,))
 			notifier.socket_remove(sock)
 			del self._connectionstates[sock]
 			sock.close()
@@ -215,7 +198,7 @@ class LogCollectorServer(object):
 
 		state['inbuffer'] += data
 
-		debug(LOGDEBUG, 'BUFFER: len=%d got %d bytes' % (len(state['inbuffer']), len(data)))
+		log(INFO, 'BUFFER: len=%d got %d bytes' % (len(state['inbuffer']), len(data)))
 
 		# repeat while enough data is present
 		while len(state['inbuffer']) > 4:
@@ -247,9 +230,9 @@ class LogCollectorServer(object):
 		return True
 
 	def _handle_packet_data(self, sock, state, packet):
-		debug(LOGDEBUG, 'PACKET_DATA: id=%s' % packet['id'])
-		debug(LOGDEBUG, 'PACKET_DATA: fn=%s' % packet['filename'])
-		debug(LOGDEBUG, 'PACKET_DATA: len=%s' % len(packet['data']))
+		log(INFO, 'PACKET_DATA: id=%s' % packet['id'])
+		log(INFO, 'PACKET_DATA: fn=%s' % packet['filename'])
+		log(INFO, 'PACKET_DATA: len=%s' % len(packet['data']))
 		state = self._connectionstates[sock]
 		basename = os.path.basename(packet['filename'])
 		fn = os.path.join(state['targetdir'], state['filelist'][packet['filename']], basename)
@@ -258,22 +241,22 @@ class LogCollectorServer(object):
 		logfd.seek(0, 2)  # seek to end of file
 		length = logfd.tell()
 		logfd.close()
-		debug(LOGDEBUG, 'LENGTH=%d   MAXSIZE=%d' % (length, self._logrot_maxsize))
+		log(INFO, 'LENGTH=%d   MAXSIZE=%d' % (length, self._logrot_maxsize))
 		if length > self._logrot_maxsize:
 			self._rotate_file(fn)
 
 		self._ack_queue.append(packet['id'])
 
 	def _handle_packet_setup(self, sock, state, packet):
-		debug(LOGDEBUG, 'Got SETUP')
+		log(INFO, 'Got SETUP')
 		addr = state['clientaddr']
 		addr = addr[: addr.rfind(':')]
 		targetdir = os.path.join(self._targetdir, addr)
 		if not os.path.exists(targetdir):
 			os.makedirs(targetdir, 0o700)
-			debug(LOGWARN, 'INFO: created %s' % targetdir)
+			log(WARN, 'INFO: created %s' % targetdir)
 
-		debug(LOGERROR, 'Client %s:' % addr)
+		log(ERROR, 'Client %s:' % addr)
 
 		state['targetdir'] = targetdir
 		for fn, fdir in packet['data']:
@@ -281,28 +264,28 @@ class LogCollectorServer(object):
 			absfdir = os.path.join(targetdir, fdir)
 			if not os.path.exists(absfdir):
 				os.makedirs(absfdir, 0o700)
-				debug(LOGINFO, 'INFO: created %s' % absfdir)
+				log(PROCESS, 'INFO: created %s' % absfdir)
 
 			basename = os.path.basename(fn)
 			logfn = os.path.join(absfdir, basename)
 			if os.path.exists(logfn) and packet['rotate']:
 				self._rotate_file(logfn)
-			debug(LOGERROR, '  added %s' % logfn)
+			log(ERROR, '  added %s' % logfn)
 
 		response = {'id': 0, 'action': 'SETUP', 'data': 'OK'}
-		debug(LOGDEBUG, 'Sending SETUP:OK')
+		log(INFO, 'Sending SETUP:OK')
 		self._send_pickled(sock, response)
 
 	def _rotate_file(self, fn):
 		if os.path.exists('%s.%d.gz' % (fn, self._logrot_keepcnt)):
-			debug(LOGDEBUG, ' REMOVE %s.%d.gz' % (fn, self._logrot_keepcnt))
+			log(INFO, ' REMOVE %s.%d.gz' % (fn, self._logrot_keepcnt))
 			os.remove('%s.%d.gz' % (fn, self._logrot_keepcnt))
 		for i in range(self._logrot_keepcnt - 1, -1, -1):
 			if os.path.exists('%s.%d.gz' % (fn, i)):
-				debug(LOGDEBUG, ' RENAME %s.%d.gz ==> %s.%d.gz' % (fn, i, fn, i + 1))
+				log(INFO, ' RENAME %s.%d.gz ==> %s.%d.gz' % (fn, i, fn, i + 1))
 				os.rename('%s.%d.gz' % (fn, i), '%s.%d.gz' % (fn, i + 1))
 		if os.path.exists(fn) and self._logrot_keepcnt > 0:
-			debug(LOGDEBUG, ' RENAME %s ==> %s.%d' % (fn, fn, 1))
+			log(INFO, ' RENAME %s ==> %s.%d' % (fn, fn, 1))
 			os.rename(fn, '%s.1' % fn)
 			os.system('gzip %s.1' % fn)
 
@@ -311,12 +294,12 @@ class LogCollectorServer(object):
 		if len(state['outbuffer']):
 			try:
 				length = sock.send(state['outbuffer'])
-				debug(LOGDEBUG, 'SEND SEND: %s <> %s' % (length, len(state['outbuffer'])))
+				log(INFO, 'SEND SEND: %s <> %s' % (length, len(state['outbuffer'])))
 				state['outbuffer'] = state['outbuffer'][length:]
-			except (SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError) as e:
+			except (SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError):
 				pass
 			except:
-				debug(LOGWARN, 'ERROR: sending send_queue failed')
+				log(WARN, 'ERROR: sending send_queue failed')
 		if len(state['outbuffer']):
 			return True
 		return False
@@ -344,15 +327,22 @@ class LogCollectorServer(object):
 
 
 if __name__ == '__main__':
-	if 'logcollector/debug/level' in ucr:
-		loglevel = ucr['logcollector/debug/level']
-
 	parser = OptionParser()
 	parser.add_option('-d', '--debug', action='store', type='int', dest='debug', default=0, help='if given then debugging is activated and set to the specified level')
 
 	(options, args) = parser.parse_args()
+	loglevel = int(ucr.get('logcollector/debug/level', 0))
 	if options.debug > 0:
 		loglevel = options.debug
+
+	filename = '/var/log/univention/log-collector-server.log'
+	init(filename, FLUSH, NO_FUNCTION)
+	adm = grp.getgrnam('adm')
+	os.chown(filename, 0, adm.gr_gid)
+	os.chmod(filename, 0o640)
+	set_level(MAIN, loglevel)
+
+	signal.signal(signal.SIGHUP, lambda signum, frame: reopen())
 
 	notifier.init()
 	logserver = LogCollectorServer()
