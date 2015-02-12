@@ -1,6 +1,13 @@
+univention-management-console-frontend (4.1.106-16) unstable; urgency=medium
+
+  * Bug #37780: the default submit button in the search form has been adjusted
+    to only show an icon
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 12 Feb 2015 18:49:26 +0100
+
 univention-management-console-frontend (4.1.106-15) unstable; urgency=medium
 
-  * Bug #37780: The UMC background image has been adjusted.
+  * Bug #37780: the UMC background image has been adjusted.
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 11 Feb 2015 19:33:14 +0100
 

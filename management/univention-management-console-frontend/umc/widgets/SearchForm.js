@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 Univention GmbH
+ * Copyright 2011-2015 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -32,11 +32,12 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/dom-class",
 	"dojo/topic",
 	"umc/tools",
 	"umc/widgets/Form",
 	"umc/i18n!"
-], function(declare, lang, array, topic, tools, Form, _) {
+], function(declare, lang, array, domClass, topic, tools, Form, _) {
 	return declare("umc.widgets.SearchForm", Form, {
 		// summary:
 		//		Encapsulates a complete search form with standard search and cancel
@@ -49,17 +50,13 @@ define([
 
 		_publishPrefix: null,
 
-		postMixInProperties: function() {
-			// in case no buttons are defined, define the standard 'submit' button
-			if (!this.buttons) {
-				this.buttons = [ {
-					name: 'submit',
-					label: _( 'Search' )
-				}];
-			}
+		_isSubmitButtonSpecified: function() {
+			return array.some(this.buttons, function(ibutton) {
+				return ibutton.name == 'submit';
+			});
+		},
 
-			// add the buttons in a new row in case they have not been specified in the layout
-			var buttonsExist = false;
+		_isSubmitButtonSpecifiedInLayout: function() {
 			var stack = [this.layout];
 			while (stack.length) {
 				var el = stack.pop();
@@ -68,16 +65,58 @@ define([
 						stack.push(i);
 					});
 				}
-				else if ( 'submit' == el ) {
-					buttonsExist = true;
-					break;
+				else if ('submit' == el) {
+					return true;
 				}
 			}
-			if (!buttonsExist) {
-				this.layout.push( [ 'submit' ] );
+			return false;
+		},
+
+		postMixInProperties: function() {
+			// in case no buttons are defined, define the standard 'submit' button
+			if (!this._isSubmitButtonSpecified()) {
+				if (!this.buttons) {
+					this.buttons = [];
+				}
+				this.buttons.push({
+					name: 'submit',
+					showLabel: false,
+					label: _('Search'),
+					iconClass: 'umcSearchIconWhite'
+				});
+			}
+
+			// add the submit button next to the last widget in the layout
+			if (!this._isSubmitButtonSpecifiedInLayout()) {
+				var lastLayoutRow = this.layout.pop();
+				if (typeof lastLayoutRow == 'string') {
+					// row is specified by a string, i.e., containing a single element in a row
+					lastLayoutRow = [lastLayoutRow, 'submit'];
+				}
+				else if (lastLayoutRow instanceof Array) {
+					// last row is an array containing multiple elements
+					lastLayoutRow.push('submit')
+				}
+				// put the last row back into the layout
+				this.layout.push(lastLayoutRow);
 			}
 
 			this.inherited(arguments);
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			// add specific CSS classes for placing the default submit button
+			// next to its preceding widget
+			var button = this._buttons.submit;
+			if (button && !button.showLabel) {
+				domClass.add(button.$refLabel$.domNode, 'umcSearchFormSubmitButton');
+				var previousWidget = button.$refLabel$.domNode.previousSibling;
+				if (previousWidget) {
+					domClass.add(previousWidget, 'umcSearchFormElementBeforeSubmitButton');
+				}
+			}
 		},
 
 		postCreate: function() {
