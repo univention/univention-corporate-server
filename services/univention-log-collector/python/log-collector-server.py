@@ -113,7 +113,7 @@ class LogCollectorServer(object):
 		self.crypto_context = SSL.Context(SSL.SSLv23_METHOD)
 		self.crypto_context.set_cipher_list('DEFAULT')
 		self.crypto_context.set_options(SSL.OP_NO_SSLv2)
-		self.crypto_context.set_verify(SSL.VERIFY_PEER, self._verify_cert_cb)
+		self.crypto_context.set_verify(SSL.VERIFY_PEER | SSL.VERIFY_FAIL_IF_NO_PEER_CERT, self._verify_cert_cb)
 		dir = '/etc/univention/ssl/%s' % ucr['hostname']
 		self.crypto_context.use_privatekey_file(os.path.join(dir, 'private.key'))
 		self.crypto_context.use_certificate_file(os.path.join(dir, 'cert.pem'))
