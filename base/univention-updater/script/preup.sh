@@ -276,6 +276,27 @@ check_for_cyrus22 () {
 }
 check_for_cyrus22
 
+## Check for invalid sep license (Bug #37778)
+check_sep_license () {
+	if [ -r /etc/sesam2000.ini ];then
+		. `grep -i '^sm_ini=' /etc/sesam2000.ini|cut -d"=" -f2` 2>/dev/null
+		. ${gv_rw_ini}/sesam2000.profile
+		updatelic=`sm_db "select value from defaults where key='update_timeout'"|grep value=|tr -d '|'|cut -d = -f 2`
+		today=`date +'%Y%m%d'`
+		if [ -n "$updatelic" -a "$updatelic" -lt "$today" ]
+		then
+			echo "Error: The update license is not valid [valid until $updatelic]"
+			echo "       and therefore the update could not be started!"
+			echo "       Please contact SEP sales (sales@sep.de) for"
+			echo "       further information or deinstall the SEP App."
+			exit 1
+		fi
+	fi
+}
+if ! is_ucr_true update40/ignore_check_sep_license; then
+	check_sep_license
+fi
+
 #################### Bug #22093
 
 list_passive_kernels () {

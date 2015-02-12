@@ -1,3 +1,9 @@
+univention-updater (10.0.51-22) unstable; urgency=low
+
+  * check sep license Bug #37778 
+
+ -- Felix Botner <botner@univention.de>  Thu, 12 Feb 2015 14:36:09 +0100
+
 univention-updater (10.0.51-21) unstable; urgency=medium
 
   * Bug #37564: fix displaying of logfile when doing a dist-upgrade
