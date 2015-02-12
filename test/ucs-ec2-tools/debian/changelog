@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.3-4) unstable; urgency=low
+
+  * Bug #37783: Switch to UCS-4.0-1 AMI.
+  * Revert r57844 to no longer use testing for all tests.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 12 Feb 2015 09:04:59 +0100
+
 ucs-ec2-tools (1.0.3-3) unstable; urgency=low
 
   * Bug #37659: Rename UCS-4.0-1 tests
