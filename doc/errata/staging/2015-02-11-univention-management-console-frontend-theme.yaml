@@ -10,4 +10,6 @@ desc: |
     their length is cut and "..." is shown.
   * The positioning of the "back to overview" header button has been adjusted.
   * The UMC background image has been adjusted.
+  * The default search button has been adjusted to be smaller and to only
+    contain an icon instead of text.
 bug: [37780]

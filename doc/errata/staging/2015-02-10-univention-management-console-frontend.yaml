@@ -10,4 +10,6 @@ desc: |
   * The automatic selection of the first item in a list widget (e.g., in
     the installed system locales in language settings) has been removed.
   * The positioning of the "back to overview" header button has been adjusted.
+  * The default search button has been adjusted to be smaller and to only
+    contain an icon instead of text.
 bug: [37565,33199,37780]
