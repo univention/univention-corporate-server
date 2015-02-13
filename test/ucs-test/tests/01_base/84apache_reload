@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: Check if apache is useable after a restart
+## desc: Check if apache is useable after a reload
 ## packages: [apache2 | apache2-mpm-prefork]
 ## tags: [apptest]
 ## exposure: dangerous
