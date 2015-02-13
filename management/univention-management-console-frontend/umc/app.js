@@ -1094,6 +1094,7 @@ define([
 		},
 
 		reloadModules: function() {
+			tools.resetModules();
 			return this._loadModules(true).then(lang.hitch(this, function(args) {
 				var modules = args[0];
 				var categories = args[1];

@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-17) unstable; urgency=medium
+
+  * Bug #37347: add methods for resetting UMC modules and renewing a session
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 13 Feb 2015 18:03:25 +0100
+
 univention-management-console-frontend (4.1.106-16) unstable; urgency=medium
 
   * Bug #37780: the default submit button in the search form has been adjusted

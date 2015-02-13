@@ -128,6 +128,28 @@ define([
 			});
 		},
 
+		renewSession: function() {
+			this.resetModules();
+			return tools.umcpCommand('lib/sso/getsession', {
+				host: 'localhost'
+			}, false).then(function(response) {
+				var loginToken = response.result.loginToken;
+				return request('/umcp/sso', {
+					query: {
+						loginToken: loginToken
+					}
+				}).then(function() {
+					console.log('UMC server session has been renewed successfully.');
+					return true;
+				}, function() {
+					return false;
+				});
+			}, function(err) {
+				console.err('WARNING: Could not renew session, access to lib/sso/getsession not granted.');
+				return false;
+			});
+		},
+
 		holdSession: function() {
 			// summary:
 			//		Set the expiration time of the current session to 24 hours.
@@ -222,6 +244,26 @@ define([
 					this.askToReload();
 				}
 			}));
+		},
+
+		_resetCallbacks: [],
+		registerOnReset: function(/*Function*/ callback) {
+			this._resetCallbacks.push(callback);
+		},
+
+		resetModules: function() {
+			topic.publish('/umc/module/reset');
+			topic.publish('/umc/actions', 'session', 'reset');
+			array.forEach(this._resetCallbacks, function(callback) {
+				if (typeof callback != 'function') {
+					// only execute functions
+					return;
+				}
+				try {
+					callback();
+				}
+				catch(e) { }
+			});
 		},
 
 		urlExists: function(moduleURL) {
