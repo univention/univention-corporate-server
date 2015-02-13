@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-45) unstable; urgency=medium
+
+  * Bug #37347: clear UDM cache via tools.registerOnReset()
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 13 Feb 2015 18:06:44 +0100
+
 univention-management-console-module-udm (5.1.25-44) unstable; urgency=medium
 
   * Bug #37780: adjust design of search and advanced search button

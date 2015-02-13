@@ -83,6 +83,11 @@ define([
 	TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, cache, udmStartup, _)
 {
 	app.registerOnStartup(udmStartup);
+	if ('registerOnReset' in tools) {
+		tools.registerOnReset(function() {
+			cache.reset();
+		});
+	}
 
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:
@@ -769,7 +774,6 @@ define([
 
 			// add also the buttons (specified by the search form itself) to the layout
 			var buttons = [];
-			console.log('layout: ', layout);
 			if ('navigation' == this.moduleFlavor) {
 				// put the buttons in the first row for the navigation
 				layout[0].push('submit');
