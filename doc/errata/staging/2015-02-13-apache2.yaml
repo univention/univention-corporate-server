@@ -1,0 +1,16 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: apache2
+fix: 2.2.22-13.86.201502122115
+version: [0,1]
+desc: |
+  This update is for UCS 4.0-0 and UCS 4.0-1. It addresses for both
+  versions the following issue:
+   * Kill and restart the apache process in the init script if a reload
+     crashes the apache process
+  For UCS 4.0-0 it includes also the following issues:
+   * Fix handling of chunk trailers to avoid bypass of intended
+     mod_headers restrictions [CVE-2013-5704]
+   * Fix hostname comparison with SNI to be case insensitive
+bug: [37792]
