@@ -32,8 +32,10 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/promise/all",
 	"umc/dialog",
 	"umc/tools",
+	"umc/app",
 	"umc/widgets/Page",
 	"umc/widgets/Grid",
 	"umc/widgets/ConfirmDialog",
@@ -41,11 +43,12 @@ define([
 	"umc/modules/lib/server",
 	"umc/modules/appcenter/SearchForm",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, dialog, tools, Page, Grid, ConfirmDialog, ProgressBar, libServer, SearchForm, _) {
+], function(declare, lang, array, all, dialog, tools, UMCApplication, Page, Grid, ConfirmDialog, ProgressBar, libServer, SearchForm, _) {
 	return declare("umc.modules.appcenter.PackagesPage", [ Page ], {
 
 		moduleStore: null,
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
+		standbyDuring: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -465,20 +468,13 @@ define([
 		},
 
 		_restartOrReload: function() {
-			// TODO: only if necessary! only minority will require a restart!
 			this.onInstalled();
-			this.standby(true);
-			libServer.askRestart(_('A restart of the UMC server components may be necessary for the software changes to take effect.')).then(
-			lang.hitch(this, function() {
-				// if user confirms, he is redirected to the login page
-				// no need to do anything fancy here :)
-				this.standby(false);
-			}),
-			lang.hitch(this, function() {
-				// user canceled -> switch back to initial view
-				this.standby(false);
+			var deferred = tools.defer(lang.hitch(this, function() {
 				this._refresh_grid();
-			}));
+				return all([UMCApplication.reloadModules(), tools.renewSession()]);
+			}), 100);
+			this.standbyDuring(deferred);
+			tools.checkReloadRequired();
 		},
 
 		onInstalled: function() {

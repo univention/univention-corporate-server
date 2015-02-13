@@ -671,18 +671,13 @@ define([
 		restartOrReload: function() {
 			tools.defer(lang.hitch(this, function() {
 				// update the list of apps
-				if (this.udmAccessible) {
-					require(['umc/modules/udm/cache'], function(cache) {
-						cache.reset();
-					});
-				}
 				var reloadPage = this.updateApplications().then(lang.hitch(this, function() {
 					return this.reloadPage();
 				}));
 				var reloadModules = UMCApplication.reloadModules();
-				this.standbyDuring(all([reloadPage, reloadModules]));
+				this.standbyDuring(all([reloadPage, reloadModules, tools.renewSession()]));
 			}), 100);
-			tools.askToReload();
+			tools.checkReloadRequired();
 		},
 
 		_detailFieldCustomUsage: function() {

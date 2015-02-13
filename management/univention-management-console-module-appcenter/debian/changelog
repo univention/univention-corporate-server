@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (4.1.20-3) unstable; urgency=medium
+
+  * Bug #37347: reset UMC modules, renew the UMC session and only reload UMC
+    if necessary after installing apps or software packages
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 13 Feb 2015 18:08:39 +0100
+
 univention-management-console-module-appcenter (4.1.20-2) unstable; urgency=low
 
   * Bug #36822: Version bump

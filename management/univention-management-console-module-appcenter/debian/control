@@ -19,7 +19,7 @@ Depends: univention-management-console-server,
  python-univention-directory-manager (>=9.0.22-13),
  univention-config,
  univention-updater,
- univention-management-console-module-lib
+ univention-management-console-module-lib (>=4.0.2-3)
 Replaces: univention-management-console-module-packages (<< 2.0.55-1)
 Breaks: univention-management-console-module-packages (<< 2.0.55-1)
 Description: UMC module for software management

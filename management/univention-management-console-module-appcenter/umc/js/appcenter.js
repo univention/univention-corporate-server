@@ -182,7 +182,8 @@ define([
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
 				moduleStore: this._packagesStore,
-				standby: lang.hitch(this, 'standby')
+				standby: lang.hitch(this, 'standby'),
+				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
 			this.addChild(this._packages);
 		},
