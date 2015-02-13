@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-2) unstable; urgency=low
+
+  * Bug #36822: Version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 13 Feb 2015 01:01:09 +0100
+
 univention-management-console-module-appcenter (4.1.20-1) unstable; urgency=low
 
   * Bug #36822: Run joinscripts after installing an app
