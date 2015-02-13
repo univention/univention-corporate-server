@@ -1,0 +1,9 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-virtual-machine-manager-daemon
+fix: 4.0.23-5.583.201502131210
+version: [0]
+desc: |
+  * Added missing translation
+bug: [36567]
