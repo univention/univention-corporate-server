@@ -174,7 +174,7 @@ class Server(object):
 				key_file='/etc/univention/ssl/%s/private.key' % ucr.get('hostname'),
 				cert_file='/etc/univention/ssl/%s/cert.pem' % ucr.get('hostname'),
 				ca_certs_file='/etc/univention/ssl/ucsCA/CAcert.pem',
-				check_hostname=True,
+				check_hostname=(host != 'localhost'),
 				))
 
 		cookie_jar = cookielib.CookieJar()
