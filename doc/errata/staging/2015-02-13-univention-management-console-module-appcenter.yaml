@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-management-console-module-appcenter
+fix: 4.1.20-2.314.201502130101
+version: [1]
+desc: |
+  * After installing an app, all pending joinscripts are called with the
+    credentials of the currently logged in user
+bug: [36822]
