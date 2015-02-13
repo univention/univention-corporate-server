@@ -1,0 +1,26 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check if apache is useable after a restart
+## packages: [apache2 | apache2-mpm-prefork]
+## tags: [apptest]
+## exposure: dangerous
+
+ret=0
+
+/etc/init.d/apache2 reload
+
+if ! timeout 5 apachectl status; then
+	ret=1
+fi
+
+if ! timeout 5 www-browser -dump http://localhost:80/server-status; then
+	ret=1
+fi
+
+if [ $ret != 0 ]; then
+	pkill -9 -f '/usr/sbin/apache2 -k'
+	/etc/init.d/apache2 restart
+fi
+
+exit $ret
+# vim: set ft=sh :
+

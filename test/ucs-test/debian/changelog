@@ -1,3 +1,9 @@
+ucs-test (5.0.111-2) unstable; urgency=medium
+
+  * Added basic apache tests (Bug #37792)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 Feb 2015 07:06:14 +0100
+
 ucs-test (5.0.111-1) unstable; urgency=low
 
   * 51_samba4/21backup_warning_messages: check that univention-samba4-backup

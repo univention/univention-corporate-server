@@ -1,0 +1,9 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Run apachectl configtest
+## packages: [apache2 | apache2-mpm-prefork]
+## tags: [apptest]
+## exposure: safe
+
+apachectl configtest
+
+# vim: set ft=sh :
