@@ -1,3 +1,10 @@
+ucs-test (4.0.206-2) unstable; urgency=medium
+
+  * base/45license_v2: stop connector to get rid of race conditions
+    (Bug #35221)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 15 Feb 2015 13:18:15 +0100
+
 ucs-test (4.0.206-1) unstable; urgency=low
 
   * Bug #27653: pass terminal parameters to Popen object in 04check_login
