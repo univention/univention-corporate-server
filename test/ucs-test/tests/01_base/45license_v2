@@ -68,6 +68,10 @@ removeObject ()
 	udm-test $module remove --dn "cn=$name,cn=computers,$ldap_base" || fail_test 110 "Failed to remove $module: cn=$name,cn=computers,$ldap_base"
 }
 
+# Ignore connector side effects
+test -x /etc/init.d/univention-s4-connector && /etc/init.d/univention-s4-connector stop
+
+
 # These objects should be counted as managed clients
 for m in "computers/linux" "computers/macos" \
 			"computers/ubuntu" "computers/windows" \
@@ -225,6 +229,9 @@ for m in "computers/memberserver" "computers/domaincontroller_slave" \
 
 	wait_for_replication
 done
+
+# Ignore connector side effects
+test -x /etc/init.d/univention-s4-connector && /etc/init.d/univention-s4-connector start
 
 ucr unset --force ldap/master
 ucr set ldap/master="$ldap_master"

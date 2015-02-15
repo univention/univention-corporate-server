@@ -1,3 +1,10 @@
+ucs-test (5.0.111-3) unstable; urgency=medium
+
+  * base/45license_v2: stop connector to get rid of race conditions
+    (Bug #35221)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 15 Feb 2015 13:18:20 +0100
+
 ucs-test (5.0.111-2) unstable; urgency=medium
 
   * Added basic apache tests (Bug #37792)
