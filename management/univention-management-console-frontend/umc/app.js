@@ -1576,6 +1576,7 @@ define([
 				'default': true,
 				callback: lang.hitch(this, function() {
 					topic.publish('/umc/actions', 'session', 'logout');
+					tools.checkSession(false);
 					tools.closeSession();
 					if (username === undefined) {
 						window.location.reload(true);

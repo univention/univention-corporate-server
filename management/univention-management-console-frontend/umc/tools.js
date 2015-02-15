@@ -141,13 +141,12 @@ define([
 				}).then(function() {
 					console.log('UMC server session has been renewed successfully.');
 					return true;
-				}, function() {
-					return false;
 				});
-			}, function(err) {
-				console.err('WARNING: Could not renew session, access to lib/sso/getsession not granted.');
-				return false;
-			});
+			}).then(null, lang.hitch(this, function(err) {
+				// if lib/sso/getsession is not accessible, simply close the session
+				console.error('WARNING: Could not renew session, access to lib/sso/getsession not granted... forcing re-login again instead:', err);
+				this.closeSession();
+			}));
 		},
 
 		holdSession: function() {
@@ -226,7 +225,7 @@ define([
 					}, {
 						label: _('Reload'),
 						callback: function() {
-							window.location.reload();
+							window.location.reload(true);
 						}
 					}]
 				});
