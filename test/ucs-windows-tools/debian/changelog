@@ -1,3 +1,9 @@
+ucs-windows-tools (2.0.2-4) unstable; urgency=low
+
+  * lib/winexe.py: added methods to work with GPOs; style changes (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 16 Feb 2015 16:42:35 +0100
+
 ucs-windows-tools (2.0.2-3) unstable; urgency=low
 
   * windows-scripts/powershell-get-gpo-report.ps1: added script to get
