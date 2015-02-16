@@ -1,3 +1,10 @@
+ucs-windows-tools (2.0.2-3) unstable; urgency=low
+
+  * windows-scripts/powershell-get-gpo-report.ps1: added script to get
+    the GPOreport (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 16 Feb 2015 16:18:46 +0100
+
 ucs-windows-tools (2.0.2-2) unstable; urgency=low
 
   * powershell-gpo-set-registry-value.ps1: script to modify GPOs;
