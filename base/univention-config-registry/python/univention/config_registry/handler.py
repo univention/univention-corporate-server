@@ -328,7 +328,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 		else:
 			stat = None
 
-		tmp_to_file = '%s__ucr__commit__%s' % (self.to_file,random.random())
+		tmp_to_file = '.%s__ucr__commit__%s' % (self.to_file, random.random())
 
 		try:
 			to_fp = open(tmp_to_file, 'w')
@@ -405,7 +405,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 			print >> sys.stderr, "The referenced template file does not exist"
 			return None
 
-		tmp_to_file = '%s__ucr__commit__%s' % (self.to_file,random.random())
+		tmp_to_file = '.%s__ucr__commit__%s' % (self.to_file, random.random())
 
 		try:
 			from_fp = open(self.from_file, 'r')
