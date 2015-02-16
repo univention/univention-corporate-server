@@ -1,3 +1,10 @@
+ucs-test (5.0.111-4) unstable; urgency=low
+
+  * 51_samba4/46machine_secret_access_sysvol: determine target host by
+    "univentionService=S4 Connector"; adjusted info message (Bug #30818).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 16 Feb 2015 10:44:54 +0100
+
 ucs-test (5.0.111-3) unstable; urgency=medium
 
   * base/45license_v2: stop connector to get rid of race conditions
