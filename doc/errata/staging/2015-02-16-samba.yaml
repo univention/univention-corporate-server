@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: samba
+fix: 2:4.2.0~rc2-1.721.201502131206
+version: [0,1]
+desc: |
+  This update fixes the following issue:
+  * Windows Server 2008 R2 Foundation memberserver license check failed
+    in Samba/AD domains.
+bug: [37687]
