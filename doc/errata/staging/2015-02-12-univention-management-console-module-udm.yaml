@@ -2,9 +2,10 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-management-console-module-udm
-fix: 5.1.25-44.554.201502121907
+fix: 5.1.25-45.555.201502131820
 version: [1]
 desc: |
   The following issues are addressed by this erratum update:
   * The appearance of the search and advanced search button has been adjusted.
-bug: [37780]
+  * The module cache is cleared now with the internal registration mechanism.
+bug: [37780,37347]

@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-management-console-frontend
-fix: 4.1.106-16.998.201502121856
+fix: 4.1.106-18.1000.201502151719
 version: [1]
 desc: |
   The following issues are addressed by this erratum update:
@@ -12,4 +12,5 @@ desc: |
   * The positioning of the "back to overview" header button has been adjusted.
   * The default search button has been adjusted to be smaller and to only
     contain an icon instead of text.
-bug: [37565,33199,37780]
+  * Methods for resetting UMC modules and renewing a session have been added.
+bug: [37565,33199,37780,37347]
