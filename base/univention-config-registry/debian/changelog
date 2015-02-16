@@ -1,3 +1,9 @@
+univention-config-registry (9.0.6-15) unstable; urgency=low
+
+  * Bug #35954: Hide temporary commit files.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 16 Feb 2015 10:27:15 +0100
+
 univention-config-registry (9.0.6-14) unstable; urgency=low
 
   * Bug #35954: Hide temporary commit files.
