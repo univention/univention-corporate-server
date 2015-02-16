@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.2-8) unstable; urgency=low
+
+  * jenkins/utils/utils.sh: added function to run windows gpo tests (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 16 Feb 2015 17:15:48 +0100
+
 ucs-ec2-tools (1.0.2-7) unstable; urgency=low
 
   * Bug #37568: added functions to reboot a remote windows host and
