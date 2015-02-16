@@ -2,8 +2,8 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-virtual-machine-manager-daemon
-fix: 4.0.23-5.583.201502131210
+fix: 4.0.23-6.584.201502160916
 version: [0]
 desc: |
-  * Added missing translation
+  * Added missing translation.
 bug: [36567]
