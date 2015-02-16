@@ -1,3 +1,9 @@
+ucs-test (5.0.111-5) unstable; urgency=medium
+
+  * retab (Bug #35898 etc.)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 16 Feb 2015 20:40:49 +0100
+
 ucs-test (5.0.111-4) unstable; urgency=low
 
   * 51_samba4/46machine_secret_access_sysvol: determine target host by
