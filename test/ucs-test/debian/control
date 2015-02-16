@@ -180,7 +180,6 @@ Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
  ucs-test-samba-common,
  shell-univention-lib,
- ucs-windows-tools,
  python-pexpect,
  ${misc:Depends}
 Provides: ucs-test-module
