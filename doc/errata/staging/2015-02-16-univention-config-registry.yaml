@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-4
 src: univention-config-registry
-fix: 9.0.6-14.477.201502160951
+fix: 9.0.6-15.478.201502161031
 version: [4]
 desc: |
   The file name for temporary files created my UCR commit now start with a dot
