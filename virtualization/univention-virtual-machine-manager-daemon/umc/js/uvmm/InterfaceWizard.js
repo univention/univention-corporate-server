@@ -105,7 +105,7 @@ define([
 		_typeDescription: function() {
 			var widget = this.getWidget( 'typeDescription' );
 			if ( this.getWidget( 'type' ).get( 'value' ).indexOf( 'network:' ) === 0 ) {
-				widget.set( 'content' , _('By default the private network is 192.168.122.0/24') );
+				widget.set( 'content' , _('By default the private network is 192.168.122.0/24.') );
 				domClass.add( widget.domNode, 'umcPageNote' );
 				this.getWidget( 'source' ).set( 'visible', false );
 			} else {

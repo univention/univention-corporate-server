@@ -298,8 +298,8 @@ msgid "Bridge"
 msgstr "Bridge"
 
 #: umc/js/uvmm/InterfaceWizard.js:108
-msgid "By default the private network is 192.168.122.0/24"
-msgstr "Das private Netzwerk ist standardmäßig 192.168.122.0/24"
+msgid "By default the private network is 192.168.122.0/24."
+msgstr "Das private Netzwerk ist standardmäßig 192.168.122.0/24."
 
 #: umc/js/uvmm/DomainWizard.js:128
 msgid ""

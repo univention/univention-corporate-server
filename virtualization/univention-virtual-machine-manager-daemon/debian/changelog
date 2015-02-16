@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.23-6) unstable; urgency=low
+
+  * Bug #36567:  updated translation
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 16 Feb 2015 09:14:42 +0100
+
 univention-virtual-machine-manager-daemon (4.0.23-5) unstable; urgency=low
 
   * Bug #36567:  updated translation
