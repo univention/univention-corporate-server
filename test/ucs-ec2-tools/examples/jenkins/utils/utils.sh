@@ -196,6 +196,11 @@ run_admember_tests ()
 	run_tests -p skip_admember "$@"
 }
 
+run_win_member_gpo_tests ()
+{
+	run_tests -r windows_gpo_test "$@"
+}
+
 run_tests ()
 {
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"

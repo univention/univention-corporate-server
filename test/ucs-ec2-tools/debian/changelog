@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.4-1) unstable; urgency=low
+
+  * jenkins/utils/utils.sh: added function to run Windows GPO tests (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 17 Feb 2015 12:17:10 +0100
+
 ucs-ec2-tools (1.0.3-4) unstable; urgency=low
 
   * Bug #37783: Switch to UCS-4.0-1 AMI.
