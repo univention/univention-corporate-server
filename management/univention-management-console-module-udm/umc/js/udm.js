@@ -756,6 +756,7 @@ define([
 				type: MixedInput,
 				name: 'objectPropertyValue',
 				label: _( 'Property value' ),
+				inlineLabel: _('Search %s...', this.objectNamePlural),
 				dynamicValues: lang.hitch(this, function(options) {
 					var moduleCache = cache.get(this.moduleFlavor);
 					return moduleCache.getValues(options.objectType, options.objectProperty);

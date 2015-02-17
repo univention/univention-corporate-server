@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-01-19 15:53+0100\n"
+"POT-Creation-Date: 2015-02-17 11:34+0100\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -196,7 +196,7 @@ msgstr ""
 "Bitte wählen Sie ein anderes Netzwerk oder stellen Sie sicher, dass "
 "ungenutzte IP Adressen für das gewählte Netzwerk zur Verfügung stehen."
 
-#: umc/python/udm/__init__.py:884 umc/python/udm/udm_ldap.py:408
+#: umc/python/udm/udm_ldap.py:408 umc/python/udm/__init__.py:884
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
