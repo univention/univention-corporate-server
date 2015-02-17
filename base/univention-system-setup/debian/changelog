@@ -1,3 +1,9 @@
+univention-system-setup (8.1.66-19) unstable; urgency=medium
+
+  * Bug #37824: added python-simplejson as build dependency
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 17 Feb 2015 13:37:27 +0100
+
 univention-system-setup (8.1.66-18) unstable; urgency=medium
 
   * Bug #37824: added unzip as build dependency

@@ -10,6 +10,7 @@ Build-Depends: debhelper (>= 9),
  univention-config-dev,
  univention-management-console-dev,
  unzip,
+ python-simplejson,
  po-debconf (>= 0.5.0)
 XS-Python-Version: 2.6, 2.7
 
