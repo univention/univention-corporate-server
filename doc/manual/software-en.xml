@@ -118,7 +118,7 @@
 	<para>
 	  The Univention App Center allows simple integration of software components in a UCS
 	  domain. The applications are provided both by third parties and by Univention itself
-	  (e.g., UCS@School). The maintenance and support for the applications are provided by the
+	  (e.g., UCS@school). The maintenance and support for the applications are provided by the
 	  respective manufacturer.
 	</para>
 
@@ -595,7 +595,7 @@ univention-repository-update -h
 	  </para>
 
 	  <figure id="software-umcinstall">
-		<title>Installing the package univention-squid in &ucsUMC;</title>
+		  <title>Installing the package <package>univention-squid</package> in &ucsUMC;</title>
 		<graphic scalefit="1" width="100%" fileref="illustrations40/software_install_en1.png"/>
 	  </figure>
 

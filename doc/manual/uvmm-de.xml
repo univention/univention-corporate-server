@@ -124,7 +124,7 @@
 									Soll eine verschlüsselte Verbindung aufgebaut werden, ist die URL in der Form <uri>https://[...]</uri> anzugeben.
 									Da für die verschlüsselte Verbindung das öffentliche Zertifikat der OpenStack Instanz verwendet wird, muss dieses dem UCS-System, 
 									auf dem die Applikation <emphasis>&ucsUVMM;</emphasis> installiert ist, verfügbar gemacht werden.
-									Dazu muss das öffentliche Zertifikat in PEM Kodierung auf dem UCS-Server in das Verzeichnis <filename class="directory">/usr/local/share/ca-certificates/</filename> kopiert werden und mit der Endung .crt versehen sein.
+									Dazu muss das öffentliche Zertifikat in PEM Kodierung auf dem UCS-Server in das Verzeichnis <filename class="directory">/usr/local/share/ca-certificates/</filename> kopiert werden und mit der Endung <filename class="extension">.crt</filename> versehen sein.
 									Die folgenden Kommandos konvertieren ein Zertifikat in die korrekte Kodierung und machen das Zertifikat bekannt:
 									<programlisting language="sh">
 openssl x509 -in [pfad/zum/openstack-zertifikat] \
@@ -133,7 +133,7 @@ openssl x509 -in [pfad/zum/openstack-zertifikat] \
 update-ca-certificates
 									</programlisting>
 									Das öffentliche Zertifikat des OpenStack Authentifizierungs-Endpunktes ist der Konfiguration der OpenStack Instanz zu entnehmen.
-									Der entsprechende Wert zum Pfad des Zertifikats ist in der <filename>keystone.conf</filename> unter <emphasis>ca_certs</emphasis> zu finden.
+									Der entsprechende Wert zum Pfad des Zertifikats ist in der <filename>keystone.conf</filename> unter <property>ca_certs</property> zu finden.
 								</entry>
 							</row>
 							<row>
@@ -152,19 +152,19 @@ update-ca-certificates
 							<row>
 								<entry>Serviceregion</entry>
 								<entry>
-									Der Name der Region, in der der Benutzer arbeiten soll. Der OpenStack Standardwert ist <emphasis>regionOne</emphasis>.
+									Der Name der Region, in der der Benutzer arbeiten soll. Der OpenStack Standardwert ist <userinput>regionOne</userinput>.
 								</entry>
 							</row>
 							<row>
 								<entry>Servicetyp</entry>
 								<entry>
-									Der Typ des Dienstes, unter dem die Cloud Compute Funktionalität zur Verfügung steht. Der Standardwert ist <emphasis>compute</emphasis>.
+									Der Typ des Dienstes, unter dem die Cloud Compute Funktionalität zur Verfügung steht. Der Standardwert ist <userinput>compute</userinput>.
 								</entry>
 							</row>
 							<row>
 								<entry>Name des Dienstes</entry>
 								<entry>
-									Der Name des Dienstes, unter dem die Cloud Compute Funktionalität zur Verfügung steht. Der Standardwert ist <emphasis>nova</emphasis>.
+									Der Name des Dienstes, unter dem die Cloud Compute Funktionalität zur Verfügung steht. Der Standardwert ist <userinput>nova</userinput>.
 								</entry>
 							</row>
 							<row>
@@ -740,7 +740,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 			<itemizedlist>
 				<listitem>
 					<simpara>
-				  Die Grundeinstellung seit UCS-3.1 ist <emphasis>none</emphasis>: Dabei greift KVM
+				  Die Grundeinstellung seit UCS-3.1 ist <guimenuitem>none</guimenuitem>: Dabei greift KVM
 				  direkt auf die Festplatte zu und umgeht den Page Cache auf dem
 				  Virtualisierungsserver.<!--footnote><para>Diese Strategie funktioniert nicht mit Dateisystemen von Typ <literal>tmpfs</literal> und bei einigen <acronym>NFS</acronym>-Servern.</para></footnote--> Lesezugriffe werden jedesmal direkt von der Festplatte
 				  beantwortet und Schreibzugriffe direkt an die Festplatte durchgereicht.
@@ -749,10 +749,10 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 
 				<listitem>
 					<simpara>
-				  Mit der Strategie <emphasis>write-through</emphasis> wird der Page Cache auf dem Virtualisierungsserver
+				  Mit der Strategie <guimenuitem>write-through</guimenuitem> wird der Page Cache auf dem Virtualisierungsserver
 				  benutzt, jedoch wird jeder Schreibzugriff auch direkt an das Speichermedium
 				  durchgereicht. Auf Virtualisierungsservern mit viel freiem Hauptspeicher können
-				  Lesezugriffe gegenüber <emphasis>none</emphasis> effizienter sein. I.d.R. wirkt sich das doppelte Caching
+				  Lesezugriffe gegenüber <guimenuitem>none</guimenuitem> effizienter sein. I.d.R. wirkt sich das doppelte Caching
 				  aber eher negativ auf die Gesamtperformance aus
 
 				  <footnote><para>Es empfiehlt sich eher, den freien Speicher den VMs direkt zur Verfügung zu stellen, so dass diese diesen zusätzlichen Speicher selbst effizienter nutzen können, u.a. auch zum Cachen.</para></footnote>.
@@ -761,7 +761,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 
 				<listitem>
 					<simpara>
-				  Wird die Strategie <emphasis>write-back</emphasis> verwendet, wird der Page Cache des
+				  Wird die Strategie <guimenuitem>write-back</guimenuitem> verwendet, wird der Page Cache des
 				  Hosts sowohl für Lese- als auch für Schreibzugriffe genutzt. Schreibzugriffe werden
 				  zunächst nur im Page Cache durchgeführt, bevor dieser dann irgendwann später erst auf
 				  die Festplatte geschrieben wird. Ein Crash des Hostsystems kann dadurch zu Datenverlusten
@@ -771,10 +771,10 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 
 				<listitem>
 					<simpara>
-				  Mit der Strategie <emphasis>unsafe</emphasis> werden Synchronisationsanforderungen
+				  Mit der Strategie <guimenuitem>unsafe</guimenuitem> werden Synchronisationsanforderungen
 				  ignoriert, die vom Gastsystem gesendet werden, um explizit das Schreiben ausstehender
 				  Daten auf das Speichermedium zu erzwingen. Dies erhöht gegenüber
-				  <emphasis>write-back</emphasis> abermals die Performance, führt aber bei einem Crash des
+				  <guimenuitem>write-back</guimenuitem> abermals die Performance, führt aber bei einem Crash des
 				  Hostsystems zu Datenverlust. Diese Variante ist nur für Testsysteme oder vergleichbare
 				  Installationen sinnvoll, in denen ein Datenverlust durch einen Absturz des Hostsystem
 				  verschmerzbar ist.
@@ -783,7 +783,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 
 				<listitem>
 					<simpara>
-				  Die Strategie <emphasis>directsync</emphasis> entspricht <emphasis>none</emphasis>,
+				  Die Strategie <guimenuitem>directsync</guimenuitem> entspricht <guimenuitem>none</guimenuitem>,
 				  nur dass hier nach jedem Schreibzugriff nochmals explizit eine Synchronisation
 				  erzwungen wird.
 					</simpara>
@@ -791,12 +791,12 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 
 				<listitem>
 					<simpara>
-				  Die Option <emphasis>Hypervisor-Standard</emphasis> ist abhängig von der UCS-Version
+				  Die Option <guimenuitem>Hypervisor-Standard</guimenuitem> ist abhängig von der UCS-Version
 				  und der KVM-Version, mit der ein Gastsystem installiert wurde: Ursprünglich war der
-				  Standardwert bis UCS 3.0 implizit <emphasis>write-through</emphasis>, aber mit UCS 3.1 wurde KVM so
-				  modifiziert, dass für alte VMs jetzt statt dessen <emphasis>none</emphasis> verwendet wird. Bei mit
+				  Standardwert bis UCS 3.0 implizit <guimenuitem>write-through</guimenuitem>, aber mit UCS 3.1 wurde KVM so
+				  modifiziert, dass für alte VMs jetzt statt dessen <guimenuitem>none</guimenuitem> verwendet wird. Bei mit
 				  UCS 3.1 neu angelegten VMs entspricht der Standardwert wieder implizit
-				  <emphasis>write-through</emphasis>, allerdings werden neue VMs explizit mit <emphasis>none</emphasis> angelegt.
+				  <guimenuitem>write-through</guimenuitem>, allerdings werden neue VMs explizit mit <guimenuitem>none</guimenuitem> angelegt.
 					</simpara>
 				</listitem>
 			</itemizedlist>
@@ -829,7 +829,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 			<title>Zugriff auf den Standard-Speicherbereich über eine Freigabe</title>
 			<para>
 			  Jeder Virtualisierungsserver stellt in der Voreinstellung einen Speicherbereich mit dem Namen
-			  <emphasis>default</emphasis> zur Verfügung. Dieser liegt auf den Virtualisierungsservern
+			  <wordasword>default</wordasword> zur Verfügung. Dieser liegt auf den Virtualisierungsservern
 			  unterhalb des Verzeichnisses <filename class="directory">/var/lib/libvirt/images/</filename>.
 			</para>
 
@@ -844,16 +844,16 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				<listitem>
 					<para>Allgemein/Grundeinstellungen</para>
 					<itemizedlist>
-						<listitem><simpara>Name: UVMM-Pool</simpara></listitem>
+						<listitem><simpara>Name: <userinput>UVMM-Pool</userinput></simpara></listitem>
 						<listitem><simpara>Server: Der Rechnername des UVMM-Servers</simpara></listitem>
-						<listitem><simpara>Pfad: /var/lib/libvirt/images</simpara></listitem>
+						<listitem><simpara>Pfad: <userinput>/var/lib/libvirt/images</userinput></simpara></listitem>
 						<listitem><simpara>Verzeichnis-Besitzer, Verzeichnis-Gruppe und Verzeichnismodus können beibehalten werden</simpara></listitem>
 					</itemizedlist>
 				</listitem>
 				<listitem>
 					<para>Erweiterte Einstellungen/Samba-Rechte</para>
 					<itemizedlist>
-						<listitem><simpara>Gültige Benutzer oder Gruppen: Administrator</simpara></listitem>
+						<listitem><simpara>Gültige Benutzer oder Gruppen: <userinput>Administrator</userinput></simpara></listitem>
 					</itemizedlist>
 				</listitem>
 			</itemizedlist>
@@ -879,7 +879,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 				</simpara></listitem>
 
 				<listitem><simpara>
-				  Mit dem folgenden Befehl wird der neue Speicherbereich <emphasis>Testpool</emphasis> erstellt:
+				  Mit dem folgenden Befehl wird der neue Speicherbereich <wordasword>Testpool</wordasword> erstellt:
 				  </simpara>
 				  <programlisting language="sh">
 virsh pool-define-as Testpool dir - - - - "/mnt/storage"
@@ -956,7 +956,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 				</listitem>
 			</itemizedlist>
 			<para>
-				Ein Diskettenlaufwerk kann einer virtuellen Maschine ebenfalls über ein Image (im VFD-Format) oder durch Durchreichung eines physischen Laufwerks bereitgestellt werden.
+				Ein Diskettenlaufwerk kann einer virtuellen Maschine ebenfalls über ein Image (im <filename class="extension">VFD</filename>-Format) oder durch Durchreichung eines physischen Laufwerks bereitgestellt werden.
 			</para>
 			<para>
 				Werden Laufwerke für eine neu zu installierende Maschine definiert, muss sichergestellt werden, dass von dem CD-ROM-Laufwerk gebootet wird.
@@ -1005,7 +1005,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 			</para>
 			<para>
 				Über die Option <guimenu>Treiber</guimenu> kann ausgewählt werden, welche Art von Netzwerkkarte bereitgestellt wird.
-				Die <emphasis>Realteak RTL-8139</emphasis> wird von nahezu jedem Betriebssystem unterstützt, die <emphasis>Intel Pro-1000</emphasis> bietet erweiterte Fähigkeiten und ein <emphasis>Paravirtualisiertes Gerät</emphasis> die beste Performance.
+				Die <guimenuitem>Realtek RTL-8139</guimenuitem> wird von nahezu jedem Betriebssystem unterstützt, die <guimenuitem>Intel Pro-1000</guimenuitem> bietet erweiterte Fähigkeiten und ein <guimenuitem>Paravirtualisiertes Gerät</guimenuitem> die beste Performance.
 			</para>
 		</section>
 		<section id="uvmm::gplpvvirtio">

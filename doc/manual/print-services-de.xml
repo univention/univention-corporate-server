@@ -560,14 +560,14 @@
 
   <para>
 	Als <guimenu>Drucker-Hersteller</guimenu> muss <emphasis>PDF</emphasis> und als
-	<guimenu>Drucker-Modell</guimenu> <emphasis>Generic CUPS-PDF Printer</emphasis> ausgewählt
+	<guimenu>Drucker-Modell</guimenu> <guimenuitem>Generic CUPS-PDF Printer</guimenuitem> ausgewählt
 	werden.
   </para>
 
   <para>
 	Das Zielverzeichnis für die generierten PDF-Dokumente wird über die &ucsUCRV;
 	<envar>cups/cups-pdf/directory</envar> festgelegt. Standardmäßig wird es auf
-	<filename>/var/spool/cups-pdf/%U</filename> gesetzt, so dass <emphasis>cups-pdf</emphasis> für
+	<filename>/var/spool/cups-pdf/%U</filename> gesetzt, so dass <application>cups-pdf</application> für
 	jeden Benutzer ein eigenes Verzeichnis verwendet.
   </para>
   
@@ -600,7 +600,7 @@
 	betrieben. Der Netzwerkdrucker kann auf Windows-Seite alternativ mit einem
 	Standard-PostScript-Druckertreiber eingerichtet werden. Wenn auf einen Farbdrucker zugegriffen
 	werden soll, sollte auf Windows-Seite ein Treiber für einen PostScript-fähigen Farbdrucker
-	verwendet werden, z.B. HP Color LaserJet 8550.
+	verwendet werden, z.B. <wordasword>HP Color LaserJet 8550</wordasword>.
   </para>
 
   <caution>
@@ -629,7 +629,7 @@
 		Zuerst müssen die Druckertreiber von der Webseite des Herstellers heruntergeladen
 		werden. Wird eine Umgebung verwendet, in der die 64 Bit-Versionen von Windows
 		eingesetzt werden, müssen die Treiber unbedingt in beiden Versionen bezogen werden (32 und 64 Bit).
-		Benötigt werden die INF-Dateien.
+		Benötigt werden die <filename class="extension">INF</filename>-Dateien.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -644,7 +644,7 @@
 		werden (nicht auf eine der Freigaben, sonst öffnet sich das kontextsensitive Menü der
 		Druckerfreigabe!) und <guimenu>Servereigenschaften</guimenu> gewählt werden. Dort im Reiter <guimenu>Treiber</guimenu> mit <guimenu>Hinzufügen &ar;
 		Weiter &ar; x86 und x64 auswählen &ar; Weiter &ar; Datenträger</guimenu> auswählen. Im sich dabei öffnenden
-		Dateidialog muss dann die INF-Datei des 64 Bit-Treibers ausgewählt werden (x64). Nach dem
+		Dateidialog muss dann die <filename class="extension">INF</filename>-Datei des 64 Bit-Treibers ausgewählt werden (x64). Nach dem
 		mit <guimenu>Weiter &ar; Fertig stellen</guimenu> bestätigt wurde wird der 64 Bit-Treiber auf den
 		Druckserver kopiert. Nun öffnet sich ein weiterer Dateidialog, in dem analog der 32
 		Bit-Treiber (x86) hochgeladen werden kann.

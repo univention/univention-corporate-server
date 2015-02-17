@@ -44,7 +44,7 @@
 		A printer can either be connected directly to the print server
 		locally (e.g., via the USB port or a parallel port) or communicate
 		with a printer via remote protocols (e.g., TCP/IP-compatible printers,
-		which are connected via IPP or LPD).
+		which are connected via <systemitem class="protocol">IPP</systemitem> or <systemitem class="protocol">LPD</systemitem>).
 	</para>
 	<para>
 		Network printers with their own IP address should be registered in the
@@ -216,8 +216,8 @@
 						</para>
 						<para>
 							The <uri>smb://</uri> protocol can be used to mount a Windows print share.
-							For example, to integrate the <emphasis>laser01</emphasis> printer share from Windows
-							system <emphasis>win01</emphasis>, <emphasis>win01/laser01</emphasis> must be specified as destination.
+							For example, to integrate the <systemitem class="resource">laser01</systemitem> printer share from Windows
+							system <systemitem class="server">win01</systemitem>, <literal>win01/laser01</literal> must be specified as destination.
 							The manufacturer and model must be selected according to the printer in question.
 							The print server uses the printer model settings to convert the print
 							jobs where necessary and send these directly to the URI
@@ -548,14 +548,14 @@
 
 	<para>
 	  <emphasis>PDF</emphasis> must be selected as <guimenu>Printer
-	  producer</guimenu> and <emphasis>Generic CUPS-PDF
-	  Printer</emphasis> as <guimenu>Printer model</guimenu>.
+	  producer</guimenu> and <guimenuitem>Generic CUPS-PDF
+	  Printer</guimenuitem> as <guimenu>Printer model</guimenu>.
 	</para>
 
 	<para>
 		The target directory for the generated PDF documents is set using
 		the &ucsUCRV; <envar>cups/cups-pdf/directory</envar>. As standard it is set
-		to <filename>/var/spool/cups-pdf/%U</filename> so that <emphasis>cups-pdf</emphasis> uses a
+		to <filename>/var/spool/cups-pdf/%U</filename> so that <application>cups-pdf</application> uses a
 		different directory for each user.
 	</para>
 	<para>
@@ -588,8 +588,8 @@
 	provided. The network printer can alternatively be set up on the
 	Windows side with a standard PostScript printer driver. If a colour
 	printer should be accessed, a driver for a PostScript-compatible
-	colour printer should be used on the Windows side, e.g., HP Color
-	LaserJet 8550.
+	colour printer should be used on the Windows side, e.g., <wordasword>HP Color
+	LaserJet 8550</wordasword>.
   </para>
 
   <caution>
@@ -615,7 +615,7 @@
   	  <listitem><simpara>
 		Firstly, the printer drivers must be downloaded from the manufacturer's website. If you
 		are using an environment in which 64-bit installations of Windows are used, you will need 
-		both versions of the drivers (32 and 64 bit). The INF files are required.
+		both versions of the drivers (32 and 64 bit). The <filename class="extension">INF</filename> files are required.
 	  </simpara></listitem>
 
   	  <listitem><simpara>
@@ -630,7 +630,7 @@
 		shares, as this will open the printer share's context-sensitive menu!) and select
 		<guimenu>Server Properties</guimenu>. Then select <guimenu>Add &ar; Next &ar; Select x86
 		and x64 &ar; Next &ar; Have Disk</guimenu> in the <guimenu>Drivers</guimenu>
-		tab. You then need to select the INF file of the 64-bit driver (x64) in the file dialogue
+		tab. You then need to select the <filename class="extension">INF</filename> file of the 64-bit driver (x64) in the file dialogue
 		which opens. Once confirmed with <guimenu>Next &ar; Apply</guimenu>, the 64-bit
 		driver is copied onto the print server. Another file dialogue now opens in which the 32-bit
 		driver (x86) can be uploaded in the same way.
@@ -742,7 +742,7 @@
 				<row>
 					<entry>Driver</entry>
 					<entry>
-						The path to the ppd file or to the <filename class="directory">/usr/share/ppd/</filename>
+						The path to the <filename class="extension">ppd</filename> file or to the <filename class="directory">/usr/share/ppd/</filename>
 						directory. For example, if the <filename>/usr/share/ppd/laserjet.ppd</filename>
 						should be used, <filename>laserjet.ppd</filename> must be entered here. <command>gzip</command>
 						compressed files (file ending <filename class="extension">.gz</filename>) can also be entered here.

@@ -239,7 +239,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>Posix group</entry>
+						<entry>POSIX group</entry>
 						<entry>
 							This checkbox indicates whether the group contains the object class
 							<classname>posixGroup</classname>.

@@ -1,5 +1,5 @@
 <chapter id="shares::general">
-  <title>Fileshare management</title>
+  <title>File share management</title>
   <para>
 	UCS supports the central management of directory shares. A share registered in &ucsUMC; is
 	created on an arbitrary UCS server system as part of the UCS domain replication.
@@ -244,9 +244,9 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  <row>
 		<entry>NFS synchronisation</entry>
 		<entry>
-		  The synchronisation mode for the share. The <emphasis>sync</emphasis> setting is
+		  The synchronisation mode for the share. The <option>sync</option> setting is
 		  used to write data directly on the underlying storage device. The
-		  opposite setting - <emphasis>async</emphasis> - can improve performance but also
+		  opposite setting - <option>async</option> - can improve performance but also
 		  involves the risk of data loss if the server is shut down incorrectly.
 		</entry>
 	  </row>
@@ -722,7 +722,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>Level 2 oplocks</entry>
+		<entry>Level 2 Oplocks</entry>
 		<entry>
 		  <para>When activating this option, Samba will support an extended form of Oplocks,
 		  the so-called <emphasis>opportunistic read-only locks</emphasis> or <emphasis>Level 2 Oplocks</emphasis>. Windows
@@ -748,7 +748,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>Fake oplocks</entry>
+		<entry>Fake Oplocks</entry>
 		<entry>
 		  <para>
 			When activating this option, Samba will allow all Oplock requests irrespective
@@ -963,17 +963,17 @@ To be able to utilise the functions of a distributed file system, the
 server. Afterwards Samba has to be restarted.
 </para>
 <para>
-For creating a reference named <emphasis>zufb</emphasis> from server <emphasis>sa</emphasis>
-within the share <emphasis>fa</emphasis> to share <emphasis>fb</emphasis> on the server
-<emphasis>sb</emphasis>, the following command has to be
-executed in directory <emphasis>fa</emphasis>:
+For creating a reference named <filename class="symlink">tofb</filename> from server <systemitem class="server">sa</systemitem>
+within the share <filename class="directory">fa</filename> to share <filename class="directory">fb</filename> on the server
+<systemitem class="server">sb</systemitem>, the following command has to be
+executed in directory <filename class="directory">fa</filename>:
 </para>
 <programlisting language="sh">
-ln -s msdfs:sb\\fb zufb
+ln -s msdfs:sb\\fb tofb
 </programlisting>
 <para>
-This reference will be displayed on every client capable of MSDFS
-(e.g. Windows 2000 and XP) as a regular directory.
+	This reference will be displayed on every client capable of <acronym>MSDFS</acronym>
+	(e.g. <systemitem class="osname">Windows 2000</systemitem> and <systemitem class="osname">Windos XP</systemitem>) as a regular directory.
 </para>
 <caution>
 	<para>
@@ -1160,7 +1160,7 @@ Used average: 4.000000
 		<listitem>
 			<para>
 		  The &ucsUCRV; <envar>grub/append</envar> must be expanded with
-		  <emphasis>root2flags=quota</emphasis>. A blank space is used to separate already set
+		  <literal>root2flags=quota</literal>. A blank space is used to separate already set
 		  values. This sets the quota support for the root partition as a boot parameter. The change
 		  is written automatically in the boot record, e.g.:
 			</para>

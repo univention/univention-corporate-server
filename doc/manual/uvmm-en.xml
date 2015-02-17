@@ -157,7 +157,7 @@ update-ca-certificates
 									</programlisting>
 									The public certificate of the OpenStack authentication end point should be taken
 									from the configuration of the OpenStack instance. The corresponding value to the
-									certificate's path can be found under <emphasis>ca_certs</emphasis> in
+									certificate's path can be found under <property>ca_certs</property> in
 									<filename>keystone.conf</filename>.
 								</entry>
 							</row>
@@ -180,21 +180,21 @@ update-ca-certificates
 								<entry>Service region</entry>
 								<entry>
 									The name of the region in which the user should work. The OpenStack default
-									value is <emphasis>regionOne</emphasis>.
+									value is <userinput>regionOne</userinput>.
 								</entry>
 							</row>
 							<row>
 								<entry>Service type</entry>
 								<entry>
 									The type of the service under which the cloud compute function is available. The
-									default value is <emphasis>compute</emphasis>.
+									default value is <userinput>compute</userinput>.
 								</entry>
 							</row>
 							<row>
 								<entry>Service</entry>
 								<entry>
 									The name of the service under which the cloud compute function is available. The
-									default value is <emphasis>nova</emphasis>.
+									default value is <userinput>nova</userinput>.
 								</entry>
 							</row>
 							<row>
@@ -289,7 +289,7 @@ update-ca-certificates
 				<graphic scalefit="1" width="90%" align="center" fileref="illustrations40/uvmm_overview1_en.png"/>
 			</figure>
 			<para>
-				In the main dialog of the UMC module, a tree structure is displayed on the left-hand side, which gives an overview of the existing virtualization servers.
+				In the main dialogue of the UMC module, a tree structure is displayed on the left-hand side, which gives an overview of the existing virtualization servers.
 				All the virtual machines are listed in the right half of the screen.
 				If one clicks on the name of a virtualization server, only the instances of that server are listed.
 				The search mask can also be used to search for individual virtual machines.
@@ -783,11 +783,11 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 			</para>
 			<para>
 				Hard drive images can be administrated in two ways on KVM systems;
-				by default images are saved in the <emphasis>Extended format (qcow2)</emphasis>.
+				by default images are saved in the <guimenuitem>Extended format (qcow2)</guimenuitem>.
 				This format supports Copy-on-write which means that changes do not overwrite the original version, but store new versions in different locations.
 				The internal references of the file administration are then updated to allow both access to the original and the new version.
-				Snapshots can only be created when using hard drive images in <emphasis>Extended format</emphasis>.
-				Alternatively, you can also access a hard drive image in <emphasis>Simple format (raw)</emphasis>.
+				Snapshots can only be created when using hard drive images in <guimenuitem>Extended format</guimenuitem>.
+				Alternatively, you can also access a hard drive image in <guimenuitem>Simple format (raw)</guimenuitem>.
 			</para>
 			<para>
 			  Operating systems use a so-called <emphasis>page cache</emphasis> to accelerate accesses
@@ -816,7 +816,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 			<itemizedlist>
 				<listitem>
 					<simpara>
-				  The default setting since UCS-3.1 is <emphasis>none</emphasis>: in this setting, KVM
+				  The default setting since UCS-3.1 is <guimenuitem>none</guimenuitem>: in this setting, KVM
 				  accesses the hard drive directly and bypasses the page cache on the virtualization
 				  server.<!--footnote><para>This strategy does not work on file systems using <literal>tmpfs</literal> or with some <acronym>NFS</acronym> servers.</para></footnote--> Read accesses are answered directly by the hard drive every time and write
 				  accesses are passed directly on to the hard drive.
@@ -825,10 +825,10 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 
 				<listitem>
 					<simpara>
-				  The <emphasis>write-through</emphasis> strategy uses the page cache on the
+				  The <guimenuitem>write-through</guimenuitem> strategy uses the page cache on the
 				  virtualization server, but every write access is also passed on directly to the
 				  storage medium. On virtualization servers with a lot of free system memory, read
-				  accesses can be more efficient than <emphasis>none</emphasis>. However, the double
+				  accesses can be more efficient than <guimenuitem>none</guimenuitem>. However, the double
 				  caching generally has a negative effect on the overall performance.
 
 				  <footnote><para>Instead, it is recommended to make the free memory directly available
@@ -839,7 +839,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 
 				<listitem>
 					<simpara>
-				  If the <emphasis>write-back</emphasis> strategy is used, the host's page cache will
+				  If the <guimenuitem>write-back</guimenuitem> strategy is used, the host's page cache will
 				  be used for both read and write accesses. Write accesses are initially only performed
 				  in the page cache, before they are then written to the hard drive at a later point in
 				  time. In this case, if the host system crashes, data may be lost.
@@ -848,9 +848,9 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 
 				<listitem>
 					<simpara>
-				  With the <emphasis>unsafe</emphasis> strategy, synchronisation requests sent by the
+				  With the <guimenuitem>unsafe</guimenuitem> strategy, synchronisation requests sent by the
 				  guest system are ignored in order to force the writing of outstanding data on the
-				  storage medium explicitly. Compared with <emphasis>write-back</emphasis>, this once
+				  storage medium explicitly. Compared with <guimenuitem>write-back</guimenuitem>, this once
 				  again increases the performance, but can result in data loss if the host system
 				  crashes. This version is only practical for test systems or comparable installations
 				  in which data loss due to the crashing of the host system is not dramatic.
@@ -859,7 +859,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 
 				<listitem>
 					<simpara>
-				  The <emphasis>directsync</emphasis> strategy corresponds to <emphasis>none</emphasis>,
+				  The <guimenuitem>directsync</guimenuitem> strategy corresponds to <guimenuitem>none</guimenuitem>,
 				  with the only difference being that here synchronisation is explicitly forced after
 				  every write access.
 					</simpara>
@@ -867,13 +867,13 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 
 				<listitem>
 					<simpara>
-				  The <emphasis>Hypervisor default</emphasis> option is dependent on the UCS version and
+				  The <guimenuitem>Hypervisor default</guimenuitem> option is dependent on the UCS version and
 				  the KVM version with which a guest system was installed: Originally, the standard
-				  value until UCS 3.0 was implicitly <emphasis>write-through</emphasis>, but KVM was
-				  modified to such an extent with UCS 3.1 that <emphasis>none</emphasis> is now used for
+				  value until UCS 3.0 was implicitly <guimenuitem>write-through</guimenuitem>, but KVM was
+				  modified to such an extent with UCS 3.1 that <guimenuitem>none</guimenuitem> is now used for
 				  all old VMs instead. For VMs re-saved with UCS 3.1 the standard value is implicitly
-				  <emphasis>write-through</emphasis> again, but new VMs are explicitly saved with
-				  <emphasis>none</emphasis>.
+				  <guimenuitem>write-through</guimenuitem> again, but new VMs are explicitly saved with
+				  <guimenuitem>none</guimenuitem>.
 					</simpara>
 				</listitem>
 			</itemizedlist>
@@ -906,7 +906,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 			<title>Accessing the default storage pool through a file share</title>
 			<para>
 			  Each virtualization server provides a storage pool with the name
-			  <emphasis>default</emphasis> in the standard configuration. It can be found on the
+			  <wordasword>default</wordasword> in the standard configuration. It can be found on the
 			  virtualization servers in the <filename class="directory">/var/lib/libvirt/images/</filename> directory.
 			</para>
 
@@ -921,16 +921,16 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 				<listitem>
 					<para>General/General settings</para>
 					<itemizedlist>
-						<listitem><simpara>Name: UVMM-Pool</simpara></listitem>
+						<listitem><simpara>Name: <userinput>UVMM-Pool</userinput></simpara></listitem>
 						<listitem><simpara>Host: The hostname of the UVMM server</simpara></listitem>
-						<listitem><simpara>Directory: /var/lib/libvirt/images</simpara></listitem>
+						<listitem><simpara>Directory: <userinput>/var/lib/libvirt/images</userinput></simpara></listitem>
 						<listitem><simpara>Directory owner, Directory owner group and Directory mode can remain in the default setting</simpara></listitem>
 					</itemizedlist>
 				</listitem>
 				<listitem>
 					<para>Advanced settings/Samba permissions</para>
 					<itemizedlist>
-						<listitem><simpara>Valid users or groups: Administrator</simpara></listitem>
+						<listitem><simpara>Valid users or groups: <userinput>Administrator</userinput></simpara></listitem>
 					</itemizedlist>
 				</listitem>
 			</itemizedlist>
@@ -955,7 +955,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 				</simpara></listitem>
 
 				<listitem><simpara>
-				  The following command is used to create the new <emphasis>Testpool</emphasis> storage pool:
+				  The following command is used to create the new <wordasword>Testpool</wordasword> storage pool:
 				  </simpara>
 				  <programlisting language="sh">
 virsh pool-define-as Testpool dir - - - - "/mnt/storage"
@@ -1029,7 +1029,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 				</listitem>
 			</itemizedlist>
 			<para>
-				It is also possible to provide a virtual machine with a disk drive via an image (in VFD format) or the pass-through of a physical drive.
+				It is also possible to provide a virtual machine with a disk drive via an image (in <filename class="extension">VFD</filename> format) or the pass-through of a physical drive.
 			</para>
 			<para>
 				If drives are defined for a new virtual machine, it must be ensured that it is possible to boot from the CD-ROM drive.
@@ -1077,7 +1077,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 			</para>
 			<para>
 				The <guimenu>Driver</guimenu> can be used to select what type of card will be provided.
-				The <emphasis>Realteak RTL-8139</emphasis> is supported by almost all operating systems, the <emphasis>Intel Pro-1000</emphasis> offers advanced abilities and a <emphasis>Paravirtual device</emphasis> offers the best performance.
+				The <guimenuitem>Realtek RTL-8139</guimenuitem> is supported by almost all operating systems, the <guimenuitem>Intel Pro-1000</guimenuitem> offers advanced abilities and a <guimenuitem>Paravirtual device</guimenuitem> offers the best performance.
 			</para>
 		</section>
 

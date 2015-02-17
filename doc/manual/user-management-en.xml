@@ -288,7 +288,7 @@
                                 <itemizedlist>
                                     <listitem>
 										<simpara>
-                                        The Linux login (e.g., on GDM or a tty) is only deactivated if all
+											The Linux login (e.g., on <systemitem class="service">KDM</systemitem> or a <systemitem class="service">tty</systemitem>) is only deactivated if all
                                         login methods are deactivated; a deactivated POSIX account alone is not enough.
 										</simpara>
                                     </listitem>
@@ -404,7 +404,7 @@
                     <row>
                         <entry>Windows logon script</entry>
                         <entry>
-                            The user-specific logon script relative to the Netlogon share is entered here, e.g.
+                            The user-specific logon script relative to the NETLOGON share is entered here, e.g.
                             <filename>scripts\user.bat</filename>.
                         </entry>
                     </row>
@@ -518,7 +518,7 @@
                 </thead>
                 <tbody>
                     <row>
-                        <entry>E-mail address(es)</entry>
+                        <entry lang="">E-mail address(es)</entry>
                         <entry>
                             <para>
                                 Additional e-mail addresses can be saved here. These are not evaluated
@@ -705,7 +705,7 @@
                         <entry>Terminated or timed-out sessions</entry>
                         <entry>
                             In this selection list one can select whether ended or expired connections
-                            should be <guimenu>Disconnected</guimenu>ed or <guimenu>Reset</guimenu>.
+                            should be <guimenu>Disconnected</guimenu> or <guimenu>Reset</guimenu>.
                         </entry>
                     </row>
                     <row>
@@ -716,7 +716,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>CTX RAS Dialin</entry>
+                        <entry lang="">CTX RAS Dialin</entry>
                         <entry>
                             <para>
                                 This option configures the callback function of a remote access server.
@@ -1138,7 +1138,7 @@ univention-director-manager users/user
 		  For example, the UNIX home directory can be stored under
 		  <filename class="directory">/home/&lt;title&gt;.&lt;lastname&gt;</filename> or the primary e-mail address
 		  can be predefined with
-		  <emphasis>&lt;firstname&gt;.&lt;lastname&gt;@company.com</emphasis>. Substitutions are
+		  <userinput>&lt;firstname&gt;.&lt;lastname&gt;@company.com</userinput>. Substitutions are
 		  generally possibly for any value, but there is no syntax or semantics check. So, if no
 		  first name is specified when creating a user, the above e-mail address would begin with a
 		  dot and would thus be invalid according to the e-mail standard. Similar sources of error
@@ -1151,7 +1151,7 @@ univention-director-manager users/user
 		  value, the index of the required character can be entered in the user template in square
 		  brackets after the name of the attribute. The count of characters of the attribute begins
 		  with 0, so that index 1 corresponds to the second character of the attribute
-		  value. Accordingly, <emphasis>&lt;firstname&gt;[0].&lt;lastname&gt;@company.com</emphasis>
+		  value. Accordingly, <userinput>&lt;firstname&gt;[0].&lt;lastname&gt;@company.com</userinput>
 		  means an e-mail address will consist of the first letter of the first name plus the lastname.
 		</para>
 
@@ -1159,25 +1159,25 @@ univention-director-manager users/user
 		  A substring of the attribute value can be defined by entering a range in square
 		  brackets. In doing so, the index of the first required character and the index of the last
 		  required character plus one are to be entered. For example, the input
-		  <emphasis>&lt;firstname&gt;[2:5]</emphasis> returns the third to fifth character of the
+		  <userinput>&lt;firstname&gt;[2:5]</userinput> returns the third to fifth character of the
 		  first name.
 		</para>
 
         <para>
-		  Adding <emphasis>&lt;:lower&gt;</emphasis> or <emphasis>&lt;:upper&gt;</emphasis> to the
+		  Adding <literal>:lower&gt;</literal> or <literal>:upper</literal> to the
 		  attribute name converts the attribute value to lowercase or uppercase, e.g.,
-		  <emphasis>&lt;firstname:lower&gt;</emphasis>. If a modifier like
-		  <emphasis>&lt;:lower&gt;</emphasis> is appended to the entire field, the complete value is
-		  transformed, e.g. <emphasis>&lt;lastname&gt;@company.com&lt;:lower&gt;</emphasis>.
+		  <userinput>&lt;firstname:lower&gt;</userinput>. If a modifier like
+		  <literal>:lower</literal> is appended to the entire field, the complete value is
+		  transformed, e.g. <userinput>&lt;lastname&gt;@company.com&lt;:lower&gt;</userinput>.
 		</para>
 
         <para>
-		  The option <emphasis>&lt;:umlauts&gt;</emphasis> can be used to convert special characters
+		  The option <literal>:umlauts</literal> can be used to convert special characters
 		  such as è, ä or ß into the corresponding ASCII characters.
 		</para>
 
         <para>
-		  It is also possible to combine options, e.g: <emphasis>&lt;:umlauts,upper&gt;</emphasis>.
+		  It is also possible to combine options, e.g: <literal>:umlauts,upper</literal>.
 		</para>
 
     </section>

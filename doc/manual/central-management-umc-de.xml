@@ -500,7 +500,7 @@
 				 <guimenu>Benötigte Objektklassen</guimenu>: Hier können LDAP-Objektklassen
 				 angegeben werden, die ein Objekt besitzen muss, damit die Richtlinie auf dieses
 				 Objekt greift. Wenn etwa eine Benutzerrichtlinie nur für Windows-Umgebungen
-				 relevant ist, könnte hier die Objektklasse <emphasis>sambaSamAccount</emphasis>
+				 relevant ist, könnte hier die Objektklasse <classname>sambaSamAccount</classname>
 				 erzwungen werden.
 				</simpara>
 			   </listitem>
@@ -1379,9 +1379,9 @@ univention-directory-manager users/user create \
 			<para>
 				<option>--option</option> definiert die LDAP-Objektklassen eines Objekts.
 				Wird bei einem Benutzerobjekt beispielsweise
-				nur <emphasis>posix</emphasis> und <emphasis>person</emphasis> als Option übergeben, so kann für
-				diesen Benutzer keine <emphasis>mailPrimaryAddress</emphasis> angegeben werden, da dieses
-				Attribut Teil der Option <emphasis>mail</emphasis> ist:
+				nur <classname>posix</classname> und <classname>person</classname> als Option übergeben, so kann für
+				diesen Benutzer keine <property>mailPrimaryAddress</property> angegeben werden, da dieses
+				Attribut Teil der Option <classname>mail</classname> ist:
 			</para>
 			<programlisting language="sh">
 univention-directory-manager users/user modify \
@@ -1551,7 +1551,7 @@ univention-directory-manager groups/group modify \
 		<para>
 		  Dieser Aufruf legt unterhalb des Standard-Containers <uri>cn=computers</uri>
 		  einen Container <uri>cn=Bremen</uri> für die Rechnerobjekte am Firmenstandort
-		  Bremen an. Durch die zusätzliche Option <emphasis>computerPath</emphasis> wird dieser
+		  Bremen an. Durch die zusätzliche Option <property>computerPath</property> wird dieser
 		  Container auch direkt als Standardcontainer für Rechnerobjekte registriert (siehe
 		  <xref linkend="central:cn-and-ous"/>):
 		</para>
@@ -1641,7 +1641,7 @@ univention-directory-manager shares/share create \
 	  <section id="central:udm:example:printer">
 		<title>Drucker</title>
 		<para>
-		  Anlegen einer Druckerfreigabe <emphasis>LaserPrinter01</emphasis> auf dem Druckserver
+		  Anlegen einer Druckerfreigabe <systemitem class="resource">LaserPrinter01</systemitem> auf dem Druckserver
 		  <systemitem class="server">printserver.example.com</systemitem>. Die Eigenschaften des Druckers sind in der
 		  PPD-Datei spezifiziert, deren Name relativ zum Verzeichnis
 		  <filename class="directory">/usr/share/ppd/</filename> angegeben wird. Der angebundene Drucker ist
@@ -1661,7 +1661,7 @@ univention-directory-manager shares/printer create \
 
 		<note>
 			<para>
-				Im Parameter <emphasis>uri</emphasis> muss ein Leerzeichen zwischen dem Druckprotokoll
+				Im Parameter <parameter class="option">uri</parameter> muss ein Leerzeichen zwischen dem Druckprotokoll
 				und dem URL-Zielpfad verwendet werden. Eine Aufstellung der Druckprotokolle findet sich
 				in <xref linkend="print::shares"/>
 			</para>
@@ -1698,7 +1698,7 @@ univention-directory-manager dhcp/host create \
 
 		<para>
 		  Soll ein Rechnername über DNS auflösbar sein, kann mit den folgenden Befehlen eine
-		  Vorwärts- (host record) und Reverse-Auflösung (ptr record) konfiguriert werden:
+		  Vorwärts- (host record) und Reverse-Auflösung (PTR record) konfiguriert werden:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager dns/host_record create \

@@ -576,7 +576,7 @@
 	  <envar>mail/antivir/spam</envar> auf <literal>no</literal> deaktiviert
 	  werden.
 	  Bei Änderungen an Univention Configuration Registry-Variablen, die die
-	  Spamerkennung betreffen, muss der Amavis-Dienst und Postfix neu gestartet
+	  Spamerkennung betreffen, muss der AMaViS-Dienst und Postfix neu gestartet
 	  werden.
 	</para>
   </section>
@@ -601,7 +601,7 @@
 	</para>
 
 	<para>
-	  Die Software <application>Amavisd-new</application> dient als Schnittstelle zwischen dem Mailserver und
+	  Die Software <application>AMaViSd-new</application> dient als Schnittstelle zwischen dem Mailserver und
 	  verschiedenen Virenscannern. Der freie Virenscanner ClamAV ist im Paket
 	  enthalten und nach der Installation sofort einsatzbereit. Die für die
 	  Virenerkennung nötigen Signaturen werden automatisch und kostenfrei durch den
@@ -609,10 +609,10 @@
 	</para>
 
 	<para>
-	  Alternativ oder zusätzlich können andere Virenscanner in Amavis eingebunden
+	  Alternativ oder zusätzlich können andere Virenscanner in AMaViS eingebunden
 	  werden.
-	  Nach Änderungen an der Amavis- oder ClamAV-Konfiguration müssen Postfix und
-	  Amavis neu gestartet werden.
+	  Nach Änderungen an der AMaViS- oder ClamAV-Konfiguration müssen Postfix und
+	  AMaViS neu gestartet werden.
 	</para>
   </section>
 

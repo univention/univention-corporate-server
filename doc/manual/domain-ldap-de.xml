@@ -98,7 +98,7 @@
 		</para>
 
 		<section id="domain-ldap:Nachtraeglicher_Domaenenbeitritt_mit_univention-join">
-			<title>Nachträglicher Domänenbeitritt mit univention-join</title>
+			<title>Nachträglicher Domänenbeitritt mit <command>univention-join</command></title>
 			<para>
 				<command>univention-join</command> fragt eine Reihe essentieller
 				Parameter direkt ab, ist aber auch durch mehrere Parameter konfigurierbar:
@@ -310,7 +310,7 @@
 			  muss in das Eingabefeld <guimenu>Name</guimenu> der Name
 			  <systemitem class="username">Administrator</systemitem> und in das Eingabefeld
 			  <guimenu>Kennwort</guimenu> das Passwort von
-			  <uri>uid=Administrator,cn=users,&lt;Basis-DN&gt;</uri> eingetragen
+			  <uri>uid=Administrator,cn=users,<replaceable>Basis-DN</replaceable></uri> eingetragen
 			  werden. Abschließend kann der Domänenbeitritt mit einem Klick auf
 			  <mousebutton>OK</mousebutton> gestartet werden.
 			</para>
@@ -344,7 +344,7 @@
 				muss in das Eingabefeld <guimenu>Name</guimenu> der Name
 				<systemitem class="username">Administrator</systemitem> und in das Eingabefeld
 				<guimenu>Kennwort</guimenu> das Passwort von
-				<uri>uid=Administrator,cn=users,&lt;Basis-DN&gt;</uri> eingetragen
+				<uri>uid=Administrator,cn=users,<replaceable>Basis-DN</replaceable></uri> eingetragen
 				werden. Abschließend kann der Domänenbeitritt mit einem Klick auf
 				<mousebutton>OK</mousebutton> gestartet werden.
 			</para>
@@ -374,7 +374,7 @@
 			Schaltfläche <mousebutton>OK</mousebutton> muss in das Eingabefeld
 			<guimenu>Name</guimenu> der Name <systemitem class="username">Administrator</systemitem> und in das
 			Eingabefeld <guimenu>Kennwort</guimenu> das Passwort von
-			<uri>uid=Administrator,cn=users,&lt;Basis-DN&gt;</uri> eingetragen
+			<uri>uid=Administrator,cn=users,<replaceable>Basis-DN</replaceable></uri> eingetragen
 			werden. Abschließend kann der Domänenbeitritt mit einem Klick auf
 			<mousebutton>OK</mousebutton> gestartet werden.
 		  </para>
@@ -641,8 +641,8 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 				halten, bringt UCS ein eigenes LDAP-Schema für Kundenerweiterungen mit. Die
 				LDAP-Objektklasse <classname>univentionFreeAttributes</classname> kann ohne
 				Einschränkungen für erweiterte Attribute verwendet werden. Sie bringt 20 frei
-				zu verwendende Attribute (<varname>univentionFreeAttribute1</varname> bis
-				<varname>univentionFreeAttribute20</varname>) mit und kann in Verbindung mit
+				zu verwendende Attribute (<property>univentionFreeAttribute1</property> bis
+				<property>univentionFreeAttribute20</property>) mit und kann in Verbindung mit
 				jedem beliebigen LDAP-Objekt (z.B. einem Benutzerobjekt) verwendet werden.
 			</para>
 
@@ -733,7 +733,7 @@ END
 		</programlisting>
 
 		Für jeden protokollierten Datensatz wird eine Hashsumme berechnet und zusätzlich in die
-		Sektion <emphasis>daemon.info</emphasis> des Syslog-Dienstes protokolliert.
+		Sektion <wordasword>daemon.info</wordasword> des Syslog-Dienstes protokolliert.
 		</para>
 	</section>
 
@@ -848,8 +848,8 @@ slapcat &gt; ldapdaten.txt
 				Standardeinstellung bietet &ucsUMC; nur dem Benutzer
 				<systemitem class="username">Administrator</systemitem> den Benutzer-Assistenten an, über den neue
 				Passwörter gesetzt werden können. Während der Installation wird automatisch
-				eine neue Richtlinie <package>default-user-password-admins</package> erstellt,
-				die den Mitgliedern der Gruppe <emphasis>User Password Admins</emphasis>
+				eine neue Richtlinie <uri>default-user-password-admins</uri> erstellt,
+				die den Mitgliedern der Gruppe <systemitem class="groupname">User Password Admins</systemitem>
 				zugewiesen ist bzw. mit einem entsprechenden Container im LDAP-Verzeichnis 
 				verknüpft werden kann. Weitere Hinweise zur Konfiguration von UMC-Richtlinien finden
 				sich in Kapitel <xref linkend="delegated-administration"/>.
@@ -1093,7 +1093,7 @@ root@dcslave1:~# cat /var/lib/univention-directory-listener/notifier_id
 836
 		  </programlisting>
 
-		  Diese Prüfung kann auch automatisiert durch den Nagios-Dienst UNIVENTION_REPLICATION
+		  Diese Prüfung kann auch automatisiert durch den Nagios-Dienst <systemitem class="service">UNIVENTION_REPLICATION</systemitem>
 		  durchgeführt werden (siehe <xref linkend="nagios:preconfiguredchecks"/>).
 		</para>
 	  </section>

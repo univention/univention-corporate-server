@@ -79,7 +79,7 @@
 
 	  <para>
 		A Samba member server can be installed on UCS member servers from the Univention App Center
-		with the application <emphasis>Windows-compatible Fileserver</emphasis>. Alternatively, the
+		with the application <application>Windows-compatible Fileserver</application>. Alternatively, the
 		software package <package>univention-samba</package> can be
 		installed (<command>univention-run-join-scripts</command> command must be run after
 		installation). Additional information can be found in <xref
@@ -154,8 +154,8 @@
 		</para>
 
 		<para>
-		  Samba supports the CIFS protocol and the successor SMB2 to provide file services. Using a client
-		  which supports SMB2 (as of Windows Vista, i.e., Windows 7/8 too) improves the performance
+			Samba supports the <systemitem class="protocol">CIFS</systemitem> protocol and the successor <systemitem class="protocol">SMB2</systemitem> to provide file services. Using a client
+			which supports <systemitem class="protocol">SMB2</systemitem> (as of <systemitem class="osname">Windows Vista</systemitem>, i.e., <systemitem class="osname">Windows 7/8</systemitem> too) improves the performance
 		  and scalability.
 		</para>
 
@@ -166,15 +166,15 @@
 
 		  <itemizedlist>
 			<listitem><simpara>
-			  <emphasis>NT1</emphasis> configures CIFS (supported by all Windows versions)
+					<literal>NT1</literal> configures <systemitem class="protocol">CIFS</systemitem> (supported by all Windows versions)
 			</simpara></listitem>
 			
 			<listitem><simpara>
-			  <emphasis>SMB2</emphasis> configures SMB2 (supported as of Windows Vista/Windows 7)
+					<literal>SMB2</literal> configures <systemitem class="protocol">SMB2</systemitem> (supported as of <systemitem class="osname">Windows Vista</systemitem>/<systemitem class="osname">Windows 7</systemitem>)
 			</simpara></listitem>
 			
 			<listitem><simpara>
-			  <emphasis>SMB3</emphasis> configures SMB3 (supported as of Windows 8) (currently not covered by Univention support)
+					<literal>SMB3</literal> configures <systemitem class="protocol">SMB3</systemitem> (supported as of <systemitem class="osname">Windows 8</systemitem>) (currently not covered by Univention support)
 			</simpara></listitem>
 		  </itemizedlist>
 		</para>
@@ -274,8 +274,8 @@ instanceType: 4
 
 		<para>
 		  In Microsoft Active Directory, the SYSVOL share is synchronised by the File Replication
-		  Service (introduced with Windows 2000) or the Distributed File System (as of Windows 2008
-		  R2). These replication methods are not yet fully implemented in Samba 4. The
+		  Service (introduced with Windows 2000) or the Distributed File System (as of <systemitem class="osname">Windows 2008
+		  R2</systemitem>). These replication methods are not yet fully implemented in Samba 4. The
 		  synchronisation between the Samba 4 domain controllers is performed in UCS via a Cron job
 		  (every five minutes as standard - can be configured using the &ucsUCRV;
 		  <envar>samba4/sysvol/sync/cron</envar>).
@@ -514,7 +514,7 @@ instanceType: 4
 		  </para>
 
 		  <para>
-			<figure><title>Evaluating the GPO for the user user01</title>
+			<figure><title>Evaluating the GPO for the user <systemitem class="username">user01</systemitem></title>
 			<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/gpo-gpresult-en.png"/>
 			</figure>
 		  </para>
@@ -587,7 +587,7 @@ instanceType: 4
 		</section>
 
 		<section id="gpo:adm">
-		  <title>Administrative templates (ADM)</title>
+			<title>Administrative templates (<acronym>ADMX</acronym>/<acronym>ADM</acronym>)</title>
 		  <para>
 			The policies displayed in Group Policy Management can be expanded with so-called
 			<emphasis>administrative templates</emphasis>. This type of template defines the name
@@ -602,7 +602,7 @@ instanceType: 4
 
 		  <para>
 			The following example of an ADM file defines a computer policy in which a registry key
-			is configured for the (ficticious) Univention RDP client. ADM files can also be
+			is configured for the (fictitious) Univention RDP client. ADM files can also be
 			converted to the newer ADMX format using third-party tools. Further information on the
 			format of ADM files can be found under <biblioref linkend="microsoft-adm-templates"/>
 			and <biblioref linkend="adm-templates-howto"/>. The administrative template must have
@@ -1141,7 +1141,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	  <guimenu>Failed Requests</guimenu> and <guimenu>Certificate Templates</guimenu>
 	  displayed under every system. Here, one must right click on the computer name - not on
 	  one of the elements - and then select <guimenu>Properties</guimenu>. The root
-	  certificate is usually called <emphasis>Certificate Nr. 0</emphasis>. Then select
+	  certificate is usually called <guimenuitem>Certificate #0</guimenuitem>. Then select
 	  <guimenu>Open &ar; Copy to File &ar; DER encoded binary X.509 (.CER) &ar; Select an arbitrary
 	  filename &ar; Finish</guimenu>.
 	</para>
@@ -1185,7 +1185,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	  <guimenu>Failed Requests</guimenu> and <guimenu>Certificate Templates</guimenu>
 	  displayed under every system. Here, one must right click on the computer name - not on
 	  one of the elements - and then select <guimenu>Properties</guimenu>. The root
-	  certificate is usually called <emphasis>Certificate Nr. 0</emphasis>. Then select
+	  certificate is usually called <guimenuitem>Certificate #0</guimenuitem>. Then select
 	  <guimenu>Open &ar; Copy to File &ar; DER encoded binary X.509 (.CER) &ar; Select an arbitrary
 	  filename &ar; Finish</guimenu>.
 	</para>
@@ -1228,12 +1228,12 @@ wizard &ucsUMC;.
 <listitem><simpara><filename>cert.pem</filename></simpara></listitem>
 </itemizedlist>
 <para>
-On 64-bit Windows versions, the <emphasis>Microsoft Visual C++ 2010
-  Redistributable Package (x86)</emphasis> must be installed before the
+On 64-bit Windows versions, the <package>Microsoft Visual C++ 2010
+  Redistributable Package (x86)</package> must be installed before the
 installation of the AD connector.
 </para>
 <para>
-The MSI files are the installation files for the
+	The <filename class="extension">MSI</filename> files are the installation files for the
 password service and can be started by double clicking on it.
 </para>
 <para>
@@ -1263,7 +1263,7 @@ The connector can be started using <mousebutton>Start Active
   Directory connection service</mousebutton> and stopped using
 <mousebutton>Stop Active Directory connection service</mousebutton>. Alternatively, the
 starting/stopping can also be performed with the
-<filename>/etc/init.d/univention-ad-connector</filename> init script.
+<filename>/etc/init.d/univention-ad-connector</filename> init-script.
 </para>
 </section>
 
@@ -1325,12 +1325,12 @@ univention-adsearch cn=administrator cn givenName
 </programlisting>
 </section>
 
-<section id="ad-connector:univention-connector-list-rejected"><title>univention-connector-list-rejected</title>
+<section id="ad-connector:univention-connector-list-rejected"><title><command>univention-connector-list-rejected</command></title>
 <para>
 This tool lists the DNs of non-synchronised objects. In addition, in
 so far as temporarily stored, the corresponding DN in the
 respective other LDAP directory will be displayed. In conclusion
-<emphasis>lastUSN</emphasis> shows the ID of the last change synchronised by AD.
+<property>lastUSN</property> shows the ID of the last change synchronised by AD.
 </para>
 <para>
 This script may display an error message or an incomplete output if
@@ -1403,7 +1403,7 @@ The description of the group is also synchronised.
 <itemizedlist>
 <listitem>
 <para>The <emphasis>Pre-Windows 2000 name</emphasis> (LDAP attribute
-<emphasis>samAccountName</emphasis>) is used in AD, which means that a group in
+<property>samAccountName</property>) is used in AD, which means that a group in
 Active Directory can appear under a different name from in UCS.
 </para>
 </listitem>
@@ -1479,13 +1479,12 @@ The complete table is:
 </para>
 </listitem>
 <listitem>
-<para>If a global group A is accepted as a member of another global
-  group B in &ucsUDM;, this membership does not appear in Active
-  Directory because of the internal AD limitations in Windows
-  2000/2003. If group A's name is then changed, the group membership
-  to group B will be lost. Since Windows 2008 this limitation no
-  longer exists and thus global groups can also be nested in Active
-  Directory.
+	<para>
+		If a global group <systemitem class="groupname">A</systemitem> is accepted as a member of another global
+		group <systemitem class="groupname">B</systemitem> in &ucsUDM;, this membership does not appear in Active
+		Directory because of the internal AD limitations in <systemitem class="osname">Windows 2000/2003</systemitem>.
+		If group <systemitem class="groupname">A</systemitem>'s name is then changed, the group membership to group <systemitem class="groupname">B</systemitem> will be lost.
+		Since <systemitem class="osname">Windows 2008</systemitem> this limitation no longer exists and thus global groups can also be nested in Active Directory.
 </para>
 </listitem>
 </itemizedlist>
@@ -1644,7 +1643,7 @@ The <systemitem class="username">root</systemitem> and <systemitem class="userna
 
 	<para>
 	  The activation of the <systemitem class="username">Administrator</systemitem> account on the AD server is
-	  recommended because this account has all the required privileges to copy the GPO sysvol
+	  recommended because this account has all the required privileges to copy the GPO SYSVOL
 	  files. The activation can be achieved by means of the <guimenu>Active Directory Users and
 	  Computers</guimenu> module or by running the following two commands:
 
@@ -1762,7 +1761,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	  confirmed with <guimenu>Next</guimenu>.
 
 	  <figure>
-		<title>Copying the sysvol share</title>
+		<title>Copying the SYSVOL share</title>
 		<graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover3-en.png"/>
 	  </figure>
 

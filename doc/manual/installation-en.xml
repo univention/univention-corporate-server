@@ -199,10 +199,11 @@ users can be managed independently of each other. The password must be re-entere
 <section id="installation:Partitionieren_der_Festplatten">
   <title>Partitioning the hard drive</title>
   <para>
-	The Univention Installer supports the partitioning of hard drives and the creation of different file systems (e.g., EXT4 and XFS). In addition, it is also possible to set up mechanisms such as the logical volume manager (LVM), RAID or partitions encrypted with LUKS.
+	The Univention Installer supports the partitioning of hard drives and the creation of different file systems (e.g., <systemitem class="filesystem">ext4</systemitem> and <systemitem class="filesystem">XFS</systemitem>). In addition, it is also possible to set up mechanisms such as the logical volume manager (<acronym>LVM</acronym>), <acronym>RAID</acronym> or partitions encrypted with <acronym>LUKS</acronym>.
   </para>
   <para>
-	As of UCS 4.0, the Univention Installer selects a suitable partition model (MBR or GPT) automatically depending on the size of the selected hard drive. On systems with the <emphasis>Unified Extensible Firmware Interface (UEFI)</emphasis>, the GUID Partition Table (GPT) is used automatically.
+	  As of UCS 4.0, the Univention Installer selects a suitable partition model (<acronym>MBR</acronym> or <acronym>GPT</acronym>) automatically depending on the size of the selected hard drive.
+	  On systems with the <emphasis>Unified Extensible Firmware Interface (<acronym>UEFI</acronym>)</emphasis>, the <acronym>GUID</acronym> Partition Table (<acronym>GPT</acronym>) is used automatically.
   </para>
   <para>
 	The Univention Installer offers guided installations to make installation simpler. In the guided installation, certain standard schemes with respect to the partitioning and formatting are applied to the selected hard drive. In addition, it is also possible to perform partitioning manually.
@@ -342,7 +343,7 @@ the size of the respective hard drive.
 	  In a UCS domain, systems can be installed in different <emphasis>system roles</emphasis>.
 	  The first UCS system, that joins an Active Directory domain, is automatically installed with the
 	  &ucsMaster; system role. If this mode is selected during installation of additional UCS systems, the
-	  system role selection dialog is shown. The system roles are described within the following section.
+	  system role selection dialogue is shown. The system roles are described within the following section.
 	</para>
 
 	<figure id="installation-adjoin">
@@ -454,7 +455,7 @@ see <xref linkend="installation-overview"/>.
 	The system will then boot from the hard drive. Following the boot procedure, the <systemitem class="username">root</systemitem> and <systemitem class="username">administrator</systemitem> users can log on via the web frontend &ucsUMC; (see <xref linkend="central:general"/>), which can be reached under the IP address set during the installation or the host name.
 </para>
   <para>
-	If the computer was installed as the first system in the UCS domain (&ucsMaster;0), the license can now be imported (see <xref linkend="central:license"/>).
+	If the computer was installed as the first system in the UCS domain (&ucsMaster;), the license can now be imported (see <xref linkend="central:license"/>).
   </para>
 </section>
 
@@ -513,7 +514,7 @@ see <xref linkend="installation-overview"/>.
 
   <para>
 	The Linux kernel used in UCS includes all the support drivers necessary for operation in VMware
-	(vmw_balloon, vmw_pvsci, vmw_vmci, vmwgfx and vmxnet3).
+	(<filename>vmw_balloon</filename>, <filename>vmw_pvsci</filename>, <filename>vmw_vmci</filename>, <filename>vmwgfx</filename> and <filename>vmxnet3</filename>).
   </para>
 
   <para>

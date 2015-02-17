@@ -253,14 +253,14 @@
   <title>Partitionierung der Festplatten</title>
   <para>
 	Der Univention Installer unterstützt die Partitionierung von Festplatten und die Erstellung von
-	unterschiedlichen Dateisystemen (u.a. EXT4 und XFS). Darüber hinaus können auch Mechanismen
-	wie der Logical Volume Manager (LVM), RAID oder mit LUKS verschlüsselte Partitionen eingerichtet
+	unterschiedlichen Dateisystemen (u.a. <systemitem class="filesystem">ext4</systemitem> und <systemitem class="filesystem">XFS</systemitem>). Darüber hinaus können auch Mechanismen
+	wie der Logical Volume Manager (<acronym>LVM</acronym>), <acronym>RAID</acronym> oder mit <acronym>LUKS</acronym> verschlüsselte Partitionen eingerichtet
 	werden.
   </para>
   <para>
-	Ab UCS 4.0 wählt der Univention Installer automatisch einen passenden Partitionstyp (MBR oder
-	GPT) in Abhängigkeit von der Größe der gewählten Festplatte aus. Auf Systemen mit <emphasis>Unified Extensible
-	Firmware Interface (UEFI)</emphasis> wird automatisch die GUID Partition Table (GPT) verwendet.
+	  Ab UCS 4.0 wählt der Univention Installer automatisch einen passenden Partitionstyp (<acronym>MBR</acronym> oder
+	  <acronym>GPT</acronym>) in Abhängigkeit von der Größe der gewählten Festplatte aus. Auf Systemen mit <emphasis>Unified Extensible
+		  Firmware Interface (<acronym>UEFI</acronym>)</emphasis> wird automatisch die <acronym>GUID</acronym> Partition Table (<acronym>GPT</acronym>) verwendet.
   </para>
   <para>
 	Zur einfacheren Installation bietet der Univention Installer geführte Installationen an. Bei der
@@ -673,7 +673,7 @@
 
   <para>
 	Der in UCS verwendete Linux-Kernel bringt alle nötigen Unterstützungstreiber für den Betrieb in
-	VMware direkt mit (vmw_balloon, vmw_pvsci, vmw_vmci, vmwgfx und vmxnet3).
+	VMware direkt mit (<filename>vmw_balloon</filename>, <filename>vmw_pvsci</filename>, <filename>vmw_vmci</filename>, <filename>vmwgfx</filename> und <filename>vmxnet3</filename>).
   </para>
 
   <para>

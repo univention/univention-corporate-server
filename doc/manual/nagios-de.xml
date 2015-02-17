@@ -173,7 +173,7 @@
 				</thead>
 				<tbody>
 					<row>
-						<entry>UNIVENTION_PING</entry>
+						<entry><systemitem class="service">UNIVENTION_PING</systemitem></entry>
 						<entry>
 							Testet die Erreichbarkeit des überwachten
 							UCS-Systems mit dem Kommando <command>ping</command>. In
@@ -184,7 +184,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_DISK_ROOT</entry>
+						<entry><systemitem class="service">UNIVENTION_DISK_ROOT</systemitem></entry>
 						<entry>
 							Überwacht den Füllstand
 							der <filename class="partition">/</filename>-Partition. Unterschreitet der
@@ -194,7 +194,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_DNS</entry>
+						<entry><systemitem class="service">UNIVENTION_DNS</systemitem></entry>
 						<entry>
 							Testet die Funktion des lokalen DNS-Servers und die
 							Erreichbarkeit der öffentlichen DNS-Server durch die Abfrage
@@ -207,19 +207,19 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_LOAD</entry>
+						<entry><systemitem class="service">UNIVENTION_LOAD</systemitem></entry>
 						<entry>
 							Überwacht die Systemlast.
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_LDAP</entry>
+						<entry><systemitem class="service">UNIVENTION_LDAP</systemitem></entry>
 						<entry>
 							Überwacht den auf Domänencontrollern laufenden LDAP-Server.
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_NTP</entry>
+						<entry><systemitem class="service">UNIVENTION_NTP</systemitem></entry>
 						<entry>
 							Fragt auf dem überwachten UCS-System die Uhrzeit beim NTP-Dienst ab.
 							Tritt eine Abweichung von mehr als 60 bzw. 120 Sekunden auf,
@@ -227,20 +227,20 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_SMTP</entry>
+						<entry><systemitem class="service">UNIVENTION_SMTP</systemitem></entry>
 						<entry>
 							Testet den Mailserver.
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_SSL</entry>
+						<entry><systemitem class="service">UNIVENTION_SSL</systemitem></entry>
 						<entry>
 							Testet die verbleibende Gültigkeitsdauer der UCS-SSL-Zertifikate.
 							Dieses Plugin ist nur für &ucsMaster;- und &ucsBackup;-Systeme geeignet.
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_SWAP</entry>
+						<entry><systemitem class="service">UNIVENTION_SWAP</systemitem></entry>
 						<entry>
 							Überwacht die Auslastung der Swap-Partition. Unterschreitet der
 							verbleibende freie Platz den Schwellwert (in der Standardeinstellung 40%
@@ -248,7 +248,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_REPLICATION</entry>
+						<entry><systemitem class="service">UNIVENTION_REPLICATION</systemitem></entry>
 						<entry>
 							Überwacht den Status der LDAP-Replikation, erkennt das Vorhandensein
 							einer <filename>failed.ldif</filename>-Datei sowie den Stillstand der Replikation
@@ -256,7 +256,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_NSCD</entry>
+						<entry><systemitem class="service">UNIVENTION_NSCD</systemitem></entry>
 						<entry>
 							Testet die Verfügbarkeit des Name Server Cache Dienstes.
 							Läuft kein NSCD-Prozess wird ein CRITICAL-Event ausgelöst,
@@ -264,21 +264,21 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_WINBIND</entry>
+						<entry><systemitem class="service">UNIVENTION_WINBIND</systemitem></entry>
 						<entry>
 							Testet die Verfügbarkeit des Winbind-Dienstes.
 							Läuft kein Prozess, wird ein CRITICAL-Event ausgelöst.
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_SMBD</entry>
+						<entry><systemitem class="service">UNIVENTION_SMBD</systemitem></entry>
 						<entry>
 							Testet die Verfügbarkeit des Samba-Dienstes.
 							Läuft kein Prozess, wird ein CRITICAL-Event ausgelöst.
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_NMBD</entry>
+						<entry><systemitem class="service">UNIVENTION_NMBD</systemitem></entry>
 						<entry>
 							Testet die Verfügbarkeit des NMBD-Dienstes,
 							der in Samba für den NetBIOS-Dienst zuständig ist.
@@ -286,7 +286,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_JOINSTATUS</entry>
+						<entry><systemitem class="service">UNIVENTION_JOINSTATUS</systemitem></entry>
 						<entry>
 							Prüft den Join-Status eines Systems.
 							Ist ein System noch nicht Mitglied der Domäne, wird ein CRITICAL-Event
@@ -295,7 +295,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_KPASSWD</entry>
+						<entry><systemitem class="service">UNIVENTION_KPASSWD</systemitem></entry>
 						<entry>
 							Prüft die Verfügbarkeit des Kerberos-Passwort-Dienstes
 							(nur verfügbar auf Domänencontroller Master/Backup).
@@ -303,15 +303,15 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_CUPS</entry>
+						<entry><systemitem class="service">UNIVENTION_CUPS</systemitem></entry>
 						<entry>
 							Überwacht den CUPS-Druckdienst.
-							Läuft kein cupsd-Prozess oder ist die Weboberfläche auf Port 631
+							Läuft kein <systemitem class="daemon">cupsd</systemitem>-Prozess oder ist die Weboberfläche auf Port 631
 							ist nicht erreichbar, wird der Status CRITICAL zurückgegeben.
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_DANSGUARDIAN</entry>
+						<entry><systemitem class="service">UNIVENTION_DANSGUARDIAN</systemitem></entry>
 						<entry>
 							Überwacht den Webfilter DansGuardian.
 							Läuft kein DansGuardian-Prozess oder ist der DansGuardian-Proxy
@@ -319,7 +319,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_SQUID</entry>
+						<entry><systemitem class="service">UNIVENTION_SQUID</systemitem></entry>
 						<entry>
 							Überwacht den Proxy Squid.
 							Läuft kein Squid-Prozess oder der Squid-Proxy ist nicht erreichbar,
@@ -327,7 +327,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_LIBVIRTD_KVM</entry>
+						<entry><systemitem class="service">UNIVENTION_LIBVIRTD_KVM</systemitem></entry>
 						<entry>
 							Prüft den Status eines KVM-Virtualisierungs-Servers
 							über eine Anfrage an <command>virsh</command>
@@ -336,7 +336,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_LIBVIRTD_XEN</entry>
+						<entry><systemitem class="service">UNIVENTION_LIBVIRTD_XEN</systemitem></entry>
 						<entry>
 							Prüft den Status eines Xen-Virtualisierungs-Servers
 							über eine Abfrage an <command>virsh</command>
@@ -345,7 +345,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_UVMMD</entry>
+						<entry><systemitem class="service">UNIVENTION_UVMMD</systemitem></entry>
 						<entry>
 							Prüft den Status des &ucsUVMM;s über eine Anfrage der verfügbaren Nodes.
 							Können sie nicht aufgelöst werden, wird der Status CRITICAL zurückgegeben.
@@ -380,7 +380,7 @@
 				</thead>
 				<tbody>
 					<row>
-						<entry>UNIVENTION_OPSI</entry>
+						<entry><systemitem class="service">UNIVENTION_OPSI</systemitem></entry>
 						<entry>
 							Überwacht den OPSI-Daemon.
 							Läuft kein OPSI-Prozess oder die OPSI-Weboberfläche ist nicht erreichbar,
@@ -388,14 +388,14 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_SMART_SDA</entry>
+						<entry><systemitem class="service">UNIVENTION_SMART_SDA</systemitem></entry>
 						<entry>
 							Prüft den S.M.A.R.T.-Status der Festplatte <filename class="devicefile">/dev/sda</filename>.
 							Für die Festplatten <filename class="partition">sdb</filename>, <filename class="partition">sdc</filename> und <filename class="partition">sdd</filename> existieren entsprechende Nagios-Dienste.
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_RAID</entry>
+						<entry><systemitem class="service">UNIVENTION_RAID</systemitem></entry>
 						<entry>
 							Prüft den Status des Software-RAIDs über <filename>/proc/mdadm</filename>
 							und gibt den Status CRITICAL zurück, sofern eine Festplatte
@@ -404,7 +404,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_ADCONNECTOR</entry>
+						<entry><systemitem class="service">UNIVENTION_ADCONNECTOR</systemitem></entry>
 						<entry>
 							Prüft den Status des Active Directory Connectors.
 							Läuft kein Connector-Prozess, wird der Status CRITICAL
@@ -759,7 +759,7 @@
 				</thead>
 				<tbody>
 					<row>
-						<entry>24x7</entry>
+						<entry><wordasword>24x7</wordasword></entry>
 						<entry>
 							Dieses Objekt definiert einen Zeitraum,
 							der Montags um 0:00 Uhr beginnt
@@ -768,16 +768,16 @@
 						</entry>
 					</row>
 					<row>
-						<entry>WorkHours</entry>
+						<entry><wordasword>WorkHours</wordasword></entry>
 						<entry>
 							Definiert die Zeitrahmen von 8 Uhr bis 16 Uhr
 							jeweils von Montag bis Freitag.
 						</entry>
 					</row>
 					<row>
-						<entry>NonWorkHours</entry>
+						<entry><wordasword>NonWorkHours</wordasword></entry>
 						<entry>
-							Das Gegenstück zum Nagios-Zeitraum WorkHours.
+							Das Gegenstück zum Nagios-Zeitraum <wordasword>WorkHours</wordasword>.
 							Deckt die Zeitrahmen von 0 Uhr bis 8 Uhr
 							sowie 16 Uhr bis 24 Uhr jeweils Montag bis Freitag
 							sowie am Samstag und Sonntag jeweils von 0 Uhr bis 24 Uhr ab.

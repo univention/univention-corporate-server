@@ -411,7 +411,7 @@
 					</entry>
 				</row>
 				<row>
-					<entry>Posix account</entry>
+					<entry>POSIX account</entry>
 					<entry>
 						If this checkbox is not selected the host does not receive the
 						<classname>posixAccount</classname> object class.
@@ -489,7 +489,7 @@
 		</para>
 		<para>
 			The default kernel in UCS for i386-based systems is the so-called
-			<emphasis>bigmem kernel</emphasis> for processors with PAE support, which
+			<wordasword>bigmem kernel</wordasword> for processors with PAE support, which
 			supports 64 GB RAM. For older i386-based systems a second kernel without PAE
 			support is provided, which only supports up to 4 GB RAM. The standard kernel
 			for amd64 systems has no such limits.
@@ -508,12 +508,12 @@
 		<itemizedlist>
 			<listitem>
 				<simpara>
-				univention-kernel-image - Standard kernel with support up to 64 GB RAM
+					<package>univention-kernel-image</package> - Standard kernel with support up to 64 GB RAM
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
-				univention-kernel-image-486 - Kernel for systems without PAE support (max. 4 GB RAM)
+					<package>univention-kernel-image-486</package> - Kernel for systems without PAE support (max. 4 GB RAM)
 				</simpara>
 			</listitem>
 		</itemizedlist>
@@ -523,7 +523,7 @@
 		<itemizedlist>
 			<listitem>
 				<simpara>
-				univention-kernel-image - Standard kernel
+					<package>univention-kernel-image</package> - Standard kernel
 				</simpara>
 			</listitem>
 		</itemizedlist>
@@ -605,13 +605,13 @@
 			<envar>grub/timeout</envar>.
 		</para>
 		<para>
-			By default a screen of 800x600 pixels size and 16 Bit colour depth is
+			By default a screen of <wordasword>800x600</wordasword> pixels size and 16 Bit colour depth is
 			pre-set. A different value can be set via the &ucsUCRV;
 			<envar>grub/gfxmode</envar>. Only resolutions are supported which can be set
 			via VESA BIOS extensions. A list of available modes can be found at
 			<ulink url="http://en.wikipedia.org/wiki/VESA_BIOS_Extensions"/>. The input must
 			be specified in the format
-			<emphasis>HORIZONTALxVERTICAL@COLOURDEPTHBIT</emphasis>, so for example
+			<userinput><replaceable>HORIZONTAL</replaceable>x<replaceable>VERTICAL</replaceable>@<replaceable>COLOURDEPTHBIT</replaceable></userinput>, so for example
 			<literal>1024x768@16</literal>.
 		</para>
 		<para>
@@ -1251,7 +1251,7 @@ ucr unset umc/modules/setup/network/disabled/by
 		<para>
 			The variables are named according to a tree structure with a forward slash
 			being used to separate components of the name. For example, &ucsUCR; variables
-			beginning with <emphasis>ldap</emphasis> are settings which apply to the local
+			beginning with <literal>ldap</literal> are settings which apply to the local
 			directory service.
 		</para>
 		<para>
@@ -1618,7 +1618,7 @@ if configRegistry.get('apache2/ssl/certificate'):
 			<para>
 				All the data output with the print function are written in the generated
 				configuration file. The data saved in &ucsUCR; can be requested via the
-				configRegistry object, e.g.:
+				<classname>ConfigRegistry</classname> object, e.g.:
 			</para>
 			<programlisting>
 @!@
@@ -1736,7 +1736,7 @@ if configRegistry.get('version/version') and \
 			<para>
 				In the default setting, only the <systemitem class="username">root</systemitem> user and members of
 				the <systemitem class="groupname">Domain Admins</systemitem> group can login remotely via SSH and
-				locally on a tty.
+				locally on a <systemitem class="service">tty</systemitem>.
 			</para>
 			<para>
 				This restriction can be configured with the &ucsUCRV;
@@ -1745,11 +1745,15 @@ if configRegistry.get('version/version') and \
 				<envar>auth/SERVICE/group/GROUPNAME</envar> to <literal>yes</literal>.
 			</para>
 			<para>
-				Login restrictions are supported for SSH (<systemitem class="service">sshd</systemitem>), FTP
-				(<systemitem class="service">ftp</systemitem>), the login manager GDM (<systemitem class="service">gdm</systemitem>),
-				login on a tty (<systemitem class="service">login</systemitem>), rlogin
-				(<systemitem class="service">rlogin</systemitem>), PPP (<systemitem class="service">ppp</systemitem>) and other
-				services (<systemitem class="service">other</systemitem>). An example for SSH:
+				Login restrictions are supported for
+				<systemitem class="service">SSH</systemitem> (<literal>sshd</literal>),
+				<systemitem class="service">FTP</systemitem> (<literal>ftp</literal>),
+				the login manager <systemitem class="service">KDM</systemitem> (<literal>kdm</literal>),
+				login on a <systemitem class="service">tty</systemitem> (<literal>login</literal>),
+				<systemitem class="service">rlogin</systemitem> (<literal>rlogin</literal>),
+				<systemitem class="service">PPP</systemitem> (<literal>ppp</literal>)
+				and other services (<literal>other</literal>).
+				An example for <systemitem class="service">SSH</systemitem>:
 			</para>
 			<programlisting>
 auth/sshd/group/Administrators: yes
@@ -1813,7 +1817,7 @@ auth/sshd/restrict: yes
 				<filename>/var/log/apache2/error.log</filename>.
 			</para>
 			<para>
-				The log files are managed by Logrotate. It ensures that log files are named in
+				The log files are managed by <application>logrotate</application>. It ensures that log files are named in
 				series in intervals (can be configured in weeks using the &ucsUCRV;
 				<envar>log/rotate/weeks</envar>, with the default setting being 12) and older
 				log files are then deleted. For example, the current log file for the
@@ -1870,7 +1874,7 @@ auth/sshd/restrict: yes
 				</listitem>
 				<listitem>
 					<simpara>
-					Temperature, fan and voltage indices from LM sensors (<command>sensors</command>)
+					Temperature, fan and voltage indices from <application>lm-sensors</application> (<command>sensors</command>)
 					</simpara>
 				</listitem>
 				<listitem>
@@ -1986,7 +1990,7 @@ auth/sshd/restrict: yes
 		</section>
 
 		<section id="cron:local">
-			<title>Defining local cron jobs in /etc/cron.d</title>
+			<title>Defining local cron jobs in <filename class="directory">/etc/cron.d/</filename></title>
 			<para>
 				A cron job is defined in a line, which is composed of a total of seven columns:
 			</para>
@@ -2021,7 +2025,7 @@ auth/sshd/restrict: yes
 				they are set via a &ucsUDM; policy and are thus used on more than one computer.
 			</para>
 			<para>
-				Each cron job is composed of at least two &ucsUCR; variables. JOBNAME is a
+				Each cron job is composed of at least two &ucsUCR; variables. <replaceable>JOBNAME</replaceable> is a
 				general description.
 			</para>
 			<itemizedlist>

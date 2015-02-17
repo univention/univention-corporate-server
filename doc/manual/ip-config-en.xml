@@ -300,12 +300,12 @@
 			  <para>
 				Samba 4 provides an Active Directory domain. Active Directory is
 				closely connected with DNS, for DNS updates of Windows clients or
-				the localisation of Netlogon shares among other things. If Samba 4
+				the localisation of NETLOGON shares among other things. If Samba 4
 				is used, the domain controller in question is switched over to the
 				use of the <emphasis>Samba backend</emphasis>.
 				The DNS database is maintained in
-				Samba's internal LDB database, which Samba updates directly. Bind
-				then accesses the Samba DNS data via the DLZ interface.
+				Samba's internal <acronym>LDB</acronym> database, which Samba updates directly. Bind
+				then accesses the Samba DNS data via the <acronym>DLZ</acronym> interface.
 			  </para>
 			</listitem>
 		  </itemizedlist>
@@ -338,7 +338,7 @@
 	<section id="ip-config:dns:umc">
 	  <title>Administration of DNS data in &ucsUMC;</title>
 	  <para>
-		DNS files are stored in the <uri>cn=dns,&lt;base-dn&gt;</uri> container as
+		DNS files are stored in the <uri>cn=dns,<replaceable>base DN</replaceable></uri> container as
 		standard. Forward and reverse lookup zones are stored directly in the
 		container. Additional DNS objects such as pointer records can be stored in
 		the respective zones.
@@ -481,7 +481,7 @@
 						<listitem>
 						  <para>
 							By including the date the number can be entered in the format
-							YYYYMMDDNN, where Y stands for year, M for month, D for day and N
+							<userinput><replaceable>YYYYMMDDNN</replaceable></userinput>, where <replaceable>Y</replaceable> stands for year, <replaceable>M</replaceable> for month, <replaceable>D</replaceable> for day and <replaceable>N</replaceable>
 							for the number of the change of this day.
 						  </para>
 						</listitem>
@@ -835,8 +835,7 @@
 				  </entry>
 				  <entry>
 					<para>
-					  The protocol via which the record can be accessed (TCP, UDP, MSDCS or
-					  SITES).
+						The protocol via which the record can be accessed (<systemitem class="protocol">TCP</systemitem>, <systemitem class="protocol">UDP</systemitem>, <systemitem class="protocol">MSDCS</systemitem> or <systemitem class="protocol">SITES</systemitem>).
 					</para>
 				  </entry>
 				</row>
@@ -874,10 +873,10 @@
 					  is distributed across the servers in relation to the weight function.
 					</para>
 					<para>
-					  Example: <emphasis>Server1</emphasis> has a priority of 1 and a weight function of 1,
-					  whilst <emphasis>Server2</emphasis>also has a priority of 1, but has a weight
-					  function of 3. In this case, <emphasis>Server2</emphasis>
-					  will be used three times as often as <emphasis>Server1</emphasis>.
+					  Example: <systemitem class="server">Server1</systemitem> has a priority of 1 and a weight function of 1,
+					  whilst <systemitem class="server">Server2</systemitem> also has a priority of 1, but has a weight
+					  function of 3. In this case, <systemitem class="server">Server2</systemitem>
+					  will be used three times as often as <systemitem class="server">Server1</systemitem>.
 					  The load is measured depending on the
 					  service, for example, as the number of requests or connection.
 					</para>
@@ -1156,7 +1155,7 @@
 	<section id="ip-config:Introduction">
 	  <title>Introduction</title>
 	  <para>
-		The <emphasis>Dynamic Host Configuration Protocol</emphasis> (DHCP) assigns
+		The <firstterm>Dynamic Host Configuration Protocol</firstterm> (<acronym>DHCP</acronym>) assigns
 		computers an IP address, the subnet mask and further settings for the
 		gateway or NetBIOS server as necessary. The IP address can be set
 		fixed or dynamic.
@@ -1921,22 +1920,22 @@ closest to the object always applies.
 					  <itemizedlist>
 						<listitem>
 						  <para>
-							1 B-node (Broadcast: no WINS)
+							  <guimenuitem>1 B-node</guimenuitem> (Broadcast: no WINS)
 						  </para>
 						</listitem>
 						<listitem>
 						  <para>
-							2 P-node (Peer: only WINS)
+							  <guimenuitem>2 P-node</guimenuitem> (Peer: only WINS)
 						  </para>
 						</listitem>
 						<listitem>
 						  <para>
-							4 M-node (Mixed: first Broadcast, then WINS)
+							  <guimenuitem>4 M-node</guimenuitem> (Mixed: first Broadcast, then WINS)
 						  </para>
 						</listitem>
 						<listitem>
 						  <para>
-							8 H-node (Hybrid: first WINS, then Broadcast)
+							  <guimenuitem>8 H-node</guimenuitem> (Hybrid: first WINS, then Broadcast)
 						  </para>
 						</listitem>
 					  </itemizedlist>
@@ -2481,7 +2480,7 @@ dansguardian -g
 				  Files with the specified file suffixes may not be downloaded. The suffix point
 				  must always be specified. If this variable is left blank, standard values are
 				  used. To allow all file suffixes, the variable must be set to ' ' (string with a
-				  blank space). Example: <emphasis>'.doc .xls .exe'</emphasis>.
+				  blank space). Example: <userinput>'.doc .xls .exe'</userinput>.
 				</entry>
 			  </row>
 

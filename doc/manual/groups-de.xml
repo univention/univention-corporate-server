@@ -249,7 +249,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>Posix-Gruppe</entry>
+						<entry>POSIX-Gruppe</entry>
 						<entry>
 							Dieses Auswahlkästchen gibt an, ob die Gruppe die Objektklasse
 							<classname>posixGroup</classname> erhält.

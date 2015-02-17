@@ -83,12 +83,11 @@
 			<simpara>
 		Some status information cannot be requested over the network
 		(e.g., the query of free disk space on a hard drive partition). In
-		this case, the NRPED service (Nagios Remote Plugin Executor Daemon)
+		this case, the <acronym>NRPED</acronym> service (Nagios Remote Plugin Executor Daemon)
 		is used, which runs Nagios plugins on another computer following a
 		request from the Nagios server and then transfers the gathered
-		information. The NRPED is provided by the <emphasis>Nagios client</emphasis>
+		information. The <acronym>NRPED</acronym> is provided by the <emphasis>Nagios client</emphasis>
 		component, which is preinstalled on all UCS system roles.
-		<emphasis>Nagios client</emphasis>
 			</simpara>
 		</listitem>
 	</itemizedlist>
@@ -170,7 +169,7 @@
 				</thead>
 				<tbody>
 					<row>
-						<entry>UNIVENTION_PING</entry>
+						<entry><systemitem class="service">UNIVENTION_PING</systemitem></entry>
 						<entry>
 							tests the availability of the monitored UCS system
 							with the command <command>ping</command>.
@@ -180,7 +179,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_DISK_ROOT</entry>
+						<entry><systemitem class="service">UNIVENTION_DISK_ROOT</systemitem></entry>
 						<entry>
 							monitors how full the <filename class="partition">/</filename> partition
 							is. An error status is raised if the remaining free space falls
@@ -188,7 +187,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_DNS</entry>
+						<entry><systemitem class="service">UNIVENTION_DNS</systemitem></entry>
 						<entry>
 							tests the function of the local DNS server and the
 							accessibility of the public DNS server by querying the hostname
@@ -200,19 +199,19 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_LDAP</entry>
+						<entry><systemitem class="service">UNIVENTION_LDAP</systemitem></entry>
 						<entry>
 							monitors the LDAP server running on UCS domain controller systems.
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_LOAD</entry>
+						<entry><systemitem class="service">UNIVENTION_LOAD</systemitem></entry>
 						<entry>
 							monitors the system load.
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_NTP</entry>
+						<entry><systemitem class="service">UNIVENTION_NTP</systemitem></entry>
 						<entry>
 							requests the time from the NTP service on the monitored
 							UCS system. If this deviates by more than 60 or 120 seconds,
@@ -220,20 +219,20 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_SMTP</entry>
+						<entry><systemitem class="service">UNIVENTION_SMTP</systemitem></entry>
 						<entry>
 							tests the mail server.
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_SSL</entry>
+						<entry><systemitem class="service">UNIVENTION_SSL</systemitem></entry>
 						<entry>
 							tests the remaining validity period of the UCS SSL certificates.
 							This plugin is only suitable for &ucsMaster; and &ucsBackup; systems.
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_SWAP</entry>
+						<entry><systemitem class="service">UNIVENTION_SWAP</systemitem></entry>
 						<entry>
 							monitors the utilisation of the swap partition.
 							An error status is raised if the remaining free space falls below the
@@ -241,7 +240,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_REPLICATION</entry>
+						<entry><systemitem class="service">UNIVENTION_REPLICATION</systemitem></entry>
 						<entry>
 							monitors the status of the LDAP replication
 							and recognises the creation of a <filename>failed.ldif</filename>
@@ -250,7 +249,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_NSCD</entry>
+						<entry><systemitem class="service">UNIVENTION_NSCD</systemitem></entry>
 						<entry>
 							tests the availability of the name server cache
 							daemon. If there is no NSCD process running, a CRITICAL event is
@@ -258,21 +257,21 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_WINBIND</entry>
+						<entry><systemitem class="service">UNIVENTION_WINBIND</systemitem></entry>
 						<entry>
 							tests the availability of the Winbind service.
 							If no process is running, a CRITICAL event is triggered.
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_SMBD</entry>
+						<entry><systemitem class="service">UNIVENTION_SMBD</systemitem></entry>
 						<entry>
 							tests the availability of the Samba service.
 							If no process is running, a CRITICAL event is triggered.
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_NMBD</entry>
+						<entry><systemitem class="service">UNIVENTION_NMBD</systemitem></entry>
 						<entry>
 							tests the availability of the NMBD service,
 							which is responsible for the NetBIOS service in Samba.
@@ -280,7 +279,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_JOINSTATUS</entry>
+						<entry><systemitem class="service">UNIVENTION_JOINSTATUS</systemitem></entry>
 						<entry>
 							tests the join status of a system.
 							If a system has yet to join, a CRITICAL event is triggered;
@@ -288,7 +287,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_KPASSWD</entry>
+						<entry><systemitem class="service">UNIVENTION_KPASSWD</systemitem></entry>
 						<entry>
 							tests the availability of the Kerberos password service
 							(only available on domain controller master/backup).
@@ -296,15 +295,15 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_CUPS</entry>
+						<entry><systemitem class="service">UNIVENTION_CUPS</systemitem></entry>
 						<entry>
 							monitors the CUPS daemon.
-							If there is no cupsd process running or the web interface
+							If there is no <systemitem class="daemon">cupsd</systemitem> process running or the web interface
 							on port 631 is not accessible, the CRITICAL status is returned.
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_DANSGUARDIAN</entry>
+						<entry><systemitem class="service">UNIVENTION_DANSGUARDIAN</systemitem></entry>
 						<entry>
 							monitors the DansGuardian web filter.
 							If no DansGuardian process is running
@@ -313,7 +312,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_SQUID</entry>
+						<entry><systemitem class="service">UNIVENTION_SQUID</systemitem></entry>
 						<entry>
 							monitors the Squid proxy.
 							If no squid process is running or the Squid proxy is not accessible,
@@ -321,7 +320,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_LIBVIRTD_KVM</entry>
+						<entry><systemitem class="service">UNIVENTION_LIBVIRTD_KVM</systemitem></entry>
 						<entry>
 							tests the status of a KVM virtualization server
 							via a request to <command>virsh</command>
@@ -329,7 +328,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_LIBVIRTD_XEN</entry>
+						<entry><systemitem class="service">UNIVENTION_LIBVIRTD_XEN</systemitem></entry>
 						<entry>
 							tests the status of a Xen virtualization server
 							via a request to <command>virsh</command>
@@ -337,7 +336,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_UVMMD</entry>
+						<entry><systemitem class="service">UNIVENTION_UVMMD</systemitem></entry>
 						<entry>
 							tests the status of the &ucsUVMM; by requesting the available nodes.
 							If they cannot be resolved, CRITICAL is returned.
@@ -372,7 +371,7 @@
 				</thead>
 				<tbody>
 					<row>
-						<entry>UNIVENTION_OPSI</entry>
+						<entry><systemitem class="service">UNIVENTION_OPSI</systemitem></entry>
 						<entry>
 							<para>
 							monitors the OPSI daemon.
@@ -382,7 +381,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_SMART_SDA</entry>
+						<entry><systemitem class="service">UNIVENTION_SMART_SDA</systemitem></entry>
 						<entry>
 							<para>
 							tests the S.M.A.R.T. status of the hard drive <filename class="devicefile">/dev/sda</filename>.
@@ -391,7 +390,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_RAID</entry>
+						<entry><systemitem class="service">UNIVENTION_RAID</systemitem></entry>
 						<entry>
 							<para>
 							tests the status of the software RAID via <filename>/proc/mdadm</filename>
@@ -401,7 +400,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>UNIVENTION_ADCONNECTOR</entry>
+						<entry><systemitem class="service">UNIVENTION_ADCONNECTOR</systemitem></entry>
 						<entry>
 							<para>
 							Checks the status of the AD connector.
@@ -538,7 +537,7 @@
 							If the test of a service cannot be performed remotely (e.g., of the
 							available drive space on the root partition), the plugin can be
 							executed on a distant UCS system via the Nagios Remote Plugin
-							Executor Daemon (NRPED). To do so,
+							Executor Daemon (<acronym>NRPED</acronym>). To do so,
 							the <package>univention-nagios-client</package> package must be installed.
 							</para>
 						</entry>
@@ -767,7 +766,7 @@
 				</thead>
 				<tbody>
 					<row>
-						<entry>24x7</entry>
+						<entry><wordasword>24x7</wordasword></entry>
 						<entry>
 							<para>
 							This object defines a period
@@ -777,7 +776,7 @@
 						</entry>
 					</row>
 					<row>
-						<entry>WorkHours</entry>
+						<entry><wordasword>WorkHours</wordasword></entry>
 						<entry>
 							<para>
 							Defines the period from 8 a.m. to 4 p.m. from Monday to Friday respectively.
@@ -785,10 +784,10 @@
 						</entry>
 					</row>
 					<row>
-						<entry>NonWorkHours</entry>
+						<entry><wordasword>NonWorkHours</wordasword></entry>
 						<entry>
 							<para>
-							The opposite to the Nagios period WorkHours,
+							The opposite to the Nagios period <wordasword>WorkHours</wordasword>,
 							this period covers the time from midnight to 8 a.m. and from 4 p.m. to
 							midnight from Monday to Friday respectively and from 0:00 to 24:00 on
 							Saturday and Sunday.

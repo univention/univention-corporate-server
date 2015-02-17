@@ -292,7 +292,7 @@
                                 <itemizedlist>
                                     <listitem>
 										<simpara>
-                                        Die Linux-Anmeldung (z.B. an GDM oder einem tty) wird nur deaktiviert,
+											Die Linux-Anmeldung (z.B. an <systemitem class="service">KDM</systemitem> oder einem <systemitem class="service">tty</systemitem>) wird nur deaktiviert,
                                         wenn alle Anmeldeverfahren deaktiviert werden; ein deaktiviertes POSIX-Konto
                                         reicht dazu nicht aus.
 										</simpara>
@@ -531,7 +531,7 @@
                 </thead>
                 <tbody>
                     <row>
-                        <entry>E-Mail-Adresse(n)</entry>
+                        <entry lang="">E-Mail-Adresse(n)</entry>
                         <entry>
                             Hier können weitere E-Mail-Adressen hinterlegt werden. Diese werden
                             nicht vom Mailserver ausgewertet. Die Werte werden im LDAP-Attribut
@@ -729,7 +729,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>CTX RAS Dialin</entry>
+                        <entry lang="">CTX RAS Dialin</entry>
                         <entry>
                             <para>
                                 Diese Option konfiguriert die Callback-Funktion eines Remote Access
@@ -1173,7 +1173,7 @@ univention-directory-manager users/user
         <para>
 		  So kann beispielsweise das UNIX-Heimatverzeichnis unter
 		  <filename class="directory">/home/&lt;title&gt;.&lt;lastname&gt;</filename> angelegt werden oder die primäre
-		  E-Mail-Adresse mit <emphasis>&lt;firstname&gt;.&lt;lastname&gt;@firma.com</emphasis>
+		  E-Mail-Adresse mit <userinput>&lt;firstname&gt;.&lt;lastname&gt;@firma.com</userinput>
 		  vordefiniert werden. Ersetzungen sind grundsätzlich für beliebige Werte möglich, eine
 		  syntaktische oder semantische Überprüfung erfolgt jedoch nicht. Wird beispielsweise beim
 		  Anlegen des Benutzers kein Vorname angegeben, würde die obige E-Mail-Adresse mit einem
@@ -1187,7 +1187,7 @@ univention-directory-manager users/user
 		  benötigt, kann in der Benutzervorlage nach dem Attributnamen der Index des benötigten
 		  Zeichens in eckigen Klammern angegeben werden. Die Zählung der Zeichen des Attributs
 		  beginnt bei 0, so dass z.B. der Index 1 dem zweiten Zeichen des Attributwertes
-		  entspricht. Mit <emphasis>&lt;firstname&gt;[0].&lt;lastname&gt;@firma.com</emphasis> wird
+		  entspricht. Mit <userinput>&lt;firstname&gt;[0].&lt;lastname&gt;@firma.com</userinput> wird
 		  beispielsweise eine E-Mail-Adresse aus dem ersten Buchstaben des Vornamens sowie dem
 		  Nachnamen gebildet.
 		</para>
@@ -1195,26 +1195,26 @@ univention-directory-manager users/user
         <para>
 		  Eine Teilzeichenkette des Attributwerts kann über die Angabe eines Bereichs in eckigen
 		  Klammern erreicht werden. Dabei ist der Index des ersten benötigten Zeichens sowie der
-		  Index des letzten benötigten Zeichnis plus 1 anzugeben. Die Angabe
-		  <emphasis>&lt;firstname&gt;[2:5]</emphasis> gibt z.B. das dritte bis fünfte Zeichen des
+		  Index des letzten benötigten Zeichens plus 1 anzugeben. Die Angabe
+		  <userinput>&lt;firstname&gt;[2:5]</userinput> gibt z.B. das dritte bis fünfte Zeichen des
 		  Vornamens zurück.
 		</para>
 
         <para>
-		  Das Anhängen von <emphasis>&lt;:lower&gt;</emphasis> oder <emphasis>&lt;:upper&gt;</emphasis> an den
+		  Das Anhängen von <literal>:lower</literal> oder <literal>:upper</literal> an den
 		  Attributnamen führt dazu, dass der Attributwert in Klein- oder Großschreibung
-		  umgewandelt wird, z.B. <emphasis>&lt;firstname:lower&gt;</emphasis>. Wird ein
-		  Modifikator wie <emphasis>&lt;:lower&gt;</emphasis> an das Ende des Feldes angehängt, wird
-		  der komplette Wert umgewandelt, z.B. <emphasis>&lt;lastname&gt;@company.com&lt;:lower&gt;</emphasis>.
+		  umgewandelt wird, z.B. <userinput>&lt;firstname:lower&gt;</userinput>. Wird ein
+		  Modifikator wie <literal>:lower</literal> an das Ende des Feldes angehängt, wird
+		  der komplette Wert umgewandelt, z.B. <userinput>&lt;lastname&gt;@company.com&lt;:lower&gt;</userinput>.
 		</para>
 
         <para>
-		  Durch die Option <emphasis>&lt;:umlauts&gt;</emphasis> werden Sonderzeichen wie è,
+		  Durch die Option <literal>:umlauts</literal> werden Sonderzeichen wie è,
 		  ä oder ß in entsprechende ASCII-Zeichen umgewandelt.
 		</para>
 
         <para>
-		  Optionen können auch kombiniert werden, z.B: <emphasis>&lt;:umlauts,upper&gt;</emphasis>.
+		  Optionen können auch kombiniert werden, z.B: <literal>:umlauts,upper</literal>.
 		</para>
 
     </section>

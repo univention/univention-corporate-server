@@ -252,9 +252,9 @@ eingetragen/modifiziert oder entfernt.
 	  <row>
 		<entry>NFS-Synchronisation</entry>
 		<entry>
-		  Der Synchronisations-Modus für die Freigabe. Mit der Einstellung <emphasis>sync</emphasis>
+		  Der Synchronisations-Modus für die Freigabe. Mit der Einstellung <option>sync</option>
 		  werden Daten direkt auf das unterliegende Speichermedium geschrieben. Die
-		  gegenteilige Einstellung - <emphasis>async</emphasis> - kann die Performance verbessern,
+		  gegenteilige Einstellung - <option>async</option> - kann die Performance verbessern,
 		  birgt aber auch das Risiko von Datenverlusten wenn der Server ohne
 		  kontrolliertes Herunterfahren abgeschaltet wird.
 		</entry>
@@ -1009,15 +1009,15 @@ Fileserver die &ucsUCRV; <envar>samba/enable-msdfs</envar> auf <literal>yes</lit
 werden. Anschließend muss der Samba-Dienst neu gestartet werden.
 </para>
 <para>
-Um einen Verweis mit dem Namen <emphasis>zufb</emphasis> von Server <emphasis>sa</emphasis> in der Freigabe <emphasis>fa</emphasis> auf die
-Freigabe <emphasis>fb</emphasis> des Servers <emphasis>sb</emphasis> anzulegen muss im Ordner <emphasis>fa</emphasis>
+Um einen Verweis mit dem Namen <filename class="symlink">zufb</filename> von Server <systemitem class="server">sa</systemitem> in der Freigabe <filename class="directory">fa</filename> auf die
+Freigabe <filename class="directory">fb</filename> des Servers <systemitem class="server">sb</systemitem> anzulegen muss im Ordner <filename class="directory">fa</filename>
 folgender Befehl ausgeführt werden.
 </para>
 <programlisting language="sh">
 ln -s msdfs:sb\\fb zufb
 </programlisting>
 <para>
-Dieser Verweis wird in jedem MSDFS fähigem Client (z.B. Windows 2000 und XP) als
+	Dieser Verweis wird in jedem <acronym>MSDFS</acronym> fähigem Client (z.B. <systemitem class="osname">Windows 2000</systemitem> und <systemitem class="osname">Windows XP</systemitem>) als
 regulärer Ordner angezeigt.
 </para>
 <caution>
@@ -1208,7 +1208,7 @@ Durchschnittlich verwendet: 4,000000
 	  <itemizedlist>
 		<listitem>
 			<para>
-		  Die &ucsUCRV; <envar>grub/append</envar> muss um <emphasis>root2flags=quota</emphasis>
+		  Die &ucsUCRV; <envar>grub/append</envar> muss um <literal>root2flags=quota</literal>
 		  ergänzt werden. Als Trennzeichen zu bereits gesetzten Werten wird dabei ein Leerzeichen
 		  verwendet. Hierdurch wird der Quota-Support für die Root-Partition als
 		  Bootparameter gesetzt. Die Änderung wird automatisch in den Bootrecord geschrieben, z.B:

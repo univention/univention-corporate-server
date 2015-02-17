@@ -420,7 +420,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Posix Konto</entry>
+                        <entry>POSIX Konto</entry>
                         <entry>
                             Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die
                             Objektklasse <classname>posixAccount</classname> nicht.
@@ -494,7 +494,7 @@
                 Kernel-Image-Paketes notwendig.
             </para>
             <para>
-                Der Standard-Kernel in UCS für i386-basierte Systeme ist der sogenannte <emphasis>bigmem-Kernel</emphasis> für Prozessoren mit PAE-Unterstützung, der 64 GB RAM unterstützt.
+                Der Standard-Kernel in UCS für i386-basierte Systeme ist der sogenannte <wordasword>bigmem-Kernel</wordasword> für Prozessoren mit PAE-Unterstützung, der 64 GB RAM unterstützt.
                 Für ältere i386-basierte Systeme wird ein zweiter Kernel ohne PAE-Unterstützung bereitgestellt, der maximal 4 GB Arbeitsspeicher unterstützt.
                 Der Standard-Kernel für amd64-Systeme besitzt keine solchen Einschränkungen.
             </para>
@@ -510,14 +510,14 @@
                 Die folgenden Meta-Pakete stehen unter i386 / 32 Bit zur Verfügung:
             </para>
 			<itemizedlist>
-				<listitem><simpara>univention-kernel-image - Standard-Kernel (max. 64 GB RAM)</simpara></listitem>
-				<listitem><simpara>univention-kernel-image-486 - Kernel für Systeme ohne PAE-Support (max. 4 GB RAM)</simpara></listitem>
+				<listitem><simpara><package>univention-kernel-image</package> - Standard-Kernel (max. 64 GB RAM)</simpara></listitem>
+				<listitem><simpara><package>univention-kernel-image-486</package> - Kernel für Systeme ohne PAE-Support (max. 4 GB RAM)</simpara></listitem>
 			</itemizedlist>
             <para>
                 Die folgenden Meta-Pakete stehen unter amd64 / 64 Bit zur Verfügung:
             </para>
 			<itemizedlist>
-				<listitem><simpara>univention-kernel-image - Standard-Kernel</simpara></listitem>
+				<listitem><simpara><package>univention-kernel-image</package> - Standard-Kernel</simpara></listitem>
 			</itemizedlist>
         </section>
 
@@ -593,12 +593,12 @@
                 konfiguriert werden.
             </para>
             <para>
-                In der Grundeinstellung wird in einen 800x600 Pixel großen Bildschirm unter
+				In der Grundeinstellung wird in einen <wordasword>800x600</wordasword> Pixel großen Bildschirm unter
                 16 Bit Farbtiefe gewechselt. Durch die &ucsUCRV; <envar>grub/gfxmode</envar> kann ein anderer Modus ausgewählt
                 werden. Es werden nur Auflösungen unterstützt, die über VESA BIOS Extentions
                 gesetzte werden können. Eine Liste der verfügbaren Modi findet sich unter
                 <ulink url="http://en.wikipedia.org/wiki/VESA_BIOS_Extensions"/>. Die Eingabe
-                erfolgt im Format <emphasis>HORIZONTALxVERTIKAL@FARBTIEFEBIT</emphasis>, also
+				erfolgt im Format <userinput><replaceable>HORIZONTAL</replaceable>x<replaceable>VERTIKAL</replaceable>@<replaceable>FARBTIEFEBIT</replaceable></userinput>, also
                 z.B. <literal>1024x768@16</literal>.
             </para>
             <para>
@@ -1231,7 +1231,7 @@ ucr unset umc/modules/setup/network/disabled/by
             <para>
                 Die Benennung der Variablen folgt einer baumartigen Struktur, wobei
                 ein Schrägstrich als Trennzeichen von Namensbestandteilen verwendet
-                wird. Beispielsweise handelt es sich bei allen mit <emphasis>ldap</emphasis>
+                wird. Beispielsweise handelt es sich bei allen mit <literal>ldap</literal>
                 beginnenden &ucsUCR;-Variablen um Einstellungen, die den lokalen
                 Verzeichnisdienst betreffen.
             </para>
@@ -1605,7 +1605,7 @@ if configRegistry.get('apache2/ssl/certificate'):
                 <para>
                     Alle mit der print-Funktion ausgegebenen Daten werden dabei in die
                     generierte Konfigurationsdatei geschrieben. Die in &ucsUCR;
-                    gespeicherten Daten können über das configRegistry-Objekt abgefragt
+                    gespeicherten Daten können über das <classname>ConfigRegistry</classname>-Objekt abgefragt
                     werden, z.B.:
                 </para>
                     <programlisting>
@@ -1723,7 +1723,7 @@ if configRegistry.get('version/version') and \
                 <para>
                     In der Grundeinstellung können sich nur der <systemitem class="username">root</systemitem>-Benutzer und Mitglieder der
                     Gruppe <systemitem class="groupname">Domain Admins</systemitem> remote über SSH und lokal auf einem
-                    tty anmelden.
+					<systemitem class="service">tty</systemitem> anmelden.
                 </para>
                 <para>
                     Diese Einschränkung kann mit der &ucsUCRV; <envar>auth/DIENST/restrict</envar>
@@ -1733,10 +1733,15 @@ if configRegistry.get('version/version') and \
                     werden.
                 </para>
                 <para>
-					Anmeldebeschränkungen werden unterstützt für SSH (<systemitem class="service">sshd</systemitem>), FTP
-					(<systemitem class="service">ftp</systemitem>), die Anmeldung am Login-Manager GDM (<systemitem class="service">gdm</systemitem>), die
-					Anmeldung an einem tty (<systemitem class="service">login</systemitem>), rlogin (<systemitem class="service">rlogin</systemitem>), PPP
-					(<systemitem class="service">ppp</systemitem>) und andere Dienste (<systemitem class="service">other</systemitem>). Ein Beispiel für SSH:
+					Anmeldebeschränkungen werden unterstützt für
+					<systemitem class="service">SSH</systemitem> (<literal>sshd</literal>),
+					<systemitem class="service">FTP</systemitem> (<literal>ftp</literal>),
+					die Anmeldung am Login-Manager <systemitem class="service">KDM</systemitem> (<literal>kdm</literal>),
+					Anmeldung an einem <systemitem class="service">tty</systemitem> (<literal>login</literal>),
+					<systemitem class="service">rlogin</systemitem> (<literal>rlogin</literal>),
+					<systemitem class="service">PPP</systemitem> (<literal>ppp</literal>)
+					und andere Dienste (<literal>other</literal>).
+					Ein Beispiel für <systemitem class="service">SSH</systemitem>:
                 </para>
                     <programlisting>
 auth/sshd/group/Administrators: yes
@@ -1795,7 +1800,7 @@ auth/sshd/restrict: yes
                     die Datei <filename>/var/log/apache2/error.log</filename>.
                 </para>
                 <para>
-                    Die Logdateien werden durch Logrotate verwaltet. Es sorgt dafür, dass
+					Die Logdateien werden durch <application>logrotate</application> verwaltet. Es sorgt dafür, dass
                     Logdateien in einem Intervall (konfigurierbar in Wochen über
                     die &ucsUCRV; <envar>log/rotate/weeks</envar>, standardmäßig 12) fortlaufend benannt werden
                     und ältere Logdateien anschließend gelöscht werden. Die aktuelle Logdatei für
@@ -1826,7 +1831,7 @@ auth/sshd/restrict: yes
 						<listitem><simpara>Zwei <command>top</command>-Aufstellungen der aktuellen Prozesse und Auslastung (<command>top -b -n2</command>)</simpara></listitem>
 						<listitem><simpara>Den aktuell freien Arbeitsspeicher (<command>free</command>)</simpara></listitem>
 						<listitem><simpara>Die Zeit, die seit dem Start des Systems vergangen ist (<command>uptime</command>)</simpara></listitem>
-						<listitem><simpara>Temperatur-, Lüfter- und Spannungskennzahlen aus LM-Sensors (<command>sensors</command>)</simpara></listitem>
+						<listitem><simpara>Temperatur-, Lüfter- und Spannungskennzahlen aus <application>lm-sensors</application> (<command>sensors</command>)</simpara></listitem>
 						<listitem><simpara>Eine Aufstellung der aktuellen Samba-Verbindungen (<command>smbstatus</command>)</simpara></listitem>
                     </itemizedlist>
                 <para>
@@ -1937,7 +1942,7 @@ auth/sshd/restrict: yes
                 </para>
             </section>
 
-            <section id="cron:local"><title>Definition eigener Cron-Jobs in /etc/cron.d</title>
+            <section id="cron:local"><title>Definition eigener Cron-Jobs in <filename class="directory">/etc/cron.d/</filename></title>
                 <para>
                     Ein Cron-Job wird in einer Zeile definiert, die aus insgesamt sieben Spalten aufgebaut ist:
                 </para>
@@ -1973,7 +1978,7 @@ auth/sshd/restrict: yes
                 </para>
                 <para>
                     Jeder Cron-Job setzt sich dabei aus min. zwei &ucsUCR;-Variablen
-                    zusammen. JOBNAME ist dabei ein allgemeiner Bezeichner.
+					zusammen. <replaceable>JOBNAME</replaceable> ist dabei ein allgemeiner Bezeichner.
                 </para>
                     <itemizedlist>
 						<listitem>

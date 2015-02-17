@@ -141,7 +141,7 @@
 
 		<para>
 		  Die in UCS integrierten Dateidienste unterstützen eine Bereitstellung von Freigaben auf
-		  Basis von CIFS/SMB (siehe <xref linkend="shares::general"/>). Sofern das unterliegende
+		  Basis von <systemitem class="filesystem">CIFS</systemitem>/<systemitem class="filesystem">SMB</systemitem> (siehe <xref linkend="shares::general"/>). Sofern das unterliegende
 		  Dateisystem Access Control Lists (ACLs) unterstützt (verwendbar bei <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> und <systemitem class="filesystem">XFS</systemitem>)
 		  sind ACLs auch von Windows-Clients verwendbar.
 		</para>
@@ -158,9 +158,9 @@
 		</para>
 
 		<para>
-		  Samba unterstützt das CIFS-Protokoll und den Nachfolger SMB2. Verwendet man einen Client,
-		  der SMB2 unterstützt (ab Windows Vista, also auch Windows 7/8), verbessert sich die
-		  Performance und die Skalierbarkeit.
+			Samba unterstützt das <systemitem class="protocol">CIFS</systemitem>-Protokoll und den Nachfolger <systemitem class="protocol">SMB2</systemitem>.
+			Verwendet man einen Client, der <systemitem class="protocol">SMB2</systemitem> unterstützt (ab <systemitem class="osname">Windows Vista</systemitem>, also auch <systemitem class="osname">Windows 7/8</systemitem>), verbessert sich die
+			Performance und die Skalierbarkeit.
 		</para>
 
 		<para>
@@ -170,15 +170,15 @@
 
 		  <itemizedlist>
 			<listitem><simpara>
-			  <emphasis>NT1</emphasis> konfiguriert CIFS (unterstützt von allen Windows-Versionen)
+					<literal>NT1</literal> konfiguriert <systemitem class="protocol">CIFS</systemitem> (unterstützt von allen Windows-Versionen)
 			</simpara></listitem>
 
 			<listitem><simpara>
-			  <emphasis>SMB2</emphasis> konfiguriert SMB2 (unterstützt ab Windows Vista/Windows 7)
+					<literal>SMB2</literal> konfiguriert <systemitem class="protocol">SMB2</systemitem> (unterstützt ab <systemitem class="osname">Windows Vista</systemitem>/<systemitem class="osname">Windows 7</systemitem>)
 			</simpara></listitem>
 
 			<listitem><simpara>
-			  <emphasis>SMB3</emphasis> konfiguriert SMB3 (unterstützt ab Windows 8) (aktuell nicht durch Univention-Support abgedeckt)
+					<literal>SMB3</literal> konfiguriert <systemitem class="protocol">SMB3</systemitem> (unterstützt ab <systemitem class="osname">Windows 8</systemitem>) (aktuell nicht durch Univention-Support abgedeckt)
 			</simpara></listitem>
 		  </itemizedlist>
 		</para>
@@ -272,7 +272,7 @@ instanceType: 4
 
 		<para>
 		  In Microsoft Active Directory wird die SYSVOL-Freigabe durch den File Replication Service
-		  (eingeführt mit Windows 2000), bzw. durch das Distributed File System (ab Windows 2008 R2)
+		  (eingeführt mit Windows 2000), bzw. durch das Distributed File System (ab <systemitem class="osname">Windows 2008 R2</systemitem>)
 		  synchronisiert. Diese Replikationsmethoden sind in Samba noch nicht vollständig
 		  implementiert. Die Synchronisation zwischen den Samba-Domänencontrollern erfolgt in UCS
 		  durch einen Cron-Job (standardmäßig alle fünf Minuten, konfigurierbar durch die &ucsUCRV;
@@ -524,7 +524,7 @@ instanceType: 4
 		  </para>
 
 		  <para>
-			<figure><title>Auswertung der GPO für den Benutzer user01</title>
+			<figure><title>Auswertung der GPO für den Benutzer <systemitem class="username">user01</systemitem></title>
 			<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/gpo-gpresult-de.png"/>
 			</figure>
 		  </para>
@@ -599,7 +599,7 @@ instanceType: 4
 		</section>
 
 		<section id="gpo:adm">
-		  <title>Administrative Vorlagen (ADMX/ADM)</title>
+			<title>Administrative Vorlagen (<acronym>ADMX</acronym>/<acronym>ADM</acronym>)</title>
 		  <para>
 			Die in der Gruppenrichtlinienverwaltung angezeigten Richtlinien können durch sogenannte <emphasis>Administrative
 			Vorlagen</emphasis> erweitert werden. In einer solchen Vorlage wird definiert unter
@@ -1236,7 +1236,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	  <guimenu>Zertifikatsvorlagen</guimenu> angezeigt. Hier muss ein Rechtsklick auf den
 	  Rechnernamen erfolgen - nicht auf eines der Elemente darunter - und
 	  <guimenu>Eigenschaften</guimenu> ausgewählt werden. Das Root-Zertifikat heisst in der Regel
-	  <emphasis>Zertifikat Nr. 0</emphasis>. Dann <guimenu>Zertifikat anzeigen &ar; Details  &ar; In Datei kopieren &ar;
+	  <guimenuitem>Zertifikat Nr. 0</guimenuitem>. Dann <guimenu>Zertifikat anzeigen &ar; Details  &ar; In Datei kopieren &ar;
 	  DER-codiert-binär X.509 (.CER) &ar; Auswahl eines beliebigen Dateinamens und Speicherpfad
 	  &ar; Fertig stellen</guimenu>.
 	</para>
@@ -1323,11 +1323,11 @@ UMC-Einrichtungs-Assistenten bereitgestellt:
 </itemizedlist>
 <para>
 Auf 64 Bit-Varianten von Windows muss vor der Installation des AD
-Connectors das <emphasis>Microsoft Visual C++ 2010
-  Redistributable Package (x86)</emphasis>installiert werden.
+Connectors das <package>Microsoft Visual C++ 2010
+  Redistributable Package (x86)</package> installiert werden.
 </para>
 <para>
-Die MSI-Pakete sind die Installations-Dateien für den
+	Die <filename class="extension">MSI</filename>-Pakete sind die Installations-Dateien für den
 Passwortdienst und können durch einen Doppelklick gestartet werden.
 </para>
 <para>
@@ -1415,11 +1415,11 @@ univention-adsearch cn=administrator cn givenName
 </programlisting>
 </section>
 
-<section id="ad-connector:univention-connector-list-rejected"><title>univention-connector-list-rejected</title>
+<section id="ad-connector:univention-connector-list-rejected"><title><command>univention-connector-list-rejected</command></title>
 <para>
 Dieses Tool führt die DNs nicht synchronisierter Objekte auf. Zusätzlich wird,
 sofern zwischengespeichert, die korrespondierende DN im jeweils anderen LDAP-Verzeichnis
-angegeben. Abschließend gibt <emphasis>lastUSN</emphasis> die ID der letzten von AD
+angegeben. Abschließend gibt <property>lastUSN</property> die ID der letzten von AD
 synchronisierten Änderung an.
 </para>
 </section>
@@ -1489,7 +1489,7 @@ Zusätzlich wird die Beschreibung der Gruppe synchronisiert.
 <section id="windows:gruppen:Besonderheiten"><title>Besonderheiten</title>
 <itemizedlist>
 <listitem><simpara>Unter AD wird der <emphasis>Prä-Windows 2000 Name</emphasis> (LDAP-Attribut
-<emphasis>samAccountName</emphasis>) verwendet, daher kann eine Gruppe im
+<property>samAccountName</property>) verwendet, daher kann eine Gruppe im
 Active Directory mit anderem Namen erscheinen als unter UCS.
 </simpara>
 </listitem>
@@ -1562,13 +1562,13 @@ sollten daher aufgrund der in Active Directory vorliegenden
 Einschränkungen immer nur dort zugewiesen werden.
 </simpara>
 </listitem>
-<listitem><simpara>Wird im &ucsUDM; eine globale Gruppe A als Mitglied einer
-  anderen globalen Gruppe B aufgenommen, so erscheint diese Mitgliedschaft aufgrund von
-AD-internen Beschränkungen unter Windows 2000/2003 nicht im Active
-Directory. Wird Gruppe A anschließend umbenannt, geht die
-Gruppenmitgliedschaft in Gruppe B verloren. Ab Windows 2008 besteht
-diese Einschränkung nicht mehr, dort können im Active Directory auch
-globale Gruppen verschachtelt werden.
+<listitem>
+	<simpara>
+		Wird im &ucsUDM; eine globale Gruppe <systemitem class="groupname">A</systemitem> als Mitglied einer
+		anderen globalen Gruppe <systemitem class="groupname">B</systemitem> aufgenommen, so erscheint diese Mitgliedschaft aufgrund von
+		AD-internen Beschränkungen unter <systemitem class="osname">Windows 2000/2003</systemitem> nicht im Active Directory.
+		Wird Gruppe <systemitem class="groupname">A</systemitem> anschließend umbenannt, geht die Gruppenmitgliedschaft in Gruppe <systemitem class="groupname">B</systemitem> verloren.
+		Ab <systemitem class="osname">Windows 2008</systemitem> besteht diese Einschränkung nicht mehr, dort können im Active Directory auch globale Gruppen verschachtelt werden.
 </simpara>
 </listitem>
 </itemizedlist>

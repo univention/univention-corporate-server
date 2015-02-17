@@ -329,7 +329,7 @@
 	  <para>
 		Commonly used UMC modules are shown in the category <guimenu>Favorites</guimenu>. Clicking on a
 		UMC module with the right mouse button opens a context menu. <guimenu>Add to favorites</guimenu>
-		and <guimenu>Remove from favorites</guimenu> can be used to mark a UMC module as a favourite
+		and <guimenu>Remove from favorites</guimenu> can be used to mark a UMC module as a favorite
 		or remove it again.
 	  </para>
 	</section>
@@ -480,7 +480,7 @@
 			  <guimenu>Required object classes</guimenu>: Here you can specify LDAP object classes
 			  that an object must possess for the policy to apply to this object. If, for example, a
 			  user policy is only relevant for Windows environments, the
-			  <emphasis>sambaSamAccount</emphasis> object class could be demanded here.
+			  <classname>sambaSamAccount</classname> object class could be demanded here.
 				</simpara>
 			</listitem>
 			<listitem>
@@ -869,7 +869,7 @@
 			<entry>Translations of tab name</entry>
 			<entry>
 			  Translated tab names can be assigned to the corresponding language code
-			  (z.B. <literal>de_DE</literal> or <literal>fr_FR</literal>) in this input field.
+			  (e.g. <literal>de_DE</literal> or <literal>fr_FR</literal>) in this input field.
 			</entry>
 		  </row>
 
@@ -1339,10 +1339,10 @@ univention-directory-manager users/user create \
 		<listitem>
 			<para>
 				<option>--option</option> defines the LDAP object classes of an
-				object. If, for example, only <emphasis>posix</emphasis> and <emphasis>person</emphasis>
+				object. If, for example, only <classname>posix</classname> and <classname>person</classname>
 				are provided as options for a user object, it is not possible to
-				specify a <emphasis>mailPrimaryAddress</emphasis> for this user as this
-				attribute is part of the <emphasis>mail</emphasis> option:
+				specify a <property>mailPrimaryAddress</property> for this user as this
+				attribute is part of the <classname>mail</classname> option:
 			</para>
 			<programlisting language="sh">
 univention-directory-manager users/user modify \
@@ -1510,7 +1510,7 @@ univention-directory-manager groups/group modify \
 		<para>
 		  This call creates a container <uri>cn=Bremen</uri> beneath the standard
 		  container <uri>cn=computers</uri> for the computers at the "Bremen" site. The
-		  additional option <emphasis>computerPath</emphasis> also registers this container directly
+		  additional option <property>computerPath</property> also registers this container directly
 		  as the standard container for computer objects (see <xref linkend="central:cn-and-ous"/>):
 		</para>
 		<programlisting language="sh">
@@ -1598,7 +1598,7 @@ univention-directory-manager shares/share create \
 	  <section id="central:udm:example:printer">
 		<title>Printers</title>
 		<para>
-		  Creating a printer share <emphasis>LaserPrinter01</emphasis> on the print server
+		  Creating a printer share <systemitem class="resource">LaserPrinter01</systemitem> on the print server
 		  <systemitem class="server">printserver.example.com</systemitem>. The properties of the printer are specified
 		  in the PPD file, the name of which is given relative to the directory
 		  <filename class="directory">/usr/share/ppd/</filename>. The connected printer is network-compatible and is

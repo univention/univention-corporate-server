@@ -217,7 +217,7 @@ In the <emphasis>Director</emphasis> section, the
 <varname>director</varname> (see <xref
 linkend="bacula:directory"/>). A client password must be set for every
 system. In addition, the <varname>FDAddress</varname> option in the
-<emphasis>FileDaemon</emphasis> section should be set to the computer's
+<wordasword>FileDaemon</wordasword> section should be set to the computer's
 IP address.
 			</para>
 			<programlisting>
@@ -335,7 +335,7 @@ Additional options for an action can also be set or overwritten here.
 			</listitem>
 			<listitem>
 				<simpara>
-A <emphasis>FileSet</emphasis> defines which files or directories should
+A <wordasword>FileSet</wordasword> defines which files or directories should
 be backed up, whether they should be compressed and which meta
 information (e.g., ACLs) should be backed up.
 				</simpara>
@@ -481,7 +481,7 @@ required. It should also be backed up independently of Bacula.
 		</para>
 		<para>
 The backup job for the catalog with the corresponding
-<emphasis>FileSet</emphasis> and <emphasis>Schedule</emphasis> is
+<wordasword>FileSet</wordasword> and <emphasis>Schedule</emphasis> is
 available as a template in the configuration of the <emphasis>director
 daemon</emphasis> and merely needs to be adjusted.
 		</para>

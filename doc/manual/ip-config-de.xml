@@ -294,9 +294,9 @@
 			  Windows-Clients oder für die Lokalisierung des Netlogon-Shares. Wird
 			  Samba 4 eingesetzt, wird der betreffende Domänencontroller auf die
 			  Verwendung des <emphasis>Samba-Backend</emphasis>s umgestellt. Die DNS-Datenbank
-			  wird dabei in der Samba-internen LDB-Datenbank vorgehalten, die
+			  wird dabei in der Samba-internen <acronym>LDB</acronym>-Datenbank vorgehalten, die
 			  direkt von Samba aktualisiert wird. Bind greift dann über die
-			  DLZ-Schnittstelle auf die Samba-DNS-Daten zu.
+			  <acronym>DLZ</acronym>-Schnittstelle auf die Samba-DNS-Daten zu.
 				</simpara>
 			</listitem>
 		  </itemizedlist>
@@ -331,7 +331,7 @@
 	<section id="ip-config:dns:umc">
 	  <title>Konfiguration der DNS-Daten in &ucsUMC;</title>
 	  <para>
-		DNS-Daten werden standardmäßig im Container <uri>cn=dns,&lt;Basis-DN></uri>
+		DNS-Daten werden standardmäßig im Container <uri>cn=dns,<replaceable>Basis-DN</replaceable></uri>
 		abgelegt. Forward- und Reverse-Lookup-Zonen werden direkt in dem
 		Container abgelegt. In den jeweiligen Zonen können
 		zusätzliche DNS-Objekte wie z.B. Pointer-Records angelegt werden.
@@ -448,8 +448,8 @@
 						</listitem>
 						<listitem>
 							<simpara>
-						  Unter Einbeziehung des Datums kann die Zahl im Format JJJJMMTTNN
-						  eingegeben werden, wobei J für Jahr, M für Monat, T für Tag und N
+						  Unter Einbeziehung des Datums kann die Zahl im Format <userinput><replaceable>JJJJMMTTNN</replaceable></userinput>
+						  eingegeben werden, wobei <replaceable>J</replaceable> für Jahr, <replaceable>M</replaceable> für Monat, <replaceable>T</replaceable> für Tag und <replaceable>N</replaceable>
 						  für die Nummer der Änderung an diesem Tag steht.
 							</simpara>
 						</listitem>
@@ -712,8 +712,7 @@
 			  <row>
 				<entry>Protokoll</entry>
 				<entry>
-				  Der Protokoll, über das der Record erreichbar ist (TCP, UDP, MSDCS
-				  oder SITES).
+					Der Protokoll, über das der Record erreichbar ist (<systemitem class="protocol">TCP</systemitem>, <systemitem class="protocol">UDP</systemitem>, <systemitem class="protocol">MSDCS</systemitem> oder <systemitem class="protocol">SITES</systemitem>).
 				</entry>
 			  </row>
 			  <row>
@@ -742,10 +741,10 @@
 					die Server verteilt.
 				  </para>
 				  <para>
-					Beispiel: <emphasis>Server1</emphasis> hat eine Priorität von 1 und eine Gewichtung
-					von 1, während <emphasis>Server2</emphasis> ebenfalls eine Priorität von 1, aber
-					eine Gewichtung von 3 hat. In diesem Fall wird <emphasis>Server2</emphasis> dreimal
-					so oft verwendet wie <emphasis>Server1</emphasis>. Die Belastung wird abhängig vom
+					Beispiel: <systemitem class="server">Server1</systemitem> hat eine Priorität von 1 und eine Gewichtung
+					von 1, während <systemitem class="server">Server2</systemitem> ebenfalls eine Priorität von 1, aber
+					eine Gewichtung von 3 hat. In diesem Fall wird <systemitem class="server">Server2</systemitem> dreimal
+					so oft verwendet wie <systemitem class="server">Server1</systemitem>. Die Belastung wird abhängig vom
 					Dienst beispielsweise als Anzahl der Anfragen oder Verbindungen
 					gemessen.
 				  </para>
@@ -951,7 +950,7 @@
 	<section id="ip-config:Einfuehrung">
 	  <title>Einführung</title>
 	  <para>
-		Das <emphasis>Dynamic Host Configuration Protocol</emphasis> (DHCP) weist Rechnern eine
+		Das <firstterm>Dynamic Host Configuration Protocol</firstterm> (<acronym>DHCP</acronym>) weist Rechnern eine
 		IP-Adresse, die Subnetz-Maske und gegebenenfalls weitere Einstellungen
 		wie Gateway oder NetBIOS-Server zu. Die IP-Adresse kann fest oder
 		dynamisch vergeben werden.
@@ -1620,22 +1619,22 @@
 				  <itemizedlist>
 					<listitem>
 						<simpara>
-					  1 B-node (Broadcast: kein WINS)
+							<guimenuitem>1 B-node</guimenuitem> (Broadcast: kein WINS)
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-					  2 P-node (Peer: ausschließlich WINS)
+							<guimenuitem>2 P-node</guimenuitem> (Peer: ausschließlich WINS)
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-					  4 M-node (Mixed: erst Broadcast, dann WINS)
+							<guimenuitem>4 M-node</guimenuitem> (Mixed: erst Broadcast, dann WINS)
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-					  8 H-node (Hybrid: erst WINS, dann Broadcast)
+							<guimenuitem>8 H-node</guimenuitem> (Hybrid: erst WINS, dann Broadcast)
 						</simpara>
 					</listitem>
 				  </itemizedlist>
@@ -2153,7 +2152,7 @@ dansguardian -g
 				  Trennpunkt muss dabei mit angegeben werden. Ist diese Variable leer, werden
 				  Standardwerte verwendet. Um alle Dateiendungen zu erlauben, muss die Variable auf
 				  ' ' gesetzt werden (Zeichenkette mit einem Leerzeichen). Beispiel:
-				  <emphasis>'.doc .xls .exe'</emphasis>.
+				  <userinput>'.doc .xls .exe'</userinput>.
 				</entry>
 			  </row>
 

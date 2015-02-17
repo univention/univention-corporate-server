@@ -95,7 +95,7 @@
 		</para>
 
 		<section id="domain-ldap:Subsequent_domain_joins_with_univention-join">
-			<title>Subsequent domain joins with univention-join</title>
+			<title>Subsequent domain joins with <command>univention-join</command></title>
 			<para>
 				<command>univention-join</command> retrieves a number of essential parameters
 				interactively; however, it can also be configured using a number of parameters:
@@ -298,7 +298,7 @@
 			  the <mousebutton>OK</mousebutton> button, the
 			  <systemitem class="username">Administrator</systemitem> must be entered in the input field
 			  <guimenu>Name</guimenu> and the password from
-			  <uri>uid=Administrator,cn=users,&lt;Basis-DN&gt;</uri> transferred to
+			  <uri>uid=Administrator,cn=users,<replaceable>base DN</replaceable></uri> transferred to
 			  the <guimenu>Password</guimenu> input field. The process for joining the domain
 			  can then be started by clicking on <mousebutton>OK</mousebutton>.
 			</para>
@@ -329,7 +329,7 @@
 				the <mousebutton>OK</mousebutton> button, the
 				<systemitem class="username">Administrator</systemitem> must be entered in the input field
 				<guimenu>Name</guimenu> and the password from
-				<uri>uid=Administrator,cn=users,&lt;Basis-DN&gt;</uri> transferred to
+				<uri>uid=Administrator,cn=users,<replaceable>base DN</replaceable></uri> transferred to
 				the <guimenu>Password</guimenu> input field. The process for joining the domain
 				can then be started by clicking on <mousebutton>OK</mousebutton>.
 			</para>
@@ -356,7 +356,7 @@
 			domain entered in the input field for the domain join. After clicking on the
 			<mousebutton>OK</mousebutton> button, the <systemitem class="username">Administrator</systemitem> must be
 			entered in the input field <guimenu>Name</guimenu> and the password from
-			<uri>uid=Administrator,cn=users,&lt;Basis-DN&gt;</uri> transferred to the
+			<uri>uid=Administrator,cn=users,<replaceable>base DN</replaceable></uri> transferred to the
 			<guimenu>Password</guimenu> input field. The process for joining the domain can then be
 			started by clicking on <mousebutton>OK</mousebutton>.
 		  </para>
@@ -620,8 +620,8 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 				&ucsUCS; provides its own LDAP scheme for customer extensions. The LDAP object
 				class <classname>univentionFreeAttributes</classname> can be used for extended
 				attributes without restrictions. It offers 20 freely usable attributes
-				(<varname>univentionFreeAttribute1</varname> to
-				<varname>univentionFreeAttribute20</varname>) and can be used in connection
+				(<property>univentionFreeAttribute1</property> to
+				<property>univentionFreeAttribute20</property>) and can be used in connection
 				with any LDAP object (e.g., a user object).
 			</para>
 
@@ -682,7 +682,7 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 		  Individual areas of the directory service can be excluded from the logging. These branches
 		  can be configured using the &ucsUCR; variables <envar>ldap/logging/exclude1</envar>,
 		  <envar>ldap/logging/exclude2</envar>, etc.  As standard, the container is excluded in
-		  which the temporary objects are stored (cn=temporary,cn=univention). The LDAP changes are
+		  which the temporary objects are stored (<uri>cn=temporary,cn=univention</uri>). The LDAP changes are
 		  logged by a Univention directory listener module. The Univention directory listener
 		  service must be restarted if changes are made to the &ucsUCR; variables.
 		</para>
@@ -708,7 +708,7 @@ END
 		</programlisting>
 
 		A hash sum is calculated for each logged data record and also logged in the
-		<emphasis>daemon.info</emphasis> section of the Syslog service.
+		<wordasword>daemon.info</wordasword> section of the Syslog service.
 		</para>
 	</section>
 
@@ -816,9 +816,9 @@ slapcat &gt; ldapdata.txt
 			  Passwords can be reset via &ucsUMC;. In the default setting, &ucsUMC; only
 			  offers the user wizard to the <systemitem class="username">Administrator</systemitem> user, which
 			  allows the setting of new passwords. During the installation a new
-			  <emphasis>default-user-password-admins</emphasis> policy is created
-			  automatically, which is linked to the members of the <emphasis>User
-			  Password Admins</emphasis> group and can be assigned to a corresponding 
+			  <uri>default-user-password-admins</uri> policy is created
+			  automatically, which is linked to the members of the <systemitem class="groupname">User
+			  Password Admins</systemitem> group and can be assigned to a corresponding 
 			  container in the LDAP directory. Further information on the configuration of UMC
 			  policies can be found in Section <xref linkend="delegated-administration"/>.
 			</para>
@@ -840,7 +840,7 @@ slapcat &gt; ldapdata.txt
 			</caution>
 			<para>
 			  Password resets via the password group can be prevented for sensitive users or groups
-			  (e.g., domain admins). The &ucsUCR; variables
+			  (e.g., domain administrators). The &ucsUCR; variables
 			  <envar>ldap/acl/user/passwordreset/protected/uid</envar> and
 			  <envar>ldap/acl/user/passwordreset/protected/gid</envar> can be used to configure
 			  users and groups. Multiple values must be separated by commas.
@@ -864,7 +864,7 @@ slapcat &gt; ldapdata.txt
 		<title>Name Service Switch / LDAP NSS module</title>
 		<para>
 			With the <emphasis>Name Service Switch</emphasis>, the GNU C standard library
-			(glibc) used in Univention Corporate Server offers a modular interface for
+			(<systemitem class="library">glibc</systemitem>) used in Univention Corporate Server offers a modular interface for
 			resolving the names of users, groups and hosts.
 		</para>
 		<para>
@@ -1058,7 +1058,7 @@ root@dcslave1:~# cat /var/lib/univention-directory-listener/notifier_id
 		  </programlisting>
 
 		  This check can also be performed automatically by the Nagios service
-		  UNIVENTION_REPLICATION (see <xref linkend="nagios:preconfiguredchecks"/>).
+		  <systemitem class="service">UNIVENTION_REPLICATION</systemitem> (see <xref linkend="nagios:preconfiguredchecks"/>).
 
 		</para>
 	  </section>
