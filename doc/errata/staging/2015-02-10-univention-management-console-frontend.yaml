@@ -12,6 +12,9 @@ desc: |
   * The positioning of the "back to overview" header button has been adjusted.
   * The default search button has been adjusted to be smaller and to only
     contain an icon instead of text.
+  * The UMC header menus have been adjusted in their positioning on small
+    screens and they have been styled with icons.
+  * The UCR variable umc/web/sso/enabled is now evaluated.
   * Methods for resetting UMC modules and renewing a session have been added.
   * Notifications now must be closed via a close icon.
   * Pop-up dialogs that need no verification now have a close icon.

@@ -12,5 +12,7 @@ desc: |
   * The UMC background image has been adjusted.
   * The default search button has been adjusted to be smaller and to only
     contain an icon instead of text.
+  * The UMC header menus have been adjusted in their positioning on small
+    screens and they have been styled with icons.
   * The display of the modules and the moduleheader has been slightly adjusted.
 bug: [37780]
