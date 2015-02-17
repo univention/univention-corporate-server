@@ -9,17 +9,7 @@ Build-Depends: debhelper (>= 9),
  python-all,
  univention-config-dev,
  univention-management-console-dev,
- python-apt,
- python-psutil,
- python-notifier,
- python-univention-lib,
- python-univention-management-console,
- python-imaging,
- python-simplejson,
- python-dnspython,
- unzip,
- po-debconf (>= 0.5.0),
- python-lxml
+ po-debconf (>= 0.5.0)
 XS-Python-Version: 2.6, 2.7
 
 Package: univention-system-setup

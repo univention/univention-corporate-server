@@ -1,3 +1,9 @@
+univention-system-setup (8.1.66-17) unstable; urgency=medium
+
+  * Bug #37824: adjust imports of unit tests and remove old build dependencies
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 17 Feb 2015 13:18:25 +0100
+
 univention-system-setup (8.1.66-16) unstable; urgency=medium
 
   Bug #37824:

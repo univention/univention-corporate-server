@@ -3,11 +3,11 @@
 # pylint: disable-msg=C0103,E0611,R0904
 import unittest
 import os
-import univention.management.console.modules
-univention.management.console.modules.__path__.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
-from univention.management.console.modules.setup.netconf.common import convert_udm_subnet_to_network
-from univention.management.console.modules.setup.netconf.common import convert_udm_subnet_to_ipv4_network
-from univention.management.console.modules.setup.netconf.common import convert_udm_subnet_to_ipv6_network
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python/setup'))
+from netconf.common import convert_udm_subnet_to_network
+from netconf.common import convert_udm_subnet_to_ipv4_network
+from netconf.common import convert_udm_subnet_to_ipv6_network
 from ipaddr import IPNetwork, IPv4Network, IPv6Network
 
 
