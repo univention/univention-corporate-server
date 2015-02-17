@@ -1,3 +1,11 @@
+ucs-windows-tools (2.0.5-1) unstable; urgency=low
+
+  * windows-scripts/powershell-gpo-set-registry-value.ps1: script to edit GPO;
+    windows-scripts/powershell-get-gpo-report.ps1: script to get report on GPO.
+    (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 17 Feb 2015 12:31:23 +0100
+
 ucs-windows-tools (2.0.4-1) unstable; urgency=low
 
   * windows-scripts/powershell-apply-gpo.ps1: Added option to "-Replace"
