@@ -1,3 +1,9 @@
+univention-config-registry (10.0.1-7) unstable; urgency=low
+
+  * Bug #37819: Hide temporary commit files.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 17 Feb 2015 09:33:04 +0100
+
 univention-config-registry (10.0.1-6) unstable; urgency=low
 
   * fixed iter_templates in univention-check-templates (Bug #35202) 

@@ -268,6 +268,11 @@ class ConfigHandlerDiverting(ConfigHandler):
 				'--remove', self.to_file)
 		return True
 
+	def _temp_file_name(self):
+		dirname, basename = os.path.split(self.to_file)
+		filename = '.%s__ucr__commit__%s' % (basename, random.random())
+		return os.path.join(dirname, filename)
+
 
 class ConfigHandlerMultifile(ConfigHandlerDiverting):
 	"""Handler for multifile."""
@@ -320,8 +325,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 		else:
 			stat = None
 
-		tmp_to_file = '%s__ucr__commit__%s' % (self.to_file,random.random())
-
+		tmp_to_file = self._temp_file_name()
 		try:
 			to_fp = open(tmp_to_file, 'w')
 
@@ -397,8 +401,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 			print >> sys.stderr, "The referenced template file does not exist"
 			return None
 
-		tmp_to_file = '%s__ucr__commit__%s' % (self.to_file,random.random())
-
+		tmp_to_file = self._temp_file_name()
 		try:
 			from_fp = open(self.from_file, 'r')
 			to_fp = open(tmp_to_file, 'w')
