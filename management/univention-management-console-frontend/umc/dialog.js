@@ -361,7 +361,8 @@ define([
 				style: options.style || '',
 				'class': options['class'] || '',
 				message: form,
-				options: buttons
+				options: buttons,
+				closable: options.buttons.length == 1
 			});
 
 			// check if the submit button is the default action
@@ -398,6 +399,9 @@ define([
 			});
 			// user clicked the x on the top right
 			confirmDialog.on('hide', function() {
+				if (options.buttons.length == 1) {
+					deferred.resolve(response);
+				}
 				if (!deferred.isFulfilled()) {
 					deferred.cancel({
 						button: null,

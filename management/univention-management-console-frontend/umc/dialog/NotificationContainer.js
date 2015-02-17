@@ -49,7 +49,7 @@ define([
 			'<div class="umcNotification umcNotificationTransparent" data-dojo-attach-point="domNode">' +
 				'<div class="umcNotificationTitle" data-dojo-attach-point="titleNode">${title}</div>' +
 				'<div class="umcNotificationMessage" data-dojo-attach-point="messageNode"></div>' +
-				'<div class="umcNotificationCloseIcon" data-dojo-attach-point="closeNode"></div>' +
+				'<div class="umcNotificationCloseIcon" data-dojo-attach-point="closeNode" data-dojo-attach-event="ondijitclick: remove" role="button"></div>' +
 			'</div>',
 		title: _('Notification'),
 		message: _('No message'),
@@ -79,10 +79,15 @@ define([
 					if (has('touch')) {
 						this._hideAfterTimeout();
 					}
-				} else {
+				}
+				if (has('touch')) {
 					this.remove();
 				}
 			}));
+
+			if(has('touch')) {
+				domClass.add(this.closeNode, 'dijitHidden');
+			}
 
 			if (!has('touch')) {
 				this.on(mouse.enter, lang.hitch(this, 'show'));

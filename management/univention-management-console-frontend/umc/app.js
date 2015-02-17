@@ -483,8 +483,6 @@ define([
 
 		setupGui: function() {
 			// show the menu bar
-			style.set(this._headerRight.domNode, 'display', 'block');
-			style.set(this._headerCenter.domNode, 'display', 'block');
 			this.setupHeader();
 			this.setupMenus();
 		},
@@ -497,12 +495,14 @@ define([
 			this.addChild(this._headerLeft);
 
 			this._headerRight = new ContainerWidget({
-				'class': 'umcHeaderRight col-xxs-12 col-xs-6'
+				'class': 'umcHeaderRight col-xxs-12 col-xs-6',
+				style: 'display: none'
 			});
 			this.addChild(this._headerRight);
 
 			this._headerCenter = new ContainerWidget({
-				'class': 'umcHeaderCenter'
+				'class': 'umcHeaderCenter',
+				style: 'display: none'
 			});
 			this.addChild(this._headerCenter);
 		},
@@ -510,6 +510,9 @@ define([
 		setupHeader: function() {
 			this._menuMap = {};
 			if (tools.status('overview')) {
+				style.set(this._headerRight.domNode, 'display', 'block');
+				style.set(this._headerCenter.domNode, 'display', 'block');
+
 				// the host info and menu
 				this._hostMenu = new Menu({});
 				this._hostInfo = new DropDownButton({
