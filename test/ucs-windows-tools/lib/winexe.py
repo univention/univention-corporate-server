@@ -47,7 +47,8 @@ def default_options():
 	return parser
 
 class WinExeFailed(Exception):
-    '''ucs_addServiceToLocalhost failed'''
+	'''ucs_addServiceToLocalhost failed'''
+
 
 class WinExe:
 
@@ -122,7 +123,7 @@ class WinExe:
 		else:
 			cmd.append("-U")
 			cmd.append(self.local_admin + "%" + self.local_password)
-		
+
 		cmd.append("//" + self.client)
 		return cmd
 
@@ -150,7 +151,7 @@ class WinExe:
 		self.__debug(stdout)
 		self.__debug(stderr)
 		if p.returncode and not dont_fail:
-		    raise WinExeFailed("command '%s' failed with: %s %s" % (" ".join(cmd), stdout, stderr))
+			raise WinExeFailed("command '%s' failed with: %s %s" % (" ".join(cmd), stdout, stderr))
 		stdout = self.__trim_windows_stdout(stdout)
 		return p.returncode, stdout, stderr
 
@@ -315,15 +316,60 @@ class WinExe:
 
 		return self.winexec("create-ad-groups", groupname, groups)
 
+
 	def add_users_to_group(self, username, users, groupname, groups):
 		''' adds users with prefix username to groups with prefix groupname '''
 
 		return self.winexec("add-users-to-group", username, users, groupname, groups)
 
+
 	def create_user_and_add_to_group(self, username, password, groupname):
 		''' create a user with the given username and add the user to the group '''
 
 		return self.winexec("create-user-and-add-to-group", username, password, groupname)
+
+
+	def get_gpo_report(self, gpo_name, server):
+		''' returns gpo report for the self.client on the server in the domain '''
+
+		return self.winexec("powershell-get-gpo-report", self.domain, gpo_name, server, domain_mode=True)
+
+
+	def create_gpo(self, gpo_name, server, comment):
+		''' creates a gpo via the self.client on the server in the domain '''
+
+		return self.winexec("powershell-create-gpo", self.domain, gpo_name, server, comment, domain_mode=True)
+
+	def apply_gpo(self, gpo_name, permission_level, target_name, target_type, server, replace="False"):
+		'''
+		applies a gpo via the self.client on the server in the domain
+		permission_level: GpoRead|GpoApply|GpoEdit|GpoEditDeleteModifySecurity|None
+		target_type: Computer|User|Group
+		replace to overwrite existing GpoPermissions: True|False as a string
+		'''
+
+		return self.winexec("powershell-apply-gpo", self.domain, gpo_name, permission_level, target_name, target_type, server, replace, domain_mode=True)
+
+
+	def gpo_set_reg_value(self, gpo_name, reg_key, value_name, value, value_type, server):
+		'''
+		modifies the gpo_name with reg_key to value_name and value_type with value
+		'''
+
+		return self.winexec("powershell-gpo-set-registry-value", self.domain, gpo_name, reg_key, value_name, value, value_type, server, domain_mode=True)
+
+
+	def link_gpo(self, gpo_name, link_order, target_container, server):
+		'''
+		links a gpo via the self.client on the server in the domain to the target_container
+		'''
+
+		return self.winexec("powershell-link-gpo", self.domain, gpo_name, link_order, target_container, server, domain_mode=True)
+
+	def remove_gpo(self, gpo_name, server):
+		''' removes a gpo via the self.client on the server in the domain '''
+
+		return self.winexec("powershell-remove-gpo", self.domain, gpo_name, server, domain_mode=True)
 
 	def add_certificate_authority(self):
 		''' install and setup certificate authority '''
@@ -384,13 +430,13 @@ class WinExe:
 
 	def set_local_user_password(self, user, password):
 		''' Changes the password of a local windows user '''
-		self.winexec("cmd /C net user %s" % (user + " " + password ), domain_mode=False)
+		self.winexec("cmd /C net user %s" % (user + " " + password), domain_mode=False)
 
 	def reboot_remote_win_host(self):
 		''' Reboots this windows host'''
-		self.winexec("reboot", domain_mode=False)
+		return self.winexec("reboot", domain_mode=False)
 
-        def shutdown_remote_win_host(self):
+	def shutdown_remote_win_host(self):
 		''' Shuts down this windows host'''
 		self.winexec("shutdown", domain_mode=False)
 
