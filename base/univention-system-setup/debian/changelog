@@ -1,3 +1,11 @@
+univention-system-setup (8.1.66-16) unstable; urgency=medium
+
+  Bug #37824:
+  * adjust positioning of page icons for small screens
+  * move styling for LiveSearch widget into CSS file, use default search icon
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 17 Feb 2015 12:40:40 +0100
+
 univention-system-setup (8.1.66-15) unstable; urgency=medium
 
   * Bug #37326: Add python-dnspython to build dependencies

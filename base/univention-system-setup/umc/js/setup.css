@@ -75,6 +75,15 @@
 	height: 16px;
 }
 
+.umc-setup-page .umcLiveSearch .dijitArrowButtonInner {
+	background-position: -260px -40px;
+}
+
+.umc-setup-page .umcLiveSearch .umcLiveSearching .dijitArrowButtonInner {
+	background-position: center;
+	background-image: url('../../dijit/themes/umc/form/images/loading.gif');
+}
+
 .umc-setup-page-validation li,
 .umc-setup-page-error li {
 	padding-bottom: 0.75em;
@@ -116,16 +125,11 @@
 
 @media (max-width: 767px) {
 	.umc .umc-setup-page .umcPageIcon {
-		position: absolute;
-		top: 0;
-		height: 100%;
-		width: 50%;
-		margin-left: 50%;
+		height: 100px;
 	}
 
 	.umc .umc-setup-page .umcPageHelpText {
-		min-height: 100px;
-		width: 50%;
+		min-height: 1px
 	}
 
 	.umc .umc-setup-page .umcPageMain {

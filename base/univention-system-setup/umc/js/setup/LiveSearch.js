@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/event",
 	"dojo/dom-construct",
+	"dojo/dom-class",
 	"dojo/on",
 	"dojo/keys",
 	"dojo/topic",
@@ -40,7 +41,7 @@ define([
 	"dijit/form/ComboBox",
 	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, dojoEvent, domConstruct, on, keys, topic, styles, DijitComboBox, TextBox, _) {
+], function(declare, lang, dojoEvent, domConstruct, domClass, on, keys, topic, styles, DijitComboBox, TextBox, _) {
 	return declare('umc.modules.setup.LiveSearch', [DijitComboBox, TextBox], {
 		searchAttr: 'label',
 		hasDownArrow: false,
@@ -60,12 +61,10 @@ define([
 
 			this._searchNode = lang.clone(this._buttonNode);
 			this._searchNode.style.display = '';
-			this._searchNode.childNodes[0].style.backgroundImage = 'url("' + require.toUrl('umc/modules/setup/search-icon.png') + '")';
-			this._searchNode.childNodes[0].style.backgroundPosition = 'center';
 			this.own(on(this._searchNode, 'click', lang.hitch(this, 'loadDropDown')));
 
 			this._searchingNode = lang.clone(this._searchNode);
-			this._searchingNode.childNodes[0].style.backgroundImage = 'url("' + require.toUrl('dijit/themes/umc/form/images/loading.gif') + '")';
+			domClass.add(this._searchingNode, 'umcLiveSearching');
 
 			this._setState('search');
 		},
