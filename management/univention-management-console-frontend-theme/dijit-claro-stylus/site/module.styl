@@ -51,10 +51,19 @@
 
 	.umcModuleHeaderRight {
 		float: right;
+		padding-top: 3px;
+		.umcContainerWidget:first-child {
+			.dijitButton:last-child {
+				.dijitButtonText {
+					text-align: right;
+					margin-left: -280px;
+				}
+			}
+		}
 	}
-
+	
 	.dijitButton {
-		margin-left: 6px;
+		margin-left: 12px;
 
 		.dijitButtonNode {
 			background: none;
@@ -70,9 +79,10 @@
 				color: #ffffff;
 				width: 300px;
 				padding-right: 0;
-				margin-left: -280px;
-				text-align: right;
+				text-align: center;
+				margin-left: -143px;
 			}
+
 			.dijitIcon {
 				display: block;
 				width: 20px;
@@ -91,8 +101,15 @@ body.umc:not([class~=umcHeadless]) .umcModuleHeader {
 		top: 0;
 		font-size: 0.7em;
 		z-index: 900;
+		padding: 5px 0;
 		.umcModuleHeaderLeft {
 			padding-bottom: 0;
+		}
+		.umcModuleHeaderRight {
+			padding-top: 0;
+		}
+		.dijitButton.dijitButtonHover .dijitButtonText {
+			display: none;
 		}
 	}
 }

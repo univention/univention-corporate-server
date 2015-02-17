@@ -1,3 +1,13 @@
+univention-management-console-frontend-theme (0.0.89-5) unstable; urgency=low
+
+  Bug #37780:
+  * adjusted styling for the Buttons in the umcModuleHeader
+  * adjusted styling of the sticky ModuleHeader
+  * adjusted the color of the heading in the wizard
+  * long category names now have a line break
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 17 Feb 2015 15:37:19 +0100
+
 univention-management-console-frontend-theme (0.0.89-4) unstable; urgency=medium
 
   * Bug #37780: add CSS rules for SearchBox widget

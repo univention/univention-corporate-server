@@ -69,6 +69,19 @@ $notification-transition ?= 0.75s
 //			}
 //		}
 //	}
+
+	.umcNotificationCloseIcon {
+    	icon-image(0, 0, "../", "-small-white", 12px, 12px);
+    	position: absolute;
+    	right: 0;
+    	top: 0;
+    	margin: 0.7em 1.2em;
+    }
+
+    .umcNotificationCloseIcon:hover {
+    	icon-image(-12, 0, "../", "-small-white", 12px, 12px);
+    	cursor: pointer;
+	}
 }
 
 /* semi transparent background gradient via pseudo element 'after' */
