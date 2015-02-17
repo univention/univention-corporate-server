@@ -1,3 +1,10 @@
+ucs-test (5.0.112-1) unstable; urgency=low
+
+  * 51_samba4/21backup_warning_messages: use "LANG=C" with
+    univention-samba4-backup (Bug #35907).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 17 Feb 2015 11:08:02 +0100
+
 ucs-test (5.0.111-5) unstable; urgency=medium
 
   * retab (Bug #35898 etc.)
