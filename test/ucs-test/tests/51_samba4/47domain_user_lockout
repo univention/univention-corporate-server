@@ -5,6 +5,7 @@
 ## bugs: [35898]
 ## roles:
 ## - domaincontroller_master
+## - domaincontroller_backup
 
 from sys import exit
 from time import sleep
