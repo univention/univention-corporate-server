@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules import Base, UMC_OptionTypeError, error_handling
+from univention.management.console.modules import Base, UMC_OptionTypeError
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
@@ -46,6 +46,39 @@ from .snapshots import Snapshots
 
 _ = Translation('univention-management-console-modules-uvmm').translate
 
+
+# copied from ucs4.0-0/umc/modules/__init__.py
+from univention.management.console.modules import UMC_Error, UMC_OptionMissing, UMC_CommandError
+import traceback
+def error_handling(function, method=None):
+	method = method or function.__name__
+
+	def _decorated(self, request, *args, **kwargs):
+		message = ''
+		result = None
+		try:
+			return function(self, request, *args, **kwargs)
+		except UMC_Error as exc:
+			status = exc.status
+			result = exc.result
+			if isinstance(exc, UMC_OptionTypeError):
+				message = _('An option passed to %s has the wrong type: %s') % (method, exc)
+			elif isinstance(exc, UMC_OptionMissing):
+				message = _('One or more options to %s are missing: %s') % (method, exc)
+			elif isinstance(exc, UMC_CommandError):
+				message = _('The command has failed: %s') % (exc,)
+			else:
+				message = str(exc)
+		except:
+			status = MODULE_ERR_COMMAND_FAILED
+			message = _("Execution of command '%(command)s' has failed:\n\n%(text)s")
+			message = message % {
+				'command': ('%s %s' % (request.arguments[0], request.flavor or '')).strip(),
+				'text': unicode(traceback.format_exc())
+			}
+		MODULE.process(str(message))
+		self.finished(request.id, result, message, status=status)
+	return _decorated
 
 class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots):
 	"""
