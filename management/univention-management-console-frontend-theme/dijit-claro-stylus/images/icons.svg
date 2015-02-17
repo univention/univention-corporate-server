@@ -29,15 +29,16 @@
      id="namedview493"
      showgrid="true"
      inkscape:zoom="2.8284271"
-     inkscape:cx="195.17959"
-     inkscape:cy="213.58369"
+     inkscape:cx="37.657662"
+     inkscape:cy="119.51922"
      inkscape:window-x="65"
      inkscape:window-y="60"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg5837"
-     inkscape:object-nodes="true"
-     inkscape:snap-global="false"
-     inkscape:snap-object-midpoints="true">
+     inkscape:object-nodes="false"
+     inkscape:snap-global="true"
+     inkscape:snap-object-midpoints="true"
+     inkscape:snap-nodes="true">
     <inkscape:grid
        type="xygrid"
        id="grid3469"
@@ -2326,4 +2327,14 @@
        id="path1298-0"
        inkscape:connector-curvature="0" />
   </g>
+  <path
+     inkscape:connector-curvature="0"
+     id="server-6-icon"
+     d="m 26.170165,140.25 0,14.93851 7.65967,0 0,-14.93851 z m 1.29,1.39291 5.07968,0 0,1.59128 -5.07968,0 z m 0,2.93568 5.07968,0 0,1.59128 -5.07968,0 z m 2.54075,5.93181 c 0.66111,0 1.19544,0.53788 1.19544,1.19879 0,0.66133 -0.53433,1.19545 -1.19544,1.19545 -0.66112,0 -1.19879,-0.53412 -1.19879,-1.19545 0,-0.66101 0.53767,-1.19879 1.19879,-1.19879 z m 1.13912,5.65891 -2.28007,0 0,1.74648 -1.5905,0 0,0.0185 0,1.81571 5.46103,0 0,-1.81571 0,-0.0185 -1.5905,0 0,-1.74648 z m 6.46395,1.74648 -3.17521,0 0,1.83421 3.17521,0 z m -12.03275,0 -3.17521,0 0,1.83421 3.17521,0 z"
+     style="color:#000000;fill:#282828;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.14999998;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+  <path
+     inkscape:connector-curvature="0"
+     id="user-icon"
+     d="m 17.168065,154.94475 c -2.79419,-0.64449 -5.39512,-1.20886 -4.13548,-3.5837 3.83422,-7.22869 1.01632,-11.09447 -3.03254,-11.09447 -4.1286503,0 -6.8772103,4.01416 -3.0325303,11.09447 1.29741,2.38932 -1.40135,2.95307 -4.13548,3.5837 -2.79304005,0.64411 -2.57822005,2.11674 -2.57822005,4.78867 H 19.746185 c 0,-2.67198 0.21483,-4.14456 -2.57812,-4.78867 z"
+     style="color:#000000;fill:#282828;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.14999998;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
 </svg>

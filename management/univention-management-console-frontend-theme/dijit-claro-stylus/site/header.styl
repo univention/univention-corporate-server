@@ -29,24 +29,39 @@
 	}
 
 	.umcHeaderRight {
+		text-align: right;
 		padding-top: 5px;
 		padding-left: 25px;
-	}
 
-	.umcHeaderRight {
-		text-align: right;
+		@media (max-width: 549px) {
+			padding-left: 0;
+		}
 
 		/* enable text-overflow=ellipsis for hostname */
 		.dijitDropDownButton {
 			max-width: 100%;
+
 			.dijitButtonNode {
 				max-width: 100%;
+			}
+
+			.dijitButtonText {
+				max-width: 100%;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				margin-right: -20px;
+				padding-right: 24px;
+				margin-left: -20px;
+				padding-left: 24px;
+			}
+
+			&.dijitDisabled .dijitButtonNode {
+				.dijitIcon {
+					opacity: 1 !important;
+				}
 				.dijitButtonText {
-					max-width: 100%;
-					text-overflow: ellipsis;
-					overflow: hidden;
-					margin-right: -20px;
-					padding-right: 24px;
+					padding-right: 0;
+					margin-right: 0;
 				}
 			}
 		}
@@ -80,13 +95,17 @@
 
 		.dijitDropDownButton,
 		.dijitButton {
-			margin: 0 0 0 5px;
+			margin: 0;
 			display: block;
 			//height: 24px;
 			padding: 0 0 5px 0;
 			border: none;
 			background: none;
 			filter: none;
+		}
+
+		.dijitDropDownButton, .umcLiveSearchSidebar {
+			padding-left: 1em;
 		}
 
 		.dijitDropDownButtonHover .dijitArrowButtonInner {
@@ -114,6 +133,34 @@
 	.dijitDropDownButton[widgetid=umcMenuUsername] {
 		display: inline-block;
 		text-align: left;
+		padding-right: 2px;
+
+		.dijitDownArrowButton {
+			text-align: left;
+		}
+
+		&.dijitDisabled {
+			.dijitIcon {
+				opacity: 1 !important;
+			}
+			.dijitButtonText {
+				padding-right: 0;
+			}
+		}
+	}
+
+	@media (max-width: 549px) {
+		.dijitDropDownButton[widgetid=umcMenuHost] {
+			max-width: 60%;
+			float: left;
+		}
+		.dijitDropDownButton[widgetid=umcMenuUsername] {
+			max-width: 40%;
+		}
+		.umcLiveSearchSidebar {
+			max-width: 40%;
+			margin-top: -6.9em;
+		}
 	}
 
 	.umcLiveSearchSidebar {
@@ -132,6 +179,7 @@
 		.umcLiveSearchSidebarRadioButtonGroup {
 			display: none;
 		}
+
 	}
 
 	#umcMenuUsername,
