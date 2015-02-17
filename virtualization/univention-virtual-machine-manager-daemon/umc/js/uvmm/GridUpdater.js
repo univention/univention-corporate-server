@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define,console*/
 
 define([
 	"dojo/_base/declare",
@@ -34,8 +34,10 @@ define([
 	"dojo/_base/array",
 	"dojo/promise/all",
 	"dojox/timing/_base",
+	"umc/tools",
+	"umc/dialog",
 	"dijit/Destroyable"
-], function(declare, lang, array, all, timing, Destroyable) {
+], function(declare, lang, array, all, timing, tools, dialog, Destroyable) {
 	return declare("umc.modules.uvmm.GridUpdater", [Destroyable], {
 		grid: null, // reference to the grid
 		interval: null, // interval in seconds
@@ -53,6 +55,7 @@ define([
 				// else: interval=0 or interval=NaN
 				this._timer.start();
 			}
+			this._uvmmErrorShown = false;
 		},
 
 		updateItems: function() {
@@ -115,7 +118,21 @@ define([
 			if (this._shallGetAllItems()) {
 				var query = this.getQuery(items);
 				if (query) {
-					return this.grid.moduleStore.query(this.getQuery(items));
+					return tools.umcpCommand('uvmm/query', this.getQuery(items), false).then(lang.hitch(this, function(results) {
+						this._uvmmErrorShown = false; // reset if one query succeeds
+						return results.result;
+					}), lang.hitch(this, function(error) {
+						var err = tools.parseError(error);
+						if (err.status == 503) {
+							if (!this._uvmmErrorShown) {
+								this._uvmmErrorShown = true;
+								dialog.alert(err.message);
+							}
+						} else {
+							tools.handleErrorStatus(error);
+						}
+						return [];
+					}));
 				} else {
 					return null;
 				}

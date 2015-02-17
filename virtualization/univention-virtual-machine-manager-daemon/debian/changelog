@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (3.0.19-3) unstable; urgency=low
+
+  * Bug #35122: Backport error handling patch for updating the grid
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Feb 2015 09:59:00 +0100
+
 univention-virtual-machine-manager-daemon (3.0.19-2) unstable; urgency=low
 
   * Bug #35122: Re-add autoupdate of Grid
