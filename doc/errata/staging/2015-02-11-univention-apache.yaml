@@ -2,9 +2,11 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-apache
-fix: 7.0.16-3.225.201502111949
+fix: 7.0.16-4.226.201502171647
 version: [1]
 desc: |
   The following issues are addressed by this erratum update:
   * The UCS overview background image has been adjusted.
+  * The style of the UCS overview modules has been adjusted to
+    match the style from the UMC.
 bug: [37780]
