@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 Univention GmbH
+ * Copyright 2011-2015 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -899,6 +899,7 @@ define([
 		_moduleStore: null,
 		_categories: [],
 		_loaded: false,
+		_lastCategory: null,
 
 		setupStaticGui: function() {
 			// setup everything that can be set up statically
@@ -1300,7 +1301,9 @@ define([
 
 			aspect.after(this._overviewPage, '_onShow', lang.hitch(this, '_focusSearchField'));
 			this._registerGridEvents();
-			this._updateQuery({id: '_favorites_'});
+
+			// show the first visible category
+			this._updateQuery(this._lastCategory);
 		},
 
 		renderCategories: function() {
@@ -1318,17 +1321,25 @@ define([
 				var button = new CategoryButton({
 					label: category.label,
 					'class': lang.replace('umcCategory-{id}', category),
-					onClick: lang.hitch(this, '_updateQuery', category),
+					onClick: lang.hitch(this, function() {
+						this._lastCategory = category;
+						this._updateQuery(category);
+					}),
 					color: color,
 					categoryID: category.id,
 					iconClass: iconClass
 				});
 				category._button = button;
-				if (category.id === '_favorites_' && this.getModules('_favorites_').length == 0) {
-					domClass.add(button.domNode, 'favoritesHidden');
-				}
 				this._categoryButtons.addChild(button);
 			}));
+
+			// special treats for an empty favorites category
+			var favoritesCategory = this.getCategory('_favorites_');
+			var emptyFavorites = this.getModules('_favorites_').length == 0;
+			domClass.toggle(favoritesCategory._button.domNode, 'favoritesHidden', emptyFavorites);
+
+			// take the first visible category as fallback for the last selected one
+			this._lastCategory = emptyFavorites ? this.getCategories()[1] : favoritesCategory;
 
 			// spread category buttons over whole width
 			styles.insertCssRule('.umc .umcCategoryBar .dijitButton', lang.replace('width: {0}%', [100.0 / this.getCategories().length]));
@@ -1360,11 +1371,6 @@ define([
 			var searchPattern = '';
 			var searchQuery = new RegExp('.*');
 
-			// update the 'selected' state of all category buttons
-			array.forEach(this._categoryButtons.getChildren(), function(ibutton) {
-				ibutton.set('selected', category ? ibutton.categoryID == category.id : false);
-			});
-
 			if (!category) {
 				searchPattern = lang.trim(this._header._searchSidebar.get('value'));
 				searchQuery = this._header._searchSidebar.getSearchQuery(searchPattern);
@@ -1373,6 +1379,19 @@ define([
 					this._header._searchSidebar.set('value', null);
 				}
 			}
+
+			if (!category && !searchPattern) {
+				// if search pattern is an empty string, resort back to the
+				// last selected category
+				category = this._lastCategory;
+				category._button.set('selected', true);
+			}
+
+			// update the 'selected' state of all category buttons
+			array.forEach(this._categoryButtons.getChildren(), function(ibutton) {
+				ibutton.set('selected', category ? ibutton.categoryID == category.id : false);
+			});
+
 			this._grid.updateQuery(searchPattern, searchQuery, category);
 
 			// update the search label

@@ -36,11 +36,11 @@ define([
 	"dojo/dom-class",
 	"dojo/regexp",
 	"umc/widgets/ContainerWidget",
-	"umc/widgets/TextBox",
+	"umc/widgets/SearchBox",
 	"umc/widgets/LabelPane",
 	"umc/widgets/RadioButton",
 	"umc/i18n!"
-], function(declare, lang, array, has, domClass, regexp, ContainerWidget, TextBox, LabelPane, RadioButton, _) {
+], function(declare, lang, array, has, domClass, regexp, ContainerWidget, SearchBox, LabelPane, RadioButton, _) {
 	return declare("umc.widgets.LiveSearchSidebar", [ContainerWidget], {
 		// summary:
 		//		Offers a side bar for live searching, a set of categories can be defined.
@@ -83,7 +83,7 @@ define([
 				this.searchableAttributes = ['name', 'description', 'categories', 'keywords'];
 			}
 
-			this._searchTextBox = new TextBox({
+			this._searchTextBox = new SearchBox({
 				inlineLabel: this.searchLabel || _('Search term')
 			});
 			this.addChild(this._searchTextBox);

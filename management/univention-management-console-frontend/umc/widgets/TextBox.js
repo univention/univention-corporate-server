@@ -73,6 +73,7 @@ define([
 
 		_registerInlineLabelEvents: function() {
 			this.on('keydown', lang.hitch(this, '_updateInlineLabelVisibility', 'keydown'));
+			this.on('click', lang.hitch(this, '_updateInlineLabelVisibility', 'keydown'));
 			this.on('focus', lang.hitch(this, '_updateInlineLabelVisibility', 'focus'));
 			this.on('blur', lang.hitch(this, '_updateInlineLabelVisibility', 'blur'));
 		},
