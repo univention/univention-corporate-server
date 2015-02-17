@@ -1,6 +1,6 @@
 # UCS Virtual Machine Manager Daemon
 #
-# Copyright 2011-2014 Univention GmbH
+# Copyright 2011-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-uvmm 2.0.40-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-02-17 13:26+0100\n"
+"POT-Creation-Date: 2015-02-17 16:12+0100\n"
 "PO-Revision-Date: 2013-05-23 09:17+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -42,6 +42,11 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: umc/python/uvmm/__init__.py:65
+#, python-format
+msgid "An option passed to %s has the wrong type: %s"
+msgstr "Eine Option für %s hat den falschen Typ: %s"
 
 #: umc/python/uvmm/domains.py:436
 msgid "Could not determine architecture for domain"
@@ -65,6 +70,17 @@ msgstr ""
 #, python-format
 msgid "Could not retrieve details for domain %s"
 msgstr "Die Details zur virtuellen Instanz %s konnten nicht abgerufen werden"
+
+#: umc/python/uvmm/__init__.py:74
+#, python-format
+msgid ""
+"Execution of command '%(command)s' has failed:\n"
+"\n"
+"%(text)s"
+msgstr ""
+"Die Ausführung des Kommandos %(command)s ist fehlgeschlagen:\n"
+"\n"
+"%(text)s"
 
 #: umc/python/uvmm/storages.py:238
 msgid "Failed to check if the drive is used by any other virtual instance"
@@ -94,28 +110,44 @@ msgstr "Ungültiger Domain Status: %s"
 
 #: umc/python/uvmm/uvmmd.py:59
 msgid "More detailed information can be found in the following logfiles:"
-msgstr "Weitere Informationen können in den folgenden Protokolldateien gefunden werden:"
+msgstr ""
+"Weitere Informationen können in den folgenden Protokolldateien gefunden "
+"werden:"
+
+#: umc/python/uvmm/__init__.py:67
+#, python-format
+msgid "One or more options to %s are missing: %s"
+msgstr "Eine oder mehrere Optionen für %s fehlen: %s"
 
 #: umc/python/uvmm/profiles.py:74
 msgid "Paravirtualization (XEN)"
 msgstr "Paravirtualisierung (XEN)"
 
-#: umc/python/uvmm/nodes.py:98 umc/python/uvmm/__init__.py:139
+#: umc/python/uvmm/nodes.py:98 umc/python/uvmm/__init__.py:172
 msgid "Physical servers"
 msgstr "Physikalische Server"
+
+#: umc/python/uvmm/__init__.py:69
+#, python-format
+msgid "The command has failed: %s"
+msgstr "Das Kommando ist fehlgeschlagen: %s"
 
 #: umc/python/uvmm/uvmmd.py:57
 msgid ""
 "The connection to the univention-virtual-machine-manager-daemon service "
 "failed."
-msgstr "Die Verbindung zum univention-virtual-machine-manager-daemon-Dienst ist fehlgeschlagen."
+msgstr ""
+"Die Verbindung zum univention-virtual-machine-manager-daemon-Dienst ist "
+"fehlgeschlagen."
 
 #: umc/python/uvmm/uvmmd.py:66
 #, python-format
 msgid ""
 "The connection to the univention-virtual-machine-manager-daemon service "
 "failed: %s"
-msgstr "Die Verbindung zum univention-virtual-machine-manager-daemon-Dienst ist fehlgeschlagen: %s"
+msgstr ""
+"Die Verbindung zum univention-virtual-machine-manager-daemon-Dienst ist "
+"fehlgeschlagen: %s"
 
 #: umc/python/uvmm/uvmmd.py:85
 msgid "The given UVMM command is not known"
@@ -125,7 +157,9 @@ msgstr "Der gegebene UVMM Befehl ist unbekannt"
 msgid ""
 "This might be a temporary problem. Please wait some minutes for the "
 "connection to reestablish or restart the UVMM service."
-msgstr "Dies kann ein temporäres Problem sein. Bitte warten Sie einige Minuten damit die Verbindung wiederhergestellt wird oder starten Sie den UVMM-Dienst neu."
+msgstr ""
+"Dies kann ein temporäres Problem sein. Bitte warten Sie einige Minuten damit "
+"die Verbindung wiederhergestellt wird oder starten Sie den UVMM-Dienst neu."
 
 #: umc/python/uvmm/domains.py:452
 #, python-format
@@ -140,7 +174,7 @@ msgstr "Unbekanntes Profil"
 msgid "Unknown profile given"
 msgstr "Unbekanntes Profil wurde angegeben"
 
-#: umc/python/uvmm/__init__.py:144
+#: umc/python/uvmm/__init__.py:177
 msgid "Unknown query type"
 msgstr "Unbekannter Anfragetyp"
 
