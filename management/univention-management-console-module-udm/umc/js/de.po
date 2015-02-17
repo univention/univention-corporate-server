@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-02-17 11:34+0100\n"
+"POT-Creation-Date: 2015-02-17 15:28+0100\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/udm/DetailPage.js:1648
+#: umc/js/udm/DetailPage.js:1645
 #, python-format
 msgid "%(attribute)s: %(message)s\n"
 msgstr "%(attribute)s: %(message)s\n"
@@ -169,7 +169,7 @@ msgstr "UCS-Aktivierung"
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: umc/js/udm/NewObjectDialog.js:89 umc/js/udm.js:501
+#: umc/js/udm.js:501 umc/js/udm/NewObjectDialog.js:89
 #, python-format
 msgid "Add a new %s"
 msgstr "%s neu hinzufügen"
@@ -207,25 +207,17 @@ msgstr "Alle Objekttypen"
 msgid "Allow/Deny"
 msgstr "Erlauben/Verbieten"
 
-#: umc/js/udm/wizards/CreateWizard.js:163
+#: umc/js/udm/wizards/CreateWizard.js:163 umc/js/udm/DetailPage.js:1095
 msgid "Back"
 msgstr "Zurück"
-
-#: umc/js/udm/DetailPage.js:1097
-msgid "Back to LDAP directory tree"
-msgstr "Zurück zum LDAP-Verzeichnisbaum"
-
-#: umc/js/udm/DetailPage.js:1095
-msgid "Back to search"
-msgstr "Zurück zur Suche"
 
 #: umc/js/udm.js:1632
 msgid "Boot"
 msgstr "Boot"
 
-#: umc/js/udm/LicenseImportDialog.js:138 umc/js/udm/CreateReportDialog.js:114
-#: umc/js/udm/startup.js:91 umc/js/udm/DetailPage.js:1100 umc/js/udm.js:1150
-#: umc/js/udm.js:1441
+#: umc/js/udm.js:1150 umc/js/udm.js:1441 umc/js/udm/LicenseImportDialog.js:138
+#: umc/js/udm/startup.js:91 umc/js/udm/CreateReportDialog.js:114
+#: umc/js/udm/DetailPage.js:1097
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -233,7 +225,7 @@ msgstr "Abbrechen"
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: umc/js/udm/DetailPage.js:1216 umc/js/udm/DetailPage.js:1244
+#: umc/js/udm/DetailPage.js:1213 umc/js/udm/DetailPage.js:1241
 msgid "Click to edit the inherited properties of the policy"
 msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 
@@ -241,8 +233,8 @@ msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 msgid "Clients"
 msgstr "Clients"
 
-#: umc/js/udm/LicenseImportDialog.js:109 umc/js/udm/CreateReportDialog.js:165
-#: umc/js/udm/LicenseDialog.js:72
+#: umc/js/udm/LicenseDialog.js:72 umc/js/udm/LicenseImportDialog.js:109
+#: umc/js/udm/CreateReportDialog.js:165
 msgid "Close"
 msgstr "Schließen"
 
@@ -254,7 +246,7 @@ msgstr "Kontakt"
 msgid "Container"
 msgstr "Container"
 
-#: umc/js/udm/DetailPage.js:1730
+#: umc/js/udm/DetailPage.js:1727
 msgid "Continue editing"
 msgstr "Bearbeiten fortführen"
 
@@ -327,7 +319,7 @@ msgstr "DVS Benutzer"
 msgid "Data type"
 msgstr "Datentyp"
 
-#: umc/js/udm/MultiObjectSelect.js:108 umc/js/udm.js:676
+#: umc/js/udm.js:676 umc/js/udm/MultiObjectSelect.js:108
 msgid "Default properties"
 msgstr "Standardeigenschaften"
 
@@ -352,7 +344,7 @@ msgstr "Die ausgewählten %s löschen"
 msgid "Desktops"
 msgstr "Desktops"
 
-#: umc/js/udm/DetailPage.js:1733
+#: umc/js/udm/DetailPage.js:1730
 msgid "Discard changes"
 msgstr "Änderungen verwerfen"
 
@@ -373,7 +365,7 @@ msgstr "%s bearbeiten"
 msgid "Employee"
 msgstr "Mitarbeiter"
 
-#: umc/js/udm/DetailPage.js:1650
+#: umc/js/udm/DetailPage.js:1647
 msgid "Error"
 msgstr "Fehler"
 
@@ -401,7 +393,7 @@ msgstr "Allgemein"
 msgid "Groups"
 msgstr "Gruppen"
 
-#: umc/js/udm/DetailPage.js:1113 umc/js/udm.js:387
+#: umc/js/udm.js:387 umc/js/udm/DetailPage.js:1110
 msgid "Help"
 msgstr "Hilfe"
 
@@ -469,7 +461,7 @@ msgstr "LDAP-Objekte"
 msgid "Lease Time"
 msgstr "Lease-Zeit"
 
-#: umc/js/udm/startup.js:129 umc/js/udm.js:1646
+#: umc/js/udm.js:1646 umc/js/udm/startup.js:129
 msgid "License"
 msgstr "Lizenz"
 
@@ -724,8 +716,8 @@ msgstr "Durch Richtlinien ererbte Eigenschaften"
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: umc/js/udm/MultiObjectSelect.js:116 umc/js/udm/MultiObjectSelect.js:131
-#: umc/js/udm.js:738 umc/js/udm.js:758
+#: umc/js/udm.js:738 umc/js/udm.js:758 umc/js/udm/MultiObjectSelect.js:116
+#: umc/js/udm/MultiObjectSelect.js:131
 msgid "Property value"
 msgstr "Eigenschaftswert"
 
@@ -760,10 +752,11 @@ msgid "Samba"
 msgstr "Samba"
 
 #: umc/js/udm/DetailPage.js:1093
-msgid "Save changes"
-msgstr "Änderungen speichern"
+msgid "Save"
+msgstr "Speichern"
 
 #: umc/js/udm.js:759
+#, python-format
 msgid "Search %s..."
 msgstr "Suche %s..."
 
@@ -806,7 +799,7 @@ msgstr "Vereinfachte Optionen"
 msgid "Start of authority"
 msgstr "Start of Authority Eintrag"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:313 umc/js/udm.js:653
+#: umc/js/udm.js:653 umc/js/udm/wizards/FirstPageWizard.js:313
 msgid "Superordinate"
 msgstr "Übergeordnetes Objekt"
 
@@ -823,12 +816,12 @@ msgstr ""
 "Das %s kann unter der folgenden Adresse heruntergeladen werden<br><br><a "
 "target=\"_blank\" href=\"%s\">%s Report</a>"
 
-#: umc/js/udm/DetailPage.js:1584
+#: umc/js/udm/DetailPage.js:1581
 #, python-format
 msgid "The LDAP object could not be saved: %(details)s"
 msgstr "Das LDAP-Objekt konnte nicht gespeichert werden: %(details)s"
 
-#: umc/js/udm/DetailPage.js:1591
+#: umc/js/udm/DetailPage.js:1588
 msgid "The changes have been successfully applied."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
@@ -846,7 +839,7 @@ msgstr "Das dem neuen LDAP-Objekt zugewiesene übergeordnete Objekt."
 msgid "The exact object type of the new LDAP object."
 msgstr "Der genaue Objekttyp des neuen LDAP-Objekts."
 
-#: umc/js/udm/DetailPage.js:1573
+#: umc/js/udm/DetailPage.js:1570
 msgid "The following LDAP objects could not be saved:"
 msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gespeichert werden:"
 
@@ -862,11 +855,11 @@ msgstr ""
 msgid "The following object(s) could not be deleted:"
 msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gelöscht werden:"
 
-#: umc/js/udm/DetailPage.js:1621
+#: umc/js/udm/DetailPage.js:1618
 msgid "The following properties could not be validated:"
 msgstr "Die folgenden Eigenschaften konnten nicht validiert werden:"
 
-#: umc/js/udm/DetailPage.js:1483
+#: umc/js/udm/DetailPage.js:1480
 msgid "The following properties need to be specified or are invalid:"
 msgstr ""
 "Die folgenden Eigenschaften wurden nicht angegeben oder sind nicht gültig:"
@@ -901,7 +894,7 @@ msgstr ""
 msgid "The report template that should be used for the report."
 msgstr "Die zuverwendende Reportvorlage"
 
-#: umc/js/udm/DetailPage.js:1729
+#: umc/js/udm/DetailPage.js:1726
 msgid "There are unsaved changes. Are you sure to cancel?"
 msgstr "Einige Änderungen sind noch nicht gespeichert. Möchten Sie abbrechen?"
 
@@ -909,10 +902,10 @@ msgstr "Einige Änderungen sind noch nicht gespeichert. Möchten Sie abbrechen?"
 msgid "This UCS system is part of an Active Directory domain"
 msgstr "Dieses UCS-System ist Teil einer Active Directory-Domäne"
 
+#: umc/js/udm.js:688 umc/js/udm.js:1309 umc/js/udm.js:1322
 #: umc/js/udm/wizards/FirstPageWizard.js:324
 #: umc/js/udm/wizards/FirstPageWizard.js:343
-#: umc/js/udm/wizards/FirstPageWizard.js:381 umc/js/udm.js:688
-#: umc/js/udm.js:1309 umc/js/udm.js:1322
+#: umc/js/udm/wizards/FirstPageWizard.js:381
 msgid "Type"
 msgstr "Typ"
 
@@ -965,7 +958,7 @@ msgstr "Gültige Produkttypen"
 msgid "Windows"
 msgstr "Windows"
 
-#: umc/js/udm/DetailPage.js:1326
+#: umc/js/udm/DetailPage.js:1323
 msgid ""
 "You are currently editing a policy. Changing its properties affects all "
 "referenced objects and may affect your system globally."
@@ -1002,7 +995,7 @@ msgstr "Rechner"
 msgid "computers"
 msgstr "Rechner"
 
-#: umc/js/udm/DetailPage.js:1217 umc/js/udm/DetailPage.js:1245
+#: umc/js/udm/DetailPage.js:1214 umc/js/udm/DetailPage.js:1242
 msgid "edit"
 msgstr "bearbeiten"
 
@@ -1015,7 +1008,6 @@ msgid "groups"
 msgstr "Gruppen"
 
 #: umc/js/udm/ComboBox.js:336
-#, python-brace-format
 msgid "in {size} objects"
 msgstr "insgesamt {size} Objekte"
 
@@ -1035,7 +1027,7 @@ msgstr "Netz-Objekt"
 msgid "network objects"
 msgstr "Netz-Objekte"
 
-#: umc/js/udm/DetailPage.js:1202
+#: umc/js/udm/DetailPage.js:1199
 msgid "not defined"
 msgstr "nicht gesetzt"
 
@@ -1081,6 +1073,12 @@ msgstr "Benutzer"
 
 #~ msgid "<b>License type:</b> GPL"
 #~ msgstr "<b>Lizenztyp:</b> GPL"
+
+#~ msgid "Back to LDAP directory tree"
+#~ msgstr "Zurück zum LDAP-Verzeichnisbaum"
+
+#~ msgid "Back to search"
+#~ msgstr "Zurück zur Suche"
 
 #~ msgid "Choose file..."
 #~ msgstr "Datei auswählen..."

@@ -1,3 +1,10 @@
+univention-management-console-module-udm (5.1.25-47) unstable; urgency=low
+
+  * Bug 37780: Changed the wording for the 'Back to search' button to 'Back'
+    and 'Save changes' to 'Save'
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 17 Feb 2015 15:30:11 +0100
+
 univention-management-console-module-udm (5.1.25-46) unstable; urgency=medium
 
   * Bug #37780: use inlineLabel in search widget

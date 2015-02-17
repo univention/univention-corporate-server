@@ -1090,12 +1090,9 @@ define([
 			if (this.newObjectOptions) {
 				createLabel = _( 'Create %s', this.objectNameSingular );
 			} else {
-				createLabel = _( 'Save changes' );
+				createLabel = _( 'Save' );
 			}
-			var closeLabel = _('Back to search');
-			if ('navigation' == this.moduleFlavor) {
-				closeLabel = _('Back to LDAP directory tree');
-			}
+			var closeLabel = _('Back');
 			if (this.isClosable) {
 				closeLabel = _('Cancel');
 			}
