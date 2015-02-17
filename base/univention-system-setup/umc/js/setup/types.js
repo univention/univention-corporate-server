@@ -41,7 +41,13 @@ define([
 				return parseInt(nm, 10);
 			}
 			var num = 0;
-			array.forEach(array.map(nm.split('.'), function(i) { return parseInt((parseInt(i, 10) + 1) / 32, 10); }), function(x) { num += x; });
+			array.forEach(nm.split('.'), function(i) {
+				i = parseInt(i, 10);
+				for (;i> 0; i = (i <<1) % 256) {
+					num++;
+				}
+			});
+
 			return num;
 		},
 		interfaceTypeLabels: {
