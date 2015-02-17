@@ -1,3 +1,9 @@
+univention-updater (10.0.53-3) unstable; urgency=low
+
+  * Bug #37573: added max-height for the updater dialog. 
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 17 Feb 2015 12:23:09 +0100
+
 univention-updater (10.0.53-2) unstable; urgency=medium
 
   * Bug #37741: don't display back button during upgrade

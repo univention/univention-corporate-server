@@ -40,7 +40,8 @@ define([
 	"umc/widgets/Module",
 	"umc/modules/updater/UpdatesPage",
 	"umc/modules/updater/ProgressPage",
-	"umc/i18n!umc/modules/updater"
+	"umc/i18n!umc/modules/updater",
+	"xstyle/css!./updater.css"
 ], function(declare, lang, array, Dialog, dialog, app, tools, ConfirmDialog, Module, UpdatesPage, ProgressPage, _) {
 
 	app.registerOnStartup(function() {
@@ -260,6 +261,7 @@ define([
 						title:			_("Start Upgrade?"),
 						message:		txt,
 						style:			'max-width:650px;',
+						'class':		'updaterDialog',
 						options:
 						[
 							{
