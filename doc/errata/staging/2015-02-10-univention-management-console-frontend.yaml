@@ -13,4 +13,6 @@ desc: |
   * The default search button has been adjusted to be smaller and to only
     contain an icon instead of text.
   * Methods for resetting UMC modules and renewing a session have been added.
+  * Notifications now must be closed via a close icon.
+  * Pop-up dialogs that need no varification now have a close icon.
 bug: [37565,33199,37780,37347]
