@@ -4,7 +4,7 @@
 # Univention System Setup
 #  python setup script base
 #
-# Copyright 2012-2014 Univention GmbH
+# Copyright 2012-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
