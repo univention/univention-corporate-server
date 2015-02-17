@@ -1,3 +1,9 @@
+univention-apache (7.0.16-4) unstable; urgency=low
+
+  * Bug #37780: Adjusted styling for the module items
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 17 Feb 2015 16:39:43 +0100
+
 univention-apache (7.0.16-3) unstable; urgency=medium
 
   * Bug #37780: The UCS overview background image has been adjusted.
