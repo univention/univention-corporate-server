@@ -1164,7 +1164,7 @@ univention-director-manager users/user
 		</para>
 
         <para>
-		  Adding <literal>:lower&gt;</literal> or <literal>:upper</literal> to the
+		  Adding <literal>:lower</literal> or <literal>:upper</literal> to the
 		  attribute name converts the attribute value to lowercase or uppercase, e.g.,
 		  <userinput>&lt;firstname:lower&gt;</userinput>. If a modifier like
 		  <literal>:lower</literal> is appended to the entire field, the complete value is

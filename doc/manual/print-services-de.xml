@@ -174,15 +174,15 @@
 						</para>
 						<itemizedlist>
 							<listitem>
-								<para><uri>parallel://<replaceable>&lt;devicedatei&gt;</replaceable></uri></para>
+								<para><uri>parallel://<replaceable>devicedatei</replaceable></uri></para>
 								<para>Beispiel: <uri>parallel://dev/lp0</uri></para>
 							</listitem>
 							<listitem>
-								<para><uri>socket://<replaceable>&lt;server&gt;</replaceable>:<replaceable>&lt;port&gt;</replaceable></uri></para>
+								<para><uri>socket://<replaceable>server</replaceable>:<replaceable>port</replaceable></uri></para>
 								<para>Beispiel: <uri>socket://printer_03:9100</uri></para>
 							</listitem>
 							<listitem>
-								<para><uri>usb://<replaceable>&lt;devicedatei&gt;</replaceable></uri></para>
+								<para><uri>usb://<replaceable>devicedatei</replaceable></uri></para>
 								<para>Beispiel: <uri>usb://dev/usb/lp0</uri></para>
 							</listitem>
 						</itemizedlist>
@@ -192,15 +192,15 @@
 						</para>
 						<itemizedlist>
 							<listitem>
-								<para><uri>http://<replaceable>&lt;server&gt;</replaceable>[:<replaceable>&lt;port&gt;</replaceable>]/<replaceable>&lt;pfad&gt;</replaceable></uri></para>
+								<para><uri>http://<replaceable>server</replaceable>[:<replaceable>port</replaceable>]/<replaceable>pfad</replaceable></uri></para>
 								<para>Beispiel: <uri>http://192.168.0.10:631/printers/remote</uri></para>
 							</listitem>
 							<listitem>
-								<para><uri>ipp://<replaceable>&lt;server&gt;</replaceable>/printers/<replaceable>&lt;queue&gt;</replaceable></uri></para>
+								<para><uri>ipp://<replaceable>server</replaceable>/printers/<replaceable>queue</replaceable></uri></para>
 								<para>Beispiel: <uri>ipp://printer_01/printers/kopierer</uri></para>
 							</listitem>
 							<listitem>
-								<para><uri>lpd://<replaceable>&lt;server&gt;</replaceable>/<replaceable>&lt;queue&gt;</replaceable></uri></para>
+								<para><uri>lpd://<replaceable>server</replaceable>/<replaceable>queue</replaceable></uri></para>
 								<para>Beispiel: <uri>lpd://10.200.18.30/bwdraft</uri></para>
 							</listitem>
 						</itemizedlist>

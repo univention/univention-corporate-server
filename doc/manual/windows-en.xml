@@ -672,7 +672,7 @@ END CATEGORY
 
 		<para>
 		  The logon scripts are stored in
-		  <filename class="directory">/var/lib/samba/sysvol/&lt;Domainname&gt;/scripts/</filename> and provided under
+		  <filename class="directory">/var/lib/samba/sysvol/<replaceable>Domainname</replaceable>/scripts/</filename> and provided under
 		  the share name <emphasis>NETLOGON</emphasis>.
 		</para>
 

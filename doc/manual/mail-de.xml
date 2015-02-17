@@ -725,7 +725,7 @@
 		in einer Zeile hinterlegt werden:
 	  </para>
 		<programlisting>
-&lt;FQDN-Relayhost&gt;			&lt;Benutzername&gt;:&lt;Passwort&gt;
+<replaceable>FQDN-Relayhost</replaceable>			<replaceable>Benutzername</replaceable>:<replaceable>Passwort</replaceable>
 		</programlisting>
 		<para>
 		Anschließend muss für diese Datei

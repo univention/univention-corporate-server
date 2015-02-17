@@ -85,7 +85,7 @@
 			<filename>/var/log/univention/join.log</filename> log file, which can be used
 			for reference in error analysis. Actions run on the domain controller master
 			are stored in the
-			<filename>/home/&lt;Join-Account&gt;/.univention-server-join.log</filename> log
+			<filename>/home/<replaceable>Join-Account</replaceable>/.univention-server-join.log</filename> log
 			file.
 		</para>
 		<para>
@@ -246,7 +246,7 @@
 	  <para>
 		Joining the domain takes some time and the process must not be cancelled prematurely. After
 		successful joining a small window appears with the message <guimenu>Welcome to the domain
-		&lt;domain name&gt;</guimenu>. This should be confirmed with
+		<replaceable>domain name</replaceable></guimenu>. This should be confirmed with
 		<mousebutton>OK</mousebutton>. The computer must then be restarted for the changes to take
 		effect.
 	  </para>
@@ -396,7 +396,7 @@
 		  shares which should be mounted have to be listed in it in the following way:
 		</para>
 	  <programlisting>
-&lt;subfolder name&gt;    -fstype=smbfs    ://&lt;fqdn&gt;/&lt;sharename&gt;
+<replaceable>subfolder name</replaceable>    -fstype=smbfs    ://<replaceable>fqdn</replaceable>/<replaceable>sharename</replaceable>
 	  </programlisting>
 		<para>
 	       Note that the automounted shares are not displayed in the finder's sidebar.
@@ -439,8 +439,8 @@
 			The domain join can also be performed on the command line using <command>dsconfigad</command>:
 		  </para>
 	    <programlisting language="sh">
-dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ldap_base&gt;" \
-  -u &lt;Domain Administrator&gt; -mobile enable
+dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn</replaceable> -ou "CN=Computers,<replaceable>ldap_base</replaceable>" \
+  -u <replaceable>Domain Administrator</replaceable> -mobile enable
 	    </programlisting>
 		  <para>
 	    Additional configuration options are available through <command>dsconfigad -help</command>.

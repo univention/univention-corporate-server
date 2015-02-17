@@ -1122,7 +1122,7 @@
 			</thead>
 			<tbody>
 				<row>
-					<entry>Zu Standard-&lt;Objekttyp&gt;-Container hinzufügen</entry>
+					<entry>Zu Standard-<replaceable>Objekttyp</replaceable>-Container hinzufügen</entry>
 					<entry>
 						Ist diese Option aktiviert, wird der Container/die
 						Organisationseinheit als Standard-Container für einen bestimmten
@@ -1302,7 +1302,7 @@ move options:
 		folgende Befehl aus:
 	</para>
 	<programlisting language="sh">
-univention-directory-manager &lt;Kategorie/Modulname&gt;
+univention-directory-manager <replaceable>Kategorie/Modulname</replaceable>
 	</programlisting>
 	<para>
 		Dabei werden auch die Attribute des Moduls angezeigt. Bei der Operation
@@ -1404,7 +1404,7 @@ univention-directory-manager users/user modify \
 				Einstellungen aus der Richtlinie für das Objekt angewendet, z.B:
 			</para>
 			<programlisting language="sh">
-univention-directory-manager &lt;Kategorie/Modulname&gt; &lt;Operation&gt; \
+univention-directory-manager <replaceable>Kategorie/Modulname</replaceable> <replaceable>Operation</replaceable> \
     --policy-reference="cn=vertrieb,cn=pwhistory,"\
 "cn=users,cn=policies,dc=firma,dc=de"
 			</programlisting>

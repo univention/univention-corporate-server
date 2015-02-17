@@ -2126,7 +2126,7 @@ dansguardian -g
 
 	  <para>
 		Die Variablen zur Definition der Filterregeln enthalten den
-		Gruppennamen, welcher in der folgenden Liste durch <emphasis>&lt;group&gt;</emphasis> ersetzt
+		Gruppennamen, welcher in der folgenden Liste durch <emphasis><replaceable>group</replaceable></emphasis> ersetzt
 		wird.
 	  </para>
 
@@ -2145,7 +2145,7 @@ dansguardian -g
 			<tbody>
 			  <row>
 				<entry>
-				  <envar>dansguardian/groups/&lt;group&gt;/banned/extensions</envar>
+				  <envar>dansguardian/groups/<replaceable>group</replaceable>/banned/extensions</envar>
 				</entry>
 				<entry>
 				  Dateien mit den angegebenen Dateiendungen dürfen nicht heruntergeladen werden. Der
@@ -2158,7 +2158,7 @@ dansguardian -g
 
 			  <row>
 				<entry>
-				  <envar>dansguardian/groups/&lt;group&gt;/banned/mimetypes</envar>
+				  <envar>dansguardian/groups/<replaceable>group</replaceable>/banned/mimetypes</envar>
 				</entry>
 				<entry>
 				  Dateien mit dem angegebenen MIME-Type dürfen nicht heruntergeladen werden. Der
@@ -2173,7 +2173,7 @@ dansguardian -g
 
 			  <row>
 				<entry>
-				  <envar>dansguardian/groups/&lt;group&gt;/banned/sites</envar>
+				  <envar>dansguardian/groups/<replaceable>group</replaceable>/banned/sites</envar>
 				</entry>
 				<entry>
 				  Hiermit können komplette Webseiten gesperrt werden. Beispiel:
@@ -2183,7 +2183,7 @@ dansguardian -g
 
 			  <row>
 				<entry>
-				  <envar>dansguardian/groups/&lt;group&gt;/banned/urls</envar>
+				  <envar>dansguardian/groups/<replaceable>group</replaceable>/banned/urls</envar>
 				</entry>
 				<entry>
 				  Im Gegensatz zum vorherigen Parameter können hiermit einzelne URLs von Webseiten
@@ -2193,7 +2193,7 @@ dansguardian -g
 
 			  <row>
 				<entry>
-				  <envar>dansguardian/&lt;group&gt;/exception/urls</envar>
+				  <envar>dansguardian/<replaceable>group</replaceable>/exception/urls</envar>
 				</entry>
 				<entry>
 				  Der Zugriff auf die hier angegebenen URLs wird nicht durch DansGuardian geprüft.
@@ -2202,7 +2202,7 @@ dansguardian -g
 
 			  <row>
 				<entry>
-				  <envar>dansguardian/&lt;group&gt;/exception/sites</envar>
+				  <envar>dansguardian/<replaceable>group</replaceable>/exception/sites</envar>
 				</entry>
 				<entry>
 				  Der Zugriff auf die hier angegebenen Webseiten wird nicht durch DansGuardian geprüft.
@@ -2239,7 +2239,7 @@ dansguardian -g
 	  <caution>
 		  <para>
 		Die Definition einer Ausnahmeregel bei Inhaltsfiltern mit
-		<envar>dansguardian/&lt;group&gt;/exception/*</envar> führt dazu, dass diese auch von einem
+		<envar>dansguardian/<replaceable>group</replaceable>/exception/*</envar> führt dazu, dass diese auch von einem
 		Virenscan ausgenommen werden.
 		  </para>
 	  </caution>

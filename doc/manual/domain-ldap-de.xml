@@ -88,7 +88,7 @@
 		  Der Domänenbeitritt wird auf Client-Seite in der Logdatei
 		  <filename>/var/log/univention/join.log</filename> aufgezeichnet, die zur Fehleranalyse
 		  herangezogen werden kann. Auf dem &ucsMaster; ausgeführte Aktionen werden in der Logdatei
-		  <filename>/home/&lt;Join-Account&gt;/.univention-server-join.log</filename> abgelegt.
+		  <filename>/home/<replaceable>Join-Account</replaceable>/.univention-server-join.log</filename> abgelegt.
 		</para>
 		<para>
 			Der Join-Vorgang kann jederzeit wiederholt werden. Nach bestimmten
@@ -260,7 +260,7 @@
 			Der Domänenbeitritt dauert einige Zeit und sollte nicht vorzeitig
 			abgebrochen werden. Nach einem erfolgreichen Beitritt erscheint ein kleines
 			Fenster mit der Nachricht <guimenu>Willkommen in der Domäne
-			&lt;Domänenname&gt;</guimenu>, die mit <mousebutton>OK</mousebutton> bestätigt
+			<replaceable>Domänenname</replaceable></guimenu>, die mit <mousebutton>OK</mousebutton> bestätigt
 			werden muss. Abschließend muss der Rechner neu gestartet werden, um die
 			Änderungen in Kraft zu setzen.
 		</para>
@@ -417,7 +417,7 @@
 		  einzubindenden Freigaben dort in der folgenden Form aufgeführt werden:
 		</para>
 	  <programlisting>
-&lt;subfolder name&gt;    -fstype=smbfs    ://&lt;fqdn&gt;/&lt;sharename&gt;
+<replaceable>subfolder name</replaceable>    -fstype=smbfs    ://<replaceable>fqdn</replaceable>/<replaceable>sharename</replaceable>
 	  </programlisting>
 		<para>
 	  Die eingebundenen Freigaben werden nicht in der Seitenleiste des Finders angezeigt.
@@ -460,8 +460,8 @@
 			<command>dsconfigad</command> erfolgen:
 		  </para>
 	    <programlisting language="sh">
-dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ldap_base&gt;" \
-  -u &lt;Domain Administrator&gt; -mobile enable
+dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn</replaceable> -ou "CN=Computers,<replaceable>ldap_base</replaceable>" \
+  -u <replaceable>Domain Administrator</replaceable> -mobile enable
 	    </programlisting>
 		  <para>
 	    Weitere Optionen werden mit <command>dsconfigad -help</command> angezeigt.

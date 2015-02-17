@@ -1088,7 +1088,7 @@
 			</thead>
 			<tbody>
 				<row>
-					<entry>Add to standard &lt;object type&gt; containers</entry>
+					<entry>Add to standard <replaceable>object type</replaceable> containers</entry>
 					<entry>
 						If this option is activated, the container or organisational unit will
 						be regarded as a standard container for a certain object type. If the
@@ -1265,7 +1265,7 @@ move options:
 		module:
 	</para>
 	<programlisting language="sh">
-univention-directory-manager &lt;category/modulename&gt;
+univention-directory-manager <replaceable>category/modulename</replaceable>
 	</programlisting>
 	<para>
 		With the <option>create</option> operation, the attributes marked with
@@ -1365,7 +1365,7 @@ univention-directory-manager users/user modify \
 				object, the settings from the policy are used for the object, e.g.:
 			</para>
 			<programlisting language="sh">
-univention-directory-manager &lt;category/modulename&gt; &lt;Operation&gt; \
+univention-directory-manager <replaceable>category/modulename</replaceable> <replaceable>Operation</replaceable> \
     --policy-reference "cn=sales,cn=pwhistory,"\
 "cn=users,cn=policies,dc=company,dc=example"
 			</programlisting>

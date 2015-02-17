@@ -692,7 +692,7 @@
 		user name and password must be saved in this file in one line.
 	  </para>
 		<programlisting>
-&lt;FQDN-Relayhost&gt;			&lt;username&gt;:&lt;password&gt;
+<replaceable>FQDN-Relayhost</replaceable>			<replaceable>username</replaceable>:<replaceable>password</replaceable>
 		</programlisting>
 	  <para>
 		The command

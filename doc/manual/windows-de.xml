@@ -685,7 +685,7 @@ END CATEGORY
 
 		<para>
 		  Die Anmeldeskripte werden unter
-		  <filename class="directory">/var/lib/samba/sysvol/&lt;Domänenname&gt;/scripts/</filename> abgelegt und
+		  <filename class="directory">/var/lib/samba/sysvol/<replaceable>Domänenname</replaceable>/scripts/</filename> abgelegt und
 		  werden unter dem Freigabennamen <emphasis>NETLOGON</emphasis> bereitgestellt. Die
 		  NETLOGON-Freigabe wird im Rahmen der SYSVOL-Replikation repliziert.
 		</para>

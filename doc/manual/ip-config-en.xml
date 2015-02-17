@@ -2457,7 +2457,7 @@ dansguardian -g
 
 	  <para>
 		The &ucsUCR; variables for the definition of the filter rules contain the group names
-		replaced in the following list by <emphasis>&lt;group&gt;</emphasis>.
+		replaced in the following list by <emphasis><replaceable>group</replaceable></emphasis>.
 	  </para>
 
 		<table>
@@ -2474,7 +2474,7 @@ dansguardian -g
 			<tbody>
 			  <row>
 				<entry>
-				  <envar>dansguardian/groups/&lt;group&gt;/banned/extensions</envar>
+				  <envar>dansguardian/groups/<replaceable>group</replaceable>/banned/extensions</envar>
 				</entry>
 				<entry>
 				  Files with the specified file suffixes may not be downloaded. The suffix point
@@ -2486,7 +2486,7 @@ dansguardian -g
 
 			  <row>
 				<entry>
-				  <envar>dansguardian/groups/&lt;group&gt;/banned/mimetypes</envar>
+				  <envar>dansguardian/groups/<replaceable>group</replaceable>/banned/mimetypes</envar>
 				</entry>
 				<entry>
 				  Files with the specified MIME types may not be downloaded. The MIME type is
@@ -2500,7 +2500,7 @@ dansguardian -g
 
 			  <row>
 				<entry>
-				  <envar>dansguardian/groups/&lt;group&gt;/banned/sites</envar>
+				  <envar>dansguardian/groups/<replaceable>group</replaceable>/banned/sites</envar>
 				</entry>
 				<entry>
 				  This can be used to block complete web sites. Example: <uri>illegal-example-website.com</uri>
@@ -2509,7 +2509,7 @@ dansguardian -g
 
 			  <row>
 				<entry>
-				  <envar>dansguardian/&lt;group&gt;/banned/urls</envar>
+				  <envar>dansguardian/<replaceable>group</replaceable>/banned/urls</envar>
 				</entry>
 				<entry>
 				  In contrast to the previous parameter, this can be used to block only specific
@@ -2519,7 +2519,7 @@ dansguardian -g
 
 			  <row>
 				<entry>
-				  <envar>dansguardian/&lt;group&gt;/exception/urls</envar>
+				  <envar>dansguardian/<replaceable>group</replaceable>/exception/urls</envar>
 				</entry>
 				<entry>
 				  The access to the URLs specified here is not filtered by DansGuardian.
@@ -2528,7 +2528,7 @@ dansguardian -g
 
 			  <row>
 				<entry>
-				  <envar>dansguardian/&lt;group&gt;/exception/sites</envar>
+				  <envar>dansguardian/<replaceable>group</replaceable>/exception/sites</envar>
 				</entry>
 				<entry>
 				  The access to the web sites specified here is not filtered by DansGuardian.
@@ -2564,7 +2564,7 @@ dansguardian -g
 	  <caution>
 		<para>
 		The definition of an exception rule for content filters using
-		<envar>dansguardian/&lt;group&gt;/exception/*</envar> also exempts the content from virus scanning!
+		<envar>dansguardian/<replaceable>group</replaceable>/exception/*</envar> also exempts the content from virus scanning!
 		</para>
 	  </caution>
 
