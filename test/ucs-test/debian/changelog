@@ -1,3 +1,10 @@
+ucs-test (5.0.113-1) unstable; urgency=low
+
+  * Bug #27653: pass terminal parameters to Popen object in 04check_login
+  *
+
+ -- Ammar Najjar <najjar@univention.de>  Tue, 17 Feb 2015 11:51:46 +0100
+
 ucs-test (5.0.112-2) unstable; urgency=low
 
   * 51_samba4/46machine_secret_access_sysvol: extended the test to run on
@@ -73,7 +80,7 @@ ucs-test (5.0.108-3) unstable; urgency=low
 
 ucs-test (5.0.108-2) unstable; urgency=low
 
-  * added 04_http_proxy_ntlm_auth_performance_check Bug #26452 
+  * added 04_http_proxy_ntlm_auth_performance_check Bug #26452
 
  -- Felix Botner <botner@univention.de>  Wed, 04 Feb 2015 15:30:38 +0100
 
@@ -144,7 +151,7 @@ ucs-test (5.0.99-4) unstable; urgency=low
 
 ucs-test (5.0.99-3) unstable; urgency=low
 
-  * Bug #37603: 60_umc/06_non-ucr-policies: added missing import. 
+  * Bug #37603: 60_umc/06_non-ucr-policies: added missing import.
 
  -- Dmitry Galkin <galkin@univention.de>  Fri, 23 Jan 2015 15:15:20 +0100
 
@@ -284,7 +291,7 @@ ucs-test (5.0.89-1) unstable; urgency=low
 
 ucs-test (5.0.88-1) unstable; urgency=low
 
-  * Bug #37523: 60_umc-system/70_umc-service-network-functionality: 
+  * Bug #37523: 60_umc-system/70_umc-service-network-functionality:
     changed error code and message when no free IP addresses left.
 
  -- Dmitry Galkin <galkin@univention.de>  Mon, 12 Jan 2015 15:22:34 +0100
@@ -415,14 +422,14 @@ ucs-test (5.0.75-1) unstable; urgency=medium
 
 ucs-test (5.0.74-2) unstable; urgency=low
 
-  * 01_base/52proofuniquemember_empty_attribute: test how 
+  * 01_base/52proofuniquemember_empty_attribute: test how
     proof_uniqueMembers handles the empty 'uniqueMember' attribute (Bug #35911)
 
  -- Dmitry Galkin <galkin@univention.de>  Mon, 15 Dec 2014 16:58:49 +0100
 
 ucs-test (5.0.74-1) unstable; urgency=low
 
-  * 01_base/52proofuniquemember: removed the '--quiet' when grep'ing the 
+  * 01_base/52proofuniquemember: removed the '--quiet' when grep'ing the
     univention-directory-manager-tools/proof_uniqueMembers output (Bug #36799).
 
  -- Dmitry Galkin <galkin@univention.de>  Mon, 15 Dec 2014 12:27:27 +0100
@@ -469,13 +476,13 @@ ucs-test (5.0.71-3) unstable; urgency=low
 
 ucs-test (5.0.71-2) unstable; urgency=low
 
-  * Fixed app long description test to 1000 c (Bug #31876) 
+  * Fixed app long description test to 1000 c (Bug #31876)
 
  -- Felix Botner <botner@univention.de>  Thu, 11 Dec 2014 17:07:37 +0100
 
 ucs-test (5.0.71-1) unstable; urgency=low
 
-  * Added ucs-test-appcenter-deinstall (Bug #31876) 
+  * Added ucs-test-appcenter-deinstall (Bug #31876)
 
  -- Felix Botner <botner@univention.de>  Thu, 11 Dec 2014 13:20:50 +0100
 
@@ -500,7 +507,7 @@ ucs-test (5.0.69-3) unstable; urgency=low
 
 ucs-test (5.0.69-2) unstable; urgency=low
 
-  * fixed last commit (Bug #36907 #37228) 
+  * fixed last commit (Bug #36907 #37228)
 
  -- Felix Botner <botner@univention.de>  Mon, 08 Dec 2014 17:41:06 +0100
 
@@ -756,7 +763,7 @@ ucs-test (5.0.42-1) unstable; urgency=medium
 
 ucs-test (5.0.41-1) unstable; urgency=low
 
-  * 20_appcenter/17_app_status: new test version that considers App's server role 
+  * 20_appcenter/17_app_status: new test version that considers App's server role
     (Bug #32546).
 
  -- Dmitry Galkin <galkin@univention.de>  Mon, 03 Nov 2014 16:37:50 +0100
@@ -1033,7 +1040,7 @@ ucs-test (5.0.13-1) unstable; urgency=low
 
 ucs-test (5.0.12-1) unstable; urgency=low
 
-  * Bug #8052 test scripts added "*_with_special_characters" 
+  * Bug #8052 test scripts added "*_with_special_characters"
   * scripts 06_.._with_special_characters and 07_.._with_special_characters
   * are skipped for the current version because they fail because of Bug #35959.
   * Bug #15219: test script added "102_Standard_Paketliste_installation"
@@ -1175,7 +1182,7 @@ ucs-test (5.0.0-4) unstable; urgency=low
 
 ucs-test (5.0.0-3) unstable; urgency=low
 
-  * fixed wrong python verion in /tests/10_ldap/ldap_extensions_utils.py 
+  * fixed wrong python verion in /tests/10_ldap/ldap_extensions_utils.py
   (Bug #35664)
 
  -- Drees Dormann <dormann@univention.de>  Fri, 22 Aug 2014 12:43:52 +0200
@@ -1211,7 +1218,7 @@ ucs-test (4.0.166-70) unstable; urgency=low
         61_dns_ptr_modification_append_records
         59_dns_ptr_creation_set_record
         54_dns_reverse_zone_creation_append_nameserver
-    
+
     Tests extended with IPv6 cases (Bug #33041)
 
  -- Dmitry Galkin <galkin@univention.de>  Tue, 19 Aug 2014 11:24:34 +0200
@@ -1640,7 +1647,7 @@ ucs-test (4.0.166-6) unstable; urgency=low
 
   * /60_umc-system/23_umc-service-create-user:
     test user creation, modification and deletion via UMC (Bug #34791)
-  * /60_umc-system/TestUMCSystemModule.py: 
+  * /60_umc-system/TestUMCSystemModule.py:
     new helper methods to ease the deletion and checking of objects.
 
  -- Dmitry Galkin <galkin@univention.de>  Fri, 16 May 2014 10:50:02 +0200
@@ -1722,7 +1729,7 @@ ucs-test (4.0.164-44) unstable; urgency=low
 
 ucs-test (4.0.164-43) unstable; urgency=low
 
-  * Bug #29211: 
+  * Bug #29211:
     52_s4connector/dnstests.py:
      adapted wait_for_sync() to match
      s4connector.sh/ad_wait_for_syncronisation()
@@ -1855,7 +1862,7 @@ ucs-test (4.0.164-29) unstable; urgency=low
 
 ucs-test (4.0.164-28) unstable; urgency=low
 
-  * fixed traceback when trying to terminate UDM CLI server 
+  * fixed traceback when trying to terminate UDM CLI server
   (Bug #34348)
 
  -- Lukas Walter <walter@univention.de>  Tue, 08 Apr 2014 12:02:26 +0200
@@ -2049,7 +2056,7 @@ ucs-test (4.0.164-2) unstable; urgency=low
 
 ucs-test (4.0.164-1) unstable; urgency=low
 
-  * ignore listfilter.secret template in 25check-permissions-etc-secret (Bug #26910) 
+  * ignore listfilter.secret template in 25check-permissions-etc-secret (Bug #26910)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Mar 2014 09:12:24 +0100
 
