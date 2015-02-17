@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.5-1) unstable; urgency=low
+
+  * examples/jenkins/autotest-230-master-s4-w2k12-member-join.cfg: a template
+    with Windows 2012 joined to UCS with Samba4 for GPO tests (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 17 Feb 2015 18:02:55 +0100
+
 ucs-ec2-tools (1.0.4-1) unstable; urgency=low
 
   * jenkins/utils/utils.sh: added function to run Windows GPO tests (Bug #37568).
