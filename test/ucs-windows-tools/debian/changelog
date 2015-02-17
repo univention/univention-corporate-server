@@ -1,3 +1,10 @@
+ucs-windows-tools (2.0.4-1) unstable; urgency=low
+
+  * windows-scripts/powershell-apply-gpo.ps1: Added option to "-Replace"
+    existing 'Security Filtering' settings (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 17 Feb 2015 12:26:58 +0100
+
 ucs-windows-tools (2.0.3-1) unstable; urgency=low
 
   * lib/winexe.py: Added methods to work with GPO on Windows (Bug #37568).

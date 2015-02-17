@@ -5,7 +5,8 @@ Param(
         [string]$permission_level,  # GpoRead|GpoApply|GpoEdit|GpoEditDeleteModifySecurity|None
         [string]$target_name,  # Object in LDAP
         [string]$target_type,  # Computer|User|Group
-	[string]$server  # Domain controller
+	[string]$server,  # Domain controller
+        [string]$replace # force GpoPermissions overwrite True|False
 )
 
 ##################
@@ -47,6 +48,7 @@ if (!(gwmi win32_computersystem).partofdomain -eq $true) {
                 -TargetType "$target_type" `
                 -Domain "$domain" `
                 -Server "$server" `
+                -Replace:([System.Convert]::ToBoolean($replace)) `
 }
     Catch {
             error("$_")
