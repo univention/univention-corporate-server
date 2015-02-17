@@ -1,4 +1,4 @@
-from ..common import LdapChange
+from univention.management.console.modules.setup.netconf.common import LdapChange
 import univention.admin.objects
 import univention.admin.modules as modules
 from univention.admin.uexceptions import base as UniventionBaseException

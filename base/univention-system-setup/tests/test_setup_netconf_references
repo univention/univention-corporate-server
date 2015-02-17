@@ -3,10 +3,10 @@
 # pylint: disable-msg=C0103,E0611,R0904
 import unittest
 import os
-import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python/setup'))
-from netconf import ChangeSet
-from netconf.modules import LdapReferences
+import univention.management.console.modules
+univention.management.console.modules.__path__.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
+from univention.management.console.modules.setup.netconf import ChangeSet
+from univention.management.console.modules.setup.netconf.modules import LdapReferences
 
 
 class DummyOption(object):

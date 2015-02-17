@@ -1,4 +1,4 @@
-from ..common import RestartService
+from univention.management.console.modules.setup.netconf.common import RestartService
 
 
 class PhaseRestartNscd(RestartService):

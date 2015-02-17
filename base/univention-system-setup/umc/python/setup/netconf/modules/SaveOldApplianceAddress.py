@@ -1,4 +1,4 @@
-from ..conditions import AddressChange, SkipPhase
+from univention.management.console.modules.setup.netconf.conditions import AddressChange, SkipPhase
 
 
 class PhaseSaveOldApplianceAddress(AddressChange):

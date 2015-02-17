@@ -1,4 +1,4 @@
-from ..common import Executable
+from univention.management.console.modules.setup.netconf.common import Executable
 
 
 class PhaseKernelModules(Executable):

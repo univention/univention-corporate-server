@@ -1,5 +1,5 @@
-from .. import SkipPhase
-from ..common import AddressMap
+from univention.management.console.modules.setup.netconf import SkipPhase
+from univention.management.console.modules.setup.netconf.common import AddressMap
 import os
 
 

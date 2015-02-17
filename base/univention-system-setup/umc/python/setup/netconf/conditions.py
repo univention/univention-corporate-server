@@ -30,7 +30,7 @@ Univention Setup: network configuration conditions
 
 import os
 from abc import ABCMeta
-from . import SkipPhase, Phase
+from univention.management.console.modules.setup.netconf import SkipPhase, Phase
 from univention.uldap import getMachineConnection
 from ldap import LDAPError
 from ldap.filter import filter_format

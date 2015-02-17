@@ -1,3 +1,9 @@
+univention-system-setup (8.1.66-21) unstable; urgency=medium
+
+  * Bug #37824: revert revisions 58147 to 58154
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 17 Feb 2015 14:35:27 +0100
+
 univention-system-setup (8.1.66-20) unstable; urgency=medium
 
   * Bug #37824: switch to relative imports for netconf modules in order to

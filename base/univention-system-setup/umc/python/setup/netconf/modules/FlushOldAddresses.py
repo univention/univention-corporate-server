@@ -1,4 +1,4 @@
-from .. import Phase, SkipPhase
+from univention.management.console.modules.setup.netconf import Phase, SkipPhase
 
 
 class PhaseFlushOldAddresses(Phase):

@@ -1,5 +1,5 @@
-from .. import SkipPhase
-from ..common import LdapChange, convert_udm_subnet_to_network
+from univention.management.console.modules.setup.netconf import SkipPhase
+from univention.management.console.modules.setup.netconf.common import LdapChange, convert_udm_subnet_to_network
 import univention.admin.objects
 import univention.admin.uldap as uldap
 import univention.admin.modules as modules

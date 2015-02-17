@@ -1,5 +1,5 @@
-from ..common import AddressMap, LdapChange, convert_udm_subnet_to_network
-from ..conditions import Executable
+from univention.management.console.modules.setup.netconf.common import AddressMap, LdapChange, convert_udm_subnet_to_network
+from univention.management.console.modules.setup.netconf.conditions import Executable
 import univention.admin.objects
 import univention.admin.modules as modules
 from univention.admin.uexceptions import base as UniventionBaseException
