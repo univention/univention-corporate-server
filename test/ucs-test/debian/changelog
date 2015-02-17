@@ -1,6 +1,6 @@
 ucs-test (5.0.116-1) unstable; urgency=low
 
-  * 51_samba4/47domain_user_lockout: also run on DC-Backup (Bug #35898).
+  * 51_samba4/47domain_user_lockout: also run on DC-Slave (Bug #35898).
 
  -- Dmitry Galkin <galkin@univention.de>  Tue, 17 Feb 2015 16:07:30 +0100
 
