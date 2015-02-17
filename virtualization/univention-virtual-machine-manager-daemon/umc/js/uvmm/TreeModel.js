@@ -33,8 +33,9 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"umc/tools",
+	"umc/dialog",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, tools, _) {
+], function(declare, lang, array, tools, dialog, _) {
 
 	return declare('umc.modules.uvmm.TreeModel', null, {
 		// summary:
@@ -50,6 +51,7 @@ define([
 
 		constructor: function(args) {
 			lang.mixin(this, args);
+			this.__workaround_uvmm_down = false;
 
 			this.root = {
 				id: '$root$',
@@ -84,8 +86,7 @@ define([
 
 		getChildren: function(parentItem, onComplete) {
 			if (parentItem.type == 'root') {
-				this.umcpCommand('uvmm/group/query', {
-				}).then(lang.hitch(this, function(data) {
+				this.umcpCommand('uvmm/group/query', {}).then(lang.hitch(this, function(data) {
 					var results = data.result instanceof Array ? data.result : [];
 					results.sort();
 					onComplete(array.map(results, lang.hitch(this, function(groupname) {
@@ -96,6 +97,13 @@ define([
 							icon: 'uvmm-group'
 						};
 					})));
+					this.__workaround_uvmm_down = true;
+				}), lang.hitch(this, function(error) {
+					var err = tools.parseError(error);
+					if (err.status == 503 && !this.__workaround_uvmm_down) {
+						this.__workaround_uvmm_down = true;
+						dialog.notify(_('The UVMM service is currently not available. Please trigger a search to refresh the view.'));
+					}
 				}));
 			} else if (parentItem.type == 'group') {
 				this.umcpCommand('uvmm/node/query', {

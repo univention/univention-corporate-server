@@ -201,10 +201,16 @@ define([
 				this._grid.on('FilterDone', lang.hitch(this, '_selectInputText')); // FIXME: ?
 
 				this._grid._grid.on('StyleRow', lang.hitch(this, '_adjustIconColumns'));
+				this._grid.on('FilterDone', lang.hitch(this, function() {
+					if (!this._tree._getFirst()) {
+						this._tree.reload();
+					}
+				}));
 
 				// setup autoUpdater
 				this._gridUpdater = new GridUpdater({
 					grid: this._grid,
+					tree: this._tree,
 					interval: parseInt(ucr['uvmm/umc/autoupdate/interval'], 10),
 					onItemCountChanged: lang.hitch(this, function() {
 						if (!this._itemCountChangedNoteShowed) {
