@@ -1,3 +1,10 @@
+ucs-test (5.0.114-1) unstable; urgency=low
+
+  * 51_samba4/56evaluate_windows_gpo: test GPOs created on a native Windows
+    Server in UCS with Samba4 domain (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 17 Feb 2015 12:35:05 +0100
+
 ucs-test (5.0.113-1) unstable; urgency=low
 
   * Bug #27653: pass terminal parameters to Popen object in 04check_login
