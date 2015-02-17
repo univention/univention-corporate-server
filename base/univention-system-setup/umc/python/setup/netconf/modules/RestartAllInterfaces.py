@@ -1,4 +1,4 @@
-from univention.management.console.modules.setup.netconf import Phase
+from .. import Phase
 
 
 class PhaseRestartAllInterfaces(Phase):

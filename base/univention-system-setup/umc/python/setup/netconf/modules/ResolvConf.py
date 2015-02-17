@@ -1,5 +1,5 @@
-from univention.management.console.modules.setup.netconf import SkipPhase
-from univention.management.console.modules.setup.netconf.conditions import Dhcp
+from .. import SkipPhase
+from ..conditions import Dhcp
 from univention.config_registry.frontend import handler_commit
 
 

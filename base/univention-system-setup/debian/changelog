@@ -1,3 +1,10 @@
+univention-system-setup (8.1.66-20) unstable; urgency=medium
+
+  * Bug #37824: switch to relative imports for netconf modules in order to
+    allow unit tests to run isolated at build time
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 17 Feb 2015 14:14:04 +0100
+
 univention-system-setup (8.1.66-19) unstable; urgency=medium
 
   * Bug #37824: added python-simplejson as build dependency

@@ -1,6 +1,6 @@
-from univention.management.console.modules.setup.netconf import SkipPhase
-from univention.management.console.modules.setup.netconf.common import RestartService
-from univention.management.console.modules.setup.netconf.conditions import Server, Dhcp
+from .. import SkipPhase
+from ..common import RestartService
+from ..conditions import Server, Dhcp
 
 
 class PhaseIfplugd(RestartService, Server, Dhcp):

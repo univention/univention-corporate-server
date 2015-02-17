@@ -31,7 +31,7 @@ import sys
 import os
 import logging
 import imp
-from univention.management.console.modules.setup.netconf import Phase, SkipPhase
+from .. import Phase, SkipPhase
 
 
 class RunPhases(object):

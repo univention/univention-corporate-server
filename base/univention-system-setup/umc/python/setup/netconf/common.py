@@ -30,8 +30,8 @@ Univention Setup: network configuration abstract common classes
 
 import os
 from abc import ABCMeta
-from univention.management.console.modules.setup.netconf import SkipPhase
-from univention.management.console.modules.setup.netconf.conditions import Executable, AddressChange, Ldap
+from . import SkipPhase
+from .conditions import Executable, AddressChange, Ldap
 import univention.admin.uldap as uldap
 from ipaddr import IPv4Network, IPv6Network
 

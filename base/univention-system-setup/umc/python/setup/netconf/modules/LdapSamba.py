@@ -1,4 +1,4 @@
-from univention.management.console.modules.setup.netconf.common import AddressMap, LdapChange
+from ..common import AddressMap, LdapChange
 import univention.admin.objects
 import univention.admin.modules as modules
 from univention.admin.uexceptions import base as UniventionBaseException

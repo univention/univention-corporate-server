@@ -1,5 +1,5 @@
-from univention.management.console.modules.setup.netconf.common import AddressMap
-from univention.management.console.modules.setup.netconf.conditions import Ldap, Executable
+from ..common import AddressMap
+from ..conditions import Ldap, Executable
 from univention import ipcalc
 
 
