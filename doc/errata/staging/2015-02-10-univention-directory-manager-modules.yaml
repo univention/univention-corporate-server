@@ -8,6 +8,6 @@ desc: |
   This update addresses the following issues:
   * Remove the property "reinstalltext" from layout and LDAP mapping of various
     computer modules as the property no longer exists.
-  * Fix tracebacks due to wrong checking of object existance in open() methods
+  * Fix tracebacks due to wrong checking of object existence in open() methods
     of UDM objects.
 bug: [37560, 37119]
