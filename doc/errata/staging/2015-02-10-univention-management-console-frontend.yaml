@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-management-console-frontend
-fix: 4.1.106-19.1001.201502171129
+fix: 4.1.106-20.1002.201502171551
 version: [1]
 desc: |
   The following issues are addressed by this erratum update:
@@ -14,5 +14,5 @@ desc: |
     contain an icon instead of text.
   * Methods for resetting UMC modules and renewing a session have been added.
   * Notifications now must be closed via a close icon.
-  * Pop-up dialogs that need no varification now have a close icon.
+  * Pop-up dialogs that need no verification now have a close icon.
 bug: [37565,33199,37780,37347]
