@@ -517,7 +517,8 @@ define([
 				this._hostMenu = new Menu({});
 				this._hostInfo = new DropDownButton({
 					id: 'umcMenuHost',
-					label:  _('<b>Host</b> ') + tools.status('fqdn'),
+					iconClass: 'umcServerIcon',
+					label: tools.status('fqdn'),
 					disabled: true,
 					dropDown: this._hostMenu
 				});
@@ -527,9 +528,8 @@ define([
 				this._usernameButton = new DropDownButton({
 					id: 'umcMenuUsername',
 					'class': 'umcHeaderText',
-					label: _('umcUserInfo', {
-						username: tools.status('username')
-					}),
+					iconClass: 'umcUserIcon',
+					label: tools.status('username'),
 					dropDown: new Menu({})
 				});
 				this._headerRight.addChild(this._usernameButton);
@@ -613,6 +613,7 @@ define([
 
 			// enforce same width as username button
 			var usernameButtonPos = domGeometry.position(this._usernameButton.domNode);
+			usernameButtonPos.w = Math.max(usernameButtonPos.w, 165);
 			this._searchSidebar = new LiveSearchSidebar({
 				searchLabel: _('Module search'),
 				style: lang.replace('width: {w}px', usernameButtonPos)
@@ -710,7 +711,8 @@ define([
 			tools.umcpCommand('get/hosts/list').then(lang.hitch(this, function(data) {
 				var empty = data.result.length <= 1;
 				empty = empty || data.result.length >= (parseInt(_ucr['umc/web/host_referrallimit'], 10) || 100);
-				this._hostInfo.set('disabled', empty);
+				var disabled = tools.isFalse(tools.status('umcWebSsoEnabled'));
+				this._hostInfo.set('disabled', empty || disabled)
 
 				var isIE89 = (has('ie') == 8 || has('ie') == 9);
 				if (empty && isIE89) {
