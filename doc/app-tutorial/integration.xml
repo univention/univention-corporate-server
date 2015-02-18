@@ -187,7 +187,7 @@ def modify_user(new, old):
 	new_givenName = new.get(['givenName', [])[0]
 	new_sn = new.get(['sn', [])[0]
 	get_db_connection().modify(old_mailPrimaryAddress, new_givenName, 
-														new_sn, new_mailPrimaryAddress)
+                             new_sn, new_mailPrimaryAddress)
 
 def get_db_connection():
 	raise NotImplementedError()
@@ -655,7 +655,9 @@ ucs_registerLDAPExtension "$@" --schema "/usr/share/$APP/$APP.schema"
 			</para>
 
 			<programlisting language="sh">
-svn co http://forge.univention.org/svn/dev/branches/ucs-4.0/ucs-4.0-1/management/univention-management-console-module-appcenter/udm/handlers/appcenter/
+svn co http://forge.univention.org/svn/dev/branches/ucs-4.0/ucs-4.0-0/\
+			management/univention-management-console-module-appcenter/\
+			udm/handlers/appcenter/
 			</programlisting>
 
 		</section>
