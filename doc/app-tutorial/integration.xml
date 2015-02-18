@@ -62,15 +62,16 @@
 		</para>
 
 		<programlisting language="sh">
-ldap_base=$(ucr get ldap/base)
+ldap_base="$(ucr get ldap/base)"
 APP=myapp
 PASSWORD=secret
 touch "/etc/$APP.secret"
 chown root:root "/etc/$APP.secret" # or so
 chmod 600 "/etc/$APP.secret"
 echo "$PASSWORD" > "/etc/$APP.secret"
-udm users/user create "$@" --position cn=users,$ldap_base --set "username=$APP-user" --set
-"lastname=$APP-user" --set "password=$PASSWORD" --options ldap_pwd
+udm users/user create "$@" --position "cn=users,$ldap_base" \
+		--set "username=$APP-user" --set "lastname=$APP-user" \
+		--set "password=$PASSWORD" --options ldap_pwd
 		</programlisting>
 
 		<para>
@@ -185,7 +186,8 @@ def modify_user(new, old):
 	new_mailPrimaryAddress = new.get(['mailPrimaryAddress', [])[0]
 	new_givenName = new.get(['givenName', [])[0]
 	new_sn = new.get(['sn', [])[0]
-	get_db_connection().modify(old_mailPrimaryAddress, new_givenName, new_sn, new_mailPrimaryAddress)
+	get_db_connection().modify(old_mailPrimaryAddress, new_givenName, 
+														new_sn, new_mailPrimaryAddress)
 
 def get_db_connection():
 	raise NotImplementedError()
@@ -263,7 +265,8 @@ ucr set myapp/loglevel?4
 
 		<programlisting language="sh">
 eval "$(ucr shell)"
-echo "This UCS system has the FQDN $hostname.$domainname and the LDAP base is $ldap_base."
+echo "This UCS system has the FQDN $hostname.$domainname and the LDAP \
+			base is $ldap_base."
 		</programlisting>
 
 		<para>
@@ -391,7 +394,8 @@ VERSION="1"
 . /usr/share/univention-lib/ldap.sh
 . /usr/share/univention-join/joinscripthelper.lib
 
-# this function of joinscripthelper.lib initializes some important variables as well as aborting if this script has already been run
+# this function of joinscripthelper.lib initializes some important
+# variables as well as aborting if this script has already been run
 joinscript_init
 
 eval "$(ucr shell)"
@@ -400,14 +404,15 @@ APP="app"
 
 # "$@" is IMPORTANT, because this includes parameters for LDAP bind
 # Otherwise these functions will fail on systems != DC master
-# An example schema file is in the section "Extend the UCS management system"
+# An example schema file is in the section "Extend the UCS management
+# system"
 ucs_registerLDAPExtension "$@" --schema "/usr/share/$APP/$APP.schema"
 
 # create a container where the extended attributes shall live
 udm container/cn create "$@" \
-	--ignore_exists `# if this script is called twice for whatever reason this command shall not fail just because the object already existed` \
-	--position "cn=custom attributes,cn=univention,$ldap_base" `# this container already exists and _should_ be used` \
-	--set "name=$APP" || die # if this fails for whatever reason, abort join script. generally a good idea
+	--ignore_exists
+	--position "cn=custom attributes,cn=univention,$ldap_base"
+	--set "name=$APP" || die # if this fails, abort join script
 
 # for more details, see the section "Extend the UCS management system"
 udm settings/extended_attribute create "$@" \
@@ -417,11 +422,12 @@ udm settings/extended_attribute create "$@" \
 	# ...
 	--set name="$APP-enabled" || die
 
-# Best practice: Adds the service to the host. Then LDAP can be queried to lookup
-# where the app is already installed. Also useful for unjoin
+# Best practice: Adds the service to the host. Then LDAP can be queried
+# to lookup where the app is already installed. Also useful for unjoin
 ucs_addServiceToLocalhost "${SERVICE}" "$@"
 
-# when everything worked fine, tell the system that this VERSION does not need to be run again
+# when everything worked fine, tell the system that this VERSION does
+# not need to be run again
 joinscript_save_current_version
 exit 0
 		</programlisting>
@@ -451,15 +457,21 @@ ucs_removeServiceFromLocalhost "${SERVICE}" "$@"
 
 # check whether this app is still installed elsewhere
 if ucs_isServiceUnused "${SERVICE}" "$@"; then
-# revert other changes made by 50app.inst
-# easy: just remove the container, the extended attribute is removed automatically
-udm container/cn remove --dn "cn=$APP,cn=custom attributes,cn=univention,$ldap_base"
-# DO NOT revert ucs_registerLDAPExtension "$@" --schema
-# schema extensions should be kept forever. If attributes defined there were set during the time the app was installed
-# it may break LDAP if the attribute definition gets removed!
+	# revert other changes made by 50app.inst
+	# just remove the container, the extended attribute is removed
+	# automatically
+	udm container/cn remove --dn \
+			"cn=$APP,cn=custom attributes,cn=univention,$ldap_base"
+
+	# DO NOT revert ucs_registerLDAPExtension "$@" --schema
+	# schema extensions should be kept forever. If attributes defined
+	# there were set during the time the app was installed
+	# it may break LDAP if the attribute definition gets removed!
+	# See http://sdb.univention.de/1274
 fi
 
-# revert joinscript_save_current_version - so that the join script would run again if the app is reinstalled
+# revert joinscript_save_current_version - so that the join script
+# would run again if the app is reinstalled
 joinscript_remove_script_from_status_file 50app.inst
 
 exit 0
@@ -504,22 +516,24 @@ dh $@
 			<programlisting language="sh">
 APP="myapp"
 SERVICE="My App"
-# for more details, see http://docs.univention.de/developer-reference.html#udm:ea
-# "$@" is here because this should go into a join script and there passing the arguments of the script invocation to udm is necessary
+# for more details, see
+#   http://docs.univention.de/developer-reference.html#udm:ea
+# "$@" is here because this should go into a join script and there
+# passing the arguments of the script invocation to udm is necessary
 udm settings/extended_attribute create "$@" \
 	--ignore_exists \
 	--position "cn=$APP,cn=custom attributes,cn=univention,$ldap_base" \
 	--set module="users/user" `# extending users` \
-	--set ldapMapping='${APP}Enabled' `# this is the LDAP internal name form the schema file` \
+	--set ldapMapping='${APP}Enabled' `# LDAP attribute from the schema` \
 	--set objectClass="${APP}-user" \
 	--set name="$APP-enabled" `# this is the name for UDM` \
 	--set shortDescription="Allow $SERVICE" \
-	--set longDescription="Whether this user shall be allowed to use the $SERVICE service" \
+	--set longDescription="Whether this user shall be allowed ..." \
 	--set translationShortDescription="\"de_DE\" \"$SERVICE erlauben\"" \
-	--set translationLongDescription="\"de_DE\" \"Zeigt an, ob dem Benutzer gestattet ist, den $SERVICE-Dienst zu nutzen\"" \
+	--set translationLongDescription="\"de_DE\" \"Zeigt an, ob ...\"" \
 	--set tabName="$SERVICE" `# This may create a new tab in the form` \
 	--set translationTabName="\"de_DE\" \"$SERVICE\"" \
-	--set tabAdvanced='1' `# will actually NOT create a new tab in the form, instead adds it in the already existing "Advanced" tab` \
+	--set tabAdvanced='0' \
 	--set tabPosition='1' \
 	--set syntax='TrueFalseUp' `# should be a CheckBox` \
 	--set mayChange='1' \
@@ -547,12 +561,12 @@ udm settings/extended_attribute create "$@" \
 	--set shortDescription="Role in $SERVICE" \
 	--set longDescription="Which role the user has for $SERVICE" \
 	--set translationShortDescription="\"de_DE\" \"$SERVICE-Rolle\"" \
-	--set translationLongDescription="\"de_DE\" \"Welche Rolle der Benutzer in $SERVICE innehat\"" \
+	--set translationLongDescription="\"de_DE\" \"Welche Rolle ...\"" \
 	--set tabName="$SERVICE" \
 	--set translationTabName="\"de_DE\" \"$SERVICE\"" \
 	--set tabAdvanced='1' \
 	--set tabPosition='1' \
-	--set syntax="${APP}UserOrAdmin" `This is the interesting part. The syntax is different` \
+	--set syntax="${APP}UserOrAdmin" \
 	--set mayChange='1' \
 	--set default='user' || die
 			</programlisting>
@@ -571,7 +585,8 @@ choices=[('user', 'User'), ('admin', 'Admin')]
 			</para>
 
 			<programlisting language="sh">
-				ucs_registerLDAPExtension "$@" --udm_syntax "/usr/share/$APP/${APP}_syntax.py"
+ucs_registerLDAPExtension "$@" \
+			--udm_syntax "/usr/share/$APP/${APP}_syntax.py"
 			</programlisting>
 
 		</section>
@@ -774,13 +789,16 @@ WebInterface=/$APP/
 
 # ucs/web/overview/entries/services/... or
 # ucs/web/overview/entries/admin/...
-ucr set ucs/web/overview/entries/services/$APP/description/de="Description of link to $APP (German)" \
-     ucs/web/overview/entries/services/$APP/description="Description of link to $APP (English)" \
-     ucs/web/overview/entries/services/$APP/icon=/url/to/icon/$APP.png \
-     ucs/web/overview/entries/services/$APP/label/de="Headline of link to $APP (German)" \
-     ucs/web/overview/entries/services/$APP/label="Headline of link to $APP (English)" \
-     ucs/web/overview/entries/services/$APP/link=https://$hostname.$domainname:$APP_PORT/webinterface/ \
-     ucs/web/overview/entries/services/$APP/priority=xx-digits-for-sorting-or-just-dont-set
+
+export P="ucs/web/overview/entries/services"
+ucr set \
+		$P/$APP/description/de="Description of link to $APP (German)" \
+		$P/$APP/description="Description of link to $APP (English)" \
+		$P/$APP/icon=/url/to/icon/$APP.png \
+		$P/$APP/label/de="Headline of link to $APP (German)" \
+		$P/$APP/label="Headline of link to $APP (English)" \
+		$P/$APP/link=https://$hostname.$domainname:$APP_PORT/webinterface/ \
+		$P/$APP/priority=xx-digits-for-sorting-or-just-dont-set
 
 	</programlisting>
 	<programlisting language="sh">

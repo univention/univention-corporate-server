@@ -43,10 +43,8 @@
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="prepare.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="package.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="integration.xml"/>
-
-
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="selfcheck.xml"/>
 <!--
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="selfcheck.xml"/>
 -->
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="provide.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="next.xml"/>
