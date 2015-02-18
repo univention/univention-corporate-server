@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-24) unstable; urgency=medium
+
+  * Bug #37780: make node handling more robust in SearchForm
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 18 Feb 2015 15:51:07 +0100
+
 univention-management-console-frontend (4.1.106-23) unstable; urgency=medium
 
   * Bug #37347: remove versioned dependency to u-m-c-frontend-theme

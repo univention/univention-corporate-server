@@ -111,8 +111,10 @@ define([
 			// next to its preceding widget
 			var button = this._buttons.submit;
 			if (button && !button.showLabel) {
-				domClass.add(button.$refLabel$.domNode, 'umcSearchFormSubmitButton');
-				var previousWidget = button.$refLabel$.domNode.previousSibling;
+				var labelPaneNode = lang.getObject('$refLabel$.domNode', false, button);
+				var node = labelPaneNode || button.domNode;
+				domClass.add(node, 'umcSearchFormSubmitButton');
+				var previousWidget = node.previousSibling;
 				if (previousWidget) {
 					domClass.add(previousWidget, 'umcSearchFormElementBeforeSubmitButton');
 				}
