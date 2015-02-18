@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-23) unstable; urgency=medium
+
+  * Bug #37347: remove versioned dependency to u-m-c-frontend-theme
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 18 Feb 2015 15:03:23 +0100
+
 univention-management-console-frontend (4.1.106-22) unstable; urgency=medium
 
   Bug #37347:
