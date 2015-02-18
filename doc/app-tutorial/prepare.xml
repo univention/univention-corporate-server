@@ -40,8 +40,8 @@
 				To install your solution, you may need packages that are in the unmaintained repository. Please activate it:
 			</para>
 
-			<programlisting>
-				root@master.tutorial.ucs:~$ ucr set repository/online/unmaintained='yes'
+			<programlisting language="sh">
+root@master.tutorial.ucs:~$ ucr set repository/online/unmaintained='yes'
 			</programlisting>
 
 			<note><para>
@@ -60,8 +60,8 @@
 				packages. The corresponding package can be installed with
 			</para>
 
-			<programlisting>
-				univention-install build-essential debhelper
+			<programlisting language="sh">
+univention-install build-essential debhelper
 			</programlisting>
 
 			<para>
@@ -69,21 +69,21 @@
 				(e.g. libc-dev, php5-dev). For UCS integration packages, we recommend
 			</para>
 
-			<programlisting>
+			<programlisting language="sh">
 # ucslint checks for common mistakes in a variety of files if enabled
 # in debian/rules
 #  see http://docs.univention.de/developer-reference.html#misc:ucslint
 univention-install ucslint-univention
 			</programlisting>
 
-			<programlisting>
+			<programlisting language="sh">
 # univention-config-dev takes care of installing and registering UCR
 # variables if enabled in debian/rules
 #   see http://docs.univention.de/developer-reference.html#chap:ucr
 univention-install univention-config-dev
 			</programlisting>
 
-			<programlisting>
+			<programlisting language="sh">
 # If you are developing a UMC module to extend the management console, you will need
 univention-install univention-management-console-dev
 			</programlisting>
@@ -92,7 +92,7 @@ univention-install univention-management-console-dev
 				If you already have a source directory with working code
 			</para>
 
-			<programlisting>
+			<programlisting language="sh">
 				dpkg-buildpackage
 			</programlisting>
 

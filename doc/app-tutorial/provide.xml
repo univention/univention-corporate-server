@@ -10,7 +10,7 @@
 		<para>
 			For the archive to be uploaded, the following directory structure is recommended:
 		</para>
-		<programlisting>
+		<programlisting language="sh">
 ─ metadata
 ─ packages
   ─ all
@@ -51,7 +51,7 @@
 			The .ini file has the attribute ID. Simply name the .ini file and the product logo after that ID:
 		</para>
 
-		<programlisting>
+		<programlisting language="sh">
 myapp.ini
 myapp.png
 		</programlisting>

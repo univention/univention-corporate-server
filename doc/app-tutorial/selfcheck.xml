@@ -6,7 +6,7 @@
 			well as all the built packages are:
 		</para>
 
-		<programlisting>
+		<programlisting language="sh">
 APP=myapp
 mkdir -p /var/www/meta-inf/$(ucr get version/version)/
 mkdir -p /var/www/univention-repository/$(ucr get version/version)/maintained/component/$APP/all

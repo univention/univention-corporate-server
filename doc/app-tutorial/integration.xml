@@ -1,27 +1,67 @@
-Integration with UCS
+<chapter>
+	<title>Integration with UCS</title>
+	<para>
+		Univention Corporate Server (UCS) is not just an enterprise Linux distribution. With its focus
+		on identity and infrastructure management it has a lot of information saved about the IT
+		infrastructure environment, the user accounts and the groups and the system configuration, to name a
+		few.
+	</para>
 
-Univention Corporate Server (UCS) is not just an enterprise Linux distribution. With its focus on identity and infrastructure management it has a lot of information saved about the IT infrastructure environment, the user accounts and the groups and the system configuration, to name a few.
+	<para>
+		The most obvious integration makes use of the numerous user accounts stored in the UCS directory service. Apps using this information avoid double effort in user administration. They may technically make just a simple LDAP bind for user authentication. Or if the app needs certain user attributes in its own persistence layer (e.g. the database) they may be synchronised via the Listener-/Notifier mechanism.
+		Furthermore, existing data can be extended with app specific attributes, e.g., shall a user be allowed to use the app or what role shall the user occupy for the app. The UCS management system can be extended by attributes and the information is usually stored in the directory service. It is even possible that certain values or their change may trigger certain actions.
+		A third integration possibility is to hook up the app in existing solution stacks of UCS, for example the mail stack or the web server. The app will among others benefit from a working configuration and a higher communication security because of already present security certificates.
+	</para>
 
-    The most obvious integration makes use of the numerous user accounts stored in the UCS directory service. Apps using this information avoid double effort in user administration. They may technically make just a simple LDAP bind for user authentication. Or if the app needs certain user attributes in its own persistence layer (e.g. the database) they may be synchronised via the Listener-/Notifier mechanism.
-    Furthermore, existing data can be extended with app specific attributes, e.g., shall a user be allowed to use the app or what role shall the user occupy for the app. The UCS management system can be extended by attributes and the information is usually stored in the directory service. It is even possible that certain values or their change may trigger certain actions.
-    A third integration possibility is to hook up the app in existing solution stacks of UCS, for example the mail stack or the web server. The app will among others benefit from a working configuration and a higher communication security because of already present security certificates.
+	<para>
+		Those are just a few examples to outline the possibilities for the integration. There are many
+		more. The guiding question for the integration should be: What information about the infrastructure,
+		the configuration and identities does UCS offer that the app will benefit of and saves efforts for
+		the administrator?
+	</para>
 
-Those are just a few examples to outline the possibilities for the integration. There are many more. The guiding question for the integration should be: What information about the infrastructure, the configuration and identities does UCS offer that the app will benefit of and saves efforts for the administrator?
+	<para>
+		The following sections give an impression of several integration scenarios. Further
+		information can be found in the UCS developer reference.
+	</para>
+	<section>
+		<title>Read information from the directory service</title>
 
-The following sections give an impression of several integration scenarios. Further information can be found in the UCS developer reference.
-Read information from the directory service
+		<para>
+			One primary element of the UCS management system is an LDAP directory in which the data
+			required across the domain for the administration are stored. In addition to the user accounts and
+			similar elements, the data basis of services such as DHCP is also saved there.
+		</para>
 
-One primary element of the UCS management system is an LDAP directory in which the data required across the domain for the administration are stored. In addition to the user accounts and similar elements, the data basis of services such as DHCP is also saved there.
+		<para>
+			An LDAP directory has a tree-like structure, the root of which forms the so-called basis of
+			the UCS domain. The UCS domain forms the common security and trust context for its members. An
+			account in the LDAP directory establishes the membership in the UCS domain for users. Computers
+			receive a computer account when they join the domain.
+		</para>
 
-An LDAP directory has a tree-like structure, the root of which forms the so-called basis of the UCS domain. The UCS domain forms the common security and trust context for its members. An account in the LDAP directory establishes the membership in the UCS domain for users. Computers receive a computer account when they join the domain.
+		<para>
+			UCS utilises OpenLDAP as a directory service server. The directory is provided by the master
+			domain controller and replicated on all domain controllers (DCs) in the domain. The complete LDAP
+			directory is also replicated on a DC backup as this can replace the DC master in an emergency. In
+			contrast, the replication on DC slaves can be restricted to certain areas of the LDAP directory
+			using ACLs (access control lists) in order to realize a selective replication.
+		</para>
 
-UCS utilises OpenLDAP as a directory service server. The directory is provided by the master domain controller and replicated on all domain controllers (DCs) in the domain. The complete LDAP directory is also replicated on a DC backup as this can replace the DC master in an emergency. In contrast, the replication on DC slaves can be restricted to certain areas of the LDAP directory using ACLs (access control lists) in order to realize a selective replication.
+		<para>
+			More information about the OpenLDAP server in UCS can be found in the manual.
+		</para>
 
-More information about the OpenLDAP server in UCS can be found in the manual.
-Access the LDAP directory
+		<section>
+			<title>Access the LDAP directory</title>
 
-Sometimes software can use LDAP, but does not use the user accounts directly but is restricted to one specific user who then is used for further user authentication. This LDAP bind can be done by creating a app specific user in UDM. This should be done in a Join script via
+		<para>
+			Sometimes software can use LDAP, but does not use the user accounts directly but is
+			restricted to one specific user who then is used for further user authentication. This LDAP bind can
+			be done by creating a app specific user in UDM. This should be done in a Join script via
+		</para>
 
+		<programlisting language="sh">
 ldap_base=$(ucr get ldap/base)
 APP=myapp
 PASSWORD=secret
@@ -29,21 +69,39 @@ touch "/etc/$APP.secret"
 chown root:root "/etc/$APP.secret" # or so
 chmod 600 "/etc/$APP.secret"
 echo "$PASSWORD" > "/etc/$APP.secret"
-udm users/user create "$@" \-\-position cn=users,$ldap_base \-\-set "username=$APP-user" \-\-set
-"lastname=$APP-user" \-\-set "password=$PASSWORD" \-\-options ldap_pwd
+udm users/user create "$@" --position cn=users,$ldap_base --set "username=$APP-user" --set
+"lastname=$APP-user" --set "password=$PASSWORD" --options ldap_pwd
+		</programlisting>
 
-Now you can configure your software accordingly. Here the DN will be uid=$APP-user,cn=users,$ldap_base.
+		<para>
+			Now you can configure your software accordingly. Here the DN will be
+			uid=$APP-user,cn=users,$ldap_base.
+		</para>
 
-If more access is needed, it is also possible to use the machine account of the UCS system. Every computer joined into the UCS domain has certain permissions. Computers in cn=dc,cn=computers,$ldap_base (by default DC Master, DC Backup, DC Slave) can even access the password attributes of users and computers. The password for the machine account is stored in /etc/machine.secret (readable by root). The machine DN can be found by
+		<para>
+			If more access is needed, it is also possible to use the machine account of the UCS system.
+			Every computer joined into the UCS domain has certain permissions. Computers in
+			cn=dc,cn=computers,$ldap_base (by default DC Master, DC Backup, DC Slave) can even access the
+			password attributes of users and computers. The password for the machine account is stored in
+			/etc/machine.secret (readable by root). The machine DN can be found by
+		</para>
 
+		<programlisting language="sh">
 ucr get ldap/hostdn
+		</programlisting>
 
-The machine password rotates. This means the password changes over time. If your software needs to adapt, you may install a script (with executable bit set!) at
+		<para>
+			The machine password rotates. This means the password changes over time. If your software
+			needs to adapt, you may install a script (with executable bit set!) at
+		</para>
 
  /usr/lib/univention-server/server_password_change.d/xx$app # xx are two digits for ordering purposes
 
-with something like the following content:
+		<para>
+			with something like the following content:
+		</para>
 
+		<programlisting language="sh">
 #!/bin/sh
 case "$1" in
 prechange)
@@ -61,138 +119,267 @@ postchange)
 	invoke-rc.d $app restart
 	;;
 esac
+		</programlisting>
 
-Listener-/Notifier Mechanism
+		</section>
+		<section>
+			<title>Listener-/Notifier Mechanism</title>
 
-The data regarding identity and infrastructure management is saved in LDAP. Apps that are not LDAP-aware can use this data nonetheless by registering handlers that trigger when certain data is changed (e.g. a user is created, the IP of a computer is changed). This may be useful if
+			<para>
+				The data regarding identity and infrastructure management is saved in LDAP. Apps that are
+				not LDAP-aware can use this data nonetheless by registering handlers that trigger when certain data
+				is changed (e.g. a user is created, the IP of a computer is changed). This may be useful if
+			</para>
 
-    Your software contains some kind of user authentication/authorization, but cannot connect to LDAP
-    Your software has its own database and the data should be in sync
-    Your software needs to reconfigure as soon as certain parameters of the network topology change
+			<orderedlist>
+				<listitem><simpara>
+					Your software contains some kind of user authentication/authorization, but cannot connect to LDAP
+				</simpara></listitem>
+				<listitem><simpara>
+					Your software has its own database and the data should be in sync
+				</simpara></listitem>
+				<listitem><simpara>
+					Your software needs to reconfigure as soon as certain parameters of the network topology change
+				</simpara></listitem>
+			</orderedlist>
 
-More details can be found in the Developer Reference
+			<para>
+				More details can be found in the Developer Reference
+			</para>
 
-A short example how to sync first name, last name, email of a user to a (theoretical) third-party database. This script is run every time a user is added, removed or any of these attributes change. As the email is unique (forced by UCS) and all three attributes are only single-valued (also forced by UCS), this may come down to:
+			<para>
+				A short example how to sync first name, last name, email of a user to a (theoretical)
+				third-party database. This script is run every time a user is added, removed or any of these
+				attributes change. As the email is unique (forced by UCS) and all three attributes are only
+				single-valued (also forced by UCS), this may come down to:
+			</para>
 
+			<programlisting  language="python">
 name = "app_sync_users"
 description = "always be in sync with UCS users"
-filter = "(&(uid=*)(!(uid=*$))"
+filter = "(&amp;(uid=*)(!(uid=*$))"
 attributes = ["givenName", "sn", "mailPrimaryAddress"]
 
 def handler(dn, new, old):
-if new and not old:
- add_user(new)
+	if new and not old:
+		add_user(new)
 
- if not new and old:
- remove_user(old)
+	if not new and old:
+		remove_user(old)
 
- if new and old:
- modify_user(new, old)
+	if new and old:
+		modify_user(new, old)
 
 def add_user(new):
-new_mailPrimaryAddress = new.get(['mailPrimaryAddress', [])[0]
-new_givenName = new.get(['givenName', [])[0]
-new_sn = new.get(['sn', [])[0]
-get_db_connection().add(new_givenName, new_sn, new_mailPrimaryAddress)
+	new_mailPrimaryAddress = new.get(['mailPrimaryAddress', [])[0]
+	new_givenName = new.get(['givenName', [])[0]
+	new_sn = new.get(['sn', [])[0]
+	get_db_connection().add(new_givenName, new_sn, new_mailPrimaryAddress)
 
 def remove_user(old):
-old_mailPrimaryAddress = old.get(['mailPrimaryAddress', [])[0]
-get_db_connection().remove(old_mailPrimaryAddress)
+	old_mailPrimaryAddress = old.get(['mailPrimaryAddress', [])[0]
+	get_db_connection().remove(old_mailPrimaryAddress)
 
 def modify_user(new, old):
-old_mailPrimaryAddress = old.get(['mailPrimaryAddress', [])[0]
-new_mailPrimaryAddress = new.get(['mailPrimaryAddress', [])[0]
-new_givenName = new.get(['givenName', [])[0]
-new_sn = new.get(['sn', [])[0]
-get_db_connection().modify(old_mailPrimaryAddress, new_givenName, new_sn, new_mailPrimaryAddress)
+	old_mailPrimaryAddress = old.get(['mailPrimaryAddress', [])[0]
+	new_mailPrimaryAddress = new.get(['mailPrimaryAddress', [])[0]
+	new_givenName = new.get(['givenName', [])[0]
+	new_sn = new.get(['sn', [])[0]
+	get_db_connection().modify(old_mailPrimaryAddress, new_givenName, new_sn, new_mailPrimaryAddress)
 
 def get_db_connection():
-raise NotImplementedError()
+	raise NotImplementedError()
+			</programlisting>
 
-Read configuration database
+		</section>
+	</section>
 
-UCS ships with a key-value store used to save parameters of the environment, the Univention Config Registry (UCR). It holds information about the local host (like hostname or network settings) and to some extent about the domain configuration (like the domainname or where the DC Master can be found). More details can be found in the Developer Reference.
+	<section>
+		<title>Read configuration database</title>
 
-The values can be accessed easily in a script by using
+		<para>
+			UCS ships with a key-value store used to save parameters of the environment, the Univention
+			Config Registry (UCR). It holds information about the local host (like hostname or network settings)
+			and to some extent about the domain configuration (like the domainname or where the DC Master can be
+			found). More details can be found in the Developer Reference.
+		</para>
 
+		<para>
+			The values can be accessed easily in a script by using
+		</para>
+
+		<programlisting language="sh">
 hostname=$(ucr get hostname)
+		</programlisting>
 
-Notable variables include:
+		<para>
+			Notable variables include:
+		</para>
 
-    hostname
-    domainname
-    ldap/base
-    ldap/master (FQDN of the DC Master)
-    ldap/master/port (Port for LDAP bind)
-    ldap/hostdn (May be useful to connect to LDAP with the machine account (password in /etc/machine.secret))
+		<itemizedlist>
+			<listitem><simpara>
+				hostname
+			</simpara></listitem>
+			<listitem><simpara>
+				domainname
+			</simpara></listitem>
+			<listitem><simpara>
+				ldap/base
+			</simpara></listitem>
+			<listitem><simpara>
+				ldap/master (FQDN of the DC Master)
+			</simpara></listitem>
+			<listitem><simpara>
+				ldap/master/port (Port for LDAP bind)
+			</simpara></listitem>
+			<listitem><simpara>
+				ldap/hostdn (May be useful to connect to LDAP with the machine account (password in /etc/machine.secret))
+			</simpara></listitem>
+		</itemizedlist>
 
-You can use the database to store your own keys and values and use those in your script:
+		<para>
+			You can use the database to store your own keys and values and use those in your script:
+		</para>
 
+		<programlisting language="sh">
 ucr set myapp/loglevel=5
+		</programlisting>
 
-It is also possible to set the variable only if it was not set before. This is generally preferred as it allows users to overwrite those values without having to fear that it is overwritten again
+		<para>
+			It is also possible to set the variable only if it was not set before. This is generally
+			preferred as it allows users to overwrite those values without having to fear that it is overwritten
+			again.
+		</para>
 
+		<programlisting language="sh">
 ucr set myapp/loglevel?4
+		</programlisting>
 
-You do not need to register those variables anywhere, they are just saved. It is also possible to use theses variables in your installations scripts as environment variables, for example:
+		<para>
+			You do not need to register those variables anywhere, they are just saved. It is also
+			possible to use theses variables in your installations scripts as environment variables, for
+			example:
+		</para>
 
+		<programlisting language="sh">
 eval "$(ucr shell)"
 echo "This UCS system has the FQDN $hostname.$domainname and the LDAP base is $ldap_base."
+		</programlisting>
 
-A very powerful ability of UCR is its usage in templates. You may ship files that are recreated when certain variables change. For example, your app's configuration file needs to be updated every time a locale of the system is added or removed. Say your main package (myapp.deb) ships /etc/myapp.conf:
+		<para>
+			A very powerful ability of UCR is its usage in templates. You may ship files that are
+			recreated when certain variables change. For example, your app's configuration file needs to be
+			updated every time a locale of the system is added or removed. Say your main package (myapp.deb)
+			ships /etc/myapp.conf:
+		</para>
 
+		<programlisting language="sh">
 # configuration of myapp
 title=My App
 locales=en_US.UTF-8:UTF-8
+		</programlisting>
 
-Your integration package (univention-myapp.deb) can ship this file, too:
+		<para>
+			Your integration package (univention-myapp.deb) can ship this file, too:
+		</para>
 
+		<programlisting language="sh">
 @%@UCRWARNING=#@%@
 # configuration of myapp
 title=My App
 locales=@%@locale@%@
+		</programlisting>
 
-This file shall trigger each time
+		<para>
+			This file shall trigger each time
+		</para>
 
+		<programlisting language="sh">
 ucr set locale=...
+		</programlisting>
 
-is called.
+		<para>
+			is called.
+		</para>
 
-You need to add the file above in univention-myapp's directory conffiles/etc/myapp.conf. Furthermore you need to add the following in debian/rules
+		<para>
+			You need to add the file above in univention-myapp's directory conffiles/etc/myapp.conf.
+			Furthermore you need to add the following in debian/rules.
+		</para>
 
+		<programlisting language="sh">
 override_dh_auto_install:
 univention-install-config-registry
 dh_auto_install
 
 %:
 dh $@
+		</programlisting>
 
-Now you need to tell the system when to recreate it. For this create a file debian/univention-myapp.univention-config-registry with
+		<para>
+			Now you need to tell the system when to recreate it. For this create a file
+			debian/univention-myapp.univention-config-registry with
+		</para>
 
+		<programlisting language="sh">
 Type: file
 File: etc/myapp.conf
 Variables: locale
+		</programlisting>
 
-And this should do the trick. Templates can even use a python runtime to do more than just writing the exact content of certain UCR variables. See the Reference for details.
-Extend the UCS management system
-Domain-Join and Unjoin
+		<para>
+			And this should do the trick. Templates can even use a python runtime to do more than just
+			writing the exact content of certain UCR variables. See the Reference for details.
+		</para>
+	</section>
 
-Integration into the UCS domain works by writing into the domain wide LDAP directory. The package can only change something in the LDAP directory through a join script otherwise the functionality is not guaranteed. Furthermore, the hostname and other basic configuration settings are first defined when the join script is executed.
+	<section>
+		<title>Domain-Join and Unjoin</title>
 
-A join script is just an executable script living in /usr/lib/univention-install/. The name is something like xx$app.inst (xx are two digits for ordering purposes).
+		<para>
+			Integration into the UCS domain works by writing into the domain wide LDAP directory. The package
+			can only change something in the LDAP directory through a join script otherwise the functionality is
+			not guaranteed. Furthermore, the hostname and other basic configuration settings are first defined
+			when the join script is executed.
+		</para>
 
-Join scripts are commonly used to (but of course not limited to):
+		<para>
+			A join script is just an executable script living in /usr/lib/univention-install/. The name is
+			something like xx$app.inst (xx are two digits for ordering purposes).
+		</para>
 
-    Create users, groups, etc, as well as modifying existing ones
-    Registering an LDAP schema extension
-    Extending the form for creating/modifying a user (or a computer, ...) by Extended Attributes
-    Adding a service entry to the local host
-    Configuring the app with parameters read from LDAP
+		<para>
+			Join scripts are commonly used to (but of course not limited to):
+		</para>
 
-Join scripts are normally run as root.
+		<itemizedlist>
+			<listitem><simpara>
+    		Create users, groups, etc, as well as modifying existing ones
+			</simpara></listitem>
+			<listitem><simpara>
+    		Registering an LDAP schema extension
+			</simpara></listitem>
+			<listitem><simpara>
+    		Extending the form for creating/modifying a user (or a computer, ...) by Extended Attributes
+			</simpara></listitem>
+			<listitem><simpara>
+    		Adding a service entry to the local host
+			</simpara></listitem>
+			<listitem><simpara>
+    		Configuring the app with parameters read from LDAP
+			</simpara></listitem>
+		</itemizedlist>
 
-This example shows how to register a schema extension as well as adding widgets to the user form.
+		<para>
+			Join scripts are normally run as root.
+		</para>
 
+		<para>
+			This example shows how to register a schema extension as well as adding widgets to the user
+			form.
+		</para>
+
+		<programlisting language="sh">
 root@master:~# cat /usr/lib/univention-install/50app.inst
 #!/bin/bash
 
@@ -214,21 +401,21 @@ APP="app"
 # "$@" is IMPORTANT, because this includes parameters for LDAP bind
 # Otherwise these functions will fail on systems != DC master
 # An example schema file is in the section "Extend the UCS management system"
-ucs_registerLDAPExtension "$@" \-\-schema "/usr/share/$APP/$APP.schema"
+ucs_registerLDAPExtension "$@" --schema "/usr/share/$APP/$APP.schema"
 
 # create a container where the extended attributes shall live
 udm container/cn create "$@" \
-\-\-ignore_exists `# if this script is called twice for whatever reason this command shall not fail just because the object already existed` \
-\-\-position "cn=custom attributes,cn=univention,$ldap_base" `# this container already exists and _should_ be used` \
-\-\-set "name=$APP" || die # if this fails for whatever reason, abort join script. generally a good idea
+	--ignore_exists `# if this script is called twice for whatever reason this command shall not fail just because the object already existed` \
+	--position "cn=custom attributes,cn=univention,$ldap_base" `# this container already exists and _should_ be used` \
+	--set "name=$APP" || die # if this fails for whatever reason, abort join script. generally a good idea
 
 # for more details, see the section "Extend the UCS management system"
 udm settings/extended_attribute create "$@" \
-\-\-ignore_exists \
-\-\-position "cn=$APP,cn=custom attributes,cn=univention,$ldap_base" \
-\-\-set module="users/user" \
-# ...
-\-\-set name="$APP-enabled" || die
+	--ignore_exists \
+	--position "cn=$APP,cn=custom attributes,cn=univention,$ldap_base" \
+	--set module="users/user" \
+	# ...
+	--set name="$APP-enabled" || die
 
 # Best practice: Adds the service to the host. Then LDAP can be queried to lookup
 # where the app is already installed. Also useful for unjoin
@@ -237,9 +424,17 @@ ucs_addServiceToLocalhost "${SERVICE}" "$@"
 # when everything worked fine, tell the system that this VERSION does not need to be run again
 joinscript_save_current_version
 exit 0
+		</programlisting>
 
-An unjoin script is more or less the same, except that it lives in /usr/lib/univention-uninstall/ (and ends with .uinst). Its purpose is to be called after the app is uninstalled. After uninstallation, it might be appropriate to clean up those objects that have been added in the join script. Keep in mind that the app may be installed on different servers in the domain. So one must take care to not delete important objects when another host is still running this service.
+		<para>
+			An unjoin script is more or less the same, except that it lives in /usr/lib/univention-uninstall/
+			(and ends with .uinst). Its purpose is to be called after the app is uninstalled. After
+			uninstallation, it might be appropriate to clean up those objects that have been added in the join
+			script. Keep in mind that the app may be installed on different servers in the domain. So one must
+			take care to not delete important objects when another host is still running this service.
+		</para>
 
+		<programlisting language="sh">
 root@master:~# cat /usr/lib/univention-uninstall/50app-uninstall.uinst
 #!/bin/bash
 VERSION=1
@@ -258,8 +453,8 @@ ucs_removeServiceFromLocalhost "${SERVICE}" "$@"
 if ucs_isServiceUnused "${SERVICE}" "$@"; then
 # revert other changes made by 50app.inst
 # easy: just remove the container, the extended attribute is removed automatically
-udm container/cn remove \-\-dn "cn=$APP,cn=custom attributes,cn=univention,$ldap_base"
-# DO NOT revert ucs_registerLDAPExtension "$@" \-\-schema
+udm container/cn remove --dn "cn=$APP,cn=custom attributes,cn=univention,$ldap_base"
+# DO NOT revert ucs_registerLDAPExtension "$@" --schema
 # schema extensions should be kept forever. If attributes defined there were set during the time the app was installed
 # it may break LDAP if the attribute definition gets removed!
 fi
@@ -268,84 +463,133 @@ fi
 joinscript_remove_script_from_status_file 50app.inst
 
 exit 0
+		</programlisting>
 
-Now the scripts need to be packaged. Some steps have to be done in the postinst, prerm, postrm files of the package. There is a helper script that does that automatically. In debian/rules, add
+		<para>
+			Now the scripts need to be packaged. Some steps have to be done in the postinst, prerm, postrm files
+			of the package. There is a helper script that does that automatically. In debian/rules, add
+		</para>
 
+		<programlisting language="sh">
 override_dh_auto_install:
 univention-install-joinscript
 dh_auto_install
 
 %:
 dh $@
+		</programlisting>
 
-The join script needs to lie in the root directory of the source code and has to be named after the package, e.g. 50univention-myapp.inst and 50univention-myapp-uninstall.uinst. If you need more control, just do not univention-install-joinscript, details what to do can be found here.
-Add tabs and options
+		<para>
+			The join script needs to lie in the root directory of the source code and has to be named after the package, e.g. 50univention-myapp.inst and 50univention-myapp-uninstall.uinst. If you need more control, just do not univention-install-joinscript, details what to do can be found here.
+		</para>
+	</section>
 
-The form for creating LDAP objects can be customized by apps. Technically this is done by writing special objects into LDAP. As such, customization is generally done in a join script. The objects are created with the Univention Directory Manager (UDM).
+	<section>
+		<title>Extend the UCS management system</title>
+		<section>
+			<title>Add tabs and options</title>
 
-This example creates a CheckBox in the users' form's tab "Advanced settings". This makes it possible to save whether the user should be allowed to use the app. The value has to be queried by the app afterwards.
+			<para>
+				The form for creating LDAP objects can be customized by apps. Technically this is done by writing
+				special objects into LDAP. As such, customization is generally done in a join script. The objects
+				are created with the Univention Directory Manager (UDM).
+			</para>
 
+			<para>
+				This example creates a CheckBox in the users' form's tab "Advanced settings". This makes it possible
+				to save whether the user should be allowed to use the app. The value has to be queried by the app
+				afterwards.
+			</para>
+
+			<programlisting language="sh">
 APP="myapp"
 SERVICE="My App"
 # for more details, see http://docs.univention.de/developer-reference.html#udm:ea
 # "$@" is here because this should go into a join script and there passing the arguments of the script invocation to udm is necessary
 udm settings/extended_attribute create "$@" \
-\-\-ignore_exists \
-\-\-position "cn=$APP,cn=custom attributes,cn=univention,$ldap_base" \
-\-\-set module="users/user" `# extending users` \
-\-\-set ldapMapping='${APP}Enabled' `# this is the LDAP internal name form the schema file` \
-\-\-set objectClass="${APP}-user" \
-\-\-set name="$APP-enabled" `# this is the name for UDM` \
-\-\-set shortDescription="Allow $SERVICE" \
-\-\-set longDescription="Whether this user shall be allowed to use the $SERVICE service" \
-\-\-set translationShortDescription="\"de_DE\" \"$SERVICE erlauben\"" \
-\-\-set translationLongDescription="\"de_DE\" \"Zeigt an, ob dem Benutzer gestattet ist, den $SERVICE-Dienst zu nutzen\"" \
-\-\-set tabName="$SERVICE" `# This may create a new tab in the form` \
-\-\-set translationTabName="\"de_DE\" \"$SERVICE\"" \
-\-\-set tabAdvanced='1' `# will actually NOT create a new tab in the form, instead adds it in the already existing "Advanced" tab` \
-\-\-set tabPosition='1' \
-\-\-set syntax='TrueFalseUp' `# should be a CheckBox` \
-\-\-set mayChange='1' \
-\-\-set default='TRUE' || die
+	--ignore_exists \
+	--position "cn=$APP,cn=custom attributes,cn=univention,$ldap_base" \
+	--set module="users/user" `# extending users` \
+	--set ldapMapping='${APP}Enabled' `# this is the LDAP internal name form the schema file` \
+	--set objectClass="${APP}-user" \
+	--set name="$APP-enabled" `# this is the name for UDM` \
+	--set shortDescription="Allow $SERVICE" \
+	--set longDescription="Whether this user shall be allowed to use the $SERVICE service" \
+	--set translationShortDescription="\"de_DE\" \"$SERVICE erlauben\"" \
+	--set translationLongDescription="\"de_DE\" \"Zeigt an, ob dem Benutzer gestattet ist, den $SERVICE-Dienst zu nutzen\"" \
+	--set tabName="$SERVICE" `# This may create a new tab in the form` \
+	--set translationTabName="\"de_DE\" \"$SERVICE\"" \
+	--set tabAdvanced='1' `# will actually NOT create a new tab in the form, instead adds it in the already existing "Advanced" tab` \
+	--set tabPosition='1' \
+	--set syntax='TrueFalseUp' `# should be a CheckBox` \
+	--set mayChange='1' \
+	--set default='TRUE' || die
+			</programlisting>
 
-It exists other syntax defintions, for example string or ipAddress. More examples can be found in the following file /usr/share/pyshared/univention/admin/syntax.py.
+			<para>
+				It exists other syntax defintions, for example string or ipAddress. More examples can be found in
+				the following file /usr/share/pyshared/univention/admin/syntax.py.
+			</para>
 
-It is also possible to create own drop downs. The following example adds a ComboBox with two options "Admin" or "User"
+			<para>
+				It is also possible to create own drop downs. The following example adds a ComboBox with two options
+				"Admin" or "User"
+			</para>
 
+			<programlisting language="sh">
 udm settings/extended_attribute create "$@" \
-\-\-ignore_exists \
-\-\-position "cn=$APP,cn=custom attributes,cn=univention,$ldap_base" \
-\-\-set module="users/user" \
-\-\-set ldapMapping='${APP}Role' \
-\-\-set objectClass="${APP}-user" \
-\-\-set name="$APP-role" \
-\-\-set shortDescription="Role in $SERVICE" \
-\-\-set longDescription="Which role the user has for $SERVICE" \
-\-\-set translationShortDescription="\"de_DE\" \"$SERVICE-Rolle\"" \
-\-\-set translationLongDescription="\"de_DE\" \"Welche Rolle der Benutzer in $SERVICE innehat\"" \
-\-\-set tabName="$SERVICE" \
-\-\-set translationTabName="\"de_DE\" \"$SERVICE\"" \
-\-\-set tabAdvanced='1' \
-\-\-set tabPosition='1' \
-\-\-set syntax="${APP}UserOrAdmin" `This is the interesting part. The syntax is different` \
-\-\-set mayChange='1' \
-\-\-set default='user' || die
+	--ignore_exists \
+	--position "cn=$APP,cn=custom attributes,cn=univention,$ldap_base" \
+	--set module="users/user" \
+	--set ldapMapping='${APP}Role' \
+	--set objectClass="${APP}-user" \
+	--set name="$APP-role" \
+	--set shortDescription="Role in $SERVICE" \
+	--set longDescription="Which role the user has for $SERVICE" \
+	--set translationShortDescription="\"de_DE\" \"$SERVICE-Rolle\"" \
+	--set translationLongDescription="\"de_DE\" \"Welche Rolle der Benutzer in $SERVICE innehat\"" \
+	--set tabName="$SERVICE" \
+	--set translationTabName="\"de_DE\" \"$SERVICE\"" \
+	--set tabAdvanced='1' \
+	--set tabPosition='1' \
+	--set syntax="${APP}UserOrAdmin" `This is the interesting part. The syntax is different` \
+	--set mayChange='1' \
+	--set default='user' || die
+			</programlisting>
 
-The syntax is a python class and needs to be defined in a separate file:
+			<para>
+				The syntax is a python class and needs to be defined in a separate file:
+			</para>
 
+			<programlisting language="sh">
 class myappUserOrAdmin(select):
 choices=[('user', 'User'), ('admin', 'Admin')]
+			</programlisting>
 
-This file needs to be registered in a join script:
+			<para>
+				This file needs to be registered in a join script:
+			</para>
 
-ucs_registerLDAPExtension "$@" \-\-udm_syntax "/usr/share/$APP/${APP}_syntax.py"
+			<programlisting language="sh">
+				ucs_registerLDAPExtension "$@" --udm_syntax "/usr/share/$APP/${APP}_syntax.py"
+			</programlisting>
 
-LDAP schema extension
+		</section>
 
-The Extended Attributes are generally stored in LDAP as attributes not defined by default. A schema file needs to be created and registered for the Extended Attributes to actually work. See [1] for details of how to write a schema file.
+		<section>
+			<title>LDAP schema extension</title>
 
-The example above needs a file like this:
+			<para>
+				The Extended Attributes are generally stored in LDAP as attributes not defined by default. A schema
+				file needs to be created and registered for the Extended Attributes to actually work. See [1] for
+				details of how to write a schema file.
+			</para>
 
+			<para>
+				The example above needs a file like this:
+			</para>
+
+			<programlisting language="sh">
 attributetype ( 1.3.6.1.4.1.10176.99998.xxx.1.1 NAME 'myapp-enabled'
 DESC 'My App allowed'
 EQUALITY caseIgnoreMatch
@@ -364,75 +608,166 @@ SUP top AUXILIARY
 MUST ( cn )
 MAY ( myapp-enabled $ myapp-role )
 )
+			</programlisting>
 
-Note the "xxx" in the so called OIDs. You need a unique (worldwide!) identifier for your attributes and object classes. Either request one or (probably better) talk to us, as Univention has its own namespace and any schema extension can be defined "beneath" it.
+			<para>
+				Note the "xxx" in the so called OIDs. You need a unique (worldwide!) identifier for your attributes
+				and object classes. Either request one or (probably better) talk to us, as Univention has its own
+				namespace and any schema extension can be defined "beneath" it.
+			</para>
 
-This file needs to be registered in a join script:
+			<para>
+				This file needs to be registered in a join script:
+			</para>
 
-ucs_registerLDAPExtension "$@" \-\-schema "/usr/share/$APP/$APP.schema"
+			<programlisting language="sh">
+ucs_registerLDAPExtension "$@" --schema "/usr/share/$APP/$APP.schema"
+			</programlisting>
 
-Build own UDM modules
+		</section>
 
-The Univention Directory Manager (UDM) is a collection of modules written in Python to add powerful capabilities around Python's LDAP bindings. In general, vendors will extend those existing modules using Extended Attributes. But if a completely new class of object shall be saved, a new UDM module may be useful, e.g., if the app manages buildings which cannot be simply "extended groups or containers".
+		<section>
+			<title>Build own UDM modules</title>
 
-When writing a UDM module, it is best to look out for existing modules that can be copied and customized for one own needs. They live in /usr/share/pyshared/univention/admin/handlers/. The module appcenter/app.py is a rather simple module which shows how a basic module should look like:
+			<para>
+				The Univention Directory Manager (UDM) is a collection of modules written in Python to add powerful capabilities around Python's LDAP bindings. In general, vendors will extend those existing modules using Extended Attributes. But if a completely new class of object shall be saved, a new UDM module may be useful, e.g., if the app manages buildings which cannot be simply "extended groups or containers".
+			</para>
 
+			<para>
+				When writing a UDM module, it is best to look out for existing modules that can be copied and
+				customized for one own needs. They live in /usr/share/pyshared/univention/admin/handlers/. The
+				module appcenter/app.py is a rather simple module which shows how a basic module should look like:
+			</para>
+
+			<programlisting language="sh">
 svn co http://forge.univention.org/svn/dev/branches/ucs-4.0/ucs-4.0-1/management/univention-management-console-module-appcenter/udm/handlers/appcenter/
+			</programlisting>
 
-Build own UMC modules
+		</section>
 
-The Univention Management Console (UMC) is the web based frontend which is used to administrate the UCS domain. It consists of separate modules and vendors may write such modules to further extend the Console. This may be a good idea if
+		<section>
+			<title>Build own UMC module </title>
 
-    The app can be customized but currently lacks a frontend
-    The app needs to be activated or manually configured to work properly
+			<para>
+				The Univention Management Console (UMC) is the web based frontend which is used to administrate the UCS domain. It consists of separate modules and vendors may write such modules to further extend the Console. This may be a good idea if
+			</para>
 
-Note that many UCS users are used to UMC and the fact that everything can be configured in one place. So adding a UMC module may greatly enhance the user experience.
+			<itemizedlist>
+				<listitem><simpara>
+					The app can be customized but currently lacks a frontend
+				</simpara></listitem>
+				<listitem><simpara>
+					The app needs to be activated or manually configured to work properly
+				</simpara></listitem>
+			</itemizedlist>
 
-UMC modules are very versatile (both the Javascript based frontend part as well as the Python backend part) and can be used for nearly anything. This guide cannot cover everything there is about UMC modules. One starting point may be
+			<para>
+				Note that many UCS users are used to UMC and the fact that everything can be configured in one
+				place. So adding a UMC module may greatly enhance the user experience.
+			</para>
 
+			<para>
+				UMC modules are very versatile (both the Javascript based frontend part as well as the Python
+				backend part) and can be used for nearly anything. This guide cannot cover everything there is about
+				UMC modules. One starting point may be 
+			</para>
+
+			<programlisting language="sh">
 univention-install univention-management-console-dev
-umc-create-module \-\-help
+umc-create-module --help
+			</programlisting>
 
-Or you use UMC and look out for modules that to some extend do what you are trying to accomplish and copy the source code, e.g.
+			<para>
+				Or you use UMC and look out for modules that to some extend do what you are trying to
+				accomplish and copy the source code, e.g.
+			</para>
 
+				<programlisting language="sh">
 svn co http://forge.univention.org/svn/dev/branches/ucs-4.0/ucs-4.0-0/management/univention-management-console-module-top
+				</programlisting>
+		</section>
+	</section>
 
-Further integration scenarios
-Firewall settings
+	<section>
+		<title>Further integration scenarios</title>
+		<section>
+			<title>Firewall settings</title>
 
-In the default setting, all incoming ports are blocked by the UCS firewall. Every package can provide rules, which free up the ports required. In this example the port 6644 is opened for TCP and UDP. It can be run in the postinst script or in the join script:
+			<para>
+				In the default setting, all incoming ports are blocked by the UCS firewall. Every package
+				can provide rules, which free up the ports required. In this example the port 6644 is opened for TCP
+				and UDP. It can be run in the postinst script or in the join script:
+			</para>
 
+			<programlisting language="sh">
 # configure firewall
-univention-config-registry set security/packetfilter/package/$APP/tcp/6644/all="ACCEPT" \
-              security/packetfilter/package/$APP/tcp/6644/all/en="$APP" \
-              security/packetfilter/package/$APP/udp/6644/all="ACCEPT" \
-              security/packetfilter/package/$APP/udp/6644/all/en="$APP"
-[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+univention-config-registry set \
+			security/packetfilter/package/$APP/tcp/6644/all="ACCEPT" \
+      security/packetfilter/package/$APP/tcp/6644/all/en="$APP" \
+      security/packetfilter/package/$APP/udp/6644/all="ACCEPT" \
+      security/packetfilter/package/$APP/udp/6644/all/en="$APP"
+[ -x "/etc/init.d/univention-firewall" ] &amp;&amp; \
+		invoke-rc.d univention-firewall restart
+			</programlisting>
+		</section>
 
-Serving a web application
+		<section>
+			<title>Serving a web application</title>
 
-UCS comes with a running Apache HTTP Server used by the UMC server as a proxy. This means that apps cannot use port 80/443 easily: It is already used. Apps can use Apache, though, by shipping a file /etc/apache2/sites-available/$APP. Apache can then act as a proxy to the app's server (running on a different port).
+			<para>
+				UCS comes with a running Apache HTTP Server used by the UMC server as a proxy. This means that apps
+				cannot use port 80/443 easily: It is already used. Apps can use Apache, though, by shipping a file
+				/etc/apache2/sites-available/$APP. Apache can then act as a proxy to the app's server (running on a
+				different port).
+			</para>
 
+			<programlisting language="sh">
 # minimal
 ProxyPass /$APP/ http://127.0.0.1:$APP_PORT/
 ProxyPassReverse /$APP/ http://127.0.0.1:$APP_PORT/
+			</programlisting>
 
-The site needs to be enabled by a line in the postinst of the package:
+			<para>
+				The site needs to be enabled by a line in the postinst of the package:
+			</para>
 
+			<programlisting language="sh">
 a2ensite $APP
+			</programlisting>
 
-It is highly recommended to use Apache for it is the service with port 80/443. While it is possible to just let the app responding to requests on port say, 8080, many firewalls will block the app without taking further actions. One prominent example are the default security rules of the Amazon Web Services. The app may not be accessible without using Apache as a proxy!
-Setting links to the web interface in /ucs-overview
+			<para>
+				It is highly recommended to use Apache for it is the service with port 80/443. While it is
+				possible to just let the app responding to requests on port say, 8080, many firewalls will block the
+				app without taking further actions. One prominent example are the default security rules of the
+				Amazon Web Services. The app may not be accessible without using Apache as a proxy!
+			</para>
+		</section>
 
-The start page of any UCS system (http://$hostname/) lists available services on this server, notably UMC. If an app provides a web interface, this can be listed, too. The easiest way is by stating this in the ini file:
+		<section>
+			<title>Setting links to the web interface in /ucs-overview</title>
 
+			<para>
+				The start page of any UCS system (http://$hostname/) lists available services on this
+				server, notably UMC. If an app provides a web interface, this can be listed, too. The easiest way is
+				by stating this in the ini file:
+			</para>
+
+			<programlisting language="sh">
 WebInterface=/$APP/
-#WebInterfaceName=... <- defaults to Name=
+#WebInterfaceName=... # defaults to Name=
 # one of the two categories in /ucs-overview. "services" (default) or "admin"
 #UCSOverviewCategory=services
+			</programlisting>
 
-If WebInterface is given in the ini, the App Center takes care of the integration on the overview site. But sometimes this is not powerful enough. This level of "automated integration" cannot handle ports other than 80/443 (as it will always use the current port which is 80 or 443) and cannot add more than one link. If a deeper level is required, this should be done in the postinst and postrm scripts of the integration package using UCR:
+			<para>
+				If WebInterface is given in the ini, the App Center takes care of the integration on the
+				overview site. But sometimes this is not powerful enough. This level of "automated integration"
+				cannot handle ports other than 80/443 (as it will always use the current port which is 80 or 443)
+				and cannot add more than one link. If a deeper level is required, this should be done in the
+				postinst and postrm scripts of the integration package using UCR:
+			</para>
 
+	<programlisting language="sh">
 # postint
 
 #DEBHELPER#
@@ -447,6 +782,8 @@ ucr set ucs/web/overview/entries/services/$APP/description/de="Description of li
      ucs/web/overview/entries/services/$APP/link=https://$hostname.$domainname:$APP_PORT/webinterface/ \
      ucs/web/overview/entries/services/$APP/priority=xx-digits-for-sorting-or-just-dont-set
 
+	</programlisting>
+	<programlisting language="sh">
 # postrm
 
 #DEBHELPER#
@@ -458,12 +795,31 @@ ucr unset ucs/web/overview/entries/services/$APP/description/de \
        ucs/web/overview/entries/services/$APP/label \
        ucs/web/overview/entries/services/$APP/link \
        ucs/web/overview/entries/services/$APP/priority
+	</programlisting>
 
-Using PostgreSQL or MySQL
+		</section>
 
-When your application uses PostgreSQL, your package should depend on univention-postgres and you need to ship a file in /etc/postgresql/9.1/main/pg_hba.conf.d/ or, maybe even better, in /etc/univention/templates/files/etc/postgresql/9.1/main/pg_hba.conf.d/ (see UCR):
+		<section>
+			<title>Using PostgreSQL or MySQL</title>
 
+			<para>
+				When your application uses PostgreSQL, your package should depend on univention-postgres and
+				you need to ship a file in /etc/postgresql/9.1/main/pg_hba.conf.d/ or, maybe even better, in
+				/etc/univention/templates/files/etc/postgresql/9.1/main/pg_hba.conf.d/ (see UCR):
+			</para>
+
+				<programlisting language="sh">
 local $app_db_name $app_db_user md5
+				</programlisting>
 
-When your application uses MySQL, you may access the admin password by reading /etc/mysql.secret. A dependency to mysql is enough as we patch the debian package.
+			<para>
+				When your application uses MySQL, you may access the admin password by reading
+				/etc/mysql.secret. A dependency to mysql is enough as we patch the debian package.
+			</para>
+		</section>
 
+	</section>
+
+</chapter>
+
+<!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->
