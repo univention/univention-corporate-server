@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.89-7) unstable; urgency=medium
+
+  * Bug #37780: adapt style of SearchForm submit button
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 18 Feb 2015 15:52:38 +0100
+
 univention-management-console-frontend-theme (0.0.89-6) unstable; urgency=medium
 
   Bug #37780:
