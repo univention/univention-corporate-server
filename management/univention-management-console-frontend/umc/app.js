@@ -711,8 +711,7 @@ define([
 			tools.umcpCommand('get/hosts/list').then(lang.hitch(this, function(data) {
 				var empty = data.result.length <= 1;
 				empty = empty || data.result.length >= (parseInt(_ucr['umc/web/host_referrallimit'], 10) || 100);
-				var disabled = tools.isFalse(tools.status('umcWebSsoEnabled'));
-				this._hostInfo.set('disabled', empty || disabled)
+				this._hostInfo.set('disabled', empty)
 
 				var isIE89 = (has('ie') == 8 || has('ie') == 9);
 				if (empty && isIE89) {
