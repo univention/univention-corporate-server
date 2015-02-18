@@ -1,3 +1,9 @@
+univention-apache (7.0.16-5) unstable; urgency=low
+
+  * Bug #37780: Adjusted styling for the module items 
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 18 Feb 2015 20:05:44 +0100
+
 univention-apache (7.0.16-4) unstable; urgency=low
 
   * Bug #37780: Adjusted styling for the module items
