@@ -134,7 +134,7 @@ define([
 				host: 'localhost'
 			}, false).then(function(response) {
 				var loginToken = response.result.loginToken;
-				return request('/umcp/sso', {
+				return xhr('/umcp/sso', {
 					query: {
 						loginToken: loginToken
 					}

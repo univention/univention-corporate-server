@@ -1,3 +1,11 @@
+univention-management-console-frontend (4.1.106-22) unstable; urgency=medium
+
+  Bug #37347:
+  * fixed wrong reference to request()
+  * added error handler for umc.dialog.login() to avoid tracebacks
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 18 Feb 2015 14:17:30 +0100
+
 univention-management-console-frontend (4.1.106-21) unstable; urgency=medium
 
   Bug #37780:

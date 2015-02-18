@@ -92,6 +92,7 @@ define([
 			else {
 				// reject deferred to force login
 				this._loginDeferred = new Deferred();
+				this._loginDeferred.then(null, function() { /* prevent logging of exception */ });
 				this._loginDeferred.reject();
 			}
 
