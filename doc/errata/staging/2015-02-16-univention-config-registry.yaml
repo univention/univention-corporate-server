@@ -5,6 +5,6 @@ src: univention-config-registry
 fix: 9.0.6-15.478.201502161031
 version: [4]
 desc: |
-  The file name for temporary files created my UCR commit now start with a dot
+  The file name for temporary files created by UCR commit now start with a dot
   ('.') to hide them by default.
-bug: [37784]
+bug: [35954]
