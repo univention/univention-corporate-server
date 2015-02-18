@@ -1,0 +1,24 @@
+product: ucs
+release: "3.2"
+version: [4]
+scope: ucs_3.2-0-errata3.2-4
+src: xorg-server
+fix: 2:1.7.7-18.103.201502181507
+desc: |
+ Multiple out of bounds accesses and integer overflows in the
+ Xorg X-Server may result in denial of service or privilege escalation.
+cve:
+ - CVE-2014-8091
+ - CVE-2014-8092
+ - CVE-2014-8093
+ - CVE-2014-8094
+ - CVE-2014-8095
+ - CVE-2014-8096
+ - CVE-2014-8097
+ - CVE-2014-8098
+ - CVE-2014-8099
+ - CVE-2014-8100
+ - CVE-2014-8101
+ - CVE-2014-8102
+bug:
+ - 37272
