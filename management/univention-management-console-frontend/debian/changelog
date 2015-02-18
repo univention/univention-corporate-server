@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-26) unstable; urgency=medium
+
+  * Bug #37347: fix deferred handling in tools.defer() renewSession()
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 18 Feb 2015 19:00:27 +0100
+
 univention-management-console-frontend (4.1.106-25) unstable; urgency=medium
 
   * Bug #37780: reverted changes for umc/web/sso/enabled

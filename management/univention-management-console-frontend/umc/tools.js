@@ -130,6 +130,7 @@ define([
 
 		renewSession: function() {
 			this.resetModules();
+			var sessionID = cookie('UMCSessionId');
 			return tools.umcpCommand('lib/sso/getsession', {
 				host: 'localhost'
 			}, false).then(function(response) {
@@ -139,13 +140,21 @@ define([
 						loginToken: loginToken
 					}
 				}).then(function() {
+					var newSessionID = cookie('UMCSessionId');
+					if (newSessionID == sessionID) {
+						console.log('UMC server session could not be renewed, therefore a re-login is enforced.');
+						this.closeSession();
+						return dialog.login();
+					}
+
 					console.log('UMC server session has been renewed successfully.');
-					return true;
+					return;
 				});
 			}).then(null, lang.hitch(this, function(err) {
 				// if lib/sso/getsession is not accessible, simply close the session
 				console.error('WARNING: Could not renew session, access to lib/sso/getsession not granted... forcing re-login again instead:', err);
 				this.closeSession();
+				return dialog.login();
 			}));
 		},
 
@@ -1538,10 +1547,13 @@ define([
 			var deferred = new Deferred();
 			setTimeout(function() {
 				if (!deferred.isCanceled()) {
-					deferred.resolve(func());
+					deferred.resolve();
 				}
 			}, waitingTime);
-			return deferred.promise;
+			var returnDeferred = deferred.then(function() {
+				return func();
+			});
+			return returnDeferred;
 		},
 
 		linkToModule: function(/*Object*/ props) {
