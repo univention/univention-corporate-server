@@ -114,7 +114,7 @@ nochange)
 	exit 0
 	;;
 postchange)
-    # do something with /etc/machine.secret, e.g.
+  # do something with /etc/machine.secret, e.g.
 	cp /etc/machine.secret /etc/$app.secret
 	# restart daemon after password was changed
 	invoke-rc.d $app restart
