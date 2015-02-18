@@ -669,15 +669,17 @@ define([
 		},
 
 		restartOrReload: function() {
-			tools.defer(lang.hitch(this, function() {
+			var deferred = tools.defer(lang.hitch(this, function() {
 				// update the list of apps
-				var reloadPage = this.updateApplications().then(lang.hitch(this, function() {
-					return this.reloadPage();
+				return tools.renewSession().then(lang.hitch(this, function() {
+					var reloadPage = this.updateApplications().then(lang.hitch(this, 'reloadPage'));
+					var reloadModules = UMCApplication.reloadModules();
+					return all([reloadPage, reloadModules]).then(function() {;
+						tools.checkReloadRequired();
+					});
 				}));
-				var reloadModules = UMCApplication.reloadModules();
-				this.standbyDuring(all([reloadPage, reloadModules, tools.renewSession()]));
 			}), 100);
-			tools.checkReloadRequired();
+			this.standbyDuring(deferred);
 		},
 
 		_detailFieldCustomUsage: function() {

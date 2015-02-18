@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-5) unstable; urgency=medium
+
+  * Bug #37347: correct command order in restartOrReload() methods
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 18 Feb 2015 19:02:20 +0100
+
 univention-management-console-module-appcenter (4.1.20-4) unstable; urgency=medium
 
   * Bug #37347: remove versioned dependency to u-m-c-module-lib

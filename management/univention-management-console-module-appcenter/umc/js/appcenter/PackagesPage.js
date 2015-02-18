@@ -470,11 +470,17 @@ define([
 		_restartOrReload: function() {
 			this.onInstalled();
 			var deferred = tools.defer(lang.hitch(this, function() {
-				this._refresh_grid();
-				return all([UMCApplication.reloadModules(), tools.renewSession()]);
+				// update the list of apps
+				return tools.renewSession().then(lang.hitch(this, function() {
+					return all([
+						UMCApplication.reloadModules(),
+						this._refresh_grid()
+					]).then(function() {
+						tools.checkReloadRequired();
+					});
+				}));
 			}), 100);
 			this.standbyDuring(deferred);
-			tools.checkReloadRequired();
 		},
 
 		onInstalled: function() {
