@@ -149,7 +149,9 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The partitioning can be performed as required, e.g., by using an LVM.
+		  The partitioning can be performed as required, e.g., by using an LVM. For an image that
+		  will be used in a cloud setup, a single root partition should be used. This allows growing
+		  the root partition based on the selected instance disk size.
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
@@ -177,20 +179,10 @@
 	  <programlisting>
 univention-install univention-printserver
 	  </programlisting>
-
-	  Packages from the Univention App Center are installed with the command
-	  <command>univention-add-app</command>.  The ID of an application can be retrieved with the
-	  command <command>univention-add-app --list</command>:
-
-	  <programlisting>
-univention-add-app -l APPID
-	  </programlisting>
 	</para>
 
 	<para> 
-	  The system now needs to be shut down cleanly without filesystems still being mounted. This can
-	  be done by restarting the system and then shutting it down in UVMM when the
-	  system displays the Grub menu.
+	  The system now needs to be shut down cleanly without filesystems still being mounted.
 	</para>
 
 	<para> 
@@ -200,8 +192,10 @@ univention-add-app -l APPID
 	</para>
 
 	<para> 
-	  Additional steps are required if the image is to be used in Amazon EC2, see <xref
-		linkend="appliance:create:ec2"/>.
+	  Additional steps are required if the image is to be used in Amazon EC2 
+	  (see <xref linkend="appliance:create:ec2"/>), OpenStack (see <xref
+	  linkend="appliance:create:openstack"/>) or as a VMware / VirtualBox appliance (see <xref
+	  linkend="appliance:create:virt"/>).
 	</para>
 
 	<section id="appliance:create:ec2">
@@ -231,22 +225,23 @@ univention-grub-generate-menu-lst
 	  <para>
 		The initial login to the EC2 instance is performed via a SSH host key. To prevent SSH logins
 		from occurring with the default root password of the standard image during commissioning of
-		the instance, the initial root password is removed. The two &ucsUCR; variables configure this start mode:
+		the instance, the initial root password is removed. The following &ucsUCR; variable configures this start mode:
 
 		<programlisting>
 usermod -p \* root
 ucr set server/amazon=true
-ucr set apache2/startsite="ucs-overview/initialsetup.html"
 		</programlisting>
 	  </para>
 
 	  <para>
-		The name server should be set; in this example to OpenDNS:
+		  The name server should be set; in this example to OpenDNS. Additionally, the timeout when
+		  waiting for a DHCP request answer is lowered.
  
 		<programlisting>
 ucr set nameserver1=208.67.222.222 dns/forwarder1=208.67.222.222
 ucr unset nameserver2 nameserver3
 ucr unset dns/forwarder2 dns/forwarder3
+ucr set interfaces/eth0/type=dhcp dhclient/options/timeout=12
 		</programlisting>
 	  </para>
 	</section>
@@ -254,15 +249,38 @@ ucr unset dns/forwarder2 dns/forwarder3
 	<section id="appliance:create:openstack">
 	  <title>Providing an image for OpenStack</title>
 	  <para>
-		The provisioning for OpenStack images occurs via Cloud-Init  (see
-		<xref linkend="appliance:use:cloudinit"/>). No additional adjustments are necessary.
+		The provisioning for OpenStack images occurs via Cloud-Init (see
+		<xref linkend="appliance:use:cloudinit"/>).
+		Cloud-Init is a standardised solution for configuration of an image. Cloud-Init checks a
+		range of data sources for an existing configuration. The <package>univention-cloud-init</package>
+		package must be installed to prepare an image for provisioning via Cloud-Init:
+
+		<programlisting>
+univention-install univention-cloud-init
+		</programlisting>
+	  </para>
+
+	  <para>
+		The local firefox session should not be started when running as an OpenStack instance.
+		<programlisting>
+ucr set system/setup/boot/start=false
+		</programlisting>
+	  </para>
+
+	  <para>
+		The initial login to the OpenStack instance is performed via a SSH host key. To prevent SSH logins
+		from occurring with the default root password of the standard image during commissioning of
+		the instance, the initial root password is removed.
+		<programlisting>
+usermod -p \* root
+		</programlisting>
 	  </para>
 	</section>
 
 	<section id="appliance:create:virt">
 	  <title>Providing an image for VMWare/VirtualBox</title>
 	  <para>
-		Virtualization images for VirtualBox, VMware Player and Vmware ESX(i) can also be created on
+		Virtualization images for VirtualBox, VMware Player and Vmware ESX can also be created on
 		the basis of the QCOW images above. To this end, Univention offers a tool, which can be
 		installed via the <package>generate-appliance</package> package (the integration in UCS 4.0
 		can be followed via Bug 37137).
@@ -299,7 +317,7 @@ generate_appliance -s appliance.qcow2
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			VMWare ESX(i) OVA image, can be suppressed with <emphasis>--no-ova-esxi</emphasis>
+			VMWare ESX OVA image, can be suppressed with <emphasis>--no-ova-esxi</emphasis>
 		  </simpara></listitem>
 		</itemizedlist>
 	  </para>
@@ -369,28 +387,35 @@ invoke-rc.d univention-management-console-server restart
 	<section id="appliance:use:cloudinit">
 	  <title>Automatic configuration of an appliance with Cloud-Init</title>
 	  <para>
-		Cloud-Init is a standardised solution for configuration of an image. Cloud-Init checks a
-		range of data sources for an existing configuration. The <package>cloud-init</package>
-		package must be installed to prepare an image for provisioning via Cloud-Init:
-
-		<programlisting>
-univention-install cloud-init
-		</programlisting>
-
+		Cloud-Init works on a configuration file in the cloud config format.
 		The configuration file is provided by the respective cloud service; the type of provision
 		differs from cloud solution to cloud solution. It is currently only possible to provide a
 		&ucsMaster;.
 	  </para>
 
 	  <para>
+		The configuration file may be adapted for different scenarios. To setup a domain,
+		the <emphasis>ucs_setup</emphasis> section is required. Note that the supplied
+		<emphasis>ldap_base</emphasis> is used in other config sections as well.
+	  </para>
+
+	  <para>
 		The following includes an example file with which a &ucsMaster; can be provided. In
-		addition, two files are generated on the system: the UCS license to be installed and a file
-		with the apps to be installed from the Univention App Center. The files specified are base64-encoded
-		The <command>base64</command> and <command>base64 --decode</command> commands can
-		be used to encode and decode files. The <emphasis>content</emphasis> entry needs to be
-		specified as a consecutive line:
+		addition, several files are generated on the system: the UCS license to be installed and a file
+		with the apps to be installed from the Univention App Center.
+		The license in this example is the default <emphasis>free for personal use license</emphasis>.
+		More information about requesting a proper license can be found in <xref linkend="appliance:license"/>.
+	  </para>		
+
+	  <para>
+		Two example hook scripts are generated which are called after setup is finished:
+		One calls wget for a given URL, which could be used to signal an external service that the
+		provisioning of	the instance is done. The other is an example <command>udm</command>
+		call to register an OpenStack connection in UVMM.
 
 		<programlisting>
+#cloud-config
+#
 ucs_setup:
   hostname: myucsmaster
   domainname: ucs.local
@@ -398,55 +423,77 @@ ucs_setup:
   ldap_base: dc=ucs,dc=local
   rootpassword: univention
   defaultlocale: de_DE.UTF-8:UTF-8
-  components:
-  packages_install:
-  packages_remove:
+  components: 
+  packages_install: univention-virtual-machine-manager-daemon
+  packages_remove: 
 write_files:
--   encoding: b64
-    content:
-	ZG46IGNuPWFkbWluLGNuPWxpY2Vuc2UsY249dW5pdmVudGlvbixkYz11Y3MsZGM9bG9\
-    jYWwKY246IGFkbWluCm9iamVjdENsYXNzOiB0b3AKb2JqZWN0Q2xhc3M6IHVuaXZlbn\
-    Rpb25MaWNlbnNlCm9iamVjdENsYXNzOiB1bml2ZW50aW9uT2JqZWN0CnVuaXZlbnRpb\
-    25MaWNlbnNlQmFzZUROOiBGcmVlIGZvciBwZXJzb25hbCB1c2UgZWRpdGlvbgp1bml2\
-    ZW50aW9uTGljZW5zZUNvcnBvcmF0ZUNsaWVudHM6IHVubGltaXRlZAp1bml2ZW50aW9\
-    uTGljZW5zZUVuZERhdGU6IHVubGltaXRlZAp1bml2ZW50aW9uTGljZW5zZUtleUlEOi\
-    A0MDBkM2IzMS02YWMxLTQwNTgtOTc2Ny1jNTY5Zjk4Mzc1YmEKdW5pdmVudGlvbkxpY\
-    2Vuc2VNYW5hZ2VkQ2xpZW50czogNQp1bml2ZW50aW9uTGljZW5zZU1vZHVsZTogYWRt\
-    aW4KdW5pdmVudGlvbkxpY2Vuc2VQcmVtaXVtU3VwcG9ydDogMAp1bml2ZW50aW9uTGl\
-    jZW5zZVNlcnZlcnM6IHVubGltaXRlZAp1bml2ZW50aW9uTGljZW5zZVNpZ25hdHVyZT\
-    ogWllwVmVLWkhXSkVIVFdMTEhYZTB0ZS9NZTh6cis5SnpCMUYvNFV5RkxPc3JQa3hLC\
-    iArS0I3Q0tFbmpGVFg3NnBRN1BMYmhHWHR4VEJDOUlXdzV1T0EzTzdUNEd1ZzU3c1RO\
-    TVRnR0FMTzF0Vldxa1cxaFQ5OE9NSW5yUFcKIHlIZmVsVmZGa2hjNEJxQVhCOTlSc1M\
-    xY1h0Rm1tWE0xQWF1ekNkOUFqVEFQZm9NSFBmTE9HL1JRVXdGSVU2SjZWaUlMd2p0dG\
-    Z1YQogZnZKOWpLNGR1REliTXNSRWxSejNZQkk3M1FwSy9CcG04WXZTd0ZvVGF0RW9kS\
-    mJ0RzRIUTNkL2kxV2dPd20wVUdaK3BtNWl1Vm45CiBTN0RnOXorTXdVZ05TUmk2dmdu\
-    d2F2cVl0NHVtMGhTTHZJOUsvaWVia3BoRW52RVlOb2NFN0xSKy9MSjBBT21XMm5CeXc\
-    9PQp1bml2ZW50aW9uTGljZW5zZVN1cHBvcnQ6IDAKdW5pdmVudGlvbkxpY2Vuc2VUeX\
-    BlOiBVQ1MKdW5pdmVudGlvbkxpY2Vuc2VVc2VyczogNQp1bml2ZW50aW9uTGljZW5zZ\
-    VZlcnNpb246IDIKdW5pdmVudGlvbkxpY2Vuc2VWaXJ0dWFsRGVza3RvcENsaWVudHM6\
-    IHVubGltaXRlZAp1bml2ZW50aW9uTGljZW5zZVZpcnR1YWxEZXNrdG9wVXNlcnM6IHV\
-    ubGltaXRlZAp1bml2ZW50aW9uT2JqZWN0VHlwZTogc2V0dGluZ3MvbGljZW5zZQoK
+-   content: |
+      dn: cn=admin,cn=license,cn=univention,dc=ucs,dc=local
+      objectClass: top
+      objectClass: univentionLicense
+      objectClass: univentionObject
+      univentionObjectType: settings/license
+      univentionLicenseEndDate: unlimited
+      univentionLicenseModule: admin
+      cn: admin
+      univentionLicenseBaseDN: Free for personal use edition
+      univentionLicenseUsers: 50
+      univentionLicenseServers: unlimited
+      univentionLicenseManagedClients: 50
+      univentionLicenseCorporateClients: unlimited
+      univentionLicenseVirtualDesktopUsers: unlimited
+      univentionLicenseVirtualDesktopClients: unlimited
+      univentionLicenseSupport: 0
+      univentionLicensePremiumSupport: 0
+      univentionLicenseVersion: 2
+      univentionLicenseType: UCS
+      univentionLicenseSignature: FPkmAy7icL0N/2w15fREr/l4rD9r6xaLi3C7dLRVQbDX5zdcQ+
+       0BSPfHFT8pdAaMpZqXkp13rQK4N2PzHHPy0HwyyaeMTckxJyaIQd/B/M4t+vbIxnz+2YNoDVqskws
+       me/V8qxgoMsMFT47LUDp7serXZoCETutwcwwqrycy0RdahezzyAA93e3bBaH1y5zK1b4ElAWW933d
+       fctWTR+/LdQglhKbRlHBN8fbcHLmXBtu7yMV3J7AGl+wTo4+KzASUWdTmrfUY5dcU77spyCMJEGL6
+       ZxsFs8FhDrYajyAn2s0rAcxJK9JKFFjBuuiF+8MB2dyypkJilSiTRQDhEYorQ==
     owner: root:root
     path: /var/cache/univention-system-setup/license
     permissions: '0400'
--   encoding: b64
-    content: YWRjb25uZWN0b3IKc2ltcGxlc2FtbHBocAo=
+-   content: |
+      simplesamlphp
+      adconnector
     owner: root:root
     path: /var/cache/univention-system-setup/installapps
     permissions: '0400'
+-   content: |
+      #!/bin/sh
+      wget http://myURL/page?myparam=myValue
+    owner: root:root
+    path: /usr/lib/univention-system-setup/appliance-hooks.d/90_wget_url
+    permissions: '0755'
+-   content: |
+      #!/bin/sh
+      udm uvmm/cloudconnection create --ignore_exists \
+      --position="cn=CloudConnection,cn=Virtual Machine Manager,dc=ucs,dc=local" \
+      --set name="OpenStack" \
+      --set type="cn=OpenStack,cn=CloudType,cn=Virtual Machine Manager,dc=ucs,dc=local" \
+      --set includeUCSimages=0 \
+      --append parameter="username demouser" \
+      --append parameter="password password" \
+      --append parameter="cloudtype OpenStack" \
+      --append parameter="auth_url http://192.168.0.1:5000" \
+      --append parameter="auth_version 2.0_password" \
+      --append parameter="service_type compute" \
+      --append parameter="service_name nova" \
+      --append parameter="tenant demotenant" \
+      --append parameter="service_region regionOne"
+      invoke-rc.d univention-virtual-machine-manager-daemon restart
+    owner: root:root
+    path: /usr/lib/univention-system-setup/appliance-hooks.d/80_add_uvmm_connection
+    permissions: '0755'
 		</programlisting>
 	  </para>
 
 	  <para>
 		The file with the apps to be installed contains a list of IDs of applications from the
 		Univention App Center, see <xref linkend="appliance:installbase"/>. The list in the example
-		above looks like this when decoded, i.e., the Univention AD Connector and the SAML
-		integration are installed on the provided &ucsMaster;:
-
-		<programlisting>
-adconnector
-simplesamlphp
-		</programlisting>
+		above installs the Univention AD Connector and the SAML	integration on the provided &ucsMaster;
 	  </para>
 	</section>
 
@@ -454,7 +501,7 @@ simplesamlphp
 	  <title>License management in cloud instances</title>	
 	  <para>
 		In the default installation, a UCS installation has a so-called <emphasis>free for personal
-		use license</emphasis> (up to five users). A license from Univention is required for the
+		use license</emphasis> (up to fifty users). A license from Univention is required for the
 		productive use of a UCS installation. For standard installations it is sent to the user by
 		e-mail and then set up in the &ucsUMC;.
 	  </para>
