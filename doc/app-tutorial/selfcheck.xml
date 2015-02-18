@@ -1,0 +1,84 @@
+<chapter>
+	<title>App Self-Check</title>
+		<para>
+			You may test how the application looks like in the Univention App Center and also test
+			the installation with little effort. Assuming you are in the directory where all the meta files as
+			well as all the built packages are:
+		</para>
+
+		<programlisting>
+APP=myapp
+mkdir -p /var/www/meta-inf/$(ucr get version/version)/
+mkdir -p /var/www/univention-repository/$(ucr get version/version)/maintained/component/$APP/all
+mkdir -p /var/www/univention-repository/$(ucr get version/version)/maintained/component/$APP/i386
+mkdir -p /var/www/univention-repository/$(ucr get version/version)/maintained/component/$APP/amd64
+
+cp $APP.ini /var/www/meta-inf/$(ucr get version/version)/
+cp $APP.png /var/www/meta-inf/$(ucr get version/version)/
+cp ${APP}_screenshot.png /var/www/meta-inf/$(ucr get version/version)/
+
+cp README* /var/www/univention-repository/$(ucr get version/version)/maintained/component/$APP/
+cp LICENSE_AGREEMENT* /var/www/univention-repository/$(ucr get version/version)/maintained/component/$APP/
+cp *_all.deb /var/www/univention-repository/$(ucr get version/version)/maintained/component/$APP/all/
+cp *_i386.deb /var/www/univention-repository/$(ucr get version/version)/maintained/component/$APP/i386/
+cp *_amd64.deb /var/www/univention-repository/$(ucr get version/version)/maintained/component/$APP/amd64/
+
+ucr set repository/app_center/server=http://$(ucr get interfaces/eth0/address)
+
+gen_index() {
+local mode=sources file=Sources arch oldpwd=$(pwd)
+cd "/var/www/univention-repository/$(ucr get version/version)/maintained/component/"
+for arch in source all amd64 i386; do
+ if [ -d "$APP/$arch" ]; then
+   rm -f "$APP/$arch/$file"*
+   apt-ftparchive "$mode" "$APP/$arch" >"$APP/$arch/$file"
+   gzip -c "$APP/$arch/$file" >"$APP/$arch/$file.gz"
+   bzip2 -c "$APP/$arch/$file" >"$APP/$arch/$file.bz2"
+ fi  
+ mode=packages file=Packages
+done
+cd "$oldpwd"
+}
+
+gen_meta() {
+create_appcenter_json.py -u "$(ucr get version/version)" -d "/var/www/" -s \
+	"$(ucr get ucr set repository/app_center/server)/" \-\-tar "/var/www/meta-inf/$(ucr get version/version)/all.tar" \
+		>"/var/www/meta-inf/$(ucr get version/version)/index.json"
+rm -f "/var/www/meta-inf/$(ucr get version/version)/all.tar.gz"
+gzip -9 "/var/www/meta-inf/$(ucr get version/version)/all.tar"
+chmod 664 "/var/www/meta-inf/$(ucr get version/version)/all.tar.gz"
+rm -f "/var/www/meta-inf/$(ucr get version/version)/index.json.gz"
+gzip -9 "/var/www/meta-inf/$(ucr get version/version)/index.json"
+chmod 664 "/var/www/meta-inf/$(ucr get version/version)/index.json.gz"
+}
+
+gen_index # needs to be redone each time a .deb changes
+gen_meta # needs to be redone each time the .ini file (or logo, screenshot) changes
+		</programlisting>
+
+		<para>
+			This App Center can also be used by other systems in the domain, e.g., if you want to
+			test it on a DC slave.
+		</para>
+
+		<para>
+			When something went wrong, there are several log files one may examine:
+		</para>
+
+		<itemizedlist>
+			<listitem><simpara>
+    			dpkg output (if something goes wrong during installation) is in
+				/var/log/univention/management-console-module-appcenter.log (and in /var/log/dpkg.log, too)
+			</simpara></listitem>
+			<listitem><simpara>
+    			Join scripts write in /var/log/univention/join.log. On a DC master, the join script
+				is probably executed in the postinst. In this case, the output is essentially dpkg output (log files
+				above)
+			</simpara></listitem>
+			<listitem><simpara>
+    			Listener scripts write to /var/log/univention/listener.log
+			</simpara></listitem>
+		</itemizedlist>
+
+</chapter>
+<!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->

@@ -1,0 +1,130 @@
+<chapter>
+	<title>Provide the App</title>
+		<para>
+			Until now you should have your software solution packaged as Debian package(s) including
+			a separate package taking care of the UCS integration. Please make sure you have packages for amd64
+			and i386, as well. To finish the app, you'll need to add the meta data for the App Center and upload
+			it to Univention.
+		</para>
+
+		<para>
+			For the archive to be uploaded, the following directory structure is recommended:
+		</para>
+		<programlisting>
+─ metadata
+─ packages
+  ─ all
+  ─ amd64
+  ─ i386
+─ readme
+		</programlisting>
+
+		<para>
+			Put your packages in the appropriate subdirectories below packages.
+		</para>
+
+	<section>
+		<title>Create the App meta data</title>
+
+		<para>
+			The Debian packages take care of the installation of your software solution on UCS
+			through the Debian Package Manager. But, the App Center does not know what to present to the user.
+			This gap is filled with the App meta data comprising of text information like description, website,
+			contact, visual information like a logo and optional screenshots, optional detailed information for
+			the users in several readme files.
+		</para>
+
+		<para>
+			Please provide the following information together with packages:
+		</para>
+
+		<orderedlist>
+			<listitem><simpara>
+    			A text file in the .ini format including information like description, several website links, contact information, conflicting apps, etc. Please refer to the developer reference for a template and the description of every attribute.
+			</simpara></listitem>
+			<listitem><simpara>
+    			A product logo in PNG format, size: 50x50 pixels, with transparent background.
+			</simpara></listitem>
+		</orderedlist>
+
+		<para>
+			The .ini file has the attribute ID. Simply name the .ini file and the product logo after that ID:
+		</para>
+
+		<programlisting>
+myapp.ini
+myapp.png
+		</programlisting>
+
+		<para>
+			Put those files below the metadata directory.
+		</para>
+
+		<note><para>
+			Note: The meta data contains the attributes NotifyVendor and NotificationEmail. If you want to receive daily email notifications upon the installation of your app, please set them appropriately. The email address here may differ from the contact address. If set to True the user will be informed about the delivery of such a notification before installing the app.
+		</para></note>
+
+		<note><para>
+			Note to sales: You as independent software vendor are responsible for the contacts and it is up to you how to organize the follow-up. Try to contact the very fast. The experience shows that it makes sense to organize a follow up within one week.
+		</para></note>
+
+		<para>
+			A detailed explanation about the notifications can be found in the developer reference.
+		</para>
+	</section>
+
+	<section>
+		<title>Create optional App meta information</title>
+
+		<para>
+			You may add optional app meta data information. Please refer to the Optional application files section in the developer reference for the choice of files:
+		</para>
+
+		<orderedlist>
+			<listitem><simpara>
+    			Screenshot of your solution: The filename of the screenshot is given in the app meta
+				data with the attribute Screenshot. Recommended name: myapp_screenshot.png (you may also provide a
+				jpg).
+			</simpara></listitem>
+			<listitem><simpara>
+    			License agreement: If you require the user to confirm a license agreement before
+				installation, provide the file LICENSE_AGREEMENT_EN and LICENSE_AGREEMENT_DE.
+			</simpara></listitem>
+			<listitem><simpara>
+    			README files: You may add different readme files depending on action taking place.
+				For example, you may present text before installation or before update only. Please refer to the
+				Optional application files section for the set of possible readme files.
+			</simpara></listitem>
+		</orderedlist>
+
+		<para>
+			Please use simple HTML in all those files and split the text into reasonable paragraphs. Copy the files below the readme directory in the recommended structure. The file names have to match the definitions.
+		</para>
+		</section>
+
+		<section>
+		<title>Upload the App</title>
+
+		<para>
+			Finally, upload the whole app according to the following steps:
+		</para>
+
+		<orderedlist>
+			<listitem><simpara>
+    			Take the above directory structure, create an archive, for example tar.gz or zip.
+			</simpara></listitem>
+			<listitem><simpara>
+    			Upload the archive to http://upload.univention.de/ and remember the upload-id shown there.
+			</simpara></listitem>
+			<listitem><simpara>
+    			Send the upload-id via email to appcenter@univention.de.
+			</simpara></listitem>
+		</orderedlist>
+
+		<para>
+			Congratulations! That's it, you are finished for the moment.
+		</para>
+
+		</section>
+</chapter>
+<!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->

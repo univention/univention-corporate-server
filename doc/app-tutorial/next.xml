@@ -1,0 +1,14 @@
+<chapter>
+	<title>What happens next?</title>
+		<para>
+			After you sent the upload-id to Univention, a Univention employee will extract your
+			files and copy them to the Test App Center. You'll receive a short note about how to activate the
+			Test App Center for final testing of your app. After the app passed the automatic tests at
+			Univention concerning the packages and you as vendor gave your written approval, the app will be
+			published in the App Center. Due to feedback and further communication the approval process may last
+			a couple of days. Further uploads may be necassary to fix issue that have been found during this
+			iterating process.
+		</para>
+</chapter>
+
+<!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->

@@ -1,0 +1,105 @@
+<chapter>
+		<title> Prepare the environment</title>
+		<para>
+			Before you can start with the creation of an app for Univention App Center, you'll need to prepare your UCS environment. This section guides you through the necessary steps.
+		</para>
+
+		<section>
+			<title>Download</title>
+			<para>
+				First of all, get yourself a copy of UCS free of charge at the Univention Website. You can choose between an ISO image or a pre-installed virtual machine.
+			</para>
+		</section>
+
+		<section>
+			<title>Initial setup </title>
+			<para>
+				Please refer to the UCS Quickstart Guide for the steps about installation and initial setup.
+			</para>
+
+			<para>
+				Note about the license:The download comes with the Free-for-personal-use license integrated
+				that allows to manage up to 50 users and 50 clients with the UCS management system. If you need
+				more, please request a not-for-resale license and provide the LDAP base DN that has been configured
+				during the initial setup. It can be looked up in the UCS management system, described in the UCS
+				manual.
+			</para>
+		</section>
+
+		<section>
+			<title>Activate the unmaintained repository</title>
+			<para>
+				UCS is a Linux distribution derived from Debian GNU/Linux. It behaves very similar
+				and therefore software is installed from software repositories. UCS comes with the sames packages as
+				Debian (except the packages from the games section). The packages are provided through two
+				repositories: maintained and unmaintained. Only the maintained repository is always activated by
+				default.
+			</para>
+
+			<para>
+				To install your solution, you may need packages that are in the unmaintained repository. Please activate it:
+			</para>
+
+			<programlisting>
+				root@master.tutorial.ucs:~$ ucr set repository/online/unmaintained='yes'
+			</programlisting>
+
+			<note><para>
+				Please remember the packages you need from unmaintained repository and provide the
+				list later with your upload. Univention will copy those packages besides your app packages and make
+				sure that the package dependencies from the unmaintained repository are met without prior activation
+				by the user.
+			</para></note>
+		</section>
+
+		<section>
+			<title>Install required packages for App development</title>
+
+			<para>
+				To build your software on UCS you will need to install build tools for Debian
+				packages. The corresponding package can be installed with
+			</para>
+
+			<programlisting>
+				univention-install build-essential debhelper
+			</programlisting>
+
+			<para>
+				Depending on your app you may furthermore require several development libraries
+				(e.g. libc-dev, php5-dev). For UCS integration packages, we recommend
+			</para>
+
+			<programlisting>
+# ucslint checks for common mistakes in a variety of files if enabled
+# in debian/rules
+#  see http://docs.univention.de/developer-reference.html#misc:ucslint
+univention-install ucslint-univention
+			</programlisting>
+
+			<programlisting>
+# univention-config-dev takes care of installing and registering UCR
+# variables if enabled in debian/rules
+#   see http://docs.univention.de/developer-reference.html#chap:ucr
+univention-install univention-config-dev
+			</programlisting>
+
+			<programlisting>
+# If you are developing a UMC module to extend the management console, you will need
+univention-install univention-management-console-dev
+			</programlisting>
+
+			<para>
+				If you already have a source directory with working code
+			</para>
+
+			<programlisting>
+				dpkg-buildpackage
+			</programlisting>
+
+			<para>
+				should list the missing build dependencies, if any.
+			</para>
+		</section>
+</chapter>
+
+<!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->

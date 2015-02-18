@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
+]>
+<book lang="en" id="app-developer-tutorial-4.0">
+	<bookinfo>
+		<title>App Tutorial</title>
+		<subtitle>App Center tutorial for developers</subtitle>
+		<address>
+			Univention GmbH
+			<street>Mary-Somerville-Straße 1</street>
+			<postcode>28359</postcode> <city>Bremen</city>
+			<country>Deutschland</country>
+			<email>feedback@univention.de</email>
+		</address>
+		<copyright>
+			<year>2015</year>
+		</copyright>
+		<legalnotice>
+			<para>
+				Alle Rechte vorbehalten./ All rights reserved.
+			</para>
+
+			<para>
+				The mentioned brand names and registered trademarks are owned by the respective legal owners in each case.
+			</para>
+
+			<para>
+			  <trademark class="registered">Linux</trademark> is a registered trademark of Linus Torvalds.
+			</para>
+		</legalnotice>
+		<revhistory>
+			<revision>
+				<revnumber>4.0-1</revnumber>
+				<date>18th of February 2015</date>
+			</revision>
+		</revhistory>
+	</bookinfo>
+ 
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="introduction.xml"/>
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="prepare.xml"/>
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="package.xml"/>
+
+
+<!--
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="integration.xml"/>
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="selfcheck.xml"/>
+-->
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="provide.xml"/>
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="next.xml"/>
+
+<?dbhtml-include href="../stylesheets/piwik.html"?>
+</book>
+<!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->

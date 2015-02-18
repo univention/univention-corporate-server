@@ -1,0 +1,39 @@
+<chapter>
+	<title>Apps and Univention App Center</title>
+		<para>
+			Univention App Center provides a platform for software vendors and an easy-to-use entry point
+			for Univention Corporate Server (UCS) users to extend their IT environment with business software.
+			The App Center is part of the web-based UCS management system and gives an overview of available and
+			installed apps. Its purpose is to present available business applications for UCS and simplify their
+			installation. This allows their easy evaluation and fosters the purchase decision.
+		</para>
+
+		<para>
+			Apps are the content of the App Center and they consist of the business software and
+			some meta data about the presentation in the App Center. Most of them come with an integration into
+			UCS, e.g. the management system or the mailstack. The purpose of an app is to provide the business
+			solution in a way that it is ready to use after the installation and that comes with a decent
+			default configuration to offer a satisfying impression of the solution. The installation is
+			non-interactive and is done by just a click. Furthermore, an app utilizes the benefits of UCS and
+			the business solution.
+		</para>
+
+		<para>
+			The App Center infrastructure consists of two parts: The already mentioned frontend as
+			part of the web-based UCS management system and the server side component that stores the app meta
+			data and the app software packages in their own respective repositories. The server side
+			infrastructure is operated by Univention. The technological basis for installation and updates of
+			the apps is Apt, the well known advanced package tool from Debian. Therefore, the app needs to
+			consist of so-called debian packages. The App Center frontend is responsible for the app's
+			presentation. As soon as an app is clicked to be installed or updated, the App Center activates the
+			respective repository and the further process is handed over to apt which takes care of the rest
+			like for example dependency resolution.
+		</para>
+
+		<para>
+			The next sections explain how to prepare your business solution as app for UCS. It also
+			outlines the integration possibilities and describes what to do by example. Let's go!
+		</para>
+</chapter>
+
+<!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->

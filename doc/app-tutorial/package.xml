@@ -1,0 +1,64 @@
+<chapter>
+<title>Package the software solution</title>
+
+<section>
+	<title>Create or use debian packages</title>
+
+		<para>
+			You as ISV already distribute your software solution in a certain way. Univention App
+			Center makes heavy use of the debian package manager dpkg and the technology around it. Therefore,
+			it is required that the software is provided in the debian package format and that it can be
+			installed non-interactively, e.g. the user will not be asked any questions for software
+			configuration. This step has to be moved to a later step following the package installation.
+		</para>
+
+		<para>
+			Please follow this checklist:
+		</para>
+
+		<orderedlist>
+			<listitem><simpara>
+				If your software is provided via .deb files, you already have debian packages.
+				Please install those packages on UCS for testing purpose and evaluate if the software works as
+				expected.
+			</simpara></listitem>
+			<listitem><simpara>
+				If your software is not provided via .deb files, debian packages have to be created.
+				Please follow the chapter "packaging software" in the UCS developer reference about how to create
+				debian packages.
+			</simpara></listitem>
+		</orderedlist>
+
+</section>
+<section>
+	<title>Structure the App</title>
+
+		<para>
+			In most cases packages of an app for Univention App Center in principle consist of:
+		</para>
+
+		<orderedlist>
+			<listitem><simpara>
+				packages including the vanilla software solution of the ISV
+			</simpara></listitem>
+			<listitem><simpara>
+				packages with the integration of the software solution with Univention Corporate Server
+			</simpara></listitem>
+		</orderedlist>
+
+		<para>
+			For the ease of app maintenance it is recommended to provide the vanilla software from
+			1) in packages on their own, independent from UCS. This allows to theoretically use the packages on
+			other Debian-based Linux Distributions like for example Debian GNU/Linux itself or Ubuntu.
+		</para>
+
+		<para>
+			All UCS specific "stuff" from 2) should be collected in a separate package. This package
+			depends on the "main" package from 1) and therefore automatically installs all the other packages
+			needed via the dependency resolution of the package manager.
+		</para>
+
+	</section>
+</chapter>
+
+<!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->
