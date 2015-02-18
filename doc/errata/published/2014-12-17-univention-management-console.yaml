@@ -1,9 +1,0 @@
-product: ucs
-release: "3.2"
-scope: ucs_3.2-0-errata3.2-4
-src: univention-management-console
-fix: 6.0.24-38.849.201412181202
-version: [3,4]
-desc: |
-  * Fixed handling of crashed UMC module processes.
-bug: [37379, 37380]
