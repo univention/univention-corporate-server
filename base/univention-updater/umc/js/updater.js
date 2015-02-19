@@ -260,7 +260,6 @@ define([
 					var dia = new ConfirmDialog({
 						title:			_("Start Upgrade?"),
 						message:		txt,
-						style:			'max-width:650px;',
 						'class':		'updaterDialog',
 						options:
 						[
