@@ -609,10 +609,9 @@ ucs_registerLDAPExtension "$@" \
 
 			<para>
 				The Extended Attributes are generally stored in LDAP as attributes not defined by default. A schema
-				file needs to be created and registered for the Extended Attributes to actually work. See [1] for
+				file needs to be created and registered for the Extended Attributes to actually work. See <ulink url="http://www.openldap.org/doc/admin23/schema.html">this section</ulink> for
 				details of how to write a schema file.
 			</para>
-			<!-- FIXME: [1] -->
 
 			<para>
 				The example above needs a file like this:
