@@ -382,13 +382,13 @@ define([
 			this._form.ready().then(lang.hitch(this, function() {
 				var valuesChanged = this.haveValuesChanged() || this.havePolicyReferencesChanged();
 				if (valuesChanged) {
-					var changes = '\n<ul>';
+					var changes = [];
 					tools.forIn(this.getAlteredValues(), lang.hitch(this, function(key, value) {
 						if (key === '$dn$') {
 							return;
 						}
 						var widget = this._form.getWidget(key);
-						if (widget) {
+						if (widget && widget.get('visible')) {
 							value = widget.get('value');
 							if (value instanceof Array) {
 								value = value.join(', ');
@@ -400,15 +400,18 @@ define([
 									}
 								});
 							}
-							changes += lang.replace('<li>{tabName}{groupName} - {widgetName}: {value}</li>', {
+							changes.push(lang.replace('<li>{tabName}{groupName} - {widgetName}: {value}</li>', {
 								tabName: widget.$refTab$ ? widget.$refTab$.label: '',
 								groupName: widget.$refTitlePane$ ? ' - ' + widget.$refTitlePane$.label: '',
 								widgetName: widget.get('label') || key,
-								value: value});
+								value: value
+							}));
 						}
 					}));
-					changes += '</ul>';
-					dialog.alert(_('The following empty properties were set to default values in the form. These values will be applied when saving.') + changes);
+					if (changes.length) {
+						changes = '\n<ul>' + changes.join('') + '</ul>';
+						dialog.alert(_('The following empty properties were set to default values in the form. These values will be applied when saving.') + changes);
+					}
 				}
 			}));
 		},
@@ -1422,27 +1425,49 @@ define([
 		},
 
 		haveValuesChanged: function() {
-			var nChanges = 0;
+			return this._changedValues().length > 0;
+		},
+
+		_changedValues: function() {
+			var changed = [];
 			var regKey = /\$.*\$/;
 			tools.forIn(this.getAlteredValues(), function(ikey) {
 				if (!regKey.test(ikey) || ikey == '$options$') {
 					// key does not start and end with '$' and is thus a regular key
-					++nChanges;
+					changed.push(ikey);
 				}
 			});
-			return nChanges > 0;
+			return changed;
 		},
 
 		havePolicyReferencesChanged: function() {
-			var nChanges = 0;
+			return this._changedPolicyReferenceValues().length > 0;
+		},
+
+		_changedPolicyReferenceValues: function() {
+			var changed = [];
 			tools.forIn(this._policyWidgets, function(ipolicyType, iwidgets) {
 				var ival = iwidgets.$policy$.get('value');
 				var iresetValue = iwidgets.$policy$._resetValue;
 				if (iresetValue != ival) {
-					++nChanges;
+					changed.push(iwidgets);
 				}
 			}, this);
-			return nChanges > 0;
+			return changed;
+		},
+
+		haveVisibleValuesChanged: function() {
+			if (!this._form) {
+				return false;  // not yet loaded
+			}
+			var valuesChanged = array.some(this._changedValues(), lang.hitch(this, function(key) {
+				var widget = this._form.getWidget(key);
+				if (!widget) {
+					return false;
+				}
+				return widget.get('visible');
+			}));
+			return valuesChanged || this.havePolicyReferencesChanged();
 		},
 
 		save: function(e) {
@@ -1722,7 +1747,7 @@ define([
 		confirmClose: function() {
 			topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'cancel');
 
-			if (!this.newObjectOptions && (this.haveValuesChanged() || this.havePolicyReferencesChanged())) {
+			if (!this.newObjectOptions && this.haveVisibleValuesChanged()) {
 				return dialog.confirm(_('There are unsaved changes. Are you sure to cancel?'), [{
 					label: _('Continue editing'),
 					name: 'cancel'
