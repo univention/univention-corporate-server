@@ -24,8 +24,9 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				If your software is not provided via .deb files, debian packages have to be created.
-				Please follow the chapter "packaging software" in the UCS developer reference about how to create
-				debian packages.
+				Please follow the chapter <ulink
+				url="http://docs.univention.de/developer-reference.html#chap:packaging">packaging
+				software</ulink> in the UCS developer reference about how to create debian packages.
 			</simpara></listitem>
 		</orderedlist>
 

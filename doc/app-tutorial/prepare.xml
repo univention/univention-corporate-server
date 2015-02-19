@@ -1,28 +1,34 @@
 <chapter>
 		<title> Prepare the environment</title>
 		<para>
-			Before you can start with the creation of an app for Univention App Center, you'll need to prepare your UCS environment. This section guides you through the necessary steps.
+			Before you can start with the creation of an app for Univention App Center, you'll need to
+			prepare your UCS environment. This section guides you through the necessary steps.
 		</para>
 
 		<section>
 			<title>Download</title>
 			<para>
-				First of all, get yourself a copy of UCS free of charge at the Univention Website. You can choose between an ISO image or a pre-installed virtual machine.
+				First of all, get yourself a copy of UCS free of charge at the <ulink
+				url="https://www.univention.com/downloads/ucs-download/">Univention Website</ulink>. You can
+				choose between an ISO image or a pre-installed virtual machine.
 			</para>
 		</section>
 
 		<section>
 			<title>Initial setup </title>
 			<para>
-				Please refer to the UCS Quickstart Guide for the steps about installation and initial setup.
+				Please refer to the <ulink url="http://docs.univention.de/quickstart-en.html">UCS Quickstart
+				Guide</ulink> for the steps about installation and initial setup.
 			</para>
 
 			<para>
 				Note about the license:The download comes with the Free-for-personal-use license integrated
 				that allows to manage up to 50 users and 50 clients with the UCS management system. If you need
-				more, please request a not-for-resale license and provide the LDAP base DN that has been configured
-				during the initial setup. It can be looked up in the UCS management system, described in the UCS
-				manual.
+				more, please <ulink
+				url="https://www.univention.com/downloads/license-models/test-license/">request</ulink> a
+				not-for-resale license and provide the LDAP base DN that has been configured during the initial
+				setup. It can be looked up in the UCS management system, described in the <ulink
+				url="http://docs.univention.de/manual.html#central:license">UCS manual</ulink>.
 			</para>
 		</section>
 

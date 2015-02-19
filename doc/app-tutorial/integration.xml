@@ -22,7 +22,8 @@
 
 	<para>
 		The following sections give an impression of several integration scenarios. Further
-		information can be found in the UCS developer reference.
+		information can be found in the <ulink
+		url="http://docs.univention.de/developer-reference.html">UCS developer reference</ulink>.
 	</para>
 	<section>
 		<title>Read information from the directory service</title>
@@ -49,7 +50,8 @@
 		</para>
 
 		<para>
-			More information about the OpenLDAP server in UCS can be found in the manual.
+			More information about the OpenLDAP server in UCS can be found <ulink
+			url="http://docs.univention.de/manual.html#domain:ldap">in the manual</ulink>.
 		</para>
 
 		<section>
@@ -145,7 +147,8 @@ esac
 			</orderedlist>
 
 			<para>
-				More details can be found in the Developer Reference
+				More details can be found in the <ulink
+				url="http://docs.univention.de/developer-reference.html#chap:listener">Developer Reference</ulink>.
 			</para>
 
 			<para>
@@ -203,7 +206,8 @@ def get_db_connection():
 			UCS ships with a key-value store used to save parameters of the environment, the Univention
 			Config Registry (UCR). It holds information about the local host (like hostname or network settings)
 			and to some extent about the domain configuration (like the domainname or where the DC Master can be
-			found). More details can be found in the Developer Reference.
+			found). More details can be found in the <ulink
+			url="http://docs.univention.de/developer-reference.html#chap:ucr">Developer Reference</ulink>.
 		</para>
 
 		<para>
@@ -492,7 +496,11 @@ dh $@
 		</programlisting>
 
 		<para>
-			The join script needs to lie in the root directory of the source code and has to be named after the package, e.g. 50univention-myapp.inst and 50univention-myapp-uninstall.uinst. If you need more control, just do not univention-install-joinscript, details what to do can be found here.
+			The join script needs to lie in the root directory of the source code and has to be named
+			after the package, e.g. 50univention-myapp.inst and 50univention-myapp-uninstall.uinst. If you need
+			more control, just do not univention-install-joinscript, details what to do can be found in the
+			<ulink url="http://docs.univention.de/developer-reference.html#join:write">Developer
+			Reference</ulink>.
 		</para>
 	</section>
 
@@ -627,7 +635,8 @@ MAY ( myapp-enabled $ myapp-role )
 
 			<para>
 				Note the "xxx" in the so called OIDs. You need a unique (worldwide!) identifier for your attributes
-				and object classes. Either request one or (probably better) talk to us, as Univention has its own
+				and object classes. Either <ulink url="http://pen.iana.org/pen/PenApplication.page">request
+				one</ulink> or (probably better) talk to us, as Univention has its own
 				namespace and any schema extension can be defined "beneath" it.
 			</para>
 

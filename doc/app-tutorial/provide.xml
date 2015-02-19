@@ -40,10 +40,13 @@
 
 		<orderedlist>
 			<listitem><simpara>
-    			A text file in the .ini format including information like description, several website links, contact information, conflicting apps, etc. Please refer to the developer reference for a template and the description of every attribute.
+    		A text file in the .ini format including information like description, several website
+				links, contact information, conflicting apps, etc. Please refer to the <ulink
+				url="http://docs.univention.de/developer-reference.html#app:iniFile">Developer
+				Reference</ulink> for a template and the description of every attribute.
 			</simpara></listitem>
 			<listitem><simpara>
-    			A product logo in PNG format, size: 50x50 pixels, with transparent background.
+    		A product logo in PNG format, size: 50x50 pixels, with transparent background.
 			</simpara></listitem>
 		</orderedlist>
 
@@ -61,15 +64,21 @@ myapp.png
 		</para>
 
 		<note><para>
-			Note: The meta data contains the attributes NotifyVendor and NotificationEmail. If you want to receive daily email notifications upon the installation of your app, please set them appropriately. The email address here may differ from the contact address. If set to True the user will be informed about the delivery of such a notification before installing the app.
+			Note: The meta data contains the attributes NotifyVendor and NotificationEmail. If you want to
+			receive daily email notifications upon the installation of your app, please set them appropriately.
+			The email address here may differ from the contact address. If set to True the user will be informed
+			about the delivery of such a notification before installing the app.
 		</para></note>
 
 		<note><para>
-			Note to sales: You as independent software vendor are responsible for the contacts and it is up to you how to organize the follow-up. Try to contact the very fast. The experience shows that it makes sense to organize a follow up within one week.
+			Note to sales: You as independent software vendor are responsible for the contacts and it is
+			up to you how to organize the follow-up. Try to contact the very fast. The experience shows that it
+			makes sense to organize a follow up within one week.
 		</para></note>
 
 		<para>
-			A detailed explanation about the notifications can be found in the developer reference.
+			A detailed explanation about the notifications can be found in the <ulink
+			url="http://docs.univention.de/developer-reference.html#app:notification">Developer Reference</ulink>.
 		</para>
 	</section>
 
@@ -77,23 +86,25 @@ myapp.png
 		<title>Create optional App meta information</title>
 
 		<para>
-			You may add optional app meta data information. Please refer to the Optional application files section in the developer reference for the choice of files:
+			You may add optional app meta data information. Please refer to the Optional application files
+			section in the developer reference for the choice of files.
 		</para>
 
 		<orderedlist>
 			<listitem><simpara>
-    			Screenshot of your solution: The filename of the screenshot is given in the app meta
+    		Screenshot of your solution: The filename of the screenshot is given in the app meta
 				data with the attribute Screenshot. Recommended name: myapp_screenshot.png (you may also provide a
 				jpg).
 			</simpara></listitem>
 			<listitem><simpara>
-    			License agreement: If you require the user to confirm a license agreement before
+    		License agreement: If you require the user to confirm a license agreement before
 				installation, provide the file LICENSE_AGREEMENT_EN and LICENSE_AGREEMENT_DE.
 			</simpara></listitem>
 			<listitem><simpara>
-    			README files: You may add different readme files depending on action taking place.
+    		README files: You may add different readme files depending on action taking place.
 				For example, you may present text before installation or before update only. Please refer to the
-				Optional application files section for the set of possible readme files.
+				<ulink url="http://docs.univention.de/developer-reference.html#app:optionalFiles">Optional
+				application files section</ulink> for the set of possible readme files.
 			</simpara></listitem>
 		</orderedlist>
 
@@ -114,7 +125,7 @@ myapp.png
     			Take the above directory structure, create an archive, for example tar.gz or zip.
 			</simpara></listitem>
 			<listitem><simpara>
-    			Upload the archive to http://upload.univention.de/ and remember the upload-id shown there.
+    			Upload the archive to <ulink url="https://upload.univention.de/">https://upload.univention.de/</ulink> and remember the upload-id shown there.
 			</simpara></listitem>
 			<listitem><simpara>
     			Send the upload-id via email to appcenter@univention.de.
