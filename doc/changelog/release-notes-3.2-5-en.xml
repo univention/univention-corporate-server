@@ -25,7 +25,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2014 Univention GmbH
+				(c) 2002-2015 Univention GmbH
 			</para>
 
 			<para>
@@ -52,11 +52,11 @@
 		<title>&ucsUCS; (UCS) 3.2-5</title>
 
 		<para>
-			The fourth point release for &ucsUCS; (UCS) is now available in the form of &ucsUCS; 3.2-5.
+			The fifth point release for &ucsUCS; (UCS) is now available in the form of &ucsUCS; 3.2-5.
 			The online repository provided by Univention can be used to update existing UCS systems
 			or, alternatively, updates can be installed from an update DVD. There are also UCS 3.2-5
 			ISO images available for new installations. UCS 3.2-5 includes all the errata updates
-			published for UCS 3.2-3.
+			published for UCS 3.2-4.
 		</para>
 
 	</chapter>
@@ -337,7 +337,7 @@ xe vm-param-set uuid=UUIDVM platform:vga=std
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS 3.2-3:
+			Listed are the changes since UCS 3.2-4:
 		</para>
 
 		&changelog;

@@ -25,7 +25,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2014 Univention GmbH
+				(c) 2002-2015 Univention GmbH
 			</para>
 
 			<para>
@@ -52,11 +52,11 @@
 		<title>&ucsUCS; (UCS) 3.2-5</title>
 
 		<para>
-			Mit &ucsUCS; 3.2-5 steht das vierte Point-Release für &ucsUCS; (UCS) zur Verfügung.
-			Vorhandene UCS-Systeme können über das von Univention bereitgestellte Online
-			Repository aktualisiert werden. Alternativ können Updates über eine Update-DVD
+			Mit &ucsUCS; 3.2-5 steht das fünfte Point-Release für &ucsUCS; (UCS) zur Verfügung.
+			Vorhandene UCS-Systeme können über das von Univention bereitgestellte Online-Repository 
+			aktualisiert werden. Alternativ können Updates über eine Update-DVD
 			eingespielt werden. Für Neuinstallationen stehen UCS 3.2-5 ISO-Images zur Verfügung.
-			UCS 3.2-5 beinhaltet alle für UCS 3.2-3 veröffentlichten Errata-Updates.
+			UCS 3.2-5 beinhaltet alle für UCS 3.2-4 veröffentlichten Errata-Updates.
 		</para>
 
 	</chapter>

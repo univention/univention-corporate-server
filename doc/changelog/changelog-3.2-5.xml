@@ -4,7 +4,7 @@
 
 	<itemizedlist>
 		<listitem><simpara>
-			Package <package>bsd-mailx</package>
+			Package <package>bsd-mailx</package>:
 			CVE-2014-7844
 			(<ulink url="&ucsbug;37369">Bug 37369</ulink>)
 		</simpara></listitem>
@@ -29,7 +29,11 @@
 			CVE-2014-1592
 			CVE-2014-1593
 			CVE-2014-1594
-			(<ulink url="&ucsbug;37140">Bug 37140</ulink>)
+			CVE-2014-8634
+			CVE-2014-8638
+			CVE-2014-8639
+			CVE-2014-8641
+			(<ulink url="&ucsbug;37140">Bug 37140</ulink>, <ulink url="&ucsbug;37535">Bug 37535</ulink>)
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -40,7 +44,11 @@
 			CVE-2014-1592
 			CVE-2014-1593
 			CVE-2014-1594
-			(<ulink url="&ucsbug;37140">Bug 37140</ulink>)
+			CVE-2014-8634
+			CVE-2014-8638
+			CVE-2014-8639
+			CVE-2014-8641
+			(<ulink url="&ucsbug;37140">Bug 37140</ulink>, <ulink url="&ucsbug;37535">Bug 37535</ulink>)
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -55,6 +63,13 @@
 			CVE-2014-3468
 			CVE-2014-3469
 			(<ulink url="&ucsbug;35017">Bug 35017</ulink>)
+		</simpara></listitem>
+
+		<listitem><simpara>
+			Package <package>libxml2</package>:
+			CVE-2014-0191
+			CVE-2014-3660
+			(<ulink url="&ucsbug;35073">Bug 35073</ulink>)
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -193,6 +208,22 @@
 			(<ulink url="&ucsbug;36872">Bug 36872</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+			Package <package>xorg-server</package>:
+			CVE-2014-8091
+			CVE-2014-8092
+			CVE-2014-8093
+			CVE-2014-8094
+			CVE-2014-8095
+			CVE-2014-8096
+			CVE-2014-8097
+			CVE-2014-8098
+			CVE-2014-8099
+			CVE-2014-8100
+			CVE-2014-8101
+			CVE-2014-8102
+			(<ulink url="&ucsbug;37272">Bug 37272</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 </section>
 
@@ -207,15 +238,13 @@
 -->
 
 
-<section id="changelog:updater">
-	<title>Univention Updater</title>
-	<itemizedlist>
-		<listitem><simpara>
-		</simpara></listitem>
-	</itemizedlist>
-</section>
-
-
+<!-- <section id="changelog:updater"> -->
+<!-- 	<title>Univention Updater</title> -->
+<!-- 	<itemizedlist> -->
+<!-- 		<listitem><simpara> -->
+<!-- 		</simpara></listitem> -->
+<!-- 	</itemizedlist> -->
+<!-- </section> -->
 
 
 
@@ -226,7 +255,7 @@
 		<title>Linux kernel and firmware packages</title>
 		  <itemizedlist>
 			<listitem><simpara>
-			  The Linux kernel in Univention Corporate Server 3.2 has been updated to  3.10.62. This provides many bugfixes
+			  The Linux kernel has been updated to  3.10.62. This provides many bugfixes
 			  (<ulink url="&ucsbug;35397">Bug 35397</ulink>, <ulink url="&ucsbug;37143">Bug 37143</ulink>).
 			</simpara></listitem>
 
@@ -244,13 +273,16 @@
 		</section>
 
 
-	<section id="changelog:basis:ucr">
-	<title>Univention Configuration Registry</title>
-	<itemizedlist>
-		<listitem><simpara>
-		</simpara></listitem>
-	</itemizedlist>
-	</section>
+		<section id="changelog:basis:ucr">
+		  <title>Univention Configuration Registry</title>
+		  <itemizedlist>
+			<listitem><simpara>
+			  The file name for temporary files created by <command>ucr commit</command> now start with
+			  a dot to hide them by default (<ulink url="&ucsbug;35954">Bug 35954</ulink>).
+			</simpara></listitem>
+		  </itemizedlist>
+		</section>
+
 <!--
 	<section id="changelog:basic:nfs">
 		<title>NFS</title>
@@ -306,54 +338,49 @@
 <section id="changelog:domain">
 	<title>Domain services</title>
 
-	<section id="changelog:domain:udm">
-		<title>Univention Directory Manager</title>
-		<itemizedlist>
-		  <listitem><simpara>
-		  </simpara></listitem>
-		</itemizedlist>
-	</section>
-
 	<section id="changelog:domain:openldap">
 		<title>OpenLDAP</title>
-<!--
-		<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
-		</itemizedlist>
-		<section id="changelog:domain:openldap:acl">
-			<title>LDAP ACL changes</title>
-			<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
-			</itemizedlist>
-		</section>
+
+		<!-- <itemizedlist> -->
+		<!-- 	<listitem><simpara> -->
+		<!-- 	</simpara></listitem> -->
+		<!-- </itemizedlist> -->
+		<!-- <section id="changelog:domain:openldap:acl"> -->
+		<!-- 	<title>LDAP ACL changes</title> -->
+		<!-- 	<itemizedlist> -->
+		<!-- 	<listitem><simpara> -->
+		<!-- 	</simpara></listitem> -->
+		<!-- 	</itemizedlist> -->
+		<!-- </section> -->
 
 		<section id="changelog:domain:openldap:schema">
-			<title>LDAP schema changes</title>
-			<itemizedlist>
-				<listitem><simpara>
-				</simpara></listitem>
-			</itemizedlist>
+		  <title>LDAP schema changes</title>
+		  <itemizedlist>
+			<listitem><simpara>
+			  The object class <emphasis>msGPOContainer</emphasis> has been extended to support the
+			  new attribute <emphasis>msNTSecurityDescriptor</emphasis> (<ulink url="&ucsbug;36978">Bug 36978</ulink>).
+			</simpara></listitem>
+		  </itemizedlist>
 		</section>
--->
 
 		<section id="changelog:domain:openldap:replication">
 			<title>Listener/Notifier domain replication</title>
 			<itemizedlist>
 				<listitem><simpara>
+				  Fix shutdown of univention-directory-listener if <filename>failed.ldif</filename>
+				  exists (<ulink url="&ucsbug;34761">Bug 34761</ulink>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>
 
-	<section id="changelog:domain:join">
-		<title>Join</title>
-		<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
+	<!-- <section id="changelog:domain:join"> -->
+	<!-- 	<title>Domain join</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 		<listitem><simpara> -->
+	<!-- 		</simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
 
 </section>
 
@@ -362,94 +389,158 @@
 	<title>Univention Management Console</title>
 
 	<section id="changelog:umc:web">
-		<title>Univention Management Console web interface</title>
-		<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
-		</itemizedlist>
+	  <title>Univention Management Console web interface</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  A display bug was resolved which showed scrollbars in the search input field in the user
+		  module when using the Chrome browser (<ulink url="&ucsbug;35838">Bug 35838</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  A display but was resolved which caused the login button to be displaced when using
+		  the Firefox browser (<ulink url="&ucsbug;34071">Bug 34071</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Open the <guimenu>Software Update</guimenu> UMC module upon startup during release updates
+		  and show a information dialog about the current update process (<ulink
+		  url="&ucsbug;37255">Bug 37255</ulink>).
+		</simpara></listitem>
+
+	  </itemizedlist>
 	</section>
+
+
 	<section id="changelog:umc:server">
-		<title>Univention Management Console server</title>
-		<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
-		</itemizedlist>
+	  <title>Univention Management Console server</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  Fix an error introduced in UCS 3.2-3 regarding the error handling of closed UMC
+		  module process sockets (<ulink url="&ucsbug;36561">Bug 36561</ulink>).
+		</simpara></listitem>
+		
+		<listitem><simpara>
+		  Fixed a bug which prevented that UMC components could write into their logfiles (<ulink
+		  url="&ucsbug;37159">Bug 37159</ulink>, <ulink url="&ucsbug;37316">Bug 37316</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Fix an error if the UMC server and the UMC module want to close the module process at the
+		  same time (<ulink url="&ucsbug;37315">Bug 37315</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Fixed handling of crashed UMC module processes (<ulink url="&ucsbug;37379">Bug
+		  37379</ulink>, <ulink url="&ucsbug;37380">Bug 37380</ulink>).
+		</simpara></listitem>
+
+	  </itemizedlist>
 	</section>
-<!--
+
 	<section id="changelog:umc:appcenter">
-		<title>Univention App Center</title>
-		<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
+	  <title>Univention App Center</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  A command to allow searching for multiple components at once has been added (<ulink
+		  url="&ucsbug;37029">Bug 37029</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The translation file for installed apps modules may have been corrupted during a release
+		  update. This has been fixed (<ulink url="&ucsbug;36657">Bug 36657</ulink>).
+		</simpara></listitem>
+
 		</itemizedlist>
 	</section>
--->
+
+
 	<section id="changelog:umc:setup">
-		<title>Basic settings / Appliance mode</title>
-		<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
-		</itemizedlist>
+	  <title>Basic settings / Appliance mode</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  Fix the configuration of primary devices and MII monitoring in bonding network devices
+		  (<ulink url="&ucsbug;36339">Bug 36339</ulink>, <ulink url="&ucsbug;36341">Bug
+		  36341</ulink>).
+		</simpara></listitem>
+	  </itemizedlist>
 	</section>
+
 
 	<section id="changelog:umc:user">
 		<title>Users module</title>
 		<itemizedlist>
 		  <listitem><simpara>
+			Simple authentication accounts can now be created much faster (the unnecessary UID
+			locking is now omitted for these accounts) (<ulink url="&ucsbug;34811">Bug
+			34811</ulink>).
 		  </simpara></listitem>
 		</itemizedlist>
 	</section>
 
-	<section id="changelog:umc:computers">
-		<title>Computers module</title>
-		<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
-	<section id="changelog:umc:license">
-		<title>License module</title>
-		<itemizedlist>
-			<listitem><simpara>
-					FIXME
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
-	<section id="changelog:umc:join">
-		<title>Domain join module</title>
-		<itemizedlist>
-			<listitem><simpara>
-					FIXME
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
+
+	<!-- <section id="changelog:umc:computers"> -->
+	<!-- 	<title>Computers module</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 		<listitem><simpara> -->
+	<!-- 		</simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
+
+	<!-- <section id="changelog:umc:license"> -->
+	<!-- 	<title>License module</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 		<listitem><simpara> -->
+	<!-- 		</simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
+
+	<!-- <section id="changelog:umc:join"> -->
+	<!-- 	<title>Domain join module</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 		<listitem><simpara> -->
+	<!-- 		</simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
 
 	<section id="changelog:umc:update">
-		<title>Online update module</title>
-		<itemizedlist>
-			<listitem><simpara>
-					FIXME
-			</simpara></listitem>
-		</itemizedlist>
+	  <title>Online update module</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  The hints and warning messages before or during the execution of a UCS update have been
+		  clarified (<ulink url="&ucsbug;37254">Bug 37254</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Extended the message shown in the UMC module if an app is blocking the update (<ulink
+		  url="&ucsbug;37028">Bug 37028</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  List all blocking apps (or other components) in the UMC module 
+		  (<ulink url="&ucsbug;37029">Bug 37029</ulink>).
+		</simpara></listitem>
+
+	  </itemizedlist>
 	</section>
 
-	<section id="changelog:umc:share">
-		<title>Shares module</title>
-		<itemizedlist>
-			<listitem><simpara>
-					FIXME
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
+	<!-- <section id="changelog:umc:share"> -->
+	<!-- 	<title>Shares module</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 		<listitem><simpara> -->
+	<!-- 		</simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
 
 	<section id="changelog:umc:policy">
-		<title>Policies</title>
-		<itemizedlist>
-			<listitem><simpara>
-					FIXME
-			</simpara></listitem>
-		</itemizedlist>
+	  <title>Policies</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  When executing a maintaince or release policy, a requested reboot is now only performed
+		  once all updates have been performed (<ulink url="&ucsbug;37298">Bug 37298</ulink>).
+		</simpara></listitem>
+	  </itemizedlist>
 	</section>
+
 
 	<section id="changelog:umc:printer">
 		<title>Printers module</title>
@@ -464,149 +555,170 @@
 		</itemizedlist>
 	</section>
 
+	<!-- <section id="changelog:umc:ucr"> -->
+	<!--   <title>Univention Configuration Registry module</title> -->
+	<!--   <itemizedlist> -->
+	<!-- 	<listitem><simpara> -->
+	<!-- 	</simpara></listitem> -->
+	<!--   </itemizedlist> -->
+	<!-- </section> -->
 
-	<section id="changelog:umc:ucr">
-		<title>Univention Configuration Registry module</title>
-		<itemizedlist>
-			<listitem><simpara>
-					FIXME
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
 
-	<section id="changelog:umc:ldap">
-		<title>LDAP directory browser</title>
-		<itemizedlist>
-			<listitem><simpara>
-					FIXME
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
+	<!-- <section id="changelog:umc:ldap"> -->
+	<!-- 	<title>LDAP directory browser</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 		<listitem><simpara> -->
+	<!-- 		</simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
 
 	<section id="changelog:umc:other">
-		<title>Other modules</title>
-		<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
-		</itemizedlist>
+	  <title>Other modules</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  Fix killing and terminating of processes in the <guimenu>Process overview</guimenu> module
+		  if a backported python-psutil packaged (installed by some applications) (<ulink
+		  url="&ucsbug;36439">Bug 36439</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Remove references to the network object when deleting it (<ulink url="&ucsbug;37377">Bug
+		  37377</ulink>).
+		</simpara></listitem>
+
+	  </itemizedlist>
 	</section>
+
 	<section id="changelog:umc:udmcli">
-		<title>&ucsUDM; command line interface and related tools</title>
-		<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
-		</itemizedlist>
+	  <title>&ucsUDM; command line interface and related tools</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  Added support for the following operators in a UDM filter: &lt;, &lt;, &lt;=, &gt;=. (<ulink
+		  url="&ucsbug;36970">Bug 36970</ulink>).
+		</simpara></listitem>
+	  </itemizedlist>
 	</section>
-	<section id="changelog:umc:development">
-		<title>Development of modules for &ucsUMC;</title>
-		<itemizedlist>
-			<listitem><simpara>
-					FIXME
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
+
+
+	<!-- <section id="changelog:umc:development"> -->
+	<!-- 	<title>Development of modules for &ucsUMC;</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 		<listitem><simpara> -->
+	<!-- 		</simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
 </section>
 
 
 <section id="changelog:deployment">
 	<title>Software deployment</title>
 
-<!--
 	<section id="changelog:deployment:cli">
-		<title>Software deployment command line tools</title>
-		<itemizedlist>
-			<listitem><simpara>
-					FIXME
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
--->
-	<section id="changelog:deployment:monitor">
-		<title>Software monitor</title>
-		<itemizedlist>
-		  <listitem><simpara>
-		  </simpara></listitem>
-		</itemizedlist>
-	</section>
-</section>
+	  <title>Software deployment command line tools</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  When using the command line tool <command>univention-upgrade</command> all components
+		  blocking an update are now displayed (<ulink url="&ucsbug;37030">Bug 37030</ulink>).
+		</simpara></listitem>
 
+		<listitem><simpara>
+		  Detect broken HTTP proxies like DansGuardian, which block downloading the Packages files
+		  and updater scripts while still signalling success (<ulink url="&ucsbug;37031">Bug
+		  37031</ulink>).
+		</simpara></listitem>
+
+	  </itemizedlist>
+	</section>
+
+	<!-- <section id="changelog:deployment:monitor"> -->
+	<!-- 	<title>Software monitor</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 	  <listitem><simpara> -->
+	<!-- 	  </simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
+</section>
 
 <section id="changelog:lib">
 	<title>Univention Library</title>
 	<itemizedlist>
 		<listitem><simpara>
+		  Fix a bug introduced in UCS 3.2-3 in the atjobs library. It prevented e.g. the removal
+		  of room settings in the UCS@school computer room UMC module (<ulink
+		  url="&ucsbug;36815">Bug 36815</ulink>).
 		</simpara></listitem>
 	</itemizedlist>
 </section>
 
 
-<section id="changelog:service">
-	<title>System services</title>
+<!-- <section id="changelog:service"> -->
+<!-- 	<title>System services</title> -->
 
-	<section id="changelog:service:mail">
-		<title>Mail services</title>
-		<itemizedlist>
-		  <listitem><simpara>
-		  </simpara></listitem>
-		</itemizedlist>
-	</section>
+	<!-- <section id="changelog:service:mail"> -->
+	<!-- 	<title>Mail services</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 	  <listitem><simpara> -->
+	<!-- 	  </simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
 
-<!--
-	<section id="changelog:service:virus">
-		<title>Spam/virus detection and countermeasures</title>
-		<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
--->
 
-	<section id="changelog:service:print">
-		<title>Printing services</title>
-		<itemizedlist>
-		  <listitem><simpara>
-		  </simpara></listitem>
-		</itemizedlist>
-	</section>
+	<!-- <section id="changelog:service:virus"> -->
+	<!-- 	<title>Spam/virus detection and countermeasures</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 		<listitem><simpara> -->
+	<!-- 		</simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
 
-	<section id="changelog:service:nagios">
-		<title>Nagios</title>
-		<itemizedlist>
-		  <listitem><simpara>
-		  </simpara></listitem>
-		</itemizedlist>
-	</section>
-	<section id="changelog:service:ssl">
-		<title>SSL</title>
-		<itemizedlist>
-		  <listitem><simpara>
-		  </simpara></listitem>
-		</itemizedlist>
-	</section>
+	<!-- <section id="changelog:service:print"> -->
+	<!-- 	<title>Printing services</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 	  <listitem><simpara> -->
+	<!-- 	  </simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
 
-	<section id="changelog:service:proxy">
-		<title>Proxy services</title>
-		<itemizedlist>
-		  <listitem><simpara>
-		  </simpara></listitem>
-		</itemizedlist>
-	</section>
-	<section id="changelog:service:pam">
-		<title>PAM / Local group cache</title>
-		<itemizedlist>
-		  <listitem><simpara>
-		  </simpara></listitem>
-		</itemizedlist>
-	</section>
+	<!-- <section id="changelog:service:nagios"> -->
+	<!-- 	<title>Nagios</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 	  <listitem><simpara> -->
+	<!-- 	  </simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
 
-	<section id="changelog:service:other">
-		<title>Other services</title>
-		<itemizedlist>
-		  <listitem><simpara>
-		  </simpara></listitem>
-		</itemizedlist>
-	</section>
-</section>
+	<!-- <section id="changelog:service:ssl"> -->
+	<!-- 	<title>SSL</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 	  <listitem><simpara> -->
+	<!-- 	  </simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
+
+	<!-- <section id="changelog:service:proxy"> -->
+	<!-- 	<title>Proxy services</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 	  <listitem><simpara> -->
+	<!-- 	  </simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
+
+	<!-- <section id="changelog:service:pam"> -->
+	<!-- 	<title>PAM / Local group cache</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 	  <listitem><simpara> -->
+	<!-- 	  </simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
+
+	<!-- <section id="changelog:service:other"> -->
+	<!-- 	<title>Other services</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 	  <listitem><simpara> -->
+	<!-- 	  </simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
+<!-- </section> -->
 
 
 <section id="changelog:virt">
@@ -632,6 +744,16 @@
 
 		  <listitem><simpara>
 			Ignore errors reading UVMM profiles (<ulink url="&ucsbug;37552">Bug 37552</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			The list of virtual machines now refreshes automatically in the UMC grid when leaving
+			the detail page of a virtual machine (as actions taken there can influence the state of
+			the machine). Also, the &ucsUCRV; <envar>uvmm/umc/autosearch</envar> now only prevents the
+			very first search on startup; manually clicking on the tree on the left refreshes the
+			list even when autosearch is disabled. In addition, the grid is updated non-invasively
+			at a configurable interval (&ucsUCRV; <envar>uvmm/umc/autoupdate/interval</envar>) (<ulink
+			url="&ucsbug;35122">Bug 35122</ulink>).
 		  </simpara></listitem>
 
 		</itemizedlist>
@@ -674,50 +796,52 @@
 		</itemizedlist>
 	</section>
 
-	<section id="changelog:win:takeover">
-		<title>Univention AD Takeover</title>
-		<itemizedlist>
-		  <listitem><simpara>
-		  </simpara></listitem>
-		</itemizedlist>
-	</section>
+	<!-- <section id="changelog:win:takeover"> -->
+	<!-- 	<title>Univention AD Takeover</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 	  <listitem><simpara> -->
+	<!-- 	  </simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
+
 	<section id="changelog:win:s4c">
-		<title>Univention S4 Connector</title>
-		<itemizedlist>
-		  <listitem><simpara>
-		  </simpara></listitem>
-		</itemizedlist>
-	</section>
-	<section id="changelog:win:adc">
-		<title>Univention Active Directory Connector</title>
-		<itemizedlist>
-		  <listitem><simpara>
-		  </simpara></listitem>
-		</itemizedlist>
-	</section>
-</section>
-
-
-<!--
-<section id="changelog:other">
-	<title>Other changes</title>
-	<itemizedlist>
-		<listitem>
-			<para>
-				The following packages have been moved to the maintained repository
-			</para>
-			<itemizedlist>
-				<listitem><simpara>
-						<package>test</package>,
-						(<ulink url="&ucsbug;99999">Bug 99999</ulink>)
-				</simpara></listitem>
-
-			</itemizedlist>
-		</listitem>
+	  <title>Univention S4 Connector</title>
+	  <itemizedlist>
 		<listitem><simpara>
+		  GPO Security Descriptors can now be synchronised between OpenLDAP and the Samba directory
+		  service.  By default this is not activated, an  upcoming errata update for UCS@school 4.0
+		  will make use of this feature (<ulink url="&ucsbug;33768">Bug 33768</ulink>).
 		</simpara></listitem>
-	</itemizedlist>
+
+		<listitem><simpara>
+		  Ignore cn=Subschema and warn if the listener didn't pass entryUUID (<ulink
+		  url="&ucsbug;35973">Bug 35973</ulink>).
+		</simpara></listitem>
+	  </itemizedlist>
+	</section>
+
+	<!-- <section id="changelog:win:adc"> -->
+	<!-- 	<title>Univention Active Directory Connector</title> -->
+	<!-- 	<itemizedlist> -->
+	<!-- 	  <listitem><simpara> -->
+	<!-- 	  </simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!-- </section> -->
 </section>
--->
+
+
+
+<section id="changelog:other">
+  <title>Other changes</title>
+  <itemizedlist>
+	<listitem><simpara>
+	  Fix a segmentation fault in univention-debug when reloading the logfile (<ulink
+	  url="&ucsbug;36603">Bug 36603</ulink>, <ulink url="&ucsbug;37159">Bug 37159</ulink>, <ulink
+	  url="&ucsbug;37316">Bug 37316</ulink>).
+	  </simpara></listitem>
+  </itemizedlist>
+</section>
+
+
 
 <!-- vim: set ts=4 sw=2 noet: -->
