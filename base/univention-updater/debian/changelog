@@ -1,3 +1,9 @@
+univention-updater (10.0.53-4) unstable; urgency=low
+
+  * Bug #37573: adjusted the styling for the updater dialog. 
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 19 Feb 2015 16:28:05 +0100
+
 univention-updater (10.0.53-3) unstable; urgency=low
 
   * Bug #37573: added max-height for the updater dialog. 

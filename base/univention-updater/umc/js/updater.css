@@ -31,3 +31,8 @@
 	max-height: 400px;
 	overflow: auto;
 }
+
+.umc .updaterDialog .dijitDialogPaneContent .umcText td +td {
+	white-space: nowrap;
+	vertical-align: top;
+}
