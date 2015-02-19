@@ -1,3 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
+]>
 <chapter>
 	<title>What happens next?</title>
 		<para>
@@ -6,9 +12,14 @@
 			Test App Center for final testing of your app. After the app passed the automatic tests at
 			Univention concerning the packages and you as vendor gave your written approval, the app will be
 			published in the App Center. Due to feedback and further communication the approval process may last
-			a couple of days. Further uploads may be necassary to fix issue that have been found during this
+			a couple of days. Further uploads may be necessary to fix issue that have been found during this
 			iterating process.
 		</para>
+		<note><para>
+				The automatic tests run after the packages have been copied into the Test App Center, only cover
+				UCS core functionality, e.g., whether LDAP still works after adding a schema file. They do not test
+				the App itself.
+		</para></note>
 </chapter>
 
 <!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->

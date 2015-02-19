@@ -1,3 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
+]>
 <chapter>
 	<title>App Self-Check</title>
 		<para>
@@ -67,16 +73,16 @@ gen_meta # needs to be redone each time the .ini file (or logo, screenshot) chan
 
 		<itemizedlist>
 			<listitem><simpara>
-    			dpkg output (if something goes wrong during installation) is in
-				/var/log/univention/management-console-module-appcenter.log (and in /var/log/dpkg.log, too)
+					<command>dpkg</command> output (if something goes wrong during installation) is in
+					<filename>/var/log/univention/management-console-module-appcenter.log</filename> (and in <filename>/var/log/dpkg.log</filename>, too)
 			</simpara></listitem>
 			<listitem><simpara>
-    			Join scripts write in /var/log/univention/join.log. On a DC master, the join script
-				is probably executed in the postinst. In this case, the output is essentially dpkg output (log files
+					Join scripts write in <filename>/var/log/univention/join.log</filename>. On a DC master, the join script
+					is probably executed in the postinst. In this case, the output is essentially <command>dpkg</command> output (log files
 				above)
 			</simpara></listitem>
 			<listitem><simpara>
-    			Listener scripts write to /var/log/univention/listener.log
+					Listener scripts write to <filename>/var/log/univention/listener.log</filename>
 			</simpara></listitem>
 		</itemizedlist>
 

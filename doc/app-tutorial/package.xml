@@ -1,13 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
+]>
 <chapter>
 <title>Package the software solution</title>
 
 <section>
-	<title>Create or use debian packages</title>
+	<title>Create or use Debian packages</title>
 
 		<para>
 			You as ISV already distribute your software solution in a certain way. Univention App
-			Center makes heavy use of the debian package manager dpkg and the technology around it. Therefore,
-			it is required that the software is provided in the debian package format and that it can be
+			Center makes heavy use of the Debian package manager <command>dpkg</command> and the technology around it. Therefore,
+			it is required that the software is provided in the Debian package format and that it can be
 			installed non-interactively, e.g. the user will not be asked any questions for software
 			configuration. This step has to be moved to a later step following the package installation.
 		</para>
@@ -18,19 +24,19 @@
 
 		<orderedlist>
 			<listitem><simpara>
-				If your software is provided via .deb files, you already have debian packages.
+					If your software is provided via <filename class="extension">.deb</filename> files, you already have Debian packages.
 				Please install those packages on UCS for testing purpose and evaluate if the software works as
 				expected.
 			</simpara></listitem>
 			<listitem><simpara>
-				If your software is not provided via .deb files, debian packages have to be created.
+				If your software is not provided via <filename class="extension">.deb</filename> files, Debian packages have to be created.
 				Please follow the chapter <ulink
 				url="http://docs.univention.de/developer-reference.html#chap:packaging">packaging
-				software</ulink> in the UCS developer reference about how to create debian packages.
+				software</ulink> in the UCS developer reference about how to create Debian packages.
 			</simpara></listitem>
 		</orderedlist>
-
 </section>
+
 <section>
 	<title>Structure the App</title>
 
@@ -49,13 +55,13 @@
 
 		<para>
 			For the ease of app maintenance it is recommended to provide the vanilla software from
-			1) in packages on their own, independent from UCS. This allows to theoretically use the packages on
+			1. in packages on their own, independent from UCS. This allows to theoretically use the packages on
 			other Debian-based Linux Distributions like for example Debian GNU/Linux itself or Ubuntu.
 		</para>
 
 		<para>
-			All UCS specific "stuff" from 2) should be collected in a separate package. This package
-			depends on the "main" package from 1) and therefore automatically installs all the other packages
+			The UCS specific part from 2. should be collected in a separate package. This package
+			depends on the "main" package from 1. and therefore automatically installs all the other packages
 			needed via the dependency resolution of the package manager.
 		</para>
 

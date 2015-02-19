@@ -10,16 +10,16 @@
 		<subtitle>Building Apps for the Univention App Center</subtitle>
 		<address>
 			Univention GmbH
-			<street>Mary-Somerville-Straße 1</street>
+			<street lang="">Mary-Somerville-Straße 1</street>
 			<postcode>28359</postcode> <city>Bremen</city>
-			<country>Deutschland</country>
+			<country lang="de">Deutschland</country>
 			<email>feedback@univention.de</email>
 		</address>
 		<copyright>
 			<year>2015</year>
 		</copyright>
 		<legalnotice>
-			<para>
+			<para lang="">
 				Alle Rechte vorbehalten./ All rights reserved.
 			</para>
 
@@ -34,11 +34,11 @@
 		<revhistory>
 			<revision>
 				<revnumber>4.0-1</revnumber>
-				<date>18th of February 2015</date>
+				<date>19th of February 2015</date>
 			</revision>
 		</revhistory>
 	</bookinfo>
- 
+
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="introduction.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="prepare.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="package.xml"/>

@@ -1,3 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
+]>
 <chapter>
 		<title> Prepare the environment</title>
 		<para>
@@ -17,12 +23,12 @@
 		<section>
 			<title>Initial setup </title>
 			<para>
-				Please refer to the <ulink url="http://docs.univention.de/quickstart-en.html">UCS Quickstart
+				Please refer to the <ulink url="http://docs.univention.de/quickstart-en.html" lang="">UCS Quickstart
 				Guide</ulink> for the steps about installation and initial setup.
 			</para>
 
 			<para>
-				Note about the license:The download comes with the Free-for-personal-use license integrated
+				Note about the license: The download comes with the Free-for-personal-use license integrated
 				that allows to manage up to 50 users and 50 clients with the UCS management system. If you need
 				more, please <ulink
 				url="https://www.univention.com/downloads/license-models/test-license/">request</ulink> a
@@ -36,7 +42,7 @@
 			<title>Activate the unmaintained repository</title>
 			<para>
 				UCS is a Linux distribution derived from Debian GNU/Linux. It behaves very similar
-				and therefore software is installed from software repositories. UCS comes with the sames packages as
+				and therefore software is installed from software repositories. UCS comes with the same packages as
 				Debian (except the packages from the games section). The packages are provided through two
 				repositories: maintained and unmaintained. Only the maintained repository is always activated by
 				default.
@@ -47,7 +53,7 @@
 			</para>
 
 			<programlisting language="sh">
-root@master.tutorial.ucs:~$ ucr set repository/online/unmaintained='yes'
+ucr set repository/online/unmaintained='yes'
 			</programlisting>
 
 			<note><para>
@@ -72,14 +78,14 @@ univention-install build-essential debhelper
 
 			<para>
 				Depending on your app you may furthermore require several development libraries
-				(e.g. libc-dev, php5-dev). For UCS integration packages, we recommend
+				(e.g. <package>libc-dev</package>, <package>php5-dev</package>). For UCS integration packages, we recommend
 			</para>
 
 			<programlisting language="sh">
 # ucslint checks for common mistakes in a variety of files if enabled
 # in debian/rules
 #  see http://docs.univention.de/developer-reference.html#misc:ucslint
-univention-install ucslint-univention
+univention-install ucslint
 			</programlisting>
 
 			<programlisting language="sh">
@@ -90,7 +96,8 @@ univention-install univention-config-dev
 			</programlisting>
 
 			<programlisting language="sh">
-# If you are developing a UMC module to extend the management console, you will need
+# If you are developing a UMC module to extend the management console,
+# you will need
 univention-install univention-management-console-dev
 			</programlisting>
 
@@ -99,7 +106,7 @@ univention-install univention-management-console-dev
 			</para>
 
 			<programlisting language="sh">
-				dpkg-buildpackage
+dpkg-checkbuilddeps
 			</programlisting>
 
 			<para>
