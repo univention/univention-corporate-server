@@ -14,6 +14,6 @@ desc: |
     contain an icon instead of text.
   * The UMC header menus have been adjusted in their positioning on small
     screens and they have been styled with icons.
-  * The display of the modules and the moduleheader has been slightly adjusted.
+  * The style of modules and module headers has been slightly adjusted.
   * The label for module buttons is centered if there is enough space.
 bug: [37780]

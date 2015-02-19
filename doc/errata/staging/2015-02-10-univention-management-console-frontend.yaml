@@ -14,9 +14,8 @@ desc: |
     contain an icon instead of text.
   * The UMC header menus have been adjusted in their positioning on small
     screens and they have been styled with icons.
-  * The UCR variable umc/web/sso/enabled is now evaluated.
   * Methods for resetting UMC modules and renewing a session have been added.
-  * Notifications now must be closed via a close icon.
+  * Notifications must now be closed via a close icon.
   * Pop-up dialogs that need no verification now have a close icon.
-  * The label for module buttons is centered if there is enough space.
+  * The label for module buttons is now centered if there is enough space.
 bug: [37565,33199,37780,37347]
