@@ -4,17 +4,17 @@
 
   <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
   <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
-  <!ENTITY changelog SYSTEM "changelog-3.2-4.xml">
+  <!ENTITY changelog SYSTEM "changelog-3.2-5.xml">
 
   %entities;
 ]>
-<book lang="en" id="releasenotes-3.2-4-en">
+<book lang="en" id="releasenotes-3.2-5-en">
 	<bookinfo>
-		<title>UCS 3.2-4 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 3.2-4</subtitle>
+		<title>UCS 3.2-5 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 3.2-5</subtitle>
 		<revhistory>
 			<revision>
-				<revnumber>3.2-4</revnumber>
+				<revnumber>3.2-5</revnumber>
 				<date>17 Nov 2014</date>
 			</revision>
 		</revhistory>
@@ -49,13 +49,13 @@
 	</bookinfo>
 
 	<chapter id="relnotes:highlights">
-		<title>&ucsUCS; (UCS) 3.2-4</title>
+		<title>&ucsUCS; (UCS) 3.2-5</title>
 
 		<para>
-			The fourth point release for &ucsUCS; (UCS) is now available in the form of &ucsUCS; 3.2-4.
+			The fourth point release for &ucsUCS; (UCS) is now available in the form of &ucsUCS; 3.2-5.
 			The online repository provided by Univention can be used to update existing UCS systems
-			or, alternatively, updates can be installed from an update DVD. There are also UCS 3.2-4
-			ISO images available for new installations. UCS 3.2-4 includes all the errata updates
+			or, alternatively, updates can be installed from an update DVD. There are also UCS 3.2-5
+			ISO images available for new installations. UCS 3.2-5 includes all the errata updates
 			published for UCS 3.2-3.
 		</para>
 
@@ -133,7 +133,7 @@
 			<programlisting language="sh">
 LOCAL_DIR="/var/lib/univention-repository/mirror"
 SERVER="http://updates.software-univention.de"
-for release in 3.2-0 3.2-1 3.2-2 3.2-3 3.2-4; do
+for release in 3.2-0 3.2-1 3.2-2 3.2-3 3.2-4 3.2-5; do
 	for script in preup postup; do
 		file="3.2/maintained/$release/all/$script.sh.gpg"
 		wget -O "$LOCAL_DIR/$file" "$SERVER/$file"
