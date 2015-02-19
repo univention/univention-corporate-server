@@ -56,8 +56,24 @@
 			The online repository provided by Univention can be used to update existing UCS systems
 			or, alternatively, updates can be installed from an update DVD. There are also UCS 3.2-5
 			ISO images available for new installations. UCS 3.2-5 includes all the errata updates
-			published for UCS 3.2-4.
+			published for UCS 3.2-4. An overview of the most important changes:
 		</para>
+
+		<itemizedlist>
+		  <listitem><para>
+			Multiple improvements in the design and usability of &ucsUMC;
+		  </para></listitem>
+
+		  <listitem><para>
+			The update from UCS 3.2 to 4.0 has been simplified
+		  </para></listitem>
+
+		  <listitem><para>
+			Multiple bugfixes and improvements, e.g. in the Samba 4/Active Directory integration of UCS
+			which now supports Microsoft Sharepoint
+		  </para></listitem>
+		</itemizedlist>
+
 
 	</chapter>
 

@@ -52,12 +52,28 @@
 		<title>&ucsUCS; (UCS) 3.2-5</title>
 
 		<para>
-			Mit &ucsUCS; 3.2-5 steht das fünfte Point-Release für &ucsUCS; (UCS) zur Verfügung.
-			Vorhandene UCS-Systeme können über das von Univention bereitgestellte Online-Repository 
-			aktualisiert werden. Alternativ können Updates über eine Update-DVD
+			Mit &ucsUCS; 3.2-5 steht das fünfte Point-Release für &ucsUCS; (UCS) zur
+			Verfügung. Vorhandene UCS-Systeme können über das von Univention bereitgestellte
+			Online-Repository aktualisiert werden. Alternativ können Updates über eine Update-DVD
 			eingespielt werden. Für Neuinstallationen stehen UCS 3.2-5 ISO-Images zur Verfügung.
 			UCS 3.2-5 beinhaltet alle für UCS 3.2-4 veröffentlichten Errata-Updates.
+			Die wichtigsten Änderungen im Überblick:
 		</para>
+
+		<itemizedlist>
+		  <listitem><para>
+			Zahlreiche Verbesserungen in Design und Usability der &ucsUMC;
+		  </para></listitem>
+
+		  <listitem><para>
+			Vereinfachung des Update-Prozesses von UCS 3.2 auf 4.0
+		  </para></listitem>
+
+		  <listitem><para>
+			Zahlreiche Fehlerkorrekturen und Verbesserungen unter anderem in der Samba 4/Active
+			Directory-Integration von UCS, bspw. bei der Verwendung von Microsoft Sharepoint
+		  </para></listitem>
+		</itemizedlist>
 
 	</chapter>
 
