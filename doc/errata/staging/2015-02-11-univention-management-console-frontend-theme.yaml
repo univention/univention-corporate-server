@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-management-console-frontend-theme
-fix: 0.0.89-6.77.201502171753
+fix: 0.0.89-8.79.201502191106
 version: [1]
 desc: |
   The following issues are addressed by this erratum update:
@@ -15,4 +15,5 @@ desc: |
   * The UMC header menus have been adjusted in their positioning on small
     screens and they have been styled with icons.
   * The display of the modules and the moduleheader has been slightly adjusted.
+  * The label for module buttons is centered if there is enough space.
 bug: [37780]
