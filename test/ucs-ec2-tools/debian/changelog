@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.22-14) unstable; urgency=low
+
+  * Bug #37807: UCS-3.2-5 pre-tests
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 19 Feb 2015 14:20:55 +0100
+
 ucs-ec2-tools (0.1.22-13) unstable; urgency=low
 
   * Bug #35856: corrected check_correct_* functions in
