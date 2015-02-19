@@ -1,3 +1,12 @@
+univention-management-console-frontend-theme (0.0.89-8) unstable; urgency=low
+
+  Bug #37780:
+  * adjusted styling for module icons
+  * adjusted styling for module button labels
+  Bug #37197: added pointer cursor when hovering a default action for a grid
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 19 Feb 2015 11:01:05 +0100
+
 univention-management-console-frontend-theme (0.0.89-7) unstable; urgency=medium
 
   * Bug #37780: adapt style of SearchForm submit button

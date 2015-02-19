@@ -52,13 +52,8 @@
 	.umcModuleHeaderRight {
 		float: right;
 		padding-top: 3px;
-		.umcContainerWidget:first-child {
-			.dijitButton:last-child {
-				.dijitButtonText {
-					text-align: right;
-					margin-left: -280px;
-				}
-			}
+		.dijitButtonContents {
+			position: relative;
 		}
 	}
 	
@@ -77,10 +72,9 @@
 				display: none;
 				position: absolute;
 				color: #ffffff;
-				width: 300px;
-				padding-right: 0;
-				text-align: center;
-				margin-left: -143px;
+				width: auto;
+				padding: 0;
+				text-align: left;
 			}
 
 			.dijitIcon {
