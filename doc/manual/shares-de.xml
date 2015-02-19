@@ -1079,6 +1079,10 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
   </para>
 
   <para>
+	Ein konfigurierter Quota Wert von <emphasis>0</emphasis> wird als unbegrenzte Quota ausgewertet.
+  </para>
+
+  <para>
 	Dateisystem-Quota können nur auf Partitionen mit den Dateisystemen ext2, ext3, ext4 und xfs
 	angelegt werden. Bevor Dateisystem-Quota konfiguriert werden, muss der Quota-Support pro
 	Partition aktiviert werden, siehe <xref linkend="shares::quota::umc"/>.
@@ -1103,8 +1107,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 	</para>
 
 	<para>
-	  Um auf der Root-Partition Quota zu konfigurieren, müssen zusätzliche Einstellungen vorgenommen
-	  werden, siehe <xref linkend="shares::quota::root"/>.
+	  Nachdem auf einer xfs Root-Partition Quota aktiviert wurde, muss das System neu gestartet werden
 	</para>
 
   </section>
@@ -1134,13 +1137,21 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 	</para>
 
 	<para>
+	  Über eine Freigabe-Richtlinie gesetzte Quotaeinstellungen werden standardmäßig nur einmal
+	  ausgewertet und auf das Dateisystem angewendet. Sollte sich die Einstellung ändern, wird
+	  dies nicht automatisch bei der nächsten Anmeldung des Benutzers angewendet. Um geänderte 
+	  Quota Werte zu übernehmen, kann an der Freigabe-Richtlinie der Punkt <emphasis>Einstellungen
+	  bei jedem Login anwenden</emphasis> aktiviert werden.
+	</para>
+
+	<para>
 	  Quota-Richtlinien können nur auf Partitionen angewendet werden, für die die
 	  Quota-Unterstützung im UMC-Modul aktiviert wurde, siehe <xref linkend="shares::quota::umc"/>.
 	</para>
 
 	<note>
 	  <para>
-		Dateisystem-Quota können immer nur auf vollständige Partitionen angewendet werden.
+		Dateisystem-Quotas können immer nur auf vollständige Partitionen angewendet werden.
 		Auch wenn die Richtlinien für Freigaben definiert werden, werden sie auf vollständige
 		Partitionen angewendet. Wenn also beispielsweise auf einem Server drei Freigaben
 		bereitgestellt werden, die alle auf der separaten <filename>/var</filename>-Partition abgelegt werden und werden
@@ -1205,60 +1216,6 @@ Durchschnittlich verwendet: 4,000000
 	</para>
   </section>
 
-  <section id="shares::quota::root">
-	<title>Quota auf dem Root-Dateisystem</title>
-	<para>
-	  Wenn Quota für die Root-Partition aktiviert werden soll, muss wie folgt
-	  vorgegangen werden:
-	  <itemizedlist>
-		<listitem>
-			<para>
-		  Die &ucsUCRV; <envar>grub/append</envar> muss um <emphasis>root2flags=quota</emphasis>
-		  ergänzt werden. Als Trennzeichen zu bereits gesetzten Werten wird dabei ein Leerzeichen
-		  verwendet. Hierdurch wird der Quota-Support für die Root-Partition als
-		  Bootparameter gesetzt. Die Änderung wird automatisch in den Bootrecord geschrieben, z.B:
-			</para>
-			<screen>
-root@system:~# ucr get grub/append
-nosplash
-root@system:~# ucr set grub/append="noplash root2flags=quota"
-Setting grub/append
-File: /etc/default/grub
-Generating grub.cfg ...
-Found background: /boot/grub/uniboot.png
-Found background image: /boot/grub/uniboot.png
-Found linux image: /boot/vmlinuz-3.2.0-ucs27-686-pae
-Found initrd image: /boot/initrd.img-3.2.0-ucs27-686-pae
-Found memtest86+ image: /boot/memtest86+.bin
-done
-Generating legacy menu.lst from current kernels
-</screen>
-		</listitem>
-
-		<listitem>
-			<para>
-		  Bei ext2, ext3 und ext4-Dateisystemen muss der Parameter <emphasis>usrquota</emphasis> für die root-Partition
-		  in der Datei <filename>/etc/fstab</filename> ergänzt werden. Für XFS-Dateisysteme ist dies
-		  nicht notwendig. Ein Beispiel:
-			</para>
-			<programlisting><![CDATA[
-# /etc/fstab: static file system information.
-#
-# <file system> <mount point>   <type>  <options>       <dump>  <pass>
-UUID=64cff02c-0870-4890-9fb6-7b502ed1aa12       /       ext3    acl,errors=remount-ro,user_xattr,usrquota       0       1
-proc    /proc   proc    defaults        0       0
-UUID=1bb33966-bc9b-4d41-97e8-476b9effe515       none    swap    sw      0       0
-/dev/sr0        /cdrom  auto    user,noauto,exec        0       0
-/dev/fd0        /floppy vfat    user,noauto,exec        0       0
-]]></programlisting>
-		</listitem>
-
-		<listitem> <para>
-		  Anschließend muss das System neu gestartet werden.
-		</para></listitem>
-	  </itemizedlist>
-	</para>
-  </section>
 </section>
 
 </chapter>
