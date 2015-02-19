@@ -35,6 +35,9 @@ define([
 	"dojo/topic",
 	"dojo/aspect",
 	"dojo/dom-class",
+	"dojo/dom-style",
+	"dojo/dom-geometry",
+	"dojo/window",
 	"dijit/layout/StackContainer",
 	"dojox/html/entities",
 	"umc/tools",
@@ -44,7 +47,7 @@ define([
 	"umc/widgets/ModuleHeader",
 	"umc/widgets/StandbyMixin",
 	"umc/i18n!"
-], function(declare, lang, array, topic, aspect, domClass, StackContainer, entities, tools, render, _ModuleMixin, ContainerWidget, ModuleHeader, StandbyMixin, _) {
+], function(declare, lang, array, topic, aspect, domClass, domStyle, domGeom, win, StackContainer, entities, tools, render, _ModuleMixin, ContainerWidget, ModuleHeader, StandbyMixin, _) {
 	return declare("umc.widgets.Module", [ContainerWidget, _ModuleMixin, StandbyMixin], {
 		// summary:
 		//		Basis class for module classes.
@@ -188,6 +191,15 @@ define([
 				child._headerButtons = render.buttons(headerButtons.reverse(), container);
 				array.forEach(child._headerButtons.$order$.reverse(), function(btn) {
 					container.addChild(child._headerButtons[btn.name]); // important! allow overwriting of button names (e.g close)
+					btn.on('mouseEnter', function() {
+						domClass.add(btn.domNode, 'dijitButtonHover');
+						var labelBox = domGeom.getMarginBox(btn.containerNode)
+						var buttonBox = domGeom.getMarginBox(btn.focusNode);
+						var halfWidth = (labelBox.w - buttonBox.w) / 2;
+						var distanceToBrowserWindow = win.getBox().w - buttonBox.l;
+						var offset = Math.max(halfWidth, labelBox.w - distanceToBrowserWindow + 5);
+						domGeom.setMarginBox(btn.containerNode, {l: -offset});
+					});
 				});
 
 				this._top._right.addChild(container, 0);

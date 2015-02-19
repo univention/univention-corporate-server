@@ -1,3 +1,11 @@
+univention-management-console-frontend (4.1.106-27) unstable; urgency=low
+  
+  Bug #37780:
+  * compute label position of module buttons
+  * fix undefined reference in ConfirmDialog
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 19 Feb 2015 10:58:03 +0100
+
 univention-management-console-frontend (4.1.106-26) unstable; urgency=medium
 
   * Bug #37347: fix deferred handling in tools.defer() renewSession()

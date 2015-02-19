@@ -400,9 +400,6 @@ define([
 			});
 			// user clicked the x on the top right
 			confirmDialog.on('hide', function() {
-				if (options.buttons.length == 1) {
-					deferred.resolve(response);
-				}
 				if (!deferred.isFulfilled()) {
 					deferred.cancel({
 						button: null,
