@@ -136,10 +136,6 @@
 		/* overwrite autoHeight property for small devices */
 		min-height: 0px !important;
 	}
-
-	.umc .umc-setup-page-summary .umcPageNav {
-		margin-bottom: -4em;
-	}
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
