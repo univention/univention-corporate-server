@@ -1027,6 +1027,10 @@ Microsoft Distributed File System Tree'.
   </para>
 
   <para>
+	If a quota value of <emphasis>0</emphasis> has been configured, it is evaluated as an unlimited quota.
+  </para>
+
+  <para>
 	File system quotas can only be applied on partitions with the file systems <systemitem class="filesystem">ext2</systemitem>, <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> and
 	<systemitem class="filesystem">XFS</systemitem>. Before filesystem quotas can be configured, the use of file system quotas needs to be
 	activated per partition, see <xref linkend="shares::quota::umc"/>.
@@ -1051,8 +1055,7 @@ Microsoft Distributed File System Tree'.
 	</para>
 
 	<para>
-	  To configure quota limits on the root partition, additional configuration changes need to be
-	  made, see <xref linkend="shares::quota::root"/>.
+	  If quota has been activated on a xfs root-partition, the system has to be rebooted.
 	</para>
 
   </section>
@@ -1080,6 +1083,13 @@ Microsoft Distributed File System Tree'.
 	  The quota settings can also be set with a <guimenu>User quota</guimenu> share policy. The
 	  settings apply for all users of a share; it is not possible to establish different quota
 	  limits for different users within one policy.
+	</para>
+
+	<para>
+	  Quota settings that are applied via a quota-policy are by default only applied once to the filesystem.
+	  If the setting is changed, it will not be applied automatically on the next user-login.
+	  To inherit changed quota values, the option <emphasis>Reapply settings on every login</emphasis>
+	  can be activated at the quota-policy.
 	</para>
 
 	<para>
@@ -1152,59 +1162,6 @@ Used average: 4.000000
 	</para>
   </section>
 
-  <section id="shares::quota::root">
-	<title>Quota on the root file system</title>
-	<para>
-	  To enable a quota for the root partition, proceed as follows:
-	  <itemizedlist>
-		<listitem>
-			<para>
-		  The &ucsUCRV; <envar>grub/append</envar> must be expanded with
-		  <literal>root2flags=quota</literal>. A blank space is used to separate already set
-		  values. This sets the quota support for the root partition as a boot parameter. The change
-		  is written automatically in the boot record, e.g.:
-			</para>
-			<screen>
-root@system:~# ucr get grub/append
-nosplash
-root@system:~# ucr set grub/append="noplash root2flags=quota"
-Setting grub/append
-File: /etc/default/grub
-Generating grub.cfg ...
-Found background: /boot/grub/uniboot.png
-Found background image: /boot/grub/uniboot.png
-Found linux image: /boot/vmlinuz-3.2.0-ucs27-686-pae
-Found initrd image: /boot/initrd.img-3.2.0-ucs27-686-pae
-Found memtest86+ image: /boot/memtest86+.bin
-done
-Generating legacy menu.lst from current kernels
-</screen>
-		</listitem>
-
-		<listitem>
-			<para>
-		  On <systemitem class="filesystem">ext2</systemitem>, <systemitem class="filesystem">ext3</systemitem> and <systemitem class="filesystem">ext4</systemitem> file systems, the <option>usrquota</option> parameter for the
-		  root partition must be expanded in the file <filename>/etc/fstab</filename>. This is not
-		  necessary on <systemitem class="filesystem">XFS</systemitem> file systems, e.g:
-			</para>
-			<programlisting><![CDATA[
-# /etc/fstab: static file system information.
-#
-# <file system> <mount point>   <type>  <options>       <dump>  <pass>
-UUID=64cff02c-0870-4890-9fb6-7b502ed1aa12       /       ext3    acl,errors=remount-ro,user_xattr,usrquota       0       1
-proc    /proc   proc    defaults        0       0
-UUID=1bb33966-bc9b-4d41-97e8-476b9effe515       none    swap    sw      0       0
-/dev/sr0        /cdrom  auto    user,noauto,exec        0       0
-/dev/fd0        /floppy vfat    user,noauto,exec        0       0
-]]></programlisting>
-		</listitem>
-
-		<listitem> <para>
-		  The system must then be restarted.
-		</para></listitem>
-	  </itemizedlist>
-	</para>
-  </section>
 </section>
 
 </chapter>
