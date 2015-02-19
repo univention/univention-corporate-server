@@ -16,5 +16,5 @@ desc: |
     screens and they have been styled with icons.
   * The style of modules and module headers has been slightly adjusted.
   * The label for module buttons is centered if there is enough space.
-  * When hovering a clickable name in a grid a pointer cursor is shown.
+  * Changed the cursor to a pointer when hovering grid row actions.
 bug: [37780, 37197]
