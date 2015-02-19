@@ -66,6 +66,7 @@ define([
 				detailsDialog: this._dialog,
 				hostDialog: this._choose,
 				udmAccessible: udmAccessible,
+				standby: lang.hitch(this, 'standby'),
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
 			this._page.on('back', lang.hitch(this, function() {

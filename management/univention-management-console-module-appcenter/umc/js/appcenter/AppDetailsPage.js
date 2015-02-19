@@ -56,6 +56,7 @@ define([
 	return declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
 		appLoadingDeferred: null,
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
+		standby: null,
 
 		title: _("App management"),
 		noFooter: true,
@@ -669,17 +670,21 @@ define([
 		},
 
 		restartOrReload: function() {
-			var deferred = tools.defer(lang.hitch(this, function() {
+			tools.defer(lang.hitch(this, function() {
 				// update the list of apps
-				return tools.renewSession().then(lang.hitch(this, function() {
+				var deferred = tools.renewSession().then(lang.hitch(this, function() {
 					var reloadPage = this.updateApplications().then(lang.hitch(this, 'reloadPage'));
 					var reloadModules = UMCApplication.reloadModules();
 					return all([reloadPage, reloadModules]).then(function() {;
 						tools.checkReloadRequired();
 					});
 				}));
+
+				// show standby animation
+				this._progressBar.reset(_('Updating session and module data...'));
+				this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
+				this.standbyDuring(deferred, this._progressBar);
 			}), 100);
-			this.standbyDuring(deferred);
 		},
 
 		_detailFieldCustomUsage: function() {

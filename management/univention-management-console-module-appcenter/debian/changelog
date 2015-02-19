@@ -1,3 +1,11 @@
+univention-management-console-module-appcenter (4.1.20-6) unstable; urgency=medium
+
+  Bug #37347:
+  * show progress bar during session and module data update
+  * show standby animation in package management module until form is ready
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 19 Feb 2015 16:48:12 +0100
+
 univention-management-console-module-appcenter (4.1.20-5) unstable; urgency=medium
 
   * Bug #37347: correct command order in restartOrReload() methods

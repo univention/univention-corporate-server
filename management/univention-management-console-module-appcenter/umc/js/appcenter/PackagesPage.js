@@ -166,6 +166,11 @@ define([
 			this.addChild(this._grid);
 		},
 
+		postCreate: function() {
+			this.inherited(arguments);
+			this.standbyDuring(this._form.ready());
+		},
+
 		_refresh_grid: function() {
 
 			var values = this._form.get('value');
@@ -469,9 +474,9 @@ define([
 
 		_restartOrReload: function() {
 			this.onInstalled();
-			var deferred = tools.defer(lang.hitch(this, function() {
+			tools.defer(lang.hitch(this, function() {
 				// update the list of apps
-				return tools.renewSession().then(lang.hitch(this, function() {
+				var deferred = tools.renewSession().then(lang.hitch(this, function() {
 					return all([
 						UMCApplication.reloadModules(),
 						this._refresh_grid()
@@ -479,8 +484,12 @@ define([
 						tools.checkReloadRequired();
 					});
 				}));
+
+				// show standby animation
+				this._progressBar.reset(_('Updating session and module data...'));
+				this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
+				this.standbyDuring(deferred, this._progressBar);
 			}), 100);
-			this.standbyDuring(deferred);
 		},
 
 		onInstalled: function() {
