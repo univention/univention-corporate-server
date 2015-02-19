@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-28) unstable; urgency=medium
+
+  * Bug #37851: raise cherrypy config for threads from 10 to 35
+
+ -- Florian Best <best@univention.de>  Thu, 19 Feb 2015 15:39:21 +0100
+
 univention-management-console-frontend (4.1.106-27) unstable; urgency=low
   
   Bug #37780:
