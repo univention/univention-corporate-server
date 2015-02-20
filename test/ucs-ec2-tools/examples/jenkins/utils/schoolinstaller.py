@@ -30,6 +30,9 @@
 
 from optparse import OptionParser
 import sys
+import socket
+import time
+import traceback
 
 try:
 	# with 3.1
@@ -120,8 +123,18 @@ if not result['success']:
 
 print '=== INSTALLATION STARTED ==='
 status = {'finished': False}
+failcount = 0
 while not status['finished']:
-	status = connection.request('schoolinstaller/progress')
+	if failcount >= 1200:
+		print 'ERROR: %d failed attempts - comitting suicide' % (failcount, )
+		sys.exit(1)
+	try:
+		status = connection.request('schoolinstaller/progress')
+		failcount = 0
+	except socket.error as exc:
+		failcount += 1
+		print 'TRACEBACK %d in connection.request("schoolinstaller/progress"):\n%s' % (failcount, traceback.format_exc(),)
+		time.sleep(1)
 	print '%(component)s - %(info)s' % status
 
 if len(status['errors']) > 0:
