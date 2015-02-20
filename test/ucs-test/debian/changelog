@@ -1,3 +1,11 @@
+ucs-test (5.0.116-2) unstable; urgency=low
+
+  * 20_appcenter/43_installed_apps_check_packages_available_for_i386
+    test has been rewritten to rely less on app ini files and to
+    take also dependencies into consideration (Bug #31792)
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 20 Feb 2015 14:20:50 +0100
+
 ucs-test (5.0.116-1) unstable; urgency=low
 
   * 51_samba4/47domain_user_lockout: also run on DC-Slave (Bug #35898).
