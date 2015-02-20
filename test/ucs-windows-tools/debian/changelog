@@ -1,3 +1,11 @@
+ucs-windows-tools (2.0.6-1) unstable; urgency=medium
+
+  * windows-scripts/powershell-install-gpmc.ps1: powershell script to 
+    install Group Policy Management Console (Bug #37568);
+    lib/winexe.py: expose GPMC installation feature;
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 20 Feb 2015 16:24:33 +0100
+
 ucs-windows-tools (2.0.5-1) unstable; urgency=low
 
   * windows-scripts/powershell-gpo-set-registry-value.ps1: script to edit GPO;

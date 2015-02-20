@@ -382,6 +382,10 @@ class WinExe:
 		self.wait_until_client_is_gone(timeout=120)
 		self.wait_for_client(timeout=600)
 
+	def add_gpo_management_console(self):
+		''' install GPMC on self.client '''
+		self.winexec("powershell-install-gpmc", self.domain)
+
 	def file_exists(self, filename):
 		''' check if filename exists, return TRUE or FALSE (if file does not exists) '''
 
