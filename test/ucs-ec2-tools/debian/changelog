@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.9-1) unstable; urgency=medium
+
+  * examples/jenkins/autotest-230-master-s4-w2k12-member-join.cfg:
+    install GPMC on Windows Server before running GPO tests (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 20 Feb 2015 16:44:09 +0100
+
 ucs-ec2-tools (1.0.8-1) unstable; urgency=low
 
   * examples/jenkins/utils/utils.sh: added function to install GPMC on
