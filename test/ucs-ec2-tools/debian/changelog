@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.9-2) unstable; urgency=low
+
+  * examples/jenkins/autotest-230-master-s4-w2k12-member-join.cfg: removed
+    extra local sleep (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 20 Feb 2015 16:50:42 +0100
+
 ucs-ec2-tools (1.0.9-1) unstable; urgency=medium
 
   * examples/jenkins/autotest-230-master-s4-w2k12-member-join.cfg:
