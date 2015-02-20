@@ -222,6 +222,23 @@ do_reboot () {
 	reboot
 }
 
+install_gpmc_windows ()
+{
+	local HOST="$1"
+	local DOMAIN="$2"
+	local ADMIN_ACCOUNT="${3:-administrator}"
+	
+        if [[ ! -z "$HOST" ]] && [[ ! -z "$DOMAIN" ]]; then
+	python -c "
+import univention.winexe
+win=univention.winexe.WinExe('$DOMAIN', '$ADMIN_ACCOUNT', 'Univention@99', 'Administrator', 'Univention@99', 445, '$HOST')
+win.add_gpo_management_console()
+"
+	else
+		echo "You must specify a host address, domain name, dns server address."
+	fi
+}
+
 join_windows_memberserver ()
 {
 	local HOST="$1"
@@ -288,7 +305,7 @@ reboot_windows_host ()
 	local ADMIN_ACCOUNT="${2:-administrator}"
 	python -c "
 import univention.winexe
-win=univention.winexe.WinExe('dummydomain', '$ADMIN_ACCOUNT', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
+win=univention.winexe.WinExe('dummydomain', '$ADMIN_ACCOUNT', 'Univention@99', 'Administrator', 'Univention@99', 445, '$HOST')
 win.reboot_remote_win_host()
 "
 }
