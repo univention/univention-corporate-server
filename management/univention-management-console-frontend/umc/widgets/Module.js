@@ -193,10 +193,10 @@ define([
 					container.addChild(child._headerButtons[btn.name]); // important! allow overwriting of button names (e.g close)
 					btn.on('mouseEnter', function() {
 						domClass.add(btn.domNode, 'dijitButtonHover');
-						var labelBox = domGeom.getMarginBox(btn.containerNode)
-						var buttonBox = domGeom.getMarginBox(btn.focusNode);
+						var labelBox = domGeom.getMarginBox(btn.containerNode);
+						var buttonBox = domGeom.position(btn.focusNode);
 						var halfWidth = (labelBox.w - buttonBox.w) / 2;
-						var distanceToBrowserWindow = win.getBox().w - buttonBox.l;
+						var distanceToBrowserWindow = win.getBox().w - buttonBox.x;
 						var offset = Math.max(halfWidth, labelBox.w - distanceToBrowserWindow + 5);
 						domGeom.setMarginBox(btn.containerNode, {l: -offset});
 					});
