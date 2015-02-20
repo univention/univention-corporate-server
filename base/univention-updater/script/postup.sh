@@ -107,14 +107,14 @@ fi
 
 # Move to mirror mode for previous errata component
 ucr set \
-	repository/online/component/3.2-3-errata=false \
-	repository/online/component/3.2-3-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
+	repository/online/component/3.2-4-errata=false \
+	repository/online/component/3.2-4-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
 
-# Set errata component for UCS 3.2-4
+# Set errata component for UCS 3.2-5
 ucr set \
-	repository/online/component/3.2-4-errata=enabled \
-	repository/online/component/3.2-4-errata/description="Errata updates for UCS 3.2-4" \
-	repository/online/component/3.2-4-errata/version="3.2" >>"$UPDATER_LOG" 2>&1
+	repository/online/component/3.2-5-errata=enabled \
+	repository/online/component/3.2-5-errata/description="Errata updates for UCS 3.2-5" \
+	repository/online/component/3.2-5-errata/version="3.2" >>"$UPDATER_LOG" 2>&1
 
 # make sure that UMC server is restarted (Bug #33426)
 echo "

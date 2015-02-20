@@ -1,3 +1,9 @@
+univention-updater (9.0.46-1) unstable; urgency=medium
+
+  * Adjust pre and postup.sh to UCS 3.2-5 (Bug #37810)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Feb 2015 08:38:37 +0100
+
 univention-updater (9.0.45-1) unstable; urgency=low
 
   * Bug #37298: Reboot only after all updates are performed.
