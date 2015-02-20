@@ -232,7 +232,7 @@ join_windows_memberserver ()
         if [[ ! -z "$HOST" ]] && [[ ! -z "$DOMAIN" ]] && [[ ! -z "$DNS_SERVER" ]]; then
 	python -c "
 import univention.winexe
-win=univention.winexe.WinExe('$DOMAIN', '$ADMIN_ACCOUNT', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
+win=univention.winexe.WinExe('$DOMAIN', '$ADMIN_ACCOUNT', 'Univention@99', 'Administrator', 'Univention@99', 445, '$HOST')
 win.domain_join('$DNS_SERVER')
 "
 	else

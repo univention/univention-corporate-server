@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.7-1) unstable; urgency=low
+
+  * examples/jenkins/utils/utils.sh: run join of Windows Server with
+    'Administrator' user (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 20 Feb 2015 15:33:02 +0100
+
 ucs-ec2-tools (1.0.6-1) unstable; urgency=low
 
   * examples/jenkins/autotest-230-master-s4-w2k12-member-join.cfg:
