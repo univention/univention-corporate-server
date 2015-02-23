@@ -1,3 +1,12 @@
+ucs-ec2-tools (1.0.9-4) unstable; urgency=low
+
+  * examples/jenkins/autotest-230-master-s4-w2k12-member-join.cfg: set
+    admin_dn and password before Windows join;
+    examples/jenkins/utils/utils.sh: changed back local user admin when
+    joining Windows Host (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 23 Feb 2015 17:02:23 +0100
+
 ucs-ec2-tools (1.0.9-3) unstable; urgency=low
 
   * examples/jenkins/autotest-230-master-s4-w2k12-member-join.cfg: do not
