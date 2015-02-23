@@ -1,0 +1,16 @@
+product: ucs
+release: "3.2"
+version: [4]
+scope: ucs_3.2-0-errata3.2-4
+src: samba
+fix: 2:4.1.0-1.722.201502181223
+desc: |
+ A malicious client could send packets that may set up the stack in
+ such a way that the freeing of memory in a subsequent anonymous
+ netlogon packet could allow execution of arbitrary code. This code
+ would execute with root privileges.
+cve:
+ - CVE-2015-0240
+bug:
+ - 37731
+
