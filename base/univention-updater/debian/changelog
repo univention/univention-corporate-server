@@ -1,3 +1,10 @@
+univention-updater (10.0.51-23) unstable; urgency=low
+
+  * added univention-ssl, shell-univention-lib, univention-ldap-acl-master
+    and python-univention-connector to preup Bug #37748 
+
+ -- Felix Botner <botner@univention.de>  Mon, 23 Feb 2015 10:06:51 +0100
+
 univention-updater (10.0.51-22) unstable; urgency=low
 
   * check sep license Bug #37778 

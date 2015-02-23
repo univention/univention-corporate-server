@@ -285,7 +285,7 @@ check_sep_license () {
 		today=`date +'%Y%m%d'`
 		if [ -n "$updatelic" -a "$updatelic" -lt "$today" ]
 		then
-			echo "Error: The update license is not valid [valid until $updatelic]"
+			echo "Error: The SEP update license is not valid [valid until $updatelic]"
 			echo "       and therefore the update could not be started!"
 			echo "       Please contact SEP sales (sales@sep.de) for"
 			echo "       further information or deinstall the SEP App."
@@ -397,6 +397,18 @@ then
 	exit 1
 fi
 echo "OK"
+
+echo "save packages status:" >&3 2>&3
+echo "-> dpkg --get-selections" >&3 2>&3
+dpkg --get-selections >&3 2>&3
+echo >&3 2>&3
+echo >&3 2>&3
+
+echo "save auto installed packages (/var/lib/apt/extended_states):" >&3 2>&3
+echo "-> apt-cache showauto" >&3 2>&3
+apt-cache showauto >&3 2>&3
+echo >&3 2>&3
+echo >&3 2>&3
 
 if [ -x /usr/sbin/slapschema ]; then
 	echo -n "Checking LDAP schema: "
@@ -531,7 +543,7 @@ fi
 egrep -q '^supported-versions.*python2.7' /usr/share/python/debian_defaults ||\
 	sed -i 's|\(^supported-versions.*\)|\1, python2.7|' /usr/share/python/debian_defaults
 # Pre-upgrade
-preups="gcc-4.4-base univention-ldap-config python-support python-univention univention-config univention-samba mysql-server"
+preups="gcc-4.4-base univention-ldap-config python-support python-univention univention-config univention-samba mysql-server univention-ssl shell-univention-lib univention-ldap-acl-master python-univention-connector"
 $update_commands_update >&3 2>&3
 for pkg in $preups; do
 	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then
