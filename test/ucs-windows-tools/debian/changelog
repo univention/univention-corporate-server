@@ -1,3 +1,10 @@
+ucs-windows-tools (2.0.8-1) unstable; urgency=low
+
+  * lib/winexe.py: reboot the Windows Host after GPMC installation to
+    prevent "RPC-service unavailable" error (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 23 Feb 2015 16:51:15 +0100
+
 ucs-windows-tools (2.0.7-1) unstable; urgency=low
 
   * lib/winexe.py: first turn off the firewall when joining a Windows Host;
