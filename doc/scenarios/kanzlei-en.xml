@@ -135,7 +135,7 @@
   <section>
 	<title>Web proxy/web filter</title>
 	<para>
-	  UCS has an integrated web filter based on Squid and Dansguardian, which checks web traffic for
+	  UCS has an integrated web filter based on Squid and DansGuardian, which checks web traffic for
 	  viruses using the integrated virus scanner ClamAV. In this way, trojans and viruses on websites
 	  are identified and filtered out. Potentially dangerous files such as executable files can also
 	  be blocked.

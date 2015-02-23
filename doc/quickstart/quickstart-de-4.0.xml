@@ -13,8 +13,8 @@
   <subtitle>Quickstart Guide für Univention Corporate Server</subtitle>
   <revhistory>
      <revision>
-        <revnumber>4.0-0</revnumber>
-        <date>18 Nov 2014</date>
+        <revnumber>4.0-1</revnumber>
+        <date>23. Februar 2015</date>
      </revision>
   </revhistory>
 </bookinfo>
@@ -43,7 +43,7 @@
   </para>
 
   <para>
-	Alternativ können auch vorinstallierte VMWare und VirtualBox-Images verwendet werden. Diese
+	Alternativ können auch vorinstallierte VMware und VirtualBox-Images verwendet werden. Diese
 	stehen unter <ulink
 	url="http://www.univention.de/download/ucs-download/vorinstallierte-vm-images/"/>
 	zum Download bereit.
@@ -100,12 +100,12 @@
   <para>
 	Im weiteren Verlauf der Installation wird bei einem &ucsMaster; der vollqualifizierte
 	Rechnername eingetragen, unter dem der Rechner im Netzwerk erreichbar sein soll. Hier kann als
-	Domänenname auch ein lokaler Name verwendet werden, z.B. <emphasis>firma.local</emphasis>.  (Wenn
+	Domänenname auch ein lokaler Name verwendet werden, z.B. <systemitem class="domainname">firma.local</systemitem>.  (Wenn
 	das System etwa als Mailserver verwendet werden soll, können die Maildomänen unabhängig vom
 	Domänennamen verwendet werden).
-	Wenn also beispielsweise das Rechnersystem <emphasis>mailserver</emphasis> in der DNS-Domäne
-	<emphasis>firma.local</emphasis> in Betrieb genommen werden soll, ist als vollständiger Rechnername
-	<emphasis>mailserver.firma.local</emphasis> einzutragen. Die <guimenu>LDAP-Basis</guimenu> wird auf
+	Wenn also beispielsweise das Rechnersystem <systemitem class="systemname">mailserver</systemitem> in der DNS-Domäne
+	<systemitem class="domainname">firma.local</systemitem> in Betrieb genommen werden soll, ist als vollständiger Rechnername
+	<systemitem class="fqdomainname">mailserver.firma.local</systemitem> einzutragen. Die <guimenu>LDAP-Basis</guimenu> wird auf
 	Basis des vollständigen Rechnernamens vorgeschlagen und muss nur in Ausnahmefällen angepasst
 	werden.  Bei allen anderen Systemrollen reicht es in der Regel nur den Rechnernamen anzugeben. Der
 	Domänenname wird während des Domänenbeitritt vom &ucsMaster; bezogen.  Das Passwort muss mindestens acht
@@ -135,10 +135,10 @@
 
   <para>
 	Die Konfiguration des installierten UCS-Systems erfolgt über die web-basierte &ucsUMC;
-	(erreichbar unter https://server_ip oder http://server_ip, HTTPS wird empfohlen).
+	(erreichbar unter <uri>https://<replaceable>server_ip</replaceable></uri> oder <uri>http://<replaceable>server_ip</replaceable></uri>, HTTPS wird empfohlen).
 	Die Anmeldung an der &ucsUMC; erfolgt über die Option <guimenu>System- und
-	Domäneneinstellungen</guimenu> als <emphasis>Administrator</emphasis> mit dem während der
-	Installation vergebenen Passwort für den Benutzer <emphasis>root</emphasis>.
+	Domäneneinstellungen</guimenu> als <systemitem class="username">Administrator</systemitem> mit dem während der
+	Installation vergebenen Passwort für den Benutzer <systemitem class="username">root</systemitem>.
   </para>
 
   <para>

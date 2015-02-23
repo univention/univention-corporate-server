@@ -161,7 +161,7 @@
 	<para>
 	  Die Anwendungen der Benutzer werden auf den Terminalservern ausgeführt, während die Thin
 	  Clients die Anwendungen lediglich darstellen und Benutzereingaben an den Terminalserver
-	  übermitteln. Der Bildschirminhalt wird durch den RDP-Server xrdp bereitgestellt, die
+	  übermitteln. Der Bildschirminhalt wird durch den RDP-Server <application>xrdp</application> bereitgestellt, die
 	  Übertragung erfolgt daher bandbreitenschonend über das Remote Desktop Protocol (RDP).
 	</para>
 

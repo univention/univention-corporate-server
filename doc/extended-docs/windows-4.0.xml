@@ -43,8 +43,8 @@
 
 			<para>
 			  A Samba 4 domain controller can be operated in RODC mode (on a &ucsSlave; for
-			  example). Prior to the installation of <emphasis>univention-samba4</emphasis>, the
-			  &ucsUCRV; <envar>samba4/role</envar> must be set to <emphasis>RODC</emphasis>:
+			  example). Prior to the installation of <package>univention-samba4</package>, the
+			  &ucsUCRV; <envar>samba4/role</envar> must be set to <literal>RODC</literal>:
 			</para>
 <programlisting language="sh">
 ucr set samba4/role=RODC
@@ -63,7 +63,7 @@ univention-run-join-scripts
 
 		  <para>
 			If the domain should continue to be provide Active Directory-compatible services, the
-			<emphasis>univention-samba4</emphasis> package must remain installed on the &ucsMaster;
+			<package>univention-samba4</package> package must remain installed on the &ucsMaster;
 			or a &ucsBackup; system.
 		  </para>
 
@@ -106,7 +106,7 @@ root@backup:~#
 
 			<para>
 			  The FSMO (Flexible Single Master Operations) roles should be checked. In case the
-			  roles were provided by the removed DC, they must be transfered, for example:
+			  roles were provided by the removed DC, they must be transferred, for example:
 			</para>
 <programlisting language="sh">
 root@backup:~# samba-tool fsmo show

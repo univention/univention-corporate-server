@@ -13,8 +13,8 @@
   <subtitle>Quick start guide for Univention Corporate Server</subtitle>
   <revhistory>
      <revision>
-        <revnumber>4.0-0</revnumber>
-        <date>18 Nov 2014</date>
+        <revnumber>4.0-1</revnumber>
+        <date>23 Feb 2015</date>
      </revision>
   </revhistory>
 </bookinfo>
@@ -30,7 +30,7 @@
   
   <para>
 	This quickstart guide offers a short introduction on how to get started with UCS. Several
-	featues of UCS are only mentioned briefly with a reference to further documentation. The
+	features of UCS are only mentioned briefly with a reference to further documentation. The
 	documentation on UCS is available at <ulink url="http://docs.univention.de"/>.
   </para>
 
@@ -42,7 +42,7 @@
   </para>
 
   <para>
-	Alternatively preinstalled images for VMWare and VirtualBox can be used. These are available for
+	Alternatively preinstalled images for VMware and VirtualBox can be used. These are available for
 	download at <ulink
 	url="https://www.univention.com/downloads/ucs-download/preinstalled-vm-images/"/>..
   </para>
@@ -99,11 +99,11 @@
 	In the subsequent course of the installation, the fully qualified host name, under which the
 	computer should be accessible in the network, is entered for a &ucsMaster;. A local
 	name should also be used as the domain name in this case, e.g.,
-	<emphasis>company.local</emphasis>. (If the system is used as a mail server, for example,
+	<systemitem class="domainname">company.local</systemitem>. (If the system is used as a mail server, for example,
 	the mail domains can be used independently of the domain names).
-	For example, to commission the <emphasis>mailserver</emphasis> host system in the 
-	<emphasis>company.local</emphasis> DNS domain,
-	<emphasis>mailserver.company.local</emphasis> should be entered as the fully qualified host
+	For example, to commission the <systemitem class="systemname">mailserver</systemitem> host system in the 
+	<systemitem class="domainname">company.local</systemitem> DNS domain,
+	<systemitem class="fqdomainname">mailserver.company.local</systemitem> should be entered as the fully qualified host
 	name.
 	The <guimenu>LDAP base</guimenu> is suggested based on the fully qualified host name and
 	only needs to be adjusted in exceptional cases. The root password must be at least eight
@@ -132,10 +132,10 @@
   <title>Administration (Univention Management Console)</title>
 
 	<para>
-	  The installed UCS system is configured via the web-based &ucsUMC; (reachable at https://server_ip or
-	  http://server_ip, HTTPS is recommended) which can be reached under <guimenu>System and domain settings</guimenu>.
-	  The login to the &ucsUMC; is performed as the  <emphasis>Administrator</emphasis> with the
-	  password specified for the user <emphasis>root</emphasis> during the installation.
+		The installed UCS system is configured via the web-based &ucsUMC; (reachable at <uri>https://<replaceable>server_ip</replaceable></uri> or
+		<uri>http://<replaceable>server_ip</replaceable></uri>, HTTPS is recommended) which can be reached under <guimenu>System and domain settings</guimenu>.
+	  The login to the &ucsUMC; is performed as the  <systemitem class="username">Administrator</systemitem> with the
+	  password specified for the user <systemitem class="username">root</systemitem> during the installation.
 	</para>
 
 	<para>

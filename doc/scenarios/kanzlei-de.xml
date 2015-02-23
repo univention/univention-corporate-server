@@ -138,7 +138,7 @@
   <section>
 	<title>Proxy und Webfilter</title>
 	<para>
-	  Ein Webfilter auf Basis von Squid und Dansguardian ist in UCS integriert und führt mit dem
+	  Ein Webfilter auf Basis von Squid und DansGuardian ist in UCS integriert und führt mit dem
 	  integrierten Virenscanner ClamAV eine Prüfung des Webdatenverkehrs auf Viren durch. Dadurch
 	  werden auf Webseiten versteckte Trojaner erkannt und ausgefiltert. Auch potentiell
 	  gefährliche Dateien wie ausführbare Dateien können blockiert werden.

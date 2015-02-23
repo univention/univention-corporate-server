@@ -886,7 +886,7 @@ slapcat &gt; ldapdata.txt
 	<section id="domain:ldap:syncrepl">
 		<title>Syncrepl for synchronisation with non-UCS OpenLDAP servers</title>
 		<para>
-			The Syncrepl replication service can also be activated parallel to the notifier
+			The syncrepl replication service can also be activated parallel to the notifier
 			service for the synchronisation of OpenLDAP servers not installed on UCS
 			systems. Syncrepl is a component of OpenLDAP, monitors changes in the local
 			directory service and transmits them to other OpenLDAP servers.
@@ -910,7 +910,7 @@ slapcat &gt; ldapdata.txt
 			If Samba 4 is used, the Samba domain controller service occupies the ports 389
 			and 636. In this case, OpenLDAP is automatically reconfigured so that only
 			ports 7389 and 7636 are used. This must be taken into account during the
-			configuration of Syncrepl in particular (see <xref
+			configuration of syncrepl in particular (see <xref
 			linkend="domain:ldap:syncrepl"/>). <command>univention-ldapsearch</command>
 			uses the standard port automatically.
 		</para>

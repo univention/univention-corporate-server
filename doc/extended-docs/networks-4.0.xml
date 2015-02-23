@@ -104,7 +104,7 @@ cron/IPFORWARDING/time=@reboot
 			  restarted. To disable the virus scanner, the
 			  &ucsUCRV; <envar>squid/virusscan</envar> must be set to <emphasis>no</emphasis>.
 			  If neither of the two variables is set to <emphasis>yes</emphasis>,
-			  Dansguardian is not used. After changes to the variables Squid and Dansguardian
+			  DansGuardian is not used. After changes to the variables Squid and DansGuardian
 			  must be restarted.
 			</para>
 

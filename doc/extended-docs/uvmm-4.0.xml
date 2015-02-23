@@ -34,7 +34,7 @@
 			<para>
 				<itemizedlist>
 					<listitem><simpara>
-							The <emphasis>open-iscsi</emphasis> package must be installed on the virtualization
+							The <package>open-iscsi</package> package must be installed on the virtualization
 							servers. 
 					</simpara></listitem>
 
@@ -72,18 +72,18 @@
 			<para>
 				<itemizedlist>
 					<listitem><simpara>
-							The <emphasis>type</emphasis> attribute must be set to the <emphasis>iscsi</emphasis>
+							The <property>type</property> attribute must be set to the <literal>iscsi</literal>
 							value in the <emphasis>pool</emphasis> element.
 					</simpara></listitem>
 
 					<listitem><simpara>
-							A <emphasis>source</emphasis> element is used to specify the source servers (iSCSI
+							A <property>source</property> element is used to specify the source servers (iSCSI
 							target).
 					</simpara></listitem>
 
 					<listitem><simpara>
-							The <emphasis>target</emphasis> element is used to define the path to the device
-							files. The <filename>/dev/disk/by-path</filename> should be used there for stable
+							The <property>target</property> element is used to define the path to the device
+							files. The <filename class="directory">/dev/disk/by-path</filename> should be used there for stable
 							names. 
 					</simpara></listitem>
 				</itemizedlist>
@@ -91,8 +91,8 @@
 
 			<para>
 				In the following example, a storage pool is defined, which mounts the
-				<emphasis>iqn.2010-08.local.ucs:sdb</emphasis> iSCSI target from the
-				<emphasis>xen6.ucs.local</emphasis> server: 
+				<systemitem class="resource">iqn.2010-08.local.ucs:sdb</systemitem> iSCSI target from the
+				<systemitem class="server">xen6.ucs.local</systemitem> server: 
 
 				<programlisting language="xml"><![CDATA[
 <pool type='iscsi'>
@@ -165,7 +165,7 @@ virsh pool-refresh iscsi
 			Customers using <application>Xen</application> can continue using existing UCS-3 virtualization servers with UVMM from UCS-3 by not updating them, but should consider one of the following options longterm:
 		</para>
 		<itemizedlist>
-			<listitem><simpara>switch to the Hypervisor <application>QEMU/KVM</application>, which requires updating all virtual machines.</simpara></listitem>
+			<listitem><simpara>switch to the hypervisor <application>QEMU/KVM</application>, which requires updating all virtual machines.</simpara></listitem>
 			<listitem><simpara>switch to the Debian based <application>Xen</application>.</simpara></listitem>
 		</itemizedlist>
 		<para>
@@ -405,7 +405,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 						If many virtual machines need updating, the <abbrev>XML</abbrev> definition from <application>Xen</application> can be semi-automatically transformed into a <abbrev>XML</abbrev> definition for <application>QEMU/KVM</application>.
 					</para>
 					<procedure>
-						<title>Re-define virtual machines convetting the Xen XML definition</title>
+						<title>Re-define virtual machines converting the Xen XML definition</title>
 						<step>
 							<para>
 								Use the command <command>virsh dumpxml --inactive "$vm" &gt;"$vm.xml"</command> to generate the XML file <filename><replaceable>$vm</replaceable>.xml</filename> describing a single virtual machine on the <application>Xen</application> host.

@@ -62,7 +62,7 @@
 
 	  <para>
 		A Samba member server can be installed on UCS member servers from the Univention App Center
-		with the application <emphasis>Windows-compatible Fileserver</emphasis>. Alternatively, the
+		with the application <emphasis>Windows-compatible fileserver</emphasis>. Alternatively, the
 		software package <package>univention-samba</package> can be installed
 		(<command>univention-run-join-scripts</command> command must be run after
 		installation).
@@ -87,7 +87,7 @@
 		  directory when logging into the domain with their username and password, and can then
 		  access all the shared resources of the domain without having to enter their username and
 		  password again. Computers with any kind of Windows operating systems are authenticated in
-		  the same way as in Windows NT domains, via the NTLMv2 protocol.
+		  the same way as in Windows NT domains, via the <systemitem class="protocol">NTLMv2</systemitem> protocol.
 		</para>
 	  </section>
 
@@ -119,15 +119,15 @@
 
 		  <itemizedlist>
 			<listitem><simpara>
-			  <emphasis>NT1</emphasis> configures CIFS (supported by all Windows versions)
+			  <guimenuitem>NT1</guimenuitem> configures CIFS (supported by all Windows versions)
 			</simpara></listitem>
 
 			<listitem><simpara>
-			  <emphasis>SMB2</emphasis> configures SMB2 (supported as of Windows Vista/Windows 7)
+			  <guimenuitem>SMB2</guimenuitem> configures SMB2 (supported as of Windows Vista/Windows 7)
 			</simpara></listitem>
 
 			<listitem><simpara>
-			  <emphasis>SMB3</emphasis> configures SMB3 (supported as of Windows 8) (currently not covered by Univention support)
+			  <guimenuitem>SMB3</guimenuitem> configures SMB3 (supported as of Windows 8) (currently not covered by Univention support)
 			</simpara></listitem>
 		  </itemizedlist>
 		</para>
@@ -152,7 +152,7 @@
 		  NetBIOS is a network protocol for host names and for network communication of Windows
 		  clients. It is primarily used for NT-compatible domains; the name resolution in Active
 		  Directory is based on DNS. Samba provides NetBIOS functions with the
-		  <emphasis>nmbd</emphasis> system service.
+		  <systemitem class="service">nmbd</systemitem> system service.
 		</para>
 
 		<para>
@@ -190,7 +190,7 @@
 		</para>
 
 		<para>
-		  The WINS server can be assigned to Windows clients via a DHCP-NetBIOS policy, see chapter
+			The WINS server can be assigned to Windows clients via a <wordasword>DHCP-NetBIOS</wordasword> policy, see chapter
 		  <emphasis>IP and network management</emphasis> of the UCS manual <biblioref
 		  linkend="ucs-handbuch"/>.
 		</para>
@@ -217,8 +217,8 @@
 
 		<para>
 		  In the default setting, all adjustments are made in the
-		  <filename>/var/lib/samba/netlogon</filename> directory on the &ucsMaster; and synchronised
-		  hourly on all domain controllers with Samba installed via the <emphasis>rsync</emphasis>
+		  <filename class="directory">/var/lib/samba/netlogon/</filename> directory on the &ucsMaster; and synchronised
+		  hourly on all domain controllers with Samba installed via the <command>rsync</command>
 		  tool.
 		</para>
 
@@ -249,7 +249,7 @@
 		<para>
 		  It it also possible to make individual assignment in the user settings in the &ucsUMC;
 		  with the setting <guimenu>Windows home path</guimenu>, e.g.,
-		  <emphasis>\\ucs-file-server\smith</emphasis>. 
+		  <userinput>\\ucs-file-server\smith</userinput>.
 		</para>
 
 		<para>

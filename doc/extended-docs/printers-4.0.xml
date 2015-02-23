@@ -30,7 +30,7 @@
 	  </para>
 
 	  <para>
-		Print quotas are implemented using the component Pykota. It creates an interface between the
+		Print quotas are implemented using the component PyKota. It creates an interface between the
 		print server CUPS and the connected printer. Before the print job is sent to
 		the printer, the system checks whether the user is authorised to print. In addition, every
 		print job is logged, which allows cost evaluations.
@@ -54,14 +54,14 @@
 		</itemizedlist>
 
 	  <para>
-		Pykota interprets print jobs in the following print formats: PostScript, PDF, PCL1, PCL2,
-		PCL3, PCL4, PCL5, PCLXL, PCL6 and ESC/P2.
+		  PyKota interprets print jobs in the following print formats: <systemitem class="protocol">PostScript</systemitem>, <systemitem class="protocol">PDF</systemitem>, <systemitem class="protocol">PCL1</systemitem>, <systemitem class="protocol">PCL2</systemitem>,
+		  <systemitem class="protocol">PCL3</systemitem>, <systemitem class="protocol">PCL4</systemitem>, <systemitem class="protocol">PCL5</systemitem>, <systemitem class="protocol">PCLXL</systemitem>, <systemitem class="protocol">PCL6</systemitem> and <systemitem class="protocol">ESC/P2</systemitem>.
 	  </para>
 
 	  <para>
 		The print quota status is not saved in the LDAP directory service, but rather in a separate
-		Postgres SQL database set up automatically via the
-		<emphasis>univention-printquotadb</emphasis> package on the print server.
+		PostgreSQL database set up automatically via the
+		<package>univention-printquotadb</package> package on the print server.
 	  </para>
 	</section>
 
@@ -69,12 +69,12 @@
 	  <title>Installation</title>
 	  <para>
 		Print quota support is disabled as standard. It must be subsequently set up by installing
-		the <emphasis>univention-printquota</emphasis> package.
+		the <package>univention-printquota</package> package.
 	  </para>
 
 	  <para>
 		Enabling the print quotas results in an internal change to the printer management. For this
-		reason, <emphasis>univention-printquota</emphasis> must be installed on all print servers.
+		reason, <package>univention-printquota</package> must be installed on all print servers.
 	  </para>
 	</section>
 
@@ -96,10 +96,10 @@
 		<note>
 		  <para>
 			Print quotas can only be used for printers connected via the protocols
-			<emphasis>lpd</emphasis>, <emphasis>ipp</emphasis>, <emphasis>http</emphasis>,
-			<emphasis>socket</emphasis> and <emphasis>smb</emphasis>. It is not possible to set up
-			print quotas for printers connected via <emphasis>usb</emphasis>,
-			<emphasis>parallel</emphasis> and <emphasis>file</emphasis> URIs.
+			<systemitem class="protocol">lpd</systemitem>, <systemitem class="protocol">ipp</systemitem>, <systemitem class="protocol">http</systemitem>,
+			<systemitem class="protocol">socket</systemitem> and <systemitem class="protocol">smb</systemitem>. It is not possible to set up
+			print quotas for printers connected via <uri>usb</uri>,
+			<uri>parallel</uri> and <uri>file</uri> URIs.
 		  </para>
 		</note>
 	  </section>
@@ -183,8 +183,8 @@
 	  <title>Querying the printer quotas</title>
 	  <para>
 		The quota data can only be queried if print quota is enabled on at least one printer
-		share; otherwise, repykota delivers an error message: <command>/usr/bin/repykota : There's
-		no printer matching *</command>.
+		share; otherwise, <command>repykota</command> delivers an error message: <computeroutput>/usr/bin/repykota : There's
+		no printer matching *</computeroutput>.
 	  </para>
 
 	  <para>

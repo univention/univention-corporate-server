@@ -85,11 +85,11 @@ slapadd -l ldif
 			</programlisting>
 			In the default configuration the memory mapped database needs more I/O operations than
 			the BDB backend. With the &ucsUCRV; <envar>ldap/database/mdb/envflags</envar> this
-			behavior can be configured. The following flags can be set (multiple values are
+			behaviour can be configured. The following flags can be set (multiple values are
 			separated by commas):
 			<itemizedlist>
 				<listitem><simpara>
-					<envar>nosync</envar> specify that on-disk  database contents should not be
+					<option>nosync</option> specify that on-disk  database contents should not be
 					immediately synchronized with in memory changes. Enabling 
 					this option may improve performance at the expense of data security. In
 					particular, if the operating system crashes before changes are flushed, some
@@ -97,27 +97,27 @@ slapadd -l ldif
 					performed when each transaction is committed.
 				</simpara></listitem>
 				<listitem><simpara>
-					<envar>nometasync</envar> Flush the data on a commit, but
+					<option>nometasync</option> Flush the data on a commit, but
 					skip the sync of the meta page. This mode is slightly faster than doing a full
 					sync, but can potentially lose the last committed transaction if the operating
-					system crashes. If both  nometasync  and  nosync  are set, the nosync flag takes
+					system crashes. If both <option>nometasync</option> and <option>nosync</option> are set, the <option>nosync</option> flag takes
 					precedence.
 				</simpara></listitem>
 				<listitem><simpara>
-					<envar>writemap</envar> Use a writable memory map instead of
+					<option>writemap</option> Use a writable memory map instead of
 					just read-only. This speeds up write operations but makes the database
-					vulnerable to corruption in case any bugs in slapd cause stray writes into the
-					mmap region.
+					vulnerable to corruption in case any bugs in <systemitem class="daemon">slapd</systemitem> cause stray writes into the
+					memory mapped region.
 				</simpara></listitem>
 				<listitem><simpara>
-					<envar>mapasync</envar> When using a writable memory map and
+					<option>mapasync</option> When using a writable memory map and
 					performing flushes on each commit, use an asynchronous flush instead of a
-					synchronous flush (the default). This option has no effect if writemap has not
-					been set. It also has no effect if nosync is set.
+					synchronous flush (the default). This option has no effect if <option>writemap</option> has not
+					been set. It also has no effect if <option>nosync</option> is set.
 				</simpara></listitem>
 				<listitem><simpara>
-					<envar>nordahead</envar> Turn  off  file  readahead.
-					Usually  the OS performs readahead on every read request. This usually boosts
+					<option>nordahead</option> Turn  off  file  read-ahead.
+					Usually  the OS performs read-ahead on every read request. This usually boosts
 					read performance but can be harmful to random access read performance if the
 					system's memory is full and the DB is larger than RAM.
 				</simpara></listitem>
@@ -326,7 +326,7 @@ slapadd -l ldif
 				<term><envar>kernel/fs/inotify/max_user_instances</envar></term>
 				<listitem>
 					<simpara>
-						The upper limit of Inotify services per user ID.
+						The upper limit of inotify services per user ID.
 						The default is 511.
 					</simpara>
 				</listitem>
@@ -335,7 +335,7 @@ slapadd -l ldif
 				<term><envar>kernel/fs/inotify/max_user_watches</envar></term>
 				<listitem>
 					<simpara>
-						The upper limit of files per user which can be watched by the Inotify service.
+						The upper limit of files per user which can be watched by the inotify service.
 						The default is 32767.
 					</simpara>
 				</listitem>
@@ -344,7 +344,7 @@ slapadd -l ldif
 				<term><envar>kernel/fs/inotify/max_queued_events</envar></term>
 				<listitem>
 					<simpara>
-						The upper limit of queued events per Inotify instance.
+						The upper limit of queued events per inotify instance.
 						The default is 16384.
 					</simpara>
 				</listitem>

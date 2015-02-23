@@ -1055,7 +1055,7 @@ Microsoft Distributed File System Tree'.
 	</para>
 
 	<para>
-	  If quota has been activated on a xfs root-partition, the system has to be rebooted.
+		If quota has been activated on a <systemitem class="filesystem">XFS</systemitem> root-partition, the system has to be rebooted.
 	</para>
 
   </section>

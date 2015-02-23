@@ -90,7 +90,7 @@
 
 	<para>
 	  The DC master is the centrepiece of the UCS domain. The central,
-	  writeable copy of the LDAP directory service is maintained on this
+	  writable copy of the LDAP directory service is maintained on this
 	  system.
 	</para>
 
@@ -166,8 +166,8 @@
 	<para>
 	  The users' applications are run on the terminal servers, while the
 	  thin clients merely display the applications and transmit the user
-	  inputs to the terminal servers. The screen content is provided by the RDP server xrdp,
-	  allowing a low-bandwith access using the Remote Desktop Protocol (RDP).
+	  inputs to the terminal servers. The screen content is provided by the RDP server <application>xrdp</application>,
+	  allowing a low-bandwidth access using the Remote Desktop Protocol (RDP).
 	</para>
 
 	<para>

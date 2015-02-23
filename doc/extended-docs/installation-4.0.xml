@@ -109,9 +109,9 @@
 	<para> 
 	  The basic installation is performed using the standard UCS installer. Further information on
 	  the individual options can be found in the UCS manual. The installation should be performed in
-	  a virtualization solution. In this example, the installation is performed in UVMM. A QCOW2
-	  image should be selected for the hard drive for the virtual machine.  QCOW2 images can be
-	  converted to different virtualization formats such as VirtualBox or VMWare using a tool
+	  a virtualization solution. In this example, the installation is performed in UVMM. A qcow2
+	  image should be selected for the hard drive for the virtual machine.  Qcow2 images can be
+	  converted to different virtualization formats such as VirtualBox or VMware using a tool
 	  provided by Univention, see <xref linkend="appliance:create:virt"/>.
 	</para>
 
@@ -158,7 +158,7 @@
 
 	<para> 
 	  Once the basic installation is complete, a dialogue is shown in which you can select whether
-	  to create a new UCS domain or join an existing domain. To create the appliance, CTRL+q
+	  to create a new UCS domain or join an existing domain. To create the appliance, <keycombo action="simul"><keycap function="control">Control</keycap><keycap>Q</keycap></keycombo>
 	  must be pressed at this point to interrupt the process. The installation continues for a short
 	  period of time, during which the <guimenu>Starting Univention System Setup</guimenu> message
 	  appears and the systems then restarts. 
@@ -176,7 +176,7 @@
 	  is not yet available at this point in time. The installation is thus performed via the command
 	  line. UCS standard components can be installed using the corresponding package names, e.g.
 
-	  <programlisting>
+	  <programlisting language="sh">
 univention-install univention-printserver
 	  </programlisting>
 
@@ -185,7 +185,7 @@ univention-install univention-printserver
 	  The ID of an application can be retrieved with the command
 	  <command>univention-add-app --list</command>:
 
-	  <programlisting>
+	  <programlisting language="sh">
 univention-add-app -l APPID
 	  </programlisting>
 	</para>
@@ -195,7 +195,7 @@ univention-add-app -l APPID
 	</para>
 
 	<para> 
-	  The QCOW image (i.e., the hard drive of the virtual machine) is now copied. If the
+	  The qcow2 image (i.e., the hard drive of the virtual machine) is now copied. If the
 	  <emphasis>default</emphasis> storage pool of UVMM was used, the image is stored in the
 	  directory <filename>/var/lib/libvirt/images</filename>.
 	</para>
@@ -215,14 +215,15 @@ univention-add-app -l APPID
 	  </para>
 
 	  <para>
-		Amazon EC2 uses a PyGrub version which can only read the data format from Grub 1 (menu.lst),
+		  Amazon EC2 uses a PyGrub version which can only read the data format from Grub 1 (<filename>menu.lst</filename>),
 		whilst UCS uses Grub 2 as the bootloader. The following &ucsUCR; variables can be
 		used to generate the Grub configuration in this format additionally. The bootloader
 		configuration is also adapted:
 
-		<programlisting>
+		<programlisting language="sh">
 append="$(ucr get grub/append)"
-ucr set grub/append="$(echo "$append" | sed -e 's|/dev/sda|/dev/xvda|g;s|splash|nosplash|')"
+ucr set grub/append="$(echo "$append" |
+ sed -e 's|/dev/sda|/dev/xvda|g;s|splash|nosplash|')"
 ucr set grub/root=/dev/xvda1
 ucr set grub/grub1root="(hd0)"
 update-initramfs -uk all
@@ -236,17 +237,17 @@ univention-grub-generate-menu-lst
 		from occurring with the default root password of the standard image during commissioning of
 		the instance, the initial root password is removed. The following &ucsUCR; variable configures this start mode:
 
-		<programlisting>
+		<programlisting language="sh">
 usermod -p \* root
 ucr set server/amazon=true
 		</programlisting>
 	  </para>
 
 	  <para>
-		  The name server should be set; in this example to OpenDNS. Additionally, the timeout when
+		  The name server should be set; in this example to <systemitem class="service">OpenDNS</systemitem>. Additionally, the timeout when
 		  waiting for a DHCP request answer is lowered.
  
-		<programlisting>
+		<programlisting language="sh">
 ucr set nameserver1=208.67.222.222 dns/forwarder1=208.67.222.222
 ucr unset nameserver2 nameserver3
 ucr unset dns/forwarder2 dns/forwarder3
@@ -264,14 +265,14 @@ ucr set interfaces/eth0/type=dhcp dhclient/options/timeout=12
 		range of data sources for an existing configuration. The <package>univention-cloud-init</package>
 		package must be installed to prepare an image for provisioning via Cloud-Init:
 
-		<programlisting>
+		<programlisting language="sh">
 univention-install univention-cloud-init
 		</programlisting>
 	  </para>
 
 	  <para>
-		The local firefox session should not be started when running as an OpenStack instance.
-		<programlisting>
+		The local <application>Firefox</application> session should not be started when running as an OpenStack instance.
+		<programlisting language="sh">
 ucr set system/setup/boot/start=false
 		</programlisting>
 	  </para>
@@ -280,23 +281,23 @@ ucr set system/setup/boot/start=false
 		The initial login to the OpenStack instance is performed via a SSH host key. To prevent SSH logins
 		from occurring with the default root password of the standard image during commissioning of
 		the instance, the initial root password is removed.
-		<programlisting>
+		<programlisting language="sh">
 usermod -p \* root
 		</programlisting>
 	  </para>
 	</section>
 
 	<section id="appliance:create:virt">
-	  <title>Providing an image for VMWare/VirtualBox</title>
+	  <title>Providing an image for VMware/VirtualBox</title>
 	  <para>
-		Virtualization images for VirtualBox, VMware Player and Vmware ESX can also be created on
-		the basis of the QCOW images above. To this end, Univention offers a tool, which can be
+		  Virtualization images for <application>VirtualBox</application>, <application>VMware Player</application> and <application>VMware ESX</application> can also be created on
+		the basis of the qcow2 images above. To this end, Univention offers a tool, which can be
 		installed via the <package>generate-appliance</package> package (the integration in UCS 4.0
 		can be followed via Bug 37137).
 	  </para>
 
 	  <para>
-		The <command>generate_appliance</command> tool must be started and the QCOW
+		The <command>generate_appliance</command> tool must be started and the qcow2
 		image selected with the parameter <emphasis>-s</emphasis>:
 
 		<programlisting>
@@ -313,38 +314,32 @@ generate_appliance -s appliance.qcow2
 	  </para>
 
 	  <para>
-		In the default setting, three different virtualization images are generated from the QCOW
+		In the default setting, three different virtualization images are generated from the qcow2
 		image. The generation for a type can be suppressed using the respectively given option:
 
 		<itemizedlist>
 		  <listitem><simpara>
-			Zipped VMware-compatible images (e.g. for VMWare Player), can be suppressed with <emphasis>--no-vmware</emphasis>
+			Zipped VMware compatible images (e.g. for <application>VMware Player</application>), can be suppressed with <option>--no-vmware</option>
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			VirtualBox OVA image, can be suppressed with <emphasis>--no-ova-virtualbox</emphasis>
+			VirtualBox OVA image, can be suppressed with <option>--no-ova-virtualbox</option>
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			VMWare ESX OVA image, can be suppressed with <emphasis>--no-ova-esxi</emphasis>
+			<application>VMware ESX</application> OVA image, can be suppressed with <option>--no-ova-esxi</option>
 		  </simpara></listitem>
 		</itemizedlist>
 	  </para>
-
 	</section>
-
-
-
-
   </section>
-
 
   <section id="appliance:use:auto">
 	<title>Automatic configuration of an appliance</title>
 	<para>
 	  Instead of an interactive configuration of the appliance by the user,
 	  it can also be performed automatically. The automatic configuration can either be performed
-	  via Cloud-Init (a general tool for the provision of cloud images) or a Univention appliance
+	  via <application>cloud-init</application> (a general tool for the provision of cloud images) or a Univention appliance
 	  mode profile file.
 	</para>
 
@@ -368,7 +363,7 @@ packages_install="univention-s4-connector univention-samba4 univention-nagios-se
 packages_remove=""
 
 server/role="domaincontroller_master"
- 
+
 interfaces/eth0/type=""
 interfaces/eth0/address="10.201.101.2"
 interfaces/eth0/netmask="255.0.0.0"
@@ -378,7 +373,7 @@ dns/forwarder1="10.201.74.2"
 gateway="10.201.0.1"
 		</programlisting>
 
-		If <emphasis>interfaces/eth0/type</emphasis> is set to <emphasis>dynamic</emphasis>, DHCP is
+		If <envar>interfaces/eth0/type</envar> is set to <literal>dynamic</literal>, DHCP is
 		used for the network configuration.
 	  </para>
 
@@ -386,7 +381,7 @@ gateway="10.201.0.1"
 		Then the <command>/usr/lib/univention-system-setup/scripts/setup-join.sh</command> tool
 		needs to be run once. Then Apache and the UMC server need to be restarted:
 
-		<programlisting>
+		<programlisting language="sh">
 invoke-rc.d apache2 restart
 invoke-rc.d univention-management-console-server restart
 		</programlisting>
@@ -396,7 +391,7 @@ invoke-rc.d univention-management-console-server restart
 	<section id="appliance:use:cloudinit">
 	  <title>Automatic configuration of an appliance with Cloud-Init</title>
 	  <para>
-		Cloud-Init works on a configuration file in the cloud config format.
+		Cloud-Init works on a configuration file in the cloud configuration format.
 		The configuration file is provided by the respective cloud service; the type of provision
 		differs from cloud solution to cloud solution. It is currently only possible to provide a
 		&ucsMaster;.
@@ -404,8 +399,8 @@ invoke-rc.d univention-management-console-server restart
 
 	  <para>
 		The configuration file may be adapted for different scenarios. To setup a domain,
-		the <emphasis>ucs_setup</emphasis> section is required. Note that the supplied
-		<emphasis>ldap_base</emphasis> is used in other config sections as well.
+		the <literal>ucs_setup</literal> section is required. Note that the supplied
+		<literal>ldap_base</literal> is used in other configuration sections as well.
 	  </para>
 
 	  <para>
@@ -418,7 +413,7 @@ invoke-rc.d univention-management-console-server restart
 
 	  <para>
 		Two example hook scripts are generated which are called after setup is finished:
-		One calls wget for a given URL, which could be used to signal an external service that the
+		One calls <command>wget</command> for a given URL, which could be used to signal an external service that the
 		provisioning of	the instance is done. The other is an example <command>udm</command>
 		call to register an OpenStack connection in UVMM.
 
@@ -538,10 +533,10 @@ write_files:
 
 		<para>
 		  Firstly, a session with the license server must be opened, in this case with the user name
-		  <emphasis>univention</emphasis> and the password <emphasis>secret</emphasis> as an
+		  <systemitem class="username">univention</systemitem> and the password <literal>secret</literal> as an
 		  example. It is also possible to request more than one license in one session.
 
-		  <programlisting>
+		  <programlisting language="sh">
 wget --keep-session-cookies --save-cookies cookie.db --load-cookies \ 
  cookie.db --post-data='username=univention&amp;password=secret' \
  https://license.univention.de/shop/example/
@@ -549,11 +544,11 @@ wget --keep-session-cookies --save-cookies cookie.db --load-cookies \
 		</para>
 
 		<para>
-		  A license can also be ordered with a POST request via wget. Please note that special
+			A license can also be ordered with a POST request via <command>wget</command>. Please note that special
 		  characters such as blank spaces must be escaped in URL-encoded syntax, see
 		  <uri>http://en.wikipedia.org/wiki/Percent-encoding</uri> for details.
 
-		  <programlisting>
+		  <programlisting language="sh">
 wget --keep-session-cookies --save-cookies cookie.db --load-cookies cookie.db \
 --post-data='kundeEmail=customer@example&amp;'\
 'kundeUnternehmen=New%20Customern&amp;'\
@@ -574,7 +569,7 @@ https://license.univention.de/shop/example/order
 
 		<para>
 		  If the order is successful, the return code 202 is returned. The HTML data includes the tag
-		  <emphasis>orderid</emphasis>, which identifies the order number of a successful order:
+		  <varname>orderid</varname>, which identifies the order number of a successful order:
 
 		  <programlisting>
 ...
@@ -584,7 +579,7 @@ https://license.univention.de/shop/example/order
 		</para>
 
 		<para>
-		  If the order fails, a return code 4xx is returned and the <emphasis>details</emphasis> tag
+		  If the order fails, a return code <errorcode>4xx</errorcode> is returned and the <varname>details</varname> tag
 		  includes additional information, e.g.:
 
 		  <programlisting>
@@ -605,7 +600,7 @@ https://license.univention.de/shop/example/order
 		  above returns e.g. the order number 465, the file name is thus <filename>465.ldif</filename>.
 		  The request specified below waits for the availability of the license for up to sixty seconds:
 
-		  <programlisting>
+		  <programlisting language="sh">
 wget --keep-session-cookies --save-cookies cookie.db --load-cookies cookie.db \
 https://license.univention.de/shop/example/orders/465.ldif 
 		  </programlisting>
@@ -614,11 +609,7 @@ https://license.univention.de/shop/example/orders/465.ldif
 
 	  </section>
 	</section>
-
-
   </section>
-
-
 
 </chapter>
 

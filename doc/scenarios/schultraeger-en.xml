@@ -56,7 +56,7 @@
   <section>
 	<title>Implementation</title>
 	<para>
-	  The school board is implementing an environment based on UCS@School, a
+	  The school board is implementing an environment based on UCS@school, a
 	  complete IT solution based on UCS with numerous additional components
 	  for the use, operation and management of the schools' IT.
 	</para>
@@ -68,7 +68,7 @@
 	</para>
 
 	<para>
-	  For security reasons, the UCS@School concept specifies that the school
+	  For security reasons, the UCS@school concept specifies that the school
 	  servers only perform a partial replication of the &ucsMaster;'s
 	  LDAP directory. In the default setting they only replicate
 	  the parts relevant for themselves (e.g., users and groups of the
@@ -77,7 +77,7 @@
 
 	<para>
 	  The DC master is the centrepiece of the UCS domain. The central,
-	  writeable copy of the LDAP directory service is provided on this
+	  writable copy of the LDAP directory service is provided on this
 	  system.
 	</para>
 
@@ -109,7 +109,7 @@
 	</para>
 
 	<para>
-	  There are four different user roles in UCS@School:
+	  There are four different user roles in UCS@school:
 	</para>
 		<itemizedlist>
 		  <listitem><simpara><emphasis>Students</emphasis></simpara></listitem>
@@ -282,7 +282,7 @@
 	  distribution and collection of teaching materials from classes and
 	  working groups. Optionally, it is also possible to set a period for
 	  the distribution and collection. This makes it possible to allocate
-	  tasks that need to be done by the end of the lession. Once
+	  tasks that need to be done by the end of the lesson. Once
 	  this period elapses, the distributed materials are then automatically
 	  collected back in again and stored in the teacher's home
 	  directory.
@@ -368,7 +368,7 @@
 	<para>
 	  The administration of the groupware-relevant attributes integrates
 	  seamlessly in the &ucsUMC;. The employees access the groupware via
-	  the web client Roundcube.
+	  the web client RoundCube.
 	</para>
 
 	<para>
@@ -381,8 +381,8 @@
 	<title>References</title>
 	  <itemizedlist>
 		<listitem><simpara><ulink url="http://docs.univention.de/manual.html"/> (UCS manual)</simpara></listitem>
-		<listitem><simpara><ulink url="http://docs.univention.de/ucsschool-manual.html"/> (UCS@School manuals for administrators (currently only available in German))</simpara></listitem>
-		<listitem><simpara><ulink url="http://docs.univention.de/ucsschool-teacher-manual.html"/> (UCS@School manuals for teachers (currently only available in German))</simpara></listitem>
+		<listitem><simpara><ulink url="http://docs.univention.de/ucsschool-manual.html"/> (UCS@school manuals for administrators (currently only available in German))</simpara></listitem>
+		<listitem><simpara><ulink url="http://docs.univention.de/ucsschool-teacher-manual.html"/> (UCS@school manuals for teachers (currently only available in German))</simpara></listitem>
 		<listitem><simpara><ulink url="http://www.univention.de/en/products/ucs/app-catalogue/app/details/kolab"/> (Kolab)</simpara></listitem>
 	  </itemizedlist>
   </section>

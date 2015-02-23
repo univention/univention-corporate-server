@@ -1,10 +1,10 @@
 <chapter>
-  <title>Heterogenous enterprise environment in an insurance company</title>
+  <title>Heterogeneous enterprise environment in an insurance company</title>
   <section>
 	<title>Initial situation</title>
 	<para>
-	  <emphasis>Hanseatische Marineversicherung</emphasis> (HMV) is an insurance company with
-	  1800 employees specialised in the logistics sector. HMV is a subsidiary
+		<foreignphrase>Hanseatische Marineversicherung</foreignphrase> (<acronym>HMV</acronym>) is an insurance company with
+		1800 employees specialised in the logistics sector. <acronym>HMV</acronym> is a subsidiary
 	  of the Vigil Insurances parent company.
 	</para>
 
@@ -69,7 +69,7 @@
 
 	<para>
 	  The DC master is the centrepiece of the UCS domain. The central,
-	  writeable LDAP directory is provided on this system.
+	  writable LDAP directory is provided on this system.
 	</para>
 
 	<para>

@@ -37,7 +37,7 @@
 		  In case a command fails or does not return the expected output, 
 		  please make sure that all configuration options and files are entered and
 		  have been written as shown in this document. For example, some text editors do not
-  		  preserve the indentation which is required for some config files.
+  		  preserve the indentation which is required for some configuration files.
 	</para></caution>
 
         <section>
@@ -285,9 +285,9 @@ exit
 ]]></programlisting>
 
             <para>
-			  Kubuntu 14.04 uses AccountService, a D-Bus interface for user account management, which
-			  ignores the <filename>/etc/lightdm.conf</filename> file.  Since there is no config
-			  file for AccountService the login theme needs to be changed to
+				Kubuntu 14.04 uses <systemitem class="service">AccountService</systemitem>, a D-Bus interface for user account management, which
+			  ignores the <filename>/etc/lightdm.conf</filename> file.  Since there is no configuration
+			  file for <systemitem class="service">AccountService</systemitem> the login theme needs to be changed to
 			  <emphasis>classic</emphasis> under <guimenu>System Settings -> Login Screen (LightDM)</guimenu>.
 			</para>
 
@@ -522,16 +522,16 @@ getent group
 
 			<itemizedlist>
 			  <listitem><simpara>
-				KERBEROSREALM must be replaced by the name of the UCS Kerberos realm (saved in the
+					  <replaceable>KERBEROSREALM</replaceable> must be replaced by the name of the UCS Kerberos realm (saved in the
 				&ucsUCRV; <envar>kerberos/realm</envar>).
 			  </simpara></listitem>
 
 			  <listitem><simpara>
-				MASTERIP must be replaced by the IP address of the &ucsMaster;.
+					  <replaceable>MASTERIP</replaceable> must be replaced by the IP address of the &ucsMaster;.
 			  </simpara></listitem>
 
 			  <listitem><simpara>
-				MASTERFQDN must be replaced by the fully qualified domain name of the &ucsMaster;.
+					  <replaceable>MASTERFQDN</replaceable> must be replaced by the fully qualified domain name of the &ucsMaster;.
 			  </simpara></listitem>
 			</itemizedlist>
 
@@ -571,8 +571,8 @@ KERBEROSREAKM = {
 		  </para>
 
 		  <para>
-			To allow SSH logins via Kerberos, the options <emphasis>GSSAPIAuthentication</emphasis>
-			and <emphasis>GSSAPIKeyExchange</emphasis> should be set to <emphasis>yes</emphasis> in
+			To allow SSH logins via Kerberos, the options <option>GSSAPIAuthentication</option>
+			and <option>GSSAPIKeyExchange</option> should be set to <literal>yes</literal> in
 			the configuration file of the SSH daemon (typically <filename>/etc/ssh/sshd_config</filename>).
 		  </para>
 
@@ -596,7 +596,7 @@ ServerName printserver.example.com
 	  <title>Advanced SSL certificate handling</title>
 
 	  <section>
-		<title>Managing additional certificates with univention-certificate</title>
+		<title>Managing additional certificates with <command>univention-certificate</command></title>
         <para>
 		  Every UCS domain has its own SSL certificate authority. The SSL certificates are created
 		  automatically for all UCS systems during the installation (&ucsMaster;) or during the domain join
@@ -729,7 +729,7 @@ univention-certificate new -name fullyqualifiedhostname
 
         <para>
 			REQUEST is the file with the CSR in either PEM or DER format.
-			A file in PEM format is a text file containing a Base64-encoded block enclosed between <literal>BEGIN CERTIFICATE</literal> and <literal>END CERTIFICATE</literal>.
+			A file in PEM format is a text file containing a base64 encoded block enclosed between <literal>BEGIN CERTIFICATE</literal> and <literal>END CERTIFICATE</literal>.
 			A request in binary DER format must be first converted to the PEM format with the following command:
 		</para>
 <programlisting language="sh">
@@ -766,21 +766,21 @@ openssl ca -batch -config /etc/univention/ssl/openssl.cnf \
 	  	</para>
    	
 	  	<para>
-		  The external OpenLDAP server is described as <emphasis>extldap.univention.test</emphasis>
+		  The external OpenLDAP server is described as <systemitem class="fqdomainname">extldap.univention.test</systemitem>
 		  below and synchronises with the &ucsMaster;, which uses the LDAP base
-		  <emphasis>dc=univention,dc=test</emphasis>.
+		  <uri>dc=univention,dc=test</uri>.
 	  	</para>
    	
 	  	<para>
 		  The following steps must be run on the OpenLDAP system and the UCS system as the
-		  <emphasis>root</emphasis> user:
+		  <systemitem class="username">root</systemitem> user:
 	  	</para>
 	  </section>
 
 	  <section>
 	  	<title>Creating a computer account</title>
 	  	<para>
-		  For <emphasis>extldap.univention.test</emphasis>, a <emphasis>Linux</emphasis>
+		  For <systemitem class="fqdomainname">extldap.univention.test</systemitem>, a <emphasis>Linux</emphasis>
 		  computer object must be created in the &ucsUMC; computer management and
 		  a DNS forward and reverse zone assigned to the computer.
 	  	</para>
@@ -884,17 +884,17 @@ cp /root/slapd.conf /etc/ldap
 
 		  <itemizedlist>
 			<listitem><simpara>
-			  <emphasis>extldap.univention.test</emphasis> must be replaced with the fully qualified
+			  <systemitem class="fqdomainname">extldap.univention.test</systemitem> must be replaced with the fully qualified
 			  domain name of the external LDAP server
 			</simpara></listitem>
 
 			<listitem><simpara>
-			  <emphasis>dc=univention,dc=test</emphasis> must be replaced with the LDAP base
+			  <uri>dc=univention,dc=test</uri> must be replaced with the LDAP base
 			  actually used
 			</simpara></listitem>
 
 			<listitem><simpara>
-			  <emphasis>REMOTE_UPDATE_PASSWORD</emphasis> must be replaced with the password used to
+			  <replaceable>REMOTE_UPDATE_PASSWORD</replaceable> must be replaced with the password used to
 			  access the LDAP database
 			</simpara></listitem>
 		  </itemizedlist>
@@ -923,7 +923,7 @@ chgrp -R openldap /etc/univention/ssl
 		<para>
 		  The configuration of the external LDAP server is now complete. The following command
 		  (performed on the &ucsMaster;) can be used to check whether the external LDAP server can
-		  be reached via the LDAPS protocol:
+		  be reached via the <systemitem class="protocol">LDAPS</systemitem> protocol:
 
 		  <programlisting language="sh">
 ldapsearch -x -H ldaps://extldap.univention.test -b cn=Subschema -s base
@@ -933,7 +933,7 @@ ldapsearch -x -H ldaps://extldap.univention.test -b cn=Subschema -s base
 		<para>
 		  Whenever schema files are added on the UCS Master, the following steps
 		  have to be repeated.
-		  First an updated slapd.conf needs to be generated for the remote LDAP server
+		  First an updated <filename>slapd.conf</filename> needs to be generated for the remote LDAP server
 		  which includes all UCS schema files. Then all required files need to be copied to the
 		  remote LDAP server:
 		  <programlisting language="sh">
@@ -953,9 +953,9 @@ chgrp openldap /etc/ldap/slapd.conf
 		</para>
 
 		<para>
-		  If the external system is a Debian system, the 'SLAPD_SERVICES' variable may need to be
-		  adapted in <filename>/etc/default/slapd</filename>. In addition, the 'SLAPD_CONF' variable can be used to
-		  specify the <filename>/etc/ldap/slapd.conf</filename> file as the configuration file for the SLAPD, if this
+			If the external system is a Debian system, the '<varname>SLAPD_SERVICES</varname>' variable may need to be
+			adapted in <filename>/etc/default/slapd</filename>. In addition, the '<varname>SLAPD_CONF</varname>' variable can be used to
+			specify the <filename>/etc/ldap/slapd.conf</filename> file as the configuration file for the <systemitem class="daemon">slapd</systemitem>, if this
 		  is not the standard for the OpenLDAP version used.
 		</para>
 	  </section>
@@ -963,8 +963,8 @@ chgrp openldap /etc/ldap/slapd.conf
 	  <section>
 		<title>Activation of the syncrepl proxy</title>
 		<para>
-		  If the LDAPS connection works, the configuration of the syncrepl proxy can be
-		  activated on the &ucsMaster;. This is done by saving the 'REMOTE_UPDATE_PASSWORD' password
+		  If the LDAP connection works, the configuration of the syncrepl proxy can be
+		  activated on the &ucsMaster;. This is done by saving the '<replaceable>REMOTE_UPDATE_PASSWORD</replaceable>' password
 		  configured above in the <filename>/etc/replica-001.secret</filename> file and entering the
 		  address of the external LDAP server in the form of a LDAP-URI in the &ucsUCRV;
 		  <envar>ldap/replica/target/uri</envar>:
@@ -985,7 +985,7 @@ ucr commit /etc/ldap/syncrepl-proxy.conf
 		</para>
 
 		<para>
-		  The replication originates from the &ucsMaster; and is performed via LDAPS to the host
+			The replication originates from the &ucsMaster; and is performed via <systemitem class="protocol">LDAPS</systemitem> to the host
 		  name of the external LDAP server system. This requires working name resolution (typically via
 		  DNS). The host name must be specified as a fully qualified domain name to allow checking
 		  of the SSL certificate.
