@@ -62,7 +62,7 @@
 
 		<itemizedlist>
 		  <listitem><para>
-			Zahlreiche Verbesserungen in Design und Usability der &ucsUMC;
+			Verbesserung der Stabilität des Managementsystems in bestimmten Situationen
 		  </para></listitem>
 
 		  <listitem><para>
@@ -70,8 +70,8 @@
 		  </para></listitem>
 
 		  <listitem><para>
-			Zahlreiche Fehlerkorrekturen und Verbesserungen unter anderem in der Samba 4/Active
-			Directory-Integration von UCS, bspw. bei der Verwendung von Microsoft Sharepoint
+			Zahlreiche Verbesserungen in der Samba 4/Active Directory-Integration von UCS, bspw.
+			bei der Verwendung von Microsoft SharePoint
 		  </para></listitem>
 		</itemizedlist>
 
@@ -111,7 +111,7 @@
 		<para>
 			Eine Remote-Aktualisierung über SSH wird nicht empfohlen, da dies beispielsweise bei Unterbrechung der Netzverbindung zum Abbruch des Update-Vorgangs und zu einer Beeinträchtigung des Systems führen kann.
 			Sollte dennoch eine Aktualisierung über eine Netzverbindung durchgeführt werden, ist sicherzustellen, dass das Update bei Unterbrechung der Netzverbindung trotzdem weiterläuft.
-			Hierfür können beispielsweise die Tools <command>screen</command> oder <command>at</command> eingesetzt werden, die auf allen Systemrollen installiert sind.
+			Hierfür können beispielsweise die Tools <command>screen</command> oder <command>at</command> eingesetzt werden, die standardmäßig installiert sind.
 		</para>
 
 	</chapter>
@@ -133,7 +133,7 @@
 			<title>Betrieb eines lokalen Repository-Servers / Preup- und Postup-Skripte</title>
 			<para>
 				Preup- und Postup-Skripte sind Skripte, die vor und nach Release-Updates aufgerufen werden
-				(z.B. zur Nachbereitung des Updates, etwa die Deinstallation obsoleter Pakete).
+				(z.B. zur Nachbereitung des Updates, etwa die Deinstallation nicht mehr benötigter Pakete).
 				Ab UCS 3.2 werden diese Skripte kryptographisch signiert, um eine unerlaubte Modifikation zu verhindern.
 				Beim Update und Spiegeln des Repositories werden diese Signaturen überprüft.
 				Sind diese ungültig oder fehlen, so wird die Aktion abgebrochen.
@@ -251,7 +251,7 @@ done
 			<itemizedlist>
 				<listitem>
 					<para>
-						Microsoft Windows Domänencontroller dürfen aktuell nicht in eine Samba 4-Domäne beitreten.
+						Microsoft Windows Domänencontroller dürfen nicht einer Samba 4-Domäne beitreten und umgekehrt.
 					</para>
 				</listitem>
 
@@ -263,13 +263,13 @@ done
 
 				<listitem>
 					<para>
-						Samba 4 unterstützt aktuell keine Forest-Domänen.
+						Samba 4 unterstützt keine Forest-Domänen.
 					</para>
 				</listitem>
 
 				<listitem>
 					<para>
-						Samba 4 unterstützt aktuell keine Vertrauensstellungen.
+						Samba 4 unterstützt keine Vertrauensstellungen.
 					</para>
 				</listitem>
 			</itemizedlist>

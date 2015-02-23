@@ -61,7 +61,7 @@
 
 		<itemizedlist>
 		  <listitem><para>
-			Multiple improvements in the design and usability of &ucsUMC;
+			Stability improvements of the management system in some situations
 		  </para></listitem>
 
 		  <listitem><para>
@@ -69,8 +69,8 @@
 		  </para></listitem>
 
 		  <listitem><para>
-			Multiple bugfixes and improvements, e.g. in the Samba 4/Active Directory integration of UCS
-			which now supports Microsoft Sharepoint
+			Multiple improvements in the Samba 4/Active Directory integration of UCS, e.g. in 
+			the use of Microsoft SharePoint
 		  </para></listitem>
 		</itemizedlist>
 
@@ -111,7 +111,7 @@
 		<para>
 			Remote updating via SSH is not recommended as this may result in the update procedure being cancelled if the network connection is interrupted, for example, and this can affect the system.
 			If updating should occur over a network connection nevertheless, it must be verified that the update continues despite disconnection from the network.
-			This can be done, for example, using the tools <command>screen</command> and <command>at</command>, which are installed on all system roles.
+			This can be done, for example, using the tools <command>screen</command> and <command>at</command>, which are installed by default.
 		</para>
 
 	</chapter>
@@ -131,7 +131,7 @@
 		<section id="repo:verify">
 			<title>Operating a local repository server / pre-up/ post-up scripts</title>
 			<para>
-				Pre-up and postup scripts are scripts which are run before and after release updates
+				Pre-up and post-up scripts are scripts which are run before and after release updates
 				(e.g., for post-processing the update, for example by uninstalling obsolete packages).
 				As of UCS 3.2, these scripts are cryptographically signed to prevent unauthorized modification.
 				During the update and when mirroring the repository these signatures are checked.
@@ -250,7 +250,7 @@ done
 			<itemizedlist>
 				<listitem>
 					<para>
-						Microsoft Windows domain controllers must not be joined in a Samba 4 domain currently.
+						Microsoft Windows domain controllers must not be joined in a Samba 4 domain and vice versa.
 					</para>
 				</listitem>
 
@@ -262,13 +262,13 @@ done
 
 				<listitem>
 					<para>
-						Samba 4 does not currently support forest domains.
+						Samba 4 does not support forest domains.
 					</para>
 				</listitem>
 
 				<listitem>
 					<para>
-						Samba 4 does not currently support trust relationships.
+						Samba 4 does not support trust relationships.
 					</para>
 				</listitem>
 			</itemizedlist>

@@ -265,7 +265,7 @@
 			</simpara></listitem>
 
 			<listitem><simpara>
-			  In bug in ACL handling when using NFS file shares has been fixed (<ulink
+			  A bug in ACL handling when using NFS file shares has been fixed (<ulink
 			  url="&ucsbug;36990">Bug 36990</ulink>).
 			</simpara></listitem>
 
@@ -577,7 +577,7 @@
 	  <itemizedlist>
 		<listitem><simpara>
 		  Fix killing and terminating of processes in the <guimenu>Process overview</guimenu> module
-		  if a backported python-psutil packaged (installed by some applications) (<ulink
+		  if a backported python-psutil package is used (installed by some applications) (<ulink
 		  url="&ucsbug;36439">Bug 36439</ulink>).
 		</simpara></listitem>
 
