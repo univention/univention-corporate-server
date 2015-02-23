@@ -627,6 +627,10 @@
 		  37031</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The update scripts have been adjusted to UCS 3.2-5 (<ulink url="&ucsbug;37810">Bug 37810</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
 	</section>
 
