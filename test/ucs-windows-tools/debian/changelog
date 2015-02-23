@@ -1,3 +1,10 @@
+ucs-windows-tools (2.0.7-1) unstable; urgency=low
+
+  * lib/winexe.py: first turn off the firewall when joining a Windows Host;
+    perform shutdown in the domain_mode (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 23 Feb 2015 15:45:00 +0100
+
 ucs-windows-tools (2.0.6-1) unstable; urgency=medium
 
   * windows-scripts/powershell-install-gpmc.ps1: powershell script to 

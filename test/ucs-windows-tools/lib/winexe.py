@@ -286,9 +286,9 @@ class WinExe:
 		''' join self.client into self.domain '''
 
 		self.check_name_server(dns_server)
+		self.winexec("firewall-turn-off", domain_mode=False)
 		self.winexec("set-dns-server", dns_server, domain_mode=False)
 		self.winexec("domain-join", self.domain, self.domain_admin, self.domain_password, domain_mode=False)
-		self.winexec("firewall-turn-off")
 		self.winexec("reboot")
 		self.wait_until_client_is_gone(timeout=120)
 		self.wait_for_client(timeout=120)
@@ -442,7 +442,7 @@ class WinExe:
 
 	def shutdown_remote_win_host(self):
 		''' Shuts down this windows host'''
-		self.winexec("shutdown", domain_mode=False)
+		self.winexec("shutdown", domain_mode=True)
 
 	def set_gateway(self, gateway, domain_mode=True):
 		''' Sets the gateway on windows host'''
