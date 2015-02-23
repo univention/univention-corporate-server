@@ -187,7 +187,8 @@
 		<listitem><simpara>
 			Package <package>samba</package>:
 			CVE-2014-8143
-			(<ulink url="&ucsbug;37497">Bug 37497</ulink>)
+			CVE-2015-0240
+			(<ulink url="&ucsbug;37497">Bug 37497</ulink>, <ulink url="&ucsbug;37731">Bug 37731</ulink>)
 		</simpara></listitem>
 
 		<listitem><simpara>
