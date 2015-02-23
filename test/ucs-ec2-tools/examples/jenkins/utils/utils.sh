@@ -81,6 +81,13 @@ upgrade_to_testing ()
 	upgrade_to_latest
 }
 
+upgrade_to_latest_3_from_testing ()
+{
+	ucr set repository/online/server=testing.univention.de
+	upgrade_to_latest --updateto '3.2-99'
+	ucr set repository/online/server=updates.software-univention.de
+}
+
 upgrade_to_latest ()
 {
 	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@" && return 0
