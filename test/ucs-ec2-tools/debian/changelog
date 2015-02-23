@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.9-3) unstable; urgency=low
+
+  * examples/jenkins/autotest-230-master-s4-w2k12-member-join.cfg: do not
+    install unused packages (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 23 Feb 2015 10:54:48 +0100
+
 ucs-ec2-tools (1.0.9-2) unstable; urgency=low
 
   * examples/jenkins/autotest-230-master-s4-w2k12-member-join.cfg: removed
