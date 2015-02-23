@@ -9,6 +9,7 @@ include $(COMMON_DIR)/Makefile
 $(addsuffix .epub,$(MAIN)): %.epub: $(SOURCES)
 $(addsuffix .html,$(MAIN)): %.html: $(SOURCES)
 $(addsuffix .fo,$(MAIN)): %.fo: $(SOURCES)
+$(addsuffix .xml.err,$(MAIN)): %.xml.err: $(SOURCES)
 
 check:: $(addsuffix .xml,$(MAIN))
 	XML_CATALOG_FILES="$(COMMON_DIR)/catalog.xml" \

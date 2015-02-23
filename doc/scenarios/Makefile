@@ -20,3 +20,6 @@ $(addsuffix .html,$(MAIN_en)): %.html: $(SOURCES_en)
 
 $(addsuffix .fo,$(MAIN_de)): %.fo: $(SOURCES_de)
 $(addsuffix .fo,$(MAIN_en)): %.fo: $(SOURCES_en)
+
+$(addsuffix .xml.err,$(MAIN_de)): %.xml.err: $(SOURCES_de)
+$(addsuffix .xml.err,$(MAIN_en)): %.xml.err: $(SOURCES_en)
