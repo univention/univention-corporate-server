@@ -1,3 +1,10 @@
+ucs-test (5.0.117-1) unstable; urgency=low
+
+  * 52_s4connector/270read_ad_move_user: patched to work with CamelCase
+    ldap/base (Bug #37595).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 23 Feb 2015 16:03:37 +0100
+
 ucs-test (5.0.116-2) unstable; urgency=low
 
   * 20_appcenter/43_installed_apps_check_packages_available_for_i386
