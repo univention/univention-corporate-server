@@ -870,7 +870,7 @@ END CATEGORY
   </para>
 
   <para>
-    In the default setting, the Active Directory connection set up in this way does not transfer any password data from AD to the UCS directory service. In some scenarios, however, it can be practical to transfer the encrypted password data. Some apps from the Univention App Center require this, for example. For this purpose, the password service can be installed on the AD server (see <xref linkend="ad-connector:password-dienst"/>).
+    In the default setting, the Active Directory connection set up in this way does not transfer any password data from AD to the UCS directory service. Some apps from the Univention App Center require encrypted password data. If an app needs it, a note is shown in the App Center. For this purpose, the password service can be installed on the AD server (see <xref linkend="ad-connector:password-dienst"/>).
   </para>
 
   <para>

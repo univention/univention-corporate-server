@@ -926,7 +926,7 @@ END CATEGORY
   </para>
 
   <para>
-    Per Voreinstellung überträgt die so eingerichtete Active Directory-Verbindung keine Passwortdaten aus AD in den UCS-Verzeichnisdienst. In einigen Szenarien kann es dennoch sinnvoll sein, die verschlüsselten Passwortdaten zu übertragen. Manche Apps aus dem Univention App Center beispielsweise benötigen dies. Zu diesem Zweck kann der Passwortdienst auf dem AD-Server installiert werden (siehe <xref linkend="ad-connector:password-dienst"/>).
+    Per Voreinstellung überträgt die so eingerichtete Active Directory-Verbindung keine Passwortdaten aus AD in den UCS-Verzeichnisdienst. Einige Apps aus dem App Center benötigen verschlüsselte Passwortdaten. Sofern eine App diese benötigt, wird ein entsprechender Hinweis im App Center angezeigt. Zu diesem Zweck kann der Passwortdienst auf dem AD-Server installiert werden (siehe <xref linkend="ad-connector:password-dienst"/>).
   </para>
 
   <para>
