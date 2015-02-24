@@ -15,6 +15,7 @@
 		<listitem><simpara>
 		  Parellele Verwendung von einer UCS-Domäne und einer Active Directory-Domäne. Dies kann auf
 		  zwei Arten erfolgen:
+		</simpara>
 
 		  <itemizedlist>
 			<listitem><simpara>
@@ -34,7 +35,7 @@
 			  die jeweils andere repliziert. Dies ist im UCS-Handbuch dokumentiert <biblioref linkend="ucs-adconnector"/>.
 			</simpara></listitem>
 		  </itemizedlist>
-		</simpara></listitem>
+		</listitem>
 
 		<listitem><simpara>
 		  UCS unterstützt die Übernahme von Benutzern, Gruppen, Rechnerobjekten und

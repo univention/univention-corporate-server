@@ -74,12 +74,12 @@
 
 		  <listitem><simpara>
 			<emphasis>Fully qualified domain name</emphasis>: This value is composed of the computer name
-			and the domain name. In <emphasis>server1.company.example</emphasis>
-			<emphasis>server1</emphasis> is the computer name and
-			<emphasis>company.example</emphasis> the domain name. Any name can be used for the
+			and the domain name. In <systemitem class="fqdomainname">server1.company.example</systemitem>
+			<systemitem class="systemname">server1</systemitem> is the computer name and
+			<systemitem class="domainname">company.example</systemitem> the domain name. Any name can be used for the
 			computer name, as long as it is not in use in the AD domain to be migrated. The domain
 			name must be the AD domain name (it is displayed in the Windows Control Panel under
-			<guimenu>System and Security -> System</guimenu> in the <guimenu>Domain</guimenu> field.
+			<guimenu>System and Security &ar; System</guimenu> in the <guimenu>Domain</guimenu> field.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -319,8 +319,8 @@
 		lists all the published shares. The <guimenu>Properties</guimenu> section in the context
 		menu of a share lists the properties of the share. In the following example, a share with
 		the name <emphasis>Documentation</emphasis>, which provides the path
-		<emphasis>C:\Documentation</emphasis> under the share path
-		<emphasis>\\ADSERVER\Documentation</emphasis>.
+		<filename class="directory">C:\Documentation</filename> under the share path
+		<uri>\\ADSERVER\Documentation</uri>.
 
 		<figure id="bestpractice-migrate-cifs">
 		  <title>The file share to migrate</title>
@@ -349,7 +349,7 @@
 		  <listitem><simpara>
 			<emphasis>Directory</emphasis>: The path under which the share data are saved on the UCS
 			server. It the path does not already exist, it will be created automatically. The rights
-			of the directory can be found under <emphasis>Permissions for the shares's root
+			of the directory can be found under <emphasis>Permissions for the shares' root
 			directory</emphasis>.
 		  </simpara></listitem>
 		</itemizedlist>
@@ -395,14 +395,14 @@
 		under <guimenu>Print server</guimenu>. All the registered print shares are listed there
 		under <guimenu>Printers</guimenu>. The settings can be viewed under
 		<guimenu>Properties</guimenu> in the context menu of a printer. In the following example, a
-		brother DCP-116C is connected as a network printer under the address 192.168.0.100.
+		<systemitem>Brother DCP-116C</systemitem> is connected as a network printer under the address <systemitem class="ipaddress">192.168.0.100</systemitem>.
 
 	  <figure id="bestpractice-migrate-print">
 		<title>Printer to migrate</title>
 		<graphic scalefit="1" width="80%" fileref="illustrations/printer-migrate-en.png"/>
 	  </figure>
 
-	  A printer share is now created in &ucsUMC;'s printer management. The print module offers a
+	  A printer share is now created in &ucsUMC;' printer management. The print module offers a
 	  range of possibilities, which are documented in the UCS manual <biblioref
 	  linkend="ucs-print"/>. However, just a few settings are enough for the takeover of the print
 	  shares. The following values need to be saved as a minimum when creating the printers in the

@@ -13,6 +13,7 @@
 
 		<listitem><simpara>
 		  Parallel use of a UCS domain and an Active Directory domain. This can be done in two ways:
+		</simpara>
 
 		  <itemizedlist>
 			<listitem><simpara>
@@ -32,7 +33,7 @@
 			  the respective other. This is documented in the UCS manual <biblioref linkend="ucs-adconnector"/>.
 			</simpara></listitem>
 		  </itemizedlist>
-		</simpara></listitem>
+		</listitem>
 
 		<listitem><simpara>
 		  UCS supports the takeover of users, groups, computer objects and group policy objects

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+
+<!ENTITY migration SYSTEM "migration-en.xml">
+<!ENTITY planning SYSTEM "planning-en.xml">
+
+<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+
+  %entities;
+]>
+<book lang="en" id='bestpractice'>
+<bookinfo>
+  <title>Best practices for using Univention Corporate Server</title>
+  <revhistory>
+     <revision>
+        <revnumber>4.0</revnumber>
+        <date>February 24 2015</date>
+     </revision>
+  </revhistory>
+</bookinfo>
+
+  &planning;
+  &migration;
+
+  <bibliography>
+	<bibliomixed id="ad-takeover"/>
+	<bibliomixed id="ucs-macjoin"/>
+	<bibliomixed id="ubuntu-join"/>
+	<bibliomixed id="ucc-manual"/>
+	<bibliomixed id="wiki-saml"/>
+	<bibliomixed id="ucs-dhcp"/>
+	<bibliomixed id="ucs-proxy"/>
+	<bibliomixed id="ucs-print"/>
+	<bibliomixed id="ucs-nagios"/>
+	<bibliomixed id="ucs-uvmm"/>
+	<bibliomixed id="ucs-shares"/>
+	<bibliomixed id="microsoft-fsmo"/>
+	<bibliomixed id="ucs-quickstart"/>
+	<bibliomixed id="ucs-print-umc"/>
+	<bibliomixed id="ucs-winprinter"/>
+	<bibliomixed id="ucs-adconnector"/>
+  </bibliography>
+
+<?dbhtml-include href="../stylesheets/piwik.html"?>
+</book>

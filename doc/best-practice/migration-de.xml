@@ -73,12 +73,12 @@
 
 		  <listitem><simpara>
 			<emphasis>Vollständiger Rechnername</emphasis>: Dieser Wert besteht aus dem Rechnernamen und dem
-			Domänennamen. In <emphasis>server1.company.example</emphasis> ist
-			<emphasis>server1</emphasis> der Rechnername und <emphasis>company.example</emphasis>
+			Domänennamen. In <systemitem class="fqdomainname">server1.company.example</systemitem> ist
+			<systemitem class="systemname">server1</systemitem> der Rechnername und <systemitem class="domainname">company.example</systemitem>
 			der Domänenname. Der Rechnername kann beliebig gewählt werden, darf aber in der
 			zu migrierenden AD-Domäne noch nicht in Verwendung sein. Als Domänenname muss der
 			AD-Domänenname verwendet werden (er wird z.B. in der Windows-Systemsteuerung unter
-			<guimenu>System und Sicherheit -> System</guimenu> im Feld <guimenu>Domäne</guimenu>
+			<guimenu>System und Sicherheit &ar; System</guimenu> im Feld <guimenu>Domäne</guimenu>
 			angezeigt.
 		  </simpara></listitem>
 
@@ -323,8 +323,8 @@
 		<guimenu>Freigaben</guimenu> werden alle veröffentlichten Freigaben aufgeführt. Im
 		Kontextmenü einer Freigabe unter <guimenu>Eigenschaften</guimenu> werden die Eigenschaften
 		einer Freigabe angezeigt, im folgenden Beispiel eine Freigabe mit dem Namen
-		<emphasis>Documentation</emphasis>, die den Pfad <emphasis>C:\Documentation</emphasis>
-		unter dem Freigabepfad <emphasis>\\ADSERVER\Documentation</emphasis> bereitstellt.
+		<emphasis>Documentation</emphasis>, die den Pfad <filename class="directory">C:\Documentation</filename>
+		unter dem Freigabepfad <uri>\\ADSERVER\Documentation</uri> bereitstellt.
 
 		<figure id="bestpractice-migrate-cifs">
 		  <title>Zu migrierende Freigabe</title>
@@ -404,7 +404,7 @@
 		wird der Name des Windows-Servers aufgeführt. Dort sind unter <guimenu>Drucker</guimenu>
 		alle registrierten Druckerfreigaben aufgeführt. Im Kontext-Menü eines Druckers können unter
 		<guimenu>Eigenschaften</guimenu> die Einstellungen abgerufen werden. Im folgenden Beispiel
-		ist ein Brother DCP-116C als Netzwerkdrucker unter der Adresse 192.168.0.100 angebunden.
+		ist ein <systemitem>Brother DCP-116C</systemitem> als Netzwerkdrucker unter der Adresse <systemitem  class="ipaddress">192.168.0.100</systemitem> angebunden.
 
 	  <figure id="bestpractice-migrate-print">
 		<title>Zu migrierender Drucker</title>
