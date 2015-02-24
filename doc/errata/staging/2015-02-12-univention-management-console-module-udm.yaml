@@ -11,5 +11,6 @@ desc: |
   * Shortened the description for the 'Back to search' and 'Save changes'
     buttons to 'Back' and 'Save'.
   * A popup notification about automatically set default values was displayed
-    for values which were disabled by the selected options. This has been fixed.
+    for values which were disabled by the selected options. This has 
+    been fixed.
 bug: [37780,37347,37711]
