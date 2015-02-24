@@ -1,3 +1,10 @@
+ucs-test (5.0.119-1) unstable; urgency=medium
+
+  * lib/udm.sh: added function 'udm_verify_multi_value_udm_attribute_contains'
+    that is not case sensetive (Bug #37595).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 24 Feb 2015 14:29:07 +0100
+
 ucs-test (5.0.118-1) unstable; urgency=low
 
   * 52_s4connector/270read_ad_move_user: reverted previous commit due

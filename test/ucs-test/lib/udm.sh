@@ -521,6 +521,20 @@ udm_verify_udm_attribute () {
 	verify_value "$attribute" "$value" "$expected_value"
 }
 
+udm_verify_multi_value_udm_attribute_contains_ignore_case () {
+	local attribute="$1"
+	local expected_value="$2"
+	local module="$3"
+	local variableprefix="$4"
+	local superordinate="$5"
+	local ldaplocation="$6"
+	local objectname="$7"
+
+	local value="$(udm_get_udm_attribute "$attribute" "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname")"
+
+	verify_value_contains_line_ignore_case "$attribute" "$value" "$expected_value"
+}
+
 udm_verify_multi_value_udm_attribute_contains () {
 	local attribute="$1"
 	local expected_value="$2"
