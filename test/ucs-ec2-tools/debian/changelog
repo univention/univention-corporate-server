@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.9-6) unstable; urgency=medium
+
+  * examples/jenkins/autotest-230-master-s4-w2k12-member-join.cfg: removed
+    testing comments (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 24 Feb 2015 12:25:49 +0100
+
 ucs-ec2-tools (1.0.9-5) unstable; urgency=low
 
   * examples/jenkins/autotest-230-master-s4-w2k12-member-join.cfg: added sleep
