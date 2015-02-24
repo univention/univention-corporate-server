@@ -1,3 +1,10 @@
+ucs-test (5.0.118-1) unstable; urgency=low
+
+  * 52_s4connector/270read_ad_move_user: reverted previous commit due
+    to fix on test lib level found (Bug #37595).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 24 Feb 2015 12:44:33 +0100
+
 ucs-test (5.0.117-1) unstable; urgency=low
 
   * 52_s4connector/270read_ad_move_user: patched to work with CamelCase
