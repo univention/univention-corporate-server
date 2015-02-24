@@ -1,3 +1,18 @@
+ucs-test (5.0.120-1) unstable; urgency=medium
+
+  * 52_s4connector/257read_ad_user_primarygroup;
+    52_s4connector/270read_ad_move_user;
+    52_s4connector/256read_ad_user_group_membership;
+    52_s4connector/107sync_groupmembership_ad_to_ucs;
+    52_s4connector/157sync_ad_user_primarygroup;
+    52_s4connector/173sync_create_ucs_groups_nest_on_ad_side;
+    52_s4connector/170sync_ad_move_user;
+    52_s4connector/156sync_ad_user_group_membership;
+    52_s4connector/201read_initial_membership_ad_to_ucs:
+        updated tests to work with CamelCase ldap/base (Bug #37595).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 24 Feb 2015 14:34:52 +0100
+
 ucs-test (5.0.119-1) unstable; urgency=medium
 
   * lib/udm.sh: added function 'udm_verify_multi_value_udm_attribute_contains'

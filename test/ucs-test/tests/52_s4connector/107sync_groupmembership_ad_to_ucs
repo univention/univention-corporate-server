@@ -150,14 +150,14 @@ done
 for g in "$G00" "$G01" "$G02" "$G03" "$G04" "$G05" "$G06" "$G07" "$G08" "$G09"; do
 	for b in "$UDM_B00_DN" "$UDM_B01_DN" "$UDM_B02_DN" "$UDM_B03_DN" "$UDM_B04_DN" "$UDM_B05_DN" "$UDM_B06_DN" "$UDM_B07_DN" "$UDM_B08_DN" "$UDM_B09_DN" "$UDM_B10_DN" "$UDM_B11_DN" "$UDM_B12_DN" "$UDM_B13_DN" "$UDM_B14_DN" "$UDM_B15_DN" "$UDM_B16_DN" "$UDM_B17_DN" "$UDM_B18_DN" "$UDM_B19_DN"; do
 		UDM_groups_group_name="$g"
-		udm_verify_multi_value_udm_attribute_contains "users" "$b" "groups/group"; fail_bool 0 110
+		udm_verify_multi_value_udm_attribute_contains_ignore_case "users" "$b" "groups/group"; fail_bool 0 110
 	done
 done
 
 for b in "$B00" "$B01" "$B02" "$B03" "$B04" "$B05" "$B06" "$B07" "$B08" "$B09" "$B10" "$B11" "$B12" "$B13" "$B14" "$B15" "$B16" "$B17" "$B18" "$B19"; do
 	UDM_users_user_username="$b"
 	for g in "$UDM_G00_DN" "$UDM_G01_DN" "$UDM_G02_DN" "$UDM_G03_DN" "$UDM_G04_DN" "$UDM_G05_DN" "$UDM_G06_DN" "$UDM_G07_DN" "$UDM_G08_DN" "$UDM_G09_DN"; do
-		udm_verify_multi_value_udm_attribute_contains "groups" "$g" "users/user"; fail_bool 0 110
+		udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" "$g" "users/user"; fail_bool 0 110
 	done
 done
 

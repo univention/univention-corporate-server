@@ -47,14 +47,14 @@ ad_exists "$AD_USER_DN"; fail_bool 0 110
 udm_exists "users/user"; fail_bool 0 110
 
 UDM_groups_group_name="$GROUP1"
-udm_verify_multi_value_udm_attribute_contains "users" \
+udm_verify_multi_value_udm_attribute_contains_ignore_case "users" \
 	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "groups" \
+udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" \
 	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
 UDM_groups_group_name="$GROUP2"
-udm_verify_multi_value_udm_attribute_contains "users" \
+udm_verify_multi_value_udm_attribute_contains_ignore_case "users" \
 	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "groups" \
+udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" \
 	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
 ad_verify_multi_value_attribute_contains "CN=$GROUP1,CN=groups,$(ad_get_base)" "member" "$AD_USER_DN"; fail_bool 0 110
 ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "CN=$GROUP1,CN=groups,$(ad_get_base)"; fail_bool 0 110
@@ -74,14 +74,14 @@ ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "CN=$GROUP2,CN
 
 UDM_groups_group_name="$GROUP1"
 udm_verify_udm_attribute "primaryGroup" "cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 121 "See: #20029"
-udm_verify_multi_value_udm_attribute_contains "users" \
+udm_verify_multi_value_udm_attribute_contains_ignore_case "users" \
 	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "groups" \
+udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" \
 	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
 UDM_groups_group_name="$GROUP2"
-udm_verify_multi_value_udm_attribute_contains "users" \
+udm_verify_multi_value_udm_attribute_contains_ignore_case "users" \
 	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "groups" \
+udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" \
 	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
 
 section "Set primary group of user to GROUP2"
@@ -96,15 +96,15 @@ ad_verify_multi_value_attribute_contains "CN=$GROUP2,CN=groups,$(ad_get_base)" "
 ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "CN=$GROUP2,CN=groups,$(ad_get_base)"; fail_bool 1 110
 
 UDM_groups_group_name="$GROUP1"
-udm_verify_multi_value_udm_attribute_contains "users" \
+udm_verify_multi_value_udm_attribute_contains_ignore_case "users" \
 	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "groups" \
+udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" \
 	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
 UDM_groups_group_name="$GROUP2"
 udm_verify_udm_attribute "primaryGroup" "cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 121 "See: #20029"
-udm_verify_multi_value_udm_attribute_contains "users" \
+udm_verify_multi_value_udm_attribute_contains_ignore_case "users" \
 	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "groups" \
+udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" \
 	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
 
 section "Clean up"

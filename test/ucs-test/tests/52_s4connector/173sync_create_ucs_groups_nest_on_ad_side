@@ -39,10 +39,10 @@ UDM_groups_group_name="$OUTER_GROUP"
 udm_exists "groups/group"; fail_bool 0 110
 
 UDM_groups_group_name="$OUTER_GROUP"
-udm_verify_multi_value_udm_attribute_contains "nestedGroup" \
+udm_verify_multi_value_udm_attribute_contains_ignore_case "nestedGroup" \
 	"cn=$INNER_GROUP,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
 UDM_groups_group_name="$INNER_GROUP"
-udm_verify_multi_value_udm_attribute_contains "memberOf" \
+udm_verify_multi_value_udm_attribute_contains_ignore_case "memberOf" \
 	"cn=$OUTER_GROUP,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
 
 ad_verify_multi_value_attribute_contains "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)" \

@@ -73,18 +73,18 @@ ad_verify_multi_value_attribute_contains "$AD_B2_DN" "memberOf" "$AD_G1_DN"; fai
 ad_verify_multi_value_attribute_contains "$AD_B2_DN" "memberOf" "$AD_G2_DN"; fail_bool 0 110
 
 UDM_groups_group_name="$G1"
-udm_verify_multi_value_udm_attribute_contains "users" "$UDM_B1_DN" "groups/group"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "users" "$UDM_B2_DN" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains_ignore_case "users" "$UDM_B1_DN" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains_ignore_case "users" "$UDM_B2_DN" "groups/group"; fail_bool 0 110
 UDM_groups_group_name="$G2"
-udm_verify_multi_value_udm_attribute_contains "users" "$UDM_B1_DN" "groups/group"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "users" "$UDM_B2_DN" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains_ignore_case "users" "$UDM_B1_DN" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains_ignore_case "users" "$UDM_B2_DN" "groups/group"; fail_bool 0 110
 
 UDM_users_user_username="$B1"
-udm_verify_multi_value_udm_attribute_contains "groups" "$UDM_G1_DN" "users/user"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "groups" "$UDM_G2_DN" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" "$UDM_G1_DN" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" "$UDM_G2_DN" "users/user"; fail_bool 0 110
 UDM_users_user_username="$B2"
-udm_verify_multi_value_udm_attribute_contains "groups" "$UDM_G1_DN" "users/user"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "groups" "$UDM_G2_DN" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" "$UDM_G1_DN" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" "$UDM_G2_DN" "users/user"; fail_bool 0 110
 
 section "Clean up"
 
