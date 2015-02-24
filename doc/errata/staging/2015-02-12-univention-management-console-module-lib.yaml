@@ -5,6 +5,6 @@ src: univention-management-console-module-lib
 fix: 4.0.2-3.31.201502131811
 version: [1]
 desc: |
-  The following issues are addressed by this erratum update:
-  * It is now possible to request a Single Sign On login token for localhost.
+  The following issues are addressed by this update:
+  * It is now possible to request a single-sign-on login token for localhost.
 bug: [37347]

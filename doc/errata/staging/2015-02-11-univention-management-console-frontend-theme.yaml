@@ -5,9 +5,9 @@ src: univention-management-console-frontend-theme
 fix: 0.0.89-8.79.201502191106
 version: [1]
 desc: |
-  The following issues are addressed by this erratum update:
-  * When host name or user name are too long for the menu labels in the header,
-    their length is cut and "..." is shown.
+  The following issues are addressed by this update:
+  * If host name or user name are too long for the menu labels in the header,
+    their length is now trimmed and "..." is shown.
   * The positioning of the "back to overview" header button has been adjusted.
   * The UMC background image has been adjusted.
   * The default search button has been adjusted to be smaller and to only

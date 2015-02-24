@@ -5,9 +5,9 @@ src: univention-apache
 fix: 7.0.16-5.227.201502191139
 version: [1]
 desc: |
-  The following issues are addressed by this erratum update:
+  The following issues are addressed by this update:
   * The UCS overview background image has been adjusted.
   * The style of the UCS overview modules has been adjusted to
-    match the style from the UMC.
+    match the style of the UMC.
   * The display of the modules has been slightly adjusted.
 bug: [37780]

@@ -5,8 +5,8 @@ src: univention-updater
 fix: 10.0.53-5.1376.201502191651
 version: [1]
 desc: |
-  The following issues are addressed by this erratum update:
+  The following issues are addressed by this update:
   * The dialogue showing the list of packages to be updated/installed
-    in the "Software update" module now is limited in its maximum height.
+    in the "Software update" module is now limited in its maximum height.
   * The styling for the updater dialogue has been slightly adjusted.
 bug: [37573]
