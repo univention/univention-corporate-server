@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 Univention GmbH
+ * Copyright 2011-2015 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -52,27 +52,23 @@ define([
 	"umc/widgets/Tooltip",
 	"umc/i18n!umc/modules/ucr"
 ], function(declare, lang, kernel, array, aspect, has, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, TextBox, Text, HiddenInput, ComboBox, Tooltip, _) {
-	var _DetailDialog = declare([ Dialog, StandbyMixin ], {
+
+	var _DetailDialog = declare([Dialog, StandbyMixin], {
 		_form: null,
-
-		_locale: kernel.locale.substr(0, 2),
-
 		_description: null,
-
 		moduleStore: null,
 
 		postMixInProperties: function() {
-			// call superclass method
 			this.inherited(arguments);
 
 			lang.mixin(this, {
-				title: _( 'Edit UCR variable' ),
-				style: 'max-width: 325px'
+				_locale: kernel.locale.substr(0, 2),
+				style: 'min-width: 450px;',
+				title: _('Edit UCR variable')
 			});
 		},
 
 		buildRendering: function() {
-			// call superclass method
 			this.inherited(arguments);
 
 			var widgets = [{
@@ -90,7 +86,7 @@ define([
 				name: 'description',
 				description: _( 'Description of the UCR variable' ),
 				label: _( 'Description:' ),
-				style: 'margin-bottom: 5px'
+//				style: 'margin-bottom: 5px'
 			}, {
 				type: HiddenInput,
 				name: 'description[' + this._locale + ']'
@@ -122,7 +118,6 @@ define([
 			var layout = ['key', 'value', 'description'];//, ['categories']];
 
 			this._form = this.own(new Form({
-				style: 'width: 100%',
 				widgets: widgets,
 				buttons: buttons,
 				layout: layout,
@@ -170,6 +165,7 @@ define([
 		},
 
 		newVariable: function() {
+			this.set('title', _('Add UCR variable'));
 			this._form._widgets.key.set('disabled', false);
 			this.clearForm();
 			this.standby(false);
@@ -177,9 +173,9 @@ define([
 		},
 
 		loadVariable: function(ucrVariable) {
+			this.set('title', _('Edit UCR variable'));
 			this._form._widgets.key.set('disabled', true);
 
-			// start standing-by mode
 			this.standby(true);
 			this.show();
 
@@ -199,6 +195,7 @@ define([
 			// stub for event handling
 		}
 	});
+
 	return declare("umc.modules.ucr", Module, {
 		// summary:
 		//		Module for modifying and displaying UCR variables on the system.
@@ -214,21 +211,14 @@ define([
 		idProperty: 'key',
 
 		buildRendering: function() {
-			// call superclass method
 			this.inherited(arguments);
 
-			// generate border layout and add it to the module
 			this._page = new Page({
 				headerText: _('Univention Configuration Registry'),
 				helpText: _('The Univention Configuration Registry (UCR) is the local database for the configuration of UCS systems to access and edit system-wide properties in a unified manner. Caution: Changing UCR variables directly results in the change of the system configuration. Misconfiguration may cause an unusable system!')
 			});
 			this.addChild(this._page);
 
-			//
-			// add data grid
-			//
-
-			// define actions
 			var actions = [{
 				name: 'add',
 				label: _( 'Add' ),
@@ -259,7 +249,7 @@ define([
 				isStandardAction: true,
 				isMultiAction: true,
 				callback: lang.hitch(this, function(ids) {
-					dialog.confirm(_('Are you sure to delete the %d select UCR variable(s)?', ids.length), [{
+					dialog.confirm(_('Are you sure to delete the %d selected UCR variable(s)?', ids.length), [{
 						label: _('Delete'),
 						callback: lang.hitch(this, function() {
 							// remove the selected elements via a transaction on the module store
@@ -300,11 +290,6 @@ define([
 				}
 			});
 
-			//
-			// add search widget
-			//
-
-			// define the different search widgets
 			var widgets = [{
 				type: ComboBox,
 				name: 'category',
@@ -334,7 +319,6 @@ define([
 				label: _( 'Keyword' ),
 			}];
 
-			// generate the search widget
 			this._searchForm = new SearchForm({
 				region: 'nav',
 				widgets: widgets,
@@ -352,10 +336,6 @@ define([
 				this.own(aspect.after(this._page, '_onShow', lang.hitch(this, '_selectInputText')));
 				this._grid.on('filterDone', lang.hitch(this, '_selectInputText'));
 			}
-
-			//
-			// create dialog for UCR variable details
-			//
 
 			this._detailDialog = new _DetailDialog({
 				moduleStore: this.moduleStore

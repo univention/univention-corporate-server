@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (4.1.1-2) unstable; urgency=medium
+
+  * Bug #37742: fix visibility of long variable names
+
+ -- Florian Best <best@univention.de>  Wed, 25 Feb 2015 09:56:11 +0100
+
 univention-management-console-module-ucr (4.1.1-1) unstable; urgency=medium
 
   * Bug #35654: UMC design adaptions
