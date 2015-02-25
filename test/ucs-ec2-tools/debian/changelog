@@ -1,3 +1,10 @@
+ucs-ec2-tools (0.1.22-15) unstable; urgency=low
+
+  * Bug #37878: Added functions to start jobs simultaneously on multiple
+    hosts to utils-local.sh 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 25 Feb 2015 11:30:39 +0100
+
 ucs-ec2-tools (0.1.22-14) unstable; urgency=low
 
   * Bug #37807: UCS-3.2-5 pre-tests
