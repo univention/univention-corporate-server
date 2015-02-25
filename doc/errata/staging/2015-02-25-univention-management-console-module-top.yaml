@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-management-console-module-top
+fix: 
+version: [1]
+desc: |
+  This update addresses the following issue:
+  * Fix width of the dialog when editing UCR variables.
+bug: [37742]

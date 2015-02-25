@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-directory-manager-modules
+fix: 
+version: [1]
+desc: |
+  This update addresses the following issue:
+  * Improving time to create a simple authentication account considerably by
+    disabling uidNumber locking.
+bug: [37607, 36711, 36539, 36401]
