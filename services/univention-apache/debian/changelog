@@ -1,3 +1,17 @@
+univention-apache (7.0.16-6) unstable; urgency=low
+
+  * Add new UCR variables to allow fine-grained configuration of the mod_ssl
+    settings: (Bug #37566)
+    - apache2/ssl/tlsv11: If activated, only allow TLS 1.1 and TLS 1.2
+    - apache2/ssl/tlsv12: If activated, only allow TLS 1.2
+    - apache2/ssl/compression: Enable TLS compression (discouraged for security
+	                       reasons)
+    - apache2/ssl/ciphersuite: Select a specific set of ciphers
+    - apache2/ssl/honorcipherorder: Select server choice of ciphers instead of
+	                            client preference
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 25 Feb 2015 11:42:03 +0100
+
 univention-apache (7.0.16-5) unstable; urgency=low
 
   * Bug #37780: Adjusted styling for the module items 

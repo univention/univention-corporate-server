@@ -14,6 +14,11 @@ Variables: apache2/ssl/key
 Variables: apache2/ssl/ca
 Variables: apache2/ssl/certificatechain
 Variables: apache2/ssl/v3
+Variables: apache2/ssl/tlsv11
+Variables: apache2/ssl/tlsv12
+Variables: apache2/ssl/compression
+Variables: apache2/ssl/honorcipherorder
+Variables: apache2/ssl/ciphersuite
 
 Type: module
 Module: extension.py
