@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-services\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-04 00:32+0100\n"
+"POT-Creation-Date: 2015-02-25 10:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,39 +12,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/services/__init__.py:179
+#: umc/python/services/__init__.py:185
 msgid "Could not change start type"
 msgstr "Die Startart konnte nicht geändert werden"
 
-#: umc/python/services/__init__.py:131
+#: umc/python/services/__init__.py:137
 msgid "Restarting the following services failed:"
 msgstr "Die folgenden Dienste konnten nicht neugestartet werden:"
 
-#: umc/python/services/__init__.py:102
+#: umc/python/services/__init__.py:108
 msgid "Starting the following services failed:"
 msgstr "Die folgenden Dienste konnten nicht gestartet werden:"
 
-#: umc/python/services/__init__.py:116
+#: umc/python/services/__init__.py:122
 msgid "Stopping the following services failed:"
 msgstr "Die folgenden Dienste konnten nicht gestoppt werden:"
 
-#: umc/python/services/__init__.py:186
+#: umc/python/services/__init__.py:192
 msgid "Successfully changed start type"
 msgstr "Die Startart wurde erfolgreich geändert"
 
-#: umc/python/services/__init__.py:130
+#: umc/python/services/__init__.py:136
 msgid "Successfully restarted"
 msgstr "Erfolgreich neugestartet"
 
-#: umc/python/services/__init__.py:101
+#: umc/python/services/__init__.py:107
 msgid "Successfully started"
 msgstr "Erfolgreich gestartet"
 
-#: umc/python/services/__init__.py:115
+#: umc/python/services/__init__.py:121
 msgid "Successfully stopped"
 msgstr "Erfolgreich gestoppt"
 
-#: umc/python/services/__init__.py:108 umc/python/services/__init__.py:122
-#: umc/python/services/__init__.py:137
+#: umc/python/services/__init__.py:114 umc/python/services/__init__.py:128
+#: umc/python/services/__init__.py:143
 msgid "You are not permitted to run this command."
 msgstr "Sie sind nicht berechtigt diesen Befehl auszuführen."

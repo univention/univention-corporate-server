@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 Univention GmbH
+ * Copyright 2011-2015 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -54,7 +54,8 @@ define([
 			this.inherited(arguments);
 
 			this._page = new Page({
-				headerText: _('System services')
+				headerText: _('System services'),
+				helpText: _('This module shows the system services and their current status. Specified services can be configured, started and stopped.')
 			});
 			this.addChild(this._page);
 
@@ -134,12 +135,12 @@ define([
 
 			var columns = [{
 				name: 'service',
-				label: _('Name'),
-            	width: '200px'
+				label: _('Name')//,
 			}, {
 				name: 'isRunning',
 				label: _('Status'),
-            	width: 'adjust',
+//				width: 'adjust',  // FIXME: the label must be longer than entries
+				width: '15%',
 				formatter: lang.hitch(this, function(value) {
 					if (value === true) {
 						return _('running');
@@ -150,7 +151,8 @@ define([
 			}, {
 				name: 'autostart',
 				label: _('Start type'),
-            	width: '100px',
+//				width: 'adjust',  // FIXME: the label must be longer than entries
+				width: '15%',
 				formatter: lang.hitch(this, function(value) {
 					if (value == 'no') {
 						return _('Never');
@@ -163,7 +165,6 @@ define([
 			}, {
 				name: 'description',
 				label: _('Description'),
-            	width: 'auto',
 				formatter: lang.hitch(this, function(value) {
 					if (value === null) {
 						return '-';
@@ -203,6 +204,11 @@ define([
 			this._page.startup();
     	},
 
+		reloadGrid: function() {
+			data = this._searchWidget.get('value');
+			this._grid.filter(data);
+		},
+
 		_changeState: function(data, command, confirmMessage, errorMessage) {
 			confirmMessage += '<ul>';
 			array.forEach(data, function(idata) {
@@ -213,24 +219,17 @@ define([
 			dialog.confirm(confirmMessage, [{
 				label: _('OK'),
 				callback: lang.hitch(this, function() {
-					this.standby(true);
-					tools.umcpCommand(command, data).then(
-						lang.hitch(this, function(response) {
-							this.standby(false);
-							if (response.result.success === false) {
-								errorMessage += '<ul>';
-								array.forEach(response.result.objects, function(item) {
-									errorMessage += '<li>' + item + '</li>';
-								});
-								errorMessage += '</ul>';
-								dialog.alert(errorMessage);
-							}
-							data = this._searchWidget.get('value');
-							this._grid.filter(data);
-						}), lang.hitch(this, function() {
-							this.standby(false);
-						})
-					);
+					this.standbyDuring(tools.umcpCommand(command, data)).then(lang.hitch(this, function(response) {
+						if (response.result.success === false) {
+							errorMessage += '<ul>';
+							array.forEach(response.result.objects, function(item) {
+								errorMessage += '<li>' + item + '</li>';
+							});
+							errorMessage += '</ul>';
+							dialog.alert(errorMessage);
+						}
+						this.reloadGrid();
+					}));
 				})
 			}, {
 				'default': true,

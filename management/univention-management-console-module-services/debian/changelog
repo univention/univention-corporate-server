@@ -1,3 +1,10 @@
+univention-management-console-module-services (4.1.0-4) unstable; urgency=medium
+
+  * Bug #36564: fix german spelling of services title
+  * Bug #36569: fix design issues
+
+ -- Florian Best <best@univention.de>  Wed, 25 Feb 2015 11:43:38 +0100
+
 univention-management-console-module-services (4.1.0-3) unstable; urgency=low
 
   * Bug #35654: UMC design adaptions
