@@ -1,3 +1,10 @@
+ucs-test (5.0.120-2) unstable; urgency=low
+
+  * 20_appcenter/43_installed_apps_check_packages_available_for_i386 
+    corrected error during determination of host architecture (Bug #31792)
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 25 Feb 2015 11:34:33 +0100
+
 ucs-test (5.0.120-1) unstable; urgency=medium
 
   * 52_s4connector/257read_ad_user_primarygroup;

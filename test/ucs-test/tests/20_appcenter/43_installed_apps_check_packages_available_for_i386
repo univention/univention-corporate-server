@@ -36,12 +36,16 @@ class Test():
 		self.failed = {}
 
 	def _get_other_arch(self):
-		if self._ucr_arch_settings == 'amd64':
-			return 'i386'
-		if self._ucr_arch_settings == 'i386':
-			return 'amd64'
-		print 'Warning: Could not determin system architecture, not changes made'
-		return None
+		if self._ucr_arch_settings:
+			if self._ucr_arch_settings == 'amd64':
+				return 'i386'
+			if self._ucr_arch_settings == 'i386':
+				return 'amd64'
+		else:
+			if sys.maxsize > 2**32:
+				return 'amd64'
+			else:
+				return 'i386'
 
 	def get_installed_default_packages(self):
 		print "Gathering packages of installed apps "
@@ -126,10 +130,10 @@ class Test():
 			ucr_update(ucr, {'repository/online/architectures' : 'i386 amd64'})
 			os.system('dpkg --add-architecture %s > /dev/null' % self._other_arch)
 			os.system('apt-get update > /dev/null')
-			self.pkg_cache = apt.apt_pkg.Cache()
 			if not self.pkg_cache.is_multi_arch:
 				print "Error adding %s architecture" % self._other_arch
 				sys.exit(1)
+		self.pkg_cache = apt.apt_pkg.Cache()
 
 
 	def unset_multi_architecture(self):
