@@ -2,10 +2,15 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-directory-manager-modules
-fix: 
+fix: 10.0.29-26.1290.201502261150
 version: [1]
 desc: |
   This update addresses the following issue:
   * Improving time to create a simple authentication account considerably by
     disabling uidNumber locking.
+  * Adjust error message of the PrinterURI syntax class.
+  * Prevent uninstallation of essential packages when creating a
+    slave/master/memberpackages policy.
+  * Replaced the term "General" by a more descriptive title in various UDM
+    modules.
 bug: [37607, 36711, 36539, 36401]

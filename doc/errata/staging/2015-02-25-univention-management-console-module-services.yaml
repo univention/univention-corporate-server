@@ -2,11 +2,10 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-management-console-module-services
-fix: 
+fix: 4.1.0-4.26.201502251153
 version: [1]
 desc: |
   This update addresses the following issues:
   * Fix german translation of the module heading.
   * Adapt the design of the UMC module.
 bug: [36564,36569]
-
