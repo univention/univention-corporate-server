@@ -399,7 +399,7 @@ def setdata(key, value): pass
 		<section id="listener:example:setdata">
 			<title>A Little Bit more Object Oriented</title>
 			<para>
-				For larger modules it might be preferrable to use a more object oriented design like the following example, which logs referential integrity violations into a file.
+				For larger modules it might be preferable to use a more object oriented design like the following example, which logs referential integrity violations into a file.
 			</para>
 			<para>
 				Source code: <ulink url="&websvn;doc/developer-reference/listener/obj.py"/>
@@ -488,7 +488,7 @@ def setdata(key, value): pass
 			</para>
 
 			<section id="listener:commands:ctrl">
-				<title>univention-directory-listener-ctrl</title>
+				<title><command>univention-directory-listener-ctrl</command></title>
 				<para>
 					The command <command>univention-directory-listener-ctrl resync <replaceable>name</replaceable></command> can be used to reset and re-initialize a module.
 					It stops any currently running listener process, removes the state file for the specified module and starts the listener process again.
@@ -497,7 +497,7 @@ def setdata(key, value): pass
 			</section>
 
 			<section id="listener:commands:dump">
-				<title>univention-directory-listener-dump</title>
+				<title><command>univention-directory-listener-dump</command></title>
 				<para>
 					The command <command>univention-directory-listener-dump</command> can be used to dump the cache file <filename>/var/lib/univention-directory-listener/cache.db</filename>.
 					The &ucsUDL; must be stopped first by invoking <command>service univention-directory-listener stop</command>.
@@ -506,7 +506,7 @@ def setdata(key, value): pass
 			</section>
 
 			<section id="listener:commands:verify">
-				<title>univention-directory-listener-verify
+				<title><command>univention-directory-listener-verify</command>
 					<indexterm><primary>Directory Listener</primary><secondary>Verify</secondary></indexterm>
 				</title>
 				<para>
@@ -524,7 +524,7 @@ univention-directory-listener-verify \
 			</section>
 
 			<section id="listener:commands:getnid">
-				<title>get_notifier_id.py
+				<title><command>get_notifier_id.py</command>
 					<indexterm><primary>Directory Listener</primary><secondary>Notifier ID</secondary></indexterm>
 				</title>
 				<para>
@@ -573,7 +573,7 @@ univention-directory-listener-verify \
 				The following steps occur on changes:
 			</para>
 			<procedure>
-				<title>Listener/Notifier prcoedure</title>
+				<title>Listener/Notifier procedure</title>
 				<step>
 					<para>
 						An <abbrev>LDAP</abbrev> object is modified on the &ucsMaster;.

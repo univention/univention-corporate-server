@@ -188,7 +188,7 @@
 			</itemizedlist>
 		</para>
 		<para>
-			See also <xref linkend="app:update" /> for how to procede if an update is
+			See also <xref linkend="app:update" /> for how to proceed if an update is
 			to be released.
 		</para>
 	</section>
@@ -376,7 +376,7 @@
 					<listitem>
 						<simpara>
 							In contrast to the product logo, the screenshot has to be given
-							explicitely in the ini file. That is the filename (with file
+							explicitly in the ini file. That is the filename (with file
 							extension, without any webserver or directory).
 						</simpara>
 					</listitem>
@@ -609,8 +609,8 @@
 		<title>Uploading the application</title>
 		<para>
 			If the meta data (text file, logo and screenshot) and the packages are
-			ready for upload, they can be put into a file archive (.zip or
-			(preferably) .tar.gz) and uploaded to <ulink
+			ready for upload, they can be put into a file archive (<filename class="extension">.zip</filename> or
+			(preferably) <filename class="extension">.tar.gz</filename>) and uploaded to <ulink
 				url="http://upload.univention.de">http://upload.univention.de</ulink>.
 			If the archive is larger than 150 MB it has to be split into single parts
 			not larger than 150 MB.
@@ -715,7 +715,7 @@
 			because the <literal>Version</literal> has to be increased. If this is
 			the only change in the ini file, this may be stated in the email instead
 			of shipping the file and we will take care of that during copying. Please
-			use the upload if a higher amount of data has to be transfered (see <xref
+			use the upload if a higher amount of data has to be transferred (see <xref
 				linkend="app:upload" />).
 		</para>
 		<para>

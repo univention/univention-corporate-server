@@ -890,15 +890,15 @@ udm settings/extended_attribute modify \
 		</para>
 		<variablelist>
 			<varlistentry>
-				<term>string</term>
-				<term>string64</term>
-				<term>OneThirdString</term>
-				<term>HalfString</term>
-				<term>TwoThirdsString</term>
-				<term>FourThirdsString</term>
-				<term>OneAndAHalfString</term>
-				<term>FiveThirdsString</term>
-				<term>TextArea</term>
+				<term><classname>string</classname></term>
+				<term><classname>string64</classname></term>
+				<term><classname>OneThirdString</classname></term>
+				<term><classname>HalfString</classname></term>
+				<term><classname>TwoThirdsString</classname></term>
+				<term><classname>FourThirdsString</classname></term>
+				<term><classname>OneAndAHalfString</classname></term>
+				<term><classname>FiveThirdsString</classname></term>
+				<term><classname>TextArea</classname></term>
 				<listitem>
 					<simpara>
 						Different string classes, which are mapped in &ucsUMC; to text input widgets with different widths and heights.
@@ -906,9 +906,9 @@ udm settings/extended_attribute modify \
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>string_numbers_letters_dots</term>
-				<term>string_numbers_letters_dots_spaces</term>
-				<term>IA5string</term>
+				<term><classname>string_numbers_letters_dots</classname></term>
+				<term><classname>string_numbers_letters_dots_spaces</classname></term>
+				<term><classname>IA5string</classname></term>
 				<term>...</term>
 				<listitem>
 					<simpara>
@@ -917,16 +917,16 @@ udm settings/extended_attribute modify \
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Upload</term>
-				<term>Base64Upload</term>
-				<term>jpegPhoto</term>
+				<term><classname>Upload</classname></term>
+				<term><classname>Base64Upload</classname></term>
+				<term><classname>jpegPhoto</classname></term>
 				<listitem>
 					<simpara>
 						Binary data.
 					</simpara>
 				</listitem>
 			</varlistentry>
-			<varlistentry><term>integer</term>
+			<varlistentry><term><classname>integer</classname></term>
 				<listitem>
 					<simpara>
 						Positive integers.
@@ -934,11 +934,11 @@ udm settings/extended_attribute modify \
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>boolean</term>
-				<term>booleanNone</term>
-				<term>TrueFalse</term>
-				<term>TrueFalseUpper</term>
-				<term>TrueFalseUp</term>
+				<term><classname>boolean</classname></term>
+				<term><classname>booleanNone</classname></term>
+				<term><classname>TrueFalse</classname></term>
+				<term><classname>TrueFalseUpper</classname></term>
+				<term><classname>TrueFalseUp</classname></term>
 				<listitem>
 					<simpara>
 						Different boolean types which map to <literal>yes</literal> and <literal>no</literal> or <literal>true</literal> and <literal>false</literal>.
@@ -946,16 +946,16 @@ udm settings/extended_attribute modify \
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>hostName</term>
-				<term>DNS_Name</term>
-				<term>windowsHostName</term>
-				<term>ipv4Address</term>
-				<term>ipAddress</term>
-				<term>hostOrIP</term>
-				<term>v4netmask</term>
-				<term>netmask</term>
-				<term>IPv4_AddressRange</term>
-				<term>IP_AddressRange</term>
+				<term><classname>hostName</classname></term>
+				<term><classname>DNS_Name</classname></term>
+				<term><classname>windowsHostName</classname></term>
+				<term><classname>ipv4Address</classname></term>
+				<term><classname>ipAddress</classname></term>
+				<term><classname>hostOrIP</classname></term>
+				<term><classname>v4netmask</classname></term>
+				<term><classname>netmask</classname></term>
+				<term><classname>IPv4_AddressRange</classname></term>
+				<term><classname>IP_AddressRange</classname></term>
 				<term>...</term>
 				<listitem>
 					<simpara>
@@ -964,10 +964,10 @@ udm settings/extended_attribute modify \
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>unixTime</term>
-				<term>TimeString</term>
-				<term>iso8601Date</term>
-				<term>date</term>
+				<term><classname>unixTime</classname></term>
+				<term><classname>TimeString</classname></term>
+				<term><classname>iso8601Date</classname></term>
+				<term><classname>date</classname></term>
 				<listitem>
 					<simpara>
 						Date and time.
@@ -975,13 +975,13 @@ udm settings/extended_attribute modify \
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>GroupDN</term>
-				<term>UserDN</term>
-				<term>UserID</term>
-				<term>HostDN</term>
-				<term>DomainController</term>
-				<term>Windows_Server</term>
-				<term>UCS_Server</term>
+				<term><classname>GroupDN</classname></term>
+				<term><classname>UserDN</classname></term>
+				<term><classname>UserID</classname></term>
+				<term><classname>HostDN</classname></term>
+				<term><classname>DomainController</classname></term>
+				<term><classname>Windows_Server</classname></term>
+				<term><classname>UCS_Server</classname></term>
 				<term>...</term>
 				<listitem>
 					<simpara>
@@ -990,9 +990,9 @@ udm settings/extended_attribute modify \
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>LDAP_Search</term>
-				<term>UDM_Objects</term>
-				<term>UDM_Attribute</term>
+				<term><classname>LDAP_Search</classname></term>
+				<term><classname>UDM_Objects</classname></term>
+				<term><classname>UDM_Attribute</classname></term>
 				<listitem>
 					<simpara>
 						These syntaxes do an <acronym>LDAP</acronym> search and display the result as a list.
@@ -1545,7 +1545,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>messagecatalog</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Multivalued property to supply message translation files (syntax: &lt;language tag&gt; &lt;Base64 encoded GNU message catalog&gt;).
+						Multivalued property to supply message translation files (syntax: &lt;language tag&gt; &lt;base64 encoded GNU message catalog&gt;).
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1559,7 +1559,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>icon</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Multivalued property to supply icons for the Univention Management Console (base64 encoded png, jpeg or svgz).
+						Multivalued property to supply icons for the Univention Management Console (base64 encoded <filename class="extension">png</filename>, <filename class="extension">jpeg</filename> or <filename class="extension">svgz</filename>).
 					</simpara>
 				</listitem>
 			</varlistentry>

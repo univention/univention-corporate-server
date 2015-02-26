@@ -37,7 +37,7 @@
 		</title>
 		<para>
 			For each join script a version number is tracked.
-			This is used to skip re-executing join scrips, which already have been executed.
+			This is used to skip re-executing join scripts, which already have been executed.
 			This is mostly a performance optimization, but is also used to find join scripts which need to be run.
 		</para>
 		<para>
@@ -637,7 +637,7 @@ fi
 							</variablelist>
 							<para>
 								The modes can be combined.
-								If more than one mode is used in one call of the function, the modes are always processed in the order as listed abobe.
+								If more than one mode is used in one call of the function, the modes are always processed in the order as listed above.
 								Each of these options expects a filename as an required argument.
 							</para>
 							<para>
@@ -665,7 +665,7 @@ fi
 									<term><option>--icon</option> <filename><replaceable>filename</replaceable></filename></term>
 									<listitem>
 										<para>
-											The option can be used to supply icon files (png or jpeg, in 16x16 or 50x50, or svgz).
+											The option can be used to supply icon files (<filename class="extension">png</filename> or <filename class="extension">jpeg</filename>, in 16×16 or 50×50, or <filename class="extension">svgz</filename>).
 										</para>
 									</listitem>
 								</varlistentry>
@@ -676,7 +676,7 @@ fi
 								required for the creation of the corresponding object. After creation of the object the function waits
 								up to 3 minutes for the &ucsMaster; to signal availability of the new extension and reports success or failure.
 								For UDM extensions it additionally checks that the corresponding file has been made available in the local filesystem.
-								Failure conditions may occurr e.g. in case the new <acronym>LDAP</acronym> schema extension collides with the schema currently active.
+								Failure conditions may occur e.g. in case the new <acronym>LDAP</acronym> schema extension collides with the schema currently active.
 								The &ucsMaster; only activates a new <acronym>LDAP</acronym> schema or ACL extension if the configuration check succeeded.
 							</para>
 							<note>
@@ -747,7 +747,7 @@ ucs_registerLDAPExtension "$@" \
 						</cmdsynopsis></term>
 						<listitem>
 							<para>
-								There is a corresponding <command>ucs_unregisterLDAPExtension</command> function, which can be used to unregister extension objects. This only works if no App is registered any longer for the object. It must not be called unless it has been verified that no object in <acronym>LDAP</acronym>  still requires this schema extension. For this reason it schould generally not be called in unjoin scripts.
+								There is a corresponding <command>ucs_unregisterLDAPExtension</command> function, which can be used to unregister extension objects. This only works if no App is registered any longer for the object. It must not be called unless it has been verified that no object in <acronym>LDAP</acronym>  still requires this schema extension. For this reason it should generally not be called in unjoin scripts.
 							</para>
 							<example>
 								<title>Schema unregistration in unjoin script</title>

@@ -135,7 +135,7 @@
 		</listitem>
 		<listitem>
 			<simpara>
-			<package>univention-nagios-opsi</package> Prüfung der Softwareverteilung OPSI
+			<package>univention-nagios-opsi</package> Prüfung der Softwareverteilung opsi
 			</simpara>
 		</listitem>
 		<listitem>
@@ -382,8 +382,8 @@
 					<row>
 						<entry><systemitem class="service">UNIVENTION_OPSI</systemitem></entry>
 						<entry>
-							Überwacht den OPSI-Daemon.
-							Läuft kein OPSI-Prozess oder die OPSI-Weboberfläche ist nicht erreichbar,
+							Überwacht den opsi-Daemon.
+							Läuft kein opsi-Prozess oder die opsi-Weboberfläche ist nicht erreichbar,
 							wird der Status CRITICAL zurückgegeben.
 						</entry>
 					</row>

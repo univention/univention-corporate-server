@@ -1,4 +1,4 @@
-<section id="changelog:general">
+<section id="changelog:general" lang="en">
   <title>General</title>
   <itemizedlist>
 
@@ -20,7 +20,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  <package>firefox-de, firefox-en</package> (CVE-2014-1587, CVE-2014-1589, CVE-2014-1590, CVE-2014-1592,
+		  <package>firefox-de</package>, <package>firefox-en</package> (CVE-2014-1587, CVE-2014-1589, CVE-2014-1590, CVE-2014-1592,
 		  CVE-2014-1593, CVE-2014-1594, CVE-2014-9293, CVE-2014-9294, CVE-2014-9295, CVE-2014-9296)
 		  (<ulink url="&ucsbug;37141">Bug 37141</ulink>, <ulink url="&ucsbug;37536">Bug
 		  37536</ulink>)
@@ -107,7 +107,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  <package>apache2</package> (CVE-2013-5704) (<ulink url="&ucsbug;36984">Bug 36984 </ulink>)
+		  <package>apache2</package> (CVE-2013-5704) (<ulink url="&ucsbug;36984">Bug 36984</ulink>)
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -196,7 +196,7 @@
 </section>
 
 
-<!-- <section id="changelog:installer"> -->
+<!-- <section id="changelog:installer" lang="en"> -->
 <!-- 	<title>Univention Installer</title> -->
 <!-- 	<itemizedlist> -->
 <!-- 		<listitem><simpara> -->
@@ -205,10 +205,10 @@
 <!-- </section> -->
 
 
-<section id="changelog:basic">
+<section id="changelog:basic" lang="en">
   <title>Basic system services</title>
 
-  <section id="changelog:basic:kernel">
+  <section id="changelog:basic:kernel" lang="en">
 	<title>Linux kernel and firmware packages</title>
 	<itemizedlist>
 	  <listitem><simpara>
@@ -220,14 +220,14 @@
   </section>
 
 
-  <!-- <section id="changelog:basis:ucr"> -->
+  <!-- <section id="changelog:basis:ucr" lang="en"> -->
   <!-- 	<title>Univention Configuration Registry</title> -->
   <!-- 	<itemizedlist> -->
   <!-- 	  <listitem><simpara> -->
   <!-- 	  </simpara></listitem> -->
   <!-- 	</itemizedlist> -->
 
-  <!-- 	<section id="changelog:basis:ucr:template"> -->
+  <!-- 	<section id="changelog:basis:ucr:template" lang="en"> -->
   <!-- 	  <title>Changes to templates and modules</title> -->
   <!-- 	  <itemizedlist> -->
   <!-- 		<listitem><simpara> -->
@@ -236,7 +236,7 @@
   <!-- 	</section> -->
   <!-- </section> -->
 
-  <!-- <section id="changelog:basis:boot"> -->
+  <!-- <section id="changelog:basis:boot" lang="en"> -->
   <!-- 	<title>Boot Loader</title> -->
   <!-- 	<itemizedlist> -->
   <!-- 		<listitem><simpara> -->
@@ -244,7 +244,7 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
 
-  <section id="changelog:basis:other">
+  <section id="changelog:basis:other" lang="en">
   	<title>Other system services</title>
   	<itemizedlist>
   	  <listitem><simpara>
@@ -256,15 +256,15 @@
 
 </section>
 
-<section id="changelog:domain">
+<section id="changelog:domain" lang="en">
   <title>Domain services</title>
 
-<!--   <section id="changelog:domain:openldap"> -->
+<!--   <section id="changelog:domain:openldap" lang="en"> -->
 <!-- 	<title>OpenLDAP</title> -->
 <!-- 	<itemizedlist> -->
 <!-- 	</itemizedlist> -->
 
-<!-- 	<section id="changelog:domain:openldap:acl"> -->
+<!-- 	<section id="changelog:domain:openldap:acl" lang="en"> -->
 <!-- 	  <title>LDAP ACL changes</title> -->
 <!-- 	  <itemizedlist> -->
 <!-- 		<listitem><simpara> -->
@@ -272,25 +272,25 @@
 <!-- 	  </itemizedlist> -->
 <!-- 	</section> -->
 
-	<section id="changelog:domain:openldap:schema">
+	<section id="changelog:domain:openldap:schema" lang="en">
 	  <title>LDAP schema changes</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The object class <emphasis>msGPOContainer</emphasis> has been extended to support the new
-		  attribute <emphasis>msNTSecurityDescriptor</emphasis> (<ulink url="&ucsbug;36979">Bug 36979</ulink>).
+		  The object class <classname>msGPOContainer</classname> has been extended to support the new
+		  attribute <property>msNTSecurityDescriptor</property> (<ulink url="&ucsbug;36979">Bug 36979</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The <emphasis>univentionUserTemplate</emphasis> object class has been adapted to include
-		  all attributes from the <emphasis>person</emphasis>,
-		  <emphasis>organizationalPerson</emphasis> and <emphasis>inetOrgPerson</emphasis> standard
+		  The <classname>univentionUserTemplate</classname> object class has been adapted to include
+		  all attributes from the <classname>person</classname>,
+		  <classname>organizationalPerson</classname> and <classname>inetOrgPerson</classname> standard
 		  LDAP schemas (<ulink url="&ucsbug;35775">Bug 35775</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
 	</section>
 
-	<section id="changelog:domain:openldap:replication">
+	<section id="changelog:domain:openldap:replication" lang="en">
 	  <title>Listener/Notifier domain replication</title>
 	  <itemizedlist>
 		<listitem><simpara>
@@ -300,7 +300,7 @@
 	  </itemizedlist>
 	</section>
 
-	<section id="changelog:domain:dnsserver">
+	<section id="changelog:domain:dnsserver" lang="en">
 	  <title>DNS server</title>
 	  <itemizedlist>
 		<listitem><simpara>
@@ -309,8 +309,8 @@
 		  of the internet. To prevent such abuse the default configuration will be changed to allow
 		  'recursive queries' only from IP addresses of the private address ranges, link-local
 		  address ranges, localhost and local networks. If the name servers need to be queried from
-		  any other hosts outside those network, they must be configured using the Univention
-		  Configuration Registry variable 'dns/allow/query/cache'. This change gets only applied for
+		  any other hosts outside those network, they must be configured using the &ucsUCRV;
+		  <envar>dns/allow/query/cache</envar>. This change gets only applied for
 		  newly installed domain controllers. See <ulink url="http://sdb.univention.de/1298"/> for
 		  additional details (<ulink url="&ucsbug;37553">Bug 37553</ulink>).
 		</simpara></listitem>
@@ -321,17 +321,17 @@
 </section>
 
 
-<section id="changelog:umc">
+<section id="changelog:umc" lang="en">
   <title>Univention Management Console</title>
 
-  <section id="changelog:umc:web">
+  <section id="changelog:umc:web" lang="en">
   	<title>Univention Management Console web interface</title>
   	<itemizedlist>
   	  <listitem><simpara>
 		The UMC requires JavaScript. If it is disabled in the web browser, a warning message is
-		displayed. The styling of the notification has been improved (<ulink url="&ucsbug;36338">Bug
-		36338</ulink>). Also, display a warning if an Internet Explorer version earlier than version 9 is used (it
-		misrenders SVG graphics) (<ulink url="&ucsbug;36914">Bug 36914</ulink>)
+		displayed. The styling of the notification has been improved (<ulink url="&ucsbug;36338">Bug 36338</ulink>).
+		Also, display a warning if an Internet Explorer version earlier than version 9 is used (it
+		mis-renders SVG graphics) (<ulink url="&ucsbug;36914">Bug 36914</ulink>)
 	  </simpara></listitem>
 
   	  <listitem><simpara>
@@ -366,7 +366,7 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		The <emphasis>LocationMatch</emphasis> directive of Apache is now only configured for the UMC (<ulink
+		The <property>LocationMatch</property> directive of Apache is now only configured for the UMC (<ulink
 		url="&ucsbug;37518">Bug 37518</ulink>).
   	  </simpara></listitem>
 
@@ -386,7 +386,7 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		Fix the visibility of error messages when a login dialog is opened (<ulink
+		Fix the visibility of error messages when a login dialogue is opened (<ulink
 		url="&ucsbug;36400">Bug 36400</ulink>).
   	  </simpara></listitem>
 
@@ -418,8 +418,8 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		Searching for an invalid object type will not raise an exception anymore.Opening a
-		nonexistent object (e.g. object was moved / deleted) now shows an error message instead of
+		Searching for an invalid object type will not raise an exception anymore. Opening a
+		non-existent object (e.g. object was moved / deleted) now shows an error message instead of
 		raising an exception (<ulink url="&ucsbug;35350">Bug 35350</ulink>).
   	  </simpara></listitem>
 
@@ -447,7 +447,7 @@
   	</itemizedlist>
   </section>
 
-  <section id="changelog:umc:server">
+  <section id="changelog:umc:server" lang="en">
   	<title>Univention Management Console server</title>
   	<itemizedlist>
  	  <listitem><simpara>
@@ -456,7 +456,7 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		The JavaScript method umc.tools.umcpProgressSubCommand did not send the UMCP flavour along
+		The JavaScript method <wordasword>umc.tools.umcpProgressSubCommand</wordasword> did not send the UMCP flavour along
 		with a request and could therefore fail due to insufficient permissions (<ulink
 		url="&ucsbug;36875">Bug 36875</ulink>).
   	  </simpara></listitem>
@@ -472,13 +472,13 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		The UMCP command <emphasis>udm/layout</emphasis> failed if a DN was given which could not be
+		The UMCP command <wordasword>udm/layout</wordasword> failed if a DN was given which could not be
 		identified as a UDM object (<ulink url="&ucsbug;29231">Bug 29231</ulink>).
   	  </simpara></listitem>
 
   	  <listitem><simpara>
 		Allows UMC modules to set the response status when the module initialization fails. This is
-		required to show the login dialog after a password change (<ulink url="&ucsbug;34353">Bug
+		required to show the login dialogue after a password change (<ulink url="&ucsbug;34353">Bug
 		34353</ulink>).
   	  </simpara></listitem>
 
@@ -494,7 +494,7 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		Add the UMCP flavor to error information when a traceback occurs (<ulink
+		Add the UMCP flavour to error information when a traceback occurs (<ulink
 		url="&ucsbug;37169">Bug 37169</ulink>).
   	  </simpara></listitem>
 
@@ -530,7 +530,7 @@
   	</itemizedlist>
   </section>
 
-  <section id="changelog:umc:appcenter">
+  <section id="changelog:umc:appcenter" lang="en">
   	<title>Univention App Center</title>
   	<itemizedlist>
   	  <listitem><simpara>
@@ -562,7 +562,7 @@
   	</itemizedlist>
   </section>
 
-  <section id="changelog:umc:setup">
+  <section id="changelog:umc:setup" lang="en">
   	<title>Basic settings / Appliance mode</title>
   	<itemizedlist>
   	  <listitem><simpara>
@@ -672,7 +672,7 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		Fix the configuration of primary devices and bond-miimon in bonding network devices (<ulink
+		Fix the configuration of primary devices and <wordasword>bond-miimon</wordasword> in bonding network devices (<ulink
 		url="&ucsbug;36340">Bug 36340</ulink>, <ulink url="&ucsbug;36342">Bug 36342</ulink>).
   	  </simpara></listitem>
 
@@ -693,7 +693,7 @@
 
 
 
-  <section id="changelog:umc:user">
+  <section id="changelog:umc:user" lang="en">
   	<title>Users module</title>
   	<itemizedlist>
   	  <listitem><simpara>
@@ -717,7 +717,7 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		The user properties CtxBrokenSession, CtxReconnectSession and CtxRASDialin now have default values. They
+		The user properties <property>CtxBrokenSession</property>, <property>CtxReconnectSession</property> and <property>CtxRASDialin</property> now have default values. They
 		prevented changes via UMC when not having sufficient LDAP permission to change these
 		attributes (<ulink url="&ucsbug;29884">Bug 29884</ulink>, <ulink url="&ucsbug;37592">Bug 37592</ulink>).
   	  </simpara></listitem>
@@ -727,7 +727,7 @@
 
 
 
-  <section id="changelog:umc:reports">
+  <section id="changelog:umc:reports" lang="en">
   	<title>Univention Directory Reports</title>
   	<itemizedlist>
   	  <listitem><simpara>
@@ -737,7 +737,7 @@
   	</itemizedlist>
   </section>
 
-  <section id="changelog:umc:computers">
+  <section id="changelog:umc:computers" lang="en">
   	<title>Computers module</title>
   	<itemizedlist>
   	  <listitem><simpara>
@@ -749,7 +749,7 @@
   </section>
 
 
-  <section id="changelog:umc:dns">
+  <section id="changelog:umc:dns" lang="en">
   	<title>DNS module</title>
   	<itemizedlist>
   	  <listitem><simpara>
@@ -759,7 +759,7 @@
   	</itemizedlist>
   </section>
 
-  <section id="changelog:umc:license">
+  <section id="changelog:umc:license" lang="en">
   	<title>License module</title>
   	<itemizedlist>
   	  <listitem><simpara>
@@ -776,7 +776,7 @@
   	</itemizedlist>
   </section>
 
-  <section id="changelog:umc:diag">
+  <section id="changelog:umc:diag" lang="en">
   	<title>System diagnostic module</title>
   	<itemizedlist>
   	  <listitem><simpara>
@@ -793,7 +793,7 @@
   </section>
 
 
-  <section id="changelog:umc:update">
+  <section id="changelog:umc:update" lang="en">
   	<title>Online update module</title>
   	<itemizedlist>
   	  <listitem><simpara>
@@ -814,7 +814,7 @@
 
   	  <listitem><simpara>
 		Open the <guimenu>Software update</guimenu> module upon UMC startup during release updates
-		and show a information dialog about the current update process (<ulink
+		and show a information dialogue about the current update process (<ulink
 		url="&ucsbug;37357">Bug 37357</ulink>).
   	  </simpara></listitem>
 
@@ -837,7 +837,7 @@
 
 
 
-  <!-- <section id="changelog:umc:share"> -->
+  <!-- <section id="changelog:umc:share" lang="en"> -->
   <!-- 	<title>Shares module</title> -->
   <!-- 	<itemizedlist> -->
   <!-- 	  <listitem><simpara> -->
@@ -845,7 +845,7 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
   
-  <section id="changelog:umc:policy">
+  <section id="changelog:umc:policy" lang="en">
   	<title>Policies</title>
   	<itemizedlist>
   	  <listitem><simpara>
@@ -865,20 +865,20 @@
 
 
   
-  <section id="changelog:umc:printer">
+  <section id="changelog:umc:printer" lang="en">
 	<title>Printers module</title>
 	<itemizedlist>
 	  <listitem><simpara>
-		The Samba share option <emphasis>force printername</emphasis> was activated implictly during
+		The Samba share option <option>force printername</option> was activated implicitly during
 		modifications of existing print shares. Now it only gets activated on new print shares and if
-		the UCR variable <envar>samba/force_printername</envar> is not set to <emphasis>no</emphasis> or
-		<emphasis>false</emphasis> (<ulink url="&ucsbug;37123">Bug 37123</ulink>).
+		the UCR variable <envar>samba/force_printername</envar> is not set to <literal>no</literal> or
+		<literal>false</literal> (<ulink url="&ucsbug;37123">Bug 37123</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
   </section>
 
 
-  <!-- <section id="changelog:umc:mail"> -->
+  <!-- <section id="changelog:umc:mail" lang="en"> -->
   <!-- 	<title>Mail</title> -->
   <!-- 	<itemizedlist> -->
   <!-- 	  <listitem><simpara> -->
@@ -886,7 +886,7 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
   
-  <!-- <section id="changelog:umc:quota"> -->
+  <!-- <section id="changelog:umc:quota" lang="en"> -->
   <!-- 	<title>Filesystem quota module</title> -->
   <!-- 	<itemizedlist> -->
   <!-- 	  <listitem><simpara> -->
@@ -894,7 +894,7 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
   
-  <!-- <section id="changelog:umc:ucr"> -->
+  <!-- <section id="changelog:umc:ucr" lang="en"> -->
   <!-- 	<title>Univention Configuration Registry module</title> -->
   <!-- 	<itemizedlist> -->
   <!-- 	  <listitem><simpara> -->
@@ -902,7 +902,7 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
 
-  <!-- <section id="changelog:umc:ldap"> -->
+  <!-- <section id="changelog:umc:ldap" lang="en"> -->
   <!-- 	<title>LDAP directory browser</title> -->
   <!-- 	<itemizedlist> -->
   <!-- 	  <listitem><simpara> -->
@@ -910,7 +910,7 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
 
-  <section id="changelog:umc:other">
+  <section id="changelog:umc:other" lang="en">
   	<title>Other modules</title>
   	<itemizedlist>
   	  <listitem><simpara>
@@ -919,8 +919,8 @@
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-		After changing the own password a login dialog is shown if a LDAP connection needs to be
-		reestablished (<ulink url="&ucsbug;34353">Bug 34353</ulink>).
+		After changing the own password a login dialogue is shown if a LDAP connection needs to be
+		re-established (<ulink url="&ucsbug;34353">Bug 34353</ulink>).
   	  </simpara></listitem>
 
   	  <listitem><simpara>
@@ -931,7 +931,7 @@
   </section>
 
 
-  <section id="changelog:umc:udmcli">
+  <section id="changelog:umc:udmcli" lang="en">
   	<title>&ucsUDM; command line interface and related tools</title>
   	<itemizedlist>
   	  <listitem><simpara>
@@ -943,7 +943,7 @@
 
 
   
-  <!-- <section id="changelog:umc:development"> -->
+  <!-- <section id="changelog:umc:development" lang="en"> -->
   <!-- 	<title>Development of modules for &ucsUMC;</title> -->
   <!-- 	<itemizedlist> -->
   <!-- 	  <listitem><simpara> -->
@@ -955,11 +955,11 @@
 </section>
 
 
-<section id="changelog:deployment">
+<section id="changelog:deployment" lang="en">
   <title>Software deployment</title>
   <itemizedlist>
 	<listitem><simpara>
-	  When executing a maintaince or release policy, a requested reboot is now only performed once
+	  When executing a maintenance or release policy, a requested reboot is now only performed once
 	  all updates have been performed (<ulink url="&ucsbug;37231">Bug 37231</ulink>).
 	</simpara></listitem>
 
@@ -978,11 +978,11 @@
 	</simpara></listitem>
 
 	<listitem><simpara>
-	  The sclix schema check have been removed from the pre-update script (<ulink url="&ucsbug;37145">Bug 37145</ulink>).
+	  The Scalix schema check have been removed from the pre-update script (<ulink url="&ucsbug;37145">Bug 37145</ulink>).
 	</simpara></listitem>
   </itemizedlist>
 
-  <section id="changelog:deployment:pkgdb">
+  <section id="changelog:deployment:pkgdb" lang="en">
 	<title>Software monitor</title>
 	<itemizedlist>
 	  <listitem><simpara>
@@ -996,14 +996,14 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The connection to the Postgresql server is re-established in case of an error (<ulink
+		The connection to the PostgreSQL server is re-established in case of an error (<ulink
 		url="&ucsbug;35700">Bug 35700</ulink>).
 	  </simpara></listitem>
 
 	</itemizedlist>
   </section>
 
-  <section id="changelog:deployment:cli">
+  <section id="changelog:deployment:cli" lang="en">
   	<title>Software deployment command line tools</title>
   	<itemizedlist>
   	  <listitem><simpara>
@@ -1013,7 +1013,7 @@
 
   	  <listitem><simpara>
 		The available Univention App Center apps can now be queried on the command line by running
-		<command>univention-add-app</command> with the parameter <emphasis>--list</emphasis> (<ulink
+		<command>univention-add-app</command> with the parameter <option>--list</option> (<ulink
 		url="&ucsbug;37153">Bug 37153</ulink>).
 	  </simpara></listitem>
 
@@ -1029,7 +1029,7 @@
 </section>
 
 
-<section id="changelog:lib">
+<section id="changelog:lib" lang="en">
   <title>Univention base libraries</title>
   <itemizedlist>
 	<listitem><simpara>
@@ -1039,7 +1039,7 @@
 	</simpara></listitem>
 
 	<listitem><simpara>
-	  Fix a segmentation fault in univention-debug when reopening the logfile (<ulink
+	  Fix a segmentation fault in <package>univention-debug</package> when reopening the logfile (<ulink
 	  url="&ucsbug;37317">Bug 37317</ulink>).
 	</simpara></listitem>
 
@@ -1048,10 +1048,10 @@
 </section>
 
 
-<section id="changelog:service">
+<section id="changelog:service" lang="en">
   <title>System services</title>
 
-  <!-- <section id="changelog:service:mail"> -->
+  <!-- <section id="changelog:service:mail" lang="en"> -->
   <!-- 	<title>Mail services</title> -->
   <!-- 	<itemizedlist> -->
   <!-- 	  <listitem><simpara> -->
@@ -1060,7 +1060,7 @@
   <!-- </section> -->
   
 
-  <section id="changelog:service:virus">
+  <section id="changelog:service:virus" lang="en">
 	<title>Spam/virus detection and countermeasures</title>
 	<itemizedlist>
 	  <listitem><simpara>
@@ -1075,7 +1075,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The Amavis service was always listed as stopped in the <guimenu>System services</guimenu>
+		The AMaViS service was always listed as stopped in the <guimenu>System services</guimenu>
 		module of the &ucsUMC;. This has been fixed (<ulink url="&ucsbug;36998">Bug 36998</ulink>).
 	  </simpara></listitem>
 
@@ -1083,7 +1083,7 @@
   </section>
 
 
-  <section id="changelog:service:print">
+  <section id="changelog:service:print" lang="en">
 	<title>Printing services</title>
 	<itemizedlist>
 	  <listitem><simpara>
@@ -1093,7 +1093,7 @@
 	</itemizedlist>
   </section>
 
-  <!-- <section id="changelog:service:nagios"> -->
+  <!-- <section id="changelog:service:nagios" lang="en"> -->
   <!-- 	<title>Nagios</title> -->
   <!-- 	<itemizedlist> -->
   <!-- 	  <listitem><simpara> -->
@@ -1101,19 +1101,19 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
 
-  <section id="changelog:service:ssl">
+  <section id="changelog:service:ssl" lang="en">
   	<title>SSL</title>
   	<itemizedlist>
   	  <listitem><simpara>
 		Prior to the generation of the CA, the system time is updated. A timeout of 15 seconds has
-		been added to the use of rdate to query the current time from a NTP time server, as this
+		been added to the use of <command>rdate</command> to query the current time from a NTP time server, as this
 		sometimes stalls endlessly (<ulink url="&ucsbug;36934">Bug 36934</ulink>, <ulink
 		url="&ucsbug;36935">Bug 36935</ulink>, <ulink url="&ucsbug;36937">Bug 36937</ulink>).
   	  </simpara></listitem>
   	</itemizedlist>
   </section>
 
-  <!-- <section id="changelog:service:proxy"> -->
+  <!-- <section id="changelog:service:proxy" lang="en"> -->
   <!-- 	<title>Proxy services</title> -->
   <!-- 	<itemizedlist> -->
   <!-- 	  <listitem><simpara> -->
@@ -1121,7 +1121,7 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
 
-  <section id="changelog:service:systeminfo">
+  <section id="changelog:service:systeminfo" lang="en">
   	<title>Univention System Info</title>
   	<itemizedlist>
   	  <listitem><simpara>
@@ -1146,7 +1146,7 @@
   	</itemizedlist>
   </section>
 
-  <section id="changelog:service:apache">
+  <section id="changelog:service:apache" lang="en">
 	<title>Apache</title>
 	<itemizedlist>
 	  <listitem><simpara>
@@ -1157,7 +1157,7 @@
 	</itemizedlist>
   </section>
 
-  <!-- <section id="changelog:service:pam"> -->
+  <!-- <section id="changelog:service:pam" lang="en"> -->
   <!-- 	<title>PAM / Local group cache</title> -->
   <!-- 	<itemizedlist> -->
   <!-- 	  <listitem><simpara> -->
@@ -1165,7 +1165,7 @@
   <!-- 	</itemizedlist> -->
   <!-- </section> -->
 
-  <section id="changelog:service:other">
+  <section id="changelog:service:other" lang="en">
   	<title>Other services</title>
   	<itemizedlist>
   	  <listitem><simpara>
@@ -1185,10 +1185,10 @@
 </section>
 
 
-<section id="changelog:virt">
+<section id="changelog:virt" lang="en">
   <title>Virtualization</title>
 
-  <section id="changelog:virt:uvmm">
+  <section id="changelog:virt:uvmm" lang="en">
 	<title>Univention Virtual Machine Manager (UVMM)</title>
 	<itemizedlist>
 	  <listitem><simpara>
@@ -1202,7 +1202,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The timeout for the libvirtd liveness check has been raised to 30 seconds (if the &ucsUCRV;
+		The timeout for the <command>libvirtd</command> liveness check has been raised to 30 seconds (if the &ucsUCRV;
 		<envar>libvirt/check/timeout</envar> hadn't been modified locally (<ulink
 		url="&ucsbug;36605">Bug 36605</ulink>).
 	  </simpara></listitem>
@@ -1260,7 +1260,7 @@
 	</itemizedlist>
   </section>
 
-  <!-- <section id="changelog:virt:operation"> -->
+  <!-- <section id="changelog:virt:operation" lang="en"> -->
   <!-- 	<title>Operate UCS as virtual machine</title> -->
   <!-- 	<itemizedlist> -->
   <!-- 	  <listitem><simpara> -->
@@ -1270,13 +1270,13 @@
 </section>
 
 
-<section id="changelog:win">
+<section id="changelog:win" lang="en">
   <title>Services for Windows</title>
-  <section id="changelog:win:samba">
+  <section id="changelog:win:samba" lang="en">
 	<title>Samba</title>
 	<itemizedlist>
 	  <listitem><simpara>
-		The Sharepoint document search showed no results due to failing group membership check
+		The SharePoint document search showed no results due to failing group membership check
 		This has been fixed (<ulink url="&ucsbug;37233">Bug 37233</ulink>).
 	  </simpara></listitem>
 
@@ -1289,21 +1289,21 @@
 	  <listitem><simpara>
 		The default for the Samba print server architecture was 32 bits. Now on newly installed
 		systems the print server architecture is determined by the host architecture. Additionally
-		the smb.conf parameter <emphasis>spoolss: architecture</emphasis> can  be adjusted manually
-		by setting the new &ucsUCRV; <envar>samba/spoolss/architecture</envar> (see man
-		smb.conf). On updated systems this UCR variable is maintained to keep the old default
+		the <filename>smb.conf</filename> parameter <option>spoolss: architecture</option> can  be adjusted manually
+		by setting the new &ucsUCRV; <envar>samba/spoolss/architecture</envar> (see <command>man
+		smb.conf</command>). On updated systems this UCR variable is maintained to keep the old default
 		(<ulink url="&ucsbug;34068">Bug 34068</ulink>, <ulink url="&ucsbug;37476">Bug 37476</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		A potential issue during the inplace migration from Samba 3 to Samba 4 has been fixed
+		A potential issue during the in-place migration from Samba 3 to Samba 4 has been fixed
 		(<ulink url="&ucsbug;36395">Bug 36395</ulink>).
 	  </simpara></listitem>
 
 	</itemizedlist>
   </section>
 
-  <section id="changelog:win:takeover">
+  <section id="changelog:win:takeover" lang="en">
 	<title>Univention AD Takeover</title>
 	<itemizedlist>
 	  <listitem><simpara>
@@ -1312,7 +1312,7 @@
 	</itemizedlist>
   </section>
 
-  <section id="changelog:win:s4c">
+  <section id="changelog:win:s4c" lang="en">
 	<title>Univention S4 Connector</title>
 	<itemizedlist>
 	  <listitem><simpara>
@@ -1327,18 +1327,18 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Ignore <emphasis>cn=Subschema</emphasis> and warn if Univention Directory Listener didn't
-		pass a entryUUID (<ulink url="&ucsbug;36981">Bug 36981</ulink>).
+		Ignore <uri>cn=Subschema</uri> and warn if Univention Directory Listener didn't
+		pass a <property>entryUUID</property> (<ulink url="&ucsbug;36981">Bug 36981</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
   </section>
 
 
-  <section id="changelog:win:adc">
+  <section id="changelog:win:adc" lang="en">
 	<title>Univention Active Directory Connection</title>
 	<itemizedlist>
 	  <listitem><simpara>
-		Check that the join account is member of the <emphasis>Domain Admins</emphasis> group in
+		Check that the join account is member of the <systemitem class="groupname">Domain Admins</systemitem> group in
 		Active Directory (<ulink url="&ucsbug;35562">Bug 35562</ulink>, <ulink url="&ucsbug;37168">Bug 37168</ulink>).
 	  </simpara></listitem>
 
@@ -1369,7 +1369,7 @@
 
 
 
-<section id="changelog:other">
+<section id="changelog:other" lang="en">
   <title>Other changes</title>
   <itemizedlist>
 	<listitem><simpara>
@@ -1381,87 +1381,87 @@
 		<ulink url="&ucsbug;37288">Bug 37288</ulink>, 
 		<ulink url="&ucsbug;36583">Bug 36583</ulink>):
 		<itemizedlist spacing="compact">
-			<listitem>altermime</listitem>
-			<listitem>asterisk-config</listitem>
-			<listitem>asterisk-core-sounds-en-gsm</listitem>
-			<listitem>asterisk-modules</listitem>
-			<listitem>asterisk-moh-opsound-gsm</listitem>
-			<listitem>asterisk-voicemail</listitem>
-			<listitem>asterisk</listitem>
-			<listitem>autopoint</listitem>
-			<listitem>dahdi-linux</listitem>
-			<listitem>dahdi</listitem>
-			<listitem>docutils-doc</listitem>
-			<listitem>freetds-common</listitem>
-			<listitem>fxload</listitem>
-			<listitem>libalgorithm-diff-perl</listitem>
-			<listitem>libalgorithm-diff-xs-perl</listitem>
-			<listitem>libalgorithm-merge-perl</listitem>
-			<listitem>libapache2-mod-python</listitem>
-			<listitem>libapache2-svn</listitem>
-			<listitem>libart-2.0-2</listitem>
-			<listitem>libboost-thread1.49.0</listitem>
-			<listitem>libcorosync4</listitem>
-			<listitem>libfile-fcntllock-perl</listitem>
-			<listitem>libid3tag0</listitem>
-			<listitem>libjansson4</listitem>
-			<listitem>libmail-sendmail-perl</listitem>
-			<listitem>libopenais3</listitem>
-			<listitem>libopenr2-3</listitem>
-			<listitem>libpri1.4</listitem>
-			<listitem>libsox-fmt-mp3</listitem>
-			<listitem>libss7-1</listitem>
-			<listitem>openjdk-7-jdk</listitem>
-			<listitem>php-mdb2-driver-mysql</listitem>
-			<listitem>php-net-ldap2</listitem>
-			<listitem>php-net-url2</listitem>
-			<listitem>php5-sqlite</listitem>
-			<listitem>python-clearsilver</listitem>
-			<listitem>python-genshi</listitem>
-			<listitem>python-jinja2</listitem>
-			<listitem>python-renderpm</listitem>
-			<listitem>python-reportlab-accel</listitem>
-			<listitem>python-utidylib</listitem>
-			<listitem>ripole</listitem>
-			<listitem>smarty3</listitem>
-			<listitem>sox</listitem>
-			<listitem>trac</listitem>
-			<listitem>vpb-driver-source</listitem>
-			<listitem>asterisk-modules</listitem>
-			<listitem>libcoroipcc4</listitem>
-			<listitem>libfile-fcntllock-perl</listitem>
-			<listitem>libgmime-2.6-0</listitem>
-			<listitem>libiksemel3</listitem>
-			<listitem>libmail-sendmail-perl</listitem>
-			<listitem>libopencore-amrnb0</listitem>
-			<listitem>libopencore-amrwb0</listitem>
-			<listitem>libpri1.4</listitem>
-			<listitem>libresample1</listitem>
-			<listitem>libsaclm3</listitem>
-			<listitem>libsaevt3</listitem>
-			<listitem>libsox2</listitem>
-			<listitem>libsox-fmt-alsa</listitem>
-			<listitem>libsox-fmt-base</listitem>
-			<listitem>libsox-fmt-mp3</listitem>
-			<listitem>libsybdb5</listitem>
-			<listitem>libtonezone2.0</listitem>
-			<listitem>libvpb0</listitem>
-			<listitem>python-feedparser</listitem>
-			<listitem>python-libxslt1</listitem>
-			<listitem>python-mock</listitem>
-			<listitem>python-openid</listitem>
-			<listitem>python-passlib</listitem>
-			<listitem>python-psycopg2</listitem>
-			<listitem>python-pybabel</listitem>
-			<listitem>python-pychart</listitem>
-			<listitem>python-pydot</listitem>
-			<listitem>python-pypdf</listitem>
-			<listitem>python-unittest2</listitem>
-			<listitem>python-vatnumber</listitem>
-			<listitem>python-vobject</listitem>
-			<listitem>python-werkzeug</listitem>
-			<listitem>antiword</listitem>
-			<listitem>python-babel</listitem>
+			<listitem><package>altermime</package></listitem>
+			<listitem><package>asterisk-config</package></listitem>
+			<listitem><package>asterisk-core-sounds-en-gsm</package></listitem>
+			<listitem><package>asterisk-modules</package></listitem>
+			<listitem><package>asterisk-moh-opsound-gsm</package></listitem>
+			<listitem><package>asterisk-voicemail</package></listitem>
+			<listitem><package>asterisk</package></listitem>
+			<listitem><package>autopoint</package></listitem>
+			<listitem><package>dahdi-linux</package></listitem>
+			<listitem><package>dahdi</package></listitem>
+			<listitem><package>docutils-doc</package></listitem>
+			<listitem><package>freetds-common</package></listitem>
+			<listitem><package>fxload</package></listitem>
+			<listitem><package>libalgorithm-diff-perl</package></listitem>
+			<listitem><package>libalgorithm-diff-xs-perl</package></listitem>
+			<listitem><package>libalgorithm-merge-perl</package></listitem>
+			<listitem><package>libapache2-mod-python</package></listitem>
+			<listitem><package>libapache2-svn</package></listitem>
+			<listitem><package>libart-2.0-2</package></listitem>
+			<listitem><package>libboost-thread1.49.0</package></listitem>
+			<listitem><package>libcorosync4</package></listitem>
+			<listitem><package>libfile-fcntllock-perl</package></listitem>
+			<listitem><package>libid3tag0</package></listitem>
+			<listitem><package>libjansson4</package></listitem>
+			<listitem><package>libmail-sendmail-perl</package></listitem>
+			<listitem><package>libopenais3</package></listitem>
+			<listitem><package>libopenr2-3</package></listitem>
+			<listitem><package>libpri1.4</package></listitem>
+			<listitem><package>libsox-fmt-mp3</package></listitem>
+			<listitem><package>libss7-1</package></listitem>
+			<listitem><package>openjdk-7-jdk</package></listitem>
+			<listitem><package>php-mdb2-driver-mysql</package></listitem>
+			<listitem><package>php-net-ldap2</package></listitem>
+			<listitem><package>php-net-url2</package></listitem>
+			<listitem><package>php5-sqlite</package></listitem>
+			<listitem><package>python-clearsilver</package></listitem>
+			<listitem><package>python-genshi</package></listitem>
+			<listitem><package>python-jinja2</package></listitem>
+			<listitem><package>python-renderpm</package></listitem>
+			<listitem><package>python-reportlab-accel</package></listitem>
+			<listitem><package>python-utidylib</package></listitem>
+			<listitem><package>ripole</package></listitem>
+			<listitem><package>smarty3</package></listitem>
+			<listitem><package>sox</package></listitem>
+			<listitem><package>trac</package></listitem>
+			<listitem><package>vpb-driver-source</package></listitem>
+			<listitem><package>asterisk-modules</package></listitem>
+			<listitem><package>libcoroipcc4</package></listitem>
+			<listitem><package>libfile-fcntllock-perl</package></listitem>
+			<listitem><package>libgmime-2.6-0</package></listitem>
+			<listitem><package>libiksemel3</package></listitem>
+			<listitem><package>libmail-sendmail-perl</package></listitem>
+			<listitem><package>libopencore-amrnb0</package></listitem>
+			<listitem><package>libopencore-amrwb0</package></listitem>
+			<listitem><package>libpri1.4</package></listitem>
+			<listitem><package>libresample1</package></listitem>
+			<listitem><package>libsaclm3</package></listitem>
+			<listitem><package>libsaevt3</package></listitem>
+			<listitem><package>libsox2</package></listitem>
+			<listitem><package>libsox-fmt-alsa</package></listitem>
+			<listitem><package>libsox-fmt-base</package></listitem>
+			<listitem><package>libsox-fmt-mp3</package></listitem>
+			<listitem><package>libsybdb5</package></listitem>
+			<listitem><package>libtonezone2.0</package></listitem>
+			<listitem><package>libvpb0</package></listitem>
+			<listitem><package>python-feedparser</package></listitem>
+			<listitem><package>python-libxslt1</package></listitem>
+			<listitem><package>python-mock</package></listitem>
+			<listitem><package>python-openid</package></listitem>
+			<listitem><package>python-passlib</package></listitem>
+			<listitem><package>python-psycopg2</package></listitem>
+			<listitem><package>python-pybabel</package></listitem>
+			<listitem><package>python-pychart</package></listitem>
+			<listitem><package>python-pydot</package></listitem>
+			<listitem><package>python-pypdf</package></listitem>
+			<listitem><package>python-unittest2</package></listitem>
+			<listitem><package>python-vatnumber</package></listitem>
+			<listitem><package>python-vobject</package></listitem>
+			<listitem><package>python-werkzeug</package></listitem>
+			<listitem><package>antiword</package></listitem>
+			<listitem><package>python-babel</package></listitem>
 		</itemizedlist>
 	</simpara></listitem>
 
@@ -1477,7 +1477,7 @@
 	</simpara></listitem>
 
 	<listitem><simpara>
-	  A traceback in ucslint module 0001 has been fixed. This traceback could appear if there were
+	  A traceback in <command>ucslint</command> module 0001 has been fixed. This traceback could appear if there were
 	  problems while reading the join scripts of the source package (<ulink url="&ucsbug;37688">Bug
 	  37688</ulink>).
 	</simpara></listitem>

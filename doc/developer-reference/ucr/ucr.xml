@@ -263,7 +263,7 @@ handler_unset(['foo', 'bar'])
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>debian/<replaceable>package</replaceable>.univention-config-registry</term>
+				<term><filename>debian/<replaceable>package</replaceable>.univention-config-registry</filename></term>
 				<listitem>
 					<simpara>
 						This mandatory information file describes the each template file.
@@ -273,7 +273,7 @@ handler_unset(['foo', 'bar'])
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>debian/<replaceable>package</replaceable>.univention-config-registry-variables</term>
+				<term><filename>debian/<replaceable>package</replaceable>.univention-config-registry-variables</filename></term>
 				<listitem>
 					<simpara>
 						This optional file can add descriptions to <acronym>UCR</acronym> variables, which should describe the use of the variable, its default and allowed values.
@@ -282,7 +282,7 @@ handler_unset(['foo', 'bar'])
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>debian/<replaceable>package</replaceable>.univention-config-registry-categories</term>
+				<term><filename>debian/<replaceable>package</replaceable>.univention-config-registry-categories</filename></term>
 				<listitem>
 					<simpara>
 						This optional file can add additional categories to group <acronym>UCR</acronym> variables.
@@ -291,7 +291,7 @@ handler_unset(['foo', 'bar'])
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>debian/<replaceable>package</replaceable>.univention-config-registry-services</term>
+				<term><filename>debian/<replaceable>package</replaceable>.univention-config-registry-services</filename></term>
 				<listitem>
 					<simpara>
 						This optional file is used to define long running services.
@@ -307,7 +307,7 @@ handler_unset(['foo', 'bar'])
 		</para>
 
 		<section id="ucr:info">
-			<title>debian/<replaceable>package</replaceable>.univention-config-registry
+			<title><filename>debian/<replaceable>package</replaceable>.univention-config-registry</filename>
 				<indexterm><primary>Config Registry</primary><secondary>Configuration files</secondary></indexterm>
 			</title>
 			<para>
@@ -588,7 +588,7 @@ def handler(config_registry, changes):
 		</section>
 
 		<section id="ucr:variables">
-			<title>debian/<replaceable>package</replaceable>.univention-config-registry-variables
+			<title><filename>debian/<replaceable>package</replaceable>.univention-config-registry-variables</filename>
 				<indexterm><primary>Config Registry</primary><secondary>Descriptions</secondary></indexterm>
 			</title>
 			<para>
@@ -669,7 +669,7 @@ Categories=<category,...>]]></programlisting>
 		</section>
 
 		<section id="ucr:categories">
-			<title>debian/<replaceable>package</replaceable>.univention-config-registry-categories
+			<title><filename>debian/<replaceable>package</replaceable>.univention-config-registry-categories</filename>
 				<indexterm><primary>Config Registry</primary><secondary>Categories</secondary></indexterm>
 			</title>
 			<para>
@@ -721,7 +721,7 @@ icon=<file-name>]]></programlisting>
 		</section>
 
 		<section id="ucr:services">
-			<title>debian/<replaceable>package</replaceable>.univention-config-registry-services
+			<title><filename>debian/<replaceable>package</replaceable>.univention-config-registry-services</filename>
 				<indexterm><primary>Config Registry</primary><secondary>Services</secondary></indexterm>
 			</title>
 			<para>

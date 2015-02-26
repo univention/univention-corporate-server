@@ -345,7 +345,7 @@
 	<para>
 	  In der Vergangenheit wurden alle Benutzer, die auf dem System arbeiten,
 	  doppelt in der lokalen Benutzerdatenbank des AIX-Systems gepflegt.
-	  Auf dem AIX-System läuft nun der secldapclntd-Dienst, der sämtliche
+	  Auf dem AIX-System läuft nun der <systemitem class="service">secldapclntd</systemitem>-Dienst, der sämtliche
 	  Authentifizierungsvorgänge gegen das UCS-LDAP-Verzeichnis
 	  durchführt.
 	</para>

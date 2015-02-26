@@ -19,7 +19,7 @@
 			</revision>
 		</revhistory>
 
-		<legalnotice>
+		<legalnotice lang="">
 			<para>
 				Alle Rechte vorbehalten. / All rights reserved.
 			</para>
@@ -33,15 +33,15 @@
 			</para>
 
 			<para>
-				<ulink url="mailto:feedback@univention.de">feedback@univention.de</ulink>
+				<email>feedback@univention.de</email>
 			</para>
 
-			<para>
+			<para lang="de">
 				Jede aufgeführte Marke und jedes Warenzeichen steht im Eigentum ihrer jeweiligen eingetragenen Rechtsinhaber.
 				Linux ist ein eingetragenes Warenzeichen von Linus Torvalds.
 			</para>
 
-			<para>
+			<para lang="en">
 				The mentioned brand names and registered trademarks are owned by the respective legal owners in each case.
 				Linux is a registered trademark of Linus Torvalds.
 			</para>
@@ -78,7 +78,7 @@
 
 		  <listitem><para>
 			Multiple bugfixes and improvements related to Samba, e.g. in the printer support and
-			when using  Microsoft Sharepoint.
+			when using  Microsoft SharePoint.
 		  </para></listitem>
 
 		  <listitem><para>
@@ -149,7 +149,7 @@
 
 		<para>
 		  For the update, a login should be performed on the system's local console as user
-		  <emphasis>root</emphasis>, and the update should be initiated there. Alternatively, the
+		  <systemitem class="username">root</systemitem>, and the update should be initiated there. Alternatively, the
 		  update can be conducted using &ucsUMC;.
 		</para>
 
@@ -171,7 +171,7 @@
 		  Following the update, new or updated join scripts need to be executed. This can be done in
 		  two ways: Either using the UMC module  <guimenu>Domain join</guimenu> or by running the
 		  command <command>univention-run-join-scripts</command> as user
-		  <emphasis>root</emphasis>.
+		  <systemitem class="username">root</systemitem>.
 		</para>
 
 		<para>
@@ -180,8 +180,8 @@
 		  of the internet. To prevent such abuse the default configuration will be changed to allow
 		  'recursive queries' only from IP addresses of the private address ranges, link-local
 		  address ranges, localhost and local networks. If the name servers need to be queried from
-		  any other hosts outside those network, they must be configured using the Univention
-		  Configuration Registry variable 'dns/allow/query/cache'. This change gets only applied for
+		  any other hosts outside those network, they must be configured using the &ucsUCRV;
+		  <envar>dns/allow/query/cache</envar>. This change gets only applied for
 		  newly installed domain controllers. See <ulink url="http://sdb.univention.de/1298"/> for
 		  additional details to convert existing installations.
 		</para>
@@ -229,20 +229,20 @@
 	  </section>
 
 	  <section id="relnotes:secbrowsers">
-		<title>Scope of security support for Webkit, Konqueror und QtWebKit</title>
+		<title>Scope of security support for WebKit, Konqueror and QtWebKit</title>
 		<para>
-		  Webkit, Konqueror and QtWebkit are shipped in the maintained branch of the UCS repository,
-		  but not covered with security support. Webkit is primarily used for displaying HTML help
+		  WebKit, Konqueror and QtWebKit are shipped in the maintained branch of the UCS repository,
+		  but not covered with security support. WebKit is primarily used for displaying HTML help
 		  pages etc. Firefox should be used as web browser.
 		</para>
 
 	  </section>
 
 	  <section id="relnotes:browsers">
-		<title>Recommeded browsers for the access to Univention Management Console</title>
+		<title>Recommended browsers for the access to Univention Management Console</title>
 
 		<para>
-		  &ucsUMC; uses numerous Javascript and CSS functions to display the web interface. Cookies
+		  &ucsUMC; uses numerous JavaScript and CSS functions to display the web interface. Cookies
 		  need to be permitted in the browser. The following browsers are recommended:
 		</para>
 

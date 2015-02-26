@@ -8,7 +8,7 @@
 
   <para>
 	Sometimes it might be necessary to add external repositories, e.g. when testing an application
-	which is developed for the the &ucsUAS;. Such components can be registered via &ucsUMC; or in
+	which is developed for the &ucsUAS;. Such components can be registered via &ucsUMC; or in
 	&ucsUCR;.
   </para>
 

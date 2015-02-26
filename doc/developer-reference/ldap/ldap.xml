@@ -11,7 +11,7 @@
 		<para>
 			An <acronym>LDAP</acronym> server provides authenticated and controlled access to directory objects over the network.
 			<acronym>LDAP</acronym> objects consist of a collection of attributes which conform to so called <acronym>LDAP</acronym> schemata.
-			An in depth documentation of <acronym>LDAP</acronym> is beyond the scope of this document, other sources cover this topic exaustively,
+			An in depth documentation of <acronym>LDAP</acronym> is beyond the scope of this document, other sources cover this topic exhaustively,
 			e.g. <ulink url="http://www.zytrax.com/books/ldap/"/> or the man pages (<literal>slapd.conf</literal>, <literal>slapd.access</literal>).
 		</para>
 		<para>
@@ -23,7 +23,7 @@
 		</para>
 		<para>
 			On top of the raw <acronym>LDAP</acronym> layer, the Univention Directory Manager offers an object model on a higher level,
-			featuring advanced object semantics (see <xref linkend="chap:udm"/>). That is the level that usually appropriate for app developpers, which
+			featuring advanced object semantics (see <xref linkend="chap:udm"/>). That is the level that usually appropriate for app developers, which
 			should be considered before venturing down to the level of direct <acronym>LDAP</acronym> operations. On the other hand, for the development
 			of new UDM extensions it is important to understand some of the essential concepts of <acronym>LDAP</acronym> as used in UCS.
 		</para>
@@ -112,7 +112,7 @@
 			</varlistentry>
 		</variablelist>
 		<para>
-			Since many of these parameters are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
+			Since many of these parameters are determined automatically by the <function>ucs_registerLDAPExtension</function> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
 		</para>
 		<example>
 			<title>Schema registration in join script</title>
@@ -212,7 +212,7 @@ ucs_registerLDAPExtension "$@" \
 			</varlistentry>
 		</variablelist>
 		<para>
-			Since many of these parameters are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
+			Since many of these parameters are determined automatically by the <function>ucs_registerLDAPExtension</function> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
 		</para>
 		<example>
 			<title>LDAP ACL registration in join script</title>

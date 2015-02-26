@@ -3,7 +3,7 @@
   <section>
 	<title>Initial situation</title>
 	<para>
-	  The administrative district Rechtwede is the school body for a total of
+	  The administrative district <wordasword>Rechtwede</wordasword> is the school body for a total of
 	  eight primary schools, comprehensive schools, vocational schools and
 	  grammar schools.
 	</para>
@@ -31,8 +31,8 @@
 	</para>
 
 	<para>
-	  On most PCs - which are operated on Microsoft Windows XP or
-	  Microsoft Windows 7 - there is one common user account. The
+	   On most PCs - which are operated on <systemitem class="osname">Microsoft Windows XP</systemitem> or
+	  <systemitem class="osname">Microsoft Windows 7</systemitem> - there is one common user account. The
 	  computers are not centrally administrated.
 	</para>
 
@@ -43,7 +43,7 @@
 
 	<para>
 	  Software installation versions are often different on the computers
-	  and many computers have viruses and trojans as security updates are
+	  and many computers have viruses and Trojans as security updates are
 	  not installed systematically.
 	</para>
 

@@ -3,7 +3,7 @@
   <section>
 	<title>Ausgangslage</title>
 	<para>
-	  Der Landkreis Rechtwede ist Schulträger für insgesamt acht
+	  Der Landkreis <wordasword>Rechtwede</wordasword> ist Schulträger für insgesamt acht
 	  Grundschulen, Gesamtschulen, Berufsschulen und Gymnasien.
 	</para>
 
@@ -29,8 +29,8 @@
 	</para>
 
 	<para>
-	  An den meisten PCs - die mit Microsoft Windows XP oder Microsoft
-	  Windows 7 betrieben werden - gibt es nur ein gemeinsames
+	  An den meisten PCs - die mit <systemitem class="osname">Microsoft Windows XP</systemitem> oder <systemitem class="osname">Microsoft
+	  Windows 7</systemitem> betrieben werden - gibt es nur ein gemeinsames
 	  Benutzerkonto. Die Rechner werden nicht zentral
 	  verwaltet.
 	</para>

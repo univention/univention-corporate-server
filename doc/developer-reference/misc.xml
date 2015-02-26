@@ -141,7 +141,7 @@ override_dh_auto_test:
 			Since <command>ucslint</command> is very Univention centric, many of its tests return false positives for software packages by other parties.
 			Therefore many tests need to be disables.
 			For that a file <filename>debian/ucslint.overrides</filename> can be created with list of modules and test, which should be ignored.
-			Without specifying the optional filename, line number and column number, the test ist globally disabled for all files.
+			Without specifying the optional filename, line number and column number, the test is globally disabled for all files.
 		</para>
 	</section>
 

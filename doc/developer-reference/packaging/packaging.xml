@@ -16,7 +16,7 @@
 		<para>
 			<acronym>UCS</acronym> is based on the Debian distribution, which is using the <acronym>deb</acronym> format to package software.
 			The program <command>dpkg</command> is used for handling a set of packages.
-			On installation packages are unpacked und configured, while on un-installation packages are de-configured and the files belonging to the packages are removed from the system.
+			On installation packages are unpacked and configured, while on un-installation packages are de-configured and the files belonging to the packages are removed from the system.
 			On top of that the <application>apt</application>-tools provide a software repository, which allows software to be downloaded from central file servers.
 			<filename>Package</filename> files provide an index of all packages contained in the repository, which is used to resolve dependencies between packages:
 			while <command>dpkg</command> works on a set of packages given on the command line, <command>apt-get</command> builds that set of packages and their dependencies before invoking <command>dpkg</command> on this set.
@@ -160,7 +160,7 @@ Type of Package  : Single
 Hit <enter> to confirm:
 		]]></screen>
 		<para>
-			The package name <quote>testdeb</quote> and version <quote>0.1</quote> were determined from the name of the directory <filename class="directory">testdeb-0.1</filename>, the maintainer name and address were gathered from the <acronym>UNIX</acronym> account information.
+			The package name <package>testdeb</package> and version <quote>0.1</quote> were determined from the name of the directory <filename class="directory">testdeb-0.1</filename>, the maintainer name and address were gathered from the <acronym>UNIX</acronym> account information.
 		</para>
 		<para>
 			After pressing the <keycap function="enter">enter</keycap> key some warning message will be shown:
@@ -416,9 +416,9 @@ ucr set \
 		]]></programlisting>
 	</section>
 
-	<section id="pkg:obs"><title>Building packages through the OpenSuSE Build Service</title>
+	<section id="pkg:obs"><title>Building packages through the openSUSE Build Service</title>
 	<para>
-	  The OpenSuSE Build Service (OBS) is a framework to generate packages for a wide range of
+	  The openSUSE Build Service (OBS) is a framework to generate packages for a wide range of
 	  distributions. Additional information can be found at <ulink
 	  url="https://build.opensuse.org/"/>. If OBS is already used to build packages for other distributions, it can also
 	  be used for Univention Corporate Server builds. The build target for UCS 4.0 is called

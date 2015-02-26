@@ -223,7 +223,7 @@ or add --createorig to create one.
 						Historically the Debian source format <literal>1.0</literal> shipped packages as a <acronym>TAR</acronym> file containing the upstream source plus one patch file, which contained all files of the <filename class="directory">debian/</filename> sub-directory in addition to all changes to upstream files.
 					</para>
 					<para>
-						The new format <literal>3.0 (quilt)</literal> replaces the patch file with a second <acronym>TAR</acronym> archive containing the <filename class="directory">debian/</filename> direcory.
+						The new format <literal>3.0 (quilt)</literal> replaces the patch file with a second <acronym>TAR</acronym> archive containing the <filename class="directory">debian/</filename> directory.
 						Changes to upstream files are no longer applied as one giant patch, but split into logical changes and applied using a built-in <citerefentry><refentrytitle>quilt</refentrytitle><manvolnum>1</manvolnum></citerefentry>.
 					</para>
 					<para>
@@ -908,7 +908,7 @@ override_dh_auto_configure:
 				<para>
 					On the other hand an exit code unequal to zero usually aborts any package installation, upgrade or removal process.
 					This prevents any automatic package maintenance and usually requires manual intervention of a human administrator.
-					Therefore it is essential that maintainer scrips handle error conditions properly and are able to recover an inconsistent state.
+					Therefore it is essential that maintainer scripts handle error conditions properly and are able to recover an inconsistent state.
 				</para>
 			</warning>
 		</section>

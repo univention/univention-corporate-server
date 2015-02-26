@@ -132,7 +132,7 @@
 		</listitem>
 		<listitem>
 			<simpara>
-			<package>univention-nagios-opsi</package> Test of software distribution OPSI
+			<package>univention-nagios-opsi</package> Test of software distribution opsi
 			</simpara>
 		</listitem>
 		<listitem>
@@ -374,8 +374,8 @@
 						<entry><systemitem class="service">UNIVENTION_OPSI</systemitem></entry>
 						<entry>
 							<para>
-							monitors the OPSI daemon.
-							If no OPSI process is running or the OPSI proxy is not accessible,
+							monitors the opsi daemon.
+							If no opsi process is running or the opsi proxy is not accessible,
 							the CRITICAL status is returned.
 							</para>
 						</entry>

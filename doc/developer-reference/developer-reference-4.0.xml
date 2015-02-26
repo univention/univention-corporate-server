@@ -8,7 +8,7 @@
 	<bookinfo>
 		<title>Univention Developer Reference</title>
 		<subtitle>Manual for developers</subtitle>
-		<address>
+		<address lang="">
 			Univention GmbH
 			<street>Mary-Somerville-Straße 1</street>
 			<postcode>28359</postcode> <city>Bremen</city>
@@ -18,9 +18,10 @@
 		<copyright>
 			<year>2013</year>
 			<year>2014</year>
+			<year>2015</year>
 		</copyright>
 		<legalnotice>
-			<para>
+			<para lang="">
 				Alle Rechte vorbehalten./ All rights reserved.
 			</para>
 

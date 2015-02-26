@@ -333,7 +333,7 @@
 
 	<para>
 	  In the past, all users working on the system were maintained doubly in
-	  the local user database of the AIX system. Now only the secldapclntd
+	  the local user database of the AIX system. Now only the <systemitem class="service">secldapclntd</systemitem>
 	  service runs on the AIX system; it performs all the authentication
 	  processes against the UCS LDAP directory.
 	</para>
