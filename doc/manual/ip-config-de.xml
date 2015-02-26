@@ -158,15 +158,15 @@
   </section>
 
   <section id="networks:dns">
-	<title>Verwaltung von DNS-Daten mit Bind</title>
+	<title>Verwaltung von DNS-Daten mit BIND</title>
 	<para>
-	  UCS integriert Bind für die Namensauflösung über das Domain Name
+	  UCS integriert BIND für die Namensauflösung über das Domain Name
 	  System (DNS). Die meisten DNS-Funktionen werden für die DNS-Auflösung in
-	  der lokalen Domäne verwendet, die UCS-Bind-Integration kann aber
+	  der lokalen Domäne verwendet, die UCS-BIND-Integration kann aber
 	  prinzipiell auch für einen öffentlichen Nameserver eingesetzt werden.
 	</para>
 	<para>
-	  Auf allen Domänencontroller-Systemrollen ist Bind immer
+	  Auf allen Domänencontroller-Systemrollen ist BIND immer
 	  verfügbar, eine Installation auf anderen Systemrollen wird nicht
 	  unterstützt.
 	</para>
@@ -251,12 +251,12 @@
 	  </itemizedlist>
 
 	<section id="ip-config:Konfiguration_des_Bind-Dienstes">
-	  <title>Konfiguration des Bind-Dienstes</title>
+	  <title>Konfiguration des BIND-Dienstes</title>
 
 	  <section id="ip-config:bind-debug">
-		<title>Konfiguration der Debug-Ausgaben von Bind</title>
+		<title>Konfiguration der Debug-Ausgaben von BIND</title>
 		<para>
-		  Der Detailgrad der Debugausgaben von Bind kann über die &ucsUCR;-Variablen
+		  Der Detailgrad der Debugausgaben von BIND kann über die &ucsUCR;-Variablen
 		  <envar>dns/debug/level</envar> und <envar>dns/dlz/debug/level</envar> (für das
 		  Samba-Backend, siehe <xref linkend="ip-config:dns:backend"/>) konfiguriert
 		  werden. Die möglichen Werte reichen von 0 (keine Debug-Ausgaben) bis 11. Eine komplette
@@ -267,24 +267,24 @@
 	  <section id="ip-config:dns:backend">
 		<title>Konfiguration des Daten-Backends des Nameservers</title>
 		<para>
-		  In einer typischen Bind-Installation auf einem Nicht-UCS-System
+		  In einer typischen BIND-Installation auf einem Nicht-UCS-System
 		  wird die Konfiguration durch das Bearbeiten von Zonen-Dateien
-		  durchgeführt. In UCS wird Bind komplett über &ucsUMC;
+		  durchgeführt. In UCS wird BIND komplett über &ucsUMC;
 		  konfiguriert, das seine Daten im LDAP-Verzeichnis speichert.
 		</para>
 		<para>
-		  Bind kann zwei verschiedene Backends für seine Konfigurationsdateien verwenden:
+		  BIND kann zwei verschiedene Backends für seine Konfigurationsdateien verwenden:
 		</para>
 		  <itemizedlist>
 			<listitem>
 				<simpara>
 				  Das <emphasis>LDAP-Backend</emphasis> greift auf die Daten im OpenLDAP-Verzeichnis
 				  zu. Dieses Backend ist der Standard. Der DNS-Dienst ist in diesem Fall
-				  zweigeteilt: Der <emphasis>Bind-Proxy</emphasis> ist der primäre Nameserver und
+				  zweigeteilt: Der <emphasis>BIND-Proxy</emphasis> ist der primäre Nameserver und
 				  bedient den DNS-Standard-Port 53. Ein zweiter Server im Hintergrund arbeitet auf
 				  Port 7777. Werden Daten der internen DNS-Zonen im LDAP bearbeitet, wird die
 				  Zonendatei auf dem zweiten Server basierend auf den LDAP-Informationen
-				  aktualisiert und durch einen Zonentransfer an den Bind-Proxy übertragen. 
+				  aktualisiert und durch einen Zonentransfer an den BIND-Proxy übertragen. 
 				</simpara>
 			</listitem>
 			<listitem>
@@ -295,7 +295,7 @@
 			  Samba 4 eingesetzt, wird der betreffende Domänencontroller auf die
 			  Verwendung des <emphasis>Samba-Backend</emphasis>s umgestellt. Die DNS-Datenbank
 			  wird dabei in der Samba-internen <acronym>LDB</acronym>-Datenbank vorgehalten, die
-			  direkt von Samba aktualisiert wird. Bind greift dann über die
+			  direkt von Samba aktualisiert wird. BIND greift dann über die
 			  <acronym>DLZ</acronym>-Schnittstelle auf die Samba-DNS-Daten zu.
 				</simpara>
 			</listitem>

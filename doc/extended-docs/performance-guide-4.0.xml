@@ -272,9 +272,9 @@ slapadd -l ldif
 	</section>
 
 	<section id="bind">
-		<title>Bind</title>
+		<title>BIND</title>
 		<para>
-		  Bind can use two different backends for its configuration: OpenLDAP or the internal LDB
+		  BIND can use two different backends for its configuration: OpenLDAP or the internal LDB
 		  database of Samba 4. The backend is configured via the &ucsUCRV;
 		  <envar>dns/backend</envar>.
 		</para>

@@ -174,15 +174,15 @@
   </section>
 
   <section id="networks:dns">
-	<title>Administration of DNS data with Bind</title>
+	<title>Administration of DNS data with BIND</title>
 	<para>
-	  UCS integrates Bind for the name resolution via the domain name system
+	  UCS integrates BIND for the name resolution via the domain name system
 	  (DNS). The majority of DNS functions are used for DNS resolution in
-	  the local domain; however, the UCS Bind integration can also be used
+	  the local domain; however, the UCS BIND integration can also be used
 	  for a public name server in principle.
 	</para>
 	<para>
-	  Bind is always available on all domain controller system roles;
+	  BIND is always available on all domain controller system roles;
 	  installation on other system roles is not supported.
 	</para>
 	<para>
@@ -260,12 +260,12 @@
 	</itemizedlist>
 
 	<section id="ip-config:Configuration_of_the_Bind_nameserver">
-	  <title>Configuration of the Bind nameserver</title>
+	  <title>Configuration of the BIND nameserver</title>
 
 	  <section id="ip-config:bind-debug">
-		<title>Configuration of Bind debug output</title>
+		<title>Configuration of BIND debug output</title>
 		<para>
-		  The level of detail of the Bind debug output can be configured via the
+		  The level of detail of the BIND debug output can be configured via the
 		  <envar>dns/debug/level</envar> and <envar>dns/dlz/debug/level</envar> (for the Samba
 		  backend, see <xref linkend="ip-config:dns:backend"/>) &ucsUCR;
 		  variables. The possible values are between 0 (no debug tasks) to 11. A complete list of
@@ -276,23 +276,23 @@
 	  <section id="ip-config:dns:backend">
 		<title>Configuration of the data backend</title>
 		<para>
-		  In a typical Bind installation on a non-UCS system, the configuration
-		  is performed by editing zone files. In UCS, Bind is completely
+		  In a typical BIND installation on a non-UCS system, the configuration
+		  is performed by editing zone files. In UCS, BIND is completely
 		  configured via &ucsUMC;, which saves its data in the LDAP
 		  directory.
 		</para>
 		<para>
-		  Bind can use two different backends for its configuration:
+		  BIND can use two different backends for its configuration:
 		</para>
 		  <itemizedlist>
 			<listitem>
 			  <para>
 				The <emphasis>LDAP backend</emphasis> accesses the data in the LDAP directory. This
 				is the standard backend. The DNS service is split into two in this case: The
-				<emphasis>Bind proxy</emphasis> is the primary name server and uses the DNS standard
+				<emphasis>BIND proxy</emphasis> is the primary name server and uses the DNS standard
 				port 53. A second server in the background works on port 7777. If data from the
 				internal DNS zones are edited in the LDAP, the zone file on the second server is
-				updated based on the LDAP information and transmitted to the Bind proxy by means of
+				updated based on the LDAP information and transmitted to the BIND proxy by means of
 				a zone transfer.
 			  </para>
 			</listitem>
@@ -304,7 +304,7 @@
 				is used, the domain controller in question is switched over to the
 				use of the <emphasis>Samba backend</emphasis>.
 				The DNS database is maintained in
-				Samba's internal <acronym>LDB</acronym> database, which Samba updates directly. Bind
+				Samba's internal <acronym>LDB</acronym> database, which Samba updates directly. BIND
 				then accesses the Samba DNS data via the <acronym>DLZ</acronym> interface.
 			  </para>
 			</listitem>
