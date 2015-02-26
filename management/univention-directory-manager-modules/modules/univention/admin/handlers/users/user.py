@@ -1806,12 +1806,14 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 			self.alloc.append(('uid', uid))
 
-			if self['uidNumber']:
-				self.alloc.append(('uidNumber', self['uidNumber']))
-				self.uidNum = univention.admin.allocators.acquireUnique(self.lo, self.position, 'uidNumber', self['uidNumber'], 'uidNumber', scope='base')
-			else:
-				self.uidNum=univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
-				self.alloc.append(('uidNumber', self.uidNum))
+			self.uidNum = None
+			if 'posix' in self.options or 'samba' in self.options:
+				if self['uidNumber']:
+					self.alloc.append(('uidNumber', self['uidNumber']))
+					self.uidNum = univention.admin.allocators.acquireUnique(self.lo, self.position, 'uidNumber', self['uidNumber'], 'uidNumber', scope='base')
+				else:
+					self.uidNum=univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
+					self.alloc.append(('uidNumber', self.uidNum))
 
 			if 'samba' in self.options:
 				self.userSid = self.__generate_user_sid(self.uidNum)
