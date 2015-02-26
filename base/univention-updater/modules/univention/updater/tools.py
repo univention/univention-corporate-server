@@ -493,6 +493,10 @@ class UCSHttpServer(object):
 				raise ConfigurationError(uri, reason)
 			else: # proxy
 				raise ProxyError(uri, reason)
+		except socket.timeout as ex:
+			self.log.exception("Failed %s %s: %s", req.get_method(), req.get_full_url(), ex)
+			raise DownloadError(uri, httplib.SERVICE_UNAVAILABLE)  # 503
+
 
 class UCSLocalServer(object):
 	'''Access to UCS compatible local update server.'''
