@@ -280,12 +280,14 @@
 		&changelog;
 	</chapter>
 
+	<!--
 	<bibliography id="relnotes:bibliography">
 		<bibliomixed id="ucs-handbuch"/>
 		<bibliomixed id="ext-doc-uvmm"/>
 		<bibliomixed id="ucs-uvmm-profile"/>
 		<bibliomixed id="ucs-performance-guide"/>
 	</bibliography>
+	-->
 
 	<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
