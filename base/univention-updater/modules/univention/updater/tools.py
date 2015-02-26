@@ -334,11 +334,11 @@ class UCSHttpServer(object):
 			if m == 'HEAD' == UCSHttpServer.http_method:
 				ud.debug(ud.NETWORK, ud.INFO, "HEAD not implemented at %s, switching to GET." % req)
 				UCSHttpServer.http_method = 'GET'
-				return self.parent.open(req)
+				return self.parent.open(req, timeout=req.timeout)
 			else:
 				return None
 
-	def __init__(self, server, port=80, prefix='', username=None, password=None, user_agent=None):
+	def __init__(self, server, port=80, prefix='', username=None, password=None, user_agent=None, timeout=None):
 		self.log = logging.getLogger('updater.UCSHttp')
 		self.log.addHandler(NullHandler())
 		self.server = server
@@ -351,6 +351,7 @@ class UCSHttpServer(object):
 		self.username = username
 		self.password = password
 		self.user_agent = user_agent
+		self.timeout = timeout
 
 	http_method = 'HEAD'
 	head_handler = HTTPHeadHandler()
@@ -394,7 +395,14 @@ class UCSHttpServer(object):
 
 	def __repr__(self):
 		'''Return canonical string representation.'''
-		return 'UCSHttpServer(%r, port=%d, prefix=%r, username=%r, password=%r)' % (self.server, self.port, self.prefix, self.username, self.password)
+		return 'UCSHttpServer(%r, port=%d, prefix=%r, username=%r, password=%r, timeout=%r)' % (
+			self.server,
+			self.port,
+			self.prefix,
+			self.username,
+			self.password,
+			self.timeout,
+		)
 
 	def __add__(self, rel):
 		'''Append relative URI.'''
@@ -432,7 +440,7 @@ class UCSHttpServer(object):
 		self.log.info('Requesting %s', req.get_full_url())
 		ud.debug(ud.NETWORK, ud.ALL, "updater: %s %s" % (req.get_method(), req.get_full_url()))
 		try:
-			res = UCSHttpServer.opener.open(req)
+			res = UCSHttpServer.opener.open(req, timeout=self.timeout)
 			try:
 				code = res.code
 				size = int(res.headers.get('content-length', 0))
@@ -464,8 +472,14 @@ class UCSHttpServer(object):
 			self.log.exception("Failed %s %s: %s", req.get_method(), req.get_full_url(), e)
 			if isinstance(e.reason, basestring):
 				reason = e.reason
+			elif isinstance(e.reason, socket.timeout):
+				self.log.exception("Failed %s %s: %s", req.get_method(), req.get_full_url(), e)
+				raise DownloadError(uri, httplib.SERVICE_UNAVAILABLE)  # 503
 			else:
-				reason = e.reason.args[1] # default value for error message
+				try:
+					reason = e.reason.args[1]  # default value for error message
+				except IndexError:
+					reason = str(e)  # unknown
 				if isinstance(e.reason, socket.gaierror):
 					if e.reason.args[0] == socket.EAI_NONAME: # -2
 						reason = 'host is unresolvable'
@@ -560,6 +574,7 @@ class UniventionUpdater:
 		self.repository_port = self.configRegistry.get('repository/online/port', '80')
 		self.repository_prefix = self.configRegistry.get('repository/online/prefix', '').strip('/')
 		self.sources = self.configRegistry.is_true('repository/online/sources', False)
+		self.timeout = float(self.configRegistry.get('repository/online/timeout', 600))
 		UCSHttpServer.http_method = self.configRegistry.get('repository/online/httpmethod', 'HEAD').upper()
 
 	def ucr_reinit(self):
@@ -602,7 +617,13 @@ class UniventionUpdater:
 		user_agent = self._get_user_agent_string()
 
 		# Auto-detect prefix
-		self.server = UCSHttpServer(server=self.repository_server, port=self.repository_port, prefix=self.repository_prefix, user_agent = user_agent)
+		self.server = UCSHttpServer(
+			server=self.repository_server,
+			port=self.repository_port,
+			prefix=self.repository_prefix,
+			user_agent=user_agent,
+			timeout=self.timeout,
+		)
 		try:
 			if not self.repository_prefix:
 				try:
@@ -1437,7 +1458,15 @@ class UniventionUpdater:
 
 		user_agent = self._get_user_agent_string()
 
-		server = UCSHttpServer(server=server, port=port, prefix='', username=username, password=password, user_agent=user_agent)
+		server = UCSHttpServer(
+			server=server,
+			port=port,
+			prefix='',
+			username=username,
+			password=password,
+			user_agent=user_agent,
+			timeout=self.timeout,
+		)
 		try:
 			# if prefix.lower() == 'none' ==> use no prefix
 			if prefix and prefix.lower() == 'none':

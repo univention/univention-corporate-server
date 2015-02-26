@@ -380,3 +380,15 @@ Description[de]=Ist diese Option aktiviert, wird im UMC-Modul 'Online-Update' ei
 Description[en]=If this option is activated, a simplified update procedure is used in the UMC module 'Online Updates'. If the variable is unset, the simplified procedure isn't used.
 Type=bool
 Categories=service-software-management
+
+[repository/online/timeout]
+Description[de]=Diese Option legt das Zeitintervall fest, nach der eine HTTP-Verbindung abgebrochen wird. [600s]
+Description[en]=If this option sets the time interval, after wich a HTTP connection is aborted. [600s]
+Type=int
+Categories=service-software-management
+
+[repository/mirror/timeout]
+Description[de]=Diese Option legt das Zeitintervall fest, nach der eine HTTP-Verbindung abgebrochen wird. [600s]
+Description[en]=If this option sets the time interval, after wich a HTTP connection is aborted. [600s]
+Type=int
+Categories=service-software-management

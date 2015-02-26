@@ -1,3 +1,9 @@
+univention-updater (10.0.53-6) unstable; urgency=low
+
+  * Bug #36044: Set timeout of 600s for HTTP connections
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 25 Feb 2015 16:21:03 +0100
+
 univention-updater (10.0.53-5) unstable; urgency=low
 
   * Bug #37573: removed unneeded max-width style in updater.js.
