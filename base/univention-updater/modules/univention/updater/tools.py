@@ -473,8 +473,7 @@ class UCSHttpServer(object):
 			if isinstance(e.reason, basestring):
 				reason = e.reason
 			elif isinstance(e.reason, socket.timeout):
-				self.log.exception("Failed %s %s: %s", req.get_method(), req.get_full_url(), e)
-				raise DownloadError(uri, httplib.SERVICE_UNAVAILABLE)  # 503
+				raise ConfigurationError(uri, 'timeout in network connection')
 			else:
 				try:
 					reason = e.reason.args[1]  # default value for error message
@@ -495,7 +494,7 @@ class UCSHttpServer(object):
 				raise ProxyError(uri, reason)
 		except socket.timeout as ex:
 			self.log.exception("Failed %s %s: %s", req.get_method(), req.get_full_url(), ex)
-			raise DownloadError(uri, httplib.SERVICE_UNAVAILABLE)  # 503
+			raise ConfigurationError(uri, 'timeout in network connection')
 
 
 class UCSLocalServer(object):

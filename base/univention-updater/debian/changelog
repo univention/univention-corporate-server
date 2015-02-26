@@ -1,3 +1,9 @@
+univention-updater (10.0.53-8) unstable; urgency=low
+
+  * Bug #36044: Make timeout for fatal
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 26 Feb 2015 15:45:32 +0100
+
 univention-updater (10.0.53-7) unstable; urgency=low
 
   * Bug #36044: Catch one more socket timeout exception
