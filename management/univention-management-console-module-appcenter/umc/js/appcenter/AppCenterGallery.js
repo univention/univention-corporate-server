@@ -72,12 +72,12 @@ define([
 				iconClass = 'umcUpdateIcon';
 			}
 			if (item.installations) {
-				tools.forIn(item.installations, function(server, info) {
-					if (info.version && ((item.candidate_version || item.version) != info.version)) {
-						iconClass = 'umcUpdateIcon';
-						return false;
-					}
+				var canUpgrade = array.some(item.installationData, function(item) {
+					return item.canUpgrade();
 				});
+				if (canUpgrade) {
+						iconClass = 'umcUpdateIcon';
+				}
 			}
 			return iconClass;
 		}

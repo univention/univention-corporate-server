@@ -323,7 +323,7 @@ class Application(object):
 				self._options[ikey] = False
 
 		# parse int values:
-		for ikey in ('minphysicalram',):
+		for ikey in ('minphysicalram', 'webinterfaceport'):
 			if ikey in self._options:
 				self._options[ikey] = config.getint('Application', ikey)
 			else:
@@ -877,12 +877,16 @@ class Application(object):
 				description = computer_obj.info.get('description')
 				ip = computer_obj.info.get('ip') # list
 				version = None
+				candidate_version = self.version
+				if self.candidate:
+					candidate_version = self.candidate.version
 				for app_obj in app_objs:
 					if computer_obj.info.get('fqdn') in app_obj.info.get('server', []):
 						version = app_obj.info.get('version')
 						break
 				ret[computer_obj['name']] = {
 					'version': version,
+					'candidate_version': candidate_version,
 					'description': description,
 					'ip': ip,
 					'role': role,
@@ -915,6 +919,7 @@ class Application(object):
 		res['is_current'] = self.is_current(ucr)
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
 		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
+		res['local_role'] = ucr.get('server/role')
 		res['host_master'] = ucr.get('ldap/master')
 		res['umc_module'] = 'apps'
 		res['umc_flavor'] = self.id
@@ -1274,10 +1279,12 @@ class Application(object):
 	def set_ucs_overview_ucr_variables(self, super_ucr, unset=False):
 		ucsoverviewcategory = self.get('ucsoverviewcategory')
 		webinterface = self.get('webinterface')
+		port = self.get('webinterfaceport') or '' # '' deletes
 		if ucsoverviewcategory and webinterface:
 			registry_key = 'ucs/web/overview/entries/%s/%s/%%s' % (ucsoverviewcategory, self.id)
 			variables = {
 				'icon' : '/univention-management-console/js/dijit/themes/umc/icons/50x50/%s' % self.get('icon'),
+				'port' : port,
 				'label' : self.get_localised('name'),
 				'label/de' : self.get_localised('name', 'de'),
 				'description' : self.get_localised('description'),

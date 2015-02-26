@@ -50,9 +50,9 @@ define([
 	"umc/widgets/ProgressBar",
 	"umc/widgets/Page",
 	"umc/modules/appcenter/AppCenterGallery",
-	"umc/modules/appcenter/AppInstallationsItem",
+	"umc/modules/appcenter/App",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, Button, ProgressBar, Page, AppCenterGallery, AppInstallationsItem, _) {
+], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, Button, ProgressBar, Page, AppCenterGallery, App, _) {
 	return declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
 		appLoadingDeferred: null,
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
@@ -115,33 +115,12 @@ define([
 					this.appLoadingDeferred.reject();
 					return;
 				}
-				this._set('app', loadedApp);
+				var app = new App(loadedApp, this);
+				this._set('app', app);
 				this.hostDialog.set('app', app);
-				this.detailsDialog.set('app', loadedApp);
-				this.set('headerText', loadedApp.name);
-				this.set('helpText', this.app.longdescription);
-				this._installationData = null;
-				if (this.app.installations) {
-					this._installationData = [];
-					tools.forIn(this.app.installations, lang.hitch(this, function(name, info) {
-						var installation = new AppInstallationsItem(name, info, this);
-						this._installationData.push(installation);
-					}));
-					this._installationData.sort(function(a, b) {
-						if (a.role == b.role) {
-							return (a.name > b.name) - 0.5;
-						}
-						var roleWeights = {
-							master: 1,
-							backup: 2,
-							slave: 3,
-							member: 4
-						};
-						var roleA = roleWeights[a.role];
-						var roleB = roleWeights[b.role];
-						return roleA - roleB;
-					});
-				}
+				this.detailsDialog.set('app', app);
+				this.set('headerText', app.name);
+				this.set('helpText', app.longDescription);
 				this.buildInnerPage();
 				this.appLoadingDeferred.resolve();
 			}));
@@ -153,8 +132,8 @@ define([
 
 		_appCountInstallations: function() {
 			var sum = 0;
-			array.forEach(this._installationData, function(item) {
-				sum += item.isInstalled();
+			array.forEach(this.app.installationData, function(item) {
+				sum += item.isInstalled;
 			});
 			return sum;
 		},
@@ -167,7 +146,7 @@ define([
 
 		getButtons: function() {
 			var buttons = [];
-			if (this.app.useshop) {
+			if (this.app.useShop) {
 				buttons.push({
 					name: 'shop',
 					label: _('Buy'),
@@ -176,27 +155,17 @@ define([
 					callback: lang.hitch(this, 'openShop')
 				});
 			}
-			if (this.app.is_installed) {
-				var umcmodulename = this.app.umcmodulename;
-				var umcmoduleflavor = this.app.umcmoduleflavor;
-				var module = UMCApplication.getModule(umcmodulename, umcmoduleflavor);
-				var webinterface = this.app.webinterface;
-				if (module || webinterface) {
-					buttons.push({
-						name: 'open',
-						label: _('Open'),
-						align: 'right',
-						callback: lang.hitch(this, function() {
-							if (module) {
-								topic.publish('/umc/modules/open', umcmodulename, umcmoduleflavor);
-							} else {
-								window.open(webinterface, '_blank');
-							}
-						})
-					});
-				}
+			if (this.app.canOpen()) {
+				buttons.push({
+					name: 'open',
+					label: _('Open'),
+					align: 'right',
+					callback: lang.hitch(this, function() {
+						this.app.open();
+					})
+				});
 			}
-			if (this.app.is_installed && this.app.endoflife) {
+			if (this.app.canDisable()) {
 				if (this.app.is_current) {
 					buttons.push({
 						name: 'disable',
@@ -206,29 +175,29 @@ define([
 					});
 				}
 			}
-			if (this.app.is_installed) {
+			if (this.app.canUninstall()) {
 				buttons.push({
 					name: 'uninstall',
 					label: _('Uninstall'),
 					align: 'right',
-					defaultButton: this.app.endoflife,
-					callback: lang.hitch(this, 'uninstallApp', null)
+					defaultButton: this.app.endOfLife,
+					callback: lang.hitch(this.app, 'uninstall')
 				});
 			}
-			if (this.app.is_installed && this.app.candidate_version) {
+			if (this.app.canUpgrade()) {
 				buttons.push({
 					name: 'update',
 					label: _('Upgrade'),
 					defaultButton: true,
-					callback: lang.hitch(this, 'upgradeApp', null)
+					callback: lang.hitch(this.app, 'upgrade')
 				});
 			}
-			if (!this.app.endoflife && (!this.app.is_installed || this.app.installations)) {
+			if (this.app.canInstall()) {
 				buttons.push({
 					name: 'install',
 					label: _('Install'),
 					defaultButton: true,
-					callback: lang.hitch(this, 'installAppDialog')
+					callback: lang.hitch(this.app, 'install')
 				});
 			}
 			return buttons;
@@ -242,7 +211,7 @@ define([
 			}
 			if (this._icon) {
 				this.removeChild(this._icon);
-				this._icon.destroyRecursive()
+				this._icon.destroyRecursive();
 				this._icon = null;
 			}
 			this._container = new ContainerWidget({});
@@ -300,8 +269,8 @@ define([
 				var installationTable = domConstruct.create('table', {
 					style: {borderSpacing: '1em 0.1em'}
 				});
-				array.forEach(this._installationData, lang.hitch(this, function(item) {
-					if (!item.isInstalled()) {
+				array.forEach(this.app.installationData, lang.hitch(this, function(item) {
+					if (!item.isInstalled) {
 						return;
 					}
 					var tr;
@@ -370,7 +339,7 @@ define([
 		},
 
 		openShop: function() {
-			var shopUrl = this.app.shopurl || 'https://shop.univention.com';
+			var shopUrl = this.app.shopURL || 'https://shop.univention.com';
 			var w = window.open(shopUrl, '_blank');
 			tools.umcpCommand('appcenter/buy', {application: this.app.id}).then(
 				function(data) {
@@ -392,33 +361,33 @@ define([
 
 		uninstallApp: function(host) {
 			// before installing, user must read uninstall readme
-			this.showReadme(this.app.readmeuninstall, _('Uninstall Information'), _('Uninstall')).then(lang.hitch(this, function() {
+			this.showReadme(this.app.readmeUninstall, _('Uninstall Information'), _('Uninstall')).then(lang.hitch(this, function() {
 				this.callInstaller('uninstall', host).then(lang.hitch(this, function() {
-					this.showReadme(this.app.readmepostuninstall, _('Uninstall Information')).then(lang.hitch(this, 'markupErrors'));
+					this.showReadme(this.app.readmePostUninstall, _('Uninstall Information')).then(lang.hitch(this, 'markupErrors'));
 				}));
 			}));
 		},
 
 		installAppDialog: function() {
-			if (this._installationData) {
+			if (this.app.installationData) {
 				var hosts = [];
 				var removedDueToInstalled = [];
 				var removedDueToRole = [];
-				array.forEach(this._installationData, function(item) {
+				array.forEach(this.app.installationData, function(item) {
 					if (item.canInstall()) {
 						if (item.isLocal()) {
 							hosts.unshift({
 								label: item.displayName,
-								id: item.name
+								id: item.hostName
 							});
 						} else {
 							hosts.push({
 								label: item.displayName,
-								id: item.name
+								id: item.hostName
 							});
 						}
 					} else {
-						if (item.isInstalled()) {
+						if (item.isInstalled) {
 							removedDueToInstalled.push(item.displayName);
 						} else if (!item.hasFittingRole()) {
 							removedDueToRole.push(item.displayName);
@@ -437,12 +406,12 @@ define([
 		},
 
 		installApp: function(host) {
-			this.showReadme(this.app.licenseagreement, _('License agreement'), _('Accept license')).then(lang.hitch(this, function() {
-				this.showReadme(this.app.readmeinstall, _('Install Information'), _('Install')).then(lang.hitch(this, function() {
+			this.showReadme(this.app.licenseAgreement, _('License agreement'), _('Accept license')).then(lang.hitch(this, function() {
+				this.showReadme(this.app.readmeInstall, _('Install Information'), _('Install')).then(lang.hitch(this, function() {
 					this.callInstaller('install', host).then(lang.hitch(this, function() {
 						// put dedicated module of this app into favorites
-						UMCApplication.addFavoriteModule(this.app.umc_module, this.app.umc_flavor);
-						this.showReadme(this.app.readmepostinstall, _('Install Information')).then(lang.hitch(this, 'markupErrors'));
+						UMCApplication.addFavoriteModule('apps', this.app.id);
+						this.showReadme(this.app.readmePostInstall, _('Install Information')).then(lang.hitch(this, 'markupErrors'));
 					}));
 				}));
 			}));
@@ -450,9 +419,9 @@ define([
 
 		upgradeApp: function(host) {
 			// before installing, user must read update readme
-			this.showReadme(this.app.candidate_readmeupdate, _('Upgrade Information'), _('Upgrade')).then(lang.hitch(this, function() {
+			this.showReadme(this.app.candidateReadmeUpdate, _('Upgrade Information'), _('Upgrade')).then(lang.hitch(this, function() {
 				this.callInstaller('update', host).then(lang.hitch(this, function() {
-					this.showReadme(this.app.candidate_readmepostupdate, _('Upgrade Information')).then(lang.hitch(this, 'markupErrors'));
+					this.showReadme(this.app.candidateReadmePostUpdate, _('Upgrade Information')).then(lang.hitch(this, 'markupErrors'));
 				}));
 			}));
 		},
@@ -596,7 +565,7 @@ define([
 				// not the DC Master or because the user is no
 				// Administrator
 				var msg;
-				if (this.app.is_master) {
+				if (this.app.isMaster) {
 					var loginAsAdminTag = '<a href="javascript:void(0)" onclick="require(\'umc/app\').relogin(\'Administrator\')">Administrator</a>';
 					msg =
 						'<p>' + _('You need to request and install a new license in order to use the Univention App Center.') + '</p>' +
@@ -604,9 +573,9 @@ define([
 				} else {
 					var hostLink;
 					if (tools.status('username') == 'Administrator') {
-						hostLink = '<a href="javascript:void(0)" onclick="require(\'umc/tools\').openRemoteSession(\'' + this.app.host_master + '\')">' + this.app.host_master + '</a>';
+						hostLink = '<a href="javascript:void(0)" onclick="require(\'umc/tools\').openRemoteSession(\'' + this.app.hostMaster + '\')">' + this.app.hostMaster + '</a>';
 					} else {
-						hostLink = '<a target="_blank" href="https://' + this.app.host_master + '/univention-management-console">' + this.app.host_master + '</a>';
+						hostLink = '<a target="_blank" href="https://' + this.app.hostMaster + '/univention-management-console">' + this.app.hostMaster + '</a>';
 					}
 					var dialogName = _('Activation of UCS');
 					msg =
@@ -675,7 +644,7 @@ define([
 				var deferred = tools.renewSession().then(lang.hitch(this, function() {
 					var reloadPage = this.updateApplications().then(lang.hitch(this, 'reloadPage'));
 					var reloadModules = UMCApplication.reloadModules();
-					return all([reloadPage, reloadModules]).then(function() {;
+					return all([reloadPage, reloadModules]).then(function() {
 						tools.checkReloadRequired();
 					});
 				}));
@@ -689,13 +658,8 @@ define([
 
 		_detailFieldCustomUsage: function() {
 			var txts = [];
-			var is_installed = this.app.is_installed;
-			var useractivationrequired = this.app.useractivationrequired;
-			var webinterface = this.app.webinterface;
-			var webinterfacename = this.app.webinterfacename || this.app.name;
-			var umcmodulename = this.app.umcmodulename;
-			var umcmoduleflavor = this.app.umcmoduleflavor;
-			var module = UMCApplication.getModule(umcmodulename, umcmoduleflavor);
+			var is_installed = this.app.isInstalled;
+			var useractivationrequired = this.app.userActivationRequired;
 			if (is_installed && useractivationrequired) {
 				var domain_administration_link = _('Domain administration');
 				if (UMCApplication.getModule('udm', 'users/user')) {
@@ -703,20 +667,13 @@ define([
 				}
 				txts.push(_('Users need to be modified in the %s in order to use this service.', domain_administration_link));
 			}
-			if (module) {
-				var module_link = lang.replace('<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'{umcmodulename}\', {umcmoduleflavor})">{name}</a>', {
-					umcmodulename: umcmodulename,
-					umcmoduleflavor: umcmoduleflavor ? '\'' + umcmoduleflavor + '\'' : 'undefined',
-					name: module.name
-				});
-				txts.push(_('A module for the administration of the app is available: %s.', module_link));
+			var moduleLink = this.app.getModuleLink();
+			if (moduleLink) {
+				txts.push(_('A module for the administration of the app is available: %s.', moduleLink));
 			}
-			if (is_installed && webinterface) {
-				var webinterface_link = lang.replace('<a href="{webinterface}" target="_blank">{name}</a>', {
-					webinterface: webinterface,
-					name: webinterfacename
-				});
-				txts.push(_('The app provides a web interface: %s.', webinterface_link));
+			var webInterface = this.app.getWebInterfaceTag();
+			if (webInterface) {
+				txts.push(_('The app provides a web interface: %s.', webInterface));
 			}
 			if (txts.length) {
 				return txts.join(' ');
@@ -725,8 +682,8 @@ define([
 
 		_detailFieldCustomCandidateVersion: function() {
 			var version = this.app.version;
-			var candidate_version = this.app.candidate_version;
-			var is_installed = this.app.is_installed;
+			var candidate_version = this.app.candidateVersion;
+			var is_installed = this.app.isInstalled;
 			if (candidate_version) {
 				return candidate_version;
 			}
@@ -737,7 +694,7 @@ define([
 
 		_detailFieldCustomVersion: function() {
 			var version = this.app.version;
-			var is_installed = this.app.is_installed;
+			var is_installed = this.app.isInstalled;
 			if (is_installed) {
 				return version;
 			}
@@ -752,14 +709,14 @@ define([
 		},
 
 		_detailFieldCustomSupportURL: function() {
-			var supportURL = this.app.supporturl;
+			var supportURL = this.app.supportURL;
 			if (supportURL) {
 				if (supportURL == 'None') {
 					return _('No support option provided');
 				}
 				return '<a href="' + supportURL + '" target="_blank">' + _('Available support options') + '</a>';
 			} else {
-				if (this.app.maintainer && this.app.maintainer !== this.app.vendor) {
+				if (this.app.hasMaintainer()) {
 					return _('Please contact the maintainer of the application');
 				} else {
 					return _('Please contact the vendor of the application');
@@ -769,7 +726,7 @@ define([
 
 		_detailFieldCustomVendor: function() {
 			var vendor = this.app.vendor;
-			var website = this.app.websitevendor;
+			var website = this.app.websiteVendor;
 			if (vendor && website) {
 				return '<a href="' + website + '" target="_blank">' + vendor + '</a>';
 			} else if (vendor) {
@@ -778,12 +735,11 @@ define([
 		},
 
 		_detailFieldCustomMaintainer: function() {
-			var maintainer = this.app.maintainer;
-			var vendor = this.app.vendor;
-			if (vendor == maintainer) {
+			if (!this.app.hasMaintainer()) {
 				return null;
 			}
-			var website = this.app.websitemaintainer;
+			var maintainer = this.app.maintainer;
+			var website = this.app.websiteMaintainer;
 			if (maintainer && website) {
 				return '<a href="' + website + '" target="_blank">' + maintainer + '</a>';
 			} else if (maintainer) {
@@ -799,22 +755,21 @@ define([
 		},
 
 		_detailFieldCustomNotifyVendor: function() {
-			if (this.app.withoutrepository) {
+			if (this.app.withoutRepository) {
 				// without repository: Uses UCS repository:
 				//   strictly speaking, we get the information
 				//   about installation by some access logs
 				//   (although this is not sent on purpose)
 				return null;
 			}
-			var maintainer = this.app.maintainer && this.app.maintainer != this.app.vendor;
-			if (this.app.notifyvendor) {
-				if (maintainer) {
+			if (this.app.notifyVendor) {
+				if (this.app.hasMaintainer()) {
 					return _('This application will inform the maintainer if you (un)install it.');
 				} else {
 					return _('This application will inform the vendor if you (un)install it.');
 				}
 			} else {
-				if (maintainer) {
+				if (this.app.hasMaintainer()) {
 					return _('This application will not inform the maintainer if you (un)install it.');
 				} else {
 					return _('This application will not inform the vendor if you (un)install it.');
@@ -823,9 +778,9 @@ define([
 		},
 
 		_detailFieldCustomEndOfLife: function() {
-			if (this.app.endoflife) {
+			if (this.app.endOfLife) {
 				var warning = _('This application will not get any further updates. We suggest to uninstall %(app)s and search for an alternative application.', {app: this.app.name});
-				if (this.app.is_current) {
+				if (this.app.isCurrent) {
 					warning += ' ' + _('Click on "%(button)s" if you want to continue running this application at your own risk.', {button: _('Continue using')});
 				}
 				return warning;

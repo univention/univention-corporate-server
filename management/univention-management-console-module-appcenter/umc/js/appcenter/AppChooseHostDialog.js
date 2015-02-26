@@ -48,6 +48,17 @@ define([
 
 		title: _('App management'),
 
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this.headerButtons = [{
+				name: 'close',
+				iconClass: 'umcCloseIconWhite',
+				label: _('Back'),
+				align: 'left',
+				callback: lang.hitch(this, 'onBack')
+			}];
+		},
+
 		reset: function(title, hosts, removedDueToInstalled, removedDueToRole) {
 			if (this._continueDeferred) {
 				this._continueDeferred.reject();

@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-7) unstable; urgency=low
+
+  * Bug #35456: Support WebInterfacePort
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 26 Feb 2015 23:32:55 +0100
+
 univention-management-console-module-appcenter (4.1.20-6) unstable; urgency=medium
 
   Bug #37347:

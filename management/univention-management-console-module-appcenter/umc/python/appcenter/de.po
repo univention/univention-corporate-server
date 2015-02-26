@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-02-11 12:36+0100\n"
+"POT-Creation-Date: 2015-02-24 10:15+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,7 +32,7 @@ msgstr "Konnte keine Applikation für %s finden"
 msgid "Could not query App Center: %s"
 msgstr "Konnte das App Center nicht erreichen: %s"
 
-#: umc/python/appcenter/app_center.py:1474
+#: umc/python/appcenter/app_center.py:1477
 #, python-format
 msgid "Installing LDAP packages on %s"
 msgstr "Installiere LDAP Pakete auf %s"
@@ -41,7 +41,7 @@ msgstr "Installiere LDAP Pakete auf %s"
 msgid "Package not found in repository"
 msgstr "Paket wurde in keinem Repository gefunden"
 
-#: umc/python/appcenter/app_center.py:1386
+#: umc/python/appcenter/app_center.py:1389
 msgid ""
 "Registration of the application in LDAP failed. It will be retried every "
 "time the App Center module is opened."
@@ -49,7 +49,7 @@ msgstr ""
 "Die Registrierung der Applikation im LDAP ist fehlgeschlagen. Sie wird bei "
 "jedem Öffnen des App Center Moduls wiederholt werden."
 
-#: umc/python/appcenter/app_center.py:975
+#: umc/python/appcenter/app_center.py:976
 #, python-format
 msgid ""
 "The application needs a %(needs)s-bit operating system. This server is "

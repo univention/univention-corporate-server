@@ -165,7 +165,7 @@ define([
 		},
 
 		showUnreachableHint: function(unreachable, masterUnreachable) {
-			var componentID = this.app.candidate_component_id || this.app.component_id;
+			var componentID = this.app.candidateComponentID || this.app.componentID;
 			var label = _('The server tried to connect to the involved systems.') + ' ' + _('The following hosts cannot be reached or do not have access to the App Center server:');
 			this._container.addChild(new Text({
 				content: label + '<ul><li>' + unreachable.join('</li><li>') + '</li></ul>'
