@@ -1665,11 +1665,15 @@ define([
 				iwidget.setValid(ivalid, iprop.details);
 				if (!iallValid) {
 					this._setWidgetInvalid(iprop.property);
+					var _msg = iprop.details || _('Error');
+					if (_msg instanceof Array) {
+						_msg = '<ul><li>' + iprop.details.join('</li><li>') + '</li></ul>';
+					}
 
 					// update the global error message
 					errMessage += '<li>' + _("%(attribute)s: %(message)s\n", {
 						attribute: iwidget.label,
-						message: iprop.details || _('Error')
+						message: _msg
 					}) + '</li>';
 				}
 			}, this);

@@ -86,7 +86,7 @@ property_descriptions={
 	'memberPackagesRemove': univention.admin.property(
 			short_description=_('Package removal list'),
 			long_description='',
-			syntax=univention.admin.syntax.Packages,
+			syntax=univention.admin.syntax.PackagesRemove,
 			multivalue=1,
 			options=[],
 			required=0,

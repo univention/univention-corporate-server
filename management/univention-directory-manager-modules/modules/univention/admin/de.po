@@ -1717,3 +1717,8 @@ msgstr "Authentisierung fehlgeschlagen"
 #: uldap.py:427
 msgid "Moving childs is not supported."
 msgstr "Das Verschieben von Kindsknoten wird nicht unterstützt."
+
+#: syntax.px:1
+#, python-format
+msgid "The package \"%s\" can not be removed as it would uninstall necessary components."
+msgstr "Das Paket \"%s\" kann nicht gelöscht werden da es wichtige Komponenten deinstallieren würde."

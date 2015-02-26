@@ -1366,6 +1366,15 @@ class Packages( UDM_Attribute ):
 	attribute = 'packageList'
 	label_format = '%(name)s: %($attribute$)s'
 
+class PackagesRemove(Packages):
+	@classmethod
+	def parse(cls, text):
+		text = super(PackagesRemove, cls).parse(text)
+		if text in ['wget', 'screen', 'openssh-client', 'nmap', 'lsof', 'file']:
+			# Bug #36711: don't allow to remove packages which would uninstall univention-server-master
+			raise univention.admin.uexceptions.valueError(_('The package "%s" can not be removed as it would uninstall necessary components.') % (text,))
+		return text
+
 class userAttributeList(string):
 	@classmethod
 	def parse(self, text):
