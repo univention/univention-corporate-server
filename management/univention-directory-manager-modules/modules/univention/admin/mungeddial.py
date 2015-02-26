@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  methods and defines for the samba munged dial attribute
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #

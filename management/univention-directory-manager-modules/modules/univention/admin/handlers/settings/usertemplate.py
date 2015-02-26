@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for user template objects
 #
-# Copyright 2002-2014 Univention GmbH
+# Copyright 2002-2015 Univention GmbH
 #
 # http://www.univention.de/
 #

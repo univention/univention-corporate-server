@@ -6,7 +6,7 @@
 Update the UIDs in memberUid of all groups to match the uid of the objects
 referenced by uniqueMember."""
 #
-# Copyright 2007-2014 Univention GmbH
+# Copyright 2007-2015 Univention GmbH
 #
 # http://www.univention.de/
 #

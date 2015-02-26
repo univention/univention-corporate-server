@@ -3,7 +3,7 @@
 # Univention Directory Manager modules
 #  policy for the xorg configuration
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #

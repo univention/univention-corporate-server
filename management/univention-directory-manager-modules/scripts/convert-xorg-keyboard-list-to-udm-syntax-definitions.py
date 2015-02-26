@@ -4,7 +4,7 @@
 # Script to generate syntax definitions for the XKeyboardLayout in Univention Directory
 # Manager from the definitions shipped by X.org in /usr/share/X11/xkb/rules/xorg.lst
 #
-# Copyright 2011-2014 Univention GmbH
+# Copyright 2011-2015 Univention GmbH
 #
 # http://www.univention.de/
 #

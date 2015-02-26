@@ -4,7 +4,7 @@
 # Univention Admin Modules
 #  access to handler modules
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
