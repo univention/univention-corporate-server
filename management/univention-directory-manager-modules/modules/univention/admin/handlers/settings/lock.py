@@ -76,7 +76,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Lock Information'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General lock settings' ), layout = [
 			[ 'name', 'locktime' ],
 		] ),
 	] ),

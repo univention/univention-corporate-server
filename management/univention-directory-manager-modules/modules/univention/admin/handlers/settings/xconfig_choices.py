@@ -167,7 +167,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('X Configuration Choices'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General X configuration choices settings' ), layout = [
 			'name',
 			[ 'resolution', 'colorDepth' ],
 			[ 'mouseProtocol', 'mouseDevice' ],

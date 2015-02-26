@@ -130,7 +130,7 @@ options={
 
 layout = [
 	Tab(_('General'), _('Basic settings'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General pool settings' ), layout = [
 			'name',
 			'range'
 		] ),

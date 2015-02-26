@@ -218,7 +218,7 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'General settings' ), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General printer settings' ), layout = [
 			[ 'name', 'sambaName'],
 			'spoolHost',
 			'uri',

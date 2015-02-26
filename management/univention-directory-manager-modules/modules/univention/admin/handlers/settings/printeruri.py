@@ -78,7 +78,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Printer URI'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General printer URI list settings' ), layout = [
 			'name',
 			'printeruri',
 		] ),

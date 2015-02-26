@@ -85,7 +85,7 @@ property_descriptions={
 }
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General service record settings' ), layout = [
 			'name',
 			'location',
 			'zonettl'

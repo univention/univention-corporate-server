@@ -138,7 +138,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Sound settings'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General sound settings' ), layout = [
 			'name',
 			'enable',
 			'soundModule'

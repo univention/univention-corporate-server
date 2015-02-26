@@ -153,7 +153,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Basic settings'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General domain settings' ), layout = [
 			"name"
 			] ),
 		] ),

@@ -125,7 +125,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('DHCP routing'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General DHCP routing settings' ), layout = [
 			'name',
 			'routers',
 		] ),

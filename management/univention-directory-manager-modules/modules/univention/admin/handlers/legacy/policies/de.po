@@ -320,3 +320,21 @@ msgstr "Erweiterte Einstellungen des primären Monitors"
 #: xfree.py:409
 msgid "Advanced settings of secondary display"
 msgstr "Erweiterte Einstellungen des sekundären Monitors"
+msgid "General client devices settings"
+msgstr "Allgemeine Einstellungen für Client-Peripherie"
+
+msgid "General managed client packages settings"
+msgstr "Allgemeine Einstellungen für Managed Client Pakete"
+
+msgid "General mobile client packages settings"
+msgstr "Allgemeine Einstellungen für Mobile Client Pakete"
+
+msgid "General sound settings"
+msgstr "Allgemeine Einstellungen für Sound"
+
+msgid "General thin client settings"
+msgstr "Allgemeine Einstellungen für Thin Client"
+
+msgid "General display settings"
+msgstr "Allgemeine Einstellungen für Display"
+

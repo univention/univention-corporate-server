@@ -126,7 +126,7 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Autostart' ), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General autostart settings' ), layout = [
 			'name',
 			'autostartScript'
 		] ),

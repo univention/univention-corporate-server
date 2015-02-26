@@ -77,7 +77,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Prohibited user names'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General prohibited user names settings' ), layout = [
 			'name',
 			'usernames',
 		] ),

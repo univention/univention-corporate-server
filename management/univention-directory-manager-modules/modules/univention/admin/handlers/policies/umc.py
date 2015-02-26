@@ -127,7 +127,7 @@ property_descriptions = {
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General UMC settings' ), layout = [
 			'name',
 			'allow',
 		] ),

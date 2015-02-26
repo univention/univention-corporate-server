@@ -130,7 +130,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Basic values'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General LDAP schema extension settings' ), layout = [
 			["name"],
 			["filename"],
 			["data"],

@@ -175,3 +175,9 @@ msgstr "Mail-Objekt(e) suchen"
 
 #~ msgid "Mail Address"
 #~ msgstr "Mail-Adresse"
+msgid "General mail folder (IMAP) settings"
+msgstr "Allgemeine Einstellungen für Mail-Ordner (IMAP)"
+
+msgid "General mailing list settings"
+msgstr "Allgemeine Einstellungen für Mailingliste"
+

@@ -203,3 +203,12 @@ msgstr ""
 
 #~ msgid "FIXME"
 #~ msgstr "FIXME"
+msgid "General container settings"
+msgstr "Allgemeine Einstellungen für Container"
+
+msgid "General domain settings"
+msgstr "Allgemeine Einstellungen für Domäne"
+
+msgid "General organisational unit settings"
+msgstr "Allgemeine Einstellungen für Organisationseinheit"
+

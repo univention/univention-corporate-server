@@ -177,7 +177,7 @@ property_descriptions={
 
 layout = [
 	Tab( _('General'),_('Basic values'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General default container settings' ), layout = [
 			"name"
 		] ),
 		Group( _( 'User Links' ), layout = [

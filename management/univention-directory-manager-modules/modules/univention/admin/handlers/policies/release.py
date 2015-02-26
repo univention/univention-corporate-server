@@ -136,7 +136,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Automatic updates'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General automatic updates settings' ), layout = [
 			'name',
 			'activate',
 			'releaseVersion'

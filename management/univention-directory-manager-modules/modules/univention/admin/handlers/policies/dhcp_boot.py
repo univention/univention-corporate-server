@@ -137,7 +137,7 @@ server from which the initial boot file is retrieved.'),
 
 layout = [
 	Tab(_('Boot'), _('Boot settings'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General DHCP boot settings' ), layout = [
 			'name',
 			[ 'boot_server', 'boot_filename' ]
 		] ),

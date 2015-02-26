@@ -130,7 +130,7 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Univention Directory Manager settings' ), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General Univention Directory Manager container settings' ), layout = [
 				'name',
 				'listModules',
 			] ),

@@ -144,7 +144,7 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General network settings' ), layout = [
 			'name',
 			[ 'network', 'netmask' ],
 			'ipRange',

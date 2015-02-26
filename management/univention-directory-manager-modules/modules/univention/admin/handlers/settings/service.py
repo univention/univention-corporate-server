@@ -63,7 +63,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Basic values'),[
-		Group( _( 'General' ), layout = [
+		Group( _( 'General service settings' ), layout = [
 			"name",
 		] ),
 	] ),

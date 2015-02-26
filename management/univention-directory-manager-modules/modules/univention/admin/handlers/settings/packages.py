@@ -77,7 +77,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Package List'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General package list settings' ), layout = [
 			'name',
 			'packageList',
 		] ),

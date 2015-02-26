@@ -171,7 +171,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Servers to use'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General thin client settings' ), layout = [
 			'name',
 			[ 'authServer', 'fileServer' ],
 			[ 'linuxTerminalServer', 'windowsTerminalServer' ],

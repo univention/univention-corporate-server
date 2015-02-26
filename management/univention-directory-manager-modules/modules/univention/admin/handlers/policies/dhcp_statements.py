@@ -180,7 +180,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('DHCP statements'), _('Miscellaneous DHCP statements'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General DHCP statements settings' ), layout = [
 			'name',
 			[ 'authoritative','boot-unknown-clients' ],
 			[ 'pingCheck', 'getLeaseHostnames' ],

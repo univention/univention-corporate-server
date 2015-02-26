@@ -137,7 +137,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Basic DNS settings'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General DHCP DNS settings' ), layout = [
 			'name',
 			[ 'domain_name', 'domain_name_servers' ]
 		] ),

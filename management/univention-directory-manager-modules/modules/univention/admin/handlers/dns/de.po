@@ -248,6 +248,12 @@ msgstr "DNS: Service Record"
 msgid "Location"
 msgstr "Ort"
 
+msgid "DNS: Host Record"
+msgstr "DNS: Host Record"
+
+msgid "DNS: TXT Record"
+msgstr "DNS: TXT Record"
+
 #~ msgid "Additional name servers"
 #~ msgstr "Zusätzliche Nameserver"
 
@@ -271,3 +277,24 @@ msgstr "Ort"
 
 #~ msgid "Update/Create Reverse Record"
 #~ msgstr "Reverse Record erstellen/erneuern"
+msgid "General alias record settings"
+msgstr "Allgemeine Einstellungen für Alias Record"
+
+msgid "General forward lookup zone settings"
+msgstr "Allgemeine Einstellungen für Forward Lookup Zone"
+
+msgid "General host record settings"
+msgstr "Allgemeine Einstellungen für Host Record"
+
+msgid "General pointer record settings"
+msgstr "Allgemeine Einstellungen für Pointer Record"
+
+msgid "General reverse lookup zone settings"
+msgstr "Allgemeine Einstellungen für Reverse Lookup Zone"
+
+msgid "General service record settings"
+msgstr "Allgemeine Einstellungen für Service Record"
+
+msgid "General TXT record settings"
+msgstr "Allgemeine Einstellungen für TXT Record"
+

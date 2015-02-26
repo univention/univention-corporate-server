@@ -203,7 +203,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('DNS Update'), _('Dynamic DNS update'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General DHCP dynamic DNS settings' ), layout = [
 			'name',
 			[ 'ddnsDomainname', 'ddnsRevDomainname' ],
 			[ 'ddnsUpdates', 'ddnsUpdateStyle' ],

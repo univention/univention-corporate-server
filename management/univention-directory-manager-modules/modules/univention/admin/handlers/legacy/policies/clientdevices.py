@@ -126,7 +126,7 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Client devices' ), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General client devices settings' ), layout = [
 			'name',
 			'clientDevicesActivate'
 		] ),

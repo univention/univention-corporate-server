@@ -158,7 +158,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Passwords'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General passwords settings' ), layout = [
 			'name',
 			'pwLength',
 			'expiryInterval',

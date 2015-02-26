@@ -80,7 +80,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Printer List'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General printer driver list settings' ), layout = [
 			'name',
 			'printmodel',
 		] ),

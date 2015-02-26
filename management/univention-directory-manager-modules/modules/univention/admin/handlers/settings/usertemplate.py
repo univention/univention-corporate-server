@@ -350,7 +350,7 @@ for key, value in mungeddial.properties.items():
 
 layout = [
 	Tab(_('General'),_('Basic values'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General user template settings' ), layout = [
 			[ "name","description" ],
 			[  "title", "organisation" ],
 			[  "displayName" ],

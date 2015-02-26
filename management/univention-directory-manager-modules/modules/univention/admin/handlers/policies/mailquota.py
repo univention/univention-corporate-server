@@ -126,7 +126,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Mail quota'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General mail quota settings' ), layout = [
 			'name',
 			'MailQuota'
 		] ),

@@ -179,7 +179,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Basic values'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General UDM module settings' ), layout = [
 			["name"],
 			["filename"],
 			["data"],

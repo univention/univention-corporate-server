@@ -152,14 +152,14 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General reverse lookup zone settings' ), layout = [
 			'subnet',
 			'zonettl',
 			'nameserver'
 		] ),
 	] ),
 	Tab(_('Start of authority'), _('Primary name server information'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'Start of authority' ), layout = [
 			'contact',
 			'serial',
 			['refresh', 'retry'],

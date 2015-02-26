@@ -393,7 +393,7 @@ layout = [
 		["deleteObjectClass"],
 	]),
 	Tab(_('UMC'),_('Settings for UMC'), layout=[
-		Group(_('General'), layout=[
+		Group(_('General extended attribute settings'), layout=[
 			"disableUDMWeb",
 			"doNotSearch"
 		]),

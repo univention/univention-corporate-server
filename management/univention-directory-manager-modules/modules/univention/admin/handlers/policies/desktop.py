@@ -157,7 +157,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Desktop settings'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General desktop settings' ), layout = [
 			'name',
 			'language',
 			'profile',

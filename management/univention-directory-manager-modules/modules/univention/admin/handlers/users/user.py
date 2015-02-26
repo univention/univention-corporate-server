@@ -1002,7 +1002,7 @@ layout = [
 			], ),
 		] ),
 	Tab( _( 'Certificate' ), _( 'Certificate' ), advanced = True, layout = [
-		Group( _( 'General' ), '', [
+		Group( _( 'General user settings' ), '', [
 			'userCertificate',
 			] ),
 		Group( _( 'Subject' ), '', [

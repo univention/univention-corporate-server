@@ -1280,3 +1280,84 @@ msgstr "Liste der erlaubten UMC Operationen"
 
 #~ msgid "Disallow ACL"
 #~ msgstr "Nicht erlaubte Zugriffe"
+msgid "General Univention Directory Manager container settings"
+msgstr "Allgemeine Einstellungen für Univention Directory Manager Container Konfiguration"
+
+msgid "General autostart settings"
+msgstr "Allgemeine Einstellungen für Autostart"
+
+msgid "General desktop settings"
+msgstr "Allgemeine Einstellungen für Desktop"
+
+msgid "General DHCP boot settings"
+msgstr "Allgemeine Einstellungen für DHCP Boot"
+
+msgid "General DHCP DNS settings"
+msgstr "Allgemeine Einstellungen für DHCP DNS"
+
+msgid "General DHCP dynamic DNS settings"
+msgstr "Allgemeine Einstellungen für DHCP DNS Aktualisierung"
+
+msgid "General DHCP lease time settings"
+msgstr "Allgemeine Einstellungen für DHCP Lease-Zeit"
+
+msgid "General DHCP NetBIOS settings"
+msgstr "Allgemeine Einstellungen für DHCP NetBIOS"
+
+msgid "General DHCP routing settings"
+msgstr "Allgemeine Einstellungen für DHCP Routing"
+
+msgid "General DHCP allow/deny settings"
+msgstr "Allgemeine Einstellungen für DHCP Erlauben/Verbieten"
+
+msgid "General DHCP statements settings"
+msgstr "Allgemeine Einstellungen für DHCP Verschiedenes"
+
+msgid "General LDAP server settings"
+msgstr "Allgemeine Einstellungen für LDAP-Server"
+
+msgid "General mail quota settings"
+msgstr "Allgemeine Einstellungen für Mail-Quota"
+
+msgid "General maintenance settings"
+msgstr "Allgemeine Einstellungen für Paketpflege"
+
+msgid "General master packages settings"
+msgstr "Allgemeine Einstellungen für Master Pakete"
+
+msgid "General member server packages settings"
+msgstr "Allgemeine Einstellungen für Memberserver Pakete"
+
+msgid "General NFS mounts settings"
+msgstr "Allgemeine Einstellungen für NFS-Freigaben"
+
+msgid "General print quota settings"
+msgstr "Allgemeine Einstellungen für Druck-Quota"
+
+msgid "General print server settings"
+msgstr "Allgemeine Einstellungen für Druckserver"
+
+msgid "General passwords settings"
+msgstr "Allgemeine Einstellungen für Passwort"
+
+msgid "General Univention Configuration Registry settings"
+msgstr "Allgemeine Einstellungen für Univention Configuration Registry"
+
+msgid "General automatic updates settings"
+msgstr "Allgemeine Einstellungen für Automatische Updates"
+
+msgid "General repository server settings"
+msgstr "Allgemeine Einstellungen für Repository-Server"
+
+msgid "General repository synchronisation settings"
+msgstr "Allgemeine Einstellungen für Repository-Synchronisation"
+
+msgid "General user quota settings"
+msgstr "Allgemeine Einstellungen für Benutzer-Quota"
+
+msgid "General slave packages settings"
+msgstr "Allgemeine Einstellungen für Slave Pakete"
+
+msgid "General UMC settings"
+msgstr "Allgemeine Einstellungen für UMC"
+

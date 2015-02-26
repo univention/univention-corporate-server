@@ -391,7 +391,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Display settings'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General display settings' ), layout = [
 			'name',
 			'autodetect',
 			'xModule',

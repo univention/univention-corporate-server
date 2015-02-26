@@ -289,7 +289,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('License'),_('Licensing Information'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General license settings' ), layout = [
 			'name',
 			'module',
 			'expires',

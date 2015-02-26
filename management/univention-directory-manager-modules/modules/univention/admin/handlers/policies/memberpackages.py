@@ -137,7 +137,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'), policy_short_description, layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General member server packages settings' ), layout = [
 			'name',
 			'memberPackages',
 			'memberPackagesRemove'

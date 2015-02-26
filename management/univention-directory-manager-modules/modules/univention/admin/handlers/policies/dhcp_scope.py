@@ -169,7 +169,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('Allow/Deny'), _('Allow/Deny/Ignore statements'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General DHCP allow/deny settings' ), layout = [
 			'name',
 			[ 'scopeUnknownClients', 'bootp' ],
 			[ 'booting','duplicates' ],

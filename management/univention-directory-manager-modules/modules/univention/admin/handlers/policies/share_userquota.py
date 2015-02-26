@@ -171,7 +171,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Quota'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General user quota settings' ), layout = [
 			'name',
 			[ 'softLimitSpace', 'hardLimitSpace' ],
 			[ 'softLimitInodes', 'hardLimitInodes' ],

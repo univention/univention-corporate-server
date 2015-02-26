@@ -102,7 +102,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('UMC Operation Set'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General UMC operation set settings' ), layout = [
 			[ 'name', 'description' ],
 			'operation',
 			'flavor'

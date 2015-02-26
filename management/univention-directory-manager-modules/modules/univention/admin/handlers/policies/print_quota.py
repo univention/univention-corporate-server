@@ -150,7 +150,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Print quota'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General print quota settings' ), layout = [
 			'name',
 			[ 'quotaUsers', 'quotaGroupsPerUsers' ],
 			'quotaGroups'

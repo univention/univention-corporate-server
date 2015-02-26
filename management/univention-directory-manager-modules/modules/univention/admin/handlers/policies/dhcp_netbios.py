@@ -147,7 +147,7 @@ property_descriptions={
 
 layout=[
 	Tab(_('Netbios'),_('SMB/CIFS name resolution'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General DHCP NetBIOS settings' ), layout = [
 			'name',
 			'netbios_name_servers',
 			[ 'netbios_scope', 'netbios_node_type' ],

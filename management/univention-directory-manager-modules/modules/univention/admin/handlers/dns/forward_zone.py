@@ -181,7 +181,7 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General forward lookup zone settings' ), layout = [
 			'zone',
 			'nameserver',
 			'zonettl'

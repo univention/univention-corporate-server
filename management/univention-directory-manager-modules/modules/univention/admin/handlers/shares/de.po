@@ -1004,3 +1004,12 @@ msgstr "Die/Der %s %s%s %s diese Freigabe als Heimatverzeichnisfreigabe"
 #, python-format
 msgid "%s (%s on %s)"
 msgstr "%s (%s auf %s)"
+msgid "General printer settings"
+msgstr "Allgemeine Einstellungen für Drucker"
+
+msgid "General printer group settings"
+msgstr "Allgemeine Einstellungen für Druckergruppe"
+
+msgid "General directory settings"
+msgstr "Allgemeine Einstellungen für Verzeichnis"
+

@@ -127,7 +127,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('These configuration settings will be set on the local UCS system.'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General Univention Configuration Registry settings' ), layout = [
 			'name',
 			'registry',
 		] ),

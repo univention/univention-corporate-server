@@ -167,7 +167,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Repository syncronisation settings'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General repository synchronisation settings' ), layout = [
 			'name',
 			[ 'month', 'weekday' ],
 			[ 'day', 'hour' ],

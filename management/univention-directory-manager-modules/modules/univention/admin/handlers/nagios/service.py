@@ -232,7 +232,7 @@ property_descriptions={
 
 layout = [
 	Tab( _('General'), _('Basic settings'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General nagios service settings' ), layout = [
 			[ "name", "description" ],
 			[ "checkCommand" ,  "checkArgs" ],
 			"useNRPE"

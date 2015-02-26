@@ -127,7 +127,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Update'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General repository server settings' ), layout = [
 			'name',
 			'repositoryServer'
 		] ),

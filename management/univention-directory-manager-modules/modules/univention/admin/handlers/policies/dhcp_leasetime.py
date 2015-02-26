@@ -147,7 +147,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('Lease Time'), _('DHCP lease time'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General DHCP lease time settings' ), layout = [
 			'name',
 			'lease_time_default',
 			'lease_time_min',

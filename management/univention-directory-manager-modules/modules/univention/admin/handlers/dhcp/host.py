@@ -85,7 +85,7 @@ Each address should be either an IP address or a domain name that resolves to on
 }
 layout=[
 	Tab( _('General'), _('Basic settings'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General host settings' ), layout = [
 			'host',
 			'hwaddress',
 			'fixedaddress'

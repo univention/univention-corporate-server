@@ -207,7 +207,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Maintenance settings'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General maintenance settings' ), layout = [
 			'name',
 			'startup',
 			'shutdown',

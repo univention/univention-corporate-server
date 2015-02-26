@@ -181,7 +181,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Basic values'), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'General Samba configuration settings' ), layout = [
 			"name",
 			[ "passwordLength", "passwordHistory" ],
 			[ "minPasswordAge", "maxPasswordAge" ],
