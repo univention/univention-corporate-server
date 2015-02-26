@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-30) unstable; urgency=medium
+
+  * Bug #36539: give required attribute to subwidgets of ComplexInput
+
+ -- Florian Best <best@univention.de>  Thu, 26 Feb 2015 11:37:44 +0100
+
 univention-management-console-frontend (4.1.106-29) unstable; urgency=low
 
   * Bug #37780: adjusted computing of label position of module buttons

@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-management-console-module-udm
+fix: 
+version: [1]
+desc: |
+  This update addresses the following issue:
+  * Fix format of error message in specific circumstances.
+bug: [36711]

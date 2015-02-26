@@ -1,3 +1,14 @@
+univention-directory-manager-modules (10.0.29-26) unstable; urgency=medium
+
+  * Bug #36539: fix printer URI syntax message
+  * Bug #37607: merge svn r57481: Disable uidNumber locking if
+  	uidNumber is not needed
+  * Bug #36711: disallow to remove essential packages via policy
+  * Bug #36401: replace "General" by a more descriptive group title
+
+
+ -- Florian Best <best@univention.de>  Thu, 26 Feb 2015 11:36:06 +0100
+
 univention-directory-manager-modules (10.0.29-25) unstable; urgency=medium
 
   * Bug #37119: use self.exists() instead of self.dn in open() to verify
