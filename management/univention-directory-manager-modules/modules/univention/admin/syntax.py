@@ -2921,7 +2921,7 @@ class PrinterURI( complex ):
 			count = len( self.subsyntaxes ) if not 'pdf' in texts[0] else len( self.subsyntaxes )-1
 
 		if len(texts) < count:
-			raise univention.admin.uexceptions.valueInvalidSyntax, _("not enough arguments")
+			raise univention.admin.uexceptions.valueInvalidSyntax, _('Protocol and destination have to be specified.')
 
 		if len(texts) > len( self.subsyntaxes ):
 			raise univention.admin.uexceptions.valueInvalidSyntax, _("too many arguments")

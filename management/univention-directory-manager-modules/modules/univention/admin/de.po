@@ -228,7 +228,11 @@ msgstr "Ein leerer Wert ist nicht erlaubt!"
 
 #: syntax.py:213 syntax.py:2924
 msgid "not enough arguments"
-msgstr "Nicht genug Parameter"
+msgstr "Nicht genügend Parameter"
+
+#: syntax.py:2924
+msgid "Protocol and destination have to be specified."
+msgstr "Protokoll und Ziel müssen angegeben werden."
 
 #: syntax.py:216 syntax.py:2927
 msgid "too many arguments"
@@ -236,7 +240,7 @@ msgstr "Zu viele Parameter"
 
 #: syntax.py:226 syntax.py:2937
 msgid "Invalid syntax"
-msgstr "Falsche Syntax"
+msgstr "Ungültige Syntax"
 
 #: syntax.py:291 syntax.py:1382 syntax.py:1458
 msgid "Not a valid LDAP DN"

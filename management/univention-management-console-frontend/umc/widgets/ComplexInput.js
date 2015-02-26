@@ -80,7 +80,8 @@ define([
 					threshold: this.threshold, // for UDM-threshold
 					name: iname,
 					dynamicValues: widget.dynamicValues,
-					umcpCommand: this.umcpCommand
+					umcpCommand: lang.hitch(this, 'umcpCommand'),
+					required: this.required
 				});
 
 				// if no label is given, set the main label as label
