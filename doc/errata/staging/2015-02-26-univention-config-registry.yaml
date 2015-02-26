@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-config-registry
+fix: 10.0.1-8.480.201502261454
+version: [1]
+desc: |
+  Fix race condition in univention-ldapsearch wrapper, which prevents proper
+  error detection.
+bug: [37631]
