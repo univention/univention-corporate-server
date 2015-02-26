@@ -1,3 +1,9 @@
+univention-config-registry (10.0.1-8) unstable; urgency=low
+
+  * Bug #37631: Fix univention-ldapsearch
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 26 Feb 2015 14:03:25 +0100
+
 univention-config-registry (10.0.1-7) unstable; urgency=low
 
   * Bug #37819: Hide temporary commit files.
