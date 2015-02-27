@@ -79,10 +79,11 @@ def getMachineConnection(start_tls=2,decode_ignorelist=[], ldap_master = True):
 def _err2str(err):
 	msgs = []
 	for iarg in err.args:
-		if 'info' in iarg and 'desc' in iarg:
-			msgs.append('%(desc)s: %(info)s' % iarg)
-		elif 'desc' in iarg:
-			msgs.append(str(iarg['desc']))
+		msg = ': '.join([str(m) for m in (iarg.get('desc'), iarg.get('info')) if m])
+		if msg:
+			msgs.append(msg)
+	if not msgs:
+		msgs.append(': '.join(str(type(err).__name__), str(err)))
 	return '. '.join(msgs)
 
 class domain:
@@ -370,10 +371,6 @@ class access:
 		except ldap.FILTER_ERROR as msg:
 			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), filter))
 		except ldap.LDAPError, msg:
-			# workaround for bug 14827 ==> msg tuple seems to be empty
-			if not msg:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'uldap.searchDn: ldapError occured: msg=' % str(msg))
-				raise univention.admin.uexceptions.ldapError, str(msg)
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
 	def getPolicies( self, dn, policies = None, attrs = None, result = None, fixedattrs = None ):
