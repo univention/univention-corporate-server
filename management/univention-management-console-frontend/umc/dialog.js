@@ -363,7 +363,7 @@ define([
 				'class': options['class'] || '',
 				message: form,
 				options: buttons,
-				closable: options.buttons.length == 1
+				closable: options.buttons ? options.buttons.length == 1 : true
 			});
 
 			// check if the submit button is the default action
