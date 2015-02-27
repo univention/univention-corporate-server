@@ -132,6 +132,7 @@ define([
 
 			var wizardModuleURL = 'umc/modules/udm/wizards/' + (module || this.superModule);
 			var deferred = new Deferred();
+			deferred.then(null, function() {});
 			tools.urlExists(wizardModuleURL).then(
 				lang.hitch(this, function() {
 					require([wizardModuleURL], lang.hitch(this, function(WizardClass) {

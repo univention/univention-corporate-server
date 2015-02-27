@@ -981,6 +981,11 @@ define([
 			this._addReferencesToWidgets();
 
 			this.addChild(this._form);
+
+			this._form._buttons = render.buttons(this._form.buttons || [], this);
+			array.forEach(this._form._buttons.$order$, function(ibutton) {
+				container.addChild(ibutton);
+			});
 		},
 
 		renderDetailPage: function(properties, layout, policies, template, metaInfo) {
@@ -1192,31 +1197,52 @@ define([
 						return;
 					}
 
-					// set the value and label
-					var iinfo = data.result[iname];
-					var label = '';
-					if (!iinfo) {
-						// no policy values are inherited
-						label = lang.replace('{label} (<span class="umcUnsetPolicy">{edit}</span>)', {
-							label: iwidget.$orgLabel$,
-							edit: _('not defined')
-						});
-						iwidget.set('label', label);
-						iwidget.set('value', ''); // also sets CheckBox to false
-					} else if (!(iinfo instanceof Array)) {
-						// standard policy
-						iwidget.set('value', iinfo.value);
-						label = lang.replace('{label} (<a href="javascript:void(0)" ' +
+					var _editLabelFunc = lang.hitch(this, function(label, dn) {
+						return lang.replace('{label} (<a href="javascript:void(0)" ' +
 								'onclick=\'require("dijit/registry").byId("{id}")._openPolicy("{type}", "{dn}")\' ' +
 								'title="{title}: {dn}">{edit}</a>)', {
-							label: iwidget.$orgLabel$,
+							label: label,
 							id: this.id,
 							type: policyType,
-							dn: iinfo.policy,
+							dn: dn,
 							title: _('Click to edit the inherited properties of the policy'),
 							edit: _('edit')
 						});
-						iwidget.set('label', label);
+					});
+
+					var _undefinedLabelFunc = function(label) {
+						return lang.replace('{label} (<span class="umcUnsetPolicy">{edit}</span>)', {
+							label: label,
+							edit: _('not defined')
+						});
+					};
+
+					var _getLabel = function(labelFunc, dn) {
+						var label = '';
+						if (iwidget.subtypes instanceof Array) {
+							label = [];
+							array.forEach(iwidget.subtypes, function(itype, i) {
+								// set the subtype label
+								var subTypeLabel = itype.label || (i === 0 && iwidget.$orgLabel$ ? iwidget.$orgLabel$ : '&nbsp;');
+								label.push(labelFunc(subTypeLabel, dn));
+							});
+						}
+						else {
+							label = labelFunc(iwidget.$orgLabel, dn);
+						}
+						return label;
+					};
+
+					// set the value and label
+					var iinfo = data.result[iname];
+					if (!iinfo) {
+						// no policy values are inherited
+						iwidget.set('value', ''); // also sets CheckBox to false
+						iwidget.set('label', _getLabel(_undefinedLabelFunc));
+					} else if (!(iinfo instanceof Array)) {
+						// standard policy
+						iwidget.set('value', iinfo.value);
+						iwidget.set('label', _getLabel(_editLabelFunc, iinfo.policy));
 					} else if (iinfo instanceof Array && iwidget.isInstanceOf(MultiInput)) {
 						// we got probably a UCR-Policy, this is a special case:
 						// -> a list of values where each value might have been inherited
@@ -1234,17 +1260,7 @@ define([
 									return false;
 								}
 
-								// prepare the HTML code to link to the policy
-								var label = lang.replace('(<a href="javascript:void(0)" ' +
-										'onclick=\'require("dijit/registry").byId("{id}")._openPolicy("{type}", "{dn}")\' ' +
-										'title="{title}: {dn}">{edit}</a>)', {
-									id: this.id,
-									type: policyType,
-									dn: jinfo.policy,
-									title: _('Click to edit the inherited properties of the policy'),
-									edit: _('edit')
-								});
-
+								var label = _getEditLabel('', jinfo.policy);
 								var container = iwidget._rowContainers[j];
 								if (!container.$linkWidget$) {
 									// add an additional widget with the link the the UCR policy to the row

@@ -1,3 +1,12 @@
+univention-management-console-module-udm (5.1.25-51) unstable; urgency=medium
+
+  Bug #36708:
+  * set labels for policy widgets correctly also for their subtypes
+  * added invisible submit button to allow for saving via pressing 'Return'
+  * added error handler to avoid tracebacks for non-existing creation wizards
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 27 Feb 2015 20:01:59 +0100
+
 univention-management-console-module-udm (5.1.25-50) unstable; urgency=medium
 
   * Bug #37740: reexecute functions in LDAP-decorators if they fail due to
