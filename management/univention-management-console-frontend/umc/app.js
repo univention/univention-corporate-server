@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/kernel",
 	"dojo/_base/array",
+	"dojo/_base/fx",
 	"dojo/_base/window",
 	"dojo/window",
 	"dojo/on",
@@ -44,6 +45,8 @@ define([
 	"dojo/promise/all",
 	"dojo/cookie",
 	"dojo/topic",
+	"dojo/fx",
+	"dojo/fx/easing",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dojo/dom",
@@ -75,16 +78,18 @@ define([
 	"./widgets/Form",
 	"./widgets/Button",
 	"./widgets/Text",
+	"./widgets/Module",
+	"./widgets/ModuleHeader",
 	"./app/CategoryButton",
 	"./i18n/tools",
 	"./i18n!",
 	"xstyle/css!./app.css",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, win, on, aspect, has,
-		Evented, Deferred, when, all, cookie, topic, Memory, Observable,
+], function(declare, lang, kernel, array, baseFx, baseWin, win, on, aspect, has,
+		Evented, Deferred, when, all, cookie, topic, fx, fxEasing, Memory, Observable,
 		dom, style, domAttr, domClass, domGeometry, domConstruct, locale, styles, entities, gfx, registry, tools, dialog, store,
 		Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
-		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, CategoryButton,
+		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, Module, ModuleHeader, CategoryButton,
 		i18nTools, _
 ) {
 	// cache UCR variables
@@ -111,6 +116,108 @@ define([
 	var isFavorite = function(mod) {
 		return array.indexOf(mod.categories, '_favorites_') >= 0;
 	};
+	
+	var _StackContainer = declare([StackContainer], {
+		constructor: function() {
+			this.animationFinished = new Deferred;
+			this.animationFinished.resolve();
+			this.animationOff = 0
+		},
+
+		ready: function() {
+			return this.animationFinished.promise;
+		},
+
+		_transition: function(/*dijit/_WidgetBase?*/ newWidget, /*dijit/_WidgetBase?*/ oldWidget) {
+			if (!oldWidget || (!newWidget.isOverview && !oldWidget.isOverview)) {
+				return this.inherited(arguments);
+			}
+			
+			if (!this.animationFinished.isFulfilled()) {
+				this.animationFinished.cancel();
+			}
+
+			var overviewWidget = newWidget.isOverview ? newWidget : oldWidget;
+			var moduleWidget = newWidget.isOverview ? oldWidget : newWidget;
+			var headlessHeight = win.getBox().h - domGeometry.position(overviewWidget.domNode).y;
+			var overviewHeight = Math.max(domGeometry.getMarginBox(overviewWidget.domNode).h, headlessHeight);
+
+			var _setup = lang.hitch(this, function() {
+				win.scrollIntoView("umcHeader");
+
+				// this check was take from:
+				// https://tylercipriani.com/2014/07/12/crossbrowser-javascript-scrollbar-detection.html
+				var hasScrollbar = window.innerWidth == document.documentElement.clientWidth;
+				if (hasScrollbar) {
+					style.set(baseWin.body(), {overflow: 'hidden'});
+				}
+
+				if (newWidget._wrapper) {
+					domClass.replace(newWidget._wrapper, "dijitVisible", "dijitHidden");
+				}
+			
+				style.set(moduleWidget._wrapper, {
+					position: 'absolute',
+					overflow: 'hidden',
+					width: '100%',
+				});
+				style.set(overviewWidget.domNode, {
+					height: overviewHeight + 'px'
+				});
+			});
+
+			var _cleanup = lang.hitch(this, function() {
+				style.set(overviewWidget.domNode, {height: 'initial'});
+				style.set(baseWin.body(), {overflow: ''});
+				if (moduleWidget.domNode && moduleWidget._wrapper) {
+					style.set(moduleWidget.domNode, {height: 'initial'});
+					style.set(moduleWidget._wrapper, {
+						position: '',
+						overflow: '',
+						width: '',
+						top: ''
+					});
+				}
+			});
+
+			this.animationFinished = new Deferred();
+			this.animationFinished.then(_cleanup, _cleanup);
+
+			this._animation = new baseFx.Animation({
+				node: overviewWidget.domNode,
+				duration: parseInt(_ucr['umc/web/overview/tabs/animation_length'], 10) || 500,
+				curve: [0, 1],
+				easing: fxEasing.cubicInOut
+			});
+
+			// fade the module widget out of the view
+			this._animation.on('Animate', lang.hitch(this, function(value) {
+				if (!moduleWidget._wrapper) {
+					// module got destroyed... stop the animation
+					this._animation.destroy();
+					this.animationFinished.cancel();
+					return;
+				}
+				var t = newWidget.isOverview ? value * headlessHeight : (1 - value) * headlessHeight;
+				var h = headlessHeight - t;
+				style.set(moduleWidget._wrapper, {
+					top: t + 'px'
+				});
+				style.set(moduleWidget.domNode, {
+					height: h + 'px'
+				});
+			}));
+
+			var _arguments = arguments;
+			this._animation.on('End', lang.hitch(this, function() {
+				this.inherited(_arguments);
+				this.animationFinished.resolve();
+			}));
+
+			_setup();
+			this._animation.play();
+		}
+	});
 
 	var _OverviewPane = declare([GalleryPane], {
 //		categories: null,
@@ -938,7 +1045,7 @@ define([
 			});
 
 			// module (and overview) container
-			this._tabContainer = new StackContainer({
+			this._tabContainer = new _StackContainer({
 				'class': 'umcMainTabContainer dijitTabContainer dijitTabContainerTop'
 			});
 
@@ -999,7 +1106,7 @@ define([
 				domClass.toggle(baseWin.body(), 'umcOverviewNotShown', !overviewShown);
 				domClass.toggle(this._tabController.domNode, 'dijitHidden', (this._tabContainer.getChildren().length <= 1)); // hide/show tabbar
 				if (newModule.selectedChildWidget && newModule.selectedChildWidget._onShow) {
-					newModule.selectedChildWidget._onShow();
+					this._tabContainer.ready().then(lang.hitch(newModule.selectedChildWidget, '_onShow'));
 				}
 			}));
 			aspect.before(this._tabContainer, 'removeChild', lang.hitch(this, function(module) {
@@ -1057,6 +1164,7 @@ define([
 				'umc/web/sso/enabled',
 				'umc/web/sso/allow/http',
 				'umc/web/sso/newwindow',
+				'umc/web/overview/tabs/animation_length',
 				'umc/http/session/timeout',
 				'ssl/validity/host',
 				'ssl/validity/root',
@@ -1274,6 +1382,8 @@ define([
 					isDefaultAction: true,
 					callback: lang.hitch(this, function(id, item) {
 						this.openModule(item);
+						console.log(this.getModule(id).id);
+						//this._tabContainer.transition(id, item);
 					})
 				}, {
 					name: 'toggle_favorites',
@@ -1290,6 +1400,7 @@ define([
 				noFooter: true,
 				id: 'umcOverviewPage',
 				title: 'Overview',
+				isOverview: true,
 				'class': 'umcOverviewContainer container'
 			});
 
@@ -1438,6 +1549,8 @@ define([
 					});
 					if (sameModules.length) {
 						tab = sameModules[0];
+						this._tabContainer.selectChild(tab, true);
+						deferred.resolve(tab);
 					}
 				}
 				if (!tab) {
@@ -1450,15 +1563,30 @@ define([
 						moduleID: module.id,
 						description: module.description
 					}, props);
-					tab = new BaseClass(params);
-					this._tabContainer.addChild(tab);
-					tab.startup();
-					tools.checkReloadRequired();
-
-					this.__insertTabStyles(tab, module);
+					if (lang.getObject('_tabContainer.selectedChildWidget.isOverview', false, this)) {
+						var dummy = new Module(params);
+						this._tabContainer.addChild(dummy);
+						this.__insertTabStyles(dummy, module);
+						this._tabContainer.selectChild(dummy);
+						this._tabContainer.ready().then(lang.hitch(this, function() {
+							tab = new BaseClass(params);
+							this._tabContainer.addChild(tab);
+							this.__insertTabStyles(tab, module);
+							this._tabContainer.selectChild(tab, true);
+							this._tabContainer.removeChild(dummy, true);
+							dummy.destroyRecursive();
+							deferred.resolve(tab);
+							tools.checkReloadRequired();
+						}));
+					} else {
+						tab = new BaseClass(params);
+						this._tabContainer.addChild(tab);
+						this.__insertTabStyles(tab, module);
+						this._tabContainer.selectChild(tab, true);
+						tools.checkReloadRequired();
+						deferred.resolve(tab);
+					}
 				}
-				this._tabContainer.selectChild(tab, true);
-				deferred.resolve(tab);
 			})).otherwise(function(err) {
 				console.warn('Error initializing module ' + module.id + ':', err);
 				tools.checkReloadRequired();
@@ -1503,11 +1631,21 @@ define([
 		},
 
 		closeTab: function(tab, /*Boolean?*/ destroy) {
+			destroy = destroy === undefined || destroy === true;
 			tab.onClose();
-			this._tabContainer.removeChild(tab);
-			if (destroy === undefined || destroy === true) {
-				tab.destroyRecursive();
+			//this._tabContainer.switchAnimation();
+			this._tabContainer.selectChild(this._overviewPage);
+			if (destroy) {
+				this._tabContainer.closeChild(tab);
+			} else {
+				this._tabContainer.removeChild(tab);
 			}
+			//this._tabContainer.ready().then(lang.hitch(this, function() {
+			//	this._tabContainer.removeChild(tab);
+			//	if (destroy === undefined || destroy === true) {
+			//		tab.destroyRecursive();
+			//	}
+			//}));
 		},
 
 		getModules: function(/*String?*/ category) {

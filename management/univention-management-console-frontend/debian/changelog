@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-32) unstable; urgency=low
+
+  * Bug #37899: added animation when opening/hiding modules
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 27 Feb 2015 18:52:36 +0100
+
 univention-management-console-frontend (4.1.106-31) unstable; urgency=medium
 
   * Bug #37892: fix an error in dialog.confirmForm if no buttons where defined
