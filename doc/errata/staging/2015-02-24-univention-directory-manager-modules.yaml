@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-directory-manager-modules
-fix: 10.0.29-26.1290.201502261150
+fix: 10.0.29-27.1291.201502271408
 version: [1]
 desc: |
   This update addresses the following issue:
@@ -13,4 +13,5 @@ desc: |
     slave/master/memberpackages policy.
   * Replaced the term "General" by a more descriptive title in various UDM
     modules.
-bug: [37607, 36711, 36539, 36401]
+  * Improoved error message format.
+bug: [37607, 36711, 36539, 36401, 37740]
