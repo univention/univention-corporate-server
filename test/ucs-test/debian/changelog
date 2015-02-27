@@ -1,3 +1,10 @@
+ucs-test (5.0.121-1) unstable; urgency=medium
+
+  * 51_samba4/47domain_user_lockout: changed the way credentials for samba-tool
+    are specified (Bug #37884).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 27 Feb 2015 11:32:30 +0100
+
 ucs-test (5.0.120-2) unstable; urgency=low
 
   * 20_appcenter/43_installed_apps_check_packages_available_for_i386 

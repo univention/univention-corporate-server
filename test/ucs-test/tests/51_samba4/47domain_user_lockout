@@ -81,8 +81,7 @@ def set_reset_lockout_settings(lock_duration, lock_threshold):
 	cmd = ("samba-tool", "domain", "passwordsettings", "set",
 		   "--account-lockout-duration=" + lock_duration,
 		   "--account-lockout-threshold=" + lock_threshold,
-		   "--username=" + admin_username,
-		   "--password=" + admin_password)
+		   "-U", admin_username + '%' + admin_password)
 
 	stdout, stderr = create_and_run_process(cmd)
 	if stderr:
@@ -109,8 +108,7 @@ def create_delete_test_user(should_exist):
 				   " 'True' to create a user or 'False' to delete."
 				   % should_exist)
 
-	cmd += ("--username=" + admin_username,
-			"--password=" + admin_password)
+	cmd += ("-U", admin_username + '%' + admin_password)
 
 	stdout, stderr = create_and_run_process(cmd)
 	if stderr:
