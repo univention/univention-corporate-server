@@ -42,6 +42,7 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/on",
 	"dojo/dom-class",
 	"umc/dialog",
 	"umc/tools",
@@ -52,7 +53,7 @@ define([
 	"umc/widgets/Text",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, domClass, dialog, tools, Page, _LogViewer, Button, ContainerWidget, Text, libServer, _) {
+], function(declare, lang, on, domClass, dialog, tools, Page, _LogViewer, Button, ContainerWidget, Text, libServer, _) {
 	return declare("umc.modules.updater.ProgressPage", Page, {
 
 		// Polling interval for eventually running Updater jobs. If this is
@@ -62,6 +63,8 @@ define([
 		_job_key: '', // the key of the currently running job
 
 		_reboot_required: null,
+
+		_beforeunloadHandler: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -216,13 +219,29 @@ define([
 
 		// switches visibility of our 'close' button on or off.
 		// Additionally, changes some labels to reflect the current situation.
-		_allow_close: function(yes) {
-			this._allow_closing = yes;
+		_allow_close: function(allow_closing) {
+			this._allow_closing = allow_closing;
 			this.set('navButtons', this._allow_closing ? this._orgNavButtons : []);
 			// While the button is hidden, the polling callback maintains the content.
 			// Only if Close is enabled -> set to a different text.
-			if (yes)
+			if (!allow_closing && !this._beforeunloadHandler)
 			{
+				// this piece of code was taken from:
+				// https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload
+				this._beforeunloadHandler = on(window, "beforeunload", function (e) {
+					var msg = _('An update of the system is being executed.') + '\n' +
+						_('Are you sure to close the updater log view?') + '\n\n' +
+						_('It is expected that the system may not respond (via web browser, SSH, etc.) during a period of up to several minutes during the update as services are stopped, updated, and restarted.');
+					(e || window.event).returnValue = msg;
+					return msg;
+				});
+				this.own(this._beforeunloadHandler);
+			}
+			if (allow_closing) {
+				if (this._beforeunloadHandler) {
+					this._beforeunloadHandler.remove();
+					this._beforeunloadHandler = null;
+				}
 				if ((this._job_key !== '') && (this._last_job))
 				{
 					// First thing to do: notify the Module that the job is finished. So it can already

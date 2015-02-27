@@ -1,3 +1,10 @@
+univention-updater (10.0.53-9) unstable; urgency=medium
+
+  * Bug #37033: prompt a confirmation dialogue when the browser window is
+    closed or reloaded during an update process
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 27 Feb 2015 16:27:49 +0100
+
 univention-updater (10.0.53-8) unstable; urgency=low
 
   * Bug #36044: Make timeout for fatal
