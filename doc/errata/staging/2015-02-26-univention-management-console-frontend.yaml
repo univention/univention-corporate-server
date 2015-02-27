@@ -10,4 +10,5 @@ desc: |
   * Fixed an error introduces by errata 90 which prevented to stop virtual
     machines and to send error information.
   * An animation has been added for opening and hiding modules.
-bug: [36539, 37892, 37899]
+  * Policy labels are now correctly displayed with an edit link
+bug: [36539, 37892, 37899, 36708]

@@ -8,4 +8,7 @@ desc: |
   This update addresses the following issue:
   * Fix format of error message in specific circumstances.
   * Execute UDM requests again if an ldap error occurs due to timeout problems.
-bug: [36711, 37740]
+  * Policy labels are now correctly displayed with an edit link.
+  * Changes on a UDM object can now be saved by pressing 'Return' on the
+    keyboard.
+bug: [36711, 37740, 36708]
