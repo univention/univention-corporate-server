@@ -2,9 +2,11 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-management-console-frontend
-fix: 4.1.106-30.1010.201502261202
+fix: 4.1.106-31.1011.201502271109
 version: [1]
 desc: |
   This update addresses the following issue:
   * Pass the "required" attribute to subwidgets of the ComplexInput widget.
-bug: [36539]
+  * Fixed an error introduces by errata 90 which prevented to stop virtual
+    machines and to send error information.
+bug: [36539, 37892]
