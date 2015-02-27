@@ -50,7 +50,8 @@ define([
 	"umc/widgets/HiddenInput",
 	"umc/widgets/ComboBox",
 	"umc/widgets/Tooltip",
-	"umc/i18n!umc/modules/ucr"
+	"umc/i18n!umc/modules/ucr",
+	"xstyle/css!./ucr.css"
 ], function(declare, lang, kernel, array, aspect, has, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, TextBox, Text, HiddenInput, ComboBox, Tooltip, _) {
 
 	var _DetailDialog = declare([Dialog, StandbyMixin], {
@@ -63,7 +64,7 @@ define([
 
 			lang.mixin(this, {
 				_locale: kernel.locale.substr(0, 2),
-				style: 'min-width: 450px;',
+				'class': 'umcUcrDialog',
 				title: _('Edit UCR variable')
 			});
 		},

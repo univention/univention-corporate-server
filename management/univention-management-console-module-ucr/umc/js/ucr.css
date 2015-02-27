@@ -1,0 +1,8 @@
+.umc .dijitDialog.umcUcrDialog {
+  min-width: 100%;
+}
+@media (min-width: 451px) {
+  .umc .dijitDialog.umcUcrDialog {
+    min-width: 450px;
+  }
+}
