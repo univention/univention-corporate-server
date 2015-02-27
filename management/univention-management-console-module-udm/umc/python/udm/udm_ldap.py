@@ -99,9 +99,8 @@ def LDAP_Connection(func):
 			ldap_connection.searchDn(..., position=ldap_position)
 			...
 	"""
-	def wrapper_func(*args, **kwargs):
-		global _ldap_connection, _ldap_position, _user_dn, _password, _licenseCheck
-
+	def _get_user_connection():
+		global _licenseCheck
 		if _ldap_connection is None:
 			MODULE.info('Opening LDAP connection for user %s' % _user_dn)
 			lo = udm_uldap.access(host=ucr.get('ldap/master'), base=ucr.get('ldap/base'), binddn=_user_dn, bindpw=_password)
@@ -132,23 +131,27 @@ def LDAP_Connection(func):
 			MODULE.info('Using open LDAP connection for user %s' % _user_dn)
 			lo = _ldap_connection
 			po = _ldap_position
+		return lo, po
 
+	def _func(*args, **kwargs):
+		global _ldap_connection, _ldap_position
+		lo, po = _get_user_connection()
 		kwargs['ldap_connection'] = lo
 		kwargs['ldap_position'] = po
+		ret = func(*args, **kwargs)
+		_ldap_connection = lo
+		_ldap_position = po
+		return ret
+
+	def wrapper_func(*args, **kwargs):
 		try:
-			ret = func(*args, **kwargs)
-			_ldap_connection = lo
-			_ldap_position = po
-		except udm_errors.ldapError:
-			# workaround to keep the behavior from the past to trigger ldap.SERVER_DOWN exception as admin.uldap maskes it
-			_lo = udm_uldap.access(host=ucr.get('ldap/master'), base=ucr.get('ldap/base'), binddn=_user_dn, bindpw=_password)
-			del _lo
-			raise
-		except LDAPError:
+			return _func(*args, **kwargs)
+		except (LDAPError, udm_errors.ldapError) as exc:
+			MODULE.warn('Exception during ldap operation (probably timeout): %s' % (exc,))
+			global _ldap_connection, _ldap_position
 			_ldap_connection = None
 			_ldap_position = None
-			raise
-		return ret
+			return _func(*args, **kwargs)
 
 	return error_handler(wrapper_func)
 
