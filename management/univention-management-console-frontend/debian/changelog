@@ -1,3 +1,12 @@
+univention-management-console-frontend (4.1.106-33) unstable; urgency=medium
+
+  Bug #36708:
+  * added _setLabelAttr() method to MultiInput for setting subtype labels
+  * just print a warning message instead of tracebacks when modules cannot be
+    loaded
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 27 Feb 2015 20:05:13 +0100
+
 univention-management-console-frontend (4.1.106-32) unstable; urgency=low
 
   * Bug #37899: added animation when opening/hiding modules

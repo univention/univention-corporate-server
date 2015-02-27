@@ -275,15 +275,40 @@ define([
 			this._setAllValues(vals);
 		},
 
+		_setLabelAttr: function(_label) {
+			// make sure label is treated as an array
+			var label = _label;
+			if (!(label instanceof Array)) {
+				label = [];
+				array.forEach(this.subtypes, function(itype, i) {
+					label.push(i === 0 && _label ? _label : '&nbsp;');
+				}, this);
+			}
+
+			this._allWidgetsBuiltDeferred.then(lang.hitch(this, function() {
+				var i, j, jwidget;
+				for (i = 0; i < this._widgets.length; ++i) {
+					for (j = 0; j < this._widgets[i].length; ++j) {
+						jwidget = this._widgets[i][j];
+						if (!jwidget) {
+							continue;
+						}
+						jwidget.set('label', label[j]);
+					}
+				}
+				this._set('label', _label);
+			}));
+		},
+
 		_setDisabledAttr: function ( value ) {
 			domClass.toggle(this.domNode, 'umcMultiInputDisabled', value);
 			this._allWidgetsBuiltDeferred.then(lang.hitch(this, function() {
 				var i;
-				for ( i = 0; i < this._rowContainers.length; ++i) {
+				for (i = 0; i < this._rowContainers.length; ++i) {
 					var irow = this._rowContainers[i];
-					array.forEach( irow ? irow.getChildren() : [], function( widget ) {
+					array.forEach(irow ? irow.getChildren() : [], function(widget) {
 						widget.set('disabled', value);
-					} );
+					});
 				}
 			}));
 			this._set('disabled', value);
