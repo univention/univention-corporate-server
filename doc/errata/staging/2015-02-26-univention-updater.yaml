@@ -8,4 +8,6 @@ desc: |
   The following issues are addressed by this update:
   * A default time-out of 10 minutes was added to the updater, after which
     stalled HTTP connections are aborted.
-bug: [36044]
+  * A confirmation dialogue is now prompted when the browser window is closed
+    or the page is reloaded during an update process.
+bug: [36044,37033]
