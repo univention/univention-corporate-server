@@ -306,7 +306,6 @@ define([
 						child.position_text.set('content', position_text);
 					}
 				}));
-
 				return this._form.ready();
 			}));
 		},
@@ -379,6 +378,12 @@ define([
 		},
 
 		_notifyAboutAutomaticChanges: function() {
+			if (!this.ldapName || this._multiEdit) {
+				// ignore creation of a new object as well as the multi edit mode
+				return;
+			}
+			// a direct call to haveValuesChanged() will yield true...
+			// therefore we add a call to Form::ready()
 			this._form.ready().then(lang.hitch(this, function() {
 				var valuesChanged = this.haveValuesChanged() || this.havePolicyReferencesChanged();
 				if (valuesChanged) {
@@ -998,7 +1003,7 @@ define([
 			var loadedDeferred = this._loadObject(formBuiltDeferred, this._policyDeferred);
 			loadedDeferred.then(lang.hitch(this, 'addActiveDirectoryWarning'));
 			loadedDeferred.then(lang.hitch(this, 'set', 'helpLink', metaInfo.help_link));
-			loadedDeferred.then(lang.hitch(this, '_notifyAboutAutomaticChanges'));
+			all([loadedDeferred, formBuiltDeferred]).then(lang.hitch(this, '_notifyAboutAutomaticChanges'));
 
 			if (template && template.length > 0) {
 				template = template[0];

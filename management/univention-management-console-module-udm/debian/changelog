@@ -1,3 +1,10 @@
+univention-management-console-module-udm (5.1.25-52) unstable; urgency=medium
+
+  Bug #36708: fix JS traceback when editing a new object (introduced by
+  Bug #36700)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 02 Mar 2015 14:05:39 +0100
+
 univention-management-console-module-udm (5.1.25-51) unstable; urgency=medium
 
   Bug #36708:
