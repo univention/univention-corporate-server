@@ -1,5 +1,5 @@
 product: ucs
-release: "4.0"
+release: "3.2"
 scope: ucs_3.2-0-errata3.2-5
 src: univention-updater
 fix: 9.0.46-2.1382.201503020825
