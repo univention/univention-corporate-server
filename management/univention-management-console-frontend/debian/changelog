@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.106-35) unstable; urgency=medium
+
+  * Bug #36708: make sure that subtype labels in MultiInput widgets are
+    preferred over a given label
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 02 Mar 2015 16:49:23 +0100
+
 univention-management-console-frontend (4.1.106-34) unstable; urgency=medium
 
   * Bug #37899: removed trailing comma

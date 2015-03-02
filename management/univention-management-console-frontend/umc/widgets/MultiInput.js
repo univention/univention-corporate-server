@@ -148,6 +148,14 @@ define([
 				return iwidget.label;
 			});
 
+			// overwrite label with subtypes label
+			if (this._hasSubtypeLabel) {
+				this.label = [];
+				array.forEach(this.subtypes, function(itype, i) {
+					this.label.push(itype.label || '&nbsp;');
+				}, this);
+			}
+
 			// initiate other properties
 			this._rowContainers = [];
 			this._widgets = [];
