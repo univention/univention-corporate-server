@@ -159,7 +159,7 @@ define([
 				style.set(moduleWidget._wrapper, {
 					position: 'absolute',
 					overflow: 'hidden',
-					width: '100%',
+					width: '100%'
 				});
 				style.set(overviewWidget.domNode, {
 					height: overviewHeight + 'px'

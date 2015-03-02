@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-34) unstable; urgency=medium
+
+  * Bug #37899: removed trailing comma
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 02 Mar 2015 09:48:06 +0100
+
 univention-management-console-frontend (4.1.106-33) unstable; urgency=medium
 
   Bug #36708:
