@@ -1,0 +1,74 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Verify that SID of native Windows joined is correct in S4 and OpenLDAP"
+## bugs: [37572, 36570]
+## tags: [native_win_client]
+## exposure: safe
+## packages:
+##  - univention-samba4
+##  - univention-s4-connector
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+## versions:
+##  4.0-1: skip
+
+# TODO: Please enable the test after Bug #36570 is fixed.
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+RETVAL=100
+
+
+echo "Looking for a Windows host. It should be joined prior to the test run:"
+windows_host_dn="$(udm computers/windows list | sed -n 's/^DN: //p')"
+
+# skip the test if no Windows host records cannot be found:
+if [ -z "$windows_host_dn" ]; then
+    echo "Cannot find any 'computers/windows' records via UDM (Possibly Windows Client not joined or replication did not work or there is simply no Windows in the Domain.)"
+    exit 137
+fi
+echo "Windows host '$windows_host_dn' will be used for the test."
+
+
+# extract the Windows hostname:
+windows_hostname="$(echo $windows_host_dn | sed 's/cn=\(.*\),cn=computers,'"$ldap_base"'/\1/g')"
+echo "Windows Hostname is $windows_hostname"
+
+
+# skip the test if Windows host cannot be found in the CN=MicrosoftDNS:
+if [ -z "$(univention-s4search DC=$windows_hostname)" ]; then
+    echo "Cannot find a record with DC=$windows_hostname in the S4, there is no respective record in CN=MicrosoftDNS"
+    exit 137
+fi
+
+
+# get the objectSid from S4:
+windows_object_sid="$(univention-s4search CN="$windows_hostname" objectSid | sed -n 's/^objectSid: //p')"
+echo "The Windows Host 'objectSID' in S4 is '$windows_object_sid'"
+if [ -z "$windows_object_sid" ]; then
+    fail_fast 110 "Failed to determine the Windows host 'objectSID' or it is empty."
+fi
+
+
+# get the sambaSID from OpenLDAP:
+windows_samba_sid="$(univention-ldapsearch cn="$windows_hostname" sambaSID | sed -n 's/^sambaSID: //p')"
+echo "The Windows Host sambaSID in 'OpenLDAP' is '$windows_samba_sid'"
+if [ -z "$windows_samba_sid" ]; then
+    fail_fast 110 "Failed to determine the Windows host 'sambaSID' or it is empty."
+fi
+
+
+# fail if Windows Host SID in OpenLDAP starts with temporary prefix 'S-1-4-':
+if [[ $windows_samba_sid == S-1-4-* ]]; then
+    fail_fast 110 "The sambaSID of the Windows '$windows_hostname' has a UCS temorary prefix."
+fi
+
+
+# fail if Windows Host SIDs in S4 and OpenLDAP are different:
+if [ "$windows_object_sid" != "$windows_samba_sid" ]; then
+    fail_fast 110 "The SIDs of '$windows_hostname' are not the same in Samba4 '$windows_object_sid' and OpenLDAP '$windows_samba_sid'."
+fi   
+
+
+exit $RETVAL
