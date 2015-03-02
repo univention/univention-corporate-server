@@ -201,6 +201,12 @@ run_win_member_gpo_tests ()
 	run_tests -r windows_gpo_test "$@"
 }
 
+run_windows_native_client_tests ()
+{
+	# tests that require a native windows client in the domain
+        run_tests -r native_win_client "$@"
+}
+
 run_tests ()
 {
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"

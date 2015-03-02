@@ -1,3 +1,12 @@
+ucs-ec2-tools (1.0.9-8) unstable; urgency=low
+
+  * examples/jenkins/autotest-230-master-s4-w2k12-member-join.cfg: run all
+    tests that require a native windows to be in the domain (Bug #37572);
+    examples/jenkins/utils/utils.sh: added function to run tests with a
+    tag "native_win_client" (Bug #37572).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 02 Mar 2015 15:16:44 +0100
+
 ucs-ec2-tools (1.0.9-7) unstable; urgency=low
 
   * Bug #37878: Added functions to start jobs simultaneously on multiple
