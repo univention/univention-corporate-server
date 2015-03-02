@@ -67,6 +67,7 @@ class UniventionMirror( UniventionUpdater ):
 		self.repository_port = self.configRegistry.get( 'repository/mirror/port', '80' )
 		self.repository_prefix = self.configRegistry.get( 'repository/mirror/prefix', '' ).strip('/')
 		self.sources = self.configRegistry.is_true('repository/mirror/sources', False)
+		self.timeout = float(self.configRegistry.get('repository/mirror/timeout', 600))
 		self.http_method = self.configRegistry.get('repository/mirror/httpmethod', 'HEAD').upper()
 		self.script_verify = self.configRegistry.is_true('repository/mirror/verify', True)
 

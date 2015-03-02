@@ -24,7 +24,6 @@ Depends: ${misc:Depends}, ${python:Depends},
  shell-univention-lib,
  python-univention-lib (>= 1.0.25-1),
  univention-errata-level
-Provides: ${python:Provides}
 Description: UCS - system upgrading tool
  UCS Updater can upgrade your version of UCS.
  .
@@ -36,6 +35,7 @@ Description: UCS - system upgrading tool
 Package: univention-management-console-module-updater
 Architecture: all
 Depends: ${misc:Depends},
+ ${python:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server,
  univention-updater (= ${source:Version}),

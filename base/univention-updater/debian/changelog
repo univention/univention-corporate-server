@@ -1,3 +1,9 @@
+univention-updater (9.0.46-2) unstable; urgency=low
+
+  * Bug #37901: Set timeout of 600s for HTTP connections
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 02 Mar 2015 08:19:49 +0100
+
 univention-updater (9.0.46-1) unstable; urgency=medium
 
   * Adjust pre and postup.sh to UCS 3.2-5 (Bug #37810)
