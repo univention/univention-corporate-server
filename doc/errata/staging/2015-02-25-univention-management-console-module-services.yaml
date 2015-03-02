@@ -2,10 +2,12 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-management-console-module-services
-fix: 4.1.0-4.26.201502251153
+fix: 4.1.0-5.27.201503021315
 version: [1]
 desc: |
   This update addresses the following issues:
   * Fix german translation of the module heading.
-  * Adapt the design of the UMC module.
+  * Fixed captions of the grid header to fit into the column header.
+  * Added help text for the module.
+  * Added icons for the actions in the grid.
 bug: [36564,36569]
