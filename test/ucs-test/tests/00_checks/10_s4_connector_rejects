@@ -1,9 +1,14 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check for S4 connector rejected objects
 ## exposure: safe
-## bugs: [37011, 37324]
+## bugs: [37011, 37324, 37570]
 ## packages:
 ## - univention-s4-connector
+## versions:
+##  4.0-0: skip
+##  4.0-1: skip
+
+# TODO: please enable the test after Bug #37570 being fixed.
 
 from subprocess import Popen, PIPE
 

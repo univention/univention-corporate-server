@@ -1,3 +1,9 @@
+ucs-test (5.0.122-3) unstable; urgency=low
+
+  * 00_checks/10_s4_connector_rejects: disabled the test due to Bug #37570.
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 02 Mar 2015 16:02:26 +0100
+
 ucs-test (5.0.122-2) unstable; urgency=low
 
   * Moved 51_samba4/57check_windows_sid to 52_s4connector/400check_windows_sid
