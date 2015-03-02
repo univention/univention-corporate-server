@@ -1,3 +1,10 @@
+ucs-test (5.0.122-2) unstable; urgency=low
+
+  * Moved 51_samba4/57check_windows_sid to 52_s4connector/400check_windows_sid
+    (Bug #37572).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 02 Mar 2015 15:38:22 +0100
+
 ucs-test (5.0.122-1) unstable; urgency=low
 
   * 51_samba4/57check_windows_sid: check a native Windows host SIDs
