@@ -1,3 +1,9 @@
+univention-management-console-module-services (4.1.0-5) unstable; urgency=medium
+
+  * Bug #36569: use icons for grid actions
+
+ -- Florian Best <best@univention.de>  Mon, 02 Mar 2015 13:13:08 +0100
+
 univention-management-console-module-services (4.1.0-4) unstable; urgency=medium
 
   * Bug #36564: fix german spelling of services title
