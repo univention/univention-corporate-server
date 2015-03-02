@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_3.2-0-errata3.2-5
+src: univention-updater
+fix: 9.0.46-2.1382.201503020825
+version: [5]
+desc: |
+  The following issu is addressed by this update:
+  * A default time-out of 10 minutes was added to the updater, after which
+    stalled HTTP connections are aborted.
+bug: [37901]
