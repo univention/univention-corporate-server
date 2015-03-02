@@ -276,9 +276,9 @@ msgstr "Sonntag"
 #: timeperiod.py:174
 msgid "Time Period Settings"
 msgstr "Zeitraum-Einstellungen"
+
 msgid "General nagios service settings"
-msgstr "Allgemeine Einstellungen für Nagios-Dienst"
+msgstr "Allgemeine Einstellungen für den Nagios-Dienst"
 
 msgid "General nagios time period settings"
-msgstr "Allgemeine Einstellungen für Nagios-Zeitraum"
-
+msgstr "Allgemeine Einstellungen für den Nagios-Zeitraum"

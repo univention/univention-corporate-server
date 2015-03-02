@@ -127,7 +127,7 @@ property_descriptions={
 
 layout=[
 	Tab(_('General'),_('General settings'), layout = [
-		Group( _( 'General printer group settings' ), layout = [
+		Group( _( 'General printer group share settings' ), layout = [
 			[ 'name', 'spoolHost' ],
 			[ 'sambaName', 'groupMember' ],
 			'setQuota',

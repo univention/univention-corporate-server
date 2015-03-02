@@ -135,7 +135,7 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'General mail folder (IMAP) settings' ), layout = [
+		Group( _( 'General IMAP mail folder settings' ), layout = [
 			[ "name" , "mailDomain" ],
 			[ "mailHomeServer" ],
 			[ "cyrus-userquota" ],

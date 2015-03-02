@@ -201,14 +201,12 @@ msgstr ""
 "Es ist nicht gestattet einen container/ou als untergeordnetes Objekt von "
 "einem container/cn zu erstellen."
 
-#~ msgid "FIXME"
-#~ msgstr "FIXME"
 msgid "General container settings"
-msgstr "Allgemeine Einstellungen für Container"
+msgstr "Allgemeine Einstellungen für den Container"
 
 msgid "General domain settings"
-msgstr "Allgemeine Einstellungen für Domäne"
+msgstr "Allgemeine Einstellungen für die Domäne"
 
 msgid "General organisational unit settings"
-msgstr "Allgemeine Einstellungen für Organisationseinheit"
+msgstr "Allgemeine Einstellungen für die Organisationseinheit"
 

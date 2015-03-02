@@ -1281,31 +1281,31 @@ msgstr "Liste der erlaubten UMC Operationen"
 #~ msgid "Disallow ACL"
 #~ msgstr "Nicht erlaubte Zugriffe"
 msgid "General Univention Directory Manager container settings"
-msgstr "Allgemeine Einstellungen für Univention Directory Manager Container Konfiguration"
+msgstr "Allgemeine Einstellungen für die Univention Directory Manager Container Konfiguration"
 
 msgid "General autostart settings"
-msgstr "Allgemeine Einstellungen für Autostart"
+msgstr "Allgemeine Einstellungen für den Autostart"
 
 msgid "General desktop settings"
-msgstr "Allgemeine Einstellungen für Desktop"
+msgstr "Allgemeine Einstellungen für den Desktop"
 
 msgid "General DHCP boot settings"
-msgstr "Allgemeine Einstellungen für DHCP Boot"
+msgstr "Allgemeine Einstellungen für den DHCP Boot"
 
 msgid "General DHCP DNS settings"
-msgstr "Allgemeine Einstellungen für DHCP DNS"
+msgstr "Allgemeine Einstellungen für das DHCP DNS"
 
 msgid "General DHCP dynamic DNS settings"
-msgstr "Allgemeine Einstellungen für DHCP DNS Aktualisierung"
+msgstr "Allgemeine Einstellungen für die DHCP DNS Aktualisierung"
 
 msgid "General DHCP lease time settings"
-msgstr "Allgemeine Einstellungen für DHCP Lease-Zeit"
+msgstr "Allgemeine Einstellungen für die DHCP Lease-Zeit"
 
 msgid "General DHCP NetBIOS settings"
-msgstr "Allgemeine Einstellungen für DHCP NetBIOS"
+msgstr "Allgemeine Einstellungen für das DHCP NetBIOS"
 
 msgid "General DHCP routing settings"
-msgstr "Allgemeine Einstellungen für DHCP Routing"
+msgstr "Allgemeine Einstellungen für das DHCP Routing"
 
 msgid "General DHCP allow/deny settings"
 msgstr "Allgemeine Einstellungen für DHCP Erlauben/Verbieten"
@@ -1314,50 +1314,49 @@ msgid "General DHCP statements settings"
 msgstr "Allgemeine Einstellungen für DHCP Verschiedenes"
 
 msgid "General LDAP server settings"
-msgstr "Allgemeine Einstellungen für LDAP-Server"
+msgstr "Allgemeine Einstellungen für den LDAP-Server"
 
 msgid "General mail quota settings"
-msgstr "Allgemeine Einstellungen für Mail-Quota"
+msgstr "Allgemeine Einstellungen für den Mail-Quota"
 
 msgid "General maintenance settings"
-msgstr "Allgemeine Einstellungen für Paketpflege"
+msgstr "Allgemeine Einstellungen für die Paketpflege"
 
 msgid "General master packages settings"
-msgstr "Allgemeine Einstellungen für Master Pakete"
+msgstr "Allgemeine Einstellungen für die Master Pakete"
 
 msgid "General member server packages settings"
-msgstr "Allgemeine Einstellungen für Memberserver Pakete"
+msgstr "Allgemeine Einstellungen für die Memberserver Pakete"
 
 msgid "General NFS mounts settings"
-msgstr "Allgemeine Einstellungen für NFS-Freigaben"
+msgstr "Allgemeine Einstellungen für die NFS-Freigaben"
 
 msgid "General print quota settings"
-msgstr "Allgemeine Einstellungen für Druck-Quota"
+msgstr "Allgemeine Einstellungen für den Druck-Quota"
 
 msgid "General print server settings"
-msgstr "Allgemeine Einstellungen für Druckserver"
+msgstr "Allgemeine Einstellungen für den Druckserver"
 
 msgid "General passwords settings"
-msgstr "Allgemeine Einstellungen für Passwort"
+msgstr "Allgemeine Einstellungen für das Passwort"
 
 msgid "General Univention Configuration Registry settings"
 msgstr "Allgemeine Einstellungen für Univention Configuration Registry"
 
 msgid "General automatic updates settings"
-msgstr "Allgemeine Einstellungen für Automatische Updates"
+msgstr "Allgemeine Einstellungen für die automatischen Updates"
 
 msgid "General repository server settings"
-msgstr "Allgemeine Einstellungen für Repository-Server"
+msgstr "Allgemeine Einstellungen für den Repository-Server"
 
 msgid "General repository synchronisation settings"
-msgstr "Allgemeine Einstellungen für Repository-Synchronisation"
+msgstr "Allgemeine Einstellungen für die Repository-Synchronisation"
 
 msgid "General user quota settings"
-msgstr "Allgemeine Einstellungen für Benutzer-Quota"
+msgstr "Allgemeine Einstellungen für den Benutzer-Quota"
 
 msgid "General slave packages settings"
-msgstr "Allgemeine Einstellungen für Slave Pakete"
+msgstr "Allgemeine Einstellungen für die Slave Pakete"
 
 msgid "General UMC settings"
 msgstr "Allgemeine Einstellungen für UMC"
-

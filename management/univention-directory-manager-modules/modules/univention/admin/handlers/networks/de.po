@@ -127,6 +127,6 @@ msgstr "DHCP-Einstellungen"
 
 #~ msgid "Network Manager"
 #~ msgstr "Netzwerkverwaltung"
-msgid "General network settings"
-msgstr "Allgemeine Einstellungen für Netz"
 
+msgid "General network settings"
+msgstr "Allgemeine Einstellungen für das Netz"

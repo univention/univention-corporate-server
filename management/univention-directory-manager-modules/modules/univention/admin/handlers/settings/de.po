@@ -1515,7 +1515,7 @@ msgstr "Gruppenmitgliedschaften"
 
 #: xconfig_choices.py:50
 msgid "Preferences: X Configuration Choices"
-msgstr "Einstellungen: X Konfigurationsauswahl"
+msgstr "Einstellungen: X-Konfigurationsauswahl"
 
 #: xconfig_choices.py:67
 msgid "Resolution"
@@ -1551,7 +1551,7 @@ msgstr "Vertikale Wiederholungsrate"
 
 #: xconfig_choices.py:147
 msgid "X Module"
-msgstr "X Modul"
+msgstr "X-Modul"
 
 #: xconfig_choices.py:157
 msgid "Display Size (mm)"
@@ -1559,7 +1559,7 @@ msgstr "Bildschirm Grösse (mm)"
 
 #: xconfig_choices.py:169
 msgid "X Configuration Choices"
-msgstr "X Konfiguration Auswahl"
+msgstr "X-Konfiguration Auswahl"
 
 #~ msgid ""
 #~ "Configuration of the LDAP settings used to store the extended attribute"
@@ -1575,69 +1575,69 @@ msgstr "X Konfiguration Auswahl"
 
 #~ msgid "UMC layout"
 #~ msgstr "Karteikartendarstellung"
+
 msgid "General default settings"
-msgstr "Allgemeine Einstellungen für Vorgabe"
+msgstr "Allgemeine Einstellungen für die Vorgabe"
 
 msgid "General default container settings"
-msgstr "Allgemeine Einstellungen für Standard-Container"
+msgstr "Allgemeine Einstellungen für den Standard-Container"
 
 msgid "General extended attribute settings"
-msgstr "Allgemeine Einstellungen für Erweitertes Attribut"
+msgstr "Allgemeine Einstellungen für das Erweiterte Attribut"
 
 msgid "General extended options settings"
-msgstr "Allgemeine Einstellungen für Erweiterte Optionen"
+msgstr "Allgemeine Einstellungen für die Erweiterten Optionen"
 
 msgid "General LDAP ACL extension settings"
-msgstr "Allgemeine Einstellungen für LDAP ACL Erweiterung"
+msgstr "Allgemeine Einstellungen für die LDAP ACL Erweiterung"
 
 msgid "General LDAP schema extension settings"
-msgstr "Allgemeine Einstellungen für LDAP-Schemaerweiterung"
+msgstr "Allgemeine Einstellungen für die LDAP-Schemaerweiterung"
 
 msgid "General license settings"
-msgstr "Allgemeine Einstellungen für Lizenz"
+msgstr "Allgemeine Einstellungen für die Lizenz"
 
 msgid "General lock settings"
-msgstr "Allgemeine Einstellungen für Sperrung"
+msgstr "Allgemeine Einstellungen für die Sperrung"
 
 msgid "General package list settings"
-msgstr "Allgemeine Einstellungen für Paketliste"
+msgstr "Allgemeine Einstellungen für die Paketliste"
 
 msgid "General printer driver list settings"
-msgstr "Allgemeine Einstellungen für Druckertreiberliste"
+msgstr "Allgemeine Einstellungen für die Druckertreiberliste"
 
 msgid "General printer URI list settings"
-msgstr "Allgemeine Einstellungen für Drucker-URI-Liste"
+msgstr "Allgemeine Einstellungen für die Drucker-URI-Liste"
 
 msgid "General prohibited user names settings"
-msgstr "Allgemeine Einstellungen für Verbotene Benutzernamen"
+msgstr "Allgemeine Einstellungen für verbotene Benutzernamen"
 
 msgid "General Samba configuration settings"
-msgstr "Allgemeine Einstellungen für Samba-Konfiguration"
+msgstr "Allgemeine Einstellungen für die Samba-Konfiguration"
 
 msgid "General Samba domain settings"
-msgstr "Allgemeine Einstellungen für Samba-Domäne"
+msgstr "Allgemeine Einstellungen für die Samba-Domäne"
 
 msgid "General service settings"
-msgstr "Allgemeine Einstellungen für Dienst"
+msgstr "Allgemeine Einstellungen für den Dienst"
 
 msgid "General syntax definition settings"
-msgstr "Allgemeine Einstellungen für Syntax-Definition"
+msgstr "Allgemeine Einstellungen für die Syntax-Definition"
 
 msgid "General UDM hook settings"
-msgstr "Allgemeine Einstellungen für UDM Hook"
+msgstr "Allgemeine Einstellungen für den UDM Hook"
 
 msgid "General UDM module settings"
-msgstr "Allgemeine Einstellungen für UDM Modul"
+msgstr "Allgemeine Einstellungen für das UDM Modul"
 
 msgid "General UDM syntax settings"
-msgstr "Allgemeine Einstellungen für UDM Syntax"
+msgstr "Allgemeine Einstellungen für die UDM Syntax"
 
 msgid "General UMC operation set settings"
-msgstr "Allgemeine Einstellungen für UMC-Operationen"
+msgstr "Allgemeine Einstellungen für die UMC-Operationen"
 
 msgid "General user template settings"
-msgstr "Allgemeine Einstellungen für Benutzervorlage"
+msgstr "Allgemeine Einstellungen für die Benutzervorlage"
 
 msgid "General X configuration choices settings"
-msgstr "Allgemeine Einstellungen für X Konfigurationsauswahl"
-
+msgstr "Allgemeine Einstellungen für die X-Konfigurationsauswahl"

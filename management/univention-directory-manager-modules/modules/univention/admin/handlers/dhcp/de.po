@@ -210,23 +210,23 @@ msgstr "DHCP: Subnetz"
 #~ msgid "Basic values"
 #~ msgstr "Grundeinstellungen"
 msgid "General host settings"
-msgstr "Allgemeine Einstellungen für Rechner"
+msgstr "Allgemeine Einstellungen für den Rechner"
 
 msgid "General pool settings"
-msgstr "Allgemeine Einstellungen für Pool"
+msgstr "Allgemeine Einstellungen für den Pool"
 
 msgid "General server settings"
-msgstr "Allgemeine Einstellungen für Server"
+msgstr "Allgemeine Einstellungen für den Server"
 
 msgid "General service settings"
-msgstr "Allgemeine Einstellungen für Service"
+msgstr "Allgemeine Einstellungen für den Dienst"
 
 msgid "General shared network settings"
-msgstr "Allgemeine Einstellungen für Shared Network"
+msgstr "Allgemeine Einstellungen für das Shared Network"
 
 msgid "General shared subnet settings"
-msgstr "Allgemeine Einstellungen für Shared Subnet"
+msgstr "Allgemeine Einstellungen für das Shared Subnet"
 
 msgid "General subnet settings"
-msgstr "Allgemeine Einstellungen für Subnetz"
+msgstr "Allgemeine Einstellungen für das Subnetz"
 
