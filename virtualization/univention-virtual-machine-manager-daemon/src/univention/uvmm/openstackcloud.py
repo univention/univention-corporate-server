@@ -44,8 +44,7 @@ import errno
 import ssl
 
 from node import PersistentCached
-from helpers import TranslatableException
-from cloudconnection import CloudConnection
+from cloudconnection import CloudConnection, CloudConnectionError
 from protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Secgroup_Rule, Cloud_Data_Size, Cloud_Data_Network, Cloud_Data_Image
 import univention.config_registry as ucr
 
@@ -99,7 +98,7 @@ LIBCLOUD_UVMM_STATE_MAPPING = {
 		}
 
 
-class OpenStackCloudConnectionError(TranslatableException):
+class OpenStackCloudConnectionError(CloudConnectionError):
 	pass
 
 

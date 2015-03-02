@@ -45,8 +45,8 @@ import errno
 import ssl
 
 from node import PersistentCached
-from helpers import TranslatableException
-from cloudconnection import CloudConnection
+from helpers import N_ as _
+from cloudconnection import CloudConnection, CloudConnectionError
 from protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Size, Cloud_Data_Network
 import univention.config_registry as ucr
 
@@ -105,7 +105,7 @@ PROVIDER_MAPPING = {
 		}
 
 
-class EC2CloudConnectionError(TranslatableException):
+class EC2CloudConnectionError(CloudConnectionError):
 	pass
 
 
@@ -506,8 +506,12 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 					self.logerror(logger, "Unknown exception %s with unknown errno %s: %s" % (self.publicdata.name, e.errno, self.publicdata.url))
 			elif hasattr(e, 'message'):
 				self.logerror(logger, "%s: %s Error: %s" % (self.publicdata.name, self.publicdata.url, e.message))
+				if "Blocked" in e.message:
+					raise EC2CloudConnectionError(_('The EC2 endpoint returned an error for connection "%(connection)s":\n\nYour account is currently blocked. If you have questions, please contact AWS Support.'), connection=self.publicdata.name)
 				if "RequestExpired" in e.message:
-					raise EC2CloudConnectionError("RequestExpired for connection %s, check system time" % self.publicdata.name)
+					raise EC2CloudConnectionError(_('The EC2 endpoint returned an error for connection "%(connection)s":\n\nRequestExpired: Please check your system time.'), connection=self.publicdata.name)
+				if "UnauthorizedOperation" in e.message:
+					raise EC2CloudConnectionError(_('The EC2 endpoint returned an error for connection "%(connection)s":\n\nUnauthorizedOperation: You are not authorized to perform this operation. Check your IAM policies, and ensure that you are using the correct access keys. Also, the IAM user must have appropriate access rights to interact with EC2, e.g. AmazonEC2FullAccess.'), connection=self.publicdata.name)
 			else:
 				self.logerror(logger, "Unknown exception %s: %s, %s" % (self.publicdata.name, self.publicdata.url, dir(e)))
 			raise
