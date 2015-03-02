@@ -1,3 +1,10 @@
+ucs-test (5.0.121-2) unstable; urgency=low
+
+  * 51_samba4/56evaluate_windows_gpo: marked test as one that requires Windows
+    host to be in the domain (tag "native_win_client") Bug #37568.
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 02 Mar 2015 15:24:48 +0100
+
 ucs-test (5.0.121-1) unstable; urgency=medium
 
   * 51_samba4/47domain_user_lockout: changed the way credentials for samba-tool
