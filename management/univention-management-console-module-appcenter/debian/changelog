@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-8) unstable; urgency=low
+
+  * Bug #35614: Better error messages when App Center contact fails
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 03 Mar 2015 15:47:32 +0100
+
 univention-management-console-module-appcenter (4.1.20-7) unstable; urgency=low
 
   * Bug #35456: Support WebInterfacePort
