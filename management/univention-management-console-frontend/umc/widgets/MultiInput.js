@@ -294,17 +294,33 @@ define([
 			}
 
 			this._allWidgetsBuiltDeferred.then(lang.hitch(this, function() {
-				var i, j, jwidget;
+				// prepare an array with labels for all widgets
+				var allLabels = [];
+				var i, j;
+				for (i = 0; i < this._widgets.length; ++i) {
+					allLabels.push(label);
+				}
+
+				// set all labels at once
+				this._setAllLabels(allLabels);
+
+				// notify observers
+				this._set('label', _label);
+			}));
+		},
+
+		_setAllLabels: function(labels) {
+			this._allWidgetsBuiltDeferred.then(lang.hitch(this, function() {
+				var i, j, jwidget, label;
 				for (i = 0; i < this._widgets.length; ++i) {
 					for (j = 0; j < this._widgets[i].length; ++j) {
 						jwidget = this._widgets[i][j];
-						if (!jwidget) {
-							continue;
+						if (jwidget) {
+							label = i < labels.length && j < labels[i].length ? labels[i][j] : '';
+							jwidget.set('label', label);
 						}
-						jwidget.set('label', label[j]);
 					}
 				}
-				this._set('label', _label);
 			}));
 		},
 
