@@ -1,3 +1,10 @@
+ucs-test (5.0.122-4) unstable; urgency=low
+
+  * 20_appcenter/43_installed_apps_check_packages_available_for_i386·
+    bugfix (Bug #31792)
+
+ -- Drees Dormann <dormann@univention.de>  Tue, 03 Mar 2015 09:05:31 +0100
+
 ucs-test (5.0.122-3) unstable; urgency=low
 
   * 00_checks/10_s4_connector_rejects: disabled the test due to Bug #37570.

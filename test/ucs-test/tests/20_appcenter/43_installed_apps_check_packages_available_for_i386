@@ -130,10 +130,13 @@ class Test():
 			ucr_update(ucr, {'repository/online/architectures' : 'i386 amd64'})
 			os.system('dpkg --add-architecture %s > /dev/null' % self._other_arch)
 			os.system('apt-get update > /dev/null')
+			self.pkg_cache = apt.apt_pkg.Cache()
 			if not self.pkg_cache.is_multi_arch:
 				print "Error adding %s architecture" % self._other_arch
 				sys.exit(1)
-		self.pkg_cache = apt.apt_pkg.Cache()
+		else:
+			self.pkg_cache = apt.apt_pkg.Cache()
+
 
 
 	def unset_multi_architecture(self):
