@@ -56,8 +56,8 @@ msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
 #: domain.py:69
-msgid "Mail domain settings"
-msgstr "Mail-Domäne-Einstellungen"
+msgid "Mail domain description"
+msgstr "Mail-Domänen-Bezeichnung"
 
 #: folder.py:51
 msgid "Mail folder (IMAP)"
@@ -177,7 +177,7 @@ msgstr "Mail-Objekt(e) suchen"
 #~ msgstr "Mail-Adresse"
 
 msgid "General IMAP mail folder settings"
-msgstr "Allgemeine Einstellungen für den IMAP-Mail-Ordner"
+msgstr "Grundeinstellungen - IMAP-Mail-Ordner"
 
 msgid "General mailing list settings"
-msgstr "Allgemeine Einstellungen für die Mailingliste"
+msgstr "Grundeinstellungen - Mailingliste"

@@ -129,4 +129,4 @@ msgstr "DHCP-Einstellungen"
 #~ msgstr "Netzwerkverwaltung"
 
 msgid "General network settings"
-msgstr "Allgemeine Einstellungen für das Netz"
+msgstr "Grundeinstellungen - Netzwerk"

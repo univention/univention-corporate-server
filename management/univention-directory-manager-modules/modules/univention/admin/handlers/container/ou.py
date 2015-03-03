@@ -190,7 +190,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'),_('Basic settings'), layout = [
-		Group( _( 'General organisational unit settings' ), layout = [
+		Group( _( 'Organisational unit description' ), layout = [
 			[ "name", "description" ]
 			] ),
 		] ),

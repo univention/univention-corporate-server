@@ -98,7 +98,7 @@ options={
 
 layout = [
 	Tab(_('General'), _('Basic settings'), layout = [
-		Group( _( 'General shared subnet settings' ), layout = [
+		Group( _( 'General DHCP shared subnet settings' ), layout = [
 			[ 'subnet', 'subnetmask' ],
 			'broadcastaddress',
 			'range'

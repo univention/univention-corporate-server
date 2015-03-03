@@ -278,7 +278,7 @@ msgid "Time Period Settings"
 msgstr "Zeitraum-Einstellungen"
 
 msgid "General nagios service settings"
-msgstr "Allgemeine Einstellungen für den Nagios-Dienst"
+msgstr "Grundeinstellungen - Nagios-Dienst"
 
 msgid "General nagios time period settings"
-msgstr "Allgemeine Einstellungen für den Nagios-Zeitraum"
+msgstr "Grundeinstellungen - Nagios-Zeitraum"

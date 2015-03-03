@@ -1006,11 +1006,11 @@ msgid "%s (%s on %s)"
 msgstr "%s (%s auf %s)"
 
 msgid "General printer share settings"
-msgstr "Allgemeine Einstellungen für die Freigabe des Druckers"
+msgstr "Grundeinstellungen - Druckerfreigabe"
 
 msgid "General printer group share settings"
-msgstr "Allgemeine Einstellungen für die Freigabe der Druckergruppe"
+msgstr "Grundeinstellungen - Druckergruppen-Freigabe"
 
 msgid "General directory share settings"
-msgstr "Allgemeine Einstellungen für die Freigabe des Verzeichnisses"
+msgstr "Grundeinstellungen - Verzeichnisfreigabe"
 

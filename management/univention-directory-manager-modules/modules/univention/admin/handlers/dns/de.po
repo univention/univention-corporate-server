@@ -279,22 +279,22 @@ msgstr "DNS: TXT Record"
 #~ msgstr "Reverse Record erstellen/erneuern"
 
 msgid "General alias record settings"
-msgstr "Allgemeine Einstellungen für den Alias Record"
+msgstr "Grundeinstellungen - Alias Record"
 
 msgid "General forward lookup zone settings"
-msgstr "Allgemeine Einstellungen für die Forward Lookup Zone"
+msgstr "Grundeinstellungen - Forward Lookup Zone"
 
 msgid "General host record settings"
-msgstr "Allgemeine Einstellungen für den Host Record"
+msgstr "Grundeinstellungen - Host Record"
 
 msgid "General pointer record settings"
-msgstr "Allgemeine Einstellungen für den Pointer Record"
+msgstr "Grundeinstellungen - Pointer Record"
 
 msgid "General reverse lookup zone settings"
-msgstr "Allgemeine Einstellungen für die Reverse Lookup Zone"
+msgstr "Grundeinstellungen - Reverse Lookup Zone"
 
 msgid "General service record settings"
-msgstr "Allgemeine Einstellungen für den Service Record"
+msgstr "Grundeinstellungen - Service Record"
 
 msgid "General TXT record settings"
-msgstr "Allgemeine Einstellungen für den TXT Record"
+msgstr "Grundeinstellungen - TXT Record"

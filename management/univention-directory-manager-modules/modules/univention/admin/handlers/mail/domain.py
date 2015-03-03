@@ -66,7 +66,7 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'Mail domain settings' ), layout = [
+		Group( _( 'Mail domain description' ), layout = [
 			"name",
 		] ),
 	] ),

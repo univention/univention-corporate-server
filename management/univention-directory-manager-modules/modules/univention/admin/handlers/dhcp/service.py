@@ -62,7 +62,7 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'General service settings' ), layout = [
+		Group( _( 'DHCP service description' ), layout = [
 			'service',
 		] ),
 	] ),

@@ -960,7 +960,7 @@ layout = [
 		Group( _( 'Locking and deactivation' ), layout = [
 			[ 'disabled', 'locked'],
 			[ 'userexpiry', 'passwordexpiry' ],
-			'pwdChangeNextLogin', 
+			'pwdChangeNextLogin',
 			] ),
 		Group( _( 'Windows' ), _( 'Windows account settings' ), layout = [
 			[ 'homedrive', 'sambahome' ],
@@ -1002,7 +1002,7 @@ layout = [
 			], ),
 		] ),
 	Tab( _( 'Certificate' ), _( 'Certificate' ), advanced = True, layout = [
-		Group( _( 'General user settings' ), '', [
+		Group( _( 'General' ), '', [
 			'userCertificate',
 			] ),
 		Group( _( 'Subject' ), '', [

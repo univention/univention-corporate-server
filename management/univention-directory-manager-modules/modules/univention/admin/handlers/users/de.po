@@ -638,7 +638,3 @@ msgstr "%s: Ungültige Pfadangabe"
 
 #~ msgid "Extended settings"
 #~ msgstr "Erweiterte Einstellungen"
-
-msgid "General user settings"
-msgstr "Allgemeine Einstellungen für den Benutzer"
-

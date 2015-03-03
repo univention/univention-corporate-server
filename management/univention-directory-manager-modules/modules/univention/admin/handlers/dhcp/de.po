@@ -207,26 +207,24 @@ msgstr "DHCP: Subnetz"
 #~ msgid "Fixed IP Addresses of the Host"
 #~ msgstr "Feste IP-Adressen des Rechners"
 
-#~ msgid "Basic values"
-#~ msgstr "Grundeinstellungen"
-msgid "General host settings"
-msgstr "Allgemeine Einstellungen für den Rechner"
+msgid "General DHCP host settings"
+msgstr "Grundeinstellungen - DHCP-Rechner"
 
-msgid "General pool settings"
-msgstr "Allgemeine Einstellungen für den Pool"
+msgid "General DHCP pool settings"
+msgstr "Grundeinstellungen - DHCP-Pool"
 
-msgid "General server settings"
-msgstr "Allgemeine Einstellungen für den Server"
+msgid "DHCP server description"
+msgstr "DHCP-Server-Bezeichnung"
 
-msgid "General service settings"
-msgstr "Allgemeine Einstellungen für den Dienst"
+msgid "DHCP service description"
+msgstr "DHCP-Dienst-Bezeichnung"
 
-msgid "General shared network settings"
-msgstr "Allgemeine Einstellungen für das Shared Network"
+msgid "DHCP shared network description"
+msgstr "DHCP-Shared Network-Bezeichnung"
 
-msgid "General shared subnet settings"
-msgstr "Allgemeine Einstellungen für das Shared Subnet"
+msgid "General DHCP shared subnet settings"
+msgstr "Grundeinstellungen - DHCP-Shared Subnet"
 
-msgid "General subnet settings"
-msgstr "Allgemeine Einstellungen für das Subnetz"
+msgid "General DHCP subnet settings"
+msgstr "Grundeinstellungen - DHCP-Subnetz"
 

@@ -99,7 +99,7 @@ options={
 
 layout = [
 	Tab( _( 'General' ), _('Basic settings'), layout = [
-		Group( _( 'General subnet settings' ), layout = [
+		Group( _( 'General DHCP subnet settings' ), layout = [
 			[ 'subnet', 'subnetmask' ],
 			'broadcastaddress',
 			'range'

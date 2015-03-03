@@ -65,7 +65,7 @@ options={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'General shared network settings' ), layout = [
+		Group( _( 'DHCP shared network description' ), layout = [
 			'name'
 		] ),
 	] ),

@@ -201,12 +201,12 @@ msgstr ""
 "Es ist nicht gestattet einen container/ou als untergeordnetes Objekt von "
 "einem container/cn zu erstellen."
 
-msgid "General container settings"
-msgstr "Allgemeine Einstellungen für den Container"
+msgid "Container description"
+msgstr "Container-Bezeichnung"
 
-msgid "General domain settings"
-msgstr "Allgemeine Einstellungen für die Domäne"
+msgid "Domain container description"
+msgstr "Domänen-Container-Bezeichnung"
 
-msgid "General organisational unit settings"
-msgstr "Allgemeine Einstellungen für die Organisationseinheit"
+msgid "Organisational unit description"
+msgstr "Organisationseinheit-Bezeichnung"
 
