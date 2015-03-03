@@ -101,6 +101,8 @@ def LDAP_Connection(func):
 	"""
 	def _get_user_connection():
 		global _licenseCheck
+		lo = _ldap_connection
+		po = _ldap_position
 		if _ldap_connection is None:
 			MODULE.info('Opening LDAP connection for user %s' % _user_dn)
 			lo = udm_uldap.access(host=ucr.get('ldap/master'), base=ucr.get('ldap/base'), binddn=_user_dn, bindpw=_password)
@@ -127,10 +129,6 @@ def LDAP_Connection(func):
 					lo.requireLicense()
 
 			po = udm_uldap.position(lo.base)
-		else:
-			MODULE.info('Using open LDAP connection for user %s' % _user_dn)
-			lo = _ldap_connection
-			po = _ldap_position
 		return lo, po
 
 	def _func(*args, **kwargs):

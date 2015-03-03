@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-53) unstable; urgency=medium
+
+  * Bug #37740: Don't log every function call which uses @LDAP_Connection
+
+ -- Florian Best <best@univention.de>  Tue, 03 Mar 2015 12:30:55 +0100
+
 univention-management-console-module-udm (5.1.25-52) unstable; urgency=medium
 
   * Bug #36708: fix JS traceback when editing a new object (introduced by
