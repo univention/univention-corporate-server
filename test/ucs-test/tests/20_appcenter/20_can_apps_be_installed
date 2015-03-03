@@ -84,7 +84,7 @@ for app in all_apps:
 
 	print 'Checking app: %r' % app
 	result, previously_registered_by_dry_run = app.install_dry_run(pm, cm)
-	if result['broken']:
+	if result.get('broken'):
 		failed.append((app, result['broken']))
 
 if failed:

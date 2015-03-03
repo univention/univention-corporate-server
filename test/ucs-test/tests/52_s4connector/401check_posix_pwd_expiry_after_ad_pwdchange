@@ -1,0 +1,90 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Change password vi s4 and verify shadowMax and shadowLastChange (posix pw expiry)"
+## exposure: dangerous
+## packages:
+##  - univention-samba4
+##  - univention-s4-connector
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+## bugs:
+##  - 36317
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "s4connector.sh" || exit 137
+
+RETVAL=100
+
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+function ad_change_password () 
+{
+	local uid="$1"
+	local old="$2"
+	local new="$3"
+
+	samba-tool user password -U "$uid" --password "$old" --newpassword="$new"
+	return $?
+}
+
+SYNCMODE="$(ad_get_sync_mode)"
+HOST="$(ucr get connector/s4/ldap/host)"
+SHADOW_LASTCHANGE="$(( $(date +"%s") / 3600 / 24 ))"
+SHADOW_MAX=99
+ad_set_sync_mode "sync"
+
+####################################################
+# check shadowLastChange=now and shadowMax=x
+section "Test S4 password change with expiry policy"
+####################################################
+
+UDM_policies_pwhistory_name="$(random_chars)"
+UDM_policies_pwhistory_expiryInterval=$SHADOW_MAX
+udm_create "policies/pwhistory" || fail_test 110
+
+UDM_users_user_username="$(random_chars)"
+UDM_users_user_lastname="$(random_chars)"
+UDM_users_user_password="univention"
+UDM_users_user_firstname="$(random_chars)"
+udm_create "users/user" || fail_test 110
+udm_modify "users/user" "" "" "" "" \
+	--set pwdChangeNextLogin=0 \
+	--policy-reference="cn=$UDM_policies_pwhistory_name,$ldap_base" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_change_password "$UDM_users_user_username" "univention" "123-abc-ABC-?" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%123-abc-ABC-?" ; fail_bool 0 100
+udm_verify_ldap_attribute "shadowLastChange" "$SHADOW_LASTCHANGE" "users/user" || fail_test 110
+udm_verify_ldap_attribute "shadowMax" "$SHADOW_MAX" "users/user" || fail_test 110
+
+#######################################################
+# check shadowLastChange=now and no shadowMax
+section "Test S4 password change without expiry policy"
+#######################################################
+
+udm_modify "users/user" "" "" "" "" \
+	--policy-dereference="cn=$UDM_policies_pwhistory_name,$ldap_base" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_change_password "$UDM_users_user_username" "123-abc-ABC-?" "Univention.99" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%Univention.99" ; fail_bool 0 100
+udm_verify_ldap_attribute "shadowLastChange" "$SHADOW_LASTCHANGE" "users/user" || fail_test 110
+udm_verify_ldap_attribute "shadowMax" "" "users/user" || fail_test 110
+univention-ldapsearch uid=$UDM_users_user_username
+
+##################
+section "Clean up"
+##################
+
+udm_remove "users/user" || fail_test 110
+udm_remove "policies/pwhistory" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+udm_exists "users/user"; fail_bool 1 110
+udm_exists "policies/pwhistory"; fail_bool 1 110
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
