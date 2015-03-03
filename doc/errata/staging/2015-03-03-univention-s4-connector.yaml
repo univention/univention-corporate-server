@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-s4-connector
+fix: 9.0.16-11.542.201503031117
+version: [1]
+desc: |
+  This update addresses the following issue:
+  * The S4 connector now caculates and sets the posix password
+    expiry attributes during password change via S4/windows.
+bug: [36317]
