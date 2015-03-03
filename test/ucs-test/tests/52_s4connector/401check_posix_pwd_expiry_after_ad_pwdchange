@@ -52,7 +52,6 @@ UDM_users_user_password="univention"
 UDM_users_user_firstname="$(random_chars)"
 udm_create "users/user" || fail_test 110
 udm_modify "users/user" "" "" "" "" \
-	--set pwdChangeNextLogin=0 \
 	--policy-reference="cn=$UDM_policies_pwhistory_name,$ldap_base" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 ad_change_password "$UDM_users_user_username" "univention" "123-abc-ABC-?" || fail_test 110
@@ -74,7 +73,6 @@ ad_wait_for_synchronization; fail_bool 0 110
 smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%Univention.99" ; fail_bool 0 100
 udm_verify_ldap_attribute "shadowLastChange" "$SHADOW_LASTCHANGE" "users/user" || fail_test 110
 udm_verify_ldap_attribute "shadowMax" "" "users/user" || fail_test 110
-univention-ldapsearch uid=$UDM_users_user_username
 
 ##################
 section "Clean up"
