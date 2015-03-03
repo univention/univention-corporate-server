@@ -739,15 +739,12 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 			## Update POSIX password expiry interval
 			##
 			## update shadowLastChange to now
-			if res[0][1].has_key('shadowLastChange'):
-				new_shadowLastChange = str(long(time.time())/3600/24)
-				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))
-				modlist.append(('shadowLastChange', res[0][1]['shadowLastChange'][0], new_shadowLastChange))
+			old_shadowLastChange = res[0][1].get('shadowLastChange', [None])[0]
+			new_shadowLastChange = str(long(time.time())/3600/24)
+			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))
+			modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
 			## shadowMax (set to value of univentionPWExpiryInterval, otherwise delete)
-			if res[0][1].has_key('shadowMax'):
-				old_shadowMax = res[0][1]['shadowMax'][0]
-			else:
-				old_shadowMax = None
+			old_shadowMax = res[0][1].get('shadowMax', [None])[0]
 			new_shadowMax = None
 			policies = s4connector.lo.getPolicies(ucs_object['dn'])
 			pwexp = policies.get('univentionPolicyPWHistory', {}).get('univentionPWExpiryInterval')
