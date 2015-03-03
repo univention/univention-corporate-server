@@ -1613,11 +1613,12 @@ class Application(object):
 				# open().readlines() works, but not very good for big log files
 				# working with f.seek() is a hassle
 				try:
-					line = subprocess.check_output(['tail', '-n', '1', '/var/log/univention/join.log'])
-				except subprocess.CalledProcessError as e:
-					MODULE.warn('Watching join.log failed: %s' % str(e))
+					line = subprocess.check_output(['tail', '-n', '1', '/var/log/univention/join.log']).strip()
+				except subprocess.CalledProcessError as exc:
+					MODULE.warn('Watching join.log failed: %s' % exc)
 				else:
-					package_manager.progress_state.info(line)
+					if line:
+						package_manager.progress_state.info(line)
 				time.sleep(1)
 			run_join_scripts.join()
 
