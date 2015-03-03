@@ -944,7 +944,7 @@ slapcat &gt; ldapdaten.txt
 			Wird Samba 4 eingesetzt, belegt der Samba-Domänencontroller-Dienst die
 			Ports 389 und 636. In diesem Fall wird OpenLDAP automatisch umkonfiguriert, so
 			dass nur noch die Ports 7389 und 7636 eingesetzt werden. Dies ist insbesondere
-			bei der Konfiguration von Syncrepl zu beachten (siehe <xref
+			bei der Konfiguration von syncrepl zu beachten (siehe <xref
 			linkend="domain:ldap:syncrepl"/>). <command>univention-ldapsearch</command>
 			verwendet automatisch den Standard-Port.
 		</para>
