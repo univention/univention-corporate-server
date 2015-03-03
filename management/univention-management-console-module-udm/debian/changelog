@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-55) unstable; urgency=low
+
+  * Bug #35614: Better error messages for UCS activation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 03 Mar 2015 17:40:00 +0100
+
 univention-management-console-module-udm (5.1.25-54) unstable; urgency=medium
 
   * Bug #36708: adjust policy labeling, also for UCRV policies
