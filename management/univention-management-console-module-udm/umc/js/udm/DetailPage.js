@@ -535,7 +535,19 @@ define([
 								jprop.type = 'MultiInput';
 							}
 							jprop.disabled = true; // policies cannot be edited
-							jprop.$orgLabel$ = jprop.label; // we need the original label
+
+							// store the original label (we will modify it)
+							jprop.$orgLabel$ = jprop.label;
+							if (jprop.subtypes instanceof Array) {
+								// in case we have subtypes (e.g. for MultiInput),
+								// prefer their labels over the widget's one
+								jprop.$orgLabel$ = [];
+								array.forEach(jprop.subtypes, function(itype, i) {
+									// set the subtype label
+									var subTypeLabel = itype.label || (i === 0 && jprop.label ? jprop.label : '&nbsp;');
+									jprop.$orgLabel$.push(subTypeLabel);
+								});
+							}
 
 							// add an empty label to ComboBox so that _firstValueInList
 							//   is an empty string. This will empty the choice of
@@ -1224,16 +1236,14 @@ define([
 
 					var _getLabel = function(labelFunc, dn) {
 						var label = '';
-						if (iwidget.subtypes instanceof Array) {
-							label = [];
-							array.forEach(iwidget.subtypes, function(itype, i) {
-								// set the subtype label
-								var subTypeLabel = itype.label || (i === 0 && iwidget.$orgLabel$ ? iwidget.$orgLabel$ : '&nbsp;');
-								label.push(labelFunc(subTypeLabel, dn));
+						if (iwidget.$orgLabel$ instanceof Array) {
+							label = array.map(iwidget.$orgLabel$, function(ilabel, i) {
+								// only add the edit link to the first entry
+								return i == 0 ? labelFunc(ilabel, dn) : ilabel;
 							});
 						}
 						else {
-							label = labelFunc(iwidget.$orgLabel, dn);
+							label = labelFunc(iwidget.$orgLabel$, dn);
 						}
 						return label;
 					};
@@ -1259,38 +1269,17 @@ define([
 						}));
 
 						iwidget.ready().then(lang.hitch(this, function() {
-							array.forEach(iinfo, function(jinfo, j) {
+							var labels = array.map(iinfo, function(jinfo, j) {
 								if (iwidget._rowContainers.length < j) {
-									// something is wrong... there are not enough entries it seems
-									return false;
+									// default to the original label
+									return iwidget.$orgLabel$;
 								}
-
-								var label = _getEditLabel('', jinfo.policy);
-								var container = iwidget._rowContainers[j];
-								if (!container.$linkWidget$) {
-									// add an additional widget with the link the the UCR policy to the row
-									container.$linkWidget$ = new LabelPane({
-										label: j === 0 ? '&nbsp;' : '',
-										content: new Text({
-											content: label
-										})
-									});
-
-									// get the correct row container
-									container.addChild(container.$linkWidget$);
-								} else {
-									// link widget already exists, update its content
-									container.$linkWidget$.get('content').set('content', label);
-								}
+								return _getLabel(_editLabelFunc, jinfo.policy);
 							}, this);
-
-							// make sure that the last row does not contain a link widget
-							var lastContainer = iwidget._rowContainers[iwidget._rowContainers.length - 1];
-							if (lastContainer.$linkWidget$) {
-								lastContainer.removeChild(lastContainer.$linkWidget$);
-								lastContainer.$linkWidget$.destroyRecursive();
-								lastContainer.$linkWidget$ = null;
+							if (!labels.length) {
+								labels.push(iwidget.$orgLabel$);
 							}
+							iwidget._setAllLabels(labels);
 						}));
 					} else {
 						// fallback
