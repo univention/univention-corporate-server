@@ -1,3 +1,11 @@
+ucs-test (5.0.122-7) unstable; urgency=low
+
+  * 20_appcenter/18_check_app_links: test for broken links;
+    debian/control: added 'linkchecker' as dependency for
+    appcenter tests (Bug #37717)
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 03 Mar 2015 17:03:45 +0100
+
 ucs-test (5.0.122-6) unstable; urgency=low
 
   * Bug #36317: tests/52_s4connector/401check_posix_pwd_expiry_after_ad_pwdchange 

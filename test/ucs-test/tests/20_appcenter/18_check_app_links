@@ -1,0 +1,179 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check that links in the .ini files do not return errors when accessed.
+## roles-not: [basesystem]
+## tags: [basic, apptest]
+## bugs: [37717]
+## packages:
+##   - univention-management-console-module-appcenter
+##   - linkchecker
+## exposure: careful
+
+from os import path
+from glob import glob
+from re import findall
+from subprocess import Popen, PIPE
+from multiprocessing import Process, Pipe as m_Pipe
+
+import univention.testing.utils as utils
+from univention.testing.codes import TestCodes
+from univention.config_registry import handler_set, handler_unset
+from univention.management.console.modules.appcenter.app_center import Application, CACHE_DIR, ucr
+
+APP_CENTER = "http://appcenter.software-univention.de/"  # server for the test
+APPCENTER_FILE = "/var/cache/appcenter-installed.txt"  # installed apps
+FAIL_CODES = ('404',)  # response codes that make the test fail (as 'str')
+CHECK_LEVEL = '0'  # level of recursion when checking links:
+                   # ('0' to check only current link)
+                   # ('1' or higher may lead to a very-very long checks)
+check_installed_apps = []  # list of installed apps (from APPCENTER_FILE)
+failures_counter = 0  # errors counter
+
+
+def fail_the_test():
+    """
+    Simply increases the global failures counter.
+    """
+    global failures_counter
+    failures_counter += 1
+
+
+def get_installed_apps():
+    """
+    Populates the global 'check_installed_apps' with ids from the
+    'APPCENTER_FILE'. Skips when the 'APPCENTER_FILE' does not exist.
+    """
+    try:
+        if not path.exists(APPCENTER_FILE):
+            print("The '%s' file with a list of installed Apps cannot "
+                  "be found." % APPCENTER_FILE)
+            exit(TestCodes.RESULT_SKIP)
+
+        AppsFile = open(APPCENTER_FILE)
+        global check_installed_apps
+        for app_id in AppsFile:
+            check_installed_apps.append(app_id.strip())
+
+        AppsFile.close()
+        print "Installed Apps are:", check_installed_apps
+    except (IOError, OSError) as exc:
+        utils.fail("An error occured while trying to open the '%s' file: %r"
+                   % (APPCENTER_FILE, exc))
+
+
+def create_and_run_process(proc_connection, cmd):
+    """
+    Puts the stdout and stderr of the created and executed 'cmd'
+    into 'proc_connection'.
+    """
+    proc = Popen(cmd, stdout=PIPE, stderr=PIPE)
+    proc_connection.send(proc.communicate())
+    proc_connection.close()
+
+
+def collect_links():
+    """
+    Looks for all .ini files in CACHE_DIR;
+    Opens the .inis of installed Apps and looks for 'http' in every line;
+    Adds link found to a set and returns it when done.
+    """
+    test_path = glob(path.join(CACHE_DIR, '*.ini'))
+    links_to_check = set()
+
+    for app in check_installed_apps:
+        print "\nChecking App:", app
+        app = "/" + app  # .ini filename starts with application name
+
+        for filename in test_path:
+            if app in filename:
+                print "\nGetting links from file '%s':" % filename
+
+                # determine links to be checked (duplicates are ignored):
+                with open(filename, 'r') as ini_file:
+                    for line in ini_file:
+                        if 'http:' in line:
+                            links_to_check.add(line[line.find('http:'):].rstrip())
+
+    return links_to_check
+
+
+def check_ini_files():
+    """
+    Collects all links from .inis of installed Apps;
+    Checks all links found using 'linkchecker';
+    Checks the stdout of 'linkchecker' for FAIL_CODES.
+    """
+    print "\nThe path to Appcenter .ini files is:", CACHE_DIR
+    if not path.exists(CACHE_DIR):
+        utils.fail("The path to App center .ini files does not exist.")
+
+    # check links using linkchecker:
+    for link in collect_links():
+        print "\nChecking link:", link
+        cmd = ('linkchecker', '-r', CHECK_LEVEL, '-v', '--timeout=60', link)
+        print "Executing:", cmd
+
+        # a separate Process is run with a timeout to make sure
+        # that test does not hang with "waiting" links:
+        parent_conn, child_conn = m_Pipe()
+        proc = Process(target=create_and_run_process, args=(child_conn, cmd))
+        proc.start()
+        stdout, stderr = parent_conn.recv()
+        proc.join(90)
+
+        if stderr:
+            print "STDERR:", stderr
+
+        if not stdout:
+            print "Failed to get any stdout from linkchecker..."
+            print "\n ERROR: The link '%s' seems to be inaccessible\n" % link
+            fail_the_test()
+        else:
+            for error_code in FAIL_CODES:
+                if findall("Ergebnis.*\s" + error_code + "\s", stdout):
+                    print ("\n ERROR: Code '%s' was found when checking link "
+                           "'%s'. See below:\n" % (error_code, link))
+                    print "STDOUT:", stdout
+                    fail_the_test()
+
+
+def set_unset_ucr_appcenter_server(server_url=''):
+    """
+    Sets the UCR var 'repository/app_center/server' to a given 'server_url',
+    or unsets it in case no 'server_url' is given. Reloads the UCR and
+    performs a sync after.
+    """
+    ucr_appcenter_server = 'repository/app_center/server'
+
+    if server_url:
+        print("\nSetting the UCR var '%s' to '%s':"
+              % (ucr_appcenter_server, server_url))
+        handler_set(['%s=%s' % (ucr_appcenter_server, server_url)])
+    else:
+        print "\nUnsetting the UCR var '%s':" % ucr_appcenter_server
+        handler_unset([ucr_appcenter_server])
+
+    ucr.load()
+    Application.sync_with_server()
+
+
+if __name__ == '__main__':
+    # skip the test if there are no Apps (in 'APPCENTER_FILE'):
+    get_installed_apps()
+
+    # save original 'app_center/server' UCR setting:
+    ucr_appcenter_server_orig = ucr.get('repository/app_center/server')
+
+    # set APP_CENTER to be used for the test
+    set_unset_ucr_appcenter_server(APP_CENTER)
+
+    try:
+        # find and check only .ini files of the 'check_installed_apps':
+        check_ini_files()
+
+        if failures_counter:
+            utils.fail("\nThere were %d link error(s) were detected, please "
+                       "check a complete test output." % failures_counter)
+        else:
+            print "\nNo errors were detected.\n"
+    finally:
+        set_unset_ucr_appcenter_server(ucr_appcenter_server_orig)
