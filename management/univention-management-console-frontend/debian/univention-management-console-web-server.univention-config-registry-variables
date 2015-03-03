@@ -27,3 +27,16 @@ Description[de]=Legt die minimale Größe (in KB) an freiem Festplattenspeicher 
 Description[en]=Sets the minimum size of free disk space (in kb) which must be available to upload files. If the variable is unset, 51200 applies.
 Type=int
 Categories=management-umc
+
+[umc/http/maxthreads]
+Description[de]=Definiert die maximale Anzahl an offenen Anfragen, die der UMC-Web-Server parallel verarbeiten wird. Ist die Variable nicht gesetzt, gilt 35.
+Description[en]=Defines the maximum number of open request that the UMC web server will process in parallel. If the variable is unset, 35 applies.
+Type=int
+Categories=management-umc
+
+[umc/http/requestqueuesize]
+Description[de]=Definiert die Anzahl noch nicht akzeptierter Verbindungen, die der UMC-Web-Server zulässt bevor er neue Verbindungen zurückweist. Ist die Variable nicht gesetzt, gilt 100.
+Description[en]=Defines the number of unaccepted connections that the UMC web server will allow before refusing new connections. If the variable is unset, 100 applies.
+Type=int
+Categories=management-umc
+

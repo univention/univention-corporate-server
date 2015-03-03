@@ -1,6 +1,8 @@
 univention-management-console-frontend (4.1.106-36) unstable; urgency=medium
 
-  * Bug #36708: added method MultiInput::_setAllLabels
+  Bug #36708:
+  * added method MultiInput::_setAllLabels
+  * added UCR variable descriptions
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 03 Mar 2015 17:00:53 +0100
 
