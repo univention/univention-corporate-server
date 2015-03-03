@@ -42,6 +42,7 @@ from hashlib import md5
 
 # univention
 from univention.management.console.log import MODULE
+import univention.management.console as umc
 import univention.config_registry
 import univention.uldap as uldap
 from univention.admin.handlers.computers import domaincontroller_master
@@ -51,6 +52,8 @@ from univention.admin.handlers.computers import memberserver
 
 # local application
 from constants import COMPONENT_BASE, COMP_PARAMS, STATUS_ICONS, DEFAULT_ICON, PUT_SUCCESS, PUT_PROCESSING_ERROR
+
+_ = umc.Translation('univention-management-console-module-appcenter').translate
 
 def rename_app(old_id, new_id, component_manager, package_manager):
 	from univention.management.console.modules.appcenter.app_center import Application
@@ -135,6 +138,28 @@ def install_opener(ucr):
 		proxy = urllib2.ProxyHandler({'http': proxy_http, 'https': proxy_http})
 		opener = urllib2.build_opener(proxy)
 		urllib2.install_opener(opener)
+
+def verbose_http_error(exc):
+	strerror = str(exc)
+	if hasattr(exc, 'getcode'):
+		code = exc.getcode()
+		if code == 404:
+			strerror = _('%s could not be downloaded. This seems to be a problem with the App Center server. Please try again later.') % exc.url
+	while hasattr(exc, 'reason'):
+		exc = exc.reason
+	if hasattr(exc, 'errno'):
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+		version = ucr.get('version/version')
+		errno = exc.errno
+		strerror = exc.strerror
+		if errno == 1: # gaierror(1, something like 'SSL Unknown protocol')
+			link_to_doc = _('http://docs.univention.de/manual-%s.html#ip-config:Web_proxy_for_caching_and_policy_management__virus_scan') % version
+			strerror += '. ' + _('This may be a problem with the proxy of your system. You may find help at %s.') % link_to_doc
+		if errno == -2: # gaierror(-2, 'Name or service not known')
+			link_to_doc = _('http://docs.univention.de/manual-%s.html#networks:dns') % version
+			strerror += '. ' + _('This is probably due to the DNS settings of your server. You may find help at %s.') % link_to_doc
+	return strerror
 
 def urlopen(request):
 	# use this in __init__ and app_center
