@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-56) unstable; urgency=low
+
+  * Bug #35614: Revert
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 04 Mar 2015 02:26:11 +0100
+
 univention-management-console-module-udm (5.1.25-55) unstable; urgency=low
 
   * Bug #35614: Better error messages for UCS activation
