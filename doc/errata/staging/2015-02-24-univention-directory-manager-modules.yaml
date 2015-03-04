@@ -9,7 +9,7 @@ desc: |
   * Improving time to create a simple authentication account considerably by
     disabling uidNumber locking.
   * Adjust error message of the PrinterURI syntax class.
-  * Prevent uninstallation of essential packages when creating a
+  * Prevent deinstallation of essential packages when creating a
     slave/master/memberpackages policy.
   * Replaced the term "General" by a more descriptive title in various UDM
     modules.
