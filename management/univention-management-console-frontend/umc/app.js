@@ -116,7 +116,7 @@ define([
 	var isFavorite = function(mod) {
 		return array.indexOf(mod.categories, '_favorites_') >= 0;
 	};
-	
+
 	var _StackContainer = declare([StackContainer], {
 		constructor: function() {
 			this.animationFinished = new Deferred;
@@ -132,7 +132,7 @@ define([
 			if (!oldWidget || (!newWidget.isOverview && !oldWidget.isOverview)) {
 				return this.inherited(arguments);
 			}
-			
+
 			if (!this.animationFinished.isFulfilled()) {
 				this.animationFinished.cancel();
 			}
@@ -155,7 +155,7 @@ define([
 				if (newWidget._wrapper) {
 					domClass.replace(newWidget._wrapper, "dijitVisible", "dijitHidden");
 				}
-			
+
 				style.set(moduleWidget._wrapper, {
 					position: 'absolute',
 					overflow: 'hidden',
@@ -258,20 +258,6 @@ define([
 			return '';
 		},
 
-//		_onNotification: function() {
-//			this._updateCategoryHeaderVisiblity(this._lastCollection);
-//		},
-
-//		_getCategory: function(categoryID) {
-//			var categories = array.filter(this.categories, function(icat) {
-//				return icat.id == categoryID;
-//			});
-//			if (!categories.length) {
-//				return null;
-//			}
-//			return categories[0];
-//		},
-
 		_createFavoriteIcon: function(categoryColor, parentNode) {
 			var _createIcon = function(nodeClass, color) {
 				var node = domConstruct.create('div', { 'class': nodeClass }, parentNode);
@@ -303,7 +289,6 @@ define([
 				if (cat) {
 					styleStr += lang.replace('background-color: {0};', [cat.color]);
 				}
-				//domConstruct.create('div', {'class': 'umcGalleryCategoryFavorite', style: styleStr}, div.firstElementChild);
 				this._createFavoriteIcon(cat.color, div.firstElementChild);
 			}
 			return div;
@@ -430,9 +415,7 @@ define([
 			}).join(',');
 
 			// store updated favorites
-			tools.setUserPreference({favorites: favoritesStr});/*.otherwise(function() {
-				_favoritesDisabled = true;
-			});*/
+			tools.setUserPreference({favorites: favoritesStr});
 		},
 
 		getCategories: function() {
@@ -1035,7 +1018,6 @@ define([
 				domNode: dom.byId('umcTopContainer'),
 				containerNode: dom.byId('umcTopContainer'),
 				'class': 'umcTopContainer'
-//				style: styleStr
 			});
 
 			// the header
@@ -1212,21 +1194,13 @@ define([
 				var modules = args[0];
 				var categories = args[1];
 
-//				when(this._moduleStore.query(), lang.hitch(this, function(items) {
-//					// undefine JS modules and remove modules from module store
-//					array.forEach(items, function(module) {
-//						this._moduleStore.remove(module.$id$);
-//						require.undef('umc/modules/' + module.id);  // FIXME: everything starting with …/module.id
-//					}, this);
+				this._grid.set('categories', categories);
+				this._moduleStore.constructor(modules, categories);
 
-					this._grid.set('categories', categories);
-					this._moduleStore.constructor(modules, categories);
-
-					this._overviewPage.removeChild(this._categoryButtons);
-					this.renderCategories();
-					// select the previous selected category again (assuming it still exists after reload)
-					this._updateQuery(this.category || {id: '_favorites_'});
-//				}));
+				this._overviewPage.removeChild(this._categoryButtons);
+				this.renderCategories();
+				// select the previous selected category again (assuming it still exists after reload)
+				this._updateQuery(this.category || {id: '_favorites_'});
 			}));
 		},
 
@@ -1320,16 +1294,6 @@ define([
 			tools.status('sessionTimeout', parseInt(_ucr['umc/http/session/timeout'], 10) || tools.status('sessionTimeout'));
 			tools.status('feedbackAddress', _ucr['umc/web/feedback/mail'] || tools.status('feedbackAddress'));
 			tools.status('feedbackSubject', _ucr['umc/web/feedback/description'] || tools.status('feedbackSubject'));
-
-//			on.once(this, 'GuiDone', lang.hitch(this, function() {
-//				this._tabContainer.layout();
-//
-//				// put focus into the GalleryPane for scrolling
-//				dijit.focus(this._categoryPane.domNode);
-//				this.on(_categoryPane, 'show', function() {
-//					dijit.focus(this._categoryPane.domNode);
-//				});
-//			}));
 
 			var launchableModules = this._getLaunchableModules();
 			tools.status('singleModule', launchableModules.length < 2);
@@ -1638,19 +1602,11 @@ define([
 		closeTab: function(tab, /*Boolean?*/ destroy) {
 			destroy = destroy === undefined || destroy === true;
 			tab.onClose();
-			//this._tabContainer.switchAnimation();
-			this._tabContainer.selectChild(this._overviewPage);
 			if (destroy) {
 				this._tabContainer.closeChild(tab);
 			} else {
 				this._tabContainer.removeChild(tab);
 			}
-			//this._tabContainer.ready().then(lang.hitch(this, function() {
-			//	this._tabContainer.removeChild(tab);
-			//	if (destroy === undefined || destroy === true) {
-			//		tab.destroyRecursive();
-			//	}
-			//}));
 		},
 
 		getModules: function(/*String?*/ category) {

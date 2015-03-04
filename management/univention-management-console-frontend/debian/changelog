@@ -1,3 +1,11 @@
+univention-management-console-frontend (4.1.106-37) unstable; urgency=medium
+
+  Bug #37899:
+  * removed unneeded switch to overview page in umc/app::closeTab()
+  * clean up some deprecated code parts that were commented out
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 04 Mar 2015 12:45:56 +0100
+
 univention-management-console-frontend (4.1.106-36) unstable; urgency=medium
 
   Bug #36708:
