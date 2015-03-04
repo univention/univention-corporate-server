@@ -1041,8 +1041,38 @@ ddb.virtualHWVersion = "7"
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
 ESXi = ESXi()
 
+class Docker(Target):
+	def __str__(self):
+		return 'Docker Image (tgz)'
 
-TARGETS = frozenset((VMware, Virtualbox, ESXi))
+	def __repr__(self):
+		return 'docker'
+
+	def create(self, image, options):
+		archive_name = os.path.join(os.getcwd(), '%s-docker.tar' % (options.filename, ))
+		temp_image = os.path.join(TEMPDIR, '%s-docker.raw' % (options.filename, ))
+		for fn in (archive_name, temp_image):
+			if os.path.exists(fn):
+				raise IOError('Output file %r exists' % (fn, ))
+
+		image_path = image.path()
+		log('Copying file')
+		subprocess.check_call(['cp', '--sparse=always', '--reflink=auto', image_path, temp_image], cwd=TEMPDIR, stdout=sys.stderr)
+		log('Guestfishing')
+		cmd = [
+			'guestfish',
+			'add', temp_image, ':',
+			'run', ':',
+			'mount', '/dev/vg_ucs/root', '/', ':',
+			'mount', '/dev/sda1', '/boot', ':',
+			'tar-out', '/', archive_name,
+			]
+		subprocess.check_call(cmd, cwd=TEMPDIR, stdout=sys.stderr)
+		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
+Docker = Docker()
+
+
+TARGETS = frozenset((VMware, Virtualbox, ESXi, Docker))
 assert len(frozenset(map(repr, TARGETS))) == len(TARGETS), 'target names not unique'
 
 
