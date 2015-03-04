@@ -7,9 +7,9 @@ version: [1]
 desc: |
   The following issues are addressed in this erratum update:
   * After installing an app, all pending joinscripts are called with the
-    credentials of the currently logged in user
+    credentials of the currently logged in user.
   * After installing apps or software packages, UMC modules are now reset, the
     UMC session is renewed automatically, and a page reload is done only if
     really necessary.
-  * Add support for WebInterfacePort in the ini file of an app
+  * Add support for WebInterfacePort in the ini file of an app.
 bug: [36822,37347,35456]
