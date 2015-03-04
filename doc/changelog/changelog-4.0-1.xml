@@ -2,8 +2,10 @@
   <title>General</title>
   <itemizedlist>
 
-	<listitem><simpara>
+	<listitem>
+	  <para>
 	  All security updates issued for UCS 4.0-0 are included:
+	</para>
 	  <itemizedlist>
 
 		<listitem><simpara>
@@ -94,12 +96,14 @@
 		  CVE-2014-8101, CVE-2014-8102) (<ulink url="&ucsbug;37274">Bug 37274</ulink>)
 		</simpara></listitem>
 	  </itemizedlist>
-	</simpara></listitem>
+	</listitem>
 
 
-	<listitem><simpara>
+	<listitem>
+	  <simpara>
 	  The Debian Wheezy update 7.8 has been integrated. It fixes several security issues in addition
 	  to the errata security issues already issued:
+	  </simpara>
 
 	  <itemizedlist>
 		<listitem><simpara>
@@ -189,7 +193,7 @@
 
 	  </itemizedlist>
 
-	</simpara></listitem>
+	</listitem>
 
 
   </itemizedlist>
@@ -1372,7 +1376,8 @@
 <section id="changelog:other" lang="en">
   <title>Other changes</title>
   <itemizedlist>
-	<listitem><simpara>
+	<listitem>
+	  <simpara>
 		The following packages have been added to the maintained package repository
         (<ulink url="&ucsbug;36467">Bug 36467</ulink>, 
 		<ulink url="&ucsbug;36735">Bug 36735</ulink>, 
@@ -1380,90 +1385,91 @@
 		<ulink url="&ucsbug;37669">Bug 37669</ulink>, 
 		<ulink url="&ucsbug;37288">Bug 37288</ulink>, 
 		<ulink url="&ucsbug;36583">Bug 36583</ulink>):
+	  </simpara>
 		<itemizedlist spacing="compact">
-			<listitem><package>altermime</package></listitem>
-			<listitem><package>asterisk-config</package></listitem>
-			<listitem><package>asterisk-core-sounds-en-gsm</package></listitem>
-			<listitem><package>asterisk-modules</package></listitem>
-			<listitem><package>asterisk-moh-opsound-gsm</package></listitem>
-			<listitem><package>asterisk-voicemail</package></listitem>
-			<listitem><package>asterisk</package></listitem>
-			<listitem><package>autopoint</package></listitem>
-			<listitem><package>dahdi-linux</package></listitem>
-			<listitem><package>dahdi</package></listitem>
-			<listitem><package>docutils-doc</package></listitem>
-			<listitem><package>freetds-common</package></listitem>
-			<listitem><package>fxload</package></listitem>
-			<listitem><package>libalgorithm-diff-perl</package></listitem>
-			<listitem><package>libalgorithm-diff-xs-perl</package></listitem>
-			<listitem><package>libalgorithm-merge-perl</package></listitem>
-			<listitem><package>libapache2-mod-python</package></listitem>
-			<listitem><package>libapache2-svn</package></listitem>
-			<listitem><package>libart-2.0-2</package></listitem>
-			<listitem><package>libboost-thread1.49.0</package></listitem>
-			<listitem><package>libcorosync4</package></listitem>
-			<listitem><package>libfile-fcntllock-perl</package></listitem>
-			<listitem><package>libid3tag0</package></listitem>
-			<listitem><package>libjansson4</package></listitem>
-			<listitem><package>libmail-sendmail-perl</package></listitem>
-			<listitem><package>libopenais3</package></listitem>
-			<listitem><package>libopenr2-3</package></listitem>
-			<listitem><package>libpri1.4</package></listitem>
-			<listitem><package>libsox-fmt-mp3</package></listitem>
-			<listitem><package>libss7-1</package></listitem>
-			<listitem><package>openjdk-7-jdk</package></listitem>
-			<listitem><package>php-mdb2-driver-mysql</package></listitem>
-			<listitem><package>php-net-ldap2</package></listitem>
-			<listitem><package>php-net-url2</package></listitem>
-			<listitem><package>php5-sqlite</package></listitem>
-			<listitem><package>python-clearsilver</package></listitem>
-			<listitem><package>python-genshi</package></listitem>
-			<listitem><package>python-jinja2</package></listitem>
-			<listitem><package>python-renderpm</package></listitem>
-			<listitem><package>python-reportlab-accel</package></listitem>
-			<listitem><package>python-utidylib</package></listitem>
-			<listitem><package>ripole</package></listitem>
-			<listitem><package>smarty3</package></listitem>
-			<listitem><package>sox</package></listitem>
-			<listitem><package>trac</package></listitem>
-			<listitem><package>vpb-driver-source</package></listitem>
-			<listitem><package>asterisk-modules</package></listitem>
-			<listitem><package>libcoroipcc4</package></listitem>
-			<listitem><package>libfile-fcntllock-perl</package></listitem>
-			<listitem><package>libgmime-2.6-0</package></listitem>
-			<listitem><package>libiksemel3</package></listitem>
-			<listitem><package>libmail-sendmail-perl</package></listitem>
-			<listitem><package>libopencore-amrnb0</package></listitem>
-			<listitem><package>libopencore-amrwb0</package></listitem>
-			<listitem><package>libpri1.4</package></listitem>
-			<listitem><package>libresample1</package></listitem>
-			<listitem><package>libsaclm3</package></listitem>
-			<listitem><package>libsaevt3</package></listitem>
-			<listitem><package>libsox2</package></listitem>
-			<listitem><package>libsox-fmt-alsa</package></listitem>
-			<listitem><package>libsox-fmt-base</package></listitem>
-			<listitem><package>libsox-fmt-mp3</package></listitem>
-			<listitem><package>libsybdb5</package></listitem>
-			<listitem><package>libtonezone2.0</package></listitem>
-			<listitem><package>libvpb0</package></listitem>
-			<listitem><package>python-feedparser</package></listitem>
-			<listitem><package>python-libxslt1</package></listitem>
-			<listitem><package>python-mock</package></listitem>
-			<listitem><package>python-openid</package></listitem>
-			<listitem><package>python-passlib</package></listitem>
-			<listitem><package>python-psycopg2</package></listitem>
-			<listitem><package>python-pybabel</package></listitem>
-			<listitem><package>python-pychart</package></listitem>
-			<listitem><package>python-pydot</package></listitem>
-			<listitem><package>python-pypdf</package></listitem>
-			<listitem><package>python-unittest2</package></listitem>
-			<listitem><package>python-vatnumber</package></listitem>
-			<listitem><package>python-vobject</package></listitem>
-			<listitem><package>python-werkzeug</package></listitem>
-			<listitem><package>antiword</package></listitem>
-			<listitem><package>python-babel</package></listitem>
+			<listitem><simpara><package>altermime</package></simpara></listitem>
+			<listitem><simpara><package>asterisk-config</package></simpara></listitem>
+			<listitem><simpara><package>asterisk-core-sounds-en-gsm</package></simpara></listitem>
+			<listitem><simpara><package>asterisk-modules</package></simpara></listitem>
+			<listitem><simpara><package>asterisk-moh-opsound-gsm</package></simpara></listitem>
+			<listitem><simpara><package>asterisk-voicemail</package></simpara></listitem>
+			<listitem><simpara><package>asterisk</package></simpara></listitem>
+			<listitem><simpara><package>autopoint</package></simpara></listitem>
+			<listitem><simpara><package>dahdi-linux</package></simpara></listitem>
+			<listitem><simpara><package>dahdi</package></simpara></listitem>
+			<listitem><simpara><package>docutils-doc</package></simpara></listitem>
+			<listitem><simpara><package>freetds-common</package></simpara></listitem>
+			<listitem><simpara><package>fxload</package></simpara></listitem>
+			<listitem><simpara><package>libalgorithm-diff-perl</package></simpara></listitem>
+			<listitem><simpara><package>libalgorithm-diff-xs-perl</package></simpara></listitem>
+			<listitem><simpara><package>libalgorithm-merge-perl</package></simpara></listitem>
+			<listitem><simpara><package>libapache2-mod-python</package></simpara></listitem>
+			<listitem><simpara><package>libapache2-svn</package></simpara></listitem>
+			<listitem><simpara><package>libart-2.0-2</package></simpara></listitem>
+			<listitem><simpara><package>libboost-thread1.49.0</package></simpara></listitem>
+			<listitem><simpara><package>libcorosync4</package></simpara></listitem>
+			<listitem><simpara><package>libfile-fcntllock-perl</package></simpara></listitem>
+			<listitem><simpara><package>libid3tag0</package></simpara></listitem>
+			<listitem><simpara><package>libjansson4</package></simpara></listitem>
+			<listitem><simpara><package>libmail-sendmail-perl</package></simpara></listitem>
+			<listitem><simpara><package>libopenais3</package></simpara></listitem>
+			<listitem><simpara><package>libopenr2-3</package></simpara></listitem>
+			<listitem><simpara><package>libpri1.4</package></simpara></listitem>
+			<listitem><simpara><package>libsox-fmt-mp3</package></simpara></listitem>
+			<listitem><simpara><package>libss7-1</package></simpara></listitem>
+			<listitem><simpara><package>openjdk-7-jdk</package></simpara></listitem>
+			<listitem><simpara><package>php-mdb2-driver-mysql</package></simpara></listitem>
+			<listitem><simpara><package>php-net-ldap2</package></simpara></listitem>
+			<listitem><simpara><package>php-net-url2</package></simpara></listitem>
+			<listitem><simpara><package>php5-sqlite</package></simpara></listitem>
+			<listitem><simpara><package>python-clearsilver</package></simpara></listitem>
+			<listitem><simpara><package>python-genshi</package></simpara></listitem>
+			<listitem><simpara><package>python-jinja2</package></simpara></listitem>
+			<listitem><simpara><package>python-renderpm</package></simpara></listitem>
+			<listitem><simpara><package>python-reportlab-accel</package></simpara></listitem>
+			<listitem><simpara><package>python-utidylib</package></simpara></listitem>
+			<listitem><simpara><package>ripole</package></simpara></listitem>
+			<listitem><simpara><package>smarty3</package></simpara></listitem>
+			<listitem><simpara><package>sox</package></simpara></listitem>
+			<listitem><simpara><package>trac</package></simpara></listitem>
+			<listitem><simpara><package>vpb-driver-source</package></simpara></listitem>
+			<listitem><simpara><package>asterisk-modules</package></simpara></listitem>
+			<listitem><simpara><package>libcoroipcc4</package></simpara></listitem>
+			<listitem><simpara><package>libfile-fcntllock-perl</package></simpara></listitem>
+			<listitem><simpara><package>libgmime-2.6-0</package></simpara></listitem>
+			<listitem><simpara><package>libiksemel3</package></simpara></listitem>
+			<listitem><simpara><package>libmail-sendmail-perl</package></simpara></listitem>
+			<listitem><simpara><package>libopencore-amrnb0</package></simpara></listitem>
+			<listitem><simpara><package>libopencore-amrwb0</package></simpara></listitem>
+			<listitem><simpara><package>libpri1.4</package></simpara></listitem>
+			<listitem><simpara><package>libresample1</package></simpara></listitem>
+			<listitem><simpara><package>libsaclm3</package></simpara></listitem>
+			<listitem><simpara><package>libsaevt3</package></simpara></listitem>
+			<listitem><simpara><package>libsox2</package></simpara></listitem>
+			<listitem><simpara><package>libsox-fmt-alsa</package></simpara></listitem>
+			<listitem><simpara><package>libsox-fmt-base</package></simpara></listitem>
+			<listitem><simpara><package>libsox-fmt-mp3</package></simpara></listitem>
+			<listitem><simpara><package>libsybdb5</package></simpara></listitem>
+			<listitem><simpara><package>libtonezone2.0</package></simpara></listitem>
+			<listitem><simpara><package>libvpb0</package></simpara></listitem>
+			<listitem><simpara><package>python-feedparser</package></simpara></listitem>
+			<listitem><simpara><package>python-libxslt1</package></simpara></listitem>
+			<listitem><simpara><package>python-mock</package></simpara></listitem>
+			<listitem><simpara><package>python-openid</package></simpara></listitem>
+			<listitem><simpara><package>python-passlib</package></simpara></listitem>
+			<listitem><simpara><package>python-psycopg2</package></simpara></listitem>
+			<listitem><simpara><package>python-pybabel</package></simpara></listitem>
+			<listitem><simpara><package>python-pychart</package></simpara></listitem>
+			<listitem><simpara><package>python-pydot</package></simpara></listitem>
+			<listitem><simpara><package>python-pypdf</package></simpara></listitem>
+			<listitem><simpara><package>python-unittest2</package></simpara></listitem>
+			<listitem><simpara><package>python-vatnumber</package></simpara></listitem>
+			<listitem><simpara><package>python-vobject</package></simpara></listitem>
+			<listitem><simpara><package>python-werkzeug</package></simpara></listitem>
+			<listitem><simpara><package>antiword</package></simpara></listitem>
+			<listitem><simpara><package>python-babel</package></simpara></listitem>
 		</itemizedlist>
-	</simpara></listitem>
+	</listitem>
 
 	<listitem><simpara>
 	  This update silences the PHP cron job, which is cleaning up old PHP session files. Due to a
