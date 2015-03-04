@@ -101,7 +101,7 @@ class Instance(umcm.Base):
 		try:
 			applications = Application.all(force_reread=True)
 		except (urllib2.HTTPError, urllib2.URLError) as e:
-			raise umcm.UMC_CommandError(_('Error while contacting the App Center server. %s') % util.verbose_http_error(e))
+			raise umcm.UMC_CommandError(_('Could not query App Center: %s') % e)
 		result = []
 		self.package_manager.reopen_cache()
 		hosts = util.get_all_hosts()

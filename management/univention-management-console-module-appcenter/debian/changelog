@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-10) unstable; urgency=low
+
+  * Bug #35614: Reverted
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 04 Mar 2015 02:24:32 +0100
+
 univention-management-console-module-appcenter (4.1.20-9) unstable; urgency=low
 
   * Bug #36822: Fix sending lines only containing of a newline

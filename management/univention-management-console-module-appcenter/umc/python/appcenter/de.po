@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-03-03 15:20+0100\n"
+"POT-Creation-Date: 2015-02-24 10:15+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,15 +11,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: umc/python/appcenter/util.py:147
-#, python-format
-msgid ""
-"%s could not be downloaded. This seems to be a problem with the App Center "
-"server. Please try again later."
-msgstr ""
-"Konnte %s nicht herunterladen. Das deutet auf ein Problem auf dem App Center-"
-"Server hin. Bitte versuchen Sie es später noch einmal."
 
 #: umc/python/appcenter/__init__.py:331 umc/python/appcenter/__init__.py:481
 msgid "Another package operation is in progress"
@@ -35,17 +26,13 @@ msgstr "Ein Wert aus %r muss gegeben sein"
 msgid "Could not find an application for %s"
 msgstr "Konnte keine Applikation für %s finden"
 
-#: umc/python/appcenter/__init__.py:137 umc/python/appcenter/__init__.py:166
+#: umc/python/appcenter/__init__.py:104 umc/python/appcenter/__init__.py:137
+#: umc/python/appcenter/__init__.py:166
 #, python-format
 msgid "Could not query App Center: %s"
 msgstr "Konnte das App Center nicht erreichen: %s"
 
-#: umc/python/appcenter/__init__.py:104
-#, python-format
-msgid "Error while contacting the App Center server. %s"
-msgstr "Fehler bei der Kontaktaufnahme mit dem App Center-Server. %s"
-
-#: umc/python/appcenter/app_center.py:1481
+#: umc/python/appcenter/app_center.py:1477
 #, python-format
 msgid "Installing LDAP packages on %s"
 msgstr "Installiere LDAP Pakete auf %s"
@@ -54,7 +41,7 @@ msgstr "Installiere LDAP Pakete auf %s"
 msgid "Package not found in repository"
 msgstr "Paket wurde in keinem Repository gefunden"
 
-#: umc/python/appcenter/app_center.py:1393
+#: umc/python/appcenter/app_center.py:1389
 msgid ""
 "Registration of the application in LDAP failed. It will be retried every "
 "time the App Center module is opened."
@@ -62,7 +49,7 @@ msgstr ""
 "Die Registrierung der Applikation im LDAP ist fehlgeschlagen. Sie wird bei "
 "jedem Öffnen des App Center Moduls wiederholt werden."
 
-#: umc/python/appcenter/app_center.py:980
+#: umc/python/appcenter/app_center.py:976
 #, python-format
 msgid ""
 "The application needs a %(needs)s-bit operating system. This server is "
@@ -83,35 +70,6 @@ msgstr ""
 "Auf dem Server befindet sich kein Repository (oder zumindest keins für die "
 "aktuelle UCS Version)"
 
-#: umc/python/appcenter/util.py:161
-#, python-format
-msgid ""
-"This is probably due to the DNS settings of your server. You may find help at "
-"%s."
-msgstr ""
-"Grund sind wahrscheinlich die DNS-Einstellungen Ihres Servers. Sie finden "
-"Hilfe unter %s."
-
-#: umc/python/appcenter/util.py:158
-#, python-format
-msgid ""
-"This may be a problem with the proxy of your system. You may find help at %s."
-msgstr ""
-"Dies kann auf ein Problem mit einem auf Ihrem System eingerichteten Proxy hindeuten. Sie finden "
-"Hilfe unter %s."
-
-#: umc/python/appcenter/util.py:157
-#, python-format
-msgid ""
-"http://docs.univention.de/manual-%s.html#ip-config:"
-"Web_proxy_for_caching_and_policy_management__virus_scan"
-msgstr "http://docs.univention.de/handbuch-%s.html#ip-config:Web-Proxy_fuer_Caching_und_Policy_Management_Virenscan"
-
-#: umc/python/appcenter/util.py:160
-#, python-format
-msgid "http://docs.univention.de/manual-%s.html#networks:dns"
-msgstr "http://docs.univention.de/handbuch-%s.html#networks:dns"
-
 #: umc/python/appcenter/__init__.py:525
 msgid "installed"
 msgstr "installiert"
@@ -128,8 +86,11 @@ msgstr "aktualisierbar"
 #~ msgstr "Ausgabe von %(host)s: %(info)s"
 
 #~ msgid ""
-#~ "This may only be a temporary problem with the App Center server. Please "
-#~ "try again later."
+#~ "This is probably due to the DNS settings of the server. You may find help "
+#~ "at %s."
 #~ msgstr ""
-#~ "Es könnte sich um ein vorübergehendes Problem auf dem App Center-Server "
-#~ "sein. Bitte versuchen Sie es später noch einmal."
+#~ "Grund sind wahrscheinlich die DNS-Einstellungen des Servers. Sie finden "
+#~ "Hilfe unter %s."
+
+#~ msgid "http://docs.univention.de/manual-%s.html#networks:dns"
+#~ msgstr "http://docs.univention.de/handbuch-%s.html#networks:dns"
