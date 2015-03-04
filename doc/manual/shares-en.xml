@@ -1022,12 +1022,12 @@ Microsoft Distributed File System Tree'.
   </para>
 
   <para>
-	Quotas can either be defined via the UMC module
-	<guimenu>Filesystem quotas</guimenu> or a policy for shares, see <xref linkend="shares::quota::policy"/>.
+	If a quota value of <emphasis>0</emphasis> has been configured, it is evaluated as an unlimited quota.
   </para>
 
   <para>
-	If a quota value of <emphasis>0</emphasis> has been configured, it is evaluated as an unlimited quota.
+	Quotas can either be defined via the UMC module
+	<guimenu>Filesystem quotas</guimenu> or a policy for shares, see <xref linkend="shares::quota::policy"/>.
   </para>
 
   <para>
@@ -1086,10 +1086,10 @@ Microsoft Distributed File System Tree'.
 	</para>
 
 	<para>
-	  Quota settings that are applied via a quota-policy are by default only applied once to the filesystem.
-	  If the setting is changed, it will not be applied automatically on the next user-login.
+	  Quota settings that are applied via a quota policy are by default only applied once to the filesystem.
+	  If the setting is changed, it will not be applied automatically on the next user login.
 	  To inherit changed quota values, the option <emphasis>Reapply settings on every login</emphasis>
-	  can be activated at the quota-policy.
+	  can be activated at the quota policy.
 	</para>
 
 	<para>

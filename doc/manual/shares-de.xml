@@ -1068,13 +1068,13 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
   </para>
 
   <para>
-	Quotas können entweder über das UMC-Modul
-	<guimenu>Dateisystem Quota</guimenu> oder über eine Richtlinie für Freigaben definiert werden,
-	siehe <xref linkend="shares::quota::policy"/>.
+	Ein konfigurierter Quota-Wert von <emphasis>0</emphasis> wird als unbegrenzte Quota ausgewertet.
   </para>
 
   <para>
-	Ein konfigurierter Quota Wert von <emphasis>0</emphasis> wird als unbegrenzte Quota ausgewertet.
+	Quotas können entweder über das UMC-Modul
+	<guimenu>Dateisystem Quota</guimenu> oder über eine Richtlinie für Freigaben definiert werden,
+	siehe <xref linkend="shares::quota::policy"/>.
   </para>
 
   <para>
@@ -1135,7 +1135,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 	  Über eine Freigabe-Richtlinie gesetzte Quotaeinstellungen werden standardmäßig nur einmal
 	  ausgewertet und auf das Dateisystem angewendet. Sollte sich die Einstellung ändern, wird
 	  dies nicht automatisch bei der nächsten Anmeldung des Benutzers angewendet. Um geänderte 
-	  Quota Werte zu übernehmen, kann an der Freigabe-Richtlinie der Punkt <emphasis>Einstellungen
+	  Quota-Werte zu übernehmen, kann an der Freigabe-Richtlinie der Punkt <emphasis>Einstellungen
 	  bei jedem Login anwenden</emphasis> aktiviert werden.
 	</para>
 
