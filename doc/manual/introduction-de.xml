@@ -287,7 +287,7 @@ Weiterführende Informationen finden sich in <xref linkend="central:policies"/>.
 <para>
 Ein wichtiger technischer Bestandteil des &ucsUMS;s stellt der so genannte
 "Listener/Notifier-Mechanismus" dar. Mit ihm lösen das Anlegen, Verändern oder
-Löschen von Einträge im LDAP-Verzeichnis definierte Aktionen auf
+Löschen von Einträgen im LDAP-Verzeichnis definierte Aktionen auf
 betroffenen Rechnern aus.
 So führt zum Beispiel das Anlegen einer Verzeichnisfreigabe mit &ucsUMC; dazu, das die Freigabe
 zunächst in das LDAP-Verzeichnis eingetragen wird. Der
