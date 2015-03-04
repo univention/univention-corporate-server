@@ -166,6 +166,12 @@ Description[de]=Gibt die URL des Icons für den entsprechenden Eintrag der UCS-S
 Type=str
 Categories=service-apache
 
+[ucs/web/overview/entries/.*/port]
+Description[en]=Forces the port for URL of the corresponding entry of the UCS start site. Full format: ucs/web/overview/entries/{admin,service}/<entryID>/port.
+Description[de]=Erzwingt den Port für die URL des entsprechenden Eintrages der UCS-Startseite. Vollständiges Format: ucs/web/overview/entries/{admin,service}/<entryID>/port.
+Type=str
+Categories=service-apache
+
 [ucs/web/overview/entries/.*/priority]
 Description[en]=Defines the (lexicographical) sort priority for the corresponding entry of the UCS start site. Full format: ucs/web/overview/entries/{admin,service}/<entryID>/priority.
 Description[de]=Gibt die (lexikografische) Sortierungsreihenfolge des entsprechenden Eintrags der UCS-Startseite an. Vollständiges Format: ucs/web/overview/entries/{admin,service}/<entryID>/priority.

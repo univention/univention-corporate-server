@@ -1,3 +1,9 @@
+univention-apache (7.0.16-7) unstable; urgency=low
+
+  * Bug #35456: Support ucs/web/overview/entries/admin/*/port
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 04 Mar 2015 03:04:52 +0100
+
 univention-apache (7.0.16-6) unstable; urgency=low
 
   * Add new UCR variables to allow fine-grained configuration of the mod_ssl
@@ -35,7 +41,7 @@ univention-apache (7.0.16-2) unstable; urgency=low
   * Disable SSLv2 and SSLv3. These are legacy protocols with known security
     problems. Support can be re-enabled by setting the UCR variable
     apache2/ssl/v3 to "true" (Bug #36232).
-	
+
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 12 Jan 2015 11:41:45 +0100
 
 univention-apache (7.0.16-1) unstable; urgency=medium

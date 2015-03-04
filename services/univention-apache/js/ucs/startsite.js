@@ -206,9 +206,21 @@ define([
 				category: category,
 				id: id
 			};
-			array.forEach(['link', 'icon', 'label', 'description'], lang.hitch(this, function(ikey) {
+			array.forEach(['link', 'icon', 'label', 'description', 'port'], lang.hitch(this, function(ikey) {
 				localizedProps[ikey] = this._localizeString(props[ikey]);
 			}));
+			if (localizedProps.port) {
+				var protocol = window.location.protocol;
+				var port = ':' + localizedProps.port;
+				if (localizedProps.port == '80') {
+					protocol = 'http:';
+					port = '';
+				} else if (localizedProps.port == '443') {
+					protocol = 'https:';
+					port = '';
+				}
+				localizedProps.link = protocol + '//' + window.location.hostname + port + localizedProps.link;
+			}
 			var node = domConstruct.toDom(lang.replace(
 				'<div class="umcGalleryWrapperItem col-xxs-12 col-xs-6 col-sm-6 col-md-4" id="{id}">\n'
 				+ '	<a href="{link}">\n'
