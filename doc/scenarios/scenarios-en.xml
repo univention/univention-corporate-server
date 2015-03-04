@@ -1,31 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-
-<!ENTITY kanzlei SYSTEM "kanzlei-en.xml">
-<!ENTITY mittelstand SYSTEM "mittelstand-en.xml">
-<!ENTITY versicherung SYSTEM "versicherung-en.xml">
-<!ENTITY schultraeger SYSTEM "schultraeger-en.xml">
-
-<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
-
-  %entities;
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
 ]>
 <book lang="en" id='scenarios'>
 <bookinfo>
   <title>Scenarios for Univention Corporate Server</title>
   <revhistory>
      <revision>
-        <revnumber>3.2</revnumber>
-        <date>1 Dec 2013</date>
+        <revnumber>4.0</revnumber>
+        <date>4 Mar 2015</date>
      </revision>
   </revhistory>
 </bookinfo>
 
-  &kanzlei;
-  &mittelstand;
-  &versicherung;
-  &schultraeger;
+<xi:include href="kanzlei-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+<xi:include href="mittelstand-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+<xi:include href="versicherung-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+<xi:include href="schultraeger-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
 <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>

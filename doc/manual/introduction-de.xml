@@ -1,3 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"[
+	<!ENTITY % entities SYSTEM "../../stylesheets/macros-de.ent" >
+	%entities;
+]>
 <chapter id="introduction:Einfuehrung"><title>Einführung</title>
 
 <section id="introduction:Was_ist_Univention_Corporate_Server"><title>Was ist Univention Corporate Server?</title>

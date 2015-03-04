@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-
-  <!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
-  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-de.xml">
-  <!ENTITY changelog SYSTEM "changelog-4.0-1.xml">
-
-  %entities;
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%entities;
 ]>
 <book lang="de" id="releasenotes-4.0-1-de">
 	<bookinfo>
@@ -285,7 +281,7 @@
 			Aufgeführt sind die Änderung seit UCS 4.0-0:
 		</para>
 
-		&changelog;
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.0-1.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 
 	<!--

@@ -1,25 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"[
-
-	  <!ENTITY introduction SYSTEM "introduction-de.xml">
-	  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-de.xml">
-	  <!ENTITY installation SYSTEM "installation-de.xml">
-	  <!ENTITY domain-ldap SYSTEM "domain-ldap-de.xml">
-	  <!ENTITY central-management-umc SYSTEM "central-management-umc-de.xml">
-	  <!ENTITY software SYSTEM "software-de.xml">
-	  <!ENTITY user-management SYSTEM "user-management-de.xml">
-	  <!ENTITY groups SYSTEM "groups-de.xml">
-	  <!ENTITY computers SYSTEM "computers-de.xml">
-	  <!ENTITY windows SYSTEM "windows-de.xml">
-	  <!ENTITY ip-config SYSTEM "ip-config-de.xml">
-	  <!ENTITY shares SYSTEM "shares-de.xml">
-	  <!ENTITY print-services SYSTEM "print-services-de.xml">
-	  <!ENTITY nagios SYSTEM "nagios-de.xml">
-	  <!ENTITY uvmm SYSTEM "uvmm-de.xml">
-	  <!ENTITY backup SYSTEM "backup-de.xml">
-	  <!ENTITY mail SYSTEM "mail-de.xml">
-
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
 	%entities;
 ]>
@@ -59,23 +40,23 @@ feedback@univention.de
     </legalnotice>
   </bookinfo>
 
-  &introduction;
-  &installation;
-  &domain-ldap;
-  &central-management-umc;
-  &software;
-  &user-management;
-  &groups;
-  &computers;
-  &windows;
-  &ip-config;
-  &shares;
-  &print-services;
-  &mail;
-  &nagios;
-  &uvmm;
-  &backup;
-  &bibliography;
+  <xi:include href="introduction-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="installation-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="domain-ldap-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="central-management-umc-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="software-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="user-management-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="groups-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="computers-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="windows-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="ip-config-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="shares-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="print-services-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="mail-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="nagios-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="uvmm-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="backup-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="../stylesheets/bibliography-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
   <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
