@@ -113,20 +113,20 @@ Type=bool
 Categories=service-apache
 
 [apache2/ssl/compression]
-Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, wird Komprimierung auf der SSL-Ebene aktiviert. Von der Verwendung von SSL-Kompression wird aus Sicherheitsgründen abgeraten (CRIME-Protokoll-Angriff).
-Description[en]=If this option is enabled or the variable unset, compression on the SSL level is enabled. The use of SSL compression is discouraged for security reasons (CRIME protocl attack)
+Description[de]=Ist diese Option aktiviert wird Komprimierung auf der SSL-Ebene aktiviert. Ist die Variable nicht gesetzt, ist die Komprimierung abgeschaltet. Von der Verwendung von SSL-Kompression wird aus Sicherheitsgründen abgeraten (CRIME-Protokoll-Angriff).
+Description[en]=If this option is enabled compression on the SSL level is enabled. If the variable is unset, compression is disabled. The use of SSL compression is discouraged for security reasons (CRIME protocol attack)
 Type=bool
 Categories=service-apache
 
 [apache2/ssl/honorcipherorder]
 Description[de]=Bei der Aushandlung der kryptografischen Verfahren während des Aufbaus einer SSL/TLS-Verbindung wird standardmässig die Präferenz des Clients verwendet. Ist diese Option aktiviert, wird stattdessen die Präferenz des Server verwendet werden. Die Liste der von Apache angebotenen Verfahren kann mit der Variable 'apache2/ssl/ciphersuite' konfiguriert werden.
-Description[en]=During the negotiation of cryptographic algorithms during the setup of a SSL/TLS connection the preference of the client is used by default. If this option is enabled, the preference of the server is used instead. The list of algorithsm offered by Apache can be configured with the variable 'apache2/ssl/ciphersuite'.
+Description[en]=During the negotiation of cryptographic algorithms during the setup of a SSL/TLS connection the preference of the client is used by default. If this option is enabled, the preference of the server is used instead. The list of algorithms offered by Apache can be configured with the variable 'apache2/ssl/ciphersuite'.
 Type=bool
 Categories=service-apache
 
 [apache2/ssl/ciphersuite]
-Description[de]=Dies konfiguriert die kryptografischen Verfahren, die ein Client in der SSL-Handshake-Phase angeboten bekommt. Das Format ist unter http://httpd.apache.org/docs/2.2/mod/mod_ssl.html#sslciphersuite beschrieben.
-Description[en]=This configures the cryptopgraphic algorithms which are offered to clients during a SSL handshake. The format is described at http://httpd.apache.org/docs/2.2/mod/mod_ssl.html#sslciphersuite.
+Description[de]=Dies konfiguriert die kryptografischen Verfahren, die ein Client in der SSL-Handshake-Phase angeboten bekommt. Das Format ist unter http://httpd.apache.org/docs/2.2/mod/mod_ssl.html#sslciphersuite beschrieben. Ist die Variable nicht gesetzt, wird 'HIGH:MEDIUM:!aNULL:!MD5:!RC4' verwendet.
+Description[en]=This configures the cryptopgraphic algorithms which are offered to clients during a SSL handshake. The format is described at http://httpd.apache.org/docs/2.2/mod/mod_ssl.html#sslciphersuite. If the variable is unset, 'HIGH:MEDIUM:!aNULL:!MD5:!RC4' is used.
 Type=str
 Categories=service-apache
 

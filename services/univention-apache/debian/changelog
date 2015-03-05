@@ -1,3 +1,11 @@
+univention-apache (7.0.16-8) unstable; urgency=low
+
+  * Bug #37566:
+  - Fix description of UCR variables (Bug #37566)
+  - Set the default value of apache2/ssl/ciphersuite to HIGH:MEDIUM:!aNULL:!MD5:!RC4
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 05 Mar 2015 09:17:58 +0100
+
 univention-apache (7.0.16-7) unstable; urgency=low
 
   * Bug #35456: Support ucs/web/overview/entries/admin/*/port
