@@ -259,9 +259,9 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 			<command>univention-run-join-scripts</command> als Benutzer <emphasis>root</emphasis>.
 		</para>
 		<para>
-			Wenn die Applikation <emphasis>Management-Server für KVM und Cloud-Instanzen</emphasis>
-			zusammen mit KVM Virtualisierungsservern vor dem Update in der Domäne betrieben wurden,
-			müssen die mit dem Update hinzugekommenen Profile für virtuelle Maschinen mit UCS-4.0
+			Wenn die Applikation <emphasis>UCS Virtual Machine Manager</emphasis>
+			zusammen mit KVM-Virtualisierungsservern vor dem Update in der Domäne betrieben wurde,
+			müssen die mit dem Update hinzugekommenen Profile für virtuelle Maschinen mit UCS 4.0
 			angepasst werden. Wenn das Bridge-Interface auf den KVM Servern nicht <emphasis>br0</emphasis>
 			ist, sollte das Profil entsprechend der Beschreibung in <xref linkend="ucs-uvmm-profile"/> angepasst werden.
 		</para>
