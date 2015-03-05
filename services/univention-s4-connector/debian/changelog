@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.16-13) unstable; urgency=low
+
+  * Bug #36317: update krb5PasswordEnd too 
+
+ -- Felix Botner <botner@univention.de>  Thu, 05 Mar 2015 17:53:17 +0100
+
 univention-s4-connector (9.0.16-12) unstable; urgency=low
 
   * Bug #36317: update shadowMax and shadowLastChange during password
