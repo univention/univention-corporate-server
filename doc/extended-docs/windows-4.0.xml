@@ -168,6 +168,22 @@ root@backup:~#
 		</para>
 
 		<para>
+		If SSL is used for the connection encryption, the exported Active Directory certificate must be converted via <command>openssl</command> into the required format, for example:
+
+<programlisting language="sh">
+ openssl x509 -inform der -outform pem -in infile.cer -out outfile.pem
+</programlisting>
+
+		The file name of the certificate is subsequently stored in 
+		&ucsUCR;:
+
+<programlisting language="sh">
+univention-config-registry set \
+   connector2/ad/ldap/certificate=/etc/univention/ad-connector2.pem
+</programlisting>
+		</para>
+
+		<para>
 		  If a UCS synchronisation is performed towards Active Directory, the replication of the
 		  listener module must be restarted after a further connector instance is created. To this
 		  end, the following command must be run:
