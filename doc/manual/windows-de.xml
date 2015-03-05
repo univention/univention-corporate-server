@@ -697,11 +697,7 @@ END CATEGORY
 		</para>
 
 		<para>
-		  Um ein globales Anmeldeskript für alle Benutzer zu definieren, steht die &ucsUCRV;
-		  <envar>samba/logonscript</envar> zur Verfügung. Ist diese Variable auf einem Samba-Server
-		  gesetzt, wird allen Benutzern, die sich an diesem Samba-Server anmelden, standardmäßig das
-		  dort angegebene Anmeldeskript zugeordnet. Das Anmeldeskript kann auch benutzerspezifisch
-		  zugewiesen werden, siehe <xref linkend="users::management"/>.
+		  Das Anmeldeskript kann pro Benutzer zugewiesen werden, siehe <xref linkend="users::management"/>.
 		</para>
 	  </section>
 

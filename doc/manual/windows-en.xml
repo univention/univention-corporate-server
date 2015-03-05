@@ -688,10 +688,7 @@ END CATEGORY
 		</para>
 
 		<para>
-		  The &ucsUCRV; <envar>samba/logonscript</envar> is available for defining a global logon
-		  script for all users. If this variable is set on a Samba server, then all users logging
-		  into this Samba server have the specified logon script assigned. The logon script can also
-		  be assigned user-specifically, see <xref linkend="users::management"/>.
+		  The logon script can be assigned for each user, see <xref linkend="users::management"/>.
 		</para>
 	  </section>
 
