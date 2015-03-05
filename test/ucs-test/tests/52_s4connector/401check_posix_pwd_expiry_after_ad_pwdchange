@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash 
-## desc: "Change password vi s4 and verify shadowMax and shadowLastChange (posix pw expiry)"
+## desc: "Change password vi s4 and verify shadowMax, shadowLastChange (posix pw expiry) and krb5PasswordEnd"
 ## exposure: dangerous
 ## packages:
 ##  - univention-samba4
@@ -35,10 +35,12 @@ SYNCMODE="$(ad_get_sync_mode)"
 HOST="$(ucr get connector/s4/ldap/host)"
 SHADOW_LASTCHANGE="$(( $(date +"%s") / 3600 / 24 ))"
 SHADOW_MAX=99
+KRB5_PASSWORD_END=$(date +"%Y%m%d000000Z" --date="@$(( $(date -u +"%s") + ($SHADOW_MAX * 24 * 3600)))")
+
 ad_set_sync_mode "sync"
 
 ####################################################
-# check shadowLastChange=now and shadowMax=x
+# check shadowLastChange=now and shadowMax=x, krb5PasswordEnd=x
 section "Test S4 password change with expiry policy"
 ####################################################
 
@@ -59,9 +61,11 @@ ad_wait_for_synchronization; fail_bool 0 110
 smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%123-abc-ABC-?" ; fail_bool 0 100
 udm_verify_ldap_attribute "shadowLastChange" "$SHADOW_LASTCHANGE" "users/user" || fail_test 110
 udm_verify_ldap_attribute "shadowMax" "$SHADOW_MAX" "users/user" || fail_test 110
+udm_verify_ldap_attribute "krb5PasswordEnd" "$KRB5_PASSWORD_END" "users/user" || fail_test 110
+univention-ldapsearch uid="$UDM_users_user_username"
 
 #######################################################
-# check shadowLastChange=now and no shadowMax
+# check shadowLastChange=now and no shadowMax, krb5PasswordEnd
 section "Test S4 password change without expiry policy"
 #######################################################
 
@@ -73,6 +77,7 @@ ad_wait_for_synchronization; fail_bool 0 110
 smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%Univention.99" ; fail_bool 0 100
 udm_verify_ldap_attribute "shadowLastChange" "$SHADOW_LASTCHANGE" "users/user" || fail_test 110
 udm_verify_ldap_attribute "shadowMax" "" "users/user" || fail_test 110
+udm_verify_ldap_attribute "krb5PasswordEnd" "" "users/user" || fail_test 110
 
 ##################
 section "Clean up"
