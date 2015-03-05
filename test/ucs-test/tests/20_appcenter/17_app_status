@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Checks if Apps are installed correctly
-## tags: [basic, apptest]
+## tags: [SKIP-UCSSCHOOL, basic, apptest]
 ## bugs: [32546, 35652]
 ## roles-not: [basesystem]
 ## packages:
