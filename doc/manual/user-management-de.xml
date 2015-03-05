@@ -418,7 +418,7 @@
                         <entry>Anmeldeskript</entry>
                         <entry>
                             Hier wird das benutzerspezifische Anmeldeskript relativ zur Netlogon-Freigabe
-                            eingetragen, z.B. <filename>scripts\user.bat</filename>.
+                            eingetragen, z.B. <filename>user.bat</filename>.
                         </entry>
                     </row>
                     <row>

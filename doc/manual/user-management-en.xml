@@ -411,7 +411,7 @@
                         <entry>Windows logon script</entry>
                         <entry>
                             The user-specific logon script relative to the NETLOGON share is entered here, e.g.
-                            <filename>scripts\user.bat</filename>.
+                            <filename>user.bat</filename>.
                         </entry>
                     </row>
                     <row>
