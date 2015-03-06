@@ -1221,6 +1221,14 @@
 	  </tgroup>
 	</table>
   </para>
+  <caution>
+    <para>
+	  Für den Zugriff auf UMC-Module werden nur Richtlinien ausgewertet, die
+	  Gruppen oder aber direkt Benutzer- sowie Rechnerkonten zugewiesen sind.
+	  Eine Auswertung von verschachtelten Gruppenmitgliedsschaften (also
+	  Gruppen in Gruppen) findet nicht statt.
+    </para>
+  </caution>
 </section>
 
 

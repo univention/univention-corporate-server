@@ -1185,6 +1185,13 @@
 	  </tgroup>
 	</table>
   </para>
+  <caution>
+    <para>
+	  For the access to UMC, only policies are considered that are assigned to
+	  groups or directly to user and computer accounts. An evaluation of nested
+	  group memberships (i.e., groups in groups) does not take place.
+    </para>
+  </caution>
 </section>
 
 
