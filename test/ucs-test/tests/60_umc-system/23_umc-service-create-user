@@ -129,12 +129,17 @@ class TestUMCUserCreation(TestUMCSystem):
 
         test_username = 'umc_test_user_' + random_username(6)
         test_username_admin = test_username + '_admin'
-        test_password = 'univention'
+        test_password = 'Univention@99'
+        
+        # get localized groups translations if any:
+        domain_users = self.get_groupname_translation('domainusers')
+        domain_admins = self.get_groupname_translation('domainadmins')
+        print_admins = self.get_groupname_translation('printoperators')
 
         try:
             print("Creating a simple domain user with username '%s'"
                   % test_username)
-            self.create_user(test_username, test_password, "Domain Users")
+            self.create_user(test_username, test_password, domain_users)
             if not self.check_obj_exists(test_username, "users/user"):
                 utils.fail("Cannot query a simple test user '%s' that "
                            "was just created" % test_username)
@@ -142,15 +147,15 @@ class TestUMCUserCreation(TestUMCSystem):
             print("Creating an advanced user (Administrator) with username "
                   "'%s'" % test_username_admin)
             self.create_user(test_username_admin, test_password,
-                             "Domain Admins")
+                             domain_admins)
             if not self.check_obj_exists(test_username_admin, "users/user"):
                 utils.fail("Cannot query an advanced test user '%s' that "
                            "was just created" % test_username_admin)
 
             print "Modifing simple user '%s' groups" % test_username
-            test_groupnames = ["cn=Domain Users,cn=groups,"
+            test_groupnames = ["cn=" + domain_users + ",cn=groups,"
                                + self.ldap_base,
-                               "cn=Printer-Admins,cn=groups,"
+                               "cn=" + print_admins +",cn=groups,"
                                + self.ldap_base]
             self.modify_user_groups(test_username, test_groupnames)
 
@@ -165,9 +170,9 @@ class TestUMCUserCreation(TestUMCSystem):
                            % (test_username, user_groups, test_groupnames))
 
             print "Modifing advanced user '%s' groups" % test_username_admin
-            test_groupnames = ["cn=Domain Admins,cn=groups,"
+            test_groupnames = ["cn=" + domain_admins + ",cn=groups,"
                                + self.ldap_base,
-                               "cn=Printer-Admins,cn=groups,"
+                               "cn=" + print_admins + ",cn=groups,"
                                + self.ldap_base]
             self.modify_user_groups(test_username_admin, test_groupnames)
 

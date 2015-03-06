@@ -29,6 +29,16 @@ class TestUMCSystem(object):
 
         self.UCR = ConfigRegistry()
 
+        # for getting the default English names of users/groups:
+        self.default_names = {'domainadmins': "Domain Admins",
+                              'domainusers': "Domain Users",
+                              'windowshosts': "Windows Hosts",
+                              'dcbackuphosts': "DC Backup Hosts",
+                              'dcslavehosts': "DC Slave Hosts",
+                              'computers': "Computers",
+                              'printoperators': "Printer-Admins",
+                              'administrator': "Administrator"}
+
     def reload_ucr(self):
         """Reload the UCR variables """
         self.UCR.load()
@@ -269,6 +279,34 @@ class TestUMCSystem(object):
         if stdout:
             print("\nWaiting for Samba replication produced the "
                   "following output:\n%s" % stdout)
+
+    def get_translation(self, obj_type, obj_name):
+        """
+        Returns the translation taken from UCR for given 'obj_name' and
+        'obj_type'. If not translation found -> returns default English
+        name. If no English name availabe -> prints a messge, returns None.
+        """
+        translated = self.UCR.get(obj_type + '/default/' + obj_name,
+                                  self.default_names.get(obj_name))
+        if not translated:
+            print("\nNo translation and no default English name can be found "
+                  "for object %s of %s type" % (obj_name, obj_type))
+
+        return translated
+
+    def get_groupname_translation(self, groupname):
+        """
+        Returns the localized translation for the given 'groupname'.
+        Groupname should be the UCR variable name (e.g. domainadmins).
+        """
+        return self.get_translation('groups', groupname)
+
+    def get_username_translation(self, username):
+        """
+        Returns the localized translation for the given 'username'.
+        Username should be the UCR variable name (e.g. administrator).
+        """
+        return self.get_translation('users', username)
 
     def check_obj_exists(self, name, obj_type):
         """

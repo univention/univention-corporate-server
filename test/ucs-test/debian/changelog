@@ -1,3 +1,12 @@
+ucs-test (5.0.123-1) unstable; urgency=low
+
+  * 60_umc-system/23_umc-service-create-user: adjusted test to use localized
+    translations if any present;
+    60_umc-system/TestUMCSystemModule.py: added methods for getting
+    translations from the UCR (Bug #37920).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 06 Mar 2015 17:12:37 +0100
+
 ucs-test (5.0.122-9) unstable; urgency=low
 
   * 20_appcenter/18_check_app_links: improved link search and linkchecker
