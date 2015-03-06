@@ -70,11 +70,19 @@ def create_and_run_process(proc_connection, cmd):
     proc_connection.close()
 
 
+def findall_urls(ini_content):
+    """
+    Returns all the 'http:' and 'https:' URLs found in the given 'ini_content'.
+    """
+    re_pattern = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+    return set(findall(re_pattern, ini_content))
+
+
 def collect_links():
     """
     Looks for all .ini files in CACHE_DIR;
-    Opens the .inis of installed Apps and looks for 'http' in every line;
-    Adds link found to a set and returns it when done.
+    Opens the .inis of installed Apps and looks for links;
+    Adds links found to a set and returns it when done.
     """
     test_path = glob(path.join(CACHE_DIR, '*.ini'))
     links_to_check = set()
@@ -88,10 +96,12 @@ def collect_links():
                 print "\nGetting links from file '%s':" % filename
 
                 # determine links to be checked (duplicates are ignored):
-                with open(filename, 'r') as ini_file:
-                    for line in ini_file:
-                        if 'http:' in line:
-                            links_to_check.add(line[line.find('http:'):].rstrip())
+                try:
+                    with open(filename, 'r') as ini_file:
+                        links_to_check.update(findall_urls(ini_file.read()))
+                except (IOError, OSError) as exc:
+                    utils.fail("An %r error occured while working with %s"
+                               % (exc, filename))
 
     return links_to_check
 
@@ -117,11 +127,15 @@ def check_ini_files():
         parent_conn, child_conn = m_Pipe()
         proc = Process(target=create_and_run_process, args=(child_conn, cmd))
         proc.start()
-        stdout, stderr = parent_conn.recv()
         proc.join(90)
 
-        if stderr:
-            print "STDERR:", stderr
+        if proc.is_alive():  # did not terminate in a timeout
+            proc.terminate()
+            stdout = ''
+        else:
+            stdout, stderr = parent_conn.recv()  # receive output
+            if stderr:
+                print "STDERR:", stderr
 
         if not stdout:
             print "Failed to get any stdout from linkchecker..."
@@ -176,4 +190,5 @@ if __name__ == '__main__':
         else:
             print "\nNo errors were detected.\n"
     finally:
+        # restore initial App center setting in UCR
         set_unset_ucr_appcenter_server(ucr_appcenter_server_orig)
