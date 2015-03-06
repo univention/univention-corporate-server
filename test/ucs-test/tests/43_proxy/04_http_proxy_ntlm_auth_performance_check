@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: http-proxy-ntlm-auth-perfomance-check
 ## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave]
-## tags: [apptest]
+## tags: [SKIP-UCSSCHOOL, apptest]
 ## exposure: dangerous
 ## packages: [univention-squid]
 
@@ -41,7 +41,7 @@ def doJobs(c, num):
 
 def main():
 
-	print 
+	print
 	ucr = ucr_test.UCSTestConfigRegistry()
 	ucr.load()
 
@@ -52,7 +52,7 @@ def main():
 	time.sleep(3)
 	subprocess.call(['/etc/init.d/squid3', 'restart'])
 	time.sleep(3)
-	
+
 	# set up curl
 	host = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 	url = 'http://' + host + '/ucs-overview/'
@@ -68,7 +68,7 @@ def main():
 	master_pid = os.getpid()
 	start = int(time.time())
 	try:
-		# aftert squid restart the ntlm help needs to 
+		# aftert squid restart the ntlm help needs to
 		# get the NT hashes via ldap, this takes a while
 		# so fewer tests for this first run
 		for job in range(1):
