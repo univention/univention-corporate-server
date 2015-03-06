@@ -1,3 +1,9 @@
+ucs-test (5.0.124-1) unstable; urgency=low
+
+  * debian/control: removed linkchecker from dependencies for now (Bug #37950)
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 06 Mar 2015 17:20:52 +0100
+
 ucs-test (5.0.123-1) unstable; urgency=low
 
   * 60_umc-system/23_umc-service-create-user: adjusted test to use localized

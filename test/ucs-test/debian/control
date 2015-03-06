@@ -435,7 +435,6 @@ Package: ucs-test-appcenter
 Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
- linkchecker,
  ${misc:Depends}
 Provides: ucs-test-module
 Description: Test scripts to test the app center
