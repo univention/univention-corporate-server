@@ -6,16 +6,27 @@
 ## packages: [univention-squid]
 
 from univention.config_registry import handler_set, handler_unset
+import apt
+import os
+import pycurl
+import subprocess
+import sys
+import time
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 
-import pycurl
-import os
-import sys
-import subprocess
-import time
+def max_duration():
+	meta_packages = ['ucs-school-master', 'ucs-school-singlemaster', 'ucs-school-slave']
+	apt_cache = apt.Cache()
+	apt_cache.open()
+	for pkg in meta_packages:
+		if pkg in apt_cache and apt_cache[pkg].is_installed:
+			return 130 
+	else:
+		return 60
+		
+MAX_DURATION = max_duration()
 
-MAX_DURATION = 60
 
 def doJobs(c, num):
 	children = []
