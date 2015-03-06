@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: http-proxy-ntlm-auth-perfomance-check
 ## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave]
-## tags: [SKIP-UCSSCHOOL, apptest]
+## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-squid]
 
@@ -21,10 +21,10 @@ def max_duration():
 	apt_cache.open()
 	for pkg in meta_packages:
 		if pkg in apt_cache and apt_cache[pkg].is_installed:
-			return 130 
+			return 130
 	else:
 		return 60
-		
+
 MAX_DURATION = max_duration()
 
 
