@@ -1,3 +1,10 @@
+ucs-test (5.0.128-1) unstable; urgency=low
+
+  * 60_umc/07_expired_password: added bug reference and tagged 'skip_admember'
+    (Bug #37916).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 09 Mar 2015 15:52:40 +0100
+
 ucs-test (5.0.127-1) unstable; urgency=low
 
   * 20_appcenter/10_check_apps_ini: removed parser for arguments and option
