@@ -2,7 +2,7 @@
 #
 # UCS test
 #
-# Copyright 2013 Univention GmbH
+# Copyright 2013-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -49,9 +49,11 @@ import email.encoders as Encoders
 
 COMMASPACE = ', '
 
+
 def disable_mail_quota():
 	handler_set(['mail/cyrus/imap/quota=no'])
 	subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'])
+
 
 def enable_mail_quota():
 	handler_set(['mail/cyrus/imap/quota=yes'])
@@ -62,7 +64,7 @@ class Mail(object):
 
 	def get_reply(self, s):
 		try:
-			buff_size=1024
+			buff_size = 1024
 			reply = ''
 			while(True):
 				part = s.recv(buff_size)
@@ -109,7 +111,7 @@ class ImapMail(Mail):
 		self.send_message(s, '%s %s' % (id, message))
 		response = self.get_reply(s)
 		while True:
-			response2 =self.get_reply(s)
+			response2 = self.get_reply(s)
 			if response2:
 				response += response2
 			else:
@@ -122,7 +124,7 @@ class ImapMail(Mail):
 		self.send_message(s, '%s %s' % (id, message))
 		response = self.get_reply(s)
 		while True:
-			response2 =self.get_reply(s)
+			response2 = self.get_reply(s)
 			if response2:
 				response += response2
 			else:
@@ -139,26 +141,26 @@ class ImapMail(Mail):
 		print self.get_reply(s)
 		retval = self.send_and_receive(s, 'a001', 'login %s %s\r\n' % (username, password))
 		self.send_and_receive(s, 'a002', 'logout\r\n')
-		s.close();
+		s.close()
 		return (retval == 'OK')
 
 	def get_imap_quota(self, username, password):
-
 		hostname = socket.gethostname()
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		s.settimeout(10)
 		s.connect((hostname, 143))
-		r = self.send_and_receive_quota(s, 'a001', 'login %s %s\r\n' % (username, password))
-		retval = self.send_and_receive_quota(s, 'a002', 'GETQUOTAROOT INBOX\r\n')# user/%s\r\n' % username)
+		retval = self.send_and_receive_quota(s, 'a001', 'login %s %s\r\n' % (username, password))
+		retval = self.send_and_receive_quota(s, 'a002', 'GETQUOTAROOT INBOX\r\n')  # user/%s\r\n' % username)
 		regex = '\(STORAGE 0 (.*)\)'
-		m = re.search (regex, retval[1])
+		m = re.search(regex, retval[1])
 		try:
-				quota = int(m.group (1))
+			quota = int(m.group(1))
 		except:
 				quota = -1
 		self.send_and_receive_quota(s, 'a003', 'logout\r\n')
 		s.close()
 		return quota, retval[0]
+
 
 class PopMail(Mail):
 
@@ -193,26 +195,31 @@ class PopMail(Mail):
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
+
 def random_email():
 	return '%s@%s' % (uts.random_name, ucr.get('domainname'))
 
+
 def make_token():
 	return str(time.time())
+
 
 def get_dir_files(dir_path, recursive=True):
 	result = []
 	for f in glob.glob('%s/*' % dir_path):
 		if os.path.isfile(f):
 			result.append(f)
-		if os.path.isdir(f) and	recursive:
+		if os.path.isdir(f) and recursive:
 			result.extend(get_dir_files(f))
 	return result
+
 
 def get_file_contain(token, _dir):
 	for _file in get_dir_files(_dir, recursive=True):
 		with open(_file) as fi:
 			if token in fi.read():
 				return os.path.basename(_file)
+
 
 def virus_delivered(token, mail_address):
 	virus_dir = '/var/lib/amavis/virusmails'
@@ -227,19 +234,34 @@ def virus_delivered(token, mail_address):
 						found += 1
 	return found == 2
 
+
 def deactivate_spam_detection():
 	handler_set(['mail/antispam=no', 'mail/antivir/spam=no'])
+
 
 def activate_spam_header_tag(tag):
 	handler_set(['mail/antispam/headertag=%s' % tag])
 
+
 def reload_postfix():
 	cmd = ['/etc/init.d/postfix', 'force-reload']
-	subprocess.Popen(cmd , stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+	try:
+		subprocess.Popen(cmd).communicate()
+	except EnvironmentError as ex:
+		print >> sys.stderr, ex
+
 
 def reload_amavis_postfix():
-	for cmd in (['newaliases'],['/etc/init.d/amavis', 'force-reload'], ['/etc/init.d/postfix', 'force-reload']):
-		subprocess.Popen(cmd , stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+	for cmd in (
+		['newaliases'],
+		['/etc/init.d/amavis', 'force-reload'],
+		['/etc/init.d/postfix', 'force-reload'],
+	):
+		try:
+			subprocess.Popen(cmd).communicate()
+		except EnvironmentError as ex:
+			print >> sys.stderr, ex
+
 
 def spam_delivered(token, mail_address):
 	delivered = False
@@ -254,6 +276,7 @@ def spam_delivered(token, mail_address):
 					spam = True
 				break
 	return delivered and spam
+
 
 def mail_delivered(token, user=None, mail_address=None, check_root=True):
 	delivered = False
@@ -324,13 +347,13 @@ def get_cyrus_maildir(mail_address):
 
 	if not mail_address:
 		raise UCSTest_Mail_InvalidMailAddress()
-	if not '@' in mail_address:
+	if '@' not in mail_address:
 		raise UCSTest_Mail_InvalidMailAddress()
 
 	# FIXME cyrus uses a special UTF-7 encoding for umlauts for example - this encoding is currently missing
-	mail_address, domain = mail_address.rsplit('@',1)
+	mail_address, domain = mail_address.rsplit('@', 1)
 	if '.' in mail_address:
-		mail_address = mail_address.replace('.' , '^')
+		mail_address = mail_address.replace('.', '^')
 	# mail_address = re.sub("[0-9]", 'q', s)
 	return '/var/spool/cyrus/mail/domain/%s/%s/%s/user/%s' % (domain[0].lower(), domain.lower(), re.sub("[0-9]", "q", mail_address[0].lower()), mail_address.lower())
 
@@ -366,12 +389,12 @@ def wait_for_mailboxes(mailboxes, timeout=90):
 
 
 def send_mail(recipients=None, sender=None, subject=None, msg=None, idstring='no id string',
-	       gtube=False, virus=False, attachments=[], server=None, port=25, tls=False, username=None, password=None ):
+	       gtube=False, virus=False, attachments=[], server=None, port=25, tls=False, username=None, password=None):
 	"""
 	Send a mail to mailserver.
 	Arguments:
 	recipients: single recipient as string or a list of recipients
-		    (e.g. 'foo@example.com' or ['foo@example.com', 'bar@example.com'])
+	            (e.g. 'foo@example.com' or ['foo@example.com', 'bar@example.com'])
 	sender:	    [optional] mail address of sender (default: tarpit@example.com)
 	subject:    [optional] mail subject (default: 'Testmessage %s' % time.ctime() )
 	msg:	    [optional] mail message; if msg is defined, idstring will be ignored!
@@ -380,7 +403,7 @@ def send_mail(recipients=None, sender=None, subject=None, msg=None, idstring='no
 	virus:	    [optional] if True, an attachment with virus signature will be added to mail
 	attachments:[optional] list of filenames to be attached to mail
 	server:	    [optional] name or IP address of mailserver (default: localhost)
-        port:       [optional] port, the mailserver will listen on (default: 25)
+	port:       [optional] port, the mailserver will listen on (default: 25)
 	tls:	    [optional] use TLS if true
 	username:   [optional] authenticate against mailserver if username and password are set
 	password:	[optional] authenticate against mailserver if username and password are set
@@ -389,9 +412,9 @@ def send_mail(recipients=None, sender=None, subject=None, msg=None, idstring='no
 	# default values
 	m_sender = 'tarpit@example.com'
 	m_subject = 'Testmessage %s' % time.ctime()
-        m_ehlo = 'ucstest.%d.example.com' % os.getpid()
+	m_ehlo = 'ucstest.%d.example.com' % os.getpid()
 	m_server = 'localhost'
-        m_port = 25
+	m_port = 25
 	m_msg = '''Hello,
 
 This is a test mail. Please do not answer.
@@ -406,7 +429,7 @@ Regards,
 	if sender:
 		m_sender = sender
 	if recipients and type(recipients) == str:
-		m_recipients = [ recipients ]
+		m_recipients = [recipients]
 	elif recipients and type(recipients) == list:
 		m_recipients = recipients
 	else:
@@ -421,16 +444,16 @@ Regards,
 		m_msg = msg
 
 	print '*** Sending mail: recipients=%r sender=%r subject=%r idstring=%r gtube=%r server=%r port=%r tls=%r username=%r password=%r HELO/EHLO=%r' % (
-            m_recipients, m_sender, m_subject, idstring, gtube, m_server, m_port, tls, username, password, m_ehlo)
+		m_recipients, m_sender, m_subject, idstring, gtube, m_server, m_port, tls, username, password, m_ehlo)
 
 	# build message
-	#		m_body = ''
-	#		m_body += 'From: %s\n' % m_sender
-	#		m_body += 'To: %s\n' % ', '.join(m_recipients)
-	#		m_body += 'Subject: %s\n' % m_subject
-	#		m_body += '.\n'
-	#		m_body += m_msg
-	#		m_body += '.\n'
+	# m_body = ''
+	# m_body += 'From: %s\n' % m_sender
+	# m_body += 'To: %s\n' % ', '.join(m_recipients)
+	# m_body += 'Subject: %s\n' % m_subject
+	# m_body += '.\n'
+	# m_body += m_msg
+	# m_body += '.\n'
 	if gtube:
 		m_msg += '\nXJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X\n'
 
@@ -441,14 +464,14 @@ Regards,
 	mimemsg['Subject'] = m_subject
 	mimemsg['UCS-TEST'] = idstring
 
-	mimemsg.attach( MIMEText(m_msg) )
+	mimemsg.attach(MIMEText(m_msg))
 
 	if virus:
-		mimemsg.attach( MIMEText('X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*') )
+		mimemsg.attach(MIMEText('X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*'))
 
 	for fn in attachments:
 		part = MIMEBase('application', "octet-stream")
-		part.set_payload( open(fn, 'rb').read() )
+		part.set_payload(open(fn, 'rb').read())
 		Encoders.encode_base64(part)
 		part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(fn))
 		mimemsg.attach(part)

@@ -2,7 +2,10 @@
 ## desc: Basic spam email delivery
 ## tags: apptest
 ## exposure: dangerous
-## packages: [univention-mail-server, univention-config, univention-directory-manager-tools]
+## packages:
+##  - univention-mail-server
+##  - univention-directory-manager-tools
+##  - univention-antivir-mail
 ## bugs: [23527]
 
 #################

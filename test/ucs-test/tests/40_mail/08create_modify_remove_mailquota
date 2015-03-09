@@ -2,7 +2,9 @@
 ## desc: Create modify remove mailquota
 ## tags: apptest
 ## exposure: dangerous
-## packages: [univention-mail-server, univention-config, univention-directory-manager-tools]
+## packages:
+##  - univention-mail-server
+##  - univention-directory-manager-tools
 ## bugs: [23527]
 
 

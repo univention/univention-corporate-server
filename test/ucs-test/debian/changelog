@@ -1,3 +1,9 @@
+ucs-test (5.0.129-1) unstable; urgency=low
+
+  * Bug #36966: Fix ClamAV/AMaViS tests
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 09 Mar 2015 16:01:12 +0100
+
 ucs-test (5.0.128-1) unstable; urgency=low
 
   * 60_umc/07_expired_password: added bug reference and tagged 'skip_admember'
