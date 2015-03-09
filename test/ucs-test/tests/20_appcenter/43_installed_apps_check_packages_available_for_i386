@@ -11,7 +11,7 @@ import apt
 import univention.management.console.modules.appcenter.app_center as app
 import univention.lib.package_manager as PM
 import sys
-import os
+from subprocess import Popen, PIPE, call
 
 from univention.config_registry.frontend import ucr_update
 
@@ -19,33 +19,32 @@ import univention.config_registry
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
-
+ARCHS = set('i386 amd64'.split())
+UCR_ARCH = 'repository/online/architectures'
 
 
 class Test():
 
 	def __init__(self):
-		self._ucr_arch_settings = ucr.get('repository/online/architectures')
+		self._ucr_arch_settings = ucr.get(UCR_ARCH)
 		self._other_arch = self._get_other_arch()
 		self.cache = apt.Cache()
 		self.cache.open()
 		self.pkg_cache = None
 		self.package_manager = PM.PackageManager()
-
 		self.installed = {}
 		self.failed = {}
 
+
 	def _get_other_arch(self):
-		if self._ucr_arch_settings:
-			if self._ucr_arch_settings == 'amd64':
-				return 'i386'
-			if self._ucr_arch_settings == 'i386':
-				return 'amd64'
-		else:
-			if sys.maxsize > 2**32:
-				return 'amd64'
-			else:
-				return 'i386'
+		proc = Popen(('dpkg', '--print-architecture'), stdout=PIPE)
+		stdout, _stderr = proc.communicate()
+		other = ARCHS - set([stdout.strip()])
+		assert len(other) == 1
+		print ' '.join(other)
+		return ' '.join(other)
+
+
 
 	def get_installed_default_packages(self):
 		print "Gathering packages of installed apps "
@@ -119,17 +118,17 @@ class Test():
 				else:
 					amd64 = group.find_package('amd64').version_list[0].ver_str
 					if not i386 and all:
-						self.failed[app]={ app_package : 'version expected: %s, version found: %s' % (str(amd64), 'none found', )}
+						self.failed[app] = { app_package : 'version expected: %s, version found: %s' % (str(amd64), 'none found', )}
 				if i386 and i386 != amd64:
-					self.failed[app]={ app_package : 'version expected: %s, version found: %s' % (str(amd64), str(i386),)}
+					self.failed[app] = { app_package : 'version expected: %s, version found: %s' % (str(amd64), str(i386),)}
 
 
 	def set_multi_architecture(self):
 		if self._other_arch:
 			print "Adding %s architecture" % self._other_arch
 			ucr_update(ucr, {'repository/online/architectures' : 'i386 amd64'})
-			os.system('dpkg --add-architecture %s > /dev/null' % self._other_arch)
-			os.system('apt-get update > /dev/null')
+			call(('dpkg', '--add-architecture', self._other_arch))
+			call(('apt-get', '-qq', 'update'))
 			self.pkg_cache = apt.apt_pkg.Cache()
 			if not self.pkg_cache.is_multi_arch:
 				print "Error adding %s architecture" % self._other_arch
@@ -138,13 +137,11 @@ class Test():
 			self.pkg_cache = apt.apt_pkg.Cache()
 
 
-
 	def unset_multi_architecture(self):
 		if self._other_arch:
 			print "Restoring architecture settings"
-			ucr_update(ucr, {'repository/online/architectures' : self._ucr_arch_settings})
-			os.system('dpkg --remove-architecture %s > /dev/null' % self._other_arch)
-			os.system('apt-get update > /dev/null')
+			ucr_update(ucr, {UCR_ARCH : self._ucr_arch_settings})
+			call(('dpkg', '--remove-architecture', self._other_arch))
 
 
 if __name__ == "__main__":

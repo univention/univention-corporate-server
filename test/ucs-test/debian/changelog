@@ -1,3 +1,11 @@
+ucs-test (5.0.126-2) unstable; urgency=low
+
+  * 20_appcenter/43_installed_apps_check_packages_available_for_i386
+    revised arcitecture determination;
+    use of subprocess instead of os.system (Bug #31792)
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 09 Mar 2015 15:24:42 +0100
+
 ucs-test (5.0.126-1) unstable; urgency=low
 
   * Bug #37931: increase timeout in 43_proxy/04_http_proxy_ntlm_auth_performance_check
@@ -11,6 +19,7 @@ ucs-test (5.0.125-1) unstable; urgency=low
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 09 Mar 2015 09:20:23 +0100
 
+>>>>>>> .r58749
 ucs-test (5.0.124-1) unstable; urgency=low
 
   * debian/control: removed linkchecker from dependencies for now (Bug #37950)
