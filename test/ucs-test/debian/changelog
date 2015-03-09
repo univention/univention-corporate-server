@@ -1,3 +1,9 @@
+ucs-test (5.0.125-1) unstable; urgency=low
+
+  * Bug #37952: 01/85apache_close_fds
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 09 Mar 2015 09:20:23 +0100
+
 ucs-test (5.0.124-1) unstable; urgency=low
 
   * debian/control: removed linkchecker from dependencies for now (Bug #37950)

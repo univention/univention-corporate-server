@@ -2,6 +2,7 @@
 ## desc: Check if apache is useable after a reload
 ## packages: [apache2 | apache2-mpm-prefork]
 ## tags: [apptest]
+## bugs: [37792]
 ## exposure: dangerous
 
 ret=0
@@ -23,4 +24,3 @@ fi
 
 exit $ret
 # vim: set ft=sh :
-
