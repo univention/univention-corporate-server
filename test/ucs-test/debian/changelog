@@ -1,3 +1,10 @@
+ucs-test (5.0.127-1) unstable; urgency=low
+
+  * 20_appcenter/10_check_apps_ini: removed parser for arguments and option
+    to pick app center server (Bug #30508).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 09 Mar 2015 15:41:30 +0100
+
 ucs-test (5.0.126-2) unstable; urgency=low
 
   * 20_appcenter/43_installed_apps_check_packages_available_for_i386

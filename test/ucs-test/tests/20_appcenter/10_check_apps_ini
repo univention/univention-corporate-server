@@ -11,11 +11,9 @@
 import locale
 from os import path
 from glob import glob
-from optparse import OptionParser
 
 import univention.testing.utils as utils
-from univention.config_registry import handler_set, handler_unset
-from univention.management.console.modules.appcenter.app_center import Application, CACHE_DIR, ucr
+from univention.management.console.modules.appcenter.app_center import Application, CACHE_DIR
 
 
 failures_counter = 0
@@ -35,26 +33,6 @@ def set_locale(new_locale):
         print("An Error occured when trying to set the current locale to "
               "'%s': '%s'. (Probably the '%s' is not installed.)"
               % (new_locale, exc, new_locale))
-
-
-def set_unset_ucr_appcenter_server(server_url=''):
-    """
-    Sets the UCR var 'repository/app_center/server' to a given 'server_url',
-    or unsets it in case no 'server_url' is given. Reloads the UCR and
-    performs a sync after.
-    """
-    ucr_appcenter_server = 'repository/app_center/server'
-
-    if server_url:
-        print("\nSetting the UCR var '%s' to '%s':"
-              % (ucr_appcenter_server, server_url))
-        handler_set(['%s=%s' % (ucr_appcenter_server, server_url)])
-    else:
-        print "\nUnsetting the UCR var '%s':" % ucr_appcenter_server
-        handler_unset([ucr_appcenter_server])
-
-    ucr.load()
-    Application.sync_with_server()
 
 
 def check_file(filename):
@@ -91,57 +69,27 @@ def print_all_apps_versions(number_of_files):
             print "The App with ID '%s' was not found." % app_id
 
 
-def check_ini_files(original_server_used):
+def check_ini_files():
     """
     Checks all .ini files that are found in the CACHE_DIR.
     """
     test_locales = ('de_DE', 'en_US')
     test_path = glob(path.join(CACHE_DIR, '*.ini'))
-    try:
-        for local in test_locales:
-            if set_locale(local):
-                for filename in test_path:
-                    print "Checking", filename, "in", local, "locale:"
-                    check_file(filename)
-    finally:
-        print("\nRestoring (or unsetting if it was None) the original UCR "
-              "app_center/server setting")
-        set_unset_ucr_appcenter_server(original_server_used)
+
+    for local in test_locales:
+        if set_locale(local):
+            for filename in test_path:
+                print "Checking", filename, "in", local, "locale:"
+                check_file(filename)
 
     print_all_apps_versions(len(test_path))
 
 
-def parse_options():
-    """
-    Creates an OptionParser to allow specifying the appcenter server url
-    if running the test interactively (via python ... --server)
-    By default url is https://appcenter.test.software-univention.de/
-    """
-    Parser = OptionParser()
-    Parser.add_option("-s", "--server",
-                      dest="appcenter",
-                      default="https://appcenter.test.software-univention.de/",
-                      help=("External Univention App Center Server "
-                            "(defaults to %default. May also be: "
-                            "http://appcenter.software-univention.de/ "
-                            "or http://appcenter.knut.univention.de/)"),
-                      metavar="APPCENTER")
-
-    return Parser.parse_args()
-
-
 if __name__ == '__main__':
-    # parse options if any or use defaults:
-    options, args = parse_options()
+    Application.sync_with_server()
 
-    # save original 'app_center/server' UCR setting:
-    ucr_appcenter_server_orig = ucr.get('repository/app_center/server')
-
-    # set a new (parsed) 'app_center/server' setting:
-    set_unset_ucr_appcenter_server(options.appcenter)
-
-    # find and check all .ini files, reset the original UCR setting:
-    check_ini_files(ucr_appcenter_server_orig)
+    # find and check all .ini files:
+    check_ini_files()
 
     if failures_counter:
         utils.fail("There were App's .ini(s) that cannot be "
