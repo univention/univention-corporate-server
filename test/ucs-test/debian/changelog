@@ -1,3 +1,10 @@
+ucs-test (5.0.129-2) unstable; urgency=low
+
+  * 60_umc-system/80_umc-service-license: use more complex password when
+    creating test users (Bug #37918).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 09 Mar 2015 16:13:14 +0100
+
 ucs-test (5.0.129-1) unstable; urgency=low
 
   * Bug #36966: Fix ClamAV/AMaViS tests

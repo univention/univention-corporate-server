@@ -97,7 +97,7 @@ class TestUMCLicenseManagement(TestUMCSystem):
                                                       [['']])
             elif obj_type == 'user':
                 request_result = self.create_user(obj_name,
-                                                  'univention',
+                                                  'Univention@99',
                                                   'Domain Users')
             if request_result[0].get("success"):
                 if obj_type == 'computer':
