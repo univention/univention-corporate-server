@@ -1,3 +1,10 @@
+univention-updater (10.0.53-10) unstable; urgency=low
+
+  * Bug #32543: Prevent app installation of univention-add-app on wrong server
+    role
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 09 Mar 2015 11:24:36 +0100
+
 univention-updater (10.0.53-9) unstable; urgency=medium
 
   * Bug #37033: prompt a confirmation dialogue when the browser window is

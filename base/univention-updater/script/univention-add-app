@@ -121,6 +121,13 @@ if __name__ == '__main__':
 	if not LICENSE.allows_using(requested_app.get('notifyvendor')):
 		sys.stderr.write('App "%s" may not be installed\n' % requested_app.name)
 		sys.exit(1)
+	if not requested_app.allowed_on_local_server():
+		if options.install_master or options.install_all:
+			only_master_packages = not options.install_all
+			may_install_master_packages = ucr.get('server/role') in ['domaincontroller_master', 'domaincontroller_backup']
+			if not only_master_packages or not may_install_master_packages:
+				sys.stderr.write('App "%s" may not be installed on %s\n' % (requested_app.name, ucr.get('server/role')))
+				sys.exit(1)
 	success = True
 
 	manually = False
