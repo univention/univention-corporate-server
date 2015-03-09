@@ -5,6 +5,7 @@
 ## roles:
 ##  - memberserver
 ## tags:
+##  - SKIP-UCSSCHOOL
 ##  - basic
 ##  - apptest
 ## exposure: safe
