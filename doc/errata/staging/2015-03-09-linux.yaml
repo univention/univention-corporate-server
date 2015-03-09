@@ -1,0 +1,44 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-5
+src: linux
+fix: 
+version: [4,5]
+desc: |
+ Multiple security issues have been fixed in the Linux kernel:
+ * Denial of service in VMX handling in KVM (CVE-2014-3645)
+ * TLS base address leak allows partial ASLR bypass (CVE-2014-9419)
+ * Denial of service in isofs (CVE-2014-9420)
+ * espfix can be bypassed (CVE-2014-8133)
+ * espfix not available for KVM paravirtualised guests (CVE-2014-8134)
+ * Information leak in isofs (CVE-2014-9584)
+ * Memory corruption in garbage collector for unused security 
+   keys (CVE-2014-9529)
+ * Insufficient randomisation of the vdso segment (CVE-2014-9585)
+ * Crypto userspace API allows loading of arbitrary kernel modules
+  (CVE-2013-7421, CVE-2014-9644)
+ * Denial of service in the VMX handling in KVM (CVE-2014-3690)
+ * Denial of service in VMX handling in KVM (CVE-2014-3646)
+ * Use-after-free in SCTP (CVE-2015-1421)
+ * ecryptfs 1-byte overwrite (CVE-2014-9683)
+ * ASLR integer overflow: Reducing stack entropy by four 
+   (CVE-2015-1593)
+bug:
+ - 37353
+cve:
+ - CVE-2014-3645
+ - CVE-2014-9419
+ - CVE-2014-9420
+ - CVE-2014-8133
+ - CVE-2014-8134
+ - CVE-2014-9584
+ - CVE-2014-9529
+ - CVE-2014-9585
+ - CVE-2013-7421
+ - CVE-2014-9644
+ - CVE-2014-3690
+ - CVE-2014-3646
+ - CVE-2015-1421
+ - CVE-2014-9683
+ - CVE-2015-1593
+
