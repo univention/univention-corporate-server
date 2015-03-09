@@ -9,12 +9,14 @@ desc: |
  * Reading of local files through manipulation of form autocomplete (CVE-2015-0822)
  * Out-of-bounds read and write while rendering SVG content (CVE-2015-0827)
  * Use-after-free in IndexedDB (CVE-2015-0831)
+ * Memory safety problems and crashes (CVE-2015-0835)
  * Miscellaneous memory safety hazards (CVE-2015-0836)
 note: This update consists of two updates for firefox-en and firefox-de.
 cve:
  - CVE-2015-0822
  - CVE-2015-0827
  - CVE-2015-0831
+ - CVE-2015-0835
  - CVE-2015-0836
 bug:
  - 37881
