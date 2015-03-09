@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-11) unstable; urgency=low
+
+  * Bug #35456: Fix absolute and html entities containing URLs
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 09 Mar 2015 09:58:12 +0100
+
 univention-management-console-module-appcenter (4.1.20-10) unstable; urgency=low
 
   * Bug #35614: Reverted

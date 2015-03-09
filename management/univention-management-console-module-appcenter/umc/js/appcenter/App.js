@@ -35,10 +35,11 @@ define([
 	"dojo/_base/lang",
 	"dojo/topic",
 	"dojo/json",
+	"dojox/html/entities",
 	"umc/app",
 	"umc/tools",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, kernel, lang, topic, json, UMCApplication, tools, _) {
+], function(declare, kernel, lang, topic, json, entities, UMCApplication, tools, _) {
 	var App = declare('umc.modules.appcenter.App', null, {
 		constructor: function(props, page, host) {
 			props = lang.clone(props);
@@ -68,7 +69,7 @@ define([
 			this.isInstalled = props.is_installed;
 			this.moduleName = props.umcmodulename;
 			this.moduleFlavor = props.umcmoduleflavor;
-			this.webInterface = props.webinterface;
+			this.webInterface = entities.decode(props.webinterface);
 			this.webInterfaceName = props.webinterfacename;
 			this.webInterfacePort = props.webinterfaceport;
 			this.endOfLife = props.endoflife;
@@ -161,6 +162,9 @@ define([
 
 		getWebInterfaceURL: function() {
 			if (this.isInstalled && this.webInterface) {
+				if (this.webInterface.indexOf('/') !== 0) {
+					return this.webInterface;
+				}
 				var webInterface = this.webInterface;
 				var protocol = window.location.protocol;
 				var host = window.location.host;
