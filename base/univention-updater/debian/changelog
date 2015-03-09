@@ -1,3 +1,9 @@
+univention-updater (10.0.53-11) unstable; urgency=low
+
+  * Bug #37961: remove umc/apache restart from postup.sh 
+
+ -- Felix Botner <botner@univention.de>  Mon, 09 Mar 2015 13:29:54 +0100
+
 univention-updater (10.0.53-10) unstable; urgency=low
 
   * Bug #32543: Prevent app installation of univention-add-app on wrong server
