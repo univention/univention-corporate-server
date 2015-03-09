@@ -52,6 +52,7 @@ define([
 			}
 			this.id = props.id;
 			this.name = props.name;
+			this.icon = props.icon;
 			this.version = props.version;
 			this.candidateVersion = props.candidate_version;
 			this.website = props.website;
@@ -230,7 +231,7 @@ define([
 		},
 
 		canDisable: function() {
-			return this.isInstalled && this.endOfLife;
+			return this.isInstalled && this.endOfLife && this.isCurrent;
 		},
 
 		canUninstall: function() {

@@ -166,14 +166,12 @@ define([
 				});
 			}
 			if (this.app.canDisable()) {
-				if (this.app.is_current) {
-					buttons.push({
-						name: 'disable',
-						label: _('Continue using'),
-						align: 'right',
-						callback: lang.hitch(this, 'disableApp')
-					});
-				}
+				buttons.push({
+					name: 'disable',
+					label: _('Continue using'),
+					align: 'right',
+					callback: lang.hitch(this, 'disableApp')
+				});
 			}
 			if (this.app.canUninstall()) {
 				buttons.push({

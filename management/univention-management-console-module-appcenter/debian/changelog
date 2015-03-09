@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-12) unstable; urgency=low
+
+  * Bug #35456: Fix new App.js
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 09 Mar 2015 18:19:31 +0100
+
 univention-management-console-module-appcenter (4.1.20-11) unstable; urgency=low
 
   * Bug #35456: Fix absolute and html entities containing URLs
