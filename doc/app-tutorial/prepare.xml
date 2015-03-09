@@ -4,14 +4,14 @@
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<chapter>
+<chapter id="prepare">
 		<title> Prepare the environment</title>
 		<para>
 			Before you can start with the creation of an app for Univention App Center, you'll need to
 			prepare your UCS environment. This section guides you through the necessary steps.
 		</para>
 
-		<section>
+		<section id="prepare:download">
 			<title>Download</title>
 			<para>
 				First of all, get yourself a copy of UCS free of charge at the <ulink
@@ -20,7 +20,7 @@
 			</para>
 		</section>
 
-		<section>
+		<section id="prepare:setup">
 			<title>Initial setup </title>
 			<para>
 				Please refer to the <ulink url="http://docs.univention.de/quickstart-en.html" lang="">UCS Quickstart
@@ -38,7 +38,7 @@
 			</para>
 		</section>
 
-		<section>
+		<section id="prepare:unmaintained">
 			<title>Activate the unmaintained repository</title>
 			<para>
 				UCS is a Linux distribution derived from Debian GNU/Linux. It behaves very similar
@@ -64,7 +64,7 @@ ucr set repository/online/unmaintained='yes'
 			</para></note>
 		</section>
 
-		<section>
+		<section id="prepare:dependencies">
 			<title>Install required packages for App development</title>
 
 			<para>

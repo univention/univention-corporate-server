@@ -4,10 +4,10 @@
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<chapter>
+<chapter id="package">
 <title>Package the software solution</title>
 
-<section>
+<section id="package:debian">
 	<title>Create or use Debian packages</title>
 
 		<para>
@@ -37,7 +37,7 @@
 		</orderedlist>
 </section>
 
-<section>
+<section id="package:structure">
 	<title>Structure the App</title>
 
 		<para>

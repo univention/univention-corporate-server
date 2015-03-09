@@ -4,7 +4,7 @@
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<chapter>
+<chapter id="provide">
 	<title>Provide the App</title>
 		<para>
 			Until now you should have your software solution packaged as Debian package(s) including
@@ -33,7 +33,7 @@
 			Put your packages in the appropriate subdirectories below <filename class="directory">packages/</filename>.
 		</para>
 
-	<section>
+	<section id="provide:meta">
 		<title>Create the App meta data</title>
 
 		<para>
@@ -92,7 +92,7 @@ myapp.png
 		</para>
 	</section>
 
-	<section>
+	<section id="provide:meta:optional">
 		<title>Create optional App meta information</title>
 
 		<para>
@@ -123,7 +123,7 @@ myapp.png
 		</para>
 		</section>
 
-		<section>
+		<section id="provide:upload">
 		<title>Upload the App</title>
 
 		<para>

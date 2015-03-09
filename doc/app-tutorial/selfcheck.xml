@@ -4,7 +4,7 @@
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<chapter>
+<chapter id="selfcheck">
 	<title>App Self-Check</title>
 		<para>
 			You may test how the application looks like in the Univention App Center and also test

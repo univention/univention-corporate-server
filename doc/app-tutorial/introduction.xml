@@ -4,7 +4,7 @@
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<chapter>
+<chapter id="introduction">
 	<title>Apps and Univention App Center</title>
 		<para>
 			Univention App Center provides a platform for software vendors and an easy-to-use entry point

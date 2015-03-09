@@ -4,7 +4,7 @@
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<chapter>
+<chapter id="next">
 	<title>What happens next?</title>
 		<para>
 			After you sent the upload-id to Univention, a Univention employee will extract your
