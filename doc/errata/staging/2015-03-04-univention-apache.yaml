@@ -14,7 +14,7 @@ desc: |
    enabled using the UCR variable apache2/ssl/compression.
  - Apache no longer accepts various insecure ciphers and hash algorithms
    (e.g. RC4, MD5 and the outdated "export ciphers") by default. Note 
-   that such algorithms would not have been be negotiated if the TLS 
+   that such algorithms would not have been negotiated if the TLS 
    client supports current crypto algorithms. A different set of ciphers
    can be configured using the new UCR variable apache2/ssl/ciphersuite.
  - If the new UCR variable apache2/ssl/honorcipherorder is set, the
