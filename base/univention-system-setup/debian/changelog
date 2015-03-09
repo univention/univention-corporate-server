@@ -1,3 +1,10 @@
+univention-system-setup (8.1.66-23) unstable; urgency=low
+
+  * Bug #37129: Added pam-config to show motd.setup even
+    if ucr template for pam.d/common-session is not installed
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 09 Mar 2015 09:16:48 +0100
+
 univention-system-setup (8.1.66-22) unstable; urgency=medium
 
   * Bug #37824: minor adjustment for summary page in setup.css

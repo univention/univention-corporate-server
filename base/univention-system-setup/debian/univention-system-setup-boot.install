@@ -1,5 +1,6 @@
 usr/share/univention-system-setup/startxwithfirefox
 usr/share/univention-system-setup/download-packages
+usr/share/pam-configs
 etc/init.d
 usr/lib/univention-system-setup/addons
 var/www

@@ -1,0 +1,8 @@
+Name: Univention system-setup show motd
+Default: yes
+Priority: 705
+Conflicts:
+Auth-Type: Primary
+Session-Type: Additional
+Session:
+        optional                        pam_motd.so motd=/etc/motd.setup

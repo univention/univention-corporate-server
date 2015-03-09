@@ -94,4 +94,7 @@ fi
 __EOF__
 chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/95_remove_package_cache
 
+# Show motd on unjoined systems (Bug #37129)
+pam-auth-update --package univention-system-setup-boot
+
 exit 0

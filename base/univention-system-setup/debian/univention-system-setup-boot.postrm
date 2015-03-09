@@ -52,6 +52,9 @@ update-rc.d -f univention-system-setup-boot-prepare remove
 # Runlevel settings should equal initscripts.postinst values
 update-rc.d urandom start 55 S . start 30 0 6 . || exit $?
 
+pam-auth-update --package --remove univention-system-setup-boot
+ucr commit /etc/pam.d/common-session
+
 #DEBHELPER#
 
 exit 0
