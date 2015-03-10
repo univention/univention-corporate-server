@@ -104,4 +104,4 @@ if __name__ == '__main__':
 		except utils.LDAPObjectNotFound:
 			pass
 		else:
-			fail('appcenter/app object was found although it had been removed')
+			utils.fail('appcenter/app object was found although it had been removed')

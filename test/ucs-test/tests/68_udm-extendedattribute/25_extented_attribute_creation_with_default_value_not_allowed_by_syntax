@@ -9,7 +9,7 @@
 ## versions:
 ##   3.2-0: skip
 
-
+import sys
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 import univention.testing.strings as uts

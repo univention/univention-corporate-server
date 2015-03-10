@@ -26,4 +26,4 @@ if __name__ == '__main__':
 		except utils.LDAPObjectNotFound:
 			pass
 		else:
-			fail('settings/ldapacl object was found although it had been removed')
+			utils.fail('settings/ldapacl object was found although it had been removed')

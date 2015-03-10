@@ -74,6 +74,7 @@ cleanup () {
 	then
 		ucr set nagios/server/webaccess/groups="$old_nagios_server_webaccess_groups"
 	elif [ -z "$old_nagios_server_webaccess_groups" ]
+	then
 		ucr unset nagios/server/webaccess/groups
 	fi
 
