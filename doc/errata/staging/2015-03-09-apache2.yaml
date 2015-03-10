@@ -5,8 +5,7 @@ src: apache2
 fix: 2.2.22-13.87.201503090840
 version: [0,1]
 desc: |
-  This update is for UCS 4.0-0 and UCS 4.0-1 and fixes a regression introduced
-  by erratum 84:
+  This update is for UCS 4.0-0 and UCS 4.0-1 and fixes the following issue:
   * The Apache web-server does not close all inherited file descriptors by
     itself, which can lead to other processes being block indefinitely.
 bug: [37952]
