@@ -6,6 +6,6 @@ fix: 9.0.16-13.544.201503051754
 version: [1]
 desc: |
   This update addresses the following issue:
-  * The S4 connector now caculates and sets the password
-    expiry attributes during password change via S4/windows.
+  * The password expiry attributes are now set in OpenLDAP if
+    the password has been changed in Active Directory/Samba 4.
 bug: [36317]
