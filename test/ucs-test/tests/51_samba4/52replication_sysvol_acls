@@ -7,6 +7,7 @@
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 ## tags:
+##  - SKIP-UCSSCHOOL
 ##  - basic
 ##  - apptest
 
@@ -43,10 +44,12 @@ enable_sysvol_sync() {
 ### Cleanup function
 cleanup() {
 	[ -n "$gpo_cn" ] || exit 0
-	samba-tool gpo del "$gpo_name" -U "$admin_account%$tests_domainadmin_pwd"
+	samba-tool gpo del "$gpo_cn" -U "$admin_account%$tests_domainadmin_pwd"
 	[ -n "$gpo_path" ] && rm -rf "$gpo_path"
 
-	univention-install cifs-utils >/dev/null
+	ucr set repository/online/unmaintained=yes
+	univention-install -y cifs-utils >/dev/null
+	ucr set repository/online/unmaintained=no
 	tmp_dir=$(mktemp -d)
 	mount -t cifs -o user="$admin_account" -o password="$tests_domainadmin_pwd" \
 		"//$samba4_sysvol_sync_host/sysvol" "$tmp_dir"
@@ -95,6 +98,11 @@ start_gpo_ntacl=$(samba-tool ntacl get --as-sddl "$gpo_path")
 
 test_account=join-backup
 test_account_sid=$(univention-s4search samaccountname="$test_account" objectSid | ldapsearch-wrapper | sed -n 's/^objectSid: //p')
+
+## This sleep 1 seems necessary to avoid occasional test failures where rsync
+## is not considering the local modification time to be more recent than the
+## remote one due to a "same second" issue
+sleep 1
 
 ### Update the NTACLs on the local SYSVOL share via SMB
 test_ntace="(A;OICI;0x001200a9;;;$test_account_sid)"
