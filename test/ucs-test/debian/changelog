@@ -1,3 +1,18 @@
+ucs-test (5.0.130-1) unstable; urgency=low
+
+  * Bug #37965: skip test temporarily 06krb_keytab
+  * Bug #37966: disable the test temporarily 02server_password_change
+  *	Bug #37984: disable the test temporarily 41samba-tool_user_password_change
+  *	Bug #37985: disable the test temporarily 41samba-tool_user_setpassword
+  *	Bug #37986: disable the test temporarily 52replication_sysvol
+  *	Bug #37987: disable the test temporarily 52replication_sysvol_acls
+  *	Bug #37988: disable the test temporarily 43access_sysvol
+  *	Bug #37989: disable the test temporarily 50replication_drs
+  *	Bug #37990: disable the test temporarily 35smbclient_auth
+  *	Bug #37991: disable the test temporarily 70schema_unregistration_basis
+
+ -- Ammar Najjar <najjar@univention.de>  Tue, 10 Mar 2015 11:59:05 +0100
+
 ucs-test (5.0.129-2) unstable; urgency=low
 
   * 60_umc-system/80_umc-service-license: use more complex password when
