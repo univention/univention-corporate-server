@@ -10,6 +10,6 @@ desc: |
     stalled HTTP connections are aborted.
   * A confirmation dialogue is now prompted when the browser window is closed
     or the page is reloaded during an update process.
-  * univention-app-app now prevents the installation of apps on the wrong
+  * univention-add-app now prevents the installation of apps on the wrong
     server role
 bug: [36044,37033,32543]
