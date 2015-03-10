@@ -1,3 +1,11 @@
+ucs-test (5.0.132-1) unstable; urgency=low
+
+  * 20_appcenter/18_check_app_links: added support for fail messages;
+    added support for English and German output;
+    now using default 'repository/app_center/server' (Bug #37717).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 10 Mar 2015 12:22:42 +0100
+
 ucs-test (5.0.131-1) unstable; urgency=low
 
   * Bug #35957: Fix syntax errors and missing imports

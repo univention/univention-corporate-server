@@ -2,26 +2,24 @@
 ## desc: Check that links in the .ini files do not return errors when accessed.
 ## roles-not: [basesystem]
 ## tags: [basic, apptest]
-## bugs: [37717]
-## packages:
-##   - univention-management-console-module-appcenter
-##   - linkchecker
+## bugs: [37717, 37950]
+## packages: [univention-management-console-module-appcenter, linkchecker]
 ## exposure: careful
 
 from os import path
 from glob import glob
-from re import findall
+from re import findall, search as re_search
 from subprocess import Popen, PIPE
 from multiprocessing import Process, Pipe as m_Pipe
 
 import univention.testing.utils as utils
 from univention.testing.codes import TestCodes
-from univention.config_registry import handler_set, handler_unset
-from univention.management.console.modules.appcenter.app_center import Application, CACHE_DIR, ucr
+from univention.management.console.modules.appcenter.app_center import Application, CACHE_DIR
 
-APP_CENTER = "http://appcenter.software-univention.de/"  # server for the test
+
 APPCENTER_FILE = "/var/cache/appcenter-installed.txt"  # installed apps
-FAIL_CODES = ('404',)  # response codes that make the test fail (as 'str')
+FAIL_CODES = (404,)  # HTTP response codes that make the test fail
+FAIL_MESSAGES = ('Name or service not known',)  # Messages that make the test fail
 CHECK_LEVEL = '0'  # level of recursion when checking links:
                    # ('0' to check only current link)
                    # ('1' or higher may lead to a very-very long checks)
@@ -65,7 +63,7 @@ def create_and_run_process(proc_connection, cmd):
     Puts the stdout and stderr of the created and executed 'cmd'
     into 'proc_connection'.
     """
-    proc = Popen(cmd, stdout=PIPE, stderr=PIPE)
+    proc = Popen(cmd, stdout=PIPE, stderr=PIPE, env={'LANG': 'C'})
     proc_connection.send(proc.communicate())
     proc_connection.close()
 
@@ -89,7 +87,7 @@ def collect_links():
 
     for app in check_installed_apps:
         print "\nChecking App:", app
-        app = "/" + app  # .ini filename starts with application name
+        app = "/" + app  # .ini filename starts with Application name
 
         for filename in test_path:
             if app in filename:
@@ -104,6 +102,23 @@ def collect_links():
                                % (exc, filename))
 
     return links_to_check
+
+
+def check_stdout_for_error_codes_messages(stdout, link):
+    """
+    Searches for the 'FAIL_CODES' + 'FAIL_MESSAGES' in the given 'stdout'.
+    """
+    all_errors = FAIL_CODES + FAIL_MESSAGES
+    for error in all_errors:
+        fail_re = ("(Ergebnis|Result).*\s%s\s" % error)
+        if bool(re_search(fail_re, stdout)):
+            print ("\n ERROR: Fail code or message '%s' "
+                   "was found when checking the link '%s'."
+                   "\nSee linkchecker output below:"
+                   % (error, link))
+
+            print "STDOUT:", stdout
+            fail_the_test()
 
 
 def check_ini_files():
@@ -142,53 +157,19 @@ def check_ini_files():
             print "\n ERROR: The link '%s' seems to be inaccessible\n" % link
             fail_the_test()
         else:
-            for error_code in FAIL_CODES:
-                if findall("Ergebnis.*\s" + error_code + "\s", stdout):
-                    print ("\n ERROR: Code '%s' was found when checking link "
-                           "'%s'. See below:\n" % (error_code, link))
-                    print "STDOUT:", stdout
-                    fail_the_test()
-
-
-def set_unset_ucr_appcenter_server(server_url=''):
-    """
-    Sets the UCR var 'repository/app_center/server' to a given 'server_url',
-    or unsets it in case no 'server_url' is given. Reloads the UCR and
-    performs a sync after.
-    """
-    ucr_appcenter_server = 'repository/app_center/server'
-
-    if server_url:
-        print("\nSetting the UCR var '%s' to '%s':"
-              % (ucr_appcenter_server, server_url))
-        handler_set(['%s=%s' % (ucr_appcenter_server, server_url)])
-    else:
-        print "\nUnsetting the UCR var '%s':" % ucr_appcenter_server
-        handler_unset([ucr_appcenter_server])
-
-    ucr.load()
-    Application.sync_with_server()
+            check_stdout_for_error_codes_messages(stdout, link)
 
 
 if __name__ == '__main__':
     # skip the test if there are no Apps (in 'APPCENTER_FILE'):
     get_installed_apps()
+    Application.sync_with_server()
 
-    # save original 'app_center/server' UCR setting:
-    ucr_appcenter_server_orig = ucr.get('repository/app_center/server')
+    # find and check only .ini files of the 'check_installed_apps':
+    check_ini_files()
 
-    # set APP_CENTER to be used for the test
-    set_unset_ucr_appcenter_server(APP_CENTER)
-
-    try:
-        # find and check only .ini files of the 'check_installed_apps':
-        check_ini_files()
-
-        if failures_counter:
-            utils.fail("\nThere were %d link error(s) were detected, please "
-                       "check a complete test output." % failures_counter)
-        else:
-            print "\nNo errors were detected.\n"
-    finally:
-        # restore initial App center setting in UCR
-        set_unset_ucr_appcenter_server(ucr_appcenter_server_orig)
+    if failures_counter:
+        utils.fail("\nThere were %d link error(s) were detected, please "
+                   "check a complete test output." % failures_counter)
+    else:
+        print "\nNo errors were detected.\n"
