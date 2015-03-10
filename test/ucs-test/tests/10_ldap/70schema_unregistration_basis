@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner python2.7
 ## desc: Test schema unregistration
 ## tags:
+##  - SKIP-UCSSCHOOL
 ##  - ldapextensions
 ##  - apptest
 ## roles-not:
