@@ -8,6 +8,7 @@
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 ## tags:
+##  - SKIP-UCSSCHOOL
 ##  - basic
 ##  - apptest
 
@@ -26,7 +27,7 @@ determine_neighbour_s4host() {
 	do
 		if [ "$candidate" != "$hostname" ] && ping -c 1 "$candidate.$domainname" > /dev/null; then
 			s4host_fqdn="$candidate.$domainname"
-			break	
+			break
 		fi
 	done
 
