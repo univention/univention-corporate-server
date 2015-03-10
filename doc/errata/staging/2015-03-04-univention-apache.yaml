@@ -23,5 +23,5 @@ desc: |
  Please refer to the UCR variable descriptions for additional details.
  In addition this update adds support for forcing a port in the URL shown
  in the ucs-overview page. This is done by setting the UCR variable
- ucs/web/overview/entries/*/*/port_http and ../port_https.
+ ucs/web/overview/entries/*/*/port_http and .../port_https.
 bug: [35456, 37566]
