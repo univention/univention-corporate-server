@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-virtual-machine-manager-daemon
-fix: 4.0.23-7.589.201503021336
+fix: 4.0.23-8.590.201503101132
 version: [1]
 desc: |
   * Make error message more understandable if the cloud endpoint returns an
