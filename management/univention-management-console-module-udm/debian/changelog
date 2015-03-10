@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-57) unstable; urgency=medium
+
+  * Bug #37740: comment out heuristic code
+
+ -- Florian Best <best@univention.de>  Tue, 10 Mar 2015 16:44:43 +0100
+
 univention-management-console-module-udm (5.1.25-56) unstable; urgency=low
 
   * Bug #35614: Revert
