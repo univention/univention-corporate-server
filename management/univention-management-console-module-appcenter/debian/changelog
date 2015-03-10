@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-13) unstable; urgency=low
+
+  * Bug #35456: Support WebInterfacePortHTTP{,S}
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 10 Mar 2015 13:49:52 +0100
+
 univention-management-console-module-appcenter (4.1.20-12) unstable; urgency=low
 
   * Bug #35456: Fix new App.js

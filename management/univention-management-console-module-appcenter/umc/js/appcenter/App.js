@@ -72,7 +72,8 @@ define([
 			this.moduleFlavor = props.umcmoduleflavor;
 			this.webInterface = entities.decode(props.webinterface);
 			this.webInterfaceName = props.webinterfacename;
-			this.webInterfacePort = props.webinterfaceport;
+			this.webInterfacePortHTTP = props.webinterfaceporthttp;
+			this.webInterfacePortHTTPS = props.webinterfaceporthttps;
 			this.endOfLife = props.endoflife;
 			this.isCurrent = props.is_current;
 			this.allowedRoles = props.serverrole;
@@ -180,7 +181,20 @@ define([
 					}
 
 				}
-				var port = this.webInterfacePort;
+				var port = null;
+				if (protocol == 'http:') {
+					port = this.webInterfacePortHTTP;
+					if (!port && this.webInterfacePortHTTPS) {
+						port = this.webInterfacePortHTTPS;
+						protocol = 'https:';
+					}
+				} else if (protocol == 'https:') {
+					port = this.webInterfacePortHTTPS;
+					if (!port && this.webInterfacePortHTTP) {
+						port = this.webInterfacePortHTTP;
+						protocol = 'http:';
+					}
+				}
 				if (port == 80) {
 					protocol = 'http:';
 					port = null;

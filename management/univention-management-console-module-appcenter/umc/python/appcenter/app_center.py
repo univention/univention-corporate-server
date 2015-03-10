@@ -323,7 +323,7 @@ class Application(object):
 				self._options[ikey] = False
 
 		# parse int values:
-		for ikey in ('minphysicalram', 'webinterfaceport'):
+		for ikey in ('minphysicalram', 'webinterfaceporthttp', 'webinterfaceporthttps'):
 			if ikey in self._options:
 				self._options[ikey] = config.getint('Application', ikey)
 			else:
@@ -1279,12 +1279,14 @@ class Application(object):
 	def set_ucs_overview_ucr_variables(self, super_ucr, unset=False):
 		ucsoverviewcategory = self.get('ucsoverviewcategory')
 		webinterface = self.get('webinterface')
-		port = self.get('webinterfaceport') or '' # '' deletes
+		port_http = self.get('webinterfaceporthttp') or '' # '' deletes
+		port_https = self.get('webinterfaceporthttps') or ''
 		if ucsoverviewcategory and webinterface:
 			registry_key = 'ucs/web/overview/entries/%s/%s/%%s' % (ucsoverviewcategory, self.id)
 			variables = {
 				'icon' : '/univention-management-console/js/dijit/themes/umc/icons/50x50/%s' % self.get('icon'),
-				'port' : port,
+				'port_http' : port_http,
+				'port_https' : port_https,
 				'label' : self.get_localised('name'),
 				'label/de' : self.get_localised('name', 'de'),
 				'description' : self.get_localised('description'),
