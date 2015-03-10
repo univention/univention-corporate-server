@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-apache
-fix: 7.0.16-8.230.201503051139
+fix: 7.0.16-9.231.201503101333
 version: [1]
 desc: |
  The configuration of the SSL/TLS support in Apache has been improved:
