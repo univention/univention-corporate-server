@@ -8,8 +8,10 @@
 ##  - univention-samba | univention-samba4
 ## exposure: careful
 ## tags:
+##  - SKIP-UCSSCHOOL
 ##  - basic
 ##  - apptest
+##  - skip_admember
 
 import os
 import sys
