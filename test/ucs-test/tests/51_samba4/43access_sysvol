@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: "Accessing sysvol with smbclient"
 ## exposure: safe
-## tags: [apptest]
+## tags: [SKIP-UCSSCHOOL,apptest]
 ## packages:
 ##  - univention-samba4
 ## roles:
@@ -32,9 +32,11 @@ fi
 check_domainadmin_credentials || fail_fast 77 "UCR variables for admin credentials are not set"
 ADMINISTRATOR_NAME="$(univention-ldapsearch -b "$tests_domainadmin_account" uid | grep uid | sed -ne 's/^uid: //p')"
 
+s4_domainname=$(samba-tool domain info 127.0.0.1 | sed -n 's/^Domain *: //p') ## Samba's idea of spelling
+
 ##Put a file on sysvol as Administrator
 echo "----Put a file on sysvol as Administrator"
-output="$(smbclient //localhost/sysvol -U"$ADMINISTRATOR_NAME%$tests_domainadmin_pwd" -c "put /etc/hosts $domainname/t1" 2>&1)"
+output="$(smbclient //localhost/sysvol -U"$ADMINISTRATOR_NAME%$tests_domainadmin_pwd" -c "put /etc/hosts $s4_domainname/t1" 2>&1)"
 echo "$output"
 if [ "$?" != 0 ]; then
 	echo "$output"
@@ -47,7 +49,7 @@ wait_for_drs_replication "(sAMAccountName=$username)"
 
 ##Access the folder Policies on sysvol as a user
 echo "----Access the folder Policies on sysvol as a user"
-output="$(smbclient //localhost/sysvol -U"$username%$password" -c "ls $domainname/Policies" 2>&1)"
+output="$(smbclient //localhost/sysvol -U"$username%$password" -c "ls $s4_domainname/Policies" 2>&1)"
 if [ "$?" != 0 ]; then
 	echo "$output"
 	fail_test 1 "Could not access Policies on sysvol as a user"
@@ -55,7 +57,7 @@ fi
 
 ##Put a file in the folder Policies on sysvol as a user
 echo "----Put a file in the folder Policies on sysvol as a user"
-output="$(smbclient //localhost/sysvol -U"$username%$password" -c "put /etc/hosts $domainname/t1"  2>&1)"
+output="$(smbclient //localhost/sysvol -U"$username%$password" -c "put /etc/hosts $s4_domainname/t1"  2>&1)"
 if [ "$?" = 0 ]; then
 	echo "$output"
 	fail_test 1 "Successfully put a file on sysvol as a user"
@@ -64,7 +66,7 @@ fi
 
 ##Replace GPT.ini of the default domain policies as a user
 echo "----Replace GPT.ini of the default domain policies as a user"
-output="$(smbclient //localhost/sysvol -U"$username%$password" -c "cd $domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9};get GPT.INI /tmp/GPT.INI;put /tmp/GPT.INI GPT.INI" 2>&1)"
+output="$(smbclient //localhost/sysvol -U"$username%$password" -c "cd $s4_domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9};get GPT.INI /tmp/GPT.INI;put /tmp/GPT.INI GPT.INI" 2>&1)"
 if [ "$?" = 0 ]; then
 	echo "$output"
 	fail_test 1 "GPT.ini of the default domain policies could be replaced"
@@ -72,7 +74,7 @@ fi
 
 ##Remove GPT.ini of the default domain policies as a user
 echo "----Remove GPT.ini of the default domain policies as a user"
-output="$(smbclient //localhost/sysvol -U"$username%$password" -c "cd $domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9};rm GPT.INI" 2>&1)"
+output="$(smbclient //localhost/sysvol -U"$username%$password" -c "cd $s4_domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9};rm GPT.INI" 2>&1)"
 if [ "$?" = 0 ]; then
 	echo "$output"
 	fail_test 1 "GPT.ini of the default domain policies could be removed"
@@ -80,7 +82,7 @@ fi
 
 ##Put a file in the Machine folder of the default domain policies as a user
 echo "----Put a file in the Machine folder of the default domain policies as a user"
-output="$(smbclient //localhost/sysvol -U"$username%$password" -c "put /etc/hosts $domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/MACHINE/hosts"  2>&1)"
+output="$(smbclient //localhost/sysvol -U"$username%$password" -c "put /etc/hosts $s4_domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/MACHINE/hosts"  2>&1)"
 if [ "$?" = 0 ]; then
 	echo "$output"
 	fail_test 1 "Successfully put a file in the machines folder of the default domain policy as a user"
@@ -88,7 +90,7 @@ fi
 
 ##Check that the file ownership of the default domain policy is okay
 echo "----Check that the file ownership of the default domain policy is okay"
-output="$(stat --printf '%U' "/var/lib/samba/sysvol/$domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}" 2>&1)"
+output="$(stat --printf '%U' "/var/lib/samba/sysvol/$s4_domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}" 2>&1)"
 if [ "$output" != "$ADMINISTRATOR_NAME" ]; then
 	echo "$output"
 	fail_test 1 "The file ownership of the default domain policy is not okay"
