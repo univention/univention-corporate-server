@@ -57,7 +57,7 @@ msgstr "Grundeinstellungen"
 
 #: domain.py:69
 msgid "Mail domain description"
-msgstr "Mail-Domänen-Bezeichnung"
+msgstr "Bezeichnung - Mail-Domäne"
 
 #: folder.py:51
 msgid "Mail folder (IMAP)"

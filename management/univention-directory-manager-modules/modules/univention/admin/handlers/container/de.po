@@ -205,8 +205,7 @@ msgid "Container description"
 msgstr "Container-Bezeichnung"
 
 msgid "Domain container description"
-msgstr "Domänen-Container-Bezeichnung"
+msgstr "Bezeichnung - Domänen-Container"
 
 msgid "Organisational unit description"
-msgstr "Organisationseinheit-Bezeichnung"
-
+msgstr "Bezeichnung - Organisationseinheit"

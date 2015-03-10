@@ -371,7 +371,7 @@ property_descriptions={
 
 layout = [
 	Tab(_('General'), _('General settings'), layout=[
-		Group(_("Name"), layout=[
+		Group(_("Extended attribute description"), layout=[
 			["name", "CLIName"],
 		]),
 		Group(_("Short description"), layout=[

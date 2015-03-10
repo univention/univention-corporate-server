@@ -1555,7 +1555,7 @@ msgstr "X-Modul"
 
 #: xconfig_choices.py:157
 msgid "Display Size (mm)"
-msgstr "Bildschirm Grösse (mm)"
+msgstr "Bildschirm Größe (mm)"
 
 #: xconfig_choices.py:169
 msgid "X Configuration Choices"
@@ -1577,19 +1577,16 @@ msgstr "X-Konfiguration Auswahl"
 #~ msgstr "Karteikartendarstellung"
 
 msgid "Default settings description"
-msgstr "Vorgabe-Einstellungen-Bezeichnung"
+msgstr "Bezeichnung - Vorgabe-Einstellungen"
 
-msgid "General default container settings"
-msgstr "Grundeinstellungen - Standard-Container"
-
-msgid "General extended attribute settings"
-msgstr "Grundeinstellungen - Erweiterte Attribut"
+msgid "Default container description"
+msgstr "Bezeichnung - Standard-Container"
 
 msgid "General extended options settings"
-msgstr "Grundeinstellungen - Erweiterten Optionen"
+msgstr "Grundeinstellungen - Erweiterte Optionen"
 
 msgid "General LDAP ACL extension settings"
-msgstr "Grundeinstellungen - LDAP ACL Erweiterung"
+msgstr "Grundeinstellungen - LDAP ACL-Erweiterung"
 
 msgid "General LDAP schema extension settings"
 msgstr "Grundeinstellungen - LDAP-Schemaerweiterung"
@@ -1625,13 +1622,13 @@ msgid "General syntax definition settings"
 msgstr "Grundeinstellungen - Syntax-Definition"
 
 msgid "General UDM hook settings"
-msgstr "Grundeinstellungen - UDM Hook"
+msgstr "Grundeinstellungen - UDM-Hook"
 
 msgid "General UDM module settings"
-msgstr "Grundeinstellungen - UDM Modul"
+msgstr "Grundeinstellungen - UDM-Modul"
 
 msgid "General UDM syntax settings"
-msgstr "Grundeinstellungen - UDM Syntax"
+msgstr "Grundeinstellungen - UDM-Syntax"
 
 msgid "General UMC operation set settings"
 msgstr "Grundeinstellungen - UMC-Operationen"
@@ -1641,3 +1638,6 @@ msgstr "Grundeinstellungen - Benutzervorlage"
 
 msgid "General X configuration choices settings"
 msgstr "Grundeinstellungen - X-Konfigurationsauswahl"
+
+msgid "Extended attribute description"
+msgstr "Bezeichnung - Erweitertes Attribut"

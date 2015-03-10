@@ -214,13 +214,13 @@ msgid "General DHCP pool settings"
 msgstr "Grundeinstellungen - DHCP-Pool"
 
 msgid "DHCP server description"
-msgstr "DHCP-Server-Bezeichnung"
+msgstr "Bezeichnung - DHCP-Server"
 
 msgid "DHCP service description"
-msgstr "DHCP-Dienst-Bezeichnung"
+msgstr "Bezeichnung - DHCP-Dienst"
 
 msgid "DHCP shared network description"
-msgstr "DHCP-Shared Network-Bezeichnung"
+msgstr "Bezeichnung - DHCP-Shared Network"
 
 msgid "General DHCP shared subnet settings"
 msgstr "Grundeinstellungen - DHCP-Shared Subnet"
