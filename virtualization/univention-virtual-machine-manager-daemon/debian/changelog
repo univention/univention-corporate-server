@@ -1,4 +1,4 @@
-univention-virtual-machine-manager-daemon (4.0.23-7) unstable; urgency=low
+univention-virtual-machine-manager-daemon (4.0.23-8) unstable; urgency=low
 
   * Bug #37099: make EC2 error messages more understandable
 
