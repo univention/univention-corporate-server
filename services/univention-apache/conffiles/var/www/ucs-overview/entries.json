@@ -21,7 +21,7 @@ class LocalizedString:
 
 class Entry:
 	def __init__(self):
-		self._data = dict(icon='', priority='~', port='', link=LocalizedString(), label=LocalizedString(), description=LocalizedString())
+		self._data = dict(icon='', priority='~', port_http='', port_https='', link=LocalizedString(), label=LocalizedString(), description=LocalizedString())
 
 	def set(self, key, value, lang=None):
 		lang = lang or 'C'

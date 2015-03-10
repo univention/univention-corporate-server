@@ -206,18 +206,34 @@ define([
 				category: category,
 				id: id
 			};
-			array.forEach(['link', 'icon', 'label', 'description', 'port'], lang.hitch(this, function(ikey) {
+			array.forEach(['link', 'icon', 'label', 'description'], lang.hitch(this, function(ikey) {
 				localizedProps[ikey] = this._localizeString(props[ikey]);
 			}));
-			if (localizedProps.port) {
+			if ((props.port_http || props.port_https) && localizedProps.link && localizedProps.link.indexOf('/') === 0) {
 				var protocol = window.location.protocol;
-				var port = ':' + localizedProps.port;
-				if (localizedProps.port == '80') {
+				var port = '';
+				if (protocol == 'http:') {
+					port = props.port_http;
+					if (!port) {
+						port = props.port_https;
+						protocol = 'https:';
+					}
+				} else if (protocol == 'https:') {
+					port = props.port_https;
+					if (!port) {
+						port = props.port_http;
+						protocol = 'http:';
+					}
+				}
+				if (port == '80') {
 					protocol = 'http:';
 					port = '';
-				} else if (localizedProps.port == '443') {
+				} else if (port == '443') {
 					protocol = 'https:';
 					port = '';
+				}
+				if (port) {
+					port = ':' + port;
 				}
 				localizedProps.link = protocol + '//' + window.location.hostname + port + localizedProps.link;
 			}

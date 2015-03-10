@@ -1,3 +1,9 @@
+univention-apache (7.0.16-9) unstable; urgency=low
+
+  * Bug #35456: Support ucs/web/overview/entries/admin/*/port_http[s]
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 10 Mar 2015 13:31:46 +0100
+
 univention-apache (7.0.16-8) unstable; urgency=low
 
   * Bug #37566:

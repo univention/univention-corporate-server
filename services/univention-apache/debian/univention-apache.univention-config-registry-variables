@@ -166,9 +166,15 @@ Description[de]=Gibt die URL des Icons für den entsprechenden Eintrag der UCS-S
 Type=str
 Categories=service-apache
 
-[ucs/web/overview/entries/.*/port]
-Description[en]=Forces the port for URL of the corresponding entry of the UCS start site. Full format: ucs/web/overview/entries/{admin,service}/<entryID>/port.
-Description[de]=Erzwingt den Port für die URL des entsprechenden Eintrages der UCS-Startseite. Vollständiges Format: ucs/web/overview/entries/{admin,service}/<entryID>/port.
+[ucs/web/overview/entries/.*/port_http]
+Description[en]=Forces the port for URL of the corresponding entry of the UCS start site. Used when the start site is opened with HTTP or when no port_https variable is set. Full format: ucs/web/overview/entries/{admin,service}/<entryID>/port_http.
+Description[de]=Erzwingt den Port für die URL des entsprechenden Eintrages der UCS-Startseite. Findet Verwendung, falls die Startseite per HTTP aufgerufen wird oder falls port_https nicht gesetzt wurde. Vollständiges Format: ucs/web/overview/entries/{admin,service}/<entryID>/port_http.
+Type=str
+Categories=service-apache
+
+[ucs/web/overview/entries/.*/port_https]
+Description[en]=Same as ucs/web/overview/entries/.*/port_http, but used when opening the start site with HTTPS or when no port_http variable is set. Full format: ucs/web/overview/entries/{admin,service}/<entryID>/port_https.
+Description[de]=Ähnlich zu ucs/web/overview/entries/.*/port_http; wird benutzt falls Startseite per HTTPS aufgerufen wird oder falls port_http nicht gesetzt wurde. Vollständiges Format: ucs/web/overview/entries/{admin,service}/<entryID>/port_https.
 Type=str
 Categories=service-apache
 
