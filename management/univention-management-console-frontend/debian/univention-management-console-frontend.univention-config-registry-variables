@@ -57,3 +57,9 @@ Description[de]=Anzahl der Sekunden, die ein Login-Token für das Single-Sign-On
 Description[en]=Number of seconds a login token for single sign-on (see 'umc/web/sso/enabled) is valid.
 Type=int
 Categories=management-umc
+
+[umc/web/overview/tabs/animation_length]
+Description[de]=Dauer der Animation, die beim wechseln von UMC-Modulen abgespielt wird (in Millisekunden). Der Wert '1' kann benutzt werden, um die Animation zu deaktivieren.
+Description[en]=Duration of the animation that is played when switching UMC modules (in milliseconds). The value '1' can be used to deactivate the animation.
+Tpye=int
+Categories=management-umc
