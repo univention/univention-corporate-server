@@ -5,10 +5,9 @@ src: univention-directory-manager-modules
 fix: 10.0.29-31.1295.201503110845
 version: [1]
 desc: |
-  This update addresses the following issue:
-  * Improving time to create a simple authentication account considerably by
-    disabling uidNumber locking.
-  * Adjust error message of the PrinterURI syntax class.
+  This update addresses the following issues:
+  * Creating a simple authentication account is now much faster
+  * Adjust an error message of the PrinterURI syntax class.
   * Prevent deinstallation of essential packages when creating a
     slave/master/memberpackages policy.
   * Replaced the term "General" by a more descriptive title in various UDM
