@@ -362,25 +362,8 @@
   <title>Collection of usage statistics</title>
   <para>
 	Anonymous usage statistics on the use of &ucsUMC; are collected when using the <emphasis>free for
-	personal use</emphasis> version of UCS (which is generally used for evaluating UCS). The modules
-	opened are logged in an instance of the web traffic analysis tool Piwik. This makes it
-	possible for Univention to tailor the development of &ucsUMC; better to customer needs
-	and carry out usability improvements.
-  </para>
-
-  <para>
-	This logging is only performed when the <emphasis>free-for-personal-use
-	license</emphasis> is used. The license status can be verified via the
-	menu entry <guimenu>License &ar; License information</guimenu> of the user
-	menu in the upper right corner of &ucsUMC;.  If <guimenu>Free for personal
-	use edition</guimenu> is listed under <guimenu>LDAP base</guimenu>,
-	this version is in use. When a regular UCS license is used, no usage
-	statistics are collected.
-  </para>
-
-  <para>
-	Independent of the license used, the statistics generation can be deactivated by setting the
-	&ucsUCRV; <envar>umc/web/piwik</envar> to <literal>false</literal>.
+	personal use</emphasis> version of UCS (which is generally used for evaluating UCS). Further
+	information can be found in <biblioref linkend="sdb-datacollect"/>.
   </para>
 </section>
 

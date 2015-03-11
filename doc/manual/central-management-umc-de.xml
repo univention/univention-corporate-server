@@ -371,29 +371,12 @@
 </section>
 
 <section id="central-management-umc:piwik">
-	<title>Erfassung von Nutzungsstatistiken</title>
-<para>
-  Bei Verwendung der <foreignphrase>Free for personal use</foreignphrase>-Version von UCS (die
-  in der Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken
-  zur Verwendung von &ucsUMC; erzeugt. Die aufgerufenen Module werden dabei von einer
-  Instanz des Web-Traffic-Analyse-Tools Piwik protokolliert. Dies ermöglicht es Univention die
-  Entwicklung von &ucsUMC; besser auf das Kundeninteresse zuzuschneiden und
-  Usability-Verbesserungen vorzunehmen.
-</para>
-<para>
-  Diese Protokollierung erfolgt nur bei Verwendung der
-  <foreignphrase>Free-for-Personal-Use-Lizenz</foreignphrase>. Der Lizenzstatus kann
-  überprüft werden durch den Eintrag <guimenu>Lizenz &ar;
-  Lizenzinformation</guimenu> des Benutzermenüs in der rechten, oberen Ecke
-  von &ucsUMC;.  Steht hier unter <guimenu>LDAP-Basis</guimenu> <guimenu>Free
-  for personal use edition</guimenu> wird eine solche Version verwendet.
-  Bei Einsatz einer regulären UCS-Lizenz erfolgt keine Teilnahme an der
-  Nutzungsstatistik.
-</para>
-<para>
-  Die Protokollierung kann unabhängig von der verwendeten Lizenz durch Setzen der &ucsUCRV;
-  <envar>umc/web/piwik</envar> auf <literal>false</literal> deaktiviert werden.
-</para>
+  <title>Erfassung von Nutzungsstatistiken</title>
+  <para>
+	Bei Verwendung der <foreignphrase>Free for personal use</foreignphrase>-Version von UCS (die
+	in der Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken
+	zur Verwendung von &ucsUMC; erzeugt. Weitere Informationen finden sich in <biblioref linkend="sdb-datacollect"/>.
+  </para>
 </section>
 
 <section id="central:navigation">
