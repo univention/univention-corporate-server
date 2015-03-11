@@ -236,7 +236,7 @@ define([
 		getModuleLink: function() {
 			var module = this.getModule();
 			if (module) {
-				return lang.replace('<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule({umcmodulename}, {umcmoduleflavor})">{name}</a>', {
+				return lang.replace("<a href='javascript:void(0)' onclick='require(\"umc/app\").openModule({umcmodulename}, {umcmoduleflavor})'>{name}</a>", {
 					umcmodulename: json.stringify(module.id),
 					umcmoduleflavor: json.stringify(module.flavor),
 					name: module.name
