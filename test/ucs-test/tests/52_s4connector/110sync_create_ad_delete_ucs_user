@@ -1,9 +1,10 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 ## desc: "Create an AD-User and remove the corresponding UCS-User in sync mode"
 ## exposure: dangerous
 ## packages:
 ## - univention-s4-connector
 ## tags:
+##  - SKIP-UCSSCHOOL
 ##  - basic
 ##  - apptest
 
