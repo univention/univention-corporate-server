@@ -6,7 +6,10 @@ Build-Depends: debhelper (>= 7.0.50~)
 
 Package: generate-appliance
 Architecture: all
-Depends: qemu-utils, python-lxml, vmdk-stream-converter
+Depends: qemu-utils,
+ python-lxml,
+ vmdk-stream-converter,
+ libguestfs-tools,
 Description: Create virtual appliances for various virtualization systems
  Create virtual appliances for various virtualization systems from a single disk image
  .

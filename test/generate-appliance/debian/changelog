@@ -1,3 +1,9 @@
+generate-appliance (1.2.6-1) unstable; urgency=low
+
+  *  Bug #37935: added dependency to libguestfs-tools
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 11 Mar 2015 14:45:05 +0100
+
 generate-appliance (1.2.5-2) unstable; urgency=low
 
   * add Docker target to generate-appliance (Bug #37935)
