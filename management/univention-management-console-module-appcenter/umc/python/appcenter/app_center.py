@@ -1285,8 +1285,8 @@ class Application(object):
 			registry_key = 'ucs/web/overview/entries/%s/%s/%%s' % (ucsoverviewcategory, self.id)
 			variables = {
 				'icon' : '/univention-management-console/js/dijit/themes/umc/icons/50x50/%s' % self.get('icon'),
-				'port_http' : port_http,
-				'port_https' : port_https,
+				'port_http' : str(port_http),
+				'port_https' : str(port_https),
 				'label' : self.get_localised('name'),
 				'label/de' : self.get_localised('name', 'de'),
 				'description' : self.get_localised('description'),

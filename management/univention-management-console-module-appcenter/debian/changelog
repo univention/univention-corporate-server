@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-14) unstable; urgency=low
+
+  * Bug #35456: Fix setting WebInterfacePortHTTP{,S} in UCR
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 11 Mar 2015 09:32:31 +0100
+
 univention-management-console-module-appcenter (4.1.20-13) unstable; urgency=low
 
   * Bug #35456: Support WebInterfacePortHTTP{,S}
