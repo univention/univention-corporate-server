@@ -6,7 +6,8 @@ src: firefox-en
 fix: 1:31.5.0esr-3.51.201503041210
 desc: |
  Several vulnerabilities have been fixed with the update to Firefox ESR 31.5:
- * Reading of local files through manipulation of form autocomplete (CVE-2015-0822)
+ * Reading of local files through manipulation of form autocomplete 
+   (CVE-2015-0822)
  * Out-of-bounds read and write while rendering SVG content (CVE-2015-0827)
  * Use-after-free in IndexedDB (CVE-2015-0831)
  * Memory safety problems and crashes (CVE-2015-0835)
