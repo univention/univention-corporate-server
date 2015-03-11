@@ -1,9 +1,10 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 ## desc: "Create and Remove an AD-Object"
 ## exposure: dangerous
 ## packages:
 ## - univention-s4-connector
 ## tags:
+##  - SKIP-UCSSCHOOL
 ##  - basic
 ##  - apptest
 
