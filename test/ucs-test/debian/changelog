@@ -1,3 +1,11 @@
+ucs-test (4.0.208-1) unstable; urgency=low
+
+  * Bug #37998: disable the test temporarily' 000create_remove_object
+  * Bug #38000: disable the test temporarily' 110sync_create_ad_delete_ucs_user
+  * Bug #38001: disable the test temporarily' 111sync_create_ucs_delete_ad_user
+
+ -- Ammar Najjar <najjar@univention.de>  Wed, 11 Mar 2015 09:02:17 +0100
+
 ucs-test (4.0.207-1) unstable; urgency=low
 
   * Bug #37965: skip test temporarily 06krb_keytab
