@@ -5,9 +5,9 @@ src: univention-management-console-module-udm
 fix: 5.1.25-57.565.201503101648
 version: [1]
 desc: |
-  This update addresses the following issue:
+  This update addresses the following issues:
   * Fix format of error message in specific circumstances.
-  * Execute UDM requests again if an ldap error occurs due to timeout problems.
+  * Execute UDM requests again if an LDAP error occurs due to timeout problems.
   * Policy labels are now correctly displayed with an edit link.
   * Changes on a UDM object can now be saved by pressing 'Return' on the
     keyboard.
