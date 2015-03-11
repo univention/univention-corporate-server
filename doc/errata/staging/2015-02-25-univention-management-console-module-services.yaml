@@ -6,7 +6,7 @@ fix: 4.1.0-5.27.201503021315
 version: [1]
 desc: |
   This update addresses the following issues:
-  * Some text parts of the module have been improved, and icons have been
+  * Some label texts in the Services modules have been improved, and icons have been
     added for the module actions.
   * The rendering of the list view has been optimized.
 bug: [36564,36569]
