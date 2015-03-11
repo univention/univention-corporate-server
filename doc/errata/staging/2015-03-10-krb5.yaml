@@ -1,0 +1,18 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: krb5
+fix: 1.10.1+dfsg-5.57.201503101742
+version: [0,1]
+desc: |
+ Multiple vulnerabilities have been found in krb5:
+ * gss_process_context_token() incorrectly frees context (CVE-2014-5352)
+ * kadmind doubly frees partial deserialization results (CVE-2014-9421)
+ * kadmind incorrectly validates server principal name (CVE-2014-9422)
+ * libgssrpc server applications leak uninitialized bytes (CVE-2014-9423)
+bug: [37680]
+cve:
+ - CVE-2014-5352
+ - CVE-2014-9421
+ - CVE-2014-9422
+ - CVE-2014-9423
