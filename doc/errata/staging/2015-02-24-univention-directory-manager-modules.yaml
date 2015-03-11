@@ -13,5 +13,5 @@ desc: |
     slave/master/memberpackages policy.
   * Replaced the term "General" by a more descriptive title in various UDM
     modules.
-  * Improoved error message format.
+  * Improved error message format.
 bug: [37607, 36711, 36539, 36401, 37740]
