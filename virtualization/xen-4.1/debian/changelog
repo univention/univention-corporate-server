@@ -3,8 +3,9 @@ xen-4.1 (4.1.3-19) unstable; urgency=low
   * Multiple security fixes: (Bug #37956)
     - Information leak through version information hypercall (CVE-2015-2045)
     - Information leak via internal x86 system device emulation (CVE-2015-2044)
+    - Hypervisor memory corruption due to x86 emulator flaw (CVE-2015-2151)
 
- -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 09 Mar 2015 08:01:35 +0100
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 11 Mar 2015 07:58:02 +0100
 
 xen-4.1 (4.1.3-18) unstable; urgency=low
 
