@@ -6,6 +6,6 @@ fix: 2:4.2.0~rc2-1.728.201503051522
 version: [0,1]
 desc: |
   This update fixes the following issue:
-  * Windows Server 2008 R2 Foundation memberserver license check failed
+  * The Windows Server 2008 R2 Foundation member server license check failed
     in Samba/AD domains.
 bug: [37687]

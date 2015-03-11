@@ -5,7 +5,7 @@ src: univention-virtual-machine-manager-daemon
 fix: 4.0.23-8.590.201503101132
 version: [1]
 desc: |
-  * Make error message more understandable if the cloud endpoint returns an
-    error because of a blocked account, wrong server time or missing IAM
+  * Make the error message more understandable if the cloud end point returns an
+    error due to a blocked account, incorrect server time or missing IAM
     policies to interact with EC2.
 bug: [37099]

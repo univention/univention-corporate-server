@@ -5,8 +5,8 @@ src: univention-management-console-frontend
 fix: 4.1.106-39.1019.201503111206
 version: [1]
 desc: |
-  This update addresses the following issue:
-  * Pass the "required" attribute to subwidgets of the ComplexInput widget.
+  This update addresses the following issues:
+  * Pass the "required" attribute to sub widgets of the ComplexInput widget.
   * An error prevented the execution of stopping virtual machines as well as
     reporting errorneous UMC behaviour. These can now be executed again.
   * An animation has been added for opening and hiding modules.
