@@ -5,9 +5,9 @@ src: univention-management-console-module-appcenter
 fix: 4.1.20-15.324.201503111211
 version: [1]
 desc: |
-  The following issues are addressed in this erratum update:
-  * After installing an app, all pending joinscripts are called with the
-    credentials of the currently logged in user.
+  The following issues are addressed in this update:
+  * After installing an app, all pending join scripts are called with the
+    credentials of the currently logged-in user.
   * After installing apps or software packages, UMC modules are now reset, the
     UMC session is renewed automatically, and a page reload is done only if
     really necessary.
