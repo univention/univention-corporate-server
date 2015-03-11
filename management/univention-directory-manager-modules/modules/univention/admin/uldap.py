@@ -83,7 +83,7 @@ def _err2str(err):
 		if msg:
 			msgs.append(msg)
 	if not msgs:
-		msgs.append(': '.join(str(type(err).__name__), str(err)))
+		msgs.append(': '.join([str(type(err).__name__), str(err)]))
 	return '. '.join(msgs)
 
 class domain:

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-31) unstable; urgency=medium
+
+  * Bug #37740: fix typo
+
+ -- Florian Best <best@univention.de>  Wed, 11 Mar 2015 08:43:55 +0100
+
 univention-directory-manager-modules (10.0.29-30) unstable; urgency=medium
 
   * Bug #36401: replace "General" by a more descriptive group title
