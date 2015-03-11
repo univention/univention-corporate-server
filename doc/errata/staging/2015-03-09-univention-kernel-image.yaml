@@ -24,7 +24,7 @@ desc: |
  * ecryptfs 1-byte overwrite (CVE-2014-9683)
  * ASLR integer overflow: Reducing stack entropy by four 
    (CVE-2015-1593)
-note: This is the first part of the fix, which provides the new kernel package.
+note: This is the second part of the fix, which updates the meta package.
 bug:
  - 37353
 cve:
