@@ -429,8 +429,8 @@ infinite use for up to 5 users and support is provided via the Univention forum.
 \x20
 Commercial users can obtain UCS at reasonable prices and have guaranteed, individually adjustable support.
 \x20
-http://www.univention.de/en/univention/oss/
-http://www.univention.de/en/download-and-support/free-for-personal-use-edition/licensing-conditions/'''
+https://www.univention.com/about-us/open-source/
+https://www.univention.com/downloads/license-models/free-for-personal-use-license/'''
 
 ANNOTATION = '''Univention Corporate Server (UCS) is a complete solution to provide standard
 IT services (like domain management or file services for Microsoft Windows
@@ -1090,12 +1090,12 @@ def parse_options():
 	parser.add_option('-p', '--product', help='product name of appliance (default: %default)',
 					  default='Univention Corporate Server (UCS)')
 	parser.add_option('--product-url', help='product URL of appliance (default: %default)',
-					  default='http://www.univention.de/en/products/ucs/')
+					default='https://www.univention.com/products/ucs/')
 	parser.add_option('-v', '--version', help='version string of appliance')
 	parser.add_option('--vendor', help='vendor string of appliance (default: %default)',
 					  default='Univention GmbH')
 	parser.add_option('--vendor-url', help='vendor URL of appliance (default: %default)',
-					  default='http://www.univention.de/en/')
+					  default='http://www.univention.com/')
 	parser.add_option('-t', '--tempdir', help='temporary directory to use')
 	parser.add_option(
 		'-o', '--only', action='store_const', dest='choices', const=[],

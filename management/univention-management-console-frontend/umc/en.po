@@ -125,8 +125,7 @@ msgid ""
 "<ul><li><a href=\"http://docs.univention.de/en/ucs.html\" target=\"_blank"
 "\">Online documentation</a></li><li><a href=\"http://wiki.univention.de/"
 "index.php?title=Hauptseite\" target=\"_blank\">Univention Wiki</a></"
-"li><li><a href=\"http://www.univention.com/download-und-support/support/"
-"community/\" target=\"_blank\">Community and support</a></li></ul>"
+"li><li><a href=\"https://www.univention.com/products/support/community-support/\" target=\"_blank\">Community and support</a></li></ul>"
 msgstr ""
 
 #: umc/tools.js:197
@@ -731,7 +730,7 @@ msgstr ""
 
 #: umc/app/WelcomePage.js:72 umc/app.js:815
 msgid "umcFeedbackUrl"
-msgstr "http://www.univention.com/feedback"
+msgstr "https://www.univention.com/feedback/"
 
 #: umc/app.js:691
 msgid "umcUniventionUrl"

@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-40) unstable; urgency=medium
+
+  * Bug #37908: fix links to univention.de
+
+ -- Florian Best <best@univention.de>  Thu, 12 Mar 2015 10:46:30 +0100
+
 univention-management-console-frontend (4.1.106-39) unstable; urgency=low
 
   * Bug #37899: fixed typo

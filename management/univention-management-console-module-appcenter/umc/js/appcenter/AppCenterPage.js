@@ -76,7 +76,7 @@ define([
 
 			if (this.addMissingAppButton) {
 				var voteForAppAnchor = domConstruct.create('a', {
-					href: _('https://www.univention.de/en/products/ucs/app-catalogue/vote-for-app/'),
+					href: _('https://www.univention.com/products/univention-app-center/vote-for-app/'),
 					target: '_blank',
 					style: {color: '#414142'},
 					title: _('Let us know if you you miss any application in Univention App Center!'),

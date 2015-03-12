@@ -1065,8 +1065,8 @@ msgid "https://docs.univention.de/manual.html#ad-connector:password-dienst"
 msgstr "https://docs.univention.de/handbuch.html#ad-connector:password-dienst"
 
 #: umc/js/appcenter/AppCenterPage.js:79
-msgid "https://www.univention.de/en/products/ucs/app-catalogue/vote-for-app/"
-msgstr "https://www.univention.de/produkte/ucs/app-katalog/vote-for-app/"
+msgid "https://www.univention.com/products/univention-app-center/vote-for-app/"
+msgstr "https://www.univention.de/produkte/univention-app-center/vote-for-app/"
 
 #: umc/js/appcenter/AppDetailsDialog.js:210
 msgid "incompatible"

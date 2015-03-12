@@ -156,14 +156,11 @@ msgid ""
 "<ul><li><a href=\"http://docs.univention.de/en/ucs.html\" target=\"_blank"
 "\">Online documentation</a></li><li><a href=\"http://wiki.univention.de/"
 "index.php?title=Hauptseite\" target=\"_blank\">Univention Wiki</a></"
-"li><li><a href=\"http://www.univention.com/download-und-support/support/"
-"community/\" target=\"_blank\">Community and support</a></li></ul>"
+"li><li><a href=\"https://www.univention.com/products/support/community-support/\" target=\"_blank\">Community and support</a></li></ul>"
 msgstr ""
 "<ul><li><a href=\"http://docs.univention.de/de/ucs.html\" target=\"_blank"
 "\">Online-Dokumentation</a></li><li><a href=\"http://wiki.univention.de\" "
-"target=\"_blank\">Univention Wiki</a></li><li><a href=\"http://www."
-"univention.de/download-und-support/support/community/\" target=\"_blank"
-"\">Community und Support</a></li></ul>"
+"target=\"_blank\">Univention Wiki</a></li><li><a href=\"https://www.univention.de/produkte/support/community-support/\" target=\"_blank\">Community und Support</a></li></ul>"
 
 #: umc/tools.js:197
 msgid ""
@@ -809,7 +806,7 @@ msgstr "Schritte, um den Fehler zu reproduzieren"
 
 #: umc/app/WelcomePage.js:72 umc/app.js:804
 msgid "umcFeedbackUrl"
-msgstr "http://www.univention.de/feedback"
+msgstr "https://www.univention.de/produkt-feedback/"
 
 #: umc/app.js:680
 msgid "umcUniventionUrl"

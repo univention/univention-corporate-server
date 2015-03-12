@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-16) unstable; urgency=medium
+
+  * Bug #37908: fix links to univention.de
+
+ -- Florian Best <best@univention.de>  Thu, 12 Mar 2015 10:47:06 +0100
+
 univention-management-console-module-appcenter (4.1.20-15) unstable; urgency=low
 
   * Bug #35456: Fix opening a module
