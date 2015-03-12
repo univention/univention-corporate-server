@@ -4,7 +4,8 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 8.0.0),
  ucslint-univention,
- python-support
+ python-support,
+ univention-management-console-dev
 Standards-Version: 3.6.1
 XS-Python-Version: 2.6, 2.7
 
@@ -391,9 +392,16 @@ Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
  curl,
+ ucs-test-umc-module,
  ${misc:Depends}
 Description: Test scripts for UMC
  This package includes some scripts for testing UMC
+
+Package: ucs-test-umc-module
+Architecture: all
+Recommends: univention-management-console-server,
+Description: Test UMC modules
+ This package includes some test UMC modules
 
 #Package: ucs-test-system-setup
 #Architecture: all

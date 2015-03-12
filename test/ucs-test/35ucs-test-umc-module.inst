@@ -1,9 +1,10 @@
-#!/usr/bin/make -f
+#!/bin/sh
+# -*- coding: utf-8 -*-
 #
-# Univention UCS test
-#  rules file for the debian package
+# Univention Management Console Module top
+#  join script
 #
-# Copyright 2013-2014 Univention GmbH
+# Copyright 2011-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,23 +31,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-export DH_ALWAYS_EXCLUDE=.svn
+VERSION=1
 
-%:
-	dh $@ --with python_support
+. /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/umc.sh
 
-override_dh_install:
-	dh_install --sourcedir=$(CURDIR)
+joinscript_init
 
-override_dh_auto_test:
-	ucslint
-	! find -type f -exec grep '^source\>' {} +
-	find tests -name .svn -prune -o -type f \( \( -perm -0755 -exec grep -q '^#! */usr/share/ucs-test/runner ' {} \; -prune \) -o \( -not -perm /0111 -not -exec grep -q '^#! */usr/share/ucs-test/runner ' {} \; -prune \) -o -ls \)
+umc_init
+umc_operation_create "ucstest-all" "UCS Test" "" "ucstest/*"
+umc_policy_append "default-umc-all" "ucstest-all"
 
-override_dh_auto_build:
-	dh-umc-module-build
-	dh_auto_build
+joinscript_save_current_version
 
-override_dh_auto_install:
-	dh-umc-module-install
-	dh_auto_install
+exit 0
+
+

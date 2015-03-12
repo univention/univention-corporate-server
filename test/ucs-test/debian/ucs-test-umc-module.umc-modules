@@ -1,0 +1,5 @@
+Module: ucstest
+Python: umc/python
+Definition: umc/ucstest.xml
+Javascript: umc/js
+Icons: umc/icons

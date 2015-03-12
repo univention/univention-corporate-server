@@ -1,8 +1,14 @@
+ucs-test (5.0.133-2) unstable; urgency=low
+
+  * Bug #37485: Added two tests for the umc-webserver
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 12 Mar 2015 08:49:54 +0100
+
 ucs-test (5.0.133-1) unstable; urgency=low
 
   * Bug #37998: disable the test temporarily' 000create_remove_object
   * Bug #38000: disable the test temporarily' 110sync_create_ad_delete_ucs_user
-  *	Bug #38001: disable the test temporarily' 111sync_create_ucs_delete_ad_user
+  * Bug #38001: disable the test temporarily' 111sync_create_ucs_delete_ad_user
 
  -- Ammar Najjar <najjar@univention.de>  Wed, 11 Mar 2015 09:00:39 +0100
 

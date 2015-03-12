@@ -1,0 +1,70 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check if requests are answered with an error code after killing ucstest module
+## roles:
+##  - domaincontroller_master
+## packages:
+##  - univention-management-console
+##  - univention-management-console-frontend
+##  - ucs-test-umc-module
+## exposure: dangerous
+
+
+from umc_test_connection import UMCTestConnection
+import univention.testing.utils as utils
+import subprocess
+import ssl
+import sys
+import psutil
+import time
+
+
+NUMBER_OF_CONNECTIONS = 8
+RESPONSE_STATUS_CODE = 510
+
+
+def kill_ucstest():
+	search_mask = set(['/usr/sbin/univention-management-console-module', '-m', 'ucstest'])
+	for process in psutil.process_iter():
+		if not (search_mask - set(process.cmdline)):
+			print 'Found module process and killing it ...'
+			process.kill()
+	for process in psutil.process_iter():
+		if not (search_mask - set(process.cmdline)):
+			assert False, 'ERROR: ... module process ist still there, this should not happen!'
+
+
+def restart_web_server():
+	subprocess.Popen(['/etc/init.d/univention-management-console-web-server', 'restart'])
+
+
+def main():
+	print 'Setting up the connections and sending requests...'
+	test_con = UMCTestConnection()
+	connections = []
+	for i in range(NUMBER_OF_CONNECTIONS):
+		i_connection = test_con.get_custom_connection(command='command/ucstest/norespond')
+		connections.append(i_connection)
+	time.sleep(2)
+	
+	print 'Killing module process...'
+	kill_ucstest()
+	time.sleep(2)
+	
+	print 'Verfying that requests are answered with an error code...'
+	success = True
+	for i_connection in connections:
+		try:
+			response = i_connection.getresponse()
+			if(response.status != RESPONSE_STATUS_CODE):
+				print 'ERROR: Unexpected status of response %s (expected was %s)' % (response.status, status)
+				success = False
+		except ssl.SSLError:
+			print 'ERROR: request timed out'
+	
+	restart_web_server()
+	if not success:
+		utils.fail('ERROR: Requests are not answered with an error code')
+
+
+if __name__ == '__main__':
+	sys.exit(main())

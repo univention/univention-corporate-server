@@ -1,0 +1,44 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check if the webserver is responding after sending many unanswered requests
+## roles:
+##  - domaincontroller_master
+## packages:
+##  - univention-management-console
+##  - univention-management-console-frontend
+##  - ucs-test-umc-module
+## exposure: dangerous
+
+
+from umc_test_connection import UMCTestConnection
+import univention.testing.utils as utils
+import subprocess
+import ssl
+import sys
+
+
+NUMBER_OF_NOT_RESPONDING_REQUESTS = 25
+
+
+def main():
+	print 'Setting up the connections ...'
+	test_con = UMCTestConnection()
+
+	print 'Sending %d not responding requests' % NUMBER_OF_NOT_RESPONDING_REQUESTS
+	for request in range(NUMBER_OF_NOT_RESPONDING_REQUESTS):
+		test_con.get_custom_connection(command='command/ucstest/norespond')
+
+	print 'Verfying the webserver still response to a request ...'
+	try:
+		connection = test_con.get_custom_connection(command='command/ucstest/respond')
+		response = connection.getresponse()
+		assert response.status == 200
+	except ssl.SSLError:
+		utils.fail('ERROR: request timed out')
+	except AssertionError:
+		utils.fail('ERROR: webserver is not responding')
+	finally:
+		subprocess.Popen(['/etc/init.d/univention-management-console-web-server', 'restart'])
+
+
+if __name__ == '__main__':
+	sys.exit(main())

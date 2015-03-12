@@ -1,9 +1,10 @@
-#!/usr/bin/make -f
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
 #
-# Univention UCS test
-#  rules file for the debian package
+# Univention Management Console
+#  module: ucs-test
 #
-# Copyright 2013-2014 Univention GmbH
+# Copyright 2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,23 +31,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-export DH_ALWAYS_EXCLUDE=.svn
+from univention.management.console.modules import Base
+from univention.management.console.modules.decorators import simple_response
 
-%:
-	dh $@ --with python_support
 
-override_dh_install:
-	dh_install --sourcedir=$(CURDIR)
+class Instance(Base):
 
-override_dh_auto_test:
-	ucslint
-	! find -type f -exec grep '^source\>' {} +
-	find tests -name .svn -prune -o -type f \( \( -perm -0755 -exec grep -q '^#! */usr/share/ucs-test/runner ' {} \; -prune \) -o \( -not -perm /0111 -not -exec grep -q '^#! */usr/share/ucs-test/runner ' {} \; -prune \) -o -ls \)
+    @simple_response
+    def respond(self):
+        return True
 
-override_dh_auto_build:
-	dh-umc-module-build
-	dh_auto_build
-
-override_dh_auto_install:
-	dh-umc-module-install
-	dh_auto_install
+    def norespond(self, request):
+        pass

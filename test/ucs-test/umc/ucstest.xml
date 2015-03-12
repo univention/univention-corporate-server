@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="ucstest" version="1.0">
+		<name>UCS Test</name>
+		<description>UCS test module</description>
+		<keywords></keywords>
+		<command name="ucstest/norespond" function="norespond" />
+		<command name="ucstest/respond" function="respond" />
+	</module>
+</umc>
