@@ -1,3 +1,9 @@
+ucs-test (5.0.134-1) unstable; urgency=low
+
+  * Bug #38017: disable the test temporarily' 01_all_roles_removal
+
+ -- Ammar Najjar <najjar@univention.de>  Thu, 12 Mar 2015 10:49:12 +0100
+
 ucs-test (5.0.133-2) unstable; urgency=low
 
   * Bug #37485: Added two tests for the umc-webserver
