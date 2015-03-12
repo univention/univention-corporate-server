@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Remove object for all computer roles
-## tags: [udm-computers,apptest]
+## tags: [SKIP-UCSSCHOOL,udm-computers,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
@@ -20,4 +20,4 @@ if __name__ == '__main__':
 			udm.remove_object(role, dn = computer)
 
 			utils.verify_ldap_object(computer, should_exist = False)
-			
+
