@@ -1631,6 +1631,7 @@ class simpleComputer( simpleLdap ):
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should create a dns reverse object: zoneDn="%s", name="%s", ip="%s"' % ( zoneDn, name, ip ) )
 		if name and zoneDn and ip:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'dns reverse object: start' )
+			hostname_list = []
 			if ':' in ip: # IPv6, e.g. ip=2001:db8:100::5
 				# 0.1.8.b.d.0.1.0.0.2.ip6.arpa → 0.1.8.b.d.1.0.0.2 → ['0', '1', '8', 'b', 'd', '0', '1', '0', '0', '2', ]
 				subnet = ldap.explode_dn(zoneDn, 1)[0].replace('.ip6.arpa', '').split('.')
@@ -1652,7 +1653,6 @@ class simpleComputer( simpleLdap ):
 				ipPart = '.'.join(pointer)
 				tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
 				# check in which forward zone the ip is set
-				hostname_list = []
 				results = self.lo.search( base = tmppos.getBase( ) , scope = 'domain', attr = [ 'zoneName' ], filter = '(&(relativeDomainName=%s)(aAAARecord=%s))' % ( name, ip ), unique = 0 )
 			else:
 				subnet = ldap.explode_dn( zoneDn, 1 )[ 0 ].replace( '.in-addr.arpa', '' ).split( '.' )
@@ -1666,22 +1666,24 @@ class simpleComputer( simpleLdap ):
 				ipPart = string.join( pointer, '.' )
 				tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
 				# check in which forward zone the ip is set
-				hostname_list = []
 				results = self.lo.search( base = tmppos.getBase( ) , scope = 'domain', attr = [ 'zoneName' ], filter = '(&(relativeDomainName=%s)(aRecord=%s))' % ( name, ip ), unique = 0 )
 			if results:
-				for dn,attr in results:
-					if attr.has_key( 'zoneName' ):
-						if not '%s.%s.' % ( name, attr[ 'zoneName' ][ 0 ] ) in hostname_list:
-							hostname_list.append( '%s.%s.' % ( name, attr[ 'zoneName' ][ 0 ] ) )
+				for dn, attr in results:
+					if 'zoneName' in attr:
+						hostname = '%s.%s.' % (name, attr['zoneName'][0])
+						if hostname not in hostname_list:
+							hostname_list.append(hostname)
 
-			if len( hostname_list ) < 1:
-				hostname_list.append ( name )
+			if not hostname_list:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Could not determine host record for name=%r, ip=%r. Not creating pointer record.' % (name, ip))
+				return
 
 			# check if the object exists
 			results = self.lo.search( base = tmppos.getBase() , scope = 'domain', attr = [ 'dn' ], filter = '(&(relativeDomainName=%s)(%s))' % ( ipPart, ldap.explode_dn(zoneDn)[0] ), unique = 0 )
 			if not results:
 				self.lo.add( 'relativeDomainName=%s,%s' % ( ipPart, zoneDn ), [ \
-						( 'objectClass', [ 'top', 'dNSZone' ] ), \
+						( 'objectClass', [ 'top', 'dNSZone', 'univentionObject' ] ), \
+						( 'univentionObjectType', ['dns/ptr_record']), \
 						( 'zoneName', [ ldap.explode_dn( zoneDn, 1 )[ 0 ] ] ), \
 						( 'relativeDomainName', [ ipPart ] ) ,
 						( 'PTRRecord',  hostname_list  ) ] )
@@ -1840,7 +1842,8 @@ class simpleComputer( simpleLdap ):
 			if not results:
 				try:
 					self.lo.add( 'relativeDomainName=%s,%s'% ( name, zoneDn ), [\
-										( 'objectClass', [ 'top', 'dNSZone' ]),\
+										( 'objectClass', [ 'top', 'dNSZone', 'univentionObject' ]),\
+										( 'univentionObjectType', ['dns/host_record']),\
 										( 'zoneName', univention.admin.uldap.explodeDn( zoneDn, 1 )[ 0 ]),\
 										( 'aAAARecord', [ ip ]),\
 										( 'relativeDomainName', [ name ])])
@@ -1866,7 +1869,8 @@ class simpleComputer( simpleLdap ):
 			if not results:
 				try:
 					self.lo.add( 'relativeDomainName=%s,%s'% ( name, zoneDn ), [\
-										( 'objectClass', [ 'top', 'dNSZone' ]),\
+										( 'objectClass', [ 'top', 'dNSZone', 'univentionObject' ]),\
+										( 'univentionObjectType', ['dns/host_record']),\
 										( 'zoneName', univention.admin.uldap.explodeDn( zoneDn, 1 )[ 0 ]),\
 										( 'ARecord', [ ip ]),\
 										( 'relativeDomainName', [ name ])])
