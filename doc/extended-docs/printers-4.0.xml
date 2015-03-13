@@ -19,9 +19,9 @@
 	</revhistory>
   </bookinfo>
 
-  <chapter>
+  <chapter id="quota">
 	<title>Print quota configuration</title>
-	<section>
+	<section id="quota:intro">
 
 	  <title>Introduction</title>
 	  <para>
@@ -65,7 +65,7 @@
 	  </para>
 	</section>
 
-	<section>
+	<section id="quota:install">
 	  <title>Installation</title>
 	  <para>
 		Print quota support is disabled as standard. It must be subsequently set up by installing
@@ -78,7 +78,7 @@
 	  </para>
 	</section>
 
-	<section>
+	<section id="quota:config">
 	  <title>Configuration of print quotas</title>
 
 	  <section id="quota:config:activate">
@@ -104,14 +104,14 @@
 		</note>
 	  </section>
 
-	  <section>
+	  <section id="quota:assign">
 		<title>Assigning quota limits to users and groups</title>
 		<para>
 		  The printer quotas can then be assigned in two ways; via a policy or specifically for each
 		  user in the UMC module <guimenu>Printer administration</guimenu>.
 		</para>
 
-		<section>
+		<section id="quota:assign:policy">
 		  <title>Assignment via a policy</title>
 		  <para>
 			The quota can be configured as a soft limit (warning threshold) and a hard limit (maximum
@@ -179,7 +179,7 @@
 	  </section>
 	</section>
 
-	<section>
+	<section id="quota:query">
 	  <title>Querying the printer quotas</title>
 	  <para>
 		The quota data can only be queried if print quota is enabled on at least one printer
@@ -207,7 +207,7 @@ user            -Q   1.0    20   100   200     0.00             20
 	  </para>
 	</section>
 
-	<section>
+	<section id="quota:reset">
 	  <title>Resetting the printer quotas</title>
 	  <para>
 		The page counter for a user can be reset either with the UMC module <guimenu>Printer

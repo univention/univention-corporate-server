@@ -4,9 +4,9 @@
 	<!ENTITY % entities SYSTEM "../../stylesheets/macros-de.ent" >
 	%entities;
 ]>
-<chapter>
+<chapter id="school">
   <title>Schulträger</title>
-  <section>
+  <section id="school:start">
 	<title>Ausgangslage</title>
 	<para>
 	  Der Landkreis <wordasword>Rechtwede</wordasword> ist Schulträger für insgesamt acht
@@ -59,7 +59,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="school:impl">
 	<title>Umsetzung</title>
 	<para>
 	  Der Schulträger implementiert eine Umgebung auf Basis von &ucsUAS;, einer
@@ -104,7 +104,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="school:user">
 	<title>Verwaltung der Benutzerdaten</title>
 	<para>
 	  Alle Schulanmeldungen, -wechsel und Versetzungen werden
@@ -134,7 +134,7 @@
 		</itemizedlist>
   </section>
 
-  <section>
+  <section id="school:services">
 	<title>Dienste auf den Schulservern</title>
 	<para>
 	  Auf allen Schulservern wird ein lokaler LDAP-Verzeichnisdienst betrieben, auf den
@@ -191,7 +191,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="school:modules">
 	<title>Werkzeuge für den pädagogischen EDV-Betrieb</title>
 	<para>
 	  &ucsUAS; stellt eine Reihe von Modulen für die &ucsUMC; bereit, die
@@ -335,7 +335,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="school:italc">
 	<title>Management von Schüler-Desktops mit iTALC</title>
 	<para>
 	  iTALC ist eine didaktische Software für den Zugriff auf
@@ -390,7 +390,7 @@
 	  </para>
   </section>
 
-  <section>
+  <section id="school:groupware">
 	<title>Groupware</title>
 	<para>
 	  Der Schulträger verwendet die Groupwarelösung Kolab zur Abstimmung von
@@ -410,7 +410,7 @@
 	</para>
   </section>
 
-	  <section>
+	  <section id="school:ref">
 		<title>Referenzen</title>
 		  <itemizedlist>
 			<listitem><simpara><ulink url="http://docs.univention.de/handbuch.html"/> (UCS-Handbuch)</simpara></listitem>

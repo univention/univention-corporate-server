@@ -4,9 +4,9 @@
 	<!ENTITY % entities SYSTEM "../../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<chapter>
+<chapter id="engineering">
   <title>Medium-sized mechanical engineering company</title>
-  <section>
+  <section id="engineering:start">
 	<title>Initial situation</title>
 	<para>
 	  Ganupa Technologies is one of the leading manufacturers of rolled steel mills. At the company
@@ -67,7 +67,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:impl">
 	<title>Implementation</title>
 
 	<para>
@@ -85,7 +85,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:dc">
 	<title>Domain controller / LDAP directory</title>
 	<para>
 	  The company implements an infrastructure composed of a UCS domain
@@ -121,7 +121,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:virt">
 	<title>Virtualization</title>
 	<para>
 	  All server systems of Ganupa Technologies are virtualized with
@@ -161,7 +161,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:ucc">
 	<title>Linux terminal services</title>
 	<para>
 	  Four domain controller slave systems are installed in the company
@@ -208,7 +208,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:print">
 	<title>Print services</title>
 	<para>
 	  Print jobs are forwarded to the requested printer via a print
@@ -231,7 +231,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:terminal">
 	<title>Microsoft Windows terminal services</title>
 	<para>
 	  Samba 4 is used to create a Windows domain in which a Microsoft Windows terminal
@@ -253,7 +253,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:db">
 	<title>Integration of Oracle Solaris systems</title>
 	<para>
 	  A specialist application for CAD design is only available for
@@ -271,7 +271,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:storage">
 	<title>Data management</title>
 	<para>
 	  All user data is stored on a central Storage Area Network (SAN) system. The different shares
@@ -281,7 +281,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:groupware">
 	<title>Groupware</title>
 	<para>
 	  Ganupa Technologies uses the groupware solution Open-Xchange Server
@@ -312,7 +312,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:outlook">
 	<title>Outlook</title>
 	<para>
 	  At a later point in time, the plan is to monitor the Internet access
@@ -326,7 +326,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:ref">
 	<title>References</title>
 	  <itemizedlist>
 		<listitem><simpara><ulink url="http://docs.univention.de/manual.html"/> (UCS manual)</simpara></listitem>

@@ -19,9 +19,9 @@
         </revhistory>
     </bookinfo>
 
-    <chapter>
+    <chapter id="samba">
         <title>Advanced Samba documentation</title>
-        <section>
+        <section id="samba:doc">
             <title>Operating Samba 4 as a read-only domain controller</title>
 			<para>
 			  Active Directory offers an operating mode called <emphasis>read-only domain
@@ -77,7 +77,7 @@ univention-run-join-scripts
 			e.g:
 		  </para>
 
-<programlisting language="sh">
+<screen>
 root@backup:~# /usr/share/univention-samba4/scripts/purge_s4_computer.py --computername=master
 Really remove master from Samba 4? [y/N]: Yes
 If you are really sure type YES and hit enter: YES
@@ -89,7 +89,7 @@ Really remove master from UDM as well? [y/N]: No
 Ok, stopping as requested.
 
 root@backup:~#
-</programlisting>
+</screen>
 
 			<para>
 			  The Univention S4 connector must be run on the &ucsMaster; or a &ucsBackup; in the
@@ -108,7 +108,7 @@ root@backup:~#
 			  The FSMO (Flexible Single Master Operations) roles should be checked. In case the
 			  roles were provided by the removed DC, they must be transferred, for example:
 			</para>
-<programlisting language="sh">
+<screen>
 root@backup:~# samba-tool fsmo show
 InfrastructureMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
 RidAllocationMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
@@ -128,13 +128,13 @@ FSMO transfer of 'infrastructure' role successful
 Will not attempt transfer, seizing...
 FSMO transfer of 'schema' role successful
 root@backup:~# 
-</programlisting>
+</screen>
         </section>
     </chapter>
 
-    <chapter>
+    <chapter id="ad">
 	  <title>Advanced Active Directory connector documentation</title>
-	  <section>
+	  <section id="ad:multiple">
 		<title>Synchronisation of several Active Directory domains with one UCS directory service</title>
 		<para>
 		  It is possible to synchronise several separate Active Directory domains with one UCS

@@ -4,9 +4,9 @@
 	<!ENTITY % entities SYSTEM "../../stylesheets/macros-de.ent" >
 	%entities;
 ]>
-<chapter>
+<chapter id="lawyer">
   <title>Anwaltskanzlei</title>
-  <section>
+  <section id="lawyer:start">
 	<title>Ausgangslage</title>
 	<para>
 	  Die Anwaltskanzlei Hemmerlein &amp; Söhne verfügt über insgesamt zehn Mitarbeiter. Die Mitarbeiter
@@ -25,7 +25,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:services">
 	<title>Systeme und Dienste</title>
 	<para>
 	  Univention Corporate Server (UCS) stellt die benötigten Dienste und Anwendungen ``out of the
@@ -42,7 +42,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:users">
 	<title>Verwaltung der Benutzerdaten</title>
 	<para>
 	  Für die zehn Mitarbeiter werden im Web-Interface der &ucsUMC; Benutzerkonten angelegt. Jeder
@@ -58,7 +58,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:windows">
 	<title>Verwaltung der Microsoft Windows-Rechner</title>
 	<para>
 	  Auf dem UCS-System wird Samba 4 für die Anbindung der Windows-Clients eingesetzt. Samba 4
@@ -75,7 +75,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:storage">
 	<title>Datenverwaltung</title>
 	<para>
 	  Samba stellt für jeden Benutzer auf dem UCS-System ein Heimatverzeichnis als Dateifreigabe
@@ -94,7 +94,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:sso">
 	<title>Single-Sign-On mit einer juristischen Fachanwendung</title>
 	<para>
 	  Die Kanzlei greift auf einen webbasierten juristischen Fachdienst zu. Dieser benutzt eine
@@ -110,7 +110,7 @@
   </section>
 
 
-  <section>
+  <section id="lawyer:print">
 	<title>Druckdienste</title>
 	<para>
 	  Das UCS-System stellt über die Software CUPS Druckdienste bereit. Es können sowohl
@@ -125,7 +125,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:groupware">
 	<title>Groupware</title>
 	<para>
 	  Auf dem UCS-System wird über das App Center Zarafa4UCS installiert, eine Integration der Groupware
@@ -141,7 +141,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:proxy">
 	<title>Proxy und Webfilter</title>
 	<para>
 	  Ein Webfilter auf Basis von Squid und DansGuardian ist in UCS integriert und führt mit dem
@@ -151,7 +151,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:backup">
 	<title>Backup</title>
 	<para>
 	  Alle Daten (sowohl die Daten der Benutzer im Heimatverzeichnis als auch die Daten auf der
@@ -161,7 +161,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:outlook">
 	<title>Ausblick</title>
 	<para>
 	  Für den geplanten Zusammenschluss mit einem weiteren Büro in München kann einfach ein weiteres
@@ -177,7 +177,7 @@
 
   </section>
 
-  <section>
+  <section id="lawyer:ref">
 	<title>Referenzen</title>
 	  <itemizedlist>
 		<listitem><simpara><ulink url="http://docs.univention.de/handbuch.html"/> (UCS-Handbuch)</simpara></listitem>

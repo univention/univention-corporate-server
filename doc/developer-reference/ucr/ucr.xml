@@ -240,7 +240,8 @@ handler_unset(['foo', 'bar'])
 		</section>
 	</section>
 
-	<section><title>Configuration files</title>
+	<section id="ucr:conf">
+		<title>Configuration files</title>
 		<para>
 			Packages can use the <acronym>UCR</acronym> functionality to create customized configuration files themselves.
 			<acronym>UCR</acronym> <firstterm>diverts</firstterm> files shipped by Debian packages and replaces them by generated files.

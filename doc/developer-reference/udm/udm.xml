@@ -17,7 +17,8 @@
 		Modifying entries is slightly complicated, as there are no high-level operations to add or remove values from multi-valued attributes, or to keep the password used by different authentication schemes such as Windows <acronym>NTLM</acronym>-hashes, UNIX <acronym>MD5</acronym> hashes, or Kerberos tickets in sync.
 	</para>
 
-	<section><title>Introduction</title>
+	<section id="udm:intro">
+		<title>Introduction</title>
 		<para>
 			The command line client <command>udm</command> provides different modes of operation.
 			<cmdsynopsis>

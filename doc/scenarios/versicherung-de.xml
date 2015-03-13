@@ -4,9 +4,9 @@
 	<!ENTITY % entities SYSTEM "../../stylesheets/macros-de.ent" >
 	%entities;
 ]>
-<chapter>
+<chapter id="insurance">
   <title>Heterogene Großumgebung im Konzernverbund</title>
-  <section>
+  <section id="insurance:start">
 	<title>Ausgangslage</title>
 	<para>
 	  Die Hanseatische Marineversicherung (HMV) ist ein auf den Logistikbereich
@@ -71,7 +71,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:impl">
 	<title>Umsetzung</title>
 	<para>
 	  Das Unternehmen implementiert eine Infrastruktur bestehend aus einem
@@ -118,7 +118,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:virt">
 	<title>Virtualisierung</title>
 	<para>
 	  Alle Serversysteme in der Umgebung der HMV sind mit &ucsUVMM; (UVMM)
@@ -158,7 +158,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:software">
 	<title>Software-Verteilung der UCS-Systeme</title>
 	<para>
 	  Für die UCS-Domänencontroller wurden Installationsprofile
@@ -191,7 +191,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:windows">
 	<title>Anbindung von Windows-Clients und Software-Verteilung</title>
 	<para>
 	  In der HMV wird Samba 4 für die Anbindung der Windows-Clients
@@ -224,7 +224,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:ad">
 	<title>Active Directory-Anbindung</title>
 	<para>
 	  Der UCS Active Directory Connector (kurz AD Connector)
@@ -257,7 +257,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:groupware">
 	<title>Groupware</title>
 	<para>
 	  Die Groupware wird in Form von Exchange Server 2010 komplett durch
@@ -280,7 +280,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:complianc3">
 	<title>Compliance-Anforderungen</title>
 	<para>
 	  Die HMV muss eine Reihe von Compliance-Anforderungen im
@@ -307,7 +307,7 @@
 	  </itemizedlist>
   </section>
 
-  <section>
+  <section id="insurance:monitoring">
 	<title>System-Monitoring mit Nagios</title>
 	<para>
 	  UCS integriert die Systemüberwachungssoftware Nagios, die die Überwachung
@@ -341,7 +341,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:aix">
 	<title>Integration des AIX-Systems</title>
 	<para>
 	  Die Versichungspolicen werden mit einer Applikation verwaltet, die nur
@@ -357,7 +357,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:terminal">
 	<title>Citrix Terminal Services</title>
 	<para>
 	  In der Zentrale arbeiten 150 Benutzer mit Terminaldiensten auf Basis
@@ -377,7 +377,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:backup">
 	<title>Backup</title>
 	<para>
 	  Für die Datensicherung kommt SEP sesam zum Einsatz. Es bietet ein
@@ -400,7 +400,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:crm">
 	<title>Integration von SugarCRM</title>
 	<para>
 	  Als CRM-Lösung für Vertriebsmitarbeiter wird SugarCRM
@@ -416,7 +416,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:rev">
 	<title>Referenzen</title>
 	  <itemizedlist>
 		<listitem><simpara><ulink url="http://docs.univention.de/handbuch.html"/> (UCS-Handbuch)</simpara></listitem>

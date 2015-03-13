@@ -4,9 +4,9 @@
 	<!ENTITY % entities SYSTEM "../../stylesheets/macros-de.ent" >
 	%entities;
 ]>
-<chapter>
+<chapter id="engineering">
   <title>Mittelständische Maschinenbau-Firma</title>
-  <section>
+  <section id="engineering:start">
 	<title>Ausgangslage</title>
 	<para>
 	  Ganupa Technologies ist einer der wichtigsten Hersteller für Walzstahlfräsen. Am Firmensitz in
@@ -66,7 +66,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:impl">
 	<title>Umsetzung</title>
 
 	<para>
@@ -84,7 +84,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:dc">
 	<title>Domänencontroller / LDAP-Verzeichnis</title>
 	<para>
 	  Das Unternehmen implementiert eine Infrastruktur bestehend aus einem UCS Domänencontroller
@@ -116,7 +116,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:virt">
 	<title>Virtualisierung</title>
 	<para>
 	  Alle Serversysteme in der Umgebung von Ganupa Technologies sind mit &ucsUVMM; (UVMM)
@@ -157,7 +157,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:ucc">
 	<title>Linux Terminal Services</title>
 	<para>
 	  In der Firmenzentrale sind vier Domänencontroller Slave-Systeme installiert. Sie dienen als
@@ -199,7 +199,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:print">
 	<title>Druckdienste</title>
 	<para>
 	  Druckaufträge werden über einen Print-Server an den gewünschten Drucker weiterleitet. Die
@@ -221,7 +221,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:terminal">
 	<title>Windows-Terminalserver</title>
 	<para>
 	  Für die Windows-Programme wird durch Samba 4 eine Windows-Domäne realisiert, in die ein
@@ -243,7 +243,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:db">
 	<title>Einbindung von Oracle Solaris-Systemen</title>
 	<para>
 	  Eine Fachanwendung für CAD-Konstruktionen ist nur für Oracle Solaris verfügbar. Die
@@ -259,7 +259,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:storage">
 	<title>Datenhaltung</title>
 	<para>
 	  Die Speicherung aller Benutzerdaten erfolgt auf einem zentralen SAN-System. Die verschiedenen
@@ -269,7 +269,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:groupware">
 	<title>Groupware</title>
 	<para>
 	  Ganupa Technologies verwendet die Groupwarelösung Open-Xchange Server Edition zur Abstimmung
@@ -299,7 +299,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:outlook">
 	<title>Ausblick</title>
 	<para>
 	  Zu einem späteren Zeitpunkt soll der Internet-Zugriff zentral über einen Web-Proxy kanalisiert
@@ -316,7 +316,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:ref">
 	<title>Referenzen</title>
 	  <itemizedlist>
 		<listitem><simpara><ulink url="http://docs.univention.de/handbuch.html"/> (UCS-Handbuch)</simpara></listitem>

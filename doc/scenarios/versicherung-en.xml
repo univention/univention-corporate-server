@@ -4,9 +4,9 @@
 	<!ENTITY % entities SYSTEM "../../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<chapter>
+<chapter id="insurance">
   <title>Heterogeneous enterprise environment in an insurance company</title>
-  <section>
+  <section id="insurance:start">
 	<title>Initial situation</title>
 	<para>
 		<foreignphrase>Hanseatische Marineversicherung</foreignphrase> (<acronym>HMV</acronym>) is an insurance company with
@@ -65,7 +65,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:impl">
 	<title>Implementation</title>
 	<para>
 	  The company implements an infrastructure composed of a &ucsMaster;
@@ -111,7 +111,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:virt">
 	<title>Virtualization</title>
 	<para>
 	  All server systems in the HMV environment are virtualized with
@@ -147,7 +147,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:software">
 	<title>Software distribution of UCS systems</title>
 	<para>
 	  Installation profiles have been created for the UCS domain
@@ -180,7 +180,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:windows">
 	<title>Connecting Windows clients and Windows software deployment</title>
 	<para>
 	  Samba 4 is used in the HMV for the integration of Microsoft Windows
@@ -211,7 +211,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:ad">
 	<title>Active Directory synchronisation</title>
 	<para>
 	  The Univention Active Directory connector (AD connector for short)
@@ -244,7 +244,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:groupware">
 	<title>Groupware</title>
 	<para>
 	  The groupware is provided in the form of Exchange Server
@@ -267,7 +267,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:complianc3">
 	<title>Compliance requirements</title>
 	<para>
 	  HMV must satisfy a range of insurance industry compliance
@@ -297,7 +297,7 @@
 	  </itemizedlist>
   </section>
 
-  <section>
+  <section id="insurance:monitoring">
 	<title>System monitoring with Nagios</title>
 	<para>
 	  UCS integrates the system monitoring software Nagios, which allows the
@@ -330,7 +330,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:aix">
 	<title>Integration of the AIX system</title>
 	<para>
 	  The insurance policies are administrated with an application which can
@@ -345,7 +345,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:terminal">
 	<title>Citrix terminal services</title>
 	<para>
 	  In the headquarters 150 users work with terminal services based on
@@ -364,7 +364,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:backup">
 	<title>Backup</title>
 	<para>
 	  SEP sesam is used for file backup. It offers a distributed backup
@@ -388,7 +388,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:crm">
 	<title>Integration of SugarCRM</title>
 	<para>
 	  SugarCRM is employed as the CRM solution for sales personnel. The
@@ -404,7 +404,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:rev">
 	<title>References</title>
 	  <itemizedlist>
 		<listitem><simpara><ulink url="http://docs.univention.de/manual.html"/> (UCS manual)</simpara></listitem>

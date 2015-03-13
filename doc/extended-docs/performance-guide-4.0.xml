@@ -19,7 +19,7 @@
 	</revhistory>
 </bookinfo>
 
-<chapter>
+<chapter id="intro">
 	<title>Introduction</title>
 	<para>
 		In its default configuration, UCS is suitable for environments with up to
@@ -232,7 +232,7 @@ slapadd -l ldif
 </chapter>
 
 
-<chapter>
+<chapter id="umc">
   <title>UCS management system</title>
 
   <section id="umc:search:auto">
@@ -257,7 +257,7 @@ slapadd -l ldif
 </chapter>
 
 
-<chapter>
+<chapter id="services">
 	<title>Further services and components</title>
 	<section id="squid">
 		<title>Squid</title>

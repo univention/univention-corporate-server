@@ -19,9 +19,9 @@
         </revhistory>
     </bookinfo>
 
-    <chapter>
+    <chapter id="proxy">
         <title>Advanced proxy configuration</title>
-        <section>
+        <section id="proxy:cascading">
             <title>Cascading of proxies</title>
 			<para>
 			  In some scenarios, cascading of proxy servers may be required. In such a setup,
@@ -48,7 +48,7 @@
 			</para>
         </section>
 
-        <section>
+        <section id="proxy:transparent">
             <title>Operation as a transparent proxy</title>
 			<para>
 			  It is possible to configure Squid as a transparent proxy to avoid configuring the
@@ -89,7 +89,7 @@ cron/IPFORWARDING/time=@reboot
 			</para>
 		</section>
 
-        <section>
+        <section id="proxy:scanner">
             <title>Integration of a virus scanner in the proxy</title>
 
 			<para>

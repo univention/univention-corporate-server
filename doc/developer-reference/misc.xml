@@ -154,7 +154,7 @@ override_dh_auto_test:
 		</para>
 		<remark>PMH: poorly documented and of qustionale code quality</remark>
 
-		<section>
+		<section id="misc:lib:sh">
 			<title><package>shell-univention-lib</package></title>
 			<para>
 				This package provides several libraries in <filename class="directory">/usr/share/univention-lib/</filename>, which can be used in shell scripts.
@@ -219,7 +219,7 @@ override_dh_auto_test:
 			</variablelist>
 		</section>
 
-		<section>
+		<section id="misc:lib:python">
 			<title><package>python-univention-lib</package></title>
 			<para>
 				This package provides several Python libraries located in the module <package>univention.lib</package>.

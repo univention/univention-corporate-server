@@ -40,7 +40,7 @@
   		  preserve the indentation which is required for some configuration files.
 	</para></caution>
 
-        <section>
+        <section id="ubuntu:integration">
             <title>Integration into the LDAP directory and the SSL certificate authority</title>
             <para>
 			  After Ubuntu has been installed, some of it's configuration files need to be
@@ -113,7 +113,7 @@ exit
 ]]></programlisting>
 		</section>
 
-        <section>
+        <section id="ubuntu:sssd">
             <title>Configuration of the System Security Services Daemon (SSSD)</title>
             <para>
 			  SSSD provides a set of daemons to manage access to remote directories and
@@ -215,7 +215,7 @@ exit
 			</para>
 		</section>
 
-        <section>
+        <section id="ubuntu:login">
             <title>Configuring user logins</title>
             <para>
 			  The home directory of a user should be created automatically during login:
@@ -297,7 +297,7 @@ exit
 			</para>
 		</section>
 
-        <section>
+        <section id="ubuntu:kerberos">
             <title>Kerberos integration</title>
             <para>
 			  Every UCS domain provides a Kerberos domain. Since Kerberos relies on DNS, the
@@ -351,7 +351,7 @@ exit
 ]]></programlisting>
 		</section>
 
-        <section>
+        <section id="ubuntu:limits">
             <title>Limitations of the Ubuntu domain integration</title>
             <para>
 			  It is currently not possible to change the user password at the LightDM login
@@ -360,7 +360,7 @@ exit
 			</para>
 		</section>
 
-        <section>
+        <section id="ubuntu:ref">
             <title>Additional references</title>
 			  <itemizedlist>
 				<listitem><para><ulink url="https://help.ubuntu.com/community/LDAPClientAuthentication"/></para></listitem>
@@ -397,7 +397,7 @@ exit
 		  login is performed anyway).
 		</para>
 
-        <section>
+        <section id="unix:umc">
 		  <title>Managing the systems in the &ucsUMC;</title>
 		  <para>
 			A <guimenu>Computer: Linux</guimenu> object can be created in the UMC computer
@@ -425,7 +425,7 @@ nameserver  10.200.3.99
 </programlisting>
 		</section>
 
-        <section>
+        <section id="unix:time">
 		  <title>Configuration of the time server</title>
 		  <para>
 			All UCS domain controllers (i.e., &ucsMaster;, &ucsBackup; and &ucsSlave;) operate a NTP
@@ -442,7 +442,7 @@ server backup.example.com
 </programlisting>
 		</section>
 
-		<section>
+		<section id="unix:domain">
 		  <title>Access to user and group information of the UCS domain</title>
 		  <para>
 			The <emphasis>Name Service Switch</emphasis> (NSS) is an interface for configuring the
@@ -504,7 +504,7 @@ getent group
 </programlisting>
 		</section>
 
-		<section>
+		<section id="unix:kerberos">
 		  <title>Integrating into Kerberos</title>
 		  <para>
 			UCS employs the Kerberos implementation Heimdal. For this reason, Heimdal should also be
@@ -578,7 +578,7 @@ KERBEROSREAKM = {
 
 		</section>
 
-		<section>
+		<section id="unix:print">
 		  <title>Accessing a UCS print server</title>
 		  <para>
 			UCS uses the <emphasis>Common Unix Printing System</emphasis> (CUPS) to implement print
@@ -595,7 +595,7 @@ ServerName printserver.example.com
     <chapter id="extdom:ssl">
 	  <title>Advanced SSL certificate handling</title>
 
-	  <section>
+	  <section id="extdom:ssl:manage">
 		<title>Managing additional certificates with <command>univention-certificate</command></title>
         <para>
 		  Every UCS domain has its own SSL certificate authority. The SSL certificates are created
@@ -671,7 +671,7 @@ univention-certificate dump -name fullyqualifiedhostname
 ]]></programlisting>
 		</section>
 
-        <section>
+        <section id="extdom:ssl:valid">
             <title>Checking the validity of a certificate</title>
 			<para>
 			  This command checks whether a certificate is valid or invalid:
@@ -754,7 +754,7 @@ openssl ca -batch -config /etc/univention/ssl/openssl.cnf \
     <chapter id="ext-dom-syncrepl">
 	  <title>Connecting an external OpenLDAP server via syncrepl</title>
 
-	  <section>
+	  <section id="syncrepl:intro">
 	  	<title>Introduction</title>
 
 	  	<para>
@@ -777,7 +777,7 @@ openssl ca -batch -config /etc/univention/ssl/openssl.cnf \
 	  	</para>
 	  </section>
 
-	  <section>
+	  <section id="syncrepl:account">
 	  	<title>Creating a computer account</title>
 	  	<para>
 		  For <systemitem class="fqdomainname">extldap.univention.test</systemitem>, a <emphasis>Linux</emphasis>
@@ -787,7 +787,7 @@ openssl ca -batch -config /etc/univention/ssl/openssl.cnf \
 
 	  </section>
 
-	  <section>
+	  <section id="syncrepl:master">
 		<title>Activation of syncrepl on the master domain controller</title>
 		<!-- Can be trimmed drastically once 33709 is fixed -->
 		<para>
@@ -835,7 +835,7 @@ ucr commit /etc/ldap/syncrepl-proxy.conf
 		</para>
 	  </section>
 
-	  <section>
+	  <section id="syncrepl:init">
 		<title>Initial transfer of the LDAP data</title>
 
 		<para>
@@ -864,7 +864,7 @@ rsync -aR /etc/univention/ssl/ucsCA/CAcert.pem extldap.univention.test:/
 		</para>
 	  </section>
 
-	  <section>
+	  <section id="syncrepl:3rd">
 		<title>Configuration of the LDAP service on the third-party system</title>
 		<para>
 		  The configuration of the external LDAP server is now adapted. It must be noted that only a
@@ -901,7 +901,7 @@ cp /root/slapd.conf /etc/ldap
 		</para>
 	  </section>
 
-	  <section>
+	  <section id="syncrepl:init2">
 		<title>Importing the initial LDAP copy</title>
 		<para>
 		  The initial copy of the UCS directory data is now imported and the LDAP server
@@ -960,7 +960,7 @@ chgrp openldap /etc/ldap/slapd.conf
 		</para>
 	  </section>
 
-	  <section>
+	  <section id="syncrepl:proxy">
 		<title>Activation of the syncrepl proxy</title>
 		<para>
 		  If the LDAP connection works, the configuration of the syncrepl proxy can be
@@ -1002,7 +1002,7 @@ BASE LDAPBASE
 		</para>
 	  </section>
 
-	  <section>
+	  <section id="syncrepl:test">
 		<title>Testing the replication</title>
 		<para>
 		  The replication via syncrepl can be tested by changing the description of an existing user

@@ -4,9 +4,9 @@
 	<!ENTITY % entities SYSTEM "../../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<chapter>
+<chapter id="school">
   <title>School board</title>
-  <section>
+  <section id="school:start">
 	<title>Initial situation</title>
 	<para>
 	  The administrative district <wordasword>Rechtwede</wordasword> is the school body for a total of
@@ -59,7 +59,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="school:impl">
 	<title>Implementation</title>
 	<para>
 	  The school board is implementing an environment based on UCS@school, a
@@ -104,7 +104,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="school:user">
 	<title>Management of user data</title>
 	<para>
 	  All school registrations, changes and transfers are managed
@@ -132,7 +132,7 @@
 		</itemizedlist>
   </section>
 
-  <section>
+  <section id="school:services">
 	<title>Services on the school servers</title>
 	<para>
 	  A local LDAP directory is operated on all school servers and can be
@@ -187,7 +187,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="school:modules">
 	<title>Tools for using IT-assisted teaching</title>
 	<para>
 	  &ucsUAS; offers a range of modules for the &ucsUMC; which can be
@@ -327,7 +327,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="school:italc">
 	<title>Management of pupil's desktops using iTALC</title>
 	<para>
 	  iTALC is a didactic software for accessing pupil desktops. iTALC is
@@ -362,7 +362,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="school:groupware">
 	<title>Groupware</title>
 	<para>
 	  The school board uses the groupware solution Kolab for arranging
@@ -383,7 +383,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="school:ref">
 	<title>References</title>
 	  <itemizedlist>
 		<listitem><simpara><ulink url="http://docs.univention.de/manual.html"/> (UCS manual)</simpara></listitem>
