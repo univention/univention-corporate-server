@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-management-console
+fix: FIXME
+version: [1]
+desc: |
+  This update addresses the following issues:
+  * a racing condition during UMC session shutdown has been fixed, that
+    could lead to a complete shutdown of the UMC server.
+bug: [37399]
