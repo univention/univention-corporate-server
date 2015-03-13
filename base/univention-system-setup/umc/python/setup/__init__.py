@@ -207,20 +207,21 @@ class Instance(Base, ProgressMixin):
 				obj._finishedLock.release()
 
 		def _finished( thread, result ):
-			success = True
+			if self.__keep_alive_request:
+				self.finished(self.__keep_alive_request.id, None)
+				self.__keep_alive_request = None
+
 			if isinstance( result, BaseException ):
-				success = False
 				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
 				MODULE.warn( 'Exception during saving the settings: %s\n%s' % (result, msg) )
 				self._progressParser.current.errors.append(_('Encountered unexpected error during setup process: %s') % result)
 				self._progressParser.current.critical = True
 				self._finishedResult = True
 
-			self.finished(request.id, success)
-
 		thread = notifier.threads.Simple( 'save',
 			notifier.Callback( _thread, request, self ), _finished )
 		thread.run()
+		self.finished(request.id, None)
 
 	@simple_response
 	def join(self, values=None, username=None, password=None):

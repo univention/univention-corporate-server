@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2015 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -543,18 +543,18 @@ define([
 
 			// function to save data
 			var _save = lang.hitch(this, function(values, umc_url) {
-				var deferred = new Deferred();
-
 				// send save command to server
-				this._progressBar.reset(_('Initialize the configuration process ...'));
-				this.standby(false, this._progressBar);
-				this.standby(true, this._progressBar);
-				this.umcpCommand('setup/save', {
+				return this.standbyDuring(this.umcpCommand('setup/save', {
 					values: values
-				}, false);
+				})).then(lang.hitch(this, function() {
+					// make sure the server process cannot die
+					this.umcpCommand('setup/ping', {keep_alive: true}, false);
 
-				// poll whether script has finished
-				tools.defer(lang.hitch(this, function() {
+					var deferred = new Deferred();
+					// poll whether script has finished
+					this._progressBar.reset(_('Initialize the configuration process ...'));
+					this.standby(false, this._progressBar);
+					this.standbyDuring(deferred, this._progressBar);
 					this._progressBar.auto(
 						'setup/finished',
 						{},
@@ -567,10 +567,7 @@ define([
 						_('Configuration finished'),
 						true
 					);
-				}), 500);
-
-				return deferred.then(lang.hitch(this, function() {
-					this.standby(false);
+					return deferred;
 				}));
 			});
 
