@@ -269,10 +269,10 @@ class Processor(signals.Provider):
 	def shutdown(self):
 		"""Instructs the module process to shutdown"""
 		CORE.info('The session is shutting down. Sending UMC modules an EXIT request (%d processes)' % len(self.__processes))
-		for module_name in self.__processes:
+		for module_name, process in self.__processes.items():
 			CORE.info('Ask module %s to shutdown gracefully' % module_name)
 			req = Request('EXIT', arguments=[module_name, 'internal'])
-			self.__processes[module_name].request(req)
+			process.request(req)
 
 	def __del__(self):
 		CORE.process('Processor: dying')
