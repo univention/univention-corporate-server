@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (4.1.1-4) unstable; urgency=low
+
+  * Bug #38036: Encode HTML entities in description and tool-tip
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 13 Mar 2015 11:52:02 +0100
+
 univention-management-console-module-ucr (4.1.1-3) unstable; urgency=medium
 
   * Bug #37742: fix dialog design for small devices

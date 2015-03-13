@@ -35,6 +35,7 @@ define([
 	"dojo/_base/array",
 	"dojo/aspect",
 	"dojo/sniff",
+	"dojox/html/entities",
 	"dijit/Dialog",
 	"dijit/form/_TextBoxMixin",
 	"umc/tools",
@@ -52,7 +53,7 @@ define([
 	"umc/widgets/Tooltip",
 	"umc/i18n!umc/modules/ucr",
 	"xstyle/css!./ucr.css"
-], function(declare, lang, kernel, array, aspect, has, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, TextBox, Text, HiddenInput, ComboBox, Tooltip, _) {
+], function(declare, lang, kernel, array, aspect, has, entities, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, TextBox, Text, HiddenInput, ComboBox, Tooltip, _) {
 
 	var _DetailDialog = declare([Dialog, StandbyMixin], {
 		_form: null,
@@ -135,7 +136,7 @@ define([
 				if (text) {
 					// we have description, update the description field
 					descWidget.set('visible', true);
-					descWidget.set('content', '<i>' + text + '</i>');
+					descWidget.set('content', '<i>' + entities.encode(text) + '</i>');
 				}
 				else {
 					// no description -> hide widget and label
@@ -368,7 +369,7 @@ define([
 			var item = this._grid.getRowValues(rowIndex);
 			if (item.description) {
 				var tooltip = new Tooltip({
-					label: item.description,
+					label: entities.encode(item.description),
 					connectId: [widget.domNode],
 					position: ['below']
 				});
