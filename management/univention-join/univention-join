@@ -527,18 +527,20 @@ args+=(-role "$server_role" -hostname "$hostname" -domainname "$domainname")
 # Copy local $DCPWD to remote $DCPWD' and invoke univention-join remotely
 univention-ssh --no-split "$DCPWD" "${DCACCOUNT}@${DCNAME}" \
 	'DCPWD=$(mktemp) && trap "rm -f \"$DCPWD\"" EXIT && cat >"$DCPWD" && /usr/share/univention-join/univention-server-join -bindpwfile "$DCPWD"' \
-	"$(bashquote "${args[@]}")" <"$DCPWD" 2>&1 | tee "$USERTMP/log" >>/var/log/univention/join.log
-res_message="$(sed -n '/^E:/ { s/^E:\s*// p }' "$USERTMP/log")"
+	"$(bashquote "${args[@]}")" <"$DCPWD" 2>&1 |
+	tee "$USERTMP/secret" |
+	grep -v '^KerberosPasswd="' |
+	tee "$USERTMP/scrubbed" >>/var/log/univention/join.log
+
+res_message="$(sed -ne 's/^E:\s*//p' "$USERTMP/scrubbed")"
 if [ -z "$res_message" ]; then
 	echo -e "\033[60Gdone"
 fi
 
-if [ -s "$USERTMP/log" ]
+if [ -s "$USERTMP/secret" ]
 then
-	echo "Join result = [$(<"$USERTMP/log")]" | sed -e 's/KerberosPasswd="[^"]*"//' | fromdos -fa >>/var/log/univention/join.log
-
 	#try to get password
-	kpwd="$(sed -ne 's|^KerberosPasswd="\(.*\)" *|\1|p' <"$USERTMP/log")"
+	kpwd="$(sed -ne 's|^KerberosPasswd="\(.*\)" *|\1|p' <"$USERTMP/secret")"
 
 	if [ -n "$kpwd" ]; then
 		if [ -e /etc/machine.secret ]; then
@@ -555,11 +557,11 @@ then
 		if [ -n "$res_message" ]; then
 			failed_message "$res_message"
 		else
-			failed_message "$(<"$USERTMP/log")"
+			failed_message "$(<"$USERTMP/scrubbed")"
 		fi
 	fi
 
-	ldap_dn="$(sed -ne 's|^ldap_dn="\(.*\)" *|\1|p' <"$USERTMP/log")"
+	ldap_dn="$(sed -ne 's|^ldap_dn="\(.*\)" *|\1|p' <"$USERTMP/scrubbed")"
 	if [ -n "$ldap_dn" ]; then
 		univention-config-registry set ldap/hostdn="$ldap_dn" >>/var/log/univention/join.log 2>&1
 	else

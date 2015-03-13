@@ -1,3 +1,9 @@
+univention-join (7.1.2-14) unstable; urgency=low
+
+  * Bug #37489: filter out password from log file
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 13 Mar 2015 14:49:39 +0100
+
 univention-join (7.1.2-13) unstable; urgency=low
 
   * Bug #34238: update translation,  fix link to network module
