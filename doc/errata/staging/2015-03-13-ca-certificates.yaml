@@ -1,0 +1,9 @@
+product: ucs
+release: "4.0"
+src: ca-certificates
+fix: 20141019.13.201503131231
+scope: ucs_4.0-0-errata4.0-1
+version: [1]
+desc: |
+ The list of public SSL root certificates has been updated.
+bug: [37885]
