@@ -805,10 +805,10 @@ WebInterface=/$APP/
 
 #DEBHELPER#
 
-# ucs/web/overview/entries/services/... or
+# ucs/web/overview/entries/service/... or
 # ucs/web/overview/entries/admin/...
 
-export P="ucs/web/overview/entries/services"
+export P="ucs/web/overview/entries/service"
 ucr set \
 	"$P/$APP"/description/de="Description of link to $APP (German)" \
 	"$P/$APP"/description="Description of link to $APP (English)" \
@@ -825,13 +825,13 @@ ucr set \
 #DEBHELPER#
 
 ucr unset \
-	ucs/web/overview/entries/services/"$APP"/description/de \
-	ucs/web/overview/entries/services/"$APP"/description \
-	ucs/web/overview/entries/services/"$APP"/icon \
-	ucs/web/overview/entries/services/"$APP"/label/de \
-	ucs/web/overview/entries/services/"$APP"/label \
-	ucs/web/overview/entries/services/"$APP"/link \
-	ucs/web/overview/entries/services/"$APP"/priority
+	ucs/web/overview/entries/service/"$APP"/description/de \
+	ucs/web/overview/entries/service/"$APP"/description \
+	ucs/web/overview/entries/service/"$APP"/icon \
+	ucs/web/overview/entries/service/"$APP"/label/de \
+	ucs/web/overview/entries/service/"$APP"/label \
+	ucs/web/overview/entries/service/"$APP"/link \
+	ucs/web/overview/entries/service/"$APP"/priority
 	</programlisting>
 
 		</section>
