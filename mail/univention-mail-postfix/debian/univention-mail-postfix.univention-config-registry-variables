@@ -18,8 +18,8 @@ ReadOnly=yes
 Categories=service-mail
 
 [mail/postfix/smtpd/banner]
-Description[de]=Mit dieser Variable kann der SMTP-Banner (verwendet zur Identifikation im SMTP-Protokoll) angepasst werden. Das Format ist unter http://www.postfix.org/postconf.5.html#smtpd_banner beschrieben.
-Description[en]=This variable allows the configuration of the SMTP banner (used for identification in the SMTP protocol). The format is documented at http://www.postfix.org/postconf.5.html#smtpd_banner .
+Description[de]=Mit dieser Variable kann der SMTP-Banner (verwendet zur Identifikation im SMTP-Protokoll) angepasst werden. Das Format ist unter <http://www.postfix.org/postconf.5.html#smtpd_banner> beschrieben.
+Description[en]=This variable allows the configuration of the SMTP banner (used for identification in the SMTP protocol). The format is documented at <http://www.postfix.org/postconf.5.html#smtpd_banner>.
 Type=str
 Categories=service-mail
 
@@ -30,20 +30,20 @@ Type=str
 Categories=service-mail
 
 [mail/messagesizelimit]
-Description[de]=Mit dieser Variable kann die maximale Größe in Byte für ein- und ausgehende E-Mails festgelegt werden. Wird 0 als Wert konfiguriert, so wird die Begrenzung aufgehoben. Es ist zu beachten, dass Emailanhänge durch die Base64-Kodierung um ca. ein Drittel vergrössert werden. 
-Description[en]=This variable can be used to set the maximum size in bytes for incoming and outgoing e-mails. If the value is configured to 0 the limit is effectively removed. Please note that e-mail attachments are enlarged by approximately a third due to the base64 encoding. 
+Description[de]=Mit dieser Variable kann die maximale Größe in Byte für ein- und ausgehende E-Mails festgelegt werden. Es ist zu beachten, dass Emailanhänge durch die Base64-Kodierung um ca. ein Drittel vergrössert werden. Standard ist 10_240_000 Byte.
+Description[en]=This variable can be used to set the maximum size in bytes for incoming and outgoing e-mails. Please note that e-mail attachments are enlarged by approximately a third due to the base64 encoding. The default is 10_240_000 byte.
 Type=int
 Categories=service-mail
 
 [mail/postfix/mynetworks]
-Description[de]=Für E-Mails aus den hier angebenenen Netz(en) ist Relaying erlaubt. Das Format ist unter http://www.postfix.org/postconf.5.html#mynetworks beschrieben. Ist die Variable nicht gesetzt, gilt '127.0.0.0/8'. 
-Description[en]=Relaying is permitted for e-mails from the network(s) specified hier. The format is described at http://www.postfix.org/postconf.5.html#mynetworks. If the variable is unset, '127.0.0.0/8' applies.
+Description[de]=Für E-Mails aus den hier angegebenen Netz(en) ist Relaying erlaubt. Das Format ist unter <http://www.postfix.org/postconf.5.html#mynetworks> beschrieben. Ist die Variable nicht gesetzt, gilt '127.0.0.0/8'. 
+Description[en]=Relaying is permitted for e-mails from the network(s) specified hier. The format is described at <http://www.postfix.org/postconf.5.html#mynetworks>. If the variable is unset, '127.0.0.0/8' applies.
 Type=str
 Categories=service-mail
 
 [mail/relayhost]
 Description[de]=In der Grundeinstellung baut Postfix beim Versenden einer E-Mail an eine nicht-lokale Adresse eine direkte SMTP-Verbindung an den für diese Domain zuständigen Mailserver auf. Dieser Server wird durch eine Abfrage des MX-Records im DNS ermittelt. Alternativ kann ein Mail-Relay-Server zu Einsatz kommen, also ein Server der die Mails entgegen nimmt und den weiteren Versand abwickelt. Der Server muss in dieser Variable als vollqualifizierter Domänenname (FQDN) eingetragen werden. 
-Description[en]=In the default setting, Postfix creates a direct STMP connection to the mail server responsible for the domain when an e-mail is sent to a non-local address. This server is determined by querying the MX record in the DNS. Alternatively, a mail relay server can also be used, i.e., a server which receives the mails and takes over their further sending. The server must be entered as a fully qualified domain name(FQDN).
+Description[en]=In the default setting, Postfix creates a direct SMTP connection to the mail server responsible for the domain when an e-mail is sent to a non-local address. This server is determined by querying the MX record in the DNS. Alternatively, a mail relay server can also be used, i.e., a server which receives the mails and takes over their further sending. The server must be entered as a fully qualified domain name(FQDN).
 Type=str
 Categories=service-mail
 
@@ -55,7 +55,7 @@ Categories=service-mail
 
 [mail/smtp/helo/name]
 Description[de]=Mit dieser Variable kann der Rechnername konfiguriert werden, unter dem sich der Server im Rahmen des SMTP-Protokolls identifiziert (EHLO/HELO). Ist die Variable nicht gesetzt, wird der vollqualifizierte Rechnername verwendet.
-Description[en]=This variable allows the configuration of the hostname the server used for identification as part of the SMTP protocol (EHLO/HELO). If the variable is unset, fhe fully qualified hostname is used.
+Description[en]=This variable allows the configuration of the hostname the server used for identification as part of the SMTP protocol (EHLO/HELO). If the variable is unset, the fully qualified hostname is used.
 Type=str
 Categories=service-mail
 
@@ -72,14 +72,14 @@ Type=str
 Categories=service-mail
 
 [mail/localmailboxsizelimit]
-Description[de]=Diese Variable konfiguriert die maximale Dateigröße in Bytes von Mailbox- oder Maildir-Dateien. Ist die Variable nicht gesetzt, gilt keine Beschränkung.
-Description[en]=This variable configures the maximum size in bytes of mailbox or Maildir files. If the variable is unset, no limitation applies.
+Description[de]=Diese Variable konfiguriert die maximale Dateigröße in Bytes von Mailbox- oder Maildir-Dateien. Ist die Variable nicht gesetzt, gilt eine Beschränkung von 51_200_000 Byte.
+Description[en]=This variable configures the maximum size in bytes of mailbox or Maildir files. If the variable is unset, a limit of 51_200_000 byte applies.
 Type=int
 Categories=service-mail
 
 [mail/postfix/masquerade/domains]
-Description[de]=Mit dieser Variable kann eine Unterdomäne aus E-Mail-Adressen entfernt werden, so dass z.B. user@server.example.com nach user@example.com umgeschrieben wird. Das Format ist unter http://www.postfix.org/postconf.5.html#masquerade_domains beschrieben. Ist die Variable nicht gesetzt, gilt der vollqualifizierte Rechnername des Servers.
-Description[en]=This variable can be used to strip a subdomain from an e-mail-adress, so that e.g. user@server.example.com can be rewritten to user@example.com. The format is described at http://www.postfix.org/postconf.5.html#masquerade_domains. If the variable is unset, the fully qualified hostname of the server is used.
+Description[de]=Mit dieser Variable kann eine Unterdomäne aus E-Mail-Adressen entfernt werden, so dass z.B. user@server.example.com nach user@example.com umgeschrieben wird. Das Format ist unter <http://www.postfix.org/postconf.5.html#masquerade_domains> beschrieben. Ist die Variable nicht gesetzt, gilt der vollqualifizierte Rechnername des Servers.
+Description[en]=This variable can be used to strip a subdomain from an e-mail-adress, so that e.g. user@server.example.com can be rewritten to user@example.com. The format is described at <http://www.postfix.org/postconf.5.html#masquerade_domains>. If the variable is unset, the fully qualified hostname of the server is used.
 Type=str
 Categories=service-mail
 
@@ -102,8 +102,8 @@ Type=bool
 Categories=service-mail
 
 [mail/postfix/local/header/rewrite/clients]
-Description[de]=Für die hier konfigurierten Clients ist das Umschreiben von Headern erlaubt. Das Format ist unter http://www.postfix.org/postconf.5.html#local_header_rewrite_clients beschrieben.
-Description[en]=Header rewriting is permitted to the clients configured here. The format is described at http://www.postfix.org/postconf.5.html#local_header_rewrite_clients .
+Description[de]=Für die hier konfigurierten Clients ist das Umschreiben von Headern erlaubt. Das Format ist unter <http://www.postfix.org/postconf.5.html#local_header_rewrite_clients> beschrieben.
+Description[en]=Header rewriting is permitted to the clients configured here. The format is described at <http://www.postfix.org/postconf.5.html#local_header_rewrite_clients>.
 Type=str
 Categories=service-mail
 
@@ -132,8 +132,8 @@ Type=str
 Categories=service-mail
 
 [mail/maps/transport/.*]
-Description[de]=Im Regelfall erfolgt das Mailrouting über im DNS hinterlegte MX-Records. Für Sonderfälle - beispielsweise den Betrieb eines Tunnels zwischen zwei Servern, die nicht über DNS aufgelöst werden können - kann die Konfiguration einer manuellen Transportroute nötig sein. Mit Variablen der Form mail/maps/transport/IDENTIFIER=TRANSPORTENTRY kann dies konfiguriert werden. Das Format der Transportrouten ist unter http://www.postfix.org/transport.5.html dokumentiert. Beispiel: mail/maps/transport/TUNNEL="somedomain.org smtp:[mail.somedomain.com]"
-Description[en]=Usually mail routing is based on MX records retrieved from DNS. For some cases - e.g. the operation of a tunnel between two servers which do not have access to DNS - the configuration of a manual transport route can be necessary. This can be configured with variables in the format mail/maps/transport/IDENTIFIER=TRANSPORTENTRY. The format of the transport routes is documented at http://www.postfix.org/transport.5.html. Example: Beispiel: mail/maps/transport/TUNNEL="somedomain.org smtp:[mail.somedomain.com]".
+Description[de]=Im Regelfall erfolgt das Mailrouting über im DNS hinterlegte MX-Records. Für Sonderfälle - beispielsweise den Betrieb eines Tunnels zwischen zwei Servern, die nicht über DNS aufgelöst werden können - kann die Konfiguration einer manuellen Transportroute nötig sein. Mit Variablen der Form mail/maps/transport/IDENTIFIER=TRANSPORTENTRY kann dies konfiguriert werden. Das Format der Transportrouten ist unter <http://www.postfix.org/transport.5.html> dokumentiert. Beispiel: mail/maps/transport/TUNNEL="somedomain.org smtp:[mail.somedomain.com]"
+Description[en]=Usually mail routing is based on MX records retrieved from DNS. For some cases - e.g. the operation of a tunnel between two servers which do not have access to DNS - the configuration of a manual transport route can be necessary. This can be configured with variables in the format mail/maps/transport/IDENTIFIER=TRANSPORTENTRY. The format of the transport routes is documented at <http://www.postfix.org/transport.5.html>. Example: Beispiel: mail/maps/transport/TUNNEL="somedomain.org smtp:[mail.somedomain.com]".
 Type=str
 Categories=service-mail
 
@@ -156,8 +156,8 @@ Type=int
 Categories=service-mail
 
 [mail/postfix/smtpd/restrictions/recipient/.*]
-Description[de]=Mit Variablen der Form mail/postfix/smtpd/restrictions/recipient/SEQUENZNUMMER=REGEL können Empfangsbeschränkungen über die Postfix-Option 'smtpd_recipient_restrictions' konfiguriert werden (siehe http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions). Die Sequenznummer wird alphanumerisch sortiert und beeinflusst die Reihenfolge.
-Description[en]=Variables in the format mail/postfix/smtpd/restrictions/recipient/SEQUENCE=RULE can be used to configure recipient restrictions using the Postfix 'option smtpd_recipient_restrictions' (see http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions). The sequence numbers are sorted alphabetically and ensure the order.
+Description[de]=Mit Variablen der Form mail/postfix/smtpd/restrictions/recipient/SEQUENZNUMMER=REGEL können Empfangsbeschränkungen über die Postfix-Option 'smtpd_recipient_restrictions' konfiguriert werden (siehe <http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions>). Die Sequenznummer wird alphanumerisch sortiert und beeinflusst die Reihenfolge.
+Description[en]=Variables in the format mail/postfix/smtpd/restrictions/recipient/SEQUENCE=RULE can be used to configure recipient restrictions using the Postfix 'option smtpd_recipient_restrictions' (see <http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions>). The sequence numbers are sorted alphabetically and ensure the order.
 Type=str
 Categories=service-mail
 
@@ -186,8 +186,8 @@ Type=str
 Categories=service-mail
 
 [mail/postfix/tls/client/level]
-Description[de]=Die Variable konfiguriert die Verwendung von TLS-Verschlüsselung in SMTP: 'may' verwendet TLS wenn der andere Server es anbietet, 'none' deaktiviert es. Weitere Konfigurationsoptionen sind unter http://www.postfix.org/postconf.5.html#smtp_tls_security_level beschrieben.
-Description[en]=This variable configures the use of TLS encryption in SMTP: 'may' uses TLS if the other server offers it, 'none' deactivates it. Further configuration directives are documented at http://www.postfix.org/postconf.5.html#smtp_tls_security_level.
+Description[de]=Die Variable konfiguriert die Verwendung von TLS-Verschlüsselung in SMTP: 'may' verwendet TLS wenn der andere Server es anbietet, 'none' deaktiviert es. Weitere Konfigurationsoptionen sind unter <http://www.postfix.org/postconf.5.html#smtp_tls_security_level> beschrieben.
+Description[en]=This variable configures the use of TLS encryption in SMTP: 'may' uses TLS if the other server offers it, 'none' deactivates it. Further configuration directives are documented at <http://www.postfix.org/postconf.5.html#smtp_tls_security_level>.
 Type=str
 Categories=service-mail
 

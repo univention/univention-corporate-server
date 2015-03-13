@@ -6,7 +6,7 @@
 if configRegistry.get('mail/messagesizelimit'):
 	print 'message_size_limit = %s' % configRegistry.get('mail/messagesizelimit')
 else:
-	print '# message_size_limit = 0'
+	print '# message_size_limit = 10240000'
 @!@
 
 # mailbox_size_limit limits the max. size of local mailboxes. Default is 51200000
@@ -14,7 +14,7 @@ else:
 if configRegistry.get('mail/localmailboxsizelimit'):
 	print 'mailbox_size_limit = %s' % configRegistry.get('mail/localmailboxsizelimit')
 else:
-	print '#mailbox_size_limit = 0'
+	print '# mailbox_size_limit = 51200000'
 @!@
 
 # some basic path definitions
