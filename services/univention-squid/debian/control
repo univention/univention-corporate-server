@@ -15,7 +15,8 @@ Depends: ${misc:Depends},
  winbind,
  univention-heimdal-common (>>5.0.24-1),
  python-ipaddr,
- python-crypto
+ python-crypto,
+ python-univention-lib,
 Breaks: squid
 Recommends: univention-nagios-squid
 Suggests: univention-firewall

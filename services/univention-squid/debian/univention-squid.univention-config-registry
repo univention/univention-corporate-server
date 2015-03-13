@@ -2,6 +2,7 @@ Type: file
 File: etc/squid3/squid.conf
 Variables: ldap/base
 Variables: ldap/server/name
+Variables: ldap/server/addition
 Variables: ldap/hostdn
 Variables: squid/cache
 Variables: squid/virusscan
