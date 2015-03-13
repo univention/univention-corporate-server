@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-squid
+fix: 8.0.2-2.224.201503131731
+version: [1]
+desc: |
+ The web-proxy Squid now also uses the additional LDAP servers configured
+ through the Univention Configuration Registry variable
+ "ldap/server/addition".
+bug: [37752]
