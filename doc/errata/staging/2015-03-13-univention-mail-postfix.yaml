@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-mail-postfix
+fix: 9.0.0-12.233.201503131109
+version: [1]
+desc: |
+ This Univention Configuration Registry (UCR) variable descriptions for
+ "mail/localmailboxsizelimit" and "mail/messagesizelimit" have been updated
+ as "0" does not implement "unlimited" as previously mentioned.
+bug: [37442]
