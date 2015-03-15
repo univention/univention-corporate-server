@@ -1,3 +1,9 @@
+univention-squid (8.0.2-3) unstable; urgency=low
+
+  * Bug #36623: Support interfaces other then ethX
+
+ -- Philipp Hahn <hahn@univention.de>  Sun, 15 Mar 2015 08:28:55 +0100
+
 univention-squid (8.0.2-2) unstable; urgency=low
 
   * Bug #37752: Support ldap/server/addition
