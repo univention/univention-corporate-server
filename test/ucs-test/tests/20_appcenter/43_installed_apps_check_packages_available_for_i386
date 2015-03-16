@@ -5,7 +5,7 @@
 ## packages:
 ##   - univention-directory-manager-tools
 ##   - univention-management-console-module-appcenter
-#  Bug [31792]
+## bugs: [31792]
 
 import apt
 import univention.management.console.modules.appcenter.app_center as app
@@ -43,7 +43,6 @@ class Test():
 		assert len(other) == 1
 		print ' '.join(other)
 		return ' '.join(other)
-
 
 
 	def get_installed_default_packages(self):
@@ -126,7 +125,7 @@ class Test():
 	def set_multi_architecture(self):
 		if self._other_arch:
 			print "Adding %s architecture" % self._other_arch
-			ucr_update(ucr, {'repository/online/architectures' : 'i386 amd64'})
+			ucr_update(ucr, {UCR_ARCH: 'i386 amd64'})
 			call(('dpkg', '--add-architecture', self._other_arch))
 			call(('apt-get', '-qq', 'update'))
 			self.pkg_cache = apt.apt_pkg.Cache()
@@ -145,13 +144,14 @@ class Test():
 
 
 if __name__ == "__main__":
-
 	test = Test()
 	test.get_installed_default_packages()
 
-	test.set_multi_architecture()
-	test.check_packages_available()
-	test.unset_multi_architecture()
+	try:
+		test.set_multi_architecture()
+		test.check_packages_available()
+	finally:
+		test.unset_multi_architecture()
 
 	if test.failed:
 		print "####"
@@ -160,4 +160,3 @@ if __name__ == "__main__":
 		sys.exit(1)
 	else:
 		print "No missing packages detected"
-
