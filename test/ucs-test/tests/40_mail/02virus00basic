@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
-## desc: Basic virus email delivery
-## tags: apptest
+## desc: Basic virus email delivery 
+## tags: apttest
 ## exposure: dangerous
 ## packages: [univention-mail-server, univention-config, univention-directory-manager-tools]
 ## bugs: [23527]
@@ -45,6 +45,7 @@ def main():
 
 				token1 = str(time.time())
 				send_mail(recipients=mail, msg=token1, virus=True, subject='Filter on')
+				time.sleep(5)
 
 				deactivate_spam_detection()
 				reload_amavis_postfix()
