@@ -1,3 +1,9 @@
+ucs-test (4.0.210-1) unstable; urgency=low
+
+  * Bug #37599:add sleep before reloading amavis and postfix 02virus00basic
+
+ -- Ammar Najjar <najjar@univention.de>  Mon, 16 Mar 2015 09:08:51 +0100
+
 ucs-test (4.0.209-1) unstable; urgency=low
 
   * Bug #38017: disable the test temporarily 01_all_roles_removal
