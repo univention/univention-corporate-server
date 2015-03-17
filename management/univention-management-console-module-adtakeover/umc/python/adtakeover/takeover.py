@@ -1141,10 +1141,10 @@ class AD_Takeover():
 		for (sid, canonical_name) in AD_well_known_sids.items():
 
 			msgs = self.samdb.search(base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
-								expression="(objectSid=%s)" % (sid),
+								expression="(&(objectSid=%s)(sAMAccountName=*))" % (sid,),
 								attrs=["sAMAccountName", "objectClass"])
 			if not msgs:
-				log.debug("Well known SID %s not found in Samba" % (sid,))
+				log.debug("Name of Well known SID %s not found in Samba" % (sid,))
 				continue
 
 			obj = msgs[0]
