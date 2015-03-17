@@ -1503,6 +1503,41 @@
 
 	<section id="networks::dhcp::policies">
 	  <title>Konfiguration von Clients durch DHCP-Richtlinien</title>
+	  <para>
+		Viele Einstellungen für DHCP werden über Richtlinien konfiguriert.
+		Der DHCP-Server verwendet aber ebenfalls eine hierarchische Konfiguration:
+		Die nachfolgende Liste gibt in absteigender Reihenfolge die Einträge an, aus denen die Konfiguration für eine DHCP-Anfrage ermittelt werden:
+	  </para>
+	  <orderedlist>
+		<listitem><simpara>DHCP:Rechner</simpara></listitem>
+		<listitem><simpara>DHCP-Pool</simpara></listitem>
+		<listitem><simpara>DHCP-Shared Subnet</simpara></listitem>
+		<listitem><simpara>DHCP-Shared Network</simpara></listitem>
+		<listitem><simpara>DHCP-Subnetz</simpara></listitem>
+		<listitem><simpara>DHCP-Service</simpara></listitem>
+	  </orderedlist>
+	  <para>
+		DHCP-Rechner-Objekt haben die höchste Priorität.
+		Da sie zudem <emphasis>global</emphasis> und damit nicht aus Subnetze beschränkt sind, werden sie im LDAP-Verzeichnisbaum deshalb auch direkt unterhalb des DHCP-Service-Containers angelegt.
+	  </para>
+	  <para>
+		Zusammen mit Richtlinie führt das oft zu unerwarteten Ergebnissen:
+		Eine DHCP-Richtlinie, die mit der LDAP-Basis oder einem der andere dazwischenliegenden Container verknüpft ist, wird auf <emphasis>alle</emphasis> DHCP-relevanten Objekte angewandt.
+		Dadurch werden diese Einstellungen auch direkt auf die DHCP-Rechner-Objekte angewandt, was dazu führt, das weitere Richtlinien für individuelle DHCP-Subnetze deshalb oft keine Anwendung mehr finden.
+	  </para>
+	  <para>
+		DHCP-Richtlinien sollten von daher nicht mit der LDAP-Basis verknüpft werden, sofern diese dann individuell für einzelne Netzwerke durch andere Richtlinien überschrieben werden soll.
+		In diesen Fällen ist es besser, die Richtlinie mit den DHCP-Netzwerk-Objekten zu verknüpfen.
+	  </para>
+	  <para>
+		Alternativ kann in den erweiterten Einstellungen der Richtlinien unter <guisubmenu>Objekt</guisubmenu> bei <guimenuitem>Ausgeschlossene Objektklassen</guimenuitem> die LDAP-Klasse <classname>univentionDhcpHost</classname> hinzugefügt werden.
+		Solche Richtlinien finden dann nicht länger auf die DHCP-Rechner-Objekt Anwendung, wodurch dann die Einstellungen aus DHCP-Subnetz und -Service benutzt werden.
+	  </para>
+	  <para>
+		Die Option <option>--policies 0</option> beim Aufruf von <command>udm dhcp/host list</command> liefert wertvolle Hinweise, um die komplexe Vererbungshierarchie des DHCP-Servers besser zu verstehen.
+		Weitere Informationen zur Kommandozeile finden sich in <xref linkend="central:udm:example:dnsdhcp"/>.
+	  </para>
+
 	  <section id="ip-config:Vorgabe_des_Gateways">
 		<title>Vorgabe des Gateways</title>
 		<para>
