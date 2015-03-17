@@ -94,6 +94,10 @@ Variables: mail/postfix/smtpd/debug
 Type: subfile
 Multifile: etc/postfix/master.cf
 Subfile: etc/postfix/master.cf.d/10_services
+Variables: mail/smtpport
+Variables: mail/postfix/smtpd/debug
+Variables: mail/postfix/mastercf/options/smtp/.*
+Variables: mail/postfix/mastercf/options/smtps/.*
 
 Type: subfile
 Multifile: etc/postfix/master.cf

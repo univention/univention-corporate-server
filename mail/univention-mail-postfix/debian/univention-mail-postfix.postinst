@@ -83,6 +83,8 @@ univention-config-registry set \
 	mail/postfix/smtpd/tls/dh512/param/file?/etc/postfix/dh_512.pem \
 	mail/postfix/smtpd/tls/loglevel?0 \
 	mail/postfix/smtp/tls/loglevel?0 \
+	mail/postfix/mastercf/options/smtps/smtpd_tls_wrappermode?yes \
+	mail/postfix/mastercf/options/smtps/smtpd_sasl_auth_enable?yes \
 	mail/postfix/cron/recreate/dh/parameter?'0 4 * * 0'
 
 eval "$(univention-config-registry shell)"

@@ -5,10 +5,27 @@
 # 		(yes)	(yes)	(yes)	(never)	(50)
 # ==========================================================================
 @!@
-smtp = '%s      inet  n       -       n       -       -       smtpd' % configRegistry.get('mail/smtpport', '25')
+opt_verbose = ''
 if configRegistry.is_true("mail/postfix/smtpd/debug", False):
-	smtp += " -v"
-print smtp
+	opt_verbose += " -v"
+
+def get_options(prefix):
+	result = ''
+	for key, value in configRegistry.items():
+		if key.startswith(prefix) and key != prefix:
+			result += ' -o %s=%s' % (key.split('/')[-1], configRegistry[key])
+	return result
+
+print '%s      inet  n       -       n       -       -       smtpd %s%s' % (
+	configRegistry.get('mail/smtpport', '25'),
+	opt_verbose,
+	get_options('mail/postfix/mastercf/options/smtp/'),
+)
+
+print '465       inet  n       -       n       -       -       smtpd %s%s' % (
+	opt_verbose,
+	get_options('mail/postfix/mastercf/options/smtps/'),
+)
 @!@
 #628      inet  n       -       n       -       -       qmqpd
 pickup    fifo  n       -       n       60      1       pickup
@@ -26,12 +43,6 @@ error     unix  -       -       n       -       -       error
 local     unix  -       n       n       -       -       local
 #virtual   unix  -       n       n       -       -       virtual
 lmtp      unix  -       -       n       -       -       lmtp
-@!@
-ssmtp = "465       inet  n       -       n       -       -       smtpd -o smtpd_tls_wrappermode=yes -o smtpd_sasl_auth_enable=yes"
-if configRegistry.is_true("mail/postfix/smtpd/debug", False):
-	ssmtp += " -v"
-print ssmtp
-@!@
 #587      inet  n       -       n       -       -       smtpd -v -o smtpd_enforce_tls=yes -o smtpd_sasl_auth_enable=yes
 relay    unix  -       -       n       -       -       smtp
 trace    unix  -       -       n       -       0       bounce

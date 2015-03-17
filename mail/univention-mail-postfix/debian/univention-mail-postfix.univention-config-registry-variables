@@ -286,3 +286,15 @@ Description[de]=Cronjob Intervall für die Erneuerung der DH Parameter Dateien (
 Description[en]=Cronjob interval for recreating dh parameter files (forward secrecy).
 Type=str
 Categories=service-mail
+
+[mail/postfix/mastercf/options/smtp/.*]
+Description[de]=Diese Variablen definieren zusätzliche Optionen für Postfix' smtp-Dienst auf Port 25. Die Variablen müssen die Form mail/postfix/mastercf/options/smtp/OPTION=WERT aufweisen.
+Description[en]=These variables define additional options for postfix' smtp service on port 25. The variables have to be defined as mail/postfix/mastercf/options/smtp/OPTION=VALUE.
+Type=str
+Categories=service-mail
+
+[mail/postfix/mastercf/options/smtps/.*]
+Description[de]=Diese Variablen definieren zusätzliche Optionen für Postfix' smtps-Dienst auf Port 465. Die Variablen müssen die Form mail/postfix/mastercf/options/smtps/OPTION=WERT aufweisen.
+Description[en]=These variables define additional options for postfix' smtps service on port 465. The variables have to be defined as mail/postfix/mastercf/options/smtps/OPTION=VALUE.
+Type=str
+Categories=service-mail
