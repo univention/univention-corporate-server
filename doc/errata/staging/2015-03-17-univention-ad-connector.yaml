@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-ad-connector
+fix: 9.0.11-10.465.201503171706
+version: [1]
+desc: |
+  While synchronizing an object from Active Directory to UCS
+  the UCS target object is now checked. If the UCS object should
+  be ignored, the UCS object will not be modified or moved.
+bug: [37351]
