@@ -855,6 +855,17 @@ class uid(simple):
 	regex = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)')
 	error_message = _("Value must not contain anything other than digits, letters, dots, dash or underscore, must be at least 2 characters long, must start and end with a digit or letter, and must not be admin!")
 
+class mail_domain_name(simple):
+	_re = re.compile(r'^[\[a-zA-Z0-9.-]*$')
+
+	@classmethod
+	def parse(self, text):
+		if text is None:
+			return ''
+		if not self._re.match(text):
+			raise univention.admin.uexceptions.valueError(_("The name of a mail domain may only be composed of lowercase letters, the figures 0-9, full stops and hyphens."))
+		return text.lower()
+
 class uid_umlauts(simple):
 	name='uid'
 	min_length=1

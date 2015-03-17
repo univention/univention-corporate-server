@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-29 17:53+0100\n"
+"POT-Creation-Date: 2015-03-17 15:07+0100\n"
 "PO-Revision-Date: 2015-01-29 17:54+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de@li.org>\n"
@@ -226,23 +226,19 @@ msgstr "Ungültiger Wert"
 msgid "An empty value is not allowed"
 msgstr "Ein leerer Wert ist nicht erlaubt!"
 
-#: syntax.py:213 syntax.py:2924
+#: syntax.py:213
 msgid "not enough arguments"
 msgstr "Nicht genügend Parameter"
 
-#: syntax.py:2924
-msgid "Protocol and destination have to be specified."
-msgstr "Protokoll und Ziel müssen angegeben werden."
-
-#: syntax.py:216 syntax.py:2927
+#: syntax.py:216 syntax.py:2947
 msgid "too many arguments"
 msgstr "Zu viele Parameter"
 
-#: syntax.py:226 syntax.py:2937
+#: syntax.py:226 syntax.py:2957
 msgid "Invalid syntax"
 msgstr "Ungültige Syntax"
 
-#: syntax.py:291 syntax.py:1382 syntax.py:1458
+#: syntax.py:291 syntax.py:1402 syntax.py:1478
 msgid "Not a valid LDAP DN"
 msgstr "Kein gültiger LDAP-DN"
 
@@ -406,88 +402,96 @@ msgstr ""
 "Ziffer oder einem Buchstaben beginnen und enden, und darf nicht \"admin\" "
 "sein."
 
-#: syntax.py:867
+#: syntax.py:866
+msgid ""
+"The name of a mail domain may only be composed of lowercase letters, the "
+"figures 0-9, full stops and hyphens."
+msgstr ""
+"Der Name der Mail-Domäne sollte nur Kleinbuchstaben, die Zahlen von 0-9, "
+"Punkte und Bindestriche beinhalten."
+
+#: syntax.py:878
 msgid "Spaces are not allowed in the username!"
 msgstr "Der Benutzername darf keine Leerzeichen enthalten!"
 
-#: syntax.py:871 syntax.py:888
+#: syntax.py:882 syntax.py:899
 msgid ""
 "Username must only contain numbers, letters and dots, and may not be 'admin'!"
 msgstr ""
 "Der Wert darf nur Zahlen, Buchstaben und Punkte enthalten. Ausnahme ist die "
 "Bezeichnug 'admin', die auch nicht verwendet werden darf"
 
-#: syntax.py:883
+#: syntax.py:894
 msgid "Only the first letter of the username may be uppercase!"
 msgstr "Nur der erste Buchstabe des Benutzernames darf groß geschrieben sein!"
 
-#: syntax.py:894 syntax.py:1267 syntax.py:1271 syntax.py:1275
+#: syntax.py:905 syntax.py:1278 syntax.py:1282 syntax.py:1286
 msgid "Value may not contain other than numbers, letters and dots!"
 msgstr "Der Wert darf nur Zahlen, Buchstaben und Punkte enthalten."
 
-#: syntax.py:898
+#: syntax.py:909
 msgid "Value may not contain double quotes (\")!"
 msgstr "Der Wert darf kein Anführungszeichen (\") enthalten!"
 
-#: syntax.py:903
+#: syntax.py:914
 msgid ", a path must begin with \"/\"!"
 msgstr ", eine Pfadangabe muss mit \\\"/\\\" beginnen."
 
-#: syntax.py:906
+#: syntax.py:917
 #, python-format
 msgid "Path may not start with \"%s\" !"
 msgstr "Pfadname darf nicht mit \"%s\" beginnen!"
 
-#: syntax.py:922
+#: syntax.py:933
 #, python-format
 msgid "The password is too short, at least %d characters needed."
 msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen sind erforderlich."
 
-#: syntax.py:930
+#: syntax.py:941
 msgid "Empty password not allowed!"
 msgstr "Ein leeres Passwort ist nicht erlaubt!"
 
-#: syntax.py:937
+#: syntax.py:948
 msgid "This is not a valid hostname."
 msgstr "Dies ist kein gültiger Hostname"
 
-#: syntax.py:942
+#: syntax.py:953
 msgid "This is not a valid DNS entry name."
 msgstr "Dies ist kein gültiger Name für einen DNS-Eintrag"
 
-#: syntax.py:950
+#: syntax.py:961
 msgid "Not a valid windows hostname!"
 msgstr "Kein gültiger Windows-Hostname"
 
-#: syntax.py:959 syntax.py:969
+#: syntax.py:970 syntax.py:980
 msgid "Not a valid IP address!"
 msgstr "Keine gültige IP-Adresse"
 
-#: syntax.py:997
+#: syntax.py:1008
 msgid "Not a valid hostname or IP address!"
 msgstr "Kein gültiger Hostname oder IP-Adresse"
 
-#: syntax.py:1041 syntax.py:1052
+#: syntax.py:1052 syntax.py:1063
 msgid "Not a valid netmask!"
 msgstr "Keine gültige Netzmaske."
 
-#: syntax.py:1060
+#: syntax.py:1071
 msgid "Not a valid network!"
 msgstr "Kein gültiges Netz."
 
-#: syntax.py:1064 syntax.py:1070
+#: syntax.py:1075 syntax.py:1081
 msgid "First address"
 msgstr "Erste Adresse"
 
-#: syntax.py:1065 syntax.py:1071
+#: syntax.py:1076 syntax.py:1082
 msgid "Last address"
 msgstr "Letzte Adresse"
 
-#: syntax.py:1091
+#: syntax.py:1102
 msgid "Not an absolute path!"
 msgstr "Keine absolute Pfadangabe"
 
-#: syntax.py:1097
+#: syntax.py:1108
 msgid ""
 "Not a valid email address! (No \"@\"-character to separate local-part and "
 "domain-part)"
@@ -495,11 +499,11 @@ msgstr ""
 "Keine gültige E-Mail-Adresse! (Kein \"@\"-Zeichen zum Trennen der "
 "Adressteile vorhanden)"
 
-#: syntax.py:1109
+#: syntax.py:1120
 msgid "Not a valid email address!"
 msgstr "Keine gültige E-Mail-Adresse"
 
-#: syntax.py:1113
+#: syntax.py:1124
 #, python-format
 msgid ""
 "The domain part of the following mail addresses is not in list of configured "
@@ -508,7 +512,7 @@ msgstr ""
 "Der Domänenteil der folgenden Mailadressen ist nicht in der Liste der "
 "eingerichteten Maildomänen enthalten: %s"
 
-#: syntax.py:1144
+#: syntax.py:1155
 #, python-format
 msgid ""
 "The domain part of the primary mail address is not in list of configured "
@@ -517,16 +521,16 @@ msgstr ""
 "Der Domänenteil der primären Mailadresse ist nicht in der Liste der "
 "eingerichteten Maildomänen enthalten: %s"
 
-#: syntax.py:1159
+#: syntax.py:1170
 msgid "The given date does not conform to iso8601, example: \"2009-01-01\"."
 msgstr ""
 "Das eingegebene Datum entspricht nicht ISO 8601, Beispiel: \"2009-01-01\"."
 
-#: syntax.py:1208 syntax.py:1226
+#: syntax.py:1219 syntax.py:1237
 msgid "Not a valid Date"
 msgstr "Kein gültiges Datum"
 
-#: syntax.py:1235
+#: syntax.py:1246
 msgid ""
 "A subnet for reverse lookup consists of the first one to three parts of an "
 "IPv4 address (example: \"192.168.0\") or of the first 1 to 31 nibbles of an "
@@ -538,7 +542,7 @@ msgstr ""
 "einer IPv6-Adresse mit führenden Nullen und ohne die :: Ersetzung (z.B. "
 "\"2001:0db8:010\")"
 
-#: syntax.py:1241
+#: syntax.py:1252
 msgid ""
 "The name of a reverse zone for IPv4 consists of the reversed subnet address "
 "followed by .in-addr.arpa (example: \"0.168.192.in-addr.arpa\") or for IPv6 "
@@ -550,7 +554,7 @@ msgstr ""
 "im Nibble Format, gefolgt von .ip6.arpa (z.B. \"0.0.0.0.0.0.1.0.8.b."
 "d.0.1.0.0.2.ip6.arpa\")."
 
-#: syntax.py:1246
+#: syntax.py:1257
 msgid ""
 "Invalid DNS zone name! (Must not end with a \".\", only \"0\"-\"9\", \"A\"-"
 "\"Z\", \"a\"-\"z\", and \"-\" allowed)"
@@ -558,99 +562,99 @@ msgstr ""
 "Ungültiger DNS-Zonen-Name! (darf nicht auf \".\" enden; nur die Zeichen "
 "\"0\"-\"9\", \"A\"-\"Z\", \"a\"-\"z\" und \"-\" sind erlaubt)"
 
-#: syntax.py:1251 syntax.py:1264
+#: syntax.py:1262 syntax.py:1275
 msgid "Missing value!"
 msgstr "Fehlender Wert!"
 
-#: syntax.py:1253
+#: syntax.py:1264
 msgid "A DNS zone may not be longer than 255 characters!"
 msgstr "Der DNS-Zonen-Name darf nicht länger als 255 Zeichen sein!"
 
-#: syntax.py:1279
+#: syntax.py:1290
 msgid "Key"
 msgstr "Schlüssel"
 
-#: syntax.py:1279 syntax.py:1930 syntax.py:2676
+#: syntax.py:1290 syntax.py:1950 syntax.py:2696
 msgid "Value"
 msgstr "Wert"
 
-#: syntax.py:1283 syntax.py:1303
+#: syntax.py:1294 syntax.py:1314
 msgid "Priority"
 msgstr "Priorität"
 
-#: syntax.py:1283
+#: syntax.py:1294
 msgid "Mail server"
 msgstr "Mail-Server"
 
-#: syntax.py:1294
+#: syntax.py:1305
 msgid "Service"
 msgstr "Dienst"
 
-#: syntax.py:1294 syntax.py:2912
+#: syntax.py:1305 syntax.py:2932
 msgid "Protocol"
 msgstr "Protokoll"
 
-#: syntax.py:1294
+#: syntax.py:1305
 msgid "Extension"
 msgstr "Erweiterung"
 
-#: syntax.py:1299
+#: syntax.py:1310
 msgid "Street"
 msgstr "Straße"
 
-#: syntax.py:1299
+#: syntax.py:1310
 msgid "Postal code"
 msgstr "Postleitzahl"
 
-#: syntax.py:1299
+#: syntax.py:1310
 msgid "City"
 msgstr "Stadt"
 
-#: syntax.py:1303
+#: syntax.py:1314
 msgid "Weighting"
 msgstr "Gewichtung"
 
-#: syntax.py:1303
+#: syntax.py:1314
 msgid "Port"
 msgstr "Port"
 
-#: syntax.py:1303
+#: syntax.py:1314
 msgid "Server"
 msgstr "Server"
 
-#: syntax.py:1309 syntax.py:1321
+#: syntax.py:1320 syntax.py:1332
 msgid "Not a valid time format"
 msgstr "Keine gültige Zeitangabe"
 
-#: syntax.py:1314
+#: syntax.py:1325
 msgid "seconds"
 msgstr "Sekunden"
 
-#: syntax.py:1315
+#: syntax.py:1326
 msgid "minutes"
 msgstr "Minuten"
 
-#: syntax.py:1316
+#: syntax.py:1327
 msgid "hours"
 msgstr "Stunden"
 
-#: syntax.py:1317
+#: syntax.py:1328
 msgid "days"
 msgstr "Tage"
 
-#: syntax.py:1330
+#: syntax.py:1341
 msgid "Ethernet"
 msgstr "Ethernet"
 
-#: syntax.py:1330
+#: syntax.py:1341
 msgid "FDDI"
 msgstr "FDDI"
 
-#: syntax.py:1330
+#: syntax.py:1341
 msgid "Token-Ring"
 msgstr "Token-Ring"
 
-#: syntax.py:1337
+#: syntax.py:1348
 msgid ""
 "This is not a valid MAC address (valid examples are 86:f5:d1:f5:6b:3e, 86-f5-"
 "d1-f5-6b-3e, 86f5d1f56b3e, 86f5.d1f5.6b3e)"
@@ -658,71 +662,80 @@ msgstr ""
 "Dies ist keine gültige MAC-Adresse (gültige Beispiele sind 86:f5:d1:"
 "f5:6b:3e, 86-f5-d1-f5-6b-3e, 86f5d1f56b3e, 86f5.d1f5.6b3e)"
 
-#: syntax.py:1360
+#: syntax.py:1371
 msgid "Type"
 msgstr "Typ"
 
-#: syntax.py:1360
+#: syntax.py:1371
 msgid "Address"
 msgstr "Adresse"
 
-#: syntax.py:1390
+#: syntax.py:1386
+#, python-format
+msgid ""
+"The package \"%s\" can not be removed as it would uninstall necessary "
+"components."
+msgstr ""
+"Das Paket \"%s\" kann nicht gelöscht werden da es wichtige Komponenten "
+"deinstallieren würde."
+
+#: syntax.py:1410
 msgid "Command pattern"
 msgstr "Kommandomuster"
 
-#: syntax.py:1390
+#: syntax.py:1410
 msgid "Option Pattern"
 msgstr "Optionenmuster"
 
-#: syntax.py:1402
+#: syntax.py:1422
 msgid "IMAP"
 msgstr "IMAP"
 
-#: syntax.py:1403
+#: syntax.py:1423
 msgid "POP3"
 msgstr "POP3"
 
-#: syntax.py:1408
+#: syntax.py:1428
 msgid "No access"
 msgstr "Kein Zugriff"
 
-#: syntax.py:1409
+#: syntax.py:1429
 msgid "Read"
 msgstr "Lesen"
 
-#: syntax.py:1410
+#: syntax.py:1430
 msgid "Post"
 msgstr "Senden"
 
-#: syntax.py:1411
+#: syntax.py:1431
 msgid "Append"
 msgstr "Anhängen"
 
-#: syntax.py:1412
+#: syntax.py:1432
 msgid "Write"
 msgstr "Schreiben"
 
-#: syntax.py:1413
+#: syntax.py:1433
 msgid "All"
 msgstr "Alle"
 
-#: syntax.py:1420
+#: syntax.py:1440
 msgid "Anyone"
 msgstr "Jeder"
 
-#: syntax.py:1438 syntax.py:1444 syntax.py:2875
+#: syntax.py:1458 syntax.py:1464 syntax.py:2895
 msgid "User"
 msgstr "Benutzer"
 
-#: syntax.py:1438 syntax.py:1441 syntax.py:1444 syntax.py:1447
+#: syntax.py:1458 syntax.py:1461 syntax.py:1464 syntax.py:1467
 msgid "Access right"
 msgstr "Zugriffsrecht"
 
-#: syntax.py:1441 syntax.py:1447 syntax.py:2869 syntax.py:2872
+#: syntax.py:1461 syntax.py:1467 syntax.py:2889 syntax.py:2892
 msgid "Group"
 msgstr "Gruppe"
 
-#: syntax.py:1472
+#: syntax.py:1492
 msgid ""
 "Value consists of two integer numbers separated by an \"x\" (e.g. "
 "\"1024x768\")"
@@ -730,544 +743,544 @@ msgstr ""
 "Der Wert muss zwei ganzzahlige Werte mit einem \"x\" dazwischen beinhalten "
 "(z.B. \"1024x768\")"
 
-#: syntax.py:1476
+#: syntax.py:1496
 msgid ""
 "Value consists of two integer numbers separated by a \"-\" (e.g. \"30-70\")"
 msgstr ""
 "Der Wert muss aus zwei durch ein \"-\" getrennte ganzzahlige Werte bestehen "
 "(z.B. \"30-70\")"
 
-#: syntax.py:1551
+#: syntax.py:1571
 msgid "Left of primary display"
 msgstr "Links vom primären Monitor"
 
-#: syntax.py:1552
+#: syntax.py:1572
 msgid "Right of primary display"
 msgstr "Rechts vom primären Monitor"
 
-#: syntax.py:1553
+#: syntax.py:1573
 msgid "Above primary display"
 msgstr "Über dem primären Monitor"
 
-#: syntax.py:1554
+#: syntax.py:1574
 msgid "Below primary display"
 msgstr "Unter dem primären Monitor"
 
-#: syntax.py:1822
+#: syntax.py:1842
 msgid "Not a valid FQDN"
 msgstr "kein gültiger vollqualifizierter Domänenname"
 
-#: syntax.py:1852 syntax.py:1857
+#: syntax.py:1872 syntax.py:1877
 msgid "Primary Group"
 msgstr "Primäre Gruppe"
 
-#: syntax.py:1861
+#: syntax.py:1881
 msgid "Network"
 msgstr "Netzwerk"
 
-#: syntax.py:1882 syntax.py:1896 syntax.py:1911
+#: syntax.py:1902 syntax.py:1916 syntax.py:1931
 msgid "DNS forward zone"
 msgstr "DNS-Forward-Zone"
 
-#: syntax.py:1888 syntax.py:1902
+#: syntax.py:1908 syntax.py:1922
 msgid "DNS reverse zone"
 msgstr "DNS-Reverse-Zone"
 
-#: syntax.py:1895
+#: syntax.py:1915
 msgid "DNS Entry"
 msgstr "DNS-Eintrag"
 
-#: syntax.py:1896 syntax.py:1902 syntax.py:1921
+#: syntax.py:1916 syntax.py:1922 syntax.py:1941
 msgid "IP address"
 msgstr "IP-Adresse"
 
-#: syntax.py:1901
+#: syntax.py:1921
 msgid "DNS Entry Reverse"
 msgstr "Reverse Lookup DNS-Eintrag"
 
-#: syntax.py:1910
+#: syntax.py:1930
 msgid "DNS Entry Alias"
 msgstr "Alias DNS-Eintrag"
 
-#: syntax.py:1911
+#: syntax.py:1931
 msgid "Zone of existing host record"
 msgstr "Zone des existierenden Host-Eintrags"
 
-#: syntax.py:1911
+#: syntax.py:1931
 msgid "Alias"
 msgstr "Alias"
 
-#: syntax.py:1916 syntax.py:1921
+#: syntax.py:1936 syntax.py:1941
 msgid "DHCP service"
 msgstr "DHCP-Dienst"
 
-#: syntax.py:1921
+#: syntax.py:1941
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
-#: syntax.py:1922
+#: syntax.py:1942
 msgid "DHCP Entry"
 msgstr "DHCP-Eintrag"
 
-#: syntax.py:1930
+#: syntax.py:1950
 msgid "Name"
 msgstr "Name"
 
-#: syntax.py:1931
+#: syntax.py:1951
 msgid "DHCP option"
 msgstr "DHCP Option"
 
-#: syntax.py:1937
+#: syntax.py:1957
 #, python-format
 msgid "%(name)s (%(path)s on %(host)s)"
 msgstr "%(name)s (%(path)s auf %(host)s)"
 
-#: syntax.py:1949 syntax.py:1973
+#: syntax.py:1969 syntax.py:1993
 msgid "allow"
 msgstr "erlauben"
 
-#: syntax.py:1950 syntax.py:1974
+#: syntax.py:1970 syntax.py:1994
 msgid "deny"
 msgstr "verbieten"
 
-#: syntax.py:1951
+#: syntax.py:1971
 msgid "ignore"
 msgstr "ignorieren"
 
-#: syntax.py:1980 syntax.py:1987
+#: syntax.py:2000 syntax.py:2007
 msgid "Yes"
 msgstr "Ja"
 
-#: syntax.py:1981 syntax.py:1988
+#: syntax.py:2001 syntax.py:2008
 msgid "No"
 msgstr "Nein"
 
-#: syntax.py:1986
+#: syntax.py:2006
 msgid "Auto"
 msgstr ""
 
-#: syntax.py:1994 syntax.py:2001 syntax.py:2007
+#: syntax.py:2014 syntax.py:2021 syntax.py:2027
 msgid "True"
 msgstr "Wahr"
 
-#: syntax.py:1995 syntax.py:2002 syntax.py:2008
+#: syntax.py:2015 syntax.py:2022 syntax.py:2028
 msgid "False"
 msgstr "Falsch"
 
-#: syntax.py:2013
+#: syntax.py:2033
 msgid "OK"
 msgstr "OK"
 
-#: syntax.py:2014
+#: syntax.py:2034
 msgid "Not OK"
 msgstr "Nicht OK"
 
-#: syntax.py:2020
+#: syntax.py:2040
 msgid "ad-hoc"
 msgstr "ad-hoc"
 
-#: syntax.py:2021
+#: syntax.py:2041
 msgid "interim"
 msgstr "interim"
 
-#: syntax.py:2022
+#: syntax.py:2042
 msgid "none"
 msgstr "kein"
 
-#: syntax.py:2028
+#: syntax.py:2048
 msgid "on"
 msgstr "an"
 
-#: syntax.py:2029
+#: syntax.py:2049
 msgid "off"
 msgstr "aus"
 
-#: syntax.py:2339 syntax.py:2357 syntax.py:2370 syntax.py:2407 syntax.py:2465
+#: syntax.py:2359 syntax.py:2377 syntax.py:2390 syntax.py:2427 syntax.py:2485
 msgid "all"
 msgstr "Alle"
 
-#: syntax.py:2340
+#: syntax.py:2360
 msgid "January"
 msgstr "Januar"
 
-#: syntax.py:2341
+#: syntax.py:2361
 msgid "February"
 msgstr "Februar"
 
-#: syntax.py:2342
+#: syntax.py:2362
 msgid "March"
 msgstr "März"
 
-#: syntax.py:2343
+#: syntax.py:2363
 msgid "April"
 msgstr "April"
 
-#: syntax.py:2344
+#: syntax.py:2364
 msgid "May"
 msgstr "Mai"
 
-#: syntax.py:2345
+#: syntax.py:2365
 msgid "June"
 msgstr "Juni"
 
-#: syntax.py:2346
+#: syntax.py:2366
 msgid "July"
 msgstr "Juli"
 
-#: syntax.py:2347
+#: syntax.py:2367
 msgid "August"
 msgstr "August"
 
-#: syntax.py:2348
+#: syntax.py:2368
 msgid "September"
 msgstr "September"
 
-#: syntax.py:2349
+#: syntax.py:2369
 msgid "October"
 msgstr "Oktober"
 
-#: syntax.py:2350
+#: syntax.py:2370
 msgid "November"
 msgstr "November"
 
-#: syntax.py:2351
+#: syntax.py:2371
 msgid "December"
 msgstr "Dezember"
 
-#: syntax.py:2358
+#: syntax.py:2378
 msgid "Monday"
 msgstr "Montag"
 
-#: syntax.py:2359
+#: syntax.py:2379
 msgid "Tuesday"
 msgstr "Dienstag"
 
-#: syntax.py:2360
+#: syntax.py:2380
 msgid "Wednesday"
 msgstr "Mittwoch"
 
-#: syntax.py:2361
+#: syntax.py:2381
 msgid "Thursday"
 msgstr "Donnerstag"
 
-#: syntax.py:2362
+#: syntax.py:2382
 msgid "Friday"
 msgstr "Freitag"
 
-#: syntax.py:2363
+#: syntax.py:2383
 msgid "Saturday"
 msgstr "Samstag"
 
-#: syntax.py:2364
+#: syntax.py:2384
 msgid "Sunday"
 msgstr "Sonntag"
 
-#: syntax.py:2506
+#: syntax.py:2526
 msgid "Domain Group"
 msgstr "Globale Gruppe"
 
-#: syntax.py:2507
+#: syntax.py:2527
 msgid "Local Group"
 msgstr "Lokale Gruppe"
 
-#: syntax.py:2508
+#: syntax.py:2528
 msgid "Well-Known Group"
 msgstr "Bekannte Gruppe"
 
-#: syntax.py:2514
+#: syntax.py:2534
 msgid "Local (Type: Security)"
 msgstr "Lokal (Typ: Sicherheit)"
 
-#: syntax.py:2515
+#: syntax.py:2535
 msgid "Global (Type: Security)"
 msgstr "Global (Typ: Sicherheit)"
 
-#: syntax.py:2516
+#: syntax.py:2536
 msgid "Universal (Type: Security)"
 msgstr "Universell (Typ: Sicherheit)"
 
-#: syntax.py:2517
+#: syntax.py:2537
 msgid "Domain local (Type: Security)"
 msgstr "Domänenlokal (Typ: Sicherheit)"
 
-#: syntax.py:2518
+#: syntax.py:2538
 msgid "Local (Type: Distribution)"
 msgstr "Lokal (Typ: Verteilung)"
 
-#: syntax.py:2519
+#: syntax.py:2539
 msgid "Global (Type: Distribution)"
 msgstr "Global (Typ: Verteilung)"
 
-#: syntax.py:2520
+#: syntax.py:2540
 msgid "Universal (Type: Distribution)"
 msgstr "Universell (Typ: Verteilung)"
 
-#: syntax.py:2524
+#: syntax.py:2544
 msgid "Sun"
 msgstr "So"
 
-#: syntax.py:2524
+#: syntax.py:2544
 msgid "Mon"
 msgstr "Mo"
 
-#: syntax.py:2524
+#: syntax.py:2544
 msgid "Tue"
 msgstr "Di"
 
-#: syntax.py:2524
+#: syntax.py:2544
 msgid "Wed"
 msgstr "Mi"
 
-#: syntax.py:2524
+#: syntax.py:2544
 msgid "Thu"
 msgstr "Do"
 
-#: syntax.py:2524
+#: syntax.py:2544
 msgid "Fri"
 msgstr "Fr"
 
-#: syntax.py:2524
+#: syntax.py:2544
 msgid "Sat"
 msgstr "Sa"
 
-#: syntax.py:2537
+#: syntax.py:2557
 msgid "Add machines to domain"
 msgstr "Maschinen zur Domäne hinzufügen"
 
-#: syntax.py:2538
+#: syntax.py:2558
 msgid "Manage auditing and security log"
 msgstr "Verwalten von Revisions- und Sicherheitsprotokolle"
 
-#: syntax.py:2539
+#: syntax.py:2559
 msgid "Take ownership of files or other objects"
 msgstr "Besitz von Dateien oder anderen Objekten übernehmen"
 
-#: syntax.py:2540
+#: syntax.py:2560
 msgid "Back up files and directories"
 msgstr "Dateien und Verzeichnisse sichern"
 
-#: syntax.py:2541
+#: syntax.py:2561
 msgid "Restore files and directories"
 msgstr "Dateien und Verzeichnisse wiederherstellen"
 
-#: syntax.py:2542
+#: syntax.py:2562
 msgid "Force shutdown from a remote system"
 msgstr "Herunterfahren von Remote-System erzwingen"
 
-#: syntax.py:2543
+#: syntax.py:2563
 msgid "Manage printers"
 msgstr "Drucker verwalten"
 
-#: syntax.py:2544
+#: syntax.py:2564
 msgid "Add users and groups to the domain"
 msgstr "Benutzer und Gruppen hinzufügen"
 
-#: syntax.py:2545
+#: syntax.py:2565
 msgid "Manage disk shares"
 msgstr "Freigaben verwalten"
 
-#: syntax.py:2551
+#: syntax.py:2571
 msgid "Domaincontroller Master"
 msgstr ""
 
-#: syntax.py:2552
+#: syntax.py:2572
 msgid "Domaincontroller Backup"
 msgstr ""
 
-#: syntax.py:2553
+#: syntax.py:2573
 msgid "Domaincontroller Slave"
 msgstr ""
 
-#: syntax.py:2554
+#: syntax.py:2574
 msgid "Memberserver"
 msgstr "Memberserver"
 
-#: syntax.py:2574
+#: syntax.py:2594
 msgid "synchronous"
 msgstr "synchron"
 
-#: syntax.py:2575
+#: syntax.py:2595
 msgid "asynchronous"
 msgstr "asynchron"
 
-#: syntax.py:2587
+#: syntax.py:2607
 #, python-format
 msgid "\"%s\" is not a Univention Admin Module."
 msgstr "\"%s\" ist kein Univention Admin Modul"
 
-#: syntax.py:2603
+#: syntax.py:2623
 msgid "UDM module"
 msgstr "UDM Modul"
 
-#: syntax.py:2603
+#: syntax.py:2623
 msgid "property"
 msgstr "Eigenschaft"
 
-#: syntax.py:2617
+#: syntax.py:2637
 msgid "No Reboot"
 msgstr "Nicht neu starten"
 
-#: syntax.py:2618
+#: syntax.py:2638
 msgid "Immediately"
 msgstr "Sofort"
 
-#: syntax.py:2623
+#: syntax.py:2643
 msgid "Groupware Account"
 msgstr "Groupware Konto"
 
-#: syntax.py:2624
+#: syntax.py:2644
 msgid "Kerberos Principal"
 msgstr "Kerberos Prinzipal"
 
-#: syntax.py:2625
+#: syntax.py:2645
 msgid "Personal Information"
 msgstr "Persönliche Information"
 
-#: syntax.py:2626
+#: syntax.py:2646
 msgid "Samba Account"
 msgstr "Samba Konto"
 
-#: syntax.py:2627
+#: syntax.py:2647
 msgid "POSIX Account"
 msgstr "POSIX Konto"
 
-#: syntax.py:2628
+#: syntax.py:2648
 msgid "Mail Account"
 msgstr "Mail Konto"
 
-#: syntax.py:2635
+#: syntax.py:2655
 msgid "Disconnect"
 msgstr "Trennen"
 
-#: syntax.py:2636
+#: syntax.py:2656
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: syntax.py:2643
+#: syntax.py:2663
 msgid "All Clients"
 msgstr "Von jedem Client"
 
-#: syntax.py:2644
+#: syntax.py:2664
 msgid "Previously used Client"
 msgstr "Nur von vorherigem Client"
 
-#: syntax.py:2651 syntax.py:2661
+#: syntax.py:2671 syntax.py:2681
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: syntax.py:2652
+#: syntax.py:2672
 msgid "Enabled: Input: on, Message: on"
 msgstr "Aktiviert: Eingabe: ein, Benachrichtigen: ein"
 
-#: syntax.py:2653
+#: syntax.py:2673
 msgid "Enabled: Input: on, Message: off"
 msgstr "Aktiviert: Eingabe: an, Benachrichtigen: aus"
 
-#: syntax.py:2654
+#: syntax.py:2674
 msgid "Enabled: Input: off, Message: on"
 msgstr "Aktiviert: Eingabe: aus, Benachrichtigen: an"
 
-#: syntax.py:2655
+#: syntax.py:2675
 msgid "Enabled: Input: off, Message: off"
 msgstr "Aktiviert: Eingabe: aus, Benachrichtigen: aus"
 
-#: syntax.py:2662
+#: syntax.py:2682
 msgid "Enabled: Set by Caller"
 msgstr "Aktiviert: Set by Caller"
 
-#: syntax.py:2663
+#: syntax.py:2683
 msgid "Enabled: No Call Back"
 msgstr "Aktiviert: No Call Back"
 
-#: syntax.py:2676
+#: syntax.py:2696
 msgid "Variable"
 msgstr "Variable"
 
-#: syntax.py:2791
+#: syntax.py:2811
 msgid "NFS share"
 msgstr "NFS-Freigabe"
 
-#: syntax.py:2804
+#: syntax.py:2824
 msgid "Language code must be in format \"xx_XX\"!"
 msgstr "Sprach-Code muss im Format \"xx_XX\" angegeben werden!"
 
-#: syntax.py:2809 syntax.py:2813 syntax.py:2816 syntax.py:2819 syntax.py:2822
+#: syntax.py:2829 syntax.py:2833 syntax.py:2836 syntax.py:2839 syntax.py:2842
 msgid "Language code (e.g. en_US)"
 msgstr "Sprachcode (z.B. de_DE)"
 
-#: syntax.py:2809
+#: syntax.py:2829
 msgid "Text"
 msgstr "Text"
 
-#: syntax.py:2813
+#: syntax.py:2833
 msgid "Translated short description"
 msgstr "Übersetzte Kurzbeschreibung"
 
-#: syntax.py:2816
+#: syntax.py:2836
 msgid "Translated long description"
 msgstr "Übersetzte Langbeschreibung"
 
-#: syntax.py:2819
+#: syntax.py:2839
 msgid "Translated tab name"
 msgstr "Übersetzter Karteikartenname"
 
-#: syntax.py:2822
+#: syntax.py:2842
 msgid "Translated group name"
 msgstr "Übersetzter Gruppenname"
 
-#: syntax.py:2826 syntax.py:2839
+#: syntax.py:2846 syntax.py:2859
 msgid "None"
 msgstr "Keine"
 
-#: syntax.py:2827
+#: syntax.py:2847
 msgid "All disabled"
 msgstr "Alle deaktiviert"
 
-#: syntax.py:2829
+#: syntax.py:2849
 msgid "Windows disabled"
 msgstr "Windows deaktiviert"
 
-#: syntax.py:2830
+#: syntax.py:2850
 msgid "Kerberos disabled"
 msgstr "Kerberos deaktiviert"
 
-#: syntax.py:2831
+#: syntax.py:2851
 msgid "POSIX disabled"
 msgstr "POSIX deaktiviert"
 
-#: syntax.py:2832
+#: syntax.py:2852
 msgid "Windows and POSIX disabled"
 msgstr "Windows und POSIX deaktiviert"
 
-#: syntax.py:2833
+#: syntax.py:2853
 msgid "Windows and Kerberos disabled"
 msgstr "Windows und Kerberos deaktiviert"
 
-#: syntax.py:2834
+#: syntax.py:2854
 msgid "POSIX and Kerbeors disabled"
 msgstr "POSIX und Kerberos deaktiviert"
 
-#: syntax.py:2840
+#: syntax.py:2860
 msgid "Lock all login methods"
 msgstr "Alle Anmeldeverfahren sind gesperrt"
 
-#: syntax.py:2841
+#: syntax.py:2861
 msgid "Lock Windows/Kerberos only"
 msgstr "Nur Windows/Kerberos gesperrt"
 
-#: syntax.py:2842
+#: syntax.py:2862
 msgid "Lock POSIX/LDAP only"
 msgstr "Nur POSIX/LDAP gesperrt"
 
-#: syntax.py:2869 syntax.py:2872 syntax.py:2875
+#: syntax.py:2889 syntax.py:2892 syntax.py:2895
 msgid "Soft limit (pages)"
 msgstr "Soft-Limit (Seiten)"
 
-#: syntax.py:2869 syntax.py:2872 syntax.py:2875
+#: syntax.py:2889 syntax.py:2892 syntax.py:2895
 msgid "Hard limit (pages)"
 msgstr "Hard-Limit (Seiten)"
 
-#: syntax.py:2887
+#: syntax.py:2907
 msgid ""
 "Value may not contain other than numbers, letters, underscore (\"_\") and "
 "minus (\"-\")!"
@@ -1275,19 +1288,23 @@ msgstr ""
 "Der Wert darf nur Zahlen, Buchstaben, Unterstriche (\"_\") und Minuszeichen "
 "(\"-\") enthalten."
 
-#: syntax.py:2890
+#: syntax.py:2910
 msgid "Driver"
 msgstr "Treiber"
 
-#: syntax.py:2890
+#: syntax.py:2910
 msgid "Description"
 msgstr "Beschreibung"
 
-#: syntax.py:2912
+#: syntax.py:2932
 msgid "Destination"
 msgstr "Ziel"
 
-#: syntax.py:2952
+#: syntax.py:2944
+msgid "Protocol and destination have to be specified."
+msgstr "Protokoll und Ziel müssen angegeben werden."
+
+#: syntax.py:2972
 msgid ""
 "May only contain letters (except umlauts), digits, space as well as the "
 "characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit and "
@@ -1297,20 +1314,20 @@ msgstr ""
 "# ! $ % & | ^ . ~ _ - enthalten. Darf nur mit einer Zahl oder einem "
 "Buchstaben beginnen und nicht mit einem Leerzeichen enden."
 
-#: syntax.py:3002
+#: syntax.py:3022
 #, python-format
 msgid "Error: %s - %s"
 msgstr "Fehler: %s - %s"
 
-#: syntax.py:3009
+#: syntax.py:3029
 msgid "Mark this object as hidden"
 msgstr "Dieses Objekt als versteckt markieren"
 
-#: syntax.py:3010
+#: syntax.py:3030
 msgid "Mark this object as temporary"
 msgstr "Dieses Objekt als temporär markieren"
 
-#: syntax.py:3011
+#: syntax.py:3031
 msgid "Ignore this object in standard UDM modules"
 msgstr "Dieses Objekt in Standard-UDM-Modulen ignorieren"
 
@@ -1701,24 +1718,19 @@ msgstr ""
 "Es wird eine primäre Gruppe mit Samba-Option benötigt um einen Benutzer mit "
 "Samba-Option zu erstellen."
 
-#: uldap.py:100
+#: uldap.py:101
 msgid "There was no LDAP base specified."
 msgstr "Es wurde keine LDAP Basis angegeben."
 
-#: uldap.py:151
+#: uldap.py:152
 #, python-format
 msgid "DN not found: %s."
 msgstr "DN nicht gefunden: %s."
 
-#: uldap.py:263 uldap.py:265 uldap.py:281 uldap.py:283
+#: uldap.py:264 uldap.py:266 uldap.py:282 uldap.py:284
 msgid "Authentication failed"
 msgstr "Authentisierung fehlgeschlagen"
 
-#: uldap.py:427
+#: uldap.py:424
 msgid "Moving childs is not supported."
 msgstr "Das Verschieben von Kindsknoten wird nicht unterstützt."
-
-#: syntax.px:1
-#, python-format
-msgid "The package \"%s\" can not be removed as it would uninstall necessary components."
-msgstr "Das Paket \"%s\" kann nicht gelöscht werden da es wichtige Komponenten deinstallieren würde."

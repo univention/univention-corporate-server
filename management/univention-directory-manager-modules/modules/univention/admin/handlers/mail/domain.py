@@ -55,7 +55,7 @@ property_descriptions={
 	'name': univention.admin.property(
 			short_description=_('Mail domain name'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.mail_domain_name,
 			multivalue=0,
 			include_in_default_search=1,
 			required=1,
