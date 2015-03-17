@@ -1,3 +1,10 @@
+ucs-test (4.0.211-2) unstable; urgency=medium
+
+  * 10_ldap/05K5KEY_userexpiry: Added test case for K5KEY / userexpiry
+    (Bug #31429)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Mar 2015 12:21:42 +0100
+
 ucs-test (4.0.211-1) unstable; urgency=low
 
   * Bug #37602: correct typo apptest tag 02virus00basic
