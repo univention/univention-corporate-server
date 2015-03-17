@@ -3,7 +3,7 @@
 # Univention mail Postfix Policy
 #  check allowed email senders for groups and distlist
 #
-# Copyright 2005-2014 Univention GmbH
+# Copyright 2005-2015 Univention GmbH
 #
 # http://www.univention.de/
 #

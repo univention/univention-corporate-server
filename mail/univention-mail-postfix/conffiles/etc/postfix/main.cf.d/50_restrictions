@@ -22,6 +22,9 @@ submission_recipient_restrictions = [x[1] for x in ucrlist]
 
 print '\n# special recipient_restrictions which may be used by smtps/submission services'
 print '# (can be configured via UCR: mail/postfix/submission/restrictions/recipient/...)'
-print "submission_recipient_restrictions = %s" % ",\n        ".join(submission_recipient_restrictions)
+if submission_recipient_restrictions:
+	print "submission_recipient_restrictions = %s" % ",\n        ".join(submission_recipient_restrictions)
+else:
+	print "# submission_recipient_restrictions ="
 @!@
 
