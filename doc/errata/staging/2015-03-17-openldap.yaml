@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-5
+src: openldap
+fix: 2.4.35-1.182.201503171228
+version: [4,5]
+desc: |
+  If a password has been changed via Samba 4, the account expiry
+  setting was not always considered. This has been fixed.
+bug:
+ - 31429
