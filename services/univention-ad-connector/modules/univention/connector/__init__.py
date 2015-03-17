@@ -1260,6 +1260,19 @@ class ucs:
 
 		try:
 			result = False
+
+			# Check if the object on UCS side should be synchronized
+			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=37351
+			old_ucs_ldap_object = {}
+			old_ucs_ldap_object['dn'] = object['dn']
+			if object.get('olddn'):
+				old_ucs_ldap_object['dn'] = object['olddn']
+			old_ucs_ldap_object['attributes'] = self.get_ucs_ldap_object(old_ucs_ldap_object['dn'])
+
+			if old_ucs_ldap_object['attributes'] and self._ignore_object(property_type,old_ucs_ldap_object):
+				ud.debug(ud.LDAP, ud.PROCESS, 'The object (%s) will be ignored because a valid match filter for this object was not found.' % old_ucs_ldap_object['dn'])
+				return True
+
 			if object['modtype'] == 'add':
 				result = self.add_in_ucs(property_type, object, module, position)
 				self._check_dn_mapping(object['dn'], premapped_ad_dn)

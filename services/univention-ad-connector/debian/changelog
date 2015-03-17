@@ -1,3 +1,11 @@
+univention-ad-connector (9.0.11-10) unstable; urgency=medium
+
+  * Before synchronizing an object from AD to UCS, the ignore status of
+    the UCS object is checked. This prevents the move of an UCS DC on
+    UCS side when it was moved in AD (Bug #37351)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Mar 2015 17:05:09 +0100
+
 univention-ad-connector (9.0.11-9) unstable; urgency=medium
 
   * Bug #35870: Adjust SDB link URL
