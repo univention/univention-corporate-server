@@ -1,0 +1,13 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-management-console-module-top
+fix: 4.1.0-5.36.201503171350
+version: [1]
+desc: |
+  The following issues are addressed in this update:
+  * Prevent an error if the user of an process is unknown.
+  * Killing multiple processes at once now works properly.
+  * If an process is beeing killed that is not running anymore
+    an error message is shown.
+bug: [33923, 33193, 25305]
