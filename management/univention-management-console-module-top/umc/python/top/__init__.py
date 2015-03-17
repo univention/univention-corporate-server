@@ -33,6 +33,7 @@
 
 import time
 import psutil
+import pwd
 
 import univention.management.console as umc
 import univention.management.console.modules as umcm
@@ -58,8 +59,12 @@ class Instance(umcm.Base):
 			listEntry['timestamp'].append(time.time())
 			(user_time, system_time, ) = process.get_cpu_times()
 			listEntry['cpu_time'].append(user_time + system_time)
-
-			listEntry['user'] = process.username
+			real_uid = process.uids.real
+			try:
+				username = process.username
+			except KeyError:  # fixed in psutil 2.2.0
+				username = str(real_uid)
+			listEntry['user'] = username
 			listEntry['pid'] = process.pid
 			listEntry['cpu'] = 0.0
 			listEntry['mem'] = process.get_memory_percent()

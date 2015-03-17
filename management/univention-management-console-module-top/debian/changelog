@@ -1,3 +1,10 @@
+univention-management-console-module-top (4.1.0-4) unstable; urgency=low
+
+  * Bug #33923: Use process uid as process username if the uid can not be
+  resolved by the system.
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 17 Mar 2015 12:30:14 +0100
+
 univention-management-console-module-top (4.1.0-3) unstable; urgency=low
 
   * Bug #36161: Adaptions for new psutil API
