@@ -2,10 +2,11 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-directory-manager-modules
-fix: 10.0.29-32.1296.201503130954
+fix: 10.0.29-33.1297.201503171311
 version: [1]
 desc: |
   The following issues are addressed in this update:
   * Don't create a pointer record if no forward zone could be determined when
     modifying a computer object.
-bug: [37504]
+  * Repair --policies option of UDM command line tool.
+bug: [37504,21585]
