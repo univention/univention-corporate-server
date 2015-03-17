@@ -1,3 +1,11 @@
+univention-management-console-module-top (4.1.0-5) unstable; urgency=low
+
+  * Bug #25305: prevent traceback when SIGKILL/SIGTERM is send to an
+  process that isn't running anymore
+  * Bug #33193: Fixed Multi kill not working in process overview
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 17 Mar 2015 13:44:33 +0100
+
 univention-management-console-module-top (4.1.0-4) unstable; urgency=low
 
   * Bug #33923: Use process uid as process username if the uid can not be

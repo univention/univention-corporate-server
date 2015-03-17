@@ -61,19 +61,24 @@ define([
 				msg = _('Please confirm sending %s to the selected process!', signal);
 			}
 			else {
-				msg = _('Please confirm sending %(sig)s to the %(pids)s selected processes!', {sig: signal, pids: pids.length});
+				msg = _('Please confirm sending %(sig)s to the %(pid)s selected processes!', {sig: signal, pid: pids.length});
 			}
 			dialog.confirm(msg, [{
 				label: _('OK'),
 				callback: lang.hitch(this, function() {
-					this.umcpCommand('top/kill', params).then(lang.hitch(this, function() {
+					this.standbyDuring(this.umcpCommand('top/kill', params)).then(lang.hitch(this, function() {
 						this.addNotification(_('Signal (%s) sent successfully', signal));
+						this.reloadGrid();
 					}));
 				})
 			}, {
 				'default': true,
 				label: _('Cancel')
 			}]);
+		},
+
+		reloadGrid: function() {
+			this._grid.filter(this._grid.query);
 		},
 
 		buildRendering: function() {

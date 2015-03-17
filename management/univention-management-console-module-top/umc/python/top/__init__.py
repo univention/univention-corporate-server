@@ -33,7 +33,6 @@
 
 import time
 import psutil
-import pwd
 
 import univention.management.console as umc
 import univention.management.console.modules as umcm
@@ -59,11 +58,10 @@ class Instance(umcm.Base):
 			listEntry['timestamp'].append(time.time())
 			(user_time, system_time, ) = process.get_cpu_times()
 			listEntry['cpu_time'].append(user_time + system_time)
-			real_uid = process.uids.real
 			try:
 				username = process.username
 			except KeyError:  # fixed in psutil 2.2.0
-				username = str(real_uid)
+				username = str(process.uids.real)
 			listEntry['user'] = username
 			listEntry['pid'] = process.pid
 			listEntry['cpu'] = 0.0
@@ -123,7 +121,7 @@ class Instance(umcm.Base):
 			success = True
 		else:
 			request.status = MODULE_ERR
-			failed = ', '.join(failed)
+			failed = ', '.join(map(str, failed))
 			message = _('No process found with PID %s') % (failed)
 			success = False
 		self.finished(request.id, success, message=message)
