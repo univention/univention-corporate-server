@@ -476,7 +476,7 @@ def _doit(arglist):
 		elif opt == '--logfile':
 			logfile=val
 		elif opt == '--policies':
-			policies = True
+			list_policies = True
 			if val=="1":
 				policies_with_DN = True
 			else:
