@@ -1,3 +1,10 @@
+ucs-test (5.0.136-3) unstable; urgency=medium
+
+  * 10_ldap/05K5KEY_userexpiry: Added test case for K5KEY / userexpiry
+    (Bug #38060)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Mar 2015 12:20:39 +0100
+
 ucs-test (5.0.136-2) unstable; urgency=low
 
   * Bug #31792: 20/43_installed_apps_check_packages_available_for_i386
