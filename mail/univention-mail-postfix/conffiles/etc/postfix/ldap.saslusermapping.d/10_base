@@ -1,0 +1,29 @@
+@%@UCRWARNING=# @%@
+#
+# LDAP Alias support (without recipient canonical rewrite)
+#
+
+search_base = @%@ldap/base@%@
+query_filter = (&(objectClass=univentionMail)(|(mailAlternativeAddress=%s)(mailPrimaryAddress=%s)))
+result_attribute = mailPrimaryAddress
+result_format = %s
+search_timeout = @%@mail/postfix/ldap/timeout@%@
+scope = sub
+version = 3
+bind_dn = @%@ldap/hostdn@%@
+@!@
+import os
+from univention.lib.misc import getLDAPURIs
+print 'server_host = %s' % getLDAPURIs(configRegistry)
+if os.path.exists('/etc/machine.secret'):
+	print 'bind_pw = %s' % (open('/etc/machine.secret','r').read())
+else:
+	print 'bind_pw = MACHINE.SECRET_IS_MISSING'
+if configRegistry.is_true('mail/postfix/ldaptable/starttls', False):
+	print 'start_tls = yes'
+if configRegistry.is_true('mail/postfix/ldaptable/tlsrequirecert', False):
+	print 'tls_require_cert = yes'
+if configRegistry.get('mail/postfix/ldaptable/tlscacertfile'):
+	print 'tls_ca_cert_file = %s' % configRegistry['mail/postfix/ldaptable/tlscacertfile']
+print 'debuglevel = %s' % configRegistry.get('mail/postfix/ldaptable/debuglevel', '0')
+@!@

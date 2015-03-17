@@ -11,8 +11,11 @@ desc: |
     updated as "0" does not implement "unlimited" as previously mentioned.
   * Additional arguments for smtpd processes may now be added via UCR
     variables. The given arguments are automatically added to the config
-	file /etc/postfix/master.cf. The following UCR variable prefixes are
-	currently supported:
-	- mail/postfix/mastercf/options/smtp/...
-	- mail/postfix/mastercf/options/smtps/...
-bug: [37442,38049]
+    file /etc/postfix/master.cf. The following UCR variable prefixes are
+    currently supported:
+    - mail/postfix/mastercf/options/smtp/...
+    - mail/postfix/mastercf/options/smtps/...
+  * The first changes to the main.cf framework have been done for defining
+    a custom restriction rule set via UCR variables for postfix' smtps
+	port (465). There is currently no change in postfix behaviour.
+bug: [31738,37442,38049]
