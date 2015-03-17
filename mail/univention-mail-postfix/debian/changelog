@@ -1,3 +1,10 @@
+univention-mail-postfix (8.0.13-9) unstable; urgency=low
+
+  * Bug #31738: added base framework to prevent sender address spoofing
+    (deactivated by default)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 16 Mar 2015 13:52:38 +0100
+
 univention-mail-postfix (8.0.13-8) unstable; urgency=low
 
   * Bug #38049: allow optional arguments for smtp and smtps in master.cf

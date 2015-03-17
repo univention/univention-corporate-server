@@ -50,6 +50,7 @@ Description: Transitional package for univention-mail-postfix-forward
 Package: univention-mail-server
 Architecture: all
 Depends: ${misc:Depends},
+ shell-univention-lib,
  univention-directory-manager-tools (>> 7.0.147),
  univention-mail-postfix (= ${binary:Version}),
  univention-sasl,
