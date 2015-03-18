@@ -14,6 +14,7 @@ import time
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 from essential.simplesquid import SimpleSquid
+from atexit import register
 
 
 def max_duration():
@@ -88,26 +89,26 @@ def main():
 		handler_unset(['squid/basicauth', 'squid/krb5auth'])
 		handler_set(['squid/ntlmauth=yes'])
 		squid.restart()
+		register(squid.restart)
 		time.sleep(3)
 
 		start = time.time()
 
 		# /var/log/syslog: (squid) Too many queued ntlmauthenticator requests
 		# <http://wiki.squid-cache.org/KnowledgeBase/TooManyQueued>
-		TOTAL = 30 + 60 * 40  # 30 for cold-LDAP-cache, 40 for hot-cache
+		total = 30 + 60 * 40  # 30 for cold-LDAP-cache, 40 for hot-cache
 		MAX_CONCURRENT = 2 * int(ucr.get("squid/ntlmauth/children", 10)) * 2 + 1
-		rounds = TOTAL / MAX_CONCURRENT
+		concurrent = 0
 
 		job = Job(ucr)
-		print "Running %d rounds with %d each..." % (rounds, MAX_CONCURRENT)
-		for run in xrange(rounds):
-			doJobs(job, MAX_CONCURRENT)
+		while total > 0:
+			concurrent = min(concurrent + 1, MAX_CONCURRENT, total)
+			doJobs(job, concurrent)
+			total -= concurrent
 
 		end = time.time()
 		duration = end - start
 		print 'Test took %.2f seconds' % (duration,)
-
-	squid.restart()
 
 	MAX_DURATION = max_duration()
 	if duration > MAX_DURATION:
