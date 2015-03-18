@@ -6,10 +6,10 @@
 ## packages: [univention-squid]
 
 from essential.simplecurl import SimpleCurl
+from essential.simplesquid import SimpleSquid
 from univention.config_registry import handler_set, handler_unset
 import itertools
 import pycurl
-import subprocess
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 
@@ -37,7 +37,7 @@ def checkNTLM(host, passwd, url, http_code):
 		utils.fail('NTLM proxy auth check failed, http_code = %r, expected = %r' % (result, http_code))
 
 
-def setAuthVariables((basic, ntlm)):
+def setAuthVariables(squid, (basic, ntlm)):
 	"""set ucr variables according to the auth states, and restart Squid"""
 	if basic:
 		handler_set(['squid/basicauth=yes'])
@@ -47,7 +47,7 @@ def setAuthVariables((basic, ntlm)):
 		handler_set(['squid/ntlmauth=yes'])
 	else:
 		handler_unset(['squid/ntlmauth'])
-	subprocess.call(["/etc/init.d/squid3", "restart"])
+	squid.restart()
 
 def printHeader(state, passwd, expect_wrong_password):
 	print '-' * 40
@@ -56,13 +56,18 @@ def printHeader(state, passwd, expect_wrong_password):
 			passwd, expect_wrong_password)
 
 def main():
+	squid = SimpleSquid()
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		# url = ucr.get('proxy/filter/redirecttarget')
 		url = 'http://www.univention.de'
-		host = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+		host = '%(hostname)s.%(domainname)s' % ucr
 
 		# list of tuples (passwd, expect_wrong_password) used in the test
-		passwords = [('univention', False),('wrong_passwd',True)]
+		account = utils.UCSTestDomainAdminCredentials()
+		passwords = [
+			(account.bindpw, False),
+			('wrong_passwd', True),
+		]
 
 		# Generate all the possibilities for the auth states
 		# [(0, 0), (0, 1), (1, 0), (1, 1)]
@@ -73,12 +78,12 @@ def main():
 				printHeader(state, passwd, expect_wrong_password)
 
 				# set ucr variables according to the auth states
-				setAuthVariables(state)
+				setAuthVariables(squid, state)
 
 				# Perform the checks
 				checkAuths(host, passwd, url, state, expect_wrong_password)
 
-	subprocess.call(["/etc/init.d/squid3", "restart"])
+	squid.restart()
 
 if __name__ == '__main__':
 	main()

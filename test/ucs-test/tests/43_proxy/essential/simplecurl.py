@@ -7,8 +7,8 @@
 import pycurl
 import StringIO
 import time
-import os
 import univention.testing.utils as utils
+from tempfile import NamedTemporaryFile
 
 
 class SimpleCurl(object):
@@ -54,12 +54,13 @@ class SimpleCurl(object):
 		self.curl.setopt(pycurl.PROXYPORT, port)
 		self.curl.setopt(pycurl.PROXYAUTH, auth)
 		account = utils.UCSTestDomainAdminCredentials()
-		username = username if username else account.username
-		password = password if password else account.bindpw
-		self.curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (username, password))
-		self.cookieFilename = os.tempnam()
-		self.curl.setopt(pycurl.COOKIEJAR, self.cookieFilename)
-		self.curl.setopt(pycurl.COOKIEFILE, self.cookieFilename)
+		self.curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (
+			username or account.username,
+			password or account.bindpw,
+		))
+		self.cookiefile = NamedTemporaryFile()
+		self.curl.setopt(pycurl.COOKIEJAR, self.cookiefile.name)
+		self.curl.setopt(pycurl.COOKIEFILE, self.cookiefile.name)
 
 	def cookies(self):
 		return self.curl.getinfo(pycurl.INFO_COOKIELIST)
@@ -87,13 +88,12 @@ class SimpleCurl(object):
 			try:
 				self.curl.perform()
 				break
-			except Exception as e:
-				time.sleep(1)
+			except pycurl.error:
 				print '.'
-				if i == 59:
-					print 'Requested page could not be fetched'
-					raise
-				continue
+				time.sleep(1)
+		else:
+			print 'Requested page could not be fetched'
+			raise
 		page = buf.getvalue()
 		# print page[1:150]
 		buf.close()
@@ -119,8 +119,5 @@ class SimpleCurl(object):
 		"""Close the curl connection"""
 		self.curl.close()
 
-
 	def __del__(self):
 		self.curl.close()
-		if os.path.exists(self.cookieFilename):
-			os.remove(self.cookieFilename)

@@ -8,6 +8,7 @@ ucs-test (5.0.136-6) unstable; urgency=medium
 ucs-test (5.0.136-5) unstable; urgency=low
 
   * Bug #33495, Bug #32244: 10_ldap/45replication_modrdn: Stop S4C
+  * Bug #26452: 43_proxy/04_http_proxy_ntlm_auth_performance_check
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 18 Mar 2015 10:19:10 +0100
 

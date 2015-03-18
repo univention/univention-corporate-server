@@ -5,19 +5,16 @@
 .. moduleauthor:: Ammar Najjar <najjar@univention.de>
 """
 import os
-import subprocess
+from subprocess import call
 import time
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 
-def returncode(cmd):
-	pop = subprocess.Popen(cmd)
-	pop.communicate()
-	return pop.returncode
 
 def get_lines_containing(filename, string):
 	with open(filename) as input_file:
 		return [line for line in input_file if string in line]
+
 
 class SimpleSquid(object):
 	"""
@@ -26,18 +23,18 @@ class SimpleSquid(object):
 	"""
 	def __init__(self, path=None):
 		self.path = path if path else "/etc/init.d/squid3"
-		self.basename  = os.path.basename(self.path)
+		self.basename = os.path.basename(self.path)
 		self.conf = "/etc/%s/squid.conf" % self.basename
 
 	def restart(self):
 		"""Trying to restart"""
-		return returncode([self.path, "restart"])
+		return call([self.path, "restart"])
 
 	def is_not_running(self):
 		"""Check the current running status\n
 		:return boolean : True if not running, Flase if running
 		"""
-		return returncode([self.basename, "-k", "check"])
+		return call([self.basename, "-k", "check"])
 
 	def is_running(self, tolerance=5):
 		"""Check if it is running within the given tolerance of time\n

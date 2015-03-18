@@ -4,16 +4,17 @@
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-squid]
+## bugs: [26452,37931]
 
 from univention.config_registry import handler_set, handler_unset
 import apt
 import os
 import pycurl
-import subprocess
-import sys
 import time
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
+from essential.simplesquid import SimpleSquid
+
 
 def max_duration():
 	meta_packages = ['ucs-school-master', 'ucs-school-singlemaster', 'ucs-school-slave']
@@ -23,81 +24,95 @@ def max_duration():
 		if pkg in apt_cache and apt_cache[pkg].is_installed:
 			return 130
 	else:
-		return 60
-
-MAX_DURATION = max_duration()
+		return 120  # EC2 m3.medium PV
 
 
-def doJobs(c, num):
-	children = []
-	for job in range(num):
+def doJobs(job, num):
+	children = set()
+	start = time.time()
+	for _ in xrange(num):
 		child = os.fork()
 		if child:
-			children.append(child)
+			os.write(1, '<')
+			children.add(child)
 		else:
-			# run the job and exit
-			c.perform()
-			# check if ntlm auth is available
-			if c.getinfo(pycurl.PROXYAUTH_AVAIL) is not pycurl.HTTPAUTH_NTLM:
-				sys.exit(2)
-			# check http code
-			if c.getinfo(pycurl.HTTP_CODE) is not 200:
-				sys.exit(1)
-			sys.exit(0)
+			os._exit(job.run())
 	# wait for the children and check the status
-	for child in children:
-		pid, status = os.waitpid(child, 0)
-		if not pid or os.WEXITSTATUS(status) != 0:
-			utils.fail('job failed with %s' % os.WEXITSTATUS(status))
+	while children:
+		pid, status = os.waitpid(0, 0)
+		os.write(1, '>')
+		if os.WIFSIGNALED(status):
+			utils.fail('job %d failed with signal %d' % (pid, os.WTERMSIG(status)))
+		elif os.WIFEXITED(status) and os.WEXITSTATUS(status):
+			utils.fail('job %d failed with status %d' % (pid, os.WEXITSTATUS(status)))
+		children.remove(pid)
+	end = time.time()
+	os.write(1, " %.2f\n" % (end - start,))
+
+
+class Job(object):
+	def __init__(self, ucr):
+		self.account = utils.UCSTestDomainAdminCredentials()
+		self.host = '%(hostname)s.%(domainname)s' % ucr
+		self.url = 'http://' + self.host + '/ucs-overview/'
+
+	def run(self):
+		c = pycurl.Curl()
+		try:
+			c.setopt(pycurl.PROXY, self.host)
+			c.setopt(pycurl.PROXYPORT, 3128)
+			c.setopt(pycurl.PROXYAUTH, pycurl.HTTPAUTH_NTLM)
+			c.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (self.account.username, self.account.bindpw))
+			c.setopt(pycurl.URL, self.url)
+			c.setopt(pycurl.NOBODY, 1)
+			try:
+				c.perform()
+				# check if NTLM auth is available
+				if c.getinfo(pycurl.PROXYAUTH_AVAIL) is not pycurl.HTTPAUTH_NTLM:
+					return 2
+				# check http code
+				if c.getinfo(pycurl.HTTP_CODE) == 200:
+					return 0
+			except pycurl.error as ex:
+				print ex
+				return 1
+		finally:
+			c.close()
+
 
 def main():
+	squid = SimpleSquid()
+	duration = -1
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		# set up squid
+		handler_unset(['squid/basicauth', 'squid/krb5auth'])
+		handler_set(['squid/ntlmauth=yes'])
+		squid.restart()
+		time.sleep(3)
 
-	print
-	ucr = ucr_test.UCSTestConfigRegistry()
-	ucr.load()
+		start = time.time()
 
-	# set up squid
-	handler_unset(['squid/basicauth'])
-	handler_unset(['squid/krb5auth'])
-	handler_set(['squid/ntlmauth=yes'])
-	time.sleep(3)
-	subprocess.call(['/etc/init.d/squid3', 'restart'])
-	time.sleep(3)
+		# /var/log/syslog: (squid) Too many queued ntlmauthenticator requests
+		# <http://wiki.squid-cache.org/KnowledgeBase/TooManyQueued>
+		TOTAL = 30 + 60 * 40  # 30 for cold-LDAP-cache, 40 for hot-cache
+		MAX_CONCURRENT = 2 * int(ucr.get("squid/ntlmauth/children", 10)) * 2 + 1
+		rounds = TOTAL / MAX_CONCURRENT
 
-	# set up curl
-	host = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
-	url = 'http://' + host + '/ucs-overview/'
-	account = utils.UCSTestDomainAdminCredentials()
-	c = pycurl.Curl()
-	c.setopt(pycurl.PROXY, host)
-	c.setopt(pycurl.PROXYPORT, 3128)
-	c.setopt(pycurl.PROXYAUTH, pycurl.HTTPAUTH_NTLM)
-	c.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (account.username, account.bindpw))
-	c.setopt(pycurl.URL, url)
-	c.setopt(pycurl.NOBODY, 1)
+		job = Job(ucr)
+		print "Running %d rounds with %d each..." % (rounds, MAX_CONCURRENT)
+		for run in xrange(rounds):
+			doJobs(job, MAX_CONCURRENT)
 
-	master_pid = os.getpid()
-	start = int(time.time())
-	try:
-		# aftert squid restart the ntlm help needs to
-		# get the NT hashes via ldap, this takes a while
-		# so fewer tests for this first run
-		for job in range(1):
-			doJobs(c, 30)
-		# now the password is chached
-		for job in range(60):
-			doJobs(c, 40)
-	finally:
-		if master_pid == os.getpid():
-			end = int(time.time())
-			duration = end - start
-			print 'Test took %s seconds' % str(duration)
-			print 'Cleanup ... '
-			ucr.revert_to_original_registry()
-			time.sleep(3)
-			subprocess.call(["/etc/init.d/squid3", "restart"])
-			if duration > MAX_DURATION:
-				utils.fail('test took to long (max %s)' % MAX_DURATION)
+		end = time.time()
+		duration = end - start
+		print 'Test took %.2f seconds' % (duration,)
+
+	squid.restart()
+
+	MAX_DURATION = max_duration()
+	if duration > MAX_DURATION:
+		utils.fail('test took too long (%.2f > %d)' % (duration, MAX_DURATION))
+
 
 if __name__ == '__main__':
 	main()
