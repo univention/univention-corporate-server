@@ -32,7 +32,6 @@
 
 set -o errexit
 set -o pipefail
-set -o nounset
 
 verbose () {
 	if [ "$VERBOSE" -eq 1 ]

@@ -1,3 +1,12 @@
+univention-quota (9.1.5-2) unstable; urgency=medium
+
+  * univention-group-quota: Don't print an 'unbound variable' message
+    (Bug #37134)
+  * univention-user-quota: Don't try to reconnect LDAP connection
+    automatically (Bug #36805)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Mar 2015 20:15:53 +0100
+
 univention-quota (9.1.5-1) unstable; urgency=medium
 
   * Bug #36435: text adaptations
