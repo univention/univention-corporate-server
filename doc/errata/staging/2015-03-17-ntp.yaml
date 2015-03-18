@@ -6,7 +6,8 @@ fix: 1:4.2.6.p5+dfsg-2.37.201503161732
 version: [0,1]
 desc: |
  A security issue has been found in ntp:
- * Information leak/denial of service in autokey crypto handling (CVE-2014-9297)
- The fix for this was incomplete (erratum 79), some additional sanitation was missing.
+ * Information leak/denial of service in autokey crypto handling
+   (CVE-2014-9297) The fix for this was incomplete (erratum 79), some
+   additional sanitation was missing.
 bug:
  - 37746
