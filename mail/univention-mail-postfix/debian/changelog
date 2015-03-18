@@ -1,3 +1,9 @@
+univention-mail-postfix (9.0.0-15) unstable; urgency=low
+
+  * Bug #31738: updated UCR variable descriptions
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 18 Mar 2015 11:48:11 +0100
+
 univention-mail-postfix (9.0.0-14) unstable; urgency=low
 
   * Bug #31738: added base framework to prevent sender address spoofing
