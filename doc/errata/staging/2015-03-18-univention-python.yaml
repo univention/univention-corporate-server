@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-python
+fix: 8.0.3-3.148.201503181639
+version: [1]
+desc: |
+  If the first configured LDAP server was not reachable, timeouts
+  could occur during the login. This has been fixed.
+bug: [36805]
