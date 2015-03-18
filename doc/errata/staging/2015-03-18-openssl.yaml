@@ -6,7 +6,7 @@ fix: 0.9.8o-4.91.201503181343
 version: [4,5]
 desc: |
  Multiple vulnerabilities have been found in OpenSSL:
- * NULL pointer derererence in elliptic curves (CVE-2015-0209)
+ * NULL pointer dereference in elliptic curves (CVE-2015-0209)
  * NULL pointer dereference in X509 parsing (CVE-2015-0288)
 bug: [37959]
 cve:
