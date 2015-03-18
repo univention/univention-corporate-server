@@ -32,13 +32,14 @@
 
 # python packages
 import socket, fcntl, os, sys, random, errno, stat, struct, json, time
+import cPickle
 
 # external packages
 from optparse import OptionParser
 import univention.config_registry as ub
 import inspect
 import notifier
-from OpenSSL import *
+from OpenSSL import SSL
 
 MAX_JSON_ID = 999999
 MIN_JSON_ID = 1
@@ -51,6 +52,7 @@ LOGDEBUG = 4
 
 loglevel = 0
 logobj = None
+
 
 def debug( level, msg ):
 	global logobj, loglevel
@@ -70,6 +72,7 @@ def debug( level, msg ):
 
 baseconfig = ub.ConfigRegistry()
 baseconfig.load()
+
 
 class LogCollectorClient( object ):
 	def __init__( self, server, port = 7450 ):
@@ -97,8 +100,6 @@ class LogCollectorClient( object ):
 		self._init_socket()
 		self.connect()
 
-
-
 	def _verify_cert_cb( self, conn, cert, errnum, depth, ok ):
 		debug( LOGDEBUG, 'Got certificate subject: %s' % cert.get_subject() )
 		debug( LOGDEBUG, 'Got certificate issuer: %s' % cert.get_issuer() )
@@ -108,11 +109,8 @@ class LogCollectorClient( object ):
 			sys.exit(1)
 		return ok
 
-
 	def _info_callback( self, conn, fkt, status ):
 		debug( LOGDEBUG, 'fkt=%s  status=%s' % (fkt, status) )
-		return ok
-
 
 	def _init_socket( self ):
 		self._realsocket = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
@@ -120,12 +118,10 @@ class LogCollectorClient( object ):
 		fcntl.fcntl(self._realsocket.fileno(), fcntl.F_SETFD, 1)
 		self._socket = SSL.Connection( self._crypto_context, self._realsocket )
 
-
 	def reconnect( self ):
 		debug( LOGDEBUG, 'RECONNECT')
 		self.connect()
 		return False
-
 
 	def connect( self ):
 		if not self._realsocket or not self._socket:
@@ -162,7 +158,7 @@ class LogCollectorClient( object ):
 
 		try:
 			recv = sock.recv( 16384 )
-		except SSL.SysCallError, e:
+		except SSL.SysCallError:
 			# lost connection or any other unfixable error
 			recv = None
 		except SSL.Error:
@@ -192,7 +188,13 @@ class LogCollectorClient( object ):
 			plen = struct.unpack('!I', self._inbuffer[0:4])[0]
 			if plen+4 <= len(self._inbuffer):
 				# unpickle data
-				packet = json.loads( self._inbuffer[4:4+plen] )
+				data = self._inbuffer[4:4+plen]
+				try:
+					packet = json.loads(data)
+				except ValueError:
+					# try old format
+					import cPickle
+					packet = cPickle.loads(data)
 				# remove data from buffer
 				self._inbuffer = self._inbuffer[4+plen:]
 
@@ -209,7 +211,6 @@ class LogCollectorClient( object ):
 
 		return True
 
-
 	def _handle_packet_setup( self, packet ):
 		debug( LOGDEBUG, 'Got SETUP' )
 		if packet['data'] == 'OK':
@@ -219,13 +220,11 @@ class LogCollectorClient( object ):
 		else:
 			debug( LOGERROR, 'ERROR: got negative SETUP msg' )
 
-
 	def _handle_packet_ack( self, packet ):
 		debug( LOGDEBUG, 'Got ACK')
 		for ackid in packet['data']:
 			if self._resendQueue.has_key(ackid):
 				del self._resendQueue[ackid]
-
 
 # config files in /etc/logcollector.d/
 # config file format:
@@ -263,7 +262,6 @@ class LogCollectorClient( object ):
 		else:
 			notifier.timer_add( 50, notifier.Callback( self._check_new_data ) )
 
-
 	def _check_new_data( self ):
 		if self._socket and self._socket_ready:
 			for fobj in self._config.keys():
@@ -288,7 +286,6 @@ class LogCollectorClient( object ):
 
 		return True
 
-
 	def _new_data_in_file( self, sock ):
 		if len(self._resendQueue) < MAX_LENGTH_RESEND_QUEUE:
 			# read data from file
@@ -307,13 +304,12 @@ class LogCollectorClient( object ):
 
 		return True
 
-
 	def _send_outbuffer( self, foo = None ):
 		if len(self._outbuffer):
 			try:
 				length = self._socket.send( self._outbuffer )
 				self._outbuffer = self._outbuffer[length:]
-			except ( SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError ), e:
+			except ( SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError ):
 				pass
 			except:
 				debug( LOGWARN, 'ERROR: sending send_queue failed')
@@ -321,17 +317,14 @@ class LogCollectorClient( object ):
 			return True
 		return False
 
-
 	def _add_to_outbuffer( self, data ):
 		self._outbuffer += data
 		if self._socket:
 			notifier.socket_add( self._socket, self._send_outbuffer, condition = notifier.IO_WRITE )
 
-
 	def _resend_unacked_packets( self ):
 		for packetid, buf in self._resendQueue.items():
 			self._add_to_outbuffer( buf )
-
 
 	def _send_serialized( self, data, resendQueue = True ):
 		if resendQueue:
@@ -339,7 +332,7 @@ class LogCollectorClient( object ):
 			data['id'] = self._nextId
 
 		# create network data
-		buf = json.dumps(data,-1)
+		buf = cPickle.dumps(data,-1)  # FIXME: s/cPickle/json/
 		buflen = struct.pack('!I', len(buf))
 		buf = buflen + buf
 
@@ -353,7 +346,6 @@ class LogCollectorClient( object ):
 				self._nextId = MIN_JSON_ID
 
 		self._add_to_outbuffer( buf )
-
 
 
 if __name__ == '__main__':
@@ -387,4 +379,3 @@ if __name__ == '__main__':
 
 	logserver = LogCollectorClient( loghost )
 	notifier.loop()
-

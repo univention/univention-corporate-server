@@ -36,6 +36,7 @@ import fcntl
 import os
 import struct
 import json
+import cPickle
 import sys
 import grp
 
@@ -59,6 +60,26 @@ def log(level, msg):
 	except TypeError:
 		# null byte
 		debug(MAIN, level, repr(msg))
+
+
+def save_unpickle(data):
+	log(WARN, 'Legacy client in use...')
+	def forbidden(*a,**kw):
+		log(ERROR, 'Hacking attempt: not unpickling %r' % (data,))
+		raise ValueError('Hacking attempt')
+	import pickle
+	from cStringIO import StringIO
+	fd = StringIO(data)
+	unpickler = pickle.Unpickler(fd)
+	for key in [
+		'R', # Prevent __reduce__
+		'c', # Prevent globals
+		'b', 'i', 'o', b'\x80', b'\x81']:  # not sure what they do, sounds dangerous and does not break anything to forbid them (build, inst, obj, proto, newobj)
+		unpickler.dispatch[key] = forbidden
+	try:
+		return unpickler.load()
+	except ValueError:
+		return {}
 
 
 class HackingAttempt(Exception):
@@ -192,7 +213,11 @@ class LogCollectorServer(object):
 			plen = struct.unpack('!I', state['inbuffer'][0:4])[0]
 			if plen + 4 <= len(state['inbuffer']):
 				# unpickle data
-				packet = json.loads(state['inbuffer'][4:4 + plen])
+				packet = state['inbuffer'][4:4 + plen]
+				try:
+					packet = json.loads(packet)
+				except ValueError:
+					packet = save_unpickle(packet)
 				# remove data from buffer
 				state['inbuffer'] = state['inbuffer'][4 + plen:]
 
@@ -310,7 +335,7 @@ class LogCollectorServer(object):
 			state['nextId'] = MIN_JSON_ID
 
 		# create network data
-		buf = json.dumps(data, -1)
+		buf = cPickle.dumps(data, -1)  # FIXME: s/cPickle/json/
 		buflen = struct.pack('!I', len(buf))
 		buf = buflen + buf
 
