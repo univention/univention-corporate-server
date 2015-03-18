@@ -1,3 +1,9 @@
+ucs-test (5.0.136-4) unstable; urgency=medium
+
+  * 10_ldap/05K5KEY_userexpiry: limit test to DC master (Bug #38060)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Mar 2015 05:51:01 +0100
+
 ucs-test (5.0.136-3) unstable; urgency=medium
 
   * 10_ldap/05K5KEY_userexpiry: Added test case for K5KEY / userexpiry
