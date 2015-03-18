@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!DOCTYPE book [
+	<!ENTITY % local.link.char.class "|u:cve|u:bug|u:sdb|u:rfc">
+	<!ELEMENT u:cve (#PCDATA)>
+	<!ATTLIST u:cve xmlns:u CDATA #FIXED "htttp://docs.univention.de/2015-02-25/">
+	<!ELEMENT u:bug (#PCDATA)>
+	<!ATTLIST u:bug xmlns:u CDATA #FIXED "htttp://docs.univention.de/2015-02-25/">
+	<!ELEMENT u:sdb (#PCDATA)>
+	<!ATTLIST u:sdb xmlns:u CDATA #FIXED "htttp://docs.univention.de/2015-02-25/">
+	<!ELEMENT u:rfc (#PCDATA)>
+	<!ATTLIST u:rfc xmlns:u CDATA #FIXED "htttp://docs.univention.de/2015-02-25/">
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%DocBookDTD;
 	%entities;
 ]>
 <book lang="de" id="releasenotes-4.0-1-de">
@@ -182,7 +193,7 @@
 		  angefragt werden können sollen, müssen diese über die &ucsUCRV;
 		  <envar>dns/allow/query/cache</envar> freigegeben werden. Diese Änderung wird nur bei
 		  Neuinstallationen durchgeführt. Weitere Hinweise zur Umstellung bestehender Systemen
-		  finden sich unter <ulink url="http://sdb.univention.de/1298"/>.
+		  finden sich unter <u:sdb>1298</u:sdb>.
 		</para>
 
 		<para>
@@ -200,7 +211,7 @@
 				Die Profil-basierte Netzwerkinstallation von UCS steht mit UCS 4.0-1 noch nicht zur
 				Verfügung. Die Unterstützung wird zu einem späteren Zeitpunkt nachgeliefert. Der
 				Status kann in unserem Issue-Tracker nachvollzogen werden:
-				<ulink url="&ucsbug;35537">Bug 35537</ulink>.
+				<u:bug>35537</u:bug>.
 			</para>
 		</section>
 

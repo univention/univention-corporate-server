@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!DOCTYPE book [
+	<!ENTITY % local.link.char.class "|u:cve|u:bug|u:sdb|u:rfc">
+	<!ELEMENT u:cve (#PCDATA)>
+	<!ATTLIST u:cve xmlns:u CDATA #FIXED "htttp://docs.univention.de/2015-02-25/">
+	<!ELEMENT u:bug (#PCDATA)>
+	<!ATTLIST u:bug xmlns:u CDATA #FIXED "htttp://docs.univention.de/2015-02-25/">
+	<!ELEMENT u:sdb (#PCDATA)>
+	<!ATTLIST u:sdb xmlns:u CDATA #FIXED "htttp://docs.univention.de/2015-02-25/">
+	<!ELEMENT u:rfc (#PCDATA)>
+	<!ATTLIST u:rfc xmlns:u CDATA #FIXED "htttp://docs.univention.de/2015-02-25/">
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%DocBookDTD;
 	%entities;
 ]>
 <book lang="en" id="releasenotes-4.0-1-en">
@@ -178,7 +189,7 @@
 		  address ranges, localhost and local networks. If the name servers need to be queried from
 		  any other hosts outside those network, they must be configured using the &ucsUCRV;
 		  <envar>dns/allow/query/cache</envar>. This change gets only applied for
-		  newly installed domain controllers. See <ulink url="http://sdb.univention.de/1298"/> for
+		  newly installed domain controllers. See <u:sdb>1298</u:sdb> for
 		  additional details to convert existing installations.
 		</para>
 
@@ -196,7 +207,7 @@
 		<para>
 		  The profile-based UCS network installation is not yet available in UCS 4.0-1. It will be
 		  provided at a later date. Please refer to our issue tracker for further details:
-		  <ulink url="&ucsbug;35537">Bug 35537</ulink>.
+		  <u:bug>35537</u:bug>.
 		</para>
 	  </section>
 
