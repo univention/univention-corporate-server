@@ -1,3 +1,9 @@
+ucs-test (5.0.136-7) unstable; urgency=low
+
+  * Bug #37931: 43_proxy/* timeout improvements
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 18 Mar 2015 18:18:29 +0100
+
 ucs-test (5.0.136-6) unstable; urgency=medium
 
   * 52_s4connector/100sync_gpo_ntsecurity_descriptor: udm cli is case
