@@ -1,0 +1,14 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: openssl
+fix: 1.0.1e-2.88.201503181219
+version: [0,1]
+desc: |
+ Multiple vulnerabilities have been found in OpenSSL:
+ * NULL pointer derererence in elliptic curves (CVE-2015-0209)
+ * NULL pointer dereference in X509 parsing (CVE-2015-0288)
+bug: [37960]
+cve:
+ - CVE-2015-0209
+ - CVE-2015-0288
