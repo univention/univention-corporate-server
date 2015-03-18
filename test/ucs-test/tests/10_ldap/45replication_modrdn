@@ -19,6 +19,14 @@ from univention.testing.strings import random_name
 from univention.testing.utils import wait_for_replication, stop_listener, start_listener
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+from atexit import register
+
+
+if __name__ == '__main__':
+	if utils.s4connector_present():
+		register(utils.start_s4connector)
+		utils.stop_s4connector()
+
 
 def _get_name_normal():
 	return random_name()
@@ -59,6 +67,7 @@ wait_for_replication()
 def check_listener_stop(consider_listener):
 	if consider_listener:
 		stop_listener()
+
 def check_listener_start(consider_listener):
 	if consider_listener:
 		start_listener()
@@ -85,7 +94,7 @@ for consider_listener in [False,True]:
 			wait_for_replication()
 			utils.verify_ldap_object(computer_new)
 			utils.verify_ldap_object(computer, should_exist=False)
-			
+
 			check_listener_stop(consider_listener)
 			name = computer_name+random_name(4) # make name uniq
 			print '\n***** Move twice *****'
