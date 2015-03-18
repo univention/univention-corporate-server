@@ -63,17 +63,17 @@ def explodeDn(dn, notypes=0):
 		return map(lambda(x): x[x.find('=')+1:], exploded_dn)
 	return exploded_dn
 
-def getAdminConnection(start_tls=2, decode_ignorelist=[]):
+def getAdminConnection(start_tls=2, decode_ignorelist=[]), reconnect=True:
 	ucr = ConfigRegistry()
 	ucr.load()
 	bindpw=open('/etc/ldap.secret').read()
 	if bindpw[-1] == '\n':
 		bindpw=bindpw[0:-1]
 	port = int(ucr.get('ldap/master/port', '7389'))
-	lo=access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,'+ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+	lo=access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,'+ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 	return lo
 
-def getBackupConnection(start_tls=2, decode_ignorelist=[]):
+def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	ucr = ConfigRegistry()
 	ucr.load()
 	bindpw=open('/etc/ldap-backup.secret').read()
@@ -81,16 +81,16 @@ def getBackupConnection(start_tls=2, decode_ignorelist=[]):
 		bindpw=bindpw[0:-1]
 	port = int(ucr.get('ldap/master/port', '7389'))
 	try:
-		lo=access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=backup,'+ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+		lo=access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=backup,'+ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 	except ldap.SERVER_DOWN, e:
 		if ucr['ldap/backup']:
 			backup=string.split(ucr['ldap/backup'],' ')[0]
-			lo=access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,'+ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+			lo=access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,'+ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 		else:
 			raise ldap.SERVER_DOWN, e
 	return lo
 
-def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True, secret_file = "/etc/machine.secret"):
+def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True, secret_file = "/etc/machine.secret", reconnect=True):
 	ucr = ConfigRegistry()
 	ucr.load()
 
@@ -101,12 +101,12 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True, 
 	if ldap_master:
 		# Connect to DC Master
 		port = int(ucr.get('ldap/master/port', '7389'))
-		lo=access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+		lo=access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 	else:
 		# Connect to ldap/server/name
 		port = int(ucr.get('ldap/server/port', '7389'))
 		try:
-			lo=access(host=ucr['ldap/server/name'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+			lo=access(host=ucr['ldap/server/name'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 		except ldap.SERVER_DOWN, e:
 			# ldap/server/name is down, try next server
 			if not ucr.get('ldap/server/addition'):
@@ -114,7 +114,7 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True, 
 			servers = ucr.get('ldap/server/addition', '')
 			for server in servers.split():
 				try:
-					lo=access(host=server, port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+					lo=access(host=server, port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 				except ldap.SERVER_DOWN, e:
 					pass
 				else:
