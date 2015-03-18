@@ -1,9 +1,9 @@
-univention-python (7.0.4-2) unstable; urgency=medium
+univention-python (7.0.4-3) unstable; urgency=medium
 
   * uldap.py: Added the parameter reconnect to getAdminConnection,
     getMachineConnection and getBackupConnection in order to control if
     a reconnect should be performed. In some situations a reconnect is
-    not desired for example in pam-session (Bug #36805)
+    not desired for example in pam-session (Bug #38078)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Mar 2015 16:37:28 +0100
 
