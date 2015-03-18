@@ -1,3 +1,10 @@
+ucs-test (5.0.136-6) unstable; urgency=medium
+
+  * 52_s4connector/100sync_gpo_ntsecurity_descriptor: udm cli is case
+    sensitive. The DN is now used in the exact case (Bug #37633)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Mar 2015 10:49:10 +0100
+
 ucs-test (5.0.136-5) unstable; urgency=low
 
   * Bug #33495, Bug #32244: 10_ldap/45replication_modrdn: Stop S4C
