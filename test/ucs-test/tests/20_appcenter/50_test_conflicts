@@ -1,0 +1,61 @@
+#!/usr/share/ucs-test/runner python
+# -*- coding: utf-8 -*-
+## desc: Simple check if App's must_have_no_conflicts_apps works as expected
+## tags: [basic]
+## bugs: [35661]
+## packages:
+##   - univention-management-console-module-appcenter
+## exposure: safe
+
+from tempfile import NamedTemporaryFile
+from contextlib import contextmanager
+import os.path
+
+import univention.testing.utils as utils
+
+from univention.lib.package_manager import PackageManager
+from univention.management.console.modules.appcenter.app_center import Application
+
+pm = PackageManager(lock=False)
+
+@contextmanager
+def init_app(**kwargs):
+	with NamedTemporaryFile() as f:
+		f.write('[Application]\n')
+		kwargs.setdefault('ID', os.path.basename(f.name))
+		kwargs.setdefault('Name', kwargs['ID'])
+		kwargs.setdefault('Version', '1.0')
+		for key, value in kwargs.iteritems():
+			f.write('%s=%s\n' % (key, value))
+		f.flush()
+		if Application._all_applications is None:
+			Application._all_applications = []
+		app = Application(f.name, localize=False)
+		Application._all_applications.append(app)
+		try:
+			yield app
+		finally:
+			Application._all_applications.remove(app)
+			if Application._all_applications == []:
+				Application._all_applications = None
+
+with init_app(ID='test1', ConflictedApps='test2, test3') as app, init_app(ID='test2', DefaultPackages='python'), init_app(ID='test3', DefaultPackages='python, someappspecificpackage'):
+	conflicts = app.must_have_no_conflicts_apps(pm)
+	print conflicts
+	if conflicts is True:
+		utils.fail('There should be a conflict between test1 and test2. Something is wrong!')
+	if not any(info['id'] == 'test2' for info in conflicts):
+		utils.fail('There should be a conflict between test1 and test2. Something is wrong!')
+	if any(info['id'] == 'test3' for info in conflicts):
+		utils.fail('There should be no conflict between test1 and test3. Something is wrong!')
+
+with init_app(ID='test1') as app, init_app(ID='test2', DefaultPackages='python', ConflictedApps='test1'), init_app(ID='test3', DefaultPackages='python, someappspecificpackage', ConflictedApps='test1'):
+	conflicts = app.must_have_no_conflicts_apps(pm)
+	print conflicts
+	if conflicts is True:
+		utils.fail('There should be a conflict between test1 and test2. Something is wrong!')
+	if not any(info['id'] == 'test2' for info in conflicts):
+		utils.fail('There should be a conflict between test1 and test2. Something is wrong!')
+	if any(info['id'] == 'test3' for info in conflicts):
+		utils.fail('There should be no conflict between test1 and test3. Something is wrong!')
+
