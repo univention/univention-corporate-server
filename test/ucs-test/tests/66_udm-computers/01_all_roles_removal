@@ -1,17 +1,18 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Remove object for all computer roles
-## tags: [SKIP-UCSSCHOOL,udm-computers,apptest]
+## tags: [udm-computers,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-
-
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.testing.utils as utils
+
+from univention.testing.decorators import SetTimeout
+utils.verify_ldap_object = SetTimeout(utils.verify_ldap_object)
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
@@ -20,4 +21,3 @@ if __name__ == '__main__':
 			udm.remove_object(role, dn = computer)
 
 			utils.verify_ldap_object(computer, should_exist = False)
-
