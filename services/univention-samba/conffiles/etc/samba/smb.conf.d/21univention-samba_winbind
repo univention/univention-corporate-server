@@ -14,9 +14,16 @@ if not admindn:
 		admindn='cn=admin,%s' % (ldap_base)
 	else:
 		admindn='cn=backup,%s' % (ldap_base)
+
+ldapserver = configRegistry['ldap/server/name'].split(' ')
+if configRegistry.get('ldap/server/addition',''):
+	ldapserver.extend( configRegistry.get('ldap/server/addition').split(' ') )
+port=configRegistry.get('ldap/server/port', '7389')
+ldapserver=map(lambda s: '%s:%s' % (s,port) , ldapserver)
+
 print '\tidmap config * : backend\t= ldap'
 print '\tidmap config * : range\t\t= 55000-64000'
-print '\tidmap config * : ldap_url\t= ldap://%s:%s' % (ldap_server_name, ldap_server_port)
+print '\tidmap config * : ldap_url\t= ldap://%s' % ' ldap://'.join(ldapserver)
 print '\tidmap config * : ldap_user_dn\t= %s' % (admindn)
 ## print '\tidmap config * : ldap_base_dn\t= cn=idmap,cn=univention,%s' % (ldap_base)
 
