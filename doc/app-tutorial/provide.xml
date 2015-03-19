@@ -18,7 +18,7 @@
 				a 32 bit UCS 3.2, one may update to UCS 4.0. It is therefore
 				recommended (but not required) to provide the app for amd64 and i386.
 				If i386 shall not be supported, one may specify
-				"SupportedArchitectures=amd64" in the ini file, see <xref
+				<literal>SupportedArchitectures=amd64</literal> in the ini file, see <xref
 					linkend="provide:meta"/>.
 		</para></note>
 
