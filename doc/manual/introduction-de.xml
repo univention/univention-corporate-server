@@ -127,7 +127,7 @@ seiner Installation eine so genannte Systemrolle zugewiesen.  Mögliche
 Systemrollen sind Domänencontroller, &ucsMember; und Client.
 </para>
 
-<figure><title>UCS-Domänenkonzept</title>
+<figure id="introduction:domain"><title>UCS-Domänenkonzept</title>
  <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/domainconcept.jpg"/>
 </figure>
 
@@ -218,7 +218,7 @@ Weiterführende Informationen finden sich in <xref linkend="domain:ldap"/>.
 <section id="introduction:Domaenenadministration"><title>Domänenadministration</title>
 
 <para>
-<figure><title>Univention Management Console</title>
+<figure id="introduction:umc"><title>Univention Management Console</title>
  <graphic scalefit="1" width="100%" fileref="illustrations40/umc-overview.png"/>
 </figure>
 </para>

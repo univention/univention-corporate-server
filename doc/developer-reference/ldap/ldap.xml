@@ -114,7 +114,7 @@
 		<para>
 			Since many of these parameters are determined automatically by the <function>ucs_registerLDAPExtension</function> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
 		</para>
-		<example>
+		<example id="join:registerSchema">
 			<title>Schema registration in join script</title>
 		<programlisting language="sh"><![CDATA[
 export UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
@@ -214,7 +214,7 @@ ucs_registerLDAPExtension "$@" \
 		<para>
 			Since many of these parameters are determined automatically by the <function>ucs_registerLDAPExtension</function> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
 		</para>
-		<example>
+		<example id="join:registerACL">
 			<title>LDAP ACL registration in join script</title>
 		<programlisting language="sh"><![CDATA[
 export UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
@@ -319,7 +319,7 @@ ucs_registerLDAPExtension "$@" \
 				They file must be executable and is called via <citerefentry><refentrytitle>run-parts</refentrytitle><manvolnum>8</manvolnum></citerefentry>.
 				It receives one argument, which is used to distinguish three phases:
 			</para>
-			<procedure>
+			<procedure id="join:serverPassword:procedure">
 				<title>Server password change procedure</title>
 				<step>
 					<para>
@@ -359,7 +359,7 @@ ucs_registerLDAPExtension "$@" \
 				</step>
 			</procedure>
 
-			<example>
+			<example id="join:serverPassword:example">
 				<title>Server password change example</title>
 				<para>
 					Install this file to <filename class="directory">/usr/lib/univention-server/server_password_change.d/</filename>.

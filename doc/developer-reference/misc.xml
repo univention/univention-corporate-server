@@ -489,7 +489,7 @@ override_dh_auto_test:
 			<para>
 				Some examples:
 			</para>
-			<example>
+			<example id="misc:firewall">
 				<title>Local firewall rule</title>
 				<programlisting><![CDATA[
 security/packetfilter/tcp/2000/all=DROP
@@ -534,7 +534,7 @@ security/packetfilter/udp/500:600/all/en=Accept UDP port 500 to 600
 			<programlisting language="sh">
 				<command>nmap <replaceable class="option">HOSTNAME</replaceable> <option>-sU</option> <option>-p</option> <replaceable class="option">PORT(s)</replaceable></command>
 			</programlisting>
-			<example>
+			<example id="misc:firewall:testing">
 				<title>Using <command>nmap</command> for firewall port testing</title>
 				<programlisting language="sh">
 nmap 192.168.1.100 -p 400

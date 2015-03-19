@@ -390,7 +390,7 @@ slapadd -l ldif
 	</section>
 </chapter>
 
-	<bibliography>
+	<bibliography id="bibliography">
 		<bibliomixed id="ucs-manual"/>
 	</bibliography>
 

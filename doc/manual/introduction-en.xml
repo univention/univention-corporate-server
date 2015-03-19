@@ -126,7 +126,7 @@ security and trust context, referred to as the UCS domain. Every UCS system is a
 during the installation. Possible system roles are domain controller, &ucsMember; and client.
 </para>
 <para>
-<figure><title>UCS domain concept</title>
+<figure id="introduction:domain"><title>UCS domain concept</title>
  <graphic scalefit="1" width="100%" fileref="illustrations40/domainconcept.jpg"/>
  </figure>
 </para>
@@ -213,7 +213,7 @@ Further information can be found in <xref linkend="domain:ldap"/>.
 
 <section id="introduction:Domain_administration"><title>Domain administration</title>
 <para>
-<figure><title>Univention Management Console</title>
+<figure id="introduction:umc"><title>Univention Management Console</title>
  <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/umc-overview_en.png"/>
 </figure>
 </para>

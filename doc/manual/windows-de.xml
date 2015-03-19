@@ -417,11 +417,9 @@ instanceType: 4
 			bezogen werden.
 		  </para>
 
-		  <para>
-			<figure><title>Aktivierung der Gruppenrichtlinienverwaltung</title>
+			<figure id="windows:gpo:activate"><title>Aktivierung der Gruppenrichtlinienverwaltung</title>
 			<graphic scalefit="1" width="90%" align="center" fileref="illustrations40/gpo-activate-de.png"/>
 			</figure>
-		  </para>
 
 		  <para>
 			Nach der Installation muss die Gruppenrichtlinienverwaltung in der Windows-Systemsteuerung
@@ -482,11 +480,9 @@ instanceType: 4
 			Speichermenge zu verwalten.
 		  </para>
 
-		  <para>
-			<figure><title>Bearbeiten einer Richtlinie</title>
+			<figure id="windows:gpo:edit"><title>Bearbeiten einer Richtlinie</title>
 			<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/gpo-edit-policy-de.png"/>
 			</figure>
-		  </para>
 
 		  <para>
 			Zwei Standard-Richtlinienobjekte sind vordefiniert:
@@ -529,11 +525,9 @@ instanceType: 4
 			werden:
 		  </para>
 
-		  <para>
-			<figure><title>Auswertung der GPO für den Benutzer <systemitem class="username">user01</systemitem></title>
+			<figure id="windows:gpo:user"><title>Auswertung der GPO für den Benutzer <systemitem class="username">user01</systemitem></title>
 			<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/gpo-gpresult-de.png"/>
 			</figure>
-		  </para>
 
 		  <para>
 			Die Richtlinien werden in folgender Reihenfolge ausgewertet:
@@ -640,11 +634,9 @@ END CATEGORY
 			</programlisting>
 		  </para>
 
-		  <para>
-			<figure><title>Die eingebundene administrative Vorlage</title>
+			<figure id="windows:gpo:admin"><title>Die eingebundene administrative Vorlage</title>
 			<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/gpo-adm-template-de.png"/>
 			</figure>
-		  </para>
 
 		  <para>
 			Die ADM-Datei kann anschließend in das ADMX-Format umgewandelt oder aber direkt über die Gruppenrichtlinienverwaltung importiert
@@ -858,11 +850,9 @@ END CATEGORY
 		</itemizedlist>
   </note>
 
-  <para>
-    <figure><title>Konfiguration des Betriebsmodus als Teil einer AD-Domäne</title>
+    <figure id="windows:gpo:mode"><title>Konfiguration des Betriebsmodus als Teil einer AD-Domäne</title>
       <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/admember_1-de.png"/>
     </figure>
-  </para>
 
   <para>
 	Im ersten Dialog der Einrichtungsassistenten ist der Punkt <emphasis>UCS als Teil einer
@@ -880,11 +870,9 @@ END CATEGORY
     Durch Betätigen der Schaltfläche <mousebutton>AD-Domäne beitreten</mousebutton> wird der Domänenbeitritt gestartet.
   </para>
 
-  <para>
-    <figure><title>Domänenbeitritt zu einer AD-Domäne</title>
+    <figure id="windows:ad:join"><title>Domänenbeitritt zu einer AD-Domäne</title>
       <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/admember_2-de.png"/>
     </figure>
-  </para>
 
   <para>
     Falls die Systemzeit des UCS-Systems mehr als 5 Minuten gegenüber der Systemzeit des AD-Domänencontrollers vorgeht, ist eine manuelle Angleichung der Systemzeiten notwendig. Dies ist notwendig, da die AD-Kerberos-Infrastruktur zur Authentifizierung verwendet wird.
@@ -1060,11 +1048,9 @@ echo -n "Administrator password" > /etc/univention/connector/password
 	  Im ersten Dialog der Einrichtungsassistenten muss der Punkt <emphasis>Synchronisation von Kontendaten zwischen einer AD und dieser UCS-Domäne</emphasis> ausgewählt und mit <mousebutton>Weiter</mousebutton> bestätigt werden.
 	</para>
 
-	<para>
-	  <figure><title>Konfiguration des UCS AD-Connectors in UMC</title>
+	  <figure id="windows:ad:connector"><title>Konfiguration des UCS AD-Connectors in UMC</title>
 	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/adconnector_1-de.png"/>
 	  </figure>
-	</para>
 
 	<para>
 	  Im nächsten Dialog wird die Adresse eines AD-Domänencontrollers abgefragt.
@@ -1144,11 +1130,9 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	  </para>
 	</note>
 
-	<para>
-	 <figure><title>Administrationsdialog für die Active Directory-Verbindung</title>
+	 <figure id="windows:ad:dialog"><title>Administrationsdialog für die Active Directory-Verbindung</title>
 	 <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/adconnector_2-de.png"/>
 	 </figure>
-	</para>
 
 	</section>
 
@@ -1202,11 +1186,9 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	  nachinstalliert werden:
 	</para>
 
-	<para>
-	  <figure><title>Export des Root-Zertifikats unter Windows 2008</title>
+	  <figure id="windows:2008:ca"><title>Export des Root-Zertifikats unter Windows 2008</title>
 	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/adconnector_23-de.png"/>
 	  </figure>
-	</para>
 
 	<para>
 	  <guimenu>Start &ar; Systemsteuerung &ar; Programme und Funktionen &ar; Windows-Funktionen
@@ -1774,7 +1756,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	  Administratorpasswort</guimenu> das dazugehörige Passwort.
 	</para>
 
-	<figure>
+	<figure id="windows:ad:takeover1">
 	  <title>Erste Phase der Domänenmigration</title>
 	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover1-de.png"/>
 	</figure>
@@ -1783,7 +1765,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	  Das Modul prüft, ob der AD-Domänencontroller erreicht werden kann und zeigt die zu
 	  migrierenden Domänendaten an:
 
-	<figure>
+	<figure id="windows:ad:takeover2">
 	  <title>Übersicht über die zu migrierenden Daten</title>
 	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover2-de.png"/>
 	</figure>
@@ -1841,7 +1823,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	  Das aufzurufende Kommando wird im UMC-Modul angezeigt. Wenn es erfolgreich aufgerufen wurde,
 	  muss mit <guimenu>Weiter</guimenu> bestätigt werden.
 
-	  <figure>
+	  <figure id="windows:ad:sysvol">
 		<title>Kopieren der Sysvol-Freigabe</title>
 		<graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover3-de.png"/>
 	  </figure>
@@ -1861,7 +1843,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	  heruntergefahren werden. Anschließend muss im UMC-Modul auf <guimenu>Weiter</guimenu> geklickt
 	  werden.
 
-	  <figure>
+	  <figure id="windows:ad:shutdown">
 		<title>Herunterfahren des/der AD-Systeme</title>
 		<graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover4-de.png"/>
 	  </figure>

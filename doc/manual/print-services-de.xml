@@ -680,7 +680,7 @@
 		Ist noch kein Druckertreiber hinterlegt, wird die folgende Fehlermeldung angezeigt, die mit
 		<guimenu>Nein</guimenu> bestätigt werden muss.
 		</simpara>
-		<figure>
+		<figure id="printer:error">
 		  <title>Fehlermeldung beim ersten Zugriff</title>
 		  <graphic scalefit="1" align="center" width="40%" fileref="illustrations40/windows-printerdriver-de.png"/>
 		</figure>

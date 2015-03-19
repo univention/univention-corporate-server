@@ -49,7 +49,7 @@
 		<para>
 			Source code: <ulink url="&websvn;doc/developer-reference/packaging/testdeb/"/>
 		</para>
-		<procedure>
+		<procedure id="pkg:procedure">
 			<title>Checking out and building a UCS package</title>
 			<step performance="optional">
 				<para>Create the top level working directory</para>

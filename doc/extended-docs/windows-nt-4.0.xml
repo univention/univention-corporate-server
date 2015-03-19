@@ -443,7 +443,7 @@ net rpc trustdom list
 	  </section>
 	</chapter>
 
-  <bibliography>
+  <bibliography id="bibliography">
     <bibliomixed id="ucs-handbuch"/>
     <bibliomixed id="wiki-samba-update"/>
     <bibliomixed id="windows-trust"/>

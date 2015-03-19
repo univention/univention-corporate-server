@@ -183,7 +183,7 @@ virsh pool-refresh iscsi
 				Univention recommends to setup a new virtualization server using <application>KVM</application> and to copy over the exiting image files to the new server.
 				This has the advantage that the new setup can be tested thoroughly and a fall-back to the old hypervisor using <application>Xen</application> is possible.
 			</para>
-			<procedure>
+			<procedure id="uvmm:xen2kvm">
 				<title>Convert virtual machines from Xen to KVM</title>
 				<step performance="optional">
 					<para>
@@ -308,7 +308,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 							If anything goes wrong, the server has to be restored from backup and must be re-joined!
 						</para>
 					</warning>
-					<procedure>
+					<procedure id="uvmm:xen2kvm:inplace">
 						<title>Migrate server from Xen to KVM in-place</title>
 						<step>
 							<para>Shut down all virtual machines running on this server.</para>
@@ -353,7 +353,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 					<para>
 						If only a few virtual machines need migration, it is easier to create new virtual machines which re-use the old images:
 					</para>
-					<procedure>
+					<procedure id="uvmm:xen2kvm:reuse">
 						<title>Re-define virtual machines only re-using images</title>
 						<step>
 							<para>
@@ -404,7 +404,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 					<para>
 						If many virtual machines need updating, the <abbrev>XML</abbrev> definition from <application>Xen</application> can be semi-automatically transformed into a <abbrev>XML</abbrev> definition for <application>QEMU/KVM</application>.
 					</para>
-					<procedure>
+					<procedure id="uvmm:xen2kvm:redefine">
 						<title>Re-define virtual machines converting the Xen XML definition</title>
 						<step>
 							<para>
@@ -644,7 +644,7 @@ univention-install xen
 			As this interface name is referenced in the domain configurations of all existing virtual machines, they will no longer start.
 			This is further complicated by the fact, that each snapshot and saved virtual machine also contains the old information, which should be updated.
 		</para>
-		<procedure>
+		<procedure id="uvmm:bridge">
 			<title>Convert virtual machines to new network bridge setup</title>
 			<step>
 				<para>
@@ -771,7 +771,7 @@ univention-install xen
 
 	</chapter>
 
-	<bibliography>
+	<bibliography id="bibliography">
 		<bibliomixed id="ucs-manual"/>
 	</bibliography>
 

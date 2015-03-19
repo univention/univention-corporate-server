@@ -117,7 +117,7 @@ Datei <filename>/etc/exports</filename>, bzw. in die Samba-Konfigurationsdatei
 eingetragen/modifiziert oder entfernt.
 </para>
 
-<figure><title>Anlegen einer Freigabe in UMC</title>
+<figure id="shares:create"><title>Anlegen einer Freigabe in UMC</title>
  <graphic scalefit="1" width="100%" fileref="illustrations40/projekt-freigabe_DE.png"/>
 </figure>
 
@@ -1097,7 +1097,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 	  einem Mount Point eingebunden sind.
 	</para>
 
-	<figure>
+	<figure id="shares:quota">
 	  <title>Aktivierung von Quota</title>
 	  <graphic scalefit="1" width="100%" fileref="illustrations40/quota-overview-en.png"/>
 	</figure>

@@ -669,7 +669,7 @@
 		If no printer driver is yet stored, the following error is displayed, which must be
 		confirmed with <guimenu>No</guimenu>.
 		</simpara>
-  		<figure>
+  		<figure id="printer:error">
   		  <title>Error message during first access</title>
   		  <graphic scalefit="1" align="center" width="40%" fileref="illustrations40/windows-printerdriver-en.png"/>
   		</figure>

@@ -109,7 +109,7 @@ When adding/editing/deleting a share, it is entered, modified or removed
 in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 </para>
 
-<figure><title>Creating a share in UMC</title>
+<figure id="shares:umc"><title>Creating a share in UMC</title>
  <graphic scalefit="1" width="100%" fileref="illustrations40/projekt-freigabe_EN.png"/>
 </figure>
 
@@ -1050,7 +1050,7 @@ Microsoft Distributed File System Tree'.
 	  point.
 	</para>
 
-	<figure>
+	<figure id="shares:quota">
 	  <title>Managing quota in the UMC</title>
 	  <graphic scalefit="1" width="100%" fileref="illustrations40/quota-overview-en.png"/>
 	</figure>

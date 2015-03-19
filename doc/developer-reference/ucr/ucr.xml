@@ -49,7 +49,7 @@
 							Set &ucsUCRV; <varname>key</varname> to the given <varname>value</varname>.
 							Using <literal>=</literal> forces an assignment, while <literal>?</literal> only sets the value if the variable is unset.
 						</para>
-						<example>
+						<example id="ucr:set">
 							<title>Use of <command>ucr set</command></title>
 							<programlisting><![CDATA[
 ucr set print/papersize?a4 \
@@ -72,7 +72,7 @@ ucr set print/papersize?a4 \
 						<para>
 							Return the current value of the &ucsUCRV; <varname>key</varname>.
 						</para>
-						<example>
+						<example id="ucr:get">
 							<title>Use of <command>ucr get</command></title>
 							<programlisting><![CDATA[
 case "$(ucr get system/role)" in
@@ -87,7 +87,7 @@ esac
 							It returns 0 (success) for the values <simplelist type="inline"><member>"1"</member><member>"yes"</member><member>"on"</member><member>"true"</member><member>"enable"</member><member>"enabled"</member></simplelist>, 1 for the negated values <simplelist type="inline"><member>"0"</member><member>"no"</member><member>"off"</member><member>"false"</member><member>"disable"</member><member>"disabled"</member></simplelist>.
 							For all other values it returns a value of 2 to indicate inappropriate usage.
 						</para>
-						<example>
+						<example id="ucr:true">
 							<title>Use of <command>is_ucr_true</command></title>
 							<programlisting><![CDATA[
 . /usr/share/univention-lib/ucr.sh
@@ -113,7 +113,7 @@ fi
 						<para>
 							Unset the &ucsUCRV; <varname>key</varname>.
 						</para>
-						<example>
+						<example id="ucr:unset">
 							<title>Use of <command>ucr unset</command></title>
 							<programlisting><![CDATA[
 ucr unset print/papersize variable/namme
@@ -136,7 +136,7 @@ ucr unset print/papersize variable/namme
 							Export some or all &ucsUCRV;s in a shell compatible manner as environment variables.
 							All shell-incompatible characters in variable names are substituted by underscores (<literal>_</literal>).
 						</para>
-						<example>
+						<example id="ucr:shell">
 							<title>Use of <command>ucr shell</command></title>
 							<programlisting><![CDATA[
 eval "$(ucr shell)"
@@ -173,7 +173,7 @@ esac
 				An instance of <classname>univention.config_registry.ConfigRegistry</classname> needs to be crated first.
 				After loading the current database state with <methodname>load()</methodname> the values can be accessed by using the instance like a Python dictionary:
 			</para>
-			<example>
+			<example id="ucr:python:read">
 				<title>Reading a &ucsUCRV; in Python</title>
 				<programlisting><![CDATA[
 from univention.config_registry import ConfigRegistry
@@ -188,7 +188,7 @@ print ucr.get('variable/name', '<not set>')
 				The former returns <literal>True</literal> for the values <simplelist type="inline"><member>"1"</member><member>"yes"</member><member>"on"</member><member>"true"</member><member>"enable"</member><member>"enabled"</member></simplelist>, while the later one returns <literal>True</literal> for the negated values <simplelist type="inline"><member>"0"</member><member>"no"</member><member>"off"</member><member>"false"</member><member>"disable"</member><member>"disabled"</member></simplelist>.
 				Both methods accept an optional argument <option>default</option>, which is returned as-is when the variable is not set.
 			</para>
-			<example>
+			<example id="ucr:python:bool">
 				<title>Reading boolean &ucsUCRV;s in Python</title>
 				<programlisting><![CDATA[
 if ucr.is_true('repository/online/unmaintained'):
@@ -205,7 +205,7 @@ if ucr.is_false('repository/online/unmaintained', True):
 				Modifying variables requires a different approach.
 				The function <function>ucr_update()</function> should be used to set and unset variables.
 			</para>
-			<example>
+			<example id="ucr:python:change">
 				<title>Changing &ucsUCRV;s in Python</title>
 				<programlisting><![CDATA[
 from univention.config_registry.frontend import ucr_update
@@ -229,7 +229,7 @@ ucr_update(ucr, {
 				Both functions expect an array of strings with the same syntax as used with the command line tool <command>ucr</command>.
 				As the functions <function>handler_set()</function> and <function>handler_unset()</function> don't automatically update any instance of <classname>ConfigRegistry</classname>, the method <methodname>load()</methodname> has to be called manually afterwards to reflect the updated values.
 			</para>
-			<example>
+			<example id="ucr:python:unset">
 				<title>Setting and unsetting &ucsUCRV;s in Python</title>
 				<programlisting><![CDATA[
 from univention.config_registry import handler_set, handler_unset

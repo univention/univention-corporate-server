@@ -414,11 +414,9 @@ instanceType: 4
 			for Windows 8.
 		  </para>
 
-		  <para>
-			<figure><title>Activating the Group Policy Management tools</title>
+			<figure id="windows:gpo:activate"><title>Activating the Group Policy Management tools</title>
 			<graphic scalefit="1" width="90%" align="center" fileref="illustrations40/gpo-activate-en.png"/>
 			</figure>
-		  </para>
 
 		  <para>
 			Following the installation, Group Policy Management must still be enabled in the Windows
@@ -475,11 +473,9 @@ instanceType: 4
 			policy could include an additional option for managing the storage space.
 		  </para>
 
-		  <para>
-			<figure><title>Editing a policy</title>
+			<figure id="windows:gpo:edit"><title>Editing a policy</title>
 			<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/gpo-edit-policy-en.png"/>
 			</figure>
-		  </para>
 
 		  <para>
 			Two standard policy objects are predefined:
@@ -519,11 +515,9 @@ instanceType: 4
 			/v </command> in the Windows command line.
 		  </para>
 
-		  <para>
-			<figure><title>Evaluating the GPO for the user <systemitem class="username">user01</systemitem></title>
+			<figure id="windows:gpo:user"><title>Evaluating the GPO for the user <systemitem class="username">user01</systemitem></title>
 			<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/gpo-gpresult-en.png"/>
 			</figure>
-		  </para>
 
 		  <para>
 			The policies are evaluated in the following order:
@@ -628,11 +622,9 @@ END CATEGORY
 			</programlisting>
 		  </para>
 
-		  <para>
-			<figure><title>The activated administrative template</title>
+			<figure id="windows:gpo:admin"><title>The activated administrative template</title>
 			<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/gpo-adm-template-en.png"/>
 			</figure>
-		  </para>
 
 		  <para>
 			The ADM file can then be converted to the ADMX format or imported directly via Group
@@ -809,11 +801,9 @@ END CATEGORY
 		</itemizedlist>
   </note>
 
-  <para>
-    <figure><title>Configuration of the operating mode as part of an AD domain</title>
+    <figure id="windows:gpo:mode"><title>Configuration of the operating mode as part of an AD domain</title>
       <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/admember_1-en.png"/>
     </figure>
-  </para>
 
   <para>
 	In the first dialogue window of the set-up wizard, the point <emphasis>Configure UCS as part of an AD domain</emphasis> is preselected and can be confirmed with <mousebutton>Next</mousebutton>.
@@ -825,11 +815,9 @@ END CATEGORY
     Pressing the <mousebutton>Join AD domain</mousebutton> button starts the domain join.
   </para>
 
-  <para>
-    <figure><title>Domain join of an AD domain</title>
+    <figure id="windows:ad:join"><title>Domain join of an AD domain</title>
       <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/admember_2-en.png"/>
     </figure>
-  </para>
 
   <para>
     If the system time of the UCS system is more than 5 minutes ahead of the system time of the AD domain controller, manual adjustment of the system times is required. This is necessary because the AD Kerberos infrastructure is used for the authentication.
@@ -985,11 +973,9 @@ echo -n "Administrator password" > /etc/univention/connector/password
 	In the first dialogue window of the set-up wizard, the point <emphasis>Synchronisation of content data between an AD and this UCS domain</emphasis> must be selected and confirmed with <mousebutton>Next</mousebutton>.
 	</para>
 
-  <para>
-	<figure><title>Configuration of the UCS AD Connector in UMC</title>
+	<figure id="windows:ad:connector"><title>Configuration of the UCS AD Connector in UMC</title>
 	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/adconnector_1-en.png"/>
 	</figure>
-  </para>
 
   <para>
 	The address of an AD domain controller is requested in the next dialogue window.
@@ -1055,11 +1041,9 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	</para>
   </note>
 
-  <para>
-    <figure><title>Administration dialogue for the Active Directory Connection</title>
+    <figure id="windows:ad:dialog"><title>Administration dialogue for the Active Directory Connection</title>
       <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/adconnector_2-en.png"/>
     </figure>
-  </para>
 
 </section>
 
@@ -1111,11 +1095,9 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	  before proceeding.
 	</para>
 
-	<para>
-	  <figure><title>Exporting the root certificate on Windows 2008</title>
+	  <figure id="windows:2008:ca"><title>Exporting the root certificate on Windows 2008</title>
 	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/adconnector_23-en.png"/>
 	  </figure>
-	</para>
 
 	<para>
 	  <guimenu>Start &ar; Server Manager &ar; Add or Remove Programs &ar; Add Roles &ar; Next &ar;
@@ -1697,7 +1679,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	  password</guimenu>.
 	</para>
 
-	<figure>
+	<figure id="windows:ad:takeover1">
 	  <title>First phase of domain migration</title>
 	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover1-en.png"/>
 	</figure>
@@ -1706,7 +1688,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	  The module checks whether the AD domain controller can be accessed and displays the domain
 	  data to be migrated.
 
-	<figure>
+	<figure id="windows:ad:takeover2">
 	  <title>Overview of the data to be migrated</title>
 	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover2-en.png"/>
 	</figure>
@@ -1763,7 +1745,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	  The command to be run in shown in the UMC module. If it has been successfully run, it must be
 	  confirmed with <guimenu>Next</guimenu>.
 
-	  <figure>
+	  <figure id="windows:ad:sysvol">
 		<title>Copying the SYSVOL share</title>
 		<graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover3-en.png"/>
 	  </figure>
@@ -1784,7 +1766,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	  controllers of the Active Directory domain. Then <guimenu>Next</guimenu> must be clicked in
 	  the UMC module.
 
-	  <figure>
+	  <figure id="windows:ad:shutdown">
 		<title>Shutdown of the AD server(s)</title>
 		<graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover4-en.png"/>
 	  </figure>

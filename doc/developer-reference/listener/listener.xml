@@ -572,7 +572,7 @@ univention-directory-listener-verify \
 			<para>
 				The following steps occur on changes:
 			</para>
-			<procedure>
+			<procedure id="listener:procedure">
 				<title>Listener/Notifier procedure</title>
 				<step>
 					<para>

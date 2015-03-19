@@ -258,7 +258,7 @@
 			Der Domänenbeitritt wird in der Regel mit dem lokalen Administrator-Konto
 			des Windows-Systems durchgeführt.
 		</para>
-		<figure>
+		<figure id="domain-ldap:join:win7">
 			<title>Domänenbeitritt eines Windows 7-Systems</title>
 			<graphic scalefit="1" width="80%" fileref="illustrations40/win7-join_2-de.png"/>
 		</figure>
@@ -439,7 +439,7 @@
 			angeklickt werden.
 		  </para>
 
-		<figure>
+		<figure id="domain-ldap:join:osx">
 			<title>Domänenbeitritt eines Mac OS X-Systems</title>
 			<graphic scalefit="1" width="60%" fileref="illustrations40/macosx-bind_de.png"/>
 		</figure>
@@ -995,7 +995,7 @@ slapcat &gt; ldapdaten.txt
 		</itemizedlist>
 	  </para>
 	
-	  <figure>
+	  <figure id="domain-join:listener-notifier">
 		<title>Listener/Notifier-Mechanismus</title>
 		<graphic scalefit="1" width="80%" fileref="illustrations40/administration-overview.png"/>
 	  </figure>

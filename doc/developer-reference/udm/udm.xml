@@ -471,7 +471,7 @@ class StaticSelection(select):
 					For performance reason it is recommended to implement a class derived from <classname>UDM_Attribute</classname> or <classname>UDM_Objects</classname> instead of using <classname>LDAP_Search</classname>.
 					The file <filename>/usr/share/pyshared/univention/admin/syntax.py</filename> contains several examples.
 				</para>
-				<example>
+				<example id="udm:ea:select:dynamic:example">
 					<title>Dynamic selection list for Extended Attributes</title>
 					<para>
 						The idea is to create a container with sub-entries for each selection.

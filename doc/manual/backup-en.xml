@@ -86,7 +86,7 @@ which is responsible for saving the data on physical media. In addition,
 meta information concerning the backups are also saved in a database via
 the <emphasis>catalog</emphasis>.
 		</para>
-		<figure><title>Bacula Schema</title>
+		<figure id="backup:bacula"><title>Bacula Schema</title>
 			<graphic scalefit="1" width="60%" fileref="illustrations40/bacula.png"/>
 		</figure>
 	</section>

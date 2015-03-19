@@ -257,7 +257,7 @@
 		effect.
 	  </para>
 
-	  <figure>
+	  <figure id="domain-ldap:join:win7">
 		<title>Domain join of a Windows 7 system</title>
 		<graphic scalefit="1" width="80%" fileref="illustrations40/win7-join_2-en.png"/>
 	  </figure>
@@ -418,7 +418,7 @@
 			that menu it is possible to open the <guimenu>Directory Utility</guimenu>.
 		  </para>
 
-		<figure>
+		<figure id="domain-ldap:join:osx">
 			<title>Domain join of a Mac OS X system</title>
 			<graphic scalefit="1" width="60%" fileref="illustrations40/macosx-bind_en.png"/>
 		</figure>
@@ -962,7 +962,7 @@ slapcat &gt; ldapdata.txt
 
 	</para>
 
-	<figure>
+	<figure id="domain-join:listener-notifier">
 	  <title>Listener/Notifier mechanism</title>
 	  <graphic scalefit="1" width="80%" fileref="illustrations40/administration-overview_en.png"/>
 	</figure>

@@ -61,7 +61,7 @@
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="appendix-qa.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../stylesheets/bibliography-en.xml"/>
 	-->
-	<bibliography>
+	<bibliography id="bibliography">
 		<bibliomixed id="ucs-handbuch"/>
 		<biblioentry id="RFC2254">
 			<abbrev>RFC2254</abbrev>
@@ -136,6 +136,6 @@
 	<!--
 	<?dbhtml-include href="../stylesheets/piwik.html"?>
 	-->
-	<index/>
+	<index id="index"/>
 </book>
 <!-- vim:set ts=2 sw=2 noet ft=docbk:-->

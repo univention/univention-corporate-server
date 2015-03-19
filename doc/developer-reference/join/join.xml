@@ -516,7 +516,7 @@ VERSION="3"
 								Registers the additional service <option>servicename</option> in the LDAP object representing the local host.
 								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> are passed on as-is.
 							</para>
-							<example>
+							<example id="join:addService">
 								<title>Service registration in join script</title>
 							<programlisting language="sh">
 ucs_addServiceToLocalhost "MyService" "$@"
@@ -535,7 +535,7 @@ ucs_addServiceToLocalhost "MyService" "$@"
 								Removes the service <option>servicename</option> from the LDAP object representing the local host, effectively reverting an <command>ucs_addServiceToLocalhost</command> call.
 								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> are passed on as-is.
 							</para>
-							<example>
+							<example id="join:removeService">
 								<title>Service unregistration in unjoin script</title>
 							<programlisting language="sh">
 ucs_removeServiceFromLocalhost "MyService" "$@"
@@ -553,7 +553,7 @@ ucs_removeServiceFromLocalhost "MyService" "$@"
 							<para>
 								Returns <literal>0</literal> if no LDAP host object exists where the service <option>servicename</option> is registered with.
 							</para>
-							<example>
+							<example id="join:unusedService">
 								<title>Check for unused service in unjoin script</title>
 							<programlisting language="sh">
 if ucs_isServiceUnused "MyService" "$@"
@@ -706,7 +706,7 @@ fi
 								in the <acronym>LDAP</acronym> directory which make use of it.
 							</para>
 
-							<example>
+							<example id="join:registerExtensions">
 								<title>Extension registration in join script</title>
 							<programlisting language="sh">
 export UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
@@ -749,7 +749,7 @@ ucs_registerLDAPExtension "$@" \
 							<para>
 								There is a corresponding <command>ucs_unregisterLDAPExtension</command> function, which can be used to unregister extension objects. This only works if no App is registered any longer for the object. It must not be called unless it has been verified that no object in <acronym>LDAP</acronym>  still requires this schema extension. For this reason it should generally not be called in unjoin scripts.
 							</para>
-							<example>
+							<example id="join:unregisterExtensions">
 								<title>Schema unregistration in unjoin script</title>
 							<programlisting language="sh">
 . /usr/share/univention-lib/ldap.sh
