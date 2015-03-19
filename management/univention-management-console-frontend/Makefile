@@ -63,7 +63,7 @@ $(tmpDir):
 
 # convert .po to .json files
 i18n:
-	/usr/bin/dh-umc-translate -p univention-management-console-frontend -l en -l de -o umc $(jsFiles)
+	/usr/bin/dh-umc-translate -p univention-management-console-frontend -l en -l de -o umc $(jsFiles) index.html
 
 $(buildDir):
 	mkdir -p $@
