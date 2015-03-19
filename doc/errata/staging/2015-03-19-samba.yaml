@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: samba
+fix: 2:4.2.0~rc2-1.729.201503191909
+version: [0,1]
+desc: |
+  This update fixes the following issue:
+  * NetApp filer NAS devices joined to a Samba/AD DC failed to lookup SIDs
+    due to an issue in negotiating strong encryption for server authentication.
+bug: [37874]
