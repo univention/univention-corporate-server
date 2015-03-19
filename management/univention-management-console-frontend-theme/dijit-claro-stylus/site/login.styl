@@ -72,8 +72,13 @@
 	background: transparent;
 	font-size: 1.5em;
 	color: #787878;
-	width: 100%;
+	float: left;
+	width: 257px;
 	height: 100%;
+}
+#umcLoginDialog #umcLoginForm span.umcHelpIcon {
+	opacity: 0.6;
+	margin-top: 4px;
 }
 #umcLoginDialog .umcLoginForm input[type=submit] {
 	icon-image(0, -160, "../");
@@ -88,13 +93,6 @@
 	icon-image(0, -160, "../", "-white");
 }
 
-#umcLoginDialog .umcLoginForm label:nth-last-child(1) input {
-	float: left;
-}
-#umcLoginDialog .umcLoginForm label:nth-last-child(1) input:first-child {
-	width: 92%;
-	width: 257px;
-}
 #umcLoginMessages {
 	margin: 0 auto;
 	padding: 1.3em;
