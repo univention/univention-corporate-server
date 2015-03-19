@@ -1,3 +1,10 @@
+ucs-test (4.0.212-1) unstable; urgency=low
+
+  * Bug #38017: SetTimeout decorator added to univention.testing lib
+  * Bug #38017: 66_udm-computers.01_all_roles_removal is modified to use the mentioned decorator for utils.verify_ldap_object
+
+ -- Ammar Najjar <najjar@univention.de>  Thu, 19 Mar 2015 10:31:24 +0100
+
 ucs-test (4.0.211-3) unstable; urgency=medium
 
   * 10_ldap/05K5KEY_userexpiry: limit test to DC master (Bug #31429)
