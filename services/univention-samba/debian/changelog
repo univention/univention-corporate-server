@@ -1,3 +1,10 @@
+univention-samba (9.0.5-5) unstable; urgency=medium
+
+  * Add LDAP servers configured via ldap/server/addition to the list of
+    idmap servers (Bug #36805)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Mar 2015 06:32:43 +0100
+
 univention-samba (9.0.5-4) unstable; urgency=medium
 
   * Bug #37476: Fix version number in update condition
