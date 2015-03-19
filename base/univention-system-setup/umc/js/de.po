@@ -1011,7 +1011,7 @@ msgid ""
 "Login to Univention Management Console with the domain account "
 "<b>Administrator</b>:"
 msgstr ""
-"Melden Sie sicht mit dem Domänenkonto <b>Administrator</b> an Univention Management Console an:"
+"Melden Sie sich mit dem Domänenkonto <b>Administrator</b> an Univention Management Console an:"
 
 #: umc/js/setup/InterfaceWizard.js:438
 msgid "MII link monitoring frequency"
