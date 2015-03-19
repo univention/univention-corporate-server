@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (4.1.20-17) unstable; urgency=low
+
+  * Bug #35661: App conflicts with another app only when all packages of that
+    are installed, less is not enough
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 19 Mar 2015 23:50:38 +0100
+
 univention-management-console-module-appcenter (4.1.20-16) unstable; urgency=medium
 
   * Bug #37908: fix links to univention.de

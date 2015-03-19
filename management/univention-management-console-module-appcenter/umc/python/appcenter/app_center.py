@@ -1018,11 +1018,8 @@ class Application(object):
 				# cannot be installed, continue
 				continue
 			if app.id in self.get('conflictedapps') or self.id in app.get('conflictedapps'):
-				if any(package_manager.is_installed(package) for package in app.get('defaultpackages')):
-					if app.name not in conflictedapps:
-						# can conflict multiple times: conflicts with
-						# APP-1.1 and APP-1.2, both named APP
-						conflictedapps.append({'id' : app.id, 'name' : app.name})
+				if app.is_installed(package_manager):
+					conflictedapps.append({'id' : app.id, 'name' : app.name})
 		if conflictedapps:
 			return conflictedapps
 		return True
