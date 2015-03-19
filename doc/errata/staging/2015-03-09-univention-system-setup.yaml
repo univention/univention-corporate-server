@@ -2,11 +2,15 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-system-setup
-fix: 8.1.66-24.851.201503131331
+fix: 8.1.66-25.852.201503191057
 version: [1]
 desc: |
   This update addresses the following issues:
   * Additional connection and setup information is now shown by
     displaying the file motd.setup before the system is fully configured.
   * Error handling during saving in the system setup modules has been improved.
-bug: [37129, 36843]
+  * A warning is displayed during appliance mode when to few memory is
+    available for installing UCS.
+  * The instructions how to access Univention Management Console for the first
+    time has been enhanced.
+bug: [37129, 36843, 36460, 37804]
