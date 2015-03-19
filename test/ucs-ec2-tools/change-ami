@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Change AMI in Jenkins configuration
 #
