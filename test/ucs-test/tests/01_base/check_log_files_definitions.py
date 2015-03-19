@@ -64,6 +64,11 @@ class Errors(LogMessage):
 		r".*statoverride: error: an override for '/var/log/lastlog' already exists",  # Bug 37502
 		r".*statoverride: error: an override for '/var/log/faillog' already exists",  # Bug 37502
 		r".*ln: failed to create symbolic link `java': File exists",  # Bug 37503
+		r"Action 'start' failed.",
+		r'The Apache error log may have more information.',
+		r'failed!',
+		r'invoke-rc.d: initscript apache2, action "start" failed',
+		r"Unable to locate package could-initramfs-growroot",
 	]
 
 	# extra ignore patterns for case when line == 'failed.'

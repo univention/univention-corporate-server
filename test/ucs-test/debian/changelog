@@ -1,3 +1,9 @@
+ucs-test (5.0.136-12) unstable; urgency=low
+
+  * Bug #36902: 01/99: Ignore Apache errors for now.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 19 Mar 2015 21:45:29 +0100
+
 ucs-test (5.0.136-11) unstable; urgency=medium
 
   * Skip various nested group tests if the ldap/base contains uppercase
