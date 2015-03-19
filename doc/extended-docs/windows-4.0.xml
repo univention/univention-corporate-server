@@ -171,10 +171,10 @@ root@backup:~#
 		If SSL is used for the connection encryption, the exported Active Directory certificate must be converted via <command>openssl</command> into the required format, for example:
 
 <programlisting language="sh">
-openssl x509 -inform der -outform pem -in infile.cer -out outfile.pem
+openssl x509 -inform der -outform pem -in infile.cer -out ad-connector2.pem
 </programlisting>
 
-		The file name of the certificate is subsequently stored in 
+		The file name of the converted certificate then needs to be stored in 
 		&ucsUCR;:
 
 <programlisting language="sh">
