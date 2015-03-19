@@ -40,6 +40,7 @@ import univention.config_registry as ub
 import inspect
 import notifier
 from OpenSSL import SSL
+from cStringIO import StringIO
 
 MAX_JSON_ID = 999999
 MIN_JSON_ID = 1
@@ -52,6 +53,9 @@ LOGDEBUG = 4
 
 loglevel = 0
 logobj = None
+
+baseconfig = ub.ConfigRegistry()
+baseconfig.load()
 
 
 def debug( level, msg ):
@@ -70,8 +74,16 @@ def debug( level, msg ):
 		logobj.write( "%s [L%s]: %s\n" % (time.asctime( time.localtime()), printInfo[1], msg) )
 		logobj.flush()
 
-baseconfig = ub.ConfigRegistry()
-baseconfig.load()
+
+def save_unpickle(data):
+	fd = StringIO(data)
+	unpickler = cPickle.Unpickler(fd);
+	unpickler.find_global = None
+
+	try:
+		return unpickler.load()
+	except cPickle.UnpicklingError:
+		return {}
 
 
 class LogCollectorClient( object ):
@@ -193,8 +205,7 @@ class LogCollectorClient( object ):
 					packet = json.loads(data)
 				except ValueError:
 					# try old format
-					import cPickle
-					packet = cPickle.loads(data)
+					packet = save_unpickle(data)
 				# remove data from buffer
 				self._inbuffer = self._inbuffer[4+plen:]
 

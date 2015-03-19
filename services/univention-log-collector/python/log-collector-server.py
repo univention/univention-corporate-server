@@ -39,6 +39,7 @@ import json
 import cPickle
 import sys
 import grp
+from cStringIO import StringIO
 
 from optparse import OptionParser
 from univention.config_registry import ConfigRegistry
@@ -64,21 +65,14 @@ def log(level, msg):
 
 def save_unpickle(data):
 	log(WARN, 'Legacy client in use...')
-	def forbidden(*a,**kw):
-		log(ERROR, 'Hacking attempt: not unpickling %r' % (data,))
-		raise ValueError('Hacking attempt')
-	import pickle
-	from cStringIO import StringIO
 	fd = StringIO(data)
-	unpickler = pickle.Unpickler(fd)
-	for key in [
-		'R', # Prevent __reduce__
-		'c', # Prevent globals
-		'b', 'i', 'o', b'\x80', b'\x81']:  # not sure what they do, sounds dangerous and does not break anything to forbid them (build, inst, obj, proto, newobj)
-		unpickler.dispatch[key] = forbidden
+	unpickler = cPickle.Unpickler(fd);
+	unpickler.find_global = None
+
 	try:
 		return unpickler.load()
-	except ValueError:
+	except cPickle.UnpicklingError as exc:
+		log(ERROR, 'unpickling failed. hacking attempt? %r' % (exc,))
 		return {}
 
 
