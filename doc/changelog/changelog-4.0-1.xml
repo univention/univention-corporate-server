@@ -220,7 +220,7 @@
 <section id="changelog:basic">
   <title>Basic system services</title>
 
-  <section id="changelog:basic:kernel">
+  <section>
 	<title>Linux kernel and firmware packages</title>
 	<itemizedlist>
 	  <listitem><simpara>
