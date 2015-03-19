@@ -40,6 +40,23 @@
 				return defaultVal;
 			}
 
+			var _fillUsernameField = function() {
+				require('dojo/dom').byId('umcLoginUsername').value = 'Administrator';
+			};
+			var _showLoginTooltip = function(evt) {
+				require(["dojo/on", "dojo/_base/event", "dijit/Tooltip",  "umc/i18n!umc/app"], function(on, dojoEvent, Tooltip, _) {
+					var node = evt.target;
+					Tooltip.show(_('Please login with a valid username and password. A login with an e-mail address is not possible. The default username to manage the domain is %s.', '<b><a href="javascript:void();" onclick="_fillUsernameField()">Administrator</a></b>'), node);
+					if (evt) {
+						dojoEvent.stop(evt);
+					}
+					on.once(dojo.body(), 'click', function(evt) {
+						Tooltip.hide(node);
+						dojoEvent.stop(evt);
+					});
+				});
+			};
+
 			var locale = getQuery('lang') || getCookie('UMCLang');
 			if (locale) {
 				locale = locale.replace('_', '-');
@@ -104,6 +121,9 @@
 				<form id="umcLoginForm" name="umcLoginForm" action="blank.html" method="post" class="umcLoginForm" autocomplete="on">
 					<label for="umcLoginUsername">
 						<input placeholder="Username" id="umcLoginUsername" name="username" type="text" autocomplete="on"/>
+						<a href="javascript:void(0);" onclick="_showLoginTooltip(event);">
+							<span class="dijitReset dijitInline dijitIcon umcHelpIcon"></span>
+						</a>
 					</label>
 					<label for="umcLoginPassword">
 						<input placeholder="Password" id="umcLoginPassword" name="password" type="password" autocomplete="on"/>

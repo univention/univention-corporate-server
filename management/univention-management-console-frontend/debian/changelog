@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-41) unstable; urgency=medium
+
+  * Bug #37804: Add a hint to login as administrator in the login dialog
+
+ -- Florian Best <best@univention.de>  Thu, 19 Mar 2015 09:23:48 +0100
+
 univention-management-console-frontend (4.1.106-40) unstable; urgency=medium
 
   * Bug #37908: fix links to univention.de
