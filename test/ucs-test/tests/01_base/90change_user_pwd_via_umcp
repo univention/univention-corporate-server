@@ -4,7 +4,7 @@
 ## roles: [domaincontroller_master]
 ## packages:
 ##  - univention-directory-manager-tools
-## tags: [basic, apptest]
+## tags: [basic, apptest, skip_admember]
 ## exposure: dangerous
 
 from time import sleep

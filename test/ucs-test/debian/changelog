@@ -1,3 +1,10 @@
+ucs-test (5.0.136-8) unstable; urgency=medium
+
+  * 01_base/90change_user_pwd_via_umcp: disable the test case in AD
+    member mode (Bug #38082)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Mar 2015 10:18:52 +0100
+
 ucs-test (5.0.136-7) unstable; urgency=low
 
   * Bug #37931: 43_proxy/* timeout improvements
