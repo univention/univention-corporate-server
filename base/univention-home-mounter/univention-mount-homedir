@@ -58,9 +58,6 @@ def hostname_fqdn():
 def get_homeattr(username):
 	'''return automountInformation of <username>, if any'''
 	try:
-		connection = univention.uldap.getMachineConnection(ldap_master=False, reconnect=False)
-	except TypeError:
-		# old version of univention.uldap
 		connection = univention.uldap.getMachineConnection(ldap_master=False)
 	except Exception, err:
 		return None
