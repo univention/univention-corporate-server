@@ -56,6 +56,11 @@
 		</para>
 
 		<para>
+			The OpenLDAP server of UCS listens on port 7389 by default, not on 389. This is due to Samba 4
+			requiring port 389.
+		</para>
+
+		<para>
 			More information about the OpenLDAP server in UCS can be found <ulink
 			url="http://docs.univention.de/manual.html#domain:ldap">in the manual</ulink>.
 		</para>
@@ -477,7 +482,7 @@ fi
 
 # revert joinscript_save_current_version - so that the join script
 # would run again if the app is reinstalled
-joinscript_remove_script_from_status_file 50app.inst
+joinscript_remove_script_from_status_file app
 
 exit 0
 		</programlisting>
