@@ -60,7 +60,7 @@
 		<listitem><simpara>
 		  <envar>description</envar> configures a longer description of an overview entry. The description
 		  can also be translated; e.g. <envar>description/de</envar> can be used for a description
-		  in German.
+		  in German. Should not exceed 60 characters, because of space limitations of the rendered box.
 		</simpara></listitem>
 
 		<listitem><simpara>
