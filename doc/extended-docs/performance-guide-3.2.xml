@@ -19,7 +19,7 @@
 	</revhistory>
 </bookinfo>
 
-<chapter>
+<chapter id="intro">
 	<title>Introduction</title>
 	<para>
 		In its default configuration, UCS is suitable for environments with up to
@@ -126,6 +126,7 @@
 				</para>
 			</listitem>
 		</itemizedlist>
+	</section>
 
 		<section id="slapd:acl">
 			<title>OpenLDAP ACLs</title>
@@ -148,7 +149,6 @@
 				directory requests.
 			</para>
 		</section>
-	</section>
 
 	<section id="listener">
 		<title>Univention Directory Listener</title>
@@ -232,7 +232,7 @@
 </chapter>
 
 
-<chapter>
+<chapter id="umc">
   <title>UCS management system</title>
 
   <section id="umc:search:auto">
@@ -257,7 +257,7 @@
 </chapter>
 
 
-<chapter>
+<chapter id="services">
 	<title>Further services and components</title>
 	<section id="squid">
 		<title>Squid</title>
@@ -367,7 +367,7 @@
 
 </chapter>
 
-	<bibliography>
+	<bibliography id="bibliography">
 		<bibliomixed id="ucs-manual"/>
 	</bibliography>
 
