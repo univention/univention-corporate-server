@@ -89,6 +89,7 @@ define([
 				'system/setup/boot/pages/whitelist',
 				'system/setup/boot/pages/blacklist',
 				'system/setup/boot/fields/blacklist',
+				'system/setup/boot/minimal_memory',
 				'system/setup/boot/installer',
 				'umc/modules/setup/network/disabled/by',
 				'umc/web/appliance/*'

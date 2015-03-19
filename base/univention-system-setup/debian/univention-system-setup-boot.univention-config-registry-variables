@@ -21,3 +21,9 @@ Description[de]=Diese Variable konfiguriert eine Negativeliste für die im Appli
 Description[en]=This variable configures a blacklist for the dialogues present in appliance configuration mode. Dialogues listed here are not shown. Multiple entries need to be separated by a blank. Possible values: 'SystemRolePage', 'SoftwarePage', 'locale', 'welcome'. If the variable is unset, all dialogues are shown.
 Type=str
 Categories=system-base
+
+[system/setup/boot/minimal_memory]
+Description[de]=Erzeugt eine Warnung im Appliance-Konfigurations-Modus wenn das System weniger Arbeitsspeicher besitzt als der in MiB angegebene Wert.
+Description[en]=Causes a warning to be shown in the appliance configuration mode if the system has less memory than the value given in MiB.
+Type=int
+Categories=system-base

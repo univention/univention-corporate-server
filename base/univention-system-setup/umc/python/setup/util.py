@@ -45,6 +45,7 @@ import os.path
 import simplejson as json
 import random
 import urllib2
+import psutil
 from contextlib import contextmanager
 
 from univention.lib.i18n import Translation, Locale
@@ -130,6 +131,9 @@ def load_values():
 
 	# root password
 	values['root_password'] = ''
+
+	# memory
+	values['memory_total'] = psutil.virtual_memory().total / 1024.0 / 1024.0  # MiB
 
 	# get timezone
 	if os.path.exists('/etc/timezone'):

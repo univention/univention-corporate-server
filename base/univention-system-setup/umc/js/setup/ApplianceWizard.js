@@ -610,6 +610,7 @@ define([
 				layout: [
 					'organization',
 					'email_address',
+					'_user_account',
 					'root_password'
 				],
 				widgets: [{
@@ -626,6 +627,11 @@ define([
 						'</a>)',
 					validator: _validateEmailAddress,
 					invalidMessage: _invalidEmailAddressMessage
+				}, {
+					type: Text,
+					name: '_user_account',
+					style: 'margin-top: 2em;',
+					content: _('Fill in the password for the system administrator user <b>root</b> and the domain administrative user account <b>Administrator</b>.'),
 				}, {
 					type: PasswordInputBox,
 					required: true,
@@ -978,6 +984,27 @@ define([
 			}
 			if (msg) {
 				_showTooltip(evt.target, msg, evt);
+			}
+		},
+
+		_showMemoryWarning: function() {
+			var memory_min = Math.max(parseInt(this.ucr['system/setup/boot/minimal_memory'], 10) || 512, 512);
+			if (memory_min > this.values.memory_total) {
+				_memString = function(memory) {
+					if (memory < 1024) {
+						return _('%s MiB', parseInt(memory));
+					}
+					return _('%s GiB', parseInt(memory / 1024));
+				}
+				var message = lang.replace(
+					'<p class="umcSetupMemoryWarning">' + _('<b>Warning:</b> At least {memory_min} RAM is required for the installation of {product_name}.') + ' ' +
+					_('This system only has {memory_total} RAM.') + ' ' + _('Continuing the installation might lead to a broken or hung up system.') + ' ' +
+					_('If you want to upgrade your memory first please press the power button of your server to shutdown the system.') + '</p>', {
+					memory_min: _memString(memory_min),
+					memory_total: _memString(this.values.memory_total),
+					product_name: _('Univention Corporate Server')  // TODO: appliance name?
+				});
+				dialog.alert(message, _('Warning'));
 			}
 		},
 
@@ -1516,6 +1543,8 @@ define([
 			}
 			msg += '</ul>';
 
+			this._showMemoryWarning();
+
 			this.getWidget('summary', 'info').set('content', msg);
 		},
 
@@ -1608,9 +1637,9 @@ define([
 					msg += '<p>' + _('The system has been configured with the IP address(es) %s.', ips.join(', ')) + '</p>';
 				}
 				if (isMaster) {
-					msg += '<p>' + _('To administrate the domain as well as the local system, login to Univention Management Console as user <i>Administrator</i>:') + '</p>';
+					msg += '<p>' + _('Login to Univention Management Console as user <b>Administrator</b>:') + '</p>';
 				} else {
-					msg += '<p>' + _('To administrate the local system, login to Univention Management Console with the domain account <i>Administrator</i>:') + '</p>';
+					msg += '<p>' + _('Login to Univention Management Console with the domain account <b>Administrator</b>:') + '</p>';
 				}
 				msg += this._getUMCLinks();
 			} else {
@@ -1623,7 +1652,7 @@ define([
 			if (array.indexOf(this.disabledFields, 'reboot') !== -1) {
 				msg += _('<p>After clicking on the button <i>Finish</i> the system will be prepared for the first boot procedure and will be rebooted.</p>');
 			} else {
-				msg += _('<p>It is mandatory to click on <i>Finish</i> for putting UCS into operation and completing the setup process.</p>');
+				msg += _('<p>Click on <i>Finish</i> for putting UCS into operation.</p>');
 			}
 			this.getPage('done').set('helpText', msg);
 		},

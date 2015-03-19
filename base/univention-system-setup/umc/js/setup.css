@@ -198,3 +198,10 @@
 	background-image: url(setup/done.svg);
 }
 
+.umcSetupMemoryWarning {
+	background-image: url(setup/warning.svg);
+	background-repeat: no-repeat;
+	min-height: 96px;;
+	background-size: 96px;
+	padding-left: 96px;
+}

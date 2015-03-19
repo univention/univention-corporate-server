@@ -1,3 +1,11 @@
+univention-system-setup (8.1.66-25) unstable; urgency=medium
+
+  * Bug #36460: Show a warning if the system does not have enough RAM to
+  	install
+  * Bug #37804: enhance information about Administrator user account
+
+ -- Florian Best <best@univention.de>  Thu, 19 Mar 2015 10:03:21 +0100
+
 univention-system-setup (8.1.66-24) unstable; urgency=low
 
   * Bug #36843: changed timing so that save only continues if the 
