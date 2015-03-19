@@ -318,7 +318,7 @@
 
 </chapter>
 
-<bibliography>
+<bibliography id="bibliography">
   <bibliomixed id="ucs-handbuch"/>
   <bibliomixed id="ucs-systemrole"/>
   <bibliomixed id="ucs-winjoin"/>
