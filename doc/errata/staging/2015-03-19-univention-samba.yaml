@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-samba
+fix: 9.0.5-5.495.201503190635
+version: [1]
+desc: |
+  If the first configured LDAP server was not reachable, timeouts
+  could occur during the share access on a member server. This has
+  been fixed.
+bug: [36805]
