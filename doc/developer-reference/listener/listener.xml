@@ -545,7 +545,7 @@ univention-directory-listener-verify \
 				The &ucsUDL; service listens for those notifications, downloads the changes and runs listener modules performing arbitrary local actions like storing the data in a local <abbrev>LDAP</abbrev> server for replication or generating configuration files for non-<abbrev>LDAP</abbrev>-aware local services.
 			</para>
 			<figure id="listener:schema"><title>Listener/Notifier mechanism</title>
-				<graphic scalefit="1" width="80%" fileref="illustrations/ListenerNotifier.png"/>
+				<graphic scalefit="1" width="80%" fileref="illustrations40/ListenerNotifier.png"/>
 			</figure>
 			<para>
 				On startup the listener connects to the notifier and opens a persistent <abbrev>TCP</abbrev> connection.
