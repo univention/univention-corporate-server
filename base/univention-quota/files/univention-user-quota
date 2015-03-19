@@ -69,11 +69,7 @@ def get_blocks(size):
 
 
 def get_shares():
-	try:
-		lo = univention.uldap.getMachineConnection(ldap_master=False, reconnect=False)
-	except TypeError:
-		# old version of univention.uldap
-		lo = univention.uldap.getMachineConnection(ldap_master=False)
+	lo = univention.uldap.getMachineConnection(ldap_master=False)
 	shares = {}
 	for dn, attrs in lo.search(filter='(&(objectClass=univentionShare)(univentionShareHost=%s.%s))' % (ucr.get('hostname', ''), ucr.get('domainname', '')), attr=['univentionSharePath']):
 		policy_result = univention.lib.policy_result.policy_result(dn)[0]
