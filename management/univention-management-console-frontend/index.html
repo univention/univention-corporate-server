@@ -42,6 +42,7 @@
 
 			var _fillUsernameField = function() {
 				require('dojo/dom').byId('umcLoginUsername').value = 'Administrator';
+				require('dojo/dom').byId('umcLoginPassword').focus();
 			};
 			var _showLoginTooltip = function(evt) {
 				require(["dojo/on", "dojo/_base/event", "dijit/Tooltip",  "umc/i18n!umc/app"], function(on, dojoEvent, Tooltip, _) {
