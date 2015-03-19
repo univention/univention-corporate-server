@@ -510,7 +510,7 @@ msgstr "Passwort"
 msgid ""
 "Please login with a valid username and password. A login with an e-mail "
 "address is not possible. The default username to manage the domain is %s."
-msgstr "Bitte melden Sie sich mit einem gültigem Benutzername und Passwort an. Eine Anmeldung mit einer E-Mail-Adresse ist nicht möglich. Der Standardbenutzername zur Administration der Domäne ist %s."
+msgstr "Bitte melden Sie sich mit einem gültigen Benutzername und Passwort an. Eine Anmeldung mit einer E-Mail-Adresse ist nicht möglich. Der Standardbenutzername zur Administration der Domäne ist %s."
 
 #: umc/tools.js:762
 msgid "Please take a second to provide the following information:"
