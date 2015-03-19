@@ -2,11 +2,10 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-log-collector
-fix: 8.0.0-3.29.201502121708
+fix: 8.0-0-5.31.201503191345
 version: [0,1]
 desc: |
   This update addresses the following issues:
-  * Use JSON instead of pickle for communication between server and client.
   * Limit collection of files to the set up basepath.
   * Require a SSL certificate to be given when communicating with the server.
 bug: [36452]
