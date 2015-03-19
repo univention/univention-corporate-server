@@ -1,0 +1,19 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-5
+src: postgresql-8.4
+fix: 8.4.22lts1-0.23.201503191059
+version: [5]
+desc: |
+ Multiple vulnerabilities have been found in PostgreSQL:
+ * Buffer overflows in "to_char" functions (CVE-2015-0241)
+ * Memory errors in functions in the pgcrypto extension (CVE-2015-0243)
+ * An error in extended protocol message reading (CVE-2015-0244)
+ * Constraint violation errors can cause display of values in columns
+   which the user would not normally have rights to see (CVE-2014-8161)
+bug: [37703]
+cve:
+ - CVE-2015-0241
+ - CVE-2015-0243
+ - CVE-2015-0244
+ - CVE-2014-8161
