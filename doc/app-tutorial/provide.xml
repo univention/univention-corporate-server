@@ -8,10 +8,19 @@
 	<title>Provide the App</title>
 		<para>
 			Until now you should have your software solution packaged as Debian package(s) including
-			a separate package taking care of the UCS integration. Please make sure you have packages for amd64
-			and i386, as well. To finish the app, you'll need to add the meta data for the App Center and upload
-			it to Univention.
+			a separate package taking care of the UCS integration. To finish the app, you'll need to
+			add the meta data for the App Center and upload it to Univention.
 		</para>
+
+		<note><para>
+				Starting with UCS 4.0, only 64 bit installation images are provided.
+				Univention does support 32 bit for at least UCS 4.x, though. When using
+				a 32 bit UCS 3.2, one may update to UCS 4.0. It is therefore
+				recommended (but not required) to provide the app for amd64 and i386.
+				If i386 shall not be supported, one may specify
+				"SupportedArchitectures=amd64" in the ini file, see <xref
+					linkend="provide:meta"/>.
+		</para></note>
 
 		<para>
 			For the archive to be uploaded, the following directory structure is recommended:
