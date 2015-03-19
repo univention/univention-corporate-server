@@ -7,6 +7,7 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
+import sys
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
@@ -16,6 +17,10 @@ GROUP_TYPE_LOCAL="-2147483643"
 GROUP_TYPE_DOMAIN_LOCAL="-2147483644"
 GROUP_TYPE_GLOBAL="-2147483646"
 GROUP_TYPE_UNIVERSAL="-2147483640"
+
+if utils.uppercase_in_ldap_base():
+	# https://forge.univention.org/bugzilla/show_bug.cgi?id=38088
+	sys.exit(137)
 
 def _test_local_group_change():
 	with udm_test.UCSTestUDM() as udm:

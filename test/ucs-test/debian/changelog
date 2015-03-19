@@ -1,3 +1,10 @@
+ucs-test (5.0.136-10) unstable; urgency=medium
+
+  * Skip various nested group tests if the ldap/base contains uppercase
+    chars (Bug #38088)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Mar 2015 13:32:52 +0100
+
 ucs-test (5.0.136-9) unstable; urgency=medium
 
   * Disable some more tests in AD member mode (Bug #37289)

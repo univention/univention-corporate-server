@@ -396,6 +396,10 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 				if self_ver is not None and other_ver is not None]
 		return self.rel(*zip(*parts))  # pylint: disable-msg=W0142
 
+def uppercase_in_ldap_base():
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+	return not ucr.get('ldap/base').islower()
 
 if __name__ == '__main__':
 	import doctest
