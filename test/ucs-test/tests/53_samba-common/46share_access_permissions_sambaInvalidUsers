@@ -3,6 +3,7 @@
 ## exposure: safe
 ## packages:
 ##  - univention-samba | univention-samba4
+## tags: [skip_admember]
 ## roles:
 ## - domaincontroller_master
 ## - domaincontroller_backup

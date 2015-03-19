@@ -1,3 +1,9 @@
+ucs-test (5.0.136-9) unstable; urgency=medium
+
+  * Disable some more tests in AD member mode (Bug #37289)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Mar 2015 10:49:24 +0100
+
 ucs-test (5.0.136-8) unstable; urgency=medium
 
   * 01_base/90change_user_pwd_via_umcp: disable the test case in AD

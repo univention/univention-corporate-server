@@ -7,7 +7,7 @@
 ##  * Log in with this user using ssh
 ##  * Try to change password with kpasswd to "too short password" and parse its output
 ##  * Test "long password" and "too short password" by trying to log in using ssh
-## tags: [basic]
+## tags: [basic,skip_admember]
 ## bugs: [10013]
 ## roles:
 ##  - domaincontroller_master
