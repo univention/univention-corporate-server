@@ -24,7 +24,7 @@ my_mv /etc/ssh/ssh_known_hosts{,.$$}
 my_mv "${HOME}/.ssh/known_hosts"{,.$$}
 
 if univention-ssh "$tests_domainadmin_pwdfile" "root@${hostname}.${domainname}" true && \
-	[ -n "$(ssh-keygen -F "${hostname}.${domainname}")" ]
+	[ -n "$(ssh-keygen -F "${hostname,,}.${domainname,,}")" ]
 then
 	exit 100 # OK
 else

@@ -1,3 +1,10 @@
+ucs-test (5.0.136-14) unstable; urgency=medium
+
+  * 40univention-ssh_unknown: use lowercase hostname and domainname for
+    ssh-keygen search (Bug #37917)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Mar 2015 06:08:55 +0100
+
 ucs-test (5.0.136-13) unstable; urgency=low
 
   * Bug #35661: Test conflicts between apps
