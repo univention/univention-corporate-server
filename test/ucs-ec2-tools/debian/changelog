@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.10-2) unstable; urgency=low
+
+  * examples/jenkins/autotest-230-master-s4-w2k12-member-join.cfg:
+    call shutdown_windows_host with DOMAIN_MODE=True (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 20 Mar 2015 11:06:09 +0100
+
 ucs-ec2-tools (1.0.10-1) unstable; urgency=low
 
   * examples/jenkins/utils/utils.sh: call shutdown_windows_host with
