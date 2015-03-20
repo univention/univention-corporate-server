@@ -17,5 +17,5 @@ desc: |
     - mail/postfix/mastercf/options/smtps/...
   * The first changes to the main.cf framework have been done for defining
     a custom restriction rule set via UCR variables for postfix' smtps
-	port (465). There is currently no change in postfix behaviour.
+    port (465). There is currently no change in postfix behaviour.
 bug: [38061,37442,38049]

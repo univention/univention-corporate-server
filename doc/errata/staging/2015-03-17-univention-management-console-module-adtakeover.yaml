@@ -5,6 +5,7 @@ src: univention-management-console-module-adtakeover
 fix: 2.0.7-1.61.201503171318
 version: [1]
 desc: |
-  This update fixes a traceback which occurred when Active Directory builtin accounts
-  where positioned in an non-default location in the AD LDAP directory.
+  This update fixes a traceback which occurred when Active Directory
+  built-in accounts where positioned in an non-default location in the
+  AD LDAP directory.
 bug: [37596]

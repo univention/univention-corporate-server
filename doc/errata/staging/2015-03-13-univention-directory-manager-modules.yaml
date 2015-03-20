@@ -12,6 +12,6 @@ desc: |
   * Added a validation for the mail domain name to check if it is only composed
     of lowercase letters, the figures 0-9, full stops and hyphens.
     To restore the old behavior you can overwrite the syntax from the cli:
-    ucr set 
+    ucr set \
     directory/manager/web/modules/mail/domain/properties/name/syntax='string'
 bug: [37504,21585, 34552]

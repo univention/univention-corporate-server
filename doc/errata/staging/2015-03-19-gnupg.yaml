@@ -5,7 +5,7 @@ src: gnupg
 fix: 1.4.12-7.66.201503191340
 version: [0,1]
 desc: |
- Multiple security issues have been found in gnupg:
+ Multiple security issues have been found in GnuPG:
  * use after free when using non-standard keyring (CVE-2015-1606)
  * Side-channel attack on El-Gamal keys (CVE-2014-3591)
  * Side-channel attack in the mpi_pow() function (CVE-2015-0837)
