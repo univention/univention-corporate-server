@@ -443,9 +443,9 @@ class WinExe:
 		''' Reboots this windows host'''
 		return self.winexec("reboot", domain_mode=False)
 
-	def shutdown_remote_win_host(self):
+	def shutdown_remote_win_host(self, domain_mode=False):
 		''' Shuts down this windows host'''
-		self.winexec("shutdown", domain_mode=True)
+		self.winexec("shutdown", domain_mode=domain_mode)
 
 	def set_gateway(self, gateway, domain_mode=True):
 		''' Sets the gateway on windows host'''

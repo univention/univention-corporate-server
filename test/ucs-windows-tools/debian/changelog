@@ -1,3 +1,10 @@
+ucs-windows-tools (2.0.9-1) unstable; urgency=low
+
+  * lib/winexe.py: added domain_mode as argument to
+    shutdown_remote_windows_host function. (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 20 Mar 2015 11:02:32 +0100
+
 ucs-windows-tools (2.0.8-1) unstable; urgency=low
 
   * lib/winexe.py: reboot the Windows Host after GPMC installation to
