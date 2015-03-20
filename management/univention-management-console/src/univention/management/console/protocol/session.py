@@ -51,8 +51,6 @@ import notifier.popen as popen
 from notifier import threads
 
 import univention.admin.uldap as udm_uldap
-import univention.admin.objects as udm_objects
-import univention.admin.modules as udm_modules
 import univention.admin.uexceptions as udm_errors
 
 from univention.lib.i18n import Translation, I18N_Error
@@ -72,23 +70,6 @@ from ..log import CORE
 from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND, ucr
 from ..locales import I18N, I18N_Manager
 from ..modules.sanitizers import StringSanitizer, DictSanitizer, ValidationError
-
-users_module = None
-try:
-	# get the users/user UDM module
-	udm_modules.update()
-	users_module = udm_modules.get('users/user')
-except udm_errors.base as e:
-	# UDM error, user module coule not be initiated
-	CORE.warn('An error occurred getting the UDM users/user module: %s' % e)
-except AttributeError as e:
-	# Strange error that should not have happened. Probably because of
-	#   udm_syntax.SomeUnknownSytax in a handler which is not yet loaded.
-	#   This is a problem as users_module is not initialized but should happen
-	#   only outside real UMC usage (e.g. when using a script which imports
-	#   univention.management.console.log.MODULE or something)
-	# See Bug #32565
-	CORE.warn('An error occurred loading UDM handlers. Probably an unknown syntax. This error message is only a problem when not executed in helper scripts like postinst or similar. %s' % e)
 
 TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
 
@@ -261,16 +242,16 @@ class Processor(signals.Provider):
 		try:
 			# get LDAP connection with machine account
 			self.lo, self.po = udm_uldap.getMachineConnection(ldap_master=False)
-		except (ldap.LDAPError, IOError) as e:
+		except (ldap.LDAPError, udm_errors.base, IOError) as exc:
 			# problems connection to LDAP server or the server is not joined (machine.secret is missing)
-			CORE.warn('An error occurred connecting to the LDAP server: %s' % e)
+			CORE.warn('An error occurred connecting to the LDAP server: %s' % (exc,))
 			self.lo = None
 
 	def shutdown(self):
 		"""Instructs the module process to shutdown"""
 		CORE.info('The session is shutting down. Sending UMC modules an EXIT request (%d processes)' % len(self.__processes))
 		for module_name, process in self.__processes.items():
-			CORE.info('Ask module %s to shutdown gracefully' % module_name)
+			CORE.info('Ask module %s to shutdown gracefully' % (module_name,))
 			req = Request('EXIT', arguments=[module_name, 'internal'])
 			process.request(req)
 
@@ -358,22 +339,12 @@ class Processor(signals.Provider):
 
 		self.signal_emit('response', res)
 
-	def _get_user_obj(self):
+	def _get_user_connection(self):
 		if not self.__user_dn:
-			# local user (probably root)
-			return None
+			return  # local user (probably root)
 		try:
-			# make sure that the UDM users/user module could be initiated
-			if not users_module:
-				raise udm_errors.base('UDM module users/user could not be initiated')
-
-			if not self.__udm_users_module_initialised:
-				# initiate the users/user UDM module
-				udm_modules.init(self.lo, self.po, users_module)
-				self.__udm_users_module_initialised = True
-
 			# open an LDAP connection with the user password and credentials
-			lo = udm_uldap.access(
+			return udm_uldap.access(
 				host=ucr.get('ldap/server/name'),
 				base=ucr.get('ldap/base'),
 				port=int(ucr.get('ldap/server/port', '7389')),
@@ -381,18 +352,8 @@ class Processor(signals.Provider):
 				bindpw=self.__password,
 				follow_referral=True
 			)
-
-			# try to open the user object
-			userObj = udm_objects.get(users_module, None, lo, self.po, self.__user_dn)
-			if not userObj:
-				raise udm_errors.noObject()
-			userObj.open()
-			return userObj
-		except udm_errors.noObject as e:
-			CORE.warn('Failed to open UDM user object for user %s' % (self.__username))
-		except (udm_errors.base, ldap.LDAPError) as e:
-			CORE.warn('Failed to open UDM user object %s: %s' % (self.__user_dn, e))
-		return None
+		except (ldap.LDAPError, udm_errors.base) as exc:
+			CORE.warn('Failed to open LDAP connection for user %s: %s' % (self.__user_dn, exc))
 
 	def _translate(self, message, translationId):
 		try:
@@ -429,20 +390,7 @@ class Processor(signals.Provider):
 				self._reload_acls_and_permitted_commands()
 				self._reload_i18n()
 
-			favorites = set()
-			userObj = self._get_user_obj()
-			if userObj:
-				favorites = dict(userObj.info.get('umcProperty', [])).setdefault('favorites', ucr.get('umc/web/favorites/default', '')).strip()
-				favorites = set(favorites.split(','))
-			else:  # no LDAP user
-				favorites = set(ucr.get('umc/web/favorites/default', '').split(','))
-
-			# appcenter module has changed to appcenter:appcenter -> make sure
-			# that it will be in the favorites also after an update from
-			# UCS 3.2 to UCS 4.0 (cf. Bug #36416)
-			if 'appcenter' in favorites:
-				favorites.add('appcenter:appcenter')
-
+			favorites = self._get_user_favorites()
 			modules = []
 			for id, module in self.__command_list.items():
 				# check for translation
@@ -499,21 +447,14 @@ class Processor(signals.Provider):
 			CORE.info('Categories: %s' % (res.body['categories'],))
 		elif 'user/preferences' in msg.arguments:
 			# fallback is an empty dict
-			res.body['preferences'] = {}
-
-			# query user's UMC properties
-			userObj = self._get_user_obj()
-			if userObj:
-				res.body['preferences'] = dict(userObj.info.get('umcProperty', []))
-			else:
-				res.status = BAD_REQUEST_INVALID_OPTS
+			res.body['preferences'] = self._get_user_preferences(self._get_user_connection())
 		elif 'hosts/list' in msg.arguments:
 			self._init_ldap_connection()
 			if self.lo:
 				try:
 					domaincontrollers = self.lo.search(filter="(objectClass=univentionDomainController)")
-				except ldap.LDAPError as e:
-					CORE.warn('Could not search for domaincontrollers: %s' % (e))
+				except (ldap.LDAPError, udm_errors.base) as exc:
+					CORE.warn('Could not search for domaincontrollers: %s' % (exc))
 					domaincontrollers = []
 				res.result = ['%s.%s' % (computer['cn'][0], computer['associatedDomain'][0]) for dn, computer in domaincontrollers if computer.get('associatedDomain')]
 				res.result.sort()
@@ -552,51 +493,32 @@ class Processor(signals.Provider):
 			if key == 'locale':
 				try:
 					self.core_i18n.set_language(value)
-					CORE.info('Setting locale: %s' % value)
+					CORE.info('Setting locale: %r' % (value,))
 					self.i18n.set_locale(value)
-				except (I18N_Error, AttributeError, TypeError) as e:
+				except (I18N_Error, AttributeError, TypeError):
 					res.status = BAD_REQUEST_UNAVAILABLE_LOCALE
 					res.message = status_description(res.status)
-					CORE.warn('Setting locale to specified locale failed (%s)' % value)
+					CORE.warn('Setting locale to specified locale failed (%r)' % (value,))
 					CORE.warn('Falling back to C')
 					self.core_i18n.set_language('C')
 					self.i18n.set_locale('C')
 					break
 			elif key == 'user' and isinstance(value, dict) and 'preferences' in value:
-				# try to open the user object
-				userObj = self._get_user_obj()
-				if not userObj:
-					res.status = BAD_REQUEST_INVALID_OPTS
-					res.message = status_description(res.status)
-					break
 				try:
 					# make sure we got a dict
 					prefs = value['preferences']
 					if not isinstance(prefs, dict):
-						raise ValueError('user preferences are not a dict: %s' % prefs)
+						raise ValueError('user preferences are not a dict: %r' % (prefs,))
 
-					# iterate over all given user preferences
-					newPrefs = []
-					for prefKey, prefValue in prefs.iteritems():
-						if not isinstance(prefKey, basestring):
-							raise ValueError('user preferences keys needs to be strings: %s' % prefKey)
+					lo = self._get_user_connection()
+					# eliminate double entries
+					preferences = self._get_user_preferences(lo)
+					preferences.update(dict(prefs))
+					if preferences:
+						self._set_user_preferences(lo, preferences)
 
-						# we can put strings directly into the dict
-						if isinstance(prefValue, basestring):
-							newPrefs.append((prefKey, prefValue))
-						else:
-							newPrefs.append((prefKey, json.dumps(prefValue)))
-
-					if newPrefs:
-						# eliminate double entries
-						newPrefs = dict(userObj.info.get('umcProperty', []) + newPrefs)
-
-						# apply changes
-						userObj.info['umcProperty'] = newPrefs.items()
-						userObj.modify()
-
-				except (ValueError, udm_errors.base) as e:
-					CORE.warn('Could not set given option: %s' % e)
+				except (ValueError, ldap.LDAPError, udm_errors.base) as exc:
+					CORE.warn('Could not set given option: %r' % (exc,))
 					res.status = BAD_REQUEST_INVALID_OPTS
 					res.message = status_description(res.status)
 					break
@@ -606,6 +528,53 @@ class Processor(signals.Provider):
 				break
 
 		self.signal_emit('response', res)
+
+	def _get_user_preferences(self, lo):
+		if not self.__user_dn or not lo:
+			return {}
+		try:
+			preferences = lo.get(self.__user_dn, ['univentionUMCProperty']).get('univentionUMCProperty')
+		except (ldap.LDAPError, udm_errors.base) as exc:
+			CORE.warn('Failed to retrieve user preferences: %s' % (exc,))
+			return {}
+		return dict(val.split('=', 1) if '=' in val else (val, '') for val in preferences)
+
+	def _set_user_preferences(self, lo, preferences):
+		if not self.__user_dn or not lo:
+			return
+
+		old_preferences = lo.get(self.__user_dn, ['univentionUMCProperty']).get('univentionUMCProperty')
+
+		# validity / sanitizing
+		new_preferences = []
+		for key, value in preferences.iteritems():
+			if not isinstance(key, basestring):
+				CORE.warn('user preferences keys needs to be strings: %r' % (key,))
+				continue
+
+			# we can put strings directly into the dict
+			if isinstance(value, basestring):
+				new_preferences.append((key, value))
+			else:
+				new_preferences.append((key, json.dumps(value)))
+		new_preferences = ['%s=%s' % (key, value) for key, value in new_preferences]
+
+		lo.modify(self.__user_dn, [['univentionUMCProperty', old_preferences, new_preferences]])
+
+	def _get_user_favorites(self):
+		favorites = set()
+		if not self.__user_dn:  # no LDAP user
+			favorites = set(ucr.get('umc/web/favorites/default', '').split(','))
+		else:
+			favorites = self._get_user_preferences(self._get_user_connection()).setdefault('favorites', ucr.get('umc/web/favorites/default', '')).strip()
+			favorites = set(favorites.split(','))
+
+		# appcenter module has changed to appcenter:appcenter -> make sure
+		# that it will be in the favorites also after an update from
+		# UCS 3.2 to UCS 4.0 (cf. Bug #36416)
+		if 'appcenter' in favorites:
+			favorites.add('appcenter:appcenter')
+		return favorites
 
 	def _change_user_password(self, request):
 		CORE.info('Got password changing request')
@@ -867,8 +836,8 @@ class Processor(signals.Provider):
 				CORE.info('No connection to module process yet')
 			mod._connect_retries += 1
 			return True
-		except Exception as e:
-			CORE.error('Unknown error while trying to connect to module process: %s\n%s' % (e, traceback.format_exc()))
+		except Exception as exc:
+			CORE.error('Unknown error while trying to connect to module process: %s\n%s' % (exc, traceback.format_exc()))
 			_send_error()
 			return False
 		else:
