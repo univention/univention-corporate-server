@@ -53,7 +53,7 @@ class LogrotateService(object):
 
 	def service_restart(self):
 		call(['invoke-rc.d', os.path.basename(self.service), 'restart'])
-		sleep(0.2)  # give time to restart
+		sleep(1)  # give time to restart
 
 	def logrotate(self):
 		if call(['logrotate', '-f', '/etc/logrotate.d/univention-management-console']):
