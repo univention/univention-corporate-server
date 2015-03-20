@@ -2,6 +2,7 @@ ucs-test (5.0.136-14) unstable; urgency=medium
 
   * 40univention-ssh_unknown: use lowercase hostname and domainname for
     ssh-keygen search (Bug #37917)
+  * Don't install ucs-test-umc-module by default (Bug #37485)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Mar 2015 06:08:55 +0100
 
