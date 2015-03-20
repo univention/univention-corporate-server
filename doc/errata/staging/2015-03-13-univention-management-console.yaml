@@ -2,10 +2,12 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-management-console
-fix: 7.1.63-13.854.201503131531
+fix: 7.1.63-14.855.201503201149
 version: [1]
 desc: |
   This update addresses the following issues:
-  * a racing condition during UMC session shutdown has been fixed, that
+  * A racing condition during UMC session shutdown has been fixed, that
     could lead to a complete shutdown of the UMC server.
-bug: [37399]
+  * The removal followed by adding of extended attributes could lead to a
+    UMC server crash. This has been fixed.
+bug: [37399, 37447]
