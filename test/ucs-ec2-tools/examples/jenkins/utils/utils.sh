@@ -318,7 +318,7 @@ win.reboot_remote_win_host()
 shutdown_windows_host ()
 {
 	local HOST="$1"
-	local DOMAIN_MODE=${2:-False}"
+	local DOMAIN_MODE="${2:-False}"
 	local ADMIN_ACCOUNT="${3:-administrator}"
 	python -c "
 import univention.winexe

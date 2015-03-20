@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.11-1) unstable; urgency=low
+
+  * ucs-ec2-tools/examples/jenkins/utils/utils.sh: added missing " (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 20 Mar 2015 11:12:35 +0100
+
 ucs-ec2-tools (1.0.10-2) unstable; urgency=low
 
   * examples/jenkins/autotest-230-master-s4-w2k12-member-join.cfg:
