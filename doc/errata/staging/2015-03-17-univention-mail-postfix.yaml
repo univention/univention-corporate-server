@@ -1,5 +1,5 @@
 product: ucs
-release: "4.0"
+release: "3.2"
 scope: ucs_3.2-0-errata3.2-5
 src: univention-mail-postfix
 fix: 8.0.13-10.236.201503181158
@@ -14,5 +14,5 @@ desc: |
     - mail/postfix/mastercf/options/smtps/...
   * The first changes to the main.cf framework have been done for defining
     a custom restriction rule set via UCR variables for postfix' smtps
-	port (465). There is currently no change in postfix behaviour.
+    port (465). There is currently no change in postfix behaviour.
 bug: [31738,38062]

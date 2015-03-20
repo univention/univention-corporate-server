@@ -9,7 +9,7 @@ desc: |
  * Information leak/denial of service in autokey crypto
    handling (CVE-2014-9297)
  * ACLs restricting the access to control mode queries can be bypassed
-   on IPv6 networks(CVE-2014-9298)
+   on IPv6 networks (CVE-2014-9298)
 bug: [37703]
 cve:
  - CVE-2014-9297

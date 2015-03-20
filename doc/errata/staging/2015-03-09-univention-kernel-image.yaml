@@ -1,8 +1,8 @@
 product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-5
-src: linux
-fix: 
+src: univention-kernel-image
+fix: 7.0.0-18.71.201503111143
 version: [4,5]
 desc: |
  This erratum updates the Linux kernel in UCS 3.2 to 3.10.71. Among
@@ -43,4 +43,3 @@ cve:
  - CVE-2015-1421
  - CVE-2014-9683
  - CVE-2015-1593
-
