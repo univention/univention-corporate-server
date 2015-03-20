@@ -1,3 +1,10 @@
+ucs-test (5.0.138-1) unstable; urgency=low
+
+  * 52_s4connector/101sync_initial_membership_ad_to_ucs: adjusted to
+    work with CamelCase base DN (Bug #37595).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 20 Mar 2015 10:22:08 +0100
+
 ucs-test (5.0.137-1) unstable; urgency=low
 
   * Bug #38017: SetTimeout decorator added to univention.testing lib
