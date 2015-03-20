@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.12-2) unstable; urgency=low
+
+  * examples/jenkins/autotest-093-backup-s4.cfg: removed the
+    samba debug level = 4 setting. (Bug #37884).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 20 Mar 2015 14:06:39 +0100
+
 ucs-ec2-tools (1.0.12-1) unstable; urgency=low
 
   * examples/jenkins/autotest-225-admember-module-w2k12r2-france.cfg:
