@@ -68,7 +68,8 @@ class Errors(LogMessage):
 		r'The Apache error log may have more information.',
 		r'failed!',
 		r'invoke-rc.d: initscript apache2, action "start" failed',
-		r"Unable to locate package could-initramfs-growroot",
+		r'invoke-rc.d: initscript apache2, action "restart" failed',
+		r"E: Unable to locate package could-initramfs-growroot",
 	]
 
 	# extra ignore patterns for case when line == 'failed.'
