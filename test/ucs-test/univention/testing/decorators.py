@@ -14,11 +14,10 @@ class SetTimeout(object):
 				print "** Entering", self.func.__name__
 				self.func(*args, **kwargs)
 				print "** Exiting", self.func.__name__
+				break
 			except Exception as ex:
 				print "(%d)-- Exception cought: %s %s" % (i,  type(ex), str(ex))
 				time.sleep(1)
-			else:
-				break
 		else:
 			self.func(*args, **kwargs)
 
@@ -29,11 +28,10 @@ def setTimeout(func, timeout=DEFAULT_TIMEOUT):
 				print "** Entering", func.__name__
 				func(*args, **kwargs)
 				print "** Exiting", func.__name__
+				break
 			except Exception as ex:
 				print "(%d)-- Exception cought: %s %s" % (i,  type(ex), str(ex))
 				time.sleep(1)
-			else:
-				break
 		else:
 			func(*args, **kwargs)
 	return wrapper
