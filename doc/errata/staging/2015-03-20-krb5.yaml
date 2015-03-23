@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-5
 src: krb5
-fix: 1.8.3+dfsg-4.58.201503201854
+fix: 1.8.3+dfsg-4.59.201503231438
 version: [5]
 desc: |
  Multiple vulnerabilities have been found in krb5:
@@ -10,8 +10,9 @@ desc: |
  * denial of service due to improper GSSAPI message validation (CVE-2014-4342)
  * double-free in SPNEGO initiator during renegotiation (CVE-2014-4343)
  * NULL dereference in SPNEGO acceptor (CVE-2014-4344)
- * buffer overrun in kadmind with LDAP backend (CVE-2014-4345)
  * gss_process_context_token() incorrectly frees context (CVE-2014-5352)
+ Additionally the following issues not affecting UCS are fixed in the source:
+ * buffer overrun in kadmind with LDAP backend (CVE-2014-4345)
  * kadmind doubly frees partial deserialization results (CVE-2014-9421)
  * kadmind incorrectly validates server principal name (CVE-2014-9422)
  * libgssrpc server applications leak uninitialized bytes (CVE-2014-9423)
@@ -21,8 +22,8 @@ cve:
  - CVE-2014-4342
  - CVE-2014-4343
  - CVE-2014-4344
- - CVE-2014-4345
  - CVE-2014-5352
+ - CVE-2014-4345
  - CVE-2014-9421
  - CVE-2014-9422
  - CVE-2014-9423
