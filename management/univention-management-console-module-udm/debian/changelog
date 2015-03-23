@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-58) unstable; urgency=medium
+
+  * Bug #36460: replace warning icon
+
+ -- Florian Best <best@univention.de>  Mon, 23 Mar 2015 14:42:38 +0100
+
 univention-management-console-module-udm (5.1.25-57) unstable; urgency=medium
 
   * Bug #37740: comment out heuristic code
