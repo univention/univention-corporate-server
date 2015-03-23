@@ -73,8 +73,7 @@
 
   <para>
 	Mit Access Control Lists sind noch mächtigere Berechtigungsmodelle
-	möglich. Die Konfiguration von ACLs ist in der Univention SDB
-	beschrieben <biblioref linkend="sdb-acls"/>.
+	möglich. Die Konfiguration von ACLs ist in <u:sdb>1042</u:sdb> beschrieben.
   </para>
   <para>
 	Im Unix-Berechtigungsmodell - und somit unter UCS - reicht das Schreibrecht

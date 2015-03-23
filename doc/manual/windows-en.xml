@@ -220,7 +220,7 @@
 		<para>
 		  Further information on the status of the synchronisation can be found in the log file
 		  <filename>/var/log/univention/connector-s4.log</filename>. Additional information on analysing
-		  connector replication problems can be found in <xref linkend="sdb-s4trouble"/>.
+		  connector replication problems can be found in <u:sdb>1235</u:sdb>.
 		</para>
 
 		<para>
@@ -263,8 +263,7 @@ instanceType: 4
 		</para>
 
 		<para>
-		  Additional information on troubleshooting replication problems can be found in <xref
-		  linkend="sdb-s4trouble"/>.
+			Additional information on troubleshooting replication problems can be found in <u:sdb>1235</u:sdb>.
 		</para>
 
 		<para>

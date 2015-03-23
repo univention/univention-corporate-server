@@ -1641,7 +1641,7 @@
 				<entry>NetBIOS Scope</entry>
 				<entry>
 				  Der NetBIOS over TCP/IP-Scope für den Client nach der Spezifikation
-				  in <ulink url="http://www.ietf.org/rfc/rfc1001.txt">RFC1001</ulink> und <ulink url="http://www.ietf.org/rfc/rfc1002.txt">RFC1002</ulink>. Bei der Angabe des NetBIOS Scopes ist die
+				  in <u:rfc>1001</u:rfc> und <u:rfc>1002</u:rfc>. Bei der Angabe des NetBIOS Scopes ist die
 				  Groß- und Kleinschreibung zu beachten.
 				</entry>
 			  </row>

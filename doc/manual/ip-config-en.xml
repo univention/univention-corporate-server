@@ -1914,7 +1914,7 @@ closest to the object always applies.
 				  <entry>
 					<para>
 					  The NetBIOS over TCP/IP scope for the client according to the
-					  specification in <ulink url="http://www.ietf.org/rfc/rfc1001.txt">RFC1001</ulink> and <ulink url="http://www.ietf.org/rfc/rfc1002.txt">RFC1002</ulink>. Attention must be paid to
+					  specification in <u:rfc>1001</u:rfc> and <u:rfc>1002</u:rfc>. Attention must be paid to
 					  uppercase and lowercase when entering the NetBIOS scope.
 					</para>
 				  </entry>

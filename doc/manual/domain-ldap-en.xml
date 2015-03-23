@@ -293,7 +293,7 @@
 			<para>
 			  When using Windows 8 to a domain based on Samba 3, certain settings must be
 			  made in the Windows registry before joining the domain. A corresponding REG
-			  file can be downloaded from <ulink url="http://sdb.univention.de/1102"/>. The
+			  file can be downloaded from <u:sdb>1102</u:sdb>. The
 			  system must then be restarted. This step is not necessary with Samba 4.
 			</para>
 			<para>
@@ -323,7 +323,7 @@
 			<para>
 				When using Windows 7 to a domain based on Samba 3, certain settings must be
 				made in the Windows registry before joining the domain. A corresponding REG
-				file can be downloaded from <ulink url="http://sdb.univention.de/1102"/>. The
+				file can be downloaded from <u:sdb>1102</u:sdb>. The
 				system must then be restarted. This step is not necessary with Samba 4.
 			</para>
 			<para>
@@ -351,7 +351,7 @@
 		  <para>
 			When using Windows 8 to a domain based on Samba 3, certain settings must be made in the
 			Windows registry before joining the domain. A corresponding REG file can be downloaded
-			from <ulink url="http://sdb.univention.de/1102"/>. The system must then be restarted. This step is not necessary with Samba 4.
+			from <u:sdb>1102</u:sdb>. The system must then be restarted. This step is not necessary with Samba 4.
 		  </para>
 
 		  <para>
@@ -905,7 +905,7 @@ slapcat &gt; ldapdata.txt
 		<!-- Can be re-integrated once the article has been updated to UCS 3.x -->
 		<!-- <para> -->
 		<!--	The setup is described in the Univention support database at -->
-		<!--	<ulink url="http://sdb.univention.de/1120"/> (currently only available in German). -->
+		<!--	<u:sdb>1120</u:sdb> (currently only available in German). -->
 		<!-- </para> -->
 	</section>
 
@@ -1139,7 +1139,7 @@ univention-directory-listener-ctrl resync cups-printers
 		<para>
 	  If the UCS domain contains more than one system, all other host certificates need to be
 	  reissued after changing the root certificate! The procedure required for this is documented in
-	  <biblioref linkend="sdb-sslchange"/>.
+	  <u:sdb>1183</u:sdb>.
 		</para>
 	</caution>
 
@@ -1184,7 +1184,7 @@ univention-directory-listener-ctrl resync cups-printers
 
 	<para>
 	  The renewal of the root certificate and the other host certificates is documented in
-	  <biblioref linkend="sdb-sslchange"/>.
+	  <u:sdb>1183</u:sdb>.
 	</para>
 
 	<para>

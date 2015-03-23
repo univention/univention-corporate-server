@@ -69,7 +69,7 @@
 
   <para>
 	Access control lists allow even more complex permission models.
-	The configuration of ACLs is described in the Univention SDB <biblioref linkend="sdb-acls"/>.
+	The configuration of ACLs is described in <u:sdb>1042</u:sdb>.
   </para>
   <para>
 	In the Unix permission model - and thus under UCS - write permission

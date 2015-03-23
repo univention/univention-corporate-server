@@ -223,7 +223,7 @@
 		<para>
 		  Hinweise zum Status der Synchronisation finden sich in der Logdatei
 		  <filename>/var/log/univention/connector-s4.log</filename>. Weitere Informationen zur
-		  Fehleranalyse von eventuellen Connectorproblemen finden sich in <xref linkend="sdb-s4trouble"/>.
+		  Fehleranalyse von eventuellen Connectorproblemen finden sich in <u:sdb>1235</u:sdb>.
 		</para>
 
 		<para>
@@ -266,8 +266,7 @@ instanceType: 4
 		</para>
 
 		<para>
-		  Hinweise zur Analyse von DRS-Replikationsproblemen finden sich in <xref
-		  linkend="sdb-s4trouble"/>.
+			Hinweise zur Analyse von DRS-Replikationsproblemen finden sich in <u:sdb>1235</u:sdb>.
 		</para>
 	  </section>
 

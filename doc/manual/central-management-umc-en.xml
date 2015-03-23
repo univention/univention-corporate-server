@@ -367,7 +367,7 @@
   <para>
 	Anonymous usage statistics on the use of &ucsUMC; are collected when using the <emphasis>free for
 	personal use</emphasis> version of UCS (which is generally used for evaluating UCS). Further
-	information can be found in <biblioref linkend="sdb-datacollect"/>.
+	information can be found in <u:sdb>1318</u:sdb>.
   </para>
 </section>
 

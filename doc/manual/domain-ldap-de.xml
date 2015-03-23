@@ -302,7 +302,7 @@
 			  Tritt der Client einer Domäne auf Basis von Samba 3 bei, müssen vor dem
 			  Domänenbeitritt einige Einstellungen in der Windows-Registry vorgenommen
 			  werden. Eine entsprechende REG-Datei kann unter
-			  <ulink url="http://sdb.univention.de/1102"/> heruntergeladen werden. Anschließend
+			  <u:sdb>1102</u:sdb> heruntergeladen werden. Anschließend
 			  muss das System neu gestartet werden. Dieser Schritt ist unter Samba 4 nicht
 			  nötig.
 			</para>
@@ -336,7 +336,7 @@
 				Tritt der Client einer Domäne auf Basis von Samba 3 bei, müssen vor dem
 				Domänenbeitritt einige Einstellungen in der Windows-Registry vorgenommen
 				werden. Eine entsprechende REG-Datei kann unter
-				<ulink url="http://sdb.univention.de/1102"/> heruntergeladen werden. Anschließend
+				<u:sdb>1102</u:sdb> heruntergeladen werden. Anschließend
 				muss das System neu gestartet werden. Dieser Schritt ist unter Samba 4 nicht
 				nötig.
 			</para>
@@ -365,7 +365,7 @@
 		  <para>
 			Tritt der Server einer Domäne auf Basis von Samba 3 bei, müssen vor dem Domänenbeitritt
 			einige Einstellungen in der Windows-Registry vorgenommen werden. Eine entsprechende
-			REG-Datei kann unter <ulink url="http://sdb.univention.de/1102"/> heruntergeladen
+			REG-Datei kann unter <u:sdb>1102</u:sdb> heruntergeladen
 			werden. Anschließend muss das System neu gestartet werden. Dieser Schritt ist unter
 			Samba 4 nicht nötig.
 		  </para>
@@ -939,7 +939,7 @@ slapcat &gt; ldapdaten.txt
 		<!-- Can be re-integrated once the article has been updated to UCS 3.x -->
 		<!-- <para> -->
 		<!--	Die Einrichtung ist in der Univention Supportdatenbank unter -->
-		<!--	<ulink url="http://sdb.univention.de/1120"/> beschrieben. -->
+		<!--	<u:sdb>1120</u:sdb> beschrieben. -->
 		<!-- </para> -->
 	</section>
 
@@ -1176,7 +1176,7 @@ univention-directory-listener-ctrl resync cups-printers
 		<para>
 		Besteht die UCS-Domäne aus mehr als einem System müssen durch die Änderung des
 		Root-Zertifikats auch alle anderen Rechner-Zertifikate neu ausgestellt werden! Das dafür
-		nötige Vorgehen ist in <biblioref linkend="sdb-sslchange"/> dokumentiert.
+		nötige Vorgehen ist in <u:sdb>1183</u:sdb> dokumentiert.
 		</para>
 	</caution>
 
@@ -1220,8 +1220,8 @@ univention-directory-listener-ctrl resync cups-printers
 	</caution>
 
 	<para>
-	  Die Erneuerung des Root-Zertifikats und der übrigen Rechnerzertifikate ist in <biblioref
-	  linkend="sdb-sslchange"/> dokumentiert.
+	  Die Erneuerung des Root-Zertifikats und der übrigen Rechnerzertifikate ist in
+	  <u:sdb>1183</u:sdb> dokumentiert.
 	</para>
 
 	<para>

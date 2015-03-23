@@ -728,7 +728,7 @@ testdeb (0.1-1) unstable; urgency=low
  -- John Doe <user@example.com>  Mon, 21 Mar 2013 13:46:39 +0100
 			]]></programlisting>
 			<para>
-				The date and time stamp must follow the format described in <biblioref linkend="RFC2822"/>.
+				The date and time stamp must follow the format described in <u:rfc>2822</u:rfc>.
 				<command>debchange</command> automatically inserts and updates the current date.
 				Alternatively <command>date -R</command> can be used on the command line to create the correct format.
 			</para>

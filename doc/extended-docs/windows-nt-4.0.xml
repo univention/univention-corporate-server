@@ -188,7 +188,7 @@
 		  <envar>windows/wins-support</envar>. WINS can only be operated without adjustments on one
 		  Samba server in the domain; distribution across several servers requires the setup of WINS
 		  replication. Information on the commissioning of the WINS replication can be found in the
-		  Univention Support database at <xref linkend="sdb-winsrepl"/>.
+		  Univention Support database at <u:sdb>1107</u:sdb>.
 		</para>
 
 		<para>
@@ -449,7 +449,6 @@ net rpc trustdom list
     <bibliomixed id="ucs-handbuch"/>
     <bibliomixed id="wiki-samba-update"/>
     <bibliomixed id="windows-trust"/>
-    <bibliomixed id="sdb-winsrepl"/>
   </bibliography>
 
     <?dbhtml-include href="../stylesheets/piwik.html"?>
