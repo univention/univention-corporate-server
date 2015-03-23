@@ -1,4 +1,4 @@
-univention-python (7.0.4-2) unstable; urgency=medium
+univention-python (7.0.4-4) unstable; urgency=medium
 
   * uldap.py: Added the parameter reconnect to getAdminConnection,
     getMachineConnection and getBackupConnection in order to control if
