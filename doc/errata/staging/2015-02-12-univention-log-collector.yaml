@@ -2,10 +2,9 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-log-collector
-fix: 8.0-0-5.31.201503191345
+fix: 8.0.0-5.32.201503231230
 version: [0,1]
 desc: |
   This update addresses the following issues:
   * Limit collection of files to the set up basepath.
-  * Require a SSL certificate to be given when communicating with the server.
 bug: [36452]
