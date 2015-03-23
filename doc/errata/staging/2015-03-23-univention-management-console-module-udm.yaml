@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-management-console-module-udm
+fix: 5.1.25-58.566.201503231445
+version: [1]
+desc: |
+  This update addresses the following issue:
+  * Update a warning icon.
+bug: [36460]
