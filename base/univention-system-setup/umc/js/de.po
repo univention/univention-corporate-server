@@ -527,7 +527,7 @@ msgstr "Ohne Internetzugriff fortfahren"
 
 #: umc/js/setup/ApplianceWizard.js:1001
 msgid "Continuing the installation might lead to a broken or hung up system."
-msgstr "Ein Fortsetzen der Installation kann zu einem kaputten oder aufgehängten System führen."
+msgstr "Ein Fortsetzen der Installation kann zu einem kaputten oder nicht reagierenden System führen."
 
 #: umc/js/setup/CertificatePage.js:78
 msgid "Country"

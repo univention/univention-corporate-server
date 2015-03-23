@@ -1,3 +1,9 @@
+univention-system-setup (8.1.66-26) unstable; urgency=medium
+
+  * Bug #36460: replace warning icon
+
+ -- Florian Best <best@univention.de>  Mon, 23 Mar 2015 14:34:57 +0100
+
 univention-system-setup (8.1.66-25) unstable; urgency=medium
 
   * Bug #36460: Show a warning if the system does not have enough RAM to
