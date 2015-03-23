@@ -30,8 +30,8 @@ Type=str
 Categories=service-mail
 
 [mail/messagesizelimit]
-Description[de]=Mit dieser Variable kann die maximale Größe in Byte für ein- und ausgehende E-Mails festgelegt werden. Es ist zu beachten, dass Emailanhänge durch die Base64-Kodierung um ca. ein Drittel vergrössert werden. Standard ist 10_240_000 Byte.
-Description[en]=This variable can be used to set the maximum size in bytes for incoming and outgoing e-mails. Please note that e-mail attachments are enlarged by approximately a third due to the base64 encoding. The default is 10_240_000 byte.
+Description[de]=Mit dieser Variable kann die maximale Größe in Byte für ein- und ausgehende E-Mails festgelegt werden. Es ist zu beachten, dass Emailanhänge durch die Base64-Kodierung um ca. ein Drittel vergrössert werden. Standard ist 10240000 (~10M) Byte.
+Description[en]=This variable can be used to set the maximum size in bytes for incoming and outgoing e-mails. Please note that e-mail attachments are enlarged by approximately a third due to the base64 encoding. The default is 10240000 (~10M) byte.
 Type=int
 Categories=service-mail
 
