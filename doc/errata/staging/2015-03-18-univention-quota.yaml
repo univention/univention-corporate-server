@@ -1,7 +1,7 @@
 product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
-src: univention-home-mounter
+src: univention-quota
 fix: 6.0.0-2.70.201503181646
 version: [1]
 desc: |
