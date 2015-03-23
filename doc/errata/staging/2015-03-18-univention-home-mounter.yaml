@@ -1,0 +1,10 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-5
+src: univention-home-mounter
+fix: 5.0.1-6.72.201503230739
+version: [5]
+desc: |
+  If the first configured LDAP server was not reachable, timeouts
+  could occur during the login. This has been fixed.
+bug: [38078]
