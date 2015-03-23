@@ -63,17 +63,17 @@ def explodeDn(dn, notypes=0):
 		return map(lambda(x): x[x.find('=')+1:], exploded_dn)
 	return exploded_dn
 
-def getAdminConnection(start_tls=2, decode_ignorelist=[]):
+def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	ucr = ConfigRegistry()
 	ucr.load()
 	bindpw=open('/etc/ldap.secret').read()
 	if bindpw[-1] == '\n':
 		bindpw=bindpw[0:-1]
 	port = int(ucr.get('ldap/master/port', '7389'))
-	lo=access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,'+ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+	lo=access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,'+ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 	return lo
 
-def getBackupConnection(start_tls=2, decode_ignorelist=[]):
+def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	ucr = ConfigRegistry()
 	ucr.load()
 	bindpw=open('/etc/ldap-backup.secret').read()
@@ -81,16 +81,16 @@ def getBackupConnection(start_tls=2, decode_ignorelist=[]):
 		bindpw=bindpw[0:-1]
 	port = int(ucr.get('ldap/master/port', '7389'))
 	try:
-		lo=access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=backup,'+ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+		lo=access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=backup,'+ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 	except ldap.SERVER_DOWN, e:
 		if ucr['ldap/backup']:
 			backup=string.split(ucr['ldap/backup'],' ')[0]
-			lo=access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,'+ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+			lo=access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,'+ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 		else:
 			raise ldap.SERVER_DOWN, e
 	return lo
 
-def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True, secret_file = "/etc/machine.secret"):
+def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True, secret_file = "/etc/machine.secret", reconnect=True):
 	ucr = ConfigRegistry()
 	ucr.load()
 
@@ -101,12 +101,12 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True, 
 	if ldap_master:
 		# Connect to DC Master
 		port = int(ucr.get('ldap/master/port', '7389'))
-		lo=access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+		lo=access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 	else:
 		# Connect to ldap/server/name
 		port = int(ucr.get('ldap/server/port', '7389'))
 		try:
-			lo=access(host=ucr['ldap/server/name'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+			lo=access(host=ucr['ldap/server/name'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 		except ldap.SERVER_DOWN, e:
 			# ldap/server/name is down, try next server
 			if not ucr.get('ldap/server/addition'):
@@ -114,7 +114,7 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True, 
 			servers = ucr.get('ldap/server/addition', '')
 			for server in servers.split():
 				try:
-					lo=access(host=server, port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+					lo=access(host=server, port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 				except ldap.SERVER_DOWN, e:
 					pass
 				else:
@@ -125,7 +125,7 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True, 
 
 class access:
 
-	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False, uri=None, follow_referral=False):
+	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False, uri=None, follow_referral=False, reconnect=True):
 		"""start_tls = 0 (no); 1 (try); 2 (must)"""
 		ucr = None
 		self.host = host
@@ -134,6 +134,7 @@ class access:
 		self.bindpw = bindpw
 		self.start_tls = start_tls
 		self.ca_certfile = ca_certfile
+		self.reconnect = reconnect
 
 		self.port = port
 
@@ -176,17 +177,20 @@ class access:
 
 		self.client_connection_attempt = client_retry_count+1
 
-		i=0
-		while i <= self.client_connection_attempt:
-			try:
-				self.__open(ca_certfile)
-				break
-			except ldap.SERVER_DOWN:
-				if i >= (self.client_connection_attempt-1):
-					raise
-				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "Can't contact LDAP server. Try again (%d/%d)" % (i+1,self.client_connection_attempt))
-				time.sleep(1)
-			i+=1
+		if self.reconnect:
+			i=0
+			while i <= self.client_connection_attempt:
+				try:
+					self.__open(ca_certfile)
+					break
+				except ldap.SERVER_DOWN:
+					if i >= (self.client_connection_attempt-1):
+						raise
+					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "Can't contact LDAP server. Try again (%d/%d)" % (i+1,self.client_connection_attempt))
+					time.sleep(1)
+				i+=1
+		else:
+			self.__open(ca_certfile)
 
 	def __encode_pwd(self, pwd):
 		if isinstance( pwd, unicode ):
@@ -207,8 +211,12 @@ class access:
 		if not hasattr(self, 'protocol'):
 			self.protocol = 'ldap'
 
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
-		self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1)
+		if self.reconnect:
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection with retry_max=%d' % self. client_connection_attempt)
+			self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1)
+		else:
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
+			self.lo = ldap.initialize(self.uri, trace_stack_limit=None)
 
 		if ca_certfile:
 			self.lo.set_option( ldap.OPT_X_TLS_CACERTFILE, ca_certfile )
