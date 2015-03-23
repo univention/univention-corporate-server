@@ -1,3 +1,9 @@
+univention-mail-postfix (9.0.0-17) unstable; urgency=low
+
+  * Bug #37442: Fix UCR variable description for maximum message size
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 23 Mar 2015 15:08:12 +0100
+
 univention-mail-postfix (9.0.0-16) unstable; urgency=low
 
   * Bug #37442: Fix UCR variable description for maximum message size

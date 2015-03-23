@@ -72,8 +72,8 @@ Type=str
 Categories=service-mail
 
 [mail/localmailboxsizelimit]
-Description[de]=Diese Variable konfiguriert die maximale Dateigröße in Bytes von Mailbox- oder Maildir-Dateien. Ist die Variable nicht gesetzt, gilt eine Beschränkung von 51_200_000 Byte.
-Description[en]=This variable configures the maximum size in bytes of mailbox or Maildir files. If the variable is unset, a limit of 51_200_000 byte applies.
+Description[de]=Diese Variable konfiguriert die maximale Dateigröße in Bytes von Mailbox- oder Maildir-Dateien. Ist die Variable nicht gesetzt, gilt eine Beschränkung von 51200000 (~51M) Byte.
+Description[en]=This variable configures the maximum size in bytes of mailbox or Maildir files. If the variable is unset, a limit of 51200000 (~51M) byte applies.
 Type=int
 Categories=service-mail
 
