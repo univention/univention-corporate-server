@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!DOCTYPE book [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
 	%entities;
 ]>
 <book lang="en" id='scenarios'>

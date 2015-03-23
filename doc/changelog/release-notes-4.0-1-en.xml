@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE book [
-	<!ENTITY % local.link.char.class "|u:cve|u:bug|u:sdb|u:rfc">
-	<!ELEMENT u:cve (#PCDATA)>
-	<!ATTLIST u:cve xmlns:u CDATA #FIXED "htttp://docs.univention.de/2015-02-25/">
-	<!ELEMENT u:bug (#PCDATA)>
-	<!ATTLIST u:bug xmlns:u CDATA #FIXED "htttp://docs.univention.de/2015-02-25/">
-	<!ELEMENT u:sdb (#PCDATA)>
-	<!ATTLIST u:sdb xmlns:u CDATA #FIXED "htttp://docs.univention.de/2015-02-25/">
-	<!ELEMENT u:rfc (#PCDATA)>
-	<!ATTLIST u:rfc xmlns:u CDATA #FIXED "htttp://docs.univention.de/2015-02-25/">
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
 	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
 	%DocBookDTD;
 	%entities;
 ]>
