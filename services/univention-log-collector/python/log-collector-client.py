@@ -104,10 +104,10 @@ class LogCollectorClient( object ):
 #		self._crypto_context.set_info_callback(self._info_callback)
 		self._crypto_context.set_cipher_list('DEFAULT')
 		self._crypto_context.set_verify( SSL.VERIFY_PEER | SSL.VERIFY_FAIL_IF_NO_PEER_CERT, self._verify_cert_cb )
-#		dir = '/etc/univention/ssl/%s' % umc.baseconfig[ 'hostname' ]
-#		self._crypto_context.use_privatekey_file( os.path.join( dir, 'private.key' ) )
-#		self._crypto_context.use_certificate_file( os.path.join( dir, 'cert.pem' ) )
-		self._crypto_context.load_verify_locations( os.path.join( dir, '/etc/univention/ssl/ucsCA', 'CAcert.pem' ) )
+#		dir_ = '/etc/univention/ssl/%s' % baseconfig['hostname']
+#		self._crypto_context.use_privatekey_file(os.path.join(dir_, 'private.key'))
+#		self._crypto_context.use_certificate_file(os.path.join(dir_, 'cert.pem'))
+		self._crypto_context.load_verify_locations(os.path.join('/etc/univention/ssl/ucsCA', 'CAcert.pem'))
 
 		self._init_socket()
 		self.connect()

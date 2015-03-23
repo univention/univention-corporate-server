@@ -1,6 +1,7 @@
-univention-log-collector (8.0-0-5) unstable; urgency=medium
+univention-log-collector (8.0.0-5) unstable; urgency=medium
 
   * Bug #36452: secure pickle loading
+  * revert SSL certificate verification
 
  -- Florian Best <best@univention.de>  Thu, 19 Mar 2015 13:43:34 +0100
 
