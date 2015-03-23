@@ -1,7 +1,7 @@
 product: ucs
 release: "4.0"
 src: ca-certificates
-fix: 20141019.13.201503131231
+fix: 20141019.14.201503231550
 scope: ucs_4.0-0-errata4.0-1
 version: [1]
 desc: |
