@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.12-3) unstable; urgency=low
+
+  * jenkins/autotest-224-admember-module-w2k12-german-other-join-user.cfg:
+    use 'Domanen-Admins' when creating a new admin (Bug #38118).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 24 Mar 2015 14:35:14 +0100
+
 ucs-ec2-tools (1.0.12-2) unstable; urgency=low
 
   * examples/jenkins/autotest-093-backup-s4.cfg: removed the
