@@ -1,3 +1,9 @@
+univention-system-setup (8.1.66-27) unstable; urgency=medium
+
+  * Bug #36460: Bug #37804: textual changes
+
+ -- Florian Best <best@univention.de>  Tue, 24 Mar 2015 12:22:45 +0100
+
 univention-system-setup (8.1.66-26) unstable; urgency=medium
 
   * Bug #36460: replace warning icon

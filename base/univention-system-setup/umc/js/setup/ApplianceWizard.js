@@ -998,7 +998,7 @@ define([
 				}
 				var message = lang.replace(
 					'<p class="umcSetupMemoryWarning">' + _('<b>Warning:</b> At least {memory_min} RAM is required for the installation of {product_name}.') + ' ' +
-					_('This system only has {memory_total} RAM.') + ' ' + _('Continuing the installation might lead to a broken or hung up system.') + ' ' +
+					_('This system only has {memory_total} RAM.') + ' ' + _('Continuing the installation might lead to a not functioning or hung up system.') + ' ' +
 					_('If you want to upgrade your memory first please press the power button of your server to shutdown the system.') + '</p>', {
 					memory_min: _memString(memory_min),
 					memory_total: _memString(this.values.memory_total),
@@ -1592,7 +1592,7 @@ define([
 				msg += _('Failed join scripts can be executed via the UMC module <i>Domain join</i>.');
 				msg += '</p>';
 
-				msg += '<p>' + _('Connect to Univention Management Console on this system either as user <i>Administrator</i> or as user <i>root</i> in case the system has not yet created a new UCS domain:') + '</p>';
+				msg += '<p>' + _('Connect to Univention Management Console on this system either as user <b>Administrator</b> or as user <b>root</b> in case the system has not yet created a new UCS domain:') + '</p>';
 				msg += this._getUMCLinks();
 			} else if (isBaseSystem) {
 				var fqdn = this._getFQDN();
@@ -1607,7 +1607,7 @@ define([
 				msg += _('Failed join scripts or a new join of the system can be executed via the UMC module <i>Domain join</i>.');
 				msg += '</p>';
 
-				msg += '<p>' + _('Connect to Univention Management Console on this system either as user <i>Administrator</i> or as user <i>root</i> in case the system has not yet joined the domain:') + '</p>';
+				msg += '<p>' + _('Connect to Univention Management Console on this system either as user <b>Administrator</b> or as user <b>root</b> in case the system has not yet joined the domain:') + '</p>';
 				msg += this._getUMCLinks();
 			}
 
@@ -1628,25 +1628,26 @@ define([
 
 			var msg = '';
 			if (this.ucr['umc/web/appliance/name']) {
-				msg += '<p>' + _('The %s appliance has been successfully set up.', this.ucr['umc/web/appliance/name']) + '</p>';
+				msg += '<p>' + _('The %s appliance has been successfully set up.', this.ucr['umc/web/appliance/name']) + ' ';
 			} else {
-				msg += '<p>' + _('UCS has been successfully set up.') + '</p>';
+				msg += '<p>' + _('UCS has been successfully set up.') + ' ';
 			}
 			if (!isBaseSystem) {
 				if (ips.length) {
-					msg += '<p>' + _('The system has been configured with the IP address(es) %s.', ips.join(', ')) + '</p>';
+					msg += _('The system has been configured with the IP address(es) %s.', ips.join(', '));
 				}
+				msg += '</p>';
 				if (isMaster) {
-					msg += '<p>' + _('Login to Univention Management Console as user <b>Administrator</b>:') + '</p>';
+					msg += '<p>' + _('Login to Univention Management Console as user <b>Administrator</b> at one of the available addresses:') + '</p>';
 				} else {
-					msg += '<p>' + _('Login to Univention Management Console with the domain account <b>Administrator</b>:') + '</p>';
+					msg += '<p>' + _('Login to Univention Management Console with the domain account <b>Administrator</b> at one of the available addresses:') + '</p>';
 				}
 				msg += this._getUMCLinks();
 			} else {
 				if (ips.length) {
-					msg += '<p>' + _('The system is reachable at <i>%s</i> or via its IP address(es) <i>%s</i>.', fqdn, ips.join(', ')) + '</p>';
+					msg += _('The system is reachable at <i>%s</i> or via its IP address(es) <i>%s</i>.', fqdn, ips.join(', ')) + '</p>';
 				} else {
-					msg += '<p>' + _('The system is reachable at <i>%s</i>.', fqdn) + '</p>';
+					msg += _('The system is reachable at <i>%s</i>.', fqdn) + '</p>';
 				}
 			}
 			if (array.indexOf(this.disabledFields, 'reboot') !== -1) {
@@ -1661,12 +1662,12 @@ define([
 			var fqdn = this._getFQDN();
 			var ips = this._getIPAdresses();
 			var msg = '<ul>';
-			if (fqdn) {
-				msg += lang.replace('<li>https://{0}/univention-management-console/</li>', [fqdn]);
-			}
 			array.forEach(ips, function(ip) {
 				msg += lang.replace('<li>https://{0}/univention-management-console/</li>', [ip]);
 			});
+			if (fqdn) {
+				msg += lang.replace('<li>https://{0}/univention-management-console/</li>', [fqdn]);
+			}
 			msg += '</ul>';
 			return msg;
 		},
