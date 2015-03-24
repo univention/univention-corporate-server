@@ -533,7 +533,7 @@ class Processor(signals.Provider):
 		if not self.__user_dn or not lo:
 			return {}
 		try:
-			preferences = lo.get(self.__user_dn, ['univentionUMCProperty']).get('univentionUMCProperty')
+			preferences = lo.get(self.__user_dn, ['univentionUMCProperty']).get('univentionUMCProperty', [])
 		except (ldap.LDAPError, udm_errors.base) as exc:
 			CORE.warn('Failed to retrieve user preferences: %s' % (exc,))
 			return {}

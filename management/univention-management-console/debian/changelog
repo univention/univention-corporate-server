@@ -1,3 +1,9 @@
+univention-management-console (7.1.63-15) unstable; urgency=medium
+
+  * Bug #37447: fixup for users without preferences
+
+ -- Florian Best <best@univention.de>  Tue, 24 Mar 2015 10:15:41 +0100
+
 univention-management-console (7.1.63-14) unstable; urgency=medium
 
   * Bug #37447: fix UMC server crashes due to change of extended attributes,
