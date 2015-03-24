@@ -6,7 +6,7 @@ fix: 4.1.106-12.994.201502031621
 version: [0]
 desc: |
   * UMC specific apache configuration has been put into a LocationMatch
-    directive to not disturb other services usiong apache.
+    directive to not disturb other services using apache.
   * Don't let firefox ask for resending POST form data when logging out
     of UMC.
   * Fix an endless login animation if the login fails due to not running
