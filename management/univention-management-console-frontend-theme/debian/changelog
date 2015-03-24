@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.89-11) unstable; urgency=medium
+
+  * Bug #37804: add hover and active state to help icon
+
+ -- Florian Best <best@univention.de>  Tue, 24 Mar 2015 14:09:11 +0100
+
 univention-management-console-frontend-theme (0.0.89-10) unstable; urgency=medium
 
   * Bug #37804: replace floating with positioning in login dialog icons
