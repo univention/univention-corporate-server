@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-18) unstable; urgency=low
+
+  * Bug #35661: Version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 24 Mar 2015 14:21:11 +0100
+
 univention-management-console-module-appcenter (4.1.20-17) unstable; urgency=low
 
   * Bug #35661: App conflicts with another app only when all packages of that
