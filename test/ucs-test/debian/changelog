@@ -1,3 +1,10 @@
+ucs-test (5.0.138-2) unstable; urgency=low
+
+  * 20_appcenter/18_check_app_links: now using urllib2 instead of linkchecker;
+    added more useful output (Bug #37717).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 24 Mar 2015 11:06:25 +0100
+
 ucs-test (5.0.138-1) unstable; urgency=low
 
   * 52_s4connector/101sync_initial_membership_ad_to_ucs: adjusted to

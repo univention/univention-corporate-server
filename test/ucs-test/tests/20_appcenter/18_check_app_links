@@ -1,15 +1,15 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check that links in the .ini files do not return errors when accessed.
-## roles-not: [basesystem]
+## roles: [domaincontroller_master]
 ## tags: [basic, apptest]
 ## bugs: [37717, 37950]
-## packages: [univention-management-console-module-appcenter, linkchecker]
+## packages: [univention-management-console-module-appcenter]
 ## exposure: careful
 
 from os import path
 from glob import glob
-from re import findall, search as re_search
-from subprocess import Popen, PIPE
+from re import findall
+from urllib2 import urlopen, URLError, HTTPError
 from multiprocessing import Process, Pipe as m_Pipe
 
 import univention.testing.utils as utils
@@ -18,21 +18,19 @@ from univention.management.console.modules.appcenter.app_center import Applicati
 
 
 APPCENTER_FILE = "/var/cache/appcenter-installed.txt"  # installed apps
-FAIL_CODES = (404,)  # HTTP response codes that make the test fail
-FAIL_MESSAGES = ('Name or service not known',)  # Messages that make the test fail
-CHECK_LEVEL = '0'  # level of recursion when checking links:
-                   # ('0' to check only current link)
-                   # ('1' or higher may lead to a very-very long checks)
+FAIL_CODES = (401, 403, 404, 406, 407, 408, 409, 410)  # fail HTTP codes
 check_installed_apps = []  # list of installed apps (from APPCENTER_FILE)
 failures_counter = 0  # errors counter
+bad_links = []  # list of problematic links
 
 
-def fail_the_test():
+def fail_the_test(bad_link):
     """
-    Simply increases the global failures counter.
+    Increases the global failures counter and makes a list of bad links.
     """
-    global failures_counter
+    global failures_counter, bad_links
     failures_counter += 1
+    bad_links.append(bad_link)
 
 
 def get_installed_apps():
@@ -58,13 +56,24 @@ def get_installed_apps():
                    % (APPCENTER_FILE, exc))
 
 
-def create_and_run_process(proc_connection, cmd):
+def check_link_by_request(proc_connection, link):
     """
-    Puts the stdout and stderr of the created and executed 'cmd'
-    into 'proc_connection'.
+    Opens the given 'link' using urllib2 and returns HTTP code/reason.
     """
-    proc = Popen(cmd, stdout=PIPE, stderr=PIPE, env={'LANG': 'C'})
-    proc_connection.send(proc.communicate())
+    response_code = reason = ''
+    try:
+        url = urlopen(link, timeout=60)
+        response_code = url.getcode()
+
+    except (URLError, HTTPError, ValueError) as exc:
+        print "\n ERROR while checking the URL '%s': %r" % (link, exc)
+        if isinstance(exc, HTTPError):
+            response_code = exc.code
+            reason = exc.reason
+        elif isinstance(exc, URLError):
+            reason = exc.reason
+
+    proc_connection.send((response_code, reason))
     proc_connection.close()
 
 
@@ -104,60 +113,46 @@ def collect_links():
     return links_to_check
 
 
-def check_stdout_for_error_codes_messages(stdout, link):
-    """
-    Searches for the 'FAIL_CODES' + 'FAIL_MESSAGES' in the given 'stdout'.
-    """
-    all_errors = FAIL_CODES + FAIL_MESSAGES
-    for error in all_errors:
-        fail_re = ("(Ergebnis|Result).*\s%s\s" % error)
-        if bool(re_search(fail_re, stdout)):
-            print ("\n ERROR: Fail code or message '%s' "
-                   "was found when checking the link '%s'."
-                   "\nSee linkchecker output below:"
-                   % (error, link))
-
-            print "STDOUT:", stdout
-            fail_the_test()
-
-
 def check_ini_files():
     """
     Collects all links from .inis of installed Apps;
-    Checks all links found using 'linkchecker';
-    Checks the stdout of 'linkchecker' for FAIL_CODES.
+    Tries to open each URL found using urlopen with a timeout.
     """
     print "\nThe path to Appcenter .ini files is:", CACHE_DIR
     if not path.exists(CACHE_DIR):
         utils.fail("The path to App center .ini files does not exist.")
 
-    # check links using linkchecker:
     for link in collect_links():
         print "\nChecking link:", link
-        cmd = ('linkchecker', '-r', CHECK_LEVEL, '-v', '--timeout=60', link)
-        print "Executing:", cmd
 
         # a separate Process is run with a timeout to make sure
-        # that test does not hang with "waiting" links:
+        # that test does not hang forever with "waiting" links:
         parent_conn, child_conn = m_Pipe()
-        proc = Process(target=create_and_run_process, args=(child_conn, cmd))
+        proc = Process(target=check_link_by_request, args=(child_conn, link))
+
         proc.start()
-        proc.join(90)
+        proc.join(timeout=70)
 
-        if proc.is_alive():  # did not terminate in a timeout
+        if proc.is_alive():  # terminate if did not terminate in a timeout
             proc.terminate()
-            stdout = ''
-        else:
-            stdout, stderr = parent_conn.recv()  # receive output
-            if stderr:
-                print "STDERR:", stderr
+            print "Failed to get any response in time when checking the link."
+            print " ERROR: The link '%s' seems to be inaccessible\n" % link
+            fail_the_test(link)
 
-        if not stdout:
-            print "Failed to get any stdout from linkchecker..."
-            print "\n ERROR: The link '%s' seems to be inaccessible\n" % link
-            fail_the_test()
         else:
-            check_stdout_for_error_codes_messages(stdout, link)
+            # get HTTP response code and reason if any
+            response_code, reason = parent_conn.recv()
+            if not response_code:
+                print "No HTTP response code in response."
+                fail_the_test(link)  # when ValueError or URLError happens
+            else:
+                print "The HTTP response code is:", response_code
+                if response_code in FAIL_CODES:
+                    print "Response code indicates a problem."
+                    fail_the_test(link)
+
+            if reason:
+                print "Reason is '%s'." % reason
 
 
 if __name__ == '__main__':
@@ -169,7 +164,8 @@ if __name__ == '__main__':
     check_ini_files()
 
     if failures_counter:
-        utils.fail("\nThere were %d link error(s) were detected, please "
-                   "check a complete test output." % failures_counter)
+        utils.fail(" %d link error(s) were detected, please "
+                   "check a complete test output.\n Problematic links are: %s"
+                   % (failures_counter, bad_links))
     else:
         print "\nNo errors were detected.\n"
