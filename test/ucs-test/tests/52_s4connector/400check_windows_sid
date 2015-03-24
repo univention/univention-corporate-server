@@ -32,19 +32,19 @@ echo "Windows host '$windows_host_dn' will be used for the test."
 
 
 # extract the Windows hostname:
-windows_hostname="$(echo $windows_host_dn | sed 's/cn=\(.*\),cn=computers,'"$ldap_base"'/\1/g')"
+windows_hostname="$(echo $windows_host_dn | sed 's/^cn=\(.*\),cn=computers,'"$ldap_base"'/\1/g')"
 echo "Windows Hostname is $windows_hostname"
 
 
-# skip the test if Windows host cannot be found in the CN=MicrosoftDNS:
-if [ -z "$(univention-s4search DC=$windows_hostname)" ]; then
-    echo "Cannot find a record with DC=$windows_hostname in the S4, there is no respective record in CN=MicrosoftDNS"
-    exit 137
-fi
+# get the account data from OpenLDAP:
+openldap_account_data=$(univention-ldapsearch -xLLL -s base -b "$windows_host_dn" uid sambaSID)
+
+# get the sAMAccountName equivalent from OpenLDAP:
+samaccountname=$(sed -n 's/^uid: //p' <<<"$openldap_account_data")
 
 
 # get the objectSid from S4:
-windows_object_sid="$(univention-s4search CN="$windows_hostname" objectSid | sed -n 's/^objectSid: //p')"
+windows_object_sid="$(univention-s4search sAMAccountName="$samaccountname" objectSid | sed -n 's/^objectSid: //p')"
 echo "The Windows Host 'objectSID' in S4 is '$windows_object_sid'"
 if [ -z "$windows_object_sid" ]; then
     fail_fast 110 "Failed to determine the Windows host 'objectSID' or it is empty."
@@ -52,7 +52,7 @@ fi
 
 
 # get the sambaSID from OpenLDAP:
-windows_samba_sid="$(univention-ldapsearch cn="$windows_hostname" sambaSID | sed -n 's/^sambaSID: //p')"
+windows_samba_sid=$(sed -n 's/^sambaSID: //p' <<<"$openldap_account_data")
 echo "The Windows Host sambaSID in 'OpenLDAP' is '$windows_samba_sid'"
 if [ -z "$windows_samba_sid" ]; then
     fail_fast 110 "Failed to determine the Windows host 'sambaSID' or it is empty."

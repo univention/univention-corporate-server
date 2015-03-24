@@ -1,3 +1,10 @@
+ucs-test (5.0.139-1) unstable; urgency=low
+
+  * 52_s4connector/400check_windows_sid: do not skip the test if no
+    record found in CN=MicrosoftDNS; Changes according to review (Bug #37572).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 24 Mar 2015 16:08:35 +0100
+
 ucs-test (5.0.138-4) unstable; urgency=low
 
   * 51_samba4/47domain_user_lockout: also debug level = 1 for
