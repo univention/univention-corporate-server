@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.89-10) unstable; urgency=medium
+
+  * Bug #37804: replace floating with positioning in login dialog icons
+
+ -- Florian Best <best@univention.de>  Tue, 24 Mar 2015 13:11:48 +0100
+
 univention-management-console-frontend-theme (0.0.89-9) unstable; urgency=medium
 
   * Bug #37804: update styling of login dialog to show a help icon
