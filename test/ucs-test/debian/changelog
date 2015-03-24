@@ -1,3 +1,10 @@
+ucs-test (5.0.138-3) unstable; urgency=low
+
+  * 51_samba4/47domain_user_lockout: force debug level = 1 when running
+    samba-tool. (Bug #37884).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 24 Mar 2015 13:01:23 +0100
+
 ucs-test (5.0.138-2) unstable; urgency=low
 
   * 20_appcenter/18_check_app_links: now using urllib2 instead of linkchecker;
