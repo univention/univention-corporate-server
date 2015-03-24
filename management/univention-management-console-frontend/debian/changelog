@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-45) unstable; urgency=medium
+
+  * Bug #37804: fix typo in german translation
+
+ -- Florian Best <best@univention.de>  Tue, 24 Mar 2015 16:54:20 +0100
+
 univention-management-console-frontend (4.1.106-44) unstable; urgency=medium
 
   * Bug #37804: fix tabindex to focus password field after username field
