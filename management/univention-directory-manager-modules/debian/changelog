@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-36) unstable; urgency=medium
+
+  * Bug #34552: replace mail_domain_name syntax with DNS_Name
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 24 Mar 2015 17:12:46 +0100
+
 univention-directory-manager-modules (10.0.29-35) unstable; urgency=low
 
   * Bug #34552: Adapted the regex and the messages
