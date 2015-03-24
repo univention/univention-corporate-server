@@ -9,9 +9,8 @@ desc: |
   * Don't create a pointer record if no forward zone could be determined when
     modifying a computer object.
   * Repair --policies option of UDM command line tool.
-  * Added a validation for the mail domain name to check if it is only composed
-    of lowercase letters, the figures 0-9, full stops and hyphens.
-    To restore the old behavior you can overwrite the syntax from the cli:
+  * Added appropriate validation for the mail domain name. To restore the old
+    behavior it is possible to overwrite the syntax from the cli:
     ucr set \
     directory/manager/web/modules/mail/domain/properties/name/syntax='string'
-bug: [37504,21585, 34552]
+bug: [37504,21585,34552]
