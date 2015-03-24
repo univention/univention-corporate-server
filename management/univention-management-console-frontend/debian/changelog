@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-44) unstable; urgency=medium
+
+  * Bug #37804: fix tabindex to focus password field after username field
+
+ -- Florian Best <best@univention.de>  Tue, 24 Mar 2015 13:14:26 +0100
+
 univention-management-console-frontend (4.1.106-43) unstable; urgency=medium
 
   * Bug #37804: focus password field after autofillin of username
