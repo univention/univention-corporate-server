@@ -37,6 +37,13 @@ VERSION=1
 
 joinscript_init
 
+dest="/etc/pykota.secret"
+if [ ! -f "$dest" ] ; then
+    cp /etc/machine.secret "$dest"
+    chown pykota:root "$dest"
+    chmod 600  "$dest"
+fi
+
 ucs_addServiceToLocalhost 'PrintQuota' "$@"
 
 joinscript_save_current_version

@@ -1,3 +1,10 @@
+univention-printquota (7.0.0-4) unstable; urgency=low
+
+  * moved /etc/machine.secret stuff from postinst to
+    join script (Bug #36861)
+
+ -- Felix Botner <botner@univention.de>  Wed, 25 Mar 2015 13:56:43 +0100
+
 univention-printquota (7.0.0-3) unstable; urgency=low
 
   * fixed permission for pykotadmin.conf template (Bug #36859) 
