@@ -1,3 +1,9 @@
+ucs-test (5.0.139-2) unstable; urgency=low
+
+  * added some more ucs-test-appcenter-uninstall test Bug #31876
+
+ -- Felix Botner <botner@univention.de>  Wed, 25 Mar 2015 10:36:45 +0100
+
 ucs-test (5.0.139-1) unstable; urgency=low
 
   * 52_s4connector/400check_windows_sid: do not skip the test if no
