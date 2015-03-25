@@ -1,3 +1,12 @@
+univention-management-console-module-udm (5.1.25-59) unstable; urgency=medium
+
+  Bug #38132:
+  * renew UMC session via SSO after importing a new license
+  * prompt error message if text field is empty
+  * add CSS class umcLargeDialog to the LicenseImportDialog
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 25 Mar 2015 16:05:15 +0100
+
 univention-management-console-module-udm (5.1.25-58) unstable; urgency=medium
 
   * Bug #36460: replace warning icon

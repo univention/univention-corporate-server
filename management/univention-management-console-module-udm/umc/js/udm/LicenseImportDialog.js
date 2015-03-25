@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define,window*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
@@ -40,10 +40,10 @@ define([
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/Text",
 	"umc/widgets/TextArea",
-	"umc/widgets/Button",
 	"umc/widgets/Uploader",
+	"umc/widgets/ProgressBar",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, domClass, tools, dialog, render, ContainerWidget, ConfirmDialog, StandbyMixin, Text, TextArea, Button, Uploader, _) {
+], function(declare, lang, domClass, tools, dialog, render, ContainerWidget, ConfirmDialog, StandbyMixin, Text, TextArea, Uploader, ProgressBar, _) {
 
 	return declare('umc.modules.udm.LicenseImportDialog', [ConfirmDialog, StandbyMixin], {
 		// summary:
@@ -57,10 +57,16 @@ define([
 
 		_widgets: null,
 
+		_progressBar: null,
+
 		title: _('UCS license import'),
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+
+			// create a progress bar widget
+			this._progressBar = new ProgressBar({});
+			this.own(this._progressBar);
 
 			// add icon container
 			this.message = new ContainerWidget({});
@@ -97,11 +103,16 @@ define([
 				label : _('Import from text field'),
 				callback: lang.hitch(this, function() {
 					var license = this._widgets.licenseText.get('value');
+					if (!lang.trim(license)) {
+						dialog.alert(_('The text field is empty. Please copy all lines of the license file into the text field and retry to import the data.'));
+						return;
+					}
+					this._progressBar.setInfo(_('Importing license data...'), null, Infinity);
 					this.standbyDuring(tools.umcpCommand('udm/license/import', { 'license': license }).then(
 						lang.hitch(this, function(response) {
-							this._handleUploaded(response.result[0]);
+							return this._handleUploaded(response.result[0]);
 						})
-					));
+					), this._progressBar);
 				})
 			}, {
 				name: 'submit', // workaround for a style as default button
@@ -125,22 +136,12 @@ define([
 
 		_handleUploaded: function(result) {
 			if (result.success) {
-				var btns = [{
-					name: 'relogin',
-					label: _('Logout'),
-					'default': true,
-					callback: function() {
-						tools.closeSession();
-						window.location.reload();
-					}
-				}, {
-					name: 'cancel',
-					label: _('Cancel'),
-					callback: lang.hitch(this, function() {
-						this.hide();
-					})
-				}];
-				dialog.confirm(_('The license has been imported successfully.') + '<br>' + _('Please login again to complete the import process.'), btns);
+				this._progressBar.setInfo(_('Updating session data...'), null, Infinity);
+				return tools.renewSession().then(lang.hitch(this, function() {
+					this.hide();
+					dialog.alert(_('The license has been imported successfully.'));
+				}));
+
 			} else {
 				var msg = _('The import of the license failed. Check the integrity of the original file given to you. If this error persists, please contact Univention or your Univention partner.');
 				if (result.message) {
