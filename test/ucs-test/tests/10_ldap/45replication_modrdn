@@ -20,13 +20,13 @@ from univention.testing.utils import wait_for_replication, stop_listener, start_
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from atexit import register
+import os
 
 
 if __name__ == '__main__':
-	if utils.s4connector_present():
+	if os.path.exists('/etc/init.d/univention-s4-connector'):
 		register(utils.start_s4connector)
 		utils.stop_s4connector()
-
 
 def _get_name_normal():
 	return random_name()

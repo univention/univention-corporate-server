@@ -1,3 +1,9 @@
+ucs-test (5.0.139-4) unstable; urgency=medium
+
+  * Bug #38126: Fix S4 Connector stop in 10_ldap.45replication_modrdn
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Mar 2015 12:40:08 +0100
+
 ucs-test (5.0.139-3) unstable; urgency=low
 
   * added some more ucs-test-appcenter-uninstall test Bug #31876 
