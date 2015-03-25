@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: openssl
-fix: 1.0.1e-2.92.201503200950
+fix: 1.0.1e-2.99.201503250939
 version: [0,1]
 desc: |
  Multiple vulnerabilities have been found in OpenSSL:
