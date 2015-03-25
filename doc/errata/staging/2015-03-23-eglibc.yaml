@@ -6,27 +6,28 @@ fix: 2.11.3-4.23.201503110900
 version: [4,5]
 desc: |
  Multiple vulnerabilities have been found in eglibc:
- * Incorrect memory management using alloca() 
+ * Incorrect memory management using alloca()
    (CVE-2012-3405, CVE-2012-3406)
  * Integeroverflows in strto() (CVE-2012-3480)
  * Stack overflow in strcoll() (CVE-2012-4424)
  * Integer overflow in strcoll() (CVE-2012-4412)
- * Denial of service when processing regular expressions with multibyte 
+ * Denial of service when processing regular expressions with multibyte
    characters (CVE-2013-0242)
  * Stack overflow in getaddrinfo() (CVE-2013-1914)
- * PTR_MANGLE encrypts pointers as a countermeasure against buffer 
-   overflows. When linking statically, this mangling didn't work correctly 
+ * PTR_MANGLE encrypts pointers as a countermeasure against buffer
+   overflows. When linking statically, this mangling didn't work correctly
    (CVE-2013-4788)
  * Missing sanitising for path length in readdir_r()  (CVE-2013-4237)
  * Multiple integer overflows in pvalloc(), valloc() and posix_memalign
    /memalign/aligned_alloc()  (CVE-2013-4332)
  * Stack overflow in getaddrinfo() (CVE-2013-4357)
  * Stack frame overflow in getaddrinfo() for Ipv6 sockets (CVE-2013-4458)
- * posix_spawn_file_actions_addopen() fails to copy the path argument 
+ * posix_spawn_file_actions_addopen() fails to copy the path argument
    (CVE-2014-4043)
- * During high load getaddrinfo() may send DNS queries to random fds 
+ * During high load getaddrinfo() may send DNS queries to random fds
    (CVE-2013-7423)
- * Memory corruption in getaddrinfo() if the AI_IDN flag is used (CVE-2013-7424)
+ * Memory corruption in getaddrinfo() if the AI_IDN flag is used
+   (CVE-2013-7424)
 bug: [37644]
 cve:
  - CVE-2012-3405
