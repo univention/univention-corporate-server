@@ -266,6 +266,9 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 
 		return networks
 
+	def list_subnets(self):
+		return []
+
 	def _boot_instance(self, instance):
 		self._exec_libcloud(lambda: self.driver.ex_hard_reboot_node(instance))
 

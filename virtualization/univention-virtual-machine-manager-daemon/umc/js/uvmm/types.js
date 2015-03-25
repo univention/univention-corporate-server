@@ -333,6 +333,16 @@ define([
 				return data.result;
 			});
 		},
+		getCloudListNetwork: function(options) {
+			return tools.umcpCommand('uvmm/cloud/list/network', options).then(function(data) {
+				return data.result;
+			});
+		},
+		getCloudListSubnet: function(options) {
+			return tools.umcpCommand('uvmm/cloud/list/subnet', options).then(function(data) {
+				return data.result;
+			});
+		},
 		getNodeType: function( uri ) {
 			var colon = uri.indexOf( ':' );
 			if ( colon == -1 ) {

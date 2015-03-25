@@ -98,6 +98,7 @@ class CloudConnection(object):
 		self._images = []
 		self._sizes = []
 		self._networks = []
+		self._subnets = []
 
 	def _create_connection(self, cloud, testconnection=True):
 		pass
