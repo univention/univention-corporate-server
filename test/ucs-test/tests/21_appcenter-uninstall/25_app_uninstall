@@ -26,6 +26,16 @@ def check_app_webinterface(App, UCR):
 		var = 'ucs/web/overview/entries/%s%s/link' % (App.get('ucsoverviewcategory'), App.get('webinterface'))
 		if UCR.get(var):
 			utils.fail('%s - webinterface still configured' % App.id)
+	if App.get('webinterface'):
+		webinterface = App.get('webinterface').replace('/', '')
+		for i in ['admin', 'service']:
+			var = 'ucs/web/overview/entries/%s/%s/link' % (i, webinterface)
+			if UCR.get(var):
+				utils.fail('%s - webinterface still configured' % App.id)
+	# special kolab-enterprise tests
+	if str(App.id) == 'kolab-enterprise':
+		if UCR.get('ucs/web/overview/entries/service/kolab-webclient/link'):
+			utils.fail('%s - webinterface still configured' % App.id)
 
 def check_app_component(App, UCR):
 	print 'Checking component for app %s' % App.id
