@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-47) unstable; urgency=medium
+
+  * Bug #38132: improve tracking of UMC actions
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 26 Mar 2015 19:10:02 +0100
+
 univention-management-console-frontend (4.1.106-46) unstable; urgency=medium
 
   * Bug #38132: added page to startup dialogue for importing the license file

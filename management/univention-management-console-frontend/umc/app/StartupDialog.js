@@ -91,12 +91,16 @@ define([
 					}
 					return page.showInStartupDialog !== false;
 				},
+
 				next: function(pageName) {
+					topic.publish('/umc/actions', 'startup-wizard', pageName, 'next');
 					var nextPage = this.inherited(arguments);
 					var deferred = null;
 					if (pageName == 'activation') {
 						deferred = when(lang.hitch(thisDialog, '_evaluateActivation')()).then(function(success) {
 							// only advance if no error occurred
+							var actionLabel = success === true ? 'success' : success === false ? 'failure' : 'empty-email';
+							topic.publish('/umc/actions', 'startup-wizard', 'activation', actionLabel);
 							return success !== false ? nextPage : 'help';
 						});
 						thisDialog._progressBar.setInfo(_('Sending activation email...'), null, Infinity);
@@ -104,6 +108,11 @@ define([
 						return deferred;
 					}
 					return nextPage;
+				},
+
+				previous: function(pageName) {
+					topic.publish('/umc/actions', 'startup-wizard', pageName, 'previous');
+					return this.inherited(arguments);
 				}
 			});
 
@@ -112,11 +121,14 @@ define([
 			var licenseUploader = this._wizard.getWidget('licenseImport', 'licenseUpload');
 			licenseUploader.onImportLicense = lang.hitch(this, function(deferred) {
 				this._progressBar.setInfo(_('Importing license data...'), null, Infinity);
+				topic.publish('/umc/actions', 'startup-wizard', 'licenseImport', 'upload');
 				this._wizard.standbyDuring(deferred, this._progressBar);
 				deferred.then(lang.hitch(this, function() {
 					// advance to next page
+					topic.publish('/umc/actions', 'startup-wizard', 'licenseImport', 'success');
 					this._wizard._next('licenseImport');
 				}), function(errMsg) {
+					topic.publish('/umc/actions', 'startup-wizard', 'licenseImport', 'failure');
 					var msg = '<p>' + _('The import of the license failed. Check the integrity of the original file given to you.') + '</p>';
 					if (errMsg) {
 						msg += '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + errMsg + '</p>';

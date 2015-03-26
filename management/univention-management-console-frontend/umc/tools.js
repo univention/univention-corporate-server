@@ -84,7 +84,8 @@ define([
 			sessionTimeout: 300,
 			sessionLastRequest: new Date(0),
 			autoStartModule: null,
-			autoStartFlavor: null
+			autoStartFlavor: null,
+			numOfTabs: 0
 		},
 
 		status: function(/*String?*/ key, /*Mixed?*/ value) {
@@ -129,6 +130,7 @@ define([
 		},
 
 		renewSession: function() {
+			topic.publish('/umc/actions', 'session', 'renew');
 			this.resetModules();
 			var sessionID = cookie('UMCSessionId');
 			return tools.umcpCommand('lib/sso/getsession', {

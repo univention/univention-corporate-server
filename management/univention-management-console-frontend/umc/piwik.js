@@ -60,6 +60,8 @@ define([
 		//console.log('###   ', arguments);
 		piwikTracker.setDocumentTitle(_buildSiteTitle(arguments));
 		piwikTracker.setCustomUrl(window.location.protocol + "//" + window.location.host);
+		piwikTracker.setCustomVariable(1, 'ucsVersion', tools.status('ucsVersion'), 'visit');
+		piwikTracker.setCustomVariable(1, 'numOfTabs', tools.status('numOfTabs'), 'page');
 		piwikTracker.trackPageView();
 	};
 

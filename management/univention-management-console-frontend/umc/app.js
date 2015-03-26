@@ -1079,7 +1079,7 @@ define([
 				if (!newModule.moduleID) {
 					// this is the overview page, not a module
 					topic.publish('/umc/actions', 'overview');
-				} else {
+				} else if (!newModule.$isDummy$) {
 					topic.publish('/umc/actions', newModule.moduleID, newModule.moduleFlavor, 'focus');
 				}
 				var overviewShown = (newModule === this._overviewPage);
@@ -1092,7 +1092,10 @@ define([
 				}
 			}));
 			aspect.before(this._tabContainer, 'removeChild', lang.hitch(this, function(module) {
-				topic.publish('/umc/actions', module.moduleID, module.moduleFlavor, 'close');
+				if (!module.$isDummy$) {
+					this._updateNumOfTabs(-1);
+					topic.publish('/umc/actions', module.moduleID, module.moduleFlavor, 'close');
+				}
 				if (module == this._tabContainer.get('selectedChildWidget')) {
 					if (array.indexOf(this._tabContainer.getChildren(), this._lastSelectedChild) !== -1) {
 						this._tabContainer.selectChild(this._lastSelectedChild);
@@ -1483,6 +1486,12 @@ define([
 			this._searchText.set('content', _('Search query ›%s‹', entities.encode(searchPattern)));
 		},
 
+		_updateNumOfTabs: function(offset) {
+			// updated number of tabs
+			offset = offset || 0;
+			tools.status('numOfTabs', Math.max(0, this._tabContainer.getChildren().length - 1 + offset));
+		},
+
 		openModule: function(/*String|Object*/ module, /*String?*/ flavor, /*Object?*/ props) {
 			// summary:
 			//		Open a new tab for the given module.
@@ -1533,7 +1542,9 @@ define([
 						description: module.description
 					}, props);
 					if (lang.getObject('_tabContainer.selectedChildWidget.isOverview', false, this)) {
-						var dummy = new Module(params);
+						var dummy = new Module(lang.mixin({
+							$isDummy$: true
+						}, params));
 						this._tabContainer.addChild(dummy);
 						this.__insertTabStyles(dummy, module);
 						this._tabContainer.selectChild(dummy);
@@ -1541,6 +1552,8 @@ define([
 							tab = new BaseClass(params);
 							this._tabContainer.addChild(tab);
 							this.__insertTabStyles(tab, module);
+							this._updateNumOfTabs(-1);
+							topic.publish('/umc/actions', module.id, module.flavor, 'open');
 							this._tabContainer.selectChild(tab, true);
 							this._tabContainer.removeChild(dummy, true);
 							dummy.destroyRecursive();
@@ -1551,6 +1564,8 @@ define([
 						tab = new BaseClass(params);
 						this._tabContainer.addChild(tab);
 						this.__insertTabStyles(tab, module);
+						this._updateNumOfTabs();
+						topic.publish('/umc/actions', module.id, module.flavor, 'open');
 						this._tabContainer.selectChild(tab, true);
 						tools.checkReloadRequired();
 						deferred.resolve(tab);
