@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-46) unstable; urgency=medium
+
+  * Bug #38132: added page to startup dialogue for importing the license file
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 26 Mar 2015 17:35:47 +0100
+
 univention-management-console-frontend (4.1.106-45) unstable; urgency=medium
 
   * Bug #37804: fix typo in german translation

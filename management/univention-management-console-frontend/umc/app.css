@@ -30,6 +30,10 @@
 	background-image: url(app/activation.svg);
 }
 
+.umc .umcAppDialogPage-licenseImport .umcPageIcon {
+	background-image: url(app/licenseMail.svg);
+}
+
 .umc .umcAppDialogPage-help .umcPageIcon {
 	background-image: url(app/help.svg);
 }

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-03-19 09:20+0100\n"
+"POT-Creation-Date: 2015-03-26 17:08+0100\n"
 "PO-Revision-Date: 2013-09-12 11:31+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,7 +50,7 @@ msgstr "%s: %s"
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
 
-#: umc/app/WelcomePage.js:72
+#: umc/app/WelcomePage.js:78
 #, python-format
 msgid ""
 "<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Tell us you opinion!</"
@@ -58,6 +58,15 @@ msgid ""
 msgstr ""
 "<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Sagen Sie uns Ihre "
 "Meinung!</a></p>"
+
+#: umc/app/LicenseImportPage.js:48
+msgid ""
+"<p><b>You have got mail!</b></p><p>A license file should have been sent to "
+"your email address. Upload the license file from the email to activate your "
+"UCS instance.</p>"
+msgstr ""
+"<p><b>Sie haben eine E-Mail erhalten!</b></p><p>Eine Lizenzdatei sollte an Ihre E-Mail-Adresse geschickt worden sein. "
+"Laden Sie die Lizenzdatei aus der E-Mail hier hoch, um Ihre UCS-Instanz zu aktivieren.</p>"
 
 #: umc/app/WelcomePage.js:58
 msgid ""
@@ -87,20 +96,20 @@ msgstr ""
 #, python-format
 msgid ""
 "<p>Details about the activation of a UCS license can be found in the <a href="
-"\"http://docs.univention.de/manual-%(version)s.html#software:appcenter\" "
+"\"http://docs.univention.de/manual-%(version)s.html#central:license\" "
 "target=\"_blank\">UCS manual</a>.</p>"
 msgstr ""
 "<p>Details zur Aktivierung der UCS-Lizenz werden im <a href=\"http://docs."
-"univention.de/handbuch-%(version)s.html#software:appcenter\" target=\"_blank"
+"univention.de/handbuch-%(version)s.html#central:license\" target=\"_blank"
 "\">UCS-Handbuch</a> beschrieben.</p>"
 
 #: umc/app/ActivationPage.js:61
 msgid ""
 "<p>Leave the field empty to perform the activation at a later point in time "
-"via the settings menu.</p>"
+"via the user menu in top right corner.</p>"
 msgstr ""
 "<p>Lassen Sie das Feld frei, um die Aktivierung zu einem späteren Zeitpunkt "
-"über das Einstellungsmenü durchzuführen.</p>"
+"über das Benutzermenü oben rechts durchzuführen.</p>"
 
 #: umc/app/FeedbackPage.js:47
 #, python-format
@@ -139,14 +148,12 @@ msgstr ""
 #: umc/app/ActivationPage.js:47
 msgid ""
 "<p>You may now enter a valid e-mail address in order to activate the UCS "
-"system to use the App Center. Within a short time, you will receive an "
-"updated license key. This key can then be uploaded via the license dialog in "
-"the user menu (on the top right).</p>"
+"system to use the App Center. In the next step you can upload the license "
+"file that has been sent to your email address.</p>"
 msgstr ""
 "<p>Sie können nun eine gültige E-Mail-Adresse angeben, um das UCS-System für "
-"die Verwendung des App Centers freizuschalten. Es wird Ihnen dann in Kürze "
-"ein aktualisierter Lizenzschlüssel zugeschickt, der über den Lizenzdialog im "
-"Benutzermenü (oben rechts) eingespielt werden kann.</p>"
+"die Verwendung des App Centers freizuschalten. Im nächsten Schritt können Sie die "
+"Lizenzdatei hochladen, die an Ihre E-Mail-Adresse zugeschickt wird.</p>"
 
 #: umc/app/HelpPage.js:48
 msgid ""
@@ -176,8 +183,8 @@ msgstr ""
 msgid "About UMC"
 msgstr "Über UMC"
 
-#: umc/widgets/UnixAccessRights.js:96
 #: umc/widgets/UnixAccessRightsExtended.js:96
+#: umc/widgets/UnixAccessRights.js:96
 msgid "Access"
 msgstr "Zugriff"
 
@@ -245,8 +252,8 @@ msgstr "Zurück"
 msgid "Back to overview"
 msgstr "Zurück zur Übersicht"
 
-#: umc/app.js:1695 umc/dialog.js:352 umc/tools.js:229
-#: umc/widgets/MultiObjectSelect.js:137 umc/widgets/Wizard.js:163
+#: umc/tools.js:229 umc/app.js:1695 umc/widgets/MultiObjectSelect.js:137
+#: umc/widgets/Wizard.js:163 umc/dialog.js:352
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -258,7 +265,7 @@ msgstr "Daten leeren"
 msgid "Clear image data"
 msgstr "Bilddaten leeren"
 
-#: umc/app.js:837 umc/tools.js:799 umc/widgets/Module.js:168
+#: umc/tools.js:799 umc/app.js:837 umc/widgets/Module.js:168
 msgid "Close"
 msgstr "Schließen"
 
@@ -334,8 +341,8 @@ msgstr "Fertigstellen"
 msgid "Further Information"
 msgstr "Weiterführende Informationen"
 
-#: umc/widgets/UnixAccessRights.js:76
 #: umc/widgets/UnixAccessRightsExtended.js:76
+#: umc/widgets/UnixAccessRights.js:76
 msgid "Group"
 msgstr "Gruppe"
 
@@ -357,9 +364,13 @@ msgstr "Hilfe"
 msgid "Hide server error message"
 msgstr "Fehlernachricht des Servers ausblenden"
 
-#: umc/app/WelcomePage.js:67
+#: umc/app/WelcomePage.js:70
 msgid "I see potential for improvement."
 msgstr "Ich sehe Verbesserungsmöglichkeiten."
+
+#: umc/app/StartupDialog.js:114 umc/app/LicenseImportPage.js:57
+msgid "Importing license data..."
+msgstr "Importieren der Lizenzdaten..."
 
 #: umc/tools.js:815
 msgid "Inform vendor"
@@ -429,6 +440,10 @@ msgstr "Interner Server-Fehler: Der Dienst ist momentan nicht erreichbar!"
 msgid "Language"
 msgstr "Sprache"
 
+#: umc/app/LicenseImportPage.js:41
+msgid "License import"
+msgstr "Lizenz-Import"
+
 #: umc/dialog/LoginDialog.js:62
 msgid "Login"
 msgstr "Anmelden"
@@ -491,13 +506,13 @@ msgstr "Ok"
 msgid "Open module"
 msgstr "Modul öffnen"
 
-#: umc/widgets/UnixAccessRights.js:77
 #: umc/widgets/UnixAccessRightsExtended.js:77
+#: umc/widgets/UnixAccessRights.js:77
 msgid "Others"
 msgstr "Andere"
 
-#: umc/widgets/UnixAccessRights.js:75
 #: umc/widgets/UnixAccessRightsExtended.js:75
+#: umc/widgets/UnixAccessRights.js:75
 msgid "Owner"
 msgstr "Besitzer"
 
@@ -510,7 +525,10 @@ msgstr "Passwort"
 msgid ""
 "Please login with a valid username and password. A login with an e-mail "
 "address is not possible. The default username to manage the domain is %s."
-msgstr "Bitte melden Sie sich mit einem gültigen Benutzernamen und Passwort an. Eine Anmeldung mit einer E-Mail-Adresse ist nicht möglich. Der Standardbenutzername zur Administration der Domäne ist %s."
+msgstr ""
+"Bitte melden Sie sich mit einem gültigen Benutzernamen und Passwort an. "
+"Eine Anmeldung mit einer E-Mail-Adresse ist nicht möglich. Der "
+"Standardbenutzername zur Administration der Domäne ist %s."
 
 #: umc/tools.js:762
 msgid "Please take a second to provide the following information:"
@@ -518,8 +536,8 @@ msgstr ""
 "Bitte nehmen Sie sich einen Augenblick Zeit, um die folgenden Informationen "
 "bereitzustellen:"
 
-#: umc/widgets/UnixAccessRights.js:88
 #: umc/widgets/UnixAccessRightsExtended.js:88
+#: umc/widgets/UnixAccessRights.js:88
 msgid "Read"
 msgstr "Lesen"
 
@@ -527,7 +545,7 @@ msgstr "Lesen"
 msgid "Reload"
 msgstr "Neu laden"
 
-#: umc/widgets/MultiObjectSelect.js:287 umc/widgets/MultiUploader.js:123
+#: umc/widgets/MultiUploader.js:123 umc/widgets/MultiObjectSelect.js:287
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -564,11 +582,15 @@ msgstr "Suchbegriff"
 msgid "Send as email"
 msgstr "Als E-Mail senden"
 
+#: umc/app/StartupDialog.js:102
+msgid "Sending activation email..."
+msgstr "Senden der Aktivierungs-E-Mail..."
+
 #: umc/app/AboutPage.js:47
 msgid "Server"
 msgstr "Server"
 
-#: umc/tools.js:742
+#: umc/tools.js:742 umc/app/StartupDialog.js:122
 msgid "Server error message:"
 msgstr "Fehlernachricht des Servers:"
 
@@ -632,13 +654,24 @@ msgstr ""
 "Das Benutzerkonto kannt nicht verwendet werden. Seine Gültigkeit ist "
 "abgelaufen."
 
-#: umc/app/StartupDialog.js:165
+#: umc/app/StartupDialog.js:219
 msgid ""
 "The activation of UCS failed. Please re-try to perform the the activation "
-"again via the settings menu."
+"again via the user menu in the top right."
 msgstr ""
 "Die Aktivierung des UCS-Systems schlug fehl. Bitte wiederholen Sie den "
-"Aktivierungsvorgang über das Einstellungsmenü."
+"Aktivierungsvorgang über das Benutzermenü oben rechts."
+
+#: umc/app/StartupDialog.js:120
+msgid ""
+"The import of the license failed. Check the integrity of the original file "
+"given to you."
+msgstr ""
+"Der Import der Lizenz schlug fehl. Überprüfen Sie die Integrität der Originaldatei, die Ihnen zugestellt wurde."
+
+#: umc/app/LicenseImportPage.js:65
+msgid "The license has been imported successfully."
+msgstr "Die Lizenz wurde erfolgreich importiert."
 
 #: umc/tools.js:615
 msgid "The password has expired and must be changed."
@@ -701,10 +734,18 @@ msgstr "Univention Webseite"
 msgid "Unknown error while performing automatic login at host "
 msgstr "Unbekannter Fehler während des automatischen Logins an Rechner "
 
+#: umc/app/LicenseImportPage.js:62
+msgid "Updating session data..."
+msgstr "Aktualisieren der Sitzungsdaten..."
+
 #: umc/widgets/InfoUploader.js:43 umc/widgets/MultiUploader.js:104
 #: umc/widgets/Uploader.js:109
 msgid "Upload"
 msgstr "Hochladen"
+
+#: umc/app/LicenseImportPage.js:52
+msgid "Upload license file..."
+msgstr "Lizenzdatei hochladen..."
 
 #: umc/widgets/ImageUploader.js:47
 msgid "Upload new image"
@@ -755,7 +796,7 @@ msgstr ""
 msgid "Webfrontend error: The specified request is unknown."
 msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht bekannt."
 
-#: umc/app/StartupDialog.js:54
+#: umc/app/StartupDialog.js:57
 msgid "Welcome to UMC"
 msgstr "Willkommen bei UMC"
 
@@ -763,14 +804,21 @@ msgstr "Willkommen bei UMC"
 msgid "Welcome to Univention Management Console"
 msgstr "Willkommen bei Univention Management Console"
 
-#: umc/widgets/UnixAccessRights.js:92
 #: umc/widgets/UnixAccessRightsExtended.js:92
+#: umc/widgets/UnixAccessRights.js:92
 msgid "Write"
 msgstr "Schreiben"
 
 #: umc/tools.js:604
 msgid "You are not authorized to perform this action."
 msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen."
+
+#: umc/app/LicenseImportPage.js:78
+msgid ""
+"You may as well import the license file at a later point in time via the "
+"user menu in the top right."
+msgstr ""
+"Sie können die Lizenzdatei auch zu einem späteren Zeitpunkt über das Benutzermenü oben rechts importieren."
 
 #: umc/dialog/LoginDialog.js:370
 msgid "Your Browser is outdated"
@@ -812,7 +860,7 @@ msgstr "mehr"
 msgid "steps to reproduce the failure"
 msgstr "Schritte, um den Fehler zu reproduzieren"
 
-#: umc/app.js:901 umc/app/WelcomePage.js:72
+#: umc/app/WelcomePage.js:78 umc/app.js:901
 msgid "umcFeedbackUrl"
 msgstr "https://www.univention.de/produkt-feedback/"
 
@@ -847,12 +895,6 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgid "Favorites"
 #~ msgstr "Favoriten"
 
-#~ msgid "Import new license"
-#~ msgstr "Neue Lizenz einspielen"
-
-#~ msgid "License information"
-#~ msgstr "Lizenzinformationen"
-
 #~ msgid "Loaded module %s"
 #~ msgstr "Modul %s wurde geladen"
 
@@ -878,8 +920,13 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgid "Open context menu"
 #~ msgstr "Kontextmenü öffnen"
 
-#~ msgid "The license has already been activated."
-#~ msgstr "Die Lizenz wurde bereits aktiviert."
+#~ msgid ""
+#~ "Please login with a valid username and password. A login with an e-mail "
+#~ "address is not possible. The default username to manage the domain is %s."
+#~ msgstr ""
+#~ "Bitte melden Sie sich mit einem gültigen Benutzername und Passwort an. "
+#~ "Eine Anmeldung mit einer E-Mail-Adresse ist nicht möglich. Der "
+#~ "Standardbenutzername zur Administration der Domäne ist %s."
 
 #~ msgid "The system does not allow changing the password"
 #~ msgstr "Das System erlaubt das Ändern des Passwortes nicht"

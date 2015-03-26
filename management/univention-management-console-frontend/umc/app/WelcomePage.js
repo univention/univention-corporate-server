@@ -60,12 +60,18 @@ define([
 			type: RadioButton,
 			name: 'installation_ok',
 			label: _('Everything worked great.'),
-			radioButtonGroup: 'umcStartupWelcomePageRadioButtons'
+			radioButtonGroup: 'umcStartupWelcomePageRadioButtons',
+			isValid: function() {
+				return true;
+			}
 		}, {
 			type: _RadioButton,
 			name: 'installation_not_ok',
 			label: _('I see potential for improvement.'),
-			radioButtonGroup: 'umcStartupWelcomePageRadioButtons'
+			radioButtonGroup: 'umcStartupWelcomePageRadioButtons',
+			isValid: function() {
+				return true;
+			}
 		}, {
 			type: Text,
 			name: 'link',

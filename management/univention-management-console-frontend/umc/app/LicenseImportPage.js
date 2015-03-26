@@ -30,54 +30,70 @@
 /*global define*/
 define([
 	"dojo/_base/lang",
+	"dojo/Deferred",
 	"umc/tools",
 	"umc/widgets/Text",
-	"umc/widgets/TextBox",
+	"umc/widgets/Uploader",
 	"umc/i18n!"
-], function(lang, tools, Text, TextBox, _) {
+], function(lang, Deferred, tools, Text, Uploader, _) {
 	var pageConf = {
-		name: 'activation',
-		headerText: _('Activation of Univention Corporate Server'),
-		'class': 'umcAppDialogPage umcAppDialogPage-activation',
+		name: 'licenseImport',
+		headerText: _('License import'),
+		'class': 'umcAppDialogPage umcAppDialogPage-licenseImport',
 		navBootstrapClasses: 'col-xxs-12 col-xs-4',
 		mainBootstrapClasses: 'col-xxs-12 col-xs-8',
 		widgets: [{
 			type: Text,
-			name: 'text',
-			content: _('<p>You may now enter a valid e-mail address in order to activate the UCS system to use the App Center. In the next step you can upload the license file that has been sent to your email address.</p>')
+			name: 'text1',
+			content: _('<p><b>You have got mail!</b></p><p>A license file should have been sent to your email address. Upload the license file from the email to activate your UCS instance.</p>')
 		}, {
-			type: TextBox,
-			name: 'email',
-			inlineLabel: _('E-mail address'),
-			regExp: '.+@.+',
-			invalidMessage: _('No valid e-mail address.'),
-			size: 'Two'
+			type : Uploader,
+			name : 'licenseUpload',
+			buttonLabel: _('Upload license file...'),
+			command: 'udm/license/import',
+			_progressDeferred: null,
+			onUploadStarted: function() {
+				this._progressDeferred = new Deferred();
+				this._progressDeferred.progress(_('Importing license data...'));
+				this.onImportLicense(this._progressDeferred);
+			},
+			onUploaded: function(result) {
+				if (result.success) {
+					this._progressDeferred.progress(_('Updating session data...'));
+					tools.renewSession().then(lang.hitch(this, function() {
+						this._progressDeferred.resolve();
+						//dialog.alert(_('The license has been imported successfully.'));
+					}));
+				}
+				else {
+					this._progressDeferred.reject(result.message);
+				}
+			},
+			onImportLicense: function(deferred) {
+				// event stub
+			}
 		}, {
 			type: Text,
 			name: 'text2',
-			labelConf: {
-				'class': 'umcActivationLeaveFieldFreeMessage'
-			},
-			content: _('<p>Leave the field empty to perform the activation at a later point in time via the user menu in top right corner.</p>')
-		}, {
-			type: Text,
-			name: 'text3',
-			content: _('<p>Details about the activation of a UCS license can be found in the <a href="http://docs.univention.de/manual-%(version)s.html#central:license" target="_blank">UCS manual</a>.</p>', {
-				version: tools.status('ucsVersion').split('-')[0]
-			})
-		}]
+			content: '<p>' + _('You may as well import the license file at a later point in time via the user menu in the top right.') + '</p>'
+		}],
+
+		// the following values will be loaded via UCR
+		hasLicense: null,
+		hasLicenseRequested: null,
+		showInStartupDialog: function(wizardValues) {
+			return !this.hasLicense && (this.hasLicenseRequested || lang.trim(wizardValues.email));
+		}
 	};
 
 	var _ucrDeferred = null;
 	var ucr = function() {
 		if (!_ucrDeferred) {
 			_ucrDeferred = tools.ucr(['uuid/license', 'ucs/web/license/requested']).then(function(ucr) {
-				var res = {
+				return {
 					hasLicense: Boolean(ucr['uuid/license']),
 					hasLicenseRequested: tools.isTrue(ucr['ucs/web/license/requested'])
 				};
-				res.showInStartupDialog = !res.hasLicense && !res.hasLicenseRequested;
-				return res;
 			});
 		}
 		return _ucrDeferred;
@@ -87,7 +103,7 @@ define([
 	return {
 		load: function (params, req, load, config) {
 			ucr().then(function(info) {
-				load(lang.mixin({}, info, pageConf));
+				load(lang.mixin(pageConf, info));
 			});
 		}
 	};

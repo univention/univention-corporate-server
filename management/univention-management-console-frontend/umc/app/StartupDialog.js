@@ -32,20 +32,23 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/when",
 	"dojo/topic",
 	"dijit/Dialog",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/Wizard",
 	"umc/widgets/Text",
+	"umc/widgets/ProgressBar",
 	"./WelcomePage",
 	"./FeedbackPage",
 	"./ActivationPage!",  // needs to be loaded as AMD plugin
+	"./LicenseImportPage!",  // needs to be loaded as AMD plugin
 	"./HelpPage",
 	"./FinishedPage",
 	"umc/i18n!"
-], function(declare, lang, array, topic, Dialog, tools, dialog, Wizard, Text,
-		WelcomePage, FeedbackPage, ActivationPage, HelpPage, FinishedPage, _) {
+], function(declare, lang, array, when, topic, Dialog, tools, dialog, Wizard, Text, ProgressBar,
+		WelcomePage, FeedbackPage, ActivationPage, LicenseImportPage, HelpPage, FinishedPage, _) {
 
 	return declare(Dialog, {
 		// summary:
@@ -59,19 +62,67 @@ define([
 
 		_wizardCompleted: false,
 
+		_progressBar: null,
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
 			// some pages might return null
-			var pages = array.filter([WelcomePage, FeedbackPage, ActivationPage, HelpPage, FinishedPage], function(ipage) {
-				return ipage.showInStartupDialog !== false;
-			});
-
+			var pages = [WelcomePage, FeedbackPage, ActivationPage, LicenseImportPage, HelpPage, FinishedPage];
+			var thisDialog = this;
 			this._wizard = new Wizard({
 				pages: pages,
 				autoHeight: true,
+				autoValidate: true,
 				onFinished: lang.hitch(this, 'close', true),
 				onCancel: lang.hitch(this, 'close', false)
+			});
+
+			// create a progress bar widget
+			this._progressBar = new ProgressBar({});
+			this.own(this._progressBar);
+
+			// safeMixin() is needed here for this.inherited() to work correctly
+			declare.safeMixin(this._wizard, {
+				isPageVisible: function(pageName) {
+					var page = this._pages[pageName];
+					if (typeof page.showInStartupDialog == 'function') {
+						return page.showInStartupDialog(this.getValues());
+					}
+					return page.showInStartupDialog !== false;
+				},
+				next: function(pageName) {
+					var nextPage = this.inherited(arguments);
+					var deferred = null;
+					if (pageName == 'activation') {
+						deferred = when(lang.hitch(thisDialog, '_evaluateActivation')()).then(function(success) {
+							// only advance if no error occurred
+							return success !== false ? nextPage : 'help';
+						});
+						thisDialog._progressBar.setInfo(_('Sending activation email...'), null, Infinity);
+						this.standbyDuring(deferred, thisDialog._progressBar);
+						return deferred;
+					}
+					return nextPage;
+				}
+			});
+
+			// register wizard logic for license upload
+			// (standby animation + go to next page)
+			var licenseUploader = this._wizard.getWidget('licenseImport', 'licenseUpload');
+			licenseUploader.onImportLicense = lang.hitch(this, function(deferred) {
+				this._progressBar.setInfo(_('Importing license data...'), null, Infinity);
+				this._wizard.standbyDuring(deferred, this._progressBar);
+				deferred.then(lang.hitch(this, function() {
+					// advance to next page
+					this._wizard._next('licenseImport');
+				}), function(errMsg) {
+					var msg = '<p>' + _('The import of the license failed. Check the integrity of the original file given to you.') + '</p>';
+					if (errMsg) {
+						msg += '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + errMsg + '</p>';
+					}
+					dialog.alert(msg);
+				}, lang.hitch(this._progressBar, 'setInfo'));
 			});
 
 			// add CSS classes per page, add icon element
@@ -109,7 +160,6 @@ define([
 			if (this._wizardCompleted) {
 				this._evaluateFeedback();
 				this._evaluateHardwareStatistics();
-				this._evaluateActivation();
 			}
 			this._evaluateWizardCompleted();
 		},
@@ -154,15 +204,20 @@ define([
 		},
 
 		_evaluateActivation: function() {
-			var email = this._getValue('activation', 'email');
+			var emailWidget = this._wizard.getWidget('activation', 'email');
+			var email = lang.trim(emailWidget.get('value'));
 			if (!email) {
 				return;
 			}
 
-			tools.umcpCommand('udm/request_new_license', {
+			return tools.umcpCommand('udm/request_new_license', {
 				email: email
-			}, false).then(function() {}, lang.hitch(this, function() {
-				dialog.alert(_('The activation of UCS failed. Please re-try to perform the the activation again via the settings menu.'));
+			}, false).then(function() {
+				return true;
+			}, lang.hitch(this, function() {
+				emailWidget.set('value', '');
+				dialog.alert(_('The activation of UCS failed. Please re-try to perform the the activation again via the user menu in the top right.'));
+				return false;
 			}));
 		},
 
