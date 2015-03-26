@@ -134,7 +134,7 @@ def install_signal_handlers(options):
 		"""Handle HUP signal to restart daemon."""
 		self = os.path.abspath(sys.argv[0])
 		args = sys.argv[:]
-		logger.info("Re-executing self: %s %s" % (self, args))
+		logger.info("Re-executing self: %s %s", self, args)
 		os.execv(self, args)
 		logger.error("Failed to re-executing self.")
 		sys.exit(1)
@@ -260,7 +260,7 @@ if __name__ == '__main__':
 		logger = logging.getLogger("uvmmd")
 	except ConfigParser.Error:
 		logger = logging.getLogger("uvmmd")
-		logger.warning('Could not configure logger from %s' % (options.conffile,))
+		logger.warning('Could not configure logger from %s', options.conffile)
 
 	if options.verbose:
 		logger.setLevel(logging.DEBUG)
@@ -282,7 +282,7 @@ if __name__ == '__main__':
 				uri = config.get(section, "uri")
 				node_add(uri)
 			except ConfigParser.NoOptionError:
-				logger.warning("Section [%s] has no uri." % (section,))
+				logger.warning("Section [%s] has no uri.", section)
 
 	# Add nodes from command line
 	for uri in arguments:
@@ -310,7 +310,7 @@ if __name__ == '__main__':
 			try:
 				cloudconnections.add_connection(connection, testconnection=False)
 			except:
-				logger.error("Could not add connection %s (from ldap)" % (connection["name"]))
+				logger.error("Could not add connection %s (from ldap)", connection["name"])
 
 	except LdapError as msg:
 		logger.warning(msg)

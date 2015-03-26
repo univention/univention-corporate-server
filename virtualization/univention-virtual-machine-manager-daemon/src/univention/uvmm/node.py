@@ -159,14 +159,14 @@ class DomainTemplate(object):
 			if self.emulator:
 				break
 		else:
-			logger.error('No emulator specified in %s/%s' % (self.arch, self.domain_type))
+			logger.error('No emulator specified in %s/%s', self.arch, self.domain_type)
 
 		for node in [domain_type, arch]:
 			self.machines = [m.text for m in node.findall('machine')]
 			if self.machines:
 				break
 		else:
-			logger.error('No machines specified in %s/%s' % (self.arch, self.domain_type))
+			logger.error('No machines specified in %s/%s', self.arch, self.domain_type)
 
 		self.loader = arch.findtext('loader')
 
@@ -303,7 +303,7 @@ class Domain(PersistentCached):
 				break
 			time.sleep(1)
 		else:
-			logger.warning('No state for %s: %s' % (self.pd.name, info))
+			logger.warning('No state for %s: %s', self.pd.name, info)
 			return
 
 		self.pd.state, maxMem, curMem, self.pd.vcpus, runtime = info
@@ -349,7 +349,7 @@ class Domain(PersistentCached):
 					self.cache_save(dom.inactive_xml)
 					self._cache_id = cache_id
 				except IOError as ex:
-					logger.warning("Failed to cache domain %s: %s" % (self.pd.name, ex))
+					logger.warning("Failed to cache domain %s: %s", self.pd.name, ex)
 
 			if domain.isActive():
 				xml = dom.active_xml
@@ -694,10 +694,10 @@ class Node(PersistentCached):
 						self.domains[domStat.pd.uuid] = domStat
 						logger.debug("Loaded from cache '%s#%s'", self.pd.uri, domStat.pd.uuid)
 					except (EOFError, IOError, AssertionError, ET.XMLSyntaxError) as ex:
-						logger.warning("Failed to load cached domain %s: %s" % (cache_file_name, ex))
+						logger.warning("Failed to load cached domain %s: %s", cache_file_name, ex)
 				del dirs[:]  # just that direcory; no recursion
 		except (EOFError, IOError, AssertionError, pickle.PickleError) as ex:
-			logger.warning("Failed to load cached state of %s: %s" % (uri, ex))
+			logger.warning("Failed to load cached state of %s: %s", uri, ex)
 			self.pd = Data_Node()  # public data
 			self.pd.uri = uri
 			self.pd.name = re.sub('^[^:]+://(?:[^/@]+@)?([^/]+).*', lambda m: m.group(1), uri)
@@ -709,26 +709,26 @@ class Node(PersistentCached):
 
 	def run(self):
 		"""Handle regular poll. Also checks connection liveness."""
-		logger.info("timer_callback(%s) start" % (self.pd.uri,))
+		logger.info("timer_callback(%s) start", self.pd.uri)
 		try:
 			while self.timer is not None:
 				try:
-					logger.debug("timer_callback: %s" % (self.pd.uri,))
+					logger.debug("timer_callback: %s", self.pd.uri)
 					self.update_autoreconnect()
 				except Exception:
-					logger.error("%s: Exception in timer_callbck", (self.pd.uri,), exc_info=True)
+					logger.error("%s: Exception in timer_callback", self.pd.uri, exc_info=True)
 					# don't crash the event handler
 				self.timerEvent.clear()
 				self.timerEvent.wait(self.current_frequency / 1000.0)
 		finally:
-			logger.debug("timer_callback(%s) terminated" % (self.pd.uri,))
+			logger.debug("timer_callback(%s) terminated", self.pd.uri)
 
 	def update_autoreconnect(self):
 		"""(Re-)connect after connection broke."""
 		try:
 			if self.conn is None:
 				self.conn = libvirt.open(self.pd.uri)
-				logger.info("Connected to '%s'" % (self.pd.uri,))
+				logger.info("Connected to '%s'", self.pd.uri)
 				self.update_once()
 				self._register_default_pool()
 				# reset timer after successful re-connect
@@ -739,7 +739,7 @@ class Node(PersistentCached):
 			self.pd.last_try = time.time()
 			# double timer interval until maximum
 			hz = min(self.current_frequency * 2, Nodes.BEBO_FREQUENCY)
-			logger.warning("'%s' broken? next check in %s. %s" % (self.pd.uri, ms(hz), ex))
+			logger.warning("'%s' broken? next check in %s. %s", self.pd.uri, ms(hz), ex)
 			if hz > self.current_frequency:
 				self.current_frequency = hz
 			self._unregister()
@@ -810,7 +810,7 @@ class Node(PersistentCached):
 			# during migration events are not ordered causal
 			pass
 		except Exception:
-			log.error('%s: Exception handling callback' % (self.pd.uri,), exc_info=True)
+			log.error('%s: Exception handling callback', self.pd.uri, exc_info=True)
 			# don't crash the event handler
 
 	def reboot_event(self, conn, dom, opaque):
@@ -839,7 +839,7 @@ class Node(PersistentCached):
 			finally:
 				domStat._restart = 0
 		except Exception:
-			log.error('%s: Exception handling callback' % (self.pd.uri,), exc_info=True)
+			log.error('%s: Exception handling callback', self.pd.uri, exc_info=True)
 			# don't crash the event handler
 
 	def unregister(self, wait=False):
@@ -851,7 +851,7 @@ class Node(PersistentCached):
 			while wait:
 				timer.join(1.0)  # wait for up to 1 second until Thread terminates
 				if timer.isAlive():
-					logger.debug("timer still alive: %s" % (self.pd.uri,))
+					logger.debug("timer still alive: %s", self.pd.uri)
 				else:
 					wait = False
 
@@ -864,12 +864,12 @@ class Node(PersistentCached):
 				try:
 					self.conn.domainEventDeregisterAny(self.domainCB.pop())
 				except Exception:
-					logger.error("%s: Exception in domainEventDeregisterAny" % (self.pd.uri,), exc_info=True)
+					logger.error("%s: Exception in domainEventDeregisterAny", self.pd.uri, exc_info=True)
 
 			try:
 				self.conn.close()
 			except Exception:
-				logger.error('%s: Exception in conn.close' % (self.pd.uri,), exc_info=True)
+				logger.error('%s: Exception in conn.close', self.pd.uri, exc_info=True)
 			self.conn = None
 
 	def set_frequency(self, hz):
@@ -1029,7 +1029,7 @@ class Nodes(dict):
 		node = Node(uri, cache_dir=self.cache_dir)
 		self[uri] = node
 
-		logger.debug("Hypervisor '%s' added." % (uri,))
+		logger.debug("Hypervisor '%s' added.", uri)
 
 	def remove(self, uri):
 		"""Remove node from watch list."""
@@ -1037,7 +1037,7 @@ class Nodes(dict):
 			del self[uri]
 		except KeyError:
 			raise NodeError(_('Hypervisor "%(uri)s" is not connected.'), uri=uri)
-		logger.debug("Hypervisor '%s' removed." % (uri,))
+		logger.debug("Hypervisor '%s' removed.", uri)
 
 	def query(self, uri):
 		"""Get domain data from node."""
@@ -1091,7 +1091,7 @@ def _domain_backup(dom, save=True):
 	uuid = dom.UUIDString()
 	xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
 	if len(xml) < 300:  # minimal XML descriptor length
-		logger.error("Failed to backup domain %s: %s" % (uuid, xml))
+		logger.error("Failed to backup domain %s: %s", uuid, xml)
 		raise NodeError(_("Failed to backup domain %(domain)s: %(xml)s"), domain=uuid, xml=xml)
 	now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 	suffix = 'xml'
@@ -1107,7 +1107,7 @@ def _domain_backup(dom, save=True):
 		tmp_file.close()
 	os.umask(umask)
 	os.rename(tmp_file_name, file)
-	logger.info("Domain backuped to %s." % (file,))
+	logger.info("Domain backuped to %s.", file)
 
 
 def _update_xml(_node_parent, _node_name, _node_value, _changes=set(), **attr):
@@ -1159,7 +1159,7 @@ def _domain_edit(node, dom_stat, xml):
 	update = _update_xml
 
 	# find loader
-	logger.debug('Searching for template: arch=%s domain_type=%s os_type=%s' % (dom_stat.arch, dom_stat.domain_type, dom_stat.os_type))
+	logger.debug('Searching for template: arch=%s domain_type=%s os_type=%s', dom_stat.arch, dom_stat.domain_type, dom_stat.os_type)
 	for template in node.pd.capabilities:
 		logger.debug('template: %s' % template)
 		if template.matches(dom_stat):
@@ -1490,7 +1490,7 @@ def domain_define(uri, domain):
 					if ex.get_error_code() not in (libvirt.VIR_ERR_NO_SUPPORT, libvirt.VIR_ERR_INVALID_ARG):
 						raise
 					old_dom.undefine()
-				logger.info('Old domain "%s" removed.' % (domain.uuid,))
+				logger.info('Old domain "%s" removed.', domain.uuid)
 		except libvirt.libvirtError as ex:
 			if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 				logger.error(ex)
@@ -1504,7 +1504,7 @@ def domain_define(uri, domain):
 	except libvirt.libvirtError as ex:
 		logger.error(ex)
 		raise NodeError(_('Error defining domain "%(domain)s": %(error)s'), domain=domain.name, error=ex.get_error_message())
-	logger.info('New domain "%s"(%s) defined.' % (domain.name, domain.uuid))
+	logger.info('New domain "%s"(%s) defined.', domain.name, domain.uuid)
 
 	if domain.annotations:
 		try:
@@ -1521,10 +1521,10 @@ def domain_define(uri, domain):
 			if modified:
 				record.commit()
 		except LdapConnectionError as ex:
-			logger.error('Updating LDAP failed, insufficient permissions: %s' % (ex,))
+			logger.error('Updating LDAP failed, insufficient permissions: %s', ex)
 			warnings.append(_('Failed to update the additionally information in the LDAP directory.'))
 		except (univention.admin.uexceptions.ldapError, univention.admin.uexceptions.objectExists) as ex:
-			logger.error('Updating LDAP failed: %s %s' % (ex, record))
+			logger.error('Updating LDAP failed: %s %s', ex, record)
 			warnings.append(_('Failed to update the additionally information in the LDAP directory.'))
 
 	node.wait_update(domain.uuid, old_stat)
@@ -1639,7 +1639,7 @@ def domain_state(uri, domain, state):
 					stat_key = dom_stat.key()
 					node.wait_update(domain, stat_key)
 	except KeyError as ex:
-		logger.error("Domain %s not found" % (ex,))
+		logger.error("Domain %s not found", ex)
 		raise NodeError(_('Error managing domain "%(domain)s"'), domain=domain)
 	except NetworkError as ex:
 		logger.error(ex)
@@ -1934,17 +1934,17 @@ def domain_clone(uri, domain, name, subst):
 					new_mac = subst[key]
 				except KeyError:
 					if default_mac == 'auto':
-						logger.debug('Auto-generating MAC address for %s (default)' % (mac_address,))
+						logger.debug('Auto-generating MAC address for %s (default)', mac_address)
 						del domain_devices_interface_mac.attrib['address']
 					else:
-						logger.debug('Keeping MAC address %s (default)' % (mac_address,))
+						logger.debug('Keeping MAC address %s (default)', mac_address)
 						# nothing to do for mode 'auto'
 				else:
 					if new_mac:
-						logger.debug('Changing MAC from %s to %s' % (mac_address, new_mac))
+						logger.debug('Changing MAC from %s to %s', mac_address, new_mac)
 						domain_devices_interface_mac.attrib['address'] = new_mac
 					else:
-						logger.debug('Auto-generating MAC for %s' % (mac_address,))
+						logger.debug('Auto-generating MAC for %s', mac_address)
 						del domain_devices_interface_mac.attrib['address']
 
 			# /domain/devices/disk[]
@@ -2037,7 +2037,7 @@ def domain_clone(uri, domain, name, subst):
 					# /volume/backingStore/path
 					_update_xml(volume_backingStore, 'path', vol.path())
 				xml = ET.tostring(volume)
-				logger.debug('Cloning disk: %s' % (xml,))
+				logger.debug('Cloning disk: %s', xml)
 
 				try:
 					if method == 'copy':
@@ -2057,10 +2057,10 @@ def domain_clone(uri, domain, name, subst):
 					domain_devices_disk_source.attrib['dev'] = new_vol.path()
 
 			xml = ET.tostring(domain)
-			logger.debug('Cloning domain: %s' % (xml,))
+			logger.debug('Cloning domain: %s', xml)
 			dom2 = conn.defineXML(xml)
 			uuid = dom2.UUIDString()
-			logger.info('Clone domain "%s"(%s) defined.' % (name, uuid))
+			logger.info('Clone domain "%s"(%s) defined.', name, uuid)
 			del undo_vol[:]
 
 			annotations['uuid'] = uuid

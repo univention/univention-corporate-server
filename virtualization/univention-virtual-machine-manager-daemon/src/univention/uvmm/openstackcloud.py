@@ -143,7 +143,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 		self.updatethread.start()
 
 	def update_expensive(self):
-		logger.debug("Expensive update for %s: %s" % (self.publicdata.name, self.publicdata.url))
+		logger.debug("Expensive update for %s: %s", self.publicdata.name, self.publicdata.url)
 		self._images = self._exec_libcloud(lambda: self.driver.list_images())
 		self._sizes = self._exec_libcloud(lambda: self.driver.list_sizes())
 		self._locations = self._exec_libcloud(lambda: self.driver.list_locations())
@@ -326,13 +326,13 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			(NodeState.PAUSED, "SHUTOFF"): self._shutoff_instance,
 			(NodeState.RUNNING, "SUSPEND"): self._suspend_instance,
 		}
-		logger.debug("STATE: connection: %s instance %s (id:%s), oldstate: %s (%s), requested: %s" % (self.publicdata.name, instance.name, instance.id, instance.state, instance.state, state))
+		logger.debug("STATE: connection: %s instance %s (id:%s), oldstate: %s (%s), requested: %s", self.publicdata.name, instance.name, instance.id, instance.state, instance.state, state)
 		try:
 			transition = OS_TRANSITION[(instance.state, state)]
 			if transition:
 				transition(instance)
 			else:
-				logger.debug("NOP state transition: %s -> %s" % (instance.state, state))
+				logger.debug("NOP state transition: %s -> %s", instance.state, state)
 		except KeyError:
 			raise OpenStackCloudConnectionError("Unsupported State transition (%s -> %s) requested" % (instance.state, state))
 		except Exception as ex:
@@ -350,7 +350,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			self.set_frequency_fast_update()
 		except Exception as ex:  # Unfortunately, libcloud only throws "Exception"
 			raise OpenStackCloudConnectionError("Error while destroying instance %s (id:%s): %s" % (name, instance_id, ex))
-		logger.info("Destroyed instance %s (id:%s), using connection %s" % (name, instance_id, self.publicdata.name))
+		logger.info("Destroyed instance %s (id:%s), using connection %s", name, instance_id, self.publicdata.name)
 
 	def instance_create(self, args):
 		# Check args

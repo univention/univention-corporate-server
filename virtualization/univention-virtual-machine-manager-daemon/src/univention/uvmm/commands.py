@@ -66,7 +66,7 @@ class _Commands:
 		if not isinstance(request.testconnection, bool):
 			raise CommandError('L_CLOUD_ADD', _('testconnection is not a bool %(testconnection)s'), testconnection=request.testconnection)
 
-		logger.debug('L_CLOUD_ADD %s, testconnection: %s' % (request.args, request.testconnection))
+		logger.debug('L_CLOUD_ADD %s, testconnection: %s', request.args, request.testconnection)
 		try:
 			cloudnode.cloudconnections.add_connection(request.args, request.testconnection)
 		except cloudnode.CloudConnectionError as ex:
@@ -78,7 +78,7 @@ class _Commands:
 		if not isinstance(request.name, basestring):
 			raise CommandError('L_CLOUD_REMOVE', _('name != string: %(name)s'), name=request.name)
 
-		logger.debug('L_CLOUD_REMOVE %s' % (request.name))
+		logger.debug('L_CLOUD_REMOVE %s', request.name)
 		try:
 			cloudnode.cloudconnections.remove_connection(request.name)
 		except cloudnode.CloudConnectionError as ex:
@@ -121,7 +121,7 @@ class _Commands:
 			raise CommandError('L_CLOUD_FREQUENCY', _('freq != int: %(freq)s'), freq=request.freq)
 		if request.name is not None and not isinstance(request.name, basestring):
 			raise CommandError('L_CLOUD_FREQUENCY', _('name != string: %(name)s'), name=request.name)
-		logger.debug('L_CLOUD_FREQUENCY %d %s' % (freq, request.name))
+		logger.debug('L_CLOUD_FREQUENCY %d %s', freq, request.name)
 		try:
 			cloudnode.cloudconnections.set_poll_frequency(freq, request.name)
 		except cloudnode.CloudConnectionError as ex:
@@ -265,7 +265,7 @@ class _Commands:
 		"""Add node to watch list."""
 		if not isinstance(request.uri, basestring):
 			raise CommandError('NODE_ADD', _('uri != string: %(uri)s'), uri=request.uri)
-		logger.debug('NODE_ADD %s' % (request.uri,))
+		logger.debug('NODE_ADD %s', request.uri)
 
 		try:
 			node.node_add(request.uri)
@@ -277,7 +277,7 @@ class _Commands:
 		"""Remove node from watch list."""
 		if not isinstance(request.uri, basestring):
 			raise CommandError('NODE_REMOVE', _('uri != string: %(uri)s'), uri=request.uri)
-		logger.debug('NODE_REMOVE %s' % (request.uri,))
+		logger.debug('NODE_REMOVE %s', request.uri)
 
 		try:
 			node.node_remove(request.uri)
@@ -289,7 +289,7 @@ class _Commands:
 		"""Get domain and storage-pool information from node."""
 		if not isinstance(request.uri, basestring):
 			raise CommandError('NODE_QUERY', _('uri != string: %(uri)s'), uri=request.uri)
-		logger.debug('NODE_QUERY %s' % (request.uri,))
+		logger.debug('NODE_QUERY %s', request.uri)
 
 		try:
 			local_data = node.node_query(request.uri)
@@ -314,7 +314,7 @@ class _Commands:
 			raise CommandError('NODE_FREQUENCY', _('hz != int: %(hz)s'), hz=request.hz)
 		if request.uri is not None and not isinstance(request.uri, basestring):
 			raise CommandError('NODE_FREQUENCY', _('uri != string: %(uri)s'), uri=request.uri)
-		logger.debug('NODE_FREQUENCY %d %s' % (hz, request.uri))
+		logger.debug('NODE_FREQUENCY %d %s', hz, request.uri)
 		try:
 			node.node_frequency(hz, request.uri)
 		except node.NodeError as ex:
@@ -360,7 +360,7 @@ class _Commands:
 		if not isinstance(request.pattern, basestring):
 			raise CommandError('DOMAIN_LIST', _('pattern != string: %(pattern)s'), pattern=request.pattern)
 
-		logger.debug('DOMAIN_LIST %s %s' % (request.uri, request.pattern))
+		logger.debug('DOMAIN_LIST %s %s', request.uri, request.pattern)
 		try:
 			domains = node.domain_list(request.uri, request.pattern)
 			res = protocol.Response_DUMP()
@@ -377,7 +377,7 @@ class _Commands:
 		if not isinstance(request.domain, basestring):
 			raise CommandError('DOMAIN_INFO', _('domain != string: %(domain)s'), domain=request.domain)
 
-		logger.debug('DOMAIN_INFO %s %s' % (request.uri, request.domain))
+		logger.debug('DOMAIN_INFO %s %s', request.uri, request.domain)
 		try:
 			domain_info = node.domain_info(request.uri, request.domain)
 			res = protocol.Response_DUMP()
@@ -393,7 +393,7 @@ class _Commands:
 			raise CommandError('DOMAIN_DEFINE', _('uri != string: %(uri)s'), uri=request.uri)
 		if not isinstance(request.domain, protocol.Data_Domain):
 			raise CommandError('DOMAIN_DEFINE', _('definition != Domain: %(domain)s'), domain=request.domain)
-		logger.debug('DOMAIN_DEFINE %s %s' % (request.uri, request.domain))
+		logger.debug('DOMAIN_DEFINE %s %s', request.uri, request.domain)
 		try:
 			uuid, warnings = node.domain_define(request.uri, request.domain)
 			res = protocol.Response_DUMP()
@@ -412,7 +412,7 @@ class _Commands:
 			raise CommandError('DOMAIN_STATE', _('domain != string: %(domain)s'), domain=request.domain)
 		if request.state not in ('RUN', 'PAUSE', 'SHUTDOWN', 'SHUTOFF', 'RESTART', 'SUSPEND'):
 			raise CommandError('DOMAIN_STATE', _('unsupported state: %(state)s'), state=request.state)
-		logger.debug('DOMAIN_STATE %s#%s %s' % (request.uri, request.domain, request.state))
+		logger.debug('DOMAIN_STATE %s#%s %s', request.uri, request.domain, request.state)
 		try:
 			node.domain_state(request.uri, request.domain, request.state)
 		except node.NodeError as ex:
@@ -427,7 +427,7 @@ class _Commands:
 			raise CommandError('DOMAIN_SAVE', _('domain != string: %(domain)s'), domain=request.domain)
 		if not isinstance(request.statefile, basestring):
 			raise CommandError('DOMAIN_SAVE', _('statefile != string: %(file)s'), file=request.statefile)
-		logger.debug('DOMAIN_SAVE %s#%s %s' % (request.uri, request.domain, request.statefile))
+		logger.debug('DOMAIN_SAVE %s#%s %s', request.uri, request.domain, request.statefile)
 		try:
 			node.domain_save(request.uri, request.domain, request.statefile)
 		except node.NodeError as ex:
@@ -442,7 +442,7 @@ class _Commands:
 			raise CommandError('DOMAIN_RESTORE', _('domain != string: %(domain)s'), domain=request.domain)
 		if not isinstance(request.statefile, basestring):
 			raise CommandError('DOMAIN_RESTORE', _('statefile != string: %(file)s'), file=request.statefile)
-		logger.debug('DOMAIN_RESTORE %s %s' % (request.uri, request.statefile))
+		logger.debug('DOMAIN_RESTORE %s %s', request.uri, request.statefile)
 		try:
 			node.domain_restore(request.uri, request.domain, request.statefile)
 		except node.NodeError as ex:
@@ -461,9 +461,9 @@ class _Commands:
 			for vol in request.volumes:
 				if not isinstance(vol, basestring):
 					raise CommandError('DOMAIN_UNDEFINE', _('volumes[] != string: %(volume)s'), volume=vol)
-			logger.debug('DOMAIN_UNDEFINE %s#%s [%s]' % (request.uri, request.domain, ','.join(request.volumes)))
+			logger.debug('DOMAIN_UNDEFINE %s#%s [%s]', request.uri, request.domain, ','.join(request.volumes))
 		else:
-			logger.debug('DOMAIN_UNDEFINE %s#%s None (-> all volumes will be removed)' % (request.uri, request.domain))
+			logger.debug('DOMAIN_UNDEFINE %s#%s None (-> all volumes will be removed)', request.uri, request.domain)
 		try:
 			node.domain_undefine(request.uri, request.domain, request.volumes)
 		except node.NodeError as ex:
@@ -478,7 +478,7 @@ class _Commands:
 			raise CommandError('DOMAIN_MIGRATE', _('domain != string: %(domain)s'), domain=request.domain)
 		if not isinstance(request.target_uri, basestring):
 			raise CommandError('DOMAIN_MIGRATE', _('target_uri != string: %(uri)s'), uri=request.target_uri)
-		logger.debug('DOMAIN_MIGRATE %s#%s %s' % (request.uri, request.domain, request.target_uri))
+		logger.debug('DOMAIN_MIGRATE %s#%s %s', request.uri, request.domain, request.target_uri)
 		try:
 			node.domain_migrate(request.uri, request.domain, request.target_uri)
 		except node.NodeError as ex:
@@ -493,7 +493,7 @@ class _Commands:
 			raise CommandError('DOMAIN_SNAPSHOT_CREATE', _('domain != string: %(domain)s'), domain=request.domain)
 		if not isinstance(request.snapshot, basestring):
 			raise CommandError('DOMAIN_SNAPSHOT_CREATE', _('snapshot != string: %(snapshot)s'), snapshot=request.snapshot)
-		logger.debug('DOMAIN_SNAPSHOT_CREATE %s#%s %s' % (request.uri, request.domain, request.snapshot))
+		logger.debug('DOMAIN_SNAPSHOT_CREATE %s#%s %s', request.uri, request.domain, request.snapshot)
 		try:
 			node.domain_snapshot_create(request.uri, request.domain, request.snapshot)
 		except node.NodeError as ex:
@@ -508,7 +508,7 @@ class _Commands:
 			raise CommandError('DOMAIN_SNAPSHOT_REVERT', _('domain != string: %(domain)s'), domain=request.domain)
 		if not isinstance(request.snapshot, basestring):
 			raise CommandError('DOMAIN_SNAPSHOT_REVERT', _('snapshot != string: %(snapshot)s'), snapshot=request.snapshot)
-		logger.debug('DOMAIN_SNAPSHOT_REVERT %s#%s %s' % (request.uri, request.domain, request.snapshot))
+		logger.debug('DOMAIN_SNAPSHOT_REVERT %s#%s %s', request.uri, request.domain, request.snapshot)
 		try:
 			node.domain_snapshot_revert(request.uri, request.domain, request.snapshot)
 		except node.NodeError as ex:
@@ -523,7 +523,7 @@ class _Commands:
 			raise CommandError('DOMAIN_SNAPSHOT_DELETE', _('domain != string: %(domain)s'), domain=request.domain)
 		if not isinstance(request.snapshot, basestring):
 			raise CommandError('DOMAIN_SNAPSHOT_DELETE', _('snapshot != string: %(snapshot)s'), snapshot=request.snapshot)
-		logger.debug('DOMAIN_SNAPSHOT_DELETE %s#%s %s' % (request.uri, request.domain, request.snapshot))
+		logger.debug('DOMAIN_SNAPSHOT_DELETE %s#%s %s', request.uri, request.domain, request.snapshot)
 		try:
 			node.domain_snapshot_delete(request.uri, request.domain, request.snapshot)
 		except node.NodeError as ex:
@@ -556,7 +556,7 @@ class _Commands:
 				raise CommandError('DOMAIN_CLONE', _('subst[] != string: %(subst)s'), subst=key)
 			if not (value is None or isinstance(value, basestring)):
 				raise CommandError('DOMAIN_CLONE', _('subst[] != string: %(subst)s'), subst=value)
-		logger.debug('DOMAIN_CLONE %s#%s %s %r' % (request.uri, request.domain, request.name, request.subst))
+		logger.debug('DOMAIN_CLONE %s#%s %s %r', request.uri, request.domain, request.name, request.subst)
 		try:
 			uuid, warnings = node.domain_clone(request.uri, request.domain, request.name, request.subst)
 			res = protocol.Response_DUMP()
@@ -575,7 +575,7 @@ class _Commands:
 			raise CommandError('DOMAIN_TARGETHOST_ADD', _('domain != string: %(domain)s'), domain=request.domain)
 		if not isinstance(request.targethost, basestring):
 			raise CommandError('DOMAIN_TARGETHOST_ADD', _('targethost != string: %(targethost)s'), domain=request.targethost)
-		logger.debug('DOMAIN_TARGETHOST_ADD %s: add %s' % (request.domain, request.targethost))
+		logger.debug('DOMAIN_TARGETHOST_ADD %s: add %s', request.domain, request.targethost)
 		try:
 			node.domain_targethost_add(request.uri, request.domain, request.targethost)
 		except node.NodeError as ex:
@@ -590,7 +590,7 @@ class _Commands:
 			raise CommandError('DOMAIN_TARGETHOST_REMOVE', _('domain != string: %(domain)s'), domain=request.domain)
 		if not isinstance(request.targethost, basestring):
 			raise CommandError('DOMAIN_TARGETHOST_REMOVE', _('targethost != string: %(targethost)s'), domain=request.targethost)
-		logger.debug('DOMAIN_TARGETHOST_REMOVE %s: remove %s' % (request.domain, request.targethost))
+		logger.debug('DOMAIN_TARGETHOST_REMOVE %s: remove %s', request.domain, request.targethost)
 		try:
 			node.domain_targethost_remove(request.uri, request.domain, request.targethost)
 		except node.NodeError as ex:
@@ -601,7 +601,7 @@ class _Commands:
 		"""List all pools."""
 		if not isinstance(request.uri, basestring):
 			raise CommandError('STORAGE_POOLS', _('uri != string: %(uri)s'), uri=request.uri)
-		logger.debug('STORAGE_POOLS %s' % (request.uri,))
+		logger.debug('STORAGE_POOLS %s', request.uri)
 		try:
 			node_stat = node.node_query(request.uri)
 			pools = storage.storage_pools(node_stat)

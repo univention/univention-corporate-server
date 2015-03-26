@@ -59,7 +59,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 		"""Initialize connection."""
 		StreamHandler.client_count += 1
 		self.client_id = StreamHandler.client_count
-		logger.info('[%d] New connection.' % (self.client_id,))
+		logger.info('[%d] New connection.', self.client_id)
 		# super(StreamHandler,self).setup()
 		SocketServer.StreamRequestHandler.setup(self)
 		if False and StreamHandler.active_count == 0:
@@ -79,7 +79,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 						continue
 					else:
 						raise
-				logger.debug('[%d] Data recveived: %d' % (self.client_id, len(data)))
+				logger.debug('[%d] Data recveived: %d', self.client_id, len(data))
 				if data == '':
 					self.eos = True
 				else:
@@ -89,30 +89,30 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 					if packet is None:
 						continue  # waiting
 				except protocol.PacketError as ex:  # (translatable_text, dict):
-					logger.warning("[%d] Invalid packet received: %s" % (self.client_id, ex))
+					logger.warning("[%d] Invalid packet received: %s", self.client_id, ex)
 					if logger.isEnabledFor(logging.DEBUG):
-						logger.debug("[%d] Dump: %r" % (self.client_id, data))
+						logger.debug("[%d] Dump: %r", self.client_id, data)
 					break
 
-				logger.debug('[%d] Received packet.' % (self.client_id,))
+				logger.debug('[%d] Received packet.', self.client_id)
 				(length, command) = packet
 				buffer = buffer[length:]
 
 				if isinstance(command, protocol.Request):
 					res = self.handle_command(command)
 				else:
-					logger.warning('[%d] Packet is no UVMM Request. Ignored.' % (self.client_id,))
+					logger.warning('[%d] Packet is no UVMM Request. Ignored.', self.client_id)
 					res = protocol.Response_ERROR()
 					res.translatable_text = _('Packet is no UVMM Request: %(type)s')
 					res.values = {
 						'type': type(command),
 					}
 
-				logger.debug('[%d] Sending response.' % (self.client_id,))
+				logger.debug('[%d] Sending response.', self.client_id)
 				packet = res.pack()
 				self.wfile.write(packet)
 				self.wfile.flush()
-				logger.debug('[%d] Done.' % (self.client_id,))
+				logger.debug('[%d] Done.', self.client_id)
 		except EOFError:
 			pass
 		except socket.error as ex:
@@ -127,11 +127,11 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 
 	def handle_command(self, command):
 		"""Handle command packet."""
-		logger.info('[%d] Request "%s" received' % (self.client_id, command.command,))
+		logger.info('[%d] Request "%s" received', self.client_id, command.command)
 		try:
 			cmd = commands[command.command]
 		except KeyError as ex:
-			logger.warning('[%d] Unknown command "%s": %s.' % (self.client_id, command.command, str(ex)))
+			logger.warning('[%d] Unknown command "%s": %s.', self.client_id, command.command, ex)
 			res = protocol.Response_ERROR()
 			res.translatable_text = '[%(id)d] Unknown command "%(command)s".'
 			res.values = {
@@ -144,7 +144,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 				if res is None:
 					res = protocol.Response_OK()
 			except CommandError as ex:
-				logger.warning('[%d] Error doing command "%s": %s' % (self.client_id, command.command, ex))
+				logger.warning('[%d] Error doing command "%s": %s', self.client_id, command.command, ex)
 				res = protocol.Response_ERROR()
 				res.translatable_text, res.values = ex.args
 			except Exception as ex:
@@ -158,7 +158,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 
 	def finish(self):
 		"""Perform cleanup."""
-		logger.info('[%d] Connection closed.' % (self.client_id,))
+		logger.info('[%d] Connection closed.', self.client_id)
 		StreamHandler.active_count -= 1
 		if False and StreamHandler.active_count == 0:
 			node_frequency(Nodes.IDLE_FREQUENCY)
@@ -182,7 +182,7 @@ def unix(options):
 			unixd.daemon_threads = True
 			sockets[unixd.fileno()] = unixd
 		except Exception as ex:
-			logger.error("Could not create SSL server: %s" % (ex,))
+			logger.error("Could not create SSL server: %s", ex)
 	if not sockets:
 		logger.error("No UNIX socket server.")
 		return

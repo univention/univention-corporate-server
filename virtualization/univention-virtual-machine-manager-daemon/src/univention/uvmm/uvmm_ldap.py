@@ -113,7 +113,7 @@ def cached(cachefile, func, exception=LdapConnectionError):
 	except IOError:
 		pass
 	except exception as msg:
-		logger.info('Using cached data "%s"' % (cachefile,))
+		logger.info('Using cached data "%s"', cachefile)
 		try:
 			file = open("%s" % (cachefile,), "r")
 			try:
@@ -229,7 +229,7 @@ def ldap_cloud_connections():
 				c['type'] = cloudtype
 				for p in data['univentionVirtualMachineCloudConnectionParameter']:
 					if '=' not in p:
-						logger.error('Expected "=" in cloud connection parameter. Connection %s, parameter %s' % (dn, p))
+						logger.error('Expected "=" in cloud connection parameter. Connection %s, parameter %s', dn, p)
 						continue
 					p_name = p.split('=', 1)[0]
 					p_value = p.split('=', 1)[1]
