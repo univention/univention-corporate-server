@@ -129,7 +129,7 @@ sudo bash
 . /etc/univention/ucr_master
 
 # Install SSSD based configuration
-DEBIAN_FRONTEND=noninteractive apt-get -y install sssd
+DEBIAN_FRONTEND=noninteractive apt-get -y install sssd libnss-sss libpam-sss libsss-sudo
 
 # Create sssd.conf
 cat >/etc/sssd/sssd.conf <<__EOF__
