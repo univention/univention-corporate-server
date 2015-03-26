@@ -88,18 +88,11 @@ wget -O /etc/univention/ssl/ucsCA/CAcert.pem \
 
 # Create an account and save the password
 password="$(tr -dc A-Za-z0-9_ </dev/urandom | head -c20)"
-if [ "$version_version" = 3.0 ] && [ "$version_patchlevel" -lt 2 ]
-then
-    ssh root@${ldap_master} udm computers/managedclient create \
-        --position "cn=computers,${ldap_base}" \
-        --set name=$(hostname) --set password="${password}"
-else
-    ssh root@${ldap_master} udm computers/ubuntu create \
-        --position "cn=computers,${ldap_base}" \
-        --set name=$(hostname) --set password="${password}" \
-        --set operatingSystem="$(lsb_release -is)" \
-        --set operatingSystemVersion="$(lsb_release -rs)"
-fi
+ssh root@${ldap_master} udm computers/ubuntu create \
+    --position "cn=computers,${ldap_base}" \
+    --set name=$(hostname) --set password="${password}" \
+    --set operatingSystem="$(lsb_release -is)" \
+    --set operatingSystemVersion="$(lsb_release -rs)"
 printf '%s' "$password" >/etc/ldap.secret
 chmod 0400 /etc/ldap.secret
 
