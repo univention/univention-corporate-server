@@ -332,11 +332,9 @@ sed -i 's|start on (|start on (never and |' /etc/init/avahi-daemon.conf
 # Synchronize the time with the UCS system
 ntpdate -bu $ldap_master
 
-# Test Kerberos
+# Test Kerberos: kinit will ask you for a ticket and the SSH login to the master should work with ticket authentication:
 kinit Administrator
-
-# Requires domain password
-krsh Administrator@$ldap_master ls /etc/univention
+ssh Administrator@$ldap_master ls /etc/univention
 
 # Destroy the kerberos ticket
 kdestroy
