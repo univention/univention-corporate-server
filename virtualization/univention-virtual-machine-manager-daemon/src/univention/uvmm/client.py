@@ -64,8 +64,8 @@ class UVMM_ClientSocket(object):
 			return self.receive()
 		except socket.timeout:
 			raise ClientError(_('Timed out while sending data.'))
-		except socket.error as (errno, msg):
-			raise ClientError(_("Could not send request: %(errno)d"), errno=errno)
+		except socket.error as ex:
+			raise ClientError(_("Could not send request: %(errno)d"), errno=ex.errno)
 
 	def receive(self):
 		"""Get response."""
@@ -89,12 +89,13 @@ class UVMM_ClientSocket(object):
 					raise ClientError(_('Not a UVMM_Response.'))
 				else:
 					return res
-		except protocol.PacketError as (translatable_text, dict):
+		except protocol.PacketError as ex:
+			(translatable_text, dict) = ex.args
 			raise ClientError(translatable_text, **dict)
 		except socket.timeout:
 			raise ClientError(_('Timed out while receiving data.'))
-		except socket.error as (errno, msg):
-			raise ClientError(_('Error while waiting for answer: %(errno)d'), errno=errno)
+		except socket.error as ex:
+			raise ClientError(_('Error while waiting for answer: %(errno)d'), errno=ex.errno)
 		except EOFError:
 			raise ClientError(_('EOS while waiting for answer.'))
 
@@ -105,8 +106,8 @@ class UVMM_ClientSocket(object):
 			self.sock = None
 		except socket.timeout:
 			raise ClientError(_('Timed out while closing socket.'))
-		except socket.error as (errno, msg):
-			raise ClientError(_('Error while closing socket: %(errno)d'), errno=errno)
+		except socket.error as ex:
+			raise ClientError(_('Error while closing socket: %(errno)d'), errno=ex.errno)
 
 
 class UVMM_ClientUnixSocket(UVMM_ClientSocket):
@@ -122,8 +123,8 @@ class UVMM_ClientUnixSocket(UVMM_ClientSocket):
 			self.sock.connect(socket_path)
 		except socket.timeout:
 			raise ClientError(_('Timed out while opening local socket "%(path)s".'), path=socket_path)
-		except socket.error as (errno, msg):
-			raise ClientError(_('Could not open socket "%(path)s": %(errno)d'), path=socket_path, errno=errno)
+		except socket.error as ex:
+			raise ClientError(_('Could not open socket "%(path)s": %(errno)d'), path=socket_path, errno=ex.errno)
 
 	def __str__(self):
 		return "UNIX Socket %s" % (self.sock.getpeername(),)

@@ -75,8 +75,8 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 			while not self.eos:
 				try:
 					data = self.request.recv(1024)
-				except socket.error as (err, errmsg):
-					if err == errno.EINTR:
+				except socket.error as ex:
+					if ex.errno == errno.EINTR:
 						continue
 					else:
 						raise
@@ -116,8 +116,8 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 				logger.debug('[%d] Done.' % (self.client_id,))
 		except EOFError:
 			pass
-		except socket.error as (err, errmsg):
-			if err != errno.ECONNRESET:
+		except socket.error as ex:
+			if ex.errno != errno.ECONNRESET:
 				logger.error('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
 				raise
 			else:
@@ -172,8 +172,8 @@ def unix(options):
 	try:
 		if os.path.exists(options.socket):
 			os.remove(options.socket)
-	except OSError as (err, errmsg):
-		logger.error("Failed to delete old socket '%s': %s" % (options.socket, errmsg))
+	except OSError as ex:
+		logger.error("Failed to delete old socket '%s': %s", options.socket, ex)
 		sys.exit(1)
 
 	sockets = {}
@@ -198,8 +198,8 @@ def unix(options):
 			rlist, wlist, xlist = select.select(sockets.keys(), [], [], None)
 			for fd in rlist:
 				sockets[fd].handle_request()
-		except (select.error, socket.error) as (err, errmsg):
-			if err == errno.EINTR:
+		except (select.error, socket.error) as ex:
+			if ex.errno == errno.EINTR:
 				continue
 			else:
 				raise
@@ -209,8 +209,8 @@ def unix(options):
 	logger.info('Server is terminating.')
 	try:
 		os.remove(options.socket)
-	except OSError as (err, errmsg):
-		logger.warning("Failed to delete old socket '%s': %s" % (options.socket, errmsg))
+	except OSError as ex:
+		logger.warning("Failed to delete old socket '%s': %s", options.socket, ex)
 
 
 if __name__ == '__main__':
