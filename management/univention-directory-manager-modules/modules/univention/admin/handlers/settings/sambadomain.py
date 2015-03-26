@@ -224,6 +224,36 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'domainPasswordComplex': univention.admin.property(
+			short_description=_('Passwords Must Meet Complexity Requirements'),
+			long_description=_('Is not based on the user’s account name. Contains at least six characters. Contains characters from three of the following four categories: Uppercase alphabet characters (A–Z) Lowercase alphabet characters (a–z) Arabic numerals (0–9)'),
+			syntax=univention.admin.syntax.boolean,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'domainPasswordStoreCleartext': univention.admin.property(
+			short_description=_('Store plaintext passwords'),
+			long_description=_('Store plaintext passwords where account have "store passwords with reversible encryption" set.'),
+			syntax=univention.admin.syntax.boolean,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'domainPwdProperties': univention.admin.property(
+			short_description=_('Password Properties'),
+			long_description=_('Part of Domain Policy. A bitfield to indicate complexity and storage restrictions.'),
+			syntax=univention.admin.syntax.integer,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	}
 
 layout = [
@@ -237,6 +267,7 @@ layout = [
 			["minPasswordAge"],
 			["maxPasswordAge"],
 			["logonToChangePW", "refuseMachinePWChange"],
+			["domainPasswordComplex", "domainPasswordStoreCleartext"],
 		] ),
 		Group( _('Connection'), layout = [
 			["badLockoutAttempts"],
@@ -264,6 +295,14 @@ mapping.register('lockoutDuration', 'sambaLockoutDuration', univention.admin.map
 mapping.register('resetCountMinutes', 'sambaLockoutObservationWindow', None, univention.admin.mapping.ListToString)
 mapping.register('disconnectTime', 'sambaForceLogoff', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
 mapping.register('refuseMachinePWChange', 'sambaRefuseMachinePwdChange', None, univention.admin.mapping.ListToString)
+mapping.register('domainPwdProperties', 'univentionSamba4pwdProperties', None, univention.admin.mapping.ListToString)
+
+DOMAIN_PASSWORD_COMPLEX = 1
+DOMAIN_PASSWORD_NO_ANON_CHANGE = 2
+DOMAIN_PASSWORD_NO_CLEAR_CHANGE = 4
+DOMAIN_LOCKOUT_ADMINS = 8
+DOMAIN_PASSWORD_STORE_CLEARTEXT = 16
+DOMAIN_REFUSE_PASSWORD_CHANGE = 32
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
@@ -282,9 +321,53 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
+		if self.dn:
+			# map domain domainPwdProperties bitfield to individual password attributes
+			self['domainPasswordComplex'] = '0'
+			self['domainPasswordStoreCleartext'] = '0'
+			props = int(self.info.get('domainPwdProperties', 0))
+			if (props | DOMAIN_PASSWORD_COMPLEX) == props:
+				self['domainPasswordComplex'] = '1'
+			if (props | DOMAIN_PASSWORD_STORE_CLEARTEXT) == props:
+				self['domainPasswordStoreCleartext'] = '1'
 
 	def _ldap_pre_create(self):		
 		self.dn='sambaDomainName=%s,%s' % ( mapping.mapValue('name', self.info['name']), self.position.getDn())
+		self.__update_password_properties()
+
+	def _ldap_pre_modify(self):
+		self.__update_password_properties()
+
+	def __update_password_properties(self):
+		# DOMAIN_PASSWORD_COMPLEX 1 domainPasswordComplex -> univentionSamba4pwdProperties
+		# DOMAIN_PASSWORD_NO_ANON_CHANGE 2 -> logonToChangePW -> sambaLogonToChgPwd
+		# DOMAIN_PASSWORD_NO_CLEAR_CHANGE 4
+		# DOMAIN_LOCKOUT_ADMINS 8
+		# DOMAIN_PASSWORD_STORE_CLEARTEXT 16 -> univentionSamba4pwdProperties
+		# DOMAIN_REFUSE_PASSWORD_CHANGE 32 -> refuseMachinePWChange -> sambaRefuseMachinePwdChange
+
+		props = int(self.get('domainPwdProperties', 0))
+
+		if self.hasChanged('domainPwdProperties'):
+			# if domainPwdProperties where modified directly (udm cli, s4 connector), 
+			# this setting has precedence
+			return
+
+		# domainPasswordComplex -> domainPwdProperties
+		if self.hasChanged('domainPasswordComplex'):
+			if self['domainPasswordComplex'] == '1':
+				props = props | DOMAIN_PASSWORD_COMPLEX
+			else:
+				props = props & (~DOMAIN_PASSWORD_COMPLEX)
+		# domainPasswordStoreCleartext -> domainPwdProperties
+		if self.hasChanged('domainPasswordStoreCleartext'):
+			if self['domainPasswordStoreCleartext'] == '1':
+				props = props | DOMAIN_PASSWORD_STORE_CLEARTEXT
+			else:
+				props = props & (~DOMAIN_PASSWORD_STORE_CLEARTEXT)
+
+		if not props == int(self.get('domainPwdProperties', 0)):
+			self['domainPwdProperties'] = str(props)
 
 	def _ldap_addlist(self):
 		ocs=['sambaDomain']		

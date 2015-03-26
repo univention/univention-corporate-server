@@ -1,3 +1,10 @@
+univention-directory-manager-modules (10.0.29-37) unstable; urgency=low
+
+  * Bug #28331: added domainPwdProperties, domainPasswordStoreCleartext
+    and domainPasswordComplex to settings/sambadomain 
+
+ -- Felix Botner <botner@univention.de>  Thu, 26 Mar 2015 18:42:13 +0100
+
 univention-directory-manager-modules (10.0.29-36) unstable; urgency=medium
 
   * Bug #34552: replace mail_domain_name syntax with DNS_Name
