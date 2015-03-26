@@ -195,7 +195,7 @@ pam_session=
         session [success=1 default=ignore] pam_sss.so
         session required pam_unix.so
 __EOF__
-auth-client-config -n -a -p sss
+auth-client-config -a -p sss
 
 # Restart sssd
 restart sssd
