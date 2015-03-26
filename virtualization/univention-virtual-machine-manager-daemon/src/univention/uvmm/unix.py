@@ -44,7 +44,6 @@ from helpers import N_ as _
 import socket
 import select
 import logging
-import traceback
 
 logger = logging.getLogger('uvmmd.unix')
 
@@ -118,12 +117,12 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 			pass
 		except socket.error as ex:
 			if ex.errno != errno.ECONNRESET:
-				logger.error('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
+				logger.error('[%d] Exception: %s', self.client_id, ex, exc_info=True)
 				raise
 			else:
-				logger.warn('[%d] NetException: %s' % (self.client_id, traceback.format_exc()))
-		except Exception:
-			logger.critical('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
+				logger.warn('[%d] NetException: %s', self.client_id, ex, exc_info=True)
+		except Exception as ex:
+			logger.critical('[%d] Exception: %s', self.client_id, ex, exc_info=True)
 			raise
 
 	def handle_command(self, command):
@@ -149,7 +148,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 				res = protocol.Response_ERROR()
 				res.translatable_text, res.values = ex.args
 			except Exception as ex:
-				logger.error('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
+				logger.error('[%d] Exception: %s', self.client_id, ex, exc_info=True)
 				res = protocol.Response_ERROR()
 				res.translatable_text = _('Exception: %(exception)s')
 				res.values = {
