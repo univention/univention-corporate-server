@@ -1,0 +1,9 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-s4-connector
+fix: 9.0.16-14.545.201503271213
+version: [1]
+desc: |
+  Synchronisation of the domain password properties has been added.
+bug: [28331]
