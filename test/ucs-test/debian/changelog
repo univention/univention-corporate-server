@@ -1,3 +1,10 @@
+ucs-test (5.0.140-3) unstable; urgency=low
+
+  * 50_samba/22overlapping_user_and_group_memberquery: removed the test
+    (Bug #31816).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 27 Mar 2015 10:54:59 +0100
+
 ucs-test (5.0.140-2) unstable; urgency=low
 
   * added some more ucs-test-appcenter-uninstall test Bug #31876
