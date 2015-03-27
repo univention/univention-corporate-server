@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-management-console-frontend
+fix: 4.1.106-45.1025.201503241655
+version: [1]
+desc: |
+  This update addresses the following issues:
+  * The activation of UCS with a personalized license key as well as the import
+    process of a new license file has been improved w.r.t. the usability.
+bug: [38132]
