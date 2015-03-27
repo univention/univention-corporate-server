@@ -225,8 +225,8 @@ property_descriptions={
 			identifies=0
 		),
 	'domainPasswordComplex': univention.admin.property(
-			short_description=_('Passwords Must Meet Complexity Requirements'),
-			long_description=_('Is not based on the user’s account name. Contains at least six characters. Contains characters from three of the following four categories: Uppercase alphabet characters (A–Z) Lowercase alphabet characters (a–z) Arabic numerals (0–9)'),
+			short_description=_('Passwords must meet complexity requirements'),
+			long_description=_('Is not based on the user’s account name. Contains at least six characters. Contains characters from three of the following four categories: Uppercase alphabet characters (A–Z), Lowercase alphabet characters (a–z), Arabic numerals (0–9), Nonalphanumeric characters (for example, !$#,%)'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=[],
@@ -245,8 +245,8 @@ property_descriptions={
 			identifies=0
 		),
 	'domainPwdProperties': univention.admin.property(
-			short_description=_('Password Properties'),
-			long_description=_('Part of Domain Policy. A bitfield to indicate complexity and storage restrictions.'),
+			short_description=_('Password properties'),
+			long_description=_('A bitfield to indicate complexity and storage restrictions.'),
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
 			options=[],

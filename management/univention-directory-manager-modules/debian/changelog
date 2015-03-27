@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-38) unstable; urgency=low
+
+  * Bug #28331: added translation 
+
+ -- Felix Botner <botner@univention.de>  Fri, 27 Mar 2015 12:45:24 +0100
+
 univention-directory-manager-modules (10.0.29-37) unstable; urgency=low
 
   * Bug #28331: added domainPwdProperties, domainPasswordStoreCleartext
