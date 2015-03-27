@@ -1,3 +1,9 @@
+ucs-test (5.0.140-4) unstable; urgency=low
+
+  * Bug #38143: Fix 60_umc.08_logrotate.test
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 27 Mar 2015 12:49:32 +0100
+
 ucs-test (5.0.140-3) unstable; urgency=low
 
   * 50_samba/22overlapping_user_and_group_memberquery: removed the test
