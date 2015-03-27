@@ -96,9 +96,11 @@ class TestUMCLicenseManagement(TestUMCSystem):
                                                       [['']],
                                                       [['']])
             elif obj_type == 'user':
+                # use translated group name for non-Enlish AD case: Bug #37921
+                domain_users = self.get_groupname_translation('domainusers')
                 request_result = self.create_user(obj_name,
                                                   'Univention@99',
-                                                  'Domain Users')
+                                                  domain_users)
             if request_result[0].get("success"):
                 if obj_type == 'computer':
                     self.computers_to_delete.append(obj_name)

@@ -1,3 +1,10 @@
+ucs-test (5.0.140-5) unstable; urgency=low
+
+  * 60_umc-system/80_umc-service-license: use translation for 'Domain Users'
+    when available (Bug #37921).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 27 Mar 2015 16:34:39 +0100
+
 ucs-test (5.0.140-4) unstable; urgency=low
 
   * Bug #38143: Fix 60_umc.08_logrotate.test
