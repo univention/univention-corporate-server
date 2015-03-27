@@ -1,3 +1,10 @@
+univention-s4-connector (9.0.16-14) unstable; urgency=low
+
+  * Bug #28331: added synchronization of domainPwdProperties 
+    pwdProperties to s4connector/s4/dc.py
+
+ -- Felix Botner <botner@univention.de>  Fri, 27 Mar 2015 12:11:50 +0100
+
 univention-s4-connector (9.0.16-13) unstable; urgency=low
 
   * Bug #36317: update krb5PasswordEnd too 

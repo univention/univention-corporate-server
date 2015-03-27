@@ -109,7 +109,7 @@ def ucs2con (s4connector, key, object):
 					s4_time = "0"
 				ml.append( (ldap.MOD_REPLACE, s4_attr, [ s4_time ] ) )
 		
-		sync_integers = [ ('sambaPwdHistoryLength', 'pwdHistoryLength'), ('sambaMinPwdLength', 'minPwdLength') ]
+		sync_integers = [ ('sambaPwdHistoryLength', 'pwdHistoryLength'), ('sambaMinPwdLength', 'minPwdLength'), ('univentionSamba4pwdProperties', 'pwdProperties') ]
 		for (ucs_attr, s4_attr) in sync_integers:
 			ucs_val = object['attributes'].get(ucs_attr, str(0))
 			s4_val = s4base_attr.get(s4_attr, [0])[0]
@@ -149,7 +149,7 @@ def con2ucs (s4connector, key, object):
 				sambadomainnameObject[ucs_attr] = [str(s4_time), 'seconds']
 				modify = True
 		
-		sync_integers = [ ('passwordHistory', 'pwdHistoryLength'), ('passwordLength', 'minPwdLength') ]
+		sync_integers = [ ('passwordHistory', 'pwdHistoryLength'), ('passwordLength', 'minPwdLength'), ('domainPwdProperties', 'pwdProperties') ]
 		for (ucs_attr, s4_attr) in sync_integers:
 			ucs_val = sambadomainnameObject.get(ucs_attr, 0)
 			s4_val = object['attributes'].get(s4_attr, [None])[0]
