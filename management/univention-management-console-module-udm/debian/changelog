@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-60) unstable; urgency=medium
+
+  * Bug #38132: use small wizard for license activation dialogue
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 27 Mar 2015 17:06:37 +0100
+
 univention-management-console-module-udm (5.1.25-59) unstable; urgency=medium
 
   Bug #38132:

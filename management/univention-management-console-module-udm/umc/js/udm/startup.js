@@ -44,8 +44,9 @@ define([
 	"umc/tools",
 	"umc/dialog",
 	"umc/app/ActivationPage!",  // page needs to be loaded as plugin
+	"umc/app/ActivationDialog",
 	"umc/i18n!umc/modules/udm"
-], function(declare, kernel, lang, array, query, Deferred, topic, registry, Menu, PopupMenuItem, MenuItem, app, tools, dialog, ActivationPage, _) {
+], function(declare, kernel, lang, array, query, Deferred, topic, registry, Menu, PopupMenuItem, MenuItem, app, tools, dialog, ActivationPage, ActivationDialog, _) {
 
 	var ucr = {};
 
@@ -86,23 +87,7 @@ define([
 			return;
 		}
 
-		app.showPageDialog('ActivationPage!', 'activation', [{
-			name: 'cancel',
-			label: _('Cancel')
-		}, {
-			name: 'submit',
-			label: _('Activate'),
-			'default': true
-		}], 'umcUdmDialogPage').then(function(values) {
-			var email = values.email;
-			if (email) {
-				tools.umcpCommand('udm/request_new_license', {
-					email: email
-				}).then(function() {
-					_showLicenseImportDialog();
-				});
-			}
-		});
+		new ActivationDialog({});
 	};
 
 	var addLicenseMenu = function() {
