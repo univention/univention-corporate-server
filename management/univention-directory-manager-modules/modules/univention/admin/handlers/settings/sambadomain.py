@@ -226,7 +226,7 @@ property_descriptions={
 		),
 	'domainPasswordComplex': univention.admin.property(
 			short_description=_('Passwords must meet complexity requirements'),
-			long_description=_('Is not based on the user’s account name. Contains at least six characters. Contains characters from three of the following four categories: Uppercase alphabet characters (A–Z), Lowercase alphabet characters (a–z), Arabic numerals (0–9), Nonalphanumeric characters (for example, !$#,%)'),
+			long_description=_("Is not based on the user's account name. Contains at least six characters. Contains characters from three of the following four categories: Uppercase alphabet characters (A-Z), Lowercase alphabet characters (a-z), Arabic numerals (0-9), Nonalphanumeric characters (for example, !$#,%)"),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=[],
