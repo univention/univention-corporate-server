@@ -54,6 +54,10 @@
 	display: block;
 }
 
+.umc .umcActivationDialog .umcActivationLeaveFieldFreeMessage {
+	display: none;
+}
+
 @media (max-width: 549px) {
 	.umc .umcAppDialogPage .umcPageIcon {
 		left: 50px;

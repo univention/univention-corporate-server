@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-48) unstable; urgency=medium
+
+  * Bug #38132: use small wizard for license activation dialogue
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 27 Mar 2015 17:03:09 +0100
+
 univention-management-console-frontend (4.1.106-47) unstable; urgency=medium
 
   * Bug #38132: improve tracking of UMC actions
