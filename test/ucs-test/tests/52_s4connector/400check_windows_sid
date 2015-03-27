@@ -10,10 +10,6 @@
 ## - domaincontroller_master
 ## - domaincontroller_backup
 ## - domaincontroller_slave
-## versions:
-##  4.0-1: skip
-
-# TODO: Please enable the test after Bug #36570 is fixed.
 
 . "$TESTLIBPATH/base.sh" || exit 137
 

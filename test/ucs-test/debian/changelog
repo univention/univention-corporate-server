@@ -1,3 +1,9 @@
+ucs-test (5.0.140-1) unstable; urgency=low
+
+  * 52_s4connector/400check_windows_sid: enabled the test (Bug #37572).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 27 Mar 2015 10:27:06 +0100
+
 ucs-test (5.0.139-4) unstable; urgency=medium
 
   * Bug #38126: Fix S4 Connector stop in 10_ldap.45replication_modrdn
