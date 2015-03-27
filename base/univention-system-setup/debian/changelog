@@ -1,3 +1,9 @@
+univention-system-setup (8.1.66-28) unstable; urgency=medium
+
+  * Bug #38148: correctly evaluate field blacklist
+
+ -- Florian Best <best@univention.de>  Fri, 27 Mar 2015 17:57:56 +0100
+
 univention-system-setup (8.1.66-27) unstable; urgency=medium
 
   * Bug #36460: Bug #37804: textual changes
