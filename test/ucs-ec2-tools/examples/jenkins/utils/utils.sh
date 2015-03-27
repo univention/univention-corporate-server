@@ -50,6 +50,18 @@ basic_setup ()
 	if [ -f /var/cache/univention-system-setup/profile.bak ] ; then
 		mv /var/cache/univention-system-setup/profile.bak /var/cache/univention-system-setup/profile
 	fi
+	bug37459_postfix_pfs
+}
+bug37459_postfix_pfs () {
+	local FILE='/usr/share/univention-mail-postfix/create-dh-parameter-files.sh'
+	dpkg-divert --local --rename --divert "${FILE}.ucs-test" --add "$FILE"
+	ln -s /bin/true "$FILE"
+
+	if [ ! /dev/urandom -ef /dev/random ]
+	then
+		mv /dev/random /dev/random.orig
+		ln -f /dev/urandom /dev/random
+	fi
 }
 
 upgrade_to_latest_errata ()
@@ -80,15 +92,24 @@ upgrade_to_testing ()
 	upgrade_to_latest
 }
 
-upgrade_to_latest ()
-{
-	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@" && return 0
-	(echo "ERROR: univention-upgrade failed in attempt 1 with exitcode $?"; ps faxwww ; ucr search update/check)
-	# Workaround for Bug #31561
-	sleep 300
-	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@" && return 0
-	(echo "ERROR: univention-upgrade failed in attempt 2 with exitcode $?"; ps faxwww ; ucr search update/check)
-	return 1
+upgrade_to_latest () {
+	declare -i max=300 rv delay=30
+	while true
+	do
+		univention-upgrade --noninteractive --ignoreterm --ignoressh "$@"
+		rv="$?"
+		case "$rv" in
+		0) return 0 ;;
+		5) delay=30 ;;
+		*) delay=300 ;;
+		esac
+		echo "ERROR: univention-upgrade failed exitcode $rv"
+		ps faxwww
+		ucr search --brief --non-empty update/check
+		max+=-$delay
+		[ $max -ge 0 ] || return "$rv"
+		sleep "$delay"  # Workaround for Bug #31561
+	done
 }
 
 run_setup_join ()
@@ -134,7 +155,6 @@ install_apps ()
 
 uninstall_apps ()
 {
-
 	local app
 	for app in "$@"; do echo "$app" >>/var/cache/appcenter-uninstalled.txt; done
 	for app in "$@"; do /root/uninstall-app.py -a "$app"; done
