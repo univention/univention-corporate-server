@@ -1,5 +1,11 @@
 univention-virtual-machine-manager-daemon (4.0.23-8) unstable; urgency=low
 
+  * Bug #36640: Add memory debugger
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 05 Mar 2015 13:27:30 +0100
+
+univention-virtual-machine-manager-daemon (4.0.23-7) unstable; urgency=low
+
   * Bug #37099: make EC2 error messages more understandable
 
  -- Andreas Peichert <peichert@univention.de>  Mon, 02 Mar 2015 12:50:22 +0100

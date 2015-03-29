@@ -27,6 +27,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-univention-lib (>= 1.0.25-1)
 Recommends: libvirt-clients,
  univention-nagios-uvmmd
+Suggests: python-meliae,
 Description: UCS Virtual Machine Manager Daemon
  This package contains the UCS Virtual Machine Manager Daemon
  used to collect informations from a farm of virtualization servers.

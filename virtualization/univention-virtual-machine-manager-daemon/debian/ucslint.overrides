@@ -6,6 +6,7 @@
 0010-2: scripts-dev/test-delete.sh
 0010-2: scripts-dev/check-vms.py
 0010-2: scripts-dev/lv-pool-crash.py
+0010-2: scripts-dev/uvmm-memleak
 0010-2: scripts-dev/watch_vm
 0009-2: test/urlparser.py
 0009-2: scripts-dev/check-vms.py

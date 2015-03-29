@@ -43,6 +43,7 @@ import os
 import signal
 import libvirt
 from threading import Thread
+from time import time
 
 
 def createDaemon(options):
@@ -179,6 +180,16 @@ def install_signal_handlers(options):
 	signal.signal(signal.SIGINT, signal_handler_terminate)  # interrupt
 	signal.signal(signal.SIGTERM, signal_handler_terminate)  # terminate
 	signal.signal(signal.SIGSEGV, signal_handler_terminate)  # memory corrupt
+
+	try:
+		from meliae import scanner
+		def signal_handler_dump(signum, frame):
+			"""Handle SIGUSR2 to dump memory usage"""
+			filename = '/var/tmp/uvmm-mm_%d.json' % (time(),)
+			scanner.dump_all_objects(filename)
+		signal.signal(signal.SIGUSR2, signal_handler_dump)  # user2
+	except ImportError:
+		signal.signal(signal.SIGUSR2, signal.SIG_IGN)  # user2
 
 
 def runEventLoop():
