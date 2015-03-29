@@ -43,9 +43,9 @@ import PAM
 from getpass import getpass
 from pprint import pprint
 try:
-	import xml.etree.ElementTree as ET
+	from lxml import etree as ET
 except ImportError:
-	import elementtree.ElementTree as ET
+	import xml.etree.ElementTree as ET
 __builtins__._ = _
 
 class ParameterModeError(TranslatableException):

@@ -1,6 +1,7 @@
 univention-virtual-machine-manager-daemon (4.0.23-8) unstable; urgency=low
 
   * Bug #36640: Add memory debugger
+  * Bug #36640: Fix memory leak in XML parsing
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 05 Mar 2015 13:27:30 +0100
 

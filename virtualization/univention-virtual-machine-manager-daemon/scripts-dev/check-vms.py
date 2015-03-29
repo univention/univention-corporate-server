@@ -16,9 +16,9 @@ import subprocess
 import logging
 from optparse import OptionParser
 try:
-    import xml.etree.ElementTree as ET
+    from lxml import etree as ET
 except ImportError:
-    import elementtree.ElementTree as ET
+    import xml.etree.ElementTree as ET
 # The expat parser fails on control characters
 from xml.parsers.expat import ExpatError
 

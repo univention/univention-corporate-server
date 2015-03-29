@@ -37,8 +37,6 @@ This module implements functions to handle nodes and domains. This is independen
 import libvirt
 import time
 import logging
-from xml.dom.minidom import parseString
-from xml.parsers.expat import ExpatError
 import math
 from helpers import TranslatableException, ms, tuple2version, N_ as _, uri_encode, FQDN
 from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify
@@ -57,9 +55,9 @@ import random
 from xml.sax.saxutils import escape as xml_escape
 import tempfile
 try:
-	import xml.etree.ElementTree as ET
+	from lxml import etree as ET
 except ImportError:
-	import elementtree.ElementTree as ET
+	import xml.etree.ElementTree as ET
 try:
 	import cPickle as pickle
 except ImportError:
@@ -101,68 +99,56 @@ class DomainTemplate(object):
 	@staticmethod
 	def list_from_xml(xml):
 		"""Convert XML to list."""
-		doc = parseString(xml)
-		capas = doc.firstChild
+		capabilities_tree = ET.fromstring(xml)
 		result = []
-		for guest in filter(lambda f: f.nodeName == 'guest', capas.childNodes):
-			os_type = DomainTemplate.__nv(guest, 'os_type')
+		for guest in capabilities_tree.findall('guest'):
+			os_type = guest.findtext('os_type')
 			f_names = DomainTemplate.__get_features(guest)
-			for arch in filter(lambda f: f.nodeName == 'arch', guest.childNodes):
-				for dom in filter(lambda f: f.nodeName == 'domain', arch.childNodes):
+			for arch in guest.findall('arch'):
+				for dom in arch.findall('domain'):
 					dom = DomainTemplate(arch, dom, os_type, f_names)
 					result.append(dom)
 		return result
 
 	@staticmethod
-	def __nv(node, name):
-		return node.getElementsByTagName(name)[0].firstChild.nodeValue
-
-	@staticmethod
 	def __get_features(node):
 		"""Return list of features."""
 		f_names = []
-		features = filter(lambda f: f.nodeName == 'features', node.childNodes)
-		if features:
-			for child in features[0].childNodes:
-				if child.nodeType == 1:
-					if child.nodeName == 'pae':
-						if 'nonpae' not in f_names:
-							f_names.append('pae')
-					elif child.nodeName == 'nonpae':
-						if 'pae' not in f_names:
-							f_names.append('nonpae')
-					elif child.getAttribute('default') == 'on' and child.nodeName in ('acpi', 'apic'):
-						f_names.append(child.nodeName)
+		features = node.find('features')
+		if features is not None:
+			for child in features:
+				if child.tag == 'pae':
+					if 'nonpae' not in f_names:
+						f_names.append('pae')
+				elif child.tag == 'nonpae':
+					if 'pae' not in f_names:
+						f_names.append('nonpae')
+				elif child.attrib.get('default') == 'on' and child.tag in ('acpi', 'apic'):
+					f_names.append(child.tag)
 		return f_names
 
 	def __init__(self, arch, domain_type, os_type, features):
 		self.os_type = os_type
 		self.features = features
-		self.arch = arch.getAttribute('name')
-		self.domain_type = domain_type.getAttribute('type')
+		self.arch = arch.attrib['name']
+		self.domain_type = domain_type.attrib['type']
 
+		self.emulator = domain_type.findtext('emulator') or arch.findtext('emulator')
 		for node in [domain_type, arch]:
-			try:
-				self.emulator = DomainTemplate.__nv(node, 'emulator')
+			self.emulator = node.findtext('emulator')
+			if self.emulator:
 				break
-			except IndexError:
-				pass
 		else:
 			logger.error('No emulator specified in %s/%s' % (self.arch, self.domain_type))
-			raise
 
 		for node in [domain_type, arch]:
-			self.machines = [m.firstChild.nodeValue for m in node.childNodes if m.nodeName == 'machine']
+			self.machines = [m.text for m in node.findall('machine')]
 			if self.machines:
 				break
 		else:
 			logger.error('No machines specified in %s/%s' % (self.arch, self.domain_type))
-			raise
 
-		try:
-			self.loader = DomainTemplate.__nv(arch, 'loader')
-		except:
-			self.loader = None # optional
+		self.loader = arch.findtext('loader')
 
 	def __str__(self):
 		return 'DomainTemplate(arch=%s dom_type=%s os_type=%s): %s, %s, %s, %s' % (self.arch, self.domain_type, self.os_type, self.emulator, self.loader, self.machines, self.features)
@@ -297,10 +283,10 @@ class Domain(PersistentCached):
 						snap = domain.snapshotLookupByName(name, 0)
 						xml = snap.getXMLDesc(0)
 						try:
-							doc = parseString(xml)
-						except ExpatError:
+							domainsnap_tree = ET.fromstring(xml)
+						except ET.XMLSyntaxError:
 							continue
-						ctime = doc.getElementsByTagName('creationTime')[0].firstChild.nodeValue
+						ctime = domainsnap_tree.findtext('creationTime')
 						snap_stat = Data_Snapshot()
 						snap_stat.name = name
 						snap_stat.ctime = int(ctime)
@@ -323,120 +309,109 @@ class Domain(PersistentCached):
 	def xml2obj(self, xml):
 		"""Parse XML into python object."""
 		try:
-			doc = parseString(xml)
-		except ExpatError:
+			domain_tree = ET.fromstring(xml)
+		except ET.XMLSyntaxError:
 			return
-		devices = doc.getElementsByTagName( 'devices' )[ 0 ]
-		self.pd.domain_type = doc.documentElement.getAttribute('type')
+		devices = domain_tree.find('devices')
+		self.pd.domain_type = domain_tree.attrib['type']
 		if not self.pd.domain_type:
 			logger.error("Failed /domain/@type from %s" % xml)
-		self.pd.uuid = doc.getElementsByTagName('uuid')[0].firstChild.nodeValue
-		self.pd.name = doc.getElementsByTagName('name')[0].firstChild.nodeValue
-		os_ = doc.getElementsByTagName( 'os' )
-		if os_:
-			os_ = os_[ 0 ]
-			type = os_.getElementsByTagName( 'type' )
-			if type and type[ 0 ].firstChild and type[ 0 ].firstChild.nodeValue:
-				self.pd.os_type = type[0].firstChild.nodeValue
-				if type[ 0 ].hasAttribute( 'arch' ):
-					self.pd.arch = type[0].getAttribute('arch')
-			kernel = os_.getElementsByTagName( 'kernel' )
-			if kernel and kernel[ 0 ].firstChild and kernel[ 0 ].firstChild.nodeValue:
-				self.pd.kernel = kernel[0].firstChild.nodeValue
-			cmdline = os_.getElementsByTagName( 'cmdline' )
-			if cmdline and cmdline[ 0 ].firstChild and cmdline[ 0 ].firstChild.nodeValue:
-				self.pd.cmdline = cmdline[0].firstChild.nodeValue
-			initrd = os_.getElementsByTagName( 'initrd' )
-			if initrd and initrd[ 0 ].firstChild and initrd[ 0 ].firstChild.nodeValue:
-				self.pd.initrd = initrd[0].firstChild.nodeValue
-			boot = os_.getElementsByTagName('boot')
-			if boot:
-				self.pd.boot = [dev.attributes['dev'].value for dev in boot]
-		bootloader = doc.getElementsByTagName( 'bootloader' )
-		if bootloader:
-			if bootloader[ 0 ].firstChild and bootloader[ 0 ].firstChild.nodeValue:
-				self.pd.bootloader = bootloader[ 0 ].firstChild.nodeValue
-			args = doc.getElementsByTagName( 'bootloader_args' )
-			if args and args[ 0 ].firstChild and args[ 0 ].firstChild.nodeValue:
-				self.pd.bootloader_args = args[ 0 ].firstChild.nodeValue
-		clock = doc.getElementsByTagName('clock')
-		if clock:
-			self.pd.rtc_offset = clock[0].getAttribute('offset')
+		self.pd.uuid = domain_tree.findtext('uuid')
+		self.pd.name = domain_tree.findtext('name')
+		os_ = domain_tree.find('os')
+		if os_ is not None:
+			typ = os_.find('type')
+			if typ is not None:
+				self.pd.os_type = typ.text
+				if 'arch' in typ.attrib:
+					self.pd.arch = typ.attrib['arch']
+			self.pd.kernel = os_.findtext('kernel')
+			self.pd.cmdline = os_.findtext('cmdline')
+			self.pd.initrd = os_.findtext('initrd')
+			self.pd.boot = [boot.attrib['dev'] for boot in os_.findall('boot')]
+		bootloader = domain_tree.find('bootloader')
+		if bootloader is not None:
+			self.pd.bootloader = bootloader.text
+			self.pd.bootloader_args = domain_tree.findtext('bootloader_args')
+		clock = domain_tree.find('clock')
+		if clock is not None:
+			self.pd.rtc_offset = clock.attrib.get('offset')
 
 		self.pd.disks = []
-		disks = devices.getElementsByTagName( 'disk' )
-		for disk in disks:
+		for disk in devices.findall('disk'):
 			dev = Disk()
-			dev.type = disk.getAttribute( 'type' )
-			dev.device = disk.getAttribute( 'device' )
-			driver = disk.getElementsByTagName('driver')
-			if driver:
-				dev.driver = driver[0].getAttribute('name')
-				dev.driver_type = driver[0].getAttribute('type')
-				dev.driver_cache = driver[0].getAttribute('cache')
-			source = disk.getElementsByTagName( 'source' )
-			if source:
+			dev.type = disk.attrib['type']
+			dev.device = disk.attrib['device']
+			driver = disk.find('driver')
+			if driver is not None:
+				dev.driver = driver.attrib.get('name')  # optional
+				dev.driver_type = driver.attrib['type']
+				dev.driver_cache = driver.attrib.get('cache', '')  # optional
+			source = disk.find('source')
+			if source is not None:
 				if dev.type == Disk.TYPE_FILE:
-					dev.source = source[0].getAttribute('file')
+					dev.source = source.attrib['file']
 				elif dev.type == Disk.TYPE_BLOCK:
-					dev.source = source[0].getAttribute('dev')
+					dev.source = source.attrib['dev']
 				elif dev.type == Disk.TYPE_DIR:
-					dev.source = source[0].getAttribute('dir')
+					dev.source = source.attrib['dir']
 				elif dev.type == Disk.TYPE_NETWORK:
-					dev.source = source[0].getAttribute('protocol')
+					dev.source = source.attrib['protocol']
 				else:
 					raise NodeError(_('Unknown disk type: %(type)d'), type=dev.type)
-			target = disk.getElementsByTagName( 'target' )
-			if target:
-				dev.target_dev = target[ 0 ].getAttribute( 'dev' )
-				dev.target_bus = target[ 0 ].getAttribute( 'bus' )
-			if disk.getElementsByTagName( 'readonly' ):
+			target = disk.find('target')
+			if target is not None:
+				dev.target_dev = target.attrib['dev']
+				dev.target_bus = target.attrib.get('bus')  # optional
+			if disk.find('readonly') is not None:
 				dev.readonly = True
 
 			self.pd.disks.append(dev)
 
 		self.pd.interfaces = []
-		interfaces = devices.getElementsByTagName( 'interface' )
-		for iface in interfaces:
+		for iface in devices.findall('interface'):
 			dev = Interface()
-			dev.type = iface.getAttribute( 'type' )
-			mac = iface.getElementsByTagName( 'mac' )
-			if mac:
-				dev.mac_address = mac[ 0 ].getAttribute( 'address' )
-			source = iface.getElementsByTagName( 'source' )
-			if source:
+			dev.type = iface.attrib['type']
+			mac = iface.find('mac')
+			if mac is not None:
+				dev.mac_address = mac.attrib['address']
+			source = iface.find('source')
+			if source is not None:
 				if dev.type == Interface.TYPE_BRIDGE:
-					dev.source = source[0].getAttribute('bridge')
+					dev.source = source.attrib['bridge']
 				elif dev.type == Interface.TYPE_NETWORK:
-					dev.source = source[0].getAttribute('network')
+					dev.source = source.attrib['network']
 				elif dev.type == Interface.TYPE_DIRECT:
-					dev.source = source[0].getAttribute('dev')
-			script = iface.getElementsByTagName( 'script' )
-			if script:
-				dev.script = script[ 0 ].getAttribute( 'path' )
-			target = iface.getElementsByTagName( 'target' )
-			if target:
-				dev.target = target[ 0 ].getAttribute( 'dev' )
-			model = iface.getElementsByTagName( 'model' )
-			if model:
-				dev.model = model[ 0 ].getAttribute( 'type' )
+					dev.source = source.attrib['dev']
+			script = iface.find('script')
+			if script is not None:
+				dev.script = script.attrib['path']
+			target = iface.find('target')
+			if target is not None:
+				dev.target = target.attrib['dev']
+			model = iface.find('model')
+			if model is not None:
+				dev.model = model.attrib['type']
 
 			self.pd.interfaces.append(dev)
 
 		self.pd.graphics = []
-		graphics = devices.getElementsByTagName( 'graphics' )
-		for graphic in graphics:
+		for graphic in devices.findall('graphics'):
 			dev = Graphic()
-			type = graphic.getAttribute('type')
+			type = graphic.attrib['type']
 			dev.type = type
 			if dev.type == Graphic.TYPE_VNC:
-				dev.port = int(graphic.getAttribute('port'))
-				dev.autoport = graphic.getAttribute('autoport').lower() == 'yes'
-				if graphic.hasAttribute('listen'):
-					dev.listen = graphic.getAttribute('listen')
-				if graphic.hasAttribute('passwd'):
-					dev.passwd = graphic.getAttribute('passwd')
-				dev.keymap = graphic.getAttribute('keymap')
+				dev.port = int(graphic.attrib['port'])
+				dev.autoport = graphic.attrib['autoport'].lower() == 'yes'
+				try:
+					dev.listen = graphic.attrib['listen']
+				except LookupError:
+					pass
+				try:
+					dev.passwd = graphic.attrib['passwd']
+				except LookupError:
+					pass
+				dev.keymap = graphic.attrib['keymap']
 			elif dev.type == Graphic.TYPE_SDL:
 				pass
 			else:
@@ -545,7 +520,7 @@ class Node(PersistentCached):
 						assert domStat.cache_file_name() == cache_file_name
 						self.domains[domStat.pd.uuid] = domStat
 						logger.debug("Loaded from cache '%s#%s'", self.pd.uri, domStat.pd.uuid)
-					except (EOFError, IOError, AssertionError, ExpatError), ex:
+					except (EOFError, IOError, AssertionError, ET.XMLSyntaxError) as ex:
 						logger.warning("Failed to load cached domain %s: %s" % (cache_file_name, ex))
 				del dirs[:] # just that direcory; no recursion
 		except (EOFError, IOError, AssertionError, pickle.PickleError), ex:

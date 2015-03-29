@@ -37,14 +37,16 @@ independent from the on-wire-format.
 
 import libvirt
 import logging
-from xml.dom.minidom import parseString
-from xml.parsers.expat import ExpatError
 from helpers import TranslatableException, N_ as _, TimeoutError, timeout
 from protocol import Disk, Data_Pool
 import os.path
 import univention.config_registry as ucr
 import time
 from xml.sax.saxutils import escape as xml_escape
+try:
+	from lxml import etree as ET
+except ImportError:
+	import xml.etree.ElementTree as ET
 
 POOLS_RW = set(('dir', 'disk', 'fs', 'netfs', 'logical'))
 POOLS_TYPE = {
@@ -129,9 +131,9 @@ def create_storage_volume(conn, domain, disk):
 		try:
 			pool = conn.storagePoolLookupByName(pool_name)
 			xml = pool.XMLDesc(0)
-			doc = parseString(xml)
-			pool_type = doc.firstChild.getAttribute('type')
-			path = doc.getElementsByTagName('path')[0].firstChild.nodeValue
+			pool_tree = ET.fromstring(xml)
+			pool_type = pool_tree.attrib['type']
+			path = pool_tree.find('target').findtext('path')
 			if '/' != path[-1]:
 				path += '/'
 			if disk.source.startswith(path):
@@ -293,8 +295,8 @@ def get_storage_volumes(node, pool_name, type=None):
 		pool = timeout(node.conn.storagePoolLookupByName)(pool_name)
 
 		xml = pool.XMLDesc(0)
-		doc = parseString(xml)
-		pool_type = doc.firstChild.getAttribute('type')
+		pool_tree = ET.fromstring(xml)
+		pool_type = pool_tree.attrib['type']
 		if pool_type in ('dir', 'fs', 'netfs'):
 			pool.refresh(0)
 	except TimeoutError, ex:
@@ -310,25 +312,25 @@ def get_storage_volumes(node, pool_name, type=None):
 				)
 
 	xml = pool.XMLDesc(0)
-	doc = parseString(xml)
-	pool_type = doc.firstChild.getAttribute('type')
+	pool_tree = ET.fromstring(xml)
+	pool_type = pool_tree.attrib['type']
 
 	for name in pool.listVolumes():
 		vol = pool.storageVolLookupByName( name )
 		xml = vol.XMLDesc( 0 )
 		try:
-			doc = parseString(xml)
-		except ExpatError:
+			volume_tree = ET.fromstring(xml)
+		except ET.XMLSyntaxError:
 			continue
 		disk = Disk()
 		disk.pool = pool_name
-		disk.size = int(doc.getElementsByTagName('capacity')[0].firstChild.nodeValue)
-		target = doc.getElementsByTagName( 'target' )[ 0 ]
-		disk.source = target.getElementsByTagName( 'path' )[ 0 ].firstChild.nodeValue
+		disk.size = int(volume_tree.findtext('capacity'))
+		target = volume_tree.find('target')
+		disk.source = target.findtext('path')
 
 		disk.type = POOLS_TYPE.get(pool_type)
 		if disk.type == Disk.TYPE_FILE:
-			disk.driver_type = target.getElementsByTagName('format')[0].getAttribute('type')
+			disk.driver_type = target.find('format').attrib['type']
 			if disk.driver_type == 'iso':
 				disk.device = Disk.DEVICE_CDROM
 			else:
@@ -354,24 +356,18 @@ def get_domain_storage_volumes(domain):
 	"""Retrieve all referenced storage volumes."""
 	volumes = []
 	try:
-		doc = parseString(domain.XMLDesc(0))
-	except ExpatError:
+		xml = domain.XMLDesc(0)
+		domain_tree = ET.fromstring(xml)
+	except ET.XMLSyntaxError:
 		return volumes
-	devices = doc.getElementsByTagName('devices')
-	try:
-		devices = devices[0]
-	except IndexError:
-		return volumes
-	disks = devices.getElementsByTagName('disk')
-	for disk in disks:
-		source = disk.getElementsByTagName('source')
-		try:
-			source = source[0]
-			vol = source.getAttribute('file')
+
+	for disk in domain_tree.find('devices').findall('disk'):
+		source = disk.find('source')
+		if source is not None:
+			vol = source.attrib.get('file')
 			if vol:
 				volumes.append(vol)
-		except LookupError:
-			continue
+
 	return volumes
 
 
@@ -430,16 +426,16 @@ def get_pool_info(node, name):
 				uri=node.pd.uri,
 				error=ex.get_error_message(),
 				)
-	xml = pool.XMLDesc( 0 )
-	doc = parseString( xml )
+	xml = pool.XMLDesc(0)
+	pool_tree = ET.fromstring(xml)
 	res = Data_Pool()
 	res.name = name
-	res.uuid = doc.getElementsByTagName( 'uuid' )[ 0 ].firstChild.nodeValue
-	res.capacity = int( doc.getElementsByTagName( 'capacity' )[ 0 ].firstChild.nodeValue )
-	res.available = int( doc.getElementsByTagName( 'available' )[ 0 ].firstChild.nodeValue )
-	res.path = doc.getElementsByTagName( 'path' )[ 0 ].firstChild.nodeValue
+	res.uuid = pool_tree.findtext('uuid')
+	res.capacity = int(pool_tree.findtext('capacity'))
+	res.available = int(pool_tree.findtext('available'))
+	res.path = pool_tree.find('target').findtext('path')
 	res.active = pool.isActive() == 1
-	res.type = doc.firstChild.getAttribute('type') # pool/@type
+	res.type = pool_tree.attrib['type']  # pool/@type
 	return res
 
 
