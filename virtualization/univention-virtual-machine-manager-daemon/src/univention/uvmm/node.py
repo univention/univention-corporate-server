@@ -100,23 +100,7 @@ class DomainTemplate(object):
 
 	@staticmethod
 	def list_from_xml(xml):
-		"""Convert XML to list.
-		>>> t = DomainTemplate.list_from_xml(KVM_CAPABILITIES)
-		>>> len(t)
-		3
-		>>> t[0].os_type
-		u'hvm'
-		>>> t[0].arch
-		u'i686'
-		>>> t[0].domain_type
-		u'qemu'
-		>>> t[0].emulator
-		u'/usr/bin/qemu'
-		>>> t[0].machines
-		[u'pc']
-		>>> t[0].features
-		['pae', u'acpi', u'apic']
-		"""
+		"""Convert XML to list."""
 		doc = parseString(xml)
 		capas = doc.firstChild
 		result = []
@@ -854,8 +838,7 @@ class Nodes(dict):
 		self.cache_dir = cache
 
 	def add(self, uri):
-		"""Add node to watch list.
-		>>> #node_add("qemu:///session")"""
+		"""Add node to watch list."""
 		if uri in self:
 			raise NodeError(_('Hypervisor "%(uri)s" is already connected.'), uri=uri)
 
@@ -1910,57 +1893,3 @@ def domain_clone(uri, domain, name, subst):
 				vol.delete(0)
 			except Exception, ex:
 				logger.warning('Failed undo: %(error)s' % {'error': ex})
-
-if __name__ == '__main__':
-	KVM_CAPABILITIES = '''<capabilities>
-		<host>
-			<uuid>00020003-0004-0005-0006-000700080009</uuid>
-			<cpu>
-				<arch>x86_64</arch>
-				<model>phenom</model>
-				<topology sockets='1' cores='2' threads='1'/>
-				<feature name='wdt'/>
-			</cpu>
-			<migration_features>
-				<live/>
-				<uri_transports>
-					<uri_transport>tcp</uri_transport>
-				</uri_transports>
-			</migration_features>
-		</host>
-		<guest>
-			<os_type>hvm</os_type>
-			<arch name='i686'>
-				<wordsize>32</wordsize>
-				<emulator>/usr/bin/qemu</emulator>
-				<machine>pc</machine>
-				<domain type='qemu'>
-				</domain>
-				<domain type='kvm'>
-					<emulator>/usr/bin/kvm</emulator>
-					<machine>pc-0.12</machine>
-					<machine canonical='pc-0.12'>pc</machine>
-				</domain>
-			</arch>
-			<features>
-				<cpuselection/>
-				<pae/>
-				<nonpae/>
-				<acpi default='on' toggle='yes'/>
-				<apic default='on' toggle='no'/>
-			</features>
-		</guest>
-		<guest>
-			<os_type>hvm</os_type>
-			<arch name='arm'>
-				<wordsize>32</wordsize>
-				<emulator>/usr/bin/qemu-system-arm</emulator>
-				<machine>integratorcp</machine>
-				<domain type='qemu'>
-				</domain>
-			</arch>
-		</guest>
-	</capabilities>'''
-
-	import doctest
-	doctest.testmod()
