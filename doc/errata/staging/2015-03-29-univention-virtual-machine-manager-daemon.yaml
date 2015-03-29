@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-virtual-machine-manager-daemon
+fix: 4.0.24-2.592.201503291138
+version: [1]
+desc: |
+  This update fixes the following issue:
+  * A memory leak caused by parsing XML documents has been fixed.
+  * Some unused code has been removed.
+bug: [36640,36635]
