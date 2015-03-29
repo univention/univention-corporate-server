@@ -1,3 +1,9 @@
+ucslint (4.0.0-8) unstable; urgency=low
+
+  * Bug #38145: Add debian/$pkg.maintscript
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 28 Mar 2015 12:52:27 +0100
+
 ucslint (4.0.0-7) unstable; urgency=low
 
   * Bug #37688: fixed traceback in 0001-CheckJoinScript.py

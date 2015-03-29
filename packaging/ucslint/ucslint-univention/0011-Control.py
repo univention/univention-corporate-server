@@ -178,6 +178,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'logcheck.ignore.workstation', # dh_installlogcheck
 			'logcheck.violations', # dh_installlogcheck
 			'logcheck.violations.ignore', # dh_installlogcheck
+			'maintscript', # dh_installdeb
 			'manpages', # dh_installman
 			'menu', # dh_installmenu
 			'menu-method', # dh_installmenu
