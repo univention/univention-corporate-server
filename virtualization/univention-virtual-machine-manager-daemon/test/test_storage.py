@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 """Test univention.uvmm.storage.*"""
 # Copyright 2010-2015 Univention GmbH

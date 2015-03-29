@@ -16,8 +16,6 @@
 0006-6: debian/univention-management-console-module-uvmm.postinst
 0006-6: debian/univention-virtual-machine-manager-daemon.postinst
 0006-6: debian/univention-virtual-machine-manager-daemon.postrm
-# ucslint-Bug: set -e is right
-0006-5: debian/univention-virtual-machine-manager-daemon.postrm
 # ucslint-Bug #24816: Does not handle dh-umc-module-install
 0001-6: 45univention-management-console-module-uvmm.inst
 0001-7:
@@ -25,7 +23,7 @@
 0015-2: src/univention/uvmm/helpers.py:104
 0015-2: src/univention/uvmm/helpers.py:104
 0015-2: src/univention/uvmm/helpers.py:111
-0015-2: src/univention/uvmm/helpers.py:111
+0015-2: src/univention/uvmm/helpers.py:113
 # No UCR variables
 0004-56: conffiles/etc/runit/univention-virtual-machine-manager-daemon/run
 0004-56: conffiles/etc/security/access-uvmmd.conf
