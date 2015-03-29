@@ -41,8 +41,6 @@ attributes = []
 __package__='' 	# workaround for PEP 366
 import listener
 import univention.debug as debug
-#import univention.uvmm.client as uvmm_c
-#import univention.uvmm.protocol as uvmm_p
 
 def initialize():
 	"""Called once on first initialization."""
@@ -56,21 +54,9 @@ def handler(dn, new, old):
 	if new:
 		uuids |= set(new.get('univentionVirtualMachineUUID', []))
 	for uuid in uuids:
-		# Bug #21534: listener breaks pickle, using external CLI instead
 		rc = listener.run("/usr/sbin/univention-virtual-machine-manager", ["univention-virtual-machine-manager", "domain_update", uuid, "-T", "5"], 0, False)
 		debug.debug(debug.LISTENER, debug.INFO, "Requested update for %s: %d" % (', '.join(uuids), rc))
-		continue
 
-		try:
-			r = uvmm_p.Request_DOMAIN_UPDATE(domain=uuid)
-			listener.setuid(0)
-			try:
-				uvmm_c.uvmm_cmd(request=r, managers=[])
-			finally:
-				listener.unsetuid()
-			debug.debug(debug.LISTENER, debug.INFO, "Requested update for %s" % ', '.join(uuids))
-		except uvmm_c.ClientError, e:
-			debug.debug(debug.LISTENER, debug.INFO, "Failed request for update of %s: %s" % (', '.join(uuids), e))
 
 def postrun():
 	"""Called 15s after handler."""
