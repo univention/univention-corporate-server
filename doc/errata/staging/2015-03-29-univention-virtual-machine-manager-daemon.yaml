@@ -8,4 +8,5 @@ desc: |
   This update fixes the following issue:
   * A memory leak caused by parsing XML documents has been fixed.
   * Some unused code has been removed.
-bug: [36640,36635]
+  * WIP: Support EC2 with VPC (requires libcloud 0.17.0)
+bug: [36640,36635,36141]
