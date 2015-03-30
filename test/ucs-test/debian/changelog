@@ -1,3 +1,10 @@
+ucs-test (5.0.141-1) unstable; urgency=low
+
+  * 01_base/47faillog_account-smb-krb: added bug references and logging
+    of the results (Bug #35014).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 30 Mar 2015 12:45:56 +0200
+
 ucs-test (5.0.140-5) unstable; urgency=low
 
   * 60_umc-system/80_umc-service-license: use translation for 'Domain Users'
