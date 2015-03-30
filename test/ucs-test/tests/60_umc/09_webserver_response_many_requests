@@ -14,6 +14,7 @@ import univention.testing.utils as utils
 import subprocess
 import ssl
 import sys
+from univention.management.console.modules.ucstest import joinscript, unjoinscript
 
 
 NUMBER_OF_NOT_RESPONDING_REQUESTS = 25
@@ -25,11 +26,11 @@ def main():
 
 	print 'Sending %d not responding requests' % NUMBER_OF_NOT_RESPONDING_REQUESTS
 	for request in range(NUMBER_OF_NOT_RESPONDING_REQUESTS):
-		test_con.get_custom_connection(command='command/ucstest/norespond')
+		test_con.get_custom_connection('ucstest/norespond')
 
 	print 'Verfying the webserver still response to a request ...'
 	try:
-		connection = test_con.get_custom_connection(command='command/ucstest/respond')
+		connection = test_con.get_custom_connection('ucstest/respond')
 		response = connection.getresponse()
 		assert response.status == 200
 	except ssl.SSLError:
@@ -41,4 +42,8 @@ def main():
 
 
 if __name__ == '__main__':
-	sys.exit(main())
+	joinscript()
+	try:
+		main()
+	finally:
+		unjoinscript()

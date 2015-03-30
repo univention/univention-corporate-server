@@ -16,6 +16,7 @@ import ssl
 import sys
 import psutil
 import time
+from univention.management.console.modules.ucstest import joinscript, unjoinscript
 
 
 NUMBER_OF_CONNECTIONS = 8
@@ -42,7 +43,7 @@ def main():
 	test_con = UMCTestConnection()
 	connections = []
 	for i in range(NUMBER_OF_CONNECTIONS):
-		i_connection = test_con.get_custom_connection(command='command/ucstest/norespond')
+		i_connection = test_con.get_custom_connection('ucstest/norespond')
 		connections.append(i_connection)
 	time.sleep(2)
 	
@@ -67,4 +68,8 @@ def main():
 
 
 if __name__ == '__main__':
-	sys.exit(main())
+	joinscript()
+	try:
+		main()
+	finally:
+		unjoinscript()

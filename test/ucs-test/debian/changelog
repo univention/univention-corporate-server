@@ -1,4 +1,10 @@
-ucs-test (5.0.141-1) unstable; urgency=low
+ucs-test (5.0.140-7) unstable; urgency=low
+
+  * Bug #37485: Moved code from join script to ucs test module
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 30 Mar 2015 13:21:13 +0200
+
+ucs-test (5.0.140-6) unstable; urgency=low
 
   * 01_base/47faillog_account-smb-krb: added bug references and logging
     of the results (Bug #35014).

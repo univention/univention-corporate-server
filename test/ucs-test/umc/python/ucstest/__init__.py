@@ -33,6 +33,23 @@
 
 from univention.management.console.modules import Base
 from univention.management.console.modules.decorators import simple_response
+import subprocess
+
+
+def joinscript():
+	process = subprocess.Popen(['/bin/sh'], stdin=subprocess.PIPE)
+	process.communicate('''
+	. /usr/share/univention-lib/umc.sh
+
+	umc_init
+	umc_operation_create "ucstest-all" "UCS Test" "" "ucstest/*"
+	umc_policy_append "default-umc-all" "ucstest-all"
+	exit 0
+	''')
+
+
+def unjoinscript():
+	pass
 
 
 class Instance(Base):
