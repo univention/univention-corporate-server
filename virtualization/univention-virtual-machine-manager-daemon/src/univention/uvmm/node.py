@@ -1047,7 +1047,7 @@ def _domain_edit(node, dom_stat, xml):
 			domain_devices_disk = ET.SubElement(domain_devices, 'disk')
 			# /domain/devices/disk/target @bus @dev
 			domain_devices_disk_target = ET.SubElement(domain_devices_disk, 'target')
-			domain_devices_disk_target.attrib['bus'] = disk.target_bus
+			domain_devices_disk_target.attrib['bus'] = disk.target_bus or ''
 			domain_devices_disk_target.attrib['dev'] = disk.target_dev
 		domain_devices_disk.attrib['type'] = disk.type
 		domain_devices_disk.attrib['device'] = disk.device
@@ -1096,7 +1096,7 @@ def _domain_edit(node, dom_stat, xml):
 			domain_devices_interface = ET.SubElement(domain_devices, 'interface')
 			# /domain/devices/interface/mac @address
 			domain_devices_interface_mac = ET.SubElement(domain_devices_interface, 'mac')
-			domain_devices_interface_mac.attrib['address'] = interface.mac_address
+			domain_devices_interface_mac.attrib['address'] = interface.mac_address or ''
 		domain_devices_interface.attrib['type'] = interface.type
 		# /domain/devices/interface/source @bridge @network @dev
 		if interface.type == Interface.TYPE_BRIDGE:
@@ -1151,19 +1151,18 @@ def _domain_edit(node, dom_stat, xml):
 		# /domain/devices/graphics @port @keymap @listen @passwd
 		domain_devices_graphic.attrib['port'] = '%d' % graphics.port
 		domain_devices_graphic.attrib['keymap'] = graphics.keymap
-		domain_devices_graphic.attrib['listen'] = graphics.listen
+		domain_devices_graphic.attrib['listen'] = graphics.listen or ''
 		if node.libvirt_version >= tuple2version((0, 9, 4)):
 			domain_devices_graphic_listens = domain_devices_graphic.findall('listen')
 			for listen in domain_devices_graphic_listens:
 				if listen.attrib['type'] != 'address':
 					continue
 				if graphics.listen:
-					listen.attrib['address'] = graphics.listen
+					listen.attrib['address'] = graphics.listen or ''
 				else:
 					domain_devices_graphic.remove(listen)
-		domain_devices_graphic.attrib['listen'] = graphics.listen
 		if domain_devices_graphic.attrib.get('passwd') != graphics.passwd:
-			domain_devices_graphic.attrib['passwd'] = graphics.passwd
+			domain_devices_graphic.attrib['passwd'] = graphics.passwd or ''
 			live_updates.append(domain_devices_graphic)
 
 	if dom_stat.domain_type in ('kvm', 'qemu'):
