@@ -108,20 +108,6 @@ univention-config-registry set \
 	nss/group/cachefile/check_member?yes \
 	nscd/group/enabled?no
 
-# restrict ssh and local login to admins on domaincontroller hosts
-# allow access to members of groups Computers, DC Slave Hosts and DC
-# Backup Hosts (host objects) for joining
-if is_domain_controller; then
-	univention-config-registry set \
-		auth/sshd/restrict?"yes" \
-		"auth/sshd/group/Domain Admins?yes" \
-		auth/sshd/group/Computers?"yes" \
-		"auth/sshd/group/DC Slave Hosts?yes" \
-		"auth/sshd/group/DC Backup Hosts?yes" \
-		auth/sshd/group/Administrators?"yes" \
-		auth/sshd/user/root?"yes"
-fi
-
 
 # remove old non-multifile template
 if [ -e /etc/univention/templates/files/etc/pam.d/common-auth ]; then

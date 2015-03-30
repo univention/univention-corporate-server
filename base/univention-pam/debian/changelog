@@ -1,3 +1,9 @@
+univention-pam (8.0.3-2) unstable; urgency=low
+
+  * Bug #37971: Delay auth/sshd/ restrictions until role is known
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 30 Mar 2015 14:45:42 +0200
+
 univention-pam (8.0.3-1) unstable; urgency=low
 
   * Bug #36743: Provide PAM configuration for KDM

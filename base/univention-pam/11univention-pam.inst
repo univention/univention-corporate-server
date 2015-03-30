@@ -37,6 +37,20 @@ VERSION=1
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
+# restrict ssh and local login to admins on domaincontroller hosts
+# allow access to members of groups Computers, DC Slave Hosts and DC
+# Backup Hosts (host objects) for joining
+. /usr/share/univention-lib/base.sh
+if is_domain_controller; then
+	univention-config-registry set \
+		auth/sshd/restrict?"yes" \
+		"auth/sshd/group/Domain Admins?yes" \
+		auth/sshd/group/Computers?"yes" \
+		"auth/sshd/group/DC Slave Hosts?yes" \
+		"auth/sshd/group/DC Backup Hosts?yes" \
+		auth/sshd/group/Administrators?"yes" \
+		auth/sshd/user/root?"yes"
+fi
 
 # assure that /etc/libnss-ldap.conf is re-commited at least once after the
 # machine.secret has been created in 10univention-ldap-server.inst
