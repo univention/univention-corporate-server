@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-pam
+fix: 8.0.3-2.259.201503301502
+version: [1]
+desc: |
+  This update fixes the following issue:
+  * The setup to deny ssh logins on Domaincontrollers has been moved into the
+    join scripts, as those restrictions were not applied in all cases.
+bug: [37971]
