@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: "Verify that SID of native Windows joined is correct in S4 and OpenLDAP"
 ## bugs: [37572, 36570]
-## tags: [native_win_client]
+## tags: [basic, native_win_client]
 ## exposure: safe
 ## packages:
 ##  - univention-samba4
@@ -21,7 +21,7 @@ windows_host_dn="$(udm computers/windows list | sed -n 's/^DN: //p')"
 
 # skip the test if no Windows host records cannot be found:
 if [ -z "$windows_host_dn" ]; then
-    echo "Cannot find any 'computers/windows' records via UDM (Possibly Windows Client not joined or replication did not work or there is simply no Windows in the Domain.)"
+    echo "Cannot find any 'computers/windows' records via UDM (Possible reasons: There is simply no Windows in the Domain; There is a Windows client, but not joined; Or replication did not work.)"
     exit 137
 fi
 echo "Windows host '$windows_host_dn' will be used for the test."
@@ -30,6 +30,14 @@ echo "Windows host '$windows_host_dn' will be used for the test."
 # extract the Windows hostname:
 windows_hostname="$(echo $windows_host_dn | sed 's/^cn=\(.*\),cn=computers,'"$ldap_base"'/\1/g')"
 echo "Windows Hostname is $windows_hostname"
+
+
+# check Windows hostname lookup:
+dns_lookup="$(LANG=C host -t A $windows_hostname | grep 'not found')"
+if [ -n "$dns_lookup" ]; then
+    echo $dns_lookup
+    fail_fast 110 "The Windows Client with a name $windows_hostname cannot be found in the domain (Or possibly was not joined correctly.)"
+fi
 
 
 # get the account data from OpenLDAP:

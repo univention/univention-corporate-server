@@ -1,3 +1,10 @@
+ucs-test (5.0.140-8) unstable; urgency=low
+
+  * 52_s4connector/400check_windows_sid: perform lookup for windows hostname;
+    also tagged as 'basic' (Bug #37572).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 30 Mar 2015 15:04:26 +0200
+
 ucs-test (5.0.140-7) unstable; urgency=low
 
   * Bug #37485: Moved code from join script to ucs test module
