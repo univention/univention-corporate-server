@@ -1,3 +1,9 @@
+univention-dvd (0.2.28-3) unstable; urgency=low
+
+  * Bug #38152: Fix symblic links in firmware/ directory
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 30 Mar 2015 11:08:14 +0200
+
 univention-dvd (0.2.28-2) unstable; urgency=low
 
   * Bug #37613: Fix net installer hook script
