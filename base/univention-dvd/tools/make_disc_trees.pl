@@ -1374,26 +1374,26 @@ sub add_packages {
                 }
                 $realfile = real_file ("$source/$file");
                 my $dstfile = "$file";
-                $dstfile =~ s,.*(\b(?:amd64|i386|all)/[^/]+),$dir/$1,;
+                $dstfile =~ s,.*(\b(?:amd64|i386|all)/[^/]+),$1,;
 
-                if (! -e "$dstfile") {
+                if (! -e "$dir/$dstfile") {
                     # Count how big the file is, for checking if the
                     # disc is full. ONLY do this if the file is not
                     # already linked in - consider binary-all packages
                     # on a multi-arch disc
                     $total_blocks += get_file_blocks($realfile);
-                    $total_blocks += good_link ($realfile, "$dstfile");
-                    msg_ap(0, "  Linked $dir/$file\n");
+                    $total_blocks += good_link ($realfile, "$dir/$dstfile");
+                    msg_ap(0, "  Linked $dir/$dstfile\n");
                     if ($firmware_package{$pkgname}) {
                         msg_ap(0, "Symlink fw package $pkgname into /firmware\n");
                         if (! -d "$dir/firmware") {
                             mkdir "$dir/firmware" or die "symlink failed $!\n";
                         }
-                        symlink("../$file", "$dir/firmware/" . basename($file));
-                        msg_ap(0, "Symlink ../$file $dir/firmware/.\n");
+                        symlink("../$dstfile", "$dir/firmware/" . basename($file));
+                        msg_ap(0, "Symlink ../$dstfile $dir/firmware/.\n");
                     }
                 } else {
-                    msg_ap(0, "  $dir/$file already linked in\n");
+                    msg_ap(0, "  $dir/$dstfile already linked in\n");
                 }
             }
         }
