@@ -16,6 +16,8 @@ import signal
 import select
 import errno
 import re
+from time import time
+from fcntl import fcntl, F_GETFL, F_SETFL
 try:  # >= Python 2.5
 	from hashlib import md5
 except ImportError:
@@ -556,38 +558,75 @@ class TestCase(object):
 	@staticmethod
 	def _run_tee(proc, result, stdout=sys.stdout, stderr=sys.stderr):
 		"""Run test collecting and passing through stdout, stderr:"""
-		log_stdout, log_stderr = [], []
-		fd_stdout = proc.stdout.fileno()
-		fd_stderr = proc.stderr.fileno()
-		read_set = [fd_stdout, fd_stderr]
-		while read_set:
+		channels = {
+			proc.stdout.fileno(): (proc.stdout, [], 'stdout', stdout, '[]'),
+			proc.stderr.fileno(): (proc.stderr, [], 'stderr', stderr, '()'),
+		}
+		for fd in channels:
+			fcntl(fd, F_SETFL, fcntl(fd, F_GETFL) | os.O_NONBLOCK)
+		combined = []
+		start = time()
+		while channels:
 			try:
-				rlist, _wlist, _elist = select.select(read_set, [], [])
+				rlist, _wlist, _elist = select.select(channels.keys(), [], [])
 			except select.error, ex:
 				if ex.args[0] == errno.EINTR:
 					continue
 				raise
-			if fd_stdout in rlist:
-				data = os.read(fd_stdout, 1024)
-				if data == '':
-					read_set.remove(fd_stdout)
-					proc.stdout.close()
-				else:
-					stdout.write(data)
-					log_stdout.append(data)
-			if fd_stderr in rlist:
-				data = os.read(fd_stderr, 1024)
-				if data == '':
-					read_set.remove(fd_stderr)
-					proc.stderr.close()
-				else:
-					stderr.write(data)
-					log_stderr.append(data)
+			delta = time() - start
+			for fd in rlist:
+				stream, log, name, out, paren = channels[fd]
 
-		if log_stdout:
-			TestCase._attach(result, 'stdout', log_stdout)
-		if log_stderr:
-			TestCase._attach(result, 'stderr', log_stderr)
+				try:
+					for line in TestCase._read_pipe(fd):
+						out.write(line)
+						entry = '{1[0]}{0: >7.3f}{1[1]}{2}\n'.format(delta, paren, line.rstrip('\r\n'))
+						log.append(entry)
+						combined.append(entry)
+				except EOFError:
+					stream.close()
+					del channels[fd]
+					TestCase._attach(result, name, log)
+		TestCase._attach(result, 'stdout', combined)
+
+	@staticmethod
+	def _read_pipe(fd):
+		buf = ''
+		try:
+			while True:
+				try:
+					data = os.read(fd, 1024)
+					if data == '':
+						raise EOFError()
+				except OSError as ex:
+					if ex.errno != errno.EWOULDBLOCK:
+						raise
+					return
+				buf += data
+				lines = list(TestCase._line_iter(buf))
+				for line in lines[:-1]:
+					yield line
+				buf = lines[-1]
+		finally:
+			if buf:
+				yield buf
+
+	@staticmethod
+	def _line_iter(s):
+		r"""
+		>>> list(TestCase._line_iter(""))
+		['']
+		>>> list(TestCase._line_iter("1"))
+		['1']
+		>>> list(TestCase._line_iter("1\n2\r3\r\n4\n"))
+		['1\n', '2\r', '3\r\n', '4\n', '']
+		"""
+		pos = 0
+		regexp = re.compile(r'[\r\n]+')
+		for m in regexp.finditer(s):
+			yield s[pos:m.end()]
+			pos = m.end()
+		yield s[pos:]
 
 	@staticmethod
 	def _attach(result, part, content):
