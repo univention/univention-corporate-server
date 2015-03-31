@@ -1,6 +1,7 @@
 ucs-test (5.0.142-1) unstable; urgency=low
 
   * Bug #31912: Merge stdout and stderr in output
+  * Bug #38174: Wait for child exit
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 31 Mar 2015 14:58:17 +0200
 

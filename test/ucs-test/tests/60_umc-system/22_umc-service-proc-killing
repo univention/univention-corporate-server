@@ -16,6 +16,7 @@ import univention.testing.utils as utils
 
 
 class TestUMCProcessKilling(TestUMCSystem):
+    MAX_PROCESS_TIME = 30  # s
 
     def __init__(self):
         """Test Class constructor"""
@@ -66,7 +67,15 @@ class TestUMCProcessKilling(TestUMCSystem):
             print("Created process with pid '%s' was not terminated, "
                   "forcing kill" % self.Proc.pid)
             self.Proc.kill()
-            _pid, exit_status, _res_usage = wait4(self.Proc.pid, WNOHANG)
+            for i in xrange(self.MAX_PROCESS_TIME):
+                if i:
+                    sleep(1)
+                child, exit_status, _res_usage = wait4(self.Proc.pid, WNOHANG)
+                if child:
+                    break
+            else:
+                print("Process with pid '%s' did not exit after %ds"
+                      % (self.Proc.pid, i))
             if WTERMSIG(exit_status) != signal.SIGKILL:
                 print("The exit status while force kill is 0x%x "
                       "instead of 'SIGKILL'(%d)."
@@ -85,7 +94,7 @@ class TestUMCProcessKilling(TestUMCSystem):
         else:  # child under test
             if ignore_sigterm:
                 signal.signal(signal.SIGTERM, signal.SIG_IGN)
-            sleep(30)
+            sleep(self.MAX_PROCESS_TIME)
             sys.exit(0)
 
     def test(self, signame, ignore_signal=False):

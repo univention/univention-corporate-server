@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Basic group email delivery 
+## desc: Basic email delivery to root
 ## tags: apptest
 ## exposure: dangerous
 ## packages: [univention-mail-server, univention-mail-postfix]
