@@ -1,3 +1,9 @@
+ucs-test (5.0.140-9) unstable; urgency=low
+
+  * Bug #38143: Fix 60_umc.08_logrotate.test
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 31 Mar 2015 08:53:01 +0200
+
 ucs-test (5.0.140-8) unstable; urgency=low
 
   * 52_s4connector/400check_windows_sid: perform lookup for windows hostname;

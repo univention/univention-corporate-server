@@ -46,10 +46,9 @@ class LogrotateService(object):
 			file_ = os.path.join('/proc/%d/fd/' % (pid,), file_)
 			if os.path.islink(file_) and os.readlink(file_).startswith(self.logfile_pattern):
 				return file_
+		print 'No logfile for service %s found.' % (self.service,)
 
 	def stat(self, logfile):
-		if not logfile:
-			raise LogrotateError('No logfile for service %s found.' % (self.service,))
 		try:
 			stat = os.stat(logfile)
 			print logfile, stat
@@ -70,6 +69,8 @@ class LogrotateService(object):
 			if i:
 				sleep(1)
 			logfile = self.logfile()
+			if not logfile:
+				continue
 			new_stat = self.stat(logfile)
 			if not os.path.samestat(self.old_stat, new_stat):
 				return
