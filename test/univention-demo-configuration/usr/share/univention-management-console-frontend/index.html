@@ -40,6 +40,24 @@
 				return defaultVal;
 			}
 
+			var _fillUsernameField = function() {
+				require('dojo/dom').byId('umcLoginUsername').value = 'Administrator';
+				require('dojo/dom').byId('umcLoginPassword').focus();
+			};
+			var _showLoginTooltip = function(evt) {
+				require(["dojo/on", "dojo/_base/event", "dijit/Tooltip",  "umc/i18n!umc/app"], function(on, dojoEvent, Tooltip, _) {
+					var node = evt.target;
+					Tooltip.show(_('Please login with a valid username and password. A login with an e-mail address is not possible. The default username to manage the domain is %s.', '<b><a href="javascript:void();" onclick="_fillUsernameField()">Administrator</a></b>'), node);
+					if (evt) {
+						dojoEvent.stop(evt);
+					}
+					on.once(dojo.body(), 'click', function(evt) {
+						Tooltip.hide(node);
+						dojoEvent.stop(evt);
+					});
+				});
+			};
+
 			var locale = getQuery('lang') || getCookie('UMCLang');
 			if (locale) {
 				locale = locale.replace('_', '-');
@@ -58,7 +76,7 @@
 						parser.parse();
 
 						// set the version of the UMC frontend
-						tools.status('version', '4.1.103-1.961.201411182017');
+						tools.status('version', '4.1.106-45.1025.201503241655');
 
 						// start the application when everything has been loaded
 						app.start({
@@ -76,6 +94,23 @@
 		<script type="text/javascript" async src="js_$20141811192458$/dojo/dojo.js"></script>
 	</head>
 	<body class="umc umcOverviewShown">
+		<!--[if lte IE 8]>
+			<div class="warningWrapper">
+				<div class="warningCenterer"></div>
+				<div class="warning umc_ie">
+					<div class="icon"></div>
+					<div class="title">Browser upgrade required</div>
+					<p>To use this service one of the following browsers is required:</p>
+					<p>
+						Internet Explorer (version 9 or higher),<br>
+						Firefox ( >= 24 ),<br>
+						Google Chrome ( >= 33 ),<br>
+						Safari ( >= 7 ).
+					</p>
+				</div>
+			</div>
+		<![endif]-->
+		<!--[if gte IE 9]><!-->
 		<div id="umcLoginWrapper">
 			<div id="umcFakeLoginLogo"></div>
 			<div id="umcLanguageSwitch" data-dojo-type="umc/app/LanguageSwitch"></div>
@@ -84,16 +119,19 @@
 				<div id="umcLoginLogo" class="umcLoginLogo">
 					<img id="umcLoginLogo" src="js_$20141811192458$/dijit/themes/umc/images/login_logo.png"/>
 				</div>
-				<form id="umcLoginForm" name="umcLoginForm" action="login2.html" method="post" class="umcLoginForm" autocomplete="on">
+				<form id="umcLoginForm" name="umcLoginForm" action="blank.html" method="post" class="umcLoginForm" autocomplete="on">
 					<label for="umcLoginUsername">
 						<input placeholder="Username" id="umcLoginUsername" name="username" type="text" autocomplete="off" value="Administrator"/>
+						<a href="javascript:void(0);" onclick="_showLoginTooltip(event);" tabindex="-1">
+							<span class="dijitReset dijitInline dijitIcon umcHelpIcon"></span>
+						</a>
 					</label>
 					<label for="umcLoginPassword">
 						<input placeholder="Password" id="umcLoginPassword" name="password" type="password" autocomplete="off" value="univention"/>
 						<input id="umcLoginSubmit" type="submit" name="submit" value="Login"/>
 					</label>
 				</form>
-				<form id="umcNewPasswordForm" name="umcLoginForm" action="login2.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
+				<form id="umcNewPasswordForm" name="umcLoginForm" action="blank.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
 					<label for="umcLoginNewPassword">
 						<input placeholder="New Password" id="umcLoginNewPassword" name="new_password" type="password"/>
 					</label>
@@ -106,10 +144,18 @@
 				<img src="js_$20141811192458$/dijit/themes/umc/images/login_bg.gif" height="0" width="0">
 			</div>
 		</div>
+		<!--<![endif]-->
 		<div id="umcTopContainer" class="umcTopContainer"></div>
-		<noscript style="margin: auto; padding-top: 50px; width: 50%; display: block;">
-			<h1>A browser with JavaScript enabled is needed in order to use Univention Management Console.</h1>
-			<h1 style="margin-top: 20px;">When using Internet Explorer, please check your security settings and add this address to your trusted sites.</h1>
+		<noscript>
+			<div class="warningWrapper">
+				<div class="warningCenterer"></div>
+				<div class="warning" id="no-js">
+					<div class="icon"></div>
+					<div class="title">JavaScript required</div>
+					<p>A browser with JavaScript enabled is required in order to use this service.</p>
+					<p>When using Internet Explorer, please check your security settings and add this address to your trusted sites.</p>
+				</div>
+			</div>
 		</noscript>
 	</body>
 </html>
