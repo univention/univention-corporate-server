@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-49) unstable; urgency=medium
+
+  * Bug #38132: added missing translations
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 31 Mar 2015 17:57:07 +0200
+
 univention-management-console-frontend (4.1.106-48) unstable; urgency=medium
 
   * Bug #38132: use small wizard for license activation dialogue
