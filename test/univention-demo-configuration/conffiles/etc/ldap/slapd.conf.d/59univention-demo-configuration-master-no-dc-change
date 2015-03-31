@@ -1,0 +1,8 @@
+
+@!@
+ldap_base=baseConfig['ldap/base']
+print 'access to dn.subtree="cn=dc,cn=computers,%s"' % (ldap_base, )
+print '    by users read'
+print '    by * none'
+print
+@!@
