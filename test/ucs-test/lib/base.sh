@@ -231,6 +231,12 @@ check_domainadmin_credentials () { # check ldap credentials are available
 	fi
 }
 
+get_domain_admins_dn () { # prints the Domain Admins dn
+	eval "$(ucr shell groups/default/domainadmins ldap/base)"
+	group_admins="${groups_default_domainadmins:-Domain Admins}"
+	echo "cn=$group_admins,cn=groups,$ldap_base"
+}
+
 # vim:set filetype=sh ts=4:
 # Local Variables:
 # mode: sh

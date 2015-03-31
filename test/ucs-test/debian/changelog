@@ -1,3 +1,10 @@
+ucs-test (4.0.212-3) unstable; urgency=low
+
+  * 00_base/47faillog_account-smb-krb: ported changes from 4.0-1.
+    lib/base.sh: added 'get_domain_admins_dn' (Bug #35014).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 31 Mar 2015 12:35:01 +0200
+
 ucs-test (4.0.212-2) unstable; urgency=low
 
   * 00_base/47faillog_account-smb-krb: re-enabled the test (Bug #35014).

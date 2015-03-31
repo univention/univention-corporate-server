@@ -84,7 +84,8 @@ krb_login () {
 }
 
 user_create "$NAME" \
-	--set groups="cn=Administrators,cn=groups,$ldap_base"
+	--set password="$(<$tests_domainadmin_pwdfile)" \
+	--set primaryGroup="$(get_domain_admins_dn)"
 
 while read udm windows kerberos posix comment
 do
@@ -99,19 +100,22 @@ do
 	sleep 5 # wait for replication
 
 	smb_login "$tests_domainadmin_pwdfile"
-	if [ $? -ne "$windows" ]
+	result=$?
+	if [ "$result" -ne "$windows" ]
 	then
 		fail_test 110 "Failed Windows login: expected $windows, got $result"
 	fi
 
 	krb_login "$tests_domainadmin_pwdfile"
-	if [ $? -ne "$kerberos" ]
+	result=$?
+	if [ "$result" -ne "$kerberos" ]
 	then
 		fail_test 110 "Failed Kerberos login: expected $kerberos, got $result"
 	fi
 
 	posix_login "$tests_domainadmin_pwdfile"
-	if [ $? -ne "$posix" ]
+	result=$?
+	if [ "$result" -ne "$posix" ]
 	then
 		fail_test 110 "Failed POSIX login: expected $posix, got $result"
 	fi
