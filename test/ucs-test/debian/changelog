@@ -1,3 +1,10 @@
+ucs-test (4.0.212-4) unstable; urgency=low
+
+  * 53_samba-common/50quota: also wait on 'NT_STATUS_LOGON_FAILURE' and
+    try again (Bug #35844).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 31 Mar 2015 13:07:05 +0200
+
 ucs-test (4.0.212-3) unstable; urgency=low
 
   * 00_base/47faillog_account-smb-krb: ported changes from 4.0-1.
