@@ -71,7 +71,8 @@ define([
 					name: 'region',
 					type: ComboBox,
 					staticValues: [
-						{ id: 'EC2_EU_WEST', label: 'EU (Ireland)' },
+						{ id: 'EC2_EU_WEST', label: 'EU West (Ireland)' },
+						{ id: 'EC2_EU_CENTRAL', label: 'EU Central (Frankfurt)' },
 						{ id: 'EC2_US_EAST', label: 'US East (N. Virginia)' },
 						{ id: 'EC2_US_WEST', label: 'US West (N. California)' },
 						{ id: 'EC2_US_WEST_OREGON', label: 'US West (Oregon)' },

@@ -94,14 +94,15 @@ LIBCLOUD_EC2_UVMM_STATE_MAPPING = {
 
 
 PROVIDER_MAPPING = {
-		"EC2_US_EAST": Provider.EC2_US_EAST,
-		"EC2_EU_WEST": Provider.EC2_EU_WEST,
-		"EC2_US_WEST": Provider.EC2_US_WEST,
-		"EC2_US_WEST_OREGON": Provider.EC2_US_WEST_OREGON,
-		"EC2_AP_SOUTHEAST": Provider.EC2_AP_SOUTHEAST,
-		"EC2_AP_NORTHEAST": Provider.EC2_AP_NORTHEAST,
-		"EC2_SA_EAST": Provider.EC2_SA_EAST,
-		"EC2_AP_SOUTHEAST2": Provider.EC2_AP_SOUTHEAST2,
+		"EC2_US_EAST": "us-east-1",
+		"EC2_EU_WEST": "eu-west-1",
+		"EC2_US_WEST": "us-west-1",
+		"EC2_US_WEST_OREGON": "us-west-2",
+		"EC2_AP_SOUTHEAST": "ap-southeast-1",
+		"EC2_AP_NORTHEAST": "ap-northeast-1",
+		"EC2_SA_EAST": "sa-east-1",
+		"EC2_AP_SOUTHEAST2": "ap-southeast-2",
+		"EC2_EU_CENTRAL": "eu-central-1",
 		}
 
 
@@ -138,7 +139,8 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		if 'secure' not in params:
 			params['secure'] = True
 
-		os = get_driver(PROVIDER_MAPPING[cloud["region"]])
+		os = get_driver(Provider.EC2)
+		params['region'] = PROVIDER_MAPPING[cloud["region"]]
 
 		p = params.copy()
 		p["secret"] = "******"
