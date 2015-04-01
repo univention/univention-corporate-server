@@ -37,6 +37,7 @@ define([
 	"dojo/Deferred",
 	"dojo/on",
 	"dojo/aspect",
+	"dojo/sniff",
 	"dojox/html/entities",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -68,7 +69,7 @@ define([
 	"umc/modules/uvmm/CloudConnectionWizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, string, query, Deferred, on, aspect, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
+], function(declare, lang, array, string, query, Deferred, on, aspect, has, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
 	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, InstanceWizard, CreatePage, CloudConnectionWizard, types, _) {
 
@@ -352,7 +353,10 @@ define([
 				if (this._tree._getFirst() && this._tree._getFirst().item.id == 'cloudconnections') {
 					this._searchForm.getWidget('type').set('value', 'instance');
 				}
-				this.own(this._tree.watch('path', lang.hitch(this, function() {
+				this.own(this._tree.watch('path', lang.hitch(this, function(attr, oldVal, newVal) {
+					if (tools.isEqual(oldVal, newVal)) {
+						return;
+					}
 					var searchType = this._searchForm.getWidget('type').get('value');
 					if (searchType == 'domain' || searchType == 'instance') {
 						this.filter();
@@ -1163,6 +1167,12 @@ define([
 				}];
 			}
 
+			if (has("ff")) {
+				var cell_width = '70px';
+			} else {
+				var cell_width = '50px';
+			}
+
 			if (type == 'instance') {
 				return [{
 					name: 'label',
@@ -1171,7 +1181,7 @@ define([
 				}, {
 					name: 'start',
 					label: _('Start'),
-					width: '50px',
+					width: cell_width,
 					'class': 'uvmmStartColumn',
 					description: _( 'Start the instance' ),
 					formatter: lang.hitch(this, '_startFormatter')
@@ -1192,14 +1202,14 @@ define([
 			}, {
 				name: 'start',
 				label: _('Start'),
-				width: 'adjust',
+				width: '50px',
 				'class': 'uvmmStartColumn',
 				description: _( 'Start the virtual machine' ),
 				formatter: lang.hitch(this, '_startFormatter')
 			}, {
 				name: 'vnc',
 				label: _('View'),
-				width: 'adjust',
+				width: cell_width,
 				description: lang.hitch(this, function(item) {
 					return lang.replace( _( 'Open a view to the virtual machine {label} on {nodeName}' ), item );
 				}),

@@ -1,3 +1,13 @@
+univention-virtual-machine-manager-daemon (4.0.24-4) unstable; urgency=low
+
+  Bug #36678:
+  * Fixed VNC acces beeing half hidden in firefox.
+  Bug #38010:
+  * Fixed the Grid in the UVMM module from endlessly refreshing if
+  no connection is available.
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 01 Apr 2015 16:48:52 +0200
+
 univention-virtual-machine-manager-daemon (4.0.24-3) unstable; urgency=low
 
   * Bug #36640: Fix memory leak in XML parsing
