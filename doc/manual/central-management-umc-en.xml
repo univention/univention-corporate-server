@@ -1174,9 +1174,9 @@
   </para>
   <caution>
     <para>
-	  For the access to UMC, only policies are considered that are assigned to
-	  groups or directly to user and computer accounts. An evaluation of nested
-	  group memberships (i.e., groups in groups) does not take place.
+	  For access to UMC, only policies are considered that are assigned to
+	  groups or directly to user and computer accounts. Nested
+	  group memberships (i.e., groups in groups) are not evaluated.
     </para>
   </caution>
 </section>
