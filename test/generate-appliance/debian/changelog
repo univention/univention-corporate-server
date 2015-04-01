@@ -1,3 +1,9 @@
+generate-appliance (1.2.6-3) unstable; urgency=low
+
+  * Bug #37935: add start-app script that is "patched" into the existing image
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 01 Apr 2015 11:05:44 +0200
+
 generate-appliance (1.2.6-2) unstable; urgency=medium
 
   * Bug #37908: fix links to univention.de

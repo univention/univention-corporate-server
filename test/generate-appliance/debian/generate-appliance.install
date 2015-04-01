@@ -1,1 +1,2 @@
 bin usr/
+docker usr/share/generate-appliance/

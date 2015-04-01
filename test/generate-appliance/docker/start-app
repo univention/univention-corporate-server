@@ -1,0 +1,17 @@
+#!/bin/sh
+# deactivate some USS widgets
+ucr set system/setup/boot/fields/blacklist="network password" system/setup/boot/pages/blacklist="network"
+# FIXME: this only works for /16 IPv4 subnets!
+ucr set interfaces/eth0/address="$(ifconfig eth0 | grep -Po "inet addr:\K\d+\.\d+\.\d+.\d")" \
+        interfaces/eth0/broadcast="$(ifconfig eth0 | grep -Po "Bcast:\K\d+\.\d+\.\d+.\d+")" \
+		interfaces/eth0/netmask="$(ifconfig eth0 | grep -Po "Mask:\K\d+\.\d+\.\d+.\d+")" \
+		interfaces/eth0/network="$(ip -f inet addr show eth0 | grep -Po 'inet \K\d+\.\d+\.'0.0)" \
+		interfaces/eth0/type="static"
+# extract root password from environment variable, store it to a file and remove it from environment
+touch /var/lib/univention-ldap/root.secret
+chown root:root /var/lib/univention-ldap/root.secret
+chmod 600 /var/lib/univention-ldap/root.secret
+echo -n "$UCS_PWD_ROOT" > /var/lib/univention-ldap/root.secret
+unset UCS_PWD_ROOT
+# continue booting the app
+exec "$@"
