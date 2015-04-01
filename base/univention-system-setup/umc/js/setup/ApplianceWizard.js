@@ -631,7 +631,7 @@ define([
 					type: Text,
 					name: '_user_account',
 					style: 'margin-top: 2em;',
-					content: _('Fill in the password for the system administrator user <b>root</b> and the domain administrative user account <b>Administrator</b>.'),
+					content: _('Fill in the password for the system administrator user <b>root</b> and the domain administrative user account <b>Administrator</b>.')
 				}, {
 					type: PasswordInputBox,
 					required: true,
@@ -1237,6 +1237,12 @@ define([
 			organization = organization.replace(/[^0-9a-z\-]+/g, '-').replace(/-+$/, '').replace(/^-+/, '').replace(/-+/, '-');
 			var hostname = this._randomHostName();
 			var fqdn = lang.replace('{0}.{1}.intranet', [hostname, organization]);
+			if (this.ucr['system/setup/boot/force/fqdn']) {  // in some environments (like docker) the hostname cannot be changed
+				fqdn = this.ucr['system/setup/boot/force/fqdn'];
+				hostname = this.ucr['system/setup/boot/force/fqdn'];
+				this.getWidget('fqdn-master', '_fqdn').set('disabled', true);
+				this.getWidget('fqdn-nonmaster-all', 'hostname').set('disabled', true);
+			}
 			this.getWidget('fqdn-master', '_fqdn').set('value', fqdn);
 			this.getWidget('fqdn-nonmaster-all', 'hostname').set('value', hostname);
 		},

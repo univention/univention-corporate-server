@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Fri, 23 Dec 2011 03:05:06 +0100\n"
+"POT-Creation-Date: Fri, 27 Mar 2015 12:53:13 +0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,34 +12,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/setup.xml: 5
-msgid "UCS setup wizard"
-msgstr "UCS-Einrichtungsassistent"
-
-#: umc/setup.xml: 6
-msgid "Configuration of the UCS system"
-msgstr "Konfiguration des UCS-Systems"
-
-#: umc/setup.xml: 13
-msgid "Language settings"
-msgstr "Sprach-Einstellungen"
-
-#: umc/setup.xml: 14
 msgid "All language relevant configurations"
 msgstr "Alle sprachrelevanten Einstellungsmöglichkeiten"
 
-#: umc/setup.xml: 18
-msgid "Network settings"
-msgstr "Netzwerk-Einstellungen"
-
-#: umc/setup.xml: 19
-msgid "Specify IP addresses, name servers, gateways and HTTP proxies"
-msgstr "Setzen der IP Adressen, Gateways, HTTP Proxies und DNS-Server"
-
-#: umc/setup.xml: 28
 msgid "Certificate settings"
 msgstr "Zertifikats-Einstellungen"
 
-#: umc/setup.xml: 29
+msgid "Configuration of the UCS system"
+msgstr "Konfiguration des UCS-Systems"
+
 msgid "Create a new root certificate"
 msgstr "Erstellung eines neuen Root-Zertifikats"
+
+msgid "Language settings"
+msgstr "Sprach-Einstellungen"
+
+msgid "Network settings"
+msgstr "Netzwerk-Einstellungen"
+
+msgid "Specify IP addresses, name servers, gateways and HTTP proxies"
+msgstr "Setzen der IP Adressen, Gateways, HTTP Proxies und DNS-Server"
+
+msgid "UCS setup wizard"
+msgstr "UCS-Einrichtungsassistent"

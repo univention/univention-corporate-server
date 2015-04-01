@@ -91,6 +91,7 @@ define([
 				'system/setup/boot/fields/blacklist',
 				'system/setup/boot/minimal_memory',
 				'system/setup/boot/installer',
+				'system/setup/boot/force/fqdn',
 				'umc/modules/setup/network/disabled/by',
 				'umc/web/appliance/*'
 			]);
