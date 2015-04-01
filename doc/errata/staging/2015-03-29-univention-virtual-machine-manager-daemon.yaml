@@ -9,4 +9,5 @@ desc: |
   * A memory leak caused by parsing XML documents has been fixed.
   * Some unused code has been removed.
   * WIP: Support EC2 with VPC (requires libcloud 0.17.0)
-bug: [36640,36635,36141]
+  * WIP: Support EC2 region Frankfurt (requires libcloud latest-dev)
+bug: [36640,36635,36141,36289]
