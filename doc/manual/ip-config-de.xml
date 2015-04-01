@@ -1507,6 +1507,28 @@
 
 	<section id="networks::dhcp::policies">
 	  <title>Konfiguration von Clients durch DHCP-Richtlinien</title>
+	  <note>
+		<para>
+		  Viele Einstellungen für DHCP werden über Richtlinien konfiguriert.
+		  Diese finden auch Anwendung auf DHCP-Rechner-Objekte, wenn eine Richtlinie mit der LDAP-Basis oder einem der andere dazwischenliegenden Container verknüpft ist.
+		  Da die Einstellungen an DHCP-Rechner-Objekte für den DHCP-Server die höchste Priorität haben, werden andere Einstellungen an Subnetz- oder Service-Objekten ignoriert.
+		</para>
+		<para>
+		  DHCP-Richtlinien sollten von daher nicht an der LDAP-Basis verknüpft werden, sofern diese dann individuell für einzelne Netzwerke durch andere Richtlinien überschrieben werden soll.
+		  In diesen Fällen ist es besser, die Richtlinie mit den DHCP-Netzwerk-Objekten zu verknüpfen.
+		  <footnote>
+			<para>
+			  Alternativ kann in den erweiterten Einstellungen der Richtlinien unter <guisubmenu>Objekt</guisubmenu> bei <guimenuitem>Ausgeschlossene Objektklassen</guimenuitem> die LDAP-Klasse <classname>univentionDhcpHost</classname> hinzugefügt werden.
+			  Solche Richtlinien finden dann nicht länger auf die DHCP-Rechner-Objekt Anwendung, wodurch dann die Einstellungen aus DHCP-Subnetz und -Service benutzt werden.
+			</para>
+		  </footnote>
+		</para>
+	  </note>
+	  <tip>
+		<para>
+		  Bei Verwendung der Kommandozeile <command>udm dhcp/host list</command> (siehe auch <xref linkend="central:udm:example:dnsdhcp"/>) kann die Option <option>--policies 0</option> verwendet werden, um die effektiven Einstellungen anzeigen zu lassen.
+		</para>
+	  </tip>
 
 	  <section id="ip-config:Vorgabe_des_Gateways">
 		<title>Vorgabe des Gateways</title>
