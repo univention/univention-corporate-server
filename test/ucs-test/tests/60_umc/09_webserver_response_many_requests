@@ -1,5 +1,11 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check if the webserver is responding after sending many unanswered requests
+## bugs: [37487]
+## versions:
+##  4.0-0: found
+##  4.0-1: skip
+##  4.1-0: fixed
+## tags: [SKIP]
 ## roles:
 ##  - domaincontroller_master
 ## packages:
@@ -17,7 +23,7 @@ import sys
 from univention.management.console.modules.ucstest import joinscript, unjoinscript
 
 
-NUMBER_OF_NOT_RESPONDING_REQUESTS = 25
+NUMBER_OF_NOT_RESPONDING_REQUESTS = 100
 
 
 def main():

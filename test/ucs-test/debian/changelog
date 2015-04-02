@@ -1,3 +1,9 @@
+ucs-test (5.0.143-2) unstable; urgency=low
+
+  * Bug #37485: Adapted meta data for 09_webserver_response_many_requests
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 02 Apr 2015 13:40:50 +0200
+
 ucs-test (5.0.143-1) unstable; urgency=low
 
   * Bug #38176: checking for each mail delivery before sending another email 00delivery04root
