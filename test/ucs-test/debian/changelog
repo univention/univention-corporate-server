@@ -1,3 +1,9 @@
+ucs-test (4.0.213-1) unstable; urgency=low
+
+  * Bug #38176: checking for each mail delivery before sending another email 00delivery04root
+
+ -- Ammar Najjar <najjar@univention.de>  Thu, 02 Apr 2015 09:39:01 +0200
+
 ucs-test (4.0.212-4) unstable; urgency=low
 
   * 53_samba-common/50quota: also wait on 'NT_STATUS_LOGON_FAILURE' and
