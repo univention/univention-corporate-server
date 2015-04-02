@@ -16,7 +16,7 @@
 	<revhistory>
 	  <revision>
 		<revnumber>4.0-1</revnumber>
-		<date>04 Mar 2015</date>
+		<date>02 Apr 2015</date>
 	  </revision>
 	</revhistory>
   </bookinfo>
@@ -227,13 +227,13 @@ Done.
 	  <para>
 		The following command removes the print quota for a user on all printer shares:
 
-<screen>
+<programlisting language="sh">
 edpykota --delete user01 
-</screen>
+</programlisting>
 		or on a specific printer:
-<screen>
+<programlisting language="sh">
 edpykota --delete user01 --printer labelprinter
-</screen>
+</programlisting>
 	  </para>
 
 	</section>
