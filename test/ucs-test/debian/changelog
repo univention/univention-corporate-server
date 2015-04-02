@@ -1,3 +1,9 @@
+ucs-test (5.0.143-1) unstable; urgency=low
+
+  * Bug #38176: checking for each mail delivery before sending another email 00delivery04root
+
+ -- Ammar Najjar <najjar@univention.de>  Thu, 02 Apr 2015 09:37:40 +0200
+
 ucs-test (5.0.142-1) unstable; urgency=low
 
   * Bug #31912: Merge stdout and stderr in output
@@ -77,7 +83,7 @@ ucs-test (5.0.139-4) unstable; urgency=medium
 
 ucs-test (5.0.139-3) unstable; urgency=low
 
-  * added some more ucs-test-appcenter-uninstall test Bug #31876 
+  * added some more ucs-test-appcenter-uninstall test Bug #31876
 
  -- Felix Botner <botner@univention.de>  Wed, 25 Mar 2015 11:34:53 +0100
 
