@@ -2,15 +2,13 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-virtual-machine-manager-daemon
-fix: 4.0.24-4.594.201504011732
+fix: 4.0.24-5.595.201504021001
 version: [1]
 desc: |
   This update fixes the following issue:
   * A memory leak caused by parsing XML documents has been fixed.
   * Some unused code has been removed.
-  * WIP: Support EC2 with VPC (requires libcloud 0.17.0)
-  * WIP: Support EC2 region Frankfurt (requires libcloud latest-dev)
   * Fixed a displayerror in firefox for the VNC icon in the UVMM UMC module.
-  * Prevent the grid in the UVMM UMC module from endlessy refreshing
+  * Prevent the grid in the UVMM UMC module from endless refreshing
     if no connections are available.
-bug: [36640,36635,36141,36289, 36678, 38010]
+bug: [36640,36635,36678,38010]
