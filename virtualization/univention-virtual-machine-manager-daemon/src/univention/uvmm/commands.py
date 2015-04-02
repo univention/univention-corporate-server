@@ -204,19 +204,6 @@ class _Commands:
 			raise CommandError('L_CLOUD_NETWORK_LIST', e)
 
 	@staticmethod
-	def L_CLOUD_SUBNET_LIST(server, request):
-		"""List available cloud subnets of cloud connections"""
-		logger.debug('L_CLOUD_SUBNET_LIST')
-		if not isinstance(request.conn_name, basestring):
-			raise CommandError('L_CLOUD_SUBNET_LIST', _('conn_name != string: %(conn_name)s'), conn_name=request.conn_name)
-		try:
-			res = protocol.Response_DUMP()
-			res.data = cloudnode.cloudconnections.list_conn_subnets(request.conn_name)
-			return res
-		except cloudnode.CloudConnectionError, e:
-			raise CommandError('L_CLOUD_SUBNET_LIST', e)
-
-	@staticmethod
 	def L_CLOUD_INSTANCE_STATE(server, request):
 		"""Change instance state"""
 		logger.debug('L_CLOUD_INSTANCE_STATE')

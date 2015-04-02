@@ -47,7 +47,7 @@ import ssl
 from node import PersistentCached
 from helpers import N_ as _
 from cloudconnection import CloudConnection, CloudConnectionError
-from protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Size, Cloud_Data_Network, Cloud_Data_Subnet
+from protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Size, Cloud_Data_Network
 import univention.config_registry as ucr
 
 configRegistry = ucr.ConfigRegistry()
@@ -72,7 +72,7 @@ EC2_CREATE_ATTRIBUTES = {
 		"location": "location",
 		"keyname": "ex_keyname",
 		"userdata": "ex_userdata",
-		"security_group_ids": {'group_name': "ex_security_groups", 'group_id': 'ex_security_group_ids'},
+		"security_group_ids": "ex_security_groups",
 		"metadata": "ex_metadata",
 		"min_instance_count": "ex_mincount",
 		"max_instance_count": "ex_maxcount",
@@ -80,7 +80,7 @@ EC2_CREATE_ATTRIBUTES = {
 		"blockdevicemappings": "ex_blockdevicemappings",
 		"iamprofile": "ex_iamprofile",
 		"ebs_optimized": "ex_ebs_optimized",
-		"subnet_id": "ex_subnet"
+		"subnet": "ex_subnet"
 	}
 
 
@@ -94,15 +94,14 @@ LIBCLOUD_EC2_UVMM_STATE_MAPPING = {
 
 
 PROVIDER_MAPPING = {
-		"EC2_US_EAST": "us-east-1",
-		"EC2_EU_WEST": "eu-west-1",
-		"EC2_US_WEST": "us-west-1",
-		"EC2_US_WEST_OREGON": "us-west-2",
-		"EC2_AP_SOUTHEAST": "ap-southeast-1",
-		"EC2_AP_NORTHEAST": "ap-northeast-1",
-		"EC2_SA_EAST": "sa-east-1",
-		"EC2_AP_SOUTHEAST2": "ap-southeast-2",
-		"EC2_EU_CENTRAL": "eu-central-1",
+		"EC2_US_EAST": Provider.EC2_US_EAST,
+		"EC2_EU_WEST": Provider.EC2_EU_WEST,
+		"EC2_US_WEST": Provider.EC2_US_WEST,
+		"EC2_US_WEST_OREGON": Provider.EC2_US_WEST_OREGON,
+		"EC2_AP_SOUTHEAST": Provider.EC2_AP_SOUTHEAST,
+		"EC2_AP_NORTHEAST": Provider.EC2_AP_NORTHEAST,
+		"EC2_SA_EAST": Provider.EC2_SA_EAST,
+		"EC2_AP_SOUTHEAST2": Provider.EC2_AP_SOUTHEAST2,
 		}
 
 
@@ -139,8 +138,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		if 'secure' not in params:
 			params['secure'] = True
 
-		os = get_driver(Provider.EC2)
-		params['region'] = PROVIDER_MAPPING[cloud["region"]]
+		os = get_driver(PROVIDER_MAPPING[cloud["region"]])
 
 		p = params.copy()
 		p["secret"] = "******"
@@ -167,7 +165,6 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		self._keypairs = self._exec_libcloud(lambda: self.driver.list_key_pairs())
 		self._security_groups = self._exec_libcloud(lambda: self.driver.ex_get_security_groups())  # ex_get_ for ec2!
 		self._networks = self._exec_libcloud(lambda: self.driver.ex_list_networks())
-		self._subnets = self._exec_libcloud(lambda: self.driver.ex_list_subnets())
 		self._last_expensive_update = time.time()
 
 	def list_instances(self, pattern="*"):
@@ -231,8 +228,6 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 			s.out_rules = secgroup.egress_rules
 			s.extra = secgroup.extra
 			s.tenant_id = secgroup.extra["owner_id"]
-			s.driver = self.driver.name  # missing in libcloud EC2SecurityGroup
-			s.network_id = secgroup.extra["vpc_id"]
 
 			secgroups.append(s)
 
@@ -263,28 +258,12 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 			s = Cloud_Data_Network()
 			s.id = network.id
 			s.name = network.name
-			s.driver = self.driver.name  # missing in libcloud EC2Network
 			s.extra = network.extra
 			s.cidr = network.cidr_block
 
 			networks.append(s)
 
 		return networks
-
-	def list_subnets(self):
-		subnets = []
-		for subnet in self._subnets:
-			s = Cloud_Data_Subnet()
-			s.id = subnet.id
-			s.name = subnet.name
-			s.driver = self.driver.name  # missing in libcloud EC2NetworkSubnet
-			s.cidr = subnet.extra['cidr_block']
-			s.network_id = subnet.extra["vpc_id"]
-			s.extra = subnet.extra
-
-			subnets.append(s)
-
-		return subnets
 
 	def to_cloud_data_image(self, image):
 		cloud_data_image = super(EC2CloudConnection, self).to_cloud_data_image(image)
@@ -442,10 +421,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 			if not secgroups:
 				raise EC2CloudConnectionError("No security group with id %s found." % args["security_group_ids"])
 
-			if "subnet_id" in args and args["subnet_id"] != '':  # vpc
-				kwargs[EC2_CREATE_ATTRIBUTES["security_group_ids"]["group_id"]] = [s.id for s in secgroups]
-			else:  # default
-				kwargs[EC2_CREATE_ATTRIBUTES["security_group_ids"]["group_name"]] = [s.name for s in secgroups]
+			kwargs[EC2_CREATE_ATTRIBUTES["security_group_ids"]] = [s.name for s in secgroups]
 
 		if "min_instance_count" in args:
 			if not (isinstance(args["min_instance_count"], int)):
@@ -481,13 +457,10 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 				raise EC2CloudConnectionError("<ebs_optimized> attribute must be a bool")
 			kwargs[EC2_CREATE_ATTRIBUTES["ebs_optimized"]] = args["ebs_optimized"]
 
-		if "subnet_id" in args and args["subnet_id"] != '':
-			if not (isinstance(args["subnet_id"], str) or isinstance(args["userdata"], unicode)):
-				raise EC2CloudConnectionError("<subnet_id> attribute must be a string")
-			subnet = [s for s in self._subnets if s.id == args["subnet_id"]]
-			if not subnet:
-				raise EC2CloudConnectionError("No subnet with id %s found." % args["subnet_id"])
-			kwargs[EC2_CREATE_ATTRIBUTES["subnet_id"]] = subnet[0]
+		if "subnet" in args:
+			if not (isinstance(args["subnet"], str)):
+				raise EC2CloudConnectionError("<subnet> attribute must be a string")
+			kwargs[EC2_CREATE_ATTRIBUTES["subnet"]] = args["subnet"]
 
 		# libcloud call
 		try:

@@ -1,10 +1,14 @@
+univention-virtual-machine-manager-daemon (4.0.24-5) unstable; urgency=low
+
+  * Revert of commit 59544 (Bug #36289) and 59436 (Bug #36141)
+
+ -- Andreas Peichert <peichert@univention.de>  Thu, 02 Apr 2015 09:24:14 +0200
+
 univention-virtual-machine-manager-daemon (4.0.24-4) unstable; urgency=low
 
-  Bug #36678:
-  * Fixed VNC acces beeing half hidden in firefox.
-  Bug #38010:
-  * Fixed the Grid in the UVMM module from endlessly refreshing if
-  no connection is available.
+  * Bug #36678: Fixed VNC acces beeing half hidden in firefox.
+  * Bug #38010: Fixed the Grid in the UVMM module from endlessly refreshing if
+    no connection is available.
 
  -- Johannes Keiser <keiser@univention.de>  Wed, 01 Apr 2015 16:48:52 +0200
 

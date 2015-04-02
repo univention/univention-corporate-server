@@ -340,12 +340,6 @@ class Request_L_CLOUD_NETWORK_LIST(Request):
 		self.command = 'L_CLOUD_NETWORK_LIST'
 		self.conn_name = None
 
-class Request_L_CLOUD_SUBNET_LIST(Request):
-	"""List available cloud subnets of cloud connections"""
-	def _default(self):
-		self.command = 'L_CLOUD_SUBNET_LIST'
-		self.conn_name = None
-
 class Request_L_CLOUD_INSTANCE_STATE(Request):
 	"""Change instance state"""
 	def _default(self):
@@ -548,7 +542,6 @@ class Cloud_Data_Secgroup(object):
 		self.in_rules = {}
 		self.out_rules = {}
 		self.extra = {}
-		self.network_id = None
 
 
 class Cloud_Data_Secgroup_Rule(object):
@@ -573,17 +566,6 @@ class Cloud_Data_Network(object):
 		self.id = None
 		self.driver = None
 		self.cidr = None
-		self.extra = {}
-
-
-class Cloud_Data_Subnet(object):
-	"""Container for libcloud subnet statistics"""
-	def __init__(self):
-		self.name = None
-		self.id = None
-		self.driver = None
-		self.cidr = None
-		self.network_id = None
 		self.extra = {}
 
 

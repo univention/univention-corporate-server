@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-uvmm 2.0.40-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-03-25 09:15+0100\n"
+"POT-Creation-Date: 2015-02-02 13:33+0100\n"
 "PO-Revision-Date: 2013-05-23 09:17+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -93,7 +93,7 @@ msgstr ""
 "Weitere Informationen können in den folgenden Protokolldateien gefunden "
 "werden:"
 
-#: umc/python/uvmm/__init__.py:144 umc/python/uvmm/nodes.py:98
+#: umc/python/uvmm/nodes.py:98 umc/python/uvmm/__init__.py:144
 msgid "Physical servers"
 msgstr "Physikalische Server"
 
@@ -101,18 +101,14 @@ msgstr "Physikalische Server"
 msgid ""
 "The connection to the univention-virtual-machine-manager-daemon service "
 "failed."
-msgstr ""
-"Die Verbindung zum univention-virtual-machine-manager-daemon-Dienst ist "
-"fehlgeschlagen."
+msgstr "Die Verbindung zum univention-virtual-machine-manager-daemon-Dienst ist fehlgeschlagen."
 
 #: umc/python/uvmm/uvmmd.py:66
 #, python-format
 msgid ""
 "The connection to the univention-virtual-machine-manager-daemon service "
 "failed: %s"
-msgstr ""
-"Die Verbindung zum univention-virtual-machine-manager-daemon-Dienst ist "
-"fehlgeschlagen: %s"
+msgstr "Die Verbindung zum univention-virtual-machine-manager-daemon-Dienst ist fehlgeschlagen: %s"
 
 #: umc/python/uvmm/uvmmd.py:85
 msgid "The given UVMM command is not known"
@@ -122,9 +118,7 @@ msgstr "Der gegebene UVMM Befehl ist unbekannt"
 msgid ""
 "This might be a temporary problem. Please wait some minutes for the "
 "connection to reestablish or restart the UVMM service."
-msgstr ""
-"Dies kann ein temporäres Problem sein. Bitte warten Sie einige Minuten damit "
-"die Verbindung wiederhergestellt wird oder starten Sie den UVMM-Dienst neu."
+msgstr "Dies kann ein temporäres Problem sein. Bitte warten Sie einige Minuten damit die Verbindung wiederhergestellt wird oder starten Sie den UVMM-Dienst neu."
 
 #: umc/python/uvmm/domains.py:420
 #, python-format

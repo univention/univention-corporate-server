@@ -719,15 +719,6 @@ class Client(object):
 		"""
 		return protocol.Request_L_CLOUD_NETWORK_LIST(conn_name=name)
 
-	def cloud_subnet_list(self, name="*"):
-		"""
-		%prog cloud_subnet_list <name>
-
-		List available cloud subnets
-		name is the cloud connection name. If empty, list information from all connections
-		"""
-		return protocol.Request_L_CLOUD_SUBNET_LIST(conn_name=name)
-
 	def cloud_instance_state(self, name, instance_id, state):
 		"""
 		%prog cloud_instance_state <name> <instance_id> <state>
