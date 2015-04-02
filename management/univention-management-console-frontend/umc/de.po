@@ -164,7 +164,7 @@ msgid ""
 msgstr ""
 "<p>Sie können nun eine gültige E-Mail-Adresse angeben, um das UCS-System für "
 "die Verwendung des App Centers freizuschalten. Im nächsten Schritt können "
-"Sie die Lizenzdatei hochladen, die an Ihre E-Mail-Adresse zugeschickt wird.</"
+"Sie die Lizenzdatei hochladen, die an Ihre E-Mail-Adresse gesendet wird.</"
 "p>"
 
 #: umc/app/HelpPage.js:48

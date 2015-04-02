@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-50) unstable; urgency=medium
+
+  * Bug #38132: fixed typo
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 02 Apr 2015 12:50:24 +0200
+
 univention-management-console-frontend (4.1.106-49) unstable; urgency=medium
 
   * Bug #38132: added missing translations
