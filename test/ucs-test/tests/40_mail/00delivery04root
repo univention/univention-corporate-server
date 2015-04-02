@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Basic group email delivery 
+## desc: Basic email delivery to root
 ## tags: apptest
 ## exposure: dangerous
 ## packages: [univention-mail-server, univention-mail-postfix]
@@ -30,11 +30,10 @@ def reload_postfix():
 	time.sleep(5)
 
 def main():
-	TIMEOUT = 40
+	TIMEOUT = 60
 	with udm_test.UCSTestUDM() as udm:
 		try:
 			with ucr_test.UCSTestConfigRegistry() as ucr:
-				token1 = str(time.time())
 				domain = ucr.get('domainname')
 				host = ucr.get('hostname')
 				handler_set(['mail/alias/root=systemmail@%s.%s' % (host, domain)])
@@ -49,18 +48,33 @@ def main():
 							'mailPrimaryAddress': mail,
 							}
 						)
-				send_mail(recipients='root', msg=token1, idstring=token1, subject='Normal')
-				time.sleep(5)
+				token = str(time.time())
+				delivery_OK = False
+				send_mail(recipients='root', msg=token, idstring=token, subject='Normal')
+				for i in xrange(TIMEOUT):
+					if mail_delivered(token, check_root=True):
+						delivery_OK = True
+						break
+					else:
+						print "Mail sent to root has not been delivered yet"
+						time.sleep(1)
+				if not delivery_OK:
+					utils.fail('Mail sent to root was not delivered')
+
 				handler_set(['mail/alias/root=%s' % mail])
 				reload_postfix()
 
-				token2 = str(time.time())
-				send_mail(recipients='root', msg=token2, idstring=token2, subject='Alias')
-
-				time.sleep(TIMEOUT)
-				if not mail_delivered(token1, check_root=True):
-					utils.fail('Mail sent to %s was not delivered' % 'root')
-				if not mail_delivered(token2, mail_address=mail, check_root=False):
+				token = str(time.time())
+				delivery_OK = False
+				send_mail(recipients='root', msg=token, idstring=token, subject='Alias')
+				for i in xrange(TIMEOUT):
+					if mail_delivered(token, mail_address=mail, check_root=False):
+						delivery_OK = True
+						break
+					else:
+						print "Mail sent to %s has not been delivered yet" % mail
+						time.sleep(1)
+				if not delivery_OK:
 					utils.fail('Mail sent to %s was not delivered' % mail)
 		finally:
 			reload_postfix()
