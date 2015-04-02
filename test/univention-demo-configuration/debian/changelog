@@ -1,3 +1,9 @@
+univention-demo-configuration (3.0.1-5) unstable; urgency=medium
+
+  * Bug #38170: adjust ACLs for access to DC LDAP entries
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 02 Apr 2015 11:06:47 +0200
+
 univention-demo-configuration (3.0.1-4) unstable; urgency=medium
 
   * Bug #38170: disallow writing access to DC LDAP entries
