@@ -726,7 +726,7 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 		  Die Protokollierung erfolgt in die Datei
 		  <filename>/var/log/univention/directory-logger.log</filename> im folgenden Format:
 
-		<programlisting language="sh">
+		  <screen>
 START
 Old Hash: Hashsumme des vorhergehenden Datensatzes
 DN: DN des LDAP-Objekts
@@ -740,7 +740,7 @@ Old Values:
 New Values:
  Liste der neuen Attribute, ist leer wenn ein Objekt gelöscht wird
 END
-		</programlisting>
+		</screen>
 
 		Für jeden protokollierten Datensatz wird eine Hashsumme berechnet und zusätzlich in die
 		Sektion <wordasword>daemon.info</wordasword> des Syslog-Dienstes protokolliert.
@@ -1067,7 +1067,7 @@ slapcat &gt; ldapdaten.txt
 
 		<para>
 		  Statusmeldungen des &ucsUDN;-Dienstes werden in die Datei
-		  <filename>/var/log/univention/listener.log</filename> protokolliert. Der Debuglevel kann mit der
+		  <filename>/var/log/univention/notifier.log</filename> protokolliert. Der Debuglevel kann mit der
 		  Variable <envar>notifier/debug/level</envar> konfiguriert werden (ebenfalls von 0-4).
 		  Nachdem der Debuglevel geändert  wurde, muss der &ucsUDN; neu gestartet werden.
 		</para>
@@ -1090,18 +1090,18 @@ slapcat &gt; ldapdaten.txt
 		  <filename>/var/lib/univention-ldap/notify/transaction</filename> geschrieben. Ein
 		  Beispiel:
 
-		  <programlisting language="sh">
+		  <screen>
 root@dcmaster:~# tail -1 /var/lib/univention-ldap/notify/transaction
 836 cn=dcslave3,cn=dc,cn=computers,dc=firma,dc=de m
-		  </programlisting>
+		  </screen>
 
 		  Auf dem Listener-System wird die zuletzt vom Listener empfangene Transaktion in der Datei
 		  <filename>/var/lib/univention-directory-listener/notifier_id</filename> gespeichert:
 
-		  <programlisting language="sh">
+		  <screen>
 root@dcslave1:~# cat /var/lib/univention-directory-listener/notifier_id
 836
-		  </programlisting>
+		  </screen>
 
 		  Diese Prüfung kann auch automatisiert durch den Nagios-Dienst <systemitem class="service">UNIVENTION_REPLICATION</systemitem>
 		  durchgeführt werden (siehe <xref linkend="nagios:preconfiguredchecks"/>).
@@ -1121,7 +1121,7 @@ root@dcslave1:~# cat /var/lib/univention-directory-listener/notifier_id
 		<para>
 		  Dem Befehl zum erneuten Initialisieren muss der Name des Listener-Moduls übergeben
 		  werden. Die installierten Listener-Module sind im Verzeichnis
-		  <filename class="directory">/var/lib/univention-directory-listener/handlers/system/</filename> zu finden.
+		  <filename class="directory">/var/lib/univention-directory-listener/handlers/</filename> zu finden.
 		</para>
 
 		<para>

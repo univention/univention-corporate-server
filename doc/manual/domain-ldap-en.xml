@@ -701,7 +701,7 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 		  The logging is made in the <filename>/var/log/univention/directory-logger.log</filename>
 		  file in the following format:
 
-		<programlisting language="sh">
+		  <screen>
 START
 Old Hash: Hash sum of the previous data record
 DN: DN of the LDAP object
@@ -715,7 +715,7 @@ Old Values:
 New Values:
  List of new attributes, empty when an object is deleted
 END
-		</programlisting>
+		</screen>
 
 		A hash sum is calculated for each logged data record and also logged in the
 		<wordasword>daemon.info</wordasword> section of the Syslog service.
@@ -1031,7 +1031,7 @@ slapcat &gt; ldapdata.txt
 
 		<para>
 		  Status messages from the &ucsUDN; service are logged in the
-		  <filename>/var/log/univention/listener.log</filename> file. The debug level can be
+		  <filename>/var/log/univention/notifier.log</filename> file. The debug level can be
 		  configured using the <envar>notifier/debug/level</envar> variable (also from 0-4).
 		  Once the debug level has been changed, the &ucsUDN; must be restarted.
 		</para>
@@ -1054,18 +1054,18 @@ slapcat &gt; ldapdata.txt
 		  on the &ucsMaster;. An example:
 
 
-		  <programlisting language="sh">
+		  <screen>
 root@dcmaster:~# tail -1 /var/lib/univention-ldap/notify/transaction
 836 cn=dcslave3,cn=dc,cn=computers,dc=firma,dc=de m
-		  </programlisting>
+		  </screen>
 
 		  The last transaction received by the listener system is stored in the
 		  <filename>/var/lib/univention-directory-listener/notifier_id</filename> file:
 
-		  <programlisting language="sh">
+		  <screen>
 root@dcslave1:~# cat /var/lib/univention-directory-listener/notifier_id
 836
-		  </programlisting>
+		  </screen>
 
 		  This check can also be performed automatically by the Nagios service
 		  <systemitem class="service">UNIVENTION_REPLICATION</systemitem> (see <xref linkend="nagios:preconfiguredchecks"/>).
@@ -1086,7 +1086,7 @@ root@dcslave1:~# cat /var/lib/univention-directory-listener/notifier_id
 		<para>
 		  The name of the listener module must be supplied to the command for the renewed
 		  initialisation. The installed listener modules can be found in the
-		  <filename class="directory">/var/lib/univention-directory-listener/handlers/system/</filename> directory.
+		  <filename class="directory">/var/lib/univention-directory-listener/handlers/</filename> directory.
 		</para>
 
 		<para>
