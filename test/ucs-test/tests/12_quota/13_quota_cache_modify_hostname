@@ -1,0 +1,67 @@
+#!/usr/share/ucs-test/runner python
+## desc: Quota share cache; modify share host
+## roles-not: [basesystem]
+## exposure: dangerous
+## packages:
+##   - univention-quota
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import os
+
+SHARE_CACHE_DIR = '/var/cache/univention-quota/'
+
+
+def create_share(host):
+	name = uts.random_name()
+	path = '/mnt/_%s' % name
+	return udm.create_object('shares/share', name=name, path=path, host=host)
+
+def change_host(dn, host):
+	udm.modify_object('shares/share', dn=dn, host=host)
+
+def cache_must_exists(dn):
+	filename = os.path.join(SHARE_CACHE_DIR,dn)
+	if not os.path.exists(filename):
+		utils.fail('%s does not exist' % filename)
+
+def cache_must_not_exists(dn):
+	filename = os.path.join(SHARE_CACHE_DIR,dn)
+	if os.path.exists(filename):
+		utils.fail('%s exists' % filename)
+
+if __name__ == '__main__':
+	ucr = ucr_test.UCSTestConfigRegistry()
+	ucr.load()
+
+	my_fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+
+	with udm_test.UCSTestUDM() as udm:
+		share1 = create_share(my_fqdn)
+		share2 = create_share('test.bar')
+		share3 = create_share('test2.bar')
+
+		utils.wait_for_replication_and_postrun()
+
+		cache_must_exists(share1)
+		cache_must_not_exists(share2)
+		cache_must_not_exists(share3)
+
+		change_host(share1, 'test.bar')
+		change_host(share2, my_fqdn)
+		change_host(share3, 'foo.bar')
+
+		utils.wait_for_replication_and_postrun()
+
+		cache_must_not_exists(share1)
+		cache_must_exists(share2)
+		cache_must_not_exists(share3)
+
+	utils.wait_for_replication_and_postrun()
+
+	cache_must_not_exists(share1)
+	cache_must_not_exists(share2)
+	cache_must_not_exists(share3)
+

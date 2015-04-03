@@ -104,13 +104,13 @@ Description: univention-lib tests
 #Description: Login tests
 # This package includes some scripts to test the login behavior.
 
-#Package: ucs-test-quota
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Quota tests
-# This package includes some scripts for testing file quota.
+Package: ucs-test-quota
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ${misc:Depends}
+Provides: ucs-test-module
+Description: Quota tests
+ This package includes some scripts for testing file quota.
 
 Package: ucs-test-ldap
 Architecture: all
@@ -495,7 +495,7 @@ Architecture: all
 Depends:
  ucs-test-checks,
  ucs-test-base,
-# ucs-test-quota,
+ ucs-test-quota,
  ucs-test-ldap,
 # ucs-test-dns,
  ucs-test-mail,
