@@ -1,0 +1,13 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-quota
+fix: 9.1.5-3.143.201504032150
+version: [1]
+desc: |
+  This update fixes the following issue:
+  * The quota settings are now written to a cache directory by a
+    listener module. The PAM script which sets the quota settings
+    to the share uses this cache directory. This improves the login
+    performance.
+bug: [36989]
