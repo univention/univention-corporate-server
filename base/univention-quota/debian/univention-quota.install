@@ -1,4 +1,5 @@
 files/univention-group-quota usr/sbin
 files/univention-user-quota usr/sbin
 files/univention-setquota usr/sbin
+quota.py usr/lib/univention-directory-listener/system/
 
