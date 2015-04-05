@@ -40,7 +40,7 @@ import univention.lib.policy_result
 
 name = 'quota'
 description = 'Dump quota settings into a cache directory'
-filter = '(|(objectClass=univentionPolicyShareUserQuota)(cn=organizationalRole)(cn=organizationalUnit)(objectClass=univentionBase)(objectClass=univentionShare))'
+filter = '(|(objectClass=univentionPolicyShareUserQuota)(objectClass=organizationalRole)(objectClass=organizationalUnit)(objectClass=univentionBase)(objectClass=univentionShare))'
 attributes = []
 
 '''
