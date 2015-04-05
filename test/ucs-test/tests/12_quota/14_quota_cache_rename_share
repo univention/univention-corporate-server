@@ -21,22 +21,26 @@ def create_share(host):
 	path = '/mnt/_%s' % name
 	return udm.create_object('shares/share', name=name, path=path, host=host)
 
+
 def rename_share(dn):
 	name = uts.random_name()
 	udm.modify_object('shares/share', dn=dn, name=name)
-	exploded_dn =  ldap.explode_dn(dn)
+	exploded_dn = ldap.explode_dn(dn)
 	exploded_dn[0] = 'cn=%s' % name
 	return ','.join(exploded_dn)
 
+
 def cache_must_exists(dn):
-	filename = os.path.join(SHARE_CACHE_DIR,dn)
+	filename = os.path.join(SHARE_CACHE_DIR, dn)
 	if not os.path.exists(filename):
 		utils.fail('%s does not exist' % filename)
 
+
 def cache_must_not_exists(dn):
-	filename = os.path.join(SHARE_CACHE_DIR,dn)
+	filename = os.path.join(SHARE_CACHE_DIR, dn)
 	if os.path.exists(filename):
 		utils.fail('%s exists' % filename)
+
 
 if __name__ == '__main__':
 	ucr = ucr_test.UCSTestConfigRegistry()
@@ -57,7 +61,7 @@ if __name__ == '__main__':
 
 		cache_must_not_exists(share1)
 		cache_must_exists(share2)
-		
+
 		# renamed objects must be removed manually
 		subprocess.call('udm-test shares/share remove --dn "%s"' % share2, shell=True)
 
@@ -65,4 +69,3 @@ if __name__ == '__main__':
 
 	cache_must_not_exists(share1)
 	cache_must_not_exists(share2)
-
