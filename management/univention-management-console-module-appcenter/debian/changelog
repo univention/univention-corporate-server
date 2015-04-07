@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-19) unstable; urgency=medium
+
+  * Bug #37616: avoid loading of license object during import of app_center
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 02 Apr 2015 16:49:00 +0200
+
 univention-management-console-module-appcenter (4.1.20-18) unstable; urgency=low
 
   * Bug #35661: Version bump

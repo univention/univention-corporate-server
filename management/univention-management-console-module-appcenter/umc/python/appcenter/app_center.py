@@ -93,7 +93,6 @@ _ = umc.Translation('univention-management-console-module-appcenter').translate
 class License(object):
 	def __init__(self):
 		self.uuid = None
-		self.reload()
 
 	def reload(self, force=False):
 		if self.uuid is not None and not force:
@@ -116,6 +115,7 @@ class License(object):
 		return self.uuid is not None
 
 	def allows_using(self, email_required):
+		self.reload()
 		return self.email_known() or not email_required
 
 LICENSE = License()
@@ -943,7 +943,6 @@ class Application(object):
 
 	@HardRequirement('install', 'update')
 	def must_have_valid_license(self):
-		LICENSE.reload()
 		return LICENSE.allows_using(self.get('notifyvendor'))
 
 	@HardRequirement('install')
