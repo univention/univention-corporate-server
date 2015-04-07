@@ -1,0 +1,18 @@
+[umc/web/appliance/name]
+Description[de]=Gibt den Namen der UCS App-Appliance an, der dann im Einrichtungsassistenten als "<name> Appliance" an Stelle von "UCS" angezeigt wird.
+Description[en]=Specifies the name of the UCS app appliance which will be displayed in the setup wizard as "<name> appliance" instead of "UCS".
+Type=string
+Categories=management-umc
+
+[umc/web/appliance/logo]
+Description[de]=Gibt die URI zur Logo-Datei der App-Appliance im SVG-Format an, die auf der ersten Seite des Einrichtungsassistenten anstelle des UCS-Logos angezeigt wird (bspw. "/icon/meine_appliance.svg").
+Description[en]=Specifies the URI for the logo file of the app appliance in SVG format. This logo will be then displayed on the first page of the setup wizard instead of the UCS logo (e.g., "/icon/my_appliance.svg").
+Type=string
+Categories=management-umc
+
+[umc/web/appliance/data_path]
+Description[de]=Gibt den Präfix des Datenpfades an für weitere App-Appliance-Daten wie insb. Lizenzdateien, die dann im Einrichtungsassistenten automatisch mit angezeigt werden (bspw. "/var/cache/univention-management-console/appcenter/univention-demoapp.")
+Description[en]=Specifies the prefix for the data path to further app appliance data especially such as license files. Those are then automatically displayed in the setup wizard (e.g., "/var/cache/univention-management-console/appcenter/univention-demoapp.")
+Type=string
+Categories=management-umc
+

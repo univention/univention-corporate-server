@@ -1,3 +1,9 @@
+univention-system-setup (8.1.66-30) unstable; urgency=medium
+
+  * Bug #37616: add descriptions for app appliance UCR variables
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 07 Apr 2015 12:06:32 +0200
+
 univention-system-setup (8.1.66-29) unstable; urgency=medium
 
   * Bug #37616: allow to display a license agreement in the ApplianceWizard
