@@ -1,3 +1,9 @@
+univention-system-setup (8.1.66-29) unstable; urgency=medium
+
+  * Bug #37616: allow to display a license agreement in the ApplianceWizard
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 02 Apr 2015 18:25:10 +0200
+
 univention-system-setup (8.1.66-28) unstable; urgency=medium
 
   * Bug #38148: correctly evaluate field blacklist

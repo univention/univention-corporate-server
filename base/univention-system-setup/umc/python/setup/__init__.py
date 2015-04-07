@@ -143,7 +143,7 @@ class Instance(Base, ProgressMixin):
 	def load(self):
 		'''Return a dict with all necessary values for system-setup read from the current
 		status of the system.'''
-		return util.load_values()
+		return util.load_values(self.locale.language)
 
 	@simple_response
 	def save_keymap(self, layout=None):

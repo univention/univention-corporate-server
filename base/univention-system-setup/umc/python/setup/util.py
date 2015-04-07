@@ -115,7 +115,7 @@ def timestamp():
 def is_system_joined():
 	return os.path.exists('/var/univention-join/joined')
 
-def load_values():
+def load_values(lang=None):
 	# load UCR variables
 	ucr.load()
 	values = dict([ (ikey, ucr[ikey]) for ikey in UCR_VARIABLES ])
@@ -141,6 +141,17 @@ def load_values():
 			values['timezone'] = fd.readline().strip()
 	else:
 		values['timezone']=''
+
+	# read license agreement for app appliance
+	if lang and ucr.get('umc/web/appliance/data_path'):
+		prefix = ucr.get('umc/web/appliance/data_path')
+		license_path = '%sLICENSE_AGREEMENT' % prefix
+		localized_license_path = '%s_%s' % (license_path, lang.upper())
+		for ipath in (localized_license_path, license_path):
+			if os.path.exists(ipath):
+				with open(ipath) as license_file:
+					values['license_agreement'] = ''.join(license_file.readlines())
+					break
 
 	return values
 
@@ -532,7 +543,7 @@ def run_scripts_in_path(path, logfile, category_name=""):
 
 	if os.path.isdir(path):
 		for filename in sorted(os.listdir(path)):
-			logfile.write('= Running %s\n' % filename);
+			logfile.write('= Running %s\n' % filename)
 			logfile.flush()
 			try:
 				subprocess.call(os.path.join(path, filename), stdout=logfile, stderr=logfile)

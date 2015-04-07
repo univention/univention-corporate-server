@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-03-19 09:45+0100\n"
+"POT-Creation-Date: 2015-04-02 18:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,7 +36,7 @@ msgstr "Bond-primary muss in bond-slaves enthalten sein"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/python/setup/__init__.py:483 umc/python/setup/util.py:156
+#: umc/python/setup/util.py:167 umc/python/setup/__init__.py:483
 msgid ""
 "Cannot automatically determine the domain. Please specify the server's fully "
 "qualified domain name."
@@ -54,7 +54,7 @@ msgstr "Kann Bridge %r nicht als bridge-port verwenden"
 msgid "Cannot use device %s: Device must be unconfigured"
 msgstr "Kann Gerät %s nicht verwenden: Gerät muss unkonfiguriert sein"
 
-#: umc/python/setup/util.py:670
+#: umc/python/setup/util.py:681
 #, python-format
 msgid "Could not query App Center: %s"
 msgstr "App-Center-Daten konnten nicht abgefragt werden: %s"

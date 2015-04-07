@@ -156,6 +156,10 @@
 	background-image: url(setup/locale.svg);
 }
 
+.umc-setup-page-license .umcPageIcon {
+	background-image: url(setup/license.svg);
+}
+
 .umc-setup-page-role .umcPageIcon,
 .umc-setup-page-role-nonmaster-ad .umcPageIcon,
 .umc-setup-page-warning-basesystem .umcPageIcon {

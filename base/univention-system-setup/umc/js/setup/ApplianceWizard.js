@@ -372,6 +372,15 @@ define([
 					})
 				}]
 			}), lang.mixin({}, pageConf, {
+				name: 'license',
+				headerText: _('License agreement'),
+				helpText: _('Please read carefully the license agreement for the %s appliance.', this.ucr['umc/web/appliance/name'] || ''),
+				widgets: [{
+					type: Text,
+					name: 'license',
+					content: this.values.license_agreement
+				}]
+			}), lang.mixin({}, pageConf, {
 				name: 'network',
 				headerText: _('Domain and network configuration'),
 				helpText: _('Specify the network settings for this system.'),
@@ -837,17 +846,18 @@ define([
 		},
 
 		_adjustWizardHeight: function() {
-			var _setInterfaceVisibility = lang.hitch(this, function(visible) {
+			var _setVisibility = lang.hitch(this, function(visible) {
 				array.forEach(this._getNetworkDevices(), function(idev, i) {
 					this.getWidget('network', '_ip' + i).set('visible', visible);
 					this.getWidget('network', '_netmask' + i).set('visible', visible);
 				}, this);
+				this.getWidget('license', 'license').set('visible', visible);
 			});
 
 			// ignore number of network interfaces when determining the auto height
-			_setInterfaceVisibility(false);
+			_setVisibility(false);
 			this.inherited(arguments);
-			_setInterfaceVisibility(true);
+			_setVisibility(true);
 		},
 
 		evaluateBlacklist: function() {
@@ -1770,6 +1780,9 @@ define([
 			if (pageName == 'locale' && this._nLocaleSettingsConfigured == 3) {
 				// no need to display page for locale settings
 				return false;
+			}
+			if (pageName == 'license') {
+				return Boolean(this.values.license_agreement);
 			}
 
 			// support blacklisting of specific pages
