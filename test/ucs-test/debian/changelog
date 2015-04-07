@@ -1,3 +1,11 @@
+ucs-test (5.0.143-5) unstable; urgency=medium
+
+  * Added ucs-test-quota.install file (Bug #36989)
+  * 53_samba-common/50quota: It could take some more seconds until the
+    new quota cache is ready. The test case waits for it now.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 07 Apr 2015 05:51:42 +0200
+
 ucs-test (5.0.143-4) unstable; urgency=medium
 
   * Added more quota cache tests (Bug #36989)

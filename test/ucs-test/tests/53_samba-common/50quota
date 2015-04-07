@@ -82,6 +82,16 @@ for FS in xfs ext2 ext3 ext4; do
 
 	wait_for_replication_and_postrun
 
+	# wait for the quota cache
+	for((i=0;i<60;i++)); do
+		if [ -e "/var/cache/univention-quota/cn=$share,cn=shares,$ldap_base" ]; then
+			break
+		fi
+		echo "Waiting for share cache ..."
+		sleep 1
+	done
+
+
 	# wait until the share is ready
 	for((i=0;i<60;i++)); do
 		if smbcquotas -u $user -U ${account}%${tests_domainadmin_pwd} //$hostname/$share; then
