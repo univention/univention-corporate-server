@@ -177,7 +177,7 @@ define([
 				type: TextBox,
 				name: 'pattern',
 				label: _('Query pattern'),
-				size: 'TwoThirds',
+				size: 'One',
 				value: ''
 			}];
 			var layout = [[ 'type', 'pattern', 'submit' ]];
@@ -1168,9 +1168,9 @@ define([
 			}
 
 			if (has("ff")) {
-				var cell_width = '70px';
+				var cell_width = '80px';
 			} else {
-				var cell_width = '50px';
+				var cell_width = '60px';
 			}
 
 			if (type == 'instance') {
