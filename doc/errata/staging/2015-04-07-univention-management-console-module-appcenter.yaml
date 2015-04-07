@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-management-console-module-appcenter
+fix:
+version: [1]
+desc: |
+  This update addresses the following issues:
+  * The process of loading license information from the LDAP has been improved
+    to avoid idle times in UMC.
+bug: [37616]
