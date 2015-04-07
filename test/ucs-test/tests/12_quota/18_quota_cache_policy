@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Quota share cache; create and remoe shares
+## desc: Quota share cache; create different policies
 ## roles-not: [basesystem]
 ## exposure: dangerous
 ## packages:
