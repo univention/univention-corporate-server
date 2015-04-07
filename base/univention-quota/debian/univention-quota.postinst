@@ -44,4 +44,9 @@ fi
 
 call_joinscript 71univention-quota.inst
 
+mkdir -p /var/cache/univention-quota && chmod 750 /var/cache/univention-quota
+
+test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener restart
+
+
 exit 0
