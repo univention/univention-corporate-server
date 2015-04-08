@@ -1,8 +1,33 @@
 import univention.testing.utils as utils
 import cPickle
 import os
+import time
 
 SHARE_CACHE_DIR = '/var/cache/univention-quota/'
+TIMEOUT = 5  # seconds
+
+
+def cache_must_exists(dn):
+	filename = os.path.join(SHARE_CACHE_DIR, dn)
+	i = 0
+	while not os.path.exists(filename):
+		if i > TIMEOUT:
+			utils.fail('%s does not exist' % filename)
+		print 'Waiting for quota cache removing (%d) ...' % i
+		time.sleep(1)
+		i += 1
+
+
+def cache_must_not_exists(dn):
+	filename = os.path.join(SHARE_CACHE_DIR, dn)
+	i = 0
+	while os.path.exists(filename):
+		if i > TIMEOUT:
+			utils.fail('%s exists' % filename)
+			break
+		print 'Waiting for quota cache creating (%d) ...' % i
+		time.sleep(1)
+		i += 1
 
 
 def get_cache_values(dn):
