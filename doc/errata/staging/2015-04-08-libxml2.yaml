@@ -1,0 +1,16 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: libxml2
+fix: 2.8.0+dfsg1-7.50.201504082023
+version: [1]
+desc: |
+  Multiple security vulnerabilities have been found in the libxml 
+  library:
+  * Denial of source due to unlimited expansion of external 
+    entities (CVE-2014-0191)
+  * Denial of service through unlimited entity expansion 
+     (CVE-2014-3660)
+cve:
+ - CVE-2014-0191
+ - CVE-2014-3660
