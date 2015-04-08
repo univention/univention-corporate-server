@@ -1,3 +1,9 @@
+ucs-test (5.0.144-1) unstable; urgency=low
+
+  * Bug #38017: increase timeout to 90sec testing/decorators.py
+
+ -- Ammar Najjar <najjar@univention.de>  Wed, 08 Apr 2015 10:10:25 +0200
+
 ucs-test (5.0.143-7) unstable; urgency=medium
 
   * 12_quota: Sometimes the postrun takes some more time.
