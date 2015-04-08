@@ -7,4 +7,5 @@ version: [1]
 desc: |
   This update addresses the following issues:
   * License agreement information can now be displayed during the setup wizard.
-bug: [37616]
+  * Hide a description for password when the password field is hidden.
+bug: [37616, 38148]
