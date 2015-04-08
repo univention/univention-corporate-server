@@ -1,3 +1,9 @@
+generate-appliance (1.2.6-4) unstable; urgency=low
+
+  * Bug #37935: fixed regex in start-app for extracting IP address
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 08 Apr 2015 14:38:21 +0200
+
 generate-appliance (1.2.6-3) unstable; urgency=low
 
   * Bug #37935: add start-app script that is "patched" into the existing image
