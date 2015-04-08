@@ -411,7 +411,10 @@ class Domain(PersistentCached):
 					dev.passwd = graphic.attrib['passwd']
 				except LookupError:
 					pass
-				dev.keymap = graphic.attrib['keymap']
+				try:
+					dev.keymap = graphic.attrib['keymap']
+				except LookupError:
+					pass
 			elif dev.type == Graphic.TYPE_SDL:
 				pass
 			else:

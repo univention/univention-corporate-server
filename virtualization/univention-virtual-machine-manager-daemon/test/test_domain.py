@@ -96,7 +96,7 @@ class TestDomainKVM(_Domain):
 			<input type='tablet' bus='usb'/>
 			<input type='mouse' bus='ps2'/>
 			<input type='keyboard' bus='ps2'/>
-			<graphics type='vnc' port='-1' autoport='yes' listen='0.0.0.0' keymap='de'>
+			<graphics type='vnc' port='-1' autoport='yes' listen='0.0.0.0' keymap='en'>
 				<listen type='address' address='0.0.0.0'/>
 			</graphics>
 			<video>
@@ -180,6 +180,7 @@ class TestDomainKVM(_Domain):
 		self.assertTrue(g.autoport)
 		self.assertEqual('0.0.0.0', g.listen)
 		self.failIf(g.passwd)
+		self.assertEqual('en', g.keymap)
 
 
 class TestDomainXenHVM(_Domain):
@@ -325,6 +326,48 @@ class TestDomainXenPVGrub(_Domain):
 		self.assertEqual('vif-bridge', i.script)
 		self.assertEqual('internal0', i.target)
 		self.assertEqual('netfront', i.model)
+
+
+class TestDomainVNC(_Domain):
+	"""
+	<domain type='kvm'>
+		<name>ucs401</name>
+		<uuid>da33829a-4c56-4626-8d33-beec0580fc10</uuid>
+		<memory unit='KiB'>1048576</memory>
+		<currentMemory unit='KiB'>1048576</currentMemory>
+		<vcpu placement='static'>1</vcpu>
+		<os>
+			<type arch='x86_64' machine='pc-1.1'>hvm</type>
+		</os>
+		<features>
+			<acpi/>
+			<apic/>
+		</features>
+		<clock offset='utc'/>
+		<on_poweroff>destroy</on_poweroff>
+		<on_reboot>restart</on_reboot>
+		<on_crash>destroy</on_crash>
+		<devices>
+			<emulator>/usr/bin/kvm</emulator>
+			<input type='tablet' bus='usb'/>
+			<input type='mouse' bus='ps2'/>
+			<input type='keyboard' bus='ps2'/>
+			<graphics type='vnc' port='7900' autoport='no'/>
+			<video>
+				<model type='cirrus' vram='9216' heads='1'/>
+			</video>
+		</devices>
+	</domain>
+	"""
+
+	def test_graphics0(self):
+		g = self.dom.pd.graphics[0]
+		self.assertEqual('vnc', g.type)
+		self.assertEqual(7900, g.port)
+		self.assertFalse(g.autoport)
+		self.failIf(g.listen)
+		self.failIf(g.passwd)
+		self.assertEqual('de', g.keymap)
 
 
 if __name__ == '__main__':
