@@ -1,6 +1,6 @@
 import time
 
-DEFAULT_TIMEOUT = 30 # seconds
+DEFAULT_TIMEOUT = 90 # seconds
 
 class SetTimeout(object):
 
