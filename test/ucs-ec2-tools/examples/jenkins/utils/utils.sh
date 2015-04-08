@@ -75,14 +75,28 @@ upgrade_to_testing ()
 {
 	ucr set repository/online/server=testing.univention.de
 	upgrade_to_latest --updateto '3.2-99'
+	upgrade_to_latest_test_errata
 }
 
 upgrade_to_latest ()
 {
-	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@" || (echo "ERROR: univention-upgrade failed in attempt 1 with exitcode $?"; ps faxwww ; ucr search update/check)
-	# Workaround for Bug #31561
-	sleep 300
-	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@" || (echo "ERROR: univention-upgrade failed in attempt 2 with exitcode $?"; ps faxwww ; ucr search update/check)
+	declare -i remain=300 rv delay=30
+	while true
+	do
+		univention-upgrade --noninteractive --ignoreterm --ignoressh "$@"
+		rv="$?"
+		case "$rv" in
+		0) return 0 ;;  # success
+		5) delay=30 ;;  # /var/lock/univention-updater exists
+		*) delay=$max ;;  # all other errors
+		esac
+		echo "ERROR: univention-upgrade failed exitcode $rv"
+		ps faxwww
+		ucr search --brief --non-empty update/check
+		[ $remain -gt 0 ] || return "$rv"
+		remain+=-$delay
+		sleep "$delay"  # Workaround for Bug #31561
+	done
 }
 
 run_setup_join ()
