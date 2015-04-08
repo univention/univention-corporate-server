@@ -23,18 +23,6 @@ def create_share(position):
 	return udm.create_object('shares/share', name=name, path=path, host=my_fqdn, position=position)
 
 
-def cache_must_exists(dn):
-	filename = os.path.join(SHARE_CACHE_DIR, dn)
-	if not os.path.exists(filename):
-		utils.fail('%s does not exist' % filename)
-
-
-def cache_must_not_exists(dn):
-	filename = os.path.join(SHARE_CACHE_DIR, dn)
-	if os.path.exists(filename):
-		utils.fail('%s exists' % filename)
-
-
 def create_policy(inodeSoftLimit, inodeHardLimit, spaceSoftLimit, spaceHardLimit, reapplyQuota):
 	name = uts.random_name()
 	position = 'cn=userquota,cn=shares,cn=policies,%s' % ucr.get('ldap/base')
@@ -63,8 +51,8 @@ if __name__ == '__main__':
 
 		utils.wait_for_replication_and_postrun()
 
-		cache_must_exists(share1)
-		cache_must_exists(share2)
+		qc.cache_must_exists(share1)
+		qc.cache_must_exists(share2)
 
 		inodeSoftLimit_policy1 = '10'
 		inodeHardLimit_policy1 = '15'
@@ -105,5 +93,5 @@ if __name__ == '__main__':
 
 	utils.wait_for_replication_and_postrun()
 
-	cache_must_not_exists(share1)
-	cache_must_not_exists(share2)
+	qc.cache_must_not_exists(share1)
+	qc.cache_must_not_exists(share2)

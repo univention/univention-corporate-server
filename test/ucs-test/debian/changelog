@@ -1,3 +1,10 @@
+ucs-test (5.0.143-7) unstable; urgency=medium
+
+  * 12_quota: Sometimes the postrun takes some more time.
+    The test cases now wait up to 5 seconds longer (Bug #36989)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 08 Apr 2015 05:53:39 +0200
+
 ucs-test (5.0.143-6) unstable; urgency=medium
 
   * 12_quota/18_quota_cache_policy: Updated description (Bug #36989)
