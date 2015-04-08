@@ -1,3 +1,9 @@
+ucs-test (4.0.214-1) unstable; urgency=low
+
+  * Bug #38017: increase timeout to 90sec decorators.py
+
+ -- Ammar Najjar <najjar@univention.de>  Wed, 08 Apr 2015 10:11:49 +0200
+
 ucs-test (4.0.213-7) unstable; urgency=medium
 
   * 12_quota: Fixed last commit (Bug #36989)
