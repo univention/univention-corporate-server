@@ -1,0 +1,20 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: postgresql-8.4
+fix: 8.4.22lts1-0.24.201504081342
+desc: |
+  Multiple security issues were discovered in the PostgreSQL database server:
+  * Buffer overflows in "to_char" functions (CVE-2015-0241)
+  * Memory errors in functions in the pgcrypto extension (CVE-2015-0243)
+  * An error in extended protocol message reading (CVE-2015-0244)
+  * Constraint violation errors can cause display of values in columns which
+    the user would not normally have rights to see (CVE-2014-8161)
+bugs: [37702]
+note: This update fixes these vulnerabilities.
+cve:
+ - CVE-2015-0241
+ - CVE-2015-0243
+ - CVE-2015-0244
+ - CVE-2014-8161
