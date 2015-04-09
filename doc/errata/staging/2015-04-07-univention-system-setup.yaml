@@ -9,4 +9,6 @@ desc: |
   * License agreement information can now be displayed during the setup wizard.
   * The password description will now be hidden, as well, when the password
     field is hidden (e.g., during the installation).
-bug: [37616, 38148]
+  * The UCR variable system/setup/boot/fields/blacklist has been extended to
+    disabling the selection of particular server roles
+bug: [37616,38148,38116]
