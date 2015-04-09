@@ -860,6 +860,12 @@ define([
 			_setVisibility(true);
 		},
 
+		_areRolesDisabled: function() {
+			return array.every(arguments, function(irole) {
+				return array.indexOf(this.disabledFields, irole) >= 0;
+			}, this);
+		},
+
 		evaluateBlacklist: function() {
 			var disable = [];
 			array.forEach(this.disabledFields, lang.hitch(this, function(field) {
@@ -892,8 +898,29 @@ define([
 					disable.push(['locale', 'locale/default']);
 					disable.push(['locale', 'xorg/keyboard/options/XkbLayout']);
 					disable.push(['locale', 'timezone']);
+				} else if (field == 'basesystem') {
+					disable.push(['role', '_noDomain']);
+					disable.push(['role', 'noDomainHelpText']);
+				} else if (field == 'ad') {
+					disable.push(['role', '_adDomain']);
+					disable.push(['role', 'adDomainHelpText']);
+				} else if (field == 'domaincontroller_backup') {
+					disable.push(['role-nonmaster-ad', '_roleBackup']);
+					disable.push(['role-nonmaster-ad', 'helpBackup']);
+				} else if (field == 'domaincontroller_slave') {
+					disable.push(['role-nonmaster-ad', '_roleSlave']);
+					disable.push(['role-nonmaster-ad', 'helpSlave']);
+				} else if (field == 'memberserver') {
+					disable.push(['role-nonmaster-ad', '_roleMember']);
+					disable.push(['role-nonmaster-ad', 'helpMember']);
 				}
 			}));
+
+			if (this._areRolesDisabled('domaincontroller_backup', 'domaincontroller_slave', 'memberserver')) {
+				// hide option to join a UCS domain
+				disable.push(['role', '_joinDomain']);
+				disable.push(['role', 'joinDomainHelpText']);
+			}
 
 			array.forEach(disable, lang.hitch(this, function(page_widget) {
 				var widget = this.getWidget(page_widget[0], page_widget[1]);
@@ -902,6 +929,18 @@ define([
 					widget.set('disabled', true);
 				}
 			}));
+
+			// preselect the first visible option for radio buttons
+			array.forEach(['role', 'role-nonmaster-ad'], function(_ipage) {
+				var ipage = this.getPage(_ipage);
+				array.some(ipage._form.widgets, function(_iwidget) {
+					var iwidget = this.getWidget(_ipage, _iwidget.name);
+					if (iwidget.isInstanceOf(RadioButton) && iwidget.get('visible')) {
+						iwidget.set('value', true);
+						return true;
+					}
+				}, this);
+			}, this);
 		},
 
 		dhclient: function() {
@@ -2145,6 +2184,11 @@ define([
 					return this._forcePageTemporarily('network');
 				});
 
+				var _adJoinWithNonMasterNotPossibleWarning = lang.hitch(this, function() {
+					dialog.alert(_('It seems that a UCS DC master system has already joined into the Windows AD domain. Please choose a different option as other system roles for joining an AD domain are not available.'));
+					return pageName;
+				});
+
 				return this._checkDomain().then(lang.hitch(this, function(info) {
 					if (this._isAdMember()) {
 						this._domainHasMaster = info.ucs_master;
@@ -2155,6 +2199,9 @@ define([
 						if (info.ucs_master) {
 							// UCS DC master already has joined into the AD domain
 							// let the user choose a system role
+							if (this._areRolesDisabled('domaincontroller_backup', 'domaincontroller_slave', 'memberserver')) {
+								return _adJoinWithNonMasterNotPossibleWarning();
+							}
 							return this._forcePageTemporarily('role-nonmaster-ad');
 						}
 						return this._forcePageTemporarily('credentials-ad');

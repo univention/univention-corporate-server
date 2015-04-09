@@ -1,3 +1,10 @@
+univention-system-setup (8.1.66-31) unstable; urgency=medium
+
+  * Bug #38116: extend system/setup/boot/fields/blacklist to disable selection
+    of particular server roles
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 09 Apr 2015 19:03:27 +0200
+
 univention-system-setup (8.1.66-30) unstable; urgency=medium
 
   * Bug #37616: add descriptions for app appliance UCR variables
