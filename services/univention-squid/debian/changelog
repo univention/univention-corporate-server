@@ -1,3 +1,9 @@
+univention-squid (8.0.2-4) unstable; urgency=medium
+
+  * Bug #37543: Add UCRV for custom squid.conf-ACLs
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 09 Apr 2015 14:43:14 +0200
+
 univention-squid (8.0.2-3) unstable; urgency=low
 
   * Bug #36623: Support interfaces other then ethX
