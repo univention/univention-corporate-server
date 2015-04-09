@@ -95,3 +95,41 @@ def random_version(elements=3):
 def random_ucs_version(min_major=1, max_major=9, min_minor=0, max_minor=99, min_patchlevel=0, max_patchlevel=99):
 	return '%s.%s-%s' % (random_int(min_major, max_major), random_int(min_minor, max_minor), random_int(min_patchlevel, max_patchlevel))
 
+def random_mac():
+	mac = [
+		random.randint(0x00, 0x7f),
+		random.randint(0x00, 0x7f),
+		random.randint(0x00, 0x7f),
+		random.randint(0x00, 0x7f),
+		random.randint(0x00, 0xff),
+		random.randint(0x00, 0xff)
+	]
+
+	return ':'.join(map(lambda x: "%02x" % x, mac))
+
+# Generate 110 different ip addresses in the range 11.x.x.x-120.x.x.x
+class IP_Iter(object):
+
+	def __init__(self):
+		self.max_range = 120
+		self.index = 11
+
+	def __iter__(self):
+		return self
+
+	def next(self):
+		if self.index < self.max_range:
+			ip_list = [
+					self.index,
+					random.randint(1, 254),
+					random.randint(1, 254),
+					random.randint(1, 254)
+					]
+			ip = ".".join(map(str, ip_list))
+			self.index += 1
+			return ip
+		else:
+			raise StopIteration()
+
+def random_ip(ip_iter=IP_Iter()):
+	return ip_iter.next()
