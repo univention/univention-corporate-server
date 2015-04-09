@@ -63,6 +63,14 @@ univention-config-registry set connector/s4/listener/dir?/var/lib/univention-con
 							   connector/s4/mapping/container/ignorelist?"mail,kerberos,MicrosoftDNS" \
 							   connector/s4/mapping/dns/ignorelist?"DC=_ldap._tcp.Default-First-Site-Name._site"
 
+# deactivate sambaDomain sync to ucs for slaves in ucs@school
+if [ "$server_role" = "domaincontroller_slave" ]; then
+	if is_ucr_true 'connector/s4/allow/secondary'; then # Slave PDC
+		ucr set connector/s4/mapping/dc/syncmode?'write'
+	fi
+fi
+
+
 if [ ! -d /var/lib/univention-connector/s4 ]; then
 	mkdir -p /var/lib/univention-connector/s4
 	chown 0.0 /var/lib/univention-connector/s4
@@ -111,12 +119,6 @@ if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join
 
 	# Bug 28331
 	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.16-15; then
-		# deactivate sambaDomain sync to ucs for slaves in ucs@school
-		if [ "$server_role" = "domaincontroller_slave" ]; then
-			if is_ucr_true 'connector/s4/allow/secondary'; then # Slave PDC
-				ucr set connector/s4/mapping/dc/syncmode?'write'
-			fi
-		fi
 		# resync sambaDomain object from s4 to ucs (initial setup of pwdProperties in UCS)
 		if ! is_ucr_true 'connector/s4/allow/secondary'; then
 			if [ -n "$connector_s4_ldap_base" ]; then
