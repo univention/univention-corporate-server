@@ -348,6 +348,9 @@ define([
 					iwidget.destroy();
 					return false;
 				}
+				if (iwidget._destroyed) {
+					return false;
+				}
 				return true;
 			}, this);
 		},

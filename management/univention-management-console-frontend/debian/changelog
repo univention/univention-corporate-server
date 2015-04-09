@@ -1,6 +1,13 @@
+univention-management-console-frontend (4.1.106-52) unstable; urgency=low
+
+  * Bug #36615: widgets in grids that do not have a corresponding DOM node
+    anymore are now getting destroyed.
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 09 Apr 2015 17:43:30 +0200
+
 univention-management-console-frontend (4.1.106-51) unstable; urgency=low
 
-  * Bug #36615: fixed memory leak in UVMM UMC module.
+  * Bug #36615: version bump
 
  -- Johannes Keiser <keiser@univention.de>  Thu, 09 Apr 2015 16:24:41 +0200
 
