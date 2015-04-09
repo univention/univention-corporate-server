@@ -545,7 +545,7 @@ class Processor(signals.Provider):
 
 		user = lo.get(self.__user_dn, ['univentionUMCProperty', 'objectClass'])
 		old_preferences = user.get('univentionUMCProperty')
-		object_classes = list(set(user.get('objectClass', [])) | {'univentionPerson',})
+		object_classes = list(set(user.get('objectClass', [])) | set(['univentionPerson']))
 
 		# validity / sanitizing
 		new_preferences = []
