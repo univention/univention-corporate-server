@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-management-console
+fix: 7.1.63-16.858.201504091208
+version: [1]
+desc: |
+  This update addresses the following issues:
+  * User preferences as well as favourite UMC modules could not be saved into
+    the LDAP under specific circumstances. This behaviour has been adjusted.
+bug: [38222]
