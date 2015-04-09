@@ -1,3 +1,11 @@
+univention-s4-connector (9.0.16-15) unstable; urgency=low
+
+  * Bug #28331
+  * initial (update) setup of UCS pwdProperties
+  * dc/syncmode=write for slaves in ucs@school  
+
+ -- Felix Botner <botner@univention.de>  Thu, 09 Apr 2015 16:10:15 +0200
+
 univention-s4-connector (9.0.16-14) unstable; urgency=low
 
   * Bug #28331: added synchronization of domainPwdProperties 
