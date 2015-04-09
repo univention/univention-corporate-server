@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-51) unstable; urgency=low
+
+  * Bug #36615: fixed memory leak in UVMM UMC module.
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 09 Apr 2015 16:24:41 +0200
+
 univention-management-console-frontend (4.1.106-50) unstable; urgency=medium
 
   * Bug #38132: fixed typo

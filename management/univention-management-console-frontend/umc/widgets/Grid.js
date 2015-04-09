@@ -177,6 +177,14 @@ define([
 
 		baseClass: 'umcGrid',
 
+		_widgetList: [],
+		own: function() {
+			array.forEach(arguments, function(iarg) {
+				this._widgetList.push(iarg);
+			}, this);
+			return this.inherited(arguments);
+		},
+
 		disabled: false,
 
 		_contextMenu: null,
@@ -318,8 +326,9 @@ define([
 				})));
 			}
 
-			this.own(aspect.after(this._grid, "_onFetchComplete", lang.hitch(this, '_onFetched', true)));
-			this.own(aspect.after(this._grid, "_onFetchError", lang.hitch(this, '_onFetched', false)));
+			this.own(aspect.after(this._grid, '_onFetchComplete', lang.hitch(this, '_onFetched', true)));
+			this.own(aspect.after(this._grid, '_onFetchError', lang.hitch(this, '_onFetched', false)));
+			this.own(aspect.after(this._grid, 'postrender', lang.hitch(this, '_cleanupWidgets'))); 
 
 			this._grid.on('selectionChanged', lang.hitch(this, '_selectionChanged'));
 			this._grid.on('cellContextMenu', lang.hitch(this, '_updateContextItem'));
@@ -328,6 +337,19 @@ define([
 
 			// make sure that we update the disabled items after sorting etc.
 			this.own(aspect.after(this._grid, '_refresh', lang.hitch(this, '_updateDisabledItems')));
+		},
+
+		_cleanupWidgets: function() {
+			this._widgetList = array.filter(this._widgetList, function(iwidget) {
+				if ((iwidget.isInstanceOf && !iwidget.isInstanceOf(Menu))
+						&& (!iwidget.domNode || !iwidget.domNode.parentNode)
+						&& !iwidget._destroyed
+						&& iwidget.destroy) {
+					iwidget.destroy();
+					return false;
+				}
+				return true;
+			}, this);
 		},
 
 		startup: function() {
@@ -400,6 +422,7 @@ define([
 								'style': 'display: inline!important;'
 							});
 							container.addChild(value);
+							container.own(value);
 							this.own(container);
 							return container;
 						} else {
