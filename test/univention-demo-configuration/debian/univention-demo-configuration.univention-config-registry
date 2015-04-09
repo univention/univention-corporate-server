@@ -5,5 +5,5 @@ Variables: ldap/base
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
-Subfile: conffiles/etc/ldap/slapd.conf.d/59univention-demo-configuration-master-no-dc-change
+Subfile: etc/ldap/slapd.conf.d/59univention-demo-configuration-master-no-dc-change
 Variables: ldap/base

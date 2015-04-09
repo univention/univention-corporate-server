@@ -1,3 +1,9 @@
+univention-demo-configuration (3.0.1-6) unstable; urgency=medium
+
+  * Bug #38170: adjust UCR template paths
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 09 Apr 2015 15:53:00 +0200
+
 univention-demo-configuration (3.0.1-5) unstable; urgency=medium
 
   * Bug #38170: adjust ACLs for access to DC LDAP entries
