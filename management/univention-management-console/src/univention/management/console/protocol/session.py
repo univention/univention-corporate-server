@@ -543,7 +543,9 @@ class Processor(signals.Provider):
 		if not self.__user_dn or not lo:
 			return
 
-		old_preferences = lo.get(self.__user_dn, ['univentionUMCProperty']).get('univentionUMCProperty')
+		user = lo.get(self.__user_dn, ['univentionUMCProperty', 'objectClass'])
+		old_preferences = user.get('univentionUMCProperty')
+		object_classes = list(set(user.get('objectClass', [])) | {'univentionPerson',})
 
 		# validity / sanitizing
 		new_preferences = []
@@ -559,7 +561,7 @@ class Processor(signals.Provider):
 				new_preferences.append((key, json.dumps(value)))
 		new_preferences = ['%s=%s' % (key, value) for key, value in new_preferences]
 
-		lo.modify(self.__user_dn, [['univentionUMCProperty', old_preferences, new_preferences]])
+		lo.modify(self.__user_dn, [['univentionUMCProperty', old_preferences, new_preferences], ['objectClass', user.get('objectClass', []), object_classes]])
 
 	def _get_user_favorites(self):
 		favorites = set()
