@@ -294,6 +294,7 @@ define([
 					this._tree.reload();
 				})
 			}));
+			this._tree.own(menu);
 
 			// tree left-click
 			this.own(aspect.after(this._tree, '_onClick', lang.hitch(this, function(node) {
