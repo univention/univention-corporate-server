@@ -93,8 +93,10 @@ _ = umc.Translation('univention-management-console-module-appcenter').translate
 class License(object):
 	def __init__(self):
 		self.uuid = None
+		self.has_loaded = False
 
 	def reload(self, force=False):
+		self.has_loaded = True
 		if self.uuid is not None and not force:
 			# license with uuid has already been found
 			return
@@ -1623,6 +1625,8 @@ class Application(object):
 	def _send_information(self, action, status):
 		if not self.get('notifyvendor'):
 			return
+		if not LICENSE.has_loaded:
+			LICENSE.reload()
 		ucr.load()
 		server = self.get_server(with_scheme=True)
 		url = '%s/postinst' % (server, )
