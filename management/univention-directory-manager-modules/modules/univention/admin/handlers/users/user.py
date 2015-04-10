@@ -217,7 +217,7 @@ property_descriptions={
 			readonly_when_synced=1,
 		),
 	'sambaPrivileges': univention.admin.property(
-			short_description = _( 'Samba privileges' ),
+			short_description = _( 'Samba privilege' ),
 			long_description = _( 'Manage samba privileges' ),
 			syntax = univention.admin.syntax.SambaPrivileges,
 			multivalue = True,
@@ -332,7 +332,7 @@ property_descriptions={
 			readonly_when_synced=1,
 		),
 	'e-mail': univention.admin.property(
-			short_description=_('E-mail address(es)'),
+			short_description=_('E-mail address'),
 			long_description='',
 			syntax=univention.admin.syntax.emailAddress,
 			multivalue=1,
@@ -365,7 +365,7 @@ property_descriptions={
 			readonly_when_synced=1,
 		),
 	'phone': univention.admin.property(
-			short_description=_('Telephone number(s)'),
+			short_description=_('Telephone number'),
 			long_description='',
 			syntax=univention.admin.syntax.phone,
 			multivalue=1,
@@ -437,7 +437,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'homeTelephoneNumber': univention.admin.property(
-			short_description=_('Private telephone number(s)'),
+			short_description=_('Private telephone number'),
 			long_description='',
 			syntax=univention.admin.syntax.phone,
 			multivalue=1,
@@ -448,7 +448,7 @@ property_descriptions={
 			readonly_when_synced=1,
 		),
 	'mobileTelephoneNumber': univention.admin.property(
-			short_description=_('Mobile phone number(s)'),
+			short_description=_('Mobile phone number'),
 			long_description='',
 			syntax=univention.admin.syntax.phone,
 			multivalue=1,
@@ -459,7 +459,7 @@ property_descriptions={
 			readonly_when_synced=1,
 		),
 	'pagerTelephoneNumber': univention.admin.property(
-			short_description=_('Pager telephone number(s)'),
+			short_description=_('Pager telephone number'),
 			long_description='',
 			syntax=univention.admin.syntax.phone,
 			multivalue=1,
@@ -608,7 +608,7 @@ property_descriptions={
 			readonly_when_synced=1,
 		),
 	'mailAlternativeAddress': univention.admin.property(
-			short_description=_('Alternative e-mail addresses'),
+			short_description=_('Alternative e-mail address'),
 			long_description='',
 			syntax=univention.admin.syntax.emailAddressValidDomain,
 			multivalue=1,
@@ -667,7 +667,7 @@ property_descriptions={
 			default = '<username>'
 		),
 	'sambaUserWorkstations': univention.admin.property(
-			short_description=_('Allow the authentication only on these Microsoft Windows hosts'),
+			short_description=_('Allow the authentication only on this Microsoft Windows host'),
 			long_description=(''),
 			syntax=univention.admin.syntax.string,
 			multivalue=1,

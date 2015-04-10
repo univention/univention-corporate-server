@@ -199,7 +199,7 @@ property_descriptions={
 			default='1'
 		),
 	'nfs_hosts': univention.admin.property(
-			short_description=_('Only allow access for these hosts, IP addresses or networks'),
+			short_description=_('Only allow access for this host, IP address or network'),
 			long_description=_('May contain hostnames, ip addresses or networks (e.g. 10.1.1.1/24 or 10.1.1.1/255.255.255.0'),
 			syntax=univention.admin.syntax.hostname_or_ipadress_or_network,
 			multivalue=1,
@@ -459,7 +459,7 @@ property_descriptions={
 			default='manual'
 		),
 	'sambaHostsAllow': univention.admin.property(
-			short_description=_('Allowed hosts/networks'),
+			short_description=_('Allowed host/network'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -469,7 +469,7 @@ property_descriptions={
 			identifies=0
 		),
 	'sambaHostsDeny': univention.admin.property(
-			short_description=_('Denied hosts/networks'),
+			short_description=_('Denied host/network'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,

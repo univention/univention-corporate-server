@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-24 17:10+0100\n"
+"POT-Creation-Date: 2015-04-01 14:56+0200\n"
 "PO-Revision-Date: 2015-01-29 17:54+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de@li.org>\n"
@@ -187,8 +187,8 @@ msgid "Advanced"
 msgstr "Erweiterung"
 
 #: nagios.py:50
-msgid "Email addresses of Nagios contacts"
-msgstr "Email-Adressen für Nagios-Benachrichtigungen"
+msgid "Email address of Nagios contacts"
+msgstr "Email-Adresse für Nagios-Benachrichtigungen"
 
 #: nagios.py:60
 msgid "Parent hosts"
@@ -452,8 +452,8 @@ msgid ""
 "This is not a valid DNS entry name. A valid name can only consist of "
 "numbers, letters, dots and hyphens."
 msgstr ""
-"Dies ist kein gültiger Name für einen DNS-Eintrag. Ein gültiger Name darf nur aus Buchstaben, Zahlen, Punkten und "
-"Bindestrichen bestehen."
+"Dies ist kein gültiger Name für einen DNS-Eintrag. Ein gültiger Name darf "
+"nur aus Buchstaben, Zahlen, Punkten und Bindestrichen bestehen."
 
 #: syntax.py:950
 msgid "Not a valid windows hostname!"

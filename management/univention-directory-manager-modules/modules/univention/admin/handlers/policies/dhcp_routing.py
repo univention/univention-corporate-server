@@ -82,7 +82,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required object classes'),
+			short_description=_('Required object class'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -92,7 +92,7 @@ property_descriptions={
 			identifies=0
 			),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Excluded object classes'),
+			short_description=_('Excluded object class'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -102,7 +102,7 @@ property_descriptions={
 			identifies=0
 			),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed attributes'),
+			short_description=_('Fixed attribute'),
 			long_description='',
 			syntax=dhcp_routingFixedAttributes,
 			multivalue=1,
@@ -112,7 +112,7 @@ property_descriptions={
 			identifies=0
 			),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty attributes'),
+			short_description=_('Empty attribute'),
 			long_description='',
 			syntax=dhcp_routingFixedAttributes,
 			multivalue=1,

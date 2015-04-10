@@ -47,7 +47,7 @@ _=translation.translate
 
 nagios_properties = {
 	'nagiosContactEmail': univention.admin.property(
-			short_description = _('Email addresses of Nagios contacts'),
+			short_description = _('Email address of Nagios contacts'),
 			long_description = (''),
 			syntax=univention.admin.syntax.emailAddress,
 			multivalue=1,

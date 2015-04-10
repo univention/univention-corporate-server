@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-41) unstable; urgency=low
+
+  * Bug #32760: adpated multi value labels
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 10 Apr 2015 14:57:34 +0200
+
 univention-directory-manager-modules (10.0.29-40) unstable; urgency=low
 
   * Bug #28331: added translation 

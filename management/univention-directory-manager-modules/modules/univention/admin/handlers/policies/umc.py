@@ -84,7 +84,7 @@ property_descriptions = {
 			identifies = False
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description = _( 'Required object classes' ),
+			short_description = _( 'Required object class' ),
 			long_description = '',
 			syntax = udm_syntax.string,
 			multivalue = True,
@@ -94,7 +94,7 @@ property_descriptions = {
 			identifies = False
 		),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description = _( 'Excluded object classes' ),
+			short_description = _( 'Excluded object class' ),
 			long_description = '',
 			syntax = udm_syntax.string,
 			multivalue = True,
@@ -104,7 +104,7 @@ property_descriptions = {
 			identifies = False
 		),
 	'fixedAttributes': univention.admin.property(
-			short_description = _( 'Fixed attributes' ),
+			short_description = _( 'Fixed attribute' ),
 			long_description = '',
 			syntax = umcFixedAttributes,
 			multivalue = True,
@@ -114,7 +114,7 @@ property_descriptions = {
 			identifies = False
 		),
 	'emptyAttributes': univention.admin.property(
-			short_description = _( 'Empty attributes' ),
+			short_description = _( 'Empty attribute' ),
 			long_description = '',
 			syntax = umcFixedAttributes,
 			multivalue = True,

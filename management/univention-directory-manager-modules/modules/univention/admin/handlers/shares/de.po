@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-29 20:36+0100\n"
+"POT-Creation-Date: 2015-04-01 14:48+0200\n"
 "PO-Revision-Date: 2011-09-21 20:05+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,14 +72,17 @@ msgstr "Preis pro Seite"
 msgid "Price per print job"
 msgstr "Preis pro Druckauftrag"
 
-#: printergroup.py:129 printergroup.py:130 printer.py:220 printer.py:221
-#: share.py:649 share.py:650
+#: printergroup.py:129 printer.py:220 share.py:649
 msgid "General"
 msgstr "Allgemein"
 
 #: printergroup.py:129 printer.py:220 share.py:649
 msgid "General settings"
 msgstr "Grundeinstellungen"
+
+#: printergroup.py:130
+msgid "General printer group share settings"
+msgstr "Grundeinstellungen - Druckergruppen-Freigabe"
 
 #: printergroup.py:194 printer.py:338
 #, python-format
@@ -165,6 +168,10 @@ msgstr "Zugelassene/abgewiesene Gruppen"
 #: printer.py:209
 msgid "For the given groups printing is explicitly allowed or denied."
 msgstr "Für die angegebenen Gruppen wird der Zugriff erlaubt oder abgewiesen."
+
+#: printer.py:221
+msgid "General printer share settings"
+msgstr "Grundeinstellungen - Druckerfreigabe"
 
 #: printer.py:231
 msgid "Access control for users and groups"
@@ -337,8 +344,9 @@ msgid "Redirect root user access to a non-privileged uid."
 msgstr "Zugriff auf eine nicht privilegierte uid Kennung umlenken."
 
 #: share.py:202
-msgid "Only allow access for these hosts, IP addresses or networks"
-msgstr "Zugriff nur für diese Rechner, IP-Adressen oder Netze erlauben"
+msgid "Only allow access for this host, IP address or network"
+msgstr ""
+"Zugriff begrenzen auf Rechner, IP-Adresse oder Netz"
 
 #: share.py:203
 msgid ""
@@ -730,12 +738,12 @@ msgstr ""
 "Bestimmt das Verfahren, mit dem Clients Dateiinhalte lokal zwischenspeichern."
 
 #: share.py:462
-msgid "Allowed hosts/networks"
-msgstr "Zugelassene Rechner/Netze"
+msgid "Allowed host/network"
+msgstr "Zugelassene(r/s) Rechner/Netz"
 
 #: share.py:472
-msgid "Denied hosts/networks"
-msgstr "Nicht zugelassene Rechner/Netze"
+msgid "Denied host/network"
+msgstr "Nicht zugelassene(r/s) Rechner/Netz"
 
 #: share.py:482
 msgid "Valid users or groups"
@@ -917,6 +925,10 @@ msgstr ""
 "Konfigurieren von zusätzlichen Einstellungen für diese Freigabe, die der "
 "Datei /etc/exports hinzugefügt werden."
 
+#: share.py:650
+msgid "General directory share settings"
+msgstr "Grundeinstellungen - Verzeichnisfreigabe"
+
 #: share.py:657 share.py:658
 msgid "NFS"
 msgstr "NFS"
@@ -1004,13 +1016,3 @@ msgstr "Die/Der %s %s%s %s diese Freigabe als Heimatverzeichnisfreigabe"
 #, python-format
 msgid "%s (%s on %s)"
 msgstr "%s (%s auf %s)"
-
-msgid "General printer share settings"
-msgstr "Grundeinstellungen - Druckerfreigabe"
-
-msgid "General printer group share settings"
-msgstr "Grundeinstellungen - Druckergruppen-Freigabe"
-
-msgid "General directory share settings"
-msgstr "Grundeinstellungen - Verzeichnisfreigabe"
-

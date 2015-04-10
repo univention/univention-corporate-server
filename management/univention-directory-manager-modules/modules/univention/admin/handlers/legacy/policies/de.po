@@ -29,10 +29,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-19 14:46+0200\n"
+"POT-Creation-Date: 2015-04-01 14:22+0200\n"
 "PO-Revision-Date: 2011-10-29 22:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
@@ -57,30 +58,32 @@ msgstr "Aktiviere den Zugriff auf Client-Peripheriegeräte"
 
 #: clientdevices.py:86 managedclientpackages.py:97 mobileclientpackages.py:97
 #: sound.py:98 thinclient.py:131 xfree.py:240
-msgid "Required object classes"
-msgstr "Benötigte Objektklassen"
+msgid "Required object class"
+msgstr "Benötigte Objektklasse"
 
 #: clientdevices.py:96 managedclientpackages.py:107
 #: mobileclientpackages.py:107 sound.py:108 thinclient.py:141 xfree.py:250
-msgid "Excluded object classes"
-msgstr "Ausgeschlossene Objektklassen"
+msgid "Excluded object class"
+msgstr "Ausgeschlossene Objektklasse"
 
 #: clientdevices.py:106 managedclientpackages.py:117
 #: mobileclientpackages.py:117 sound.py:118 thinclient.py:151 xfree.py:260
-msgid "Fixed attributes"
-msgstr "Festgelegte Attribute"
+msgid "Fixed attribute"
+msgstr "Festgelegtes Attribut"
 
 #: clientdevices.py:116 managedclientpackages.py:127
 #: mobileclientpackages.py:127 sound.py:128 thinclient.py:161
-msgid "Empty attributes"
-msgstr "Leere Attribute"
+msgid "Empty attribute"
+msgstr "Leeres Attribut"
 
-#: clientdevices.py:128 clientdevices.py:129 managedclientpackages.py:139
-#: managedclientpackages.py:140 mobileclientpackages.py:139
-#: mobileclientpackages.py:140 sound.py:140 sound.py:141 thinclient.py:173
-#: thinclient.py:174 xfree.py:393 xfree.py:394
+#: clientdevices.py:128 managedclientpackages.py:139
+#: mobileclientpackages.py:139 sound.py:140 thinclient.py:173 xfree.py:393
 msgid "General"
 msgstr "Allgemein"
+
+#: clientdevices.py:129
+msgid "General client devices settings"
+msgstr "Allgemeine Einstellungen für die Client-Peripherie"
 
 #: clientdevices.py:134 managedclientpackages.py:146
 #: mobileclientpackages.py:146 sound.py:147 thinclient.py:181 xfree.py:414
@@ -105,6 +108,10 @@ msgstr "Richtlinie: Managed Client Pakete"
 msgid "Managed Client packages"
 msgstr "Managed Client Pakete"
 
+#: managedclientpackages.py:140
+msgid "General managed client packages settings"
+msgstr "Allgemeine Einstellungen für die Managed Client Pakete"
+
 #: mobileclientpackages.py:59
 msgid "Policy: Mobile Client packages"
 msgstr "Richtlinie: Mobile Client Pakete"
@@ -112,6 +119,10 @@ msgstr "Richtlinie: Mobile Client Pakete"
 #: mobileclientpackages.py:60
 msgid "Mobile Client packages"
 msgstr "Mobile Client Pakete"
+
+#: mobileclientpackages.py:140
+msgid "General mobile client packages settings"
+msgstr "Allgemeine Einstellungen für die Mobile Client Pakete"
 
 #: sound.py:47 sound.py:77
 msgid "Sound enabled"
@@ -128,6 +139,10 @@ msgstr "Richtlinie: Sound"
 #: sound.py:60 sound.py:140
 msgid "Sound settings"
 msgstr "Sound-Einstellungen"
+
+#: sound.py:141
+msgid "General sound settings"
+msgstr "Allgemeine Einstellungen für den Sound"
 
 #: thinclient.py:47 thinclient.py:91
 msgid "File servers"
@@ -180,6 +195,10 @@ msgstr "Windows-Domäne für die Windows Anmeldung"
 #: thinclient.py:173
 msgid "Servers to use"
 msgstr "Zu nutzende Server"
+
+#: thinclient.py:174
+msgid "General thin client settings"
+msgstr "Allgemeine Einstellungen für den Thin Client"
 
 #: xfree.py:45 xfree.py:382
 msgid "Automatic detection"
@@ -305,6 +324,10 @@ msgstr "Name des sekundären Monitors"
 msgid "RAM on the graphics adapter in kB"
 msgstr "RAM auf der Grafikkarte in kB"
 
+#: xfree.py:394
+msgid "General display settings"
+msgstr "Allgemeine Einstellungen für den Display"
+
 #: xfree.py:400
 msgid "Input devices"
 msgstr "Eingabegeräte"
@@ -320,21 +343,3 @@ msgstr "Erweiterte Einstellungen des primären Monitors"
 #: xfree.py:409
 msgid "Advanced settings of secondary display"
 msgstr "Erweiterte Einstellungen des sekundären Monitors"
-
-msgid "General client devices settings"
-msgstr "Allgemeine Einstellungen für die Client-Peripherie"
-
-msgid "General managed client packages settings"
-msgstr "Allgemeine Einstellungen für die Managed Client Pakete"
-
-msgid "General mobile client packages settings"
-msgstr "Allgemeine Einstellungen für die Mobile Client Pakete"
-
-msgid "General sound settings"
-msgstr "Allgemeine Einstellungen für den Sound"
-
-msgid "General thin client settings"
-msgstr "Allgemeine Einstellungen für den Thin Client"
-
-msgid "General display settings"
-msgstr "Allgemeine Einstellungen für den Display"

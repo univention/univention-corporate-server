@@ -96,7 +96,7 @@ msgstr "Ausgeschlossene Objektklassen"
 #: registry.py:107 release.py:116 repositoryserver.py:107
 #: repositorysync.py:147 share_userquota.py:151 slavepackages.py:117
 #: umc.py:107
-msgid "Fixed attributes"
+msgid "Fixed attribute"
 msgstr "Festgelegte Attribute"
 
 #: admin_container.py:120 autostart.py:116 desktop.py:147 dhcp_boot.py:127
@@ -108,7 +108,7 @@ msgstr "Festgelegte Attribute"
 #: registry.py:117 release.py:126 repositoryserver.py:117
 #: repositorysync.py:157 share_userquota.py:161 slavepackages.py:127
 #: umc.py:117
-msgid "Empty attributes"
+msgid "Empty attribute"
 msgstr "Leere Attribute"
 
 #: admin_container.py:132 admin_container.py:133 autostart.py:128

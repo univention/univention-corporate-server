@@ -141,7 +141,7 @@ property_descriptions={
 			default = ( ( '3', 'hours' ), [] )
 		),
 	'nameserver': univention.admin.property(
-			short_description=_('Name servers'),
+			short_description=_('Name server'),
 			long_description='',
 			syntax=univention.admin.syntax.dnsName,
 			multivalue=1,

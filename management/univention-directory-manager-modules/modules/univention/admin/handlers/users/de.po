@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-11 17:59+0200\n"
+"POT-Creation-Date: 2015-04-01 14:08+0200\n"
 "PO-Revision-Date: 2013-02-15 18:12+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de@li.org>\n"
@@ -43,11 +43,11 @@ msgstr ""
 msgid "User: Password"
 msgstr "Benutzer: Passwort"
 
-#: passwd.py:57 user.py:133
+#: passwd.py:57 user.py:127
 msgid "User name"
 msgstr "Benutzername"
 
-#: passwd.py:67 user.py:304
+#: passwd.py:67 user.py:312
 msgid "Password"
 msgstr "Passwort"
 
@@ -55,91 +55,91 @@ msgstr "Passwort"
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: self.py:52 user.py:902 user.py:975
+#: self.py:51 user.py:932 user.py:1005
 msgid "General"
 msgstr "Allgemein"
 
-#: self.py:56
+#: self.py:55
 msgid "User: Self"
 msgstr "Benutzer: Persönliche Einstellungen"
 
-#: user.py:69
+#: user.py:68
 msgid "day"
 msgstr "Tag"
 
-#: user.py:71
+#: user.py:70
 msgid "days"
 msgstr "Tagen"
 
-#: user.py:77
+#: user.py:76
 msgid "Users"
 msgstr "Benutzer"
 
-#: user.py:78
+#: user.py:77
 msgid "Add, edit and delete users"
 msgstr "Hinzufügen, Bearbeiten und Löschen von Benutzern"
 
-#: user.py:79
+#: user.py:78
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: user.py:79
+#: user.py:78
 msgid "Add User"
 msgstr "Benutzer hinzufügen"
 
-#: user.py:79
+#: user.py:78
 msgid "Search"
 msgstr "Suchen"
 
-#: user.py:79
+#: user.py:78
 msgid "Search for user(s)"
 msgstr "Benutzer suchen"
 
-#: user.py:83
+#: user.py:82
 msgid "User"
 msgstr "Benutzer"
 
-#: user.py:94
+#: user.py:88
 msgid "POSIX account"
 msgstr "POSIX-Konto"
 
-#: user.py:99
+#: user.py:93
 msgid "Samba account"
 msgstr "Samba-Konto"
 
-#: user.py:104
+#: user.py:98
 msgid "Kerberos principal"
 msgstr "Kerberos Prinzipal"
 
-#: user.py:109
+#: user.py:103
 msgid "Mail account"
 msgstr "Mail-Konto"
 
-#: user.py:114
+#: user.py:108
 msgid "Public key infrastructure account"
 msgstr "Public Key Infrastruktur-Konto"
 
-#: user.py:120 user.py:910
+#: user.py:114 user.py:940
 msgid "Personal information"
 msgstr "Persönliche Informationen"
 
-#: user.py:125
+#: user.py:119
 msgid "Simple authentication account"
 msgstr "Einfaches Authentisierungskonto"
 
-#: user.py:143
+#: user.py:138
 msgid "User ID"
 msgstr "Benutzer-ID"
 
-#: user.py:153
+#: user.py:149
 msgid "Group ID of the primary group"
 msgstr "Gruppen-ID der primären Gruppe"
 
-#: user.py:164
+#: user.py:162
 msgid "First name"
 msgstr "Vorname"
 
-#: user.py:175
+#: user.py:174
 msgid "Last name"
 msgstr "Nachname"
 
@@ -147,485 +147,487 @@ msgstr "Nachname"
 msgid "GECOS"
 msgstr "GECOS"
 
-#: user.py:196
+#: user.py:197
 msgid "Display name"
 msgstr "Anzeigename"
 
-#: user.py:207
+#: user.py:209
 msgid "Title"
 msgstr "Anrede"
 
-#: user.py:217
-msgid "Samba privileges"
-msgstr "Samba-Privilegien"
+#: user.py:220
+msgid "Samba privilege"
+msgstr "Samba-Privileg"
 
-#: user.py:218
+#: user.py:221
 msgid "Manage samba privileges"
 msgstr "Samba-Privilegien verwalten"
 
-#: user.py:228
+#: user.py:232
 msgid "Description"
 msgstr "Beschreibung"
 
-#: user.py:238 user.py:916
+#: user.py:243 user.py:945
 msgid "Organisation"
 msgstr "Organisation"
 
-#: user.py:248
+#: user.py:254
 msgid "Account expiry date"
 msgstr "Konto-Ablaufdatum"
 
-#: user.py:249 user.py:260
+#: user.py:255 user.py:266
 msgid "Enter date as day.month.year."
 msgstr "Datum als Tag.Monat.Jahr eingeben."
 
-#: user.py:259
+#: user.py:265
 msgid "Password expiry date"
 msgstr "Passwort-Ablaufdatum"
 
-#: user.py:271 user.py:272
+#: user.py:278 user.py:279
 msgid "Change password on next login"
 msgstr "Passwort bei der nächsten Anmeldung ändern"
 
-#: user.py:282
+#: user.py:290
 msgid "Account deactivation"
 msgstr "Konto-Deaktivierung"
 
-#: user.py:293
+#: user.py:301
 msgid "Locked login methods"
 msgstr "Gesperrte Anmeldeverfahren"
 
-#: user.py:315
+#: user.py:324
 msgid "Street"
 msgstr "Straße"
 
-#: user.py:325
-msgid "E-mail address(es)"
-msgstr "E-Mail-Adresse(n)"
+#: user.py:335
+msgid "E-mail address"
+msgstr "E-Mail-Adresse"
 
-#: user.py:336
+#: user.py:346
 msgid "Postal code"
 msgstr "Postleitzahl"
 
-#: user.py:346
+#: user.py:357
 msgid "City"
 msgstr "Stadt"
 
-#: user.py:356
-msgid "Telephone number(s)"
-msgstr "Telefonnummer(n)"
+#: user.py:368
+msgid "Telephone number"
+msgstr "Telefonnummer"
 
-#: user.py:366
+#: user.py:379
 msgid "Employee number"
 msgstr "Mitarbeiternummer"
 
-#: user.py:377
+#: user.py:390
 msgid "Room number"
 msgstr "Raumnummer"
 
-#: user.py:387
+#: user.py:400
 msgid "Superior"
 msgstr "Vorgesetzter"
 
-#: user.py:397
+#: user.py:410
 msgid "Department number"
 msgstr "Abteilungsnummer"
 
-#: user.py:407
+#: user.py:420
 msgid "Employee type"
 msgstr "Mitarbeiterkategorie"
 
-#: user.py:417
+#: user.py:430
 msgid "Private postal address"
 msgstr "Private Adresse"
 
-#: user.py:427
-msgid "Private telephone number(s)"
-msgstr "Telefonnummer(n) Festnetz"
+#: user.py:440
+msgid "Private telephone number"
+msgstr "Telefonnummer Festnetz"
 
-#: user.py:437
-msgid "Mobile phone number(s)"
-msgstr "Telefonnummer(n) Mobil"
+#: user.py:451
+msgid "Mobile phone number"
+msgstr "Telefonnummer Mobil"
 
-#: user.py:447
-msgid "Pager telephone number(s)"
-msgstr "Rufnummer(n) Pager"
+#: user.py:462
+msgid "Pager telephone number"
+msgstr "Rufnummer Pager"
 
-#: user.py:457
+#: user.py:473
 msgid "Birthday"
 msgstr "Geburtsdatum"
 
-#: user.py:458
+#: user.py:474
 msgid "Date of birth"
 msgstr "Geburtsdatum"
 
-#: user.py:467
+#: user.py:483
 msgid "Unix home directory"
 msgstr "UNIX-Heimatverzeichnis"
 
-#: user.py:479
+#: user.py:495
 msgid "Login shell"
 msgstr "Login-Shell"
 
-#: user.py:490
+#: user.py:506
 msgid "Windows home path"
 msgstr "Windows-Heimatverzeichnis"
 
-#: user.py:500
+#: user.py:517
 msgid "Windows logon script"
 msgstr "Anmeldeskript"
 
-#: user.py:510
+#: user.py:528
 msgid "Windows profile directory"
 msgstr "Profilverzeichnis"
 
-#: user.py:520
+#: user.py:539
 msgid "Windows home drive"
 msgstr "Laufwerk für das Windows-Heimatverzeichnis"
 
-#: user.py:530
+#: user.py:550
 msgid "Relative ID"
 msgstr "Relative ID"
 
-#: user.py:541 user.py:921
+#: user.py:562 user.py:951
 msgid "Groups"
 msgstr "Gruppen"
 
-#: user.py:552 user.py:922
+#: user.py:574 user.py:952
 msgid "Primary group"
 msgstr "Primäre Gruppe"
 
-#: user.py:563
+#: user.py:586
 msgid "Mail home server"
 msgstr "Mail Home Server"
 
-#: user.py:574
+#: user.py:598
 msgid "Primary e-mail address"
 msgstr "Primäre E-Mail-Adresse"
 
-#: user.py:586
-msgid "Alternative e-mail addresses"
-msgstr "Alternative E-Mail-Adressen"
+#: user.py:611
+msgid "Alternative e-mail address"
+msgstr "Alternative E-Mail-Adresse"
 
-#: user.py:597
+#: user.py:623
 msgid "Override password history"
 msgstr "Passwort-History ignorieren"
 
-#: user.py:608
+#: user.py:635
 msgid "Override password check"
 msgstr "Passwort-Prüfungen ignorieren"
 
-#: user.py:619
+#: user.py:647 user.py:2379
 msgid "Home share"
 msgstr "Heimatverzeichnisfreigabe"
 
-#: user.py:620
+#: user.py:648
 msgid "Share, the user's home directory resides on"
 msgstr "Freigabe, auf der das Heimatverzeichnis des Benutzers liegt."
 
-#: user.py:630
+#: user.py:658 user.py:2379 user.py:2383
 msgid "Home share path"
 msgstr "Pfad zum Heimatverzeichnis"
 
-#: user.py:631
+#: user.py:659
 msgid "Path to the home directory on the home share"
 msgstr "Pfad zum Heimatverzeichnis unterhalb der Freigabe."
 
-#: user.py:642
-msgid "Allow the authentication only on these Microsoft Windows hosts"
-msgstr "Anmeldung nur an diesen Microsoft Windows-Rechnern zulassen"
+#: user.py:670
+msgid "Allow the authentication only on this Microsoft Windows host"
+msgstr "Anmeldung nur an diesem Microsoft Windows-Rechner zulassen"
 
-#: user.py:653
+#: user.py:682
 msgid "Permitted times for Windows logins"
 msgstr "Erlaubte Zeiten für Windows-Anmeldungen"
 
-#: user.py:664
+#: user.py:694
 msgid "Picture of the user (JPEG format)"
 msgstr "Bild des Benutzers (JPEG-Format)"
 
-#: user.py:665
+#: user.py:695
 msgid "Picture for user account in JPEG format"
 msgstr "Bild des Benutzerkontos im JPEG-Format"
 
-#: user.py:675
+#: user.py:705
 msgid "PKI user certificate (DER format)"
 msgstr "PKI Benutzerzertifikat (DER Format)"
 
-#: user.py:676
+#: user.py:706
 msgid "Public key infrastructure - user certificate "
 msgstr "Public key infrastruktur - Benutzerzertifikat"
 
-#: user.py:686
+#: user.py:716
 msgid "Issuer Country"
 msgstr "Herausgeber Land"
 
-#: user.py:687
+#: user.py:717
 msgid "Certificate Issuer Country"
 msgstr "Land des Zertifikat-Herausgebers"
 
-#: user.py:697
+#: user.py:727
 msgid "Issuer State"
 msgstr "Herausgeber Bundesland"
 
-#: user.py:698
+#: user.py:728
 msgid "Certificate Issuer State"
 msgstr "Bundesland des Zertifikat-Herausgebers"
 
-#: user.py:708
+#: user.py:738
 msgid "Issuer Location"
 msgstr "Herausgeber Ort"
 
-#: user.py:709
+#: user.py:739
 msgid "Certificate Issuer Location"
 msgstr "Ort des Zertifikat-Herausgebers"
 
-#: user.py:719
+#: user.py:749
 msgid "Issuer Organisation"
 msgstr "Herausgeber Organisation"
 
-#: user.py:720
+#: user.py:750
 msgid "Certificate Issuer Organisation"
 msgstr "Organisation des Zertifikat-Herausgebers"
 
-#: user.py:730
+#: user.py:760
 msgid "Issuer Organisational Unit"
 msgstr "Herausgeber Organisationseinheit"
 
-#: user.py:731
+#: user.py:761
 msgid "Certificate Issuer Organisational Unit"
 msgstr "Organisationseinheit des Zertifikat-Herausgebers"
 
-#: user.py:741
+#: user.py:771
 msgid "Issuer Common Name"
 msgstr "Herausgeber Allgemeiner Name"
 
-#: user.py:742
+#: user.py:772
 msgid "Certificate Issuer Common Name"
 msgstr "Allgemeiner Name des Zertifikat-Herausgebers"
 
-#: user.py:752
+#: user.py:782
 msgid "Issuer Mail"
 msgstr "Herausgeber E-Mail-Adresse"
 
-#: user.py:753
+#: user.py:783
 msgid "Certificate Issuer Mail"
 msgstr "E-Mail-Adresse des Zertifikat-Herausgebers"
 
-#: user.py:763
+#: user.py:793
 msgid "Subject Country"
 msgstr "Inhaber Land"
 
-#: user.py:764
+#: user.py:794
 msgid "Certificate Subject Country"
 msgstr "Land des Zertifikat-Inhabers"
 
-#: user.py:774
+#: user.py:804
 msgid "Subject State"
 msgstr "Inhaber Bundesland"
 
-#: user.py:775
+#: user.py:805
 msgid "Certificate Subject State"
 msgstr "Bundesland des Zertifikat-Inhaber"
 
-#: user.py:785
+#: user.py:815
 msgid "Subject Location"
 msgstr "Inhaber Ort"
 
-#: user.py:786
+#: user.py:816
 msgid "Certificate Subject Location"
 msgstr "Ort des Zertifikat-Inhaber"
 
-#: user.py:796
+#: user.py:826
 msgid "Subject Organisation"
 msgstr "Inhaber Organisation"
 
-#: user.py:797
+#: user.py:827
 msgid "Certificate Subject Organisation"
 msgstr "Organisation des Zertifikat-Inhabers"
 
-#: user.py:807
+#: user.py:837
 msgid "Subject Organisational Unit"
 msgstr "Inhaber Organisationseinheit"
 
-#: user.py:808
+#: user.py:838
 msgid "Certificate Subject Organisational Unit"
 msgstr "Organisationseinheit des Zertifikat-Inhabers"
 
-#: user.py:818
+#: user.py:848
 msgid "Subject Common Name"
 msgstr "Inhaber Allgemeiner Name"
 
-#: user.py:819
+#: user.py:849
 msgid "Certificate Subject Common Name"
 msgstr "Allgemeiner Name des Zertifikat-Inhaber"
 
-#: user.py:823
+#: user.py:859
 msgid "Subject Mail"
 msgstr "Inhaber E-Mail-Adresse"
 
-#: user.py:824
+#: user.py:860
 msgid "Certificate Subject Mail"
 msgstr "E-Mail-Adresse des Zertifikat-Inhabers"
 
-#: user.py:840
+#: user.py:870
 msgid "Valid from"
 msgstr "Gültig ab"
 
-#: user.py:841
+#: user.py:871
 msgid "Certificate valid from"
 msgstr "Das Zertifikat ist gültig ab dem Zeitpunkt"
 
-#: user.py:851
+#: user.py:881
 msgid "Valid until"
 msgstr "Gültig bis"
 
-#: user.py:852
+#: user.py:882
 msgid "Certificate valid until"
 msgstr "Das Zertifikat ist gültig bis zu dem Zeitpunkt"
 
-#: user.py:862
+#: user.py:892
 msgid "Version"
 msgstr "Version"
 
-#: user.py:863
+#: user.py:893
 msgid "Certificate Version"
 msgstr "Zertifikatversion"
 
-#: user.py:873
+#: user.py:903
 msgid "Serial"
 msgstr "Seriennummer"
 
-#: user.py:874
+#: user.py:904
 msgid "Certificate Serial"
 msgstr "Zertifikatsseriennummer"
 
-#: user.py:884
+#: user.py:914
 msgid "UMC user preferences"
 msgstr "UMC-Benutzer-Einstellungen"
 
-#: user.py:885
+#: user.py:915
 msgid "Key value pairs storing user preferences for UMC"
 msgstr "Key-Value-Paare, die UMC-Benutzereinstellungen speichern"
 
-#: user.py:902
+#: user.py:932
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: user.py:903
+#: user.py:933
 msgid "User account"
 msgstr "Benutzerkonto"
 
-#: user.py:925
+#: user.py:955
 msgid "Additional groups"
 msgstr "Weitere Gruppen"
 
-#: user.py:929
+#: user.py:959
 msgid "Account"
 msgstr "Konto"
 
-#: user.py:929
+#: user.py:959
 msgid "Account settings"
 msgstr "Konto-Einstellungen"
 
-#: user.py:930
+#: user.py:960
 msgid "Locking and deactivation"
 msgstr "Konto-Deaktivierung"
 
-#: user.py:935
+#: user.py:965
 msgid "Windows"
 msgstr "Windows"
 
-#: user.py:935
+#: user.py:965
 msgid "Windows account settings"
 msgstr "Windows-Kontoeinstellungen"
 
-#: user.py:943
+#: user.py:973
 msgid "POSIX (Linux/UNIX)"
 msgstr "POSIX (Linux/UNIX)"
 
-#: user.py:943
+#: user.py:973
 msgid "POSIX (Linux/UNIX) account settings"
 msgstr "POSIX (Linux/UNIX) Kontoeinstellungen"
 
-#: user.py:949
+#: user.py:979
 msgid "Contact"
 msgstr "Kontakt"
 
-#: user.py:949
+#: user.py:979
 msgid "Contact information"
 msgstr "Kontaktinformationen"
 
-#: user.py:950
+#: user.py:980
 msgid "Business"
 msgstr "Geschäftlich"
 
-#: user.py:956
+#: user.py:986
 msgid "Private"
 msgstr "Privat"
 
-#: user.py:963
+#: user.py:993
 msgid "Mail"
 msgstr "Mail"
 
-#: user.py:963
+#: user.py:993
 msgid "Mail preferences"
 msgstr "Maileinstellungen"
 
-#: user.py:964
+#: user.py:994
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
 
-#: user.py:969 user.py:970
+#: user.py:999 user.py:1000
 msgid "UMC preferences"
 msgstr "UMC-Einstellungen"
 
-#: user.py:972
-msgid "Subject"
-msgstr "Inhaber"
-
-#: user.py:974
+#: user.py:1004
 msgid "Certificate"
 msgstr "Zertifikat"
 
-#: user.py:985
+#: user.py:1008
+msgid "Subject"
+msgstr "Inhaber"
+
+#: user.py:1014
 msgid "Issuer"
 msgstr "Aussteller"
 
-#: user.py:994
+#: user.py:1020
 msgid "Validity"
 msgstr "Gültigkeit"
 
-#: user.py:998
+#: user.py:1023
 msgid "Misc"
 msgstr "Verschiedenes"
 
-#: user.py:1824
+#: user.py:1768
 #, python-format
 msgid "Need one of %s, %s, %s or %s in options to create user."
 msgstr ""
 "Mindestens eine Option aus %s, %s, %s oder %s muss aktiv sein, um einen "
 "neuen Benutzer zu erstellen."
 
-#: user.py:2094 user.py:2100
+#: user.py:2039 user.py:2045
 #, python-format
 msgid "The password is too short, at least %d characters needed!"
 msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
 
-#: user.py:2432
+#: user.py:2371
 msgid "DN given as share is not valid."
 msgstr "Der DN der Freigabe ist nicht zulässig."
 
-#: user.py:2444
-msgid "Given DN is no share."
-msgstr "Der angegebene DN ist keine Freigabe."
-
-#: user.py:2434
+#: user.py:2379
+#, python-format
 msgid "%(homeSharePath)s must be given if %(homeShare)s is given."
 msgstr "%(homeSharePath)s muss gesetzt sein, wenn %(homeShare)s gesetzt wurde."
 
-#: user.py:2438
+#: user.py:2383
+#, python-format
 msgid "%s: Invalid path"
 msgstr "%s: Ungültige Pfadangabe"
+
+#: user.py:2389
+msgid "Given DN is no share."
+msgstr "Der angegebene DN ist keine Freigabe."
 
 #~ msgid "Dates"
 #~ msgstr "Datumsangaben"

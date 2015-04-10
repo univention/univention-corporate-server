@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-30 13:14+0100\n"
+"POT-Creation-Date: 2015-04-10 14:54+0200\n"
 "PO-Revision-Date: 2011-12-01 09:47+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -43,32 +43,27 @@ msgstr ""
 msgid "Univention Settings"
 msgstr "Univention-Einstellungen"
 
-#: cn.py:52 default.py:54 directory.py:55 extended_attribute.py:374
-#: extended_options.py:55 extended_options.py:56 license.py:66 license.py:67
-#: lock.py:55 lock.py:56 packages.py:55 packages.py:56 printermodel.py:57
-#: printermodel.py:58 printeruri.py:55 printeruri.py:56
-#: prohibited_username.py:55 prohibited_username.py:56 umc_operationset.py:56
-#: umc_operationset.py:57 usertemplate.py:52 xconfig_choices.py:56
+#: cn.py:52 default.py:54 directory.py:55 extended_options.py:55
+#: extended_options.py:56 license.py:66 license.py:67 lock.py:55 lock.py:56
+#: packages.py:55 packages.py:56 printermodel.py:57 printermodel.py:58
+#: printeruri.py:55 printeruri.py:56 prohibited_username.py:55
+#: prohibited_username.py:56 umc_operationset.py:56 umc_operationset.py:57
+#: xconfig_choices.py:56
 msgid "Name"
 msgstr "Name"
 
-#: cn.py:65 default.py:144 default.py:145 directory.py:179 directory.py:180
-#: extended_attribute.py:373 extended_attribute.py:396 extended_options.py:152
-#: extended_options.py:153 ldapacl.py:152 ldapacl.py:153 ldapschema.py:132
-#: ldapschema.py:133 license.py:292 lock.py:78 lock.py:79 packages.py:79
-#: packages.py:80 printermodel.py:82 printermodel.py:83 printeruri.py:80
-#: printeruri.py:81 prohibited_username.py:79 prohibited_username.py:80
-#: sambaconfig.py:183 sambaconfig.py:184 sambadomain.py:230 sambadomain.py:231
-#: service.py:65 service.py:66 syntax.py:160 syntax.py:161 udm_hook.py:152
-#: udm_hook.py:153 udm_module.py:181 udm_module.py:182 udm_syntax.py:152
-#: udm_syntax.py:153 umc_operationset.py:104 umc_operationset.py:105
-#: usertemplate.py:352 usertemplate.py:353 xconfig_choices.py:169
-#: xconfig_choices.py:170
+#: cn.py:65 default.py:144 directory.py:179 extended_attribute.py:373
+#: extended_options.py:152 ldapacl.py:152 ldapschema.py:132 lock.py:78
+#: packages.py:79 printermodel.py:82 printeruri.py:80
+#: prohibited_username.py:79 sambaconfig.py:183 sambadomain.py:260
+#: service.py:65 syntax.py:160 udm_hook.py:152 udm_module.py:181
+#: udm_syntax.py:152 umc_operationset.py:104 usertemplate.py:352
+#: xconfig_choices.py:169
 msgid "General"
 msgstr "Allgemein"
 
 #: cn.py:65 default.py:144 directory.py:179 extended_options.py:152
-#: ldapacl.py:152 ldapschema.py:132 sambaconfig.py:183 sambadomain.py:230
+#: ldapacl.py:152 ldapschema.py:132 sambaconfig.py:183 sambadomain.py:260
 #: service.py:65 syntax.py:160 udm_hook.py:152 udm_module.py:181
 #: udm_syntax.py:152 usertemplate.py:352
 msgid "Basic values"
@@ -105,6 +100,10 @@ msgstr "Standardgruppe für Clients"
 #: default.py:132
 msgid "Default KDE Profiles"
 msgstr "Standard KDE-Profile"
+
+#: default.py:145
+msgid "Default settings description"
+msgstr "Bezeichnung - Vorgabe-Einstellungen"
 
 #: default.py:149 default.py:150
 msgid "Primary Groups"
@@ -161,6 +160,10 @@ msgstr "Mailverweis"
 #: directory.py:167
 msgid "License Link"
 msgstr "Lizenzverweis"
+
+#: directory.py:180
+msgid "Default container description"
+msgstr "Bezeichnung - Standard-Container"
 
 #: directory.py:183
 msgid "User Links"
@@ -575,6 +578,10 @@ msgstr ""
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
 
+#: extended_attribute.py:374
+msgid "Extended attribute description"
+msgstr "Bezeichnung - Erweitertes Attribut"
+
 #: extended_attribute.py:381
 msgid "Long Description"
 msgstr "Ausführliche Beschreibung"
@@ -602,6 +609,10 @@ msgstr "UMC"
 #: extended_attribute.py:395
 msgid "Settings for UMC"
 msgstr "UMC-spezifische Einstellungen"
+
+#: extended_attribute.py:396
+msgid "General extended attribute settings"
+msgstr "Grundeinstellungen - Erweiterte Optionen"
 
 #: extended_attribute.py:400
 msgid "Attribute layout"
@@ -693,6 +704,10 @@ msgstr "Liste der Module, auf die diese Option angewandt wird."
 msgid "Mapping to LDAP objectClasses"
 msgstr "Abbildung auf LDAP-Objektklassen"
 
+#: extended_options.py:153
+msgid "General extended options settings"
+msgstr "Grundeinstellungen - Erweiterte Optionen"
+
 #: ldapacl.py:52
 msgid "Settings: LDAP ACL Extension"
 msgstr "Einstellungen: LDAP ACL Erweiterung"
@@ -737,6 +752,10 @@ msgstr "Minimale UCS-Version"
 msgid "Maximal UCS version"
 msgstr "Maximale UCS-Version"
 
+#: ldapacl.py:153
+msgid "General LDAP ACL extension settings"
+msgstr "Grundeinstellungen - LDAP ACL-Erweiterung"
+
 #: ldapacl.py:158 ldapschema.py:138 udm_hook.py:158 udm_module.py:190
 #: udm_syntax.py:158
 msgid "Metadata"
@@ -771,6 +790,10 @@ msgstr "Dateiname des LDAP-Schemas"
 #: ldapschema.py:79
 msgid "Schema data"
 msgstr "Schema-Daten"
+
+#: ldapschema.py:133
+msgid "General LDAP schema extension settings"
+msgstr "Grundeinstellungen - LDAP-Schemaerweiterung"
 
 #: license.py:50
 msgid "Settings: License"
@@ -976,6 +999,10 @@ msgstr "Lizenz"
 msgid "Licensing Information"
 msgstr "Lizenz-Informationen"
 
+#: license.py:292
+msgid "General license settings"
+msgstr "Grundeinstellungen - Lizenz"
+
 #: license.py:300
 msgid "Version 1 license informations"
 msgstr "Lizenz-Informationen Version 1"
@@ -1004,6 +1031,10 @@ msgstr "Gesperrt bis"
 msgid "Lock Information"
 msgstr "Informationen über die Sperrung"
 
+#: lock.py:79
+msgid "General lock settings"
+msgstr "Grundeinstellungen - Sperrung"
+
 #: packages.py:49
 msgid "Settings: Package List"
 msgstr "Einstellungen: Paketliste"
@@ -1015,6 +1046,10 @@ msgstr "Paketliste für UCS-Systeme"
 #: packages.py:66 packages.py:67 packages.py:79
 msgid "Package List"
 msgstr "Paketliste"
+
+#: packages.py:80
+msgid "General package list settings"
+msgstr "Grundeinstellungen - Paketliste"
 
 #: printermodel.py:51
 msgid "Settings: Printer Driver List"
@@ -1032,6 +1067,10 @@ msgstr "Druckermodell"
 msgid "Printer List"
 msgstr "Druckerliste"
 
+#: printermodel.py:83
+msgid "General printer driver list settings"
+msgstr "Grundeinstellungen - Druckertreiberliste"
+
 #: printeruri.py:49
 msgid "Settings: Printer URI List"
 msgstr "Einstellungen: Drucker-URI-Liste"
@@ -1043,6 +1082,10 @@ msgstr "Liste von Drucker-URIs"
 #: printeruri.py:66 printeruri.py:67 printeruri.py:80
 msgid "Printer URI"
 msgstr "Drucker-URI"
+
+#: printeruri.py:81
+msgid "General printer URI list settings"
+msgstr "Grundeinstellungen - Drucker-URI-Liste"
 
 #: prohibited_username.py:49
 msgid "Settings: Prohibited user names"
@@ -1059,6 +1102,10 @@ msgstr "Verbotener Benutzername"
 #: prohibited_username.py:79
 msgid "Prohibited user names"
 msgstr "Verbotene Benutzernamen"
+
+#: prohibited_username.py:80
+msgid "General prohibited user names settings"
+msgstr "Grundeinstellungen - Verbotene Benutzernamen"
 
 #: sambaconfig.py:65
 msgid "Settings: Samba Configuration"
@@ -1107,6 +1154,10 @@ msgstr "Verbindung trennen nach"
 #: sambaconfig.py:171
 msgid "Refuse Machine Password Change"
 msgstr "Änderung des Rechnerpasswortes ablehnen"
+
+#: sambaconfig.py:184
+msgid "General Samba configuration settings"
+msgstr "Grundeinstellungen - Samba-Konfiguration"
 
 #: sambadomain.py:68
 msgid "Settings: Samba Domain"
@@ -1172,11 +1223,52 @@ msgstr "Verbindung trennen nach"
 msgid "Refuse machine password change"
 msgstr "Änderung des Rechnerpasswortes ablehnen"
 
-#: sambadomain.py:235
+#: sambadomain.py:228
+msgid "Passwords must meet complexity requirements"
+msgstr "Kennwort muss Komplexitätsvoraussetzungen entsprechen"
+
+#: sambadomain.py:229
+msgid ""
+"Is not based on the user's account name. Contains at least six characters. "
+"Contains characters from three of the following four categories: Uppercase "
+"alphabet characters (A-Z), Lowercase alphabet characters (a-z), Arabic "
+"numerals (0-9), Nonalphanumeric characters (for example, !$#,%)"
+msgstr ""
+"Es darf weder wesentliche Teile des Kontonamens des Benutzers noch den "
+"vollständigen Kontonamen enthalten. Es muss mindestens sechs Zeichen lang "
+"sein. Es muss Zeichen aus drei der vier folgenden Kategorien enthalten: "
+"Großbuchstaben von A bis Z, Kleinbuchstaben von A bis Z, Ziffern der Basis "
+"10 (0 bis 9), Andere als alphabetische Zeichen (z. B. !, $, #, %)"
+
+#: sambadomain.py:238
+msgid "Store plaintext passwords"
+msgstr "Kennwort mit umkehrbarer Verschlüsselung speichern"
+
+#: sambadomain.py:239
+msgid ""
+"Store plaintext passwords where account have \"store passwords with "
+"reversible encryption\" set."
+msgstr ""
+"Klartext Passwörter speichern, falls am Benutzerkonto \"Kennwort mit "
+"umkehrbarer Verschlüsselung speichern\" gesetzt ist."
+
+#: sambadomain.py:248
+msgid "Password properties"
+msgstr "Passwort-Eigenschaften"
+
+#: sambadomain.py:249
+msgid "A bitfield to indicate complexity and storage restrictions."
+msgstr ""
+
+#: sambadomain.py:261
+msgid "General Samba domain settings"
+msgstr "Grundeinstellungen - Samba-Domäne"
+
+#: sambadomain.py:265
 msgid "Password"
 msgstr "Passwort"
 
-#: sambadomain.py:241
+#: sambadomain.py:272
 msgid "Connection"
 msgstr "Verbindung"
 
@@ -1187,6 +1279,10 @@ msgstr "Einstellungen: Dienst"
 #: service.py:52
 msgid "Service Name"
 msgstr "Dienstname"
+
+#: service.py:66
+msgid "General service settings"
+msgstr "Grundeinstellungen - Dienst"
 
 #: settings.py:50
 msgid "Preferences"
@@ -1236,6 +1332,10 @@ msgstr "Zu speicherndes Attribut"
 msgid "Stored LDAP Attribute"
 msgstr "Zu speicherndes LDAP-Attribut"
 
+#: syntax.py:161
+msgid "General syntax definition settings"
+msgstr "Grundeinstellungen - Syntax-Definition"
+
 #: syntax.py:164
 msgid "Display"
 msgstr "Anzeige"
@@ -1269,6 +1369,10 @@ msgstr "Dateiname des UDM Hooks"
 msgid "UDM hook data"
 msgstr "UDM Hook-Daten"
 
+#: udm_hook.py:153
+msgid "General UDM hook settings"
+msgstr "Grundeinstellungen - UDM-Hook"
+
 #: udm_module.py:50
 msgid "Settings: UDM Module"
 msgstr "Einstellungen: UDM Modul"
@@ -1297,6 +1401,10 @@ msgstr "UMC-Registrierungsdaten"
 msgid "UMC icon"
 msgstr "UMC-Icon"
 
+#: udm_module.py:182
+msgid "General UDM module settings"
+msgstr "Grundeinstellungen - UDM-Modul"
+
 #: udm_syntax.py:52
 msgid "Settings: UDM Syntax"
 msgstr "Einstellungen: UDM Syntax"
@@ -1312,6 +1420,10 @@ msgstr "Dateiname der UDM Syntax"
 #: udm_syntax.py:79
 msgid "UDM syntax data"
 msgstr "UDM Syntaxdaten"
+
+#: udm_syntax.py:153
+msgid "General UDM syntax settings"
+msgstr "Grundeinstellungen - UDM-Syntax"
 
 #: umc_operationset.py:50
 msgid "Settings: UMC operation set"
@@ -1349,9 +1461,17 @@ msgstr ""
 msgid "UMC Operation Set"
 msgstr "UMC-Befehlssatz"
 
+#: umc_operationset.py:105
+msgid "General UMC operation set settings"
+msgstr "Grundeinstellungen - UMC-Operationen"
+
 #: usertemplate.py:46
 msgid "Settings: User Template"
 msgstr "Einstellungen: Benutzervorlage"
+
+#: usertemplate.py:52
+msgid "Template name"
+msgstr "Name der Vorlage"
 
 #: usertemplate.py:63
 msgid "Title"
@@ -1362,7 +1482,7 @@ msgid "Display name"
 msgstr "Anzeigename"
 
 #: usertemplate.py:95
-msgid "Organization"
+msgid "Organisation"
 msgstr "Organisation"
 
 #: usertemplate.py:105 usertemplate.py:106
@@ -1370,59 +1490,59 @@ msgid "Change password on next login"
 msgstr "Passwort bei der nächsten Anmeldung ändern"
 
 #: usertemplate.py:116
-msgid "Disabled"
-msgstr "Deaktiviert"
+msgid "Account deactivation"
+msgstr "Kontodeaktivierung"
 
 #: usertemplate.py:127
-msgid "E-Mail Address"
+msgid "E-mail address"
 msgstr "E-Mail-Adresse"
 
 #: usertemplate.py:137
-msgid "Unix Home Directory"
+msgid "Unix home directory"
 msgstr "UNIX-Heimatverzeichnis"
 
 #: usertemplate.py:148
-msgid "Home Share"
-msgstr "Heimatverzeichnisfreigabe"
+msgid "Home share"
+msgstr "Benutzerverzeichnis-Freigabe"
 
 #: usertemplate.py:149
 msgid "Share, the user's home directory resides on"
 msgstr "Freigabe, auf der sich das Heimatverzeichnis des Benutzers befindet"
 
 #: usertemplate.py:158
-msgid "Home Share Path"
-msgstr "Pfad der Heimatverzeichnisfreigabe"
+msgid "Home share path"
+msgstr "Pfad der Benutzerverzeichnis-Freigabe"
 
 #: usertemplate.py:159
-msgid "Path on the home share"
-msgstr "Relativer Pfad des Heimatverzeichnises innerhalb der Freigabe"
+msgid "Path to the home directory on the home share"
+msgstr "Relativer Pfad der Benutzerverzeichnis-Freigabe"
 
 #: usertemplate.py:169
-msgid "Login Shell"
+msgid "Login shell"
 msgstr "Login-Shell"
 
 #: usertemplate.py:180
-msgid "Windows Home Path"
-msgstr "Windows-Heimatverzeichnis"
+msgid "Windows home path"
+msgstr "Windows-Home-Verzeichnis"
 
 #: usertemplate.py:190
-msgid "Windows Script Path"
-msgstr "Anmeldeskriptpfad"
+msgid "Windows logon path"
+msgstr "Windows-Logon-Pfad"
 
 #: usertemplate.py:200
-msgid "Windows Profile Path"
+msgid "Windows profile directory"
 msgstr "Profilverzeichnis"
 
 #: usertemplate.py:210
-msgid "Windows Home Drive"
-msgstr "Laufwerk für Heimatverzeichnis"
+msgid "Windows home drive"
+msgstr "Laufwerk des Benutzerverzeichnises"
 
 #: usertemplate.py:220
 msgid "Street"
 msgstr "Straße"
 
 #: usertemplate.py:230
-msgid "Postal Code"
+msgid "Postal code"
 msgstr "Postleitzahl"
 
 #: usertemplate.py:240
@@ -1430,19 +1550,19 @@ msgid "City"
 msgstr "Stadt"
 
 #: usertemplate.py:250
-msgid "Telephone Number"
+msgid "Telephone number"
 msgstr "Telefonnummer"
 
 #: usertemplate.py:260
-msgid "Secretary"
-msgstr "Vorgesetzter"
+msgid "Superior"
+msgstr ""
 
 #: usertemplate.py:270
-msgid "Department Number"
+msgid "Department number"
 msgstr "Abteilungsnummer"
 
 #: usertemplate.py:280
-msgid "Employee Type"
+msgid "Employee type"
 msgstr "Mitarbeiterkategorie"
 
 #: usertemplate.py:290 usertemplate.py:397 usertemplate.py:398
@@ -1450,16 +1570,20 @@ msgid "Groups"
 msgstr "Gruppen"
 
 #: usertemplate.py:300
-msgid "Primary Group"
+msgid "Primary group"
 msgstr "Primäre Gruppe"
 
 #: usertemplate.py:313
-msgid "Primary E-Mail Address"
+msgid "Primary e-mail address"
 msgstr "Primäre E-Mail-Adresse"
 
 #: usertemplate.py:325
-msgid "Alternative E-Mail Addresses"
-msgstr "Alternative E-Mail-Adressen"
+msgid "Alternative e-mail address"
+msgstr "Alternative E-Mail-Adresse"
+
+#: usertemplate.py:353
+msgid "General user template settings"
+msgstr "Grundeinstellungen - Benutzervorlage"
 
 #: usertemplate.py:360 usertemplate.py:361
 msgid "User Account"
@@ -1561,6 +1685,22 @@ msgstr "Bildschirm Größe (mm)"
 msgid "X Configuration Choices"
 msgstr "X-Konfiguration Auswahl"
 
+#: xconfig_choices.py:170
+msgid "General X configuration choices settings"
+msgstr "Grundeinstellungen - X-Konfigurationsauswahl"
+
+#~ msgid "User name"
+#~ msgstr "Benutzername"
+
+#~ msgid "Disabled"
+#~ msgstr "Deaktiviert"
+
+#~ msgid "Windows Script Path"
+#~ msgstr "Anmeldeskriptpfad"
+
+#~ msgid "Secretary"
+#~ msgstr "Vorgesetzter"
+
 #~ msgid ""
 #~ "Configuration of the LDAP settings used to store the extended attribute"
 #~ msgstr ""
@@ -1575,96 +1715,3 @@ msgstr "X-Konfiguration Auswahl"
 
 #~ msgid "UMC layout"
 #~ msgstr "Karteikartendarstellung"
-
-msgid "Default settings description"
-msgstr "Bezeichnung - Vorgabe-Einstellungen"
-
-msgid "Default container description"
-msgstr "Bezeichnung - Standard-Container"
-
-msgid "General extended options settings"
-msgstr "Grundeinstellungen - Erweiterte Optionen"
-
-msgid "General LDAP ACL extension settings"
-msgstr "Grundeinstellungen - LDAP ACL-Erweiterung"
-
-msgid "General LDAP schema extension settings"
-msgstr "Grundeinstellungen - LDAP-Schemaerweiterung"
-
-msgid "General license settings"
-msgstr "Grundeinstellungen - Lizenz"
-
-msgid "General lock settings"
-msgstr "Grundeinstellungen - Sperrung"
-
-msgid "General package list settings"
-msgstr "Grundeinstellungen - Paketliste"
-
-msgid "General printer driver list settings"
-msgstr "Grundeinstellungen - Druckertreiberliste"
-
-msgid "General printer URI list settings"
-msgstr "Grundeinstellungen - Drucker-URI-Liste"
-
-msgid "General prohibited user names settings"
-msgstr "Grundeinstellungen - Verbotene Benutzernamen"
-
-msgid "General Samba configuration settings"
-msgstr "Grundeinstellungen - Samba-Konfiguration"
-
-msgid "General Samba domain settings"
-msgstr "Grundeinstellungen - Samba-Domäne"
-
-msgid "General service settings"
-msgstr "Grundeinstellungen - Dienst"
-
-msgid "General syntax definition settings"
-msgstr "Grundeinstellungen - Syntax-Definition"
-
-msgid "General UDM hook settings"
-msgstr "Grundeinstellungen - UDM-Hook"
-
-msgid "General UDM module settings"
-msgstr "Grundeinstellungen - UDM-Modul"
-
-msgid "General UDM syntax settings"
-msgstr "Grundeinstellungen - UDM-Syntax"
-
-msgid "General UMC operation set settings"
-msgstr "Grundeinstellungen - UMC-Operationen"
-
-msgid "General user template settings"
-msgstr "Grundeinstellungen - Benutzervorlage"
-
-msgid "General X configuration choices settings"
-msgstr "Grundeinstellungen - X-Konfigurationsauswahl"
-
-msgid "Extended attribute description"
-msgstr "Bezeichnung - Erweitertes Attribut"
-
-msgid "Passwords must meet complexity requirements"
-msgstr "Kennwort muss Komplexitätsvoraussetzungen entsprechen"
-
-msgid ""
-"Is not based on the user's account name. Contains at least "
-"six characters. Contains characters from three of the following "
-"four categories: Uppercase alphabet characters (A-Z), "
-"Lowercase alphabet characters (a-z), Arabic numerals (0-9), "
-"Nonalphanumeric characters (for example, !$#,%)"
-msgstr ""
-"Es darf weder wesentliche Teile des Kontonamens des Benutzers noch "
-"den vollständigen Kontonamen enthalten. Es muss mindestens sechs "
-"Zeichen lang sein. Es muss Zeichen aus drei der vier folgenden "
-"Kategorien enthalten: Großbuchstaben von A bis Z, Kleinbuchstaben "
-"von A bis Z, Ziffern der Basis 10 (0 bis 9), "
-"Andere als alphabetische Zeichen (z. B. !, $, #, %)"
-
-msgid "Store plaintext passwords"
-msgstr "Kennwort mit umkehrbarer Verschlüsselung speichern"
-
-msgid ""
-"Store plaintext passwords where account have \"store passwords with "
-"reversible encryption\" set."
-msgstr ""
-"Klartext Passwörter speichern, falls am Benutzerkonto \"Kennwort mit "
-"umkehrbarer Verschlüsselung speichern\" gesetzt ist."

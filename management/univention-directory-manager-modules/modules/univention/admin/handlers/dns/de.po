@@ -29,10 +29,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-18 15:47+0100\n"
+"POT-Creation-Date: 2015-04-01 14:25+0200\n"
 "PO-Revision-Date: 2009-08-04 14:47+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
@@ -46,30 +47,32 @@ msgstr "DNS: Alias Record"
 msgid "Alias"
 msgstr "Alias"
 
-#: alias.py:66 forward_zone.py:69 host_record.py:64 reverse_zone.py:66
-#: srv_record.py:74 txt_record.py:64
+#: alias.py:67 forward_zone.py:67 host_record.py:66 reverse_zone.py:65
+#: srv_record.py:75 txt_record.py:65
 msgid "Zone time to live"
 msgstr "Zone Time-to-Live"
 
-#: alias.py:77
+#: alias.py:78
 msgid "Canonical name"
 msgstr "Kanonischer Name"
 
-#: alias.py:78
+#: alias.py:79
 msgid "Alias for this host. FQDNs must end with '.'"
 msgstr "Alias des Rechners. Der FQDN muss mit einem '.' enden"
 
-#: alias.py:88 alias.py:89 dns.py:84 forward_zone.py:185 forward_zone.py:186
-#: host_record.py:104 host_record.py:105 ptr_record.py:73 ptr_record.py:74
-#: reverse_zone.py:155 reverse_zone.py:156 reverse_zone.py:163
-#: srv_record.py:86 srv_record.py:87 txt_record.py:86 txt_record.py:87
+#: alias.py:90 dns.py:85 forward_zone.py:183 host_record.py:106
+#: ptr_record.py:75 reverse_zone.py:154 srv_record.py:87 txt_record.py:87
 msgid "General"
 msgstr "Allgemein"
 
-#: alias.py:88 dns.py:84 forward_zone.py:185 ptr_record.py:73
-#: reverse_zone.py:155 srv_record.py:86
+#: alias.py:90 dns.py:85 forward_zone.py:183 ptr_record.py:75
+#: reverse_zone.py:154 srv_record.py:87
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
+
+#: alias.py:91
+msgid "General alias record settings"
+msgstr "Grundeinstellungen - Alias Record"
 
 #: dns.py:53 dns.py:57
 msgid "DNS"
@@ -99,120 +102,129 @@ msgstr "DNS-Objekt(e) suchen"
 msgid "Name"
 msgstr "Name"
 
-#: forward_zone.py:53
+#: forward_zone.py:50
 msgid "DNS: Forward lookup zone"
 msgstr "DNS: Forward Lookup Zone"
 
-#: forward_zone.py:59
+#: forward_zone.py:56
 msgid "Zone name"
 msgstr "Name der Zone"
 
-#: forward_zone.py:80 reverse_zone.py:77
+#: forward_zone.py:78 reverse_zone.py:76
 msgid "Contact person"
 msgstr "Verantwortliche Person"
 
-#: forward_zone.py:91 reverse_zone.py:88
+#: forward_zone.py:89 reverse_zone.py:87
 msgid "Serial number"
 msgstr "Seriennummer"
 
-#: forward_zone.py:102 reverse_zone.py:99
+#: forward_zone.py:100 reverse_zone.py:98
 msgid "Refresh interval"
 msgstr "Aktualisierungsintervall"
 
-#: forward_zone.py:113 reverse_zone.py:110
+#: forward_zone.py:111 reverse_zone.py:109
 msgid "Retry interval"
 msgstr "Intervall für erneute Versuche"
 
-#: forward_zone.py:124 reverse_zone.py:121
+#: forward_zone.py:122 reverse_zone.py:120
 msgid "Expiry interval"
 msgstr "Ablaufintervall"
 
-#: forward_zone.py:135 reverse_zone.py:132
+#: forward_zone.py:133 reverse_zone.py:131
 msgid "Minimum time to live"
 msgstr "Minimum Time-to-Live"
 
-#: forward_zone.py:146 reverse_zone.py:143
-msgid "Name servers"
+#: forward_zone.py:144 reverse_zone.py:142
+msgid "Name server"
 msgstr "Nameserver"
 
-#: forward_zone.py:156
+#: forward_zone.py:154
 msgid "Mail exchanger host"
 msgstr "Mail Exchanger Rechner"
 
-#: forward_zone.py:165
+#: forward_zone.py:163
 msgid "TXT record"
 msgstr "TXT Record"
 
-#: forward_zone.py:174 forward_zone.py:200 host_record.py:75
+#: forward_zone.py:172 forward_zone.py:198 host_record.py:77
 msgid "IP addresses"
 msgstr "IP-Adressen"
 
-#: forward_zone.py:192 forward_zone.py:193 reverse_zone.py:162
+#: forward_zone.py:184
+msgid "General forward lookup zone settings"
+msgstr "Grundeinstellungen - Forward Lookup Zone"
+
+#: forward_zone.py:190 forward_zone.py:191 reverse_zone.py:161
+#: reverse_zone.py:162
 msgid "Start of authority"
 msgstr "Start of Authority Eintrag"
 
-#: forward_zone.py:192 reverse_zone.py:162
+#: forward_zone.py:190 reverse_zone.py:161
 msgid "Primary name server information"
 msgstr "Primäre Nameserver Informationen"
 
-#: forward_zone.py:200 forward_zone.py:201
+#: forward_zone.py:198 forward_zone.py:199
 msgid "IP addresses of the zone"
 msgstr "IP-Adressen der Zone"
 
-#: forward_zone.py:205 forward_zone.py:206
+#: forward_zone.py:203 forward_zone.py:204
 msgid "MX records"
 msgstr "MX Records"
 
-#: forward_zone.py:205
+#: forward_zone.py:203
 msgid "Mail exchanger records"
 msgstr "Mailserver-Einträge"
 
-#: forward_zone.py:210 forward_zone.py:211
+#: forward_zone.py:208 forward_zone.py:209
 msgid "TXT records"
 msgstr "TXT Records"
 
-#: forward_zone.py:210
+#: forward_zone.py:208
 msgid "Text records"
 msgstr "Text Records"
 
-#: forward_zone.py:251 host_record.py:156 ptr_record.py:100
-#: reverse_zone.py:208 srv_record.py:142 txt_record.py:116
+#: forward_zone.py:249 host_record.py:158 ptr_record.py:102
+#: reverse_zone.py:228 srv_record.py:143 txt_record.py:117
 msgid "neither DN nor position present"
 msgstr "Weder ein DN noch eine Position wurde angegeben"
 
-#: host_record.py:54
+#: host_record.py:55
 msgid "Hostname"
 msgstr "Rechnername"
 
-#: host_record.py:84
+#: host_record.py:86
 msgid "Mail Exchanger"
 msgstr "Mail Exchanger"
 
-#: host_record.py:93 txt_record.py:75
+#: host_record.py:95 txt_record.py:76
 msgid "Text Record"
 msgstr "Text Record"
 
-#: host_record.py:104 txt_record.py:86
+#: host_record.py:106 txt_record.py:87
 msgid "Basic values"
 msgstr "Grundeinstellungen"
 
-#: host_record.py:111
+#: host_record.py:107
+msgid "General host record settings"
+msgstr "Grundeinstellungen - Host Record"
+
+#: host_record.py:113
 msgid "Mail"
 msgstr "Mail"
 
-#: host_record.py:111
+#: host_record.py:113
 msgid "Mail exchangers for this host"
 msgstr "Mail Exchanger für diesen Rechner"
 
-#: host_record.py:114
+#: host_record.py:116
 msgid "Text"
 msgstr "Text"
 
-#: host_record.py:114
+#: host_record.py:116
 msgid "Optional text"
 msgstr "Optionaler Text"
 
-#: host_record.py:154 ptr_record.py:98 srv_record.py:140 txt_record.py:114
+#: host_record.py:156 ptr_record.py:100 srv_record.py:141 txt_record.py:115
 msgid "superordinate object not present"
 msgstr "Ein übergeordnetes Objekt ist nicht vorhanden"
 
@@ -224,35 +236,51 @@ msgstr "DNS: Pointer Record"
 msgid "Address"
 msgstr "Adresse"
 
-#: ptr_record.py:62
+#: ptr_record.py:63
 msgid "Pointer record"
 msgstr "Pointer Record"
 
-#: ptr_record.py:63
+#: ptr_record.py:64
 msgid "FQDNs must end with '.'"
 msgstr "Der FQDN muss mit einem '.' enden"
 
-#: reverse_zone.py:50
+#: ptr_record.py:76
+msgid "General pointer record settings"
+msgstr "Grundeinstellungen - Pointer Record"
+
+#: reverse_zone.py:48
 msgid "DNS: Reverse lookup zone"
 msgstr "DNS: Reverse Lookup Zone"
 
-#: reverse_zone.py:56
+#: reverse_zone.py:54
 msgid "Subnet"
 msgstr "Subnetz"
+
+#: reverse_zone.py:155
+msgid "General reverse lookup zone settings"
+msgstr "Grundeinstellungen - Reverse Lookup Zone"
 
 #: srv_record.py:49
 msgid "DNS: Service record"
 msgstr "DNS: Service Record"
 
-#: srv_record.py:65
+#: srv_record.py:66
 msgid "Location"
 msgstr "Ort"
 
-msgid "DNS: Host Record"
-msgstr "DNS: Host Record"
+#: srv_record.py:88
+msgid "General service record settings"
+msgstr "Grundeinstellungen - Service Record"
 
-msgid "DNS: TXT Record"
-msgstr "DNS: TXT Record"
+#: txt_record.py:88
+msgid "General TXT record settings"
+msgstr "Grundeinstellungen - TXT Record"
+
+#~ msgid "DNS: Host Record"
+#~ msgstr "DNS: Host Record"
+
+#~ msgid "DNS: TXT Record"
+#~ msgstr "DNS: TXT Record"
 
 #~ msgid "Additional name servers"
 #~ msgstr "Zusätzliche Nameserver"
@@ -277,24 +305,3 @@ msgstr "DNS: TXT Record"
 
 #~ msgid "Update/Create Reverse Record"
 #~ msgstr "Reverse Record erstellen/erneuern"
-
-msgid "General alias record settings"
-msgstr "Grundeinstellungen - Alias Record"
-
-msgid "General forward lookup zone settings"
-msgstr "Grundeinstellungen - Forward Lookup Zone"
-
-msgid "General host record settings"
-msgstr "Grundeinstellungen - Host Record"
-
-msgid "General pointer record settings"
-msgstr "Grundeinstellungen - Pointer Record"
-
-msgid "General reverse lookup zone settings"
-msgstr "Grundeinstellungen - Reverse Lookup Zone"
-
-msgid "General service record settings"
-msgstr "Grundeinstellungen - Service Record"
-
-msgid "General TXT record settings"
-msgstr "Grundeinstellungen - TXT Record"

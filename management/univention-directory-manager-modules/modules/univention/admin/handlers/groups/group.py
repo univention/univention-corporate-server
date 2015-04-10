@@ -127,7 +127,7 @@ property_descriptions={
 			options=['samba']
 		),
 	'sambaPrivileges': univention.admin.property(
-			short_description = _( 'Samba privileges' ),
+			short_description = _( 'Samba privilege' ),
 			long_description = _( 'Manage samba privileges' ),
 			syntax = univention.admin.syntax.SambaPrivileges,
 			multivalue = True,
