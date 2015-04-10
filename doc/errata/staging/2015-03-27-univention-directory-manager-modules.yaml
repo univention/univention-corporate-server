@@ -2,9 +2,11 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-directory-manager-modules
-fix: 10.0.29-40.1304.201503271439
+fix: 10.0.29-40.1308.201504101505
 version: [1]
 desc: |
-  Two attributes domainPasswordComplex and domainPasswordStoreCleartext
-  have been added to the sambadomain settings module.
-bug: [28331]
+  This update addresses the following issues:
+  * Two attributes domainPasswordComplex and domainPasswordStoreCleartext
+    have been added to the sambadomain settings module.
+  * The multi value fields got a consistent labeling
+bug: [28331, 32760]
