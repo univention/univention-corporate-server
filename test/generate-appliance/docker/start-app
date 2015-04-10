@@ -1,34 +1,51 @@
 #!/bin/bash
 #
-#############################
-# FIXME TODO - DEV SECTION
-#############################
-ucr set system/setup/boot/start=true
+
+# purge fstab (unused for docker)
 : > /etc/fstab
-#############################
+
 # set hostname, required for:
 # 1) apache requires a valid /etc/hosts entry
 # 2) SSL certificate
 # 3) ...
 ucr set hostname="$(hostname | sed -re 's/[.].*//')" domainname="$(hostname | sed -re 's/^[^.]+.//')"
-# create new certificate
+# create new certificate - otherwise apache will not start
 univention-certificate new -name "$(hostname)"
+
+declare -a ucrchanges
+
 # force hostname for univention system setup
-ucr set system/setup/boot/force/fqdn="$(hostname)"
+ucrchanges+=( "system/setup/boot/force/fqdn=$(hostname)" )
 
 # deactivate some USS widgets
-ucr set system/setup/boot/fields/blacklist="network password" system/setup/boot/pages/blacklist="SystemRolePage network"
+ucrchanges+=( "system/setup/boot/fields/blacklist=network password" "system/setup/boot/pages/blacklist=network" )
+
+# set DNS settings
+[ -n "$UCS_NAMESERVER1" ] && ucrchanges+=( "nameserver1=$UCS_NAMESERVER1" )
+[ -n "$UCS_NAMESERVER2" ] && ucrchanges+=( "nameserver2=$UCS_NAMESERVER2" )
+[ -n "$UCS_NAMESERVER3" ] && ucrchanges+=( "nameserver3=$UCS_NAMESERVER3" )
+[ -n "$UCS_DNS_FORWARDER1" ] && ucrchanges+=( "dns/forwarder1=$UCS_DNS_FORWARDER1" )
+[ -n "$UCS_DNS_FORWARDER2" ] && ucrchanges+=( "dns/forwarder2=$UCS_DNS_FORWARDER2" )
+[ -n "$UCS_DNS_FORWARDER3" ] && ucrchanges+=( "dns/forwarder3=$UCS_DNS_FORWARDER3" )
+
 # Update updater identification string (VMware ==> Docker)
 eval "$(ucr shell updater/identify)"
 if echo "${updater_identify}" | grep -q "VMware" ; then
-	ucr set updater/identify="${updater_identify/VMware/Docker}"
+	ucrchanges+=( "updater/identify=${updater_identify/VMware/Docker}" )
 fi
+
 # FIXME: this only works for /16 IPv4 subnets!
-ucr set interfaces/eth0/address="$(ifconfig eth0 | grep -Po "inet addr:\K\d+\.\d+\.\d+.\d+")" \
-        interfaces/eth0/broadcast="$(ifconfig eth0 | grep -Po "Bcast:\K\d+\.\d+\.\d+.\d+")" \
-		interfaces/eth0/netmask="$(ifconfig eth0 | grep -Po "Mask:\K\d+\.\d+\.\d+.\d+")" \
-		interfaces/eth0/network="$(ip -f inet addr show eth0 | grep -Po 'inet \K\d+\.\d+\.'0.0)" \
-		interfaces/eth0/type="static"
+ucrchanges+=(
+    "interfaces/eth0/address=$(ifconfig eth0 | grep -Po "inet addr:\K\d+\.\d+\.\d+.\d+")" \
+    "interfaces/eth0/broadcast=$(ifconfig eth0 | grep -Po "Bcast:\K\d+\.\d+\.\d+.\d+")" \
+    "interfaces/eth0/netmask=$(ifconfig eth0 | grep -Po "Mask:\K\d+\.\d+\.\d+.\d+")" \
+    "interfaces/eth0/network=$(ip -f inet addr show eth0 | grep -Po 'inet \K\d+\.\d+\.'0.0)" \
+    "interfaces/eth0/type=static"
+)
+
+# commit UCR changes
+[ -n "$ucrchanges" ] && ucr set "${ucrchanges[@]}"
+
 # extract root password from environment variable, store it to a file and remove it from environment
 touch /var/lib/univention-ldap/root.secret
 chown root:root /var/lib/univention-ldap/root.secret
@@ -36,5 +53,6 @@ chmod 600 /var/lib/univention-ldap/root.secret
 echo -n "$UCS_PWD_ROOT" > /var/lib/univention-ldap/root.secret
 echo "root:$UCS_PWD_ROOT" | chpasswd
 unset UCS_PWD_ROOT
+
 # continue booting the app
 exec "$@"
