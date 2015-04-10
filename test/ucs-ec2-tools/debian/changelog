@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.12-5) unstable; urgency=low
+
+  * utils/ad-join.py: added functionality to join in sync mode (Bug #37290).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 10 Apr 2015 16:49:54 +0200
+
 ucs-ec2-tools (1.0.12-4) unstable; urgency=low
 
   * jenkins/autotest-228-admember-installation-w2k12-german-other-join-user.cfg:

@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
-# Copyright 2013 Univention GmbH
+# Copyright 2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,7 +29,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from optparse import OptionParser
-import sys
+from sys import exit
 
 try:
 	# with 3.1
@@ -55,18 +55,61 @@ parser.add_option('-A', '--domain_admin', dest='domain_admin',
 	help='domain admin username', metavar='DOMAIN_UID', default='administrator')
 parser.add_option('-P', '--domain_password', dest='domain_password', default='Univention@99',
 	help='domain admin password', metavar='DOMAIN_PASSWORD')
+parser.add_option('-S', '--sync_mode', dest='sync_mode', action="store_true", default=False,
+	help='join in synchronization mode (instead of read by default)', metavar='SYNC_MODE')
 
 (options, args) = parser.parse_args()
 
 if not options.domain_host:
-	parser.error('Please specify a domain controller host address!')
+	parser.error('Please specify an AD DC host address!')
 
 
-def join_ad():
-	""" Function for joining an AD domain, mimicking a join from umc"""
+def join_sync_mode():
+	""" Join in bi-directional sync mode via UMC requests """
 
-	connection = UMCConnection(options.host)
-	connection.auth(options.username, options.password)
+	# check domain / get configuration:
+	print '=== AD-JOIN STARTED ==='
+	request_options = {"ad_server_address": options.domain_host,
+		"username": options.domain_admin,
+		"password": options.domain_password,
+		"mode": "adconnector"}
+	result = connection.request("adconnector/check_domain", data=request_options)
+
+	# configure / save options:
+	print '=== AD-JOIN CONFIGURATION ==='
+	try:
+		kerberos_domain = result['Domain']
+		ad_ldap_base = result['LDAP_Base']
+		ad_dc_name = result['DC_DNS_Name']
+	except KeyError as exc:
+		print "\nAn Error while reading the AD Domain configuration: %r" % exc
+		exit(1)
+
+	request_options = {'Host_IP': options.domain_host,
+		'KerberosDomain': kerberos_domain,
+		'LDAP_Base': ad_ldap_base,
+		'LDAP_BindDN': "cn=" + options.domain_admin + ",cn=users," + ad_ldap_base,
+		'LDAP_Host': ad_dc_name,
+		'LDAP_Password': options.domain_password,
+		'MappingSyncMode': "sync"}
+
+	conf_result = connection.request("adconnector/adconnector/save", data=request_options)
+	if not conf_result['success']:
+		print "\nThe AD Connector configuration was not saved successfully: %s" % conf_result
+		exit(1)
+
+	# start AD connector:
+	print '=== AD-JOIN STARTING CONNECTOR ==='
+	start_result = connection.request("adconnector/service", data={'action': "start"})
+	if not start_result['success']:
+		print "\nThe AD Connector was not started successfully: %s" % start_result
+		exit(1)
+
+	print '=== AD-JOIN FINISHED ==='
+
+
+def join_read_mode():
+	""" Join in read mode via UMC requests """
 
 	send_data = {
 		'ad_server_address': options.domain_host,
@@ -78,17 +121,15 @@ def join_ad():
 
 	if not result:
 		print 'ERROR: Failed to join ad domain!'
-		print 'output: %s' % result
-		sys.exit(1)
+		exit(1)
 
 	progress_id = result['id']
-	progress_data = {
-			'progress_id':progress_id
-			}
+	progress_data = {'progress_id': progress_id}
 
 	print '=== AD-JOIN STARTED ==='
 	status = {'finished': False}
 	while not status['finished']:
+		# FIXME: this might loop forever?
 		status = connection.request('adconnector/admember/progress', data=progress_data)
 		percentage = status['percentage']
 		print percentage
@@ -97,9 +138,26 @@ def join_ad():
 	if not status['result']['success']:
 		print status['result']['error']
 		print '=== AD-JOIN FINISHED WITH ERROR ==='
-		sys.exit(1)
+		exit(1)
 
 	print '=== AD-JOIN FINISHED ==='
+
+
+def join_ad():
+	""" Function for joining an AD domain, mimicking a join from umc"""
+
+	global connection
+	connection = UMCConnection(options.host)
+	connection.auth(options.username, options.password)
+
+	if options.sync_mode:
+		# join in sync mode:
+		print '=== AD-JOIN SYNC MODE SELECTED ==='
+		join_sync_mode()
+	else:
+		# join in read mode:
+		print '=== AD-JOIN READ MODE SELECTED ==='
+		join_read_mode()
 
 
 def check_correct_passwords():
@@ -115,10 +173,10 @@ def check_correct_passwords():
 
 	ucr.save()
 
-	with open ("/var/lib/ucs-test/pwdfile", "r") as pwfile:
+	with open("/var/lib/ucs-test/pwdfile", "r") as pwfile:
 		pwfile_pw = pwfile.read().replace('\n', '')
 	if pwfile_pw != options.domain_password:
-		with open ("/var/lib/ucs-test/pwdfile", "w") as pwfile:
+		with open("/var/lib/ucs-test/pwdfile", "w") as pwfile:
 			pwfile.write(options.domain_password)
 
 
@@ -142,16 +200,14 @@ def check_correct_domain_admin():
 			ucr_domain_parts = ucr_domain_name.split('.')
 			ucr_domain_admin_parts = ['uid=%s' % options.domain_admin, 'cn=users']
 			for part in ucr_domain_parts:
-				ucr_domain_admin_parts.append('dc=%s'%part)
+				ucr_domain_admin_parts.append('dc=%s' % part)
 			ucr['tests/domainadmin/account'] = ','.join(ucr_domain_admin_parts)
 
 	ucr.save()
-
-
 
 
 join_ad()
 check_correct_passwords()
 check_correct_domain_admin()
 
-sys.exit(0)
+exit(0)
