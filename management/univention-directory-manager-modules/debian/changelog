@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-44) unstable; urgency=low
+
+  * Bug #32760: version bump
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 10 Apr 2015 15:29:35 +0200
+
 univention-directory-manager-modules (10.0.29-41) unstable; urgency=low
 
   * Bug #32760: adpated multi value labels
