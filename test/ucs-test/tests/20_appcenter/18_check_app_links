@@ -18,8 +18,9 @@ from univention.management.console.modules.appcenter.app_center import Applicati
 
 
 APPCENTER_FILE = "/var/cache/appcenter-installed.txt"  # installed apps
-FAIL_CODES = (401, 403, 404, 406, 407, 408, 409, 410)  # fail HTTP codes
 check_installed_apps = []  # list of installed apps (from APPCENTER_FILE)
+
+re_pattern = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'  # link extraction pattern
 failures_counter = 0  # errors counter
 bad_links = []  # list of problematic links
 
@@ -77,12 +78,24 @@ def check_link_by_request(proc_connection, link):
     proc_connection.close()
 
 
-def findall_urls(ini_content):
+def findall_urls(filename):
     """
-    Returns all the 'http:' and 'https:' URLs found in the given 'ini_content'.
+    Returns a set of 'http:' and 'https:' URLs found in the given 'filename'.
+    Lines starting with '#' are ignored.
     """
-    re_pattern = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
-    return set(findall(re_pattern, ini_content))
+    all_urls = []
+
+    try:
+        with open(filename, 'r') as ini_file:
+            for line in ini_file:
+                if not line.startswith('#'):
+                    all_urls += findall(re_pattern, line)
+
+    except (IOError, OSError) as exc:
+        utils.fail("An %r error occured while working with %s"
+                   % (exc, filename))
+
+    return set(all_urls)
 
 
 def collect_links():
@@ -101,14 +114,8 @@ def collect_links():
         for filename in test_path:
             if app in filename:
                 print "\nGetting links from file '%s':" % filename
-
                 # determine links to be checked (duplicates are ignored):
-                try:
-                    with open(filename, 'r') as ini_file:
-                        links_to_check.update(findall_urls(ini_file.read()))
-                except (IOError, OSError) as exc:
-                    utils.fail("An %r error occured while working with %s"
-                               % (exc, filename))
+                links_to_check.update(findall_urls(filename))
 
     return links_to_check
 
@@ -147,7 +154,8 @@ def check_ini_files():
                 fail_the_test(link)  # when ValueError or URLError happens
             else:
                 print "The HTTP response code is:", response_code
-                if response_code in FAIL_CODES:
+                # fail if HTTP response code startswith 4xx or 5xx:
+                if str(response_code).startswith(('4', '5')):
                     print "Response code indicates a problem."
                     fail_the_test(link)
 
