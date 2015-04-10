@@ -1,0 +1,2 @@
+overlay	chrome://browser/content/browser.xul	chrome://hidetabbar/content/hidetabbarOverlay.xul
+content	hidetabbar	chrome/content/

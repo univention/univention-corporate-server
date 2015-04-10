@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Welcome to Univention Corporate Server</title>
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" href="js/dijit/themes/dijit.css">
+		<link rel="stylesheet" href="css/bootstrap.css"/>
+		<link rel="stylesheet" href="css/ucs.css">
+		<link rel="stylesheet" href="css/welcome.css">
+		<script type="text/javascript">
+			var l10nResources = ['welcome'];
+		</script>
+		<script type="text/javascript" src="js/ucs/query.js"></script>
+		<script type="text/javascript" src="js/welcome/ucs.js"></script> <!-- must be after ucs/query to overwrite dojoConfig -->
+		<script type="text/javascript" src="js/dojo/dojo.js"></script>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="site-header">
+				<div id="header-top">
+					<div id="header-left">
+					</div>
+					<div id="header-right">
+						<div class="dropdown" id="dropDownButton"></div>
+					</div>
+				</div>
+			</div>
+			<div class="container">
+				<div id="title" class="dijitHidden">
+					<h1 data-i18n="Welcome to Univention Corporate Server"></h1>
+					<h2 data-i18n="{hostname}.{domainname}"></h2>
+				</div>
+				<div id="content" class="tab-content">
+					<span class="welcome-text" data-i18n="Navigate with your browser to the IP address of this system in order to access the management interface of Univention Corporate Server."></span>
+					<div class="welcome-image">
+						<div id="welcome-appliance-logo"></div>
+						<div id="welcome-url" class="welcome-url"></div>
+						<div class="welcome-url-alternative dijitHidden" id="welcome-url-alternative">
+							<span data-i18n="Or use an alternative address:"></span>
+						</div>
+					</div>
+
+					<a class="welcome-command" href="#" data-i18n="Looking for a command line?"></a>
+					<a class="welcome-desktop" href="#" data-i18n="Looking for a desktop?"></a>
+<!--
+					<a class="" href="#" data-i18n="[↓] more options"></a>
+1. UCS version / App appliance name
+
+2. The current network setting
+
+3. How to connect the web management interface
+
+4. A login to the command line
+
+We could later add a simple interface for changing the network settings.
+
+TODO: [↓] more options
+
+KDE-hint
+
+access UMC in this session directly
+
+-->
+
+				</div>
+			</div>
+		</div>
+		<div class="footer " id="footer" role="contentinfo"></div>
+	</body>
+</html>

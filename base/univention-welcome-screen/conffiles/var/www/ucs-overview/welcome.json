@@ -1,0 +1,23 @@
+@!@
+import json
+import univention.management.console.modules.setup.network
+data = {}
+for key in ('server/role', 'hostname', 'domainname'):
+	data[key] = configRegistry.get(key)
+
+for key, value in configRegistry.items():
+	if key.startswith('umc/web/appliance/'):
+		data[key] = value
+
+all_ip4s = set()
+all_ip6s = set()
+interfaces = univention.management.console.modules.setup.network.Interfaces()
+for interface in interfaces.values():
+	all_ip4s.update(a[0] for a in interface.ip4)
+	all_ip6s.update(a[0] for a in interface.ip6)
+
+data['ip_addresses'] = list(all_ip4s)
+data['ip6_addresses'] = list(all_ip6s)
+
+print json.dumps(data, indent=2)
+@!@

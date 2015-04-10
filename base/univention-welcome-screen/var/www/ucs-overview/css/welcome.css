@@ -1,0 +1,65 @@
+.welcome-image {
+	position: relative;
+	margin: 0 auto;
+	background-image: url("../welcome/welcome.png");
+	background-repeat: no-repeat;
+	width: 652px;
+	height: 200px;
+}
+
+.welcome-url {
+	position: absolute;
+	top: 88px;
+	left: 250px;
+	width: 163px;
+	height: 22px;
+	line-height: 22px;
+}
+
+.welcome-url-alternative {
+	position: absolute;
+	top: 120px;
+	left: 250px;
+}
+
+.welcome-url-alternative span {
+	display: block;
+}
+
+.welcome-url-alternative span:first-child {
+	margin-left: -20px;
+}
+
+.welcome-text {
+	display: block;
+	margin: 0 auto;
+	font-size: 1.1em;
+	width: 652px;
+	padding: 15px 10px;
+}
+
+.welcome-command {
+	background-image: url("../welcome/command.svg");
+}
+.welcome-desktop {
+	background-image: url("../welcome/desktop.svg");
+}
+.welcome-command, .welcome-desktop {
+	background-repeat: no-repeat;
+	background-size: 30px;
+	padding: 5px 30px 0;
+	line-height: 20px;
+	display: block;
+}
+
+#welcome-appliance-logo {
+	margin: 10px;
+	height: 67px;
+	width: 155px;
+	position: absolute;
+	left: 230px;
+	top: 0;
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+}

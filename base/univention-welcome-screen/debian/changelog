@@ -1,0 +1,5 @@
+univention-welcome-screen (0.0.0-1) unstable; urgency=medium
+
+  * Bug #37537: Initial Release
+
+ -- Florian Best <best@univention.de>  Fri, 10 Apr 2015 10:00:14 +0200

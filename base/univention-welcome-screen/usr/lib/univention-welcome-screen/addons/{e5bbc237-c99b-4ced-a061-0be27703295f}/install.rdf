@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+	<Description about="urn:mozilla:install-manifest">
+		<em:id>{e5bbc237-c99b-4ced-a061-0be27703295f}</em:id>
+		<em:type>2</em:type>
+		<em:name>Hide Tab Bar With One Tab</em:name>
+		<em:version>1.2beta3</em:version>
+		<em:creator>Chris</em:creator>
+		<em:homepageURL>http://forums.mozillazine.org/viewtopic.php?f=48&amp;t=2141579</em:homepageURL>
+		<em:description>Hide the tab bar if there is only one tab.</em:description>
+		<contributor>plix</contributor>
+		<em:targetApplication>
+			<Description>
+				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+				<em:minVersion>23.0a1</em:minVersion>
+				<em:maxVersion>28.0a1</em:maxVersion>
+			</Description>
+		</em:targetApplication>
+	</Description>
+</RDF>

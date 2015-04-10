@@ -1,0 +1,29 @@
+Source: univention-welcome-screen
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.8.2
+Build-Depends: debhelper (>= 9),
+ ucslint-univention,
+ univention-config-dev,
+ univention-management-console-dev,
+ po-debconf (>= 0.5.0),
+
+Package: univention-welcome-screen
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends},
+ passwd,
+ x11-utils,
+ x11-xkb-utils,
+ openbox,
+ univention-management-console-module-setup,
+ shell-univention-lib,
+ python-univention-lib,
+Recommends: firefox-en | firefox-de | firefox | iceweasel,
+Description: UCS welcome screen
+ This package provides a welcome screen to the UCS system which is shown at system startup.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

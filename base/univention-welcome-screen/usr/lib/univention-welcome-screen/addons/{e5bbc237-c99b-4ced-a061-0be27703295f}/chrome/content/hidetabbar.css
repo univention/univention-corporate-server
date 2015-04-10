@@ -1,0 +1,2 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+@-moz-document url-prefix('chrome://') { .tabbrowser-tabs { -moz-binding: url("chrome://hidetabbar/content/hidetabbar.xml#hidetabbar-tabbrowser-tabs"); } }
