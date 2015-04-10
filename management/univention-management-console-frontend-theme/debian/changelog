@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.89-12) unstable; urgency=medium
+
+  * Bug #38225: force bg size for icons to avoid display problems with IE11
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 10 Apr 2015 18:22:08 +0200
+
 univention-management-console-frontend-theme (0.0.89-11) unstable; urgency=medium
 
   * Bug #37804: add hover and active state to help icon

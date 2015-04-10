@@ -257,6 +257,7 @@ icon-image(xoffset=0, yoffset=0, dirprefix="", filesuffix="", width=20px, height
 	_iconImage = replace("^(.*)(\.\w*)", "$1" + filesuffix + "$2", $image-icons)
 	_url = dirprefix + _iconImage;
 	background: url(_url) unit(xoffset, px) unit(yoffset, px) no-repeat;
+	background-size: image-size(_url);
 	width: width;
 	height: height;
 }
