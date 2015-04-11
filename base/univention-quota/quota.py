@@ -51,8 +51,7 @@ been changed at a parent object.
 '''
 
 SHARE_CACHE_DIR = '/var/cache/univention-quota/'
-
-UPGRADE_SHARE_DN_LIST = set()
+SHARE_CACHE_TODO_DIR = '/var/cache/univention-quota/todo'
 
 
 def _dump_share_and_policy_result(dn, share_object, policy_result):
@@ -81,13 +80,9 @@ def _read_share_and_policy_result(dn):
 
 def _remove_cache_for_share(dn):
 	filename = os.path.join(SHARE_CACHE_DIR, dn)
-	listener.setuid(0)
-	try:
-		ud.debug(ud.LISTENER, ud.INFO, 'Remove "%s"' % filename)
-		if os.path.exists(filename):
-			os.remove(filename)
-	finally:
-		listener.unsetuid()
+	ud.debug(ud.LISTENER, ud.INFO, 'Remove "%s"' % filename)
+	if os.path.exists(filename):
+		os.remove(filename)
 
 
 def _is_share(new, old):
@@ -116,12 +111,7 @@ def _is_container(new, old):
 
 
 def _get_ldap_connection():
-	connection = False
-
-	try:
-		connection = univention.uldap.getMachineConnection(ldap_master=False)
-	finally:
-		listener.unsetuid()
+	connection = univention.uldap.getMachineConnection(ldap_master=False)
 
 	return connection
 
@@ -142,18 +132,14 @@ def _is_container_change_relevant(new, old):
 
 	result = False
 
-	listener.setuid(0)
-	try:
-		lo = _get_ldap_connection()
-		# Check if one policy is a quota policy
-		for dn in old_reference + new_reference:
-			ldap_object = lo.get(dn)
-			if _is_quota_policy(ldap_object, None):
-				result = True
-				break
-		lo.lo.unbind()
-	finally:
-		listener.unsetuid()
+	lo = _get_ldap_connection()
+	# Check if one policy is a quota policy
+	for dn in old_reference + new_reference:
+		ldap_object = lo.get(dn)
+		if _is_quota_policy(ldap_object, None):
+			result = True
+			break
+	lo.lo.unbind()
 
 	return result
 
@@ -172,31 +158,25 @@ def _is_share_used_on_this_server(new, old):
 
 
 def _add_all_shares_below_this_container_to_dn_list(container_dn):
-	listener.setuid(0)
-	try:
-		lo = _get_ldap_connection()
-		for dn, attr in lo.search(base=container_dn, filter='(&(objectClass=univentionShare)(univentionShareHost=%s))' % _get_fqdn(), attr=['dn']):
-			_add_share_to_dn_list(dn)
-		lo.lo.unbind()
-	finally:
-		listener.unsetuid()
+	lo = _get_ldap_connection()
+	for dn, attr in lo.search(base=container_dn, filter='(&(objectClass=univentionShare)(univentionShareHost=%s))' % _get_fqdn(), attr=['dn']):
+		_add_share_to_dn_list(dn)
+	lo.lo.unbind()
 
 
 def _add_share_to_dn_list(dn):
 	ud.debug(ud.LISTENER, ud.INFO, 'Add %s to share list' % dn)
-	UPGRADE_SHARE_DN_LIST.add(dn)
+	filename = os.path.join(SHARE_CACHE_TODO_DIR, dn)
+	# Create todo file
+	open(filename, 'w').close()
 
 
 def _get_all_quota_references(dn):
 	references = []
-	listener.setuid(0)
-	try:
-		lo = _get_ldap_connection()
-		for ddn, attr in lo.search(filter='(univentionPolicyReference=%s)' % dn):
-			references.append((ddn, attr))
-		lo.lo.unbind()
-	finally:
-		listener.unsetuid()
+	lo = _get_ldap_connection()
+	for ddn, attr in lo.search(filter='(univentionPolicyReference=%s)' % dn):
+		references.append((ddn, attr))
+	lo.lo.unbind()
 	return references
 
 
@@ -236,30 +216,38 @@ def clean():
 		if os.path.exists(SHARE_CACHE_DIR):
 			for filename in os.listdir(SHARE_CACHE_DIR):
 				os.remove(os.path.join(SHARE_CACHE_DIR, filename))
+		if os.path.exists(SHARE_CACHE_TODO_DIR):
+			for filename in os.listdir(SHARE_CACHE_TODO_DIR):
+				os.remove(os.path.join(SHARE_CACHE_TODO_DIR, filename))
 	finally:
 		listener.unsetuid()
-	UPGRADE_SHARE_DN_LIST.clear()
 
 
 def postrun():
 	listener.setuid(0)
+	lo = None
 	try:
-		lo = _get_ldap_connection()
-		for dn in UPGRADE_SHARE_DN_LIST:
+		for dn in os.listdir(SHARE_CACHE_TODO_DIR):
+			filename = os.path.join(SHARE_CACHE_TODO_DIR, dn)
+			if not lo:
+				lo = _get_ldap_connection()
 			attrs = lo.get(dn)
 			ud.debug(ud.LISTENER, ud.INFO, '%s: attrs: %s' % (dn, attrs))
 
 			if not attrs or not _get_fqdn() in attrs.get('univentionShareHost'):
+				os.remove(filename)
 				_remove_cache_for_share(dn)
 				continue
 
-			listener.setuid(0)
 			policy_result = univention.lib.policy_result.policy_result(dn)[0]
+			ud.debug(ud.LISTENER, ud.INFO, '%s: policy_result: %s' % (dn, policy_result))
 			_dump_share_and_policy_result(dn, attrs, policy_result)
-		lo.lo.unbind()
+
+			os.remove(filename)
+		if lo:
+			lo.lo.unbind()
 	finally:
 		listener.unsetuid()
-	UPGRADE_SHARE_DN_LIST.clear()
 
 
 def initialize():
