@@ -75,6 +75,8 @@ def get_shares():
 	shares = {}
 	for f in os.listdir(SHARE_CACHE_DIR):
 		filename = os.path.join(SHARE_CACHE_DIR, f)
+		if os.path.isdir(filename):
+			continue
 		f = open(filename, 'r')
 		dn, attrs, policy_result  = cPickle.load(f)
 		f.close()
