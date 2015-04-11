@@ -1,3 +1,10 @@
+univention-quota (9.1.5-5) unstable; urgency=medium
+
+  * Use a todo directory instead of a list in the listener module,
+    otherwise a modification could be lost (Bug #36989)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 11 Apr 2015 20:45:37 +0200
+
 univention-quota (9.1.5-4) unstable; urgency=medium
 
   * Fixed ldap filter in quota listener module (Bug #36989)
