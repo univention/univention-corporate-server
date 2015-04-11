@@ -232,7 +232,7 @@ def postrun():
 			if not lo:
 				lo = _get_ldap_connection()
 			attrs = lo.get(dn)
-			ud.debug(ud.LISTENER, ud.PROCESS, '%s: attrs: %s' % (dn, attrs))
+			ud.debug(ud.LISTENER, ud.INFO, '%s: attrs: %s' % (dn, attrs))
 
 			if not attrs or not _get_fqdn() in attrs.get('univentionShareHost'):
 				os.remove(filename)
@@ -240,7 +240,7 @@ def postrun():
 				continue
 
 			policy_result = univention.lib.policy_result.policy_result(dn)[0]
-			ud.debug(ud.LISTENER, ud.PROCESS, '%s: policy_result: %s' % (dn, policy_result))
+			ud.debug(ud.LISTENER, ud.INFO, '%s: policy_result: %s' % (dn, policy_result))
 			_dump_share_and_policy_result(dn, attrs, policy_result)
 
 			os.remove(filename)
