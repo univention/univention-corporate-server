@@ -1,3 +1,9 @@
+univention-quota (9.1.5-7) unstable; urgency=medium
+
+  * Don't try to remove the todo directory (Bug #36989)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 12 Apr 2015 13:10:31 +0200
+
 univention-quota (9.1.5-6) unstable; urgency=medium
 
   * Check for directories in cache dir (Bug #36989)

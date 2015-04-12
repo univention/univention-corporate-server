@@ -215,6 +215,8 @@ def clean():
 	try:
 		if os.path.exists(SHARE_CACHE_DIR):
 			for filename in os.listdir(SHARE_CACHE_DIR):
+				if filename == 'todo':
+					continue
 				os.remove(os.path.join(SHARE_CACHE_DIR, filename))
 		if os.path.exists(SHARE_CACHE_TODO_DIR):
 			for filename in os.listdir(SHARE_CACHE_TODO_DIR):
