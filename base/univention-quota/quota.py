@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 __package__ = '' 	# workaround for PEP 366
+import ldap
 import listener
 import cPickle
 import os
@@ -111,7 +112,10 @@ def _is_container(new, old):
 
 
 def _get_ldap_connection():
-	connection = univention.uldap.getMachineConnection(ldap_master=False)
+	try:
+		connection = univention.uldap.getMachineConnection(ldap_master=False)
+	except ldap.SERVER_DOWN:
+		connection = univention.uldap.getMachineConnection()
 
 	return connection
 
