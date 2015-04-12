@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-5
 src: univention-quota
-fix: 8.0.6-14.149.201504112145
+fix: 8.0.6-15.151.201504121318
 version: [5]
 desc: |
   This update fixes the following issue:
