@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-ldap
-fix: 11.0.12-1.736.201503261652
+fix: 11.0.12-3.738.201504131229
 version: [1]
 desc: |
   The LDAP attribute univentionSamba4pwdPropertiesi (integer) 
