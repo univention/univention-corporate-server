@@ -2,8 +2,8 @@ generate-appliance (1.2.6-5) unstable; urgency=low
 
   * Bug #37935: updated start-app
     - added DNS settings
-	- removed setting of system/setup/boot/start=true
-	- improved UCR setting
+    - removed setting of system/setup/boot/start=true
+    - improved UCR setting
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 10 Apr 2015 17:51:02 +0200
 
