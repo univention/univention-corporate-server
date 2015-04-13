@@ -1,3 +1,9 @@
+univention-kernel-image (8.0.6-5) unstable; urgency=low
+
+  * Revert last change (Bug #37385)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 13 Apr 2015 12:15:02 +0200
+
 univention-kernel-image (8.0.6-4) unstable; urgency=low
 
   * Update to latest kernel (Bug #37385)
