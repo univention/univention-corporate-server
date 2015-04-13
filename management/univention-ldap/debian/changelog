@@ -1,4 +1,4 @@
-univention-ldap (11.0.12-2) unstable; urgency=low
+univention-ldap (11.0.12-3) unstable; urgency=low
 
   * Bug #28331: added default (1) for univentionSamba4pwdProperties in base.ldif 
 
