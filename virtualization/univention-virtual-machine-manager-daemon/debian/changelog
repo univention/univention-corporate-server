@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.24-9) unstable; urgency=low
+
+  * Bug #37551: Fix default keyboard layout of profiles in join script.
+
+ -- Andreas Peichert <peichert@univention.de>  Mon, 13 Apr 2015 11:11:50 +0200
+
 univention-virtual-machine-manager-daemon (4.0.24-8) unstable; urgency=low
 
   * Bug #36615: fixed a memory leak in the UVMM UMC module.
