@@ -54,6 +54,7 @@ print 'univentionObjectType: settings/sambadomain'
 print 'sambaNextUserRid: 1000'
 print 'sambaNextGroupRid: 1000'
 print 'sambaMinPwdLength: 8'
+print 'univentionSamba4pwdProperties: 1'
 @!@
 dn: cn=admin,@%@ldap/base@%@
 objectClass: top
