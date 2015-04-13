@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-virtual-machine-manager-daemon
-fix: 4.0.24-8.598.201504091831
+fix: 4.0.24-9.600.201504131629
 version: [1]
 desc: |
   This update fixes the following issue:
@@ -13,4 +13,6 @@ desc: |
   * An error in the grid of the UMC module resulted in an endless refreshing
     loop of the grid if no connection was available. This has been adjusted.
   * A memory leak in the UVMM UMC module has been fixed.
-bug: [36640,36635,36678,38010,36615]
+  * The Debian-installer does no longer set locale/keymap, which caused the
+    join script to use en-us as default keyboard layout. This has been fixed.
+bug: [36640,36635,36678,38010,36615,37551]
