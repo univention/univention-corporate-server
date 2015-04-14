@@ -1,3 +1,9 @@
+ucs-test (5.0.144-4) unstable; urgency=low
+
+  * 01_base/47faillog_account-smb-krb: skip in S4 envs (Bug #35014).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 14 Apr 2015 11:49:24 +0200
+
 ucs-test (5.0.144-3) unstable; urgency=low
 
   * Added 51_samba4/57pwdComplexitySync Bug #28331
