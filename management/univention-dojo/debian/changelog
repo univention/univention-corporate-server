@@ -1,3 +1,9 @@
+univention-dojo (8.0.3-2) unstable; urgency=medium
+
+  * Bug #38225: update Dojo version to 1.10.4
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 14 Apr 2015 12:24:21 +0200
+
 univention-dojo (8.0.3-1) unstable; urgency=medium
 
   Bug #35654:
