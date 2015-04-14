@@ -3,11 +3,12 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
- git,
  univention-dojo,
  stylus,
  unzip,
- sed
+ sed,
+ imagemagick,
+ librsvg2-bin
 
 Package: univention-management-console-frontend-theme
 Architecture: all

@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.89-13) unstable; urgency=medium
+
+  * Bug #38225: use PNG image for background icons in IE
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 14 Apr 2015 12:41:39 +0200
+
 univention-management-console-frontend-theme (0.0.89-12) unstable; urgency=medium
 
   * Bug #38225: force bg size for icons to avoid display problems with IE11

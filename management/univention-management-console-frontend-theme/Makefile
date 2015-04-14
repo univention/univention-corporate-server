@@ -38,6 +38,8 @@ TMP_THEME_CSS=$(TMP_THEME_DIR)/umc.css
 GIT_PARAMS=--git-dir $(REPO)/.git
 BOOSTRAP_FILE=$(TMP_THEME_DIR)/bootstrap.css
 INSTALL_DIR=/usr/share/univention-management-console-frontend/js/dijit/themes/umc
+ICON_FILES=icons.svg icons-small.svg icons-white.svg icons-small-white.svg
+ICON_FILES_PNG=$(addprefix $(TMP_THEME_DIR)/images/,$(ICON_FILES:.svg=.png))
 
 .PRECIOUS: $(REPO) Makefile
 
@@ -62,6 +64,9 @@ tmp: $(REPO)
 		sed 's/\#282828/\#ffffff/g' $(TMP_THEME_DIR)/images/$$isvg.svg > $(TMP_THEME_DIR)/images/$$isvg-white.svg; \
 	done
 
+%.png: %.svg
+	convert -background transparent "$<" "$@"
+
 css:
 	mkdir css
 
@@ -69,7 +74,9 @@ css/fonts:
 	mkdir -p $@
 	unzip -o -j clearsans-1.00.zip "*.woff" -d $@
 
-css/umc.css: tmp css $(BOOSTRAP_FILE)
+$(ICON_FILES_PNG): tmp
+
+css/umc.css: tmp css $(BOOSTRAP_FILE) $(ICON_FILES_PNG)
 	# compile all stylus files
 	stylus $(TMP_THEME_DIR) $(TMP_THEME_DIR)/form $(TMP_THEME_DIR)/layout $(TMP_THEME_DIR)/site
 	# Workaround: mark several commands as comments (/*TMP ... */) 
