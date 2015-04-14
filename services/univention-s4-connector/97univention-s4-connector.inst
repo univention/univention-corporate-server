@@ -125,13 +125,6 @@ if ! is_ucr_true 'connector/s4/allow/secondary'; then
 	s4connectorservicehost_dns="$(univention-directory-manager computers/computer list "$@" --filter "(&(univentionService=${NAME})(!(cn=$hostname)))" | sed -ne 's|^DN: ||p')"
 fi
 
-# set the pwdProperties UCS default (complexity on)
-if ! is_ucr_true 'connector/s4/allow/secondary'; then
-	udm settings/sambadomain modify "$@" --ignore_exists \
-		--dn "sambaDomainName=$windows_domain,cn=samba,$ldap_base" \
-		--set domainPasswordComplex=1
-fi
-
 if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide this service
 
 	LDB_URI="tdb:///var/lib/samba/private/sam.ldb"
