@@ -5,6 +5,6 @@ src: univention-ldap
 fix: 11.0.12-3.738.201504131229
 version: [1]
 desc: |
-  The LDAP attribute univentionSamba4pwdPropertiesi (integer) 
+  The LDAP attribute univentionSamba4pwdProperties (integer) 
   has been added to the sambaDomain object class.
 bug: [28331]
