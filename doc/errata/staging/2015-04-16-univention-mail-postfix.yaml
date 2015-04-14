@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0" 
+version: [1]
+scope: ucs_4.0-0-errata4.0-1
+src: univention-mail-postfix
+fix: 9.0.0-18.240.201504141632
+desc: |
+  This update addresses the following issues:
+  * Allow Postfix to receive client mails on submission port 587.
+bug: [30043]
