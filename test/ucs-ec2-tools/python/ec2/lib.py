@@ -657,7 +657,7 @@ class VM_EC2(VM):
 				aws_cfg['region'] = region
 				break
 
-		env_vars = ('JOB_NAME', 'BUILD_NUMBER')
+		env_vars = ('JOB_NAME', 'BUILD_NUMBER', 'BUILD_URL')
 		user_data = '\n'.join(['%s=%s' % (v, os.getenv(v, '')) for v in env_vars])
 
 		self.ec2 = boto.connect_ec2(**aws_cfg)

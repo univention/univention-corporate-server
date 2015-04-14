@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.12-6) unstable; urgency=low
+
+  * Bug #35744: Add Jenkins URL.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 14 Apr 2015 10:09:09 +0200
+
 ucs-ec2-tools (1.0.12-5) unstable; urgency=low
 
   * utils/ad-join.py: added functionality to join in sync mode (Bug #37290).
