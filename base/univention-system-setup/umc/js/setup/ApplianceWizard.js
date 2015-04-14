@@ -866,7 +866,7 @@ define([
 			}, this);
 		},
 
-		evaluateBlacklist: function() {
+		_evaluateBlacklist: function() {
 			var disable = [];
 			array.forEach(this.disabledFields, lang.hitch(this, function(field) {
 				if (field == 'password') {
@@ -929,8 +929,9 @@ define([
 					widget.set('disabled', true);
 				}
 			}));
+		},
 
-			// preselect the first visible option for radio buttons
+		_preselectFirstVisibleRadioButton: function() {
 			array.forEach(['role', 'role-nonmaster-ad'], function(_ipage) {
 				var ipage = this.getPage(_ipage);
 				array.some(ipage._form.widgets, function(_iwidget) {
@@ -1270,6 +1271,8 @@ define([
 			this._setLocaleDefault();
 			this._setupFooterButtons();
 			this._updateOrganizationName('');
+			this._evaluateBlacklist();
+			this._preselectFirstVisibleRadioButton();
 		},
 
 		_randomHostName: function() {
@@ -2254,7 +2257,7 @@ define([
 			}
 
 			// evaluate blacklist after update of view
-			this.evaluateBlacklist();
+			this._evaluateBlacklist();
 
 			// extra handling for specific pages
 			if (pageName == 'welcome-adapt-locale-settings') {

@@ -1,3 +1,9 @@
+univention-system-setup (8.1.66-32) unstable; urgency=medium
+
+  * Bug #38116: correct logic error for preselection of radio buttons
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 14 Apr 2015 11:03:37 +0200
+
 univention-system-setup (8.1.66-31) unstable; urgency=medium
 
   * Bug #38116: extend system/setup/boot/fields/blacklist to disable selection
