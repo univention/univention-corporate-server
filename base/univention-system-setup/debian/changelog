@@ -1,3 +1,12 @@
+univention-system-setup (8.1.66-33) unstable; urgency=medium
+
+  Bug #38116:
+  * reload (localized) data when changing language in ApplianceWizard
+  * add English license agreement as fallback
+  * limit license agreement in its height
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 14 Apr 2015 12:11:36 +0200
+
 univention-system-setup (8.1.66-32) unstable; urgency=medium
 
   * Bug #38116: correct logic error for preselection of radio buttons

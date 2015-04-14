@@ -377,6 +377,7 @@ define([
 				helpText: _('Please read carefully the license agreement for the %s appliance.', this.ucr['umc/web/appliance/name'] || ''),
 				widgets: [{
 					type: Text,
+					'class': 'umcUCSSetupLicenseAgreement',
 					name: 'license',
 					content: this.values.license_agreement
 				}]

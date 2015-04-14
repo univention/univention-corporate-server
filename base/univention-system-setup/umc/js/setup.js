@@ -261,14 +261,14 @@ define([
 					locale: locale
 				}, false));
 				deferreds.push(_.load());
-				return all(deferreds);
+				return all(deferreds).then(lang.hitch(this, 'load'));
 			});
 
 			// remove wizard and render it again
 			var _cleanup = lang.hitch(this, function() {
 				this.removeChild(this.wizard);
 				this.wizard.destroy();
-				this._renderWizard(values, ucr);
+				this._renderWizard(this._orgValues, ucr);
 			});
 
 			// chain tasks with some time in between to allow a smooth standby animation
@@ -306,7 +306,9 @@ define([
 		setValues: function(values) {
 			// update all pages with the given values
 			this._orgValues = lang.clone(values); //FIXME: wrong place
-			this._page.setValues(this._orgValues);
+			if (this._page) {
+				this._page.setValues(this._orgValues);
+			}
 		},
 
 		getValues: function() {

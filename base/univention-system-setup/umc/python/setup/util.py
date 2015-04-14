@@ -147,7 +147,8 @@ def load_values(lang=None):
 		prefix = ucr.get('umc/web/appliance/data_path')
 		license_path = '%sLICENSE_AGREEMENT' % prefix
 		localized_license_path = '%s_%s' % (license_path, lang.upper())
-		for ipath in (localized_license_path, license_path):
+		english_license_path = '%s_EN' % license_path
+		for ipath in (localized_license_path, license_path, english_license_path):
 			if os.path.exists(ipath):
 				with open(ipath) as license_file:
 					values['license_agreement'] = ''.join(license_file.readlines())

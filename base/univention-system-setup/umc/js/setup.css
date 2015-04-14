@@ -57,6 +57,11 @@
 	float: right;
 }
 
+.umc .umcUCSSetupLicenseAgreement {
+	overflow: auto;
+	height: 350px !important;
+}
+
 .umc .umcUCSSetupSoftwareGrid .dojoxGrid {
 	height: 350px !important;
 }
