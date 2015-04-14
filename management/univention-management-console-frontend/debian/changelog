@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-53) unstable; urgency=low
+
+  * Bug #38225: version bump
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 14 Apr 2015 14:55:01 +0200
+
 univention-management-console-frontend (4.1.106-52) unstable; urgency=low
 
   * Bug #36615: widgets in grids that do not have a corresponding DOM node
