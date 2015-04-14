@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.22-16) unstable; urgency=low
+
+  * Bug #35744: Add Jenkins URL.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 14 Apr 2015 10:09:09 +0200
+
 ucs-ec2-tools (0.1.22-15) unstable; urgency=low
 
   * Bug #37878: Added functions to start jobs simultaneously on multiple
