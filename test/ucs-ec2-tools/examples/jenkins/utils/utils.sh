@@ -203,6 +203,11 @@ run_admember_tests ()
 	run_tests -p skip_admember "$@"
 }
 
+run_adconnector_tests ()
+{
+	run_tests -s adconnector "$@"
+}
+
 run_win_member_gpo_tests ()
 {
 	run_tests -r windows_gpo_test "$@"

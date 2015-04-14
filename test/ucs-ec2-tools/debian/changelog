@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.12-7) unstable; urgency=low
+
+  * examples/jenkins/utils/utils.sh: added run_adconnector_tests to
+    run 55_adconnector/* tests (Bug #37290).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 14 Apr 2015 16:10:56 +0200
+
 ucs-ec2-tools (1.0.12-6) unstable; urgency=low
 
   * Bug #35744: Add Jenkins URL.
