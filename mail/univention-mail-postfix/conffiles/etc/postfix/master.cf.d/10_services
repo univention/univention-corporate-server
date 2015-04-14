@@ -26,6 +26,11 @@ print '465       inet  n       -       n       -       -       smtpd %s%s' % (
 	opt_verbose,
 	get_options('mail/postfix/mastercf/options/smtps/'),
 )
+
+print '587       inet  n       -       n       -       -       smtpd %s%s' % (
+	opt_verbose,
+	get_options('mail/postfix/mastercf/options/submission/'),
+)
 @!@
 #628      inet  n       -       n       -       -       qmqpd
 pickup    fifo  n       -       n       60      1       pickup

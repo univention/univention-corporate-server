@@ -1,3 +1,9 @@
+univention-mail-postfix (9.0.0-18) unstable; urgency=low
+
+  * Bug #30043: Allow Message Submission via port 587
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 14 Apr 2015 15:47:52 +0200
+
 univention-mail-postfix (9.0.0-17) unstable; urgency=low
 
   * Bug #37442: Fix UCR variable description for maximum message size

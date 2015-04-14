@@ -83,6 +83,7 @@ Variables: mail/smtpport
 Variables: mail/postfix/smtpd/debug
 Variables: mail/postfix/mastercf/options/smtp/.*
 Variables: mail/postfix/mastercf/options/smtps/.*
+Variables: mail/postfix/mastercf/options/submission/.*
 
 Type: subfile
 Multifile: etc/postfix/master.cf

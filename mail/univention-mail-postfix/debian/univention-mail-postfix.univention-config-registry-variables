@@ -316,3 +316,9 @@ Description[de]=Diese Variablen definieren zusätzliche Optionen für den Postfi
 Description[en]=These variables define additional options for the smtps service of postfix on port 465. The variables have to be defined as mail/postfix/mastercf/options/smtps/OPTION=VALUE.
 Type=str
 Categories=service-mail
+
+[mail/postfix/mastercf/options/submission/.*]
+Description[de]=Diese Variablen definieren zusätzliche Optionen für den Postfix-submission-Dienst auf Port 587. Die Variablen müssen die Form mail/postfix/mastercf/options/submission/OPTION=WERT aufweisen.
+Description[en]=These variables define additional options for the submission service of postfix on port 587. The variables have to be defined as mail/postfix/mastercf/options/submssion/OPTION=VALUE.
+Type=str
+Categories=service-mail
