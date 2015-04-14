@@ -1,0 +1,50 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check synchronisation of pwdComplexity attribute"
+## exposure: dangerous
+## bugs:
+## - 31649
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+eval "$(ucr shell)"
+
+RETVAL=100
+
+orig_password_complexity=$(samba-tool domain passwordsettings show  | sed -ne 's|Password complexity: ||p')
+
+section "pwdComplexity S4 -> UCS"
+
+samba-tool domain passwordsettings set --complexity=on
+wait_for_replication_and_postrun
+udm_complexity=$(udm settings/sambadomain list | grep 'domainPasswordComplex: '| awk -F ': ' '{print $2}')
+test "$udm_complexity" = '1' || fail_test 110
+
+samba-tool domain passwordsettings set --complexity=off
+wait_for_replication_and_postrun
+udm_complexity=$(udm settings/sambadomain list | grep 'domainPasswordComplex: '| awk -F ': ' '{print $2}')
+test "$udm_complexity" = '0' || fail_test 110
+
+section "pwdComplexity UCS -> S4"
+
+udm settings/sambadomain modify --dn "sambaDomainName=$windows_domain,cn=samba,$ldap_base" --set domainPasswordComplex=1
+wait_for_replication_and_postrun
+s4_complexity=$(samba-tool domain passwordsettings show  | sed -ne 's|Password complexity: ||p')
+test "$s4_complexity" = 'on' || fail_test 110
+
+udm settings/sambadomain modify --dn "sambaDomainName=$windows_domain,cn=samba,$ldap_base" --set domainPasswordComplex=0
+wait_for_replication_and_postrun
+s4_complexity=$(samba-tool domain passwordsettings show  | sed -ne 's|Password complexity: ||p')
+test "$s4_complexity" = 'off' || fail_test 110
+
+section "cleanup"
+samba-tool domain passwordsettings set --complexity=$orig_password_complexity
+wait_for_replication_and_postrun
+
+exit $RETVAL

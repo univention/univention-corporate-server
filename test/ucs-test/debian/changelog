@@ -1,3 +1,9 @@
+ucs-test (5.0.144-3) unstable; urgency=low
+
+  * Added 51_samba4/57pwdComplexitySync Bug #28331
+
+ -- Felix Botner <botner@univention.de>  Tue, 14 Apr 2015 11:13:34 +0200
+
 ucs-test (5.0.144-2) unstable; urgency=low
 
   * 20_appcenter/18_check_app_links: the test now fails on any 4xx or 5xx
