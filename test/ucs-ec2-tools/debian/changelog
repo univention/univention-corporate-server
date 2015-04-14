@@ -1,3 +1,11 @@
+ucs-ec2-tools (1.0.12-9) unstable; urgency=low
+
+  *  examples/jenkins/autotest-232-adsync-w2k8r2-english.cfg
+     examples/jenkins/autotest-232-adsync-w2k8r2-english-same-domain.cfg
+    renamed to correct Windows version (Bug #37290).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 14 Apr 2015 16:49:21 +0200
+
 ucs-ec2-tools (1.0.12-8) unstable; urgency=low
 
   *  examples/jenkins/autotest-232-adsync-w2k8-english-same-domain.cfg
