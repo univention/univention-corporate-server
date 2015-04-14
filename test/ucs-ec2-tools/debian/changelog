@@ -1,3 +1,13 @@
+ucs-ec2-tools (1.0.12-8) unstable; urgency=low
+
+  *  examples/jenkins/autotest-232-adsync-w2k8-english-same-domain.cfg
+     examples/jenkins/autotest-231-adsync-w2k12-german.cfg
+     examples/jenkins/autotest-233-adsync-w2k12r2-france.cfg
+     examples/jenkins/autotest-232-adsync-w2k8-english.cfg
+    new configs to run_adconnector tests (Bug #37290).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 14 Apr 2015 16:42:26 +0200
+
 ucs-ec2-tools (1.0.12-7) unstable; urgency=low
 
   * examples/jenkins/utils/utils.sh: added run_adconnector_tests to
