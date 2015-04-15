@@ -74,8 +74,6 @@ css/fonts:
 	mkdir -p $@
 	unzip -o -j clearsans-1.00.zip "*.woff" -d $@
 
-$(ICON_FILES_PNG): tmp
-
 css/umc.css: tmp css $(BOOSTRAP_FILE) $(ICON_FILES_PNG)
 	# compile all stylus files
 	stylus $(TMP_THEME_DIR) $(TMP_THEME_DIR)/form $(TMP_THEME_DIR)/layout $(TMP_THEME_DIR)/site
@@ -100,7 +98,7 @@ $(BOOSTRAP_FILE): bootstrap.zip
 
 build: css/umc.css css/fonts
 
-build-dev: tmp css $(BOOSTRAP_FILE) css/fonts
+build-dev: tmp css $(BOOSTRAP_FILE) css/fonts $(ICON_FILES_PNG)
 	cp -r $(TMP_THEME_DIR)/* css
 	cd css; stylus -m .
 	cd css/form; stylus -m .

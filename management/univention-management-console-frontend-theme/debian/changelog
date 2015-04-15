@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.89-14) unstable; urgency=medium
+
+  * Bug #38225: use CSS class dj_trident for IE11+
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 15 Apr 2015 16:51:37 +0200
+
 univention-management-console-frontend-theme (0.0.89-13) unstable; urgency=medium
 
   * Bug #38225: use PNG image for background icons in IE

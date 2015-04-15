@@ -1,0 +1,21 @@
+--- a/dojo/uacss.js	2015-04-15 16:16:56.164000000 +0200
++++ b/dojo/uacss.js	2015-04-15 16:16:59.272000000 +0200
+@@ -24,6 +24,7 @@
+ 	var
+ 		html = baseWindow.doc.documentElement,
+ 		ie = has("ie"),
++		trident = has("trident"),
+ 		opera = has("opera"),
+ 		maj = Math.floor,
+ 		ff = has("ff"),
+@@ -52,6 +53,10 @@
+ 		classes["dj_ie" + maj(ie)] = true;
+ 		classes["dj_iequirks"] = has("quirks");
+ 	}
++	if(trident){
++		classes["dj_trident"] = true;
++		classes["dj_trident" + maj(trident)] = true;
++	}
+ 	if(ff){
+ 		classes["dj_ff" + maj(ff)] = true;
+ 	}
