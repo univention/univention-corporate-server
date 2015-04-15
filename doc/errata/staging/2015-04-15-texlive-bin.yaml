@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-5
 src: texlive-bin
-fix: 
+fix: 2009-8.21.201504151958
 note: This update fixes these vulnerabilities.
 version: [5]
 desc: |

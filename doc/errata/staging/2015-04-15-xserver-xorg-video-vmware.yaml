@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-5
 src: xserver-xorg-video-vmware
-fix: 
+fix: 1:11.0.1-2.22.201504151935
 note: This update fixes these vulnerabilities.
 version: [5]
 desc: |

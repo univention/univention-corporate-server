@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-5
 src: cairo
-fix: 
+fix: 1.10.2-7~bpo60+1.26.201504151923
 note: This update fixes these vulnerabilities.
 version: [5]
 desc: |
