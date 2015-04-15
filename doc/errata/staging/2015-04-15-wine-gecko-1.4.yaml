@@ -1,12 +1,12 @@
 product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
-src: libx11
-fix: 2:1.5.0-1.40.201504151215
+src: wine-gecko-1.4
+fix: 1.4+dfsg1-3.3.201504151400
 note: This update fixes these vulnerabilities.
 version: [1]
 desc: |
  Two vulnerabilities have been discovered in libx11:
- * 4-byte buffer overflow in MakeBigReq and SetReqLen
+ * 4-byte buffer overflow in SetReqLen
 cve:
  - CVE-2013-7439
