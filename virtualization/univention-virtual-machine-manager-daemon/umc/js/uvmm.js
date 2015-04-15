@@ -1247,7 +1247,7 @@ define([
 				style: 'padding: 0; display: inline; margin: 0;',
 				callback: lang.hitch(this, call, 'RUN', 'start', [id], [item])
 			});
-			this.own(btn);
+			this._grid.own(btn);
 			var tooltip = new Tooltip({
 				label: col.description,
 				connectId: [btn.domNode]
@@ -1272,7 +1272,7 @@ define([
 				style: 'padding: 0; display: inline; margin: 0;',
 				callback: lang.hitch(this, 'vncLink', [id], [item])
 			});
-			this.own(btn);
+			this._grid.own(btn);
 			var description = col.description(item);
 			var tooltip = new Tooltip({
 				label: description,
@@ -1511,7 +1511,7 @@ define([
 				var progressBar = new ProgressBar({
 					value: percentage + '%'
 				});
-				this.own(progressBar);
+				this._grid.own(progressBar);
 				return progressBar;
 			}
 
@@ -1525,7 +1525,7 @@ define([
 			var item = this._grid._grid.getItem(rowIndex);
 			if (item.type == 'node') {
 				// for the node, return a progressbar
-				return new ProgressBar({
+				var progressBar = new ProgressBar({
 					label: lang.replace('{used} / {available}', {
 						used: types.prettyCapacity(item.memUsed),
 						available: types.prettyCapacity(item.memAvailable)
@@ -1533,6 +1533,8 @@ define([
 					maximum: item.memAvailable,
 					value: item.memUsed
 				});
+				this._grid.own(progressBar);
+				return progressBar;
 			}
 
 			// else: item.type == 'domain'
@@ -1582,7 +1584,7 @@ define([
 			});
 			// set content after creating the object because of HTTP404: Bug #25635
 			var widget = new Text({});
-			this.own(widget);
+			this._grid.own(widget);
 			widget.set('content', html);
 
 			if ( undefined !== item.state ) {
@@ -1596,6 +1598,7 @@ define([
 					connectId: [ widget.domNode ],
 					position: [ 'below' ]
 				});
+				widget.own(tooltip);
 
 				// destroy the tooltip when the widget is destroyed
 				tooltip.connect( widget, 'destroy', 'destroy' );
