@@ -1,3 +1,10 @@
+univention-mail-postfix (9.0.0-20) unstable; urgency=low
+
+  * Bug 38044: Postfix: Allow to set SSL/TLS protocols for client and server,
+  disable SSLv3 for the SMTP client in new installations by default
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 15 Apr 2015 15:48:01 +0200
+
 univention-mail-postfix (9.0.0-19) unstable; urgency=low
 
   * Bug #30043: Open port 587 in packet filter

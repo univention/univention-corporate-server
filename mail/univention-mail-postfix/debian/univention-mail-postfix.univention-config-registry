@@ -66,6 +66,10 @@ Variables: mail/postfix/smtpd/tls/dh1024/param/file
 Variables: mail/postfix/smtpd/tls/dh512/param/file
 Variables: mail/postfix/tls/preempt/cipherlist
 Variables: mail/postfix/smtpd/tls/eecdh/grade
+Variables: mail/postfix/smtpd/tls/mandatory_protocols
+Variables: mail/postfix/smtpd/tls/protocols
+Variables: mail/postfix/tls/client/mandatory_protocols
+Variables: mail/postfix/tls/client/protocols
 
 Type: subfile
 Multifile: etc/postfix/main.cf

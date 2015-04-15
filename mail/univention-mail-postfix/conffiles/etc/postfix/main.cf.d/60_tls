@@ -5,6 +5,8 @@ smtpd_starttls_timeout = 300s
 smtpd_timeout = 300s
 @!@
 fqdn = '%s.%s' % (baseConfig.get('hostname'), baseConfig.get('domainname'))
+print 'smtpd_tls_mandatory_protocols = %s' % baseConfig.get('mail/postfix/smtpd/tls/mandatory_protocols', '!SSLv2')
+print 'smtpd_tls_protocols = %s' % baseConfig.get('mail/postfix/smtpd/tls/protocols', '')
 print 'smtpd_tls_cert_file = %s' % baseConfig.get('mail/postfix/ssl/certificate', '/etc/univention/ssl/%s/cert.pem' % fqdn)
 print 'smtpd_tls_key_file = %s' % baseConfig.get('mail/postfix/ssl/key', '/etc/univention/ssl/%s/private.key' % fqdn)
 if baseConfig.get('mail/postfix/ssl/cafile'):
@@ -25,6 +27,8 @@ smtpd_sasl_security_options = noanonymous
 # smtp client
 @!@
 print 'smtp_tls_security_level = %s' % baseConfig.get('mail/postfix/tls/client/level', 'none')
+print 'smtp_tls_mandatory_protocols = %s' % baseConfig.get('mail/postfix/tls/client/mandatory_protocols', '!SSLv2')
+print 'smtp_tls_protocols = %s' % baseConfig.get('mail/postfix/tls/client/protocols', '!SSLv2')
 @!@
 
 # Support broken clients like Microsoft Outlook Express 4.x which expect AUTH=LOGIN instead of AUTH LOGIN

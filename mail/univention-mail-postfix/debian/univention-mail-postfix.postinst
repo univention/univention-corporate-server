@@ -81,7 +81,10 @@ if [ "$1" = "configure" -a -z "$2" ] ; then
 		mail/postfix/smtpd/restrictions/recipient/10="permit_mynetworks" \
 		mail/postfix/smtpd/restrictions/recipient/30="permit_sasl_authenticated" \
 		mail/postfix/smtpd/restrictions/recipient/50="reject_unauth_destination" \
-		mail/postfix/smtpd/restrictions/recipient/70="reject_unlisted_recipient"
+		mail/postfix/smtpd/restrictions/recipient/70="reject_unlisted_recipient" \
+		mail/postfix/smtpd/tls/mandatory_protocols="!SSLv2,!SSLv3" \
+		mail/postfix/tls/client/mandatory_protocols="!SSLv2,!SSLv3" \
+		mail/postfix/tls/client/protocols="!SSLv2,!SSLv3"
 
 	/usr/share/univention-mail-postfix/create-dh-parameter-files.sh >/dev/null 2>&1
 fi

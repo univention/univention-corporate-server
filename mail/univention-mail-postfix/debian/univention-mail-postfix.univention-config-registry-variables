@@ -138,7 +138,7 @@ Type=str
 Categories=service-mail
 
 [mail/postfix/ldap/timeout]
-Description[de]=Der Timeout für LDAP-Abfragen des Postfix-Servers in Sekunden. 
+Description[de]=Der Timeout für LDAP-Abfragen des Postfix-Servers in Sekunden.
 Description[en]=The timeout for LDAP requests of the Postfix server in seconds.
 Type=int
 Categories=service-mail
@@ -194,6 +194,18 @@ Categories=service-mail
 [mail/postfix/tls/client/level]
 Description[de]=Die Variable konfiguriert die Verwendung von TLS-Verschlüsselung in SMTP: 'may' verwendet TLS wenn der andere Server es anbietet, 'none' deaktiviert es. Weitere Konfigurationsoptionen sind unter <http://www.postfix.org/postconf.5.html#smtp_tls_security_level> beschrieben.
 Description[en]=This variable configures the use of TLS encryption in SMTP: 'may' uses TLS if the other server offers it, 'none' deactivates it. Further configuration directives are documented at <http://www.postfix.org/postconf.5.html#smtp_tls_security_level>.
+Type=str
+Categories=service-mail
+
+[mail/postfix/tls/client/mandatory_protocols]
+Description[de]=Liste der TLS-Protokolle, die der Postfix SMTP-Client mit zwingender TLS-Verschlüsselung verwendet. (Standard ist: '!SSLv2') http://www.postfix.org/postconf.5.html#smtp_tls_mandatory_protocols
+Description[en]=List of SSL/TLS protocols that the Postfix SMTP client will use with mandatory TLS encryption. (default: '!SSLv2') http://www.postfix.org/postconf.5.html#smtp_tls_mandatory_protocols
+Type=str
+Categories=service-mail
+
+[mail/postfix/tls/client/protocols]
+Description[de]=Liste der TLS-Protokolle, die der Postfix SMTP-Client mit opportunistischer TLS-Verschlüsselung verwendet. (Standard ist: '!SSLv2') http://www.postfix.org/postconf.5.html#smtp_tls_protocols
+Description[en]=List of TLS protocols that the Postfix SMTP client will exclude or include with opportunistic TLS encryption. (default: '!SSLv2') http://www.postfix.org/postconf.5.html#smtp_tls_protocols
 Type=str
 Categories=service-mail
 
@@ -287,14 +299,26 @@ Description[en]=File with DH parameters that the Postfix SMTP server should use 
 Type=str
 Categories=service-mail
 
+[mail/postfix/smtpd/tls/mandatory_protocols]
+Description[de]=Liste der TLS-Protokolle, die der Postfix SMTP-Server mit zwingender TLS-Verschlüsselung verwendet. (Standard ist: '!SSLv2') http://www.postfix.org/postconf.5.html#smtpd_tls_mandatory_protocols
+Description[en]=The SSL/TLS protocols accepted by the Postfix SMTP server with mandatory TLS encryption. (default: '!SSLv2') http://www.postfix.org/postconf.5.html#smtpd_tls_mandatory_protocols
+Type=str
+Categories=service-mail
+
+[mail/postfix/smtpd/tls/protocols]
+Description[de]=Liste der TLS-Protokolle, die der Postfix SMTP-Server mit opportunistischer TLS-Verschlüsselung verwendet. (Standard ist: nicht gesetzt) http://www.postfix.org/postconf.5.html#smtpd_tls_protocols
+Description[en]=List of TLS protocols that the Postfix SMTP server will exclude or include with opportunistic TLS encryption. (default: empty) http://www.postfix.org/postconf.5.html#smtpd_tls_protocols
+Type=str
+Categories=service-mail
+
 [mail/postfix/smtp/tls/loglevel]
-Description[de]=TLS Loglevel for den Postfix SMTP Client.
+Description[de]=TLS Loglevel für den Postfix SMTP Client.
 Description[en]=Enable additional Postfix SMTP client logging of TLS activity.
 Type=int
 Categories=service-mail
 
 [mail/postfix/smtpd/tls/loglevel]
-Description[de]=TLS Loglevel for den Postfix SMTP Server.
+Description[de]=TLS Loglevel für den Postfix SMTP Server.
 Description[en]=Enable additional Postfix SMTP server logging of TLS activity.
 Type=int
 Categories=service-mail
