@@ -61,7 +61,8 @@ dojo: dojo-*.tar.gz
 	patch -p1 < ../fix_Dialog_autofocus.patch && \
 	patch -p1 < ../fix_Dialog_resize_handling.patch && \
 	patch -p1 < ../fix_dojox_widget_Standby_scrollbar_offset.patch && \
-	patch -p1 < ../fix_dijit_ProgressBar_additional_css_classes.patch
+	patch -p1 < ../fix_dijit_ProgressBar_additional_css_classes.patch && \
+	patch -p1 < ../fix_dojo_sniff_ie11_detection.patch
 
 # all other JS packages
 libs/%: %-*.tar.gz

@@ -1,3 +1,9 @@
+univention-dojo (8.0.3-3) unstable; urgency=medium
+
+  * Bug #38225: import patch for sniffing IE11
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 15 Apr 2015 12:06:50 +0200
+
 univention-dojo (8.0.3-2) unstable; urgency=medium
 
   * Bug #38225: update Dojo version to 1.10.4
