@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-dojo
-fix: 8.0.3-2.90.201504141253
+fix: 8.0.3-3.91.201504151210
 version: [1]
 desc: |
   The version of the Dojo Toolkit has been updated from 1.10.2 to 1.10.4.
