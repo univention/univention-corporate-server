@@ -169,7 +169,7 @@ property_descriptions={
 			may_change=1
 		),
 	'a': univention.admin.property(
-			short_description=_('IP addresses'),
+			short_description=_('IP address'),
 			long_description='',
 			syntax=univention.admin.syntax.ipAddress,
 			multivalue=1,

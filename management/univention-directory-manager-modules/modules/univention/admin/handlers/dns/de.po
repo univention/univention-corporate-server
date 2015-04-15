@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-01 14:25+0200\n"
+"POT-Creation-Date: 2015-04-15 16:16+0200\n"
 "PO-Revision-Date: 2009-08-04 14:47+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -146,9 +146,9 @@ msgstr "Mail Exchanger Rechner"
 msgid "TXT record"
 msgstr "TXT Record"
 
-#: forward_zone.py:172 forward_zone.py:198 host_record.py:77
-msgid "IP addresses"
-msgstr "IP-Adressen"
+#: forward_zone.py:172
+msgid "IP address"
+msgstr "IP-Adresse"
 
 #: forward_zone.py:184
 msgid "General forward lookup zone settings"
@@ -162,6 +162,10 @@ msgstr "Start of Authority Eintrag"
 #: forward_zone.py:190 reverse_zone.py:161
 msgid "Primary name server information"
 msgstr "Primäre Nameserver Informationen"
+
+#: forward_zone.py:198 host_record.py:77
+msgid "IP addresses"
+msgstr "IP-Adressen"
 
 #: forward_zone.py:198 forward_zone.py:199
 msgid "IP addresses of the zone"
