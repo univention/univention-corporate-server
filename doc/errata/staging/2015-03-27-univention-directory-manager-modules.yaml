@@ -8,5 +8,6 @@ desc: |
   This update addresses the following issues:
   * Two attributes domainPasswordComplex and domainPasswordStoreCleartext
     have been added to the sambadomain settings module.
-  * The multi value fields got a consistent labeling
+  * Labels of multi value fields in UDM modules have been adjusted to be more
+    consistent.
 bug: [28331, 32760]
