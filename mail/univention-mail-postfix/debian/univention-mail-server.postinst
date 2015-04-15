@@ -56,7 +56,9 @@ fi
 ucr set security/packetfilter/package/univention-mail-postfix/tcp/25/all="ACCEPT" \
 		security/packetfilter/package/univention-mail-postfix/tcp/25/all/en="SMTP" \
 		security/packetfilter/package/univention-mail-postfix/tcp/465/all="ACCEPT" \
-		security/packetfilter/package/univention-mail-postfix/tcp/465/all/en="SSMTP"
+		security/packetfilter/package/univention-mail-postfix/tcp/465/all/en="SSMTP" \
+		security/packetfilter/package/univention-mail-postfix/tcp/587/all="ACCEPT" \
+		security/packetfilter/package/univention-mail-postfix/tcp/587/all/en="SMTP/submission"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 if [ "$1" = "configure" ]; then
