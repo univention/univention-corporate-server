@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: iceweasel
-fix: 31.6.0esr-1.54.201504151637
+fix: 31.6.0esr-1.55.201504151819
 note: This update fixes these vulnerabilities.
 version: [1]
 desc: |
