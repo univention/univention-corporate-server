@@ -10,3 +10,5 @@ desc: |
  * 4-byte buffer overflow in SetReqLen
 cve:
  - CVE-2013-7439
+bug:
+ - 38250
