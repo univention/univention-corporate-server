@@ -6,5 +6,7 @@ fix: 4.1.106-53.1036.201504151212
 version: [1]
 desc: |
   This update fixes the following issue:
-  * A memory leak in the UMC module grids has been fixed.
+  * The UMC grid can now take care of cleaning up orphaned widget references
+    that could lead to a growing memory consumption in the browser (particular
+    in UVMM).
 bug: [36615]
