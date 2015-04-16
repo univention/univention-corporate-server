@@ -8,4 +8,6 @@ desc: |
   This update addresses the following issue:
   * The Univention management console web server and the upload widgets now can 
     handle uploading of several files at once.
-bug: [32888]
+  * The version of the Dojo Toolkit has been updated from 1.10.2 to 1.10.4.
+  * Support for IE11 in the Dojo module dojo/uacss has been added.
+bug: [32888,38225]
