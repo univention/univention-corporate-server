@@ -57,6 +57,7 @@ univention-config-registry set \
 	mail/alias/postmaster?root \
 	mail/messagesizelimit?10240000 \
 	mail/postfix/tls/client/level?may \
+	mail/postfix/tls/client/exclude_ciphers?"RC4, aNULL" \
 	mail/postfix/ldaptable/starttls?yes \
 	mail/postfix/ldaptable/tlsrequirecert?yes \
 	mail/postfix/ldaptable/tlscacertfile?"/etc/univention/ssl/ucsCA/CAcert.pem" \
@@ -64,6 +65,7 @@ univention-config-registry set \
 	mail/postfix/smtpd/tls/dh1024/param/file?/etc/postfix/dh_2048.pem \
 	mail/postfix/smtpd/tls/dh512/param/file?/etc/postfix/dh_512.pem \
 	mail/postfix/smtpd/tls/eecdh/grade?strong \
+	mail/postfix/smtpd/tls/exclude_ciphers?"RC4, aNULL" \
 	mail/postfix/tls/preempt/cipherlist?yes \
 	mail/postfix/smtpd/tls/loglevel?0 \
 	mail/postfix/smtp/tls/loglevel?0 \

@@ -70,6 +70,8 @@ Variables: mail/postfix/smtpd/tls/mandatory_protocols
 Variables: mail/postfix/smtpd/tls/protocols
 Variables: mail/postfix/tls/client/mandatory_protocols
 Variables: mail/postfix/tls/client/protocols
+Variables: mail/postfix/smtpd/tls/exclude_ciphers
+Variables: mail/postfix/tls/client/exclude_ciphers
 
 Type: subfile
 Multifile: etc/postfix/main.cf

@@ -1,3 +1,9 @@
+univention-mail-postfix (9.0.0-21) unstable; urgency=low
+
+  * Bug 38043:  Postfix: Prohibit RC4 Cipher Suites.
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 16 Apr 2015 11:55:49 +0200
+
 univention-mail-postfix (9.0.0-20) unstable; urgency=low
 
   * Bug 38044: Postfix: Allow to set SSL/TLS protocols for client and server,

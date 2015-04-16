@@ -209,6 +209,12 @@ Description[en]=List of TLS protocols that the Postfix SMTP client will exclude 
 Type=str
 Categories=service-mail
 
+[mail/postfix/tls/client/exclude_ciphers]
+Description[de]=Liste der Verschlüsselungstypen, die aus der SMTP-Client Cipher Liste auf allen TLS Sicherheitsstufen ausgenommen sind, siehe http://www.postfix.org/postconf.5.html#smtp_tls_exclude_ciphers. Standard ist "RC4, aNULL"
+Description[en]=List of ciphers or cipher types to exclude from the Postfix SMTP client cipher list at all TLS security levels as described in http://www.postfix.org/postconf.5.html#smtp_tls_exclude_ciphers. Defaults to "RC4, aNULL"
+Type=str
+Categories=service-mail
+
 [mail/postfix/ssl/cafile]
 Description[de]=Eine Datei mit CA-Zertifikaten (im PEM-Format) von vertrauenswürdigen Stammzertifizierungsstellen, um entweder Remote-SMTP-Client-Zertifikate oder Zwischen-CA-Zertifikate zu signieren.
 Description[en]=A file containing  CA certificates (in PEM format) of root CAs trusted to sign either remote SMTP client certificates or intermediate CA certificates.
@@ -308,6 +314,12 @@ Categories=service-mail
 [mail/postfix/smtpd/tls/protocols]
 Description[de]=Liste der TLS-Protokolle, die der Postfix SMTP-Server mit opportunistischer TLS-Verschlüsselung verwendet. (Standard ist: nicht gesetzt) http://www.postfix.org/postconf.5.html#smtpd_tls_protocols
 Description[en]=List of TLS protocols that the Postfix SMTP server will exclude or include with opportunistic TLS encryption. (default: empty) http://www.postfix.org/postconf.5.html#smtpd_tls_protocols
+Type=str
+Categories=service-mail
+
+[mail/postfix/smtpd/tls/exclude_ciphers]
+Description[de]=Liste der Verschlüsselungstypen, die aus der SMTP-Server Cipher Liste auf allen TLS Sicherheitsstufen ausgenommen sind, siehe http://www.postfix.org/postconf.5.html#smtpd_tls_exclude_ciphers. Standard ist "RC4, aNULL"
+Description[en]=List of ciphers or cipher types to exclude from the SMTP server cipher list at all TLS security levels as described in http://www.postfix.org/postconf.5.html#smtpd_tls_exclude_ciphers. Defaults to "RC4, aNULL"
 Type=str
 Categories=service-mail
 
