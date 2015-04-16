@@ -87,6 +87,9 @@ define([
 		//		A size limit for the uploaded file.
 		maxSize: 524288,
 
+		//toggle mutliple files selectable
+		multiFile: false,
+
 		// make sure that no sizeClass is being set
 		sizeClass: null,
 
@@ -124,6 +127,8 @@ define([
 			this._uploader = new dojox.form.Uploader({
 				url: '/umcp/upload' + (this.command ? '/' + this.command : ''),
 				label: this.buttonLabel,
+				multiple: this.multiFile,
+				uploadOnSelect: false,
 				getForm: function() {
 					// make sure that the Uploader does not find any of our encapsulating forms
 					return null;
@@ -150,39 +155,49 @@ define([
 			this.inherited(arguments);
 
 			// as soon as the user has selected a file, start the upload
-			this._uploader.on('change', lang.hitch(this, function(data) {
-				var allOk = array.every(data, function(ifile) {
-					return ifile.size <= this.maxSize;
+			this._uploader.on('change', lang.hitch(this, function(_data) {
+				var _fileTooBig = [];
+				var allOk = true;
+				array.forEach(_data, function(ifile) {
+					if (! (ifile.size <= this.maxSize)){
+						_fileTooBig.push(ifile.name);
+						allOk = false;
+					}
 				}, this);
 				if (!allOk) {
-					dialog.alert(_('File cannot be uploaded, its maximum size may be %.1f MB.', this.maxSize / 1048576.0));
+					dialog.alert(_('The following Files cannot be uploaded because they exceed the maximum file size: %s The maximum size of a file is %.1f MB.',('<ul><li>' + _fileTooBig.join('</li><li>') + '</li></ul>' ), this.maxSize / 1048576.0));
 					this._uploader.reset();
-				}
-				else {
-					when(this.canUpload(data[0]), lang.hitch(this, function(doUpload) {
+				}else {
+					var data = _data;
+					if (data.length == 1){
+						data = data[0];
+						this.data = data;
+					}
+					when(this.canUpload(data), lang.hitch(this, function(doUpload) {
 						if (!doUpload) {
 							// upload canceled
 							this._uploader.reset();
 							return;
-						}
-
-						// perform the upload
-						var params = {};
-						if (this.dynamicOptions) {
-							if (typeof this.dynamicOptions == "function") {
-								lang.mixin(params, this.dynamicOptions(params));
+						} else {
+							// perform the upload
+							var params = {};
+							if (this.dynamicOptions) {
+								if (typeof this.dynamicOptions == "function") {
+									lang.mixin(params, this.dynamicOptions(params));
+								}
+								else if (typeof this.dynamicOptions == "object") {
+									lang.mixin(params, this.dynamicOptions);
+								}
 							}
-							else if (typeof this.dynamicOptions == "object") {
-								lang.mixin(params, this.dynamicOptions);
-							}
+							// mixin the iframe information
+							lang.mixin(params, {
+								iframe: (this._uploader.uploadType === 'iframe') ? true : false
+							});
+							
+							this._uploader.upload(params);
+							this._updateLabel();
+							this.onUploadStarted(data);
 						}
-						// mixin the iframe information
-						lang.mixin(params, {
-							iframe: (this._uploader.uploadType === 'iframe') ? true : false
-						});
-						this._uploader.upload(params);
-						this._updateLabel();
-						this.onUploadStarted(data[0]);
 					}));
 				}
 			}));
