@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.106-55) unstable; urgency=low
+
+  * Bug #32888: fixed translation, minor change in UMC web server
+
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 16 Apr 2015 11:30:53 +0200
+
 univention-management-console-frontend (4.1.106-54) unstable; urgency=low
 
   * Bug #32888:
