@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-dojo
-fix: 8.0.3-4.92.201504151847
+fix: 8.0.3-4.93.201504151911
 version: [1]
 desc: |
   This update addresses the following issues
