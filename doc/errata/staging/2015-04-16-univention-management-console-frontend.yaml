@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-management-console-frontend
+fix: 4.1.106-55.1040.201504161145
+version: [1]
+desc: |
+  This update addresses the following issue:
+  * The Univention management console web server and the upload widgets now can 
+    handle uploading of several files at once.
+bug: [32888]
