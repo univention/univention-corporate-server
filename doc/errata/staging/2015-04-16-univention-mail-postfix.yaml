@@ -3,8 +3,12 @@ release: "4.0"
 version: [1]
 scope: ucs_4.0-0-errata4.0-1
 src: univention-mail-postfix
-fix: 9.0.0-19.241.201504151110
+fix: 9.0.0-20.242.201504151646
 desc: |
-  This update addresses the following issues:
+  Improve Postfix configuration:
   * Allow Postfix to receive client mails on submission port 587.
-bug: [30043]
+  * Allow to set TLS/SSL settings for server and client. Disables SSLv3 for
+  fresh installs, except for receiving mails. Adds UCR variables
+  mail/postfix/smtpd/tls/*protocols and mail/postfix/tls/client/*protocols
+  (thanks to Lutz Willek).
+bug: [30043,38044]
