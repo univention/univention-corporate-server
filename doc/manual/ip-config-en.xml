@@ -1773,6 +1773,27 @@ closest to the object always applies.
 
 	<section id="networks::dhcp::policies">
 	  <title>Configuration of clients via DHCP policies</title>
+	  <note>
+		<para>
+		  Many of the settings for DHCP are configured via policies.
+		  They are also applied to DHCP computer objects if a policy is linked to the LDAP base or one of the other intermediate containers.
+		  As the settings for DHCP computer objects have the highest priority, other settings for subnetwork and service objects are ignored.
+		</para>
+		<para>
+		  For this reason, DHCP policies should be linked directly to the DHCP network objects (e.g., the DHCP subnetworks).
+		  <footnote>
+			<para>
+			  Alternatively, the LDAP class <classname>univentionDhcpHost</classname> can be added in the advanced settings of the policies under <guisubmenu>Object</guisubmenu> and then <guimenuitem>Excluded object classes</guimenuitem>.
+			  Such policies are then no longer applied to the DHCP computer objects, with the result that the settings from the  DHCP subnetwork and service are used.
+			</para>
+		  </footnote>
+		</para>
+	  </note>
+	  <tip>
+		<para>
+		  When using the command line <command>udm dhcp/host list</command> (see also <xref linkend="central:udm:example:dnsdhcp"/>), it is possible to use the option <option>--policies 0</option> to display the effective settings.
+		</para>
+	  </tip>
 	  <section id="ip-config:Setting_the_gateway">
 		<title>Setting the gateway</title>
 		<para>
