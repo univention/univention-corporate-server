@@ -1,13 +1,3 @@
-univention-management-console-frontend (4.1.106-54) unstable; urgency=low
-
-  * Bug #32888:
-    - univention-management-console-web-server: adaptions to allow upload 
-    of multiple files at once
-    - upload widgets now can handle selecting and uploading of multiple files
-    at once
-
- -- Drees Dormann <dormann@univention.de>  Thu, 16 Apr 2015 10:14:29 +0200
-
 univention-management-console-frontend (4.1.106-53) unstable; urgency=low
 
   * Bug #38225: version bump

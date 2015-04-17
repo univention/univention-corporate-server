@@ -88,9 +88,6 @@ define([
 		// internal reference to the current Uploader widget
 		_uploader: null,
 
-		// allow selecting of Multiple Files
-		multiFile: false,
-
 		// internal reference to the progress bar
 		_progressBar: null,
 
@@ -235,7 +232,6 @@ define([
 				command: this.command,
 				dynamicOptions: this.dynamicOptions,
 				maxSize: this.maxSize,
-				multiFile: this.multiFile,
 				canUpload: this.canUpload,
 				style: 'float: left;'
 			});
@@ -290,19 +286,12 @@ define([
 						// add files to internal list of files
 						this._files.standby(false);
 						var vals = this.get('value');
-
-						if (this.multiFile && ( this._uploadingFiles[0] instanceof Array ) ){
-							array.forEach(this._uploadingFiles[0], function(ifile){
-								if (file.success) { 
-									vals.unshift(ifile.name);
-								}
-							});
-						} else {
+						array.forEach(this._uploadingFiles, function(ifile) {
+							//console.log('### adding:', ifile.name);
 							if (file.success) {
-								vals.unshift(this._uploadingFiles[0].name);
+								vals.unshift(ifile.name);
 							}
-						}
-
+						});
 						this.set('value', vals);
 
 						// clear the list of uploading files
@@ -320,7 +309,6 @@ define([
 				this._addUploader();
 			}));
 		},
-
 
 		canUpload: function(fileInfo) {
 			// summary:

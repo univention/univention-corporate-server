@@ -633,56 +633,43 @@ class CPUpload(CPgeneric):
 
 		options = []
 		body = {}
-
-		def _check_field_storage(iid, ifield):
-			# field is a FieldStorage object
-			store = ifield
-			tmpfile = _upload_manager.add(req.id, store)
-
-			# check if filesize is allowed
-			st = os.stat(tmpfile)
-			max_size = int(configRegistry.get('umc/server/upload/max', 64)) * 1024
-			if st.st_size > max_size:
-				self._log('warn', 'file of size %d could not be uploaded' % (st.st_size))
-				raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'The size of the uploaded file is too large')
-
-			# check if enough free space is available
-			min_size = int(configRegistry.get('umc/server/upload/min_free_space', 51200))  # kilobyte
-			s = os.statvfs(tmpfile)
-			free_disk_space = s.f_bavail * s.f_frsize / 1024  # kilobyte
-			if free_disk_space < min_size:
-				self._log('error', 'there is not enough free space to upload files')
-				raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'There is not enough free space on disk')
-
-			filename = store.filename
-			# some security
-			for c in ('<>/'):
-				filename = filename.replace(c, '_')
-
-			options.append({'filename': filename, 'name': store.name, 'tmpfile': tmpfile})
-
 		for iid, ifield in args.iteritems():
 			if isinstance(ifield, cherrypy._cpreqbody.Part):
-				_check_field_storage(iid, ifield)
-			elif isinstance(ifield, list):
-				for jfield in ifield:
-					if isinstance(jfield, cherrypy._cpreqbody.Part):
-						_check_field_storage(iid, jfield)
-					else:
-						self._warn_unknown_multipart()
+				# field is a FieldStorage object
+				store = ifield
+				tmpfile = _upload_manager.add(req.id, store)
+
+				# check if filesize is allowed
+				st = os.stat(tmpfile)
+				max_size = int(configRegistry.get('umc/server/upload/max', 64)) * 1024
+				if st.st_size > max_size:
+					self._log('warn', 'file of size %d could not be uploaded' % (st.st_size))
+					raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'The size of the uploaded file is too large')
+
+				# check if enough free space is available
+				min_size = int(configRegistry.get('umc/server/upload/min_free_space', 51200))  # kilobyte
+				s = os.statvfs(tmpfile)
+				free_disk_space = s.f_bavail * s.f_frsize / 1024  # kilobyte
+				if free_disk_space < min_size:
+					self._log('error', 'there is not enough free space to upload files')
+					raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'There is not enough free space on disk')
+
+				filename = store.filename
+				# some security
+				for c in ('<>/'):
+					filename = filename.replace(c, '_')
+
+				options.append({'filename': filename, 'name': store.name, 'tmpfile': tmpfile})
 			elif isinstance(ifield, basestring):
 				# field is a string :)
 				body[iid] = ifield
 			else:
-				self._warn_unknown_multipart()
+				# we cannot handle any other type
+				CORE.warn('Unknown type of multipart/form entry: %s=%s' % (iid, ifield))
 
 		req.body = body
 		req.body['options'] = options
 		return req
-
-	def _warn_unknown_multipart(self):
-		# we cannot handle any other type
-		CORE.warn('Unknown type of multipart/form-data entry: %r=%r' % (iid, ifield))
 
 	@cherrypy.expose
 	@logExceptions
