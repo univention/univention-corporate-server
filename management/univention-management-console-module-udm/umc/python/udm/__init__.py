@@ -266,10 +266,14 @@ class Instance(Base, ProgressMixin):
 			license_data['oemProductTypes'] = udm_license._license.oemProductTypes
 			license_data['endDate'] = udm_license._license.endDate
 			license_data['baseDN'] = udm_license._license.licenseBase
-			license_data['ffpu'] = False
+			free_license = ''
 			if license_data['baseDN'] == 'Free for personal use edition':
+				free_license = 'ffpu'
+			if license_data['baseDN'] == 'UCS Core Edition':
+				free_license = 'core'
+			if free_license:
 				license_data['baseDN'] = ucr.get('ldap/base', '')
-				license_data['ffpu'] = True
+			license_data['freeLicense'] = free_license
 			license_data['sysAccountsFound'] = udm_license._license.sysAccountsFound
 
 		self.finished(request.id, license_data)

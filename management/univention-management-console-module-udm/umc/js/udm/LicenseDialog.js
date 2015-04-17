@@ -43,8 +43,6 @@ define([
 	"umc/i18n!umc/modules/udm"
 ], function(declare, lang, array, domClass, tools, dialog, ConfirmDialog, StandbyMixin, Text, TitlePane, ContainerWidget, _) {
 
-	var ffpu_license_info = _('<p>The "free for personal use" edition of Univention Corporate Server is a special software license which allows users free use of the Univention Corporate Server and software products based on it for private purposes acc. to § 13 BGB (German Civil Code).</p><p>In the scope of this license, UCS can be downloaded, installed and used from our servers. It is, however, not permitted to make the software available to third parties to download or use it in the scope of a predominantly professional or commercial usage.</p><p>The license of the "free for personal use" edition of UCS occurs in the scope of a gift contract. We thus exclude all warranty and liability claims, except in the case of deliberate intention or gross negligence. We emphasise that the liability, warranty, support and maintance claims arising from our commercial software contracts do not apply to the "free for personal use" edition.</p><p>We wish you a lot of happiness using the "free for personal use" edition of Univention Corporate Server and look forward to receiving your feedback. If you have any questions, please consult our forum, which can be found on the Internet at http://forum.univention.de/.</p>');
-
 	return declare('umc.modules.udm.LicenseDialog', [ConfirmDialog, StandbyMixin], {
 		// summary:
 		//		Class that provides the license Dialog for UCS. It shows details about the current license.
@@ -54,8 +52,6 @@ define([
 
 		_iconWidget: null,
 		_messageWidget: null,
-		_ffpuTextWidget: null,
-		_ffpuTitlePane: null,
 
 		licenseInfo: null,
 
@@ -84,24 +80,10 @@ define([
 				'class': 'col-xxs-12 col-xs-8',
 				content : ''
 			});
-			this._ffpuTitlePane = new TitlePane({
-				'class': 'umcUDMLicenseTitlePane col-xs-12 dijitHidden',
-				open: false,
-				title: _('Information about the "free for personal use" license'),
-				_setVisibleAttr: lang.hitch(this, function(visible) {
-					if (this._ffpuTitlePane) {
-						domClass.toggle(this._ffpuTitlePane.domNode, 'dijitHidden', !visible);
-					}
-				})
-			});
 
 			this.message = new ContainerWidget({});
 			this.message.addChild(this._iconWidget);
 			this.message.addChild(this._messageWidget);
-			this.message.addChild(this._ffpuTitlePane);
-
-			this._ffpuTextWidget = new Text({'content': ''});
-			this._ffpuTitlePane.addChild(this._ffpuTextWidget);
 
 			this.updateLicense();
 		},
@@ -120,9 +102,6 @@ define([
 				return;
 			}
 
-			var isFFPU = this.licenseInfo.ffpu;
-			this._ffpuTitlePane.set('visible', isFFPU);
-
 			var entries = {};
 			if (this.licenseInfo.licenseVersion === 'gpl') {
 				entries = [
@@ -139,6 +118,12 @@ define([
 					product = this.licenseInfo.oemProductTypes.join(', ');
 				}
 
+				var licenseTypeLabel = {
+					'ffpu': 'Free for personal use edition',
+					'core': 'Univention Core Edition',
+					'': _('UCS License')
+				}[this.licenseInfo.freeLicense];
+
 				if (this.licenseInfo.licenseVersion === '1') {
 
 					// substract system accounts
@@ -147,7 +132,7 @@ define([
 					}
 
 					entries = [
-						[_('License type'),	this.licenseInfo.ffpu ? 'Free for personal use edition' : _('UCS License')],
+						[_('License type'),	licenseTypeLabel,
 						[_('LDAP base'), this.licenseInfo.baseDN],
 						[_('User accounts'), this._limitInfo('account')],
 						[_('Clients'), this._limitInfo('client')],
@@ -165,7 +150,7 @@ define([
 					}
 
 					entries = [
-						[_('License type'), this.licenseInfo.ffpu ? 'Free for personal use edition' : _('UCS License')],
+						[_('License type'), licenseTypeLabel,
 						[_('LDAP base'), this.licenseInfo.baseDN],
 						[_('Servers'), this._limitInfo('servers')],
 						[_('User accounts'), this._limitInfo('users')],
@@ -180,8 +165,6 @@ define([
 						[_('Valid product types'), product]
 					];
 				}
-
-				this._ffpuTextWidget.set('content', isFFPU ? ffpu_license_info : '');
 			}
 
 			// render information
