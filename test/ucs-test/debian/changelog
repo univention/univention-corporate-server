@@ -1,3 +1,10 @@
+ucs-test (5.0.145-4) unstable; urgency=low
+
+  * 60_umc-system/22_umc-service-proc-killing: wait a bit after UMC request
+    to terminate process was done (Bug #38174).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 17 Apr 2015 16:52:45 +0200
+
 ucs-test (5.0.145-3) unstable; urgency=low
 
   * 51_samba4/56evaluate_windows_gpo: added 'basic' tag to run daily;

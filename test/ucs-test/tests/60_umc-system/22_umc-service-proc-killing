@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the UMC backend process killing
-## bugs: [34593]
+## bugs: [34593, 38174]
 ## exposure: dangerous
 
 import sys
@@ -104,6 +104,7 @@ class TestUMCProcessKilling(TestUMCSystem):
             pid = self.create_process(ignore_signal)
             if self.query_process_exists(pid):
                 self.make_kill_request(signame, [pid])
+                sleep(10)  # (see Bug #38174 Comment 3)
                 _pid, exit_status, _res_usage = wait4(pid, WNOHANG)
                 if ignore_signal != (WTERMSIG(exit_status) != signum):
                     utils.fail("Process exit status is 0x%x instead of "
