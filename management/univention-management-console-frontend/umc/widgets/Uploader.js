@@ -72,7 +72,7 @@ define([
 		clearButtonLabel: 'Clear data',
 
 		// displayErrorMessage: Boolean
-		//		Show message if error occured when uploading file.
+		// 		Show message if error occured when uploading file.
 		displayErrorMessage: true,
 
 		// data: Object
@@ -159,15 +159,15 @@ define([
 				var _fileTooBig = [];
 				var allOk = true;
 				array.forEach(_data, function(ifile) {
-					if (!(ifile.size <= this.maxSize)) {
+					if (! (ifile.size <= this.maxSize)){
 						_fileTooBig.push(ifile.name);
 						allOk = false;
 					}
 				}, this);
 				if (!allOk) {
-					dialog.alert(_('The following files cannot be uploaded because they exceed the maximum file size: %s The maximum size of a file is %.1f MB.',('<ul><li>' + _fileTooBig.join('</li><li>') + '</li></ul>' ), this.maxSize / 1048576.0));
+					dialog.alert(_('The following Files cannot be uploaded because they exceed the maximum file size: %s The maximum size of a file is %.1f MB.',('<ul><li>' + _fileTooBig.join('</li><li>') + '</li></ul>' ), this.maxSize / 1048576.0));
 					this._uploader.reset();
-				} else {
+				}else {
 					var data = _data;
 					if (data.length == 1){
 						data = data[0];
