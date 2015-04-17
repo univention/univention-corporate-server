@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-62) unstable; urgency=medium
+
+  * Bug #38103: adjust wording
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 08 Apr 2015 08:26:56 +0200
+
 univention-management-console-module-udm (5.1.25-61) unstable; urgency=medium
 
   * Bug #38103: replace FFPU license with Univention Core License

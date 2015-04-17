@@ -120,7 +120,7 @@ define([
 
 				var licenseTypeLabel = {
 					'ffpu': 'Free for personal use edition',
-					'core': 'Univention Core Edition',
+					'core': 'UCS Core Edition',
 					'': _('UCS License')
 				}[this.licenseInfo.freeLicense];
 
