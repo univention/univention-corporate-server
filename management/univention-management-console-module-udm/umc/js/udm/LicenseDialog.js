@@ -170,10 +170,6 @@ define([
 						[_('User accounts'), this._limitInfo('users')],
 						[_('Managed Clients'), this._limitInfo('managedclients')],
 						[_('Corporate Clients'), this._limitInfo('corporateclients')],
-						[_('DVS Users'), this._limitInfo('virtualdesktopusers')],
-						[_('DVS Clients'), this._limitInfo('virtualdesktopclients')],
-						[_('Servers with standard support'), this.licenseInfo.support],
-						[_('Servers with premium support'), this.licenseInfo.premiumSupport],
 						[_('Key ID'), this.licenseInfo.keyID],
 						[_('Expiry date'), _(this.licenseInfo.endDate)],
 						[_('Valid product types'), product]

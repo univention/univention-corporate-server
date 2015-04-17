@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-64) unstable; urgency=medium
+
+  * Bug #38203: remove DVS and support entries from LicenseDialog
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 08 Apr 2015 12:26:05 +0200
+
 univention-management-console-module-udm (5.1.25-63) unstable; urgency=medium
 
   * Bug #38103: show additional hints + links for FFPU and UCS Core license

@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import getopt, datetime
+import traceback
 
 import univention.debug
 import univention.admin.license
@@ -203,7 +204,7 @@ def main(argv):
 						   bindpw = bindpw)
 	except uexceptions.authFail:
 		raise UsageError, "Authentication failed, try `--bindpwd'"
-	
+
 	out = ['Base DN: %s' % baseDN]
 	try:
 		_license.init_select(lo, 'admin')
@@ -212,6 +213,10 @@ def main(argv):
 		dns = find_licenses(lo, baseDN, 'admin')
 		dn, expired = choose_license(lo, dns)
 		out.extend( check_license(lo, dn, options.has_key('list-dns'), expired) )
+	except Exception:
+		# output any other tracebacks
+		trace_out = traceback.format_exc().splitlines()
+		out.extend(trace_out)
 	finally:
 		return out
 

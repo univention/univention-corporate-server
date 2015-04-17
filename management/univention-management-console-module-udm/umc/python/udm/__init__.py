@@ -250,7 +250,7 @@ class Instance(Base, ProgressMixin):
 			elif udm_license._license.version == '2':
 				for item in ('licenses', 'real'):
 					license_data[item] = {}
-					for lic_type in ('SERVERS', 'USERS', 'MANAGEDCLIENTS', 'CORPORATECLIENTS', 'VIRTUALDESKTOPUSERS', 'VIRTUALDESKTOPCLIENTS'):
+					for lic_type in ('SERVERS', 'USERS', 'MANAGEDCLIENTS', 'CORPORATECLIENTS'):
 						count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
 						if isinstance(count, basestring):
 							try:

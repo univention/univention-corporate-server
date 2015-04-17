@@ -34,6 +34,7 @@ import operator
 import univention.license
 import univention.debug
 import univention.admin.modules
+import univention.admin.filter
 import univention.admin.uexceptions
 import univention.admin.localization
 import univention.admin.license_data as licenses
@@ -117,7 +118,6 @@ class License( object ):
 					# Version 2 since UCS 3.1
 					License.USERS: None, License.SERVERS: None,
 					License.MANAGEDCLIENTS: None, License.CORPORATECLIENTS: None,
-					License.VIRTUALDESKTOPUSERS: None, License.VIRTUALDESKTOPCLIENTS: None,
 				},
 			}
 		self.real = {
@@ -129,7 +129,6 @@ class License( object ):
 				'2': {
 					# Version 2 since UCS 3.1
 					License.USERS: 0, License.SERVERS: 0,
-					License.VIRTUALDESKTOPUSERS: 0, License.VIRTUALDESKTOPCLIENTS: 0,
 					License.MANAGEDCLIENTS: 0, License.CORPORATECLIENTS: 0,
 				},
 			}
@@ -143,7 +142,6 @@ class License( object ):
 					# Version 2 since UCS 3.1
 					License.USERS: 'Users', License.SERVERS: 'Servers',
 					License.MANAGEDCLIENTS: 'Managed Clients', License.CORPORATECLIENTS: 'Corporate Clients',
-					License.VIRTUALDESKTOPUSERS: 'DVS Users', License.VIRTUALDESKTOPCLIENTS: 'DVS Clients',
 				},
 			}
 		self.keys = {
@@ -160,8 +158,6 @@ class License( object ):
 					License.SERVERS: 'univentionLicenseServers',
 					License.MANAGEDCLIENTS: 'univentionLicenseManagedClients',
 					License.CORPORATECLIENTS: 'univentionLicenseCorporateClients',
-					License.VIRTUALDESKTOPUSERS: 'univentionLicenseVirtualDesktopUsers',
-					License.VIRTUALDESKTOPCLIENTS: 'univentionLicenseVirtualDesktopClients',
 				},
 			}
 		self.filters = {
@@ -179,10 +175,6 @@ class License( object ):
 					# Thin Clients, Managed Clients, Mobile Clients, Windows Clients, Ubuntu Clients, Linux Clients, UCC Clients, MaxOS X Clients
 					License.MANAGEDCLIENTS : '(&%s)' % ''.join([LDAP_FILTER_managedclients, ldap_filter_not_objectflag(managedclient_exclude_objectflags)]),
 					License.CORPORATECLIENTS : '(&(objectclass=univentionCorporateClient))',
-					License.VIRTUALDESKTOPUSERS : '(&(objectClass=univentionDVSUsers)(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount))(!(uidNumber=0))(!(uid=*$))(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
-					## Could be expressed as:
-					## License.VIRTUALDESKTOPUSERS : '(&%s)' % ''.join([ '(objectClass=univentionDVSUsers)', LDAP_FILTER_normal_user_account, LDAP_FILTER_account_not_disabled])
-					License.VIRTUALDESKTOPCLIENTS : '(&(objectclass=univentionDVSComputers))',
 				},
 		}
 		self.__selected = False
@@ -309,21 +301,15 @@ class License( object ):
 				self.__countObject( License.SERVERS, lo)
 				self.__countObject( License.MANAGEDCLIENTS, lo)
 				self.__countObject( License.CORPORATECLIENTS, lo)
-				self.__countObject( License.VIRTUALDESKTOPUSERS, lo)
-				self.__countObject( License.VIRTUALDESKTOPCLIENTS, lo)
 
 				lic = ( self.licenses[self.version][License.USERS],
 					self.licenses[self.version][License.SERVERS],
 					self.licenses[self.version][License.MANAGEDCLIENTS],
-					self.licenses[self.version][License.CORPORATECLIENTS],
-					self.licenses[self.version][License.VIRTUALDESKTOPUSERS],
-					self.licenses[self.version][License.VIRTUALDESKTOPCLIENTS] )
+					self.licenses[self.version][License.CORPORATECLIENTS] )
 				real= ( self.real[self.version][License.USERS],
 					self.real[self.version][License.SERVERS],
 					self.real[self.version][License.MANAGEDCLIENTS],
-					self.real[self.version][License.CORPORATECLIENTS],
-					self.real[self.version][License.VIRTUALDESKTOPUSERS ],
-					self.real[self.version][License.VIRTUALDESKTOPCLIENTS] )
+					self.real[self.version][License.CORPORATECLIENTS] )
 				self.licenseKeyID = self.__getValue ( 'univentionLicenseKeyID', '' )
 				self.licenseSupport = self.__getValue ( 'univentionLicenseSupport', '0' )
 				self.licensePremiumSupport = self.__getValue ( 'univentionLicensePremiumSupport', '0' )
@@ -372,8 +358,8 @@ class License( object ):
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: 4')
 					disable_add = 4
 		elif self.version == '2':
-			lic_users, lic_servers, lic_managedclients, lic_corporateclients, lic_virtualdesktopusers, lic_virtualdesktopclients = lic
-			real_users, real_servers, real_managedclients, real_corporateclients, real_virtualdesktopusers, real_virtualdesktopclients = real
+			lic_users, lic_servers, lic_managedclients, lic_corporateclients, = lic
+			real_users, real_servers, real_managedclients, real_corporateclients, = real
 			if lic_users and self.__cmp_gt( int( real_users ) - self.sysAccountsFound ,lic_users ):
 				disable_add = 6
 			# The license should be valid even if we have more servers than the license allowed
@@ -383,10 +369,6 @@ class License( object ):
 				disable_add = 8
 			if lic_corporateclients and self.__cmp_gt( real_corporateclients, lic_corporateclients ):
 				disable_add = 9
-			if lic_virtualdesktopusers and self.__cmp_gt( real_virtualdesktopusers, lic_virtualdesktopusers ):
-				disable_add = 10
-			if lic_virtualdesktopclients and self.__cmp_gt( real_virtualdesktopclients, lic_virtualdesktopclients ):
-				disable_add = 11
 		return disable_add
 
 	def __countSysAccounts( self, lo ):
@@ -476,10 +458,6 @@ class License( object ):
 					'Managed Clients', 'Managed Clients not found' )
 			self.licenses[self.version][ License.CORPORATECLIENTS ] = self.__getValue( self.keys[self.version][License.CORPORATECLIENTS], None, 
 					'Corporate Clients', 'Corporate Clients not found' )
-			self.licenses[self.version][ License.VIRTUALDESKTOPUSERS ] = self.__getValue( self.keys[self.version][License.VIRTUALDESKTOPUSERS], None, 
-					'DVS Users', 'DVS Users not found' )
-			self.licenses[self.version][ License.VIRTUALDESKTOPCLIENTS ] = self.__getValue( self.keys[self.version][License.VIRTUALDESKTOPCLIENTS], None, 
-					'DVS Clients', 'DVS Clients not found' )
 			self.types = self.__getValue( 'univentionLicenseProduct', [ 'Univention Corporate Server' ],
 					'License Product', 'Product attribute not found' )
 			if not isinstance( self.types, ( list, tuple ) ):
