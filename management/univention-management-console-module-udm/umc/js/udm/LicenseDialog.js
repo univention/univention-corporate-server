@@ -132,7 +132,7 @@ define([
 					}
 
 					entries = [
-						[_('License type'),	licenseTypeLabel,
+						[_('License type'),	licenseTypeLabel],
 						[_('LDAP base'), this.licenseInfo.baseDN],
 						[_('User accounts'), this._limitInfo('account')],
 						[_('Clients'), this._limitInfo('client')],
@@ -150,7 +150,7 @@ define([
 					}
 
 					entries = [
-						[_('License type'), licenseTypeLabel,
+						[_('License type'), licenseTypeLabel],
 						[_('LDAP base'), this.licenseInfo.baseDN],
 						[_('Servers'), this._limitInfo('servers')],
 						[_('User accounts'), this._limitInfo('users')],
