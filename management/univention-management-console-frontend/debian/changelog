@@ -1,3 +1,15 @@
+univention-management-console-frontend (4.1.106-56) unstable; urgency=medium
+
+  * Bug #38104: version bump
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 17 Apr 2015 21:27:25 +0200
+
+univention-management-console-frontend (4.1.106-55) unstable; urgency=medium
+
+  * Bug #38104: version bump
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 17 Apr 2015 21:27:08 +0200
+
 univention-management-console-frontend (4.1.106-54) unstable; urgency=medium
 
   * Bug #38104: replace FFPU license with Univention Core License

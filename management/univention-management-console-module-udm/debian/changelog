@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-65) unstable; urgency=medium
+
+  * Bug #38203: version bump
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 17 Apr 2015 21:28:08 +0200
+
 univention-management-console-module-udm (5.1.25-64) unstable; urgency=medium
 
   * Bug #38203: remove DVS and support entries from LicenseDialog
