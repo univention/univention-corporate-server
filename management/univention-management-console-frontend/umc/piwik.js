@@ -101,14 +101,14 @@ define([
 
 		// set the UCR variable accordingly
 		var ucrStore = store('key', 'ucr');
-		if (disable || tools.status('hasFFPULicense')) {
+		if (disable || tools.status('hasFreeLicense')) {
 			// explicitely set UCR variable to false or false/true on licensed systems
 			ucrStore.put({
 				key: 'umc/web/piwik',
 				value: disable ? 'false' : 'true'
 			});
 		} else {
-			// remove UCR variable to obtain the default behaviour on FFPU systems
+			// remove UCR variable to obtain the default behaviour on systems with UCS Core License
 			ucrStore.remove('umc/web/piwik');
 		}
 	};

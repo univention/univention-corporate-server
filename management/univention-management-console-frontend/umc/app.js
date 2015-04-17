@@ -100,8 +100,9 @@ define([
 		return kernel.locale.split('-')[0];
 	};
 
-	var _hasFFPULicense = function() {
-		return _ucr['license/base'] == 'Free for personal use edition';
+	var _hasFreeLicense = function() {
+		return _ucr['license/base'] == 'Free for personal use edition'
+			|| _ucr['license/base'] == 'UCS Core Edition';
 	};
 
 	// helper function for sorting, sort indeces with priority < 0 to be at the end
@@ -538,7 +539,7 @@ define([
 			var isUCRVariableEmpty = !Boolean(_ucr['umc/web/startupdialog']);
 			var showStartupDialog = tools.isTrue(_ucr['umc/web/startupdialog']);
 			var isDCMaster = _ucr['server/role'] == 'domaincontroller_master';
-			if (!isDCMaster || !((isUCRVariableEmpty && _hasFFPULicense() && isUserAdmin) || (showStartupDialog && isUserAdmin))) {
+			if (!isDCMaster || !((isUCRVariableEmpty && _hasFreeLicense() && isUserAdmin) || (showStartupDialog && isUserAdmin))) {
 				return;
 			}
 
@@ -782,7 +783,7 @@ define([
 
 		_insertPiwikMenuItem: function() {
 			var isUserAdmin = tools.status('username').toLowerCase() == 'administrator';
-			if (!(_hasFFPULicense() && isUserAdmin)) {
+			if (!(_hasFreeLicense() && isUserAdmin)) {
 				return;
 			}
 			this.addMenuEntry(new MenuItem({
@@ -1177,8 +1178,8 @@ define([
 		_loadPiwik: function() {
 			var piwikUcrv = _ucr['umc/web/piwik'];
 			var piwikUcrvIsSet = typeof piwikUcrv == 'string' && piwikUcrv !== '';
-			tools.status('hasFFPULicense', _hasFFPULicense());
-			if (tools.isTrue(_ucr['umc/web/piwik']) || (!piwikUcrvIsSet && _hasFFPULicense())) {
+			tools.status('hasFreeLicense', _hasFreeLicense());
+			if (tools.isTrue(_ucr['umc/web/piwik']) || (!piwikUcrvIsSet && _hasFreeLicense())) {
 				// use piwik for user action feedback if it is not switched off explicitely
 				tools.status('piwikDisabled', false);
 				require(["umc/piwik"], function() {});

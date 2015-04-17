@@ -17,8 +17,8 @@ Type=str
 Categories=management-umc
 
 [umc/web/piwik]
-Description[de]=Ist diese Option aktiviert, werden bei Verwendung der 'Free for personal use'-Version von UCS (die in der Regel für Evaluationen von UCS herangezogen wird) anonyme Nutzungsstatistiken zur Verwendung der UMC erzeugt. Die aufgerufenen Module werden dabei von einer Instanz des Web-Traffic-Analyse-Tools Piwik protokolliert. Dies ermöglicht es Univention die Entwicklung besser auf das Kundeninteresse zuzuschneiden und Usability-Verbesserungen vorzunehmen.
-Description[en]=If this option is activated, anonymous usage statistics on the use of the UMC are collected when using the free for personal use version of UCS (which is generally used for evaluating UCS). The modules opened are logged in an instance of the web traffic analysis tool Piwik. This allows Univention to tailor the development better to customer needs and carry out usability improvements.
+Description[de]=Ist diese Option aktiviert, werden bei Verwendung der Univention Core License (die in der Regel für Evaluationen von UCS herangezogen wird) anonyme Nutzungsstatistiken zur Verwendung der UMC erzeugt. Die aufgerufenen Module werden dabei von einer Instanz des Web-Traffic-Analyse-Tools Piwik protokolliert. Dies ermöglicht es Univention die Entwicklung besser auf das Kundeninteresse zuzuschneiden und Usability-Verbesserungen vorzunehmen.
+Description[en]=If this option is activated, anonymous usage statistics on the use of the UMC are collected when using the Univention Core License (which is generally used for evaluating UCS). The modules opened are logged in an instance of the web traffic analysis tool Piwik. This allows Univention to tailor the development better to customer needs and carry out usability improvements.
 Type=bool
 Categories=management-umc
 
