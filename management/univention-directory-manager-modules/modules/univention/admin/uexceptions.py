@@ -202,6 +202,9 @@ class licenseWrongBaseDn(base):
 class licenseGPLversion(base):
 	message=_('The license check is disabled. Your are using the GPL version without any support or maintenance by Univention.')
 
+class licenseCoreEdition(base):
+	message='Univention Core Edition.'
+
 class freeForPersonalUse(base):
 	message='Free for personal use edition.'
 

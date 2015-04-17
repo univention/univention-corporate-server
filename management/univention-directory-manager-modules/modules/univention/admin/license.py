@@ -331,7 +331,7 @@ class License( object ):
 			self.licenseBase = self.__getValue ( 'univentionLicenseBaseDN', '' )
 			if disable_add:
 				self._expired = True
-			elif not disable_add and self.licenseBase == 'Free for personal use edition':
+			elif not disable_add and self.licenseBase in ('Free for personal use edition', 'UCS Core Edition'):
 				disable_add = 5
 
 		# check modules list for validity and accepted operations
