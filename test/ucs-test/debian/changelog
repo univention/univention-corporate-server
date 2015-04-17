@@ -1,3 +1,11 @@
+ucs-test (5.0.145-3) unstable; urgency=low
+
+  * 51_samba4/56evaluate_windows_gpo: added 'basic' tag to run daily;
+    added 'DC-Slave' to roles; will be skipped if no Windows hosts found
+    (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 17 Apr 2015 12:57:53 +0200
+
 ucs-test (5.0.145-2) unstable; urgency=low
 
   * 60_umc-system/23_umc-service-create-user: specified encoding (Bug #37920).

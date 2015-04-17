@@ -2,10 +2,11 @@
 ## desc: Test if GPOs created on a native Windows Server work with S4
 ## exposure: dangerous
 ## packages: [univention-samba4, univention-s4-connector, ucs-windows-tools]
-## tags: [windows_gpo_test, native_win_client]
+## tags: [basic, windows_gpo_test, native_win_client]
 ## bugs: [37568]
 ## roles:
 ## - domaincontroller_master
+## - domaincontroller_slave
 
 from os import path
 from sys import exit
@@ -369,8 +370,9 @@ def get_windows_hostname():
     sed_stdout, stderr = run_cmd(("sed", "-n", "s/^DN: //p"),
                                  stdin=PIPE, std_in=stdout)
     if not sed_stdout:
-        utils.fail("Failed to find any Windows Host DN via UDM. "
-                   "Perhaps host not joined as a memberserver?")
+        print("SKIP: failed to find any Windows Host DN via UDM. Perhaps host "
+              "not joined as a memberserver or does not exist in this setup.")
+        exit(TestCodes.REASON_INSTALL)
 
     return sed_stdout.split(',')[0][3:]  # extract CN only
 
