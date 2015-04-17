@@ -1,0 +1,35 @@
+h1, h2 {
+	margin-bottom: 5px;
+	margin-top: 10px;
+}
+h1 {
+	margin-top: 0;
+}
+html, body {
+	min-height: 100%;
+}
+body {
+	padding: 10px;
+}
+.error {
+	color: red;
+	font-weight: bold;
+}
+.success {
+	color: green;
+	font-weight: bold;
+}
+#overlay {
+	background: url("../js/dijit/themes/umc/images/standbyAnimation.svg") rgba(255, 255, 255, 0.8) center center no-repeat;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	margin: -10px;
+}
+.umcMultiSelect {
+	width: 100% !important;
+}
+.umcMultiUploader {
+	padding-bottom: 30px;
+}
+

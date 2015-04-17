@@ -36,6 +36,7 @@ dojoDir:=/usr/share/univention-dojo
 version:=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 buildDir:=$(CURDIR)/build
 tmpDir:=$(CURDIR)/tmp
+testsDir:=$(CURDIR)/tests
 jsFiles:=$(shell find umc -name "*.js")
 
 .PHONY: build build-dev build-common install clean jslint i18n umc/package.json $(buildDir)/login.html $(buildDir)/index.html $(buildDir)/debug.html
@@ -89,6 +90,8 @@ $(buildDir)/login.html: login.html
 build-dev: build-common
 	# symlink javascript code
 	[ -e $(buildDir)/js ] || ln -s $(tmpDir) $(buildDir)/js
+	# symlink test directory
+	[ -e $(buildDir)/tests ] || ln -s $(testsDir) $(buildDir)/tests
 	# symlinks for installed modules
 	mkdir -p $(tmpDir)/umc/modules
 	cp -frsn /usr/share/univention-management-console-frontend/js/umc/modules/* $(tmpDir)/umc/modules

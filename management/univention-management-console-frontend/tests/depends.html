@@ -1,46 +1,39 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<style type="text/css">
-			@import url("/univention-management-console/js/dojo/resources/dojo.css");
-			@import url("/univention-management-console/js/dijit/themes/umc/umc.css");
-			@import url("/univention-management-console/js/dijit/themes/umc/umcGrid.css");
-			@import url("/univention-management-console/js/dijit/themes/umc/EnhancedGrid.css");
-			@import url("/univention-management-console/js/dijit/themes/umc/umcEnhancedGrid.css");
-			@import url("/univention-management-console/js/dijit/themes/umc/Toaster.css");
-			h1 {
-				margin-bottom: 5px;
-				margin-top: 10px;
-			}
-			.umcLabelPane {
-				margin-right: 10px;
-				margin-bottom: 10px;
-			}
-			html {
-				background: #FFF;
-			}
-			body {
-				overflow: auto;
-			}
-		</style>
-		<script type="text/javascript">
-			var dojoConfig = {
-				async: true
-			};
-		</script>
-		<script type="text/javascript" src="/univention-management-console/js/dojo/dojo.js"></script>
-		<script type="text/javascript">
-			require([
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+		@import url("../js/dijit/themes/umc/umc.css");
+		@import url("style.css");
+	</style>
+	<script type="text/javascript">
+		var dojoConfig = {
+			async: true
+		};
+	</script>
+	<script type="text/javascript">
+		var dojoConfig = {
+			has: {
+				'dojo-undef-api': true
+			},
+			isDebug: true,
+			async: true,
+			deps: [
 				"dojo/_base/window",
+				"dojo/dom-style",
 				"dojo/Deferred",
 				"dojo/json",
 				"umc/tools",
 				"umc/widgets/Form",
-				"dojo/domReady!",
-				"umc/widgets"
-			], function(win, Deferred, json, tools, Form) {
+				"umc/widgets/Text",
+				"umc/widgets/MultiInput",
+				"umc/widgets/ComboBox",
+				"umc/widgets/MultiSelect",
+				"umc/widgets/TextBox"
+			],
+			callback: function(win, domStyle, Deferred, json, tools, Form, Text, MultiInput, ComboBox, MultiSelect, TextBox) {
+				domStyle.set('overlay', 'display', 'none');
 				var valuesAnimals = [ 'dog', 'cat', 'eagle', 'polar bear' ];
 				var valuesColors = [ 'green', 'blue', 'yellow', 'red', 'purple', 'pink', 'orange', 'transparent', 'white', 'black' ];
 				var mapContinents = {
@@ -90,188 +83,188 @@
 				}
 
 				var widgets = [{
-					type: 'Text',
+					type: Text,
 					label: '',
 					name: 'test0',
 					content: '<h1>Test case: ComboBox</h1>'
 				}, {
-					type: 'ComboBox',
+					type: ComboBox,
 					name: 'ComboBox0-1',
 					label: 'ComboBox - static values - value=red',
 					staticValues: ['green', 'red', 'blue'],
 					value: 'red'
 				}, {
-					type: 'ComboBox',
+					type: ComboBox,
 					name: 'ComboBox0-2',
 					label: 'ComboBox - dynamic values - value=green',
 					dynamicOptions: { _data: valuesColors },
 					dynamicValues: valuesAsync,
 					value: 'green'
 				}, {
-					type: 'Text',
+					type: Text,
 					label: '',
 					name: 'test1',
 					content: '<h1>Test case: ComboBox &larr; ComboBox</h1>'
 				}, {
-					type: 'ComboBox',
+					type: ComboBox,
 					name: 'ComboBox1-1',
 					label: 'ComboBox1',
 					dynamicOptions: { _data: continents },
 					dynamicValues: valuesAsync,
 					staticValues: [ '-None-' ]
 				}, {
-					type: 'ComboBox',
+					type: ComboBox,
 					name: 'ComboBox1-2',
 					label: 'ComboBox2',
 					depends: 'ComboBox1-1',
 					dynamicOptions: { _data: mapContinents, _dep: 'ComboBox1-1' },
 					dynamicValues: valuesAsync
 				}, {
-					type: 'Text',
+					type: Text,
 					label: '',
 					name: 'test1b',
 					content: '<h1>Test case: ComboBox w/static values &larr; ComboBox</h1>'
 				}, {
-					type: 'ComboBox',
+					type: ComboBox,
 					name: 'ComboBox1b-1',
 					label: 'ComboBox1b',
 					staticValues: continents
 				}, {
-					type: 'ComboBox',
+					type: ComboBox,
 					name: 'ComboBox1b-2',
 					label: 'ComboBox2',
 					depends: 'ComboBox1b-1',
 					dynamicOptions: { _data: mapContinents, _dep: 'ComboBox1b-1' },
 					dynamicValues: valuesAsync
 				}, {
-					type: 'Text',
+					type: Text,
 					label: '',
 					name: 'test2',
 					content: '<h1>Test case: MultiInput w/TextBox &larr; MultiInput.ComboBox</h1>'
 				}, {
-					type: 'MultiInput',
+					type: MultiInput,
 					name: 'MultiInput2-1',
-					subtypes: [{ type: 'TextBox' }],
+					subtypes: [{ type: TextBox }],
 					label: 'MultiInput1'
 				}, {
-					type: 'MultiInput',
+					type: MultiInput,
 					name: 'MultiInput2-2',
 					label: 'MultiInput2',
-					subtypes: [{ 
-						type: 'ComboBox', 
-						depends: 'MultiInput2-1', 
-						dynamicValues: valuesAsync, 
-						dynamicOptions: { _func: function() { return form.getWidget('MultiInput2-1').get('value'); } } 
+					subtypes: [{
+						type: ComboBox,
+						depends: 'MultiInput2-1',
+						dynamicValues: valuesAsync,
+						dynamicOptions: { _func: function() { return form.getWidget('MultiInput2-1').get('value'); } }
 					}]
 				}, {
-					type: 'Text',
+					type: Text,
 					label: '',
 					name: 'test3',
 					content: '<h1>Test case: MultiInput w/ComboBox &larr; MultiInput.ComboBox</h1>'
 				}, {
-					type: 'MultiInput',
+					type: MultiInput,
 					name: 'MultiInput3-1',
-					subtypes: [{ 
-						type: 'ComboBox',
+					subtypes: [{
+						type: ComboBox,
 						dynamicOptions: { _data: valuesAnimals },
 						dynamicValues: valuesAsync,
 						staticValues: [ '-None-' ]
 					}],
 					label: 'MultiInput1'
 				}, {
-					type: 'MultiInput',
+					type: MultiInput,
 					name: 'MultiInput3-2',
 					label: 'MultiInput3',
-					subtypes: [{ 
-						type: 'ComboBox', 
-						depends: 'MultiInput3-1', 
-						dynamicValues: valuesAsync, 
-						dynamicOptions: { _func: function() { return form.getWidget('MultiInput3-1').get('value'); } } 
+					subtypes: [{
+						type: ComboBox,
+						depends: 'MultiInput3-1',
+						dynamicValues: valuesAsync,
+						dynamicOptions: { _func: function() { return form.getWidget('MultiInput3-1').get('value'); } }
 					}]
 				}, {
-					type: 'Text',
+					type: Text,
 					label: '',
 					name: 'test4',
 					content: '<h1>Test case: MultiInput w/TextBox &larr; ComboBox</h1>'
 				}, {
-					type: 'MultiInput',
+					type: MultiInput,
 					name: 'MultiInput4-1',
-					subtypes: [{ type: 'TextBox' }], 
+					subtypes: [{ type: TextBox }],
 					label: 'MultiInput1'
 				}, {
-					type: 'ComboBox',
+					type: ComboBox,
 					name: 'ComboBox4-1',
 					label: 'ComboBox1',
-					depends: 'MultiInput4-1', 
-					dynamicValues: valuesAsync, 
-					dynamicOptions: { _func: function() { return form.getWidget('MultiInput4-1').get('value'); } } 
+					depends: 'MultiInput4-1',
+					dynamicValues: valuesAsync,
+					dynamicOptions: { _func: function() { return form.getWidget('MultiInput4-1').get('value'); } }
 				}, {
-					type: 'Text',
+					type: Text,
 					label: '',
 					name: 'test5',
 					content: '<h1>Test case: MultiSelect &larr; ComboBox</h1>'
 				}, {
-					type: 'MultiSelect',
+					type: MultiSelect,
 					name: 'MultiSelect5-1',
 					label: 'MultiSelect1',
-					dynamicValues: valuesAsync, 
+					dynamicValues: valuesAsync,
 					dynamicOptions: { _data: valuesColors }
 					//staticValues: [ '-None-' ]
 				}, {
-					type: 'ComboBox',
+					type: ComboBox,
 					name: 'ComboBox5-1',
 					label: 'ComboBox1',
-					depends: 'MultiSelect5-1', 
-					dynamicValues: valuesAsync, 
-					dynamicOptions: { _func: function() { return form.getWidget('MultiSelect5-1').get('value'); } } 
+					depends: 'MultiSelect5-1',
+					dynamicValues: valuesAsync,
+					dynamicOptions: { _func: function() { return form.getWidget('MultiSelect5-1').get('value'); } }
 				}, {
-					type: 'Text',
+					type: Text,
 					label: '',
 					name: 'test6',
 					content: '<h1>Test case: MultiInput w/ComboBox &amp; staticValues</h1>'
 				}, {
-					type: 'MultiInput',
+					type: MultiInput,
 					name: 'MultiInput6',
 					subtypes: [{
-						type: 'TextBox',
+						type: TextBox,
 						label: 'Test'
 					}, {
-						type: 'ComboBox',
+						type: ComboBox,
 						staticValues: [ 'house', 'car', 'yacht' ],
 						label: 'Test2'
 					}],
 					label: 'MultiInput'
 				}, {
-					type: 'Text',
+					type: Text,
 					label: '',
 					name: 'test8',
 					content: '<h1>Test case: MultiInput w/ComboBox &amp; dynamicValues -> check for onValuesLoaded</h1>'
 				}, {
-					type: 'Text',
+					type: Text,
 					label: '',
 					name: 'Text8',
 					style: 'color:red; font-weight: bold;',
 					content: 'values are loading...'
 				}, {
-					type: 'MultiInput',
+					type: MultiInput,
 					name: 'MultiInput8',
 					subtypes: [{
-						type: 'ComboBox',
+						type: ComboBox,
 						dynamicOptions: { _data: valuesColors },
 						dynamicValues: valuesAsync,
 						label: 'Test'
 					}],
 					label: 'MultiInput'
 				}, {
-					type: 'Text',
+					type: Text,
 					label: '',
 					name: 'test7',
 					content: '<h1>Test case: disabled ComboBoxes with staticValues and dynamicValues</h1>'
 				}, {
-					type: 'MultiInput',
+					type: MultiInput,
 					name: 'MultiInput7-1',
 					subtypes: [{
-						type: 'ComboBox',
+						type: ComboBox,
 						dynamicOptions: { _data: valuesColors },
 						dynamicValues: valuesAsync,
 						label: 'Value'
@@ -280,10 +273,10 @@
 					value: ['green', 'blue'],
 					disabled: true
 				}, {
-					type: 'MultiInput',
+					type: MultiInput,
 					name: 'MultiInput7-2',
 					subtypes: [{
-						type: 'ComboBox',
+						type: ComboBox,
 						staticValues: ['green', 'red', 'blue'],
 						label: 'Value'
 					}],
@@ -291,7 +284,7 @@
 					value: ['green', 'blue'],
 					disabled: true
 				}, {
-					type: 'ComboBox',
+					type: ComboBox,
 					name: 'ComboBox7-1',
 					label: 'ComboBox (dynamic)',
 					dynamicOptions: { _data: valuesColors },
@@ -299,7 +292,7 @@
 					value: 'green',
 					disabled: true
 				}, {
-					type: 'ComboBox',
+					type: ComboBox,
 					name: 'ComboBox7-2',
 					label: 'ComboBox (static)',
 					staticValues: ['green', 'red', 'blue'],
@@ -334,9 +327,12 @@
 				});
 				form.startup();
 				form.placeAt(win.body());
-			});
-		</script>
-	</head>
-	<body class="umc">
-	</body>
+			}
+		};
+	</script>
+	<script type="text/javascript" src="../js/dojo/dojo.js"></script>
+</head>
+<body class="umc">
+<div id="overlay"></div>
+</body>
 </html>
