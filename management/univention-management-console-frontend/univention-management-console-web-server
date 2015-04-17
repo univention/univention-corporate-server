@@ -642,7 +642,7 @@ class CPUpload(CPgeneric):
 					if isinstance(jfield, cherrypy._cpreqbody.Part):
 						options.append(self._check_field_storage(req, iid, jfield))
 					else:
-						CORE.warn('Unknown type of multipart/form-data entry: %r=%r' % (iid, jfield))
+						CORE.warn('Unknown type of multipart/form-data entry: %r=%r' % (iid, ifield))
 			elif isinstance(ifield, basestring):
 				# field is a string :)
 				body[iid] = ifield

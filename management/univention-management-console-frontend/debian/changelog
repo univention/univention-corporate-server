@@ -1,9 +1,3 @@
-univention-management-console-frontend (4.1.106-56) unstable; urgency=low
-
-  * Bug #38276: fix logging in case of mult ifile upload
-
- -- Drees Dormann <dormann@univention.de>  Thu, 16 Apr 2015 14:09:51 +0200
-
 univention-management-console-frontend (4.1.106-55) unstable; urgency=low
 
   * Bug #32888: fixed translation, minor change in UMC web server
