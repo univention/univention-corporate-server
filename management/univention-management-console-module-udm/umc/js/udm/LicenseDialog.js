@@ -52,6 +52,7 @@ define([
 
 		_iconWidget: null,
 		_messageWidget: null,
+		_additionalInfoWidget: null,
 
 		licenseInfo: null,
 
@@ -81,9 +82,15 @@ define([
 				content : ''
 			});
 
+			this._additionalInfoWidget = new Text({
+				'class': 'col-xxs-12',
+				content : ''
+			});
+
 			this.message = new ContainerWidget({});
 			this.message.addChild(this._iconWidget);
 			this.message.addChild(this._messageWidget);
+			this.message.addChild(this._additionalInfoWidget);
 
 			this.updateLicense();
 		},
@@ -118,6 +125,13 @@ define([
 					product = this.licenseInfo.oemProductTypes.join(', ');
 				}
 
+				var additionalInfo = {
+					'ffpu': _('The license type "Free for personal use" can be upgraded to the latest <a href="https://www.univention.com/downloads/license-models/ucs-core-edition" target="_blank">UCS Core Edition license</a> allowing an unlimited amount of user and computer accounts. To upgrade, follow the instructions in the <a href="http://sdb.univention.de/1324" target="_blank">Univention Support Database</a>.'),
+					'core': _('Detailed information about the terms of use for this free license can be found on the <a href="https://www.univention.com/downloads/license-models/ucs-core-edition" target="_blank">Univention website</a>.'),
+					'': ''
+				}[this.licenseInfo.freeLicense];
+				this._additionalInfoWidget.set('content', additionalInfo);
+
 				var licenseTypeLabel = {
 					'ffpu': 'Free for personal use edition',
 					'core': 'UCS Core Edition',
@@ -126,7 +140,7 @@ define([
 
 				if (this.licenseInfo.licenseVersion === '1') {
 
-					// substract system accounts
+					// subtract system accounts
 					if (this.licenseInfo.real.account >= this.licenseInfo.sysAccountsFound) {
 						this.licenseInfo.real.account -= this.licenseInfo.sysAccountsFound;
 					}

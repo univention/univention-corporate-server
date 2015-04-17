@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-03-25 15:58+0100\n"
+"POT-Creation-Date: 2015-04-08 12:10+0200\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,7 +38,7 @@ msgstr ""
 "benutzt, welche momentan nicht installiert ist. Sie können die Applikation "
 "über das %(link)s installieren."
 
-#: umc/js/udm/LicenseDialog.js:206
+#: umc/js/udm/LicenseDialog.js:203
 #, python-format
 msgid "%s (used: %s)"
 msgstr "%s (genutzt: %s)"
@@ -118,11 +118,7 @@ msgstr "Konto"
 msgid "Account disabled"
 msgstr "Konto deaktiviert"
 
-#: umc/js/udm/startup.js:94
-msgid "Activate"
-msgstr "Aktivieren"
-
-#: umc/js/udm/startup.js:113
+#: umc/js/udm/startup.js:98
 msgid "Activation of UCS"
 msgstr "UCS-Aktivierung"
 
@@ -176,8 +172,8 @@ msgstr "Zurück"
 msgid "Boot"
 msgstr "Boot"
 
-#: umc/js/udm/CreateReportDialog.js:114 umc/js/udm/startup.js:91
-#: umc/js/udm/DetailPage.js:1122 umc/js/udm.js:1150 umc/js/udm.js:1441
+#: umc/js/udm/CreateReportDialog.js:114 umc/js/udm/DetailPage.js:1122
+#: umc/js/udm.js:1150 umc/js/udm.js:1441
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -189,12 +185,12 @@ msgstr "Passwort ändern"
 msgid "Click to edit the inherited properties of the policy"
 msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 
-#: umc/js/udm/LicenseDialog.js:153
+#: umc/js/udm/LicenseDialog.js:152
 msgid "Clients"
 msgstr "Clients"
 
 #: umc/js/udm/LicenseImportDialog.js:120 umc/js/udm/CreateReportDialog.js:165
-#: umc/js/udm/LicenseDialog.js:72
+#: umc/js/udm/LicenseDialog.js:69
 msgid "Close"
 msgstr "Schließen"
 
@@ -210,7 +206,7 @@ msgstr "Container"
 msgid "Continue editing"
 msgstr "Bearbeiten fortführen"
 
-#: umc/js/udm/LicenseDialog.js:173
+#: umc/js/udm/LicenseDialog.js:172
 msgid "Corporate Clients"
 msgstr "Corporate Clients"
 
@@ -267,11 +263,11 @@ msgstr "DNS-Objekte"
 msgid "DNS zones"
 msgstr "DNS-Zonen"
 
-#: umc/js/udm/LicenseDialog.js:175
+#: umc/js/udm/LicenseDialog.js:174
 msgid "DVS Clients"
 msgstr "DVS Clients"
 
-#: umc/js/udm/LicenseDialog.js:174
+#: umc/js/udm/LicenseDialog.js:173
 msgid "DVS Users"
 msgstr "DVS Benutzer"
 
@@ -300,9 +296,19 @@ msgstr "Zugehörige Objekte löschen."
 msgid "Deleting the selected %s."
 msgstr "Die ausgewählten %s löschen"
 
-#: umc/js/udm/LicenseDialog.js:154
+#: umc/js/udm/LicenseDialog.js:153
 msgid "Desktops"
 msgstr "Desktops"
+
+#: umc/js/udm/LicenseDialog.js:130
+msgid ""
+"Detailed information about the terms of use for this free license can be "
+"found on the <a href=\"https://www.univention.com/downloads/license-models/"
+"ucs-core-edition\" target=\"_blank\">Univention website</a>."
+msgstr ""
+"Genaue Information zu Nutzungsbedingung dieser kostenfreien Lizenz sind auf "
+"der <a href=\"https://www.univention.de/download/lizenzmodelle/ucs-core-"
+"edition\" target=\"_blank\">Univention Webseite</a> zu finden."
 
 #: umc/js/udm/DetailPage.js:1769
 msgid "Discard changes"
@@ -329,7 +335,7 @@ msgstr "Mitarbeiter"
 msgid "Error"
 msgstr "Fehler"
 
-#: umc/js/udm/LicenseDialog.js:155 umc/js/udm/LicenseDialog.js:179
+#: umc/js/udm/LicenseDialog.js:154 umc/js/udm/LicenseDialog.js:178
 msgid "Expiry date"
 msgstr "Ablaufdatum"
 
@@ -341,7 +347,7 @@ msgstr "Die folgenden Objekte konnten nicht verschoben werden:"
 msgid "Failed to upload certificate"
 msgstr "Fehler beim Hochladen des Zertifikates"
 
-#: umc/js/udm/LicenseDialog.js:129
+#: umc/js/udm/LicenseDialog.js:115
 msgid "GPL"
 msgstr "GPL"
 
@@ -373,7 +379,7 @@ msgstr "Importieren aus Datei..."
 msgid "Import from text field"
 msgstr "Importieren aus Textfeld"
 
-#: umc/js/udm/startup.js:119
+#: umc/js/udm/startup.js:104
 msgid "Import new license"
 msgstr "Neue Lizenz importieren"
 
@@ -385,11 +391,7 @@ msgstr "Importieren der Lizenzdaten..."
 msgid "Include hidden objects"
 msgstr "Versteckte Objekte anzeigen"
 
-#: umc/js/udm/LicenseDialog.js:90
-msgid "Information about the \"free for personal use\" license"
-msgstr "Informationen über die \"Free For Personal Use\"-Lizenz"
-
-#: umc/js/udm/LicenseDialog.js:68
+#: umc/js/udm/LicenseDialog.js:65
 msgid "Information about the current UCS license"
 msgstr "Informationen über die aktuelle UCS-Lizenz"
 
@@ -401,7 +403,7 @@ msgstr "Ererbt"
 msgid "KDE Profiles"
 msgstr "KDE-Profile"
 
-#: umc/js/udm/LicenseDialog.js:178
+#: umc/js/udm/LicenseDialog.js:177
 msgid "Key ID"
 msgstr "Key ID"
 
@@ -409,7 +411,7 @@ msgstr "Key ID"
 msgid "LDAP"
 msgstr "LDAP"
 
-#: umc/js/udm/LicenseDialog.js:151 umc/js/udm/LicenseDialog.js:169
+#: umc/js/udm/LicenseDialog.js:150 umc/js/udm/LicenseDialog.js:168
 msgid "LDAP base"
 msgstr "LDAP-Basis"
 
@@ -425,16 +427,16 @@ msgstr "LDAP-Objekte"
 msgid "Lease Time"
 msgstr "Lease-Zeit"
 
-#: umc/js/udm/startup.js:129 umc/js/udm.js:1646
+#: umc/js/udm/startup.js:114 umc/js/udm.js:1646
 msgid "License"
 msgstr "Lizenz"
 
-#: umc/js/udm/startup.js:123
+#: umc/js/udm/startup.js:108
 msgid "License information"
 msgstr "Lizenzinformation"
 
-#: umc/js/udm/LicenseDialog.js:129 umc/js/udm/LicenseDialog.js:150
-#: umc/js/udm/LicenseDialog.js:168
+#: umc/js/udm/LicenseDialog.js:115 umc/js/udm/LicenseDialog.js:149
+#: umc/js/udm/LicenseDialog.js:167
 msgid "License type"
 msgstr "Lizenztyp"
 
@@ -471,7 +473,7 @@ msgstr "MX Records"
 msgid "Mail"
 msgstr "Mail"
 
-#: umc/js/udm/LicenseDialog.js:172
+#: umc/js/udm/LicenseDialog.js:171
 msgid "Managed Clients"
 msgstr "Managed Clients"
 
@@ -735,15 +737,15 @@ msgstr "Richtlinien-Konfiguration"
 msgid "Server error message:"
 msgstr "Server-Fehlermeldung:"
 
-#: umc/js/udm/LicenseDialog.js:170
+#: umc/js/udm/LicenseDialog.js:169
 msgid "Servers"
 msgstr "Server"
 
-#: umc/js/udm/LicenseDialog.js:177
+#: umc/js/udm/LicenseDialog.js:176
 msgid "Servers with premium support"
 msgstr "Server mit Premiumsupport"
 
-#: umc/js/udm/LicenseDialog.js:176
+#: umc/js/udm/LicenseDialog.js:175
 msgid "Servers with standard support"
 msgstr "Server mit Standardsupport"
 
@@ -830,13 +832,30 @@ msgstr ""
 "Originaldatei. Sollte dieser Fehler wiederholt auftreten, wenden Sie sich "
 "bitte an Univention oder Ihren Univention-Partner."
 
-#: umc/js/udm/startup.js:85
+#: umc/js/udm/startup.js:86
 msgid "The license has already been activated."
 msgstr "Die Lizenz wurde bereits aktiviert."
 
 #: umc/js/udm/LicenseImportDialog.js:142
 msgid "The license has been imported successfully."
 msgstr "Die Lizenz wurde erfolgreich importiert."
+
+#: umc/js/udm/LicenseDialog.js:129
+msgid ""
+"The license type \"Free for personal use\" can be upgraded to the latest <a "
+"href=\"https://www.univention.com/downloads/license-models/ucs-core-edition"
+"\" target=\"_blank\">UCS Core Edition license</a> allowing an unlimited "
+"amount of user and computer accounts. To upgrade, follow the instructions in "
+"the <a href=\"http://sdb.univention.de/1324\" target=\"_blank\">Univention "
+"Support Database</a>."
+msgstr ""
+"Der Lizenztyp \"Free for personal use\" kann auf die neue <a "
+"href=\"https://www.univention.de/download/lizenzmodelle/ucs-core-edition"
+"\" target=\"_blank\">UCS Core Edition Lizenz</a> aktualisiert werden, welche "
+"eine unlimitierte Anzahl von Benutzer- und Rechnerkonten ermöglicht. "
+"Für die Aktualisierung reicht es, den aufgezeigten Schritten in der "
+"<a href=\"http://sdb.univention.de/1324\" target=\"_blank\">Univention "
+"Support Database</a> zu folgen."
 
 #: umc/js/udm/CreateReportDialog.js:154
 msgid ""
@@ -854,7 +873,9 @@ msgstr "Die zuverwendende Reportvorlage"
 msgid ""
 "The text field is empty. Please copy all lines of the license file into the "
 "text field and retry to import the data."
-msgstr "Das Textfeld ist leer. Bitte kopieren sie alle Zeilen der Lizenzdatei in das Textfeld und starten Sie den Import-Vorgang erneut."
+msgstr ""
+"Das Textfeld ist leer. Bitte kopieren sie alle Zeilen der Lizenzdatei in das "
+"Textfeld und starten Sie den Import-Vorgang erneut."
 
 #: umc/js/udm/DetailPage.js:1765
 msgid "There are unsaved changes. Are you sure to cancel?"
@@ -876,7 +897,7 @@ msgstr "Typ"
 msgid "Type: <i>%(type)s</i>"
 msgstr "Typ: <i>%(type)s</i>"
 
-#: umc/js/udm/LicenseDialog.js:150 umc/js/udm/LicenseDialog.js:168
+#: umc/js/udm/LicenseDialog.js:138
 msgid "UCS License"
 msgstr "UCS-Lizenz"
 
@@ -896,7 +917,7 @@ msgstr "UDM Web"
 msgid "Updating session data..."
 msgstr "Aktualisieren der Sitzungsdaten..."
 
-#: umc/js/udm/LicenseDialog.js:114
+#: umc/js/udm/LicenseDialog.js:103
 msgid "Updating the license information has failed"
 msgstr "Die Aktualisierung der Lizenzinformationen ist fehlgeschlagen"
 
@@ -912,11 +933,11 @@ msgstr "Benutzerkonto"
 msgid "User Contact"
 msgstr "Benutzer-Kontakt"
 
-#: umc/js/udm/LicenseDialog.js:152 umc/js/udm/LicenseDialog.js:171
+#: umc/js/udm/LicenseDialog.js:151 umc/js/udm/LicenseDialog.js:170
 msgid "User accounts"
 msgstr "Benutzerkonten"
 
-#: umc/js/udm/LicenseDialog.js:156 umc/js/udm/LicenseDialog.js:180
+#: umc/js/udm/LicenseDialog.js:155 umc/js/udm/LicenseDialog.js:179
 msgid "Valid product types"
 msgstr "Gültige Produkttypen"
 
@@ -933,7 +954,7 @@ msgstr ""
 "alle referenzierende Objekte aus und kann ggf. das System global "
 "beeinflussen."
 
-#: umc/js/udm/LicenseDialog.js:130
+#: umc/js/udm/LicenseDialog.js:116
 msgid ""
 "You are using a GPL license which is not eligible for maintenance or support "
 "claims."
@@ -1026,7 +1047,7 @@ msgstr "Freigabe"
 msgid "shares"
 msgstr "Freigaben"
 
-#: umc/js/udm/LicenseDialog.js:204
+#: umc/js/udm/LicenseDialog.js:201
 msgid "unlimited"
 msgstr "unbegrenzt"
 
@@ -1040,6 +1061,9 @@ msgstr "Benutzer"
 
 #~ msgid "<b>License type:</b> GPL"
 #~ msgstr "<b>Lizenztyp:</b> GPL"
+
+#~ msgid "Activate"
+#~ msgstr "Aktivieren"
 
 #~ msgid "Back to LDAP directory tree"
 #~ msgstr "Zurück zum LDAP-Verzeichnisbaum"
@@ -1061,6 +1085,9 @@ msgstr "Benutzer"
 
 #~ msgid "Import of new UCS license"
 #~ msgstr "Import einer neuen UCS Lizenz"
+
+#~ msgid "Information about the \"free for personal use\" license"
+#~ msgstr "Informationen über die \"Free For Personal Use\"-Lizenz"
 
 #~ msgid "Logout"
 #~ msgstr "Abmelden"
