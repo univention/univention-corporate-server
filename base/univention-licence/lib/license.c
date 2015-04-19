@@ -276,6 +276,13 @@ int univention_license_check_basedn()
 		
 		if (licenseBaseDN != NULL && baseDN != NULL)
 		{
+			/* check for UCS Core edition */
+			if ((strlen(licenseBaseDN->line[0]) == strlen("UCS Core Edition"))) {
+				if (strcmp(licenseBaseDN->line[0], "UCS Core Edition") == 0) {
+					ret = 1;
+				}
+			}
+
 			/* check for free for personal use edition */
 			if ((strlen(licenseBaseDN->line[0]) == strlen("Free for personal use edition"))) {
 				if (strcmp(licenseBaseDN->line[0], "Free for personal use edition") == 0) {
