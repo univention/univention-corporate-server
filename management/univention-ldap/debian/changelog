@@ -1,3 +1,9 @@
+univention-ldap (11.0.12-4) unstable; urgency=medium
+
+  * Upgrade to UCS Core Edition (Bug #38107)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 19 Apr 2015 20:27:16 +0200
+
 univention-ldap (11.0.12-3) unstable; urgency=low
 
   * Bug #28331: added default (1) for univentionSamba4pwdProperties in base.ldif 

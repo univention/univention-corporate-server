@@ -92,7 +92,7 @@ if [ -z "$files" ] ; then
 	realm=$(echo "$domainname" | sed -e 's/dc=//g;s/,/./g;s/[a-z]/\u&/g')
 	sid=$(/usr/sbin/univention-newsid)
 	Domain=$domainname
-	cat /usr/share/univention-ldap/base.ldif /usr/share/univention-ldap/ffpu.ldif |
+	cat /usr/share/univention-ldap/base.ldif /usr/share/univention-ldap/core-edition.ldif |
 		 sed -e \
 		"s|@@%%@@ldap\.pw@@%%@@|$pw_crypt|;s|@@%%@@backup\.pw@@%%@@|$backup_crypt|;s|@@%%@@sambadomain@@%%@@|$sambadomain|;s|@@%%@@firstdc@@%%@@|$firstdc|;s|@@%%@@realm@@%%@@|$realm|;s|@@%%@@sid@@%%@@|$sid|;s|@@%@@domain@@%@@|$Domain|" | \
 		univention-config-registry filter | slapadd >>/var/log/univention/join.log 2>&1
