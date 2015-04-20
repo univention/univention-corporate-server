@@ -1,3 +1,9 @@
+univention-ldap (11.0.12-5) unstable; urgency=medium
+
+  * Fix version check in univention-ldap-server.postinst (Bug #38107)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 20 Apr 2015 07:16:52 +0200
+
 univention-ldap (11.0.12-4) unstable; urgency=medium
 
   * Upgrade to UCS Core Edition (Bug #38107)

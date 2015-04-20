@@ -220,7 +220,7 @@ upgrade_license () {
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/01univention-ldap-server-init.inst || true
 	/usr/lib/univention-install/10univention-ldap-server.inst || true
-	[ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 11.0.12-2 && upgrade_license || :
+	[ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 11.0.12-5 && upgrade_license || :
 fi
 
 ## after this line slapd.conf is expected to be updated properly and slapd may restart
