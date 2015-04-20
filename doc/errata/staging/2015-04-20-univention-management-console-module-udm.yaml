@@ -1,15 +1,15 @@
 product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
-src: univention-management-console-frontend
-fix: 4.1.106-56.1041.201504172130
+src: univention-management-console-module-udm
+fix: 5.1.25-65.573.201504172139
 version: [1]
 desc: |
-  This update addresses the following issues:
+  This update addresses the following issue:
   * Support for the UCS Core Edtion license have been added.
     Every "Free for personal use" license can easily be migrated
     to the UCS Core Edition. Details can be found in the SDB:
     http://sdb.univention.de/1324
-  * The version of the Dojo Toolkit has been updated from 1.10.2 to 1.10.4.
-  * Support for IE11 in the Dojo module dojo/uacss has been added.
-bug: [38104,38225]
+  * DVS and support information has been removed from the license information
+    dialogue.
+bug: [38103,38203]

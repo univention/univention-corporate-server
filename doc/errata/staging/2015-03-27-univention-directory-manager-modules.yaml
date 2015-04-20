@@ -2,12 +2,17 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-directory-manager-modules
-fix: 10.0.29-45.1310.201504151632
+fix: 10.0.29-48.1311.201504172144
 version: [1]
 desc: |
   This update addresses the following issues:
+  * Support for the UCS Core Edtion license have been added.
+    Every "Free for personal use" license can easily be migrated
+    to the UCS Core Edition. Details can be found in the SDB:
+    http://sdb.univention.de/1324 
+  * DVS and support information has been removed from univention-license-check.
   * Two attributes domainPasswordComplex and domainPasswordStoreCleartext
     have been added to the sambadomain settings module.
   * Labels of multi value fields in UDM modules have been adjusted to be more
     consistent.
-bug: [28331, 32760]
+bug: [38101,38203,28331,32760]
