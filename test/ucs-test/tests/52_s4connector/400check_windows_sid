@@ -5,7 +5,6 @@
 ## exposure: safe
 ## packages:
 ##  - univention-samba4
-##  - univention-s4-connector
 ## roles:
 ## - domaincontroller_master
 ## - domaincontroller_backup

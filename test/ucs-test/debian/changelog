@@ -1,3 +1,10 @@
+ucs-test (5.0.145-7) unstable; urgency=low
+
+  * 52_s4connector/400check_windows_sid: removed connector from
+    dependiences (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 20 Apr 2015 16:46:38 +0200
+
 ucs-test (5.0.145-6) unstable; urgency=low
 
   * 51_samba4/56evaluate_windows_gpo: removed connector from dependencies
