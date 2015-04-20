@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-squid
+fix: 8.0.2-4.226.201504201435
+version: [1]
+desc: |
+ This update addresses the following issue:
+ * The squid configuration can now be extended with custom ACLs
+   via UCR variables.
+bug: [37543]
