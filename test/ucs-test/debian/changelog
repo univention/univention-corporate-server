@@ -1,3 +1,11 @@
+ucs-test (5.0.145-5) unstable; urgency=low
+
+  * 60_umc-system/22_umc-service-proc-killing updated:
+    More debug output; do not wait too much when the process
+    is killed during the clean-up; wait when terminated via UMC (Bug #38174).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 20 Apr 2015 15:15:59 +0200
+
 ucs-test (5.0.145-4) unstable; urgency=low
 
   * 60_umc-system/22_umc-service-proc-killing: wait a bit after UMC request

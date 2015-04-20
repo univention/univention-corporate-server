@@ -5,18 +5,18 @@
 
 import sys
 sys.path.insert(0, '.')
-from TestUMCSystemModule import TestUMCSystem
 
-from psutil import Process
-from os import wait4, WNOHANG, WTERMSIG, fork
 import signal
 from time import sleep
+from psutil import Process, TimeoutExpired
+from os import wait4, WNOHANG, WTERMSIG, fork
 
+from TestUMCSystemModule import TestUMCSystem
 import univention.testing.utils as utils
 
 
 class TestUMCProcessKilling(TestUMCSystem):
-    MAX_PROCESS_TIME = 30  # s
+    MAX_PROCESS_TIME = 30  # seconds
 
     def __init__(self):
         """Test Class constructor"""
@@ -61,25 +61,20 @@ class TestUMCProcessKilling(TestUMCSystem):
 
     def force_process_kill(self):
         """
-        Kills process with SIGKILL signal if not yet terminated.
+        Kills process with SIGKILL signal via psutil if not yet terminated.
+        That is a clean-up action.
         """
         if self.Proc.is_running():
             print("Created process with pid '%s' was not terminated, "
-                  "forcing kill" % self.Proc.pid)
+                  "forcing kill using psutil" % self.Proc.pid)
             self.Proc.kill()
-            for i in xrange(self.MAX_PROCESS_TIME):
-                if i:
-                    sleep(1)
-                child, exit_status, _res_usage = wait4(self.Proc.pid, WNOHANG)
-                if child:
-                    break
-            else:
-                print("Process with pid '%s' did not exit after %ds"
-                      % (self.Proc.pid, i))
-            if WTERMSIG(exit_status) != signal.SIGKILL:
-                print("The exit status while force kill is 0x%x "
-                      "instead of 'SIGKILL'(%d)."
-                      % (exit_status, signal.SIGKILL))
+
+            try:
+                # wait a bit for process to be killed
+                exit_code = self.Proc.wait(timeout=5)
+            except TimeoutExpired as exc:
+                print("Process with pid '%s' did not exit after forced KILL "
+                      "via psutil: %r" % (self.Proc.pid, exc))
 
     def create_process(self, ignore_sigterm=False):
         """
@@ -93,25 +88,51 @@ class TestUMCProcessKilling(TestUMCSystem):
             return pid
         else:  # child under test
             if ignore_sigterm:
+                # the process should ignore 'SIGTERM'
                 signal.signal(signal.SIGTERM, signal.SIG_IGN)
             sleep(self.MAX_PROCESS_TIME)
             sys.exit(0)
 
     def test(self, signame, ignore_signal=False):
-        print "Testing UMC process killing with signal '%s'" % signame
+        """
+        Creates a process;
+        Check created process exist via UMC;
+        Kills/Terminates process with a given 'signame' via UMC;
+        Performs clean-up using psutil if needed.
+        """
+        print "\nTesting UMC process killing with signal '%s'" % signame
         signum = getattr(signal, signame)
         try:
             pid = self.create_process(ignore_signal)
-            if self.query_process_exists(pid):
-                self.make_kill_request(signame, [pid])
-                sleep(10)  # (see Bug #38174 Comment 3)
-                _pid, exit_status, _res_usage = wait4(pid, WNOHANG)
-                if ignore_signal != (WTERMSIG(exit_status) != signum):
-                    utils.fail("Process exit status is 0x%x instead of "
-                               "%s(%d)." % (exit_status, signame, signum))
-                if ignore_signal != self.query_process_exists(pid):
-                    utils.fail("Process did not terminate after request "
-                               "with signal %s" % signame)
+            if self.query_process_exists(pid):  # a UMC request
+                self.make_kill_request(signame, [pid])  # a UMC request
+
+                for i in xrange(self.MAX_PROCESS_TIME):
+                    if i:
+                        sleep(1)
+                    child, exit_status, _res_usage = wait4(pid, WNOHANG)
+                    if child:
+                        break
+
+                print "Process Exit Status is: ", exit_status
+                exit_code = WTERMSIG(exit_status)
+
+                if ignore_signal:
+                    # case 3:
+                    if exit_code in (signum, getattr(signal, 'SIGKILL')):
+                        # process exited due to given signal or SIGKILL, i.e.
+                        # the UMC forced the kill of unwilling process:
+                        utils.fail("The exit code of unwilling process is %s."
+                                   " The process was terminated either with "
+                                   "SIGKILL or SIGTERM." % exit_code)
+                else:
+                    # cases 1 and 2:
+                    if exit_code != signum:
+                        utils.fail("Process exit status is 0x%x instead of "
+                                   "%s(%d)." % (exit_status, signame, signum))
+                    if self.query_process_exists(pid):  # a UMC request
+                        utils.fail("Process did not terminate after request "
+                                   "with signal %s" % signame)
             else:
                 utils.fail("The process is not running right after creation")
         finally:
@@ -119,11 +140,11 @@ class TestUMCProcessKilling(TestUMCSystem):
 
     def main(self):
         """
-        Method to start the test of the UMC backend
-        process killing functionality.
+        Method to start the test of the UMC backend process killing.
         """
         self.get_ucr_credentials()
         self.create_connection_authenticate()
+        print "Test process max running time (sec) is:", self.MAX_PROCESS_TIME
 
         # case 1: killing process using signal 'SIGTERM'
         self.test('SIGTERM')
@@ -131,7 +152,9 @@ class TestUMCProcessKilling(TestUMCSystem):
         # case 2: killing process using signal 'SIGKILL'
         self.test('SIGKILL')
 
-        # case 3: killing unwilling process using signal 'SIGTERM'
+        # case 3: try to kill a process with 'SIGTERM' when
+        # the process ignores 'SIGTERM'. To make sure that UMC won't
+        # force kill (with SIGKILL) such unwilling process.
         self.test('SIGTERM', ignore_signal=True)
 
 
