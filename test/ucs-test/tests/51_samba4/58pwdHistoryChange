@@ -1,0 +1,76 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check that change of domain passwordHistory works"
+## exposure: dangerous
+## bugs: [37018]
+## packages: [univention-samba4]
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+eval "$(ucr shell)"
+
+RETVAL=100
+TEST_PWD_HISTORY=5
+
+# create test User
+echo "Creating User for the test:"
+SAMBA="true"
+MAIL="false"
+KERBEROS="true"
+PERSON="false"
+POSIX="true"
+
+username="$(user_randomname)"
+password=univention
+
+if ! user_create "$username"; then
+    fail_fast 1 "User could not be created"
+fi
+
+# get samba domain DN and save the original password history:
+samba_domain=$(udm settings/sambadomain list  | sed -n 's/^DN: sambaDomainName=//p')
+orig_password_history=$(udm settings/sambadomain list  | sed -n 's/^  passwordHistory: //p')
+
+echo -e "\nSamba Domain DN:" $samba_domain
+echo "The current domain passwordHistory:" $orig_password_history
+
+
+echo -e "\nConfiguring password history via UDM:"
+udm settings/sambadomain modify --dn sambaDomainName=$samba_domain --set passwordHistory=$TEST_PWD_HISTORY
+wait_for_replication_and_postrun
+
+# check modification worked via samba-tool:
+samba_tool_history=$(samba-tool domain passwordsettings show | grep 'Password history length: '| awk -F ': ' '{print $2}')
+test "$samba_tool_history" = "$TEST_PWD_HISTORY" || fail_test 110
+
+
+echo -e "\nCheck that test user can be found via pdbedit:"
+samba_user=$(LANG=C pdbedit -L "$username" | grep "Username not found")
+
+if [ -n "$samba_user" ]; then
+    echo "$samba_user"
+    echo "    E: The created test user '$username' was not found via pdbedit after the password history was set!"
+    fail_test 110
+fi
+
+
+echo -e "\nCheck that user can access sysvol via smbclient:"
+output="$(smbclient //localhost/sysvol -U"$username%$password" -c "ls")"
+if [ "$?" != 0 ]; then
+    echo "$output"
+    echo "    E: Could not access sysvol as the user '$username' after the password history was set!"
+    fail_test 110
+fi
+
+
+echo -e "\nCleanup:"
+udm settings/sambadomain modify --dn sambaDomainName=$samba_domain --set passwordHistory=$orig_password_history
+wait_for_replication_and_postrun
+user_remove "$username"
+
+exit $RETVAL
