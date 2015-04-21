@@ -53,6 +53,33 @@ basic_setup ()
 	fi
 }
 
+jenkins_updates () {
+	local version_version version_patchlevel version_erratalevel target
+	target="$(echo "${JOB_NAME:-}"|sed -rne 's,.*/UCS-([0-9]+\.[0-9]+-[0-9]+)/.*,\1,p')"
+	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
+	echo "Starting from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
+
+	case "${release_update:-}" in
+	public) upgrade_to_latest --updateto "$target" ;;
+	testing) upgrade_to_testing --updateto "$target" ;;
+	none|"") ;;
+	*) echo "Unknown release_update='$release_update'" >&1 ; exit 1 ;;
+	esac
+
+	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
+	echo "Continuing from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
+
+	case "${errata_update:-}" in
+	testing) upgrade_to_latest_test_errata ;;
+	public) upgrade_to_latest_errata ;;
+	none|"") ;;
+	*) echo "Unknown errata_update='$errata_update'" >&1 ; exit 1 ;;
+	esac
+
+	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
+	echo "Finished at ${version_version}-${version_patchlevel}+${version_erratalevel}"
+}
+
 upgrade_to_latest_errata ()
 {
 	# Bug #34336: needs further discussion if release or only errata updates are expected
@@ -74,7 +101,7 @@ upgrade_to_latest_test_errata ()
 upgrade_to_testing ()
 {
 	ucr set repository/online/server=testing.univention.de
-	upgrade_to_latest --updateto '3.2-99'
+	upgrade_to_latest --updateto '3.2-99' "$@"
 }
 
 upgrade_to_latest ()
