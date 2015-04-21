@@ -1,3 +1,9 @@
+ucs-test (5.0.145-8) unstable; urgency=low
+
+  * Bug #38305: Core licence adjustment
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 21 Apr 2015 10:10:19 +0200
+
 ucs-test (5.0.145-7) unstable; urgency=low
 
   * 52_s4connector/400check_windows_sid: removed connector from

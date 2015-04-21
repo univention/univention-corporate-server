@@ -188,10 +188,10 @@ class TestUMCLicenseManagement(TestUMCSystem):
                            "'corporateclients'")
             if license_info['managedclients'] != 5:
                 utils.fail("The free license should have 5 'managedclients'")
-            if license_info['virtualdesktopclients']:
+            if license_info.get('virtualdesktopclients'):
                 utils.fail("The free license should not have "
                            "'virtualdesktopclients'")
-            if license_info['virtualdesktopusers']:
+            if license_info.get('virtualdesktopusers'):
                 utils.fail("The free license should not have "
                            "'virtualdesktopusers'")
             if license_info['users'] != 5:
