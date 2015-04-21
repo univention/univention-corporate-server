@@ -8,7 +8,7 @@ desc: |
   This update addresses the following issues:
   * The LDAP attribute univentionSamba4pwdProperties (integer) 
     has been added to the sambaDomain object class.
-  * Support for the UCS Core Edtion license has been added.
+  * Support for the UCS Core Edition license has been added.
     Every "Free for personal use" license can easily be migrated
     to the UCS Core Edition. Details can be found in the SDB:
     http://sdb.univention.de/1324 
