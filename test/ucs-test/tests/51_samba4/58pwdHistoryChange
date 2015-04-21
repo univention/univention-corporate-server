@@ -58,7 +58,6 @@ if [ -n "$samba_user" ]; then
     fail_test 110
 fi
 
-
 echo -e "\nCheck that user can access sysvol via smbclient:"
 output="$(smbclient //localhost/sysvol -U"$username%$password" -c "ls")"
 if [ "$?" != 0 ]; then
