@@ -59,7 +59,7 @@ if [ -n "$samba_user" ]; then
 fi
 
 echo -e "\nCheck that user can access sysvol via smbclient:"
-output="$(smbclient //localhost/sysvol -U"$username%$password" -c "ls")"
+output="$(smbclient //localhost/sysvol -U"$username%$password" -c "ls" 2>&1)"
 if [ "$?" != 0 ]; then
     echo "$output"
     echo "    E: Could not access sysvol as the user '$username' after the password history was set!"
