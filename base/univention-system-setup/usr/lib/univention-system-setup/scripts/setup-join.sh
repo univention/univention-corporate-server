@@ -147,15 +147,15 @@ fi
 # Call scripts which won't be handled by join scripts
 # keyboard, language and timezone
 echo "Starting re-configuration of locales"
-run-parts /usr/lib/univention-system-setup/scripts/15_keyboard/
-run-parts /usr/lib/univention-system-setup/scripts/20_language/
-run-parts /usr/lib/univention-system-setup/scripts/25_defaultlocale/
+run-parts /usr/lib/univention-system-setup/scripts/15_keyboard
+run-parts /usr/lib/univention-system-setup/scripts/20_language
+run-parts /usr/lib/univention-system-setup/scripts/25_defaultlocale
 
 # Do network stuff
 echo "Starting re-configuration of network"
-run-parts -a --network-only -a --appliance-mode -- /usr/lib/univention-system-setup/scripts/30_net/
+run-parts -a --network-only -a --appliance-mode -- /usr/lib/univention-system-setup/scripts/30_net
 
-run-parts /usr/lib/univention-system-setup/scripts/35_timezone/
+run-parts /usr/lib/univention-system-setup/scripts/35_timezone
 
 # Re-create SSL certificates on DC Master even if the admin didn't change all variables
 # otherwise a lot of appliances will have the same SSL certificate secret
@@ -167,20 +167,20 @@ fi
 univention-certificate new -name "$hostname.$domainname"
 ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
 
-run-parts /usr/lib/univention-system-setup/scripts/45_modules/
+run-parts /usr/lib/univention-system-setup/scripts/45_modules
 
 # Re-create sources.list files
 ucr commit /etc/apt/sources.list.d/*
 
 # Install selected software
 echo "Starting re-configuration of software packages"
-run-parts /usr/lib/univention-system-setup/scripts/50_software/
+run-parts /usr/lib/univention-system-setup/scripts/50_software
 
 eval "$(univention-config-registry shell)"
 
 is_profile_var_true "start/join"
 if [ $? -ne 1 ]; then
-	info_header "$(basename $0)" "$(gettext "Domain join")"
+	info_header "domain-join" "$(gettext "Domain join")"
 
 	# see how many join scripts we need to execute
 	joinScripts=(/usr/lib/univention-install/*.inst)
@@ -242,7 +242,7 @@ fi
 # (e.g. univention-upgrade which would require testing new installations
 # each time we release an update)
 echo "Running postjoin scripts"
-run-parts /usr/lib/univention-system-setup/scripts/90_postjoin/
+run-parts /usr/lib/univention-system-setup/scripts/90_postjoin
 
 # Cleanup
 rm -f /var/lib/univention-ldap/root.secret

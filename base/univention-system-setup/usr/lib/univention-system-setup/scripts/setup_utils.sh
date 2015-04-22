@@ -57,7 +57,7 @@ done
 # @param  description (optional)
 info_header()
 {
-	_path=$(readlink -m "$0")
+	_path=$1
 	script="${_path##*scripts/}"
 	echo "=== $script ($(date +'%Y-%m-%d %H:%M:%S')) ==="
 
