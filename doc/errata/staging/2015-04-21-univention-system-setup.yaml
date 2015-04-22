@@ -1,0 +1,16 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-system-setup
+fix: 8.1.66-34.869.201504221243
+version: [1]
+desc: |
+  This errata update addresses the following issues:
+  * A reload of apache is now disabled during the complete configuration of a
+    UCS appliance. This has been done in order to avoid access problems at the
+    end of the wizard when accessing UMC via HTTPS.
+  * The city search widget has been improved w.r.t. its usability.
+  * The progress bar has been adjusted to reach 100%, its localization has been
+    corrected to match the chosen one, and its output has been improved.
+  * Output written into /var/log/univention/setup.log is now regularly flushed.
+bug: [37771,35550,38293]
