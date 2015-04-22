@@ -267,13 +267,14 @@ ucr commit /etc/pam.d/*
 # Removed system setup login message
 ucr set system/setup/showloginmessage=false
 
-# allow a restart of server components without actually restarting them
-/usr/share/univention-updater/enable-apache2-umc --no-restart
-
 # call appliance hooks
+info_header "appliance-hooks.d" "$(gettext "Running appliance scripts")"
 if [ -d /usr/lib/univention-system-setup/appliance-hooks.d ]; then
 	run-parts /usr/lib/univention-system-setup/appliance-hooks.d
 fi
+
+# allow a restart of server components without actually restarting them
+/usr/share/univention-updater/enable-apache2-umc --no-restart
 
 exit 0
 
