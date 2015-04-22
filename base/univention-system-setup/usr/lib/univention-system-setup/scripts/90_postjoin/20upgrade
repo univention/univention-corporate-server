@@ -32,13 +32,14 @@
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
+info_header "$0" "$(gettext "Upgrading the system")"
+
 is_profile_var_true "update/system/after/setup"
 
 if [ $? -ne 0 ]; then
 	exit 0
 fi
 
-info_header "$0" "$(gettext "Upgrading the system")"
 progress_msg "$(gettext "This might take a while depending on the number of pending updates.")"
 
 eval "$(ucr shell)"

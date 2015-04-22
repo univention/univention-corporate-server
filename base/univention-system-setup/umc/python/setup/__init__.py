@@ -304,6 +304,7 @@ class Instance(Base, ProgressMixin):
 					 'critical' : state.critical,
 					 'steps' : state.percentage }
 				info.update(kwargs)
+				MODULE.info('Progress state: %(steps).1f%% - %(component)s - %(info)s' % info)
 				return info
 			# acquire the lock in order to wait for the join/setup scripts to finish
 			# do this for 30 sec and then return anyway

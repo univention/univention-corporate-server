@@ -43,6 +43,7 @@ class RoleScript(AptScript):
 	def inner_run(self):
 		# preparation install autoremove
 		self.steps(3 * 100)
+		self.message(_('Preparing package lists (this may take a moment)...'))
 
 		if not self.wanted_server_role or self.wanted_server_role == self.current_server_role:
 			# nothing to do

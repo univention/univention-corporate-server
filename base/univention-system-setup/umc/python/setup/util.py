@@ -323,12 +323,13 @@ class ProgressParser( object ):
 
 	# fractions of setup scripts
 	FRACTIONS = {
-		'05_role/10role' : 40,
+		'05_role/10role' : 30,
 		'10_basis/12domainname' : 15,
 		'10_basis/14ldap_basis' : 20,
 		'30_net/10interfaces' : 20,
-		'50_software/10software' : 50,
+		'50_software/10software' : 30,
 		'90_postjoin/10admember' : 30,
+		'90_postjoin/20upgrade' : 10,
 	}
 
 	# current status
@@ -359,6 +360,7 @@ class ProgressParser( object ):
 
 		self.current.max = sum(self.fractions.values())
 		MODULE.info('Calculated a maximum value of %d' % self.current.max)
+		MODULE.info('Dumping all fractions:\n%s' % self.fractions)
 
 	@property
 	def changed( self ):
@@ -507,8 +509,28 @@ def run_joinscript( progressParser, values, _username, password, lang='C'):
 	f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())
 	f.flush()
 
-	progressParser.fractions[ 'setup-join.sh' ] = 50
+	# the following scripts will not be called via setup-join.sh
+	progressParser.fractions[ '10_basis/10hostname' ] = 0
+	progressParser.fractions[ '10_basis/12domainname' ] = 0
+	progressParser.fractions[ '10_basis/14ldap_basis' ] = 0
+	progressParser.fractions[ '10_basis/16windows_domain' ] = 0
+
+	# check whether particular scripts are called
+	if not values.get('ad/member'):
+		progressParser.fractions[ '90_postjoin/10admember' ] = 0
+	if not values.get('update/system/after/setup'):
+		progressParser.fractions[ '90_postjoin/20upgrade' ] = 0
+	if not values.get('packages_remove') and not values.get('packages_install'):
+		progressParser.fractions[ '50_software/10software' ] = 0
+
+	# additional entries that will be called via setup-join.sh
+	progressParser.fractions[ 'domain-join' ] = 50
+	progressParser.fractions[ 'appliance-hooks.d' ] = 1
+	progressParser.fractions[ 'create-ssh-keys' ] = 10
+
+	# recompute sum
 	progressParser.current.max = sum( progressParser.fractions.values() )
+
 	def runit( command ):
 		p = subprocess.Popen( command, stdout = subprocess.PIPE, stderr = subprocess.STDOUT, env = {
 			'PATH': '/bin:/sbin:/usr/bin:/usr/sbin',

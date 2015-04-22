@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-14 11:38+0200\n"
+"POT-Creation-Date: 2015-04-21 16:25+0200\n"
 "PO-Revision-Date: 2012-02-20 14:41+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,17 +11,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:169
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:124
+msgid "Recreating SSH keys"
+msgstr "Erstellen von SSH-Schlüsseln"
+
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:125
+#: usr/lib/univention-system-setup/scripts/10_basis/20initscripts:36
+msgid "This might take a moment..."
+msgstr "Dies kann einen Moment dauern..."
+
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:201
 msgid "Domain join"
 msgstr "Domänenbeitritt"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:175
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:207
 msgid "Preparing domain join"
 msgstr "Vorbereitung des Domänenbeitritts"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:214
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:246
 msgid "Configure"
 msgstr "Einrichten von"
+
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:289
+msgid "Running appliance scripts"
+msgstr "Ausführen der Appliance-Skripte"
 
 #: usr/lib/univention-system-setup/scripts/10_basis/10hostname:35
 msgid "Setting hostname"
@@ -87,17 +100,17 @@ msgstr "Einrichten der Zeitzonen"
 msgid "Generating SSL certificate"
 msgstr "Erstellen der SSL-Zertifikate"
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade:41
+#: usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade:35
 msgid "Upgrading the system"
 msgstr "Aktualisiere das System"
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade:42
+#: usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade:43
 msgid "This might take a while depending on the number of pending updates."
 msgstr ""
 "Abhängig von der Anzahl der austehenden Updates, kann dies einige Zeit "
 "dauern."
 
-#: umc/python/setup/setup_script.py:411
+#: umc/python/setup/setup_script.py:432
 #, python-format
 msgid "Failed to get package for Role %s"
 msgstr "Kein Paket für Rolle %s gefunden"
@@ -106,82 +119,86 @@ msgstr "Kein Paket für Rolle %s gefunden"
 msgid "Configuring server role"
 msgstr "Einrichten der Systemrolle"
 
-#: usr/lib/univention-system-setup/scripts/30_net/10interfaces:58
+#: usr/lib/univention-system-setup/scripts/05_role/10role:46
+msgid "Preparing package lists (this may take a moment)..."
+msgstr "Vorbereiten der Paketlisten (das kann einen Moment dauern)..."
+
+#: usr/lib/univention-system-setup/scripts/30_net/10interfaces:47
 msgid "Configuring IPvX network interfaces"
 msgstr "Einrichten der IPvX-Netzwerkgeräte"
 
-#: usr/lib/univention-system-setup/scripts/50_software/10software:37
+#: usr/lib/univention-system-setup/scripts/50_software/10software:38
 msgid "Configuring software components"
 msgstr "Einrichten der Software-Komponenten"
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:39
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:41
 msgid "Configuring Active Directory connection"
 msgstr "Einrichten der Active-Directory-Verbindung"
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:70
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:74
 msgid "Configuring time synchronization..."
 msgstr "Einrichten der Zeitsynchronisation..."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:74
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:81
 msgid "Configuring DNS server..."
 msgstr "Einrichten des DNS-Servers..."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:78
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:85
 msgid "Configuring Kerberos settings..."
 msgstr "Einrichten von Kerberos-Einstellungen..."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:82
-msgid "Configuring Administrator account..."
-msgstr "Einrichten des Administrator-Kontos..."
-
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:85
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:89
 msgid "Configuring reverse DNS settings..."
 msgstr "Einrichten von Reverse-DNS-Einstellungen..."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:88
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:92
 msgid "Configuring software components..."
 msgstr "Einrichten von Softwarekomponenten..."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:100
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:104
 msgid "An error occurred while installing necessary software components."
 msgstr ""
 "Ein Fehler trat während der Installation von notwendigen Softwarekomponenten "
 "auf."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:101
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:106
 msgid "Configuring synchronization from AD..."
 msgstr "Einrichten der Synchronisation von AD..."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:105
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:110
 msgid "Renaming well known SID objects..."
 msgstr "Umbennen bekannter SID-Objekte..."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:108
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:113
+msgid "Configuring Administrator account..."
+msgstr "Einrichten des Administrator-Kontos..."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:116
 msgid "Running Samba join script..."
 msgstr "Ausführen des Samba Join-Skripts..."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:111
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:119
 msgid "Configuring DNS entries..."
 msgstr "Einrichten von DNS-Einträgen..."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:116
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:125
 msgid "Starting Active Directory connection service..."
 msgstr "Active Directory-Verbindungsdienst wird gestartet..."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:119
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:128
 msgid "Registering LDAP service entry..."
 msgstr "Registrierung von LDAP-Service-Einträgen..."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:122
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:131
 msgid "Join has been finished successfully."
 msgstr "Der Domänenbeitritt wurde erfolgreich abgeschlossen."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:125
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:134
 msgid "The AD member mode can only be configured on a DC master server."
 msgstr ""
 "Der AD-Member-Modus kann nur auf einem DC-Master-System konfiguriert werden."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:127
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:136
 #, python-format
 msgid ""
 "Could not connect to AD Server %s. Please verify that the specified address "
@@ -190,7 +207,7 @@ msgstr ""
 "Eine Verbindung zum AD-Server %s konnte nicht hergestellt werden. Bitte "
 "überprüfen Sie, ob die angegebene Adresse korrekt ist."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:129
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:138
 #, python-format
 msgid ""
 "The domain name of the AD Server (%(ad_domain)s) does not match the local "
@@ -202,7 +219,7 @@ msgstr ""
 "notwendig, ein UCS-System mit dem gleichen Domänennamen wie der AD-Server "
 "aufzusetzen."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:131
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:140
 #, python-format
 msgid ""
 "Could not connect to AD Server %s. Please verify that username and password "
@@ -211,7 +228,7 @@ msgstr ""
 "Eine Verbindung zum AD-Server %s konnte nicht hergestellt werden. Bitte "
 "überprüfen Sie Benutzername und Password."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:133
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:142
 msgid ""
 "Failed to set the password of the UCS Administrator to the Active Directory "
 "Administrator password."
@@ -219,7 +236,7 @@ msgstr ""
 "Eine Verbindung zum AD-Server %s konnte nicht hergestellt werden. Bitte "
 "überprüfen Sie Benutzername und Passwort."
 
-#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:135
+#: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:144
 #, python-format
 msgid ""
 "Could not synchronize the time between the UCS system and the Active "

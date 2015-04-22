@@ -121,6 +121,10 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 
 fi
 
+info_header "create-ssh-keys" "$(gettext "Recreating SSH keys")"
+progress_msg "$(gettext "This might take a moment...")"
+progress_steps 10
+
 # cleanup secrets
 if [ "$server_role" = "domaincontroller_master" ]; then
 	. /usr/share/univention-lib/base.sh
@@ -130,6 +134,7 @@ else
 	rm -f /etc/ldap.secret /etc/ldap-backup.secret
 fi
 rm -f /etc/machine.secret
+progress_next_step 1
 
 if [ "$system_setup_boot_installer" != "true" ]; then
 	# Re-create ssh keys
@@ -138,9 +143,22 @@ if [ "$system_setup_boot_installer" != "true" ]; then
 		rm -f /etc/ssh/ssh_host_*
 		DEBIAN_FRONTEND=noninteractive dpkg-reconfigure openssh-server
 	fi
+	progress_next_step 3
 
+	(
 	test -x /usr/share/univention-mail-postfix/create-dh-parameter-files.sh && \
 		/usr/share/univention-mail-postfix/create-dh-parameter-files.sh
+	) | (
+		nsteps=3
+		while read line; do
+			if [ "This is going to take a long time" == "$line" ]; then
+				# one of 2 SSH keys is generated
+				progress_next_step $nsteps
+				nsteps+=2
+			fi
+		done
+	)
+	progress_next_step 10
 fi
 
 
