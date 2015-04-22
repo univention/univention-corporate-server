@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# Bug #37689: this script is "sourced", not forked! Do not "exit" the process
+(
 test -z "$interface" && exit 0
 
 eval "$(univention-config-registry shell)"
@@ -113,3 +115,4 @@ elif [ "$interface_type" = "dhcp" ]; then
 fi
 
 exit 0
+)
