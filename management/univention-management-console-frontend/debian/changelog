@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-58) unstable; urgency=low
+
+  * Bug #38276: minor changes in Upload widget
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 22 Apr 2015 16:05:04 +0200
+
 univention-management-console-frontend (4.1.106-57) unstable; urgency=low
 
   * Bug #38276: adapted webserver and upload widgets to handle upload of multiple

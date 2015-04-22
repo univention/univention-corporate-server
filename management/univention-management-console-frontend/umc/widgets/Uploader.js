@@ -156,24 +156,21 @@ define([
 
 			// as soon as the user has selected a file, start the upload
 			this._uploader.on('change', lang.hitch(this, function(_data) {
-				var _fileTooBig = [];
-				var allOk = true;
+				var _tooLargeFiles = [];
 				array.forEach(_data, function(ifile) {
 					if (!(ifile.size <= this.maxSize)) {
-						_fileTooBig.push(ifile.name);
-						allOk = false;
+						_tooLargeFiles.push(ifile.name);
 					}
 				}, this);
-				if (!allOk) {
-					dialog.alert(_('The following files cannot be uploaded because they exceed the maximum file size: %s The maximum size of a file is %.1f MB.',('<ul><li>' + _fileTooBig.join('</li><li>') + '</li></ul>' ), this.maxSize / 1048576.0));
+				if (_tooLargeFiles.length) {
+					dialog.alert(_('The following files cannot be uploaded because they exceed the maximum file size: %s The maximum size of a file is %.1f MB.',('<ul><li>' + _tooLargeFiles.join('</li><li>') + '</li></ul>' ), this.maxSize / 1048576.0));
 					this._uploader.reset();
 				} else {
-					var data = _data;
-					if (data.length == 1){
-						data = data[0];
-						this.data = data;
+					if ((!this.multiFile)&&(_data instanceof Array)){
+						_data = _data[0];
+						this.data = _data;
 					}
-					when(this.canUpload(data), lang.hitch(this, function(doUpload) {
+					when(this.canUpload(_data), lang.hitch(this, function(doUpload) {
 						if (!doUpload) {
 							// upload canceled
 							this._uploader.reset();
@@ -196,7 +193,7 @@ define([
 							
 							this._uploader.upload(params);
 							this._updateLabel();
-							this.onUploadStarted(data);
+							this.onUploadStarted(_data);
 						}
 					}));
 				}
@@ -208,8 +205,13 @@ define([
 			// notification as soon as the file has been uploaded
 			this._uploader.on('complete', lang.hitch(this, function(data) {
 				if (data && data.result instanceof Array) {
-					this.set('data', data.result);
-					this.onUploaded(this.data);
+					if ((!this.multiFile)&&(data.result.length == 1)) {
+						this.set('data', data.result[0]);
+						this.onUploaded(this.data);
+					}else{
+						this.set('data', data.result);
+						this.onUploaded(this.data);
+					}
 				} else {
 					this.set('data', null);
 					var error = tools.parseError(data);
@@ -218,8 +220,8 @@ define([
 							tools.handleErrorStatus(data);
 						}
 						this.onError(error);
-					} else { 
-						this.onUploaded([this.data]);
+					} else {
+						this.onUploaded(data);
 					}
 				}
 				this._resetLabel();

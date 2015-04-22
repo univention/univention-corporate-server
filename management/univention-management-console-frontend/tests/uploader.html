@@ -128,7 +128,7 @@
 						onUploaded: function(data) {
 							_log('<b>onUploaded()</b>');
 							_assertArrayOrNot(data);
-							data.content = '<i>&lt;base64 encoded string with size ' + humanReadableSize(data.content.length) + '&gt;</i>';
+							//data.content = '<i>&lt;base64 encoded string with size ' + humanReadableSize(data.content.length) + '&gt;</i>';
 							_log(data);
 						},
 						onError: function(data) {

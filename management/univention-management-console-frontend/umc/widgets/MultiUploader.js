@@ -131,13 +131,10 @@ define([
 				style: 'float: right;'
 			}));
 			this.addChild(this._container);
-
+			
 			// add the uploader button
 			this._addUploader();
-		},
 
-		postCreate: function() {
-			this.inherited(arguments);
 			this._uploader.setDragAndDrop(this._files.domNode);
 		},
 
@@ -225,9 +222,8 @@ define([
 				if (this._uploadingFiles && this._progress) {
 					currentMaxSize += ifile.size;
 					if (this._progress.bytesLoaded >= currentMaxSize){
-						//nDone += 1;
 						nDone = ifile.index
-						ifile['done'] = true;
+						ifile.done = true;
 					}
 				}
 			}));
