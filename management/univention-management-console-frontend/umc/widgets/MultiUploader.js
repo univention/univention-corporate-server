@@ -88,6 +88,11 @@ define([
 		// internal reference to the current Uploader widget
 		_uploader: null,
 
+		_progress: null,
+
+		// allow selecting of Multiple Files
+		multiFile: false,
+
 		// internal reference to the progress bar
 		_progressBar: null,
 
@@ -129,6 +134,11 @@ define([
 
 			// add the uploader button
 			this._addUploader();
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+			this._uploader.setDragAndDrop(this._files.domNode);
 		},
 
 		destroy: function() {
@@ -210,12 +220,19 @@ define([
 
 			var currentVal = 0;
 			var nDone = 0;
-			array.forEach(this._uploadingFiles, function(ifile) {
-				nDone += ifile.done || 0;
-				currentVal += ifile.done ? 1.0 : ifile.decimal || 0;
-			});
-			currentVal = Math.min(currentVal / this._uploadingFiles.length, 0.99);
-			if (!this._uploadingFiles.length || nDone == this._uploadingFiles.length) {
+			var currentMaxSize = 0;
+			array.forEach(this._uploadingFiles, lang.hitch (this, function(ifile) {
+				if (this._uploadingFiles && this._progress) {
+					currentMaxSize += ifile.size;
+					if (this._progress.bytesLoaded >= currentMaxSize){
+						//nDone += 1;
+						nDone = ifile.index
+						ifile['done'] = true;
+					}
+				}
+			}));
+			currentVal = Math.min(nDone / this._uploadingFiles.length, 0.99);
+			if (!this._uploadingFiles.length || nDone == this._uploadingFiles.length - 1) {
 				// all uploads are finished
 				this._progressBar.update(1, '', _('Uploads finished'));
 			}
@@ -232,6 +249,7 @@ define([
 				command: this.command,
 				dynamicOptions: this.dynamicOptions,
 				maxSize: this.maxSize,
+				multiFile: this.multiFile,
 				canUpload: this.canUpload,
 				style: 'float: left;'
 			});
@@ -239,6 +257,9 @@ define([
 
 			// register events
 			var uploader = this._uploader;
+
+
+
 			on.once(uploader, 'uploadStarted', lang.hitch(this, function(file) {
 				//console.log('### onUploadStarted:', json.stringify(file));
 
@@ -248,13 +269,21 @@ define([
 					//this._createProgressBar();
 					this._files.standby(true, this._progressBar);
 				}
-				this._uploadingFiles.push(file);
+				// convert to array if single file
+				if (!(file instanceof Array)){
+					file = [ file ];
+				}
+				array.forEach(file, lang.hitch(this, function(ifile) {
+					ifile['done'] = false;
+					this._uploadingFiles.push(ifile);
+				}));
 				this._updateProgress();
 
 				var progressSignal = on(uploader, 'progress', lang.hitch(this, function(info) {
 					// update progress information
 					//console.log('### onProgress:', json.stringify(info));
 					lang.mixin(file, info);
+					this._progress=info;
 					this._updateProgress();
 				}));
 
@@ -286,13 +315,22 @@ define([
 						// add files to internal list of files
 						this._files.standby(false);
 						var vals = this.get('value');
-						array.forEach(this._uploadingFiles, function(ifile) {
-							//console.log('### adding:', ifile.name);
+
+						array.forEach(this._uploadingFiles, function(ifile){
 							if (file.success) {
 								vals.unshift(ifile.name);
 							}
 						});
-						this.set('value', vals);
+
+						//remove duplicates from list
+						var newVals = [];
+						array.forEach(vals, function(value) {
+							if (array.indexOf(newVals, value) == -1) {
+								newVals.push(value);
+							}
+						});
+
+						this.set('value', newVals);
 
 						// clear the list of uploading files
 						this._uploadingFiles = [];
@@ -307,8 +345,11 @@ define([
 					overflow: 'hidden'
 				});
 				this._addUploader();
+				//since we create a new uploader we need to setup drag and drop again
+				this._uploader.setDragAndDrop(this._files.domNode);
 			}));
 		},
+
 
 		canUpload: function(fileInfo) {
 			// summary:

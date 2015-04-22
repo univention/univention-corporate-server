@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-03-31 17:55+0200\n"
+"POT-Creation-Date: 2015-04-22 13:38+0200\n"
 "PO-Revision-Date: 2013-09-12 11:31+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: umc/tools.js:1577
-#, python-brace-format
 msgid "\"${moduleName}\" module"
 msgstr "Modul \"${moduleName}\""
 
@@ -26,7 +25,7 @@ msgstr "Modul \"${moduleName}\""
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
 
-#: umc/widgets/Grid.js:786
+#: umc/widgets/Grid.js:812
 #, python-format
 msgid "%d entries of %d selected"
 msgstr "%d Einträge von %d ausgewählt"
@@ -45,7 +44,7 @@ msgstr "%s geladen"
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: umc/widgets/Grid.js:791
+#: umc/widgets/Grid.js:817
 #, python-format
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
@@ -143,8 +142,8 @@ msgid ""
 "installation on this system.</p>"
 msgstr ""
 "<p>Die Lizenz wurde erfolgreich aktualisiert.</p><p>Sie können nun mit dem "
-"Einsatz von UMC fortfahren, alle Anwendungen des Univention App Centers stehen "
-"dem System nun zur Installation zur Verfügung.</p>"
+"Einsatz von UMC fortfahren, alle Anwendungen des Univention App Centers "
+"stehen dem System nun zur Installation zur Verfügung.</p>"
 
 #: umc/app/FinishedPage.js:44
 msgid ""
@@ -164,8 +163,7 @@ msgid ""
 msgstr ""
 "<p>Sie können nun eine gültige E-Mail-Adresse angeben, um das UCS-System für "
 "die Verwendung des App Centers freizuschalten. Im nächsten Schritt können "
-"Sie die Lizenzdatei hochladen, die an Ihre E-Mail-Adresse gesendet wird.</"
-"p>"
+"Sie die Lizenzdatei hochladen, die an Ihre E-Mail-Adresse gesendet wird.</p>"
 
 #: umc/app/HelpPage.js:48
 msgid ""
@@ -191,16 +189,16 @@ msgstr ""
 "Module benutzen zu können.<br>Momentan geöffnete Module funktionieren "
 "möglicherweise nicht mehr korrekt.<br>Soll die Seite neu geladen werden?"
 
-#: umc/app.js:754
+#: umc/app.js:755
 msgid "About UMC"
 msgstr "Über UMC"
 
-#: umc/widgets/UnixAccessRightsExtended.js:96
 #: umc/widgets/UnixAccessRights.js:96
+#: umc/widgets/UnixAccessRightsExtended.js:96
 msgid "Access"
 msgstr "Zugriff"
 
-#: umc/app/ActivationPage.js:40 umc/app/ActivationDialog.js:55
+#: umc/app/ActivationDialog.js:55 umc/app/ActivationPage.js:40
 msgid "Activation of Univention Corporate Server"
 msgstr "Aktivierung von Univention Corporate Server"
 
@@ -212,7 +210,7 @@ msgstr "Hinzufügen"
 msgid "Add objects"
 msgstr "Objekte hinzufügen"
 
-#: umc/app.js:1363
+#: umc/app.js:1364
 msgid "Add to favorites"
 msgstr "Zu Favoriten hinzufügen"
 
@@ -260,16 +258,16 @@ msgstr "Automatischer Login fehlgeschlagen"
 msgid "Back"
 msgstr "Zurück"
 
-#: umc/app.js:716
+#: umc/app.js:717
 msgid "Back to overview"
 msgstr "Zurück zur Übersicht"
 
-#: umc/tools.js:231 umc/app.js:1710 umc/widgets/MultiObjectSelect.js:137
-#: umc/widgets/Wizard.js:163 umc/dialog.js:352
+#: umc/tools.js:231 umc/app.js:1711 umc/dialog.js:352
+#: umc/widgets/MultiObjectSelect.js:137 umc/widgets/Wizard.js:163
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/widgets/Uploader.js:110
+#: umc/widgets/Uploader.js:113
 msgid "Clear data"
 msgstr "Daten leeren"
 
@@ -277,7 +275,7 @@ msgstr "Daten leeren"
 msgid "Clear image data"
 msgstr "Bilddaten leeren"
 
-#: umc/tools.js:801 umc/app.js:837 umc/widgets/Module.js:168
+#: umc/tools.js:801 umc/app.js:838 umc/widgets/Module.js:168
 msgid "Close"
 msgstr "Schließen"
 
@@ -293,7 +291,7 @@ msgstr "Bestätigung"
 msgid "Could not fulfill the request."
 msgstr "Die Anfrage konnte nicht ausgeführt werden."
 
-#: umc/app.js:1249
+#: umc/app.js:1250
 #, python-format
 msgid "Could not load module \"%s\"."
 msgstr "Modul \"%s\" konnte nicht geladen werden."
@@ -310,7 +308,7 @@ msgstr "Gültigkeitsdatum des SSL-Rechner-Zertifikats"
 msgid "Date of expiry of the SSL root certificate"
 msgstr "Gültigkeitsdatum des SSL-Wurzel-Zertifikats"
 
-#: umc/app.js:1709
+#: umc/app.js:1710
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
@@ -326,7 +324,7 @@ msgstr "Einmalige Erfassung von Hardware-Statistiken aktivieren."
 msgid "Everything worked great."
 msgstr "Alles hat super funktioniert."
 
-#: umc/app.js:746
+#: umc/app.js:747
 msgid "Feedback"
 msgstr "Feedback"
 
@@ -338,13 +336,6 @@ msgstr "Feedback durch Nutzungsstatistiken"
 msgid "Fetching information from the server failed!"
 msgstr "Das Holen von Informationen vom Server schlug fehl!"
 
-#: umc/widgets/Uploader.js:158
-#, python-format
-msgid "File cannot be uploaded, its maximum size may be %.1f MB."
-msgstr ""
-"Die Datei kann nicht hochgeladen werden, ihre Maximalgröße darf %.1f MB "
-"nicht überschreiten."
-
 #: umc/widgets/Wizard.js:159
 msgid "Finish"
 msgstr "Fertigstellen"
@@ -353,8 +344,8 @@ msgstr "Fertigstellen"
 msgid "Further Information"
 msgstr "Weiterführende Informationen"
 
-#: umc/widgets/UnixAccessRightsExtended.js:76
 #: umc/widgets/UnixAccessRights.js:76
+#: umc/widgets/UnixAccessRightsExtended.js:76
 msgid "Group"
 msgstr "Gruppe"
 
@@ -368,7 +359,7 @@ msgstr "Hello %(last)s, %(first)s!"
 msgid "Hello %s %s!"
 msgstr "Hello %s %s!"
 
-#: umc/app.js:645 umc/app.js:740 umc/widgets/Module.js:158
+#: umc/app.js:646 umc/app.js:741 umc/widgets/Module.js:158
 msgid "Help"
 msgstr "Hilfe"
 
@@ -461,11 +452,11 @@ msgstr "Lizenz-Import"
 msgid "Login"
 msgstr "Anmelden"
 
-#: umc/app.js:655 umc/app.js:1712
+#: umc/app.js:656 umc/app.js:1713
 msgid "Logout"
 msgstr "Abmelden"
 
-#: umc/app.js:708
+#: umc/app.js:709
 msgid "Module search"
 msgstr "Modulsuche"
 
@@ -485,7 +476,7 @@ msgstr "Neuer Eintrag"
 msgid "Next"
 msgstr "Weiter"
 
-#: umc/widgets/Grid.js:788
+#: umc/widgets/Grid.js:814
 msgid "No entries could be found"
 msgstr "Es konnten keine Einträge gefunden werden"
 
@@ -493,11 +484,11 @@ msgstr "Es konnten keine Einträge gefunden werden"
 msgid "No message"
 msgstr "Keine Nachricht"
 
-#: umc/widgets/Grid.js:765
+#: umc/widgets/Grid.js:791
 msgid "No object selected"
 msgstr "Kein Objekt ausgewählt"
 
-#: umc/widgets/MultiUploader.js:203
+#: umc/widgets/MultiUploader.js:213
 msgid "No upload in progress"
 msgstr "Keine laufende Dateiübertragung"
 
@@ -505,9 +496,9 @@ msgstr "Keine laufende Dateiübertragung"
 msgid "No valid e-mail address."
 msgstr "Keine gültige E-Mail-Adresse."
 
+#: umc/dialog.js:164 umc/dialog.js:193 umc/dialog.js:217
 #: umc/dialog/NotificationContainer.js:54
-#: umc/dialog/NotificationContainer.js:204 umc/dialog.js:164 umc/dialog.js:193
-#: umc/dialog.js:217
+#: umc/dialog/NotificationContainer.js:204
 msgid "Notification"
 msgstr "Benachrichtigung"
 
@@ -515,17 +506,17 @@ msgstr "Benachrichtigung"
 msgid "Ok"
 msgstr "Ok"
 
-#: umc/app.js:1353
+#: umc/app.js:1354
 msgid "Open module"
 msgstr "Modul öffnen"
 
-#: umc/widgets/UnixAccessRightsExtended.js:77
 #: umc/widgets/UnixAccessRights.js:77
+#: umc/widgets/UnixAccessRightsExtended.js:77
 msgid "Others"
 msgstr "Andere"
 
-#: umc/widgets/UnixAccessRightsExtended.js:75
 #: umc/widgets/UnixAccessRights.js:75
+#: umc/widgets/UnixAccessRightsExtended.js:75
 msgid "Owner"
 msgstr "Besitzer"
 
@@ -533,14 +524,24 @@ msgstr "Besitzer"
 msgid "Password"
 msgstr "Passwort"
 
+#: index.html:50
+#, python-format
+msgid ""
+"Please login with a valid username and password. A login with an e-mail "
+"address is not possible. The default username to manage the domain is %s."
+msgstr ""
+"Bitte melden Sie sich mit einem gültigen Benutzernamen und Passwort an. Eine "
+"Anmeldung mit einer E-Mail-Adresse ist nicht möglich. Der "
+"Standardbenutzername zur Administration der Domäne ist %s."
+
 #: umc/tools.js:764
 msgid "Please take a second to provide the following information:"
 msgstr ""
 "Bitte nehmen Sie sich einen Augenblick Zeit, um die folgenden Informationen "
 "bereitzustellen:"
 
-#: umc/widgets/UnixAccessRightsExtended.js:88
 #: umc/widgets/UnixAccessRights.js:88
+#: umc/widgets/UnixAccessRightsExtended.js:88
 msgid "Read"
 msgstr "Lesen"
 
@@ -548,19 +549,19 @@ msgstr "Lesen"
 msgid "Reload"
 msgstr "Neu laden"
 
-#: umc/widgets/MultiUploader.js:123 umc/widgets/MultiObjectSelect.js:287
+#: umc/widgets/MultiObjectSelect.js:287 umc/widgets/MultiUploader.js:128
 msgid "Remove"
 msgstr "Entfernen"
 
-#: umc/app.js:1363
+#: umc/app.js:1364
 msgid "Remove from favorites"
 msgstr "Aus Favoriten entfernen"
 
-#: umc/app.js:527
+#: umc/app.js:528
 msgid "SSL host certificate"
 msgstr "SSL Rechner-Zertifikat"
 
-#: umc/app.js:524
+#: umc/app.js:525
 msgid "SSL root certificate"
 msgstr "SSL Wurzel-Zertifikat"
 
@@ -568,7 +569,7 @@ msgstr "SSL Wurzel-Zertifikat"
 msgid "Search"
 msgstr "Suchen"
 
-#: umc/app.js:1486
+#: umc/app.js:1487
 #, python-format
 msgid "Search query ›%s‹"
 msgstr "Suchanfrage ›%s‹"
@@ -610,7 +611,7 @@ msgstr "Session-Timeout"
 msgid "Setgid"
 msgstr "Setgid"
 
-#: umc/app.js:635
+#: umc/app.js:636
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -625,7 +626,6 @@ msgstr ""
 "probiert."
 
 #: umc/tools.js:313
-#, python-brace-format
 msgid ""
 "So far, the connection to the server could not be established after {time} "
 "seconds. This can be a normal behavior. In any case, the process will "
@@ -647,7 +647,7 @@ msgstr "Sticky bit"
 msgid "Submit"
 msgstr "Absenden"
 
-#: umc/app.js:532
+#: umc/app.js:533
 #, python-format
 msgid "The %s will expire in %d days and should be renewed!"
 msgstr "Das %s wird in %d Tagen ablaufen und sollte erneuert werden!"
@@ -670,6 +670,13 @@ msgstr ""
 "Die Aktivierung des UCS-Systems schlug fehl. Bitte wiederholen Sie den "
 "Aktivierungsvorgang über das Benutzermenü oben rechts."
 
+#: umc/widgets/Uploader.js:168
+#, python-format
+msgid ""
+"The following files cannot be uploaded because they exceed the maximum file "
+"size: %s The maximum size of a file is %.1f MB."
+msgstr ""
+
 #: umc/app/StartupDialog.js:132 umc/app/ActivationDialog.js:147
 msgid ""
 "The import of the license failed. Check the integrity of the original file "
@@ -686,7 +693,7 @@ msgstr "Die Lizenz wurde erfolgreich importiert."
 msgid "The password has expired and must be changed."
 msgstr "Das Passwort ist abgelaufen und muss geändert werden."
 
-#: umc/dialog/LoginDialog.js:226 umc/widgets/PasswordInputBox.js:122
+#: umc/widgets/PasswordInputBox.js:122 umc/dialog/LoginDialog.js:226
 msgid "The passwords do not match, please retype again."
 msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 
@@ -695,7 +702,7 @@ msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 msgid "The total cost was %.2f EUR!"
 msgstr "The total cost was %.2f EUR!"
 
-#: umc/app.js:1307
+#: umc/app.js:1308
 #, python-format
 msgid "There is no module available for the authenticated user %s."
 msgstr "Für den angemeldeten Benutzer %s ist kein Modul verfügbar."
@@ -719,7 +726,7 @@ msgstr "Translate me!"
 msgid "UCS Version"
 msgstr "UCS-Version"
 
-#: umc/app.js:764
+#: umc/app.js:765
 msgid "UCS start site"
 msgstr "UCS Startseite"
 
@@ -735,7 +742,7 @@ msgstr "Erneutes Laden der UMC notwendig"
 msgid "Univention Management Console"
 msgstr "Univention Management Console"
 
-#: umc/app.js:774
+#: umc/app.js:775
 msgid "Univention Website"
 msgstr "Univention Webseite"
 
@@ -747,8 +754,8 @@ msgstr "Unbekannter Fehler während des automatischen Logins an Rechner "
 msgid "Updating session data..."
 msgstr "Aktualisieren der Sitzungsdaten..."
 
-#: umc/widgets/InfoUploader.js:43 umc/widgets/MultiUploader.js:104
-#: umc/widgets/Uploader.js:109
+#: umc/widgets/Uploader.js:112 umc/widgets/InfoUploader.js:43
+#: umc/widgets/MultiUploader.js:109
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -760,20 +767,20 @@ msgstr "Lizenzdatei hochladen..."
 msgid "Upload new image"
 msgstr "Neues Bild hochladen"
 
-#: umc/widgets/Uploader.js:260
+#: umc/widgets/Uploader.js:274
 msgid "Uploading..."
 msgstr "Datenübertragung..."
 
-#: umc/widgets/MultiUploader.js:223
+#: umc/widgets/MultiUploader.js:240
 #, python-format
 msgid "Uploading... %d of %d files remaining."
 msgstr "Dateiübertragung... %d von %d Dateien verbleiben"
 
-#: umc/widgets/MultiUploader.js:220
+#: umc/widgets/MultiUploader.js:237
 msgid "Uploads finished"
 msgstr "Dateiübertragung beendet"
 
-#: umc/app.js:790
+#: umc/app.js:791
 msgid "Usage statistics"
 msgstr "Nutzungsstatistiken"
 
@@ -813,8 +820,8 @@ msgstr "Willkommen bei UMC"
 msgid "Welcome to Univention Management Console"
 msgstr "Willkommen bei Univention Management Console"
 
-#: umc/widgets/UnixAccessRightsExtended.js:92
 #: umc/widgets/UnixAccessRights.js:92
+#: umc/widgets/UnixAccessRightsExtended.js:92
 msgid "Write"
 msgstr "Schreiben"
 
@@ -862,7 +869,7 @@ msgstr "beobachtetes Ergebnis"
 msgid "expected result"
 msgstr "erwartetes Ergebnis"
 
-#: umc/widgets/Grid.js:565
+#: umc/widgets/Grid.js:591
 msgid "more"
 msgstr "mehr"
 
@@ -870,16 +877,15 @@ msgstr "mehr"
 msgid "steps to reproduce the failure"
 msgstr "Schritte, um den Fehler zu reproduzieren"
 
-#: umc/app/WelcomePage.js:78 umc/app.js:901
+#: umc/app.js:902 umc/app/WelcomePage.js:78
 msgid "umcFeedbackUrl"
 msgstr "https://www.univention.de/produkt-feedback/"
 
-#: umc/app.js:777
+#: umc/app.js:778
 msgid "umcUniventionUrl"
 msgstr "http://www.univention.de"
 
 #: umc/widgets/ProgressBar.js:176
-#, python-brace-format
 msgid "{number} errors occurred: "
 msgstr "{number} Fehler sind aufgetreten: "
 
@@ -905,6 +911,11 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgid "Favorites"
 #~ msgstr "Favoriten"
 
+#~ msgid "File cannot be uploaded, its maximum size may be %.1f MB."
+#~ msgstr ""
+#~ "Die Datei kann nicht hochgeladen werden, ihre Maximalgröße darf %.1f MB "
+#~ "nicht überschreiten."
+
 #~ msgid "Loaded module %s"
 #~ msgstr "Modul %s wurde geladen"
 
@@ -929,14 +940,6 @@ msgstr "{number} Fehler sind aufgetreten: "
 
 #~ msgid "Open context menu"
 #~ msgstr "Kontextmenü öffnen"
-
-#~ msgid ""
-#~ "Please login with a valid username and password. A login with an e-mail "
-#~ "address is not possible. The default username to manage the domain is %s."
-#~ msgstr ""
-#~ "Bitte melden Sie sich mit einem gültigen Benutzernamen und Passwort an. "
-#~ "Eine Anmeldung mit einer E-Mail-Adresse ist nicht möglich. Der "
-#~ "Standardbenutzername zur Administration der Domäne ist %s."
 
 #~ msgid "The system does not allow changing the password"
 #~ msgstr "Das System erlaubt das Ändern des Passwortes nicht"

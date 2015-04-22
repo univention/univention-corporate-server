@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.106-57) unstable; urgency=low
+
+  * Bug #38276: adapted webserver and upload widgets to handle upload of multiple
+    files at once
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 22 Apr 2015 13:39:45 +0200
+
 univention-management-console-frontend (4.1.106-56) unstable; urgency=medium
 
   * Bug #38104: version bump
