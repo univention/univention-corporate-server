@@ -514,6 +514,7 @@ def run_joinscript( progressParser, _username, password ):
 				break
 			progressParser.parse( line )
 			f.write( line )
+			f.flush()
 		p.wait()
 
 	cmd = [ PATH_JOIN_SCRIPT ]

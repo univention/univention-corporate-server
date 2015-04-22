@@ -1,3 +1,9 @@
+univention-system-setup (8.1.66-34) unstable; urgency=medium
+
+  * Bug #38293: flush lines when writing to setup.log
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Apr 2015 11:01:58 +0200
+
 univention-system-setup (8.1.66-33) unstable; urgency=medium
 
   Bug #38116:
