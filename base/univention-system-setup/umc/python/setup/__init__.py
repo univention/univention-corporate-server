@@ -87,7 +87,7 @@ class Instance(Base, ProgressMixin):
 		os.umask( 0022 )
 
 	def init( self ):
-		os.environ['LC_ALL'] = str(self.locale)
+		os.putenv('LANG', str(self.locale))
 		_locale.setlocale(_locale.LC_ALL, str(self.locale))
 		self._very_first_locale = copy.deepcopy(self.locale)
 		MODULE.process('Very first locale is %s. Will be added if this is very first system setup' % self._very_first_locale)
@@ -198,7 +198,7 @@ class Instance(Base, ProgressMixin):
 				# on a joined system or on a basesystem, we can run the setup scripts
 				MODULE.info('runnning system setup scripts (flavor %r)' % (request.flavor,))
 
-				util.run_scripts(self._progressParser, restart, subfolders)
+				util.run_scripts(self._progressParser, restart, subfolders, lang=str(self.locale))
 
 				# done :)
 				self._finishedResult = True
@@ -264,7 +264,7 @@ class Instance(Base, ProgressMixin):
 
 				# unjoined DC master (that is not being converted to a basesystem) -> run the join script
 				MODULE.info('runnning system setup join script')
-				util.run_joinscript( self._progressParser, username, password )
+				util.run_joinscript( self._progressParser, values, username, password, lang=str(self.locale) )
 
 				# done :)
 				self._finishedResult = True
@@ -621,7 +621,7 @@ class Instance(Base, ProgressMixin):
 		locale = Locale(locale)
 		locale.codeset = self.locale.codeset
 		MODULE.info('Switching language to: %s' % locale)
-		os.environ['LC_ALL'] = str(self.locale)
+		os.putenv('LANG', str(self.locale))
 		try:
 			_locale.setlocale(_locale.LC_ALL, str(locale))
 		except _locale.Error:

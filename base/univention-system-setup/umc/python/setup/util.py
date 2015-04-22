@@ -433,7 +433,7 @@ def sorted_files_in_subdirs(directory, allowed_subdirs=None):
 			for filename in sorted(os.listdir(path)):
 				yield os.path.join(path, filename)
 
-def run_scripts(progressParser, restartServer=False, allowed_subdirs=None):
+def run_scripts(progressParser, restartServer=False, allowed_subdirs=None, lang='C'):
 	# write header before executing scripts
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP SCRIPTS (%s) ===\n\n' % timestamp())
@@ -455,7 +455,10 @@ def run_scripts(progressParser, restartServer=False, allowed_subdirs=None):
 	for scriptpath in sorted_files_in_subdirs(PATH_SETUP_SCRIPTS, allowed_subdirs):
 			# launch script
 			MODULE.info('Running script %s\n' % scriptpath)
-			p = subprocess.Popen( scriptpath, stdout = f, stderr = subprocess.STDOUT )
+			p = subprocess.Popen( scriptpath, stdout = f, stderr = subprocess.STDOUT, env = {
+				'PATH': '/bin:/sbin:/usr/bin:/usr/sbin',
+				'LANG': lang,
+			})
 
 			while p.poll() is None:
 				fr.seek(0, os.SEEK_END) # update file handle
@@ -498,7 +501,7 @@ def _temporary_password_file(password):
 		# remove password file
 		os.remove(PATH_PASSWORD_FILE)
 
-def run_joinscript( progressParser, _username, password ):
+def run_joinscript( progressParser, values, _username, password, lang='C'):
 	# write header before executing join script
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())
@@ -507,7 +510,10 @@ def run_joinscript( progressParser, _username, password ):
 	progressParser.fractions[ 'setup-join.sh' ] = 50
 	progressParser.current.max = sum( progressParser.fractions.values() )
 	def runit( command ):
-		p = subprocess.Popen( command, stdout = subprocess.PIPE, stderr = subprocess.STDOUT )
+		p = subprocess.Popen( command, stdout = subprocess.PIPE, stderr = subprocess.STDOUT, env = {
+			'PATH': '/bin:/sbin:/usr/bin:/usr/sbin',
+			'LANG': lang,
+		})
 		while True:
 			line = p.stdout.readline()
 			if not line:
