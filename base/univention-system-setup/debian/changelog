@@ -5,6 +5,7 @@ univention-system-setup (8.1.66-34) unstable; urgency=medium
   * Bug #37771: adjust info_header to allow for printing any filename
   * Bug #35550: ensure that the chosen locale is used for the progress bar
   * Bug #37771: improve progress bar information, ensure to reach 100%
+  * Bug #37771: select first live search entry upon blur event
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Apr 2015 11:01:58 +0200
 

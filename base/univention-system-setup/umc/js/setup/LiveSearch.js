@@ -92,17 +92,26 @@ define([
 			this._startSearch(this.get('value'));
 		},
 
-		_onKey: function(evt) {
+		_autoSelect: function() {
 			var lastResult = this.store.lastResult;
+			if (this.state != 'searching' && lastResult.length && this._opened && !this.dropDown.selected) {
+				// select first item
+				this.set('item', lastResult[0]);
+				this.closeDropDown();
+				return true;
+			}
+			return false;
+		},
+
+		_onBlur: function(evt) {
+			this._autoSelect();
+			this.inherited(arguments);
+		},
+
+		_onKey: function(evt) {
 			if (evt.keyCode == keys.ENTER) {
-				if (this.state != 'searching' && lastResult.length && this._opened && !this.dropDown.selected) {
-					// select first item
-					this.set('item', lastResult[0]);
-					this.closeDropDown();
-					dojoEvent.stop(evt);
-					return;
-				}
-				if (this.state == 'searching' || !this.get('item')) {
+				var selected = this._autoSelect();
+				if (selected || this.state == 'searching' || !this.get('item')) {
 					// ignore key event
 					dojoEvent.stop(evt);
 					return;
