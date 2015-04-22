@@ -1,3 +1,9 @@
+univention-network-manager (6.0.0-2) unstable; urgency=low
+
+  * Bug #37689: Fix sourced script using exit
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 22 Apr 2015 13:44:07 +0200
+
 univention-network-manager (6.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35138)
