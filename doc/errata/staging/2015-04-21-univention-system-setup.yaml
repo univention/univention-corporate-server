@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-system-setup
-fix: 8.1.66-34.869.201504221243
+fix: 8.1.66-35.874.201504231325
 version: [1]
 desc: |
   This errata update addresses the following issues:
@@ -13,4 +13,5 @@ desc: |
   * The progress bar has been adjusted to reach 100%, its localization has been
     corrected to match the chosen one, and its output has been improved.
   * Output written into /var/log/univention/setup.log is now regularly flushed.
-bug: [37771,35550,38293]
+  * Fixed wrong URL for advanced UVMM network setup.
+bug: [37771,35550,38293,38314]
