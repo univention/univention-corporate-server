@@ -14,8 +14,8 @@
   <subtitle>Extended installation documentation</subtitle>
   <revhistory>
      <revision>
-        <revnumber>4.0-0</revnumber>
-        <date>16 Oct 2014</date>
+        <revnumber>4.0-1</revnumber>
+        <date>20 Apr 2015</date>
      </revision>
   </revhistory>
 </bookinfo>
@@ -23,18 +23,18 @@
 <chapter id="appliance:use">
   <title>Using a UCS appliance</title>
 
-  <para> 
+  <para>
 	In addition to the traditional installation, there is also the possibility of providing UCS via
 	an appliance image. These appliance images can be used both for simple commissioning in a
 	virtualization solution such as VMware and for providing a cloud instance.
   </para>
 
-  <para> 
+  <para>
 	Appliances can be created with minimal effort. This is described in <xref
 	linkend="appliance:create"/>.
   </para>
 
-  <para> 
+  <para>
 	Whilst some of the settings can be preconfigured globally in the image, it is still necessary
 	for the end user to make final adjustments to the configuration, e.g., to set the computer name
 	or the domain used. For this reason, a basic system is installed for the appliance image and a
@@ -43,7 +43,7 @@
 	described in <xref linkend="appliance:use:auto"/>.
   </para>
 
-  <para> 
+  <para>
 	The interactive configuration can be performed in two ways:
 
 	<itemizedlist>
@@ -58,11 +58,11 @@
 		the system's IP address must be known to the user (e.g., if it has been notified to him in
 		advance in the scope of the provision of a cloud image).
 	  </simpara></listitem>
-	  
+
 	</itemizedlist>
   </para>
 
-  <para> 
+  <para>
 	In the scope of the initial configuration, the user can change the following settings in the
 	default setting:
 
@@ -74,11 +74,11 @@
 	  <listitem><simpara>
 		Configuration of the network settings
 	  </simpara></listitem>
-	  
+
 	  <listitem><simpara>
 		Setup of a new UCS domain or joining a UCS or Microsoft Active Directory domain
 	  </simpara></listitem>
-	  
+
 	  <listitem><simpara>
 		Software selection of UCS key components. The user can install software from other
 		vendors at a later point in time via the Univention App Center.
@@ -88,15 +88,13 @@
 
 </chapter>
 
-
-
 <chapter id="appliance:create">
   <title>Creating a UCS appliance/cloud image</title>
 
   <section id="appliance:intro">
 	<title>Introduction</title>
 
-	<para> 
+	<para>
 	  This article describes how to set up an appliance based on UCS 4.0. This type of appliance can
 	  also be used to provide preconfigured instances as a cloud service provider. The
 	  creation of images for typical virtualization solutions is another possible application
@@ -108,7 +106,7 @@
   <section id="appliance:installbase">
 	<title>Performing the basic installation</title>
 
-	<para> 
+	<para>
 	  The basic installation is performed using the standard UCS installer. Further information on
 	  the individual options can be found in the UCS manual. The installation should be performed in
 	  a virtualization solution. In this example, the installation is performed in UVMM. A qcow2
@@ -117,7 +115,7 @@
 	  provided by Univention, see <xref linkend="appliance:create:virt"/>.
 	</para>
 
-	<para> 
+	<para>
 	  The following settings are configured for the basic image:
 
 	  <itemizedlist>
@@ -158,21 +156,21 @@
 	  </itemizedlist>
 	</para>
 
-	<para> 
+	<para>
 	  Once the basic installation is complete, a dialogue is shown in which you can select whether
 	  to create a new UCS domain or join an existing domain. To create the appliance, <keycombo action="simul"><keycap function="control">Control</keycap><keycap>Q</keycap></keycombo>
 	  must be pressed at this point to interrupt the process. The installation continues for a short
 	  period of time, during which the <guimenu>Starting Univention System Setup</guimenu> message
-	  appears and the systems then restarts. 
+	  appears and the systems then restarts.
 	</para>
 
-	<para> 
+	<para>
 	  The installation of the basic image is now complete. Following a reboot, the user of the
 	  appliance is shown the dialogue for adjusting the configuration, see <xref
 	  linkend="appliance:use"/>.
 	</para>
 
-	<para> 
+	<para>
 	  In most cases, the appliance needs to be preconfigured with a certain selection of
 	  software. The installation is usually performed via the Univention App Center, which, however,
 	  is not yet available at this point in time. The installation is thus performed via the command
@@ -192,18 +190,18 @@ univention-add-app -l APPID
 	  </programlisting>
 	</para>
 
-	<para> 
+	<para>
 	  The system now needs to be shut down cleanly without filesystems still being mounted.
 	</para>
 
-	<para> 
+	<para>
 	  The qcow2 image (i.e., the hard drive of the virtual machine) is now copied. If the
 	  <emphasis>default</emphasis> storage pool of UVMM was used, the image is stored in the
-	  directory <filename>/var/lib/libvirt/images</filename>.
+	  directory <filename class="directory">/var/lib/libvirt/images/</filename>.
 	</para>
 
-	<para> 
-	  Additional steps are required if the image is to be used in Amazon EC2 
+	<para>
+	  Additional steps are required if the image is to be used in Amazon EC2
 	  (see <xref linkend="appliance:create:ec2"/>), OpenStack (see <xref
 	  linkend="appliance:create:openstack"/>) or as a VMware / VirtualBox appliance (see <xref
 	  linkend="appliance:create:virt"/>).
@@ -248,7 +246,7 @@ ucr set server/amazon=true
 	  <para>
 		  The name server should be set; in this example to <systemitem class="service">OpenDNS</systemitem>. Additionally, the timeout when
 		  waiting for a DHCP request answer is lowered.
- 
+
 		<programlisting language="sh">
 ucr set nameserver1=208.67.222.222 dns/forwarder1=208.67.222.222
 ucr unset nameserver2 nameserver3
@@ -295,23 +293,23 @@ usermod -p \* root
 		  Virtualization images for <application>VirtualBox</application>, <application>VMware Player</application> and <application>VMware ESX</application> can also be created on
 		the basis of the qcow2 images above. To this end, Univention offers a tool, which can be
 		installed via the <package>generate-appliance</package> package (the integration in UCS 4.0
-		can be followed via Bug 37137).
+		can be followed via <u:bug>37137</u:bug>).
 	  </para>
 
 	  <para>
 		The <command>generate_appliance</command> tool must be started and the qcow2
-		image selected with the parameter <emphasis>-s</emphasis>:
+		image selected with the parameter <option>-s</option>:
 
 		<programlisting>
 generate_appliance -s appliance.qcow2
 		</programlisting>
 
 		The virtual machine is assigned one CPU and a gigabyte of RAM as standard. If the appliance
-		has a higher storage or CPU power requirement, the parameter <emphasis>-m</emphasis> can be
-		used to specify a different quantity of RAM in megabytes and <emphasis>-c</emphasis> can be
+		has a higher storage or CPU power requirement, the parameter <option>-m</option> can be
+		used to specify a different quantity of RAM in megabytes and <option>-c</option> can be
 		used to assign a different number of CPUs.
 
-		The parameters <emphasis>--vendor</emphasis> and <emphasis>--product</emphasis> can be used
+		The parameters <option>--vendor</option> and <option>--product</option> can be used
 		to specify a vendor and product name.
 	  </para>
 
@@ -347,7 +345,7 @@ generate_appliance -s appliance.qcow2
 
 	<section id="appliance:use:auto:profile">
 	  <title>Automatic configuration with a UCS appliance mode profile file</title>
-	  
+
 	  <para>
 		Automatic configuration with the UCS appliance mode requires creating a profile file
 		<filename>/var/cache/univention-system-setup/profile</filename>. Example configuration:
@@ -358,7 +356,7 @@ domainname="testdom.local"
 windows/domain="TESTDOM"
 ldap/base="dc=testdom,dc=local"
 root_password="univention"
- 
+
 locale/default="de_DE.UTF-8:UTF-8"
 components="univention-s4-connector:univention-samba4 univention-nagios-server"
 packages_install="univention-s4-connector univention-samba4 univention-nagios-server"
@@ -411,12 +409,12 @@ invoke-rc.d univention-management-console-server restart
 		with the apps to be installed from the Univention App Center.
 		The license in this example is the default <emphasis>free for personal use license</emphasis>.
 		More information about requesting a proper license can be found in <xref linkend="appliance:license"/>.
-	  </para>		
+	  </para>
 
 	  <para>
 		Two example hook scripts are generated which are called after setup is finished:
 		One calls <command>wget</command> for a given URL, which could be used to signal an external service that the
-		provisioning of	the instance is done. The other is an example <command>udm</command>
+		provisioning of the instance is done. The other is an example <command>udm</command>
 		call to register an OpenStack connection in UVMM.
 
 		<programlisting>
@@ -429,9 +427,9 @@ ucs_setup:
   ldap_base: dc=ucs,dc=local
   rootpassword: univention
   defaultlocale: de_DE.UTF-8:UTF-8
-  components: 
+  components:
   packages_install: univention-virtual-machine-manager-daemon
-  packages_remove: 
+  packages_remove:
 write_files:
 -   content: |
       dn: cn=admin,cn=license,cn=univention,dc=ucs,dc=local
@@ -504,7 +502,7 @@ write_files:
 	</section>
 
 	<section id="appliance:license">
-	  <title>License management in cloud instances</title>	
+	  <title>License management in cloud instances</title>
 	  <para>
 		In the default installation, a UCS installation has a so-called <emphasis>free for personal
 		use license</emphasis> (up to fifty users). A license from Univention is required for the
@@ -520,7 +518,7 @@ write_files:
 
 	  <para>
 		Access to the license server requires a user name and a password. These can be requested
-		from Univention at sales@univention.de. In this document,
+		from Univention at <email>sales@univention.de</email>. In this document,
 		<uri>https://license.univention.de/shop/example/</uri> is used as an example URL for the
 		license server.
 	  </para>
@@ -539,7 +537,7 @@ write_files:
 		  example. It is also possible to request more than one license in one session.
 
 		  <programlisting language="sh">
-wget --keep-session-cookies --save-cookies cookie.db --load-cookies \ 
+wget --keep-session-cookies --save-cookies cookie.db --load-cookies \
  cookie.db --post-data='username=univention&amp;password=secret' \
  https://license.univention.de/shop/example/
 		  </programlisting>
@@ -549,8 +547,9 @@ wget --keep-session-cookies --save-cookies cookie.db --load-cookies \
 			A license can also be ordered with a POST request via <command>wget</command>. Please note that special
 		  characters such as blank spaces must be escaped in URL-encoded syntax, see
 		  <uri>http://en.wikipedia.org/wiki/Percent-encoding</uri> for details.
+		</para>
 
-		  <programlisting language="sh">
+		<programlisting language="sh">
 wget --keep-session-cookies --save-cookies cookie.db --load-cookies cookie.db \
 --post-data='kundeEmail=customer@example&amp;'\
 'kundeUnternehmen=New%20Customern&amp;'\
@@ -566,30 +565,29 @@ wget --keep-session-cookies --save-cookies cookie.db --load-cookies cookie.db \
 'VirtualDesktopClients=0&amp;'\
 'Type=UCS' \
 https://license.univention.de/shop/example/order
-		  </programlisting>
-		</para>
+		</programlisting>
 
 		<para>
 		  If the order is successful, the return code 202 is returned. The HTML data includes the tag
 		  <varname>orderid</varname>, which identifies the order number of a successful order:
+		</para>
 
-		  <programlisting>
+		<screen>
 ...
 &lt;span id="orderid"&gt;21&lt;/span&gt;
 ...
-		  </programlisting>
-		</para>
+		</screen>
 
 		<para>
 		  If the order fails, a return code <errorcode>4xx</errorcode> is returned and the <varname>details</varname> tag
 		  includes additional information, e.g.:
+		</para>
 
-		  <programlisting>
+		<screen>
 ...
 &lt;span id="details"&gt;Not a valid date: u'27.11.201'&lt;/span&gt;
 ...
-		  </programlisting>
-		</para>
+		</screen>
 
 		<para>
 		  Should it not be possible to process an order due to a server error, 5xx is output as the
@@ -604,7 +602,7 @@ https://license.univention.de/shop/example/order
 
 		  <programlisting language="sh">
 wget --keep-session-cookies --save-cookies cookie.db --load-cookies cookie.db \
-https://license.univention.de/shop/example/orders/465.ldif 
+https://license.univention.de/shop/example/orders/465.ldif
 		  </programlisting>
 
 		</para>
@@ -615,10 +613,600 @@ https://license.univention.de/shop/example/orders/465.ldif
 
 </chapter>
 
-<!-- <bibliography id="bibliography"> -->
-<!--   <bibliomixed id="ucs-handbuch"/> -->
-<!--   <bibliomixed id="locales"/> -->
-<!-- </bibliography> -->
+<chapter id="profile:intro"><title>Profile-based installation</title>
+	<para>
+		In addition to the interactive installation described in the <biblioref linkend="ucs-manual"/>, a profile-based installation of UCS is also possible.
+		With this method, the settings for the <wordasword>Debian Installer</wordasword> and <wordasword>&ucsUSS;</wordasword> are specified in a pre-seed file.
+		If all the required settings are included in the installation profile, it is possible to perform the installation fully unattended.
+		Otherwise the installer will ask interactively for missing values.
+	</para>
+
+	<section id="profile:structure">
+		<title>Structure of profile files</title>
+		<para>
+			An installation profile is a text file which can be edited with any editor.
+			The file must use the UTF-8 character encoding.
+			Empty lines and lines starting with a hash character (<literal>#</literal>) are ignored.
+			All other lines should follow the four column layout required by <application>debconf</application>, which is fully described in <biblioref linkend="Debian:preseed"/>:
+		</para>
+		<programlisting>
+<![CDATA[# Comment
+<owner>	<question name>	<question type>	<value>]]>
+		</programlisting>
+		<para>
+			The <wordasword>owner</wordasword> of most questions will be <literal>d-i</literal>, which is the <wordasword>Debian Installer</wordasword>.
+			The <wordasword>question type</wordasword> depends on the questions and can be <literal>boolean</literal>, <literal>string</literal> or <literal>select</literal>.
+			Any questions not answered by the pre-seed file is asked interactively and will prevent an unattended installation.
+		</para>
+	</section>
+
+	<section id="profile:example">
+		<title>Example installation profile</title>
+		<para>
+			A template file is provided as <filename>/usr/share/doc/univention-net-installer/examples/TEMPLATE</filename>.
+			It contains the minimum required settings to perform a fully automatic installation of a &ucsMember; with no additional software.
+			It will use the German keyboard layout and language settings.
+			It will re-partition the hard-disk without asking any questions and will use LVM to manage the disk space.
+			No additional software will be installed.
+		</para>
+		<programlisting linenumbering="numbered">
+#
+# This file overwrites /proc/cmdline overwrites preseed.cfg in the InitRamFs!
+#
+
+#
+# The following options are set through the PXE configuration <co id="preseed:pxe-co" linkends="preseed:pxe"/>
+#
+# Delay asking for locale and keyboard layout after pre-seeding via network
+#d-i auto-install/enable boolean true
+# Only ask for critical questions
+#d-i debconf/priority select critical
+# Disable graphical installer
+#d-i debian-installer/framebuffer boolean false
+
+#
+# Select German as default locale and for keyboard layout <co id="preseed:locale-co" linkends="preseed:locale"/>
+#
+d-i debian-installer/locale string de_DE.UTF-8
+d-i keyboard-configuration/xkb-keymap select de(nodeadkeys)
+#d-i keyboard-configuration/modelcode string pc105
+d-i ucr/xorg/keyboard/options/XkbModel string pc105
+#d-i keyboard-configuration/layoutcode string de
+d-i ucr/xorg/keyboard/options/XkbLayout string de
+#d-i keyboard-configuration/variantcode string nodeadkeys
+d-i ucr/xorg/keyboard/options/XkbVariant string nodeadkeys
+#d-i keyboard-configuration/optionscode string
+d-i ucr/xorg/keyboard/options/XkbOptions string
+#d-i debian-installer/keymap select de-latin1-nodeadkeys
+
+#
+# Configure local repository server
+#
+d-i debian-installer/allow_unauthenticated boolean true
+d-i mirror/country string manual
+d-i mirror/protocol select http
+d-i mirror/http/proxy string
+# The host name of the repository server is filled through the PXE configuration generated by UDM
+#d-i mirror/http/hostname string ... <co id="preseed:mirror-co" linkends="preseed:mirror"/>
+d-i mirror/http/directory string /univention-repository/4.0/maintained/4.0-1 <co id="preseed:release-co" linkends="preseed:release"/>
+d-i mirror/codename string ucs401
+d-i mirror/suite string ucs401
+d-i mirror/udeb/suite string ucs401
+
+#
+# Disable password for user 'root'
+#
+d-i passwd/root-login boolean true
+# Alternative: printf "secret" | mkpasswd -s -m sha-512
+d-i passwd/root-password-crypted string * <co id="preseed:password-co" linkends="preseed:password"/>
+
+#
+# Partition hard disk: Use "lvm" and one big "/" partition <co id="preseed:partman-co" linkends="preseed:partman"/>
+#
+# Choices: lvm crypto regular
+d-i partman-auto/method string lvm
+# Choices: atomic home multi
+d-i partman-auto/choose_recipe string atomic
+d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-md/device_remove_md boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-lvm/confirm_nooverwrite boolean true
+d-i partman-partitioning/confirm_write_new_label boolean true
+d-i partman/choose_partition select finish
+d-i partman/confirm boolean true
+d-i partman/confirm_nooverwrite boolean true
+
+#
+# Disable starting "Univention System Setup Boot" <co id="preseed:uss-co" linkends="preseed:uss"/>
+#
+d-i ucr/system/setup/boot/start string false
+
+#
+# Univension System Setup profile
+#
+#univention-system-setup-boot uss/root_password string
+univention-system-setup-boot uss/components string
+univention-system-setup-boot uss/packages_install string
+univention-system-setup-boot uss/packages_remove string
+# Choices: domaincontroller_master domaincontroller_backup domaincontroller_slave memberserver base
+univention-system-setup-boot uss/server/role string memberserver
+#univention-system-setup-boot uss/ldap/base string dc=example,dc=com
+</programlisting>
+		<calloutlist>
+			<callout arearefs="preseed:pxe-co" id="preseed:pxe">
+				<para>
+					These settings are configured through the PXE command line parameters.
+					There are listed here for reference only and cannot be changed through this file.
+				</para>
+			</callout>
+			<callout arearefs="preseed:locale-co" id="preseed:locale">
+				<para>
+					If the locale settings are not consistent, the installer will ask interactively for corrections.
+					The keyboard related settings must be configured through &ucsUCR; - the questions starting with <literal>keyboard-configuration/xkb-…</literal> will not work!
+				</para>
+			</callout>
+			<callout arearefs="preseed:mirror-co" id="preseed:mirror">
+				<para>
+					The location of the local repository is filled in through the PXE configuration.
+					By default the value of the &ucsUCRV; <envar>repository/online/server</envar> is used.
+					It can be over-written by specifying the value here in the profile file.
+				</para>
+			</callout>
+			<callout arearefs="preseed:release-co" id="preseed:release">
+				<para>
+					These directory and release names must be kept in sync to select the right UCS release.
+					This example consistently uses the <wordasword>UCS-4.0-1</wordasword>
+				</para>
+			</callout>
+			<callout arearefs="preseed:password-co" id="preseed:password">
+				<para>
+					By default no password is set, which will prevent logging in.
+					It should be replaced by an encrypted password, which can be used by running a command like <command>printf "secret" | mkpasswd -s -m sha-512</command>
+				</para>
+			</callout>
+			<callout arearefs="preseed:partman-co" id="preseed:partman">
+				<para>
+					By default all existing partitions will be wiped without asking any question!
+					They will be replaced by a single file system for <filename class="directory">/</filename> using <acronym>LVM</acronym>.
+					See <biblioref linkend="Debian:preseed"/> for more advanced partitioning schemas.
+				</para>
+			</callout>
+			<callout arearefs="preseed:uss-co" id="preseed:uss">
+				<para>
+					This sections contains the UCS specific settings, which are normally configured through <wordasword>&ucsUSS;</wordasword>.
+					For an unattended installation the graphical installer is disabled.
+					All other values starting with <literal>uss/</literal> are copied to the installation profile.
+					The variables are described in <xref linkend="profile:variables"/>.
+				</para>
+			</callout>
+		</calloutlist>
+	</section>
+
+	<section id="profile:variables">
+		<title>Overview of profile variables</title>
+
+		<section id="profile:variables:system">
+			<title>Profile variables - System properties</title>
+			<para>
+				The following profile variables can be used to specify basic properties of the computer such as the computer name, its role within the UCS domain and the name of the domain the computer should join.
+			</para>
+
+			<table>
+				<title>Profile variables - System properties</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
+						<row>
+							<entry>Name</entry>
+							<entry>Function</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry><varname>server/role</varname></entry>
+							<entry>
+								The system role.
+								You may choose from <literal>domaincontroller_master</literal>, <literal>domaincontroller_backup</literal>, <literal>domaincontroller_slave</literal>, <literal>memberserver</literal> and <literal>base</literal>.
+								The properties of the system roles are described in the domain services chapter of the <biblioref linkend="ucs-manual"/>.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>hostname</varname></entry>
+							<entry>
+								The computer name.
+								The name must only contain the letters <literal>a</literal> to <literal>z</literal> in lowercase, the figures <literal>0</literal> to <literal>9</literal> and hyphens.
+								Although underscore are allowed as well, they should not be used as they are not supported everywhere.
+								The name must begin with a letter.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>domainname</varname></entry>
+							<entry>
+								The name of the DNS domain in which the computer is joined.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>windows/domain</varname></entry>
+							<entry>
+								The name of the NetBIOS domain used by Samba.
+								This variable should only by defined for the system role &ucsMaster;.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>locales</varname></entry>
+							<entry>
+								Localisation packages to be installed (locales).
+								If more than one locale is specified, the locales are separated by blank spaces.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>locale/default</varname></entry>
+							<entry>
+								The standard locale for the computer, e.g. <literal>en_GB.UTF-8:UTF-8</literal>.
+								More information on system locales can be found at <biblioref linkend="locales"/>.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>country</varname>, <varname>keymap</varname></entry>
+							<entry>
+								The keyboard layout for the computer, specified in the form of an X11
+								<wordasword>keymap</wordasword> entry, e.g. <literal>de-latin1</literal>.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>timezone</varname></entry>
+							<entry>
+								The time zone for the computer, e.g. <literal>Europe/Berlin</literal>.
+								A complete list of possible configuration options is shown in the <emphasis>Basic settings</emphasis> module of the Univention Management Console.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>root_password</varname></entry>
+							<entry>
+								The password for the <emphasis>root</emphasis> user for this computer.
+								On a &ucsMaster;, this password is also used for the <emphasis>Administrator</emphasis>'s password.
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</section>
+
+		<section id="profile:variables:join">
+			<title>Profile variables - LDAP settings and domain joins</title>
+			<para>
+				The entries <varname>domain_controller_account</varname> and <varname>domain_controller_password</varname> are essential for computers intended to join the domain.
+			</para>
+
+			<table>
+				<title>Profile variables - LDAP settings and domain joins</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
+						<row>
+							<entry>Name</entry>
+							<entry>Function</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry><varname>start/join</varname></entry>
+							<entry>
+								As standard, all computers apart from the base system and &ucsMaster; attempt to join the UCS domain in the course of the installation.
+								If this parameter is set to <literal>false</literal>, the automatic domain join is deactivated.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>ldap/base</varname></entry>
+							<entry>
+								The base DN of the LDAP domain.
+								In general, the base DN <literal>dc=example,dc=com</literal> is used in a domain <literal>example.com</literal>.
+								This variable is only evaluated on the system role &ucsMaster;.
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</section>
+
+		<section id="profile:variables:network">
+			<title>Profile variables - Network configuration</title>
+			<para>
+				By default automatically installed systems use DHCP.
+				The following profile variables can be used to specify the network configuration of the computer.
+			</para>
+			<para>
+				General information on the network configuration and the use of the name servers can be found in Chapter <emphasis>Network configuration</emphasis> of the <biblioref linkend="ucs-manual"/>.
+			</para>
+			<para>
+				The settings for network cards must be performed completely.
+				It is not possible to leave individual settings blank.
+				For example, if there is no IP address for the device <filename class="devicefile">eth0</filename> in the profile, in addition to the IP address, the <varname>interfaces/eth0/netmask</varname> will also be requested.
+			</para>
+
+			<table>
+				<title>Profile variables - Network configuration</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
+						<row>
+							<entry>Name</entry>
+							<entry>Function</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry><varname>interfaces/eth<replaceable>N</replaceable>/type</varname></entry>
+							<entry>
+								If this parameter is set to <literal>dynamic</literal> or <literal>dhcp</literal>, the network interface <filename class="devicefile">eth<replaceable>N</replaceable></filename> procures its network configuration via DHCP.
+								The settings of <varname>interfaces/eth<replaceable>N</replaceable>/ip</varname>, <varname>interfaces/eth<replaceable>N</replaceable>/netmask</varname>, <varname>interfaces/eth<replaceable>N</replaceable>/network</varname>, <varname>interfaces/eth<replaceable>N</replaceable>/broadcast</varname>, <varname>nameserver<replaceable>N</replaceable></varname> and <varname>gateway</varname> then become optional, but can still be used to over-write the configuration provided by DHCP.
+								<!-- PMH: Actually DHCP is skipped as soon as _ip and _netmask are given -->
+								If no DHCP offer is received, a random IP address from the link-local network <literal>169.254.<replaceable>x.x</replaceable></literal> is used.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>interfaces/eth<replaceable>N</replaceable>/ip</varname></entry>
+							<entry>
+								The IPv4 address of the physical network interface <filename class="devicefile">eth<replaceable>N</replaceable></filename>.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>interfaces/eth<replaceable>N</replaceable>/netmask</varname></entry>
+							<entry>
+								The network mask of the subnetwork from which the IPv4 address of <filename class="devicefile">eth<replaceable>N</replaceable></filename> originates.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>gateway</varname></entry>
+							<entry>
+								The IPv4 address of the gateway which the computer should use as standard.
+								Alternatively, one can specify the computer name or the FQDN that can be resolved into the IP address.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>interfaces/eth<replaceable>N</replaceable>/ip6</varname></entry>
+							<entry>
+								The IPv6 address of the physical network interface <filename class="devicefile">eth<replaceable>N</replaceable></filename> in static configuration.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>interfaces/eth<replaceable>N</replaceable>_prefix6</varname></entry>
+							<entry>
+								The prefix of the IPv6 address of the physical network interface <filename class="devicefile">eth<replaceable>N</replaceable></filename> in static configuration.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>ipv6/gateway</varname></entry>
+							<entry>
+								The IPv6 address of the gateway which the computer should use as standard.
+								It is not obligatory to enter a gateway for IPv6, but recommended.
+								An IPv6 gateway configured here has preference over router advertisements, which might otherwise be able to change the route.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>interfaces/eth<replaceable>N</replaceable>/acceptra</varname></entry>
+							<entry>
+								If this setting is set to <literal>yes</literal>, the stateless address auto-configuration (<acronym>SLAAC</acronym>) is used.
+								In this, the IP address is assigned from the routers of the local network segment.
+								If the variable is set to <literal>no</literal>, the configuration is performed statically via <varname>interfaces/eth<replaceable>N</replaceable>/ip6</varname> and <varname>interfaces/eth<replaceable>N</replaceable>/prefix6</varname> (see there).
+							</entry>
+						</row>
+						<row>
+							<entry><varname>nameserver1</varname>, <varname>nameserver2</varname>, <varname>nameserver3</varname></entry>
+							<entry>
+								The IP address of the name server which should perform the name resolution.
+								It is possible to specify up to three name servers.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>dns/forwarder1</varname>, <varname>dns/forwarder2</varname>, <varname>dns/forwarder3</varname></entry>
+							<entry>
+								The IP address of the name server intended to serve as the forwarder for a locally installed DNS service.
+								It is possible to specify up to three forwarders.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>proxy/http</varname></entry>
+							<entry>
+								The URL of a proxy server to be used when downloading accessing the Internet.
+								The specified URL is adopted in the &ucsUCR; variables <envar>proxy/http</envar> and <envar>proxy/ftp</envar>.
+								This setting is only required if packages are to be installed which download additional packages from external web servers; e.g., the installation program for the Flash plugin.
+								<para>
+									Example: <userinput>proxy/http="http://proxy.example.com:8080"</userinput>
+								</para>
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</section>
+
+		<section id="profile:variables:software">
+			<title>Profile variables - Software selection</title>
+			<para>
+				The following profile variables refer to software packages which are to be installed on the computer.
+			</para>
+
+			<table>
+				<title>Profile variables - Software selection</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
+						<row>
+							<entry>Name</entry>
+							<entry>Function</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry><varname>packages_install</varname></entry>
+							<entry>
+								This settings names packages which are additionally installed.
+								If more than one package is specified, the packages are separated by blank spaces.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>packages_remove</varname></entry>
+							<entry>
+								This settings names packages which should be removed.
+								If more than one package is specified, the packages are separated by blank spaces.
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</section>
+
+		<section id="profile:variables:ssl">
+			<title>Profile variables - SSL</title>
+			<para>
+				A SSL certification infrastructure is set up during installation of a &ucsMaster;.
+				If no settings are configured, automatic names are given for the certificate.
+			</para>
+
+			<table>
+				<title>Profile variables - SSL</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
+						<row>
+							<entry>Name</entry>
+							<entry>Function</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry><varname>ssl/country</varname></entry>
+							<entry>
+								The ISO country code of the certification body appearing in the certificate (root CA), specified with two capital letters.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>ssl/state</varname></entry>
+							<entry>
+								The region, county or province that appears in the certificate of the root CA.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>ssl/locality</varname></entry>
+							<entry>
+								Place appearing in the certificate of the root CA.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>ssl/organization</varname></entry>
+							<entry>
+								Name of the organisation that appears in the certificate of the root CA.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>ssl/organizationalunit</varname></entry>
+							<entry>
+								Name of the organisational unit or department of the organisation that appears in the certificate of the root CA.
+							</entry>
+						</row>
+						<row>
+							<entry><varname>ssl/email</varname></entry>
+							<entry>
+								E-mail address that appears in the certificate of the root CA.
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</section>
+	</section>
+
+	<section id="profile:netinstaller">
+		<title>Network-based PXE installations with Univention Net Installer</title>
+		<para>
+			Network-based, profile-based installations via PXE are performed with the Univention Net Installer, which can be set up using the package <package>univention-net-installer</package>.
+			In addition, a DHCP and WWW server is required.
+			If the DHCP server and the PXE server of the Univention Net Installer are operated on separate systems, the PXE server must be assigned via a DHCP boot policy.
+		</para>
+		<para>
+			Univention Net Installer supports both the interactive and profile-based installation.
+			Any questions not answered in the pre-seed file forces the installer to interactive mode.
+		</para>
+		<para>
+			Univention Net Installer requires a local repository as a package source (see the software deployment chapter of the <biblioref linkend="ucs-manual"/>).
+			The profiles should be copied into the directory <filename class="directory">/var/lib/univention-client-boot/preseed/</filename> on the repository server, which is accessible through <uri>http://<replaceable>HOST-NAME</replaceable>/univention-client-boot/preseed/</uri>.
+		</para>
+
+		<section id="profile:assign">
+			<title>Assignment of a computer for automatic installation</title>
+			<para>
+				A computer to be installed via Univention Net Installer must firstly be registered in the computer management of the &ucsUMC;.
+				The following values must be set as a minimum:
+			</para>
+
+			<itemizedlist>
+				<listitem><simpara>Hostname (General tab)</simpara></listitem>
+				<listitem><simpara>MAC address (General tab)</simpara></listitem>
+				<listitem><simpara>IP address (General tab)</simpara></listitem>
+				<listitem><simpara>DNS forward and reverse zone entries (General tab)</simpara></listitem>
+				<listitem><simpara>DHCP service entry (General tab)</simpara></listitem>
+			</itemizedlist>
+			<para>
+				The <guimenu>(Re-)install on next boot</guimenu> option must now be activated in the <guimenu>Advanced settings</guimenu> tab under <guimenu>Deployment</guimenu>.
+			</para>
+			<para>
+				The name of the installation profile relative to <filename class="directory">/var/lib/univention-client-boot/preseed/</filename> can be entered under <guimenu>Name of installation profile</guimenu>.
+				As an alternative any other <systemitem class="protocol">http</systemitem> server can be used as well, in which case an absolute URL must be given.
+			</para>
+			<para>
+				Options entered under <guimenu>Additional start options</guimenu> are passed on to the kernel in network-based installations, e.g., for the deactivation of ACPI during system start.
+				This can also be used to specify other pre-seed variables on a host-by-host basis.
+			</para>
+			<para>
+				A PXE configuration file is created for every computer object under <filename class="directory">/var/lib/univention-client-boot/pxelinux.cfg/</filename>.
+			</para>
+			<tip>
+				<para>
+					Several &ucsUCRV; exist on the PXE server, which can be used to further customize the PXE configuration.
+					Use <command>ucr search ^pxe/</command> to get a list of them including a short description.
+					Those values will only be used when next a PXE configuration file is generated.
+				</para>
+			</tip>
+			<para>
+				It must be verified that the boot order in BIOS of the system to be installed prefers a PXE network boot over hard disks or CD-ROMs.
+			</para>
+			<para>
+				On the next restart of the computer it will boot via PXE and is installed via the network.
+			</para>
+			<para>
+				By default the <guimenu>(Re-)install on next boot</guimenu> option needs to be reset manually after the installation has finished.
+				If the package <package>univention-net-installer-daemon</package> is installed on the server, the flag can be reset automatically.
+			</para>
+
+			<caution>
+				<para>
+					If the <package>univention-net-installer-daemon</package> is not used, the option <guimenu>(Re-)install on next boot</guimenu> must be unset manually after the installation.
+					Otherwise the computer will be reinstalled every time the host is booted!
+				</para>
+			</caution>
+		</section>
+
+	</section>
+
+</chapter>
+
+<bibliography id="bibliography">
+	<bibliomixed id="ucs-manual"/>
+	<bibliomixed id="locales"/>
+	<biblioentry id="Debian:preseed">
+		<abbrev lang="">d-i</abbrev>
+		<publishername>Debian Project</publishername>
+		<pubdate>2013</pubdate>
+		<title>Debian Installer - <ulink url="https://www.debian.org/releases/wheezy/amd64/apb.html">Automating the installation using pre-seeding</ulink></title>
+	</biblioentry>
+</bibliography>
 
 <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
+<!-- vim:set ts=2 sw=2 noet: -->
