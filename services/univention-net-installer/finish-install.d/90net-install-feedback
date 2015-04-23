@@ -32,7 +32,7 @@ port=$(debconf-get "univention-net-installer/feedback/port")
 
 feedback () {
 	[ -n "${1:-}" ] || return
-	hostname | nc "$1" "$port}"
+	hostname | nc "$1" "$port"
 	exit 0
 }
 
