@@ -28,7 +28,7 @@
 # <http://www.gnu.org/licenses/>.
 
 port=$(debconf-get "univention-net-installer/feedback/port")
-[ -z "$port" ] && port=4973
+[ -z "$port" ] && port=49173
 
 feedback () {
 	[ -n "${1:-}" ] || return
