@@ -1556,8 +1556,8 @@ msgstr "bspw. Bremen..."
 
 #: umc/js/setup.js:286
 #, python-format
-msgid "http://docs.univention.de/computers-%s.html#uvmm"
-msgstr ""
+msgid "http://docs.univention.de/manual-%s.html#computers:networkcomplex:uvmm"
+msgstr "http://docs.univention.de/handbuch-%s.html#computers:networkcomplex:uvmm"
 
 #: umc/js/setup/ApplianceWizard.js:517 umc/js/setup/ApplianceWizard.js:635
 #: umc/js/setup/ApplianceWizard.js:752
