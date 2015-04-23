@@ -164,11 +164,7 @@ class MockFile(object):
             if head not in self.mock_whitelist and not os.path.isdir(head):
                 raise IOError(errno.ENOENT, "No such file or directory: '%s'" % (name,))
             dirname = self.mock_base + head
-            try:
-                os.makedirs(dirname)
-            except OSError, ex:
-                if ex.errno != errno.EEXIST:
-                    raise
+            M.makedirs(dirname)
             filename = os.path.join(dirname, tail)
             return MockFile._ORIG(filename, mode, *args, **kwargs)
 

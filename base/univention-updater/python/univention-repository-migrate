@@ -41,7 +41,7 @@ import time
 
 import univention.config_registry as ucr
 import univention.updater.repository as urepo
-from univention.updater import UniventionMirror, UCS_Version
+from univention.updater.mirror import UniventionMirror, UCS_Version, makedirs
 import univention.updater.tools
 
 configRegistry = ucr.ConfigRegistry()
@@ -54,12 +54,10 @@ def _copy_repository( options, source, dest, version ):
 	""" Recursively copy repository from source directory to dest directory """
 	print >> options.teefile, 'Copying repository of UCS version %s ...' % version,
 	# create directory structure if required
-	if not os.path.isdir( dest ):
-		os.makedirs( dest )
+	makedirs(dest)
 	for arch in urepo.ARCHITECTURES:
 		subdir = os.path.join( dest, arch )
-		if not os.path.isdir( subdir ):
-			os.makedirs( subdir )
+		makedirs(subdir)
 
 	urepo.copy_package_files( source, dest )
 

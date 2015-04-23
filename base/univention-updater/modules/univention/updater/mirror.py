@@ -37,12 +37,22 @@ import re
 import subprocess
 import itertools
 import logging
+from operator import itemgetter
 
 from tools import UniventionUpdater, UCS_Version, NullHandler
 try:
 	import univention.debug as ud
 except ImportError:
 	import univention.debug2 as ud
+
+
+def makedirs(dirname, mode=0755):
+	try:
+		os.makedirs(dirname, mode)
+	except OSError as ex:
+		if ex.errno != errno.EEXIST:
+			raise
+
 
 class UniventionMirror( UniventionUpdater ):
 	def __init__(self, check_access=True):
@@ -80,14 +90,12 @@ class UniventionMirror( UniventionUpdater ):
 	def mirror_repositories( self ):
 		'''uses apt-mirror to copy a repository'''
 		# check if the repository directory structure exists, otherwise create it
-		if not os.path.exists( self.repository_path ):
-			os.makedirs( self.repository_path )
+		makedirs(self.repository_path)
 
 		# these sub-directories are required by apt-mirror
 		for dir in ( 'skel', 'mirror', 'var' ):
 			path = os.path.join( self.repository_path, dir )
-			if not os.path.exists( path ):
-				os.makedirs( path )
+			makedirs(path)
 		path = os.path.join(self.repository_path, 'mirror', 'univention-repository')
 		try:
 			os.symlink('.', path)
@@ -133,12 +141,7 @@ class UniventionMirror( UniventionUpdater ):
 			#	ud.debug(ud.NETWORK, ud.ALL, "Script already exists, skipping: %s" % filename)
 			#	continue
 
-			dirname = os.path.dirname(filename)
-			try:
-				os.makedirs(dirname, 0755)
-			except OSError, ex:
-				if ex.errno != errno.EEXIST:
-					raise
+			makedirs(os.path.dirname(filename))
 			fd = open(filename, "w")
 			try:
 				fd.write(script)
@@ -167,16 +170,14 @@ class UniventionMirror( UniventionUpdater ):
 					continue
 
 				version = UCS_Version( match.group(3) )
-				# do not compare start with None by "!=" or "=="
 				if not start is None and version < start:
 					continue
-				# do not compare end with None by "!=" or "=="
 				if not end is None and end < version:
 					continue
 
 				result.append( ( dirname, version, match.group(2) == 'maintained' ) )
 
-		result.sort(lambda x,y: cmp(x[1], y[1]))
+		result.sort(key=itemgetter(1))
 
 		return result
 

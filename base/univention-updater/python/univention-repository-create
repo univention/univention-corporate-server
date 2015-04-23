@@ -44,12 +44,14 @@ import univention.config_registry as ucr
 import univention.updater.repository as urepo
 import univention.updater.tools
 from univention.updater.tools import UCS_Version
+from univention.updater.mirror import makedirs
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
 _mirror_base = configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
 _repo_base = "" # this path is set later in __main__
+
 
 def check_preconditions( options ):
 	""" Check for already existing mirror and for debmirror package """
@@ -76,7 +78,8 @@ def check_preconditions( options ):
 		print >> sys.stderr, msg
 		sys.exit( 1 )
 
-def  prepare( options ):
+
+def prepare(options):
 	""" Set local/repository and create directory structure """
 	# set local/repository
 	if configRegistry.is_false( 'local/repository', True ):
@@ -88,19 +91,10 @@ def  prepare( options ):
 		configRegistry.load()
 
 	# create directory structure
-	try:
-		os.makedirs( _repo_base )
-	except OSError, ex:
-		# already exists -> ignore
-		if ex.errno != errno.EEXIST:
-			raise ex
+	makedirs(_repo_base)
 	for arch in urepo.ARCHITECTURES:
-		try:
-			os.makedirs( os.path.join( _repo_base, arch ) )
-		except OSError, ex:
-			# already exists -> ignore
-			if ex.errno != errno.EEXIST:
-				raise ex
+		makedirs(os.path.join(_repo_base, arch))
+
 
 def copy_repository( options ):
 	""" Copy version info, kernels, grub configuration, profiles, packages and dists """
@@ -142,7 +136,11 @@ def copy_repository( options ):
 				os.chmod( profiles_dest, 0555 )
 				print 'done.'
 
-	# copy packages to new directory structure
+	copy_packages(options)
+	copy_dists(options)
+
+
+def copy_packages(options):
 	print '  copying packages ...',
 	sys.stdout.flush()
 	for subdir in ('packages', 'all', 'amd64', 'i386'):
@@ -151,7 +149,8 @@ def copy_repository( options ):
 			sys.stdout.flush()
 	print "done."
 
-	# copy dists directory structure
+
+def copy_dists(options):
 	print '  copying dists ...',
 	dists_dest = os.path.join( _repo_base, 'dists' )
 	if os.path.isdir( dists_dest ):
@@ -165,6 +164,7 @@ def copy_repository( options ):
 		print "failed (%s)." % (ex,)
 	else:
 		print 'done.'
+
 
 def mount( options ):
 	""" Mount CDROM and check for valid medium """
@@ -207,6 +207,7 @@ def mount( options ):
 	print 'ok.'
 	return True
 
+
 def setup_repository( options ):
 	""" Update indexes """
 	urepo.update_indexes( _repo_base, dists = True )
@@ -217,18 +218,16 @@ def setup_repository( options ):
 		if not os.path.exists(d):
 			os.mkdir(d)
 
+
 def setup_pxe( options ):
 	'''setup network installation (PXE)'''
 	pxedir = '/var/lib/univention-client-boot'
 	installerdir = os.path.join(pxedir, 'installer')
-
-	if not os.path.exists(pxedir):
-		os.makedirs(pxedir)
+	makedirs(pxedir)
 
 	if options.version.major >= 4:
 		installerdir = os.path.join(pxedir, 'installer', UCS_Version.FULLFORMAT % options.version)
-		if not os.path.exists(installerdir):
-			os.makedirs(installerdir)
+		makedirs(installerdir)
 
 		# copy kernel and initrd to /var/lib/univention-client-boot/installer/<major>.<minor>-<patchlevel>/
 		# and create/refresh symlinks in /var/lib/univention-client-boot/ to these files
@@ -245,7 +244,8 @@ def setup_pxe( options ):
 		print 'WARNING: The usage of this DVD for PXE reinstallation is not possible.'
 		print '         Please use an UCS installation DVD with UCS 4.0-0 or later.'
 
-if __name__ == '__main__':
+
+def main():
 	for mount_point_default in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
 		if os.path.isdir(mount_point_default):
 			break
@@ -299,6 +299,7 @@ if __name__ == '__main__':
 			print >> sys.stderr, "Error: Failed to parse %s" % (installfile,)
 			sys.exit(1)
 
+		global _repo_base
 		_repo_base = os.path.join(
 			_mirror_base,
 			'mirror',
@@ -382,3 +383,7 @@ if __name__ == '__main__':
 	finally:
 		if not univention.updater.tools.updater_lock_release(lock):
 			print 'WARNING: updater-lock already released!'
+
+
+if __name__ == '__main__':
+	main()

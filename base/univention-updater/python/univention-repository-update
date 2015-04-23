@@ -44,7 +44,8 @@ from textwrap import dedent, wrap
 
 import univention.config_registry as ucr
 import univention.updater.repository as urepo
-from univention.updater import UniventionMirror, UCS_Version, UpdaterException, VerificationError
+from univention.updater.mirror import UniventionMirror, UCS_Version, makedirs
+from univention.updater.errors import UpdaterException, VerificationError
 import univention.updater.tools
 
 configRegistry = ucr.ConfigRegistry()
@@ -57,6 +58,7 @@ _mirror_base = configRegistry.get( 'repository/mirror/basepath', '/var/lib/unive
 # directory of current version's repository
 _current_version = '%s-%s' % ( configRegistry.get( 'version/version' ), configRegistry.get( 'version/patchlevel' ) )
 _repo_base = os.path.join( _mirror_base, 'mirror', configRegistry.get( 'version/version' ), 'maintained', '%s-0' % configRegistry.get( 'version/version' ) )
+
 
 def copy_repository( options, source, version ):
 	""" Copy packages and scripts belonging to version from source directory into local repository """
@@ -72,7 +74,7 @@ def copy_repository( options, source, version ):
 	else:
 		# create directory structure
 		for arch in urepo.ARCHITECTURES:
-			os.makedirs( os.path.join( dest_repo, arch ) )
+			makedirs(os.path.join(dest_repo, arch))
 
 	# copy packages to new directory structure
 	urepo.copy_package_files( source, dest_repo )
@@ -86,6 +88,7 @@ def copy_repository( options, source, version ):
 		if os.path.exists(os.path.join(source, script)):
 			shutil.copy2(os.path.join(source, script), os.path.join(dest_repo, 'all', script))
 	print >>options.teefile, 'Done.'
+
 
 def update_cdrom( options ):
 	""" Copy repository from local DVD or ISO image """
@@ -127,6 +130,7 @@ def update_cdrom( options ):
 			print >> options.teefile, 'Error: Failed to umount %s' % options.mount_point
 			sys.exit( ret )
 
+
 def update_net( options ):
 	""" Copy packages and scripts from remote mirror into local repository """
 	mirror = UniventionMirror()
@@ -142,8 +146,7 @@ def update_net( options ):
 
 	# create mirror_base and symbolic link "univention-repository" if missing
 	destdir = os.path.join( configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' ), 'mirror' )
-	if not os.path.exists( destdir ):
-		os.makedirs( destdir )
+	makedirs(destdir)
 	try:
 		os.symlink( '.', os.path.join(destdir, 'univention-repository') )
 	except OSError, e:

@@ -158,7 +158,7 @@ class TestUniventionMirrorList(unittest.TestCase):
             maint_unmain = maintained and 'maintained' or 'unmaintained'
             major_minor_patch = U.UCS_Version.FULLFORMAT % ver
             dirname = os.path.join(self.base_dir, 'mirror', major_minor, maint_unmain, major_minor_patch)
-            os.makedirs(dirname)
+            M.makedirs(dirname)
             self.repos.append((dirname, ver, maintained))
 
     def _uri(self, uris):
