@@ -2,7 +2,7 @@
 # Univention Net Installer Daemon
 #  init script
 #
-# Copyright 2010-2014 Univention GmbH
+# Copyright 2010-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
