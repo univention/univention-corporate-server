@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-net-installer
+fix: 8.0.1-1.25.201504231304
+version: [1]
+desc: |
+  This errata update addresses the following issues:
+  * The Univention Net Installer has been adapted to allow profile based
+    installations of UCS-4.0-1.
+bug: [35537]

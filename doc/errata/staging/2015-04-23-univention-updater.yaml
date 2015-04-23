@@ -1,0 +1,13 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-1
+src: univention-updater
+fix: 10.0.53-13.1387.201504231330
+version: [1]
+desc: |
+  This errata update addresses the following issues:
+  * A local repository created from the UCS-4.0-1 DVD was incorrectly copied to
+    the location reserved for UCS-4.0-0.
+  * The Packages files required for profile based installations are now
+    generated locally.
+bug: [38248,35537]
