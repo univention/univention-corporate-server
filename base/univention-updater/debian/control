@@ -6,6 +6,7 @@ Build-Depends: debhelper (>> 7),
  univention-config-dev,
  python-all,
  python-support (>= 0.90),
+ python-debian,
  ucslint-univention,
  univention-management-console-dev
 XS-Python-Version: 2.6, 2.7
