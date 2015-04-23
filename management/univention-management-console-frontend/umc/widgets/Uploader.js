@@ -163,7 +163,10 @@ define([
 					}
 				}, this);
 				if (_tooLargeFiles.length) {
-					dialog.alert(_('The following files cannot be uploaded because they exceed the maximum file size: %s The maximum size of a file is %.1f MB.',('<ul><li>' + _tooLargeFiles.join('</li><li>') + '</li></ul>' ), this.maxSize / 1048576.0));
+					var msg =_('The following files cannot be uploaded because they exceed the maximum file size:');
+					msg += ('<ul><li>' + _tooLargeFiles.join('</li><li>') + '</li></ul>');
+					msg += _('The maximum size of a file is %.1f MB.', this.maxSize / 1048576.0);
+					dialog.alert(msg);
 					this._uploader.reset();
 				} else {
 					if ((!this.multiFile)&&(_data instanceof Array)){
