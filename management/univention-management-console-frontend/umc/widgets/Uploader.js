@@ -81,7 +81,7 @@ define([
 
 		// value: String
 		//		The content of the base64 encoded file data.
-		value: "",
+		value: null,
 
 		// maxSize: Number
 		//		A size limit for the uploaded file.
@@ -115,6 +115,12 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+
+			if (this.multiFile) {
+				this.value = [];
+			} else {
+				this.value = '';
+			}
 
 			// save the original label
 			this._origButtonLabel = this.buttonLabel;
@@ -193,7 +199,7 @@ define([
 							lang.mixin(params, {
 								iframe: (this._uploader.uploadType === 'iframe') ? true : false
 							});
-							
+
 							this._uploader.upload(params);
 							this._updateLabel();
 							this.onUploadStarted(_data);
@@ -239,10 +245,23 @@ define([
 			this.set('value', this.value);
 		},
 
-		_setDataAttr: function(newVal) {
-			this.data = newVal;
+		_setDataAttr: function(data) {
+			this._set('data', data);
 			this._settingData = true;
-			this.set( 'value', newVal && 'content' in newVal ? newVal.content : '' );
+			var value = '';
+			if (!this.multiFile && data && 'content' in data) {
+				// single file upload with data containing content
+				value = data.content;
+			} else if (this.multiFile && data instanceof Array) {
+				// multi file upload -> handle array accordingly
+				value = array.map(data, function(idata) {
+					return idata && 'content' in idata ? idata.content : '';
+				});
+			} else if (this.multiFile) {
+				// multi file fallback if data is not an array
+				value = [];
+			}
+			this.set('value', value);
 			this._settingData = false;
 		},
 
@@ -250,14 +269,20 @@ define([
 			if (!this._settingData) {
 				this.data = null;
 			}
-			this.value = newVal;
 
-			if ( this.showClearButton ) {
+			if (this.showClearButton) {
 				// decide whether to show/hide remove button
-				domClass.toggle(this._clearButton.domNode, 'dijitHidden', !(typeof this.value == "string" && this.value !== ""));
+				var isVisible = false;
+				if (!this.multiFile) {
+					isVisible = typeof newVal == "string" && newVal !== "";
+				} else {
+					isVisible = newVal instanceof Array && newVal.length;
+				}
+				domClass.toggle(this._clearButton.domNode, 'dijitHidden', !isVisible);
 			}
 
 			// send events
+			this._set('value', newVal);
 			this.onChange(newVal);
 			this.updateView(this.value, this.data);
 		},

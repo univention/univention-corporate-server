@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.106-60) unstable; urgency=low
+
+  *Bug #38276: callbacks will now always recieve an array if mutliFile
+   is set to true
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 23 Apr 2015 14:58:42 +0200
+
 univention-management-console-frontend (4.1.106-59) unstable; urgency=low
 
   * Bug #38276: changes to message strings in uploader widget

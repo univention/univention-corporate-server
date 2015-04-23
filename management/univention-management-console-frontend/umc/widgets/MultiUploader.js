@@ -154,6 +154,7 @@ define([
 		_setValueAttr: function(newVal) {
 			this._files.selection.clear();
 			this._files.set('staticValues', newVal);
+			this._set('value', newVal);
 		},
 
 		_getValueAttr: function() {
@@ -161,13 +162,14 @@ define([
 		},
 
 		_setButtonLabelAttr: function(newVal) {
-			this.buttonLabel = newVal;
 			this._uploader.set('buttonLabel', newVal);
+			this._set('buttonLabel', newVal);
 		},
 
 		_setDisabledAttr: function(newVal) {
 			this._files.set('disabled', newVal);
 			this._uploader.set('disabled', newVal);
+			this._set('disabled', newVal);
 		},
 
 		_getDisabledAttr: function() {
