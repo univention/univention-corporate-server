@@ -16,6 +16,7 @@
 			async: true,
 			deps: [
 				"dojo/_base/lang",
+				"dojo/_base/array",
 				"dojo/dom",
 				"dojo/dom-construct",
 				"dojo/dom-style",
@@ -25,7 +26,7 @@
 				"umc/widgets/Uploader",
 				"umc/widgets/MultiUploader"
 			],
-			callback: function(lang, dom, domConstruct, domStyle, win, tools, ImageUploader, Uploader, MultiUploader) {
+			callback: function(lang, array, dom, domConstruct, domStyle, win, tools, ImageUploader, Uploader, MultiUploader) {
 				domStyle.set('overlay', 'display', 'none');
 
 				tools.umcpCommand('auth', {
@@ -77,6 +78,33 @@
 					return _round(bytes) + ' ' + unit;
 				};
 
+				getType = function(obj) {
+					var t = typeof obj;
+					if (t == 'string') {
+						t = 'string of length ' + obj.length;
+					}
+					if (obj instanceof Array) {
+						t = 'Array of length ' + obj.length;
+					}
+					return t;
+				};
+
+				cleanData = function(_data) {
+					var data = lang.clone(_data);
+					if (data instanceof Array) {
+						array.forEach(data, function(i) {
+							if (i.content) {
+								i.content = '<i>&lt;' + getType(i.content) + '&gt;</i>';
+							}
+						});
+					} else {
+						if (data.content) {
+							data.content = '<i>&lt;' + getType(data.content) + '&gt;</i>';
+						}
+					}
+					return data;
+				};
+
 				// image uploader
 				imageUploader = new ImageUploader({});
 				domConstruct.place(imageUploader.domNode, 'imageUploader');
@@ -114,46 +142,44 @@
 							_log(filenames);
 							return true;
 						},
-						onUploadStarted: function(fileInfo) {
+						onUploadStarted: function(data) {
 							_log('<b>onUploadStarted()</b>');
-							_assertArrayOrNot(fileInfo);
-							_log(fileInfo);
+							_assertArrayOrNot(data);
+							_log(cleanData(data));
 						},
 						onUploadProgress: function(data) {
 							_log('<b>onProgress()</b>');
 							_assertArrayOrNot(data);
-							data.content = '<i>&lt;base64 encoded string with size ' + humanReadableSize(data.content.length) + '&gt;</i>';
-							_log(data);
+							_log(cleanData(data));
 						},
 						onUploaded: function(data) {
 							_log('<b>onUploaded()</b>');
 							_assertArrayOrNot(data);
-							//data.content = '<i>&lt;base64 encoded string with size ' + humanReadableSize(data.content.length) + '&gt;</i>';
-							_log(data);
+							_log(cleanData(data));
 						},
 						onError: function(data) {
 							_log('<b>onError()</b>');
 							_assert(false, 'An error occurred');
-							_log(data);
+							_log(cleanData(data));
 						},
 						onChange: function(data) {
-							if (!data) {
-								_clear();
+							_log('<b>onChange()</b>');
+							if (UploaderClass == Uploader) {
+								_assertArrayOrNot(data);
+							} else if (UploaderClass == MultiUploader) {
+								_assert(data instanceof Array, 'Passed parameter should be an array.');
 							}
-							else {
-								_log('<b>onChange()</b>');
-								_log('<i>String of size ' + humanReadableSize(data.length) + '</i>');
-							}
+							_log('<i>&lt;' + getType(data) + '&gt;</i><br/>');
 						}
 					});
 					uploader.watch('value', function(attr, oldVal, newVal) {
 						_log('<b>watch("value"):</b>');
 						if (UploaderClass == Uploader) {
-							_log('<i>String of size ' + humanReadableSize(newVal) + '</i>');
+							_assertArrayOrNot(newVal);
+						} else if (UploaderClass == MultiUploader) {
+							_assert(newVal instanceof Array, 'Passed parameter should be an array.');
 						}
-						else if (UploaderClass == MultiUploader) {
-							_log(newVal);
-						}
+						_log('<i>&lt;' + getType(newVal) + '&gt;</i><br/>');
 					});
 					domConstruct.place(uploader.domNode, id);
 					uploader.startup();
