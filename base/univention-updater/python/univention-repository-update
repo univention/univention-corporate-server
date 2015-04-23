@@ -32,7 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 
 from optparse import OptionParser
-import copy
 import os
 import errno
 import re
@@ -44,7 +43,7 @@ from textwrap import dedent, wrap
 
 import univention.config_registry as ucr
 import univention.updater.repository as urepo
-from univention.updater.mirror import UniventionMirror, UCS_Version, makedirs
+from univention.updater.mirror import UniventionMirror, makedirs
 from univention.updater.errors import UpdaterException, VerificationError
 import univention.updater.tools
 
@@ -186,30 +185,16 @@ def update_net( options ):
 			mirror.run()
 
 	# create .univention_install file
-	if not os.path.isfile( os.path.join( _mirror_base, '.univention_install' ) ):
-		exp_version = re.compile( '(?P<major>[0-9]*)\.(?P<minor>[0-9]*)' )
-		repo_base = os.path.join( _mirror_base, 'mirror' )
-		min_version = None
-		new_version = UCS_Version( ( 0, 0, 0 ) )
-
-		for dirname in os.listdir( os.path.join( repo_base ) ):
-			if not os.path.isdir( os.path.join( repo_base, dirname ) ):
-				continue
-			match = exp_version.match( dirname )
-			if not match:
-				continue
-			regdict = match.groupdict()
-			new_version.major = int( regdict[ 'major' ] )
-			new_version.minor = int( regdict[ 'minor' ] )
-			if not min_version or new_version < min_version:
-				min_version = copy.copy( new_version )
-		if not min_version:
+	filename = os.path.join(_mirror_base, '.univention_install')
+	if not os.path.isfile(filename):
+		repos = mirror.list_local_repositories()
+		if not repos:
 			return
+		min_version = min(repo[1] for repo in repos)
+		with open(filename, 'w') as ver:
+			print >> ver, 'VERSION=%d.%d' % (min_version.major, min_version.minor)
+			print >> ver, 'PATCHLEVEL=%d' % (min_version.patchlevel,)
 
-		inst_fd = open( os.path.join( _mirror_base, '.univention_install' ), 'w' )
-		inst_fd.write( 'VERSION=%d.%d\n' % ( min_version.major, min_version.minor ) )
-		inst_fd.write( 'PATCHLEVEL=0\n' )
-		inst_fd.close()
 
 if __name__ == '__main__':
 	# PATH does not contain */sbin when called from cron

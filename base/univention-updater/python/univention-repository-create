@@ -44,7 +44,7 @@ import univention.config_registry as ucr
 import univention.updater.repository as urepo
 import univention.updater.tools
 from univention.updater.tools import UCS_Version
-from univention.updater.mirror import makedirs
+from univention.updater.mirror import makedirs, UniventionMirror
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
@@ -136,8 +136,8 @@ def copy_repository( options ):
 				os.chmod( profiles_dest, 0555 )
 				print 'done.'
 
+		copy_dists(options)
 	copy_packages(options)
-	copy_dists(options)
 
 
 def copy_packages(options):
@@ -240,6 +240,10 @@ def setup_pxe( options ):
 				if os.path.islink(symlinkfn):
 					os.remove(symlinkfn)
 				os.symlink(os.path.relpath(dstfn, pxedir), symlinkfn)
+
+		print '  generating Package files for installer ...',
+		mirror = UniventionMirror(False)
+		mirror.update_dists_files()
 	else:
 		print 'WARNING: The usage of this DVD for PXE reinstallation is not possible.'
 		print '         Please use an UCS installation DVD with UCS 4.0-0 or later.'

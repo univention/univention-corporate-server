@@ -1,6 +1,7 @@
 univention-updater (10.0.53-13) unstable; urgency=low
 
   * Bug #38248: Fix patchlevel for local repository
+  * Bug #35537: Fix generation of dists/Packages files
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 13 Apr 2015 14:56:51 +0200
 

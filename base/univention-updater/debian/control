@@ -23,6 +23,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-univention (>> 5.0.6),
  shell-univention-lib,
  python-univention-lib (>= 1.0.25-1),
+ python-debian,
  univention-errata-level
 Description: UCS - system upgrading tool
  UCS Updater can upgrade your version of UCS.
