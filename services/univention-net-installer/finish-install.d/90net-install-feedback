@@ -1,9 +1,6 @@
 #!/bin/sh
 #
-# Univention Server Installation
-#  join script
-#
-# Copyright 2004-2015 Univention GmbH
+# Copyright 2013-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,26 +27,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+port=$(debconf-get "univention-net-installer/feedback/port")
+[ -z "$port" ] && port=4973
 
-. /usr/share/univention-join/joinscripthelper.lib
-joinscript_init
+feedback () {
+	[ -n "${1:-}" ] || return
+	hostname | nc "$1" "$port}"
+	exit 0
+}
 
-eval "$(univention-config-registry shell)"
-
-# create ucs-repository share
-univention-directory-manager container/cn create "$@" --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname || die
-univention-directory-manager shares/share create "$@" --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --option nfs --set name=ucs-repository --set path=/var/lib/univention-repository --set host=$hostname.$domainname || die
-
-# set boot file on default dhcp/boot policy
-old=$(univention-directory-manager policies/dhcp_boot list "$@" --filter cn=default-settings | awk '/^boot_filename: / {print $2}')
-if [ -z "$old" -o "$old" = "None" ]; then
-	univention-directory-manager policies/dhcp_boot modify "$@" --ignore_exists \
-	--dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$ldap_base" \
-	--set boot_filename=pxelinux.0 || die
-fi
-
-joinscript_save_current_version
-
-
-exit 0
+# Profile
+feedback "$(debconf-get "univention-net-installer/feedback/host")"
+# IPAPEND|=1
+[ -n "${ip:-}" ] &&
+	feedback "$(echo "$ip" | cut -d: -f2)"
+# DHCP
+[ -s /var/lib/udhcp/udhcpc.leases ] &&
+	feedback "$(sed -rne 's/^ *option dhcp-server-identifier ([0-9.]+);/\1/p' /var/lib/udhcp/udhcpc.leases)"
+# repository=TFTP server?
+feedback "$(env | sed -ne 's,^mirror/http/hostname=,,p')"

@@ -1,0 +1,7 @@
+Alias /univention-client-boot /var/lib/univention-client-boot
+<Directory /var/lib/univention-client-boot>
+	Order allow,deny
+	Allow from all
+	Options +Indexes +FollowSymLinks
+	AllowOverride None
+</Directory>

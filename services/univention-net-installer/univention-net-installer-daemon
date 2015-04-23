@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import sys
 from optparse import OptionParser
 import ldap.filter
 import multiprocessing
@@ -41,12 +42,14 @@ import threading
 import univention.debug as ud
 import univention.uldap
 
+
 def createDaemon(options):
 	'''daemonize via double fork, close all file handles, open /dev/null for stdin/out/err'''
 	try:
 		pid = os.fork()
-	except OSError, e:
+	except OSError as e:
 		print 'Daemon Mode Error: %s' % (e.strerror, )
+		sys.exit(1)
 
 	if pid:
 		os._exit(0) # _exit should be used for forking, pylint: disable-msg=W0212
@@ -55,8 +58,9 @@ def createDaemon(options):
 	signal.signal(signal.SIGHUP, signal.SIG_IGN)
 	try:
 		pid = os.fork()
-	except OSError, e:
+	except OSError as e:
 		print 'Daemon Mode Error: %s' % (e.strerror, )
+		sys.exit(1)
 	if pid:
 		pf = open(options.pidfile, 'w+')
 		pf.write(str(pid))
@@ -75,6 +79,7 @@ def createDaemon(options):
 	os.open("/dev/null", os.O_RDWR)
 	os.open("/dev/null", os.O_RDWR)
 
+
 def getLDAPConnection():
 	# TODO: check for an alternative binddn
 	if os.path.exists('/etc/ldap.secret'):
@@ -82,6 +87,7 @@ def getLDAPConnection():
 	else:
 		lo = univention.uldap.getMachineConnection()
 	return lo
+
 
 def processor(options, data_queue):
 	ud.init('/var/log/univention/net-installer-daemon.log', 1, 0)
@@ -99,6 +105,7 @@ def processor(options, data_queue):
 	while True:
 		data = data_queue.get()
 		process(data)
+
 
 def listener(options, data_queue):
 	local_host_address = socket.gethostbyname(socket.gethostname())
@@ -122,6 +129,7 @@ def listener(options, data_queue):
 				data_queue.put(data)
 		threading.Thread(target=reader).start()
 
+
 def main():
 	parser = OptionParser(usage='usage: %prog [options] command')
 	parser.add_option('-p', '--port',
@@ -144,6 +152,7 @@ def main():
 	subthread.daemon = True
 	subthread.start()
 	listener(options, data_queue)
+
 
 if __name__ == '__main__':
 	main()

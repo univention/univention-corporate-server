@@ -1,3 +1,9 @@
+univention-net-installer (8.0.1-1) unstable; urgency=low
+
+  * Bug #35537: Add UCS-4 support
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 13 Apr 2015 13:01:56 +0200
+
 univention-net-installer (8.0.0-3) unstable; urgency=low
 
   * Bug #35537: several bugfixes

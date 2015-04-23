@@ -30,65 +30,114 @@
 # <http://www.gnu.org/licenses/>.
 
 __package__ = '' 	# workaround for PEP 366
-import univention.config_registry
 
 name = 'serverinstallerpxe'
 description = 'PXE configuration for the Server installer'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)(objectClass=univentionClient)(objectClass=univentionMobileClient))'
-attributes = ['univentionServerReinstall', 'aRecord', 'univentionServerInstallationProfile', 'univentionServerInstallationOption']
+attributes = [
+	'univentionServerReinstall',
+	'aRecord',
+	'univentionServerInstallationProfile',
+	'univentionServerInstallationOption',
+]
 
 import listener
 import os
-import univention.debug
+import univention.debug as ud
+from textwrap import dedent
+from urlparse import urljoin
 
-ucr = listener.configRegistry
-
-pxebase = '/var/lib/univention-client-boot/pxelinux.cfg'
+EMPTY = ('',)
+PXEBASE = '/var/lib/univention-client-boot/pxelinux.cfg'
+FQDN = '%(hostname)s.%(domainname)s' % listener.configRegistry
+URLBASE = listener.configRegistry.get(
+	'pxe/installer/profiles',
+	'http://%s/univention-client-boot/preseed/' % (FQDN,))
 
 
 def ip_to_hex(ip):
-	if ip.count('.') != 3:
-		return ''
 	o = ip.split('.')
-	return '%02X%02X%02X%02X' % (int(o[0]), int(o[1]), int(o[2]), int(o[3]))
+	if len(o) != 4:
+		return ''
+	return ''.join('%02X' % int(_) for _ in o)
 
 
 def handler(dn, new, old):
-	ucr.load()
+	listener.configRegistry.load()
+	pxeconfig = gen_pxe(new)
+	remove_pxe(old)
+	if pxeconfig:
+		create_pxe(new, pxeconfig)
 
-	if 'pxe/installer/append' in ucr:
-		append = ucr.get('pxe/installer/append')
-	else:
-		append = 'auto=true priority=critical video=vesa:ywrap,mtrr '
-		append += 'vga=%s ' % ucr.get("pxe/installer/vga", "788")
-		append += 'initrd=%s ' % (ucr.get('pxe/installer/initrd', 'initrd.gz'),)
-		if ucr.is_true('pxe/installer/quiet', False):
-			append += 'quiet '
-		append += 'loglevel=%s ' % ucr.get('pxe/installer/loglevel', '0')
-		if new.get('univentionServerInstallationProfile'):
-			append += 'url=http://%s.%s/installer/./%s ' % (ucr.get('hostname'), ucr.get('domainname'), new.get('univentionServerInstallationProfile')[0])
 
-	pxeconfig = '''# Perform a profile installation by default
-PROMPT 0
-TIMEOUT 100
-DEFAULT linux
-%(additional_options)s
-LABEL linux
-        kernel %(kernel)s
-        append %(append)s
-''' % {
-		'kernel': ucr.get('pxe/installer/kernel', 'linux'),
-		'append': append,
-		'additional_options': new.get('univentionServerInstallationOption', ''),
-		}
-
-	# remove pxe host file
-	if old and old.get('aRecord'):
-		basename = ip_to_hex(old['aRecord'][0])
-		if not basename:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'PXE: invalid old IP address %s' % old['aRecord'][0])
+def gen_pxe(new):
+	args = [listener.configRegistry.get('pxe/installer/append')]
+	if args[0] is None:
+		profile = new.get('univentionServerInstallationProfile', EMPTY)[0]
+		if not profile:
 			return
-		filename = os.path.join(pxebase, basename)
+		url = urljoin(URLBASE, profile)
+
+		vga = listener.configRegistry.get("pxe/installer/vga")
+		args += [
+			'video=vesa:ywrap,mtrr',
+			'vga=%s' % (vga,),
+		] if vga else [
+			# plymouth
+			'nosplash',
+			'debian-installer/framebuffer=false',
+			'DEBIAN_FRONTEND=text',
+		]
+
+		# <https://wiki.debianforum.de/Debian-Installation_%C3%BCber_PXE,_TFTP_und_Preseed>
+		args += [
+			# Kernel
+			'quiet' if listener.configRegistry.is_true('pxe/installer/quiet', False) else '',
+			'loglevel=%s' % listener.configRegistry.get('pxe/installer/loglevel', '0'),
+			# Debian installer
+			'auto-install/enable=true',
+			'preseed/url=%s' % (url,),
+			'mirror/http/hostname=%s' % (listener.configRegistry.get("repository/online/server", FQDN),),
+			# 'DEBCONF_DEBUG=5',
+		]
+	args.append(new.get('univentionServerInstallationOption', EMPTY)[0])
+	# <http://www.syslinux.org/wiki/index.php/SYSLINUX>: The entire APPEND
+	# statement must be on a single line. A feature to break up a long line
+	# into multiple lines will be added eventually.
+	append = ' '.join(arg for arg in args if arg)
+
+	return dedent('''\
+			# Perform a profile installation by default
+			PROMPT 0
+			TIMEOUT 100
+			DEFAULT linux
+
+			LABEL linux
+				LINUX %(kernel)s
+				INITRD %(initrd)s
+				APPEND %(append)s
+				IPAPPEND %(ipappend)s
+
+			LABEL linux
+				LOCALBOOT 0
+			''') % {
+				'kernel': listener.configRegistry.get('pxe/installer/kernel', 'linux'),
+				'initrd': listener.configRegistry.get('pxe/installer/initrd', 'initrd.gz'),
+				'append': append,
+				'ipappend': listener.configRegistry.get('pxe/installer/ipappend', '0'),
+			}
+
+
+def remove_pxe(old):
+	try:
+		basename = ip_to_hex(old['aRecord'][0])
+	except LookupError:
+		return
+	else:
+		if not basename:
+			ud.debug(ud.LISTENER, ud.ERROR, 'PXE: invalid old IP address %s' % old['aRecord'][0])
+			return
+		filename = os.path.join(PXEBASE, basename)
 		listener.setuid(0)
 		try:
 			if os.path.exists(filename):
@@ -96,18 +145,22 @@ LABEL linux
 		finally:
 			listener.unsetuid()
 
-	# create pxe host file(s)
-	if new and new.get('aRecord'):
-		cn = new['cn'][0]
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'PXE: writing configuration for host %s' % cn)
 
+def create_pxe(new, pxeconfig):
+	try:
 		basename = ip_to_hex(new['aRecord'][0])
-		if not basename:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'PXE: invalid new IP address %s' % new['aRecord'][0])
-			return
-		filename = os.path.join(pxebase, basename)
+	except LookupError:
+		return
+	else:
+		cn = new['cn'][0]
+		ud.debug(ud.LISTENER, ud.INFO, 'PXE: writing configuration for host %s' % cn)
 
-		if new.get('univentionServerReinstall', [''])[0] == '1':
+		if not basename:
+			ud.debug(ud.LISTENER, ud.ERROR, 'PXE: invalid new IP address %s' % new['aRecord'][0])
+			return
+		filename = os.path.join(PXEBASE, basename)
+
+		if new.get('univentionServerReinstall', EMPTY)[0] == '1':
 			listener.setuid(0)
 			try:
 				with open(filename, 'w') as fd:

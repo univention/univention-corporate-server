@@ -32,30 +32,58 @@
 
 #DEBHELPER#
 
-. /usr/share/univention-lib/all.sh
+main () {
+	if [ "$1" = "configure" ]
+	then
+		configure_pxe
+		if dpkg --compare-versions "$2" lt-nl 8  # Bug #35537: Only on upgrade to UCS-4.0
+		then
+			update_filenames
+		fi
+		configure_http
+		install_template
+		call_joinscript 81univention-net-installer.inst
+		restart_listener
+	fi
+}
 
-eval "$(univention-config-registry shell server/role)"
+configure_pxe () {
+	univention-config-registry set \
+		pxe/installer/quiet?"yes" \
+		pxe/installer/vga?"788" \
+		pxe/installer/loglevel?"0"
+}
 
-univention-config-registry set \
-	pxe/installer/quiet?"yes" \
-	pxe/installer/vga?"788" \
-	pxe/installer/loglevel?"0"
-
-# Bug #35537: obsolete after UCS 4.0-0
-# switch to new names for PXE kernel and initrd
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.0-3; then
+update_filenames () {
 	if [ "$(univention-config-registry get pxe/installer/kernel)" = "linux-server" ]; then
 		univention-config-registry unset pxe/installer/kernel
 	fi
 	if [ "$(univention-config-registry get pxe/installer/initrd)" = "linux.bin" ]; then
 		univention-config-registry unset pxe/installer/initrd
 	fi
-fi
+}
 
-call_joinscript 81univention-net-installer.inst
+configure_http () {
+	if [ -x /etc/init.d/apache2 ]
+	then
+		a2ensite univention-net-installer
+		apachectl graceful
+	fi
+}
 
-if test -f /etc/init.d/univention-directory-listener; then
-	/etc/init.d/univention-directory-listener crestart
-fi
+install_template () {
+	if [ ! -e /var/lib/univention-client-boot/preseed/TEMPLATE ]
+	then
+		ln -s /usr/share/doc/univention-net-installer/examples/TEMPLATE /var/lib/univention-client-boot/preseed/
+	fi
+}
 
+restart_listener () {
+	if [ -x /etc/init.d/univention-directory-listener ]; then
+		invoke-rc.d univention-directory-listener crestart
+	fi
+}
+
+. /usr/share/univention-lib/all.sh
+main "$@"
 exit 0

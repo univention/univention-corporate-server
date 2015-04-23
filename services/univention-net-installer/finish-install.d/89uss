@@ -1,9 +1,6 @@
 #!/bin/sh
 #
-# Univention Server Installation
-#  join script
-#
-# Copyright 2004-2015 Univention GmbH
+# Copyright 2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,26 +27,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+TARGET='/target'
+PROFILE="${TARGET}/var/cache/univention-system-setup/profile"
+CRON="${TARGET}/etc/cron.d/univention-net-installer"
+SETUP='/usr/lib/univention-system-setup/scripts/setup-join.sh'
 
-. /usr/share/univention-join/joinscripthelper.lib
-joinscript_init
+mkdir -p "${PROFILE%/*}"
+debconf-dumpdb -p '^uss/' configdb |
+	sed -rne '/ \(null\)$/d;s,^uss/(\S+) \S+ (.+),\1="\2",p' >>"$PROFILE"
+for var in hostname domainname windows/domain ldap/base locale/default
+do
+	grep -F -q "$var=" "$PROFILE" ||
+		echo "$var=\"$(chroot /target ucr get $var)\"" >>"$PROFILE"
+done
 
-eval "$(univention-config-registry shell)"
-
-# create ucs-repository share
-univention-directory-manager container/cn create "$@" --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname || die
-univention-directory-manager shares/share create "$@" --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --option nfs --set name=ucs-repository --set path=/var/lib/univention-repository --set host=$hostname.$domainname || die
-
-# set boot file on default dhcp/boot policy
-old=$(univention-directory-manager policies/dhcp_boot list "$@" --filter cn=default-settings | awk '/^boot_filename: / {print $2}')
-if [ -z "$old" -o "$old" = "None" ]; then
-	univention-directory-manager policies/dhcp_boot modify "$@" --ignore_exists \
-	--dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$ldap_base" \
-	--set boot_filename=pxelinux.0 || die
-fi
-
-joinscript_save_current_version
-
-
-exit 0
+mkdir -p "${CRON%/*}"
+echo "@reboot	root	PATH=/usr/sbin:/usr/bin:/sbin:/bin $SETUP;rm -f '${CRON#$TARGET}'" >"$CRON"

@@ -1,3 +1,9 @@
+[pxe/installer/append]
+Description[de]=Diese Variable überschreibt die Kernel-Parameter bei der PXE-Installation.
+Description[en]=This variable over-writes the parameters for the kernel during PXE installation.
+Type=str
+Categories=system-base
+
 [pxe/installer/quiet]
 Description[de]=Ist diese Option aktiviert, wird bei der PXE-Installation der Kernel-Parameter 'quiet' gesetzt. Dadurch werden viele Bootmeldungen verborgen. Ist die Variable nicht gesetzt, wird 'quiet' nicht gesetzt.
 Description[en]=If this option is activated, the kernel parameter 'quiet' is set during PXE installation. This suppresses many boot messages. If the variable is unset, 'quiet' is not set.
@@ -26,4 +32,16 @@ Categories=system-base
 Description[de]=Der Kernel-Loglevel während der PXE-Installation. Nur Meldungen mit einem Loglevel niedriger in der Variable konfiguriert werden ausgegeben. Gültige Werte reichen von 0 (KERN_EMERG) bis 7 (KERN_DEBUG).
 Description[en]=The kernel loglevel during PXE installation. Only messages with a loglevel lower than the one specified here are printed. Valid values range from 0 (KERN_EMERG) to 7 (KERN_DEBUG).
 Type=int
+Categories=system-base
+
+[pxe/installer/ipappend]
+Description[de]=Diese Variable konfiguriert die IPAPPEND-Option. Weitere Informationen finden sich unter <http://www.syslinux.org/wiki/index.php/SYSLINUX#IPAPPEND_flag_val_.5BPXELINUX_only.5D>.
+Description[en]=This variable configures the IPAPPEND option. Additional information can be found at <http://www.syslinux.org/wiki/index.php/SYSLINUX#IPAPPEND_flag_val_.5BPXELINUX_only.5D>.
+Type=int
+Categories=system-base
+
+[pxe/installer/profiles]
+Description[de]=Basis-URL für die Profile der PXE-Installation, bezüglich der relative URLs aufgelöst werden. Ist die Variable nicht gesetzt, wird <http://FQDN/univention-client-boot/preseed/> verwendet.
+Description[en]=Base URL for profiles of the PXE installation, which is used to resolve relative URLs. This allows to specify relative URLs. If the variable is unset, <http://FQDN/univention-client-boot/preseed/> is used.
+Type=str
 Categories=system-base

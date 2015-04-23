@@ -1,4 +1,2 @@
-usr/lib/univention-directory-listener/system
-usr/lib/univention-install
-var/lib/univention-client-boot
 var/lib/univention-client-boot/pxelinux.cfg
+var/lib/univention-client-boot/preseed

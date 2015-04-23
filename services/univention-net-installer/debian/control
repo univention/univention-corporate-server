@@ -12,6 +12,7 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-tftp,
+ univention-apache,
  univention-config-registry,
  shell-univention-lib
 Description: UCS - automatic profile-based installation services
@@ -25,7 +26,7 @@ Description: UCS - automatic profile-based installation services
 
 Package: univention-net-installer-daemon
 Architecture: all
-Depends: 
+Depends:
  python-univention,
  univention-config,
  ${misc:Depends},
@@ -35,5 +36,23 @@ Description: UCS - automatic profile server installation
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: di-univention-net-installer
+Package-Type: udeb
+Architecture: all
+Section: debian-installer
+Priority: standard
+XB-Installer-Menu-Item: 6750
+Depends: cdebconf-udeb,
+ di-utils,
+ ${misc:Depends},
+Description: UCS - automatic profile-based installation services
+ This package contains the integration of profile-based installation
+ of UCS systems into the Debian installer.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
