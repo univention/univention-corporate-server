@@ -115,7 +115,7 @@ def copy_repository( options ):
 		print 'done.'
 
 	# copy kernel and grub config
-	if options.major_version < 4:
+	if options.version.major < 4:
 		print '  copying kernel and boot configuration ...',
 		boot_dest = os.path.join( _mirror_base, 'boot' )
 		if os.path.isdir( boot_dest ):
@@ -225,8 +225,8 @@ def setup_pxe( options ):
 	if not os.path.exists(pxedir):
 		os.makedirs(pxedir)
 
-	if options.major_version >= 4:
-		installerdir = os.path.join(pxedir, 'installer', '%d.%d-%d' % (options.major_version, options.minor_version, options.patchlevel_version))
+	if options.version.major >= 4:
+		installerdir = os.path.join(pxedir, 'installer', UCS_Version.FULLFORMAT % options.version)
 		if not os.path.exists(installerdir):
 			os.makedirs(installerdir)
 
@@ -284,19 +284,28 @@ if __name__ == '__main__':
 
 		#define repository base path with information from image
 		installfile = os.path.join(options.mount_point, '.univention_install')
-		for line in open(installfile).readlines():
-			if line.startswith('VERSION='):
-				version = line.split('=', 1)[1]
-				options.major_version = int(version.split('.', 1)[0].strip())
-				options.minor_version = int(version.split('.', 1)[1].strip())
-			elif line.startswith('PATCHLEVEL='):
-				options.patchlevel_version = int(line.split('=', 1)[1].strip())
+		for line in open(installfile, 'r'):
+			try:
+				key, value = line.strip().split('=', 1)
+			except ValueError:
+				continue
+			if key == 'VERSION':
+				major_version, minor_version = map(int, value.split('.', 1))
+			elif key == 'PATCHLEVEL':
+				patchlevel_version = int(value)
+		try:
+			options.version = UCS_Version((major_version, minor_version, patchlevel_version))
+		except (NameError, ValueError):
+			print >> sys.stderr, "Error: Failed to parse %s" % (installfile,)
+			sys.exit(1)
 
-		_repo_base = os.path.join(_mirror_base,
-								  'mirror',
-								  '%s.%s' % (options.major_version, options.minor_version),
-								  'maintained',
-								  '%s.%s-0' % (options.major_version, options.minor_version))
+		_repo_base = os.path.join(
+			_mirror_base,
+			'mirror',
+			UCS_Version.FORMAT % options.version,
+			'maintained',
+			UCS_Version.FULLFORMAT % options.version,
+		)
 
 		prepare( options )
 
@@ -309,27 +318,23 @@ if __name__ == '__main__':
 				subprocess.call( [ 'umount', options.mount_point ] )
 
 		# set repository server to local system
-		fqdn = '%s.%s' % ( configRegistry.get( 'hostname' ), configRegistry.get( 'domainname' ) )
-		ucr.handler_set( [ 'repository/online/server=%s' % fqdn ] )
-
+		ucr_set = [
+			'repository/online/server=%(hostname)s.%(domainname)s' % configRegistry,
+			'repository/mirror/version/start?%d.0-0' % options.version.major,
+		]
 		# unset UCR variable marking old repository
 		if 'repository/local/old' in configRegistry:
-			ucr.handler_unset(['repository/local/old'])
+			ucr_set.handler_unset(['repository/local/old'])
+		# set last version contained in repository
+		end = configRegistry.get('repository/mirror/version/end', '').strip()
+		if not end or UCS_Version(end) < options.version:
+			ucr_set.append('repository/mirror/version/end=%s' % options.version)
 
-		# set start version for synchronsation of repository
-		if options.major_version:
-			ucr.handler_set( [ 'repository/mirror/version/start?%s.0-0' % options.major_version ] )
-
-		dvd_version = UCS_Version((options.major_version, options.minor_version, options.patchlevel_version))
-		if not configRegistry.get('repository/mirror/version/end', '').strip() or (UCS_Version(configRegistry.get('repository/mirror/version/end').strip()) < dvd_version):
-			ucr.handler_set(['repository/mirror/version/end=%d.%d-%d' % (options.major_version,
-																		 options.minor_version,
-																		 options.patchlevel_version)])
+		ucr.handler_set(ucr_set)
 
 		# create symbolic link univention-repository
 		try:
-			basepath = configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
-			os.symlink('.', os.path.join(basepath, 'mirror', 'univention-repository'))
+			os.symlink('.', os.path.join(_mirror_base, 'mirror', 'univention-repository'))
 		except OSError, ex:
 			if ex.errno != errno.EEXIST:
 				raise
@@ -367,12 +372,12 @@ if __name__ == '__main__':
 		    --policy-reference "cn=%(hostname)s repository,cn=repository,cn=update,cn=policies,%(ldap/base)s"
 		""" % configRegistry)
 
-		if not options.minor_version == 0:
+		if options.version.minor != 0 or options.verion.patchlevel != 0:
 			print dedent("""
 			An UCS repository must always start with minor version 0, for example
-			with UCS %(major)s.0. Please synchronize the repository from %(major)s.0 to %(major)s.%(minor)s
+			with UCS %(major)s.0-0. Please synchronize the repository from %(major)s.0 to %(major)s.%(minor)s
 			by using the tool univention-repository-update.
-			""" % {'major': options.major_version, 'minor': options.minor_version})
+			""" % {'major': options.version.minor, 'minor': options.version.minor})
 
 	finally:
 		if not univention.updater.tools.updater_lock_release(lock):
