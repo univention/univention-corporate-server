@@ -143,7 +143,7 @@
 		vorgenommen.
 	  </para>
 	  <para>
-		Mail-Domänen werden im UMC-Modul <emphasis>Mail</emphasis>
+		Mail-Domänen werden im UMC-Modul <emphasis>E-Mail</emphasis>
 		mit dem Objekttyp <guimenu>Mail-Domäne</guimenu> verwaltet
 		(siehe auch <xref linkend="central:user-interface"/>).
 	  </para>
@@ -181,8 +181,8 @@
 		  <listitem>
 			<simpara>
 			  E-Mails an <emphasis>alternative E-Mail-Adressen</emphasis> werden
-			  ebenfalls in das Postfach des Benutzers zugestellt werden. Es können beliebig
-			  viele Adressen angegeben werden. Die alternativen E-Mail-Adressen müssen auch
+			  ebenfalls in das Postfach des Benutzers zugestellt. Es können beliebig
+			  viele Adressen angegeben werden. Die alternativen E-Mail-Adressen müssen
 			  nicht eindeutig sein; besitzen zwei Benutzer die gleiche Adresse, erhalten
 			  beide Benutzer alle E-Mails, die an diese Adresse gesandt werden. Der
 			  Domänenanteil der E-Mail-Adresse muss in &ucsUMC; registriert sein (siehe
@@ -203,7 +203,7 @@
 	  </para>
 	  <note>
 		<para>
-		Sobald das Benutzerkonto konfiguriert ist, kann eine Anmeldung am UCS-Mail-Stack (IMAP/SMTP)
+		Sobald das Benutzerkonto konfiguriert ist, kann eine Anmeldung am UCS-Mail-Stack (IMAP/POP3/SMTP)
 		erfolgen. Wurde das Benutzerkonto deaktiviert (oder das Passwort geändert), ist
 		eine Anmeldung am Mail-Stack für eine Dauer von 30min weiterhin möglich. Der Grund hierfür
 		ist der Authentifizierungscache des Mail-Stacks.
@@ -231,7 +231,7 @@
 	  </para>
 
 	  <para>
-		Mail-Domänen werden im UMC-Modul <emphasis>Mail</emphasis>
+		Mail-Domänen werden im UMC-Modul <emphasis>E-Mail</emphasis>
 		mit dem Objekttyp <guimenu>Mailingliste</guimenu> verwaltet
 		(siehe auch <xref linkend="central:user-interface"/>).
 		Unter <guimenu>Name</guimenu> ist ein frei wählbarer Name der Mailingliste
@@ -247,7 +247,7 @@
 	  </para>
 
 	  <para>
-		In der Grundeinstellungen kann jeder Benutzer an die Mailingliste schreiben. Um
+		In der Grundeinstellungen kann jeder an die Mailingliste schreiben. Um
 		Missbrauch zu verhindern, besteht die Möglichkeit den Senderkreis
 		einzuschränken. Dazu muss die &ucsUCRV; <envar>mail/postfix/policy/listfilter</envar> auf
 		dem Mailserver auf <literal>yes</literal> gesetzt und Postfix neu gestartet werden.
@@ -262,14 +262,14 @@
 	<section id="mail::management::mailgroups">
 	  <title>Verwaltung von Mailgruppen</title>
 	  <para>
-		Es besteht die Möglichkeit eine Mailgruppe zu bilden: Dabei wird einer Gruppe
+		Es besteht die Möglichkeit eine Mailgruppe zu bilden: Dabei wird einer Benutzer-Gruppe
 		eine E-Mail-Adresse zugewiesen. E-Mails an diese Adresse werden dann allen
 		Gruppenmitgliedern an ihre primäre E-Mail-Adresse zugestellt.
 	  </para>
 
 	  <para>
 		  Mailgruppen werden im UMC-Modul <emphasis>Gruppen</emphasis> verwaltet
-		  (siehe auch <xref linkend="central:user-interface"/>).
+		  (siehe auch <xref linkend="groups"/>).
 	  </para>
 
 	  <para>
@@ -309,8 +309,7 @@
 		Benutzergruppen freigegeben werden. Ein solcher Ordner wird als globaler
 		IMAP-Ordner bezeichnet.
 		Globale IMAP-Ordner werden im UMC-Modul <emphasis>Mail</emphasis>
-		mit dem Objekttyp <guimenu>Mail-Ordner (IMAP)</guimenu> verwaltet
-		(siehe auch <xref linkend="central:user-interface"/>).
+		mit dem Objekttyp <guimenu>Mail-Ordner (IMAP)</guimenu> verwaltet.
 	  </para>
 
 	  <para>
@@ -533,10 +532,15 @@
 	<para>
 	  Unerwünschte und nicht angeforderte E-Mails werden als Spam bezeichnet. Zur
 	  automatisierten Erkennung solcher E-Mails integriert UCS die Software
-	  SpamAssassin. SpamAssassin versucht anhand von Heuristiken über Herkunft, Form
+	  SpamAssassin und Postgrey. SpamAssassin versucht anhand von Heuristiken über Herkunft, Form
 	  und Inhalt einer E-Mail zu erkennen, ob sie erwünscht ist oder nicht.
-	  Die Integration erfolgt über das Paket <package>univention-spamassassin</package>, das
-	  bei der Einrichtung des Mailserver-Pakets automatisch eingerichtet wird.
+	  Postgrey ist ein Policy Server für Postfix der "Greylisting" implementiert.
+	  Greylisting ist eine Spam-Erkennungsmethode die E-Mail beim ersten Zustellversuch eines
+	  externen Servers ablehnt. Mailserver von Spamversendern unternehmen häufig keinen zweiten
+	  Zustellversuch, während legitime Server dies tun.
+	  Die Integration erfolgt über die Pakete <package>univention-spamassassin</package> und
+	  <package>univention-postgrey</package>, die bei der Einrichtung des Mailserver-Pakets
+	  automatisch eingerichtet werden.
 	</para>
 
 	<para>
@@ -572,7 +576,7 @@
 	  bewerten zu lassen. Dieser vergleicht eine eingehende E-Mail mit statistischen
 	  Daten, die er aus bereits verarbeiteten E-Mails gewonnen hat und kann so seine
 	  Bewertung an die Mailgewohnheiten anpassen. Die Bayes-Klassifizierung wird vom
-	  Benutzer selbst gesteuert, in dem nicht als Spam erkannte E-Mails in den
+	  Benutzer selbst gesteuert, in dem nicht vom System aber vom Benutzer als Spam erkannte E-Mails in den
 	  Unterordner <emphasis>Spam</emphasis> verschoben und eine Auswahl legitimer Mails in den
 	  Unterordner <emphasis>Ham</emphasis> kopiert werden. Diese Ordner werden täglich
 	  ausgewertet und noch nicht erfasste oder bisher falsch klassifizierte Daten in
