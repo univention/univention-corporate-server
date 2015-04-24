@@ -29,5 +29,7 @@
 
 (
 	echo update/secure_apt=no
+	echo repository/online=yes
+	echo repository/online/server=$(debconf-get mirror/http/hostname)
 	debconf-dumpdb -p '^ucr/' configdb | sed -rne '/ \(null\)$/d;s,^ucr/(\S+) \S+ (.+),\1=\2,p'
 ) | chroot /target xargs -d '\n' ucr set

@@ -1,3 +1,9 @@
+univention-net-installer (8.0.1-2) unstable; urgency=low
+
+  * Bug #35537: Enable online repository
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 24 Apr 2015 09:58:27 +0200
+
 univention-net-installer (8.0.1-1) unstable; urgency=low
 
   * Bug #35537: Add UCS-4 support
