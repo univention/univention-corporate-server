@@ -1,3 +1,9 @@
+univention-ssl (9.0.4-4) unstable; urgency=low
+
+  * Bug #38125: Make request non-interactive
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 24 Apr 2015 09:22:45 +0200
+
 univention-ssl (9.0.4-3) unstable; urgency=low
 
   * Bug #36934: Timeout rdate command after 15+5s

@@ -138,6 +138,7 @@ default_md          = ${DEFAULT_MD}
 distinguished_name	= req_distinguished_name
 attributes		= req_attributes
 x509_extensions		= v3_ca
+prompt		= no
 EOF
 
 	if [ -n "$password" ]; then
@@ -154,39 +155,18 @@ req_extensions = v3_req
 
 [ req_distinguished_name ]
 
-countryName			= Country Name (2 letter code)
-countryName_default		= $ssl_country
-countryName_min			= 2
-countryName_max			= 2
-
-stateOrProvinceName		= State or Province Name (full name)
-stateOrProvinceName_default	= $ssl_state
-
-localityName			= Locality Name (eg, city)
-localityName_default		= $ssl_locality
-
-0.organizationName		= Organization Name (eg, company)
-0.organizationName_default	= $ssl_organization
-
-organizationalUnitName		= Organizational Unit Name (eg, section)
-organizationalUnitName_default	= $ssl_organizationalunit
-
-commonName			= Common Name (eg, YOUR name)
-commonName_max			= 64
-commonName_default		= $name
-
-emailAddress			= Email Address
-emailAddress_max		= 60
-emailAddress_default		= $ssl_email
+C	= $ssl_country
+ST	= $ssl_state
+L	= $ssl_locality
+O	= $ssl_organization
+OU	= $ssl_organizationalunit
+CN	= $name
+emailAddress	= $ssl_email
 
 [ req_attributes ]
 
 challengePassword		= A challenge password
-challengePassword_min		= 4
-challengePassword_max		= 20
-
-unstructuredName		= An optional company name
-unstructuredName_default	= Univention GmbH
+unstructuredName	= Univention GmbH
 
 [ ${CA}_ext ]
 
@@ -285,7 +265,7 @@ init () {
 	mk_config openssl.cnf "$PASSWD" "$DEFAULT_DAYS" "$ssl_common"
 
 	openssl genrsa -des3 -passout pass:"$PASSWD" -out "${CA}/private/CAkey.pem" 2048
-	yes '' | openssl req -config openssl.cnf -new -x509 -days "$DEFAULT_DAYS" -key "${CA}/private/CAkey.pem" -out "${CA}/CAcert.pem"
+	openssl req -batch -config openssl.cnf -new -x509 -days "$DEFAULT_DAYS" -key "${CA}/private/CAkey.pem" -out "${CA}/CAcert.pem"
 
 	# copy the public key to a place, from where browsers can access it
 	openssl x509 -in "${CA}/CAcert.pem" -out /var/www/ucs-root-ca.crt
@@ -431,7 +411,7 @@ gencert () {
 	mkdir -pm 700 "$name"
 	mk_config "$name/openssl.cnf" "" "$days" "$cn"
 	openssl genrsa -out "$name/private.key" "$DEFAULT_BITS"
-	yes '' | openssl req -config "$name/openssl.cnf" -new -key "$name/private.key" -out "$name/req.pem"
+	openssl req -batch -config "$name/openssl.cnf" -new -key "$name/private.key" -out "$name/req.pem"
 
 	# get host extension file
 	local hostExt=$(ucr get ssl/host/extensions)
