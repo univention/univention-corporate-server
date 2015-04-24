@@ -1,3 +1,17 @@
+ucs-test (5.0.146-3) unstable; urgency=low
+
+  * 60_umc-system/TestUMCSystemModule.py: extra check when making a
+    file copy (Bug #38192).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 24 Apr 2015 16:31:14 +0200
+
+ucs-test (5.0.146-2) unstable; urgency=low
+
+  * 51_samba4/56evaluate_windows_gpo: sleep after gpo link creation;
+    force_drs on any other gpo creation/modification activities (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 24 Apr 2015 14:14:43 +0200
+
 ucs-test (5.0.146-1) unstable; urgency=low
 
   * 51_samba4/56evaluate_windows_gpo: force_drs_replication after linking

@@ -413,6 +413,9 @@ class TestUMCSystem(object):
         try:
             if os.path.exists(src):
                 shutil.copy2(src, dst)
+                if not os.path.exists(dst):
+                    utils.fail("The 'shutil' did not copy file '%s' to '%s'"
+                               % (src, dst))
             else:
                 utils.fail("Failed to find the file at the provided "
                            "path '%s'" % src)
