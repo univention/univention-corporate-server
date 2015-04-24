@@ -1,3 +1,10 @@
+ucs-test (5.0.146-1) unstable; urgency=low
+
+  * 51_samba4/56evaluate_windows_gpo: force_drs_replication after linking
+    the GPOs (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 24 Apr 2015 12:15:47 +0200
+
 ucs-test (5.0.145-9) unstable; urgency=low
 
   * 51_samba4/58pwdHistoryChange: check that samba domain password history

@@ -19,6 +19,7 @@ import univention.winexe
 import univention.testing.utils as utils
 from univention.testing.codes import TestCodes
 from univention.testing.strings import random_username
+from univention.testing.ucs_samba import force_drs_replication
 from univention.config_registry import ConfigRegistry
 
 
@@ -106,6 +107,7 @@ def link_gpo(gpo_name):
             utils.fail("The linking of the GPO on the Windows host "
                        "returned code '%s' when 0 is expected. "
                        "STDOUT: %s STDERR: %s" % (ret_code, stdout, stderr))
+        force_drs_replication()
     except univention.winexe.WinExeFailed as exc:
         utils.fail("An Error occured while linking a GPO remotely: %r" % exc)
 
