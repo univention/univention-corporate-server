@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-net-installer
-fix: 8.0.1-1.25.201504231304
+fix: 8.0.1-2.26.201504241501
 version: [1]
 desc: |
   This errata update addresses the following issues:
