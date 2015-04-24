@@ -891,6 +891,11 @@ postmap /etc/postfix/smtp_auth
 	  </para>
 
 	  <para>
+		Beim ändern des Mail Home Servers eines Benutzers, werden dessen E-Mails nicht
+		automatisch auf den neuen Server verschoben.
+	  </para>
+
+	  <para>
 		Für die Implementierung eines Mailbox-Clusters, d.h. der Bereitstellung einer
 		einheitlichen Sicht auf verschiedenen IMAP-Server, steht die Erweiterung Cyrus
 		Murder zur Verfügung.
