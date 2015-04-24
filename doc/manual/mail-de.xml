@@ -404,7 +404,7 @@
 				<entry>
 				  <para>
 					Hier können Zugriffsberechtigungen auf Basis von Benutzern oder Gruppen
-					vergeben werden. Benutzer werden mit Ihren primären E-Mail-Adressen
+					vergeben werden. Benutzer werden mit Ihrem Benutzernamen
 					eingetragen, als Gruppen werden die in &ucsUMC; angelegten Gruppen
 					verwendet.
 				  </para>
