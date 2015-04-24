@@ -220,7 +220,7 @@ class TestUMCUserAuthentication(TestUMCSystem):
         self.UDM.remove_object('users/user',
                                dn=self.test_user_dn)
 
-        sleep(50)  # should be changed after Bug #35634 is resolved
+        sleep(90)  # should be changed after Bug #35634 is resolved
         if self.authenticate_to_umc(self.test_username,
                                     self.test_password_unicode):
             utils.fail("Authentication with a removed user account "

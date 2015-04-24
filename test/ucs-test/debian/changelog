@@ -1,3 +1,10 @@
+ucs-test (4.0.215-3) unstable; urgency=low
+
+  * 60_umc-system/31_umc-service-user-authentication: wait longer before
+    trying to autenticate with a 'removed' username (Bug #36901).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 24 Apr 2015 11:03:12 +0200
+
 ucs-test (4.0.215-2) unstable; urgency=low
 
   * 00_base/47faillog_account-smb-krb: skip in S4 envs (Bug #35014).
