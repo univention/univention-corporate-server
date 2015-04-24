@@ -1,3 +1,9 @@
+ucs-test (4.0.215-2) unstable; urgency=low
+
+  * 00_base/47faillog_account-smb-krb: skip in S4 envs (Bug #35014).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 24 Apr 2015 10:49:23 +0200
+
 ucs-test (4.0.215-1) unstable; urgency=low
 
   * 53_samba-common/50quota: also check for 'StringToSid' fail messages (Bug #35844).
