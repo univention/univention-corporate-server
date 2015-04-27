@@ -112,10 +112,15 @@ define([
 			if (evt.keyCode == keys.ENTER) {
 				var selected = this._autoSelect();
 				if (selected || this.state == 'searching' || !this.get('item')) {
-					// ignore key event
+					// stop processing key event
 					dojoEvent.stop(evt);
 					return;
 				}
+			}
+			if (evt.keyCode == keys.TAB) {
+				// when pressing tab key, auto select the first entry from result list
+				// and continue processing event
+				this._autoSelect();
 			}
 			this.inherited(arguments);
 		}
