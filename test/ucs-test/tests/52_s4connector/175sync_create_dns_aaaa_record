@@ -19,7 +19,7 @@ if __name__ == '__main__':
 		ip = dnstests.make_random_ipv6()
 		forward_zone = udm.create_object('dns/forward_zone', zone = random_zone, nameserver = host, a = ip)
 		dnstests.check_ldap_object(forward_zone, 'AAAA Record', 'aAAARecord', ip)
-		s4connector.wait_for_sync()
+		s4connector.wait_for_sync(30)
 		dnstests.test_dns_aaaa_record(random_zone, ip)
 		dnstests.check_ldap_object(forward_zone, 'AAAA Record', 'aAAARecord', ip)
 	s4connector.wait_for_sync()

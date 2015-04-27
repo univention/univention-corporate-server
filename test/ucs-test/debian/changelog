@@ -1,3 +1,16 @@
+ucs-test (5.0.146-4) unstable; urgency=low
+
+  * wait_for_sync=30 secs for the following tests (Bug #38288):
+    52_s4connector/175sync_create_dns_reverse_zone
+    52_s4connector/175sync_create_dns_a_record
+    52_s4connector/175sync_create_dns_serial
+    52_s4connector/175sync_create_dns_aaaa_record
+    52_s4connector/175sync_create_dns_forward_zone
+    52_s4connector/175sync_create_dns_ttl
+    52_s4connector/175sync_create_dns_txt
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 27 Apr 2015 14:34:11 +0200
+
 ucs-test (5.0.146-3) unstable; urgency=low
 
   * 60_umc-system/TestUMCSystemModule.py: extra check when making a

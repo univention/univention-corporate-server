@@ -19,7 +19,7 @@ if __name__ == '__main__':
 		host = dnstests.get_hostname()
 		reverse_zone = udm.create_object('dns/reverse_zone', subnet = revzone, nameserver = host)
 		dnstests.check_ldap_object(reverse_zone, 'Reverse Zone', '', '')
-		s4connector.wait_for_sync()
+		s4connector.wait_for_sync(30)
 		dnstests.test_dns_reverse_zone(revzone, host)
 		dnstests.check_ldap_object(reverse_zone, 'Reverse Zone', '', '')
 	s4connector.wait_for_sync()
