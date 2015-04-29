@@ -7,8 +7,8 @@
 import pycurl
 import StringIO
 import time
-import os
 import univention.testing.utils as utils
+from tempfile import NamedTemporaryFile
 
 
 class SimpleCurl(object):
@@ -30,6 +30,10 @@ class SimpleCurl(object):
 	:type port: int
 	:param auth: authentication type
 	:type auth: int
+	:param cookies:
+	:type cookies:
+	:param user_agent: user agent <=> agent string
+	:type user_agent: string
 	"""
 
 	def __init__(
@@ -43,7 +47,9 @@ class SimpleCurl(object):
 			timeOut=10,
 			port=3128,
 			auth=pycurl.HTTPAUTH_BASIC,
-			cookie=None):
+			cookie=None,
+			user_agent=None,
+			):
 			# Perform basic authentication by default
 		self.curl = pycurl.Curl()
 		self.curl.setopt(pycurl.FOLLOWLOCATION, bFollowLocation)
@@ -52,14 +58,20 @@ class SimpleCurl(object):
 		self.curl.setopt(pycurl.TIMEOUT, timeOut)
 		self.curl.setopt(pycurl.PROXY, proxy)
 		self.curl.setopt(pycurl.PROXYPORT, port)
-		self.curl.setopt(pycurl.PROXYAUTH, auth)
-		account = utils.UCSTestDomainAdminCredentials()
-		username = username if username else account.username
-		password = password if password else account.bindpw
-		self.curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (username, password))
-		self.cookieFilename = os.tempnam()
-		self.curl.setopt(pycurl.COOKIEJAR, self.cookieFilename)
-		self.curl.setopt(pycurl.COOKIEFILE, self.cookieFilename)
+		if auth:
+			self.curl.setopt(pycurl.PROXYAUTH, auth)
+			account = utils.UCSTestDomainAdminCredentials()
+			self.curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (
+				username or account.username,
+				 password or account.bindpw,
+				 )
+			)
+		if user_agent:
+			self.curl.setopt(pycurl.USERAGENT, user_agent)
+
+		self.cookiefile = NamedTemporaryFile()
+		self.curl.setopt(pycurl.COOKIEJAR, self.cookiefile.name)
+		self.curl.setopt(pycurl.COOKIEFILE, self.cookiefile.name)
 
 	def cookies(self):
 		return self.curl.getinfo(pycurl.INFO_COOKIELIST)
@@ -76,7 +88,7 @@ class SimpleCurl(object):
 		:type postData:
 		:returns: html page
 		"""
-		self.curl.setopt(pycurl.URL, str(url))
+		self.curl.setopt(pycurl.URL, url)
 		self.curl.setopt(pycurl.VERBOSE, bVerbose)
 		if postData:
 			self.curl.setopt(pycurl.HTTPPOST, postData)
@@ -87,15 +99,14 @@ class SimpleCurl(object):
 			try:
 				self.curl.perform()
 				break
-			except Exception as e:
-				time.sleep(1)
+			except pycurl.error:
 				print '.'
-				if i == 59:
-					print 'Requested page could not be fetched'
-					raise
-				continue
+				time.sleep(1)
+		else:
+			print 'Requested page could not be fetched'
+			raise
 		page = buf.getvalue()
-		# print page[1:150]
+		# print page[1:400]
 		buf.close()
 		return page
 
@@ -112,15 +123,11 @@ class SimpleCurl(object):
 		:returns: int - HTTP status code
 		"""
 		self.getPage(url)
-		# print page[0:200]
 		return self.httpCode()
 
 	def close(self):
 		"""Close the curl connection"""
 		self.curl.close()
 
-
 	def __del__(self):
 		self.curl.close()
-		if os.path.exists(self.cookieFilename):
-			os.remove(self.cookieFilename)
