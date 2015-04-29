@@ -134,7 +134,7 @@ def do_test(test_case):
 		response = curl.response(url)
 		print "Response = %d" % response
 		if response != expected_response:
-			utils.fail("::::Fail::::\nUnexpected Response: %d != %d" % (response, expected_response))
+			utils.fail("Unexpected Response: %d != %d" % (response, expected_response))
 		else:
 			print ':::: OK ::::'
 	
@@ -142,6 +142,7 @@ def set_ucr_variables(name, permission, acl_type, value_type, value):
 	squid = SimpleSquid()
 	handler_set(['squid/acl/%s/%s/%s/%s=%s' % (name, permission, acl_type, value_type, value),
 				'squid/basicauth=yes'])
+
 	squid.restart()
 
 def main():
@@ -200,15 +201,15 @@ def main():
 		 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		 		do_test([('deny', 200, 'port','number', 443, 21)])
 
+			# Terminating Http server
+			p.join(5)
+			p.terminate()
+			time.sleep(0.5)
+			print 'Http server is terminated...\n%r' % p.is_alive()
+
 	finally:
-		# Terminating Http server and restarting squid
-		p.join(5)
-		p.terminate()
 		squid = SimpleSquid()
 		squid.restart()
-		print 'Http server is terminated...\n%r' % p.is_alive()
 
 if __name__ == '__main__':
-	start_time = time.time()
 	main()
-	print "--- %s seconds ---" % (time.time() - start_time)
