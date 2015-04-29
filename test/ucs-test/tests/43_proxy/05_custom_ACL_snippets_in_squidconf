@@ -192,20 +192,22 @@ def main():
 			print p, p.is_alive()
 			
 			# Test port variable (21, 443, 80)
-		 	with ucr_test.UCSTestConfigRegistry() as ucr:
-		 		do_test([('allow', 200, 'port','number', 21, 21)])
-		 	with ucr_test.UCSTestConfigRegistry() as ucr:
-		 		do_test([('allow', 407, 'port','number', 443, 21)])
-		 	with ucr_test.UCSTestConfigRegistry() as ucr:
-		 		do_test([('deny', 403, 'port','number', 21, 21)])
-		 	with ucr_test.UCSTestConfigRegistry() as ucr:
-		 		do_test([('deny', 200, 'port','number', 443, 21)])
+			try:
+				with ucr_test.UCSTestConfigRegistry() as ucr:
+					do_test([('allow', 200, 'port','number', 21, 21)])
+				with ucr_test.UCSTestConfigRegistry() as ucr:
+					do_test([('allow', 407, 'port','number', 443, 21)])
+				with ucr_test.UCSTestConfigRegistry() as ucr:
+					do_test([('deny', 403, 'port','number', 21, 21)])
+				with ucr_test.UCSTestConfigRegistry() as ucr:
+					do_test([('deny', 200, 'port','number', 443, 21)])
 
-			# Terminating Http server
-			p.join(5)
-			p.terminate()
-			time.sleep(0.5)
-			print 'Http server is terminated...\n%r' % p.is_alive()
+			finally:
+				# Terminating Http server
+				p.join(5)
+				p.terminate()
+				time.sleep(0.5)
+				print 'Http server is terminated...\n%r' % p.is_alive()
 
 	finally:
 		squid = SimpleSquid()
