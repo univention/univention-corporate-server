@@ -575,10 +575,13 @@ class TestCase(object):
 			for fd in rlist or channels.keys():
 				stream, log, name, out, paren, buf = channels[fd]
 
-				data = os.read(fd, 1024)
-				out.write(data)
+				if fd in rlist:
+					data = os.read(fd, 1024)
+					out.write(data)
+					buf += data
+				else:
+					data = None
 
-				buf += data
 				while buf:
 					if data == '':
 						line = buf
@@ -600,7 +603,7 @@ class TestCase(object):
 					del channels[fd]
 					TestCase._attach(result, name, log)
 
-				if buf:
+				if buf and data:
 					timeout = 0.1
 
 		TestCase._attach(result, 'stdout', combined)
