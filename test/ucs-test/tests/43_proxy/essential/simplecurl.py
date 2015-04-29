@@ -30,6 +30,10 @@ class SimpleCurl(object):
 	:type port: int
 	:param auth: authentication type
 	:type auth: int
+	:param cookies:
+	:type cookies:
+	:param user_agent: user agent <=> agent string
+	:type user_agent: string
 	"""
 
 	def __init__(
@@ -43,7 +47,9 @@ class SimpleCurl(object):
 			timeOut=10,
 			port=3128,
 			auth=pycurl.HTTPAUTH_BASIC,
-			cookie=None):
+			cookie=None,
+			user_agent=None,
+			):
 			# Perform basic authentication by default
 		self.curl = pycurl.Curl()
 		self.curl.setopt(pycurl.FOLLOWLOCATION, bFollowLocation)
@@ -52,12 +58,17 @@ class SimpleCurl(object):
 		self.curl.setopt(pycurl.TIMEOUT, timeOut)
 		self.curl.setopt(pycurl.PROXY, proxy)
 		self.curl.setopt(pycurl.PROXYPORT, port)
-		self.curl.setopt(pycurl.PROXYAUTH, auth)
-		account = utils.UCSTestDomainAdminCredentials()
-		self.curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (
-			username or account.username,
-			password or account.bindpw,
-		))
+		if auth:
+			self.curl.setopt(pycurl.PROXYAUTH, auth)
+			account = utils.UCSTestDomainAdminCredentials()
+			self.curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (
+				username or account.username,
+				 password or account.bindpw,
+				 )
+			)
+		if user_agent:
+			self.curl.setopt(pycurl.USERAGENT, user_agent)
+
 		self.cookiefile = NamedTemporaryFile()
 		self.curl.setopt(pycurl.COOKIEJAR, self.cookiefile.name)
 		self.curl.setopt(pycurl.COOKIEFILE, self.cookiefile.name)
@@ -77,7 +88,7 @@ class SimpleCurl(object):
 		:type postData:
 		:returns: html page
 		"""
-		self.curl.setopt(pycurl.URL, str(url))
+		self.curl.setopt(pycurl.URL, url)
 		self.curl.setopt(pycurl.VERBOSE, bVerbose)
 		if postData:
 			self.curl.setopt(pycurl.HTTPPOST, postData)
@@ -95,7 +106,7 @@ class SimpleCurl(object):
 			print 'Requested page could not be fetched'
 			raise
 		page = buf.getvalue()
-		# print page[1:150]
+		# print page[1:400]
 		buf.close()
 		return page
 
@@ -112,7 +123,6 @@ class SimpleCurl(object):
 		:returns: int - HTTP status code
 		"""
 		self.getPage(url)
-		# print page[0:200]
 		return self.httpCode()
 
 	def close(self):
