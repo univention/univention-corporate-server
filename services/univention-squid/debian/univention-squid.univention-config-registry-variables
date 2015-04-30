@@ -153,3 +153,9 @@ Description[de]=Diese Option erlaubt die Konfiguration ob bzw. wie die Client IP
 Description[en]=This options allows to finetune how/if the requesting client IP should be forwarded in the HTTP-Header X-Forwarded-For.
 Type=str
 Categories=service-webproxy
+
+[squid/acl/.*]
+Description[de]=Diese Variable definiert eine benutzerdefinierte Regel für den Proxy-Zugriff, z.B. anhand von User-Agent, Port oder Ziel-Domäne. Sie wird vorrangig gegenüber normalen Regeln ausgewertet.
+Description[en]=This variable defines a user-defined rule for proxy access, e.g. via user-agent, port, or destination domain. This is evaluated with precedence over the normal rules.
+Type=str
+Categories=service-webproxy

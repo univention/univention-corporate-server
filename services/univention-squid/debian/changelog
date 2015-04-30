@@ -1,8 +1,8 @@
-univention-squid (8.0.2-4) unstable; urgency=medium
+univention-squid (8.0.2-5) unstable; urgency=medium
 
   * Bug #37543: Add UCRV for custom squid.conf-ACLs
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 09 Apr 2015 14:43:14 +0200
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 30 Apr 2015 14:34:35 +0200
 
 univention-squid (8.0.2-3) unstable; urgency=low
 
