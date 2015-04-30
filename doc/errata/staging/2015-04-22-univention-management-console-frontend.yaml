@@ -6,6 +6,6 @@ fix: 4.1.106-60.1044.201504231500
 version: [1]
 desc: |
   This update addresses the following issue:
-  * The Univention management console web server and the upload widgets now can 
-    handle uploading of several files at once and are capable of Drag & Drop.
+  * The Univention management console web server and the upload widgets can now
+    handle uploading several files at once and are capable of drag and drop.
 bug: [38276]
