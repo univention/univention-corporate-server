@@ -1,3 +1,10 @@
+univention-quota (8.0.6-16) unstable; urgency=medium
+
+  * Move the creation of /var/cache/univention-quota to the preinst
+    (Bug #36989)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 04 May 2015 16:33:22 +0200
+
 univention-quota (8.0.6-15) unstable; urgency=medium
 
   * Don't try to remove the todo directory (Bug #36989)

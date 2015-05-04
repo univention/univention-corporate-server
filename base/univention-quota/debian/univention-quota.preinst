@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Univention Quota
-#  postinst script for the debian package
+#  preinst script for the debian package
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,21 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/share/univention-lib/all.sh
-
 #DEBHELPER#
 
-eval "$(univention-config-registry shell)"
-
-univention-config-registry set samba/quota/command?'/usr/sbin/univention-setquota'
-
-if [ ! `echo $kernel_modules | grep quota_v2` ]; then
-	univention-config-registry set kernel/modules="$kernel_modules;quota_v2"
-fi
-
-call_joinscript 71univention-quota.inst
-
-test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener restart
-
+mkdir -p /var/cache/univention-quota/todo && chmod 750 /var/cache/univention-quota
 
 exit 0
+
