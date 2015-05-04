@@ -1,3 +1,10 @@
+ucs-test (5.0.148-2) unstable; urgency=low
+
+  * 66_udm-computers/02_all_roles_creation_with_all_attributes: use random
+    IP and MAC addresses (Bug #38212).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 04 May 2015 16:33:40 +0200
+
 ucs-test (5.0.148-1) unstable; urgency=low
 
   * 52_s4connector/dnstests.py: perform up to 10 dig attempts (Bug #38288).

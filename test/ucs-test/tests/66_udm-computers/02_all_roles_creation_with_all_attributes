@@ -14,6 +14,7 @@ import univention.testing.strings as uts
 import univention.testing.utils as utils
 import univention.config_registry as configRegistry
 import atexit
+from random import choice
 
 
 if __name__ == '__main__':
@@ -25,7 +26,8 @@ if __name__ == '__main__':
 		atexit.register(utils.start_s4connector)
 		utils.stop_s4connector()
 
-
+	available_ip_nums = range(1, 10)  # will be used for IP endings
+	available_mac_nums = range(11, 99)  # will be used for MAC endings
 	
 	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
 		if role == 'computers/macos':
@@ -33,12 +35,18 @@ if __name__ == '__main__':
 		with udm_test.UCSTestUDM() as udm:
 			dhcpZone = udm.create_object('dhcp/service', service = uts.random_name())
 			
+			# get random, but unique IP and MAC endings Bug #38212:
+			rand_ip = choice(available_ip_nums)
+			available_ip_nums.remove(rand_ip)  # so it won't be used again
+			rand_mac = choice(available_mac_nums)
+			available_mac_nums.remove(rand_mac)  # so it won't be used again
+			
 			properties = {
 				'name': uts.random_name(),
 				'description': uts.random_string(),
-				'mac': '01:23:45:67:89:ab',
+				'mac': '01:23:45:67:89:%s' % rand_mac,
 				'network': udm.create_object('networks/network', name = uts.random_name(), network = '10.20.30.0', netmask = '24'),
-				'ip': '10.20.30.2',
+				'ip': '10.20.30.%s' % rand_ip,
 				'dnsEntryZoneForward': udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string()),
 				'dnsEntryZoneReverse': udm.create_object('dns/reverse_zone', subnet = '10.20.30', nameserver = uts.random_string()),
 				'inventoryNumber': uts.random_string(),
@@ -108,8 +116,8 @@ if __name__ == '__main__':
 			})
 			
 			# validate related PTR record
-			utils.verify_ldap_object('relativeDomainName=2,%s' % properties['dnsEntryZoneReverse'], {
-				'relativeDomainName': '2',
+			utils.verify_ldap_object('relativeDomainName=%s,%s' % (rand_ip, properties['dnsEntryZoneReverse']), {
+				'relativeDomainName': str(rand_ip),
 				'pTRRecord': ['%s.%s.' % (properties['name'], properties['dnsEntryZoneForward'].split('zoneName=')[1].split(',')[0])],
 				'zoneName': [properties['dnsEntryZoneReverse'].split('zoneName=')[1].split(',')[0]]
 			})
