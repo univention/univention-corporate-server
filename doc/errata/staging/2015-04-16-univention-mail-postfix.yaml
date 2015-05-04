@@ -3,7 +3,7 @@ release: "4.0"
 version: [1]
 scope: ucs_4.0-0-errata4.0-1
 src: univention-mail-postfix
-fix: 9.0.0-21.243.201504161201
+fix: 9.0.0-22.244.201505041938
 desc: |
   Improve Postfix configuration:
   * Allow Postfix to receive client mails on submission port 587.
@@ -15,4 +15,8 @@ desc: |
   fresh installs, except for receiving mails. Adds UCR variables
   mail/postfix/smtpd/tls/*protocols and mail/postfix/tls/client/*protocols
   (thanks to Lutz Willek).
-bug: [30043,38043,38044]
+  * Add options to check IP-FQDN-mapping to fight spam. Adds UCR variables
+  mail/postfix/smtpd/restrictions/sender/require_reverse_dns and
+  mail/postfix/smtpd/restrictions/sender/require_forward-confirmed_reverse_dns
+  for weaker and stricter rDNS checking respectively.
+bug: [30043,38043,38044,38292]
