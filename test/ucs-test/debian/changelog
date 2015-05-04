@@ -1,3 +1,9 @@
+ucs-test (4.0.215-4) unstable; urgency=low
+
+  * 52_s4connector/dnstests.py: perform up to 10 dig attempts (Bug #38288).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 04 May 2015 14:50:52 +0200
+
 ucs-test (4.0.215-3) unstable; urgency=low
 
   * 60_umc-system/31_umc-service-user-authentication: wait longer before
