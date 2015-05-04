@@ -60,7 +60,7 @@ def perform_test(test_case):
 				(permission, expected_response, acl_type, value_type, used_value, value)
 				)
 
-		used_value = "%s%s%s" % (value[0:2], uts.random_string(1), value[2:])
+		used_value = "%s%s%s" % (value[0:2], uts.random_string(3), value[2:5])
 		if "dstdomain" in acl_type:
 			used_value = "http://updates.software-univention.de/"
 		sub_case.append(
