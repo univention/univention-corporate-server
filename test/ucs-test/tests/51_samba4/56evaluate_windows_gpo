@@ -88,6 +88,7 @@ def create_gpo(gpo_name, gpo_comment):
             utils.fail("The creation of the GPO on the Windows host returned "
                        "code '%s' when 0 is expected. STDOUT: %s STDERR: "
                        "%s" % (ret_code, stdout, stderr))
+        force_drs_replication()
     except univention.winexe.WinExeFailed as exc:
         utils.fail("An Error occured while creating GPO remotely: %r" % exc)
 
@@ -107,7 +108,7 @@ def link_gpo(gpo_name):
             utils.fail("The linking of the GPO on the Windows host "
                        "returned code '%s' when 0 is expected. "
                        "STDOUT: %s STDERR: %s" % (ret_code, stdout, stderr))
-        force_drs_replication()
+        sleep(30)  # seems like force_drs does not help here
     except univention.winexe.WinExeFailed as exc:
         utils.fail("An Error occured while linking a GPO remotely: %r" % exc)
 
@@ -131,6 +132,7 @@ def set_gpo_readonly(gpo_name, target_name, target_type, replace):
                        "Windows host has returned code '%s' when 0 is "
                        "expected. STDOUT: %s STDERR: %s"
                        % (ret_code, stdout, stderr))
+        force_drs_replication()
     except univention.winexe.WinExeFailed as exc:
         utils.fail("An Error occured while changing GPO permission level "
                    "remotely: %r" % exc)
@@ -153,6 +155,7 @@ def apply_gpo(gpo_name, target_name, target_type):
             utils.fail("The application of the GPO on the Windows host "
                        "returned code '%s' when 0 is expected. "
                        "STDOUT: %s STDERR: %s" % (ret_code, stdout, stderr))
+        force_drs_replication()
     except univention.winexe.WinExeFailed as exc:
         utils.fail("An Error occured while applying GPO remotely: %r" % exc)
 
@@ -189,6 +192,7 @@ def set_gpo_registry_value(gpo_name, reg_key, value_name, value, value_type):
             utils.fail("The modification of the GPO on the Windows host "
                        "returned code '%s' when 0 is expected. "
                        "STDOUT: %s STDERR: %s" % (ret_code, stdout, stderr))
+        force_drs_replication()
     except univention.winexe.WinExeFailed as exc:
         utils.fail("An Error occured while modifying GPO remotely: %r" % exc)
 
@@ -472,7 +476,6 @@ if __name__ == '__main__':
 
         # case 1: checks with user GPO
         create_gpo(test_user_gpo, "GPO for %s User" % test_username)
-        sleep(5)
         check_gpo_exists(test_user_gpo)
         apply_gpo(test_user_gpo, test_username, 'User')
 
@@ -497,7 +500,6 @@ if __name__ == '__main__':
 
         # case 2: checks with computer GPO
         create_gpo(test_machine_gpo, "GPO for %s Windows host" % windows_hostname)
-        sleep(5)
         check_gpo_exists(test_machine_gpo)
         apply_gpo(test_machine_gpo, windows_hostname, 'Computer')
 
