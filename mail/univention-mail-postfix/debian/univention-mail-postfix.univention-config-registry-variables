@@ -167,6 +167,18 @@ Description[en]=Variables in the format mail/postfix/submission/restrictions/rec
 Type=str
 Categories=service-mail
 
+[mail/postfix/smtpd/restrictions/sender/require_reverse_dns]
+Description[de]=Dies schaltet die Postfix Empfangsbeschränkung "reject_unknown_reverse_client_hostname" ein (siehe auch <http://www.postfix.org/postconf.5.html#reject_unknown_reverse_client_hostname>). E-Mails werden abgelehnt, wenn die SMTP Client-IP nicht per DNS zu einem FQDN aufgelöst werden kann. Dies ist eine schwächere Beschränkung als die in mail/postfix/smtpd/restrictions/sender/require_forward-confirmed_reverse_dns, welche nicht nur diese Prüfung macht (Client-IP->FQDN), sondern auch FQDN->IP prüft und diese IP muss dann mit der des Clients übereinstimmen.
+Description[en]=This enables the Postfix restriction "reject_unknown_reverse_client_hostname" (see also <http://www.postfix.org/postconf.5.html#reject_unknown_reverse_client_hostname>): Reject the request when the client IP address has no address->name mapping. This is a weaker restriction than mail/postfix/smtpd/restrictions/sender/require_forward-confirmed_reverse_dns, which requires not only that the address->name and name->address mappings exist, but also that the two mappings reproduce the client IP address.
+Type=bool
+Categories=service-mail
+
+[mail/postfix/smtpd/restrictions/sender/require_forward-confirmed_reverse_dns]
+Description[de]=Dies schaltet die Postfix Empfangsbeschränkung "reject_unknown_client_hostname" ein (siehe auch <http://www.postfix.org/postconf.5.html#reject_unknown_client_hostname>). E-Mails werden abgelehnt, wenn eine von drei Prüfungen fehl schlägt: 1) die SMTP Client-IP kann nicht per DNS zu einem FQDN aufgelöst werden, 2) der FQDN kann nicht zu einer IP aufgelöst werden oder 3) die IP aus 2) stimmt nicht mit der Client-IP überein. Dies ist eine striktere Beschränkung als die in mail/postfix/smtpd/restrictions/sender/require_reverse_dns, welche nur 1) überprüft.
+Description[en]=This enables the Postfix restriction "reject_unknown_client_hostname" (see also <http://www.postfix.org/postconf.5.html#reject_unknown_client_hostname>). Mail will be rejected if any of three checks fail: 1) the client IP address->name mapping fails, 2) the name->address mapping fails, or 3) the name->address mapping does not match the client IP address. This is a stronger restriction than mail/postfix/smtpd/restrictions/sender/require_reverse_dns, which triggers only under condition 1).
+Type=bool
+Categories=service-mail
+
 [mail/postfix/smtp/hostlookup]
 Description[de]=Die Mechanismen, die Postfix verwendet, um die IP-Adresse eines Rechners aufzulösen: 'dns', 'native' (Auflösung über nsswitch.conf) oder 'dns,native' (erst DNS, dann Fallback auf Methoden aus nsswitch.conf).
 Description[en]=The mechanisms used by Postfix to look up a host's IP address: 'dns', 'native' (resolution via nsswitch.conf' or 'dns,native' (first DNS and fallback to nsswich.conf).
