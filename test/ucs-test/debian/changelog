@@ -1,3 +1,9 @@
+ucs-test (5.0.148-1) unstable; urgency=low
+
+  * 52_s4connector/dnstests.py: perform up to 10 dig attempts (Bug #38288).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 04 May 2015 12:34:09 +0200
+
 ucs-test (5.0.147-1) unstable; urgency=low
 
   * Bug #31912: Fix merged stdout and stderr reading
