@@ -27,6 +27,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 . /usr/share/debconf/confmodule
-
-db_get mirror/http/hostname
-[ -n "$RET" ]
+db_get preseed/url && [ -n "$RET" ] && exit 0
+exit 1
