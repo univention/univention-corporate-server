@@ -380,8 +380,8 @@ def main():
 		if options.version.minor != 0 or options.version.patchlevel != 0:
 			print dedent("""
 			An UCS repository must always start with minor version 0, for example
-			with UCS %(major)s.0-0. Please synchronize the repository from %(major)s.0 to %(major)s.%(minor)s
-			by using the tool univention-repository-update.
+			with UCS %(major)s.0-0. Please synchronize the repository
+			by using the tool 'univention-repository-update'.
 			""" % {'major': options.version.major, 'minor': options.version.minor})
 
 	finally:
