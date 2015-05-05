@@ -44,7 +44,7 @@ class RoleScript(AptScript):
 	def inner_run(self):
 		# preparation install autoremove
 		self.steps(3 * 100)
-		self.message(_('Preparing package lists (this may take a moment)...'))
+		self.message(_('Preparing package lists...'))
 
 		if not self.wanted_server_role or self.wanted_server_role == self.current_server_role:
 			# nothing to do
@@ -58,11 +58,11 @@ class RoleScript(AptScript):
 				basename = os.path.basename(filename)
 				os.link(filename, os.path.join('/var/cache/apt/archives/', basename))
 			except OSError as e:
-				self.logger.error('Error while creating hardlink to /var/cache/univention-system-setup/packages: %s' % e)
+				print 'Error while creating hardlink to /var/cache/univention-system-setup/packages: %s' % e
 				try:
 					shutil.copy(filename, '/var/cache/apt/archives/')
 				except OSError as e:
-					self.logger.error('Error while copying package to /var/cache/apt/archives: %s' % e)
+					print 'Error while copying package to /var/cache/apt/archives: %s' % e
 		self.reopen_cache()
 
 		current_server_role_package = self.get_package_for_role(self.current_server_role) if self.current_server_role else None

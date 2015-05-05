@@ -1,3 +1,9 @@
+univention-system-setup (8.1.66-39) unstable; urgency=low
+
+  * Bug #38393: Print error, because no logger is available
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 05 May 2015 17:07:25 +0200
+
 univention-system-setup (8.1.66-38) unstable; urgency=low
 
   * Bug #38332: Run cleanup.py script instead of run-parts to execute

@@ -120,8 +120,8 @@ msgid "Configuring server role"
 msgstr "Einrichten der Systemrolle"
 
 #: usr/lib/univention-system-setup/scripts/05_role/10role:46
-msgid "Preparing package lists (this may take a moment)..."
-msgstr "Vorbereiten der Paketlisten (das kann einen Moment dauern)..."
+msgid "Preparing package lists..."
+msgstr "Vorbereiten der Paketlisten..."
 
 #: usr/lib/univention-system-setup/scripts/30_net/10interfaces:47
 msgid "Configuring IPvX network interfaces"
