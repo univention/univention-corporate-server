@@ -300,10 +300,8 @@ fi
 /usr/share/univention-updater/enable-apache2-umc --no-restart
 
 if [ "$runcleanup" = true ]; then
-	echo "=== Running cleanup-pre scripts $(date --rfc-3339=seconds)"
-	run-parts -v /usr/lib/univention-system-setup/cleanup-pre.d
-	echo "=== Running cleanup-post scripts $(date --rfc-3339=seconds)"
-	run-parts -v /usr/lib/univention-system-setup/cleanup-post.d
+	echo "=== Running cleanup scripts $(date --rfc-3339=seconds)"
+	/usr/lib/univention-system-setup/scripts/cleanup.py
 else
 	echo "== Cleanup scripts will not be run now, option --do_not_run_cleanup was given $(date --rfc-3339=seconds)"
 fi

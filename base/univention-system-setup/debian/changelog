@@ -1,3 +1,10 @@
+univention-system-setup (8.1.66-38) unstable; urgency=low
+
+  * Bug #38332: Run cleanup.py script instead of run-parts to execute
+    cleanup scripts
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 05 May 2015 16:49:08 +0200
+
 univention-system-setup (8.1.66-37) unstable; urgency=low
 
   * Bug #38332: Cleanup scripts will now be executed if setup-join.sh is
