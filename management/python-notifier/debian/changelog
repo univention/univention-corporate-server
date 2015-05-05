@@ -1,4 +1,4 @@
-python-notifier (0.9.7-1-univention2) unstable; urgency=medium
+python-notifier (0.9.7-1) unstable; urgency=medium
 
   * Bug #37457: fix FTBFS
 
