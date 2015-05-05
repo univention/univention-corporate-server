@@ -441,11 +441,11 @@ msgstr ""
 #: umc/js/adconnector/ConfigPage.js:207 umc/js/adconnector/ConfigPage.js:213
 msgid ""
 "The necessary steps depend on the actual Microsoft Windows version and are "
-"described in the <a href=\"http://docs.univention.de/manual-3.2.html#ad-"
+"described in the <a href=\"http://docs.univention.de/manual-4.0.html#ad-"
 "connector:ad-zertifikat\" target=\"_blank\">UCS manual</a>."
 msgstr ""
 "Die notwendigen Schritte sind abhängig von der eingesetzten Windows-Version "
-"und sind in der <a href=\"http://docs.univention.de/handbuch-3.2.html#ad-"
+"und sind in der <a href=\"http://docs.univention.de/handbuch-4.0.html#ad-"
 "connector:ad-zertifikat\" target=\"_blank\">UCS Dokumentation</a> "
 "beispielhaft beschrieben."
 
