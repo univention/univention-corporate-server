@@ -44,9 +44,13 @@ Package-Type: udeb
 Architecture: all
 Section: debian-installer
 Priority: standard
-XB-Installer-Menu-Item: 6750
+XB-Installer-Menu-Item: 7650
 Depends: cdebconf-udeb,
+ kernel-installer,
  di-utils,
+ installed-base,
+ created-fstab,
+ bootable-system,
  ${misc:Depends},
 Description: UCS - automatic profile-based installation services
  This package contains the integration of profile-based installation

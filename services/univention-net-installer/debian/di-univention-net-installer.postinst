@@ -29,7 +29,6 @@
 
 TARGET='/target'
 PROFILE="${TARGET}/var/cache/univention-system-setup/profile"
-CRON="${TARGET}/etc/cron.d/univention-net-installer"
 SETUP='/usr/lib/univention-system-setup/scripts/setup-join.sh'
 
 mkdir -p "${PROFILE%/*}"
@@ -41,5 +40,6 @@ do
 		echo "$var=\"$(chroot /target ucr get $var)\"" >>"$PROFILE"
 done
 
-mkdir -p "${CRON%/*}"
-echo "@reboot	root	PATH=/usr/sbin:/usr/bin:/sbin:/bin $SETUP;rm -f '${CRON#$TARGET}'" >"$CRON"
+in-target "$SETUP"
+
+exit 0

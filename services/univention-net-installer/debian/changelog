@@ -1,6 +1,7 @@
 univention-net-installer (8.0.1-4) unstable; urgency=low
 
   * Bug #35537: Update to python2.7
+  * Move setup-join call to Debian Installer postinst.
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 05 May 2015 17:26:10 +0200
 
