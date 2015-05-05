@@ -42,7 +42,6 @@ usr/share/pyshared/notifier:
 
 usr/share/doc/python-notifier:
 	mkdir -p usr/share/doc/python-notifier
-	cp -r python-notifier/examples usr/share/doc/python-notifier/
 	gzip -c python-notifier/ChangeLog > usr/share/doc/python-notifier/changelog.gz
 
 repack:
