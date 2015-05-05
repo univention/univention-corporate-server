@@ -1,3 +1,9 @@
+ucs-test (5.0.148-3) unstable; urgency=low
+
+  * 52_s4connector/400check_windows_sid: disabled (Bug #37572 #36570).
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 05 May 2015 11:20:22 +0200
+
 ucs-test (5.0.148-2) unstable; urgency=low
 
   * 66_udm-computers/02_all_roles_creation_with_all_attributes: use random
