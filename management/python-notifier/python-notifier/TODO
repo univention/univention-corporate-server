@@ -1,0 +1,20 @@
+* restrict handling of callback return values for sockets:
+  if the callback function returns False/None the callback is removed
+  generic DONE
+  gtk	  DONE
+  qt	  DONE
+  wx	  TBD (deprecated)
+* add support for write notification
+  generic DONE
+  gtk	  DONE
+  qt	  TBD
+  wx	  TBD (deprecated)
+* dispatcher support
+  generic DONE
+  gtk	  DONE
+  qt	  TBD
+  wx	  TBD (deprecated)
+
+for 0.9.0
+---------
+* check popen: retrieving output of child is not stable (tested with 0.6.1)

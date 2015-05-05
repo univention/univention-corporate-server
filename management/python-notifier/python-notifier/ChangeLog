@@ -1,0 +1,762 @@
+2014-07-03  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* examples/test-twisted.py: demonstrate usage of dispatcher and
+	one-shot timer
+
+	* notifier/nf_twisted.py (step): if dispatcher are registered
+	minimum timer is set for timeout
+
+	* notifier/version.py: set version to 0.9.6
+
+	* apply patch from Jascha Geerds <geerds@univention.de>: Fix an
+	erroneous handling with command output. In certain cases this
+	could lead to the loss of some output data.
+
+	* apply patches from Philipp Hahn <hahn@univention.de>: some
+	little cleanup which I collected while debugging a UMC-UVMM
+	problem
+
+	* apply patches from SpaceOne <space@wechall.net>: code cleanup;
+	remove unneeded globals; fix check for None (== None → is None)
+	fix stopping of loop when timer returns falsy value
+	fix typo in example script
+	
+2012-03-31  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.9.5
+
+	* examples/test-qt-cli.py: add new test for the QT notifier without a GUI
+
+	* examples/test-qt.py: cleanup QT test
+
+	* examples/threads3.py: add new thread example demonstrating the decorator
+
+	* notifier/nf_qt.py (socket_add, socket_remove): add support for
+	write and exception notifications
+	(socket_add): ensure that sockets do not get registered more than
+	once for the same condition
+
+	* examples/log.py: extend/update example for logging API
+
+	* notifier/log.py (open): add function to (re)open the default
+	handlers for logging or optionally open custom handlers
+
+2012-03-23  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.9.4
+
+	* notifier/threads.py: fixed typo in import
+
+2012-03-23  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/threads.py (Enhanced): new thread cass supporting thread-safe signals
+	(threaded): a decorator that simplifies running a function as a thread
+
+	* notifier/nf_generic.py (step): if there are no timers and socket
+	events the loop sleeps for dispatch.MIN_TIMER that was passed to
+	time.sleep without dividing by 1000. That caused a sleep for 1
+	minute and 40 seconds instead of 100 milliseconds.
+
+2011-10-23  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.9.3
+
+	* notifier/threads.py: add additional property exc_info to Simple
+	containing all data from sys.exc_info()
+
+2011-08-21  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.9.2
+
+	* notifier/threads.py: if an exception has occurred during thread
+	processing the traceback is saved additonally to the exception
+	object
+
+	* notifier/threads.py: add documentation
+
+2011-08-09  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.9.1
+
+	* notifier/threads.py: catch all exception raised from the thread
+	main method
+
+2011-06-20  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.9.0
+
+	* notifier/nf_generic.py: increase maximum recursive depth to 10;
+	if it is reached an NotifierException is raised; the default log
+	level is set to CRITICAL; add new option'catch_select_errors. If
+	set to True errors during the system call poll will be catch,
+	logged and ignored; made some minor fixes in the documentation
+
+	* notifier/dispatch.py: add documentation
+
+	* notifier/nf_wx.py: removed it; has been marked as deprecated in 0.8.x
+
+2010-08-19  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.8.6
+
+	* notifier/popen.py: Process: before the command is split using
+	shlex.split it must be converted to a string because unicode strings
+	are not supported by this method
+
+2010-07-27  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.8.5
+
+	* notifier/popen.py: when using Shell the command must not be
+	splitted but passed as a string to the subprocess module
+
+2010-06-15  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.8.4
+
+	* notifier/nf_generic.py (socket_remove): do not try to
+	re-register an already closed socket
+
+2010-06-14  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.8.3
+
+	* notifier/nf_generic.py (step): remove socket if poll returned
+	state POLLNVAL
+
+	* notifier/popen.py (Process.dead): check if output object is not
+	None before flushing the buffer
+
+	* notifier/*.py: update copyright
+
+2010-06-04  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.8.2
+
+	* notifier/popen.py (Shell): fixed a typo
+
+	* notifier/nf_generic.py (socket_remove): if file descriptor is
+	already closed try to find it in the list of watched sockets by
+	identifying the socket object
+
+2010-03-10  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.8.1
+
+2010-03-07  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/popen.py (IO_Handler._handle_input): ensure that all
+	output is send to the calling instance; fixed line caching
+
+2009-07-21  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.8.0
+
+	* notifier/nf_generic.py (step): applied some suggested
+	optimisations for the timer code by Jason Tackaberry
+	<tack@urandom.ca>; adapted to the new poll code
+
+2009-03-01  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/nf_generic.py (step): applied a patch from Jason
+	Tackaberry <tack@urandom.ca>: fixes a race condition when timers
+	are added or removed in signal handlers and omit an unnecessary
+	copy
+
+2008-09-26  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.7.0
+
+	* examples/process.py: update test
+
+	* notifier/popen.py: replace popen module with subprocess
+
+2008-02-02  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/nf_twisted.py: updated notifier implementation using
+	Twisted; provided by Rob Shortt <rob@tvcentric.com>
+
+2008-01-07  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* examples/test-twisted.py: add simple test program for the
+	twisted notifer
+
+	* notifier/nf_twisted.py: add notifier implementation using
+	Twisted; provided by Rob Shortt <rob@tvcentric.com>
+
+2007-12-07  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/nf_generic.py (step): applied patch from Dirk "Dischi"
+	Meyer <dischi@freevo.org> to avoid crash on closed sockets
+
+2007-12-02  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/nf_generic.py (step): cleanup exception handling;
+	change order of code segments: calculate next timeout, select,
+	handler timer, handle sockets (suggested by Dirk "Dischi" Meyer
+	<dischi@freevo.org>
+
+2007-11-29  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/nf_generic.py (step): removed some unnecessary
+	try-except blocks; handle EINTR error code returned by select and
+	ignore it
+
+2007-05-28  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.6.0
+
+	* notifier/popen.py (RunIt._finished): fixed typo and support
+	monitoring of stderr only
+
+	* examples/test-qt.py: updated example and do more testing
+
+	* notifier/nf_gtk.py (dispatcher_add, dispatcher_remove): support
+	dispatchers with GTK+ notifier using the 'idle' functions
+
+	* notifier/nf_qt.py (step, loop): implement these functions using
+	processEvents; use generic dispatcher implementation as Qt does not have one
+	(_exit): this function override QApplication.(quit|exit) to
+	support interruption
+
+2007-05-19  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/dispatch.py (dispatcher_run),
+	notifier/nf_generic.py (step): applied a patch from Jason
+	Tackaberry <tack@urandom.ca> that fixes two bugs: 1. If a
+	dispatcher was added (that needed min timeout) and there are no
+	timers, the dispatcher would never get called.  This is because
+	timeout would be None, and 100 < None is false.  2. If a
+	dispatcher callback returned non-True it would get removed, but
+	__min_timer would not be updated.
+
+2007-05-17  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/dispatch.py (dispatcher_add, dispatcher_remove):
+	support for adding dispatcher function that do not require a
+	minimal timeout; the return value indicates if the minimal timeout
+	is required (MIN_TIMER) or nor (None)
+
+	* notifier/nf_generic.py (step): just recalculate timeout in
+	seconds if timeout is not None
+
+2007-05-12  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/nf_generic.py (dispatcher_remove),
+	notifier/dispatch.py (dispatcher_count, step): when there is no
+	dispatcher function, there is need to wake up early; based on a
+	patch by Jason Tackaberry <tack@urandom.ca>
+
+2007-02-21  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.5.8
+
+2007-01-10  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/nf_wx.py (UDPSocketEvent): fixed indentation
+
+2006-11-20  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.5.7
+
+	* notifier/*.py: tabified sources
+
+	* notifier/nf_generic.py (step): wrap step in try-except block to
+	catch KeyboardInterrupt and SystemExit exceptions globally
+
+2006-09-12  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.5.6
+
+	* notifier/popen.py (Shell.__init__): if given command is of type
+	str or unicode just append to the command list otherwise join list
+	with spaces to a string and append it; previous version did not
+	check for unicode strings
+
+2006-09-11  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.5.5
+
+	* examples/process3.py: new example demonstrating the new
+	popen.Shell class
+
+	* notifier/popen.py (Process.__init__): decleare member variables
+	child and pid
+	(Process.start): if neither stdout nor stderr should be captured
+	the process is started with spawnvp instead of popen
+	(RunIt.__init__): add support for monitoring stderr and renamed
+	argument for monitoring stdout from buffer to stdout
+	(Shell.__init__): new class for starting processes using the
+	/bin/sh shell
+
+2006-08-14  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.5.4
+
+	* notifier/signals.py (exists, Provider.signal_exists): add method
+	to check the existance of a signal
+
+	* notifier/popen.py (RunIt.__init__): add boolean option buffer
+	which is by default True. In that case stdout of the child process
+	is buffered and otherwise not
+
+	* notifier/popen.py (Process.__init__): add two boolean options
+	stdout and stderr to deactivate the monitoring of the
+	corresponding file descriptor
+
+2006-08-13  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.5.3
+
+	* examples/process2.py: add example demonstrating popen.RunIt
+
+	* notifier/popen.py (RunIt): new class providing a very simple
+	interface for running processes and collecting the output
+
+	* notifier/popen.py (Process.start): return process ID of child
+	process
+	(Process._normalize_cmd): replace command line parser code with
+	shlex.split
+	(Process.__init__): removed self.read_stdout and self.read_stderr
+	used by the callback technique that was an alternative to the
+	signals
+	(_processes, _watcher): add a global processes that is used bei a
+	dispatcher function to monitor the processes
+	(Process._closed): check if process is already dead and buried
+
+2006-08-10  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.5.2
+
+	* examples/process.py: extend example to demonstrate blocking
+	technique
+
+	* notifier/nf_generic.py (_init): add implementation specific init
+	function and an option recursive_depth to define max recursive
+	depth
+
+	* notifier/popen.py: fixed indentation and a few minor bugs
+
+2006-08-02  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.5.1
+
+	* notifier/__init__.py (init): if the notifier implementation has
+	an attribute '_options' (a dict) the keyword arguments are
+	compared with the keys in the '_options' dict; if they match the
+	value is copied.
+
+	* notifier/nf_gtk.py (_options): add options dict
+	(_init): check _option 'x11': if True use gtk otherwise fallback
+	to gobject
+
+	* examples/threads.py (doing_something_else): renamed class from
+	Thread to Simple
+
+	* notifier/dispatch.py (dispatcher_run): use global variable
+	__dispatchers
+
+2006-07-16  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.5.0
+	first release under the LGPL
+
+	* notifier/nf_gtk.py (_socket_callback, socket_remove): set log
+	level to 'info' for the message informing that the socket could
+	not be removed
+
+2006-07-15  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/*.py, examples/*.py: changed header from GPL to LGPL
+
+	* notifier/nf_gtk.py (_socket_callback): fixed a symbol error and
+	add a documentation string
+
+	* COPYING: next release will be under LGPL 2.1
+
+	* examples/threads.py: an example demonstrating the new thread handler
+
+	* notifier/threads.py: a simple thread handler that starts a
+	thread and informs about the result y invoking a callback function
+
+2006-07-14  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* examples/signal2.py (_emitting): demonstrate UnknownSignalError
+
+	* notifier/signals.py (SignalExistsError, UnknownSignalError): two
+	new exception classes
+	(emit, connect): raise an exception with the named signal does not
+	exist
+	(new): raise an exception if the named exception already exists
+
+	* notifier/nf_wx.py: still deprecated, meaning not anymore
+	maintained, but still working ;)
+
+	* examples/test-qt.py: update example to work with Qt of version 3
+	and 4
+
+	* notifier/nf_qt.py: update Qt notifier to prefer Qt 4,
+	alternative try to import Qt 3
+
+	* examples/test-generic.py: replaced calls to notifier.millisecs
+
+	* notifier/nf_gtk.py (_socket_callback): renamed from
+	_socketCallback; applied patch from Dirk "Dischi" Meyer
+	<dischi@freevo.org> that checks if the socket exists before it
+	tries to remove it.
+
+	* notifier/nf_generic.py (step): replaced invokations of
+	notifier.millisecs with int( time.time() * 1000 )
+
+	* notifier/__init__.py (millisecs): removed
+
+2006-07-12  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/nf_generic.py (step): applied 95% of a patch from Dirk
+	"Dischi" Meyer <dischi@freevo.org> that fixes a bug in calculation
+	of timer expiration timestamps; add a optimatation
+
+2006-07-11  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/nf_gtk.py: removed two unnecessary imports
+
+	* notifier/nf_generic.py (timer_add): the first timestamp is now set
+	to NOW + interval
+
+	* notifier/nf_generic.py (step): check if the saved timestamp is less
+	than NOW and not if the saved timestamp + interval is less than NOW
+
+2006-06-28  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/nf_generic.py (step): add an optimitation provided by
+	Stefan Kunaschk <kunaschk@informatik.uni-bremen.de>: When
+	determining the timeout for the following select statement by
+	iterating over the timer list, the iteration is stopped when the
+	timeout is set to zero.
+
+2006-06-15  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.4.2
+
+	* notifier/nf_generic.py (step): timer interval is set
+	exactly (last timestamp + interval). processing time is not taking
+	into account.
+
+	* examples/process.py: new example for popen.py
+
+	* notifier/popen.py: new utility to handle child
+	processes. catches stdout and stderr and emits signals providing
+	access to the data (line buffered)
+
+2006-05-02  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/nf_generic.py (step): applied some ideas from Dirk
+	"Dischi" Meyer <dischi@freevo.org>; ensure, that timer callbacks
+	are not called recursively; timer object are now deleted directly
+	without using a temporary storage; add counter for recursion depth
+	in step and a maximum depth (include API for modifing it)
+
+
+2006-04-23  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.4.1
+
+2006-04-17  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* examples/test-gtk.py: add dispatcher test
+
+	* notifier/nf_gtk.py (dispatcher_remove, dispatcher_add): add
+	links to internal dispatcher implementation (note: idle stuff from
+	glib is not compatible to the internal dispatch implementation)
+
+	* notifier/__init__.py (Callback.__hash__): add hash method to
+	make it usable as key for dicts
+
+	* notifier/dispatch.py: moved dispatcher implementation to new
+	file (currently used by GENERIC and GTK)
+
+2006-04-16  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* examples/signal.py, examples/signal2.py, examples/test-gtk.py,
+	examples/test-qt.py: updated examples
+
+2005-12-25  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.4.0
+
+2005-11-25  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.4.0pre1
+	* add debian packaging information
+
+2005-10-30  Andreas Büsching  <crunchy@bitkipper.net>
+
+        * setup.py: do not import notifier.version; use execfile instead to
+	avoid import of all files from notifier (through __init__.py)
+
+2005-06-16  Andreas Büsching  <crunchy@tzi.de>
+
+        * notifier/version.py: set version to 0.3.8
+
+	* notifier/nf_generic.py (step): when select or a socket callback fails
+	print exception and exit( 1 )
+
+2005-06-14  Andreas Büsching  <crunchy@tzi.de>
+
+        * notifier/version.py: set version to 0.3.7
+
+	* examples/test-wx.py: Markus-S. Schröder <marcus-sebastian@web.de>
+	made this sample work again
+
+2005-06-13  Andreas Büsching  <crunchy@tzi.de>
+
+        * notifier/version.py: set version to 0.3.7pre1
+
+	* examples/test-wx.py: is still not working, but much closer to it
+	tahn before ;-)
+
+	* notifier/nf_wx.py: updated notifier to make it work again; thanx
+	to Markus-S. Schröder <marcus-sebastian@web.de> for the test
+	environment and his patience
+
+
+
+2005-06-02  Andreas Büsching  <crunchy@tzi.de>
+
+        * notifier/version.py: set version to 0.3.6
+
+        * notifier/nf_generic.py (loop): removed exception handler after
+        select; if the application throws an exception here it should be
+        fixed in the application
+
+2005-03-11  Andreas Büsching  <crunchy@tzi.de>
+
+        * notifier/version.py: set version to 0.3.5
+
+        * notifier/nf_qt.py: fixed some stupid bugs; there is still no support
+        for IO_WRITE and IO_EXCEPT
+
+2005-03-10  Andreas Büsching  <crunchy@tzi.de>
+
+        * notifier/nf_qt.py: add missing symbols IO_READ, IO_WRITE, IO_EXCEPT
+
+        * notifier/log.py: if there is no default logging handler instancated
+        by the application created one.
+
+2005-03-09  Andreas Büsching  <crunchy@tzi.de>
+
+        * notifier/version.py: set version to 0.3.4
+
+        * notifier/nf_generic.py (step, millisecs, addDispatcher,
+        removeDispatcher): add more documentation
+
+2005-03-03  Andreas Büsching  <crunchy@tzi.de>
+
+        * notifier/nf_generic.py (step): fixed bug in timeout calculation for
+        select command; may cause select to sleep to long; thanx to Sönke
+        Schwardt <schwardt@users.sourceforge.net>
+
+        * notifier/version.py: set version to 0.3.3
+
+2005-01-24  Andreas Büsching  <crunchy@tzi.de>
+
+	* notifier/version.py: set version to 0.3.3pre1
+
+	* notifier/log.py: removed changes from 2005-01-20
+
+2005-01-20  Andreas Büsching  <crunchy@tzi.de>
+
+	* notifier/*.py: add license text if missing and updated copyright
+	for 2005
+
+	* notifier/log.py: create a logger instance (copy'n'paste from
+	freevo)
+	(debug): new symbol for debug output
+
+	* setup.py: updated package description and added pyPI metadata.
+
+	* AUTHORS: add Kevin as first author of source and idea.
+
+2004-12-21  Andreas Büsching  <crunchy@tzi.de>
+
+	* notifier/version.py: set version to 0.3.2
+
+	* notifier/nf_generic.py (step): fixed typo; exception is not
+	called KeyboardExit but KeyboardInterrupt
+
+	* notifier/nf_generic.py (step): if a raised exception in any
+	callback is of type KeyboardInterruppt or SystemExit it is passed
+	through; all other exceptions are catched and a log message is
+	printed out.
+
+	* notifier/nf_generic.py (step): fixed log message
+
+	* notifier/version.py (extension): set version to 0.3.2pre1
+
+	* notifier/nf_generic.py (step): use logging facility
+
+	* notifier/log.py: logging facility
+
+2004-12-20  Andreas Büsching  <crunchy@tzi.de>
+
+	* notifier/version.py: set version to 0.3.1
+
+	* notifier/nf_generic.py (step): if select raises an exception the
+	socket dicts are searched for a invalid socket/file object that
+	will be removed
+
+	* notifier/nf_qt.py, notifier/nf_gtk.py, notifier/nf_wx.py: add
+	symbols addDispatcher and removeDispatcher pointing to None
+
+	* notifier/nf_wx.py (Notifier.OnTimer): if any timer callback
+	raises an exception it is removed; removed unused class
+	DeadTimerException
+	(addDispatcher):
+
+	* notifier/__init__.py (init): map notifier constants IO_* to
+	implementation specific values.
+
+	* __init__.py, notifier/nf_qt.py, notifier/nf_gtk.py,
+	notifier/nf_wx.py: removed unused class DeadTimerException
+
+	* notifier/nf_generic.py (step): use removeSocket to delete a
+	socket if callback return False, as it checks if the socket does
+	still exist.
+	(step): if a timer callback raises any exception it will be
+	removed.
+
+	* notifier/examples: sub-directory contains a set of examples
+	demonstrating the usage of pyNotifier
+
+	* README: add documentation (the formatting is used by
+	the MoinMoin Wiki).
+
+2004-12-19  Andreas Büsching  <crunchy@tzi.de>
+
+	* notifier/nf_generic.py: renamed IO_IN to IO_READ and IO_OUT to
+	IO_WRITE to match C constances; add IO_EXCEPT to complete interface
+	(__sockets): add key IO_EXCEPT to the map.
+	(step): handle except map returned by select
+	(DeadTimerException): remove class
+
+2004-11-04  Andreas Büsching  <crunchy@tzi.de>
+
+	* notifier/version.py: set version to 0.3.0
+
+	* notifier/nf_generic.py (step): if there are no timers and no
+	external dispatchers set the default sleep timer to MIN_TIMER
+
+	* notifier/__init__.py: import version to make version information
+	available by a simple import of notifier
+	(init): import IO_IN and IO_OUT from selected notifier
+	implementation to be accessible via notifier.IO_IN and notifier.IO_OUT
+
+	* notifier/version.py: set version to 0.3.0pre3
+
+	* setup.py: make use of version.py
+
+	* notifier/version.py: new file containg information of the
+	current version of pyNotifier.
+
+	* setup.py: set version to 0.3.0pre2
+
+	* notifier/nf_gtk.py (addSocket, removeSocket): add support for
+	registration to write events on sockets
+
+	* notifier/nf_gtk.py (__socketCallback): remove socket from
+	__gtk_socketIDs if callback returned False/None.
+
+	* notifier/nf_generic.py (step): of a socket callback function
+	returns False/None it is removed; this is more consistent, as the
+	timer callbacks are handled the same way.
+
+2004-11-03  Andreas Büsching  <crunchy@tzi.de>
+
+	* MANIFEST.in: add TODO file
+
+	* setup.py: set version to 0.3.0pre1
+
+2004-11-02  Andreas Büsching  <crunchy@tzi.de>
+
+	* notifier/: restructure package; notifier implementation are not
+	located in an own subdirectory anymore.
+
+2004-10-24  Andreas Büsching  <crunchy@tzi.de>
+
+	* notifier/__init__.py (WX): remove unnecessary import of
+	traceback
+
+2004-10-22  Andreas Büsching  <crunchy@tzi.de>
+
+	* setup.py: set version to 0.2.1
+
+2004-10-21  Andreas Büsching  <crunchy@tzi.de>
+
+	* notifier/gtk/notifier.py (addTimer): adapt notifier to new unit
+	of timers (milliseconds); that's what gtk+ uses mormally
+	(addSocket, removeSocket, addTimer, removeTimer): replaced gtk I/O
+	and timer API with gobject API calls
+
+2004-10-19  Andreas Büsching  <crunchy@tzi.de>
+
+	* setup.py: set version to 0.2.0
+
+2004-10-18  Andreas Büsching  <crunchy@tzi.de>
+
+	* notifier/qt/notifier.py (removeSocket): adapt notifier to new
+	unit for timers (milliseconds); that's what Qt uses normally.
+
+2004-10-12  Andreas Büsching  <crunchy@tzi.de>
+
+	* setup.py: set version to 0.2.0rc3
+
+	* notifier/generic/notifier.py (step): fixed a stupid bug causing
+	pyNotifier to crash if sleep is False
+
+2004-10-11  Andreas Büsching  <crunchy@tzi.de>
+
+	* setup.py: set version to 0.2.0rc2
+
+2004-10-08  Andreas Büsching  <crunchy@tzi.de>
+
+	* notifier/generic/notifier.py (step): if there are no timers
+	registered and __min_timer is None the timeout for select must be
+	initialised to 0
+
+2004-10-06  Andreas Büsching  <crunchy@tzi.de>
+
+	* setup.py: set version to 0.2.0rc1
+
+	* notifier/__init__.py: removed process handling; instead
+	add support for external dispatcher functions, which can also be
+	used to do this. The dispatcher stuff is currently supported by
+	the generic notifier.
+
+2004-10-04  Andreas Büsching  <crunchy@tzi.de>
+
+	* notifier/generic/notifier.py (removeTimer): fixed type
+
+2004-09-21  Andreas Büsching  <crunchy@tzi.de>
+
+	* test-generic.py, test-gtk.py:  adapt exmaple to new API and
+	changed timer units to milliseconds
+
+	* setup.py: set version to 0.1.2rc3
+
+2004-05-12  Andreas Buesching  <crunchy@tzi.de>
+
+	* notifier/generic/notifier.py (step): check if socket object is
+	still valid before calling callback function.
+
+2004-03-25  Andreas Buesching  <crunchy@tzi.de>
+
+	* notifier/generic/notifier.py (removeSocket): fixed bug. dict
+	object does not have a remove function; using del instead
+
+2004-03-15  Andreas Buesching  <crunchy@tzi.de>
+
+	* notifier/generic/notifier.py (addTimer): catching overflow
+	exception when increase timer id.
+
+	* notifier/__init__.py (init): fixed mapping of removeTimer in
+	generic notifier from addTimer to generic.notifier.removeTimer

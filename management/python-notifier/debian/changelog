@@ -1,0 +1,5 @@
+python-notifier (0.9.6-1-univention1) unstable; urgency=low
+
+  * Bug #37457: Initial commit
+
+ -- Florian Best <best@univention.de>  Tue, 05 May 2015 16:07:52 +0200

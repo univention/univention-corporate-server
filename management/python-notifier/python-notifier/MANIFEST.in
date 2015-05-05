@@ -1,0 +1,4 @@
+recursive-include examples *.py
+include debian/changelog debian/compat debian/pynotifier.examples debian/pynotifier.docs debian/control debian/rules debian/copyright
+include COPYING AUTHORS TODO ChangeLog
+
