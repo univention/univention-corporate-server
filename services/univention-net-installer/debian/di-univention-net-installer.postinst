@@ -40,6 +40,6 @@ do
 		echo "$var=\"$(chroot /target ucr get $var)\"" >>"$PROFILE"
 done
 
-in-target "$SETUP"
+in-target "$SETUP" >>"${TARGET}/var/log/univention/setup.log" 2>&1
 
 exit 0

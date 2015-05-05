@@ -1,3 +1,9 @@
+univention-net-installer (8.0.1-5) unstable; urgency=low
+
+  * Bug #35537: Redirect setup-join.log
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 05 May 2015 22:58:33 +0200
+
 univention-net-installer (8.0.1-4) unstable; urgency=low
 
   * Bug #35537: Update to python2.7
