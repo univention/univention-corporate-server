@@ -8,7 +8,7 @@ Build-Depends: debhelper,
 
 Package: python-notifier
 Architecture: all
-Depends: python
+Depends: python2.7, python2.6
 Replaces: pynotifier
 Provides: python2.6-notifier, python2.7-notifier
 Section: python

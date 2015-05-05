@@ -1,3 +1,9 @@
+python-notifier (0.9.7-1-univention2) unstable; urgency=medium
+
+  * Bug #37457: fix FTBFS
+
+ -- Florian Best <best@univention.de>  Tue, 05 May 2015 17:18:38 +0200
+
 python-notifier (0.9.7-1-univention1) unstable; urgency=medium
 
   * Bug #37457: update version
