@@ -131,7 +131,7 @@ def _is_container_change_relevant(new, old):
 	except AttributeError:
 		old_reference = []
 
-	if old_reference == new_reference:
+	if not old_reference and not new_reference:
 		return False
 
 	result = False
@@ -140,6 +140,10 @@ def _is_container_change_relevant(new, old):
 	# Check if one policy is a quota policy
 	for dn in old_reference + new_reference:
 		ldap_object = lo.get(dn)
+		# If the policy doesn't exist, we don't know if the policy was a quota policy
+		if not ldap_object:
+			result = True
+			break
 		if _is_quota_policy(ldap_object, None):
 			result = True
 			break
