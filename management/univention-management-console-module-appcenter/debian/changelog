@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (4.1.20-21) unstable; urgency=low
+
+  * Bug #38042: Prevent installation of apps until a certain UCS version is
+    met
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 05 May 2015 15:10:51 +0200
+
 univention-management-console-module-appcenter (4.1.20-20) unstable; urgency=medium
 
   * Bug #37616: make sure that the license is loaded when accessing the UUID

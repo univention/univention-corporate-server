@@ -944,6 +944,24 @@ class Application(object):
 		return '<Application id="%s" name="%s (%s)" code="%s" component="%s">' % (self.id, self.name, self.version, self.code, self.component_id)
 
 	@HardRequirement('install', 'update')
+	def must_have_fitting_ucs_version(self):
+		required_version = self.get('requireducsversion')
+		if not required_version:
+			return True
+		try:
+			version_bits = re.match(r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$', required_version).groups()
+		except AttributeError:
+			MODULE.warn('Incorrect RequiredUCSVersion: %r' % required_version)
+			return True
+		major, minor = ucr.get('version/version').split('.', 1)
+		patchlevel = ucr.get('version/patchlevel')
+		errata = ucr.get('version/erratalevel')
+		comparisons = zip(version_bits, [major, minor, patchlevel, errata])
+		for required, present in comparisons:
+			if int(required or 0) > int(present):
+				return {'required_version': required_version}
+
+	@HardRequirement('install', 'update')
 	def must_have_valid_license(self):
 		return LICENSE.allows_using(self.get('notifyvendor'))
 

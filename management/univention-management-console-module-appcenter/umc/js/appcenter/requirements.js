@@ -91,6 +91,20 @@ define([
 				opts.appDetailsPage.standbyDuring(opts.appDetailsPage.switchToProgressBar(), opts.appDetailsPage._progressBar);
 			}
 		}),
+		must_have_fitting_ucs_version: new Requirement({
+			reasonDescription: function(details) {
+				return _('The application requires UCS version %(required_version)s or later.', details);
+			},
+			solutionDescription: function() {
+				return _('The system has to be updated.');
+			},
+			solutionLabel: function() {
+				return _('Open Software update Module');
+			},
+			solution: function() {
+				topic.publish('/umc/modules/open', 'updater');
+			}
+		}),
 		must_have_valid_license: new Requirement({
 			reasonDescription: function() {
 				return _('For the installation of this application, a UCS license key with a key identification (Key ID) is required.');
