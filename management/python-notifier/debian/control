@@ -3,9 +3,8 @@ Section: python
 Priority: optional
 Maintainer: Andreas Büsching <crunchy@bitkipper.net>
 Build-Depends: debhelper,
- dh-python,
- python2.6,
- python2.7,
+ python-support,
+ python-all,
  gzip,
 
 Package: python-notifier
