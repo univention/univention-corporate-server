@@ -33,6 +33,7 @@
 
 password_file=""
 dcaccount=""
+runcleanup=true
 
 while [ "$#" -gt 0 ]; do
 	case $1 in
@@ -44,13 +45,17 @@ while [ "$#" -gt 0 ]; do
 			password_file="$2"
 			shift 2
 			;;
+		--do_not_run_cleanup)
+			runcleanup=false
+			shift 1
+			;;
 		--help)
-			echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile>]"
+			echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile>] [--do_not_run_cleanup]"
 			exit 1
 			;;
 		*)
 			echo "WARNING: Unknown parameter $1"
-			echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile>]"
+			echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile>] [--do_not_run_cleanup]"
 			exit 1
 	esac
 done
@@ -165,15 +170,15 @@ fi
 # Call scripts which won't be handled by join scripts
 # keyboard, language and timezone
 echo "Starting re-configuration of locales"
-run-parts /usr/lib/univention-system-setup/scripts/15_keyboard
-run-parts /usr/lib/univention-system-setup/scripts/20_language
-run-parts /usr/lib/univention-system-setup/scripts/25_defaultlocale
+run-parts -v /usr/lib/univention-system-setup/scripts/15_keyboard
+run-parts -v /usr/lib/univention-system-setup/scripts/20_language
+run-parts -v /usr/lib/univention-system-setup/scripts/25_defaultlocale
 
 # Do network stuff
 echo "Starting re-configuration of network"
-run-parts -a --network-only -a --appliance-mode -- /usr/lib/univention-system-setup/scripts/30_net
+run-parts -v -a --network-only -a --appliance-mode -- /usr/lib/univention-system-setup/scripts/30_net
 
-run-parts /usr/lib/univention-system-setup/scripts/35_timezone
+run-parts -v /usr/lib/univention-system-setup/scripts/35_timezone
 
 # Re-create SSL certificates on DC Master even if the admin didn't change all variables
 # otherwise a lot of appliances will have the same SSL certificate secret
@@ -185,14 +190,14 @@ fi
 univention-certificate new -name "$hostname.$domainname"
 ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
 
-run-parts /usr/lib/univention-system-setup/scripts/45_modules
+run-parts -v /usr/lib/univention-system-setup/scripts/45_modules
 
 # Re-create sources.list files
 ucr commit /etc/apt/sources.list.d/*
 
 # Install selected software
 echo "Starting re-configuration of software packages"
-run-parts /usr/lib/univention-system-setup/scripts/50_software
+run-parts -v /usr/lib/univention-system-setup/scripts/50_software
 
 eval "$(univention-config-registry shell)"
 
@@ -260,7 +265,7 @@ fi
 # (e.g. univention-upgrade which would require testing new installations
 # each time we release an update)
 echo "Running postjoin scripts"
-run-parts /usr/lib/univention-system-setup/scripts/90_postjoin
+run-parts -v /usr/lib/univention-system-setup/scripts/90_postjoin
 
 # Cleanup
 rm -f /var/lib/univention-ldap/root.secret
@@ -288,11 +293,20 @@ ucr set system/setup/showloginmessage=false
 # call appliance hooks
 info_header "appliance-hooks.d" "$(gettext "Running appliance scripts")"
 if [ -d /usr/lib/univention-system-setup/appliance-hooks.d ]; then
-	run-parts /usr/lib/univention-system-setup/appliance-hooks.d
+	run-parts -v /usr/lib/univention-system-setup/appliance-hooks.d
 fi
 
 # allow a restart of server components without actually restarting them
 /usr/share/univention-updater/enable-apache2-umc --no-restart
+
+if [ "$runcleanup" = true ]; then
+	echo "=== Running cleanup-pre scripts $(date --rfc-3339=seconds)"
+	run-parts -v /usr/lib/univention-system-setup/cleanup-pre.d
+	echo "=== Running cleanup-post scripts $(date --rfc-3339=seconds)"
+	run-parts -v /usr/lib/univention-system-setup/cleanup-post.d
+else
+	echo "== Cleanup scripts will not be run now, option --do_not_run_cleanup was given $(date --rfc-3339=seconds)"
+fi
 
 exit 0
 

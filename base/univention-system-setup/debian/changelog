@@ -1,3 +1,14 @@
+univention-system-setup (8.1.66-37) unstable; urgency=low
+
+  * Bug #38332: Cleanup scripts will now be executed if setup-join.sh is
+    called from the command line. A new parameter --do_not_run_cleanup has
+    been introduced, which is used by the UMC system setup module 
+  * Bug #38393: The setup script 05_role/10role has been sped up. It no
+    longer copies packages into the dpkg cache, but creates hardlinks
+  * Improved logging when running setup-join: run-parts now prints filenames
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 05 May 2015 13:40:02 +0200
+
 univention-system-setup (8.1.66-36) unstable; urgency=medium
 
   * Bug #37771: select first entry from result list when pressing TAB

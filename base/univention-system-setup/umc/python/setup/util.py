@@ -554,11 +554,11 @@ def run_joinscript( progressParser, values, _username, password, lang='C'):
 			username = reg.sub('_', _username)
 
 			# run join scripts
-			runit( cmd + [ '--dcaccount', username, '--password_file', password_file ] )
+			runit( cmd + [ '--dcaccount', username, '--password_file', password_file, '--do_not_run_cleanup' ] )
 
 	else:
 		# run join scripts
-		runit( cmd )
+		runit(cmd + ['--do_not_run_cleanup'])
 
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()

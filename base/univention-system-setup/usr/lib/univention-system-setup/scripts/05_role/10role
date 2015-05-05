@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 import shutil
 import glob
+import os
 
 from univention.management.console.modules.setup.setup_script import AptScript, main, _
 
@@ -51,8 +52,17 @@ class RoleScript(AptScript):
 
 		# Copy local files into the local cache
 		#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27935
+		#  https://forge.univention.org/bugzilla/show_bug.cgi?id=38393
 		for filename in glob.glob('/var/cache/univention-system-setup/packages/*.deb'):
-			shutil.copy(filename, '/var/cache/apt/archives/')
+			try:
+				basename = os.path.basename(filename)
+				os.link(filename, os.path.join('/var/cache/apt/archives/', basename))
+			except OSError as e:
+				self.logger.error('Error while creating hardlink to /var/cache/univention-system-setup/packages: %s' % e)
+				try:
+					shutil.copy(filename, '/var/cache/apt/archives/')
+				except OSError as e:
+					self.logger.error('Error while copying package to /var/cache/apt/archives: %s' % e)
 		self.reopen_cache()
 
 		current_server_role_package = self.get_package_for_role(self.current_server_role) if self.current_server_role else None
