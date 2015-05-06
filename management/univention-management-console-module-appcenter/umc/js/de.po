@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-05 15:09+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2015-05-06 13:09+0200\n"
 "PO-Revision-Date: 2011-11-02 09:36+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -571,19 +571,19 @@ msgstr ""
 msgid "Open"
 msgstr "Öffnen"
 
+#: umc/js/appcenter/requirements.js:150
+msgid "Open \"Domain join\" module"
+msgstr "Module \"Domänenbeitritt\" öffnen"
+
+#: umc/js/appcenter/requirements.js:102
+msgid "Open \"Software update\" module"
+msgstr "Modul \"Software-Aktualisierung\" öffnen"
+
 #: umc/js/appcenter/requirements.js:171 umc/js/appcenter/requirements.js:198
 #: umc/js/appcenter/requirements.js:215
 #, python-format
 msgid "Open %s"
 msgstr "%s öffnen"
-
-#: umc/js/appcenter/requirements.js:150
-msgid "Open Domain Join Module"
-msgstr "Domänenbeitritt-Modul öffnen"
-
-#: umc/js/appcenter/requirements.js:102
-msgid "Open Software update Module"
-msgstr "Modul \"Software-Aktualisierung\" öffnen"
 
 #: umc/js/appcenter/requirements.js:231
 msgid "Open the documentation"

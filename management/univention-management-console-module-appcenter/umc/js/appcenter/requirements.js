@@ -99,7 +99,7 @@ define([
 				return _('The system has to be updated.');
 			},
 			solutionLabel: function() {
-				return _('Open Software update Module');
+				return _('Open "Software update" module');
 			},
 			solution: function() {
 				topic.publish('/umc/modules/open', 'updater');
@@ -147,7 +147,7 @@ define([
 				return _('The system has to join a domain before the application can be installed!');
 			},
 			solutionLabel: function() {
-				return _('Open Domain Join Module');
+				return _('Open "Domain join" module');
 			},
 			solution: function() {
 				topic.publish('/umc/modules/open', 'join');
