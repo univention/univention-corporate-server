@@ -1923,6 +1923,10 @@ define([
 			var _join = lang.hitch(this, function(values, username, password) {
 				var deferred = new Deferred();
 
+				// make sure that no re-login is tried/required due to the server time
+				// being adjusted in 40_ssl/10ssl (cf., Bug #38455)
+				tools.checkSession(false);
+
 				// send save command to server
 				this._progressBar.reset(_('Initialize the configuration process ...'));
 				this.standby(true, this._progressBar);

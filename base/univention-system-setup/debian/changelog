@@ -1,3 +1,9 @@
+univention-system-setup (8.1.66-42) unstable; urgency=medium
+
+  * Bug #38455: disalbe checks for session validity during the join process
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 06 May 2015 18:00:59 +0200
+
 univention-system-setup (8.1.66-41) unstable; urgency=low
 
   * Bug #38332: cleanup.py does no longer redirect its output by
