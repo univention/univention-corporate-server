@@ -6,7 +6,7 @@ src: firefox-de
 fix: 1:31.6.0esr-3.58.201504131849
 desc: |
  Several vulnerabilities have been fixed with the update to Firefox ESR 31.6:
- * Reading and writing of memory allowing for arbitary code execution on
+ * Reading and writing of memory allowing for arbitrary code execution on
    the local system (Pwn2Own asm.js exploit) (CVE-2015-0817)
  * Run arbitrary scripts in a privileged context (Same-origin bypass via SVG
    hash navigation) (CVE-2015-0818)
@@ -25,5 +25,4 @@ cve:
  - CVE-2015-0816
  - CVE-2015-0817
  - CVE-2015-0818
-bug:
- - 38179
+bug: [38179]

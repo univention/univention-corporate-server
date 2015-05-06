@@ -6,5 +6,6 @@ fix: 0.9.7-2.28.201505051806
 version: [1]
 desc: |
     The package python-notifier has been updated to version 0.9.7.
-    This fixes a bug which could cause a UMC server crash in specific circumstances.
+    This fixes a bug which could cause a UMC server crash in specific
+    circumstances.
 bug: [37457]

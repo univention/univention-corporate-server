@@ -6,7 +6,8 @@ fix: 31.6.0esr-1.55.201504151819
 note: This update fixes these vulnerabilities.
 version: [1]
 desc: |
- Several vulnerabilities have been fixed with the update to Iceweasel ESR 31.6:
+ Several vulnerabilities have been fixed with the update to
+ Iceweasel ESR 31.6:
  * 4-byte buffer overflow in libx11 macro SetReqLen
  * Same-origin bypass through anchor navigation (CVE-2015-0801)
  * Potential XSRF affecting sendBeacon() requests (CORS requests should not
@@ -14,11 +15,11 @@ desc: |
  * Use-after-free when using the Fluendo MP3 GStreamer plugin (CVE-2015-0813)
  * Memory safety bugs (CVE-2015-0815)
  * resource:// documents can load privileged pages (CVE-2015-0816)
- * Reading and writing of memory allowing for arbitary code execution on
+ * Reading and writing of memory allowing for arbitrary code execution on
    the local system (Pwn2Own asm.js exploit) (CVE-2015-0817)
  * Run arbitrary scripts in a privileged context (Same-origin bypass via SVG
    hash navigation) (CVE-2015-0818)
- * Reading of local files through manipulation of form autocomplete 
+ * Reading of local files through manipulation of form autocomplete
    (CVE-2015-0822)
  * Out-of-bounds read and write while rendering SVG content (CVE-2015-0827)
  * Use-after-free in IndexedDB (CVE-2015-0831)
@@ -38,5 +39,4 @@ cve:
  - CVE-2015-0831
  - CVE-2015-0835
  - CVE-2015-0836
-bug:
- - 38271
+bug: [38271]

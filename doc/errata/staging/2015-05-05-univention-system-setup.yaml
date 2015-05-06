@@ -9,7 +9,7 @@ desc: |
   * Cleanup scripts will now be executed if setup-join.sh is called
     from the command line
   * The setup script 05_role/10role has been sped up. It no longer
-    copies packages into the dpkg cache, but creates hardlinks
+    copies packages into the dpkg cache, but creates hard-links
   * Improved logging when running setup-join: run-parts now prints
     filenames
 bug: [38332,38393]

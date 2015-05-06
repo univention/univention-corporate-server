@@ -1,5 +1,5 @@
 product: ucs
-release: "4.0" 
+release: "4.0"
 version: [1]
 scope: ucs_4.0-0-errata4.0-1
 src: univention-mail-postfix
@@ -8,15 +8,15 @@ desc: |
   Improve Postfix configuration:
   * Allow Postfix to receive client mails on submission port 587.
   * Exclude RC4 Cipher Suites from all TLS security levels (RFC7465).
-  Adds UCR variables mail/postfix/tls/client/exclude_ciphers and 
-  mail/postfix/smtpd/tls/exclude_ciphers and sets them by default to
-  "RC4, aNULL" (thanks to Lutz Willek).
+    Adds UCR variables mail/postfix/tls/client/exclude_ciphers and
+    mail/postfix/smtpd/tls/exclude_ciphers and sets them by default to
+    "RC4, aNULL" (thanks to Lutz Willek).
   * Allow to set TLS/SSL settings for server and client. Disables SSLv3 for
-  fresh installs, except for receiving mails. Adds UCR variables
-  mail/postfix/smtpd/tls/*protocols and mail/postfix/tls/client/*protocols
-  (thanks to Lutz Willek).
+    fresh installs, except for receiving mails. Adds UCR variables
+    mail/postfix/smtpd/tls/*protocols and mail/postfix/tls/client/*protocols
+    (thanks to Lutz Willek).
   * Add options to check IP-FQDN-mapping to fight spam. Adds UCR variables
-  mail/postfix/smtpd/restrictions/sender/require_reverse_dns and
-  mail/postfix/smtpd/restrictions/sender/require_forward-confirmed_reverse_dns
-  for weaker and stricter rDNS checking respectively.
+    mail/postfix/smtpd/restrictions/sender/require_reverse_dns and
+    mail/postfix/smtpd/restrictions/sender/require_forward-confirmed_reverse
+    dns for weaker and stricter rDNS checking respectively.
 bug: [30043,38043,38044,38292]
