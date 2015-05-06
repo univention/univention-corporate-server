@@ -30,16 +30,6 @@
 				Please refer to the <ulink url="http://docs.univention.de/quickstart-en.html" lang="">UCS Quickstart
 				Guide</ulink> for the steps about installation and initial setup.
 			</para>
-
-			<para>
-				Note about the license: The download comes with the Free-for-personal-use license integrated
-				that allows to manage up to 50 users and 50 clients with the UCS management system. If you need
-				more, please <ulink
-				url="https://www.univention.com/downloads/license-models/test-license/">request</ulink> a
-				not-for-resale license and provide the LDAP base DN that has been configured during the initial
-				setup. It can be looked up in the UCS management system, described in the <ulink
-				url="http://docs.univention.de/manual.html#central:license">UCS manual</ulink>.
-			</para>
 		</section>
 
 		<section id="prepare:unmaintained">

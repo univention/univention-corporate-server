@@ -153,13 +153,13 @@
 		</para>
 		<figure id="umc-license">
 			<title>Anzeige der UCS-Lizenz</title>
-			<graphic scalefit="1" width="70%" align="center" fileref="illustrations40/umc_ffpu_de.png"/>
+			<graphic scalefit="1" width="70%" align="center" fileref="illustrations40/umc_coreedition_de.png"/>
 		</figure>
 
 		<para>
 		  Der Menüpunkt <guimenu>Neue Lizenz importieren</guimenu> öffnet einen Dialog,
 		  über den ein neuer UCS-Lizenzschlüssel aktiviert werden kann (ansonsten greift die
-		  standardmäßig installierte Free-for-Personal-Use-Lizenz). Über die Schaltfläche
+		  standardmäßig installierte Core-Edition-Lizenz). Über die Schaltfläche
 		  <guimenu>Importieren aus Datei...</guimenu> kann eine Lizenz-Datei ausgewählt
 		  und importiert werden. Alternativ kann der Lizenz-Schlüssel auch in das darunter
 		  liegende Eingabefeld kopiert und dann über der Schaltfläche
@@ -168,9 +168,9 @@
 
 		<para>
 		  Die Installation der meisten Anwendungen aus dem Univention App Center erfordert einen individuell
-		  ausgestellten Lizenzschlüssel mit eindeutiger Schlüsselidentifikation. UCS-Lizenzschlüssel,
-		  die für UCS-Versionen vor 3.1 ausgestellt wurden und Free-for-Personal-Use-Lizenzen können durch Klick auf die die
-		  Schaltfläche <guimenu>Aktivierung von UCS</guimenu> aktualisiert werden. Der aktuelle Lizenzschlüssel wird dabei an Univention geschickt
+		  ausgestellten Lizenzschlüssel mit eindeutiger Schlüsselidentifikation. UCS-Core-Edition-Lizenzen 
+		  können durch Klick auf die Schaltfläche <guimenu>Aktivierung von UCS</guimenu> aktualisiert werden.
+		  Der aktuelle Lizenzschlüssel wird dabei an Univention geschickt
 		  und der aktualisierte Schlüssel nach einigen Minuten an eine angegebene E-Mail-Adresse
 		  versendet. Der neue Schlüssel kann dann direkt eingespielt werden. Der Lizenzumfang bleibt
 		  durch die Konvertierung unverändert.
@@ -377,8 +377,7 @@
 <section id="central-management-umc:piwik">
   <title>Erfassung von Nutzungsstatistiken</title>
   <para>
-	Bei Verwendung der <foreignphrase>Free for personal use</foreignphrase>-Version von UCS (die
-	in der Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken
+	Bei Verwendung der <foreignphrase>Core Edition</foreignphrase> von UCS werden anonyme Nutzungsstatistiken
 	zur Verwendung von &ucsUMC; erzeugt. Weitere Informationen finden sich in <u:sdb>1318</u:sdb>.
   </para>
 </section>

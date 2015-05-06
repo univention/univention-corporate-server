@@ -407,7 +407,7 @@ invoke-rc.d univention-management-console-server restart
 		The following includes an example file with which a &ucsMaster; can be provided. In
 		addition, several files are generated on the system: the UCS license to be installed and a file
 		with the apps to be installed from the Univention App Center.
-		The license in this example is the default <emphasis>free for personal use license</emphasis>.
+		The license in this example is the default <emphasis>core edition license</emphasis>.
 		More information about requesting a proper license can be found in <xref linkend="appliance:license"/>.
 	  </para>
 
@@ -440,22 +440,22 @@ write_files:
       univentionLicenseEndDate: unlimited
       univentionLicenseModule: admin
       cn: admin
-      univentionLicenseBaseDN: Free for personal use edition
-      univentionLicenseUsers: 50
+      univentionLicenseBaseDN: UCS Core Edition
+      univentionLicenseUsers: unlimited
       univentionLicenseServers: unlimited
-      univentionLicenseManagedClients: 50
+      univentionLicenseManagedClients: unlimited
       univentionLicenseCorporateClients: unlimited
-      univentionLicenseVirtualDesktopUsers: unlimited
-      univentionLicenseVirtualDesktopClients: unlimited
+      univentionLicenseVirtualDesktopUsers: 0
+      univentionLicenseVirtualDesktopClients: 0
       univentionLicenseSupport: 0
       univentionLicensePremiumSupport: 0
       univentionLicenseVersion: 2
       univentionLicenseType: UCS
-      univentionLicenseSignature: FPkmAy7icL0N/2w15fREr/l4rD9r6xaLi3C7dLRVQbDX5zdcQ+
-       0BSPfHFT8pdAaMpZqXkp13rQK4N2PzHHPy0HwyyaeMTckxJyaIQd/B/M4t+vbIxnz+2YNoDVqskws
-       me/V8qxgoMsMFT47LUDp7serXZoCETutwcwwqrycy0RdahezzyAA93e3bBaH1y5zK1b4ElAWW933d
-       fctWTR+/LdQglhKbRlHBN8fbcHLmXBtu7yMV3J7AGl+wTo4+KzASUWdTmrfUY5dcU77spyCMJEGL6
-       ZxsFs8FhDrYajyAn2s0rAcxJK9JKFFjBuuiF+8MB2dyypkJilSiTRQDhEYorQ==
+      univentionLicenseSignature: ZjofoUmITUqpyF5q+AfE1i6EwsKXGWYnkh3JLJH3/bXqvD26nG
+       aLa+cpcr6g9Stkx2Lslh1feGCpsdvowkA3T+SFtPHSX0Fds78QgyatoiFlA6mbbtMf3ABbMfW9Glt
+       IZBbxxDFD+hMO/7yOHwaFZM3xb1I2ToJ1D2+xvOxrZe2SCZd4KJIXpupnmJnAC/D4Y9iqHPytVPU3
+       QlI6zXnGU5q47RN/tdXLTpV7mHoiXRWh282TNOlnEiiQxwiQ4u2ghWE1x/EWY/CXvZm0PQcsFqGyB
+       v72WdEUOex1Yuf3BgZ7QfLOQ2XIv6KPKCyYqZqlSNp8Xk+IpKjDqL+aq0oyeg==
     owner: root:root
     path: /var/cache/univention-system-setup/license
     permissions: '0400'
@@ -504,10 +504,9 @@ write_files:
 	<section id="appliance:license">
 	  <title>License management in cloud instances</title>
 	  <para>
-		In the default installation, a UCS installation has a so-called <emphasis>free for personal
-		use license</emphasis> (up to fifty users). A license from Univention is required for the
-		productive use of a UCS installation. For standard installations it is sent to the user by
-		e-mail and then set up in the &ucsUMC;.
+		In the default installation, a UCS installation has a <emphasis>core edition license</emphasis>.
+        An updated license from Univention is required in order to use the App Center. For standard installations
+        it is sent to the user by e-mail and then set up in the &ucsUMC;.
 	  </para>
 
 	  <para>

@@ -670,7 +670,7 @@
 		</para>
 		<para>
 			If a UCS environment does not have such a key at its disposal (e.g. UCS
-			Free-for-personal-Use Edition) and the vendor requires a Key ID, the user
+			Core Edition) and the vendor requires a Key ID, the user
 			will be asked to request an updated license key directly from Univention.
 			Afterwards the new key can be applied and the application installed.
 		</para>

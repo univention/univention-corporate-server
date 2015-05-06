@@ -152,11 +152,11 @@
 		</para>
 		<figure id="umc-license">
 			<title>Displaying the UCS license</title>
-			<graphic scalefit="1" width="70%" align="center" fileref="illustrations40/umc_ffpu_en.png"/>
+			<graphic scalefit="1" width="70%" align="center" fileref="illustrations40/umc_coreedition_en.png"/>
 		</figure>
 		<para>
 		  The menu entry <guimenu>Import new license</guimenu> opens a dialogue in which
-		  a new license key can be activated (otherwise the free-for-personal-use license
+		  a new license key can be activated (otherwise the core edition license
 		  is used as default license).
 		  A license file can be selected and imported via the button <guimenu>Import from file...</guimenu>.
 		  Alternatively, the license key can also be copied into the input field below and
@@ -165,7 +165,7 @@
 
 		<para>
 		  Installation of most of the applications in the Univention App Center requires a
-		  personalised license key. UCS license keys granted for UCS versions older than 3.1 and free-for-personal-use licenses can
+		  personalised license key. UCS core edition licenses can
 		  be converted by clicking <guimenu>Activation of UCS</guimenu>.
 		  The current license key is sent to Univention and the updated key
 		  returned to a specified e-mail address within a few minutes. The new key can be imported
@@ -365,8 +365,8 @@
 <section id="central-management-umc:piwik">
   <title>Collection of usage statistics</title>
   <para>
-	Anonymous usage statistics on the use of &ucsUMC; are collected when using the <emphasis>free for
-	personal use</emphasis> version of UCS (which is generally used for evaluating UCS). Further
+	Anonymous usage statistics on the use of &ucsUMC; are collected when using the <emphasis>core edition</emphasis>
+    version of UCS (which is generally used for evaluating UCS). Further
 	information can be found in <u:sdb>1318</u:sdb>.
   </para>
 </section>
