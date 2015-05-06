@@ -8,5 +8,6 @@ desc: |
   This update addresses the following issues:
   * Apps may now define a minimal UCS version below which the app may not
     be installed.
-  * Do not prevent apache from restarting while installing packages.
+  * Apache may now be restarted by packages during installation via the
+    "Package Management" module.
 bug: [38042, 38446]
