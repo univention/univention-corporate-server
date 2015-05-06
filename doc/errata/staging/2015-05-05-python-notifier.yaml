@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: python-notifier
-fix: 0.9.7-2.28.201505051806
+fix: 0.9.7-3.29.201505061934
 version: [1]
 desc: |
     The package python-notifier has been updated to version 0.9.7.
