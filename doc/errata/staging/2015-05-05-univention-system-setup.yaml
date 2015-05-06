@@ -6,11 +6,9 @@ fix: 8.1.66-41.882.201505061429
 version: [1]
 desc: |
   This errata update addresses the following issues:
-  * Cleanup scripts will now be executed if setup-join.sh is called
-    from the command line
-  * The setup script 05_role/10role has been sped up. It no longer
-    copies packages into the dpkg cache, but creates hard-links
-  * Cleanup.py logs to stdout and stderr by default from now on
-  * Improved logging when running setup-join: run-parts now prints
-    filenames
+  * Cleanup scripts will now be executed if setup-join.sh is called from the
+    command line. All output is logged to stdout/stderr.
+  * The setup script 05_role/10role has been speeded up. It creates hard-links
+    instead of copying packages into the dpkg cache.
+  * Improved logging when running setup-join: run-parts now prints filenames.
 bug: [38332,38393]
