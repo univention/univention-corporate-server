@@ -462,7 +462,7 @@ class Instance(umcm.Base):
 				if not not_found:
 					def _thread(package_manager, function, packages):
 						with package_manager.locked(set_finished=True):
-							with package_manager.no_umc_restart():
+							with package_manager.no_umc_restart(exclude_apache=True):
 								if function == 'install':
 									package_manager.install(*packages)
 								else:
