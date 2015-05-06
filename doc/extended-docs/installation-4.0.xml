@@ -300,7 +300,7 @@ usermod -p \* root
 		The <command>generate_appliance</command> tool must be started and the qcow2
 		image selected with the parameter <option>-s</option>:
 
-		<programlisting>
+		<programlisting language="sh">
 generate_appliance -s appliance.qcow2
 		</programlisting>
 
@@ -417,7 +417,7 @@ invoke-rc.d univention-management-console-server restart
 		provisioning of the instance is done. The other is an example <command>udm</command>
 		call to register an OpenStack connection in UVMM.
 
-		<programlisting>
+		<programlisting language="yaml">
 #cloud-config
 #
 ucs_setup:
@@ -722,7 +722,7 @@ d-i partman/confirm_nooverwrite boolean true
 d-i ucr/system/setup/boot/start string false
 
 #
-# Univension System Setup profile
+# Univention System Setup profile
 #
 #univention-system-setup-boot uss/root_password string
 univention-system-setup-boot uss/components string
@@ -736,7 +736,7 @@ univention-system-setup-boot uss/server/role string memberserver
 			<callout arearefs="preseed:pxe-co" id="preseed:pxe">
 				<para>
 					These settings are configured through the PXE command line parameters.
-					There are listed here for reference only and cannot be changed through this file.
+					They are listed here for reference only and cannot be changed through this file.
 				</para>
 			</callout>
 			<callout arearefs="preseed:locale-co" id="preseed:locale">
@@ -876,7 +876,7 @@ univention-system-setup-boot uss/server/role string memberserver
 		<section id="profile:variables:join">
 			<title>Profile variables - LDAP settings and domain joins</title>
 			<para>
-				The entries <varname>domain_controller_account</varname> and <varname>domain_controller_password</varname> are essential for computers intended to join the domain.
+				Automatically joining the computer into the domain is currently not supported for security reasons.
 			</para>
 
 			<table>
@@ -902,7 +902,7 @@ univention-system-setup-boot uss/server/role string memberserver
 							<entry><varname>ldap/base</varname></entry>
 							<entry>
 								The base DN of the LDAP domain.
-								In general, the base DN <literal>dc=example,dc=com</literal> is used in a domain <literal>example.com</literal>.
+								In general, the base DN <uri>dc=example,dc=com</uri> is used in a domain <systemitem class="domainname">example.com</systemitem>.
 								This variable is only evaluated on the system role &ucsMaster;.
 							</entry>
 						</row>
