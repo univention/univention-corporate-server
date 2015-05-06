@@ -37,16 +37,11 @@ import os.path
 from tempfile import mkdtemp
 from univention.management.console.modules.setup import util
 
-LOG_FILE = '/var/log/univention/setup.log'
 PATH_CLEANUP_PRE_SCRIPTS = '/usr/lib/univention-system-setup/cleanup-pre.d/'
 PATH_CLEANUP_POST_SCRIPTS = '/usr/lib/univention-system-setup/cleanup-post.d/'
 
 
 def cleanup():
-	# re-direct stdout to setup log file
-	sys.stdout = open(LOG_FILE, 'a')
-	sys.stderr = sys.stdout
-
 	temp_dir = mkdtemp()
 
 	pre_dir = os.path.join(temp_dir, 'pre')
@@ -63,7 +58,6 @@ def cleanup():
 
 	shutil.rmtree(temp_dir)
 
-	sys.stdout.close()
 	sys.exit(0)
 
 if __name__ == "__main__":

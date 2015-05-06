@@ -1,3 +1,10 @@
+univention-system-setup (8.1.66-41) unstable; urgency=low
+
+  * Bug #38332: cleanup.py does no longer redirect its output by
+    default. util.py has been adapted accordingly
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 06 May 2015 14:24:46 +0200
+
 univention-system-setup (8.1.66-40) unstable; urgency=low
 
   * Bug #38393: Improve error handling in 05_role/10role 

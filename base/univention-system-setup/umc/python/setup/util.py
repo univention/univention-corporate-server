@@ -79,7 +79,7 @@ PATH_PASSWORD_FILE = '/var/cache/univention-system-setup/secret'
 CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-restart']
 CMD_ENABLE_EXEC_WITH_RESTART = '/usr/share/univention-updater/enable-apache2-umc'
 CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
-CMD_CLEANUP_SCRIPT = '/usr/lib/univention-system-setup/scripts/cleanup.py'
+CMD_CLEANUP_SCRIPT = '/usr/lib/univention-system-setup/scripts/cleanup.py >>/var/log/univention/setup.log 2>&1'
 CITY_DATA_PATH = '/usr/share/univention-system-setup/city_data.json'
 COUNTRY_DATA_PATH = '/usr/share/univention-system-setup/country_data.json'
 
