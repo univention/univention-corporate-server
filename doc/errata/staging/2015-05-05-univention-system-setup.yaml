@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-system-setup
-fix: 8.1.66-41.882.201505061429
+fix: 8.1.66-42.883.201505061803
 version: [1]
 desc: |
   This errata update addresses the following issues:
@@ -11,4 +11,7 @@ desc: |
   * The setup script 05_role/10role has been speeded up. It creates hard-links
     instead of copying packages into the dpkg cache.
   * Improved logging when running setup-join: run-parts now prints filenames.
-bug: [38332,38393]
+  * Requests for page refresh could eventually occur on systems with an initial
+    system time in the past. These requests are now disabled during the setup
+    join process.
+bug: [38332,38393,38455]
