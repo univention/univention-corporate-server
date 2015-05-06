@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-system-setup
-fix: 8.1.66-40.881.201505061139
+fix: 8.1.66-41.882.201505061429
 version: [1]
 desc: |
   This errata update addresses the following issues:
@@ -10,6 +10,7 @@ desc: |
     from the command line
   * The setup script 05_role/10role has been sped up. It no longer
     copies packages into the dpkg cache, but creates hard-links
+  * Cleanup.py logs to stdout and stderr by default from now on
   * Improved logging when running setup-join: run-parts now prints
     filenames
 bug: [38332,38393]
