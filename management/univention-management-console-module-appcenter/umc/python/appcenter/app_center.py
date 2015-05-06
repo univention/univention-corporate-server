@@ -960,6 +960,7 @@ class Application(object):
 		for required, present in comparisons:
 			if int(required or 0) > int(present):
 				return {'required_version': required_version}
+		return True
 
 	@HardRequirement('install', 'update')
 	def must_have_valid_license(self):
