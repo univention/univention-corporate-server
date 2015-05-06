@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-25) unstable; urgency=low
+
+  * Bug #38042: Wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 06 May 2015 13:34:40 +0200
+
 univention-management-console-module-appcenter (4.1.20-24) unstable; urgency=low
 
   * Bug #38042: Fix RequiredUCSVersion check

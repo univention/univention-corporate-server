@@ -573,7 +573,7 @@ msgstr "Öffnen"
 
 #: umc/js/appcenter/requirements.js:150
 msgid "Open \"Domain join\" module"
-msgstr "Module \"Domänenbeitritt\" öffnen"
+msgstr "Modul \"Domänenbeitritt\" öffnen"
 
 #: umc/js/appcenter/requirements.js:102
 msgid "Open \"Software update\" module"
