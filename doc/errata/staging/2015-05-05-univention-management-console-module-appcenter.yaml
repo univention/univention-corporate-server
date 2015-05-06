@@ -2,11 +2,11 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-management-console-module-appcenter
-fix: 4.1.20-22.344.201505061151
+fix: 4.1.20-25.347.201505061336
 version: [1]
 desc: |
   This update addresses the following issues:
   * Apps may now define a minimal UCS version below which the app may not
     be installed.
-  * While installing packages, Apache can now be restarted.
+  * Do not prevent apache from restarting while installing packages.
 bug: [38042, 38446]
