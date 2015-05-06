@@ -5,7 +5,7 @@
 #
 # QT notifier wrapper
 #
-# Copyright (C) 2004, 2005, 2006, 2007
+# Copyright (C) 2004, 2005, 2006, 2007, 2014
 #	Andreas Büsching <crunchy@bitkipper.net>
 #
 # This library is free software; you can redistribute it and/or modify

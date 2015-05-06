@@ -1,3 +1,13 @@
+2014-12-25  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/version.py: set version to 0.9.7
+
+2014-12-25  Andreas Büsching  <crunchy@bitkipper.net>
+
+	* notifier/nf_qt.py: applied patch from Sönke Schwardt-Krummrich
+	<schwardt@univention.de> fixing problems with timer_add if there
+	is no QCoreApplication instance
+
 2014-07-03  Andreas Büsching  <crunchy@bitkipper.net>
 
 	* examples/test-twisted.py: demonstrate usage of dispatcher and
@@ -20,7 +30,7 @@
 	remove unneeded globals; fix check for None (== None → is None)
 	fix stopping of loop when timer returns falsy value
 	fix typo in example script
-	
+
 2012-03-31  Andreas Büsching  <crunchy@bitkipper.net>
 
 	* notifier/version.py: set version to 0.9.5

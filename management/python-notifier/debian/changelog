@@ -1,3 +1,10 @@
+python-notifier (0.9.7-3) unstable; urgency=low
+
+  * Bug #37457: update version
+  * cherry-pick 8a8352a7849f2362ddde82daf1c1febf5d295953
+
+ -- Florian Best <best@univention.de>  Wed, 06 May 2015 19:31:54 +0200
+
 python-notifier (0.9.7-2) unstable; urgency=medium
 
   * Bug #37457: revert dh_python2 use
