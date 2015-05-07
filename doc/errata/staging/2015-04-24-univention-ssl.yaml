@@ -5,6 +5,6 @@ src: univention-ssl
 fix: 9.0.4-4.156.201504241620
 version: [1]
 desc: |
-  This errata update addresses the following issues:
+  This errata update addresses the following issue:
   * Fixed an endless loop when invalid values for certificates are supplied.
 bug: [38125]
