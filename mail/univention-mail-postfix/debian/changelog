@@ -1,3 +1,9 @@
+univention-mail-postfix (9.0.0-24) unstable; urgency=low
+
+  * Bug #30043: add <..> arround hyperlinks in UCR variable description
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 07 May 2015 11:26:29 +0200
+
 univention-mail-postfix (9.0.0-23) unstable; urgency=low
 
   * Bug #30043: fix typo in variable description
