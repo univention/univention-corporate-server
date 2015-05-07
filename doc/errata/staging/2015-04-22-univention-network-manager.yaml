@@ -5,7 +5,7 @@ src: univention-network-manager
 fix: 6.0.0-2.103.201504221359
 version: [1]
 desc: |
-  This errata update addresses the following issue:
+  This errata update addresses the following issues:
   * An error in a network script terminated the DHCP script responsible for
     updating the network configuration too early, which lead to RFC3442
     classless routes not being applied.
