@@ -955,7 +955,7 @@ The Squid configuration can now be extended with custom ACLs via &ucsUCRV;s (<u:
 		<title>Container Technologies</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The container technology software docker.io is now available under UCS to pull and run Docker containers (<u:bug>37642</u:bug>).
+					The container technology software docker.io is now available under UCS to pull and run Docker containers (<u:bug>37642</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 	</section>
