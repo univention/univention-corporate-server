@@ -1,4 +1,4 @@
-/* product: ucs */
+product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-5
 src: sudo
