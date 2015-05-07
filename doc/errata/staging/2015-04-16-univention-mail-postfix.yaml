@@ -17,6 +17,6 @@ desc: |
     (thanks to Lutz Willek).
   * Add options to check IP-FQDN-mapping to fight spam. Adds UCR variables
     mail/postfix/smtpd/restrictions/sender/require_reverse_dns and
-    mail/postfix/smtpd/restrictions/sender/require_forward-confirmed_reverse
-    dns for weaker and stricter rDNS checking respectively.
+    mail/postfix/smtpd/restrictions/sender/require_forward-confirmed_reverse_dns
+    for weaker and stricter reverse DNS checking respectively.
 bug: [30043,38043,38044,38292]
