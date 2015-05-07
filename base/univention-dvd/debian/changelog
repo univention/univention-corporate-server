@@ -1,3 +1,9 @@
+univention-dvd (0.2.29-3) unstable; urgency=low
+
+  * Bug #38422: UCS-4.0-2 DVD
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 May 2015 12:27:37 +0200
+
 univention-dvd (0.2.29-2) unstable; urgency=low
 
   * Bug #38152: Fix symblic links in firmware/ directory
