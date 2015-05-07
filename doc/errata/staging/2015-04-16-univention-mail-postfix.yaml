@@ -20,8 +20,4 @@ desc: |
       mail/postfix/tls/client/mandatory_protocols
       mail/postfix/tls/client/protocols
     Thanks to Lutz Willek.
-  * Add options to check IP-FQDN-mapping to fight spam. Adds UCR variables
-    mail/postfix/smtpd/restrictions/sender/require_reverse_dns and
-    mail/postfix/smtpd/restrictions/sender/require_forward-confirmed_reverse_dns
-    for weaker and stricter reverse DNS checking respectively.
-bug: [30043,38043,38044,38292]
+bug: [30043,38043,38044]
