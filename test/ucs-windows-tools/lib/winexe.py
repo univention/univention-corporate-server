@@ -329,6 +329,11 @@ class WinExe:
 		return self.winexec("create-user-and-add-to-group", username, password, groupname)
 
 
+	def force_gpo_update(self):
+		''' Runs gpupdate.exe /force '''
+		return self.winexec('cmd /C "gpupdate.exe /force"', dont_fail=True)
+
+
 	def get_gpo_report(self, gpo_name, server):
 		''' returns gpo report for the self.client on the server in the domain '''
 

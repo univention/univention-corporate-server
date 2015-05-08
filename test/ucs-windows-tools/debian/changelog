@@ -1,3 +1,9 @@
+ucs-windows-tools (2.0.9-2) unstable; urgency=low
+
+  * lib/winexe.py: added function to do "gpupdate.exe /force" (Bug #37568).
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 08 May 2015 11:39:42 +0200
+
 ucs-windows-tools (2.0.9-1) unstable; urgency=low
 
   * lib/winexe.py: added domain_mode as argument to
