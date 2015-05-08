@@ -182,13 +182,13 @@
 			<title>OpenLDAP</title>
 			<itemizedlist>
 				<listitem><simpara>
-						If a password has been changed via Samba 4, the account expiry setting was not always considered.
-						This has been fixed (<u:bug>38060</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
 						Support for the UCS Core Edition license has been added.
 						Every <phrase>Free for personal use</phrase> license can easily be migrated to the UCS Core Edition.
 						Details can be found in the <u:sdb>1324</u:sdb> (<u:bug>38107</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						If a password has been changed via Samba 4, the account expiry setting was not always considered.
+						This has been fixed (<u:bug>38060</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 
@@ -240,10 +240,62 @@
 			<itemizedlist>
 				<listitem><simpara>
 						The version of the <package>Dojo Toolkit</package> has been updated from 1.10.2 to 1.10.4.
-						Support for <application>IE11</application> in the Dojo module <package>dojo/uacss</package> has been added (<u:bug>38225</u:bug>.
+						Support for <application>IE11</application> in the Dojo module <package>dojo/uacss</package> has been added (<u:bug>38225</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						It is now possible to request a single-sign-on login token for <systemitem class="systemname">localhost</systemitem> (<u:bug>37347</u:bug>).
+						If host name or user name are too long for the menu labels in the header, their length is now trimmed and <guilabel>...</guilabel> is shown.
+						The positioning of the <guilabel>back to overview</guilabel> header button has been adjusted.
+						The UMC background image has been adjusted.
+						The default search button has been adjusted to be smaller and to only contain an icon instead of text.
+						The UMC header menus have been adjusted in their positioning on small screens and they have been styled with icons.
+						The style of modules and module headers has been slightly adjusted.
+						Pop-up dialogues that need no verification now have a close icon.
+						Notifications must now be closed via a close icon.
+						The label for module buttons is now centred if there is enough space (<u:bug>37780</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						An error prevented the execution of stopping virtual machines as well as reporting erroneous UMC behaviour.
+						These can now be executed again (<u:bug>37892</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Changed the cursor to a pointer when hovering grid row actions (<u:bug>37197</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						A help icon has been added to the login dialogue (<u:bug>37804</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						SVG icon images had under specific circumstances display problems in Internet Explorer 11.
+						For Internet Explorer, the icons are displayed now in the PNG format (<u:bug>38225</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Displaying of the UMC reload dialogue has been adjusted (<u:bug>37565</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The automatic selection of the first item in a list widget (e.g., in the installed system locales in language settings) has been removed (<u:bug>33199</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Methods for resetting UMC modules and renewing a session have been added <u:bug>37347</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Pass the <emphasis>required</emphasis> attribute to sub widgets of the <classname>ComplexInput</classname> widget (<u:bug>36539</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						An animation has been added for opening and hiding modules (<u:bug>37899</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Update references to <uri>www.univention.de</uri> (<u:bug>37908</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+  The activation of UCS with a personalized license key as well as the import process of a new license file has been improved w.r.t. the usability (<u:bug>38132</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The UMC grid can now take care of cleaning up orphaned widget references that could lead to a growing memory consumption in the browser (particular in UVMM) (<u:bug>36615</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The Univention management console web server and the upload widgets can now handle uploading several files at once and are capable of drag and drop (<u:bug>38276</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Some label texts in the Services modules have been improved, and icons have been added for the module actions (<u:bug>36564</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -251,7 +303,7 @@
 		<section id="changelog:umc:server">
 			<title>Univention Management Console server</title>
 			<itemizedlist>
-				<listitem><simpara><!--staging-->
+				<listitem><simpara>
 						The package <package>python-notifier</package> has been updated to version 0.9.7.
 						This fixes a bug which could cause a UMC server crash in specific circumstances (<u:bug>37457</u:bug>).
 				</simpara></listitem>
@@ -264,7 +316,13 @@
 				</simpara></listitem>
 				<listitem><simpara>
 						User preferences as well as favourite UMC modules could not be saved into the LDAP under specific circumstances.
-						This behaviour has been adjusted (<u:bug>38222</u:bug>.
+						This behaviour has been adjusted (<u:bug>38222</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						It is now possible to request a single-sign-on login token for <systemitem class="systemname">localhost</systemitem> (<u:bug>37347</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The number of parallel and open request in the UMC webserver has been raised and can now be configured via the &ucsUCRV; <envar>umc/http/maxthreads</envar> (<u:bug>37851</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -276,7 +334,7 @@
 						After installing an app, all pending join scripts are called with the credentials of the currently logged-in user (<u:bug>36822</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						After installing apps or software packages, UMC modules are now reset, the UMC session is renewed automatically, and a page reload is done only if really necessary (<u:bug>37347</u:bug>)).
+						After installing apps or software packages, UMC modules are now reset, the UMC session is renewed automatically, and a page reload is done only if really necessary (<u:bug>37347</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 						Add support for <property>WebInterfacePortHTTP</property> and <property>HTTPS</property> in the ini file of an app (<u:bug>35456</u:bug>).
@@ -295,6 +353,85 @@
 				</simpara></listitem>
 				<listitem><simpara><!--staging-->
 						Apache may now be restarted by packages during installation via the <guimenuitem>Package Management</guimenuitem> module (<u:bug>38446</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:udmcli">
+			<title>&ucsUDM; UMC modules and command line interface</title>
+			<itemizedlist>
+				<listitem><simpara>
+						Support for the UCS Core Edition license has been added.
+						Every "Free for personal use" license can easily be migrated to the UCS Core Edition.
+						Details can be found in the <u:sdb>1324</u:sdb> (<u:bug>38103</u:bug> and <u:bug>38104</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Remove an attribute formerly used by Univention Net Installer from various computer modules (<u:bug>37560</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Fix tracebacks due to incorrect checks whether an object exists (<u:bug>37119</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Creating a simple authentication account is now much faster (<u:bug>37607</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Adjust an error message of the <classname>PrinterURI</classname> syntax class (<u:bug>36711</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Prevent de-installation of essential packages when creating a slave/master/member-server packages policy (<u:bug>36539</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Replaced the term <guilabel>General</guilabel> by a more descriptive title in various UDM modules (<u:bug>36401</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Improved error message format (<u:bug>37740</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Don't create a pointer record if no forward zone could be determined when modifying a computer object (<u:bug>37504</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Repair <option>--policies</option> option of UDM command line tool (<u:bug>21585</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Added appropriate validation for the mail domain name.
+						To restore the old behaviour it is possible to overwrite the syntax from the CLI:
+						<command>ucr set directory/manager/web/modules/mail/domain/properties/name/syntax='string'</command> (<u:bug>34552</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						DVS and support information has been removed from <command>univention-license-check</command> (<u:bug>38203</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Two attributes <property>domainPasswordComplex</property> and <property>domainPasswordStoreCleartext</property> have been added to the <classname>sambadomain</classname> settings module (<u:bug>28331</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Labels of multi value fields in UDM modules have been adjusted to be more consistent (<u:bug>32760</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The appearance of the search and advanced search button has been adjusted.
+						Shortened the description for the <guilabel>Back to search</guilabel> and <guilabel>Save changes</guilabel> buttons to <guilabel>Back</guilabel> and <guilabel>Save</guilabel> (<u:bug>37780</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The module cache is cleared now with the internal registration mechanism (<u:bug>37347</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						A pop-up notification about automatically set default values was displayed for values which were disabled by the selected options.
+						This has been fixed (<u:bug>37711</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Fix format of error message in specific circumstances (<u:bug>36711</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Execute UDM requests again if an LDAP error occurs due to timeout problems (<u:bug>37740</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Policy labels are now correctly displayed with an edit link.
+						Changes on a UDM object can now be saved by pressing 'Return' on the keyboard (<u:bug>36708</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Update a warning icon (<u:bug>36460</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						DVS and support information has been removed from the license information dialogue (<u:bug>38203</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -337,7 +474,7 @@
 						This has been done in order to avoid access problems at the end of the wizard when accessing UMC via HTTPS (<u:bug>37771</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						The city search widget has been improved w.r.t. its usability (<!-- FIXME u:bug>00000</u:bug-->).
+						The city search widget has been improved w.r.t. its usability (<u:bug>37771</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 						The progress bar has been adjusted to reach 100%, its localization has been corrected to match the chosen one, and its output has been improved (<u:bug>35550</u:bug>).
@@ -348,21 +485,17 @@
 				<listitem><simpara>
 						Fixed wrong URL for advanced UVMM network setup (<u:bug>38314</u:bug>).
 				</simpara></listitem>
-				<listitem><simpara><!--staging-->
+				<listitem><simpara>
 						Cleanup scripts will now be executed if <command>setup-join.sh</command> is called from the command line.
 						All output is logged to STDOUT/STDERR (<u:bug>38332</u:bug>).
 				</simpara></listitem>
-				<listitem><simpara><!--staging-->
+				<listitem><simpara>
 						The setup script <filename>05_role/10role</filename> has been speeded up.
 						It creates hard-links instead of copying packages into the <application>dpkg</application> cache (<u:bug>38393</u:bug>).
 				</simpara></listitem>
-				<listitem><simpara><!--staging-->
-						Improved logging when running <command>setup-join</command>:
-						<command>run-parts</command> now prints filenames (<!-- FIXME u:bug>00000</u:bug-->).
-				</simpara></listitem>
 				<listitem><simpara>
-						An error prevented the execution of stopping virtual machines as well as reporting erroneous UMC behaviour.
-						These can now be executed again (<u:bug>37892</u:bug>).
+						Improved logging when running <command>setup-join</command>:
+						<command>run-parts</command> now prints filenames (<u:bug>38332</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -412,8 +545,8 @@
 			</itemizedlist>
 		</section>
 
-		<section id="changelog:umc:diag">
-			<title>System diagnostic module</title>
+		<section id="changelog:umc:top">
+			<title>Process overview module</title>
 			<itemizedlist>
 				<listitem><simpara>
 						Prevent an error if the user of an process is unknown (<u:bug>33923</u:bug>).
@@ -428,7 +561,7 @@
 		</section>
 
 		<section id="changelog:umc:update">
-			<title>Online update module</title>
+			<title>Software update module</title>
 			<itemizedlist>
 				<listitem><simpara>
 						Hide the <guilabel>Back</guilabel> button during upgrading the system (<u:bug>37741</u:bug>).
@@ -533,147 +666,7 @@
 			<title>Other modules</title>
 			<itemizedlist>
 				<listitem><simpara>
-						If host name or user name are too long for the menu labels in the header, their length is now trimmed and <guilabel>...</guilabel> is shown.
-						The positioning of the <guilabel>back to overview</guilabel> header button has been adjusted.
-						The UMC background image has been adjusted.
-						The default search button has been adjusted to be smaller and to only contain an icon instead of text.
-						The UMC header menus have been adjusted in their positioning on small screens and they have been styled with icons.
-						The style of modules and module headers has been slightly adjusted.
-						The label for module buttons is centred if there is enough space (<u:bug>37780</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Changed the cursor to a pointer when hovering grid row actions (<u:bug>37197</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						A help icon has been added to the login dialogue (<u:bug>37804</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						SVG icon images had under specific circumstances display problems in Internet Explorer 11.
-						For Internet Explorer, the icons are displayed now in the PNG format (<u:bug>38225</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Displaying of the UMC reload dialogue has been adjusted (<u:bug>37565</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						The automatic selection of the first item in a list widget (e.g., in the installed system locales in language settings) has been removed (<u:bug>33199</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						The positioning of the <guilabel>back to overview</guilabel> header button has been adjusted.
-						The default search button has been adjusted to be smaller and to only contain an icon instead of text.
-						The UMC header menus have been adjusted in their positioning on small screens and they have been styled with icons.
-						Methods for resetting UMC modules and renewing a session have been added.
-						Notifications must now be closed via a close icon.
-						Pop-up dialogues that need no verification now have a close icon.
-						The label for module buttons is now centred if there is enough space (<u:bug>37780</u:bug> <u:bug>37347</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						The number of parallel and open request in the UMC webserver has been raised and can now be configured via the &ucsUCRV; <envar>umc/http/maxthreads</envar> (<u:bug>37851</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Pass the <emphasis>required</emphasis> attribute to sub widgets of the <classname>ComplexInput</classname> widget (<u:bug>36539</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						An animation has been added for opening and hiding modules (<u:bug>37899</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Policy labels are now correctly displayed with an edit link (<u:bug>36708</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Update references to <uri>www.univention.de</uri> (<u:bug>37908</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-  The activation of UCS with a personalized license key as well as the import process of a new license file has been improved w.r.t. the usability (<u:bug>38132</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						The UMC grid can now take care of cleaning up orphaned widget references that could lead to a growing memory consumption in the browser (particular in UVMM) (<u:bug>36615</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						The Univention management console web server and the upload widgets can now handle uploading several files at once and are capable of drag and drop (<u:bug>38276</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Some label texts in the Services modules have been improved, and icons have been added for the module actions (<u:bug>36564</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
   The rendering of the list view has been optimized (<u:bug>36569</u:bug>).
-				</simpara></listitem>
-			</itemizedlist>
-		</section>
-
-		<section id="changelog:umc:udmcli">
-			<title>&ucsUDM; command line interface and related tools</title>
-			<itemizedlist>
-				<listitem><simpara>
-						Remove an attribute formerly used by Univention Net Installer from various computer modules (<u:bug>37560</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Fix tracebacks due to incorrect checks whether an object exists (<u:bug>37119</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Creating a simple authentication account is now much faster (<u:bug>37607</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Adjust an error message of the <classname>PrinterURI</classname> syntax class (<u:bug>36711</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Prevent de-installation of essential packages when creating a slave/master/member-server packages policy (<u:bug>36539</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Replaced the term <guilabel>General</guilabel> by a more descriptive title in various UDM modules (<u:bug>36401</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Improved error message format (<u:bug>37740</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Don't create a pointer record if no forward zone could be determined when modifying a computer object (<u:bug>37504</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Repair <option>--policies</option> option of UDM command line tool (<u:bug>21585</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Added appropriate validation for the mail domain name.
-						To restore the old behaviour it is possible to overwrite the syntax from the CLI:
-						<command>ucr set directory/manager/web/modules/mail/domain/properties/name/syntax='string'</command> (<u:bug>34552</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						DVS and support information has been removed from <command>univention-license-check</command> (<u:bug>38203</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Two attributes <property>domainPasswordComplex</property> and <property>domainPasswordStoreCleartext</property> have been added to the <classname>sambadomain</classname> settings module (<u:bug>28331</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Labels of multi value fields in UDM modules have been adjusted to be more consistent (<u:bug>32760</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						The appearance of the search and advanced search button has been adjusted.
-						Shortened the description for the <guilabel>Back to search</guilabel> and <guilabel>Save changes</guilabel> buttons to <guilabel>Back</guilabel> and <guilabel>Save</guilabel> (<u:bug>37780</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						The module cache is cleared now with the internal registration mechanism (<u:bug>37347</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						A pop-up notification about automatically set default values was displayed for values which were disabled by the selected options.
-						This has been fixed (<u:bug>37711</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Fix format of error message in specific circumstances (<u:bug>36711</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Execute UDM requests again if an LDAP error occurs due to timeout problems (<u:bug>37740</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Policy labels are now correctly displayed with an edit link.
-						Changes on a UDM object can now be saved by pressing 'Return' on the keyboard (<u:bug>36708</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Update a warning icon (<u:bug>36460</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Support for the UCS Core Edition license has been added.
-						Every "Free for personal use" license can easily be migrated to the UCS Core Edition.
-						Details can be found in the <u:sdb>1324</u:sdb> (<u:bug>38103</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						DVS and support information has been removed from the license information dialogue (<u:bug>38203</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -842,7 +835,7 @@ The Squid configuration can now be extended with custom ACLs via &ucsUCRV;s (<u:
 						Kill and restart the <package>apache</package> process in the init script if a reload crashes the <package>apache</package> process (<u:bug>37792</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						The <package>Apache</package> web server does not close all inherited file descriptors by itself, which can lead to other processes being block indefinitely (<u:bug>37952</u:bug>).
+						The <package>Apache</package> web server did not close all inherited file descriptors by itself, which could lead to other processes being block indefinitely. This behaviour has been corrected (<u:bug>37952</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 						The UCS overview background image has been adjusted.
@@ -1014,12 +1007,8 @@ The Squid configuration can now be extended with custom ACLs via &ucsUCRV;s (<u:
 		<itemizedlist>
 			<listitem>
 				<simpara>
-					The following packages have been added to the maintained package repository
-					(<u:bug>36467</u:bug>):
+					Several packages have been added to the maintained package repository of UCS (<u:bug>36467</u:bug>).
 				</simpara>
-				<itemizedlist spacing="compact">
-					<listitem><simpara><package>...</package></simpara></listitem>
-				</itemizedlist>
 			</listitem>
 			<listitem><simpara>
 					The list of public SSL root certificates has been updated (<u:bug>37885</u:bug>).
