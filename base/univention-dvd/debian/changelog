@@ -1,3 +1,9 @@
+univention-dvd (0.2.29-5) unstable; urgency=medium
+
+  * Added docker.io to maintained (Bug #37642)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 08 May 2015 06:08:16 +0200
+
 univention-dvd (0.2.29-4) unstable; urgency=low
 
   * Bug #38422: UCS-4.0-2 DVD
