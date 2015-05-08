@@ -84,7 +84,7 @@ if [ "$1" = "configure" ]; then
 		update/check/boot/debug?no \
 		update/available?no \
 		version/version?4.0 \
-		version/patchlevel?1 \
+		version/patchlevel?2 \
 		version/erratalevel?0 \
 		uuid/system?"$(cat /proc/sys/kernel/random/uuid)"
 

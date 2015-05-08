@@ -1,3 +1,9 @@
+univention-updater (10.0.54-2) unstable; urgency=low
+
+  * Bug #38416: Bump patchlevel version
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 08 May 2015 16:35:57 +0200
+
 univention-updater (10.0.54-1) unstable; urgency=low
 
   * Bug #38416: Adapt preup/postup.sh
