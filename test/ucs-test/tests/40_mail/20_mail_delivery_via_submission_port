@@ -1,0 +1,61 @@
+#!/usr/share/ucs-test/runner python
+## desc: Mail delivery via submission port
+## tags: apptest
+## exposure: dangerous
+## packages: [univention-mail-server]
+
+from essential.mail import send_mail, mail_delivered
+import smtplib
+import time
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+
+def check_sending_mail(recipient_email, encryption_enabled,  should_be_delivered):
+	submission_port = 587
+	delivery_timeout = 60 # sec
+	delivered = False
+	token = str(time.time())
+	try:
+		send_mail(recipients=recipient_email, msg=token, port=submission_port, tls=encryption_enabled)
+		for i in xrange(delivery_timeout):
+			if not mail_delivered(token, mail_address=recipient_email):
+				time.sleep(1)
+				print "%s is waiting for email to be delivered ..." % recipient_email
+			else:
+				delivered = True
+				break
+		if should_be_delivered and not delivered:
+			utils.fail('Mail sent with token = %r to %s was not delivered' % (token, recipient_email))
+	except smtplib.SMTPSenderRefused as ex:
+		if should_be_delivered:
+			utils.fail('Mail sent failed with exception: %s' % ex)
+
+
+def main():
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		with udm_test.UCSTestUDM() as udm:
+			domain = ucr.get('domainname')
+			recipient_email = '%s@%s' % (uts.random_name(), domain )
+			userdn, username = udm.create_user(
+				set={
+					'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+					'mailPrimaryAddress': recipient_email,
+				}
+			)
+
+			# Normal sending with tls enabled
+			check_sending_mail(recipient_email, True, True)
+
+			# Test sending wihtout tls enabled
+			check_sending_mail(recipient_email, False, False)
+
+			# Test sending to foreign domain
+			check_sending_mail('noreply@univention.de', True, False)
+
+
+if __name__ == '__main__':
+    main()
+# vim: ft=python:ts=4:sw=4:noet:
