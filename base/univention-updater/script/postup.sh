@@ -72,13 +72,6 @@ is_ucr_true () {
     esac
 }
 
-# reinstall apps
-for app in $update_ucs401_installedapps; do
-	install "$app"
-done
-ucr unset update/ucs401/installedapps  >>"$UPDATER_LOG" 2>&1
-
-
 if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
 	install univention-basesystem
 elif [ "$server_role" = "domaincontroller_master" ]; then
@@ -95,7 +88,7 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	install univention-managed-client
 fi
 
-# Update to UCS 4.0-1 autoremove
+# Update to UCS 4.0 autoremove
 if ! is_ucr_true update40/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
 fi
@@ -130,14 +123,14 @@ fi
 
 # Move to mirror mode for previous errata component
 ucr set \
-	repository/online/component/4.0-0-errata=false \
-	repository/online/component/4.0-0-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
+	repository/online/component/4.0-1-errata=false \
+	repository/online/component/4.0-1-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
 
-# Set errata component for UCS 4.0-1
+# Set errata component for UCS 4.0-2
 ucr set \
-	repository/online/component/4.0-1-errata=enabled \
-	repository/online/component/4.0-1-errata/description="Errata updates for UCS 4.0-1" \
-	repository/online/component/4.0-1-errata/version="4.0" >>"$UPDATER_LOG" 2>&1
+	repository/online/component/4.0-2-errata=enabled \
+	repository/online/component/4.0-2-errata/description="Errata updates for UCS 4.0-2" \
+	repository/online/component/4.0-2-errata/version="4.0" >>"$UPDATER_LOG" 2>&1
 
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then

@@ -77,8 +77,8 @@ readcontinue ()
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-echo " English version: http://docs.univention.de/release-notes-4.0-1-en.html"
-echo " German version:  http://docs.univention.de/release-notes-4.0-1-de.html"
+echo " English version: http://docs.univention.de/release-notes-4.0-2-en.html"
+echo " German version:  http://docs.univention.de/release-notes-4.0-2-de.html"
 echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
@@ -301,44 +301,6 @@ then
 	fi
 fi
 
-mark_app_as_installed ()
-{
-	previous_apps="$(ucr get update/ucs40/installedapps)"
-	if [ -z "$previous_apps" ]; then
-		/usr/sbin/ucr set update/ucs401/installedapps="$1" >&3 2>&3
-	else
-		/usr/sbin/ucr set update/ucs401/installedapps="$previous_apps $1"  >&3 2>&3
-	fi
-}
-
-# Mark all installed apps and components as installed and reinstall them
-# in postup.sh if necessary
-for app in 7i4ucs-123 7i4ucs-dokuwiki 7i4ucs-svn 7i4ucs-trac 7i4ucs-wordpress \
-	agorumcore-pro agorumcore-ucs agorumcore-ucs-schema \
-	asterisk4ucs-testasterisk asterisk4ucs-udm asterisk4ucs-udm-schema asterisk4ucs-umc-deploy \
-	asterisk4ucs-umc-music asterisk4ucs-umc-user \
-	audriga-groupware-migration digitec-sugarcrm-web digitec-sugarcrm-zip-ce \
-	drbd-meta-pkg edyou kivitendo kix4otrs-meta-6 kolab-admin kolabsys-kolab2 \
-	linotp-ucs noctua owncloud owncloud-meta-5.0 owncloud-meta-6.0 owncloud-schema \
-	plucs plucs-schema python-univention-directory-manager-ucc sesam-srv tine20-ucs \
-	ucc-management-integration ucc-server ucs-school-umc-installer univention-ad-connector \
-	univention-bacula-enterprise univention-bareos univention-bareos-schema \
-	univention-corporate-client-schema univention-demoapp univention-fetchmail \
-	univention-fetchmail-schema univention-icinga univention-kde univention-klms \
-	univention-mail-horde univention-mail-server univention-management-console-module-adtakeover \
-	univention-nagios-server univention-openvpn-master univention-openvpn-schema \
-	univention-openvpn-server univention-ox-dependencies-master univention-ox-meta-singleserver \
-	univention-ox-text univention-pkgdb univention-printserver univention-printquota \
-	univention-printserver-pdf ucs-school-ucc-integration ucs-school-umc-printermoderation univention-pulse \
-	univention-radius univention-s4-connector univention-samba univention-samba4 \
-	univention-saml univention-saml-schema univention-squid univention-virtual-machine-manager-daemon \
-	univention-virtual-machine-manager-node-kvm univention-xrdp zarafa4ucs zarafa4ucs-udm z-push
-do
-	case "$(dpkg-query -W -f '${Status}' $app 2>/dev/null)" in
-	install*) mark_app_as_installed "$app";;
-	esac
-done
-
 # autoremove before the update
 if ! is_ucr_true update40/skip/autoremove; then
     DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
@@ -359,23 +321,6 @@ for pkg in $preups; do
 		echo "done."
 	fi
 done
-
-# Bug #37534
-{
-for file in passdb.tdb secrets.tdb schannel_store.tdb idmap2.tdb; do
-	oldpath="/var/lib/samba/$file"
-	newpath="/var/lib/samba/private/$file"
-	if [ -e "$oldpath" ] &&
-	   [ -e "$newpath" ] &&
-	   [ ! "$oldpath" -ef "$newpath" ]; then
-		ls -l "$oldpath" "$newpath"
-		backuppath="$oldpath.bak_$(date +%y%m%d)"
-		echo "$file exists in /var/lib/samba and /var/lib/samba/private,"
-		echo "renaming $oldpath to $backuppath"
-		mv "$oldpath" "$backuppath"
-	fi
-done
-} >&3 2>&3
 
 echo "** Starting: apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade" >&3 2>&3
 apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade >&3 2>&3

@@ -1,3 +1,9 @@
+univention-updater (10.0.54-1) unstable; urgency=low
+
+  * Bug #38416: Adapt preup/postup.sh
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 08 May 2015 14:00:37 +0200
+
 univention-updater (10.0.53-16) unstable; urgency=low
 
   * Bug #38248: drop details from message
