@@ -17,9 +17,6 @@
 				</para>
 				<itemizedlist>
 					<listitem><simpara>
-							<package>apache2</package> (<u:cve>2013-5704</u:cve>) (<u:bug>37792</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
 							<package>binutils</package> (<u:cve>2014-8484</u:cve> <u:cve>2014-8485</u:cve> <u:cve>2014-8501</u:cve> <u:cve>2014-8502</u:cve> <u:cve>2014-8503</u:cve> <u:cve>2014-8504</u:cve> <u:cve>2014-8737</u:cve> <u:cve>2014-8738</u:cve>) (<u:bug>36983</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara><!-- staging -->
