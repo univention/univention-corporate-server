@@ -20,7 +20,7 @@ def check_sending_mail(recipient_email, encryption_enabled, should_be_delivered,
 	token = str(time.time())
 	try:
 		ret_code = send_mail(recipients=recipient_email, msg=token, port=submission_port, tls=encryption_enabled)
-		if not(ret_code and should_be_allowed):
+		if (bool(ret_code) == should_be_allowed):
 			utils.fail('Sending allowed = %r, but return code = %r\n {} means there are no refused recipient' % (should_be_allowed, ret_code))
 		for i in xrange(delivery_timeout):
 			if not mail_delivered(token, mail_address=recipient_email):
