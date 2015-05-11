@@ -13,13 +13,15 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 
-def check_sending_mail(recipient_email, encryption_enabled,  should_be_delivered):
+def check_sending_mail(recipient_email, encryption_enabled, should_be_delivered, should_be_allowed):
 	submission_port = 587
 	delivery_timeout = 60 # sec
 	delivered = False
 	token = str(time.time())
 	try:
-		send_mail(recipients=recipient_email, msg=token, port=submission_port, tls=encryption_enabled)
+		ret_code = send_mail(recipients=recipient_email, msg=token, port=submission_port, tls=encryption_enabled)
+		if not(ret_code and should_be_allowed):
+			utils.fail('Sending allowed = %r, but return code = %r\n {} means there are no refused recipient' % (should_be_allowed, ret_code))
 		for i in xrange(delivery_timeout):
 			if not mail_delivered(token, mail_address=recipient_email):
 				time.sleep(1)
@@ -47,13 +49,13 @@ def main():
 			)
 
 			# Normal sending with tls enabled
-			check_sending_mail(recipient_email, True, True)
+			check_sending_mail(recipient_email, True, True, True)
 
 			# Test sending wihtout tls enabled
-			check_sending_mail(recipient_email, False, False)
+			check_sending_mail(recipient_email, False, False, True)
 
 			# Test sending to foreign domain
-			check_sending_mail('noreply@univention.de', True, False)
+			check_sending_mail('noreply@univention.de', True, False, False)
 
 
 if __name__ == '__main__':
