@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.22-17) unstable; urgency=low
+
+  * Bug #35148: Backport timeout error handling from r53257 
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 11 May 2015 10:12:41 +0200
+
 ucs-ec2-tools (0.1.22-16) unstable; urgency=low
 
   * Bug #35744: Add Jenkins URL.

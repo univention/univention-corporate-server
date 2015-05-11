@@ -81,6 +81,10 @@ def _split_config(lines):
 		yield line
 
 
+class TimeoutError(Exception):
+	pass
+
+
 class VM:
 	"""
 	Generic instance.
@@ -201,7 +205,7 @@ class VM:
 					time.sleep(5)
 					now = time.time()
 			else:
-				raise
+				raise TimeoutError(timeout)
 		# port probe if it's a windows host
 		else:
 			# if port 139 or 445 is open we should be able to connect to the windows host
@@ -718,7 +722,7 @@ class VM_EC2(VM):
 			now = time.time()
 		else:
 			self._log('Timeout waiting for instance')
-			raise
+			raise TimeoutError(timeout)
 
 
 def _print_process(msg):
