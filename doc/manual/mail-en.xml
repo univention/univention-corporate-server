@@ -388,7 +388,7 @@
 			  <entry>
 				<para>
 				  Access permissions based on users or groups can be entered
-				  here. Users are entered with their primary e-mail addresses; the groups saved
+				  here. Users are entered with their user name; the groups saved
 				  in &ucsUMC; can be used as groups.
 				</para>
 				<para>
