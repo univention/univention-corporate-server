@@ -144,8 +144,7 @@
 	  </para>
 	  <para>
 		Mail-Domänen werden im UMC-Modul <emphasis>E-Mail</emphasis>
-		mit dem Objekttyp <guimenu>Mail-Domäne</guimenu> verwaltet
-		(siehe auch <xref linkend="central:user-interface"/>).
+		mit dem Objekttyp <guimenu>Mail-Domäne</guimenu> verwaltet.
 	  </para>
 	</section>
 
@@ -193,8 +192,7 @@
 	  </para>
 
 	  <para>
-		E-Mail-Adressen werden im UMC-Modul <emphasis>Benutzer</emphasis> verwaltet
-		(siehe auch <xref linkend="central:user-interface"/>).
+		E-Mail-Adressen werden im UMC-Modul <emphasis>Benutzer</emphasis> verwaltet.
 		Die <guimenu>primäre E-Mail-Adresse</guimenu> wird im
 		Reiter <guimenu>Allgemein</guimenu> im Untermenü <guimenu>Benutzer-Konto</guimenu>
 		eingetragen.
@@ -203,7 +201,7 @@
 	  </para>
 	  <note>
 		<para>
-		Sobald das Benutzerkonto konfiguriert ist, kann eine Anmeldung am UCS-Mail-Stack (IMAP/POP3/SMTP)
+		Sobald das Benutzerkonto konfiguriert ist, kann eine Anmeldung am UCS-Mail-Stack (<systemitem class="service">IMAP</systemitem>/<systemitem class="service">POP3</systemitem>/<systemitem class="service">SMTP</systemitem>)
 		erfolgen. Wurde das Benutzerkonto deaktiviert (oder das Passwort geändert), ist
 		eine Anmeldung am Mail-Stack für eine Dauer von 30min weiterhin möglich. Der Grund hierfür
 		ist der Authentifizierungscache des Mail-Stacks.
@@ -232,8 +230,7 @@
 
 	  <para>
 		Mail-Domänen werden im UMC-Modul <emphasis>E-Mail</emphasis>
-		mit dem Objekttyp <guimenu>Mailingliste</guimenu> verwaltet
-		(siehe auch <xref linkend="central:user-interface"/>).
+		mit dem Objekttyp <guimenu>Mailingliste</guimenu> verwaltet.
 		Unter <guimenu>Name</guimenu> ist ein frei wählbarer Name der Mailingliste
 		anzugeben, die Angabe einer <guimenu>Beschreibung</guimenu> ist optional.
 		Als <guimenu>Mail-Adresse</guimenu> ist die E-Mail-Adresse der Mailingliste

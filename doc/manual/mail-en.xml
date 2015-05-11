@@ -143,8 +143,7 @@
 	  </para>
 	  <para>
 		Mail domains are managed in the UMC module <emphasis>Mail</emphasis>
-		with the <guimenu>Mail domain</guimenu> object type
-		(see <xref linkend="central:user-interface"/>).
+		with the <guimenu>Mail domain</guimenu> object type.
 	  </para>
 	</section>
 
@@ -185,8 +184,7 @@
 		  </listitem>
 		</itemizedlist>
 	  <para>
-		E-mail addresses are managed in the UMC module <emphasis>Users</emphasis>
-		(see <xref linkend="central:user-interface"/>).
+		E-mail addresses are managed in the UMC module <emphasis>Users</emphasis>.
 		The <guimenu>primary e-mail address</guimenu> is entered in
 		the <guimenu>General</guimenu> tab in the <guimenu>User account</guimenu>
 		submenu.
@@ -196,7 +194,7 @@
 	  <note>
 		<para>
 		Once the user account is properly configured authentication to the mail stack 
-		is possible (IMAP/SMTP). Please keep in mind that after disabling the account
+		is possible (<systemitem class="service">IMAP</systemitem>/<systemitem class="service">POP3</systemitem>/<systemitem class="service">SMTP</systemitem>). Please keep in mind that after disabling the account
 		or changing the password the login to the mail stack is still possible for 30min
 		due to authentication cache of the mail stack.
 		To invalidate the authentication cache restart the <systemitem class="service">saslauthd</systemitem>
@@ -222,8 +220,7 @@
 	  </para>
 	  <para>
 		Mail domains are managed in the UMC module <emphasis>Mail</emphasis>
-		with the <guimenu>Mailing list</guimenu> object type
-		(see <xref linkend="central:user-interface"/>).
+		with the <guimenu>Mailing list</guimenu> object type.
 		A name of your choice can be entered for the mailing list
 		under <guimenu>Name</guimenu>; the entry of a <guimenu>Description</guimenu>
 		is optional.
@@ -253,12 +250,12 @@
 	  <title>Management of mail groups</title>
 	  <para>
 		There is the possibility of creating a mail group: This is where an
-		e-mail address is assigned to a group. E-mails to this address are
+		e-mail address is assigned to a group of users. E-mails to this address are
 		delivered to the primary address of each of the group members.
 	  </para>
 	  <para>
 		Mail groups are managed in the UMC module <emphasis>Groups</emphasis>
-		(see <xref linkend="central:user-interface"/>).
+		(see <xref linkend="groups"/>).
 	  </para>
 	  <para>
 		The address of the mail group is specified in
@@ -293,8 +290,7 @@
 		Alternatively, individual IMAP folders can be shared for users or user
 		groups. This type of order is described as a shared IMAP folder.
 		Shared IMAP folders are managed in the UMC module <emphasis>Mail</emphasis>
-		with the <guimenu>Mail folder (IMAP)</guimenu> object type
-		(see <xref linkend="central:user-interface"/>).
+		with the <guimenu>Mail folder (IMAP)</guimenu> object type.
 	  </para>
 	  <para>
 		<figure id="mail-sharedfolder">
@@ -511,11 +507,14 @@
 	<title>Spam detection and filtering</title>
 	<para>
 	  Undesirable and unsolicited e-mails are designated as spam. The software
-	  SpamAssassin is integrated in UCS for the automatic identification of these
+	  SpamAssassin and Postgrey integrated in UCS for the automatic identification of these
 	  e-mails. SpamAssassin attempts to identify whether an e-mail is desirable or
 	  not based on heuristics concerning its origin, form and content.
-	  Integration occurs via the <package>univention-spamassassin</package>
-	  package, which is automatically set up during the installation of the mail
+	  Postgrey is a policy server for Postfix, which implements grey listing.
+	  Grey listing is a spam detection method which denies the first delivery attempt of external mail servers.
+	  Mail servers of spammers most often do not perform a second delivery attempt, while legitimate servers do so.
+	  Integration occurs via the packages <package>univention-spamassassin</package> and <package>univention-postgrey</package>,
+	  which are automatically set up during the installation of the mail
 	  server package.
 	</para>
 	<para>
@@ -549,8 +548,8 @@
 	  already gathered from processed e-mails and uses this to adapt it's
 	  evaluation to the user's e-mail.
 	  The Bayes classification is controlled by the user himself, whereby
-	  e-mails not identified as spam can be placed in the <emphasis>Spam</emphasis>
-	  subfolder and a selection of legitimate e-mails copied into
+	  e-mails not identified as spam by the system can be placed in the <emphasis>Spam</emphasis>
+	  subfolder by the user and a selection of legitimate e-mails copied into
 	  the <emphasis>Ham</emphasis> subfolder. This folder is evaluated daily and data
 	  which have not yet been collected or were previously classified
 	  incorrectly are collected in a shared database. This evaluation is
