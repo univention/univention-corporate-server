@@ -203,13 +203,13 @@ define([
 						certMsg = makeParagraphs([
 							_('Currently, an unencrypted connection to the Active Directory domain is used.'),
 							_('To achieve a higher level of security, the Active Directory root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate.'),
-							_('The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.')
+							_('The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-4.0.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.')
 						]);
 					} else {
 						certMsg = makeParagraphs([
 							_('Currently, an encrypted connection between UCS and the Active Directory domain is used.'),
 							_('To achieve a higher level of security, the Active Directory root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate.'),
-							_('The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.')
+							_('The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-4.0.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.')
 						]);
 					}
 				} else {

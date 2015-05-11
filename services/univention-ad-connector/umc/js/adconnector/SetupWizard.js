@@ -195,7 +195,7 @@ define([
 					name: 'info',
 					content: _paragraph(
 						_('An encrypted connection to the Active Directory domain could not be established. As a consequence authentication data is submitted in plaintext.'),
-						_('To enable an encrypted connection, a certification authority needs to be configured on the Active Directory server. All steps necessary are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.'),
+						_('To enable an encrypted connection, a certification authority needs to be configured on the Active Directory server. All steps necessary are described in the <a href="http://docs.univention.de/manual-4.0.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.'),
 						_('After the certification authority has been set up, press <i>Next</i> to proceed.')
 					)
 				}]
@@ -208,7 +208,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'info',
-					content: _('<p>To achieve a higher level of security, the Active Directory root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate. The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>. Alternatively, you may proceed without this configuration.</p>')
+					content: _('<p>To achieve a higher level of security, the Active Directory root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate. The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-4.0.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>. Alternatively, you may proceed without this configuration.</p>')
 
 				}, {
 					name: 'certificateUpload',
