@@ -1,3 +1,9 @@
+univention-net-installer (8.0.1-6) unstable; urgency=low
+
+  * Bug #35537: Skip scripts if not doing auto install
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 11 May 2015 23:34:56 +0200
+
 univention-net-installer (8.0.1-5) unstable; urgency=low
 
   * Bug #35537: Redirect setup-join.log
