@@ -68,7 +68,7 @@
 					<itemizedlist>
 						<listitem><simpara>Ein UCS System kann als Hostsystem für den Betrieb anderer Docker Images genutzt werden.</simpara></listitem>
 						<listitem><simpara>UCS steht in verschiedenen Systemrollen als fertiges Images zur Verfügung.</simpara></listitem>
-					</itemizedlist>.
+					</itemizedlist>
 					Weitere Informationen dazu unter <ulink url="http://wiki.univention.de/index.php?title=Docker"/>.
 			</para></listitem>
 
