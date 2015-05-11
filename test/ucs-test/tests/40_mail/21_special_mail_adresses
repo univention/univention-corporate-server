@@ -21,7 +21,7 @@ def check_sending_mail(recipient_email, should_be_allowed):
 		if (bool(ret_code) == should_be_allowed):
 			utils.fail('Sending allowed = %r, but return code = %r\n {} means there are no refused recipient' % (should_be_allowed, ret_code))
 		for i in xrange(delivery_timeout):
-			if not mail_delivered(token, mail_address=recipient_email, check_root=True):
+			if not mail_delivered(token, check_root=True):
 				time.sleep(1)
 				print "%s is waiting for email to be delivered ..." % recipient_email
 			else:
@@ -45,7 +45,6 @@ def main():
 						'mailPrimaryAddress': recipient_email,
 					}
 				)
-
 				check_sending_mail(recipient_email, True)
 
 
