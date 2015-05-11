@@ -843,6 +843,9 @@ postmap /etc/postfix/smtp_auth
 		linkend="mail::management::sharedfolder"/>) are assigned to a mail home server.
 	  </para>
 	  <para>
+		If the mail home server is changes for a user, the user's mail data is <emphasis>not</emphasis> moved to the server automatically.
+	  </para>
+	  <para>
 		The Cyrus Murder expansion is provided for the implementation of a
 		mailbox cluster.
 	  </para>
