@@ -1,9 +1,3 @@
-univention-ad-connector (9.0.11-11) unstable; urgency=medium
-
-  * Bug #38147: fix documentation links
-
- -- Daniel Troeder <troeder@univention.de>  Mon, 11 May 2015 10:06:00 +0200
-
 univention-ad-connector (9.0.11-10) unstable; urgency=medium
 
   * Before synchronizing an object from AD to UCS, the ignore status of
