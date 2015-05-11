@@ -895,7 +895,7 @@ postmap /etc/postfix/smtp_auth
 	  </para>
 
 	  <para>
-		Beim ändern des Mail Home Servers eines Benutzers, werden dessen E-Mails nicht
+		Beim ändern des Mail Home Servers eines Benutzers werden dessen E-Mails <emphasis>nicht</emphasis>
 		automatisch auf den neuen Server verschoben.
 	  </para>
 
