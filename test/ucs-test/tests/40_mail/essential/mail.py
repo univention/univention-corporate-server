@@ -483,10 +483,12 @@ Regards,
 		server.starttls()
 	if username and password:
 		server.login(username, password)
-	server.sendmail(m_sender, m_recipients, mimemsg.as_string())
+	ret_code = server.sendmail(m_sender, m_recipients, mimemsg.as_string())
 	server.quit()
+	return ret_code
 
 
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()
+# vim: ft=python:ts=4:sw=4:noet:
