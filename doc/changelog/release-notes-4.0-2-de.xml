@@ -57,9 +57,31 @@
 
 		<itemizedlist>
 			<listitem><para>
-					UCS beinhaltet standardmäßig <phrase>UCS Core Edition</phrase> Lizenz.
+					UCS beinhaltet standardmäßig die <phrase>UCS Core Edition</phrase> Lizenz.
 					Sie hat keinerlei Einschränkung bezüglich der Anzahl der Benutzer und Clients.
 					Mehr Details dazu in <u:sdb>1324</u:sdb>.
+			</para></listitem>
+
+			<listitem><para>
+					Als zusätzlich die Virtualisierungstechnologie wird <application>Docker</application> unterstützt.
+					Es kann auf zweierlei Weise genutzt werden:
+					<itemizedlist>
+						<listitem><simpara>Ein UCS System kann als Hostsystem für den Betrieb anderer Docker Images genutzt werden.</simpara></listitem>
+						<listitem><simpara>UCS steht in verschiedenen Systemrollen als fertiges Images zur Verfügung.</simpara></listitem>
+					</itemizedlist>.
+					Weitere Informationen dazu unter <ulink url="http://wiki.univention.de/index.php?title=Docker"/>.
+			</para></listitem>
+
+			<listitem><para>
+					Für die Erstellungen von Apps gibt es jetzt speziell einen eigenen <ulink url="http://docs.univention.de/app-tutorial-4.0.html">Leitfaden</ulink> (nur in Englisch).
+			</para></listitem>
+
+			<listitem><para>
+					Innerhalb der Domäne wurde die Konfiguration der App Center automatisiert.
+			</para></listitem>
+
+			<listitem><para>
+					Zahlreiche Verbesserungen in Design und Usability der &ucsUMC;
 			</para></listitem>
 
 			<listitem><para>
@@ -67,11 +89,13 @@
 			</para></listitem>
 
 			<listitem><para>
-					Docker?
+					Die Kompatibilität zum Active Directory wurde verbessert.
+					So ist nun der Domänenbeitritt von <systemitem class="osname">Windows 2008 R2 Foundation Servern</systemitem> möglich.
+					Zudem wurde ein Problem im Zusammenhang mit <application>NetApp Filern</application> behoben.
 			</para></listitem>
 
 			<listitem><para>
-					...
+					Beim Web-Server <application>Apache</application> und Mail-Server <application>Postfix</application> werden zusätzliche Einstellungen bezüglich der Verschlüsselung und anderer Sicherheitseinstellungen unterstützt.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>

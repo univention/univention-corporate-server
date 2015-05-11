@@ -63,15 +63,39 @@
 			</para></listitem>
 
 			<listitem><para>
-					UCS can be installed automatically over the network.
+					<application>Docker</application> is now available as an additional virtualization technology.
+					It can be used twofold:
+					<itemizedlist>
+						<listitem><simpara>A UCS system can be used to run other Docker images.</simpara></listitem>
+						<listitem><simpara>UCS is available as Docker images in different system roles.</simpara></listitem>
+					</itemizedlist>
+					Further information is provided on <ulink url="http://wiki.univention.de/index.php?title=Docker"/>.
 			</para></listitem>
 
 			<listitem><para>
-					Docker?
+					For creating Apps a separate <ulink url="http://docs.univention.de/app-tutorial-4.0.html">tutorial</ulink> is now available.
 			</para></listitem>
 
 			<listitem><para>
-					...
+					Within the domain the configuration of the App Center has been automated.
+			</para></listitem>
+
+			<listitem><para>
+					Several enhancements and bugfixes in design and usability of the &ucsUMC;.
+			</para></listitem>
+
+			<listitem><para>
+					UCS can be installed unattended over the network.
+			</para></listitem>
+
+			<listitem><para>
+					The compatibility to Active Directory has been improved.
+					This allows <systemitem class="osname">Windows 2008 R2 Foundation Servers</systemitem> to join the domain.
+					In addition to that a problem regarding <application>NetApp filers</application> has been fixed.
+			</para></listitem>
+
+			<listitem><para>
+					The web server <application>Apache</application> and mail server <application>Postfix</application> now support several additional settings related to encryption and other security related options.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
