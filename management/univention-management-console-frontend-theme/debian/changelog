@@ -1,3 +1,10 @@
+univention-management-console-frontend-theme (0.0.89-15) unstable; urgency=low
+
+  * Bug #8127: minor adaption to display IE specific icons in login dialog
+  	correctly
+
+ -- Drees Dormann <dormann@univention.de>  Tue, 12 May 2015 10:44:25 +0200
+
 univention-management-console-frontend-theme (0.0.89-14) unstable; urgency=medium
 
   * Bug #38225: use CSS class dj_trident for IE11+
