@@ -153,15 +153,15 @@ class UMC_Error(Exception):
 
 
 class UMC_OptionTypeError(UMC_Error):
-	pass
+	pass  # deprecated, please try prevent using!
 
 
 class UMC_OptionMissing(UMC_Error):
-	pass
+	pass  # deprecated, please try prevent using!
 
 
 class UMC_CommandError(UMC_Error):
-	pass
+	pass  # deprecated, please try prevent using!
 
 
 class UMC_OptionSanitizeError(UMC_OptionTypeError):
@@ -171,6 +171,31 @@ class UMC_OptionSanitizeError(UMC_OptionTypeError):
 		super(UMC_OptionSanitizeError, self).__init__(message, status, body)
 
 
+class LDAP_ServerDown(UMC_Error):
+
+	def __init__(self):
+		ucr.load()
+		self._is_master = ucr.get('server/role') == 'domaincontroller_master'
+		self._updates_available = ucr.is_true('update/available')
+		self._fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+		message = '\n'.join(self._error_msg())
+		super(LDAP_ServerDown, self).__init__(message, status=503)
+
+	def _error_msg(self):
+		yield _('Cannot connect to the LDAP service.')
+		yield _('The following steps can help to solve this problem:')
+		if self._is_master:
+			yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server or free some resources')
+		else:
+			yield ' * ' + _('Make sure the domaincontroller master is running and reachable from %s') % (self._fqdn,)
+			yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server and on the domaincontroller master or free some resources')
+		yield ' * ' + _('Restart the LDAP service on the domaincontroller master either via "invoke-rc.d slapd restart" on command line or with the UMC module "System services"')
+		if self._updates_available:
+			yield ' * ' + _('Install the latest software updates')
+		yield _('If the problem persists additional hints about the cause can be found in the following log file(s):')
+		yield ' * /var/log/univention/management-console-module-udm.log'
+
+
 def error_handling(function, method=None):
 	method = method or function.__name__
 
@@ -178,7 +203,10 @@ def error_handling(function, method=None):
 		message = ''
 		result = None
 		try:
-			return function(self, request, *args, **kwargs)
+			try:
+				return function(self, request, *args, **kwargs)
+			except ldap.SERVER_DOWN:
+				raise LDAP_ServerDown()
 		except UMC_Error as exc:
 			status = exc.status
 			result = exc.result

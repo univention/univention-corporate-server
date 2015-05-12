@@ -1,3 +1,9 @@
+univention-management-console (7.1.64-1) unstable; urgency=medium
+
+  * Bug #36794: handle ldap.SERVER_DOWN exception in UMC-Server core
+
+ -- Florian Best <best@univention.de>  Thu, 07 May 2015 19:41:03 +0200
+
 univention-management-console (7.1.63-16) unstable; urgency=medium
 
   * Bug #38222: Add univentionPerson object class to the modlist when

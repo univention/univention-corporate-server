@@ -192,24 +192,27 @@ class UMCError(UMC_Error):
 		yield ''
 
 
-class LDAP_ServerDown(UMCError):
+try:
+	from univention.management.console.modules import LDAP_ServerDown
+except ImportError:  # remove ASAP
+	class LDAP_ServerDown(UMCError):
 
-	def __init__(self):
-		super(LDAP_ServerDown, self).__init__(status=503)
+		def __init__(self):
+			super(LDAP_ServerDown, self).__init__(status=503)
 
-	def _error_msg(self):
-		yield _('Cannot connect to the LDAP service.')
-		yield _('The following steps can help to solve this problem:')
-		if self._is_master:
-			yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server or free some resources')
-		else:
-			yield ' * ' + _('Make sure the domaincontroller master is running and reachable from %s') % (self._fqdn,)
-			yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server and on the domaincontroller master or free some resources')
-		yield ' * ' + _('Restart the LDAP service on the domaincontroller master either via "invoke-rc.d slapd restart" on command line or with the UMC module "System services"')
-		if self._updates_available:
-			yield ' * ' + _('Install the latest software updates')
-		yield _('If the problem persists additional hints about the cause can be found in the following log file(s):')
-		yield ' * /var/log/univention/management-console-module-udm.log'
+		def _error_msg(self):
+			yield _('Cannot connect to the LDAP service.')
+			yield _('The following steps can help to solve this problem:')
+			if self._is_master:
+				yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server or free some resources')
+			else:
+				yield ' * ' + _('Make sure the domaincontroller master is running and reachable from %s') % (self._fqdn,)
+				yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server and on the domaincontroller master or free some resources')
+			yield ' * ' + _('Restart the LDAP service on the domaincontroller master either via "invoke-rc.d slapd restart" on command line or with the UMC module "System services"')
+			if self._updates_available:
+				yield ' * ' + _('Install the latest software updates')
+			yield _('If the problem persists additional hints about the cause can be found in the following log file(s):')
+			yield ' * /var/log/univention/management-console-module-udm.log'
 
 
 class UserWithoutDN(UMCError):
