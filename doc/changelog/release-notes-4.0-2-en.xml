@@ -57,27 +57,25 @@
 
 		<itemizedlist>
 			<listitem><para>
-					UCS contains the <emphasis>UCS Core Edition</emphasis> license by default.
-					It has no limits on the number of users and clients.
-					More details can be found in <u:sdb>1324</u:sdb>.
+					The <phrase>Free for personal Use</phrase> licence was replaced by the <phrase>UCS Core Edition</phrase> license.
+					This allows the usage of UCS in commercial settings without charge.
+					The upgrade of the licence is described in <u:sdb>1324</u:sdb>.
+					Further information on the <phrase>UCS Core Edition</phrase> is provided on <ulink url="https://www.univention.com/products/prices/"/>.
 			</para></listitem>
 
 			<listitem><para>
-					<application>Docker</application> is now available as an additional virtualization technology.
-					It can be used twofold:
-					<itemizedlist>
-						<listitem><simpara>A UCS system can be used to run other Docker images.</simpara></listitem>
-						<listitem><simpara>UCS is available as Docker images in different system roles.</simpara></listitem>
-					</itemizedlist>
+					The container virtualization <application>Docker</application> was added to UCS.
+					This allows to run Docker containers on UCS systems.
+					First Docker images of UCS itself are also available.
 					Further information is provided on <ulink url="http://wiki.univention.de/index.php?title=Docker"/>.
 			</para></listitem>
 
 			<listitem><para>
-					For creating Apps a separate <ulink url="http://docs.univention.de/app-tutorial-4.0.html">tutorial</ulink> is now available.
+					For creating Apps a separate <ulink url="https://docs.univention.de/app-tutorial-4.0.html">tutorial</ulink> is now available.
 			</para></listitem>
 
 			<listitem><para>
-					Within the domain the configuration of the App Center has been automated.
+					An App installed on a remote system is now automatically configured by running its Join scripts.
 			</para></listitem>
 
 			<listitem><para>
@@ -85,17 +83,18 @@
 			</para></listitem>
 
 			<listitem><para>
-					UCS can be installed unattended over the network.
+					A mode to install UCS systems unattended over the network was added.
 			</para></listitem>
 
 			<listitem><para>
 					The compatibility to Active Directory has been improved.
-					This allows <systemitem class="osname">Windows 2008 R2 Foundation Servers</systemitem> to join the domain.
-					In addition to that a problem regarding <application>NetApp filers</application> has been fixed.
+					This allows <systemitem class="osname">Windows 2008 R2 Foundation Servers</systemitem> to join the domain as a member server.
+					In addition to that a problem regarding the resolution of SIDs with <application>NetApp Storage Systems</application> has been fixed.
 			</para></listitem>
 
 			<listitem><para>
 					The web server <application>Apache</application> and mail server <application>Postfix</application> now support several additional settings related to encryption and other security related options.
+					In addition to that several old cryptographic algorithms have been disabled by default.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>

@@ -57,27 +57,25 @@
 
 		<itemizedlist>
 			<listitem><para>
-					UCS beinhaltet standardmäßig die <phrase>UCS Core Edition</phrase> Lizenz.
-					Sie hat keinerlei Einschränkung bezüglich der Anzahl der Benutzer und Clients.
-					Mehr Details dazu in <u:sdb>1324</u:sdb>.
+					Die <phrase>Free for personal Use</phrase> Lizenz wurde durch die <phrase>UCS Core Edition</phrase> Lizenz ersetzt.
+					Dadurch kann UCS auch im kommerziellen Einsatz kostenfrei eingesetzt werden.
+					Das Upgrade der Lizenz ist in <u:sdb>1324</u:sdb> beschrieben.
+					Mehr Informationen zur <phrase>UCS Core Edition</phrase> finden sich unter <ulink url="https://www.univention.de/produkte/preise/"/>.
 			</para></listitem>
 
 			<listitem><para>
-					Als zusätzlich die Virtualisierungstechnologie wird <application>Docker</application> unterstützt.
-					Es kann auf zweierlei Weise genutzt werden:
-					<itemizedlist>
-						<listitem><simpara>Ein UCS System kann als Hostsystem für den Betrieb anderer Docker Images genutzt werden.</simpara></listitem>
-						<listitem><simpara>UCS steht in verschiedenen Systemrollen als fertiges Images zur Verfügung.</simpara></listitem>
-					</itemizedlist>
+					Die Container-Virtualisierung <application>Docker</application> wurde zu UCS hinzugefügt.
+					Dadurch können auf einem UCS-System Docker-Container gestartet werden.
+					Es stehen auch erste Docker Images von UCS zur Verfügung.
 					Weitere Informationen dazu unter <ulink url="http://wiki.univention.de/index.php?title=Docker"/>.
 			</para></listitem>
 
 			<listitem><para>
-					Für die Erstellungen von Apps gibt es jetzt speziell einen eigenen <ulink url="http://docs.univention.de/app-tutorial-4.0.html">Leitfaden</ulink> (nur in Englisch).
+					Für die Erstellungen von Apps gibt es jetzt speziell einen eigenen <ulink url="https://docs.univention.de/app-tutorial-4.0.html">Leitfaden</ulink>.
 			</para></listitem>
 
 			<listitem><para>
-					Innerhalb der Domäne wurde die Konfiguration der App Center automatisiert.
+					Nach der Installation einer App auf einem entfernten System wird diese nun automatisch über Join Skripte konfiguriert.
 			</para></listitem>
 
 			<listitem><para>
@@ -85,17 +83,18 @@
 			</para></listitem>
 
 			<listitem><para>
-					UCS kann automatisiert über das Netzwerk installiert werden.
+					Die automatische Profil-basierte UCS Installation über das Netzwerk wurde hinzugefügt.
 			</para></listitem>
 
 			<listitem><para>
-					Die Kompatibilität zum Active Directory wurde verbessert.
-					So ist nun der Domänenbeitritt von <systemitem class="osname">Windows 2008 R2 Foundation Servern</systemitem> möglich.
-					Zudem wurde ein Problem im Zusammenhang mit <application>NetApp Filern</application> behoben.
+					Die Active Directory Kompatibilität wurde verbessert.
+					So ist nun der Domänenbeitritt von <systemitem class="osname">Windows 2008 R2 Foundation Servern</systemitem> als Memberserver möglich.
+					Zudem wurde ein Problem in der SID Auflösung in Zusammenhang mit <application>NetApp Storage Systemen</application> behoben.
 			</para></listitem>
 
 			<listitem><para>
 					Beim Web-Server <application>Apache</application> und Mail-Server <application>Postfix</application> werden zusätzliche Einstellungen bezüglich der Verschlüsselung und anderer Sicherheitseinstellungen unterstützt.
+					Des Weiteren werden alte Verschlüsselungsverfahren standardmäßig nicht mehr aktiviert.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
