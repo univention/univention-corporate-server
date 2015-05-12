@@ -316,9 +316,7 @@ class XML_Definition(ET.ElementTree):
 		'''Retrieves details of a flavor'''
 		for flavor in self.flavors:
 			if flavor.name == name:
-				cmd = Flavor(name, flavor.get('function'))
-				return cmd
-
+				return flavor
 		return None
 
 	def get_command(self, name):
