@@ -53,7 +53,7 @@ update-rc.d -f univention-system-setup-boot-prepare remove
 update-rc.d urandom start 55 S . start 30 0 6 . || exit $?
 
 pam-auth-update --force --package --remove univention-system-setup-boot
-ucr commit /etc/pam.d/common-session
+ucr commit /etc/pam.d/*
 
 #DEBHELPER#
 
