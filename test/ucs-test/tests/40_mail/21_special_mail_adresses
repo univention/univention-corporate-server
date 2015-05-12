@@ -5,32 +5,26 @@
 ## packages: [univention-mail-server]
 
 from essential.mail import send_mail, mail_delivered
-import smtplib
 import time
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 
-def check_sending_mail(recipient_email, should_be_allowed):
+def check_sending_mail(username, password, recipient_email):
 	delivery_timeout = 60 # sec
 	delivered = False
 	token = str(time.time())
-	try:
-		ret_code = send_mail(recipients=recipient_email, msg=token)
-		if (bool(ret_code) == should_be_allowed):
-			utils.fail('Sending allowed = %r, but return code = %r\n {} means there are no refused recipient' % (should_be_allowed, ret_code))
-		for i in xrange(delivery_timeout):
-			if not mail_delivered(token, check_root=True):
-				time.sleep(1)
-				print "%s is waiting for email to be delivered ..." % recipient_email
-			else:
-				delivered = True
-				break
-		if not delivered:
-			utils.fail('Mail sent with token = %r to %s was not redirected to root' % (token, recipient_email))
-	except smtplib.SMTPSenderRefused as ex:
-		utils.fail('Mail sent failed with exception: %s' % ex)
+	send_mail(recipients=recipient_email, msg=token, tls=True, username=username, password=password)
+	for i in xrange(delivery_timeout):
+		if not mail_delivered(token, check_root=True):
+			time.sleep(1)
+			print "%s is waiting for email to be delivered to root" % recipient_email
+		else:
+			delivered = True
+			break
+	if not delivered:
+		utils.fail('Mail sent with token = %r to %s was not redirected to root' % (token, recipient_email))
 
 
 def main():
@@ -41,11 +35,12 @@ def main():
 				recipient_email = '%s@%s' % (mail_name, domain )
 				userdn, username = udm.create_user(
 					set={
+						'password': 'univention',
 						'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
 						'mailPrimaryAddress': recipient_email,
 					}
 				)
-				check_sending_mail(recipient_email, True)
+				check_sending_mail(username, 'univention', recipient_email)
 
 
 if __name__ == '__main__':
