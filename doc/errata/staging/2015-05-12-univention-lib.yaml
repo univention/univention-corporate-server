@@ -1,0 +1,12 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-lib
+fix: 
+version: [2]
+desc: |
+  This update addresses the following issues:
+  * It the initialization of the package manager failed it is retried.
+  * Improove error messages which are raised from the package manager.
+  * Hold packages can't cause a traceback anymore.
+bug: [38112, 34291, 38129, 36951]
