@@ -69,26 +69,25 @@ def ipv6(interfaces):
 
 	# Validate addresses
 	interface_addresses = {}
-	for iface, name in interfaces.ipv6_interfaces:
-		addr = iface.ipv6_address(name)
-		if addr is False:
-			print '# ERROR: invalid IPv6 address in interfaces/%s/ipv6/%s/*' % \
-				(iface.name, name)
-			continue
-		addresses = interface_addresses.setdefault(iface.name, set())
-		if addr in addresses:
-			print '# ERROR: duplicate IPv6 address in interfaces/%s/ipv6/%s/*' % \
-				(iface.name, name)
-			continue
-		addresses.add(addr)
+	for _iface_name, iface in interfaces.all_interfaces:
+		for name in iface.ipv6_names:
+			addr = iface.ipv6_address(name)
+			if not addr:
+				print '# ERROR: incomplete/invalid IPv6 address in interfaces/%s/ipv6/%s/*' % \
+					(iface.name, name)
+				continue
+			addresses = interface_addresses.setdefault(iface.name, set())
+			if addr.ip in addresses:
+				print '# ERROR: duplicate IPv6 address in interfaces/%s/ipv6/%s/*' % \
+					(iface.name, name)
+				continue
+			addresses.add(addr.ip)
 
 	# configure interface
 	for iface, names in groupby(interfaces.ipv6_interfaces, itemgetter(0)):
 		try:
 			addresses = interface_addresses[iface.name]
 		except KeyError:
-			continue  # validation failed
-		if not addresses:
 			continue  # validation failed
 
 		auto(iface.name, iface.start)
@@ -97,7 +96,7 @@ def ipv6(interfaces):
 		for i, (iface, name) in enumerate(names):
 			addr = iface.ipv6_address(name)
 			try:
-				addresses.remove(addr)
+				addresses.remove(addr.ip)
 			except KeyError:
 				continue  # invalid or duplicate
 			print '# %s' % (name,)
@@ -105,8 +104,8 @@ def ipv6(interfaces):
 				print '\taddress %s' % (addr.ip,)
 				print '\tnetmask %s' % (addr.prefixlen,)
 			else:
-				print '\tup   ip -6 addr add %s dev %s' % (addr.ip, iface.name)
-				print '\tdown ip -6 addr del %s dev %s' % (addr.ip, iface.name)
+				print '\tup   ip -6 addr add %s dev %s' % (addr, iface.name)
+				print '\tdown ip -6 addr del %s dev %s' % (addr, iface.name)
 			# check if gateway is local on this interface
 			if gateway:
 				if addr.prefixlen == addr.max_prefixlen and \

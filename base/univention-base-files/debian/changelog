@@ -1,3 +1,10 @@
+univention-base-files (4.0.7-1) unstable; urgency=medium
+
+  * support multiple IPv6 addresses in the same subnet (Bug #33986)
+  * write prefix to ip commands for handling subnets correctly (Bug #33986)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 12 May 2015 18:03:18 +0200
+
 univention-base-files (4.0.6-2) unstable; urgency=medium
 
   * Bug #13811: register mysql/autostart UCR variable
