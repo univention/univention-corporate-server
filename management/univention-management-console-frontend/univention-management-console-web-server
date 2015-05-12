@@ -634,6 +634,14 @@ class CPUpload(CPgeneric):
 		options = []
 		body = {}
 
+		# check if enough free space is available
+		min_size = int(configRegistry.get('umc/server/upload/min_free_space', 51200))  # kilobyte
+		s = os.statvfs(umcp.TEMPUPLOADDIR)
+		free_disk_space = s.f_bavail * s.f_frsize / 1024  # kilobyte
+		if free_disk_space < min_size:
+			self._log('error', 'there is not enough free space to upload files')
+			raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'There is not enough free space on disk')
+
 		for iid, ifield in args.iteritems():
 			if isinstance(ifield, cherrypy._cpreqbody.Part):
 				options.append(self._check_field_storage(req, iid, ifield))
@@ -665,14 +673,6 @@ class CPUpload(CPgeneric):
 		if st.st_size > max_size:
 			self._log('warn', 'file of size %d could not be uploaded' % (st.st_size))
 			raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'The size of the uploaded file is too large')
-
-		# check if enough free space is available
-		min_size = int(configRegistry.get('umc/server/upload/min_free_space', 51200))  # kilobyte
-		s = os.statvfs(tmpfile)
-		free_disk_space = s.f_bavail * s.f_frsize / 1024  # kilobyte
-		if free_disk_space < min_size:
-			self._log('error', 'there is not enough free space to upload files')
-			raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'There is not enough free space on disk')
 
 		filename = store.filename
 		# some security
