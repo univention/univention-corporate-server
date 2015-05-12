@@ -69,7 +69,7 @@ if __name__ == '__main__':
 
 	( options, arguments ) = parser.parse_args()
 
-	daemon = DaemonContext( detach_process = False, umask = 0077 )
+	daemon = DaemonContext(detach_process=False, prevent_core=False, umask=0077)
 	daemon.signal_map = {
 		signal.SIGHUP: lambda signal, frame: log_reopen(),
 	}

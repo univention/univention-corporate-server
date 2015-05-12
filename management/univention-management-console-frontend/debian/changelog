@@ -1,13 +1,20 @@
+univention-management-console-frontend (4.1.107-1) unstable; urgency=medium
+
+  * Bug #37280: Allow to create core dumps of the umc-webserver process
+  * Bug #38335: dedup code for free disk space check
+
+ -- Florian Best <best@univention.de>  Tue, 12 May 2015 15:57:24 +0200
+
 univention-management-console-frontend (4.1.106-61) unstable; urgency=low
 
-  *Bug #38127: manual triggering of onChange event when IE9 is used so the
+  * Bug #38127: manual triggering of onChange event when IE9 is used so the
    html5 placeholder workaround is triggered
 
  -- Drees Dormann <dormann@univention.de>  Tue, 12 May 2015 10:47:36 +0200
 
 univention-management-console-frontend (4.1.106-60) unstable; urgency=low
 
-  *Bug #38276: callbacks will now always recieve an array if mutliFile
+  * Bug #38276: callbacks will now always recieve an array if mutliFile
    is set to true
 
  -- Drees Dormann <dormann@univention.de>  Thu, 23 Apr 2015 14:58:42 +0200

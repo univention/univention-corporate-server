@@ -1,6 +1,15 @@
 univention-management-console (7.1.64-1) unstable; urgency=medium
 
+  * Bug #37366: don't let the UMC server crash on exceptions during request
+  	processing
   * Bug #36794: handle ldap.SERVER_DOWN exception in UMC-Server core
+  * Bug #37280: allow to create core dumps of the umc-server process
+  * Bug #30353: fix typo in unused function Module.get_flavor
+  * Bug #38018: fix module crash on server socket disconnect
+  * Bug #35972: don't let the UMC-Server crash when too less memory for
+  	starting a module process is available
+  * Bug #34047: lower debug level for attribute status log messages
+  * Bug #37458: remove unused/partly broken UMCP STATISTICS command
 
  -- Florian Best <best@univention.de>  Thu, 07 May 2015 19:41:03 +0200
 
