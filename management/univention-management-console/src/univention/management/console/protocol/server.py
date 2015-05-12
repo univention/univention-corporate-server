@@ -50,7 +50,7 @@ from univention.lib.i18n import Translation
 _ = Translation('univention.management.console').translate
 
 # internal packages
-from .message import Message, Response, IncompleteMessageError, ParseError, UnknownCommandError, InvalidArgumentsError, InvalidOptionsError
+from .message import Message, Response, IncompleteMessageError, ParseError, UnknownCommandError, InvalidArgumentsError, InvalidOptionsError, MIMETYPE_JSON
 from .session import State, Processor
 from .definitions import (
 	BAD_REQUEST_INVALID_ARGS,
@@ -256,7 +256,7 @@ class MagicBucket(object):
 			return
 
 		# module process wants to exit
-		if msg.status == SUCCESS_SHUTDOWN:
+		if msg.mimetype == MIMETYPE_JSON and msg.status == SUCCESS_SHUTDOWN:
 			module_name = state.processor.get_module_name(msg.arguments[0])
 			if module_name:
 				state.processor._purge_child(module_name)

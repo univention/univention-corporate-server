@@ -170,13 +170,13 @@ class Message(object):
 			else:
 				self.body[key] = value
 		else:
-			PARSER.process('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
+			PARSER.info('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
 
 	def _get_key(self, key):
 		if self.mimetype == MIMETYPE_JSON:
 			return self.body.get(key)
 		else:
-			PARSER.process('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
+			PARSER.info('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
 			return None
 
 	#: contains a human readable error message
@@ -308,7 +308,7 @@ class Response(Message):
 			self.parse(data)
 
 	def is_final(self):
-		return (self._id and self.status != SUCCESS_PARTIAL)
+		return (self._id and (self.mimetype != MIMETYPE_JSON or self.status != SUCCESS_PARTIAL))
 
 	recreate_id = None
 
