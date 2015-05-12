@@ -449,7 +449,7 @@
 						The positioning of page icons on small screens has been optimized (<u:bug>37824</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						Additional connection and setup information is now shown by displaying the file <filename>motd.setup</filename> before the system is fully configured (<u:bug>37129</u:bug>).
+						Additional connection and setup information is now shown by displaying the file <filename>motd.setup</filename> before the system is fully configured (<u:bug>37129</u:bug>, <u:bug>38510</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 						Error handling during saving in the system setup modules has been improved (<u:bug>36843</u:bug>).
