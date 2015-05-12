@@ -43,6 +43,14 @@
 			var _fillUsernameField = function() {
 				require('dojo/dom').byId('umcLoginUsername').value = 'Administrator';
 				require('dojo/dom').byId('umcLoginPassword').focus();
+				//fire change event manually for internet explorer
+				require(['dojo/dom', 'dojo/has'], function(dom, has) {
+					if (has('ie') < 10) {
+						var event = document.createEvent("HTMLEvents");
+						event.initEvent("change",true,false);
+						dom.byId('umcLoginUsername').dispatchEvent(event);
+					}
+				});
 			};
 			var _showLoginTooltip = function(evt) {
 				require(["dojo/on", "dojo/_base/event", "dijit/Tooltip",  "umc/i18n!umc/app"], function(on, dojoEvent, Tooltip, _) {

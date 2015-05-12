@@ -435,6 +435,10 @@ define([
 						dom.byId('umcLoginUsername').focus();
 					}
 				}
+				if (has('ie') < 10 ) {
+					//trigger IE9 workaround
+					this._replaceLabels();
+				}
 			//}));
 		},
 
