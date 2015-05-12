@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-management-console-frontend
+fix: 
+version: [2]
+desc: |
+  This update addresses the following issues:
+  * It is now possible to create a core dump of the UMC-Webserver.
+  * A check for free disk space is now only done once per file upload request.
+bug: [37280, 38335]

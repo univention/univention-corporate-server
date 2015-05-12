@@ -1,0 +1,14 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-management-console
+fix: 
+version: [2]
+desc: |
+  This update addresses the following issues:
+  * The UMC server does not crash anymore during request processing.
+  * Errors due to not running LDAP server are now handled by the UMC server
+    process.
+  * It is now possible to create a core dump of the UMC server and
+    UMC module processes.
+bug: [37366, 36794, 37280]
