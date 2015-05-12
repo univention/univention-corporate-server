@@ -1,3 +1,11 @@
+univention-system-setup (8.1.66-44) unstable; urgency=medium
+
+  * Also call ucr commit in postinst of univention-system-setup-boot to
+    ensure a package upgrade will not break the PAM configuration on a
+    productive server (Bug #38510)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 May 2015 08:00:51 +0200
+
 univention-system-setup (8.1.66-43) unstable; urgency=medium
 
   * Re-write all pam.d config files after using pam-auth-update
