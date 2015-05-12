@@ -749,12 +749,12 @@
 				</simpara></listitem>
 				<listitem><simpara>
 						Exclude RC4 Cipher Suites from all TLS security levels (<u:rfc>7465</u:rfc>).
-						Adds &ucsUCRV;s <envar>mail/postfix/tls/client/exclude_ciphers</envar> and <envar>mail/postfix/smtpd/tls/exclude_ciphers</envar> and sets them by default to <literal>RC4, aNULL</literal><footnote><para>thanks to <personname><firstname>Lutz</firstname><surname>Willek</surname></personname></para></footnote> (<u:bug>38043</u:bug>).
+						Adds &ucsUCRV;s <envar>mail/postfix/tls/client/exclude_ciphers</envar> and <envar>mail/postfix/smtpd/tls/exclude_ciphers</envar> and sets them by default to <literal>RC4, aNULL</literal><!--footnote><para>thanks to <personname><firstname>Lutz</firstname><surname>Willek</surname></personname></para></footnote--> (<u:bug>38043</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 						Allow to set TLS/SSL settings for server and client.
 						Disables SSLv3 for fresh installs, except for receiving mails.
-						Adds &ucsUCRV;s <envar>mail/postfix/smtpd/tls/*protocols</envar> and <envar>mail/postfix/tls/client/*protocols</envar><footnote><para>thanks to <personname><firstname>Lutz</firstname><surname>Willek</surname></personname></para></footnote> (<u:bug>38044</u:bug>).
+						Adds &ucsUCRV;s <envar>mail/postfix/smtpd/tls/*protocols</envar> and <envar>mail/postfix/tls/client/*protocols</envar><!--footnote><para>thanks to <personname><firstname>Lutz</firstname><surname>Willek</surname></personname></para></footnote--> (<u:bug>38044</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 						Add options to check the mapping of IP addresses to FQDNs to fight spam.
