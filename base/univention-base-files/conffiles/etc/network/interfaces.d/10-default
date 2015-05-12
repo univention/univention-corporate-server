@@ -65,7 +65,8 @@ def ipv6(interfaces):
 	"""Setup IPv6."""
 	gateway = interfaces.ipv6_gateway
 	if gateway is False:
-		print '# WARNING: invalid IPv6 address in ipv6/gateway)'
+		print '# WARNING: invalid IPv6 address in ipv6/gateway'
+	gateway_zoneindex = interfaces.ipv6_gateway_zone_index
 
 	# Validate addresses
 	interface_addresses = {}
@@ -93,6 +94,9 @@ def ipv6(interfaces):
 		auto(iface.name, iface.start)
 		print 'iface %s inet6 static' % (iface.name,)
 
+		if gateway and gateway_zoneindex == iface.name:
+			print '\tgateway %s' % (gateway, )
+			gateway = None
 		for i, (iface, name) in enumerate(names):
 			addr = iface.ipv6_address(name)
 			try:
@@ -106,19 +110,20 @@ def ipv6(interfaces):
 			else:
 				print '\tup   ip -6 addr add %s dev %s' % (addr, iface.name)
 				print '\tdown ip -6 addr del %s dev %s' % (addr, iface.name)
-			# check if gateway is local on this interface
-			if gateway:
-				if addr.prefixlen == addr.max_prefixlen and \
-						iface.name == interfaces.primary:
-					data = (gateway, iface.name)
-					print '\tup   ip -6 route add %s dev %s' % data
-					print '\tup   ip -6 route add default via %s dev %s' % data
-					print '\tdown ip -6 route del default via %s dev %s' % data
-					print '\tdown ip -6 route del %s dev %s' % data
-					gateway = None
-				elif gateway in addr:
-					print '\tgateway %s' % (gateway,)
-					gateway = None
+			if gateway_zoneindex is None:
+				# check if gateway is local on this interface
+				if gateway:
+					if addr.prefixlen == addr.max_prefixlen and \
+							iface.name == interfaces.primary:
+						data = (gateway, iface.name)
+						print '\tup   ip -6 route add %s dev %s' % data
+						print '\tup   ip -6 route add default via %s dev %s' % data
+						print '\tdown ip -6 route del default via %s dev %s' % data
+						print '\tdown ip -6 route del %s dev %s' % data
+						gateway = None
+					elif gateway in addr:
+						print '\tgateway %s' % (gateway,)
+						gateway = None
 
 		if not iface.ipv4_address():
 			for value in iface.options:

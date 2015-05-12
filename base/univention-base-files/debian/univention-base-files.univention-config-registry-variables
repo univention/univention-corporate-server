@@ -103,8 +103,8 @@ Type=str
 Categories=system-network
 
 [ipv6/gateway]
-Description[de]=Die IPv6-Adresse des Standard-Gateways. Für IPv6 ist die Angabe eines Gateways bei statischer Konfiguration erforderlich; bei dynamischer Konfiguration ist diese optional, wird jedoch empfohlen. Ein hier konfiguriertes IPv6-Gateway hat Vorrang vor Router Advertisements, die ansonsten die Route ändern könnten.
-Description[en]=The IPv6 address of the standard gateway. For IPv6, a gateway must be entered in the static configuration; for the dynamic configuration, it is optional, but recommended. A gateway configured here has preference over router advertisements, which might otherwise be able to change the route.
+Description[de]=Die IPv6-Adresse des Standard-Gateways. Für IPv6 ist die Angabe eines Gateways bei statischer Konfiguration erforderlich; bei dynamischer Konfiguration ist diese optional, wird jedoch empfohlen. Ein hier konfiguriertes IPv6-Gateway hat Vorrang vor Router Advertisements, die ansonsten die Route ändern könnten. Ein zone index kann (mittels einem "%") angehängt werden, um die Schnittstelle anzugeben, von der die Adresse erreichbar ist.
+Description[en]=The IPv6 address of the standard gateway. For IPv6, a gateway must be entered in the static configuration; for the dynamic configuration, it is optional, but recommended. A gateway configured here has preference over router advertisements, which might otherwise be able to change the route. A zone index can be appended (with a "%") to specify the interface this address is reachable from.
 Type=str
 Categories=system-network
 

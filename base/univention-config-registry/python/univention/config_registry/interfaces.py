@@ -216,11 +216,19 @@ class Interfaces(object):
 		except ValueError:
 			self.ipv4_gateway = False
 		try:
-			self.ipv6_gateway = IPv6Address(ucr['ipv6/gateway'])
+			# <https://tools.ietf.org/html/rfc4007#section-11>
+			# As a common notation to specify the scope zone, an
+			# implementation SHOULD support the following format:
+			# <address>%<zone_id>
+			gateway, zone_index = (ucr['ipv6/gateway'].rsplit('%', 1) + [None])[:2]
+			self.ipv6_gateway = IPv6Address(gateway)
+			self.ipv6_gateway_zone_index = zone_index
 		except KeyError:
 			self.ipv6_gateway = None
+			self.ipv6_gateway_zone_index = None
 		except ValueError:
 			self.ipv6_gateway = False
+			self.ipv6_gateway_zone_index = None
 
 		self._all_interfaces = {}
 		for key, value in ucr.items():
@@ -399,6 +407,7 @@ if __name__ == '__main__':
 			self.assertEqual('eth0', t.primary)
 			self.assertEqual(None, t.ipv4_gateway)
 			self.assertEqual(None, t.ipv6_gateway)
+			self.assertEqual(None, t.ipv6_gateway_zone_index)
 			self.assertEqual([],
 					[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual([],
@@ -634,6 +643,15 @@ if __name__ == '__main__':
 			self.assertEqual('br0', t.primary)
 			self.assertEqual(IPv4Address('1.2.3.4'), t.ipv4_gateway)
 			self.assertEqual(IPv6Address('1:2:3:4:5:6:7:8'), t.ipv6_gateway)
+			self.assertEqual(None, t.ipv6_gateway_zone_index)
+
+		def test_v6llgw(self):
+			"""Test IPv6 link-local gateway."""
+			t = Interfaces(ucr={
+				'ipv6/gateway': 'fe80::1%eth0',
+				})
+			self.assertEqual(IPv6Address('fe80::1'), t.ipv6_gateway)
+			self.assertEqual('eth0', t.ipv6_gateway_zone_index)
 
 	class TestDecorator(unittest.TestCase):
 		"""Test forgiving decorator."""

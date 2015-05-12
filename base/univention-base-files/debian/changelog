@@ -1,3 +1,9 @@
+univention-base-files (4.0.8-1) unstable; urgency=medium
+
+  * support zone index for ipv6/gateway (Bug #35694)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 12 May 2015 19:03:00 +0200
+
 univention-base-files (4.0.7-1) unstable; urgency=medium
 
   * support multiple IPv6 addresses in the same subnet (Bug #33986)
