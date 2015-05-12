@@ -37,10 +37,7 @@ Defines the basic class for an UMC server.
 
 # python packages
 import fcntl
-import gzip
 import os
-import pwd
-import re
 import socket
 
 # external packages
@@ -56,10 +53,10 @@ _ = Translation('univention.management.console').translate
 from .message import Message, Response, IncompleteMessageError, ParseError, UnknownCommandError, InvalidArgumentsError, InvalidOptionsError
 from .session import State, Processor
 from .definitions import (
-	BAD_REQUEST_FORBIDDEN, BAD_REQUEST_INVALID_ARGS,
+	BAD_REQUEST_INVALID_ARGS,
 	BAD_REQUEST_INVALID_OPTS, BAD_REQUEST_NOT_FOUND,
 	BAD_REQUEST_UNAUTH, RECV_BUFFER_SIZE, SERVER_ERR, status_description,
-	SUCCESS, SUCCESS_SHUTDOWN, UMCP_ERR_UNPARSABLE_BODY
+	SUCCESS_SHUTDOWN, UMCP_ERR_UNPARSABLE_BODY
 )
 
 from ..resources import moduleManager, categoryManager
@@ -181,8 +178,6 @@ class MagicBucket(object):
 
 		return True
 
-	CHANGELOG_VERSION = re.compile('^[^(]*\(([^)]*)\).*')
-
 	def _handle(self, state, msg):
 		"""Ensures that commands are only passed to the processor if a
 		successful authentication has been completed.
@@ -190,12 +185,7 @@ class MagicBucket(object):
 		:param State state: state object for the connection
 		:param Request msg: UMCP request
 
-		The following commands are directly handled in this function:
-
-		* GET (ucr|info)
-		* STATISTICS
-
-		All other valid commands are redirected to the processor.
+		valid commands are redirected to the processor.
 		"""
 		state.requests[msg.id] = msg
 		statistics.requests.new()
@@ -212,68 +202,12 @@ class MagicBucket(object):
 			except (TypeError, KeyError):
 				state.authResponse.status = BAD_REQUEST_INVALID_OPTS
 				state.authResponse.message = 'insufficient authentification information'
-		elif msg.command == 'GET' and ('ucr' in msg.arguments or 'info' in msg.arguments):
-			ucr.load()
-			response = Response(msg)
-			response.result = {}
-			response.status = SUCCESS
-			if 'ucr' in msg.arguments:
-				if not isinstance(msg.options, (list, tuple)):
-					raise InvalidOptionsError
-				for value in msg.options:
-					try:
-						if not value:
-							# make sure that 'value' is non-empty
-							CORE.warn('Empty UCR variable requested. Ignoring value...')
-							continue
-						if value.endswith('*'):
-							value = value[: -1]
-							for var in filter(lambda x: x.startswith(value), ucr.keys()):
-								response.result[var] = ucr.get(var)
-						else:
-							response.result[value] = ucr.get(value)
-					except (TypeError, IndexError, AttributeError):
-						CORE.warn('Invalid UCR variable requested: %s' % (value,))
-						response.status = BAD_REQUEST_INVALID_OPTS
-						response.message = _('Invalid UCR variable requested: %s') % (value,)
-
-			elif 'info' in msg.arguments:
-				try:
-					fd = gzip.open('/usr/share/doc/univention-management-console-server/changelog.Debian.gz')
-					line = fd.readline()
-					fd.close()
-					match = MagicBucket.CHANGELOG_VERSION.match(line)
-					if not match:
-						raise IOError
-					response.result['umc_version'] = match.groups()[0]
-					response.result['ucs_version'] = '{0}-{1} errata{2} ({3})'.format(ucr.get('version/version', ''), ucr.get('version/patchlevel', ''), ucr.get('version/erratalevel', '0'), ucr.get('version/releasename', ''))
-					response.result['server'] = '{0}.{1}'.format(ucr.get('hostname', ''), ucr.get('domainname', ''))
-					response.result['ssl_validity_host'] = int(ucr.get('ssl/validity/host', '0')) * 24 * 60 * 60 * 1000
-					response.result['ssl_validity_root'] = int(ucr.get('ssl/validity/root', '0')) * 24 * 60 * 60 * 1000
-				except IOError:
-					response.status = BAD_REQUEST_FORBIDDEN
-					pass
-
-			self._response(response, state)
-		elif msg.command == 'STATISTICS':
-			response = Response(msg)
-			try:
-				pwent = pwd.getpwnam(state.username)
-				if not pwent.pw_uid in (0, ):
-					raise KeyError
-				CORE.info('Sending statistic data to client')
-				response.status = SUCCESS
-				response.result = statistics.json()
-			except KeyError:
-				CORE.info('User not allowed to retrieve statistics')
-				response.status = BAD_REQUEST_FORBIDDEN
-			self._response(response, state)
 		else:
 			# inform processor
 			if not state.processor:
 				state.processor = Processor(*state.credentials())
 				cb = notifier.Callback(self._response, state)
-				state.processor.signal_connect('response', cb)
+				state.processor.signal_connect('success', cb)
 			state.processor.request(msg)
 
 	def _do_send(self, socket):

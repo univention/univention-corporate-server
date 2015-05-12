@@ -94,14 +94,6 @@ system
 	Tools manipulating the system itself (e.g. software installation)
 	should go in here.
 
-wizards
-	UMC modules providing a step-by-step assistent to create some kind
-	of configuration should be added to this category
-
-monitor
-	Everything that provides monitor functionality (e.g. simple
-	system statistics) should be placed in this category
-
 At the end of the definition file a list of commands is specified. The
 UMC server only passes commands to a UMC module that are defined. A
 command definition has two attributes:

@@ -111,7 +111,6 @@ class ModuleServer(Server):
 			self.__init_error_message = error
 		else:
 			self.__handler.signal_connect('success', notifier.Callback(self._reply, True))
-			self.__handler.signal_connect('failure', notifier.Callback(self._reply, True))
 
 	def _reply(self, msg, final):
 		if final:

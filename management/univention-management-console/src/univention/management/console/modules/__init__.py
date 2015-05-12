@@ -126,12 +126,17 @@ Methods
 
 from notifier import signals
 import traceback
+import ldap
 
 from univention.lib.i18n import Translation
 
+import univention.admin.uldap as udm_uldap
+import univention.admin.uexceptions as udm_errors
+
 from ..protocol.message import Response, MIMETYPE_JSON
 from ..protocol.definitions import BAD_REQUEST, MODULE_ERR, MODULE_ERR_COMMAND_FAILED, SUCCESS, SUCCESS_MESSAGE, SUCCESS_PARTIAL, SUCCESS_SHUTDOWN
-from ..log import MODULE
+from ..log import MODULE, CORE
+from ..config import ucr
 
 _ = Translation('univention.management.console').translate
 
@@ -201,33 +206,48 @@ class Base(signals.Provider, Translation):
 
 	'''The base class for UMC modules of version 2 or higher'''
 
-	def __init__(self):
+	def __init__(self, domain=None):
 		signals.Provider.__init__(self)
 		self.signal_new('success')
-		self.signal_new('failure')
 		self._username = None
 		self._user_dn = None
 		self._password = None
 		self.__acls = None
 		self.__requests = {}
-		Translation.__init__(self)
+		Translation.__init__(self, domain)
 
-	def _set_username(self, username):
+	@property
+	def username(self):
+		return self._username
+
+	@username.setter
+	def username(self, username):
 		self._username = username
-	username = property(fset=_set_username)
 
-	def _set_user_dn(self, user_dn):
+	@property
+	def user_dn(self):
+		return self._user_dn
+
+	@user_dn.setter
+	def user_dn(self, user_dn):
 		self._user_dn = user_dn
-		MODULE.info('Setting user LDAP DN %s' % self._user_dn)
-	user_dn = property(fset=_set_user_dn)
+		MODULE.info('Setting user LDAP DN %r' % (self._user_dn,))
 
-	def _set_password(self, password):
+	@property
+	def password(self):
+		return self._password
+
+	@password.setter
+	def password(self, password):
 		self._password = password
-	password = property(fset=_set_password)
 
-	def _set_acls(self, acls):
+	@property
+	def acls(self):
+		return self.__acls
+
+	@acls.setter
+	def acls(self, acls):
 		self.__acls = acls
-	acls = property(fset=_set_acls)
 
 	def init(self):
 		'''this function is invoked after the initial UMCP SET command
@@ -253,9 +273,28 @@ class Base(signals.Provider, Translation):
 		MODULE.info('Executing %s' % (request.arguments,))
 		function(self, request)
 
+	def get_user_ldap_connection(self):
+		if not self._user_dn:
+			return  # local user (probably root)
+		try:
+			# open an LDAP connection with the user password and credentials
+			return udm_uldap.access(
+				host=ucr.get('ldap/server/name'),
+				base=ucr.get('ldap/base'),
+				port=int(ucr.get('ldap/server/port', '7389')),
+				binddn=self._user_dn,
+				bindpw=self._password,
+				follow_referral=True
+			)
+		except (ldap.LDAPError, udm_errors.base) as exc:
+			CORE.warn('Failed to open LDAP connection for user %s: %s' % (self._user_dn, exc))
+
 	def required_options(self, request, *options):
 		"""Raises an UMC_OptionMissing exception if any of the given
-		options is not found in request.options"""
+		options is not found in request.options
+
+		Deprecated. Please use univention.management.console.modules.sanitizers
+		"""
 		missing = filter(lambda o: o not in request.options, options)
 		if missing:
 			raise UMC_OptionMissing(', '.join(missing))
@@ -300,11 +339,5 @@ class Base(signals.Provider, Translation):
 
 	def result(self, response):
 		if response.id in self.__requests:
-			object, method = self.__requests[response.id]
-			if response.status in (SUCCESS, SUCCESS_MESSAGE, SUCCESS_PARTIAL, SUCCESS_SHUTDOWN):
-				response.module = ['ready']
-				self.signal_emit('success', response)
-			else:
-				response.module = ['failure']
-				self.signal_emit('failure', response)
+			self.signal_emit('success', response)
 			del self.__requests[response.id]
