@@ -13,7 +13,7 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 
-def check_delivery(token, recipient_email, should_be_delivered, checkroot=False):
+def check_delivery(token, recipient_email, should_be_delivered):
 	delivery_timeout = 60 # sec
 	delivered = False
 	for i in xrange(delivery_timeout):
