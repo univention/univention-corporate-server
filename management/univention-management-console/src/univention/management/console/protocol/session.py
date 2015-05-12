@@ -71,7 +71,7 @@ from ..acl import LDAP_ACLs
 from ..log import CORE
 from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND, ucr
 from ..locales import I18N, I18N_Manager
-from ..modules import Base
+from ..modules import Base, UMC_Error
 from ..modules.sanitizers import StringSanitizer, DictSanitizer
 from ..modules.decorators import sanitize
 from ..statistics import statistics
@@ -797,7 +797,12 @@ class Processor(Base):
 				return
 			if module_name not in self.__processes:
 				CORE.info('Starting new module process and passing new request to module %s: %s' % (module_name, str(msg._id)))
-				mod_proc = ModuleProcess(module_name, debug=MODULE_DEBUG_LEVEL, locale=self.i18n.locale)
+				try:
+					mod_proc = ModuleProcess(module_name, debug=MODULE_DEBUG_LEVEL, locale=self.i18n.locale)
+				except OSError as exc:
+					if exc.errno == 12:  # cannot allocate Memory
+						raise UMC_Error(self.i18n._('Could not open the module. There is not enough memory available on the server. Please try again later.'), status=503)
+					raise
 				mod_proc.signal_connect('result', self.result)
 
 				cb = notifier.Callback(self._socket_died, module_name)

@@ -393,3 +393,6 @@ msgstr "Fehler beim Parsen des UMCP-Nachrichtenrumpfes"
 
 msgid "The entered password does not match the current one."
 msgstr "Das eingegebene Passwort stimmt nicht mit dem aktuellen überein."
+
+msgid "Could not open the module. There is not enough memory available on the server. Please try again later."
+msgstr "Konnte das Modul nicht öffnen. Auf dem Server ist nicht genügend freier Arbeitsspeicher verfügbar. Bitte später erneut versuchen."
