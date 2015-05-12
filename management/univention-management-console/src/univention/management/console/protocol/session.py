@@ -74,7 +74,6 @@ from ..locales import I18N, I18N_Manager
 from ..modules import Base, UMC_Error
 from ..modules.sanitizers import StringSanitizer, DictSanitizer
 from ..modules.decorators import sanitize
-from ..statistics import statistics
 
 TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
 
@@ -279,7 +278,7 @@ class Processor(Base):
 
 		:param Request msg: UMCP request
 		"""
-		if msg.command in ('EXIT', 'GET', 'SET', 'VERSION', 'COMMAND', 'UPLOAD', 'STATISTICS'):
+		if msg.command in ('EXIT', 'GET', 'SET', 'VERSION', 'COMMAND', 'UPLOAD'):
 			method = 'handle_request_%s' % (msg.command.lower(),)
 		else:
 			method = 'handle_request_unknown'
@@ -292,20 +291,6 @@ class Processor(Base):
 			pid = self.__processes[module_name].pid()
 			os.kill(pid, 9)
 		return False
-
-	def handle_request_statistics(self, msg):
-		response = Response(msg)
-		try:
-			pwent = pwd.getpwnam(self._username)
-			if not pwent.pw_uid in (0, ):
-				raise KeyError
-			CORE.info('Sending statistic data to client')
-			response.status = SUCCESS
-			response.result = statistics.json()
-		except KeyError:
-			CORE.info('User not allowed to retrieve statistics')
-			response.status = BAD_REQUEST_FORBIDDEN
-		self.result(response)
 
 	def handle_request_exit(self, msg):
 		"""Handles an EXIT request. If the request does not have an

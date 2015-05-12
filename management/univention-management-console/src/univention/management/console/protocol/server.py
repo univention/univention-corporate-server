@@ -62,7 +62,6 @@ from .definitions import (
 from ..resources import moduleManager, categoryManager
 from ..log import CORE, CRYPT, RESOURCES
 from ..config import ucr, SERVER_MAX_CONNECTIONS
-from ..statistics import statistics
 
 
 class MagicBucket(object):
@@ -90,7 +89,6 @@ class MagicBucket(object):
 		state.signal_connect('authenticated', self._authenticated)
 		self.__states[socket] = state
 		notifier.socket_add(socket, self._receive)
-		statistics.connections.new()
 
 	def exit(self):
 		'''Closes all open connections.'''
@@ -100,7 +98,6 @@ class MagicBucket(object):
 			if state.processor is not None:
 				state.processor.shutdown()
 			notifier.socket_remove(sock)
-			statistics.connections.inactive()
 		# delete states
 		for state in self.__states.values():
 			del state
@@ -116,8 +113,6 @@ class MagicBucket(object):
 		state.authResponse.status = result.status
 		if result.message:
 			state.authResponse.message = result.message
-		if result:
-			statistics.users.add(state.username)
 		state.authenticated = bool(result)
 		self._response(state.authResponse, state)
 		state.authResponse = None
@@ -188,7 +183,6 @@ class MagicBucket(object):
 		valid commands are redirected to the processor.
 		"""
 		state.requests[msg.id] = msg
-		statistics.requests.new()
 		CORE.info('Incoming request of type %s' % msg.command)
 		if not state.authenticated and msg.command != 'AUTH':
 			res = Response(msg)
@@ -241,7 +235,6 @@ class MagicBucket(object):
 			return
 
 		try:
-			statistics.requests.inactive()
 			data = str(msg)
 			# there is no data from another request in the send queue
 			if not state.resend_queue:
@@ -271,10 +264,6 @@ class MagicBucket(object):
 	def _cleanup(self, socket):
 		if socket not in self.__states:
 			return
-
-		statistics.connections.inactive()
-		if self.__states[socket].username in statistics.users:
-			statistics.users.remove(self.__states[socket].username)
 
 		if self.__states[socket].processor is not None:
 			self.__states[socket].processor.shutdown()

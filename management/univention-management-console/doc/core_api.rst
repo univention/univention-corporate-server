@@ -53,13 +53,3 @@ Helper functions
 	:members:
 	:undoc-members:
 	:show-inheritance:
-
-----------
-Statistics
-----------
-
-.. automodule:: univention.management.console.statistics
-	:members:
-	:undoc-members:
-	:show-inheritance:
-
