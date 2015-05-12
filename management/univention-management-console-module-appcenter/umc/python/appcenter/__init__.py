@@ -79,12 +79,16 @@ class Instance(umcm.Base):
 
 		util.install_opener(self.ucr)
 
-		self.package_manager = PackageManager(
-			info_handler=MODULE.process,
-			step_handler=None,
-			error_handler=MODULE.warn,
-			lock=False,
-		)
+		try:
+			self.package_manager = PackageManager(
+				info_handler=MODULE.process,
+				step_handler=None,
+				error_handler=MODULE.warn,
+				lock=False,
+			)
+		except SystemError as exc:
+			MODULE.error(str(exc))
+			raise umcm.UMC_Error(str(exc), status=500)
 		self.package_manager.set_finished() # currently not working. accepting new tasks
 		self.uu = UniventionUpdater(False)
 		self.component_manager = util.ComponentManager(self.ucr, self.uu)
@@ -100,8 +104,8 @@ class Instance(umcm.Base):
 	def query(self):
 		try:
 			applications = Application.all(force_reread=True)
-		except (urllib2.HTTPError, urllib2.URLError) as e:
-			raise umcm.UMC_CommandError(_('Could not query App Center: %s') % e)
+		except (urllib2.HTTPError, urllib2.URLError) as exc:
+			raise umcm.UMC_Error(_('Error while contacting the App Center server. %s') % util.verbose_http_error(exc))
 		result = []
 		self.package_manager.reopen_cache()
 		hosts = util.get_all_hosts()
@@ -124,7 +128,10 @@ class Instance(umcm.Base):
 		if application is not None:
 			applications = [Application.find(application)]
 		else:
-			applications = Application.all()
+			try:
+				applications = Application.all()
+			except (urllib2.HTTPError, urllib2.URLError) as exc:
+				raise umcm.UMC_Error(_('Error while contacting the App Center server. %s') % util.verbose_http_error(exc))
 		for application in applications:
 			application.tell_ldap(self.ucr, self.package_manager, inform_about_error=False)
 
@@ -133,8 +140,8 @@ class Instance(umcm.Base):
 	def get_by_component_id(self, component_id):
 		try:
 			all_apps = Application.all(force_reread=True)
-		except (urllib2.HTTPError, urllib2.URLError) as e:
-			raise umcm.UMC_CommandError(_('Could not query App Center: %s') % e)
+		except (urllib2.HTTPError, urllib2.URLError) as exc:
+			raise umcm.UMC_Error(_('Error while contacting the App Center server. %s') % util.verbose_http_error(exc))
 		def _get_by_component_id(component, apps):
 			for app in apps:
 				for version in app.versions:
@@ -162,8 +169,8 @@ class Instance(umcm.Base):
 		self.package_manager.reopen_cache()
 		try:
 			applications = Application.all_installed(self.package_manager, force_reread=True)
-		except (urllib2.HTTPError, urllib2.URLError) as e:
-			raise umcm.UMC_CommandError(_('Could not query App Center: %s') % e)
+		except (urllib2.HTTPError, urllib2.URLError) as exc:
+			raise umcm.UMC_Error(_('Error while contacting the App Center server. %s') % util.verbose_http_error(exc))
 		hosts = util.get_all_hosts()
 		domainwide_managed = Application.domainwide_managed(hosts)
 		return [app.to_dict(self.package_manager, domainwide_managed, hosts) for app in applications if app.candidate is not None]

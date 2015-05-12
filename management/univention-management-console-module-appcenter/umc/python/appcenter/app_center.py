@@ -533,7 +533,7 @@ class Application(object):
 	def _get_category_translations(cls, fake=False):
 		if fake:
 			cls._category_translations = {}
-		if cls._category_translations is None:
+		elif cls._category_translations is None:
 			cls._category_translations = {}
 			url = '%s/../categories.ini' % cls.get_metainf_url()
 			try:
@@ -551,8 +551,11 @@ class Application(object):
 					if config.has_section(loc):
 						for k, v in config.items(loc):
 							cls._category_translations[k] = v
-			except (ConfigParser.Error, urllib2.HTTPError) as e:
-				MODULE.warn('Could not load category translations from: %s\n%s' % (url, e))
+			except (ConfigParser.Error,) as exc:
+				MODULE.warn('Could not load category translations from: %s\n%s' % (url, exc))
+			except (urllib2.HTTPError, urllib2.URLError) as exc:
+				MODULE.warn('Could not load category translations from: %s\n%s' % (url, util.verbose_http_error(exc)))
+				cls._category_translations = None
 			MODULE.info('loaded category translations: %s' % cls._category_translations)
 		return cls._category_translations
 
@@ -682,7 +685,7 @@ class Application(object):
 	@classmethod
 	def _download_directly(cls, files_to_download):
 		for filename_url, filename, remote_md5sum in files_to_download:
-			# dont forget to quote: 'foo & bar.ini' -> 'foo%20&%20bar.ini'
+			# dont forget to quote: 'foo & bar.ini' -> 'foo%20%26%20bar.ini'
 			# but dont quote https:// -> https%3A//
 			path = urllib2.quote(urlsplit(filename_url).path)
 			filename_url = '%s%s' % (cls.get_server(with_scheme=True), path)
