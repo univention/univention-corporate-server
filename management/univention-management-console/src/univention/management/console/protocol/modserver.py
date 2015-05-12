@@ -322,6 +322,8 @@ class ModuleServer(Server):
 			except socket.error as e:
 				if e[0] == errno.EWOULDBLOCK:
 					return True
+				if e[0] == errno.EPIPE:
+					return False
 				raise
 
 			if ret < length:
