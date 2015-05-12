@@ -33,10 +33,13 @@
 
 import sys
 import os
+import re
+from errno import ENOSPC, ENOENT
 import subprocess
 from contextlib import contextmanager
 import threading
 from logging import getLogger, DEBUG, Handler
+from time import sleep
 
 import apt_pkg
 import apt
@@ -235,6 +238,7 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 #
 
 class _PackageManagerLoggerHandler(Handler):
+
 	def __init__(self, info_handler, step_handler, error_handler):
 		super(_PackageManagerLoggerHandler, self).__init__()
 		self.info_handler = info_handler
@@ -252,7 +256,9 @@ class _PackageManagerLoggerHandler(Handler):
 			if self.info_handler:
 				self.info_handler(record.msg)
 
+
 class PackageManager(object):
+
 	def __init__(self, lock=True, info_handler=None, step_handler=None, error_handler=None, always_noninteractive=True):
 		# parent logger, public. should be extended by adding a handler
 		self.logger = getLogger('packagemanager')
@@ -261,7 +267,8 @@ class PackageManager(object):
 			handler = _PackageManagerLoggerHandler(info_handler, step_handler, error_handler)
 			self.logger.addHandler(handler)
 
-		self.cache = apt.Cache()
+		self.cache = None
+		self._open_cache()
 		self.progress_state = ProgressState(self.logger)
 		self.fetch_progress = FetchProgress(self.progress_state)
 		self.dpkg_progress = DpkgProgress(self.progress_state)
@@ -515,8 +522,8 @@ class PackageManager(object):
 		fixer.install_protect()
 		try:
 			fixer.resolve()
-		except SystemError as e:
-			self.progress_state.error(str(e))
+		except SystemError as exc:
+			self.progress_state.error(str(exc))
 			for pkg in install + remove:
 				broken.add(pkg.name)
 		# if more than one package is to be installed and this package
@@ -534,10 +541,13 @@ class PackageManager(object):
 		while package_was_garbage:
 			package_was_garbage = False
 			for pkg in self.cache.get_changes():
-				if pkg.marked_install and pkg.is_auto_installed:
-					if self.cache._depcache.is_garbage(pkg._pkg): # FIXME: python-apt 0.7 is broken. change to pkg.is_auto_removable in python-apt 0.8
+				if pkg.marked_install and pkg.is_auto_installed and pkg.is_auto_removable:
+					try:
 						pkg.mark_delete()
-						package_was_garbage = True
+					except SystemError as exc:
+						# Bug #34291
+						broken.add(pkg.name)
+					package_was_garbage = True
 		for pkg in self.cache.get_changes():
 			if pkg.marked_install or pkg.marked_upgrade:
 				to_be_installed.add(pkg.name)
@@ -645,8 +655,83 @@ class PackageManager(object):
 		'''Reopens the cache
 		Has to be done when the apt database changed.
 		'''
-		self.cache.open()
+		self._open_cache()
 		self.always_install(just_mark=True)
+
+	def _open_cache(self):
+		def _open():
+			if self.cache is None:
+				self.cache = apt.Cache()
+			else:
+				self.cache.open()
+		for i in xrange(10):
+			try:
+				_open()
+			except SystemError:
+				sleep(0.5)
+			else:
+				return
+		try:
+			_open()
+		except SystemError as exc:
+			# still failing, let it raise
+			self._handle_system_error(exc, *sys.exc_info())
+
+	def _handle_system_error(self, exc, etype, evalue, etraceback):
+		# All strings which must pass this function are in: https://forge.univention.org/bugzilla/attachment.cgi?id=6898
+		messages = re.sub('\s([WE]:)', r'\n\1', str(exc)).splitlines()
+		further = set()
+
+		apt_update = False
+		hold_package = False
+		no_space_left = False
+		missing_files = False
+		renaming_failed = False
+
+		message = [_('Could not initialize package manager.')]
+		for msg in messages:
+			if msg.startswith('W:'):
+				if 'apt-get update' in msg:
+					apt_update = True
+					continue
+			elif msg.startswith('E:'):
+				if 'pkgProblemResolver::Resolve' in msg:
+					hold_package = True
+					continue
+				match = re.search(' - (write|open|rename) \((\d+): .*\)', msg)
+				if match:
+					type_, errno = match.groups()
+					errno = int(errno)
+					if errno == ENOSPC:
+						no_space_left = True
+						continue
+					elif errno == ENOENT and type_ == 'open':
+						missing_files = True
+						continue
+					elif errno == ENOENT and type_ == 'rename':
+						renaming_failed = True
+						continue
+			msg = re.sub('^W:', _('Warning: '), msg)
+			msg = re.sub('^E:', _('Error: '), msg)
+			msg = re.sub(',$', '.', msg)
+			further.add(msg)
+
+		if no_space_left:
+			message.append(_('There is no free hard disk space left on the device.'))
+		if hold_package:
+			message.append(_('Some package conflicts could not be resolved. This was probably caused by packages with "hold" state.'))
+		if renaming_failed or missing_files:
+			message.append(_('Probably another process is currently using it or the package sources are corrupt. Please try again later.'))
+			apt_update = True
+		elif apt_update:
+			message.append(_('The package sources are probably corrupt.'))
+		if apt_update:
+			message.extend([
+				_('The sources.list entries could be repaired by executing the following commands as root on this server:'),
+				'\n', 'ucr commit /etc/apt/sources.list.d/*; apt-get update'])
+		if further:
+			message.extend(['\n\n'+_('Further information regarding the error:'), '\n'+'\n'.join(further)])
+		raise etype, etype(' '.join(message)), etraceback
 
 	def autoremove(self):
 		'''It seems that there is nothing like
@@ -687,4 +772,3 @@ class PackageManager(object):
 	def uninstall(self, *pkg_names):
 		'''Instantly deletes packages when found'''
 		return self.commit(install=self._always_install, remove=pkg_names)
-

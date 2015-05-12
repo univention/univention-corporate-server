@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-lib\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-08-01 15:03+0200\n"
+"POT-Creation-Date: 2015-05-12 13:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,36 +12,78 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: python/package_manager.py:681
+#: python/package_manager.py:751
 msgid "Autoremove failed"
 msgstr "Deinstallation unbenutzter Pakete fehlgeschlagen"
 
-#: python/package_manager.py:675
+#: python/package_manager.py:691
+msgid "Could not initialize package manager."
+msgstr "Paketmanager konnte nicht initialisiert werden."
+
+#: python/package_manager.py:745
 #, python-format
 msgid "Deleting unneeded %s"
 msgstr "Deinstalliere unbenutztes Paket %s"
 
-#: python/package_manager.py:650
+#: python/package_manager.py:715
+msgid "Error: "
+msgstr "Fehler: "
+
+#: python/package_manager.py:645
 msgid "Failed to install"
 msgstr "Installation fehlgeschlagen"
 
-#: python/package_manager.py:285 python/package_manager.py:436
+#: python/package_manager.py:301 python/package_manager.py:428
 msgid "Failed to lock"
 msgstr "Sperren des Systems fehlgeschlagen"
 
-#: python/package_manager.py:655
+#: python/package_manager.py:650
 msgid "Failed to uninstall"
 msgstr "Deinstallation fehlgeschlagen"
 
-#: python/package_manager.py:433 python/package_manager.py:638
+#: python/package_manager.py:425 python/package_manager.py:633
 #, python-format
 msgid "Fetch failed (%s)"
 msgstr "Herunterladen fehlgeschlagen (%s)"
 
-#: python/package_manager.py:462
+#: python/package_manager.py:733
+msgid "Further information regarding the error:"
+msgstr "Weitere Informationen zum Fehler:"
+
+#: python/package_manager.py:454
 msgid "No such package"
 msgstr "Paket existiert nicht"
 
-#: python/package_manager.py:566
+#: python/package_manager.py:724
+msgid ""
+"Probably another process is currently using it or the package sources are "
+"corrupt. Please try again later."
+msgstr "Er wird möglicherweise zurzeit von einem anderen Prozess verwendet oder die Paketquellen sind korrupt. Bitte später erneut versuchen."
+
+#: python/package_manager.py:722
+msgid ""
+"Some package conflicts could not be resolved. This was probably caused by "
+"packages with \"hold\" state."
+msgstr "Einige Paketkonflikte konnten nicht gelöst werden. Dies wird möglicherweise von Paketen mit \"hold\"-Status verursacht."
+
+#: python/package_manager.py:727
+msgid "The package sources are probably corrupt."
+msgstr "Die Paketquellen sind wahrscheinlich korrupt."
+
+#: python/package_manager.py:730
+msgid ""
+"The sources.list entries could be repaired by executing the following "
+"commands as root on this server:"
+msgstr "Die sources.list Einträge könnten durch ausführen der folgenden Kommandos als root auf diesem Server repariert werden:"
+
+#: python/package_manager.py:720
+msgid "There is no free hard disk space left on the device."
+msgstr "Es ist kein freier Speicherplatz auf dem Gerät verfügbar."
+
+#: python/package_manager.py:561
 msgid "Untrusted origin"
 msgstr "Nicht vertrauenswürdige Quelle"
+
+#: python/package_manager.py:714
+msgid "Warning: "
+msgstr "Warnung: "
