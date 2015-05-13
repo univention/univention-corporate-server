@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-base-files
+fix: 4.0.8-2.183.201505131737
+version: [2]
+desc: |
+  This update addresses the following issues:
+  * The description for the UCR variable 'ldap/server/addition' has been
+    improved.
+bug: [38094]
