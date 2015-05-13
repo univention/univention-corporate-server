@@ -1,4 +1,4 @@
-univention-management-console-module-appcenter (4.1.21-1) unstable; urgency=medium
+univention-management-console-module-appcenter (4.1.20-26) unstable; urgency=medium
 
   * Bug #33627: prevent traceback when appcenter initialization fails
   * Bug #35614: display human readable http errors
