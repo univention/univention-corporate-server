@@ -37,6 +37,7 @@ import time
 import sys
 import urllib2
 from httplib import HTTPException
+from functools import wraps
 
 # related third party
 import notifier
@@ -61,8 +62,8 @@ from sanitizers import basic_components_sanitizer, advanced_components_sanitizer
 import constants
 import util
 
-
 _ = umc.Translation('univention-management-console-module-appcenter').translate
+
 
 class NoneCandidate(object):
 	''' Mock object if package has no candidate
@@ -72,7 +73,20 @@ class NoneCandidate(object):
 		self.summary = self.version = self.description = self.priority = self.section = _('Package not found in repository')
 		self.installed_size = 0
 
+
+def system_error_handler(func):
+	@wraps(func)
+	def _decorated(self, request, *a, **kwargs):
+		try:
+			return func(self, request, *a, **kwargs)
+		except SystemError as exc:
+			MODULE.error(str(exc))
+			raise umcm.UMC_Error(str(exc), status=500)
+	return _decorated
+
+
 class Instance(umcm.Base):
+
 	def init(self):
 		self.ucr = univention.config_registry.ConfigRegistry()
 		self.ucr.load()
@@ -96,10 +110,12 @@ class Instance(umcm.Base):
 		# in order to set the correct locale for Application
 		locale.setlocale(locale.LC_ALL, str(self.locale))
 
+	@system_error_handler
 	@simple_response
 	def version(self):
 		return Application.get_appcenter_version()
 
+	@system_error_handler
 	@simple_response
 	def query(self):
 		try:
@@ -116,6 +132,7 @@ class Instance(umcm.Base):
 				result.append(props)
 		return result
 
+	@system_error_handler
 	@simple_response
 	def sync_ldap(self, application=None):
 		# TODO: Remove in (UCS 3.2) + 1
@@ -136,6 +153,7 @@ class Instance(umcm.Base):
 			application.tell_ldap(self.ucr, self.package_manager, inform_about_error=False)
 
 	# used in updater-umc
+	@system_error_handler
 	@simple_response
 	def get_by_component_id(self, component_id):
 		try:
@@ -164,6 +182,7 @@ class Instance(umcm.Base):
 				raise umcm.UMC_CommandError(_('Could not find an application for %s') % component_id)
 
 	# used in updater-umc
+	@system_error_handler
 	@simple_response
 	def app_updates(self):
 		self.package_manager.reopen_cache()
@@ -175,6 +194,7 @@ class Instance(umcm.Base):
 		domainwide_managed = Application.domainwide_managed(hosts)
 		return [app.to_dict(self.package_manager, domainwide_managed, hosts) for app in applications if app.candidate is not None]
 
+	@system_error_handler
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
 	@simple_response
 	def get(self, application):
@@ -182,10 +202,12 @@ class Instance(umcm.Base):
 		self.package_manager.reopen_cache()
 		return application.to_dict(self.package_manager)
 
+	@system_error_handler
 	def invoke_dry_run(self, request):
 		request.options['only_dry_run'] = True
 		self.invoke(request)
 
+	@system_error_handler
 	@sanitize(
 		function=ChoicesSanitizer(['install', 'uninstall', 'update', 'install-schema', 'update-schema'], required=True),
 		application=StringSanitizer(minimum=1, required=True),
@@ -346,10 +368,11 @@ class Instance(umcm.Base):
 		def _thread():
 			while not self.package_manager.progress_state._finished:
 				time.sleep(1)
-			self.finished(request.id, True)
 		def _finished(thread, result):
-			if isinstance(result, BaseException):
+			success = not isinstance(result, BaseException)
+			if not success:
 				MODULE.warn('Exception during keep_alive: %s' % result)
+			self.finished(request.id, success)
 		thread = notifier.threads.Simple('keep_alive',
 			notifier.Callback(_thread), _finished)
 		thread.run()
@@ -358,6 +381,7 @@ class Instance(umcm.Base):
 	def ping(self):
 		return True
 
+	@system_error_handler
 	@simple_response
 	def buy(self, application):
 		application = Application.find(application)
@@ -373,6 +397,7 @@ class Instance(umcm.Base):
 		ret['computer_count'] = None
 		return ret
 
+	@system_error_handler
 	@simple_response
 	def enable_disable_app(self, application, enable=True):
 		application = Application.find(application)
@@ -386,6 +411,7 @@ class Instance(umcm.Base):
 		if should_update:
 			self.package_manager.update()
 
+	@system_error_handler
 	@simple_response
 	def packages_sections(self):
 		""" fills the 'sections' combobox in the search form """
@@ -397,6 +423,7 @@ class Instance(umcm.Base):
 
 		return sorted(sections)
 
+	@system_error_handler
 	@sanitize(pattern=PatternSanitizer(required=True))
 	@simple_response
 	def packages_query(self, pattern, section='all', key='package'):
@@ -415,6 +442,7 @@ class Instance(umcm.Base):
 					result.append(self._package_to_dict(package, full=False))
 		return result
 
+	@system_error_handler
 	@simple_response
 	def packages_get(self, package):
 		""" retrieves full properties of one package """
@@ -426,6 +454,7 @@ class Instance(umcm.Base):
 			# TODO: 404?
 			return {}
 
+	@system_error_handler
 	@sanitize(function=MappingSanitizer({
 				'install' : 'install',
 				'upgrade' : 'install',
@@ -446,6 +475,7 @@ class Instance(umcm.Base):
 			kwargs['remove'] = packages
 		return dict(zip(['install', 'remove', 'broken'], self.package_manager.mark(**kwargs)))
 
+	@system_error_handler
 	@sanitize(function=MappingSanitizer({
 				'install' : 'install',
 				'upgrade' : 'install',
@@ -490,6 +520,7 @@ class Instance(umcm.Base):
 	def _working(self):
 		return not self.package_manager.progress_state._finished
 
+	@system_error_handler
 	@simple_response
 	def working(self):
 		# TODO: PackageManager needs is_idle() or something
@@ -497,6 +528,7 @@ class Instance(umcm.Base):
 		#   package_manager.is_working() => False or _('Installing UCC')
 		return self._working()
 
+	@system_error_handler
 	@simple_response
 	def progress(self):
 		timeout = 5
@@ -569,6 +601,7 @@ class Instance(umcm.Base):
 
 		return result
 
+	@system_error_handler
 	@simple_response
 	def components_query(self):
 		"""	Returns components list for the grid in the ComponentsPage.
@@ -582,6 +615,7 @@ class Instance(umcm.Base):
 			result.append(self.component_manager.component(comp))
 		return result
 
+	@system_error_handler
 	@sanitize_list(StringSanitizer())
 	@multi_response(single_values=True)
 	def components_get(self, iterator, component_id):
@@ -591,6 +625,7 @@ class Instance(umcm.Base):
 		for component_id in iterator:
 			yield self.component_manager.component(component_id)
 
+	@system_error_handler
 	@sanitize_list(DictSanitizer({'object' : advanced_components_sanitizer}))
 	@multi_response
 	def components_put(self, iterator, object):
@@ -630,6 +665,7 @@ class Instance(umcm.Base):
 	components_add = sanitize_list(DictSanitizer({'object' : add_components_sanitizer}))(components_put)
 	components_add.__name__ = 'components_add'
 
+	@system_error_handler
 	@sanitize_list(StringSanitizer())
 	@multi_response(single_values=True)
 	def components_del(self, iterator, component_id):
@@ -637,6 +673,7 @@ class Instance(umcm.Base):
 			yield self.component_manager.remove(component_id)
 		self.package_manager.update()
 
+	@system_error_handler
 	@multi_response
 	def settings_get(self, iterator):
 		# *** IMPORTANT *** Our UCR copy must always be current. This is not only
@@ -651,6 +688,7 @@ class Instance(umcm.Base):
 				'prefix' : self.ucr.get('repository/online/prefix', ''),
 			}
 
+	@system_error_handler
 	@sanitize_list(DictSanitizer({'object' : basic_components_sanitizer}),
 		min_elements=1, max_elements=1 # moduleStore with one element...
 	)
