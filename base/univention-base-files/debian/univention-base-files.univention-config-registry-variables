@@ -266,14 +266,14 @@ Type=str
 Categories=service-ldap
 
 [ldap/server/name]
-Description[de]=In einer UCS-Domäne können mehrere LDAP-Server betrieben werden. Der primär verwendete wird mit dieser Variable festgelegt. Weitere Server können über 'ldap/server/addition' angegeben werden.
-Description[en]=Several LDAP servers can be operated in a UCS domain. The primary one is specified with this variable. Further servers can be specified via 'ldap/server/addition'.
+Description[de]=In einer UCS-Domäne können mehrere LDAP-Server betrieben werden. Der primär verwendete wird mit dieser Variable festgelegt. Weitere Server werden über 'ldap/server/addition' angegeben.
+Description[en]=Several LDAP servers can be operated in a UCS domain. The primary one is specified with this variable. Further servers are specified via 'ldap/server/addition'.
 Type=str
 Categories=service-ldap
 
 [ldap/server/addition]
-Description[de]=In einer UCS-Domäne können mehrere LDAP-Server betrieben werden. Der primär verwendete wird mit 'ldap/server/name' festgelegt, weitere Server können über diese Variable angegeben werden.
-Description[en]=Several LDAP servers can be operated in a UCS domain. The primary one is specified with 'ldap/server/name'. Further servers can be specified via this variable.
+Description[de]=In einer UCS-Domäne können mehrere LDAP-Server betrieben werden. Der primär verwendete wird mit 'ldap/server/name' festgelegt. Weitere Server werden von einem Listener-Modul automatisch über dieser Variable verwaltet.
+Description[en]=Several LDAP servers can be operated in a UCS domain. The primary one is specified with 'ldap/server/name'. Further servers are automatically managed by a Listener module through this variable.
 Type=str
 Categories=service-ldap
 
