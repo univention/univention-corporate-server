@@ -33,6 +33,7 @@
 			The name of each join script is normally derived from the name of the binary package containing it.
 			It is prefixed with a two-digit number, which is used to order the scripts lexicographically.
 			The filename either ends in <filename class="extension">.inst</filename> or <filename class="extension">.uinst</filename>, which distinguishes between join script and unjoin script (see <xref linkend="join:unjoin"/>).
+			The file must have the executable permission bits set.
 		</para>
 	</section>
 

@@ -363,6 +363,7 @@ Variables: locale
 		<para>
 			A join script is just an executable script living in <filename class="directory">/usr/lib/univention-install/</filename>. The name is
 			something like <filename><replaceable>xx$app</replaceable>.inst</filename> (<replaceable>xx</replaceable> are two digits for ordering purposes).
+			The file must have the executable permission bits set.
 		</para>
 
 		<para>
