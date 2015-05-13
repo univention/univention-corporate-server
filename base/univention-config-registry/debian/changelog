@@ -1,4 +1,4 @@
-univention-config-registry (10.0.2-1) unstable; urgency=medium
+univention-config-registry (10.0.2-2) unstable; urgency=medium
 
   * support zone index for ipv6/gateway (Bug #35694)
 
