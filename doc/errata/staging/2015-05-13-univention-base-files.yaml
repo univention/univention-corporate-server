@@ -2,10 +2,15 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-base-files
-fix: 4.0.8-2.183.201505131737
+fix: 4.0.8-2.184.201505131755
 version: [2]
 desc: |
   This update addresses the following issues:
   * The description for the UCR variable 'ldap/server/addition' has been
     improved.
-bug: [38094]
+  * The UCR variable 'ipv6/gateway' now supports a zone index.
+  * Multiple IPv6 addresses from the same subnet can now be added to an
+    interface.
+  * The handling of the 'prefix' for secondary IPv6 addresses has been
+    corrected.
+bug: [38094, 35694, 33986]
