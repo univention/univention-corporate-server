@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-29) unstable; urgency=medium
+
+  * Bug #35678: fix tracebacks when appcenter can't be reached
+
+ -- Florian Best <best@univention.de>  Wed, 13 May 2015 16:32:29 +0200
+
 univention-management-console-module-appcenter (4.1.20-28) unstable; urgency=medium
 
   * Bug #37591: adjust wording for maintainer

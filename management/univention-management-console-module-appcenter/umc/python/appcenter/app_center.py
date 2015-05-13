@@ -80,7 +80,7 @@ import univention.admin.handlers.container.cn as container_udm_module
 import univention.admin.uexceptions as udm_errors
 
 # local application
-from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5
+from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
 
 CACHE_DIR = '/var/cache/univention-management-console/appcenter'
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/local/all.tar.gz'
@@ -121,6 +121,12 @@ class License(object):
 		return self.email_known() or not email_required
 
 LICENSE = License()
+
+class AppcenterServerContactFailed(Exception):
+
+	def __init__(self, exc):
+		message = _('Error while contacting the App Center server. %s') % (verbose_http_error(exc),)
+		super(AppcenterServerContactFailed, self).__init__(message)
 
 class DoesNotExist(Exception):
 	pass
@@ -554,7 +560,7 @@ class Application(object):
 			except (ConfigParser.Error,) as exc:
 				MODULE.warn('Could not load category translations from: %s\n%s' % (url, exc))
 			except (urllib2.HTTPError, urllib2.URLError) as exc:
-				MODULE.warn('Could not load category translations from: %s\n%s' % (url, util.verbose_http_error(exc)))
+				MODULE.warn('Could not load category translations from: %s\n%s' % (url, verbose_http_error(exc)))
 				cls._category_translations = None
 			MODULE.info('loaded category translations: %s' % cls._category_translations)
 		return cls._category_translations
@@ -594,13 +600,15 @@ class Application(object):
 		try:
 			zipped = StringIO(urlopen(json_url).read())
 			content = GzipFile(mode='rb', fileobj=zipped).read()
+		except (urllib2.HTTPError, urllib2.URLError) as exc:
+			raise AppcenterServerContactFailed(exc)
 		except:
 			MODULE.error('Could not read "%s"' % json_url)
 			raise
 		try:
 			json_apps = loads(content)
 		except:
-			MODULE.error('JSON malformatted: "%s"' % content)
+			MODULE.error('JSON malformatted: %r' % content)
 			raise
 		files_to_download = []
 		files_in_json_file = []

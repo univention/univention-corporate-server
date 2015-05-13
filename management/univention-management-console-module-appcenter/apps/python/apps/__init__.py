@@ -42,20 +42,26 @@ import univention.config_registry
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.modules.appcenter.app_center import Application
+from univention.management.console.modules.appcenter import error_handler
 
 _ = umc.Translation('univention-management-console-module-apps').translate
 
 class Instance(umcm.Base):
+
 	def init(self):
 		self.ucr = univention.config_registry.ConfigRegistry()
 		self.ucr.load()
-		self.package_manager = PackageManager(
-			info_handler=MODULE.process,
-			step_handler=None,
-			error_handler=MODULE.warn,
-			lock=False,
-			always_noninteractive=True,
-		)
+		try:
+			self.package_manager = PackageManager(
+				info_handler=MODULE.process,
+				step_handler=None,
+				error_handler=MODULE.warn,
+				lock=False,
+				always_noninteractive=True,
+			)
+		except SystemError as exc:
+			MODULE.error(str(exc))
+			raise umcm.UMC_Error(str(exc), status=500)
 		# in order to set the correct locale for Application
 		locale.setlocale(locale.LC_ALL, str(self.locale))
 
@@ -63,6 +69,7 @@ class Instance(umcm.Base):
 		#   otherwise one would have to ask app center server (which is undesired)
  		Application._get_category_translations(fake=True)
 
+	@error_handler
 	@simple_response
 	def get(self, application):
 		# re-populate internal cache; be always as current as app center
@@ -74,4 +81,3 @@ class Instance(umcm.Base):
 		if application is None:
 			return None
 		return application.to_dict(self.package_manager)
-
