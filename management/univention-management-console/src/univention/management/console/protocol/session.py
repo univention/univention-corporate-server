@@ -901,7 +901,7 @@ class Processor(Base):
 			else:
 				signal = -1
 				exitcode = -1
-			CORE.warn('Module process %s died (pid: %d, exit status: %d, signal: %d)' % (module_name, pid, exitcode, signal))
+			CORE.warn('Module process %s died (pid: %d, exit status: %d, signal: %d, status: %r)' % (module_name, pid, exitcode, signal, status))
 		else:
 			CORE.info('Module process %s died on purpose' % module_name)
 
