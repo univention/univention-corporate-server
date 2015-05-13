@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-89) unstable; urgency=low
+
+  * Bug #38494: update shadowMax, krb5PasswordEnd and shadowLastChange 
+    during password change in s4 
+
+ -- Felix Botner <botner@univention.de>  Wed, 13 May 2015 09:44:04 +0200
+
 univention-s4-connector (8.0.33-88) unstable; urgency=medium
 
   * Bug #33768: New UCR variable connector/s4/mapping/gpo/ntsd

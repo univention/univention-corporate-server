@@ -736,13 +736,33 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 			if modifyUserPassword:
 				modlist.append(('userPassword', userPassword_ucs, '{K5KEY}'))
 
-			# Remove the POSIX and Kerberos password expiry interval
-			if res[0][1].has_key('shadowLastChange'):
-				modlist.append(('shadowLastChange', res[0][1]['shadowLastChange'][0], None))
-			if res[0][1].has_key('shadowMax'):
-				modlist.append(('shadowMax', res[0][1]['shadowMax'][0], None))
-			if res[0][1].has_key('krb5PasswordEnd'):
-				modlist.append(('krb5PasswordEnd', res[0][1]['krb5PasswordEnd'][0], None))
+			## Update password expiry interval
+			##
+			## update shadowLastChange to now
+			old_shadowLastChange = res[0][1].get('shadowLastChange', [None])[0]
+			new_shadowLastChange = str(long(time.time())/3600/24)
+			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))
+			modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
+			## shadowMax (set to value of univentionPWExpiryInterval, otherwise delete)
+			## krb5PasswordEnd (set to today + univentionPWExpiryInterval, otherwise delete)
+			policies = s4connector.lo.getPolicies(ucs_object['dn'])
+			old_shadowMax = res[0][1].get('shadowMax', [None])[0]
+			new_shadowMax = None
+			old_krb5end = res[0][1].get('krb5PasswordEnd', [None])[0]
+			new_krb5end = None
+			pwexp = policies.get('univentionPolicyPWHistory', {}).get('univentionPWExpiryInterval')
+			if pwexp:
+				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: password expiry for %s is %s" % (ucs_object['dn'], pwexp))
+				pwexp_value = pwexp.get('value', [None])[0]
+				if pwexp_value:
+					new_shadowMax = pwexp_value
+					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime((long(time.time()) + (int(pwexp_value)*3600*24))))
+			if old_shadowMax or new_shadowMax:
+				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowMax to %s for %s" % (new_shadowMax, ucs_object['dn']))
+				modlist.append(('shadowMax', old_shadowMax, new_shadowMax))
+			if old_krb5end or new_krb5end:
+				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update krb5PasswordEnd to %s for %s" % (new_krb5end, ucs_object['dn']))
+				modlist.append(('krb5PasswordEnd', old_krb5end, new_krb5end))
 		else:
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: No password change to sync to UCS")
 
