@@ -1,4 +1,4 @@
-univention-management-console (7.1.64-1) unstable; urgency=medium
+univention-management-console (7.1.63-17) unstable; urgency=medium
 
   * Bug #37366: don't let the UMC server crash on exceptions during request
   	processing

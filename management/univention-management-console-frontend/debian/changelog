@@ -1,4 +1,4 @@
-univention-management-console-frontend (4.1.107-1) unstable; urgency=medium
+univention-management-console-frontend (4.1.106-62) unstable; urgency=medium
 
   * Bug #37280: Allow to create core dumps of the umc-webserver process
   * Bug #38335: dedup code for free disk space check
