@@ -234,8 +234,12 @@ define([
 				this.addChild(this._icon, 1);
 			}
 
-			this.addToDetails(_('Vendor'), 'Vendor');
-			this.addToDetails(_('Maintainer'), 'Maintainer');
+			if (this.app.hasMaintainer()) {
+				this.addToDetails(_('Vendor'), 'Vendor');
+				this.addToDetails(_('App provider'), 'Maintainer');
+			} else {
+				this.addToDetails(_('App provider'), 'Vendor');
+			}
 			this.addToDetails(_('Contact'), 'Contact');
 			this.addToDetails(_('More information'), 'Website');
 			this.addToDetails(_('Support'), 'SupportURL');
@@ -714,11 +718,7 @@ define([
 				}
 				return '<a href="' + supportURL + '" target="_blank">' + _('Available support options') + '</a>';
 			} else {
-				if (this.app.hasMaintainer()) {
-					return _('Please contact the maintainer of the application');
-				} else {
-					return _('Please contact the vendor of the application');
-				}
+				return _('Please contact the provider of the application');
 			}
 		},
 
@@ -761,17 +761,9 @@ define([
 				return null;
 			}
 			if (this.app.notifyVendor) {
-				if (this.app.hasMaintainer()) {
-					return _('This application will inform the maintainer if you (un)install it.');
-				} else {
-					return _('This application will inform the vendor if you (un)install it.');
-				}
+				return _('This application will inform the app provider about (un)installation. The app provider may contact you.');
 			} else {
-				if (this.app.hasMaintainer()) {
-					return _('This application will not inform the maintainer if you (un)install it.');
-				} else {
-					return _('This application will not inform the vendor if you (un)install it.');
-				}
+				return _('This application will not inform the app provider about (un)installation.');
 			}
 		},
 

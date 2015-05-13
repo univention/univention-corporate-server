@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-28) unstable; urgency=medium
+
+  * Bug #37591: adjust wording for maintainer
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 13 May 2015 15:03:13 +0200
+
 univention-management-console-module-appcenter (4.1.20-27) unstable; urgency=medium
 
   * Bug #37230: handle SystemExit in every UMC call
