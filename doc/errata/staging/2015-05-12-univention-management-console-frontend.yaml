@@ -9,4 +9,4 @@ desc: |
   * It is now possible to create a core dump of the UMC-Webserver.
   * A check for free disk space is now only done once per file upload request.
   * Placeholders in Login dialog are now diplayed correct in IE9.
-bug: [37280,38335,38127]
+bug: [37280, 38335, 38127]
