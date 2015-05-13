@@ -2,10 +2,12 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-management-console-frontend
-fix: 
+fix: 4.1.106-61.1048.201505121444
 version: [2]
 desc: |
   This update addresses the following issues:
   * It is now possible to create a core dump of the UMC-Webserver.
   * A check for free disk space is now only done once per file upload request.
-bug: [37280, 38335]
+  * Placeholders in Login dialog are now diplayed correct in IE9.
+
+bug: [37280, 38335,38127]

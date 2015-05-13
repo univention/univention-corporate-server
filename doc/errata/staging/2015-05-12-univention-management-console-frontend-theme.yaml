@@ -1,0 +1,12 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-management-console-frontend-theme
+fix: 0.0.89-15.86.201505121459
+version: [2]
+desc: |
+  This update addresses the following issues:
+  * The clear input and view password icons are now diplayed correct in the
+    login dialog.
+
+bug: [38127]
