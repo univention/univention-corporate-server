@@ -11,4 +11,4 @@ desc: |
     instead of displaying a traceback.
   * Display error message if contacting the LDAP server or the AppCenter server fails.
   * The wording for app maintainer has been adjusted to app provider.
-bug: [35760, 33627, 35614, 36794, 38112, 38129, 36951, 35678, 37591]
+bug: [35760, 33627, 35614, 36794, 38112, 38129, 36951, 35678, 37591, 37230]
