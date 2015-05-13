@@ -350,6 +350,7 @@ define([
 					type: ComboBox,
 					name: 'locale/default',
 					label: _('Default system locale'),
+					value: 'en_US.UTF-8:UTF-8',
 					umcpCommand: lang.hitch(this, 'umcpCommand'),
 					dynamicOptions: {pattern: '*'},
 					dynamicValues: 'setup/lang/locales'
@@ -357,12 +358,14 @@ define([
 					type: ComboBox,
 					name: 'timezone',
 					label: _('Time zone'),
+					value: 'America/New_York',
 					umcpCommand: lang.hitch(this, 'umcpCommand'),
 					dynamicValues: 'setup/lang/timezones'
 				}, {
 					type: ComboBox,
 					name: 'xorg/keyboard/options/XkbLayout',
 					label: _('Keyboard layout'),
+					value: 'us',
 					umcpCommand: lang.hitch(this, 'umcpCommand'),
 					dynamicValues: 'setup/lang/keyboard/layout',
 					onChange: lang.hitch(this, function(value) {
@@ -1237,10 +1240,25 @@ define([
 					locale: 'de_DE.UTF-8:UTF-8',
 					keyboard: 'de'
 				},
+				'de-AT': {
+					timezone: 'Europe/Vienna',
+					locale: 'de_AT.UTF-8:UTF-8',
+					keyboard: 'at'
+				},
+				'de-CH': {
+					timezone: 'Europe/Zurich',
+					locale: 'de_CH.UTF-8:UTF-8',
+					keyboard: 'ch'
+				},
 				'en-US': {
 					timezone: 'America/New_York',
 					locale: 'en_US.UTF-8:UTF-8',
 					keyboard: 'us'
+				},
+				'en-GB': {
+					timezone: 'Europe/London',
+					locale: 'en_GB.UTF-8:UTF-8',
+					keyboard: 'gb'
 				}
 			};
 			this._setLocaleValues(defaults[i18nTools.defaultLang()] || {});

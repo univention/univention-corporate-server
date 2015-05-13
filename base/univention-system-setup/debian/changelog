@@ -1,3 +1,10 @@
+univention-system-setup (8.1.66-45) unstable; urgency=low
+
+  * Bug #38512: Added fallback for locale and extended defaults for en_GB,
+  	de_CH and de_AT
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 13 May 2015 09:40:33 +0200
+
 univention-system-setup (8.1.66-44) unstable; urgency=medium
 
   * Also call ucr commit in postinst of univention-system-setup-boot to
