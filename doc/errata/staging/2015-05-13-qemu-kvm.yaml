@@ -6,7 +6,8 @@ fix: 1.1.2+dfsg-6.44.201505131916
 version: [1,2]
 desc: |
  A vulernability has been fixed in qemu-kvm:
- * Virtualized Environment Neglected Operations Manipulation (VENOM) in QEMU's virtual Floppy Disk Controller (CVE-2015-3456)
+ * Virtualized Environment Neglected Operations Manipulation (VENOM)
+   in QEMU's virtual Floppy Disk Controller (CVE-2015-3456)
 bug: [38537]
 cve:
  - CVE-2015-3456
