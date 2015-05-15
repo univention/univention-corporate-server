@@ -37,9 +37,8 @@ def main():
 				mail = '%s@%s' % (uts.random_name(), domain)
 				user_dn , username = udm.create_user(
 					set={
-						'password'			 : password,
-						'mailHomeServer'	 : '%s.%s' % (ucr.get('hostname'), domain),
-						# User 0, does not have an email address for now
+						'password'           : password,
+						'mailHomeServer'     : '%s.%s' % (ucr.get('hostname'), domain),
 						'mailPrimaryAddress' : mail if i > 0 else '',
 					}
 				)
@@ -51,10 +50,10 @@ def main():
 			group_dn = udm.create_object(
 				'groups/group',
 				set={
-					'position'	  : 'cn=ucsschool,cn=groups,%s' % ucr.get('ldap/base'),
-					'name'		  : group_name,
+					'position'    : 'cn=ucsschool,cn=groups,%s' % ucr.get('ldap/base'),
+					'name'        : group_name,
 					'mailAddress' : group_mail,
-					'users'		  : users_list[0],
+					'users'       : users_list[0],
 				}
 			)
 			udm.modify_object(
