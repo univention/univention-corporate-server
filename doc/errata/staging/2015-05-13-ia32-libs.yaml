@@ -5,7 +5,7 @@ src: ia32-libs
 fix: 20150413.107.201505131245
 version: [5]
 desc: |
-  Multiple vulnerabilities have been fixed in ia43-libs.
+  Multiple vulnerabilities have been fixed in ia32-libs.
 bug: [38533]
 cve:
  - CVE-2010-2482
