@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-ad-connector
+fix: 9.0.11-11.466.201505151146
+version: [1]
+desc: |
+  This errata update addresses the following issues:
+  * Fix links in the documentation that lead to the manual of UCS 3.2.
+bug: [38147]
