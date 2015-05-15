@@ -1,0 +1,105 @@
+#!/usr/share/ucs-test/runner python
+## desc: Mails to unknown users are rejected
+## tags: apptest
+## exposure: dangerous
+## packages: [univention-mail-server]
+
+from essential.mail import send_mail, mail_delivered
+import time
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+
+def check_delivery(token, recipient_email, should_be_delivered):
+	delivery_timeout = 60 # sec
+	delivered = False
+	print "%s is waiting for an email..." % recipient_email
+	for i in xrange(delivery_timeout):
+		if not mail_delivered(token, mail_address=recipient_email):
+			time.sleep(1)
+		else:
+			delivered = True
+			break
+	if should_be_delivered and not delivered:
+		utils.fail('Mail sent with token = %r to the group, was not delivered to member %s' % (token, recipient_email))
+
+
+def main():
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		with udm_test.UCSTestUDM() as udm:
+			domain = ucr.get('domainname')
+			password = 'univention'
+			mails_list= []
+			users_list = []
+			for i in xrange(4):
+				mail = '%s@%s' % (uts.random_name(), domain)
+				user_dn , username = udm.create_user(
+					set={
+						'password'			 : password,
+						'mailHomeServer'	 : '%s.%s' % (ucr.get('hostname'), domain),
+						# User 0, does not have an email address for now
+						'mailPrimaryAddress' : mail if i > 0 else '',
+					}
+				)
+				mails_list.append(mail)
+				users_list.append(user_dn)
+			group_name = uts.random_name()
+			group_mail = '%s@%s' % (group_name, domain)
+			print  'Users List = ', users_list
+			group_dn = udm.create_object(
+				'groups/group',
+				set={
+					'position'	  : 'cn=ucsschool,cn=groups,%s' % ucr.get('ldap/base'),
+					'name'		  : group_name,
+					'mailAddress' : group_mail,
+					'users'		  : users_list[0],
+				}
+			)
+			udm.modify_object(
+				'groups/group',
+				dn=group_dn,
+				append={
+					'users': users_list[1:3]
+				}
+			)
+			token = str(time.time())
+			send_mail(recipients=group_mail, msg=token, tls=True, username=username, password=password)
+			for i, mail in enumerate(mails_list):
+				should_be_delivered = False
+				if i in [1, 2]:
+					should_be_delivered = True
+				print  40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered)
+				check_delivery(token, mail, should_be_delivered)
+
+			udm.modify_object(
+				'groups/group',
+				dn=group_dn,
+				append={
+					'users': [users_list[3]]
+				}
+			)
+			for i, mail in enumerate(mails_list):
+				should_be_delivered = True
+				if i == 0:
+					should_be_delivered = False
+				print  40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered)
+				check_delivery(token, mail, should_be_delivered)
+
+			udm.modify_object(
+				'users/user',
+				dn=users_list[0],
+				set={
+					'mailPrimaryAddress' : mails_list[0]
+				}
+			)
+			for i, mail in enumerate(mails_list):
+				should_be_delivered = True
+				print  40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered)
+				check_delivery(token, mail, should_be_delivered)
+
+
+if __name__ == '__main__':
+	main()
+# vim: set ft=python ts=4 sw=4 noet :
