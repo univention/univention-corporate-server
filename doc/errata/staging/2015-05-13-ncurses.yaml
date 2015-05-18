@@ -6,5 +6,5 @@ fix: 5.7+20100313-5.18.201505131341
 version: [5]
 desc: |
   This erratum provides the package lib32ncurses5 for amd64 as a maintained
-  package. It is required by the updated ia43-libs package.
+  package. It is required by the updated ia32-libs package.
 bug: [38533]
