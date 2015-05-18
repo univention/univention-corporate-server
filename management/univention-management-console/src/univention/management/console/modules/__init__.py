@@ -153,15 +153,15 @@ class UMC_Error(Exception):
 
 
 class UMC_OptionTypeError(UMC_Error):
-	pass  # deprecated, please try prevent using!
+	pass  # deprecated, please use .sanitizers instead!
 
 
 class UMC_OptionMissing(UMC_Error):
-	pass  # deprecated, please try prevent using!
+	pass  # deprecated, please use .sanitizers instead!
 
 
 class UMC_CommandError(UMC_Error):
-	pass  # deprecated, please try prevent using!
+	pass  # deprecated, please use .sanitizers instead!
 
 
 class UMC_OptionSanitizeError(UMC_OptionTypeError):

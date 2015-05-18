@@ -1,3 +1,9 @@
+univention-management-console (7.1.63-18) unstable; urgency=medium
+
+  * Bug #37366: fix import order
+
+ -- Florian Best <best@univention.de>  Mon, 18 May 2015 10:12:58 +0200
+
 univention-management-console (7.1.63-17) unstable; urgency=medium
 
   * Bug #37366: don't let the UMC server crash on exceptions during request

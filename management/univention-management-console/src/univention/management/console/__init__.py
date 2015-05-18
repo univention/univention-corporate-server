@@ -32,3 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.lib.i18n import Translation
+
+import univention.management.console.protocol
+import univention.management.console.modules
