@@ -390,7 +390,6 @@
 		-->
 	</section>
 
-	<!--
 	<section id="changelog:deployment">
 		<title>Software deployment</title>
 
@@ -398,10 +397,13 @@
 			<title>Software deployment command line tools</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The update scripts have been adjusted to UCS 3.2-6 (<ulink url="&ucsbug;38516">Bug 38516</ulink>).
 				</simpara></listitem>
+
 			</itemizedlist>
 		</section>
 
+		<!--
 		<section id="changelog:deployment:monitor">
 			<title>Software monitor</title>
 			<itemizedlist>
@@ -409,8 +411,8 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 	</section>
-	-->
 
 	<section id="changelog:lib">
 		<title>Univention Library</title>
