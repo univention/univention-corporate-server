@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-ldap
+fix: 11.0.12-6.746.201505191650
+version: [1,2]
+desc: |
+  This update addresses the following issue:
+  * The diversion of the msgpo.schema file introduced as a fix for Bug #38488
+    should be removed again.
+bug: [38566]
