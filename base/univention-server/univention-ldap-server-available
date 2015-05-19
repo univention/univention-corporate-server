@@ -3,7 +3,7 @@
 # Univention System Role Package
 #  helper script: checks the connection to the LDAP server.
 #
-# Copyright 2010-2014 Univention GmbH
+# Copyright 2010-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
