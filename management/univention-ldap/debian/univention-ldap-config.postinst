@@ -45,4 +45,20 @@ if [ "$1" = "configure" -a -z "$2" ]; then
 	fi
 fi
 
+if [ "$1" = "configure" -a -n "$2" ]; then
+	## On update
+	# Revert diversion created in errata3.2-5 for (Bug #38488)
+	if dpkg --compare-versions "$2" lt '11.0.12-6'; then
+
+		diverted_schema_file='/usr/share/univention-ldap/schema/msgpo.schema'
+		dpkg-divert --local \
+			--remove "$diverted_schema_file" || true
+
+		diversion_target="$diverted_schema_file".ucs-errata
+		if [ -r "$diversion_target" ]; then
+			rm "$diversion_target"
+		fi
+	fi
+fi
+
 exit 0
