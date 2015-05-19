@@ -1,0 +1,13 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-5
+src: univention-ldap
+fix: 10.0.17-43.745.201505191639
+version: [5]
+desc: |
+  This update addresses the following issue:
+  * The msgpo.schema file adjusted in UCS 3.2-5 erratum 276 would get replaced
+    by a not-adjusted version during an update to UCS 4.0. This erratum
+    avoids this by implementing a dpkg diversion for that file, which will
+    get removed again in an erratum for UCS 4.0-2.
+bug: [38488]
