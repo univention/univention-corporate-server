@@ -1,3 +1,9 @@
+univention-server (10.0.3-2) unstable; urgency=low
+
+  * Bug #38094: Move ldap/server/additional into LDAP layer
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 18 May 2015 11:18:25 +0200
+
 univention-server (10.0.3-1) unstable; urgency=medium
 
   * Removed lock_expired_passwords lock_expired_accounts cron job

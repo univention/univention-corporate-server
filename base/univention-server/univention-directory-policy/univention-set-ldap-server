@@ -31,10 +31,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, subprocess
-import univention.config_registry
+import sys
+import subprocess
+from univention.config_registry import ConfigRegistry
+from univention.config_registry.frontend import ucr_update
 
-configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry = ConfigRegistry(write_registry=ConfigRegistry.LDAP)
 configRegistry.load()
 
 found=0
@@ -53,24 +55,26 @@ if ldap_hostdn:
 				if p1.returncode != 0:
 					continue
 
+				updates = {}
 				for line in result.split('\n'):
 					line=line.strip(' ').strip('\n')
 					if line.startswith('univentionLDAPServer='):
 						new_ldap_server=line.replace('univentionLDAPServer=', '').replace('"','')
 						if not found:
 							ldap_server_name = configRegistry.get('ldap/server/name')
-							if not ldap_server_name:
-								out=univention.config_registry.handler_set(['ldap/server/name=%s' % new_ldap_server])
-							elif  not new_ldap_server == ldap_server_name:
-								out=univention.config_registry.handler_set(['ldap/server/name=%s' % new_ldap_server])
+							if not ldap_server_name or new_ldap_server != ldap_server_name:
+								updates['ldap/server/name'] = new_ldap_server
 							found=1
 						else:
 							addition.append(new_ldap_server)
-				if addition:
-					out=univention.config_registry.handler_set(['ldap/server/addition=%s' % string.join(addition,' ')])
-				else:
-					if configRegistry.get( 'ldap/server/addition' ):
-						out=univention.config_registry.handler_unset(['ldap/server/addition'])
+
+				old = configRegistry.get('ldap/server/addition', '')
+				new = ' '.join(addition)
+				if new != old:
+					updates['ldap/server/addition'] = new
+
+				if updates:
+					ucr_update(configRegistry, updates)
 
 				sys.exit(0)
 
