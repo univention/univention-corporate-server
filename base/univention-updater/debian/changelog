@@ -1,3 +1,9 @@
+univention-updater (9.0.47-1) unstable; urgency=low
+
+  * Adjust pre and postup.sh to UCS 3.2-5 (Bug #38516) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 May 2015 14:57:37 +0200
+
 univention-updater (9.0.46-3) unstable; urgency=low
 
   * Bug #37901: Reword UCR variable description
