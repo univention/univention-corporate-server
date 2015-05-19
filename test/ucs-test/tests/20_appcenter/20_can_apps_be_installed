@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Checks if apps are installable (except for apps/packages conflicting with installed apps)
-## tags: [basic]
+## tags: [basic, apptest]
 ## roles-not: [basesystem]
 ## exposure: safe
 ## packages:
