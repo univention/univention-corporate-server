@@ -43,6 +43,29 @@ if [ "$1" = "configure" -a -z "$2" ]; then
 			grep -q crestart /etc/init.d/slapd && /etc/init.d/slapd crestart || true
 		fi
 	fi
+
+	# divert the msgpo.schema file on installation to avoid replacement
+	# by an unfixed version during later update to ucs_4.0-0 (Bug #38488)
+	diverted_schema_file='/usr/share/univention-ldap/schema/msgpo.schema'
+	diversion_target="$diverted_schema_file".ucs-errata
+
+	dpkg-divert --local \
+		--divert "$diversion_target" \
+		--add "$diverted_schema_file" || true
+fi
+
+if [ "$1" = "configure" -a -n "$2" ]; then
+	## On update
+	# divert the msgpo.schema file on update to avoid replacement
+	# by an unfixed version during later update to ucs_4.0-0 (Bug #38488)
+	if dpkg --compare-versions "$2" lt 10.0.17-43; then
+		diverted_schema_file='/usr/share/univention-ldap/schema/msgpo.schema'
+		diversion_target="$diverted_schema_file".ucs-errata
+
+		dpkg-divert --local \
+			--divert "$diversion_target" \
+			--add "$diverted_schema_file" || true
+	fi
 fi
 
 exit 0

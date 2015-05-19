@@ -1,3 +1,10 @@
+univention-ldap (10.0.17-43) unstable; urgency=medium
+
+  * divert msgpo.schema to avoid regression during update to UCS 4.0
+    (Bug #38488)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 19 May 2015 16:38:50 +0200
+
 univention-ldap (10.0.17-42) unstable; urgency=medium
 
   * Bug #36978: New attribute msNTSecurityDescriptor
