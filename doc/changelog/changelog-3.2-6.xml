@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%entities;
+]>
+<chapter id="relnotes:changelog" lang="en">
+	<title>Changelog</title>
+	<section id="changelog:general">
+		<title>General</title>
+		<para>
+			All security updates issued for UCS 3.2-5 are included:
+		</para>
+		<itemizedlist>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-15-cairo.yaml -->
+					<package>cairo</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38251</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-23-eglibc.yaml -->
+					<package>eglibc</package> (<u:cve>2012-3405</u:cve> <u:cve>2012-3406</u:cve> <u:cve>2012-3480</u:cve> <u:cve>2012-4412</u:cve> <u:cve>2012-4424</u:cve> <u:cve>2013-0242</u:cve> <u:cve>2013-1914</u:cve> <u:cve>2013-4237</u:cve> <u:cve>2013-4332</u:cve> <u:cve>2013-4357</u:cve> <u:cve>2013-4458</u:cve> <u:cve>2013-4788</u:cve> <u:cve>2013-7423</u:cve> <u:cve>2013-7424</u:cve> <u:cve>2014-4043</u:cve>) (<u:bug>37644</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-20-firefox-de.yaml /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-13-firefox-de.yaml -->
+					<package>firefox-de</package> (<u:cve>2015-0801</u:cve> <u:cve>2015-0807</u:cve> <u:cve>2015-0813</u:cve> <u:cve>2015-0815</u:cve> <u:cve>2015-0816</u:cve> <u:cve>2015-0817</u:cve> <u:cve>2015-0818</u:cve> <u:cve>2015-0822</u:cve> <u:cve>2015-0827</u:cve> <u:cve>2015-0831</u:cve> <u:cve>2015-0835</u:cve> <u:cve>2015-0836</u:cve>) (<u:bug>37882</u:bug> <u:bug>38180</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-20-firefox-en.yaml /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-13-firefox-en.yaml -->
+					<package>firefox-en</package> (<u:cve>2015-0801</u:cve> <u:cve>2015-0807</u:cve> <u:cve>2015-0813</u:cve> <u:cve>2015-0815</u:cve> <u:cve>2015-0816</u:cve> <u:cve>2015-0817</u:cve> <u:cve>2015-0818</u:cve> <u:cve>2015-0822</u:cve> <u:cve>2015-0827</u:cve> <u:cve>2015-0831</u:cve> <u:cve>2015-0835</u:cve> <u:cve>2015-0836</u:cve>) (<u:bug>37882</u:bug> <u:bug>38180</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-19-freetype.yaml -->
+					<package>FreeType</package> (<u:cve>2014-9656</u:cve> <u:cve>2014-9657</u:cve> <u:cve>2014-9658</u:cve> <u:cve>2014-9660</u:cve> <u:cve>2014-9661</u:cve> <u:cve>2014-9663</u:cve> <u:cve>2014-9664</u:cve> <u:cve>2014-9666</u:cve> <u:cve>2014-9667</u:cve> <u:cve>2014-9669</u:cve> <u:cve>2014-9670</u:cve> <u:cve>2014-9671</u:cve> <u:cve>2014-9672</u:cve> <u:cve>2014-9673</u:cve> <u:cve>2014-9675</u:cve>) (<u:bug>37756</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-20-krb5.yaml -->
+					<package>krb5</package> (<u:cve>2014-4341</u:cve> <u:cve>2014-4342</u:cve> <u:cve>2014-4343</u:cve> <u:cve>2014-4344</u:cve> <u:cve>2014-5352</u:cve> <u:cve>2014-4345</u:cve> <u:cve>2014-9421</u:cve> <u:cve>2014-9422</u:cve> <u:cve>2014-9423</u:cve>) (<u:bug>37680</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-15-libsdl1.2.yaml -->
+					<package>libSDL1.2</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38251</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-15-libx11.yaml -->
+					<package>libX11</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38251</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-15-libxext.yaml -->
+					<package>libXext</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38251</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-15-libxfixes.yaml -->
+					<package>libXfixes</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38251</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-15-libxi.yaml -->
+					<package>libXi</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38251</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-15-libxrandr.yaml -->
+					<package>libXrandr</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-15-libxrender.yaml -->
+					<package>libXrender</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38251</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-15-libxv.yaml -->
+					<package>libXv</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38251</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-09-linux.yaml /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-09-univention-kernel-image.yaml -->
+					<package>Linux</package> (<u:cve>2013-7421</u:cve> <u:cve>2014-3645</u:cve> <u:cve>2014-3646</u:cve> <u:cve>2014-3690</u:cve> <u:cve>2014-8133</u:cve> <u:cve>2014-8134</u:cve> <u:cve>2014-9419</u:cve> <u:cve>2014-9420</u:cve> <u:cve>2014-9529</u:cve> <u:cve>2014-9584</u:cve> <u:cve>2014-9585</u:cve> <u:cve>2014-9644</u:cve> <u:cve>2014-9683</u:cve> <u:cve>2015-1421</u:cve> <u:cve>2015-1593</u:cve>) (<u:bug>37353</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-19-ntp.yaml -->
+					<package>ntp</package> (<u:cve>2014-9297</u:cve> <u:cve>2014-9298</u:cve>) (<u:bug>37703</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-03-openjdk6.yaml -->
+					<package>OpenJDK-6</package> (<u:cve>2014-3566</u:cve> <u:cve>2014-6585</u:cve> <u:cve>2014-6587</u:cve> <u:cve>2014-6591</u:cve> <u:cve>2014-6593</u:cve> <u:cve>2014-6601</u:cve> <u:cve>2015-0383</u:cve> <u:cve>2015-0395</u:cve> <u:cve>2015-0407</u:cve> <u:cve>2015-0408</u:cve> <u:cve>2015-0410</u:cve> <u:cve>2015-0412</u:cve>) (<u:bug>37576</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-18-openssl.yaml -->
+					<package>OpenSSL</package> (<u:cve>2015-0209</u:cve> <u:cve>2015-0286</u:cve> <u:cve>2015-0287</u:cve> <u:cve>2015-0288</u:cve> <u:cve>2015-0289</u:cve> <u:cve>2015-0292</u:cve>) (<u:bug>37959</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-15-open-vm-tools.yaml -->
+					<package>Open-VM-tools</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38251</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-19-postgresql-8.4.yaml -->
+					<package>PostgreSQL-8.4</package> (<u:cve>2015-0241</u:cve> <u:cve>2015-0243</u:cve> <u:cve>2015-0244</u:cve> <u:cve>2014-8161</u:cve>) (<u:bug>37703</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-08-sudo.yaml -->
+					<package>sudo</package> (<u:cve>2014-0106</u:cve> <u:cve>2014-9680</u:cve>) (<u:bug>37853</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-15-texlive-bin.yaml -->
+					<package>TeXLive-bin</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38251</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-15-tightvnc.yaml -->
+					<package>TightVNC</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38251</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-11-xen-4.1.yaml -->
+					<package>xen-4.1</package> (<u:cve>2015-2044</u:cve> <u:cve>2015-2045</u:cve> <u:cve>2015-2151</u:cve>) (<u:bug>37956</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-15-xserver-xorg-video-vmware.yaml -->
+					<package>xserver-xorg-video-vmware</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38251</u:bug>)
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<!--
+	<section id="changelog:installer">
+		<title>Univention Installer</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:updater">
+		<title>Univention Updater</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+	-->
+
+	<section id="changelog:basic">
+		<title>Basic system services</title>
+
+		<section id="changelog:basic:kernel">
+			<title>Linux kernel and firmware packages</title>
+			<itemizedlist>
+				<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-09-linux.yaml /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-09-univention-kernel-image.yaml -->
+						The Linux kernel has been updated to 3.10.71.
+						This provides many bugfixes (<u:bug>37353</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
+		<section id="changelog:basis:ucr">
+			<title>Univention Configuration Registry</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:basic:nfs">
+			<title>NFS</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:basic:procps">
+			<title>procps</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:basic:rsync">
+			<title>rsync</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:basic:web">
+			<title>Web</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+
+		<section id="changelog:basic:quota">
+			<title>Quota</title>
+			<itemizedlist>
+				<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-18-univention-quota.yaml -->
+						If the first configured LDAP server was not reachable, timeouts could occur during the login.
+						This has been fixed in the script <command>univention-user-quota</command> (<u:bug>38078</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-18-univention-quota.yaml -->
+						An error message about an unbound variable has been removed from the script <command>univention-group-quota</command> (<u:bug>38079</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-03-univention-quota.yaml -->
+						The quota settings are now written to a cache directory by a listener module.
+						The PAM script which sets the quota settings to the share uses this cache directory.
+						This improves the login performance (<u:bug>36989</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
+		<section id="changelog:basis:ucr:template">
+			<title>Changes to templates and modules</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+	</section>
+
+	<section id="changelog:domain">
+		<title>Domain services</title>
+
+		<section id="changelog:domain:openldap">
+			<title>OpenLDAP</title>
+
+			<itemizedlist>
+				<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-17-openldap.yaml -->
+						If a password has been changed via Samba 4, the account expiry setting was not always considered. This has been fixed (<u:bug>31429</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+
+			<!--
+			<section id="changelog:domain:openldap:acl">
+				<title>LDAP ACL changes</title>
+				<itemizedlist>
+					<listitem><simpara>
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
+
+			<section id="changelog:domain:openldap:schema">
+				<title>LDAP schema changes</title>
+				<itemizedlist>
+					<listitem><simpara>
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
+
+			<section id="changelog:domain:openldap:replication">
+				<title>Listener/Notifier domain replication</title>
+				<itemizedlist>
+					<listitem><simpara>
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
+			-->
+		</section>
+
+		<!--
+		<section id="changelog:domain:join">
+			<title>Domain join</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+	</section>
+
+	<section id="changelog:umc">
+		<title>Univention Management Console</title>
+
+		<section id="changelog:umc:web">
+			<title>Univention Management Console web interface</title>
+			<itemizedlist>
+				<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-15-univention-management-console-frontend.yaml -->
+						The navigation arrow is now shown again when multiple tabs are opened (<u:bug>37618</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
+		<section id="changelog:umc:server">
+			<title>Univention Management Console server</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:appcenter">
+			<title>Univention App Center</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:setup">
+			<title>Basic settings / Appliance mode</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:user">
+			<title>Users module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:computers">
+			<title>Computers module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:license">
+			<title>License module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:join">
+			<title>Domain join module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+
+		<section id="changelog:umc:update">
+			<title>Online update module</title>
+			<itemizedlist>
+				<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-02-univention-updater.yaml -->
+						A default time-out of 10 minutes was added to the updater, after which stalled HTTP connections are aborted (<u:bug>37901</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
+		<section id="changelog:umc:share">
+			<title>Shares module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:policy">
+			<title>Policies</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:printer">
+			<title>Printers module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:ucr">
+			<title>Univention Configuration Registry module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:ldap">
+			<title>LDAP directory browser</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:other">
+			<title>Other modules</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:udmcli">
+			<title>&ucsUDM; command line interface and related tools</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:development">
+			<title>Development of modules for &ucsUMC;</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+	</section>
+
+	<!--
+	<section id="changelog:deployment">
+		<title>Software deployment</title>
+
+		<section id="changelog:deployment:cli">
+			<title>Software deployment command line tools</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:deployment:monitor">
+			<title>Software monitor</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+	-->
+
+	<section id="changelog:lib">
+		<title>Univention Library</title>
+		<itemizedlist>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-18-univention-python.yaml -->
+					If the first configured LDAP server was not reachable, timeouts could occur during the login.
+					This has been fixed (<u:bug>38078</u:bug>).
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:service">
+		<title>System services</title>
+
+		<section id="changelog:service:mail">
+			<title>Mail services</title>
+			<itemizedlist>
+				<listitem><para><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-17-univention-mail-postfix.yaml -->
+						Additional arguments for <systemitem class="daemon">smtpd</systemitem> processes may now be added via &ucsUCRV;s.
+						The given arguments are automatically added to the configuration file <filename>/etc/postfix/master.cf</filename>.
+						The following UCR variable prefixes are currently supported:
+						<itemizedlist>
+							<listitem><simpara><envar>mail/postfix/mastercf/options/smtp/...</envar></simpara></listitem>
+							<listitem><simpara><envar>mail/postfix/mastercf/options/smtps/...</envar></simpara></listitem>
+						</itemizedlist>
+						(<u:bug>38062</u:bug>)
+				</para></listitem>
+				<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-17-univention-mail-postfix.yaml -->
+						The first changes to the <filename>main.cf</filename> framework have been done for defining a custom restriction rule set via &ucsUCRV;s for Postfix' <systemitem class="service">smtps</systemitem> port (465).
+						There is currently no change in Postfix behaviour (<u:bug>31738</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
+		<section id="changelog:service:virus">
+			<title>Spam/virus detection and countermeasures</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:print">
+			<title>Printing services</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:nagios">
+			<title>Nagios</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:ssl">
+			<title>SSL</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:proxy">
+			<title>Proxy services</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:pam">
+			<title>PAM / Local group cache</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:other">
+			<title>Other services</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+	</section>
+
+	<!--
+	<section id="changelog:virt">
+		<title>Virtualisation</title>
+
+		<section id="changelog:virt:uvmm">
+			<title>Univention Virtual Machine Manager (UVMM)</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:virt:xen">
+			<title>Xen</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:virt:libvirt">
+			<title>Libvirt</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+	-->
+
+	<section id="changelog:win">
+		<title>Services for Windows</title>
+
+		<section id="changelog:win:ad">
+			<title>Samba</title>
+			<itemizedlist>
+				<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-19-univention-samba.yaml -->
+						If the first configured LDAP server was not reachable, timeouts could occur during the share access on a member server.
+						This has been fixed (<u:bug>13784</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
+		<section id="changelog:win:takeover">
+			<title>Univention AD Takeover</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:win:s4c">
+			<title>Univention S4 Connector</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:win:adc">
+			<title>Univention Active Directory Connector</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+	</section>
+
+	<section id="changelog:other">
+		<title>Other changes</title>
+		<itemizedlist>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-18-univention-home-mounter.yaml -->
+					If the first configured LDAP server was not reachable, timeouts could occur during the login.
+					This has been fixed in <package>univention-home-mounter</package> (<u:bug>38078</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-22-univention-network-manager.yaml -->
+					An error in a network script terminated the DHCP script responsible for updating the network configuration too early, which lead to <u:rfc>3442</u:rfc> classless routes not being applied (<u:bug>37689</u:bug>).
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+</chapter>
+<!-- vim: set ts=4 sw=4 noet: -->

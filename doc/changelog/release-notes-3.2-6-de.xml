@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-
-  <!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
-  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-de.xml">
-  <!ENTITY changelog SYSTEM "changelog-3.2-5.xml">
-
-  %entities;
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	<!ENTITY bibliography SYSTEM "../stylesheets/bibliography-de.xml">
+	%extensions;
+	%entities;
 ]>
-<book lang="de" id="releasenotes-3.2-5-de">
+<book lang="de" id="releasenotes-3.2-6-de">
 	<bookinfo>
-		<title>UCS 3.2-5 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 3.2-5</subtitle>
+		<title>UCS 3.2-6 Release Notes</title>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 3.2-6</subtitle>
 		<revhistory>
 			<revision>
-				<revnumber>3.2-5</revnumber>
-				<date>17 Nov 2014</date>
+				<revnumber>3.2-6</revnumber>
+				<date>26 Mai 2015</date>
 			</revision>
 		</revhistory>
 
-		<legalnotice>
+		<legalnotice lang="">
 			<para>
 				Alle Rechte vorbehalten. / All rights reserved.
 			</para>
@@ -33,15 +32,15 @@
 			</para>
 
 			<para>
-				<ulink url="mailto:feedback@univention.de">feedback@univention.de</ulink>
+				<email>feedback@univention.de</email>
 			</para>
 
-			<para>
+			<para lang="de">
 				Jede aufgeführte Marke und jedes Warenzeichen steht im Eigentum ihrer jeweiligen eingetragenen Rechtsinhaber.
 				Linux ist ein eingetragenes Warenzeichen von Linus Torvalds.
 			</para>
 
-			<para>
+			<para lang="en">
 				The mentioned brand names and registered trademarks are owned by the respective legal owners in each case.
 				Linux is a registered trademark of Linus Torvalds.
 			</para>
@@ -49,32 +48,34 @@
 	</bookinfo>
 
 	<chapter id="relnotes:highlights">
-		<title>&ucsUCS; (UCS) 3.2-5</title>
+		<title>&ucsUCS; (UCS) 3.2-6</title>
 
 		<para>
-			Mit &ucsUCS; 3.2-5 steht das fünfte Point-Release für &ucsUCS; (UCS) zur
-			Verfügung. Vorhandene UCS-Systeme können über das von Univention bereitgestellte
-			Online-Repository aktualisiert werden. Alternativ können Updates über eine Update-DVD
-			eingespielt werden. Für Neuinstallationen stehen UCS 3.2-5 ISO-Images zur Verfügung.
-			UCS 3.2-5 beinhaltet alle für UCS 3.2-4 veröffentlichten Errata-Updates.
+			Mit &ucsUCS; 3.2-6 steht das sechste Point-Release für &ucsUCS; (UCS) zur Verfügung.
+			Vorhandene UCS-Systeme können über das von Univention bereitgestellte Online-Repository aktualisiert werden.
+			Alternativ können Updates über eine Update-DVD eingespielt werden.
+			Für Neuinstallationen stehen UCS 3.2-6 ISO-Images zur Verfügung.
+			UCS 3.2-6 beinhaltet alle für UCS 3.2-5 veröffentlichten Errata-Updates.
 			Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
-		  <listitem><para>
-			Verbesserung der Stabilität des Managementsystems in bestimmten Situationen
-		  </para></listitem>
-
-		  <listitem><para>
-			Vereinfachung des Update-Prozesses von UCS 3.2 auf 4.0
-		  </para></listitem>
-
-		  <listitem><para>
-			Zahlreiche Verbesserungen in der Samba 4/Active Directory-Integration von UCS, bspw.
-			bei der Verwendung von Microsoft SharePoint
-		  </para></listitem>
+			<listitem><para>
+					Das Release enthält diverse Sicherheitsupdates, die in den letzten Wochen und Monaten für UCS 3.2-5 als Errata Updates veröffentlicht wurden.
+					U.a. enthalten sind Pakete für den <package>Linux Kernel</package>, <package>OpenSSL</package>, <package>glibc</package>, <package>sudo</package>.
+			</para></listitem>
+			<listitem><para>
+					Diverse Tools aus dem PAM Stack unterstützen nun die Konfiguration von mehreren LDAP Servern.
+					Das erhöht die Ausfallsicherheit.
+			</para></listitem>
+			<listitem><para>
+					In großen Umgebungen wurde die Login Performance verbessert:
+					Aufwendige Quota Abfragen wurden dazu aus dem Login Prozess ausgelagert.
+			</para></listitem>
+			<listitem><para>
+					Sofern UCS die Netzwerkeinstellungen via <systemitem class="service">DHCP</systemitem> bezieht, werden nun weitere Parameter ausgewertet, wie bspw. Informationen zum Routing.
+			</para></listitem>
 		</itemizedlist>
-
 	</chapter>
 
 	<chapter id="relnotes:order">
@@ -104,16 +105,15 @@
 		</para>
 
 		<para>
-			Für das Update sollte eine Anmeldung auf der Console mit dem Benutzer <emphasis>root</emphasis> durchgeführt und das Update dort gestartet werden.
-			Alternativ kann das Update über die &ucsUMC; durchgeführt werden.
+			Für das Update sollte eine Anmeldung auf der lokalen Konsole des Systems mit dem Benutzer <systemitem class="username">root</systemitem> durchgeführt und das Update dort gestartet werden.
+			Alternativ kann das Update über &ucsUMC; durchgeführt werden.
 		</para>
 
 		<para>
 			Eine Remote-Aktualisierung über SSH wird nicht empfohlen, da dies beispielsweise bei Unterbrechung der Netzverbindung zum Abbruch des Update-Vorgangs und zu einer Beeinträchtigung des Systems führen kann.
 			Sollte dennoch eine Aktualisierung über eine Netzverbindung durchgeführt werden, ist sicherzustellen, dass das Update bei Unterbrechung der Netzverbindung trotzdem weiterläuft.
-			Hierfür können beispielsweise die Tools <command>screen</command> oder <command>at</command> eingesetzt werden, die standardmäßig installiert sind.
+			Hierfür können beispielsweise die Tools <command>screen</command> oder <command>at</command> eingesetzt werden, die auf allen Systemrollen installiert sind.
 		</para>
-
 	</chapter>
 
 	<chapter id="relnotes:post">
@@ -121,12 +121,12 @@
 
 		<para>
 			Nach dem Update müssen die neuen oder aktualisierten Join-Skripte ausgeführt werden.
-			Dies kann auf zwei Wegen erfolgen: Entweder über das UMC-Modul <guimenu>Domänenbeitritt</guimenu> oder durch Aufruf des folgenden Befehls als Benutzer <emphasis>root</emphasis>:
+			Dies kann auf zwei Wegen erfolgen:
+			Entweder über das UMC-Modul <guimenu>Domänenbeitritt</guimenu> oder durch Aufruf des Befehls <command>univention-run-join-scripts</command> als Benutzer <systemitem class="username">root</systemitem>.
 		</para>
-		<para><command>univention-run-join-scripts</command></para>
 
 		<para>
-			Anschließend sollte das UCS-System neu gestartet werden.
+			Anschließend muss das UCS-System neu gestartet werden.
 		</para>
 
 		<section id="repo:verify">
@@ -135,22 +135,22 @@
 				Preup- und Postup-Skripte sind Skripte, die vor und nach Release-Updates aufgerufen werden
 				(z.B. zur Nachbereitung des Updates, etwa die Deinstallation nicht mehr benötigter Pakete).
 				Ab UCS 3.2 werden diese Skripte kryptographisch signiert, um eine unerlaubte Modifikation zu verhindern.
-				Beim Update und Spiegeln des Repositories werden diese Signaturen überprüft.
+				Beim Update und Spiegeln der Repository werden diese Signaturen überprüft.
 				Sind diese ungültig oder fehlen, so wird die Aktion abgebrochen.
 			</para>
 
 			<para>
-				Wird ein Repository-Server mit UCS 3.1-x betrieben, muß dieser auf UCS 3.2 aktualisiert werden, bevor weitere Systeme auf UCS 3.2-1 oder neuer aktualisiert werden können.
+				Wird ein Repository-Server mit UCS 3.1-x betrieben, muss dieser auf UCS 3.2 aktualisiert werden, bevor weitere Systeme auf UCS 3.2-1 oder neuer aktualisiert werden können.
 			</para>
 
 			<para>
-				Wenn ein Update des Repository-Servers nicht möglich ist, müssen die Signaturdateien manuell heruntergeladen werden:
+				Wenn ein Update des Repository-Servers nicht möglich ist, müssen die Dateien mit den Signaturen manuell heruntergeladen werden:
 			</para>
 
 			<programlisting language="sh">
 LOCAL_DIR="/var/lib/univention-repository/mirror"
 SERVER="http://updates.software-univention.de"
-for release in 3.2-0 3.2-1 3.2-2 3.2-3 3.2-4 3.2-4; do
+for release in 3.2-0 3.2-1 3.2-2 3.2-3 3.2-4 3.2-5 3.2-6; do
 	for script in preup postup; do
 		file="3.2/maintained/$release/all/$script.sh.gpg"
 		wget -O "$LOCAL_DIR/$file" "$SERVER/$file"
@@ -160,8 +160,8 @@ done
 
 			<para>
 				Alternativ kann die Prüfung der Signaturen auch deaktiviert werden, was ein Sicherheitsrisiko darstellen kann.
-				Für den Repository-Server kann dazu die &ucsUCRV; <envar>repository/mirror/verify</envar> auf <emphasis>false</emphasis> gesetzt werden.
-				Für das Update muß auf allen Systemen die &ucsUCRV; <envar>repository/online/verify</envar> auf <emphasis>false</emphasis> gesetzt werden.
+				Für den Repository-Server kann dazu die &ucsUCRV; <envar>repository/mirror/verify</envar> auf <literal>false</literal> gesetzt werden.
+				Für das Update muss auf allen Systemen die &ucsUCRV; <envar>repository/online/verify</envar> auf <literal>false</literal> gesetzt werden.
 			</para>
 		</section>
 	</chapter>
@@ -171,22 +171,20 @@ done
 		<title>Hinweise zum Einsatz einzelner Pakete</title>
 
 		<section id="relnotes:usage">
-			<title>Erfassung von Nutzungsstatistiken bei Verwendung der Free-For-Personal-Use-Version</title>
+			<title>Erfassung von Nutzungsstatistiken bei Verwendung der <phrase>Free-For-Personal-Use</phrase>-Version</title>
 			<para>
-				Bei Verwendung der <emphasis>Free for personal use</emphasis>-Version von UCS (die in der Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken zur Verwendung der &ucsUMC; erzeugt.
+				Bei Verwendung der <phrase>Free for personal use</phrase>-Version von UCS (die in der Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken zur Verwendung der &ucsUMC; erzeugt.
 				Die aufgerufenen Module werden dabei von einer Instanz des Web-Traffic-Analyse-Tools Piwik protokolliert.
-				Dies ermöglicht es Univention die Entwicklung der &ucsUMC; besser auf das Kundeninteresse zuzuschneiden und Usability-Verbesserungen vorzunehmen.
+				Dies ermöglicht es Univention die Entwicklung von &ucsUMC; besser auf das Kundeninteresse zuzuschneiden und Usability-Verbesserungen vorzunehmen.
 			</para>
-
 			<para>
-				Diese Protokollierung erfolgt nur bei Verwendung der Free-for-Personal-Use-Lizenz.
+				Diese Protokollierung erfolgt nur bei Verwendung der <phrase>Free-for-Personal-Use-Lizenz</phrase>.
 				Der Lizenzstatus kann durch einen Klick auf das Zahnrad-Symbol in der rechten, oberen Ecke der &ucsUMC; und die Auswahl von <guimenu>Lizenzinformationen</guimenu> geprüft werden.
-				Steht hier unter <guimenu>Lizenztyp</guimenu> <emphasis>Free for personal use edition</emphasis> wird eine solche Version verwendet.
-				Bei Einsatz einer regulären UCS-Lizenz wird keine Nutzungsstatistik gesammelt.
+				Steht hier unter <guimenu>Lizenztyp</guimenu> <guimenu>Free for personal use edition</guimenu> wird eine solche Version verwendet.
+				Bei Einsatz einer regulären UCS-Lizenz erfolgt keine Teilnahme an der Nutzungsstatistik.
 			</para>
-
 			<para>
-				Die Protokollierung kann unabhängig von der verwendeten Lizenz durch Setzen der &ucsUCR;-Variable <envar>umc/web/piwik</envar> auf <emphasis>false</emphasis> deaktiviert werden.
+				Die Protokollierung kann unabhängig von der verwendeten Lizenz durch Setzen der &ucsUCRV; <envar>umc/web/piwik</envar> auf <literal>false</literal> deaktiviert werden.
 			</para>
 		</section>
 
@@ -202,16 +200,16 @@ done
 		</section>
 
 		<section id="relnotes:secbrowsers">
-			<title>Umfang des Sicherheits-Supports von Webkit, Konqueror und QtWebKit</title>
+			<title>Umfang des Sicherheits-Supports von WebKit, Konqueror und QtWebKit</title>
 			<para>
-				Webkit, Konqueror und QtWebkit werden in UCS im maintained-Zweig des Repositorys mitgeliefert, aber nicht durch Sicherheits-Updates unterstützt.
-				Webkit wird vor allem für die Darstellung von HTML-Hilfeseiten u.ä. verwendet.
+				WebKit, Konqueror und QtWebKit werden in UCS im maintained-Zweig des Repositorys mitgeliefert, aber nicht durch Sicherheits-Updates unterstützt.
+				WebKit wird vor allem für die Darstellung von HTML-Hilfeseiten u.ä. verwendet.
 				Als Web-Browser sollte Firefox eingesetzt werden.
 			</para>
 		</section>
 
 		<section id="relnotes:browsers">
-			<title>Empfohlene Browser für den Zugriff auf die Univention Management Console</title>
+			<title>Empfohlene Browser für den Zugriff auf Univention Management Console</title>
 
 			<para>
 				&ucsUMC; verwendet für die Darstellung der Web-Oberfläche zahlreiche JavaScript- und CSS-Funktionen.
@@ -245,7 +243,7 @@ done
 		<section id="relnotes:s4limits">
 			<title>Einschränkungen im Samba 4-Betrieb</title>
 			<para>
-				In Samba 4 stehen einige Active-Directory-Funktionen noch nicht vollständig zur Verfügung:
+				In Samba 4 stehen einige Funktionen des <wordasword>Active-Directory</wordasword> nicht vollständig zur Verfügung:
 			</para>
 
 			<itemizedlist>
@@ -280,31 +278,31 @@ done
 		</section>
 
 		<section id="relnotes:virtualbox">
-			<title>Installation in VirtualBox</title>
+			<title>Installation in <wordasword>VirtualBox</wordasword></title>
 			<para>
-				Bei der Installation von UCS in der Virtualisierungslösung VirtualBox vor Version 4.2 kann folgender VirtualBox-Bug auftreten:
+				Bei der Installation von UCS in der Virtualisierungslösung <wordasword>VirtualBox</wordasword> vor Version 4.2 kann folgender <wordasword>VirtualBox</wordasword>-Bug auftreten:
 				Wenn von der Installations-DVD gebootet wird, bietet GRUB die Option <guimenu>Boot from first harddisk partition</guimenu> an.
-				Wählt man diese Option aus, friert VirtualBox ein.
+				Wählt man diese Option aus, friert <wordasword>VirtualBox</wordasword> ein.
 			</para>
 
 			<para>
-				Als Workaround muß vor dem Neustart der UCS-VM entweder die Installations-DVD aus den Laufwerkseinstellungen der VirtualBox-VM entfernt werden oder beim Start der virtuellen Instanz <keycap>F12</keycap> gedrückt und die Festplatte als Bootpartition ausgewählt werden.
+				Zur Abhilfe muss vor dem Neustart der virtuellen Maschine entweder die Installations-DVD aus den Laufwerkseinstellungen der <wordasword>VirtualBox</wordasword>-VM entfernt werden oder beim Start der virtuellen Instanz <keycap>F12</keycap> gedrückt und die Festplatte als Bootpartition ausgewählt werden.
 				UCS startet danach dann problemlos.
 			</para>
 		</section>
 
 		<section id="relnotes:xenserver">
-			<title>Installation in Citrix XenServer</title>
+			<title>Installation in <wordasword>Citrix XenServer</wordasword></title>
 			<para>
-				Bei der Installation von UCS in der Virtualisierungslösung Citrix XenServer 6.0 - 6.2 wird mit der standardmässig emulierten Cirrus-Grafikkarte das GRUB-Menü des Univention Installers nicht angezeigt.
+				Bei der Installation von UCS in der Virtualisierungslösung <wordasword>Citrix XenServer 6.0 - 6.2</wordasword> wird mit der standardmässig emulierten <wordasword>Cirrus</wordasword>-Grafikkarte das GRUB-Menü des Univention Installers nicht angezeigt.
 				Der Univention Installer kann durch Drücken der <keycap function="enter">ENTER</keycap>-Taste direkt gestartet werden;
 				alternativ startet die Installation automatisch nach sechzig Sekunden.
 				Der dann gestartete Univention Installer wird normal dargestellt.
 			</para>
 
 			<para>
-				Um GRUB korrekt darzustellen, kann die von XenServer emulierte Grafikkarte umkonfiguriert werden.
-				Dazu muss eine Anmeldung als Benutzer <emphasis>root</emphasis> auf dem XenServer-System folgen.
+				Um GRUB korrekt darzustellen, kann die von <wordasword>XenServer</wordasword> emulierte Grafikkarte umkonfiguriert werden.
+				Dazu muss eine Anmeldung als Benutzer <systemitem class="username">root</systemitem> auf dem <wordasword>XenServer</wordasword>-System folgen.
 				Mit dem Befehl <command>xe vm-list</command> muss zuerst die UUID der virtuellen Maschine ermittelt werden.
 				Mit dem folgenden Befehl wird dann die emulierte Grafikkarte auf VGA umkonfiguriert:
 
@@ -355,10 +353,10 @@ xe vm-param-set uuid=UUIDVM platform:vga=std
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS 3.2-4:
+			Aufgeführt sind die Änderungen seit UCS 3.2-5:
 		</para>
 
-		&changelog;
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-3.2-6.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 
 	<bibliography id="relnotes:bibliography">
@@ -367,3 +365,4 @@ xe vm-param-set uuid=UUIDVM platform:vga=std
 
 	<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
+<!-- vim: set ts=4 sw=4 noet: -->
