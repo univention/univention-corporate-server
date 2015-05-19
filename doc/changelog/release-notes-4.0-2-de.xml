@@ -218,7 +218,7 @@
 			<title>Empfohlene Browser für den Zugriff auf Univention Management Console</title>
 
 			<para>
-				&ucsUMC; verwendet für die Darstellung der Web-Oberfläche zahlreiche Javascript- und CSS-Funktionen.
+				&ucsUMC; verwendet für die Darstellung der Web-Oberfläche zahlreiche JavaScript- und CSS-Funktionen.
 				Cookies müssen im Browser zugelassen sein.
 				Die folgenden Browser werden empfohlen:
 			</para>
@@ -252,7 +252,7 @@
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderung seit UCS 4.0-1:
+			Aufgeführt sind die Änderungen seit UCS 4.0-1:
 		</para>
 
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.0-2.xml" xpointer="xpointer(/chapter/section)"/>

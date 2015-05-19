@@ -19,55 +19,58 @@
 					<listitem><simpara>
 							<package>binutils</package> (<u:cve>2014-8484</u:cve> <u:cve>2014-8485</u:cve> <u:cve>2014-8501</u:cve> <u:cve>2014-8502</u:cve> <u:cve>2014-8503</u:cve> <u:cve>2014-8504</u:cve> <u:cve>2014-8737</u:cve> <u:cve>2014-8738</u:cve>) (<u:bug>36983</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>cairo</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 							<package>ClamAV</package> (<u:cve>2014-9050</u:cve> <u:cve>2013-6497</u:cve> <u:cve>2014-9328</u:cve> <u:cve>2015-1461</u:cve> <u:cve>2015-1462</u:cve> <u:cve>2015-1463</u:cve>) (<u:bug>36966</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>Firefox</package> (<u:cve>2015-0822</u:cve> <u:cve>2015-0827</u:cve> <u:cve>2015-0831</u:cve> <u:cve>2015-0835</u:cve> <u:cve>2015-0836</u:cve> <u:cve>2015-0801</u:cve> <u:cve>2015-0807</u:cve> <u:cve>2015-0813</u:cve> <u:cve>2015-0815</u:cve> <u:cve>2015-0816</u:cve> <u:cve>2015-0817</u:cve> <u:cve>2015-0818</u:cve>) (<u:bug>37881</u:bug> <u:bug>38179</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>FreeType</package> (<u:cve>2014-9656</u:cve> <u:cve>2014-9657</u:cve> <u:cve>2014-9658</u:cve> <u:cve>2014-9660</u:cve> <u:cve>2014-9661</u:cve> <u:cve>2014-9663</u:cve> <u:cve>2014-9664</u:cve> <u:cve>2014-9666</u:cve> <u:cve>2014-9667</u:cve> <u:cve>2014-9669</u:cve> <u:cve>2014-9670</u:cve> <u:cve>2014-9671</u:cve> <u:cve>2014-9672</u:cve> <u:cve>2014-9673</u:cve> <u:cve>2014-9675</u:cve>) (<u:bug>37757</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 							<package>GnuPG</package> (<u:cve>2015-1606</u:cve> <u:cve>2014-3591</u:cve> <u:cve>2015-0837</u:cve>) (<u:bug>37841</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>Iceweasel</package> (<u:cve>2013-7439</u:cve> <u:cve>2015-0801</u:cve> <u:cve>2015-0807</u:cve> <u:cve>2015-0813</u:cve> <u:cve>2015-0815</u:cve> <u:cve>2015-0816</u:cve> <u:cve>2015-0817</u:cve> <u:cve>2015-0818</u:cve> <u:cve>2015-0822</u:cve> <u:cve>2015-0827</u:cve> <u:cve>2015-0831</u:cve> <u:cve>2015-0835</u:cve> <u:cve>2015-0836</u:cve>) (<u:bug>38271</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 							<package>krb5</package> (<u:cve>2014-5352</u:cve> <u:cve>2014-9421</u:cve> <u:cve>2014-9422</u:cve> <u:cve>2014-9423</u:cve>) (<u:bug>37680</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>LibreOffice</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>libSDL1.2</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>libX11</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>libXext</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>libXfixes</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
+							<package>libXi</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
 							<package>libxml2</package> (<u:cve>2014-0191</u:cve> <u:cve>2014-3660</u:cve>) (<u:bug>37745</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>libXrandr</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>libXrender</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>libXv</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>libXxi</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
@@ -79,7 +82,7 @@
 					<listitem><simpara>
 							<package>OpenSSL</package> (<u:cve>2015-0209</u:cve> <u:cve>2015-0286</u:cve> <u:cve>2015-0287</u:cve> <u:cve>2015-0288</u:cve> <u:cve>2015-0289</u:cve> <u:cve>2015-0292</u:cve>) (<u:bug>37960</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>Open-VM-tools</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
@@ -91,16 +94,16 @@
 					<listitem><simpara>
 							<package>sudo</package> (<u:cve>2014-0106</u:cve> <u:cve>2014-9680</u:cve>) (<u:bug>37852</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>TeXLive-bin</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>TightVNC</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>Wine-gecko</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara><!-- staging -->
+					<listitem><simpara>
 							<package>xserver-xorg-video-vmware</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38250</u:bug>)
 					</simpara></listitem>
 				</itemizedlist>
@@ -111,7 +114,7 @@
 	<section id="changelog:installer">
 		<title>Univention Installer</title>
 		<itemizedlist>
-			<listitem><simpara><!--staging-->
+			<listitem><simpara>
 					The Univention Net Installer has been adapted to allow profile based installations of UCS-4.0-1 (<u:bug>35537</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
@@ -348,10 +351,10 @@
 				<listitem><simpara>
 						The process of loading license information from the LDAP has been improved to avoid idle times in UMC (<u:bug>37616</u:bug>).
 				</simpara></listitem>
-				<listitem><simpara><!--staging-->
+				<listitem><simpara>
 						Apps may now define a minimal UCS version below which the app may not be installed (<u:bug>38042</u:bug>).
 				</simpara></listitem>
-				<listitem><simpara><!--staging-->
+				<listitem><simpara>
 						Apache may now be restarted by packages during installation via the <guimenuitem>Package Management</guimenuitem> module (<u:bug>38446</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -579,10 +582,10 @@
 				<listitem><simpara>
 						<command>univention-add-app</command> now prevents the installation of apps on the wrong server role (<u:bug>32543</u:bug>).
 				</simpara></listitem>
-				<listitem><simpara><!--staging-->
+				<listitem><simpara>
 						A local repository created from the UCS-4.0-1 DVD was incorrectly copied to the location reserved for UCS-4.0-0 (<u:bug>38248</u:bug>).
 				</simpara></listitem>
-				<listitem><simpara><!--staging-->
+				<listitem><simpara>
 						The Packages files required for profile based installations are now generated locally (<u:bug>35537</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -779,7 +782,7 @@
 			<title>Printing services</title>
 			<itemizedlist>
 				<listitem><simpara>
-<package>univention-printquota</package> now copies the <filename>/etc/machine.secret</filename> file for LDAP lookups in the join script (<u:bug>36861</u:bug>).
+						<package>univention-printquota</package> now copies the <filename>/etc/machine.secret</filename> file for LDAP lookups in the join script (<u:bug>36861</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -798,7 +801,7 @@
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
-  Fixed an endless loop when invalid values for certificates are supplied (<u:bug>38125</u:bug>).
+						Fixed an endless loop when invalid values for certificates are supplied (<u:bug>38125</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -813,7 +816,7 @@
 						Network interfaces other then <filename class="devicefile">eth<replaceable>X</replaceable></filename> are now also added to the access control list (<u:bug>36623</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-The Squid configuration can now be extended with custom ACLs via &ucsUCRV;s (<u:bug>37543</u:bug>).
+						The Squid configuration can now be extended with custom ACLs via &ucsUCRV;s (<u:bug>37543</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -878,7 +881,7 @@ The Squid configuration can now be extended with custom ACLs via &ucsUCRV;s (<u:
 			<title>PAM / Local group cache</title>
 			<itemizedlist>
 				<listitem><simpara>
-  The setup to deny ssh logins on Domaincontrollers has been moved into the join scripts, as those restrictions were not applied in all cases (<u:bug>37971</u:bug>).
+						The setup to deny ssh logins on Domaincontrollers has been moved into the join scripts, as those restrictions were not applied in all cases (<u:bug>37971</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -973,7 +976,7 @@ The Squid configuration can now be extended with custom ACLs via &ucsUCRV;s (<u:
 			<title>Univention AD Takeover</title>
 			<itemizedlist>
 				<listitem><simpara>
-  This update fixes a traceback which occurred when Active Directory built-in accounts where positioned in an non-default location in the AD LDAP directory (<u:bug>37596</u:bug>).
+						This update fixes a traceback which occurred when Active Directory built-in accounts where positioned in an non-default location in the AD LDAP directory (<u:bug>37596</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -1005,23 +1008,21 @@ The Squid configuration can now be extended with custom ACLs via &ucsUCRV;s (<u:
 	<section id="changelog:other">
 		<title>Other changes</title>
 		<itemizedlist>
-			<listitem>
-				<simpara>
+			<listitem><simpara>
 					Several packages have been added to the maintained package repository of UCS (<u:bug>36467</u:bug>).
-				</simpara>
-			</listitem>
+			</simpara></listitem>
 			<listitem><simpara>
 					The list of public SSL root certificates has been updated (<u:bug>37885</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 					An error in a network script terminated the DHCP script responsible for updating the network configuration too early, which lead to <u:rfc>3442</u:rfc> classless routes not being applied (<u:bug>37689</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Limit collection of files by <package>univention-log-collector</package> to the configured base path (<u:bug>36452</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						If the first configured LDAP server was not reachable, timeouts could occur during the login.
-						This has been fixed in <package>univention-home-mounter</package> (<u:bug>36805</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+					Limit collection of files by <package>univention-log-collector</package> to the configured base path (<u:bug>36452</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+					If the first configured LDAP server was not reachable, timeouts could occur during the login.
+					This has been fixed in <package>univention-home-mounter</package> (<u:bug>36805</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
