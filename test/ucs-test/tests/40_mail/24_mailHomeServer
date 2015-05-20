@@ -1,0 +1,111 @@
+#!/usr/share/ucs-test/runner python
+## desc: Mail home server
+## tags: apptest
+## exposure: dangerous
+## packages: [univention-mail-server]
+
+from essential.mail import send_mail, mail_delivered
+from univention.testing.mail import MailSink
+from univention.testing.network import NetworkRedirector
+import tempfile
+import time
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+TIMEOUT = 60 #sec
+
+def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
+	delivered = False
+	print "Waiting for an email delivery"
+	for i in xrange(TIMEOUT):
+		if token in open(mailsink_file).read():
+			delivered = True
+			print 'Mail Delivered'
+			break
+		else:
+			time.sleep(1)
+	if should_be_delivered != delivered:
+		utils.fail('Mail sent with token = %r, Delivered to the mail sink = %r' % (token, delivered))
+
+
+def check_delivery_locally(token, recipient_email, should_be_delivered):
+	delivered = False
+	print "%s is waiting for an email..." % recipient_email
+	for i in xrange(TIMEOUT):
+		if not mail_delivered(token, mail_address=recipient_email):
+			time.sleep(1)
+		else:
+			delivered = True
+			break
+	if should_be_delivered != delivered:
+		utils.fail('Mail sent with token = %r, Delivered locally = %r' % (token, delivered))
+
+def wait_for_dns_recognition():
+	time.sleep(30)
+
+def main():
+	with udm_test.UCSTestUDM() as udm:
+		with NetworkRedirector() as nethelper:
+			password = 'univention'
+			with ucr_test.UCSTestConfigRegistry() as ucr:
+				domain = ucr.get('domainname')
+				basedn = ucr.get('ldap/base')
+			ips = []
+			hosts = []
+			for i in xrange(2):
+				ip = uts.random_ip()
+				ips.append(ip)
+				host = uts.random_name()
+				hosts.append('%s.%s' % (host, domain))
+				udm.create_object(
+					'computers/domaincontroller_slave',
+					set={
+						'position'            : 'cn=computers,%s' % basedn,
+						'ip'                  : ip,
+						'name'                : host,
+						'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (domain, ucr.get('ldap/base'), ip)
+					}
+				)
+			mails_list = []
+			for mailHomeServer in hosts:
+				mail = '%s@%s' % (uts.random_name(), domain)
+				user_dn , username = udm.create_user(
+					set={
+						'password'           : password,
+						'mailPrimaryAddress' : mail,
+						'mailHomeServer'     : mailHomeServer
+					}
+				)
+				mails_list.append(mail)
+
+			port = 60025
+			sink_files = []
+			mail_sinks = []
+			for i in xrange(2):
+				f = tempfile.NamedTemporaryFile(suffix='.eml', dir='/tmp')
+				nethelper.add_redirection(ips[i], 25, port)
+				ms = MailSink('127.0.0.1', port, filename=f.name)
+				ms.start()
+				port += 1
+				mail_sinks.append(ms)
+				sink_files.append(f)
+
+			wait_for_dns_recognition()
+			try:
+				for i, mail in enumerate(mails_list):
+					token = str(time.time())
+					send_mail(recipients=mail, msg=token, tls=True, username=username, password=password)
+					check_delivery_locally(token, mail, False)
+					check_delivery_mailsink(token, sink_files[0].name , (i==0))
+					check_delivery_mailsink(token, sink_files[1].name, (i==1))
+			finally:
+				for ms in mail_sinks:
+					ms.stop()
+				for f in sink_files:
+					f.close()
+
+if __name__ == '__main__':
+	main()
+# vim: set ft=python ts=4 sw=4 noet :
