@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.106-63) unstable; urgency=low
+
+  * Bug #38050: deactivated the custom TouchScroll implementation from dgrid
+    in favor of native scrolling support from mobile devices/browsers
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 20 May 2015 12:15:00 +0200
+
 univention-management-console-frontend (4.1.106-62) unstable; urgency=medium
 
   * Bug #37280: Allow to create core dumps of the umc-webserver process

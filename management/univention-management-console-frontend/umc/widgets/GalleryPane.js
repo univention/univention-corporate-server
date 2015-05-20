@@ -60,6 +60,8 @@ define([
 		query: {},
 
 		queryOptions: {},
+		
+		useTouchScroll: false,
 
 		_defaultActionHandle: null,
 
