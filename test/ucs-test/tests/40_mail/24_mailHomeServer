@@ -43,7 +43,7 @@ def check_delivery_locally(token, recipient_email, should_be_delivered):
 		utils.fail('Mail sent with token = %r, Delivered locally = %r' % (token, delivered))
 
 def wait_for_dns_recognition():
-	time.sleep(30)
+	time.sleep(40)
 
 def main():
 	with udm_test.UCSTestUDM() as udm:
