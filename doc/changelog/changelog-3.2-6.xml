@@ -397,9 +397,8 @@
 			<title>Software deployment command line tools</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The update scripts have been adjusted to UCS 3.2-6 (<ulink url="&ucsbug;38516">Bug 38516</ulink>).
+						The update scripts have been adjusted to UCS 3.2-6 (<u:bug>38516</u:bug>).
 				</simpara></listitem>
-
 			</itemizedlist>
 		</section>
 
