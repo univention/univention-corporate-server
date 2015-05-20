@@ -62,18 +62,18 @@
 		<itemizedlist>
 			<listitem><para>
 					Das Release enthält diverse Sicherheitsupdates, die in den letzten Wochen und Monaten für UCS 3.2-5 als Errata Updates veröffentlicht wurden.
-					U.a. enthalten sind Pakete für den <package>Linux Kernel</package>, <package>OpenSSL</package>, <package>glibc</package>, <package>sudo</package>.
+					U.a. enthalten sind aktualisierte Pakete für den <package>Linux Kernel</package>, <package>OpenSSL</package>, <package>glibc</package>, <package>sudo</package>.
 			</para></listitem>
 			<listitem><para>
 					Diverse Tools aus dem PAM Stack unterstützen nun die Konfiguration von mehreren LDAP Servern.
-					Das erhöht die Ausfallsicherheit.
+					Eine solche Konfiguration kann genutzt werden, um die generelle Ausfallsicherheit zu erhöhen.
 			</para></listitem>
 			<listitem><para>
 					In großen Umgebungen wurde die Login Performance verbessert:
 					Aufwendige Quota Abfragen wurden dazu aus dem Login Prozess ausgelagert.
 			</para></listitem>
 			<listitem><para>
-					Sofern UCS die Netzwerkeinstellungen via <systemitem class="service">DHCP</systemitem> bezieht, werden nun weitere Parameter ausgewertet, wie bspw. Informationen zum Routing.
+					Sofern UCS die Netzwerkeinstellungen via <systemitem class="service">DHCP</systemitem> bezieht, werden nun weitere Parameter ausgewertet, wie bspw. Routing-Informationen.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -135,7 +135,7 @@
 				Preup- und Postup-Skripte sind Skripte, die vor und nach Release-Updates aufgerufen werden
 				(z.B. zur Nachbereitung des Updates, etwa die Deinstallation nicht mehr benötigter Pakete).
 				Ab UCS 3.2 werden diese Skripte kryptographisch signiert, um eine unerlaubte Modifikation zu verhindern.
-				Beim Update und Spiegeln der Repository werden diese Signaturen überprüft.
+				Beim Update und Spiegeln der Repository-Inhalte werden diese Signaturen überprüft.
 				Sind diese ungültig oder fehlen, so wird die Aktion abgebrochen.
 			</para>
 

@@ -60,19 +60,19 @@
 
 		<itemizedlist>
 			<listitem><para>
-					The release contains of several security updates, which have been released in the previous weeks and months for UCS 3.2-5 as errata updates.
-					Among others it contains packages for the <package>Linux kernel</package>, <package>OpenSSL</package>, <package>glibc</package>, <package>sudo</package>.
+					The release contains several security updates which have been released in the previous weeks and months as errata updates for UCS 3.2-5.
+					Among others, it contains updated packages for the <package>Linux kernel</package>, <package>OpenSSL</package>, <package>glibc</package>, <package>sudo</package>.
 			</para></listitem>
 			<listitem><para>
 					Various tools using the PAM stack now support the configuration of multiple LDAP servers.
-					This improves the availability.
+					Such a configuration can be used to improve the reliability of authentication services.
 			</para></listitem>
 			<listitem><para>
 					The login performance in large environments has been improved:
 					Time consuming queries for quota settings have been separated from the login process.
 			</para></listitem>
 			<listitem><para>
-					Insofar as UCS receives the network configuration using <systemitem class="service">DHCP</systemitem>, additional parameters like routing information are now also evaluated.
+					Provided that UCS receives a network configuration via <systemitem class="service">DHCP</systemitem>, additional parameters like routing information are now also evaluated.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
