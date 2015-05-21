@@ -6,8 +6,6 @@ fix: 8.1.66-45.886.201505131001
 version: [2]
 desc: |
   This errata update addresses the following issues:
-  * We extended the list of default locals to include Switzerland (german),
-    Austria and the United Kingdom. If no default locale is picked system
-    setup will use an english keyboard layout until the user choose custom
-    settings.
+  * Extended the list of default language settings to include Switzerland
+    (german), Austria and the United Kingdom.
 bug: [38512]
