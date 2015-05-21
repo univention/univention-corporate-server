@@ -83,8 +83,8 @@
 			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-15-tightvnc.yaml -->
 					<package>TightVNC</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38251</u:bug>)
 			</simpara></listitem>
-			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-11-xen-4.1.yaml -->
-					<package>xen-4.1</package> (<u:cve>2015-2044</u:cve> <u:cve>2015-2045</u:cve> <u:cve>2015-2151</u:cve>) (<u:bug>37956</u:bug>)
+			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-11-xen-4.1.yaml /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-05-19-xen-4.1.yaml -->
+					<package>xen-4.1</package> (<u:cve>2015-2044</u:cve> <u:cve>2015-2045</u:cve> <u:cve>2015-2151</u:cve> <u:cve>2015-3456</u:cve>) (<u:bug>37956</u:bug> <u:bug>38173</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-04-15-xserver-xorg-video-vmware.yaml -->
 					<package>xserver-xorg-video-vmware</package> (<u:cve>2013-7439</u:cve>) (<u:bug>38251</u:bug>)
@@ -203,6 +203,10 @@
 			<itemizedlist>
 				<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-03-17-openldap.yaml -->
 						If a password has been changed via Samba 4, the account expiry setting was not always considered. This has been fixed (<u:bug>31429</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara><!-- /home/phahn/GIT/branches/ucs-3.2/ucs-3.2-5/doc/errata/published/2015-05-19-univention-ldap.yaml -->
+						The file <filename>msgpo.schema</filename> adjusted in UCS 3.2-5 erratum 276 would get replaced by a not-adjusted version during an update to UCS 4.0.
+						This erratum avoids this by implementing a <command>dpkg</command> diversion for that file, which will get removed again in an erratum for UCS 4.0-2 (<u:bug>38488</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 
@@ -556,18 +560,18 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<section id="changelog:win:s4c">
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
-				</simpara></listitem>
-
-				<listitem><simpara>
+						The password expiry attributes are now set in OpenLDAP if the password has been changed in Active Directory/Samba 4 (<u:bug>38494</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
+		<!--
 		<section id="changelog:win:adc">
 			<title>Univention Active Directory Connector</title>
 			<itemizedlist>
@@ -591,4 +595,4 @@
 		</itemizedlist>
 	</section>
 </chapter>
-<!-- vim: set ts=4 sw=4 noet: -->
+<!-- vim: set ts=4 sw=4 noet foldmethod=syntax foldlevel=2: -->
