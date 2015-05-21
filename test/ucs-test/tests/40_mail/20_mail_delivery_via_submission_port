@@ -75,7 +75,7 @@ def main():
 
 			# to local address
 			check_sending_mail(username, password, recipient_email, tls=True)
-			check_sending_mail(None, None, recipient_email, tls=True, allowed=True) 
+			check_sending_mail(None, None, recipient_email, tls=True, allowed=True)
 			check_sending_mail(username, password, recipient_email, tls=False, allowed=False)
 			check_sending_mail(None, None, recipient_email, tls=False, allowed=False)
 
