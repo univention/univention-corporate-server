@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Mails to unknown users are rejected
+## desc: Mails to ldap group
 ## tags: apptest
 ## exposure: dangerous
 ## packages: [univention-mail-server]
@@ -79,6 +79,7 @@ def main():
 					'users': [users_list[3]]
 				}
 			)
+			send_mail(recipients=group_mail, msg=token, tls=True, username=username, password=password)
 			for i, mail in enumerate(mails_list):
 				should_be_delivered = True
 				if i == 0:
@@ -93,6 +94,7 @@ def main():
 					'mailPrimaryAddress' : mails_list[0]
 				}
 			)
+			send_mail(recipients=group_mail, msg=token, tls=True, username=username, password=password)
 			for i, mail in enumerate(mails_list):
 				should_be_delivered = True
 				print  40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered)
