@@ -1,0 +1,14 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-5
+src: xen-4.1
+fix: 4.1.3-20.51.201505202321
+version: [5]
+desc: |
+ The following security issue have been fixed in Xen:
+ - Virtualized Environment Neglected Operations Manipulation (VENOM)
+   vulnerability in QEMU's virtual Floppy Disk Controller (CVE-2015-3456)
+bug:
+ - 38173
+cve:
+ - CVE-2015-3456
