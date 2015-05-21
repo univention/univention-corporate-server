@@ -6,6 +6,6 @@ fix: 8.1.66-45.886.201505131001
 version: [2]
 desc: |
   This errata update addresses the following issues:
-  * Extended the list of default language settings to include Switzerland
-    (german), Austria and the United Kingdom.
+  * Extended the list of default language settings to include Switzerland,
+    Austria and the United Kingdom.
 bug: [38512]
