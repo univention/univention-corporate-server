@@ -6,5 +6,5 @@ fix: 9.0.11-11.466.201505151146
 version: [1]
 desc: |
   This errata update addresses the following issues:
-  * Fix links in the documentation that lead to the manual of UCS 3.2.
+  * Broken links that lead to an old manual have been adjusted.
 bug: [38147]
