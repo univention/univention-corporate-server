@@ -7,6 +7,7 @@
 from essential.mail import send_mail, mail_delivered
 import smtplib
 import time
+from univention.testing.network import NetworkRedirector
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
@@ -16,44 +17,51 @@ import univention.testing.utils as utils
 def check_delivery(token, recipient_email, should_be_delivered):
 	delivery_timeout = 60 # sec
 	delivered = False
+	print "%s is waiting for an email to be delivered ..." % recipient_email
 	for i in xrange(delivery_timeout):
 		if not mail_delivered(token, mail_address=recipient_email):
 			time.sleep(1)
-			print "%s is waiting for an email to be delivered ..." % recipient_email
 		else:
 			delivered = True
+			print 'Mail Delivered'
 			break
 	if should_be_delivered and not delivered:
 		utils.fail('Mail sent with token = %r to %s was not delivered' % (token, recipient_email))
 
 
 def check_sending_mail(
-	username=		None,
-	password=		None,
-	recipient_email=None,
-	tls=			True,
-	allowed=		True,
-	local=			True
+	username        = None,
+	password        = None,
+	recipient_email = None,
+	tls             = True,
+	allowed         = True,
+	local           = True
 	):
 	token = str(time.time())
 	try:
-		ret_code = send_mail(recipients=recipient_email, msg=token, port=587,
-								tls=tls, username=username, password=password)
+		ret_code = send_mail(
+			recipients = recipient_email,
+			msg        = token,
+			port       = 587,
+			server     = '4.3.2.1',
+			tls        = tls,
+			username   = username,
+			password   = password
+		)
 		if (bool(ret_code) == allowed):
 			utils.fail('Sending allowed = %r, but return code = %r\n {} means there are no refused recipient' % (allowed, ret_code))
 		if local:
 			check_delivery(token, recipient_email, allowed)
 	except smtplib.SMTPException as ex:
-		if tls:
+		if allowed and (tls or 'access denied' in str(ex)):
 			utils.fail('Mail sent failed with exception: %s' % ex)
-		else:
-			print '\nNo TLS is set : expected\n'
 
 
 def main():
-	with ucr_test.UCSTestConfigRegistry() as ucr:
+	with NetworkRedirector() as nethelper:
 		with udm_test.UCSTestUDM() as udm:
-			domain = ucr.get('domainname')
+			with ucr_test.UCSTestConfigRegistry() as ucr:
+				domain = ucr.get('domainname')
 			recipient_email = '%s@%s' % (uts.random_name(), domain )
 			password = 'univention'
 			userdn, username = udm.create_user(
@@ -63,16 +71,17 @@ def main():
 					'mailPrimaryAddress': recipient_email,
 				}
 			)
+			nethelper.add_loop('1.2.3.4', '4.3.2.1')
 
 			# to local address
 			check_sending_mail(username, password, recipient_email, tls=True)
-			check_sending_mail(None, None, recipient_email, tls=True, allowed=False) # Fail
+			check_sending_mail(None, None, recipient_email, tls=True, allowed=True) 
 			check_sending_mail(username, password, recipient_email, tls=False, allowed=False)
 			check_sending_mail(None, None, recipient_email, tls=False, allowed=False)
 
 			# to foreign address
 			check_sending_mail(username, password, 'noreply@univention.de', tls=True, local=False)
-			check_sending_mail(None, None, 'noreply@univention.de', tls=True, allowed=False, local=False) # Fail
+			check_sending_mail(None, None, 'noreply@univention.de', tls=True, allowed=False, local=False)
 			check_sending_mail(username, password, 'noreply@univention.de', tls=False, allowed=False, local=False)
 			check_sending_mail(None, None, 'noreply@univention.de', tls=False, allowed=False, local=False)
 
