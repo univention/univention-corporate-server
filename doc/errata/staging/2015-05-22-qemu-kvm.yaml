@@ -1,0 +1,52 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-6
+src: qemu-kvm
+fix: 1.1.2+dfsg-6.29.45.201505221302
+version: [6]
+desc: |
+ These vulernabilities have been fixed in qemu-kvm:
+ * Buffer overflow in the e1000 driver (CVE-2012-6075)
+ * Buffer overflow in virtio-net (CVE-2014-0150)
+ * Buffer overflow in processing SMART commands in the emulated IDE adaptor
+   (CVE-2014-2894)
+ * Buffer overflow in the SCSI implementation in QEMU (CVE-2013-4344)
+ * Denial of service through division by zero in parallels driver
+   (CVE-2014-0142)
+ * Integer overflows in various block drivers (CVE-2014-0143)
+ * Memory corruption in various block drivers (CVE-2014-0144)
+ * Buffer overflows in block drivers (CVE-2014-0145)
+ * NULL pointer dereference in qcow driver (CVE-2014-0146)
+ * Missing input sanitising in qcow driver (CVE-2014-0147)
+ * Out of bounds access in parsing qcow1 images (CVE-2014-0223, CVE-2014-0222)
+ * NULL pointer dereference in SLIRP (CVE-2014-3640)
+ * vmware_vga: insufficient parameter validation in rectangle functions
+   (CVE-2014-3689)
+ * Missing sanitising of the bits_per_pixel value in the VNC display driver
+   (CVE-2014-7815)
+ * Missing access checks in the Cirrus VGA emulator may result in privilege
+   escalation (CVE-2014-8106)
+ * VGA emulator in QEMU allows local guest users to read host memory by
+   setting the display to a high resolution (CVE-2014-3615)
+ * Virtualized Environment Neglected Operations Manipulation (VENOM)
+   in QEMU's virtual Floppy Disk Controller (CVE-2015-3456)
+bug: [33279]
+cve:
+ - CVE-2012-6075
+ - CVE-2014-0150
+ - CVE-2014-2894
+ - CVE-2013-4344
+ - CVE-2014-0142
+ - CVE-2014-0143
+ - CVE-2014-0144
+ - CVE-2014-0145
+ - CVE-2014-0146
+ - CVE-2014-0147
+ - CVE-2014-0223
+ - CVE-2014-0222
+ - CVE-2014-3640
+ - CVE-2014-3689
+ - CVE-2014-7815
+ - CVE-2014-8106
+ - CVE-2014-3615
+ - CVE-2015-3456
