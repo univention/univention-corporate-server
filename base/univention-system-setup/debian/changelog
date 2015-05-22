@@ -1,4 +1,4 @@
-univention-system-setup (8.1.66-43) unstable; urgency=low
+univention-system-setup (8.1.66-43.1000) unstable; urgency=low
 
   * Bug #38511: Re-write all pam.d config files after using pam-auth-update
     Merges r60642 and r60644 from 4.0-2
