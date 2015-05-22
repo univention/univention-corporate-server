@@ -318,6 +318,9 @@ class PackageManager(object):
 			self.reset_status()
 		try:
 			yield
+		except:
+			self.set_finished()
+			raise
 		finally:
 			if set_finished:
 				self.set_finished()

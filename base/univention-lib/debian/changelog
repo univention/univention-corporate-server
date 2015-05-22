@@ -1,3 +1,10 @@
+univention-lib (4.0.5-17) unstable; urgency=medium
+
+  * Bug #33627: set finish state (=remove pacakge manger lock) when exceptions
+  	occur during operations
+
+ -- Florian Best <best@univention.de>  Fri, 22 May 2015 16:07:32 +0200
+
 univention-lib (4.0.5-16) unstable; urgency=medium
 
   * Bug #34291: prevent traceback when packages are hold and not removable
