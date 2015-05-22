@@ -1,3 +1,10 @@
+univention-system-setup (8.1.66-43) unstable; urgency=low
+
+  * Bug #38511: Re-write all pam.d config files after using pam-auth-update
+    Merges r60642 and r60644 from 4.0-2
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 22 May 2015 12:39:58 +0200
+
 univention-system-setup (8.1.66-42) unstable; urgency=medium
 
   * Bug #38455: disalbe checks for session validity during the join process
