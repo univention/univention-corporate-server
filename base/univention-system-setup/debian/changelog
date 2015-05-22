@@ -1,3 +1,9 @@
+univention-system-setup (8.1.67-1) unstable; urgency=low
+
+  * Bug #38512: Version bump
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 22 May 2015 13:08:25 +0200
+
 univention-system-setup (8.1.66-45) unstable; urgency=low
 
   * Bug #38512: Added fallback for locale and extended defaults for en_GB,
