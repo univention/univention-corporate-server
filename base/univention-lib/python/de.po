@@ -43,8 +43,8 @@ msgstr "Deinstallation fehlgeschlagen"
 
 #: python/package_manager.py:425 python/package_manager.py:633
 #, python-format
-msgid "Fetch failed (%s)"
-msgstr "Herunterladen fehlgeschlagen (%s)"
+msgid "Fetching failed"
+msgstr "Herunterladen fehlgeschlagen"
 
 #: python/package_manager.py:733
 msgid "Further information regarding the error:"

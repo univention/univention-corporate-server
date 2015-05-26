@@ -424,8 +424,10 @@ class PackageManager(object):
 					self.cache.update(self.fetch_progress)
 			else:
 				self.cache.update(self.fetch_progress)
-		except FetchFailedException as e:
-			self.progress_state.error(_('Fetch failed (%s)') % e)
+		except FetchFailedException as exc:
+			self.progress_state.error(_('Fetching failed'))
+			for message in self._get_error_message(exc):
+				self.progress_state.error(message)
 			return False
 		except LockFailedException:
 			self.progress_state.error(_('Failed to lock'))
@@ -526,7 +528,8 @@ class PackageManager(object):
 		try:
 			fixer.resolve()
 		except SystemError as exc:
-			self.progress_state.error(str(exc))
+			for message in self._get_error_message(exc):
+				self.progress_state.error(message)
 			for pkg in install + remove:
 				broken.add(pkg.name)
 		# if more than one package is to be installed and this package
@@ -547,7 +550,7 @@ class PackageManager(object):
 				if pkg.marked_install and pkg.is_auto_installed and pkg.is_auto_removable:
 					try:
 						pkg.mark_delete()
-					except SystemError as exc:
+					except SystemError:
 						# Bug #34291
 						broken.add(pkg.name)
 					package_was_garbage = True
@@ -632,8 +635,10 @@ class PackageManager(object):
 				result = self.cache.commit(**kwargs)
 			if not result:
 				raise SystemError()
-		except FetchFailedException as e:
-			self.progress_state.error(_('Fetch failed (%s)') % e)
+		except FetchFailedException as exc:
+			self.progress_state.error(_('Fetching failed'))
+			for message in self._get_error_message(exc):
+				self.progress_state.error(message)
 			return False
 		except SystemError:
 			if msg_if_failed:
@@ -676,11 +681,16 @@ class PackageManager(object):
 				return
 		try:
 			_open()
-		except SystemError as exc:
+		except SystemError:
 			# still failing, let it raise
-			self._handle_system_error(exc, *sys.exc_info())
+			self._handle_system_error(*sys.exc_info())
 
-	def _handle_system_error(self, exc, etype, evalue, etraceback):
+	def _handle_system_error(self, etype, exc, etraceback):
+		message = [_('Could not initialize package manager.')]
+		message = '%s %s' % (_('Could not initialize package manager.'), '\n'.join(self._get_error_message(exc)))
+		raise etype, etype(message), etraceback
+
+	def _get_error_message(self, exc):
 		# All strings which must pass this function are in: https://forge.univention.org/bugzilla/attachment.cgi?id=6898
 		messages = re.sub('\s([WE]:)', r'\n\1', str(exc)).splitlines()
 		further = set()
@@ -691,7 +701,7 @@ class PackageManager(object):
 		missing_files = False
 		renaming_failed = False
 
-		message = [_('Could not initialize package manager.')]
+		message = []
 		for msg in messages:
 			if msg.startswith('W:'):
 				if 'apt-get update' in msg:
@@ -717,7 +727,11 @@ class PackageManager(object):
 			msg = re.sub('^W:', _('Warning: '), msg)
 			msg = re.sub('^E:', _('Error: '), msg)
 			msg = re.sub(',$', '.', msg)
+			if not msg.endswith('.'):
+				msg = '%s.' % msg
 			further.add(msg)
+		further.discard('')
+		further.discard('.')
 
 		if no_space_left:
 			message.append(_('There is no free hard disk space left on the device.'))
@@ -731,10 +745,12 @@ class PackageManager(object):
 		if apt_update:
 			message.extend([
 				_('The sources.list entries could be repaired by executing the following commands as root on this server:'),
-				'\n', 'ucr commit /etc/apt/sources.list.d/*; apt-get update'])
+				'ucr commit /etc/apt/sources.list.d/*; apt-get update'])
 		if further:
-			message.extend(['\n\n'+_('Further information regarding the error:'), '\n'+'\n'.join(further)])
-		raise etype, etype(' '.join(message)), etraceback
+			further = list(further)
+			message.append('\n\n%s\n%s' % (_('Further information regarding the error:'), further[0]))
+			message.extend(further[1:])
+		return message
 
 	def autoremove(self):
 		'''It seems that there is nothing like

@@ -1,3 +1,9 @@
+univention-lib (4.0.5-18) unstable; urgency=medium
+
+  * Bug #36951: improove error message format
+
+ -- Florian Best <best@univention.de>  Tue, 26 May 2015 14:00:52 +0200
+
 univention-lib (4.0.5-17) unstable; urgency=medium
 
   * Bug #33627: set finish state (=remove pacakge manger lock) when exceptions
