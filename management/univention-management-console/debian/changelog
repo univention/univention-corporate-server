@@ -1,3 +1,9 @@
+univention-management-console (7.1.63-19) unstable; urgency=medium
+
+  * Bug #36794: Add missing translation
+
+ -- Florian Best <best@univention.de>  Tue, 26 May 2015 12:43:09 +0200
+
 univention-management-console (7.1.63-18) unstable; urgency=medium
 
   * Bug #37366: fix import order

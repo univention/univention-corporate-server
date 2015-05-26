@@ -192,8 +192,10 @@ class LDAP_ServerDown(UMC_Error):
 		yield ' * ' + _('Restart the LDAP service on the domaincontroller master either via "invoke-rc.d slapd restart" on command line or with the UMC module "System services"')
 		if self._updates_available:
 			yield ' * ' + _('Install the latest software updates')
-		yield _('If the problem persists additional hints about the cause can be found in the following log file(s):')
-		yield ' * /var/log/univention/management-console-module-udm.log'
+		#TODO: reuse but not in LDAP_ServerDown
+		#yield _('If the problem persists additional hints about the cause can be found in the following log file(s):')
+		#yield ' * /var/log/univention/management-console-server.log'
+		#yield ' * /var/log/univention/management-console-module-*.log'
 
 
 def error_handling(function, method=None):

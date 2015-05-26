@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-28 23:51+0100\n"
+"POT-Creation-Date: 2015-05-26 12:21+0200\n"
 "PO-Revision-Date: 2011-10-25 20:29+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,12 +31,12 @@ msgstr "%s kann nur als UPLOAD genutzt werden"
 msgid "'%s' is not a valid UMCP command"
 msgstr "'%s' ist kein gültiges UMCP-Kommando"
 
-#: univention/management/console/protocol/definitions.py:111
+#: univention/management/console/protocol/definitions.py:107
 msgid "A non-fatal error has occurred processing may continue"
 msgstr ""
 "Ein nicht fataler Fehler ist aufgetreten; die Bearbeitung wird fortgesetzt"
 
-#: univention/management/console/modules/__init__.py:181
+#: univention/management/console/modules/__init__.py:214
 #, python-format
 msgid "An option passed to %s has the wrong type: %s"
 msgstr "Eine Option für %s hat den falschen Typ: %s"
@@ -45,7 +45,7 @@ msgstr "Eine Option für %s hat den falschen Typ: %s"
 msgid "Argument required"
 msgstr "Argument erforderlich"
 
-#: univention/management/console/protocol/definitions.py:114
+#: univention/management/console/protocol/definitions.py:110
 msgid "Bad request"
 msgstr "Fehlerhafte Anfrage"
 
@@ -57,19 +57,47 @@ msgstr "Kann nicht in einen Wahrheitswert umgewandelt werden"
 msgid "Cannot be converted to a number"
 msgstr "Kann nicht in eine Zahl umgewandelt werden"
 
-#: univention/management/console/pam.py:163
+#: univention/management/console/modules/__init__.py:185
+msgid "Cannot connect to the LDAP service."
+msgstr "Konnte nicht zum LDAP-Dienst verbinden."
+
+#: univention/management/console/pam.py:166
 msgid "Changing password failed."
 msgstr "Passwort ändern fehlgeschlagen."
 
-#: univention/management/console/protocol/definitions.py:129
+#: univention/management/console/modules/__init__.py:191
+msgid ""
+"Check if enough hard disk space and free RAM is available on this server and "
+"on the domaincontroller master or free some resources"
+msgstr ""
+"Überprüfen Sie, ob auf diesem Server und auf dem Domänencontroller Master "
+"genügend Festplattenspeicher und Arbeitsspeicher (RAM) verfügbar sind"
+
+#: univention/management/console/modules/__init__.py:188
+msgid ""
+"Check if enough hard disk space and free RAM is available on this server or "
+"free some resources"
+msgstr ""
+"Überprüfen Sie, ob auf diesem Server genügend Festplattenspeicher und "
+"Arbeitsspeicher (RAM) verfügbar sind"
+
+#: univention/management/console/protocol/definitions.py:125
 msgid "Connection to module process failed"
 msgstr "Verbindung zum Modulprozess ist fehlgeschlagen"
 
-#: univention/management/console/protocol/definitions.py:139
+#: univention/management/console/protocol/session.py:789
+msgid ""
+"Could not open the module. There is not enough memory available on the "
+"server. Please try again later."
+msgstr ""
+"Konnte das Modul nicht öffnen. Auf dem Server ist nicht genügend freier "
+"Arbeitsspeicher verfügbar. Bitte später erneut versuchen."
+
+#: univention/management/console/protocol/definitions.py:135
 msgid "Error occurred during command processing"
 msgstr "Fehler ist während der Kommandoverarbeitung aufgetreten"
 
-#: univention/management/console/modules/__init__.py:190
+#: univention/management/console/modules/__init__.py:223
 #, python-format
 msgid ""
 "Execution of command '%(command)s' has failed:\n"
@@ -80,7 +108,7 @@ msgstr ""
 "\n"
 "%(text)s"
 
-#: univention/management/console/protocol/modserver.py:101
+#: univention/management/console/protocol/modserver.py:103
 #, python-format
 msgid ""
 "Failed to load module %s: %s\n"
@@ -89,11 +117,11 @@ msgstr ""
 "Konnte das Modul %s nicht laden: %s\n"
 "%s"
 
-#: univention/management/console/protocol/definitions.py:116
+#: univention/management/console/protocol/definitions.py:112
 msgid "Forbidden"
 msgstr "Verboten"
 
-#: univention/management/console/protocol/modserver.py:107
+#: univention/management/console/protocol/modserver.py:109
 #, python-format
 msgid "Further information can be found in the logfile %s."
 msgstr "Weitere Informationen können der Protokolldatei %s entnommen werden."
@@ -102,20 +130,32 @@ msgstr "Weitere Informationen können der Protokolldatei %s entnommen werden."
 msgid "Has more than the allowed keys"
 msgstr "Hat mehr Schlüssel als erlaubt"
 
-#: univention/management/console/pam.py:200
+#: univention/management/console/modules/__init__.py:195
+msgid ""
+"If the problem persists additional hints about the cause can be found in the "
+"following log file(s):"
+msgstr ""
+"Wenn das Problem bestehen bleibt, können weitere Hinweise zur Ursache in der/"
+"den folgenden Protokolldatei(en) gefunden werden:"
+
+#: univention/management/console/pam.py:206
 msgid "In case it helps, the raw error message will be displayed"
 msgstr "Für den Fall, dass es hilft, hier die originale Fehlernachricht"
 
-#: univention/management/console/protocol/definitions.py:127
+#: univention/management/console/modules/__init__.py:194
+msgid "Install the latest software updates"
+msgstr "Installieren Sie alle Softwareaktualisierungen"
+
+#: univention/management/console/protocol/definitions.py:123
 msgid "Internal error"
 msgstr "Interner Fehler"
 
-#: univention/management/console/protocol/server.py:247
+#: univention/management/console/protocol/session.py:373
 #, python-format
 msgid "Invalid UCR variable requested: %s"
 msgstr "Ungültige UCR-Variable: %s"
 
-#: univention/management/console/protocol/definitions.py:118
+#: univention/management/console/protocol/definitions.py:114
 msgid "Invalid command arguments"
 msgstr "Ungültige Kommandoargumente"
 
@@ -123,11 +163,11 @@ msgstr "Ungültige Kommandoargumente"
 msgid "Invalid length information"
 msgstr "Ungültige Längenangabe"
 
-#: univention/management/console/protocol/definitions.py:135
+#: univention/management/console/protocol/definitions.py:131
 msgid "Invalid number of arguments"
 msgstr "Ungültige Anzahl von Argumenten"
 
-#: univention/management/console/protocol/definitions.py:119
+#: univention/management/console/protocol/definitions.py:115
 msgid "Invalid or missing command options"
 msgstr "Ungültige or fehlende Kommando-Optionen"
 
@@ -135,12 +175,19 @@ msgstr "Ungültige or fehlende Kommando-Optionen"
 msgid "Invalid progress ID"
 msgstr "Ungültige Fortschritt ID"
 
+#: univention/management/console/modules/__init__.py:190
+#, python-format
+msgid "Make sure the domaincontroller master is running and reachable from %s"
+msgstr ""
+"Stellen Sie sicher, dass der Domänencontroller Master läuft und von %s aus "
+"erreichbar ist"
+
 #: univention/management/console/modules/sanitizers.py:308
 #, python-format
 msgid "May have at most %(max_elements)d element(s)"
 msgstr "Darf höchstens %(max_elements)d Element(e) haben"
 
-#: univention/management/console/modules/__init__.py:245
+#: univention/management/console/modules/__init__.py:296
 #, python-format
 msgid ""
 "Method %r (%r) in %r does not exists.\n"
@@ -148,7 +195,7 @@ msgid ""
 "%s"
 msgstr ""
 
-#: univention/management/console/protocol/definitions.py:128
+#: univention/management/console/protocol/definitions.py:124
 msgid "Module process died unexpectedly"
 msgstr "Modulprozess hat sich unerwartet beendet"
 
@@ -157,7 +204,7 @@ msgstr "Modulprozess hat sich unerwartet beendet"
 msgid "Must have at least %(min_elements)d element(s)"
 msgstr "Muss mindestens %(min_elements)d Element(e) haben"
 
-#: univention/management/console/protocol/session.py:631
+#: univention/management/console/protocol/session.py:627
 msgid ""
 "Nevertheless an error occured while updating the password for running "
 "modules. Please relogin to UMC to solve this problem."
@@ -174,36 +221,36 @@ msgstr "Ist kein \"dict\""
 msgid "Not a \"list\""
 msgstr "Ist keine \"list\""
 
-#: univention/management/console/protocol/definitions.py:117
+#: univention/management/console/protocol/definitions.py:113
 msgid "Not found"
 msgstr "Nicht gefunden"
 
-#: univention/management/console/protocol/definitions.py:107
+#: univention/management/console/protocol/definitions.py:103
 msgid "OK, containing report message"
 msgstr "OK, enthält Nachricht"
 
-#: univention/management/console/protocol/definitions.py:106
+#: univention/management/console/protocol/definitions.py:102
 msgid "OK, operation successful"
 msgstr "OK, Operation erfolgreich"
 
-#: univention/management/console/protocol/definitions.py:109
+#: univention/management/console/protocol/definitions.py:105
 msgid "OK, operation successful ask for shutdown of connection"
 msgstr "OK, Anfrage zum Beenden des Moduls"
 
-#: univention/management/console/protocol/definitions.py:108
+#: univention/management/console/protocol/definitions.py:104
 msgid "OK, partial response"
 msgstr "OK, Partielle Antwort"
 
-#: univention/management/console/modules/__init__.py:183
+#: univention/management/console/modules/__init__.py:216
 #, python-format
 msgid "One or more options to %s are missing: %s"
 msgstr "Eine oder mehrere Optionen für %s fehlen: %s"
 
-#: univention/management/console/protocol/session.py:623
+#: univention/management/console/protocol/session.py:619
 msgid "Password successfully changed."
 msgstr "Passwort erfolgreich geändert."
 
-#: univention/management/console/protocol/modserver.py:106
+#: univention/management/console/protocol/modserver.py:108
 msgid ""
 "Please relogin to the Univention Management Console to see if the error "
 "persists."
@@ -215,7 +262,17 @@ msgstr ""
 msgid "Please wait for operation to finish"
 msgstr "Bitte warten, bis die Aktion durchgeführt wurde"
 
-#: univention/management/console/protocol/definitions.py:130
+#: univention/management/console/modules/__init__.py:192
+msgid ""
+"Restart the LDAP service on the domaincontroller master either via \"invoke-"
+"rc.d slapd restart\" on command line or with the UMC module \"System services"
+"\""
+msgstr ""
+"Starten Sie den LDAP-Dienst entweder über \"invoke-rc.d slapd restart\" per "
+"Kommandozeile oder mit dem UMC Modul \"Systemdienste\" auf dem "
+"Domänencontroller Master neu"
+
+#: univention/management/console/protocol/definitions.py:126
 msgid "SSL server certificate is not trustworthy"
 msgstr "SSL-Zertifikat ist nicht vertrauenswürdig"
 
@@ -227,25 +284,26 @@ msgstr "SSL-Zertifikat ist nicht vertrauenswürdig"
 msgid "Should stay %s"
 msgstr "Sollte %s bleiben"
 
-#: univention/management/console/protocol/definitions.py:123
+#: univention/management/console/protocol/definitions.py:119
 msgid "Specified locale is not available"
 msgstr "Angegebene Sprache ist nicht verfügbar"
 
-#: univention/management/console/protocol/definitions.py:122
+#: univention/management/console/protocol/definitions.py:118
 msgid "The account as been disabled"
 msgstr "Das Konto wurde deaktiviert"
 
-#: univention/management/console/protocol/definitions.py:121
-#: univention/management/console/pam.py:207
+#: univention/management/console/pam.py:213
+#: univention/management/console/protocol/definitions.py:117
 msgid "The account is expired and can not be used anymore"
 msgstr "Das Konto ist abgelaufen und kann nicht mehr verwendet werden"
 
-#: univention/management/console/protocol/definitions.py:120
-#: univention/management/console/pam.py:61
+#: univention/management/console/pam.py:63
+#: univention/management/console/protocol/definitions.py:116
 msgid "The authentication has failed"
 msgstr "Authentisierung ist fehlgeschlagen"
 
-#: univention/management/console/pam.py:208
+#: univention/management/console/pam.py:214
+#: univention/management/console/pam.py:215
 msgid "The authentication has failed, please login again"
 msgstr "Authentisierung ist fehlgeschlagen. Bitte melden Sie sich erneut an"
 
@@ -254,20 +312,28 @@ msgstr "Authentisierung ist fehlgeschlagen. Bitte melden Sie sich erneut an"
 msgid "The command '%s' do not have any arguments"
 msgstr "Das Kommando '%s' hat keine Argumente"
 
-#: univention/management/console/modules/__init__.py:185
+#: univention/management/console/modules/__init__.py:218
 #, python-format
 msgid "The command has failed: %s"
 msgstr "Das Kommando ist fehlgeschlagen: %s"
 
-#: univention/management/console/protocol/definitions.py:140
+#: univention/management/console/pam.py:216
+msgid "The entered password does not match the current one."
+msgstr "Das eingegebene Passwort stimmt nicht mit dem aktuellen überein."
+
+#: univention/management/console/protocol/definitions.py:136
 msgid "The execution of a command caused a fatal error"
 msgstr "Die Ausführung eines Kommandos hat zu einem fatalen Fehler geführt"
 
-#: univention/management/console/protocol/definitions.py:141
+#: univention/management/console/modules/__init__.py:186
+msgid "The following steps can help to solve this problem:"
+msgstr "Die folgenden Schritte können helfen, das Problem zu beheben:"
+
+#: univention/management/console/protocol/definitions.py:137
 msgid "The initialization of the module caused a fatal error"
 msgstr "Die Initialisierung des Moduls führte zu einem fatalen Fehler"
 
-#: univention/management/console/protocol/modserver.py:256
+#: univention/management/console/protocol/modserver.py:268
 #, python-format
 msgid "The initialization of the module failed: %s"
 msgstr "Die Initialisierung des Moduls ist fehlgeschlagen: %s"
@@ -288,50 +354,50 @@ msgstr "Der Nachrichtenrumpf ist (noch) nicht vollständig"
 msgid "The message header is not (yet) complete"
 msgstr "Der Nachrichtenkopf ist (noch) nicht vollständig"
 
-#: univention/management/console/protocol/modserver.py:105
+#: univention/management/console/protocol/modserver.py:107
 msgid "The module may have been removed recently."
 msgstr "Das Modul könnte kürzlich entfernt worden sein."
 
-#: univention/management/console/pam.py:59
+#: univention/management/console/pam.py:61
 msgid "The password does not contain enough different characters"
 msgstr "Das Passwort enthält nicht genügend unterschiedliche Zeichen"
 
-#: univention/management/console/protocol/definitions.py:124
-#: univention/management/console/pam.py:60
-#: univention/management/console/pam.py:206
+#: univention/management/console/pam.py:62
+#: univention/management/console/pam.py:212
+#: univention/management/console/protocol/definitions.py:120
 msgid "The password has expired and must be renewed"
 msgstr "Das Passwort ist abgelaufen und muss erneuert werden"
 
-#: univention/management/console/pam.py:56
+#: univention/management/console/pam.py:58
 msgid "The password is a palindrome"
 msgstr "Das Passwort ist ein Palindrom"
 
-#: univention/management/console/pam.py:57
+#: univention/management/console/pam.py:59
 msgid "The password is based on a dictionary word"
 msgstr "Das Passwort basiert auf einem Wörterbucheintrag"
 
-#: univention/management/console/pam.py:54
+#: univention/management/console/pam.py:56
 msgid "The password is too short"
 msgstr "Das Passwort ist zu kurz"
 
-#: univention/management/console/pam.py:55
+#: univention/management/console/pam.py:57
 msgid "The password is too simple"
 msgstr "Das Passwort ist zu einfach"
 
-#: univention/management/console/pam.py:58
+#: univention/management/console/pam.py:60
 msgid "The password was already used"
 msgstr "Das Passwort wurde bereits genutzt"
 
-#: univention/management/console/pam.py:199
+#: univention/management/console/pam.py:205
 msgid "The reason could not be determined"
 msgstr "Der Grund konnte nicht festgestellt werden"
 
-#: univention/management/console/protocol/modserver.py:104
+#: univention/management/console/protocol/modserver.py:106
 #, python-format
 msgid "The requested module %r does not exists."
 msgstr "Das angefragte Modul %r existiert nicht."
 
-#: univention/management/console/protocol/definitions.py:115
+#: univention/management/console/protocol/definitions.py:111
 msgid "Unauthorized"
 msgstr "Nicht authorisiert"
 
@@ -340,7 +406,7 @@ msgstr "Nicht authorisiert"
 msgid "Unknown UMCP command: %s"
 msgstr "Unbekanntes UMCP Kommando: %s"
 
-#: univention/management/console/protocol/definitions.py:134
+#: univention/management/console/protocol/definitions.py:130
 msgid "Unknown command"
 msgstr "Unbekanntes Kommando"
 
@@ -348,16 +414,16 @@ msgstr "Unbekanntes Kommando"
 msgid "Unknown mime type"
 msgstr "Unbekannter MIME-Typ"
 
-#: univention/management/console/protocol/definitions.py:101
-#: univention/management/console/protocol/definitions.py:171
+#: univention/management/console/protocol/definitions.py:97
+#: univention/management/console/protocol/definitions.py:167
 msgid "Unknown status code"
 msgstr "Unbekannter Status-Code"
 
-#: univention/management/console/protocol/definitions.py:136
+#: univention/management/console/protocol/definitions.py:132
 msgid "Unparsable message body"
 msgstr "Unverständlicher nachrichtenrumpf"
 
-#: univention/management/console/protocol/definitions.py:133
+#: univention/management/console/protocol/definitions.py:129
 #: univention/management/console/protocol/message.py:211
 msgid "Unparsable message header"
 msgstr "Unverständlicher nachrichtenkopf"
@@ -390,9 +456,3 @@ msgstr ""
 #: univention/management/console/protocol/message.py:257
 msgid "error parsing UMCP message body"
 msgstr "Fehler beim Parsen des UMCP-Nachrichtenrumpfes"
-
-msgid "The entered password does not match the current one."
-msgstr "Das eingegebene Passwort stimmt nicht mit dem aktuellen überein."
-
-msgid "Could not open the module. There is not enough memory available on the server. Please try again later."
-msgstr "Konnte das Modul nicht öffnen. Auf dem Server ist nicht genügend freier Arbeitsspeicher verfügbar. Bitte später erneut versuchen."
