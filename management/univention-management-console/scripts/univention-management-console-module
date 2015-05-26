@@ -33,6 +33,8 @@
 
 from univention.management.console.log import MODULE, log_init, log_reopen
 from univention.management.console.config import MODULE_DEBUG_LEVEL, ucr
+# don't import univention.management.console.{modules,protocol} here as the locale is not yet set!
+
 from univention.lib.i18n import Locale, Translation
 
 from daemon.daemon import DaemonContext

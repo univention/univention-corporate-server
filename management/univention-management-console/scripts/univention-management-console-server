@@ -48,6 +48,7 @@ from daemon.daemon import set_signal_handlers
 
 from univention.management.console.log import CORE, log_init, log_reopen
 from univention.management.console.config import SERVER_DEBUG_LEVEL, ucr
+# don't import univention.management.console.{modules,protocol} here as the locale is not yet set!
 
 server = None
 

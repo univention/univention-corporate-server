@@ -193,7 +193,9 @@ msgid ""
 "Method %r (%r) in %r does not exists.\n"
 "\n"
 "%s"
-msgstr ""
+msgstr "Methode %r (%r) in %r existiert nicht.\n"
+"\n"
+"%s"
 
 #: univention/management/console/protocol/definitions.py:124
 msgid "Module process died unexpectedly"
@@ -208,7 +210,7 @@ msgstr "Muss mindestens %(min_elements)d Element(e) haben"
 msgid ""
 "Nevertheless an error occured while updating the password for running "
 "modules. Please relogin to UMC to solve this problem."
-msgstr ""
+msgstr "Nichtsdestotrotz ist ein Fehler während der Aktualisierung des Passwords in laufenden UMC-Modulen aufgetreten. Bitte erneut an UMC anmelden, um dieses Problem zu lösen."
 
 #: univention/management/console/modules/decorators.py:301
 #: univention/management/console/modules/decorators.py:413

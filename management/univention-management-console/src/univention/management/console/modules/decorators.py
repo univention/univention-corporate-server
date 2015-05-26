@@ -63,8 +63,8 @@ from threading import Thread
 from univention.lib.i18n import Translation
 _ = Translation('univention.management.console').translate
 
-from ..modules import UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError, UMC_OptionSanitizeError
-from ..log import MODULE
+from univention.management.console.base import UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError, UMC_OptionSanitizeError
+from univention.management.console.log import MODULE
 
 from sanitizers import MultiValidationError, ValidationError, DictSanitizer, ListSanitizer
 

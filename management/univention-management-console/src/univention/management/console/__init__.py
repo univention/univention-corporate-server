@@ -33,5 +33,4 @@
 
 from univention.lib.i18n import Translation
 
-import univention.management.console.protocol
-import univention.management.console.modules
+# don't import submodules/packages here otherwise the locale is not yet set

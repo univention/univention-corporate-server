@@ -42,7 +42,6 @@ import time
 import json
 import traceback
 import gzip
-import pwd
 import re
 
 import ldap.filter
@@ -71,7 +70,7 @@ from ..acl import LDAP_ACLs
 from ..log import CORE
 from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND, ucr
 from ..locales import I18N, I18N_Manager
-from ..modules import Base, UMC_Error
+from ..base import Base, UMC_Error
 from ..modules.sanitizers import StringSanitizer, DictSanitizer
 from ..modules.decorators import sanitize
 
