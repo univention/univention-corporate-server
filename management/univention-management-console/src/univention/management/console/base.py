@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  Base class for UMC 2.0 modules
+#  Base class for UMC 2.0 command handlers
 #
 # Copyright 2006-2015 Univention GmbH
 #
@@ -30,7 +30,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-
 """
 Python API for UMC modules
 ==========================
@@ -127,16 +126,17 @@ Methods
 from notifier import signals
 import traceback
 import ldap
+import sys
 
 from univention.lib.i18n import Translation
 
 import univention.admin.uldap as udm_uldap
 import univention.admin.uexceptions as udm_errors
 
-from ..protocol.message import Response, MIMETYPE_JSON
-from ..protocol.definitions import BAD_REQUEST, MODULE_ERR, MODULE_ERR_COMMAND_FAILED, SUCCESS, SUCCESS_MESSAGE, SUCCESS_PARTIAL, SUCCESS_SHUTDOWN
-from ..log import MODULE, CORE
-from ..config import ucr
+from univention.management.console.protocol.message import Response, MIMETYPE_JSON
+from univention.management.console.protocol.definitions import BAD_REQUEST, MODULE_ERR, MODULE_ERR_COMMAND_FAILED, SUCCESS, SUCCESS_MESSAGE, SUCCESS_PARTIAL, SUCCESS_SHUTDOWN
+from univention.management.console.log import MODULE, CORE
+from univention.management.console.config import ucr
 
 _ = Translation('univention.management.console').translate
 
@@ -199,36 +199,14 @@ class LDAP_ServerDown(UMC_Error):
 
 
 def error_handling(function, method=None):
+	# deprecated, use Instance.error_handling(etype, exc, etraceback) instead
 	method = method or function.__name__
 
 	def _decorated(self, request, *args, **kwargs):
-		message = ''
-		result = None
 		try:
-			try:
-				return function(self, request, *args, **kwargs)
-			except ldap.SERVER_DOWN:
-				raise LDAP_ServerDown()
-		except UMC_Error as exc:
-			status = exc.status
-			result = exc.result
-			if isinstance(exc, UMC_OptionTypeError):
-				message = _('An option passed to %s has the wrong type: %s') % (method, exc)
-			elif isinstance(exc, UMC_OptionMissing):
-				message = _('One or more options to %s are missing: %s') % (method, exc)
-			elif isinstance(exc, UMC_CommandError):
-				message = _('The command has failed: %s') % (exc,)
-			else:
-				message = str(exc)
+			return function(self, request, *args, **kwargs)
 		except:
-			status = MODULE_ERR_COMMAND_FAILED
-			message = _("Execution of command '%(command)s' has failed:\n\n%(text)s")
-			message = message % {
-				'command': ('%s %s' % (request.arguments[0], request.flavor or '')).strip(),
-				'text': unicode(traceback.format_exc())
-			}
-		MODULE.process(str(message))
-		self.finished(request.id, result, message, status=status)
+			self._Base__error_handling(request, method, *sys.exc_info())
 	return _decorated
 
 
@@ -236,7 +214,7 @@ class Base(signals.Provider, Translation):
 
 	'''The base class for UMC modules of version 2 or higher'''
 
-	def __init__(self, domain=None):
+	def __init__(self, domain='univention-management-console'):
 		signals.Provider.__init__(self)
 		self.signal_new('success')
 		self._username = None
@@ -299,9 +277,46 @@ class Base(signals.Provider, Translation):
 			self.finished(request.id, None, message=message, status=500)
 			return
 
-		function = error_handling(function, method)
 		MODULE.info('Executing %s' % (request.arguments,))
-		function(self, request)
+		try:
+			function(self, request)
+		except:
+			self.__error_handling(request, method, *sys.exc_info())
+
+	def error_handling(self, etype, exc, etraceback):
+		if isinstance(exc, ldap.SERVER_DOWN):
+			raise LDAP_ServerDown()
+
+	def __error_handling(self, request, method, etype, exc, etraceback):
+		message = ''
+		result = None
+		try:
+			try:
+				self.error_handling(etype, exc, etraceback)
+			except:
+				raise
+			else:
+				raise etype, exc, etraceback
+		except UMC_Error as exc:
+			status = exc.status
+			result = exc.result
+			if isinstance(exc, UMC_OptionTypeError):
+				message = _('An option passed to %s has the wrong type: %s') % (method, exc)
+			elif isinstance(exc, UMC_OptionMissing):
+				message = _('One or more options to %s are missing: %s') % (method, exc)
+			elif isinstance(exc, UMC_CommandError):
+				message = _('The command has failed: %s') % (exc,)
+			else:
+				message = str(exc)
+		except:
+			status = MODULE_ERR_COMMAND_FAILED
+			message = _("Execution of command '%(command)s' has failed:\n\n%(text)s")
+			message = message % {
+				'command': ('%s %s' % (request.arguments[0], request.flavor or '')).strip(),
+				'text': unicode(traceback.format_exc())
+			}
+		MODULE.process(str(message))
+		self.finished(request.id, result, message, status=status)
 
 	def get_user_ldap_connection(self):
 		if not self._user_dn:
