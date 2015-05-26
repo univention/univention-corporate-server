@@ -47,7 +47,7 @@ msgid "Fetching failed"
 msgstr "Herunterladen fehlgeschlagen"
 
 #: python/package_manager.py:733
-msgid "Further information regarding the error:"
+msgid "Further information regarding this error:"
 msgstr "Weitere Informationen zum Fehler:"
 
 #: python/package_manager.py:454

@@ -748,7 +748,7 @@ class PackageManager(object):
 				'ucr commit /etc/apt/sources.list.d/*; apt-get update'])
 		if further:
 			further = list(further)
-			message.append('\n\n%s\n%s' % (_('Further information regarding the error:'), further[0]))
+			message.append('\n%s\n%s' % (_('Further information regarding this error:'), further[0]))
 			message.extend(further[1:])
 		return message
 
