@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Change AMI in Jenkins configuration
 #
@@ -9,7 +9,7 @@ die () {
 	exit 1
 }
 check () {
-	command -v euca-describe-images >/dev/null 2>&1 || die "Missing euca2tools"
+	type euca-describe-images >/dev/null 2>&1 || die "Missing euca2tools"
 	[ $# -eq 2 ] || die "Usage: src-ami dst-ami"
 }
 args () {
@@ -50,7 +50,6 @@ __TXT__
 }
 replace () {
 	local cfg
-	cd "$(dirname "$0")"
 	for cfg in examples/jenkins/*.cfg
 	do
 		[ -f "$cfg" ] || continue
