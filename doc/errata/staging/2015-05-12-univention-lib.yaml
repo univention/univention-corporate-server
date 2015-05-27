@@ -7,6 +7,7 @@ version: [2]
 desc: |
   This update addresses the following issues:
   * If the initialization of the package manager failed it is retried.
-  * Improve error messages which are raised from the package manager.
   * Held packages can't cause a traceback anymore.
-bug: [38112, 34291, 38129, 36951, 33627]
+  * Error messages when opening apt Packages files have improved.
+  * Error messages when the system has too few free disk space have improved.
+bug: [33627, 34291, 38112, 38129]
