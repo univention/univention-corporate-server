@@ -43,28 +43,18 @@
 						</div>
 					</div>
 
-					<a class="welcome-command" href="#" data-i18n="Looking for a command line?"></a>
-					<a class="welcome-desktop" href="#" data-i18n="Looking for a desktop?"></a>
-<!--
-					<a class="" href="#" data-i18n="[↓] more options"></a>
-1. UCS version / App appliance name
-
-2. The current network setting
-
-3. How to connect the web management interface
-
-4. A login to the command line
-
-We could later add a simple interface for changing the network settings.
-
-TODO: [↓] more options
-
-KDE-hint
-
-access UMC in this session directly
-
--->
-
+					<p class="welcome-command" id="welcome-command">
+						<a id="welcome-command-link" href="#" data-i18n="Looking for a command line?"></a>
+						<span class="dijitHidden" id="welcome-command-text">
+							<a href="#" id="switch-cli" data-i18n="Press Ctrl+Alt+F1 or click here to switch to a terminal."></a>
+						</span>
+					</p>
+					<p class="welcome-desktop dijitHidden" id="welcome-desktop">
+						<a id="welcome-desktop-link" href="#" data-i18n="Looking for a desktop?"></a>
+						<span class="dijitHidden" id="welcome-desktop-text">
+							<a href="#" id="switch-desktop" data-i18n="Press Alt+F4 or click here to close this view and display the KDE login manager."></a>
+						</span>
+					</p>
 				</div>
 			</div>
 		</div>

@@ -31,26 +31,33 @@
 # <http://www.gnu.org/licenses/>.
 
 . /lib/lsb/init-functions
-. /usr/share/univention-lib/ucr.sh
 
 case "$1" in
 	start)
 		log_action_msg "Starting univention-welcome-screen"
 
-		is_ucr_true welcome/screen/start
-		if [ "$?" != "1" ]; then
+		# check UCR autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+			. "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart univention-welcome-screen welcome-screen/autostart
+		fi
+		if [ -e "/var/run/univention-welcome-screen.pid" ]; then
 			pgrep -f firefox -F /var/run/univention-welcome-screen.pid > /dev/null
 			if [ "0" != "$?" ]; then
-				/usr/share/univention-welcome-screen > "/var/log/univention/welcome-screen.log" 2>&1 &
+				log_action_end_msg 0
+				exit 0
 			fi
 		fi
+		/usr/share/univention-welcome-screen > "/var/log/univention/welcome-screen.log" 2>&1 &
 		log_action_end_msg 0
 		;;
 	stop)
-		pgrep -f firefox -F /var/run/univention-welcome-screen.pid > /dev/null
-		if [ "0" = "$?" ]; then
-			log_action_msg "Stopping univention-welcome-screen"
-			pkill -F /var/run/univention-welcome-screen.pid
+		if [ -e "/var/run/univention-welcome-screen.pid" ]; then
+			pgrep -f firefox -F /var/run/univention-welcome-screen.pid > /dev/null
+			if [ "0" = "$?" ]; then
+				log_action_msg "Stopping univention-welcome-screen"
+				pkill -F /var/run/univention-welcome-screen.pid
+			fi
 		fi
 		log_action_end_msg 0
 		;;

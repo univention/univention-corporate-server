@@ -13,10 +13,12 @@ Package: univention-welcome-screen
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  passwd,
+ xinit,
  x11-utils,
  x11-xkb-utils,
  openbox,
  univention-management-console-module-setup,
+ univention-base-files,
  shell-univention-lib,
  python-univention-lib,
 Recommends: firefox-en | firefox-de | firefox | iceweasel,

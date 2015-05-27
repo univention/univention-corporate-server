@@ -54,19 +54,31 @@ if [ -z "$1" ]; then
 	eval "$(/usr/sbin/univention-config-registry shell locale/default)"
 	if [ -n "$locale_default" ]; then
 		default_locale=${locale_default%%.*}
-	fi  
+	fi
 
-	URL="http://localhost/ucs-overview/welcome.html?lang=$default_locale"
+	showDesktop="false"
+	if dpkg -l univention-kde 2> /dev/null > /dev/null; then
+		showDesktop="true"
+	fi
 
+	PORT=13337  # TODO: use a random free port between 1024 and 49151
+	URL="http://localhost/ucs-overview/welcome.html?lang=$default_locale&showDesktop=$showDesktop&port=$PORT"
+
+	SWITCH_TTY=$(mktemp)
+
+	# start X11 and browser ; script returns pid of browser on fd3
 	if xwininfo -root -stats > /dev/null 2>/dev/null ; then
-		/bin/su nobody -m --login -c "'$0' '$URL'" -- 3> "$BROWSERPIDFILE"
+		/bin/su nobody -m --login -c "'$0' '$PORT' '$URL'" -- 3> "$BROWSERPIDFILE" 4> "$SWITCH_TTY"
 	else
-		# start X11 and browser ; script returns pid of browser on fd3
-		[ -x /usr/bin/xinit ] && /usr/bin/xinit /bin/su nobody -c "'$0' '$URL'" -- 3> "$BROWSERPIDFILE"
+		/usr/bin/xinit /bin/su nobody -c "'$0' '$PORT' '$URL'" -- 3> "$BROWSERPIDFILE" 4> "$SWITCH_TTY"
+	fi
+
+	if [ "$(cat "$SWITCH_TTY")" = "YES" ]; then
+		chvt 1
 	fi
 
 	# remove pidfile
-	rm -f "$BROWSERPIDFILE"
+	rm -f "$BROWSERPIDFILE" "$SWITCH_TTY"
 
 	# Remove 'hide tab bar' addon
 	find '/opt/firefox/distribution/bundles/{e5bbc237-c99b-4ced-a061-0be27703295f}' -delete
@@ -75,6 +87,8 @@ if [ -z "$1" ]; then
 fi
 
 ### this is executed by xinit->su as nobody inside the running X server ###
+PORT="$1"
+shift 1
 
 # create and export a temporary home directory
 HOME=$(mktemp -d)
@@ -107,10 +121,73 @@ windowManager=$!
 # start browser
 firefox -profile "$profilePath" "$@" &
 # send pid of browser to root instance of this script
-echo "$!" >&3
+FFPID=$!
+echo "$FFPID" >&3
+
+code=$(cat <<EOF
+# -*- coding: UTF-8 -*-
+import sys
+import os
+import subprocess
+import SimpleHTTPServer
+import SocketServer
+
+PPID = int(sys.argv[1])
+PORT = int(sys.argv[2])
+
+
+class Handler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+	def do_OPTIONS(self):
+		self.send_header("Access-Control-Allow-Origin", "*")
+		self.send_response(200)
+		self.end_headers()
+
+	def do_GET(self):
+		self.send_header("Access-Control-Allow-Origin", "*")
+		try:
+				ip, port = self.request.getpeername()
+				if ip not in ('::1', '0.0.0.0', '127.0.0.1'):
+						raise ValueError
+		except IOError:
+				return  # client disconnect
+		except ValueError:
+				self.send_response(403)
+				return
+
+		if self.path.startswith('/switch-cli'):
+			cmd = self._switch_cli
+		elif self.path.startswith('/switch-desktop'):
+			cmd = self._switch_desktop
+		else:
+			self.send_response(404)
+			self.end_headers()
+
+		self.send_response(202)
+		self.end_headers()
+		httpd.server_close()
+		cmd()
+	do_OPTIONS = do_GET  # FIXME: Firefox doesnt evaluate ACAO
+
+	def _switch_cli(self):
+		subprocess.call('echo "YES">&4', shell=True)
+		self._switch_desktop()
+
+	def _switch_desktop(self):
+		os.kill(PPID, 9)
+		os._exit(0)
+
+httpd = SocketServer.TCPServer(("", PORT), Handler)
+httpd.serve_forever()
+httpd.server_close()
+EOF
+)
+python -c "$code" "$FFPID" "$PORT" 4>&4 &
+http=$!
+
 # wait for browser
-wait %%
+wait "$FFPID"
 kill "$windowManager"
+kill "$http"
 wait
 find "$profilePath" -delete
 find "$HOME" -delete

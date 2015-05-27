@@ -11,3 +11,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "Navigate with your browser to the IP address of this system in order to access the management interface of Univention Corporate Server."
+msgstr "Navigieren Sie mit ihrem Browser zu der IP-Adresse dieses Systems um auf das Management Interface von Univention Corporate Server zuzugreifen."
+
+msgid "Or use an alternative address:"
+msgstr "Oder verwenden Sie eine alternative Adresse:"
+
+msgid "Looking for a command line?"
+msgstr "Suchen Sie nach einer Kommandozeile?"
+
+msgid "Press Ctrl+Alt+F1 or click here to switch to a terminal."
+msgstr "Drücken Sie Strg+Alt+F1 oder klicken Sie hier um zu einem Terminal zu wechseln."
+
+msgid "Looking for a desktop?"
+msgstr "Suchen Sie nach einem Desktop?"
+
+msgid "Press Alt+F4 or click here to close this view and display the KDE login manager."
+msgstr "Drücken Sie Alt+F4 oder klicken Sie hier um dieses Fenster zu schließen und den KDE-Loginmanager anzuzeigen."

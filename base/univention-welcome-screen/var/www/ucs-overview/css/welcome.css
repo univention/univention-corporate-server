@@ -38,13 +38,23 @@
 	padding: 15px 10px;
 }
 
-.welcome-command {
+.welcome-command span, .welcome-desktop span {
+/*	display: none;*/
+/*	visibility: hidden;*/
+	transition: display 1s, visibility 1s;
+}
+.welcome-command:hover span, .welcome-desktop:hover span,
+.welcome-command:focus span, .welcome-desktop:focus span {
+/*	display: inline;*/
+	visibility: visible;
+}
+.welcome-command > a {
 	background-image: url("../welcome/command.svg");
 }
-.welcome-desktop {
+.welcome-desktop > a {
 	background-image: url("../welcome/desktop.svg");
 }
-.welcome-command, .welcome-desktop {
+.welcome-command > a, .welcome-desktop > a {
 	background-repeat: no-repeat;
 	background-size: 30px;
 	padding: 5px 30px 0;

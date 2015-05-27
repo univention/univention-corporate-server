@@ -34,21 +34,24 @@ define([
 	"dojo/_base/array",
 	"dojo/io-query",
 	"dojo/query",
+	"dojo/on",
 	"dojo/dom",
 	"dojo/dom-construct",
 	"dojo/dom-attr",
 	"dojo/dom-style",
 	"dojo/dom-class",
 	"dojo/dom-geometry",
+	"dojo/request/xhr",
 	"../ucs/text!/ucs-overview/welcome.json",
 	"../ucs/i18n!welcome,ucs"
-], function(lang, kernel, array, ioQuery, query, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, data, _) {
+], function(lang, kernel, array, ioQuery, query, on, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, xhr, data, _) {
 	return {
 		start: function() {
 			this.replaceTitle();
 			this.addApplianceLogo();
 			this.insertLinks();
-
+			this.showDesktop();
+			this.listenLinks();
 		},
 
 		replaceTitle: function() {
@@ -83,6 +86,28 @@ define([
 				}
 			}, this);
 		
+		},
+
+		showDesktop: function() {
+			domClass.toggle(dom.byId('welcome-desktop'), 'dijitHidden', getQuery('showDesktop') != 'true');
+		},
+
+		listenLinks: function() {
+			on(dom.byId('welcome-desktop-link'), 'click', function() {
+				domClass.toggle('welcome-desktop-text', 'dijitHidden', false);
+			});
+			on(dom.byId('welcome-command-link'), 'click', function() {
+				domClass.toggle('welcome-command-text', 'dijitHidden', false);
+			});
+			var port = String(parseInt(getQuery('port')));
+			on(dom.byId('switch-cli'), 'click', function() {
+				console.log('switch-cli', arguments);
+				xhr.get('http://localhost:' + port + '/switch-cli');
+			});
+			on(dom.byId('switch-desktop'), 'click', function() {
+				console.log('switch-desktop', arguments);
+				xhr.get('http://localhost:' + port + '/switch-desktop');
+			});
 		},
 
 		formatUrl: function(url, ip6) {

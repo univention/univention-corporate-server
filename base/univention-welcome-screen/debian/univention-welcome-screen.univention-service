@@ -1,0 +1,5 @@
+[univention-welcome-screen]
+Description[de]=Willkommensbildschirm
+Description[en]=welcome screen
+programs=/usr/share/univention-welcome-screen
+start_type=welcome-screen/autostart
