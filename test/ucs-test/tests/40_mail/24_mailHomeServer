@@ -7,13 +7,13 @@
 from essential.mail import send_mail, mail_delivered
 from univention.testing.mail import MailSink
 from univention.testing.network import NetworkRedirector
+import dns.resolver
 import tempfile
 import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-import dns.resolver
 
 TIMEOUT = 60 #sec
 
@@ -48,7 +48,7 @@ def check_delivery_locally(token, recipient_email, should_be_delivered):
 
 def wait_for_dns(hosts):
 	for host, ip in hosts:
-		for i in xrange(60):
+		for i in xrange(TIMEOUT):
 			try:
 				dns.resolver.query(host, 'A')
 				break
@@ -78,7 +78,7 @@ def main():
 						'ip'                  : ip,
 						'name'                : host,
 						'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (
-							domain, ucr.get('ldap/base'), ip)
+							domain, basedn, ip)
 					}
 				)
 			mails_list = []
