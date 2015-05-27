@@ -47,9 +47,8 @@ class TestUMCNetworkFunctionality(TestUMCSystem):
         request_result = self.make_udm_request("add", options,
                                                "networks/network")
         if not request_result[0].get("success"):
-            utils.fail("Creation of network with a name '%s' and options "
-                       "'%s' failed, no success=True in response: '%s'"
-                       % (self.test_network_name, options, request_result))
+            utils.fail("Creation of network named %r not successful. Response: %r\nRequest options: %r"
+                       % (self.test_network_name, request_result, options))
         self.test_network_dn = request_result[0].get('$dn$')
 
     def query_dhcp_services(self):

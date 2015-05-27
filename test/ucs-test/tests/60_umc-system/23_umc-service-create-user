@@ -110,12 +110,11 @@ class TestUMCUserCreation(TestUMCSystem):
             request_result = self.Connection.request('udm/add', options,
                                                      'users/user')
             if not request_result:
-                utils.fail("Request 'udm/add' user with options '%s' failed, "
-                           "hostname '%s'" % (options, self.hostname))
+                utils.fail("Request 'udm/add' user failed. Response: %r\nRequest options: %r\n"
+                           "hostname: %r" % (request_result, options, self.hostname))
             if not request_result[0].get('success'):
-                utils.fail("Request 'udm/add' user with options '%s' failed, "
-                           "no success = True in response, hostname '%s'"
-                           % (options, self.hostname))
+                utils.fail("Request 'udm/add' user not successful. Response: %r\nRequest options: %r\n"
+                           "hostname %r" % (request_result, options, self.hostname))
         except Exception as exc:
             utils.fail("Exception while making 'udm/add' user request: %s" %
                        exc)

@@ -197,14 +197,11 @@ class TestUMCExtendedAttributes(TestUMCSystem):
             request_result = self.Connection.request('udm/add', options,
                                                      "navigation")
             if not request_result:
-                utils.fail("Request 'udm/add' with options '%s' "
-                           "failed, no or empty response, "
-                           "hostname '%s'" % (options, self.hostname))
+                utils.fail("Request 'udm/add' failed. Response: %r\nRequest options: %r\n"
+                           "hostname: %r" % (request_result, options, self.hostname))
             if not request_result[0].get('success'):
-                utils.fail("Request 'udm/add' with options '%s' "
-                           "failed, no success=True in response '%s', "
-                           "hostname '%s'" % (options, request_result,
-                           self.hostname))
+                utils.fail("Request 'udm/add' not successful. Response: %r\nRequest options: %r\n"
+                           "hostname: %r" % (request_result, options, self.hostname))
         except Exception as exc:
             utils.fail("Exception while making 'udm/add' request with "
                        "options '%s': '%s'" % (options, exc))

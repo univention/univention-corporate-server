@@ -1,3 +1,9 @@
+ucs-test (5.0.148-7) unstable; urgency=medium
+
+  * Bug #37523: improve error message format
+
+ -- Florian Best <best@univention.de>  Wed, 27 May 2015 11:54:32 +0200
+
 ucs-test (5.0.148-6) unstable; urgency=low
 
   * enabled 20_can_apps_be_installed Bug #36223 
