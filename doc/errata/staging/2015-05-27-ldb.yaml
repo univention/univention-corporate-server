@@ -1,0 +1,9 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: ldb
+fix: 2:1.1.20-2.55.201505181944
+version: [1,2]
+desc: |
+ The ldb library and tools have been upgraded to version 1.1.20.
+bug: [37939]

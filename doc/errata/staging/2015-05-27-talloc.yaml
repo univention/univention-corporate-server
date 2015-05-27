@@ -1,0 +1,9 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: talloc
+fix: 2.1.2-3.33.201505181902
+version: [1,2]
+desc: |
+ The talloc library has been upgraded to version 2.1.2.
+bug: [37939]

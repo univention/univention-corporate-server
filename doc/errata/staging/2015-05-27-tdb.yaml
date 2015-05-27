@@ -1,0 +1,9 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: tdb
+fix: 1.3.5-1.47.201505181910
+version: [1,2]
+desc: |
+ The tdb library and tools have been upgraded to version 1.3.5.
+bug: [37939]
