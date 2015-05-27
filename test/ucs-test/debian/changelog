@@ -1,3 +1,10 @@
+ucs-test (5.0.148-8) unstable; urgency=medium
+
+  * 48share_force_local_user_group: Added test case to check if force
+    user or group can be set to a local user or group (Bug #36948)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 27 May 2015 21:48:23 +0200
+
 ucs-test (5.0.148-7) unstable; urgency=medium
 
   * Bug #37523: improve error message format

@@ -1,0 +1,47 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Test, whether force user and group can be set to a local user and group"
+## exposure: dangerous
+## packages:
+## - univention-samba | univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+## - memberserver
+## tags:
+## - skip_admember
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+RETVAL=0
+
+eval "$(ucr shell)"
+
+ADMINISTRATOR_NAME=$(univention-ldapsearch -b "$tests_domainadmin_account" uid | sed -ne 's/^uid: //p')
+
+sharename="$(random_chars)"
+
+cat >>/etc/samba/smb.conf <<__HERE__
+[$sharename]
+  path = /var/www
+  force user = www-data
+  force group = www-data
+  read only = No
+  create mask = 0644
+  force create mode = 0644
+  strict locking = No
+  dos filemode = Yes
+  vfs objects = acl_xattr
+__HERE__
+
+/etc/init.d/samba reload
+
+smbclient -U $ADMINISTRATOR_NAME%$tests_domainadmin_pwd //$hostname/"$sharename" -c ls || fail_test 1
+
+ucr commit /etc/samba/smb.conf
+
+/etc/init.d/samba reload
+
+exit $RETVAL
