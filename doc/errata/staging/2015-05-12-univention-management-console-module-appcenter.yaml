@@ -6,9 +6,12 @@ fix: 4.1.20-29.356.201505131635
 version: [2]
 desc: |
   This update addresses the following issues:
-  * The error messages when the UCS activation fails have been improved.
+  * If the initialization of the App Center module fails an error message is shown.
+  * Display error message if contacting the LDAP server fails.
+  * The error messages when contacting the App Center server or the UCS activation fails have been improved.
+  * Errors when opening apt Packages files are now handled.
+  * Errors when the system has too few free disk space are now handled.
   * Error messages which are raised from the package manager are now displayed
     instead of displaying a traceback.
-  * Display error message if contacting the LDAP server or the AppCenter server fails.
   * The wording for app maintainer has been adjusted to app provider.
-bug: [35760, 33627, 35614, 36794, 38112, 38129, 36951, 35678, 37591, 37230]
+bug: [33627, 36794, 35678, 38112, 38129, 37230, 37591]
