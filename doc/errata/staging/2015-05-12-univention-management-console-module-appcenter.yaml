@@ -2,11 +2,11 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-management-console-module-appcenter
-fix: 4.1.20-28.355.201505131517
+fix: 4.1.20-29.356.201505131635
 version: [2]
 desc: |
   This update addresses the following issues:
-  * The error messages when the UCS activation fails have been improoved.
+  * The error messages when the UCS activation fails have been improved.
   * Error messages which are raised from the package manager are now displayed
     instead of displaying a traceback.
   * Display error message if contacting the LDAP server or the AppCenter server fails.
