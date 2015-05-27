@@ -1,7 +1,7 @@
 univention-management-console-frontend-theme (0.0.89-15) unstable; urgency=low
 
-  * Bug #38127: manual triggering of onChange event when IE9 is used so the
-    html5 placeholder workaround is triggered
+  * Bug #38127: minor adaption to display IE specific icons in login dialog
+    correctly
 
  -- Drees Dormann <dormann@univention.de>  Wed, 27 May 2015 11:42:39 +0200
 
