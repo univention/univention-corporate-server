@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-management-console-module-appcenter
+fix: 4.1.20-29.356.201505131635
+version: [2]
+desc: |
+  This update addresses the following issues:
+   * An parameter to open a specific app immediately on opening the module has
+     been added.
+bug: [38544]

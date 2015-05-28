@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-directory-manager-modules
+fix: 
+version: [2]
+desc: |
+  This update addresses the following issues:
+  * Attributes of the UCR policy are now sorted.
+bug: [32146]

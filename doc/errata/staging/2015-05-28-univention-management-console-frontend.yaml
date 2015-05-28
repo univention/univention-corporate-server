@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-management-console-frontend
+fix: 4.1.106-64.1051.201505281535
+version: [2]
+desc: |
+  This update addresses the following issue:
+  * The query string parameters are now passed to automatically started UMC
+    modules.
+bug: [38544]
