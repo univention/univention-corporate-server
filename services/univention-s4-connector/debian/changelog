@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.16-18) unstable; urgency=medium
+
+  * Encode SQL commands to allow usernames with a ' (Bug #38614)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 May 2015 06:31:43 +0200
+
 univention-s4-connector (9.0.16-17) unstable; urgency=low
 
   * Bug #28331: removed pwdComplexity UDM default from join script 
