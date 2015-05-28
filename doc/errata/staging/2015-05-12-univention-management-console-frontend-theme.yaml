@@ -5,7 +5,7 @@ src: univention-management-console-frontend-theme
 fix: 0.0.89-15.86.201505121459
 version: [2]
 desc: |
-  This update addresses the following issues:
+  This update addresses the following issue:
   * The "clear input" and "view password" icons are now diplayed correctly in the
     login dialog with Internet Explorer 10 and above.
 bug: [38127]
