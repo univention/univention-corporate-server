@@ -61,7 +61,7 @@ if [ -z "$1" ]; then
 		showDesktop="true"
 	fi
 
-	PORT=13337  # TODO: use a random free port between 1024 and 49151
+	PORT=$(/bin/su nobody -c "python -c 'import socket; s = socket.socket(socket.AF_INET, socket.SOCK_STREAM); s.bind((str(), 0)); addr = s.getsockname(); print addr[1],; s.close()'")
 	URL="http://localhost/ucs-overview/welcome.html?lang=$default_locale&showDesktop=$showDesktop&port=$PORT"
 
 	SWITCH_TTY=$(mktemp)

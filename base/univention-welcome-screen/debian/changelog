@@ -1,3 +1,9 @@
+univention-welcome-screen (0.0.0-2) unstable; urgency=medium
+
+  * Bug #37537: use random port
+
+ -- Florian Best <best@univention.de>  Thu, 28 May 2015 12:00:27 +0200
+
 univention-welcome-screen (0.0.0-1) unstable; urgency=medium
 
   * Bug #37537: Initial Release
