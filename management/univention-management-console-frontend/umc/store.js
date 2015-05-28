@@ -193,7 +193,7 @@ define([
 			var query = {};
 			var nQueryEl = 0;
 			tools.forIn(_query, function(ikey, ival) {
-				query[ikey] = (typeof ival == "string" || typeof ival == 'boolean' || 'null' === ival) ? ival : String(ival);
+				query[ikey] = (typeof ival == "string" || typeof ival == 'boolean' || null === ival) ? ival : String(ival);
 				++nQueryEl;
 			}, this, true);
 			var deferred = new Deferred();

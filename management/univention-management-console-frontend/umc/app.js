@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global umc,define,require,console,window,getQuery,setTimeout*/
+/*global umc,define,require,console,document,window,getQuery,setTimeout*/
 
 define([
 	"dojo/_base/declare",
@@ -45,6 +45,7 @@ define([
 	"dojo/promise/all",
 	"dojo/cookie",
 	"dojo/topic",
+	"dojo/io-query",
 	"dojo/fx",
 	"dojo/fx/easing",
 	"dojo/store/Memory",
@@ -86,7 +87,7 @@ define([
 	"xstyle/css!./app.css",
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseFx, baseWin, win, on, aspect, has,
-		Evented, Deferred, when, all, cookie, topic, fx, fxEasing, Memory, Observable,
+		Evented, Deferred, when, all, cookie, topic, ioQuery, fx, fxEasing, Memory, Observable,
 		dom, style, domAttr, domClass, domGeometry, domConstruct, locale, styles, entities, gfx, registry, tools, dialog, store,
 		Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
 		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, Module, ModuleHeader, CategoryButton,
@@ -101,8 +102,7 @@ define([
 	};
 
 	var _hasFreeLicense = function() {
-		return _ucr['license/base'] == 'Free for personal use edition'
-			|| _ucr['license/base'] == 'UCS Core Edition';
+		return _ucr['license/base'] == 'Free for personal use edition' || _ucr['license/base'] == 'UCS Core Edition';
 	};
 
 	// helper function for sorting, sort indeces with priority < 0 to be at the end
@@ -120,9 +120,9 @@ define([
 
 	var _StackContainer = declare([StackContainer], {
 		constructor: function() {
-			this.animationFinished = new Deferred;
+			this.animationFinished = new Deferred();
 			this.animationFinished.resolve();
-			this.animationOff = 0
+			this.animationOff = 0;
 		},
 
 		ready: function() {
@@ -450,7 +450,7 @@ define([
 		getModule: function(/*String?*/ id, /*String?*/ flavor, /*String?*/ category) {
 			var query = {
 				id: id,
-				flavor: flavor || /.*/,
+				flavor: flavor || null,
 				// by default, match categories != favorites category
 				category: category || /^((?!_favorites_).)*$/
 			};
@@ -489,7 +489,7 @@ define([
 			this.add(mod);
 
 			var favoritesButton = this.getCategory('_favorites_')._button;
-			domClass.toggle(favoritesButton.domNode, 'favoritesHidden', (this.getModules('_favorites_').length == 0));
+			domClass.toggle(favoritesButton.domNode, 'favoritesHidden', (this.getModules('_favorites_').length === 0));
 
 			// save settings
 			this._saveFavorites();
@@ -509,7 +509,7 @@ define([
 				this.put(mod);
 			}
 			var favoritesButton = this.getCategory('_favorites_')._button;
-			domClass.toggle(favoritesButton.domNode, 'favoritesHidden', (this.getModules('_favorites_').length == 0));
+			domClass.toggle(favoritesButton.domNode, 'favoritesHidden', (this.getModules('_favorites_').length === 0));
 			// save settings
 			this._saveFavorites();
 		}
@@ -802,7 +802,7 @@ define([
 			tools.umcpCommand('get/hosts/list').then(lang.hitch(this, function(data) {
 				var empty = data.result.length <= 1;
 				empty = empty || data.result.length >= (parseInt(_ucr['umc/web/host_referrallimit'], 10) || 100);
-				this._hostInfo.set('disabled', empty)
+				this._hostInfo.set('disabled', empty);
 
 				var isIE89 = (has('ie') == 8 || has('ie') == 9);
 				if (empty && isIE89) {
@@ -1304,15 +1304,30 @@ define([
 
 			this.setupGui();
 
+			var autoStartModule = tools.status('autoStartModule');
+			var autoStartFlavor = tools.status('autoStartFlavor') || null;
+			var props;
+			if (autoStartModule) {
+				if (!(launchableModules.length === 1 && launchableModules[0].id != autoStartModule || (launchableModules[0].flavor || null) != autoStartFlavor)) {
+					props = ioQuery.queryToObject(window.location.search.substring(1));
+					array.forEach(['username', 'password', 'overview', 'lang', 'module', 'flavor'], function(key) {
+						delete props[key];
+					});
+					props = {
+						props: props
+					};
+				}
+			}
+
 			if (!launchableModules.length) {
 				dialog.alert(_('There is no module available for the authenticated user %s.', tools.status('username')));
 			} else if (launchableModules.length === 1) {
 				// if only one module exists open it
 				var module = launchableModules[0];
-				this.openModule(module.id, module.flavor);
-			} else if (tools.status('autoStartModule')) {
+				this.openModule(module.id, module.flavor, props);
+			} else if (autoStartModule) {
 				// if module is given in the query string, open it directly
-				this.openModule(tools.status('autoStartModule'), tools.status('autoStartFlavor'));
+				this.openModule(autoStartModule, autoStartFlavor, props);
 			}
 		},
 
@@ -1423,7 +1438,7 @@ define([
 
 			// special treats for an empty favorites category
 			var favoritesCategory = this.getCategory('_favorites_');
-			var emptyFavorites = this.getModules('_favorites_').length == 0;
+			var emptyFavorites = this.getModules('_favorites_').length === 0;
 			domClass.toggle(favoritesCategory._button.domNode, 'favoritesHidden', emptyFavorites);
 
 			// take the first visible category as fallback for the last selected one
@@ -1676,7 +1691,7 @@ define([
 
 		_toggleFavoriteModule: function(module) {
 			if (isFavorite(module)) {
-				// for the favorite category, remove the moduel from the favorites
+				// for the favorite category, remove the module from the favorites
 				this._moduleStore.removeFavoriteModule(module.id, module.flavor);
 				topic.publish('/umc/actions', 'overview', 'favorites', module.id, module.flavor, 'remove');
 			}

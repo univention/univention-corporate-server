@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-65) unstable; urgency=medium
+
+  * Bug #38544: give query string parameter to autostart modules
+
+ -- Florian Best <best@univention.de>  Thu, 28 May 2015 17:26:01 +0200
+
 univention-management-console-frontend (4.1.106-64) unstable; urgency=medium
 
   * Bug #38617: Add predependency to python-univention-management-console.
