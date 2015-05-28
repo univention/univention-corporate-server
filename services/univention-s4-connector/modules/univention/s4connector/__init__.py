@@ -137,9 +137,6 @@ def compare_lowercase(val1, val2):
 	except: # FIXME: which exception is to be caught?
 		return False
 
-def encode_sql_option(s):
-	return s.replace("'", "''")
-
 # helper classes
 class configdb:
 	def __init__ (self, filename):
@@ -150,7 +147,7 @@ class configdb:
 		for i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
-				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (encode_sql_option(option),))
+				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))
 				self._dbcon.commit()
 				rows = cur.fetchall()
 				cur.close()
@@ -170,7 +167,7 @@ class configdb:
 				cur.execute("""
 		INSERT OR REPLACE INTO '%s' (key,value) 
 			VALUES (  ?, ?
-		);""" % section, (encode_sql_option(option), encode_sql_option(value),) )
+		);""" % section , [option, value] )
 				self._dbcon.commit()
 				cur.close()
 				return 
@@ -199,7 +196,7 @@ class configdb:
 		for i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
-				cur.execute("DELETE FROM '%s' WHERE key=?" % section, (encode_sql_option(option),))
+				cur.execute("DELETE FROM '%s' WHERE key=?" % section, (option,))
 				self._dbcon.commit()
 				cur.close()
 				return
@@ -245,7 +242,7 @@ class configdb:
 		for i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
-				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (encode_sql_option(option),))
+				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))
 				self._dbcon.commit()
 				rows = cur.fetchall()
 				cur.close()

@@ -117,9 +117,14 @@ class S4Cache:
 		if not guid_id:
 			return None
 
+		# The SQLite python module should do the escaping, that's
+		# the reason why we use the tuple ? syntax.
+		# I've choosen the str call because I want to make sure
+		# that we use the same SQL value as before switching
+		# to the tuple ? syntax
 		sql_commands = [
-			"SELECT ATTRIBUTES.attribute,data.value from data \
-					inner join ATTRIBUTES ON data.attribute_id=attributes.id where guid_id = %s;" % (guid_id)
+			("SELECT ATTRIBUTES.attribute,data.value from data \
+					inner join ATTRIBUTES ON data.attribute_id=attributes.id where guid_id = ?;", (str(guid_id),))
 		]
 
 		rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
@@ -143,8 +148,8 @@ class S4Cache:
 			return None
 
 		sql_commands = [
-			"DELETE FROM data WHERE guid_id = '%(guid_id)s';" % ({'guid_id': guid_id}),
-			"DELETE FROM guids WHERE id = '%(guid_id)s';" % ({'guid_id': guid_id})
+			("DELETE FROM data WHERE guid_id = ?';" , (str(guid_id),)),
+			("DELETE FROM guids WHERE id = ?;" , (str(guid_id),))
 		]
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
@@ -197,7 +202,7 @@ class S4Cache:
 		_d = ud.function('S4Cache.%s' % func_name())
 
 		sql_commands = [
-			"SELECT id FROM GUIDS WHERE guid='%s';" % (guid)
+			("SELECT id FROM GUIDS WHERE guid=?;", (str(guid),))
 		]
 
 		rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
@@ -212,7 +217,7 @@ class S4Cache:
 		_d = ud.function('S4Cache.%s' % func_name())
 
 		sql_commands = [
-			"INSERT INTO GUIDS(guid) VALUES('%s');" % (guid)
+			("INSERT INTO GUIDS(guid) VALUES(?);", (str(guid),))
 		]
 
 		rows = self.__execute_sql_commands(sql_commands, fetch_result=False)
@@ -222,7 +227,7 @@ class S4Cache:
 		_d = ud.function('S4Cache.%s' % func_name())
 
 		sql_commands = [
-			"SELECT id FROM ATTRIBUTES WHERE attribute='%s';" % (attr)
+			("SELECT id FROM ATTRIBUTES WHERE attribute=?;", (str(attr),))
 		]
 
 		rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
@@ -242,7 +247,7 @@ class S4Cache:
 		_d = ud.function('S4Cache.%s' % func_name())
 
 		sql_commands = [
-			"INSERT INTO ATTRIBUTES(attribute) VALUES('%s');" % (attr)
+			("INSERT INTO ATTRIBUTES(attribute) VALUES(?);", (str(attr),))
 		]
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
@@ -271,8 +276,7 @@ class S4Cache:
 			for value in entry[attr]:
 				sql_commands.append(
 					(
-						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(%s,%s,?);" % (guid_id, attr_id),
-						[_encode_base64(value)]
+						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", [str(guid_id), str(attr_id), _encode_base64(value)]
 					)
 				)
 
@@ -290,18 +294,19 @@ class S4Cache:
 		sql_commands = []
 		for attribute in diff['removed']:
 			sql_commands.append(
+				(
 				"DELETE FROM data WHERE data.id IN (\
 				SELECT data.id FROM DATA INNER JOIN ATTRIBUTES ON data.attribute_id=attributes.id \
-					where attributes.attribute='%(attribute)s' and guid_id = '%(guid_id)s' \
-				);" % ({'guid_id': guid_id, 'attribute': attribute})
+					where attributes.attribute=? and guid_id =? \
+				);", [ (str(attribute),), (str(guid_id),)]
+				)
 			)
 		for attribute in diff['added']:
 			attr_id = self._get_attr_id_and_create_if_not_exists(attribute)
 			for value in entry[attribute]:
 				sql_commands.append(
 					(
-						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(%s,%s,?);" % (guid_id, attr_id),
-						[_encode_base64(value)]
+						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", [str(guid_id), str(attr_id), _encode_base64(value)]
 					)
 				)
 		for attribute in diff['changed']:
@@ -311,16 +316,14 @@ class S4Cache:
 					(
 						"DELETE FROM data WHERE data.id IN (\
 							SELECT data.id FROM DATA INNER JOIN ATTRIBUTES ON data.attribute_id=attributes.id \
-							where attributes.id='%(attr_id)s' and guid_id = '%(guid_id)s' and value = ? \
-						);" % ({'guid_id': guid_id, 'attr_id': attr_id}),
-						[_encode_base64(value)]
+							where attributes.id=? and guid_id = ? and value = ? \
+						);", [str(attr_id), str(guid_id), _encode_base64(value)]
 					)
 				)
 			for value in set(entry.get(attribute)) - set(old_entry.get(attribute)):
 				sql_commands.append(
 					(
-						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(%s,%s,?);" % (guid_id, attr_id),
-						[_encode_base64(value)]
+						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", [str(guid_id), str(attr_id), _encode_base64(value)]
 					)
 				)
 

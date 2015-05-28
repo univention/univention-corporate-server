@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.16-19) unstable; urgency=medium
+
+  * Use more SQL parameter substitution (Bug #38614)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 May 2015 10:16:09 +0200
+
 univention-s4-connector (9.0.16-18) unstable; urgency=medium
 
   * Encode SQL commands to allow usernames with a ' (Bug #38614)

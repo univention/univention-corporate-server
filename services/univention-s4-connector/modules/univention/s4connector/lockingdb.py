@@ -63,8 +63,13 @@ class LockingDB:
 		if not uuid:
 			return None
 
+		# The SQLite python module should do the escaping, that's
+		# the reason why we use the tuple ? syntax.
+		# I've choosen the str call because I want to make sure
+		# that we use the same SQL value as before switching
+		# to the tuple ? syntax
 		sql_commands = [
-			"INSERT INTO UCS_LOCK(uuid) VALUES('%s');" % (uuid)
+			("INSERT INTO UCS_LOCK(uuid) VALUES(?);", (str(uuid),))
 		]
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
@@ -76,7 +81,7 @@ class LockingDB:
 			return None
 
 		sql_commands = [
-			"DELETE FROM UCS_LOCK WHERE uuid = '%(uuid)s';" % ({'uuid': uuid})
+			("DELETE FROM UCS_LOCK WHERE uuid = ?;", (str(uuid),))
 		]
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
@@ -89,7 +94,7 @@ class LockingDB:
 			return None
 
 		sql_commands = [
-			"INSERT INTO S4_LOCK(guid) VALUES('%s');" % (guid)
+			("INSERT INTO S4_LOCK(guid) VALUES(?);", (str(guid),))
 		]
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
@@ -102,7 +107,7 @@ class LockingDB:
 			return None
 
 		sql_commands = [
-			"DELETE FROM S4_LOCK WHERE guid = '%(guid)s';" % ({'guid': guid})
+			("DELETE FROM S4_LOCK WHERE guid = ?;", (str(guid),))
 		]
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
@@ -114,7 +119,7 @@ class LockingDB:
 			return False
 		
 		sql_commands = [
-			"SELECT id FROM UCS_LOCK WHERE uuid='%s';" % (uuid)
+			("SELECT id FROM UCS_LOCK WHERE uuid=?;", (str(uuid),))
 		]
 
 		rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
@@ -131,7 +136,7 @@ class LockingDB:
 			return False
 
 		sql_commands = [
-			"SELECT id FROM S4_LOCK WHERE guid='%s';" % (guid)
+			("SELECT id FROM S4_LOCK WHERE guid=?;", (str(guid),))
 		]
 
 		rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
