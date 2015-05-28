@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-s4-connector
+fix: 9.0.16-19.550.201505281040
+version: [2]
+desc: |
+  This errata update fixes the following issues:
+  * The user synchronization failed if the username contains
+    special characters like an apostrophe.
+bug: [38614]
