@@ -1,0 +1,90 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Use a username with special characters in UCS"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## bugs:
+##  - 38614
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+UDM_users_user_username="$(random_chars)'f.%RWREöäü"
+UDM_users_user_lastname="$(random_chars) & Co"
+UDM_users_user_password="univention"
+
+udm-test users/user create --position "cn=users,$ldap_base" \
+	--set username="$UDM_users_user_username" \
+	--set lastname="$UDM_users_user_lastname" \
+	--set password="$UDM_users_user_password" \
+	--set description="univention" \
+	--set homeTelephoneNumber="123"
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm-test users/user modify --dn "uid=$UDM_users_user_username,cn=users,$ldap_base" \
+	--set organisation="Test" \
+	--set street="Street" \
+	--set city="Bremen" \
+	--set postcode="28359" \
+	--set mobileTelephoneNumber="3" \
+	--set pagerTelephoneNumber="4" \
+	--set sambaUserWorkstations="pc01"
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_object_file="$(mktemp)"
+ad_object_file="$(mktemp)"
+
+udm-test users/user list --filter "uid=$UDM_users_user_username" | tee "$udm_object_file"
+univention-s4search "cn=$UDM_users_user_username" | tee "$ad_object_file"
+
+check_value_in_ucs ()
+{
+	key="$1"
+	value="$2"
+
+	echo "Check $key, expected $value"
+	grep -e "^  $key: $value$" "$udm_object_file"; fail_bool 0 110
+}
+
+check_value_in_ad ()
+{
+	key="$1"
+	value="$2"
+
+	echo "Check $key, expected $value"
+	grep -e "^$key: $value$" "$ad_object_file"; fail_bool 0 110
+}
+
+check_value_in_ucs "description" "univention"
+check_value_in_ucs "homeTelephoneNumber" "123"
+check_value_in_ucs "organisation" "Test"
+check_value_in_ucs "street" "Street"
+check_value_in_ucs "city" "Bremen"
+check_value_in_ucs "postcode" "28359"
+check_value_in_ucs "mobileTelephoneNumber" "3"
+check_value_in_ucs "pagerTelephoneNumber" "4"
+check_value_in_ucs "sambaUserWorkstations" "pc01"
+
+check_value_in_ad "description" "univention"
+check_value_in_ad "homePhone" "123"
+check_value_in_ad "company" "Test"
+check_value_in_ad "streetAddress" "Street"
+check_value_in_ad "l" "Bremen"
+check_value_in_ad "postalCode" "28359"
+check_value_in_ad "mobile" "3"
+check_value_in_ad "pager" "4"
+check_value_in_ad "userWorkstations" "pc01"
+
+rm -f "$udm_object_file"
+rm -f "$ad_object_file"
+
+udm-test "users/user" remove --filter "uid=$UDM_users_user_username" || fail_test 110
+
+exit $RETVAL

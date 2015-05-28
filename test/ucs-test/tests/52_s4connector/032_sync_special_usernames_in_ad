@@ -1,0 +1,103 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Use a username with special characters in Samba4"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## bugs:
+##  - 38614
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+username="$(random_chars)'f.%RWREöäü"
+samba-tool user create "$username" "Univention.99"
+AD_DN="CN=$username,CN=users,$(ad_get_base)"
+ldbmodify -H /var/lib/samba/private/sam.ldb <<__HERE__
+dn: $AD_DN
+changetype: modify
+replace: description
+description: univention
+-
+replace: homePhone
+homePhone: 123
+-
+replace: company
+company: Test
+-
+replace: streetAddress
+streetAddress: Street
+-
+replace: l
+l: Bremen
+-
+replace: postalCode
+postalCode: 28359
+-
+replace: mobile
+mobile: 3
+-
+replace: pager
+pager: 4
+-
+replace: userWorkstations
+userWorkstations: pc01
+__HERE__
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_object_file="$(mktemp)"
+ad_object_file="$(mktemp)"
+
+udm-test users/user list --filter "uid=$username" | tee "$udm_object_file"
+univention-s4search "cn=$username" | tee "$ad_object_file"
+
+check_value_in_ucs ()
+{
+	key="$1"
+	value="$2"
+
+	echo "Check $key, expected $value"
+	grep -e "^  $key: $value$" "$udm_object_file"; fail_bool 0 110
+}
+
+check_value_in_ad ()
+{
+	key="$1"
+	value="$2"
+
+	echo "Check $key, expected $value"
+	grep -e "^$key: $value$" "$ad_object_file"; fail_bool 0 110
+}
+
+check_value_in_ucs "description" "univention"
+check_value_in_ucs "homeTelephoneNumber" "123"
+check_value_in_ucs "organisation" "Test"
+check_value_in_ucs "street" "Street"
+check_value_in_ucs "city" "Bremen"
+check_value_in_ucs "postcode" "28359"
+check_value_in_ucs "mobileTelephoneNumber" "3"
+check_value_in_ucs "pagerTelephoneNumber" "4"
+check_value_in_ucs "sambaUserWorkstations" "pc01"
+
+check_value_in_ad "description" "univention"
+check_value_in_ad "homePhone" "123"
+check_value_in_ad "company" "Test"
+check_value_in_ad "streetAddress" "Street"
+check_value_in_ad "l" "Bremen"
+check_value_in_ad "postalCode" "28359"
+check_value_in_ad "mobile" "3"
+check_value_in_ad "pager" "4"
+check_value_in_ad "userWorkstations" "pc01"
+
+rm -f "$udm_object_file"
+rm -f "$ad_object_file"
+
+ad_delete "$AD_DN" || fail_test 110
+
+exit $RETVAL
+
