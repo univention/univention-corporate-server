@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.106-64) unstable; urgency=medium
+
+  * Bug #38617: Add predependency to python-univention-management-console.
+    Can be removed in UCS 4.1-0.
+
+ -- Florian Best <best@univention.de>  Thu, 28 May 2015 15:32:22 +0200
+
 univention-management-console-frontend (4.1.106-63) unstable; urgency=low
 
   * Bug #38050: deactivated the custom TouchScroll implementation from dgrid
