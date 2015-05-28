@@ -100,7 +100,8 @@ define([
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
 				addWarning: lang.hitch(this, 'addWarning'),
-				standbyDuring: lang.hitch(this, 'standbyDuring')
+				standbyDuring: lang.hitch(this, 'standbyDuring'),
+				openApp: this.props && this.props.app
 			});
 			// switched from app center to app details and back
 			this._appCenterPage.on('showApp', lang.hitch(this, 'showApp'));

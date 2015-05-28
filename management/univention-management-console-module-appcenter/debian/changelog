@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (4.1.20-30) unstable; urgency=medium
+
+  * Bug #38544: make it possible to directly open an app (e.g. via
+  	querystring)
+
+ -- Florian Best <best@univention.de>  Thu, 28 May 2015 17:30:27 +0200
+
 univention-management-console-module-appcenter (4.1.20-29) unstable; urgency=medium
 
   * Bug #35678: fix tracebacks when appcenter can't be reached

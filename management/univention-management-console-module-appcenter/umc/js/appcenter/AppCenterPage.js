@@ -53,6 +53,8 @@ define([
 		// class name of the widget as CSS class
 		'class': 'umcAppCenter',
 
+		openApp: null, // if set, this app is opened on module opening
+
 		liveSearch: true,
 		addMissingAppButton: true,
 		appQuery: null,
@@ -137,7 +139,15 @@ define([
 				}
 			}), lang.hitch(this, function() {
 				return this.updateApplications();
-			})));
+			}))).then(lang.hitch(this ,function() {
+				if (this.openApp) {
+					var apps = this._grid.store.query({id: this.openApp});
+					if (apps && apps.length) {
+						this.showDetails(apps[0]);
+					}
+
+				}
+			}));
 		},
 
 		getAppCenterSeen: function() {
