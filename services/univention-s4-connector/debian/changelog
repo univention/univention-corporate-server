@@ -1,3 +1,10 @@
+univention-s4-connector (9.0.16-20) unstable; urgency=medium
+
+  * Reset bad password attributes while syncing the password from UCS to
+    Samba 4 (Bug #38557)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 May 2015 10:52:15 +0200
+
 univention-s4-connector (9.0.16-19) unstable; urgency=medium
 
   * Use more SQL parameter substitution (Bug #38614)

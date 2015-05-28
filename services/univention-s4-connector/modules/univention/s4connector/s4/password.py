@@ -619,6 +619,9 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 				newpwdlastset = str(univention.s4connector.s4.samba2s4_time(sambaPwdLastSet))
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdlastset in modlist: %s" % newpwdlastset)
 		modlist.append((ldap.MOD_REPLACE, 'pwdlastset', newpwdlastset))
+		modlist.append((ldap.MOD_REPLACE, 'badPwdCount', '0'))
+		modlist.append((ldap.MOD_REPLACE, 'badPasswordTime', '0'))
+		modlist.append((ldap.MOD_REPLACE, 'lockoutTime', '0'))
 
 	else:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: No password change to sync to S4 ")
