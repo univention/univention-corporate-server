@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-49) unstable; urgency=medium
+
+  * Bug #32146: sort attributes of UCR policy
+
+ -- Florian Best <best@univention.de>  Thu, 28 May 2015 16:55:02 +0200
+
 univention-directory-manager-modules (10.0.29-48) unstable; urgency=medium
 
   * Bug #38203: remove DVS and support entries from univention-license-check

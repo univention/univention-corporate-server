@@ -166,6 +166,7 @@ class object(univention.admin.handlers.simplePolicy):
 			if key.startswith( 'univentionRegistry;entry-hex-' ):
 				key_name = key.split( 'univentionRegistry;entry-hex-', 1 )[ 1 ].decode( 'hex' )
 				info[ 'registry' ].append( ( key_name, values[ key ][ 0 ].strip() ) )
+		info['registry'].sort()
 
 		return info
 
