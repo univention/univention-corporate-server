@@ -148,8 +148,8 @@ class S4Cache:
 			return None
 
 		sql_commands = [
-			("DELETE FROM data WHERE guid_id = ?';" , (str(guid_id),)),
-			("DELETE FROM guids WHERE id = ?;" , (str(guid_id),))
+			("DELETE FROM data WHERE guid_id=?;" , (str(guid_id),)),
+			("DELETE FROM guids WHERE id=?;" , (str(guid_id),))
 		]
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
