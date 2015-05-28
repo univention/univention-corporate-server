@@ -266,6 +266,13 @@ define([
 			// call superclass method
 			this.inherited(arguments);
 
+			if (this.props) {
+				this.openObject = {
+					objectType: this.props.objectType || this.moduleFlavor,
+					objectDN: this.props.dn
+				};
+			}
+
 			if ( 'users/self' == this.moduleFlavor ) {
 				this.openObject = {
 					objectType: this.moduleFlavor,

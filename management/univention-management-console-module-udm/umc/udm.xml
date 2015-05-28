@@ -47,9 +47,6 @@
 			<name>Shares</name>
 			<description>Management of directory shares in the domain</description>
 			<keywords>shares</keywords>
-			<categories>
-				<category name="devices"/>
-			</categories>
 		</flavor>
 		<flavor priority="50" id="shares/print">
 			<name>Printers</name>

@@ -1,3 +1,10 @@
+univention-management-console-module-udm (5.1.26-1) unstable; urgency=medium
+
+  * Bug #38202: move shares module into domain category
+  * Bug #38544: add possiblity to open a object via query string
+
+ -- Florian Best <best@univention.de>  Thu, 28 May 2015 17:10:55 +0200
+
 univention-management-console-module-udm (5.1.25-66) unstable; urgency=medium
 
   * Bug #36794: handle ldap.SERVER_DOWN exception in UMC-Server core
