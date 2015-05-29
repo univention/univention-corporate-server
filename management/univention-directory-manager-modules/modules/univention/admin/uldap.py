@@ -79,7 +79,10 @@ def getMachineConnection(start_tls=2,decode_ignorelist=[], ldap_master = True):
 def _err2str(err):
 	msgs = []
 	for iarg in err.args:
-		msg = ': '.join([str(m) for m in (iarg.get('desc'), iarg.get('info')) if m])
+		if isinstance(iarg, dict):
+			msg = ': '.join([str(m) for m in (iarg.get('desc'), iarg.get('info')) if m])
+		else:
+			msg = str(iarg)
 		if msg:
 			msgs.append(msg)
 	if not msgs:

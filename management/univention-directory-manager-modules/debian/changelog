@@ -1,3 +1,10 @@
+univention-directory-manager-modules (10.0.29-50) unstable; urgency=medium
+
+  * Bug #38297: prevent exception in admin.modules.update()
+  * Bug #38616: fix exception in error handling
+
+ -- Florian Best <best@univention.de>  Fri, 29 May 2015 13:29:52 +0200
+
 univention-directory-manager-modules (10.0.29-49) unstable; urgency=medium
 
   * Bug #32146: sort attributes of UCR policy

@@ -75,6 +75,9 @@ def update():
 			mod, name='.'.join(parts), '/'.join(parts)
 			m=__import__(mod, globals(), locals(), name)
 			m.initialized=0
+			if not hasattr(m, 'module'):
+				ud.debug(ud.ADMIN, ud.ERROR, 'admin.modules.update: attribute "module" is missing in module %r' % (mod,))
+				continue
 			modules[m.module]=m
 			if isContainer(m):
 				containers.append(m)
