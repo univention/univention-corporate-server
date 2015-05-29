@@ -646,7 +646,7 @@
 		<para>
 			Um DNSBL mit Postfix zu verwenden muss die &ucsUCRV; <envar>mail/postfix/smtpd/restrictions/recipient/<replaceable>SEQUENZ</replaceable>=<replaceable>REGEL</replaceable></envar> gesetzt werden.
 			Mit ihr können Empfangsbeschränkungen über die Postfix-Option <property>smtpd_recipient_restrictions</property> konfiguriert werden (siehe <ulink url="http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions"/>).
-			Die Sequenznummer wird alphanumerisch sortiert und beeinflusst die Reihenfolge.
+			Die Sequenznummer dient der alphanumerisch Sortierung mehrerer Regeln, über die die Reihenfolge beeinflusst werden kann.
 		</para>
 		<tip>
 			<para>

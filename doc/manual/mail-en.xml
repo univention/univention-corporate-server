@@ -616,8 +616,8 @@
 		</para>
 		<para>
 			The &ucsUCRV; <envar>mail/postfix/smtpd/restrictions/recipient/<replaceable>SEQUENCE</replaceable>=<replaceable>RULE</replaceable></envar> must be set to be able to use DNSBLs with Postfix.
-			It can be used to configure recipient restrictions via the Postfix option <property>smtpd_recipient_restrictions</property> see <ulink url="http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions"/>).
-			The sequential number is sorted alphanumerically and influences the order.
+			It can be used to configure recipient restrictions via the Postfix option <property>smtpd_recipient_restrictions</property> (see <ulink url="http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions"/>).
+			The sequential number is used to sort multiple rules alphanumerically, which can be used to influences the ordering.
 		</para>
 		<tip>
 			<para>
@@ -626,7 +626,7 @@
 			</para>
 		</tip>
 		<para>
-			In an unmodified &ucsUCS; Postfix installation, the DNSBL should be added to the end of the <property>smtpd_recipient_restrictions</property> regulations.
+			In an unmodified &ucsUCS; Postfix installation, the DNSBL should be added to the end of the <property>smtpd_recipient_restrictions</property> rules.
 			For example:
 			<programlisting language="sh">ucr set mail/postfix/smtpd/restrictions/recipient/80="reject_rbl_client ix.dnsbl.manitu.net"</programlisting>
 		</para>
