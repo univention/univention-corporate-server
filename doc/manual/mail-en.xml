@@ -597,41 +597,40 @@
 	</para>
   </section>
 
-<!--
-  <section id="mail::dnsbl">
-    <title>Identifikation von Spam Quellen mit DNS-based Blackhole List (DNSBL)</title>
-        <para>
-          Eine weitere Möglichkeit gegen Spam vorzugehen ist die Verwendung von <emphasis>DNS-based Blackhole List
-          (DNSBL)</emphasis> bzw. <emphasis>Real-time Blackhole List (RBL)</emphasis>. DNSBL sind Listen von IP
-          Adressen, von denen der Betreiber denkt, dass sie (potentell) Quellen von Spam sind. Die Listen werden per
-          DNS abgefragt. Ist dem DNS-Server die IP des sendenden E-Mail-Servers bekannt, so wird die Nachricht abgelehnt.
-          Der Check einer IP-Adresse ist schnell und vergleichsweise ressourcenschonend. Er findet <emphasis>vor</emphasis>
-          dem Annehmen der Nachricht statt. Erst nach dem Empfang findet die aufwändige Inhaltsüberprüfung mit SpamAssassin
-          und Anti-Virus statt. Postfix hat eine eingebaute Unterstützung für DNSBL
-          (<ulink url="http://www.postfix.org/postconf.5.html#reject_rbl_client"/>).
-        </para>
-        <para>
-          Im Internet existieren DNSBL von verschiedenen Projekten und Firmen. Bitte informieren Sie sich auf deren Webseiten
-          über Konditionen und Preise.
-        </para>
-        <para>
-          Um DNSBL mit Postfix zu verwenden muss die &ucsUCRV; <envar>mail/postfix/smtpd/restrictions/recipient/SEQUENCE=RULE</envar>
-          gesetzt werden. Mit ihr können Empfangsbeschränkungen über die Postfix-Option <emphasis>smtpd_recipient_restrictions</emphasis>
-          konfiguriert werden (siehe <ulink url="http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions"/>). Die
-          Sequenznummer wird alphanumerisch sortiert und beeinflusst die Reihenfolge.
-        </para>
-        <tip>
-          <para>
-                Existierende <emphasis>smtpd_recipient_restrictions</emphasis> Regeln können wie folgt aufgelistet werden:
-                <programlisting language="sh">ucr search &hyphen;&hyphen;brief mail/postfix/smtpd/restrictions/recipient</programlisting>
-          </para>
-        </tip>
-        <para>
-          In einer unveränderten &ucsUCS; Postfix Installation sollten die DNSBL am Ende der <emphasis>smtpd_recipient_restrictions</emphasis> Regeln angehängt werden. Zum Beispiel so:
-          <programlisting language="sh">ucr set mail/postfix/smtpd/restrictions/recipient/80="reject_rbl_client ix.dnsbl.manitu.net"</programlisting>
-        </para>
-  </section>
--->
+	<section id="mail::dnsbl">
+		<title>Identification of spam sources with <foreignphrase>DNS-based Blackhole Lists</foreignphrase> (DNSBL)</title>
+		<para>
+			Another means of combating spam is to use a <foreignphrase>DNS-based Blackhole List</foreignphrase>
+			(<acronym>DNSBL</acronym>) or <foreignphrase>Real-time Blackhole List</foreignphrase> (<acronym>RBL</acronym>).
+			DNSBLs are lists of IP addresses that the operator believes to be (potential) sources of spam.
+			The lists are checked by DNS.
+			If the IP of the sending e-mail server is known to the DNS server, the message is rejected.
+			The IP address is checked quickly and in a comparatively resource-friendly manner.
+			The check is performed <emphasis>before</emphasis> the message is accepted.
+			The extensive checking of the content with SpamAssassin and anti-virus software is only performed once it has been received. Postfix has integrated support for DNSBLs
+			(<ulink url="http://www.postfix.org/postconf.5.html#reject_rbl_client"/>).
+		</para>
+		<para>
+			DNSBLs from various projects and companies are available on the Internet.
+			Please refer to the corresponding websites for further information on conditions and prices.
+		</para>
+		<para>
+			The &ucsUCRV; <envar>mail/postfix/smtpd/restrictions/recipient/<replaceable>SEQUENCE</replaceable>=<replaceable>RULE</replaceable></envar> must be set to be able to use DNSBLs with Postfix.
+			It can be used to configure recipient restrictions via the Postfix option <property>smtpd_recipient_restrictions</property> see <ulink url="http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions"/>).
+			The sequential number is sorted alphanumerically and influences the order.
+		</para>
+		<tip>
+			<para>
+				Existing <property>smtpd_recipient_restrictions</property> regulations can be listed as follows:
+				<programlisting language="sh">ucr search &hyphen;&hyphen;brief mail/postfix/smtpd/restrictions/recipient</programlisting>
+			</para>
+		</tip>
+		<para>
+			In an unmodified &ucsUCS; Postfix installation, the DNSBL should be added to the end of the <property>smtpd_recipient_restrictions</property> regulations.
+			For example:
+			<programlisting language="sh">ucr set mail/postfix/smtpd/restrictions/recipient/80="reject_rbl_client ix.dnsbl.manitu.net"</programlisting>
+		</para>
+	</section>
 
   <section id="mail::fetchmail">
 	<title>Integration of Fetchmail for retrieving mail from external mailboxes</title>
@@ -727,7 +726,7 @@
 		which receives the mails and takes over their further sending. This
 		type of mail relay server can be provided by a superordinate corporate
 		headquarters or the Internet provider, for example. To set a relay
-		host, it must be entered as a fully qualified domain name(FQDN) in
+		host, it must be entered as a fully qualified domain name (FQDN) in
 		the &ucsUCRV; <envar>mail/relayhost</envar>.
 	  </para>
 	  <para>
@@ -1005,3 +1004,4 @@ postmap /etc/postfix/smtp_auth
   </section>
 
 </chapter>
+<!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->
