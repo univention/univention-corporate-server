@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.107-1) unstable; urgency=medium
+
+  * Bug #38544: Bug #38613: Bug #36385: add fallback flavor in LinkList widget
+
+ -- Florian Best <best@univention.de>  Fri, 29 May 2015 15:55:13 +0200
+
 univention-management-console-frontend (4.1.106-65) unstable; urgency=medium
 
   * Bug #38544: give query string parameter to autostart modules

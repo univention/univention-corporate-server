@@ -36,12 +36,15 @@ define([
 	"dojo/topic",
 	"umc/widgets/Button",
 	"umc/tools",
+	"umc/app",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_SelectMixin"
-], function(declare, lang, array, on, topic, Button, tools, ContainerWidget, _SelectMixin) {
+], function(declare, lang, array, on, topic, Button, tools, app, ContainerWidget, _SelectMixin) {
 	return declare("umc.widgets.LinkList", [ ContainerWidget, _SelectMixin ], {
 		// summary:
 		//		Provides a list of buttons opening a given object
+
+		// FIXME: should be part of the UDM module
 
 		name: '',
 
@@ -86,7 +89,13 @@ define([
 						iconClass: tools.getIconClass( item.icon, 20, null, "background-size: contain" ),
 						callback: function() {
 							// open referenced UDM object
-							topic.publish( "/umc/modules/open", moduleProps.module, moduleProps.flavor, moduleProps );
+							if (app.getModule(moduleProps.module, moduleProps.flavor)) {
+								topic.publish("/umc/modules/open", moduleProps.module, moduleProps.flavor, moduleProps);
+							} else if (app.getModule(moduleProps.module, 'navigation')) {  // udm module
+								topic.publish("/umc/modules/open", moduleProps.module, 'navigation', moduleProps);
+							} else {
+								topic.publish("/umc/modules/open", moduleProps.module, moduleProps.flavor, moduleProps);
+							}
 						}
 					} );
 
@@ -100,4 +109,3 @@ define([
 		}
 	});
 });
-
