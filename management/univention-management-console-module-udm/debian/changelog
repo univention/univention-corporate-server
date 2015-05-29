@@ -1,4 +1,4 @@
-univention-management-console-module-udm (5.1.26-1) unstable; urgency=medium
+univention-management-console-module-udm (5.1.25-67) unstable; urgency=medium
 
   * Bug #38202: move shares module into domain category
   * Bug #38544: add possiblity to open a object via query string
