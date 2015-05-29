@@ -1,4 +1,4 @@
-univention-management-console-frontend (4.1.107-1) unstable; urgency=medium
+univention-management-console-frontend (4.1.106-66) unstable; urgency=medium
 
   * Bug #38544: Bug #38613: Bug #36385: add fallback flavor in LinkList widget
 
