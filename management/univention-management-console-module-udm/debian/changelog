@@ -1,3 +1,10 @@
+univention-management-console-module-udm (5.1.25-68) unstable; urgency=medium
+
+  * Bug #38544: Bug #38613: Bug #36385: fix detection of flavor for modules
+  	which aren't referenced by a parent module
+
+ -- Florian Best <best@univention.de>  Fri, 29 May 2015 15:47:29 +0200
+
 univention-management-console-module-udm (5.1.25-67) unstable; urgency=medium
 
   * Bug #38202: move shares module into domain category

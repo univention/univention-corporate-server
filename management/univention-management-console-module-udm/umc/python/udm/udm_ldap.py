@@ -997,7 +997,7 @@ class UDM_Module(object):
 			children = getattr(mod.module, 'childmodules', [])
 			if self.name in children:
 				return mod.name
-		return None
+		return self.name
 
 
 class UDM_Settings(object):
@@ -1556,9 +1556,9 @@ def read_syntax_choices(syntax_name, options={}, module_search_options={}, ldap_
 
 			# create list entry
 			if syntax.viewonly:
-				syntax.choices.append({'module': 'udm', 'flavor': module.flavor, 'objectType': module.name, 'id': dn, 'label': label, 'icon': 'udm-%s' % module.name.replace('/', '-')})
+				syntax.choices.append({'module': 'udm', 'flavor': module.flavor or 'navigation', 'objectType': module.name, 'id': dn, 'label': label, 'icon': 'udm-%s' % module.name.replace('/', '-')})
 			else:
-				syntax.choices.append({'module': 'udm', 'flavor': module.flavor, 'objectType': module.name, 'id': id, 'label': label, 'icon': 'udm-%s' % module.name.replace('/', '-')})
+				syntax.choices.append({'module': 'udm', 'flavor': module.flavor or 'navigation', 'objectType': module.name, 'id': id, 'label': label, 'icon': 'udm-%s' % module.name.replace('/', '-')})
 		if syntax.addEmptyValue:
 			syntax.choices.insert(0, {'id': '', 'label': ''})
 		elif syntax.appendEmptyValue:
