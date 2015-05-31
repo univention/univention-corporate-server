@@ -79,6 +79,12 @@ jenkins_updates () {
 	echo "Finished at ${version_version}-${version_patchlevel}+${version_erratalevel}"
 }
 
+upgrade_to_latest_patchlevel ()
+{
+	local updateto="$(ucr get version/version)-99"
+	upgrade_to_latest --updateto "$updateto"
+}
+
 upgrade_to_latest_errata ()
 {
 	local current="$(ucr get version/version)-$(ucr get version/patchlevel)"
@@ -419,3 +425,5 @@ set_administrator_password_for_ucs_test ()
 
 
 # vim:set filetype=sh ts=4:
+release_update='public'
+errata_update='testing'

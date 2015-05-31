@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.12-10) unstable; urgency=medium
+
+  * Added app appliance job (Bug #38624)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 31 May 2015 11:25:50 +0200
+
 ucs-ec2-tools (1.0.12-9) unstable; urgency=low
 
   *  examples/jenkins/autotest-232-adsync-w2k8r2-english.cfg

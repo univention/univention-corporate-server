@@ -34,6 +34,7 @@ import os
 import paramiko
 import subprocess
 import sys
+import getpass
 import glob
 import time
 import traceback
@@ -464,6 +465,7 @@ class VM_KVM(VM):
 	def __init__(self, section, config):
 		''' Initialize a VM instance in local KVM environment '''
 		params = [ 'kvm_server',
+				   'kvm_user',
 				   'kvm_ucsversion',
 				   'kvm_architecture',
 				   'kvm_template',
@@ -493,8 +495,12 @@ class VM_KVM(VM):
 		self.server = paramiko.SSHClient()
 		self.server.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 		kvm_server = self.config.get(self.section, 'kvm_server')
+		kvm_user = self.config.get(self.section, 'kvm_user')
+		if not kvm_user:
+			kvm_user = getpass.getuser()
 		try:
 			self.server.connect(kvm_server,
+								username=kvm_user,
 								port=22)
 		except socket_error, ex:
 			self._log('Failed to connect to %s...'  % (kvm_server,))
