@@ -1,3 +1,9 @@
+ucs-test (4.0.215-7) unstable; urgency=low
+
+  * Bug #31083: added tests/52_s4connector/402rename_computer_object
+
+ -- Felix Botner <botner@univention.de>  Mon, 01 Jun 2015 11:52:48 +0200
+
 ucs-test (4.0.215-6) unstable; urgency=low
 
   * Bug #38494: added 52_s4connector/401check_posix_pwd_expiry_after_ad_pwdchange
