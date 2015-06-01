@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-90) unstable; urgency=low
+
+  * Bug #31083: also look fot dn_attr=dn_attr_val in
+    samaccountname_dn_mapping to detect modrdn 
+
+ -- Felix Botner <botner@univention.de>  Mon, 01 Jun 2015 11:36:58 +0200
+
 univention-s4-connector (8.0.33-89) unstable; urgency=low
 
   * Bug #38494: update shadowMax, krb5PasswordEnd and shadowLastChange 
