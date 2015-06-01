@@ -1,3 +1,9 @@
+univention-config-registry (10.0.2-3) unstable; urgency=medium
+
+  * always use UCR access with KeyError (Bug #35694)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 01 Jun 2015 18:32:59 +0200
+
 univention-config-registry (10.0.2-2) unstable; urgency=medium
 
   * support zone index for ipv6/gateway (Bug #35694)

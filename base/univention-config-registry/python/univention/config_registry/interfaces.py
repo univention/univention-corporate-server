@@ -204,7 +204,7 @@ class Interfaces(object):
 		if ucr is None:
 			ucr = ConfigRegistry()
 			ucr.load()
-		elif isinstance(ucr, ConfigRegistry):
+		if isinstance(ucr, ConfigRegistry):
 			ucr = VengefulConfigRegistry(ucr)
 
 		self.handler = ucr.get('interfaces/handler', 'ifplugd')
