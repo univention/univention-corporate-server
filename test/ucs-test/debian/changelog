@@ -1,3 +1,9 @@
+ucs-test (4.0.215-8) unstable; urgency=low
+
+  * Bug #31083: added tests/52_s4connector/402rename_computer_object 
+
+ -- Felix Botner <botner@univention.de>  Mon, 01 Jun 2015 12:07:09 +0200
+
 ucs-test (4.0.215-7) unstable; urgency=low
 
   * Bug #31083: added tests/52_s4connector/402rename_computer_object
