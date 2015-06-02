@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-join
+fix: 7.1.2-15.501.201506021020
+version: [2]
+desc: |
+  This update addresses the following issue:
+   * The german translation has been adapted
+bug: [38216]
