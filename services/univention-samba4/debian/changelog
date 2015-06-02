@@ -1,3 +1,10 @@
+univention-samba4 (4.0.3-6) unstable; urgency=medium
+
+  * Create default.V3, .V4 and .V5 directories in windows-profiles
+    (Bug #38643)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Jun 2015 17:56:01 +0200
+
 univention-samba4 (4.0.3-5) unstable; urgency=medium
 
   * Bug #34068: Set samba/spoolss/architecture to old default on updates
