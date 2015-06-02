@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-config-registry
-fix: 10.0.2-2.487.201505131750
+fix: 10.0.2-3.488.201506011840
 version: [2]
 desc: |
   This update addresses the following issues:
