@@ -1,3 +1,9 @@
+univention-system-setup (8.1.69-2) unstable; urgency=low
+
+  * Bug #38391: Fix debian/control file: Move Conflict to Depends
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 02 Jun 2015 13:25:47 +0200
+
 univention-system-setup (8.1.69-1) unstable; urgency=low
 
   * Bug #38391: Show server address in welcome message.
