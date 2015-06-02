@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-system-setup
+fix: 8.1.69-1.889.201506021306
+version: [2]
+desc: |
+  This update addresses the following issues:
+  * Show server address in Univention System Setup welcome screen in EC2 and
+    other cloud environments.
+bug: [38391]
