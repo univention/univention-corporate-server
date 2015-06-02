@@ -1,3 +1,10 @@
+univention-samba4 (3.0.39-36) unstable; urgency=medium
+
+  * Create default.V3, .V4 and .V5 directories in windows-profiles
+    (Bug #38644)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Jun 2015 18:05:18 +0200
+
 univention-samba4 (3.0.39-35) unstable; urgency=low
 
   * ignore tar "file changed as we read it" warning in 
