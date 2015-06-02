@@ -1,5 +1,13 @@
-
+"""
+.. module:: mailclient
+.. moduleauthor:: Ammar Najjar <najjar@univention.de>
+"""
 import imaplib
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+
+class WrongAcls(Exception):
+	pass
 
 class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 
@@ -45,7 +53,65 @@ class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 		"""
 		code , acls = self.getacl(mailbox)
 		acl = acls[0].split()
-		if len(acl) == 3:
-			return acl[2]
-		else:
-			return acls[0]
+		from itertools import izip
+		i = iter(acl[1:])
+		d = dict(izip(i, i));
+		return {acl[0]:d}
+
+	def check_acls(self, expected_acls):
+		"""Check if the the correct acls are set
+
+		:expected_acls: string
+		The expected acls are also mapped to the new set of
+		acls are shown in the permissions_map
+
+		Raises an Exception if the set acls are not correct
+		"""
+		permissions_map = {
+			"a" : "a",
+			"l" : "l",
+			"r" : "r",
+			"s" : "s",
+			"w" : "w",
+			"i" : "i",
+			"p" : "p",
+			"k" : "kc",
+			"x" : "xc",
+			"t" : "td",
+			"e" : "ed",
+			"c" : "kxc",
+			"d" : "ted",
+		}
+		for mailbox in expected_acls:
+			current = self.get_acl(mailbox)
+			for who in expected_acls.get(mailbox):
+				permissions = expected_acls.get(mailbox).get(who)
+				set1 = set(''.join([permissions_map[x] for x in permissions]))
+				set2 = set(current.get(mailbox).get(who))
+
+				if not (who in current.get(mailbox).keys() or set1 == set2):
+					raise WrongAcls('\nExpected = %s\nCurrent = %s\n' % (
+						expected_acls.get(mailbox).get(who), current.get(mailbox).get(who)))
+
+
+def create_shared_mailfolder(udm, mailHomeServer, user_permission=None, group_permission=None):
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		domain = ucr.get('domainname')
+		basedn = ucr.get('ldap/base')
+	name = uts.random_name()
+	udm.create_object(
+		'mail/folder',
+		position = 'cn=folder,cn=mail,%s' % basedn,
+		set = {
+			'name'                 : name,
+			'mailHomeServer'       : mailHomeServer,
+			'mailDomain'           : domain,
+		},
+		append = {
+			'sharedFolderUserACL'  : user_permission or [],
+			'sharedFolderGroupACL' : group_permission or [],
+		}
+	)
+	return 'shared/%s' % name
+
+# vim: set ft=python ts=4 sw=4 noet ai :
