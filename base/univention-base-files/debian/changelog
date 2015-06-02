@@ -1,8 +1,8 @@
-univention-base-files (4.0.8-3) unstable; urgency=medium
+univention-base-files (4.0.8-4) unstable; urgency=medium
 
   * Depend on newer univention-config-registry (Bug #35694)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 01 Jun 2015 18:35:22 +0200
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 02 Jun 2015 15:04:05 +0200
 
 univention-base-files (4.0.8-2) unstable; urgency=low
 
