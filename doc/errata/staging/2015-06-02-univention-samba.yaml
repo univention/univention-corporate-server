@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-samba
+fix: 8.0.19-13.498.201506021806
+version: [2]
+desc: |
+  This update adds support for the default profile directory paths
+  of Windows 8, 8.1 and 10. For new uses they will now be created
+  automatically on first logon.
+bug: [38643]
