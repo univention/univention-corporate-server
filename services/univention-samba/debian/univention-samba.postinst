@@ -48,7 +48,7 @@ if [ -z "$2" ]; then
 	fi;
 
 	mkdir -p /etc/univention/skel/windows-profiles
-	for dname in Win95 WinNT Win2k WinXP Win2K3 Vista Vista.V2 default default.V2 ; do
+	for dname in Win95 WinNT Win2k WinXP Win2K3 Vista Vista.V2 default default.V2 default.V3 default.V4 default.V5; do
 		mkdir -p /etc/univention/skel/windows-profiles/$dname
 	done
 fi
@@ -75,6 +75,12 @@ if [ "$1" = "configure" ]; then
 
 		if dpkg --compare-versions "$2" lt 9.0.5-2 ; then
 			univention-config-registry set samba/spoolss/architecture?"Windows NT x86"
+		fi
+
+		if dpkg --compare-versions "$2" lt 9.0.5-6; then
+			for dname in default.V3 default.V4 default.V5; do
+				mkdir -p "/etc/univention/skel/windows-profiles/$dname"
+			done
 		fi
 	fi
 fi
