@@ -1,6 +1,7 @@
 univention-apache (7.0.16-10) unstable; urgency=low
 
   * Bug #38391: Show real address in welcome message.
+  * Bug #38016: Enable redirect to <https://>.
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 02 Jun 2015 08:20:17 +0200
 

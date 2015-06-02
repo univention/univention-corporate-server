@@ -4,6 +4,7 @@ Variables: apache2/startsite
 Variables: apache2/allowoverride
 Variables: apache2/documentroot
 Variables: apache2/maxclients
+Variables: apache2/force_https
 
 Type: file
 File: etc/apache2/mods-available/ssl.conf
@@ -19,6 +20,7 @@ Variables: apache2/ssl/tlsv12
 Variables: apache2/ssl/compression
 Variables: apache2/ssl/honorcipherorder
 Variables: apache2/ssl/ciphersuite
+Variables: apache2/force_https
 
 Type: module
 Module: extension.py
