@@ -37,6 +37,7 @@
 case "$1" in
 	start)
 		if is_ucr_true server/cloud-init; then
+			ucr commit /var/www/ucs-overview/entries.json >/dev/null 2>&1
 			ucr set apache2/startsite="ucs-overview/cloud-init-setup.html"
 		fi
 		;;

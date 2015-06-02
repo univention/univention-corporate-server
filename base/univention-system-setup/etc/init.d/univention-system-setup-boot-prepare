@@ -52,6 +52,7 @@ case "$1" in
 
 		# Show welcome page on unjoined EC2 systems:
 		if is_ucr_true server/amazon; then
+			ucr commit /var/www/ucs-overview/entries.json >/dev/null 2>&1
 			if [ ! -e /var/univention-join/joined ]; then
 				ucr set apache2/startsite="ucs-overview/initialsetup.html"
 				invoke-rc.d apache2 reload

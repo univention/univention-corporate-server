@@ -16,7 +16,8 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-system-setup,
  cloud-init,
- cloud-initramfs-growroot
+ cloud-initramfs-growroot,
+ univention-apache (>= 7.0.16-10),
 Provides: ${python:Provides}
 Description: Univention cloud-init configuration
  This package contains cloud-init modules and configuration options

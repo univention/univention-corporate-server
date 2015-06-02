@@ -64,7 +64,15 @@ following web browsers are supported:
 
 '''
 
-url_list = []
+def query_ec2(key):
+	url = 'http://169.254.169.254/latest/meta-data/' + key
+	socket.setdefaulttimeout(2)
+	try:
+		result = urllib2.urlopen(url)
+		value = result.read().strip()
+		return value
+	except urllib2.URLError:
+		pass
 
 def get_ip_address(ifname):
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -73,18 +81,18 @@ def get_ip_address(ifname):
 		addr = socket.inet_ntoa(fcntl.ioctl( s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))[20:24])
 	except IOError:
 		addr = None
+	s.close()
 	return addr
 
-res = None
-if configRegistry.is_true('server/amazon', False):
-	socket.setdefaulttimeout(2)
-	try:
-		res = urllib2.urlopen('http://169.254.169.254/latest/meta-data/public-hostname')
-		url_list.append('https://%s' % (res.read(),))
-	except urllib2.URLError:
-		pass
 
-if not res:
+url_list = []
+if configRegistry.is_true('server/amazon', False):
+	for key in ('public-hostname', 'public-ipv4', 'local-ipv4'):
+		addr = query_ec2(key)
+		if addr:
+			url_list.append('https://%s/' % (addr,))
+
+if not url_list:
 	interfaces = Interfaces(configRegistry)
 	for ifname, iface in interfaces.all_interfaces:
 		#IPv4
@@ -100,11 +108,8 @@ if not res:
 		if addr:
 			url_list.append('https://[%s]/' % (addr.ip,))
 
-msg = msg_di_uss
-if configRegistry.is_true('server/amazon', False):
-    msg = msg_amazon
-
+msg = msg_amazon if configRegistry.is_true('server/amazon') else msg_di_uss
 print msg % {
-    'url_list': '\n  '.join(url_list),
+	'url_list': '\n  '.join(url_list),
 }
 @!@

@@ -1,3 +1,9 @@
+univention-system-setup (8.1.69-1) unstable; urgency=low
+
+  * Bug #38391: Show server address in welcome message.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Jun 2015 08:28:26 +0200
+
 univention-system-setup (8.1.68-2) unstable; urgency=low
 
   * Bug #37816: system setup allow uppercase and digits in hostnames

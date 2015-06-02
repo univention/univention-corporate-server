@@ -1,15 +1,15 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR ORGANIZATION
+# Univention System Setup
+# Copyright (C) 2015 Univentin GmbH
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: univention-system-setup\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-22 13:38+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2015-06-01 10:13+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: German <de@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,9 +35,9 @@ msgstr ""
 "gewählten privaten ssh Schlüssel. Setzen Sie ein Passwort mit <i>passwd</i>, "
 "beispielsweise mit folgendem Befehl:"
 
-msgid "ssh -i &lt;path/to/privatekey&gt; root@&lt;serveraddress&gt; passwd"
-msgstr "ssh -i &lt;pfad/zum/privatekey&gt; root@&lt;serveradresse&gt; passwd"
+msgid "ssh -i &lt;path/to/privatekey&gt; root@{serveraddress} passwd"
+msgstr "ssh -i &lt;pfad/zum/privatekey&gt; root@{serveraddress} passwd"
 
-msgid "If a password for <i>root</i> has been set, <a href='/univention-management-console/?module=setup&flavor=wizard&overview=false&username=root'>start the setup wizard</a>."
-msgstr "Wenn das Passwort für <i>root</i> gesetzt wurde, <a href='/univention-management-console/?module=setup&flavor=wizard&overview=false&username=root'>starten Sie den Einrichtungsassistenten</a>."
+msgid "If a password for <i>root</i> has been set, <a href='/univention-management-console/?module=setup&amp;flavor=wizard&amp;overview=false&amp;username=root'>start the setup wizard</a>."
+msgstr "Wenn das Passwort für <i>root</i> gesetzt wurde, <a href='/univention-management-console/?module=setup&amp;flavor=wizard&amp;overview=false&amp;username=root'>starten Sie den Einrichtungsassistenten</a>."
 
