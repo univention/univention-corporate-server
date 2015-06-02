@@ -1,3 +1,10 @@
+univention-samba (8.0.19-13) unstable; urgency=medium
+
+  * Create default.V3, .V4 and .V5 directories in windows-profiles
+    (Bug #38644)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Jun 2015 18:03:21 +0200
+
 univention-samba (8.0.19-12) unstable; urgency=medium
 
   * Add LDAP servers configured via ldap/server/addition to the list of
