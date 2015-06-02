@@ -141,8 +141,8 @@ if bl and 'software' in bl.split(','):
 else:
 	sys.exit(1)
 "
-				
 }
+
 app_get_appliance_fields_blacklist ()
 {
 	local app="$1"
@@ -217,12 +217,9 @@ download_system_setup_packages ()
 		# ad member mode
 		packages="$packages ad-connector samba"
 
-		app_appliance_is_software_blacklisted $app
-		echo "app_appliance_is_software_blacklisted $app: $?"
-		app_appliance_is_software_blacklisted $app || packages="$packages management-console-module-adtakeover printserver dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon"
-		echo "Download packages: $packages"
-		app_appliance_is_software_blacklisted $app
-		echo "app_appliance_is_software_blacklisted $app: $?"
+		if ! app_appliance_is_software_blacklisted $app; then
+			packages="$packages management-console-module-adtakeover printserver dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon"
+		fi
 
 		for package in $packages; do
 			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 univention-${package} | 
