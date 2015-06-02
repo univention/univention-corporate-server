@@ -653,6 +653,13 @@ if __name__ == '__main__':
 			self.assertEqual(IPv6Address('fe80::1'), t.ipv6_gateway)
 			self.assertEqual('eth0', t.ipv6_gateway_zone_index)
 
+		def test_non_vengeful(self):
+			"""Test ConfigRegistry not raining KeyError."""
+			try:
+				Interfaces(None)
+			except AttributeError:
+				self.fail('Failed to create Interfaces(None)')
+
 	class TestDecorator(unittest.TestCase):
 		"""Test forgiving decorator."""
 		@forgiving()
