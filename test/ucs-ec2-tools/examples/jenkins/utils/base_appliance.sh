@@ -128,6 +128,28 @@ app_get_appliance_pages_blacklist ()
 				app = Application.find('$app'); \
 				print app.get('AppliancePagesBlackList');"
 }
+app_appliance_is_software_blacklisted ()
+{
+	local app="$1"
+	python -c "
+import sys
+from univention.management.console.modules.appcenter.app_center import Application
+app = Application.find('$app')
+bl = app.get('AppliancePagesBlackList')
+if bl and 'software' in bl.split(','):
+	sys.exit(0)
+else:
+	sys.exit(1)
+"
+				
+}
+app_get_appliance_fields_blacklist ()
+{
+	local app="$1"
+	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
+				app = Application.find('$app'); \
+				print app.get('ApplianceFieldsBlackList').replace(',',' ');"
+}
 
 register_apps ()
 {
@@ -176,6 +198,10 @@ download_packages_and_dependencies ()
 
 download_system_setup_packages ()
 {
+	app="$1"
+
+	echo "download_system_setup_packages for $app"
+
 	mkdir -p /var/cache/univention-system-setup/packages/
 	(
 		if [ ! -e /etc/apt/sources.list.d/05univention-system-setup.list ]; then
@@ -185,10 +211,20 @@ download_system_setup_packages ()
 		cd /var/cache/univention-system-setup/packages/
 		install_cmd="$(univention-config-registry get update/commands/install)"
 
-		for package in server-master server-backup server-slave server-member basesystem \
-					ad-connector management-console-module-adtakeover printserver \
-					dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server \
-					nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon ; do
+		# server role packages
+		packages="server-master server-backup server-slave server-member basesystem"
+
+		# ad member mode
+		packages="$packages ad-connector samba"
+
+		app_appliance_is_software_blacklisted $app
+		echo "app_appliance_is_software_blacklisted $app: $?"
+		app_appliance_is_software_blacklisted $app || packages="$packages management-console-module-adtakeover printserver dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon"
+		echo "Download packages: $packages"
+		app_appliance_is_software_blacklisted $app
+		echo "app_appliance_is_software_blacklisted $app: $?"
+
+		for package in $packages; do
 			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 univention-${package} | 
 			apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 univention-${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
 
@@ -422,7 +458,7 @@ setup_appliance ()
 	rm -r /var/cache/univention-system-setup/packages/
 
 	apt-get update
-	download_system_setup_packages
+	download_system_setup_packages $@
 
 	# Cleanup apt archive
 	apt-get clean
@@ -496,6 +532,9 @@ appliance_basesettings ()
 	pages_blacklist="$(app_get_appliance_pages_blacklist $app)"
 	ucr set system/setup/boot/pages/blacklist="$pages_blacklist"
 
+	fields_blacklist="$(app_get_appliance_fields_blacklist $app)"
+	ucr set system/setup/boot/fields/blacklist="$fields_blacklist"
+
 	blacklist="$(app_get_appliance_blacklist $app)"
 	whitelist="$(app_get_appliance_whitelist $app)"
 	ucr set repository/app_center/blacklist="$blacklist"
@@ -506,7 +545,7 @@ appliance_basesettings ()
 
 	logo=$(app_get_appliance_logo $app)
 	if [ -n "$logo" ]; then
-		wget http://$(ucr get repository/app_center/server)/meta-inf/$(ucr get version/version)/$logo -o /var/www/icon/$logo
+		wget http://$(ucr get repository/app_center/server)/meta-inf/$(ucr get version/version)/$logo -O /var/www/icon/$logo
 		ucr set umc/web/appliance/logo="/icon/$logo"
 		chmod 644 /var/www/icon/$logo
 	fi
