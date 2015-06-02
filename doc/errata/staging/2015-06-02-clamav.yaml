@@ -1,0 +1,34 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-6
+src: clamav
+fix: 0.98.1+dfsg-2~really0.98.7+dfsg-0.150.201506021701
+version: [6]
+desc: |
+ These vulernabilities have been fixed:
+ - Buffer overflow when parsing crafted y0da Crypter PE files (CVE-2014-9050)
+ - Segmentation fault when parsing malformed Javascript files (CVE-2013-6497)
+ - Memory corruption in processing upack archives (CVE-2014-9328)
+ - Heap out of bounds condition via a crafted Yoda's crypter or mew packer
+   file (CVE-2015-1461)
+ - Heap out of bounds condition via a crafted upx packer file (CVE-2015-1462)
+ - Heap out of bounds condition via a crafted petite packer file
+   (CVE-2015-1463)
+ - Crash in upx decoder with crafted file (CVE-2015-2170)
+ - Infinite loop condition on crafted y0da cryptor file (CVE-2015-2221)
+ - Crash on crafted petite packed file (CVE-2015-2222)
+ - Infinite loop condition on a crafted "xz" archive file (CVE-2015-2668)
+ - Heap overflow vulnerability in regcomp.c (CVE-2015-2305)
+bug: [36965]
+cve:
+ - CVE-2014-9050
+ - CVE-2013-6497
+ - CVE-2014-9328
+ - CVE-2015-1461
+ - CVE-2015-1462
+ - CVE-2015-1463
+ - CVE-2015-2170
+ - CVE-2015-2221
+ - CVE-2015-2222
+ - CVE-2015-2668
+ - CVE-2015-2305
