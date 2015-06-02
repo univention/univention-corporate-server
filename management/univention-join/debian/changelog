@@ -1,3 +1,9 @@
+univention-join (7.1.2-15) unstable; urgency=low
+
+  * Bug #38216: Fixed typo in German translation
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 02 Jun 2015 10:16:11 +0200
+
 univention-join (7.1.2-14) unstable; urgency=low
 
   * Bug #37489: filter out password from log file

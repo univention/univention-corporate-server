@@ -159,7 +159,7 @@ msgid ""
 "Not all installed components have been registered. Please visit the %s to "
 "register the remaining components."
 msgstr ""
-"Nicht alle installierten Componenten wurden registriert. Bitte rufen Sie das "
+"Nicht alle installierten Komponenten wurden registriert. Bitte rufen Sie das "
 "%s auf um alle verbliebenen Komponenten zu registrieren."
 
 #: umc/js/join/Grid.js:174
