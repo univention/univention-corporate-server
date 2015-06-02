@@ -755,7 +755,7 @@ def is_ipv6netmask(addr_netmask):
 
 def is_hostname(hostname):
 	return is_hostname.RE.match(hostname) is not None
-is_hostname.RE = re.compile("^[a-z]([a-z0-9-]*[a-z0-9])*$")
+is_hostname.RE = re.compile("^[a-z0-9]([a-z0-9-]*[a-z0-9])?$", re.IGNORECASE)
 
 def is_domainname(domainname):
 	"""

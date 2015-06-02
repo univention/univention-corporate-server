@@ -1,3 +1,9 @@
+univention-system-setup (8.1.68-2) unstable; urgency=low
+
+  * Bug #37816: system setup allow uppercase and digits in hostnames
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 02 Jun 2015 11:51:11 +0200
+
 univention-system-setup (8.1.68-1) unstable; urgency=low
 
   * Bug #38512: Version bump
