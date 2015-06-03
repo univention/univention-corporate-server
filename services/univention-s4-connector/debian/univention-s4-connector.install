@@ -17,5 +17,6 @@ scripts/resync_object_from_ucs.py  usr/share/univention-s4-connector/
 scripts/resync_object_from_s4.py  usr/share/univention-s4-connector/
 scripts/remove_s4_rejected.py usr/share/univention-s4-connector/
 scripts/remove_ucs_rejected.py usr/share/univention-s4-connector/
+scripts/remove_obsolete_gpo_and_wmi_rejects usr/share/univention-s4-connector/
 etc/network/if-post-down.d/univention-s4-connector etc/network/if-post-down.d/
 server_password_change.d/univention-s4-connector usr/lib/univention-server/server_password_change.d/

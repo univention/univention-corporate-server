@@ -40,6 +40,12 @@ create_logfile /var/log/univention/connector-s4-status.log "root:adm" 640
 
 eval "$(ucr shell)"
 
+if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join/.joined ]; then
+	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.16-22; then
+		/usr/share/univention-s4-connector/remove_obsolete_gpo_and_wmi_rejects
+	fi
+fi
+
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.0-1; then
 	univention-config-registry set connector/s4/mapping/group/grouptype?false \
 				connector/s4/mapping/group/ignorelist?"${connector_s4_mapping_group_ignorelist},Remote Interactive Logon,SChannel Authentication,Digest Authentication,Terminal Server User,NTLM Authentication,Other Organization,This Organization,Anonymous Logon,Network Service,Creator Group,Creator Owner,Local Service,Owner Rights,Interactive,Restricted,Network,Service,Dialup,System,Batch,Proxy,IUSR,Self"
@@ -88,6 +94,7 @@ call_joinscript 97univention-s4-connector.inst
 stop_udm_cli_server
 
 if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join/.joined ]; then
+
 	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.128-1  && is_ucr_true connector/s4/mapping/gpo; then
 		## Write the MS GPO settings from Samba 4 to UCS
 		/etc/init.d/univention-s4-connector stop

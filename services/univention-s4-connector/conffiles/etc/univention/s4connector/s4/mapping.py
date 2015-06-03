@@ -235,6 +235,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							ucs_attribute='sambaUserWorkstations',
 							ldap_attribute='sambaUserWorkstations',
 							con_attribute='userWorkstations',
+							single_value=True,
 						),
 					#'sambaLogonHours': univention.s4connector.attribute (
 					#		ucs_attribute='sambaLogonHours',
@@ -684,42 +685,50 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 					'msGPOFlags': univention.s4connector.attribute (
 							ucs_attribute='msGPOFlags',
 							ldap_attribute='msGPOFlags',
-							con_attribute='flags'
+							con_attribute='flags',
+							single_value=True,
 						),
 					'msGPOVersionNumber': univention.s4connector.attribute (
 							ucs_attribute='msGPOVersionNumber',
 							ldap_attribute='msGPOVersionNumber',
-							con_attribute='versionNumber'
+							con_attribute='versionNumber',
+							single_value=True,
 						),
 					'msGPOSystemFlags': univention.s4connector.attribute (
 							ucs_attribute='msGPOSystemFlags',
 							ldap_attribute='msGPOSystemFlags',
-							con_attribute='systemFlags'
+							con_attribute='systemFlags',
+							single_value=True,
 						),
 					'msGPOFunctionalityVersion': univention.s4connector.attribute (
 							ucs_attribute='msGPOFunctionalityVersion',
 							ldap_attribute='msGPOFunctionalityVersion',
-							con_attribute='gPCFunctionalityVersion'
+							con_attribute='gPCFunctionalityVersion',
+							single_value=True,
 						),
 					'msGPOFileSysPath': univention.s4connector.attribute (
 							ucs_attribute='msGPOFileSysPath',
 							ldap_attribute='msGPOFileSysPath',
-							con_attribute='gPCFileSysPath'
+							con_attribute='gPCFileSysPath',
+							single_value=True,
 						),
 					'msGPOMachineExtensionNames': univention.s4connector.attribute (
 							ucs_attribute='msGPOMachineExtensionNames',
 							ldap_attribute='msGPOMachineExtensionNames',
-							con_attribute='gPCMachineExtensionNames'
+							con_attribute='gPCMachineExtensionNames',
+							single_value=True,
 						),
 					'msGPOUserExtensionNames': univention.s4connector.attribute (
 							ucs_attribute='msGPOUserExtensionNames',
 							ldap_attribute='msGPOUserExtensionNames',
-							con_attribute='gPCUserExtensionNames'
+							con_attribute='gPCUserExtensionNames',
+							single_value=True,
 						),
 					'msGPOWQLFilter': univention.s4connector.attribute (
 							ucs_attribute='msGPOWQLFilter',
 							ldap_attribute='msGPOWQLFilter',
-							con_attribute='gPCWQLFilter'
+							con_attribute='gPCWQLFilter',
+							single_value=True,
 						),
 				},
 ''' % {'ignore_filter': ignore_filter, 'sync_mode_ou': sync_mode_ou}
@@ -800,62 +809,74 @@ if configRegistry.is_true('connector/s4/mapping/wmifilter', False):
 					'author': univention.s4connector.attribute (
 							ucs_attribute='author',
 							ldap_attribute='msWMIAuthor',
-							con_attribute='msWMI-Author'
+							con_attribute='msWMI-Author',
+							single_value=True,
 						),
 					'creationDate': univention.s4connector.attribute (
 							ucs_attribute='creationDate',
 							ldap_attribute='msWMICreationDate',
-							con_attribute='msWMI-CreationDate'
+							con_attribute='msWMI-CreationDate',
+							single_value=True,
 						),
 					'changeDate': univention.s4connector.attribute (
 							ucs_attribute='changeDate',
 							ldap_attribute='msWMIChangeDate',
-							con_attribute='msWMI-ChangeDate'
+							con_attribute='msWMI-ChangeDate',
+							single_value=True,
 						),
 					'parm1': univention.s4connector.attribute (
 							ucs_attribute='parm1',
 							ldap_attribute='msWMIParm1',
-							con_attribute='msWMI-Parm1'
+							con_attribute='msWMI-Parm1',
+							single_value=True,
 						),
 					'parm2': univention.s4connector.attribute (
 							ucs_attribute='parm2',
 							ldap_attribute='msWMIParm2',
-							con_attribute='msWMI-Parm2'
+							con_attribute='msWMI-Parm2',
+							single_value=True,
 						),
 					'parm3': univention.s4connector.attribute (
 							ucs_attribute='parm3',
 							ldap_attribute='msWMIParm3',
-							con_attribute='msWMI-Parm3'
+							con_attribute='msWMI-Parm3',
+							single_value=True,
 						),
 					'parm4': univention.s4connector.attribute (
 							ucs_attribute='parm4',
 							ldap_attribute='msWMIParm4',
-							con_attribute='msWMI-Parm4'
+							con_attribute='msWMI-Parm4',
+							single_value=True,
 						),
 					'flags1': univention.s4connector.attribute (
 							ucs_attribute='flags1',
 							ldap_attribute='msWMIFlags1',
-							con_attribute='msWMI-Flags1'
+							con_attribute='msWMI-Flags1',
+							single_value=True,
 						),
 					'flags2': univention.s4connector.attribute (
 							ucs_attribute='flags2',
 							ldap_attribute='msWMIFlags2',
-							con_attribute='msWMI-Flags2'
+							con_attribute='msWMI-Flags2',
+							single_value=True,
 						),
 					'flags3': univention.s4connector.attribute (
 							ucs_attribute='flags3',
 							ldap_attribute='msWMIFlags3',
-							con_attribute='msWMI-Flags3'
+							con_attribute='msWMI-Flags3',
+							single_value=True,
 						),
 					'flags4': univention.s4connector.attribute (
 							ucs_attribute='flags4',
 							ldap_attribute='msWMIFlags4',
-							con_attribute='msWMI-Flags4'
+							con_attribute='msWMI-Flags4',
+							single_value=True,
 						),
 					'sourceOrganization': univention.s4connector.attribute (
 							ucs_attribute='sourceOrganization',
 							ldap_attribute='msWMISourceOrganization',
-							con_attribute='msWMI-SourceOrganization'
+							con_attribute='msWMI-SourceOrganization',
+							single_value=True,
 						),
 				},
 

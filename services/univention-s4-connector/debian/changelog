@@ -1,3 +1,10 @@
+univention-s4-connector (9.0.16-22) unstable; urgency=medium
+
+  * Fix single-value mapping (Bug #37259)
+  * Run remove_obsolete_gpo_and_wmi_rejects on upgrade
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Jun 2015 19:23:24 +0200
+
 univention-s4-connector (9.0.16-21) unstable; urgency=medium
 
   * Fixed quoting typo of last commit (Bug #38557)
