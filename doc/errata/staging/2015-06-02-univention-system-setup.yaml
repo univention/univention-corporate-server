@@ -8,4 +8,5 @@ desc: |
   This update addresses the following issues:
   * Show server address in Univention System Setup welcome screen in EC2 and
     other cloud environments.
-bug: [38391]
+  * Uppercase hostnames and hostnames beginning with a digit are now possible.
+bug: [38391, 37816]
