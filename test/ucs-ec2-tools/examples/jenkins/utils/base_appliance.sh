@@ -576,7 +576,7 @@ appliance_basesettings ()
 
 	
 	app_fav_list=""
-	for a in apps:
+	for a in apps; do
 		app_fav_list="$app_fav_list,apps:$a"
 	done
 	
