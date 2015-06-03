@@ -280,7 +280,7 @@ create_install_script ()
 VERSION="1"
 joinscript_init
 apt-get update
-$(ucr get update/commands/install/interactive) -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages 1>/dev/null || die
+univention-install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages 1>/dev/null || die
 joinscript_save_current_version
 univention-register-apps
 univention-run-join-scripts
