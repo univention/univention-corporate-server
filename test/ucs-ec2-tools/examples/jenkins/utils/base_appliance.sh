@@ -97,6 +97,19 @@ app_get_name ()
 				print app.name;"
 }
 
+app_get_appliance_name ()
+{
+	local app="$1"
+	python -c "
+from univention.management.console.modules.appcenter.app_center import Application
+app = Application.find('$app')
+appliance_name = app.get('ApplianceName')
+if appliance_name:
+	print appliance_name
+else:
+	print app.name;"
+}
+
 app_get_appliance_logo ()
 {
 	local app="$1"
@@ -149,6 +162,19 @@ app_get_appliance_fields_blacklist ()
 	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
 				app = Application.find('$app'); \
 				print app.get('ApplianceFieldsBlackList').replace(',',' ');"
+}
+
+appliance_dump_memory ()
+{
+	local app="$1"
+	local targetfile="$2"
+	python -c "
+from univention.management.console.modules.appcenter.app_center import Application
+app = Application.find('$app')
+if app.get('ApplianceMemory'):
+	print app.get('ApplianceMemory')
+else:
+	print '1024'" >"$targetfile"
 }
 
 register_apps ()
@@ -524,6 +550,7 @@ __EOF__
 
 appliance_basesettings ()
 {
+	apps="$@"
 	app="$1"
 
 	pages_blacklist="$(app_get_appliance_pages_blacklist $app)"
@@ -547,11 +574,17 @@ appliance_basesettings ()
 		chmod 644 /var/www/icon/$logo
 	fi
 
+	
+	app_fav_list=""
+	for a in apps:
+		app_fav_list="$app_fav_list,apps:$a"
+	done
+	
 	# App as UMC favourite for administrator user
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/umc-favorites <<__EOF__
 #!/bin/bash
 eval "\$(ucr shell)"
-fav="favorites udm:users/user,udm:groups/group,udm:computers/computer,appcenter,updater,apps:$app"
+fav="favorites udm:users/user,udm:groups/group,udm:computers/computer,appcenter,updater$app_fav_list"
 udm users/user modify --dn "uid=Administrator,cn=users,\$ldap_base" --set umcProperty="\$fav"
 __EOF__
 	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/umc-favorites
