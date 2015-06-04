@@ -287,11 +287,11 @@ define([
 				// as soon as the policy widgets are rendered, update the policy values
 				policyDeferred.then(lang.hitch(this, function() {
 					var policies = lang.getObject('_receivedObjOrigData.$policies$', false, this) || {};
-					tools.forIn(policies, function(ipolicyType, ipolicyDN) {
-						// get the ComboBox to update its value with the new DN
+					tools.forIn(policies, function(ipolicyType, ipolicyDNs) {
+						// get the MultiInput to update its ComboBox value with the new DN
 						if (ipolicyType in this._policyWidgets) {
 							var iwidget = this._policyWidgets[ipolicyType].$policy$;
-							iwidget.setInitialValue(ipolicyDN, true);
+							iwidget.set('value', ipolicyDNs);
 						}
 					}, this);
 				}));
@@ -573,13 +573,33 @@ define([
 					// for the policy group, we need a ComboBox that allows to link an object
 					// to a particular policy
 					newProperties.push({
-						type: ComboBox,
+						type: MultiInput,
 						name: '$policy$',
-						staticValues: [{ id: 'None', label: _('Inherited') }],
-						dynamicValues: lang.hitch(this, '_queryPolicies', ipolicyType),
 						label: _('Select policy configuration'),
-						description: _('Select a policy that should be directly linked to the current LDAP object'),
-						onChange: lang.hitch(this, '_updatePolicy', ipolicyType)
+						description: _('Select policies that should be directly linked to the current LDAP object'),
+						onChange: lang.hitch(this, '_updatePolicy', ipolicyType),
+						subtypes: [{
+							type: ComboBox,
+							dynamicValues: lang.hitch(this, '_queryPolicies', ipolicyType),
+							onChange: lang.hitch(this, function(dn, widgets) {
+								tools.forIn(widgets, lang.hitch(this, function(key, widget) {
+									if (widget.isPolicyEdit) {
+										widget.set('label', '');
+										widget.set('disabled', !dn);
+									}
+								}));
+							})
+						}, {
+							type: Button,
+							name: 'edit',
+							isPolicyEdit: true,
+							iconClass: 'umcIconEdit',
+							disabled: true,
+							description: _('Edit policy'),
+							callback: lang.hitch(this, function(dn) {
+								this._openPolicy(ipolicyType, dn);
+							})
+						}]
 					});
 					var buttonsConf = [{
 						type: Button,
@@ -592,13 +612,15 @@ define([
 
 					// render the group of properties
 					var widgets = render.widgets(newProperties, this);
+					widgets.$policy$._newEntryButton.set('label', _('Connect further policy'));
 					this._policyWidgets[ipolicyType] = widgets;
 					var buttons = render.buttons(buttonsConf, this);
+					widgets.$policy$.addChild(buttons.$addPolicy$);
 					policiesContainer.addChild(new TitlePane({
 						title: ipolicy.label,
 						description: ipolicy.description,
 						open: false,
-						content: render.layout(newLayout, widgets, buttons)
+						content: render.layout(newLayout, widgets)
 					}));
 				}
 
@@ -1158,7 +1180,7 @@ define([
 				vals.$policies$ = {};
 				tools.forIn(this._policyWidgets, function(ipolicyType, iwidgets) {
 					var ival = iwidgets.$policy$.get('value');
-					if ('None' != ival) {
+					if (ival.length) {
 						vals.$policies$[ipolicyType] = ival;
 					}
 				}, this);
@@ -1194,25 +1216,26 @@ define([
 			return deferred;
 		},
 
-		_updatePolicy: function(policyType, policyDN) {
+		_updatePolicy: function(policyType, policyDNs) {
 			// make sure the given policyType exists
 			if (!(policyType in this._policyWidgets)) {
 				return;
 			}
 
-			// evaluate the policy with the given policyType and policyDN
+			// evaluate the policy with the given policyType and policy DNs
 			this.umcpCommandBundle('udm/object/policies', {
 				objectType: this.objectType,
-				policyDN: 'None' == policyDN || !policyDN ? null : policyDN,
+				policies: policyDNs,
 				policyType: policyType,
 				objectDN: this.ldapName || null,
 				container: this.newObjectOptions ? this.newObjectOptions.container : null
 			}).then(lang.hitch(this, function(data) {
 				tools.forIn(this._policyWidgets[policyType], function(iname, iwidget) {
 					if (iname == '$policy$') {
-						// the ComboBox for policies, skip this widget
+						// the MultiInput for policies, skip this widget
 						return;
 					}
+					//iwidget.set('visible', policyDNs.length < 2);
 
 					var _editLabelFunc = lang.hitch(this, function(label, dn) {
 						return lang.replace('{label} (<a href="javascript:void(0)" ' +
@@ -1297,27 +1320,44 @@ define([
 				onObjectSaved: lang.hitch(this, function(dn, policyType) {
 					// a new policy was created and should be linked to the current object
 					// or an existing policy was modified
-					if ((policyType in this._policyWidgets)) {
-						// trigger a reload of the dynamicValues
-						var widget = this._policyWidgets[policyType].$policy$;
+					if (!(policyType in this._policyWidgets)) {
+						return;
+					}
+					var policyMultiInput = this._policyWidgets[policyType].$policy$;
+
+					var valuesLoaded = [];
+					// trigger a reload of the dynamicValues
+					array.forEach(policyMultiInput._widgets, function(subtype) {
+						var widget = subtype[0];
 						widget.reloadDynamicValues();
 
+						var deferred = new Deferred();
+						valuesLoaded.push(deferred);
 						// set the value after the reload has been done
 						on.once(widget, 'valuesLoaded', lang.hitch(this, function() {
-							var oldDN = widget.get('value');
-
-							// we need to set the new DN, only if a new policy object has been created
-							if (!policyDN) {
-								widget.setInitialValue(dn, true);
-							}
-							if (oldDN == dn) {
-								// we need a manual refresh in case the DN did not change since
-								// the policy might have been edited and therefore its values
-								// need to be reloaded
-								this._updatePolicy(policyType, dn);
-							}
+							deferred.resolve();
 						}));
+					}, this);
+
+					var oldValue = policyMultiInput.get('value');
+					var value = policyDN ? lang.clone(oldValue) : [dn];
+					var updatePolicy = false;
+					if (array.indexOf(value, dn) === -1) {
+						value.push(dn);
+					} else {
+						if (policyDN) {
+							updatePolicy = true;
+						}
 					}
+					all(valuesLoaded).then(lang.hitch(this, function() {
+						policyMultiInput.set('value', value);
+						if (updatePolicy) {
+							// we need a manual refresh in case the DN did not change since
+							// the policy might have been edited and therefore its values
+							// need to be reloaded
+							this._updatePolicy(policyType, value);
+						}
+					}));
 				}),
 				onCloseTab: lang.hitch(this, function() {
 					try {

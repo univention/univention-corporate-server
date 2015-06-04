@@ -486,7 +486,7 @@ class UDM_Module(object):
 				obj.options = filter(lambda option: ldap_object['$options$'][option] == True, ldap_object['$options$'].keys())
 				del ldap_object['$options$']
 			if '$policies$' in ldap_object:
-				obj.policies = ldap_object['$policies$'].values()
+				obj.policies = reduce(lambda x,y: x+y, ldap_object['$policies$'].values(), [])
 				del ldap_object['$policies$']
 
 			self._map_properties(obj, ldap_object)
@@ -546,7 +546,7 @@ class UDM_Module(object):
 				del ldap_object['$options$']
 			MODULE.info('Modifying LDAP object %s' % obj.dn)
 			if '$policies$' in ldap_object:
-				obj.policies = ldap_object['$policies$'].values()
+				obj.policies = reduce(lambda x,y: x+y, ldap_object['$policies$'].values(), [])
 				del ldap_object['$policies$']
 
 			self._map_properties(obj, ldap_object)

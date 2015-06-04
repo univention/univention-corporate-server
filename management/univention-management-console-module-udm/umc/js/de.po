@@ -221,7 +221,10 @@ msgstr "%s anlegen"
 
 #: umc/js/udm/DetailPage.js:588
 msgid "Create new policy"
-msgstr "Neue Richtlinie"
+msgstr "Neue Richtlinie erstellen"
+
+msgid "Connect further policy"
+msgstr "Weitere Richtlinie verknüpfen"
 
 #: umc/js/udm.js:579
 msgid "Create report"
@@ -455,7 +458,7 @@ msgstr ""
 "Liste aller für das Objekt geltender Eigenschaften, die durch Richtlinien "
 "ererbt werden. Die Werte können nicht direkt geändert werden, sondern müssen "
 "an den entsprechenden Richtlinien gesetzt werden. Über den Schalter \"Neue "
-"Richtlinie\" wird ein neuer Reiter mit einer neuen Richtlinie geöffnet. "
+"Richtlinie erstellen\" wird ein neuer Reiter mit einer neuen Richtlinie geöffnet. "
 "Sofern ein Attribut bereits gesetzt ist, kann über den Schalter \"bearbeiten"
 "\" die gesetzte Richtlinie in einem neuen Reiter geöffnet und bearbeitet "
 "werden."
@@ -724,10 +727,10 @@ msgstr "Suche in:"
 
 #: umc/js/udm/DetailPage.js:581
 msgid ""
-"Select a policy that should be directly linked to the current LDAP object"
+"Select policies that should be directly linked to the current LDAP object"
 msgstr ""
-"Wählen Sie eine Richtlinie, die direkt mit dem aktuellen LDAP-Objekt "
-"verknüpft werden soll"
+"Wählen Sie Richtlinien, die direkt mit dem aktuellen LDAP-Objekt "
+"verknüpft werden sollen"
 
 #: umc/js/udm/DetailPage.js:580
 msgid "Select policy configuration"

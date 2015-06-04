@@ -49,7 +49,7 @@ from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError, error_handling
 from univention.management.console.modules.decorators import simple_response, sanitize, multi_response
 from univention.management.console.modules.sanitizers import (
-	LDAPSearchSanitizer, EmailSanitizer, ChoicesSanitizer,
+	Sanitizer, LDAPSearchSanitizer, EmailSanitizer, ChoicesSanitizer,
 	ListSanitizer, StringSanitizer, DictSanitizer, BooleanSanitizer
 )
 from univention.management.console.modules.mixins import ProgressMixin
@@ -486,7 +486,7 @@ class Instance(Base, ProgressMixin):
 						for policy in obj.policies:
 							pol_mod = get_module(None, policy)
 							if pol_mod and pol_mod.name:
-								props['$policies$'][pol_mod.name] = policy
+								props['$policies$'].setdefault(pol_mod.name, []).append(policy)
 						props['$labelObjectType$'] = module.title
 						props['$flags$'] = obj.oldattr.get('univentionObjectFlag', []),
 						result.append(props)
@@ -1050,6 +1050,15 @@ class Instance(Base, ProgressMixin):
 		thread = notifier.threads.Simple('NavObjectQuery', notifier.Callback(_thread, request.options['container']), notifier.Callback(self._thread_finished, request))
 		thread.run()
 
+	@sanitize(DictSanitizer(dict(
+		objectType=StringSanitizer(required=True),
+		policies=ListSanitizer(),
+		policyType=StringSanitizer(required=True),
+		objectDN=Sanitizer(default=None),
+		container=Sanitizer(default=None)
+		#objectDN=StringSanitizer(default=None, allow_none=True),
+		#container=StringSanitizer(default=None, allow_none=True)
+	)))
 	def object_policies(self, request):
 		"""Returns a virtual policy object containing the values that
 		the given object or container inherits"""
@@ -1064,18 +1073,16 @@ class Instance(Base, ProgressMixin):
 				if _module is None or _module.module is None:
 					raise UMC_OptionTypeError('The given object type is not valid')
 				_obj = _module.get(_dn)
-				if _obj is None:
-					raise UMC_OptionTypeError('The object could not be found')
+				if _obj is None or dn and not obj.exists():
+					raise ObjectDoesNotExist(dn)
 				return _obj, _module
 
 			def _get_object_parts(_options):
 				'''Get object related information and corresponding UDM object/module. Verify user input.'''
-				try:
-					_object_type = _options.get('objectType')
-					_object_dn = _options.get('objectDN')
-					_container_dn = _options.get('container')
-				except IndexError:
-					raise UMC_OptionTypeError('The given object type is not valid')
+
+				_object_type = _options['objectType']
+				_object_dn = _options['objectDN']
+				_container_dn = _options['container']
 
 				if (object_dn, container_dn) == (_object_dn, _container_dn):
 					# nothing has changed w.r.t. last entry -> return last values
@@ -1092,19 +1099,11 @@ class Instance(Base, ProgressMixin):
 
 				return (_object_dn, _container_dn, _obj)
 
-			def _get_policy_parts(_options):
-				'''Get policy related UDM object and DN. Verify user input.'''
-				_policy_type = _options.get('policyType')
-				_policy_dn = _options.get('policyDN')
-
-				_policy_obj, _policy_module = _get_object(_policy_dn, UDM_Module(_policy_type))
-
-				return (_policy_obj, _policy_dn)
-
 			ret = []
 			for ioptions in request.options:
 				object_dn, container_dn, obj = _get_object_parts(ioptions)
-				policy_obj, policy_dn = _get_policy_parts(ioptions)
+				policy_dns = ioptions.get('policies', [])
+				policy_obj = _get_object(policy_dns[0] if policy_dns else None, UDM_Module(ioptions.get('policyType')))[0]
 				policy_obj.clone(obj)
 
 				# There are 2x2x2 (=8) cases that may occur (c.f., Bug #31916):
@@ -1120,16 +1119,16 @@ class Instance(Base, ProgressMixin):
 				#   [inherit] user request to (virtually) change the policy to 'inherited'
 				#   [set_pol] user request to (virtually) assign a particular policy
 				faked_policy_reference = None
-				if object_dn and not policy_dn:
+				if object_dn and not policy_dns:
 					# case: [edit; w/pol; inherit]
 					# -> current policy is (virtually) overwritten with 'None'
 					faked_policy_reference = [None]
-				elif not object_dn and policy_dn:
+				elif not object_dn and policy_dns:
 					# cases:
 					# * [new; w/pol; inherit]
 					# * [new; w/pol; set_pol]
 					# -> old + temporary policy are both (virtually) set at the parent container
-					faked_policy_reference = obj.policies + [policy_dn]
+					faked_policy_reference = obj.policies + policy_dns
 				else:
 					# cases:
 					# * [new; w/o_pol; inherit]
@@ -1137,7 +1136,7 @@ class Instance(Base, ProgressMixin):
 					# * [edit; w/pol; set_pol]
 					# * [edit; w/o_pol; inherit]
 					# * [edit; w/o_pol; set_pol]
-					faked_policy_reference = policy_dn
+					faked_policy_reference = policy_dns
 
 				policy_obj.policy_result(faked_policy_reference)
 				infos = copy.copy(policy_obj.polinfo_more)
