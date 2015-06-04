@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
-#  Remove obsolete gpo and wmi rejects
+#  Adjust obsolete values in pickled "UCS rejected" GPO and WMI changesets
 #
 # Copyright 2015 Univention GmbH
 #
@@ -53,9 +53,8 @@ class UCSReject(object):
 	objectclasses_of_interest = set()
 	attributes_of_interest = set()
 
-	def __init__(self, s4, filename, dn, new, old, old_dn):
+	def __init__(self, s4, dn, new, old, old_dn):
 		self.s4 = s4
-		self.filename = filename
 		self.dn = dn
 		self.new = new
 		self.old = old
@@ -77,7 +76,7 @@ class UCSReject(object):
 
 		return nattribs
 
-	def __map_ucs_change_to_s4_object_like_the_s4_connector(self, dn, new, old, old_dn):
+	def __map_openldap_changeset_to_s4_object_like_the_s4_connector_does_it(self, dn, new, old, old_dn):
 		"""this is basically s4.__sync_file_from_ucs"""
 
 		if dn == 'cn=Subschema':
@@ -93,11 +92,13 @@ class UCSReject(object):
 
 		if old_dn:
 			object['olddn'] = unicode(old_dn, 'utf8') # needed for correct samaccount-mapping
+
 		# premapped_ucs_dn = object['dn']
 		s4_object = self.s4._object_mapping(key, object, 'ucs')
 		return s4_object
 
 	def map_attributes_to_s4(self, openldap_attributes):
+		"""Just example code, not required in this case."""
 		s4_attributes = []
 
 		key = self.mapping_key
@@ -111,7 +112,7 @@ class UCSReject(object):
 				raise ValueError
 		return s4_attributes
 
-	def ucs_change_objectclass_matches(self):
+	def openldap_changeset_objectclass_matches(self):
 		if self.objectclasses_of_interest:
 			ocs = set(self.new.get("objectClass", []))
 			if not self.objectclasses_of_interest & ocs:
@@ -119,9 +120,11 @@ class UCSReject(object):
 
 		return True
 
-	def ucs_change_is_obsolete(self):
+	def adjusted_openldap_changeset(self):
+		print ''
+		print "INFO: Checking existing reject for %s" % (self.dn,)
 		if self.attributes_of_interest:
-			set_of_interesting_modified_attributes = []
+			list_of_interesting_modified_attributes = []
 			for attr, val in self.new.items():
 				if not attr in self.attributes_of_interest:
 					continue
@@ -130,59 +133,56 @@ class UCSReject(object):
 				old_val = self.old.get(attr, [])
 				if val == old_val:
 					continue
-				set_of_interesting_modified_attributes.append(attr)
+				list_of_interesting_modified_attributes.append(attr)
 
-			if not set_of_interesting_modified_attributes:
-				return False
+			if not list_of_interesting_modified_attributes:
+				return
 		else:
-			set_of_interesting_modified_attributes = None	## i.e. all
+			list_of_interesting_modified_attributes = None	## i.e. all
 
-		### Map dn and attributes from the ucs_change pickle to Samba4 dn and attrs:
-		s4_object_from_ucs_change = self.__map_ucs_change_to_s4_object_like_the_s4_connector(self.dn, self.new, self.old, self.old_dn)
+		### Map dn and attributes from the openldap_changeset pickle to Samba4 dn and attrs:
+		s4_object_from_openldap_changeset = self.__map_openldap_changeset_to_s4_object_like_the_s4_connector_does_it(self.dn, self.new, self.old, self.old_dn)
 
 		### Get the current OpenLDAP object
-		# ldapfilter='(objectClass=*)'
-		# try:
-		# 	dn, ldap_object_ucs = self.s4.lo.search(base=self.dn, scope='base', filter=ldapfilter, attr=set_of_interesting_modified_attributes)
-		# except ldap.NO_SUCH_OBJECT:
-		# 	print "INFO: Object %s does not exist any longer in UCS LDAP"
-		# 	return False
-		#
-		# if not ldap_object_ucs:
-		# 	print "INFO: Object %s does not have any of the modified attributes any longer in UCS LDAP : %s" % (self.dn, ', '.join(set_of_interesting_modified_attributes))
-		# 	print "      Ok, skipping"
-		# 	return False
-
 		ldap_object_ucs = self.s4.get_ucs_ldap_object(self.dn)
 		if not ldap_object_ucs:
 			print "INFO: Object %s does not exist any longer in UCS LDAP"
-			return False
+			return
 		#if not "msGPOContainer" in ldap_object_ucs.get("objectClass", []):
-		#	return False
-		if not set(set_of_interesting_modified_attributes) & set(ldap_object_ucs.keys()):
-			print "INFO: Object %s does not have any of the modified attributes any longer in UCS LDAP : %s" % (self.dn, ', '.join(set_of_interesting_modified_attributes))
+		#	return
+		if not set(list_of_interesting_modified_attributes) & set(ldap_object_ucs.keys()):
+			print "INFO: Object %s does not have any of the modified attributes any longer in UCS LDAP : %s" % (self.dn, ', '.join(list_of_interesting_modified_attributes))
 			print "      Ok, skipping"
-			return False
+			return
 
 
 		### Get the current Samba4 object
-		ldap_object_s4 = self.s4.get_object(s4_object_from_ucs_change['dn'])
+		ldap_object_s4 = self.s4.get_object(s4_object_from_openldap_changeset['dn'])
 		if not ldap_object_s4:
 			print "INFO: Object %s does not exist any longer in Samba4"
-			return False
+			return
 			
-		### Map the UCS object attributes to Samba4
-		recoded_ldap_object_ucs = self.recode_attribs(ldap_object_ucs)
-		ucs_object = {'dn': self.dn, 'attributes': recoded_ldap_object_ucs}
-		mapped_ucs_object = self.s4._object_mapping(self.mapping_key, ucs_object, 'ucs')
+		### Map the Samba object attributes to OpenLDAP
+		s4_object = {'dn': self.dn, 'modtype': 'modify', 'attributes': ldap_object_s4}
+		mapped_s4_object = self.s4._object_mapping(self.mapping_key, s4_object)
 
 		### Compare the interesting attributes:
-		set_of_interesting_modified_attributes_s4 = self.map_attributes_to_s4(set_of_interesting_modified_attributes)
-		for attr in set_of_interesting_modified_attributes_s4:
-			if ldap_object_s4.get(attr) != mapped_ucs_object['attributes'].get(attr):
-				return False
+		recoded_ldap_object_ucs = self.recode_attribs(ldap_object_ucs)
+		adjusted = False
+		for attr in list_of_interesting_modified_attributes:
+			if mapped_s4_object['attributes'].get(attr) == recoded_ldap_object_ucs.get(attr):
+				print "INFO: Attribute %s in OpenLDAP is %s, reject value %s is obsolete." % (attr, ldap_object_ucs.get(attr), self.new[attr])
+				self.new[attr] = ldap_object_ucs.get(attr)
+				adjusted = True
+			else:
+				print 'WARN: Attribute "%s" in OpenLDAP is %s, reject value is %s and current Samba4 value is %s.' % (attr, ldap_object_ucs.get(attr), self.new[attr], mapped_s4_object['attributes'].get(attr))
 
-		return True
+		if adjusted:
+			return (self.dn, self.new, self.old, self.old_dn)
+		else:
+			print '      This script cannot resolve this conflict.'
+			print '      In case the reason for this reject gets fixed it might result in the Samba4 value getting set to %s.' % (self.new[attr],)
+			print '      The values should be checked and possibly adjusted manually in case this not desired.'
 
 class UCSReject_msGPO(UCSReject):
 	mapping_key = 'msGPO'
@@ -199,15 +199,17 @@ class UCSReject_sambaUserWorkstations(UCSReject):
 	objectclasses_of_interest = set(("sambaSamAccount",))
 	attributes_of_interest = set(("sambaUserWorkstations",))
 
-def remove_ucs_rejected(filename):
-	cache_db = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
-	c = cache_db.cursor()
-	c.execute("DELETE FROM 'UCS rejected' WHERE key=?", (filename,))
-	cache_db.commit()
-	cache_db.close()
+def dump_object_to_file(filename, object_data):
+	tmp_file = os.path.join('/var/lib/univention-connector/s4/tmp', os.path.basename(filename))
 
-	if os.path.exists(filename):
-		os.unlink(filename)
+	f = open(tmp_file, 'w')
+	os.chmod(tmp_file, 0600)
+	p = cPickle.Pickler(f)
+	p.dump(object_data)
+	p.clear_memo()
+	f.close()
+
+	os.rename(tmp_file, filename)
 
 def invoke_s4_connector_init_script(action_string):
 	cmd = ('invoke-rc.d', 'univention-s4-connector', action_string)
@@ -222,6 +224,7 @@ if __name__ == '__main__':
 	rejected = c.fetchall()
 	cache_db.close()
 	if not rejected:
+		print "Ok, no rejects, nothing to do."
 		sys.exit(0)
 
 	print "Checking for obsolete rejects"
@@ -263,12 +266,16 @@ if __name__ == '__main__':
 				continue
 
 			for rejectClass in (UCSReject_msGPO, UCSReject_msWMIFilter, UCSReject_sambaUserWorkstations):
-				reject = rejectClass(s4, filename, dn, new, old, old_dn)
-				if reject.ucs_change_objectclass_matches():
-					if reject.ucs_change_is_obsolete():
-						print "Removing obsolete reject %s for object %s" % (filename, dn)
-						remove_ucs_rejected(filename)
+				reject = rejectClass(s4, dn, new, old, old_dn)
+				if reject.openldap_changeset_objectclass_matches():
+					adjusted_object_data = reject.adjusted_openldap_changeset()
+					if adjusted_object_data:
+						print 'INFO: Adjusting reject %s for %s' % (filename, dn)
+						print '      The reject may now resolve automatically.'
+						print '      It's recommended to check the values manually now.'
+						dump_object_to_file(filename, adjusted_object_data)
 					break
 	finally:
+		print ''
 		invoke_s4_connector_init_script('start')
 

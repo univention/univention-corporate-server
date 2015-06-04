@@ -42,7 +42,7 @@ eval "$(ucr shell)"
 
 if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join/.joined ]; then
 	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.16-22; then
-		/usr/share/univention-s4-connector/remove_obsolete_gpo_and_wmi_rejects
+		/usr/share/univention-s4-connector/adjust_obsolete_gpo_and_wmi_rejects
 	fi
 fi
 

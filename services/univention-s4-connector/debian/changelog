@@ -1,3 +1,11 @@
+univention-s4-connector (9.0.16-23) unstable; urgency=medium
+
+  * Rename scripts/remove_obsolete_gpo_and_wmi_rejects to
+    scripts/adjust_obsolete_gpo_and_wmi_rejects (Bug #37259)
+  * Improve scripts/adjust_obsolete_gpo_and_wmi_rejects
+
+ -- Arvid Requate <requate@univention.de>  Thu, 04 Jun 2015 13:39:16 +0200
+
 univention-s4-connector (9.0.16-22) unstable; urgency=medium
 
   * Fix single-value mapping (Bug #37259)
