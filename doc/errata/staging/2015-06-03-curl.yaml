@@ -3,7 +3,7 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-6
 src: curl
 fix: 7.21.0-7.53.201506031709
-version: [6]
+version: [5,6]
 desc: |
  These vulernabilities have been fixed in curl:
  * Information leak in curl_easy_duphandle() (CVE-2014-3707)
