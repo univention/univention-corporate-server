@@ -1,0 +1,93 @@
+#!/usr/share/ucs-test/runner python
+## desc: S4-connector check the mapping for single-value Samba4 attributes
+## exposure: safe
+## packages:
+##   - univention-config
+##   - univention-s4-connector
+## bugs:
+##   - 37259
+
+import univention.testing.utils as utils
+
+import os
+import sys
+import ldap
+from univention.config_registry import ConfigRegistry
+import univention.s4connector.s4
+
+CONFIGBASENAME = "connector"
+sys.path=['/etc/univention/%s/s4/' % CONFIGBASENAME]+sys.path
+import mapping
+
+configRegistry = ConfigRegistry()
+configRegistry.load()
+
+class S4ConnectorWrapper(univention.s4connector.s4.s4):
+	def __init__(self, CONFIGBASENAME, property, ucr, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir):
+		univention.s4connector.s4.s4.__init__(self, CONFIGBASENAME, property, ucr, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir, init_group_cache=False)
+		self.schema_basedn = 'CN=Schema,CN=Configuration,%s' % (self.lo_s4.base,)
+
+	def single_value_mapping_is_ok_for_samba4_attributes(self):
+		result = False
+		for key in self.property.keys():
+			mapping_attributes = getattr(self.property[key], 'attributes')
+			if not mapping_attributes:
+				continue
+			for attr_key in mapping_attributes.keys():
+				con_attribute = self.property[key].attributes[attr_key].con_attribute
+
+				if con_attribute in ('description', 'ou'):
+					## These are known exceptions
+					continue
+
+				if self.is_single_value_in_s4(con_attribute):
+					if not self.property[key].attributes[attr_key].single_value:
+						print 'ERROR: "%s": Mapping for Samba4 attribute should be adjusted to single_value=True!' % (con_attribute,)
+						result = False
+				else:
+					if self.property[key].attributes[attr_key].single_value:
+						print 'WARN: "%s": Mapping for Samba4 attribute should be adjusted to single_value=False.' % (con_attribute,)
+		return result
+
+	def is_single_value_in_s4(self, s4_attribute):
+		ldap_filter = 'lDAPDisplayName=%s' % (s4_attribute,)
+		resultlist = self._s4__search_s4(base=self.schema_basedn, scope=ldap.SCOPE_SUBTREE, filter=ldap_filter, attrlist= ['isSingleValued'], show_deleted=False)
+		if not resultlist:
+			print "WARN: con_attribute %s not found in Samba4 schema"
+			return
+
+		if resultlist[0][1]['isSingleValued'][0] == 'TRUE':
+			return True
+
+def connect():
+	if configRegistry.get('%s/s4/ldap/bindpw' % CONFIGBASENAME) and os.path.exists(configRegistry['%s/s4/ldap/bindpw' % CONFIGBASENAME]):
+		s4_ldap_bindpw=open(configRegistry['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
+		if s4_ldap_bindpw[-1] == '\n':
+			s4_ldap_bindpw=s4_ldap_bindpw[0:-1]
+	else:
+		s4_ldap_bindpw=None
+	
+	try:
+		s4c = S4ConnectorWrapper(CONFIGBASENAME,
+						mapping.s4_mapping,
+						configRegistry,
+						configRegistry['%s/s4/ldap/host' % CONFIGBASENAME],
+						configRegistry['%s/s4/ldap/port' % CONFIGBASENAME],
+						configRegistry['%s/s4/ldap/base' % CONFIGBASENAME],
+						configRegistry.get('%s/s4/ldap/binddn' % CONFIGBASENAME, None),
+						s4_ldap_bindpw,
+						configRegistry['%s/s4/ldap/certificate' % CONFIGBASENAME],
+						configRegistry['%s/s4/listener/dir' % CONFIGBASENAME])
+	except ldap.SERVER_DOWN:
+		print "ERROR: Can't initialize LDAP-Connections."
+		raise
+
+	return s4c
+
+if __name__ == '__main__':
+
+	print "INFO: Checking if all Samba4 attributes in the S4-Connector mapping are properly declared as Single-Value"
+	s4c = connect()
+	if not s4c.single_value_mapping_is_ok_for_samba4_attributes():
+		utils.fail("ERROR: Some single valued Samba4 attributes are not configured properly in the S4-Connector mapping.")
+
