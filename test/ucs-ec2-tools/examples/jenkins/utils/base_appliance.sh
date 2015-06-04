@@ -297,7 +297,7 @@ create_install_script ()
 VERSION="1"
 joinscript_init
 apt-get update
-univention-install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages 1>/dev/null || die
+univention-install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages || die
 joinscript_save_current_version
 univention-register-apps
 univention-run-join-scripts
