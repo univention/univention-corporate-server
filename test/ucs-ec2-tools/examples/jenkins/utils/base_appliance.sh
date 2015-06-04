@@ -289,7 +289,7 @@ create_install_script ()
 
 	apps="$app $(app_get_appliance_additional_apps $app)"
 
-	for app in $@; do
+	for app in $apps; do
 		packages="$(app_get_packages $app)"
 		cat >/usr/lib/univention-install/99_setup_${app}.inst <<__EOF__
 #!/bin/sh

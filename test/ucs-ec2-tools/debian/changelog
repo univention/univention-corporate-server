@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.12-13) unstable; urgency=medium
+
+  * Create install script for every app (Bug #38624)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Jun 2015 08:21:37 +0200
+
 ucs-ec2-tools (1.0.12-12) unstable; urgency=medium
 
   * App Appliance: move dependency to the ini files (Bug #38624)
