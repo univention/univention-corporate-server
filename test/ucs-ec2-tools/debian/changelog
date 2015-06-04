@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.12-12) unstable; urgency=medium
+
+  * App Appliance: move dependency to the ini files (Bug #38624)
+  * App Appliance: rename the appliances (Bug #38624)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Jun 2015 07:44:23 +0200
+
 ucs-ec2-tools (1.0.12-11) unstable; urgency=medium
 
   * Bug #38624: Modify base_appliance script to use univention-install

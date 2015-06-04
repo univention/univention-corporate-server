@@ -164,6 +164,14 @@ app_get_appliance_fields_blacklist ()
 				print app.get('ApplianceFieldsBlackList').replace(',',' ');"
 }
 
+app_get_appliance_additional_apps ()
+{
+	local app="$1"
+	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
+				app = Application.find('$app'); \
+				print app.get('ApplianceAdditionalApps').replace(',',' ');"
+}
+
 appliance_dump_memory ()
 {
 	local app="$1"
@@ -179,7 +187,8 @@ else:
 
 register_apps ()
 {
-	apps=$@
+	app=$1
+	apps="$app $(app_get_appliance_additional_apps $app)"
 
 	for app in $apps; do
 		name=$(app_get_name $app)
@@ -197,6 +206,10 @@ register_apps ()
 
 download_packages_and_dependencies ()
 {
+	app=$1
+
+	apps="$app $(app_get_appliance_additional_apps $app)"
+
 	mkdir -p /var/cache/univention-system-setup/packages/
 	if [ ! -e /etc/apt/sources.list.d/05univention-system-setup.list ]; then
 		echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
@@ -205,7 +218,7 @@ download_packages_and_dependencies ()
 	cd /var/cache/univention-system-setup/packages/
 	install_cmd="$(univention-config-registry get update/commands/install)"
 
-	for app in $@; do
+	for app in $apps; do
 		packages="$(app_get_packages $app)"
 		echo "Try to download: $packages"
 		for package in $packages; do
@@ -272,6 +285,10 @@ download_system_setup_packages ()
 
 create_install_script ()
 {
+	app=$1
+
+	apps="$app $(app_get_appliance_additional_apps $app)"
+
 	for app in $@; do
 		packages="$(app_get_packages $app)"
 		cat >/usr/lib/univention-install/99_setup_${app}.inst <<__EOF__
@@ -550,8 +567,9 @@ __EOF__
 
 appliance_basesettings ()
 {
-	apps="$@"
-	app="$1"
+	app=$1
+
+	apps="$app $(app_get_appliance_additional_apps $app)"
 
 	pages_blacklist="$(app_get_appliance_pages_blacklist $app)"
 	ucr set system/setup/boot/pages/blacklist="$pages_blacklist"
@@ -576,7 +594,7 @@ appliance_basesettings ()
 
 	
 	app_fav_list=""
-	for a in apps; do
+	for a in $apps; do
 		app_fav_list="$app_fav_list,apps:$a"
 	done
 	
