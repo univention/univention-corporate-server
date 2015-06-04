@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.16-24) unstable; urgency=medium
+
+  * Fix quoting bug (Bug #37259)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 04 Jun 2015 16:54:36 +0200
+
 univention-s4-connector (9.0.16-23) unstable; urgency=medium
 
   * Rename scripts/remove_obsolete_gpo_and_wmi_rejects to

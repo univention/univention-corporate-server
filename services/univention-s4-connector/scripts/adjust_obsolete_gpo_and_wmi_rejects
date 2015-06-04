@@ -270,9 +270,9 @@ if __name__ == '__main__':
 				if reject.openldap_changeset_objectclass_matches():
 					adjusted_object_data = reject.adjusted_openldap_changeset()
 					if adjusted_object_data:
-						print 'INFO: Adjusting reject %s for %s' % (filename, dn)
-						print '      The reject may now resolve automatically.'
-						print '      It's recommended to check the values manually now.'
+						print "INFO: Adjusting reject %s for %s" % (filename, dn)
+						print "      The reject may now resolve automatically."
+						print "      It's recommended to check the values manually now."
 						dump_object_to_file(filename, adjusted_object_data)
 					break
 	finally:
