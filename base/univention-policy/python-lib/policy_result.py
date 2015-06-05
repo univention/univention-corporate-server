@@ -38,7 +38,7 @@ def policy_result(dn, binddn="", bindpw=""):
 	Return a tuple of hash-lists, mapping attributes to a list of values and
 	mapping attributes to the matching Policy-DN.
 
-	>>> (results, policies) = policy_result('dc=opendvdi,dc=local' [, binddn=BINDDN, bindpw=BINDPW])
+	>>> (results, policies) = policy_result('dc=opendvdi,dc=local', [binddn=BINDDN, bindpw=BINDPW])
 	>>> policies['univentionDhcpDomainNameServers']
 	'cn=default-settings,cn=dns,cn=dhcp,cn=policies,dc=opendvdi,dc=local'
 	results['univentionDhcpDomainNameServers']

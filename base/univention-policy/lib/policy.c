@@ -204,7 +204,7 @@ static void univention_policy_cleanup(univention_policy_handle_t* handle)
 }
 
 /* Retrieve policy 'dn' */
-static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_handle_t *handle, char **object_classes)
+static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_handle_t *handle, char **object_classes, const char *objectdn)
 {
 	int		rc;
 	LDAPMessage	*res;
@@ -266,6 +266,25 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 				}
 				ldap_value_free_len(vals);
 			}
+
+			if (apply && (vals = ldap_get_values_len(ld, entry, "ldapFilter")) != NULL) {
+				int ldap_filter_rc;
+				for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
+					LDAPMessage *ldap_filter_res;
+					char *search_attrs[] = { LDAP_NO_ATTRS, NULL };
+					ldap_filter_rc = ldap_search_ext_s(ld, objectdn, LDAP_SCOPE_BASE, vals[i]->bv_val, search_attrs, 0, NULL, NULL, &timeout, 0, &ldap_filter_res);
+					if (ldap_filter_rc != LDAP_SUCCESS) {
+						univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "search filter '%s' caused error: %s: %s", vals[i]->bv_val, objectdn, ldap_err2string(ldap_filter_rc));
+					} else {
+						if (!ldap_count_entries(ld, ldap_filter_res))
+							apply = false;
+					}
+					ldap_msgfree(ldap_filter_res);
+					break;  // single-value
+				}
+				ldap_value_free_len(vals);
+			}
+
 			if (fixed_attributes == NULL && (vals = ldap_get_values_len(ld, entry, "fixedAttributes")) != NULL) {
 				i = ldap_count_values_len(vals);
 				if ((fixed_attributes = calloc(i + 1, sizeof(char *))) == NULL)
@@ -327,6 +346,7 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 						strcmp(attr, "emptyAttributes") &&
 						strcmp(attr, "requiredObjectClasses") &&
 						strcmp(attr, "prohibitedObjectClasses") &&
+						strcmp(attr, "ldapFilter") &&
 						strcmp(attr, "univentionObjectType") &&
 						(vals = ldap_get_values_len(ld, entry, attr)) != NULL) {
 
@@ -431,7 +451,7 @@ univention_policy_handle_t* univention_policy_open(LDAP* ld, const char *base, c
 					univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "found policies for %s", pdn);
 					for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
 						univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "   policy: %s", vals[i]->bv_val);
-						univention_policy_merge(ld, vals[i]->bv_val, handle, object_classes);
+						univention_policy_merge(ld, vals[i]->bv_val, handle, object_classes, dn);
 					}
 					ldap_value_free_len(vals);
 				}

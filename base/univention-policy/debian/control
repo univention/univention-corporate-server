@@ -18,7 +18,8 @@ Build-Depends: debhelper,
 
 Package: libunivention-policy0
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends},
+ univention-ldap-config (>=11.0.12-7)
 Description: UCS - group policy library
  This library reads group policies from LDAP.
  .

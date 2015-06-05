@@ -1,3 +1,9 @@
+univention-policy (6.0.3-1) unstable; urgency=medium
+
+  * Bug #36255: evaluate attribute "ldapFilter" of policies
+
+ -- Florian Best <best@univention.de>  Fri, 05 Jun 2015 17:51:47 +0200
+
 univention-policy (6.0.2-6) unstable; urgency=low
 
   * fixed XS-Python-Version (Bug #35138) 
