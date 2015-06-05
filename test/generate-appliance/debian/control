@@ -10,6 +10,7 @@ Depends: qemu-utils,
  python-lxml,
  vmdk-stream-converter,
  libguestfs-tools,
+ zip,
 Description: Create virtual appliances for various virtualization systems
  Create virtual appliances for various virtualization systems from a single disk image
  .

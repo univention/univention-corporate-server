@@ -368,6 +368,7 @@ def create_vmx(image_name, image_uuid, options):
 		'vmci0.pciSlotNumber': "35",
 		'uuid.location': encode_vmware_uuid(image_uuid),
 		'uuid.bios': encode_vmware_uuid(image_uuid),
+		'uuid.action': "create",
 		'cleanShutdown': "TRUE",
 		'replay.supported': "FALSE",
 		'replay.filename': "",
