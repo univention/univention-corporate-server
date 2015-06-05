@@ -63,11 +63,16 @@ attributetype ( 1.3.6.1.4.1.10176.1000.2.1.4 NAME 'emptyAttributes'
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
+attributetype ( 1.3.6.1.4.1.10176.1000.2.1.5 NAME 'ldapFilter'
+	DESC 'ldap filter string'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
 objectclass ( 1.3.6.1.4.1.10176.1000.2.2.1 NAME 'univentionPolicy'
 	SUP 'top' STRUCTURAL
 	DESC 'policy object'
 	MUST ( cn )
-	MAY ( requiredObjectClasses $ prohibitedObjectClasses $ fixedAttributes $ emptyAttributes))
+	MAY ( requiredObjectClasses $ prohibitedObjectClasses $ fixedAttributes $ emptyAttributes $ ldapFilter))
 
 attributetype ( 1.3.6.1.4.1.10176.1000.2.1.10 NAME 'univentionRegistry'
 	DESC 'registry entry'
