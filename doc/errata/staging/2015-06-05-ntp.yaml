@@ -1,0 +1,21 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-6
+src: ntp
+fix: 1:4.2.6.p2+dfsg-1.42.201506051319
+version: [5,6]
+desc: |
+ These vulernabilities have been fixed in ntp:
+ * Man-in-the-middle attackers may spoof packets by omitting the MAC
+   because the symmetric-key feature in the receive function in
+   ntp_proto.c requires a correct MAC only if the MAC field has a
+   nonzero length (CVE-2015-1798)
+ * Man-in-the-middle attackers may cause a denial of service
+   (synchronization loss) by spoofing the source IP address of a peer
+   because the symmetric-key feature in the receive function in
+   ntp_proto.c performs state-variable updates upon receiving certain
+   invalid packets (CVE-2015-1799)
+bug: [36245]
+cve:
+ - CVE-2015-1798
+ - CVE-2015-1799
