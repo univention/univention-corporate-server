@@ -1,3 +1,9 @@
+univention-python (8.0.3-4) unstable; urgency=medium
+
+  * Bug #36255: getPolicies: evaluate ldapFilter
+
+ -- Florian Best <best@univention.de>  Fri, 05 Jun 2015 21:08:21 +0200
+
 univention-python (8.0.3-3) unstable; urgency=medium
 
   * uldap.py: Added the parameter reconnect to getAdminConnection,

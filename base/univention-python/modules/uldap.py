@@ -384,13 +384,18 @@ class access:
 
 				if not ptype:
 					continue
-				if ptype not in result:
-					result[ptype]={}
-				if ptype not in fixedattrs:
-					fixedattrs[ptype]={}
+
+				if pattrs.get('ldapFilter'):
+					try:
+						self.search(pattrs['ldapFilter'][0], base=dn, scope='base', unique=True, required=True)
+					except ldap.NO_SUCH_OBJECT:
+						continue
+
+				result.setdefault(ptype, {})
+				fixedattrs.setdefault(ptype, {})
 
 				for key, value in pattrs.items():
-					if key in ( 'requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType' ):
+					if key in ('requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType', 'ldapFilter'):
 						continue
 					if key not in fixedattrs[ptype]:
 						univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "getPolicies: %s sets: %s=%s" % (pdn, key, value))
