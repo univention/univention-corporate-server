@@ -2,11 +2,13 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-management-console-module-udm
-fix: 5.1.25-68.576.201505291558
+fix: 5.1.25-69.577.201506051830
 version: [2]
 desc: |
-  This update addresses the following issue:
+  This update addresses the following issues:
    * An parameter to open a specific object immediately on opening the module has
      been added.
    * The "Shares" module has been moved into the "Domain" category.
-bug: [38544, 38202]
+   * If multiple policies of the same type are references UMC prevents to remove
+     policy references when saving the object.
+bug: [38544, 38202, 36256]

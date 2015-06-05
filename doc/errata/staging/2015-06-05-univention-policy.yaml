@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-policy
+fix: 6.0.2-7.127.201506051834
+version: [2]
+desc: |
+  This update addresses the following issue:
+   * Evaluation of the new "ldapFilter" attribute has been added to
+     univention-policy-result.
+bug: [36255]

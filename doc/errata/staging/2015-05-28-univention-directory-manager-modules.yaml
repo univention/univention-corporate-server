@@ -9,4 +9,5 @@ desc: |
   * Attributes of the UCR policy are now sorted.
   * Broken UDM handler modules are ignored when updating module list.
   * An exception when handling ldap exceptions is prevented now.
-bug: [32146, 38297, 38616]
+  * The attribute "ldapFilter" has been added to policy UDM modules.
+bug: [32146, 38297, 38616, 36255]
