@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-04-08 11:55+0200\n"
+"POT-Creation-Date: 2015-06-05 17:26+0200\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,29 +17,29 @@ msgstr ""
 msgid "%($dn$)s moved"
 msgstr "%($dn$)s verschoben"
 
-#: umc/python/udm/udm_ldap.py:291
+#: umc/python/udm/udm_ldap.py:294
 #, python-format
 msgid "All IP addresses in the specified network \"%s\" are already in use."
 msgstr "Alle IP Adressen im gewählten Netzwerk \"%s\" sind schon in Benutzung."
 
-#: umc/python/udm/__init__.py:1197
+#: umc/python/udm/__init__.py:1199
 #, python-format
 msgid "An error occurred while sending the request: %s"
 msgstr "Ein Fehler ist während des Anforderns aufgetreten: %s"
 
-#: umc/python/udm/udm_ldap.py:242
+#: umc/python/udm/udm_ldap.py:245
 msgid "Authentication failed"
 msgstr "Authentifikation fehlgeschlagen"
 
-#: umc/python/udm/udm_ldap.py:201
+#: umc/python/udm/udm_ldap.py:204
 msgid "Cannot connect to the LDAP service."
 msgstr "Konnte nicht zum LDAP-Dienst verbinden."
 
-#: umc/python/udm/__init__.py:1181
+#: umc/python/udm/__init__.py:1183
 msgid "Cannot parse License from LDAP"
 msgstr "Fehler beim Auslesen der Lizenz aus dem LDAP"
 
-#: umc/python/udm/udm_ldap.py:207
+#: umc/python/udm/udm_ldap.py:210
 msgid ""
 "Check if enough hard disk space and free RAM is available on this server and "
 "on the domaincontroller master or free some resources"
@@ -47,7 +47,7 @@ msgstr ""
 "Überprüfen Sie, ob auf diesem Server und auf dem Domänencontroller Master "
 "genügend Festplattenspeicher und Arbeitsspeicher (RAM) verfügbar sind"
 
-#: umc/python/udm/udm_ldap.py:204
+#: umc/python/udm/udm_ldap.py:207
 msgid ""
 "Check if enough hard disk space and free RAM is available on this server or "
 "free some resources"
@@ -55,14 +55,14 @@ msgstr ""
 "Überprüfen Sie, ob auf diesem Server genügend Festplattenspeicher und "
 "Arbeitsspeicher (RAM) verfügbar sind"
 
-#: umc/python/udm/udm_ldap.py:227
+#: umc/python/udm/udm_ldap.py:230
 msgid ""
 "Check the join status of this system by using the domain join UMC module"
 msgstr ""
 "Überprüfen Sie den Domänenbeitritt-Status dieses Systems durch Benutzung des "
 "Domänenbeitritt UMC-Moduls"
 
-#: umc/python/udm/udm_ldap.py:262
+#: umc/python/udm/udm_ldap.py:265
 #, python-format
 msgid "Could not identify the LDAP object type for %s."
 msgstr "Der LDAP-Objekttyp von %s konnte nicht identifiziert werden."
@@ -71,22 +71,22 @@ msgstr "Der LDAP-Objekttyp von %s konnte nicht identifiziert werden."
 msgid "Could not identify the given LDAP object"
 msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
 
-#: umc/python/udm/udm_ldap.py:273
+#: umc/python/udm/udm_ldap.py:276
 #, python-format
 msgid "Could not identify the superordinate %s."
 msgstr "Das übergeordnete Objekt konnte nicht identifiziert werden"
 
-#: umc/python/udm/udm_ldap.py:224
+#: umc/python/udm/udm_ldap.py:227
 msgid "Ensure that the LDAP server on this system is running and responsive"
 msgstr ""
 "Stellen Sie sicher, dass der LDAP-Server auf diesem System läuft und "
 "ansprechbar ist"
 
-#: umc/python/udm/udm_ldap.py:290
+#: umc/python/udm/udm_ldap.py:293
 msgid "Failed to automatically assign an IP address."
 msgstr "Fehler bei der automatischen IP Adresszuweisung."
 
-#: umc/python/udm/udm_ldap.py:211 umc/python/udm/udm_ldap.py:231
+#: umc/python/udm/udm_ldap.py:214 umc/python/udm/udm_ldap.py:234
 msgid ""
 "If the problem persists additional hints about the cause can be found in the "
 "following log file(s):"
@@ -94,7 +94,7 @@ msgstr ""
 "Wenn das Problem bestehen bleibt, können weitere Hinweise zur Ursache in der/"
 "den folgenden Protokolldatei(en) gefunden werden:"
 
-#: umc/python/udm/udm_ldap.py:263 umc/python/udm/udm_ldap.py:274
+#: umc/python/udm/udm_ldap.py:266 umc/python/udm/udm_ldap.py:277
 msgid ""
 "If the problem persists please try to relogin into Univention Management "
 "Console."
@@ -102,11 +102,11 @@ msgstr ""
 "Wenn das Problem bestehen bleibt melden Sie sich bitte erneut an der "
 "Univention Management Console an."
 
-#: umc/python/udm/udm_ldap.py:210 umc/python/udm/udm_ldap.py:230
+#: umc/python/udm/udm_ldap.py:213 umc/python/udm/udm_ldap.py:233
 msgid "Install the latest software updates"
 msgstr "Installieren Sie alle Softwareaktualisierungen"
 
-#: umc/python/udm/udm_ldap.py:266 umc/python/udm/udm_ldap.py:277
+#: umc/python/udm/udm_ldap.py:269 umc/python/udm/udm_ldap.py:280
 msgid ""
 "It possibly has been deleted or moved. Please update your search results and "
 "open the object again."
@@ -119,7 +119,7 @@ msgstr ""
 msgid "LDAP error: %s."
 msgstr "LDAP-Fehler: %s."
 
-#: umc/python/udm/udm_ldap.py:265
+#: umc/python/udm/udm_ldap.py:268
 #, python-format
 msgid "LDAP object %s could not be found."
 msgstr "Das LDAP-Objekt %s konnte nicht gefunden werden."
@@ -138,13 +138,13 @@ msgstr ""
 "Keine Lizenz gefunden. Während dieser Sitzung ist das Hinzufügen und "
 "Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/udm_ldap.py:228
+#: umc/python/udm/udm_ldap.py:231
 msgid "Make sure all join scripts were successfully executed"
 msgstr ""
 "Stellen Sie sicher, dass alle Domänenbeitritt-Skripte erfolgreich ausgeführt "
 "wurden"
 
-#: umc/python/udm/udm_ldap.py:225
+#: umc/python/udm/udm_ldap.py:228
 msgid ""
 "Make sure the DNS settings of this server are correctly set up and the DNS "
 "server is responsive"
@@ -152,7 +152,7 @@ msgstr ""
 "Stellen Sie sicher, dass die DNS-Einstellungen dieses Servers korrekt "
 "eingestellt sind und der DNS-Server ansprechbar ist"
 
-#: umc/python/udm/udm_ldap.py:206
+#: umc/python/udm/udm_ldap.py:209
 #, python-format
 msgid "Make sure the domaincontroller master is running and reachable from %s"
 msgstr ""
@@ -176,11 +176,11 @@ msgstr "Keine gültige Variante oder existierendes UDM-Modul wurden angegeben"
 msgid "No license has been found."
 msgstr "Es wurde keine Lizenz gefunden"
 
-#: umc/python/udm/udm_ldap.py:927
+#: umc/python/udm/udm_ldap.py:930
 msgid "None"
 msgstr "Keins"
 
-#: umc/python/udm/udm_ldap.py:728
+#: umc/python/udm/udm_ldap.py:731
 msgid "Objects referencing this policy object"
 msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
 
@@ -188,7 +188,7 @@ msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
 msgid "PDF document"
 msgstr "PDF Dokument"
 
-#: umc/python/udm/udm_ldap.py:292
+#: umc/python/udm/udm_ldap.py:295
 msgid ""
 "Please specify a different network or make sure that free IP addresses are "
 "available for the chosen network."
@@ -196,16 +196,16 @@ msgstr ""
 "Bitte wählen Sie ein anderes Netzwerk oder stellen Sie sicher, dass "
 "ungenutzte IP Adressen für das gewählte Netzwerk zur Verfügung stehen."
 
-#: umc/python/udm/udm_ldap.py:412 umc/python/udm/__init__.py:888
+#: umc/python/udm/udm_ldap.py:415 umc/python/udm/__init__.py:888
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
 
-#: umc/python/udm/udm_ldap.py:728
+#: umc/python/udm/udm_ldap.py:731
 msgid "Referencing objects"
 msgstr "Referenzierende Objekte"
 
-#: umc/python/udm/udm_ldap.py:208
+#: umc/python/udm/udm_ldap.py:211
 msgid ""
 "Restart the LDAP service on the domaincontroller master either via \"invoke-"
 "rc.d slapd restart\" on command line or with the UMC module \"System services"
@@ -215,12 +215,12 @@ msgstr ""
 "Kommandozeile oder mit dem UMC Modul \"Systemdienste\" auf dem "
 "Domänencontroller Master neu"
 
-#: umc/python/udm/udm_ldap.py:276
+#: umc/python/udm/udm_ldap.py:279
 #, python-format
 msgid "Superordinate %s could not be found."
 msgstr "Das übergeordnete Objekt %s konnte nicht gefunden werden."
 
-#: umc/python/udm/udm_ldap.py:222
+#: umc/python/udm/udm_ldap.py:225
 #, python-format
 msgid "The LDAP DN of the user %s could not be determined."
 msgstr "Die LDAP-DN des Benutzers %s konnte nicht ermittelt werden."
@@ -238,7 +238,7 @@ msgstr ""
 msgid "The destination is missing"
 msgstr "Das Ziel fehlt"
 
-#: umc/python/udm/udm_ldap.py:202 umc/python/udm/udm_ldap.py:223
+#: umc/python/udm/udm_ldap.py:205 umc/python/udm/udm_ldap.py:226
 msgid "The following steps can help to solve this problem:"
 msgstr "Die folgenden Schritte können helfen, das Problem zu beheben:"
 
@@ -251,12 +251,12 @@ msgstr ""
 "Die Lizenz konnte nicht eingespielt werden. Die LDAP-Basis stimmt nicht "
 "überein (erwartet: %s, gefunden: %s)."
 
-#: umc/python/udm/udm_ldap.py:426 umc/python/udm/udm_ldap.py:440
+#: umc/python/udm/udm_ldap.py:429 umc/python/udm/udm_ldap.py:443
 #, python-format
 msgid "The property %s has an invalid value: %s"
 msgstr "Die Eigenschaft '%s' hat einen nicht gültigen Wert: %s"
 
-#: umc/python/udm/udm_ldap.py:588
+#: umc/python/udm/udm_ldap.py:591
 msgid ""
 "The query you have entered timed out. Please narrow down your search by "
 "specifiying more query parameters"
@@ -264,7 +264,7 @@ msgstr ""
 "Die angeforderte Suche lieferte zu viele Ergebnisse und wurde abgebrochen. "
 "Bitte schränken Sie die Suche durch weitere Suchparameter ein."
 
-#: umc/python/udm/udm_ldap.py:590
+#: umc/python/udm/udm_ldap.py:593
 #, python-format
 msgid ""
 "The query you have entered yields too many matching entries. Please narrow "
@@ -403,7 +403,7 @@ msgstr ""
 "Sie über eine Lizenz verfügen, wenden Sie sich bitte an Univention oder "
 "Ihren Univention Partner."
 
-#: umc/python/udm/udm_ldap.py:638
+#: umc/python/udm/udm_ldap.py:641
 msgid "manual"
 msgstr "handbuch"
 

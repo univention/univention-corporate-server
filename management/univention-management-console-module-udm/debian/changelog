@@ -1,7 +1,6 @@
 univention-management-console-module-udm (5.1.25-69) unstable; urgency=medium
 
-  * Bug #36256: display all referenced policies of an object instead of only
-  	the first one
+  * Bug #36256: handle multiple referenced policies of an object
 
  -- Florian Best <best@univention.de>  Thu, 04 Jun 2015 21:06:49 +0200
 

@@ -65,3 +65,11 @@
 	}
 }
 
+.umc .umcUDMMultiInputEditButton {
+	margin: 0;
+}
+
+.umc .umcUDMMultiInputEditButton .dijitButtonNode {
+	width: 27px;
+	padding: 3px;
+}

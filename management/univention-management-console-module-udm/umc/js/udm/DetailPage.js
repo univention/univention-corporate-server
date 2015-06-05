@@ -65,6 +65,24 @@ define([
 
 	var _StandbyPage = declare([Page, StandbyMixin], {});
 
+	var FixedMultiInput = declare([MultiInput], {
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this._resetValue = [];
+			this.watch('max', lang.hitch(this, '_updateMax'));
+		},
+
+		setInitialValue: function(value) {
+			this._resetValue = value;
+			this.set('value', value);
+		},
+
+		_updateMax: function() {
+			this._removeElement(this.get('value').length);
+			this._updateNewEntryButton();
+		}
+	});
+
 	return declare("umc.modules.udm.DetailPage", [ ContainerWidget, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
@@ -291,7 +309,7 @@ define([
 						// get the MultiInput to update its ComboBox value with the new DN
 						if (ipolicyType in this._policyWidgets) {
 							var iwidget = this._policyWidgets[ipolicyType].$policy$;
-							iwidget.set('value', ipolicyDNs);
+							iwidget.setInitialValue(ipolicyDNs);
 						}
 					}, this);
 				}));
@@ -573,7 +591,7 @@ define([
 					// for the policy group, we need a ComboBox that allows to link an object
 					// to a particular policy
 					newProperties.push({
-						type: MultiInput,
+						type: FixedMultiInput,
 						name: '$policy$',
 						label: _('Select policy configuration'),
 						description: _('Select policies that should be directly linked to the current LDAP object'),
@@ -596,10 +614,16 @@ define([
 							iconClass: 'umcIconEdit',
 							disabled: true,
 							description: _('Edit policy'),
+							'class': 'umcUDMMultiInputEditButton',
 							callback: lang.hitch(this, function(dn) {
 								this._openPolicy(ipolicyType, dn);
 							})
 						}]
+					}, {
+						type: Text,
+						name: '$note$',
+						visible: false,
+						content: _('<b>Warning:</b> This %s has multiple policies of type <i>%s</i> referenced. Modifying is therefore disabled via Univention Management Console.', this.objectNameSingular, ipolicy.label)
 					});
 					var buttonsConf = [{
 						type: Button,
@@ -608,11 +632,10 @@ define([
 						label: _('Create new policy'),
 						callback: lang.hitch(this, '_openPolicy', ipolicyType, undefined)
 					}];
-					newLayout.unshift(['$policy$', '$addPolicy$']);
+					newLayout.unshift(['$note$', '$policy$']);
 
 					// render the group of properties
 					var widgets = render.widgets(newProperties, this);
-					widgets.$policy$._newEntryButton.set('label', _('Connect further policy'));
 					this._policyWidgets[ipolicyType] = widgets;
 					var buttons = render.buttons(buttonsConf, this);
 					widgets.$policy$.addChild(buttons.$addPolicy$);
@@ -1231,11 +1254,19 @@ define([
 				container: this.newObjectOptions ? this.newObjectOptions.container : null
 			}).then(lang.hitch(this, function(data) {
 				tools.forIn(this._policyWidgets[policyType], function(iname, iwidget) {
-					if (iname == '$policy$') {
-						// the MultiInput for policies, skip this widget
+					// manage visibility if multiple policies are referenced (UMC can't handle it currently)
+					var max_reached = policyDNs.length > 1;
+
+					if (iname == '$note$') {
+						iwidget.set('visible', max_reached);
 						return;
 					}
-					//iwidget.set('visible', policyDNs.length < 2);
+					if (iname == '$policy$') {
+						// the MultiInput for policies, skip this widget
+						//iwidget.set('disabled', max_reached);
+						iwidget.set('max', 1);
+						return;
+					}
 
 					var _editLabelFunc = lang.hitch(this, function(label, dn) {
 						return lang.replace('{label} (<a href="javascript:void(0)" ' +
@@ -1499,7 +1530,7 @@ define([
 			tools.forIn(this._policyWidgets, function(ipolicyType, iwidgets) {
 				var ival = iwidgets.$policy$.get('value');
 				var iresetValue = iwidgets.$policy$._resetValue;
-				if (iresetValue != ival) {
+				if (!tools.isEqual(iresetValue, ival)) {
 					changed.push(iwidgets);
 				}
 			}, this);

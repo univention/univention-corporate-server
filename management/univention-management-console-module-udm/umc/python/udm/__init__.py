@@ -1104,6 +1104,9 @@ class Instance(Base, ProgressMixin):
 				object_dn, container_dn, obj = _get_object_parts(ioptions)
 				policy_dns = ioptions.get('policies', [])
 				policy_obj = _get_object(policy_dns[0] if policy_dns else None, UDM_Module(ioptions.get('policyType')))[0]
+				if not policy_obj.exists():
+					ret.append({})
+					continue
 				policy_obj.clone(obj)
 
 				# There are 2x2x2 (=8) cases that may occur (c.f., Bug #31916):
