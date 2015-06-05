@@ -91,7 +91,7 @@ class TestUMCnonUCRpolicies(object):
         Makes a 'udm/object/policies' request and returns result
         """
         options = [{"objectType": "users/user",
-                    "policyDN": policy_dn,
+                    "policies": [policy_dn],
                     "policyType": "policies/pwhistory",
                     "objectDN": user_dn,
                     "container": None}]
