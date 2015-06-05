@@ -1073,8 +1073,8 @@ class Instance(Base, ProgressMixin):
 				if _module is None or _module.module is None:
 					raise UMC_OptionTypeError('The given object type is not valid')
 				_obj = _module.get(_dn)
-				if _obj is None or dn and not obj.exists():
-					raise ObjectDoesNotExist(dn)
+				if _obj is None or (_dn and not _obj.exists()):
+					raise ObjectDoesNotExist(_dn)
 				return _obj, _module
 
 			def _get_object_parts(_options):
