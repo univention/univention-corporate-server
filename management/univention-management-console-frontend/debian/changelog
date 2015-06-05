@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-67) unstable; urgency=medium
+
+  * Bug #38544: fix boolean logic error
+
+ -- Florian Best <best@univention.de>  Fri, 05 Jun 2015 20:11:10 +0200
+
 univention-management-console-frontend (4.1.106-66) unstable; urgency=medium
 
   * Bug #38544: Bug #38613: Bug #36385: add fallback flavor in LinkList widget

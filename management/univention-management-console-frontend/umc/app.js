@@ -1307,16 +1307,14 @@ define([
 			var autoStartModule = tools.status('autoStartModule');
 			var autoStartFlavor = tools.status('autoStartFlavor') || null;
 			var props;
-			if (autoStartModule) {
-				if (!(launchableModules.length === 1 && launchableModules[0].id != autoStartModule || (launchableModules[0].flavor || null) != autoStartFlavor)) {
-					props = ioQuery.queryToObject(window.location.search.substring(1));
-					array.forEach(['username', 'password', 'overview', 'lang', 'module', 'flavor'], function(key) {
-						delete props[key];
-					});
-					props = {
-						props: props
-					};
-				}
+			if (autoStartModule && (launchableModules.length === 1 ? (launchableModules[0].id == autoStartModule && (launchableModules[0].flavor || null) == autoStartFlavor) : true)) {
+				props = ioQuery.queryToObject(window.location.search.substring(1));
+				array.forEach(['username', 'password', 'overview', 'lang', 'module', 'flavor'], function(key) {
+					delete props[key];
+				});
+				props = {
+					props: props
+				};
 			}
 
 			if (!launchableModules.length) {
