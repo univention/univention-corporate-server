@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: samba
-fix: 2:4.2.2-1.742.201505281214
+fix: 2:4.2.2-1.746.201506081753
 version: [1,2]
 desc: |
  Samba has been upgraded to version 4.2.2.
