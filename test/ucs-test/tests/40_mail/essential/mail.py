@@ -46,6 +46,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 import email.encoders as Encoders
+import univention.testing.utils as utils
 
 COMMASPACE = ', '
 
@@ -486,6 +487,49 @@ Regards,
 	ret_code = server.sendmail(m_sender, m_recipients, mimemsg.as_string())
 	server.quit()
 	return ret_code
+
+
+def check_delivery(token, recipient_email, should_be_delivered):
+	delivery_timeout = 60 # sec
+	delivered = False
+	print "%s is waiting for an email to be delivered ..." % recipient_email
+	for i in xrange(delivery_timeout):
+		if not mail_delivered(token, mail_address=recipient_email):
+			time.sleep(1)
+		else:
+			delivered = True
+			print 'Mail Delivered'
+			break
+	if should_be_delivered != delivered:
+		utils.fail('Mail sent with token = %r to %s was not delivered' % (token, recipient_email))
+
+
+def check_sending_mail(
+	username        = None,
+	password        = None,
+	recipient_email = None,
+	tls             = True,
+	allowed         = True,
+	local           = True
+	):
+	token = str(time.time())
+	try:
+		ret_code = send_mail(
+			recipients = recipient_email,
+			msg        = token,
+			port       = 587,
+			server     = '4.3.2.1',
+			tls        = tls,
+			username   = username,
+			password   = password
+		)
+		if (bool(ret_code) == allowed):
+			utils.fail('Sending allowed = %r, but return code = %r\n {} means there are no refused recipient' % (allowed, ret_code))
+		if local:
+			check_delivery(token, recipient_email, allowed)
+	except smtplib.SMTPException as ex:
+		if allowed and (tls or 'access denied' in str(ex)):
+			utils.fail('Mail sent failed with exception: %s' % ex)
 
 
 if __name__ == '__main__':
