@@ -2,6 +2,7 @@
 .. module:: mailclient
 .. moduleauthor:: Ammar Najjar <najjar@univention.de>
 """
+from itertools import izip
 import imaplib
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -53,7 +54,6 @@ class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 		"""
 		code , acls = self.getacl(mailbox)
 		acl = acls[0].split()
-		from itertools import izip
 		i = iter(acl[1:])
 		d = dict(izip(i, i));
 		return {acl[0]:d}
