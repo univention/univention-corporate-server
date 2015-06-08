@@ -2,10 +2,13 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-python
-fix: 8.0.3-4.151.201506052110
+fix: 8.0.3-5.152.201506081640
 version: [2]
 desc: |
   This update addresses the following issue:
    * Evaluation of the new "ldapFilter" attribute has been added to
      the library functions.
-bug: [36255]
+   * The python implementation of univention-policy-result did not evaluate
+     the attributes "requiredObjectClass" and "prohibitedObjectClasses". This
+     has been fixed.
+bug: [36255, 38663]
