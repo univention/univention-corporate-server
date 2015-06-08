@@ -1418,7 +1418,11 @@ define([
 					iconClass = tools.getIconClass(category.icon, 70);
 				}
 				var color = category.color || 'white';
-				styles.insertCssRule(lang.replace('.umcGalleryWrapperItem .umcGalleryCategory-{id}:hover, .umcGalleryWrapperItem.umcGalleryItemActive .umcGalleryCategory-{id}', category), lang.replace('background-color: {0}; ', [color]));
+				if (has('touch')) {
+					styles.insertCssRule(lang.replace('.umcGalleryWrapperItem .umcGalleryCategory-{id}.touched, .umcGalleryWrapperItem.umcGalleryItemActive .umcGalleryCategory-{id}', category), lang.replace('background-color: {0}; ', [color]));
+				} else {
+					styles.insertCssRule(lang.replace('.umcGalleryWrapperItem .umcGalleryCategory-{id}.noTouch:hover, .umcGalleryWrapperItem.umcGalleryItemActive .umcGalleryCategory-{id}', category), lang.replace('background-color: {0}; ', [color]));
+				}
 				var button = new CategoryButton({
 					label: category.label,
 					'class': lang.replace('umcCategory-{id}', category),

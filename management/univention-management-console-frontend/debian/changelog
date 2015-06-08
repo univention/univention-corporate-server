@@ -1,3 +1,12 @@
+univention-management-console-frontend (4.1.106-68) unstable; urgency=low
+
+  Bug #38658:
+  * removed hover selector for galleryitems on mobile devices, added cssClass
+  	instead
+  * changed behaviour of the context menu on mobile devices
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 08 Jun 2015 12:24:31 +0200
+
 univention-management-console-frontend (4.1.106-67) unstable; urgency=medium
 
   * Bug #38544: fix boolean logic error

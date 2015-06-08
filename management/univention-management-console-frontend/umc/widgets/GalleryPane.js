@@ -41,6 +41,8 @@ define([
 	"dojo/dom-style",
 	"dojo/dom-construct",
 	"dojo/dom-geometry",
+	"dojo/touch",
+	"dojox/timing/_base",
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/Destroyable",
@@ -49,7 +51,7 @@ define([
 	"dgrid/List",
 	"dgrid/extensions/DijitRegistry",
 	"put-selector/put"
-], function(declare, lang, array, kernel, win, on, has, query, domClass, domStyle, domConstruct, domGeometry, Menu, MenuItem, Destroyable, tools, Tooltip, List, DijitRegistry, put) {
+], function(declare, lang, array, kernel, win, on, has, query, domClass, domStyle, domConstruct, domGeometry, touch, timing, Menu, MenuItem, Destroyable, tools, Tooltip, List, DijitRegistry, put) {
 	return declare("umc.widgets.GalleryPane", [ List, DijitRegistry, Destroyable ], {
 		style: "",
 
@@ -133,9 +135,11 @@ define([
 		},
 
 		_createContextMenu: function() {
+			//var _selector = (has('touch')) ? '.umcGalleryItem' : '.umcGalleryItem.noTouch';
 			this._contextMenu = new Menu({
 				targetNodes: [ this.id ],
-				selector: '.umcGalleryItem'
+				selector: '.umcGalleryItem',
+				refocus: false
 			});
 			this.own(this._contextMenu);
 			array.forEach(this.actions, lang.hitch(this, function(action) {
@@ -227,28 +231,91 @@ define([
 				var row = this.row(evt);
 				this._openContextMenu(row.data, row.element, evt.pageX, evt.pageY);
 			}));
+
 			if (has('touch')) {
-				var _contextTouchTimeout = null;
-				var _cancelContextTouch = function() {
-					if (_contextTouchTimeout !== null) {
-						window.clearTimeout(_contextTouchTimeout);
-						_contextTouchTimeout = null;
-						return true;
+				var _touchstartTime = null;
+				var _touchstartPosX = null;
+				var _touchstartPosY = null;
+				var _contextMenuAnchorPointX = null;
+				var _contextMenuAnchorPointY = null;
+				var _touchedRow = null;
+
+				var _checkContextMenuTimer = new timing.Timer(100);
+				_checkContextMenuTimer.onTick = lang.hitch(this, function() {
+					var touchLength = _touchstartTime === null ? 0: new Date() - _touchstartTime;
+					console.log(touchLength);
+					if (touchLength >= 1000) {
+						this._openContextMenu(_touchedRow.data, _touchedRow.element, _contextMenuAnchorPointX, _contextMenuAnchorPointY);
+						_checkContextMenuTimer.stop();
 					}
-					return false;
-				};
+				});
+
+				on(win.body(), 'touchstart', lang.hitch(this, function(evt) {
+					console.log("body touchstart");
+					console.log("contesxtMenu isShowint: " + this._contextMenu.isShowingNow);
+					setTimeout(lang.hitch(this, function() {
+						if (this._contextMenu.isShowingNow) {
+							setTimeout(lang.hitch(this, function() {
+								console.log("closing contextmenu");
+								this._closeContextMenu();
+							}), 0);
+						}
+					}), 350);
+				}));
 
 				this.on('.umcGalleryItem:touchstart', lang.hitch(this, function(evt) {
-					_contextTouchTimeout = setTimeout(lang.hitch(this, function() {
-						var row = this.row(evt);
-						this._openContextMenu(row.data, row.element, evt.pageX, evt.pageY);
-						_contextTouchTimeout = null;
-					}), 1000);
-				}));
-				this.on('.umcGalleryItem:touchend', lang.hitch(this, function(evt) {
-					if (!_cancelContextTouch()) {
-						evt.preventDefault();
+					_touchedRow = this.row(evt);
+					_touchstartPosX = evt.clientX;
+					_touchstartPosY = evt.clientY;
+					_contextMenuAnchorPointX = evt.pageX;
+					_contextMenuAnchorPointY = evt.pageY;
+					console.log(evt);
+
+					setTimeout(lang.hitch(this, function() {
+						array.forEach(this.contentNode.children, function(inode) {
+							domClass.remove(inode.firstChild, 'touched');
+						});
+					}), 0);
+					setTimeout(lang.hitch(this, function() {
+						domClass.add(_touchedRow.element.firstChild, 'touched');
+					}), 0);
+
+					if (!_checkContextMenuTimer.isRunning) {
+							_touchstartTime = new Date();
+							_checkContextMenuTimer.start();
 					}
+				}));
+
+				this.on(on.selector('.umcGalleryItem', touch.move), lang.hitch(this, function(evt) {
+					var isNull = _touchstartPosX === null || _touchstartPosY === null;
+					if (isNull) {
+						return;
+					}
+
+					var hasMovedFromInitialPosition = Math.abs(_touchstartPosX - evt.clientX) >= 60 || Math.abs(_touchstartPosY - evt.clientY) >= 60;
+					if (hasMovedFromInitialPosition) {
+						_touchstartTime = null;
+						_checkContextMenuTimer.stop();
+					}
+				}));
+
+				this.on(on.selector('.umcGalleryItem', touch.leave), function() {
+					_touchstartTime = null;
+					_checkContextMenuTimer.stop();
+				});
+
+				this.on('.umcGalleryItem:touchend', lang.hitch(this, function(evt) {
+					var row = this.row(evt);
+					var touchLength = _touchstartTime === null ? 0: new Date() - _touchstartTime;
+					if (_touchstartTime === null || touchLength >= 700) {
+						domClass.remove(row.element.firstChild, 'touched');
+					} else {
+						setTimeout(function() {
+							domClass.remove(row.element.firstChild, 'touched');
+						}, 1000);
+						_touchstartTime = null;
+					}
+					_checkContextMenuTimer.stop();
 				}));
 			}
 
@@ -331,7 +398,8 @@ define([
 				moduleID: item.$id$,
 				bootstrapClasses: this.bootstrapClasses
 			}));
-			var div = put(wrapperDiv, lang.replace('div.umcGalleryItem', item));
+			var cssClass = (has('touch')) ? 'div.umcGalleryItem' : 'div.umcGalleryItem.noTouch';
+			var div = put(wrapperDiv, lang.replace(cssClass, item));
 			var description = this.getItemDescription(item);
 			var iconClass = this.getIconClass(item);
 			if (iconClass) {
