@@ -135,7 +135,6 @@ define([
 		},
 
 		_createContextMenu: function() {
-			//var _selector = (has('touch')) ? '.umcGalleryItem' : '.umcGalleryItem.noTouch';
 			this._contextMenu = new Menu({
 				targetNodes: [ this.id ],
 				selector: '.umcGalleryItem',
@@ -243,7 +242,6 @@ define([
 				var _checkContextMenuTimer = new timing.Timer(100);
 				_checkContextMenuTimer.onTick = lang.hitch(this, function() {
 					var touchLength = _touchstartTime === null ? 0: new Date() - _touchstartTime;
-					console.log(touchLength);
 					if (touchLength >= 1000) {
 						this._openContextMenu(_touchedRow.data, _touchedRow.element, _contextMenuAnchorPointX, _contextMenuAnchorPointY);
 						_checkContextMenuTimer.stop();
@@ -251,12 +249,9 @@ define([
 				});
 
 				on(win.body(), 'touchstart', lang.hitch(this, function(evt) {
-					console.log("body touchstart");
-					console.log("contesxtMenu isShowint: " + this._contextMenu.isShowingNow);
 					setTimeout(lang.hitch(this, function() {
 						if (this._contextMenu.isShowingNow) {
 							setTimeout(lang.hitch(this, function() {
-								console.log("closing contextmenu");
 								this._closeContextMenu();
 							}), 0);
 						}
@@ -269,7 +264,6 @@ define([
 					_touchstartPosY = evt.clientY;
 					_contextMenuAnchorPointX = evt.pageX;
 					_contextMenuAnchorPointY = evt.pageY;
-					console.log(evt);
 
 					setTimeout(lang.hitch(this, function() {
 						array.forEach(this.contentNode.children, function(inode) {
@@ -398,8 +392,7 @@ define([
 				moduleID: item.$id$,
 				bootstrapClasses: this.bootstrapClasses
 			}));
-			var cssClass = (has('touch')) ? 'div.umcGalleryItem' : 'div.umcGalleryItem.noTouch';
-			var div = put(wrapperDiv, lang.replace(cssClass, item));
+			var div = put(wrapperDiv, lang.replace('div.umcGalleryItem', item));
 			var description = this.getItemDescription(item);
 			var iconClass = this.getIconClass(item);
 			if (iconClass) {
