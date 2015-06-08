@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.89-17) unstable; urgency=low
+
+  * Bug #38658: minor code changes
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 08 Jun 2015 15:01:34 +0200
+
 univention-management-console-frontend-theme (0.0.89-16) unstable; urgency=low
 
   * Bug #38658: adjusted class selecotrs for GalleryItems on mobile devices

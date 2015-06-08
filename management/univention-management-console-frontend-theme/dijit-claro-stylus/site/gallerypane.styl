@@ -120,8 +120,7 @@
 	}
 
 	.umcGalleryItem.touched,
-	.umcGalleryItemActive,
-	.umcGalleryItem.noTouch:hover {
+	.umcGalleryItemActive {
 		cursor: pointer;
 		.umcGalleryCategoryFavorite {
 			background-color: #ffffff!important;
@@ -144,6 +143,30 @@
 			background-position: -20px -40px;
 			opacity: 0.67;
 		}
+	}
+}
+body:not(.umcTouchDevices) .umcGalleryPane .umcGalleryItem:hover {
+	cursor: pointer;
+	.umcGalleryCategoryFavorite {
+		background-color: #ffffff!important;
+	}
+	.umcGalleryName,
+	.umcGalleryDescription {
+		color: white;
+		border-color: white;
+	}
+	.umcFavoriteIconDefault {
+		display: none;
+	}
+	.umcGalleryContextIcon {
+		icon-image(0, -40, "../", "-white");
+	}
+	.umcGalleryContextIcon:hover {
+		background-position: -20px -40px;
+	}
+	.umcGalleryContextIcon:active {
+		background-position: -20px -40px;
+		opacity: 0.67;
 	}
 }
 
