@@ -172,7 +172,7 @@ static bool in_string_array(char **object_classes, const char *object_class)
 	if (object_classes == NULL)
 		return false;
 	for (i = 0; object_classes[i] != NULL; i++)
-		if (strcmp(object_classes[i], object_class) == 0)
+		if (strcasecmp(object_classes[i], object_class) == 0)
 			return true;
 	return false;
 }
