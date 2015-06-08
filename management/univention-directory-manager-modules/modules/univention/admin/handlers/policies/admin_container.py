@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys
-
 from univention.admin.layout import Tab, Group
 import univention.admin.syntax
 import univention.admin.filter
@@ -44,7 +42,7 @@ translation=univention.admin.localization.translation('univention.admin.handlers
 _=translation.translate
 
 class adminFixedAttributes(univention.admin.syntax.select):
-        name='adminFixedAttributes'
+	name='adminFixedAttributes'
 	choices=[
 	('univentionAdminListModules',_('List of Univention Directory Manager modules')),
 	]
@@ -126,6 +124,16 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'ldapFilter': univention.admin.property(
+			short_description=_('LDAP filter'),
+			long_description=_('This policy applies only to objects which matches this LDAP filter.'),
+			syntax=univention.admin.syntax.ldapFilter,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 }
 
 layout = [
@@ -136,6 +144,7 @@ layout = [
 			] ),
 		] ),
 	Tab( _( 'Object' ), _( 'Object' ), advanced = True, layout = [
+		[ 'ldapFilter' ],
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
 	] ),
@@ -148,6 +157,7 @@ mapping.register('requiredObjectClasses', 'requiredObjectClasses')
 mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
 mapping.register('fixedAttributes', 'fixedAttributes')
 mapping.register('emptyAttributes', 'emptyAttributes')
+mapping.register('ldapFilter', 'ldapFilter')
 
 class object(univention.admin.handlers.simplePolicy):
 	module=module

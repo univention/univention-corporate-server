@@ -122,6 +122,16 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'ldapFilter': univention.admin.property(
+			short_description=_('LDAP filter'),
+			long_description=_('This policy applies only to objects which matches this LDAP filter.'),
+			syntax=univention.admin.syntax.ldapFilter,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 }
 
 layout = [
@@ -132,6 +142,7 @@ layout = [
 		] ),
 	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
+		[ 'ldapFilter' ],
 		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
 		[ 'fixedAttributes', 'emptyAttributes' ]
 	] ),
@@ -144,6 +155,7 @@ mapping.register('requiredObjectClasses', 'requiredObjectClasses')
 mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
 mapping.register('fixedAttributes', 'fixedAttributes')
 mapping.register('emptyAttributes', 'emptyAttributes')
+mapping.register('ldapFilter', 'ldapFilter')
 
 class object(univention.admin.handlers.simplePolicy):
 	module=module

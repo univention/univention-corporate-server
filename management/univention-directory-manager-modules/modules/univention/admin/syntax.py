@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
+import ldap
 import operator
 import ipaddr
 import inspect
@@ -1474,6 +1475,22 @@ class ldapObjectClass(simple):
 class ldapAttribute(simple):
 	@classmethod
 	def parse(self, text):
+		return text
+
+class ldapFilter(simple):
+
+	@classmethod
+	def parse(cls, text):
+		# use a unbound ldap connection to validate the search filter
+		lo = ldap.initialize('')
+		try:
+			lo.search_ext_s('', ldap.SCOPE_BASE, text)
+		except ldap.FILTER_ERROR:
+			raise univention.admin.uexceptions.valueError(_('Not a valid LDAP search filter'))
+		except ldap.SERVER_DOWN:
+			pass
+		finally:
+			lo.unbind()
 		return text
 
 class XResolution(simple):
