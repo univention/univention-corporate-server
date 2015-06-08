@@ -5,10 +5,10 @@
 ## packages: [univention-mail-server]
 
 from essential.mailclient import MailClient, create_shared_mailfolder
+import itertools
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
-import itertools
 
 
 def main():
@@ -18,8 +18,9 @@ def main():
 		host = '%s.%s' % (ucr.get('hostname'), domain)
 		password = 'univention'
 		mails = []
+		users = []
 		for i in xrange(2):
-			usermail = '%s@%s' % (uts.random_name(), domain )
+			usermail = '%s@%s' % (uts.random_name(), domain)
 			userdn, username = udm.create_user(
 				set={
 					'password'           : password,
@@ -28,12 +29,21 @@ def main():
 				}
 			)
 			mails.append(usermail)
-
+			users.append(userdn)
+		group_mail = '%s@%s' % (uts.random_name(), domain)
+		udm.create_group(
+			users=users[0],
+			set={
+				'users'       : users[1],
+				'mailAddress' : group_mail,
+			},
+		)
 		default_shared_permissions = {'anyone': 'lrswipkxtecda'}
 		permissions = 'lrswipkxtecda'
 		shared_mailbox = create_shared_mailfolder(
 			udm, host, user_permission=['"%s" "%s"' % ('anyone', 'all')])
 
+		mails.append(group_mail)
 		test_cases = itertools.product(mails, permissions)
 		for i in xrange(len(mails) * len(permissions)):
 			who, what = next(test_cases)
