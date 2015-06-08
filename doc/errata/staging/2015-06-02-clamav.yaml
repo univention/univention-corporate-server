@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-6
 src: clamav
-fix: 0.98.1+dfsg-2~really0.98.7+dfsg-0.150.201506021701
+fix: 0.98.1+dfsg-2~really0.98.7+dfsg-0.151.201506081022
 version: [6]
 desc: |
  These vulernabilities have been fixed:
