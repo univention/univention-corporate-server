@@ -362,10 +362,16 @@ class access:
 			return {}
 
 		# get current dn
+		if attrs and 'objectClass' in attrs and 'univentionPolicyReference' in attrs:
+			oattrs = attrs
+		else:
+			oattrs = self.get(dn, ['univentionPolicyReference', 'objectClass'])
 		if attrs and 'univentionPolicyReference' in attrs:
 			policies=attrs['univentionPolicyReference']
 		elif not policies and not attrs:
-			policies=self.getAttr(dn, 'univentionPolicyReference')
+			policies=oattrs.get('univentionPolicyReference', [])
+
+		object_classes = [x.lower() for x in oattrs.get('objectClass', [])]
 
 		if dn:
 			parent_dn=self.parentDn(dn)
@@ -390,6 +396,11 @@ class access:
 						self.search(pattrs['ldapFilter'][0], base=dn, scope='base', unique=True, required=True)
 					except ldap.NO_SUCH_OBJECT:
 						continue
+
+				if not all(oc.lower() in object_classes for oc in pattrs.get('requiredObjectClasses', [])):
+					continue
+				if any(oc.lower() in object_classes for oc in pattrs.get('prohibitedObjectClasses', [])):
+					continue
 
 				result.setdefault(ptype, {})
 				fixedattrs.setdefault(ptype, {})
