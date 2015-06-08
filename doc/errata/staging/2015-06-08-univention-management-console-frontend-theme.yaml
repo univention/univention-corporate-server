@@ -1,0 +1,12 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-management-console-frontend-theme
+fix: 0.0.89-16.87.201506081301
+version: [2]
+desc: |
+  This update addresses the following issue:
+  * On a desktop browser the modules in the UMC overview page change their
+    color if you hover over them. On mobile devices there is no hover
+    so the styling has been adjusted.
+bug: [38658]
