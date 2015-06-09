@@ -117,7 +117,15 @@ fake_replication () {
 	sync
 	chown -R openldap: /var/lib/univention-ldap/ldap
 
-	service slapd.service start
+	if [ ! -s /etc/ldap/rootpw.conf ]
+	then
+		. /usr/share/univention-lib/base.sh
+		echo "rootpw \"$(create_machine_password)\"" > /etc/ldap/rootpw.conf
+	fi
+	service slapd restart
+
+	# resync computer object
+	/usr/share/univention-directory-listener/resync-objects.py -f "uid=$hostname\$" -r
 }
 
 # 1: fake listener initialization
