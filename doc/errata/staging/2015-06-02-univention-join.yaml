@@ -6,5 +6,5 @@ fix: 7.1.2-15.501.201506021020
 version: [2]
 desc: |
   This update addresses the following issue:
-   * The german translation has been adapted
+   * A typo in the german translation has corrected.
 bug: [38216]
