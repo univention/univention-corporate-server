@@ -1,0 +1,75 @@
+#!/usr/share/ucs-test/runner python
+## desc: Mail imap acls
+## tags: apptest
+## exposure: dangerous
+## packages: [univention-mail-server]
+
+from essential.mailclient import MailClient
+from univention.config_registry import handler_set
+import psutil
+import resource
+import subprocess
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+
+def restart_cyrus():
+	"""Restart Cyrus server
+	"""
+	cmd = ['/etc/init.d/cyrus-imapd', 'restart']
+	print cmd
+	subprocess.call(cmd)
+
+def set_openfiles_limit(new_limit):
+	"""Set ulimit -n new_limit
+	for the current process only
+	"""
+	resource.setrlimit(resource.RLIMIT_NOFILE, new_limit)
+
+def used_memory():
+	"""Get System used memory
+
+	:returns: used memory in bytes
+	"""
+	return psutil.phymem_usage()[1] / (1024 * 1024.0)
+
+def main():
+	with udm_test.UCSTestUDM() as udm:
+		with ucr_test.UCSTestConfigRegistry() as ucr:
+			handler_set(['mail/cyrus/imap/maxchilds=1501'])
+			domain = ucr.get('domainname')
+			host = '%s.%s' % (ucr.get('hostname'), domain)
+			password = 'univention'
+			usermail = '%s@%s' % (uts.random_name(), domain )
+			userdn, username = udm.create_user(
+				set={
+					'password'			 : password,
+					'mailHomeServer'	 : host,
+					'mailPrimaryAddress' : usermail
+				}
+			)
+			set_openfiles_limit((2048, 2048))
+			mem_start = used_memory()
+			restart_cyrus()
+			servers = []
+			for i in xrange(1500):
+				imap = MailClient(host)
+				servers.append(imap)
+
+			print '%d imap servers are OK' % (i + 1)
+			for imap in servers:
+				imap.log_in(usermail, password)
+
+			print '%d imap logins are OK' % (i + 1)
+			for imap in servers:
+				imap.logout()
+			print '%d imap logouts are OK' % (i + 1)
+
+			mem_finish = used_memory()
+			mem_per_proc =  (mem_finish - mem_start) / 1500.0
+			print 'Memory Used = %.3fMB per connection' % mem_per_proc
+
+if __name__ == '__main__':
+	main()
+
+# vim: set ft=python ts=4 sw=4 noet :
