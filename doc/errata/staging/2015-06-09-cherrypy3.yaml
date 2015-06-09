@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: cherrypy3
+fix: 3.2.2-2.15.201506091410
+version: [2]
+desc: |
+  This update addresses the following issue:
+  * A bug in the cherrypy AutoReloader plugin deregistration has been fixed which could lead to
+    failing starts of the UMC webserver.
+bug: [37844]
