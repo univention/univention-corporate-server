@@ -1,3 +1,9 @@
+univention-system-setup (8.1.69-3) unstable; urgency=medium
+
+  * Bug #37537: add appliance hook which installs univention-welcome-screen
+
+ -- Florian Best <best@univention.de>  Wed, 10 Jun 2015 16:11:05 +0200
+
 univention-system-setup (8.1.69-2) unstable; urgency=low
 
   * Bug #38391: Fix debian/control file: Move Conflict to Depends
