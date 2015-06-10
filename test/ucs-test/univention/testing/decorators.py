@@ -2,6 +2,22 @@ import time
 
 DEFAULT_TIMEOUT = 90 # seconds
 
+class SetMailDeliveryTimeout(object):
+
+	def __init__(self, timeout=DEFAULT_TIMEOUT):
+		self.timeout = timeout
+
+	def __call__(self, func):
+		def wrapper(*args, **kwargs):
+			for i in xrange(self.timeout):
+				result = func(*args, **kwargs)
+				if result:
+					break
+				else:
+					time.sleep(1)
+			return result
+		return wrapper
+
 class SetTimeout(object):
 
 	def __init__(self, func, timeout=DEFAULT_TIMEOUT):
@@ -35,3 +51,5 @@ def setTimeout(func, timeout=DEFAULT_TIMEOUT):
 		else:
 			func(*args, **kwargs)
 	return wrapper
+
+# vim: set ft=python ts=4 sw=4 noet ai :

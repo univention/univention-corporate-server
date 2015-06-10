@@ -47,6 +47,7 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 import email.encoders as Encoders
 import univention.testing.utils as utils
+from univention.testing.decorators import SetMailDeliveryTimeout
 
 COMMASPACE = ', '
 
@@ -279,6 +280,7 @@ def spam_delivered(token, mail_address):
 	return delivered and spam
 
 
+@SetMailDeliveryTimeout()
 def mail_delivered(token, user=None, mail_address=None, check_root=True):
 	delivered = False
 	if check_root:
@@ -490,16 +492,8 @@ Regards,
 
 
 def check_delivery(token, recipient_email, should_be_delivered):
-	delivery_timeout = 60 # sec
-	delivered = False
 	print "%s is waiting for an email to be delivered ..." % recipient_email
-	for i in xrange(delivery_timeout):
-		if not mail_delivered(token, mail_address=recipient_email):
-			time.sleep(1)
-		else:
-			delivered = True
-			print 'Mail Delivered'
-			break
+	delivered  = mail_delivered(token, mail_address=recipient_email)
 	if should_be_delivered != delivered:
 		utils.fail('Mail sent with token = %r to %s was not delivered' % (token, recipient_email))
 
