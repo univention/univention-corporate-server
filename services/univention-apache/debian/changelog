@@ -1,3 +1,9 @@
+univention-apache (7.0.16-11) unstable; urgency=low
+
+  * Bug #38016: Fix overviee page.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 10 Jun 2015 19:21:16 +0200
+
 univention-apache (7.0.16-10) unstable; urgency=low
 
   * Bug #38391: Show real address in welcome message.

@@ -95,8 +95,8 @@ $(buildBootstrap): bootstrap.zip
 
 install: build
 	# copy all files from the build directory .. exclude file of the tmp directory
-	mkdir -p "$(DESTDIR)$(pkgDir)"
-	cp -r $(buildDir)/* "$(DESTDIR)$(pkgDir)/var"
+	mkdir -p "$(DESTDIR)$(pkgDir)/var"
+	cp -r $(buildDir)/* "$(DESTDIR)$(pkgDir)/var/"
 
 clean:
 	rm -rf $(buildDir)
