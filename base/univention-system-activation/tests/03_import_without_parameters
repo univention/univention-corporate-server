@@ -1,9 +1,0 @@
-#!/usr/share/ucs-test/runner bash
-
-. tools.inc.sh
-
-http --data "bar=foo"
-if ! has_request_failed; then
-	fail_fast 1 "Missing 'license' parameter is not caught!"
-fi
-
