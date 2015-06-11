@@ -9,6 +9,7 @@ from univention.config_registry.interfaces import Interfaces
 
 
 regEntries = re.compile(r'^ucs/web/overview/entries/(?P<category>[^/]+)/(?P<id>[^/]+)/(?P<key>[^/]+)(/(?P<lang>\w+))?$')
+tracebacks = []
 
 class LocalizedString:
 	def __init__(self):
@@ -80,51 +81,64 @@ def getEntries(category):
 
 def query_ec2(key):
 	url = 'http://169.254.169.254/latest/meta-data/' + key
-	socket.setdefaulttimeout(2)
 	try:
-		result = urllib2.urlopen(url)
+		result = urllib2.urlopen(url, timeout=2)
 		value = result.read().strip()
 		return value
-	except urllib2.URLError:
+	except (urllib2.URLError, socket.error, socket.timeout) as ex:
+		tracebacks.append('%s %s' % (url, ex))
 		return None
 
 
 def get_ip_address(ifname):
-	sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	SIOCGIFADDR = 0x8915
 	try:
-		addr = socket.inet_ntoa(
-			fcntl.ioctl(
-				sock.fileno(),
-				SIOCGIFADDR,
-				struct.pack('256s', ifname[:15])
-			)[20:24]
-		)
-	except IOError:
+		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		try:
+			addr = socket.inet_ntoa(
+				fcntl.ioctl(
+					sock.fileno(),
+					SIOCGIFADDR,
+					struct.pack('256s', ifname[:15])
+				)[20:24]
+			)
+		finally:
+			sock.close()
+	except IOError as ex:
+		tracebacks.append('%s %s %d' % (ifname, ex, ex.errno))
 		addr = None
-	sock.close()
 	return addr
 
 
 def get_ec2_address():
+	# EC2 meta data
 	if configRegistry.is_true('server/amazon'):
 		for key in ('public-hostname', 'public-ipv4', 'local-ipv4'):
 			addr = query_ec2(key)
 			if addr:
 				return addr
+
+	# UCR
+	DHCP = {'dhcp', 'dynamic'}
 	interfaces = Interfaces(configRegistry)
 	for ifname, iface in interfaces.all_interfaces:
-		#IPv4
-		if iface.type == 'dhcp':
-			return get_ip_address(ifname)
-		else:
-			addr = iface.ipv4_address()
-			if addr:
-				return addr
+		# IPv4
+		addr = get_ip_address(ifname) if iface.type in DHCP else iface.ipv4_address()
+		if addr:
+			return '%s' % (addr.ip,)
 		# IPv6
 		addr = iface.ipv6_address()
 		if addr:
-			return '[%s]' % (addr,)
+			return '[%s]' % (addr.ip,)
+
+	# runtime data
+	for ifname, iface in interfaces.all_interfaces:
+		addr = get_ip_address(ifname)
+		if addr:
+			return '%s' % (addr.ip,)
+
+	# fallback
+	return socket.getfqdn()
 
 
 data = dict(
@@ -134,7 +148,8 @@ data = dict(
 		domainname=configRegistry['domainname'],
 		hostname=configRegistry['hostname'],
 		serveraddress=get_ec2_address(),
-	)
+	),
+	tracebacks=tracebacks,
 )
 
 print json.dumps(data, indent=2)
