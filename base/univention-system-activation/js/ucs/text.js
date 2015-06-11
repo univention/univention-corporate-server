@@ -37,8 +37,12 @@ define([
 ], function(text,lang,json) {
 	return lang.delegate(text, {
 		load: function(id, require, load){
-			text.load(id, require, function(data){
-				load(json.parse(data));
+			text.load(id, require, function(data) {
+				// parse JSON data
+				if (id.split('.').pop() == 'json') {
+					data = json.parse(data);
+				}
+				load(data);
 			});
 		}
 	});

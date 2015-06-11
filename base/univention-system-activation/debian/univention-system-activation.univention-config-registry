@@ -5,3 +5,8 @@ Type: file
 File: usr/share/univention-system-activation/www/languages.json
 Variables: locale
 Variables: ucs/server/languages/.*
+
+Type: file
+File: usr/share/univention-system-activation/www/entries.json
+Variables: uuid/license
+Variables: ucs/web/license/requested

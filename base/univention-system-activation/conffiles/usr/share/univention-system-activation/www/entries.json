@@ -1,0 +1,10 @@
+@!@
+import json
+
+data = dict(
+	license_uuid=configRegistry['uuid/license'],
+	license_requested=configRegistry['ucs/web/license/requested'],
+)
+
+print json.dumps(data, indent=2)
+@!@

@@ -6,6 +6,7 @@ import tempfile
 from ldap import LDAPError
 from univention.management.console.modules.udm.tools import LicenseImport, LicenseError
 from univention.config_registry import ConfigRegistry
+from univention.config_registry import filter as ucr_filter
 
 #import cgitb
 #cgitb.enable(display=2, logdir="/var/log/univention/system-activation.log")
@@ -17,6 +18,13 @@ def read_ldap_secret():
 		if secret[-1] == '\n':
 			secret = secret[:-1]
 	return secret
+
+def read_license():
+	ucr = ConfigRegistry()
+	ucr.load()
+	with open('/usr/share/univention-ldap/core-edition.ldif') as license_file:
+		license = license_file.read()
+	return ucr_filter(license, ucr)
 
 def application(environ, start_response):
 	"""WSGI entry point"""
@@ -31,6 +39,10 @@ def application(environ, start_response):
 		]
 		start_response(status, headers)
 		return [response]
+
+	# output the license upon GET request
+	if environ.get('REQUEST_METHOD') == 'GET':
+		return _finish(response=read_license())
 
 	# block uploads that are larger than 1MB
 	try:

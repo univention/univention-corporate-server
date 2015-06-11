@@ -49,8 +49,10 @@ define([
 	"dijit/DropDownMenu",
 	"put-selector/put",
 	"./text!/languages.json",
+	"./text!/entries.json",
+	"./text!/license",
 	"./i18n!"
-], function(lang, kernel, array, ioQuery, query, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Menu, MenuItem, DropDownButton, DropDownMenu, put, _availableLocales, _) {
+], function(lang, kernel, array, ioQuery, query, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Menu, MenuItem, DropDownButton, DropDownMenu, put, _availableLocales, entries, license, _) {
 	// make sure that en-US exists
 	var existsEnUsLocale = array.some(_availableLocales, function(ilocale) {
 		return ilocale.id == 'en-US';
@@ -62,9 +64,27 @@ define([
 		});
 	}
 
+	var isTrue = function(input) {
+		//('yes', 'true', '1', 'enable', 'enabled', 'on')
+		if (typeof input == "string") {
+			switch (input.toLowerCase()) {
+				case 'yes':
+				case 'true':
+				case '1':
+				case 'enable':
+				case 'enabled':
+				case 'on':
+					return true;
+			}
+		}
+		return false;
+	};
+	var hasLicense = Boolean(entries.license_uuid);
+	var hasLicenseRequested = isTrue(entries.license_requested);
+    var showRequestLicenseTab = !hasLicense && !hasLicenseRequested;
+
+
 	return {
-		servicesButton: null,
-		adminButton: null,
 		_availableLocales: _availableLocales,
 		_localeLang: kernel.locale.split('-')[0],
 		_localeWithUnderscore: kernel.locale.replace('-', '_'),
@@ -115,7 +135,7 @@ define([
 		},
 
 		_getFocusedTab: function() {
-			return this.servicesButton.selected ? 'service-tab' : 'admin-tab';
+			//return this.servicesButton.selected ? 'service-tab' : 'admin-tab';
 		},
 
 		_focusTab: function(category) {
@@ -249,18 +269,35 @@ define([
 			domConstruct.place(_toggleButton.domNode, 'dropDownButton');
 		},
 
-		showElements: function() {
+		_createTitle: function() {
+			var titleNode = dom.byId('title');
+			put(titleNode, 'h1', _('Activation of Univention Corporate Server'));
+			//put(titleNode, 'h2', _(''));
+			put(titleNode, '!.dijitHidden');
+		},
+
+//		tabs: [{
+//			name: 'email',
+//			title: _('Enter a valid email address'),
+//			
+//		}],
+
+		_createUploadTab: function() {
 			var titleNode = dom.byId('title');
 			put(titleNode, 'h1', _('Welcome to Univention Corporate Server'));
-			put(titleNode, 'h2', _('System activation wizard'));
-			put(titleNode, '!.dijitHidden');
+
+		},
+
+		createElements: function() {
+			this._createTitle();
+			this._createUploadTab();
 		},
 
 		start: function() {
 			this.registerRouter();
 			this.createLanguagesDropDown();
-			this.showElements()
-			router.startup("service");
+			this.createElements()
+			router.startup('welcome');
 		}
 	};
 });
