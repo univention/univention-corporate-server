@@ -30,10 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. "$TESTLIBPATH/random.sh" || exit 137
 . tools.inc.sh
 
-http --data "bar=foo"
+license_file=$(mktemp)
+random_chars 150000 "${_upperletters}${_lowerletters}${_ciphers}._-" > $license_file
+http --form "license=@${license_file}"
+rm -f $license_file
+
 if ! has_request_failed; then
-	fail_fast 1 "Missing 'license' parameter has not been caught (response status was $RESPONSE_CODE)"
+	fail_fast 1 "Large file is not caught"
 fi
 
