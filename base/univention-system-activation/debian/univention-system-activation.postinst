@@ -34,12 +34,13 @@
 
 case "$1" in
 	configure)
-		if [ -z "$2" ]
-		then # installation
-			# nothing to do
-		else # update
-			# nothing to do
-		fi
+#		if [ -z "$2" ]
+#		then # installation
+#			# nothing to do
+#		else # update
+#			# nothing to do
+#		fi
+		/etc/init.d/apache2 reload
 		;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)

@@ -7,11 +7,19 @@ ServerAdmin webmaster@@%@hostname@%@.@%@domainname@%@
 ServerSignature Off
 ServerTokens Prod
 
-CustomLog /var/log/apache2/access.log combined
-ErrorLog /var/log/apache2/error.log
+CustomLog /var/log/univention/system-activation.log combined
+ErrorLog /var/log/univention/system-activation-error.log
 
 # Possible values include: debug, info, notice, warn, error, crit,
 # alert, emerg.
 LogLevel @%@apache2/loglevel@%@
 
-WSGIScriptAlias / /usr/share/pyshared/univention/system_activation/wsgi.py
+DocumentRoot /usr/share/univention-system-activation/www
+<Directory /usr/share/univention-system-activation/www>
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride AuthConfig Limit FileInfo
+    Order allow,deny
+    allow from all
+</Directory>
+
+WSGIScriptAlias /wsgi /usr/share/pyshared/univention/system_activation/wsgi.py

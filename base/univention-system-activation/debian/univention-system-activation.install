@@ -1,2 +1,3 @@
-src/*     usr/share/pyshared/univention/system_activation
 scripts/univention-system-activation	usr/sbin
+src/*     usr/share/pyshared/univention/system_activation
+www	usr/share/univention-system-activation
