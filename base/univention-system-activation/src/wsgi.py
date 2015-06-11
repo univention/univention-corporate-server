@@ -2,14 +2,18 @@
 
 import cgi
 import tempfile
+import subprocess
+import json
 
 from ldap import LDAPError
-from univention.management.console.modules.udm.tools import LicenseImport, LicenseError
+#from univention.management.console.modules.udm.tools import LicenseImport, LicenseError
 from univention.config_registry import ConfigRegistry
 from univention.config_registry import filter as ucr_filter
 
 #import cgitb
 #cgitb.enable(display=2, logdir="/var/log/univention/system-activation.log")
+
+LICENSE_UPLOAD_PATH = '/var/cache/univention-system-activation/license.ldif'
 
 def read_ldap_secret():
 	secret = ''
@@ -33,8 +37,9 @@ def application(environ, start_response):
 		print >> environ['wsgi.errors'], msg
 
 	def _finish(status='200 OK', response=''):
+		response = json.dumps(response)
 		headers = [
-			('Content-Type', 'text/plain'),
+			('Content-Type', 'application/json'),
 			('Content-Length', str(len(response))),
 		]
 		start_response(status, headers)
@@ -62,33 +67,20 @@ def application(environ, start_response):
 
 	# the program logic bellow is oriented at the import function of the
 	# UMC's UDM module
-	with tempfile.NamedTemporaryFile() as license_file:
+	with open(LICENSE_UPLOAD_PATH, 'wb') as license_file:
 		# Replace non-breaking space with a normal space
 		# https://forge.univention.org/bugzilla/show_bug.cgi?id=30098
 		license_data = formdata.getvalue('license', '').replace(unichr(160), ' ')
 		license_file.write(license_data)
-		license_file.flush()
 
-		try:
-			with open(license_file.name, 'rb') as fd:
-				# check license and write it to LDAP
-				ucr = ConfigRegistry()
-				ucr.load()
-				importer = LicenseImport(fd)
-				importer.check(ucr.get('ldap/base', ''))
-				importer.write('cn=admin,%s' % ucr.get('ldap/base', ''), read_ldap_secret())
+	# import the uploaded license file
+	try:
+		subprocess.check_output(['/usr/bin/sudo', '/usr/sbin/univention-license-import', LICENSE_UPLOAD_PATH], stderr=subprocess.STDOUT)
+	except subprocess.CalledProcessError as exc:
+		_log('Failed to import the license:\n%s' % exc.output)
+		return _finish('400 Bad Request', exc.output)
 
-		except (ValueError, AttributeError, LDAPError) as exc:
-			# AttributeError: missing univentionLicenseBaseDN
-			# ValueError raised by ldif.LDIFParser when e.g. dn is duplicated
-			# LDAPError e.g. LDIF contained non existing attributes
-			if isinstance(exc, LDAPError) and len(exc.args) and isinstance(exc.args[0], dict) and exc.args[0].get('info'):
-				return _finish('400 Bad Request', 'LDAP error: %s' % exc.args[0].get('info'))
-			return _finish('400 Bad Request', 'License import failed: %s' % exc)
-		except LicenseError as exc:
-			return _finish('400 Bad Request', 'The license data format is invalid: %s' % (exc, ))
-
-		return _finish('200 OK', 'Successfully imported the license data')
+	return _finish('200 OK', 'Successfully imported the license data')
 
 
 if __name__ == '__main__':

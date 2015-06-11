@@ -40,6 +40,7 @@ case "$1" in
 #		else # update
 #			# nothing to do
 #		fi
+		chmod og+w /var/cache/univention-system-activation
 		/etc/init.d/apache2 reload
 		;;
 

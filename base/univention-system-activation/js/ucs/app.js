@@ -47,12 +47,13 @@ define([
 	"dijit/MenuItem",
 	"dijit/form/DropDownButton",
 	"dijit/DropDownMenu",
+	"dojox/form/Uploader",
 	"put-selector/put",
 	"./text!/languages.json",
 	"./text!/entries.json",
 	"./text!/license",
 	"./i18n!"
-], function(lang, kernel, array, ioQuery, query, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Menu, MenuItem, DropDownButton, DropDownMenu, put, _availableLocales, entries, license, _) {
+], function(lang, kernel, array, ioQuery, query, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Menu, MenuItem, DropDownButton, DropDownMenu, Uploader, put, _availableLocales, entries, license, _) {
 	// make sure that en-US exists
 	var existsEnUsLocale = array.some(_availableLocales, function(ilocale) {
 		return ilocale.id == 'en-US';
@@ -89,6 +90,7 @@ define([
 		_localeLang: kernel.locale.split('-')[0],
 		_localeWithUnderscore: kernel.locale.replace('-', '_'),
 		_resizeTimeout: null,
+		_uploader: null,
 
 		_localizeString: function(str) {
 			if (typeof str == 'string') {
@@ -276,16 +278,30 @@ define([
 			put(titleNode, '!.dijitHidden');
 		},
 
-//		tabs: [{
-//			name: 'email',
-//			title: _('Enter a valid email address'),
-//			
-//		}],
+		_createUploader: function() {
+			// until Dojo2.0 "dojox.form.Uploader" must be used!
+			this._uploader = new dojox.form.Uploader({
+				url: '/license',
+				name: 'license',
+				label: _('Upload license file'),
+				uploadOnSelect: true,
+				getForm: function() {
+					// make sure that the Uploader does not find any of our encapsulating forms
+					return null;
+				}
+			});
+			put(this._uploader.domNode, '.umcButton[display=inline-block]');
+			//this._uploader.set('iconClass', 'umcIconAdd');
+			return this._uploader.domNode;
+		},
 
 		_createUploadTab: function() {
-			var titleNode = dom.byId('title');
-			put(titleNode, 'h1', _('Welcome to Univention Corporate Server'));
-
+			var contentNode = dom.byId('content');
+			var tabNode = put(contentNode, 'div.tab');
+			put(tabNode, 'p > b', _('You have got mail!'));
+			put(tabNode, 'p', _('A license file should have been sent to your email address. Upload the license file from the email to activate your UCS instance.'));
+			put(tabNode, '>', this._createUploader());
+			this._uploader.startup();
 		},
 
 		createElements: function() {

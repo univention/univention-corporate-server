@@ -20,6 +20,7 @@ Depends: ${misc:Depends},
  python-simplejson,
  univention-apache,
  python-ldap,
+ sudo,
  ${python:Depends}
 Description: Univention System Activation
  This package contains the system activation web service which is needed for
