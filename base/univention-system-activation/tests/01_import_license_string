@@ -1,0 +1,20 @@
+#!/usr/share/ucs-test/runner bash
+
+. tools.inc.sh
+
+timestamp_old=$(get_license_modify_timestamp)
+license_file=$(mktemp)
+cat /usr/share/univention-ldap/core-edition.ldif | univention-config-registry filter > $license_file
+http --data-urlencode "license@${license_file}"
+rm -f $license_file
+
+if has_request_failed; then
+	fail_fast 1 'Import request for license string failed'
+fi
+
+timestamp_new=$(get_license_modify_timestamp)
+if [ "$timestamp_new" -le "$timestamp_old" ]; then
+	fail_fast 1 'License has not been updated in the LDAP'
+else
+	echo "License data has been written to the LDAP."
+fi

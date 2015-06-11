@@ -1,0 +1,21 @@
+Source: univention-system-activation
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 7.0.50~),
+ python-support,
+ univention-config-dev,
+ ucslint
+Standards-Version: 3.8.2
+XS-Python-Version: 2.6
+
+Package: univention-system-activation
+Architecture: all
+Depends: ${misc:Depends},
+ libapache2-mod-wsgi,
+ python-simplejson,
+ univention-apache,
+ ${python:Depends}
+Description: Univention System Activation
+ This package contains the system activation web service which is needed for
+ Univention Corporate Server's virtual appliance images

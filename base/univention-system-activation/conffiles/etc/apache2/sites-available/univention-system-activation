@@ -1,0 +1,17 @@
+@%@UCRWARNING=# @%@
+
+# from disabled default site
+MaxClients @%@apache2/maxclients@%@
+
+ServerAdmin webmaster@@%@hostname@%@.@%@domainname@%@
+ServerSignature Off
+ServerTokens Prod
+
+CustomLog /var/log/apache2/access.log combined
+ErrorLog /var/log/apache2/error.log
+
+# Possible values include: debug, info, notice, warn, error, crit,
+# alert, emerg.
+LogLevel @%@apache2/loglevel@%@
+
+WSGIScriptAlias / /usr/share/pyshared/univention/system_activation/wsgi.py

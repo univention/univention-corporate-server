@@ -1,0 +1,11 @@
+#!/usr/share/ucs-test/runner bash
+
+. tools.inc.sh
+
+license_file=/usr/share/univention-ldap/core-edition.ldif 
+http --form "license=@${license_file}"
+
+if ! has_request_failed; then
+	fail_fast 1 "Wrong LDAP base DN is not caught"
+fi
+
