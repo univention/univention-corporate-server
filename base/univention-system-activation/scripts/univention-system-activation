@@ -1,0 +1,87 @@
+#!/bin/bash
+#
+# Univention System Activation
+#
+# Copyright 2015 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+if [ $# -eq 0 -o "$1" = "-h" -o "$1" = "--help" ]; then
+	echo
+	echo "When started, deactivates all access to the UCS and enforces the"
+	echo "redirection to a system activation web service. This service will be"
+	echo "disabled and previous apache sites will be re-activated after an"
+	echo "activated license has been imported successfully."
+	echo
+	echo "usage: $(basename $0) [start|stop]"
+	echo
+	exit 0
+fi
+
+ACTION=$1
+
+eval "$(ucr shell)"
+
+if [ "$ACTION" = "start" -a -n "$apache2_system_activation_sites" ]; then
+	echo
+	echo "ERROR: The UCR variable 'apache2/system_activation/sites' is set,"
+	echo "       it seems that the system activation has already been started."
+	echo
+	exit 1
+elif [ "$ACTION" = "start" ]; then
+	# save currently active apache sites in UCR variable for later re-activation
+	active_sites=($(find /etc/apache2/sites-enabled/ -not -type d | sed 's|^.*/||'))
+	ucr set apache2/system_activation/sites="${active_sites[*]}"
+
+	# disable sites
+	a2dissite ${active_sites[@]}
+
+	# enable system activation site configuration and reload apache
+	a2ensite univention-system-activation
+	/etc/init.d/apache2 reload
+elif [ "$ACTION" = "stop" -a -z "$apache2_system_activation_sites" ]; then
+	echo
+	echo "ERROR: The UCR variable 'apache2/system_activation/sites' is empty,"
+	echo "       it seems that the system activation has not been started yet."
+	echo
+	exit 1
+elif [ "$ACTION" = "stop" ]; then
+	# enable previous sites
+	a2ensite ${apache2_system_activation_sites}
+
+	# disable system activation site configuration and reload apache
+	a2dissite univention-system-activation
+	/etc/init.d/apache2 reload
+
+	# unset previously stored sites
+	ucr unset apache2/system_activation/sites
+else
+	echo
+	echo "ERROR: Unknown action given"
+	echo
+	exit 1
+fi
+

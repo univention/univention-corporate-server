@@ -1,7 +1,7 @@
-#!/usr/bin/make -f
+#!/bin/sh
 #
 # Univention System Activation
-#  rules file for the debian package
+#  prerm script for the debian package
 #
 # Copyright 2015 Univention GmbH
 #
@@ -30,13 +30,28 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_install:
-	dh_auto_install
-	univention-install-config-registry
+eval "$(ucr shell)"
 
-override_dh_auto_test:
-	dh_auto_test
-	ucslint
+case "$1" in
+    remove|deconfigure)
+		# if package configuration is active, deactivate it
+		if [ -n "$apache2_system_activation_sites" ]; then
+			/usr/sbin/univention-system-activation stop
+		fi
+		;;
 
-%:
-	dh $@
+	upgrade)
+		;;
+
+    failed-upgrade)
+		;;
+
+    *)
+        echo "prerm called with unknown argument \`$1'" >&2
+        exit 1
+		;;
+esac
+
+#DEBHELPER#
+
+exit 0

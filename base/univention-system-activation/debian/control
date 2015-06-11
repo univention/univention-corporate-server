@@ -7,7 +7,6 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-config-dev,
  ucslint
 Standards-Version: 3.8.2
-XS-Python-Version: 2.6
 
 Package: univention-system-activation
 Architecture: all
@@ -15,6 +14,7 @@ Depends: ${misc:Depends},
  libapache2-mod-wsgi,
  python-simplejson,
  univention-apache,
+ python-ldap,
  ${python:Depends}
 Description: Univention System Activation
  This package contains the system activation web service which is needed for
