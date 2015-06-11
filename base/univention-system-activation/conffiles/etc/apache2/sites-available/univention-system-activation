@@ -20,6 +20,10 @@ DocumentRoot /usr/share/univention-system-activation/www
     AllowOverride AuthConfig Limit FileInfo
     Order allow,deny
     allow from all
+	<FilesMatch "languages.json">
+		# prevent to cache this file in IE<10
+		Header set Cache-Control "max-age=0, must-revalidate, no-cache, no-store"
+	</FilesMatch>
 </Directory>
 
-WSGIScriptAlias /wsgi /usr/share/pyshared/univention/system_activation/wsgi.py
+WSGIScriptAlias /upload /usr/share/pyshared/univention/system_activation/wsgi.py

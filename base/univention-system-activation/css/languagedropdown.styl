@@ -1,0 +1,32 @@
+@import "variables";
+
+.dijitDropDownButton {
+	padding: 3px 6px 5px 6px;
+	cursor: pointer;
+
+	.dijitArrowButtonInner {
+		background: url(icons/icons.svg) 0px -220px no-repeat;
+		width: 20px;
+		height: 25px;
+	}
+
+	.dijitButtonNode {
+		border: none;
+	}
+
+	&:hover .dijitArrowButtonInner {
+		background: url(icons/icons.svg) -20px -220px no-repeat;
+		width: 20px;
+		height: 25px;
+	}
+}
+
+.dijitButtonText {
+	padding: 0 0.3em;
+	padding-top: 0px;
+	padding-right: 0.3em;
+	padding-bottom: 0px;
+	padding-left: 0.3em;
+	text-align: center;
+	font-size: $font-size-medium;
+}

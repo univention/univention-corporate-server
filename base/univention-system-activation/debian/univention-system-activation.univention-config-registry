@@ -1,2 +1,7 @@
 Type: file
 File: etc/apache2/sites-available/univention-system-activation
+
+Type: file
+File: usr/share/univention-system-activation/www/languages.json
+Variables: locale
+Variables: ucs/server/languages/.*

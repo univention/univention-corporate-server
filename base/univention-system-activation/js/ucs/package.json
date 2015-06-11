@@ -1,0 +1,9 @@
+{
+	"name": "ucs",
+	"version": "1",
+	"directories": {
+		"lib": "."
+	},
+	"description": "The UCS system activation site",
+	"dojoBuild": "package.js"
+}

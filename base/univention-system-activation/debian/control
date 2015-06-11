@@ -3,9 +3,14 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
+ unzip,
+ sed,
  python-support,
+ ucslint,
  univention-config-dev,
- ucslint
+ univention-dojo-dev,
+ univention-management-console-dev,
+ stylus
 Standards-Version: 3.8.2
 
 Package: univention-system-activation
