@@ -34,13 +34,12 @@ buildDir:=$(CURDIR)/build
 buildJsDir:=$(buildDir)/www/ucs-overview/js
 buildCssDir:=$(buildDir)/www/ucs-overview/css
 buildBootstrap:=$(buildCssDir)/bootstrap.css
-jsFiles:=$(shell find umc -name "*.js")
 
 .PHONY: build build-dev
 
-build: l10n $(buildDir) i18n $(buildDir)/www/ucs-overview/css/fonts
+build: l10n $(buildDir) $(buildDir)/www/ucs-overview/css/fonts
 
-build-dev: l10n $(buildCssDir) $(buildBootstrap) i18n $(buildDir)/www/ucs-overview/css/fonts
+build-dev: l10n $(buildCssDir) $(buildBootstrap) $(buildDir)/www/ucs-overview/css/fonts
 	mkdir -p build $(buildJsDir)
 	cp -r www build
 	# symlink UCS javascript code
@@ -57,9 +56,6 @@ build-dev: l10n $(buildCssDir) $(buildBootstrap) i18n $(buildDir)/www/ucs-overvi
 %/fonts:
 	mkdir -p $@
 	unzip -o -j clearsans-1.00.zip "*.woff" -d $@
-
-i18n:
-	/usr/bin/dh-umc-translate -p univention-apache -l de -o js/ucs $(jsFiles)
 
 l10n: js/ucs/de.json
 

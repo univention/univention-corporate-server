@@ -1,3 +1,9 @@
+univention-apache (7.0.16-12) unstable; urgency=low
+
+  * Bug #38016: Cleanup old stuff
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 11 Jun 2015 10:21:52 +0200
+
 univention-apache (7.0.16-11) unstable; urgency=low
 
   * Bug #38016: Fix overviee page.
