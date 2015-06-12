@@ -1,0 +1,57 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Assert bind9 picks up new interfaces on reload
+## tags:
+##  - basic
+##  - apptest
+## packages:
+##  - bind9
+##  - iproute
+##  - makepasswd
+## bugs:
+##  - 36532
+## exposure: careful
+
+PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]:-}: '
+BASH_XTRACEFD=2
+set -e -u -x
+
+IP='192.0.2.1/24'  # RFC1166 TEST-NET-1
+TYPE='bridge'
+
+reconf () {
+	case "$(ucr get dns/backend)" in
+	samba4) rndc -p 953 reload ;;
+	ldap) rndc -p 55555 reload ; rndc -p 953 reload ;;
+	esac
+}
+module= tmp= iface=
+cleanup () {
+	set +e
+	if [ -n "$iface" ]
+	then
+		ip addr flush dev "$iface"
+		ip link delete "$iface"
+	fi
+	[ -n "$module" ] && rmmod "$module"
+	[ -d "$tmp" ] && rm -f "$tmp"
+	reconf
+}
+trap cleanup EXIT
+
+if ! grep -Fq "$TYPE " /proc/modules
+then
+	modprobe "$TYPE"
+	module="$TYPE"
+fi
+while iface="$(makepasswd --chars=15)"
+do
+	ip link show dev "$iface" || break
+done
+ip link add name "$iface" type "$TYPE"
+ip addr add "$IP" dev "$iface"
+reconf
+
+tmp="$(mktemp)"
+pgrep named | xargs -n1 lsof -n -p >"$tmp"
+grep -F " TCP ${IP%/*}:domain (LISTEN)" "$tmp"
+grep -F " UDP ${IP%/*}:domain" "$tmp"
