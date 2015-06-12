@@ -32,6 +32,9 @@
 
 [ ! -f /var/run/nscd/nscd.pid ] && exit 0
 
+. /etc/network/ucs-network-tools
+ucs_ignore_interface
+
 if [ -x /etc/init.d/nscd ]; then
 	/etc/init.d/nscd restart
 	nscd -i passwd

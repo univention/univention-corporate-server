@@ -41,7 +41,7 @@ configRegistry.load()
 iface = os.environ.get('IFACE')
 
 # ignore lo and all
-if iface in ['lo', 'all']:
+if os.environ.get('METHOD') == 'loopback' or os.environ.get('ADDRFAM') == 'meta':
 	sys.exit(0)
 
 # is interface configured as DHCP?

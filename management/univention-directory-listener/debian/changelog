@@ -1,3 +1,9 @@
+univention-directory-listener (9.0.3-1) unstable; urgency=low
+
+  * Bug #36532: Speed up network re-config
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Jan 2015 11:23:42 +0100
+
 univention-directory-listener (9.0.2-4) unstable; urgency=low
 
   * Bug #32819: Remove confusing error message

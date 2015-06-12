@@ -30,6 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /etc/network/ucs-network-tools
+ucs_ignore_interface
+
 if [ -x /etc/init.d/univention-directory-notifier ]; then
 	/etc/init.d/univention-directory-notifier crestart
 fi

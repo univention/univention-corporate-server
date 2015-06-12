@@ -1,3 +1,9 @@
+univention-directory-notifier (9.0.4-1) unstable; urgency=low
+
+  * Bug #36532: Speed up network re-config
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Jan 2015 11:24:47 +0100
+
 univention-directory-notifier (9.0.3-1) unstable; urgency=medium
 
   * Wait for the notifier start in 15univention-directory-notifier-
