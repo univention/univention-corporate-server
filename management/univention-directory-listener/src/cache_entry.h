@@ -34,6 +34,7 @@
 #define _CACHE_ENTRY_H_
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <ldap.h>
 #include <univention/ldap.h>
 
@@ -97,5 +98,9 @@ extern CacheEntryAttribute *cache_entry_add1(CacheEntry *entry, const char *key,
 
 extern CacheEntryAttribute *cache_entry_update_rdn1(CacheEntry *entry, LDAPAVA *ava);
 extern void cache_entry_update_rdn(struct transaction *trans, LDAPRDN new_dn);
+
+static inline bool cache_entry_valid(CacheEntry *entry) {
+	return entry->attribute_count > 0;
+}
 
 #endif /* _CACHE_ENTRY_H_ */

@@ -528,9 +528,9 @@ void cache_entry_set1(CacheEntry *entry, const char *key, const char *value) {
 		attr->values[0] = strdup(value);
 		assert(attr->values[0]);
 		attr->length[0] = strlen(value) + 1;
-		break;
+		return;
 	}
-	assert(i < entry->attribute_count);
+	cache_entry_add1(entry, key, value);
 }
 
 static CacheEntryAttribute *_cache_entry_find_attribute(CacheEntry *entry, LDAPAVA *ava) {

@@ -650,7 +650,7 @@ static int change_update_cache(struct transaction *trans) {
 		}
 		break;
 	case 'a': // add | move_to
-		if (is_move(trans)) { // move_to
+		if (is_move(trans) && cache_entry_valid(&trans->prev.cache)) { // move_to
 			rv = process_move(trans);
 		} else { // add
 			if (!same_dn(trans->cur.notify.dn, trans->cur.ldap_dn))
@@ -717,6 +717,10 @@ int change_update_dn(struct transaction *trans) {
 			uuid = cache_entry_get1(&trans->cur.cache, "entryUUID");
 		break;
 	case 'r': // move_from ... move_to
+		if (!cache_entry_valid(&trans->prev.cache)) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "move_to without history '%s'", trans->prev.notify.dn);
+			break;
+		}
 		if (rv == 0) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "move_to collision at '%s'", trans->cur.notify.dn);
 			cache_free_entry(NULL, &trans->cur.cache);
