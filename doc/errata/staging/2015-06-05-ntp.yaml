@@ -15,7 +15,7 @@ desc: |
    because the symmetric-key feature in the receive function in
    ntp_proto.c performs state-variable updates upon receiving certain
    invalid packets (CVE-2015-1799)
-bug: [36245]
+bug: [38245]
 cve:
  - CVE-2015-1798
  - CVE-2015-1799
