@@ -69,6 +69,7 @@ TEST(force_attribute_empty) {
 	ASSERT(attr->length[1] == 0);
 	ASSERT(!strcmp(attr->values[0], ava_dc_test.la_value.bv_val));
 	ASSERT(attr->values[1] == NULL);
+	free(attr->values[0]);
 	free(attr->values);
 	free(attr->length);
 	return true;
@@ -93,6 +94,7 @@ TEST(force_attribute_replace) {
 	ASSERT(attr->length[1] == 0);
 	ASSERT(!strcmp(attr->values[0], ava_dc_test.la_value.bv_val));
 	ASSERT(attr->values[1] == NULL);
+	free(attr->values[0]);
 	free(attr->values);
 	free(attr->length);
 	return true;
@@ -108,8 +110,6 @@ TEST(add_attribute) {
 	ASSERT(attr->length[1] == 0);
 	ASSERT(!strcmp(attr->values[0], ava_dc_test.la_value.bv_val));
 	ASSERT(attr->values[1] == NULL);
-	free(attr->values);
-	free(attr->length);
-	free(attr);
+	cache_free_entry(NULL, &entry);
 	return true;
 }
