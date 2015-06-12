@@ -4,7 +4,7 @@
 # Univention S4 Connector
 #  Convert S4 DN to base64 objectGuid as used in s4cache.sqlite
 #
-# Copyright 2014 Univention GmbH
+# Copyright 2014-2015 Univention GmbH
 #
 # http://www.univention.de/
 #

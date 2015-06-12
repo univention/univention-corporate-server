@@ -4,7 +4,7 @@
 # Univention S4 Connector
 #  Upgrade script for gPLink
 #
-# Copyright 2012-2014 Univention GmbH
+# Copyright 2012-2015 Univention GmbH
 #
 # http://www.univention.de/
 #

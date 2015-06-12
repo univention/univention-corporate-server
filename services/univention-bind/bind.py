@@ -9,7 +9,7 @@ the proxy.
 During the quiet period check the cache directory (is-state) against the
 configuration directory (should-state) and reload/restart as appropriate.
 """
-# Copyright 2001-2014 Univention GmbH
+# Copyright 2001-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
