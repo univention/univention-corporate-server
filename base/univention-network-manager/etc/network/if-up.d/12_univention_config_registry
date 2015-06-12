@@ -33,69 +33,57 @@
 import sys, os, ipaddr, netifaces
 import socket, struct
 
-import univention.config_registry
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
-
-iface = os.environ.get('IFACE')
+from univention.config_registry.frontend import ConfigRegistry, ucr_update
 
 # ignore lo and all
 if os.environ.get('METHOD') == 'loopback' or os.environ.get('ADDRFAM') == 'meta':
 	sys.exit(0)
 
 # is interface configured as DHCP?
+iface = os.environ.get('IFACE')
+configRegistry = ConfigRegistry()
+configRegistry.load()
 if configRegistry.get('interfaces/%s/type' % iface) != 'dhcp':
 	sys.exit(0)
 
 # get first AF_INET interface
 inf = netifaces.ifaddresses(iface).get(netifaces.AF_INET)[0]
-
-ip = ipaddr.IPv4Network('%s/%s' % ( inf.get('addr'), inf.get('netmask') ) )
+try:
+	newip = inf.get('addr')
+	ip = ipaddr.IPv4Network('%(addr)s/%(netmask)s' % inf)
+except KeyError:
+	sys.exit(0)
+inf['address'] = newip
 inf['network'] = ip.network
 
-# make the key equal to UCR
-inf['address'] = inf.get('addr')
-
 # save to UCR
-ucr_set = []
+ucr_set = {
+	'interfaces/restart/auto': configRegistry.get('interfaces/restart/auto'),
+}
 for k in ['netmask', 'address', 'broadcast', 'network']:
-	if inf.get(k):
-		ucr_set.append('interfaces/%s/%s=%s' % (iface, k, inf.get(k)))
-	else:
-		ucr_set.append('interfaces/%s/%s' % (iface, k))
+	ucr_set['interfaces/%s/%s' % (iface, k)] = inf.get(k, None)
 
 # if old IP adress was set as nameserver, replace it with the new address
 oldip = configRegistry.get('interfaces/%s/address' % iface)
 if oldip:
 	for k in ['nameserver1', 'nameserver2', 'nameserver3']:
 		if oldip == configRegistry.get(k):
-			ucr_set.append('%s=%s' % (k, inf.get('address')))
+			ucr_set[k] = newip
 
 # read gateway from proc
-gateway=''
+gateway = ''
 with open("/proc/net/route") as fh:
 	for line in fh:
 		fields = line.strip().split()
 		if fields[1] != '00000000' or not int(fields[3], 16) & 2:
 			continue
-		gateway=socket.inet_ntoa(struct.pack("<L", int(fields[2], 16)))
+		gateway = socket.inet_ntoa(struct.pack("<L", int(fields[2], 16)))
 # write to UCR
 if configRegistry.get('gateway') != gateway:
-	ucr_set.append('gateway=%s' % gateway)
+	ucr_set['gateway'] = gateway
 
 # Redirect stdout
-null = open(os.path.devnull, 'w' )
-stdout = sys.stdout
-sys.stdout = null
-
+sys.stdout = open(os.path.devnull, 'w')
 # Disable ifdown / ifup while setting new UCR variables to avoid an endless loop
-restart = configRegistry.get('interfaces/restart/auto', 'true')
-univention.config_registry.handler_set(['interfaces/restart/auto=false'], quiet=True)
-univention.config_registry.handler_set(ucr_set, quiet=True)
-univention.config_registry.handler_set(['interfaces/restart/auto=%s' % restart], quiet=True)
-
-sys.stdout = stdout
-
-sys.exit(0)
-
+ucr_update({'interfaces/restart/auto': 'false'})
+ucr_update(ucr_set)
