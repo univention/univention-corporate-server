@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-directory-notifier
+fix: 9.0.4-1.89.201506121802
+version: [2]
+desc: |
+  This update addresses the following issue
+  * The Notifier is now restarted asynchronously when the network interfaces
+    are re-configured.
+bug: [36532]

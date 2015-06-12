@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-bind
+fix: 9.0.6-1.207.201506121804
+version: [2]
+desc: |
+  This update addresses the following issue:
+  * The configuration files and scripts have been optimized to allow a faster
+    restart when the network interfaces are re-configured.
+bug: [36532]

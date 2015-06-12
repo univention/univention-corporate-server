@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-network-manager
+fix: 6.0.1-1.107.201506121759
+version: [2]
+desc: |
+  This update addresses the following issues:
+  * Several scripts have been optimized and fixed to allow a faster restart
+    when the network interfaces are re-configured.
+bug: [36532]

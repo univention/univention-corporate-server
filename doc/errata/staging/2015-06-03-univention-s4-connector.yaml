@@ -2,9 +2,11 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-s4-connector
-fix: 9.0.16-25.557.201506042141
+fix: 9.0.17-1.558.201506121806
 version: [2]
 desc: |
   This errata update addresses the following issues:
-  * Some GPO and WMI attributes have not been treated as single-value
-bug: [37259]
+  * Some GPO and WMI attributes have not been treated as single-value.
+  * Some scripts have been optimized to allow a faster restart when the network
+    interfaces are re-configured.
+bug: [37259, 36532]
