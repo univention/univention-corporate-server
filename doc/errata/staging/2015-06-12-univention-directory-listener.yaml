@@ -1,0 +1,12 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-directory-listener
+fix: 9.0.2-4.267.201506121103
+version: [2]
+desc: |
+  This update addresses the following issue:
+  * LDAP entries using non-ASCII-characters in their DN are now handled more
+    correctly in case of case differences.
+  * A confusing error message was removed.
+bug: [35334, 32819]
