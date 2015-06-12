@@ -1,0 +1,1 @@
+rm_conffile etc/network/if-down.d/00_rdate 6.0.1~

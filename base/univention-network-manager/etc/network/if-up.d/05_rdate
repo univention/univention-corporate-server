@@ -38,6 +38,4 @@ ucs_ignore_interface
 
 /etc/init.d/rdate start
 
-/etc/init.d/ntp start
-
 exit 0
