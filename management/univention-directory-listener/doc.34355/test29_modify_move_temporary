@@ -15,7 +15,7 @@ main () {
 	check "cn=test,cn=visible" "$a" - r
 	if $BUG34833 || ! does_replication
 	then
-		! check "cn=temporary,cn=visible"
+		neg check "cn=temporary,cn=visible"
 	else
 		check "cn=temporary,cn=visible" - "" n
 	fi
@@ -24,7 +24,7 @@ main () {
 	check "cn=test,cn=visible" - "$a" a
 	if $BUG34833 || ! does_replication
 	then
-		! check "cn=temporary,cn=visible"
+		neg check "cn=temporary,cn=visible"
 	else
 		check "cn=temporary,cn=visible" "" - d
 	fi

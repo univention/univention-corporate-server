@@ -23,7 +23,7 @@ main () {
 		check 'cn=test,cn=visible' - "" a
 		check 'cn=test,cn=visible' "" "" m
 	fi
-	! check "cn=test" "" "" m
+	neg check "cn=test" "" "" m
 
 	udm settings/packages remove --dn "cn=test,cn=visible,$BASE"
 }

@@ -5,7 +5,7 @@ main () {
 	wait_listener
 
 	udm settings/packages move --dn "cn=test,cn=restricted,$BASE" --position "cn=visible,$BASE"
-	! check "cn=test,cn=restricted" "" - r
+	neg check "cn=test,cn=restricted" "" - r
 	check "cn=test,cn=visible" - "" a
 
 	udm settings/packages remove --dn "cn=test,cn=visible,$BASE"

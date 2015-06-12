@@ -1,0 +1,23 @@
+#!/bin/bash
+## desc: Create and delete in folter with case difference
+## bugs: [35334]
+main () {
+	udm container/cn create --position "cn=visible,$BASE" --set name='aÄ'
+	udm settings/packages create --position "cn=aÄ,cn=visible,$BASE" --set name=test
+	a="$(uuid "cn=test,cn=aÄ,cn=visible,$BASE")"
+	wait_listener
+
+	udm settings/packages modify --dn "cn=test,cn=aä,cn=visible,$BASE" --set name=test2
+	check "cn=test,cn=aÄ,cn=visible" - "$a" a
+	if $BUG35334
+	then
+		neg check "cn=test,cn=aÄ,cn=visible" "" "" r
+		neg check "cn=test,cn=aä,cn=visible" "" "" r
+	else
+		check "cn=test,cn=aä,cn=visible" "$a" "" r
+	fi
+	check "cn=test2,cn=aÄ,cn=visible" - "$a" a
+
+	udm settings/packages remove --dn "cn=test2,cn=aÄ,cn=visible,$BASE"
+}
+. "${0%/*}/common.sh"

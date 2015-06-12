@@ -6,7 +6,7 @@ main () {
 	udm settings/packages create --position "cn=visible,$BASE" --set name=test
 	udm settings/packages move --dn "cn=test,cn=visible,$BASE" --position "$BASE"
 	listener start
-	! check "cn=test,cn=visible"
+	neg check "cn=test,cn=visible"
 	check "cn=test" - "" a
 
 	udm settings/packages remove --dn "cn=test,$BASE"

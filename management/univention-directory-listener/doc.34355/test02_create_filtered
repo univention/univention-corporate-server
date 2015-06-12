@@ -3,9 +3,9 @@
 main () {
 	udm settings/packages create --position "cn=restricted,$BASE" --set name=test
 	wait_listener
-	! fgrep "cn=restricted,$BASE " "$LOG"
+	neg fgrep "cn=restricted,$BASE " "$LOG"
 	udm settings/packages remove --dn "cn=test,cn=restricted,$BASE"
 	wait_listener
-	! fgrep "cn=restricted,$BASE " "$LOG"
+	neg fgrep "cn=restricted,$BASE " "$LOG"
 }
 . "${0%/*}/common.sh"

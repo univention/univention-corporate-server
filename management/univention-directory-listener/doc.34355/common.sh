@@ -12,8 +12,9 @@ BUG33594=true # modrdn delold=1
 BUG34355=false # modify+modrdn
 BUG34749=true # ldap escape
 BUG34833=false # move via temporary
+BUG35334=false # utf8 strcasecmp()
 
-LOG="/root/UserList.txt"
+LOG="${LBASE:-/root}/listener.log"
 LDIF="/var/lib/univention-directory-replication/failed.ldif"
 BASE="$(ucr get ldap/base)"
 BINDDN="$(ucr get tests/domainadmin/account)"
@@ -21,6 +22,8 @@ BINDPW="$(ucr get tests/domainadmin/pwd)"
 BINDHOST="$(ucr get ldap/master)"
 BINDPORT="$(ucr get ldap/master/port)"
 DEBUGPROCNAME="listener"
+LCACHE="${LBASE:-/var/lib/univention-directory-listener}"
+LMODUL="${LBASE:-/usr/lib/univention-directory-listener}/system"
 
 udm () {
 	local module="$1" action="$2"
@@ -67,8 +70,8 @@ setup_ldap () {
 	udm container/cn create --ignore_exists --position "$BASE" --set name=visible
 }
 setup_listener () {
-	[ -f /usr/lib/univention-directory-listener/system/printusers.py ] && return
-	cat >>/usr/lib/univention-directory-listener/system/printusers.py <<__PY__
+	[ -f "$LMODUL/printusers.py" ] && return
+	cat >>"$LMODUL/printusers.py" <<__PY__
 __package__ = ""  # workaround for PEP 366
 import listener
 name = 'printusers'
@@ -188,11 +191,14 @@ check () {
 	wait_listener
 	grep -x "dn=${dn} old=${old} new=${new} command=${cmd}" "$LOG"
 }
+neg () {
+	"$@" && return 1 || return 0
+}
 _py_repr () {
 	python -c 'import sys,re;print re.sub(r"[][^\\.*$]", lambda m:"\\"+m.group(0), repr(sys.argv[1]))' "$1"
 }
 wait_listener () {
-	while [ "$(</var/lib/univention-directory-listener/notifier_id)" -lt "$(/usr/share/univention-directory-listener/get_notifier_id.py)" ]
+	while [ "$(<"$LCACHE/notifier_id")" -lt "$(/usr/share/univention-directory-listener/get_notifier_id.py)" ]
 	do
 		printf .
 		sleep 10
