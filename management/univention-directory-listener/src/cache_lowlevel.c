@@ -180,9 +180,6 @@ static int read_header(void *data, u_int32_t size, u_int32_t *pos, void **key_da
 	if (h->data_size > 0) {
 		*data_size = h->data_size;
 		*data_data = (void*)((char*)data+*pos);
-
-		if (*data_size != strlen(*data_data)+1)
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "data_size and strlen don't match: %d != %zd", *data_size, strlen(*data_data)+1);
 		*pos += *data_size;
 	} else {
 		*data_size = 0;
