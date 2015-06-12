@@ -77,7 +77,7 @@ then
 		fi
 		i=$((i+1))
 	done </etc/resolv.conf
-	"$need_restart" && invoke-rc.d bind9 restart
+	"$need_restart" && invoke-rc.d bind9 reload
 	ucr commit /etc/resolv.conf
 elif [ "$interface_type" = "dhcp" ]; then
 	# Add the local configured nameserver to the resolv.conf
@@ -85,8 +85,9 @@ elif [ "$interface_type" = "dhcp" ]; then
 	# The given nameserver via DHCP should be the default nameserver, so split the 
 	# current resolv.conf
 	tempdir=$(mktemp -d)
-	cat /etc/resolv.conf | grep -v ^nameserver >"${tempdir}/resolv.conf"
-	cat /etc/resolv.conf | grep ^nameserver >"${tempdir}/nameserver_dhcp"
+	trap "rm -rf '$tempdir'" EXIT
+	grep -v ^nameserver /etc/resolv.conf >"${tempdir}/resolv.conf"
+	grep ^nameserver /etc/resolv.conf >"${tempdir}/nameserver_dhcp"
 	touch "${tempdir}/nameserver_local"
 	for i in $(seq 1 3); do
 		dns="nameserver$i"
@@ -99,18 +100,13 @@ elif [ "$interface_type" = "dhcp" ]; then
 	done
 
 	# Build resolv.conf
-	cat "${tempdir}/resolv.conf" >/etc/resolv.conf
-	cat "${tempdir}/nameserver_local" >>/etc/resolv.conf
+	cat "${tempdir}/resolv.conf" "${tempdir}/nameserver_local" >/etc/resolv.conf
 	# Don't add the DHCP nameservers twice
-	cat "${tempdir}/nameserver_dhcp" | grep ^nameserver | awk '{print $2}' | while read ns; do
+	awk '/^nameserver/{print $2}' <"${tempdir}/nameserver_dhcp" | while read ns; do
 			if ! grep -q -s "nameserver *${ns}\$" /etc/resolv.conf; then
 				echo "nameserver $ns" >>/etc/resolv.conf
 			fi
 	done
-
-	# remove tempdir
-	rm -f "${tempdir}/resolv.conf" "${tempdir}/nameserver_local" "${tempdir}/nameserver_dhcp"
-	rmdir "${tempdir}"
 fi
 
 exit 0

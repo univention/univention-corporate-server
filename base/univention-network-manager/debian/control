@@ -51,6 +51,8 @@ Replaces: univention-network-manager,
  univention-ifplugd
 Suggests:
  univention-management-console-server
+Breaks:
+ univention-bind (<< 9.0.6),
 Description: UCS - Network tools for ifplugd and network-manager (common)
  This package installs tools required by univention-ifplugd and
  univention-network-manager.
