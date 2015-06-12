@@ -1,4 +1,4 @@
-univention-directory-listener (9.0.2-3) unstable; urgency=low
+univention-directory-listener (9.0.2-4) unstable; urgency=low
 
   * Bug #32819: Remove confusing error message
   * Bug #35334: Fix case normalization

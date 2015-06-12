@@ -82,6 +82,7 @@
 #include "cache_entry.h"
 #include "network.h"
 #include "signals.h"
+#include "utils.h"
 
 #define MASTER_KEY "__master__"
 #define MASTER_KEY_SIZE (sizeof MASTER_KEY)
@@ -106,24 +107,11 @@ static void cache_panic_call(DB_ENV *dbenvp, int errval)
 
 static char* _convert_to_lower(const char *dn)
 {
-	size_t size = strlen(dn) + 1;
-	char *result = malloc(size);
-	assert(result);
-
 	UErrorCode status = U_ZERO_ERROR;
 	UCaseMap *caseMap = ucasemap_open(NULL, U_FOLD_CASE_DEFAULT, &status);
 	assert(U_SUCCESS(status));
 
-	do {
-		status = U_ZERO_ERROR;
-		size = ucasemap_utf8ToLower(caseMap, result, size, dn, -1, &status);
-		if (status == U_BUFFER_OVERFLOW_ERROR) {
-			result = realloc(result, size);
-			assert(result);
-			continue;
-		}
-	} while(false);
-	assert(U_SUCCESS(status));
+	char *result = lower_utf8(dn, caseMap);
 
 	ucasemap_close(caseMap);
 	return result;
