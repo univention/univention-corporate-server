@@ -30,15 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+[ -x /etc/init.d/nscd ] || exit 0
+[ -f /var/run/nscd/nscd.pid ] || exit 0
+
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
 
-[ ! -f /var/run/nscd/nscd.pid ] && exit 0
-
-if [ -x /etc/init.d/nscd ]; then
-	/etc/init.d/nscd restart
-	nscd -i passwd
-	nscd -i group
-fi
+invoke-rc.d nscd restart
+nscd -i passwd
+nscd -i group
 
 exit 0

@@ -30,11 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+[ -x /etc/init.d/univention-s4-connector ] || exit 0
+
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
 
-if [ -x /etc/init.d/univention-s4-connector ]; then
-	/etc/init.d/univention-s4-connector crestart
-fi
+invoke-rc.d univention-s4-connector crestart
 
 exit 0

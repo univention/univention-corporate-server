@@ -31,11 +31,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+[ -f /var/run/ntpd.pid ] && exit 0
+
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
 
-[ -f /var/run/ntpd.pid ] && exit 0
-
-/etc/init.d/rdate start
+invoke-rc.d rdate start
 
 exit 0

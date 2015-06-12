@@ -31,18 +31,15 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+[ -e /var/univention-join/joined ] || exit 0
+
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
 
 eval "$(ucr shell server/role ldap/master)"
 
-# System must be joined
-if [ ! -e /var/univention-join/joined ]; then
-	exit 0
-fi
-
 # Is master available?
-if /bin/netcat -q0 -w1 $ldap_master 6670 </dev/null; then
+if /bin/netcat -q0 -w1 "$ldap_master" 6670 </dev/null; then
 
 	# If we are the master a restart of UMC is required
 	if [ "$server_role" = "domaincontroller_master" ]; then

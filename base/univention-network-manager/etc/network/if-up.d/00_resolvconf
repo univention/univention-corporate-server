@@ -42,7 +42,10 @@ then
 	echo "options timeout:$nameserver_option_timeout" >> /etc/resolv.conf
 fi
 
-interface_type="$(ucr get interfaces/${IFACE}/type)"
+case "$(ucr get interfaces/${IFACE}/type)" in
+dhcp) ;;
+*) exit 0 ;;
+esac
 
 is_ns ()
 {
@@ -62,7 +65,6 @@ is_ns ()
 # must not be set to true
 if	[ -e /var/univention-join/joined ] && is_domain_controller && \
 	[ -n "$nameserver1" -o -n "$nameserver2" -o -n "$nameserver3" ] && \
-	[ "$interface_type" = "dhcp" ] && \
 	! is_ucr_true "nameserver/external"
 then
 	need_restart=false
@@ -79,7 +81,7 @@ then
 	done </etc/resolv.conf
 	"$need_restart" && invoke-rc.d bind9 reload
 	ucr commit /etc/resolv.conf
-elif [ "$interface_type" = "dhcp" ]; then
+else
 	# Add the local configured nameserver to the resolv.conf
 	
 	# The given nameserver via DHCP should be the default nameserver, so split the 
