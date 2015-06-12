@@ -6,6 +6,7 @@ controls{
 };			
 options {
         tkey-gssapi-keytab "/var/lib/samba/private/dns.keytab";
+	listen-on { any; };
 @!@
 dns_allow_query = configRegistry.get('dns/allow/query')
 dns_allow_query_cache = configRegistry.get('dns/allow/query/cache')

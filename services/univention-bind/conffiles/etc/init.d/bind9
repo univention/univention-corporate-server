@@ -58,7 +58,7 @@ case "$1" in
 			. "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart univention-bind bind/autostart
 		fi
-		log_action_msg "Starting bind9 daemon:"
+		log_action_begin_msg "Starting bind9 daemon:"
 		if [ "$dns_backend" = "samba4" ]; then
 			sv_action up univention-bind-samba4
 		elif [ "$dns_backend" = "ldap" ]; then
@@ -68,7 +68,7 @@ case "$1" in
 		log_action_end_msg 0
 		;;
 	stop)
-		log_action_msg "Stopping bind9 daemon: "
+		log_action_begin_msg "Stopping bind9 daemon: "
 		sv_action down univention-bind-proxy
 		sv_action down univention-bind
 		sv_action down univention-bind-samba4
@@ -81,7 +81,7 @@ case "$1" in
 			check_autostart univention-bind bind/autostart
 		fi
 
-		log_action_msg "Restarting bind9 daemon: "
+		log_action_begin_msg "Restarting bind9 daemon: "
 		if [ "$dns_backend" = "samba4" ]; then
 			sv_action stop univention-bind
 			sv_action stop univention-bind-proxy
@@ -105,15 +105,24 @@ case "$1" in
 				"$0" restart
 			fi
 		elif [ "$dns_backend" = "ldap" ]; then
-			if sv_running univention-bind
-			then
-				"$0" restart
-			fi
-			if sv_running univention-bind-proxy
+			if sv_running univention-bind || sv_running univention-bind-proxy
 			then
 				"$0" restart
 			fi
 		fi
+		;;
+	reload)
+		log_action_begin_msg "Reloading bind9 daemon: "
+		case "$dns_backend" in
+		samba4)
+			log_action_cont_msg "samba4" && rndc -p 953 reload >/dev/null
+			;;
+		ldap)
+			log_action_cont_msg "ldap" && rndc -p 55555 reload >/dev/null
+			log_action_cont_msg "proxy" && rndc -p 953 reload >/dev/null
+			;;
+		esac
+		log_action_end_msg 0
 		;;
 	status)
 		if	sv status univention-bind-samba4 | grep -qs ^run: ||

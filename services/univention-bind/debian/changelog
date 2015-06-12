@@ -1,3 +1,9 @@
+univention-bind (9.0.6-1) unstable; urgency=low
+
+  * Bug #36532: Improve restart of bind9 on network reconfiguration
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Jan 2015 09:21:43 +0100
+
 univention-bind (9.0.5-1) unstable; urgency=low
 
   * Bug #37553: Limit queries to private addresses and localnet to prevent
