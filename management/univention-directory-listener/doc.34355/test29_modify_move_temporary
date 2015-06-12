@@ -13,7 +13,7 @@ main () {
 	udm container/cn remove --dn "$t"
 	listener start
 	check "cn=test,cn=visible" "$a" - r
-	if $BUG34833
+	if $BUG34833 || ! does_replication
 	then
 		! check "cn=temporary,cn=visible"
 	else
@@ -22,7 +22,7 @@ main () {
 	check "cn=test,cn=temporary,cn=visible" - "$a" a
 	check "cn=test,cn=temporary,cn=visible" "$a" - r
 	check "cn=test,cn=visible" - "$a" a
-	if $BUG34833
+	if $BUG34833 || ! does_replication
 	then
 		! check "cn=temporary,cn=visible"
 	else

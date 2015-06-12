@@ -215,6 +215,13 @@ uuid () {
 	local dn="$1"
 	ldapsearch -b "$dn" -s base entryUUID | sed -ne 's/entryUUID: //p' | tee /dev/stderr
 }
+does_replication () {
+	case "$(ucr get server/role)" in
+	domaincontroller_backup) return 0 ;;
+	domaincontroller_slave) return 0 ;;
+	*) return 1 ;;
+	esac
+}
 
 case "$(type -t main 2>/dev/null)" in
 function)
