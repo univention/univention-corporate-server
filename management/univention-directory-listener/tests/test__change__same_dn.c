@@ -62,7 +62,19 @@ TEST(octothorpe,
 
 TEST(umlaut,
 	"cn=föö,dc=univention,dc=de",
-	"cn=FÖÖ,dc=univention,dc=de", false); // TODO
+	"cn=FÖÖ,dc=univention,dc=de", true);
+
+TEST(germansz,
+	"cn=fuß,dc=univention,dc=de",
+	"cn=fuss,dc=univention,dc=de", false);
+
+TEST(turkishi,
+	"cn=iIıİ,dc=univention,dc=de",
+	"cn=Iiıi̇,dc=univention,dc=de", true);
+
+TEST(greek,
+	"cn=ωΩ,dc=univention,dc=de",
+	"cn=Ωω,dc=univention,dc=de", true);
 
 #if 0
 TEST(leading_hash, "cn=\\#foo,dc=univention,dc=de", ..., ...)

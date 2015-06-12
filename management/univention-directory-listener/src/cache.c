@@ -69,6 +69,10 @@
 #include <sys/stat.h>
 #include <db.h>
 #include <stdbool.h>
+#include <assert.h>
+#define U_CHARSET_IS_UTF8 1
+#include <unicode/uchar.h>
+#include <unicode/ucasemap.h>
 
 #include <univention/debug.h>
 
@@ -100,20 +104,29 @@ static void cache_panic_call(DB_ENV *dbenvp, int errval)
 }
 #endif
 
-static char* _convert_to_lower(char *dn)
+static char* _convert_to_lower(const char *dn)
 {
-	char *lower_dn = NULL;
-	int i, dn_length;
+	size_t size = strlen(dn) + 1;
+	char *result = malloc(size);
+	assert(result);
 
-	dn_length = strlen(dn);
-	lower_dn = malloc((dn_length+1) * sizeof(char));
+	UErrorCode status = U_ZERO_ERROR;
+	UCaseMap *caseMap = ucasemap_open(NULL, U_FOLD_CASE_DEFAULT, &status);
+	assert(U_SUCCESS(status));
 
-	for(i=0; i<dn_length; i++) {
-		lower_dn[i] = tolower(dn[i]);
-	}
-	lower_dn[dn_length] = '\0';
+	do {
+		status = U_ZERO_ERROR;
+		size = ucasemap_utf8ToLower(caseMap, result, size, dn, -1, &status);
+		if (status == U_BUFFER_OVERFLOW_ERROR) {
+			result = realloc(result, size);
+			assert(result);
+			continue;
+		}
+	} while(false);
+	assert(U_SUCCESS(status));
 
-	return lower_dn;
+	ucasemap_close(caseMap);
+	return result;
 }
 
 static void cache_error_message(const char *errpfx, char *msg)

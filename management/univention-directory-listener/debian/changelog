@@ -1,6 +1,7 @@
 univention-directory-listener (9.0.2-2) unstable; urgency=low
 
   * Bug #32819: Remove confusing error message
+  * Bug #35334: Fix case normalization
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 10 Jun 2015 13:09:38 +0200
 
