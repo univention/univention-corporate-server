@@ -35,6 +35,6 @@
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
 
-	/etc/init.d/univention-directory-notifier crestart
+sv t univention-directory-notifier
 
 exit 0
