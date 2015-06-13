@@ -1,34 +1,10 @@
 # coding: UTF-8
 
 import cgi
-import tempfile
 import subprocess
 import json
 
-from ldap import LDAPError
-#from univention.management.console.modules.udm.tools import LicenseImport, LicenseError
-from univention.config_registry import ConfigRegistry
-from univention.config_registry import filter as ucr_filter
-
-#import cgitb
-#cgitb.enable(display=2, logdir="/var/log/univention/system-activation.log")
-
 LICENSE_UPLOAD_PATH = '/var/cache/univention-system-activation/license.ldif'
-
-def read_ldap_secret():
-	secret = ''
-	with open('/etc/ldap.secret') as secret_file:
-		secret = secret_file.read()
-		if secret[-1] == '\n':
-			secret = secret[:-1]
-	return secret
-
-def read_license():
-	ucr = ConfigRegistry()
-	ucr.load()
-	with open('/usr/share/univention-ldap/core-edition.ldif') as license_file:
-		license = license_file.read()
-	return ucr_filter(license, ucr)
 
 def application(environ, start_response):
 	"""WSGI entry point"""
@@ -36,18 +12,23 @@ def application(environ, start_response):
 	def _log(msg):
 		print >> environ['wsgi.errors'], msg
 
-	def _finish(status='200 OK', response=''):
-		response = json.dumps(response)
+	def _finish(status='200 OK', data=''):
+		data = json.dumps(data)
 		headers = [
 			('Content-Type', 'application/json'),
-			('Content-Length', str(len(response))),
+			('Content-Length', str(len(data))),
 		]
 		start_response(status, headers)
-		return [response]
+		return [data]
 
 	# output the license upon GET request
 	if environ.get('REQUEST_METHOD') == 'GET':
-		return _finish(response=read_license())
+		try:
+			out = subprocess.check_output(['/usr/bin/sudo', '/usr/bin/univention-ldapsearch', '-LLL', 'objectClass=univentionLicense'])
+			return _finish(data=out)
+		except subprocess.CalledProcessError as exc:
+			_log('Failed to read license data from LDAP:\n%s' % exc)
+			return _finish('400 Bad Request', 'Failed to read license data from LDAP:\n%s' % exc)
 
 	# block uploads that are larger than 1MB
 	try:
@@ -77,8 +58,8 @@ def application(environ, start_response):
 	try:
 		subprocess.check_output(['/usr/bin/sudo', '/usr/sbin/univention-license-import', LICENSE_UPLOAD_PATH], stderr=subprocess.STDOUT)
 	except subprocess.CalledProcessError as exc:
-		_log('Failed to import the license:\n%s' % exc.output)
-		return _finish('400 Bad Request', exc.output)
+		_log('Failed to import the license:\n%s' % exc)
+		return _finish('400 Bad Request', exc)
 
 	return _finish('200 OK', 'Successfully imported the license data')
 
