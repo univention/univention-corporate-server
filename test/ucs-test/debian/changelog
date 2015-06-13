@@ -1,3 +1,9 @@
+ucs-test (5.0.148-13) unstable; urgency=medium
+
+  * 52_s4connector/174sync_nested_umalut_groups (Bug #38704)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 13 Jun 2015 13:53:38 +0200
+
 ucs-test (5.0.148-12) unstable; urgency=low
 
   * Bug #36532: Add bind9 reload test
