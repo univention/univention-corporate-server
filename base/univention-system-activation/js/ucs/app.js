@@ -32,6 +32,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/kernel",
 	"dojo/_base/array",
+	"dojo/request/xhr",
 	"dojo/io-query",
 	"dojo/query",
 	"dojo/dom",
@@ -45,15 +46,20 @@ define([
 	"dojo/hash",
 	"dijit/Menu",
 	"dijit/MenuItem",
+	"dijit/form/Button",
 	"dijit/form/DropDownButton",
 	"dijit/DropDownMenu",
 	"dojox/form/Uploader",
 	"put-selector/put",
+	"./TextBox",
 	"./text!/languages.json",
 	"./text!/entries.json",
 	"./text!/license",
 	"./i18n!"
-], function(lang, kernel, array, ioQuery, query, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Menu, MenuItem, DropDownButton, DropDownMenu, Uploader, put, _availableLocales, entries, license, _) {
+], function(lang, kernel, array, xhr, ioQuery, query, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Menu, MenuItem, Button, DropDownButton, DropDownMenu, Uploader, put, TextBox, _availableLocales, entries, license, _) {
+	// strip starting/ending '"' and replace newlines
+	license = license.substr(1, license.length - 2).replace(/\\n/g, '\n');
+
 	// make sure that en-US exists
 	var existsEnUsLocale = array.some(_availableLocales, function(ilocale) {
 		return ilocale.id == 'en-US';
@@ -91,6 +97,7 @@ define([
 		_localeWithUnderscore: kernel.locale.replace('-', '_'),
 		_resizeTimeout: null,
 		_uploader: null,
+		_tabIDs: [],
 
 		_localizeString: function(str) {
 			if (typeof str == 'string') {
@@ -118,8 +125,8 @@ define([
 		},
 
 		registerRouter: function() {
-			router.register(":category", lang.hitch(this, function(data){
-				this._focusTab(data.params.category);
+			router.register(":tab", lang.hitch(this, function(data){
+				this._focusTab(data.params.tab);
 			}));
 		},
 
@@ -140,12 +147,18 @@ define([
 			//return this.servicesButton.selected ? 'service-tab' : 'admin-tab';
 		},
 
-		_focusTab: function(category) {
-			// set visibility of tabs through css and also set 'selectd' of category buttons
-			//domClass.toggle("service-tab", "galleryTabInvisible", category != "service");
-			//this.servicesButton.set('selected', category == "service");
-			//domClass.toggle("admin-tab", "galleryTabInvisible", category == "service");
-			//this.adminButton.set('selected', category != "service");
+		_focusTab: function(tabID) {
+			array.forEach(this._tabIDs, function(itabID) {
+				var tabNode = dom.byId(itabID + '-tab');
+				var buttonNode = dom.byId(itabID + '-button');
+				if (itabID == tabID) {
+					put(tabNode, '!dijitHidden');
+					put(buttonNode, '.focused');
+				} else {
+					put(tabNode, '.dijitHidden');
+					put(buttonNode, '!focused');
+				}
+			}, this);
 		},
 
 		_getLinkEntry: function(props, category, id) {
@@ -278,6 +291,60 @@ define([
 			put(titleNode, '!.dijitHidden');
 		},
 
+		_createNavButton: function(tabID) {
+			var navNode = dom.byId('navigation');
+			var buttonNode = put(navNode, 'div.button#' + tabID + '-button[style=border:1px solid black; display: inline-block]', tabID);
+			on(buttonNode, 'click', function() {
+				router.go(tabID);
+			});
+			this._tabIDs.push(tabID);
+		},
+
+		_createRegistrationTab: function() {
+			this._createNavButton('register');
+			var contentNode = dom.byId('content');
+			var tabNode = put(contentNode, 'div.tab#register-tab');
+			put(tabNode, 'p', _('<p>You may now enter a valid e-mail address in order to activate the UCS system to use the App Center. In the next step you can upload the license file that has been sent to your email address.</p>'));
+
+			// create input field for email address
+			this._email = new TextBox({
+				inlineLabel: _('E-mail address'),
+				regExp: '.+@.+',
+				invalidMessage: _('No valid e-mail address.')
+			});
+			put(tabNode, '>', this._email.domNode);
+			this._email.startup();
+
+			put(tabNode, 'p', {
+				innerHTML: _('Details about the activation of a UCS license can be found in the <a href="http://docs.univention.de/manual.html#central:license" target="_blank">UCS manual</a>.')
+			});
+
+			// create input field for email address
+			this._sendEmailButton = new Button({
+				label: _('Send activation'),
+				onClick: lang.hitch(this, function() {
+					var data = {
+						email: this._email.get('value'),
+						licence: license
+					};
+					xhr.post('https://10.200.12.26/keyid/conversion/submit', {
+						data: data,
+						handleAs: 'text',
+						headers: {
+							'X-Requested-With': null
+						}
+					}).then(function() {
+						router.go('upload');
+					}, function(err) {
+						alert('An error ocurred');
+						console.log(err);
+					});
+				})
+			});
+			put(tabNode, '>', this._sendEmailButton.domNode);
+			this._sendEmailButton.startup();
+		},
+
 		_createUploader: function() {
 			// until Dojo2.0 "dojox.form.Uploader" must be used!
 			this._uploader = new dojox.form.Uploader({
@@ -296,8 +363,9 @@ define([
 		},
 
 		_createUploadTab: function() {
+			this._createNavButton('upload');
 			var contentNode = dom.byId('content');
-			var tabNode = put(contentNode, 'div.tab');
+			var tabNode = put(contentNode, 'div.tab#upload-tab');
 			put(tabNode, 'p > b', _('You have got mail!'));
 			put(tabNode, 'p', _('A license file should have been sent to your email address. Upload the license file from the email to activate your UCS instance.'));
 			put(tabNode, '>', this._createUploader());
@@ -306,6 +374,7 @@ define([
 
 		createElements: function() {
 			this._createTitle();
+			this._createRegistrationTab();
 			this._createUploadTab();
 		},
 
@@ -313,7 +382,7 @@ define([
 			this.registerRouter();
 			this.createLanguagesDropDown();
 			this.createElements()
-			router.startup('welcome');
+			router.startup('register');
 		}
 	};
 });
