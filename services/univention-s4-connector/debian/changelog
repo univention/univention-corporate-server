@@ -1,4 +1,11 @@
-univention-s4-connector (9.0.17-1) unstable; urgency=low
+univention-s4-connector (9.0.16-27) unstable; urgency=medium
+
+  * Save UTF8 DNs in the sqlite database and don't check for empty strings
+    as result (Bug #38645)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 13 Jun 2015 14:42:37 +0200
+
+univention-s4-connector (9.0.16-26) unstable; urgency=low
 
   * Bug #36532: Speed up network re-config
 

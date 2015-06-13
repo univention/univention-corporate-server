@@ -920,7 +920,7 @@ class s4(univention.s4connector.ucs):
 	def _save_rejected(self, id, dn):
 		_d=ud.function('ldap._save_rejected')
 		try:
-			self._set_config_option('S4 rejected',str(id),compatible_modstring(dn))
+			self._set_config_option('S4 rejected',str(id), unicode(dn,'utf8'))
 		except UnicodeEncodeError, msg:
 			self._set_config_option('S4 rejected',str(id),'unknown')
 			self._debug_traceback(ud.WARN,

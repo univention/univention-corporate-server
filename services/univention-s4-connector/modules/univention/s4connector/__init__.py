@@ -523,7 +523,7 @@ class ucs:
 	
 	def _save_rejected_ucs(self, filename, dn):
 		_d=ud.function('ldap._save_rejected_ucs')
-		self._set_config_option('UCS rejected',filename,dn)
+		self._set_config_option('UCS rejected',filename,unicode(dn,'utf8'))
 
 	def _get_rejected_ucs(self, filename):
 		_d=ud.function('ldap._get_rejected_ucs')
@@ -1695,11 +1695,11 @@ class ucs:
 			if object.has_key(dntype):
 				ud.debug(ud.LDAP, ud.INFO,"_dn_type %s" % (object_type)) # don't send str(object) to debug, may lead to segfaults
 
-				if (object_type == 'ucs' and self._get_dn_by_ucs(object[dntype]) != ''):
+				if (object_type == 'ucs' and self._get_dn_by_ucs(object[dntype])):
 					object[dntype] = self._get_dn_by_ucs(object[dntype])
 					object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo_s4.base)
 					dn_mapping_stored.append(dntype)
-				if (object_type != 'ucs' and self._get_dn_by_con(object[dntype]) != ''):
+				if (object_type != 'ucs' and self._get_dn_by_con(object[dntype])):
 					object[dntype] = self._get_dn_by_con(object[dntype])
 					object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo.base)
 					dn_mapping_stored.append(dntype)		
