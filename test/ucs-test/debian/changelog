@@ -1,3 +1,10 @@
+ucs-test (5.0.148-14) unstable; urgency=medium
+
+  * Fixed typo in test case name: 174sync_nested_umlaut_groups
+    (Bug #38704)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 13 Jun 2015 13:58:43 +0200
+
 ucs-test (5.0.148-13) unstable; urgency=medium
 
   * 52_s4connector/174sync_nested_umalut_groups (Bug #38704)
