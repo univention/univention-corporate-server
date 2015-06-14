@@ -1,3 +1,10 @@
+univention-s4-connector (9.0.16-29) unstable; urgency=medium
+
+  * Better use the compatible_modstring function instead of converting
+    the DN directly (Bug #38645)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 14 Jun 2015 13:42:54 +0200
+
 univention-s4-connector (9.0.16-28) unstable; urgency=medium
 
   * Again use compatible_modstring in S4 save rejected (Bug #38645)
