@@ -28,9 +28,11 @@ groupname2="a$(random_chars)ä2"
 
 udm-test groups/group create --position cn=groups,$ldap_base \
 		--set name=$groupname2
+# read DN from LDAP to get the exact case
+grp2_dn=$(univention-ldapsearch cn=$groupname2 dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|dn: ||p')
 udm-test groups/group create --position cn=groups,$ldap_base  \
 		--set name=$groupname1 \
-		--set nestedGroup=cn=$groupname2,cn=groups,$ldap_base
+		--set nestedGroup="$grp2_dn"
 
 ad_wait_for_synchronization; fail_bool 0 110
 

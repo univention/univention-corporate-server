@@ -1,3 +1,10 @@
+ucs-test (5.0.148-15) unstable; urgency=medium
+
+  * 174sync_nested_umlaut_groups: read DN from LDAP to get the exact
+    case. It is a known UDM issue (Bug #38704)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 14 Jun 2015 13:28:47 +0200
+
 ucs-test (5.0.148-14) unstable; urgency=medium
 
   * Fixed typo in test case name: 174sync_nested_umlaut_groups
