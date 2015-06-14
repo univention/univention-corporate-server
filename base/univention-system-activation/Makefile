@@ -72,8 +72,9 @@ $(buildJsDir):
 
 # rule for converting stylus CSS files into one final CSS file
 $(buildCssDir):
-	mkdir -p $@
+	mkdir -p $@/form
 	stylus -o $@ css
+	stylus -o $@/form css/form
 	cp css/ucs.css $@
 	cp -r css/images $@
 	cp -r css/icons $@
@@ -84,6 +85,8 @@ $(buildCssDir):
 	stylus --resolve-url --include-css $@/ucs.css
 	# Workaround: remove the temporarily commented lines
 	sed -i 's|/\*TMP\(.*\)\*/|\1|' $@/ucs.css
+	# replace '.claro' selector with '.umc'
+	sed -i 's/\.claro\>\|\.umc\>/.ucs/g;' $$(find $(TMP_THEME_DIR) -name '*.styl' -o -name '*.css')
 
 $(buildBootstrap): bootstrap.zip
 	unzip -o -j $< "*bootstrap.css" -d $(buildCssDir)

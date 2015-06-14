@@ -143,10 +143,6 @@ define([
 			return nodes[0];
 		},
 
-		_getFocusedTab: function() {
-			//return this.servicesButton.selected ? 'service-tab' : 'admin-tab';
-		},
-
 		_focusTab: function(tabID) {
 			array.forEach(this._tabIDs, function(itabID) {
 				var tabNode = dom.byId(itabID + '-tab');
@@ -159,78 +155,6 @@ define([
 					put(buttonNode, '!focused');
 				}
 			}, this);
-		},
-
-		_getLinkEntry: function(props, category, id) {
-			id = id || '';
-			var localizedProps = {
-				category: category,
-				id: id
-			};
-			array.forEach(['link', 'icon', 'label', 'description'], lang.hitch(this, function(ikey) {
-				localizedProps[ikey] = this._localizeString(props[ikey]);
-			}));
-			if ((props.port_http || props.port_https) && localizedProps.link && localizedProps.link.indexOf('/') === 0) {
-				var protocol = window.location.protocol;
-				var port = '';
-				if (protocol == 'http:') {
-					port = props.port_http;
-					if (!port) {
-						port = props.port_https;
-						protocol = 'https:';
-					}
-				} else if (protocol == 'https:') {
-					port = props.port_https;
-					if (!port) {
-						port = props.port_http;
-						protocol = 'http:';
-					}
-				}
-				if (port == '80') {
-					protocol = 'http:';
-					port = '';
-				} else if (port == '443') {
-					protocol = 'https:';
-					port = '';
-				}
-				if (port) {
-					port = ':' + port;
-				}
-				localizedProps.link = protocol + '//' + window.location.hostname + port + localizedProps.link;
-			}
-			var node = domConstruct.toDom(lang.replace(
-				'<div class="umcGalleryWrapperItem col-xxs-12 col-xs-6 col-sm-6 col-md-4" id="{id}">\n'
-				+ '	<a href="{link}">\n'
-				+ '		<div class="umcGalleryItem umcGalleryCategory-{category}">\n'
-				+ (localizedProps.icon ? '			<div class="umcGalleryIcon" style="background-image:url({icon})"></div>\n' : '')
-				+ '			<div class="umcGalleryName">{label}</div>\n'
-				+ '			<div class="umcGalleryDescription">{description}</div>\n'
-				+ '		</div>\n'
-				+ '	</a>\n'
-				+ '</div>\n',
-				localizedProps
-			));
-			return node;
-		},
-
-		_getLinkEntries: function(category) {
-			if (!this._entries[category]) {
-				return [];
-			}
-			return array.map(this._entries[category], lang.hitch(this, function(ientry) {
-				return this._getLinkEntry(ientry, category);
-			}));
-		},
-
-		_placeLinkEntriesInDom: function(category) {
-			var listNode = this._getTab(category);
-			array.forEach(this._getLinkEntries(category), lang.hitch(this, function(ientryNode) {
-				domConstruct.place(ientryNode, listNode);
-			}));
-		},
-
-		_updateNoServiceHint: function() {
-			domClass.toggle('no-service', 'dijitHidden', this._hasServiceEntries());
 		},
 
 		_getAvailableLocales: function() {
@@ -293,7 +217,7 @@ define([
 
 		_createNavButton: function(tabID) {
 			var navNode = dom.byId('navigation');
-			var buttonNode = put(navNode, 'div.button#' + tabID + '-button[style=border:1px solid black; display: inline-block]', tabID);
+			var buttonNode = put(navNode, 'div.button#' + tabID + '-button');
 			on(buttonNode, 'click', function() {
 				router.go(tabID);
 			});
@@ -304,7 +228,7 @@ define([
 			this._createNavButton('register');
 			var contentNode = dom.byId('content');
 			var tabNode = put(contentNode, 'div.tab#register-tab');
-			put(tabNode, 'p', _('<p>You may now enter a valid e-mail address in order to activate the UCS system to use the App Center. In the next step you can upload the license file that has been sent to your email address.</p>'));
+			put(tabNode, 'p', _('You may now enter a valid e-mail address in order to activate the UCS system to use the App Center. In the next step you can upload the license file that has been sent to your email address.'));
 
 			// create input field for email address
 			this._email = new TextBox({
@@ -372,10 +296,17 @@ define([
 			this._uploader.startup();
 		},
 
+		_createFinishedTab: function() {
+			this._createNavButton('finished');
+			var contentNode = dom.byId('content');
+			var tabNode = put(contentNode, 'div.tab#finished-tab');
+		},
+
 		createElements: function() {
 			this._createTitle();
 			this._createRegistrationTab();
 			this._createUploadTab();
+			this._createFinishedTab();
 		},
 
 		start: function() {

@@ -1,34 +1,37 @@
-#category-bar {
+#navigation {
 	text-align: center;
 	margin-bottom: 35px;
 }
 
-#category-bar .dijitButton {
-	width: 120px;
-	margin: 5px 0;
-	position: relative;
-
-	.dijitButtonNode {
-		margin: auto;
-		padding: 0;
-		border: 0 none;
-		background: none;
-		filter: none;
-		box-shadow: none;
-		display: block;
+#navigation {
+	.button {
+		width: 70px;
+		height: 70px;
+		margin: 0 2em;
+		background: url(icons/tab-buttons.svg) no-repeat;
+		display: inline-block;
 	}
 
-	.dijitButtonText {
-		display: block;
-		font-size: 1em;
-		margin-top: 0.5em;
+	#register-button {
+		background-position: 0 -70px;
+		&.focused {
+			background-position: 0 0;
+		}
 	}
 
-	.dijitIcon {
-		display: block;
-		position: absolute;
-		width: 100%;
-		background-position: center top;
+	#upload-button {
+		background-position: -70px -70px;
+		&.focused {
+			background-position: -70px 0;
+		}
 	}
+
+	#finished-button {
+		background-position: -140px -70px;
+		&.focused {
+			background-position: -140px 0;
+		}
+	}
+
 }
 
