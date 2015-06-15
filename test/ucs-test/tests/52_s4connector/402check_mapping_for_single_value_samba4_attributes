@@ -28,7 +28,7 @@ class S4ConnectorWrapper(univention.s4connector.s4.s4):
 		self.schema_basedn = 'CN=Schema,CN=Configuration,%s' % (self.lo_s4.base,)
 
 	def single_value_mapping_is_ok_for_samba4_attributes(self):
-		result = False
+		result = True
 		for key in self.property.keys():
 			mapping_attributes = getattr(self.property[key], 'attributes')
 			if not mapping_attributes:
