@@ -43,20 +43,19 @@ class AppReporting(object):
 		self.connection = ConnectionManager()
 		provider.load()
 
-		for provider_ in self.get_providers():
-			requests = provider_.get_requests()
-			while True:
-				try:
-					request = next(requests)
-				except StopIteration:
-					break
-				self.connection.request(request)
+	def main(self):
+		for provider_ in self.providers():
+			try:
+				for request in provider_.requests():
+					self.connection.request(request)
+			except:
+				raise  # TODO
 
-	def get_providers(self):
+	def providers(self):
 		yield provider.get('univention')
 		for name in ucr.get(PROVIDER_IDENTIFIER, '').split():
 			yield provider.get(name)
 
 
 if __name__ == '__main__':
-	AppReporting()
+	AppReporting().main()

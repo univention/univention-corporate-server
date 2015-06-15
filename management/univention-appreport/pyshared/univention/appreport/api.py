@@ -18,8 +18,8 @@ ucr.load()
 UUID_SYSTEM = ucr.get('uuid/system')
 UUID_LICENSE = ucr.get('uuid/license')
 
-from univention.management.console.modules.appcenter.app_center import Application
-APPS = dict((app.id.lower(), app) for app in Application.all_installed(PackageManager(), only_local=True, localize=False))
+from univention.management.console.modules.appcenter import app_center
+APPS = dict((app.id.lower(), app) for app in app_center.Application.all_installed(PackageManager(), only_local=True, localize=False))
 
 
 class Request(object):
@@ -38,8 +38,8 @@ class ServerInterface(object):
 
 	apps = ()
 
-	def uri(self, app):
-		raise NotImplementedError('uri')
+	def url(self, app):
+		raise NotImplementedError('url')
 
 	def body(self, app):
 		return app.body()
@@ -65,7 +65,7 @@ class ServerInterface(object):
 
 		self._apps = [self.application(app) for app in self._apps]
 
-	def get_requests(self):
+	def requests(self):
 		for app in self._apps:
 			yield self.build_request(app)
 

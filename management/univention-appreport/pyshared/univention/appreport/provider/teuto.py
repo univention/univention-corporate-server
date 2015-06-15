@@ -10,7 +10,7 @@ class OwnCloud(Application):
 
 class Teuto(CloudServiceProvider):
 
-	apps = ('owncloud5', 'owncloud6', 'owncloud7')
+	apps = ('owncloud5', 'owncloud6', 'owncloud7', 'owncloud8')
 
 	def application(self, app):
 		if app.id.startswith('owncloud'):
@@ -18,4 +18,4 @@ class Teuto(CloudServiceProvider):
 		return super(Teuto, self).application(app)
 
 	def uri(self, app):
-		return 'http://ucs.teuto.net/app-report/%s' % (quote(app.id),)
+		return 'http://localhost/app-report/%s' % (quote(app.id),)
