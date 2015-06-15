@@ -5,7 +5,7 @@ src: univention-management-console-module-appcenter
 fix: 4.1.20-30.360.201505281754
 version: [2]
 desc: |
-  This update addresses the following issues:
-   * An parameter to open a specific app immediately on opening the module has
+  This update addresses the following issue:
+   * A parameter to open a specific app immediately on opening the module has
      been added.
 bug: [38544]
