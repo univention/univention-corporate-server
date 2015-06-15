@@ -49,6 +49,8 @@ build-dev: l10n $(buildCssDir) $(buildBootstrap) i18n $(buildDir)/css/fonts
 	done
 	# symlink for languages.json
 	ln -s /var/www/ucs-overview/languages.json $(buildDir)
+	# create empty entries.json file
+	echo '{ "license_uuid": "", "license_requested": "false" }' > $(buildDir)/entries.json
 
 %/fonts:
 	mkdir -p $@

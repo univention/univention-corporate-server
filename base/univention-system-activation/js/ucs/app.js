@@ -99,48 +99,10 @@ define([
 		_uploader: null,
 		_tabIDs: [],
 
-		_localizeString: function(str) {
-			if (typeof str == 'string') {
-				return str;
-			}
-			if (typeof str != 'object') {
-				// not an object
-				return '';
-			}
-
-			// try several variations in order to find a proper
-			// localized string
-			var result = '';
-			array.forEach([
-				this._localeWithUnderscore, // e.g., str['de_DE']
-				kernel.locale,        // e.g., str['de-DE']
-				this._localeLang,           // e.g., str['de']
-				'C'                   // 'C' as generic fallback
-			], function(ikey) {
-				if (str[ikey] && result === '') {
-					result = str[ikey];
-				}
-			});
-			return result;
-		},
-
 		registerRouter: function() {
 			router.register(":tab", lang.hitch(this, function(data){
 				this._focusTab(data.params.tab);
 			}));
-		},
-
-		_hasCategoryBar: function() {
-			var nodes = query('#category-bar');
-			return nodes.length;
-		},
-
-		_getTab: function(id) {
-			var nodes = query(lang.replace('#{0}-tab', [id]));
-			if (!nodes.length) {
-				return;
-			}
-			return nodes[0];
 		},
 
 		_focusTab: function(tabID) {
@@ -218,9 +180,6 @@ define([
 		_createNavButton: function(tabID) {
 			var navNode = dom.byId('navigation');
 			var buttonNode = put(navNode, 'div.button#' + tabID + '-button');
-			on(buttonNode, 'click', function() {
-				router.go(tabID);
-			});
 			this._tabIDs.push(tabID);
 		},
 
@@ -251,7 +210,7 @@ define([
 						email: this._email.get('value'),
 						licence: license
 					};
-					xhr.post('https://10.200.12.26/keyid/conversion/submit', {
+					xhr.post('https://license.univention.de/keyid/conversion/submit', {
 						data: data,
 						handleAs: 'text',
 						headers: {
