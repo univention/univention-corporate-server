@@ -276,7 +276,7 @@ class S4Cache:
 			for value in entry[attr]:
 				sql_commands.append(
 					(
-						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", [str(guid_id), str(attr_id), _encode_base64(value)]
+						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), _encode_base64(value))
 					)
 				)
 
@@ -297,8 +297,8 @@ class S4Cache:
 				(
 				"DELETE FROM data WHERE data.id IN (\
 				SELECT data.id FROM DATA INNER JOIN ATTRIBUTES ON data.attribute_id=attributes.id \
-					where attributes.attribute=? and guid_id =? \
-				);", [ (str(attribute),), (str(guid_id),)]
+					where attributes.attribute=? and guid_id=? \
+				);", (str(attribute), str(guid_id))
 				)
 			)
 		for attribute in diff['added']:
@@ -306,7 +306,7 @@ class S4Cache:
 			for value in entry[attribute]:
 				sql_commands.append(
 					(
-						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", [str(guid_id), str(attr_id), _encode_base64(value)]
+						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), _encode_base64(value))
 					)
 				)
 		for attribute in diff['changed']:
@@ -317,13 +317,13 @@ class S4Cache:
 						"DELETE FROM data WHERE data.id IN (\
 							SELECT data.id FROM DATA INNER JOIN ATTRIBUTES ON data.attribute_id=attributes.id \
 							where attributes.id=? and guid_id = ? and value = ? \
-						);", [str(attr_id), str(guid_id), _encode_base64(value)]
+						);", (str(attr_id), str(guid_id), _encode_base64(value))
 					)
 				)
 			for value in set(entry.get(attribute)) - set(old_entry.get(attribute)):
 				sql_commands.append(
 					(
-						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", [str(guid_id), str(attr_id), _encode_base64(value)]
+						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), _encode_base64(value))
 					)
 				)
 

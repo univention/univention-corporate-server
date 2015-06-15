@@ -1,3 +1,10 @@
+univention-s4-connector (9.0.16-30) unstable; urgency=medium
+
+  [ Arvid Requate ]
+  * S4Cache: fixes sqlite command (Bug #38645)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 15 Jun 2015 19:52:52 +0200
+
 univention-s4-connector (9.0.16-29) unstable; urgency=medium
 
   * Better use the compatible_modstring function instead of converting
