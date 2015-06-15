@@ -5,7 +5,7 @@ src: curl
 fix: 7.26.0-1.59.201506041842
 version: [1,2]
 desc: |
- These vulernabilities have been fixed in curl:
+ These vulnerabilities have been fixed in curl:
  * Re-using authenticated connection when unauthenticated (CVE-2015-3143)
  * Negotiate not treated as connection-oriented (CVE-2015-3148)
 bug: [38352]
