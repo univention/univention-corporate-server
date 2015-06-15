@@ -58,8 +58,15 @@ def application(environ, start_response):
 	try:
 		subprocess.check_output(['/usr/bin/sudo', '/usr/sbin/univention-license-import', LICENSE_UPLOAD_PATH], stderr=subprocess.STDOUT)
 	except subprocess.CalledProcessError as exc:
-		_log('Failed to import the license:\n%s' % exc)
-		return _finish('400 Bad Request', exc)
+		_log('Failed to import the license:\n%s\n%s' % (exc.output, exc))
+		return _finish('400 Bad Request', str(exc.output))
+
+	# disable system activation service
+	try:
+		subprocess.check_call(['/usr/bin/sudo', '/usr/sbin/univention-system-activation', 'stop'], stderr=subprocess.STDOUT)
+	except subprocess.CalledProcessError as exc:
+		_log('Error stopping the system activation service:\n%s\n%s' % (exc.output, exc))
+		return _finish('500 Internal Server Error', str(exc.output))
 
 	return _finish('200 OK', 'Successfully imported the license data')
 

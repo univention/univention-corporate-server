@@ -1,2 +1,3 @@
 www-data ALL=NOPASSWD: /usr/sbin/univention-license-import /var/cache/univention-system-activation/license.ldif
 www-data ALL=NOPASSWD: /usr/bin/univention-ldapsearch -LLL objectClass=univentionLicense
+www-data ALL=NOPASSWD: /usr/sbin/univention-system-activation stop
