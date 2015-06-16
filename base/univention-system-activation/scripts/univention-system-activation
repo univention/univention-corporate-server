@@ -62,6 +62,45 @@ elif [ "$ACTION" = "start" ]; then
 	# enable system activation site configuration and reload apache
 	a2ensite univention-system-activation
 	/etc/init.d/apache2 reload
+
+	# config firewall
+	# only allow incoming http/https request during app appliance
+	# activation
+	/sbin/iptables -F
+
+	# initialise IPv4
+	/sbin/iptables -F
+	/sbin/iptables -F -t nat
+	/sbin/iptables -F -t mangle
+
+	# accept IPv4 connections from localhost
+	/sbin/iptables -A INPUT -i lo -j ACCEPT
+	/sbin/iptables -A OUTPUT -o lo -j ACCEPT
+
+	# accept established IPv4 connections
+	/sbin/iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+	# accept all ICMP messages
+	/sbin/iptables -A INPUT -p icmp -j ACCEPT
+
+	# initialise IPv6
+	/sbin/ip6tables -F
+	/sbin/ip6tables -F -t mangle
+
+	# accept IPv6 connections from localhost
+	/sbin/ip6tables -A INPUT -i lo -j ACCEPT
+	/sbin/ip6tables -A OUTPUT -o lo -j ACCEPT
+
+	# accept established IPv6 connections
+	/sbin/ip6tables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+	# accept all ICMPv6 messages
+	/sbin/ip6tables -A INPUT -p icmpv6 -j ACCEPT
+
+	# allow http/https
+	/sbin/iptables  -A INPUT -p tcp --dport 80 -j ACCEPT
+	/sbin/iptables  -A INPUT -p tcp --dport 443 -j ACCEPT
+	/sbin/iptables -A INPUT -j REJECT
 elif [ "$ACTION" = "stop" -a -z "$apache2_system_activation_sites" ]; then
 	echo
 	echo "ERROR: The UCR variable 'apache2/system_activation/sites' is empty,"
@@ -78,6 +117,9 @@ elif [ "$ACTION" = "stop" ]; then
 
 	# unset previously stored sites
 	ucr unset apache2/system_activation/sites
+
+	# restore firewall settings
+	invoke-rc.d univention-firewall restart
 else
 	echo
 	echo "ERROR: Unknown action given"
