@@ -1,7 +1,4 @@
-#!/usr/bin/python2.7
-# -*- coding: utf-8 -*-
-#
-# Univention Application Reporting
+#!/bin/sh
 #
 # Copyright (C) 2015 Univention GmbH
 #
@@ -30,6 +27,4 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-
-from univention.appreport import AppReporting
-AppReporting().main()
+/usr/bin/python2.7 -m univention.appreport
