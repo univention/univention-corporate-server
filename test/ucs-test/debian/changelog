@@ -1,3 +1,9 @@
+ucs-test (5.0.148-19) unstable; urgency=medium
+
+  * Add tests/10_ldap/51listener_case_handling (Bug #35334)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 16 Jun 2015 23:29:27 +0200
+
 ucs-test (5.0.148-18) unstable; urgency=low
 
   * Bug #38663: LDAP required/prohibutedOCs
