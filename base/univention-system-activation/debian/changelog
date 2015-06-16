@@ -1,4 +1,4 @@
-univention-system-activation (0.0.2-1) unstable; urgency=low
+univention-system-activation (0.0.1-4) unstable; urgency=low
 
   * Bug #38547: Added error handling for upload
 
