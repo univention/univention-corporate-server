@@ -187,6 +187,7 @@ define([
 			this._createNavButton('register');
 			var contentNode = dom.byId('content');
 			var tabNode = put(contentNode, 'div.tab#register-tab');
+			put(tabNode, 'p > b', _('Request a license!'));
 			put(tabNode, 'p', _('You may now enter a valid e-mail address in order to activate the UCS system to use the App Center. In the next step you can upload the license file that has been sent to your email address.'));
 
 			// create input field for email address
@@ -216,16 +217,42 @@ define([
 						headers: {
 							'X-Requested-With': null
 						}
-					}).then(function() {
+					}).then(lang.hitch(this, function() {
+						this._removeError();
 						router.go('upload');
-					}, function(err) {
-						alert('An error ocurred');
+					}), lang.hitch(this, function(err) {
+						var status_code = err.response.status;
+						var error_msg = _('Error: ') + err.message;
+
+						if(status_code === 400 || status_code === 422){
+							error_msg = _('Error: Please insert a valid mail address!');
+						} else if(status_code >= 500) {
+							error_msg = _('Error: Can not connect to license server. Please try again later!');
+						}
+						this._showError(error_msg);
 						console.log(err);
-					});
+					}));
 				})
 			});
 			put(tabNode, '>', this._sendEmailButton.domNode);
 			this._sendEmailButton.startup();
+		},
+
+		_showError: function(error_msg){
+			var contentNode = dom.byId('content');
+			var errorNode = dom.byId('error');
+			if(!errorNode){
+				errorNode = put('div[id=error][style=background-color:#E67272;padding:5px;]');
+				put(contentNode, '>', errorNode);
+			}
+			errorNode.innerHTML = error_msg;
+		},
+
+		_removeError: function(){
+			var errorNode = dom.byId('error');
+			if(errorNode){
+				put(errorNode, "!");
+			}
 		},
 
 		_createUploader: function() {
@@ -242,6 +269,9 @@ define([
 			});
 			put(this._uploader.domNode, '.umcButton[display=inline-block]');
 			//this._uploader.set('iconClass', 'umcIconAdd');
+			this._uploader.on('complete', function() {
+				router.go('finished');
+			});
 			return this._uploader.domNode;
 		},
 
@@ -249,8 +279,14 @@ define([
 			this._createNavButton('upload');
 			var contentNode = dom.byId('content');
 			var tabNode = put(contentNode, 'div.tab#upload-tab');
+			this._backToRegisterButton = new Button({
+				label: _('Back'),
+				onClick: lang.hitch(this, function(){ router.go('register')})
+			});
 			put(tabNode, 'p > b', _('You have got mail!'));
 			put(tabNode, 'p', _('A license file should have been sent to your email address. Upload the license file from the email to activate your UCS instance.'));
+			put(tabNode, '>', this._backToRegisterButton.domNode);
+			this._backToRegisterButton.startup();
 			put(tabNode, '>', this._createUploader());
 			this._uploader.startup();
 		},
@@ -259,6 +295,16 @@ define([
 			this._createNavButton('finished');
 			var contentNode = dom.byId('content');
 			var tabNode = put(contentNode, 'div.tab#finished-tab');
+			this._continueButton = new Button({
+				label: _('Continue'),
+				onClick: lang.hitch(this, function(){ 
+					location.href = "/umc" + location.search + "&username=Administrator";
+				})
+			});
+			put(tabNode, 'p > b', _('Activation successful!'));
+			put(tabNode, 'p', _('The App Appliance is now activated. Click continue to foobar your system.'));
+			put(tabNode, '>', this._continueButton.domNode);
+			this._continueButton.startup();
 		},
 
 		createElements: function() {
