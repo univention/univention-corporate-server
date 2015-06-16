@@ -17,7 +17,7 @@ UDM object types are currently supported.
 WARNING2:
 The API is currently under heavy development and may/will change before next UCS release!
 """
-# Copyright 2013-2014 Univention GmbH
+# Copyright 2013-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
