@@ -31,6 +31,10 @@
 # <http://www.gnu.org/licenses/>.
 
 export DH_ALWAYS_EXCLUDE=.svn
+PACKAGES := $(shell sed -rne '/^Provides: ucs-test-module$$/{g;p};s/Package: //;T;h' debian/control)
+BLANK :=
+SPACE := $(BLANK) $(BLANK)
+COMMA := ,
 
 %:
 	dh $@ --with python_support
@@ -50,3 +54,6 @@ override_dh_auto_build:
 override_dh_auto_install:
 	dh-umc-module-install
 	dh_auto_install
+
+override_dh_gencontrol:
+	dh_gencontrol -- -Vucs-test:all-packages=$(subst $(SPACE),$(COMMA),$(PACKAGES))

@@ -484,53 +484,23 @@ Package: ucs-test-proxy
 Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
- python-pycurl
+ python-pycurl,
  ${misc:Depends}
 Provides: ucs-test-module
-Description: Test scripts to test basic and ntlm authentications
+Description: Test scripts to test basic and NTLM authentications
  This package includes test-cases for the Basic and NTLM proxy authentications.
+
+Package: ucs-test-udm
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts to test basic Univention Directory Manager
+ This package includes test-cases for the Univention Directory Manager.
 
 Package: ucs-test-modules-all
 Architecture: all
-Depends:
- ucs-test-checks,
- ucs-test-base,
- ucs-test-quota,
- ucs-test-ldap,
-# ucs-test-dns,
- ucs-test-mail,
- ucs-test-umc,
-# ucs-test-iptables,
- ucs-test-samba,
- ucs-test-samba4,
- ucs-test-s4connector,
-# ucs-test-pkgdb,
- ucs-test-udm-dns,
- ucs-test-udm-computers,
- ucs-test-udm-containers,
- ucs-test-updater,
- ucs-test-udm-extendedattribute,
- ucs-test-udm-extensions,
- ucs-test-udm-customattribute,
- ucs-test-udm-dhcp,
-# ucs-test-dhcp,
- ucs-test-nagios,
-# ucs-test-apache,
-# ucs-test-udm-general,
- ucs-test-udm-users,
- ucs-test-udm-groups,
- ucs-test-udm-printers,
-# ucs-test-system-setup,
- ucs-test-udm-net,
- ucs-test-udm-settings,
- ucs-test-udm-syntax,
- ucs-test-ucr,
- ucs-test-adconnector,
- ucs-test-appcenter,
- ucs-test-umc-system,
- ucs-test-nfs,
- ucs-test-proxy,
-# ucs-test-ucsschool,
-# ucs-test-login
+Depends: ${ucs-test:all-packages}
 Description: UCS test environment meta package
  This package depends on all other tests of UCS test.
