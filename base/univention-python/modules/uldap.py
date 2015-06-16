@@ -348,16 +348,13 @@ class access:
 		_d=univention.debug.function('uldap.searchDn filter=%s base=%s scope=%s unique=%d required=%d' % (filter, base, scope, unique, required))
 		return map(lambda(x): x[0], self.search(filter, base, scope, ['dn'], unique, required, timeout, sizelimit, serverctrls))
 
-	def getPolicies(self, dn, policies = None, attrs = None, result = None, fixedattrs = None ):
+	def getPolicies(self, dn, policies=None, attrs=None, result=None, fixedattrs=None):
 		if attrs is None:
 			attrs = {}
-		if result is None:
-			result = {}
-		if fixedattrs is None:
-			fixedattrs = {}
 		if policies is None:
 			policies = []
-		_d=univention.debug.function('uldap.getPolicies dn=%s policies=%s attrs=%s result=%s fixedattrs=%s' % (dn, policies, attrs, result, fixedattrs))
+		_d = univention.debug.function('uldap.getPolicies dn=%s policies=%s attrs=%s' % (
+			dn, policies, attrs))
 		if not dn and not policies: # if policies is set apply a fictionally referenced list of policies
 			return {}
 
@@ -371,72 +368,66 @@ class access:
 		elif not policies and not attrs:
 			policies=oattrs.get('univentionPolicyReference', [])
 
-		object_classes = [x.lower() for x in oattrs.get('objectClass', [])]
+		object_classes = {oc.lower() for oc in oattrs.get('objectClass', [])}
 
+		result = {}
 		if dn:
-			parent_dn=self.parentDn(dn)
-			if parent_dn:
-				result=self.getPolicies(parent_dn, result=result, fixedattrs=fixedattrs)
-
-		for pdn in policies:
-			pattrs=self.get(pdn)
-			ptype=None
-			if pattrs:
-				for oc in pattrs['objectClass']:
-					if oc in ( 'top', 'univentionPolicy', 'univentionObject' ):
-						continue
-					ptype=oc
+			obj_dn = dn
+			while True:
+				for policy_dn in policies:
+					self._merge_policy(policy_dn, obj_dn, object_classes, result)
+				dn = self.parentDn(dn)
+				if not dn:
 					break
+				parent = self.get(dn, ['univentionPolicyReference'])
+				if not parent:
+					break
+				policies = parent.get('univentionPolicyReference', [])
 
-				if not ptype:
-					continue
-
-				if pattrs.get('ldapFilter'):
-					try:
-						self.search(pattrs['ldapFilter'][0], base=dn, scope='base', unique=True, required=True)
-					except ldap.NO_SUCH_OBJECT:
-						continue
-
-				if not all(oc.lower() in object_classes for oc in pattrs.get('requiredObjectClasses', [])):
-					continue
-				if any(oc.lower() in object_classes for oc in pattrs.get('prohibitedObjectClasses', [])):
-					continue
-
-				result.setdefault(ptype, {})
-				fixedattrs.setdefault(ptype, {})
-
-				for key, value in pattrs.items():
-					if key in ('requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType', 'ldapFilter'):
-						continue
-					if key not in fixedattrs[ptype]:
-						univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "getPolicies: %s sets: %s=%s" % (pdn, key, value))
-						result[ptype][key]={}
-						result[ptype][key]['policy']=pdn
-						result[ptype][key]['value']=value
-						if key in pattrs.get('emptyAttributes', []):
-							result[ptype][key]['value']=[]
-						if key in pattrs.get('fixedAttributes', []):
-							result[ptype][key]['fixed']=1
-						else:
-							result[ptype][key]['fixed']=0
-				for key in pattrs.get('fixedAttributes', []):
-					if key not in fixedattrs[ptype]:
-						fixedattrs[ptype][key]=pdn
-						if key not in result[ptype]:
-							result[ptype][key]={}
-							result[ptype][key]['policy']=pdn
-							result[ptype][key]['value']=[]
-							result[ptype][key]['fixed']=1
-				for key in pattrs.get('emptyAttributes', []):
-					if key not in result[ptype]:
-						result[ptype][key]={}
-						result[ptype][key]['policy']=pdn
-						result[ptype][key]['value']=[]
-					elif not ('fixed' in result[ptype][key] and result[ptype][key]['fixed']):
-						result[ptype][key]['value']=[]
-
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "getPolicies: result: %s" % result)
+		univention.debug.debug(
+			univention.debug.LDAP, univention.debug.INFO,
+			"getPolicies: result: %s" % result)
 		return result
+
+	def _merge_policy(self, policy_dn, obj_dn, object_classes, result):
+		pattrs = self.get(policy_dn)
+		if not pattrs:
+			return
+
+		try:
+			classes = set(pattrs['objectClass']) - {'top', 'univentionPolicy', 'univentionObject'}
+			ptype = classes.pop()
+		except KeyError:
+			return
+
+		if pattrs.get('ldapFilter'):
+			try:
+				self.search(pattrs['ldapFilter'][0], base=obj_dn, scope='base', unique=True, required=True)
+			except ldap.NO_SUCH_OBJECT:
+				return
+
+		if not all(oc.lower() in object_classes for oc in pattrs.get('requiredObjectClasses', [])):
+			return
+		if any(oc.lower() in object_classes for oc in pattrs.get('prohibitedObjectClasses', [])):
+			return
+
+		fixed = set(pattrs.get('fixedAttributes', ()))
+		empty = set(pattrs.get('emptyAttributes', ()))
+		values = result.setdefault(ptype, {})
+		for key in list(empty) + pattrs.keys() + list(fixed):
+			if key in {'requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType', 'ldapFilter'}:
+				continue
+
+			if key not in values or key in fixed:
+				value = [] if key in empty else pattrs.get(key, [])
+				univention.debug.debug(
+					univention.debug.LDAP, univention.debug.INFO,
+					"getPolicies: %s sets: %s=%s" % (policy_dn, key, value))
+				values[key] = {
+					'policy': policy_dn,
+					'value': value,
+					'fixed': 1 if key in fixed else 0,
+				}
 
 	def add(self, dn, al):
 		"""Add LDAP entry with dn and attributes in add_list=(attribute-name, old-values. new-values) or (attribute-name, new-values)."""
