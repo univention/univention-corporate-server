@@ -222,13 +222,15 @@ define([
 						router.go('upload');
 					}), lang.hitch(this, function(err) {
 						var status_code = err.response.status;
-						var error_msg = _('Error: ') + err.message;
-
-						if(status_code === 400 || status_code === 422){
-							error_msg = _('Error: Please insert a valid mail address!');
-						} else if(status_code >= 500) {
-							error_msg = _('Error: Can not connect to license server. Please try again later!');
+						var error_details = null;
+						if(status_code >= 400 && status_code <= 500){
+							error_details = put('html');
+							error_details.innerHTML = err.response.data;
+							error_details = error_details.getElementsByTagName('span')[0].innerText;
+						} else {
+							error_details = _('An unknown error occured. Please try it again later!');
 						}
+						var error_msg = _('Error ') + status_code + ': ' + error_details;
 						this._showError(error_msg);
 						console.log(err);
 					}));
@@ -242,7 +244,7 @@ define([
 			var contentNode = dom.byId('content');
 			var errorNode = dom.byId('error');
 			if(!errorNode){
-				errorNode = put('div[id=error][style=background-color:#E67272;padding:5px;]');
+				errorNode = put('div[id=error][style=background-color:#E67272;padding:5px;margin-top:10px;]');
 				put(contentNode, '>', errorNode);
 			}
 			errorNode.innerHTML = error_msg;
@@ -269,9 +271,20 @@ define([
 			});
 			put(this._uploader.domNode, '.umcButton[display=inline-block]');
 			//this._uploader.set('iconClass', 'umcIconAdd');
-			this._uploader.on('complete', function() {
-				router.go('finished');
-			});
+			this._uploader.on('complete', lang.hitch(this, function(evt) {
+				// activation successful if evt === None
+				if(evt === "None"){
+					router.go('finished');
+					this._removeError();
+				} else {
+					var error_msg = _('Error: Invalid license file. Please try again or request a new one.');
+					this._showError(error_msg);
+				}
+			}));
+			this._uploader.on('error', lang.hitch(this, function(evt){ 
+				var error_msg = _('Error: Invalid license file. Please try again or request a new one.');
+				this._showError(error_msg);
+			}));
 			return this._uploader.domNode;
 		},
 
@@ -280,7 +293,7 @@ define([
 			var contentNode = dom.byId('content');
 			var tabNode = put(contentNode, 'div.tab#upload-tab');
 			this._backToRegisterButton = new Button({
-				label: _('Back'),
+				label: _('Request new license'),
 				onClick: lang.hitch(this, function(){ router.go('register')})
 			});
 			put(tabNode, 'p > b', _('You have got mail!'));

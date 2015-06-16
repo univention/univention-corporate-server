@@ -1,3 +1,9 @@
+univention-system-activation (0.0.2-1) unstable; urgency=low
+
+  * Bug #38547: Added error handling for upload
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 16 Jun 2015 14:52:21 +0200
+
 univention-system-activation (0.0.1-3) unstable; urgency=low
 
   * Bug #38547: Added firewall rules and adapted install script
