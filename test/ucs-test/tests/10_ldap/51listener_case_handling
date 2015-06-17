@@ -6,6 +6,8 @@
 ## packages:
 ##  - univention-directory-listener
 ## exposure: dangerous
+## bugs:
+##  - 35334
 
 
 . "$TESTLIBPATH/base.sh" || exit 137
@@ -21,10 +23,6 @@ udm-test container/cn create \
 
 udm-test container/cn create \
 	--set name='new_ŵnvü#ûüΩ?ĵ' || fail_fast 140 "cannot create container/cn with name='new_ŵnvü#ûüΩ?ĵ'"
-rc=$?
-if [ "$rc" != 0 ]; then
-	fail_fast 140 "cannot create container/cn with name='ŵnvü#ûüΩ?ĵ'"
-fi
 
 undo udm-test container/cn remove --dn "cn=new_ŵnvü#ûüΩ?ĵ,$ldap_base"
 
