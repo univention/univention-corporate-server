@@ -650,7 +650,9 @@ class UDM_Module(object):
 	@property
 	def name(self):
 		"""Internal name of the UDM module"""
-		return self.module is not None and self.module.module
+		if self.module is None:
+			return
+		return self.module.module
 
 	@property
 	def subtitle(self):

@@ -1,3 +1,10 @@
+univention-management-console-module-udm (5.1.25-70) unstable; urgency=medium
+
+  * Bug #38544: handle errors when no object type is given via request.options
+  	and flavor
+
+ -- Florian Best <best@univention.de>  Wed, 17 Jun 2015 18:02:37 +0200
+
 univention-management-console-module-udm (5.1.25-69) unstable; urgency=medium
 
   * Bug #36256: handle multiple referenced policies of an object

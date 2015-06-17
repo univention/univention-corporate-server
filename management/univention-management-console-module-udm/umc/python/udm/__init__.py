@@ -101,6 +101,18 @@ def module_from_request(func):
 	return _decorated
 
 
+def bundled(func):
+	def _decoarated(self, request):
+		bundled = isinstance(request.options, (list, tuple))
+		if not bundled:
+			ret = func(self, request)
+		else:
+			options = request.options
+			ret = [func(self, request) for request.options in options]
+		self.finished(request.id, ret)
+	return _decoarated
+
+
 class ObjectPropertySanitizer(StringSanitizer):
 
 	def __init__(self, **kwargs):
@@ -161,7 +173,7 @@ class Instance(Base, ProgressMixin):
 		if not module_name or 'all' == module_name:
 			module_name = request.flavor
 
-		if not module_name:
+		if not module_name or module_name == 'navigation':
 			raise UMC_OptionMissing(_('No flavor or valid UDM module name specified'))
 
 		return UDM_Module(module_name)
@@ -789,6 +801,11 @@ class Instance(Base, ProgressMixin):
 			# return the final list of object types
 			self.finished(request.id, map(lambda module: {'id': udm_modules.name(module), 'label': getattr(module, 'short_description', udm_modules.name(module))}, allowed_modules))
 
+	@bundled
+	@sanitize(
+		objectType=StringSanitizer(),
+#		objectDN=StringSanitizer(allow_none=True),
+	)
 	def layout(self, request):
 		"""Returns the layout information for the given object type.
 
@@ -797,17 +814,20 @@ class Instance(Base, ProgressMixin):
 
 		return: <layout data structure (see UDM python modules)>
 		"""
-		ret = []
-		for options in request.options:
-			module = self._get_module_by_request(request, options.get('objectType'))
-			module.load(force_reload=True)  # reload for instant extended attributes
-			if request.flavor == 'users/self':
-				object_dn = None
-			else:
-				object_dn = options.get('objectDN', None)
-			ret.append(module.get_layout(object_dn))
-		self.finished(request.id, ret)
+		module = self._get_module_by_request(request)
+		module.load(force_reload=True)  # reload for instant extended attributes
+		if request.flavor == 'users/self':
+			object_dn = None
+		else:
+			object_dn = request.options.get('objectDN')
+		return module.get_layout(object_dn)
 
+	@bundled
+	@sanitize(
+		objectType=StringSanitizer(),
+		objectDn=StringSanitizer(),
+		searchable=BooleanSanitizer(default=False)
+	)
 	def properties(self, request):
 		"""Returns the properties of the given object type.
 
@@ -816,24 +836,13 @@ class Instance(Base, ProgressMixin):
 
 		return: [ {}, ... ]
 		"""
-		ret = []
-		bundled = False
-		if isinstance(request.options, list):
-			all_options = request.options
-			bundled = True
-		else:
-			all_options = [request.options]
-		for options in all_options:
-			module = self._get_module_by_request(request, options.get('objectType'))
-			module.load(force_reload=True)  # reload for instant extended attributes
-			object_dn = options.get('objectDN')
-			properties = module.get_properties(object_dn)
-			if options.get('searchable', False):
-				properties = filter(lambda prop: prop.get('searchable', False), properties)
-			ret.append(properties)
-		if not bundled:
-			ret = ret[0]
-		self.finished(request.id, ret)
+		module = self._get_module_by_request(request)
+		module.load(force_reload=True)  # reload for instant extended attributes
+		object_dn = request.options.get('objectDN')
+		properties = module.get_properties(object_dn)
+		if request.options.get('searchable', False):
+			properties = filter(lambda prop: prop.get('searchable', False), properties)
+		return properties
 
 	@module_from_request
 	@simple_response
@@ -847,22 +856,14 @@ class Instance(Base, ProgressMixin):
 		"""
 		return module.options
 
+	@bundled
+	@sanitize(
+		objectType=StringSanitizer()
+	)
 	def policies(self, request):
 		"""Returns a list of policy types that apply to the given object type"""
-		bundled = True
-		all_options = request.options
-		if not isinstance(request.options, list):
-			all_options = [request.options]
-			bundled = False
-
-		result = []
-		for options in all_options:
-			module = self._get_module_by_request(request, options.get('objectType'))
-			result.append(module.policies)
-
-		if not bundled:
-			result = result[0]
-		self.finished(request.id, result)
+		module = self._get_module_by_request(request)
+		return module.policies
 
 	def validate(self, request):
 		"""Validates the correctness of values for properties of the
