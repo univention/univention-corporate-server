@@ -1076,7 +1076,7 @@ class Instance(Base, ProgressMixin):
 				_obj = _module.get(_dn)
 				if _obj is None or (_dn and not _obj.exists()):
 					raise ObjectDoesNotExist(_dn)
-				return _obj, _module
+				return _obj
 
 			def _get_object_parts(_options):
 				'''Get object related information and corresponding UDM object/module. Verify user input.'''
@@ -1093,10 +1093,12 @@ class Instance(Base, ProgressMixin):
 				_module = None
 				if _object_dn:
 					# editing an exiting UDM object -> use the object itself
-					_obj, _module = _get_object(_object_dn, UDM_Module(_object_type))
+					_module = UDM_Module(_object_type)
+					_obj = _get_object(_object_dn, _module)
 				elif _container_dn:
 					# editing a new (i.e. non existing) object -> use the parent container
-					_obj, _module = _get_object(_container_dn, get_module(None, _container_dn))
+					_module = get_module(None, _container_dn)
+					_obj = _get_object(_container_dn, _module)
 
 				return (_object_dn, _container_dn, _obj)
 
@@ -1104,10 +1106,14 @@ class Instance(Base, ProgressMixin):
 			for ioptions in request.options:
 				object_dn, container_dn, obj = _get_object_parts(ioptions)
 				policy_dns = ioptions.get('policies', [])
-				policy_obj = _get_object(policy_dns[0] if policy_dns else None, UDM_Module(ioptions.get('policyType')))[0]
-				if not policy_obj.exists():
+				policy_module = UDM_Module(ioptions['policyType'])
+				policy_obj = _get_object(policy_dns[0] if policy_dns else None, policy_module)
+
+				if policy_dns and not policy_obj.exists():
+					# a policy DN was provided which does not exists
 					ret.append({})
 					continue
+
 				policy_obj.clone(obj)
 
 				# There are 2x2x2 (=8) cases that may occur (c.f., Bug #31916):
