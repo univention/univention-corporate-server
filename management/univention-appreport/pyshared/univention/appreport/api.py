@@ -111,7 +111,13 @@ class ServiceInterface(object):
 
 class UniventionServer(ServiceInterface):
 
-	apps = ('*',)
+	def __init__(self):
+		if ucr.is_true('appreport/*/report', False):
+			self.apps = ('*',)
+		else:
+			self.apps = [app for app in APPS if ucr.is_true('appreport/%s/report' % (app,), False)]
+
+		super(UniventionServer, self).__init__()
 
 	def url(self, app):
 		return 'https://license.univention.de/appreport/%s' % urllib2.quote(app.id)
@@ -124,15 +130,15 @@ class Application(object):
 		self.id = app.id
 		self.object_type = ucr.get('appreport/%s/object_type' % (self.id,), 'users/user')
 		self.object_filter = ucr.get('appreport/%s/object_filter' % (self.id,), '')
-		self.ldap_filter = ucr.get('appreport/%s/ldap_filter' % (self.id,), '(&((!(disabled=all)%s))')
-		if '%s' in self.ldap_filter:
-			self.ldap_filter = self.ldap_filter % self.object_filter
+		self.ldap_filter = ucr.get('appreport/%s/ldap_filter' % (self.id,), '(&((!(disabled=all)%(object_filter)s))')
+		if '%' in self.ldap_filter:
+			self.ldap_filter = self.ldap_filter % self.__dict__
 
 	def object_count(self):
 		object_ = univention.admin.modules.get(self.object_type)
 		try:
 			return len(object_.lookup(None, ldap_connection, self.ldap_filter))
-		except AttributeError as exc: # object_ is None
+		except AttributeError as exc:  # object_ is None
 			ud.debug(ud.MAIN, ud.ERROR, 'Unknown object type? %r=%r: %s' % (self.object_type, object_, exc))
 			raise
 		except (ldap.LDAPError, udm_error) as exc:
