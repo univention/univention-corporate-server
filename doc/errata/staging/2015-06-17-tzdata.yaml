@@ -7,4 +7,4 @@ version: [6]
 desc: |
  The time zone database was updated to include information about the scheduled
  leap second at the end of June 2015.
-bug: [38718]
+bug: [38719]
