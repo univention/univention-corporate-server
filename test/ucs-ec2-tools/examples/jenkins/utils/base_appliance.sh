@@ -52,9 +52,9 @@ install_virtualbox_packages ()
 
 install_activation_packages ()
 {
-	ucr set repository/online/unmaintained=yes
+	echo "deb http://192.168.0.10/build2/ ucs_4.0-0-errata4.0-2/all/" >/etc/apt/sources.list.d/91activation.list
 	univention-install -y --force-yes univention-system-activation
-	ucr set repository/online/unmaintained=no
+	rm -f /etc/apt/sources.list.d/91activation.list
 }
 
 download_packages ()
