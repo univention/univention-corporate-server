@@ -1,3 +1,9 @@
+ucs-test (5.0.148-21) unstable; urgency=medium
+
+  * QA feedback for tests/10_ldap/51listener_case_handling (Bug #35334)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 17 Jun 2015 11:58:41 +0200
+
 ucs-test (5.0.148-20) unstable; urgency=medium
 
   * Adjust tests/10_ldap/51listener_case_handling (Bug #35334)
