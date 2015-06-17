@@ -368,7 +368,7 @@ class access:
 		elif not policies and not attrs:
 			policies=oattrs.get('univentionPolicyReference', [])
 
-		object_classes = {oc.lower() for oc in oattrs.get('objectClass', [])}
+		object_classes = set(oc.lower() for oc in oattrs.get('objectClass', []))
 
 		result = {}
 		if dn:
