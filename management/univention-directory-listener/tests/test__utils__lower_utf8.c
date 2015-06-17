@@ -1,11 +1,12 @@
 #include "test.h"
 #include <ldap.h>
 
-#include "../src/cache.c"
+#include "../src/utils.h"
 
 static inline bool _test(const char *input, const char *expected) {
-	char *output = _convert_to_lower(input);
+	char *output = lower_utf8(input);
 	int ret = strcmp(output, expected);
+	if (ret) fprintf(stderr, " i=%s\n o=%s\n e=%s\n", input, output, expected);
 	free(output);
 	return ret == 0;
 }
@@ -25,3 +26,7 @@ TEST(german,
 TEST(greek,
 	"cn=FΩ,dc=univention,dc=de",
 	"cn=fω,dc=univention,dc=de");
+TEST(turkish,
+	"cn=âÇçĞğİiIıîŞş,dc=univention,dc=de",
+	"cn=âççğğiiiıîşş,dc=univention,dc=de");
+/* not: "cn=âççğği̇iııîşş,dc=univention,dc=de"); */

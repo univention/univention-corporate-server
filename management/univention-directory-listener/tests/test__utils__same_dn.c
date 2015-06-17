@@ -70,7 +70,7 @@ TEST(germansz,
 
 TEST(turkishi,
 	"cn=iIıİ,dc=univention,dc=de",
-	"cn=Iiıi̇,dc=univention,dc=de", true);
+	"cn=Iiıi,dc=univention,dc=de", true);
 
 TEST(greek,
 	"cn=ωΩ,dc=univention,dc=de",

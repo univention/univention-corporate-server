@@ -70,9 +70,6 @@
 #include <db.h>
 #include <stdbool.h>
 #include <assert.h>
-#define U_CHARSET_IS_UTF8 1
-#include <unicode/uchar.h>
-#include <unicode/ucasemap.h>
 
 #include <univention/debug.h>
 
@@ -104,18 +101,6 @@ static void cache_panic_call(DB_ENV *dbenvp, int errval)
 	exit(1);
 }
 #endif
-
-static char* _convert_to_lower(const char *dn)
-{
-	UErrorCode status = U_ZERO_ERROR;
-	UCaseMap *caseMap = ucasemap_open(NULL, U_FOLD_CASE_DEFAULT, &status);
-	assert(U_SUCCESS(status));
-
-	char *result = lower_utf8(dn, caseMap);
-
-	ucasemap_close(caseMap);
-	return result;
-}
 
 static void cache_error_message(const char *errpfx, char *msg)
 {
@@ -428,7 +413,7 @@ int cache_update_entry_lower(NotifierID id, char *dn, CacheEntry *entry)
 	char *lower_dn;
 	int rv = 0;
 
-	lower_dn = _convert_to_lower(dn);
+	lower_dn = lower_utf8(dn);
 	rv = cache_update_entry(id, lower_dn, entry);
 
 	free(lower_dn);
@@ -482,7 +467,7 @@ int cache_delete_entry_lower_upper(NotifierID id, char *dn)
 	int	 rv, rv2;
 
 	// convert to a lowercase dn
-	lower_dn = _convert_to_lower(dn);
+	lower_dn = lower_utf8(dn);
 	rv=cache_delete_entry(id, lower_dn);
 	if (strcmp(dn, lower_dn) != 0) {
 		mixedcase = true;
@@ -555,7 +540,7 @@ int cache_get_entry_lower_upper(char *dn, CacheEntry *entry)
 	int	 rv;
 
 	// convert to a lowercase dn
-	lower_dn = _convert_to_lower(dn);
+	lower_dn = lower_utf8(dn);
 	if (strcmp(dn, lower_dn) != 0) {
 		mixedcase = true;
 	}

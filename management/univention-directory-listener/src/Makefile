@@ -37,13 +37,13 @@ DB_OBJS=cache.o cache_entry.o cache_lowlevel.o base64.o
 CFLAGS=-g -Wall -Werror -D_FILE_OFFSET_BITS=64 $(DB_CFLAGS)
 LDADD=-g -luniventiondebug -licuuc
 LISTENER_LDADD=$(LDADD) -luniventionpolicy -lldap -lpython2.7 $(DB_LDADD)
-LISTENER_OBJS=main.o notifier.o transfile.o handlers.o cache.o cache_entry.o cache_lowlevel.o change.o network.o filter.o signals.o base64.o select_server.o
+LISTENER_OBJS=main.o notifier.o transfile.o handlers.o cache.o cache_entry.o cache_lowlevel.o change.o network.o filter.o signals.o base64.o select_server.o utils.o
 DUMP_LDADD=$(LDADD) -lldap -luniventionconfig $(DB_LDADD)
-DUMP_OBJS=dump.o dump_signals.o $(DB_OBJS)
+DUMP_OBJS=dump.o dump_signals.o utils.o $(DB_OBJS)
 DEMO_LDADD=$(LDADD) -luniventionconfig
-DEMO_OBJS=demo.o network.o
+DEMO_OBJS=demo.o network.o utils.o
 VERIFY_LDADD=$(LDADD) -lldap -luniventionconfig $(DB_LDADD)
-VERIFY_OBJS=verify.o dump_signals.o $(DB_OBJS)
+VERIFY_OBJS=verify.o dump_signals.o utils.o $(DB_OBJS)
 
 .PHONY: all
 all: listener dump verify

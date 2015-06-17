@@ -37,6 +37,8 @@ tests: $(TESTS)
 	run-parts --verbose --regex='test__[^.]*$$' .
 
 test__filter__cache_entry_ldap_filter_match: ../src/filter.o
+test__utils__lower_utf8: ../src/utils.o
+test__utils__same_dn: ../src/utils.o
 
 include ../src/Makefile
 
