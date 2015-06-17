@@ -514,15 +514,6 @@ setup_appliance ()
 
 appliance_cleanup ()
 {
-	# Activate DHCP
-	ucr set interfaces/eth0/type=dhcp dhclient/options/timeout=12
-	ucr unset gateway
-	 
-	# Set a default nameserver and remove all local configured nameserver
-	ucr set nameserver1=208.67.222.222 dns/forwarder1=208.67.222.222
-	ucr unset nameserver2 nameserver3
-	ucr unset dns/forwarder2 dns/forwarder3
-
 	# fix appcenter icons
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/commit-apps-xml <<__EOF__
 #!/bin/sh
@@ -560,6 +551,15 @@ __EOF__
 	# Cleanup apt archive
 	apt-get update
 	apt-get clean
+
+	# Activate DHCP
+	ucr set interfaces/eth0/type=dhcp dhclient/options/timeout=12
+	ucr unset gateway
+	 
+	# Set a default nameserver and remove all local configured nameserver
+	ucr set nameserver1=208.67.222.222 dns/forwarder1=208.67.222.222
+	ucr unset nameserver2 nameserver3
+	ucr unset dns/forwarder2 dns/forwarder3
 
 	# fill up HDD with ZEROs to maximize possible compression
 	dd if=/dev/zero of=/fill-it-up bs=512b count="$(df | grep rootfs | awk '{print $4 - 10000}')"; rm /fill-it-up
