@@ -9,6 +9,6 @@ desc: |
   * Some GPO and WMI attributes have not been treated as single-value.
   * Some scripts have been optimized to allow a faster restart when the network
     interfaces are re-configured.
-  * The synchronization of objects with umlauts has been improved for
+  * The synchronization of objects with umlauts has been improved, for
     example for nested groups.
 bug: [37259, 36532, 38645]

@@ -5,6 +5,6 @@ src: univention-config-registry
 fix: 10.0.2-3.488.201506011840
 version: [2]
 desc: |
-  This update addresses the following issues:
+  This update addresses the following issue:
   * The UCR variable 'ipv6/gateway' now supports a zone index.
 bug: [35694]
