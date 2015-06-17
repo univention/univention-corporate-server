@@ -395,7 +395,7 @@ class access:
 			return
 
 		try:
-			classes = set(pattrs['objectClass']) - {'top', 'univentionPolicy', 'univentionObject'}
+			classes = set(pattrs['objectClass']) - set(('top', 'univentionPolicy', 'univentionObject'))
 			ptype = classes.pop()
 		except KeyError:
 			return
@@ -415,7 +415,7 @@ class access:
 		empty = set(pattrs.get('emptyAttributes', ()))
 		values = result.setdefault(ptype, {})
 		for key in list(empty) + pattrs.keys() + list(fixed):
-			if key in {'requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType', 'ldapFilter'}:
+			if key in ('requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType', 'ldapFilter'):
 				continue
 
 			if key not in values or key in fixed:
