@@ -4,6 +4,10 @@
 }
 
 #navigation {
+	.button-container {
+		display: inline-block;
+	}
+
 	.button {
 		width: 70px;
 		height: 70px;
@@ -33,5 +37,17 @@
 		}
 	}
 
+	.loading-bar {
+		opacity: 0;
+		transition: opacity 1s ease-in-out;
+		width: 100%;
+		height: 32px;
+		background: url(icons/loading-bubbles.svg) no-repeat;
+		background-position: center center;
+	}
+
+	.loading-bar.focused {
+		opacity: 1;
+	}
 }
 

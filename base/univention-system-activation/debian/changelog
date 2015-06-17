@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-5) unstable; urgency=low
+
+  * Bug #38547: Added animation, apdapted styles and logic
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 17 Jun 2015 15:06:18 +0200
+
 univention-system-activation (0.0.1-4) unstable; urgency=low
 
   * Bug #38547: Added error handling for upload

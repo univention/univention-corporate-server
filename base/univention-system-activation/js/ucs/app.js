@@ -46,6 +46,7 @@ define([
 	"dojo/hash",
 	"dijit/Menu",
 	"dijit/MenuItem",
+	"dijit/focus",
 	"dijit/form/Button",
 	"dijit/form/DropDownButton",
 	"dijit/DropDownMenu",
@@ -56,7 +57,7 @@ define([
 	"./text!/entries.json",
 	"./text!/license",
 	"./i18n!"
-], function(lang, kernel, array, xhr, ioQuery, query, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Menu, MenuItem, Button, DropDownButton, DropDownMenu, Uploader, put, TextBox, _availableLocales, entries, license, _) {
+], function(lang, kernel, array, xhr, ioQuery, query, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Menu, MenuItem, focusUtil, Button, DropDownButton, DropDownMenu, Uploader, put, TextBox, _availableLocales, entries, license, _) {
 	// strip starting/ending '"' and replace newlines
 	license = license.substr(1, license.length - 2).replace(/\\n/g, '\n');
 
@@ -101,6 +102,7 @@ define([
 
 		registerRouter: function() {
 			router.register(":tab", lang.hitch(this, function(data){
+				this._removeError();
 				this._focusTab(data.params.tab);
 			}));
 		},
@@ -109,12 +111,17 @@ define([
 			array.forEach(this._tabIDs, function(itabID) {
 				var tabNode = dom.byId(itabID + '-tab');
 				var buttonNode = dom.byId(itabID + '-button');
+				var loadingNode = dom.byId(itabID + '-loading-bar');
 				if (itabID == tabID) {
-					put(tabNode, '!dijitHidden');
+					put(tabNode, '!hide-tab');
 					put(buttonNode, '.focused');
+					put(loadingNode, '.focused');
+					var fadeOutLaoding = function(){ put(loadingNode, '!focused');};
+					setTimeout(fadeOutLaoding, 2000);
 				} else {
-					put(tabNode, '.dijitHidden');
+					put(tabNode, '.hide-tab');
 					put(buttonNode, '!focused');
+					put(loadingNode, '!focused');
 				}
 			}, this);
 		},
@@ -179,7 +186,9 @@ define([
 
 		_createNavButton: function(tabID) {
 			var navNode = dom.byId('navigation');
-			var buttonNode = put(navNode, 'div.button#' + tabID + '-button');
+			var buttonContainerNode = put(navNode, 'div.button-container');
+			var buttonNode = put(buttonContainerNode, 'div.button#' + tabID + '-button');
+			var loadingBarNode = put(buttonContainerNode, 'div.loading-bar#' + tabID + '-loading-bar');
 			this._tabIDs.push(tabID);
 		},
 
@@ -196,6 +205,14 @@ define([
 				regExp: '.+@.+',
 				invalidMessage: _('No valid e-mail address.')
 			});
+			this._email.on("keyup", function(evt){
+				if(evt.keyCode === 13){
+					lang.hitch(this, function() {
+						console.log('foo');
+						this._sendEmail();
+					})
+				}
+			});
 			put(tabNode, '>', this._email.domNode);
 			this._email.startup();
 
@@ -207,45 +224,48 @@ define([
 			this._sendEmailButton = new Button({
 				label: _('Send activation'),
 				onClick: lang.hitch(this, function() {
-					var data = {
-						email: this._email.get('value'),
-						licence: license
-					};
-					xhr.post('https://license.univention.de/keyid/conversion/submit', {
-						data: data,
-						handleAs: 'text',
-						headers: {
-							'X-Requested-With': null
-						}
-					}).then(lang.hitch(this, function() {
-						this._removeError();
-						router.go('upload');
-					}), lang.hitch(this, function(err) {
-						var status_code = err.response.status;
-						var error_details = null;
-						if(status_code >= 400 && status_code <= 500){
-							error_details = put('html');
-							error_details.innerHTML = err.response.data;
-							error_details = error_details.getElementsByTagName('span')[0].innerText;
-						} else {
-							error_details = _('An unknown error occured. Please try it again later!');
-						}
-						var error_msg = _('Error ') + status_code + ': ' + error_details;
-						this._showError(error_msg);
-						console.log(err);
-					}));
+					this._sendEmail();
 				})
 			});
 			put(tabNode, '>', this._sendEmailButton.domNode);
 			this._sendEmailButton.startup();
 		},
 
+		_sendEmail: function(){
+			var data = {
+				email: this._email.get('value'),
+				licence: license
+			};
+			xhr.post('https://license.univention.de/keyid/conversion/submit', {
+				data: data,
+				handleAs: 'text',
+				headers: {
+					'X-Requested-With': null
+				}
+			}).then(function() {
+				router.go('upload');
+			}, lang.hitch(this, function(err) {
+				var status_code = err.response.status;
+				var error_details = null;
+				if(status_code >= 400 && status_code <= 500){
+					error_details = put('html');
+					error_details.innerHTML = err.response.data;
+					error_details = error_details.getElementsByTagName('span')[0].innerText;
+				} else {
+					error_details = _('An unknown error occured. Please try it again later!');
+				}
+				var error_msg = _('Error ') + status_code + ': ' + error_details;
+				this._showError(error_msg);
+				console.log(err);
+			}));
+		},
+
 		_showError: function(error_msg){
-			var contentNode = dom.byId('content');
+			var currentTabNode = query(".tab:not(.hide-tab)")[0];
 			var errorNode = dom.byId('error');
 			if(!errorNode){
-				errorNode = put('div[id=error][style=background-color:#E67272;padding:5px;margin-top:10px;]');
-				put(contentNode, '>', errorNode);
+				errorNode = put('div[id=error]');
+				put(currentTabNode, 'div', errorNode);
 			}
 			errorNode.innerHTML = error_msg;
 		},
@@ -272,18 +292,18 @@ define([
 			put(this._uploader.domNode, '.umcButton[display=inline-block]');
 			//this._uploader.set('iconClass', 'umcIconAdd');
 			this._uploader.on('complete', lang.hitch(this, function(evt) {
-				// activation successful if evt === None
-				if(evt === "None"){
+				console.log('### upload completet: ' + evt);
+				if(evt.toLowerCase().indexOf('successful') > -1){
 					router.go('finished');
-					this._removeError();
 				} else {
-					var error_msg = _('Error: Invalid license file. Please try again or request a new one.');
-					this._showError(error_msg);
+					//var error_msg = _('Error: Invalid license file. Please try again or request a new one.');
+					this._showError(evt);
 				}
 			}));
 			this._uploader.on('error', lang.hitch(this, function(evt){ 
-				var error_msg = _('Error: Invalid license file. Please try again or request a new one.');
-				this._showError(error_msg);
+				console.log('### upload error: ' + evt);
+				//var error_msg = _('Error: Invalid license file. Please try again or request a new one.');
+				this._showError(evt);
 			}));
 			return this._uploader.domNode;
 		},
@@ -292,6 +312,7 @@ define([
 			this._createNavButton('upload');
 			var contentNode = dom.byId('content');
 			var tabNode = put(contentNode, 'div.tab#upload-tab');
+			var uploaderNode = this._createUploader();
 			this._backToRegisterButton = new Button({
 				label: _('Request new license'),
 				onClick: lang.hitch(this, function(){ router.go('register')})
@@ -300,7 +321,8 @@ define([
 			put(tabNode, 'p', _('A license file should have been sent to your email address. Upload the license file from the email to activate your UCS instance.'));
 			put(tabNode, '>', this._backToRegisterButton.domNode);
 			this._backToRegisterButton.startup();
-			put(tabNode, '>', this._createUploader());
+			put(tabNode, '>', uploaderNode);
+			focusUtil.focus(uploaderNode);
 			this._uploader.startup();
 		},
 
@@ -311,13 +333,18 @@ define([
 			this._continueButton = new Button({
 				label: _('Continue'),
 				onClick: lang.hitch(this, function(){ 
-					location.href = "/umc" + location.search + "&username=Administrator";
+					this._continue();
 				})
 			});
+			focusUtil.focus(this._continueButton.domNode);
 			put(tabNode, 'p > b', _('Activation successful!'));
 			put(tabNode, 'p', _('The App Appliance is now activated. Click continue to foobar your system.'));
 			put(tabNode, '>', this._continueButton.domNode);
 			this._continueButton.startup();
+		},
+
+		_continue: function(){
+			location.href = "/umc" + location.search + "&username=Administrator";
 		},
 
 		createElements: function() {

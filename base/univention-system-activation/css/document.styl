@@ -115,6 +115,7 @@ h3, h4, h5, h6 {
 }
 
 .ucs #content {
+	position: relative;
 	width: 100%;
 	@media (min-width: $xs-min) {
 		width: 540px;
@@ -123,3 +124,21 @@ h3, h4, h5, h6 {
 	}
 }
 
+.tab {
+	position: absolute;
+	opacity: 1;
+	visibility: visible;
+	transition-delay: 0s;
+}
+
+.hide-tab {
+	visibility:hidden;
+	opacity: 0;
+	transition: visibility 0s linear 0.5s, opacity 0.5s ease-in-out;
+}
+
+#error {
+	background-color: #E67272;
+	padding: 5px;
+	margin-top: 10px;
+}
