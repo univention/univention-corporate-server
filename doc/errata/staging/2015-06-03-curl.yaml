@@ -5,7 +5,7 @@ src: curl
 fix: 7.21.0-7.53.201506031709
 version: [5,6]
 desc: |
- These vulernabilities have been fixed in curl:
+ These vulnerabilities have been fixed in curl:
  * Information leak in curl_easy_duphandle() (CVE-2014-3707)
  * Re-using authenticated connection when unauthenticated (CVE-2015-3143)
  * Negotiate not treated as connection-oriented (CVE-2015-3148)

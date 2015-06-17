@@ -6,6 +6,6 @@ fix: 8.0.19-13.498.201506021806
 version: [5,6]
 desc: |
   This update adds support for the default profile directory paths
-  of Windows 8, 8.1 and 10. For new uses they will now be created
+  of Windows 8, 8.1 and 10. For new users they will now be created
   automatically on first logon.
 bug: [38644]
