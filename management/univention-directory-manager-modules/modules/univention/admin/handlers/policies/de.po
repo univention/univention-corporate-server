@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-06-08 17:48+0200\n"
+"POT-Creation-Date: 2015-06-17 18:19+0200\n"
 "PO-Revision-Date: 2011-10-29 22:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -197,7 +197,7 @@ msgstr "Booten"
 msgid "Client updates"
 msgstr "Client Aktualisierungen"
 
-#: modules/univention/admin/handlers/policies/registry.py:74
+#: modules/univention/admin/handlers/policies/registry.py:75
 msgid "Configuration Registry"
 msgstr "Configuration Registry"
 
@@ -336,6 +336,11 @@ msgstr ""
 "Domänenname, der für den PTR-Record an den Rechnernamen des Clients "
 "angehängt wird"
 
+#: modules/univention/admin/handlers/policies/registry.py:190
+#, python-format
+msgid "Duplicated variables not allowed: %s"
+msgstr "Doppelte Variablen sind nicht erlaubt: %s"
+
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:48
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:109
 msgid "Duplicates"
@@ -377,7 +382,7 @@ msgstr ""
 #: modules/univention/admin/handlers/policies/print_quota.py:140
 #: modules/univention/admin/handlers/policies/printserver.py:116
 #: modules/univention/admin/handlers/policies/pwhistory.py:148
-#: modules/univention/admin/handlers/policies/registry.py:114
+#: modules/univention/admin/handlers/policies/registry.py:115
 #: modules/univention/admin/handlers/policies/release.py:126
 #: modules/univention/admin/handlers/policies/repositoryserver.py:117
 #: modules/univention/admin/handlers/policies/repositorysync.py:157
@@ -421,7 +426,7 @@ msgstr ""
 #: modules/univention/admin/handlers/policies/print_quota.py:120
 #: modules/univention/admin/handlers/policies/printserver.py:96
 #: modules/univention/admin/handlers/policies/pwhistory.py:128
-#: modules/univention/admin/handlers/policies/registry.py:94
+#: modules/univention/admin/handlers/policies/registry.py:95
 #: modules/univention/admin/handlers/policies/release.py:106
 #: modules/univention/admin/handlers/policies/repositoryserver.py:97
 #: modules/univention/admin/handlers/policies/repositorysync.py:137
@@ -469,7 +474,7 @@ msgstr ""
 #: modules/univention/admin/handlers/policies/print_quota.py:130
 #: modules/univention/admin/handlers/policies/printserver.py:106
 #: modules/univention/admin/handlers/policies/pwhistory.py:138
-#: modules/univention/admin/handlers/policies/registry.py:104
+#: modules/univention/admin/handlers/policies/registry.py:105
 #: modules/univention/admin/handlers/policies/release.py:116
 #: modules/univention/admin/handlers/policies/repositoryserver.py:107
 #: modules/univention/admin/handlers/policies/repositorysync.py:147
@@ -494,7 +499,7 @@ msgstr "Festgelegtes Attribut"
 #: modules/univention/admin/handlers/policies/print_quota.py:162
 #: modules/univention/admin/handlers/policies/printserver.py:138
 #: modules/univention/admin/handlers/policies/pwhistory.py:170
-#: modules/univention/admin/handlers/policies/registry.py:136
+#: modules/univention/admin/handlers/policies/registry.py:137
 #: modules/univention/admin/handlers/policies/release.py:148
 #: modules/univention/admin/handlers/policies/repositoryserver.py:139
 #: modules/univention/admin/handlers/policies/repositorysync.py:179
@@ -548,7 +553,7 @@ msgstr "Grundeinstellungen - NFS-Freigaben"
 msgid "General UMC settings"
 msgstr "Grundeinstellungen - UMC"
 
-#: modules/univention/admin/handlers/policies/registry.py:137
+#: modules/univention/admin/handlers/policies/registry.py:138
 msgid "General Univention Configuration Registry settings"
 msgstr "Grundeinstellungen - Univention Configuration Registry"
 
@@ -703,7 +708,7 @@ msgstr "LDAP-Server"
 #: modules/univention/admin/handlers/policies/print_quota.py:150
 #: modules/univention/admin/handlers/policies/printserver.py:126
 #: modules/univention/admin/handlers/policies/pwhistory.py:158
-#: modules/univention/admin/handlers/policies/registry.py:124
+#: modules/univention/admin/handlers/policies/registry.py:125
 #: modules/univention/admin/handlers/policies/release.py:136
 #: modules/univention/admin/handlers/policies/repositoryserver.py:127
 #: modules/univention/admin/handlers/policies/repositorysync.py:167
@@ -853,7 +858,7 @@ msgstr "NFS-Freigaben einbinden"
 #: modules/univention/admin/handlers/policies/print_quota.py:69
 #: modules/univention/admin/handlers/policies/printserver.py:64
 #: modules/univention/admin/handlers/policies/pwhistory.py:67
-#: modules/univention/admin/handlers/policies/registry.py:63
+#: modules/univention/admin/handlers/policies/registry.py:64
 #: modules/univention/admin/handlers/policies/release.py:65
 #: modules/univention/admin/handlers/policies/repositoryserver.py:65
 #: modules/univention/admin/handlers/policies/repositorysync.py:66
@@ -921,7 +926,7 @@ msgstr ""
 #: modules/univention/admin/handlers/policies/print_quota.py:169
 #: modules/univention/admin/handlers/policies/printserver.py:144
 #: modules/univention/admin/handlers/policies/pwhistory.py:179
-#: modules/univention/admin/handlers/policies/registry.py:142
+#: modules/univention/admin/handlers/policies/registry.py:143
 #: modules/univention/admin/handlers/policies/release.py:155
 #: modules/univention/admin/handlers/policies/repositoryserver.py:145
 #: modules/univention/admin/handlers/policies/repositorysync.py:187
@@ -1085,7 +1090,7 @@ msgstr "Richtlinie: Slave Pakete"
 msgid "Policy: UMC"
 msgstr "Richtlinie: UMC"
 
-#: modules/univention/admin/handlers/policies/registry.py:56
+#: modules/univention/admin/handlers/policies/registry.py:57
 msgid "Policy: Univention Configuration Registry"
 msgstr "Richtlinie: Univention Configuration Registry"
 
@@ -1196,7 +1201,7 @@ msgstr "Repository Synchronisationseinstellungen"
 #: modules/univention/admin/handlers/policies/print_quota.py:110
 #: modules/univention/admin/handlers/policies/printserver.py:86
 #: modules/univention/admin/handlers/policies/pwhistory.py:118
-#: modules/univention/admin/handlers/policies/registry.py:84
+#: modules/univention/admin/handlers/policies/registry.py:85
 #: modules/univention/admin/handlers/policies/release.py:96
 #: modules/univention/admin/handlers/policies/repositoryserver.py:87
 #: modules/univention/admin/handlers/policies/repositorysync.py:127
@@ -1299,7 +1304,7 @@ msgstr "Legt die Art der DDNS-Aktualisierung für einen DHCP Dienst fest"
 msgid "The node type of clients for NetBIOS over TCP/IP"
 msgstr "Der Node Typ der Clients für NetBIOS over TCP/IP"
 
-#: modules/univention/admin/handlers/policies/registry.py:136
+#: modules/univention/admin/handlers/policies/registry.py:137
 msgid "These configuration settings will be set on the local UCS system."
 msgstr ""
 "Diese Konfigurationseinstellungen werden auf dem lokalen UCS-System gesetzt."
@@ -1332,7 +1337,7 @@ msgstr ""
 #: modules/univention/admin/handlers/policies/print_quota.py:151
 #: modules/univention/admin/handlers/policies/printserver.py:127
 #: modules/univention/admin/handlers/policies/pwhistory.py:159
-#: modules/univention/admin/handlers/policies/registry.py:125
+#: modules/univention/admin/handlers/policies/registry.py:126
 #: modules/univention/admin/handlers/policies/release.py:137
 #: modules/univention/admin/handlers/policies/repositoryserver.py:128
 #: modules/univention/admin/handlers/policies/repositorysync.py:168
@@ -1340,13 +1345,15 @@ msgstr ""
 #: modules/univention/admin/handlers/policies/slavepackages.py:138
 #: modules/univention/admin/handlers/policies/umc.py:128
 msgid "This policy applies only to objects which matches this LDAP filter."
-msgstr "Diese Richtlinie wird nur auf Objekte angewendet, die diesem LDAP-Filter entsprechen."
+msgstr ""
+"Diese Richtlinie wird nur auf Objekte angewendet, die diesem LDAP-Filter "
+"entsprechen."
 
-#: modules/univention/admin/handlers/policies/registry.py:45
+#: modules/univention/admin/handlers/policies/registry.py:46
 msgid "UCR Variables"
 msgstr "UCR-Variablen"
 
-#: modules/univention/admin/handlers/policies/registry.py:57
+#: modules/univention/admin/handlers/policies/registry.py:58
 msgid "Univention Configuration Registry"
 msgstr "Univention Configuration Registry"
 

@@ -35,6 +35,7 @@ import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+import univention.admin.uexceptions
 
 translation=univention.admin.localization.translation('univention.admin.handlers.policies')
 _=translation.translate
@@ -169,31 +170,39 @@ class object(univention.admin.handlers.simplePolicy):
 
 		self.save()
 
-	def _post_unmap( self, info, values ):
-		info[ 'registry' ] = []
+	def _post_unmap(self, info, values):
+		info['registry'] = []
 		for key, value in values.items():
-			if key.startswith( 'univentionRegistry;entry-hex-' ):
-				key_name = key.split( 'univentionRegistry;entry-hex-', 1 )[ 1 ].decode( 'hex' )
-				info[ 'registry' ].append( ( key_name, values[ key ][ 0 ].strip() ) )
+			if key.startswith('univentionRegistry;entry-hex-'):
+				key_name = key.split('univentionRegistry;entry-hex-', 1)[1].decode('hex')
+				info['registry'].append((key_name, values[key][0].strip()))
+
 		info['registry'].sort()
 
 		return info
 
-	def _post_map( self, modlist, diff ):
+	def _post_map(self, modlist, diff):
 		for key, old, new in diff:
 			if key == 'registry':
-				old_dict = dict( old )
-				new_dict = dict( new )
+				keys = [x[0] for x in new]
+				duplicated = set([x for x in keys if keys.count(x) > 1])
+				if duplicated:
+					raise univention.admin.uexceptions.valueInvalidSyntax(_('Duplicated variables not allowed: %s') % (', '.join(map(repr, duplicated))))
+
+				old_dict = dict(old)
+				new_dict = dict((k.strip(), v) for k, v in new)  # strip leading and trailing whitespace in variable names
+
 				for var, value in old_dict.items():
-					attr_name = 'univentionRegistry;entry-hex-%s' % var.encode( 'hex' )
+					attr_name = 'univentionRegistry;entry-hex-%s' % var.encode('hex')
 					if not var in new_dict: # variable has been removed
-						modlist.append( ( attr_name, value, None ) )
-					elif value != new_dict[ var ]: # value has been changed
-						modlist.append( ( attr_name, value, new_dict[ var ] ) )
+						modlist.append((attr_name, value, None))
+					elif value != new_dict[var]: # value has been changed
+						modlist.append((attr_name, value, new_dict[var]))
+
 				for var, value in new_dict.items():
-					attr_name = 'univentionRegistry;entry-hex-%s' % var.encode( 'hex' )
+					attr_name = 'univentionRegistry;entry-hex-%s' % var.encode('hex')
 					if var not in old_dict: # variable has been added
-						modlist.append( ( attr_name, None, new_dict[ var ] ) )
+						modlist.append((attr_name, None, new_dict[var]))
 				break
 
 		return modlist
