@@ -50,6 +50,13 @@ install_virtualbox_packages ()
 	ucr set repository/online/unmaintained=no
 }
 
+install_activation_packages ()
+{
+	ucr set repository/online/unmaintained=yes
+	univention-install -y --force-yes univention-system-activation
+	ucr set repository/online/unmaintained=no
+}
+
 download_packages ()
 {
 	mkdir -p /var/cache/univention-system-setup/packages/
