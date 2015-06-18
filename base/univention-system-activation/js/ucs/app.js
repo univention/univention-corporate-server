@@ -35,6 +35,7 @@ define([
 	"dojo/request/xhr",
 	"dojo/io-query",
 	"dojo/query",
+	"dojo/keys",
 	"dojo/dom",
 	"dojo/dom-construct",
 	"dojo/dom-attr",
@@ -46,7 +47,6 @@ define([
 	"dojo/hash",
 	"dijit/Menu",
 	"dijit/MenuItem",
-	"dijit/focus",
 	"dijit/form/Button",
 	"dijit/form/DropDownButton",
 	"dijit/DropDownMenu",
@@ -57,7 +57,7 @@ define([
 	"./text!/entries.json",
 	"./text!/license",
 	"./i18n!"
-], function(lang, kernel, array, xhr, ioQuery, query, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Menu, MenuItem, focusUtil, Button, DropDownButton, DropDownMenu, Uploader, put, TextBox, _availableLocales, entries, license, _) {
+], function(lang, kernel, array, xhr, ioQuery, query, keys, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Menu, MenuItem, Button, DropDownButton, DropDownMenu, Uploader, put, TextBox, _availableLocales, entries, license, _) {
 	// strip starting/ending '"' and replace newlines
 	license = license.substr(1, license.length - 2).replace(/\\n/g, '\n');
 
@@ -107,21 +107,25 @@ define([
 			}));
 		},
 
-		_focusTab: function(tabID) {
+		_focusTab: function(tabID){
 			array.forEach(this._tabIDs, function(itabID) {
+				var loadingNode = dom.byId(itabID + '-loading-bar');
 				var tabNode = dom.byId(itabID + '-tab');
 				var buttonNode = dom.byId(itabID + '-button');
-				var loadingNode = dom.byId(itabID + '-loading-bar');
 				if (itabID == tabID) {
-					put(tabNode, '!hide-tab');
-					put(buttonNode, '.focused');
 					put(loadingNode, '.focused');
-					var fadeOutLaoding = function(){ put(loadingNode, '!focused');};
-					setTimeout(fadeOutLaoding, 2000);
+
+					var animateTabTransition = function(){
+						put(loadingNode, '!focused');
+						put(tabNode, '!hide-tab');
+						put(buttonNode, '.focused');
+					};
+
+					setTimeout(animateTabTransition, 1000);
 				} else {
+					put(loadingNode, '!focused');
 					put(tabNode, '.hide-tab');
 					put(buttonNode, '!focused');
-					put(loadingNode, '!focused');
 				}
 			}, this);
 		},
@@ -205,14 +209,11 @@ define([
 				regExp: '.+@.+',
 				invalidMessage: _('No valid e-mail address.')
 			});
-			this._email.on("keyup", function(evt){
-				if(evt.keyCode === 13){
-					lang.hitch(this, function() {
-						console.log('foo');
-						this._sendEmail();
-					})
+			this._email.on("keyup", lang.hitch(this, function(evt){
+				if(evt.keyCode === keys.ENTER){
+					this._sendEmail();
 				}
-			});
+			}));
 			put(tabNode, '>', this._email.domNode);
 			this._email.startup();
 
@@ -322,7 +323,7 @@ define([
 			put(tabNode, '>', this._backToRegisterButton.domNode);
 			this._backToRegisterButton.startup();
 			put(tabNode, '>', uploaderNode);
-			focusUtil.focus(uploaderNode);
+			this._uploader.focus();
 			this._uploader.startup();
 		},
 
@@ -336,10 +337,10 @@ define([
 					this._continue();
 				})
 			});
-			focusUtil.focus(this._continueButton.domNode);
 			put(tabNode, 'p > b', _('Activation successful!'));
 			put(tabNode, 'p', _('The App Appliance is now activated. Click continue to foobar your system.'));
 			put(tabNode, '>', this._continueButton.domNode);
+			this._continueButton.focus();
 			this._continueButton.startup();
 		},
 
@@ -357,8 +358,14 @@ define([
 		start: function() {
 			this.registerRouter();
 			this.createLanguagesDropDown();
-			this.createElements()
-			router.startup('register');
+			this.createElements();
+			// check if license already requested
+			console.log('### entries: ', entries);
+			if(entries.license_requested === "true"){
+				router.startup('upload');
+			} else {
+				router.startup('register');
+			}
 		}
 	};
 });

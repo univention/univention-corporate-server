@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-6) unstable; urgency=low
+
+  * Bug #38547: Apdapted animation, upload check and start tab
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 18 Jun 2015 11:50:36 +0200
+
 univention-system-activation (0.0.1-5) unstable; urgency=low
 
   * Bug #38547: Added animation, apdapted styles and logic
