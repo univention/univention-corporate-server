@@ -48,8 +48,7 @@ from email.mime.base import MIMEBase
 import email.encoders as Encoders
 import univention.testing.utils as utils
 import univention.testing.ucr as ucr_test
-# from univention.testing.decorators import SetMailDeliveryTimeout
-from decorators import SetMailDeliveryTimeout
+from univention.testing.decorators import SetMailDeliveryTimeout
 
 COMMASPACE = ', '
 
