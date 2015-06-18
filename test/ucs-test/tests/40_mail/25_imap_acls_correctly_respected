@@ -16,12 +16,15 @@ def main():
 	with udm_test.UCSTestUDM() as udm:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
 			domain = ucr.get('domainname')
-			handler_set(['mail/cyrus/mailbox/delete=yes'])
+			if ucr.is_true('mail/cyrus'):
+				handler_set(['mail/cyrus/mailbox/delete=yes'])
+			if ucr.is_true('mail/dovecot'):
+				handler_set(['mail/dovecot/mailbox/delete=yes'])
 			host = '%s.%s' % (ucr.get('hostname'), domain)
 			password = 'univention'
 			mails = []
 			users = []
-			for i in xrange(2):
+			for i in xrange(3):
 				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
 					set={
@@ -32,25 +35,16 @@ def main():
 				)
 				mails.append(usermail)
 				users.append(userdn)
-			group_mail = '%s@%s' % (uts.random_name(), domain)
-			udm.create_group(
-				users=users[0],
-				set={
-					'users'       : users[1],
-					'mailAddress' : group_mail,
-				},
-			)
 			default_shared_permissions = {'anyone': 'lrswipkxtecda'}
 			permissions = 'lrswipkxtecda'
 			shared_mailbox = create_shared_mailfolder(
-				udm, host, user_permission=['"%s" "%s"' % ('anyone', 'all')])
+				udm, host, mail=True, user_permission=['"%s" "%s"' % ('anyone', 'all')])
 
-			mails.append(group_mail)
-			test_cases = itertools.product(mails, permissions)
-			for i in xrange(len(mails) * len(permissions)):
+			test_cases = itertools.product(mails[0:2], permissions)
+			for i in xrange(len(mails[0:2]) * len(permissions)):
 				who, what = next(test_cases)
 				imap = MailClient(host)
-				imap.log_in(usermail, password)
+				imap.log_in(mails[2], password)
 				mailboxs = imap.getMailBoxes()
 				mailboxs.append(shared_mailbox)
 				for mailbox in mailboxs:
