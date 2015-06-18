@@ -1,4 +1,4 @@
-univention-network-manager (6.0.1-1) unstable; urgency=low
+univention-network-manager (6.0.0-2) unstable; urgency=low
 
   * Bug #36532: Speed up network re-config
 

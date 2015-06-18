@@ -1,4 +1,4 @@
-univention-bind (9.0.6-1) unstable; urgency=low
+univention-bind (9.0.5-2) unstable; urgency=low
 
   * Bug #36532: Improve restart of bind9 on network reconfiguration
 

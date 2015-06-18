@@ -1,4 +1,4 @@
-univention-directory-notifier (9.0.4-1) unstable; urgency=low
+univention-directory-notifier (9.0.3-2) unstable; urgency=low
 
   * Bug #36532: Speed up network re-config
 
