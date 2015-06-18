@@ -47,7 +47,9 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 import email.encoders as Encoders
 import univention.testing.utils as utils
-from univention.testing.decorators import SetMailDeliveryTimeout
+import univention.testing.ucr as ucr_test
+# from univention.testing.decorators import SetMailDeliveryTimeout
+from decorators import SetMailDeliveryTimeout
 
 COMMASPACE = ', '
 
@@ -269,15 +271,31 @@ def reload_amavis_postfix():
 def spam_delivered(token, mail_address):
 	delivered = False
 	spam = False
-	mail_dir = os.path.join(get_cyrus_maildir(mail_address), 'Spam')
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		dovecot_spam = ucr.get('mail/dovecot/folder/spam')
+		cyrus_spam = ucr.get('mail/cyrus/folder/spam')
+	# cyrus
+	spam_folder = cyrus_spam or 'Spam'
+	mail_dir = os.path.join(get_cyrus_maildir(mail_address), spam_folder)
 	for _file in get_dir_files(mail_dir, recursive=True):
 		with open(_file) as fi:
 			content = fi.read()
-			delivered = delivered or (token in content)
-			if delivered:
-				if 'X-Spam-Flag: YES' in content:
-					spam = True
-				break
+		delivered = delivered or (token in content)
+		if delivered:
+			if 'X-Spam-Flag: YES' in content:
+				spam = spam or True
+			break
+	# dovecot
+	spam_folder = dovecot_spam or 'Spam'
+	mail_dir = os.path.join(get_dovcot_maildir(mail_address), spam_folder)
+	for _file in get_dir_files(mail_dir, recursive=True):
+		with open(_file) as fi:
+			content = fi.read()
+		delivered = delivered or (token in content)
+		if delivered:
+			if 'X-Spam-Flag: YES' in content:
+				spam = spam or True
+			break
 	return delivered and spam
 
 
@@ -296,6 +314,12 @@ def mail_delivered(token, user=None, mail_address=None, check_root=True):
 				delivered = delivered or (token in fi.read())
 	if mail_address:
 		mail_dir = get_cyrus_maildir(mail_address)
+		for _file in get_dir_files(mail_dir, recursive=True):
+			with open(_file) as fi:
+				delivered = delivered or (token in fi.read())
+				if delivered:
+					break
+		mail_dir = get_dovcot_maildir(mail_address)
 		for _file in get_dir_files(mail_dir, recursive=True):
 			with open(_file) as fi:
 				delivered = delivered or (token in fi.read())
@@ -327,6 +351,38 @@ class UCSTest_Mail_MissingMailbox(UCSTest_Mail_Exception):
 	"""
 	pass
 
+
+def get_dovcot_maildir(mail_address):
+	"""
+	Returns directory name for specified mail address.
+
+	>>> get_dovcot_maildir('testuser@example.com')
+	'/var/spool/dovecot/private/example.com/testuser/Maildir'
+
+	>>> get_dovcot_maildir('someuser@foobar.com')
+	'/var/spool/dovecot/private/foobar.com/someuser/Maildir'
+
+	>>> get_dovcot_maildir('only-localpart')
+	Traceback (most recent call last):
+	...
+	UCSTest_Mail_InvalidMailAddress
+
+	>>> get_dovcot_maildir('')
+	Traceback (most recent call last):
+	...
+	UCSTest_Mail_InvalidMailAddress
+	"""
+
+	if not mail_address:
+		raise UCSTest_Mail_InvalidMailAddress()
+	if '@' not in mail_address:
+		raise UCSTest_Mail_InvalidMailAddress()
+
+	# FIXME cyrus uses a special UTF-7 encoding for umlauts for example - this encoding is currently missing
+	mail_address, domain = mail_address.rsplit('@', 1)
+	if '.' in mail_address:
+		mail_address = mail_address.replace('.', '^')
+	return '/var/spool/dovecot/private/%s/%s/Maildir' % (domain, mail_address.lower())
 
 def get_cyrus_maildir(mail_address):
 	"""
@@ -493,14 +549,17 @@ Regards,
 
 
 def check_delivery(token, recipient_email, should_be_delivered, spam=False):
-	print "%s is waiting for an email to be delivered ..." % recipient_email
+	print "%s is waiting for an email; should be delivered = %r" % (recipient_email, should_be_delivered)
 	if spam:
 		delivered  = spam_delivered(token, mail_address=recipient_email)
 	else:
 		delivered  = mail_delivered(token, mail_address=recipient_email)
 	spam_str = 'Spam ' if spam else ''
 	if should_be_delivered != delivered:
-		utils.fail('%sMail sent with token = %r to %s was not delivered' % (spam_str, token, recipient_email))
+		if delivered:
+			utils.fail('%sMail sent with token = %r to %s un-expectedly delivered' % (spam_str, token, recipient_email))
+		else:
+			utils.fail('%sMail sent with token = %r to %s un-expectedly not delivered' % (spam_str, token, recipient_email))
 
 
 def check_sending_mail(
