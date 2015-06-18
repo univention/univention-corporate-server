@@ -28,8 +28,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-01 14:22+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2015-06-18 20:13+0200\n"
 "PO-Revision-Date: 2011-10-29 22:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,307 +39,336 @@ msgstr ""
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: clientdevices.py:47 clientdevices.py:59 clientdevices.py:128
-msgid "Client devices"
-msgstr "Client-Peripherie"
-
-#: clientdevices.py:58
-msgid "Policy: Client devices"
-msgstr "Richtlinie: Client-Peripherie"
-
-#: clientdevices.py:65 managedclientpackages.py:66 mobileclientpackages.py:66
-#: sound.py:66 thinclient.py:70 xfree.py:85
-msgid "Name"
-msgstr "Name"
-
-#: clientdevices.py:76
+#: modules/univention/admin/handlers/legacy/policies/clientdevices.py:81
 msgid "Activate access to client devices"
 msgstr "Aktiviere den Zugriff auf Client-Peripheriegeräte"
 
-#: clientdevices.py:86 managedclientpackages.py:97 mobileclientpackages.py:97
-#: sound.py:98 thinclient.py:131 xfree.py:240
-msgid "Required object class"
-msgstr "Benötigte Objektklasse"
-
-#: clientdevices.py:96 managedclientpackages.py:107
-#: mobileclientpackages.py:107 sound.py:108 thinclient.py:141 xfree.py:250
-msgid "Excluded object class"
-msgstr "Ausgeschlossene Objektklasse"
-
-#: clientdevices.py:106 managedclientpackages.py:117
-#: mobileclientpackages.py:117 sound.py:118 thinclient.py:151 xfree.py:260
-msgid "Fixed attribute"
-msgstr "Festgelegtes Attribut"
-
-#: clientdevices.py:116 managedclientpackages.py:127
-#: mobileclientpackages.py:127 sound.py:128 thinclient.py:161
-msgid "Empty attribute"
-msgstr "Leeres Attribut"
-
-#: clientdevices.py:128 managedclientpackages.py:139
-#: mobileclientpackages.py:139 sound.py:140 thinclient.py:173 xfree.py:393
-msgid "General"
-msgstr "Allgemein"
-
-#: clientdevices.py:129
-msgid "General client devices settings"
-msgstr "Allgemeine Einstellungen für die Client-Peripherie"
-
-#: clientdevices.py:134 managedclientpackages.py:146
-#: mobileclientpackages.py:146 sound.py:147 thinclient.py:181 xfree.py:414
-msgid "Object"
-msgstr "Objekt"
-
-#: managedclientpackages.py:47 managedclientpackages.py:77
-#: mobileclientpackages.py:47 mobileclientpackages.py:77
-msgid "Package installation list"
-msgstr "Paket Installationsliste"
-
-#: managedclientpackages.py:48 managedclientpackages.py:87
-#: mobileclientpackages.py:48 mobileclientpackages.py:87
-msgid "Package removal list"
-msgstr "Paket Deinstallationsliste"
-
-#: managedclientpackages.py:59
-msgid "Policy: Managed Client packages"
-msgstr "Richtlinie: Managed Client Pakete"
-
-#: managedclientpackages.py:60
-msgid "Managed Client packages"
-msgstr "Managed Client Pakete"
-
-#: managedclientpackages.py:140
-msgid "General managed client packages settings"
-msgstr "Allgemeine Einstellungen für die Managed Client Pakete"
-
-#: mobileclientpackages.py:59
-msgid "Policy: Mobile Client packages"
-msgstr "Richtlinie: Mobile Client Pakete"
-
-#: mobileclientpackages.py:60
-msgid "Mobile Client packages"
-msgstr "Mobile Client Pakete"
-
-#: mobileclientpackages.py:140
-msgid "General mobile client packages settings"
-msgstr "Allgemeine Einstellungen für die Mobile Client Pakete"
-
-#: sound.py:47 sound.py:77
-msgid "Sound enabled"
-msgstr "Sound aktivieren"
-
-#: sound.py:48 sound.py:87
-msgid "Sound module"
-msgstr "Soundkarten-Treiber"
-
-#: sound.py:59
-msgid "Policy: Sound"
-msgstr "Richtlinie: Sound"
-
-#: sound.py:60 sound.py:140
-msgid "Sound settings"
-msgstr "Sound-Einstellungen"
-
-#: sound.py:141
-msgid "General sound settings"
-msgstr "Allgemeine Einstellungen für den Sound"
-
-#: thinclient.py:47 thinclient.py:91
-msgid "File servers"
-msgstr "File-Server"
-
-#: thinclient.py:48 thinclient.py:81
-msgid "Linux terminal servers"
-msgstr "Linux-Terminal-Server"
-
-#: thinclient.py:49 thinclient.py:111
-msgid "Windows terminal servers"
-msgstr "Windows-Terminal-Server"
-
-#: thinclient.py:50 thinclient.py:121
-msgid "Windows domain"
-msgstr "Windows-Domäne"
-
-#: thinclient.py:51 thinclient.py:101
-msgid "Authentication servers"
-msgstr "Authentisierungsserver"
-
-#: thinclient.py:63
-msgid "Policy: Thin client"
-msgstr "Richtlinie: Thin Client"
-
-#: thinclient.py:64
-msgid "Thin client configuration"
-msgstr "Thin-Client-Konfiguration"
-
-#: thinclient.py:82
-msgid "Linux terminal servers of the Thin Client"
-msgstr "Linux-Terminal-Server des Thin Clients"
-
-#: thinclient.py:92
-msgid "File servers of the Thin Client"
-msgstr "File-Server des Thin Clients"
-
-#: thinclient.py:102
-msgid "Authentication servers of the Thin Client"
-msgstr "Authentisierungsserver des Thin Client"
-
-#: thinclient.py:112
-msgid "Windows terminal servers for Windows Login"
-msgstr "Windows-Terminal-Server für die Windows Anmeldung"
-
-#: thinclient.py:122
-msgid "Windows domain for Windows Login"
-msgstr "Windows-Domäne für die Windows Anmeldung"
-
-#: thinclient.py:173
-msgid "Servers to use"
-msgstr "Zu nutzende Server"
-
-#: thinclient.py:174
-msgid "General thin client settings"
-msgstr "Allgemeine Einstellungen für den Thin Client"
-
-#: xfree.py:45 xfree.py:382
-msgid "Automatic detection"
-msgstr "Automatische Erkennung"
-
-#: xfree.py:46 xfree.py:96
-msgid "Resolution of primary display"
-msgstr "Auflösung des primären Monitors"
-
-#: xfree.py:47 xfree.py:108
-msgid "Resolution of secondary display"
-msgstr "Auflösung des sekundären Monitors"
-
-#: xfree.py:48 xfree.py:120
-msgid "Color depth"
-msgstr "Farbtiefe"
-
-#: xfree.py:49 xfree.py:132
-msgid "Mouse protocol"
-msgstr "Maus Protokoll"
-
-#: xfree.py:50 xfree.py:144
-msgid "Mouse device"
-msgstr "Mausanschluss"
-
-#: xfree.py:51 xfree.py:53 xfree.py:156
-msgid "Keyboard layout"
-msgstr "Tastaturbelegung"
-
-#: xfree.py:52 xfree.py:168
-msgid "Keyboard variant"
-msgstr "Variante der Tastaturbelegung"
-
-#: xfree.py:54 xfree.py:180
-msgid "Horizontal sync of primary display"
-msgstr "Horizontale Synchronisation des primären Monitors"
-
-#: xfree.py:55 xfree.py:192
-msgid "Horizontal sync of secondary display"
-msgstr "Horizontale Synchronisation des sekundären Monitors"
-
-#: xfree.py:56 xfree.py:204
-msgid "Vertical refresh of primary display"
-msgstr "Vertikale Wiederholfrequenz des primären Monitor"
-
-#: xfree.py:57 xfree.py:216
-msgid "Vertical refresh of secondary display"
-msgstr "Vertikale Wiederholfrequenz des sekundären Monitors"
-
-#: xfree.py:58 xfree.py:228
-msgid "Graphics adapter driver"
-msgstr "Grafikkarten-Treiber"
-
-#: xfree.py:59
-msgid "Display size of primary display"
-msgstr "Display-Grösse des primären Monitor"
-
-#: xfree.py:60
-msgid "Display size of secondary display"
-msgstr "Display-Grösse des sekundären Monitors"
-
-#: xfree.py:61 xfree.py:304
-msgid "Enable VNC export"
-msgstr "Erlaube VNC Display-Freigabe"
-
-#: xfree.py:62 xfree.py:315
-msgid "Viewonly VNC export"
-msgstr "VNC Display-Freigabe nur anzeigen"
-
-#: xfree.py:63
-msgid "Amount of RAM on the graphics adapter"
-msgstr "Die Größe des RAM auf der Grafikkarte"
-
-#: xfree.py:64
-msgid "Primary display"
-msgstr "Primärer Monitor"
-
-#: xfree.py:65
-msgid "Secondary display"
-msgstr "Sekundärer Monitor"
-
-#: xfree.py:66
-msgid "Relative position of secondary display"
-msgstr "Relative Position des zweiten Monitors"
-
-#: xfree.py:67 xfree.py:326
-msgid "Virtual size of dual monitor desktop"
-msgstr "Größe des virtuellen Desktops im Zwei-Monitor-Betrieb"
-
-#: xfree.py:78
-msgid "Policy: Display"
-msgstr "Richtlinie: Display"
-
-#: xfree.py:79 xfree.py:393
-msgid "Display settings"
-msgstr "Display-Einstellungen"
-
-#: xfree.py:270
-msgid "Empty Attributes"
-msgstr "Leere Attribute"
-
-#: xfree.py:280
-msgid "Display size (mm) of primary display"
-msgstr "Display-Grösse (mm) des primären Monitor"
-
-#: xfree.py:292
-msgid "Display size (mm) of secondary display"
-msgstr "Display-Grösse (mm) des sekundären Monitors"
-
-#: xfree.py:337
-msgid "Position of secondary display"
-msgstr "Position des sekundären Monitors"
-
-#: xfree.py:348
-msgid "Name of primary display"
-msgstr "Name des primären Monitor"
-
-#: xfree.py:360
-msgid "Name of secondary display"
-msgstr "Name des sekundären Monitors"
-
-#: xfree.py:372
-msgid "RAM on the graphics adapter in kB"
-msgstr "RAM auf der Grafikkarte in kB"
-
-#: xfree.py:394
-msgid "General display settings"
-msgstr "Allgemeine Einstellungen für den Display"
-
-#: xfree.py:400
-msgid "Input devices"
-msgstr "Eingabegeräte"
-
-#: xfree.py:403
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:376
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
 
-#: xfree.py:406
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:379
 msgid "Advanced settings of primary display"
 msgstr "Erweiterte Einstellungen des primären Monitors"
 
-#: xfree.py:409
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:382
 msgid "Advanced settings of secondary display"
 msgstr "Erweiterte Einstellungen des sekundären Monitors"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:69
+msgid "Amount of RAM on the graphics adapter"
+msgstr "Die Größe des RAM auf der Grafikkarte"
+
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:56
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:106
+msgid "Authentication servers"
+msgstr "Authentisierungsserver"
+
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:107
+msgid "Authentication servers of the Thin Client"
+msgstr "Authentisierungsserver des Thin Client"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:51
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:348
+msgid "Automatic detection"
+msgstr "Automatische Erkennung"
+
+#: modules/univention/admin/handlers/legacy/policies/clientdevices.py:52
+#: modules/univention/admin/handlers/legacy/policies/clientdevices.py:64
+#: modules/univention/admin/handlers/legacy/policies/clientdevices.py:100
+msgid "Client devices"
+msgstr "Client-Peripherie"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:54
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:126
+msgid "Color depth"
+msgstr "Farbtiefe"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:85
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:366
+msgid "Display settings"
+msgstr "Display-Einstellungen"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:246
+msgid "Display size (mm) of primary display"
+msgstr "Display-Grösse (mm) des primären Monitor"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:258
+msgid "Display size (mm) of secondary display"
+msgstr "Display-Grösse (mm) des sekundären Monitors"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:65
+msgid "Display size of primary display"
+msgstr "Display-Grösse des primären Monitor"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:66
+msgid "Display size of secondary display"
+msgstr "Display-Grösse des sekundären Monitors"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:67
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:270
+msgid "Enable VNC export"
+msgstr "Erlaube VNC Display-Freigabe"
+
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:52
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:96
+msgid "File servers"
+msgstr "File-Server"
+
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:97
+msgid "File servers of the Thin Client"
+msgstr "File-Server des Thin Clients"
+
+#: modules/univention/admin/handlers/legacy/policies/clientdevices.py:100
+#: modules/univention/admin/handlers/legacy/policies/managedclientpackages.py:111
+#: modules/univention/admin/handlers/legacy/policies/mobileclientpackages.py:111
+#: modules/univention/admin/handlers/legacy/policies/sound.py:112
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:145
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:366
+msgid "General"
+msgstr "Allgemein"
+
+#: modules/univention/admin/handlers/legacy/policies/clientdevices.py:101
+msgid "General client devices settings"
+msgstr "Allgemeine Einstellungen für die Client-Peripherie"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:367
+msgid "General display settings"
+msgstr "Allgemeine Einstellungen für den Display"
+
+#: modules/univention/admin/handlers/legacy/policies/managedclientpackages.py:112
+msgid "General managed client packages settings"
+msgstr "Allgemeine Einstellungen für die Managed Client Pakete"
+
+#: modules/univention/admin/handlers/legacy/policies/mobileclientpackages.py:112
+msgid "General mobile client packages settings"
+msgstr "Allgemeine Einstellungen für die Mobile Client Pakete"
+
+#: modules/univention/admin/handlers/legacy/policies/sound.py:113
+msgid "General sound settings"
+msgstr "Allgemeine Einstellungen für den Sound"
+
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:146
+msgid "General thin client settings"
+msgstr "Allgemeine Einstellungen für den Thin Client"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:64
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:234
+msgid "Graphics adapter driver"
+msgstr "Grafikkarten-Treiber"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:60
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:186
+msgid "Horizontal sync of primary display"
+msgstr "Horizontale Synchronisation des primären Monitors"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:61
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:198
+msgid "Horizontal sync of secondary display"
+msgstr "Horizontale Synchronisation des sekundären Monitors"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:373
+msgid "Input devices"
+msgstr "Eingabegeräte"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:57
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:59
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:162
+msgid "Keyboard layout"
+msgstr "Tastaturbelegung"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:58
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:174
+msgid "Keyboard variant"
+msgstr "Variante der Tastaturbelegung"
+
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:53
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:86
+msgid "Linux terminal servers"
+msgstr "Linux-Terminal-Server"
+
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:87
+msgid "Linux terminal servers of the Thin Client"
+msgstr "Linux-Terminal-Server des Thin Clients"
+
+#: modules/univention/admin/handlers/legacy/policies/managedclientpackages.py:65
+msgid "Managed Client packages"
+msgstr "Managed Client Pakete"
+
+#: modules/univention/admin/handlers/legacy/policies/mobileclientpackages.py:65
+msgid "Mobile Client packages"
+msgstr "Mobile Client Pakete"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:56
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:150
+msgid "Mouse device"
+msgstr "Mausanschluss"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:55
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:138
+msgid "Mouse protocol"
+msgstr "Maus Protokoll"
+
+#: modules/univention/admin/handlers/legacy/policies/clientdevices.py:70
+#: modules/univention/admin/handlers/legacy/policies/managedclientpackages.py:71
+#: modules/univention/admin/handlers/legacy/policies/mobileclientpackages.py:71
+#: modules/univention/admin/handlers/legacy/policies/sound.py:71
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:75
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:91
+msgid "Name"
+msgstr "Name"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:314
+msgid "Name of primary display"
+msgstr "Name des primären Monitor"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:326
+msgid "Name of secondary display"
+msgstr "Name des sekundären Monitors"
+
+#: modules/univention/admin/handlers/legacy/policies/managedclientpackages.py:52
+#: modules/univention/admin/handlers/legacy/policies/managedclientpackages.py:82
+#: modules/univention/admin/handlers/legacy/policies/mobileclientpackages.py:52
+#: modules/univention/admin/handlers/legacy/policies/mobileclientpackages.py:82
+msgid "Package installation list"
+msgstr "Paket Installationsliste"
+
+#: modules/univention/admin/handlers/legacy/policies/managedclientpackages.py:53
+#: modules/univention/admin/handlers/legacy/policies/managedclientpackages.py:92
+#: modules/univention/admin/handlers/legacy/policies/mobileclientpackages.py:53
+#: modules/univention/admin/handlers/legacy/policies/mobileclientpackages.py:92
+msgid "Package removal list"
+msgstr "Paket Deinstallationsliste"
+
+#: modules/univention/admin/handlers/legacy/policies/clientdevices.py:63
+msgid "Policy: Client devices"
+msgstr "Richtlinie: Client-Peripherie"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:84
+msgid "Policy: Display"
+msgstr "Richtlinie: Display"
+
+#: modules/univention/admin/handlers/legacy/policies/managedclientpackages.py:64
+msgid "Policy: Managed Client packages"
+msgstr "Richtlinie: Managed Client Pakete"
+
+#: modules/univention/admin/handlers/legacy/policies/mobileclientpackages.py:64
+msgid "Policy: Mobile Client packages"
+msgstr "Richtlinie: Mobile Client Pakete"
+
+#: modules/univention/admin/handlers/legacy/policies/sound.py:64
+msgid "Policy: Sound"
+msgstr "Richtlinie: Sound"
+
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:68
+msgid "Policy: Thin client"
+msgstr "Richtlinie: Thin Client"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:303
+msgid "Position of secondary display"
+msgstr "Position des sekundären Monitors"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:70
+msgid "Primary display"
+msgstr "Primärer Monitor"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:338
+msgid "RAM on the graphics adapter in kB"
+msgstr "RAM auf der Grafikkarte in kB"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:72
+msgid "Relative position of secondary display"
+msgstr "Relative Position des zweiten Monitors"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:52
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:102
+msgid "Resolution of primary display"
+msgstr "Auflösung des primären Monitors"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:53
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:114
+msgid "Resolution of secondary display"
+msgstr "Auflösung des sekundären Monitors"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:71
+msgid "Secondary display"
+msgstr "Sekundärer Monitor"
+
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:145
+msgid "Servers to use"
+msgstr "Zu nutzende Server"
+
+#: modules/univention/admin/handlers/legacy/policies/sound.py:52
+#: modules/univention/admin/handlers/legacy/policies/sound.py:82
+msgid "Sound enabled"
+msgstr "Sound aktivieren"
+
+#: modules/univention/admin/handlers/legacy/policies/sound.py:53
+#: modules/univention/admin/handlers/legacy/policies/sound.py:92
+msgid "Sound module"
+msgstr "Soundkarten-Treiber"
+
+#: modules/univention/admin/handlers/legacy/policies/sound.py:65
+#: modules/univention/admin/handlers/legacy/policies/sound.py:112
+msgid "Sound settings"
+msgstr "Sound-Einstellungen"
+
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:69
+msgid "Thin client configuration"
+msgstr "Thin-Client-Konfiguration"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:62
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:210
+msgid "Vertical refresh of primary display"
+msgstr "Vertikale Wiederholfrequenz des primären Monitor"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:63
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:222
+msgid "Vertical refresh of secondary display"
+msgstr "Vertikale Wiederholfrequenz des sekundären Monitors"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:68
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:281
+msgid "Viewonly VNC export"
+msgstr "VNC Display-Freigabe nur anzeigen"
+
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:73
+#: modules/univention/admin/handlers/legacy/policies/xfree.py:292
+msgid "Virtual size of dual monitor desktop"
+msgstr "Größe des virtuellen Desktops im Zwei-Monitor-Betrieb"
+
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:55
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:126
+msgid "Windows domain"
+msgstr "Windows-Domäne"
+
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:127
+msgid "Windows domain for Windows Login"
+msgstr "Windows-Domäne für die Windows Anmeldung"
+
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:54
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:116
+msgid "Windows terminal servers"
+msgstr "Windows-Terminal-Server"
+
+#: modules/univention/admin/handlers/legacy/policies/thinclient.py:117
+msgid "Windows terminal servers for Windows Login"
+msgstr "Windows-Terminal-Server für die Windows Anmeldung"
+
+#~ msgid "Empty Attributes"
+#~ msgstr "Leere Attribute"
+
+#~ msgid "Empty attribute"
+#~ msgstr "Leeres Attribut"
+
+#~ msgid "Excluded object class"
+#~ msgstr "Ausgeschlossene Objektklasse"
+
+#~ msgid "Fixed attribute"
+#~ msgstr "Festgelegtes Attribut"
+
+#~ msgid "Object"
+#~ msgstr "Objekt"
+
+#~ msgid "Required object class"
+#~ msgstr "Benötigte Objektklasse"

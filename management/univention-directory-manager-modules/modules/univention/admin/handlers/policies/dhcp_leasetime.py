@@ -36,6 +36,13 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
+from univention.admin.handlers.policies.base import (
+	register_policy_mapping, policy_object_tab,
+	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
+	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+)
+
+
 translation=univention.admin.localization.translation('univention.admin.handlers.policies')
 _=translation.translate
 
@@ -103,57 +110,14 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required object class'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-			),
-	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Excluded object class'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-			),
-	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed attribute'),
-			long_description='',
-			syntax=dhcp_leasetimeFixedAttributes,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-			),
-	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty attribute'),
-			long_description='',
-			syntax=dhcp_leasetimeFixedAttributes,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-			),
-	'ldapFilter': univention.admin.property(
-			short_description=_('LDAP filter'),
-			long_description=_('This policy applies only to objects which matches this LDAP filter.'),
-			syntax=univention.admin.syntax.ldapFilter,
-			multivalue=0,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
 }
+property_descriptions.update(dict([
+	requiredObjectClassesProperty(),
+	prohibitedObjectClassesProperty(),
+	fixedAttributesProperty(syntax=dhcp_leasetimeFixedAttributes),
+	emptyAttributesProperty(syntax=dhcp_leasetimeFixedAttributes),
+	ldapFilterProperty(),
+]))
 
 layout = [
 	Tab(_('Lease Time'), _('DHCP lease time'), layout = [
@@ -164,11 +128,7 @@ layout = [
 			'lease_time_max',
 		] ),
 	] ),
-	Tab(_('Object'),_('Object'), advanced = True, layout = [
-		[ 'ldapFilter' ],
-		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
-		[ 'fixedAttributes', 'emptyAttributes' ]
-	] ),
+	policy_object_tab()
 ]
 
 
@@ -177,12 +137,9 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('lease_time_default', 'univentionDhcpLeaseTimeDefault', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
 mapping.register('lease_time_max', 'univentionDhcpLeaseTimeMax', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
 mapping.register('lease_time_min', 'univentionDhcpLeaseTimeMin', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
+register_policy_mapping(mapping)
 
-mapping.register('requiredObjectClasses', 'requiredObjectClasses')
-mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
-mapping.register('fixedAttributes', 'fixedAttributes')
-mapping.register('emptyAttributes', 'emptyAttributes')
-mapping.register('ldapFilter', 'ldapFilter')
+
 
 class object(univention.admin.handlers.simplePolicy):
 	module=module

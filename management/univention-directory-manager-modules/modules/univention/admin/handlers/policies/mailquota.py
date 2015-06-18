@@ -36,6 +36,13 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
+
+from univention.admin.handlers.policies.base import (
+	register_policy_mapping, policy_object_tab,
+	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
+	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+)
+
 import univention.debug
 
 translation=univention.admin.localization.translation('univention.admin.handlers.policies')
@@ -82,57 +89,15 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required object class'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Excluded object class'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed attribute'),
-			long_description='',
-			syntax=mailquotaFixedAttributes,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty attribute'),
-			long_description='',
-			syntax=mailquotaFixedAttributes,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'ldapFilter': univention.admin.property(
-			short_description=_('LDAP filter'),
-			long_description=_('This policy applies only to objects which matches this LDAP filter.'),
-			syntax=univention.admin.syntax.ldapFilter,
-			multivalue=0,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
+
 }
+property_descriptions.update(dict([
+	requiredObjectClassesProperty(),
+	prohibitedObjectClassesProperty(),
+	fixedAttributesProperty(syntax=mailquotaFixedAttributes),
+	emptyAttributesProperty(syntax=mailquotaFixedAttributes),
+	ldapFilterProperty(),
+]))
 
 layout = [
 	Tab(_('General'),_('Mail quota'), layout = [
@@ -141,21 +106,14 @@ layout = [
 			'MailQuota'
 		] ),
 	] ),
-	Tab(_('Object'),_('Object'), advanced = True, layout = [
-		[ 'ldapFilter' ],
-		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
-		[ 'fixedAttributes', 'emptyAttributes' ]
-	] ),
+	policy_object_tab()
 ]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('MailQuota', 'univentionMailQuotaMB', None, univention.admin.mapping.ListToString)
-mapping.register('requiredObjectClasses', 'requiredObjectClasses')
-mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
-mapping.register('fixedAttributes', 'fixedAttributes')
-mapping.register('emptyAttributes', 'emptyAttributes')
-mapping.register('ldapFilter', 'ldapFilter')
+register_policy_mapping(mapping)
+
 
 class object(univention.admin.handlers.simplePolicy):
 	module=module

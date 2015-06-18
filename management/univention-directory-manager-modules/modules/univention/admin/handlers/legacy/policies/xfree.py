@@ -36,6 +36,12 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
+from univention.admin.handlers.policies.base import (
+	register_policy_mapping, policy_object_tab,
+	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
+	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+)
+
 translation=univention.admin.localization.translation('univention.admin.handlers.legacy.policies')
 _=translation.translate
 
@@ -236,46 +242,6 @@ property_descriptions={
 			configObjectPosition='cn=xconfig choices,cn=univention',
 			configAttributeName='univentionXModuleChoices'
 		),
-	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required object class'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Excluded object class'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed attribute'),
-			long_description='',
-			syntax=xfreeFixedAttributes,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
-			long_description='',
-			syntax=xfreeFixedAttributes,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
 	'displaySize': univention.admin.property(
 			short_description=_('Display size (mm) of primary display'),
 			long_description='',
@@ -388,6 +354,13 @@ property_descriptions={
 			identifies=0,
 		),
 }
+property_descriptions.update(dict([
+	requiredObjectClassesProperty(),
+	prohibitedObjectClassesProperty(),
+	fixedAttributesProperty(syntax=xfreeFixedAttributes),
+	emptyAttributesProperty(syntax=xfreeFixedAttributes),
+	ldapFilterProperty(),
+]))
 
 layout = [
 	Tab(_('General'),_('Display settings'), layout = [
@@ -411,10 +384,7 @@ layout = [
 			[ 'hSyncSecondary', 'vRefreshSecondary' ]
 		] ),
 	] ),
-	Tab(_('Object'),_('Object'), advanced = True, layout = [
-		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
-		[ 'fixedAttributes', 'emptyAttributes' ]
-	] ),
+	policy_object_tab(),
 ]
 
 mapping=univention.admin.mapping.mapping()
@@ -444,10 +414,7 @@ mapping.register('displaySizeSecondary', 'univentionXDisplaySizeSecondary', None
 mapping.register('hSyncSecondary', 'univentionXHSyncSecondary', None, univention.admin.mapping.ListToString)
 mapping.register('vRefreshSecondary', 'univentionXVRefreshSecondary', None, univention.admin.mapping.ListToString)
 
-mapping.register('requiredObjectClasses', 'requiredObjectClasses')
-mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
-mapping.register('fixedAttributes', 'fixedAttributes')
-mapping.register('emptyAttributes', 'emptyAttributes')
+register_policy_mapping(mapping)
 
 class object(univention.admin.handlers.simplePolicy):
 	module=module

@@ -37,6 +37,11 @@ import univention.admin.handlers
 import univention.admin.localization
 
 import univention.debug
+from univention.admin.handlers.policies.base import (
+	register_policy_mapping, policy_object_tab,
+	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
+	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+)
 
 translation=univention.admin.localization.translation('univention.admin.handlers.legacy.policies')
 _=translation.translate
@@ -127,47 +132,14 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required object class'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Excluded object class'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed attribute'),
-			long_description='',
-			syntax=thinclientFixedAttributes,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty attribute'),
-			long_description='',
-			syntax=thinclientFixedAttributes,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
 }
+property_descriptions.update(dict([
+	requiredObjectClassesProperty(),
+	prohibitedObjectClassesProperty(),
+	fixedAttributesProperty(syntax=thinclientFixedAttributes),
+	emptyAttributesProperty(syntax=thinclientFixedAttributes),
+	ldapFilterProperty(),
+]))
 
 layout = [
 	Tab(_('General'),_('Servers to use'), layout = [
@@ -178,10 +150,7 @@ layout = [
 			'windowsDomain'
 		] ),
 	] ),
-	Tab(_('Object'),_('Object'), advanced = True, layout = [
-		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
-		[ 'fixedAttributes', 'emptyAttributes' ]
-	] ),
+	policy_object_tab(),
 ]
 
 mapping=univention.admin.mapping.mapping()
@@ -191,10 +160,7 @@ mapping.register('fileServer', 'univentionFileServer')
 mapping.register('authServer', 'univentionAuthServer')
 mapping.register('windowsTerminalServer', 'univentionWindowsTerminalServer')
 mapping.register('windowsDomain', 'univentionWindowsDomain', None, univention.admin.mapping.ListToString)
-mapping.register('requiredObjectClasses', 'requiredObjectClasses')
-mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
-mapping.register('fixedAttributes', 'fixedAttributes')
-mapping.register('emptyAttributes', 'emptyAttributes')
+register_policy_mapping(mapping)
 
 class object(univention.admin.handlers.simplePolicy):
 	module=module
