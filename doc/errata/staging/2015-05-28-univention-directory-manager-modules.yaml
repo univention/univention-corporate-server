@@ -2,12 +2,12 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-directory-manager-modules
-fix: 10.0.29-51.1314.201506081823
+fix: 10.0.29-52.1316.201506171824
 version: [2]
 desc: |
   This update addresses the following issues:
   * Attributes of the UCR policy are now sorted.
   * Broken UDM handler modules are ignored when updating module list.
-  * An exception when handling ldap exceptions is prevented now.
+  * An exception when handling LDAP exceptions is prevented now.
   * The attribute "ldapFilter" has been added to policy UDM modules.
 bug: [32146, 38297, 38616, 36255]

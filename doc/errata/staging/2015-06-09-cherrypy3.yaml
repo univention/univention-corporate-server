@@ -6,6 +6,6 @@ fix: 3.2.2-2.15.201506091410
 version: [2]
 desc: |
   This update addresses the following issue:
-  * A bug in the cherrypy AutoReloader plugin deregistration has been fixed which could lead to
-    failing starts of the UMC webserver.
+  * A bug in the cherrypy "AutoReloader" plug-in de-registration has been fixed
+    which could lead to failing starts of the UMC webserver.
 bug: [37844]

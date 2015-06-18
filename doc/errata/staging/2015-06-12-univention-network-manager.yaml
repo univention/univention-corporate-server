@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-network-manager
-fix: 6.0.1-1.107.201506121759
+fix: 6.0.0-3.108.201506180826
 version: [2]
 desc: |
   This update addresses the following issues:

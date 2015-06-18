@@ -6,7 +6,7 @@ fix: 0.98.7+dfsg-0.154.201506081449
 version: [2]
 desc: |
  ClamAV has been updated to version 0.98.7. This provides several
- bugfixes and enhancements and also addresses security problems.
+ fixes and enhancements and also addresses security problems.
  - Crash in upx decoder with crafted file (CVE-2015-2170)
  - Infinite loop condition on crafted y0da cryptor file (CVE-2015-2221)
  - Crash on crafted petite packed file (CVE-2015-2222)

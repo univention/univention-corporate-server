@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-directory-notifier
-fix: 9.0.4-1.89.201506121802
+fix: 9.0.3-2.90.201506180824
 version: [2]
 desc: |
   This update addresses the following issue
