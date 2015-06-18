@@ -285,7 +285,7 @@ def spam_delivered(token, mail_address):
 				spam = spam or True
 			break
 	# dovecot
-	spam_folder = dovecot_spam or 'Spam'
+	spam_folder = dovecot_spam or '.Spam'
 	mail_dir = os.path.join(get_dovcot_maildir(mail_address), spam_folder)
 	for _file in get_dir_files(mail_dir, recursive=True):
 		with open(_file) as fi:
