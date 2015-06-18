@@ -42,8 +42,8 @@ def main():
 			usermail = '%s@%s' % (uts.random_name(), domain )
 			userdn, username = udm.create_user(
 				set={
-					'password'			 : password,
-					'mailHomeServer'	 : host,
+					'password'           : password,
+					'mailHomeServer'     : host,
 					'mailPrimaryAddress' : usermail
 				}
 			)
@@ -58,8 +58,8 @@ def main():
 			usermail = '%s@%s' % (uts.random_name(), domain )
 			userdn, username = udm.create_user(
 				set={
-					'password'			 : password,
-					'mailHomeServer'	 : host,
+					'password'           : password,
+					'mailHomeServer'     : host,
 					'mailPrimaryAddress' : usermail
 				}
 			)
