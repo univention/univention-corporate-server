@@ -265,6 +265,7 @@ def reload_amavis_postfix():
 			print >> sys.stderr, ex
 
 
+@SetMailDeliveryTimeout()
 def spam_delivered(token, mail_address):
 	delivered = False
 	spam = False
@@ -491,11 +492,15 @@ Regards,
 	return ret_code
 
 
-def check_delivery(token, recipient_email, should_be_delivered):
+def check_delivery(token, recipient_email, should_be_delivered, spam=False):
 	print "%s is waiting for an email to be delivered ..." % recipient_email
-	delivered  = mail_delivered(token, mail_address=recipient_email)
+	if spam:
+		delivered  = spam_delivered(token, mail_address=recipient_email)
+	else:
+		delivered  = mail_delivered(token, mail_address=recipient_email)
+	spam_str = 'Spam ' if spam else ''
 	if should_be_delivered != delivered:
-		utils.fail('Mail sent with token = %r to %s was not delivered' % (token, recipient_email))
+		utils.fail('%sMail sent with token = %r to %s was not delivered' % (spam_str, token, recipient_email))
 
 
 def check_sending_mail(
