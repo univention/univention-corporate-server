@@ -201,7 +201,7 @@ define([
 			var contentNode = dom.byId('content');
 			var tabNode = put(contentNode, 'div.tab#register-tab');
 			put(tabNode, 'p > b', _('Request a license!'));
-			put(tabNode, 'p', _('You may now enter a valid e-mail address in order to activate the UCS system to use the App Center. In the next step you can upload the license file that has been sent to your email address.'));
+			put(tabNode, 'p', _('Please enter a valid e-mail address in order to activate the UCS system. The activation is required to use the App Center. In the next step you can upload the license file that has been sent to your email address.'));
 
 			// create input field for email address
 			this._email = new TextBox({
@@ -314,14 +314,10 @@ define([
 			var contentNode = dom.byId('content');
 			var tabNode = put(contentNode, 'div.tab#upload-tab');
 			var uploaderNode = this._createUploader();
-			this._backToRegisterButton = new Button({
-				label: _('Request new license'),
-				onClick: lang.hitch(this, function(){ router.go('register')})
-			});
 			put(tabNode, 'p > b', _('You have got mail!'));
 			put(tabNode, 'p', _('A license file should have been sent to your email address. Upload the license file from the email to activate your UCS instance.'));
-			put(tabNode, '>', this._backToRegisterButton.domNode);
-			this._backToRegisterButton.startup();
+			var backNode = put(tabNode, 'p');
+			backNode.innerHTML = _('Note: If you did not received an email, please also check your spam directory or <a href="/#register">request a new one.</a>');
 			put(tabNode, '>', uploaderNode);
 			this._uploader.focus();
 			this._uploader.startup();
@@ -338,7 +334,7 @@ define([
 				})
 			});
 			put(tabNode, 'p > b', _('Activation successful!'));
-			put(tabNode, 'p', _('The App Appliance is now activated. Click continue to foobar your system.'));
+			put(tabNode, 'p', _('The App Appliance is now activated. Click continue to visit the Univention Management Console (UMC).'));
 			put(tabNode, '>', this._continueButton.domNode);
 			this._continueButton.focus();
 			this._continueButton.startup();

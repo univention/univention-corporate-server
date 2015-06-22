@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-7) unstable; urgency=low
+
+  * Bug #38547: Adapted text and layout
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 22 Jun 2015 09:38:36 +0200
+
 univention-system-activation (0.0.1-6) unstable; urgency=low
 
   * Bug #38547: Apdapted animation, upload check and start tab
