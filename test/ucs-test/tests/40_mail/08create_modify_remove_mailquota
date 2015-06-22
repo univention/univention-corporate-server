@@ -42,7 +42,7 @@ def main():
 				policy='cn=%s,cn=mail,cn=policies,%s' % (UDM_policies_mailquota_name, ucr.get('ldap/base'))
 				userdn, username = udm.create_user(
 						username=user,
-						passowrd='univention',
+						password='univention',
 						policy_reference=policy,
 						set={
 
@@ -62,13 +62,13 @@ def main():
 				if not response == 'OK':
 					utils.fail('Fail get imap quota')
 				if not quota == 17000:
-					utils.fail('Worng quota set = %r' % quota)
+					utils.fail('Wrong quota set = %r' % quota)
 				imap.login_OK(username, 'univention')
 				quota, response = imap.get_imap_quota(username, 'univention')
 				if not response == 'OK':
 					utils.fail('Fail get imap quota')
 				if not quota == 17000:
-					utils.fail('Worng quota set = %r' % quota)
+					utils.fail('Wrong quota set = %r' % quota)
 
 				udm.modify_object(
 						modulename='policies/mailquota',
@@ -86,13 +86,13 @@ def main():
 				if not response == 'OK':
 					utils.fail('Fail get imap quota')
 				if not quota == 42000:
-					utils.fail('Worng quota set = %r, correct =42000' % quota)
+					utils.fail('Wrong quota set = %r, correct =42000' % quota)
 				imap.login_OK(username, 'univention')
 				quota, response = imap.get_imap_quota(username, 'univention')
 				if not response == 'OK':
 					utils.fail('Fail get imap quota')
 				if not quota == 42000:
-					utils.fail('Worng quota set = %r, correct =42000' % quota)
+					utils.fail('Wrong quota set = %r, correct =42000' % quota)
 
 				udm.modify_object(
 						modulename='users/user',
@@ -112,11 +112,11 @@ def main():
 				if not response == 'OK':
 					utils.fail('Fail get imap quota')
 				if not quota == -1:
-					utils.fail('Worng quota set = %r, although it should not be set' % quota)
+					utils.fail('Wrong quota set = %r, although it should not be set' % quota)
 				imap.login_OK(username, 'univention')
 				quota, response = imap.get_imap_quota(username, 'univention')
 				if not quota == -1:
-					utils.fail('Worng quota set = %r, although it should not be set' % quota)
+					utils.fail('Wrong quota set = %r, although it should not be set' % quota)
 		finally:
 			restart_cyrus_saslauthd()
 

@@ -64,6 +64,8 @@ def enable_mail_quota():
 
 
 class Mail(object):
+	def __init__(self, timeout=10):
+		self.timeout = timeout
 
 	def get_reply(self, s):
 		try:
@@ -139,7 +141,7 @@ class ImapMail(Mail):
 	def login_OK(self, username, password):
 		hostname = socket.gethostname()
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		s.settimeout(10)
+		s.settimeout(self.timeout)
 		s.connect((hostname, 143))
 		print self.get_reply(s)
 		retval = self.send_and_receive(s, 'a001', 'login %s %s\r\n' % (username, password))
@@ -150,7 +152,7 @@ class ImapMail(Mail):
 	def get_imap_quota(self, username, password):
 		hostname = socket.gethostname()
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		s.settimeout(10)
+		s.settimeout(self.timeout)
 		s.connect((hostname, 143))
 		retval = self.send_and_receive_quota(s, 'a001', 'login %s %s\r\n' % (username, password))
 		retval = self.send_and_receive_quota(s, 'a002', 'GETQUOTAROOT INBOX\r\n')  # user/%s\r\n' % username)
@@ -185,7 +187,7 @@ class PopMail(Mail):
 	def login_OK(self, username, password):
 		hostname = socket.gethostname()
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		s.settimeout(10)
+		s.settimeout(self.timeout)
 		s.connect((hostname, 110))
 		print self.get_reply(s),
 		self.send_and_receive(s, 'USER %s' % username)
@@ -448,7 +450,8 @@ def wait_for_mailboxes(mailboxes, timeout=90):
 
 
 def send_mail(recipients=None, sender=None, subject=None, msg=None, idstring='no id string',
-	       gtube=False, virus=False, attachments=[], server=None, port=25, tls=False, username=None, password=None):
+	       gtube=False, virus=False, attachments=[], server=None, port=25, tls=False, username=None, password=None,
+	       debuglevel=1):
 	"""
 	Send a mail to mailserver.
 	Arguments:
@@ -466,6 +469,7 @@ def send_mail(recipients=None, sender=None, subject=None, msg=None, idstring='no
 	tls:	    [optional] use TLS if true
 	username:   [optional] authenticate against mailserver if username and password are set
 	password:	[optional] authenticate against mailserver if username and password are set
+	debuglevel: [optional] SMTP client debug level (default: 1)
 	"""
 
 	# default values
@@ -537,7 +541,7 @@ Regards,
 
 	# The actual mail send part
 	server = smtplib.SMTP(host=m_server, port=m_port, local_hostname=m_ehlo)
-	server.set_debuglevel(1)
+	server.set_debuglevel(debuglevel)
 	if tls:
 		server.starttls()
 	if username and password:
