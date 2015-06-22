@@ -121,7 +121,7 @@ define([
 						put(buttonNode, '.focused');
 					};
 
-					setTimeout(animateTabTransition, 1000);
+					setTimeout(animateTabTransition, 600);
 				} else {
 					put(loadingNode, '!focused');
 					put(tabNode, '.hide-tab');
@@ -162,7 +162,7 @@ define([
 						var queryString = window.location.search;
 						if (queryString.length) {
 							// cut off the '?' character
-							queryObj = ioQuery.queryToObject(queryString.substring(1))
+							queryObj = ioQuery.queryToObject(queryString.substring(1));
 						}
 						queryKey = ilocale.queryKey || 'lang';
 						queryObj[queryKey] = ilocale.id;
