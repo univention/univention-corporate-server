@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-system-setup
+fix: 8.1.69-4.892.201506221202
+version: [2]
+desc: |
+  This update addresses the following issue:
+  * Fixed an error which could occur while installing UCS with non-default locales
+    via the text based installer, resulting in an unconfigured system.
+bug: [38382]
