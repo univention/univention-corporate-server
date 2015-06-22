@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-8) unstable; urgency=low
+
+  * Bug #38547: First css adaptions
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 22 Jun 2015 12:37:57 +0200
+
 univention-system-activation (0.0.1-7) unstable; urgency=low
 
   * Bug #38547: Adapted text and layout

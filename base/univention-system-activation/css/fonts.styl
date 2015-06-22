@@ -22,3 +22,81 @@
   font-weight: bold;
   src: local('Open Sans'), local('OpenSans'), url(fonts/ClearSans-BoldItalic.woff) format('woff');
 }
+
+.claro .dijitTooltipContainer {
+	/* the part with the text */
+	background-color:#fff;
+	background-position:bottom;
+	border:1px solid #e6e6e6;
+	padding:6px 8px;
+	border-radius: 4px;
+	box-shadow: 0 0px 10px rgba(0,0,0,0.15);
+	font-size: 1em;
+	color: #282828;
+	max-width: 400px;
+	margin-left: 13px;
+}
+
+.claro .dijitTooltipConnector {
+	/* the arrow piece */
+	border: 0;
+	z-index: 2;
+	background-image:url('icons/tooltip.svg');
+	background-repeat:no-repeat;
+	width:20px;
+	height:18px;
+}
+
+.dj_ie6 .claro .dijitTooltipConnector {
+	background-image:url($image-tooltip-ie6);
+}
+
+.umc .dijitTooltipDialog .dijitTooltipConnector,
+.claro .dijitTooltipBelow .dijitTooltipConnector {
+	/* the arrow piece for tooltips below an element */
+	top: -6px;
+	//left: 3px;
+	background-position:-41px -1px;
+
+}
+.umc .dijitTooltipDialog .dijitTooltipConnector {
+	left: 12px;
+}
+
+.claro .dijitTooltipAbove .dijitTooltipConnector {
+	/* the arrow piece for tooltips above an element */
+	bottom: -6px;
+	//left: 3px;
+	background-position:-21px -1px;
+}
+
+.dj_ie7 .claro .dijitTooltipAbove .dijitTooltipConnector,
+.dj_ie6 .claro .dijitTooltipAbove .dijitTooltipConnector {
+	//bottom: -1px;
+}
+
+.claro .dijitTooltipABRight .dijitTooltipConnector {
+	/* above or below tooltip, but the arrow appears on the right,
+		and the right edges of target and tooltip are aligned rather than the left.
+		Override above rules for .dijitTooltipBelow, .dijitTooltipAbove */
+	//left: auto;
+	//right: 3px;
+}
+
+.claro .dijitTooltipLeft {
+	//padding-right: 14px;
+}
+.claro .dijitTooltipLeft .dijitTooltipConnector {
+	/* the arrow piece for tooltips to the left of an element, bottom borders aligned */
+	right: -6px;
+	background-position:-1px -1px;
+}
+
+.claro .dijitTooltipRight {
+	//padding-left: 14px;
+}
+.claro .dijitTooltipRight .dijitTooltipConnector {
+	/* the arrow piece for tooltips to the right of an element, bottom borders aligned */
+	left: -6px;
+	background-position:-61px -1px;
+}
