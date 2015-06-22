@@ -9,7 +9,7 @@ die () {
 	exit 1
 }
 check () {
-	type euca-describe-images >/dev/null 2>&1 || die "Missing euca2tools"
+	type euca-describe-images >/dev/null 2>&1 || die "Missing euca2ools"
 	[ $# -eq 2 ] || die "Usage: src-ami dst-ami"
 }
 args () {
