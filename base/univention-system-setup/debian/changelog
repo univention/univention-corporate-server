@@ -1,3 +1,11 @@
+univention-system-setup (8.1.69-4) unstable; urgency=low
+
+  * Bug #38382: Setup-join.sh: Moved execution of /scripts/15_keyboard,
+    /scripts/20_language and /scripts/25_defaultlocale to top of script to
+    prevent errors because of missing locale
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 22 Jun 2015 11:49:53 +0200
+
 univention-system-setup (8.1.69-3) unstable; urgency=medium
 
   * Bug #37537: add appliance hook which installs univention-welcome-screen

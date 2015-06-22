@@ -66,6 +66,13 @@ SETUP_LOG="/var/log/univention/setup.log"
 
 echo "no-ldap" > /var/run/univention-system-setup.ldap
 
+# Call scripts which won't be handled by join scripts
+# keyboard, language and timezone
+echo "Starting re-configuration of locales"
+run-parts -v /usr/lib/univention-system-setup/scripts/15_keyboard
+run-parts -v /usr/lib/univention-system-setup/scripts/20_language
+run-parts -v /usr/lib/univention-system-setup/scripts/25_defaultlocale
+
 # do not allow the UMC or webserver to be restarted
 /usr/share/univention-updater/disable-apache2-umc
 
@@ -165,14 +172,6 @@ if [ "$system_setup_boot_installer" != "true" ]; then
 	)
 	progress_next_step 10
 fi
-
-
-# Call scripts which won't be handled by join scripts
-# keyboard, language and timezone
-echo "Starting re-configuration of locales"
-run-parts -v /usr/lib/univention-system-setup/scripts/15_keyboard
-run-parts -v /usr/lib/univention-system-setup/scripts/20_language
-run-parts -v /usr/lib/univention-system-setup/scripts/25_defaultlocale
 
 # Do network stuff
 echo "Starting re-configuration of network"
