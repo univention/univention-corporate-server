@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-6
 src: univention-management-console-module-udm
-fix: 4.0.99-7.579.201506231427
+fix: 4.0.99-8.580.201506231612
 version: [6]
 desc: |
   The mapping of syntax classes to UMC widgets is now extendable via the
