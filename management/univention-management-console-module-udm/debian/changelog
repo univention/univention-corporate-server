@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.99-9) unstable; urgency=medium
+
+  * Bug #38743: fixup (loop variables change)
+
+ -- Florian Best <best@univention.de>  Tue, 23 Jun 2015 19:02:36 +0200
+
 univention-management-console-module-udm (4.0.99-8) unstable; urgency=medium
 
   * Bug #38743: automatically load missing widgets

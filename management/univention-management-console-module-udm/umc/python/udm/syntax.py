@@ -78,9 +78,14 @@ class Widget(object):
 
 class _UCRWidget(Widget):
 
-	def __init__(self, syntax_classes, default, subclasses, widget_func):
-		super(_UCRWidget, self).__init__(None, syntax_classes, default, subclasses, widget_func)
+	def __init__(self, props, widget, syntax_classes, default, subclasses):
+		self.props = props
+		self.widget = widget
+		super(_UCRWidget, self).__init__(None, syntax_classes, default, subclasses, self.widget_func)
 		self._syntax_classes_names = syntax_classes
+
+	def widget_func(self, syntax_, property_):
+		return self.props.get('%s/property/%s' % (syntax_.name, property_['id']), self.widget)
 
 	def __contains__(self, syntax):
 		# in case a syntax-reload has been done we need to reuse the newly ones
@@ -120,10 +125,7 @@ class _UCRWidget(Widget):
 					continue
 				syntax_classes.append(syntax)
 
-			def widget_func(syntax_, property_):
-				return props.get('%s/property/%s' % (syntax_.name, property_['id']), widget)
-
-			widgets.append(cls(syntax_classes, default, subclasses, widget_func))
+			widgets.append(cls(props, widget, syntax_classes, default, subclasses))
 			MODULE.info('Added widget definition: %r' % (widgets[-1],))
 
 		return widgets
