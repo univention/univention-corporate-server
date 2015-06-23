@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-10) unstable; urgency=low
+
+  * Bug #38547: Adapted umc link and activation script
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 23 Jun 2015 15:10:58 +0200
+
 univention-system-activation (0.0.1-9) unstable; urgency=low
 
   * Bug #38547: Adapted tab transition

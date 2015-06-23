@@ -61,6 +61,8 @@ define([
 	// strip starting/ending '"' and replace newlines
 	license = license.substr(1, license.length - 2).replace(/\\n/g, '\n');
 
+    email_address = entries.email || 'your email address';
+
 	// make sure that en-US exists
 	var existsEnUsLocale = array.some(_availableLocales, function(ilocale) {
 		return ilocale.id == 'en-US';
@@ -315,7 +317,7 @@ define([
 			var tabNode = put(contentNode, 'div.tab#upload-tab');
 			var uploaderNode = this._createUploader();
 			put(tabNode, 'p > b', _('You have got mail!'));
-			put(tabNode, 'p', _('A license file should have been sent to your email address. Upload the license file from the email to activate your UCS instance.'));
+			put(tabNode, 'p', _('A license file should have been sent to ') + email_address + _('. Upload the license file from the email to activate your UCS instance.'));
 			var backNode = put(tabNode, 'p');
 			backNode.innerHTML = _('Note: If you did not received an email, please also check your spam directory or <a href="/#register">request a new one.</a>');
 			put(tabNode, '>', uploaderNode);
@@ -341,7 +343,7 @@ define([
 		},
 
 		_continue: function(){
-			location.href = "/umc" + location.search + "&username=Administrator";
+			location.href = "/umc" + location.search + "?username=Administrator";
 		},
 
 		createElements: function() {
