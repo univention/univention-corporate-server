@@ -21,3 +21,33 @@ Description[de]=Mit dieser Variable kann pro Modul eingestellt werden, ob ein Wa
 Description[en]=This variable allows to configure for every module whether a warning should be displayed when creating objects if the system is in Active Directory mode.
 Type=str
 Categories=management-umc
+
+[directory/manager/web/widget/.*/widget]
+Description[de]=Definiert ein Widget für die Anzeige in UMC. Der Wert ist ein Pfad zum Widget.
+Description[en]=Defines a widget for displaying in UMC. The value is the path to the widget.
+Type=str
+Categories=management-umc
+
+[directory/manager/web/widget/.*/syntax]
+Description[de]=Definiert eine kommaseparierte Liste von Syntax-Klassen, für die dieses Widget angewendet wird.
+Description[en]=Defines a commaseparated list of syntax classes where this widget will be applied to.
+Type=str
+Categories=management-umc
+
+[directory/manager/web/widget/.*/default]
+Description[de]=Definiert den Standardwert für die Widget-Definition.
+Description[en]=Defines the default value fot the widget definition.
+Type=str
+Categories=management-umc
+
+[directory/manager/web/widget/.*/subclasses]
+Description[de]=Definiert, ob dieses Widget auch für Subklassen der definierten Syntax-Klassen angewendet wird.
+Description[en]=Defines whether this widget is also applied on subclasses of the defiend syntax class.
+Type=bool
+Categories=management-umc
+
+[directory/manager/web/widget/.*/property/.*]
+Description[de]=Definiert eine abweichenden Widget-Pfad für die angegebene Eigenschaft.
+Description[en]=Defines a differing widget path for the specified property.
+Type=str
+Categories=management-umc
