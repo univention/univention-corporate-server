@@ -388,9 +388,9 @@ class Instance(Base, ProgressMixin):
 
 		# host and domain name
 		packages = set(values.get('components', []))
-		_check('hostname', util.is_hostname, _('The hostname is not a valid fully qualified domain name (e.g. host.example.com).'))
+		_check('hostname', util.is_hostname, _('The hostname or the hostname part of the fully qualified domain name is invalid. Please go back to the host setting and make sure, that the hostname only contains letter (a-zA-Z) and digits (0-9).'))
 		_check('hostname', lambda x: len(x) <= 13, _('A valid NetBIOS name can not be longer than 13 characters. If Samba is installed, the hostname should be shortened.'), critical=('univention-samba' in packages or 'univention-samba4' in packages))
-		_check('domainname', util.is_domainname, _("Please enter a valid fully qualified domain name in lowercase (e.g. host.example.com)."))
+		_check('domainname', util.is_domainname, _("Please enter a valid fully qualified domain name (e.g. host.example.com)."))
 		hostname = allValues.get('hostname', '')
 		domainname = allValues.get('domainname', '')
 		if len('%s%s' % (hostname, domainname)) >= 63:

@@ -1,3 +1,9 @@
+univention-system-setup (8.1.69-5) unstable; urgency=low
+
+  * Bug #37816: Adapted the messages as requested
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 23 Jun 2015 12:13:37 +0200
+
 univention-system-setup (8.1.69-4) unstable; urgency=low
 
   * Bug #38382: Setup-join.sh: Moved execution of /scripts/15_keyboard,
