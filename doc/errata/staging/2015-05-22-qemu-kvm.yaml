@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-6
 src: qemu-kvm
-fix: 1.1.2+dfsg-6.29.45.201505221302
+fix: 1.1.2+dfsg-6.29.46.201506231342
 version: [6]
 desc: |
  These vulernabilities have been fixed in qemu-kvm:
@@ -30,6 +30,11 @@ desc: |
    setting the display to a high resolution (CVE-2014-3615)
  * Virtualized Environment Neglected Operations Manipulation (VENOM)
    in QEMU's virtual Floppy Disk Controller (CVE-2015-3456)
+ * Denial of service due to insecure temporary file use in /net/slirp.c
+   (CVE-2015-4037)
+ * A privileged guest user in a guest with an AMD PCNet ethernet card enabled
+   can potentially use this flaw to execute arbitrary code on the host with
+   the privileges of the hosting QEMU process (CVE-2015-3209)
 bug: [33279]
 cve:
  - CVE-2012-6075
@@ -50,3 +55,5 @@ cve:
  - CVE-2014-8106
  - CVE-2014-3615
  - CVE-2015-3456
+ - CVE-2015-4037
+ - CVE-2015-3209
