@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define setTimeout*/
+/*global define,require,setTimeout*/
 
 define([
 	"dojo/_base/declare",
@@ -214,14 +214,16 @@ define([
 				var policies = lang.clone(results.policies);
 				var properties = lang.clone(results.properties);
 				setTimeout(lang.hitch(this, function() {
-					this._prepareIndividualProperties(properties).then(lang.hitch(this, function(properties) {
-						this.renderDetailPage(properties, layout, policies, template).then(lang.hitch(this, function() {
-							this.loadedDeferred.resolve();
+					this._requireWidgets(properties).then(lang.hitch(this, function() {
+						this._prepareIndividualProperties(properties).then(lang.hitch(this, function(properties) {
+							this.renderDetailPage(properties, layout, policies, template).then(lang.hitch(this, function() {
+								this.loadedDeferred.resolve();
+							}), lang.hitch(this, function() {
+								this.loadedDeferred.resolve();
+							}));
 						}), lang.hitch(this, function() {
 							this.loadedDeferred.resolve();
 						}));
-					}), lang.hitch(this, function() {
-						this.loadedDeferred.resolve();
 					}));
 				}), 50);
 			}), lang.hitch(this, function() {
@@ -636,6 +638,25 @@ define([
 		active_directory_enabled: function() {
 			var ucr = lang.getObject('umc.modules.udm.ucr', false) || {};
 			return tools.isTrue(ucr['ad/member']);
+		},
+
+		_requireWidgets: function(properties) {
+			var deferreds = [];
+			array.forEach(properties, function(prop) {
+				if (typeof prop.type == 'string') {
+					var path = prop.type.indexOf('/') < 0 ? 'umc/widgets/' + prop.type : prop.type;
+					var errHandler;
+					var deferred = new Deferred();
+					var loaded = function() {
+						deferred.resolve();
+						errHandler.remove();
+					};
+					errHandler = require.on('error', loaded);
+					require([path], loaded);
+					deferreds.push(deferred);
+				}
+			});
+			return all(deferreds);
 		},
 
 		_prepareIndividualProperties: function(properties) {
