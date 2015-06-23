@@ -1,0 +1,13 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: proftpd-dfsg
+fix: 1.3.4a-5.43.201506231156
+version: [2]
+desc: |
+ These vulnerabilities have been fixed in ProFTPd:
+ - unauthenticated copying of files via SITE CPFR/CPTO allowed by mod_copy
+   (CVE-2015-3306)
+bug: [38372]
+cve:
+ - CVE-2015-3306
