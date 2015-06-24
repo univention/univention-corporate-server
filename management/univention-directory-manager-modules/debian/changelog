@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.29-54) unstable; urgency=medium
+
+  * Bug #36255: fix upgrade problems
+
+ -- Florian Best <best@univention.de>  Wed, 24 Jun 2015 16:45:35 +0200
+
 univention-directory-manager-modules (10.0.29-53) unstable; urgency=medium
 
   * Bug #36255: use ListToString as mapping for ldapFilter
