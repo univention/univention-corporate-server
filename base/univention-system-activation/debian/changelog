@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-11) unstable; urgency=low
+
+  * Bug #38547: The user email is now displayed
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 24 Jun 2015 12:15:25 +0200
+
 univention-system-activation (0.0.1-10) unstable; urgency=low
 
   * Bug #38547: Adapted umc link and activation script

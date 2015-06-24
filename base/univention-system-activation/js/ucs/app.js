@@ -235,8 +235,12 @@ define([
 		},
 
 		_sendEmail: function(){
+			email_address = this._email.get('value');
+			emailAddressNode = dom.byId('email-address');
+			emailAddressNode.innerHTML = email_address;
+
 			var data = {
-				email: this._email.get('value'),
+				email: email_address,
 				licence: license
 			};
 			xhr.post('https://license.univention.de/keyid/conversion/submit', {
@@ -317,7 +321,10 @@ define([
 			var tabNode = put(contentNode, 'div.tab#upload-tab');
 			var uploaderNode = this._createUploader();
 			put(tabNode, 'p > b', _('You have got mail!'));
-			put(tabNode, 'p', _('A license file should have been sent to ') + email_address + _('. Upload the license file from the email to activate your UCS instance.'));
+			var textNode = put(tabNode, 'p');
+			textNode.innerHTML = _('A license file should have been sent to <strong id="email-address">')
+				+ email_address
+				+ _('</strong>. Upload the license file from the email to activate your UCS instance.');
 			var backNode = put(tabNode, 'p');
 			backNode.innerHTML = _('Note: If you did not received an email, please also check your spam directory or <a href="/#register">request a new one.</a>');
 			put(tabNode, '>', uploaderNode);
