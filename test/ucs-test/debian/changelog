@@ -1,3 +1,9 @@
+ucs-test (5.0.148-22) unstable; urgency=low
+
+  * added tests/51_samba4/59checkPrimaryGroupInPacInfo (Bug #37101) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 24 Jun 2015 17:22:51 +0200
+
 ucs-test (5.0.148-21) unstable; urgency=medium
 
   * QA feedback for tests/10_ldap/51listener_case_handling (Bug #35334)

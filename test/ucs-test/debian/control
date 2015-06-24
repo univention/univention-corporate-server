@@ -182,6 +182,7 @@ Depends: ucs-test-libs (= ${source:Version}),
  ucs-test-samba-common,
  shell-univention-lib,
  python-pexpect,
+ tshark,
  ${misc:Depends}
 Provides: ucs-test-module
 Description: Test scripts for samba4 (and NFS shares)
