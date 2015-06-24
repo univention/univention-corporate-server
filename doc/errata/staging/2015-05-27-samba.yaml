@@ -2,8 +2,11 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: samba
-fix: 2:4.2.2-1.746.201506081753
+fix: 2:4.2.2-1.751.201506241332
 version: [1,2]
 desc: |
- Samba has been upgraded to version 4.2.2.
-bug: [37939]
+ This update addresses the following issue:
+ * Samba has been upgraded to version 4.2.2.
+ * The list of groups in the Kerberos PAC_LOGON_INFO
+   now also contains the RID of primary group.
+bug: [37939, 37101]
