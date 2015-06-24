@@ -3,7 +3,7 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-6
 src: tzdata
 fix: 2015d-0.35.201506170920
-version: [6]
+version: [5,6]
 desc: |
  The time zone database was updated to include information about the scheduled
  leap second at the end of June 2015.
