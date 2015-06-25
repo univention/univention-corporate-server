@@ -621,11 +621,6 @@ define([
 								this._openPolicy(ipolicyType, dn);
 							})
 						}]
-					}, {
-						type: Text,
-						name: '$note$',
-						visible: false,
-						content: _('<b>Warning:</b> This %s has multiple policies of type <i>%s</i> referenced. Modifying is therefore disabled via Univention Management Console.', this.objectNameSingular, ipolicy.label)
 					});
 					var buttonsConf = [{
 						type: Button,
@@ -634,7 +629,7 @@ define([
 						label: _('Create new policy'),
 						callback: lang.hitch(this, '_openPolicy', ipolicyType, undefined)
 					}];
-					newLayout.unshift(['$note$', '$policy$']);
+					newLayout.unshift(['$policy$']);
 
 					// render the group of properties
 					var widgets = render.widgets(newProperties, this);
@@ -1256,17 +1251,13 @@ define([
 				container: this.newObjectOptions ? this.newObjectOptions.container : null
 			}).then(lang.hitch(this, function(data) {
 				tools.forIn(this._policyWidgets[policyType], function(iname, iwidget) {
-					// manage visibility if multiple policies are referenced (UMC can't handle it currently)
-					var max_reached = policyDNs.length > 1;
 
-					if (iname == '$note$') {
-						iwidget.set('visible', max_reached);
-						return;
-					}
 					if (iname == '$policy$') {
 						// the MultiInput for policies, skip this widget
-						//iwidget.set('disabled', max_reached);
-						iwidget.set('max', 1);
+						if (policyDNs.length < 2) {
+							// make it impossible to reference multiple policies except if it originally already has multiple policies assigned
+							iwidget.set('max', 1);
+						}
 						return;
 					}
 

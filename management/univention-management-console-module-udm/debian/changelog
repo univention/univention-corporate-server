@@ -1,6 +1,7 @@
 univention-management-console-module-udm (5.1.25-71) unstable; urgency=medium
 
   * Bug #36256: fixed scope of policyType variable
+  * Bug #36256: remove warning if multiple policies are referenced
 
  -- Florian Best <best@univention.de>  Thu, 25 Jun 2015 14:55:21 +0200
 
