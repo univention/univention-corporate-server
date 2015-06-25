@@ -263,7 +263,6 @@ define([
 				}
 				var error_msg = _('Error ') + status_code + ': ' + error_details;
 				this._showError(error_msg);
-				console.log(err);
 			}));
 		},
 
@@ -297,19 +296,18 @@ define([
 				}
 			});
 			put(this._uploader.domNode, '.umcButton[display=inline-block]');
-			//this._uploader.set('iconClass', 'umcIconAdd');
+			this._uploader.on('progress', lang.hitch(this, function(evt) {
+				var loadingNode = dom.byId('finished-loading-bar');
+				put(loadingNode, '.focused');
+			}));
 			this._uploader.on('complete', lang.hitch(this, function(evt) {
-				console.log('### upload completet: ' + evt);
 				if(evt.toLowerCase().indexOf('successful') > -1){
 					router.go('finished');
 				} else {
-					//var error_msg = _('Error: Invalid license file. Please try again or request a new one.');
 					this._showError(evt);
 				}
 			}));
 			this._uploader.on('error', lang.hitch(this, function(evt){ 
-				console.log('### upload error: ' + evt);
-				//var error_msg = _('Error: Invalid license file. Please try again or request a new one.');
 				this._showError(evt);
 			}));
 			return this._uploader.domNode;
@@ -328,7 +326,6 @@ define([
 			var backNode = put(tabNode, 'p');
 			backNode.innerHTML = _('Note: If you did not received an email, please also check your spam directory or <a href="/#register">request a new one.</a>');
 			put(tabNode, '>', uploaderNode);
-			this._uploader.focus();
 			this._uploader.startup();
 		},
 
@@ -345,7 +342,6 @@ define([
 			put(tabNode, 'p > b', _('Activation successful!'));
 			put(tabNode, 'p', _('The App Appliance is now activated. Click continue to visit the Univention Management Console (UMC).'));
 			put(tabNode, '>', this._continueButton.domNode);
-			this._continueButton.focus();
 			this._continueButton.startup();
 		},
 
@@ -365,7 +361,6 @@ define([
 			this.createLanguagesDropDown();
 			this.createElements();
 			// check if license already requested
-			console.log('### entries: ', entries);
 			if(entries.license_requested === "true"){
 				router.startup('upload');
 			} else {
