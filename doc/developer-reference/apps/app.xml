@@ -508,15 +508,17 @@
 							depending on the app's functionality) working with the app (not
 							simultaniuosly, of course).
 							The following variables can be defined inside this section:
-							<simpara>
-								<literal>CPU</literal>: The number of cores, e.g., 2
-							</simpara>
-							<simpara>
-								<literal>RAM</literal>: The amount of memory and the unit, e.g., 2 GB
-							</simpara>
-							<simpara>
-								<literal>Disk</literal>: The amount of disk space and the unit, e.g., 20 GB
-							</simpara>
+						</simpara>
+						<simpara>
+							<literal>CPU</literal>: The number of cores, e.g., 2
+						</simpara>
+						<simpara>
+							<literal>RAM</literal>: The amount of memory and the unit, e.g., 2 GB
+						</simpara>
+						<simpara>
+							<literal>Disk</literal>: The amount of disk space and the unit, e.g., 20 GB
+						</simpara>
+						<simpara>
 							The numbers should be minimal, enabling a <emphasis>reasonable</emphasis> performance.
 							The following sections are common: <literal>[Sizing: 10]</literal>, <literal>[Sizing: 50]</literal>, <literal>[Sizing: 100]</literal>, <literal>[Sizing: 500]</literal>, <literal>[Sizing: 1000]</literal>, <literal>[Sizing: 5000]</literal>.
 						</simpara>
