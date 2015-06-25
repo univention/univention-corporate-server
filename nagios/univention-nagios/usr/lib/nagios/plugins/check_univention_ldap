@@ -32,7 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 #
 #
-eval "$(/usr/sbin/univention-config-registry shell hostname ldap/base ldap/hostdn slapd/port)"
+eval "$(/usr/sbin/univention-config-registry shell hostname domainname ldap/base ldap/hostdn slapd/port)"
 slapd_port="$(echo "$slapd_port"|LC_ALL=C cut -d, -f1)"
-IP="$(LC_ALL=C host "$hostname"|head -n1|LC_ALL=C cut -d' ' -f4)"
-exec /usr/lib/nagios/plugins/check_ldap -H "$IP" -p "$slapd_port" -b "$ldap_base" -D "$ldap_hostdn" -y '/etc/machine.secret'
+exec /usr/lib/nagios/plugins/check_ldap -H "$hostname.$domainname" -p "$slapd_port" -b "$ldap_base" -D "$ldap_hostdn" -y '/etc/machine.secret'
