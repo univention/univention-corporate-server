@@ -42,6 +42,8 @@ case "$1" in
 #		fi
 		chmod og+w /var/cache/univention-system-activation
 		/etc/init.d/apache2 reload
+		ucr set --force sshd/autostart='no' # forbid ssh
+		invoke-rc.d ssh stop
 		;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)

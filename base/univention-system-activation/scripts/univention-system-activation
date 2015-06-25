@@ -125,6 +125,10 @@ elif [ "$ACTION" = "stop" ]; then
 	# unset previously stored sites
 	ucr unset apache2/system_activation/sites
 
+	# allow ssh again
+	ucr unset --force sshd/autostart
+	invoke-rc.d ssh start
+
 	# restore firewall settings
 	invoke-rc.d univention-firewall restart
 else

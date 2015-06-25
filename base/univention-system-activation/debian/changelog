@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-13) unstable; urgency=low
+
+  * Bug #38547: Use sshd/autostart instead of iptables to forbid ssh
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 25 Jun 2015 14:02:53 +0200
+
 univention-system-activation (0.0.1-12) unstable; urgency=low
 
   * Bug #38547: Added a script to notify vendors, adapted upload transition
