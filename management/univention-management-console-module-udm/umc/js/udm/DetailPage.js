@@ -491,11 +491,13 @@ define([
 			// wait until we have results for all queries
 			return all(commands).then(lang.hitch(this, function(results) {
 				// parse the widget configurations
-				var i;
-				for (i = 0; i < results.length; i += 2) {
+				array.forEach(results, lang.hitch(this, function(props, i, results) {
+					if (i % 2) {
+						return;
+					}
 					var ipolicy = policies[Math.floor(i / 2)];
 					var ipolicyType = ipolicy.objectType;
-					var iproperties = results[i].result;
+					var iproperties = props.result;
 					var ilayout = results[i + 1].result;
 					var newLayout = [];
 
@@ -645,7 +647,7 @@ define([
 						open: false,
 						content: render.layout(newLayout, widgets)
 					}));
-				}
+				}));
 
 				this._policiesTab.standby(false);
 			}));

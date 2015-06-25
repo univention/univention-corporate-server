@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-71) unstable; urgency=medium
+
+  * Bug #36256: fixed scope of policyType variable
+
+ -- Florian Best <best@univention.de>  Thu, 25 Jun 2015 14:55:21 +0200
+
 univention-management-console-module-udm (5.1.25-70) unstable; urgency=medium
 
   * Bug #38544: handle errors when no object type is given via request.options
