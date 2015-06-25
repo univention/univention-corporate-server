@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-nagios
+fix: 8.0.0-5.272.201506251544
+version: [1,2]
+desc: |
+  This update addresses the following issue:
+   * The check_univention_ldap plugin has been modified to 
+     use the FQDN of the ldap server.
+bug: [27043]
