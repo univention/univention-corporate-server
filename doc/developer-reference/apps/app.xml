@@ -497,6 +497,31 @@
 						</simpara>
 					</listitem>
 				</varlistentry>
+				<varlistentry>
+					<term>[Sizing: xx]</term>
+					<listitem>
+						<simpara>
+							(Optional) Sections starting with <literal>Sizing</literal> are not
+							evaluated by the App Center itself but give Cloud Service
+							Providers a hint how to tailor a server for a customer. The
+							number inside the section name means users (or something else
+							depending on the app's functionality) working with the app (not
+							simultaniuosly, of course).
+							The following variables can be defined inside this section:
+							<simpara>
+								<literal>CPU</literal>: The number of cores, e.g., 2
+							</simpara>
+							<simpara>
+								<literal>RAM</literal>: The amount of memory and the unit, e.g., 2 GB
+							</simpara>
+							<simpara>
+								<literal>Disk</literal>: The amount of disk space and the unit, e.g., 20 GB
+							</simpara>
+							The numbers should be minimal, enabling a <emphasis>reasonable</emphasis> performance.
+							The following sections are common: <literal>[Sizing: 10]</literal>, <literal>[Sizing: 50]</literal>, <literal>[Sizing: 100]</literal>, <literal>[Sizing: 500]</literal>, <literal>[Sizing: 1000]</literal>, <literal>[Sizing: 5000]</literal>.
+						</simpara>
+					</listitem>
+				</varlistentry>
 			</variablelist>
 		</para>
 	</section>
