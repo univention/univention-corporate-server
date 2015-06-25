@@ -43,6 +43,7 @@
 			Center are:
 			<itemizedlist>
 				<listitem>
+					<simpara>
 						Formally:
 						<itemizedlist>
 							<listitem><simpara>
@@ -56,6 +57,7 @@
 									provide applications to users
 							</simpara></listitem>
 						</itemizedlist>
+					</simpara>
 				</listitem>
 				<listitem><simpara>
 					Technically: The packaging of the software solution in the Debian
