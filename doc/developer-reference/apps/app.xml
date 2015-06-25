@@ -42,12 +42,21 @@
 			The requirements for providing a software solution in Univention App
 			Center are:
 			<itemizedlist>
-				<listitem><simpara>
-					Formally: The certification of the software solution for UCS and sign
-					the Univention Logoprogram <ulink
-						url="http://wiki.univention.de/index.php?title=Certification_Certified_for_Univention_Corporate_Server">Certified
-						for Univention Corporate Server</ulink>
-				</simpara></listitem>
+				<listitem>
+						Formally:
+						<itemizedlist>
+							<listitem><simpara>
+									The certification of the software solution for UCS and sign the
+									Univention Logoprogram <ulink
+										url="http://wiki.univention.de/index.php?title=Certification_Certified_for_Univention_Corporate_Server">Certified
+										for Univention Corporate Server</ulink>
+							</simpara></listitem>
+							<listitem><simpara>
+									Sign the contract to use "Univention App Center" as platform to
+									provide applications to users
+							</simpara></listitem>
+						</itemizedlist>
+				</listitem>
 				<listitem><simpara>
 					Technically: The packaging of the software solution in the Debian
 					package format (see <xref linkend="app:package" />), provided for the
