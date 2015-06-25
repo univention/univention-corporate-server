@@ -1,3 +1,9 @@
+ucs-test (5.0.148-24) unstable; urgency=low
+
+  * support modrdn in univention.testing.udm (Bug #38767)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 25 Jun 2015 16:55:25 +0200
+
 ucs-test (5.0.148-23) unstable; urgency=low
 
   * Bug #38752: Fix 72_udm-extensions.22_listener_version_change using current

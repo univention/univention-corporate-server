@@ -227,7 +227,11 @@ class UCSTestUDM(object):
 		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
 			if line.startswith('Object modified: '):
 				dn = line.split('Object modified: ', 1)[-1]
-				assert dn in self._cleanup.get(modulename, [])
+				if dn != kwargs.get('dn'):
+					print 'modrdn detected: %r ==> %r' % (kwargs.get('dn'), dn)
+					if kwargs.get('dn') in self._cleanup.get(modulename, []):
+						self._cleanup.setdefault(modulename, []).append(dn)
+						self._cleanup[modulename].remove(kwargs.get('dn'))
 				break
 			elif line.startswith('No modification: '):
 				raise UCSTestUDM_NoModification({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
