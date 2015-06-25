@@ -1,8 +1,9 @@
 ucs-test (5.0.148-24) unstable; urgency=low
 
   * support modrdn in univention.testing.udm (Bug #38767)
+  * add dovecot tests for changing mailPrimaryAddress or username (Bug #38768)
 
- -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 25 Jun 2015 16:55:25 +0200
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 25 Jun 2015 17:24:28 +0200
 
 ucs-test (5.0.148-23) unstable; urgency=low
 

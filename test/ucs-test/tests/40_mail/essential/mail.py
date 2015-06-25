@@ -40,6 +40,7 @@ import socket
 import subprocess
 import sys
 import time
+import uuid
 import univention.testing.strings as uts
 import univention.config_registry
 from email.mime.multipart import MIMEMultipart
@@ -202,7 +203,7 @@ ucr.load()
 
 
 def random_email():
-	return '%s@%s' % (uts.random_name, ucr.get('domainname'))
+	return '%s@%s' % (uts.random_name(), ucr.get('domainname'))
 
 
 def make_token():
@@ -288,7 +289,7 @@ def spam_delivered(token, mail_address):
 			break
 	# dovecot
 	spam_folder = dovecot_spam or '.Spam'
-	mail_dir = os.path.join(get_dovcot_maildir(mail_address), spam_folder)
+	mail_dir = os.path.join(get_dovecot_maildir(mail_address), spam_folder)
 	for _file in get_dir_files(mail_dir, recursive=True):
 		with open(_file) as fi:
 			content = fi.read()
@@ -302,6 +303,16 @@ def spam_delivered(token, mail_address):
 
 @SetMailDeliveryTimeout()
 def mail_delivered(token, user=None, mail_address=None, check_root=True):
+	"""
+	Check if a mail with the specified token or message ID has been delivered to a mail spool.
+	A "token" is a string, that should occur in the mail body. The message ID is looked up in the
+	mail header. The mail spool may be specified via multiple ways:
+	"check_root": (boolean) checks /var/mail/systemmail for the requested token/messageid
+	"user": (string) checks /var/mail/%s for the requested token/messageid
+	"mail_address": (string) checks directly within the cyrus mail spool directory
+                    (/var/spool/cyrus/mail/domain/...) of the specified mail address for
+                    the requested token/messageid
+	"""
 	delivered = False
 	if check_root:
 		_file = ('/var/mail/systemmail')
@@ -320,13 +331,71 @@ def mail_delivered(token, user=None, mail_address=None, check_root=True):
 				delivered = delivered or (token in fi.read())
 				if delivered:
 					break
-		mail_dir = get_dovcot_maildir(mail_address)
+		mail_dir = get_dovecot_maildir(mail_address)
 		for _file in get_dir_files(mail_dir, recursive=True):
 			with open(_file) as fi:
 				delivered = delivered or (token in fi.read())
 				if delivered:
 					break
 	return delivered
+
+
+def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, imap_password=None, imap_folder=None, use_ssl=True):
+	"""
+	Check if a mail with the specified token or message ID has been delivered to a specific mail folder.
+	A "token" is a string, that should occur in the mail body. The message ID is looked up in the
+	mail header.
+	The search is performed via IMAP protocol, so at least server, username and folder have to be specified.
+
+	:param token: string: this string is searched in the body of each mail in folder; please note that this is a slow and simple search and MIME parts are not decoded etc.
+	:param messageid: string: this message id is searched in the mail header of each mail (faster than token search)
+	:param server: string: fqdn or IP address of IMAP server
+	:param imap_user: string: IMAP user
+	:param imap_password: string: password for IMAP user; if not specified, 'univention' is used
+	:param imap_folder: string: IMAP folder that is selected during search (no recursive search!)
+	:param use_ssl: boolean: use SSL encryption for IMAP connection
+	:return: integer: returns the number of matching mails
+	"""
+
+	assert token or messageid, "imap_search_mail: token or messageid have not been specified"
+	server = server or '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+	assert imap_user, "imap_search_mail: imap_user has not been specified"
+	imap_password = imap_password or "univention"
+	imap_folder = imap_folder or ""
+	assert type(imap_folder) == str, "imap_search_mail: imap_folder is no string"
+
+	if use_ssl:
+		conn = imaplib.IMAP4_SSL(host=server)
+	else:
+		conn = imaplib.IMAP4(host=server)
+	assert conn.login(imap_user, imap_password)[0] == 'OK', 'imap_search_mail: login failed'
+	assert conn.select(imap_folder)[0] == 'OK', 'imap_search_mail: select folder %r failed' % (imap_folder,)
+
+	foundcnt = 0
+	if messageid:
+		status, result = conn.search(None, '(HEADER Message-ID "%s")' % (messageid,))
+		assert status == 'OK'
+		result = result[0]
+		if result:
+			result = result.split()
+			print 'Found %d messages matching msg id %r' % (len(result), messageid)
+			foundcnt += len(result)
+
+	if token:
+		status, result = conn.search(None, 'ALL')
+		assert status == 'OK'
+		if result:
+			msgids = result.split()
+			print 'Folder contains %d messages' % (len(msgids),)
+			for msgid in msgids:
+				typ, msg_data = conn.fetch(msgid, '(BODY.PEEK[TEXT])')
+				for response_part in msg_data:
+					if isinstance(response_part, tuple):
+						if token in response_part[1]:
+							print 'Found token %r in msg %r' % (token, msgid)
+							foundcnt += 1
+
+	return foundcnt
 
 
 class UCSTest_Mail_Exception(Exception):
@@ -353,22 +422,22 @@ class UCSTest_Mail_MissingMailbox(UCSTest_Mail_Exception):
 	pass
 
 
-def get_dovcot_maildir(mail_address):
+def get_dovecot_maildir(mail_address):
 	"""
 	Returns directory name for specified mail address.
 
-	>>> get_dovcot_maildir('testuser@example.com')
+	>>> get_dovecot_maildir('testuser@example.com')
 	'/var/spool/dovecot/private/example.com/testuser/Maildir'
 
-	>>> get_dovcot_maildir('someuser@foobar.com')
+	>>> get_dovecot_maildir('someuser@foobar.com')
 	'/var/spool/dovecot/private/foobar.com/someuser/Maildir'
 
-	>>> get_dovcot_maildir('only-localpart')
+	>>> get_dovecot_maildir('only-localpart')
 	Traceback (most recent call last):
 	...
 	UCSTest_Mail_InvalidMailAddress
 
-	>>> get_dovcot_maildir('')
+	>>> get_dovecot_maildir('')
 	Traceback (most recent call last):
 	...
 	UCSTest_Mail_InvalidMailAddress
@@ -379,11 +448,8 @@ def get_dovcot_maildir(mail_address):
 	if '@' not in mail_address:
 		raise UCSTest_Mail_InvalidMailAddress()
 
-	# FIXME cyrus uses a special UTF-7 encoding for umlauts for example - this encoding is currently missing
-	mail_address, domain = mail_address.rsplit('@', 1)
-	if '.' in mail_address:
-		mail_address = mail_address.replace('.', '^')
-	return '/var/spool/dovecot/private/%s/%s/Maildir' % (domain, mail_address.lower())
+	localpart, domain = mail_address.rsplit('@', 1)
+	return '/var/spool/dovecot/private/%s/%s/Maildir' % (domain, localpart.lower())
 
 def get_cyrus_maildir(mail_address):
 	"""
@@ -448,10 +514,13 @@ def wait_for_mailboxes(mailboxes, timeout=90):
 		raise UCSTest_Mail_MissingMailbox(mailboxes, missing_mailboxes)
 	print
 
+def create_random_msgid():
+	""" returns a random and unique message ID """
+	return '%s.%s' % (uuid.uuid1(), random_email())
 
 def send_mail(recipients=None, sender=None, subject=None, msg=None, idstring='no id string',
 	       gtube=False, virus=False, attachments=[], server=None, port=25, tls=False, username=None, password=None,
-	       debuglevel=1):
+	       debuglevel=1, messageid=None):
 	"""
 	Send a mail to mailserver.
 	Arguments:
@@ -470,6 +539,7 @@ def send_mail(recipients=None, sender=None, subject=None, msg=None, idstring='no
 	username:   [optional] authenticate against mailserver if username and password are set
 	password:	[optional] authenticate against mailserver if username and password are set
 	debuglevel: [optional] SMTP client debug level (default: 1)
+    messageid:  [optional] message id (defaults to a random value)
 	"""
 
 	# default values
@@ -526,6 +596,7 @@ Regards,
 	mimemsg['Date'] = time.strftime("%a, %d %b %Y %H:%M:%S +0000")
 	mimemsg['Subject'] = m_subject
 	mimemsg['UCS-TEST'] = idstring
+	mimemsg['Message-Id'] = messageid or create_random_msgid()
 
 	mimemsg.attach(MIMEText(m_msg))
 
