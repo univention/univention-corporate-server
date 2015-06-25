@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.99-10) unstable; urgency=medium
+
+  * Bug #38743: code cleanup
+
+ -- Florian Best <best@univention.de>  Thu, 25 Jun 2015 16:36:57 +0200
+
 univention-management-console-module-udm (4.0.99-9) unstable; urgency=medium
 
   * Bug #38743: fixup (loop variables change)

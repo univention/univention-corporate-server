@@ -35,14 +35,14 @@ Type=str
 Categories=management-umc
 
 [directory/manager/web/widget/.*/default]
-Description[de]=Definiert den Standardwert für die Widget-Definition.
-Description[en]=Defines the default value fot the widget definition.
+Description[de]=Definiert den Standardsuchwert für die Widget-Definition (z.B.: *).
+Description[en]=Defines the default search value for the widget definition (e.g.: *).
 Type=str
 Categories=management-umc
 
 [directory/manager/web/widget/.*/subclasses]
 Description[de]=Definiert, ob dieses Widget auch für Subklassen der definierten Syntax-Klassen angewendet wird.
-Description[en]=Defines whether this widget is also applied on subclasses of the defiend syntax class.
+Description[en]=Defines whether this widget is also applied on subclasses of the defined syntax class.
 Type=bool
 Categories=management-umc
 

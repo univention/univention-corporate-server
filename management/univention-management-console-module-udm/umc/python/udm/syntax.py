@@ -85,7 +85,7 @@ class _UCRWidget(Widget):
 		self._syntax_classes_names = syntax_classes
 
 	def widget_func(self, syntax_, property_):
-		return self.props.get('%s/property/%s' % (syntax_.name, property_['id']), self.widget)
+		return self.props.get('property/%s/%s' % (syntax_.name, property_['id']), self.widget)
 
 	def __contains__(self, syntax):
 		# in case a syntax-reload has been done we need to reuse the newly ones
@@ -114,14 +114,11 @@ class _UCRWidget(Widget):
 				MODULE.warn('Ignoring syntax-widget overwrite: %s (does not define widget)' % (name,))
 				continue
 
-			default = props.get('default')
-			subclasses = ucr.is_true(None, props.get('subclasses', 'false'), False)
+			default = props.get('default', '')
+			subclasses = ucr.is_true(None, props.get('subclasses', 'false').lower(), False)
 			syntax_classes = []
 			for syntax in props.get('syntax', '').split(','):
 				if not syntax:
-					continue
-				if not hasattr(udm_syntax, syntax):
-					MODULE.warn('Ignoring unknown syntax class: %s' % (syntax,))
 					continue
 				syntax_classes.append(syntax)
 
