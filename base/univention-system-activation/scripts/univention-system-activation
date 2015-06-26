@@ -52,13 +52,6 @@ if [ "$ACTION" = "start" -a -n "$apache2_system_activation_sites" ]; then
 	echo
 	exit 1
 elif [ "$ACTION" = "start" ]; then
-	# get / update app info
-	. /usr/lib/univention-system-setup/scripts/setup_utils.sh
-	eval "$(univention-config-registry shell)"
-	email="  ,\"email\": \"$(get_profile_var email_address)\""
-	cp /usr/share/univention-system-activation/www/entries{.json,.orig}
-	sed "s/}/$email\n}/" < /usr/share/univention-system-activation/www/entries.orig > /usr/share/univention-system-activation/www/entries.json
-
 	# save currently active apache sites in UCR variable for later re-activation
 	active_sites=($(find /etc/apache2/sites-enabled/ -not -type d | sed 's|^.*/||'))
 	ucr set apache2/system_activation/sites="${active_sites[*]}"

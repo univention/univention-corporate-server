@@ -1,10 +1,23 @@
 @!@
 import json
+import re
 
+# prepare dict with all necessary values
 data = dict(
 	license_uuid=configRegistry['uuid/license'],
 	license_requested=configRegistry['ucs/web/license/requested'],
+	role=configRegistry['server/role'],
+	appcenter_server=configRegistry.get('repository/app_center/server', 'appcenter.software-univention.de'),
 )
+
+# read given email address from system setup profile file
+reg_exp_email_line = re.compile(r'^email="(?P<email>[^"]*)"\s*$')
+with open('/var/cache/univention-system-setup/profile') as profile_file:
+	for line in profile_file:
+		m = reg_exp_email_line.match(line)
+		if m:
+			data['email'] = m.group('email')
+			break
 
 print json.dumps(data, indent=2)
 @!@
