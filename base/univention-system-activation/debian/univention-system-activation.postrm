@@ -36,4 +36,7 @@
 #then
 #fi
 
+ucr unset --force sshd/autostart 2> /dev/null
+invoke-rc.d ssh start
+
 exit 0

@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-16) unstable; urgency=low
+
+  * Bug #38547: Make sure ssh will be enabled on deinstallation
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 26 Jun 2015 09:34:38 +0200
+
 univention-system-activation (0.0.1-15) unstable; urgency=low
 
   * Bug #38547: Disable and enable upload button
