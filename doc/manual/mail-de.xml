@@ -812,8 +812,10 @@ postmap /etc/postfix/smtp_auth
 		Wird die &ucsUCRV; <envar>mail/archivefolder</envar> auf eine E-Mail-Adresse
 		gesetzt, sendet Postfix eine Blindkopie aller ein- und ausgehenden E-Mails an
 		diese Adresse. So kann eine Archivierung aller E-Mails erreicht
-		werden. Standardmäßig ist die Variable nicht gesetzt. Falls noch kein Postfach
-		für diese Adresse existiert, wird es automatisch angelegt.
+		werden. Die E-Mail-Adresse muss bereits existieren. Sie kann entweder
+		eine in &ucsUCS; registrierte E-Mail-Adresse eines Benutzers sein,
+		oder von einem externen Dienst bereitgestellt werden. Standardmäßig
+		ist die Variable nicht gesetzt.
 	  </para>
 
 	  <para>

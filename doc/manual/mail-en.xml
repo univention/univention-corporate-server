@@ -776,9 +776,10 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		If the &ucsUCRV; <envar>mail/archivefolder</envar> is set to an e-mail address,
 		Postfix sends a blind carbon copy of all incoming and outgoing e-mails to
-		this address. This results in an archiving of all e-mails. As standard
-		the variable is not set. If there is no mailbox for this address, one
-		will be created automatically.
+		this address. This results in an archiving of all e-mails. The e-mail
+		address must already exist. It can be either one already registered in
+		&ucsUCS; as the e-mail address of a user, or an e-mail account with
+		an external e-mail service. As standard the variable is not set.
 	  </para>
 	  <para>
 		Postfix must then be restarted.
