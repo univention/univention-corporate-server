@@ -1,3 +1,9 @@
+univention-python (8.0.3-9) unstable; urgency=low
+
+  * Bug #38712: Fix policy inheritance
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 26 Jun 2015 08:09:38 +0200
+
 univention-python (8.0.3-8) unstable; urgency=low
 
   * Bug #38712: Fix python2.7 set() syntax

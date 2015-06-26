@@ -379,8 +379,9 @@ class access:
 				dn = self.parentDn(dn)
 				if not dn:
 					break
-				parent = self.get(dn, ['univentionPolicyReference'])
-				if not parent:
+				try:
+					parent = self.get(dn, attr=['univentionPolicyReference'], required=True)
+				except ldap.NO_SUCH_OBJECT:
 					break
 				policies = parent.get('univentionPolicyReference', [])
 
