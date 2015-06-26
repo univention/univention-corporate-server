@@ -33,6 +33,7 @@ define([
 	"dojo/_base/kernel",
 	"dojo/_base/array",
 	"dojo/request/xhr",
+	"dojo/request/script",
 	"dojo/io-query",
 	"dojo/query",
 	"dojo/keys",
@@ -45,6 +46,7 @@ define([
 	"dojo/on",
 	"dojo/router",
 	"dojo/hash",
+	"dojo/Deferred",
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/form/Button",
@@ -57,7 +59,7 @@ define([
 	"./text!/entries.json",
 	"./text!/license",
 	"./i18n!"
-], function(lang, kernel, array, xhr, ioQuery, query, keys, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Menu, MenuItem, Button, DropDownButton, DropDownMenu, Uploader, put, TextBox, _availableLocales, entries, license, _) {
+], function(lang, kernel, array, xhr, script, ioQuery, query, keys, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Deferred, Menu, MenuItem, Button, DropDownButton, DropDownMenu, Uploader, put, TextBox, _availableLocales, entries, license, _) {
 	// strip starting/ending '"' and replace newlines
 	license = license.substr(1, license.length - 2).replace(/\\n/g, '\n');
 
@@ -265,6 +267,32 @@ define([
 			}));
 		},
 
+		_sendNotification: function(uuid, apps) {
+			var data = {
+				uuid: uuid,
+				action: 'install',
+				'status': 200,
+				'role': entries.role
+			};
+			var url = entries.appcenter_server + '/postinst';
+			if (url.indexOf('://') < 0) {
+				// no scheme given
+				url = 'https://' + url;
+			}
+
+			// send a notification for each app
+			array.forEach(apps, function(app) {
+				// data to be sent via the query string
+				var idata = lang.mixin({
+					app: app[0],
+					version: app[1]
+				}, data);
+
+				// post cross domain query via dynamic script tag
+				script(url, { query: idata });
+			});
+		},
+
 		_showError: function(error_msg){
 			var currentTabNode = query(".tab:not(.hide-tab)")[0];
 			var errorNode = dom.byId('error');
@@ -301,21 +329,16 @@ define([
 				var loadingNode = dom.byId('finished-loading-bar');
 				put(loadingNode, '.focused');
 			}));
-			this._uploader.on('complete', lang.hitch(this, function(evt) {
+			this._uploader.on('complete', lang.hitch(this, function(response) {
 				this._uploader.setAttribute('disabled', false);
-				if(evt.toLowerCase().indexOf('successful') > -1){
-					router.go('finished');
-				} else {
-					var loadingNode = dom.byId('finished-loading-bar');
-					put(loadingNode, '!focused');
-					this._showError(evt);
-				}
+				this._sendNotification(response.uuid, response.apps);
+				router.go('finished');
 			}));
-			this._uploader.on('error', lang.hitch(this, function(evt){ 
+			this._uploader.on('error', lang.hitch(this, function(err) {
 				var loadingNode = dom.byId('finished-loading-bar');
 				put(loadingNode, '!focused');
 				this._uploader.setAttribute('disabled', false);
-				this._showError(evt);
+				this._showError(err);
 			}));
 			return this._uploader.domNode;
 		},

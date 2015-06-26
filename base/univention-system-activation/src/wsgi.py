@@ -3,8 +3,32 @@
 import cgi
 import subprocess
 import json
+import re
+from univention.config_registry import ConfigRegistry
+
+ucr = ConfigRegistry()
+ucr.load()
 
 LICENSE_UPLOAD_PATH = '/var/cache/univention-system-activation/license.ldif'
+
+reg_exp_app_key = re.compile(r'^appliance/apps/(?P<id>[^/]*)/(?P<key>.*)$')
+def get_installed_apps():
+	notify_apps = set()
+	apps = []
+	for key, value in ucr.items():
+		m = reg_exp_app_key.match(key)
+		if m:
+			ucr_key = m.group('key')
+			app_id = m.group('id')
+			if ucr_key == 'notifyVendor' and ucr.is_true(key):
+				notify_apps.add(app_id)
+			elif ucr_key == 'version':
+				apps.append([app_id, value])
+
+	# only return apps that will notify the vendor
+	apps = [iapp for iapp in apps if iapp[0] in notify_apps]
+	return apps
+
 
 def application(environ, start_response):
 	"""WSGI entry point"""
@@ -68,7 +92,12 @@ def application(environ, start_response):
 		_log('Error stopping the system activation service:\n%s\n%s' % (exc.output, exc))
 		return _finish('500 Internal Server Error', str(exc.output))
 
-	return _finish('200 OK', 'Successfully imported the license data')
+	ucr.load()
+	apps = get_installed_apps()
+	return _finish('200 OK', {
+		'uuid': ucr.get('uuid/license', ''),
+		'apps': apps,
+	})
 
 
 if __name__ == '__main__':

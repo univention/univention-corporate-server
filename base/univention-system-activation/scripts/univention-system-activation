@@ -99,9 +99,6 @@ elif [ "$ACTION" = "stop" ]; then
 				auth/other/user/root?yes \
 				auth/sshd/user/root?yes
 
-	# notify vendor
-	/usr/share/univention-system-activation/notify_vendor.py
-	
 else
 	echo
 	echo "ERROR: Unknown action given"

@@ -1,5 +1,4 @@
 scripts/univention-system-activation	usr/sbin
-scripts/notify_vendor.py	usr/share/univention-system-activation
 src/*     usr/share/pyshared/univention/system_activation
 www	usr/share/univention-system-activation
 conffiles/etc/sudoers.d/univention-system-activation	etc/sudoers.d
