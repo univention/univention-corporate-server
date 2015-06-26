@@ -1,3 +1,9 @@
+ucs-test (5.0.148-25) unstable; urgency=low
+
+  * Bug #38663: LDAP policy inheritance
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 26 Jun 2015 08:27:35 +0200
+
 ucs-test (5.0.148-24) unstable; urgency=low
 
   * support modrdn in univention.testing.udm (Bug #38767)

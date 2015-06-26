@@ -18,7 +18,7 @@ setup () {
 	udm policies/dhcp_routing create \
 		--position "cn=$name,$BASE" \
 		--set name="p1" \
-		--set routers="${NET%.0}.1"
+		--set routers="$router"
 	udm dhcp/service modify \
 		--dn "cn=$name,$BASE" \
 		--policy-reference "cn=p1,cn=$name,$BASE"
