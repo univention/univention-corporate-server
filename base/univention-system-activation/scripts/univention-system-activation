@@ -93,6 +93,19 @@ elif [ "$ACTION" = "stop" ]; then
 					auth/other/user/root \
 					auth/sshd/user/root
 
+	# reset su restrictions
+	ucr unset --force auth/su/restrict \
+					auth/su/user/root
+
+	# set to the default values, these values are not set
+	# during the pam installation, because they were set
+	# in the force layer
+	ucr set auth/gdm/user/root?yes \
+				auth/kdm/user/root?yes \
+				auth/login/user/root?yes \
+				auth/other/user/root?yes \
+				auth/sshd/user/root?yes
+
 	# notify vendor
 	/usr/share/univention-system-activation/notify_vendor.py
 	

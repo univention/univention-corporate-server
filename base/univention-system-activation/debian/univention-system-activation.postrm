@@ -39,4 +39,8 @@ ucr unset --force auth/gdm/user/root \
 				auth/other/user/root \
 				auth/sshd/user/root
 
+# reset su restrictions
+ucr unset --force auth/su/restrict \
+				auth/su/user/root
+
 exit 0

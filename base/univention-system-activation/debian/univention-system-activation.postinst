@@ -37,12 +37,19 @@ case "$1" in
 		chmod og+w /var/cache/univention-system-activation
 		/etc/init.d/apache2 reload
 
-		# disallow root login
-		ucr set --force auth/gdm/user/root=no \
-						auth/kdm/user/root=no \
-						auth/login/user/root=no \
-						auth/other/user/root=no \
-						auth/sshd/user/root=no
+		# Don't change it on a configured system
+		if [ ! -e /var/univention-join/joined ]; then
+			# disallow root login
+			ucr set --force auth/gdm/user/root=no \
+							auth/kdm/user/root=no \
+							auth/login/user/root=no \
+							auth/other/user/root=no \
+							auth/sshd/user/root=no
+
+			# disallow su
+			ucr set --force auth/su/restrict=yes \
+							auth/su/user/root=no
+		fi
 		;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)
