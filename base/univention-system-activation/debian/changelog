@@ -1,3 +1,14 @@
+univention-system-activation (0.0.1-21) unstable; urgency=medium
+
+  Bug #38547:
+  * Move given email address into entries.json
+  * Some JS fine tuning
+  * Send notification request to appcenter server via JavaScript
+  * Added and fixed integration of translations
+  * Fix redirection to UMC
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 26 Jun 2015 23:40:12 +0200
+
 univention-system-activation (0.0.1-20) unstable; urgency=medium
 
   * Also restrict su (Bug #38547)
