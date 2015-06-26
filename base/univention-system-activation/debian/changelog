@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-15) unstable; urgency=low
+
+  * Bug #38547: Disable and enable upload button
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 26 Jun 2015 09:01:51 +0200
+
 univention-system-activation (0.0.1-14) unstable; urgency=low
 
   * Bug #38547: Adapted postinst

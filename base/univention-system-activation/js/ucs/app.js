@@ -296,18 +296,25 @@ define([
 				}
 			});
 			put(this._uploader.domNode, '.umcButton[display=inline-block]');
-			this._uploader.on('progress', lang.hitch(this, function(evt) {
+			this._uploader.on('begin', lang.hitch(this, function(evt) {
+				this._uploader.setAttribute('disabled', true);
 				var loadingNode = dom.byId('finished-loading-bar');
 				put(loadingNode, '.focused');
 			}));
 			this._uploader.on('complete', lang.hitch(this, function(evt) {
+				this._uploader.setAttribute('disabled', false);
 				if(evt.toLowerCase().indexOf('successful') > -1){
 					router.go('finished');
 				} else {
+					var loadingNode = dom.byId('finished-loading-bar');
+					put(loadingNode, '!focused');
 					this._showError(evt);
 				}
 			}));
 			this._uploader.on('error', lang.hitch(this, function(evt){ 
+				var loadingNode = dom.byId('finished-loading-bar');
+				put(loadingNode, '!focused');
+				this._uploader.setAttribute('disabled', false);
 				this._showError(evt);
 			}));
 			return this._uploader.domNode;
@@ -320,9 +327,9 @@ define([
 			var uploaderNode = this._createUploader();
 			put(tabNode, 'p > b', _('You have got mail!'));
 			var textNode = put(tabNode, 'p');
-			textNode.innerHTML = _('A license file should have been sent to <strong id="email-address">')
-				+ email_address
-				+ _('</strong>. Upload the license file from the email to activate your UCS instance.');
+			textNode.innerHTML = _('A license file should have been sent to <strong id="email-address">') +
+				email_address +
+				_('</strong>. Upload the license file from the email to activate your UCS instance.');
 			var backNode = put(tabNode, 'p');
 			backNode.innerHTML = _('Note: If you did not received an email, please also check your spam directory or <a href="/#register">request a new one.</a>');
 			put(tabNode, '>', uploaderNode);
