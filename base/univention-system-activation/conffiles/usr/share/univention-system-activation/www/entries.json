@@ -8,6 +8,7 @@ data = dict(
 	license_requested=configRegistry['ucs/web/license/requested'],
 	role=configRegistry['server/role'],
 	appcenter_server=configRegistry.get('repository/app_center/server', 'appcenter.software-univention.de'),
+	appliance_name=configRegistry.get('umc/web/appliance/name', ''),
 )
 
 # read given email address from system setup profile file

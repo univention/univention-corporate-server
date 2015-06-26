@@ -58,7 +58,7 @@ define([
 	"./text!/languages.json",
 	"./text!/entries.json",
 	"./text!/license",
-	"./i18n!"
+	"./i18n!."
 ], function(lang, kernel, array, xhr, script, ioQuery, query, keys, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Deferred, Menu, MenuItem, Button, DropDownButton, DropDownMenu, Uploader, put, TextBox, _availableLocales, entries, license, _) {
 	// strip starting/ending '"' and replace newlines
 	license = license.substr(1, license.length - 2).replace(/\\n/g, '\n');
@@ -203,7 +203,7 @@ define([
 			this._createNavButton('register');
 			var contentNode = dom.byId('content');
 			var tabNode = put(contentNode, 'div.tab#register-tab.hide-tab');
-			put(tabNode, 'p > b', _('Request a license!'));
+			put(tabNode, 'p > b', _('License request.'));
 			put(tabNode, 'p', _('Please enter a valid e-mail address in order to activate the UCS system. The activation is required to use the App Center. In the next step you can upload the license file that has been sent to your email address.'));
 
 			// create input field for email address
@@ -226,7 +226,7 @@ define([
 
 			// create input field for email address
 			this._sendEmailButton = new Button({
-				label: _('Send activation'),
+				label: _('Request activation'),
 				onClick: lang.hitch(this, function() {
 					this._sendEmail();
 				})
@@ -300,8 +300,8 @@ define([
 				errorNode = put('div[id=error]');
 				put(currentTabNode, 'div', errorNode);
 			}
-			errorNode.innerHTML = error_msg + 
-				'<br>Need help? Send a email to: <strong><a href="mailto:feedback@univention.de" style="color:#000">feedback@univention.de</a></strong>';
+			errorNode.innerHTML = error_msg + '<br/>' +
+				_('If you encounter problems during the activation, please send an email to: <strong><a href="mailto:feedback@univention.de" style="color:#000">feedback@univention.de</a></strong>');
 		},
 
 		_removeError: function(){
@@ -350,10 +350,10 @@ define([
 			var uploaderNode = this._createUploader();
 			put(tabNode, 'p > b', _('You have got mail!'));
 			var textNode = put(tabNode, 'p', {
-				innerHTML: _('A license file should have been sent to <strong id="email-address">{0}</strong>. Upload the license file from the email to activate your UCS instance.', [email_address])
+				innerHTML: _('A license file has been sent to <strong id="email-address">{0}</strong>. Upload the license file from the email to activate your UCS instance.', [email_address])
 			});
 			var backNode = put(tabNode, 'p', {
-				innerHTML: _('Note: If you did not received an email, please also check your spam directory or <a href="#register">request a new one.</a>')
+				innerHTML: _('Note: If you did not received an email, please also check your spam directory or <a href="#register">try it again</a>.')
 			});
 			put(tabNode, '>', uploaderNode);
 			this._uploader.startup();
@@ -365,12 +365,12 @@ define([
 			var tabNode = put(contentNode, 'div.tab#finished-tab.hide-tab');
 			this._continueButton = new Button({
 				label: _('Continue'),
-				onClick: lang.hitch(this, function(){ 
+				onClick: lang.hitch(this, function() {
 					this._continue();
 				})
 			});
 			put(tabNode, 'p > b', _('Activation successful!'));
-			put(tabNode, 'p', _('The App Appliance is now activated. Click continue to visit the Univention Management Console (UMC).'));
+			put(tabNode, 'p', _('The App Appliance is now activated. Click continue to access the management interface.'));
 			put(tabNode, '>', this._continueButton.domNode);
 			this._continueButton.startup();
 		},

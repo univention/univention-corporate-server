@@ -57,7 +57,7 @@ build-dev: l10n $(buildCssDir) $(buildBootstrap) i18n $(buildDir)/css/fonts
 	unzip -o -j clearsans-1.00.zip "*.woff" -d $@
 
 i18n:
-	/usr/bin/dh-umc-translate -p univention-system-activation -l de -o js/ucs
+	/usr/bin/dh-umc-translate -p univention-system-activation -l de -o js/ucs js/ucs/*js
 
 l10n: js/ucs/de.json
 

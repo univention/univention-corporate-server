@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-27 16:10+0100\n"
+"POT-Creation-Date: 2015-06-26 23:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,93 +12,125 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: startsite.js:88
+#: js/ucs/app.js:353
 msgid ""
-"Additional services may be installed in the category <a href='#admin'>Administration</a> via Univention Management Console."
+"A license file has been sent to <strong id=\"email-address\">{0}</strong>. "
+"Upload the license file from the email to activate your UCS instance."
 msgstr ""
-"Zusätzliche Dienste können in der Rubrik <a href='#admin'>Administration</"
-"a> über Univention Management Console installiert werden."
+"Eine Lizenzdatei wurde an <strong id=\"email-address\">{0}</strong> gesendet. "
+"Laden Sie die Lizenzdatei hoch, um Ihre UCS-Instanz zu aktivieren."
 
-#: startsite.js:86
-msgid "Administration"
-msgstr "Administration"
+#: js/ucs/app.js:190
+msgid "Activation of Univention Corporate Server"
+msgstr "Aktivierung von Univention Corporate Server"
 
-#: startsite.js:93
-msgid "App Catalogue"
-msgstr "App Katalog"
+#: js/ucs/app.js:372
+msgid "Activation successful!"
+msgstr "Aktivierung erfolgreich!"
 
-#: startsite.js:94
-msgid "Further Products"
-msgstr "Ergänzende Produkte"
+#: js/ucs/app.js:263
+msgid "An unknown error occured. Please try it again later!"
+msgstr ""
+"Ein unbekannter Fehler trat auf. Bitte versuchen sie es später noch einmal!"
 
-#: startsite.js:85
-msgid "Installed web services"
-msgstr "Installierte Web-Dienste"
+#: js/ucs/app.js:367
+msgid "Continue"
+msgstr "Weiter"
 
-#: startsite.js:319
+#: js/ucs/app.js:224
+msgid ""
+"Details about the activation of a UCS license can be found in the <a href="
+"\"http://docs.univention.de/manual.html#central:license\" target=\"_blank"
+"\">UCS manual</a>."
+msgstr ""
+"Weitere Informationen zu der Aktivierung einer UCS-Lizenz können im <a href="
+"\"http://docs.univention.de/handbuch.html#central:license\" target=\"_blank"
+"\">UCS-Handbuch</a> gefunden werden."
+
+#: js/ucs/app.js:211
+msgid "E-mail address"
+msgstr "E-Mail-Adresse"
+
+#: js/ucs/app.js:265
+msgid "Error "
+msgstr "Fehler "
+
+#: js/ucs/i18n.js:84
+#, python-format
+msgid "Hello %(last)s, %(first)s!"
+msgstr ""
+
+#: js/ucs/i18n.js:83
+#, python-format
+msgid "Hello %s %s!"
+msgstr ""
+
+#: js/ucs/app.js:304
+msgid ""
+"If you encounter problems during the activation, please send an email to: "
+"<strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
+"#000\">feedback@univention.de</a></strong>"
+msgstr ""
+"Sollten Probleme bei der Aktivierung auftreten, senden Sie bitte eine E-Mail "
+"an: <strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
+"#000\">feedback@univention.de</a></strong>"
+
+#: js/ucs/app.js:180
 msgid "Language"
-msgstr "Sprache"
+msgstr "Language"
 
-#: startsite.js:92
-msgid "Manual for Univention Corporate Server"
-msgstr "Handbuch zu Univention Corporate Server"
+#: js/ucs/app.js:206
+msgid "License request."
+msgstr "Anforderung einer Lizenz."
 
-#: startsite.js:87
-msgid "There are currently no user web services installed."
-msgstr "Es sind derzeit keine Web-Dienste für Benutzer installiert."
+#: js/ucs/app.js:213
+msgid "No valid e-mail address."
+msgstr "Keine gültige E-Mail-Adresse"
 
-#: startsite.js:82
-msgid "UCS - {hostname}.{domainname}"
-msgstr "UCS - {hostname}.{domainname}"
+#: js/ucs/app.js:356
+msgid ""
+"Note: If you did not received an email, please also check your spam "
+"directory or <a href=\"#register\">try it again</a>."
+msgstr ""
+"Sollten Sie keine E-Mail erhalten haben, prüfen Sie Ihr SPAM-Verzeichnis "
+"oder <a href=\"#register\">probieren Sie es noch einmal</a>."
 
-#: startsite.js:90
-msgid "Univention Forum"
-msgstr "Univention Forum"
+#: js/ucs/app.js:207
+msgid ""
+"Please enter a valid e-mail address in order to activate the UCS system. The "
+"activation is required to use the App Center. In the next step you can "
+"upload the license file that has been sent to your email address."
+msgstr ""
+"Bitte geben Sie eine gültige E-Mail-Adresse ein, um das UCS-System zu "
+"aktivieren. Die Aktivierung wird benötigt für die Nutzung des App Centers. "
+"Im nächsten Schritt können sie die Lizenzdatei hochladen, die dann an Ihre E-"
+"Mail-Adresse gesendet wurde."
 
-#: startsite.js:91
-msgid "Univention Support Database"
-msgstr "Univention Support Datenbank"
+#: js/ucs/app.js:229
+msgid "Request activation"
+msgstr "Aktivierung anfordern"
 
-#: startsite.js:95
-msgid "Univention Website"
-msgstr "Univention Webseite"
+#: js/ucs/app.js:373
+msgid ""
+"The App Appliance is now activated. Click continue to access the management "
+"interface."
+msgstr ""
+"Die App-Appliance ist nun aktiviert. Klicken sie auf \"Weiter\", um auf die "
+"Verwaltungsoberfläche zuzugreifen."
 
-#: startsite.js:89
-msgid "Univention Wiki"
-msgstr "Univention Wiki"
+#: js/ucs/i18n.js:82
+#, python-format
+msgid "The total cost was %.2f EUR!"
+msgstr ""
 
-#: startsite.js:83
-msgid "Welcome to Univention Corporate Server"
-msgstr "Willkommen auf Univention Corporate Server"
+#: js/ucs/i18n.js:81
+msgid "Translate me!"
+msgstr ""
 
-#: startsite.js:99
-msgid "http://docs.univention.de/en.html"
-msgstr "http://docs.univention.de/de.html"
+#: js/ucs/app.js:319
+msgid "Upload license file"
+msgstr "Lizenzdatei hochladen"
 
-#: startsite.js:97
-msgid "http://forum.univention.de/"
-msgstr "http://forum.univention.de/"
-
-#: startsite.js:98
-msgid "http://sdb.univention.de/"
-msgstr "http://sdb.univention.de/"
-
-#: startsite.js:96
-msgid "http://wiki.univention.de/index.php?title=Hauptseite"
-msgstr "http://wiki.univention.de/index.php?title=Main_Page"
-
-#: startsite.js:100
-msgid "https://www.univention.com/products/univention-app-center/"
-msgstr "https://www.univention.de/produkte/univention-app-center/"
-
-#: startsite.js:102
-msgid "https://www.univention.com/"
-msgstr "https://www.univention.de/"
-
-#: startsite.js:101
-msgid "https://www.univention.com/products/"
-msgstr "https://www.univention.de/produkte/"
-
-#: startsite.js:84
-msgid "{hostname}.{domainname}"
-msgstr "{hostname}.{domainname}"
+#: js/ucs/app.js:351
+msgid "You have got mail!"
+msgstr "Sie haben neue E-Mails!"
