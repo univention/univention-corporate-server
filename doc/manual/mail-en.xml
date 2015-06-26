@@ -36,15 +36,22 @@
     </para>
 
     <para>
-	  The IMAP service Cyrus is also installed on the system along with the mail
+	  The IMAP service Dovecot is also installed on the system along with the mail
 	  server component. It provides e-mail accounts for the domain users and
 	  offers corresponding interfaces for access via e-mail clients.
-	  Cyrus is preconfigured for the fetching of e-mails via <systemitem class="protocol">IMAP</systemitem> and <systemitem class="protocol">POP3</systemitem>.
+	  Dovecot is preconfigured for the fetching of e-mails via <systemitem class="protocol">IMAP</systemitem> and <systemitem class="protocol">POP3</systemitem>.
 	  Access via POP3 can be deactivated by setting the &ucsUCRV;
-	  <envar>mail/cyrus/pop</envar> to <literal>no</literal>. The same
-	  applies to IMAP and the &ucsUCRV; <envar>mail/cyrus/imap</envar>.
+	  <envar>mail/dovecot/pop3</envar> to <literal>no</literal>. The same
+	  applies to IMAP and the &ucsUCRV; <envar>mail/dovecot/imap</envar>.
 	  The further configuration of the mail server is performed via &ucsUCR;,
 	  as well (see <xref linkend="mail::serverconfig::general"/>).
+
+		<note>
+			Since &ucsUCS; version 4.0-3 Dovecot is used as the default IMAP and
+			POP3 server. However, Cyrus is still available for this service.
+			More Information can be found in the Cyrus mail server documentation
+			<biblioref linkend="ext-doc-cyrus"/>.
+		</note>
 	</para>
 
     <para>
@@ -63,7 +70,7 @@
 
     <para>
 	  Optionally, e-mails received via Postfix can be checked for spam content
-	  and viruses before further processing by Cyrus.
+	  and viruses before further processing by Dovecot.
 	  Spam e-mails are detected by the classification software SpamAssassin
 	  (<xref linkend="mail::spam"/>); ClamAV is used for the detection of
 	  viruses and other malware (<xref linkend="mail::viren"/>).
@@ -101,9 +108,9 @@
 	</para>
 
 	<para>
-	  The runtime data of the Cyrus server are stored in the
-	  <filename class="directory">/var/spool/cyrus/</filename> directory. This directory
-	  should not be operated on a NFS share.
+	  The runtime data of the Dovecot server are stored in the
+	  <filename class="directory">/var/spool/dovecot/</filename> directory. If this directory
+	  is on a NFS share, please read <xref linkend="mail::serverconfig::nfs"/>.
 	</para>
 
 	<para>
@@ -163,7 +170,7 @@
 		  <listitem>
 			<para>
 			  The <emphasis>primary e-mail address</emphasis> is used for authentication on Postfix
-			  and Cyrus. Primary e-mail addresses must always be unique. Only one primary e-mail
+			  and Dovecot. Primary e-mail addresses must always be unique. Only one primary e-mail
 			  address can be configured for every user. It also defines the user's IMAP mailbox. 
 			  If a mail home server is assigned to a user (see <xref linkend="mail::homeserver"/>),
 			  the IMAP inbox is automatically created by a Univention directory listener module.
@@ -179,7 +186,8 @@
 			  have the same e-mail address, they both receive all the e-mails which
 			  are sent to this address. The domain part of the
 			  e-mail address must be registered in &ucsUMC; (see
-			  <xref linkend="mail::management::domains"/>).
+			  <xref linkend="mail::management::domains"/>). To receive e-mails to alternative e-mail addresses,
+				a user must have a primary e-mail address.
 			</para>
 		  </listitem>
 		</itemizedlist>
@@ -195,11 +203,14 @@
 		<para>
 		Once the user account is properly configured authentication to the mail stack 
 		is possible (<systemitem class="service">IMAP</systemitem>/<systemitem class="service">POP3</systemitem>/<systemitem class="service">SMTP</systemitem>). Please keep in mind that after disabling the account
-		or changing the password the login to the mail stack is still possible for 30min
-		due to authentication cache of the mail stack.
-		To invalidate the authentication cache restart the <systemitem class="service">saslauthd</systemitem>
-		service on the mail server. The expiration time of the authentication cache can be 
-		configured with the &ucsUCRV; <envar>mail/saslauthd/cache/timeout</envar> on
+		or changing the password the login to the mail stack is still possible for 5min
+		due to the authentication cache of the mail stack.
+		To invalidate the authentication cache run
+		<programlisting language="sh">
+doveadm auth cache flush
+		</programlisting>
+		on the mail server. The expiration time of the authentication cache can be
+		configured with the &ucsUCRV; <envar>TODO TODO</envar> on
 		the mail server.
 		</para>
 	  </note>
@@ -251,14 +262,14 @@
 	  <para>
 		There is the possibility of creating a mail group: This is where an
 		e-mail address is assigned to a group of users. E-mails to this address are
-		delivered to the primary address of each of the group members.
+		delivered to the primary e-mail address of each of the group members.
 	  </para>
 	  <para>
 		Mail groups are managed in the UMC module <emphasis>Groups</emphasis>
 		(see <xref linkend="groups"/>).
 	  </para>
 	  <para>
-		The address of the mail group is specified in
+		The e-mail address of the mail group is specified in
 		the <guimenu>mail address</guimenu> input field
 		under <guimenu>Advanced settings</guimenu>. The domain part of the address
 		must be the same as one of the managed mail domains.
@@ -288,7 +299,7 @@
 	  </para>
 	  <para>
 		Alternatively, individual IMAP folders can be shared for users or user
-		groups. This type of order is described as a shared IMAP folder.
+		groups. This type of folder is described as a shared IMAP folder.
 		Shared IMAP folders are managed in the UMC module <emphasis>Mail</emphasis>
 		with the <guimenu>Mail folder (IMAP)</guimenu> object type.
 	  </para>
@@ -315,7 +326,13 @@
 			<row>
 			  <entry>Name (*)</entry>
 			  <entry>
-				The name under which the IMAP folder is available in the e-mail clients.
+				The name under which the IMAP folder is available in the e-mail
+				clients. The name displayed in the IMAP client differs
+				depending on if an e-mail address is configures (see row
+				"E-Mail address" below) or not. If no e-mail address was
+				configured, the IMAP folder will be displayed in the
+				client as <literal>name@domain/INBOX</literal>. If an e-mail
+				address was configured it will be <literal>shared/name@domain</literal>.
 			  </entry>
 			</row>
 
@@ -354,11 +371,6 @@
 				<para>
 				  The domain part of the e-mail address must be registered in &ucsUMC; (see
 				  <xref linkend="mail::management::domains"/>).
-				</para>
-				<para>
-				  As soon as an e-mail address is entered for a folder, at least the
-				  IMAP rights <literal>lrsp</literal> are set for the user <systemitem class="username">anyone</systemitem> so that the
-				  IMAP server can save e-mails in the IMAP folder.
 				</para>
 			  </entry>
 			</row>
@@ -458,47 +470,50 @@
 		quota. When this is attained, no further e-mails can be accepted for
 		the mailbox by the mail server until the user deletes old mails from
 		her account.
-		The limit is specified by the <emphasis>Mail quota</emphasis> policy, which is
-		managed under <emphasis>Policies</emphasis> in the UMC module <emphasis>Users</emphasis>
-		(see <xref linkend="central:policies"/>)
-		The maximum size of the mailbox of a user is specified in
-		the <guimenu>Quota limit (MB)</guimenu> field.
 	  </para>
-	  <para>
+		<para>
+			The limit is specified in MB in the <guimenu>Mail quota</guimenu> field
+			under <guimenu>Advanced settings &ar; Mail</guimenu>. The default value
+			is <literal>0</literal> and means no limit.
+			The multi edit mode of &ucsUMC; can be used to assign a quota to multiple
+			users at one time, see <xref linkend="central:user-interface:edit"/>.
+		</para>
+		<para>
 		The user can be warned once a specified portion of the mailbox is
-		attained and then receives a message with every incoming mail that his
-		available storage space is almost full. This warning is shown by the
-		e-mails clients and must thus be supported by them.
-		The administrator can enter the threshold in percent or remaining
-		diskspace in kB:
+		attained and then receives a message that his
+		available storage space is almost full.
+		The administrator can enter the threshold in percent and the messages
+		subject and text:
 		<itemizedlist>
+			<listitem>
+				<para>
+					The threshold for when the warning message should be issued can
+					be configured in the &ucsUCRV;
+					<envar>mail/dovecot/quota/warning/text/PERCENT=TEXT</envar>.
+					PERCENT must be a number between 0 and 100 without the percent
+					sign, TEXT will be the content of the e-mail.
+				</para>
+				<para>
+					If TEXT contains the string "$PERCENT", it will be replaced in
+					the email with the value of the limit that has been exceeded.
+				</para>
+				<para>
+					The value of the &ucsUCRV; <envar>mail/dovecot/quota/warning/subject</envar>
+					will be used for the subject of the e-mail.
+				</para>
+			</listitem>
 		  <listitem>
-			<para>
-			  The threshold for when the warning message should be issued can
-			  configured in the &ucsUCRV;
-			  <envar>mail/cyrus/imap/quotawarnpercent</envar>. The value must be entered as a
-			  number between 0 and 100 without the percent sign.
-			</para>
-		  </listitem>
-		  <listitem>
-			<para>
-			  The &ucsUCRV; <envar>mail/cyrus/imap/quotawarnkb</envar> is
-			  used to configure the threshold in kilobytes.
-			</para>
-		  </listitem>
+				<para>
+					When the mail server package is installed, a subject and
+					two warning messages are automatically configured:
+					<itemizedlist>
+						<listitem><envar>mail/dovecot/quota/warning/subject</envar> is set to <literal>Quota-Warning</literal></listitem>
+						<listitem><envar>mail/dovecot/quota/warning/text/80</envar> is set to <literal>Your mailbox has filled up to over $PERCENT%.</literal></listitem>
+						<listitem><envar>mail/dovecot/quota/warning/text/95</envar> is set to <literal>Attention: Your mailbox has already filled up to over $PERCENT%. Please delete some messages or contact the administrator.</literal></listitem>
+					</itemizedlist>
+				</para>
+			</listitem>
 		</itemizedlist>
-	  </para>
-	  <para>
-		The quota is transferred to the quota settings of the Cyrus server
-		during authentication on the mail server. The update interval is
-		evaluated so that the quota settings are only updated once this time
-		period has expired. This interval can be configured in minutes
-		by &ucsUCRV; <envar>mail/cyrus/imap/quotainterval</envar>.
-	  </para>
-	  <para>
-		No limit values are set for the IMAP storage space in the
-		default setting. The use of mail quotas can be generally deactivated
-		with the &ucsUCRV; <envar>mail/cyrus/imap/quota</envar>.
 	  </para>
 	</section>
   </section>
@@ -507,7 +522,7 @@
 	<title>Spam detection and filtering</title>
 	<para>
 	  Undesirable and unsolicited e-mails are designated as spam. The software
-	  SpamAssassin and Postgrey integrated in UCS for the automatic identification of these
+	  SpamAssassin and Postgrey are integrated in UCS for the automatic identification of these
 	  e-mails. SpamAssassin attempts to identify whether an e-mail is desirable or
 	  not based on heuristics concerning its origin, form and content.
 	  Postgrey is a policy server for Postfix, which implements grey listing.
@@ -527,14 +542,16 @@
 	  the &ucsUCRV; <envar>mail/antispam/bodysizelimit</envar>.
 	  E-mails which are classified as spam - because they exceed a certain
 	  number of points - are not delivered to the recipient's inbox by
-	  Cyrus, but rather in the <emphasis>Spam</emphasis> folder below it.
-	  The filtering is performed by a SIEVE script, which is automatically generated when
+	  Dovecot, but rather in the <emphasis>Spam</emphasis> folder below it.
+	  The name of the folder for spam can be configured with the &ucsUCRV;
+	  <envar>mail/dovecot/folder/spam</envar>.
+	  The filtering is performed by a Sieve script, which is automatically generated when
 	  the user is created.
 	</para>
 	<para>
 	  The threshold in these scripts as of which e-mails are declared to be spam can be
 	  configured with the &ucsUCRV; <envar>mail/antispam/requiredhits</envar>.
-	  The presetting (5) generally does not need to be adjusted.
+	  The presetting (<literal>5</literal>) generally does not need to be adjusted.
 	  However, depending on experience in the local environment, this
 	  value can also be set lower. This will, however, result in more
 	  e-mails being incorrectly designated as spam.
@@ -550,7 +567,7 @@
 	  The Bayes classification is controlled by the user himself, whereby
 	  e-mails not identified as spam by the system can be placed in the <emphasis>Spam</emphasis>
 	  subfolder by the user and a selection of legitimate e-mails copied into
-	  the <emphasis>Ham</emphasis> subfolder. This folder is evaluated daily and data
+	  the <emphasis>Ham</emphasis> (<envar>mail/dovecot/folder/ham</envar>) subfolder. This folder is evaluated daily and data
 	  which have not yet been collected or were previously classified
 	  incorrectly are collected in a shared database. This evaluation is
 	  activated in the default setting and can be configured with
@@ -802,7 +819,7 @@ postmap /etc/postfix/smtp_auth
 	  <title>Handling of mailboxes during e-mail changes and the deletion of user accounts</title>
 	  <para>
 		A user's mailbox is linked to the primary e-mail address and not to
-		the user name. The &ucsUCRV; <envar>mail/cyrus/mailbox/rename</envar> can be used to
+		the user name. The &ucsUCRV; <envar>mail/dovecot/mailbox/rename</envar> can be used to
 		configure the reaction when the primary e-mail address is changed:
 	  </para>
 		<itemizedlist>
@@ -822,7 +839,7 @@ postmap /etc/postfix/smtp_auth
 		  </listitem>
 		</itemizedlist>
 	  <para>
-		The &ucsUCRV; <envar>mail/cyrus/mailbox/delete</envar> can be used to configure, whether
+		The &ucsUCRV; <envar>mail/dovecot/mailbox/delete</envar> can be used to configure, whether
 		the IMAP mailbox is also deleted when a user account is deleted. In
 		the basic setting, the mailboxes are kept when a user account is
 		deleted.
@@ -844,11 +861,15 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		If the mail home server is changes for a user, the user's mail data is <emphasis>not</emphasis> moved to the server automatically.
 	  </para>
-	  <para>
-		The Cyrus Murder expansion is provided for the implementation of a
-		mailbox cluster.
-	  </para>
 	</section>
+
+	<section id="mail::serverconfig::nfs">
+		<title>TODO TODO TODO Mail storage on NFS</title>
+		<para>
+			TODO TODO TODO
+		</para>
+	</section>
+
   </section>
 
   <section id="mail:clients">
@@ -877,7 +898,7 @@ postmap /etc/postfix/smtp_auth
 	<para>
 	  UCS integrates a number of applications from the Horde framework for
 	  web access to e-mails and web-based administration of server-side e-mail filter
-	  rules based on SIEVE. Horde can be installed via the Univention App Center (see <xref
+	  rules based on Sieve. Horde can be installed via the Univention App Center (see <xref
 	  linkend="software:appcenter"/>).
 	</para>
 	<section id="mail:Login_and_overview">
@@ -885,7 +906,7 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		The Horde login mask is linked on the system overview page (see <xref
 		linkend="central-management-umc:login"/>) under <guimenu>Horde web client</guimenu> and can
-		be opened directly at <uri>http://SERVERNAME/horde/login.php</uri>.
+		be opened directly at <uri>http://SERVERNAME/horde/</uri>.
 	  </para>
 	  <para>
 		<figure id="horde-login">
@@ -965,8 +986,8 @@ postmap /etc/postfix/smtp_auth
 	<section id="mail::horde::filter">
 	  <title>E-mail filters</title>
 	  <para>
-		Cyrus supports server-side filter scripts written in an individual
-		script language called SIEVE. The filter module allows the generation
+		Dovecot supports server-side filter scripts written in an individual
+		script language called Sieve. The filter module allows the generation
 		of these filter scripts. They apply generally and thus also apply for
 		users accessing their inboxes via a standard mail client.
 	  </para>
@@ -999,10 +1020,9 @@ postmap /etc/postfix/smtp_auth
 	  </para>
 	  <para>
 		Clicking on <guimenu>Script</guimenu> displays the source text of the generated
-		SIEVE script.
+		Sieve script.
 	  </para>
 	</section>
   </section>
-
 </chapter>
 <!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->

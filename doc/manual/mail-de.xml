@@ -39,16 +39,23 @@
 
 	<para>
 	  Mit der Mailserver-Komponente wird ebenfalls der IMAP-Dienst
-	  Cyrus auf dem System installiert. Dieser stellt E-Mailkonten für die Benutzer
+	  Dovecot auf dem System installiert. Dieser stellt E-Mailkonten für die Benutzer
 	  der Domäne bereit und bietet entsprechende Schnittstellen für den Zugriff
 	  durch E-Mail-Clients an.
-	  Cyrus ist für den Abruf von E-Mails über IMAP und POP3 vorkonfiguriert. Der
-	  Zugriff über POP3 kann durch Setzen der &ucsUCRV; <envar>mail/cyrus/pop</envar>
+	  Dovecot ist für den Abruf von E-Mails über IMAP und POP3 vorkonfiguriert. Der
+	  Zugriff über POP3 kann durch Setzen der &ucsUCRV; <envar>mail/dovecot/pop</envar>
 	  auf <literal>no</literal> deaktiviert werden. Das gleiche gilt für IMAP und
-	  die &ucsUCRV; <envar>mail/cyrus/imap</envar>.
+	  die &ucsUCRV; <envar>mail/dovecot/imap</envar>.
 	  Auch die weitere Konfiguration der Mailserver erfolgt über &ucsUCR; (siehe
 	  <xref linkend="mail::serverconfig::general"/>).
-    </para>
+
+		<note>
+			Seit &ucsUCS; Version 4.0-3 wird standardmäßig Dovecot als IMAP- und
+			POP3-Server verwendet. Cyrus ist jedoch weiterhin verfügbar um diese
+			Dienste bereit zu stellen. Weiteres zur Cyrus-Integration findet sich
+			in der Cyrus-Mail-Server Dokumentation <biblioref linkend="ext-doc-cyrus"/>.
+		</note>
+		</para>
 
 	<para>
 	  Die Verwaltung der Benutzerdaten des Mailservers (z.B. E-Mail-Adressen oder
@@ -65,7 +72,7 @@
 
 	<para>
 	  Optional können durch Postfix empfangene E-Mails vor der weiteren Verarbeitung
-	  durch Cyrus auf Spam-Inhalte und Viren hin untersucht werden.
+	  durch Dovecot auf Spam-Inhalte und Viren hin untersucht werden.
 	  Spam-Mails werden über die Klassifizierungssoftware SpamAssassin erkannt
 	  (<xref linkend="mail::spam"/>), für die Erkennung von Viren und anderer
 	  Malware wird ClamAV eingesetzt (<xref linkend="mail::viren"/>).
@@ -103,8 +110,9 @@
 	</para>
 
 	<para>
-	  Die Laufzeitdaten des Cyrus-Servers werden im Verzeichnis <filename class="directory">/var/spool/cyrus/</filename>
-	  abgelegt. Dieses Verzeichnis sollte nicht auf einer NFS-Freigabe betrieben werden.
+	  Die Laufzeitdaten des Dovecot-Servers werden im Verzeichnis <filename class="directory">/var/spool/dovecot/</filename>
+	  abgelegt. Fall dieses Verzeichnis auf einem NFS share liegen sollte,
+        lesen Sie bitte <xref linkend="mail::serverconfig::nfs"/>.
 	</para>
 
 	<para>
@@ -167,7 +175,7 @@
 		  <listitem>
 			<simpara>
 			  Die <emphasis>primäre E-Mail-Adresse</emphasis> wird zur Authentifizierung an Postfix
-			  und Cyrus verwendet. Primäre E-Mail-Adressen müssen eindeutig sein. Pro Benutzer kann
+			  und Dovecot verwendet. Primäre E-Mail-Adressen müssen eindeutig sein. Pro Benutzer kann
 			  nur eine primäre E-Mail-Adresse konfiguriert werden. Sie definiert auch das
 			  IMAP-Postfach des Benutzers. Wenn dem Benutzer ein Mail Home Server zugeordnet ist
 			  (siehe <xref linkend="mail::homeserver"/>), wird das IMAP-Postfach automatisch durch
@@ -185,7 +193,9 @@
 			  nicht eindeutig sein; besitzen zwei Benutzer die gleiche Adresse, erhalten
 			  beide Benutzer alle E-Mails, die an diese Adresse gesandt werden. Der
 			  Domänenanteil der E-Mail-Adresse muss in &ucsUMC; registriert sein (siehe
-			  <xref linkend="mail::management::domains"/>).
+			  <xref linkend="mail::management::domains"/>). Um E-Mails an
+				alternative E-Mail-Adressen zu erhalten, muss ein Benutzer eine
+				primäre E-Mail-Adresse besitzen.
 			</simpara>
 		  </listitem>
 		</itemizedlist>
@@ -203,11 +213,14 @@
 		<para>
 		Sobald das Benutzerkonto konfiguriert ist, kann eine Anmeldung am UCS-Mail-Stack (<systemitem class="service">IMAP</systemitem>/<systemitem class="service">POP3</systemitem>/<systemitem class="service">SMTP</systemitem>)
 		erfolgen. Wurde das Benutzerkonto deaktiviert (oder das Passwort geändert), ist
-		eine Anmeldung am Mail-Stack für eine Dauer von 30min weiterhin möglich. Der Grund hierfür
+		eine Anmeldung am Mail-Stack für eine Dauer von 5min weiterhin möglich. Der Grund hierfür
 		ist der Authentifizierungscache des Mail-Stacks.
-		Um den Cache zu invalidieren, muss der Dienst <systemitem class="service">saslauthd</systemitem> auf dem
-		Mailserver neu gestartet werden. Die Ablaufzeit des Caches kann auf dem Mailserver mit
-		der &ucsUCRV; <envar>mail/saslauthd/cache/timeout</envar> konfiguriert werden.
+		Um den Cache zu invalidieren, führen Sie
+        <programlisting language="sh">
+doveadm auth cache flush
+		</programlisting>
+		auf dem Mailserver aus. Die Ablaufzeit des Caches kann auf dem Mailserver mit
+		der &ucsUCRV; <envar>TODO TODO</envar> konfiguriert werden.
 		</para>
 	  </note>
 	</section>
@@ -270,7 +283,7 @@
 	  </para>
 
 	  <para>
-		Die Adresse der Mailgruppe wird im Eingabefeld <guimenu>Mail-Adresse</guimenu>
+		Die E-Mail-Adresse der Mailgruppe wird im Eingabefeld <guimenu>Mail-Adresse</guimenu>
 		unter <guimenu>Erweiterte Einstellungen</guimenu> festgelegt. Der Domänenteil der
 		Adresse muss einer der verwalteten Mail-Domänen entsprechen.
 	  </para>
@@ -332,7 +345,15 @@
 
 			  <row>
 				<entry>Name (*)</entry>
-				<entry>Der Name, unter dem der IMAP-Ordner in den E-Mail-Clients verfügbar ist.</entry>
+				<entry>Der Name, unter dem der IMAP-Ordner im E-Mail-Client
+					verfügbar ist. Der Name unterscheidet sich je nach dem,
+					ob eine E-Mail-Adresse konfiguriert wird (siehe Zeile
+					"Mail-Adresse" unten) oder nicht. Wird keine Mail-Adresse
+					konfiguriert, erscheint der IMAP-Ordner im Client als
+					<literal>name@domain/INBOX</literal>. Wird eine Mail-Adresse
+					verwendet, wird der Name die Form
+					<literal>shared/name@domain</literal> haben.
+				</entry>
 			  </row>
 
 			  <row>
@@ -368,12 +389,6 @@
 				  <para>
 					Der Domänenanteil der E-Mail-Adresse muss in &ucsUMC; registriert sein (siehe
 					<xref linkend="mail::management::domains"/>).
-				  </para>
-				  <para>
-					Sobald eine E-Mail-Adresse an einem Ordner angegeben wird, werden für den
-					Benutzer <systemitem class="username">anyone</systemitem> mindestens die IMAP-Rechte
-					<literal>lrsp</literal> gesetzt, damit der IMAP-Server E-Mails in dem IMAP-Ordner
-					ablegen kann.
 				  </para>
 				</entry>
 			  </row>
@@ -474,52 +489,52 @@
 		werden, bei deren Erreichen vom Mailserver keine weiteren E-Mails für
 		das Postfach angenommen werden, bis der Benutzer alte Mails aus seinem
 		Konto entfernt hat.
-		Die Grenze wird durch die Richtlinie <emphasis>Mail-Quota</emphasis> festgelegt, die im
-		UMC-Modul <emphasis>Benutzer</emphasis> unter <emphasis>Richtlinien</emphasis> verwaltet
-		wird (siehe auch <xref linkend="central:policies"/>).
-		Die maximale Größe des Postfachs eines Benutzers wird im Feld
-		<guimenu>Quota-Limit (MB)</guimenu> festgelegt.
+	  </para>
+
+	  <para>
+		Die Grenze wird in MB im Feld <guimenu>Mail-Quota</guimenu> festgelegt, die
+		unter <guimenu>Erweiterte Einstellungen &ar; Mail</guimenu> verwaltet
+		wird. Der Standardwert ist <literal>0</literal> und bedeutet keine Beschränkung.
+		Für das Zuweisen einer Quota an mehrere Benutzer auf einmal, kann der
+		Mehrfachbearbeitungsmodus von &ucsUMC; verwendet  werden, siehe
+		<xref linkend="central:user-interface:edit"/>.
 	  </para>
 
 	  <para>
 		Der Benutzer kann ab einer bestimmten erreichten Postfachgröße gewarnt werden
-		und erhält dann bei jeder eingehenden Mail den Hinweis, dass seine
-		Speicherressourcen nahezu ausgelastet sind. Diese Warnmeldung wird durch die
-		E-Mail-Clients dargestellt und muss von diesen unterstützt werden.
-		Der Administrator kann den Schwellwert in Prozent oder verbleibendem
-		Speicherplatz in Kilobyte angeben:
+		und erhält dann eine Mail mit dem Hinweis, dass seine
+		Speicherressourcen nahezu ausgelastet sind.
+		Der Administrator kann den Schwellwert in Prozent, den Betreff der
+		Nachricht und ihren Inhalt angeben:
 		<itemizedlist>
 		  <listitem>
 			<simpara>
-			  In der &ucsUCRV; <envar>mail/cyrus/imap/quotawarnpercent</envar> kann
+			  In der &ucsUCRV; <envar>mail/dovecot/quota/warning/text/PROZENT=TEXT</envar> kann
 			  der Schwellwert konfiguriert werden, ab dem eine Warnmeldung ausgegeben werden
-			  soll. Der Wert muss als Zahl zwischen 0 und 100 ohne Prozentzeichen angegeben
-			  werden.
+			  soll. PROZENT muss als Zahl zwischen 0 und 100 ohne Prozentzeichen angegeben
+			  werden, TEXT wird der Inhalt der E-Mail.
 			</simpara>
-		  </listitem>
-		  <listitem>
 			<simpara>
-			  Mit der &ucsUCRV; <envar>mail/cyrus/imap/quotawarnkb</envar> kann der
-			  Schwellwert auch in Kilobyte konfiguriert werden.
+			  Wenn TEXT die Zeichenkette "$PERCENT" enthält, wird diese in der
+			  E-Mail mit dem überschrittenen Wert ersetzt.
+			</simpara>
+			<simpara>
+			  Der Wert der &ucsUCRV; <envar>mail/dovecot/quota/warning/subject</envar>
+			  wird als Betreff der E-Mails verwendet.
 			</simpara>
 		  </listitem>
-	    </itemizedlist>
-	  </para>
-
-	  <para>
-		Die Quota wird bei der Authentifizierung am Mailserver in die
-		Quota-Einstellungen des Cyrus-Servers übertragen. Dabei wird ein
-		Aktualisierungsintervall ausgewertet, so dass erst nach Ablauf dieses Zeitraums
-		die Quota-Einstellungen aktualisiert werden. Dieses Intervall kann durch die
-		&ucsUCRV; <envar>mail/cyrus/imap/quotainterval</envar> in Minuten konfiguriert
-		werden.
-	  </para>
-
-	  <para>
-		In der Grundeinstellung sind keine Grenzwerte für den erlaubten
-		IMAP-Speicherplatz gesetzt. Die Verwendung von Mail-Quota kann mit der
-		&ucsUCRV; <envar>mail/cyrus/imap/quota</envar> auch generell deaktiviert
-		werden.
+			<listitem>
+				<simpara>
+					Bei der Installation des Mail-Server-Paketes werden Betreff und
+zwei Warn-Nachrichten automatisch konfiguriert:
+					<itemizedlist>
+						<listitem><envar>mail/dovecot/quota/warning/subject</envar> wird gesetzt auf <literal>Quota-Warning</literal></listitem>
+						<listitem><envar>mail/dovecot/quota/warning/text/80</envar> wird gesetzt auf <literal>Your mailbox has filled up to over $PERCENT%.</literal></listitem>
+						<listitem><envar>mail/dovecot/quota/warning/text/95</envar> wird gesetzt auf <literal>Attention: Your mailbox has already filled up to over $PERCENT%. Please delete some messages or contact the administrator.</literal></listitem>
+					</itemizedlist>
+				</simpara>
+			</listitem>
+		</itemizedlist>
 	  </para>
 	</section>
   </section>
@@ -549,18 +564,19 @@
 	  geprüft. Dies kann mit der &ucsUCRV; <envar>mail/antispam/bodysizelimit</envar>
 	  konfiguriert werden.
 	  E-Mails, die als Spam klassifiziert wurden - also eine bestimmte Anzahl
-	  Punkte überschreiten - werden bei der Auslieferung durch Cyrus nicht im
+	  Punkte überschreiten - werden bei der Auslieferung durch Dovecot nicht im
 	  Posteingang des Empfängers, sondern im darunter liegenden Ordner
-	  <emphasis>Spam</emphasis> abgelegt. Die Filterung erfolgt durch ein
-	  SIEVE-Skript, das beim Anlegen des IMAP-Postfachs eines Benutzers automatisch
-	  generiert wird.
+	  <emphasis>Spam</emphasis> abgelegt. Der Name des Ordners kann mit der
+	  &ucsUCRV; <envar>mail/dovecot/folder/spam</envar> konfiguriert werden.
+	  Die Filterung erfolgt durch ein Sieve-Skript, das beim Anlegen des
+	  IMAP-Postfachs eines Benutzers automatisch generiert wird.
 	</para>
 
 	<para>
-	  Der in die SIEVE-Skripte eingetragene Schwellwert, ab der E-Mails als Spam
+	  Der in die Sieve-Skripte eingetragene Schwellwert, ab der E-Mails als Spam
 	  deklariert werden, ist mit der &ucsUCRV;
 	  <envar>mail/antispam/requiredhits</envar> konfigurierbar. Die Voreinstellung
-	  (5) muss in der Regel nicht angepasst werden. Je nach Erfahrung im eigenen
+	  (<literal>5</literal>) muss in der Regel nicht angepasst werden. Je nach Erfahrung im eigenen
 	  Umfeld kann dieser Wert aber auch niedriger angesetzt werden. Es muss dann
 	  jedoch mit mehr E-Mails gerechnet werden, die fälschlich als Spam erkannt
 	  wurden. Die Änderung des Schwellwerts wirkt sich nicht auf bestehende Benutzer
@@ -575,7 +591,7 @@
 	  Bewertung an die Mailgewohnheiten anpassen. Die Bayes-Klassifizierung wird vom
 	  Benutzer selbst gesteuert, in dem nicht vom System aber vom Benutzer als Spam erkannte E-Mails in den
 	  Unterordner <emphasis>Spam</emphasis> verschoben und eine Auswahl legitimer Mails in den
-	  Unterordner <emphasis>Ham</emphasis> kopiert werden. Diese Ordner werden täglich
+	  Unterordner <emphasis>Ham</emphasis> (<envar>mail/dovecot/folder/ham</envar>) kopiert werden. Diese Ordner werden täglich
 	  ausgewertet und noch nicht erfasste oder bisher falsch klassifizierte Daten in
 	  einer gemeinsamen Datenbank erfasst. Diese Auswertung ist in der
 	  Grundeinstellung aktiviert und kann mit der &ucsUCRV;
@@ -844,7 +860,7 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		Das Postfach eines Benutzers ist mit der primären E-Mail-Adresse verknüpft und
 		nicht mit dem Benutzernamen. Mit der &ucsUCRV;
-		<envar>mail/cyrus/mailbox/rename</envar> kann das Verhalten bei der Änderung
+		<envar>mail/dovecot/mailbox/rename</envar> kann das Verhalten bei der Änderung
 		der primären E-Mail-Adresse konfiguriert werden.
 	  </para>
 
@@ -868,7 +884,7 @@ postmap /etc/postfix/smtp_auth
 		</itemizedlist>
 
 	  <para>
-		Mit der &ucsUCRV; <envar>mail/cyrus/mailbox/delete</envar> kann konfiguriert
+		Mit der &ucsUCRV; <envar>mail/dovecot/mailbox/delete</envar> kann konfiguriert
 		werden, ob bei der Löschung eines Benutzerkontos in &ucsUMC; auch das
 		IMAP-Postfach gelöscht werden soll. In der Grundeinstellung bleiben die
 		Postfächer bei Löschung eines Benutzerkontos erhalten.
@@ -896,12 +912,13 @@ postmap /etc/postfix/smtp_auth
 		Beim ändern des Mail Home Servers eines Benutzers werden dessen E-Mails <emphasis>nicht</emphasis>
 		automatisch auf den neuen Server verschoben.
 	  </para>
+	</section>
 
-	  <para>
-		Für die Implementierung eines Mailbox-Clusters, d.h. der Bereitstellung einer
-		einheitlichen Sicht auf verschiedenen IMAP-Server, steht die Erweiterung Cyrus
-		Murder zur Verfügung.
-	  </para>
+	<section id="mail::serverconfig::nfs">
+		<title>TODO TODO TODO Mail storage on NFS</title>
+		<para>
+			TODO TODO TODO
+		</para>
 	</section>
   </section>
 
@@ -933,7 +950,7 @@ postmap /etc/postfix/smtp_auth
 	<para>
 	  UCS integriert mehrere Applikationen des Horde-Frameworks für den Webzugriff
 	  auf E-Mails und zur webbasierten Verwaltung von serverseitigen
-	  E-Mail-Filterregeln auf Basis von SIEVE. Horde kann über das Univention App Center installiert
+	  E-Mail-Filterregeln auf Basis von Sieve. Horde kann über das Univention App Center installiert
 	  werden (siehe <xref linkend="software:appcenter"/>).
 	</para>
 
@@ -942,7 +959,7 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		Die Horde-Anmeldemaske ist auf der Übersichtswebseite (siehe <xref linkend="central-management-umc:login"/>) unter
 		<guimenu>Horde Webclient</guimenu> verlinkt und kann auch direkt unter
-		<uri>http://SERVERNAME/horde/login.php</uri> erreicht werden.
+		<uri>http://SERVERNAME/horde/</uri> erreicht werden.
 	  </para>
 
 	  <para>
@@ -1041,8 +1058,8 @@ postmap /etc/postfix/smtp_auth
 	  <title>E-Mail-Filter</title>
 
 	  <para>
-		Cyrus unterstützt serverseitige Filterskripte, die in einer eigenen
-		Skriptsprache namens SIEVE geschrieben werden. Das Filter-Modul erlaubt die
+		Dovecot unterstützt serverseitige Filterskripte, die in einer eigenen
+		Skriptsprache namens Sieve geschrieben werden. Das Filter-Modul erlaubt die
 		Generierung dieser Filterskripte. Sie gelten allgemein, greifen also auch für
 		Benutzer, die über einen Standard-Mail-Client auf ihre Postfächer zugreifen.
 	  </para>
@@ -1084,7 +1101,7 @@ postmap /etc/postfix/smtp_auth
 
 	  <para>
 		Ein Klick auf <guimenu>Skript</guimenu> zeigt den Quelltext des generierten
-		SIEVE-Skripts an.
+		Sieve-Skripts an.
 	  </para>
 	</section>
   </section>
