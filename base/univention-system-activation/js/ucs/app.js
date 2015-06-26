@@ -61,7 +61,7 @@ define([
 	// strip starting/ending '"' and replace newlines
 	license = license.substr(1, license.length - 2).replace(/\\n/g, '\n');
 
-    email_address = entries.email || 'your email address';
+    var email_address = entries.email || 'your email address';
 
 	// make sure that en-US exists
 	var existsEnUsLocale = array.some(_availableLocales, function(ilocale) {
@@ -186,7 +186,6 @@ define([
 		_createTitle: function() {
 			var titleNode = dom.byId('title');
 			put(titleNode, 'h1', _('Activation of Univention Corporate Server'));
-			//put(titleNode, 'h2', _(''));
 			put(titleNode, '!.dijitHidden');
 		},
 
@@ -201,7 +200,7 @@ define([
 		_createRegistrationTab: function() {
 			this._createNavButton('register');
 			var contentNode = dom.byId('content');
-			var tabNode = put(contentNode, 'div.tab#register-tab');
+			var tabNode = put(contentNode, 'div.tab#register-tab.hide-tab');
 			put(tabNode, 'p > b', _('Request a license!'));
 			put(tabNode, 'p', _('Please enter a valid e-mail address in order to activate the UCS system. The activation is required to use the App Center. In the next step you can upload the license file that has been sent to your email address.'));
 
@@ -324,15 +323,15 @@ define([
 		_createUploadTab: function() {
 			this._createNavButton('upload');
 			var contentNode = dom.byId('content');
-			var tabNode = put(contentNode, 'div.tab#upload-tab');
+			var tabNode = put(contentNode, 'div.tab#upload-tab.hide-tab');
 			var uploaderNode = this._createUploader();
 			put(tabNode, 'p > b', _('You have got mail!'));
-			var textNode = put(tabNode, 'p');
-			textNode.innerHTML = _('A license file should have been sent to <strong id="email-address">') +
-				email_address +
-				_('</strong>. Upload the license file from the email to activate your UCS instance.');
-			var backNode = put(tabNode, 'p');
-			backNode.innerHTML = _('Note: If you did not received an email, please also check your spam directory or <a href="/#register">request a new one.</a>');
+			var textNode = put(tabNode, 'p', {
+				innerHTML: _('A license file should have been sent to <strong id="email-address">{0}</strong>. Upload the license file from the email to activate your UCS instance.', [email_address])
+			});
+			var backNode = put(tabNode, 'p', {
+				innerHTML: _('Note: If you did not received an email, please also check your spam directory or <a href="#register">request a new one.</a>')
+			});
 			put(tabNode, '>', uploaderNode);
 			this._uploader.startup();
 		},
@@ -340,7 +339,7 @@ define([
 		_createFinishedTab: function() {
 			this._createNavButton('finished');
 			var contentNode = dom.byId('content');
-			var tabNode = put(contentNode, 'div.tab#finished-tab');
+			var tabNode = put(contentNode, 'div.tab#finished-tab.hide-tab');
 			this._continueButton = new Button({
 				label: _('Continue'),
 				onClick: lang.hitch(this, function(){ 
