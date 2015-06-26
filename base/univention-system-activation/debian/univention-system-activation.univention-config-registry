@@ -12,3 +12,4 @@ Variables: uuid/license
 Variables: ucs/web/license/requested
 Variables: server/role
 Variables: repository/app_center/server
+Variables: umc/web/appliance/name
