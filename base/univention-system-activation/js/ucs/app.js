@@ -273,7 +273,8 @@ define([
 				errorNode = put('div[id=error]');
 				put(currentTabNode, 'div', errorNode);
 			}
-			errorNode.innerHTML = error_msg;
+			errorNode.innerHTML = error_msg + 
+				'<br>Need help? Send a email to: <strong><a href="mailto:feedback@univention.de" style="color:#000">feedback@univention.de</a></strong>';
 		},
 
 		_removeError: function(){
