@@ -375,8 +375,13 @@ define([
 			this._continueButton.startup();
 		},
 
-		_continue: function(){
-			location.href = "/umc" + location.search + "?username=Administrator";
+		_continue: function() {
+			var query = ioQuery.queryToObject(location.search.substring(1));
+			lang.mixin(query, {
+				username: 'Administrator'
+			});
+			var uri = '/univention-management-console?' + ioQuery.objectToQuery(query);
+			location.href = uri;
 		},
 
 		createElements: function() {
