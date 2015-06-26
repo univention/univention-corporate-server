@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-17) unstable; urgency=low
+
+  * Bug #38547: CSS and icon cleanup
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 26 Jun 2015 13:27:21 +0200
+
 univention-system-activation (0.0.1-16) unstable; urgency=low
 
   * Bug #38547: Make sure ssh will be enabled on deinstallation
