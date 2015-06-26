@@ -118,13 +118,17 @@
 			There are two ways to install the mail server package with Cyrus instead of Dovecot:
 			<itemizedlist>
 				<listitem>
-					First install the application <emphasis>Mail server</emphasis>
-					from the Univention App Center, then use the UMC module
-					<emphasis>Package Management</emphasis> to install the package
-					<package>univention-mail-cyrus</package>.
+					<para>
+						First install the application <emphasis>Mail server</emphasis>
+						from the Univention App Center, then use the UMC module
+						<emphasis>Package Management</emphasis> to install the package
+						<package>univention-mail-cyrus</package>.
+					</para>
 				</listitem>
 				<listitem>
-					Run on the command line (logged in as root):
+					<para>
+						Run on the command line (logged in as root):
+					</para>
 					<programlisting language="sh">univention-install univention-mail-server univention-mail-cyrus</programlisting>
 				</listitem>
 			</itemizedlist>

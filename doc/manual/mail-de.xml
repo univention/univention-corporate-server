@@ -50,10 +50,12 @@
 	  <xref linkend="mail::serverconfig::general"/>).
 
 		<note>
-			Seit &ucsUCS; Version 4.0-3 wird standardmäßig Dovecot als IMAP- und
-			POP3-Server verwendet. Cyrus ist jedoch weiterhin verfügbar um diese
-			Dienste bereit zu stellen. Weiteres zur Cyrus-Integration findet sich
-			in der Cyrus-Mail-Server Dokumentation <biblioref linkend="ext-doc-cyrus"/>.
+			<para>
+				Seit &ucsUCS; Version 4.0-3 wird standardmäßig Dovecot als IMAP- und
+				POP3-Server verwendet. Cyrus ist jedoch weiterhin verfügbar um diese
+				Dienste bereit zu stellen. Weiteres zur Cyrus-Integration findet sich
+				in der Cyrus-Mail-Server Dokumentation <biblioref linkend="ext-doc-cyrus"/>.
+			</para>
 		</note>
 		</para>
 
@@ -508,31 +510,43 @@ doveadm auth cache flush
 		Nachricht und ihren Inhalt angeben:
 		<itemizedlist>
 		  <listitem>
-			<simpara>
+			<para>
 			  In der &ucsUCRV; <envar>mail/dovecot/quota/warning/text/PROZENT=TEXT</envar> kann
 			  der Schwellwert konfiguriert werden, ab dem eine Warnmeldung ausgegeben werden
 			  soll. PROZENT muss als Zahl zwischen 0 und 100 ohne Prozentzeichen angegeben
 			  werden, TEXT wird der Inhalt der E-Mail.
-			</simpara>
-			<simpara>
+			</para>
+			<para>
 			  Wenn TEXT die Zeichenkette "$PERCENT" enthält, wird diese in der
 			  E-Mail mit dem überschrittenen Wert ersetzt.
-			</simpara>
-			<simpara>
+			</para>
+			<para>
 			  Der Wert der &ucsUCRV; <envar>mail/dovecot/quota/warning/subject</envar>
 			  wird als Betreff der E-Mails verwendet.
-			</simpara>
+			</para>
 		  </listitem>
 			<listitem>
-				<simpara>
+				<para>
 					Bei der Installation des Mail-Server-Paketes werden Betreff und
 zwei Warn-Nachrichten automatisch konfiguriert:
 					<itemizedlist>
-						<listitem><envar>mail/dovecot/quota/warning/subject</envar> wird gesetzt auf <literal>Quota-Warning</literal></listitem>
-						<listitem><envar>mail/dovecot/quota/warning/text/80</envar> wird gesetzt auf <literal>Your mailbox has filled up to over $PERCENT%.</literal></listitem>
-						<listitem><envar>mail/dovecot/quota/warning/text/95</envar> wird gesetzt auf <literal>Attention: Your mailbox has already filled up to over $PERCENT%. Please delete some messages or contact the administrator.</literal></listitem>
+						<listitem>
+							<para>
+								<envar>mail/dovecot/quota/warning/subject</envar> wird gesetzt auf <literal>Quota-Warning</literal>
+							</para>
+						</listitem>
+						<listitem>
+							<para>
+								<envar>mail/dovecot/quota/warning/text/80</envar> wird gesetzt auf <literal>Your mailbox has filled up to over $PERCENT%.</literal>
+							</para>
+						</listitem>
+						<listitem>
+							<para>
+								<envar>mail/dovecot/quota/warning/text/95</envar> wird gesetzt auf <literal>Attention: Your mailbox has already filled up to over $PERCENT%. Please delete some messages or contact the administrator.</literal>
+							</para>
+						</listitem>
 					</itemizedlist>
-				</simpara>
+				</para>
 			</listitem>
 		</itemizedlist>
 	  </para>

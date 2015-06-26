@@ -47,10 +47,12 @@
 	  as well (see <xref linkend="mail::serverconfig::general"/>).
 
 		<note>
-			Since &ucsUCS; version 4.0-3 Dovecot is used as the default IMAP and
-			POP3 server. However, Cyrus is still available for this service.
-			More Information can be found in the Cyrus mail server documentation
-			<biblioref linkend="ext-doc-cyrus"/>.
+			<para>
+				Since &ucsUCS; version 4.0-3 Dovecot is used as the default IMAP and
+				POP3 server. However, Cyrus is still available for this service.
+				More Information can be found in the Cyrus mail server documentation
+				<biblioref linkend="ext-doc-cyrus"/>.
+			</para>
 		</note>
 	</para>
 
@@ -507,9 +509,21 @@ doveadm auth cache flush
 					When the mail server package is installed, a subject and
 					two warning messages are automatically configured:
 					<itemizedlist>
-						<listitem><envar>mail/dovecot/quota/warning/subject</envar> is set to <literal>Quota-Warning</literal></listitem>
-						<listitem><envar>mail/dovecot/quota/warning/text/80</envar> is set to <literal>Your mailbox has filled up to over $PERCENT%.</literal></listitem>
-						<listitem><envar>mail/dovecot/quota/warning/text/95</envar> is set to <literal>Attention: Your mailbox has already filled up to over $PERCENT%. Please delete some messages or contact the administrator.</literal></listitem>
+						<listitem>
+							<para>
+								<envar>mail/dovecot/quota/warning/subject</envar> is set to <literal>Quota-Warning</literal>
+							</para>
+						</listitem>
+						<listitem>
+							<para>
+								<envar>mail/dovecot/quota/warning/text/80</envar> is set to <literal>Your mailbox has filled up to over $PERCENT%.</literal>
+							</para>
+						</listitem>
+						<listitem>
+							<para>
+								<envar>mail/dovecot/quota/warning/text/95</envar> is set to <literal>Attention: Your mailbox has already filled up to over $PERCENT%. Please delete some messages or contact the administrator.</literal>
+							</para>
+						</listitem>
 					</itemizedlist>
 				</para>
 			</listitem>
