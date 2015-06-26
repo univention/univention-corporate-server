@@ -1,3 +1,10 @@
+univention-system-activation (0.0.1-19) unstable; urgency=medium
+
+  * Forbit root login for several services instead disallow sshd only
+    (Bug #38547)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 26 Jun 2015 16:41:34 +0200
+
 univention-system-activation (0.0.1-18) unstable; urgency=low
 
   * Bug #38547: Removed iptables, call notify_vendor, add feeback mail address

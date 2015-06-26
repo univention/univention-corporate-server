@@ -32,11 +32,11 @@
 
 #DEBHELPER#
 
-#if [ "$1" = "purge" ]
-#then
-#fi
-
-ucr unset --force sshd/autostart 2> /dev/null
-invoke-rc.d ssh start
+# allow root login again
+ucr unset --force auth/gdm/user/root \
+				auth/kdm/user/root \
+				auth/login/user/root \
+				auth/other/user/root \
+				auth/sshd/user/root
 
 exit 0

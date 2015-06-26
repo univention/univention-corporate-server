@@ -86,9 +86,12 @@ elif [ "$ACTION" = "stop" ]; then
 	# unset previously stored sites
 	ucr unset apache2/system_activation/sites
 
-	# allow ssh again
-	ucr unset --force sshd/autostart
-	invoke-rc.d ssh start
+	# allow root login again
+	ucr unset --force auth/gdm/user/root \
+					auth/kdm/user/root \
+					auth/login/user/root \
+					auth/other/user/root \
+					auth/sshd/user/root
 
 	# notify vendor
 	/usr/share/univention-system-activation/notify_vendor.py

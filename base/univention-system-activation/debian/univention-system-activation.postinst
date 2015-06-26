@@ -34,15 +34,15 @@
 
 case "$1" in
 	configure)
-#		if [ -z "$2" ]
-#		then # installation
-#			# nothing to do
-#		else # update
-#			# nothing to do
-#		fi
 		chmod og+w /var/cache/univention-system-activation
 		/etc/init.d/apache2 reload
-		ucr set --force sshd/autostart='no' # forbid ssh
+
+		# disallow root login
+		ucr set --force auth/gdm/user/root=no \
+						auth/kdm/user/root=no \
+						auth/login/user/root=no \
+						auth/other/user/root=no \
+						auth/sshd/user/root=no
 		;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)
