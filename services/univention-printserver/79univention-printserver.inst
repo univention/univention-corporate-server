@@ -89,21 +89,6 @@ while read dn; do
 done < <(univention-ldapsearch -xLLL "(&(univentionPrinterUseClientDriver=*)(univentionPrinterSpoolHost=$(hostname -f)))" dn | ldapsearch-wrapper | sed -n 's/dn: //p')
 ### </cleanupcode>
 
-# keep/delete old printer ppds
-if [ $JS_LAST_EXECUTED_VERSION -le 9 ]; then
-	if [ "$cups_keep_ppds" != "true" ]; then
-		backupfile=/var/backups/ldap-hp-ppds-`date +"%d-%m-%y-%H-%M-%S"`
-		univention-ldapsearch -h "$ldap_master" -p "$ldap_master_port" ${credentials[@]} 'objectclass=univentionPrinterModels' >  $backupfile
-		IFS=":"
-		for i in $(udm settings/printermodel list "$@" | grep ^DN:| sed 's|^DN: |:|'); do
-			if [ -n "$i" ]; then
-				univention-directory-manager settings/printermodel remove "$@" --dn "$i"
-			fi
-		done
-		unset IFS
-	fi
-fi
-
 univention-directory-manager container/cn create "$@" --ignore_exists --position "cn=univention,$ldap_base" --set name=cups || die
 
 univention-directory-manager settings/printermodel create "$@" --ignore_exists \

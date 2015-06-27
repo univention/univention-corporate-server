@@ -1,3 +1,10 @@
+univention-printserver (8.0.6-7) unstable; urgency=medium
+
+  * The printer models are no longer deleted during the join. In the future we
+    have to write update scripts for the PPDs (Bug #38117)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 27 Jun 2015 20:29:09 +0200
+
 univention-printserver (8.0.6-6) unstable; urgency=medium
 
   * Bug #37123: Fix object modification case
