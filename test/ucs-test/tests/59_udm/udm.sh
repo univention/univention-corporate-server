@@ -16,11 +16,11 @@ pypolicy () {
 from univention.uldap import getMachineConnection
 c = getMachineConnection()
 p = c.getPolicies(sys.argv[1])
-v = p["univentionPolicyDhcpRouting"]
+v = p.get("univentionPolicyDhcpRouting", {}).get("univentionDhcpRouters", {})
 print "v=", v
-e = eval(sys.argv[2])
+e = eval(sys.argv[2]).get("univentionDhcpRouters", {})
 print "e=", e
-r = 0 if v == e else 1
+r = 0 if all(value == v.get(key) for key, value in e.iteritems()) else 1
 print "r=", r
 sys.exit(r)
 ' "$@"

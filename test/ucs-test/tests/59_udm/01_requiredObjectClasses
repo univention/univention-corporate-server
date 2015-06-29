@@ -15,7 +15,7 @@ check () {
 	grep -Fx "univentionDhcpRouters=\"$router\"" "$tmp/service.sh" &&
 		die "Policy applied to DHCP-Service not having objectClass=$PROPVAL"
 	pypolicy "cn=$name,$BASE" \
-		"{}" ||
+		"{'univentionDhcpRouters': {'policy': 'cn=p1,cn=$name,$BASE'}}" &&
 		die "Policy applied to DHCP-Service not having objectClass=$PROPVAL"
 
 	policy "cn=$NET,cn=$name,$BASE" -s >"$tmp/subnet.sh"

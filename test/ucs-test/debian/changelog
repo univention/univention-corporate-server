@@ -1,6 +1,12 @@
+ucs-test (5.0.148-27) unstable; urgency=low
+
+  * Bug #38712: Use policy ihertitance tests
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 29 Jun 2015 10:02:44 +0200
+
 ucs-test (5.0.148-26) unstable; urgency=low
 
-  * Bug #38663: Use udm-test for != DC_Master/Backup
+  * Bug #38712: Use udm-test for != DC_Master/Backup
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 29 Jun 2015 09:12:04 +0200
 
