@@ -38,8 +38,8 @@ override_dh_install:
 	dh_install -X.svn -Xde.po
 
 override_dh_installinit:
-	# run after 93univention-system-setup-boot
-	dh_installinit -punivention-welcome-screen --no-start -u"defaults 94"
+	# run after 93univention-system-setup-boot and after 99kde
+	dh_installinit -punivention-welcome-screen --no-start -u"defaults 100"
 
 override_dh_fixperms:
 	dh_fixperms
