@@ -187,6 +187,24 @@ def start_listener():
 def restart_listener():
 	subprocess.call((LISTENER_INIT_SCRIPT, 'restart'))
 
+
+class AutomaticListenerRestart(object):
+	"""
+		Automatically restart Univention Directory Listener when leaving the "with" block.
+
+		with AutomaticListenerRestart() as alr:
+			with ucr_test.UCSTestConfigRegistry() as ucr:
+				# set some ucr variables, that influence the Univention Directory Listener
+				univention.config_registry.handler_set(['foo/bar=ding/dong'])
+	"""
+	def __enter__(self):
+		return self
+
+	def __exit__(self, exc_type, exc_value, traceback):
+		restart_listener()
+
+
+
 def wait_for_replication():
 	sys.stdout.flush()
 	print 'Waiting for replication:'
