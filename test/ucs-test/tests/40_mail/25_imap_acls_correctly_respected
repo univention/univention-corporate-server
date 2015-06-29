@@ -4,7 +4,8 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
-from essential.mailclient import MailClient, create_shared_mailfolder
+from essential.mailclient import MailClient
+from essential.mail import create_shared_mailfolder
 from univention.config_registry import handler_set
 import itertools
 import univention.testing.strings as uts

@@ -411,6 +411,11 @@ class UCSTest_Mail_Exception(Exception):
 	pass
 
 
+class UCSTest_Mail_InvalidFolderName(UCSTest_Mail_Exception):
+	""" The given folder name is invalid """
+	pass
+
+
 class UCSTest_Mail_InvalidMailAddress(UCSTest_Mail_Exception):
 	""" The given mail address is invalid """
 	pass
@@ -458,6 +463,34 @@ def get_dovecot_maildir(mail_address):
 
 	localpart, domain = mail_address.rsplit('@', 1)
 	return '/var/spool/dovecot/private/%s/%s/Maildir' % (domain, localpart.lower())
+
+
+def get_dovecot_shared_folder_maildir(foldername):
+	"""
+	Returns directory name for specified shared folder name.
+
+	>>> get_dovecot_shared_folder_maildir('shared/myfolder@example.com')
+	'/var/spool/dovecot/private/example.com/myfolder/Maildir'
+
+	>>> get_dovecot_shared_folder_maildir('myfolder@example.com/INBOX')
+	'/var/spool/dovecot/public/example.com/myfolder/.INBOX'
+	"""
+	if not foldername:
+		raise UCSTest_Mail_InvalidFolderName()
+	if '@' not in foldername or not '/' in foldername:
+		raise UCSTest_Mail_InvalidFolderName()
+	if foldername.count('/') > 1:
+		raise UCSTest_Mail_InvalidFolderName()
+
+	# shared folder with mail primary address
+	if foldername.startswith('shared/'):
+		return get_dovecot_maildir(foldername[7:])
+
+	# shared folder without mail primary address
+	localpart, domain = foldername.rsplit('@', 1)
+	domain, folderpath = domain.split('/', 1)
+	return '/var/spool/dovecot/public/%s/%s/.%s' % (domain, localpart.lower(), folderpath)
+
 
 def get_cyrus_maildir(mail_address):
 	"""
@@ -521,6 +554,42 @@ def wait_for_mailboxes(mailboxes, timeout=90):
 		print 'not all mailboxes have been found within %d seconds (missing=%r)' % (timeout, missing_mailboxes)
 		raise UCSTest_Mail_MissingMailbox(mailboxes, missing_mailboxes)
 	print
+
+def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permission=None, group_permission=None):
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		domain = ucr.get('domainname')
+		basedn = ucr.get('ldap/base')
+		dovecat = ucr.is_true('mail/dovecot')
+	name = uts.random_name()
+	folder_mailaddress = ''
+	if type(mailAddress) == str:
+		folder_mailaddress = mailAddress
+	elif mailAddress == True:
+		folder_mailaddress = '%s@%s' % (name, domain)
+
+	folder_dn = udm.create_object(
+		'mail/folder',
+		position = 'cn=folder,cn=mail,%s' % basedn,
+		set = {
+			'name'                 : name,
+			'mailHomeServer'       : mailHomeServer,
+			'mailDomain'           : domain,
+			'mailPrimaryAddress'   : folder_mailaddress
+		},
+		append = {
+			'sharedFolderUserACL'  : user_permission or [],
+			'sharedFolderGroupACL' : group_permission or [],
+		}
+	)
+	if dovecat:
+		if mailAddress:
+			folder_name = 'shared/%s' % folder_mailaddress
+		else:
+			folder_name = '%s@%s/INBOX' % (name, domain)
+	else:
+		folder_name = 'shared/%s' % name
+	return folder_dn, folder_name, folder_mailaddress
+
 
 def create_random_msgid():
 	""" returns a random and unique message ID """

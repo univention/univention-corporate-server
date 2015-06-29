@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create and remove shared folders
+## desc: Create and remove shared folders with different settings of mail/dovecot/mailbox/delete
 ## tags: apptest
 ## exposure: dangerous
 ## packages:
@@ -7,16 +7,12 @@
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
 
-import time
 import os
-import subprocess
 from univention.config_registry import handler_set
-import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-from essential.mail import send_mail, random_email, imap_search_mail, get_dovecot_maildir
-from essential.mailclient import create_shared_mailfolder
+from essential.mail import random_email, get_dovecot_shared_folder_maildir, create_shared_mailfolder
 
 TIMEOUT_MAIL = 10
 
@@ -42,10 +38,10 @@ def main():
 				# test creating shared folder with different delete flags
 				#
 				for i, with_mailaddress, flag_delete in [
-						(0, 'no', 'no'),
-						(1, 'no', 'yes'),
-						(2, 'yes', 'no'),
-						(3, 'yes', 'yes'), ]:
+						(0, False, 'no'),
+						(1, False, 'yes'),
+						(2, True, 'no'),
+						(3, True, 'yes'), ]:
 
 					#
 					# reconfigure system
@@ -61,77 +57,20 @@ def main():
 					dn, name, address = create_shared_mailfolder(udm, fqdn,	mailAddress=with_mailaddress, user_permission=['"%s" "%s"' % (user_addr, 'all')])
 					folder = Bunch(dn=dn, name=name, mail_address=address)
 
+					print folder
+
 					# check folder with mail address
-					path = get_dovecot_maildir(folder.mail_address)
+					path = get_dovecot_shared_folder_maildir(folder.name)
 					if not os.path.exists(path):
 						utils.fail('Test %d: maildir %r for shared folder does not exist! %r' % (i, path, folder))
 
 					udm.remove_object('mail/folder', dn=folder.dn)
 
 					# check folder removal
-					path = get_dovecot_maildir(folder.mail_address)
-					if os.path.exists(path):
-						utils.fail('Maildir %r for shared folder with mail address has not been removed! %r' % (path, folder))
-
-					#
-					# send email to shared folder
-					#
-					msgid = uts.random_name()
-					send_mail(recipients=[old_address], messageid=msgid, server=fqdn)
-					for _ in xrange(TIMEOUT_MAIL):
-						if imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (old_address,), use_ssl=True):
-							print 'Found mail in shared folder sent to %r' % ('shared/%s' % (old_address,),)
-							break
-						time.sleep(1)
-					else:
-						utils.fail('Test %d: Could not deliver test mail with msgid %r to shared folder' % (i, msgid,))
-
-					old_dir = get_dovecot_maildir(old_address)
-					if not os.path.exists(old_dir):
-						utils.fail('Test %d: old_dir = %r does not exist! %r' % (i, old_dir, folder))
-
-					new_dir = get_dovecot_maildir(new_address)
-					if os.path.exists(new_dir):
-						utils.fail('Test %d: new_dir = %r does not exist! %r' % (i, new_dir, folder))
-
-					print '\n\n==> MODIFYING ADDRESS OF SHARED FOLDER FROM %r to %r' % (old_address, new_address)
-					print '==> FOLDER OLD: %r' % (old_dir,)
-					print '==> FOLDER NEW: %r' % (new_dir,)
-					print '==> RENAME=%r' % (flag_rename,)
-					print '==> DELETE=%r' % (flag_delete,)
-					udm.modify_object('mail/folder', dn=folder.dn, set={'mailPrimaryAddress': new_address})
-
-					if i==0:
-						if not os.path.exists(old_dir):
-							utils.fail('Test %d: old_dir = %r has been removed unexpectedly! %r' % (i, old_dir, folder))
-						if imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (new_address,), use_ssl=True):
-							utils.fail('Test %d: msgid found unexpectedly' % (i,))
-					elif i==1:
-	# TODO FIXME WHY IS THE SHARED FOLDER NOT REMOVED?
-	#					if os.path.exists(old_dir):
-	#						utils.fail('Test %d: old_dir = %r has not been removed! %r' % (i, old_dir, folder))
-						if imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (new_address,), use_ssl=True):
-							utils.fail('Test %d: msgid found unexpectedly' % (i,))
-					elif i==2 or i==3:
-						if os.path.exists(old_dir):
-							utils.fail('Test %d: old_dir = %r has not been renamed! %r' % (i, old_dir, folder))
-						cnt = imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (new_address,), use_ssl=True)
-						if not cnt:
-							print 'Test %d: maildir does not contain old mails: cnt=%d' % (i, cnt)
-							time.sleep(180)
-							utils.fail('Test %d: maildir does not contain old mails' % (i,))
-
-				#
-				# remove shared folder
-				#
-				folder.mail_address = new_address
-				udm.remove_object('mail/folder', dn=folder.dn)
-
-				# check folder with mail address
-				path = get_dovecot_maildir(folder.mail_address)
-				if os.path.exists(path):
-					utils.fail('Maildir %r for shared folder with mail address has not been removed! %r' % (path, folder))
-
+					if os.path.exists(path) and flag_delete == 'yes':
+						utils.fail('Test %d: maildir %r for shared folder has not been removed! %r' % (i, path, folder))
+					elif not os.path.exists(path) and flag_delete == 'no':
+						utils.fail('Test %d: maildir %r for shared folder has been removed! %r' % (i, path, folder))
 
 if __name__ == '__main__':
 	global timeout
