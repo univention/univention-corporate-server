@@ -153,24 +153,26 @@ class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 		"""
 		pass
 
-def create_shared_mailfolder(udm, mailHomeServer, mail=None, user_permission=None, group_permission=None):
+def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permission=None, group_permission=None):
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		domain = ucr.get('domainname')
 		basedn = ucr.get('ldap/base')
 		dovecat = ucr.is_true('mail/dovecot')
 	name = uts.random_name()
-	if mail:
-		shared_mail = '%s@%s' % (name, domain)
-	else:
-		shared_mail = ''
-	udm.create_object(
+	folder_mailaddress = ''
+	if type(mailAddress) == str:
+		folder_mailaddress = mailAddress
+	elif mailAddress == True:
+		folder_mailaddress = '%s@%s' % (name, domain)
+
+	folder_dn = udm.create_object(
 		'mail/folder',
 		position = 'cn=folder,cn=mail,%s' % basedn,
 		set = {
 			'name'                 : name,
 			'mailHomeServer'       : mailHomeServer,
 			'mailDomain'           : domain,
-			'mailPrimaryAddress'   : shared_mail
+			'mailPrimaryAddress'   : folder_mailaddress
 		},
 		append = {
 			'sharedFolderUserACL'  : user_permission or [],
@@ -178,13 +180,12 @@ def create_shared_mailfolder(udm, mailHomeServer, mail=None, user_permission=Non
 		}
 	)
 	if dovecat:
-		if mail:
-			ret_value = 'shared/%s' % shared_mail
-			# ret_value = '"/"'
+		if mailAddress:
+			folder_name = 'shared/%s' % folder_mailaddress
 		else:
-			ret_value = '%s@%s/INBOX' % (name, domain)
+			folder_name = '%s@%s/INBOX' % (name, domain)
 	else:
-		ret_value = 'shared/%s' % name
-	return ret_value
+		folder_name = 'shared/%s' % name
+	return folder_dn, folder_name, folder_mailaddress
 
 # vim: set ft=python ts=4 sw=4 noet ai :
