@@ -39,25 +39,28 @@ if [ -z "$1" ]; then
 	fi
 	ln -s '/usr/lib/univention-welcome-screen/addons/{e5bbc237-c99b-4ced-a061-0be27703295f}' /opt/firefox/distribution/bundles
 
-	#export DISPLAY=:0
 	# is KDM running?
 	if pidof kdm_greet; then
 		# use the x authority of the running KDM
+		echo "Detected running KDM session. Attaching to it..."
 		export $(cat /proc/$(pidof kdm_greet)/environ | tr '\0' '\n' | grep ^XAUTHORITY=)
 		AUTHFILE=$(mktemp)
 		cp "$XAUTHORITY" "$AUTHFILE"
 		chown nobody "$AUTHFILE"
 		export XAUTHORITY="$AUTHFILE"
 	fi
+	export DISPLAY=:0
 
 	default_locale=en_US
 	eval "$(/usr/sbin/univention-config-registry shell locale/default)"
 	if [ -n "$locale_default" ]; then
 		default_locale=${locale_default%%.*}
 	fi
+	echo "Detected locale: $default_locale"
 
 	showDesktop="false"
 	if dpkg -l univention-kde 2> /dev/null > /dev/null; then
+		echo "KDE seems to be installed"
 		showDesktop="true"
 	fi
 
@@ -68,8 +71,10 @@ if [ -z "$1" ]; then
 
 	# start X11 and browser ; script returns pid of browser on fd3
 	if xwininfo -root -stats > /dev/null 2>/dev/null ; then
+		echo "using active X server session"
 		/bin/su nobody -m --login -c "'$0' '$PORT' '$URL'" -- 3> "$BROWSERPIDFILE" 4> "$SWITCH_TTY"
 	else
+		echo "Starting new X server instance"
 		/usr/bin/xinit /bin/su nobody -c "'$0' '$PORT' '$URL'" -- 3> "$BROWSERPIDFILE" 4> "$SWITCH_TTY"
 	fi
 
@@ -79,6 +84,9 @@ if [ -z "$1" ]; then
 
 	# remove pidfile
 	rm -f "$BROWSERPIDFILE" "$SWITCH_TTY"
+	if [ -n "$AUTHFILE" ]; then
+		rm -f "$AUTHFILE"
+	fi
 
 	# Remove 'hide tab bar' addon
 	find '/opt/firefox/distribution/bundles/{e5bbc237-c99b-4ced-a061-0be27703295f}' -delete
