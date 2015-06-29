@@ -2,6 +2,7 @@ ucs-test (5.0.148-28) unstable; urgency=low
 
   * Bug #38792: added wrapper class to restart Univention Directory
     Listener after leaving "with" block
+  * Bug #38792: added test scripts for dovecot's shared folders
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 29 Jun 2015 23:39:04 +0200
 
