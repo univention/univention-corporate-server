@@ -27,19 +27,19 @@ sys.exit(r)
 }
 
 setup () {
-	udm dhcp/service create \
+	udm-test dhcp/service create \
 		--position "$BASE" \
 		--set service="$name"
-	udm dhcp/subnet create \
+	udm-test dhcp/subnet create \
 		--superordinate "cn=$name,$BASE" \
 		--set subnet="$NET" \
 		--set subnetmask='255.255.255.0'
-	udm policies/dhcp_routing create \
+	udm-test policies/dhcp_routing create \
 		--position "cn=$name,$BASE" \
 		--set name="p1" \
 		--set routers="${NET%.0}.1" \
 		--set "$PROPERTY"="$PROPVAL"
-	udm dhcp/service modify \
+	udm-test dhcp/service modify \
 		--dn "cn=$name,$BASE" \
 		--policy-reference "cn=p1,cn=$name,$BASE"
 }
@@ -52,7 +52,7 @@ toggle_case () {
 	*=*) PROPVAL="${PROPVAL%%=*}=$(_toggle_case "${PROPVAL#*=}")" ;;
 	*) PROPVAL="$(_toggle_case "$PROPVAL")" ;;
 	esac
-	udm policies/dhcp_routing modify \
+	udm-test policies/dhcp_routing modify \
 		--dn "cn=p1,cn=$name,$BASE" \
 		--set "$PROPERTY"="$PROPVAL"
 }
@@ -67,7 +67,7 @@ cleanup () {
 	local retval=$?
 	[ $retval -eq 0 ] || univention-ldapsearch -LLLo ldif-wrap=no -b "cn=$name,$BASE"
 	rm -rf "$tmp"
-	udm dhcp/service remove --dn "cn=$name,$BASE"
+	udm-test dhcp/service remove --dn "cn=$name,$BASE"
 	exit $retval
 }
 trap cleanup EXIT

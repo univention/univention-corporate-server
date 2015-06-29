@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Test policy inheritance in UMC policy
 ## exposure: careful
+## tags: [udm]
 ## bugs:
 ##  - 38663
 ##  - 38712
@@ -8,31 +9,31 @@
 . udm.sh || exit 137
 
 setup () {
-	udm dhcp/service create \
+	udm-test dhcp/service create \
 		--position "$BASE" \
 		--set service="$name"
-	udm dhcp/subnet create \
+	udm-test dhcp/subnet create \
 		--superordinate "cn=$name,$BASE" \
 		--set subnet="$NET" \
 		--set subnetmask='255.255.255.0'
-	udm dhcp/pool create \
+	udm-test dhcp/pool create \
 		--superordinate "cn=$NET,cn=$name,$BASE" \
 		--set name="pool" \
 		--set range="${NET%.0}.2 ${NET%.}.253"
 
-	udm policies/dhcp_routing create \
+	udm-test policies/dhcp_routing create \
 		--position "cn=$name,$BASE" \
 		--set name="p1" \
 		--set routers="$router" \
 		--set fixedAttributes='univentionDhcpRouters'
-	udm dhcp/service modify \
+	udm-test dhcp/service modify \
 		--dn "cn=$name,$BASE" \
 		--policy-reference "cn=p1,cn=$name,$BASE"
-	udm policies/dhcp_routing create \
+	udm-test policies/dhcp_routing create \
 		--position "cn=$name,$BASE" \
 		--set name="p2" \
 		--set routers="${NET%.0}.254"
-	udm dhcp/service modify \
+	udm-test dhcp/service modify \
 		--dn "cn=pool,cn=$NET,cn=$name,$BASE" \
 		--policy-reference "cn=p2,cn=$name,$BASE"
 }

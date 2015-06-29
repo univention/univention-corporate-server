@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Test ldapFilter in UMC policy
 ## exposure: careful
+## tags: [udm]
 ## bugs:
 ##  - 38663
 ##  - 38712
