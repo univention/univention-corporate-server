@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-welcome-screen
+fix: 0.0.0-6.6.201506291656
+version: [2]
+desc: |
+  This update addresses the following issues:
+  * Initial release of the package.
+bug: [37537]
