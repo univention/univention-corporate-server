@@ -218,11 +218,12 @@
 		eine Anmeldung am Mail-Stack für eine Dauer von 5min weiterhin möglich. Der Grund hierfür
 		ist der Authentifizierungscache des Mail-Stacks.
 		Um den Cache zu invalidieren, führen Sie
-        <programlisting language="sh">
+		<programlisting language="sh">
 doveadm auth cache flush
 		</programlisting>
 		auf dem Mailserver aus. Die Ablaufzeit des Caches kann auf dem Mailserver mit
-		der &ucsUCRV; <envar>TODO TODO</envar> konfiguriert werden.
+		der &ucsUCRV; <envar>mail/dovecot/auth/cache_ttl</envar> sowie
+		<envar>mail/dovecot/auth/cache_negative_ttl</envar> konfiguriert werden.
 		</para>
 	  </note>
 	</section>
@@ -929,9 +930,42 @@ postmap /etc/postfix/smtp_auth
 	</section>
 
 	<section id="mail::serverconfig::nfs">
-		<title>TODO TODO TODO Mail storage on NFS</title>
+		<title>Mailserver-Speicher auf NFS</title>
 		<para>
-			TODO TODO TODO
+			Dovecot unterstütz das Speichern von E-Mails und Index-Dateien auf
+			Cluster-Filesystemen und NFS. Einige Einstellungen sind jedoch nötig, um
+			Datenverluste in bestimmten Situationen zu vermeiden.
+		</para>
+		<para>
+			Die folgenden Einstellungen gehen davon aus, dass auf Mailboxen nicht
+			gleichzeitig von mehreren Servern aus zugegriffen wird. Das ist der Fall,
+			wenn jedem Benutzer genau ein Mail Home Server zugeordnet ist.
+		</para>
+		<para>
+			<itemizedlist>
+				<listitem><simpara><envar>mail/dovecot/process/mmap_disable</envar><literal> = yes</literal></simpara></listitem>
+				<listitem><simpara><envar>mail/dovecot/process/dotlock_use_excl</envar><literal> = yes</literal></simpara></listitem>
+				<listitem><simpara><envar>mail/dovecot/process/mail_fsync</envar><literal> = always</literal></simpara></listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			Um eine bessere Performance zu erreichen, können Index-Dateien statt
+			zusammen mit den Nachrichten auf NFS, auf der lokalen Festplatte
+			gespeichert werden. Sie sind dann unter
+			<filename class="directory">/var/lib/dovecot/index/</filename> zu finden.
+			Setzen Sie dafür die &ucsUCRV; <envar>mail/dovecot/location/separate_index</envar><literal> = yes</literal>.
+		</para>
+		<para>
+			Mit diesen Einstellungen sollte normalerweise alles problemlos
+			funktionieren. Die im Einsatz befindlichen Server- und Client-Systeme
+			sind jedoch so vielfältig, dass hier noch ein paar Hinweise folgen, wie
+			bei Schwierigkeiten weiter vorgegangen werden kann:
+			<itemizedlist>
+				<listitem><simpara>Wenn NFSv2 im Einsatz ist (nicht der Fall, wenn der NFS-Server ein &ucsUCS; ist), setzen Sie bitte <envar>mail/dovecot/process/dotlock_use_excl</envar><literal> = no</literal>.</simpara></listitem>
+				<listitem><simpara>Falls kein lockd eingesetzt wird (nicht der Fall auf &ucsUCS; Systemen) oder falls trotz des Einsatzes von lockd Locking-Fehler auftreten, setzen Sie <envar>mail/dovecot/process/lock_method</envar><literal> = dotlock</literal>. Dies verringert die Performance, aber behebt die meisten Locking-bezogenen Probleme.</simpara></listitem>
+				<listitem><simpara>Dovecot kann mit <envar>mail/dovecot/process/mail_nfs_storage</envar><literal> = yes</literal> angewiesen werden, wenn nötig, den NFS Cache zu leeren. Dies funktioniert jedoch nicht immer, daher kann es zu sporadischen Fehlern kommen. Das gleiche gilt für das Leeren des NFS-Cache nach dem Schreiben von Index-Dateien: <envar>mail/dovecot/process/mail_nfs_index</envar><literal> = yes</literal>.</simpara></listitem>
+				<listitem><simpara>In der Documentation des Dovecot Servers sind weitere Hinweise zu finden: <xref linkend="dovecot-wiki-clusterfs"/> <xref linkend="dovecot-wiki-nfs"/></simpara></listitem>
+			</itemizedlist>
 		</para>
 	</section>
   </section>
