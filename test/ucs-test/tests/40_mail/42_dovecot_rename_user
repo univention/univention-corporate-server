@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Test renaming or removing of mailboxes
+## desc: Username modification while keeping mail primary address
 ## tags: apptest
 ## exposure: dangerous
 ## packages:
