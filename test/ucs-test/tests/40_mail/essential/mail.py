@@ -354,7 +354,7 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 	:param imap_password: string: password for IMAP user; if not specified, 'univention' is used
 	:param imap_folder: string: IMAP folder that is selected during search (no recursive search!)
 	:param use_ssl: boolean: use SSL encryption for IMAP connection
-	:return: integer: returns the number of matching mails
+	:return: integer: returns the number of matching mails (if neither token nor messageid is specified, the number of mails in folder is returned)
 	"""
 
 	assert token or messageid, "imap_search_mail: token or messageid have not been specified"
@@ -394,6 +394,14 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 						if token in response_part[1]:
 							print 'Found token %r in msg %r' % (token, msgid)
 							foundcnt += 1
+
+	if not token and not messageid:
+		status, result = conn.search(None, 'ALL')
+		assert status == 'OK'
+		if result:
+			msgids = result.split()
+			foundcnt = len(msgids)
+			print 'Found %d messages in folder' % (foundcnt,)
 
 	return foundcnt
 
