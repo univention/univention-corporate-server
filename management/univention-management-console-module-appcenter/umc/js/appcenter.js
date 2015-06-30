@@ -51,7 +51,7 @@ define([
 ], function(declare, lang, array, when, Deferred, topic, app, dialog, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppChooseHostDialog, PackagesPage, SettingsPage, DetailsPage, _) {
 
 	topic.subscribe('/umc/license/activation', function() {
-		if (!app.getModule('udm')) {
+		if (!app.getModule('udm', 'navigation'/*FIXME: 'license' Bug #36689*/)) {
 			dialog.alert(_('Activation is not possible. Please login as Administrator on the DC master.'));
 			return;
 		}

@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-31) unstable; urgency=medium
+
+  * Bug #38544: fix check for license module
+
+ -- Florian Best <best@univention.de>  Tue, 30 Jun 2015 13:16:41 +0200
+
 univention-management-console-module-appcenter (4.1.20-30) unstable; urgency=medium
 
   * Bug #38544: make it possible to directly open an app (e.g. via
