@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-70) unstable; urgency=medium
+
+  * Bug #38544: remove broken debug message
+
+ -- Florian Best <best@univention.de>  Tue, 30 Jun 2015 12:55:10 +0200
+
 univention-management-console-frontend (4.1.106-69) unstable; urgency=low
 
   * Bug #38658: minor code changes

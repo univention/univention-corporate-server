@@ -1368,7 +1368,6 @@ define([
 					isDefaultAction: true,
 					callback: lang.hitch(this, function(id, item) {
 						this.openModule(item);
-						console.log(this.getModule(id).id);
 						//this._tabContainer.transition(id, item);
 					})
 				}, {
