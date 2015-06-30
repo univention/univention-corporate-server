@@ -70,6 +70,7 @@ class Errors(LogMessage):
 		r'invoke-rc.d: initscript apache2, action "start" failed',
 		r'invoke-rc.d: initscript apache2, action "restart" failed',
 		r"E: Unable to locate package could-initramfs-growroot",
+		r"'www-browser -dump http://localhost:80/server-status' failed.",  # Bug #38797
 	]
 
 	# extra ignore patterns for case when line == 'failed.'

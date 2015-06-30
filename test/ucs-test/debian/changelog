@@ -1,3 +1,9 @@
+ucs-test (5.0.148-30) unstable; urgency=low
+
+  * Bug #38797: 01/99_check_log_files: Ignore apachectrl reload
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 30 Jun 2015 13:13:01 +0200
+
 ucs-test (5.0.148-29) unstable; urgency=low
 
   * Bug #38752: 72/22_listener_version_change: Fix python syntax
