@@ -1,3 +1,9 @@
+ucs-test (5.0.148-29) unstable; urgency=low
+
+  * Bug #38752: 72/22_listener_version_change: Fix python syntax
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 30 Jun 2015 09:28:39 +0200
+
 ucs-test (5.0.148-28) unstable; urgency=low
 
   * Bug #38792: added wrapper class to restart Univention Directory
