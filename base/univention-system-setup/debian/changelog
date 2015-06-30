@@ -1,3 +1,10 @@
+univention-system-setup (8.1.69-6) unstable; urgency=medium
+
+  * Bug #37537: Add univention-welcome-screen to the default
+    downloaded packages
+
+ -- Florian Best <best@univention.de>  Tue, 30 Jun 2015 12:29:27 +0200
+
 univention-system-setup (8.1.69-5) unstable; urgency=low
 
   * Bug #37816: Adapted the messages as requested
