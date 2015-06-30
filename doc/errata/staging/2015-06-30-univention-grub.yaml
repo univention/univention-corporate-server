@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-grub
+fix: 8.0.4-2.124.201506300919
+version: [2]
+desc: |
+ The title for the entry of UCS in the GRUB boot menu can be configured
+ through the Univenton Configuration Registry variable 'grub/title'.
+note: This update consists of two parts. 'grub2' needs to be updated, too.
+bug: [38779]
