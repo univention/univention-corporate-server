@@ -15,3 +15,4 @@ Variables: grub/color/highlight
 Variables: grub/menu/color/normal
 Variables: grub/menu/color/highlight
 Variables: grub/rootdelay
+Variables: grub/title

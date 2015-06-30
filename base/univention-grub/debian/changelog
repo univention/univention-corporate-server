@@ -1,3 +1,9 @@
+univention-grub (8.0.4-2) unstable; urgency=low
+
+  * Bug #38779: Make title configurable
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 30 Jun 2015 09:11:26 +0200
+
 univention-grub (8.0.4-1) unstable; urgency=low
 
   * Bug #36526: Fix Python dependencies

@@ -99,3 +99,9 @@ Description[de]=Der hier übergebene Wert wird für die Root-Partition in der ge
 Description[en]=This value is used for the root partition in the generated Grub1 configuration (see 'grub/generate-menu-lst'). If the variable is unset, the value is detected automatically.
 Type=str
 Categories=system-base
+
+[grub/title]
+Description[de]=Titel für den Eintrag von UCS im GRUB Boot Menu. Standard ist "Univention Corporate Server".
+Description[en]=Title for the entry of UCS in the GRUB boot menu. Default is "Univention Corporate Server".
+Type=str
+Categories=system-base
