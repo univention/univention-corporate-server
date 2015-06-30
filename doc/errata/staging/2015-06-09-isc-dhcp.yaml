@@ -6,5 +6,5 @@ fix: 4.2.2.dfsg.1-5+deb70u6.29.201506091524
 version: [2]
 desc: |
  This update addresses the following issue:
- - a broken configuration was generated for named DHCP host entries.
+ - A broken configuration was generated for named DHCP host entries.
 bug: [38675]
