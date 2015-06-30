@@ -12,7 +12,7 @@ Categories=service-apache
 
 [apache2/force_https]
 Description[en]=Force use of encrypted connection by re-directing to <https://>.
-Description[de]=Erzwingt eine verschlüsselte Verbindung durch Weiterleitugn auf <https://>.
+Description[de]=Erzwingt eine verschlüsselte Verbindung durch Weiterleitung auf <https://>.
 Type=bool
 Categories=service-apache
 
@@ -131,7 +131,7 @@ Type=bool
 Categories=service-apache
 
 [apache2/ssl/ciphersuite]
-Description[de]=Dies konfiguriert die kryctografischen Verfahren, die ein Client in der SSL-Handshake-Phase angeboten bekommt. Das Format ist unter <http://httpd.apache.org/docs/2.2/mod/mod_ssl.html#sslciphersuite> beschrieben. Ist die Variable nicht gesetzt, wird 'HIGH:MEDIUM:!aNULL:!MD5:!RC4' verwendet.
+Description[de]=Dies konfiguriert die kryptografischen Verfahren, die ein Client in der SSL-Handshake-Phase angeboten bekommt. Das Format ist unter <http://httpd.apache.org/docs/2.2/mod/mod_ssl.html#sslciphersuite> beschrieben. Ist die Variable nicht gesetzt, wird 'HIGH:MEDIUM:!aNULL:!MD5:!RC4' verwendet.
 Description[en]=This configures the cryptopgraphic algorithms which are offered to clients during a SSL handshake. The format is described at <http://httpd.apache.org/docs/2.2/mod/mod_ssl.html#sslciphersuite>. If the variable is unset, 'HIGH:MEDIUM:!aNULL:!MD5:!RC4' is used.
 Type=str
 Categories=service-apache
