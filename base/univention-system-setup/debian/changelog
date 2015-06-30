@@ -1,3 +1,13 @@
+univention-system-setup (8.1.69-7) unstable; urgency=low
+
+  * Bug #38780: Changed the wording in the setup wizard for creating
+    a new domain since "Create new UCS domain" doesn't suit for Univention
+    Apps
+  * Bug #38781: replaced UCS with *appliance_name* Univention App in the setup
+    wizard
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 30 Jun 2015 19:34:13 +0200
+
 univention-system-setup (8.1.69-6) unstable; urgency=medium
 
   * Bug #37537: Add univention-welcome-screen to the default

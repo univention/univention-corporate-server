@@ -293,11 +293,22 @@ define([
 			var welcomeHeader = _('UCS setup');
 			var doneHeader = _('UCS setup successful');
 			var errorHeader = _('UCS setup - An error occurred');
+			var creatDomainLabel = _('Create a new UCS domain');
+			var createDomainHelpText = _('Configure this system as first system for the new domain. Additional systems can join the domain later.');
+			var credentialsMasterEmailLabel = _('E-mail address to activate UCS')
+			var credentialsMasterHelpText = _('<p>Enter the name of your organization, an e-mail address to activate UCS and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>');
 			if (this.ucr['umc/web/appliance/name']) {
-				welcomeMessage = _('Welcome to the %s appliance with Univention Corporate Server (UCS).', this.ucr['umc/web/appliance/name']);
-				welcomeHeader = _('%s setup', this.ucr['umc/web/appliance/name']);
-				doneHeader = _('%s setup successful', this.ucr['umc/web/appliance/name']);
-				errorHeader = _('%s setup - An error occurred', this.ucr['umc/web/appliance/name']);
+				applianceName = this.ucr['umc/web/appliance/name'];
+				welcomeMessage = _('Welcome to %s Univention App.', applianceName);
+				welcomeHeader = _('%s Univention App setup', applianceName);
+				doneHeader = _('%s Univenton App setup successful', applianceName);
+				errorHeader = _('%s Univention App setup - An error occurred', applianceName);
+				creatDomainLabel = _('Manage users and permissions directly on this system.');
+				credentialsMasterEmailLabel = _('')
+				createDomainHelpText = _('Configure this system as new domain. It functions locally and is independet from other data bank management systems.');
+				createDomainHelpText = _('A new domain directory is created on this system. User and management data are stored locally.');
+				credentialsMasterEmailLabel = _('E-mail address to activate %s Univention App', applianceName)
+				credentialsMasterHelpText = _('<p>Enter the name of your organization, an e-mail address to activate %s Univention App and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>', applianceName);
 			}
 			welcomeMessage += ' ' + _('A few questions are needed to complete the configuration process.');
 			if (this.ucr['umc/web/appliance/logo']) {
@@ -377,7 +388,7 @@ define([
 			}), lang.mixin({}, pageConf, {
 				name: 'license',
 				headerText: _('License agreement'),
-				helpText: _('Please read carefully the license agreement for the %s appliance.', this.ucr['umc/web/appliance/name'] || ''),
+				helpText: _('Please read carefully the license agreement for %s Univention App.', applianceName || ''),
 				widgets: [{
 					type: Text,
 					'class': 'umcUCSSetupLicenseAgreement',
@@ -526,17 +537,18 @@ define([
 				name: 'role',
 				headerText: _('Domain setup'),
 				helpText: _('Please select your domain settings.'),
+				
 				widgets: [{
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_createDomain',
-					label: '<strong>' + _('Create a new UCS domain') + '</strong>',
+					label: '<strong>' + creatDomainLabel + '</strong>',
 					checked: true,
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
-					name: 'newDomainHelpText',
-					content: _('Configure this system as first system for the new domain. Additional systems can join the domain later.'),
+					name: 'createDomainHelpText',
+					content: createDomainHelpText,
 					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
 					type: RadioButton,
@@ -574,7 +586,7 @@ define([
 				}, {
 					type: Text,
 					name: 'ifUnsureHelpText',
-					content: _('If unsure, select <i>Create a new UCS domain</i>.'),
+					content: _('If unsure, select <i>' + creatDomainLabel + '</i>.'),
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}]
 			}), lang.mixin({}, pageConf, {
@@ -619,7 +631,7 @@ define([
 			}), lang.mixin({}, pageConf, {
 				name: 'credentials-master',
 				headerText: _('Account information'),
-				helpText: _('<p>Enter the name of your organization, an e-mail address to activate UCS and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>'),
+				helpText: credentialsMasterHelpText,
 				layout: [
 					'organization',
 					'email_address',
@@ -634,7 +646,7 @@ define([
 				}, {
 					type: TextBox,
 					name: 'email_address',
-					label: _('E-mail address to activate UCS') +
+					label: credentialsMasterEmailLabel +
 						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showTooltip(event, \'email\');">' +
 						_('more information') +
 						'</a>)',
@@ -1029,7 +1041,11 @@ define([
 		showTooltip: function(evt, type) {
 			var msg = '';
 			if (type == 'email') {
-				msg = _('A valid e-mail address allows to activate the UCS system for using the Univention App Center. An e-mail with a personalized license key will then be sent to your e-mail address. This license can be uploaded via the license dialog in Univention Management Console.');
+				if (this.ucr['umc/web/appliance/name']) {
+					msg = _('A valid e-mail address allows to activate the Univention App instance. This is a required step. An e-mail with a personalized license key will then be sent to your e-mail address. This license can be uploaded after the setup process.');
+				} else {
+					msg = _('A valid e-mail address allows to activate the UCS system for using the Univention App Center. An e-mail with a personalized license key will then be sent to your e-mail address. This license can be uploaded via the license dialog in Univention Management Console.');
+				}
 			}
 			else if (type == 'hostname') {
 				msg = _('For a specified host name, the domain name is automatically derived from the domain name server. A fully qualified domain may be necessary for mail server setups with differing domains.<br/>Note that the domain name <b>cannot</b> be changed after the UCS setup wizard has been completed.');
@@ -1706,7 +1722,7 @@ define([
 
 			var msg = '';
 			if (this.ucr['umc/web/appliance/name']) {
-				msg += '<p>' + _('The %s appliance has been successfully set up.', this.ucr['umc/web/appliance/name']) + ' ';
+				msg += '<p>' + _('%s Univention App has been successfully set up.', this.ucr['umc/web/appliance/name']) + ' ';
 			} else {
 				msg += '<p>' + _('UCS has been successfully set up.') + ' ';
 			}
@@ -1730,6 +1746,8 @@ define([
 			}
 			if (array.indexOf(this.disabledFields, 'reboot') !== -1) {
 				msg += _('<p>After clicking on the button <i>Finish</i> the system will be prepared for the first boot procedure and will be rebooted.</p>');
+			} else if (this.ucr['umc/web/appliance/name']) {
+				msg += _('<p>Click on <i>Finish</i> for putting this system into operation.</p>');
 			} else {
 				msg += _('<p>Click on <i>Finish</i> for putting UCS into operation.</p>');
 			}
