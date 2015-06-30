@@ -59,7 +59,7 @@ def test_run(ucr, test_ucr_value):
 	ucr.load()
 	previous_value = ucr.get(ucr_var)
 
-	if test_ucr_value == None:
+	if test_ucr_value is None:
 		univention.config_registry.handler_unset([ucr_var])
 
 	else:

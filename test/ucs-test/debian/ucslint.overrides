@@ -11,3 +11,5 @@
 0010-2
 # Depcreated univention-*
 0016-2: tests/01_base/check_log_files_definitions.py
+# Violations for testing
+0008-4: umc/de.po

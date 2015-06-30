@@ -49,7 +49,7 @@ def set_ucr(ucr_set, ucr_unset=None, ucr=None):
 			if new_val == old_val:
 				continue
 
-			if old_val != None:
+			if old_val is not None:
 				previous_ucr_set.append(u'%s=%s' % (var, old_val))
 			else:
 				previous_ucr_unset.append(u'%s' % (var,))
@@ -62,9 +62,9 @@ def set_ucr(ucr_set, ucr_unset=None, ucr=None):
 
 		for var in ucr_unset:
 			val = ucr.get(var)
-			if val != None:
+			if val is not None:
 				previous_ucr_set.append(u'%s=%s' % (var, val))
-		
+
 		univention.config_registry.handler_unset(ucr_unset)
 
 	return (previous_ucr_set, previous_ucr_unset)
@@ -275,7 +275,7 @@ class Testcase_GPO_Security_Descriptor_UDM_to_SAM(Testclass_GPO_Security_Descrip
 		temp_dn = str(ldb_msg.dn).lower()
 		temp_dn.replace(self.ucr["samba4/ldap/base"].lower(), self.ucr["ldap/base"])
 		ucs_dn = self.machine_ucs_ldap.searchDn(base=temp_dn,scope='base')[0]
-		
+
 		uldap_msg = self.get_ucs_ldap_object(ucs_dn)
 		try:
 			ucs_ntsd = self.get_ntsd(uldap_msg)

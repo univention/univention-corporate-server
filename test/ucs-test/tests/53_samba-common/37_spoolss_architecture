@@ -55,7 +55,7 @@ def test_run(ucr, arch):
 	ucr.load()
 	previous_value = ucr.get(ucr_var)
 
-	if arch == None:
+	if arch is None:
 		expected_value = expected_spoolss_architecture[host_architecture()]
 		if previous_value:
 			univention.config_registry.handler_unset([ucr_var])
