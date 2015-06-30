@@ -5,7 +5,7 @@ src: ntp
 fix: 1:4.2.6.p2+dfsg-1.42.201506051319
 version: [5,6]
 desc: |
- These vulernabilities have been fixed in ntp:
+ These vulnerabilities have been fixed in ntp:
  * Man-in-the-middle attackers may spoof packets by omitting the MAC
    because the symmetric-key feature in the receive function in
    ntp_proto.c requires a correct MAC only if the MAC field has a
