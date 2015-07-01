@@ -1,3 +1,9 @@
+univention-kvm-virtio (4.0.0-2) unstable; urgency=low
+
+  * Bug #38655: Update VirtIO driver
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 01 Jul 2015 18:09:33 +0200
+
 univention-kvm-virtio (4.0.0-1) unstable; urgency=low
 
   * Bug #36122: UCS-3.2 Version bump

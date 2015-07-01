@@ -29,41 +29,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-SOURCE := virtio-win-0.1-81.iso
-TARGET := KVM_Windows_drivers_(virtio_1.1.81).iso
+SOURCE := virtio-win-0.1.105.iso
+TARGET := KVM_Windows_drivers_(virtio_1.1.105).iso
 
 empty :=
 space := $(empty) $(empty)
 INSTALL ?= install
 
-.PHONY: patch
-patch: $(TARGET)
-$(TARGET): $(SOURCE)
-	-$(RM) "$@"
-	xorriso -no_rc \
-		-indev "$<" \
-		-outdev "$@" \
-		-compliance omit_version:lowercase:full_ascii \
-		-mv /WXP/X86/\* /XP/X86/ -- \
-		-rmdir /WXP/\* -- \
-		-rmdir /WXP -- \
-		-mv /WLH/X86/\*   /VISTA/X86/   -- \
-		-mv /WLH/AMD64/\* /VISTA/AMD64/ -- \
-		-rmdir /WLH/\* -- \
-		-rmdir /WLH -- \
-		-commit \
-		-eject all || { rc=$$? ; $(RM) "$@" ; exit $$rc ; }
-
 .PHONY: install
-install: $(TARGET)
+install: $(SOURCE)
 	$(INSTALL) -m755 -d $(DESTDIR)/usr/share/univention-kvm-virtio
-	$(INSTALL) -m644 "$(TARGET)" "$(DESTDIR)/usr/share/univention-kvm-virtio/$(subst _,$(space),$(TARGET))"
+	$(INSTALL) -m644 "$<" "$(DESTDIR)/usr/share/univention-kvm-virtio/$(subst _,$(space),$(TARGET))"
 
 .PHONY: get-orig-source
 get-orig-source: $(SOURCE)
 virtio-win-%.iso:
-	wget -O "$@" "http://alt.fedoraproject.org/pub/alt/virtio-win/latest/images/$@"
-
-.PHONY: clean
-clean:
-	$(RM) "$(TARGET)"
+	wget -O "$@" "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-$*-1/$@"

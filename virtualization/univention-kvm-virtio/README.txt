@@ -1,5 +1,5 @@
 Wir verwenden die von Fedora/RedHat gebauten und signierten Treiber:
-<http://alt.fedoraproject.org/pub/alt/virtio-win/latest/images/>
+<https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/>
 
 Das ISO-Image wird angepasst, um folgende konsistente Struktur zu haben:
     /XP     Treiber für Windows XP

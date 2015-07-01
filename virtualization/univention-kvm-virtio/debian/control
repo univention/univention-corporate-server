@@ -4,7 +4,6 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper,
  ucslint,
- xorriso
 Standards-Version: 3.8.2
 
 Package: univention-kvm-virtio
