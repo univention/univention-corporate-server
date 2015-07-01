@@ -1,3 +1,9 @@
+univention-system-setup (8.1.69-10) unstable; urgency=low
+
+  * Bug #38781: fixed typo in setup.css
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 01 Jul 2015 15:10:39 +0200
+
 univention-system-setup (8.1.69-9) unstable; urgency=low
 
   * Bug #38780, #38781: added translations
