@@ -36,6 +36,7 @@ def main():
 		with ucr_test.UCSTestConfigRegistry() as ucr:
 			handler_set(['mail/cyrus/sieve/spam=true'])
 			handler_set(['mail/dovecot/sieve/spam=true'])
+			utils.restart_listener()
 			domain = ucr.get('domainname')
 			host = '%s.%s' % (ucr.get('hostname'), domain)
 			password = 'univention'
@@ -48,13 +49,14 @@ def main():
 				}
 			)
 
-			sieve_test(usermail, 'ACTIVE')
+			sieve_test(usermail, '"default" ACTIVE')
 			token = str(time.time())
 			send_mail(recipients=usermail, msg=token, gtube=True)
 			check_delivery(token, recipient_email=usermail, should_be_delivered=True, spam=True)
 
 			handler_set(['mail/cyrus/sieve/spam=false'])
 			handler_set(['mail/dovecot/sieve/spam=false'])
+			utils.restart_listener()
 			usermail = '%s@%s' % (uts.random_name(), domain )
 			userdn, username = udm.create_user(
 				set={

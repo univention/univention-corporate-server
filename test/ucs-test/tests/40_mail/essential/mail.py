@@ -288,8 +288,10 @@ def spam_delivered(token, mail_address):
 				spam = spam or True
 			break
 	# dovecot
-	spam_folder = dovecot_spam or '.Spam'
-	mail_dir = os.path.join(get_dovecot_maildir(mail_address), spam_folder)
+	spam_folder = dovecot_spam or 'Spam'
+	mail_dir = get_dovecot_maildir(mail_address, folder=spam_folder)
+	if not os.path.isdir(mail_dir):
+		print 'Warning: maildir %r does not exist!' % (mail_dir,)
 	for _file in get_dir_files(mail_dir, recursive=True):
 		with open(_file) as fi:
 			content = fi.read()
@@ -435,7 +437,7 @@ class UCSTest_Mail_MissingMailbox(UCSTest_Mail_Exception):
 	pass
 
 
-def get_dovecot_maildir(mail_address):
+def get_dovecot_maildir(mail_address, folder=None):
 	"""
 	Returns directory name for specified mail address.
 
@@ -444,6 +446,9 @@ def get_dovecot_maildir(mail_address):
 
 	>>> get_dovecot_maildir('someuser@foobar.com')
 	'/var/spool/dovecot/private/foobar.com/someuser/Maildir'
+
+	>>> get_dovecot_maildir('someuser@foobar.com', folder='Spam/SubSpam')
+	'/var/spool/dovecot/private/foobar.com/someuser/Maildir/.Spam.SubSpam'
 
 	>>> get_dovecot_maildir('only-localpart')
 	Traceback (most recent call last):
@@ -462,7 +467,10 @@ def get_dovecot_maildir(mail_address):
 		raise UCSTest_Mail_InvalidMailAddress()
 
 	localpart, domain = mail_address.rsplit('@', 1)
-	return '/var/spool/dovecot/private/%s/%s/Maildir' % (domain, localpart.lower())
+	result = '/var/spool/dovecot/private/%s/%s/Maildir' % (domain, localpart.lower())
+	if folder:
+		result = '%s/.%s' % (result, folder.lstrip('/').replace('/', '.'))
+	return result
 
 
 def get_dovecot_shared_folder_maildir(foldername):
