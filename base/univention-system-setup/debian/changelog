@@ -1,3 +1,10 @@
+univention-system-setup (8.1.69-11) unstable; urgency=low
+
+  * Bug #38781: changed wording and translation in the setup wizard
+    for Univention Apps
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 01 Jul 2015 16:21:56 +0200
+
 univention-system-setup (8.1.69-10) unstable; urgency=low
 
   * Bug #38781: fixed typo in setup.css

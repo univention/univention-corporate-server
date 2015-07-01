@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-07-01 13:54+0200\n"
+"POT-Creation-Date: 2015-07-01 16:15+0200\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -21,6 +21,7 @@ msgid "%s MiB"
 msgstr ""
 
 #: umc/js/setup/ApplianceWizard.js:304
+#, python-format
 msgid "%s Univention App"
 msgstr "%s Univention App"
 
@@ -239,26 +240,27 @@ msgstr ""
 #: umc/js/setup/ApplianceWizard.js:1046
 msgid ""
 "A valid e-mail address allows to activate the UCS system for using the "
-"Univention App Center. An e-mail with a personalized license key will then "
-"be sent to your e-mail address. This license can be uploaded via the license "
-"dialog in Univention Management Console."
+"Univention App Center. The address can be specified now or also at a later "
+"point in time. An e-mail with a personalized license key will then be sent "
+"to your e-mail address. This license can be uploaded via the license dialog "
+"in Univention Management Console."
 msgstr ""
 "Eine gültige E-Mail-Adresse ermöglicht, das UCS-System für die Verwendung "
-"des Univention App Centers freizuschalten. Eine E-Mail mit einem "
-"personalisierten Lizenzschlüssel wird Ihnen dann an diese Adresse zugesendet "
-"werden. Die Lizenz kann über den Lizenzdialog der Univention Management "
-"Console eingespielt werden."
+"des Univention App Centers freizuschalten. Die Adresse kann jetzt oder auch zu einem späteren Zeitpunkt angegeben werden. "
+"Eine E-Mail mit einem personalisierten Lizenzschlüssel "
+"wird Ihnen dann an diese Adresse zugesendet werden. Die Lizenz kann über den "
+"Lizenzdialog der Univention Management Console eingespielt werden."
 
 #: umc/js/setup/ApplianceWizard.js:1044
 msgid ""
-"A valid e-mail address allows to activate the Univention App instance. This "
-"is a required step. An e-mail with a personalized license key will then be "
-"sent to your e-mail address. This license can be uploaded after the setup "
-"process."
+"A valid e-mail address is required to activate %s Univention App. The "
+"address can be specified now or also at a later point in time. An e-mail "
+"with a personalized license key will then be sent to your e-mail address. "
+"This license can be uploaded after the setup process."
 msgstr ""
-"Eine gültige E-Mail-Adresse erlaubt die Aktivierung dieser Univention App. "
-"Dieser Schritt ist für die Benutzung der App erforderlich. Eine E-Mail mit "
-"einem personalisierten Lizenzschlüssel wird Ihnen dann an diese Adresse "
+"Eine gültige E-Mail-Adresse ist für die Aktivierung von %s Univention App "
+"notwendig. Die Adresse kann jetzt oder auch zu einem späteren Zeitpunkt angegeben werden. Eine E-"
+"Mail einem personalisierten Lizenzschlüssel wird Ihnen dann an diese Adresse "
 "zugesendet werden. Die Lizenz kann über den Lizenzdialog der Univention "
 "Management Console eingespielt werden."
 
@@ -874,6 +876,7 @@ msgid "Identifier"
 msgstr "Bezeichner"
 
 #: umc/js/setup/ApplianceWizard.js:588
+#, python-format
 msgid "If unsure, select <i>%s</i>."
 msgstr "Wenn unsicher, wählen Sie <i>%s</i>."
 
@@ -1578,6 +1581,7 @@ msgid "Welcome to Univention Corporate Server (UCS)."
 msgstr "Wilkommen bei Univention Corporate Server (UCS)."
 
 #: umc/js/setup/ApplianceWizard.js:303
+#, python-format
 msgid "Welcome to the setup of %s Univention App."
 msgstr "Wilkommen bei der Einrichtung von %s Univention App."
 

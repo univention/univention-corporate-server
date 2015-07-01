@@ -1041,9 +1041,9 @@ define([
 			var msg = '';
 			if (type == 'email') {
 				if (this.ucr['umc/web/appliance/name']) {
-					msg = _('A valid e-mail address allows to activate the Univention App instance. This is a required step. An e-mail with a personalized license key will then be sent to your e-mail address. This license can be uploaded after the setup process.');
+					msg = _('A valid e-mail address is required to activate %s Univention App. The address can be specified now or also at a later point in time. An e-mail with a personalized license key will then be sent to your e-mail address. This license can be uploaded after the setup process.', this.ucr['umc/web/appliance/name']);
 				} else {
-					msg = _('A valid e-mail address allows to activate the UCS system for using the Univention App Center. An e-mail with a personalized license key will then be sent to your e-mail address. This license can be uploaded via the license dialog in Univention Management Console.');
+					msg = _('A valid e-mail address allows to activate the UCS system for using the Univention App Center. The address can be specified now or also at a later point in time. An e-mail with a personalized license key will then be sent to your e-mail address. This license can be uploaded via the license dialog in Univention Management Console.');
 				}
 			}
 			else if (type == 'hostname') {
