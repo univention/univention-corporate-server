@@ -37,7 +37,7 @@ import univention.admin.handlers
 import univention.admin.localization
 
 
-from univention.admin.handlers.policies.base import (
+from univention.admin.policy import (
 	register_policy_mapping, policy_object_tab,
 	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
 	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty

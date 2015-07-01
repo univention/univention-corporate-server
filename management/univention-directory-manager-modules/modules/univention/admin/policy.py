@@ -75,11 +75,11 @@ def prohibitedObjectClassesProperty(**kwargs):
 		short_description=_('Excluded object class'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=1,
+		multivalue=True,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	)
 	pargs.update(kwargs)
 	return 'prohibitedObjectClasses', univention.admin.property(**pargs)
@@ -89,11 +89,11 @@ def fixedAttributesProperty(**kwargs):
 	pargs = dict(
 		short_description=_('Fixed attribute'),
 		long_description='',
-		multivalue=1,
+		multivalue=True,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	)
 	pargs.update(kwargs)
 	return 'fixedAttributes', univention.admin.property(**pargs)
@@ -103,11 +103,11 @@ def emptyAttributesProperty(**kwargs):
 	pargs = dict(
 		short_description=_('Empty attribute'),
 		long_description='',
-		multivalue=1,
+		multivalue=True,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	)
 	pargs.update(kwargs)
 	return 'emptyAttributes', univention.admin.property(**pargs)
@@ -118,11 +118,11 @@ def ldapFilterProperty(**kwargs):
 		short_description=_('LDAP filter'),
 		long_description=_('This policy applies only to objects which matches this LDAP filter.'),
 		syntax=univention.admin.syntax.ldapFilter,
-		multivalue=0,
+		multivalue=False,
 		options=[],
-		required=0,
-		may_change=1,
-		identifies=0
+		required=False,
+		may_change=True,
+		identifies=False
 	)
 	pargs.update(kwargs)
 	return 'ldapFilter', univention.admin.property(**pargs)
