@@ -56,7 +56,7 @@ define([
 
 		replaceTitle: function() {
 			if (data['umc/web/appliance/name']) {
-				var title = _('Welcome to the {0} appliance with Univention Corporate Server', [data['umc/web/appliance/name']]);
+				var title = _('Welcome to {0} Univention App', [data['umc/web/appliance/name']]);
 				var titleNode = query('h1', 'title')[0];
 				domAttr.set(titleNode, 'data-i18n', title);
 				titleNode.innerHTML = title;

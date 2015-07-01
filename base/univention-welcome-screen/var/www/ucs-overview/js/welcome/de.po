@@ -28,3 +28,6 @@ msgstr "Suchen Sie nach einem Desktop?"
 
 msgid "Press Alt+F4 or click here to close this view and display the KDE login manager."
 msgstr "Drücken Sie Alt+F4 oder klicken Sie hier um dieses Fenster zu schließen und den KDE-Loginmanager anzuzeigen."
+
+msgid "Welcome to {0} Univention App"
+msgstr "Willkommen bei {0} Univention App"
