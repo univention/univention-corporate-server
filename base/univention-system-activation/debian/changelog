@@ -1,3 +1,11 @@
+univention-system-activation (0.0.1-24) unstable; urgency=medium
+
+  * Bug #38547: Allow access to /ucs-overview for welcome site
+  * Bug #38547: adjust parsing setup profile for email address
+  * Bug #38782: adjust wording app vendor/provider
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 01 Jul 2015 17:17:30 +0200
+
 univention-system-activation (0.0.1-23) unstable; urgency=medium
 
   * Bug #38547, Bug #38782: adjusted texts and wording
