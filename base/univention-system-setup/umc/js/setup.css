@@ -214,3 +214,12 @@
 	background-size: 96px;
 	padding-left: 96px;
 }
+
+/*make sure that headers do not break*/
+.umc.umcHeadless .umcModuleHeader .umcModuleHeaderLeft {
+	￼max-width: 100%;
+}
+
+.umc.umcHeadless .umcModuleHeader .umcModuleHeaderRight {
+	￼display: none;
+}

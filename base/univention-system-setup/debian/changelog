@@ -1,3 +1,9 @@
+univention-system-setup (8.1.69-9) unstable; urgency=low
+
+  * Bug #38780, #38781: added translations
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 01 Jul 2015 14:08:01 +0200
+
 univention-system-setup (8.1.69-8) unstable; urgency=low
 
   * Bug #37816: Adapted the messages
