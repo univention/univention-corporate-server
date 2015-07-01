@@ -1,3 +1,9 @@
+univention-system-setup (8.1.69-8) unstable; urgency=low
+
+  * Bug #37816: Adapted the messages
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 01 Jul 2015 12:28:21 +0200
+
 univention-system-setup (8.1.69-7) unstable; urgency=low
 
   * Bug #38780: Changed the wording in the setup wizard for creating
