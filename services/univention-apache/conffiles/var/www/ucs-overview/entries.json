@@ -123,9 +123,14 @@ def get_ec2_address():
 	interfaces = Interfaces(configRegistry)
 	for ifname, iface in interfaces.all_interfaces:
 		# IPv4
-		addr = get_ip_address(ifname) if iface.type in DHCP else iface.ipv4_address()
-		if addr:
-			return '%s' % (addr.ip,)
+		if iface.type in DHCP:
+			addr = get_ip_address(ifname)
+			if addr:
+				return '%s' % (addr,)
+		else:
+			addr = iface.ipv4_address()
+			if addr:
+				return '%s' % (addr.ip,)
 		# IPv6
 		addr = iface.ipv6_address()
 		if addr:
@@ -135,7 +140,7 @@ def get_ec2_address():
 	for ifname, iface in interfaces.all_interfaces:
 		addr = get_ip_address(ifname)
 		if addr:
-			return '%s' % (addr.ip,)
+			return '%s' % (addr,)
 
 	# fallback
 	return socket.getfqdn()

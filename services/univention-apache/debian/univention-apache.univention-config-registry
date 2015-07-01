@@ -52,6 +52,7 @@ Variables: umc/server/languages/.*
 Variables: hostname
 Variables: domainname
 Variables: server/amazon
+Variables: interfaces/
 
 Type: file
 File: var/www/ucs-overview/languages.json

@@ -1,3 +1,9 @@
+univention-apache (7.0.16-15) unstable; urgency=low
+
+  * Bug #38391: Fix IP address by DHCP
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 01 Jul 2015 19:10:53 +0200
+
 univention-apache (7.0.16-14) unstable; urgency=low
 
   * Bug #38016: Enable redirect to <https://>.
