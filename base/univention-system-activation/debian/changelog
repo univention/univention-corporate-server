@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-23) unstable; urgency=medium
+
+  * Bug #38547, Bug #38782: adjusted texts and wording
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 01 Jul 2015 12:55:14 +0200
+
 univention-system-activation (0.0.1-22) unstable; urgency=medium
 
   * Bug #38547: udpate UCR variable dependencies for entries.json
