@@ -1,0 +1,105 @@
+#!/usr/share/ucs-test/runner python
+## desc: Mail imap acl flags are correctly evaluated
+## tags: apptest
+## exposure: dangerous
+## packages: [univention-mail-server]
+
+from essential.mail import check_delivery, send_mail
+from essential.mailclient import MailClient, create_shared_mailfolder
+from univention.config_registry import handler_set
+import time
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+
+
+def main():
+	with udm_test.UCSTestUDM() as udm:
+		with ucr_test.UCSTestConfigRegistry() as ucr:
+			dovecot = ucr.is_true('mail/dovecot')
+			domain = ucr.get('domainname')
+			handler_set(['mail/dovecot/mailbox/delete=yes'])
+			handler_set(['mail/cyrus/mailbox/delete=yes'])
+			host = '%s.%s' % (ucr.get('hostname'), domain)
+			password = 'univention'
+			mails = []
+			users = []
+			for i in xrange(3):
+				name = uts.random_name()
+				usermail = '%s@%s' % (name, domain)
+				userdn, username = udm.create_user(
+					username=name,
+					set={
+						'password'           : password,
+						'mailHomeServer'     : host,
+						'mailPrimaryAddress' : usermail
+					}
+				)
+				mails.append(usermail)
+				users.append(userdn)
+			token = str(time.time())
+			send_mail(recipients=mails,	msg=token, port=587, tls=True,
+				username=username, password=password)
+			check_delivery(token, mails[0], True)
+			group_mail = '%s@%s' % (uts.random_name(), domain)
+			groupdn, groupname = udm.create_group(
+				set={
+					'users'       : users[1],
+					'mailAddress' : group_mail,
+				},
+			)
+			permissions = {
+				'lookup' : 'l',
+				'read'   : 'lrs',
+				'post'   : 'lrsp',
+				'append' : 'lrspi',
+				'write'  : 'lrspiwcd',
+				'all'    : 'lrspiwcda',
+			}
+
+			create_shared_mailfolder(udm, host, mail=False,
+							user_permission=['"%s" "%s"' % ('anyone', 'none')])
+			create_shared_mailfolder(udm, host, mail=True,
+							user_permission=['"%s" "%s"' % ('anyone', 'none')])
+			owner_user = mails[0]
+
+			independent_user = mails[2]
+			for permission in [permissions.get(x) for x in permissions]:
+				imap = MailClient(host)
+				imap.log_in(owner_user, password)
+				mailboxs = imap.getMailBoxes()
+				for mailbox in mailboxs:
+					print '** %s Mailbox = %s, Setting %s -> %s' % (
+						owner_user, mailbox, independent_user, permission)
+					imap.setacl(mailbox, independent_user, permission)
+					imap2 = MailClient(host)
+					imap2.log_in(independent_user, password)
+					imap2.check_permissions(owner_user, mailbox, permission, dovecot)
+					imap2.logout()
+				imap.logout()
+
+			group_user = mails[1]
+			if dovecot:
+				groupname= '$%s' % groupname
+			for permission in [permissions.get(x) for x in permissions]:
+				imap = MailClient(host)
+				imap.log_in(owner_user, password)
+				mailbox = 'INBOX'
+				print '** %s Mailbox = %s, Setting %s -> %s' % (
+					owner_user, mailbox, groupname, permission)
+				if dovecot:
+					imap.setacl(mailbox, groupname, permission)
+					time.sleep(20)
+				else:
+					imap.set_acl_cyrus(groupname, permission)
+				imap2 = MailClient(host)
+				imap2.log_in(group_user, password)
+				imap2.check_permissions(owner_user, mailbox, permission, dovecot)
+				imap2.logout()
+				imap.logout()
+
+
+if __name__ == '__main__':
+	main()
+
+# vim: set ft=python ts=4 sw=4 noet :
