@@ -14,28 +14,36 @@ desc: |
  * Denial of service in isofs (CVE-2014-9420)
  * espfix can by bypassed (CVE-2014-8133)
  * espfix not available for KVM paravirtualised guests (CVE-2014-8134)
- * Memory corruption in garbage collector for unused security keys (CVE-2014-9529)
+ * Memory corruption in garbage collector for unused security keys
+   (CVE-2014-9529)
  * Information leak in isofs (CVE-2014-9584)
- * iptables doesn't handle SCTP rules unless the SCTP module is loaded (CVE-2014-8160)
+ * iptables doesn't handle SCTP rules unless the SCTP module is loaded
+   (CVE-2014-8160)
  * Insufficient randomisation of the vdso segment (CVE-2014-9585)
  * Denial of service in packet routing (CVE-2015-1465)
  * Use-after-free in SCTP (CVE-2015-1421)
  * Incorrect implementation of SYSENTER emulation (CVE-2015-0239)
- * Crypto userspace API allows loading of arbitrary kernel modules (CVE-2013-7421, CVE-2014-9644)
+ * Crypto userspace API allows loading of arbitrary kernel modules
+   (CVE-2013-7421, CVE-2014-9644)
  * ecryptfs 1-byte overwrite (CVE-2014-9683)
  * ASLR integer overflow: Reducing stack entropy by four (CVE-2015-1593)
- * Memory leak to userspace due to incorrect data type in rds_sysctl_rds_table (CVE-2015-2042)
- * Memory leak to userspace due to incorrect data type in llc2_timeout_table (CVE-2015-2041)
+ * Memory leak to userspace due to incorrect data type in
+   rds_sysctl_rds_table (CVE-2015-2042)
+ * Memory leak to userspace due to incorrect data type in
+   llc2_timeout_table (CVE-2015-2041)
  * Xen: Non-maskable interrupts triggerable by guests (CVE-2015-2150)
  * Linux mishandles int80 fork from 64-bit tasks (CVE-2015-2830)
- * Buffer overruns in Linux kernel RFC4106 implementation using AESNI (CVE-2015-3331)
+ * Buffer overruns in Linux kernel RFC4106 implementation using AESNI
+   (CVE-2015-3331)
  * TCP Fast Open local DoS (CVE-2015-3332)
  * chown() was racy relative to execve() (CVE-2015-3339)
  * infiniband: uverbs: unprotected physical memory access (CVE-2014-8159)
  * btrfs: non-atomic xattr replace operation (CVE-2014-9710)
- * DoS -- OOPS NULL pointer dereference in nf_nat_setup_info+0x471 (CVE-2014-9715)
+ * DoS -- OOPS NULL pointer dereference in nf_nat_setup_info+0x471
+   (CVE-2014-9715)
  * Ext4: fallocate zero range page size > block size (CVE-2015-0275)
- * Kernel execution in the early microcode loader via crafted microcode (CVE-2015-2666)
+ * Kernel execution in the early microcode loader via crafted microcode
+   (CVE-2015-2666)
  * IPv6 Hop limit lowering via RA messages (CVE-2015-2922)
  * privilege escalation via ping sockets due to use-after-free (CVE-2015-3636)
  * drivers/vhost/scsi.c: potential memory corruption (CVE-2015-4036)
