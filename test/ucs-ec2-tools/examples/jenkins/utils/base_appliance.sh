@@ -119,6 +119,7 @@ app_get_notifyVendor ()
 				app = Application.find('$app'); \
 				print app.get('notifyvendor');"
 }
+
 app_get_appliance_name ()
 {
 	local app="$1"
@@ -607,8 +608,9 @@ appliance_basesettings ()
 	ucr set repository/app_center/blacklist="$blacklist"
 	ucr set repository/app_center/whitelist="$whitelist"
 
-	name=$(app_get_name $app)
+	name=$(app_get_appliance_name $app)
 	ucr set umc/web/appliance/name="$name"
+	ucr set grup/title="$name"
 
 	version=$(app_get_version $app)
 	ucr set appliance/apps/$app/version="$version"
