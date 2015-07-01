@@ -610,7 +610,7 @@ appliance_basesettings ()
 
 	name=$(app_get_appliance_name $app)
 	ucr set umc/web/appliance/name="$name"
-	ucr set grup/title="$name"
+	ucr set grup/title="Start $name Univention App"
 
 	version=$(app_get_version $app)
 	ucr set appliance/apps/$app/version="$version"
