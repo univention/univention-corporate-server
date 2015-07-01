@@ -1,4 +1,4 @@
-univention-directory-manager-modules (10.0.29-56) unstable; urgency=medium
+univention-directory-manager-modules (10.0.29-57) unstable; urgency=medium
 
   * Bug #36255: move also translation domain
 
