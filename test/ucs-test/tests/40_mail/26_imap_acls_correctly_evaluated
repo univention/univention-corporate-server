@@ -57,9 +57,9 @@ def main():
 				'all'    : 'lrspiwcda',
 			}
 
-			create_shared_mailfolder(udm, host, mail=False,
+			create_shared_mailfolder(udm, host, mailAddress=False,
 							user_permission=['"%s" "%s"' % ('anyone', 'none')])
-			create_shared_mailfolder(udm, host, mail=True,
+			create_shared_mailfolder(udm, host, mailAddress=True,
 							user_permission=['"%s" "%s"' % ('anyone', 'none')])
 			owner_user = mails[0]
 
