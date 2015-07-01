@@ -347,7 +347,7 @@ define([
 			var tabNode = put(contentNode, 'div.tab#upload-tab.hide-tab');
 			put(tabNode, 'p > b', _('You have got mail!'));
 			put(tabNode, 'p', {
-				innerHTML: _('A license file has been sent to <strong id="email-address">{0}</strong>. Upload the license file from the email to activate {1} Univention App. Once the activation has been effecutated, your email address will be sent to the vendor of the app for contact purposes.', [email_address, entries.appliance_name])
+				innerHTML: _('A license file has been sent to <strong id="email-address">{0}</strong>. Upload the license file from the email to activate {1} Univention App. Once the activation has been effecutated, your email address will be sent to the app provider. The app provider may contact you.', [email_address, entries.appliance_name])
 			});
 			put(tabNode, 'p', {
 				innerHTML: _('If you did not received an email, please make sure to check your SPAM directory or <a href="#register">try it again</a>.')
