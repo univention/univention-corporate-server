@@ -1,5 +1,11 @@
 univention-directory-manager-modules (10.0.29-56) unstable; urgency=medium
 
+  * Bug #36255: move also translation domain
+
+ -- Florian Best <best@univention.de>  Wed, 01 Jul 2015 12:37:09 +0200
+
+univention-directory-manager-modules (10.0.29-56) unstable; urgency=medium
+
   * Bug #36255: move univention.admin.handler.policies.base to
   	univention.admin.policy.
 

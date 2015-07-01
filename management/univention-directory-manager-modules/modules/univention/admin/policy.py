@@ -35,7 +35,7 @@ import univention.admin.syntax
 from univention.admin.mapping import ListToString
 from univention.admin.layout import Tab
 
-translation = univention.admin.localization.translation('univention.admin.handlers.policies')
+translation = univention.admin.localization.translation('univention.admin')
 _ = translation.translate
 
 

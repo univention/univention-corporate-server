@@ -362,10 +362,6 @@ msgstr ""
 "Dynamische Vergabe von Adressen an unbekannte Clients. Standardmäßig "
 "erlaubt. Nicht mehr empfohlen."
 
-#: modules/univention/admin/handlers/policies/base.py:104
-msgid "Empty attribute"
-msgstr "Leeres Attribut"
-
 #: modules/univention/admin/handlers/policies/dhcp_statements.py:98
 msgid ""
 "Enable clients for which there is no host declaration to obtain IP "
@@ -379,10 +375,6 @@ msgstr ""
 msgid "Enables/disables password quality checks for example dictionary entries"
 msgstr ""
 "(De-)Aktiviert die Passwort-Qualitätsprüfung wie z.B. Wörterbuch-Prüfungen."
-
-#: modules/univention/admin/handlers/policies/base.py:75
-msgid "Excluded object class"
-msgstr "Ausgeschlossene Objektklasse"
 
 #: modules/univention/admin/handlers/policies/policy.py:55
 msgid "Find"
@@ -401,10 +393,6 @@ msgstr ""
 "Versenden eines Ping (ICMP Echo request) an den Client bei der Vergabe einer "
 "dynamischen Adresse. Sollte nur bei Problemen seitens des Clients mit der "
 "Verzögerung von einer Sekunde deaktiviert werden."
-
-#: modules/univention/admin/handlers/policies/base.py:90
-msgid "Fixed attribute"
-msgstr "Festgelegtes Attribut"
 
 #: modules/univention/admin/handlers/policies/admin_container.py:102
 #: modules/univention/admin/handlers/policies/autostart.py:100
@@ -610,10 +598,6 @@ msgstr "Erste Datei, die beim Booten vom Client geladen wird"
 msgid "LDAP Server"
 msgstr "LDAP-Server"
 
-#: modules/univention/admin/handlers/policies/base.py:118
-msgid "LDAP filter"
-msgstr "LDAP-Filter"
-
 #: modules/univention/admin/handlers/policies/ldapserver.py:66
 #: modules/univention/admin/handlers/policies/ldapserver.py:83
 msgid "LDAP server"
@@ -801,10 +785,6 @@ msgid ""
 "retrieved."
 msgstr ""
 "IP-Adresse oder Name des Servers, von dem die Boot-Datei geladen werden soll"
-
-#: modules/univention/admin/handlers/policies/base.py:51
-msgid "Object"
-msgstr "Objekt"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:54
 #: modules/univention/admin/handlers/policies/masterpackages.py:84
@@ -1051,10 +1031,6 @@ msgstr "Repository-Synchronisation"
 msgid "Repository syncronisation settings"
 msgstr "Repository Synchronisationseinstellungen"
 
-#: modules/univention/admin/handlers/policies/base.py:60
-msgid "Required object class"
-msgstr "Benötigte Objektklasse"
-
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:97
 msgid "Respond to BOOTP queries. Allowed by default."
 msgstr "Auf BOOTP-Anfragen antworten. Standardmäßig erlaubt."
@@ -1160,12 +1136,6 @@ msgid ""
 msgstr ""
 "Diese Zahl gibt an, nach wie vielen Passwortwechseln der Benutzer ein altes "
 "Passwort wiederverwenden darf"
-
-#: modules/univention/admin/handlers/policies/base.py:119
-msgid "This policy applies only to objects which matches this LDAP filter."
-msgstr ""
-"Diese Richtlinie wird nur auf Objekte angewendet, die diesem LDAP-Filter "
-"entsprechen."
 
 #: modules/univention/admin/handlers/policies/registry.py:53
 msgid "UCR Variables"

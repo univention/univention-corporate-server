@@ -1806,12 +1806,33 @@ msgstr "Zu viele Parameter"
 msgid "undefined"
 msgstr "nicht definiert"
 
-#~ msgid ""
-#~ "The name of a mail domain may only be composed of lowercase letters, the "
-#~ "figures 0-9, full stops and hyphens."
-#~ msgstr ""
-#~ "Der Name der Mail-Domäne sollte nur Kleinbuchstaben, die Zahlen von 0-9, "
-#~ "Punkte und Bindestriche beinhalten."
+#: modules/univention/admin/handlers/policies/base.py:104
+msgid "Empty attribute"
+msgstr "Leeres Attribut"
 
-#~ msgid "This is not a valid DNS entry name."
-#~ msgstr "Dies ist kein gültiger Name für einen DNS-Eintrag"
+#: modules/univention/admin/handlers/policies/base.py:75
+msgid "Excluded object class"
+msgstr "Ausgeschlossene Objektklasse"
+
+#: modules/univention/admin/handlers/policies/base.py:90
+msgid "Fixed attribute"
+msgstr "Festgelegtes Attribut"
+
+#: modules/univention/admin/handlers/policies/base.py:118
+msgid "LDAP filter"
+msgstr "LDAP-Filter"
+
+#: modules/univention/admin/handlers/policies/base.py:51
+msgid "Object"
+msgstr "Objekt"
+
+#: modules/univention/admin/handlers/policies/base.py:60
+msgid "Required object class"
+msgstr "Benötigte Objektklasse"
+
+#: modules/univention/admin/handlers/policies/base.py:119
+msgid "This policy applies only to objects which matches this LDAP filter."
+msgstr ""
+"Diese Richtlinie wird nur auf Objekte angewendet, die diesem LDAP-Filter "
+"entsprechen."
+
