@@ -1,3 +1,9 @@
+ucs-test (5.0.148-31) unstable; urgency=medium
+
+  * Bug #36256: adapt policy test case
+
+ -- Florian Best <best@univention.de>  Wed, 01 Jul 2015 16:47:57 +0200
+
 ucs-test (5.0.148-30) unstable; urgency=low
 
   * Bug #38797: 01/99_check_log_files: Ignore apachectrl reload

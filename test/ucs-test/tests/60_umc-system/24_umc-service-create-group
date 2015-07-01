@@ -55,9 +55,9 @@ class TestUMCGroupsCreation(TestUMCSystem):
         by making a UMC 'udm/put' request with respective options.
         """
         options = [{"object": {"$policies$":
-                                {"policies/umc": "cn=" + policyname
+                                {"policies/umc": ["cn=" + policyname
                                                  + ",cn=UMC,cn=policies,"
-                                                 + self.ldap_base},
+                                                 + self.ldap_base]},
                                  "$dn$": "cn=" + groupname + ",cn=groups,"
                                          + self.ldap_base},
                                  "options": {}}]
