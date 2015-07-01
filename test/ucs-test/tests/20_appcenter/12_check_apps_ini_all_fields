@@ -138,11 +138,11 @@ class Value(object):
         raise Error('Over %d chars long:\n >%s<>%s<' % (length,
                     self.value[:length + 1], self.value[length + 1:]))
 
-    def is_60c(self):
-        return self.is_n_chars_long(60)
+    def is_90c(self):
+        return self.is_n_chars_long(90)
 
-    def is_1000c(self):
-        return self.is_n_chars_long(1000)
+    def is_1400c(self):
+        return self.is_n_chars_long(1400)
 
     def is_email(self):
         if self.RE_EMAIL.match(self.value):
@@ -197,12 +197,12 @@ class Section(object):
         'Contact': ('required', 'is_email',),
         'DefaultPackagesMaster': ('optional',),
         'DefaultPackages': ('required',),
-        'Description': ('required', 'is_60c',),
+        'Description': ('required', 'is_90c',),
         'EmailRequired': ('optional',),
         'EndOfLife': ('optional', 'is_bool',),
         'ID': ('required',),
         'LicenseFile': ('optional',),
-        'LongDescription': ('required', 'is_1000c'),
+        'LongDescription': ('required', 'is_1400c'),
         'Maintainer': ('optional',),
         'MinPhysicalRAM': ('optional', 'is_capacity',),
         'Name': ('required',),

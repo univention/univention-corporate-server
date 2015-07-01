@@ -1,3 +1,10 @@
+ucs-test (5.0.148-32) unstable; urgency=low
+
+  * Bug #38798: Allow 60/1400 chars in ini file for
+    Description/LongDescription
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 01 Jul 2015 17:55:55 +0200
+
 ucs-test (5.0.148-31) unstable; urgency=medium
 
   * Bug #36256: adapt policy test case
