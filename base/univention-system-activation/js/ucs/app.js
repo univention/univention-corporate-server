@@ -63,7 +63,8 @@ define([
 	// strip starting/ending '"' and replace newlines
 	license = license.substr(1, license.length - 2).replace(/\\n/g, '\n');
 
-    var email_address = entries.email || 'your email address';
+    var email_address = entries.email || _('your email address');
+	entries.appliance_name = entries.appliance_name || '';
 
 	// make sure that en-US exists
 	var existsEnUsLocale = array.some(_availableLocales, function(ilocale) {
@@ -91,10 +92,7 @@ define([
 		}
 		return false;
 	};
-	var hasLicense = Boolean(entries.license_uuid);
 	var hasLicenseRequested = isTrue(entries.license_requested);
-    var showRequestLicenseTab = !hasLicense && !hasLicenseRequested;
-
 
 	return {
 		_availableLocales: _availableLocales,
@@ -187,7 +185,7 @@ define([
 
 		_createTitle: function() {
 			var titleNode = dom.byId('title');
-			put(titleNode, 'h1', _('Activation of Univention Corporate Server'));
+			put(titleNode, 'h1', _('Activation of {appliance_name} Univention App', entries));
 			put(titleNode, '!.dijitHidden');
 		},
 
@@ -204,13 +202,13 @@ define([
 			var contentNode = dom.byId('content');
 			var tabNode = put(contentNode, 'div.tab#register-tab.hide-tab');
 			put(tabNode, 'p > b', _('License request.'));
-			put(tabNode, 'p', _('Please enter a valid e-mail address in order to activate the UCS system. The activation is required to use the App Center. In the next step you can upload the license file that has been sent to your email address.'));
+			put(tabNode, 'p', _('Please enter a valid email address in order to activate {appliance_name} Univention App. The activation is mandatory to deploy the system. In the next step you can upload the license file that has been sent to your email address.', entries));
 
 			// create input field for email address
 			this._email = new TextBox({
 				inlineLabel: _('E-mail address'),
 				regExp: '.+@.+',
-				invalidMessage: _('No valid e-mail address.')
+				invalidMessage: _('No valid email address.')
 			});
 			this._email.on("keyup", lang.hitch(this, function(evt){
 				if(evt.keyCode === keys.ENTER){
@@ -221,7 +219,7 @@ define([
 			this._email.startup();
 
 			put(tabNode, 'p', {
-				innerHTML: _('Details about the activation of a UCS license can be found in the <a href="http://docs.univention.de/manual.html#central:license" target="_blank">UCS manual</a>.')
+				innerHTML: _('More details about the activation can be found in the <a href="http://docs.univention.de/manual.html#central:license" target="_blank">UCS manual</a>.')
 			});
 
 			// create input field for email address
@@ -347,15 +345,14 @@ define([
 			this._createNavButton('upload');
 			var contentNode = dom.byId('content');
 			var tabNode = put(contentNode, 'div.tab#upload-tab.hide-tab');
-			var uploaderNode = this._createUploader();
 			put(tabNode, 'p > b', _('You have got mail!'));
-			var textNode = put(tabNode, 'p', {
-				innerHTML: _('A license file has been sent to <strong id="email-address">{0}</strong>. Upload the license file from the email to activate your UCS instance.', [email_address])
+			put(tabNode, 'p', {
+				innerHTML: _('A license file has been sent to <strong id="email-address">{0}</strong>. Upload the license file from the email to activate {1} Univention App. Once the activation has been effecutated, your email address will be sent to the vendor of the app for contact purposes.', [email_address, entries.appliance_name])
 			});
-			var backNode = put(tabNode, 'p', {
-				innerHTML: _('Note: If you did not received an email, please also check your spam directory or <a href="#register">try it again</a>.')
+			put(tabNode, 'p', {
+				innerHTML: _('If you did not received an email, please make sure to check your SPAM directory or <a href="#register">try it again</a>.')
 			});
-			put(tabNode, '>', uploaderNode);
+			put(tabNode, '>', this._createUploader());
 			this._uploader.startup();
 		},
 
@@ -370,7 +367,7 @@ define([
 				})
 			});
 			put(tabNode, 'p > b', _('Activation successful!'));
-			put(tabNode, 'p', _('The App Appliance is now activated. Click continue to access the management interface.'));
+			put(tabNode, 'p', _('{appliance_name} Univention App is now activated. Click "Continue" to access the management interface.', entries));
 			put(tabNode, '>', this._continueButton.domNode);
 			this._continueButton.startup();
 		},
@@ -396,7 +393,7 @@ define([
 			this.createLanguagesDropDown();
 			this.createElements();
 			// check if license already requested
-			if(entries.license_requested === "true"){
+			if (hasLicenseRequested) {
 				router.startup('upload');
 			} else {
 				router.startup('register');

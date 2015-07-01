@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-06-26 23:23+0200\n"
+"POT-Creation-Date: 2015-07-01 12:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,46 +12,40 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: js/ucs/app.js:353
+#: js/ucs/app.js:350
 msgid ""
 "A license file has been sent to <strong id=\"email-address\">{0}</strong>. "
-"Upload the license file from the email to activate your UCS instance."
+"Upload the license file from the email to activate {1} Univention App. Once "
+"the activation has been effecutated, your email address will be sent to the "
+"vendor of the app for contact purposes."
 msgstr ""
-"Eine Lizenzdatei wurde an <strong id=\"email-address\">{0}</strong> gesendet. "
-"Laden Sie die Lizenzdatei hoch, um Ihre UCS-Instanz zu aktivieren."
+"Eine Lizenzdatei wurde an <strong id=\"email-address\">{0}</strong> "
+"gesendet. Laden Sie die Lizenzdatei hoch, um {1} Univention App zu "
+"aktivieren. Sobald die Aktivierung durchgeführt wurde, wird Ihre E-Mail-"
+"Adresse an den App-Hersteller zu Kontaktzwecken weitergeleitet werden ."
 
-#: js/ucs/app.js:190
-msgid "Activation of Univention Corporate Server"
-msgstr "Aktivierung von Univention Corporate Server"
+#: js/ucs/app.js:188
+msgid "Activation of {appliance_name} Univention App"
+msgstr "Aktivierung von {appliance_name} Univention App"
 
-#: js/ucs/app.js:372
+#: js/ucs/app.js:369
 msgid "Activation successful!"
 msgstr "Aktivierung erfolgreich!"
 
-#: js/ucs/app.js:263
+#: js/ucs/app.js:261
 msgid "An unknown error occured. Please try it again later!"
 msgstr ""
 "Ein unbekannter Fehler trat auf. Bitte versuchen sie es später noch einmal!"
 
-#: js/ucs/app.js:367
+#: js/ucs/app.js:364
 msgid "Continue"
 msgstr "Weiter"
 
-#: js/ucs/app.js:224
-msgid ""
-"Details about the activation of a UCS license can be found in the <a href="
-"\"http://docs.univention.de/manual.html#central:license\" target=\"_blank"
-"\">UCS manual</a>."
-msgstr ""
-"Weitere Informationen zu der Aktivierung einer UCS-Lizenz können im <a href="
-"\"http://docs.univention.de/handbuch.html#central:license\" target=\"_blank"
-"\">UCS-Handbuch</a> gefunden werden."
-
-#: js/ucs/app.js:211
+#: js/ucs/app.js:209
 msgid "E-mail address"
 msgstr "E-Mail-Adresse"
 
-#: js/ucs/app.js:265
+#: js/ucs/app.js:263
 msgid "Error "
 msgstr "Fehler "
 
@@ -65,7 +59,15 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: js/ucs/app.js:304
+#: js/ucs/app.js:353
+msgid ""
+"If you did not received an email, please make sure to check your SPAM "
+"directory or <a href=\"#register\">try it again</a>."
+msgstr ""
+"Sollten Sie keine E-Mail erhalten haben, prüfen Sie Ihr SPAM-Verzeichnis "
+"oder <a href=\"#register\">probieren Sie es noch einmal</a>."
+
+#: js/ucs/app.js:302
 msgid ""
 "If you encounter problems during the activation, please send an email to: "
 "<strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
@@ -75,48 +77,42 @@ msgstr ""
 "an: <strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
 "#000\">feedback@univention.de</a></strong>"
 
-#: js/ucs/app.js:180
+#: js/ucs/app.js:178
 msgid "Language"
 msgstr "Language"
 
-#: js/ucs/app.js:206
+#: js/ucs/app.js:204
 msgid "License request."
 msgstr "Anforderung einer Lizenz."
 
-#: js/ucs/app.js:213
-msgid "No valid e-mail address."
-msgstr "Keine gültige E-Mail-Adresse"
-
-#: js/ucs/app.js:356
+#: js/ucs/app.js:222
 msgid ""
-"Note: If you did not received an email, please also check your spam "
-"directory or <a href=\"#register\">try it again</a>."
+"More details about the activation can be found in the <a href=\"http://docs."
+"univention.de/manual.html#central:license\" target=\"_blank\">UCS manual</a>."
 msgstr ""
-"Sollten Sie keine E-Mail erhalten haben, prüfen Sie Ihr SPAM-Verzeichnis "
-"oder <a href=\"#register\">probieren Sie es noch einmal</a>."
+"Weitere Informationen zu der Aktivierung können im <a href=\"http://docs."
+"univention.de/handbuch.html#central:license\" target=\"_blank\">UCS-"
+"Handbuch</a> gefunden werden."
 
-#: js/ucs/app.js:207
+#: js/ucs/app.js:211
+msgid "No valid email address."
+msgstr "Keine gültige E-Mail-Adresse."
+
+#: js/ucs/app.js:205
 msgid ""
-"Please enter a valid e-mail address in order to activate the UCS system. The "
-"activation is required to use the App Center. In the next step you can "
-"upload the license file that has been sent to your email address."
+"Please enter a valid email address in order to activate {appliance_name} "
+"Univention App. The activation is mandatory to deploy the system. In the "
+"next step you can upload the license file that has been sent to your email "
+"address."
 msgstr ""
-"Bitte geben Sie eine gültige E-Mail-Adresse ein, um das UCS-System zu "
-"aktivieren. Die Aktivierung wird benötigt für die Nutzung des App Centers. "
-"Im nächsten Schritt können sie die Lizenzdatei hochladen, die dann an Ihre E-"
-"Mail-Adresse gesendet wurde."
+"Bitte geben Sie eine gültige E-Mail-Adresse ein, um {appliance_name} "
+"Univention App zu aktivieren. Die Aktivierung ist Voraussetzung, um das "
+"System in Gebrauch zu nehmen. Im nächsten Schritt können sie die Lizenzdatei "
+"hochladen, die an Ihre E-Mail-Adresse gesendet wurde."
 
-#: js/ucs/app.js:229
+#: js/ucs/app.js:227
 msgid "Request activation"
 msgstr "Aktivierung anfordern"
-
-#: js/ucs/app.js:373
-msgid ""
-"The App Appliance is now activated. Click continue to access the management "
-"interface."
-msgstr ""
-"Die App-Appliance ist nun aktiviert. Klicken sie auf \"Weiter\", um auf die "
-"Verwaltungsoberfläche zuzugreifen."
 
 #: js/ucs/i18n.js:82
 #, python-format
@@ -127,10 +123,22 @@ msgstr ""
 msgid "Translate me!"
 msgstr ""
 
-#: js/ucs/app.js:319
+#: js/ucs/app.js:317
 msgid "Upload license file"
 msgstr "Lizenzdatei hochladen"
 
-#: js/ucs/app.js:351
+#: js/ucs/app.js:348
 msgid "You have got mail!"
-msgstr "Sie haben neue E-Mails!"
+msgstr "Sie haben eine neue E-Mail!"
+
+#: js/ucs/app.js:66
+msgid "your email address"
+msgstr "Ihre E-Mail-Adresse"
+
+#: js/ucs/app.js:370
+msgid ""
+"{appliance_name} Univention App is now activated. Click \"Continue\" to "
+"access the management interface."
+msgstr ""
+"{appliance_name} Univention App ist nun aktiviert. Klicken sie auf \"Weiter"
+"\", um auf die Verwaltungsoberfläche zuzugreifen."
