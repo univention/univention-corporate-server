@@ -3,14 +3,30 @@
 .. moduleauthor:: Ammar Najjar <najjar@univention.de>
 """
 from itertools import izip
+from pexpect import spawn, EOF
 import email
 import imaplib
+import sys
 import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
+import univention_baseconfig
 
 class WrongAcls(Exception):
 	pass
+
+class LookupFail(Exception):
+	pass
+
+class ReadFail(Exception):
+	pass
+
+class AppendFail(Exception):
+	pass
+
+class WriteFail(Exception):
+	pass
+
 
 class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 
@@ -36,6 +52,7 @@ class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 		"""
 		try:
 			self.login(usermail, password)
+			self.owner = usermail
 		except Exception as ex:
 			print "Login Failed with exeption:%r" % ex
 			raise
@@ -47,6 +64,46 @@ class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 		"""
 		mBoxes = self.list()[1]
 		return [x.split()[-1] for x in mBoxes if 'Noselect' not in x.split()[0]]
+
+	def set_acl_cyrus(self, email, permission):
+		"""wrapper for setting /usr/sbin/univention0-cyrus-set-acl"""
+
+		baseConfig = univention_baseconfig.baseConfig()
+		baseConfig.load()
+
+		cyrus_user='cyrus'
+		password=open('/etc/cyrus.secret').read()
+		if password[-1] == '\n':
+			password=password[0:-1]
+
+		hostname = 'localhost'
+		shared_name = 'user/%s' % self.owner
+
+		if 'mail/cyrus/murder/backend/hostname' in baseConfig and baseConfig['mail/cyrus/murder/backend/hostname']:
+			hostname = baseConfig['mail/cyrus/murder/backend/hostname']
+
+		# if we want to give acls to a group, a different syntax is needed
+		if email.find("@")==-1:
+			# no email address, so we are dealing with
+			# a group, with 'anyone' or 'anonymous'
+			if not (email == "anyone" or email == "anonymous"):
+				email=email.replace(" ", "\ ")
+				email="group:%s"%email
+
+		time.sleep(20)
+		child = spawn('/usr/bin/cyradm -u %s %s' % (cyrus_user, hostname))
+		child.logfile = sys.stdout
+		i=0
+		while not i == 3:
+			i = child.expect(['Password:', '>', 'cyradm: cannot connect to server', EOF], timeout=60)
+			if i == 0:
+				child.sendline(password)
+			elif i == 1:
+				child.sendline('sam %s %s %s' % (shared_name, email, permission))
+				child.sendline('disc')
+				child.sendline('exit')
+			elif i == 2:
+				return True
 
 	def get_acl(self, mailbox):
 		"""get the exact acls from getacl
@@ -96,62 +153,125 @@ class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 					raise WrongAcls('\nExpected = %s\nCurrent = %s\n' % (
 						expected_acls.get(mailbox).get(who), current.get(mailbox).get(who)))
 
-	def check_read(self, expected_result):
+	def check_lookup(self, mailbox_owner, expected_result, dovecot=False):
+		"""Checks the lookup access of a certain mailbox
+
+		:expected_result: dict{mailbox : bool}
+		"""
+		for mailbox, retcode in expected_result.items():
+			mailbox = self.mail_folder(mailbox_owner, mailbox, dovecot)
+			data = self.getMailBoxes()
+			print 'Lookup :', mailbox, data
+			if (mailbox in data) != retcode:
+				raise LookupFail('Failed to list the inbox %s' % mailbox)
+
+	def check_read(self, mailbox_owner, expected_result, dovecot=False):
 		"""Checks the read access of a certain mailbox
 
 		:expected_result: dict{mailbox : bool}
 		"""
-		for mailbox in expected_result:
+		for mailbox, retcode in expected_result.items():
+			mailbox = self.mail_folder(mailbox_owner, mailbox, dovecot)
 			self.select(mailbox)
-			print self.status(mailbox, '(MESSAGES RECENT UIDNEXT UIDVALIDITY UNSEEN)')
-			typ, data = self.search(None, 'ALL')
-			print 'Response code:', typ
-			for num in data[0].split():
-				typ, data = self.fetch(num, '(RFC822)')
-				print 'Message %s\n%s\n' % (num, data[0][1])
-			self.close()
+			typ, data = self.status(mailbox, '(MESSAGES RECENT UIDNEXT UIDVALIDITY UNSEEN)')
+			print 'Read Retcode:', typ, data
+			if (typ == 'OK') != retcode:
+				raise ReadFail('Unexpected read result for the inbox %s' % mailbox)
+			if 'OK' in typ:
+			# typ, data = self.search(None, 'ALL')
+			# for num in data[0].split():
+			# 	typ, data = self.fetch(num, '(RFC822)')
+			# 	print 'Message %s\n%s\n' % (num, data[0][1])
+				self.close()
 
-	def check_post(self, expected_result):
-		"""Checks the post access of a certain mailbox
-
-		:expected_result: dict{mailbox : bool}
-		"""
-		for mailbox in expected_result:
-			self.select(mailbox)
-			print self.status(mailbox, '(MESSAGES RECENT UIDNEXT UIDVALIDITY UNSEEN)')
-			typ, data = self.search(None, 'ALL')
-			print 'Response code:', typ
-			self.close()
-
-	def check_append(self, expected_result):
+	def check_append(self, mailbox_owner, expected_result, dovecot=False):
 		"""Checks the append access of a certain mailbox
 
 		:expected_result: dict{mailbox : bool}
 		"""
-		for mailbox in expected_result:
+		for mailbox, retcode in expected_result.items():
+			mailbox = self.mail_folder(mailbox_owner, mailbox, dovecot)
 			self.select(mailbox)
-			print self.get_acl(mailbox)
 			typ, data =  self.append(
 				mailbox, '',
 				imaplib.Time2Internaldate(time.time()),
 				str(email.message_from_string('TEST %s' % mailbox))
 			)
-			print 'Append = ', typ
-			self.close()
+			print 'Append Retcode:', typ, data
+			if (typ == 'OK') != retcode:
+				raise AppendFail('Unexpected append result to inbox %s' % mailbox)
+			if 'OK' in typ:
+				self.close()
 
-	def check_write(self, expected_result):
+	def check_write(self, mailbox_owner, expected_result, dovecot=False):
 		"""Checks the write access of a certain mailbox
 
 		:expected_result: dict{mailbox : bool}
 		"""
-		pass
+		for mailbox, retcode in expected_result.items():
+			# Actuall Permissions are given to shared/owner/INBOX
+			# This is different than listing
+			if mailbox == 'INBOX' and dovecot:
+				mailbox = 'shared/%s/INBOX' % (mailbox_owner,)
+			else:
+				mailbox = self.mail_folder(mailbox_owner, mailbox, dovecot)
+			subname = uts.random_name()
+			typ, data = self.create('%s/%s' % (mailbox, subname))
+			print 'Create Retcode:', typ, data
+			if (typ == 'OK') != retcode:
+				raise WriteFail('Unexpected create sub result mailbox in %s' % mailbox)
+			if 'OK' in typ:
+				typ, data = self.delete('%s/%s' % (mailbox, subname))
+				print 'Delete Retcode:', typ, data
+				if (typ == 'OK') != retcode:
+					raise WriteFail('Unexpected delete sub result mailbox in %s' % mailbox)
 
-	def check_all(self, expected_result):
-		"""Checks all access of a certain mailbox
+	def mail_folder(self, mailbox_owner, mailbox, dovecot=False):
+		if dovecot:
+			if mailbox == 'INBOX':
+				return 'shared/%s' % (mailbox_owner,)
+			if '/' not in mailbox:
+				return 'shared/%s/%s' % (mailbox_owner, mailbox)
+		else:
+			if 'INBOX' == mailbox:
+				return 'user/%s' % (mailbox_owner.split('@', 1)[0], )
+			if 'INBOX/' in mailbox:
+				return 'user/%s/%s' % (mailbox_owner.split('@', 1)[0], mailbox.split('/', 1)[1])
+		return mailbox
 
-		:expected_result: dict{mailbox : bool}
-		"""
-		pass
+	def check_permissions(self, owner_user, mailbox, permission, dovecot):
+		"""Check Permissions all together"""
+		permissions = {
+			'lookup' : 'l',
+			'read'   : 'lrs',
+			'post'   : 'lrsp',
+			'append' : 'lrspi',
+			'write'  : 'lrspiwcd',
+			'all'    : 'lrspiwcda',
+		}
+		def lookup_OK(permission):
+			return set(permissions.get('lookup')).issubset(permission)
+
+		def read_OK(permission):
+			return set(permissions.get('read')).issubset(permission)
+
+		def post_OK(permission):
+			return set(permissions.get('post')).issubset(permission)
+
+		def append_OK(permission):
+			return set(permissions.get('append')).issubset(permission)
+
+		def write_OK(permission):
+			return set(permissions.get('write')).issubset(permission)
+
+		def all_OK(permission):
+			return set(permissions.get('all')).issubset(permission)
+
+		self.check_lookup(owner_user, {mailbox: lookup_OK(permission)}, dovecot)
+		self.check_read(owner_user, {mailbox: read_OK(permission)}, dovecot)
+		self.check_append(owner_user, {mailbox: append_OK(permission)}, dovecot)
+		self.check_write(owner_user, {mailbox: write_OK(permission)}, dovecot)
+
 
 
 # vim: set ft=python ts=4 sw=4 noet ai :
