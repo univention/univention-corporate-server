@@ -36,6 +36,9 @@ empty :=
 space := $(empty) $(empty)
 INSTALL ?= install
 
+.PHONY: all
+all:
+
 .PHONY: install
 install: $(SOURCE)
 	$(INSTALL) -m755 -d $(DESTDIR)/usr/share/univention-kvm-virtio
