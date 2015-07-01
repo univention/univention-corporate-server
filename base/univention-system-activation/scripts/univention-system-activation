@@ -56,6 +56,9 @@ elif [ "$ACTION" = "start" ]; then
 	active_sites=($(find /etc/apache2/sites-enabled/ -not -type d | sed 's|^.*/||'))
 	ucr set apache2/system_activation/sites="${active_sites[*]}"
 
+	# make sure that json files are up-to-date
+	ucr commit /usr/share/univention-system-activation/www/{languages,entries}.json
+
 	# disable sites
 	a2dissite ${active_sites[@]}
 
