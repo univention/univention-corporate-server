@@ -4,8 +4,8 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
-from essential.mail import check_delivery, send_mail
-from essential.mailclient import MailClient, create_shared_mailfolder
+from essential.mail import send_mail, check_delivery, create_shared_mailfolder
+from essential.mailclient import MailClient
 from univention.config_registry import handler_set
 import time
 import univention.testing.strings as uts

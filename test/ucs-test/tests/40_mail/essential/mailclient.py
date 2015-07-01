@@ -9,7 +9,6 @@ import imaplib
 import sys
 import time
 import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
 import univention_baseconfig
 
 class WrongAcls(Exception):
