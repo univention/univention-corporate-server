@@ -304,7 +304,7 @@ define([
 				welcomeHeader = _('%s Univention App', applianceName);
 				doneHeader = _('Setup successful');
 				errorHeader = _('Setup - An error occurred');
-				creatDomainLabel = _('Manage users and permissions directly on this system.');
+				creatDomainLabel = _('Manage users and permissions directly on this system');
 				createDomainHelpTextContent = _('A new domain directory is created on this system. User and management data are stored locally.');
 				credentialsMasterEmailLabel = _('E-mail address to activate %s Univention App', applianceName)
 				credentialsMasterHelpText = _('<p>Enter the name of your organization, an e-mail address to activate %s Univention App and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>', applianceName);

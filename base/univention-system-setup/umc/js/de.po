@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-07-01 16:15+0200\n"
+"POT-Creation-Date: 2015-07-02 11:19+0200\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -246,12 +246,14 @@ msgid ""
 "in Univention Management Console."
 msgstr ""
 "Eine gültige E-Mail-Adresse ermöglicht, das UCS-System für die Verwendung "
-"des Univention App Centers freizuschalten. Die Adresse kann jetzt oder auch zu einem späteren Zeitpunkt angegeben werden. "
-"Eine E-Mail mit einem personalisierten Lizenzschlüssel "
-"wird Ihnen dann an diese Adresse zugesendet werden. Die Lizenz kann über den "
-"Lizenzdialog der Univention Management Console eingespielt werden."
+"des Univention App Centers freizuschalten. Die Adresse kann jetzt oder auch "
+"zu einem späteren Zeitpunkt angegeben werden. Eine E-Mail mit einem "
+"personalisierten Lizenzschlüssel wird Ihnen dann an diese Adresse zugesendet "
+"werden. Die Lizenz kann über den Lizenzdialog der Univention Management "
+"Console eingespielt werden."
 
 #: umc/js/setup/ApplianceWizard.js:1044
+#, python-format
 msgid ""
 "A valid e-mail address is required to activate %s Univention App. The "
 "address can be specified now or also at a later point in time. An e-mail "
@@ -259,10 +261,10 @@ msgid ""
 "This license can be uploaded after the setup process."
 msgstr ""
 "Eine gültige E-Mail-Adresse ist für die Aktivierung von %s Univention App "
-"notwendig. Die Adresse kann jetzt oder auch zu einem späteren Zeitpunkt angegeben werden. Eine E-"
-"Mail einem personalisierten Lizenzschlüssel wird Ihnen dann an diese Adresse "
-"zugesendet werden. Die Lizenz kann über den Lizenzdialog der Univention "
-"Management Console eingespielt werden."
+"notwendig. Die Adresse kann jetzt oder auch zu einem späteren Zeitpunkt "
+"angegeben werden. An diese E-Mail-Adresse wird Ihnen dann ein personalisierter "
+"Lizenzschlüssel zugesendet. Die Lizenz kann über den "
+"Lizenzdialog der Univention Management Console eingespielt werden."
 
 #: umc/js/setup/ApplianceWizard.js:632 umc/js/setup/ApplianceWizard.js:1570
 msgid "Account information"
@@ -1083,8 +1085,8 @@ msgid "MII link monitoring frequency"
 msgstr "MII-Trägerüberwachungsfrequenz"
 
 #: umc/js/setup/ApplianceWizard.js:307
-msgid "Manage users and permissions directly on this system."
-msgstr "Verwalten von Benutzern und Rechten direkt auf diesem System."
+msgid "Manage users and permissions directly on this system"
+msgstr "Verwalten von Benutzern und Rechten direkt auf diesem System"
 
 #: umc/js/setup/ApplianceWizard.js:622 umc/js/setup/ApplianceWizard.js:1543
 msgid "Member server"
