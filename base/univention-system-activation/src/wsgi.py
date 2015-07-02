@@ -60,22 +60,31 @@ def application(environ, start_response):
 	except (ValueError):
 		request_body_size = -1
 	if request_body_size < 0:
-		return _finish('411 Length Required', 'The content length was not specified.')
+		return _finish('411 Length Required', {
+			'success': False,
+			'message': 'The content length was not specified.'
+		})
 	if request_body_size > 1024 * 100:
-		return _finish('413 Request Entity Too Large', 'The uploaded data is too large for a license file.')
+		return _finish('413 Request Entity Too Large', {
+			'success': False,
+			'message': 'The uploaded data is too large for a license file.'
+		})
 
 	# make sure the 'license' field exists in the request
 	formdata = cgi.FieldStorage(environ=environ, fp=environ['wsgi.input'])
 	if not 'license' in formdata:
 		# no license has been uploaded :(
-		return _finish('400 Bad Request', 'No license information specified in request')
+		return _finish('400 Bad Request', {
+			'success': False,
+			'message': 'No license information specified in request'
+		})
 
 	# the program logic bellow is oriented at the import function of the
 	# UMC's UDM module
 	with open(LICENSE_UPLOAD_PATH, 'wb') as license_file:
 		# Replace non-breaking space with a normal space
 		# https://forge.univention.org/bugzilla/show_bug.cgi?id=30098
-		license_data = formdata.getvalue('license', '').replace(unichr(160), ' ')
+		license_data = formdata.getvalue('license', '').replace(chr(160), ' ')
 		license_file.write(license_data)
 
 	# import the uploaded license file
@@ -83,18 +92,25 @@ def application(environ, start_response):
 		subprocess.check_output(['/usr/bin/sudo', '/usr/sbin/univention-license-import', LICENSE_UPLOAD_PATH], stderr=subprocess.STDOUT)
 	except subprocess.CalledProcessError as exc:
 		_log('Failed to import the license:\n%s\n%s' % (exc.output, exc))
-		return _finish('400 Bad Request', str(exc.output))
+		return _finish('400 Bad Request', {
+			'success': False,
+			'message': exc.output
+		})
 
 	# disable system activation service
 	try:
 		subprocess.check_call(['/usr/bin/sudo', '/usr/sbin/univention-system-activation', 'stop'], stderr=subprocess.STDOUT)
 	except subprocess.CalledProcessError as exc:
 		_log('Error stopping the system activation service:\n%s\n%s' % (exc.output, exc))
-		return _finish('500 Internal Server Error', str(exc.output))
+		return _finish('500 Internal Server Error', {
+			'success': False,
+			'message': exc.output
+		})
 
 	ucr.load()
 	apps = get_installed_apps()
 	return _finish('200 OK', {
+		'success': True,
 		'uuid': ucr.get('uuid/license', ''),
 		'apps': apps,
 	})

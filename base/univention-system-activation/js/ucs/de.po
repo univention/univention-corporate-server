@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-07-01 17:11+0200\n"
+"POT-Creation-Date: 2015-07-02 16:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,33 +12,38 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: js/ucs/app.js:350
+#: js/ucs/app.js:363
 msgid ""
 "A license file has been sent to <strong id=\"email-address\">{0}</strong>. "
 "Upload the license file from the email to activate {1} Univention App. Once "
-"the activation has been finished, your email address will be sent to the "
-"app provider. The app provider may contact you."
+"the activation has been finished, your email address will be sent to the app "
+"provider. The app provider may contact you."
 msgstr ""
 "Eine Lizenzdatei wurde an <strong id=\"email-address\">{0}</strong> "
 "gesendet. Laden Sie die Lizenzdatei hoch, um {1} Univention App zu "
 "aktivieren. Sobald die Aktivierung durchgeführt wurde, wird Ihre E-Mail-"
-"Adresse an den App-Anbieter weitergeleitet werden. Der App-Anbieter wird "
-"Sie ggf. kontaktieren."
+"Adresse an den App-Anbieter weitergeleitet werden. Der App-Anbieter wird Sie "
+"ggf. kontaktieren."
 
 #: js/ucs/app.js:188
 msgid "Activation of {appliance_name} Univention App"
 msgstr "Aktivierung von {appliance_name} Univention App"
 
-#: js/ucs/app.js:369
+#: js/ucs/app.js:382
 msgid "Activation successful!"
 msgstr "Aktivierung erfolgreich!"
+
+#: js/ucs/app.js:346 js/ucs/app.js:352
+msgid "An unknown error has occurred."
+msgstr ""
+"Ein unbekannter Fehler trat auf."
 
 #: js/ucs/app.js:261
 msgid "An unknown error occured. Please try it again later!"
 msgstr ""
 "Ein unbekannter Fehler trat auf. Bitte versuchen sie es später noch einmal!"
 
-#: js/ucs/app.js:364
+#: js/ucs/app.js:377
 msgid "Continue"
 msgstr "Weiter"
 
@@ -60,7 +65,7 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: js/ucs/app.js:353
+#: js/ucs/app.js:366
 msgid ""
 "If you did not received an email, please make sure to check your SPAM "
 "directory or <a href=\"#register\">try it again</a>."
@@ -68,7 +73,7 @@ msgstr ""
 "Sollten Sie keine E-Mail erhalten haben, prüfen Sie Ihr SPAM-Verzeichnis "
 "oder <a href=\"#register\">probieren Sie es noch einmal</a>."
 
-#: js/ucs/app.js:302
+#: js/ucs/app.js:305
 msgid ""
 "If you encounter problems during the activation, please send an email to: "
 "<strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
@@ -115,6 +120,10 @@ msgstr ""
 msgid "Request activation"
 msgstr "Aktivierung anfordern"
 
+#: js/ucs/app.js:303
+msgid "The following error occurred:"
+msgstr "Der folgende Fehler trat auf:"
+
 #: js/ucs/i18n.js:82
 #, python-format
 msgid "The total cost was %.2f EUR!"
@@ -124,11 +133,11 @@ msgstr ""
 msgid "Translate me!"
 msgstr ""
 
-#: js/ucs/app.js:317
+#: js/ucs/app.js:320
 msgid "Upload license file"
 msgstr "Lizenzdatei hochladen"
 
-#: js/ucs/app.js:348
+#: js/ucs/app.js:361
 msgid "You have got mail!"
 msgstr "Sie haben eine neue E-Mail!"
 
@@ -136,7 +145,7 @@ msgstr "Sie haben eine neue E-Mail!"
 msgid "your email address"
 msgstr "Ihre E-Mail-Adresse"
 
-#: js/ucs/app.js:370
+#: js/ucs/app.js:383
 msgid ""
 "{appliance_name} Univention App is now activated. Click \"Continue\" to "
 "access the management interface."

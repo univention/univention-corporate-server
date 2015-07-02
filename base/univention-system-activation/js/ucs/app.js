@@ -291,15 +291,18 @@ define([
 			});
 		},
 
-		_showError: function(error_msg){
+		_showError: function(error_msg) {
 			var currentTabNode = query(".tab:not(.hide-tab)")[0];
 			var errorNode = dom.byId('error');
 			if(!errorNode){
 				errorNode = put('div[id=error]');
 				put(currentTabNode, 'div', errorNode);
 			}
-			errorNode.innerHTML = error_msg + '<br/>' +
-				_('If you encounter problems during the activation, please send an email to: <strong><a href="mailto:feedback@univention.de" style="color:#000">feedback@univention.de</a></strong>');
+			// replace newlines with BR tags
+			error_msg = error_msg.replace(/\n/g, '<br/>');
+			errorNode.innerHTML = '<p>' + _('The following error occurred:') + '</p>' +
+				'<p>' + error_msg + '</p>' +
+				'<p>' + _('If you encounter problems during the activation, please send an email to: <strong><a href="mailto:feedback@univention.de" style="color:#000">feedback@univention.de</a></strong>') + '</p>';
 		},
 
 		_removeError: function(){
@@ -329,14 +332,24 @@ define([
 			}));
 			this._uploader.on('complete', lang.hitch(this, function(response) {
 				this._uploader.setAttribute('disabled', false);
-				this._sendNotification(response.uuid, response.apps);
-				router.go('finished');
+
+				if (response && response.success) {
+					// success case
+					this._sendNotification(response.uuid, response.apps);
+					router.go('finished');
+					return;
+				}
+
+				// error case
+				var loadingNode = dom.byId('finished-loading-bar');
+				put(loadingNode, '!focused');
+				this._showError(response ? response.message : _('An unknown error has occurred.'));
 			}));
 			this._uploader.on('error', lang.hitch(this, function(err) {
 				var loadingNode = dom.byId('finished-loading-bar');
 				put(loadingNode, '!focused');
 				this._uploader.setAttribute('disabled', false);
-				this._showError(err);
+				this._showError(err ? err.message : _('An unknown error has occurred.'));
 			}));
 			return this._uploader.domNode;
 		},

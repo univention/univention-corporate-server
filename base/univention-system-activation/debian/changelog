@@ -1,6 +1,7 @@
 univention-system-activation (0.0.1-25) unstable; urgency=medium
 
   * Bug #38782: adjust typo
+  * Bug #38547: adjust error handling and encoding issues
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 02 Jul 2015 13:55:09 +0200
 
