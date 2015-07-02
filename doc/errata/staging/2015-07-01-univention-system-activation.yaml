@@ -2,7 +2,7 @@ roduct: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-system-activation
-fix: 0.0.1-24.20.201507011718
+fix: 0.0.1-25.21.201507021622
 version: [2]
 desc: |
   This update releases the new package univention system activation.
