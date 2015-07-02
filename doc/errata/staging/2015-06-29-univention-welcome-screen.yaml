@@ -5,6 +5,7 @@ src: univention-welcome-screen
 fix: 0.0.0-11.10.201507021838
 version: [2]
 desc: |
-  This update addresses the following issues:
-  * Initial release of the package.
+  This erratum release the new package univention-welcome-screen.
+  After booting the system, the package shows an informative screen which
+  indicates how the system can be accessed via a web browser.
 bug: [37537]
