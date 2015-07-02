@@ -1,9 +1,18 @@
+a, a:hover, a:focus {
+	color: #619410;
+}
+
+#content {
+	margin: 0 auto;
+	width: 652px;
+}
+
 .welcome-image {
 	position: relative;
-	margin: 0 auto;
+	margin: 20px auto 30px;
 	background-image: url("../welcome/welcome.png");
 	background-repeat: no-repeat;
-	width: 652px;
+/*	width: 652px;*/
 	height: 200px;
 }
 
@@ -19,15 +28,12 @@
 .welcome-url-alternative {
 	position: absolute;
 	top: 120px;
-	left: 250px;
+	left: 201px;
 }
 
-.welcome-url-alternative span {
+.welcome-url-alternative span,
+.welcome-url-alternative a {
 	display: block;
-}
-
-.welcome-url-alternative span:first-child {
-	margin-left: -20px;
 }
 
 .welcome-text {

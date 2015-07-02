@@ -82,7 +82,7 @@ define([
 					dom.byId('welcome-url').innerHTML = address;
 				} else {
 					domClass.toggle(alternatives, 'dijitHidden', false);
-					domConstruct.create('span', {innerHTML: address}, alternatives);
+					domConstruct.create('a', {innerHTML: address}, alternatives);
 				}
 			}, this);
 		
