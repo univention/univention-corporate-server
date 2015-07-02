@@ -1,11 +1,14 @@
 #!/usr/share/ucs-test/runner python
 ## desc: S4-connector check the mapping for single-value Samba4 attributes
 ## exposure: safe
+## roles:
+## - domaincontroller_master
 ## packages:
 ##   - univention-config
 ##   - univention-s4-connector
 ## bugs:
 ##   - 37259
+##   - 38813
 
 import univention.testing.utils as utils
 
@@ -69,7 +72,7 @@ def connect():
 			s4_ldap_bindpw=s4_ldap_bindpw[0:-1]
 	else:
 		s4_ldap_bindpw=None
-	
+
 	try:
 		s4c = S4ConnectorWrapper(CONFIGBASENAME,
 						mapping.s4_mapping,

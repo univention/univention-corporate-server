@@ -1,3 +1,9 @@
+ucs-test (5.0.148-35) unstable; urgency=low
+
+  * Bug #38813: 52/402: limit to S4 Master
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Jul 2015 11:22:45 +0200
+
 ucs-test (5.0.148-34) unstable; urgency=low
 
   * Bug #38812: 64/50: S4-Slave root password
