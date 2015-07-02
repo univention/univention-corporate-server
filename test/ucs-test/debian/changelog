@@ -1,3 +1,9 @@
+ucs-test (5.0.148-34) unstable; urgency=low
+
+  * Bug #38812: 64/50: S4-Slave root password
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Jul 2015 10:25:05 +0200
+
 ucs-test (5.0.148-33) unstable; urgency=low
 
   * Bug #38321: 40/04: S4-Slave Cyrus login test

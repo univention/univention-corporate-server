@@ -3,6 +3,7 @@
 ## tags: apttest
 ## exposure: dangerous
 ## packages: [univention-printserver]
+## bugs: [36267, 38812]
 
 import re
 import subprocess
@@ -23,21 +24,19 @@ def printer_enabled(printer_name):
 	return printer_name in out
 
 def main():
+	account = utils.UCSTestDomainAdminCredentials()
 	with udm_test.UCSTestUDM() as udm:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
-			domainname = ucr.get('domainname')
-			hostname = ucr.get('hostname')
-			ldap_base = ucr.get('ldap/base')
 			for uri in get_uirs():
 				printer_name = uts.random_name()
 				udm.create_object(
 						modulename='shares/printer',
 						name=printer_name,
-						position='cn=printers,%s' % ldap_base,
-						binddn='uid=Administrator,cn=users,%s' % ldap_base,
-						bindpwd='univention',
+						position='cn=printers,%(ldap/base)s' % ucr,
+						binddn=account.binddn,
+						bindpwd=account.bindpw,
 						set={
-							'spoolHost': '%s.%s' % (hostname, domainname),
+							'spoolHost': '%(hostname)s.%(domainname)s' % ucr,
 							'model': 'None',
 							'uri': '%s:// /tmp/%s' % (uri, printer_name)
 							}
