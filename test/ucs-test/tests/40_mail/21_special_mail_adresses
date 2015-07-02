@@ -13,17 +13,9 @@ import univention.testing.utils as utils
 
 
 def check_sending_mail(username, password, recipient_email):
-	delivery_timeout = 60 # sec
-	delivered = False
 	token = str(time.time())
 	send_mail(recipients=recipient_email, msg=token, tls=True, username=username, password=password)
-	for i in xrange(delivery_timeout):
-		if not mail_delivered(token, check_root=True):
-			time.sleep(1)
-			print "%s is waiting for email to be delivered to root" % recipient_email
-		else:
-			delivered = True
-			break
+	delivered = mail_delivered(token, check_root=True)
 	if not delivered:
 		utils.fail('Mail sent with token = %r to %s was not redirected to root' % (token, recipient_email))
 
