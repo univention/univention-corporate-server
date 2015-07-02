@@ -71,6 +71,8 @@ class Errors(LogMessage):
 		r'invoke-rc.d: initscript apache2, action "restart" failed',
 		r"E: Unable to locate package could-initramfs-growroot",
 		r"'www-browser -dump http://localhost:80/server-status' failed.",  # Bug #38797
+		'.*Failed to download required packages for univention-welcome-screen.*',  # Bug #37537: remove after release of univention-welcome-screen
+		'.*E: Unable to locate package univention-welcome-screen.*', '.*E: Handler silently failed.*'  # Bug #37537 ^^
 	]
 
 	# extra ignore patterns for case when line == 'failed.'
