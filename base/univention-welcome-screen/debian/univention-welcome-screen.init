@@ -48,7 +48,7 @@ case "$1" in
 				exit 0
 			fi
 		fi
-		/usr/share/univention-welcome-screen > "/var/log/univention/welcome-screen.log" 2>&1 &
+		/usr/bin/univention-welcome-screen > "/var/log/univention/welcome-screen.log" 2>&1 &
 		log_action_end_msg 0
 		;;
 	stop)
