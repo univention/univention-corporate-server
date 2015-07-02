@@ -1,3 +1,9 @@
+univention-bind (9.0.5-3) unstable; urgency=low
+
+  * Bug #36532: Improve restart of bind9 on network reconfiguration
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Jul 2015 13:52:12 +0200
+
 univention-bind (9.0.5-2) unstable; urgency=low
 
   * Bug #36532: Improve restart of bind9 on network reconfiguration

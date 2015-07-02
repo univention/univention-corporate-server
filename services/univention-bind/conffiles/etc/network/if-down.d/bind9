@@ -30,9 +30,9 @@
 #
 
 [ -x /usr/sbin/rndc ] || exit 0
-[ -e /etc/init.d/univention-bind9 ] || exit 0
+[ -e /etc/init.d/univention-bind ] || exit 0
 
 # Always reload, even for loopback
-invoke-rc.d univention-bind9 reload
+invoke-rc.d univention-bind reload
 
 exit 0
