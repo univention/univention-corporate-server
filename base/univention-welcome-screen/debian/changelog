@@ -1,3 +1,10 @@
+univention-welcome-screen (0.0.0-11) unstable; urgency=medium
+
+  * Bug #37537: fix race condition if X doesn't run yet
+  * fix appliance logo
+
+ -- Florian Best <best@univention.de>  Thu, 02 Jul 2015 18:36:27 +0200
+
 univention-welcome-screen (0.0.0-10) unstable; urgency=medium
 
   * Bug #37537: move script into /usr/bin

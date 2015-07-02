@@ -70,7 +70,7 @@ define([
 				if (path[0] !== '/') {
 					path = '/univention-management-console/js/dijit/themes/umc/' + path;
 				}
-				domStyle.set('welcome-appliance-logo', 'background-image', lang.replace('url({0})', [path]));
+				domStyle.set('welcome-appliance-logo', 'backgroundImage', lang.replace('url("{0}")', [path]));
 			}
 		},
 

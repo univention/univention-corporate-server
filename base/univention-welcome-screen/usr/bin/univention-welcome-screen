@@ -39,16 +39,26 @@ if [ -z "$1" ]; then
 	fi
 	ln -s '/usr/lib/univention-welcome-screen/addons/{e5bbc237-c99b-4ced-a061-0be27703295f}' /opt/firefox/distribution/bundles
 
-	# is KDM running?
-	if pidof kdm_greet; then
-		# use the x authority of the running KDM
-		echo "Detected running KDM session. Attaching to it..."
-		export $(cat /proc/$(pidof kdm_greet)/environ | tr '\0' '\n' | grep ^XAUTHORITY=)
-		AUTHFILE=$(mktemp)
-		cp "$XAUTHORITY" "$AUTHFILE"
-		chown nobody "$AUTHFILE"
-		export XAUTHORITY="$AUTHFILE"
+	showDesktop="false"
+	if dpkg -l univention-kde 2> /dev/null > /dev/null; then
+		echo "KDE seems to be installed"
+		for ((i=0; i<=100; i++)); do  # kdm might not be started yet
+			# is KDM already running?
+			if pidof kdm_greet; then
+				# use the x authority of the running KDM
+				echo "Detected running KDM session. Attaching to it..."
+				export $(cat /proc/$(pidof kdm_greet)/environ | tr '\0' '\n' | grep ^XAUTHORITY=)
+				AUTHFILE=$(mktemp)
+				cp "$XAUTHORITY" "$AUTHFILE"
+				chown nobody "$AUTHFILE"
+				export XAUTHORITY="$AUTHFILE"
+				showDesktop="true"
+				break
+			fi
+			sleep 0.1
+		done
 	fi
+
 	export DISPLAY=:0
 
 	default_locale=en_US
@@ -57,12 +67,6 @@ if [ -z "$1" ]; then
 		default_locale=${locale_default%%.*}
 	fi
 	echo "Detected locale: $default_locale"
-
-	showDesktop="false"
-	if dpkg -l univention-kde 2> /dev/null > /dev/null; then
-		echo "KDE seems to be installed"
-		showDesktop="true"
-	fi
 
 	PORT=$(/bin/su nobody -c "python -c 'import socket; s = socket.socket(socket.AF_INET, socket.SOCK_STREAM); s.bind((str(), 0)); addr = s.getsockname(); print addr[1],; s.close()'")
 	URL="http://localhost/ucs-overview/welcome.html?lang=$default_locale&showDesktop=$showDesktop&port=$PORT"
