@@ -55,7 +55,7 @@ install_activation_packages ()
 	echo "deb http://192.168.0.10/build2/ ucs_4.0-0-errata4.0-2/all/" >/etc/apt/sources.list.d/91activation.list
 	univention-install -y --force-yes univention-system-activation
 	rm -f /etc/apt/sources.list.d/91activation.list
-	ucr set auth/sshd/user/root=yes
+	ucr set --force auth/sshd/user/root=yes
 }
 
 download_packages ()
@@ -655,7 +655,7 @@ appliance_reset_servers ()
 
 disable_root_login_and_poweroff ()
 {
-	ucr set auth/sshd/user/root=no
+	ucr set --force auth/sshd/user/root=no
 	rm /root/*
 	rm /root/.bash_history
 	history -c
