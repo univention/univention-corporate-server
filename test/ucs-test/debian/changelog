@@ -1,3 +1,9 @@
+ucs-test (5.0.148-33) unstable; urgency=low
+
+  * Bug #38321: 40/04: S4-Slave Cyrus login test
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Jul 2015 09:46:59 +0200
+
 ucs-test (5.0.148-32) unstable; urgency=low
 
   * Bug #38798: Allow 60/1400 chars in ini file for
