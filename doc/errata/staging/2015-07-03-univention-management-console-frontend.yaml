@@ -1,0 +1,10 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-6
+src: univention-management-console-frontend
+fix: 3.0.153-9.1059.201507031556
+version: [5,6]
+desc: |
+ This update addresses the following issue:
+ * The PID file is no longer created world-writable.
+bug: [25162]
