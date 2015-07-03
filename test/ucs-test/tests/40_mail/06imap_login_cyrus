@@ -1,8 +1,8 @@
 #!/usr/share/ucs-test/runner python
-## desc: IMAP mail login
+## desc: IMAP mail login (cyrus specific)
 ## tags: apptest
 ## exposure: dangerous
-## packages: [univention-mail-server]
+## packages: [univention-mail-server, univention-mail-cyrus]
 ## bugs: []
 
 from essential.mail import disable_mail_quota, enable_mail_quota, ImapMail
@@ -25,12 +25,24 @@ def main():
 
 			imap = ImapMail()
 
+			disable_mail_quota()
+
 			print '* Test imap login with the correct password:'
 			if not imap.login_OK(username, password):
 				utils.fail('IMAP login failed with the correct password')
 
 			print '* Test imap login with the wrong password:'
-			if imap.login_OK(username, uts.random_name()):
+			if imap.login_OK(username, '_'):
+				utils.fail('IMAP login succeeded with the wrong password')
+
+			enable_mail_quota()
+
+			print '* Test imap login with the correct password:'
+			if not imap.login_OK(username, password):
+				utils.fail('IMAP login failed with the correct password')
+
+			print '* Test imap login with the wrong password:'
+			if imap.login_OK(username, '_'):
 				utils.fail('IMAP login succeeded with the wrong password')
 
 
