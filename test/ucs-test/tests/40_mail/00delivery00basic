@@ -15,7 +15,7 @@
 # this script.
 #################
 
-from essential.mail import mail_delivered, send_mail
+from essential.mail import file_search_mail, send_mail
 import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -50,36 +50,56 @@ def main():
 		test_cases1 = []
 		for mail in mailsToTest:
 			token = str(time.time())
-			test_cases1.append((token, mail))
+			test_cases1.append([token, mail, False])
 			print '\nTOKEN = %s\n' % token
 			send_mail(recipients=mail, msg=token, idstring=token, subject='Test')
 
 		test_cases2 = []
 		for user in users:
 			token = str(time.time())
-			test_cases2.append((token, user))
+			test_cases2.append([token, user, False])
 			print '\nTOKEN = %s\n' % token
 			send_mail(recipients=user, msg=token, subject='Test')
 
 		test_cases3 = []
 		for user in users:
 			token = str(time.time())
-			test_cases3.append((token, user))
+			test_cases3.append([token, user, False])
 			print '\nTOKEN = %s\n' % token
 			# tls:
 			send_mail(recipients=user, msg=token, subject='TestTLS', tls=True)
 
-		print "\nWaiting %d seconds...\n" % TIMEOUT
-		time.sleep(TIMEOUT)
+		print "\nWaiting up to %d seconds for delivering mails...\n" % (TIMEOUT, )
 
-		for token, mail in test_cases1:
-			if not mail_delivered(token, mail_address=mail):
-				utils.fail('Mail sent to %s was not delivered' % mail)
-		for token, user in test_cases2:
-			if not mail_delivered(token, user=user):
+		for timeout in xrange(TIMEOUT, 0, -1):
+			print 'Waiting up to %d seconds' % (timeout,)
+			all_found = True
+			for i, (token, mail, found)  in enumerate(test_cases1):
+				if file_search_mail(tokenlist=[token], mail_address=mail):
+					test_cases1[i][2] = True
+				else:
+					all_found = False
+			for i, (token, user, found)  in enumerate(test_cases2):
+				if file_search_mail(tokenlist=[token], user=user):
+					test_cases2[i][2] = True
+				else:
+					all_found = False
+			for i, (token, user, found)  in enumerate(test_cases3):
+				if file_search_mail(tokenlist=[token], user=user):
+					test_cases3[i][2] = True
+				else:
+					all_found = False
+			if not all_found:
+				time.sleep(1)
+
+		for token, mail, found in test_cases1:
+			if not found:
+				utils.fail('Mail sent to %r with token %r was not delivered' % (mail, token))
+		for token, user, found in test_cases2:
+			if not found:
 				utils.fail('Mail sent with token = %r, to %s was not delivered' % (token, user))
-		for token, user in test_cases3:
-			if not mail_delivered(token, user=user):
+		for token, user, found in test_cases3:
+			if not found:
 				utils.fail('Mail sent with token = %r, to %s was not delivered (TLS used)' % (token, user))
 
 
