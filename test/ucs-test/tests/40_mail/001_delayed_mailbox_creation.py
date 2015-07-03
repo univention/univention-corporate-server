@@ -6,6 +6,7 @@
 ## exposure: dangerous
 ## packages:
 ##   - univention-mail-server
+##   - univention-mail-cyrus
 
 
 import os
