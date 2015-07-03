@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-management-console-frontend
-fix: 4.1.106-71.1058.201507030119
+fix: 4.1.106-72.1060.201507031559
 version: [2]
 desc: |
   This update addresses the following issue:
@@ -10,5 +10,6 @@ desc: |
     modules.
   * The handling of the UMC overview page on mobile devices has been improved.
   * A race condition in the UMC webserver has been fixed which could lead to
-      failing starts of the UMC webserver.
-bug: [38544, 38658, 37844]
+    failing starts of the UMC webserver.
+  * The PID file is no longer created world-writable.
+bug: [38544, 38658, 37844, 38825]
