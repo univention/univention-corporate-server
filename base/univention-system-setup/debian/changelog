@@ -1,3 +1,10 @@
+univention-system-setup (8.1.69-14) unstable; urgency=medium
+
+  * Bug #38593: don't remove proxy, don't overwrite netmask if already
+  	specified
+
+ -- Florian Best <best@univention.de>  Fri, 03 Jul 2015 16:55:52 +0200
+
 univention-system-setup (8.1.69-13) unstable; urgency=low
 
   * Bug #38780, Bug #38781: fixed typos in the setup wizard

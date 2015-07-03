@@ -40,7 +40,7 @@ fi
 
 is_variable_set "proxy/http"
 if [ $? = 0 ]; then
-	continue
+	exit 0
 fi
 
 old_proxy=$(univention-config-registry get proxy/http)

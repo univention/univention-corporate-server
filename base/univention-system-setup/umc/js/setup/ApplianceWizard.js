@@ -1440,7 +1440,9 @@ define([
 				var ipParts = ip.split('.');
 				var netmask = '255.255.255.0';
 				var netmaskWidget = this.getWidget('network', '_netmask' + idx);
-				netmaskWidget.set('value', netmask);
+				if (!netmaskWidget.get('value')) {
+					netmaskWidget.set('value', netmask);
+				}
 
 				var gatewayWidget = this.getWidget('network', 'gateway');
 				if (idx === 0 && !gatewayWidget.get('value')) {
