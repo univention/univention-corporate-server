@@ -17,8 +17,8 @@
 # are tagged as spam (or not).
 #################
 
-from essential.mail import deactivate_spam_detection, reload_amavis_postfix
-from essential.mail import mail_delivered, send_mail, spam_delivered
+from essential.mail import activate_spam_detection, deactivate_spam_detection, reload_amavis_postfix
+from essential.mail import send_mail, file_search_mail, get_spam_folder_name
 import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -39,23 +39,41 @@ def main():
 							}
 						)
 
+				activate_spam_detection()
+				reload_amavis_postfix()
+
 				token1 = str(time.time())
 				send_mail(recipients=mail, msg=token1, idstring=token1, subject='Normal')
 				token2 = str(time.time())
 				send_mail(recipients=mail, msg=token2, gtube=True, subject='Filter')
+
+				spam_folder = get_spam_folder_name()
+
+				for timeout in xrange(TIMEOUT, 0, -1):
+					print 'Waiting up to %d seconds' % (timeout,)
+					test_results = [file_search_mail(tokenlist=[token1], mail_address=mail),
+									file_search_mail(tokenlist=[token2, 'X-Spam-Flag: YES'], mail_address=mail, folder=spam_folder)]
+					if all(test_results):
+						break
+					time.sleep(1)
+
+				if not file_search_mail(tokenlist=[token1], mail_address=mail):
+					utils.fail('Mail sent with token = %r to %s was not delivered' % (token1, mail))
+				if not file_search_mail(tokenlist=[token2, 'X-Spam-Flag: YES'], mail_address=mail, folder=spam_folder):
+					utils.fail('Spam sent with token = %r to %s sent with filter, was not delivered to spam folder, or does not have a spam flag' % (token2, mail))
 
 				deactivate_spam_detection()
 				reload_amavis_postfix()
 				token3 = str(time.time())
 				send_mail(recipients=mail, msg=token3, gtube=True, subject='No Filter')
 
-				time.sleep(TIMEOUT)
+				for timeout in xrange(TIMEOUT, 0, -1):
+					print 'Waiting up to %d seconds' % (timeout,)
+					if file_search_mail(tokenlist=[token3], mail_address=mail):
+						break
+					time.sleep(1)
 
-				if not mail_delivered(token1, mail_address=mail):
-					utils.fail('Mail sent with token = %r to %s was not delivered' % (token1, mail))
-				if not spam_delivered(token2, mail_address=mail):
-					utils.fail('Spam sent with token = %r to %s sent with filter, was not delivered to spam folder, or does not have a spam flag' % (token2, mail))
-				if not mail_delivered(token3, mail_address=mail):
+				if not file_search_mail(tokenlist=[token3], mail_address=mail):
 					utils.fail('Spam sent with token = %r to %s sent without filter, was not delivered to main mail folder' % (token3,  mail))
 		finally:
 			reload_amavis_postfix()
