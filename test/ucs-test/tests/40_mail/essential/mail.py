@@ -219,6 +219,21 @@ def get_dir_files(dir_path, recursive=True):
 			result.extend(get_dir_files(f))
 	return result
 
+def get_maildir_filenames(maildir):
+	"""
+	Returns all filenames for mails in specified dovecot maildir:
+
+	Example: get_maildir_filenames('/var/spool/dovecot/private/example.com/user1/Maildir')
+	['/var/spool/dovecot/private/example.com/user1/Maildir/cur/1435755414.M432893P22169.slave22b,S=1744,W=1783',
+	 '/var/spool/dovecot/private/example.com/user1/Maildir/new/1435734534.M432834534215.slave22b,S=2342,W=6545']
+	"""
+	result = []
+	for dirpath, dirnames, filenames in os.walk(maildir):
+		for name in list(dirnames):
+			if name not in ('cur', 'new', 'tmp'):
+				dirnames.remove(name)
+		result.extend([os.path.join(dirpath, x) for x in filenames])
+	return result
 
 def get_file_contain(token, _dir):
 	for _file in get_dir_files(_dir, recursive=True):
@@ -227,18 +242,18 @@ def get_file_contain(token, _dir):
 				return os.path.basename(_file)
 
 
-def virus_delivered(token, mail_address):
+def virus_detected_and_quarantined(token, mail_address):
+	"""
+	Check if the virusmail with given token has been detected (==> virus_archive != None) and
+	the user specified by mail_address and systemmail have been informed.
+	"""
 	virus_dir = '/var/lib/amavis/virusmails'
-	mail_dir = [get_cyrus_maildir(mail_address), '/var/mail']
-	virusarchive = get_file_contain(token, virus_dir)
-	found = 0
-	for _dir in mail_dir:
-		if virusarchive:
-			for _file in get_dir_files(_dir):
-				with open(_file) as fi:
-					if virusarchive in fi.read():
-						found += 1
-	return found == 2
+	virus_archive = get_file_contain(token, virus_dir)
+	root_informed = user_informed = False
+	if virus_archive:
+		root_informed = bool(file_search_mail(tokenlist=[virus_archive], user='systemmail', timeout=0))
+		user_informed = bool(file_search_mail(tokenlist=[virus_archive], mail_address=mail_address, timeout=0))
+	return user_informed and root_informed
 
 
 def deactivate_spam_detection():
