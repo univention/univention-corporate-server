@@ -518,7 +518,7 @@ def get_dovecot_maildir(mail_address, folder=None):
 		raise UCSTest_Mail_InvalidMailAddress()
 
 	localpart, domain = mail_address.rsplit('@', 1)
-	result = '/var/spool/dovecot/private/%s/%s/Maildir' % (domain, localpart.lower())
+	result = '/var/spool/dovecot/private/%s/%s/Maildir' % (domain.lower(), localpart.lower())
 	if folder:
 		result = '%s/.%s' % (result, folder.lstrip('/').replace('/', '.'))
 	return result
