@@ -7,7 +7,7 @@ version: [1,2]
 desc: |
   This update addresses the following issues:
   * The diversion of the "msgpo.schema" file introduced as a fix for Bug #38488
-    should be removed again.
+    has been removed again.
   * The attribute "ldapFilter" has been added to the schema for
     univentionPolicy objects.
 bug: [38566,36255]
