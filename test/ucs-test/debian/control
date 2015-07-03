@@ -147,6 +147,7 @@ Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
  swaks,
  python,
+ python-pexpect,
  ${misc:Depends}
 Provides: ucs-test-module
 Description: Test scripts for mail
