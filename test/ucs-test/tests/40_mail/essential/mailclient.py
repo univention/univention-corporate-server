@@ -30,18 +30,22 @@ class WriteFail(Exception):
 class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 
 	"""MailClient is a wrapper for imaplib.IMAP4"""
-	def __new__(self, host, port=143, ssl=False):
-		"""Custom class creation
-
-		:host: string, host name
-		:port: int, port number
-		:returns: instance of imaplib.IMAP4
-		"""
+	def __init__(self, host, port=143, ssl=False):
+		"""Custom __init__  for no-SSL and SSl"""
 		if ssl:
-			return imaplib.IMAP4_SSL(host, port)
+			imaplib.IMAP4_SSL.__init__(self,host, port)
+			print 'IMAP with ssl connection initialized'
 		else:
-			return imaplib.IMAP4(host, port)
+			imaplib.IMAP4.__init__(self,host, port)
+			print 'IMAP with no-ssl connection initialized'
 
+	def login_plain(self, user, password, authuser=None):
+		def plain_callback(response):
+			if authuser is None:
+				return "%s\x00%s\x00%s" % (user, user, password)
+			else:
+				return "%s\x00%s\x00%s" % (user, authuser, password)
+		return self.authenticate('PLAIN', plain_callback)
 
 	def log_in(self, usermail, password):
 		"""wrap the super login method with try except
