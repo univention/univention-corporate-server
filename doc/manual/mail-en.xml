@@ -306,6 +306,16 @@ doveadm auth cache flush
 		Shared IMAP folders are managed in the UMC module <emphasis>Mail</emphasis>
 		with the <guimenu>Mail folder (IMAP)</guimenu> object type.
 	  </para>
+
+		<para>
+			Shared folders cannot be renamed, therefore the &ucsUCRV;
+			<envar>mail/dovecot/mailbox/rename</envar> is ignored. When a shared
+			folder is deleted in the UMC module <emphasis>Mail</emphasis>, it is
+			only deleted from the hard disk, if
+			<envar>mail/dovecot/mailbox/delete</envar> is set. It is deactivated by
+			default.
+		</para>
+
 	  <para>
 		<figure id="mail-sharedfolder">
 		  <title>Creating a shared IMAP folder</title>
@@ -859,6 +869,58 @@ postmap /etc/postfix/smtp_auth
 		the basic setting, the mailboxes are kept when a user account is
 		deleted.
 	  </para>
+
+	<para>
+		The combination of the two variables creates <emphasis>four possible outcomes when the e-mail address is changed</emphasis>:
+		<table>
+			<title>Renaming of e-mail addresses</title>
+			<tgroup cols="2">
+				<colspec colnum="1" colname="col1" colwidth="1*"/>
+				<colspec colnum="2" colname="col2" colwidth="2*"/>
+				<thead>
+					<row>
+						<entry>mail/dovecot/mailbox/…</entry>
+						<entry>Meaning</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>
+							<literal>rename=yes</literal> and <literal>delete=no</literal> (Default)
+						</entry>
+						<entry>The existing mailbox will be renamed. E-mails will be preserved
+							and will be accessible at the new address.
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<literal>rename=yes</literal> and <literal>delete=yes</literal>
+						</entry>
+						<entry>The existing mailbox will be renamed. E-mails will be preserved
+							and will be accessible at the new address.
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<literal>rename=no</literal> and <literal>delete=no</literal>
+						</entry>
+						<entry>A new, empty mailbox will be created. The old one will be
+							preserved on disk with the old name and will thus not be
+							accessible to users.
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<literal>rename=no</literal> and <literal>delete=yes</literal>
+						</entry>
+						<entry>A new, empty mailbox will be created. The old one will be
+							deleted from the hard disk.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</para>
 	</section>
 
 	<section id="mail::homeserver">

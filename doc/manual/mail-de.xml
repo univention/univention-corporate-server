@@ -325,6 +325,14 @@ doveadm auth cache flush
 		mit dem Objekttyp <guimenu>Mail-Ordner (IMAP)</guimenu> verwaltet.
 	  </para>
 
+		<para>
+			Globale IMAP-Ordner können nicht umbenannt werden. Die &ucsUCRV;
+			<envar>mail/dovecot/mailbox/rename</envar> wird daher ignoriert. Nur wenn
+			<envar>mail/dovecot/mailbox/delete</envar> gesetzt ist (standardmäßig
+			deaktiviert), wird ein globaler IMAP-Ordner beim Löschen im UMC-Modul
+			<emphasis>Mail</emphasis> auch tatsächlich von der Festplatte gelöscht.
+		</para>
+
 	  <para>
 		<figure id="mail-sharedfolder">
 		  <title>Einrichtung eines globalen IMAP-Ordners</title>
@@ -904,6 +912,59 @@ postmap /etc/postfix/smtp_auth
 		IMAP-Postfach gelöscht werden soll. In der Grundeinstellung bleiben die
 		Postfächer bei Löschung eines Benutzerkontos erhalten.
 	  </para>
+
+	<para>
+		Aus der Kombination der beiden Variablen ergeben sich folgende <emphasis>vier Fälle wenn E-Mail-Adressen geändert werden</emphasis>:
+		<table>
+			<title>Umbenennung von E-Mail-Adressen</title>
+			<tgroup cols="2">
+				<colspec colnum="1" colname="col1" colwidth="1*"/>
+				<colspec colnum="2" colname="col2" colwidth="2*"/>
+				<thead>
+					<row>
+						<entry>mail/dovecot/mailbox/…</entry>
+						<entry>Bedeutung</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>
+							<literal>rename=yes</literal> und <literal>delete=no</literal> (Standard)
+						</entry>
+						<entry>Die bestehende Mailbox wird umbenannt. E-Mails bleiben erhalten
+							und sind unter dem neuen Namen erreichbar.
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<literal>rename=yes</literal> und <literal>delete=yes</literal>
+						</entry>
+						<entry>Die bestehende Mailbox wird umbenannt. E-Mails bleiben erhalten
+							und sind unter dem neuen Namen erreichbar.
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<literal>rename=no</literal> und <literal>delete=no</literal>
+						</entry>
+						<entry>Eine neue, leere Mailbox wird erzeugt. Die alte bleibt unter dem
+							alten Namen auf der Festplatte erhalten und ist damit vorerst für
+							Benutzer nicht zu erreichen.
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<literal>rename=no</literal> und <literal>delete=yes</literal>
+						</entry>
+						<entry>Eine neue, leere Mailbox wird erzeugt. Die alte wird von
+							der Festplatte gelöscht.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</para>
+
 	</section>
 
 	<section id="mail::homeserver">
