@@ -12,13 +12,14 @@ import subprocess
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+import time
 
-def restart_cyrus():
-	"""Restart Cyrus server
+def run_cmd(cmd):
 	"""
-	cmd = ['/etc/init.d/cyrus-imapd', 'restart']
-	print cmd
-	subprocess.call(cmd)
+	Execute the given command
+	"""
+	print 'Executing: %r' % (cmd,)
+	return subprocess.call(cmd, stderr=open('/dev/null','w'))
 
 def set_openfiles_limit(new_limit):
 	"""Set ulimit -n new_limit
@@ -36,7 +37,6 @@ def used_memory():
 def main():
 	with udm_test.UCSTestUDM() as udm:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
-			handler_set(['mail/cyrus/imap/maxchilds=1501'])
 			domain = ucr.get('domainname')
 			host = '%s.%s' % (ucr.get('hostname'), domain)
 			password = 'univention'
@@ -48,26 +48,39 @@ def main():
 					'mailPrimaryAddress' : usermail
 				}
 			)
+			if ucr.is_true('mail/cyrus'):
+				handler_set(['mail/cyrus/imap/maxchilds=1501'])
+				run_cmd(['/etc/init.d/cyrus-imapd', 'restart'])
+			else:
+				handler_set([
+						'mail/dovecot/limits/default_process_limit=2000',
+						'mail/dovecot/limits/default_client_limit=2000',
+						'mail/dovecot/limits/auth/client_limit=10000',
+						'mail/dovecot/limits/anvil/client_limit=8003',
+				])
+				run_cmd(['/etc/init.d/dovecot', 'restart'])
 			set_openfiles_limit((2048, 2048))
 			mem_start = used_memory()
-			restart_cyrus()
 			servers = []
+			time_start = time.time()
 			for i in xrange(1500):
 				imap = MailClient(host)
 				servers.append(imap)
+			print '%d IMAP connections are OK (took %f seconds)' % (i + 1, time.time()-time_start)
 
-			print '%d imap servers are OK' % (i + 1)
+			time_start = time.time()
 			for imap in servers:
 				imap.log_in(usermail, password)
+			print '%d IMAP logins are OK (took %f seconds)' % (i + 1, time.time()-time_start)
+			mem_finish = used_memory()
 
-			print '%d imap logins are OK' % (i + 1)
+			time_start = time.time()
 			for imap in servers:
 				imap.logout()
-			print '%d imap logouts are OK' % (i + 1)
+			print '%d IMAP logouts are OK (took %f seconds)' % (i + 1, time.time()-time_start)
 
-			mem_finish = used_memory()
 			mem_per_proc =  (mem_finish - mem_start) / 1500.0
-			print 'Memory Used = %.3fMB per connection' % mem_per_proc
+			print 'Memory Used = %.3fMB per connection (Warning: only rough estimation)' % mem_per_proc
 
 if __name__ == '__main__':
 	main()
