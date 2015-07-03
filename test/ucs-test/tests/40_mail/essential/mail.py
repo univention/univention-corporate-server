@@ -56,12 +56,12 @@ COMMASPACE = ', '
 
 def disable_mail_quota():
 	handler_set(['mail/cyrus/imap/quota=no'])
-	subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'])
+	subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/zero', 'w'))
 
 
 def enable_mail_quota():
 	handler_set(['mail/cyrus/imap/quota=yes'])
-	subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'])
+	subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/zero', 'w'))
 
 
 class Mail(object):
