@@ -1,3 +1,9 @@
+ucs-test (5.0.148-37) unstable; urgency=low
+
+  * Bug #38831: Fix missing include and file permission
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 03 Jul 2015 13:03:59 +0200
+
 ucs-test (5.0.148-36) unstable; urgency=medium
 
   * Bug #37537: ignore updater.log errors for unreleased package

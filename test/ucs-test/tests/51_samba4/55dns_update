@@ -12,6 +12,7 @@
 ## tags:
 ##  - basic
 
+. "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
 
 RETVAL=100
