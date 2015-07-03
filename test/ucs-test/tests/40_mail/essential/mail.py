@@ -302,7 +302,7 @@ def get_spam_folder_name():
 	return folder
 
 
-@SetMailDeliveryTimeout()
+@SetMailDeliveryTimeout
 def spam_delivered(token, mail_address):
 	delivered = False
 	spam = False
@@ -336,7 +336,7 @@ def spam_delivered(token, mail_address):
 	return delivered and spam
 
 
-@SetMailDeliveryTimeout()
+@SetMailDeliveryTimeout
 def mail_delivered(token, user=None, mail_address=None, check_root=True):
 	"""
 	Check if a mail with the specified token or message ID has been delivered to a mail spool.
