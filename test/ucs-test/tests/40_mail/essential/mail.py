@@ -341,6 +341,57 @@ def mail_delivered(token, user=None, mail_address=None, check_root=True):
 					break
 	return delivered
 
+def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, timeout=0):
+	"""
+	Check if a mail with the specified token or message ID has been delivered to a mail spool.
+	A "token" is a string, that should occur in the mail body. The message ID is looked up in the
+	mail header. The mail spool may be specified via multiple ways:
+	tokenlist: list of strings: list of strings that all have to be found within a mail
+	user: string: if username is specified, a check of /var/mail/%s is performed
+	mail_address: string: checks directly within the cyrus/dovecot mail spool directory
+	folder: string: if mail_address is specified and folder is not specified, file_search_mail
+					searches only in the INBOX, if folder is specified too, the given folder
+					is checked.
+	timeout: integer: if the number of found mails is 0, the search is retried every second
+					  up to <timeout> attempts.
+	:return: number of found mails
+	"""
+	result = 0
+	if timeout < 1:
+		timeout = 1
+	while result==0 and timeout > 0:
+		timeout -= 1
+		if user:
+			_file = os.path.join('/var/mail', user)
+			if os.path.isfile(_file):
+				with open(_file) as fd:
+					content = fd.read()
+					for token in tokenlist:
+						if not token in content:
+							break
+					else:
+						result += 1
+
+		if mail_address:
+			if ucr.is_true('mail/cyrus'):
+				mail_dir = get_cyrus_maildir(mail_address)
+				files = get_dir_files(mail_dir, recursive=False)
+			elif ucr.is_true('mail/dovecot'):
+				mail_dir = get_dovecot_maildir(mail_address, folder=folder)
+				files = get_maildir_filenames(mail_dir)
+
+			for _file in files:
+				with open(_file) as fd:
+					content = fd.read()
+					for token in tokenlist:
+						if not token in content:
+							break
+					else:
+						result += 1
+		if not result and timeout:
+			time.sleep(1)
+	return result
+
 
 def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, imap_password=None, imap_folder=None, use_ssl=True):
 	"""
