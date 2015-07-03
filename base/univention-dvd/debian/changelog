@@ -1,3 +1,10 @@
+univention-dvd (0.2.29-6) unstable; urgency=medium
+
+  * Add univention-system-activation and univention-welcome-screen to
+    maintained (Bug #38547 and Bug #37537)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 03 Jul 2015 07:01:08 +0200
+
 univention-dvd (0.2.29-5) unstable; urgency=medium
 
   * Added docker.io to maintained (Bug #37642)

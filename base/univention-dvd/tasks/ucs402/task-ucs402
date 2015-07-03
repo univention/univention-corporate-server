@@ -16,6 +16,8 @@ firefox
 xinit
 kde-window-manager
 univention-cloud-init
+univention-system-activation
+univention-welcome-screen
 
 
 /* Role Packages */
