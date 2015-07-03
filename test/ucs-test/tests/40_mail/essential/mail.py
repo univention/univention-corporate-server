@@ -423,6 +423,7 @@ def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, 
 						result += 1
 		if not result and timeout:
 			time.sleep(1)
+			print 'file_search_mail(tokenlist=%r, user=%r mail_address=%r, folder=%r): no mail found - %d attempt(s) left' % (tokenlist, user, mail_address, folder, timeout)
 	return result
 
 

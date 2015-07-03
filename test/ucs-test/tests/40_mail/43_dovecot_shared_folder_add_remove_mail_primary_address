@@ -64,18 +64,18 @@ def main():
 
 					# check folder removal
 					if os.path.exists(old_path):
-						utils.fail('Test %d: old maildir %r for shared folder has not been renamed! %r' % (i, old_path, folder))
+						utils.fail('Test %d (flag_rename=%s): old maildir %r for shared folder has not been renamed! %r' % (i, flag_rename, old_path, folder))
 					if not os.path.exists(new_path):
-						utils.fail('Test %d: maildir %r for shared folder has not been created/renamed! %r' % (i, new_path, folder))
+						utils.fail('Test %d (flag_rename=%s): maildir %r for shared folder has not been created/renamed! %r' % (i, flag_rename, new_path, folder))
 
 					# remove primary mail address to shared folder
 					udm.modify_object('mail/folder', dn=folder.dn, set={'mailPrimaryAddress': ''})
 
 					# check folder removal
 					if not os.path.exists(old_path):
-						utils.fail('Test %d: original maildir %r for shared folder has not been created/renamed! %r' % (i, old_path, folder))
+						utils.fail('Test %d (flag_rename=%s): original maildir %r for shared folder has not been created/renamed! %r' % (i, flag_rename, old_path, folder))
 					if os.path.exists(new_path):
-						utils.fail('Test %d: new maildir %r for shared folder has not been renamed! %r' % (i, new_path, folder))
+						utils.fail('Test %d (flag_rename=%s): new maildir %r for shared folder has not been renamed! %r' % (i, flag_rename, new_path, folder))
 
 
 if __name__ == '__main__':

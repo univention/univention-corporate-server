@@ -21,6 +21,10 @@ def main():
 				password = uts.random_string()
 				mailPrimaryAddress = '%s@%s' % (username, ucr.get('domainname'))
 				mailHomeServer = '%s.%s' % (ucr.get('hostname'),  ucr.get('domainname'))
+				if ucr.is_true('mail/cyrus'):
+					spam_folder = 'INBOX/%s' % (essential.mail.get_spam_folder_name(),)
+				else:  # dovecot
+					spam_folder = essential.mail.get_spam_folder_name()
 
 				userdn, username = udm.create_user(
 					username=username,
@@ -38,13 +42,16 @@ def main():
 				print 'check default behaviour, no subject tag'
 				subject = 'my subject %s' % time.ctime()
 				essential.mail.send_mail(recipients=mailPrimaryAddress, gtube=True, subject=subject)
-				time.sleep(5)
-				msg = imap.get_mails(filter='(SUBJECT "%s")' % subject, mailbox='INBOX/Spam')
+				for i in xrange(60):
+					msg = imap.get_mails(filter='(SUBJECT "%s")' % subject, mailbox=spam_folder)
+					time.sleep(1)
+					if msg:
+						break
 				if len(msg) != 1:
-					utils.fail('got multiple/none mails with subject: %s' % subject)
+					utils.fail('Test 1: got %d mails with subject: %s' % (len(msg), subject))
 				print '%s == %s ?' % (subject, msg[0]['Subject'])
 				if subject != msg[0]['Subject']:
-					utils.fail('received subject "%s" differs from sent subject "%s"' % (msg[0]['Subject'], subject))
+					utils.fail('Test 1: received subject "%s" differs from sent subject "%s"' % (msg[0]['Subject'], subject))
 
 				# subject tag test
 				print 'check if subject is modified if mail/antispam/headertag is set'
@@ -54,13 +61,16 @@ def main():
 				subject = 'my subject %s' % time.ctime()
 				wanted = tag + subject
 				essential.mail.send_mail(recipients=mailPrimaryAddress, gtube=True, subject=subject)
-				time.sleep(5)
-				msg = imap.get_mails(filter='(SUBJECT "%s")' % subject, mailbox='INBOX/Spam')
+				for i in xrange(60):
+					msg = imap.get_mails(filter='(SUBJECT "%s")' % subject, mailbox=spam_folder)
+					time.sleep(1)
+					if msg:
+						break
 				if len(msg) != 1:
-					utils.fail('got multiple/none mails with subject: %s' % subject)
+					utils.fail('Test 2: got %d mails with subject: %s' % (len(msg), subject))
 				print '%s == %s ?' % (wanted, msg[0]['Subject'])
 				if wanted != msg[0]['Subject']:
-					utils.fail('received subject "%s" differs from what we want "%s"' % (msg[0]['Subject'], wanted))
+					utils.fail('Test 2: received subject "%s" differs from what we want "%s"' % (msg[0]['Subject'], wanted))
 		finally:
 			essential.mail.reload_amavis_postfix()
 

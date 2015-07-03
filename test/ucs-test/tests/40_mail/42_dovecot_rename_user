@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Username modification while keeping mail primary address
+## desc: Dovecot: test username modrdn while keeping mail primary address
 ## tags: apptest
 ## exposure: dangerous
 ## packages:
@@ -9,6 +9,7 @@
 
 import imaplib
 import os
+import time
 import subprocess
 from univention.config_registry import handler_set
 import univention.testing.strings as uts
@@ -53,6 +54,7 @@ def main():
 				print 'Found %d of %d mails' % (found, len(userbase))
 				if found == len(userbase):
 					break
+				time.sleep(1)
 			if loopcnt == 0:
 				utils.fail('Could only deliver %d of %d mails to test users' % (found, len(userbase)))
 
@@ -74,9 +76,6 @@ def main():
 				subprocess.call(['invoke-rc.d', 'univention-directory-listener', 'restart'])
 				udm.modify_object('users/user', dn=userbase[i][0], set={'username': '%scopy' % (userbase[i][1],)})
 				utils.wait_for_replication()
-				import time
-				print 'WAITING', userbase[i]
-				time.sleep(60)
 
 				if not os.path.exists(old_dir):
 					utils.fail('Test %d: old_dir = %r has been removed unexpectedly! %r' % (i, old_dir, userbase[i]))
@@ -88,6 +87,4 @@ def main():
 					utils.fail('Test %d: login to IMAP mailbox %r is not possible' % (i, userbase[i][2]))
 
 if __name__ == '__main__':
-	global timeout
-	timeout = 1
 	main()
