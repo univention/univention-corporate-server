@@ -2,7 +2,7 @@ import time
 
 DEFAULT_TIMEOUT = 90 # seconds
 
-class SetMailDeliveryTimeout(object):
+class WaitForNonzeroResultOrTimeout(object):
 
 	def __init__(self, func, timeout=DEFAULT_TIMEOUT):
 		self.func = func
