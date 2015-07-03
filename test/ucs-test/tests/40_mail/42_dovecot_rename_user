@@ -83,7 +83,7 @@ def main():
 				try:
 					if not imap_search_mail(messageid=userbase[i][3], server=fqdn, imap_user=userbase[i][2], imap_folder='INBOX', use_ssl=True):
 						utils.fail('Test %d: msgid not found unexpectedly' % (i,))
-				except imaplib.abort as ex:
+				except Exception as ex:
 					print 'EXCEPTION in imap_search_mail: %r' % (ex,)
 					utils.fail('Test %d: login to IMAP mailbox %r is not possible' % (i, userbase[i][2]))
 
