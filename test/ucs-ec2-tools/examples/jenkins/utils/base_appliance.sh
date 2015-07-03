@@ -486,6 +486,14 @@ appliance_preinstall_non_univention_packages ()
 	done
 }
 
+install_haveged ()
+{
+    _unmaintained_setting=$(ucr get repository/online/unmaintained)
+    ucr set repository/online/unmaintained="yes"
+    univention-install -y haveged
+    ucr set repository/online/unmaintained="$_unmaintained_setting"
+}
+
 setup_appliance ()
 {
 	# Stop firefox. Not required to run, and resets some UCRv (e.g. system/setup/boot/start)
@@ -507,6 +515,8 @@ setup_appliance ()
 	 
 	# generate all UMC languages
 	ucr set locale/default="en_US.UTF-8:UTF-8" locale="en_US.UTF-8:UTF-8 de_DE.UTF-8:UTF-8"; locale-gen
+
+	install_haveged
 	 
 	# if upgraded, u-basesystem will be installed by postup.sh
 	state="$(dpkg --get-selections univention-basesystem 2>/dev/null | awk '{print $2}')"
