@@ -1,3 +1,9 @@
+ucs-test (5.0.148-38) unstable; urgency=low
+
+  * Bug #37931: Disable 43proxy/04ntlm
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 03 Jul 2015 14:17:35 +0200
+
 ucs-test (5.0.148-37) unstable; urgency=low
 
   * Bug #38831: Fix missing include and file permission

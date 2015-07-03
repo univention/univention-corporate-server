@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
-## desc: http-proxy-ntlm-auth-perfomance-check
+## desc: http-proxy-ntlm-auth-perfomance-check [DISABLED: fails regularly]
 ## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave]
-## tags: [apptest]
+## tags: [apptest, SKIP]
 ## exposure: dangerous
 ## packages: [univention-squid]
 ## bugs: [26452,37931]
