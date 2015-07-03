@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-72) unstable; urgency=low
+
+  * Bug #38825: Make PID files not world-writable.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 03 Jul 2015 15:57:38 +0200
+
 univention-management-console-frontend (4.1.106-71) unstable; urgency=medium
 
   * Bug #37844: fix race condition which caused failing web-server startups

@@ -875,6 +875,7 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		DaemonRunner.__init__(self, self)
 		self.daemon_context.prevent_core = False
 		self.daemon_context.detach_process = self.options.daemon_mode
+		self.daemon_context.umask = 0077
 		self.daemon_context.files_preserve = [debug_fd]
 
 	def _restart(self):
