@@ -260,6 +260,10 @@ def deactivate_spam_detection():
 	handler_set(['mail/antispam=no', 'mail/antivir/spam=no'])
 
 
+def activate_spam_detection():
+	handler_set(['mail/antispam=yes', 'mail/antivir/spam=yes'])
+
+
 def activate_spam_header_tag(tag):
 	handler_set(['mail/antispam/headertag=%s' % tag])
 
@@ -282,6 +286,20 @@ def reload_amavis_postfix():
 			subprocess.Popen(cmd).communicate()
 		except EnvironmentError as ex:
 			print >> sys.stderr, ex
+
+
+def get_spam_folder_name():
+	"""
+	Returns the name of the current spam folder (for dovecot and cyrus).
+	"""
+	folder = None
+	if ucr.is_true('mail/cyrus'):
+		folder = ucr.get('mail/cyrus/folder/spam', 'Spam')
+	elif ucr.is_true('mail/dovecot'):
+		folder = ucr.get('mail/dovecot/folder/spam', 'Spam')
+	if folder and folder.lower() == 'none':
+		folder = None
+	return folder
 
 
 @SetMailDeliveryTimeout()
