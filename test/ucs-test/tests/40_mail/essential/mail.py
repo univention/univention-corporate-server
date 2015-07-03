@@ -49,7 +49,7 @@ from email.mime.base import MIMEBase
 import email.encoders as Encoders
 import univention.testing.utils as utils
 import univention.testing.ucr as ucr_test
-from univention.testing.decorators import SetMailDeliveryTimeout
+from univention.testing.decorators import WaitForNonzeroResultOrTimeout
 
 COMMASPACE = ', '
 
@@ -302,7 +302,7 @@ def get_spam_folder_name():
 	return folder
 
 
-@SetMailDeliveryTimeout
+@WaitForNonzeroResultOrTimeout
 def spam_delivered(token, mail_address):
 	delivered = False
 	spam = False
@@ -336,7 +336,7 @@ def spam_delivered(token, mail_address):
 	return delivered and spam
 
 
-@SetMailDeliveryTimeout
+@WaitForNonzeroResultOrTimeout
 def mail_delivered(token, user=None, mail_address=None, check_root=True):
 	"""
 	Check if a mail with the specified token or message ID has been delivered to a mail spool.
