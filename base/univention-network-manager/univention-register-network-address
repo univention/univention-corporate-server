@@ -30,13 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, time, string
+import sys
 import optparse
-import ipaddr
 import netifaces
 import subprocess
 import univention.config_registry
 import univention.uldap
+
 
 def register_iface(configRegistry, iface, verbose):
 	# is fallback different from current address?
@@ -47,31 +47,10 @@ def register_iface(configRegistry, iface, verbose):
 		if verbose:
 			print 'More information: %s\n%s' % (res[1], res[0])
 		return False
-	else:
-		# change fallback
-		ucr_set = []
-		for k in ['type', 'address', 'network', 'broadcast', 'netmask']:
-			if configRegistry.get('interfaces/%s/%s' % (iface, k)) != configRegistry.get('interfaces/%s/fallback/%s' % (iface, k)):
-				value = configRegistry.get('interfaces/%s/%s' % (iface, k))
-				ucr_set.append('interfaces/%s/fallback/%s=%s' % (iface, k, value))
-		if ucr_set:
-			null = open(os.path.devnull, 'w' )
-			stdout = sys.stdout
-			sys.stdout = null
-
-			# Disable ifdown / ifup while setting new UCR variables to avoid an endless loop
-			restart = configRegistry.get('interfaces/restart/auto', 'true')
-			univention.config_registry.handler_set(['interfaces/restart/auto=false'], quiet=True)
-
-			# Set values
-			univention.config_registry.handler_set(ucr_set, quiet=True)
-
-			univention.config_registry.handler_set(['interfaces/restart/auto=%s' % restart], quiet=True)
-			sys.stdout = stdout
 	return True
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
 	parser = optparse.OptionParser( )
 	parser.add_option("--interface", dest="interface", default='all', action="store", help="network interface to use")
 	parser.add_option("--verbose", dest="verbose", default=False, action="store_true", help="verbose output")

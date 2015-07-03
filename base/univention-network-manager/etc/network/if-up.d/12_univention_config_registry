@@ -53,12 +53,13 @@ try:
 	ip = ipaddr.IPv4Network('%(addr)s/%(netmask)s' % inf)
 except KeyError:
 	sys.exit(0)
-inf['address'] = newip
-inf['network'] = ip.network
+inf['address'] = str(newip)
+inf['network'] = str(ip.network)
 
 # save to UCR
+restart = configRegistry.get('interfaces/restart/auto')
 ucr_set = {
-	'interfaces/restart/auto': configRegistry.get('interfaces/restart/auto'),
+	'interfaces/restart/auto': 'false',
 }
 for k in ['netmask', 'address', 'broadcast', 'network']:
 	ucr_set['interfaces/%s/%s' % (iface, k)] = inf.get(k, None)
@@ -85,5 +86,5 @@ if configRegistry.get('gateway') != gateway:
 # Redirect stdout
 sys.stdout = open(os.path.devnull, 'w')
 # Disable ifdown / ifup while setting new UCR variables to avoid an endless loop
-ucr_update({'interfaces/restart/auto': 'false'})
-ucr_update(ucr_set)
+ucr_update(configRegistry, ucr_set)
+ucr_update(configRegistry, {'interfaces/restart/auto': restart})
