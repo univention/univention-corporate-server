@@ -12,7 +12,7 @@
 # It then sends an eMail to the address and checks if all three user recieved it.
 #################
 
-from essential.mail import mail_delivered, send_mail
+from essential.mail import file_search_mail, send_mail
 import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -41,11 +41,16 @@ def main():
 		token = str(time.time())
 		send_mail(recipients=group_mail, msg=token, idstring=token, subject='Test Group Send')
 
-		time.sleep(TIMEOUT)
-		for mail in mails:
-			if not mail_delivered(token, mail_address=mail):
-				utils.fail('mail sent to %s was not delivered' % mail)
-
+		failed_addresses = ['DUMMY']
+		while TIMEOUT > 0 and failed_addresses:
+			TIMEOUT -= 1
+			failed_addresses = []
+			for mail in mails:
+				if not file_search_mail(tokenlist=[token], mail_address=mail):
+					failed_addresses.append(mail)
+			time.sleep(1)
+		for address in failed_addresses:
+			utils.fail('mail sent to group address %r was not delivered to %r' % (group_mail, address,))
 
 if __name__ == '__main__':
 	main()
