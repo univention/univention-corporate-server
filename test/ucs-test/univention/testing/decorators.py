@@ -4,19 +4,18 @@ DEFAULT_TIMEOUT = 90 # seconds
 
 class SetMailDeliveryTimeout(object):
 
-	def __init__(self, timeout=DEFAULT_TIMEOUT):
+	def __init__(self, func, timeout=DEFAULT_TIMEOUT):
+		self.func = func
 		self.timeout = timeout
 
-	def __call__(self, func):
-		def wrapper(*args, **kwargs):
-			for i in xrange(self.timeout):
-				result = func(*args, **kwargs)
-				if result:
-					break
-				else:
-					time.sleep(1)
-			return result
-		return wrapper
+	def __call__(self, *args, **kwargs):
+		for i in xrange(self.timeout):
+			result = self.func(*args, **kwargs)
+			if result:
+				break
+			else:
+				time.sleep(1)
+		return result
 
 class SetTimeout(object):
 
