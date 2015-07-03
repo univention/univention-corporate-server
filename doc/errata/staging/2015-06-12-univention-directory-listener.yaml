@@ -10,5 +10,5 @@ desc: |
     correctly in case of case differences.
   * A confusing error message was removed.
   * The Listener is now restarted asynchronously when the network interfaces
-    are re-configured.
+    are reconfigured.
 bug: [35334, 32819, 36532]

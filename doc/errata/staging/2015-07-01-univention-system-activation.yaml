@@ -5,7 +5,7 @@ src: univention-system-activation
 fix: 0.0.1-25.21.201507021622
 version: [2]
 desc: |
-  This update releases the new package univention system activation.
+  This update releases the new package univention-system-activation.
   The package registers a web service to enforce the upload of an activated
   license key prior to accessing the management web interface.
 bug: [38547,38782]

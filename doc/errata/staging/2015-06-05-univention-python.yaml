@@ -5,7 +5,7 @@ src: univention-python
 fix: 8.0.3-9.156.201506260831
 version: [2]
 desc: |
-  This update addresses the following issue:
+  This update addresses the following issues:
    * Evaluation of the new "ldapFilter" attribute has been added to
      the library functions.
    * The Python implementation of univention-policy-result did not evaluate

@@ -5,7 +5,7 @@ src: univention-cloud-init
 fix: 2.0.1-4.9.201507012316
 version: [2]
 desc: |
-  This update addresses the following issues:
+  This update addresses the following issue:
   * Show server address in Univention System Setup welcome screen in EC2 and
     other cloud environments.
 bug: [38391]

@@ -5,7 +5,7 @@ src: univention-directory-notifier
 fix: 9.0.3-2.90.201506180824
 version: [2]
 desc: |
-  This update addresses the following issue
+  This update addresses the following issue:
   * The Notifier is now restarted asynchronously when the network interfaces
-    are re-configured.
+    are reconfigured.
 bug: [36532]

@@ -5,7 +5,7 @@ src: univention-policy
 fix: 6.0.2-8.128.201506081645
 version: [2]
 desc: |
-  This update addresses the following issue:
+  This update addresses the following issues:
    * Evaluation of the new "ldapFilter" attribute has been added to
      univention-policy-result.
    * The evaluation of "requiredObjectClass", "prohibitedObjectClasses",

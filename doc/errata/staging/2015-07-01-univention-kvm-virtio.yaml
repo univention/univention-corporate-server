@@ -5,6 +5,6 @@ src: univention-kvm-virtio
 fix: 4.0.0-3.10.201507011932
 version: [2]
 desc: |
- The VirtIO drivers for Windows have been updates to version 0.1.105 to fix
- a problem with broken driver signaturs in Windows 2012 server.
+ The VirtIO drivers for Windows have been updated to version 0.1.105 to fix
+ a problem with broken driver signatures in Windows 2012 server.
 bug: [38655]

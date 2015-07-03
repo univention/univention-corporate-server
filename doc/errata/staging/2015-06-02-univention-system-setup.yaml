@@ -12,7 +12,7 @@ desc: |
   * The package univention-welcome-screen will be installed on new
     installations.
   * Fixed an error which could occur while installing UCS with non-default
-    locales via the text based installer, resulting in an un-configured
+    locales via the text based installer, resulting in an unconfigured
     system.
   * Changed the wording in the Univention System Setup to suit
     Univention App Appliances.
