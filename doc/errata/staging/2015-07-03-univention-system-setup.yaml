@@ -1,0 +1,12 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-system-setup
+fix: 8.1.69-14.901.201507031657
+version: [2]
+desc: |
+  This update addresses the following issues:
+  * Proxy settings were accidentally removed when changing network settings.
+  * The netmask is not overwritten in the initial UCS configuration anymore if
+    if was set manually.
+bug: [38593, 38593]
