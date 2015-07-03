@@ -36,29 +36,26 @@ eval "$(univention-config-registry shell)"
 
 . /usr/share/univention-lib/all.sh
 
+do_start () {
+	# System must be joined
+	[ -e /var/univention-join/joined ] || return 0
+	[ -x /usr/sbin/umc-command ] || return 1
+	[ -x /usr/sbin/univention-register-network-address ] || return 1
+	/bin/netcat -q0 -w1 "$ldap_master" 6670 </dev/null || return 1
+	/usr/sbin/univention-register-network-address
+}
+
 case "$1" in
 	start)
-		log_action_msg "Starting univention-network-common"
-		ret=0
-		# System must be joined
-		if [ -e /var/univention-join/joined ]; then
-			if /bin/netcat -q0 -w1 "$ldap_master" 6670 </dev/null && [ -e /usr/sbin/umc-command ]; then
-				/usr/sbin/univention-register-network-address; ret=$?
-			else
-				ret=1
-			fi
-		fi
-		log_action_end_msg $ret
+		log_action_begin_msg "Starting univention-network-common"
+		do_start
+		log_action_end_msg $?
 		;;
 	stop)
 		log_action_end_msg 0
 		;;
 	*)
-		log_action_msg "Usage: $0 {start}."
+		log_action_msg "Usage: $0 {start|stop}."
 		exit 1
 		;;
 esac
-
-
-
-

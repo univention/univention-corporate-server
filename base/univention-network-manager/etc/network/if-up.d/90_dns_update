@@ -46,7 +46,10 @@ if /bin/netcat -q0 -w1 "$ldap_master" 6670 </dev/null; then
 		invoke-rc.d univention-management-console-server restart
 	fi
 
+	if [ -x /usr/sbin/univention-register-network-address ]
+	then
 	/usr/sbin/univention-register-network-address
+	fi
 fi
 
 exit 0
