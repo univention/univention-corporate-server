@@ -1,3 +1,9 @@
+ucs-test (4.0.215-9) unstable; urgency=low
+
+  * Bug #38831: Fix missing include and file permission
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 03 Jul 2015 13:02:21 +0200
+
 ucs-test (4.0.215-8) unstable; urgency=low
 
   * Bug #31083: added tests/52_s4connector/402rename_computer_object 
