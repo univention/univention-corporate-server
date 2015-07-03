@@ -1,9 +1,10 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create modify remove mailquota
+## desc: Create modify remove mailquota (cyrus specific)
 ## tags: apptest
 ## exposure: dangerous
 ## packages:
 ##  - univention-mail-server
+##  - univention-mail-cyrus
 ##  - univention-directory-manager-tools
 ## bugs: [23527]
 
