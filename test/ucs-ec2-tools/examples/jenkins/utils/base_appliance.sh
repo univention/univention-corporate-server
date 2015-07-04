@@ -605,7 +605,7 @@ __EOF__
 -		done
 -	)
 -	progress_next_step 10
-+		/usr/share/univention-mail-postfix/create-dh-parameter-files.sh >>/var/log/univention/dh-parameter-files-creation.log
++		/usr/share/univention-mail-postfix/create-dh-parameter-files.sh >>/var/log/univention/dh-parameter-files-creation.log &
 +
 +	progress_next_step 15
  fi
