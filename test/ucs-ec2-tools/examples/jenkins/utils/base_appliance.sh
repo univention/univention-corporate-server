@@ -328,6 +328,11 @@ joinscript_save_current_version
 univention-register-apps
 univention-run-join-scripts
 invoke-rc.d ntp restart
+
+# Use the first template as default (Bug #38832)
+sed -i 's|templates.unshift(|templates.push(|' /usr/share/univention-management-console-frontend/js/umc/modules/udm/wizards/FirstPageWizard.js
+. /usr/share/univention-lib/umc.sh
+umc_frontend_new_hash
 __EOF__
 	chmod 755 /usr/lib/univention-install/99_setup_${main_app}.inst
 }
@@ -480,6 +485,7 @@ appliance_preinstall_non_univention_packages ()
 			pgf
 			latex-beamer
 			heimdal-servers
+			gettext
 		"
 	for p in $packages; do
 		DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends "$p"
@@ -569,6 +575,13 @@ __EOF__
 	# deactivate kernel module; prevents bootsplash from freezing in vmware
 	ucr set kernel/blacklist="$(ucr get kernel/blacklist);vmwgfx"
 	 
+	# Show an info that the domain setup might take a while (Bug #38833)
+	sed -i 's|info_header "domain-join" "$(gettext "Domain join")"|info_header "domain-join" "$(gettext "Domain setup (this might take a while)")"|' \
+			/usr/lib/univention-system-setup/scripts/setup-join.sh
+	sed -i 's|msgid "Domain join"|msgid "Domain setup (this might take a while)"|' usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
+	sed -i 's|msgstr "Domänenbeitritt"|msgstr "Domäneneinrichtung (Dies kann einige Zeit dauern)"|' /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
+	msgfmt -o /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.mo /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
+
 	# set initial values for UCR ssl variables
 	/usr/sbin/univention-certificate-check-validity
 
