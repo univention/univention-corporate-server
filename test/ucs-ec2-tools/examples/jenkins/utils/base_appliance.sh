@@ -580,7 +580,7 @@ __EOF__
 	# Show an info that the domain setup might take a while (Bug #38833)
 	sed -i 's|info_header "domain-join" "$(gettext "Domain join")"|info_header "domain-join" "$(gettext "Domain setup (this might take a while)")"|' \
 			/usr/lib/univention-system-setup/scripts/setup-join.sh
-	sed -i 's|msgid "Domain join"|msgid "Domain setup (this might take a while)"|' usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
+	sed -i 's|msgid "Domain join"|msgid "Domain setup (this might take a while)"|' /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
 	sed -i 's|msgstr "Domänenbeitritt"|msgstr "Domäneneinrichtung (Dies kann einige Zeit dauern)"|' /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
 	msgfmt -o /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.mo /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
 
