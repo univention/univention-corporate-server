@@ -310,13 +310,14 @@ download_system_setup_packages ()
 
 create_install_script ()
 {
-	app=$1
+	main_app=$1
 
-	apps="$app $(app_get_appliance_additional_apps $app)"
+	apps="$main_app $(app_get_appliance_additional_apps $main_app)"
 
 	for app in $apps; do
 		packages="$(app_get_packages $app)"
-		cat >/usr/lib/univention-install/99_setup_${app}.inst <<__EOF__
+	done
+	cat >/usr/lib/univention-install/99_setup_${main_app}.inst <<__EOF__
 #!/bin/sh
 . /usr/share/univention-join/joinscripthelper.lib
 VERSION="1"
@@ -328,8 +329,7 @@ univention-register-apps
 univention-run-join-scripts
 invoke-rc.d ntp restart
 __EOF__
-		chmod 755 /usr/lib/univention-install/99_setup_${app}.inst
-	done
+	chmod 755 /usr/lib/univention-install/99_setup_${main_app}.inst
 }
 
 appliance_preinstall_non_univention_packages ()
