@@ -314,8 +314,9 @@ create_install_script ()
 
 	apps="$main_app $(app_get_appliance_additional_apps $main_app)"
 
+	packages=""
 	for app in $apps; do
-		packages="$(app_get_packages $app)"
+		packages="$packages $(app_get_packages $app)"
 	done
 	cat >/usr/lib/univention-install/99_setup_${main_app}.inst <<__EOF__
 #!/bin/sh
@@ -581,6 +582,38 @@ __EOF__
 	sed -i 's|msgid "Domain join"|msgid "Domain setup (this might take a while)"|' usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
 	sed -i 's|msgstr "Domänenbeitritt"|msgstr "Domäneneinrichtung (Dies kann einige Zeit dauern)"|' /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
 	msgfmt -o /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.mo /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
+
+	# re-create dh parameter as background job (Bug #37459)
+	cat >/root/dh-parameter-background.patch <<'__EOF__'
+--- /usr/lib/univention-system-setup/scripts/setup-join.sh	(Revision 61517)
++++ /usr/lib/univention-system-setup/scripts/setup-join.sh	(Arbeitskopie)
+@@ -157,20 +157,10 @@
+ 	fi
+ 	progress_next_step 3
+ 
+-	(
+ 	test -x /usr/share/univention-mail-postfix/create-dh-parameter-files.sh && \
+-		/usr/share/univention-mail-postfix/create-dh-parameter-files.sh
+-	) | (
+-		nsteps=3
+-		while read line; do
+-			if [ "This is going to take a long time" == "$line" ]; then
+-				# one of 2 SSH keys is generated
+-				progress_next_step $nsteps
+-				nsteps+=2
+-			fi
+-		done
+-	)
+-	progress_next_step 10
++		/usr/share/univention-mail-postfix/create-dh-parameter-files.sh >>/var/log/univention/dh-parameter-files-creation.log
++
++	progress_next_step 15
+ fi
+__EOF__
+	patch -d/ -p0 </root/dh-parameter-background.patch
+	rm /root/dh-parameter-background.patch
+ 
+ # Do network stuff
 
 	# set initial values for UCR ssl variables
 	/usr/sbin/univention-certificate-check-validity
