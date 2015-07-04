@@ -487,6 +487,7 @@ appliance_preinstall_non_univention_packages ()
 			latex-beamer
 			heimdal-servers
 			gettext
+			patch
 		"
 	for p in $packages; do
 		DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends "$p"
