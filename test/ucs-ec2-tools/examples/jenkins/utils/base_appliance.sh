@@ -140,6 +140,14 @@ app_get_appliance_logo ()
 				print app.get('ApplianceLogo');"
 }
 
+app_get_pre_installed_packages ()
+{
+	local app="$1"
+	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
+				app = Application.find('$app'); \
+				print app.get('AppliancePreInstalledPackages').replace(',',' ');"
+}
+
 app_get_appliance_blacklist ()
 {
 	local app="$1"
@@ -227,6 +235,16 @@ register_apps ()
 		fi
 	done
 	apt-get update
+}
+
+install_pre_packages ()
+{
+	app=$1
+
+	packages="$(app_get_pre_installed_packages $app)"
+	if [ -n "$packages" ]; then
+		DEBIAN_FRONTEND=noninteractive apt-get -y install $packages
+	fi
 }
 
 download_packages_and_dependencies ()
