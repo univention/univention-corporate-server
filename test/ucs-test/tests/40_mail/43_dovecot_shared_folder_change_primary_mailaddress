@@ -95,24 +95,13 @@ def main():
 					print '==> DELETE=%r' % (flag_delete,)
 					udm.modify_object('mail/folder', dn=folder.dn, set={'mailPrimaryAddress': new_address})
 
-					if i==0:
-						if not os.path.exists(old_dir):
-							utils.fail('Test %d: old_dir = %r has been removed unexpectedly! %r' % (i, old_dir, folder))
-						if imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (new_address,), use_ssl=True):
-							utils.fail('Test %d: msgid found unexpectedly' % (i,))
-					elif i==1:
-						if not os.path.exists(old_dir): # TODO FIXME: why is the shared folder not removed? Bug #38791
-							utils.fail('Test %d: old_dir = %r has been removed! %r' % (i, old_dir, folder))
-						if imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (new_address,), use_ssl=True):
-							utils.fail('Test %d: msgid found unexpectedly' % (i,))
-					elif i==2 or i==3:
-						if os.path.exists(old_dir):
-							utils.fail('Test %d: old_dir = %r has not been renamed! %r' % (i, old_dir, folder))
-						cnt = imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (new_address,), use_ssl=True)
-						if not cnt:
-							print 'Test %d: maildir does not contain old mails: cnt=%d' % (i, cnt)
-							time.sleep(180)
-							utils.fail('Test %d: maildir does not contain old mails' % (i,))
+					if os.path.exists(old_dir):
+						utils.fail('Test %d: old_dir = %r has not been renamed! %r' % (i, old_dir, folder))
+					cnt = imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (new_address,), use_ssl=True)
+					if not cnt:
+						print 'Test %d: maildir does not contain old mails: cnt=%d' % (i, cnt)
+						time.sleep(180)
+						utils.fail('Test %d: maildir does not contain old mails' % (i,))
 
 				#
 				# remove shared folder
