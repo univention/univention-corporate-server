@@ -166,7 +166,7 @@ msgstr ""
 "<p>Wählen Sie UCS-Software-Komponenten zur Installation auf dem System aus. "
 "Dieser Schritt kann übersprungen werden; die Komponenten sind auch über das "
 "Univention App Center in der Kategorie <i>UCS-Komponenten</i> verfügbar.</"
-"p><p>Software vor Drittanbietern (bspw. Groupware) kann ebenfalls über das "
+"p><p>Software von Drittanbietern (bspw. Groupware) kann ebenfalls über das "
 "Univention App Center installiert werden.</p>"
 
 #: umc/js/setup/ApplianceWizard.js:2145
