@@ -84,6 +84,8 @@ ucr set \
 	security/packetfilter/package/univention-ldap-server/tcp/7636/all/en="LDAPS"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
+[ -f /etc/ldap/dh_2048.pem ] || cp /usr/share/univention-ldap/dh_2048.pem /etc/ldap/
+
 ucr set \
 	ldap/debug/level?0 \
 	slapd/port?"7389,389" \
@@ -103,6 +105,7 @@ ucr set \
 	ldap/database/bdb/db_config_options?"set_flags" \
 	ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE" \
 	ldap/autostart?yes \
+	ldap/tls/dh/paramfile?/etc/ldap/dh_2048.pem \
 	ldap/maxopenfiles?8192 # Bug #17705
 
 # UDM Property Attributes

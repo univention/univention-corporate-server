@@ -1,0 +1,11 @@
+@%@UCRWARNING=# @%@
+
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
+
+# recreate dh paramter files for forward secrecy
+@!@
+script = '/usr/share/univention-ldap/create-dh-parameter-files'
+interval = configRegistry.get('ldap/tls/dh/cron', '30 4  * * *')
+if interval:
+	print '%s	root	%s' % (interval, script)
+@!@

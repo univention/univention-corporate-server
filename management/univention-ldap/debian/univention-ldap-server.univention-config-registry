@@ -51,6 +51,9 @@ Subfile: etc/ldap/slapd.conf.d/25univention-ldap-server_local-schema
 Type: subfile
 Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/30univention-ldap-server_head
+Variables: ldap/tls/ciphersuite
+Variables: ldap/tls/minprotocol
+Variables: ldap/tls/dh/paramfile
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -78,3 +81,7 @@ Variables: ldap/idlcachesize
 Variables: ldap/ppolicy
 Variables: ldap/ppolicy/enabled
 Variables: ldap/ppolicy/default
+
+Type: file
+File: etc/cron.d/univention-ldap
+Variables: ldap/tls/dh/cron

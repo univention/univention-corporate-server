@@ -7,6 +7,18 @@ allow			bind_v2 update_anon
 TLSCertificateFile	/etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/cert.pem
 TLSCertificateKeyFile	/etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/private.key
 TLSCACertificateFile	/etc/univention/ssl/ucsCA/CAcert.pem
+@!@
+ciphers = configRegistry.get("ldap/tls/ciphersuite", "HIGH:MEDIUM:!aNULL:!MD5:!RC4")
+if ciphers:
+	print 'TLSCipherSuite	%s' % (ciphers,)
+protocol = configRegistry.get("ldap/tls/minprotocol", "3.1")
+if protocol:
+	print 'TLSProtocolMin	%s' % (protocol,)
+from os.path import exists
+filename = configRegistry.get("ldap/tls/dh/paramfile", "/etc/ldap/dh_2048.pem")
+if filename and exists(filename):
+	print 'TLSDHParamFile	%s' % (filename,)
+@!@
 
 sizelimit		@%@ldap/sizelimit@%@
 

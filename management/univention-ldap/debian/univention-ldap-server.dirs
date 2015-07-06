@@ -1,7 +1,3 @@
-usr/sbin
 var/lib/univention-ldap/ldap
 var/lib/univention-ldap/replog
 var/lib/univention-ldap/fake
-usr/share/univention-ldap
-usr/lib/univention-install
-usr/lib/univention-ldap

@@ -43,3 +43,7 @@ solaris.schema:
 # Solaris and LDAP Naming Service, Deploying LDAP in the Enterprise.
 # Tom Bialanski and Michael Haines, Sun Microsystems Press,
 # A Prentice Hall Title, 2001, ISBN 0-13-030678-9
+
+dh_2048.pem:
+
+# <https://tools.ietf.org/html/rfc3526>
