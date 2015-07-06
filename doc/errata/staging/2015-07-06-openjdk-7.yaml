@@ -1,0 +1,22 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: openjdk-7
+fix: 7u79-2.5.5-1.14.201507031547
+version: [2]
+desc: |
+ These vulnerabilities have been fixed in OpenJDK-7:
+ - Incorrect handling of phantom references (CVE-2015-0460)
+ - Layout engine glyphStorage off-by-one (CVE-2015-0469)
+ - Incorrect permissions check in resource loading (CVE-2015-0477)
+ - RSA implementation hardening (CVE-2015-0478)
+ - Jar directory traversal issues (CVE-2015-0480)
+ - Certificate options parsing uncaught exception (CVE-2015-0488)
+bug: [38302]
+cve:
+ - CVE-2015-0460
+ - CVE-2015-0469
+ - CVE-2015-0477
+ - CVE-2015-0478
+ - CVE-2015-0480
+ - CVE-2015-0488
