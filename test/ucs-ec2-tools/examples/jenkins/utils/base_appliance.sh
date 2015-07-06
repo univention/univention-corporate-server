@@ -297,10 +297,10 @@ download_system_setup_packages ()
 		packages="server-master server-backup server-slave server-member basesystem"
 
 		# ad member mode
-		packages="$packages ad-connector samba"
+		packages="$packages ad-connector samba welcome-screen"
 
 		if ! app_appliance_is_software_blacklisted $app; then
-			packages="$packages management-console-module-adtakeover printserver dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon welcome-screen"
+			packages="$packages management-console-module-adtakeover printserver dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon"
 		fi
 
 		for package in $packages; do
