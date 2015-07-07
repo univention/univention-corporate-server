@@ -19,6 +19,7 @@
 
 from essential.mail import activate_spam_detection, deactivate_spam_detection, reload_amavis_postfix
 from essential.mail import send_mail, file_search_mail, get_spam_folder_name
+from univention.testing.decorators import WaitForNonzeroResultOrTimeout
 import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -42,38 +43,25 @@ def main():
 				activate_spam_detection()
 				reload_amavis_postfix()
 
+				spam_folder = get_spam_folder_name()
+				file_search_mail_with_waiting_loop = WaitForNonzeroResultOrTimeout(file_search_mail, TIMEOUT)
+
 				token1 = str(time.time())
 				send_mail(recipients=mail, msg=token1, idstring=token1, subject='Normal')
+				if not file_search_mail_with_waiting_loop(tokenlist=[token1, 'X-Spam-Flag: NO'], mail_address=mail):
+					utils.fail('Mail sent with token = %r to %s was not delivered' % (token1, mail))
+
 				token2 = str(time.time())
 				send_mail(recipients=mail, msg=token2, gtube=True, subject='Filter')
-
-				spam_folder = get_spam_folder_name()
-
-				for timeout in xrange(TIMEOUT, 0, -1):
-					print 'Waiting up to %d seconds' % (timeout,)
-					test_results = [file_search_mail(tokenlist=[token1], mail_address=mail),
-									file_search_mail(tokenlist=[token2, 'X-Spam-Flag: YES'], mail_address=mail, folder=spam_folder)]
-					if all(test_results):
-						break
-					time.sleep(1)
-
-				if not file_search_mail(tokenlist=[token1], mail_address=mail):
-					utils.fail('Mail sent with token = %r to %s was not delivered' % (token1, mail))
-				if not file_search_mail(tokenlist=[token2, 'X-Spam-Flag: YES'], mail_address=mail, folder=spam_folder):
+				if not file_search_mail_with_waiting_loop(tokenlist=[token2, 'X-Spam-Flag: YES'], mail_address=mail, folder=spam_folder):
 					utils.fail('Spam sent with token = %r to %s sent with filter, was not delivered to spam folder, or does not have a spam flag' % (token2, mail))
 
 				deactivate_spam_detection()
 				reload_amavis_postfix()
+
 				token3 = str(time.time())
 				send_mail(recipients=mail, msg=token3, gtube=True, subject='No Filter')
-
-				for timeout in xrange(TIMEOUT, 0, -1):
-					print 'Waiting up to %d seconds' % (timeout,)
-					if file_search_mail(tokenlist=[token3], mail_address=mail):
-						break
-					time.sleep(1)
-
-				if not file_search_mail(tokenlist=[token3], mail_address=mail):
+				if not file_search_mail_with_waiting_loop(tokenlist=[token3], mail_address=mail):
 					utils.fail('Spam sent with token = %r to %s sent without filter, was not delivered to main mail folder' % (token3,  mail))
 		finally:
 			reload_amavis_postfix()

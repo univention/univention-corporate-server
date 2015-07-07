@@ -407,11 +407,14 @@ def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, 
 
 		if mail_address:
 			if ucr.is_true('mail/cyrus'):
-				mail_dir = get_cyrus_maildir(mail_address)
+				mail_dir = get_cyrus_maildir(mail_address, folder=folder)
 				files = get_dir_files(mail_dir, recursive=False)
 			elif ucr.is_true('mail/dovecot'):
 				mail_dir = get_dovecot_maildir(mail_address, folder=folder)
 				files = get_maildir_filenames(mail_dir)
+
+			if not os.path.isdir(mail_dir):
+				print 'Warning: maildir %r does not exist!' % (mail_dir,)
 
 			for _file in files:
 				with open(_file) as fd:
@@ -585,7 +588,7 @@ def get_dovecot_shared_folder_maildir(foldername):
 	return '/var/spool/dovecot/public/%s/%s/.%s' % (domain, localpart.lower(), folderpath)
 
 
-def get_cyrus_maildir(mail_address):
+def get_cyrus_maildir(mail_address, folder=None):
 	"""
 	Returns directory name for specified mail address.
 
@@ -594,6 +597,12 @@ def get_cyrus_maildir(mail_address):
 
 	>>> get_cyrus_maildir('someuser@foobar.com')
 	'/var/spool/cyrus/mail/domain/f/foobar.com/s/user/someuser'
+
+	>>> get_cyrus_maildir('testuser@example.com', folder='Spam')
+	'/var/spool/cyrus/mail/domain/e/example.com/t/user/testuser/Spam'
+
+	>>> get_cyrus_maildir('testuser@example.com', folder='Spam/subspam')
+	'/var/spool/cyrus/mail/domain/e/example.com/t/user/testuser/Spam.subspam'
 
 	>>> get_cyrus_maildir('only-localpart')
 	Traceback (most recent call last):
@@ -616,7 +625,10 @@ def get_cyrus_maildir(mail_address):
 	if '.' in mail_address:
 		mail_address = mail_address.replace('.', '^')
 	# mail_address = re.sub("[0-9]", 'q', s)
-	return '/var/spool/cyrus/mail/domain/%s/%s/%s/user/%s' % (domain[0].lower(), domain.lower(), re.sub("[0-9]", "q", mail_address[0].lower()), mail_address.lower())
+	result = '/var/spool/cyrus/mail/domain/%s/%s/%s/user/%s' % (domain[0].lower(), domain.lower(), re.sub("[0-9]", "q", mail_address[0].lower()), mail_address.lower())
+	if folder:
+		result = '%s/%s' % (result, folder.lstrip('/').replace('/', '.'))
+	return result
 
 
 def wait_for_mailboxes(mailboxes, timeout=90):
