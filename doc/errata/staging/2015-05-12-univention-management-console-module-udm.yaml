@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-management-console-module-udm
-fix: 5.1.25-71.582.201506251517
+fix: 5.1.25-72.584.201507071546
 version: [2]
 desc: |
   This update addresses the following issues:
@@ -11,4 +11,5 @@ desc: |
    * The "Shares" module has been moved into the "Domain" category.
    * If multiple policies of the same type are references UMC prevents to
      remove policy references when saving the object.
-bug: [38544, 38202, 36256]
+   * Errors during requesting a new license are now handled.
+bug: [38544, 38202, 36256, 35614]
