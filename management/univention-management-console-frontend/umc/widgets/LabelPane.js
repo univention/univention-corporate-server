@@ -32,14 +32,18 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/_base/event",
 	"dojo/Deferred",
 	"dojo/dom-class",
+	"dojo/dom-construct",
 	"dojo/dom-attr",
+	"dojo/on",
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
 	"dijit/_Container",
+	"dijit/Tooltip",
 	"umc/tools"
-], function(declare, lang, array, Deferred, domClass, attr, _WidgetBase, _TemplatedMixin, _Container, tools) {
+], function(declare, lang, array, event, Deferred, domClass, domConstruct, attr, on, _WidgetBase, _TemplatedMixin, _Container, Tooltip, tools) {
 	lang.extend(_WidgetBase, {
 		// displayLabel: Boolean?
 		//		If specified as false, LabelPane will not display the label value.
@@ -91,6 +95,8 @@ define([
 		labelNodeBottom: null,
 
 		labelNodeRight: null,
+
+		tooltipNode: null,
 
 		_startupDeferred: null,
 
@@ -185,6 +191,11 @@ define([
 					this.own(this.content.watch('required', lang.hitch(this, function(attr, oldVal, newVal) {
 						this.set('label', this.content.get('label') || '');
 					})));
+					// watch for decription changes an adapt tooltip accordingly
+					this.own(this.content.watch('description', lang.hitch(this, function(attr, oldVal, newVal) {
+						this._setDescriptionAttr(newVal);
+						}
+					)));
 				}
 				this.own(this.content.watch('visible', lang.hitch(this, function(attr, oldVal, newVal) {
 					domClass.toggle(this.domNode, 'dijitHidden', !newVal);
@@ -239,12 +250,31 @@ define([
 			}
 		},
 
-//TODO: this seems to be obsolete and can be removed
-//		_setBetweenNonCheckBoxesAttr: function(betweenNonCheckBoxes) {
-//			if (betweenNonCheckBoxes && this.content.isInstanceOf(DijitCheckBox)) {
-//				domClass.add(this.domNode, 'umcLabelPaneCheckBoxBetweenNonCheckBoxes');
-//			}
-//		},
+		_setDescriptionAttr: function(description) {
+
+			// prevent duplicates
+			if (this.tooltipNode != null) {
+				domConstruct.destroy(this.tooltipNode);
+			}
+			if (description) {
+				this.tooltipNode = domConstruct.create("div",{
+					'class': "umcDescription umcDescriptionIcon"
+				});
+				labelNode = this._getLabelNode();
+				domConstruct.place(this.tooltipNode, labelNode, 'after');
+				//register events to show and hide the tooltip
+
+				this.own(on(this.tooltipNode, "click", lang.hitch(this, function(clickEvent) {
+					Tooltip.show(description, this.tooltipNode);
+					//stop onClick event
+					event.stop(clickEvent);
+					// register global onClick to close the tooltip again
+					on.once(window, "click", lang.hitch(this, function(event) {
+						Tooltip.hide(this.tooltipNode);
+					}));
+				})));
+			}
+		},
 
 		_setContentAttr: function(content) {
 			this.content = content;
@@ -273,6 +303,11 @@ define([
 				}, this);
 				labelClasses.push(this._orgClass);
 				this.set('class', labelClasses);
+			}
+
+			//initiate tooltip if we got a descripiton
+			if (this._isContentAWidget() && this.content.description) {
+				this._setDescriptionAttr(this.content.description);
 			}
 
 			this.set('disabled', this.disabled);

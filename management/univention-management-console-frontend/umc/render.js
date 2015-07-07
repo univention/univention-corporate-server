@@ -135,17 +135,6 @@ define([
 				}));
 			}
 
-			// create a tooltip if there is a description
-			if (widgetConf.description) {
-				var tooltip = new Tooltip({
-					label: widgetConf.description,
-					connectId: [ widget.domNode ]
-				});
-
-				// destroy the tooltip when the widget is destroyed
-				tooltip.connect(widget, 'destroy', 'destroy');
-			}
-
 			return widget; // dijit._WidgetBase
 		},
 
