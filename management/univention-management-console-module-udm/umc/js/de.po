@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-06-05 17:28+0200\n"
+"POT-Creation-Date: 2015-07-07 15:29+0200\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/udm/DetailPage.js:1755
+#: umc/js/udm/DetailPage.js:1748
 #, python-format
 msgid "%(attribute)s: %(message)s\n"
 msgstr "%(attribute)s: %(message)s\n"
@@ -48,7 +48,7 @@ msgstr "%s (genutzt: %s)"
 msgid "%s created"
 msgstr "%s angelegt"
 
-#: umc/js/udm/DetailPage.js:814
+#: umc/js/udm/DetailPage.js:811
 #, python-format
 msgid ""
 "%s part of the Active Directory domain. UCS can only change certain "
@@ -63,16 +63,16 @@ msgstr ""
 msgid "%s template"
 msgstr "%s-Vorlage"
 
-#: umc/js/udm/DetailPage.js:893
+#: umc/js/udm/DetailPage.js:890
 msgid "(multi-edit)"
 msgstr "(Mehrfachbearbeitung)"
 
-#: umc/js/udm/DetailPage.js:810
+#: umc/js/udm/DetailPage.js:807
 #, python-format
 msgid "<b>Attention:</b> The %s \"%s\" is"
 msgstr "<b>Hinweis:</b> Der %s \"%s\" ist"
 
-#: umc/js/udm/DetailPage.js:800
+#: umc/js/udm/DetailPage.js:797
 #, python-format
 msgid "<b>Attention:</b> The %s are"
 msgstr "<b>Hinweis:</b> Die %s sind"
@@ -81,13 +81,6 @@ msgstr "<b>Hinweis:</b> Die %s sind"
 #: umc/js/udm/wizards/FirstPageWizard.js:273
 msgid "<b>Warning!</b>"
 msgstr "<b>Warnung!</b>"
-
-#: umc/js/udm/DetailPage.js:626
-#, python-format
-msgid ""
-"<b>Warning:</b> This %s has multiple policies of type <i>%s</i> referenced. "
-"Modifying is therefore disabled via Univention Management Console."
-msgstr "<b>Warnung:</b> Dieses %s-Objekt hat mehrere Richtlinien vom Typ <i>%s</i> referenziert. Modifizieren per Univention Management Console ist daher deaktiviert."
 
 #: umc/js/udm/CreateReportDialog.js:134
 #, python-format
@@ -150,7 +143,7 @@ msgstr "Erweiterte Suche"
 msgid "Advanced options"
 msgstr "Erweiterte Optionen"
 
-#: umc/js/udm/DetailPage.js:731
+#: umc/js/udm/DetailPage.js:728
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
 
@@ -171,7 +164,7 @@ msgstr "Alle Objekttypen"
 msgid "Allow/Deny"
 msgstr "Erlauben/Verbieten"
 
-#: umc/js/udm/wizards/CreateWizard.js:163 umc/js/udm/DetailPage.js:1165
+#: umc/js/udm/wizards/CreateWizard.js:163 umc/js/udm/DetailPage.js:1162
 msgid "Back"
 msgstr "Zurück"
 
@@ -179,7 +172,7 @@ msgstr "Zurück"
 msgid "Boot"
 msgstr "Boot"
 
-#: umc/js/udm/CreateReportDialog.js:114 umc/js/udm/DetailPage.js:1167
+#: umc/js/udm/CreateReportDialog.js:114 umc/js/udm/DetailPage.js:1164
 #: umc/js/udm.js:1157 umc/js/udm.js:1448
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -188,7 +181,7 @@ msgstr "Abbrechen"
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: umc/js/udm/DetailPage.js:1279
+#: umc/js/udm/DetailPage.js:1272
 msgid "Click to edit the inherited properties of the policy"
 msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 
@@ -209,7 +202,7 @@ msgstr "Kontakt"
 msgid "Container"
 msgstr "Container"
 
-#: umc/js/udm/DetailPage.js:1837
+#: umc/js/udm/DetailPage.js:1830
 msgid "Continue editing"
 msgstr "Bearbeiten fortführen"
 
@@ -221,12 +214,12 @@ msgstr "Corporate Clients"
 msgid "Create"
 msgstr "Erstellen"
 
-#: umc/js/udm/DetailPage.js:1161
+#: umc/js/udm/DetailPage.js:1158
 #, python-format
 msgid "Create %s"
 msgstr "%s anlegen"
 
-#: umc/js/udm/DetailPage.js:632
+#: umc/js/udm/DetailPage.js:629
 msgid "Create new policy"
 msgstr "Neue Richtlinie erstellen"
 
@@ -309,7 +302,7 @@ msgstr ""
 "der <a href=\"https://www.univention.de/download/lizenzmodelle/ucs-core-"
 "edition\" target=\"_blank\">Univention Webseite</a> zu finden."
 
-#: umc/js/udm/DetailPage.js:1840
+#: umc/js/udm/DetailPage.js:1833
 msgid "Discard changes"
 msgstr "Änderungen verwerfen"
 
@@ -321,7 +314,7 @@ msgstr "Bearbeiten"
 msgid "Edit in new tab"
 msgstr "Bearbeiten in neuem Reiter"
 
-#: umc/js/udm/DetailPage.js:616
+#: umc/js/udm/DetailPage.js:618
 msgid "Edit policy"
 msgstr "Richtlinie bearbeiten"
 
@@ -334,7 +327,7 @@ msgstr "%s bearbeiten"
 msgid "Employee"
 msgstr "Mitarbeiter"
 
-#: umc/js/udm/DetailPage.js:1749
+#: umc/js/udm/DetailPage.js:1742
 msgid "Error"
 msgstr "Fehler"
 
@@ -362,7 +355,7 @@ msgstr "Allgemein"
 msgid "Groups"
 msgstr "Gruppen"
 
-#: umc/js/udm/DetailPage.js:1180 umc/js/udm.js:394
+#: umc/js/udm/DetailPage.js:1177 umc/js/udm.js:394
 msgid "Help"
 msgstr "Hilfe"
 
@@ -577,7 +570,7 @@ msgid "Open a new tab in order to edit the UDM-object"
 msgstr ""
 "Öffnet einen neuen Reiter, in dem das LDAP-Objekt bearbeitet werden kann."
 
-#: umc/js/udm/DetailPage.js:839
+#: umc/js/udm/DetailPage.js:836
 msgid "Options describing the basic features of the LDAP object"
 msgstr "Optionen für grundlegende LDAP-Objekt-Eigenschaften"
 
@@ -708,7 +701,7 @@ msgstr "Report wurde erstellt"
 msgid "Samba"
 msgstr "Samba"
 
-#: umc/js/udm/DetailPage.js:1163
+#: umc/js/udm/DetailPage.js:1160
 msgid "Save"
 msgstr "Speichern"
 
@@ -721,14 +714,14 @@ msgstr "Suche %s..."
 msgid "Search in:"
 msgstr "Suche in:"
 
-#: umc/js/udm/DetailPage.js:597
+#: umc/js/udm/DetailPage.js:599
 msgid ""
 "Select policies that should be directly linked to the current LDAP object"
 msgstr ""
 "Wählen Sie Richtlinien, die direkt mit dem aktuellen LDAP-Objekt verknüpft "
 "werden sollen"
 
-#: umc/js/udm/DetailPage.js:596
+#: umc/js/udm/DetailPage.js:598
 msgid "Select policy configuration"
 msgstr "Richtlinien-Konfiguration"
 
@@ -765,12 +758,12 @@ msgstr ""
 "Das %s kann unter der folgenden Adresse heruntergeladen werden<br><br><a "
 "target=\"_blank\" href=\"%s\">%s Report</a>"
 
-#: umc/js/udm/DetailPage.js:1687
+#: umc/js/udm/DetailPage.js:1680
 #, python-format
 msgid "The LDAP object could not be saved: %(details)s"
 msgstr "Das LDAP-Objekt konnte nicht gespeichert werden: %(details)s"
 
-#: umc/js/udm/DetailPage.js:1694
+#: umc/js/udm/DetailPage.js:1687
 msgid "The changes have been successfully applied."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
@@ -788,7 +781,7 @@ msgstr "Das dem neuen LDAP-Objekt zugewiesene übergeordnete Objekt."
 msgid "The exact object type of the new LDAP object."
 msgstr "Der genaue Objekttyp des neuen LDAP-Objekts."
 
-#: umc/js/udm/DetailPage.js:1676
+#: umc/js/udm/DetailPage.js:1669
 msgid "The following LDAP objects could not be saved:"
 msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gespeichert werden:"
 
@@ -804,11 +797,11 @@ msgstr ""
 msgid "The following object(s) could not be deleted:"
 msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gelöscht werden:"
 
-#: umc/js/udm/DetailPage.js:1724
+#: umc/js/udm/DetailPage.js:1717
 msgid "The following properties could not be validated:"
 msgstr "Die folgenden Eigenschaften konnten nicht validiert werden:"
 
-#: umc/js/udm/DetailPage.js:1586
+#: umc/js/udm/DetailPage.js:1579
 msgid "The following properties need to be specified or are invalid:"
 msgstr ""
 "Die folgenden Eigenschaften wurden nicht angegeben oder sind nicht gültig:"
@@ -867,7 +860,7 @@ msgstr ""
 "Das Textfeld ist leer. Bitte kopieren sie alle Zeilen der Lizenzdatei in das "
 "Textfeld und starten Sie den Import-Vorgang erneut."
 
-#: umc/js/udm/DetailPage.js:1836
+#: umc/js/udm/DetailPage.js:1829
 msgid "There are unsaved changes. Are you sure to cancel?"
 msgstr "Einige Änderungen sind noch nicht gespeichert. Möchten Sie abbrechen?"
 
@@ -935,7 +928,7 @@ msgstr "Gültige Produkttypen"
 msgid "Windows"
 msgstr "Windows"
 
-#: umc/js/udm/DetailPage.js:1407
+#: umc/js/udm/DetailPage.js:1400
 msgid ""
 "You are currently editing a policy. Changing its properties affects all "
 "referenced objects and may affect your system globally."
@@ -952,11 +945,11 @@ msgstr ""
 "Sie verwenden eine GPL Lizenz, die zu keinem Anspruch auf Support oder "
 "Maintenance-Unterstützung berechtigt."
 
-#: umc/js/udm/DetailPage.js:730
+#: umc/js/udm/DetailPage.js:727
 msgid "[Advanced settings]"
 msgstr "[Erweiterte Einstellungen]"
 
-#: umc/js/udm/DetailPage.js:838
+#: umc/js/udm/DetailPage.js:835
 msgid "[Options]"
 msgstr "[Optionen]"
 
@@ -972,7 +965,7 @@ msgstr "Rechner"
 msgid "computers"
 msgstr "Rechner"
 
-#: umc/js/udm/DetailPage.js:1280
+#: umc/js/udm/DetailPage.js:1273
 msgid "edit"
 msgstr "bearbeiten"
 
@@ -1005,7 +998,7 @@ msgstr "Netz-Objekt"
 msgid "network objects"
 msgstr "Netz-Objekte"
 
-#: umc/js/udm/DetailPage.js:1287
+#: umc/js/udm/DetailPage.js:1280
 msgid "not defined"
 msgstr "nicht gesetzt"
 
@@ -1051,6 +1044,15 @@ msgstr "Benutzer"
 
 #~ msgid "<b>License type:</b> GPL"
 #~ msgstr "<b>Lizenztyp:</b> GPL"
+
+#~ msgid ""
+#~ "<b>Warning:</b> This %s has multiple policies of type <i>%s</i> "
+#~ "referenced. Modifying is therefore disabled via Univention Management "
+#~ "Console."
+#~ msgstr ""
+#~ "<b>Warnung:</b> Dieses %s-Objekt hat mehrere Richtlinien vom Typ <i>%s</"
+#~ "i> referenziert. Modifizieren per Univention Management Console ist daher "
+#~ "deaktiviert."
 
 #~ msgid "Activate"
 #~ msgstr "Aktivieren"

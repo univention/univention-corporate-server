@@ -46,7 +46,7 @@ import urllib2
 from ldap import LDAPError
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
-from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError, error_handling
+from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError, UMC_Error, error_handling
 from univention.management.console.modules.decorators import simple_response, sanitize, multi_response
 from univention.management.console.modules.sanitizers import (
 	Sanitizer, LDAPSearchSanitizer, EmailSanitizer, ChoicesSanitizer,
@@ -1194,17 +1194,36 @@ class Instance(Base, ProgressMixin):
 		data = urllib.urlencode(data)
 		url = 'https://license.univention.de/keyid/conversion/submit'
 		request = urllib2.Request(url, data=data, headers={'User-agent': 'UMC/AppCenter'})
+		self._request_license(request)
+		# creating a new ucr variable to prevent duplicated registration (Bug #35711)
+		handler_set(['ucs/web/license/requested=true'])
+		return True
+
+	def _request_license(self, request):
 		try:
 			urlopen(request)
-		except Exception as e:
-			try:
-				# try to parse an html error
-				body = e.read()
-				detail = re.search('<span id="details">(?P<details>.*?)</span>', body).group(1)
-			except:
-				detail = str(e)
-			raise UMC_CommandError(_('An error occurred while sending the request: %s') % detail)
-		else:
-			# creating a new ucr variable to prevent double registration (Bug #35711)
-			handler_set(['ucs/web/license/requested=true'])
-			return True
+		except (urllib2.HTTPError, urllib2.URLError, IOError) as exc:
+			strerror = ''
+			if hasattr(exc, 'read'): # try to parse an html error
+				body = exc.read()
+				match = re.search('<span id="details">(?P<details>.*?)</span>', body, flags=re.DOTALL)
+				if match:
+					strerror = match.group(1).replace('\n', '')
+			if not strerror:
+				if hasattr(exc, 'getcode') and exc.getcode() >= 400:
+					strerror = _('This seems to be a problem with the license server. Please try again later.')
+				while hasattr(exc, 'reason'):
+					exc = exc.reason
+				if hasattr(exc, 'errno'):
+					version = ucr.get('version/version')
+					errno = exc.errno
+					strerror += getattr(exc, 'strerror', '')
+					if errno == 1: # gaierror(1, something like 'SSL Unknown protocol')
+						link_to_doc = _('http://docs.univention.de/manual-%s.html#ip-config:Web_proxy_for_caching_and_policy_management__virus_scan') % version
+						strerror += '. ' + _('This may be a problem with the proxy of your system. You may find help at %s.') % link_to_doc
+					if errno == -2: # gaierror(-2, 'Name or service not known')
+						link_to_doc = _('http://docs.univention.de/manual-%s.html#networks:dns') % version
+						strerror += '. ' + _('This is probably due to the DNS settings of your server. You may find help at %s.') % link_to_doc
+			if not strerror.strip():
+				strerror = str(exc)
+			raise UMC_Error(_('An error occurred while contacting the license server: %s') % (strerror,), status=500)
