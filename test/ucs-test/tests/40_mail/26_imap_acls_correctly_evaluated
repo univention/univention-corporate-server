@@ -18,8 +18,10 @@ def main():
 		with ucr_test.UCSTestConfigRegistry() as ucr:
 			dovecot = ucr.is_true('mail/dovecot')
 			domain = ucr.get('domainname')
-			handler_set(['mail/dovecot/mailbox/delete=yes'])
-			handler_set(['mail/cyrus/mailbox/delete=yes'])
+			if dovecot:
+				handler_set(['mail/dovecot/mailbox/delete=yes'])
+			else:
+				handler_set(['mail/cyrus/mailbox/delete=yes'])
 			host = '%s.%s' % (ucr.get('hostname'), domain)
 			password = 'univention'
 			mails = []
