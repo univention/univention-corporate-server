@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-management-console-module-appcenter
-fix: 4.1.20-33.373.201507071447
+fix: 4.1.20-34.374.201507071530
 version: [2]
 desc: |
   This update addresses the following issue:
