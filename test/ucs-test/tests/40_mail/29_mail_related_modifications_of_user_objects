@@ -1,0 +1,62 @@
+#!/usr/share/ucs-test/runner python
+## desc: Mail imap acl flags are correctly evaluated
+## tags: apptest
+## exposure: dangerous
+## packages: [univention-mail-server]
+
+from essential.mailclient import MailClient
+from univention.config_registry import handler_set
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+def check_login(host, mail, password, expected_result):
+	imap = MailClient(host)
+	imap.log_in(mail, password)
+	imap.logout()
+
+def main():
+	with udm_test.UCSTestUDM() as udm:
+		with ucr_test.UCSTestConfigRegistry() as ucr:
+			dovecot = ucr.is_true('mail/dovecot')
+			domain = ucr.get('domainname')
+			if dovecot:
+				handler_set(['mail/dovecot/mailbox/rename=yes',
+							'mail/dovecot/mailbox/delete=no'])
+			else:
+				handler_set(['mail/cyrus/mailbox/rename=yes',
+							'mail/cyrus/mailbox/delete=no'])
+			host = '%s.%s' % (ucr.get('hostname'), domain)
+			password = 'univention'
+			name = uts.random_name()
+			usermail = '%s@%s' % (name, domain)
+			userdn, username = udm.create_user(
+				username=name,
+				set={
+					'password'			 : password,
+					'mailHomeServer'	 : host,
+					'mailPrimaryAddress' : usermail
+				}
+			)
+			check_login(host, usermail, password, True)
+
+			new_usermail = '%s@%s' % (uts.random_name(), domain)
+			account = utils.UCSTestDomainAdminCredentials()
+			admin = account.binddn
+			passwd = account.bindpw
+			udm.modify_object(
+				'users/user',
+				dn=userdn,
+				binddn=admin,
+				bindpwd=passwd,
+				set={'mailPrimaryAddress': new_usermail})
+			import pdb; pdb.set_trace()
+			check_login(host, new_usermail, password, True)
+			check_login(host, usermail, password, True)
+			print 'DONE'
+
+if __name__ == '__main__':
+	main()
+
+# vim: set ft=python ts=4 sw=4 noet :
