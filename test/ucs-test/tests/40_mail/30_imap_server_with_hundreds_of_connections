@@ -64,7 +64,7 @@ def main():
 			servers = []
 			time_start = time.time()
 			for i in xrange(1500):
-				imap = MailClient(host)
+				imap = MailClient(host, ssl=True)
 				servers.append(imap)
 			print '%d IMAP connections are OK (took %f seconds)' % (i + 1, time.time()-time_start)
 
