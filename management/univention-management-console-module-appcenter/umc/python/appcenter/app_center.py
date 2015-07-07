@@ -80,6 +80,7 @@ import univention.admin.handlers.container.cn as container_udm_module
 import univention.admin.uexceptions as udm_errors
 
 # local application
+from univention.management.console.modules.appcenter.decorators import reload_ucr, machine_connection
 from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
 
 CACHE_DIR = '/var/cache/univention-management-console/appcenter'
@@ -90,12 +91,14 @@ ucr.load()
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate
 
+
 class License(object):
 	def __init__(self):
 		self.uuid = None
 		self.has_loaded = False
 
-	def reload(self, force=False):
+	@machine_connection(write=False)
+	def reload(self, force=False, ldap_connection=None, ldap_position=None):
 		self.has_loaded = True
 		if self.uuid is not None and not force:
 			# license with uuid has already been found
@@ -104,9 +107,8 @@ class License(object):
 		# last time we checked, no uuid was found
 		# but maybe the user installed a new license?
 		try:
-			_lo = uldap.getMachineConnection(ldap_master=False)
-			data = _lo.search('objectClass=univentionLicense')
-			del _lo
+			data = ldap_connection.search('objectClass=univentionLicense')
+			del ldap_connection
 			self.uuid = data[0][1]['univentionLicenseKeyID'][0]
 		except Exception as e:
 			# no licensing available
@@ -872,8 +874,8 @@ class Application(object):
 			domainwide_managed = self.domainwide_managed()
 		return (domainwide_managed or self.allowed_on_local_server()) and (not self.get('endoflife') or self.is_installed(package_manager)) and not self.has_active_ad_member_issue('hide')
 
-	def get_installations(self, hosts=None):
-		lo = uldap.getMachineConnection(ldap_master=False)
+	@machine_connection(write=False, loarg='lo', poarg='pos')
+	def get_installations(self, hosts=None, lo=None, pos=None):
 		try:
 			ret = {}
 			try:
@@ -917,8 +919,8 @@ class Application(object):
 			ret = len(hosts) > 1
 		return ret
 
+	@reload_ucr(ucr)
 	def to_dict(self, package_manager, domainwide_managed=None, hosts=None):
-		ucr.load()
 		res = copy.copy(self._options)
 		res['component_id'] = self.component_id
 
@@ -1289,19 +1291,18 @@ class Application(object):
 		result.update(remote_info)
 		return result, previously_registered
 
-	def get_ldap_object(self, ldap_id=None, or_create=False):
+	@machine_connection
+	def get_ldap_object(self, ldap_id=None, or_create=False, ldap_connection=None, ldap_position=None):
 		if ldap_id is None:
 			ldap_id = self.ldap_id
-		try:
-			lo, pos = admin_uldap.getMachineConnection()
-		except IOError: # /etc/machine.secret => No LDAP set up yet (e.g. system-setup)
-			return None
+		if ldap_connection is None:
+			return
 		co = None #univention.admin.config.config(ucr.get('ldap/server/name'))
 		try:
-			return ApplicationLDAPObject(ldap_id, lo, co)
+			return ApplicationLDAPObject(ldap_id, ldap_connection, co)
 		except DoesNotExist:
 			if or_create:
-				return ApplicationLDAPObject.create(self, lo, co, pos)
+				return ApplicationLDAPObject.create(self, ldap_connection, co, ldap_position)
 			return None
 
 	def set_ucs_overview_ucr_variables(self, super_ucr, unset=False):
@@ -1388,7 +1389,8 @@ class Application(object):
 			package_manager.reopen_cache()
 		return previously_registered
 
-	def tell_ldap(self, ucr, package_manager, inform_about_error=True):
+	@machine_connection(loarg='lo', poarg='pos')
+	def tell_ldap(self, ucr, package_manager, inform_about_error=True, lo=None, pos=None):
 		''' Registers localhost at the appcenter/app UDM object with
 		the correct version. Creates that object if necessary. Also
 		unregisters localhost on all other UDM objects related to this
@@ -1397,7 +1399,6 @@ class Application(object):
 		try:
 			installed_version = None
 			versions = self.find(self.id).versions
-			lo, pos = admin_uldap.getMachineConnection()
 			co = None #univention.admin.config.config(ucr.get('ldap/server/name'))
 			localhost = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 			for iapp in versions:
@@ -1485,8 +1486,8 @@ class Application(object):
 			MODULE.warn('%r' % result)
 			return False
 
-	def find_all_hosts(self, is_master):
-		lo = uldap.getMachineConnection(ldap_master=False)
+	@machine_connection(write=False, loarg='lo', poarg='pos')
+	def find_all_hosts(self, is_master, lo=None, pos=None):
 		try:
 			hosts = []
 			if not is_master:

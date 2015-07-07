@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-32) unstable; urgency=low
+
+  * Bug #38345: Improved the App Center startup performance
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 07 Jul 2015 13:55:10 +0200
+
 univention-management-console-module-appcenter (4.1.20-31) unstable; urgency=medium
 
   * Bug #38544: fix check for license module

@@ -36,6 +36,7 @@ define([
 	"dojo/Deferred",
 	"dojo/topic",
 	"umc/app",
+	"umc/tools",
 	"umc/dialog",
 	"umc/store",
 	"umc/widgets/Module",
@@ -48,13 +49,17 @@ define([
 	"umc/modules/appcenter/DetailsPage",
 	"umc/i18n!umc/modules/appcenter", // not needed atm
 	"xstyle/css!umc/modules/appcenter.css"
-], function(declare, lang, array, when, Deferred, topic, app, dialog, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppChooseHostDialog, PackagesPage, SettingsPage, DetailsPage, _) {
+], function(declare, lang, array, when, Deferred, topic, app, tools, dialog, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppChooseHostDialog, PackagesPage, SettingsPage, DetailsPage, _) {
 
 	topic.subscribe('/umc/license/activation', function() {
 		if (!app.getModule('udm', 'navigation'/*FIXME: 'license' Bug #36689*/)) {
 			dialog.alert(_('Activation is not possible. Please login as Administrator on the DC master.'));
 			return;
 		}
+	});
+
+	app.registerOnStartup(function(){
+		tools.umcpCommand("appcenter/ping");
 	});
 
 	return declare("umc.modules.appcenter", [ Module ], {
