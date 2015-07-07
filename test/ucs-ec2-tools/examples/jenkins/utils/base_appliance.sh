@@ -345,13 +345,30 @@ apt-get update
 univention-install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages || die
 joinscript_save_current_version
 univention-register-apps
-univention-run-join-scripts "\$@"
+if [ \$# -gt 1 ]; then
+	. /usr/share/univention-lib/ldap.sh
+
+	ucs_parseCredentials "\$@"
+	dcaccount="\$(echo "\$binddn" | sed -ne 's|uid=||;s|,.*||p')"
+	dcpwd="\$(mktemp)"
+	echo -n "\$bindpwd" >\$dcpwd
+	univention-run-join-scripts -dcaccount "\$dcaccount" -dcpwd "\$dcpwd"
+
+	rm \$dcpwd
+	unset binddn
+	unset bindpwd
+
+else
+	univention-run-join-scripts
+fi
 invoke-rc.d ntp restart
 
 # Use the first template as default (Bug #38832)
-sed -i 's|templates.unshift(|templates.push(|' /usr/share/univention-management-console-frontend/js/umc/modules/udm/wizards/FirstPageWizard.js
-. /usr/share/univention-lib/umc.sh
-umc_frontend_new_hash
+if [ -e /usr/share/univention-management-console-frontend/js/umc/modules/udm/wizards/FirstPageWizard.js ]; then
+	sed -i 's|templates.unshift(|templates.push(|' /usr/share/univention-management-console-frontend/js/umc/modules/udm/wizards/FirstPageWizard.js
+	. /usr/share/univention-lib/umc.sh
+	umc_frontend_new_hash
+fi
 __EOF__
 	chmod 755 /usr/lib/univention-install/99_setup_${main_app}.inst
 }
