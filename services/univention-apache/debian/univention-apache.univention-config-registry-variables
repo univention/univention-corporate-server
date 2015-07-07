@@ -96,14 +96,26 @@ Categories=service-apache
 
 [apache2/ssl/v2]
 Description[de]=Aktiviert das unsichere Protokoll SSL 2.0 (Standard: no)
-Description[en]=Enables the insecure protocoll SSL 2.0 (Default: no)
+Description[en]=Enables the insecure protocol SSL 2.0 (Default: no)
 Type=bool
 Categories=service-apache
 
 [apache2/ssl/v3]
 Description[de]=Aktiviert das unsichere Protokoll SSL 3.0 (Standard: no)
-Description[en]=Enables the insecure protocoll SSL 3.0 (Default: no)
+Description[en]=Enables the insecure protocol SSL 3.0 (Default: no)
 Type=bool
+Categories=service-apache
+
+[apache2/ssl/honorcipherorder]
+Description[de]=Bei der Aushandlung der kryptographischen Verfahren während des Aufbaus einer SSL/TLS-Verbindung wird standardmässig die Präferenz des Clients verwendet. Ist diese Option aktiviert, wird stattdessen die Präferenz des Server verwendet werden. Die Liste der von Apache angebotenen Verfahren kann mit der Variable 'apache2/ssl/ciphersuite' konfiguriert werden.
+Description[en]=During the negotiation of cryptographic algorithms during the setup of a SSL/TLS connection the preference of the client is used by default. If this option is enabled, the preference of the server is used instead. The list of algorithms offered by Apache can be configured with the variable 'apache2/ssl/ciphersuite'.
+Type=bool
+Categories=service-apache
+
+[apache2/ssl/ciphersuite]
+Description[de]=Dies konfiguriert die kryptographischen Verfahren, die ein Client in der SSL-Handshake-Phase angeboten bekommt. Das Format ist unter <http://httpd.apache.org/docs/2.2/mod/mod_ssl.html#sslciphersuite> beschrieben. Ist die Variable nicht gesetzt, wird 'HIGH:MEDIUM:!aNULL:!MD5:!RC4' verwendet.
+Description[en]=This configures the cryptographic algorithms which are offered to clients during a SSL handshake. The format is described at <http://httpd.apache.org/docs/2.2/mod/mod_ssl.html#sslciphersuite>. If the variable is unset, 'HIGH:MEDIUM:!aNULL:!MD5:!RC4' is used.
+Type=str
 Categories=service-apache
 
 [apache2/documentroot]

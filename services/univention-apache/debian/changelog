@@ -1,3 +1,9 @@
+univention-apache (6.0.16-10) unstable; urgency=low
+
+  * Bug #38632: Add UCRVs to configure more SSL options
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 07 Jul 2015 07:49:26 +0200
+
 univention-apache (6.0.16-9) unstable; urgency=medium
 
   * disable SSLv2 and SSLv3 (Bug #36173)
