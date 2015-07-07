@@ -68,7 +68,7 @@ class _LDAP(object):
 
 
 	@classmethod
-	def machine_connection(cls, func=None, write=False, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, **kwargs):
+	def machine_connection(cls, func=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, **kwargs):
 		"""
 		@machine_connection(write=True)
 		def foobar(self, ldap_connection=None, ldap_position=None):
