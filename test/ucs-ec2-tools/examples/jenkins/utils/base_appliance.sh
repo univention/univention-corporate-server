@@ -345,7 +345,7 @@ apt-get update
 univention-install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages || die
 joinscript_save_current_version
 univention-register-apps
-univention-run-join-scripts
+univention-run-join-scripts "$@"
 invoke-rc.d ntp restart
 
 # Use the first template as default (Bug #38832)
