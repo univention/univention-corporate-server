@@ -65,13 +65,11 @@ class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 
 		:returns: list of strings, list of existing mailboxes
 		"""
-		import pdb; pdb.set_trace()
 		mBoxes = self.list()[1]
 		result = [x.split('" ')[-1] for x in mBoxes if 'Noselect' not in x.split()[0]]
 		for i, item in enumerate(result):
 			if '"' in item:
 				item = item.replace('"', '')
-				item = item.replace(' ', '\ ')
 				result[i] = item
 		return result
 
