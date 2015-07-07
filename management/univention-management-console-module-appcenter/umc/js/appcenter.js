@@ -59,7 +59,7 @@ define([
 	});
 
 	app.registerOnStartup(function(){
-		tools.umcpCommand("appcenter/ping");
+		tools.umcpCommand("appcenter/ping", "appcenter");
 	});
 
 	return declare("umc.modules.appcenter", [ Module ], {

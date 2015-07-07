@@ -97,7 +97,7 @@ class License(object):
 		self.uuid = None
 		self.has_loaded = False
 
-	@machine_connection(write=False)
+	@machine_connection
 	def reload(self, force=False, ldap_connection=None, ldap_position=None):
 		self.has_loaded = True
 		if self.uuid is not None and not force:
@@ -874,7 +874,7 @@ class Application(object):
 			domainwide_managed = self.domainwide_managed()
 		return (domainwide_managed or self.allowed_on_local_server()) and (not self.get('endoflife') or self.is_installed(package_manager)) and not self.has_active_ad_member_issue('hide')
 
-	@machine_connection(write=False, loarg='lo', poarg='pos')
+	@machine_connection(loarg='lo', poarg='pos')
 	def get_installations(self, hosts=None, lo=None, pos=None):
 		try:
 			ret = {}
@@ -1486,7 +1486,7 @@ class Application(object):
 			MODULE.warn('%r' % result)
 			return False
 
-	@machine_connection(write=False, loarg='lo', poarg='pos')
+	@machine_connection(loarg='lo', poarg='pos')
 	def find_all_hosts(self, is_master, lo=None, pos=None):
 		try:
 			hosts = []
