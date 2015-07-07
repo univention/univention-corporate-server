@@ -147,6 +147,10 @@
 	//box-sizing: content-box;
 }
 
+.claro .dijitTooltip {
+	box-sizing: content-box;
+}
+
 .umc .dijitTooltipDialog,
 .umc .dijitTooltip.dijitTooltipBelow {
 	/* leave room for arrow above content */
@@ -254,5 +258,22 @@
 	color: $text-color-lightest;
 	overflow: auto;
 	max-height: 200px;
+}
+
+.claro .umcDescriptionIcon{
+		icon-image(-24, 0, "./", "-small", 12px, 12px);
+			margin: 0.4em 0 0  0.3em;
+				display: inline-block;
+}
+
+.claro .umcDescriptionIcon:hover {
+		/* unselected */
+			background-position: -36px 0;
+				opacity: 0.66;
+}
+
+.claro .umcDescriptionIcon:active {
+		/* unselected */
+			opacity: 1;
 }
 
