@@ -9,5 +9,5 @@ desc: |
   * Proxy settings were accidentally removed when changing network settings.
   * The netmask is not overwritten in the initial UCS configuration anymore if
     if was set manually.
-  * The german translation has been adapted.
+  * A typo in the german translation has been corrected.
 bug: [38593, 38593, 38215]
