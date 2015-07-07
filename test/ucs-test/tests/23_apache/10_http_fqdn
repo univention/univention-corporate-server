@@ -1,0 +1,8 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check home page by FQDN using plain http
+## tags: [apptest]
+## exposure: safe
+
+wget -S "http://$(hostname -f)/" -O/dev/null
+
+# vim: set ft=sh :

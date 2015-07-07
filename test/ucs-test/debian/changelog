@@ -1,3 +1,9 @@
+ucs-test (5.0.148-40) unstable; urgency=low
+
+  * Bug #27656: Test for apache
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 07 Jul 2015 15:06:50 +0200
+
 ucs-test (5.0.148-39) unstable; urgency=low
 
   * Bug #38791: modified test script

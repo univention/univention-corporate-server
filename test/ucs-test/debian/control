@@ -501,6 +501,16 @@ Provides: ucs-test-module
 Description: Test scripts to test basic Univention Directory Manager
  This package includes test-cases for the Univention Directory Manager.
 
+Package: ucs-test-apache
+Architecture: all
+Depends: apache2-mpm-prefork | apache2,
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts to test the web server Apache
+ This package includes test-cases for Apache.
+
 Package: ucs-test-modules-all
 Architecture: all
 Depends: ${ucs-test:all-packages}

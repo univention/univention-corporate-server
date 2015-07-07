@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Check if apache closes FDs after restart
-## packages: [apache2 | apache2-mpm-prefork, lsof]
+## packages: [lsof]
 ## bugs: [37952]
 ## tags: [apptest]
 ## exposure: dangerous

@@ -1,0 +1,39 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test Apache2 SSL cipher order
+## bugs: [38632]
+## packages:
+##  - openssl
+## exposure: dangerous
+set -e -u
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/ucr.sh" || exit 137
+
+cleanup () {
+	ucr_restore || :
+	apachectl graceful || :
+	exit ${RETVAL:-0}
+}
+trap cleanup EXIT
+
+ciphers="$(ucr get apache2/ssl/ciphersuite)"
+[ -n "$ciphers" ] || ciphers='HIGH:MEDIUM:!aNULL:!MD5:!RC4'
+sorder="$(openssl ciphers "$ciphers")"
+corder="$(openssl ciphers "$ciphers" | tr : '\n' | tac | tr '\n' :)"
+
+for conf in yes="${sorder%%:*}" no="${corder%%:*}"
+do
+	ucr set apache2/ssl/honorcipherorder=${conf%=*}
+	apachectl configtest
+	apachectl graceful
+	openssl s_client \
+		-CAfile /etc/univention/ssl/ucsCA/CAcert.pem \
+		-connect localhost:443 \
+		-cipher "$corder" \
+		-no_ign_eof </dev/null 2>&1 |
+	grep "Cipher *: *${conf#*=}" ||
+		fail_test 1 "$conf"
+done
+
+exit ${RETVAL:-0}
+# vim: set ft=sh :
