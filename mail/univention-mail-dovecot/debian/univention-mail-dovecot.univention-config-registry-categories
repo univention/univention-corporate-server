@@ -1,0 +1,4 @@
+[service-dovecot]
+name[de]=Dienst: Dovecot
+name[en]=Service: Dovecot
+icon=service-dovecot.gif

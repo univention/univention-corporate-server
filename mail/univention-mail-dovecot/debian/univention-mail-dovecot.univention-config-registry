@@ -1,0 +1,178 @@
+Type: file
+File: etc/default/dovecot
+Variables: mail/dovecot/limits/.*/client_limit
+Variables: mail/dovecot/limits/managesieve/process_limit
+Variables: mail/dovecot/limits/default_client_limit
+
+Type: file
+File: etc/dovecot/dovecot.conf
+Variables: mail/dovecot/shutdown_clients
+Variables: mail/dovecot/verbose_proctitle
+
+Type: file
+File: etc/dovecot/dovecot-ldap.conf.ext
+Variables: ldap/hostdn
+Variables: mail/dovecot/auth/ldap/cafile
+Variables: mail/dovecot/auth/ldap/user/attributes
+Variables: mail/dovecot/auth/ldap/user/objectclasses
+Variables: mail/dovecot/logging/ldap_debug_level
+Variables: hostname
+Variables: domainname
+User: root
+Group: root
+Mode: 640
+
+Type: file
+File: etc/dovecot/conf.d/10-auth.conf
+Variables: mail/dovecot/auth/allowplaintext
+Variables: mail/dovecot/auth/cache_size
+Variables: mail/dovecot/auth/cache_ttl
+Variables: mail/dovecot/auth/cache_negative_ttl
+Variables: mail/dovecot/auth/ssl_require_client_cert
+
+Type: file
+File: etc/dovecot/conf.d/10-logging.conf
+Variables: mail/dovecot/logging/log_path
+Variables: mail/dovecot/logging/info_log_path
+Variables: mail/dovecot/logging/debug_log_path
+Variables: mail/dovecot/logging/syslog_facility
+Variables: mail/dovecot/logging/auth_verbose
+Variables: mail/dovecot/logging/auth_verbose_passwords
+Variables: mail/dovecot/logging/auth_debug
+Variables: mail/dovecot/logging/auth_debug_passwords
+Variables: mail/dovecot/logging/mail_debug
+Variables: mail/dovecot/logging/verbose_ssl
+
+Type: file
+File: etc/dovecot/conf.d/10-mail.conf
+Variables: mail/dovecot/process/mmap_disable
+Variables: mail/dovecot/process/dotlock_use_excl
+Variables: mail/dovecot/process/mail_fsync
+Variables: mail/dovecot/process/mail_nfs_storage
+Variables: mail/dovecot/process/mail_nfs_index
+Variables: mail/dovecot/process/lock_method
+Variables: mail/dovecot/internal/sharedfolders
+Variables: mail/dovecot/mailbox/share_keywords
+Variables: mail/dovecot/location/separate_index
+
+Type: file
+File: etc/dovecot/conf.d/10-master.conf
+Variables: mail/dovecot/limits/anvil/client_limit
+Variables: mail/dovecot/limits/auth/client_limit
+Variables: mail/dovecot/limits/default_process_limit
+Variables: mail/dovecot/limits/default_client_limit
+Variables: mail/dovecot/limits/default_vsz_limit
+Variables: mail/dovecot/limits/imap-login/client_limit
+Variables: mail/dovecot/limits/imap-login/service_count
+Variables: mail/dovecot/limits/imap-login/process_min_avail
+Variables: mail/dovecot/limits/imap-login/vsz_limit
+Variables: mail/dovecot/limits/imap/vsz_limit
+Variables: mail/dovecot/limits/imap/process_limit
+Variables: mail/dovecot/limits/pop3-login/client_limit
+Variables: mail/dovecot/limits/pop3-login/service_count
+Variables: mail/dovecot/limits/pop3-login/process_min_avail
+Variables: mail/dovecot/limits/pop3-login/vsz_limit
+Variables: mail/dovecot/limits/pop3/vsz_limit
+Variables: mail/dovecot/limits/pop3/process_limit
+
+Type: file
+File: etc/dovecot/conf.d/10-ssl.conf
+Variables: mail/dovecot/ssl/cafile
+Variables: mail/dovecot/ssl/certificate
+Variables: mail/dovecot/ssl/cipher_list
+Variables: mail/dovecot/ssl/dh_parameters_length
+Variables: mail/dovecot/ssl/key
+Variables: mail/dovecot/ssl/parameters_regenerate
+Variables: mail/dovecot/ssl/prefer_server_ciphers
+Variables: mail/dovecot/ssl/protocols
+Variables: hostname
+Variables: domainname
+
+Type: file
+File: etc/dovecot/conf.d/15-lda.conf
+
+Type: file
+File: etc/dovecot/conf.d/15-mailboxes.conf
+Variables: mail/dovecot/mailboxes/special/.*
+Variables: mail/dovecot/mailboxes/auto/.*
+Variables: mail/dovecot/folder/ham
+Variables: mail/dovecot/folder/spam
+
+Type: file
+File: etc/dovecot/conf.d/20-imap.conf
+Variables: mail/dovecot/imap/client_workarounds
+
+Type: file
+File: etc/dovecot/conf.d/20-lmtp.conf
+
+Type: file
+File: etc/dovecot/conf.d/20-managesieve.conf
+Variables: mail/dovecot/sieve/ip
+Variables: mail/dovecot/sieve/port
+Variables: mail/dovecot/limits/default_vsz_limit
+Variables: mail/dovecot/limits/managesieve-login/process_min_avail
+Variables: mail/dovecot/limits/managesieve-login/service_count
+Variables: mail/dovecot/limits/managesieve-login/vsz_limit
+Variables: mail/dovecot/limits/managesieve/mail_max_userip_connections
+Variables: mail/dovecot/limits/managesieve/process_limit
+
+Type: file
+File: etc/dovecot/conf.d/20-pop3.conf
+Variables: mail/dovecot/pop3/client_workarounds
+
+Type: file
+File: etc/dovecot/conf.d/90-acl.conf
+
+Type: file
+File: etc/dovecot/conf.d/90-sieve.conf
+
+Type: file
+File: etc/dovecot/conf.d/90-quota.conf
+Variables: mail/dovecot/quota/warning/text/.*
+Variables: mail/dovecot/internal/sharedfolders
+
+Type: file
+File: etc/dovecot/conf.d/95-quota-status.conf
+Variables: mail/dovecot/quota-status/ip
+Variables: mail/dovecot/quota-status/port
+
+Type: file
+File: etc/dovecot/conf.d/auth-ldap.conf.ext
+
+Type: file
+File: etc/dovecot/conf.d/auth-master.conf.ext
+
+Type: file
+File: etc/dovecot/conf.d/auth-system.conf.ext
+
+Type: file
+File: etc/init.d/dovecot
+Mode: 755
+
+Type: file
+File: etc/logrotate.d/dovecot
+Variables: mail/dovecot/logging/log_path
+Variables: mail/dovecot/logging/syslog_facility
+
+Type: file
+File: etc/pam.d/dovecot
+Variables: ldap/base
+Variables: ldap/hostdn
+Variables: ldap/server/port
+
+Type: file
+File: etc/rsyslog.d/dovecot.conf
+Variables: mail/dovecot/logging/log_path
+
+Type: file
+File: usr/share/dovecot/protocols.d/imapd.protocol
+Variables: mail/dovecot/imap
+
+Type: file
+File: usr/share/dovecot/protocols.d/pop3d.protocol
+Variables: mail/dovecot/pop3
+
+Type: file
+File: var/lib/dovecot/sieve/default.sieve
+Variables: mail/dovecot/folder/spam
+Variables: mail/antispam/requiredhits

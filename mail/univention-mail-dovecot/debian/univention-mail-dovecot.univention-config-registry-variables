@@ -1,0 +1,481 @@
+[mail/dovecot]
+Description[de]=Ist diese Variable auf "true" gesetzt, wird Dovecot vom UCS-Mail-System verwendet (read-only Variable).
+Description[en]=If this variables value is "true", Dovecot is used by the UCS mail system (read-only variable).
+Type=bool
+ReadOnly=true
+Categories=service-mail
+
+[mail/dovecot/imap]
+Description[de]=Ist diese Variable auf "true" gesetzt, wird Dovecot den IMAP-Server starten. Standard ist "yes".
+Description[en]=If this variables value is "true", the IMAP server will be started by Dovecot. Default is "yes".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/pop3]
+Description[de]=Ist diese Variable auf "true" gesetzt, wird Dovecot den POP3-Server starten. Standard ist "yes".
+Description[en]=If this variables value is "true", the POP3 server will be started by Dovecot. Default is "yes".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/auth/allowplaintext]
+Description[de]=Ist diese Variable auf "true" gesetzt, erlaubt Dovecot die Authentifikation mit Klartextpasswörtern über unverschlüsselte Verbindungen. Standard ist "no".
+Description[en]=If this variable is set to "true", Dovecot allows authenticating with plain text passwords over unencrypted connections. Default is "no".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/auth/cache_size]
+Description[de]=Größe des Authentifikations-Caches (z.B. "50k" oder "10M"). "0" bedeutet, dass Caching deaktiviert ist. Ein typischer Cache-Eintrag für passdb und userdb ist etwa 250 byte groß. Standard ist "100k".
+Description[en]=Authentication cache size (e.g. "50k" or "10M"). "0" means caching is disabled. A typical passdb plus userdb cache entry is around 250 bytes. Default is "100k".
+Type=str
+Categories=service-mail
+
+[mail/dovecot/auth/cache_ttl]
+Description[de]=Gültigkeitsspanne für gecachte Daten. Nach dem Ablauf der Gültigkeitsdauer (TTL) wird ein Eintrag nicht mehr verwendet, außer die eigentliche Authentifikationquelle (LDAP) hat eine Störung. Standard ist "5 mins".
+Description[en]=Time to live for cached data. After TTL expires the cached record is no longer used, except if the main database (LDAP) lookup returns an internal failure. Default is "5 mins".
+Type=str
+Categories=service-mail
+
+[mail/dovecot/auth/cache_negative_ttl]
+Description[de]=Gültigkeitsspanne für negative Abfragen (Benutzer nicht gefunden, falsches Passwort). "0" bedeutet, dass negatives Caching deaktiviert ist. Standard ist "1 mins".
+Description[en]=TTL for negative hits (user not found, password mismatch). "0" disables caching them completely. Default is "1 mins".
+Type=str
+Categories=service-mail
+
+[mail/dovecot/auth/ldap/cafile]
+Description[de]=Der vollständige Dateiname der Datei mit den Zertifikaten der Stammzertifizierungsstelle (CA) den Dovecot verwenden soll um sich zum LDAP-Server zum verbinden. Ist die Variable nicht gesetzt wird /etc/univention/ssl/ucsCA/CAcert.pem verwendet.
+Description[en]=The full path of the file containing the certificates of the certificate authority (CA) that Dovecot will use to connect to the LDAP server. If the variable is unset /etc/univention/ssl/ucsCA/CAcert.pem is used.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/auth/ldap/user/attributes]
+Description[de]=Mit dieser Variablen kann die "user_attrs" Konfiguration, mit der Dovecot die Attribute von Benutzereinträge im LDAP interpretiert, erweitert werden. Einträge werden kommasepariert, ohne Leerzeichen.
+Description[en]=The "user_attrs" configuration of Dovecot can be extended with this variable. Dovecot uses this to interpret the attributes of user LDAP entries. Entries must be comma separated without white space.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/auth/ldap/user/objectclasses]
+Description[de]=Mit dieser Variablen kann die "user_filter" Konfiguration, mit der Dovecot Benutzereinträge im LDAP sucht, um zusätzliche Objektklassen erweitert werden. Einträge werden kommasepariert, ohne Leerzeichen.
+Description[en]=Using this variable, the "user_filter" configuration of Dovecot can be extended with additional object classes. Dovecot uses this to find user entries in the LDAP. Entries must be comma separated without white space.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/auth/ssl_require_client_cert]
+Description[de]=Der Server verlangt ein gültiges Client Zertifikat oder die Anmeldung schlägt fehl. Standard ist "no".
+Description[en]=Require a valid SSL client certificate or the authentication fails. Defaults to "no".
+Type=bool
+Categories=service-mail
+
+[dovecot/autostart]
+Description[de]=Die Variable konfiguriert den Startmodus des Dovecot-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the Dovecot service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/folder/ham]
+Description[de]=Der Name des IMAP-Ordners für Ham-Mails, der beim Anlegen eines Mail-Kontos automatisch erzeugt wird. Diese Variable sollte nicht geändert werden, nachdem bereits Mail-Konten angelegt wurden. Ist die Variable nicht gesetzt oder "none", wird kein Verzeichnis angelegt.
+Description[en]=The name of IMAP folder for ham mails that is created automatically when creating a new mail account. This variable should not be changed after mail accounts have been created. If the variable is unset or "none", no directory will be created.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/folder/spam]
+Description[de]=Der Name des IMAP-Ordners für Spam-Mails, der beim Anlegen eines Mail-Kontos automatisch erzeugt wird. Diese Variable sollte nicht geändert werden, nachdem bereits Mail-Konten angelegt wurden. Ist die Variable nicht gesetzt oder "none", wird kein Verzeichnis angelegt.
+Description[en]=The name of IMAP folder for spam mails that is created automatically when creating a new mail account. This variable should not be changed after mail accounts have been created. If the variable is unset or "none", no directory will be created.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/imap/client_workarounds]
+Description[de]=Workarounds für verschiedene Mail-Clients. Leerzeichen-separierte Liste mit folgenden möglichen Werten: "delay-newmail": Senden bei neuen Nachrichten EXISTS/RECENT Benachrichtigungen nur, wenn auf NOOP und CHECK Kommandos geantwortet wird. Hilft mit OSX Mail (<v2.1), aber bereitet noch mehr Probleme mit Outlook Express. "tb-extra-mailbox-sep": Thunderbird wird von LAYOUT=fs mit mbox und dbox verwirrt und fügt '/' zu Mailbox-Namen hinzu. Trifft nicht auf UCS zu. "tb-lsub-flags": Zeige \Noselect flags in LSUB Nachrichten mit LAYOUT=fs an. Trifft nicht auf UCS zu. Wenn die Variable nicht gesetzt ist, sind alle Workarounds deaktivert. Standard ist deaktiviert.
+Description[en]=Workarounds for various client bugs. Space separated list of the following possible values: "delay-newmail": Send EXISTS/RECENT new mail notifications only when replying to NOOP and CHECK commands. Good for OSX Mail (<v2.1), but Outlook Express breaks more badly. "tb-extra-mailbox-sep": Thunderbird gets somehow confused with LAYOUT=fs with mbox and dbox and adds extra '/' suffixes to mailbox names. Does not apply to UCS. "tb-lsub-flags": Show \Noselect flags for LSUB replies with LAYOUT=fs. Does not apply to UCS. If the variable is unset, all workarounds are deactivated. Defaults to unset.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/limits/auth/client_limit]
+Description[de]=Maximale Anzahl gleichzeitiger Client-Verbindungen zum Authentifikationsdienst. Ist die Variable nicht gesetzt, wird der Standardwert "2000" verwendet.
+Description[en]=Maximum number of simultaneous client connections to the authentication service. If the variable is unset, the default value "2000" is used.
+Type=int
+Categories=service-mail
+
+[mail/dovecot/limits/anvil/client_limit]
+Description[de]=Maximale Anzahl gleichzeitiger Client-Verbindungen zum anvil-Dienst. Ist die Variable nicht gesetzt, wird der Standardwert "1603" verwendet.
+Description[en]=Maximum number of simultaneous client connections to the anvil service. If the variable is unset, the default value "1603" is used.
+Type=int
+Categories=service-mail
+
+[mail/dovecot/limits/default_process_limit]
+Description[de]=Standard für die maximale Anzahl an Prozessen einens Dienstes (POP3, IMAP, managesieve etc). Ist die Variable nicht gesetzt, wird der Standardwert "400" verwendet.
+Description[en]=Default for the maximum number of processes that can exist for a service (POP3, IMAP, managesieve etc). If the variable is unset, the default value "400" is used.
+Type=int
+Categories=service-mail
+
+[mail/dovecot/limits/default_client_limit]
+Description[de]=Standard für die maximale Anzahl gleichzeitiger Client-Verbindungen eines Dienstes (POP3, IMAP, managesieve etc). Ist die Variable nicht gesetzt, wird der Standardwert "400" verwendet.
+Description[en]=Default for the maximum number of simultaneous client connections that can exist for a service (POP3, IMAP, managesieve etc). If the variable is unset, the default value "400" is used.
+Type=int
+Categories=service-mail
+
+[mail/dovecot/limits/default_vsz_limit]
+Description[de]=Standard für die Beschränkung des Speicherverbrauchs eines Prozesses. Die Einstellung ist dafür da Speicherlecks daran zu hindern den gesamten Speicher zu verbrauchen. Wenn der Wert zu niedrig ist, können sehr große Mailboxen u.U. nicht gelesen werden. Ist die Variable nicht gesetzt, wird der Standardwert "256M" verwendet.
+Description[en]=Default for the limit of the process' memory usage. This setting is intended to prevent memory leaks from eating up all of the memory. If this limit is too low a huge mailbox may not be accessed. If the variable is unset, the default value "256M" is used.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/limits/imap-login/client_limit]
+Description[de]=Maximale Anzahl gleichzeitiger Client-Verbindungen des imap-login-Dienstes. Ist die Variable nicht gesetzt, wird der Standardwert "400" verwendet.
+Description[en]=Default for the maximum number of simultaneous client connections that the imap-login service accepts. If the variable is unset, the default value "400" is used.
+Type=int
+Categories=service-mail
+
+[mail/dovecot/limits/imap-login/service_count]
+Description[de]=Anzahl an Client-Verbindungen, die ein einzelner imap-login-Prozess behandelt, bevor er sich selbst beendet. 0 bedeutet "unendlich viele" ("High-performance mode"). Ist die Variable nicht gesetzt, wird der Standardwert "1" ("High-security mode") verwendet.
+Description[en]=Number of client connections to handle until a single imap-login process kills itself. 0 means "unlimited" ("High-performance mode"). If the variable is unset, the default value "1" ("High-security mode") is used.
+Type=int
+Categories=service-mail
+
+[mail/dovecot/limits/imap-login/process_min_avail]
+Description[de]=Minimale Anzahl an imap-login-Prozessen, die vorrätig sein sollen, um neue Client-Verbindungen anzunehmen. Für service_count=1 senkt dies die Latenz zum Annehmen neuer Client-Verbindungen. Für service_count!=1 sollte die Variable auf die Anzahl der CPU-Kerne im System gesetzt werden, um die Last zwischen allen Kernen aufzuteilen. Ist die Variable nicht gesetzt, wird der Standardwert "0" verwendet.
+Description[en]=Minimum number of imap-login processes that always should be available to accept more client connections. For service_count=1 this decreases the latency for handling new connections. For service_count!=1 it could be set to the number of CPU cores on the system to balance the load among them. If the variable is unset, the default value "0" is used.
+Type=int
+Categories=service-mail
+
+[mail/dovecot/limits/imap-login/vsz_limit]
+Description[de]=Limit des Speicherverbrauchs des Prozesses imap-login. Ist die Variable nicht gesetzt, wird der Wert der Variablen mail/dovecot/limits/default_vsz_limit verwendet.
+Description[en]=Limit of the imap-login process' memory usage. If the variable is unset, the value of mail/dovecot/limits/default_vsz_limit is used.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/limits/imap/vsz_limit]
+Description[de]=Limit des Speicherverbrauchs des imap Prozesses. Wenn der Wert zu niedrig ist, können sehr große Mailboxen u.U. nicht gelesen werden. Ist die Variable nicht gesetzt, wird der Wert der Variablen mail/dovecot/limits/default_vsz_limit verwendet.
+Description[en]=Limit of the imap process' memory usage. If this limit is too low a huge mailbox may not be accessed. If the variable is unset, the value of mail/dovecot/limits/default_vsz_limit is used.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/limits/imap/process_limit]
+Description[de]=Maximale Anzahl an Prozessen des IMAP-Dienstes. Ist die Variable nicht gesetzt, wird der Wert der Variablen mail/dovecot/limits/default_process_limit verwendet.
+Description[en]=Maximum number of processes that can exist for the IMAP service. If the variable is unset, the value of mail/dovecot/limits/default_process_limit is used.
+Type=int
+Categories=service-mail
+
+[mail/dovecot/limits/pop3-login/client_limit]
+Description[de]=Maximale Anzahl gleichzeitiger Client-Verbindungen des pop3-login-Dienstes. Ist die Variable nicht gesetzt, wird der Standardwert "400" verwendet.
+Description[en]=Default for the maximum number of simultaneous client connections that the pop3-login service accepts. If the variable is unset, the default value "400" is used.
+Type=int
+Categories=service-mail
+
+[mail/dovecot/limits/pop3-login/service_count]
+Description[de]=Anzahl an Client-Verbindungen, die ein einzelner pop3-login-Prozess behandelt, bevor er sich selbst beendet. 0 bedeutet "unendlich viele" ("High-performance mode"). Ist die Variable nicht gesetzt, wird der Standardwert "1" ("High-security mode") verwendet.
+Description[en]=Number of client connections to handle until a single pop3-login process kills itself. 0 means "unlimited" ("High-performance mode"). If the variable is unset, the default value "1" is used ("High-security mode").
+Type=int
+Categories=service-mail
+
+[mail/dovecot/limits/pop3-login/process_min_avail]
+Description[de]=Minimale Anzahl an pop3-login-Prozessen, die vorrätig sein sollen, um neue Client-Verbindungen anzunehmen. Für service_count=1 senkt dies die Latenz zum Annehmen neuer Client-Verbindungen. Für service_count!=1 sollte die Variable auf die Anzahl der CPU cores im System gesetzt werden, um die Last zwischen allen Cores aufzuteilen. Ist die Variable nicht gesetzt, wird der Standardwert "0" verwendet.
+Description[en]=Minimum number of pop3-login processes that always should be available to accept more client connections. For service_count=1 this decreases the latency for handling new connections. For service_count!=1 it could be set to the number of CPU cores on the system to balance the load among them. If the variable is unset, the default value "0" is used.
+Type=int
+Categories=service-mail
+
+[mail/dovecot/limits/pop3-login/vsz_limit]
+Description[de]=Limit des Speicherverbrauchs des pop3-login Prozesses. Ist die Variable nicht gesetzt, wird der Wert der Variablen mail/dovecot/limits/default_vsz_limit verwendet.
+Description[en]=Limit of the pop3-login process' memory usage. If the variable is unset, the value of mail/dovecot/limits/default_vsz_limit is used.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/limits/pop3/vsz_limit]
+Description[de]=Limit des Speicherverbrauchs des pop3 Prozesses. Wenn der Wert zu niedrig ist, können sehr große Mailboxen u.U. nicht gelesen werden. Ist die Variable nicht gesetzt, wird der Wert der Variablen mail/dovecot/limits/default_vsz_limit verwendet.
+Description[en]=Limit of the pop3 process' memory usage. If this limit is too low a huge mailbox may not be accessed. If the variable is unset, the value of mail/dovecot/limits/default_vsz_limit is used.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/limits/pop3/process_limit]
+Description[de]=Maximale Anzahl an Prozessen des pop3 Dienstes. Ist die Variable nicht gesetzt, wird der Wert der Variablen mail/dovecot/limits/default_process_limit verwendet.
+Description[en]=Maximum number of processes that can exist for the pop3 service. If the variable is unset, the value of mail/dovecot/limits/default_process_limit is used.
+Type=int
+Categories=service-mail
+
+[mail/dovecot/limits/managesieve-login/service_count]
+Description[de]=Anzahl an Client-Verbindungen, die ein managesieve-login-Prozess behandelt, bevor er sich selbst beendet. 0 bedeutet "unendlich viele" ("High-performance mode"). Ist die Variable nicht gesetzt, wird der Standardwert "1" ("High-security mode") verwendet.
+Description[en]=Number of client connections to handle until a pop3-login proces  kills itself. 0 means "unlimited" ("High-performance mode"). If the variable is unset, the default value "1" is used ("High-security mode").
+Type=int
+Categories=service-mail
+
+[mail/dovecot/limits/managesieve-login/process_min_avail]
+Description[de]=Minimale Anzahl an managesieve-login-Prozessen, die vorrätig sein sollen, um neue Client-Verbindungen anzunehmen. Für service_count=1 senkt dies die Latenz zum Annehmen neuer Client-Verbindungen. Für service_count!=1 sollte die Variable auf die Anzahl der CPU cores im System gesetzt werden, um die Last zwischen allen Cores aufzuteilen. Ist die Variable nicht gesetzt, wird der Standardwert "0" verwendet.
+Description[en]=Minimum number of managesieve-login processes that always should be available to accept more client connections. For service_count=1 this decreases the latency for handling new connections. For service_count!=1 it could be set to the number of CPU cores on the system to balance the load among them. If the variable is unset, the default value "0" is used.
+Type=int
+Categories=service-mail
+
+[mail/dovecot/limits/managesieve-login/vsz_limit]
+Description[de]=Limit des Speicherverbrauchs des managesieve-login-Prozesses. Ist die Variable nicht gesetzt, wird der Wert der Variablen mail/dovecot/limits/default_vsz_limit verwendet.
+Description[en]=Limit of the managesieve-login process' memory usage. If the variable is unset, the value of mail/dovecot/limits/default_vsz_limit is used.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/limits/managesieve/process_limit]
+Description[de]=Maximale Anzahl an ManageSieve-Prozessen (Client-Verbindungen). Ist die Variable nicht gesetzt, wird der Standardwert "400" verwendet.
+Description[en]=Maximum number of ManageSieve processes (connections). If the variable is unset, the default value "400" is used.
+Type=int
+Categories=service-mail
+
+[mail/dovecot/limits/managesieve/mail_max_userip_connections]
+Description[de]=Maximale Anzahl an ManageSieve Client-Verbindungen eines Benutzers pro IP-Adresse. Ist die Variable nicht gesetzt, wird der Standardwert "10" verwendet.
+Description[en]=Maximum number of ManageSieve connections allowed for a user from each IP. If the variable is unset, the default value "10" is used.
+Type=int
+Categories=service-mail
+
+[mail/dovecot/internal/sharedfolders]
+Description[de]=Intern verwendete Variable zur Konfiguration der globalen IMAP-Ordner. Bitte nicht ändern! (read-only Variable)
+Description[en]=Internally used variable to configure shared IMAP folders. Please do not modify! (read-only variable)
+Type=str
+ReadOnly=true
+Categories=service-mail
+
+[mail/dovecot/location/separate_index]
+Description[de]=Index-Dateien werden von E-Mail-Dateien getrennt auf lokaler Festplatte gespeichert. Erhöht die Performance, wenn E-Mail-Dateien auf NFS gespeichert werden. Standard ist "no".
+Description[en]=Store index files separately from mail files on local disk. Yields better performance if mail storage is on NFS. Default is "no".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/logging/ldap_debug_level]
+Description[de]=Debug-Level der LDAP-Bibliotheksaufrufe. Standard ist 0.
+Description[en]=LDAP library debug level. Defaults to 0.
+Type=int
+Categories=service-mail
+
+[mail/dovecot/logging/log_path]
+Description[de]=Ziel für Dovecots Logmeldungen: "syslog" schickt diese zum Syslog-Dienst, "/dev/stderr" schreibt die Logmeldungen auf die Konsole (Fehlerausgabe), bei Angabe eines Dateipfades schreibt Dovecot selbst in die angegebene Datei. Standard ist "syslog".
+Description[en]=Log file to use for error messages. "syslog" logs to syslog, "/dev/stderr" logs to stderr, a file path makes Dovecot write logfiles itself. Defaults to "syslog".
+Type=str
+Categories=service-mail
+
+[mail/dovecot/logging/info_log_path]
+Description[de]=Datei in die informative Nachrichten geschrieben werden soll. Standard ist log_path.
+Description[en]=Log file to use for informational messages. Defaults to log_path.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/logging/debug_log_path]
+Description[de]=Datei in die Debug Nachrichten geschrieben werden soll. Standard ist info_log_path.
+Description[en]=Log file to use for debug messages. Defaults to info_log_path.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/logging/syslog_facility]
+Description[de]=Welche Syslog facility soll Dovecot verwenden? Bei "mail" wird nach /var/log/mail* geschrieben. Standard ist "local5".
+Description[en]=Syslog facility to use if you're logging to syslog. Use "mail" to send Dovecot logs to /var/log/mail*. Defaults to "local5".
+Type=str
+Categories=service-mail
+
+[mail/dovecot/logging/auth_verbose]
+Description[de]=Logge nicht erfolgreiche Authentifizierungsversuche und Gründe für das Scheitern. Standard ist "no".
+Description[en]=Log unsuccessful authentication attempts and the reasons why they failed. Defaults to "no".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/logging/auth_verbose_passwords]
+Description[de]=Im Fall von falschen Passwörtern, logge die verwendeten Passwörter. Gültige Werte sind "no", "plain" und "sha1". "sha1" kann nützlich sein um brute force Passwort Angriffe unterscheiden zu können von Benutzern die immer wieder das gleiche Passwort versuchen. Standard ist "no".
+Description[en]=In case of password mismatches, log the attempted password. Valid values are "no", "plain" and "sha1". "sha1" can be useful for detecting brute force password attempts vs. user simply trying the same password over and over again. Defaults to "no".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/logging/auth_debug]
+Description[de]=Noch ausführlicheres Logging, um zu Debuggen. Zeigt z.B. SQL Abfragen. Standard ist "no".
+Description[en]=Even more verbose logging for debugging purposes. Shows for example SQL queries. Defaults to "no".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/logging/auth_debug_passwords]
+Description[de]=Im Fall von falschen Passwörtern, logge die verwendeten Passwörter und verwendeten Schema, für das Debugging. Dies aktiviert implizit auth_debug. Fehler im PAM-Stack werden nicht von Dovecot geloggt (siehe /var/log/auth.log). Standard ist "no".
+Description[en]=In case of password mismatches, log the passwords and used scheme so the problem can be debugged. Enabling this also enables auth_debug. Errors in the PAM-stack are not logged by Dovecot (see /var/log/auth.log). Defaults to "no".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/logging/mail_debug]
+Description[de]=Aktiviert das Debugging der Mail-Verarbeitung. Dies kann helfen, wenn Dovecot die Mails nicht findet. Standard ist "no".
+Description[en]=Enable mail process debugging. This can help you figure out why Dovecot isn't finding your mails. Defaults to "no".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/logging/verbose_ssl]
+Description[de]=Zeige SSL-Fehler auf Protokollebene. Standard ist "no".
+Description[en]=Show protocol level SSL errors. Defaults to "no".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/mailboxes/auto/.*]
+Description[de]=Variablen der Form mail/dovecot/mailboxes/auto/MAILBOX-NAME=WERT können verwendet werden, um das automatische Erzeugen und Abonnieren von Mailboxen zu konfigurieren. Gültige Werte sind: "no": nicht automatisch erzeugen und nicht automatisch abonnieren, "create": automatisch erzeugen, aber nicht automatisch abonnieren, "subscribe": automatisch erzeugen und automatisch abonnieren. Standard ist "no".
+Description[en]=Variables in the format mail/dovecot/mailboxes/auto/MAILBOX-NAME=VALUE can be used to configure autocreation and autosubscription of mailboxes. Valid values are: "no": do not autocreate and not autosubscribe, "create": autocreate, but don't autosubscribe, "subscribe": autocreate and autosubscribe. Default is "no".
+Type=str
+Categories=service-mail
+
+[mail/dovecot/mailbox/delete]
+Description[de]=Ist diese Option aktiviert wird bei der Löschung eines Benutzerkontos in der Univention Management Console auch das IMAP-Postfach gelöscht. Ist die Option deaktiviert oder die Variable nicht gesetzt bleiben die Postfächer bei Löschung eines Benutzerkontos erhalten.
+Description[en]=If this option is activated the IMAP mailbox is also deleted when a user account is deleted. If the option is disabled or the variable unset, the mailboxes are kept when a user account is deleted.
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/mailbox/rename]
+Description[de]=Das Postfach eines Benutzers ist mit der primären E-Mail-Adresse verknüpft und nicht mit dem Benutzernamen. Diese Variable konfiguriert das Verhalten bei der Änderung der primären E-Mail-Adresse. Ist die Option aktiviert, wird auch das IMAP-Postfach des Benutzers umbenannt. Ist sie deaktiviert oder die Variable nicht gesetzt, sind nach dem Ändern der primären E-Mail-Adresse eines Benutzers seine bisherigen E-Mails nicht mehr erreichbar!
+Description[en]=A user's mailbox is linked to the primary e-mail address and not to the user name. This variable configures the reaction when the primary e-mail address is changed. If the option is enabled, the name of the user's IMAP mailbox is changed as well. If the option is disabled or the variable unset, it will not be possible to read previous e-mails any more once the user's primary e-mail address is changed!
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/mailbox/share_keywords]
+Description[de]=Sollen IMAP-keywords (E-Mail Markierungen der Art "Wichtig", "rot" etc) in globalen und geteilten IMAP-Postfächern von Benutzern gemeinsam genutzt werden können? Standard ist "yes".
+Description[en]=Share IMAP keywords (email labels like "important", "red" etc) in shared IMAP mailboxes between users? Defaults to "yes".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/mailboxes/special/.*]
+Description[de]=Variablen der Form mail/dovecot/mailboxes/auto/MAILBOX-NAME=WERT können verwendet werden, um Mailboxen SPECIAL-USE-RFC6154-Etiketten zuzuweisen. Gültige Werte sind: "\All", "\Archive", "\Drafts", "\Flagged", "\Junk", "\Sent" and "\Trash". Für die üblichen Ordner (Drafts, Junk, Spam, Sent, Trash) wurden diese Variablen bei der Installation bereits automatisch gesetzt.
+Description[en]=Variables in the format mail/dovecot/mailboxes/special/MAILBOX-NAME=SPECIAL-USE-FLAG can be used to assign SPECIAL-USE RFC 6154 tags to a mailbox. Valid values are: "\All", "\Archive", "\Drafts", "\Flagged", "\Junk", "\Sent" and "\Trash". During the installation those flags were already set for the usual folders (Drafts, Junk, Spam, Sent, Trash).
+Type=str
+Categories=service-mail
+
+[mail/dovecot/pop3/client_workarounds]
+Description[de]=Workarounds für verschiedene Mail-Clients. Leerzeichen-separierte Liste mit folgenden möglichen Werten: "outlook-no-nuls": Outlook und Outlook Express hängen, wenn E-Mails das NUL Zeichen enthalten. Diese Einstellung ersetzt es mit dem 0x80 Zeichen. "oe-ns-eoh": Outlook Express und Netscape Mail haben Problem, wenn das Ende der headers-Zeile fehlt. Diese Option sendet sie, wenn sie fehlt. Wenn die Variable nicht gesetzt ist, sind alle Workarounds deaktivert. Der Standard ist "outlook-no-nuls oe-ns-eoh".
+Description[en]=Workarounds for various client bugs. Space separated list of the following possible values: "outlook-no-nuls": Outlook and Outlook Express hang if mails contain NUL characters. This setting replaces them with 0x80 character. "oe-ns-eoh": Outlook Express and Netscape Mail breaks if end of headers-line is missing. This option simply sends it if it's missing. If the variable is unset, all workarounds are deactivated. Default is "outlook-no-nuls oe-ns-eoh".
+Type=str
+Categories=service-mail
+
+[mail/dovecot/process/mmap_disable]
+Description[de]=Die mmap() Funktion nicht verwenden. Dies ist nötig, wenn Indizes auf Netzwerkspeicher (NFS oder einem Cluster Filesystem) liegen. Ist mail_nfs_index=yes gesetzt, wird automatisch auf "yes" gestellt. Standard ist "no".
+Description[en]=Don't use mmap() at all. This is required if you store indexes to shared filesystems (NFS or clustered filesystem). Automatically set to "yes" if mail_nfs_index=yes. Defaults to "no".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/process/dotlock_use_excl]
+Description[de]=Vertraue auf funktionierendes O_EXCL bei der Verwendung von dotlock Dateien. Linux NFS-Server unterstützen O_EXCL seit Kernel 2.6.5 mit NFS-Versionen 3 und 4. Univention NFS-Server unterstützen O_EXCL. Standard ist "yes".
+Description[en]=Rely on O_EXCL to work when creating dotlock files. Linux NFS servers supports O_EXCL since kernel 2.6.5 with NFS version 3 and 4. Univention NFS servers support O_EXCL. Defaults to "yes".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/process/mail_fsync]
+Description[de]=Wann sollen die fsync() und fdatasync() Funktionen verwendet werden? Gültige Werte sind: "optimized": nur wenn es nötig ist um gefährlichen Datenverlust zu vermeiden, "always": nützlich z.B. in Verbindung mit NFS, wenn Schreibvorgänge verzögert werden, "never": nie verwenden (höchste Performance, aber bei Absturz gehen Daten verloren). Ist mail_nfs_index=yes gesetzt, wird automatisch auf "always" gestellt. Standard ist "optimized".
+Description[en]=When to use fsync() or fdatasync() calls. Valid values are: "optimized": whenever necessary to avoid losing important data, "always": useful with e.g. NFS when write()s are delayed, "never": never use it (best performance, but crashes can lose data). Automatically set to "always" if mail_nfs_index=yes. Defaults to "optimized".
+Type=str
+Categories=service-mail
+
+[mail/dovecot/process/mail_nfs_storage]
+Description[de]=Mail Storage liegt auf NFS. Ist dies aktiviert, leert Dovecot den NFS-Cache bei Bedarf. Wenn nur ein Mail-Server verwendet wird, ist dies nicht nötig. Standard ist "no".
+Description[en]=Mail storage is on NFS. Set this to yes to make Dovecot flush NFS caches whenever needed. If you're using only a single mail server this isn't needed. Defaults to "no".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/process/mail_nfs_index]
+Description[de]=Mail-Index-Dateien liegen ebenfalls auf NFS. Wenn auf "yes" gestellt, werden mmap_disable=yes und mail_fsync=always automatisch gesetzt. Standard ist "no".
+Description[en]=Mail index files also exist on NFS. Setting this to "yes" will automatically set mmap_disable=yes and mail_fsync=always. Defaults to "no".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/process/lock_method]
+Description[de]=Locking Methode für Index-Dateien. Gültige Werte sind "fcntl", "flock" und "dotlock". "dotlock" verwendete einige Tricks die evtl. mehr Platten I/O produzieren als andere Locking Methoden, aber funktioniert auf allen Netzwerkspeichern. NFS Anwender: "flock" funktioniert nicht. Wenn lockd nicht läuft, muss "dotlock" verwendet werden, dies senkt aber die Performance. Wenn Sie viele Locking-bezogene Fehler haben, versuchen Sie "dotlock". Wenn der NFS-Server auf UCS läuft, wird lockd verwendet und Sie können "fcntl" nutzem. Standard ist "fcntl".
+Description[en]=Locking method for index files. Valid values are "fcntl", "flock" and "dotlock". "dotlock" uses some tricks which may create more disk I/O than other locking methods, but works on all network storage. NFS users: "flock" doesn't work. If you're not running lockd you'll have to use "dotlock", but this degrades performance. If you're beginning to get all kinds of locking related errors, try if the problems go away with "dotlock". If the NFS server is a UCS, lockd is running and you should stay with "fcntl". Defaults to "fcntl".
+Type=str
+Categories=service-mail
+
+[mail/dovecot/quota/warning/subject]
+Description[de]=Der Betreff von E-Mails zum Warnen der Benutzer bei Überschreitung der Mail-Quota. Standard ist "Quota-Warning".
+Description[en]=The subject of emails sent to users, when their mailboxes grow over quota. Default is "Quota-Warning".
+Type=str
+Categories=service-mail
+
+[mail/dovecot/quota/warning/text/.*]
+Description[de]=Variablen der Form mail/dovecot/quota/warning/text/PROZENT=TEXT können verwendet werden um die Texte von E-Mails zum Warnen der Benutzer bei Überschreitung der Mail-Quota zu konfigurieren. Ist keine UCR Variable gesetzt, wird keine Warnung verschickt. Wenn TEXT die Zeichenkette "$PERCENT" enthält, wird diese in der E-Mail mit dem überschrittenen Wert ersetzt. Standard sind zwei Einträge auf Englisch: "80=Your mailbox has filled up to over $PERCENT%." und "95=Attention: Your mailbox has already filled up to over $PERCENT%." Sie können z.B. folgende deutschen Äquivalente konfigurieren: "80=Ihr Postfach ist zu über $PERCENT% gefüllt." und "95=Achtung: Ihr Postfach ist bereits zu über $PERCENT% gefüllt. Bitte löschen Sie einige Nachrichten oder wenden Sie sich an den Administrator."
+Description[en]=Variables in the format mail/dovecot/quota/warning/text/PERCENT=TEXT can be used to configure the texts of warning emails sent to users, when their mailboxes grow over quota. If no UCR variable is set, no warning will be sent. If TEXT contains the string "$PERCENT", it will be replaced in the email with the value of the limit that has been exceeded. Defaults are two entries: "80=Your mailbox has filled up to over $PERCENT%." and "95=Attention: Your mailbox has already filled up to over $PERCENT%. Please delete some messages or contact the administrator."
+Type=str
+Categories=service-mail
+
+[mail/dovecot/quota-status/ip]
+Description[de]=Die IP-Adresse an der der quota-status-Dienst von Dovecot laufen soll. Gültige Werte sind IP-Adressen sowie "*" und "0.0.0.0" für alle Netzwerk-Schnittstellen. Standard ist "127.0.0.1".
+Description[en]=The IP address on which Dovecots quota-status service listens for connections. Valid values are IP addresses and for all network interfaces "*" and "0.0.0.0". Default is "127.0.0.1".
+Type=str
+Categories=service-mail
+
+[mail/dovecot/quota-status/port]
+Description[de]=Der Netzwerk-Port an dem der quota-status-Dienst von Dovecot laufen soll. Standard ist "12340".
+Description[en]=The network port on which Dovecots quota-status service listens for connections. Default is "12340".
+Type=str
+Categories=service-mail
+
+[mail/dovecot/shutdown_clients]
+Description[de]=Sollen alle Prozesse beendet werden, wenn der Dovecot master Prozess herunter fährt? Wenn auf "no" gesetzt kann ein Update von Dovecot installiert werden ohne Client Verbindungen zu beenden. Dies könnte ein Problem sein, wenn es sich z.B. um ein Sicherheitsupdate handelt. Standard ist "yes".
+Description[en]=Should all processes be killed when Dovecot master process shuts down? Setting this to "no" means that Dovecot can be upgraded without forcing existing client connections to close (although that could also be a problem if the upgrade is e.g. because of a security fix). Defaults to "yes".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/sieve/ip]
+Description[de]=Auf dieser IP-Adresse wartet der SIEVE-Dienst auf Verbindungen. Ist die Variable nicht gesetzt, wird der Standardwert "0.0.0.0" (alle Schnittstellen) verwendet.
+Description[en]=The SIEVE service is listening for connections on this IP address. If the variable is unset, the default value "0.0.0.0" (all interfaces) is used.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/sieve/client/cafile]
+Description[de]=Der vollständige Dateiname der Datei mit dem Zertifikat der Stammzertifizierungsstelle (CA), die der Sieve-Client zum Verbinden zu Dovecots Managesieve-Server verwenden soll. Bitte beim Ändern von mail/dovecot/ssl/cafile anpassen. Ist die Variable nicht gesetzt wird /etc/univention/ssl/ucsCA/CAcert.pem verwendet.
+Description[en]=The full path of the file containing the certificate of the certificate authority (CA) that the Sieve client should use to connect to Dovecots managesieve server. Please modify this, if mail/dovecot/ssl/cafile is set. If the variable is unset /etc/univention/ssl/ucsCA/CAcert.pem is used.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/sieve/port]
+Description[de]=Auf diesem Port wartet der SIEVE-Dienst auf Verbindungen. Ist die Variable nicht gesetzt, wird der Standardport "4190" verwendet.
+Description[en]=The SIEVE service is listening for connections on this port. If the variable is unset, the default port 4190 is used.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/sieve/spam]
+Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, wird beim Anlegen einer Mailbox ein Sieve-Skript erstellt, das Spam-Mails in den Spam-Ordner verschiebt (siehe 'mail/dovecot/folder/spam').
+Description[en]=If this option is activated or the variable unset, a Sieve script is created for every new mailbox, which moves spam mails into the spam folder (see 'mail/dovecot/folder/spam').
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/ssl/cafile]
+Description[de]=Der vollständige Dateiname der Datei mit den Zertifikaten der Stammzertifizierungsstelle (CA) zur Verwendung für den IMAP/POP3/Managesieve-Server. Setzen Sie diese Variable nur, wenn Sie wünschen Clients zum Senden eines Zertifikats aufzufordern. Setzen Sie zusätzlich mail/dovecot/auth/ssl_require_client_cert=yes, wenn Sie nicht nur Auffordern, sondern Client-Zertifikate verlangen wollen.
+Description[en]=The full path of the file containing the certificates of the certificate authority (CA) to be used by the IMAP/POP3/managesieve server. Set this only if you intend to request clients to send a certificate. Set mail/dovecot/auth/ssl_require_client_cert=yes is you wish to not only request client certificates, but want to require them.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/ssl/certificate]
+Description[de]=Der vollständiger Dateiname des SSL-Zertifikats, das von Dovecot für SSL-Verbindungen verwendet wird. Ist die Variable nicht gesetzt, wird das lokale Host-Zertifikat (/etc/univention/ssl/<FQDN>/cert.pem) verwendet.
+Description[en]=The full path name of SSL certificate that is used by Dovecot to establish SSL connections. If the variable is unset, the local host certificate (/etc/univention/ssl/<FQDN>/cert.pem) is used.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/ssl/cipher_list]
+Description[de]=Zu verwendende SSL-Verfahren. Standard ist "EDH+CAMELLIA:EDH+aRSA:EECDH+aRSA+AESGCM:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:+CAMELLIA256:+AES256:+CAMELLIA128:+AES128:+SSLv3:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!DSS:!RC4:!SEED:!ECDSA:CAMELLIA256-SHA:AES256-SHA:CAMELLIA128-SHA:AES128-SHA".
+Description[en]=SSL ciphers to use. Defaults to "EDH+CAMELLIA:EDH+aRSA:EECDH+aRSA+AESGCM:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:+CAMELLIA256:+AES256:+CAMELLIA128:+AES128:+SSLv3:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!DSS:!RC4:!SEED:!ECDSA:CAMELLIA256-SHA:AES256-SHA:CAMELLIA128-SHA:AES128-SHA".
+Type=str
+Categories=service-mail
+
+[mail/dovecot/ssl/dh_parameters_length]
+Description[de]=Zu verwendende Diffie-Hellman-Parameterlänge. Standard ist "2048".
+Description[en]==Diffie Hellman parameters length to use. Defaults to "2048".
+Type=int
+Categories=service-mail
+
+[mail/dovecot/ssl/key]
+Description[de]=Der vollständige Dateiname der SSL-Schlüsseldatei, das von Dovecot für SSL-Verbindungen verwendet wird. Ist die Variable nicht gesetzt, wird der lokale SSL-Host-Schlüssel (/etc/univention/ssl/<FQDN>/private.key) verwendet.
+Description[en]=The full path name of SSL key file that is used by Dovecot to establish SSL connections. If the variable is unset the l    ocal host key (/etc/univention/ssl/<FQDN>/private.key) is used.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/ssl/parameters_regenerate]
+Description[de]=Definiert das Intervall in Stunden, nach dessen Ablauf die SSL-Parameter neu erzeugt werden. Der Wert "0" deaktiviert die Wiedererzeugung. Standard ist "168" (einmal pro Woche).
+Description[en]=How often to regenerate the SSL parameters file in hours, 0 disables regeneration. Defaults to "168" (once per week).
+Type=int
+Categories=service-mail
+
+[mail/dovecot/ssl/prefer_server_ciphers]
+Description[de]=Definiert, ob Dovecot die Reihenfolge der SSL-Verfahren des Servers gegenüber der Reihenfolge der SSL-Verfahren des Clients bevorzugt. Der Standard ist "yes".
+Description[en]=Prefer the server's order of ciphers over client's. Defaults to "yes".
+Type=bool
+Categories=service-mail
+
+[mail/dovecot/ssl/protocols]
+Description[de]=Zu verwendende SSL-Protokolle. Standard ist "!SSLv2 !SSLv3".
+Description[en]=SSL protocols to use. Defaults to "!SSLv2 !SSLv3".
+Type=str
+Categories=service-mail
+
+[mail/dovecot/verbose_proctitle]
+Description[de]=Zeige längere Prozesstitel (in ps). Zeigt zur Zeit Benutzernamen und IP-Adresse. Praktisch um zu sehen wer einen IMAP-Prozess verwendet. Standard ist "no".
+Description[en]=Show more verbose process titles (in ps). Currently shows user name and IP address. Useful for seeing who are actually using the IMAP processes. Defaults to "no".
+Type=bool
+Categories=service-mail

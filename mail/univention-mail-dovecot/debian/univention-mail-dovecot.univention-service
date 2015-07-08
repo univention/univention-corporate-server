@@ -1,0 +1,6 @@
+[dovecot]
+Description[de]=IMAP- und POP3-Server
+Description[en]=IMAP and POP3 Server
+icon=service/dovecot
+programs=/usr/sbin/dovecot
+start_type=dovecot/autostart

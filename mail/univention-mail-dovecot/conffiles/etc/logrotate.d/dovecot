@@ -1,0 +1,32 @@
+@%@UCRWARNING=# @%@
+
+@!@
+rotate_conf = """	daily
+	rotate 12
+	create 640 root adm
+	compress
+	missingok
+	notifempty
+	delaycompress"""
+rsyslog_conf = """
+	postrotate
+		invoke-rc.d rsyslog rotate > /dev/null
+	endscript
+}"""
+regfile_conf = """
+	postrotate
+		doveadm log reopen
+	endscript
+}"""
+
+log_path = configRegistry.get("mail/dovecot/logging/log_path", "syslog")
+syslog_facility = configRegistry.get("mail/dovecot/logging/syslog_facility", "local5")
+
+if log_path == "syslog" and syslog_facility == "local5":
+	print "/var/log/dovecot.* {\n%s%s" % (rotate_conf, rsyslog_conf)
+elif log_path.startswith("/") and not log_path.startswith("/dev/"):
+	print "%s {\n%s%s" % (log_path, rotate_conf, regfile_conf)
+else:
+	# ignore
+	pass
+@!@

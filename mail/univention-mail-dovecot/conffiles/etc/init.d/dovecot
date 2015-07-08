@@ -1,0 +1,221 @@
+#! /bin/sh
+@%@UCRWARNING=# @%@
+
+### BEGIN INIT INFO
+# Provides:          dovecot
+# Required-Start:    $local_fs $remote_fs $network $syslog $time
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Should-Start:      postgresql mysql slapd winbind nslcd
+# Should-Stop:       postgresql mysql slapd winbind nslcd
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Dovecot init script
+# Description:       Init script for dovecot services
+### END INIT INFO
+
+# Copyright 2015 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+# Author: Miquel van Smoorenburg <miquels@cistron.nl>.
+#         Modified for Debian GNU/Linux
+#         by Ian Murdock <imurdock@gnu.ai.mit.edu>.
+#
+
+# Do NOT "set -e"
+
+# PATH should only include /usr/* if it runs after the mountnfs.sh script
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DESC="IMAP/POP3 mail server"
+NAME=dovecot
+DAEMON=/usr/sbin/dovecot
+DAEMON_ARGS=""
+SCRIPTNAME=/etc/init.d/$NAME
+CONF=/etc/dovecot/${NAME}.conf
+
+# Read configuration variable file if it is present
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+# Exit if the package is not installed
+[ -x "$DAEMON" ] || exit 0
+
+# Exit if the configuration file doesn't exist
+[ -f "$CONF" ] || exit 0
+
+# Exit if explicitly told to
+[ "$ENABLED" != "0" ] || exit 0
+
+# Allow core dumps if requested
+[ "$ALLOW_COREDUMPS" != "1" ] || ulimit -c unlimited
+
+# Define LSB log_* functions.
+# Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
+. /lib/lsb/init-functions
+
+# conf file readable?
+if [ ! -r ${CONF} ]; then
+  log_daemon_msg "${CONF}: not readable" "$NAME" && log_end_msg 1;
+  exit 1;
+fi
+
+# dont check for inetd.conf if its not installed
+if [ -f /etc/inetd.conf ]; then
+  # The init script should do nothing if dovecot or another imap/pop3 server
+  # is being run from inetd, and dovecot is configured to run as an imap or
+  # pop3 service
+  for p in `sed -r "s/^ *(([^:]+|\[[^]]+]|\*):)?(pop3s?|imaps?)[ \t].*/\3/;t;d" \
+    /etc/inetd.conf`
+  do
+    for q in `doveconf -n -h protocols`
+    do
+      if [ $p = $q ]; then
+        log_daemon_msg "protocol ${p} configured both in inetd and in dovecot" "$NAME" && log_end_msg 1
+        exit 0
+      fi
+    done
+  done
+fi
+
+# determine the location of the PID file
+# overide by setting base_dir in conf file or PIDBASE in /etc/defaults/$NAME
+PIDBASE=${PIDBASE:-`doveconf -n -c ${CONF} -h base_dir`}
+PIDFILE=${PIDBASE:-/var/run/dovecot}/master.pid
+
+#
+# Function that starts the daemon/service
+#
+do_start()
+{
+    # Return
+    #   0 if daemon has been started
+    #   1 if daemon was already running
+    #   2 if daemon could not be started
+
+    # check ucr autostart setting
+    if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+            . "/usr/share/univention-config-registry/init-autostart.lib"
+            check_autostart dovecot dovecot/autostart
+    fi
+
+    start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON --test -- -c ${CONF} > /dev/null \
+        || return 1
+    start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- -c ${CONF} \
+        $DAEMON_ARGS \
+        || return 2
+}
+
+#
+# Function that stops the daemon/service
+#
+do_stop()
+{
+    # Return
+    #   0 if daemon has been stopped
+    #   1 if daemon was already stopped
+    #   2 if daemon could not be stopped
+    #   other if a failure occurred
+    start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --pidfile $PIDFILE --name ${DAEMON##*/}
+    RETVAL="$?"
+    [ "$RETVAL" = 2 ] && return 2
+    # Wait for children to finish too if this is a daemon that forks
+    # and if the daemon is only ever run from this initscript.
+    # If the above conditions are not satisfied then add some other code
+    # that waits for the process to drop all resources that could be
+    # needed by services started subsequently.  A last resort is to
+    # sleep for some time.
+    start-stop-daemon --stop --quiet --oknodo --retry=0/30/KILL/5 --pidfile $PIDFILE --name ${DAEMON##*/}
+    [ "$?" = 2 ] && return 2
+    # Many daemons don't delete their pidfiles when they exit.
+    rm -f $PIDFILE
+    return "$RETVAL"
+}
+
+#
+# Function that sends a SIGHUP to the daemon/service
+#
+do_reload() {
+    #
+    # If the daemon can reload its configuration without
+    # restarting (for example, when it is sent a SIGHUP),
+    # then implement that here.
+    #
+    start-stop-daemon --stop --signal HUP --quiet --pidfile $PIDFILE --name $NAME
+    return 0
+}
+
+
+case "$1" in
+  start)
+    log_daemon_msg "Starting $DESC" "$NAME"
+    do_start
+    case "$?" in
+        0|1) log_end_msg 0 ;;
+        2) log_end_msg 1 ;;
+    esac
+    ;;
+  stop)
+    log_daemon_msg "Stopping $DESC" "$NAME"
+    do_stop
+    case "$?" in
+        0|1) log_end_msg 0 ;;
+        2) log_end_msg 1 ;;
+    esac
+    ;;
+  reload|force-reload)
+    log_daemon_msg "Reloading $DESC" "$NAME"
+    do_reload
+    log_end_msg $?
+    ;;
+  restart)
+    #
+    # If the "reload" option is implemented then remove the
+    # 'force-reload' alias
+    #
+    log_daemon_msg "Restarting $DESC" "$NAME"
+    do_stop
+    case "$?" in
+      0|1)
+        do_start
+        case "$?" in
+            0) log_end_msg 0 ;;
+            1) log_end_msg 1 ;; # Old process is still running
+            *) log_end_msg 1 ;; # Failed to start
+        esac
+        ;;
+      *)
+        # Failed to stop
+        log_end_msg 1
+        ;;
+    esac
+    ;;
+  status)
+    status_of_proc -p $PIDFILE $DAEMON $NAME && exit 0 || exit $?
+    ;;
+  *)
+    echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload|status}" >&2
+    exit 3
+    ;;
+esac

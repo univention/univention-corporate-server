@@ -1,0 +1,49 @@
+Source: univention-mail-dovecot
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 7),
+ univention-config-dev,
+ ucslint-univention
+Standards-Version: 3.8.2
+
+Package: univention-mail-dovecot
+Architecture: all
+XB-Python-Version: ${python:Versions}
+Depends: ${misc:Depends},
+ ${python:Depends},
+ univention-base-files,
+ univention-directory-manager-tools (>> 7.0.147),
+ univention-directory-listener (>> 6.0.0),
+ univention-config-registry (>= 8.0.2),
+ python-univention,
+ python-univention-lib (>= 3.0.4-1),
+ shell-univention-lib (>= 3.0.1-1),
+ univention-join (>= 5.0.20-1),
+ libpam-univentionmailcyrus,
+ dovecot-imapd (>= 2.2.13),
+ dovecot-ldap (>= 2.2.13),
+ dovecot-lmtpd (>= 2.2.13),
+ dovecot-managesieved (>= 2.2.13),
+ dovecot-pop3d (>= 2.2.13),
+ dovecot-sieve (>= 2.2.13),
+ sieve-connect (>= 0.87)
+Conflicts: cyrus-admin,
+ cyrus-clients,
+ cyrus-common,
+ cyrus-imapd,
+ cyrus-murder,
+ cyrus-nntpd,
+ cyrus-pop3d,
+ cyrus-replication,
+ univention-mail-cyrus,
+ univention-mail-cyrus-imap,
+ univention-mail-cyrus-murder,
+ univention-mail-cyrus-pop
+Description: UCS - imap configuration
+ The UCS dovecot imapd mail package.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

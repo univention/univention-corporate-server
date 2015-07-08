@@ -1,0 +1,161 @@
+#!/bin/sh
+#
+# Univention mail Dovecot
+#
+# Copyright 2015 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+/usr/sbin/adduser --system \
+	--shell /bin/false \
+	--home /var/spool/dovecot \
+	--no-create-home \
+	--group \
+	--disabled-password \
+	--disabled-login \
+	dovemail
+
+#DEBHELPER#
+
+. /usr/share/univention-lib/ucr.sh
+. /usr/share/univention-lib/base.sh
+
+univention-config-registry set \
+	dovecot/autostart?yes \
+	mail/dovecot=yes \
+	mail/dovecot/imap?yes \
+	mail/dovecot/pop3?yes \
+	mail/postfix/dovecot_sasl=yes \
+	mail/postfix/virtual/transport=lmtp:unix:private/dovecot-lmtp \
+	mail/dovecot/logging/log_path?syslog \
+	mail/dovecot/logging/syslog_facility?local5 \
+	mail/dovecot/mailboxes/special/Drafts?'\Drafts' \
+	mail/dovecot/mailboxes/special/Junk?'\Junk' \
+	mail/dovecot/mailboxes/special/Spam?'\Junk' \
+	mail/dovecot/mailboxes/special/Trash?'\Trash' \
+	mail/dovecot/mailboxes/special/Sent?'\Sent' \
+	'mail/dovecot/mailboxes/special/Sent Messages'?'\Sent' \
+	mail/dovecot/sieve/port?4190 \
+	mail/dovecot/quota/warning/text/80?'Your mailbox is filled to over $PERCENT%.' \
+	mail/dovecot/quota/warning/text/95?'Attention: Your mailbox is already filled to over $PERCENT%. Please delete some messages or contact your administrator.' \
+	mail/dovecot/quota/warning/subject?'Quota-Warning' \
+	mail/dovecot/folder/ham?Ham \
+	mail/dovecot/folder/spam?Spam \
+	security/packetfilter/package/univention-mail-dovecot/tcp/110/all?"ACCEPT" \
+	security/packetfilter/package/univention-mail-dovecot/tcp/110/all/en?"POP3" \
+	security/packetfilter/package/univention-mail-dovecot/tcp/143/all?"ACCEPT" \
+	security/packetfilter/package/univention-mail-dovecot/tcp/143/all/en?"IMAP" \
+	security/packetfilter/package/univention-mail-dovecot/tcp/993/all?"ACCEPT" \
+	security/packetfilter/package/univention-mail-dovecot/tcp/993/all/en?"IMAPS" \
+	security/packetfilter/package/univention-mail-dovecot/tcp/995/all?"ACCEPT" \
+	security/packetfilter/package/univention-mail-dovecot/tcp/995/all/en?"POP3S" \
+	security/packetfilter/package/univention-mail-dovecot/tcp/4190/all?"ACCEPT" \
+	security/packetfilter/package/univention-mail-dovecot/tcp/4190/all/en?"Sieve"
+
+# fresh installation
+if [ "$1" = "configure" -a -z "$2" ] ; then
+	# make sure there are no ssl-params processes still running, when we
+	# reconfigure and restart dovecot
+	pkill -P $(cat /run/dovecot/master.pid) ssl-params
+	invoke-rc.d dovecot stop
+	fuser -s -k /var/lib/dovecot/ssl-parameters*
+	rm -f /var/lib/dovecot/ssl-parameters.dat*
+
+	chown -R dovemail:dovemail /var/lib/dovecot /var/spool/dovecot
+	univention-config-registry set \
+		mail/dovecot/pop3/client_workarounds?"outlook-no-nuls oe-ns-eoh"
+fi
+
+# add quota check for Postfix as last (potentially expensive)
+# smtpd/submission_recipient_restrictions, but before a "permit"
+QUOTASTATUSIP=$(ucr get mail/dovecot/quota-status/ip)
+if [ -z $QUOTASTATUSIP ]; then
+	QUOTASTATUSIP="127.0.0.1"
+fi
+QUOTASTATUSPORT=$(ucr get mail/dovecot/quota-status/port)
+if [ -z $QUOTASTATUSPORT ]; then
+	QUOTASTATUSPORT="12340"
+fi
+UCRVPATTERN=": check_policy_service inet:$QUOTASTATUSIP:$QUOTASTATUSPORT$"
+if [ -z "$(ucr search --brief '^mail/postfix/smtpd/restrictions/recipient/' | egrep "$UCRVPATTERN")" ]; then
+	LASTNUM="$(ucr dump | sed -nre 's,^mail/postfix/smtpd/restrictions/recipient/([0-9]+): .*,\1,p' | sort -n | tail -n 1)"
+	LASTVAL="$(ucr get mail/postfix/smtpd/restrictions/recipient/$LASTNUM)"
+	if [ "$LASTVAL" = "permit" ]; then
+		ADD=-5
+	else
+		ADD=10
+	fi
+	RESULT=$(($LASTNUM + $ADD))
+	univention-config-registry set "mail/postfix/smtpd/restrictions/recipient/$RESULT=check_policy_service inet:127.0.0.1:12340"
+fi
+
+if [ ! -f /etc/dovecot/master-users ]; then
+	touch /etc/dovecot/master-users
+	chmod 640 /etc/dovecot/master-users
+	chown root:dovecot /etc/dovecot/master-users
+	echo "dovecotadmin:{PLAIN}$(create_machine_password)::::::" > /etc/dovecot/master-users
+fi
+
+if [ -x "/etc/init.d/univention-firewall" ]; then
+	/etc/init.d/univention-firewall restart
+fi
+
+if [ "$(ucr get mail/dovecot/logging/log_path)" = "syslog" -a -x /etc/init.d/rsyslog ]; then
+	invoke-rc.d rsyslog force-reload
+fi
+
+invoke-rc.d dovecot restart
+invoke-rc.d postfix restart
+
+TIME_RUNNING=0
+TIMEOUT=180
+if [ -e /var/lib/dovecot/ssl-parameters.dat.tmp ]; then
+	echo -n "Waiting for Dovecot ssl-parameters generation (this can take a long time)."
+	while [ -e /var/lib/dovecot/ssl-parameters.dat.tmp -a $TIME_RUNNING != $TIMEOUT ]; do
+		echo -n "."
+		TIME_RUNNING=$(( $TIME_RUNNING + 1 ))
+		sleep 1
+	done
+fi
+if [ $TIME_RUNNING = $TIMEOUT ]; then
+	echo " ERROR: timeout while waiting for ssl-parameters generation."
+else
+	echo "done"
+fi
+
+if [ -x /etc/init.d/univention-directory-listener ]; then
+	invoke-rc.d univention-directory-listener crestart
+fi
+
+if [ "$1" = "configure" ]
+then
+	uinst=/usr/lib/univention-install/18univention-mail-dovecot-uninstall.uinst
+	[ -e "$uinst" ] && rm "$uinst"
+fi
+
+call_joinscript 82univention-mail-dovecot.inst
+
+exit 0

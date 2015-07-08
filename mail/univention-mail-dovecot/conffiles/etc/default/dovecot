@@ -1,0 +1,19 @@
+@%@UCRWARNING=# @%@
+
+# Set to '0' to explicitly disable starting Dovecot
+#ENABLED=0
+
+# Set to '1' to allow Dovecot daemons to produce core dumps
+#ALLOW_COREDUMPS=1
+
+@!@
+import resource
+current_limit = resource.getrlimit(resource.RLIMIT_NOFILE)[0]
+
+max_conn = 2000  # default mail/dovecot/limits/auth/client_limit
+for key, value in configRegistry.items():
+	if key.startswith("mail/dovecot/limits/") and (key.endswith("client_limit") or key.endswith("process_limit")):
+		max_conn = max(max_conn, int(value))
+if max_conn > current_limit:
+	print "ulimit -n %d" % max_conn
+@!@

@@ -1,0 +1,4 @@
+var/lib/dovecot/sieve
+var/spool/dovecot/private
+var/spool/dovecot/public
+usr/share/pyshared/univention/mail

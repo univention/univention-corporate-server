@@ -1,0 +1,396 @@
+univention-mail-dovecot (0.0.0-55) unstable; urgency=low
+
+  * Bug #38463: removed OX related code - always show error message
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 08 Jul 2015 16:13:46 +0200
+
+univention-mail-dovecot (0.0.0-54) unstable; urgency=low
+
+  * Bug #38457: disallow authentification with username, using the email
+  address to login is a requirement.
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 08 Jul 2015 12:03:44 +0200
+
+univention-mail-dovecot (0.0.0-53) unstable; urgency=low
+
+  * Bug #34839: delete mail account in case of change of home server from us
+  to another
+  Edit: wrong bug number, correct one is #38840.
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 08 Jul 2015 00:01:28 +0200
+
+univention-mail-dovecot (0.0.0-52) unstable; urgency=low
+
+  * Bug #38840: fix listener not reacting corretly to simultaneous change of
+  mailPrimaryAddress and home server if home server was/became ""
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 07 Jul 2015 17:15:59 +0200
+
+univention-mail-dovecot (0.0.0-51) unstable; urgency=low
+
+  * Bug #38848: flush auth cache to prevent login with previous email address
+  after email address change
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 07 Jul 2015 12:04:26 +0200
+
+univention-mail-dovecot (0.0.0-50) unstable; urgency=low
+
+  * Bug #34839: move flushing of auth cache for modrdn to command=r
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 07 Jul 2015 12:04:25 +0200
+
+univention-mail-dovecot (0.0.0-49) unstable; urgency=low
+
+  * Bug #34839: make sure there are no two ssl-parameter generations running
+  at the same time
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 07 Jul 2015 10:54:56 +0200
+
+univention-mail-dovecot (0.0.0-48) unstable; urgency=low
+
+  * Bug #38718: add UCRVs to configure client_limit for logins, fix ulimit
+  calculation, fix wrong default_process_limit
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 06 Jul 2015 16:17:32 +0200
+
+univention-mail-dovecot (0.0.0-47) unstable; urgency=low
+
+  * Bug #38839: reconfigure Postfix after uninstall and reinstall
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 06 Jul 2015 16:03:12 +0200
+
+univention-mail-dovecot (0.0.0-46) unstable; urgency=low
+
+  * Bug #38805: force use of backported sieve-connect
+  * Bug #38474: remove extended attribute if it not used in the domain anymore
+  * Bug #38471: rename mail/dovecot/internal/_shared to
+  mail/dovecot/internal/sharedfolders
+
+ -- Daniel Troeder <troeder@univention.de>  Sat, 04 Jul 2015 11:28:05 +0200
+
+univention-mail-dovecot (0.0.0-45) unstable; urgency=low
+
+  * Bug #38474: updated translation in extended attribute
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 03 Jul 2015 14:58:45 +0200
+
+univention-mail-dovecot (0.0.0-44) unstable; urgency=low
+
+  * Bug #38791: shared folders cannot be renamed, ignore
+  mail/dovecot/mailbox/rename
+  * Bug #34839: use dovecot process uid/gid from configuration, not hardcoded
+  * Bug #38525: don't fail to rotate regular files, that didn't exist at
+  template install time
+  * Bug #38458: invalidated pam cache when a user is renamed (modrdn)
+  * Bug #38751: deactivate POP3 workarounds if UCRV is unset
+  * Bug #38463: remove OX specific code from Sieve script
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 03 Jul 2015 13:00:48 +0200
+
+univention-mail-dovecot (0.0.0-43) unstable; urgency=low
+
+  * redefine mail/dovecot/ssl/cafile as the CA for the IMAP/POP3/managesieve
+  server
+  * add mail/dovecot/auth/ldap/cafile as CA for the LDAP client (previously
+  mail/dovecot/ssl/cafile)
+  * add mail/dovecot/sieve/client/cafile as the CA file to use to connect to
+  the local managesieve server (used by the listener module)
+  * add mail/dovecot/auth/ssl_require_client_cert to configure if a valid
+  SSL client certificate is required
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 02 Jul 2015 17:31:44 +0200
+
+univention-mail-dovecot (0.0.0-42) unstable; urgency=low
+
+  * Bug #38805: sieve client used by listener checks TLS certificate
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 02 Jul 2015 17:18:08 +0200
+
+univention-mail-dovecot (0.0.0-41) unstable; urgency=low
+
+  * Bug #38461: updated UCR variable descriptions
+  * Bug #38733: updated UCR variable descriptions
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 02 Jul 2015 17:11:46 +0200
+
+univention-mail-dovecot (0.0.0-40) unstable; urgency=low
+
+  * ignore users without mail during listener init, restart listener after
+  uninstalling (Bug #34839)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 02 Jul 2015 12:44:35 +0200
+
+univention-mail-dovecot (0.0.0-39) unstable; urgency=low
+
+  * do not use sys.exit() in UCR template (Bug #38461)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 02 Jul 2015 11:32:35 +0200
+
+univention-mail-dovecot (0.0.0-38) unstable; urgency=low
+
+  * Bug #34839: wait for ssl-parameters generation before restarting
+  listener to prevent failed logins (happens with fresh installations
+  only)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 02 Jul 2015 10:17:31 +0200
+
+univention-mail-dovecot (0.0.0-37) unstable; urgency=low
+
+  * fix logic error introduced in 0.0.0-17 reversing dis/allow
+  plaintext login (Bug #34839)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 02 Jul 2015 10:14:42 +0200
+
+univention-mail-dovecot (0.0.0-36) unstable; urgency=low
+
+  * Bug #38784: fixed UCR variable descriptions
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 01 Jul 2015 17:44:32 +0200
+
+univention-mail-dovecot (0.0.0-35) unstable; urgency=low
+
+  * Bug #38464: allow to store Dovecot index files separately from mails for
+  better performance with mail storage on NFS. Adds UCRV
+  mail/dovecot/location/separate_index
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 29 Jun 2015 13:45:23 +0200
+
+univention-mail-dovecot (0.0.0-34) unstable; urgency=low
+
+  * Bug #38784: Make Dovecot auth cache settings configurable, adds UCRVs
+  mail/dovecot/auth/cache_size, mail/dovecot/auth/cache_ttl and
+  mail/dovecot/auth/cache_negative_ttl
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 29 Jun 2015 09:56:27 +0200
+
+univention-mail-dovecot (0.0.0-33) unstable; urgency=low
+
+  * Bug #34839: fix handler not supporting account rename
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 25 Jun 2015 15:18:38 +0200
+
+univention-mail-dovecot (0.0.0-32) unstable; urgency=low
+
+  * Bug #34839: QA fixes
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 24 Jun 2015 16:46:07 +0200
+
+univention-mail-dovecot (0.0.0-31) unstable; urgency=low
+
+  * Bug #34839: Dovecot management enhancement, adds UCRVs
+  mail/dovecot/shutdown_clients and mail/dovecot/verbose_proctitle
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 24 Jun 2015 09:13:49 +0200
+
+univention-mail-dovecot (0.0.0-30) unstable; urgency=low
+
+  * Bug #34839: separate user account that Dovecot uses to access mail files
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 23 Jun 2015 17:51:12 +0200
+
+univention-mail-dovecot (0.0.0-29) unstable; urgency=low
+
+  * Bug #38751: Make Dovecot client workarounds configurable
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 23 Jun 2015 13:11:38 +0200
+
+univention-mail-dovecot (0.0.0-28) unstable; urgency=low
+
+  * Bug #38740: provide a server_password_change.d script
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 23 Jun 2015 12:20:35 +0200
+
+univention-mail-dovecot (0.0.0-27) unstable; urgency=low
+
+  * Bug #38461: If UCRVse mail/dovecot/folder/{spam,ham} are set to the
+  empty string or "none", no directories are created.
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 22 Jun 2015 17:14:27 +0200
+
+univention-mail-dovecot (0.0.0-26) unstable; urgency=low
+
+  * Bug #38733: improve Dovecot SSL settings,
+  adds multiple UCVs mail/dovecot/ssl/*.
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 22 Jun 2015 12:15:50 +0200
+
+univention-mail-dovecot (0.0.0-25) unstable; urgency=low
+
+  * Bug #38725: Enable auth caching in Dovecot
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 18 Jun 2015 12:38:09 +0200
+
+univention-mail-dovecot (0.0.0-24) unstable; urgency=low
+
+  * Bug #38469: remove default sieve script, as it was sorting spam even if disabled by UCRV
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 18 Jun 2015 12:01:47 +0200
+
+univention-mail-dovecot (0.0.0-23) unstable; urgency=low
+
+  * Bug #38718: Make Dovecot connection/memory limits configurable,
+  adds UCVs mail/dovecot/limits/* to configure IMAP, POP3, managesieve, login,
+  auth and anvil services separately.
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 17 Jun 2015 17:25:37 +0200
+
+univention-mail-dovecot (0.0.0-22) unstable; urgency=low
+
+  * Bug #38469: fix spam folder path, add spam folder autocreation by sieve
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 17 Jun 2015 11:38:18 +0200
+
+univention-mail-dovecot (0.0.0-21) unstable; urgency=low
+
+  * Bug #38471: allow IMAP "anyone" identifier
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 17 Jun 2015 10:05:54 +0200
+
+univention-mail-dovecot (0.0.0-20) unstable; urgency=low
+
+  * Bug #38716: Make Dovecots quota-service listen address configurable,
+  adds UCRVs mail/dovecot/quota-status/ip and mail/dovecot/quota-status/port
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 17 Jun 2015 09:38:13 +0200
+
+univention-mail-dovecot (0.0.0-19) unstable; urgency=low
+
+  * Bug #38463: Refactor: Move OX specific code to separate listener,
+  create UCRV interfaces for other packages to modify settings, move
+  common/helper code into shared python modules
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 12 Jun 2015 15:09:40 +0200
+
+univention-mail-dovecot (0.0.0-18) unstable; urgency=low
+
+  * Add UCRV mail/dovecot/sieve/spam to switch Sieve scipt generation for new
+  users on/off.
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 12 Jun 2015 15:09:40 +0200
+
+univention-mail-dovecot (0.0.0-17) unstable; urgency=low
+
+  * Bug #34839: UCR configuration to (dis)allow plain text passwords over
+  non-TLS connections, mirrors changes for bug #38500
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 12 Jun 2015 10:45:12 +0200
+
+univention-mail-dovecot (0.0.0-16) unstable; urgency=low
+
+  * Bug #34839: honor univentionMailHomeServer
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 08 Jun 2015 11:47:09 +0200
+
+univention-mail-dovecot (0.0.0-15) unstable; urgency=low
+
+  * Bug #38469: upload default SIEVE script via managesieve
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 05 Jun 2015 16:13:23 +0200
+
+univention-mail-dovecot (0.0.0-14) unstable; urgency=low
+
+  * Bug #38475: removed "Replaces:" entries
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 05 Jun 2015 09:11:54 +0200
+
+univention-mail-dovecot (0.0.0-13) unstable; urgency=low
+
+  * Bug #38573: Add option to (not) share message keywords with Dovecot shared
+  folders
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 04 Jun 2015 11:48:51 +0200
+
+univention-mail-dovecot (0.0.0-12) unstable; urgency=low
+
+  * Bug #38463: OX needs special comment in SIEVE script to recognize
+    Univention default filter rule
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 03 Jun 2015 20:28:48 +0200
+
+univention-mail-dovecot (0.0.0-11) unstable; urgency=low
+
+  * Bug #38463: Dovecot-OX-integration
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 03 Jun 2015 17:26:46 +0200
+
+univention-mail-dovecot (0.0.0-10) unstable; urgency=low
+
+  * Bug #38472: add master-user to set ACLs, logged in as another user
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 03 Jun 2015 09:27:00 +0200
+
+univention-mail-dovecot (0.0.0-9) unstable; urgency=low
+
+  * Bug #38472: add master-user to set ACLs, logged in as another user
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 03 Jun 2015 09:07:00 +0200
+
+univention-mail-dovecot (0.0.0-8) unstable; urgency=low
+
+  * Bug #38463: Dovecot-OX integration changes
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 02 Jun 2015 17:37:54 +0200
+
+univention-mail-dovecot (0.0.0-7) unstable; urgency=low
+
+  * Bug #38469: move sieve generation from script to template
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 02 Jun 2015 14:49:34 +0200
+
+univention-mail-dovecot (0.0.0-6) unstable; urgency=low
+
+  *  Bug #38463: make sure configuration files divert those of dovecot-core
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 02 Jun 2015 11:46:56 +0200
+
+univention-mail-dovecot (0.0.0-5) unstable; urgency=low
+
+  * Bug #38471: listener can handle all operations on shared folders, ACLs,
+    quota, modifies Postfix LDAP query so mailing to a shared folder works with
+    Dovecot
+  * Bug #38472: Support ACLs for shared IMAP folders with Dovecot
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 01 Jun 2015 17:20:29 +0200
+
+univention-mail-dovecot (0.0.0-4) unstable; urgency=low
+
+  * Bug #38471: Enable shared IMAP folder feature with Dovecot
+  * Bug #38475: Backport Dovecot 2.2 from Jessie
+  * Bug #38480: Register Dovecot as IMAP service in join script for computer
+    object
+  * Bug #38474: Enable mail quota checking, configurable per user in UDM,
+    quota is stored in LDAP, UCRVs to configure warning mail
+  * Bug #38553: Enable quota-checking service for Postfix to prevent
+    backscatter from over-quota mailboxes
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 15 May 2015 19:25:54 +0200
+
+univention-mail-dovecot (0.0.0-3) unstable; urgency=low
+
+  * Bug #38458: Add account rename support
+  * Bug #38469: Default SIEVE script for Dovecot
+  * Move UCRV-free configuration files into univention-mail-dovecot.install
+  * Changed mail_location to /var/spool/dovecot
+  * Bug #38470: Configure managesieve for Dovecot
+  * Bug #38478: separate Dovecot logs from Postfix logs, make Dovecot logging
+  generally configurable
+  * Bug #38525: configure logrotate for Dovecot logs
+  * Bug #38464: add UCRVs, so Dovecots files can be on NFS
+  * Bug #38461: make IMAP special-use folders configurable
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 11 May 2015 14:28:25 +0200
+
+univention-mail-dovecot (0.0.0-2) unstable; urgency=low
+
+  * Bug #38479: Create UCRV for applications to know if Cyrus or Dovecot is
+    used. Adds read-only, boolean UCRV "mail/dovecot".
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 07 May 2015 16:15:02 +0200
+
+univention-mail-dovecot (0.0.0-1) unstable; urgency=low
+
+  * Initial commit. (Bug: #34839: Dovecot as alternative to cyrus)
+  * Authorization against PAM, authentication with LDAP, provides
+  SASL for Postfix, SMTP and POP/IMAP login with the mailPrimaryAddress
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 28 Apr 2015 22:53:47 +0200

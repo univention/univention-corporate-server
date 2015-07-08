@@ -1,0 +1,4 @@
+@%@UCRWARNING=# @%@
+@!@
+print "%s protocols = $protocols imap" % ("" if configRegistry.is_true("mail/dovecot/imap", True) else "#")
+@!@
