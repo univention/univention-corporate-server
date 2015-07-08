@@ -32,6 +32,15 @@
 
 . /usr/share/univention-lib/all.sh
 
+# Bug #38473: workaround only required up to UCS 4.1-0
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 10.0.30; then
+	FN="/usr/share/pyshared/univention/admin/handlers/policies/mailquota.py"
+	FN_BACKUP="${FN}.udm_backup"
+	if [ -f "$FN_BACKUP" ] ; then
+		mv "$FN_BACKUP" "$FN"
+	fi
+fi
+
 #DEBHELPER#
 
 eval "$(univention-config-registry shell server/role)"
