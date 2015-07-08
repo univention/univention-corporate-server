@@ -53,36 +53,38 @@
         <section id="proxy:transparent">
             <title>Operation as a transparent proxy</title>
 			<para>
-			  It is possible to configure Squid as a transparent proxy to avoid configuring the
-			  proxy server in all application programs. When using a transparent proxy, all web queries are automatically
-			  rerouted to the proxy server. LDAP authentication on the proxy server must not be enabled.
+				It is possible to configure Squid as a transparent proxy.
+				This can help avoid configuring the proxy server in all application programs.
+				When using a transparent proxy, all unencrypted web queries are automatically rerouted through the proxy server.
 			</para>
-
+			<note>
+				<simpara>This only works for unencrypted web traffic, not for <systemitem class="protocol">https</systemitem>.</simpara>
+			</note>
+			<note>
+				<simpara>LDAP authentication on the proxy server must not be enabled.</simpara>
+			</note>
 			<para>
 			  The following configuration steps need to be made:
 
 			  <itemizedlist>
-
 				<listitem><para>
 				  The proxy server must be configured as the default gateway on all clients.
 				</para></listitem>
 
 				<listitem><para>
-				  The proxy server must be configured to use IP forwarding. This can be achieved
-				  using the following &ucsUCR; variables which define a Cron job executed at boot
-				  time:
-				  <programlisting>
-cron/IPFORWARDING/command='echo "1" >/proc/sys/net/ipv4/ip_forward'
-cron/IPFORWARDING/time=@reboot
+				  The proxy server must be configured to use IP forwarding.
+				  <programlisting lang="sh">
+echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
+sysctl -p
 				  </programlisting>
 				</para></listitem>
 
 				<listitem><para>
 				  The &ucsUCRV; <envar>squid/transparentproxy</envar> must be set to
 				  <emphasis>yes</emphasis> on the proxy server. After that Univention Firewall and Squid need to be restarted:
-				  <programlisting>
+				  <programlisting lang="sh">
 /etc/init.d/univention-firewall restart
-/etc/init.d/squid restart
+/etc/init.d/squid3 restart
 				  </programlisting>
 
 				  This enables packet filter rules which redirect all queries for the web ports to the proxy server.
