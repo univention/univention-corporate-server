@@ -16,7 +16,7 @@
 		<revhistory>
 			<revision>
 				<revnumber>4.0-0</revnumber>
-				<date>25 Jun 2015</date>
+				<date>25 June 2015</date>
 			</revision>
 		</revhistory>
 	</bookinfo>
@@ -36,7 +36,7 @@
 				</para>
 				<para>
 					Since &ucsUCS; version 4.0-3 Dovecot is used as the default IMAP
-					and POP3 server. The documenation for using Dovecot can be found
+					and POP3 server. The documentation for using Dovecot can be found
 					in the main user manual <biblioref linkend="ucs-manual"/>.
 				</para>
 			</note>
