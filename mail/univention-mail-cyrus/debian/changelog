@@ -1,3 +1,10 @@
+univention-mail-cyrus (7.0.1-1) unstable; urgency=low
+
+  * Bug #38479: Create UCRV for applications to know if Cyrus or Dovecot is
+    used. Sets read-only, boolean UCRV "mail/cyrus".
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 07 May 2015 16:17:51 +0200
+
 univention-mail-cyrus (7.0.0-3) unstable; urgency=low
 
   * added ucr header, create cyrus dirs during installation (Bug #35264)

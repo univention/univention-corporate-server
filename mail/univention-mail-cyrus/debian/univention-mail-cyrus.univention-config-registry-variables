@@ -1,3 +1,10 @@
+[mail/cyrus]
+Description[de]=Ist diese Variable auf "true" gesetzt, wird Cyrus vom UCS Mail System verwendet.
+Description[en]=If this variables value is "true", Cyrus is used by the UCS mail system.
+Type=bool
+ReadOnly=true
+Categories=service-mail
+
 [mail/cyrus/admins]
 Description[de]=Die hier konfigurierten Benutzernamen erhalten neben den Benutzern 'root' und 'cyrus' administrative Berechtigungen für alle Cyrus-Dienste. Mehrere Benutzernamen müssen durch Kommas getrennt werden.
 Description[en]=The user names configured here receive administrative privileges for all Cyrus services in addition to the users 'root' and 'cyrus'. Multiple user names must be separated by commas.
