@@ -105,7 +105,7 @@ newaliases
 adduser postfix sasl
 
 univention-config-registry commit /etc/mailname
-univention-config-registry commit /etc/listfilter.secret 
+univention-config-registry commit /etc/listfilter.secret
 
 if [ -z "$postfix_autostart" ] || [ "$postfix_autostart" = "yes" ]; then
 	/etc/init.d/postfix restart

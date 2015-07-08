@@ -123,25 +123,25 @@ univention-mail-postfix (9.0.0-12) unstable; urgency=low
 
 univention-mail-postfix (9.0.0-11) unstable; urgency=low
 
-  * fixed last commit (Bug #31837) 
+  * fixed last commit (Bug #31837)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Nov 2014 11:54:39 +0100
 
 univention-mail-postfix (9.0.0-10) unstable; urgency=low
 
-  * run newaliases if /etc/aliases is modified (Bug #31837) 
+  * run newaliases if /etc/aliases is modified (Bug #31837)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Nov 2014 11:37:23 +0100
 
 univention-mail-postfix (9.0.0-9) unstable; urgency=low
 
-  * fixed tls debug level and dh parameter file creation (Bug #35923) 
+  * fixed tls debug level and dh parameter file creation (Bug #35923)
 
  -- Felix Botner <botner@univention.de>  Fri, 07 Nov 2014 10:40:10 +0100
 
 univention-mail-postfix (9.0.0-8) unstable; urgency=low
 
-  * weekly rotate dh parameters (Bug #35923) 
+  * weekly rotate dh parameters (Bug #35923)
 
  -- Felix Botner <botner@univention.de>  Mon, 13 Oct 2014 13:38:04 +0200
 
@@ -161,7 +161,7 @@ univention-mail-postfix (9.0.0-6) unstable; urgency=low
 
 univention-mail-postfix (9.0.0-5) unstable; urgency=low
 
-  * added cron job for re-creating dh parameter files (Bug #35923)  
+  * added cron job for re-creating dh parameter files (Bug #35923)
 
  -- Felix Botner <botner@univention.de>  Tue, 23 Sep 2014 10:57:26 +0200
 
@@ -173,7 +173,7 @@ univention-mail-postfix (9.0.0-4) unstable; urgency=low
 
 univention-mail-postfix (9.0.0-3) unstable; urgency=low
 
-  * moved hosteddomains.py to u-m-postfix (Bug #35232) 
+  * moved hosteddomains.py to u-m-postfix (Bug #35232)
 
  -- Felix Botner <botner@univention.de>  Wed, 27 Aug 2014 14:43:28 +0200
 
@@ -186,38 +186,38 @@ univention-mail-postfix (9.0.0-2) unstable; urgency=medium
 univention-mail-postfix (8.0.11-3) unstable; urgency=low
 
   * added mail/postfix/ldaptable/debuglevel and
-    mail/postfix/ldaptable/tlscacertfile (Bug #34198) 
+    mail/postfix/ldaptable/tlscacertfile (Bug #34198)
 
  -- Felix Botner <botner@univention.de>  Wed, 16 Apr 2014 11:45:12 +0200
 
 univention-mail-postfix (8.0.11-2) unstable; urgency=low
 
-  * added mail/postfix/ldaptable/tlsrequirecert (Bug #34198) 
+  * added mail/postfix/ldaptable/tlsrequirecert (Bug #34198)
 
  -- Felix Botner <botner@univention.de>  Mon, 07 Apr 2014 10:15:05 +0200
 
 univention-mail-postfix (8.0.11-1) unstable; urgency=low
 
   * added mail/postfix/ldaptable/starttls to configure
-    if start_tls should be uses in ldap lookups (Bug #34198) 
+    if start_tls should be uses in ldap lookups (Bug #34198)
 
  -- Felix Botner <botner@univention.de>  Thu, 13 Mar 2014 16:41:03 +0100
 
 univention-mail-postfix (8.0.10-3) unstable; urgency=low
 
-  * use user listfilter for listfilter postfix policy (Bug #26910) 
+  * use user listfilter for listfilter postfix policy (Bug #26910)
 
  -- Felix Botner <botner@univention.de>  Tue, 11 Mar 2014 12:23:10 +0100
 
 univention-mail-postfix (8.0.10-2) unstable; urgency=low
 
-  * use user listfilter for listfilter postfix policy (Bug #26910) 
+  * use user listfilter for listfilter postfix policy (Bug #26910)
 
  -- Felix Botner <botner@univention.de>  Tue, 11 Mar 2014 12:14:11 +0100
 
 univention-mail-postfix (8.0.10-1) unstable; urgency=low
 
-  * use user listfilter for listfilter postfix policy (Bug #26910) 
+  * use user listfilter for listfilter postfix policy (Bug #26910)
 
  -- Felix Botner <botner@univention.de>  Tue, 11 Mar 2014 12:04:30 +0100
 
@@ -329,14 +329,14 @@ univention-mail-postfix (8.0.2-1) unstable; urgency=low
 
 univention-mail-postfix (8.0.1-1) unstable; urgency=low
 
-  * removed ucr description for mail/relay (Bug #24715) 
+  * removed ucr description for mail/relay (Bug #24715)
 
  -- Felix Botner <botner@univention.de>  Tue, 18 Jun 2013 14:33:56 +0200
 
 univention-mail-postfix (8.0.0-1) unstable; urgency=low
 
   * added mail/postfix/smtpd/debug (Bug #29593)
-  * version bump for 3.2 
+  * version bump for 3.2
 
  -- Felix Botner <botner@univention.de>  Tue, 18 Jun 2013 13:29:21 +0200
 
@@ -368,7 +368,7 @@ univention-mail-postfix (7.0.0-2) unstable; urgency=low
 
 univention-mail-postfix (7.0.0-1) unstable; urgency=low
 
-  * fixed @%@ldap/server/port@%@ in templates (Bug #27305) 
+  * fixed @%@ldap/server/port@%@ in templates (Bug #27305)
 
  -- Felix Botner <botner@univention.de>  Tue, 24 Jul 2012 15:56:37 +0200
 
@@ -388,13 +388,13 @@ univention-mail-postfix (6.0.37-1) unstable; urgency=low
 univention-mail-postfix (6.0.36-1) unstable; urgency=low
 
   * set mail/postfix/tls/client/level?may in
-    univention-mail-postfix.postinst (Bug #25337) 
+    univention-mail-postfix.postinst (Bug #25337)
 
  -- Felix Botner <botner@univention.de>  Tue, 28 Feb 2012 10:28:56 +0100
 
 univention-mail-postfix (6.0.35-2) unstable; urgency=low
 
-  * fixed last commit (Bug #25836) 
+  * fixed last commit (Bug #25836)
 
  -- Felix Botner <botner@univention.de>  Fri, 24 Feb 2012 14:42:18 +0100
 
@@ -413,7 +413,7 @@ univention-mail-postfix (6.0.34-2) unstable; urgency=low
 
 univention-mail-postfix (6.0.34-1) unstable; urgency=low
 
-  * added smtp_tls_security_level to postfix template (Bug #25337) 
+  * added smtp_tls_security_level to postfix template (Bug #25337)
 
  -- Felix Botner <botner@univention.de>  Thu, 05 Jan 2012 14:25:54 +0100
 
@@ -452,7 +452,7 @@ univention-mail-postfix (6.0.31-1) unstable; urgency=low
 
   * use mailPrimaryAddress in ldap.group table (Bug #22369)
   * removed delivery via uid
-  
+
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 02 Nov 2011 15:46:21 +0100
 
 univention-mail-postfix (6.0.30-2) unstable; urgency=low
@@ -628,7 +628,7 @@ univention-mail-postfix (6.0.14-1) unstable; urgency=low
 
 univention-mail-postfix (6.0.13-1) unstable; urgency=low
 
-  * made 67univention-mail-server.inst executable 
+  * made 67univention-mail-server.inst executable
   * recommends univention-horde4 (Bug #22151)
 
  -- Felix Botner <botner@univention.de>  Thu, 22 Sep 2011 10:03:13 +0200
@@ -643,7 +643,7 @@ univention-mail-postfix (6.0.12-1) unstable; urgency=low
 
 univention-mail-postfix (6.0.11-1) unstable; urgency=low
 
-  * added dependecy to univention-mail-cyrus for 
+  * added dependecy to univention-mail-cyrus for
     univention-mail-server (Bug #22151)
 
  -- Felix Botner <botner@univention.de>  Wed, 21 Sep 2011 16:52:59 +0200

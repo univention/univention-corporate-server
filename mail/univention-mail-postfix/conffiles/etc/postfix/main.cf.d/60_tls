@@ -52,7 +52,7 @@ smtpd_tls_loglevel = @%@mail/postfix/smtpd/tls/loglevel@%@
 smtpd_tls_dh1024_param_file = @%@mail/postfix/smtpd/tls/dh1024/param/file@%@
 smtpd_tls_dh512_param_file = @%@mail/postfix/smtpd/tls/dh512/param/file@%@
 
-# use the Postfix SMTP server's cipher preference order instead of the remote client's cipher preference order. 
+# use the Postfix SMTP server's cipher preference order instead of the remote client's cipher preference order.
 tls_preempt_cipherlist = @%@mail/postfix/tls/preempt/cipherlist@%@
 
 # The Postfix SMTP server security grade for ephemeral elliptic-curve Diffie-Hellman (EECDH) key exchange

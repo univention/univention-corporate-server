@@ -37,7 +37,7 @@ case "$1" in
 		univention-config-registry set \
 			mail/postfix/virtual/enabled=no \
 			mail/postfix/transport/ldap/enabled=no \
-			mail/postfix/inet/interfaces=127.0.0.1 
+			mail/postfix/inet/interfaces=127.0.0.1
 	;;
 esac
 

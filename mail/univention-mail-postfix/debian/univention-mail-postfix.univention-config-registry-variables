@@ -25,7 +25,7 @@ Categories=service-mail
 
 [mail/archivefolder]
 Description[de]=Wird diese Variable auf eine E-Mail-Adresse gesetzt, sendet Postfix eine Blindkopie aller ein- und ausgehenden E-Mails an diese Adresse. So kann z.B. eine  Mailarchivierungslösung angebunden werden. Falls noch kein Postfach für diese Adresse existiert, wird es automatisch angelegt.
-Description[en]=If this variable is set to an e-mail address, Postfix sends a blind carbon copy of all incoming and outgoing e-mails to this address. This can e.g. be used to connect a mail archive solution. If there is no mailbox for this address, one will be created automatically. 
+Description[en]=If this variable is set to an e-mail address, Postfix sends a blind carbon copy of all incoming and outgoing e-mails to this address. This can e.g. be used to connect a mail archive solution. If there is no mailbox for this address, one will be created automatically.
 Type=str
 Categories=service-mail
 
@@ -36,13 +36,13 @@ Type=int
 Categories=service-mail
 
 [mail/postfix/mynetworks]
-Description[de]=Für E-Mails aus den hier angegebenen Netz(en) ist Relaying erlaubt. Das Format ist unter <http://www.postfix.org/postconf.5.html#mynetworks> beschrieben. Ist die Variable nicht gesetzt, gilt '127.0.0.0/8'. 
+Description[de]=Für E-Mails aus den hier angegebenen Netz(en) ist Relaying erlaubt. Das Format ist unter <http://www.postfix.org/postconf.5.html#mynetworks> beschrieben. Ist die Variable nicht gesetzt, gilt '127.0.0.0/8'.
 Description[en]=Relaying is permitted for e-mails from the network(s) specified hier. The format is described at <http://www.postfix.org/postconf.5.html#mynetworks>. If the variable is unset, '127.0.0.0/8' applies.
 Type=str
 Categories=service-mail
 
 [mail/relayhost]
-Description[de]=In der Grundeinstellung baut Postfix beim Versenden einer E-Mail an eine nicht-lokale Adresse eine direkte SMTP-Verbindung an den für diese Domain zuständigen Mailserver auf. Dieser Server wird durch eine Abfrage des MX-Records im DNS ermittelt. Alternativ kann ein Mail-Relay-Server zu Einsatz kommen, also ein Server der die Mails entgegen nimmt und den weiteren Versand abwickelt. Der Server muss in dieser Variable als vollqualifizierter Domänenname (FQDN) eingetragen werden. 
+Description[de]=In der Grundeinstellung baut Postfix beim Versenden einer E-Mail an eine nicht-lokale Adresse eine direkte SMTP-Verbindung an den für diese Domain zuständigen Mailserver auf. Dieser Server wird durch eine Abfrage des MX-Records im DNS ermittelt. Alternativ kann ein Mail-Relay-Server zu Einsatz kommen, also ein Server der die Mails entgegen nimmt und den weiteren Versand abwickelt. Der Server muss in dieser Variable als vollqualifizierter Domänenname (FQDN) eingetragen werden.
 Description[en]=In the default setting, Postfix creates a direct SMTP connection to the mail server responsible for the domain when an e-mail is sent to a non-local address. This server is determined by querying the MX record in the DNS. Alternatively, a mail relay server can also be used, i.e., a server which receives the mails and takes over their further sending. The server must be entered as a fully qualified domain name(FQDN).
 Type=str
 Categories=service-mail
@@ -289,7 +289,7 @@ Categories=service-mail
 
 [mail/postfix/tls/preempt/cipherlist]
 Description[de]=Falls auf 'yes' gesetzt, verwendet der Postfix SMTP-Server seine Chiffren Präferenzordnung anstelle die des Clients.
-Description[en]=If set to 'yes' the Postfix SMTP server uses its own cipher preference order instead of the remote client's cipher preference order. 
+Description[en]=If set to 'yes' the Postfix SMTP server uses its own cipher preference order instead of the remote client's cipher preference order.
 Type=str
 Categories=service-mail
 
