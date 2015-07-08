@@ -286,7 +286,7 @@ define([
 
 
 		_getOptionSelectionPage: function() {
-			var types = this.types, containers = this.containers, superordinates = this.superordinates, templates= this.templates;
+			var types = this.types, containers = this.containers, superordinates = this.superordinates, templates = lang.clone(this.templates);
 			// depending on the list we get, create a form for adding
 			// a new LDAP object
 			var widgets = [];
@@ -351,11 +351,30 @@ define([
 
 					// templates
 					if (templates.length) {
-						templates.push({ id: 'None', label: _('None') });
+						var initialValue = this.defaultObjectType;
+						var defaultValue = null;
+						if (initialValue) {
+							var matchesDN = array.filter(templates, function(ielement) {
+								return ielement.id == initialValue;
+							});
+							var matchesLabel = array.filter(templates, function(ielement) {
+								return ielement.label.toLowerCase() == initialValue.toLowerCase();
+							});
+							if (matchesDN.length) {
+								defaultValue = matchesDN[0].id;
+							} else if (matchesLabel.length) {
+								defaultValue = matchesLabel[0].id;
+							} else {
+								defaultValue = templates[0].id;
+							}
+						} else {
+							defaultValue = templates[0].id;
+						}
+						templates.unshift({ id: 'None', label: _('None') });
 						widgets.push({
 							type: 'ComboBox',
 							name: 'objectTemplate',
-							value: this.defaultObjectType,  // see Bug #13073, for users/user, there exists only one object type
+							value: defaultValue,  // see Bug #13073, for users/user, there exists only one object type
 							label: _('%s template', tools.capitalize(this.objectNameSingular)),
 							description: _('A template defines rules for default object properties.'),
 							autoHide: true,

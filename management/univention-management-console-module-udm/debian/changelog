@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-74) unstable; urgency=low
+
+  * Bug #38832: Use a ucr variable to set a default user template
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 08 Jul 2015 12:34:32 +0200
+
 univention-management-console-module-udm (5.1.25-73) unstable; urgency=low
 
   * Bug #38832: Use the first template (ABC order) instead of None
