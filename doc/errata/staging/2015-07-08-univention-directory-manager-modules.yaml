@@ -3,7 +3,7 @@ release: "4.0"
 version: [2]
 scope: ucs_4.0-0-errata4.0-2
 src: univention-directory-manager-modules
-fix: 10.0.31-1.1324.201507082131
+fix: 10.0.31-2.1325.201507082339
 desc: |
  This update addresses the following issue:
      * The UDM module policies/mailquota has been moved to the package
