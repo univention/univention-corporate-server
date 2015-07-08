@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-system-setup
-fix: 8.1.69-15.902.201507061222
+fix: 8.1.69-16.903.201507081311
 version: [2]
 desc: |
   This update addresses the following issues:
@@ -10,4 +10,6 @@ desc: |
   * The netmask is not overwritten in the initial UCS configuration anymore if
     if was set manually.
   * A typo in the german translation has been corrected.
-bug: [38593, 38593, 38215]
+  * If accessible, the nameserver specified via DHCP is pre-configured on the
+    network settings page.
+bug: [38593, 38593, 38215, 38330]
