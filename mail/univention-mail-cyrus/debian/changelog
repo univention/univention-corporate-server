@@ -1,3 +1,10 @@
+univention-mail-cyrus (7.0.1-5) unstable; urgency=low
+
+  * Bug #38473: install mail quota policy module outside
+  /usr/share/pyshared/, let ucs_registerLDAPExtension copy it there
+
+ -- Daniel Troeder <troeder@univention.de>  Sat, 04 Jul 2015 11:05:08 +0200
+
 univention-mail-cyrus (7.0.1-4) unstable; urgency=low
 
   * Bug #38707: make package conflict with dovecot packages
