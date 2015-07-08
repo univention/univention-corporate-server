@@ -32,7 +32,7 @@
 
 
 import univention.uldap
-import optparse 
+import optparse
 import sys
 import re
 
@@ -45,6 +45,7 @@ parser.add_option("-r", "--recipient", dest="recipient", help="sender address (f
 parser.add_option("-t", "--test", dest="test", help="test run", action="store_true", default=False)
 options, args = parser.parse_args()
 
+
 def listfilter(attr):
 
 	sender = attr.get("sender", None)
@@ -55,7 +56,7 @@ def listfilter(attr):
 	if options.ldap_base and sender and recipient:
 
 		# reuse secret file of univention-mail-cyrus
-		ldap = univention.uldap.getMachineConnection(ldap_master=False, secret_file = "/etc/listfilter.secret")
+		ldap = univention.uldap.getMachineConnection(ldap_master=False, secret_file="/etc/listfilter.secret")
 
 		userDn = ""
 		userGroups = []
@@ -64,7 +65,7 @@ def listfilter(attr):
 
 		# try the ldap stuff, if that fails send email anyway
 		try:
-			# get dn and groups of sender 
+			# get dn and groups of sender
 			filter = '(&(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))(objectclass=posixAccount))' % (sender, sender, sender)
 			userResult = ldap.search(base=options.ldap_base, filter=filter, attr=["dn"])
 			if userResult:
@@ -74,8 +75,8 @@ def listfilter(attr):
 				if groupResult:
 					for i in groupResult:
 						userGroups.append(i[0])
-		
-			# get recipient restriction 
+
+			# get recipient restriction
 			ldapAttr = ["univentionAllowedEmailGroups", "univentionAllowedEmailUsers"]
 			filter = '(&(mailPrimaryAddress=%s)(|(objectclass=univentionMailList)(objectclass=posixGroup)))' % recipient
 			result = ldap.search(base=options.ldap_base, filter=filter, attr=ldapAttr)
@@ -140,7 +141,7 @@ else:
 		m = re.match(r'([^=]+)=(.*)\n', data)
 		if m:
 			attr[m.group(1).strip()] = m.group(2).strip()
-	
+
 		elif data == "\n":
 			if attr.get("request", None) == "smtpd_access_policy":
 				action = listfilter(attr)
@@ -151,4 +152,3 @@ else:
 			attr = {}
 		else:
 			sys.exit(1)
-

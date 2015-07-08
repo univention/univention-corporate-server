@@ -30,28 +30,31 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__='' 	# workaround for PEP 366
+__package__ = '' 	# workaround for PEP 366
 import listener
 import univention.config_registry
-import os, re
+import os
+import re
 import univention.debug
 
-name='hosteddomains'
-description='update mail/hosteddomains'
-filter='(objectClass=univentionMailDomainname)'
-attributes=[]
+name = 'hosteddomains'
+description = 'update mail/hosteddomains'
+filter = '(objectClass=univentionMailDomainname)'
+attributes = []
 
 reload = False
 
+
 def initialize():
 	pass
+
 
 def handler(dn, new, old):
 	global reload
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-	old_hosteddomains = set(re.split('[ ]+', configRegistry.get('mail/hosteddomains','')))
+	old_hosteddomains = set(re.split('[ ]+', configRegistry.get('mail/hosteddomains', '')))
 	hosteddomains = old_hosteddomains.copy()
 
 	# remove old add new
@@ -66,11 +69,12 @@ def handler(dn, new, old):
 	if old_hosteddomains != hosteddomains:
 		try:
 			listener.setuid(0)
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "hosteddomains: %s" % u'mail/hosteddomains=%s' % ' '.join(hosteddomains) )
-			univention.config_registry.handler_set( [ u'mail/hosteddomains=%s' % ' '.join(hosteddomains) ] )
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "hosteddomains: %s" % u'mail/hosteddomains=%s' % ' '.join(hosteddomains))
+			univention.config_registry.handler_set([u'mail/hosteddomains=%s' % ' '.join(hosteddomains)])
 			reload = True
 		finally:
 			listener.unsetuid()
+
 
 def postrun():
 	global reload
@@ -78,7 +82,7 @@ def postrun():
 		# reload cyrus-imapd if UCR variable changed
 		listener.setuid(0)
 		try:
-			for fn in [ '/etc/init.d/cyrus-imapd', '/etc/init.d/cyrus2.2' ]:
+			for fn in ['/etc/init.d/cyrus-imapd', '/etc/init.d/cyrus2.2']:
 				if os.path.isfile(fn):
 					listener.run(fn, [os.path.basename(fn), 'reload'], uid=0)
 		finally:

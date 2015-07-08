@@ -35,6 +35,7 @@ import subprocess
 var = 'mail/archivefolder'
 cmd = '/usr/sbin/univention-cyrus-mkdir'
 
+
 def handler(configRegistry, changes):
 	folder = configRegistry.get(var)
 	if folder:
