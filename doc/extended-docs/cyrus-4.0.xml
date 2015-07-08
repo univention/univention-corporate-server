@@ -561,7 +561,7 @@
 			E-mails which are classified as spam - because they exceed a certain
 			number of points - are not delivered to the recipient's inbox by
 			Cyrus, but rather in the <emphasis>Spam</emphasis> folder below it.
-			The filtering is performed by a SIEVE script, which is automatically generated when
+			The filtering is performed by a Sieve script, which is automatically generated when
 			the user is created.
 		</para>
 		<para>
@@ -909,7 +909,7 @@
 		<para>
 			UCS integrates a number of applications from the Horde framework for
 			web access to e-mails and web-based administration of server-side e-mail filter
-			rules based on SIEVE. Horde can be installed via the Univention App Center.
+			rules based on Sieve. Horde can be installed via the Univention App Center.
 		</para>
 		<section id="mail:Login_and_overview">
 			<title>Login and overview</title>
@@ -997,7 +997,7 @@
 			<title>E-mail filters</title>
 			<para>
 				Cyrus supports server-side filter scripts written in an individual
-				script language called SIEVE. The filter module allows the generation
+				script language called Sieve. The filter module allows the generation
 				of these filter scripts. They apply generally and thus also apply for
 				users accessing their inboxes via a standard mail client.
 			</para>
@@ -1030,7 +1030,7 @@
 			</para>
 			<para>
 				Clicking on <guimenu>Script</guimenu> displays the source text of the generated
-				SIEVE script.
+				Sieve script.
 			</para>
 		</section>
 	</chapter>
