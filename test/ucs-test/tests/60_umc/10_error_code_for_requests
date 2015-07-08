@@ -13,7 +13,6 @@ from umc_test_connection import UMCTestConnection
 import univention.testing.utils as utils
 import subprocess
 import ssl
-import sys
 import psutil
 import time
 from univention.management.console.modules.ucstest import joinscript, unjoinscript
@@ -56,8 +55,8 @@ def main():
 	for i_connection in connections:
 		try:
 			response = i_connection.getresponse()
-			if(response.status != RESPONSE_STATUS_CODE):
-				print 'ERROR: Unexpected status of response %s (expected was %s)' % (response.status, status)
+			if response.status != RESPONSE_STATUS_CODE:
+				print 'ERROR: Unexpected status of response %s (expected was %s)' % (response.status, RESPONSE_STATUS_CODE)
 				success = False
 		except ssl.SSLError:
 			print 'ERROR: request timed out'
