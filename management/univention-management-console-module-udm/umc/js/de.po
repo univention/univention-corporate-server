@@ -551,7 +551,7 @@ msgstr "Kein LDAP-Position wurde ausgewählt."
 #: umc/js/udm/wizards/FirstPageWizard.js:354
 #: umc/js/udm/wizards/FirstPageWizard.js:396
 msgid "None"
-msgstr "Kein"
+msgstr "Keine"
 
 #: umc/js/udm.js:1143
 msgid "Note that moving a container can take some time."

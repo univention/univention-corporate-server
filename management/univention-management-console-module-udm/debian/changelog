@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-75) unstable; urgency=low
+
+  * Bug #38832: Adapted german translation for None
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 08 Jul 2015 12:57:46 +0200
+
 univention-management-console-module-udm (5.1.25-74) unstable; urgency=low
 
   * Bug #38832: Use a ucr variable to set a default user template
