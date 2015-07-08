@@ -1,3 +1,9 @@
+ucs-test (5.0.149-1) unstable; urgency=low
+
+  * Bug #38828: Add a WaitForNonzeroResultOrTimeout decorator.
+
+ -- Ammar Najjar <najjar@univention.de>  Wed, 08 Jul 2015 08:14:38 +0200
+
 ucs-test (5.0.148-42) unstable; urgency=medium
 
   * Bug #36273: Add test for user photo
