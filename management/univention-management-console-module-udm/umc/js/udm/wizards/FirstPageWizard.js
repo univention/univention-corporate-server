@@ -351,7 +351,7 @@ define([
 
 					// templates
 					if (templates.length) {
-						templates.unshift({ id: 'None', label: _('None') });
+						templates.push({ id: 'None', label: _('None') });
 						widgets.push({
 							type: 'ComboBox',
 							name: 'objectTemplate',
