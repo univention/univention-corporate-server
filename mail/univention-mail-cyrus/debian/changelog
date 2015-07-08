@@ -1,3 +1,9 @@
+univention-mail-cyrus (7.0.3-1) unstable; urgency=low
+
+  * Bug #38473: updated mailquota.py
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 08 Jul 2015 22:10:43 +0200
+
 univention-mail-cyrus (7.0.2-1) unstable; urgency=low
 
   * Bug #34839: bumped version
