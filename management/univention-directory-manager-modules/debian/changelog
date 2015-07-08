@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.31-1) unstable; urgency=low
+
+  * Bug #34839: bumped version
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 08 Jul 2015 21:27:47 +0200
+
 univention-directory-manager-modules (10.0.30-2) unstable; urgency=low
 
   * Bug #38473: fixed logic for mailquota.py backup
