@@ -5,7 +5,7 @@
 # Univention Spamassassin
 #  learn script
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,19 +35,26 @@
 @!@
 print 'SA_LEARN="/usr/bin/sa-learn"'
 
-spamFolder = baseConfig.get("mail/cyrus/folder/spam", "Spam")
-if not spamFolder: spamFolder = "Spam"
+if configRegistry.get("mail/dovecot"):
+	prod = "dovecot"
+else:
+	prod = "cyrus"
+
+spamFolder = configRegistry.get("mail/%s/folder/spam" % prod, "Spam")
+hamFolder = configRegistry.get("mail/%s/folder/ham" % prod, "Ham")
+
+if not spamFolder:
+	spamFolder = "Spam"
 if not spamFolder.lower() == "none":
 	print 'SPAMFOLDER="%s"' % spamFolder
 else:
-	print "SPAMFOLDER="" # disabled via mail/cyrus/folder/spam"
+	print "SPAMFOLDER=  # disabled via mail/%s/folder/spam" % prod
 
-hamFolder = baseConfig.get("mail/cyrus/folder/ham", "Ham")
 if not hamFolder: hamFolder = "Ham"
 if not hamFolder.lower() == "none":
 	print 'HAMFOLDER="%s"' % hamFolder
 else:
-	print "HAMFOLDER="" #  disabled via mail/cyrus/folder/ham"
+	print "HAMFOLDER=  # disabled via mail/%s/folder/ham" % prod
 @!@
 
 if [ ! -f /var/lib/amavis/.spamassassin/bayes_toks ]; then
@@ -56,13 +63,33 @@ if [ ! -f /var/lib/amavis/.spamassassin/bayes_toks ]; then
 	chmod 600 /var/lib/amavis/.spamassassin/bayes_toks
 fi
 
-# Cyrus 2.2
-if [ -n "$SPAMFOLDER" ]; then
-	find /var/spool/cyrus/mail/domain/ -wholename \*/\*/\*/user/\*/"$SPAMFOLDER" \
-		-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --spam {} \;
+@!@
+if configRegistry.get("mail/dovecot"):
+	base_folder = "/var/spool/dovecot/private/"
+	user_folder = "\*/\*/Maildir/."
+	ucr_folder = configRegistry.get("mail/dovecot/folder/spam", "Spam")
+	# find RFC 6154 flagged \Junk folders, add them if they are not there anyway
+	if not ucr_folder:
+		ucr_folder = "Spam"
+	elif ucr_folder.lower() == "none":
+		ucr_folder = ""
+	junk = ""
+	for key, value in configRegistry.items():
+		if key.startswith("mail/dovecot/mailboxes/special/") and value == "\Junk":
+			_folder = key.split("/")[-1]
+			if _folder and _folder != ucr_folder:
+				junk += " -o -wholename \*/\*/Maildir/.%s" % _folder
+else:
+	base_folder = "/var/spool/cyrus/mail/domain/"
+	user_folder = "\*/\*/\*/user/\*/"
+	junk = ""
+print '''if [ -n "$SPAMFOLDER" ]; then
+find %(base)s \( -wholename %(user)s"$SPAMFOLDER" %(junk)s \) \\
+	-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --spam {} \;
 fi
 
 if [ -n "$HAMFOLDER" ]; then
-	find /var/spool/cyrus/mail/domain/ -wholename \*/\*/\*/user/\*/"$HAMFOLDER" \
-		-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --ham {} \;
-fi
+	find %(base)s -wholename %(user)s"$HAMFOLDER" \\
+	-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --ham {} \;
+fi''' % {"base": base_folder, "user": user_folder, "junk": junk}
+@!@

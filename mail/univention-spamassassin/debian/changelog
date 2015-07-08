@@ -1,3 +1,9 @@
+univention-spamassassin (6.0.2-0) unstable; urgency=low
+
+  * Bug #38759: Add support for Dovecot
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 24 Jun 2015 09:26:37 +0200
+
 univention-spamassassin (6.0.1-5) unstable; urgency=low
 
   *  updated spamassassin rules installation (Bug #36607) 

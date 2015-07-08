@@ -9,8 +9,10 @@ Variables: mail/antispam/rules/autoupdate
 
 Type: file
 File: usr/sbin/univention-sa-learn
-Variables: mail/cyrus/folder/spam
-Variables: mail/cyrus/folder/ham
+Variables: mail/.*/folder/spam
+Variables: mail/.*/folder/ham
+Variables: mail/dovecot
+Variables: mail/dovecot/mailboxes/special/.*
 
 Type: file
 File: etc/cron.daily/univention-spamassassin
