@@ -26,6 +26,7 @@ Variables: mail/cyrus/ssl/cafile
 Variables: mail/cyrus/ssl/capath
 Variables: mail/cyrus/mailnotifier
 Variables: mail/cyrus/notifyd
+Variables: mail/cyrus/auth/allowplaintext
 User: cyrus
 Group: sasl
 Mode: 0640
