@@ -1,0 +1,12 @@
+product: ucs
+release: "4.0"
+version: [2]
+scope: ucs_4.0-0-errata4.0-2
+src: clucene-core
+fix: 2.3.3.4-4.15.201507082138
+desc: |
+  clucene-core has been updated to version 2.3.3.4.
+note: |
+  Some binary packages of clucene-core are required by a separate
+  dovecot erratum.
+bug: [34839]

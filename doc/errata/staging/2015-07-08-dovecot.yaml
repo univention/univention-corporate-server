@@ -1,0 +1,13 @@
+product: ucs
+release: "4.0"
+version: [2]
+scope: ucs_4.0-0-errata4.0-2
+src: dovecot
+fix: 2.2.13-11.13.201507082143
+desc: |
+  dovecot has been updated to version 2.2.13. The update provides several
+  bugfixes and enhancements.
+note: |
+  The new version requires an updated version of libclucene-dev that is
+  provided by a separate erratum.
+bug: [34839, 38475]
