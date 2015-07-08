@@ -32,9 +32,6 @@ print 'krb5RealmName: %s' % baseConfig['domainname'].upper()
 print 'nisDomain: %s' % baseConfig['domainname']
 print 'associatedDomain: %s' % baseConfig['domainname']
 print 'univentionPolicyReference: cn=default-settings,cn=thinclient,cn=policies,%s' % baseConfig['ldap/base']
-print 'univentionPolicyReference: cn=default-settings,cn=boot,cn=dhcp,cn=policies,%s' % baseConfig['ldap/base']
-print 'univentionPolicyReference: cn=default-settings,cn=dns,cn=dhcp,cn=policies,%s' % baseConfig['ldap/base']
-print 'univentionPolicyReference: cn=default-settings,cn=routing,cn=dhcp,cn=policies,%s' % baseConfig['ldap/base']
 print 'univentionPolicyReference: cn=default-settings,cn=pwhistory,cn=users,cn=policies,%s' % baseConfig['ldap/base']
 print 'univentionPolicyReference: cn=default-users,cn=admin-settings,cn=users,cn=policies,%s' % baseConfig['ldap/base']
 print ''
