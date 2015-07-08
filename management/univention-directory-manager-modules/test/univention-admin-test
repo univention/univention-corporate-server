@@ -235,28 +235,27 @@ cleanup() {
 	olist[57]="cn=testmanagedclientpackagespolicy,$ldap_base"
 	olist[58]="cn=testdhcpbootpolicy,$ldap_base"
 	olist[59]="cn=testldapserverpolicy,$ldap_base"
-	olist[60]="cn=testmailquotapolicy,$ldap_base"
-	olist[61]="cn=testmaintenancepolicy,$ldap_base"
-	olist[62]="cn=testmasterpackagespolicy,$ldap_base"
-	olist[63]="cn=testmemberpackagespolicy,$ldap_base"
-	olist[64]="cn=testmobileclientpackagespolicy,$ldap_base"
-	olist[65]="cn=testslavepackagespolicy,$ldap_base"
-	olist[66]="cn=testprintquotapolicy,$ldap_base"
-	olist[67]="cn=testprintserverpolicy,$ldap_base"
-	olist[68]="cn=testpwhistorypolicy,$ldap_base"
-	olist[69]="cn=testreleasepolicy,$ldap_base"
-	olist[70]="cn=testrepositoryserverpolicy,$ldap_base"
-	olist[71]="cn=testrepositorysyncpolicy,$ldap_base"
-	olist[72]="cn=testshareuserquotapolicy,$ldap_base"
-	olist[73]="uid=foobar,cn=groups,$ldap_base"
-	olist[74]="cn=testpackagessetting,$ldap_base"
-	olist[75]="cn=testprinterurisetting,$ldap_base"
-	olist[76]="cn=testsambaconfigsetting,$ldap_base"
-	olist[77]="sambaDomainName=testsambadomainsetting,$ldap_base"
-	olist[78]="cn=testservicesetting,$ldap_base"
+	olist[60]="cn=testmaintenancepolicy,$ldap_base"
+	olist[61]="cn=testmasterpackagespolicy,$ldap_base"
+	olist[62]="cn=testmemberpackagespolicy,$ldap_base"
+	olist[63]="cn=testmobileclientpackagespolicy,$ldap_base"
+	olist[64]="cn=testslavepackagespolicy,$ldap_base"
+	olist[65]="cn=testprintquotapolicy,$ldap_base"
+	olist[66]="cn=testprintserverpolicy,$ldap_base"
+	olist[67]="cn=testpwhistorypolicy,$ldap_base"
+	olist[68]="cn=testreleasepolicy,$ldap_base"
+	olist[69]="cn=testrepositoryserverpolicy,$ldap_base"
+	olist[70]="cn=testrepositorysyncpolicy,$ldap_base"
+	olist[71]="cn=testshareuserquotapolicy,$ldap_base"
+	olist[72]="uid=foobar,cn=groups,$ldap_base"
+	olist[73]="cn=testpackagessetting,$ldap_base"
+	olist[74]="cn=testprinterurisetting,$ldap_base"
+	olist[75]="cn=testsambaconfigsetting,$ldap_base"
+	olist[76]="sambaDomainName=testsambadomainsetting,$ldap_base"
+	olist[77]="cn=testservicesetting,$ldap_base"
 
 	
-	for i in `seq 1 78 `;
+	for i in `seq 1 77 `;
 	do
 		if ldapdelete -x -r -D "cn=admin,$ldap_base" -w "`cat /etc/ldap.secret`" "${olist[${i}]}" 2>/dev/null >/dev/null 
 		then
@@ -3869,31 +3868,6 @@ then
 	
 	############################################################################
 	############################################################################
-	# policies/mailquota
-	############################################################################
-	############################################################################
-
-	adminwrap $LINENO policies/mailquota create \
-		--set name=testmailquotapolicy \
-		--set MailQuota=4
-    
-	ckthere "cn=testmailquotapolicy" "base" "(univentionMailQuotaMB=4)" testmailquotapolicy "mailquota" $LINENO
-	
-	adminwrap $LINENO policies/mailquota modify \
-		--dn \"cn=testmailquotapolicy,$ldap_base\" \
-		--set MailQuota=3
-    
-	ckthere "cn=testmailquotapolicy" "base" "(univentionMailQuotaMB=3)" testmailquotapolicy "mailquota" $LINENO
-	
-	adminwrap $LINENO policies/mailquota remove \
-		--dn \"cn=testmailquotapolicy,$ldap_base\"
-    
-	cknthere "cn=testmailquotapolicy" "base" "(objectClass=*)" testmailquotapolicy "existence" $LINENO
-	
-	policy_append_remove_test $LINENO mailquota
-	
-	############################################################################
-	############################################################################
 	# policies/maintenance
 	############################################################################
 	############################################################################
@@ -3915,7 +3889,6 @@ then
 		--append minute=5 \
 		--append minute=10 
 
-	ckthere "cn=testmaintenancepolicy" "base" "(univentionInstallationStartup=1)" testmaintenancepolicy "mailquota" $LINENO
 	ckthere "cn=testmaintenancepolicy" "base" "(univentionInstallationReboot=00:45)" testmaintenancepolicy "reboot" $LINENO
 	ckthere "cn=testmaintenancepolicy" "base" "(univentionCronActive=1)" testmaintenancepolicy "cron" $LINENO
 	ckthere "cn=testmaintenancepolicy" "base" "(univentionCron=5,10 6,7 2,5 6,2 2,4)" testmaintenancepolicy "crontab" $LINENO
@@ -3939,7 +3912,6 @@ then
 		--remove minute=5 \
 		--append minute=15 
 
-	ckthere "cn=testmaintenancepolicy" "base" "(univentionInstallationStartup=0)" testmaintenancepolicy "mailquota" $LINENO
 	ckthere "cn=testmaintenancepolicy" "base" "(univentionInstallationReboot=00:15)" testmaintenancepolicy "reboot" $LINENO
 	ckthere "cn=testmaintenancepolicy" "base" "(univentionCronActive=0)" testmaintenancepolicy "cron" $LINENO
 	ckthere "cn=testmaintenancepolicy" "base" "(univentionCron=10,15 7,8 5,6 2,3 4,5)" testmaintenancepolicy "crontab" $LINENO
@@ -5821,7 +5793,6 @@ then
 			"policies dhcp_scope" \
 			"policies dhcp_statements" \
 			"policies ldapserver" \
-			"policies mailquota" \
 			"policies masterpackages" \
 			"policies memberpackages" \
 			"policies mobileclientpackages" \

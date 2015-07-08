@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.30-0) unstable; urgency=medium
+
+  * Bug #38473: move mail quota policy into univention-mail-cyrus package
+
+ -- Daniel Troeder <troeder@univention.de>	Thu, 04 Jun 2015 16:34:08 +0200
+
 univention-directory-manager-modules (10.0.29-57) unstable; urgency=medium
 
   * Bug #36255: move also translation domain
