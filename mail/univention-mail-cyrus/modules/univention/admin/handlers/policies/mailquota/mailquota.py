@@ -45,7 +45,7 @@ from univention.admin.policy import (
 
 import univention.debug
 
-translation=univention.admin.localization.translation('univention.admin.handlers.policies')
+translation=univention.admin.localization.translation('univention.admin.handlers.policies.mailquota')
 _=translation.translate
 
 class mailquotaFixedAttributes(univention.admin.syntax.select):
