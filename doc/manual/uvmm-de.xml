@@ -1161,13 +1161,13 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 			<title>Ändern des Standardnetzwerkes</title>
 			<para>
 				Der Name der Bridge für das Standardnetzwerk ist in den <acronym>UVMM</acronym>-Profilen gespeichert.
-				Wenn das Standardnetzwerk <filename class="devicefile">br0</filename> geändert wird, müssen diese angepasst werden.
-				Der folgende Befehl aktualisiert alle Profile auf die Bridge <filename class="devicefile">eth0</filename>, die momentan <filename class="devicefile">br0</filename> als Netzwerkschnittstelle benutzen:
+				Wenn das Standardnetzwerk <filename class="devicefile">eth0</filename> geändert wird, müssen diese angepasst werden.
+				Der folgende Befehl aktualisiert alle Profile auf die Bridge <filename class="devicefile">br0</filename>, die momentan als Netzwerkschnittstelle <filename class="devicefile">eth0</filename> benutzen:
 			</para>
 			<programlisting language="sh">
-udm uvmm/profile list --filter interface=br0 |
+udm uvmm/profile list --filter interface=eth0 |
 	sed -ne 's/^DN: //p' |
-	xargs -r -d '\n' -n 1 udm uvmm/profile modify --set interface=eth0 --dn
+	xargs -r -d '\n' -n 1 udm uvmm/profile modify --set interface=br0 --dn
 			</programlisting>
 		</section>
 	</section>
