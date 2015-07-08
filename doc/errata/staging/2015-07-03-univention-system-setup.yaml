@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-system-setup
-fix: 8.1.69-16.903.201507081311
+fix: 
 version: [2]
 desc: |
   This update addresses the following issues:
@@ -12,4 +12,5 @@ desc: |
   * A typo in the german translation has been corrected.
   * If accessible, the nameserver specified via DHCP is pre-configured on the
     network settings page.
-bug: [38593, 38593, 38215, 38330]
+  * The links on the last page of the setup wizard have been adjusted.
+bug: [38593, 38593, 38215, 38330, 38850]
