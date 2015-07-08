@@ -25,6 +25,14 @@ smtpd_sasl_local_domain =
 
 smtpd_sasl_security_options = noanonymous
 
+@!@
+if configRegistry.is_true('mail/postfix/dovecot_sasl'):
+	print 'smtp_sasl_type = dovecot'
+	print 'lmtp_sasl_type = dovecot'
+	print 'smtpd_sasl_type = dovecot'
+	print 'smtpd_sasl_path = private/auth'
+@!@
+
 # smtp client
 @!@
 print 'smtp_tls_security_level = %s' % baseConfig.get('mail/postfix/tls/client/level', 'none')

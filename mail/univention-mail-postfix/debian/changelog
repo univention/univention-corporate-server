@@ -1,3 +1,11 @@
+univention-mail-postfix (9.0.1-1) unstable; urgency=medium
+
+  * Bug #34839 Dovecot as alternative to cyrus
+  * add UCRV mail/postfix/dovecot_sasl (bool) for switching Postfix
+  authentication to Dovecot SASL
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 28 Apr 2015 22:53:07 +0200
+
 univention-mail-postfix (9.0.0-25) unstable; urgency=low
 
   * Bug #38292: postpone addition of this feature, revert r60366

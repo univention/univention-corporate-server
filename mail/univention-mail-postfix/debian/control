@@ -55,7 +55,7 @@ Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-mail-postfix (= ${binary:Version}),
  univention-sasl,
- univention-mail-cyrus
+ univention-mail-dovecot | univention-mail-cyrus
 Recommends: bsd-mailx,
  univention-spamassassin,
  univention-antivir-mail

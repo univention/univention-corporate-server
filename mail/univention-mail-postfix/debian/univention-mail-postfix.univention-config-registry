@@ -72,6 +72,7 @@ Variables: mail/postfix/tls/client/mandatory_protocols
 Variables: mail/postfix/tls/client/protocols
 Variables: mail/postfix/smtpd/tls/exclude_ciphers
 Variables: mail/postfix/tls/client/exclude_ciphers
+Variables: mail/postfix/dovecot_sasl
 
 Type: subfile
 Multifile: etc/postfix/main.cf

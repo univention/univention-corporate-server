@@ -358,3 +358,9 @@ Description[de]=Diese Variablen definieren zusätzliche Optionen für den Postfi
 Description[en]=These variables define additional options for the submission service of postfix on port 587. The variables have to be defined as mail/postfix/mastercf/options/submission/OPTION=VALUE.
 Type=str
 Categories=service-mail
+
+[mail/postfix/dovecot_sasl]
+Description[de]=Ist diese Option aktiviert, verwendet Postfix den SASL-Dienst von Dovecot.
+Description[en]=If this option is activated, Postfix uses Dovecots SASL service.
+Type=bool
+Categories=service-mail
