@@ -1,3 +1,9 @@
+univention-mail-postfix (9.0.2-1) unstable; urgency=low
+
+  * Bug #34839: bumped version
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 08 Jul 2015 20:59:34 +0200
+
 univention-mail-postfix (9.0.1-5) unstable; urgency=low
 
   * Bug #38471: rm sasl config file from install
