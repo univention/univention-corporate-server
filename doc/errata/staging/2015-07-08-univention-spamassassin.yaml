@@ -1,0 +1,9 @@
+product: ucs
+release: "4.0"
+version: [2]
+scope: ucs_4.0-0-errata4.0-2
+src: univention-spamassassin
+fix: 6.0.2-1
+desc: |
+  * Prepared mail stack for dovecot integration (Bug #34839, Bug #38759).
+bug: [34839, 38759]
