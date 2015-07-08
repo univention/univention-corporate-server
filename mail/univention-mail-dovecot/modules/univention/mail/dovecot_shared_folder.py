@@ -263,10 +263,11 @@ class DovecotSharedFolderListener(DovecotListener):
 
 	def create_public_folder(self, folder_name):
 		try:
+			user, group = self.get_dovecot_user()
 			pub_loc = self.get_public_location(folder_name)
 			path = os.path.join(pub_loc, ".INBOX")
 			self.mkdir_p(pub_loc)
-			self.read_from_ext_proc_as_root(["/usr/bin/maildirmake.dovecot", path, "dovecot:dovecot"])
+			self.read_from_ext_proc_as_root(["/usr/bin/maildirmake.dovecot", path, "%s:%s" % (user, group)])
 			self.listener.setuid(0)
 		except:
 			self.log_e("Failed to create maildir '%s'." % folder_name)
