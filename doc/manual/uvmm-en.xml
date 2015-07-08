@@ -1233,12 +1233,12 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 			<para>
 				The name of the bridge used as the default network interface is stored in <acronym>UVMM</acronym> profiles.
 				If the default interface <filename class="devicefile">br0</filename> is changed, the name should be updated as well.
-				The following command updates all profiles currently using interface <filename class="devicefile">eth0</filename> to use the bridge <filename class="devicefile">br0</filename>:
+				The following command updates all profiles currently using interface <filename class="devicefile"><replaceable>$OLD</replaceable></filename> to use the bridge <filename class="devicefile"><replaceable>$NEW</replaceable></filename>:
 			</para>
 			<programlisting language="sh">
-udm uvmm/profile list --filter interface=eth0 |
+udm uvmm/profile list --filter interface="$OLD" |
 	sed -ne 's/^DN: //p' |
-	xargs -r -d '\n' -n 1 udm uvmm/profile modify --set interface=br0 --dn
+	xargs -r -d '\n' -n 1 udm uvmm/profile modify --set interface="$NEW" --dn
 			</programlisting>
 		</section>
 	</section>
