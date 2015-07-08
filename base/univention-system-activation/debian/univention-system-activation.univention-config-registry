@@ -1,5 +1,8 @@
 Type: file
 File: etc/apache2/sites-available/univention-system-activation
+Variables: umc/http/port
+Variables: umc/http/interface
+Variables: umc/http/session/timeout
 
 Type: file
 File: usr/share/univention-system-activation/www/languages.json

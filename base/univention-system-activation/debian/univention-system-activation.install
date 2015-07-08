@@ -2,4 +2,4 @@ scripts/univention-system-activation	usr/sbin
 src/*     usr/share/pyshared/univention/system_activation
 www	usr/share/univention-system-activation
 conffiles/etc/sudoers.d/univention-system-activation	etc/sudoers.d
-conffiles/usr/lib/univention-system-setup/cleanup-post.d/96_enable_system_activation	usr/lib/univention-system-setup/cleanup-post.d
+conffiles/usr/lib/univention-system-setup/appliance-hooks.d/96_enable_system_activation	usr/lib/univention-system-setup/appliance-hooks.d
