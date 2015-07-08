@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-ldap
-fix: 11.0.12-8.750.201507061538
+fix: 11.0.12-9.753.201507081110
 version: [1,2]
 desc: |
   This update addresses the following issues:
@@ -11,4 +11,5 @@ desc: |
     By default 'RC4', 'NULL' and 'SSLv3' are now disabled.
   * Enables Forward Secrecy by default, which can be configured further through
     several new UCR variables starting with 'ldap/tls/dh/...'.
-bug: [38685]
+  * The DHCP policies are no longer linked to the LDAP base.
+bug: [38685, 38584]
