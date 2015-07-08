@@ -37,7 +37,13 @@ cmd = '/usr/sbin/univention-cyrus-mkdir'
 
 
 def handler(configRegistry, changes):
-	folder = configRegistry.get(var)
-	if folder:
-		print '', folder
-		subprocess.call([cmd, folder])
+	# run only if Cyrus is installed and archive folder is an email address in one of our mail domains
+	if configRegistry.is_true("mail/cyrus"):
+		folder = configRegistry.get(var)
+		if folder and "@" in folder:
+			domain = folder.split("@")[1]
+			if domain in configRegistry.get("mail/hosteddomains"):
+				print '', folder
+				subprocess.call([cmd, folder])
+			else:
+				return

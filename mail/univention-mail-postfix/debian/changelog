@@ -1,3 +1,10 @@
+univention-mail-postfix (9.0.1-2) unstable; urgency=low
+
+  * Bug #33799 and Bug #38477: create mailbox for archivefolder only if Cyrus
+  is installed and the domain is not external
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 08 May 2015 10:25:40 +0200
+
 univention-mail-postfix (9.0.1-1) unstable; urgency=medium
 
   * Bug #34839 Dovecot as alternative to cyrus

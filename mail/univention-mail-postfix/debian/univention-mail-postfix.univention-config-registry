@@ -139,6 +139,8 @@ File: etc/postfix/sasl/smtpd.conf
 Type: module
 Module: create-archivefolder.py
 Variables: mail/archivefolder
+Variables: mail/cyrus
+Variables: mail/hosteddomains
 
 Type: multifile
 Multifile: etc/postfix/ldap.groups
