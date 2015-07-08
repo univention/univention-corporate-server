@@ -36,7 +36,7 @@ if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 10.0.29-53; then
 	ln -s /usr/share/pyshared/univention/admin/policy.py /usr/lib/pymodules/python2.7/univention/admin/policy.py
 fi
 
-# Bug #38473: only required up to UCS 4.1-0
+# Bug #38473: workaround only required up to UCS 4.1-0
 if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt-nl 10.0.30; then
 	FN="/usr/share/pyshared/univention/admin/handlers/policies/mailquota.py"
 	FN_BACKUP="${FN}.udm_backup"
