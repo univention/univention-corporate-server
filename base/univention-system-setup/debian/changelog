@@ -1,3 +1,9 @@
+univention-system-setup (8.1.69-18) unstable; urgency=medium
+
+  * Bug #38593: fix parsing of netmask for virtual interfaces
+
+ -- Florian Best <best@univention.de>  Wed, 08 Jul 2015 16:22:16 +0200
+
 univention-system-setup (8.1.69-17) unstable; urgency=medium
 
   * Bug #38850: only show general server address on final setup page

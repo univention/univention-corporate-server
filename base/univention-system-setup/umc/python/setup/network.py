@@ -425,7 +425,7 @@ class Device(object):
 
 			match = re.match('^interfaces/(%s_[0-9]+)/address' % re.escape(name), key)
 			if match:
-				self.ip4.append((vals.pop(key), vals.pop('interfaces/%s/netmask' % match.group(), '24')))
+				self.ip4.append((vals.pop(key), vals.pop('interfaces/%s/netmask' % match.group(1), '24')))
 				continue
 
 		self._leftover += vals.items()
