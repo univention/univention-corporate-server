@@ -113,7 +113,7 @@
 
 	<para>
 	  Die Laufzeitdaten des Dovecot-Servers werden im Verzeichnis <filename class="directory">/var/spool/dovecot/</filename>
-	  abgelegt. Fall dieses Verzeichnis auf einem NFS share liegen sollte,
+	  abgelegt. Fall dieses Verzeichnis auf einem NFS Laufwerk liegen sollte,
         lesen Sie bitte <xref linkend="mail::serverconfig::nfs"/>.
 	</para>
 
@@ -522,11 +522,11 @@ doveadm auth cache flush
 			<para>
 			  In der &ucsUCRV; <envar>mail/dovecot/quota/warning/text/PROZENT=TEXT</envar> kann
 			  der Schwellwert konfiguriert werden, ab dem eine Warnmeldung ausgegeben werden
-			  soll. PROZENT muss als Zahl zwischen 0 und 100 ohne Prozentzeichen angegeben
+			  soll. <literal>PROZENT</literal> muss als Zahl zwischen 0 und 100 ohne Prozentzeichen angegeben
 			  werden, TEXT wird der Inhalt der E-Mail.
 			</para>
 			<para>
-			  Wenn TEXT die Zeichenkette "$PERCENT" enthält, wird diese in der
+			  Wenn <literal>TEXT</literal> die Zeichenkette <literal>$PERCENT</literal> enthält, wird diese in der
 			  E-Mail mit dem überschrittenen Wert ersetzt.
 			</para>
 			<para>
@@ -922,7 +922,7 @@ postmap /etc/postfix/smtp_auth
 				<colspec colnum="2" colname="col2" colwidth="2*"/>
 				<thead>
 					<row>
-						<entry>mail/dovecot/mailbox/…</entry>
+						<entry><envar>mail/dovecot/mailbox/…</envar></entry>
 						<entry>Bedeutung</entry>
 					</row>
 				</thead>
@@ -993,8 +993,8 @@ postmap /etc/postfix/smtp_auth
 	<section id="mail::serverconfig::nfs">
 		<title>Mailserver-Speicher auf NFS</title>
 		<para>
-			Dovecot unterstütz das Speichern von E-Mails und Index-Dateien auf
-			Cluster-Filesystemen und NFS. Einige Einstellungen sind jedoch nötig, um
+			Dovecot unterstützt das Speichern von E-Mails und Index-Dateien auf
+			Cluster-Dateisystemen und NFS. Einige Einstellungen sind jedoch nötig, um
 			Datenverluste in bestimmten Situationen zu vermeiden.
 		</para>
 		<para>

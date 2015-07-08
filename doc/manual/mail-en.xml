@@ -503,11 +503,11 @@ doveadm auth cache flush
 					The threshold for when the warning message should be issued can
 					be configured in the &ucsUCRV;
 					<envar>mail/dovecot/quota/warning/text/PERCENT=TEXT</envar>.
-					PERCENT must be a number between 0 and 100 without the percent
+					<literal>PERCENT</literal> must be a number between 0 and 100 without the percent
 					sign, TEXT will be the content of the e-mail.
 				</para>
 				<para>
-					If TEXT contains the string "$PERCENT", it will be replaced in
+					If <literal>TEXT</literal> contains the string <literal>$PERCENT</literal>, it will be replaced in
 					the email with the value of the limit that has been exceeded.
 				</para>
 				<para>
@@ -941,14 +941,14 @@ postmap /etc/postfix/smtp_auth
 	</section>
 
 	<section id="mail::serverconfig::nfs">
-		<title>Mail storge on NFS</title>
+		<title>Mail storage on NFS</title>
 		<para>
-			Dovecot supports storing e-mails and index files on cluser filesystems
-			and on NFS. Some settings are neccessary to prevent dataloss in certain
+			Dovecot supports storing e-mails and index files on cluster filesystems
+			and on NFS. Some settings are necessary to prevent data loss in certain
 			situations.
 		</para>
 		<para>
-			The following settings assume that mailboxs are not accessed simultaneously
+			The following settings assume that mailboxes are not accessed simultaneously
 			by multiple servers. This is the case if each user has configures exactly
 			one mail home server.
 		</para>
@@ -960,7 +960,7 @@ postmap /etc/postfix/smtp_auth
 			</itemizedlist>
 		</para>
 		<para>
-			To achive higher performance, index files can be kept on the local servers
+			To achieve higher performance, index files can be kept on the local servers
 			disk, instead of storing them together with the messages on NFS. The index
 			files can then be found at <filename class="directory">/var/lib/dovecot/index/</filename>.
 			To activate this option, set &ucsUCRV;
