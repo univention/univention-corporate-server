@@ -26,7 +26,15 @@ Depends: ${misc:Depends},
  python-univention,
  shell-univention-lib (>= 3.0.1-1),
  python-univention-lib (>= 3.0.4-1)
-Conflicts: univention-mail-cyrus-kolab2
+Conflicts: univention-mail-cyrus-kolab2,
+ univention-mail-dovecot,
+ dovecot-core,
+ dovecot-imapd,
+ dovecot-ldap,
+ dovecot-lmtpd,
+ dovecot-managesieved,
+ dovecot-pop3d,
+ dovecot-sieve
 Replaces: univention-mail-cyrus-pop,
  univention-mail-cyrus-imap
 Description: UCS - imap configuration
