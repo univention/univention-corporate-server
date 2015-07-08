@@ -96,6 +96,7 @@ Type: subfile
 Multifile: etc/postfix/master.cf
 Subfile: etc/postfix/master.cf.d/30_antivir
 Variables: mail/antivir
+Variables: mail/archivefolder
 
 Type: subfile
 Multifile: etc/postfix/master.cf

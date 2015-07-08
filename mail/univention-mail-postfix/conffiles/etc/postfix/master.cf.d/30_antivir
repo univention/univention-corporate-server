@@ -20,7 +20,8 @@ smtp-amavis unix -      -       n     -       2  smtp
 	-o strict_rfc821_envelopes=yes
 	-o smtpd_error_sleep_time=0
 	-o smtpd_soft_error_limit=1001
-	-o smtpd_hard_error_limit=1000
-	-o receive_override_options=no_address_mappings
+	-o smtpd_hard_error_limit=1000'''
+	if configRegistry.get("mail/archivefolder", False):
+		print '''	-o receive_override_options=no_address_mappings
 '''
 @!@
