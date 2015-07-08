@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-PO_FILES := $(shell find quota_policy -name '*.po')
+PO_FILES := $(shell find modules -name '*.po')
 MO_FILES := $(PO_FILES:%.po=%.mo)
 
 %.mo:	%.po
@@ -38,7 +38,7 @@ MO_FILES := $(PO_FILES:%.po=%.mo)
 
 override_dh_auto_clean:
 	dh_auto_clean
-	rm -f quota_policy/univention/admin/handlers/policies/mailquota/*.mo
+	rm -f modules/univention/admin/handlers/policies/mailquota/*.mo
 
 override_dh_auto_build: $(MO_FILES)
 	dh_auto_build
@@ -53,7 +53,7 @@ override_dh_auto_install:
 	@set -e;\
 	for i in $(MO_FILES); do\
 		lang=`basename "$$i" .mo`;\
-		domain=`dirname "$$i" | sed 's,^quota_policy/,,;s,/,-,g'`;\
+		domain=`dirname "$$i" | sed 's,^modules/,,;s,/,-,g'`;\
 		o=debian/univention-mail-cyrus/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
 		install -d "`dirname "$$o"`";\
 		install -m 644 "$$i" "$$o";\
