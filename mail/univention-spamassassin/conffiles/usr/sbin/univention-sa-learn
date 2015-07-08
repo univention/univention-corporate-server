@@ -52,7 +52,7 @@ hamFolder = configRegistry.get("mail/%s/folder/ham" % prod, "Ham")
 if not spamFolder:
 	spamFolder = "Spam"
 if spamFolder.lower() == "none":
-	print "# learing from spam folder disabled via mail/%s/folder/spam" % prod
+	print "# learning from spam folder disabled via mail/%s/folder/spam" % prod
 else:
 	print "# learing from spam folder %s" % spamFolder
 	spamFolder = spamFolder.strip("/").replace("/", ".")
