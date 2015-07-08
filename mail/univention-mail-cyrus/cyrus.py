@@ -3,7 +3,7 @@
 # Univention Mail Cyrus
 #  listener module: creating mailboxes and sieve scripts
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -51,7 +51,7 @@ FN_CACHE='/var/cache/univention-mail-cyrus/cyrus-mailboxrename.pickle'
 modrdn='1'
 
 def is_cyrus_murder_backend():
-	if (listener.baseConfig.get('mail/cyrus/murder/master') and listener.baseConfig.get('mail/cyrus/murder/backend/hostname')):
+	if (listener.configRegistry.get('mail/cyrus/murder/master') and listener.configRegistry.get('mail/cyrus/murder/backend/hostname')):
 	# ucr currently gives '' if not set, might change to None
 		return True
 	else:
@@ -60,7 +60,7 @@ def is_cyrus_murder_backend():
 def cyrus_usermailbox_delete(old):
 
 	# delete mailbox and logfiles
-	if listener.baseConfig.is_true('mail/cyrus/mailbox/delete', False):
+	if listener.configRegistry.is_true('mail/cyrus/mailbox/delete', False):
 
 		univention.debug.debug(
 			univention.debug.LISTENER,
@@ -70,7 +70,7 @@ def cyrus_usermailbox_delete(old):
 		try:
 			listener.setuid(0)
 			subprocess.call(['/usr/sbin/univention-cyrus-mailbox-delete', '--user', old])
-			if listener.baseConfig.is_true('mail/cyrus/userlogfiles', False):
+			if listener.configRegistry.is_true('mail/cyrus/userlogfiles', False):
 				oldpath = '/var/lib/cyrus/log/%s' % old
 				if os.path.exists(oldpath):
 					r = glob.glob('%s/*' % oldpath)
@@ -83,7 +83,7 @@ def cyrus_usermailbox_delete(old):
 def cyrus_usermailbox_rename(old, new):
 
 	# rename mailbox and rename/create logfiles
-	if listener.baseConfig.is_true('mail/cyrus/mailbox/rename', False):
+	if listener.configRegistry.is_true('mail/cyrus/mailbox/rename', False):
 
 		univention.debug.debug(
 			univention.debug.LISTENER,
@@ -98,7 +98,7 @@ def cyrus_usermailbox_rename(old, new):
 					univention.debug.LISTENER,
 					univention.debug.ERROR,
 					'%s: Cyrus mailbox rename failed for %s' % (name, old))
-			if listener.baseConfig.is_true('mail/cyrus/userlogfiles', False):
+			if listener.configRegistry.is_true('mail/cyrus/userlogfiles', False):
 				newpath = '/var/lib/cyrus/log/%s' % new
 				oldpath = '/var/lib/cyrus/log/%s' % old
 				cyrus_id = pwd.getpwnam('cyrus')[2]
@@ -130,7 +130,7 @@ def create_cyrus_mailbox(new):
 def create_cyrus_userlogfile(mailaddress):
 
 	# create log file directory
-	if listener.baseConfig.is_true('mail/cyrus/userlogfiles', False):
+	if listener.configRegistry.is_true('mail/cyrus/userlogfiles', False):
 		path = '/var/lib/cyrus/log/%s' % (mailaddress)
 		cyrus_id = pwd.getpwnam('cyrus')[2]
 		mail_id = grp.getgrnam('mail')[2]
@@ -141,9 +141,9 @@ def create_cyrus_userlogfile(mailaddress):
 
 def move_cyrus_murder_mailbox(old, new):
 
-	murderBackend = listener.baseConfig.get('mail/cyrus/murder/backend/hostname')
+	murderBackend = listener.configRegistry.get('mail/cyrus/murder/backend/hostname')
 	if not "." in murderBackend:
-		murderBackend = '%s.%s' % (murderBackend, listener.baseConfig.get('domainname'))
+		murderBackend = '%s.%s' % (murderBackend, listener.configRegistry.get('domainname'))
 
 	univention.debug.debug(
 		univention.debug.LISTENER,
@@ -164,7 +164,7 @@ def move_cyrus_murder_mailbox(old, new):
 
 def handler(dn, new, old, command):
 
-	fqdn = '%s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
+	fqdn = '%s.%s' % (listener.configRegistry['hostname'], listener.configRegistry['domainname'])
 	fqdn = fqdn.lower()
 
 	# copy object "old" - otherwise it gets modified for other listener modules
@@ -238,7 +238,7 @@ def handler(dn, new, old, command):
 		if oldMailPrimaryAddress and newMailPrimaryAddress:
 			if oldMailPrimaryAddress.lower() != newMailPrimaryAddress.lower():
 				if newHomeServer.lower() == oldHomeServer.lower() == fqdn:
-					if listener.baseConfig.is_true('mail/cyrus/mailbox/rename', False):
+					if listener.configRegistry.is_true('mail/cyrus/mailbox/rename', False):
 						# rename
 						cyrus_usermailbox_rename(oldMailPrimaryAddress.lower(), newMailPrimaryAddress.lower())
 					else:
@@ -265,7 +265,7 @@ def handler(dn, new, old, command):
 							move_cyrus_murder_mailbox(oldMailPrimaryAddress.lower(), newMailPrimaryAddress.lower())
 							# did the mailbox name change when moving between servers?
 							if oldMailPrimaryAddress != newMailPrimaryAddress:
-								if listener.baseConfig.is_true('mail/cyrus/mailbox/rename', False):
+								if listener.configRegistry.is_true('mail/cyrus/mailbox/rename', False):
 									cyrus_usermailbox_rename(oldMailPrimaryAddress.lower(), newMailPrimaryAddress.lower())
 								#else tree is already handled above(if not is_cyrus_murder_backend())
 

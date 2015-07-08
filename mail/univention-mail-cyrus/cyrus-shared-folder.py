@@ -3,7 +3,7 @@
 # Univention Mail Cyrus
 #  listener module: manages shared folders
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -37,8 +37,8 @@ import univention.debug
 import cPickle
 from univention.config_registry.interfaces import Interfaces
 
-hostname=listener.baseConfig['hostname']
-domainname=listener.baseConfig['domainname']
+hostname=listener.configRegistry['hostname']
+domainname=listener.configRegistry['domainname']
 interfaces = Interfaces(listener.configRegistry)
 ip = interfaces.get_default_ip_address().ip
 
@@ -82,7 +82,7 @@ def handler(dn, new, old, command):
 
 
 		# add defaul acls for anyone
-		if email == "anyone" and new.has_key("mailPrimaryAddress") and new["mailPrimaryAddress"][0]:
+		if email == "anyone" and "mailPrimaryAddress" in new and new["mailPrimaryAddress"][0]:
 			if policy == "none":
 				policy = defaultAnyoneACLFlags
 			else:
@@ -132,10 +132,10 @@ def handler(dn, new, old, command):
 		return (entry[:last_space], entry[last_space+1:])
 
 	# Create a new shared folder
-	if (new and not old) or (not old.has_key('univentionMailHomeServer')) or (new.has_key('univentionMailHomeServer') and old.has_key('univentionMailHomeServer') and new['univentionMailHomeServer'] != old['univentionMailHomeServer']\
+	if (new and not old) or ('univentionMailHomeServer' not in old) or ('univentionMailHomeServer' in new and 'univentionMailHomeServer' in old and new['univentionMailHomeServer'] != old['univentionMailHomeServer']\
 									 and new['univentionMailHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname,domainname)]):
 
-		if new.has_key('cn') and new['cn'][0]:
+		if 'cn' in new and new['cn'][0]:
 
 			try:
 				listener.setuid(0)
@@ -151,7 +151,7 @@ def handler(dn, new, old, command):
 				# default policy
 				setacl(new, name, "anyone", "none")
 
-				if new.has_key('univentionMailACL'):
+				if 'univentionMailACL' in new:
 					for entry in new['univentionMailACL']:
 						(email, policy) = split_acl_entry(entry)
 
@@ -164,7 +164,7 @@ def handler(dn, new, old, command):
 						else:
 							setacl(new, name, email, policy)
 
-				if new.has_key('univentionMailUserQuota') and new['univentionMailUserQuota'][0]:
+				if 'univentionMailUserQuota'in new and new['univentionMailUserQuota'][0]:
 					setquota(name, new['univentionMailUserQuota'][0])
 
 				listener.unsetuid()
@@ -173,9 +173,9 @@ def handler(dn, new, old, command):
 				pass
 
 	# Delete existing shared folder
-	if (old and not new) or (not new.has_key('univentionMailHomeServer')) or (not new['univentionMailHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname,domainname)]):
+	if (old and not new) or ('univentionMailHomeServer' not in new) or (not new['univentionMailHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname,domainname)]):
 
-		if listener.baseConfig.is_true('mail/cyrus/mailbox/delete', False):
+		if listener.configRegistry.is_true('mail/cyrus/mailbox/delete', False):
 			univention.debug.debug(
 				univention.debug.LISTENER,
 				univention.debug.PROCESS,
@@ -204,29 +204,29 @@ def handler(dn, new, old, command):
 		# default policy
 		setacl(new, name, "anyone", "none")
 
-		if old.has_key('univentionMailUserQuota') and old['univentionMailUserQuota'][0] and not new.has_key('univentionMailUserQuota'):
+		if 'univentionMailUserQuota' in old and old['univentionMailUserQuota'][0] and 'univentionMailUserQuota' not in new:
 			setquota(name, "none")
 
-		if new.has_key('univentionMailUserQuota') and new['univentionMailUserQuota'][0]:
+		if 'univentionMailUserQuota'in new  and new['univentionMailUserQuota'][0]:
 			setquota(name, new['univentionMailUserQuota'][0])
 
-		if old.has_key('univentionMailACL') and old['univentionMailACL'] and not new.has_key('univentionMailACL'):
+		if 'univentionMailACL' in old and old['univentionMailACL'] and not 'univentionMailACL' in new:
 			for line in old['univentionMailACL']:
 				(email, policy) = split_acl_entry(line)
 				setacl(new, name, email, 'none')
 
 		# convert new acls to dict
 		curacl={}
-		if new.has_key('univentionMailACL'):
+		if 'univentionMailACL' in new:
 			for entry in new['univentionMailACL']:
 				(email, policy) = split_acl_entry(entry)
 				policy = getpolicy(policy)
 				curacl[email]=policy
 
-		if old.has_key('univentionMailACL'):
+		if 'univentionMailACL' in old:
 			for entry in old['univentionMailACL']:
 				(email, policy) = split_acl_entry(entry)
-				if not curacl.has_key(email):
+				if not email in curacl:
 					setacl(new, name, email, 'none')
 
 		for key in curacl.keys():

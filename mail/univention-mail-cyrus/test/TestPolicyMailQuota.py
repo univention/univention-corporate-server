@@ -1,7 +1,7 @@
-#!/bin/sh
+# -*- coding: utf-8 -*-
 #
-# Univention Mail Cyrus
-#  join script
+# Univention Admin Modules
+#  unit tests: policies/mailquota tests
 #
 # Copyright 2004-2015 Univention GmbH
 #
@@ -30,38 +30,34 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=3
 
-. /usr/share/univention-join/joinscripthelper.lib
-. /usr/share/univention-lib/all.sh
-joinscript_init
+from GenericTest import GenericTestCase
 
-eval "$(univention-config-registry shell)"
 
-cp /etc/univention/ssl/$hostname.$domainname/cert.pem /var/lib/cyrus/
-cp /etc/univention/ssl/$hostname.$domainname/private.key /var/lib/cyrus/
-chmod 600 /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key
-chown cyrus /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key
+class PolicyMailQuotaTestCase(GenericTestCase):
+	def __init__(self, *args, **kwargs):
+		self.modname = 'policies/mailquota'
+		super(PolicyMailQuotaTestCase,
+		      self).__init__(*args, **kwargs)
 
-# add service to my host object
-ucs_addServiceToLocalhost "IMAP" "$@"
+	def setUp(self):
+		super(PolicyMailQuotaTestCase, self).setUp()
+		self.createProperties = {
+			'MailQuota': '4'
+			}
+		self.modifyProperties = {
+			'MailQuota': '3'
+			}
+		self.name = 'testmailquotapolicy'
 
-# copy machine.secret
-dest="/etc/cyrus-ldap.secret"
-cp /etc/machine.secret "$dest"
-chown cyrus:root "$dest"
-chmod 600  "$dest"
 
-# restart cyrus
-if [ -x /etc/init.d/cyrus2.2 ]; then
-	/etc/init.d/cyrus2.2 restart
-fi
-if [ -x /etc/init.d/cyrus-imapd ]; then
-	/etc/init.d/cyrus-imapd restart
-fi
+def suite():
+	import sys, unittest
+	suite = unittest.TestSuite()
+	suite.addTest(PolicyMailQuotaTestCase())
+	return suite
 
-ucs_registerLDAPExtension "$@" --udm_module /usr/share/pyshared/univention/admin/handlers/policies/mailquota.py || die
 
-joinscript_save_current_version
-
-exit 0
+if __name__ == '__main__':
+	import unittest
+	unittest.TextTestRunner().run(suite())

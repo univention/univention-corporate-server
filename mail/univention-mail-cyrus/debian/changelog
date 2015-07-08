@@ -1,3 +1,10 @@
+univention-mail-cyrus (7.0.1-2) unstable; urgency=low
+
+  * Bug #38473: install mail quota policy (moved here from
+    univention-directory-manager-modules)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 09 Jun 2015 13:03:19 +0200
+
 univention-mail-cyrus (7.0.1-1) unstable; urgency=low
 
   * Bug #38479: Create UCRV for applications to know if Cyrus or Dovecot is
