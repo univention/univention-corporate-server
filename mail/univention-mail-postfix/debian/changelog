@@ -1,3 +1,9 @@
+univention-mail-postfix (9.0.1-5) unstable; urgency=low
+
+  * Bug #38471: rm sasl config file from install
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 03 Jun 2015 09:22:43 +0200
+
 univention-mail-postfix (9.0.1-4) unstable; urgency=low
 
   * Bug #38471: revert move of sasl config file
