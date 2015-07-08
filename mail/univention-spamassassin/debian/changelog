@@ -1,3 +1,9 @@
+univention-spamassassin (6.0.3-1) unstable; urgency=low
+
+  * Bug #34839: bumped version
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 08 Jul 2015 21:03:13 +0200
+
 univention-spamassassin (6.0.2-1) unstable; urgency=low
 
   * fix sa-learn script, so it runs even if mail/dovecot/folder/spam=none
