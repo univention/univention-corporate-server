@@ -1,0 +1,9 @@
+product: ucs
+release: "4.0"
+version: [2]
+scope: ucs_4.0-0-errata4.0-2
+src: univention-mail-horde
+fix: 2.0.1-1
+desc: |
+  * Prepared horde for dovecot integration (Bug #34839, Bug #38462).
+bug: [34839, 38462]
