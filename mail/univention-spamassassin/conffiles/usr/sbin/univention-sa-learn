@@ -32,10 +32,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-@!@
-print 'SA_LEARN="/usr/bin/sa-learn"'
+SA_LEARN="/usr/bin/sa-learn"
 
-if configRegistry.get("mail/dovecot"):
+if [ ! -f /var/lib/amavis/.spamassassin/bayes_toks ]; then
+	touch /var/lib/amavis/.spamassassin/bayes_toks
+	chown amavis:amavis /var/lib/amavis/.spamassassin/bayes_toks
+	chmod 600 /var/lib/amavis/.spamassassin/bayes_toks
+fi
+
+@!@
+if configRegistry.is_true("mail/dovecot"):
 	prod = "dovecot"
 else:
 	prod = "cyrus"
@@ -45,51 +51,48 @@ hamFolder = configRegistry.get("mail/%s/folder/ham" % prod, "Ham")
 
 if not spamFolder:
 	spamFolder = "Spam"
-if not spamFolder.lower() == "none":
-	print 'SPAMFOLDER="%s"' % spamFolder
+if spamFolder.lower() == "none":
+	print "# learing from spam folder disabled via mail/%s/folder/spam" % prod
 else:
-	print "SPAMFOLDER=  # disabled via mail/%s/folder/spam" % prod
+	print "# learing from spam folder %s" % spamFolder
+	spamFolder = spamFolder.strip("/").replace("/", ".")
 
-if not hamFolder: hamFolder = "Ham"
-if not hamFolder.lower() == "none":
-	print 'HAMFOLDER="%s"' % hamFolder
+if not hamFolder:
+	hamFolder = "Ham"
+if hamFolder.lower() == "none":
+	print "# learing from ham folder disabled via mail/%s/folder/ham" % prod
 else:
-	print "HAMFOLDER=  # disabled via mail/%s/folder/ham" % prod
-@!@
+	print "# learing from ham folder %s" % hamFolder
+	hamFolder = hamFolder.strip("/").replace("/", ".")
 
-if [ ! -f /var/lib/amavis/.spamassassin/bayes_toks ]; then
-	touch /var/lib/amavis/.spamassassin/bayes_toks
-	chown amavis:amavis /var/lib/amavis/.spamassassin/bayes_toks
-	chmod 600 /var/lib/amavis/.spamassassin/bayes_toks
-fi
-
-@!@
 if configRegistry.get("mail/dovecot"):
 	base_folder = "/var/spool/dovecot/private/"
 	user_folder = "\*/\*/Maildir/."
-	ucr_folder = configRegistry.get("mail/dovecot/folder/spam", "Spam")
 	# find RFC 6154 flagged \Junk folders, add them if they are not there anyway
-	if not ucr_folder:
-		ucr_folder = "Spam"
-	elif ucr_folder.lower() == "none":
-		ucr_folder = ""
-	junk = ""
+	if spamFolder.lower() == "none":
+		junk = ""
+	else:
+		junk = "-wholename %s%s" % (user_folder, spamFolder)
 	for key, value in configRegistry.items():
 		if key.startswith("mail/dovecot/mailboxes/special/") and value == "\Junk":
 			_folder = key.split("/")[-1]
-			if _folder and _folder != ucr_folder:
-				junk += " -o -wholename \*/\*/Maildir/.%s" % _folder
+			if _folder and _folder != spamFolder:
+				_folder = _folder.strip("/").replace("/", ".")
+				if junk:
+					junk += " -o "
+				junk += "-wholename \*/\*/Maildir/.%s" % _folder
 else:
 	base_folder = "/var/spool/cyrus/mail/domain/"
 	user_folder = "\*/\*/\*/user/\*/"
-	junk = ""
-print '''if [ -n "$SPAMFOLDER" ]; then
-find %(base)s \( -wholename %(user)s"$SPAMFOLDER" %(junk)s \) \\
+	junk = "-wholename %s%s" % (user_folder, spamFolder)
+if junk:
+	print '''
+find %(base)s \( %(junk)s \) \\
 	-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --spam {} \;
-fi
+''' % {"base": base_folder, "junk": junk}
 
-if [ -n "$HAMFOLDER" ]; then
-	find %(base)s -wholename %(user)s"$HAMFOLDER" \\
+if hamFolder.lower() != "none":
+	print '''find %(base)s -wholename %(user)s%(hamFolder)s \\
 	-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --ham {} \;
-fi''' % {"base": base_folder, "user": user_folder, "junk": junk}
+''' % {"base": base_folder, "user": user_folder, "hamFolder": hamFolder}
 @!@
