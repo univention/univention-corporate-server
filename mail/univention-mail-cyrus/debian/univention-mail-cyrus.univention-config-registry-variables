@@ -1,6 +1,6 @@
 [mail/cyrus]
-Description[de]=Ist diese Variable auf "true" gesetzt, wird Cyrus vom UCS Mail System verwendet.
-Description[en]=If this variables value is "true", Cyrus is used by the UCS mail system.
+Description[de]=Ist diese Variable auf "true" gesetzt, wird Cyrus vom UCS Mail System verwendet (read-only Variable).
+Description[en]=If this variables value is "true", Cyrus is used by the UCS mail system (read-only variable).
 Type=bool
 ReadOnly=true
 Categories=service-mail
