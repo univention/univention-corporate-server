@@ -1784,10 +1784,10 @@ define([
 			var ips = this._getIPAdresses();
 			var msg = '<ul>';
 			array.forEach(ips, function(ip) {
-				msg += lang.replace('<li>https://{0}/univention-management-console/</li>', [ip]);
+				msg += lang.replace('<li>https://{0}/</li>', [ip]);
 			});
 			if (fqdn) {
-				msg += lang.replace('<li>https://{0}/univention-management-console/</li>', [fqdn]);
+				msg += lang.replace('<li>https://{0}/</li>', [fqdn]);
 			}
 			msg += '</ul>';
 			return msg;
