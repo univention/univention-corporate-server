@@ -1,0 +1,12 @@
+product: ucs
+release: "4.0"
+version: [2]
+scope: ucs_4.0-0-errata4.0-2
+src: univention-mail-postfix
+fix: 9.0.1-5
+desc: |
+  * Prepared mail stack for dovecot integration (Bug #34839, Bug #38471).
+  * Postfix will no longer resolve address mappings (e.g. BCC) before
+    sending the to amavis for content filter scan if an archove folder
+	has been defined (Bug #14619)
+bug: [14619, 34839, 38471]
