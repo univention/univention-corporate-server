@@ -6,8 +6,8 @@ ReadOnly=true
 Categories=service-mail
 
 [mail/cyrus/auth/allowplaintext]
-Description[de]=Ist diese Variable auf "true" gesetzt, erlaubt Cyrus die Authentifikation mit Klartextpasswörtern über unverschlüsselte Verbindungen. Standard ist "true".
-Description[en]=If this variable is set to "true", Cyrus allows authenticating with plain text passwords over unencrypted connections. Default is "true".
+Description[de]=Ist diese Variable auf "true" gesetzt, erlaubt Cyrus die Authentifikation mit Klartextpasswörtern über unverschlüsselte Verbindungen. Standard ist "false".
+Description[en]=If this variable is set to "true", Cyrus allows authenticating with plain text passwords over unencrypted connections. Default is "false".
 Type=bool
 Categories=service-mail
 

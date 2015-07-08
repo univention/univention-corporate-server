@@ -168,4 +168,14 @@ ucr set security/packetfilter/package/univention-mail-cyrus/tcp/110/all="ACCEPT"
 		security/packetfilter/package/univention-mail-cyrus/tcp/4190/all/en="Sieve"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
+# update, Bug #38500
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.1-6; then
+	echo "****************************************************************************"
+	echo " The default for the setting 'allowplaintext' was changed to 'no'."
+	echo " To return to the old behaviour (allow plaintext authentication over"
+	echo " unencrypted connections) run:"
+	echo " # ucr set mail/cyrus/imap/allowplaintext=yes"
+	echo "****************************************************************************"
+fi
+
 exit 0

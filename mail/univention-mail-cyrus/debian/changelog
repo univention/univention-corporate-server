@@ -1,3 +1,9 @@
+univention-mail-cyrus (7.0.1-6) unstable; urgency=low
+
+  * Bug #38500: change default of mail/cyrus/imap/allowplaintext to false
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 07 Jul 2015 13:15:56 +0200
+
 univention-mail-cyrus (7.0.1-5) unstable; urgency=low
 
   * Bug #38473: install mail quota policy module outside
