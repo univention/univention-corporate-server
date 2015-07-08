@@ -27,6 +27,7 @@
 				"dijit/form/Button",
 				"dijit/form/Textarea",
 				"umc/tools",
+				"umc/widgets/Text",
 				"umc/widgets/TextBox",
 				"umc/widgets/Form",
 				"umc/widgets/CheckBox",
@@ -38,113 +39,124 @@
 				"dojox/lang/functional/object",
 				"dojo/domReady!"
 			],
-			callback: function(lang, array, win, dom, domConstruct, domStyle, on, Stateful, StackContainer, Button, TextArea, tools, TextBox, Form, CheckBox, ComboBox, ContainerWidget, MultiInput, LabelPane, Uploader, obj) {
+			callback: function(lang, array, win, dom, domConstruct, domStyle, on, Stateful, StackContainer, Button, TextArea, tools, Text, TextBox, Form, CheckBox, ComboBox, ContainerWidget, MultiInput, LabelPane, Uploader, obj) {
 				domStyle.set('overlay', 'display', 'none');
 
-				tools.umcpCommand('auth', {
-					username : 'Administrator',
-					password : 'univention'
-				});
+				var values = [ 'green', 'blue', 'yellow', 'red', 'purple', 'pink', 'orange', 'transparent'],
+
+				_multiInputValues = [ {type: TextBox,name: "multiLine1", description: "??", label: "Line1", size:"Half", intermediateChanges: true}, {type: TextBox, name: "multiLine2", description: "??", label: "Line2", size:"Half", intermediateChanges: true} ];
 
 
-				values = [ 'green', 'blue', 'yellow', 'red', 'purple', 'pink', 'orange', 'transparent'],
-
-				_multiInputValues = [ {type: TextBox,name: "multiLine1", description: "??", label: "Line1", size:"Half", intermediateChanges: true}, {type: TextBox, name: "multiLine2", description: "??", label: "Line2", size:"Half", intermediateChanges: true} ],
-
-
-				//combobox
-				combo = new ComboBox ({
-					name: 'ComboBox1',
-					label: 'Colours',
-					description: ' A Box',
-					_showlabel: true,
-					staticValues: values
-				});
-
-				combo.startup();
-				combo.placeAt(dojo.byId('combo'));
-
-
-				// buttons to change the labels of multiinput 1
-				labelButton1 = new Button ({
-					name: 'changeLabel1',
+				this.buttons = [{
+					name: 'labelButton1',
+					type: Button,
 					label: "Change Label",
 					description: 'Do it!',
-					onClick:	function() {lang.hitch(this,
-						multi.set('label', ['1', '2'])
-					);}
-				});
-
-				labelButton2 = new Button ({
-					name: 'changeLabel2',
+					onClick:	function() {
+						setLabels('Someting');
+					}
+				}, {
+					name: 'labelButton2',
+					type: Button,
 					label: "Change Label again",
 					description: 'Do it!',
-					onClick:	function() {lang.hitch(this,
-						multi.set('label', ['3', '4'])
-					);}
-				});
-
-
-				labelButton1.placeAt(dojo.byId('button'));
-				labelButton1.startup();
-				labelButton2.placeAt(dojo.byId('button'));
-				labelButton2.startup();
-
-
-				//button to change the description of the first multiinput
-				descButton = new Button ({
-					name: 'changeTooltip',
-					label: "Change Description",
-					description: 'Do it!',
 					onClick:	function() {
-						multi._setDescription();
+						setLabels('Something else');
 					}
-				});
-
-				requiredButton = new Button ({
-					name: 'setrequired',
-					label: 'Set input to required',
-					description: 'Meh',
+				}, {
+					name: 'descButton',
+					type: Button,
+					label: "change description",
 					onClick:	function() {
-						multi._setRequired();
+						setDescriptions('!!!!!!!');
 					}
-				});
-
-				descButton.placeAt(dojo.byId('button2'));
-				descButton.startup();
-				requiredButton.placeAt(dojo.byId('button2'));
-				requiredButton.startup();
+				}, {
+					name: 'desc2Button',
+					type: Button,
+					label: 'change description again',
+					onClick:	function() {
+						setDescriptions('?');
+					}
+				}, {
+					name: 'deleteButton',
+					type: Button,
+					label: "Remove tooltips",
+					onClick: function() {
+						setDescriptions(null);
+					}
+				}];
 
 
 				// widgets inside container
 				this.widgets = [{
+					type: Text,
+					name: 'muliText',
+					label: "MultiInput"
+				} ,{
+					type: MultiInput,
+					name: 'multi',
+					subtypes: [{
+						type: TextBox,
+						description: "??",
+						label: "Line1",
+						size: 'Half'
+					}, {
+						type: TextBox,
+						description: "??",
+						label: "Line2",
+						size: 'Half'
+					}],
+					label: 'MultiInput2',
+					_setDescription: function(description) {
+						dojo.forEach(this._widgets, function(lines) {
+							dojo.forEach(lines, function (subWidget) {
+								subWidget.set('description', description);
+							});
+						});
+					},
+				}, {
+					name: 'multi2',
+					type: MultiInput,
+					subtypes: [{
+						type: TextBox,
+						description: "??",
+						label: "Line1"
+					}],
+					size: "Half",
+					label: 'MultiInput2',
+					_setDescription: function(description) {
+						dojo.forEach(this._widgets, function(lines) {
+							dojo.forEach(lines, function (subWidget) {
+								subWidget.set('description', description);
+							});
+						});
+					},
+				}, {
+					type: Text,
+					name: 'uploadText',
+					label: "Uploader"
+				} ,{
 					type: Uploader,
 					name: 'uploader',
 					label: "This is a uploader",
 					description: "This is a description of the uploader"
 				}, {
+					type: Text,
+					name: 'checkText',
+					label: "Checkbox"
+				}, {
 					type: CheckBox,
 					name: 'check',
 					label: 'Checkbox',
-					description: 'Checkable',
+					description: 'Check to remove tooltip',
 					onClick: function() {
 						this.set('description', null);
 					}
-				}, {
-					type: Button,
-					name: 'buttbutton',
-					label: "Remove CheckBox Tooltip",
-					onClick: function() {
-						var checkbox = getWidgetByName('check');
-						console.debug(checkbox);
-						delete(checkbox.description);
-						//checkbox.set('label', checkbox.label);
-						//checkbox.set('description', null);
-					}
+
 				}, {
 					type: TextArea,
 					name: 'text',
-					label: 'Text',
+					label: 'Tooltip will change if you type someting into the box',
 					description: 'Text',
 					onKeyUp: function() {
 						stuff = this.value;
@@ -156,57 +168,19 @@
 					name: 'ComboBox1',
 					label: 'Colours',
 					description: ' A Box',
-					staticValues: [ 'green', 'blue', 'yellow', 'red', 'purple', 'pink', 'orange', 'transparent'],
-					values: [ 'green', 'blue', 'yellow', 'red', 'purple', 'pink', 'orange', 'transparent'],
+					_showlabel: true,
+					staticValues: values
 				}];
 
 
 				var form = new Form({
+					buttons: buttons,
 					widgets: widgets
 				});
 
-				form.placeAt(dojo.byId('widgets'));
 
-				multi = new MultiInput ({
-					subtypes: _multiInputValues,
-					label: 'MultiInput',
-					_setDescription: function() {
-						//console.debug(this.subtypes);
-						//this.set('subtypes', _multiInputValues2);
-						//this.set('description', 'Stuff');
-						//this.subtypes[0].set('description', "aklufdgak");
-						//this.subtypes[0].description = "sfsfib";
-						//this.subtypes.set('0',{type: TextBox,name: "multiLine1", description: "!!!!", label: "Line1", size:"Half"});
-						//this._changeAttrValue('subtypes', {type: TextBox,name: "multiLine1", description: "!!!!", label: "Line1", size:"Half"});
-						dojo.forEach(this._widgets, function(lines) {
-							dojo.forEach(lines, function (subWidget) {
-								subWidget.set('description', '!!!!!!!!');
-							});
-						});
-					},
-					_setRequired: function() {
-						this.set('required', true);
-					}
-				});
-
-				multi.startup();
-				multi.placeAt(dojo.byId('multiinput'));
-				console.debug('MultiInput 1: ', this.multi);
-
-				multi2 = new MultiInput ({
-					subtypes: [{
-						type: TextBox,
-						description: "??",
-						label: "Line1"
-					}],
-					size: "Half",
-					label: 'MultiInput2'
-					});
-
-				multi2.startup();
-				multi2.placeAt(dojo.byId('multiinput2'));
-				console.debug('MultiInput 2: ', this.multi2);
-
+				form.placeAt(win.body());
+				form.startup();
 
 				// helper function to get a widget by its name,
 				// returns the widget object
@@ -220,25 +194,43 @@
 					});
 					return result;
 				};
+
+				getWidgets = function() {
+					var widgetsArray = [];
+					var widgetNames = ['multi', 'multi2', 'check', 'uploader', 'ComboBox1'];
+					dojo.forEach(widgetNames, function(widget) {
+						widgetsArray.push(getWidgetByName(widget));
+					});
+					return widgetsArray;
+				};
+
+				setDescriptions = function(description) {
+					dojo.forEach(getWidgets(), function(widget) {
+						if (typeof widget._setDescription == 'function') {
+							widget._setDescription(description);
+						} else {
+							widget.set('description', description);
+						}
+					});
+				};
+
+				setLabels = function(label) {
+					dojo.forEach(getWidgets(), function(widget) {
+						if (typeof widget.label == 'Array') {
+							widget.set('label', [label, label]);
+						} else {
+							widget.set('label', label);
+						}
+					});
+				};
 			}
 		};
-
 
 		</script>
 	<script type="text/javascript" src="../js/dojo/dojo.js"></script>
 </head>
 <body class="umc">
 	<div id="overlay"></div>
-	<h2>MultiInput 1</h2>
-	<div id="multiinput"></div>
-	<h2>MultiInput 2</h2>
-	<div id="multiinput2"></div>
-	<h3> MultiInput Manipulation Buttons</h3>
-	<div id='button'></div>
-	<div id='button2'></div>
-	<h2>Uploader</h2>
-	<div id="widgets"></div>
-	<h2>ComboBox</h2>
-	<div id='combo'></div>
+	<div id='content'></div>
 </body>
 </html>
