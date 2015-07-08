@@ -105,6 +105,9 @@ Variables: mail/postfix/policy/listfilter
 Variables: mail/postfix/policy/listfilter/maxproc
 Variables: ldap/base
 
+Type: file
+File: etc/postfix/sasl/smtpd.conf
+
 Type: multifile
 Multifile: etc/postfix/transport
 
