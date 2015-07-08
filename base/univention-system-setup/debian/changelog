@@ -1,3 +1,9 @@
+univention-system-setup (8.1.69-16) unstable; urgency=medium
+
+  * Bug #38330: Use DHCP nameserver if given
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 08 Jul 2015 13:07:26 +0200
+
 univention-system-setup (8.1.69-15) unstable; urgency=low
 
   * Bug #38215: Fixed typo in german translation.

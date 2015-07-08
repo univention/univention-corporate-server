@@ -680,11 +680,6 @@ def dhclient(interface, timeout=None):
 			MODULE.info('  %s: %s' % (key, dhcp_dict[key]))
 	os.unlink(tempfilename)
 
-	# see wether the nameserver is part of a UCS domain
-	if 'nameserver_1' in dhcp_dict:
-		dhcp_dict['is_ucs_nameserver_1'] = bool(get_ucs_domain(dhcp_dict['nameserver_1']))
-		MODULE.info('Check wether the nameserver %s is a UCS nameserver -> %s' % (dhcp_dict['nameserver_1'], dhcp_dict['is_ucs_nameserver_1']))
-
 	return dhcp_dict
 
 _apps = None

@@ -141,6 +141,10 @@ define([
 		return acceptEmtpy || isIPv4Address || isIPv6Address;
 	};
 
+	var _isLinkLocalDHCPAddress = function(ip, mask) {
+		return (ip.indexOf('169.254') === 0) && (mask=='255.255.0.0');
+	};
+
 	var _invalidNetmaskAndPrefixMessage = _('Invalid IPv4 net mask or IPv6 prefix!<br/>Expected for IPv4 is a number between 0 and 32 or a format similar to <i>255.255.255.0</i>.<br/>Expected format for IPv6 is a number between 0 and 128.');
 	var _validateNetmaskAndPrefix = function(mask) {
 		mask = mask || '';
@@ -275,6 +279,8 @@ define([
 		_forcedPage: null,
 		_progressBar: null,
 		_criticalJoinErrorOccurred: false,
+		_initialDHCPQueriesDeferred: null,
+		_lastAppliedNetworkValues: null,
 
 		disabledPages: null,
 		disabledFields: null,
@@ -283,10 +289,6 @@ define([
 
 		constructor: function(props) {
 			lang.mixin(this, props);
-			var pageConf = {
-				navBootstrapClasses: 'col-xs-12 col-sm-4 col-md-4 col-lg-4',
-				mainBootstrapClasses: 'col-xs-12 col-sm-8 col-md-8 col-lg-8'
-			};
 
 			// customize some texts for an app appliance case
 			var applianceName = '';
@@ -319,6 +321,11 @@ define([
 				}
 				styles.insertCssRule('.umc-setup-page-welcome .umcPageIcon', lang.replace('background-image: url({0}) !important;', [logoURL]));
 			}
+
+			var pageConf = {
+				navBootstrapClasses: 'col-xs-12 col-sm-4 col-md-4 col-lg-4',
+				mainBootstrapClasses: 'col-xs-12 col-sm-8 col-md-8 col-lg-8'
+			};
 
 			this.pages = [lang.mixin({}, pageConf, {
 				name: 'welcome',
@@ -959,13 +966,11 @@ define([
 			}, this);
 		},
 
-		dhclient: function() {
+		_sendDHCPQueries: function() {
 			// send out queries for each network device
 			var queries = {};
-			var dev2index = {};
 			array.forEach(this._getNetworkDevices(), function(idev, i) {
 				// workaround: use umcpProgressCommand() to make the setup/net/dhclient threaded
-				dev2index[idev] = i;
 				queries[idev] = this.umcpProgressCommand(this._progressBar, 'setup/net/dhclient', {
 					'interface': idev
 				}, false).then(null, function() {
@@ -973,6 +978,17 @@ define([
 					return {};
 				});
 			}, this);
+
+			return queries;
+		},
+
+		_processDHCPQueries: function(queries) {
+			// generate mapping from device name to index
+			var dev2index = {};
+			array.forEach(this._getNetworkDevices(), function(idev, i) {
+				// workaround: use umcpProgressCommand() to make the setup/net/dhclient threaded
+				dev2index[idev] = i;
+			});
 
 			// blur current element
 			tools.defer(function() {
@@ -999,9 +1015,7 @@ define([
 
 					// handle gateway/nameserver values
 					gateway = gateway || result.gateway;
-					if (result.is_ucs_nameserver_1) {
-						nameserver = nameserver || result.nameserver_1;
-					}
+					nameserver = nameserver || result.nameserver_1;
 
 					// set received values
 					this.getWidget('network', '_ip' + i).set('value', address);
@@ -1022,6 +1036,11 @@ define([
 					this.getWidget('network', '_dhcp').set('value', false);
 				}
 			}));
+		},
+
+		dhclient: function() {
+			var queries = this._sendDHCPQueries();
+			this._processDHCPQueries(queries);
 		},
 
 		_disableNetworkAddressWidgets: function(disable) {
@@ -1297,6 +1316,11 @@ define([
 				umcpCommand: lang.hitch(this, 'umcpCommand')
 			});
 			this.own(this._progressBar);
+
+			// start initial DHCP request... they need a reference to the progress bar
+			if (this.isPageVisible('network') && this._isDHCPPreConfigured() && !this._hasPreconfiguredLinkLocalDHCPAddresses()) {
+				this._initialDHCPQueriesDeferred = this._sendDHCPQueries()
+			}
 
 			this._setupCitySearch();
 			this._setupJavaScriptLinks();
@@ -1874,13 +1898,33 @@ define([
 			return true;
 		},
 
+		_hasPreconfiguredLinkLocalDHCPAddresses: function() {
+			var fallbackDevices = [];
+			return array.forEach(this._getNetworkDevices(), function(idev) {
+				var dev = this.values.interfaces[idev];
+				if (!dev || !dev.ip4dynamic || !dev.ip4.length) {
+					return;
+				}
+
+				var ip = dev.ip4[0][0];
+				var mask = dev.ip4[0][1];
+				if (_isLinkLocalDHCPAddress(ip, mask)) {
+					fallbackDevices.push({
+						name: idev,
+						ip: ip
+					});
+				}
+			}, this);
+			return fallbackDevices.length;
+		},
+
 		_getLinkLocalDHCPAddresses: function() {
 			var fallbackDevices = [];
 			if (this.getWidget('network', '_dhcp').get('value')){
 				array.forEach(this._getNetworkDevices(), function(idev, i) {
 					var ip = this.getWidget('network', '_ip' + i).get('value');
 					var mask = this.getWidget('network', '_netmask' + i).get('value');
-					if ((ip.indexOf('169.254') === 0) && (mask=='255.255.0.0')) {
+					if (_isLinkLocalDHCPAddress(ip, mask)) {
 						fallbackDevices.push({
 							name: idev,
 							ip: ip
@@ -2134,6 +2178,11 @@ define([
 				this._keepAlive.stop();
 			}
 
+			if (nextPage == 'network' && this._initialDHCPQueriesDeferred) {
+				// process the initial dhcp queries
+				this._processDHCPQueries(this._initialDHCPQueriesDeferred);
+			}
+
 			// check dhcp config
 			if (pageName == 'network') {
 				var _linkLocalAddressesWarning = lang.hitch(this, function(fallbackDevices) {
@@ -2178,6 +2227,16 @@ define([
 						// cancelled prior warning
 						return page;
 					}
+
+					// need network settings to be applied?
+					var networkValues = this.getPage('network')._form.get('value');
+					var haveValuesChanged = !tools.isEqual(networkValues, this._lastAppliedNetworkValues);
+					if (!haveValuesChanged) {
+						return page;
+					}
+					this._lastAppliedNetworkValues = networkValues;
+
+					// apply network settings
 					var values = this.getValues();
 					return this.standbyDuring(this.umcpCommand('setup/net/apply', {values: values}).then(function() {
 						return page;
@@ -2454,9 +2513,7 @@ define([
 			// network configuration
 			var _vals = this._gatherVisibleValues();
 			var vals = {};
-			if (this._isDHCPPreConfigured() && _vals._dhcp) {
-				// nothing to do... leave the preconfigured settings
-			} else if (this.isPageVisible('network')) {
+			if (this.isPageVisible('network')) {
 				// prepare values for network interfaces
 				vals.interfaces = {};
 				array.forEach(this._getNetworkDevices(), function(idev, i) {

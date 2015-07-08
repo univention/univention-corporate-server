@@ -613,7 +613,6 @@ class Instance(Base, ProgressMixin):
 	def net_dhclient(self, interface, timeout=10):
 		'''Request a DHCP address. Expects as options a dict containing the key
 		"interface" and optionally the key "timeout" (in seconds).'''
-
 		return util.dhclient(interface, timeout)
 
 	@sanitize(locale=StringSanitizer(default='en_US'))
