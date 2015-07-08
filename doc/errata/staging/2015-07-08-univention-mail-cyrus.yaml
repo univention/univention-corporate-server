@@ -3,9 +3,9 @@ release: "4.0"
 version: [2]
 scope: ucs_4.0-0-errata4.0-2
 src: univention-mail-cyrus
-fix: 7.0.1-6
+fix: 7.0.3-1.205.201507082215
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
      * Add UCR variable mail/cyrus/imap/allowplaintext to (dis)allow plain
        text passwords over non-TLS connections. Defaults to "no".
        Attention: This changes the previous default behaviour! Plain text

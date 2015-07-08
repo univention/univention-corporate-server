@@ -3,10 +3,11 @@ release: "4.0"
 version: [2]
 scope: ucs_4.0-0-errata4.0-2
 src: univention-directory-manager-modules
-fix: 10.0.30-2
+fix: 10.0.31-1.1324.201507082131
 desc: |
  This update addresses the following issue:
      * The UDM module policies/mailquota has been moved to the package
-	   univention-mail-cyrus. The module will only be available if the
-	   UCS mail stack with cyrus is installed.
+	   univention-mail-cyrus. From now on the module will only be available
+	   if the UCS domain contains an UCS system with installed cyrus
+	   mail stack.
 bug: [38473]
