@@ -48,7 +48,7 @@
 
 		<note>
 			<para>
-				Since &ucsUCS; version 4.0-3 Dovecot is used as the default IMAP and
+				Since &ucsUCS; version 4.0-2 Dovecot is used as the default IMAP and
 				POP3 server. However, Cyrus is still available for this service.
 				More Information can be found in the Cyrus mail server documentation
 				<biblioref linkend="ext-doc-cyrus"/>.
@@ -309,11 +309,10 @@ doveadm auth cache flush
 
 		<para>
 			Shared folders cannot be renamed, therefore the &ucsUCRV;
-			<envar>mail/dovecot/mailbox/rename</envar> is ignored. When a shared
+			<envar>mail/dovecot/mailbox/rename</envar> is not taken into account. When a shared
 			folder is deleted in the UMC module <emphasis>Mail</emphasis>, it is
 			only deleted from the hard disk, if
-			<envar>mail/dovecot/mailbox/delete</envar> is set. It is deactivated by
-			default.
+			<envar>mail/dovecot/mailbox/delete</envar> is set to <literal>yes</literal>. The default value is <literal>no</literal>.
 		</para>
 
 	  <para>
@@ -341,11 +340,11 @@ doveadm auth cache flush
 			  <entry>
 				The name under which the IMAP folder is available in the e-mail
 				clients. The name displayed in the IMAP client differs
-				depending on if an e-mail address is configures (see row
-				"E-Mail address" below) or not. If no e-mail address was
+				depending on if an e-mail address is configured (see row
+				"E-Mail address" below) or not. If no e-mail address is
 				configured, the IMAP folder will be displayed in the
 				client as <literal>name@domain/INBOX</literal>. If an e-mail
-				address was configured it will be <literal>shared/name@domain</literal>.
+				address is configured, it will be <literal>shared/name@domain</literal>.
 			  </entry>
 			</row>
 
@@ -485,9 +484,9 @@ doveadm auth cache flush
 		her account.
 	  </para>
 		<para>
-			The limit is specified in MB in the <guimenu>Mail quota</guimenu> field
+			The limit is specified in megabytes in the <guimenu>Mail quota</guimenu> field
 			under <guimenu>Advanced settings &ar; Mail</guimenu>. The default value
-			is <literal>0</literal> and means no limit.
+			is <literal>0</literal> and means that no limit is set.
 			The multi edit mode of &ucsUMC; can be used to assign a quota to multiple
 			users at one time, see <xref linkend="central:user-interface:edit"/>.
 		</para>
@@ -865,13 +864,29 @@ postmap /etc/postfix/smtp_auth
 		</itemizedlist>
 	  <para>
 		The &ucsUCRV; <envar>mail/dovecot/mailbox/delete</envar> can be used to configure, whether
-		the IMAP mailbox is also deleted when a user account is deleted. In
-		the basic setting, the mailboxes are kept when a user account is
-		deleted.
+		the IMAP mailbox is also deleted. The value <literal>yes</literal> activates the removal of the corresponding IMAP mailbox if one of the following actions is performed:
+		<itemizedlist>
+			<listitem>
+				<simpara>
+					deletion of the user account
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+					removal of the primary e-mail address from the user account
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+					changing the user's mail home server to a different system
+				</simpara>
+			</listitem>
+		</itemizedlist>
+		With default settings (<literal>no</literal>) the mailboxes are kept if one of the actions above is performed.
 	  </para>
 
 	<para>
-		The combination of the two variables creates <emphasis>four possible outcomes when the e-mail address is changed</emphasis>:
+		The combination of the two variables creates four possible outcomes when the e-mail address is changed:
 		<table>
 			<title>Renaming of e-mail addresses</title>
 			<tgroup cols="2">
@@ -949,8 +964,8 @@ postmap /etc/postfix/smtp_auth
 		</para>
 		<para>
 			The following settings assume that mailboxes are not accessed simultaneously
-			by multiple servers. This is the case if each user has configures exactly
-			one mail home server.
+			by multiple servers. This is the case if for each user exactly
+			one mail home server has been configured.
 		</para>
 		<para>
 			<itemizedlist>
@@ -972,7 +987,7 @@ postmap /etc/postfix/smtp_auth
 			service. In case you encounter problems, here are some notes that might
 			help:
 			<itemizedlist>
-				<listitem><simpara>If NFSv2 is in use (not the case if the NFS-Server is a &ucsUCS;), please set <envar>mail/dovecot/process/dotlock_use_excl</envar><literal> = no</literal>.</simpara></listitem>
+				<listitem><simpara>If NFSv2 is in use (not the case if the NFS server is a &ucsUCS;), please set <envar>mail/dovecot/process/dotlock_use_excl</envar><literal> = no</literal>.</simpara></listitem>
 				<listitem><simpara>If lockd is not in use (not the case on &ucsUCS; systems) or if even with lockd in use locking error are encountered, set <envar>mail/dovecot/process/lock_method</envar><literal> = dotlock</literal>. This does lower the performance, but solves most locking related errors.</simpara></listitem>
 				<listitem><simpara>Dovecot flushes NFS caches when needed if you set <envar>mail/dovecot/process/mail_nfs_storage</envar><literal> = yes</literal>, but unfortunately this doesn't work 100%, so you can get random errors. The same holds for flushing NFS caches after writing index files with <envar>mail/dovecot/process/mail_nfs_index</envar><literal> = yes</literal>.</simpara></listitem>
 				<listitem><simpara>The Dovecot documentation has more information on the topic: <xref linkend="dovecot-wiki-clusterfs"/> <xref linkend="dovecot-wiki-nfs"/></simpara></listitem>

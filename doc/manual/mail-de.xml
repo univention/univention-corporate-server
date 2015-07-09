@@ -328,8 +328,8 @@ doveadm auth cache flush
 		<para>
 			Globale IMAP-Ordner können nicht umbenannt werden. Die &ucsUCRV;
 			<envar>mail/dovecot/mailbox/rename</envar> kommt daher nicht zur Anwendung. Nur wenn
-			<envar>mail/dovecot/mailbox/delete</envar> gesetzt ist (standardmäßig
-			deaktiviert), wird ein globaler IMAP-Ordner beim Löschen im UMC-Modul
+			<envar>mail/dovecot/mailbox/delete</envar> auf <literal>yes</literal> gesetzt ist (Standard ist <literal>no</literal>),
+			wird ein globaler IMAP-Ordner beim Löschen im UMC-Modul
 			<emphasis>Mail</emphasis> auch tatsächlich von der Festplatte gelöscht.
 		</para>
 
@@ -908,7 +908,7 @@ postmap /etc/postfix/smtp_auth
 
 	  <para>
 		Mit der &ucsUCRV; <envar>mail/dovecot/mailbox/delete</envar> kann konfiguriert
-		werden, ob IMAP-Postfächer automatisch gelöscht werden sollen. Der Wert <literal>yes</literal> aktiviert die Löschung des betroffenen IMAP-Postfachs bei folgenden Ereignissen:
+		werden, ob IMAP-Postfächer automatisch gelöscht werden sollen. Der Wert <literal>yes</literal> aktiviert die Löschung des betroffenen IMAP-Postfachs bei folgenden Aktionen:
 		<itemizedlist>
 			<listitem>
 				<simpara>
