@@ -53,3 +53,7 @@ print 'ProxyTimeout %s' % int(configRegistry.get('umc/http/session/timeout', '30
 	#   http://cherrypy.org/ticket/853
 	SetEnv proxy-nokeepalive 1
 </LocationMatch>
+
+# redirect accesses to UMC to the activation service
+RedirectMatch ^/univention-management-console.*$ /
+
