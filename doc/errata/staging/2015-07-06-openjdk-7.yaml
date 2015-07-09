@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: openjdk-7
-fix: 7u79-2.5.5-1.14.201507031547
+fix: 7u79-2.5.5-1.15.201507090942
 version: [2]
 desc: |
  These vulnerabilities have been fixed in OpenJDK-7:
