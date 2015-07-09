@@ -1,26 +1,53 @@
 #!/usr/share/ucs-test/runner python
-## desc: Mail imap acl flags are correctly evaluated
+# -*- coding: utf-8 -*-
+## desc: check mail related modifications of user objects
 ## tags: apptest
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
-from essential.mailclient import MailClient
+from essential.mailclient import MailClient_SSL
 from univention.config_registry import handler_set
+import subprocess
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
-def check_login(host, mail, password, expected_result):
-	imap = MailClient(host)
-	imap.log_in(mail, password)
-	imap.logout()
+def check_login_lookup(host, mail, password, expected_result, dovecot):
+	"""This function checks if it is possible to login via a mail address
+	and a given password, also checks if it is possible to lookup
+	the standard set of mailboxes: INBOX, Ham, Spam.
+	Considering different cases for dovecot and cyrus,
+	an exception is thrown if the result of either the login or the lookup
+	was not expected.
+	"""
+	imap = MailClient_SSL(host)
+	try:
+		imap.log_in(mail, password)
+		for mailbox in ['INBOX', 'Ham', 'Spam']:
+			imap.check_lookup(mail, {mailbox: expected_result}, dovecot)
+		imap.logout()
+		if not expected_result and dovecot:
+			utils.fail('Authentication passed, expected to fail.')
+	except Exception as ex:
+		if 'AUTHENTICATIONFAILED' in str(ex):
+			if expected_result:
+				utils.fail('Authentication failed, expected to pass.')
+		elif 'LOGIN => socket error' in str(ex):
+			if expected_result:
+				utils.fail('Authentication failed, expected to pass.')
+		elif 'Login failed' in str(ex):
+			if expected_result:
+				utils.fail('Login failed, expected to pass.')
+		else:
+			raise
 
 def main():
 	with udm_test.UCSTestUDM() as udm:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
 			dovecot = ucr.is_true('mail/dovecot')
 			domain = ucr.get('domainname')
+			basedn = ucr.get('ldap/base')
 			if dovecot:
 				handler_set(['mail/dovecot/mailbox/rename=yes',
 							'mail/dovecot/mailbox/delete=no'])
@@ -29,6 +56,16 @@ def main():
 							'mail/cyrus/mailbox/delete=no'])
 			host = '%s.%s' % (ucr.get('hostname'), domain)
 			password = 'univention'
+			account = utils.UCSTestDomainAdminCredentials()
+			admin = account.binddn
+			passwd = account.bindpw
+
+			# Case 1
+			# Create a user with mailHomeServer and mailPrimaryAddress
+			# → mailbox should have been created and is accessible
+			# Change mailPrimaryAddress
+			# → mailbox with NEW name should have been created and is accessible
+			# → mailbox with OLD name should NOT be accessible
 			name = uts.random_name()
 			usermail = '%s@%s' % (name, domain)
 			userdn, username = udm.create_user(
@@ -39,22 +76,204 @@ def main():
 					'mailPrimaryAddress' : usermail
 				}
 			)
-			check_login(host, usermail, password, True)
-
+			check_login_lookup(host, usermail, password, True, dovecot)
 			new_usermail = '%s@%s' % (uts.random_name(), domain)
-			account = utils.UCSTestDomainAdminCredentials()
-			admin = account.binddn
-			passwd = account.bindpw
 			udm.modify_object(
 				'users/user',
 				dn=userdn,
 				binddn=admin,
 				bindpwd=passwd,
 				set={'mailPrimaryAddress': new_usermail})
-			import pdb; pdb.set_trace()
-			check_login(host, new_usermail, password, True)
-			check_login(host, usermail, password, True)
-			print 'DONE'
+			check_login_lookup(host, new_usermail, password, True, dovecot)
+			check_login_lookup(host, usermail, password, False, dovecot)
+
+			# Case 2
+			# Create a user with mailPrimaryAddress and without mailHomeServer
+			# → mailbox should NOT have been created
+			# Add local FQDN as mailHomeServer
+			# → mailbox should have been created and is accessible
+			name = uts.random_name()
+			usermail = '%s@%s' % (name, domain)
+			userdn, username = udm.create_user(
+				username=name,
+				set={
+					'password'			 : password,
+					'mailPrimaryAddress' : usermail
+				}
+			)
+			expected_result = True if dovecot else False
+			check_login_lookup(host, usermail, password, expected_result, dovecot)
+			udm.modify_object(
+				'users/user',
+				dn=userdn,
+				binddn=admin,
+				bindpwd=passwd,
+				set={'mailHomeServer': host})
+			check_login_lookup(host, usermail, password, True, dovecot)
+
+			# Case 3
+			# Create a user with mailPrimaryAddress and without mailHomeServer
+			# → mailbox should NOT have been created
+			# Add "foreign" FQDN as mailHomeServer
+			# → mailbox should NOT have been created
+			name = uts.random_name()
+			usermail = '%s@%s' % (name, domain)
+			userdn, username = udm.create_user(
+				username=name,
+				set={
+					'password'			 : password,
+					'mailPrimaryAddress' : usermail
+				}
+			)
+			expected_result = True if dovecot else False
+			check_login_lookup(host, usermail, password, expected_result, dovecot)
+			udm.modify_object(
+				'users/user',
+				dn=userdn,
+				binddn=admin,
+				bindpwd=passwd,
+				set={'mailHomeServer': 'mail.example.com'})
+			check_login_lookup(host, usermail, password, False, dovecot)
+
+			# Case 4
+			# Create a user without mailPrimaryAddress and mailHomeServer==$LOCALFQDN
+			# → mailbox should NOT have been created
+			# Add mailPrimaryAddress
+			# → mailbox should have been created and is accessible
+			name = uts.random_name()
+			usermail = '%s@%s' % (name, domain)
+			userdn, username = udm.create_user(
+				username=name,
+				set={
+					'password'			 : password,
+					'mailHomeServer'	 : host
+				}
+			)
+			check_login_lookup(host, '', password, False, dovecot)
+			udm.modify_object(
+				'users/user',
+				dn=userdn,
+				binddn=admin,
+				bindpwd=passwd,
+				set={'mailPrimaryAddress': usermail})
+			# flushing auth cache manually
+			if dovecot:
+				subprocess.call(['/usr/bin/doveadm', 'auth', 'cache', 'flush'])
+			check_login_lookup(host, usermail, password, True, dovecot)
+
+			# Case 5
+			# Create a user with mailHomeServer and mailPrimaryAddress
+			# → mailbox should have been created and is accessible
+			# Change mailHomeServer
+			# → mailbox should NOT be accessible
+			ip = uts.random_ip()
+			new_host = uts.random_name()
+			udm.create_object(
+				'computers/domaincontroller_slave',
+				set={
+					'position'            : 'cn=computers,%s' % basedn,
+					'ip'                  : ip,
+					'name'                : new_host,
+					'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (
+						domain, basedn, ip)
+				}
+			)
+			name = uts.random_name()
+			usermail = '%s@%s' % (name, domain)
+			userdn, username = udm.create_user(
+				username=name,
+				set={
+					'password'			 : password,
+					'mailHomeServer'	 : host,
+					'mailPrimaryAddress' : usermail
+				}
+			)
+			check_login_lookup(host, usermail, password, True, dovecot)
+			udm.modify_object(
+				'users/user',
+				dn=userdn,
+				binddn=admin,
+				bindpwd=passwd,
+				set={'mailHomeServer': '%s.%s' % (new_host, domain)})
+			expected_result = False if dovecot else True
+			check_login_lookup(host, usermail, password, expected_result, dovecot)
+
+			# Case 6
+			# Create a user with mailHomeServer and mailPrimaryAddress
+			# → mailbox should have been created and is accessible
+			# Remove mailHomeServer
+			# → mailbox should still be accessible
+			ip = uts.random_ip()
+			new_host = uts.random_name()
+			udm.create_object(
+				'computers/domaincontroller_slave',
+				set={
+					'position'            : 'cn=computers,%s' % basedn,
+					'ip'                  : ip,
+					'name'                : new_host,
+					'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (
+						domain, basedn, ip)
+				}
+			)
+			name = uts.random_name()
+			usermail = '%s@%s' % (name, domain)
+			userdn, username = udm.create_user(
+				username=name,
+				set={
+					'password'			 : password,
+					'mailHomeServer'	 : host,
+					'mailPrimaryAddress' : usermail
+				}
+			)
+			check_login_lookup(host, usermail, password, True, dovecot)
+			udm.modify_object(
+				'users/user',
+				dn=userdn,
+				binddn=admin,
+				bindpwd=passwd,
+				set={'mailHomeServer': ''})
+			check_login_lookup(host, usermail, password, True, dovecot)
+
+			# Case 7
+			# Create a user with mailHomeServer and mailPrimaryAddress
+			# → mailbox should have been created and is accessible
+			# Remove mailPrimaryAddress
+			# → mailbox should NOT be accessible
+			ip = uts.random_ip()
+			new_host = uts.random_name()
+			udm.create_object(
+				'computers/domaincontroller_slave',
+				set={
+					'position'            : 'cn=computers,%s' % basedn,
+					'ip'                  : ip,
+					'name'                : new_host,
+					'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (
+						domain, basedn, ip)
+				}
+			)
+			name = uts.random_name()
+			usermail = '%s@%s' % (name, domain)
+			userdn, username = udm.create_user(
+				username=name,
+				set={
+					'password'			 : password,
+					'mailHomeServer'	 : host,
+					'mailPrimaryAddress' : usermail
+				}
+			)
+			check_login_lookup(host, usermail, password, True, dovecot)
+			udm.modify_object(
+				'users/user',
+				dn=userdn,
+				binddn=admin,
+				bindpwd=passwd,
+				set={'mailPrimaryAddress': ''})
+			# flushing auth cache manually
+			if dovecot:
+				subprocess.call(['/usr/bin/doveadm', 'auth', 'cache', 'flush'])
+			expected_result = False if dovecot else True
+			check_login_lookup(host, usermail, password, expected_result, dovecot)
+
 
 if __name__ == '__main__':
 	main()
