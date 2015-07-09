@@ -27,18 +27,10 @@ class WriteFail(Exception):
 	pass
 
 
-class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
-
-	"""MailClient is a wrapper for imaplib.IMAP4"""
-	def __init__(self, host, port=143, ssl=False):
-		"""Custom __init__  for no-SSL and SSl"""
-		if ssl:
-			imaplib.IMAP4_SSL.__init__(self,host, port)
-			print 'IMAP with ssl connection initialized'
-		else:
-			imaplib.IMAP4.__init__(self,host, port)
-			print 'IMAP with no-ssl connection initialized'
-
+class BaseMailClient(object):
+	"""BaseMailClient is a Base (interface) for imaplib.IMAP4_SSL and imaplib.IMAP4
+	Does not work alone, can be used only as a super class of other child class.
+	"""
 	def login_plain(self, user, password, authuser=None):
 		def plain_callback(response):
 			if authuser is None:
@@ -65,12 +57,14 @@ class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 
 		:returns: list of strings, list of existing mailboxes
 		"""
+		result = []
 		mBoxes = self.list()[1]
-		result = [x.split('" ')[-1] for x in mBoxes if 'Noselect' not in x.split()[0]]
-		for i, item in enumerate(result):
-			if '"' in item:
-				item = item.replace('"', '')
-				result[i] = item
+		if mBoxes[0]:
+			result = [x.split('" ')[-1] for x in mBoxes if 'Noselect' not in x.split()[0]]
+			for i, item in enumerate(result):
+				if '"' in item:
+					item = item.replace('"', '')
+					result[i] = item
 		return result
 
 	def set_acl_cyrus(self, email, permission):
@@ -121,6 +115,11 @@ class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 		"""
 		code , acls = self.getacl(mailbox)
 		acl = acls[0].split()
+		if '"' in acl[0]:
+			x = acl[0].split('"', 1)[1]
+			y = acl[1].split('"', 1)[0]
+			acl[0] = "%s %s" % (x, y)
+			del(acl[1])
 		i = iter(acl[1:])
 		d = dict(izip(i, i));
 		return {acl[0]:d}
@@ -167,11 +166,14 @@ class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 		:expected_result: dict{mailbox : bool}
 		"""
 		for mailbox, retcode in expected_result.items():
-			mailbox = self.mail_folder(mailbox_owner, mailbox, dovecot)
+			if mailbox_owner != self.owner:
+				mailbox = self.mail_folder(mailbox_owner, mailbox, dovecot)
+			elif not dovecot and mailbox != 'INBOX':
+				mailbox = 'INBOX/%s' % mailbox
 			data = self.getMailBoxes()
 			print 'Lookup :', mailbox, data
 			if (mailbox in data) != retcode:
-				raise LookupFail('Failed to list the inbox %s' % mailbox)
+				raise LookupFail('Un-expected result for listing the mailbox %s' % mailbox)
 
 	def check_read(self, mailbox_owner, expected_result, dovecot=False):
 		"""Checks the read access of a certain mailbox
@@ -179,7 +181,10 @@ class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 		:expected_result: dict{mailbox : bool}
 		"""
 		for mailbox, retcode in expected_result.items():
-			mailbox = self.mail_folder(mailbox_owner, mailbox, dovecot)
+			if mailbox_owner != self.owner:
+				mailbox = self.mail_folder(mailbox_owner, mailbox, dovecot)
+			elif not dovecot and mailbox != 'INBOX':
+				mailbox = 'INBOX/%s' % mailbox
 			self.select(mailbox)
 			typ, data = self.status(mailbox, '(MESSAGES RECENT UIDNEXT UIDVALIDITY UNSEEN)')
 			print 'Read Retcode:', typ, data
@@ -198,7 +203,10 @@ class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 		:expected_result: dict{mailbox : bool}
 		"""
 		for mailbox, retcode in expected_result.items():
-			mailbox = self.mail_folder(mailbox_owner, mailbox, dovecot)
+			if mailbox_owner != self.owner:
+				mailbox = self.mail_folder(mailbox_owner, mailbox, dovecot)
+			elif not dovecot and mailbox != 'INBOX':
+				mailbox = 'INBOX/%s' % mailbox
 			self.select(mailbox)
 			typ, data =  self.append(
 				mailbox, '',
@@ -219,10 +227,13 @@ class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 		for mailbox, retcode in expected_result.items():
 			# Actuall Permissions are given to shared/owner/INBOX
 			# This is different than listing
-			if mailbox == 'INBOX' and dovecot:
-				mailbox = 'shared/%s/INBOX' % (mailbox_owner,)
-			else:
-				mailbox = self.mail_folder(mailbox_owner, mailbox, dovecot)
+			if mailbox_owner != self.owner:
+				if mailbox == 'INBOX' and dovecot:
+					mailbox = 'shared/%s/INBOX' % (mailbox_owner,)
+				else:
+					mailbox = self.mail_folder(mailbox_owner, mailbox, dovecot)
+			elif not dovecot and mailbox != 'INBOX':
+				mailbox = 'INBOX/%s' % mailbox
 			subname = uts.random_name()
 			typ, data = self.create('%s/%s' % (mailbox, subname))
 			print 'Create Retcode:', typ, data
@@ -280,6 +291,18 @@ class MailClient(imaplib.IMAP4, imaplib.IMAP4_SSL):
 		self.check_append(owner_user, {mailbox: append_OK(permission)}, dovecot)
 		self.check_write(owner_user, {mailbox: write_OK(permission)}, dovecot)
 
+
+class MailClient_SSL(imaplib.IMAP4_SSL, BaseMailClient):
+
+	"""MailClient_SSL is a wrapper for imaplib.IMAP4_SSL"""
+	def __init__(self, host, port=993):
+		imaplib.IMAP4_SSL.__init__(self,host, port)
+
+class MailClient(imaplib.IMAP4, BaseMailClient):
+
+	"""MailClient is a wrapper for imaplib.IMAP4"""
+	def __init__(self, host, port=143):
+		imaplib.IMAP4.__init__(self,host, port)
 
 
 # vim: set ft=python ts=4 sw=4 noet ai :
