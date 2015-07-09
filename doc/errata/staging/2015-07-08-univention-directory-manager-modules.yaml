@@ -5,12 +5,12 @@ scope: ucs_4.0-0-errata4.0-2
 src: univention-directory-manager-modules
 fix: 10.0.31-3.1326.201507091100
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
    * The UDM module policies/mailquota has been moved to the package
      univention-mail-cyrus. From now on the module will only be available
      if the UCS domain contains an UCS system with installed cyrus
      mail stack.
-   * A default user templates for new users can be configured by the UCR
+   * A default user template for new users can be configured by the UCR
      variable "directory/manager/web/modules/users/user/add/default". The
      variable expects the DN or the label of a user template.
 bug: [38473, 38832]
