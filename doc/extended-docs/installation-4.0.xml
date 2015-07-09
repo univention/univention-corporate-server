@@ -941,13 +941,14 @@ univention-system-setup-boot uss/server/role string memberserver
 							<entry><varname>interfaces/eth<replaceable>N</replaceable>/type</varname></entry>
 							<entry>
 								If this parameter is set to <literal>dynamic</literal> or <literal>dhcp</literal>, the network interface <filename class="devicefile">eth<replaceable>N</replaceable></filename> procures its network configuration via DHCP.
-								The settings of <varname>interfaces/eth<replaceable>N</replaceable>/ip</varname>, <varname>interfaces/eth<replaceable>N</replaceable>/netmask</varname>, <varname>interfaces/eth<replaceable>N</replaceable>/network</varname>, <varname>interfaces/eth<replaceable>N</replaceable>/broadcast</varname>, <varname>nameserver<replaceable>N</replaceable></varname> and <varname>gateway</varname> then become optional, but can still be used to over-write the configuration provided by DHCP.
-								<!-- PMH: Actually DHCP is skipped as soon as _ip and _netmask are given -->
+								The settings of <varname>interfaces/eth<replaceable>N</replaceable>/address</varname>, <varname>interfaces/eth<replaceable>N</replaceable>/netmask</varname>, <varname>interfaces/eth<replaceable>N</replaceable>/network</varname>, <varname>interfaces/eth<replaceable>N</replaceable>/broadcast</varname>, <varname>nameserver<replaceable>N</replaceable></varname> and <varname>gateway</varname> then become optional, but can still be used to over-write the configuration provided by DHCP.
+								<!-- PMH: Actually DHCP is skipped as soon as _address and _netmask are given -->
 								If no DHCP offer is received, a random IP address from the link-local network <literal>169.254.<replaceable>x.x</replaceable></literal> is used.
+								For manual configuration this parameter must be set to <literal>static</literal>.
 							</entry>
 						</row>
 						<row>
-							<entry><varname>interfaces/eth<replaceable>N</replaceable>/ip</varname></entry>
+							<entry><varname>interfaces/eth<replaceable>N</replaceable>/address</varname></entry>
 							<entry>
 								The IPv4 address of the physical network interface <filename class="devicefile">eth<replaceable>N</replaceable></filename>.
 							</entry>
@@ -966,15 +967,16 @@ univention-system-setup-boot uss/server/role string memberserver
 							</entry>
 						</row>
 						<row>
-							<entry><varname>interfaces/eth<replaceable>N</replaceable>/ip6</varname></entry>
+							<entry><varname>interfaces/eth<replaceable>N</replaceable>/ipv6/<replaceable>name</replaceable>/address</varname></entry>
 							<entry>
-								The IPv6 address of the physical network interface <filename class="devicefile">eth<replaceable>N</replaceable></filename> in static configuration.
+								An IPv6 address of the physical network interface <filename class="devicefile">eth<replaceable>N</replaceable></filename> in static configuration.
+								Multiple addresses can be assigned by using different <replaceable>name</replaceable> prefixes.
 							</entry>
 						</row>
 						<row>
-							<entry><varname>interfaces/eth<replaceable>N</replaceable>_prefix6</varname></entry>
+							<entry><varname>interfaces/eth<replaceable>N</replaceable>/ipv6/<replaceable>name</replaceable>/prefix</varname></entry>
 							<entry>
-								The prefix of the IPv6 address of the physical network interface <filename class="devicefile">eth<replaceable>N</replaceable></filename> in static configuration.
+								The prefix length of the IPv6 address of the physical network interface <filename class="devicefile">eth<replaceable>N</replaceable></filename> in static configuration.
 							</entry>
 						</row>
 						<row>
