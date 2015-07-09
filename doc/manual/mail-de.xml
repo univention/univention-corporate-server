@@ -51,8 +51,8 @@
 
 		<note>
 			<para>
-				Seit &ucsUCS; Version 4.0-3 wird standardmäßig Dovecot als IMAP- und
-				POP3-Server verwendet. Cyrus ist jedoch weiterhin verfügbar um diese
+				Seit &ucsUCS; Version 4.0-2 wird standardmäßig Dovecot als IMAP- und
+				POP3-Server verwendet. Cyrus ist jedoch weiterhin verfügbar, um diese
 				Dienste bereit zu stellen. Weiteres zur Cyrus-Integration findet sich
 				in der Cyrus-Mail-Server Dokumentation <biblioref linkend="ext-doc-cyrus"/>.
 			</para>
@@ -113,7 +113,7 @@
 
 	<para>
 	  Die Laufzeitdaten des Dovecot-Servers werden im Verzeichnis <filename class="directory">/var/spool/dovecot/</filename>
-	  abgelegt. Fall dieses Verzeichnis auf einem NFS Laufwerk liegen sollte,
+	  abgelegt. Falls dieses Verzeichnis auf einem NFS-Laufwerk liegen sollte,
         lesen Sie bitte <xref linkend="mail::serverconfig::nfs"/>.
 	</para>
 
@@ -327,7 +327,7 @@ doveadm auth cache flush
 
 		<para>
 			Globale IMAP-Ordner können nicht umbenannt werden. Die &ucsUCRV;
-			<envar>mail/dovecot/mailbox/rename</envar> wird daher ignoriert. Nur wenn
+			<envar>mail/dovecot/mailbox/rename</envar> kommt daher nicht zur Anwendung. Nur wenn
 			<envar>mail/dovecot/mailbox/delete</envar> gesetzt ist (standardmäßig
 			deaktiviert), wird ein globaler IMAP-Ordner beim Löschen im UMC-Modul
 			<emphasis>Mail</emphasis> auch tatsächlich von der Festplatte gelöscht.
@@ -503,9 +503,9 @@ doveadm auth cache flush
 	  </para>
 
 	  <para>
-		Die Grenze wird in MB im Feld <guimenu>Mail-Quota</guimenu> festgelegt, die
+		Die Grenze wird in Megabytes im Feld <guimenu>Mail-Quota</guimenu> festgelegt, die
 		unter <guimenu>Erweiterte Einstellungen &ar; Mail</guimenu> verwaltet
-		wird. Der Standardwert ist <literal>0</literal> und bedeutet keine Beschränkung.
+		wird. Der Standardwert ist <literal>0</literal> und bedeutet, dass keine Beschränkung aktiv ist.
 		Für das Zuweisen einer Quota an mehrere Benutzer auf einmal, kann der
 		Mehrfachbearbeitungsmodus von &ucsUMC; verwendet  werden, siehe
 		<xref linkend="central:user-interface:edit"/>.
@@ -908,13 +908,30 @@ postmap /etc/postfix/smtp_auth
 
 	  <para>
 		Mit der &ucsUCRV; <envar>mail/dovecot/mailbox/delete</envar> kann konfiguriert
-		werden, ob bei der Löschung eines Benutzerkontos in &ucsUMC; auch das
-		IMAP-Postfach gelöscht werden soll. In der Grundeinstellung bleiben die
-		Postfächer bei Löschung eines Benutzerkontos erhalten.
+		werden, ob IMAP-Postfächer automatisch gelöscht werden sollen. Der Wert <literal>yes</literal> aktiviert die Löschung des betroffenen IMAP-Postfachs bei folgenden Ereignissen:
+		<itemizedlist>
+			<listitem>
+				<simpara>
+					dem Löschen des Benutzerkontos
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+					dem Entfernen der primären Mailadresse von einem Benutzerkonto
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+					dem Ändern des Mail Home Servers auf ein anderes System
+				</simpara>
+			</listitem>
+		</itemizedlist>
+		In der Grundeinstellung (<literal>no</literal>) bleiben die
+		Postfächer bei diesen Aktionen erhalten und müssen ggf. manuell gelöscht werden.
 	  </para>
 
 	<para>
-		Aus der Kombination der beiden Variablen ergeben sich folgende <emphasis>vier Fälle wenn E-Mail-Adressen geändert werden</emphasis>:
+		Aus der Kombination der beiden Variablen ergeben sich folgende vier Fälle, wenn E-Mail-Adressen geändert werden:
 		<table>
 			<title>Umbenennung von E-Mail-Adressen</title>
 			<tgroup cols="2">
@@ -956,7 +973,7 @@ postmap /etc/postfix/smtp_auth
 						<entry>
 							<literal>rename=no</literal> und <literal>delete=yes</literal>
 						</entry>
-						<entry>Eine neue, leere Mailbox wird erzeugt. Die alte wird von
+						<entry>Eine neue, leere Mailbox wird erzeugt. Die alte Mailbox wird inkl. aller enthaltenen Mails von
 							der Festplatte gelöscht.
 						</entry>
 					</row>
@@ -1000,7 +1017,7 @@ postmap /etc/postfix/smtp_auth
 		<para>
 			Die folgenden Einstellungen gehen davon aus, dass auf Mailboxen nicht
 			gleichzeitig von mehreren Servern aus zugegriffen wird. Das ist der Fall,
-			wenn jedem Benutzer genau ein Mail Home Server zugeordnet ist.
+			wenn jedem Benutzer ein Mail Home Server zugeordnet ist.
 		</para>
 		<para>
 			<itemizedlist>
@@ -1011,7 +1028,7 @@ postmap /etc/postfix/smtp_auth
 		</para>
 		<para>
 			Um eine bessere Performance zu erreichen, können Index-Dateien statt
-			zusammen mit den Nachrichten auf NFS, auf der lokalen Festplatte
+			zusammen mit den Nachrichten im NFS auch auf der lokalen Festplatte
 			gespeichert werden. Sie sind dann unter
 			<filename class="directory">/var/lib/dovecot/index/</filename> zu finden.
 			Setzen Sie dafür die &ucsUCRV; <envar>mail/dovecot/location/separate_index</envar><literal> = yes</literal>.
@@ -1023,7 +1040,7 @@ postmap /etc/postfix/smtp_auth
 			bei Schwierigkeiten weiter vorgegangen werden kann:
 			<itemizedlist>
 				<listitem><simpara>Wenn NFSv2 im Einsatz ist (nicht der Fall, wenn der NFS-Server ein &ucsUCS; ist), setzen Sie bitte <envar>mail/dovecot/process/dotlock_use_excl</envar><literal> = no</literal>.</simpara></listitem>
-				<listitem><simpara>Falls kein lockd eingesetzt wird (nicht der Fall auf &ucsUCS; Systemen) oder falls trotz des Einsatzes von lockd Locking-Fehler auftreten, setzen Sie <envar>mail/dovecot/process/lock_method</envar><literal> = dotlock</literal>. Dies verringert die Performance, aber behebt die meisten Locking-bezogenen Probleme.</simpara></listitem>
+				<listitem><simpara>Falls kein lockd eingesetzt wird (nicht der Fall auf &ucsUCS;-Systemen) oder falls trotz des Einsatzes von lockd Locking-Fehler auftreten, setzen Sie <envar>mail/dovecot/process/lock_method</envar><literal> = dotlock</literal>. Dies verringert die Performance, aber behebt die meisten Locking-bezogenen Probleme.</simpara></listitem>
 				<listitem><simpara>Dovecot kann mit <envar>mail/dovecot/process/mail_nfs_storage</envar><literal> = yes</literal> angewiesen werden, wenn nötig, den NFS Cache zu leeren. Dies funktioniert jedoch nicht immer, daher kann es zu sporadischen Fehlern kommen. Das gleiche gilt für das Leeren des NFS-Cache nach dem Schreiben von Index-Dateien: <envar>mail/dovecot/process/mail_nfs_index</envar><literal> = yes</literal>.</simpara></listitem>
 				<listitem><simpara>In der Documentation des Dovecot Servers sind weitere Hinweise zu finden: <xref linkend="dovecot-wiki-clusterfs"/> <xref linkend="dovecot-wiki-nfs"/></simpara></listitem>
 			</itemizedlist>
