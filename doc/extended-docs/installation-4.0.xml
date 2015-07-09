@@ -15,7 +15,7 @@
   <revhistory>
      <revision>
         <revnumber>4.0-2</revnumber>
-        <date>May 7, 2015</date>
+        <date>July 9, 2015</date>
      </revision>
   </revhistory>
 </bookinfo>
@@ -1127,7 +1127,7 @@ univention-system-setup-boot uss/server/role string memberserver
 		<title>Network-based PXE installations with Univention Net Installer</title>
 		<para>
 			Network-based, profile-based installations via PXE are performed with the Univention Net Installer, which can be set up using the package <package>univention-net-installer</package>.
-			In addition, a DHCP and WWW server is required.
+			In addition, DHCP, TFTP and WWW servers are required.
 			If the DHCP server and the PXE server of the Univention Net Installer are operated on separate systems, the PXE server must be assigned via a DHCP boot policy.
 		</para>
 		<para>
@@ -1135,9 +1135,55 @@ univention-system-setup-boot uss/server/role string memberserver
 			Any questions not answered in the pre-seed file forces the installer to interactive mode.
 		</para>
 		<para>
-			Univention Net Installer requires a local repository as a package source (see the software deployment chapter of the <biblioref linkend="ucs-manual"/>).
+			Univention Net Installer requires a local repository as a package source.
+		</para>
+		<important>
+			<para>
+				The repository must be created using the DVD (image) of the targeted UCS release.
+				This is done by running the command <command>univention-repository-create</command>, which copies the corresponding PXE kernel and installer to <filename class="directory">/var/lib/univention-client-boot/installer/<replaceable>release</replaceable>/</filename>.
+			</para>
+		</important>
+		<para>
+			It is safe to run <command>univention-repository-create</command> again, which is for example required to update the installer to a newer version of UCS.
+			For more information on local repositories see the software deployment chapter of the <biblioref linkend="ucs-manual"/>.
+		</para>
+		<para>
 			The profiles should be copied into the directory <filename class="directory">/var/lib/univention-client-boot/preseed/</filename> on the repository server, which is accessible through <uri>http://<replaceable>HOST-NAME</replaceable>/univention-client-boot/preseed/</uri>.
 		</para>
+		<note>
+			<para>
+				The installation process consists of multiple steps, which contact different services and servers:
+			</para>
+			<orderedlist>
+				<listitem>
+					<simpara>
+						First the <emphasis>DHCP server</emphasis> is contacted.
+						It sends the client to the <guimenu>Boot server</guimenu> (by default the DHCP server itself) configured through the <emphasis>DHCP Boot</emphasis> policy to request the boot loader given in <guimenu>Boot filename</guimenu> (<filename>pxelinux.0</filename>).
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+						Then the client downloads the boot loader via the <systemitem class="protocol">tftp</systemitem> protocol from the <emphasis>PXE server</emphasis>.
+						The boot loader scans the server for the client configuration file in <filename class="directory">pxelinux.cfg/</filename>.
+						The referenced Linux kernel (<filename>linux</filename>) and initial RAM disk file (<filename>initrd.gz</filename>) are then downloaded.
+						Those names can be changed through the &ucsUCRV;s <envar>pxe/installer/kernel</envar> and <envar>pxe/installer/initrd</envar><footnote id="http"><simpara>Newer versions of the PXE boot loader support downloading through <systemitem class="protocol">http</systemitem>, which can be faster and more reliable in certain environments. This can be enabled by specifying URLs starting with <uri>http://</uri> as file names.</simpara></footnote>.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+						Finally the UCS installer downloads the profiles and package files using <systemitem class="protocol">http</systemitem>.
+						The <guimenu>Name of the installation profile</guimenu> is configured in the computer entry in LDAP.
+						The file is fetch from the <emphasis>PXE server</emphasis> by default, but the prefix can be overwritten through the &ucsUCRV; <envar>pxe/installer/profiles</envar>.
+						As an alternative the name can also be specified as an absolute URL.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+						The package files are fetched from the <emphasis>local repository server</emphasis>, which is configured through the &ucsUCRV; <envar>repository/online/server</envar> on the PXE server.
+					</simpara>
+				</listitem>
+			</orderedlist>
+		</note>
 
 		<section id="profile:assign">
 			<title>Assignment of a computer for automatic installation</title>
