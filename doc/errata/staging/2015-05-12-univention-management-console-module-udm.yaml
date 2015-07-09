@@ -12,7 +12,7 @@ desc: |
    * If multiple policies of the same type are references UMC prevents to
      remove policy references when saving the object.
    * Errors during requesting a new license are now handled.
-   * For creating a user a default user template can be configured by the ucr
-     variable "directory/manager/web/modules/users/user/add/default". Use the DN
-     or the label of a user template to set the variable.
+   * A default user templates for new users can be configured by the UCR
+     variable "directory/manager/web/modules/users/user/add/default". The
+     variable expects the DN or the label of a user template.
 bug: [38544, 38202, 36256, 35614, 38832]
