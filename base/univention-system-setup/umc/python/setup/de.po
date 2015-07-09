@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-06-23 11:11+0200\n"
+"POT-Creation-Date: 2015-07-09 18:23+0200\n"
 "PO-Revision-Date: 2015-07-01 12:23+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,7 +54,7 @@ msgstr "Kann Bridge %r nicht als bridge-port verwenden"
 msgid "Cannot use device %s: Device must be unconfigured"
 msgstr "Kann Gerät %s nicht verwenden: Gerät muss unkonfiguriert sein"
 
-#: umc/python/setup/util.py:711
+#: umc/python/setup/util.py:706
 #, python-format
 msgid "Could not query App Center: %s"
 msgstr "App-Center-Daten konnten nicht abgefragt werden: %s"
@@ -228,7 +228,7 @@ msgstr "Der folgende Wert ist zu lang, es sind nur 128 Zeichen erlaubt: %s"
 msgid "The following value is too long, only 64 characters allowed: %s"
 msgstr "Der folgende Wert ist zu lang, es sind nur 64 Zeichen erlaubt: %s"
 
-#: umc/python/setup/__init__.py:749
+#: umc/python/setup/__init__.py:748
 msgid ""
 "The given user is not member of the Domain Admins group in Active Directory. "
 "This is a requirement for the Active Directory domain join."
@@ -242,7 +242,10 @@ msgid ""
 "The hostname or the hostname part of the fully qualified domain name is "
 "invalid. Please go back to the host setting and make sure, that the hostname "
 "only contains letter (a-zA-Z) and digits (0-9)."
-msgstr "Der Rechnername (im vollqualifizierten Domänennamen) ist ungültig. Bitte kehren Sie zu den Rechnereinstellungen zurück und überprüfen Sie, ob der Name ausschließlich Buchstaben (a-zA-Z) und Ziffern (0-9) enthält."
+msgstr ""
+"Der Rechnername (im vollqualifizierten Domänennamen) ist ungültig. Bitte "
+"kehren Sie zu den Rechnereinstellungen zurück und überprüfen Sie, ob der "
+"Name ausschließlich Buchstaben (a-zA-Z) und Ziffern (0-9) enthält."
 
 #: umc/python/setup/__init__.py:397
 msgid ""

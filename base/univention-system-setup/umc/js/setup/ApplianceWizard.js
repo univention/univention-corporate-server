@@ -1741,38 +1741,24 @@ define([
 		_updateDonePage: function() {
 			var isBaseSystem = this._isRoleBaseSystem();
 			var isMaster = this._isRoleMaster();
+			var isUniventionApp = Boolean(this.ucr['umc/web/appliance/name']);
 
 			var fqdn = this._getFQDN();
 			var ips = this._getIPAdresses();
 
 			var msg = '';
-			if (this.ucr['umc/web/appliance/name']) {
+			if (isUniventionApp) {
 				msg += '<p>' + _('%s Univention App has been successfully set up.', this.ucr['umc/web/appliance/name']) + ' ';
 			} else {
 				msg += '<p>' + _('UCS has been successfully set up.') + ' ';
 			}
-			if (!isBaseSystem) {
-				if (ips.length) {
-					msg += _('The system has been configured with the IP address(es) %s.', ips.join(', '));
-				}
-				msg += '</p>';
-				if (isMaster) {
-					msg += '<p>' + _('Login to Univention Management Console as user <b>Administrator</b> at one of the available addresses:') + '</p>';
-				} else {
-					msg += '<p>' + _('Login to Univention Management Console with the domain account <b>Administrator</b> at one of the available addresses:') + '</p>';
-				}
-				msg += this._getUMCLinks();
-			} else {
-				if (ips.length) {
-					msg += _('The system is reachable at <i>%s</i> or via its IP address(es) <i>%s</i>.', fqdn, ips.join(', ')) + '</p>';
-				} else {
-					msg += _('The system is reachable at <i>%s</i>.', fqdn) + '</p>';
-				}
-			}
 			if (array.indexOf(this.disabledFields, 'reboot') !== -1) {
 				msg += _('<p>After clicking on the button <i>Finish</i> the system will be prepared for the first boot procedure and will be rebooted.</p>');
-			} else if (this.ucr['umc/web/appliance/name']) {
+			} else if (isUniventionApp) {
 				msg += _('<p>Click on <i>Finish</i> for putting this system into operation.</p>');
+				if (isMaster) {
+					msg += _('<p>When accessing the system for the first time, you will be asked to upload a new license that has been sent to your email account.</p>');
+				}
 			} else {
 				msg += _('<p>Click on <i>Finish</i> for putting UCS into operation.</p>');
 			}
