@@ -5,5 +5,7 @@ scope: ucs_4.0-0-errata4.0-2
 src: univention-mail-dovecot
 fix: 1.0.0-2.37.201507090123
 desc: |
-  * New integration package for dovecot base mail stack (Bug #34839).
+  This erratum provides the new package univention-mail-dovecot which
+  integrates the IMAP/POP3 server dovecot into the UCS mail stack
+  (Bug #34839).
 bug: [34839,38387,38457,38458,38461,38462,38463,38464,38469,38470,38471,38472,38474,38475,38478,38479,38480,38498,38525,38553,38573,38716,38718,38725,38733,38740,38751,38784,38791,38805,38811,38839,38840,38848]

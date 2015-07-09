@@ -6,9 +6,9 @@ src: univention-mail-postfix
 fix: 9.0.2-1.253.201507082103
 desc: |
  This update addresses the following issues:
-  * The mail stack has been prepared for integration of dovecot
+  * The mail stack has been prepared for the integration of dovecot
     (Bug #34839, Bug #38471).
   * Postfix will no longer resolve address mappings (e.g. BCC) before
-    sending the to amavis for content scanning if an archive folder
+    handing them over to amavis for content scanning if an archive folder
     has been defined (Bug #14619)
 bug: [14619, 34839, 38471]
