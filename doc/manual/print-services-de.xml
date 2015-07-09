@@ -627,9 +627,8 @@
   <para>
 	Windows unterstützt ein Verfahren zur serverseitigen Bereitstellung von Druckertreibern auf dem
 	Druckserver (<emphasis>Point 'n' Print</emphasis>). Die folgende Anleitung beschreibt die
-	Bereitstellung der Druckertreiber unter Windows 7 bzw. Windows 8 für eine in der UMC konfigurierte
-	Druckerfreigabe. Zuerst müssen die Druckertreiber auf dem Druckserver hinterlegt werden, danach werden
-	die Drucker mit einem Druckertreiber verknüpft.
+	Bereitstellung der Druckertreiber unter Windows 7 für eine in der UMC konfigurierte
+	Druckerfreigabe. Zuerst müssen die Druckertreiber auf dem Druckserver hinterlegt werden.
 	Die Benutzerführung unter Windows bietet zahlreiche Stolperfallen, es ist wichtig den einzelnen
 	Schritten exakt zu folgen!
   </para>
@@ -644,61 +643,46 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Nun muss das Programm <guimenu>printmanagement.msc</guimenu> gestartet werden. Im Menüpunkt 
-		<guimenu>Aktion</guimenu> kann mit einem Klick auf <guimenu>Server hinzufügen/entfernen</guimenu>
-		ein weiterer Server hinzugefügt werden. In dem Eingabefeld <guimenu>Server hinzufügen</guimenu>
-		muss der Name des Druckerservers eingetragen werden. 
-	    </simpara>
-		<figure id="printer:addserver">
-		  <title>Druckerserver hinzufügen</title>
-		  <graphic scalefit="1" align="center" width="80%" fileref="illustrations40/windows-printerdriver-addserver-de.png"/>
-		</figure>
-	   </listitem>
+		Nun muss der Windows Explorer gestartet und dort die Netzwerkumgebung geöffnet werden. Dort
+		muss der Druckserver ausgewählt werden, auf dem die Druckerfreigabe angelegt wurde. In der
+		oberen Menüleiste wird nach einem Klick auf <guimenu>Remotedrucker anzeigen</guimenu> eine
+		Liste mit allen Druckerfreigaben angezeigt.
+	  </simpara></listitem>
 
 	  <listitem><simpara>
-		In der Druckerverwaltung sollte der neu hinzugefügte Druckserver nun aufgelistet werden.
-		Durch einen Klick auf <guimenu>Drucker</guimenu> werden die aktuell auf dem Druckerserver eingerichteten
-		Drucker angezeigt.
-	    </simpara>
-		<figure id="printer:printers">
-		  <title>Druckerliste</title>
-		  <graphic scalefit="1" align="center" width="80%" fileref="illustrations40/windows-printerdriver-printerlist-de.png"/>
-		</figure>
-	   </listitem>
-		
-	  <listitem><simpara>
-		Mit einem Klick auf den Eintrag <guimenu>Treiber</guimenu> werden die hinterlegten Druckertreiber aufgelistet.
-		Im Menüpunkt <guimenu>Aktion</guimenu> kann mit einem Klick auf <guimenu>Treiber hinzufügen</guimenu>
-		der Dialog für die Treiberinstallation gestartet werden.
-		Wir empfehlen die Druckertreiber direkt vom Hersteller herunterzuladen und diese während der
-		Treiberinstallation auszuwählen. Wird eine Umgebung verwendet, in der die 64 Bit-Versionen von Windows
-		eingesetzt werden, müssen die Treiber unbedingt für 32 und 64 Bit hochgeladen werden.
-	    </simpara>
-		<figure id="printer:upload">
-		  <title>Treiberinstallation</title>
-		  <graphic scalefit="1" align="center" width="80%" fileref="illustrations40/windows-printerdriver-upload-de.png"/>
-		</figure>
-	   </listitem>
+		Nun muss mit der rechten Maustaste auf die freie Fläche unter den Druckerfreigaben geklickt
+		werden (nicht auf eine der Freigaben, sonst öffnet sich das kontextsensitive Menü der
+		Druckerfreigabe!) und <guimenu>Servereigenschaften</guimenu> gewählt werden. Dort im Reiter <guimenu>Treiber</guimenu> mit <guimenu>Hinzufügen &ar;
+		Weiter &ar; x86 und x64 auswählen &ar; Weiter &ar; Datenträger</guimenu> auswählen. Im sich dabei öffnenden
+		Dateidialog muss dann die <filename class="extension">INF</filename>-Datei des 64 Bit-Treibers ausgewählt werden (x64). Nach dem
+		mit <guimenu>Weiter &ar; Fertig stellen</guimenu> bestätigt wurde wird der 64 Bit-Treiber auf den
+		Druckserver kopiert. Nun öffnet sich ein weiterer Dateidialog, in dem analog der 32
+		Bit-Treiber (x86) hochgeladen werden kann.
+	  </simpara></listitem> 
 
  	  <listitem><simpara>
 		Nach diesen Schritten sind die Treiber auf dem Druckserver im Verzeichnis <filename class="directory">/var/lib/samba/drivers/</filename> gespeichert.
  	  </simpara></listitem>
 
-	  <listitem><simpara>
-		Nun muss die Druckerfreigabe noch mit dem hochgeladenen Druckertreiber verknüpft werden. Dazu wird im
-		Programm <guimenu>printmanagement.msc</guimenu> die Druckerliste für den Druckserver aufgerufen. Dort werden
-		durch einen Doppelklick auf den <guimenu>Drucker</guimenu> die Eigenschaften aufgelistet. 
-	    </simpara>
-		<figure id="printer:selectprinter">
-		  <title>Drucker auswählen</title>
-		  <graphic scalefit="1" align="center" width="80%" fileref="illustrations40/windows-printerdriver-printerselect-de.png"/>
-		</figure>
-	   </listitem>
+	</orderedlist>
+  </para>
 
+  <para>
+	Nun wird die Druckerfreigabe mit dem hochgeladenen Druckertreiber verknüpft:
+	<orderedlist>
+	  <listitem><simpara>
+		Nun muss der Windows Explorer gestartet und dort die Netzwerkumgebung geöffnet werden. Dort
+		muss der Druckserver ausgewählt werden, auf dem die Druckerfreigabe angelegt wurde. In der
+		oberen Menüleiste wird nach einem Klick auf <guimenu>Remotedrucker anzeigen</guimenu> eine
+		Liste mit allen Druckerfreigaben angezeigt. Nun muss durch einen Klick mit der linken
+		Maustaste ein Drucker ausgewählt werden, so dass dieser blau hinterlegt ist. Nun ein
+		Rechtsklick und dann <guimenu>Eigenschaften</guimenu> auswählen (Achtung: Wurde der Drucker
+		nicht durch Linksklick ausgewählt öffnet sich ein anderer Dialog!).
+	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Ist noch kein Druckertreiber hinterlegt, wird eine Meldung angezeigt, dass noch kein Druckertreiber installiert ist.
-		Die Frage, ob der Treiber installiert werden soll, muss mit <guimenu>Nein</guimenu> bestätigt werden.
+		Ist noch kein Druckertreiber hinterlegt, wird die folgende Fehlermeldung angezeigt, die mit
+		<guimenu>Nein</guimenu> bestätigt werden muss.
 		</simpara>
 		<figure id="printer:error">
 		  <title>Fehlermeldung beim ersten Zugriff</title>
