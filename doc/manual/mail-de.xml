@@ -1046,6 +1046,73 @@ postmap /etc/postfix/smtp_auth
 			</itemizedlist>
 		</para>
 	</section>
+
+	<section id="mail::serverconfig::limits">
+		<title>Beschränkung der Verbindungsanzahl</title>
+		<para>
+			In der Standardeinstellung in UCS wird Dovecot für jeweils maximal 400 gleichzeitige Verbindungen per IMAP und POP3 ausgeliefert. Diese reichen sicher aus, um 100 gleichzeitig eingeloggte IMAP-Benutzer zu bedienen, unter Umständen deutlich mehr. Wie viele IMAP-Verbindungen Benutzer gleichzeitig geöffnet haben, hängt von den eingesetzten Clients ab. Webmail öffnet nur einzelne, kurzlebige Verbindungen. Desktop E-Mail-Programme halten über lange Zeit mehrere Verbindungen offen. Mobile Clients halten über lange Zeit wenige Verbindungen offen, aber beenden diese oft nicht von sich aus, so dass sie unnötig lang Ressourcen belegen. Die Beschränkungen dienen primär dazu, einem Denial-of-service-Angriff durch sehr viele geöffnete Prozesse und Netzwerkverbindungen zu widerstehen.
+		</para>
+		<para>
+			Um die in diesem Augenblick offenen Verbindungen zu sehen, kann folgender Befehl ausgeführt werden:
+			<programlisting language="sh"># doveadm who</programlisting>
+			Um die Gesamtanzahl auszugeben:
+			<programlisting language="sh"># doveadm who -1 | wc -l</programlisting>
+		</para>
+		<para>
+			Um die Beschränkungen zu verändern, können die &ucsUCRV; <envar>mail/dovecot/limits/*</envar> angepasst werden. Der Vorgang ist auf Grund des komplexen Zusammenspiels dieser Variablen nur semi-automatisch. Die Bedeutung aller Variablen kann in der Dovecot Dokumentation nachgelesen werden: <xref linkend="dovecot-wiki-services"/>
+		</para>
+		<para>
+			Da bei Dovecot verschiedene Prozesse für Login und Zugriff auf die E-Mail-Dateien zuständig sind, können diese getrennt konfiguriert werden. Zusätzlich wird getrennt konfiguriert wie viele Verbindungen zu einem Dienst erlaubt sind und wie viele Prozesse für einen Dienst gestartet werden. Durch das Setzen von <envar>mail/dovecot/limits/default_client_limit</envar><literal> = 3000</literal> würde die Beschränkung für die Anzahl an Verbindungen zu den POP3- und IMAP-Diensten verändert, nicht jedoch für die erlaubte Anzahl an Prozessen. In der &ucsUCS; Standardeinstellung läuft Dovecot im "High-security mode": Jede Verbindung wird von einem separaten Login-Prozess betreut. Da standardmäßig nur 400 Prozesse erlaubt sind, können auch nicht mehr Verbindungen geöffnet werden.
+		</para>
+		<para>
+			Um 3000 Verbindungen von Benutzern zu ihren E-Mails zu erlauben, muss daher eine weitere &ucsUCRV; gesetzt werden:
+			<programlisting language="sh">
+# ucr set mail/dovecot/limits/default_client_limit=3000 mail/dovecot/limits/default_process_limit=3000
+# doveadm reload
+			</programlisting>
+		</para>
+		<para>
+			Ein Blick in <filename>/var/log/dovecot.info</filename> offenbart nun eine Warnung:
+<programlisting language="sh">
+config: Warning: service auth { client_limit=2000 } is lower than required under max. load (15000)
+config: Warning: service anvil { client_limit=1603 } is lower than required under max. load (12003)
+</programlisting>
+			Die Dienste <literal>auth</literal> (Zuständig für Login und SSL-Verbindungen) sowie <literal>anvil</literal> (Zuständig für Statistiken) haben noch das Standardlimit. Es werden zwar je 3000 POP3- und IMAP-Verbindungen und -Prozesse erlaubt, aber die Anzahl der Prozesse für Login und SSL ist nun zu niedrig um sie alle zu bedienen. Dies wird dazu führen, dass Logins fehlschlagen. Die Werte für diese Dienste müssen nun der Fehlermeldung entsprechend angepasst werden:
+<programlisting language="sh">
+# ucr set mail/dovecot/limits/auth/client_limit=15000 mail/dovecot/limits/anvil/client_limit=12003
+# doveadm reload
+</programlisting>
+			Ein Blick in <filename>/var/log/dovecot.info</filename> offenbart nun noch eine letzte Warnung:
+<programlisting language="sh">
+master: Warning: fd limit (ulimit -n) is lower than required under max. load (2000 &lt; 15000), because of service auth { client_limit }
+</programlisting>
+			Das vom Linux-Kernel kontrolliere <literal>ulimit</literal> (die erlaubte Anzahl gleichzeitig geöffneter Dateien/Verbindungen pro Prozess) wird nur bei einem Neustart des Dovecot-Dienstes verändert, daher:
+<programlisting language="sh">
+# /etc/init.d/dovecot restart
+</programlisting>
+			Nun erscheint keine Fehlermeldung mehr, und IMAP- und POP3-Server akzeptieren nun beide je 3000 Verbindungen.
+		</para>
+		<section id="mail::serverconfig::limits::highperformance">
+			<title>High-Performance mode</title>
+			<para>
+				In der UCS-Standardkonfiguration wird Dovecot im "High-security mode" betrieben. Jede Verbindung wird von einem separaten Login-Prozess betreut. Diese Sicherheit hat einen Preis: Pro Benutzer und Verbindung laufen mindestens zwei separate Prozesse.
+			</para>
+			<para>
+				Installationen mit 10.000en Benutzern stoßen daher an Betriebssystemgrenzen. Dovecot kann in einem solchen Fall im "High-performance mode" betrieben werden. Um ihn zu aktivieren, wird den Login-Prozessen erlaubt, mehr als eine Verbindung zu bedienen. Dies wird konfiguriert mit:
+<programlisting language="sh">
+# ucr set mail/dovecot/limits/imap-login/service_count=0
+</programlisting>
+				Wird nun z.B. <literal>client_limit=1000</literal> und <literal>process_limit=100</literal> gesetzt, so werden nur 100 Login-Prozesse gestartet, diese bedienen jedoch jeweils bis zu 1000 Verbindungen &ndash; insgesamt 100.000 Verbindungen.
+			</para>
+			<para>
+				Der Preis: Würde ein Login-Prozess kompromittiert, könnte der Angreifer womöglich die Logindaten und E-Mails aller anderen Benutzer, die dieser Prozess bedient, abgreifen.
+			</para>
+			<para>
+				Um die Last der Login-Prozesse zwischen allen CPU-Kernen gleichmäßig aufzuteilen, sollte <envar>mail/dovecot/limits/imap-login/process_min_avail</envar> auf die Anzahl der CPU-Kerne im System gesetzt werden.
+			</para>
+		</section>
+	</section>
+
   </section>
 
   <section id="mail:clients">
