@@ -71,8 +71,8 @@ def main():
 			userdn, username = udm.create_user(
 				username=name,
 				set={
-					'password'			 : password,
-					'mailHomeServer'	 : host,
+					'password'           : password,
+					'mailHomeServer'     : host,
 					'mailPrimaryAddress' : usermail
 				}
 			)
@@ -97,7 +97,7 @@ def main():
 			userdn, username = udm.create_user(
 				username=name,
 				set={
-					'password'			 : password,
+					'password'           : password,
 					'mailPrimaryAddress' : usermail
 				}
 			)
@@ -121,7 +121,7 @@ def main():
 			userdn, username = udm.create_user(
 				username=name,
 				set={
-					'password'			 : password,
+					'password'           : password,
 					'mailPrimaryAddress' : usermail
 				}
 			)
@@ -145,8 +145,8 @@ def main():
 			userdn, username = udm.create_user(
 				username=name,
 				set={
-					'password'			 : password,
-					'mailHomeServer'	 : host
+					'password'       : password,
+					'mailHomeServer' : host
 				}
 			)
 			check_login_lookup(host, '', password, False, dovecot)
@@ -183,8 +183,8 @@ def main():
 			userdn, username = udm.create_user(
 				username=name,
 				set={
-					'password'			 : password,
-					'mailHomeServer'	 : host,
+					'password'           : password,
+					'mailHomeServer'     : host,
 					'mailPrimaryAddress' : usermail
 				}
 			)
@@ -220,8 +220,8 @@ def main():
 			userdn, username = udm.create_user(
 				username=name,
 				set={
-					'password'			 : password,
-					'mailHomeServer'	 : host,
+					'password'           : password,
+					'mailHomeServer'     : host,
 					'mailPrimaryAddress' : usermail
 				}
 			)
@@ -256,8 +256,8 @@ def main():
 			userdn, username = udm.create_user(
 				username=name,
 				set={
-					'password'			 : password,
-					'mailHomeServer'	 : host,
+					'password'           : password,
+					'mailHomeServer'     : host,
 					'mailPrimaryAddress' : usermail
 				}
 			)
