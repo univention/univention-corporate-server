@@ -5,7 +5,7 @@
 ## packages: [univention-mail-server]
 
 from essential.mail import send_mail, check_delivery, create_shared_mailfolder
-from essential.mailclient import MailClient
+from essential.mailclient import MailClient_SSL
 from univention.config_registry import handler_set
 import time
 import univention.testing.strings as uts
@@ -67,14 +67,14 @@ def main():
 
 			independent_user = mails[2]
 			for permission in [permissions.get(x) for x in permissions]:
-				imap = MailClient(host)
+				imap = MailClient_SSL(host)
 				imap.log_in(owner_user, password)
 				mailboxs = imap.getMailBoxes()
 				for mailbox in mailboxs:
 					print '** %s Mailbox = %s, Setting %s -> %s' % (
 						owner_user, mailbox, independent_user, permission)
 					imap.setacl(mailbox, independent_user, permission)
-					imap2 = MailClient(host)
+					imap2 = MailClient_SSL(host)
 					imap2.log_in(independent_user, password)
 					imap2.check_permissions(owner_user, mailbox, permission, dovecot)
 					imap2.logout()
@@ -84,7 +84,7 @@ def main():
 			if dovecot:
 				groupname= '$%s' % groupname
 			for permission in [permissions.get(x) for x in permissions]:
-				imap = MailClient(host)
+				imap = MailClient_SSL(host)
 				imap.log_in(owner_user, password)
 				mailbox = 'INBOX'
 				print '** %s Mailbox = %s, Setting %s -> %s' % (
@@ -94,7 +94,7 @@ def main():
 					time.sleep(20)
 				else:
 					imap.set_acl_cyrus(groupname, permission)
-				imap2 = MailClient(host)
+				imap2 = MailClient_SSL(host)
 				imap2.log_in(group_user, password)
 				imap2.check_permissions(owner_user, mailbox, permission, dovecot)
 				imap2.logout()

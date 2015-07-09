@@ -4,7 +4,7 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
-from essential.mailclient import MailClient
+from essential.mailclient import MailClient_SSL
 from essential.mail import create_shared_mailfolder
 from univention.config_registry import handler_set
 import itertools
@@ -44,7 +44,7 @@ def main():
 			test_cases = itertools.product(mails[0:2], permissions)
 			for i in xrange(len(mails[0:2]) * len(permissions)):
 				who, what = next(test_cases)
-				imap = MailClient(host)
+				imap = MailClient_SSL(host)
 				imap.log_in(mails[2], password)
 				mailboxs = imap.getMailBoxes()
 				mailboxs.append(shared_mailbox)
