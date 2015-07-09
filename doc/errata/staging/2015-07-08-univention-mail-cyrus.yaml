@@ -6,15 +6,15 @@ src: univention-mail-cyrus
 fix: 7.0.3-1.205.201507082215
 desc: |
  This update addresses the following issues:
-     * Add UCR variable mail/cyrus/imap/allowplaintext to (dis)allow plain
-       text passwords over non-TLS connections. Defaults to "no".
-       Attention: This changes the previous default behaviour! Plain text
-       authentication over unencrypted connections is now disabled by
-       default. To revert to the old behaviour set
-       mail/cyrus/imap/allowplaintext=yes (Bug #38500).
-     * Several changes related to dovecot integration (Bug #38479, #38707)
-     * The UDM module policies/mailquota has been moved to the package
-	   univention-mail-cyrus. The UDM module will only be available if the
-	   UCS mail stack with cyrus is installed. No change in behaviour
-	   (Bug #38473).
+   * Add UCR variable mail/cyrus/imap/allowplaintext to (dis)allow plain
+     text passwords over non-TLS connections. Defaults to "no".
+     Attention: This changes the previous default behaviour! Plain text
+     authentication over unencrypted connections is now disabled by
+     default. To revert to the old behaviour set
+     mail/cyrus/imap/allowplaintext=yes (Bug #38500).
+   * Several changes related to dovecot integration (Bug #38479, #38707)
+   * The UDM module policies/mailquota has been moved to the package
+     univention-mail-cyrus. The UDM module will only be available if the
+     UCS mail stack with cyrus is installed. No change in behaviour
+     (Bug #38473).
 bug: [38479,38473,38500,38707]
