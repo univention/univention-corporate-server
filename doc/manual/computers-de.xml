@@ -473,8 +473,8 @@
     <section id="computers:Konfiguration_von_Hardware_und_Treibern"><title>Konfiguration von Hardware und Treibern</title>
         <section id="computers:Verfuegbare_Kernel-Varianten"><title>Verfügbare Kernel-Varianten</title>
 			<para>
-            Der Standard-Kernel in UCS 3.2 basiert auf dem Linux-Kernel
-            3.10. Prinzipiell sind drei verschiedene Arten von Kernel-Paketen zu
+            Der Standard-Kernel in UCS 4.0 basiert auf dem Linux-Kernel
+            3.16. Prinzipiell sind drei verschiedene Arten von Kernel-Paketen zu
             unterscheiden:
 			</para>
             <itemizedlist>
