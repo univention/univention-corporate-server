@@ -1,4 +1,4 @@
-univention-management-console-module-udm (5.1.26-1) unstable; urgency=low
+univention-management-console-module-udm (5.1.25-76) unstable; urgency=low
 
   * Bug #38832: Improved template condition
 
