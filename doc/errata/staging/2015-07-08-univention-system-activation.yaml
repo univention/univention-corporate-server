@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-system-activation
-fix: 
+fix: 0.0.1-27.23.201507091201
 version: [2]
 desc: |
   This erratum addresses the following issue:
