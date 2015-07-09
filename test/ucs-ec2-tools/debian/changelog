@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.12-16) unstable; urgency=medium
+
+  * Bug #38869: fix IndexError for not defined commands
+
+ -- Florian Best <best@univention.de>  Thu, 09 Jul 2015 15:00:57 +0200
+
 ucs-ec2-tools (1.0.12-15) unstable; urgency=medium
 
   *  Bug #37537: Add univention-welcome-screen to the default downloaded

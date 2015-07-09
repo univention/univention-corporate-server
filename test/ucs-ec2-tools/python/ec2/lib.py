@@ -289,6 +289,11 @@ class VM:
 		''' Run all commands for a given phase e.g. for command1 '''
 		if not self.commands:
 			return
+		try:
+			self.commands[phase]
+		except IndexError:
+			_print_done('fail: phase %s does not exists' % (phase,))
+			return
 		for cmdline in self.commands[phase]:
 			try:
 				_print_process('  %s' % cmdline)
