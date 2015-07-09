@@ -34,6 +34,12 @@ Alias /ucs-overview/ /var/www/ucs-overview/
     allow from all
 </Directory>
 
+Alias /icon/ /var/www/icon/
+<Directory /var/www/icon>
+    Order allow,deny
+    allow from all
+</Directory>
+
 # allow umcp commands ... taken from UMC apache site config file
 ProxyPreserveHost on
 

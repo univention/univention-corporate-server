@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-28) unstable; urgency=medium
+
+  * Bug #38850: allow access to /icon
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 09 Jul 2015 17:48:20 +0200
+
 univention-system-activation (0.0.1-27) unstable; urgency=medium
 
   * Bug #38850: redirect accesses to UMC to the activation service
