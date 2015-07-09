@@ -354,20 +354,15 @@ define([
 						var initialValue = this.defaultObjectType;
 						var defaultValue = null;
 						if (initialValue) {
-							var matchesDN = array.filter(templates, function(ielement) {
-								return ielement.id == initialValue;
+							var match = array.filter(templates, function(ielement) {
+								return ielement.id == initialValue ||
+									ielement.label.toLowerCase() == initialValue.toLowerCase();
 							});
-							var matchesLabel = array.filter(templates, function(ielement) {
-								return ielement.label.toLowerCase() == initialValue.toLowerCase();
-							});
-							if (matchesDN.length) {
-								defaultValue = matchesDN[0].id;
-							} else if (matchesLabel.length) {
-								defaultValue = matchesLabel[0].id;
-							} else {
-								defaultValue = templates[0].id;
+							if (match.length) {
+								defaultValue = match[0].id;
 							}
-						} else {
+						}
+						if (!defaultValue) {
 							defaultValue = templates[0].id;
 						}
 						templates.unshift({ id: 'None', label: _('None') });
