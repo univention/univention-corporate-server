@@ -137,7 +137,7 @@
 	  form the basis for the virtualization. Each of these hosts one or more virtual machines with
 	  the KVM virtualization solution. UCS and Microsoft Windows systems are operated
 	  paravirtualized, i.e., the direct access of the virtualized systems to the hosts' resources
-	  results in better performance. Paravirtualization drivers for Xen and KVM are provided by
+	  results in better performance. Paravirtualization drivers for KVM are provided by
 	  Univention as signed MSI installation packages and, as such, can be installed simply.
 	</para>
 
@@ -157,11 +157,6 @@
 
 	<para>
 	  Snapshots allow a simple rollback of updates in the case of error.
-	</para>
-
-	<para>
-	  The access to the virtual machines is abstracted via a library, so
-	  that the virtualization solution Xen can also be used alongside KVM.
 	</para>
   </section>
 

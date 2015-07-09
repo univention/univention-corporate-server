@@ -133,7 +133,7 @@
 	  virtuelle Maschinen mit der Virtualisierungslösung KVM. UCS- und Windows-Systeme werden
 	  paravirtualisiert betrieben, d.h. durch einen Zugriff der virtualisierten Systeme auf die
 	  Ressourcen der Wirtsysteme kann ein höherer Durchsatz erzielt werden.
-	  Paravirtualisierungstreiber für Xen und KVM werden von Univention als signierte
+	  Paravirtualisierungstreiber für KVM werden von Univention als signierte
 	  MSI-Installationspakete bereitgestellt und können so einfach installiert werden.
 	</para>
 
@@ -153,11 +153,6 @@
 
 	<para>
 	  Snapshots ermöglichen einen einfachen Rollback von Updates im Fehlerfall.
-	</para>
-
-	<para>
-	  Der Zugriff auf die virtuellen Maschinen wird durch eine Bibliothek abstrahiert, so dass
-	  alternativ zu KVM auch die Virtualisierungslösung Xen eingesetzt werden kann.
 	</para>
   </section>
 

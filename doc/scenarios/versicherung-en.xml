@@ -133,7 +133,7 @@
 	  Virtualization servers based on UCS member servers (server installations
 	  without a local LDAP server) form the basis for the
 	  virtualization. Each of these hosts one or more virtual machines with
-	  the Xen virtualization solution. UCS and Windows systems are operated
+	  the KVM virtualization solution. UCS and Windows systems are operated
 	  paravirtualized, i.e., the direct access of the virtualized systems to the
 	  hosts' resources results in better performance.
 	</para>
@@ -143,11 +143,6 @@
 	  web-based &ucsUVMM;. If maintenance work is necessary on a
 	  virtualization server, the virtual machines running on this system can
 	  be migrated to another server while still running.
-	</para>
-
-	<para>
-	  The access to the virtual machines is abstracted via a library, so
-	  that the virtualization solution KVM can also be used alongside Xen.
 	</para>
   </section>
 

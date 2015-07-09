@@ -141,7 +141,7 @@
 	  Als Grundlage der Virtualisierung dienen
 	  Virtualisierungsserver auf UCS-Memberservern (Serversysteme
 	  ohne lokalen Verzeichnisdienst). Auf diesen laufen jeweils ein bis mehrere
-	  virtuelle Maschinen mit der Virtualisierungslösung Xen. UCS- und
+	  virtuelle Maschinen mit der Virtualisierungslösung KVM. UCS- und
 	  Windows-Systeme werden paravirtualisiert betrieben, d.h. durch einen
 	  Zugriff der virtualisierten Systeme auf die Ressourcen der Wirtsysteme
 	  kann ein höherer Durchsatz erzielt werden.
@@ -153,12 +153,6 @@
 	  werden. Werden Wartungsarbeiten an einem Virtualisierungsserver
 	  nötig, so können die auf diesem System laufenden virtuellen Maschinen im
 	  laufenden Betrieb auf einen anderen Server migriert werden.
-	</para>
-
-	<para>
-	  Der Zugriff auf die virtuellen Maschinen wird durch eine Bibliothek abstrahiert,
-	  so dass alternativ zu Xen auch die Virtualisierungslösung KVM eingesetzt werden
-	  kann.
 	</para>
   </section>
 
