@@ -82,7 +82,7 @@
 			<abbrev>Debian FAQ</abbrev>
 			<publishername>Debian</publishername>
 			<pubdate>2012</pubdate>
-			<title><ulink url="http://www.debian.org/doc/FAQ/ch-pkg_basics">The Debian GNU/Linux FAQ - Basics of the Debian package management system</ulink></title>
+			<title><ulink url="http://www.debian.org/doc/manuals/debian-faq/ch-pkg_basics">The Debian GNU/Linux FAQ - Basics of the Debian package management system</ulink></title>
 		</biblioentry>
 		<biblioentry id="Debian:maint-guide">
 			<abbrev>Debian Guide</abbrev>
@@ -100,14 +100,16 @@
 			<abbrev>Debian Reference</abbrev>
 			<publishername>Debian</publishername>
 			<pubdate>2012</pubdate>
-			<title><ulink url="http://www.debian.org/doc/developers-reference/">Debian Developer's Reference</ulink></title>
+			<title><ulink url="http://www.debian.org/doc/manuals/developers-reference/">Debian Developer's Reference</ulink></title>
 		</biblioentry>
+		<!--
 		<biblioentry id="appcenter-whitepaper">
 			<abbrev>App Center Whitepaper</abbrev>
 			<publishername>Univention GmbH</publishername>
 			<pubdate>2013</pubdate>
 			<title><ulink url="http://www.univention.de/fileadmin/download/whitepaper/Univention_App_Center_Summary_en.pdf">App Center White Paper</ulink></title>
 		</biblioentry>
+		-->
 
 
 	</bibliography>

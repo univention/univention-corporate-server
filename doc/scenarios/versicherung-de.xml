@@ -422,9 +422,9 @@
 		<listitem><simpara><ulink url="http://wiki.univention.de/index.php?title=Opsi_%28open_pc_server_integration%29"/></simpara></listitem>
 		<listitem><simpara><ulink url="http://docs.univention.de/ucc-manual-1.0.html"/> (Univention Corporate Client-Handbuch)</simpara></listitem>
 		<listitem><simpara><ulink url="http://docs.univention.de/installation.html"/> (Erweiterte Installations-Dokumentation)</simpara></listitem>
-		<listitem><simpara><ulink url="http://www.univention.de/produkte/ucs/app-katalog/app/details/drbd"/> (DRBD)</simpara></listitem>
-		<listitem><simpara><ulink url="http://www.univention.de/produkte/ucs/app-katalog/app/details/sep-sesam"/> (SEP sesam Backup)</simpara></listitem>
-		<listitem><simpara><ulink url="http://www.univention.de/produkte/ucs/app-katalog/app/details/sugarcrm"/> (SugarCRM)</simpara></listitem>
+		<listitem><simpara><ulink url="https://www.univention.de/produkte/univention-app-center/drbd/"/> (DRBD)</simpara></listitem>
+		<listitem><simpara><ulink url="https://www.univention.de/produkte/univention-app-center/sep-sesam/"/> (SEP sesam Backup)</simpara></listitem>
+		<listitem><simpara><ulink url="https://www.univention.de/produkte/univention-app-center/sugarcrm/"/> (SugarCRM)</simpara></listitem>
 	  </itemizedlist>
   </section>
 </chapter>

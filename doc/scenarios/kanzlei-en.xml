@@ -182,7 +182,7 @@
 	<title>References</title>
 	<itemizedlist>
 	  <listitem><simpara><ulink url="http://docs.univention.de/manual.html"/> (UCS manual)</simpara></listitem>
-	  <listitem><simpara><ulink url="http://www.univention.de/en/products/ucs/app-catalogue/app/details/zarafa"/> (Zarafa Collaboration Platform)</simpara></listitem>
+	  <listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/zarafa/"/> (Zarafa Collaboration Platform)</simpara></listitem>
 	  <listitem><simpara><ulink url="http://docs.univention.de/manual.html#windows:adtakeover"/></simpara></listitem>
 	</itemizedlist>
   </section>

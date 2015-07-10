@@ -329,7 +329,7 @@
 	<title>References</title>
 	  <itemizedlist>
 		<listitem><simpara><ulink url="http://docs.univention.de/manual.html"/> (UCS manual)</simpara></listitem>
-		<listitem><simpara><ulink url="http://www.univention.de/en/products/ucs/app-catalogue/app/details/oxseforucs"/> (Open-Xchange Server Edition)</simpara></listitem>
+		<listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/oxseforucs/"/> (OX App Suite)</simpara></listitem>
 	  </itemizedlist>
   </section>
 </chapter>

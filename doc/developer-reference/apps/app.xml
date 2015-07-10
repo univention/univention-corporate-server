@@ -27,13 +27,16 @@
 	</para>
 	<para>
 	  This chapter mainly aims at software vendors that want to provide their
-	  software in Univention App Center and describes the necessary steps. An
+		software in Univention App Center and describes the necessary steps.
+		<!--
+		An
 	  overview of the advantages and benefits from a business perspective can
 	  can be found in <xref linkend="appcenter-whitepaper"/>.
+		-->
 	</para>
 	<para>
 		A catalogue with the available applications can be viewed on the <ulink
-			url="http://www.univention.de/en/products/ucs/app-catalogue-for-univention-corporate-server/">Univention
+			url="https://www.univention.com/products/univention-app-center/">Univention
 			website</ulink>.
 	</para>
 	<section id="app:requirements">

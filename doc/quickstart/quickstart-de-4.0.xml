@@ -38,7 +38,7 @@
 
   <para>
 	Die UCS-Installations-DVD steht unter <ulink
-	url="http://www.univention.de/download/ucs-download/"/> zum Download bereit.
+	url="https://www.univention.de/download/ucs-download/"/> zum Download bereit.
 	Die Installations-DVD ist nur für die Rechnerarchitektur amd64 (64 Bit) verfügbar. Sie unterstützt den
 	Unified Extensible Firmware Interface-Standard (UEFI) inkl. SecureBoot.
   </para>
@@ -46,7 +46,7 @@
   <para>
 	Alternativ können auch vorinstallierte VMware und VirtualBox-Images verwendet werden. Diese
 	stehen unter <ulink
-	url="http://www.univention.de/download/ucs-download/vorinstallierte-vm-images/"/>
+	url="https://www.univention.de/download/ucs-download/vorinstallierte-vm-images/"/>
 	zum Download bereit.
   </para>
 
