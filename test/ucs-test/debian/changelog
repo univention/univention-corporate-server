@@ -1,3 +1,9 @@
+ucs-test (5.0.151-1) unstable; urgency=low
+
+  * Bug #38804: Restart imap server after setting the ucr variables.
+
+ -- Ammar Najjar <najjar@univention.de>  Fri, 10 Jul 2015 09:51:12 +0200
+
 ucs-test (5.0.150-1) unstable; urgency=low
 
   * Bug #38804: Add 29_mail_related_modifications_of_user_objects test script.
