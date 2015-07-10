@@ -99,7 +99,7 @@ def main():
 						recipients=mail,
 						msg=token,
 						tls=True,
-						username=username,
+						username=mail,
 						password=password
 					)
 					check_delivery(token, mail, False)

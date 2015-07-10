@@ -16,21 +16,22 @@ def main():
 		with udm_test.UCSTestUDM() as udm:
 			username = uts.random_name()
 			password = uts.random_string()
+			mailAddress = '%s@%s' % (username, ucr.get('domainname'))
 			userdn, username = udm.create_user(
 					username=username,
 					password=password,
-					mailPrimaryAddress='%s@%s' % (username, ucr.get('domainname')),
+					mailPrimaryAddress= mailAddress,
 					option=['mail', 'person', 'posix', 'samba', 'pki']
 					)
 
 			imap = ImapMail()
 
 			print '* Test imap login with the correct password:'
-			if not imap.login_OK(username, password):
+			if not imap.login_OK(mailAddress, password):
 				utils.fail('IMAP login failed with the correct password')
 
 			print '* Test imap login with the wrong password:'
-			if imap.login_OK(username, uts.random_name()):
+			if imap.login_OK(mailAddress, uts.random_name()):
 				utils.fail('IMAP login succeeded with the wrong password')
 
 

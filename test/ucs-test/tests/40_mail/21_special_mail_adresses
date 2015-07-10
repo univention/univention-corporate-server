@@ -24,16 +24,19 @@ def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		with udm_test.UCSTestUDM() as udm:
 			domain = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+			username = uts.random_name()
+			mailAddress = '%s@%s' % (username, ucr.get('domainname'))
 			userdn, username = udm.create_user(
+				username=username,
 				set={
 					'password': 'univention',
 					'mailHomeServer': domain,
-					'mailPrimaryAddress': '%s@%s' % (uts.random_name(), ucr.get('domainname'))
+					'mailPrimaryAddress': mailAddress
 				}
 			)
 			for mail_name in ('postmaster', 'webmaster'):
 				recipient_email = '%s@%s' % (mail_name, domain )
-				check_sending_mail(username, 'univention', recipient_email)
+				check_sending_mail(mailAddress, 'univention', recipient_email)
 
 
 if __name__ == '__main__':

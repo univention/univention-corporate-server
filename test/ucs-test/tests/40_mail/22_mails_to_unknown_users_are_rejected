@@ -55,8 +55,8 @@ def main():
 			)
 
 			restart_postfix()
-			check_sending_mail(username, password, recipient_email, True)
-			check_sending_mail(username, password, unknown_email, False)
+			check_sending_mail(recipient_email, password, recipient_email, True)
+			check_sending_mail(recipient_email, password, unknown_email, False)
 
 
 if __name__ == '__main__':

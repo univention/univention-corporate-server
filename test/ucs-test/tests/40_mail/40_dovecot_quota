@@ -50,7 +50,7 @@ def main():
 			# create quota (already done above in udm.create_user())
 			imap = ImapMail(timeout=timeout)
 			imap.login_OK(mail, pw)
-			quota, response = imap.get_imap_quota(username, pw)
+			quota, response = imap.get_imap_quota(mail, pw)
 			if not response == 'OK':
 				utils.fail('Fail get imap quota')
 			if not quota == quota01 * 1024:
@@ -60,7 +60,7 @@ def main():
 			udm.modify_object(modulename='users/user', dn=userdn, UniventionDovecotUserQuota=str(quota02))
 			subprocess.call(["/usr/bin/doveadm", "auth", "cache", "flush"])
 
-			quota, response = imap.get_imap_quota(username, pw)
+			quota, response = imap.get_imap_quota(mail, pw)
 			if not response == 'OK':
 				utils.fail('Fail get imap quota')
 			if not quota == quota02 * 1024:
@@ -70,7 +70,7 @@ def main():
 			udm.modify_object(modulename='users/user', dn=userdn, UniventionDovecotUserQuota=str(quota03))
 			subprocess.call(["/usr/bin/doveadm", "auth", "cache", "flush"])
 
-			quota, response = imap.get_imap_quota(username, pw)
+			quota, response = imap.get_imap_quota(mail, pw)
 			if not response == 'OK':
 				utils.fail('Fail get imap quota')
 			if not quota == -1:
