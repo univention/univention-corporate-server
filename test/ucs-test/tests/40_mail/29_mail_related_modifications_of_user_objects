@@ -7,7 +7,6 @@
 
 from essential.mailclient import MailClient_SSL
 from univention.config_registry import handler_set
-import subprocess
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
@@ -50,7 +49,10 @@ def main():
 			basedn = ucr.get('ldap/base')
 			if dovecot:
 				handler_set(['mail/dovecot/mailbox/rename=yes',
-							'mail/dovecot/mailbox/delete=no'])
+				'mail/dovecot/mailbox/delete=no',
+				'mail/dovecot/auth/cache_ttl=0',
+				'mail/dovecot/auth/cache_negative_ttl=0'
+				])
 			else:
 				handler_set(['mail/cyrus/mailbox/rename=yes',
 							'mail/cyrus/mailbox/delete=no'])
@@ -156,9 +158,6 @@ def main():
 				binddn=admin,
 				bindpwd=passwd,
 				set={'mailPrimaryAddress': usermail})
-			# flushing auth cache manually
-			if dovecot:
-				subprocess.call(['/usr/bin/doveadm', 'auth', 'cache', 'flush'])
 			check_login_lookup(host, usermail, password, True, dovecot)
 
 			# Case 5
@@ -268,9 +267,6 @@ def main():
 				binddn=admin,
 				bindpwd=passwd,
 				set={'mailPrimaryAddress': ''})
-			# flushing auth cache manually
-			if dovecot:
-				subprocess.call(['/usr/bin/doveadm', 'auth', 'cache', 'flush'])
 			expected_result = False if dovecot else True
 			check_login_lookup(host, usermail, password, expected_result, dovecot)
 
