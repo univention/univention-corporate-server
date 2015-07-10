@@ -77,22 +77,7 @@ define([
 		});
 	}
 
-	var isTrue = function(input) {
-		//('yes', 'true', '1', 'enable', 'enabled', 'on')
-		if (typeof input == "string") {
-			switch (input.toLowerCase()) {
-				case 'yes':
-				case 'true':
-				case '1':
-				case 'enable':
-				case 'enabled':
-				case 'on':
-					return true;
-			}
-		}
-		return false;
-	};
-	var hasLicenseRequested = isTrue(entries.license_requested);
+	var hasLicenseRequested = Boolean(entries.email);
 
 	return {
 		_availableLocales: _availableLocales,

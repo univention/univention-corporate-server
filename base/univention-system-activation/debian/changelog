@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-29) unstable; urgency=medium
+
+  * Bug #38850: check for existing email address instead license request
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 10 Jul 2015 14:42:42 +0200
+
 univention-system-activation (0.0.1-28) unstable; urgency=medium
 
   * Bug #38850: allow access to /icon
