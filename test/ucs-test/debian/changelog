@@ -1,3 +1,9 @@
+ucs-test (5.0.152-1) unstable; urgency=low
+
+  * Bug #38883 :authenticate using the user mailAddress instead of uid 
+
+ -- Ammar Najjar <najjar@univention.de>  Fri, 10 Jul 2015 10:38:00 +0200
+
 ucs-test (5.0.151-1) unstable; urgency=low
 
   * Bug #38804: Restart imap server after setting the ucr variables.
