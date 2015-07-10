@@ -6,7 +6,7 @@ src: univention-mail-postfix
 fix: 9.0.3-1.254.201507101104
 desc: |
  This update addresses the following issue:
-  * An error message was mistakenly printed into a postfix config file,
-    that led to an incorrect postfix configuration. This problem was
-    introduced with erratum 238.
+ * An error message was mistakenly printed into a postfix config file,
+   that led to an incorrect postfix configuration. This problem was
+   introduced with erratum 238.
 bug: [38884]
