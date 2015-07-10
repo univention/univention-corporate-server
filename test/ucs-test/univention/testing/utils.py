@@ -204,6 +204,35 @@ class AutomaticListenerRestart(object):
 		restart_listener()
 
 
+class AutoCallCommand(object):
+	"""
+		Automatically call the given commands when entering/leaving the "with" block.
+        The keyword arguments enter_cmd and exit_cmd are optional.
+
+		with AutoCallCommand(enter_cmd=['/etc/init.d/dovecot', 'reload'],
+                             exit_cmd=['/etc/init.d/dovecot', 'restart']) as acc:
+			with ucr_test.UCSTestConfigRegistry() as ucr:
+				# set some ucr variables, that influence the Univention Directory Listener
+				univention.config_registry.handler_set(['foo/bar=ding/dong'])
+	"""
+	def __init__(self, enter_cmd=None, exit_cmd=None):
+		self.enter_cmd = None
+		if type(enter_cmd) in (list, tuple):
+			self.enter_cmd = enter_cmd
+		self.exit_cmd = None
+		if type(exit_cmd) in (list, tuple):
+			self.exit_cmd = exit_cmd
+
+	def __enter__(self):
+		if self.enter_cmd:
+			subprocess.call(self.enter_cmd)
+		return self
+
+	def __exit__(self, exc_type, exc_value, traceback):
+		if self.exit_cmd:
+			subprocess.call(self.exit_cmd)
+
+
 
 def wait_for_replication():
 	sys.stdout.flush()
