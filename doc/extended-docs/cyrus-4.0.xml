@@ -16,7 +16,7 @@
 		<revhistory>
 			<revision>
 				<revnumber>4.0-0</revnumber>
-				<date>25 June 2015</date>
+				<date>10 July 2015</date>
 			</revision>
 		</revhistory>
 	</bookinfo>
@@ -35,7 +35,7 @@
 					using Cyrus instead of Dovecot as IMAP and POP3 server.
 				</para>
 				<para>
-					Since &ucsUCS; version 4.0-3 Dovecot is used as the default IMAP
+					Since &ucsUCS; version 4.0-2 Dovecot is used as the default IMAP
 					and POP3 server. The documentation for using Dovecot can be found
 					in the main user manual <biblioref linkend="ucs-manual"/>.
 				</para>
