@@ -1,3 +1,10 @@
+ucs-test (5.0.150-1) unstable; urgency=low
+
+  * Bug #38804: Add 29_mail_related_modifications_of_user_objects test script.
+  * Bug #38600: Use SSL connection for imap MailClient.
+
+ -- Ammar Najjar <najjar@univention.de>  Fri, 10 Jul 2015 08:34:10 +0200
+
 ucs-test (5.0.149-1) unstable; urgency=low
 
   * Bug #38828: Add a WaitForNonzeroResultOrTimeout decorator.
