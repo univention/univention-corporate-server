@@ -7,6 +7,7 @@
 from essential.mail import send_mail, check_delivery, create_shared_mailfolder
 from essential.mailclient import MailClient_SSL
 from univention.config_registry import handler_set
+import subprocess
 import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -16,12 +17,14 @@ import univention.testing.udm as udm_test
 def main():
 	with udm_test.UCSTestUDM() as udm:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
-			dovecot = ucr.is_true('mail/dovecot')
 			domain = ucr.get('domainname')
+			dovecot = ucr.is_true('mail/dovecot')
 			if dovecot:
 				handler_set(['mail/dovecot/mailbox/delete=yes'])
+				subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/zero', 'w'))
 			else:
 				handler_set(['mail/cyrus/mailbox/delete=yes'])
+				subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/zero', 'w'))
 			host = '%s.%s' % (ucr.get('hostname'), domain)
 			password = 'univention'
 			mails = []
