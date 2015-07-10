@@ -250,7 +250,7 @@
 			<para>
 				<figure id="mail-mailinglist">
 					<title>Creating a mailing list</title>
-					<graphic scalefit="1" width="90%" align="center" fileref="illustrations40/mail_mailinglist_en.png"/>
+					<graphic scalefit="1" width="90%" align="center" fileref="illustrations40/cyrus-mail_mailinglist_en.png"/>
 				</figure>
 			</para>
 			<para>
@@ -329,7 +329,7 @@
 			<para>
 				<figure id="mail-sharedfolder">
 					<title>Creating a shared IMAP folder</title>
-					<graphic scalefit="1" width="100%" fileref="illustrations40/mail_imapfolder_en.png"/>
+					<graphic scalefit="1" width="100%" fileref="illustrations40/cyrus-mail_imapfolder_en.png"/>
 				</figure>
 			</para>
 
@@ -899,7 +899,7 @@
 		<para>
 			<figure id="mail:clients:thunderbird">
 				<title>Setup of Mozilla Thunderbird</title>
-				<graphic scalefit="1" align="center" width="80%" fileref="illustrations40/thunderbird_en.png"/>
+				<graphic scalefit="1" align="center" width="80%" fileref="illustrations40/cyrus-thunderbird_en.png"/>
 			</figure>
 		</para>
 	</chapter>
@@ -921,7 +921,7 @@
 			<para>
 				<figure id="horde-login">
 					<title>Login on Horde</title>
-					<graphic scalefit="1" align="center" width="35%" fileref="illustrations40/login_en.png"/>
+					<graphic scalefit="1" align="center" width="35%" fileref="illustrations40/cyrus-login_en.png"/>
 				</figure>
 			</para>
 			<para>
@@ -953,7 +953,7 @@
 			<para>
 				<figure id="horde-inbox">
 					<title>Web mail (Inbox)</title>
-					<graphic scalefit="1" width="95%" fileref="illustrations40/inbox_en.png"/>
+					<graphic scalefit="1" width="95%" fileref="illustrations40/cyrus-inbox_en.png"/>
 				</figure>
 			</para>
 			<para>
@@ -973,7 +973,7 @@
 			</para>
 			<figure id="horde-address">
 				<title>Address book for webmail</title>
-				<graphic scalefit="1" width="100%" fileref="illustrations40/addressbook_en.png"/>
+				<graphic scalefit="1" width="100%" fileref="illustrations40/cyrus-addressbook_en.png"/>
 			</figure>
 			<para>
 				Contact information found using the simple or advanced search can then be
@@ -1003,7 +1003,7 @@
 			</para>
 			<figure id="horde-filter">
 				<title>Filter management in Horde</title>
-				<graphic scalefit="1" width="100%" fileref="illustrations40/filter_en.png"/>
+				<graphic scalefit="1" width="100%" fileref="illustrations40/cyrus-filter_en.png"/>
 			</figure>
 			<para>
 				Filters can be edited and expanded
