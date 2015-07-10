@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  module: software management / app center
 #
-# Copyright 2012-2015 Univention GmbH
+# Copyright 2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,10 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
 import time
 import functools
 import ldap
+from errno import ENOENT
+
 from univention.admin.uldap import getMachineConnection as _getMachineConnection, getAdminConnection as _getAdminConnection
 from univention.admin.uexceptions import base
 
@@ -57,59 +57,57 @@ class reload_ucr(object):
 		return wrapper
 
 
-def _wraps(func):
-	return functools.wraps(func)
+class LDAP(object):
 
-class _LDAP(object):
-
-	__ldap_connections = {}
 	_LDAP_CONNECTION = 'ldap_connection'
 	_LDAP_POSITION = 'ldap_position'
 
+	def __init__(self):
+		self.__ldap_connections = {}
 
-	@classmethod
-	def machine_connection(cls, func=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, **kwargs):
-		"""
-		@machine_connection(write=True)
-		def foobar(self, ldap_connection=None, ldap_position=None):
-			pass
-		"""
-		return cls._wrapped(func, cls._get_machine_connection(write, kwargs), cls._set_machine_connection(write), loarg, poarg)
-	__ldap_connections['machine_connection'] = {'write': None, 'read': None}
-
-	@classmethod
-	def _get_machine_connection(cls, write, kwargs):
+	def machine_connection(self, func=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, **kwargs):
+		hash_ = ('machine', bool(write))
+		kwargs.update({'ldap_master': write})
 		def connection():
-			conn = cls.__ldap_connections['machine_connection']['write' if write else 'read']
-			if conn is None:
-				kwargs.update({'ldap_master': write})
-				try:
-					conn = _getMachineConnection(**kwargs)
-				except IOError:  # /etc/machine.secret does not exists
+			try:
+				return _getMachineConnection(**kwargs)
+			except IOError as exc:  # /etc/machine.secret does not exists
+				if exc.errno == ENOENT:
 					return
-			return conn
-		return connection
+				raise
+		return self._wrapped(func, hash_, connection, loarg, poarg)
 
-	@classmethod
-	def _set_machine_connection(cls, write):
+	def get_machine_connection(self, *args, **kwargs):
+		@self.machine_connection(*args, **kwargs)
+		def connection(ldap_connection=None, ldap_position=None):
+			return ldap_connection, ldap_position
+		return connection()
+
+	def _wrapped(self, func, hash_, connection, loarg, poarg):
 		def setter(conn):
-			cls.__ldap_connections['machine_connection']['write' if write else 'read'] = conn
-		return setter
-
-	@classmethod
-	def _wrapped(cls, func, connection, setter, loarg, poarg):
+			self.__ldap_connections[hash_] = conn
 		def _decorator(func):
-			@_wraps(func)
+			@functools.wraps(func)
 			def _decorated(*args, **kwargs):
-				kwargs[loarg], kwargs[poarg] = conn = connection()
+				try:
+					conn = self.__ldap_connections[hash_]
+				except KeyError:
+					conn = connection()
+
+				try:
+					lo, po = conn
+				except (TypeError, ValueError):
+					lo, po = conn, None
+
+				kwargs[loarg], kwargs[poarg] = conn = lo, po
+
 				try:
 					return func(*args, **kwargs)
-				except ldap.SERVER_DOWN:
-					setter(None)
-					raise
-				except base as exc:
-					if isinstance(getattr(exc, 'original_exception', None), (ldap.SERVER_DOWN, )):
+				except (ldap.SERVER_DOWN, base) as exc:
+					if isinstance(exc, ldap.SERVER_DOWN) or isinstance(getattr(exc, 'original_exception', None), (ldap.SERVER_DOWN, )):
 						setter(None)
+					else:
+						setter(conn)
 					raise
 				else:
 					setter(conn)
@@ -117,4 +115,9 @@ class _LDAP(object):
 		if func is None:
 			return _decorator
 		return _decorator(func)
+
+
+_LDAP = LDAP()
 machine_connection = _LDAP.machine_connection
+get_machine_connection = _LDAP.get_machine_connection
+del _LDAP

@@ -51,6 +51,7 @@ from univention.admin.handlers.computers import domaincontroller_slave
 from univention.admin.handlers.computers import memberserver
 
 # local application
+from univention.management.console.modules.appcenter.decorators import reload_ucr, machine_connection, get_machine_connection
 from constants import COMPONENT_BASE, COMP_PARAMS, STATUS_ICONS, DEFAULT_ICON, PUT_SUCCESS, PUT_PROCESSING_ERROR
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate
@@ -108,7 +109,7 @@ def get_all_hosts(lo=None, ucr=None):
 	delete_lo = False
 	if lo is None:
 		try:
-			lo = uldap.getMachineConnection(ldap_master=False)
+			lo, po = get_machine_connection(write=False)
 		except IOError: # /etc/machine.secret => No LDAP set up yet (e.g. system-setup)
 			return []
 		delete_lo = True
@@ -120,6 +121,7 @@ def get_all_hosts(lo=None, ucr=None):
 	finally:
 		if delete_lo:
 			del lo
+			del po
 
 def get_md5(filename):
 	m = md5()

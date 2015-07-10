@@ -40,7 +40,9 @@ case "$1" in
 		# will not be populated
 		echo 'from univention.management.console.modules.appcenter.app_center import Application; Application.sync_with_server()' | python
 		;;
+	upgrade)
+		ln -s /usr/share/pyshared/univention/management/console/modules/appcenter/decorators.py /usr/lib/pymodules/python2.7/univention/management/console/modules/appcenter/decorators.py
+		;;
 esac
 
 exit 0
-
