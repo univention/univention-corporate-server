@@ -7,6 +7,7 @@
 
 from essential.mailclient import MailClient_SSL
 from univention.config_registry import handler_set
+import subprocess
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
@@ -48,14 +49,19 @@ def main():
 			domain = ucr.get('domainname')
 			basedn = ucr.get('ldap/base')
 			if dovecot:
-				handler_set(['mail/dovecot/mailbox/rename=yes',
-				'mail/dovecot/mailbox/delete=no',
-				'mail/dovecot/auth/cache_ttl=0',
-				'mail/dovecot/auth/cache_negative_ttl=0'
+				handler_set(['mail/dovecot/mailbox/delete=yes',
+							'mail/dovecot/mailbox/rename=yes',
+							'mail/dovecot/mailbox/delete=no',
+							'mail/dovecot/auth/cache_ttl=0',
+							'mail/dovecot/auth/cache_negative_ttl=0'
 				])
+				subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/zero', 'w'))
 			else:
-				handler_set(['mail/cyrus/mailbox/rename=yes',
-							'mail/cyrus/mailbox/delete=no'])
+				handler_set(['mail/cyrus/mailbox/delete=yes',
+							'mail/cyrus/mailbox/rename=yes',
+							'mail/cyrus/mailbox/delete=no'
+				])
+				subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/zero', 'w'))
 			host = '%s.%s' % (ucr.get('hostname'), domain)
 			password = 'univention'
 			account = utils.UCSTestDomainAdminCredentials()
