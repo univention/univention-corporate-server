@@ -619,7 +619,7 @@
 			pre-set. A different value can be set via the &ucsUCRV;
 			<envar>grub/gfxmode</envar>. Only resolutions are supported which can be set
 			via VESA BIOS extensions. A list of available modes can be found at
-			<ulink url="http2://en.wikipedia.org/wiki/VESA_BIOS_Extensions"/>. The input must
+			<ulink url="https://en.wikipedia.org/wiki/VESA_BIOS_Extensions"/>. The input must
 			be specified in the format
 			<userinput><replaceable>HORIZONTAL</replaceable>x<replaceable>VERTICAL</replaceable>@<replaceable>COLOURDEPTHBIT</replaceable></userinput>, so for example
 			<literal>1024x768@16</literal>.
