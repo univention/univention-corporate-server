@@ -309,6 +309,11 @@ define([
 						// get the MultiInput to update its ComboBox value with the new DN
 						if (ipolicyType in this._policyWidgets) {
 							var iwidget = this._policyWidgets[ipolicyType].$policy$;
+							if (ipolicyDNs.length > 1) {
+								// by default we have a max constraint of 1 to disable that one can set multiple policies.
+								// In case multiple policies are already set in the backend the user should be able to correctly modify them.
+								iwidget.set('max', Infinity);
+							}
 							iwidget.setInitialValue(ipolicyDNs);
 						}
 					}, this);
@@ -594,6 +599,7 @@ define([
 					// to a particular policy
 					newProperties.push({
 						type: FixedMultiInput,
+						max: 1,
 						name: '$policy$',
 						label: _('Select policy configuration'),
 						description: _('Select policies that should be directly linked to the current LDAP object'),
@@ -1253,11 +1259,6 @@ define([
 				tools.forIn(this._policyWidgets[policyType], function(iname, iwidget) {
 
 					if (iname == '$policy$') {
-						// the MultiInput for policies, skip this widget
-						if (policyDNs.length < 2) {
-							// make it impossible to reference multiple policies except if it originally already has multiple policies assigned
-							iwidget.set('max', 1);
-						}
 						return;
 					}
 
