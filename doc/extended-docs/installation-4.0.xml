@@ -215,21 +215,29 @@ univention-add-app -l APPID
 	  </para>
 
 	  <para>
-		  Amazon EC2 uses a PyGrub version which can only read the data format from Grub 1 (<filename>menu.lst</filename>),
-		whilst UCS uses Grub 2 as the bootloader. The following &ucsUCR; variables can be
-		used to generate the Grub configuration in this format additionally. The bootloader
+		  Amazon EC2 uses a PyGrub version which can only read the data format from GRUB 1 (<filename>menu.lst</filename>),
+		whilst UCS uses GRUB 2 as the bootloader. The following &ucsUCR; variables can be
+		used to generate the GRUB configuration in this format additionally. The bootloader
 		configuration is also adapted:
 
-		<programlisting language="sh">
-append="$(ucr get grub/append)"
-ucr set grub/append="$(echo "$append" |
- sed -e 's|/dev/sda|/dev/xvda|g;s|splash|nosplash|')"
-ucr set grub/root=/dev/xvda1
-ucr set grub/grub1root="(hd0)"
+		<programlisting language="sh"><![CDATA[
+DEV='/dev/xvda' GRUB='(hd0)'
+grub-mkdevicemap ||
+	echo "${GRUB} ${DEV}" >/boot/grub/device.map
+append="$(ucr get grub/append |
+	sed -re "s|/dev/sda|${DEV}|g;s|(no)?splash||g")"
+xargs -d'\n' ucr set <<__UCR__
+grub/append=${append}
+grub/boot=${DEV}
+grub/root=${DEV}1
+grub/grub1root=${GRUB}
+grub/bootsplash=no
+grub/quiet=no
+__UCR__
 update-initramfs -uk all
 update-grub
 univention-grub-generate-menu-lst
-		</programlisting>
+]]></programlisting>
 	  </para>
 
 	  <para>
