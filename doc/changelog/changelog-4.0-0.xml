@@ -1,8 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%entities;
+]>
+<chapter id="relnotes:changelog" lang="">
+	<title>Changelog</title>
 <section id="changelog:general">
 	<title>General</title>
 	<itemizedlist>
 		<listitem><simpara>
-				The underlying Debian version has been updated to Debian GNU/Linux 7.7 (Wheezy) <sbr/>
+				The underlying Debian version has been updated to Debian GNU/Linux 7.7 (Wheezy)
 				(<ulink url="&ucsbug;33835">Bug 33835</ulink>,
 				 <ulink url="&ucsbug;33836">Bug 33836</ulink>.
 				 <ulink url="&ucsbug;35688">Bug 35688</ulink>,
@@ -12,7 +22,7 @@
 		</simpara></listitem>
 		<listitem><simpara>
 				All Univention packages have been adapted to Dephelper 9 and to Python
-				2.7. UCR templates have been adapted to the new upstream packages <sbr/>
+				2.7. UCR templates have been adapted to the new upstream packages
 				(<ulink url="&ucsbug;33836">Bug 33836</ulink>,
 				<ulink url="&ucsbug;35135">Bug 35135</ulink>,
 				<ulink url="&ucsbug;35138">Bug 35138</ulink>,
@@ -74,7 +84,7 @@
 	<title>Univention Installer</title>
 	<itemizedlist>
 		<listitem><simpara>
-				The UCS installation DVD has been revised. The installation is now performed by an adapted version of the Debian installer <sbr/>
+				The UCS installation DVD has been revised. The installation is now performed by an adapted version of the Debian installer
 				(<ulink url="&ucsbug;30547">Bug 30547</ulink>,
 				<ulink url="&ucsbug;34994">Bug 34994</ulink>,
 				<ulink url="&ucsbug;35370">Bug 35370</ulink>,
@@ -122,7 +132,7 @@
 		<title>Linux kernel and firmware packages</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The Linux kernel has been updated to 3.16.5 <sbr/> (<ulink url="&ucsbug;33844">Bug 33844</ulink>, <ulink url="&ucsbug;36279">Bug 36279</ulink>).
+				The Linux kernel has been updated to 3.16.5 (<ulink url="&ucsbug;33844">Bug 33844</ulink>, <ulink url="&ucsbug;36279">Bug 36279</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The packages <package>amd64-microcode</package> and <package>intel-microcode</package> were added and are installed by default to provide micro-code updates for AMD and Intel CPUs (<ulink url="&ucsbug;34437">Bug 34437</ulink>).
@@ -328,7 +338,7 @@
 			<listitem><simpara>
 				The web interface design has been completely revised also with respect to
 				its rendering on mobile devices (responsive design). Along with this change
-				many details of UMC have been adapted accordingly <sbr/>
+				many details of UMC have been adapted accordingly
 				(<ulink url="&ucsbug;35654">Bug 35654</ulink>,
 				<ulink url="&ucsbug;35499">Bug 35499</ulink>,
 				<ulink url="&ucsbug;36095">Bug 36095</ulink>).
@@ -590,7 +600,7 @@
 				(<ulink url="&ucsbug;35847">Bug 35847</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-				A module <emphasis>System diagnostic</emphasis> has been added to UMC which is able to analyse the system for known problems and helps to resolve them <sbr/>
+				A module <emphasis>System diagnostic</emphasis> has been added to UMC which is able to analyse the system for known problems and helps to resolve them
 				(<ulink url="&ucsbug;34765">Bug 34765</ulink>),
 				(<ulink url="&ucsbug;35866">Bug 35866</ulink>),
 				(<ulink url="&ucsbug;35864">Bug 35864</ulink>).
@@ -634,7 +644,7 @@
 		</simpara></listitem>
 		<listitem><simpara>
 				The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename>
-				have been adapted to the needs of UCS 4.0  <sbr/>
+				have been adapted to the needs of UCS 4.0
 				(
 				<ulink url="&ucsbug;36205">Bug 36205</ulink>,
 				<ulink url="&ucsbug;36218">Bug 36218</ulink>,
@@ -814,7 +824,7 @@
 			<listitem><simpara>
 				Univention Virtual Machine Manager now supports connections to Cloud Computing
 				Environments e.g. to OpenStack (<ulink url="&ucsbug;32842">Bug 32842</ulink>).
-				The following additional changes and bug fixes were made during UCS 4 &ucsUVMM; development: <sbr/>(
+				The following additional changes and bug fixes were made during UCS 4 &ucsUVMM; development: (
 					<ulink url="&ucsbug;36139">Bug 36139</ulink>,
 					<ulink url="&ucsbug;36145">Bug 36145</ulink>,
 					<ulink url="&ucsbug;35824">Bug 35824</ulink>,
@@ -888,7 +898,7 @@
 		<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Samba has been updated to version 4.2rc2 <sbr/>
+					Samba has been updated to version 4.2rc2
 					(<ulink url="&ucsbug;35319">Bug 35319</ulink>,
 					 <ulink url="&ucsbug;35766">Bug 35766</ulink>,
 					 <ulink url="&ucsbug;36090">Bug 36090</ulink>,
@@ -922,12 +932,12 @@
 				</simpara></listitem>
 				<listitem><simpara>
 						When <envar>windows/wins-support</envar> was not set samba complained about
-						an empty value in smb.conf. This has been fixed
+						an empty value in <filename>smb.conf</filename> This has been fixed
 						(<ulink url="&ucsbug;33261">Bug 33261</ulink>).
 				</simpara></listitem>
 				<listitem><simpara>
 						Samba3 to Samba4 in-place migration failed with Samba 4.2 because
-						the new smb.conf validation code complained about empty values in smb.conf
+						the new <filename>smb.conf</filename> validation code complained about empty values in <filename>smb.conf</filename>
 						(<ulink url="&ucsbug;36814">Bug 36814</ulink>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -948,7 +958,7 @@
 	<title>Univention S4 Connector</title>
 		<itemizedlist>
 			<listitem><simpara>
-					A traceback in the cleanup code of the <emphasis>s4-connector</emphasis> listener
+					A traceback in the cleanup code of the <package>s4-connector</package> listener
 					has been fixed (<ulink url="&ucsbug;32813">Bug 32813</ulink>)
 			</simpara></listitem>
 		</itemizedlist>
@@ -1056,5 +1066,5 @@
 		</simpara></listitem>
 	</itemizedlist>
 </section>
-
+</chapter>
 <!-- vim: set ts=4 sw=4 noet: -->

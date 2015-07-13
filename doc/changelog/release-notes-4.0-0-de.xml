@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-
-  <!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
-  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-de.xml">
-  <!ENTITY changelog SYSTEM "changelog-4.0-0.xml">
-
-  %entities;
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%extensions;
+	%entities;
 ]>
 <book lang="de" id="releasenotes-4.0-0-de">
 	<bookinfo>
@@ -19,7 +17,7 @@
 			</revision>
 		</revhistory>
 
-		<legalnotice>
+		<legalnotice lang="">
 			<para>
 				Alle Rechte vorbehalten. / All rights reserved.
 			</para>
@@ -33,15 +31,15 @@
 			</para>
 
 			<para>
-				<ulink url="mailto:feedback@univention.de">feedback@univention.de</ulink>
+				<email>feedback@univention.de</email>
 			</para>
 
-			<para>
+			<para lang="de">
 				Jede aufgeführte Marke und jedes Warenzeichen steht im Eigentum ihrer jeweiligen eingetragenen Rechtsinhaber.
 				Linux ist ein eingetragenes Warenzeichen von Linus Torvalds.
 			</para>
 
-			<para>
+			<para lang="en">
 				The mentioned brand names and registered trademarks are owned by the respective legal owners in each case.
 				Linux is a registered trademark of Linus Torvalds.
 			</para>
@@ -53,7 +51,7 @@
 
 		<para>
 			Mit &ucsUCS; 4.0 steht das vierte Major Release für &ucsUCS; (UCS) zur Verfügung. Es
-			umfasst eine Reihe umfangreicher Funktionserweiterungen und -verbesserungen, neue
+			umfasst eine Reihe umfangreicher Funktionserweiterungen und Verbesserungen, neue
 			Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten
 			Änderungen im Überblick:
 		</para>
@@ -61,13 +59,13 @@
 		<itemizedlist>
 			<listitem><para>
 				Das Design und die Usability der graphischen Administrationsoberfläche &ucsUMC;
-				wurde mit UCS 4.0 komplett überarbeitet. Durch ein Responsive Design kann die
+				wurde mit UCS 4.0 komplett überarbeitet. Durch ein <foreignphrase>Responsive Design</foreignphrase> kann die
 				Administration auch bequem vom Tablet oder Smartphone aus erfolgen.
 			</para></listitem>
 			<listitem><para>
-				UCS Virtual Machine Manger (UVMM) kann neben lokalen UCS-Virtualisierungsservern nun
+				UCS Virtual Machine Manager (UVMM) kann neben lokalen UCS Virtualisierungsservern nun
 				auch OpenStack- oder Amazon EC2-Umgebungen administrieren. Dadurch sind hybride Cloud
-				Szenarien mit UCS Out-of-the-Box möglich.
+				Szenarien mit UCS <foreignphrase>Out-of-the-Box</foreignphrase> möglich.
 			</para></listitem>
 			<listitem><para>
 				UCS 4.0 basiert auf Debian GNU/Linux 7.7 (Wheezy). Mehr als 16.000 Source Pakete
@@ -148,7 +146,7 @@
 					erfolgen soll, so sollte vor dem Update auf UCS 4.0 auf die letzte verfügbare
 					&ucsUCC; 1.0 Version aktualisiert werden. Dies kann mit dem folgenden Befehlen
 					durchgeführt werden:
-					<programlisting>
+					<programlisting language="sh">
 eval "$(ucr shell version/version version/patchlevel)"
 univention-add-app ucc_20140115
 univention-upgrade --updateto $version_version-$version_patchlevel
@@ -194,7 +192,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 
 		<para>
 			Für das Update sollte eine Anmeldung auf der lokalen Konsole des Systems mit dem Benutzer
-			<emphasis>root</emphasis> durchgeführt und das Update dort gestartet werden. Alternativ
+			<systemitem class="username">root</systemitem> durchgeführt und das Update dort gestartet werden. Alternativ
 			kann das Update über &ucsUMC; durchgeführt werden.
 		</para>
 
@@ -231,18 +229,14 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 					<para>
 						<application>PostgreSQL-8.3</application> wurde in UCS 4.0 entfernt.
 						Die Daten müssen von Hand in eine neuere Version migriert werden.
-						Das Vorgehen ist in dem
-						<ulink url="http://sdb.univention.de/1220">SDB-Artikel 1220</ulink>
-						beschrieben.
+						Das Vorgehen ist in <u:sdb>1220</u:sdb> beschrieben.
 					</para>
 				</listitem>
 				<listitem>
 					<para>
 						<application>Cyrus-2.2</application> wurde in UCS 4.0 entfernt.
 						Die Mailserverdaten müssen von Hand in eine neuere Version migriert
-						werden. Das Vorgehen ist in dem
-						<ulink url="http://sdb.univention.de/1213">SDB-Artikel 1213</ulink>
-						beschrieben.
+						werden. Das Vorgehen ist in <u:sdb>1213</u:sdb> beschrieben.
 					</para>
 				</listitem>
 			</itemizedlist>
@@ -256,13 +250,13 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 			Nach dem Update müssen die neuen oder aktualisierten Join-Skripte ausgeführt werden.
 			Dies kann auf zwei Wegen erfolgen: Entweder über das UMC-Modul
 			<guimenu>Domänenbeitritt</guimenu> oder durch Aufruf des Befehls
-			<command>univention-run-join-scripts</command> als Benutzer <emphasis>root</emphasis>.
+			<command>univention-run-join-scripts</command> als Benutzer <systemitem class="username">root</systemitem>.
 		</para>
 		<para>
 			Wenn die Applikation <emphasis>UCS Virtual Machine Manager</emphasis>
 			zusammen mit KVM-Virtualisierungsservern vor dem Update in der Domäne betrieben wurde,
 			müssen die mit dem Update hinzugekommenen Profile für virtuelle Maschinen mit UCS 4.0
-			angepasst werden. Wenn das Bridge-Interface auf den KVM Servern nicht <emphasis>br0</emphasis>
+			angepasst werden. Wenn das Bridge-Interface auf den KVM Servern nicht <filename class="devicefile">br0</filename>
 			ist, sollte das Profil entsprechend der Beschreibung in <xref linkend="ucs-uvmm-profile"/> angepasst werden.
 		</para>
 		<para>
@@ -306,15 +300,15 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 			</para>
 			<para>
 				Die Protokollierung kann unabhängig von der verwendeten Lizenz durch Setzen der &ucsUCRV;
-				<envar>umc/web/piwik</envar> auf <emphasis>false</emphasis> deaktiviert werden.
+				<envar>umc/web/piwik</envar> auf <literal>false</literal> deaktiviert werden.
 			</para>
 		</section>
 
 		<section id="relnotes:secbrowsers">
-			<title>Umfang des Sicherheits-Supports von Webkit, Konqueror und QtWebKit</title>
+			<title>Umfang des Sicherheits-Supports von WebKit, Konqueror und QtWebKit</title>
 			<para>
-				Webkit, Konqueror und QtWebkit werden in UCS im maintained-Zweig des Repositorys
-				mitgeliefert, aber nicht durch Sicherheits-Updates unterstützt. Webkit wird vor allem für
+				WebKit, Konqueror und QtWebKit werden in UCS im maintained-Zweig des Repositorys
+				mitgeliefert, aber nicht durch Sicherheits-Updates unterstützt. WebKit wird vor allem für
 				die Darstellung von HTML-Hilfeseiten u.ä. verwendet. Als Web-Browser sollte Firefox
 				eingesetzt werden.
 			</para>
@@ -358,7 +352,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 				Auf Domänencontrollern mit MDB LDAP Backend (z.B. Systeme, die mit UCS 4.0
 				installiert worden sind) kann nun eine automatisierte Kontosperrungen
 				bei wiederholten LDAP-Authentisierungsfehlern aktiviert werden. Die Aktivierung ist
-				im SDB-Artikel beschrieben <ulink url="http://sdb.univention.de/1291"/>.
+				in <u:sdb>1291</u:sdb> beschrieben.
 			</para>
 		</section>
 
@@ -371,7 +365,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 			Aufgeführt sind die Änderung seit UCS 3.2-4:
 		</para>
 
-		&changelog;
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.0-0.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 
 	<bibliography id="relnotes:bibliography">

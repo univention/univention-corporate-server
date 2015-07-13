@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-
-  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
-  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
-  <!ENTITY changelog SYSTEM "changelog-4.0-0.xml">
-
-  %entities;
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%entities;
 ]>
 <book lang="en" id="releasenotes-4.0-0-en">
 	<bookinfo>
@@ -19,7 +17,7 @@
 			</revision>
 		</revhistory>
 
-		<legalnotice>
+		<legalnotice lang="">
 			<para>
 				Alle Rechte vorbehalten. / All rights reserved.
 			</para>
@@ -33,15 +31,15 @@
 			</para>
 
 			<para>
-				<ulink url="mailto:feedback@univention.de">feedback@univention.de</ulink>
+				<email>feedback@univention.de</email>
 			</para>
 
-			<para>
+			<para lang="de">
 				Jede aufgeführte Marke und jedes Warenzeichen steht im Eigentum ihrer jeweiligen eingetragenen Rechtsinhaber.
 				Linux ist ein eingetragenes Warenzeichen von Linus Torvalds.
 			</para>
 
-			<para>
+			<para lang="en">
 				The mentioned brand names and registered trademarks are owned by the respective legal owners in each case.
 				Linux is a registered trademark of Linus Torvalds.
 			</para>
@@ -149,7 +147,7 @@
 			time, the update to the latest available &ucsUCC; 1.0 version should be made before
 			updating to UCS 4.0:
 
-			<programlisting>
+			<programlisting language="sh">
 eval "$(ucr shell version/version version/patchlevel)"
 univention-add-app ucc_20140115
 univention-upgrade --updateto $version_version-$version_patchlevel
@@ -177,7 +175,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 			<para>
 			  Starting with UCS 4.0 UCS, installation DVDs are only provided for the x86 64 bit
 			  architecture (amd64). Existing 32 bit UCS 3 systems can still be updated to UCS 4.0 through the
-			  online repository or by using update DVDs. The 32 bit architectur will be supported
+			  online repository or by using update DVDs. The 32 bit architecture will be supported
 			  over the entire UCS 4 maintenance.
 			</para>
 		</section>
@@ -195,7 +193,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 
 		<para>
 		  For the update, a login should be performed on the system's local console as user
-		  <emphasis>root</emphasis>, and the update should be initiated there. Alternatively, the
+		  <systemitem class="username">root</systemitem>, and the update should be initiated there. Alternatively, the
 		  update can be conducted using &ucsUMC;.
 		</para>
 
@@ -209,7 +207,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 		</para>
 
 		<section id="relnotes:removed">
-		  <title>Removed/unspported Components</title>
+		  <title>Removed/unsupported Components</title>
 		  <para>
 			Some components have been removed and are not shipped any longer with UCS 4.0:
 		  </para>
@@ -225,7 +223,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 
 			<listitem>
 			  <para>
-				The Scalix LDAP schema has been removed in UCS 4.0. All Scalix-specific attributes
+				The Scalix LDAP schema has been removed in UCS 4.0. All Scalix specific attributes
 				need to be removed from the LDAP directory before updating.
 			  </para>
 			</listitem>
@@ -233,16 +231,14 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 			<listitem>
 			  <para>
 				<application>PostgreSQL 8.3</application> is no longer provided in UCS 4.0. The
-				migration of the databases to PostgreSQL 8.4 is described in <ulink
-				url="http://sdb.univention.de/1249">SDB article 1249</ulink>.
+				migration of the databases to PostgreSQL 8.4 is described in <u:sdb>1249</u:sdb>.
 			  </para>
 			</listitem>
 
 			<listitem>
 			  <para>
 				<application>Cyrus 2.2</application> is no longer provided in UCS 4.0. The migration
-				of the mail spool to Cyrus 2.4 is described in <ulink
-				url="http://sdb.univention.de/1213">SDB article 1213</ulink>.
+				of the mail spool to Cyrus 2.4 is described in <u:sdb>1213</u:sdb>.
 			  </para>
 			</listitem>
 		  </itemizedlist>
@@ -257,14 +253,14 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 		  Following the update, new or updated join scripts need to be executed. This can be done in
 		  two ways: Either using the UMC module  <guimenu>Domain join</guimenu> or by running the
 		  command <command>univention-run-join-scripts</command> as user
-		  <emphasis>root</emphasis>.
+		  <systemitem class="username">root</systemitem>.
 		</para>
 
 		<para>
 		  If the application <emphasis>UCS Virtual Machine Manager</emphasis> was used
 		  with KVM virtualization servers, the new virtualization profiles need to be adapted for
 		  UCS 4.0. If the bridge interface on the KVM servers wasn't configured as
-		  <emphasis>br0</emphasis>, the profile should be adapted as documented in <xref
+		  <filename class="devicefile">br0</filename>, the profile should be adapted as documented in <xref
 		  linkend="ucs-uvmm-profile"/>.
 		</para>
 
@@ -311,20 +307,20 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 	  </section>
 
 	  <section id="relnotes:secbrowsers">
-		<title>Scope of security support for Webkit, Konqueror und QtWebKit</title>
+		<title>Scope of security support for WebKit, Konqueror and QtWebKit</title>
 		<para>
-		  Webkit, Konqueror and QtWebkit are shipped in the maintained branch of the UCS repository,
-		  but not covered with security support. Webkit is primarily used for displaying HTML help
+		  WebKit, Konqueror and QtWebKit are shipped in the maintained branch of the UCS repository,
+		  but not covered with security support. WebKit is primarily used for displaying HTML help
 		  pages etc. Firefox should be used as web browser.
 		</para>
 
 	  </section>
 
 	  <section id="relnotes:browsers">
-		<title>Recommeded browsers for the access to Univention Management Console</title>
+		<title>Recommended browsers for the access to Univention Management Console</title>
 
 		<para>
-		  &ucsUMC; uses numerous Javascript and CSS functions to display the web interface. Cookies
+		  &ucsUMC; uses numerous JavaScript and CSS functions to display the web interface. Cookies
 		  need to be permitted in the browser. The following browsers are recommended:
 		</para>
 
@@ -356,8 +352,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 		<para>
 		  On domain controllers using the MDB LDAP backend (e.g. systems installed with UCS 4.0)
 		  automatic account lockout can be activated in cases of repeated LDAP authentication
-		  failures. The activation is described in the SDB article
-		  <ulink url="http://sdb.univention.de/1291"/>.
+		  failures. The activation is described in <u:sdb>1291</u:sdb>.
 		</para>
 	  </section>
 
@@ -369,7 +364,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 		  Listed are the changes since UCS 3.2-4:
 		</para>
 
-		&changelog;
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.0-0.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 
 	<bibliography id="relnotes:bibliography">
