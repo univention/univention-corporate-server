@@ -989,7 +989,7 @@
   <title>Integration eigener Plugins</title>
   <para>
 	Die in UCS mitgelieferten und vorkonfigurierten Nagios-Plugins können durch selbst geschriebene
-	oder externe Plugins ergänzt werden. Unter <ulink url="http://exchange.nagios.org/"/> findet sich
+	oder externe Plugins ergänzt werden. Unter <ulink url="https://exchange.nagios.org/"/> findet sich
 	eine Vielzahl verfügbarer Module.
   </para>
 

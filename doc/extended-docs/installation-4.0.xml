@@ -545,7 +545,7 @@ wget --keep-session-cookies --save-cookies cookie.db --load-cookies \
 		<para>
 			A license can also be ordered with a POST request via <command>wget</command>. Please note that special
 		  characters such as blank spaces must be escaped in URL-encoded syntax, see
-		  <uri>http://en.wikipedia.org/wiki/Percent-encoding</uri> for details.
+		  <uri>https://en.wikipedia.org/wiki/Percent-encoding</uri> for details.
 		</para>
 
 		<programlisting language="sh">

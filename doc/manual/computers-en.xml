@@ -619,7 +619,7 @@
 			pre-set. A different value can be set via the &ucsUCRV;
 			<envar>grub/gfxmode</envar>. Only resolutions are supported which can be set
 			via VESA BIOS extensions. A list of available modes can be found at
-			<ulink url="http://en.wikipedia.org/wiki/VESA_BIOS_Extensions"/>. The input must
+			<ulink url="http2://en.wikipedia.org/wiki/VESA_BIOS_Extensions"/>. The input must
 			be specified in the format
 			<userinput><replaceable>HORIZONTAL</replaceable>x<replaceable>VERTICAL</replaceable>@<replaceable>COLOURDEPTHBIT</replaceable></userinput>, so for example
 			<literal>1024x768@16</literal>.
@@ -1447,7 +1447,7 @@ univention-config-registry search --value master.example.com
 				<para>
 					Search templates in the form of regular expressions can also be used in the
 					search. The complete format is documented at
-					<ulink url="http://docs.python.org/library/re.html"/>.
+					<ulink url="https://docs.python.org/2/library/re.html"/>.
 				</para>
 			</section>
 

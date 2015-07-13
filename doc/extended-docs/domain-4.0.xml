@@ -359,7 +359,7 @@ exit
 				<listitem><para><ulink url="https://help.ubuntu.com/community/LDAPClientAuthentication"/></para></listitem>
 				<listitem><para><ulink url="https://help.ubuntu.com/community/SingleSignOn"/></para></listitem>
 				<listitem><para><ulink url="https://help.ubuntu.com/community/PamCcredsHowto"/></para></listitem>
-				<listitem><para><ulink url="http://www.opinsys.fi/en/user-management-with-sssd-on-shared-laptops"/></para></listitem>
+				<listitem><para><ulink url="http://labs.opinsys.com/blog/2010/03/26/user-management-with-sssd-on-shared-laptops/"/></para></listitem>
 			  </itemizedlist>
 		</section>
 	</chapter>

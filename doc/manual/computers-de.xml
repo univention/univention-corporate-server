@@ -607,7 +607,7 @@
                 16 Bit Farbtiefe gewechselt. Durch die &ucsUCRV; <envar>grub/gfxmode</envar> kann ein anderer Modus ausgewählt
                 werden. Es werden nur Auflösungen unterstützt, die über VESA BIOS Extentions
                 gesetzte werden können. Eine Liste der verfügbaren Modi findet sich unter
-                <ulink url="http://en.wikipedia.org/wiki/VESA_BIOS_Extensions"/>. Die Eingabe
+                <ulink url="https://en.wikipedia.org/wiki/VESA_BIOS_Extensions"/>. Die Eingabe
 				erfolgt im Format <userinput><replaceable>HORIZONTAL</replaceable>x<replaceable>VERTIKAL</replaceable>@<replaceable>FARBTIEFEBIT</replaceable></userinput>, also
                 z.B. <literal>1024x768@16</literal>.
             </para>
@@ -1435,7 +1435,7 @@ univention-config-registry search --value master.example.com
                 <para>
                     Bei der Suche können auch Suchmuster in Form von regulären Ausdrücken
                     verwendet werden. Das vollständige Format ist unter
-                    <ulink url="http://docs.python.org/library/re.html"/> dokumentiert.
+					<ulink url="https://docs.python.org/2/library/re.html"/> dokumentiert.
                 </para>
             </section><!-- Suche nach Variablen und gesetzten Werten -->
 

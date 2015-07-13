@@ -999,7 +999,7 @@
   <title>Integration of additional plugins</title>
   <para>
 	The preconfigured Nagios plugins supplied with UCS can be complemented with additional
-	plugins. A variety of available modules can be found at <ulink url="http://exchange.nagios.org"/>.
+	plugins. A variety of available modules can be found at <ulink url="https://exchange.nagios.org/"/>.
   </para>
 
   <para>
