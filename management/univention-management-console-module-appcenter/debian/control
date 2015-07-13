@@ -17,6 +17,7 @@ Depends: univention-management-console-server,
  python-univention-lib,
  shell-univention-lib (>= 3.0.12-4),
  python-univention-directory-manager (>=9.0.22-13),
+ python-univention-appcenter,
  univention-config,
  univention-updater,
  univention-management-console-module-lib
@@ -42,6 +43,16 @@ Depends: univention-management-console-module-appcenter,
  python-polib
 Description: UMC module for application overview
  This package contains an introduction for every installed app.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: python-univention-appcenter
+Architecture: all
+Depends: python-univention-config-registry
+Description: Library for the Univention App Center.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

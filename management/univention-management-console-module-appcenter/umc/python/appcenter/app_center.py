@@ -446,6 +446,7 @@ class Application(object):
 				filename = os.path.join(CACHE_DIR, '%s.%s' % (self.component_id, localised_file_ext))
 				with open(filename, 'rb') as fp:
 					self._options[key] = ''.join(fp.readlines()).strip()
+					self._options['%s_file' % key] = filename
 					return
 			except IOError:
 				pass
@@ -1636,7 +1637,10 @@ class Application(object):
 					pwd_file.write(password)
 					pwd_file.flush()
 					args.extend(['-dcpwd', pwd_file.name])
-			run_join_scripts = Thread(target=subprocess.call, args=[args])
+				else:
+					MODULE.process('Cannot run them without credentials')
+					return
+			run_join_scripts = Thread(target=subprocess.call, args=[args], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			run_join_scripts.start()
 			while run_join_scripts.is_alive():
 				# i did not find anything nearly as efficient as this one
