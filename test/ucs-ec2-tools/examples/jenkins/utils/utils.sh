@@ -42,6 +42,7 @@ basic_setup ()
 		sleep 10 # just wait a few seconds to give the amazone cloud some time
 		ucr set --force updater/identify="UCS (EC2 Test)"
 		ucr set update/check/cron/enabled=false update/check/boot/enabled=false
+		grep -F /dev/vda /boot/grub/device.map && [ -b /dev/xvda ] && /usr/sbin/grub-mkdevicemap # Bug 36256
 	fi
 	while pgrep -f "/etc/init.d/rc 2" && ! pgrep -f /opt/firefox/firefox ; do
 		sleep 1s
