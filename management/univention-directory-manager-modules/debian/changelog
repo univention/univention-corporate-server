@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.31-4) unstable; urgency=medium
+
+  * Bug #38364: disallow name change of DCs and memberservers
+
+ -- Florian Best <best@univention.de>  Mon, 13 Jul 2015 18:47:55 +0200
+
 univention-directory-manager-modules (10.0.31-3) unstable; urgency=low
 
   * Bug #38832: Adapted the description for a ucr variable
