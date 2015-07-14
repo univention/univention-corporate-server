@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-directory-manager-modules
+fix: 10.0.31-4.1327.201507141126
+version: [2]
+desc: |
+  This update addresses the following issues:
+  * Renaming of domain controller or memberserver computers is prevented now.
+bug: [38364]

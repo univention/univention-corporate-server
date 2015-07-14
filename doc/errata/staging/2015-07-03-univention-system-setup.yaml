@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-system-setup
-fix: 8.1.69-19.906.201507091832
+fix: 8.1.69-20.907.201507141126
 version: [2]
 desc: |
   This update addresses the following issues:
@@ -13,4 +13,8 @@ desc: |
   * If accessible, the name server specified via DHCP is pre-configured on the
     network settings page.
   * The links on the last page of the setup wizard have been adjusted.
-bug: [38593, 38593, 38215, 38330, 38850]
+  * A non authoritative DNS answer is now correctly handled during validation
+    of settings.
+  * A information is shown during domain setup that the process might take a
+    while.
+bug: [38593, 38593, 38215, 38330, 38850, 38522, 38833]
