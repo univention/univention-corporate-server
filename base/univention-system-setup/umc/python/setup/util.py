@@ -829,7 +829,7 @@ def is_ucs_domain(nameserver, domain):
 	try:
 		resolver.query('_domaincontroller_master._tcp.%s.' % domain, 'SRV')
 		return True
-	except dns.resolver.NXDOMAIN:
+	except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer):
 		MODULE.warn('No valid UCS domain (%s) at nameserver %s!' % (domain, nameserver))
 	except dns.exception.Timeout as exc:
 		MODULE.warn('Lookup for DC master record at nameserver %s timed out: %s' % (nameserver, exc))
@@ -862,7 +862,7 @@ def get_fqdn(nameserver):
 		domain = '.'.join(parts)
 
 		return domain
-	except dns.resolver.NXDOMAIN as exc:
+	except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer) as exc:
 		MODULE.warn('Lookup for nameserver %s failed: %s' % (nameserver, exc))
 	except dns.exception.Timeout as exc:
 		MODULE.warn('Lookup for nameserver %s timed out: %s' % (nameserver, exc))
@@ -960,4 +960,3 @@ def get_random_nameserver(country):
 		ipv4_nameserver=random.choice(ipv4_servers),
 		ipv6_nameserver=random.choice(ipv6_servers),
 	)
-

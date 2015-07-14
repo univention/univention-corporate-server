@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-07-09 18:23+0200\n"
+"POT-Creation-Date: 2015-07-13 17:11+0200\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -43,6 +43,7 @@ msgid "<b>Unknown</b>"
 msgstr "<b>Unbekannt</b>"
 
 #: umc/js/setup/ApplianceWizard.js:1089
+#, python-brace-format
 msgid ""
 "<b>Warning:</b> At least {memory_min} RAM is required for the installation "
 "of {product_name}."
@@ -174,8 +175,8 @@ msgid ""
 "<p>When accessing the system for the first time, you will be asked to upload "
 "a new license that has been sent to your email account.</p>"
 msgstr ""
-"<p>Beim initialen Zugriff auf das System, werden Sie gebeten eine Lizenzdatei, "
-"die an Ihre E-Mail-Adresse gesendet wurde, hochzuladen.</p>"
+"<p>Beim initialen Zugriff auf das System, werden Sie gebeten eine "
+"Lizenzdatei, die an Ihre E-Mail-Adresse gesendet wurde, hochzuladen.</p>"
 
 #: umc/js/setup/ApplianceWizard.js:2182
 msgid ""
@@ -417,8 +418,9 @@ msgstr "Bridge ports"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/js/setup.js:147 umc/js/setup.js:498 umc/js/setup/InterfaceGrid.js:131
+#: umc/js/setup.js:147 umc/js/setup.js:498
 #: umc/js/setup/ApplianceWizard.js:2186 umc/js/setup/ApplianceWizard.js:2376
+#: umc/js/setup/InterfaceGrid.js:131
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -615,8 +617,8 @@ msgstr ""
 "Authetifizierungsdienste bereit. Lokale Dienste auf einem DC Slave haben "
 "Zugriff auf die lokale LDAP-Datenbank."
 
-#: umc/js/setup/InterfaceWizard.js:616 umc/js/setup/InterfaceWizard.js:642
-#: umc/js/setup/ApplianceWizard.js:1035
+#: umc/js/setup/ApplianceWizard.js:1035 umc/js/setup/InterfaceWizard.js:616
+#: umc/js/setup/InterfaceWizard.js:642
 msgid "DHCP query failed."
 msgstr "DHCP-Anfrage schlug fehl."
 
@@ -628,8 +630,8 @@ msgstr "DHCP-Anfrage"
 msgid "DNS server"
 msgstr "DNS-Server"
 
-#: umc/js/setup/LanguagePage.js:149 umc/js/setup/LanguagePage.js:229
-#: umc/js/setup/ApplianceWizard.js:369
+#: umc/js/setup/ApplianceWizard.js:369 umc/js/setup/LanguagePage.js:149
+#: umc/js/setup/LanguagePage.js:229
 msgid "Default system locale"
 msgstr "Standard-System-Sprachdefinition"
 
@@ -800,8 +802,8 @@ msgstr ""
 "handbuch-%s.html#computers:networkcomplex\" target=\"_blank\">UCS "
 "Dokumentation</a> gefunden werden."
 
-#: umc/js/setup/InterfaceWizard.js:627 umc/js/setup/ApplianceWizard.js:511
-#: umc/js/setup/ApplianceWizard.js:1634
+#: umc/js/setup/ApplianceWizard.js:511 umc/js/setup/ApplianceWizard.js:1634
+#: umc/js/setup/InterfaceWizard.js:627
 msgid "Gateway"
 msgstr "Gateway"
 
@@ -821,8 +823,8 @@ msgstr "Allgemeine Einstellungen"
 msgid "Global network settings"
 msgstr "Globale Netzwerk-Einstellungen"
 
-#: umc/js/setup/NetworkPage.js:125 umc/js/setup/NetworkPage.js:295
 #: umc/js/setup/ApplianceWizard.js:536 umc/js/setup/ApplianceWizard.js:1646
+#: umc/js/setup/NetworkPage.js:125 umc/js/setup/NetworkPage.js:295
 msgid "HTTP proxy"
 msgstr "HTTP-Proxy"
 
@@ -856,6 +858,7 @@ msgstr "IPv4-Adresse"
 
 #: umc/js/setup/ApplianceWizard.js:450 umc/js/setup/ApplianceWizard.js:467
 #: umc/js/setup/ApplianceWizard.js:485 umc/js/setup/ApplianceWizard.js:503
+#, python-brace-format
 msgid "IPv4 net mask/IPv6 prefix {interface}"
 msgstr "IPv4-Netzmaske/IPv6-Präfix {interface}"
 
@@ -865,6 +868,7 @@ msgstr "IPv4-Netzwerkgerätkonfiguration"
 
 #: umc/js/setup/ApplianceWizard.js:441 umc/js/setup/ApplianceWizard.js:457
 #: umc/js/setup/ApplianceWizard.js:475 umc/js/setup/ApplianceWizard.js:493
+#, python-brace-format
 msgid "IPv4/IPv6 address {interface}"
 msgstr "IPv4/IPv6-Adresse {interface}"
 
@@ -1017,8 +1021,8 @@ msgstr "Einer bestehenden Active-Directory-Domäne beitreten"
 msgid "Join into an existing UCS domain"
 msgstr "Einer bestehenden UCS-Domäne beitreten"
 
-#: umc/js/setup/LanguagePage.js:88 umc/js/setup/LanguagePage.js:217
-#: umc/js/setup/ApplianceWizard.js:384
+#: umc/js/setup/ApplianceWizard.js:384 umc/js/setup/LanguagePage.js:88
+#: umc/js/setup/LanguagePage.js:217
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
@@ -1135,7 +1139,7 @@ msgstr "Netzwerkgerät"
 msgid "Network interface configuration"
 msgstr "Netzwerkgerätkonfiguration"
 
-#: umc/js/setup/NetworkPage.js:299 umc/js/setup/ApplianceWizard.js:1511
+#: umc/js/setup/ApplianceWizard.js:1511 umc/js/setup/NetworkPage.js:299
 msgid "Network interfaces"
 msgstr "Netzwerkgeräte"
 
@@ -1188,7 +1192,7 @@ msgstr ""
 "Aktualisierungen, Installation weiterer Software-Komponenten) nicht wie "
 "erwatet funtionieren werden."
 
-#: umc/js/setup/NetworkPage.js:98 umc/js/setup/InterfaceWizard.js:627
+#: umc/js/setup/InterfaceWizard.js:627 umc/js/setup/NetworkPage.js:98
 msgid "None"
 msgstr "Kein"
 
@@ -1267,8 +1271,8 @@ msgstr "Bitte geben Sie die Ports an, die zu der Bridge hinzugefügt werden."
 msgid "Preferred DNS server"
 msgstr "Bevorzugter DNS-Server"
 
-#: umc/js/setup/NetworkPage.js:101 umc/js/setup/NetworkPage.js:303
-#: umc/js/setup/ApplianceWizard.js:1514
+#: umc/js/setup/ApplianceWizard.js:1514 umc/js/setup/NetworkPage.js:101
+#: umc/js/setup/NetworkPage.js:303
 msgid "Primary network interface"
 msgstr "Primäres Netzwerkgerät"
 
@@ -1372,6 +1376,7 @@ msgid "The changes have been applied successfully."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
 #: umc/js/setup.js:566
+#, python-brace-format
 msgid ""
 "The connection to the server could not be established after {time} seconds. "
 "This problem can occur due to a change of the IP address. In this case, "
@@ -1456,6 +1461,7 @@ msgstr ""
 "Systemen, gewählt werden."
 
 #: umc/js/setup/ApplianceWizard.js:1090
+#, python-brace-format
 msgid "This system only has {memory_total} RAM."
 msgstr "Dieses System verfügt nur über {memory_total} Arbeitsspeicher."
 
@@ -1483,8 +1489,8 @@ msgid "This sytem will join an existing UCS domain with the role <i>%s</i>."
 msgstr ""
 "Das System tritt einer existierenden UCS-Domäne mit der Rolle <i>%s</i> bei."
 
-#: umc/js/setup/LanguagePage.js:76 umc/js/setup/LanguagePage.js:209
-#: umc/js/setup/ApplianceWizard.js:377
+#: umc/js/setup/ApplianceWizard.js:377 umc/js/setup/LanguagePage.js:76
+#: umc/js/setup/LanguagePage.js:209
 msgid "Time zone"
 msgstr "Zeitzone"
 
@@ -1596,423 +1602,3 @@ msgstr "mehr Informationen"
 #: umc/js/setup/InterfaceWizard.js:630
 msgid "set"
 msgstr "setzen"
-
-#~ msgid "%s Univention App setup - An error occurred"
-#~ msgstr "Einrichtung von %s Univention App - Ein Fehler ist aufgetreten"
-
-#~ msgid "%s Univenton App setup successful  "
-#~ msgstr "Die Einrichtung von %s Univention App war erfolgreich"
-
-#~ msgid "%s setup"
-#~ msgstr "%s Einrichtung"
-
-#~ msgid "<b>Member server</b>"
-#~ msgstr "<b>Member-Server</b>"
-
-#~ msgid ""
-#~ "<h2>Base system</h2>A base system is an autonomous system which is not a "
-#~ "member of the domain. A base system is thus suitable for services which "
-#~ "are operated outside of the trust context of the domain, such as a web "
-#~ "server or a firewall."
-#~ msgstr ""
-#~ "<h2>Basissystem</h2>Ein Basissystem ist ein eigenständiges System, das "
-#~ "aber nicht Mitglied der Domäne ist. Ein Basissystem bietet sich somit für "
-#~ "Dienste an, die außerhalb des Vertrauenskontextes der Domäne betrieben "
-#~ "werden, etwa als Web-Server oder Firewall."
-
-#~ msgid ""
-#~ "<h2>Domain controller backup</h2>All the domain data and SSL security "
-#~ "certificates are saved as read-only copies on servers with the domain "
-#~ "controller backup role (DC backup for short). The DC backup is the "
-#~ "fallback system for the DC master. If the latter should fail, a DC backup "
-#~ "can take over the role of the DC master permanently."
-#~ msgstr ""
-#~ "<h2>Domänencontroller Backup</h2> Auf Servern mit der Rolle "
-#~ "Domänencontroller Backup (kurz DC Backup) werden alle Domänendaten und "
-#~ "SSL-Sicherheitszertifikate als Nur-Lese-Kopie gespeichert. Der DC Backup "
-#~ "dient als Fallback-System des DC Master. Sollte dieser ausfallen, kann "
-#~ "ein DC Backup die Rolle des DC Master dauerhaft übernehmen."
-
-#~ msgid ""
-#~ "<h2>Domain controller master</h2>A system with the domain controller "
-#~ "master role (DC master for short) is the primary domain controller of a "
-#~ "UCS domain and is always installed as the first system. The domain data "
-#~ "(such as users, groups, printers) and the SSL security certificates are "
-#~ "saved on the DC master.  Copies of these data are automatically "
-#~ "transferred to all servers with the DC backup role."
-#~ msgstr ""
-#~ "<h2>Domänencontroller Master</h2> Ein System mit der Rolle "
-#~ "Domänencontroller Master (kurz DC Master) ist der primäre "
-#~ "Domänencontroller einer UCS-Domäne und wird immer als erstes System "
-#~ "installiert. Auf dem DC Master werden die Domänendaten (wie z.B. "
-#~ "Benutzer, Gruppen, Drucker) und die SSL-Sicherheitszertifikate "
-#~ "gespeichert. Kopien dieser Daten werden automatisch auf Server mit der "
-#~ "Rolle DC Backup übertragen."
-
-#~ msgid ""
-#~ "<h2>Domain controller slave</h2>All the domain data are saved as read-"
-#~ "only copies on servers with the domain controller slave role (DC slave "
-#~ "for short). In contrast to the DC backup, however, not all security "
-#~ "certificates are synchronised. As access to the services running on a DC "
-#~ "slave are performed against the local LDAP server, DC slave systems are "
-#~ "ideal for site servers and the distribution of load-intensive services. A "
-#~ "DC slave system cannot be promoted to a DC master."
-#~ msgstr ""
-#~ "<h2>Domänencontroller Slave</h2> Auf Servern mit der Rolle "
-#~ "Domänencontroller Slave (kurz DC Slave) werden die Domänendaten als Nur-"
-#~ "Lese-Kopie gespeichert. Im Gegensatz zum DC Backup werden jedoch nicht "
-#~ "alle SSL-Sicherheitszertifikate gespeichert. Da die Zugriffe der auf "
-#~ "einem DC Slave laufenden Dienste gegen den lokalen LDAP-Datenbestand "
-#~ "erfolgen, bieten sich DC Slave-Systeme für Standortserver und für die "
-#~ "Verteilung lastintensiver Dienste an. Ein DC Slave-System kann nicht zum "
-#~ "DC Master hochgestuft werden."
-
-#~ msgid ""
-#~ "<p>Member servers are server systems without a local LDAP server. Access "
-#~ "to domain data here is performed via other servers in the domain.</p>"
-#~ msgstr ""
-#~ "<p>Member-Server sind Server-Systeme ohne lokalen LDAP-Server. Der "
-#~ "Zugriff auf Domänendaten erfolgt hier über andere Server der Domäne.</p>"
-
-#~ msgid "<p>UCS has been successfully set up with the specified settings.</p>"
-#~ msgstr ""
-#~ "<p>UCS wurde erfolgreich mit den angegebenen Einstellungen eingerichtet.</"
-#~ "p>"
-
-#~ msgid "Access settings"
-#~ msgstr "Zugriffseinstellungen"
-
-#~ msgid "Account data"
-#~ msgstr "Kontodaten"
-
-#~ msgid "Account description"
-#~ msgstr "Beschreibung des Kontos"
-
-#~ msgid "Active Directory account"
-#~ msgstr "Active Directory-Konto"
-
-#~ msgid "Active Directory password"
-#~ msgstr "Active Directory-Passwort"
-
-#~ msgid "Administrator password"
-#~ msgstr "Passwort des Administrator-Benutzerkontos"
-
-#~ msgid "Alternate external name server"
-#~ msgstr "Alternativer externer DNS-Server"
-
-#~ msgid "Base system"
-#~ msgstr "Basissystem"
-
-#~ msgid "Basic settings"
-#~ msgstr "Basis-Einstellungen"
-
-#~ msgid "Configuration of the UCS system role"
-#~ msgstr "Konfiguration der UCS-Systemrolle"
-
-#~ msgid ""
-#~ "Configure the new UCS domain and specify the network settings for this "
-#~ "system."
-#~ msgstr ""
-#~ "Einrichten der neuen UCS-Domäne und der Netzwerk-Einstellungen dieses "
-#~ "Systems."
-
-#~ msgid "Configure the new UCS domain."
-#~ msgstr "Einrichten der neuen UCS-Domäne."
-
-#~ msgid "Continue unjoined"
-#~ msgstr "Ungejoint fortfahren"
-
-#~ msgid "Currently selected system role"
-#~ msgstr "Aktuell ausgewählte Systemrolle"
-
-#~ msgid "Domain admin credentials"
-#~ msgstr "Domänen-Administrator-Zugangsdaten"
-
-#~ msgid ""
-#~ "For Active Directory domains the fully qualified domain name must have at "
-#~ "least two dots (e.g. host.example.com). This warning is shown only once, "
-#~ "the installation can be continued with the name currently given."
-#~ msgstr ""
-#~ "Für Active Directory Domänen muss der vollständige Domänenname mindestens "
-#~ "zwei Punkte enthalten (z.B. host.example.com). Dies ist eine einmalige "
-#~ "Warnung, die Einstellungen können mit dem aktuell gewählten Namen "
-#~ "gespeichert werden."
-
-#~ msgid "Fully qualified domain name (FQDN)"
-#~ msgstr "Vollqualifizierter Domänenname (FQDN)"
-
-#~ msgid "Fully qualified domain name (e.g. master.example.com)"
-#~ msgstr "Vollständiger Rechnername (z.B. master.example.com)"
-
-#~ msgid "General"
-#~ msgstr "Allgemein"
-
-#~ msgid "HTTP proxy (e.g., <i>http://proxy.mydomain.intranet:3128</i>)"
-#~ msgstr "HTTP-Proxy (bspw. <i>http://proxy.meinedomaene.intranet:3128</i>)"
-
-#~ msgid "Help"
-#~ msgstr "Hilfe"
-
-#~ msgid "Host and domain settings"
-#~ msgstr "Rechner- und Domäneneinstellungen"
-
-#~ msgid "Hostname and windows domain may not be equal."
-#~ msgstr "Hostname und Windows-Domäne dürfen nicht gleich sein."
-
-#~ msgid ""
-#~ "If Samba is used on this system, the length of the hostname may be at "
-#~ "most 13 characters."
-#~ msgstr ""
-#~ "Falls Samba auf diesem System verwendet wird, darf der Hostname maximal "
-#~ "13 Zeichen lang sein."
-
-#~ msgid ""
-#~ "If the system is not part of a domain yet, the <i>system role</i> may be "
-#~ "changed."
-#~ msgstr ""
-#~ "Die <i>Systemrolle</i> des Systems kann geändert werden, solange es noch "
-#~ "nicht der UCS-Domäne beigetreten ist."
-
-#~ msgid "Ignore"
-#~ msgstr "Ignorieren"
-
-#~ msgid "Information about the initial configuration"
-#~ msgstr "Informationen über die Erstkonfiguration"
-
-#~ msgid "Install all available updates for UCS %s after the setup"
-#~ msgstr ""
-#~ "Alle für UCS %s verfügbaren Aktualisierungen nach der Einrichtung "
-#~ "installieren"
-
-#~ msgid "Installed software components"
-#~ msgstr "Installierte Softwarekomponenten"
-
-#~ msgid ""
-#~ "Installing or removing software components may result in restarting or "
-#~ "stopping services. This can have severe side-effects when the system is "
-#~ "in productive use at the moment."
-#~ msgstr ""
-#~ "Die Installation oder das Entfernen von Softwarekomponenten kann Neustart "
-#~ "oder Anhalten von diversen Diensten zur Folge haben. Dies kann ernsthafte "
-#~ "Auswirkungen haben, sollte sich das System im Produktiveinsatz befinden."
-
-#~ msgid "Invalid LDAP base!<br/>Expected format: dc=mydomain,dc=intranet"
-#~ msgstr ""
-#~ "Ungültige LDAP-Basis!<br/>Erwartetes Format: dc=meinedomaene,dc=intranet"
-
-#~ msgid ""
-#~ "It is not possible to mix NT and Active Directory compatible "
-#~ "domaincontroller. Make sure the existing UCS domain is Active Directory-"
-#~ "compatible (Samba 4)."
-#~ msgstr ""
-#~ "Es ist nicht möglich NT- und Active-Directory-kompatible Domaincontroller "
-#~ "gleichzeitig zu verwenden. Stellen sie sicher, dass die existierende UCS-"
-#~ "Domäne kompatibel zu Active-Directory (Samba 4) ist."
-
-#~ msgid ""
-#~ "It is not possible to mix NT and Active Directory compatible "
-#~ "domaincontroller. Make sure the existing UCS domain is NT-compatible "
-#~ "(Samba 3)."
-#~ msgstr ""
-#~ "Es ist nicht möglich NT- und Active-Directory-kompatible Domaincontroller "
-#~ "gleichzeitig zu verwenden. Stellen sie sicher, dass die existierende UCS-"
-#~ "Domäne NT-kompatibel (Samba 3) ist."
-
-#~ msgid "Join domain"
-#~ msgstr "Domäne beitreten"
-
-#~ msgid "Lastname"
-#~ msgstr "Nachname"
-
-#~ msgid ""
-#~ "Login to Univention Management Console as user <b>Administrator</b> at "
-#~ "one of the available addresses:"
-#~ msgstr ""
-#~ "Melden Sie sich mit dem Benutzer <b>Administrator</b> an Univention "
-#~ "Management Console über eine der verfügbaren Adressen an:"
-
-#~ msgid "Login to Univention Management Console as user <b>Administrator</b>:"
-#~ msgstr ""
-#~ "Melden Sie sich mit dem Benutzer <b>Administrator</b> an Univention "
-#~ "Management Console an:"
-
-#~ msgid ""
-#~ "Login to Univention Management Console with the domain account "
-#~ "<b>Administrator</b> at one of the available addresses:"
-#~ msgstr ""
-#~ "Melden Sie sich mit dem Domänenkonto <b>Administrator</b> an Univention "
-#~ "Management Console über eine der verfügbaren Adressen an:"
-
-#~ msgid "Name server of the domain"
-#~ msgstr "DNS-Server der Domäne"
-
-#~ msgid "New root password"
-#~ msgstr "Neues Root-Passwort"
-
-#~ msgid "Next"
-#~ msgstr "Weiter"
-
-#~ msgid ""
-#~ "No valid DHCP address could be obtained for interface(s) %s. Please "
-#~ "adjust your network settings or confirm to use invalid DHCP addresses."
-#~ msgstr ""
-#~ "Für die Netzwerkschnittstelle(n) %s konnte keine gültige DHCP Adresse "
-#~ "bezogen werden. Bitte passen Sie Ihre Netzwerkeinstellungen an oder "
-#~ "bestätigen Sie um mit ungültiger DHCP Adresse fortzufahren."
-
-#~ msgid "Preferred external name server"
-#~ msgstr "Bevorzugter externer DNS-Server"
-
-#~ msgid "Reconfigure, retry"
-#~ msgstr "Ändern, wiederholen"
-
-#~ msgid "Reset"
-#~ msgstr "Zurücksetzen"
-
-#~ msgid "Root password"
-#~ msgstr "Root-Passwort"
-
-#~ msgid "Software"
-#~ msgstr "Software"
-
-#~ msgid "Software settings"
-#~ msgstr "Software-Einstellungen"
-
-#~ msgid "Specify credentials to join into the Active Directory domain."
-#~ msgstr ""
-#~ "Eingabe der Zugangsdaten für den Beitritt zur Active Directory-Domäne."
-
-#~ msgid "Specify credentials to join into the UCS domain."
-#~ msgstr "Eingabe der Zugangsdaten für den Beitritt zur UCS-Domäne."
-
-#~ msgid "Specify hostname and configure network settings for this system."
-#~ msgstr ""
-#~ "Eingabe von Rechnername und Konfiguration der Netzwerkeinstellungen "
-#~ "dieses Systems."
-
-#~ msgid ""
-#~ "Specify hostname as well as a password for the local superuser <i>root</"
-#~ "i> and configure network settings for this system."
-#~ msgstr ""
-#~ "Eingabe von Rechnername und einem Passwort für den lokalen Superuser "
-#~ "<i>root</i> sowie Konfiguration der Netzwerkeinstellungen dieses Systems."
-
-#~ msgid ""
-#~ "Specify the type of the system to join into an existing UCS domain. For "
-#~ "this, credentials of a valid domain Administrator account will be "
-#~ "necessary."
-#~ msgstr ""
-#~ "Wählen Sie die Systemrolle aus, um einer bestehenden UCS-Domäne "
-#~ "beizutreten. Dazu sind Zugangsdaten eines gültigen Domänen-Administrator-"
-#~ "Kontos notwendig."
-
-#~ msgid "The %s appliance has been successfully set up."
-#~ msgstr "Die %s Appliance wurde erfolgreich eingerichtet."
-
-#~ msgid ""
-#~ "The <i>basic settings</i> define essential properties, such as host and "
-#~ "domain name, LDAP base, Windows domain name as well as the system "
-#~ "administrators (root) password."
-#~ msgstr ""
-#~ "Die <i>Basis-Einstellungen</i> legen grundlegende Einstellungen wie "
-#~ "Rechner- und Domänenname, LDAP-Basis, Windows-Domänename und das Passwort "
-#~ "für die Systemadministration (root) fest."
-
-#~ msgid ""
-#~ "The configuration was successful. Please confirm to complete the process."
-#~ msgstr ""
-#~ "Die Konfiguration war erfolgreich. Bitte bestätigen Sie, um den Vorgang "
-#~ "abzuschließen."
-
-#~ msgid ""
-#~ "The settings can always be adpated in the UMC module <i>Basic settings</"
-#~ "i>. Please confirm now to complete the process."
-#~ msgstr ""
-#~ "Die Einstellungen können nach Beendigung des Domänenbeitritts im UMC-"
-#~ "Modul <i>Basis-Einstellungen</i> geändert werden. Bitte bestätigen Sie, "
-#~ "um den Vorgang abzuschließen."
-
-#~ msgid ""
-#~ "The specified settings will be applied to the system and the system will "
-#~ "be joined into the domain. Please enter username and password of a domain "
-#~ "administrator account."
-#~ msgstr ""
-#~ "Die angegebenen Einstellungen werden auf das System übertragen, danach "
-#~ "wird das System der Domäne beitreten. Bitte geben Sie dafür Benutzernamen "
-#~ "und Password eines Administrator-Kontos der Domäne an."
-
-#~ msgid ""
-#~ "The specified settings will be applied to the system. This may take some "
-#~ "time. Please confirm to proceed."
-#~ msgstr ""
-#~ "Die angegebenen Einstellungen werden auf das System übertragen, dies kann "
-#~ "einen Moment dauern. Bitte bestätigen Sie um fortzufahren."
-
-#~ msgid "The system has been configured with the IP address(es) %s."
-#~ msgstr "Das System wurde mit der/den IP-Adresse(n) %s konfiguriert."
-
-#~ msgid "The system is reachable at <i>%s</i>."
-#~ msgstr "Das System ist unter <i>%s</i> erreichbar."
-
-#~ msgid ""
-#~ "The system join process failed. The following information will give some "
-#~ "more details on which exact problem occurred during the setup process."
-#~ msgstr ""
-#~ "Der Domänenbeitritt des Systems schlug fehl. Die folgenden Informationen "
-#~ "geben genauere Informationen über die Problemursache."
-
-#~ msgid "The system join was not successful."
-#~ msgstr "Der Domänenbeitritt war nicht erfolgreich."
-
-#~ msgid ""
-#~ "This system will join a group of existing systems which share user and "
-#~ "computer accounts, credentials and other trustworthy information."
-#~ msgstr ""
-#~ "Das System tritt einer Gruppe existierender Systeme bei, die Benutzer- "
-#~ "und Rechnerkonten sowie Zugangsdaten und andere vertrauenswürdige "
-#~ "Informationen miteinander teilen."
-
-#~ msgid "UCS domain name server"
-#~ msgstr "UCS Domänen-DNS-Server"
-
-#~ msgid "UCS initial configuration"
-#~ msgstr "UCS Erstkonfiguration"
-
-#~ msgid ""
-#~ "Update the server to the version of the DC Master system after the setup"
-#~ msgstr ""
-#~ "Nach der Einrichtung diesen Server auf die Version des DC Master "
-#~ "aktualisieren"
-
-#~ msgid "Username of the Administrator"
-#~ msgstr "Name des Administrator-Benutzerkontos"
-
-#~ msgid ""
-#~ "Via the <i>software settings</i>, particular software components may be "
-#~ "installed or removed."
-#~ msgstr ""
-#~ "Über die <i>Software-Einstellungen</i> können bestimmte Software-"
-#~ "Komponenten installiert und deinstalliert werden."
-
-#~ msgid "Welcome to the %s appliance with Univention Corporate Server (UCS)."
-#~ msgstr ""
-#~ "Willkommen bei der %s Appliance mit Univention Corporate Server (UCS)."
-
-#~ msgid ""
-#~ "Will the system be the first system of a new UCS domain or shall it join "
-#~ "into an existing one?"
-#~ msgstr ""
-#~ "Wird das System das erste System einer neuen UCS-Domäne sein oder wird es "
-#~ "einer existierenden Domäne beitreten?"
-
-#~ msgid "Windows domain"
-#~ msgstr "Windows-Domäne"
-
-#~ msgid ""
-#~ "You may reconfigure the settings and restart the process or you continue "
-#~ "and close the wizard. You may resolve the the problems by using the "
-#~ "appropriate modules of the Univention Management Console."
-#~ msgstr ""
-#~ "Sie können die Einstellungen anpassen und den Vorgang wiederholen. Sie "
-#~ "können auch den Wizard beenden und die Probleme mit den entsprechenden "
-#~ "Modulen der Univention Management Console lösen."

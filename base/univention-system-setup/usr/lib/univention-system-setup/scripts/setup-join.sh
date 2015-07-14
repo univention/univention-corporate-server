@@ -202,7 +202,7 @@ eval "$(univention-config-registry shell)"
 
 is_profile_var_true "start/join"
 if [ $? -ne 1 ]; then
-	info_header "domain-join" "$(gettext "Domain join")"
+	info_header "domain-join" "$(gettext "Domain setup (this might take a while)")"
 
 	# see how many join scripts we need to execute
 	joinScripts=(/usr/lib/univention-install/*.inst)

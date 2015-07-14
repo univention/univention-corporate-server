@@ -1,3 +1,11 @@
+univention-system-setup (8.1.69-20) unstable; urgency=medium
+
+  * Bug #38522: catch NoAnswer dns exception
+  * Bug #38833: show information in progressbar that the domain setup might
+  	take a while
+
+ -- Florian Best <best@univention.de>  Mon, 13 Jul 2015 16:56:43 +0200
+
 univention-system-setup (8.1.69-19) unstable; urgency=medium
 
   * Bug #38850: adjust text on the last setup wizard page
