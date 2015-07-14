@@ -1886,7 +1886,7 @@ define([
 
 		_hasPreconfiguredLinkLocalDHCPAddresses: function() {
 			var fallbackDevices = [];
-			return array.forEach(this._getNetworkDevices(), function(idev) {
+			array.forEach(this._getNetworkDevices(), function(idev) {
 				var dev = this.values.interfaces[idev];
 				if (!dev || !dev.ip4dynamic || !dev.ip4.length) {
 					return;
