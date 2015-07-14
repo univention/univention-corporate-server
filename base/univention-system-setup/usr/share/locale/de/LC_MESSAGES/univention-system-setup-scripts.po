@@ -21,8 +21,8 @@ msgid "This might take a moment..."
 msgstr "Dies kann einen Moment dauern..."
 
 #: usr/lib/univention-system-setup/scripts/setup-join.sh:201
-msgid "Domain join"
-msgstr "Domänenbeitritt"
+msgid "Domain setup (this might take a while)"
+msgstr "Domäneneinrichtung (Dies kann einige Zeit dauern)"
 
 #: usr/lib/univention-system-setup/scripts/setup-join.sh:207
 msgid "Preparing domain join"

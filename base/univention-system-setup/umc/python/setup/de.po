@@ -26,7 +26,7 @@ msgstr ""
 
 #: umc/python/setup/__init__.py:239
 msgid "Already joined systems cannot be joined."
-msgstr "Bereits gejointe Systeme können nicht gejoint werden."
+msgstr "System, die bereits einer Domäne beigetreten sind können nicht erneut beitreten."
 
 #: umc/python/setup/network.py:693
 msgid "Bond-primary must exist in bond-slaves"
@@ -320,40 +320,3 @@ msgid ""
 msgstr ""
 "Es ist kein Gerät konfiguriert. Mindestens eine IPv4 oder IPv6-Adresse oder "
 "DHCP oder SLAAC muss angegeben werden."
-
-#~ msgid ""
-#~ "A fully qualified domain name have to be composed of the hostname, domain "
-#~ "name and the top level domain (e.g. host.example.com)."
-#~ msgstr ""
-#~ "Ein vollqualifizierter Domänenname besteht aus dem Rechnernamen, dem "
-#~ "Namen der Domäne und der Top-Level Domäne (e.g. host.example.com)."
-
-#~ msgid ""
-#~ "At least one domain name server needs to be given if DHCP or SLAAC is not "
-#~ "specified."
-#~ msgstr ""
-#~ "Mindestens ein Domänen-DNS-Server muss angegeben werden, wenn DHCP oder "
-#~ "SLAAC nicht ausgewählt sind."
-
-#~ msgid "The LDAP base may not contain any blanks (e.g., dc=test,dc=net)."
-#~ msgstr ""
-#~ "Die LDAP-Basis darf keine Leerzeichen enthalten (z.B., dc=test,dc=net)."
-
-#~ msgid ""
-#~ "The domain cannot automatically be determined. Make sure that the correct "
-#~ "UCS domain name server has been specified or enter a fully qualified "
-#~ "domain name of the system."
-#~ msgstr ""
-#~ "Die Domäne kann nicht automatisch bestimmt werden. Stellen Sie sicher, "
-#~ "dass der korrekte UCS-Domänen-DNS-Server angegeben wurde oder geben Sie "
-#~ "den vollständigen Domänennamen des Systems an."
-
-#~ msgid ""
-#~ "The hostname is not a valid fully qualified domain name (e.g. host."
-#~ "example.com)."
-#~ msgstr ""
-#~ "Der Rechnername muss auch den Domänennamen enthalten (z.B. host.example."
-#~ "com)."
-
-#~ msgid "The specified nameserver %s cannot be contacted."
-#~ msgstr "Der angegebene DNS-Server %s kann nicht kontaktiert werden."
