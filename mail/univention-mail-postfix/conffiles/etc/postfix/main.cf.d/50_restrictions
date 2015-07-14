@@ -6,6 +6,30 @@
 # get all recipient restrictions from UCR ==> [ (key, val), ... ]
 ucrlist = [ x for x in configRegistry.items() if x[0].startswith('mail/postfix/smtpd/restrictions/recipient/') ]
 
+if configRegistry.is_true("mail/postfix/smtpd/restrictions/sender/reject_unknown_client_hostname") or \
+	configRegistry.is_true("mail/postfix/smtpd/restrictions/sender/reject_unknown_reverse_client_hostname"):
+	# insert reject_unknown_client_hostname and reject_unknown_reverse_client_hostname
+	# after reject_unauth_destination
+	try:
+		ucrlistids = dict([(int(x[0].split("/")[-1]), x[1]) for x in ucrlist])
+	except ValueError:
+		print "# ERROR: Please use only numbers in mail/postfix/smtpd/restrictions/recipient/.*"
+		ucrlistids = dict()
+	for k, v in ucrlistids.items():
+		if "reject_unauth_destination" in v:
+			# find next free spot
+			num = k
+			while num in ucrlistids.keys():
+				num += 1
+			if configRegistry.is_true("mail/postfix/smtpd/restrictions/sender/reject_unknown_client_hostname"):
+				ucrlist.append(("mail/postfix/smtpd/restrictions/recipient/%s" % num, "reject_unknown_client_hostname"))
+				ucrlistids[num] = "reject_unknown_client_hostname"
+			# find next free spot
+			while num in ucrlistids.keys():
+				num += 1
+			if configRegistry.is_true("mail/postfix/smtpd/restrictions/sender/reject_unknown_reverse_client_hostname"):
+				ucrlist.append(("mail/postfix/smtpd/restrictions/recipient/%s" % num, "reject_unknown_reverse_client_hostname"))
+
 # add listfilter if enabled by UCR with level "05" (Bug #17954)
 if configRegistry.is_true("mail/postfix/policy/listfilter", False):
 	ucrlist.append( ('mail/postfix/smtpd/restrictions/recipient/05-listfilter', 'check_policy_service unix:private/listfilter') )
