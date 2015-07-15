@@ -320,7 +320,7 @@ define([
 				this._resetForm();
 
 				// make sure that we got data
-				this.onLogin(username);
+				this.onLogin(data.result.username);
 				if (tools.status('setupGui')) {
 					// the module loading bar was already triggered
 					this.hide();

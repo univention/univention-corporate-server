@@ -85,8 +85,8 @@ define([
 				}, false, undefined, {
 					message: _('So far the authentification failed. Continuing nevertheless.'),
 					noLogin: true
-				}).then(function() {
-					return username;
+				}).then(function(response) {
+					return response.result.username;
 				});
 			}
 			else {

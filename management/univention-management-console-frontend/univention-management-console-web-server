@@ -144,11 +144,12 @@ class SessionClient(object):
 			self.client.disconnect()
 		return False
 
-	def _authenticated(self, success, status, message):
+	def _authenticated(self, success, response):
 		"""Callback function for 'authenticated' from UMCP-Server."""
-		CORE.process('SessionClient(0x%x): _authenticated: success=%s  status=%s  message=%s' % (id(self), success, status, message))
-		self._auth_response.status = status
-		self._auth_response.message = message
+		CORE.process('SessionClient(0x%x): _authenticated: success=%s  status=%s  message=%s' % (id(self), success, response.status, response.message))
+		self._auth_response.status = response.status
+		self._auth_response.result = response.result
+		self._auth_response.message = response.message
 		self._auth_response_queue.put(self._auth_response)
 		# release queue object
 		self._auth_response_queue = None
@@ -763,14 +764,18 @@ class CPAuth(CPgeneric):
 		CORE.info('CPRoot/auth: got response with status %s' % response.status)
 
 		if response.status == umcp.SUCCESS and response.body.get('sessionid'):
-			CORE.info('CPRoot/auth: creating session with sessionid=%s' % response.body.get('sessionid'))
+			sessionid = response.body.pop('sessionid')
+			CORE.info('CPRoot/auth: creating session with sessionid=%s' % (sessionid,))
 
 			# add new one time session
-			UMCP_Dispatcher.logintokens.add_session(response.body.get('sessionid'), json['options'].get('username', ''))
+			UMCP_Dispatcher.logintokens.add_session(sessionid, json['options'].get('username', ''))
 
-			self.set_cookies(sessionid=response.body.get('sessionid'))
+			self.set_cookies(sessionid=sessionid)
 
-			return ""
+			cherrypy.response.headers['Content-Type'] = response.mimetype
+			if response.mimetype == 'application/json':
+				return simplejson.dumps(response.body)
+			return response.body
 
 		CORE.process('CPRoot/auth: username: %s, status code: %s' % (json.get('username'), response.status))
 		raise cherrypy.HTTPError(response.status, response.message)

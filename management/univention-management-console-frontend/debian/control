@@ -33,11 +33,10 @@ Description: UCS Management Console - Web based computer administration tool
 
 Package: univention-management-console-web-server
 Architecture: all
-Pre-Depends: python-univention-management-console (>= 7.1.63-20),
 Depends: ${misc:Depends},
  univention-management-console-frontend,
  univention-management-console-server,
- python-univention-management-console (>= 7.1.63),
+ python-univention-management-console (>= 8.0.0),
  univention-base-files,
  python-cherrypy3,
  python-daemon,
