@@ -74,7 +74,6 @@ from univention.config_registry.frontend import ucr_update
 import univention.uldap as uldap
 import univention.management.console as umc
 from univention.lib.umc_connection import UMCConnection
-import univention.admin.uldap as admin_uldap
 import univention.admin.handlers.appcenter.app as appcenter_udm_module
 import univention.admin.handlers.container.cn as container_udm_module
 import univention.admin.uexceptions as udm_errors
@@ -106,8 +105,8 @@ class License(object):
 		# last time we checked, no uuid was found
 		# but maybe the user installed a new license?
 		try:
-			ldap_connection, po = get_machine_connection(write=False)
-			data = ldap_connection.search('objectClass=univentionLicense')
+			lo = get_machine_connection(write=False)[0].lo
+			data = lo.search('objectClass=univentionLicense')
 			self.uuid = data[0][1]['univentionLicenseKeyID'][0]
 		except Exception as e:
 			# no licensing available
@@ -446,6 +445,7 @@ class Application(object):
 				filename = os.path.join(CACHE_DIR, '%s.%s' % (self.component_id, localised_file_ext))
 				with open(filename, 'rb') as fp:
 					self._options[key] = ''.join(fp.readlines()).strip()
+					self._options['%s_file' % key] = filename
 					return
 			except IOError:
 				pass
@@ -875,6 +875,7 @@ class Application(object):
 
 	@machine_connection(write=False, loarg='lo', poarg='pos')
 	def get_installations(self, hosts=None, lo=None, pos=None):
+		lo = lo.lo
 		try:
 			ret = {}
 			try:
@@ -1487,15 +1488,13 @@ class Application(object):
 
 	@machine_connection(write=False, loarg='lo', poarg='pos')
 	def find_all_hosts(self, is_master, lo=None, pos=None):
-		try:
-			hosts = []
-			if not is_master:
-				hosts.append((get_master(lo), True))
-			# use ucr to not find oneself!
-			hosts.extend([(host, False) for host in get_all_backups(lo, ucr)])
-			return hosts
-		finally:
-			del lo
+		lo = lo.lo
+		hosts = []
+		if not is_master:
+			hosts.append((get_master(lo), True))
+		# use ucr to not find oneself!
+		hosts.extend([(host, False) for host in get_all_backups(lo, ucr)])
+		return hosts
 
 	def install_master_packages_on_hosts(self, package_manager, remote_function, username, password, is_master, hosts=None):
 		master_packages = self.get('defaultpackagesmaster')
@@ -1636,7 +1635,10 @@ class Application(object):
 					pwd_file.write(password)
 					pwd_file.flush()
 					args.extend(['-dcpwd', pwd_file.name])
-			run_join_scripts = Thread(target=subprocess.call, args=[args])
+				else:
+					MODULE.process('Cannot run them without credentials')
+					return
+			run_join_scripts = Thread(target=subprocess.call, args=[args], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			run_join_scripts.start()
 			while run_join_scripts.is_alive():
 				# i did not find anything nearly as efficient as this one
