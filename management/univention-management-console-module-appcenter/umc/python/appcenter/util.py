@@ -38,23 +38,23 @@ import urllib2
 from hashlib import md5
 
 # related third party
-#import psutil # our psutil is outdated. reenable when methods are supported
+# import psutil # our psutil is outdated. reenable when methods are supported
 
 # univention
 from univention.management.console.log import MODULE
 import univention.management.console as umc
 import univention.config_registry
-import univention.uldap as uldap
 from univention.admin.handlers.computers import domaincontroller_master
 from univention.admin.handlers.computers import domaincontroller_backup
 from univention.admin.handlers.computers import domaincontroller_slave
 from univention.admin.handlers.computers import memberserver
 
 # local application
-from univention.management.console.modules.appcenter.decorators import reload_ucr, machine_connection, get_machine_connection
+from univention.management.console.modules.appcenter.decorators import get_machine_connection
 from constants import COMPONENT_BASE, COMP_PARAMS, STATUS_ICONS, DEFAULT_ICON, PUT_SUCCESS, PUT_PROCESSING_ERROR
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate
+
 
 def rename_app(old_id, new_id, component_manager, package_manager):
 	from univention.management.console.modules.appcenter.app_center import Application
@@ -78,14 +78,14 @@ def rename_app(old_id, new_id, component_manager, package_manager):
 	app.tell_ldap(component_manager.ucr, package_manager, inform_about_error=False)
 
 def get_hosts(module, lo, ucr=None):
- 	_hosts = module.lookup(None, lo, None)
+	_hosts = module.lookup(None, lo, None)
 	hosts = []
 	if ucr is not None:
 		local_hostname = ucr.get('hostname')
 	else:
 		local_hostname = None
 	for host in _hosts:
-		host.open() # needed for fqdn. it may be enough to return 'name'
+		host.open()  # needed for fqdn. it may be enough to return 'name'
 		hostname = host.info.get('name')
 		if hostname == local_hostname:
 			MODULE.process('%s is me. Skipping' % host.dn)
@@ -106,22 +106,12 @@ def get_all_backups(lo, ucr=None):
 	return [host.info['fqdn'] for host in get_hosts(domaincontroller_backup, lo, ucr)]
 
 def get_all_hosts(lo=None, ucr=None):
-	delete_lo = False
 	if lo is None:
-		try:
-			lo, po = get_machine_connection(write=False)
-		except IOError: # /etc/machine.secret => No LDAP set up yet (e.g. system-setup)
-			return []
-		delete_lo = True
-	try:
-		return get_hosts(domaincontroller_master, lo, ucr) + \
-				get_hosts(domaincontroller_backup, lo, ucr) + \
-				get_hosts(domaincontroller_slave, lo, ucr) + \
-				get_hosts(memberserver, lo, ucr)
-	finally:
-		if delete_lo:
-			del lo
-			del po
+		lo = get_machine_connection(write=False)[0].lo
+	return get_hosts(domaincontroller_master, lo, ucr) + \
+			get_hosts(domaincontroller_backup, lo, ucr) + \
+			get_hosts(domaincontroller_slave, lo, ucr) + \
+			get_hosts(memberserver, lo, ucr)
 
 def get_md5(filename):
 	m = md5()

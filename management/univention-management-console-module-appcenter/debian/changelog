@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.21-1) unstable; urgency=low
+
+  * Bug #38345: Removed needless imports and apdated uldap connection
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 15 Jul 2015 08:26:23 +0200
+
 univention-management-console-module-appcenter (4.1.20-36) unstable; urgency=low
 
   * Bug #38697: Adding library functions to install/upgrade an app

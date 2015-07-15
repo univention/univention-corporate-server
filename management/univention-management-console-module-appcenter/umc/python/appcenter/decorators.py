@@ -35,8 +35,8 @@ import functools
 import ldap
 from errno import ENOENT
 
-from univention.admin.uldap import getMachineConnection as _getMachineConnection, getAdminConnection as _getAdminConnection
-from univention.admin.uexceptions import base
+from univention.admin.uldap import getMachineConnection as _getMachineConnection
+from univention.admin.uexceptions import base, noObject, objectExists
 
 
 class reload_ucr(object):
@@ -68,6 +68,7 @@ class LDAP(object):
 	def machine_connection(self, func=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, **kwargs):
 		hash_ = ('machine', bool(write))
 		kwargs.update({'ldap_master': write})
+
 		def connection():
 			try:
 				return _getMachineConnection(**kwargs)
@@ -86,6 +87,7 @@ class LDAP(object):
 	def _wrapped(self, func, hash_, connection, loarg, poarg):
 		def setter(conn):
 			self.__ldap_connections[hash_] = conn
+
 		def _decorator(func):
 			@functools.wraps(func)
 			def _decorated(*args, **kwargs):
@@ -93,6 +95,7 @@ class LDAP(object):
 					conn = self.__ldap_connections[hash_]
 				except KeyError:
 					conn = connection()
+					setter(conn)
 
 				try:
 					lo, po = conn
@@ -103,14 +106,14 @@ class LDAP(object):
 
 				try:
 					return func(*args, **kwargs)
-				except (ldap.SERVER_DOWN, base) as exc:
-					if isinstance(exc, ldap.SERVER_DOWN) or isinstance(getattr(exc, 'original_exception', None), (ldap.SERVER_DOWN, )):
+				except (ldap.LDAPError, base) as exc:
+					if isinstance(exc, base) and hasattr(exc, 'original_exception'):
+						exc = exc.original_exception
+					# ignore often occuring exceptions which doesn't indicate the the connection is broken
+					if not isinstance(exc, (ldap.NO_SUCH_OBJECT, ldap.ALREADY_EXISTS, noObject, objectExists)):
+						# unset the cached connection
 						setter(None)
-					else:
-						setter(conn)
 					raise
-				else:
-					setter(conn)
 			return _decorated
 		if func is None:
 			return _decorator
