@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+# Lint tests
+#
+set -u
+
+tmp=$(mktemp)
+trap "rm -f '$tmp'" EXIT
+
+rc=0
+issue () {
+	[ -s "$tmp" ] || return 0
+
+	echo "E: $*"
+	cat "$tmp"
+	echo
+	rc=1
+}
+
+find -type f -exec grep '^source\>' {} + >"$tmp"
+issue "BASHism 'source'"
+
+find tests -name .svn -prune -o -type f \( \
+	\( -name \*.inst -prune \) -o \
+	\( -perm -0755 -exec grep -q '^#! */usr/share/ucs-test/runner ' {} \; -prune \) -o \
+	\( -not -perm /0111 -not -exec grep -q '^#! */usr/share/ucs-test/runner ' {} \; -prune \) -o \
+	-ls \) >"$tmp"
+issue "Executable bits"
+
+find tests -type f -exec grep -F -l '"$TESTLIBPATH/ucr.sh"' {} + |
+	xargs grep -F -L "ucr_restore" >"$tmp"
+issue "Use of 'ucr.sh' without call to 'ucr_restore'."
+
+exit $rc

@@ -44,8 +44,7 @@ override_dh_install:
 
 override_dh_auto_test:
 	ucslint
-	! find -type f -exec grep '^source\>' {} +
-	find tests -name .svn -prune -o -type f \( \( -perm -0755 -exec grep -q '^#! */usr/share/ucs-test/runner ' {} \; -prune \) -o \( -not -perm /0111 -not -exec grep -q '^#! */usr/share/ucs-test/runner ' {} \; -prune \) -o -ls \)
+	./lint
 
 override_dh_auto_build:
 	dh-umc-module-build
