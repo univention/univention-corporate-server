@@ -11,7 +11,7 @@ undo () { # collect undo commands in file executed on EXIT
 		args+=("$(printf '%q' "$arg")")
 	done
 	local order=$(printf '%s/%08d' "$TEST_undo" "$TEST_order")
-	echo "$@" >"$order"
+	echo "${args[@]}" >"$order"
 	TEST_order+=1
 }
 TEST_cleanup () {

@@ -1,3 +1,9 @@
+ucs-test (5.0.152-3) unstable; urgency=low
+
+  * Bug #38924: Fix undo.sh quoting
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Jul 2015 16:25:05 +0200
+
 ucs-test (5.0.152-2) unstable; urgency=low
 
   * Bug #38893: added AutoCallCommand() to univention.testing.utils
