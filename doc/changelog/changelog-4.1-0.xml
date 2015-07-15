@@ -138,6 +138,7 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Support for logging in with the primary email address at UMC has been added (<u:bug>38528</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
