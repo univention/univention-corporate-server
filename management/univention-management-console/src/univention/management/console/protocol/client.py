@@ -339,8 +339,9 @@ class Client(signals.Provider, Translation):
 			if response.status == SUCCESS:
 				self.__authenticated = True
 				self.__unfinishedRequests.pop(response.id)
-			message = response.message or status_description(response.status)
-			self.signal_emit('authenticated', self.__authenticated, response.status, message)
+			else:
+				response.message = response.message or status_description(response.status)
+			self.signal_emit('authenticated', self.__authenticated, response)
 		elif response.id in self.__unfinishedRequests:
 			self.signal_emit('response', response)
 			if response.is_final():
@@ -367,8 +368,8 @@ if __name__ == '__main__':
 
 	notifier.init(notifier.GENERIC)
 
-	def auth(success, status, text):
-		print 'authentication', success, status, text
+	def auth(success, response):
+		print 'authentication', success, response.status, response.message
 
 	client = Client()
 	client.signal_connect('authenticated', auth)

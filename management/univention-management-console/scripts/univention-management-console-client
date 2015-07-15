@@ -134,7 +134,7 @@ class CLI_Client( umcp.Client ):
 		self.__started = None
 		self.__finished = None
 
-	def _authenticated( self, success, status, text ):
+	def _authenticated(self, success, response):
 		if self._options.timing:
 			self.__finished = datetime.datetime.now()
 			self.print_timing()
