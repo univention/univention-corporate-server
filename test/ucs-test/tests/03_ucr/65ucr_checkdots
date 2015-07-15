@@ -3,6 +3,7 @@
 ## exposure: careful
 
 . "$TESTLIBPATH/ucr.sh" || exit 137
+trap ucr_restore EXIT
 
 randomchars () {
 	tr -d -c 'a-zA-Z0-9.' </dev/urandom 2>/dev/null | head -c 10

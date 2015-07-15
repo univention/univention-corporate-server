@@ -15,7 +15,6 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
-. "$TESTLIBPATH/ucr.sh" || exit 137
 . "$TESTLIBPATH/undo.sh" || exit 137
 
 if [ "$ldap_database_type" != 'mdb' ]; then
