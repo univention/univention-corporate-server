@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-management-console
+fix: 7.1.63-21.863.201507151042
+version: [2]
+desc: |
+  This update addresses the following issues:
+  * The username is not treated case sensitive anymore when changing the
+    password via the kerberos PAM module in UMC.
+bug: [38826]
