@@ -9,8 +9,8 @@ desc: |
    * A parameter to open a specific object immediately on opening the module
      has been added.
    * The "Shares" module has been moved into the "Domain" category.
-   * If multiple policies of the same type are references UMC prevents to
-     remove policy references when saving the object.
+   * If multiple policies of the same type are referenced UMC prevents
+     removing policy references when saving the object.
    * Errors during requesting a new license are now handled.
    * A default user templates for new users can be configured by the UCR
      variable "directory/manager/web/modules/users/user/add/default". The
