@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-37) unstable; urgency=low
+
+  * Bug #38345: Added error handling
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 15 Jul 2015 12:02:34 +0200
+
 univention-management-console-module-appcenter (4.1.20-36) unstable; urgency=low
 
   * Bug #38345: Removed needless imports and adapted uldap connection
