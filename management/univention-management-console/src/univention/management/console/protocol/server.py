@@ -113,6 +113,7 @@ class MagicBucket(object):
 		state.authResponse.status = result.status
 		if result.message:
 			state.authResponse.message = result.message
+		state.authResponse.result = result.result
 		state.authenticated = bool(result)
 		self._response(state.authResponse, state)
 		state.authResponse = None
@@ -196,12 +197,13 @@ class MagicBucket(object):
 			except (TypeError, KeyError):
 				state.authResponse.status = BAD_REQUEST_INVALID_OPTS
 				state.authResponse.message = 'insufficient authentification information'
+				self._response(state.authResponse, state)
+				state.authResponse = None
 		else:
 			# inform processor
 			if not state.processor:
 				state.processor = Processor(*state.credentials())
-				cb = notifier.Callback(self._response, state)
-				state.processor.signal_connect('success', cb)
+				state.processor.signal_connect('success', notifier.Callback(self._response, state))
 			state.processor.request(msg)
 
 	def _do_send(self, socket):
