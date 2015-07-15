@@ -42,7 +42,11 @@ basic_setup ()
 		sleep 10 # just wait a few seconds to give the amazone cloud some time
 		ucr set --force updater/identify="UCS (EC2 Test)"
 		ucr set update/check/cron/enabled=false update/check/boot/enabled=false
-		grep -F /dev/vda /boot/grub/device.map && [ -b /dev/xvda ] && /usr/sbin/grub-mkdevicemap # Bug 36256
+		if grep -F /dev/vda /boot/grub/device.map && [ -b /dev/xvda ] # Bug 36256
+		then
+			/usr/sbin/grub-mkdevicemap
+			echo set grub-pc/install_devices /dev/xvda | debconf-communicate
+		fi
 	fi
 	while pgrep -f "/etc/init.d/rc 2" && ! pgrep -f /opt/firefox/firefox ; do
 		sleep 1s
