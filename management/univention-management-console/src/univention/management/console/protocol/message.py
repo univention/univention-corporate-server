@@ -170,7 +170,7 @@ class Message(object):
 			else:
 				self.body[key] = value
 		else:
-			PARSER.info('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
+			PARSER.warn('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
 
 	def _get_key(self, key):
 		if self.mimetype == MIMETYPE_JSON:
@@ -251,9 +251,9 @@ class Message(object):
 		if self.mimetype == MIMETYPE_JSON:
 			try:
 				self.body = json.loads(self.body)
-			except:
+			except ValueError as exc:
 				self.body = {}
-				PARSER.process('Error parsing UMCP message body')
+				PARSER.error('Error parsing UMCP message body: %s' % (exc,))
 				raise ParseError(UMCP_ERR_UNPARSABLE_BODY, _('error parsing UMCP message body'))
 
 			for key in ('options', ):

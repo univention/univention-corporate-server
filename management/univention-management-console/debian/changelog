@@ -1,3 +1,9 @@
+univention-management-console (7.1.63-21) unstable; urgency=medium
+
+  * Bug #38826: make password change case insensitive
+
+ -- Florian Best <best@univention.de>  Mon, 13 Jul 2015 19:30:42 +0200
+
 univention-management-console (7.1.63-20) unstable; urgency=medium
 
   * Bug #37366: fix translating internal messages

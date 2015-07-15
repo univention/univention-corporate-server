@@ -31,10 +31,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import ldap
+from ldap.filter import escape_filter_chars
+
 import notifier
 import notifier.signals as signals
 import notifier.threads as threads
 
+from univention.uldap import getMachineConnection
 from univention.management.console.log import AUTH
 from univention.management.console.pam import PamAuth, AuthenticationError, AuthenticationFailed, PasswordExpired, PasswordChangeFailed
 
@@ -49,6 +53,7 @@ class AuthenticationResult(object):
 		if self.authenticated:
 			self.credentials = result
 		self.message = None
+		self.result = None
 		self.password_expired = False
 		if isinstance(result, AuthenticationError):
 			self.status = BAD_REQUEST_AUTH_FAILED
@@ -59,6 +64,9 @@ class AuthenticationResult(object):
 		elif isinstance(result, BaseException):
 			self.status = 500
 			self.message = str(result)
+		else:
+			username, password = result
+			self.result = {'username': username}
 
 	def __nonzero__(self):
 		return self.authenticated
@@ -77,6 +85,7 @@ class AuthHandler(signals.Provider):
 	def __authenticate_thread(self, username, password, new_password, locale):
 		AUTH.info('Trying to authenticate user %r' % (username,))
 		pam = PamAuth(locale)
+		username = self.__canonicalize_username(username)
 		try:
 			pam.authenticate(username, password)
 		except AuthenticationFailed as auth_failed:
@@ -98,6 +107,19 @@ class AuthHandler(signals.Provider):
 		else:
 			AUTH.info('Authentication for %r was successful' % (username,))
 			return (username, password)
+
+	def __canonicalize_username(self, username):
+		try:
+			lo = getMachineConnection()
+			attr = 'mailPrimaryAddress' if '@' in username else 'uid'
+			result = lo.search('%s=%s' % (attr, escape_filter_chars(username)), attr=['uid'], unique=True)
+			if result and result[0][1].get('uid'):
+				username = result[0][1]['uid'][0]
+				AUTH.info('Canonicalized username; %r' % (username,))
+			lo.lo.unbind()
+		except (ldap.LDAPError, IOError) as exc:
+			AUTH.info('Canonicalization of username failed: %s' % (exc,))
+		return username
 
 	def __authentication_result(self, thread, result):
 		if isinstance(result, BaseException) and not isinstance(result, (AuthenticationFailed, PasswordExpired, PasswordChangeFailed)):
