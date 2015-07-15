@@ -1397,6 +1397,8 @@ class Application(object):
 		'''
 		try:
 			lo, pos = get_machine_connection(write=True)
+			if lo is None:
+				raise LDAPError()
 			installed_version = None
 			versions = self.find(self.id).versions
 			co = None #univention.admin.config.config(ucr.get('ldap/server/name'))

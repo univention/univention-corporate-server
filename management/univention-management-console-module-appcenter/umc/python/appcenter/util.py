@@ -107,7 +107,10 @@ def get_all_backups(lo, ucr=None):
 
 def get_all_hosts(lo=None, ucr=None):
 	if lo is None:
-		lo = get_machine_connection(write=False)[0].lo
+		lo = get_machine_connection(write=False)[0]
+		if lo is None:
+			return []
+		lo = lo.lo
 	return get_hosts(domaincontroller_master, lo, ucr) + \
 			get_hosts(domaincontroller_backup, lo, ucr) + \
 			get_hosts(domaincontroller_slave, lo, ucr) + \
