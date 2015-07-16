@@ -1,3 +1,9 @@
+univention-dhcp (9.0.0-4) unstable; urgency=low
+
+  * Bug #38584: Depend on fixed isc-dhcp-server package
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 16 Jul 2015 12:06:57 +0200
+
 univention-dhcp (9.0.0-3) unstable; urgency=low
 
   * Bug #38822: Create missing default DHCP routing policy
