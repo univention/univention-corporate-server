@@ -644,7 +644,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Nun muss das Programm <guimenu>printmanagement.msc</guimenu> gestartet werden. Im Menüpunkt 
+		Nun muss das Programm <guimenu>printmanagement.msc</guimenu> (Druckerverwaltung) gestartet werden. Im Menüpunkt 
 		<guimenu>Aktion</guimenu> kann mit einem Klick auf <guimenu>Server hinzufügen/entfernen</guimenu>
 		ein weiterer Server hinzugefügt werden. In dem Eingabefeld <guimenu>Server hinzufügen</guimenu>
 		muss der Name des Druckerservers eingetragen werden. 
@@ -658,7 +658,7 @@
 	  <listitem><simpara>
 		In der Druckerverwaltung sollte der neu hinzugefügte Druckserver nun aufgelistet werden.
 		Durch einen Klick auf <guimenu>Drucker</guimenu> werden die aktuell auf dem Druckerserver eingerichteten
-		Drucker angezeigt.
+		Druckerfreigaben angezeigt.
 	    </simpara>
 		<figure id="printer:printers">
 		  <title>Druckerliste</title>
@@ -672,7 +672,15 @@
 		der Dialog für die Treiberinstallation gestartet werden.
 		Wir empfehlen die Druckertreiber direkt vom Hersteller herunterzuladen und diese während der
 		Treiberinstallation auszuwählen. Wird eine Umgebung verwendet, in der die 64 Bit-Versionen von Windows
-		eingesetzt werden, müssen die Treiber unbedingt für 32 und 64 Bit hochgeladen werden.
+		eingesetzt werden, sollte zunächst geprüft werden, ob auf dem UCS Samba System dir &ucsUCRV;
+		<envar>samba/spoolss/architecture</envar> auf <literal>Windows x64</literal> gesetzt ist. Falls das nicht der Fall ist,
+		müssen die Treiber unbedingt für 32 und 64 Bit hochgeladen werden, andernfalls kann auf die 32 Bit Treiber verzichtet
+		werden, wenn ausschliesslich 64 Bit Windows Systeme in der Domäne zum Einsatz kommen.
+		Die Treiber können für verschiedene Windows-Architekturen entweder in getrennten Schritten nacheinander oder direkt
+		in einem Vorgang hochgeladen werden. Falls ibeide Treiberarchitekturen gleichzeitig zum Hochgeladen ausgewählt werden,
+		dann muss im anschliessenden Dateiauswahldialog als erstes der 64 Bit Treiber gewählt werden.
+		Nachdem Windows diese Dateien zum Server hochgeladen hat, fragt es dann erneut nach dem Ort für die 32 Bit Treiber.
+		Danach werden auch diese zum Server hochgeladen.
 	    </simpara>
 		<figure id="printer:upload">
 		  <title>Treiberinstallation</title>
@@ -681,13 +689,13 @@
 	   </listitem>
 
  	  <listitem><simpara>
-		Nach diesen Schritten sind die Treiber auf dem Druckserver im Verzeichnis <filename class="directory">/var/lib/samba/drivers/</filename> gespeichert.
+		Nach diesen Schritten sind die Treiber auf dem UCS Druckserver im Verzeichnis <filename class="directory">/var/lib/samba/drivers/</filename> gespeichert.
  	  </simpara></listitem>
 
 	  <listitem><simpara>
 		Nun muss die Druckerfreigabe noch mit dem hochgeladenen Druckertreiber verknüpft werden. Dazu wird im
-		Programm <guimenu>printmanagement.msc</guimenu> die Druckerliste für den Druckserver aufgerufen. Dort werden
-		durch einen Doppelklick auf den <guimenu>Drucker</guimenu> die Eigenschaften aufgelistet. 
+		Programm <guimenu>printmanagement.msc</guimenu> die Liste der vom Druckserver bereitgestellten Drucker aufgerufen.
+		Dort werden durch einen Doppelklick auf den <guimenu>Drucker</guimenu> die Eigenschaften aufgelistet. 
 	    </simpara>
 		<figure id="printer:selectprinter">
 		  <title>Drucker auswählen</title>
@@ -695,10 +703,9 @@
 		</figure>
 	   </listitem>
 
-
 	  <listitem><simpara>
 		Ist noch kein Druckertreiber hinterlegt, wird eine Meldung angezeigt, dass noch kein Druckertreiber installiert ist.
-		Die Frage, ob der Treiber installiert werden soll, muss mit <guimenu>Nein</guimenu> bestätigt werden.
+		Die Frage, ob der Treiber installiert werden soll, muss hier mit <guimenu>Nein</guimenu> bestätigt werden.
 		</simpara>
 		<figure id="printer:error">
 		  <title>Fehlermeldung beim ersten Zugriff</title>
@@ -713,22 +720,58 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Nun wird ein Dialog angezeigt, in dem gefragt wird, ob dem Drucker vertraut wird. Dies muss
-		mit <guimenu>Treiber installieren</guimenu> bestätigt werden. Wichtig: Nun darf nicht direkt
-		auf <guimenu>OK</guimenu> geklickt werden, sondern es muss auf den Reiter
-		<guimenu>Allgemein</guimenu> gewechselt werden. In dem Reiter muss weiterhin der alte Name
-		der Druckerfreigabe angezeigt werden. Es kann vorkommen, dass die Druckerfreigabe umbenannt
-		wurde, damit ist sie dann nicht mehr mit der Freigabe assoziiert! Ist das der Fall, muss der
-		Name des Druckers im Reiter <guimenu>Allgemein</guimenu> (das erste Eingabefeld, neben dem
-		stilisierten Druckersymbol) wieder auf den Namen der Druckerfreigabe geändert werden. Hier
-		ist das in der Druckerverwaltung der UMC konfigurierte Feld <guimenu>Samba-Name</guimenu> zu
-		verwenden, falls es leer ist, dann der Wert aus <guimenu>Name</guimenu>.
+		Falls der betreffende Druckertreiber das erste mal einem Drucker zugewiesen wird,
+		dann wird ein Dialog angezeigt, in dem gefragt wird, ob dem Drucker vertraut wird. Dies muss
+		mit <guimenu>Treiber installieren</guimenu> bestätigt werden.  Nun werden die
+		serverseitig hinterlegten Druckertreiber auf den Client heruntergeladen.
+		Falls der betreffende Druckertreiber schon zuvor einmal auf diese Weise vom Druckerserver
+		auf das betreffende Windows System heruntergeladen worden ist, dann meldet Windows an dieser
+		Stelle eine Fehlermeldung <literal>0x0000007a</literal>. Diese kann ignoriert werden.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Anschließend auf <guimenu>Übernehmen</guimenu> und <guimenu>OK</guimenu> klicken. Nun werden die
-		serverseitig hinterlegten Druckertreiber auf den Client heruntergeladen, sodass
-		von dort aus z.B. direkt eine Testseite gedruckt werden kann.
+		Wichtig: Nun sollte nicht direkt auf <guimenu>OK</guimenu> geklickt werden, sondern es muss
+		noch einmal auf den Reiter <guimenu>Allgemein</guimenu> gewechselt werden. Auf dem Reiter
+		muss weiterhin der alte Name der Druckerfreigabe angezeigt werden. In UCS Releases vor
+		UCS 4.0-1 kann es vorkommen, dass das Windows System hier den Namen der Druckerfreigabe
+		in den Namen des Druckertreibers geändert hat. Wenn man dies so übernehmen würde, dann
+		wäre der Drucker nicht mehr mit der Freigabe assoziiert!
+		Wenn dieser Fall eingetreten ist, muss der Name des Druckers auf dem Reiter
+		<guimenu>Allgemein</guimenu> (das erste Eingabefeld, neben dem stilisierten Druckersymbol)
+		wieder auf den Namen der Druckerfreigabe geändert werden. Hier ist das in der
+		Druckerverwaltung der UMC konfigurierte Feld <guimenu>Samba-Name</guimenu> zu
+		verwenden (oder falls dies leer gelassen wurde, dann der Wert aus <guimenu>Name</guimenu>).
+		Wenn der Name auf diese Weise zurückgesetzt werden musste, dann fragt Windows beim
+		abschliessenden Klick auf <guimenu>OK</guimenu> nach, ob man sich sicher ist, dass
+		man den Namen ändern möchte. Dies ist zu bestätigen.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Um dem Windows Druckertreiber nun die Möglichkeit zu geben, korrekte Standard-Einstellungen
+		für den Drucker zu speichern, sollte nun auf den Reiter <guimenu>Geräteeinstellungen</guimenu>
+		gewechselt werden. Der Name dieses Reiters ist herstellerspezifisch und kann auch mit
+		<guimenu>Einstellungen</guimenu> oder einfach <guimenu>Konfiguration</guimenu> bezeichnet sein.
+		Ein abschliessender Klick auf <guimenu>OK</guimenu> schliesst den Dialog.
+		Danach kann direkt eine Testseite gedruckt werden.
+		Sollte Windows hier eine Fehlermeldung <literal>0x00000006</literal> ausgeben, muss
+		in den Druckereinstellungen erneut geprüft werden, ob sich ein herstellerspezifischer Reiter
+		namens <guimenu>Geräteeinstellungen</guimenu> (oder ähnlich) findet. Dieser sollte geöffnet
+		und dann einfach mit <guimenu>OK</guimenu> bestätigt werden. Dies schliesst den Dialog und
+		speichert Druckertreibereinstellungen (<literal>PrinterDriverData</literal>) in der Samba Registry.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Es ist sinnvoll zu diesem Zeitpunkt auch direkt die Papiergröße und ähnliche Einstellungen
+		vorzunehmen, damit diese an der Druckerfreigabe gespeichert werden. Andere Windows Systeme,
+		die später auf die Druckerfreigabe zugreifen finden dann automatisch die korrekten Einstellungen.
+		Diese Einstellungen lassen sich in den meisten Fällen dadurch öffnen, indem in den
+		Druckereigenschaften auf dem Reiter <guimenu>Erweitert</guimenu> auf die Schaltfläche
+		<guimenu>Standardwerte...</guimenu> geklickt wird. Der sich öffnende Dialog ist
+		ebenfalls herstellerabhängig. Typischerweise findet sich die Einstellung für Papiergröße
+		und Orientierung auf einem Reiter <guimenu>Seite Einrichten</guimenu> oder auch
+		<guimenu>Papier/Qualität</guimenu>. Nach Bestätigung des Dialogs durch Klick auf
+		<guimenu>OK</guimenu> speichert der Druckertreiber diese Einstellungen (als
+		<literal>Default DevMode</literal>) für den Drucker in der Samba Registry.
 	  </simpara></listitem>
 
 	</orderedlist>
