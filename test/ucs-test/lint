@@ -31,4 +31,7 @@ find tests -type f -exec grep -F -l '"$TESTLIBPATH/ucr.sh"' {} + |
 	xargs grep -F -L "ucr_restore" >"$tmp"
 issue "Use of 'ucr.sh' without call to 'ucr_restore'."
 
+find tests -type f -exec grep -E -l 'fail_(test|fast)+ [^0-9"$?]+' {} + >"$tmp"
+issue "Missing reason for fail_test"
+
 exit $rc

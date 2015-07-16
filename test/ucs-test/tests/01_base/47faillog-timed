@@ -49,7 +49,7 @@ ssh_login "$fake_passwd" # 9
 ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" = "$hostname" ]
 then
-	fail_test "ssh login was successful, but the user should be locked"
+	fail_test 1 "ssh login was successful, but the user should be locked"
 fi
 
 info "Wait for timeout ${LOCKTIME}"
@@ -58,7 +58,7 @@ sleep "${LOCKTIME}"
 ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]
 then
-	fail_test "ssh login wasn't successful"
+	fail_test 1 "ssh login wasn't successful"
 fi
 
 exit $RETVAL
