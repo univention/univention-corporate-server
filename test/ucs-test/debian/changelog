@@ -1,3 +1,10 @@
+ucs-test (5.0.154-1) unstable; urgency=low
+
+  * Bug #38828 :remove column from desc meta section
+  * Bug #38828 :use time instead of ctime as a subject token
+
+ -- Ammar Najjar <najjar@univention.de>  Thu, 16 Jul 2015 10:51:24 +0200
+
 ucs-test (5.0.153-1) unstable; urgency=low
 
   * Bug #38883 :authenticate using the user mailAddress instead of uid 
