@@ -1,3 +1,9 @@
+ucs-test (5.0.153-1) unstable; urgency=low
+
+  * Bug #38883 :authenticate using the user mailAddress instead of uid 
+
+ -- Ammar Najjar <najjar@univention.de>  Thu, 16 Jul 2015 09:01:59 +0200
+
 ucs-test (5.0.152-4) unstable; urgency=low
 
   * Bug #38837: 01/27 Ignore /var/log/univention/welcome-screen.log
