@@ -2,8 +2,8 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: tevent
-fix: 0.9.24-1.25.201505181919
+fix: 0.9.25-1.30.201507161435
 version: [1,2]
 desc: |
- The tevent library has been upgraded to version 0.9.24.
+ The tevent library has been upgraded to version 0.9.25.
 bug: [37939]
