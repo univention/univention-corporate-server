@@ -1,0 +1,56 @@
+#!/usr/share/ucs-test/runner python
+## desc: Delivery to deactivated local account
+## tags: apptest
+## exposure: dangerous
+## packages: [univention-mail-server]
+
+from essential.mail import send_mail, check_delivery
+from univention.config_registry import handler_set
+import subprocess
+import time
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+
+def main():
+	with udm_test.UCSTestUDM() as udm:
+		with ucr_test.UCSTestConfigRegistry() as ucr:
+			domain = ucr.get('domainname')
+			dovecot = ucr.is_true('mail/dovecot')
+			if dovecot:
+				handler_set(['mail/dovecot/mailbox/delete=yes'])
+				subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/zero', 'w'))
+			else:
+				handler_set(['mail/cyrus/mailbox/delete=yes'])
+				subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/zero', 'w'))
+			host = '%s.%s' % (ucr.get('hostname'), domain)
+			password = 'univention'
+			name = uts.random_name()
+			usermail1 = '%s@%s' % (name, domain)
+			userdn, username = udm.create_user(
+				username=name,
+				set={
+					'password'           : password,
+					'mailHomeServer'     : host,
+					'mailPrimaryAddress' : usermail1,
+					'disabled': 'all'
+				}
+			)
+			name = uts.random_name()
+			usermail = '%s@%s' % (name, domain)
+			userdn, username = udm.create_user(
+				username=name,
+				set={
+					'password'           : password,
+					'mailHomeServer'     : host,
+					'mailPrimaryAddress' : usermail,
+				}
+			)
+			token = str(time.time())
+			send_mail(recipients=usermail1, msg=token, tls=True, username=usermail, password=password)
+			check_delivery(token, usermail1, True)
+
+if __name__ == '__main__':
+	main()
+
+# vim: set ft=python ts=4 sw=4 noet :
