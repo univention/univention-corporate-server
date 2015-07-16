@@ -364,6 +364,17 @@ property_descriptions={
 			identifies=0,
 			readonly_when_synced=1,
 		),
+	'country': univention.admin.property(
+			short_description=_('Country'),
+			long_description='',
+			syntax=univention.admin.syntax.Country,
+			multivalue=0,
+			options=['person'],
+			required=0,
+			may_change=1,
+			identifies=0,
+			readonly_when_synced=1,
+		),
 	'phone': univention.admin.property(
 			short_description=_('Telephone number'),
 			long_description='',
@@ -981,7 +992,7 @@ layout = [
 			'e-mail',
 			'phone',
 			[ 'roomNumber', 'departmentNumber' ],
-			[ 'street', 'postcode', 'city' ],
+			[ 'street', 'postcode', 'city', 'country' ],
 			] ),
 		Group( _( 'Private' ), layout = [
 			'homeTelephoneNumber',
@@ -1210,6 +1221,7 @@ mapping.register('street', 'street', None, univention.admin.mapping.ListToString
 mapping.register('e-mail', 'mail')
 mapping.register('postcode', 'postalCode', None, univention.admin.mapping.ListToString)
 mapping.register('city', 'l', None, univention.admin.mapping.ListToString)
+mapping.register('country', 'st', None, univention.admin.mapping.ListToString)
 mapping.register('phone', 'telephoneNumber')
 mapping.register('roomNumber', 'roomNumber', None, univention.admin.mapping.ListToString)
 mapping.register('employeeNumber', 'employeeNumber', None, univention.admin.mapping.ListToString)
