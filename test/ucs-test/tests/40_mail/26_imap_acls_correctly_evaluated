@@ -44,7 +44,7 @@ def main():
 				users.append(userdn)
 			token = str(time.time())
 			send_mail(recipients=mails,	msg=token, port=587, tls=True,
-				username=username, password=password)
+				username=usermail, password=password)
 			check_delivery(token, mails[0], True)
 			group_mail = '%s@%s' % (uts.random_name(), domain)
 			groupdn, groupname = udm.create_group(
