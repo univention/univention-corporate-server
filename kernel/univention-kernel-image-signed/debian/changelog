@@ -1,8 +1,8 @@
-univention-kernel-image-signed (1.0.3-1) unstable; urgency=medium
+univention-kernel-image-signed (1.0.3-2) unstable; urgency=medium
 
-  * Update to ucs134 (Bug #37385)
+  * Update to ucs135 (Bug #37385)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 24 Jun 2015 13:25:34 +0200
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 17 Jul 2015 17:34:28 +0200
 
 univention-kernel-image-signed (1.0.2-1) unstable; urgency=medium
 
