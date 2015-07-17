@@ -1,3 +1,10 @@
+univention-mail-postfix (9.0.3-3) unstable; urgency=low
+
+  * Bug #37653: Add UCR variable mail/antivir/max_servers to configure max.
+  concurrent Amavis processes.
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 17 Jul 2015 11:24:40 +0200
+
 univention-mail-postfix (9.0.3-2) unstable; urgency=low
 
   * Bug #38292: Postfix: check HELO string against reverse DNS entry, adds UCR
