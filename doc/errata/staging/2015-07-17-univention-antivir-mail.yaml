@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-6
+src: univention-antivir-mail
+fix: 5.0.0-5.124.201507171556
+version: [6]
+desc: |
+  This update addresses the following issues:
+  * To configure the max. number of concurrent Amavis processes, a new UCR
+  variable is introduced: mail/antivir/max_servers. When unset, the
+  current default "2" is used.
+bug: [38937]
