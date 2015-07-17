@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-ldap
-fix: 11.0.12-9.753.201507081110
+fix: 11.0.12-10.756.201507170830
 version: [1,2]
 desc: |
   This update addresses the following issues:
