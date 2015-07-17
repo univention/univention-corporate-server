@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.0-2) unstable; urgency=low
+
+  * Bug #36771: Fix for tooltip beeing displayed on hidden labels in
+  	MutliInputs
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 17 Jul 2015 09:44:01 +0200
+
 univention-management-console-frontend (5.0.0-1) unstable; urgency=medium
 
   * Bug #38528: allow login with primary email address

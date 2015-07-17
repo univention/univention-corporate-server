@@ -256,11 +256,11 @@ define([
 			if (this.tooltipNode != null) {
 				domConstruct.destroy(this.tooltipNode);
 			}
-			if (description) {
+			if ((description) && (this._isLabelDisplayed())) {
+				labelNode = this._getLabelNode();
 				this.tooltipNode = domConstruct.create("div",{
 					'class': "umcDescription umcDescriptionIcon"
 				});
-				labelNode = this._getLabelNode();
 				domConstruct.place(this.tooltipNode, labelNode, 'after');
 				//register events to show and hide the tooltip
 
