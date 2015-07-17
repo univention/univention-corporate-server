@@ -105,6 +105,7 @@ Variables: mail/postfix/mastercf/options/smtps/.*
 Type: subfile
 Multifile: etc/postfix/master.cf
 Subfile: etc/postfix/master.cf.d/30_antivir
+Variables: mail/antivir/max_servers
 
 Type: subfile
 Multifile: etc/postfix/master.cf
