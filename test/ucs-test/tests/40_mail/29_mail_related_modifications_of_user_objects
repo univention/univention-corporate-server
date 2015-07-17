@@ -49,17 +49,15 @@ def main():
 			domain = ucr.get('domainname')
 			basedn = ucr.get('ldap/base')
 			if dovecot:
-				handler_set(['mail/dovecot/mailbox/delete=yes',
-							'mail/dovecot/mailbox/rename=yes',
+				handler_set(['mail/dovecot/mailbox/rename=yes',
 							'mail/dovecot/mailbox/delete=no',
-							'mail/dovecot/auth/cache_ttl=0',
-							'mail/dovecot/auth/cache_negative_ttl=0'
+							'mail/dovecot/auth/cache_size=0'
 				])
 				subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/zero', 'w'))
 			else:
-				handler_set(['mail/cyrus/mailbox/delete=yes',
-							'mail/cyrus/mailbox/rename=yes',
-							'mail/cyrus/mailbox/delete=no'
+				handler_set(['mail/cyrus/mailbox/rename=yes',
+							'mail/cyrus/mailbox/delete=no',
+							'mail/saslauthd/cache/timeout=0'
 				])
 				subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/zero', 'w'))
 			host = '%s.%s' % (ucr.get('hostname'), domain)
@@ -275,6 +273,10 @@ def main():
 				set={'mailPrimaryAddress': ''})
 			expected_result = False if dovecot else True
 			check_login_lookup(host, usermail, password, expected_result, dovecot)
+	if dovecot:
+		subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/zero', 'w'))
+	else:
+		subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/zero', 'w'))
 
 
 if __name__ == '__main__':
