@@ -84,8 +84,6 @@ ucr set \
 	security/packetfilter/package/univention-ldap-server/tcp/7636/all/en="LDAPS"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
-[ -f /etc/ldap/dh_2048.pem ] || cp /usr/share/univention-ldap/dh_2048.pem /etc/ldap/
-
 ucr set \
 	ldap/debug/level?0 \
 	slapd/port?"7389,389" \
@@ -107,6 +105,9 @@ ucr set \
 	ldap/autostart?yes \
 	ldap/tls/dh/paramfile?/etc/ldap/dh_2048.pem \
 	ldap/maxopenfiles?8192 # Bug #17705
+
+paramfile="$(ucr get ldap/tls/dh/paramfile)"
+[ -n "$paramfile" ] && [ ! -f "$paramfile" ] && cp /usr/share/univention-ldap/dh_2048.pem "$paramfile"
 
 # UDM Property Attributes
 udm_prop_attrs="univentionUDMPropertyVersion,univentionUDMPropertyModule,univentionUDMPropertyShortDescription,univentionUDMPropertyLongDescription,univentionUDMPropertySyntax,univentionUDMPropertyMultivalue,univentionUDMPropertyDefault,univentionUDMPropertyLdapMapping,univentionUDMPropertyObjectClass,univentionUDMPropertyDeleteObjectClass,univentionUDMPropertyValueMayChange,univentionUDMPropertyLayoutTabName,univentionUDMPropertyLayoutOverwriteTab,univentionUDMPropertyLayoutOverwritePosition,univentionUDMPropertyLayoutPosition,univentionUDMPropertyCLIName,univentionUDMPropertyTranslationShortDescription,univentionUDMPropertyTranslationLongDescription,univentionUDMPropertyTranslationTabName,univentionUDMPropertyOptions,univentionUDMPropertyLayoutTabAdvanced,univentionUDMPropertyValueRequired,univentionUDMPropertyHook,univentionUDMPropertyDoNotSearch"

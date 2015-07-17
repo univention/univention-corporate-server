@@ -15,7 +15,7 @@ protocol = configRegistry.get("ldap/tls/minprotocol", "3.1")
 if protocol:
 	print 'TLSProtocolMin	%s' % (protocol,)
 from os.path import exists
-filename = configRegistry.get("ldap/tls/dh/paramfile", "/etc/ldap/dh_2048.pem")
+filename = configRegistry.get("ldap/tls/dh/paramfile")
 if filename and exists(filename):
 	print 'TLSDHParamFile	%s' % (filename,)
 @!@

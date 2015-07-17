@@ -38,7 +38,7 @@ exec >"$log" 2>&1
 tmp=$(mktemp "$paramfile.XXXXXXXXXX")
 trap "cat '$log';rm -f '$tmp' '$log'" EXIT
 
-openssl gendh -out "$tmp" -2 2048
+openssl dhparam -out "$tmp" -2 2048
 chmod 644 "$tmp"
 mv "$tmp" "$paramfile"
 
