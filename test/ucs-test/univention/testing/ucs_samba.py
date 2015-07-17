@@ -1,4 +1,3 @@
-import univention.config_registry
 import subprocess
 from samba.auth import system_session
 from samba.samdb import SamDB
@@ -78,8 +77,6 @@ def wait_for_s4connector():
 	c = conn.cursor()
 
 	static_count = 0
-	cache_S4_rejects = None
-	t_last_feedback = t_1 = t_0 = time.time()
 
 	highestCommittedUSN = -1
 	lastUSN = -1

@@ -11,7 +11,7 @@ from optparse import OptionParser, OptionGroup
 
 import univention.testing.format
 from univention.testing.codes import TestCodes
-from univention.testing.utils import setup_environment, setup_debug, \
+from univention.testing.internal import setup_environment, setup_debug, \
 		LOG_BASE, get_sections, get_tests
 from univention.testing.data import TestEnvironment, TestCase, TestResult
 from univention.testing.errors import TestError

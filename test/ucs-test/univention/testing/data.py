@@ -6,7 +6,7 @@ import os
 from univention.config_registry import ConfigRegistry
 import yaml
 from univention.testing.codes import TestCodes
-from univention.testing.utils import UCSVersion
+from univention.testing.internal import UCSVersion
 from univention.testing.errors import TestError
 from operator import and_, or_
 from subprocess import call, Popen, PIPE
@@ -17,10 +17,7 @@ import signal
 import select
 import errno
 import re
-try:  # >= Python 2.5
-	from hashlib import md5
-except ImportError:
-	from md5 import new as md5
+from hashlib import md5
 
 
 __all__ = ['TestEnvironment', 'TestCase', 'TestResult', 'TestFormatInterface']
@@ -81,9 +78,9 @@ class TestEnvironment(object):
 		self.role = self.ucr.get('server/role', '')
 		TestEnvironment.logger.debug('Role=%r' % self.role)
 
-		version = self.ucr.get('version/version').split('.', 1)
+		version = self.ucr.get('version/version', '0.0').split('.', 1)
 		major, minor = int(version[0]), int(version[1])
-		patchlevel = int(self.ucr.get('version/patchlevel'))
+		patchlevel = int(self.ucr.get('version/patchlevel', 0))
 		if (major, minor) < (3, 0):
 			securitylevel = int(self.ucr.get('version/security-patchlevel', 0))
 			self.ucs_version = UCSVersion((major, minor, patchlevel,
@@ -98,9 +95,13 @@ class TestEnvironment(object):
 		"""Load join status."""
 		devnull = open(os.path.devnull, 'w+')
 		try:
-			ret = call(('/usr/sbin/univention-check-join-status',),
+			try:
+				ret = call(
+					('/usr/sbin/univention-check-join-status',),
 					stdin=devnull, stdout=devnull, stderr=devnull)
-			self.joined = ret == 0
+				self.joined = ret == 0
+			except OSError:
+				self.joined = False
 		finally:
 			devnull.close()
 		TestEnvironment.logger.debug('Join=%r' % self.joined)

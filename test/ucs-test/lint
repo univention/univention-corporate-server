@@ -9,12 +9,17 @@ trap "rm -f '$tmp'" EXIT
 
 rc=0
 issue () {
-	[ -s "$tmp" ] || return 0
-
-	echo "E: $*"
-	cat "$tmp"
-	echo
-	rc=1
+	local err msg="$1"
+	shift
+	err="$(sed -ne "${1:-p}" "$tmp")"
+	if [ -n "$err" ]
+	then
+		echo "FAIL: $msg"
+		echo "$err"
+		rc=1
+	else
+		echo "OK: $msg"
+	fi
 }
 
 find -type f -exec grep '^source\>' {} + >"$tmp"
@@ -40,8 +45,8 @@ sys.path.remove("")
 import univention
 univention.__path__.insert(0, "univention")
 execfile("bin/ucs-test")
-' --dry-run --count 2>&1 |
-	grep '^CRITICAL' >"$tmp"
-issue "Broken tests"
+' --dry-run --count >"$tmp" 2>&1 ||
+	issue "Failed to run ucs-test" '/^Traceback/,$p'
+issue "Broken tests" '/^CRITICAL/p'
 
 exit $rc

@@ -5,7 +5,7 @@
 #
 import sys
 from optparse import OptionParser
-from univention.testing.utils import setup_environment, setup_debug
+from univention.testing.internal import setup_environment, setup_debug
 from univention.testing.data import TestEnvironment, TestCase, TestResult
 import univention.testing.format
 
