@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: linux
-fix: 3.16.7-ckt11-1~bpo70+1.134.201506231755
+fix: 3.16.7-ckt11-1~bpo70+1.135.201507161851
 version: [2]
 desc: |
  The Linux kernel in Univention Corporate Server 4.0 has been updated to
