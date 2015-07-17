@@ -14,6 +14,7 @@ from univention.testing.codes import TestCodes
 from univention.testing.utils import setup_environment, setup_debug, \
 		LOG_BASE, get_sections, get_tests
 from univention.testing.data import TestEnvironment, TestCase, TestResult
+from univention.testing.errors import TestError
 
 
 def parse_options(sections):
@@ -109,7 +110,15 @@ class TestSet(object):
 				try:
 					for fname in cases:
 						count += 1
-						test_case = TestCase().load(fname)
+						try:
+							test_case = TestCase().load(fname)
+						except TestError as ex:
+							logger = logging.getLogger('test')
+							logger.critical(
+								'Failed to load test "%s": %s',
+								fname, ex)
+							continue
+
 						test_result = TestResult(test_case,
 								self.test_environment)
 						check = test_result.check()

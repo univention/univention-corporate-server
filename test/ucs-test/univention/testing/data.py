@@ -7,6 +7,7 @@ from univention.config_registry import ConfigRegistry
 import yaml
 from univention.testing.codes import TestCodes
 from univention.testing.utils import UCSVersion
+from univention.testing.errors import TestError
 from operator import and_, or_
 from subprocess import call, Popen, PIPE
 import apt
@@ -502,11 +503,18 @@ class TestCase(object):
 		"""
 		TestCase.logger.info('Loading test %s' % (filename,))
 		digest = md5()
-		tc_file = open(filename, 'r')
+		try:
+			tc_file = open(filename, 'r')
+		except IOError as ex:
+			TestCase.logger.critical(
+				'Failed to read "%s": %s',
+				filename, ex)
+			raise TestError('Failed to open file')
+
 		try:
 			firstline = tc_file.readline()
 			if not firstline.startswith('#!'):
-				raise ValueError('Missing hash-bang')
+				raise TestError('Missing hash-bang')
 			args = firstline.split(None)
 			try:
 				lang = args[1]
@@ -517,7 +525,14 @@ class TestCase(object):
 
 			digest.update(firstline)
 			reader = _TestReader(tc_file, digest)
-			header = yaml.load(reader) or {}
+			try:
+				header = yaml.load(reader) or {}
+			except yaml.scanner.ScannerError as ex:
+				TestCase.logger.critical(
+					'Failed to read "%s": %s',
+					filename, ex,
+					exc_info=True)
+				raise TestError('Invalid test YAML data')
 		finally:
 			tc_file.close()
 
