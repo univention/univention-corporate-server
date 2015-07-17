@@ -26,7 +26,7 @@ def main():
 			host = '%s.%s' % (ucr.get('hostname'), domain)
 			password = 'univention'
 			mails = []
-			for i in xrange(3):
+			for i in xrange(2):
 				name = uts.random_name()
 				usermail = '%s@%s' % (name, domain)
 				userdn, username = udm.create_user(
@@ -38,8 +38,19 @@ def main():
 					}
 				)
 				mails.append(usermail)
+			list_name = uts.random_name()
+			list_mail = '%s@%s' % (list_name, domain)
+			udm.create_object(
+				'mail/lists',
+				members=mails[0],
+				set={
+					'name': list_name,
+					'mailAddress': list_mail,
+					'members': mails[1]
+				}
+			)
 			token = str(time.time())
-			send_mail(recipients=mails, msg=token, tls=True, username=usermail, password=password)
+			send_mail(recipients=list_mail, msg=token, tls=True, username=usermail, password=password)
 			for mail in mails:
 				check_delivery(token, mail, True)
 
