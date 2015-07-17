@@ -459,7 +459,8 @@ Depends: ucs-test-libs (= ${source:Version}),
  ucs-test-udm-groups,
  ucs-test-udm-users,
  ucs-test-ldap,
- ucs-test-base
+ ucs-test-base,
+ ucs-test-apache,
 Provides: ucs-test-module
 Description: Test scripts to test the app removal
  This package includes test-cases for the app removal.
