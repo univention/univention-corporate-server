@@ -1,3 +1,9 @@
+ucs-test (5.0.155-1) unstable; urgency=low
+
+  * Bug #38893: disable auth caching during tests
+
+ -- Ammar Najjar <najjar@univention.de>  Fri, 17 Jul 2015 09:25:22 +0200
+
 ucs-test (5.0.154-3) unstable; urgency=low
 
   * Bug #18512: check if static list of country names and abbreviations in
