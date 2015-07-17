@@ -1,3 +1,10 @@
+univention-antivir-mail (5.0.0-5) unstable; urgency=low
+
+  * Bug #38937: Add UCR variable mail/antivir/max_servers to configure max.
+  concurrent Amavis processes.
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 17 Jul 2015 15:16:20 +0200
+
 univention-antivir-mail (5.0.0-4) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30945)

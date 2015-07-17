@@ -4,6 +4,12 @@ Description[en]=This variable configures the start mode of the Amavis service. I
 Type=str
 Categories=service-mail,system-services
 
+[mail/antivir/max_servers]
+Description[de]=Maximale Anzahl gleichzeitiger AMaViS-Prozesse. Wenn nicht gesetzt, ist der Standard 2.
+Description[en]=Maximum number of concurrent AMaViS processes. If not set, the default of 2 is used.
+Type=int
+Categories=service-mail
+
 [clamav/daemon/autostart]
 Description[de]=Die Variable konfiguriert den Startmodus des ClamAV-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
 Description[en]=This variable configures the start mode of the ClamAV service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.

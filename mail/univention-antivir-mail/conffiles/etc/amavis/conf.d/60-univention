@@ -138,7 +138,9 @@ $ENV{TMPDIR} = $TEMPBASE;       # wise, but usually not necessary
 # feeding amavisd, e.g. with Postfix the 'Max procs' field in the
 # master.cf file, like the '2' in the:  smtp-amavis unix - - n - 2 smtp
 #
-$max_servers  =  2;   # number of pre-forked children          (default 2)
+@!@
+print '$max_servers  =  %s;   # number of pre-forked children          (default 2)' % configRegistry.get("mail/antivir/max_servers", "2")
+@!@
 $max_requests = 10;   # retire a child after that many accepts (default 10)
 
 $child_timeout=5*60;  # abort child if it does not complete each task in n sec

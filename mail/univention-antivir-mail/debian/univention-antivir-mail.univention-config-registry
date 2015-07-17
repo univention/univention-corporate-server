@@ -14,6 +14,7 @@ Variables: mail/antivir/banned/long_ext
 Variables: mail/antivir/banned/file_type
 Variables: mail/antivir/banned/mime_type
 Variables: mail/antivir/banned/rfc2046
+Variables: mail/antivir/max_servers
 
 Type: file
 File: etc/amavis/conf.d/15-content_filter_mode
