@@ -1,7 +1,7 @@
 # cron job for the univention-antivir-mail package
 # (remove old files every 6 hours)
 #
-# Copyright 2001-2014 Univention GmbH
+# Copyright 2001-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
