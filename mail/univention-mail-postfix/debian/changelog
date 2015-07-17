@@ -1,6 +1,6 @@
 univention-mail-postfix (8.0.13-11) unstable; urgency=low
 
-  * Bug #37653: Add UCR variable mail/antivir/max_servers to configure max.
+  * Bug #38937: Add UCR variable mail/antivir/max_servers to configure max.
   concurrent Amavis processes.
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 17 Jul 2015 15:36:11 +0200
