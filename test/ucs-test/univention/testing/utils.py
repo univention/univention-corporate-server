@@ -43,10 +43,10 @@ import univention.uldap as uldap
 __all__ = ['TEST_BASE', 'LOG_BASE', 'setup_environment', 'setup_debug',
 		'strip_indent', 'get_sections', 'get_tests', 'UCSVersion']
 
-TEST_BASE = '/usr/share/ucs-test'
+TEST_BASE = os.environ.get('UCS_TESTS', '/usr/share/ucs-test')
 RE_SECTION = re.compile(r'^[0-9]{2}_(.+)$')
 RE_PREFIX = re.compile(r'^[0-9]{2}(.+)')
-RE_SUFFIX = re.compile(r'(?:~|\.(?:lib|sh|py[co]|bak|mo|po|png|jpg|xml|csv|inst|uinst))$')
+RE_SUFFIX = re.compile(r'(?:~|\.(?:lib|sh|py[co]|bak|mo|po|png|jpg|jpeg|xml|csv|inst|uinst))$')
 LOG_BASE = '/var/log/univention/test_%d.log'
 S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
 LISTENER_INIT_SCRIPT = '/etc/init.d/univention-directory-listener'

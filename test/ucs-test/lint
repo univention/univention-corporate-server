@@ -34,4 +34,14 @@ issue "Use of 'ucr.sh' without call to 'ucr_restore'."
 find tests -type f -exec grep -E -l 'fail_(test|fast)+ [^0-9"$?]+' {} + >"$tmp"
 issue "Missing reason for fail_test"
 
+UCS_TESTS=./tests python -c '
+import sys
+sys.path.remove("")
+import univention
+univention.__path__.insert(0, "univention")
+execfile("bin/ucs-test")
+' --dry-run --count 2>&1 |
+	grep '^CRITICAL' >"$tmp"
+issue "Broken tests"
+
 exit $rc
