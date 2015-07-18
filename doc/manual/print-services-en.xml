@@ -628,82 +628,163 @@
 		both versions of the drivers (32 and 64 bit). The <filename class="extension">INF</filename> files are required.
 	  </simpara></listitem>
 
-  	  <listitem><simpara>
-		You now need to start Windows Explorer and open the network environment there. Here, you
-		need to select the print server on which you want to create the printer share. You can
-		display a list of all printer shares by clicking on <guimenu>View remote printer</guimenu>
-		in the menu bar at the top.
-	  </simpara></listitem>
 
-  	  <listitem><simpara>
-		You now need to right-click on the empty space below the printer shares (not on one of the
-		shares, as this will open the printer share's context-sensitive menu!) and select
-		<guimenu>Server Properties</guimenu>. Then select <guimenu>Add &ar; Next &ar; Select x86
-		and x64 &ar; Next &ar; Have Disk</guimenu> in the <guimenu>Drivers</guimenu>
-		tab. You then need to select the <filename class="extension">INF</filename> file of the 64-bit driver (x64) in the file dialogue
-		which opens. Once confirmed with <guimenu>Next &ar; Apply</guimenu>, the 64-bit
-		driver is copied onto the print server. Another file dialogue now opens in which the 32-bit
-		driver (x86) can be uploaded in the same way.
-	  </simpara></listitem>
+	  <listitem><simpara>
+<!-- TODO: transalation
+		Nun muss das Programm <guimenu>printmanagement.msc</guimenu> (Druckerverwaltung) gestartet werden. Im Menüpunkt 
+		<guimenu>Aktion</guimenu> kann mit einem Klick auf <guimenu>Server hinzufügen/entfernen</guimenu>
+		ein weiterer Server hinzugefügt werden. In dem Eingabefeld <guimenu>Server hinzufügen</guimenu>
+		muss der Name des Druckerservers eingetragen werden. 
+-->
+	    </simpara>
+		<figure id="printer:addserver">
+		  <title>Druckerserver hinzufügen</title>
+		  <graphic scalefit="1" align="center" width="80%" fileref="illustrations40/windows-printerdriver-addserver-en.png"/>
+		</figure>
+	   </listitem>
+
+	  <listitem><simpara>
+<!-- TODO: transalation
+		In der Druckerverwaltung sollte der neu hinzugefügte Druckserver nun aufgelistet werden.
+		Durch einen Klick auf <guimenu>Drucker</guimenu> werden die aktuell auf dem Druckerserver eingerichteten
+		Druckerfreigaben angezeigt.
+-->
+	    </simpara>
+		<figure id="printer:printers">
+		  <title>Druckerliste</title>
+		  <graphic scalefit="1" align="center" width="80%" fileref="illustrations40/windows-printerdriver-printerlist-en.png"/>
+		</figure>
+	   </listitem>
+		
+	  <listitem><simpara>
+<!-- TODO: transalation
+		Mit einem Klick auf den Eintrag <guimenu>Treiber</guimenu> werden die hinterlegten Druckertreiber aufgelistet.
+		Im Menüpunkt <guimenu>Aktion</guimenu> kann mit einem Klick auf <guimenu>Treiber hinzufügen</guimenu>
+		der Dialog für die Treiberinstallation gestartet werden.
+		Wir empfehlen die Druckertreiber direkt vom Hersteller herunterzuladen und diese während der
+		Treiberinstallation auszuwählen. Wird eine Umgebung verwendet, in der die 64 Bit-Versionen von Windows
+		eingesetzt werden, sollte zunächst geprüft werden, ob auf dem UCS Samba System die &ucsUCRV;
+		<envar>samba/spoolss/architecture</envar> auf <literal>Windows x64</literal> gesetzt ist. Falls das nicht der Fall ist,
+		müssen die Treiber unbedingt für 32 und 64 Bit hochgeladen werden, andernfalls kann auf die 32 Bit Treiber verzichtet
+		werden, wenn ausschliesslich 64 Bit Windows Systeme in der Domäne zum Einsatz kommen.
+		Die Treiber können für verschiedene Windows-Architekturen entweder in getrennten Schritten nacheinander oder direkt
+		in einem Vorgang hochgeladen werden. Falls beide Treiberarchitekturen gleichzeitig zum Hochgeladen ausgewählt werden,
+		dann muss im anschliessenden Dateiauswahldialog als erstes der 64 Bit Treiber gewählt werden.
+		Nachdem Windows diese Dateien zum Server hochgeladen hat, fragt es dann erneut nach dem Ort für die 32 Bit Treiber.
+		Danach werden auch diese zum Server hochgeladen.
+-->
+	    </simpara>
+		<figure id="printer:upload">
+		  <title>Treiberinstallation</title>
+		  <graphic scalefit="1" align="center" width="80%" fileref="illustrations40/windows-printerdriver-upload-en.png"/>
+		</figure>
+	   </listitem>
 
  	  <listitem><simpara>
 		After these steps the drivers are stored in the directory
 		<filename class="directory">/var/lib/samba/drivers/</filename> on the print server.
  	  </simpara></listitem>
 
+	  <listitem><simpara>
+<!-- TODO: transalation
+		Nun muss die Druckerfreigabe noch mit dem hochgeladenen Druckertreiber verknüpft werden. Dazu wird im
+		Programm <guimenu>printmanagement.msc</guimenu> die Liste der vom Druckserver bereitgestellten Drucker aufgerufen.
+		Dort werden durch einen Doppelklick auf den <guimenu>Drucker</guimenu> die Eigenschaften aufgelistet. 
+-->
+	    </simpara>
+		<figure id="printer:selectprinter">
+		  <title>Drucker auswählen</title>
+		  <graphic scalefit="1" align="center" width="80%" fileref="illustrations40/windows-printerdriver-printerselect-en.png"/>
+		</figure>
+	   </listitem>
 
-
-  	</orderedlist>
-  </para>
-
-
-  <para>
-	The printer share is now linked to the uploaded printer driver:
-  	<orderedlist>
-  	  <listitem><simpara>
-		You now need to start Windows Explorer and open the network environment there. Here, you
-		need to select the print server on which you want to create the printer share. You can
-		display a list of all printer shares by clicking on <guimenu>View remote printers</guimenu>
-		in the menu bar at the top. You now need to select a printer by left-clicking on it, turning
-		it blue. Now right-click and select <guimenu>Properties</guimenu> (Caution: Another dialogue
-		opens if the printer has not been selected with a left click!).
-  	  </simpara></listitem>
-
-  	  <listitem><simpara>
-		If no printer driver is yet stored, the following error is displayed, which must be
-		confirmed with <guimenu>No</guimenu>.
+	  <listitem><simpara>
+<!-- TODO: transalation
+		Ist noch kein Druckertreiber hinterlegt, wird eine Meldung angezeigt, dass noch kein Druckertreiber installiert ist.
+		Die Frage, ob der Treiber installiert werden soll, muss hier mit <guimenu>Nein</guimenu> bestätigt werden.
+-->
 		</simpara>
-  		<figure id="printer:error">
-  		  <title>Error message during first access</title>
-  		  <graphic scalefit="1" align="center" width="40%" fileref="illustrations40/windows-printerdriver-en.png"/>
-  		</figure>
-  	  </listitem>
+		<figure id="printer:error">
+		  <title>Fehlermeldung beim ersten Zugriff</title>
+		  <graphic scalefit="1" align="center" width="40%" fileref="illustrations40/windows-printerdriver-en.png"/>
+		</figure>
+	  </listitem>
 
-  	  <listitem><simpara>
-		The uploaded driver must now be selected from the dropdown menu under
-		<guimenu>Driver</guimenu> on the <guimenu>Advanced</guimenu> tab. Then click on
-		<guimenu>Apply</guimenu> (Important: Do not click <guimenu>OK</guimenu>!).
-  	  </simpara></listitem>
+	  <listitem><simpara>
+<!-- TODO: transalation
+		Nun muss im Reiter <guimenu>Erweitert</guimenu> unter <guimenu>Treiber</guimenu> der
+		hochgeladene Treiber aus dem Dropdown-Menü ausgewählt werden. Anschließend muss auf
+		<guimenu>Übernehmen</guimenu> geklickt werden (Wichtig: Nicht auf <guimenu>OK</guimenu>!).
+-->
+	  </simpara></listitem>
 
-  	  <listitem><simpara>
-		A dialogue is now shown asking whether you trust the printer. This must be confirmed with
-		<guimenu>Install driver</guimenu>. Important: You must not click directly on
-		<guimenu>OK</guimenu> - instead you must switch to the <guimenu>General</guimenu>
-		tab. The old name of the printer share should still be displayed on the tab. If the printer
-		share has been renamed, it is no longer associated with the share! If this is the case, the
-		name of the printer on the <guimenu>General</guimenu> tab (the first input field beside
-		the stylised printer symbol) must be changed back to the name of the printer share. This is
-		done using the <guimenu>Samba name</guimenu> field configured in the UMC's printer
-		management; if it is blank, then the value from <guimenu>Name</guimenu>.
-  	  </simpara></listitem>
+	  <listitem><simpara>
+<!-- TODO: transalation
+		Falls der betreffende Druckertreiber das erste mal einem Drucker zugewiesen wird,
+		dann wird ein Dialog angezeigt, in dem gefragt wird, ob dem Drucker vertraut wird. Dies muss
+		mit <guimenu>Treiber installieren</guimenu> bestätigt werden.  Nun werden die
+		serverseitig hinterlegten Druckertreiber auf den Client heruntergeladen.
+		Falls der betreffende Druckertreiber schon zuvor einmal auf diese Weise vom Druckerserver
+		auf das betreffende Windows System heruntergeladen worden ist, dann meldet Windows an dieser
+		Stelle eine Fehlermeldung <literal>0x0000007a</literal>. Diese kann ignoriert werden.
+-->
+	  </simpara></listitem>
 
-  	  <listitem><simpara>
-		Then click on <guimenu>Apply</guimenu> and <guimenu>OK</guimenu>. The printer drivers stored
-		on the server side are downloaded onto the client, so e.g. a test page can be printed.
-  	  </simpara></listitem>
-  	</orderedlist>
+	  <listitem><simpara>
+<!-- TODO: transalation
+		Wichtig: Nun sollte nicht direkt auf <guimenu>OK</guimenu> geklickt werden, sondern es muss
+		noch einmal auf den Reiter <guimenu>Allgemein</guimenu> gewechselt werden. Auf dem Reiter
+		muss weiterhin der alte Name der Druckerfreigabe angezeigt werden. In UCS Releases vor
+		UCS 4.0-1 kann es vorkommen, dass das Windows System hier den Namen der Druckerfreigabe
+		in den Namen des Druckertreibers geändert hat. Wenn man dies so übernehmen würde, dann
+		wäre der Drucker nicht mehr mit der Freigabe assoziiert!
+		Wenn dieser Fall eingetreten ist, muss der Name des Druckers auf dem Reiter
+		<guimenu>Allgemein</guimenu> (das erste Eingabefeld, neben dem stilisierten Druckersymbol)
+		wieder auf den Namen der Druckerfreigabe geändert werden. Hier ist das in der
+		Druckerverwaltung der UMC konfigurierte Feld <guimenu>Samba-Name</guimenu> zu
+		verwenden (oder falls dies leer gelassen wurde, dann der Wert aus <guimenu>Name</guimenu>).
+		Wenn der Name auf diese Weise zurückgesetzt werden musste, dann fragt Windows beim
+		abschliessenden Klick auf <guimenu>OK</guimenu> nach, ob man sich sicher ist, dass
+		man den Namen ändern möchte. Dies ist zu bestätigen.
+-->
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+<!-- TODO: transalation
+		Um dem Windows Druckertreiber nun die Möglichkeit zu geben, korrekte Standard-Einstellungen
+		für den Drucker zu speichern, sollte nun auf den Reiter <guimenu>Geräteeinstellungen</guimenu>
+		gewechselt werden. Der Name dieses Reiters ist herstellerspezifisch und kann auch mit
+		<guimenu>Einstellungen</guimenu> oder einfach <guimenu>Konfiguration</guimenu> bezeichnet sein.
+		Ein abschliessender Klick auf <guimenu>OK</guimenu> schliesst den Dialog.
+		Danach kann direkt eine Testseite gedruckt werden.
+		Sollte Windows hier eine Fehlermeldung <literal>0x00000006</literal> ausgeben, muss
+		in den Druckereinstellungen erneut geprüft werden, ob sich ein herstellerspezifischer Reiter
+		namens <guimenu>Geräteeinstellungen</guimenu> (oder ähnlich) findet. Dieser sollte geöffnet
+		und dann einfach mit <guimenu>OK</guimenu> bestätigt werden. Dies schliesst den Dialog und
+		speichert Druckertreibereinstellungen (<literal>PrinterDriverData</literal>) in der Samba Registry.
+-->
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+<!-- TODO: transalation
+		Es ist sinnvoll zu diesem Zeitpunkt auch direkt die Papiergröße und ähnliche Einstellungen
+		vorzunehmen, damit diese an der Druckerfreigabe gespeichert werden. Andere Windows Systeme,
+		die später auf die Druckerfreigabe zugreifen finden dann automatisch die korrekten Einstellungen.
+		Diese Einstellungen lassen sich in den meisten Fällen dadurch öffnen, indem in den
+		Druckereigenschaften auf dem Reiter <guimenu>Erweitert</guimenu> auf die Schaltfläche
+		<guimenu>Standardwerte...</guimenu> geklickt wird. Der sich öffnende Dialog ist
+		ebenfalls herstellerabhängig. Typischerweise findet sich die Einstellung für Papiergröße
+		und Orientierung auf einem Reiter <guimenu>Seite Einrichten</guimenu> oder auch
+		<guimenu>Papier/Qualität</guimenu>. Nach Bestätigung des Dialogs durch Klick auf
+		<guimenu>OK</guimenu> speichert der Druckertreiber diese Einstellungen (als
+		<literal>Default DevMode</literal>) für den Drucker in der Samba Registry.
+-->
+	  </simpara></listitem>
+
+	</orderedlist>
   </para>
 </section>
+
 
 <section id="print::ppdlisten">
 <title>Integrating additional PPD files</title>
