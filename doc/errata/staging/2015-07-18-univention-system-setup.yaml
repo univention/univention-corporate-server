@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-system-setup
+fix: 8.1.69-22.910.201507181442
+version: [2]
+desc: |
+  This update addresses the following issue:
+  * The NETBIOS domain name of the Active Directory domain is used when
+    the UCS system joins into an Active Directory domain.
+bug: [37460]
