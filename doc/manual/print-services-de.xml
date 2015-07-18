@@ -672,12 +672,12 @@
 		der Dialog für die Treiberinstallation gestartet werden.
 		Wir empfehlen die Druckertreiber direkt vom Hersteller herunterzuladen und diese während der
 		Treiberinstallation auszuwählen. Wird eine Umgebung verwendet, in der die 64 Bit-Versionen von Windows
-		eingesetzt werden, sollte zunächst geprüft werden, ob auf dem UCS Samba System dir &ucsUCRV;
+		eingesetzt werden, sollte zunächst geprüft werden, ob auf dem UCS Samba System die &ucsUCRV;
 		<envar>samba/spoolss/architecture</envar> auf <literal>Windows x64</literal> gesetzt ist. Falls das nicht der Fall ist,
 		müssen die Treiber unbedingt für 32 und 64 Bit hochgeladen werden, andernfalls kann auf die 32 Bit Treiber verzichtet
 		werden, wenn ausschliesslich 64 Bit Windows Systeme in der Domäne zum Einsatz kommen.
 		Die Treiber können für verschiedene Windows-Architekturen entweder in getrennten Schritten nacheinander oder direkt
-		in einem Vorgang hochgeladen werden. Falls ibeide Treiberarchitekturen gleichzeitig zum Hochgeladen ausgewählt werden,
+		in einem Vorgang hochgeladen werden. Falls beide Treiberarchitekturen gleichzeitig zum Hochgeladen ausgewählt werden,
 		dann muss im anschliessenden Dateiauswahldialog als erstes der 64 Bit Treiber gewählt werden.
 		Nachdem Windows diese Dateien zum Server hochgeladen hat, fragt es dann erneut nach dem Ort für die 32 Bit Treiber.
 		Danach werden auch diese zum Server hochgeladen.
