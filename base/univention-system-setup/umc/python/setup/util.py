@@ -52,6 +52,7 @@ from univention.lib.i18n import Translation, Locale
 from univention.lib import atjobs as atjobs
 from univention.management.console.log import MODULE
 from univention.management.console.modules import UMC_CommandError
+from univention.lib.admember import lookup_adds_dc, failedADConnect
 
 try:
 	# execute imports in try/except block as during build test scripts are
@@ -168,8 +169,24 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 			raise Exception(_('Cannot automatically determine the domain. Please specify the server\'s fully qualified domain name.'))
 
 	# The check "and 'domainname' in newValues" is solely for basesystems
+	if 'windows/domain' not in newValues:
+		if 'ad/member' in newValues and 'ad/address' in newValues:
+			MODULE.process('Searching for NETBIOS domain in AD')
+			for nameserver in ('nameserver1', 'nameserver2', 'nameserver3'):
+				ns = newValues.get(nameserver, ucr.get(nameserver))
+				if ns:
+					try:
+						ad_domain_info = lookup_adds_dc(newValues.get('ad/address'), ucr={'nameserver1' : ns})
+					except failedADConnect:
+						pass
+					else:
+						newValues['windows/domain'] = ad_domain_info['Netbios Domain']
+						MODULE.process('Setting NETBIOS domain to AD value: %s' % newValues['windows/domain'])
+						break
+				
 	if 'windows/domain' not in newValues and 'domainname' in newValues:
 		newValues['windows/domain'] = domain2windowdomain(newValues.get('domainname'))
+		MODULE.process('Setting NETBIOS domain to default: %s' % newValues['windows/domain'])
 
 	# add lists with all packages that should be removed/installed on the system
 	if 'components' in newValues:
