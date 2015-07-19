@@ -1184,7 +1184,7 @@ msgstr "Ohne Angabe wird die aktuelleste Version verwendet"
 
 #: modules/univention/admin/handlers/policies/policy.py:49
 msgid "http://docs.univention.de/manual.html#central:policies"
-msgstr ""
+msgstr "http://docs.univention.de/handbuch.html#central:policies"
 
 #~ msgid "Activate access to client devices"
 #~ msgstr "Aktiviere den Zugriff auf Client-Peripheriegeräte"

@@ -167,7 +167,7 @@ msgstr "Authentisierung fehlgeschlagen"
 
 #: modules/univention/admin/syntax.py:2012
 msgid "Auto"
-msgstr ""
+msgstr "Auto"
 
 #: modules/univention/admin/syntax.py:2566
 msgid "Back up files and directories"
@@ -360,15 +360,15 @@ msgstr "Domänenlokal (Typ: Sicherheit)"
 
 #: modules/univention/admin/syntax.py:2578
 msgid "Domaincontroller Backup"
-msgstr ""
+msgstr "Domaincontroller Backup"
 
 #: modules/univention/admin/syntax.py:2577
 msgid "Domaincontroller Master"
-msgstr ""
+msgstr "Domaincontroller Master"
 
 #: modules/univention/admin/syntax.py:2579
 msgid "Domaincontroller Slave"
-msgstr ""
+msgstr "Domaincontroller Slave"
 
 #: modules/univention/admin/syntax.py:2916
 msgid "Driver"

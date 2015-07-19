@@ -1257,7 +1257,7 @@ msgstr "Passwort-Eigenschaften"
 
 #: sambadomain.py:249
 msgid "A bitfield to indicate complexity and storage restrictions."
-msgstr ""
+msgstr "Ein Bitfeld um Komplexität und Speicherbeschränkungen anzuzeigen."
 
 #: sambadomain.py:261
 msgid "General Samba domain settings"
@@ -1554,7 +1554,7 @@ msgstr "Telefonnummer"
 
 #: usertemplate.py:260
 msgid "Superior"
-msgstr ""
+msgstr "Vorgesetzter"
 
 #: usertemplate.py:270
 msgid "Department number"
