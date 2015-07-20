@@ -3,7 +3,7 @@ release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-ldap
 fix: 11.0.12-11.757.201507201215
-version: [1,2]
+version: [2]
 desc: |
   This update addresses the following issues:
   * Adds UCR variables 'ldap/tls/ciphersuite' and 'ldap/tls/minprotocol' to
