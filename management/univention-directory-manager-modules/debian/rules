@@ -39,6 +39,10 @@ MO_FILES := $(PO_FILES:%.po=%.mo)
 %.mo:	%.po
 	msgfmt --check -o $@ $<
 
+override_dh_auto_clean:
+	dh_auto_clean
+	find modules -name 'de.mo' -delete
+
 override_dh_auto_build: $(MO_FILES)
 	dh_auto_build
 
