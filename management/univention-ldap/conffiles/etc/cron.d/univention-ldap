@@ -2,10 +2,10 @@
 
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
-# recreate dh paramter files for forward secrecy
+# re-create dh parameter files for forward secrecy on a regular basis
 @!@
 script = '/usr/share/univention-ldap/create-dh-parameter-files'
-interval = configRegistry.get('ldap/tls/dh/cron', '30 4  * * *')
+interval = configRegistry.get('ldap/tls/dh/cron')
 if interval:
 	print '%s	root	%s' % (interval, script)
 @!@
