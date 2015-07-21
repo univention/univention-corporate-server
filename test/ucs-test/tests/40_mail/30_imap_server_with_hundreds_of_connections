@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Imap Server with hunderds of connections
-## tags: apptest
+## tags: [producttest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 

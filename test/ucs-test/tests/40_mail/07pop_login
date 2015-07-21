@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: POP3 mail login
-## tags: apptest
+##tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 ## bugs: []

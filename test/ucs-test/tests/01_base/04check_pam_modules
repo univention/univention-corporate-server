@@ -2,7 +2,7 @@
 ## desc: |
 ##  Test for used pam modules
 ##  This script test for all required pam modules.
-## tags: basic
+## tags: [basic]
 ## exposure: safe
 
 # Use: whitelist=(pam_module1.so pam_module2.so pam_modules3.so)

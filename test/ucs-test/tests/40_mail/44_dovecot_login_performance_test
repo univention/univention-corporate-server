@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test logon time with many groups in LDAP
-## tags: apptest
+##tags: [apptest]
 ## exposure: dangerous
 ## packages:
 ##  - univention-mail-server

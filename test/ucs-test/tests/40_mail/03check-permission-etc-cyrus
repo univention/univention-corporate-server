@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Permissions for /etc/cyrus.secret
-## tags: apptest
+## tags: [apptest]
 ## exposure: safe
 ## packages: [univention-mail-server, cyrus-common]
 ## bugs: [23527]
