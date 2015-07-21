@@ -5,7 +5,7 @@
 ## packages: [univention-mail-server]
 ## bugs: []
 
-from essential.mail import disable_mail_quota, enable_mail_quota, ImapMail
+from essential.mailclient import MailClient_SSL
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
@@ -24,14 +24,15 @@ def main():
 					option=['mail', 'person', 'posix', 'samba', 'pki']
 					)
 
-			imap = ImapMail()
 
 			print '* Test imap login with the correct password:'
-			if not imap.login_OK(mailAddress, password):
+			imap = MailClient_SSL('%s.%s' % (ucr.get('hostname'), ucr.get('domainname')))
+			if imap.login_ok(mailAddress, password):
 				utils.fail('IMAP login failed with the correct password')
 
 			print '* Test imap login with the wrong password:'
-			if imap.login_OK(mailAddress, uts.random_name()):
+			imap = MailClient_SSL('%s.%s' % (ucr.get('hostname'), ucr.get('domainname')))
+			if imap.login_ok(mailAddress, uts.random_name(), expected_to_succeed=False):
 				utils.fail('IMAP login succeeded with the wrong password')
 
 

@@ -5,44 +5,45 @@
 ## packages: [univention-mail-server, univention-mail-cyrus]
 ## bugs: []
 
-from essential.mail import disable_mail_quota, enable_mail_quota, ImapMail
+from essential.mail import disable_mail_quota, enable_mail_quota
+from essential.mailclient import MailClient_SSL
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 def main():
-	with ucr_test.UCSTestConfigRegistry() as ucr:
-		with udm_test.UCSTestUDM() as udm:
+	with udm_test.UCSTestUDM() as udm:
+		with ucr_test.UCSTestConfigRegistry() as ucr:
 			username = uts.random_name()
 			password = uts.random_string()
+			mailAddress = '%s@%s' % (username, ucr.get('domainname'))
 			userdn, username = udm.create_user(
 					username=username,
 					password=password,
-					mailPrimaryAddress='%s@%s' % (username, ucr.get('domainname')),
+					mailPrimaryAddress= mailAddress,
 					option=['mail', 'person', 'posix', 'samba', 'pki']
 					)
 
-			imap = ImapMail()
 
 			disable_mail_quota()
-
 			print '* Test imap login with the correct password:'
-			if not imap.login_OK(username, password):
+			imap = MailClient_SSL('%s.%s' % (ucr.get('hostname'), ucr.get('domainname')))
+			if imap.login_ok(username, password):
 				utils.fail('IMAP login failed with the correct password')
-
 			print '* Test imap login with the wrong password:'
-			if imap.login_OK(username, '_'):
+			imap = MailClient_SSL('%s.%s' % (ucr.get('hostname'), ucr.get('domainname')))
+			if imap.login_ok(username, uts.random_name(), expected_to_succeed=False):
 				utils.fail('IMAP login succeeded with the wrong password')
 
 			enable_mail_quota()
-
 			print '* Test imap login with the correct password:'
-			if not imap.login_OK(username, password):
+			imap = MailClient_SSL('%s.%s' % (ucr.get('hostname'), ucr.get('domainname')))
+			if imap.login_ok(username, password):
 				utils.fail('IMAP login failed with the correct password')
-
 			print '* Test imap login with the wrong password:'
-			if imap.login_OK(username, '_'):
+			imap = MailClient_SSL('%s.%s' % (ucr.get('hostname'), ucr.get('domainname')))
+			if imap.login_ok(username, uts.random_name(), expected_to_succeed=False):
 				utils.fail('IMAP login succeeded with the wrong password')
 
 

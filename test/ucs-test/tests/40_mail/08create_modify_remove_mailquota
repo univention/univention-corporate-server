@@ -9,7 +9,7 @@
 ## bugs: [23527]
 
 
-from essential.mail import mail_delivered, send_mail, ImapMail
+from essential.mailclient import MailClient_SSL
 import time
 import subprocess
 from univention.config_registry import handler_set
@@ -31,6 +31,7 @@ def main():
 		try:
 			with ucr_test.UCSTestConfigRegistry() as ucr:
 				domain = ucr.get('domainname')
+				hostname = ucr.get('hostname')
 				user = uts.random_name()
 				mail = '%s@%s' % (user, domain)
 				UDM_policies_mailquota_name = uts.random_name()
@@ -47,7 +48,7 @@ def main():
 						policy_reference=policy,
 						set={
 
-							'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+							'mailHomeServer': '%s.%s' % (hostname, domain),
 							'mailPrimaryAddress': mail,
 							},
 						options=['mail', 'person', 'posix', 'samba', 'groupware']
@@ -57,18 +58,20 @@ def main():
 				enable_mailquota_set_interval(1)
 				restart_cyrus_saslauthd()
 
-				imap = ImapMail()
-				imap.login_OK(mail, 'univention')
-				quota, response = imap.get_imap_quota(username, 'univention')
+				imap = MailClient_SSL('%s.%s' % (hostname, domain))
+				imap.log_in(mail, 'univention')
+				response, quota = imap.get_quota_root('INBOX')
 				if not response == 'OK':
 					utils.fail('Fail get imap quota')
-				if not quota == 17000:
+				if not quota == '17000':
 					utils.fail('Wrong quota set = %r' % quota)
-				imap.login_OK(username, 'univention')
-				quota, response = imap.get_imap_quota(username, 'univention')
+
+				imap = MailClient_SSL('%s.%s' % (hostname, domain))
+				imap.log_in(mail, 'univention')
+				response, quota = imap.get_quota_root('INBOX')
 				if not response == 'OK':
 					utils.fail('Fail get imap quota')
-				if not quota == 17000:
+				if not quota == '17000':
 					utils.fail('Wrong quota set = %r' % quota)
 
 				udm.modify_object(
@@ -78,22 +81,25 @@ def main():
 						)
 
 				restart_cyrus_saslauthd()
-				imap.login_OK(username, 'univention')
 				time.sleep(60)
-				restart_cyrus_saslauthd()
-				imap.login_OK(username, 'univention')
 
-				quota, response = imap.get_imap_quota(username, 'univention')
+				imap = MailClient_SSL('%s.%s' % (hostname, domain))
+				imap.log_in(mail, 'univention')
+				response, quota = imap.get_quota_root('INBOX')
+				imap.logout()
 				if not response == 'OK':
-					utils.fail('Fail get imap quota')
-				if not quota == 42000:
-					utils.fail('Wrong quota set = %r, correct =42000' % quota)
-				imap.login_OK(username, 'univention')
-				quota, response = imap.get_imap_quota(username, 'univention')
+					utils.fail('Failed to get imap quota')
+				if not quota == '42000':
+					utils.fail('Wrong quota set = %r, correct = 42000' % quota)
+
+				imap = MailClient_SSL('%s.%s' % (hostname, domain))
+				imap.log_in(mail, 'univention')
+				response, quota = imap.get_quota_root('INBOX')
+				imap.logout()
 				if not response == 'OK':
-					utils.fail('Fail get imap quota')
-				if not quota == 42000:
-					utils.fail('Wrong quota set = %r, correct =42000' % quota)
+					utils.fail('Failed to get imap quota')
+				if not quota == '42000':
+					utils.fail('Wrong quota set = %r, correct = 42000' % quota)
 
 				udm.modify_object(
 						modulename='users/user',
@@ -105,21 +111,29 @@ def main():
 						dn=mailquota_dn
 						)
 				restart_cyrus_saslauthd()
-				imap.login_OK(username, 'univention')
 				time.sleep(60)
-				restart_cyrus_saslauthd()
-				imap.login_OK(username, 'univention')
-				quota, response = imap.get_imap_quota(username, 'univention')
+
+				imap = MailClient_SSL('%s.%s' % (hostname, domain))
+				imap.log_in(mail, 'univention')
+				response, quota = imap.get_quota_root('INBOX')
+				imap.logout()
 				if not response == 'OK':
-					utils.fail('Fail get imap quota')
-				if not quota == -1:
+					utils.fail('Failed to get imap quota')
+				if not quota == '(':
 					utils.fail('Wrong quota set = %r, although it should not be set' % quota)
-				imap.login_OK(username, 'univention')
-				quota, response = imap.get_imap_quota(username, 'univention')
-				if not quota == -1:
+
+				imap = MailClient_SSL('%s.%s' % (hostname, domain))
+				imap.log_in(mail, 'univention')
+				response, quota = imap.get_quota_root('INBOX')
+				imap.logout()
+				if not response == 'OK':
+					utils.fail('Failed to get imap quota')
+				if not quota == '(':
 					utils.fail('Wrong quota set = %r, although it should not be set' % quota)
 		finally:
 			restart_cyrus_saslauthd()
 
 if __name__ == '__main__':
 	main()
+
+# vim: set ft=python ts=4 sw=4 noet ai :
