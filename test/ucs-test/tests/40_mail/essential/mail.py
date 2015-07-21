@@ -271,7 +271,7 @@ def activate_spam_header_tag(tag):
 def reload_postfix():
 	cmd = ['/etc/init.d/postfix', 'force-reload']
 	try:
-		subprocess.Popen(cmd).communicate()
+		subprocess.Popen(cmd, stderr=open('/dev/zero', 'w')).communicate()
 	except EnvironmentError as ex:
 		print >> sys.stderr, ex
 
@@ -283,7 +283,7 @@ def reload_amavis_postfix():
 		['/etc/init.d/postfix', 'force-reload'],
 	):
 		try:
-			subprocess.Popen(cmd).communicate()
+			subprocess.Popen(cmd, stderr=open('/dev/zero', 'w')).communicate()
 		except EnvironmentError as ex:
 			print >> sys.stderr, ex
 
