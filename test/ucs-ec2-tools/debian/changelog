@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.12-20) unstable; urgency=low
+
+  * Bug #34819: Support additional EC2 disks
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 22 Jul 2015 13:34:57 +0200
+
 ucs-ec2-tools (1.0.12-19) unstable; urgency=low
 
   * Bug #34382: Check for missing local files

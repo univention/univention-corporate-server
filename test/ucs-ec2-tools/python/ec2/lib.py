@@ -629,7 +629,8 @@ class VM_EC2(VM):
 				'ec2_region',
 				'ec2_subnet_id',
 				'ec2_partition_size',
-				]
+				'ec2_instance_store',
+		]
 		for key in params:
 			if not config.has_option(section, key):
 				if config.has_option('Global', key):
@@ -643,18 +644,34 @@ class VM_EC2(VM):
 
 		self.ec2 = None
 
-	def _get_blockdevicemapping(self):
+	def _create_blockdevicemapping(self, ami):
 		"""
 		Create explicit block device with given size.
+		Also make additional ephemeral disk available.
 		"""
-		bdm = None
-		if self.aws_cfg.get('ec2_partition_size'):
-			dev_sda1 = blockdevicemapping.EBSBlockDeviceType(
-					size = self.aws_cfg.get('ec2_partition_size'),
-					delete_on_termination=True,
-					)
-			bdm = blockdevicemapping.BlockDeviceMapping()
-			bdm['/dev/sda1'] = dev_sda1
+		size = self.aws_cfg.get('ec2_partition_size')
+		max_ephemeral = int(self.aws_cfg.get('ec2_instance_store', 4))
+		bdm = blockdevicemapping.BlockDeviceMapping()
+
+		last_used = 0
+		for dev, desc in ami.block_device_mapping.iteritems():
+			bdm[dev] = blockdevicemapping.BlockDeviceType(
+				ephemeral_name=desc.ephemeral_name,
+				volume_id=desc.volume_id,
+				snapshot_id=desc.snapshot_id,
+				size=int(size) if size else desc.size,
+				delete_on_termination=True,
+			)
+			if desc.ephemeral_name:
+				max_ephemeral = 0
+			last_used = max(last_used, ord(dev.rstrip("0123456789")[-1]))
+
+		for ephemeral in range(max_ephemeral):
+			dev = u'/dev/xvd%c' % (chr(last_used + 1 + ephemeral),)
+			bdm[dev] = blockdevicemapping.BlockDeviceType(
+				ephemeral_name=u"ephemeral%d" % (ephemeral,),
+			)
+
 		return bdm
 
 	def _connect_vm(self):
@@ -681,29 +698,24 @@ class VM_EC2(VM):
 		reuse = self.aws_cfg.get('ec2_reuse')
 		if reuse:
 			reservation = self.ec2.get_all_instances(instance_ids=[reuse])[0]
-		elif self.aws_cfg.get('ec2_subnet_id'):
-			ami = self.ec2.get_image(self.aws_cfg['ec2_ami'])
-			reservation = ami.run(min_count=1,
-				max_count=1,
-				key_name=self.aws_cfg['ec2_keypair'],
-				subnet_id=self.aws_cfg['ec2_subnet_id'],
-				user_data=user_data,
-				security_group_ids=[self.aws_cfg['ec2_security_group']],
-				instance_type=self.aws_cfg['ec2_instance_type'],
-				instance_initiated_shutdown_behavior='terminate',  # 'save'
-				block_device_map=self._get_blockdevicemapping()
-				)
 		else:
 			ami = self.ec2.get_image(self.aws_cfg['ec2_ami'])
-			reservation = ami.run(min_count=1,
+
+			param = dict(
 				max_count=1,
 				key_name=self.aws_cfg['ec2_keypair'],
 				user_data=user_data,
-				security_groups=[self.aws_cfg['ec2_security_group']],
 				instance_type=self.aws_cfg['ec2_instance_type'],
 				instance_initiated_shutdown_behavior='terminate',  # 'save'
-				block_device_map=self._get_blockdevicemapping()
-				)
+				block_device_map=self._create_blockdevicemapping(ami),
+			)
+			if self.aws_cfg.get('ec2_subnet_id'):
+				param['subnet_id'] = self.aws_cfg['ec2_subnet_id']
+				param['security_group_ids'] = [self.aws_cfg['ec2_security_group']]
+			else:
+				param['security_groups'] = [self.aws_cfg['ec2_security_group']]
+
+			reservation = ami.run(**param)
 
 		self.instance = reservation.instances[0]
 
