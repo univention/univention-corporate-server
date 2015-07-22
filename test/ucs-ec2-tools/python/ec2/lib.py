@@ -252,6 +252,8 @@ class VM:
 		self._open_client_sftp_connection()
 
 		for localfile, remotedir in self.list_files():
+			if not remotedir:
+				continue
 			fname = os.path.basename(localfile)
 			remfile = os.path.join(remotedir, fname)
 			self._remote_mkdir(remotedir)
@@ -777,8 +779,8 @@ def check_missing_files(vms):
 	missing = [
 		localfile
 		for vm in vms
-		for localfile, _remotedir in vm.list_files()
-		if not os.path.exists(localfile)
+		for localfile, remotedir in vm.list_files()
+		if not os.path.exists(localfile) or not remotedir
 	]
 	if missing:
 		print >> sys.stderr, 'fail: missing local files:\n%s' % ('\n'.join(missing),)
