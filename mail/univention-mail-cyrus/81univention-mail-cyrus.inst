@@ -60,7 +60,7 @@ if [ -x /etc/init.d/cyrus-imapd ]; then
 	/etc/init.d/cyrus-imapd restart
 fi
 
-ucs_registerLDAPExtension "$@" --udm_module /usr/share/univention-mail-cyrus/mailquota.py || die
+ucs_registerLDAPExtension "$@" --udm_module /usr/share/univention-mail-cyrus/mailquota.py --ucsversionstart 4.0-2 || die
 
 joinscript_save_current_version
 
