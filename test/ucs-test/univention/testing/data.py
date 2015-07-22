@@ -39,6 +39,14 @@ RE_ILLEGAL_XML = re.compile(u'[%s]' % u''.join((u'%s-%s' %
 		if low < sys.maxunicode)))
 
 
+def checked_set(values):
+	if values is None:
+		return None
+	if not isinstance(values, (list, tuple, set, frozenset)):
+		raise TypeError('"%r" not a list or tuple' % values)
+	return set(values)
+
+
 class TestEnvironment(object):
 	"""Test environment for running test cases.
 
@@ -269,7 +277,7 @@ class CheckTags(Check):
 
 	def __init__(self, tags):
 		super(CheckTags, self).__init__()
-		self.tags = set(tags)
+		self.tags = checked_set(tags)
 
 	def check(self, environment):
 		"""Check environment for required / prohibited tags."""
@@ -311,8 +319,8 @@ class CheckRoles(Check):
 
 	def __init__(self, roles_required=(), roles_prohibited=()):
 		super(CheckRoles, self).__init__()
-		self.roles_required = set(roles_required)
-		self.roles_prohibited = set(roles_prohibited)
+		self.roles_required = checked_set(roles_required)
+		self.roles_prohibited = checked_set(roles_prohibited)
 
 	def check(self, environment):
 		"""Check environment for required / prohibited server role."""
@@ -540,18 +548,27 @@ class TestCase(object):
 		self.filename = os.path.abspath(filename)
 		self.uid = os.path.sep.join(self.filename.rsplit(os.path.sep, 2)[-2:])
 
-		self.description = header.get('desc', '').strip()
-		self.bugs = set(header.get('bugs', []))
-		self.otrs = set(header.get('otrs', []))
-		self.versions = CheckVersion(header.get('versions', {}))
-		self.tags = CheckTags(header.get('tags', []))
-		self.roles = CheckRoles(header.get('roles', []),
+		try:
+			self.description = header.get('desc', '').strip()
+			self.bugs = checked_set(header.get('bugs', []))
+			self.otrs = checked_set(header.get('otrs', []))
+			self.versions = CheckVersion(header.get('versions', {}))
+			self.tags = CheckTags(header.get('tags', []))
+			self.roles = CheckRoles(
+				header.get('roles', []),
 				header.get('roles-not', []))
-		self.join = CheckJoin(header.get('join', None))
-		self.components = CheckComponents(header.get('components', {}))
-		self.packages = CheckPackages(header.get('packages', []))
-		self.exposure = CheckExposure(header.get('exposure', 'dangerous'),
+			self.join = CheckJoin(header.get('join', None))
+			self.components = CheckComponents(header.get('components', {}))
+			self.packages = CheckPackages(header.get('packages', []))
+			self.exposure = CheckExposure(
+				header.get('exposure', 'dangerous'),
 				digest)
+		except TypeError as ex:
+			TestCase.logger.critical(
+				'Tag error in "%s": %s',
+				filename, ex,
+				exc_info=True)
+			raise TestError(ex)
 
 		return self
 
