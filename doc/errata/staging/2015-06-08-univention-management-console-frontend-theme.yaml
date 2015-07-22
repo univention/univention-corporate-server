@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-management-console-frontend-theme
-fix: 0.0.89-18.89.201507070804
+fix: 0.0.89-19.90.201507221511
 version: [2]
 desc: |
   This update addresses the following issue:
@@ -11,4 +11,5 @@ desc: |
     so the styling has been adjusted.
   * New icons for tooltips have been added and the style for tooltips
     has been adadpted.
-bug: [38658, 36771]
+  * Added a transition when a UMC-module-header reaches the top of the screen.
+bug: [38658, 36771, 38491]
