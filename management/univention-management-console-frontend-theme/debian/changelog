@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.89-19) unstable; urgency=low
+
+  * Bug #38491: added css transition for the sticky ModuleHeader
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 22 Jul 2015 15:08:59 +0200
+
 univention-management-console-frontend-theme (0.0.89-18) unstable; urgency=low
 
   *Bug #36771: added icons and adjusted style for tooltips
