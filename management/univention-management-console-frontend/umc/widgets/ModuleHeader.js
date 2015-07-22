@@ -32,9 +32,11 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/Deferred",
 	"dojo/on",
 	"dojo/dom-class",
 	"dojo/dom-geometry",
+	"dojo/dom-style",
 	"dojo/_base/window",
 	"umc/tools",
 	"umc/dialog",
@@ -43,8 +45,10 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"dojo/topic",
+	"put-selector/put",
 	"umc/i18n!"
-], function(declare, lang, array, on, domClass, geometry, baseWin, tools, dialog, store, ContainerWidget, Text, Button, topic, _) {
+], function(declare, lang, array, Deferred, on, domClass, geometry, domStyle, baseWin, tools, dialog, store, ContainerWidget, Text, Button, topic, put,  _) {
+
 	return declare('umc.widgets.ModuleHeader', [ContainerWidget], {
 
 		baseClass: 'umcModuleHeader',
@@ -56,11 +60,57 @@ define([
 			this._title.set('content', title);
 		},
 
+		_stickyTimer: null,
+
+		_stickyHeaderTopPadding: null,
+
+		_getStickyHeaderTopPadding: function() {
+			var stickyHeaderNode = put(document.body, 'div.umcModuleHeader.dijitOffscreen > div.umcModuleHeaderSticky');
+			this._stickyHeaderTopPadding =  geometry.getPadExtents(stickyHeaderNode).t;
+			put(stickyHeaderNode.parentNode, '!');
+		},
+
+		_moduleHeaderTopPadding: null,
+
+		_getModuleHeaderTopPadding: function() {
+			var moduleHeaderNode = put(document.body, 'div.umcModuleHeader.dijitOffscreen > div.umcModuleHeaderOuterContainer');
+			this._moduleHeaderTopPadding =  geometry.getPadExtents(moduleHeaderNode).t;
+			put(moduleHeaderNode.parentNode, '!');
+		},
+
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this._stickyTimer = new Deferred();
+			this._stickyTimer.resolve();
+			this._getStickyHeaderTopPadding();
+			this._getModuleHeaderTopPadding();
+		},
+
+		_removeModuleHeaderHeight: function()  {
+			this._stickyTimer = this._stickyTimer.then(lang.hitch(this, function() {
+				return tools.defer(lang.partial(domStyle.set, this._outerContainer.domNode.parentNode, 'height', ''), 200);
+			}));
+			this._stickyTimer.then(null, function() {
+				// empty callback to catch cancel exceptions
+			});
+		},
+
+		_cancelRemoveModuleHeaderHeight: function()  {
+			this._stickyTimer.cancel();
+		},
+
 		_updateStickyHeader: function() {
 			var scroll = geometry.docScroll();
 			var bboxHeader = geometry.getMarginBox('umcHeader');
-			var moduleHeaderHeight = geometry.getMarginBox(this.domNode).h;
-			var sticky = scroll.y >= bboxHeader.h + bboxHeader.t + moduleHeaderHeight;
+			var topPaddingDifference = this._moduleHeaderTopPadding - this._stickyHeaderTopPadding;
+			var sticky = scroll.y >= bboxHeader.h + bboxHeader.t + topPaddingDifference;
+			var moduleHeaderHeight = geometry.getContentBox(this._outerContainer.domNode.parentNode).h;
+			if (sticky) {
+				this._cancelRemoveModuleHeaderHeight();
+				domStyle.set(this._outerContainer.domNode.parentNode, 'height', moduleHeaderHeight + 'px');
+			} else {
+				this._removeModuleHeaderHeight();
+			}
 			domClass.toggle(this._outerContainer.domNode, 'umcModuleHeaderSticky', sticky);
 		},
 
