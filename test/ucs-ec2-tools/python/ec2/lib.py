@@ -135,6 +135,8 @@ class VM:
 			if config.has_option(sname, 'logfile'):
 				self.logfile = os.path.expanduser(config.get(sname, 'logfile'))
 				break
+		else:
+			self.logfile = None
 
 		# Create the logfile
 		if self.logfile:
@@ -466,7 +468,6 @@ class VM:
 				lfile.write('\n')
 			lfile.close()
 		else:
-			print 'I: no logfile is configured, print to stdout'
 			print msg
 
 
