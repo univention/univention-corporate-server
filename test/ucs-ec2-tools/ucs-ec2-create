@@ -39,10 +39,10 @@ import logging
 
 try:
 	import python.ec2.lib as univention_ec2_lib
-	from python.ec2.lib import _print_done, _print_process
+	from python.ec2.lib import _print_done, _print_process, check_missing_files
 except ImportError:
 	import univention.ec2.lib as univention_ec2_lib
-	from univention.ec2.lib import _print_done, _print_process
+	from univention.ec2.lib import _print_done, _print_process, check_missing_files
 
 
 def main():
@@ -80,12 +80,15 @@ def main():
 		_print_done()
 	else:
 		_print_done('fail: See http://code.google.com/p/boto/wiki/BotoConfig or https://hutten.knut.univention.de/mediawiki/index.php/UCS_EC2_Tools#.boto_Datei)')
+		sys.exit(1)
 
 	vms = []
 	for host in config.hosts():
 		_print_process('Creating VM [%s]' % host)
 		vms.append( univention_ec2_lib.VM_EC2(host, config) )
 		_print_done()
+
+	check_missing_files(vms)
 
 	# start instances
 	for vm in vms:

@@ -231,26 +231,32 @@ class VM:
 
 		self._close_client_sftp_connection()
 
-	def copy_files(self):
-		''' Copy the given files to the instance '''
+	def list_files(self):
+		'''Iterate files to copy'''
 		if self._is_windows:
 			return
 		if not self.files:
 			return
 
-		self._open_client_sftp_connection()
-
 		for line in self.files:
 			localfiles, remotedir = line.rsplit(' ', 1)
 			expanded_files = glob.glob(os.path.expanduser(localfiles))
-			self._remote_mkdir(remotedir)
+			if expanded_files:
+				for localfile in expanded_files:
+					yield localfile, remotedir
+			else:
+				yield localfiles, None
 
-			for localfile in expanded_files:
-				if os.path.exists(localfile):
-					fname = os.path.basename(localfile)
-					remfile = os.path.join(remotedir, fname)
-					self.client_sftp.put(localfile, remfile)
-					self.client_sftp.chmod(remfile, os.stat(localfile).st_mode & 0777)
+	def copy_files(self):
+		''' Copy the given files to the instance '''
+		self._open_client_sftp_connection()
+
+		for localfile, remotedir in self.list_files():
+			fname = os.path.basename(localfile)
+			remfile = os.path.join(remotedir, fname)
+			self._remote_mkdir(remotedir)
+			self.client_sftp.put(localfile, remfile)
+			self.client_sftp.chmod(remfile, os.stat(localfile).st_mode & 0777)
 
 		self._close_client_sftp_connection()
 
@@ -749,6 +755,18 @@ def _print_done(msg='done'):
 	'''	Close the status line opend with _print_process '''
 	print '%s' % msg
 	sys.stdout.flush()
+
+
+def check_missing_files(vms):
+	missing = [
+		localfile
+		for vm in vms
+		for localfile, _remotedir in vm.list_files()
+		if not os.path.exists(localfile)
+	]
+	if missing:
+		print >> sys.stderr, 'fail: missing local files:\n%s' % ('\n'.join(missing),)
+		sys.exit(1)
 
 
 class Parser(ConfigParser.ConfigParser):
