@@ -1,3 +1,9 @@
+ucs-test (5.0.158-4) unstable; urgency=medium
+
+  * Bug #31792: Meta fixes
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 22 Jul 2015 23:25:12 +0200
+
 ucs-test (5.0.158-3) unstable; urgency=low
 
   * Bug #39002: Validate tags
