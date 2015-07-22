@@ -1,6 +1,7 @@
 ucs-ec2-tools (1.0.12-20) unstable; urgency=low
 
   * Bug #34819: Support additional EC2 disks
+  * Bug #39006: Fix EC2 meta-data service
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 22 Jul 2015 13:34:57 +0200
 

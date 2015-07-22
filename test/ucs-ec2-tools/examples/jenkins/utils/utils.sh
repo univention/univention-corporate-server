@@ -36,7 +36,11 @@ basic_setup ()
 		# wait until Univention System Setup is running and profile file has been moved
 	else
 		echo "Assuming Amazon Cloud"
-		echo -e "#!/bin/sh\nroute del default ; route add default gw 10.210.216.13" >>/etc/network/if-up.d/z_route
+		cat >/etc/network/if-up.d/z_route <<__SH__
+#!/bin/sh
+ip route replace default via 10.210.216.13  # VPN gateway
+ip route replace 169.254.169.254 dev eth0  # EC2 meta-data service
+__SH__
 		chmod +x /etc/network/if-up.d/z_route
 		/etc/network/if-up.d/z_route
 		sleep 10 # just wait a few seconds to give the amazone cloud some time
