@@ -744,6 +744,10 @@ class VM_EC2(VM):
 
 def _print_process(msg):
 	'''	Print s status line '''
+	if not os.isatty(sys.stdout.fileno()):
+		print msg
+		return
+
 	if len(msg) > 64:
 		print '%s..' % msg[:63],
 	else:
@@ -766,7 +770,8 @@ def check_missing_files(vms):
 	]
 	if missing:
 		print >> sys.stderr, 'fail: missing local files:\n%s' % ('\n'.join(missing),)
-		# sys.exit(1)
+		if os.isatty(sys.stdout.fileno()):
+			sys.exit(1)
 
 
 class Parser(ConfigParser.ConfigParser):
