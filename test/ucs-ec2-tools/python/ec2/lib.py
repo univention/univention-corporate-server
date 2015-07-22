@@ -766,7 +766,7 @@ def check_missing_files(vms):
 	]
 	if missing:
 		print >> sys.stderr, 'fail: missing local files:\n%s' % ('\n'.join(missing),)
-		sys.exit(1)
+		# sys.exit(1)
 
 
 class Parser(ConfigParser.ConfigParser):
