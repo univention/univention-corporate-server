@@ -632,11 +632,14 @@ class VM_EC2(VM):
 				'ec2_ami',
 				'ec2_security_group',
 				'ec2_instance_type',
+				'ec2_instance_ebsOptimized',
 				'ec2_keypair',
 				'ec2_region',
 				'ec2_subnet_id',
 				'ec2_partition_size',
 				'ec2_instance_store',
+				'ec2_volume_type',
+				'ec2_volume_iops',
 		]
 		for key in params:
 			if not config.has_option(section, key):
@@ -669,6 +672,11 @@ class VM_EC2(VM):
 				size=int(size) if size else desc.size,
 				delete_on_termination=True,
 			)
+			if tuple(map(int, boto.Version.split('.'))) >= (2, 6):
+				iops = self.aws_cfg.get('ec2_volume_iops')
+				if iops:
+					bdm[dev].iops = int(iops)
+				bdm[dev].volume_type = self.aws_cfg.get('ec2_volume_type')
 			if desc.ephemeral_name:
 				max_ephemeral = 0
 			last_used = max(last_used, ord(dev.rstrip("0123456789")[-1]))
@@ -709,6 +717,7 @@ class VM_EC2(VM):
 			ami = self.ec2.get_image(self.aws_cfg['ec2_ami'])
 
 			param = dict(
+				image_id=ami.id,
 				max_count=1,
 				key_name=self.aws_cfg['ec2_keypair'],
 				user_data=user_data,
@@ -721,8 +730,11 @@ class VM_EC2(VM):
 				param['security_group_ids'] = [self.aws_cfg['ec2_security_group']]
 			else:
 				param['security_groups'] = [self.aws_cfg['ec2_security_group']]
+			if tuple(map(int, boto.Version.split('.'))) >= (2, 9, 3):
+				if self.aws_cfg.get('ec2_instance_ebsOptimized', '').lower() in ('1', 'true', 'yes'):
+					param['ebs_optimized'] = True
 
-			reservation = ami.run(**param)
+			reservation = self.ec2.run_instances(**param)
 
 		self.instance = reservation.instances[0]
 
