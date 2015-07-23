@@ -36,6 +36,18 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
+try:
+	from univention.admin.policy import (
+		register_policy_mapping, policy_object_tab,
+		requiredObjectClassesProperty, prohibitedObjectClassesProperty,
+		fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+	)
+	UDMPolicyAPIVersion = 1
+except ImportError:
+	# Bug #39004: UDMPolicyAPIVersion is a workaround for registerLDAPExtension problems #39010 and #39011
+	# it may be removed if those bugs are fixed or all systems in UCS domain have UCS version 4.0-3 or higher
+	UDMPolicyAPIVersion = 0
+
 import univention.debug
 
 translation=univention.admin.localization.translation('univention.admin.handlers.policies.mailquota')
@@ -82,7 +94,11 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'requiredObjectClasses': univention.admin.property(
+	}
+
+if UDMPolicyAPIVersion == 0:
+	property_descriptions.update({
+		'requiredObjectClasses': univention.admin.property(
 			short_description=_('Required object class'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
@@ -92,7 +108,7 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'prohibitedObjectClasses': univention.admin.property(
+		'prohibitedObjectClasses': univention.admin.property(
 			short_description=_('Excluded object class'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
@@ -102,7 +118,7 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'fixedAttributes': univention.admin.property(
+		'fixedAttributes': univention.admin.property(
 			short_description=_('Fixed attribute'),
 			long_description='',
 			syntax=mailquotaFixedAttributes,
@@ -112,7 +128,7 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'emptyAttributes': univention.admin.property(
+		'emptyAttributes': univention.admin.property(
 			short_description=_('Empty attribute'),
 			long_description='',
 			syntax=mailquotaFixedAttributes,
@@ -122,7 +138,21 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-}
+	})
+
+	object_tab = Tab(_('Object'),_('Object'), advanced = True, layout = [
+		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
+		[ 'fixedAttributes', 'emptyAttributes' ]
+	])
+else:
+	property_descriptions.update(dict([
+		requiredObjectClassesProperty(),
+		prohibitedObjectClassesProperty(),
+		fixedAttributesProperty(syntax=mailquotaFixedAttributes),
+		emptyAttributesProperty(syntax=mailquotaFixedAttributes),
+		ldapFilterProperty(),
+	]))
+	object_tab = policy_object_tab()
 
 layout = [
 	Tab(_('General'),_('Mail quota'), layout = [
@@ -131,19 +161,20 @@ layout = [
 			'MailQuota'
 		] ),
 	] ),
-	Tab(_('Object'),_('Object'), advanced = True, layout = [
-		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
-		[ 'fixedAttributes', 'emptyAttributes' ]
-	] ),
+	object_tab,
 ]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('MailQuota', 'univentionMailQuotaMB', None, univention.admin.mapping.ListToString)
-mapping.register('requiredObjectClasses', 'requiredObjectClasses')
-mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
-mapping.register('fixedAttributes', 'fixedAttributes')
-mapping.register('emptyAttributes', 'emptyAttributes')
+if UDMPolicyAPIVersion == 0:
+	mapping.register('requiredObjectClasses', 'requiredObjectClasses')
+	mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
+	mapping.register('fixedAttributes', 'fixedAttributes')
+	mapping.register('emptyAttributes', 'emptyAttributes')
+else:
+	register_policy_mapping(mapping)
+
 
 class object(univention.admin.handlers.simplePolicy):
 	module=module
@@ -162,7 +193,7 @@ class object(univention.admin.handlers.simplePolicy):
 
 	def _ldap_addlist(self):
 		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionMailQuota']) ]
-	
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
