@@ -7,6 +7,6 @@ version: [2]
 desc: |
   This update addresses the following issues:
   * To configure the max. number of concurrent Amavis processes, a new UCR
-  variable is introduced: mail/antivir/max_servers. When unset, the
-  current default "2" is used.
+    variable has been introduced: mail/antivir/max_servers. When unset, the
+    current default "2" is used.
 bug: [37653]
