@@ -8,7 +8,7 @@ desc: |
   This update addresses the following issue:
   * A API change introduced in erratum 217 and a UDM module move in
     erratum 236 led to UDM/UMC problems on UCS systems with an UCS
-	version prior to 4.0-2 errata level 217.
+    version prior to 4.0-2 errata level 217.
     The UDM module policies/mailquota is now able to use the old and
-	the new API.
+    the new API.
 bug: [39004]
