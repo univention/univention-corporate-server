@@ -19,10 +19,10 @@ def main():
 			dovecot = ucr.is_true('mail/dovecot')
 			if dovecot:
 				handler_set(['mail/dovecot/mailbox/delete=yes'])
-				subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/zero', 'w'))
+				subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
 			else:
 				handler_set(['mail/cyrus/mailbox/delete=yes'])
-				subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/zero', 'w'))
+				subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/null', 'w'))
 			host = '%s.%s' % (ucr.get('hostname'), domain)
 			password = 'univention'
 			name = uts.random_name()
