@@ -98,6 +98,8 @@ define([
 
 		tooltipNode: null,
 
+		usesHoverTooltip: false,
+
 		_startupDeferred: null,
 
 		_orgClass: '',
@@ -252,27 +254,40 @@ define([
 
 		_setDescriptionAttr: function(description) {
 
-			// prevent duplicates
-			if (this.tooltipNode != null) {
-				domConstruct.destroy(this.tooltipNode);
-			}
-			if ((description) && (this._isLabelDisplayed())) {
-				labelNode = this._getLabelNode();
-				this.tooltipNode = domConstruct.create("div",{
-					'class': "umcDescription umcDescriptionIcon"
-				});
-				domConstruct.place(this.tooltipNode, labelNode, 'after');
-				//register events to show and hide the tooltip
+			if (description) {
+				//default to the 'new' tooltip style
+				if (!this.usesHoverTooltip) {
+					// prevent duplicates
+					if (this.tooltipNode != null) {
+						domConstruct.destroy(this.tooltipNode);
+					}
+					if (this._isLabelDisplayed()) {
+						labelNode = this._getLabelNode();
+						this.tooltipNode = domConstruct.create("div",{
+							'class': "umcDescription umcDescriptionIcon"
+						});
+						domConstruct.place(this.tooltipNode, labelNode, 'after');
+						//register events to show and hide the tooltip
+						this.own(on(this.tooltipNode, "click", lang.hitch(this, function(clickEvent) {
+							Tooltip.show(description, this.tooltipNode);
+							//stop onClick event
+							event.stop(clickEvent);
+							// register global onClick to close the tooltip again
+							on.once(window, "click", lang.hitch(this, function(event) {
+								Tooltip.hide(this.tooltipNode);
+							}));
+						})));
+					}
+				} else {
+					// use "old" hovering tooltip instead
+					var tooltip = new Tooltip({
+						label: description,
+						connectId: [ this.domNode ]
+					});
 
-				this.own(on(this.tooltipNode, "click", lang.hitch(this, function(clickEvent) {
-					Tooltip.show(description, this.tooltipNode);
-					//stop onClick event
-					event.stop(clickEvent);
-					// register global onClick to close the tooltip again
-					on.once(window, "click", lang.hitch(this, function(event) {
-						Tooltip.hide(this.tooltipNode);
-					}));
-				})));
+					// destroy the tooltip when the widget is destroyed
+					tooltip.connect(this, 'destroy', 'destroy');
+				}
 			}
 		},
 

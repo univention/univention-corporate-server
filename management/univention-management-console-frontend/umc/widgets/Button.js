@@ -49,6 +49,8 @@ define([
 
 		// do not display button labels via the LabelPane
 		displayLabel: false,
+		// use old hovering Tooltip since there is no label to attach a tooltip to
+		usesHoverTooltip: true,
 
 		constructor: function(props) {
 			lang.mixin(this, props);
