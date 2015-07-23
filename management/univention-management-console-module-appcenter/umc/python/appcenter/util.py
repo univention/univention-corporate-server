@@ -149,7 +149,7 @@ def verbose_http_error(exc):
 		ucr.load()
 		version = ucr.get('version/version')
 		errno = exc.errno
-		strerror += getattr(exc, 'strerror', '')
+		strerror += getattr(exc, 'strerror', '') or ''
 		if errno == 1: # gaierror(1, something like 'SSL Unknown protocol')
 			link_to_doc = _('http://docs.univention.de/manual-%s.html#ip-config:Web_proxy_for_caching_and_policy_management__virus_scan') % version
 			strerror += '. ' + _('This may be a problem with the proxy of your system. You may find help at %s.') % link_to_doc
