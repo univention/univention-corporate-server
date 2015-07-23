@@ -34,9 +34,7 @@ __package__=''  # workaround for PEP 366
 import listener
 import os
 import os.path
-import time
 import univention.debug as ud
-import univention.config_registry
 
 name='univention-saml'
 description='Manage simpleSAMLphp service providers'
@@ -102,8 +100,8 @@ def handler(dn, new, old):
 					f.write("	'simplesaml.nameidattribute'	=> '%s',\n" % new.get('simplesamlNameIDAttribute')[0])
 				if new.get('simplesamlAttributes'):
 					f.write("	'simplesaml.attributes'	=> %s,\n" % new.get('simplesamlAttributes')[0])
-				if new.get('simplesamlLDAPattributes'):
-					f.write("	'attributes'	=> '%s',\n" % ','.join(new.get('simplesamlLDAPattributes')))
+				simplesamlLDAPattributes = list(new.get('simplesamlLDAPattributes', [])) + ['enabledServiceProviderIdentifier']
+				f.write("	'attributes'	=> array('%s'),\n" % "', '".join(simplesamlLDAPattributes))
 				if new.get('serviceproviderdescription'):
 					f.write("	'description'	=> '%s',\n" % new.get('serviceproviderdescription')[0])
 				if new.get('serviceProviderOrganizationName'):
@@ -132,6 +130,4 @@ def handler(dn, new, old):
 		ud.debug(ud.LISTENER, ud.INFO, "%s reload" % script )
 		listener.run(script, ['apache2', 'reload'], uid=0)
 	else:
-		ud.debug(ud.LISTENER, ud.INFO, "Webserver not reloaded: %s does not exist" % (prefix, daemon) )
-	
-
+		ud.debug(ud.LISTENER, ud.INFO, "Apache Webserver not reloaded: %s does not exist" % (script,))

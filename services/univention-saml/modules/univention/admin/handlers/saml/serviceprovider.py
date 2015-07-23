@@ -63,7 +63,7 @@ property_descriptions = {
 			multivalue = False,
 			options = [],
 			required = True,
-			may_change = True,
+			may_change = False,
 			identifies = True,
 		),
 	'AssertionConsumerService': univention.admin.property(

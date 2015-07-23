@@ -1,3 +1,11 @@
+univention-saml (3.0.0-1) unstable; urgency=medium
+
+  * Bug #38934: disallow renaming of a service provider
+  * Bug #38927: write attributes as PHP array into config
+  * Bug #38935: fix ACL evaluation by always passing required attribute
+
+ -- Florian Best <best@univention.de>  Thu, 23 Jul 2015 12:10:46 +0200
+
 univention-saml (2.0.5-1) unstable; urgency=low
 
   * Bug #36428: Show description above directly below login message 
