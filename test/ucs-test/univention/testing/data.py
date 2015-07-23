@@ -18,6 +18,7 @@ import select
 import errno
 import re
 from hashlib import md5
+from time import sleep
 
 
 __all__ = ['TestEnvironment', 'TestCase', 'TestResult', 'TestFormatInterface']
@@ -58,6 +59,7 @@ class TestEnvironment(object):
 	def __init__(self, interactive=True, logfile=None):
 		self.exposure = 'safe'
 		self.interactive = interactive
+		self.timeout = 0
 
 		self._load_host()
 		self._load_ucr()
@@ -129,6 +131,7 @@ class TestEnvironment(object):
 				(' '.join(self.tags_required) or '-',)
 		print >> stream, 'tags_prohibited: %s' % \
 				(' '.join(self.tags_prohibited) or '-',)
+		print >> stream, 'timeout: %d' % (self.timeout,)
 
 	def tag(self, require=set(), ignore=set(), prohibit=set()):
 		"""Update required, ignored, prohibited tags."""
@@ -144,6 +147,10 @@ class TestEnvironment(object):
 	def set_exposure(self, exposure):
 		"""Set maximum allowed exposure level."""
 		self.exposure = exposure
+
+	def set_timeout(self, timeout):
+		"""Set maximum allowed time for single test."""
+		self.timeout = timeout
 
 
 class _TestReader(object):  # pylint: disable-msg=R0903
@@ -505,6 +512,7 @@ class TestCase(object):
 		self.description = None
 		self.bugs = set()
 		self.otrs = set()
+		self.timeout = None
 
 	def load(self, filename):
 		"""
@@ -563,7 +571,9 @@ class TestCase(object):
 			self.exposure = CheckExposure(
 				header.get('exposure', 'dangerous'),
 				digest)
-		except TypeError as ex:
+			if header.get('timeout'):
+				self.timeout = int(header['timeout'])
+		except (TypeError, ValueError) as ex:
 			TestCase.logger.critical(
 				'Tag error in "%s": %s',
 				filename, ex,
@@ -577,6 +587,8 @@ class TestCase(object):
 		Check if the test case should run.
 		"""
 		TestCase.logger.info('Checking test %s' % (self.filename,))
+		if self.timeout is None:
+			self.timeout = environment.timeout
 		conditions = []
 		conditions += list(self.exe.check(environment))
 		conditions += list(self.versions.check(environment))
@@ -695,6 +707,7 @@ class TestCase(object):
 			result.result = TestCodes.RESULT_SKIP
 			result.reason = TestCodes.REASON_ABORT
 		old_sig_int = signal.signal(signal.SIGINT, handle_int)
+		old_sig_alrm = signal.getsignal(signal.SIGALRM)
 
 		def prepare_child():
 			"""Setup child process."""
@@ -720,6 +733,25 @@ class TestCase(object):
 						devnull.close()
 					to_stdout = to_stderr = result.environment.log
 
+				if self.timeout:
+					def handle_alarm(_signal, _frame):
+						try:
+							for i in range(8):  # 2^8 * 100ms = 25.5s
+								TestCase.logger.info('Sending %d. SIGTERM', i + 1)
+								proc.terminate()
+								if proc.poll() is not None:
+									return
+								sleep((1 << i) / 10.0)
+							TestCase.logger.info('Sending SIGKILL')
+							proc.kill()
+						except OSError as ex:
+							if ex.errno != errno.ESRCH:
+								TestCase.logger.warn(
+									'Failed to kill process %r: %s', cmd, ex,
+									exc_info=True)
+					old_sig_alrm = signal.signal(signal.SIGALRM, handle_alarm)
+					signal.alarm(self.timeout)
+
 				TestCase._run_tee(proc, result, to_stdout, to_stderr)
 
 				result.result = proc.wait()
@@ -728,6 +760,8 @@ class TestCase(object):
 						cmd, self.exe, dirname)
 				raise
 		finally:
+			signal.alarm(0)
+			signal.signal(signal.SIGALRM, old_sig_alrm)
 			signal.signal(signal.SIGINT, old_sig_int)
 			if result.reason == TestCodes.REASON_ABORT:
 				raise KeyboardInterrupt()  # pylint: disable-msg=W1010

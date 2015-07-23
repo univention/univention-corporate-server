@@ -1,3 +1,9 @@
+ucs-test (5.0.160-1) unstable; urgency=low
+
+  * Bug #35153: Add timeout mechanism.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 23 Jul 2015 08:57:16 +0200
+
 ucs-test (5.0.159-1) unstable; urgency=low
 
   * Bug #38942: add new test 14_delivery_to_root_without_univention_mail_server

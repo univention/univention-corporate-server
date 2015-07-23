@@ -31,6 +31,7 @@
 ##  - dpkg-dev (>= 1.15)
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous
+## timeout: 0
 
 . "$TESTLIBPATH/base.sh" || exit 137
 

@@ -24,6 +24,9 @@ def parse_options(sections):
 	parser.add_option("-H", "--hold",
 			dest="hold", action="store_true", default=False,
 			help="Stop execution after the first failed test")
+	parser.add_option("-t", "--timeout",
+			dest="timeout", action="store", default=3600, type=int,
+			help="Abort single test after [%default]s")
 
 	selection_group = OptionGroup(parser, 'Test selection')
 	selection_group.add_option("-s", "--section",
@@ -175,6 +178,7 @@ def main():
 			prohibit=options.tags_prohibited)
 	if options.exposure:
 		test_environment.set_exposure(options.exposure)
+	test_environment.set_timeout(options.timeout)
 	test_set.set_environment(test_environment)
 	test_set.set_prefix(options.count)
 	test_set.set_format(options.format)
