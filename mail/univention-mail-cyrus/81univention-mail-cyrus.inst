@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=3
+VERSION=4
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/all.sh
@@ -38,8 +38,8 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-cp /etc/univention/ssl/$hostname.$domainname/cert.pem /var/lib/cyrus/
-cp /etc/univention/ssl/$hostname.$domainname/private.key /var/lib/cyrus/
+cp "/etc/univention/ssl/$hostname.$domainname/cert.pem" /var/lib/cyrus/
+cp "/etc/univention/ssl/$hostname.$domainname/private.key" /var/lib/cyrus/
 chmod 600 /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key
 chown cyrus /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key
 

@@ -1,6 +1,6 @@
 univention-mail-cyrus (7.0.4-1) unstable; urgency=low
 
-  * Bug #39004: readded original UCS 4.0-2 mailquota.py incl. translation
+  * Bug #39004: merged original UCS 4.0-2 mailquota.py into updated version
   * Bug #39004: register mailquota.py in LDAP with ucsversionstart==4.0-2
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 22 Jul 2015 17:50:54 +0200
