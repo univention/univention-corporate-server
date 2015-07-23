@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-78) unstable; urgency=low
+
+  * Bug #38491: code adjustments
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 23 Jul 2015 16:41:49 +0200
+
 univention-management-console-frontend (4.1.106-77) unstable; urgency=low
 
   *Bug #36771: restored old tooltip style/behaviour for Buttons
