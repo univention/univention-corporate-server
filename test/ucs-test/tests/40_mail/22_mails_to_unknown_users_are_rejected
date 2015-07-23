@@ -28,7 +28,7 @@ def check_sending_mail(username, password, recipient_email, should_be_accepted):
 def restart_postfix():
 	print '\n* restarting postfix'
 	cmd = ['service', 'postfix', 'restart']
-	subprocess.Popen(cmd, stderr=open('/dev/zero', 'w')).communicate()
+	subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
 	time.sleep(5)
 
 
