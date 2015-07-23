@@ -56,12 +56,12 @@ COMMASPACE = ', '
 
 def disable_mail_quota():
 	handler_set(['mail/cyrus/imap/quota=no'])
-	subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/zero', 'w'))
+	subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/null', 'w'))
 
 
 def enable_mail_quota():
 	handler_set(['mail/cyrus/imap/quota=yes'])
-	subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/zero', 'w'))
+	subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/null', 'w'))
 
 
 class Mail(object):
@@ -271,7 +271,7 @@ def activate_spam_header_tag(tag):
 def reload_postfix():
 	cmd = ['/etc/init.d/postfix', 'force-reload']
 	try:
-		subprocess.Popen(cmd, stderr=open('/dev/zero', 'w')).communicate()
+		subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
 	except EnvironmentError as ex:
 		print >> sys.stderr, ex
 
@@ -283,7 +283,7 @@ def reload_amavis_postfix():
 		['/etc/init.d/postfix', 'force-reload'],
 	):
 		try:
-			subprocess.Popen(cmd, stderr=open('/dev/zero', 'w')).communicate()
+			subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
 		except EnvironmentError as ex:
 			print >> sys.stderr, ex
 

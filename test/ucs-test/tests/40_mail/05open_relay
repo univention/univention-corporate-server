@@ -19,7 +19,7 @@ def set_postfix_networks(networks='127.0.0.0/8'):
 def restart_postfix():
 	print '\n* restarting postfix'
 	cmd = ['service', 'postfix', 'restart']
-	subprocess.Popen(cmd, stderr=open('/dev/zero', 'w')).communicate()
+	subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
 
 # ACTUAL_MYNETWORKS="$(postconf -nh mynetworks)"
 # def networks_set():

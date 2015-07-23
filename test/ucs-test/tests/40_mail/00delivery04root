@@ -26,7 +26,7 @@ import univention.testing.utils as utils
 def reload_postfix():
 	print '** Reloading aliases and postfix'
 	for cmd in (['newaliases'], ['postfix', 'reload']):
-		subprocess.Popen(cmd, stderr=open('/dev/zero', 'w')).communicate()
+		subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
 	time.sleep(5)
 
 def main():
