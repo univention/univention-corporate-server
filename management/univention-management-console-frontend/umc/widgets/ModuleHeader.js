@@ -78,6 +78,8 @@ define([
 			put(moduleHeaderNode.parentNode, '!');
 		},
 
+		_moduleHeaderHeight: null,
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this._stickyTimer = new Deferred();
@@ -88,9 +90,8 @@ define([
 
 		_removeModuleHeaderHeight: function()  {
 			this._stickyTimer = this._stickyTimer.then(lang.hitch(this, function() {
-				return tools.defer(lang.partial(domStyle.set, this._outerContainer.domNode.parentNode, 'height', ''), 200);
-			}));
-			this._stickyTimer.then(null, function() {
+				return tools.defer(lang.partial(domStyle.set, this.domNode, 'height', ''), 200);
+			})).then(null, function() {
 				// empty callback to catch cancel exceptions
 			});
 		},
@@ -99,17 +100,25 @@ define([
 			this._stickyTimer.cancel();
 		},
 
+		_isModuleFocused: function() {
+			return Boolean(this.domNode.offsetParent);
+		},
+
 		_updateStickyHeader: function() {
+			if (!this._isModuleFocused()) {
+				return;
+			}
 			var scroll = geometry.docScroll();
 			var bboxHeader = geometry.getMarginBox('umcHeader');
 			var topPaddingDifference = this._moduleHeaderTopPadding - this._stickyHeaderTopPadding;
 			var sticky = scroll.y >= bboxHeader.h + bboxHeader.t + topPaddingDifference;
-			var moduleHeaderHeight = geometry.getContentBox(this._outerContainer.domNode.parentNode).h;
 			if (sticky) {
+				this._moduleHeaderHeight = this._moduleHeaderHeight || geometry.getContentBox(this.domNode).h;
 				this._cancelRemoveModuleHeaderHeight();
-				domStyle.set(this._outerContainer.domNode.parentNode, 'height', moduleHeaderHeight + 'px');
-			} else {
+				domStyle.set(this.domNode, 'height', this._moduleHeaderHeight + 'px');
+			} else if (this._moduleHeaderHeight) {
 				this._removeModuleHeaderHeight();
+				this._moduleHeaderHeight = 0;
 			}
 			domClass.toggle(this._outerContainer.domNode, 'umcModuleHeaderSticky', sticky);
 		},
