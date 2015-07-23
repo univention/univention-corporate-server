@@ -1,3 +1,10 @@
+ucs-test (5.0.159-1) unstable; urgency=low
+
+  * Bug #38942: add new test 14_delivery_to_root_without_univention_mail_server
+  * Bug #38828: direct stderr to /dev/null
+
+ -- Ammar Najjar <najjar@univention.de>  Thu, 23 Jul 2015 08:26:05 +0200
+
 ucs-test (5.0.158-4) unstable; urgency=medium
 
   * Bug #31792: Meta fixes
