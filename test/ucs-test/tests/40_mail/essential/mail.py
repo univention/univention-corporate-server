@@ -359,7 +359,7 @@ def mail_delivered(token, user=None, mail_address=None, check_root=True):
 		if os.path.isfile(_file):
 			with open(_file) as fi:
 				delivered = delivered or (token in fi.read())
-	if mail_address:
+	if mail_address and '@' in mail_address:
 		mail_dir = get_cyrus_maildir(mail_address)
 		for _file in get_dir_files(mail_dir, recursive=True):
 			with open(_file) as fi:
