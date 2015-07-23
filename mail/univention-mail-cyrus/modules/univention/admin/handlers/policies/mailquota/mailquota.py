@@ -36,13 +36,6 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
-
-from univention.admin.policy import (
-	register_policy_mapping, policy_object_tab,
-	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
-)
-
 import univention.debug
 
 translation=univention.admin.localization.translation('univention.admin.handlers.policies.mailquota')
@@ -89,15 +82,47 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-
+	'requiredObjectClasses': univention.admin.property(
+			short_description=_('Required object class'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'prohibitedObjectClasses': univention.admin.property(
+			short_description=_('Excluded object class'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'fixedAttributes': univention.admin.property(
+			short_description=_('Fixed attribute'),
+			long_description='',
+			syntax=mailquotaFixedAttributes,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'emptyAttributes': univention.admin.property(
+			short_description=_('Empty attribute'),
+			long_description='',
+			syntax=mailquotaFixedAttributes,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 }
-property_descriptions.update(dict([
-	requiredObjectClassesProperty(),
-	prohibitedObjectClassesProperty(),
-	fixedAttributesProperty(syntax=mailquotaFixedAttributes),
-	emptyAttributesProperty(syntax=mailquotaFixedAttributes),
-	ldapFilterProperty(),
-]))
 
 layout = [
 	Tab(_('General'),_('Mail quota'), layout = [
@@ -106,14 +131,19 @@ layout = [
 			'MailQuota'
 		] ),
 	] ),
-	policy_object_tab()
+	Tab(_('Object'),_('Object'), advanced = True, layout = [
+		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
+		[ 'fixedAttributes', 'emptyAttributes' ]
+	] ),
 ]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('MailQuota', 'univentionMailQuotaMB', None, univention.admin.mapping.ListToString)
-register_policy_mapping(mapping)
-
+mapping.register('requiredObjectClasses', 'requiredObjectClasses')
+mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
+mapping.register('fixedAttributes', 'fixedAttributes')
+mapping.register('emptyAttributes', 'emptyAttributes')
 
 class object(univention.admin.handlers.simplePolicy):
 	module=module
