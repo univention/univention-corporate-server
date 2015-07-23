@@ -6,7 +6,12 @@ fix: 9.0.3-3.255.201507171157
 version: [2]
 desc: |
   This update addresses the following issues:
+  * Add options to check IP-FQDN-mapping as a means to fight spam. Adds two
+  new UCR variables:
+  mail/postfix/smtpd/restrictions/sender/reject_unknown_client_hostname and
+  mail/postfix/smtpd/restrictions/sender/reject_unknown_reverse_client_hostname
+  for weaker and stricter reverse DNS checking respectively.
   * To configure the max. number of concurrent Amavis processes, a new UCR
-    variable has been introduced: mail/antivir/max_servers. When unset, the
-    current default "2" is used.
-bug: [37653]
+  variable is introduced: mail/antivir/max_servers. When unset, the
+  current default "2" is used.
+bug: [37653, 38292]
