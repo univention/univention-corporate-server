@@ -235,8 +235,6 @@ class VM:
 
 	def list_files(self):
 		'''Iterate files to copy'''
-		if self._is_windows:
-			return
 		if not self.files:
 			return
 
@@ -251,6 +249,9 @@ class VM:
 
 	def copy_files(self):
 		''' Copy the given files to the instance '''
+		if self._is_windows:
+			return
+
 		self._open_client_sftp_connection()
 
 		for localfile, remotedir in self.list_files():
@@ -437,11 +438,14 @@ class VM:
 
 	def _open_client_sftp_connection(self):
 		'''	Open the SFTP connection and save the connection as self.client_sftp '''
-		self.client_sftp = self.client.open_sftp()
+		if not self.client_sftp:
+			self.client_sftp = self.client.open_sftp()
 
 	def _close_client_sftp_connection(self):
 		'''	Close the SFTP connection '''
-		self.client_sftp.close()
+		if self.client_sftp:
+			self.client_sftp.close()
+		self.client_sftp = None
 
 	def _remote_mkdir(self, directory):
 		'''	Helpder function to create the given directory structure through
