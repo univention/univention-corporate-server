@@ -1,0 +1,83 @@
+[saml/idp/enableSAML20-IdP]
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, ist der saml 2.0 Identity Provider aktiviert. (default: true)
+Description[en]=If this variable is set to 'true', the saml 2.0 identity provider is activated. (default: true)
+Type=str
+Categories=saml
+
+[saml/idp/timezone]
+Description[de]=Zeitzone, in der der Identity Provider sich befindet. (default: Europe/Berlin)
+Description[en]=Timezone in which the identity provider operates. (default: Europe/Berlin)
+Type=str
+Categories=saml
+
+[saml/idp/log/debug/enabled]
+Description[de]=Aktivieren ("TRUE") oder deaktivieren ("FALSE") von Debugausgaben. default: FALSE
+Description[en]=Activation ("TRUE") or deactivation ("FALSE") of debug output. default: FALSE
+Type=str
+Categories=saml
+
+[saml/idp/log/level]
+Description[de]=Loglevel des Identity Providers (gültige Werte: ERR, WARNING, NOTICE, INFO, DEBUG). (default: NOTICE)
+Description[en]=Identity provider loglevel (valid values: ERR, WARNING, NOTICE, INFO, DEBUG). (default: NOTICE)
+Type=str
+Categories=saml
+
+[saml/idp/lookandfeel/theme]
+Description[de]=Das verwendete Theme der Webseiten des Identity Providers. (default: univentiontheme:univention)
+Description[en]=The theme used by the identity Provider webpages. (default: univentiontheme:univention)
+Type=str
+Categories=saml
+
+[saml/idp/technicalcontactname]
+Description[de]=Name des Kontaktes der bei Problemen Hilfestellung leistet. (default: Administrator)
+Description[en]=Name of the contact who offers help with problems. (default: Administrator)
+Type=str
+Categories=saml
+
+[saml/idp/technicalcontactemail]
+Description[de]=Kontakt E-Mailadresse um Probleme zu melden. (default: root@[domainname])
+Description[en]=Contact email address to report problems to. (default: root@[domainname])
+Type=str
+Categories=saml
+
+[saml/idp/ldap/enable_tls]
+Description[de]=Ist diese Variable auf 'true' gesetzt, wird eine verschlüsselte Verbindung zum LDAP Server aufgebaut. (default: true)
+Description[en]=If this variable is set to 'true', the ldap connection will be encrypted. (default: true)
+Type=str
+Categories=saml
+
+[saml/idp/ldap/debug]
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird das Debugging für die LDAP Verbindung eingeschaltet. (default: false)
+Description[en]=If this variable is set to 'true', ldap server connection debugging is activated. (default: false)
+Type=str
+Categories=saml
+
+[saml/idp/ldap/search_attributes]
+Description[de]=Eine Liste von LDAP Attributen, die als Filter für den angegebenen Benutzernamen verwendet werden (z.B.: "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress')
+Description[en]=A list of ldap attributes that are filtered for the provided username (i.e. "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress')
+Type=str
+Categories=saml
+
+[saml/idp/ldap/get_attributes]
+Description[de]=Eine Liste von LDAP Benutzerattributen, die aus dem LDAP gelesen werden (z.B.: "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier')
+Description[en]=A list of ldap user attributes that are read from ldap after succesful user authentication (i.e.: "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier')
+Type=str
+Categories=saml
+
+[saml/idp/certificate/privatekey]
+Description[de]=Der Pfad zum Zertifikatsschlüssel, mit dem die SAML Assertion signiert an den Service Provider gesendet wird.
+Description[en]=The path of the certificate key which is used to sign the SAML assertion that is send to the service provider.
+Type=str
+Categories=saml
+
+[saml/idp/certificate/certificate]
+Description[de]=Der Pfad zum öffentlichen Zertifikat, mit dem die SAML Assertion signiert an den Service Provider gesendet wird.
+Description[en]=The path of the public certificate which is used to sign the SAML assertion that is send to the service provider.
+Type=str
+Categories=saml
+
+[saml/idp/https]
+Description[de]=Wenn diese Variable auf true gesetzt ist, werden HTTP Verbindungen zu /simplesamlphp automatisch auf HTTPS umgeleitet (default: true=
+Description[en]=If this variable is set to true, HTTP connections to /simplesamlphp will be automatically redirected to HTTPS (default: true)
+Type=str
+Categories=saml

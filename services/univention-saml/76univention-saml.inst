@@ -1,0 +1,108 @@
+#!/bin/bash
+#
+# UCS - univention-saml integration - domain integration
+#  join script
+#
+# Copyright 2013-2014 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+VERSION="1"
+
+. /usr/share/univention-lib/all.sh
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+
+eval "$(ucr shell)"
+
+ucs_addServiceToLocalhost "univention-saml" "$@"
+
+univention-directory-manager container/cn create "$@" --ignore_exists \
+	--position="cn=univention,$ldap_base" \
+	--set name="saml-serviceprovider" \
+	--set description="SAML Service Provider definitions" || die
+
+udm settings/extended_attribute create "$@" \
+	--ignore_exists \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name="serviceprovider" \
+	--set CLIName="serviceprovider" \
+	--set module="users/user" \
+	--set tabName="Account" \
+	--set translationTabName='"de_DE" "Konto"' \
+	--set tabPosition=4 \
+	--set groupName="SAML settings" \
+	--set translationGroupName='"de_DE" "SAML Einstellungen"' \
+	--set shortDescription="Enable user for the following service providers" \
+	--append translationShortDescription='"de_DE" "Benutzer für folgende Service Provider freischalten"' \
+	--set longDescription="Enable user to use the specified service providers" \
+	--append translationLongDescription='"de_DE" "Zulassen des Benutzer für die angegebenen Service Provider"' \
+	--set objectClass="univentionSAMLEnabled" \
+	--set ldapMapping="enabledServiceProviderIdentifier" \
+	--set syntax="samlserviceprovider" \
+	--set tabAdvanced=0 \
+	--set mayChange=1 \
+	--set multivalue=1 || die
+
+udm saml/serviceprovider create "$@" \
+	--ignore_exists \
+	--position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
+	--set isActivated=FALSE \
+	--set Identifier=google.com \
+	--set NameIDFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:email" \
+	--set simplesamlAttributes="false" \
+	--set AssertionConsumerService="https://www.google.com/a/univention-test.mygbiz.com/acs" \
+	--set simplesamlNameIDAttribute="uid" \
+	--set privacypolicyURL="http://support.google.com/a/bin/answer.py?hl=en&answer=60762" \
+	--set serviceProviderOrganizationName="Google Apps" || die
+
+udm saml/serviceprovider create "$@" \
+	--ignore_exists \
+	--position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
+	--set isActivated=FALSE \
+	--set Identifier="https://sp.testshib.org/shibboleth-sp" \
+	--set NameIDFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:email" \
+	--set simplesamlAttributes="false" \
+	--set AssertionConsumerService="https://sp.testshib.org/Shibboleth.sso/SAML2/POST" \
+	--set simplesamlNameIDAttribute="uid" \
+	--set privacypolicyURL="https://www.testshib.org/policy.html" \
+	--set serviceProviderOrganizationName="TestShib Two" \
+	--set serviceproviderdescription="TestShib Two is a testing service intended for new installations of Shibboleth. All SAML 2.0 implementations are welcome and may be tested against Shibboleth here" || die
+
+udm saml/serviceprovider create "$@" \
+	--ignore_exists \
+	--position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
+	--set isActivated=FALSE \
+	--set Identifier="https://saml.salesforce.com" \
+	--set NameIDFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:email" \
+	--set simplesamlAttributes="false" \
+	--set AssertionConsumerService="https://sp.testshib.org/Shibboleth.sso/SAML2/POST" \
+	--set simplesamlNameIDAttribute="mailPrimaryAddress" \
+	--set privacypolicyURL="https://trust.salesforce.com/trust/privacy/" \
+	--set serviceProviderOrganizationName="Salesforce" || die
+
+joinscript_save_current_version
+exit 0

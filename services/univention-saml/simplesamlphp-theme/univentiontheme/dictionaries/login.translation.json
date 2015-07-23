@@ -1,0 +1,8 @@
+{
+	"user_pass_header": {
+		"de": "Bitte geben Sie ihren Benutzernamen und das Passwort ein"
+	},
+	"user_pass_text": {
+		"de": "Um den Dienst $$OrganizationName$$zu nutzen, m\u00fcssen Sie sich authentifizieren. Bitte geben sie ihren Benutzernamen und das Passwort ein."
+	}
+}

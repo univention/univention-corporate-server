@@ -1,0 +1,227 @@
+univention-saml (2.0.5-1) unstable; urgency=low
+
+  * Bug #36428: Show description above directly below login message 
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 04 Nov 2014 17:19:07 +0100
+
+univention-saml (2.0.4-1) unstable; urgency=low
+
+  * Bug #36428: use input type password for password textbox
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 04 Nov 2014 16:41:14 +0100
+
+univention-saml (2.0.3-2) unstable; urgency=low
+
+  * Bug #35890: Update UMC module layout
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 03 Nov 2014 18:05:26 +0100
+
+univention-saml (2.0.3-1) unstable; urgency=low
+
+  Bug #35890:
+  * removed duplicate title from logout.php
+  * added "warning" class to authorize_403.php
+    to adjust stlye
+  * adjusted sytling of loginerror to match
+    umcloginerror 
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 03 Nov 2014 17:37:22 +0100
+
+univention-saml (2.0.2-1) unstable; urgency=low
+
+  * Bug #35890: Improved texts, changed error message position 
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 03 Nov 2014 13:16:36 +0100
+
+univention-saml (2.0.1-1ubuntu1) unstable; urgency=low
+
+  Bug #35890: 
+  * renamed classes for loginDialog
+  * added dijitHidden to footer class
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 31 Oct 2014 13:36:20 +0100
+
+univention-saml (2.0.1-1) unstable; urgency=low
+
+  * Bug #35890: adapted php files to new UCS overview design
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 30 Oct 2014 20:00:02 +0100
+
+univention-saml (2.0.0-2) unstable; urgency=low
+
+  * Fixed file permissions (Bug #35890) 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 10 Oct 2014 16:27:03 +0200
+
+univention-saml (2.0.0-1) unstable; urgency=low
+
+  * Update for UCS 4 (Bug #35890)
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 10 Oct 2014 13:29:22 +0200
+
+univention-saml (1.0.11-1) unstable; urgency=low
+
+  * Explicitely set file permissions and owner/group for ucr templates (Bug #34233) 
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 04 Mar 2014 11:27:19 +0100
+
+univention-saml (1.0.10-1) unstable; urgency=low
+
+  * Bugfix in language switching: Revert changes, do not use univention-apache
+    javascript (Bug #32897)
+  * Include additional translations
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 04 Nov 2013 14:41:30 +0100
+
+univention-saml (1.0.9-1) unstable; urgency=low
+
+  * Added extra css rule to disable service/admin tabs on firefox (Bug #32897) 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 01 Nov 2013 13:32:55 +0100
+
+univention-saml (1.0.8-1) unstable; urgency=low
+
+  * Adapted updated links in website footer (Bug #32897)
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 01 Nov 2013 11:03:00 +0100
+
+univention-saml (1.0.7-1) unstable; urgency=low
+
+  * Fixed problems with language switcher which could result in errors
+    or multiple languages on pages (Bug #32897)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 24 Oct 2013 16:23:23 +0200
+
+univention-saml (1.0.6-1) unstable; urgency=low
+
+  * Integrate default ucs javascript functions for the language switcher
+    and to translate the links in the website footer (Bug #32897)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 22 Oct 2013 11:47:51 +0200
+
+univention-saml (1.0.5-5) unstable; urgency=low
+
+  * Fixed prerm script to correctly disable apache site (Bug #31693) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 09 Oct 2013 12:06:30 +0200
+
+univention-saml (1.0.5-4) unstable; urgency=low
+
+  * Fixed joinscript error handling (Bug #31693) 
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 07 Oct 2013 11:20:17 +0200
+
+univention-saml (1.0.5-3) unstable; urgency=low
+
+  * Fixed configuration error (Bug #31693) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 02 Oct 2013 16:10:52 +0200
+
+univention-saml (1.0.5-2) unstable; urgency=low
+
+  * Fixed enforcing en-US as available language (Bug #31693) 
+  * Fixed dependencies: apache2 -> univention-apache 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 02 Oct 2013 14:32:55 +0200
+
+univention-saml (1.0.5-1) unstable; urgency=low
+
+  * Show hostname in header claim (Bug #31693)
+  * Add english as fallback language choice
+  * Changed warning icon when a wrong password has been entered 
+  * Redirect from /simplesamlphp welcome page to /ucs-overview 
+  * Corrected texts and translations
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 01 Oct 2013 16:50:09 +0200
+
+univention-saml (1.0.4-1) unstable; urgency=low
+
+  * Corrected use of ldap server port in config file (Bug #31693)
+  * Fixed UCR variable descriptions
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 30 Sep 2013 12:21:05 +0200
+
+univention-saml (1.0.3-3) unstable; urgency=low
+
+  * Fixed joinscript bug (Bug #31693) 
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 26 Sep 2013 16:03:41 +0200
+
+univention-saml (1.0.3-1) unstable; urgency=low
+
+  * Provide a theme to match UCS look (Bug #32621)
+  * Enable language switching
+  * Countless smaller improvements
+  * Three default/example service provider configurations are shipped with
+    this version (Bug #31693)
+  * A new checkbox controls if a service provider is enabled, i.e. its
+    configuration file is written (Bug #31693)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 26 Sep 2013 15:47:08 +0200
+
+univention-saml (1.0.2-1) unstable; urgency=low
+
+  * Bug #32048: Add keywords to UMC module definition
+
+ -- Florian Best <best@univention.de>  Mon, 09 Sep 2013 13:47:59 +0200
+
+univention-saml (1.0.1-7) unstable; urgency=low
+
+  * Updated udm module description (Bug #31693)
+  * Improved UMC module layout 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 30 Aug 2013 15:23:24 +0200
+
+univention-saml (1.0.1-6) unstable; urgency=low
+
+  * Changed App icon (Bug #31693)
+  * Improved many text-strings and translations 
+  * Changed simplesamlLDAPattributes a multivalue field 
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 29 Aug 2013 15:23:06 +0200
+
+univention-saml (1.0.1-5) unstable; urgency=low
+
+  * Corrected config file permission (Bug #31693)
+  * Added server password change script 
+  * Added icons
+  * Added UMC module definition 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 16 Aug 2013 14:30:51 +0200
+
+univention-saml (1.0.1-4) unstable; urgency=low
+
+  * Added more configuration options for simplesamlphp (Bug #31693) 
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 08 Aug 2013 16:33:27 +0200
+
+univention-saml (1.0.1-3) unstable; urgency=low
+
+  * New feature: Users must be enabled to use SAML service providers
+    by adding the SP on the users contact page (Bug #31693)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 08 Aug 2013 12:52:17 +0200
+
+univention-saml (1.0.1-2) unstable; urgency=low
+
+  * Removed univention-config-dev from binary package dependency (Bug #31693) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 07 Aug 2013 10:26:25 +0200
+
+univention-saml (1.0.1-1) unstable; urgency=low
+
+  * Initial App Center Release (Bug #31693)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 06 Aug 2013 16:06:14 +0200
+
+univention-saml (0.0.1-1) unstable; urgency=low
+
+  * Bug #25408: minor fixes to make the package build
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 10 Jul 2013 15:03:42 +0200
+
+univention-saml (0.0.0-1) unstable; urgency=low
+
+  * Bug #25408: Initial release
+
+ -- Jacek Groth <groth@univention.de>  Wed, 10 Jul 2013 08:19:58 -0400

@@ -1,0 +1,3 @@
+univention-saml-pw-change usr/lib/univention-server/server_password_change.d
+umc/saml-serviceprovider.xml usr/share/univention-management-console/modules
+simplesamlphp-theme/univentiontheme usr/share/simplesamlphp/modules

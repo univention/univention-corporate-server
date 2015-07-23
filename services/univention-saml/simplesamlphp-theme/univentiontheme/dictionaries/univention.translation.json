@@ -1,0 +1,47 @@
+{
+	"serverwelcome": {
+		"de": "Willkommen auf Univention Corporate Server"
+	},
+	"app-catalogue-link": {
+		"de": "http://www.univention.de/produkte/ucs/app-katalog/"
+	},
+	"app-catalogue-text": {
+		"de": "App Katalog"
+	},
+	"further-products-link": {
+		"de": "http://www.univention.de/produkte/"
+	},
+	"further-products-text": {
+		"de": "Ergänzende Produkte"
+	},
+	"website-link": {
+		"de": "http://www.univention.de/"
+	},
+	"website-text": {
+		"de": "Univention Website"
+	},
+	"manual-link": {
+		"de": "http://docs.univention.de/de.html"
+	},
+	"manual-text": {
+		"de": "Handbuch zu Univention Corporate Server"
+	},
+	"sdb-link": {
+		"de": "http://sdb.univention.de/"
+	},
+	"sdb-text": {
+		"de": "Univention Support Datenbank"
+	},
+	"wiki-link": {
+		"de": "http://wiki.univention.de/index.php?title=Main_Page"
+	},
+	"wiki-text": {
+		"de": "Univention Wiki"
+	},
+	"forum-link": {
+		"de": "http://forum.univention.de/"
+	},
+	"forum-text": {
+		"de": "Univention Forum"
+	}
+}

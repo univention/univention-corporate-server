@@ -1,0 +1,76 @@
+#!/bin/sh
+#
+# Copyright 2013-2014 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+#DEBHELPER#
+
+case "$1" in
+configure)
+	hostname=$(ucr get hostname)
+	domainname=$(ucr get domainname)
+	fqdn="${hostname}.${domainname}"
+	# check if we need a certificate and create one if necessary
+	if [ ! -e /etc/simplesamlphp/${fqdn}-idp-certificate.crt ]; then	
+		days_valid=$(ucr get ssl/default/days)
+		if [ -z $days_valid ]; then
+			# default: valid for 5 years
+			days_valid=1825
+		fi
+		openssl req -newkey rsa:2048 -new -x509 -days ${days_valid} -subj "/C=US/ST=Unknown/L=Unknown/O=Unknown/CN=${fqdn}" -nodes -out /etc/simplesamlphp/${fqdn}-idp-certificate.crt -keyout /etc/simplesamlphp/${fqdn}-idp-certificate.key
+		chown root:www-data /etc/simplesamlphp/${fqdn}-idp-certificate.crt \
+			/etc/simplesamlphp/${fqdn}-idp-certificate.key 
+		chmod 640 /etc/simplesamlphp/${fqdn}-idp-certificate.crt /etc/simplesamlphp/${fqdn}-idp-certificate.key
+	fi
+
+	chown -R root:www-data /etc/simplesamlphp
+
+	ucr set saml/idp/enableSAML20-IdP?true \
+		saml/idp/ldap/get_attributes?"'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'" \
+		saml/idp/ldap/search_attributes?"'uid', 'mailPrimaryAddress'" \
+		saml/idp/certificate/privatekey?"/etc/simplesamlphp/${fqdn}-idp-certificate.key" \
+		saml/idp/certificate/certificate?"/etc/simplesamlphp/${fqdn}-idp-certificate.crt" \
+		saml/idp/lookandfeel/theme?"univentiontheme:univention" \
+		saml/idp/https?"true"
+
+	if [ ! -e /etc/simplesamlphp/metadata/metadata_include.php ]; then
+		touch /etc/simplesamlphp/metadata/metadata_include.php
+	fi
+
+	a2ensite univention-saml-apache
+	invoke-rc.d apache2 reload
+	invoke-rc.d univention-management-console-server restart
+
+	;;
+abort-upgrade|abort-remove|abort-deconfigure)
+	;;
+*)
+	echo "postinst called with unknown argument \`$1'" >&2
+	exit 1
+	;;
+esac
+exit 0
