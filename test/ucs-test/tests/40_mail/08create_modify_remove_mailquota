@@ -23,7 +23,7 @@ def enable_mailquota_set_interval(interval):
 
 def restart_cyrus_saslauthd():
 	for cmd in [['/etc/init.d/cyrus-imapd', 'restart'], ['/etc/init.d/saslauthd', 'restart']]:
-		subprocess.call(cmd)
+		subprocess.call(cmd, stderr=open('/dev/null', 'w'))
 
 
 def main():
