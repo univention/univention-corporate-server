@@ -93,7 +93,7 @@ def handler(dn, new, old):
 			with open(new_filename, 'w') as f:
 				f.write("<?php\n")
 				f.write("$metadata[\'%s\'] = array(\n" % new.get('SAMLServiceProviderIdentifier')[0])
-				f.write("	'AssertionConsumerService'	=> '%s',\n" % new.get('AssertionConsumerService')[0])
+				f.write("	'AssertionConsumerService'	=> array('%s'),\n" % "', '".join(new.get('AssertionConsumerService')))
 				if new.get('NameIDFormat'):
 					f.write("	'NameIDFormat'	=> '%s',\n" % new.get('NameIDFormat')[0])
 				if new.get('simplesamlNameIDAttribute'):

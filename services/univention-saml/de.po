@@ -57,12 +57,9 @@ msgid "Respond to this service provider URL after login"
 msgstr "Antwort an diese Service Provider URL nach dem Login"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:72
-msgid ""
-"The URL of the AssertionConsumerService endpoint for this SP. Users will be "
-"redirected to the URL upon succesful authentication. Example: https://sp."
-"example.com/login"
+msgid "The URLs of the AssertionConsumerService endpoints for this SP. Users will be redirected to the URL upon succesful authentication. Example: https://sp.example.com/login"
 msgstr ""
-"Die URL des AssertionConsumerService Endpunktes dieses Service Providers. "
+"Die URLs der AssertionConsumerService Endpunkte dieses Service Providers. "
 "Benutzer werden nach erfolgreicher Authentifizierung an diese URL "
 "weitergeleitet. Beispiel: https://sp.example.com/login"
 
