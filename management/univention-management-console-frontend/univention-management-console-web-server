@@ -31,62 +31,81 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import cherrypy
 import httplib
 import os
 import threading
-import Queue
 from optparse import OptionParser
-import simplejson
 import signal
 import sys
 import tempfile
 import time
 import traceback
+import functools
 import uuid
 import datetime
 import hashlib
 import urllib
-from ipaddr import IPAddress
+import json
 
 import notifier
+import cherrypy
+import Queue
+from ipaddr import IPAddress
+from cherrypy import HTTPError, HTTPRedirect
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
 
 import univention.management.console.protocol as umcp
 from univention.management.console.log import CORE, log_init
-try:
-	from univention.management.console.log import log_reopen
-except ImportError:
-	log_reopen = lambda: None  # remove! errata-cross-dependency
-import univention.config_registry as ucr
+from univention.management.console.log import log_reopen
+from univention.config_registry import ConfigRegistry
 
-configRegistry = ucr.ConfigRegistry()
-configRegistry.load()
+from saml2 import BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT, BINDING_HTTP_REDIRECT, element_to_extension_element, time_util, ecp
+from saml2.client import Saml2Client
+from saml2.extension.pefim import SPCertEnc
+from saml2.metadata import create_metadata_string
+from saml2.ecp_client import PAOS_HEADER_INFO
+from saml2.httputil import make_cookie, parse_cookie
+from saml2.response import VerificationError
+from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, sid, rndstr
+from saml2.samlp import Extensions
+#from saml2 import xmldsig as ds  # FIXME: pysaml2 v3 required
 
-# global objects
+ucr = ConfigRegistry()
+ucr.load()
+
+_thread_http = None
+
 try:
-	_session_timeout = int(configRegistry.get('umc/http/session/timeout', 300))
+	_session_timeout = int(ucr.get('umc/http/session/timeout', 300))
 except (TypeError, ValueError):
 	CORE.process('Failed to read session timeout from UCR variable umc/http/session/timeout. Using default of 300 seconds')
 	_session_timeout = 300
-_thread_http = None
 
 
-def logExceptions(f):
-	def new_f(*args, **kwargs):
+def log_exceptions(func):
+	@functools.wraps(func)
+	def _decorated(*args, **kwargs):
 		try:
-			return f(*args, **kwargs)
-		except (cherrypy.HTTPError, cherrypy.HTTPRedirect):
-			# ignore common cherrypy exceptions
+			return func(*args, **kwargs)
+		except (HTTPError, HTTPRedirect, KeyboardInterrupt, SystemExit):
+			raise # ignore system and common cherrypy exceptions
+		except Exception:
+			CORE.error('Traceback in %s(%r, %r):\n%s' % (func.__name__, args, kwargs, traceback.format_exc()))
 			raise
-		except (KeyboardInterrupt, SystemExit):
-			# ignore
-			raise
-		except Exception as ex:
-			CORE.error('Traceback in %s(%r, %r):\n%s' % (f.__name__, args, kwargs, traceback.format_exc()))
-			raise
-	new_f.__name__ = f.__name__
-	return new_f
+	return _decorated
+
+
+@log_exceptions
+def _fix_uri_for_saml():
+	cherrypy.request.uri = '%s://%s%s?%s' % (cherrypy.request.scheme, cherrypy.request.headers['Host'], cherrypy.request.path_info, cherrypy.request.query_string)
+	foo = cherrypy.request.params
+	try:
+		cherrypy.request.params = {}
+		cherrypy.request.process_query_string()
+		cherrypy.request.query = cherrypy.request.params
+	finally:
+		cherrypy.request.params = foo
+cherrypy.tools.fix_uri = cherrypy.Tool('before_handler', _fix_uri_for_saml)
 
 
 class SessionClient(object):
@@ -209,7 +228,7 @@ class LoginToken(object):
 		if timeout is not None:
 			self.timeout = timeout
 		else:
-			self.timeout = time.time() + int(configRegistry.get('umc/web/sso/timeout', 15))
+			self.timeout = time.time() + int(ucr.get('umc/web/sso/timeout', 15))
 
 	def repr(self):
 		return '<LoginToken(username=%s, sessionid=%s, timeout=%d)>' % (self.username, self.sessionid, self.timeout)
@@ -243,7 +262,7 @@ class UMCP_Dispatcher(object):
 	_queue_send = Queue.Queue()
 
 	@classmethod
-	@logExceptions
+	@log_exceptions
 	def check_queue(cls):
 		while True:
 			try:
@@ -326,7 +345,7 @@ class UMCP_Dispatcher(object):
 		try:
 			del cls.sessions[sessionid]
 			CORE.info('Cleaning up session %s' % sessionid)
-		except KeyError as e:
+		except KeyError:
 			CORE.info('Session %s not found' % sessionid)
 		# remove onetime session keys
 		cls.logintokens.remove_session(sessionid)
@@ -384,7 +403,7 @@ def default_error_page(status, message, traceback, version, result=None):
 	}
 	if result:
 		response['result'] = result
-	return simplejson.dumps(response)
+	return json.dumps(response)
 
 
 class UMC_HTTPError(cherrypy.HTTPError):
@@ -431,7 +450,7 @@ class CPgeneric(object):
 	def get_request(self, path, args):
 		return umcp.Request(['generic'], opts={})
 
-	@logExceptions
+	@log_exceptions
 	def get_session_id(self):
 		"""get the current session ID, either set via headers or cookie."""
 		# check for a valid session key
@@ -465,19 +484,19 @@ class CPgeneric(object):
 			cherrypy.response.cookie['UMCUsername']['version'] = 1
 			cherrypy.response.cookie['UMCUsername']['path'] = '/'
 
-	@logExceptions
+	@log_exceptions
 	def load_json(self, body):
 		try:
-			json = simplejson.loads(body)
-			if not isinstance(json, dict):
+			json_ = json.loads(body)
+			if not isinstance(json_, dict):
 				raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'JSON document have to be dict')
 		except ValueError:
 			self._log('error', 'cannot parse JSON body')
 			raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Invalid JSON document')
-		return json
+		return json_
 
 	@cherrypy.expose
-	@logExceptions
+	@log_exceptions
 	def default(self, *path, **kwargs):
 		self._log('info', 'got new request')
 
@@ -502,7 +521,7 @@ class CPgeneric(object):
 
 		return self.get_response(sessionid, path, args)
 
-	@logExceptions
+	@log_exceptions
 	def get_response(self, sessionid, path, args):
 		# create new UMCP request
 		req = self.get_request('/'.join(path), args)
@@ -527,7 +546,7 @@ class CPgeneric(object):
 		if 200 <= status < 300:
 			if response.mimetype == umcp.MIMETYPE_JSON:
 				# convert data to JSON
-				body = simplejson.dumps(response.body)
+				body = json.dumps(response.body)
 
 			# return response
 			cherrypy.response.headers['Content-Type'] = response.mimetype
@@ -546,7 +565,7 @@ class CPgeneric(object):
 class CPSingleSignOn(CPgeneric):
 
 	@cherrypy.expose
-	@logExceptions
+	@log_exceptions
 	def default(self, *path, **kwargs):
 		self._log('info', 'got SSO request %r %r' % (path, kwargs))
 		login_token = UMCP_Dispatcher.logintokens.get(kwargs.get('loginToken'))
@@ -587,7 +606,7 @@ class CPSingleSignOn(CPgeneric):
 
 class CPGet(CPgeneric):
 
-	@logExceptions
+	@log_exceptions
 	def get_request(self, path, args):
 		if not path:
 			self._log('error', 'get_request: path is empty')
@@ -599,14 +618,14 @@ class CPGet(CPgeneric):
 class IPAddresses(object):
 
 	@cherrypy.expose
-	@logExceptions
+	@log_exceptions
 	def default(self, *a, **kw):
 		try:
 			addresses = self.addresses
 		except ValueError:
 			# hacking attempt
 			addresses = [cherrypy.request.remote.ip]
-		return simplejson.dumps(addresses)
+		return json.dumps(addresses)
 
 	@property
 	def addresses(self):
@@ -619,14 +638,14 @@ class IPAddresses(object):
 
 class CPSet(CPgeneric):
 
-	@logExceptions
+	@log_exceptions
 	def get_request(self, path, args):
 		return umcp.Request('SET', options=args.get('options', {}))
 
 
 class CPUpload(CPgeneric):
 
-	@logExceptions
+	@log_exceptions
 	def get_request(self, path, args):
 		self._log('info', 'Handle upload command')
 		global _upload_manager
@@ -636,7 +655,7 @@ class CPUpload(CPgeneric):
 		body = {}
 
 		# check if enough free space is available
-		min_size = int(configRegistry.get('umc/server/upload/min_free_space', 51200))  # kilobyte
+		min_size = int(ucr.get('umc/server/upload/min_free_space', 51200))  # kilobyte
 		s = os.statvfs(umcp.TEMPUPLOADDIR)
 		free_disk_space = s.f_bavail * s.f_frsize / 1024  # kilobyte
 		if free_disk_space < min_size:
@@ -670,7 +689,7 @@ class CPUpload(CPgeneric):
 
 		# check if filesize is allowed
 		st = os.stat(tmpfile)
-		max_size = int(configRegistry.get('umc/server/upload/max', 64)) * 1024
+		max_size = int(ucr.get('umc/server/upload/max', 64)) * 1024
 		if st.st_size > max_size:
 			self._log('warn', 'file of size %d could not be uploaded' % (st.st_size))
 			raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'The size of the uploaded file is too large')
@@ -683,7 +702,7 @@ class CPUpload(CPgeneric):
 		return {'filename': filename, 'name': store.name, 'tmpfile': tmpfile}
 
 	@cherrypy.expose
-	@logExceptions
+	@log_exceptions
 	def default(self, *path, **kwargs):
 		self._log('info', 'got new request')
 
@@ -706,7 +725,7 @@ class CPUpload(CPgeneric):
 
 class CPCommand(CPgeneric):
 
-	@logExceptions
+	@log_exceptions
 	def get_request(self, path, args):
 		if not path:
 			self._log('error', 'get_request: path is empty')
@@ -722,7 +741,7 @@ class CPCommand(CPgeneric):
 class CPAuth(CPgeneric):
 
 	@cherrypy.expose
-	@logExceptions
+	@log_exceptions
 	def default(self, **kw):
 		remote = cherrypy.request.remote
 		CORE.info('CPRoot/auth: got new auth request (%s:%s <=> %s)' % (get_ip_address(), remote.port, remote.name))
@@ -740,22 +759,22 @@ class CPAuth(CPgeneric):
 				raise cherrypy.HTTPError(httplib.REQUEST_ENTITY_TOO_LARGE, 'Request data is too large, allowed length is %d' % max_length)
 			body = cherrypy.request.body.read()
 
-		json = self.load_json(body)
+		data = self.load_json(body)
 
 		CORE.info('CPRoot/command: request: command=%s' % cherrypy.request.path_info)
 
 		# create new UMCP request
 		req = umcp.Request('AUTH')
-		req.body['username'] = json['options'].get('username', '')
-		req.body['password'] = json['options'].get('password', '')
-		req.body['new_password'] = json['options'].get('new_password')
+		req.body['username'] = data['options'].get('username', '')
+		req.body['password'] = data['options'].get('password', '')
+		req.body['new_password'] = data['options'].get('new_password')
 		req.body['locale'] = (cherrypy.request.headers.values('Accept-Language') or ['C'])[0].replace('-', '_')
 
 		# create new response queue
 		response_queue = Queue.Queue()
 
 		# send request to UMC server
-		cookie = not bool(json['options'].get('version', ''))
+		cookie = not bool(data['options'].get('version', ''))
 		request = QueueRequest(None, req, response_queue, get_ip_address(), cookie=cookie)
 		UMCP_Dispatcher._queue_send.put(request)
 
@@ -768,28 +787,28 @@ class CPAuth(CPgeneric):
 			CORE.info('CPRoot/auth: creating session with sessionid=%s' % (sessionid,))
 
 			# add new one time session
-			UMCP_Dispatcher.logintokens.add_session(sessionid, json['options'].get('username', ''))
+			UMCP_Dispatcher.logintokens.add_session(sessionid, data['options'].get('username', ''))
 
 			self.set_cookies(sessionid=sessionid)
 
 			cherrypy.response.headers['Content-Type'] = response.mimetype
 			if response.mimetype == 'application/json':
-				return simplejson.dumps(response.body)
+				return json.dumps(response.body)
 			return response.body
 
-		CORE.process('CPRoot/auth: username: %s, status code: %s' % (json.get('username'), response.status))
+		CORE.process('CPRoot/auth: username: %s, status code: %s' % (data.get('username'), response.status))
 		raise cherrypy.HTTPError(response.status, response.message)
 
 
 class CPRoot(object):
 
 	@cherrypy.expose
-	@logExceptions
+	@log_exceptions
 	def index(self, **kw):
 		"""
 		http://localhost:<ucr:umc/http/port>/
 		"""
-		raise cherrypy.HTTPError(httplib.NOT_FOUND)
+		raise HTTPRedirect('/univention-management-console/')
 
 
 def get_ip_address():
@@ -797,15 +816,347 @@ def get_ip_address():
 	return cherrypy.request.headers.get('X-FORWARDED-FOR', cherrypy.request.remote.ip).rsplit(', ', 1).pop()
 
 
-@logExceptions
+class SAML(object):
+
+	def __init__(self):
+		self.configfile = '/usr/share/univention-management-console/saml/sp.py'
+		self.sp = Saml2Client(config_file=self.configfile)
+		self.seed = 'SnabbtInspel'  # FIXME: generate a secure random seed?
+
+		self.idp_query_param = "IdpQuery"
+		self.wayf = None
+		self.discosrv = None
+		self.bindings = [BINDING_HTTP_REDIRECT, BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT]
+
+		self.uid2user = {}
+		self.cookie_name = "spauthn"
+		self.outstanding_queries = {}
+		self.outstanding_certs = {}
+		self.relay_state = {}
+		self.user = {}
+
+	@cherrypy.expose
+	@log_exceptions
+	@cherrypy.tools.fix_uri()
+	def index(self, *args, **kwargs):
+		user = self.get_user()
+
+		if user is None:
+			return self.do_single_sign_on()
+
+		cherrypy.response.headers['Content-Type'] = 'text/html'
+		return '<a href="./logout">logout</a>'
+
+	@cherrypy.expose
+	@log_exceptions
+	@cherrypy.tools.fix_uri()
+	def metadata(self, *args, **kwargs):
+		metadata = create_metadata_string(self.configfile, None, valid='4', cert=None, keyfile=None, mid=None, name=None, sign=False)
+		cherrypy.response.headers['Content-Type'] = 'text/xml'
+		return metadata
+
+	@cherrypy.expose
+	@log_exceptions
+	@cherrypy.tools.fix_uri()
+	def acs(self, *args, **kwargs):  # attribute consuming service
+		message, binding, relay_state = self._get_saml_arguments()
+
+		try:
+			response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries, self.outstanding_certs)
+		except UnknownPrincipal as exc:
+			raise HTTPError(500, "UnknownPrincipal: %s" % (exc,))
+		except UnsupportedBinding as exc:
+			raise HTTPError(500, "UnsupportedBinding: %s" % (exc,))
+		except VerificationError as exc:
+			raise HTTPError(500, "Verification error: %s" % (exc,))
+		if response is None:
+			raise HTTPError(400, "The SAML message is invalid for this service provider.")
+
+		user = SAMLUser(response.name_id, response.ava)
+		self.set_cookie(user)
+
+		raise HTTPRedirect('/univention-management-console/')
+
+	@cherrypy.expose
+	@log_exceptions
+	@cherrypy.tools.fix_uri()
+	def slo(self, *args, **kwargs):  # single logout service
+		message, binding, relay_state = self._get_saml_arguments()
+		self.sp.parse_logout_request_response(message, binding)
+		self.delete_cookie()
+		cherrypy.response.headers['Content-Type'] = 'text/plain'
+		return 'You are now logged out of this service'
+
+	def _get_saml_arguments(self):
+		if cherrypy.request.method not in ('GET', 'POST'):
+			cherrypy.response.headers['Allow'] = 'GET, HEAD, POST'
+			raise HTTPError(405)
+
+		if cherrypy.request.method == 'GET':
+			binding = BINDING_HTTP_REDIRECT
+			args = cherrypy.request.query
+		elif cherrypy.request.method == "POST":
+			binding = BINDING_HTTP_POST
+			args = cherrypy.request.params
+
+		relay_state = args.get('RelayState', '')
+		try:
+			message = args['SAMLResponse']
+		except KeyError:
+			try:
+				message = args['SAMLRequest']
+			except KeyError:
+				try:
+					message = args['SAMLart']
+				except KeyError:
+					raise HTTPError(400, 'The HTTP request is missing required SAML parameter.')
+				message = self.sp.artifact2message(message, 'spsso')
+				binding = BINDING_HTTP_ARTIFACT
+
+		return message, binding, relay_state
+
+	@cherrypy.expose
+	@log_exceptions
+	@cherrypy.tools.fix_uri()
+	def logout(self, *args, **kwargs):
+		user = self.get_user()
+
+		if user is None:
+			return self.do_single_sign_on()
+
+		# What if more than one
+		data = self.sp.global_logout(user.name_id)
+
+		for entity_id, logout_info in data.items():
+			if not isinstance(logout_info, tuple):
+				continue  # result from logout, should be OK
+
+			binding, http_info = logout_info
+
+			if binding == BINDING_HTTP_POST:
+				body = ''.join(http_info['data'])
+				cherrypy.response.headers['Content-Type'] = 'text/html'
+				return body
+			elif binding == BINDING_HTTP_REDIRECT:
+				for key, value in http_info['headers']:
+					if key.lower() == 'location':
+						raise HTTPRedirect(value, status=302)
+				raise HTTPError(500, 'Cannot redirect due to missing Location header')
+			else:
+				raise HTTPError(500, 'unknown logout binding: %s', binding)
+
+		self.delete_cookie()
+		cherrypy.response.headers['Content-Type'] = 'text/plain'
+		return 'You are now logged out of this service'
+
+	@cherrypy.expose
+	@log_exceptions
+	@cherrypy.tools.fix_uri()
+	def disco(self, *args, **kwargs):
+		try:
+			sid = kwargs['sid']
+			entity_id = kwargs['entityID']
+		except KeyError as key:
+			raise HTTPError(400, 'missing query string parameter: %s' % (key,))
+		try:
+			came_from = self.outstanding_queries[sid]
+		except KeyError:
+			raise HTTPError(400, 'unknown sid!')
+
+		resp = self.redirect_to_auth(entity_id, came_from)
+
+		# Add cookie
+		key, value = make_cookie("ve_disco", entity_id, "SEED_SAW")  # TODO: find out why "SEED_SAW"
+		cherrypy.response.headers[key] = value
+
+		return resp
+
+	def do_single_sign_on(self):
+		# Which page was accessed to get here
+		came_from = cherrypy.request.uri
+
+		# If more than one idp and if none is selected, I have to do wayf
+		(done, response) = self._pick_idp(came_from)
+		# Two cases:
+		#		0 I've got an IdP to send a request to
+		#		>0 ECP in progress
+		if done > 0:
+			self.outstanding_queries[done] = came_from
+			cherrypy.response.headers['Content-Type'] = 'text/xml'
+			return response
+		else:
+			entity_id = response
+			# Do the AuthnRequest
+			return self.redirect_to_auth(entity_id, came_from)
+
+	def _pick_idp(self, came_from):
+		"""
+		If more than one idp and if none is selected, I have to do wayf or
+		disco
+		"""
+
+		if 'Paos' in cherrypy.request.headers:
+			if cherrypy.request.headers['Paos'] != PAOS_HEADER_INFO:
+				raise HTTPError(500, 'unknown ECP version')
+
+			if 'application/vnd.paos+xml' not in cherrypy.request.headers.values('Accept'):
+				raise HTTPError(500, 'Faulty Accept header')
+
+			# Where should I redirect the user to
+			# entityid -> the IdP to use
+			# relay_state -> when back from authentication
+
+			_rstate = rndstr()
+			self.relay_state[_rstate] = cherrypy.request.uri
+			_entityid = self.sp.config.ecp_endpoint(get_ip_address())  # get_ip_address instead of environ['REMOTE_ADDR']
+
+			if not _entityid:
+				raise HTTPError(500, "Could not determine identity provider.")
+			return ecp.ecp_auth_request(self.sp, _entityid, _rstate)
+
+		# Find all IdPs
+		idps = self.sp.metadata.with_descriptor("idpsso")
+		idp_entity_id = None
+
+		kaka = cherrypy.request.headers.get('Cookie')
+		if kaka:
+			try:
+				(idp_entity_id, _) = parse_cookie("ve_disco", "SEED_SAW", kaka)
+			except (ValueError, TypeError):
+				pass
+
+		# Any specific IdP specified in a query part
+		if not idp_entity_id and self.idp_query_param in cherrypy.request.query:
+			_idp_entity_id = cherrypy.request.query[self.idp_query_param]
+			if _idp_entity_id in idps:
+				idp_entity_id = _idp_entity_id
+
+		if not idp_entity_id:
+
+			if self.wayf:
+				wayf_selected = cherrypy.request.query.get('wayf_selected')
+				if not wayf_selected:
+					return self._wayf_redirect(came_from)
+				idp_entity_id = wayf_selected
+			elif self.discosrv:
+				if cherrypy.request.query_string:
+					idp_entity_id = self.sp.parse_discovery_service_response(query=cherrypy.request.query_string)
+				if not idp_entity_id:
+					sid_ = sid()
+					self.outstanding_queries[sid_] = came_from
+					eid = self.sp.config.entityid
+					ret = self.sp.config.getattr("endpoints", "sp")["discovery_response"][0][0]
+					ret += "?sid=%s" % sid_
+					loc = self.sp.create_discovery_service_request(self.discosrv, eid, **{"return": ret})
+					raise HTTPRedirect(loc, status=303)
+			elif len(idps) == 1:
+				# idps is a dictionary
+				idp_entity_id = idps.keys()[0]
+			elif not idps:
+				raise HTTPError(500, 'Misconfiguration')
+			else:
+				raise HTTPError(501, "No WAYF or DS present!")
+
+		return 0, idp_entity_id
+
+	def _wayf_redirect(self, came_from):
+		sid_ = sid()
+		self.outstanding_queries[sid_] = came_from
+		raise HTTPRedirect("%s?%s" % (self.wayf, sid_), status=303)
+
+	def redirect_to_auth(self, entity_id, came_from, sigalg=""):
+		# Picks a binding to use for sending the Request to the IDP
+		_binding, destination = self.sp.pick_binding("single_sign_on_service", self.bindings, "idpsso", entity_id=entity_id)
+		# Binding here is the response binding that is which binding the
+		# IDP should use to return the response.
+		acs = self.sp.config.getattr("endpoints", "sp")["assertion_consumer_service"]
+		# just pick one
+		endp, return_binding = acs[0]
+
+		extensions = None
+		cert = None
+		if self.sp.config.generate_cert_func is not None:
+			cert_str, req_key_str = self.sp.config.generate_cert_func()
+			cert = {
+				"cert": cert_str,
+				"key": req_key_str
+			}
+			spcertenc = SPCertEnc(x509_data=ds.X509Data(x509_certificate=ds.X509Certificate(text=cert_str)))
+			extensions = Extensions(extension_elements=[element_to_extension_element(spcertenc)])
+
+		req_id, req = self.sp.create_authn_request(destination, binding=return_binding, extensions=extensions)
+		_rstate = rndstr()
+		self.relay_state[_rstate] = came_from
+		ht_args = self.sp.apply_binding(_binding, "%s" % req, destination, relay_state=_rstate, sigalg=sigalg)
+		_sid = req_id
+
+		if cert is not None:
+			self.outstanding_certs[_sid] = cert
+
+		# remember the request
+		self.outstanding_queries[_sid] = came_from
+		return self.response(_binding, ht_args)
+
+	def response(self, binding, http_args):
+		for key, value in http_args["headers"]:
+			cherrypy.response.headers[key] = value
+
+		if binding == BINDING_HTTP_ARTIFACT:
+			raise HTTPRedirect(None, status=302)
+		elif binding == BINDING_HTTP_REDIRECT:
+			for param, value in http_args["headers"]:
+				if param == "Location":
+					raise HTTPRedirect(str(value), status=303)
+			raise HTTPError(500, "Parameter error")
+
+		return http_args["data"]
+
+	def get_user(self):
+		morsel = cherrypy.request.cookie.get(self.cookie_name, None)
+		if morsel:
+			try:
+				return self.uid2user[morsel.value]
+			except KeyError:
+				pass
+
+	def delete_cookie(self):
+		cookie = cherrypy.response.cookie
+		cookie[self.cookie_name] = ""
+		cookie[self.cookie_name]['path'] = "/"  # FIXME?
+		cookie[self.cookie_name]["expires"] = self._expiration()
+
+	def set_cookie(self, user):
+		uid = rndstr(32)
+		self.uid2user[uid] = user
+		cookie = cherrypy.response.cookie
+		cookie[self.cookie_name] = uid
+		cookie[self.cookie_name]['path'] = "/"  # FIXME?
+		cookie[self.cookie_name]["expires"] = self._expiration(480)
+
+	def _expiration(self, timeout=None, tformat='%a, %d-%b-%Y %T GMT'):
+		if timeout is None:  # now
+			return time_util.instant(tformat)
+		# validity time should match lifetime of assertions
+		return time_util.in_a_while(minutes=timeout, format=tformat)
+
+
+class SAMLUser(object):
+
+	def __init__(self, name_id, data):
+		self.name_id = name_id
+		self.data = data
+
+
+
+@log_exceptions
 def run_cherrypy():
 	# TODO FIXME Folgenden Configeintrag einbauen, wenn loglevel in (0,1,2)
 	# 'server.environment': 'production',
 	cherrypy.config.update({
-		'server.socket_port': int(configRegistry.get('umc/http/port', 8090)),
-		'server.socket_host': configRegistry.get('umc/http/interface', '127.0.0.1'),
-		'server.request_queue_size': int(configRegistry.get('umc/http/requestqueuesize', 100)),
-		'server.thread_pool': int(configRegistry.get('umc/http/maxthreads', 35)),
+		'server.socket_port': int(ucr.get('umc/http/port', 8090)),
+		'server.socket_host': ucr.get('umc/http/interface', '127.0.0.1'),
+		'server.request_queue_size': int(ucr.get('umc/http/requestqueuesize', 100)),
+		'server.thread_pool': int(ucr.get('umc/http/maxthreads', 35)),
 		'response.timeout': _session_timeout,
 		'engine.autoreload_on': False,
 		'tools.response_headers.on': True,
@@ -823,6 +1174,10 @@ def run_cherrypy():
 	root.set = CPSet()
 	root.upload = CPUpload()
 	root.sso = CPSingleSignOn()
+	try:
+		root.saml = SAML()
+	except:
+		CORE.error('Cannot support SAML2.0 single sign on\n%s' % (traceback.format_exc(),))
 	root.get.ipaddress = IPAddresses()
 
 	cherrypy.quickstart(root=root)
@@ -837,7 +1192,7 @@ class UMC_HTTP_Daemon(DaemonRunner):
 			help='if set the process will not fork into the background'
 		)
 		try:
-			default_debug = int(configRegistry.get('umc/server/debug/level', '1'))
+			default_debug = int(ucr.get('umc/server/debug/level', '1'))
 		except:
 			default_debug = 1
 		self.parser.add_option('-d', '--debug', action='store', type='int', dest='debug', default=default_debug,
@@ -849,7 +1204,7 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		(self.options, self.arguments) = self.parser.parse_args()
 
 		# cleanup environment
-		os.environ.clear()  # supported since python 2.6
+		os.environ.clear()
 		os.environ['PATH'] = '/bin:/sbin:/usr/bin:/usr/sbin'
 
 		# init logging
@@ -913,7 +1268,7 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		try:
 			os.kill(pid, signal.SIGTERM)
 		except OSError as exc:
-			raise DaemonRunnerStopFailureError(	"Failed to terminate %(pid)d: %(exc)s" % vars())
+			raise DaemonRunnerStopFailureError("Failed to terminate %d: %s" % (pid, exc))
 
 		if self.pidfile.is_locked():
 			CORE.process('The UMC web server is still running. Will wait for 5 seconds')
