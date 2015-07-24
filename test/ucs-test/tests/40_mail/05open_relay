@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Basic email functions
-##tags: [apptest]
+## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 ## bugs: []

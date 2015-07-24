@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Mails to unknown users are rejected
-##tags: [apptest]
+## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 

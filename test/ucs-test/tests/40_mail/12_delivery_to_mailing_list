@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Delivery to a mailing list
-##tags: [apptest]
+## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 

@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Delivery to root without univention mail server
-##tags: [apptest]
+## tags: [apptest]
 ## exposure: dangerous
 
 from essential.mail import send_mail, check_delivery

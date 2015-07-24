@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Modification of user's mail primary address
-##tags: [apptest]
+## tags: [apptest]
 ## exposure: dangerous
 ## packages:
 ##  - univention-mail-server

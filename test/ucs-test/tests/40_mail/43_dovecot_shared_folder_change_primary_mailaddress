@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Change primary mail address of shared folders
-##tags: [apptest]
+## tags: [apptest]
 ## exposure: dangerous
 ## packages:
 ##  - univention-mail-server

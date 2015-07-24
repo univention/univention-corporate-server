@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Add and remove mail primary address from shared folders
-##tags: [apptest]
+## tags: [apptest]
 ## exposure: dangerous
 ## packages:
 ##  - univention-mail-server
