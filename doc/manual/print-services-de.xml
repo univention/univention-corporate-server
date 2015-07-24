@@ -634,7 +634,6 @@
 	Schritten exakt zu folgen!
   </para>
 
-  <para>
 	<orderedlist>
 	  <listitem><simpara>
 		Zuerst müssen die Druckertreiber von der Webseite des Herstellers heruntergeladen
@@ -678,7 +677,7 @@
 		werden, wenn ausschliesslich 64 Bit Windows Systeme in der Domäne zum Einsatz kommen.
 		Die Treiber können für verschiedene Windows-Architekturen entweder in getrennten Schritten nacheinander oder direkt
 		in einem Vorgang hochgeladen werden. Falls beide Treiberarchitekturen gleichzeitig zum Hochladen ausgewählt werden,
-		dann muss im anschliessenden Dateiauswahldialog als erstes der 64 Bit Treiber gewählt werden.
+		dann muss im anschließenden Dateiauswahldialog als erstes der 64 Bit Treiber gewählt werden.
 		Nachdem Windows diese Dateien zum Server hochgeladen hat, fragt es dann erneut nach dem Ort für die 32 Bit Treiber.
 		Danach werden auch diese zum Server hochgeladen.
 	    </simpara>
@@ -742,7 +741,7 @@
 		Druckerverwaltung der UMC konfigurierte Feld <guimenu>Samba-Name</guimenu> zu
 		verwenden (oder falls dies leer gelassen wurde, dann der Wert aus <guimenu>Name</guimenu>).
 		Wenn der Name auf diese Weise zurückgesetzt werden musste, dann fragt Windows beim
-		abschliessenden Klick auf <guimenu>OK</guimenu> nach, ob man sich sicher ist, dass
+		abschließenden Klick auf <guimenu>OK</guimenu> nach, ob man sich sicher ist, dass
 		man den Namen ändern möchte. Dies ist zu bestätigen.
 	  </simpara></listitem>
 
@@ -751,13 +750,13 @@
 		für den Drucker zu speichern, sollte nun auf den Reiter <guimenu>Geräteeinstellungen</guimenu>
 		gewechselt werden. Der Name dieses Reiters ist herstellerspezifisch und kann auch mit
 		<guimenu>Einstellungen</guimenu> oder einfach <guimenu>Konfiguration</guimenu> bezeichnet sein.
-		Ein abschliessender Klick auf <guimenu>OK</guimenu> schliesst den Dialog.
+		Ein abschließender Klick auf <guimenu>OK</guimenu> schließt den Dialog.
 		Danach kann direkt eine Testseite gedruckt werden.
 		Sollte Windows hier eine Fehlermeldung <literal>0x00000006</literal> ausgeben, muss
 		in den Druckereinstellungen erneut geprüft werden, ob sich ein herstellerspezifischer Reiter
 		namens <guimenu>Geräteeinstellungen</guimenu> (oder ähnlich) findet. Dieser sollte geöffnet
-		und dann einfach mit <guimenu>OK</guimenu> bestätigt werden. Dies schliesst den Dialog und
-		speichert Druckertreibereinstellungen (<literal>PrinterDriverData</literal>) in der Samba Registry.
+		und dann einfach mit <guimenu>OK</guimenu> bestätigt werden. Dies schließt den Dialog und
+		speichert Druckertreibereinstellungen (<foreignphrase>PrinterDriverData</foreignphrase>) in der Samba Registry.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -775,7 +774,6 @@
 	  </simpara></listitem>
 
 	</orderedlist>
-  </para>
 </section>
 
 <section id="print::ppdlisten">
@@ -845,3 +843,4 @@
 	</table>
 </section>
 </chapter>
+<!-- vim:set ts=2 sw=2 tw=0 noet ft=docbk:-->
