@@ -2,6 +2,7 @@ ucs-test (5.0.160-2) unstable; urgency=low
 
   * Bug #39002: Fix broken tags
   * Bug #38601: Tags for producttest
+  * Bug #38828: Rename test
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 24 Jul 2015 08:54:43 +0200
 

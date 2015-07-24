@@ -42,7 +42,7 @@ __all__ = [
 
 TEST_BASE = os.environ.get('UCS_TESTS', '/usr/share/ucs-test')
 RE_SECTION = re.compile(r'^[0-9]{2}_(.+)$')
-RE_PREFIX = re.compile(r'^[0-9]{2}(.+)')
+RE_PREFIX = re.compile(r'^[0-9]{2,3}_?(.+)')
 RE_SUFFIX = re.compile(r'(?:~|\.(?:lib|sh|py[co]|bak|mo|po|png|jpg|jpeg|xml|csv|inst|uinst))$')
 LOG_BASE = '/var/log/univention/test_%d.log'
 S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
@@ -119,7 +119,7 @@ def get_tests(sections):
 
 		files = os.listdir(dirname)
 		for filename in sorted(files):
-			fname = dirname + os.path.sep + filename
+			fname = os.path.join(dirname, filename)
 			if not RE_PREFIX.match(filename):
 				logger.debug('Skipped file %s' % (fname,))
 				continue

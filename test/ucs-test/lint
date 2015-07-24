@@ -39,7 +39,24 @@ issue "Use of 'ucr.sh' without call to 'ucr_restore'."
 find tests -type f -exec grep -E -l 'fail_(test|fast)+ [^0-9"$?]+' {} + >"$tmp"
 issue "Missing reason for fail_test"
 
-UCS_TESTS=./tests python -c '
+UCS_TESTS=tests python -c '
+import sys
+sys.path.remove("")
+import univention
+univention.__path__.insert(0, "univention")
+from univention.testing.internal import get_sections, get_tests
+from os.path import basename
+sections = get_sections()
+tests = get_tests(sections)
+for tests in tests.itervalues():
+    for fname in tests:
+        if "." in basename(fname):
+            print fname
+' >"$tmp" 2>&1 ||
+	issue "Failed to find tests" '/^Traceback/,$p'
+issue "Wrong file name"
+
+UCS_TESTS=tests python -c '
 import sys
 sys.path.remove("")
 import univention
