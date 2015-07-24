@@ -20,7 +20,9 @@ Architecture: any
 Depends: libc6 (>= 2.8),
  libtalloc2 (>= 2.1.1),
  libtevent0 (>= 0.9.22),
- samba-libs (>= 4.2.0~rc2)
+ samba-libs (>= 4.2.0~rc2),
+ ${misc:Depends},
+ ${shlibs:Depends},
 Description: Remote Windows®-command executor
  Winexe remotely executes commands on Windows® NT/2000/XP/2003 systems.
  .

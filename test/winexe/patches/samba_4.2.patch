@@ -1,5 +1,5 @@
---- winexe-1.1.0.orig/winexe-winexe-waf/source/wscript	2014-11-12 18:03:22.129554000 +0100
-+++ winexe-1.1.0/winexe-winexe-waf/source/wscript	2014-11-12 18:07:54.085554000 +0100
+--- winexe-1.1.0.orig/source/wscript	2014-11-12 18:03:22.129554000 +0100
++++ winexe-1.1.0/source/wscript	2014-11-12 18:07:54.085554000 +0100
 @@ -78,7 +78,7 @@ def configure(ctx):
                  ''' % (h in 'smb_cli.h smb_cliraw.h smb_composite.h util/debug.h'.split(), h))
  

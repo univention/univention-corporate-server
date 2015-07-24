@@ -30,28 +30,31 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-get-orig-source:
-	rm -rf winexe-winexe-waf
-	git clone git://git.code.sf.net/p/winexe/winexe-waf winexe-winexe-waf
-	cd winexe-winexe-waf; git archive  --format tar --output ../winexe-winexe-waf.tar master
-	rm winexe-winexe-waf.tar.gz
-	gzip winexe-winexe-waf.tar
-	rm -rf winexe-winexe-waf
+export DEB_BUILD_MAINT_OPTIONS=hardening=-all  # Bug #38673: mingw is too old
+WORKDIR := winexe-winexe-waf
 
-override_dh_auto_configure:
-	mkdir winexe-winexe-waf || true
-	tar -xvf winexe-winexe-waf.tar.gz -C winexe-winexe-waf
-	QUILT_PATCHES=debian/patches quilt push -a
-	cd winexe-winexe-waf/source/; ./waf configure
+get-orig-source: winexe-winexe-waf.tar.gz
+winexe-winexe-waf.tar.gz:
+	rm -rf ${WORKDIR}
+	git clone git://git.code.sf.net/p/winexe/winexe-waf ${WORKDIR}
+	cd ${WORKDIR} && git archive --output ../$@ master # --prefix ${WORKDIR}
+	rm -rf ${WORKDIR}
+
+patch:
+	mkdir -p ${WORKDIR}
+	tar -xvf winexe-winexe-waf.tar.gz -C ${WORKDIR}
+	cd ${WORKDIR}/source && QUILT_PATCHES=../patches quilt push -a || [ $$? -eq 2 ]
+
+override_dh_auto_configure: patch
+	cd ${WORKDIR}/source && ./waf -v configure
 	dh_auto_configure
 
 override_dh_auto_build:
-	cd winexe-winexe-waf/source; ./waf build
+	cd ${WORKDIR}/source && ./waf -v build
 	dh_auto_build
 
 override_dh_clean:
-	QUILT_PATCHES=debian/patches quilt pop -a || true
-	rm -rf winexe-winexe-waf
+	rm -rf ${WORKDIR}
 	dh_clean
 
 %:

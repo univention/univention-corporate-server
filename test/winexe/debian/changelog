@@ -1,3 +1,9 @@
+winexe (1.1.0-12) unstable; urgency=low
+
+  * Bug #38673: Fix winexe build
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 24 Jul 2015 11:52:27 +0200
+
 winexe (1.1.0-11) unstable; urgency=medium
 
   * Bug #36019: fix quilt return code
