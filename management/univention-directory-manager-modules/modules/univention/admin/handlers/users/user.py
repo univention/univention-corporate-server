@@ -1559,6 +1559,14 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		self.old_options= copy.deepcopy( self.options )
 
+	def modify(self, *args, **kwargs):
+		try:
+			super(object, self).modify(*args, **kwargs)
+		except univention.admin.uexceptions.licenseDisableModify as exc:
+			if 'all' not in self['disabled'] or not self.hasChanged('disabled'):
+				raise
+			kwargs['ignore_license'] = True
+			super(object, self).modify(*args, **kwargs)
 
 	def reload_certificate(self):
 		"""Reload user certificate."""

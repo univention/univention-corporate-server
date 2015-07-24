@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.31-7) unstable; urgency=low
+
+  * Bug #38835: Disable user even if the license count is exceeded
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 24 Jul 2015 13:42:53 +0200
+
 univention-directory-manager-modules (10.0.31-6) unstable; urgency=low
 
   * Bug #18512: use country name translation from iso-codes package
