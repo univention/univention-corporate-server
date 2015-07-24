@@ -66,7 +66,7 @@ from saml2.metadata import create_metadata_string
 from saml2.ecp_client import PAOS_HEADER_INFO
 from saml2.httputil import make_cookie, parse_cookie
 from saml2.response import VerificationError
-from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, sid, rndstr
+from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, sid as generate_sid, rndstr
 from saml2.samlp import Extensions
 #from saml2 import xmldsig as ds  # FIXME: pysaml2 v3 required
 
@@ -838,18 +838,6 @@ class SAML(object):
 	@cherrypy.expose
 	@log_exceptions
 	@cherrypy.tools.fix_uri()
-	def index(self, *args, **kwargs):
-		user = self.get_user()
-
-		if user is None:
-			return self.do_single_sign_on()
-
-		cherrypy.response.headers['Content-Type'] = 'text/html'
-		return '<a href="./logout">logout</a>'
-
-	@cherrypy.expose
-	@log_exceptions
-	@cherrypy.tools.fix_uri()
 	def metadata(self, *args, **kwargs):
 		metadata = create_metadata_string(self.configfile, None, valid='4', cert=None, keyfile=None, mid=None, name=None, sign=False)
 		cherrypy.response.headers['Content-Type'] = 'text/xml'
@@ -858,9 +846,19 @@ class SAML(object):
 	@cherrypy.expose
 	@log_exceptions
 	@cherrypy.tools.fix_uri()
-	def acs(self, *args, **kwargs):  # attribute consuming service
-		message, binding, relay_state = self._get_saml_arguments()
+	def index(self, *args, **kwargs):
+		user = self.get_user()
 
+		if user is None:
+			message, binding, relay_state = self._get_saml_arguments()
+			if message is None:
+				return self.do_single_sign_on()
+			return self.acs(message, binding, relay_state)
+
+		cherrypy.response.headers['Content-Type'] = 'text/html'
+		return '<a href="./logout">logout</a>'
+
+	def acs(self, message, binding, relay_state):  # attribute consuming service
 		try:
 			response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries, self.outstanding_certs)
 		except UnknownPrincipal as exc:
@@ -882,10 +880,12 @@ class SAML(object):
 	@cherrypy.tools.fix_uri()
 	def slo(self, *args, **kwargs):  # single logout service
 		message, binding, relay_state = self._get_saml_arguments()
+		if message is None:
+			raise HTTPError(400, 'The HTTP request is missing required SAML parameter.')
 		self.sp.parse_logout_request_response(message, binding)
 		self.delete_cookie()
-		cherrypy.response.headers['Content-Type'] = 'text/plain'
-		return 'You are now logged out of this service'
+		cherrypy.response.headers['Content-Type'] = 'text/html'
+		return 'You are now logged out of this service. <a href="../">Relogin</a>'
 
 	def _get_saml_arguments(self):
 		if cherrypy.request.method not in ('GET', 'POST'):
@@ -909,7 +909,7 @@ class SAML(object):
 				try:
 					message = args['SAMLart']
 				except KeyError:
-					raise HTTPError(400, 'The HTTP request is missing required SAML parameter.')
+					return None, None, None
 				message = self.sp.artifact2message(message, 'spsso')
 				binding = BINDING_HTTP_ARTIFACT
 
@@ -946,8 +946,8 @@ class SAML(object):
 				raise HTTPError(500, 'unknown logout binding: %s', binding)
 
 		self.delete_cookie()
-		cherrypy.response.headers['Content-Type'] = 'text/plain'
-		return 'You are now logged out of this service'
+		cherrypy.response.headers['Content-Type'] = 'text/html'
+		return 'You are now logged out of this service. <a href="../">Relogin</a>'
 
 	@cherrypy.expose
 	@log_exceptions
@@ -1042,7 +1042,7 @@ class SAML(object):
 				if cherrypy.request.query_string:
 					idp_entity_id = self.sp.parse_discovery_service_response(query=cherrypy.request.query_string)
 				if not idp_entity_id:
-					sid_ = sid()
+					sid_ = generate_sid()
 					self.outstanding_queries[sid_] = came_from
 					eid = self.sp.config.entityid
 					ret = self.sp.config.getattr("endpoints", "sp")["discovery_response"][0][0]
@@ -1060,18 +1060,18 @@ class SAML(object):
 		return 0, idp_entity_id
 
 	def _wayf_redirect(self, came_from):
-		sid_ = sid()
-		self.outstanding_queries[sid_] = came_from
-		raise HTTPRedirect("%s?%s" % (self.wayf, sid_), status=303)
+		sid = generate_sid()
+		self.outstanding_queries[sid] = came_from
+		raise HTTPRedirect("%s?%s" % (self.wayf, sid), status=303)  # FIXME: sid doesn't have a QS name
 
 	def redirect_to_auth(self, entity_id, came_from, sigalg=""):
-		# Picks a binding to use for sending the Request to the IDP
-		_binding, destination = self.sp.pick_binding("single_sign_on_service", self.bindings, "idpsso", entity_id=entity_id)
-		# Binding here is the response binding that is which binding the
-		# IDP should use to return the response.
+		binding, destination = self.sp.pick_binding("single_sign_on_service", self.bindings, "idpsso", entity_id=entity_id)
 		acs = self.sp.config.getattr("endpoints", "sp")["assertion_consumer_service"]
-		# just pick one
-		endp, return_binding = acs[0]
+
+		service_url, reply_binding = acs[0]
+#		for _url, _binding in acs:
+#			if _url.startswith(came_from):
+#				service_url, reply_binding = _url, _binding
 
 		extensions = None
 		cert = None
@@ -1084,28 +1084,25 @@ class SAML(object):
 			spcertenc = SPCertEnc(x509_data=ds.X509Data(x509_certificate=ds.X509Certificate(text=cert_str)))
 			extensions = Extensions(extension_elements=[element_to_extension_element(spcertenc)])
 
-		req_id, req = self.sp.create_authn_request(destination, binding=return_binding, extensions=extensions)
-		_rstate = rndstr()
-		self.relay_state[_rstate] = came_from
-		ht_args = self.sp.apply_binding(_binding, "%s" % req, destination, relay_state=_rstate, sigalg=sigalg)
-		_sid = req_id
+		sid, message = self.sp.create_authn_request(destination, binding=reply_binding, extensions=extensions)
+
+		relay_state = rndstr()
+		self.relay_state[relay_state] = came_from
+
+		http_args = self.sp.apply_binding(binding, message, destination, relay_state=relay_state, sigalg=sigalg)
 
 		if cert is not None:
-			self.outstanding_certs[_sid] = cert
+			self.outstanding_certs[sid] = cert
+		self.outstanding_queries[sid] = came_from
 
-		# remember the request
-		self.outstanding_queries[_sid] = came_from
-		return self.response(_binding, ht_args)
-
-	def response(self, binding, http_args):
 		for key, value in http_args["headers"]:
 			cherrypy.response.headers[key] = value
 
 		if binding == BINDING_HTTP_ARTIFACT:
-			raise HTTPRedirect(None, status=302)
+			raise HTTPRedirect(None, status=302)  # FIXME: hmm, no location header?
 		elif binding == BINDING_HTTP_REDIRECT:
 			for param, value in http_args["headers"]:
-				if param == "Location":
+				if param.lower() == "location":
 					raise HTTPRedirect(str(value), status=303)
 			raise HTTPError(500, "Parameter error")
 
@@ -1114,10 +1111,7 @@ class SAML(object):
 	def get_user(self):
 		morsel = cherrypy.request.cookie.get(self.cookie_name, None)
 		if morsel:
-			try:
-				return self.uid2user[morsel.value]
-			except KeyError:
-				pass
+			return self.uid2user.get(morsel.value)
 
 	def delete_cookie(self):
 		cookie = cherrypy.response.cookie

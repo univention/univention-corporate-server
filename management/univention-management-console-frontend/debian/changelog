@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.1-2) unstable; urgency=medium
+
+  * Bug #31943: fix redirection loop on logout; cleanup
+
+ -- Florian Best <best@univention.de>  Fri, 24 Jul 2015 16:30:46 +0200
+
 univention-management-console-frontend (5.0.1-1) unstable; urgency=medium
 
   * Bug #31943: Implement single sign on (SSO) via SAML2.0 using pysaml2 in

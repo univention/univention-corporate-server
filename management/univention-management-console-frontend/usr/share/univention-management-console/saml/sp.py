@@ -24,13 +24,13 @@ CONFIG = {
 			"authn_requests_signed": True,
 			"logout_requests_signed": True,
 			"endpoints": {
-				"assertion_consumer_service": [('%s/acs/' % (url,), binding) for url in bases for binding in (BINDING_HTTP_POST, BINDING_HTTP_REDIRECT)],
+				"assertion_consumer_service": [('%s/' % (url,), binding) for url in bases for binding in (BINDING_HTTP_POST, BINDING_HTTP_REDIRECT)],
 				"single_logout_service": [('%s/slo/' % (url,), binding) for url in bases for binding in (BINDING_HTTP_POST, BINDING_HTTP_REDIRECT)],
 			}
 		},
 	},
-	"key_file": "/usr/share/univention-management-console/pki/mykey.pem",
-	"cert_file": "/usr/share/univention-management-console/pki/mycert.pem",
+	"key_file": "/usr/share/univention-management-console/saml/pki/mykey.pem",
+	"cert_file": "/usr/share/univention-management-console/saml/pki/mycert.pem",
 	"xmlsec_binary": "/usr/bin/xmlsec1",
 	"metadata": {
 		"local": ["/usr/share/univention-management-console/saml/idp.xml"],
