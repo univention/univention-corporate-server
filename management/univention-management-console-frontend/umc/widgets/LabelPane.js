@@ -193,6 +193,8 @@ define([
 					this.own(this.content.watch('required', lang.hitch(this, function(attr, oldVal, newVal) {
 						this.set('label', this.content.get('label') || '');
 					})));
+				}
+				if (this._isLabelDisplayed() || this.usesHoverTooltip) {
 					// watch for decription changes an adapt tooltip accordingly
 					this.own(this.content.watch('description', lang.hitch(this, function(attr, oldVal, newVal) {
 						this._setDescriptionAttr(newVal);
