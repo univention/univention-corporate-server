@@ -46,6 +46,7 @@ import datetime
 import hashlib
 import urllib
 import json
+from urlparse import urlparse
 
 import notifier
 import cherrypy
@@ -97,7 +98,10 @@ def log_exceptions(func):
 
 @log_exceptions
 def _fix_uri_for_saml():
-	cherrypy.request.uri = '%s://%s%s?%s' % (cherrypy.request.scheme, cherrypy.request.headers['Host'], cherrypy.request.path_info, cherrypy.request.query_string)
+	scheme = cherrypy.request.scheme
+	if cherrypy.request.headers.get('X-UMC-HTTPS') == 'on':
+		scheme = 'https'
+	cherrypy.request.uri = '%s://%s%s?%s' % (scheme, cherrypy.request.headers['Host'], cherrypy.request.path_info, cherrypy.request.query_string)
 	foo = cherrypy.request.params
 	try:
 		cherrypy.request.params = {}
@@ -858,7 +862,7 @@ class SAML(object):
 		cherrypy.response.headers['Content-Type'] = 'text/html'
 		return '<a href="./logout">logout</a>'
 
-	def acs(self, message, binding, relay_state):  # attribute consuming service
+	def acs(self, message, binding, relay_state):  # assertion consumer service
 		try:
 			response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries, self.outstanding_certs)
 		except UnknownPrincipal as exc:
@@ -883,9 +887,65 @@ class SAML(object):
 		if message is None:
 			raise HTTPError(400, 'The HTTP request is missing required SAML parameter.')
 		self.sp.parse_logout_request_response(message, binding)
+		return self._logout_success()
+
+	@cherrypy.expose
+	@log_exceptions
+	@cherrypy.tools.fix_uri()
+	def logout(self, *args, **kwargs):
+		user = self.get_user()
+
+		if user is None:
+			return self.do_single_sign_on()
+
+		# What if more than one
+		data = self.sp.global_logout(user.name_id)
+
+		for entity_id, logout_info in data.items():
+			if not isinstance(logout_info, tuple):
+				continue  # result from logout, should be OK
+
+			binding, http_args = logout_info
+
+			if binding == BINDING_HTTP_POST:
+				body = ''.join(http_args['data'])
+				cherrypy.response.headers['Content-Type'] = 'text/html'
+				return body
+			elif binding == BINDING_HTTP_REDIRECT:
+				for key, value in http_args['headers']:
+					if key.lower() == 'location':
+						raise HTTPRedirect(value, status=302)
+				raise HTTPError(500, 'Cannot redirect due to missing Location header')
+			else:
+				raise HTTPError(500, 'unknown logout binding: %s', binding)
+		return self._logout_success()
+
+	def _logout_success(self):
 		self.delete_cookie()
 		cherrypy.response.headers['Content-Type'] = 'text/html'
 		return 'You are now logged out of this service. <a href="../">Relogin</a>'
+
+	@cherrypy.expose
+	@log_exceptions
+	@cherrypy.tools.fix_uri()
+	def disco(self, *args, **kwargs):
+		try:
+			sid = kwargs['sid']
+			entity_id = kwargs['entityID']
+		except KeyError as key:
+			raise HTTPError(400, 'missing query string parameter: %s' % (key,))
+		try:
+			came_from = self.outstanding_queries[sid]
+		except KeyError:
+			raise HTTPError(400, 'unknown sid!')
+
+		resp = self.redirect_to_auth(entity_id, came_from)
+
+		# Add cookie
+		key, value = make_cookie("ve_disco", entity_id, "SEED_SAW")  # TODO: find out why "SEED_SAW"
+		cherrypy.response.headers[key] = value
+
+		return resp
 
 	def _get_saml_arguments(self):
 		if cherrypy.request.method not in ('GET', 'POST'):
@@ -915,163 +975,88 @@ class SAML(object):
 
 		return message, binding, relay_state
 
-	@cherrypy.expose
-	@log_exceptions
-	@cherrypy.tools.fix_uri()
-	def logout(self, *args, **kwargs):
-		user = self.get_user()
-
-		if user is None:
-			return self.do_single_sign_on()
-
-		# What if more than one
-		data = self.sp.global_logout(user.name_id)
-
-		for entity_id, logout_info in data.items():
-			if not isinstance(logout_info, tuple):
-				continue  # result from logout, should be OK
-
-			binding, http_info = logout_info
-
-			if binding == BINDING_HTTP_POST:
-				body = ''.join(http_info['data'])
-				cherrypy.response.headers['Content-Type'] = 'text/html'
-				return body
-			elif binding == BINDING_HTTP_REDIRECT:
-				for key, value in http_info['headers']:
-					if key.lower() == 'location':
-						raise HTTPRedirect(value, status=302)
-				raise HTTPError(500, 'Cannot redirect due to missing Location header')
-			else:
-				raise HTTPError(500, 'unknown logout binding: %s', binding)
-
-		self.delete_cookie()
-		cherrypy.response.headers['Content-Type'] = 'text/html'
-		return 'You are now logged out of this service. <a href="../">Relogin</a>'
-
-	@cherrypy.expose
-	@log_exceptions
-	@cherrypy.tools.fix_uri()
-	def disco(self, *args, **kwargs):
-		try:
-			sid = kwargs['sid']
-			entity_id = kwargs['entityID']
-		except KeyError as key:
-			raise HTTPError(400, 'missing query string parameter: %s' % (key,))
-		try:
-			came_from = self.outstanding_queries[sid]
-		except KeyError:
-			raise HTTPError(400, 'unknown sid!')
-
-		resp = self.redirect_to_auth(entity_id, came_from)
-
-		# Add cookie
-		key, value = make_cookie("ve_disco", entity_id, "SEED_SAW")  # TODO: find out why "SEED_SAW"
-		cherrypy.response.headers[key] = value
-
-		return resp
-
 	def do_single_sign_on(self):
-		# Which page was accessed to get here
 		came_from = cherrypy.request.uri
 
-		# If more than one idp and if none is selected, I have to do wayf
-		(done, response) = self._pick_idp(came_from)
-		# Two cases:
-		#		0 I've got an IdP to send a request to
-		#		>0 ECP in progress
-		if done > 0:
-			self.outstanding_queries[done] = came_from
-			cherrypy.response.headers['Content-Type'] = 'text/xml'
-			return response
+		if 'Paos' in cherrypy.request.headers:
+			done, response = self.enhanced_client_proxy_profile()
+			if done > 0:
+				self.outstanding_queries[done] = came_from
+				cherrypy.response.headers['Content-Type'] = 'text/xml'
+				return response
+			identity_provider = response
 		else:
-			entity_id = response
-			# Do the AuthnRequest
-			return self.redirect_to_auth(entity_id, came_from)
+			identity_provider = self._pick_idp(came_from)
+
+		if identity_provider is None:
+			raise HTTPError(500, 'Could not pick an identity provider. You can specify one via the query string parameter %r' % (self.idp_query_param,))
+
+		return self.redirect_to_auth(identity_provider, came_from)
 
 	def _pick_idp(self, came_from):
-		"""
-		If more than one idp and if none is selected, I have to do wayf or
-		disco
-		"""
-
-		if 'Paos' in cherrypy.request.headers:
-			if cherrypy.request.headers['Paos'] != PAOS_HEADER_INFO:
-				raise HTTPError(500, 'unknown ECP version')
-
-			if 'application/vnd.paos+xml' not in cherrypy.request.headers.values('Accept'):
-				raise HTTPError(500, 'Faulty Accept header')
-
-			# Where should I redirect the user to
-			# entityid -> the IdP to use
-			# relay_state -> when back from authentication
-
-			_rstate = rndstr()
-			self.relay_state[_rstate] = cherrypy.request.uri
-			_entityid = self.sp.config.ecp_endpoint(get_ip_address())  # get_ip_address instead of environ['REMOTE_ADDR']
-
-			if not _entityid:
-				raise HTTPError(500, "Could not determine identity provider.")
-			return ecp.ecp_auth_request(self.sp, _entityid, _rstate)
-
-		# Find all IdPs
 		idps = self.sp.metadata.with_descriptor("idpsso")
-		idp_entity_id = None
 
-		kaka = cherrypy.request.headers.get('Cookie')
-		if kaka:
-			try:
-				(idp_entity_id, _) = parse_cookie("ve_disco", "SEED_SAW", kaka)
-			except (ValueError, TypeError):
-				pass
+		if self.idp_query_param in cherrypy.request.query and cherrypy.request.query[self.idp_query_param] in idps:
+			return cherrypy.request.query[self.idp_query_param]
 
-		# Any specific IdP specified in a query part
-		if not idp_entity_id and self.idp_query_param in cherrypy.request.query:
-			_idp_entity_id = cherrypy.request.query[self.idp_query_param]
-			if _idp_entity_id in idps:
-				idp_entity_id = _idp_entity_id
+		if cherrypy.request.cookie.get('ve_disco'):
+			return parse_cookie("ve_disco", "SEED_SAW", cherrypy.request.headers.get('Cookie'))[0]
 
-		if not idp_entity_id:
+		if self.wayf:
+			wayf_selected = cherrypy.request.query.get('wayf_selected')
+			if not wayf_selected:
+				sid = generate_sid()
+				self.outstanding_queries[sid] = came_from
+				raise HTTPRedirect("%s?sid=%s" % (self.wayf, sid), status=303)
+			return wayf_selected
 
-			if self.wayf:
-				wayf_selected = cherrypy.request.query.get('wayf_selected')
-				if not wayf_selected:
-					return self._wayf_redirect(came_from)
-				idp_entity_id = wayf_selected
-			elif self.discosrv:
-				if cherrypy.request.query_string:
-					idp_entity_id = self.sp.parse_discovery_service_response(query=cherrypy.request.query_string)
-				if not idp_entity_id:
-					sid_ = generate_sid()
-					self.outstanding_queries[sid_] = came_from
-					eid = self.sp.config.entityid
-					ret = self.sp.config.getattr("endpoints", "sp")["discovery_response"][0][0]
-					ret += "?sid=%s" % sid_
-					loc = self.sp.create_discovery_service_request(self.discosrv, eid, **{"return": ret})
-					raise HTTPRedirect(loc, status=303)
-			elif len(idps) == 1:
-				# idps is a dictionary
-				idp_entity_id = idps.keys()[0]
-			elif not idps:
-				raise HTTPError(500, 'Misconfiguration')
-			else:
-				raise HTTPError(501, "No WAYF or DS present!")
+		if self.discosrv and cherrypy.request.query_string:
+			idp_entity_id = self.sp.parse_discovery_service_response(query=cherrypy.request.query_string)
+			if not idp_entity_id:
+				sid_ = generate_sid()
+				self.outstanding_queries[sid_] = came_from
+				eid = self.sp.config.entityid
+				ret = self.sp.config.getattr("endpoints", "sp")["discovery_response"][0][0]
+				ret += "?sid=%s" % sid_
+				loc = self.sp.create_discovery_service_request(self.discosrv, eid, **{"return": ret})
+				raise HTTPRedirect(loc, status=303)
+			return idp_entity_id
 
-		return 0, idp_entity_id
+		if len(idps) == 1:
+			return idps.keys()[0]
 
-	def _wayf_redirect(self, came_from):
-		sid = generate_sid()
-		self.outstanding_queries[sid] = came_from
-		raise HTTPRedirect("%s?%s" % (self.wayf, sid), status=303)  # FIXME: sid doesn't have a QS name
+	def enhanced_client_proxy_profile(self):
+		if cherrypy.request.headers['Paos'] != PAOS_HEADER_INFO:
+			raise HTTPError(500, 'unknown ECP version')
+
+		if 'application/vnd.paos+xml' not in cherrypy.request.headers.values('Accept'):
+			raise HTTPError(406, 'application/vnd.paos+xml must be acceptable.')
+
+		# Where should I redirect the user to
+		# entityid -> the IdP to use
+		# relay_state -> when back from authentication
+
+		relay_state = rndstr()
+		self.relay_state[relay_state] = cherrypy.request.uri
+		_entityid = self.sp.config.ecp_endpoint(get_ip_address())
+
+		if not _entityid:
+			raise HTTPError(500, "Could not determine identity provider.")
+		return ecp.ecp_auth_request(self.sp, _entityid, relay_state)
 
 	def redirect_to_auth(self, entity_id, came_from, sigalg=""):
 		binding, destination = self.sp.pick_binding("single_sign_on_service", self.bindings, "idpsso", entity_id=entity_id)
 		acs = self.sp.config.getattr("endpoints", "sp")["assertion_consumer_service"]
 
 		service_url, reply_binding = acs[0]
-#		for _url, _binding in acs:
-#			if _url.startswith(came_from):
-#				service_url, reply_binding = _url, _binding
+		for _url, _binding in acs:
+			p1 = urlparse(_url)
+			p2 = urlparse(came_from)
+			if p1.scheme == p2.scheme and p1.netloc == p2.netloc:
+				service_url, reply_binding = _url, _binding
+				break
+			elif p1.netloc == p2.netloc:
+				service_url, reply_binding = _url, _binding
 
 		extensions = None
 		cert = None
@@ -1084,7 +1069,7 @@ class SAML(object):
 			spcertenc = SPCertEnc(x509_data=ds.X509Data(x509_certificate=ds.X509Certificate(text=cert_str)))
 			extensions = Extensions(extension_elements=[element_to_extension_element(spcertenc)])
 
-		sid, message = self.sp.create_authn_request(destination, binding=reply_binding, extensions=extensions)
+		sid, message = self.sp.create_authn_request(destination, binding=reply_binding, extensions=extensions, assertion_consumer_service_urls=(service_url,))
 
 		relay_state = rndstr()
 		self.relay_state[relay_state] = came_from
@@ -1106,7 +1091,7 @@ class SAML(object):
 					raise HTTPRedirect(str(value), status=303)
 			raise HTTPError(500, "Parameter error")
 
-		return http_args["data"]
+		return ''.join(http_args["data"])
 
 	def get_user(self):
 		morsel = cherrypy.request.cookie.get(self.cookie_name, None)
