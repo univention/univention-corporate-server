@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.3-1) unstable; urgency=medium
+
+  * Bug #20714: Add support for browser back/next button
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 27 Jul 2015 16:29:40 +0200
+
 univention-management-console-frontend (5.0.2-1) unstable; urgency=medium
 
   * Bug #31943: make it possible to set <AssertionConsumerServiceURL>
@@ -45,7 +51,7 @@ univention-management-console-frontend (5.0.0-3) unstable; urgency=low
 univention-management-console-frontend (5.0.0-2) unstable; urgency=low
 
   * Bug #36771: Fix for tooltip beeing displayed on hidden labels in
-  	MutliInputs
+    MutliInputs
 
  -- Drees Dormann <dormann@univention.de>  Fri, 17 Jul 2015 09:44:01 +0200
 
@@ -63,8 +69,8 @@ univention-management-console-frontend (4.1.106-74) unstable; urgency=low
 
 univention-management-console-frontend (4.1.106-73) unstable; urgency=low
 
-  *Bug #36771: Changed tooltip behaviour, tt will only be displayed if new
-  icon is clicked, no auto popup.
+  * Bug #36771: Changed tooltip behaviour, tt will only be displayed if new
+    icon is clicked, no auto popup.
   Added tooltip test (WIP)
 
  -- Drees Dormann <dormann@univention.de>  Tue, 07 Jul 2015 07:58:49 +0200
