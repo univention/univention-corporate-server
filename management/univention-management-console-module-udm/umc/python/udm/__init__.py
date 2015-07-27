@@ -202,9 +202,9 @@ class Instance(Base, ProgressMixin):
 		except udm_errors.licenseNotFound:
 			message = _('License not found. During this session add and modify are disabled.')
 		except udm_errors.licenseAccounts:  # UCS license v1
-			message = _('You have too many user accounts for your license. During this session add and modify are disabled.')
+			message = _('You have too many user accounts for your license. Add and modify are disabled. Disable or delete <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'users/user\', {})"> user accounts</a> to re-enable editing.');
 		except udm_errors.licenseUsers:  # UCS license v2
-			message = _('You have too many user accounts for your license. During this session add and modify are disabled.')
+			message = _('You have too many user accounts for your license. Add and modify are disabled. Disable or delete <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'users/user\', {})"> user accounts</a> to re-enable editing.');
 		except udm_errors.licenseClients:  # UCS license v1
 			message = _('You have too many client accounts for your license. During this session add and modify are disabled.')
 		except udm_errors.licenseServers:  # UCS license v2

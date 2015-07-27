@@ -409,9 +409,9 @@ define([
 			if (!tools.status('udm/licenseNote')) {
 				tools.status('udm/licenseNote', true);
 				this.umcpCommand('udm/license', {}, false).then(lang.hitch(this, function(data) {
-					var msg = data.result.message;
-					if (msg) {
-						this.addNotification(msg);
+					if (data.result.message) {
+						msg = _('<p><b>Add and modify are disabled in this session.</b></p><p>You have too many user accounts for your license. Carry out the following steps to re-enable editing:</p><ol><li>Disable or delete user accounts</li><li>Re-login to UMC for changes to take effect</li></ol><p>If a new license is needed, contact your UCS partner.</p>');
+						dialog.alert(msg, _('<b>Warning!</b>'));
 					}
 				}), function() {
 					console.log('WARNING: An error occurred while verifying the license. Ignoring error.');

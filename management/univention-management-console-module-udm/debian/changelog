@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-79) unstable; urgency=low
+
+  * Bug #38836: - Improve license exceed message
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 27 Jul 2015 12:16:40 +0200
+
 univention-management-console-module-udm (5.1.25-78) unstable; urgency=medium
 
   * Bug #38926: fix error handling
