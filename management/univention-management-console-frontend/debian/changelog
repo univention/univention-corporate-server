@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.4-1) unstable; urgency=medium
+
+  * Bug #20714: fixed fragment decoding, flavor mapping and live search
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 27 Jul 2015 23:36:51 +0200
+
 univention-management-console-frontend (5.0.3-1) unstable; urgency=medium
 
   * Bug #20714: Add support for browser back/next button

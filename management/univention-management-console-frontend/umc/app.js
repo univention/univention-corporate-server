@@ -1082,10 +1082,11 @@ define([
 				if (!newModule.moduleID) {
 					// this is the overview page, not a module
 					topic.publish('/umc/actions', 'overview');
+					this._updateStateHash();
 				} else if (!newModule.$isDummy$) {
 					topic.publish('/umc/actions', newModule.moduleID, newModule.moduleFlavor, 'focus');
+					this._updateStateHash();
 				}
-				this._updateStateHash();
 				var overviewShown = (newModule === this._overviewPage);
 				this._header.toggleBackToOverviewVisibility(!overviewShown);
 				domClass.toggle(baseWin.body(), 'umcOverviewShown', overviewShown);
@@ -1382,17 +1383,17 @@ define([
 
 			if (!moduleTab.isOverview) {
 				// module tab
-				return 'module=' + encodeURIComponent(lang.replace('{id}:{flavor}:{index}:{state}', {
+				return 'module=' + lang.replace('{id}:{flavor}:{index}:{state}', {
 					id: moduleTab.moduleID,
-					flavor: moduleTab.moduleFlavor,
+					flavor: moduleTab.moduleFlavor || '',
 					index: this._getModuleTabIndex(moduleTab),
 					state: moduleTab.moduleState
-				}));
+				});
 			}
 
 			if (moduleTab.isOverview && this.category) {
 				// overview tab with selected category
-				return 'category=' + encodeURIComponent(this.category.id);
+				return 'category=' + this.category.id;
 			}
 
 			return '';
@@ -1400,8 +1401,7 @@ define([
 
 		_parseModuleStateHash: function(hash) {
 			try {
-				var moduleString = decodeURIComponent(hash);
-				var allParts = moduleString.split(':');
+				var allParts = hash.split(':');
 				var mainParts = allParts.splice(0, 3);
 				return {
 					id: mainParts[0],
@@ -1416,11 +1416,12 @@ define([
 
 		_reCategory: /^category=(.*)$/,
 		_reModule: /^module=(.*)$/,
-		_ignoreHashEvents: false,
+		_lastStateHash: '',
 		_setupStateHashing: function() {
 			topic.subscribe('/dojo/hashchange', lang.hitch(this, function(hash) {
-				if (this._getStateHash() == hash) {
+				if (this._getStateHash() == hash || this._lastStateHash == hash) {
 					// nothing to do
+					this._lastStateHash = hash;
 					return;
 				}
 				if (!hash) {
@@ -1456,6 +1457,8 @@ define([
 					}
 				}
 
+				// save the called parameter
+				this._lastStateHash = hash;
 			}));
 
 			if (_initialHash) {
