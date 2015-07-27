@@ -17,4 +17,6 @@ desc: |
     the tooltip icon.
   * The module header in UMC modules now sticks smoothly to the top when
     scrolling down.
-bug: [38544, 38658, 37844, 38825, 36771, 38491]
+  * The browser next/back buttons have been integrated into UMC in order to
+    simplify its navigation.
+bug: [38544, 38658, 37844, 38825, 36771, 38491, 20714]
