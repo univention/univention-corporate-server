@@ -55,6 +55,8 @@ import imghdr
 import PIL
 import traceback
 from io import BytesIO
+import locale
+from operator import itemgetter
 
 translation=univention.admin.localization.translation('univention/admin')
 _=translation.translate
@@ -3159,6 +3161,8 @@ class Country(select):
 		('VI', _iso_3166(u'Virgin Islands, U.S.')), ('WF', _iso_3166(u'Wallis and Futuna')),
 		('EH', _iso_3166(u'Western Sahara')), ('YE', _iso_3166(u'Yemen')), ('ZM', _iso_3166(u'Zambia')),
 		('ZW', _iso_3166(u'Zimbabwe'))]
+	locale.setlocale(locale.LC_ALL, "")
+	choices.sort(cmp=locale.strcoll, key=itemgetter(1))
 
 
 if __name__ == '__main__':
