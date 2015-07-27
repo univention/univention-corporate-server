@@ -314,7 +314,7 @@ define([
 			if (!(description instanceof Array)) {
 				description = [];
 				array.forEach(this.subtypes, function(itype, i) {
-					description.push(i === 0 && _description ? _description : '');
+					description.push(i === 0 ? _description || itype.description || '' : itype.description || '');
 				}, this);
 			}
 
@@ -358,7 +358,7 @@ define([
 						jwidget = this._widgets[i][j];
 						if (jwidget) {
 							description = i < descriptions.length && j < descriptions[i].length ? descriptions[i][j] : '';
-							if (! ((description === '') || (description === ' ')) ) {
+							if (! ((description === '') || (description === ' ') || (typeof description == 'undefined')) ) {
 								jwidget.set('description', description);
 							} else {
 								jwidget.set('description', null);
@@ -572,6 +572,7 @@ define([
 				rowContainer.addChild(new LabelPane({
 					disabled: this.disabled,
 					content: iwidget,
+					usesHoverTooltip: iwidget.usesHoverTooltip || false,
 					// mark last element in a row
 					'class': idx == order.length - 1 ? 'umcMultiInputLastRowEntry' : null
 				}));
