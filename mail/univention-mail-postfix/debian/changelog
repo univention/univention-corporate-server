@@ -1,6 +1,6 @@
 univention-mail-postfix (9.0.3-4) unstable; urgency=low
 
-  * Bug #38292: safer smtp_restrictions sorting code
+  * Bug #38948: safer smtp_restrictions sorting code
 
  -- Daniel Troeder <troeder@univention.de>  Thu, 23 Jul 2015 16:11:34 +0200
 
