@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-07-07 15:41+0200\n"
+"POT-Creation-Date: 2015-07-27 10:07+0200\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -196,7 +196,7 @@ msgstr ""
 "Bitte wählen Sie ein anderes Netzwerk oder stellen Sie sicher, dass "
 "ungenutzte IP Adressen für das gewählte Netzwerk zur Verfügung stehen."
 
-#: umc/python/udm/udm_ldap.py:415 umc/python/udm/__init__.py:889
+#: umc/python/udm/__init__.py:889 umc/python/udm/udm_ldap.py:415
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
@@ -301,7 +301,9 @@ msgstr "Das Objekt kann nicht verschoben werden"
 #: umc/python/udm/__init__.py:1214
 msgid ""
 "This seems to be a problem with the license server. Please try again later."
-msgstr "Das deutet auf ein Problem auf dem Lizenz-Server hin. Bitte versuchen Sie es später noch einmal."
+msgstr ""
+"Das deutet auf ein Problem auf dem Lizenz-Server hin. Bitte versuchen Sie es "
+"später noch einmal."
 
 #: umc/python/udm/__init__.py:233
 msgid ""
@@ -378,11 +380,17 @@ msgstr ""
 
 #: umc/python/udm/__init__.py:205 umc/python/udm/__init__.py:207
 msgid ""
-"You have too many user accounts for your license. During this session add "
-"and modify are disabled."
+"You have too many user accounts for your license. Add and modify are "
+"disabled. Disable or delete <a href=\"javascript:void(0)\" onclick=\"require"
+"('umc/app').openModule('udm', 'users/user', {})\"> user accounts</a> to re-"
+"enable editing."
 msgstr ""
-"Sie haben mehr Benutzerkonten, als Ihre Lizenz erlaubt. Während dieser "
-"Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
+"Sie haben mehr Benuterkonten, als Ihre Lizenz erlaubt. Das Hinzufügen und "
+"Bearbeiten von Objekten ist nicht möglich. Deaktivieren oder löschen Sie "
+"<a href=\"javascript:void(0)\" onclick=\"require('umc/app').openModule('udm', "
+"'users/user', {})\"> Benuzterkonten</a>, um das Bearbeiten wieder zu "
+"ermöglichen."
+
 
 #: umc/python/udm/__init__.py:231
 msgid ""
@@ -446,3 +454,10 @@ msgstr "handbuch"
 #: umc/python/udm/__init__.py:620
 msgid "text file"
 msgstr "Textdatei"
+
+#~ msgid ""
+#~ "You have too many user accounts for your license. During this session add "
+#~ "and modify are disabled."
+#~ msgstr ""
+#~ "Sie haben mehr Benutzerkonten, als Ihre Lizenz erlaubt. Während dieser "
+#~ "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
