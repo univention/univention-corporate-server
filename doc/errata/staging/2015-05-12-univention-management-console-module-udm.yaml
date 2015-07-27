@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-management-console-module-udm
-fix: 5.1.25-77.588.201507131338
+fix: 5.1.25-80.591.201507271149
 version: [2]
 desc: |
   This update addresses the following issues:
@@ -15,4 +15,6 @@ desc: |
    * A default user templates for new users can be configured by the UCR
      variable "directory/manager/web/modules/users/user/add/default". The
      variable expects the DN or the label of a user template.
-bug: [38544, 38202, 36256, 35614, 38832]
+   * If too many user accounts for the license have been created, the UMC
+     now provides information about how to re-enable editing.
+bug: [38544, 38202, 36256, 35614, 38832, 38836]
