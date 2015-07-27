@@ -268,6 +268,12 @@ def activate_spam_header_tag(tag):
 	handler_set(['mail/antispam/headertag=%s' % tag])
 
 
+def restart_postfix():
+	cmd = ['/etc/init.d/postfix', 'restart']
+	try:
+		subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
+	except EnvironmentError as ex:
+		print >> sys.stderr, ex
 def reload_postfix():
 	cmd = ['/etc/init.d/postfix', 'force-reload']
 	try:
