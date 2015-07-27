@@ -1,6 +1,12 @@
+univention-management-console-frontend (4.1.106-80) unstable; urgency=medium
+
+  * Bug #20714: Add support for browser back/next button
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 27 Jul 2015 16:29:40 +0200
+
 univention-management-console-frontend (4.1.106-79) unstable; urgency=low
 
-  *Bug #36771: fixed tooltip not displayed on policy buttons
+  * Bug #36771: fixed tooltip not displayed on policy buttons
 
  -- Drees Dormann <dormann@univention.de>  Mon, 27 Jul 2015 10:07:31 +0200
 
@@ -12,7 +18,7 @@ univention-management-console-frontend (4.1.106-78) unstable; urgency=low
 
 univention-management-console-frontend (4.1.106-77) unstable; urgency=low
 
-  *Bug #36771: restored old tooltip style/behaviour for Buttons
+  * Bug #36771: restored old tooltip style/behaviour for Buttons
 
  -- Drees Dormann <dormann@univention.de>  Thu, 23 Jul 2015 09:12:29 +0200
 
@@ -26,7 +32,7 @@ univention-management-console-frontend (4.1.106-76) unstable; urgency=low
 univention-management-console-frontend (4.1.106-75) unstable; urgency=low
 
   * Bug #36771: Fix for tooltip beeing displayed on hidden labels in
-  	MutliInputs
+    MutliInputs
 
  -- Drees Dormann <dormann@univention.de>  Fri, 17 Jul 2015 09:44:01 +0200
 
@@ -38,8 +44,8 @@ univention-management-console-frontend (4.1.106-74) unstable; urgency=low
 
 univention-management-console-frontend (4.1.106-73) unstable; urgency=low
 
-  *Bug #36771: Changed tooltip behaviour, tt will only be displayed if new
-  icon is clicked, no auto popup.
+  * Bug #36771: Changed tooltip behaviour, tt will only be displayed if new
+    icon is clicked, no auto popup.
   Added tooltip test (WIP)
 
  -- Drees Dormann <dormann@univention.de>  Tue, 07 Jul 2015 07:58:49 +0200

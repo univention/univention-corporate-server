@@ -1082,13 +1082,10 @@ define([
 				if (!newModule.moduleID) {
 					// this is the overview page, not a module
 					topic.publish('/umc/actions', 'overview');
-					this._lastHash = '';
-					hash(this._lastHash);
 				} else if (!newModule.$isDummy$) {
 					topic.publish('/umc/actions', newModule.moduleID, newModule.moduleFlavor, 'focus');
-					this._lastHash = 'module=' + encodeURIComponent(newModule.moduleID + (newModule.moduleFlavor ? ':' + newModule.moduleFlavor : ''));
-					hash(this._lastHash);
 				}
+				this._updateStateHash();
 				var overviewShown = (newModule === this._overviewPage);
 				this._header.toggleBackToOverviewVisibility(!overviewShown);
 				domClass.toggle(baseWin.body(), 'umcOverviewShown', overviewShown);
@@ -1351,49 +1348,118 @@ define([
 			// setup menus
 			this._header.setupGui();
 			this._setupOverviewPage();
-			this._setupHashing();
+			this._setupStateHashing();
 
 			// set a flag that GUI has been build up
 			tools.status('setupGui', true);
 			this.onGuiDone();
 		},
 
+		// return the index for the given module tab, i.e., the index regarding other
+		// open tabs if the same module ID and flavor
+		_getModuleTabIndex: function(tab) {
+			var idx = 0;
+			array.some(this._tabContainer.getChildren(), function(itab) {
+				if (itab.id == tab.id) {
+					return true;
+				}
+				if (itab.moduleID == tab.moduleID && itab.moduleFlavor == tab.moduleFlavor && !itab.$isDummy$) {
+					++idx;
+				}
+			}, this);
+			return idx;
+		},
+
+		_updateStateHash: function() {
+			tools.defer(lang.hitch(this, function() {
+				var state = this._getStateHash();
+				hash(state);
+			}), 0);
+		},
+
+		_getStateHash: function() {
+			var moduleTab = lang.getObject('_tabContainer.selectedChildWidget', false, this);
+
+			if (!moduleTab.isOverview) {
+				// module tab
+				return 'module=' + encodeURIComponent(lang.replace('{id}:{flavor}:{index}:{state}', {
+					id: moduleTab.moduleID,
+					flavor: moduleTab.moduleFlavor,
+					index: this._getModuleTabIndex(moduleTab),
+					state: moduleTab.moduleState
+				}));
+			}
+
+			if (moduleTab.isOverview && this.category) {
+				// overview tab with selected category
+				return 'category=' + encodeURIComponent(this.category.id);
+			}
+
+			return '';
+		},
+
+		_parseModuleStateHash: function(hash) {
+			try {
+				var moduleString = decodeURIComponent(hash);
+				var allParts = moduleString.split(':');
+				var mainParts = allParts.splice(0, 3);
+				return {
+					id: mainParts[0],
+					flavor: mainParts[1] || undefined,
+					index: mainParts[2] || 0,
+					moduleState: allParts.join(':')
+				};
+			} catch(err) {
+				return {};
+			}
+		},
+
 		_reCategory: /^category=(.*)$/,
 		_reModule: /^module=(.*)$/,
 		_ignoreHashEvents: false,
-		_setupHashing: function() {
+		_setupStateHashing: function() {
 			topic.subscribe('/dojo/hashchange', lang.hitch(this, function(hash) {
-				console.log('###', hash);
-				if (this._lastHash == hash) {
+				if (this._getStateHash() == hash) {
+					// nothing to do
 					return;
 				}
 				if (!hash) {
+					// UMC overview page
 					this.switchToOverview();
 					return;
 				}
 				var match = hash.match(this._reModule);
 				if (match) {
-					try {
-						var moduleString = decodeURIComponent(match[1]);
-						var moduleParts = moduleString.split(':');
-						var moduleID = moduleParts[0];
-						var moduleFlavor = moduleParts.length > 1 ? moduleParts[1] : null;
-						var foundTab = array.some(this._tabContainer.getChildren(), function(itab) {
-							if (itab.moduleID == moduleID && itab.moduleFlavor == moduleFlavor) {
-								this.focusTab(itab);
-								return true;
-							}
-						}, this);
-						if (!foundTab) {
-							this._lastHash = _initialHash;
-							this.openModule(moduleID, moduleFlavor);
-						}
-					} catch(e) { }
+					// hash encodes module tab
+					var state = this._parseModuleStateHash(match[1]);
+					var similarModuleTabs = array.filter(this._tabContainer.getChildren(), function(itab) {
+						return itab.moduleID == state.id && itab.moduleFlavor == state.flavor;
+					});
+
+					if (state.index < similarModuleTabs.length) {
+						this.focusTab(similarModuleTabs[state.index]);
+						similarModuleTabs[state.index].set('moduleState', state.moduleState);
+					} else {
+						this.openModule(state.id, state.flavor, {
+							moduleState: state.moduleState
+						});
+					}
 				}
+
+				match = hash.match(this._reCategory);
+				if (match) {
+					// hash encodes a module category view
+					this.switchToOverview();
+					var category = this.getCategory(match[1]);
+					if (category) {
+						this._updateQuery(category);
+					}
+				}
+
 			}));
 
 			if (_initialHash) {
-				hash(_initialHash, true);
+				tools.defer(lang.partial(hash, _initialHash, true), 0);
 			}
 		},
 
@@ -1547,6 +1613,9 @@ define([
 			// update the search label
 			domClass.toggle(this._searchText.domNode, 'dijitHidden', !!category);
 			this._searchText.set('content', _('Search query ›%s‹', entities.encode(searchPattern)));
+
+			// update the hash
+			this._updateStateHash();
 		},
 
 		_updateNumOfTabs: function(offset) {
@@ -1613,6 +1682,7 @@ define([
 						this._tabContainer.selectChild(dummy);
 						this._tabContainer.ready().then(lang.hitch(this, function() {
 							tab = new BaseClass(params);
+							tab.watch('moduleState', lang.hitch(this, '_updateStateHash'));
 							this._tabContainer.addChild(tab);
 							this.__insertTabStyles(tab, module);
 							this._updateNumOfTabs(-1);
@@ -1625,6 +1695,7 @@ define([
 						}));
 					} else {
 						tab = new BaseClass(params);
+						tab.watch('moduleState', lang.hitch(this, '_updateStateHash'));
 						this._tabContainer.addChild(tab);
 						this.__insertTabStyles(tab, module);
 						this._updateNumOfTabs();

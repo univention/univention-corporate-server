@@ -98,7 +98,10 @@ define([
 			this.inherited(arguments);
 			this._searchTextBox.on('keyup', lang.hitch(this, function() {
 				this._updateCss(); // ... just to be sure
-				this.onSearch();
+				if (this.get('value')) {
+					// ignore empty search strings
+					this.onSearch();
+				}
 			}));
 		},
 

@@ -71,6 +71,12 @@ define([
 		//		(Is specified automatically.)
 		title: '',
 
+		// title: String
+		// 		Specifies the state of a module, e.g., current search parameters or an
+		// 		opened object. Module states can be accessed directly via a URL with hash
+		// 		or via browser back/next history buttons.
+		moduleState: '',
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
