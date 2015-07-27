@@ -57,6 +57,7 @@ define([
 	"dojo/dom-geometry",
 	"dojo/dom-construct",
 	"dojo/date/locale",
+	"dojo/hash",
 	"dojox/html/styles",
 	"dojox/html/entities",
 	"dojox/gfx",
@@ -88,7 +89,7 @@ define([
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseFx, baseWin, win, on, aspect, has,
 		Evented, Deferred, when, all, cookie, topic, ioQuery, fx, fxEasing, Memory, Observable,
-		dom, style, domAttr, domClass, domGeometry, domConstruct, locale, styles, entities, gfx, registry, tools, dialog, store,
+		dom, style, domAttr, domClass, domGeometry, domConstruct, locale, hash, styles, entities, gfx, registry, tools, dialog, store,
 		Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
 		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, Module, ModuleHeader, CategoryButton,
 		i18nTools, _
@@ -96,6 +97,7 @@ define([
 	// cache UCR variables
 	var _ucr = {};
 	var _favoritesDisabled = false;
+	var _initialHash = hash();
 
 	var _getLang = function() {
 		return kernel.locale.split('-')[0];
@@ -1080,8 +1082,12 @@ define([
 				if (!newModule.moduleID) {
 					// this is the overview page, not a module
 					topic.publish('/umc/actions', 'overview');
+					this._lastHash = '';
+					hash(this._lastHash);
 				} else if (!newModule.$isDummy$) {
 					topic.publish('/umc/actions', newModule.moduleID, newModule.moduleFlavor, 'focus');
+					this._lastHash = 'module=' + encodeURIComponent(newModule.moduleID + (newModule.moduleFlavor ? ':' + newModule.moduleFlavor : ''));
+					hash(this._lastHash);
 				}
 				var overviewShown = (newModule === this._overviewPage);
 				this._header.toggleBackToOverviewVisibility(!overviewShown);
@@ -1345,10 +1351,50 @@ define([
 			// setup menus
 			this._header.setupGui();
 			this._setupOverviewPage();
+			this._setupHashing();
 
 			// set a flag that GUI has been build up
 			tools.status('setupGui', true);
 			this.onGuiDone();
+		},
+
+		_reCategory: /^category=(.*)$/,
+		_reModule: /^module=(.*)$/,
+		_ignoreHashEvents: false,
+		_setupHashing: function() {
+			topic.subscribe('/dojo/hashchange', lang.hitch(this, function(hash) {
+				console.log('###', hash);
+				if (this._lastHash == hash) {
+					return;
+				}
+				if (!hash) {
+					this.switchToOverview();
+					return;
+				}
+				var match = hash.match(this._reModule);
+				if (match) {
+					try {
+						var moduleString = decodeURIComponent(match[1]);
+						var moduleParts = moduleString.split(':');
+						var moduleID = moduleParts[0];
+						var moduleFlavor = moduleParts.length > 1 ? moduleParts[1] : null;
+						var foundTab = array.some(this._tabContainer.getChildren(), function(itab) {
+							if (itab.moduleID == moduleID && itab.moduleFlavor == moduleFlavor) {
+								this.focusTab(itab);
+								return true;
+							}
+						}, this);
+						if (!foundTab) {
+							this._lastHash = _initialHash;
+							this.openModule(moduleID, moduleFlavor);
+						}
+					} catch(e) { }
+				}
+			}));
+
+			if (_initialHash) {
+				hash(_initialHash, true);
+			}
 		},
 
 		_setupOverviewPage: function() {
