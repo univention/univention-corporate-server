@@ -72,6 +72,8 @@ define([
 		//		defaults to ['name', 'description', 'categories', 'keywords']
 		searchableAttributes: null,
 
+		_lastValue: '',
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this._radioButtons = [];
@@ -98,8 +100,9 @@ define([
 			this.inherited(arguments);
 			this._searchTextBox.on('keyup', lang.hitch(this, function() {
 				this._updateCss(); // ... just to be sure
-				if (this.get('value')) {
+				if (this.get('value') || this._lastValue) {
 					// ignore empty search strings
+					this._lastValue = this.get('value');
 					this.onSearch();
 				}
 			}));
