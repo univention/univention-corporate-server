@@ -338,6 +338,53 @@ define([
 
 			// register onClose events
 			this.on('close', lang.hitch(this, 'onCloseTab'));
+
+			// watch the state of the currently focused page
+			this._loadUCRVariables().then(lang.hitch(this, function() {
+				this.watch('selectedChildWidget', lang.hitch(this, '_updateModuleState'));
+			}));
+		},
+
+		_updateModuleState: function() {
+			tools.defer(lang.hitch(this, function() {
+				this.set('moduleState', this.get('moduleState'));
+			}), 0);
+		},
+
+		_setModuleStateAttr: function(_state) {
+			var currentState = this.get('moduleState');
+			if (this._created && _state == this.moduleState || currentState == _state) {
+				this._set('moduleState', _state);
+				return;
+			}
+			var state = _state.split(':');
+			if (!state.length || (state.length == 1 && state[0] == '')) {
+				if (this._searchPage) {
+					this.selectChild(this._searchPage);
+				}
+			}
+			else {
+				var objType = state.shift();
+				var ldapName = state.length > 1 ? state : state[0];
+				this._loadUCRVariables().then(lang.hitch(this, function() {
+					this.createDetailPage(objType, ldapName);
+				}));
+			}
+			this._set('moduleState', _state);
+		},
+
+		_getModuleStateAttr: function() {
+			var state = [];
+			if (this.selectedChildWidget && this.selectedChildWidget == this._detailPage) {
+				var objectType = this._detailPage.objectType;
+				var ldapName = this._detailPage.ldapName;
+				state = [objectType];
+				if (ldapName && !(ldapName instanceof Array)) {
+					state.push(ldapName);
+				}
+			}
+			return state.join(':');
+
 		},
 
 		_ldapDN2TreePath: function( ldapDN ) {
@@ -1586,10 +1633,11 @@ define([
 			} else {
 				this.selectChild(this._detailPage);
 			}
-			this._detailPage.ready().then(function() { 
-			}, lang.hitch(this, function() {
+			this._detailPage.ready().then(lang.hitch(this, '_updateModuleState'), 
+			lang.hitch(this, function() {
 				this.closeDetailPage();
 			}));
+
 		},
 
 		closeDetailPage: function() {
