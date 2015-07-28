@@ -41,20 +41,21 @@ import sys
 import notifier
 
 import univention.management.console.protocol as umcp
+from univention.management.console.protocol.client import Client
 from univention.management.console.log import log_init, log_set_level
 
-class ClientExit( Exception ):
+
+class ClientExit(Exception):
 	pass
 
-class CLI_Client( umcp.Client ):
-	def __init__( self, options = [], arguments = [] ):
-		if options.unix_socket and os.path.exists( options.unix_socket ):
-			umcp.Client.__init__( self, unix = options.unix_socket,
-								  ssl = False, auth = options.authenticate )
+
+class CLI_Client(Client):
+
+	def __init__(self, options=[], arguments=[]):
+		if options.unix_socket and os.path.exists(options.unix_socket):
+			super(CLI_Client, self).__init__(unix=options.unix_socket, ssl=False, auth=options.authenticate)
 		else:
-			umcp.Client.__init__( self, servername = options.server,
-								  port = options.port,
-								  auth = options.authenticate )
+			super(CLI_Client, self).__init__(servername=options.server, port=options.port, auth=options.authenticate)
 		self.__wait = None
 		self._options = options
 		self.__started = None
@@ -64,67 +65,67 @@ class CLI_Client( umcp.Client ):
 			self.connect()
 		except umcp.NoSocketError:
 			print >>sys.stderr, "The UMC server %s could not be contacted." % options.server
-			sys.exit( 1 )
+			sys.exit(1)
 
-		self.signal_connect( 'response', self._response )
-		self.signal_connect( 'authenticated', self._authenticated )
-		self.signal_connect( 'closed', self._closed )
-		self.signal_connect( 'error', self._error )
+		self.signal_connect('response', self._response)
+		self.signal_connect('authenticated', self._authenticated)
+		self.signal_connect('closed', self._closed)
+		self.signal_connect('error', self._error)
 		if arguments:
-			self.__wait = self.create( arguments[ 0 ], arguments[ 1 : ], options )
+			self.__wait = self.create(arguments[0], arguments[1:], options)
 		if options.authenticate:
 			if self._options.timing:
 				self.__started = datetime.datetime.now()
-			self.authenticate( options.username, options.password )
+			self.authenticate(options.username, options.password)
 		else:
 			if self.__wait:
-				self.request( self.__wait )
+				self.request(self.__wait)
 				self.__wait = None
 		if options.exit:
 			if not self._options.quiet:
 				print >> sys.stderr, 'existing without waiting for response'
-			sys.exit( 0 )
+			sys.exit(0)
 
-	def create( self, command, args = [], options = [], flavor = None ):
-		msg = umcp.Request( command.upper() )
+	def create(self, command, args=[], options=[], flavor=None):
+		msg = umcp.Request(command.upper())
 		msg.arguments = args
 		if options.flavor is not None:
 			msg.flavor = options.flavor
 		if options.list_options and not options.eval_options:
 			msg.options = options.options
 		elif options.filename:
-			msg.body = open( options.filename ).read()
+			msg.body = open(options.filename).read()
 			msg.mimetype = options.mimetype
 		elif options.eval_options:
 			if not options.list_options:
-				msg.options = eval( options.options[ 0 ] )
+				msg.options = eval(options.options[0])
 			else:
-				msg.options = map( lambda x: eval( x ), options.options )
+				msg.options = map(lambda x: eval(x), options.options)
 		else:
 			for opt in options.options:
-				key, value = opt.split( '=', 1 )
-				if key.find( ':' ) > 0:
-					typ, key = key.split( ':', 1 )
+				key, value = opt.split('=', 1)
+				if key.find(':') > 0:
+					typ, key = key.split(':', 1)
 					try:
-						value = eval( "%s('%s')" % ( typ, value ) )
+						value = eval("%s('%s')" % (typ, value))
 					except NameError:
 						print >>sys.stderr, "Invalid type for option: %s" % typ
-				msg.options[ key ] = value
+				msg.options[key] = value
 		return msg
 
 	def _error(self, error):
 		print >> sys.stderr, "Error: %s" % (error,)
 		sys.exit(1)
 
-	def _closed( self ):
+	def _closed(self):
 		print >> sys.stderr, "Error: The connection to UMC was closed unexpectedly. Make sure the server is running"
-		sys.exit( 1 )
+		sys.exit(1)
 
-	def print_timing( self, response = None ):
+	def print_timing(self, response=None):
 		if self.__started is not None and self.__finished is not None:
 			diff = self.__finished - self.__started
 			if response is not None:
-				print '>>> Timing:', response.command, ' '.join( response.arguments )
+				print '>>> Timing:', response.command, ' '.join(response.arguments)
 			else:
 				print '>>> Timing (Authentication):'
 			print ' Request send at', self.__started
@@ -142,144 +143,133 @@ class CLI_Client( umcp.Client ):
 			if self.__wait:
 				if self._options.timing:
 					self.__started = datetime.datetime.now()
-				self.request( self.__wait )
+				self.request(self.__wait)
 				self.__wait = None
 		else:
 			print >> sys.stderr, 'error: authentication failed'
 			sys.exit(1)
 
-	def _response( self, msg ):
+	def _response(self, msg):
 		if self._options.timing:
 			self.__finished = datetime.datetime.now()
-			self.print_timing( msg )
+			self.print_timing(msg)
 		if self._options.quiet:
-			raise ClientExit( msg.status - 200 )
+			raise ClientExit(msg.status - 200)
 		print 'Response: %s' % msg.command
-		print '  data length   : %4d' % len( str( msg ) )
+		print '  data length   : %4d' % len(str(msg))
 		print '  message length: %4d' % msg._length
 		print '  ---'
 		if msg.arguments:
 			if self._options.prettyprint:
-				print '  ARGUMENTS: %s' % pprint.pformat( msg.arguments )
+				print '  ARGUMENTS: %s' % pprint.pformat(msg.arguments)
 			else:
-				print '  ARGUMENTS: %s' % ' '.join( msg.arguments )
+				print '  ARGUMENTS: %s' % ' '.join(msg.arguments)
 		print 'MIMETYPE   : %s' % msg.mimetype
 		if msg.mimetype == umcp.MIMETYPE_JSON:
 			print '  STATUS   : %d' % msg.status
 			if msg.options:
 				if self._options.prettyprint:
-					print '  OPTIONS  : %s' % pprint.pformat( msg.options, indent = 2 )
+					print '  OPTIONS  : %s' % pprint.pformat(msg.options, indent=2)
 				else:
-					if isinstance( msg.options, ( list, tuple ) ):
-						print '  OPTIONS  : %s' % ', '.join( map( lambda x: str( x ), msg.options ) )
+					if isinstance(msg.options, (list, tuple)):
+						print '  OPTIONS  : %s' % ', '.join(map(lambda x: str(x), msg.options))
 					else:
-						print '  OPTIONS  : %s' % ' '.join( [ '%s=%s' % ( k, v ) for k, v in msg.options.items() ] )
+						print '  OPTIONS  : %s' % ' '.join(['%s=%s' % (k, v) for k, v in msg.options.items()])
 			print '  MESSAGE  : %s' % msg.message
 			result = msg.result
 			if not result:
 				result = msg.body
 			if self._options.prettyprint:
-				print '  RESULT   : %s' % pprint.pformat( result, indent = 2 )
+				print '  RESULT   : %s' % pprint.pformat(result, indent=2)
 			else:
 				print '  RESULT   : %s' % result
 			if msg.status is not None:
-				raise ClientExit( msg.status - 200 )
+				raise ClientExit(msg.status - 200)
 		else:
-			print 'BODY       : %s' % str( msg.body )
+			print 'BODY    : %s' % str(msg.body)
 		raise ClientExit()
 
+
 if __name__ == '__main__':
-	notifier.init( notifier.GENERIC )
+	notifier.init(notifier.GENERIC)
 
-	parser = OptionParser( usage = "usage: %prog [options] command <arguments>" )
-	group = OptionGroup( parser, 'General' )
-	group.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = 0,
-					   help = 'if given than debugging is activated and set to the specified level [default: %default]' )
-	group.add_option( '-q', '--quiet', action = 'store_true', dest = 'quiet',
-					   help = 'if given no output is generated' )
-	group.add_option( '-r', '--pretty-print', action = 'store_true',
-					   dest = 'prettyprint', default = False,
-					   help = 'if given the output will be printed out using pretty print' )
-	group.add_option( '-t', '--timing', action = 'store_true', dest = 'timing',
-					   help = 'if given the amount of time required for the UMCP request is measured. -q will not supress the output' )
-	parser.add_option_group( group )
+	parser = OptionParser(usage="usage: %prog [options] command <arguments>")
+	group = OptionGroup(parser, 'General')
+	group.add_option('-d', '--debug', action='store', type='int', dest='debug', default=0,
+		help='if given than debugging is activated and set to the specified level [default: %default]')
+	group.add_option('-q', '--quiet', action='store_true', dest='quiet',
+		help='if given no output is generated')
+	group.add_option('-r', '--pretty-print', action='store_true', dest='prettyprint', default=False,
+		help='if given the output will be printed out using pretty print')
+	group.add_option('-t', '--timing', action='store_true', dest='timing',
+		help='if given the amount of time required for the UMCP request is measured. -q will not supress the output')
+	parser.add_option_group(group)
 
-	group = OptionGroup( parser, 'Connection' )
-	group.add_option( '-n', '--no-auth', action = 'store_false',
-					   dest = 'authenticate', default = True,
-					   help = 'if given the client do not try to authenticate first' )
-	group.add_option( '-p', '--port', type = 'int', action = 'store',
-					   dest = 'port', default = '6670',
-					   help = 'defines the port to connect to [default: %default]' )
-	group.add_option( '-P', '--password', type = 'string',
-					   action = 'store', dest = 'password',
-					   help = 'set password for authentication' )
-	group.add_option( '-y', '--password_file', type = 'string',
-					   action = 'store', dest = 'password_file',
-					   help = 'read password for authentication from given file' )
-	group.add_option( '-s', '--server', type = 'string', action = 'store',
-					   dest = 'server', default = 'localhost',
-					   help = 'defines the host of the UMC daemon to connect to [default: %default]' )
-	group.add_option( '-u', '--unix-socket', type = 'string', action = 'store',
-					   dest = 'unix_socket',
-					   help = 'defines the filename of the UNIX socket' )
-	group.add_option( '-U', '--username', type = 'string',
-					   action = 'store', dest = 'username',
-					   help = 'set username for authentication' )
-	group.add_option( '-x', '--exit', action = 'store_true', dest = 'exit',
-					   help = 'if given, the client send the request to the server and exits directly after it without waiting for the response' )
-	parser.add_option_group( group )
+	group = OptionGroup(parser, 'Connection')
+	group.add_option('-n', '--no-auth', action='store_false', dest='authenticate', default=True,
+		help='if given the client do not try to authenticate first')
+	group.add_option('-p', '--port', type='int', action='store', dest='port', default='6670',
+		help='defines the port to connect to [default: %default]')
+	group.add_option('-P', '--password', type='string', action='store', dest='password',
+		help='set password for authentication')
+	group.add_option('-y', '--password_file', type='string', action='store', dest='password_file',
+		help='read password for authentication from given file')
+	group.add_option('-s', '--server', type='string', action='store', dest='server', default='localhost',
+		help='defines the host of the UMC daemon to connect to [default: %default]')
+	group.add_option('-u', '--unix-socket', type='string', action='store', dest='unix_socket',
+		help='defines the filename of the UNIX socket')
+	group.add_option('-U', '--username', type='string', action='store', dest='username',
+		help='set username for authentication')
+	group.add_option('-x', '--exit', action='store_true', dest='exit',
+		help='if given, the client send the request to the server and exits directly after it without waiting for the response')
+	parser.add_option_group(group)
 
-	group = OptionGroup( parser, 'Request arguments' )
-	group.add_option( '-e', '--eval-option', action = 'store_true', dest = 'eval_options',
-					   help = 'if set the only given option is evalulated as python code' )
-	group.add_option( '-f', '--flavor', action = 'store',
-					   dest = 'flavor', default = None,
-					   help = 'set the required flavor' )
-	group.add_option( '-F', '--filename', action = 'store', dest = 'filename',
-					   help = 'if given the content of the file is send as the body of the UMCP request. Additionally the mime type must be given' )
-	group.add_option( '-l', '--list-options', action = 'store_true', dest = 'list_options',
-					   help = 'if set all specified options will be assembled in a list' )
-	group.add_option( '-m', '--mimetype', action = 'store', dest = 'mimetype', default = umcp.MIMETYPE_JSON,
-					   type = 'choice', choices = ( umcp.MIMETYPE_JSON, umcp.MIMETYPE_JPEG, umcp.MIMETYPE_PNG ),
-					   help = 'defines the mime type of the UMCP request body [default: %default].' )
-	group.add_option( '-o', '--option', type = 'string', default = [],
-					   action = 'append', dest = 'options',
-					   help = 'append an option to the request' )
-	parser.add_option_group( group )
+	group = OptionGroup(parser, 'Request arguments')
+	group.add_option( '-e', '--eval-option', action='store_true', dest='eval_options',
+		help='if set the only given option is evalulated as python code')
+	group.add_option('-f', '--flavor', action='store', dest='flavor', default=None,
+		help='set the required flavor')
+	group.add_option('-F', '--filename', action='store', dest='filename',
+		help='if given the content of the file is send as the body of the UMCP request. Additionally the mime type must be given')
+	group.add_option('-l', '--list-options', action='store_true', dest='list_options',
+		help='if set all specified options will be assembled in a list')
+	group.add_option('-m', '--mimetype', action='store', dest='mimetype', default=umcp.MIMETYPE_JSON, type='choice', choices=(umcp.MIMETYPE_JSON, umcp.MIMETYPE_JPEG, umcp.MIMETYPE_PNG),
+		help = 'defines the mime type of the UMCP request body [default: %default].')
+	group.add_option('-o', '--option', type='string', default=[], action='append', dest='options',
+		help='append an option to the request')
+	parser.add_option_group(group)
 
-	( options, arguments ) = parser.parse_args()
+	(options, arguments) = parser.parse_args()
 
-	prog = os.path.basename( sys.argv[ 0 ] )
-	if prog.startswith( 'umc-' ):
-		command = prog[ 4 : ]
+	prog = os.path.basename(sys.argv[0])
+	if prog.startswith('umc-'):
+		command = prog[4:]
 		if command != 'client':
-			arguments.insert( 0, command )
+			arguments.insert(0, command)
 
-	log_init( '/dev/stderr', options.debug )
+	log_init('/dev/stderr', options.debug)
 
 	if not arguments:
-		parser.error( 'command is missing' )
+		parser.error('command is missing')
 	if options.authenticate:
 		if not options.username:
-			options.username = raw_input( 'Username:' )
+			options.username = raw_input('Username:')
 		if options.password_file:
 			options.password = open(options.password_file).read().strip()
 		if not options.password:
-			options.password = getpass( 'Password:' )
+			options.password = getpass('Password:')
 	try:
-		client = CLI_Client( options, arguments )
+		client = CLI_Client(options, arguments)
 	except Exception, e:
-		print >> sys.stderr, 'An fatal error occurred: %s' % str( e )
-		sys.exit( 1 )
+		print >> sys.stderr, 'An fatal error occurred: %s' % str(e)
+		sys.exit(1)
 
 	try:
 		notifier.loop()
 	except ClientExit, exit:
 		if exit.args:
-			exitcode = int( exit.args[ 0 ] )
+			exitcode = int(exit.args[0])
 			if exitcode == 200:
 				exitcode = 0
-			sys.exit( exitcode )
-		sys.exit( 0 )
-
+			sys.exit(exitcode)
+		sys.exit(0)
