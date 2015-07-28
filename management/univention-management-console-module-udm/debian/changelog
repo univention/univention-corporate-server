@@ -1,4 +1,4 @@
-univention-management-console-module-udm (5.1.25-80) unstable; urgency=medium
+univention-management-console-module-udm (6.0.0-1) unstable; urgency=medium
 
   * Bug #39033: integrated browser history navigation into UDM module
 
