@@ -42,186 +42,188 @@
 			callback: function(lang, array, win, dom, domConstruct, domStyle, on, Stateful, StackContainer, Button, TextArea, tools, Text, TextBox, Form, CheckBox, ComboBox, ContainerWidget, MultiInput, LabelPane, Uploader, obj) {
 				domStyle.set('overlay', 'display', 'none');
 
-				var values = [ 'green', 'blue', 'yellow', 'red', 'purple', 'pink', 'orange', 'transparent'],
+				var values = [ 'green', 'blue', 'yellow', 'red', 'purple', 'pink', 'orange', 'transparent'];
 
-				_multiInputValues = [ {type: TextBox,name: "multiLine1", description: "??", label: "Line1", size:"Half", intermediateChanges: true}, {type: TextBox, name: "multiLine2", description: "??", label: "Line2", size:"Half", intermediateChanges: true} ];
+				var defaultDesc = 'Default tooltip';
+				var defaultLabel = 'Default label';
 
-
-				this.buttons = [{
-					name: 'labelButton1',
+				var buttons = [{
+					name: '_change_label',
 					type: Button,
-					label: "Change Label",
-					description: 'Do it!',
-					onClick:	function() {
-						setLabels('Someting');
-					}
-				}, {
-					name: 'labelButton2',
-					type: Button,
-					label: "Change Label again",
-					description: 'Do it!',
-					onClick:	function() {
-						setLabels('Something else');
-					}
-				}, {
-					name: 'descButton',
-					type: Button,
-					label: "change description",
-					onClick:	function() {
-						setDescriptions('!!!!!!!');
-					}
-				}, {
-					name: 'desc2Button',
-					type: Button,
-					label: 'change description again',
-					onClick:	function() {
-						setDescriptions('?');
-					}
-				}, {
-					name: 'deleteButton',
-					type: Button,
-					label: "Remove tooltips",
+					label: "Change all labels (empty=remove)",
 					onClick: function() {
-						setDescriptions(null);
+						setLabels();
 					}
+				}, {
+					name: '_change_description',
+					type: Button,
+					label: "Change all tooltips (empty=remove)",
+					onClick: function() {
+						setDescriptions();
+					}
+				}, {
+					name: 'button',
+					type: Button,
+					label: defaultLabel,
+					description: defaultDesc
 				}];
 
-
-				// widgets inside container
-				this.widgets = [{
+				var widgets = [{
 					type: Text,
-					name: 'muliText',
-					label: "MultiInput"
-				} ,{
+					name: 'header1',
+					label: "<h1>MultiInput - MultiInput label/description + no subtype label/description</h1>"
+				}, {
 					type: MultiInput,
-					name: 'multi',
+					name: 'multi1',
 					subtypes: [{
 						type: TextBox,
-						description: "??",
-						label: "Line1",
 						size: 'Half'
 					}, {
 						type: TextBox,
-						description: "??",
-						label: "Line2",
 						size: 'Half'
 					}],
-					label: 'MultiInput2',
-					_setDescription: function(description) {
-						dojo.forEach(this._widgets, function(lines) {
-							dojo.forEach(lines, function (subWidget) {
-								subWidget.set('description', description);
-							});
-						});
-					},
+					label: defaultLabel,
+					description: defaultDesc
 				}, {
-					name: 'multi2',
+					type: Text,
+					name: 'header2',
+					label: "<h1>MultiInput - subtype label/description</h1>"
+				}, {
 					type: MultiInput,
+					name: 'multi2',
 					subtypes: [{
 						type: TextBox,
-						description: "??",
-						label: "Line1"
+						label: defaultLabel + ' subtype 1',
+						description: defaultDesc + ' subtype 1',
+						size: 'Half'
+					}, {
+						type: TextBox,
+						label: defaultLabel + '2 subtype ',
+						description: defaultDesc + '2 subtype ',
+						size: 'Half'
 					}],
-					size: "Half",
-					label: 'MultiInput2',
-					_setDescription: function(description) {
-						dojo.forEach(this._widgets, function(lines) {
-							dojo.forEach(lines, function (subWidget) {
-								subWidget.set('description', description);
-							});
-						});
-					},
+					label: defaultLabel,
+					description: defaultDesc
 				}, {
 					type: Text,
-					name: 'uploadText',
-					label: "Uploader"
+					name: 'header3',
+					label: "<h1>Uploader with label/description</h1>"
 				} ,{
 					type: Uploader,
-					name: 'uploader',
-					label: "This is a uploader",
-					description: "This is a description of the uploader"
+					name: 'uploader1',
+					label: defaultLabel,
+					description: defaultDesc
 				}, {
 					type: Text,
-					name: 'checkText',
-					label: "Checkbox"
+					name: 'header4',
+					label: "<h1>Uploader with description</h1>"
+				} ,{
+					type: Uploader,
+					name: 'uploader2',
+					description: defaultDesc
 				}, {
-					type: CheckBox,
-					name: 'check',
-					label: 'Checkbox',
-					description: 'Check to remove tooltip',
-					onClick: function() {
-						this.set('description', null);
-					}
-
-				}, {
-					type: TextArea,
-					name: 'text',
-					label: 'Tooltip will change if you type someting into the box',
-					description: 'Text',
-					onKeyUp: function() {
-						stuff = this.value;
-						console.debug(stuff);
-						this.set('description', stuff);
-					}
+					type: Text,
+					name: 'header5',
+					label: "<h1>Combobox</h1>"
 				}, {
 					type: ComboBox,
-					name: 'ComboBox1',
-					label: 'Colours',
-					description: ' A Box',
-					_showlabel: true,
+					name: 'combobox',
+					label: defaultLabel,
+					description: defaultDesc,
 					staticValues: values
+				}, {
+					type: Text,
+					name: 'header6',
+					label: "<h1>Checkbox</h1>"
+				}, {
+					type: CheckBox,
+					name: 'checkbox',
+					label: defaultLabel,
+					description: defaultDesc
+				}, {
+					type: Text,
+					name: 'header7',
+					label: "<h1>Buttons</h1>"
+				}, {
+					type: Text,
+					name: 'header8',
+					label: "<h1>No initial label + description</h1>"
+				}, {
+					type: TextBox,
+					name: 'textbox1',
+					description: defaultDesc
+				}, {
+					type: Text,
+					name: 'header9',
+					label: "<h1>No initial description</h1>"
+				}, {
+					type: TextBox,
+					name: 'textbox2',
+					label: defaultLabel
+				}, {
+					type: Text,
+					name: 'header10',
+					label: "<h1>Change labels/tooltips</h1>"
+				}, {
+					type: TextBox,
+					name: '_text_label',
+					size: 'Half',
+					label: 'Enter text to be displayed in label fields'
+				}, {
+					type: TextBox,
+					name: '_text_description',
+					size: 'Half',
+					label: 'Enter text to be displayed as tooltip'
 				}];
 
+				var layout = [
+					'header1', 'multi1',
+					'header2', 'multi2',
+					'header3', 'uploader1',
+					'header4', 'uploader2',
+					'header5', 'combobox',
+					'header6', 'checkbox',
+					'header7', 'button',
+					'header8', 'textbox1',
+					'header9', 'textbox2',
+					'header10',
+					['_text_label', '_change_label'],
+					['_text_description', '_change_description']
+				]
 
-				var form = new Form({
+				form = new Form({
+					layout: layout,
 					buttons: buttons,
 					widgets: widgets
 				});
 
-
 				form.placeAt(win.body());
 				form.startup();
 
-				// helper function to get a widget by its name,
-				// returns the widget object
-				getWidgetByName = function(widgetName) {
-					var allWidgets =  dijit.registry._hash;
-					var result = null;
-					array.forEach(obj.keys(allWidgets), function(iwidget) {
-						if (allWidgets[iwidget].name == widgetName) {
-							result =  allWidgets[iwidget];
-						}
-					});
-					return result;
+				function get(widgetName) {
+					return form._widgets[widgetName];
 				};
 
-				getWidgets = function() {
-					var widgetsArray = [];
-					var widgetNames = ['multi', 'multi2', 'check', 'uploader', 'ComboBox1'];
-					dojo.forEach(widgetNames, function(widget) {
-						widgetsArray.push(getWidgetByName(widget));
-					});
-					return widgetsArray;
-				};
-
-				setDescriptions = function(description) {
-					dojo.forEach(getWidgets(), function(widget) {
-						if (typeof widget._setDescription == 'function') {
-							widget._setDescription(description);
-						} else {
-							widget.set('description', description);
+				function _set(attr, val) {
+					tools.forIn(form._widgets, function(ikey, iwidget) {
+						if (ikey[0] != '_' && !iwidget.isInstanceOf(Text)) {
+							if (ikey == 'multi2') {
+								// ignore
+							} else {
+								iwidget.set(attr, val);
+							}
 						}
 					});
+				}
+
+				function setDescriptions(description) {
+					var desc = get('_text_description').get('value') || null;
+					_set('description', desc);
 				};
 
-				setLabels = function(label) {
-					dojo.forEach(getWidgets(), function(widget) {
-						if (typeof widget.label == 'Array') {
-							widget.set('label', [label, label]);
-						} else {
-							widget.set('label', label);
-						}
-					});
+				function setLabels(label) {
+					var label = get('_text_label').get('value') || null;
+					_set('label', label);
 				};
 			}
 		};
@@ -231,6 +233,5 @@
 </head>
 <body class="umc">
 	<div id="overlay"></div>
-	<div id='content'></div>
 </body>
 </html>
