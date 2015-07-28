@@ -6,6 +6,5 @@ fix: 8.0.33-90.553.201506011154
 version: [6]
 desc: |
  This update addresses the following issue:
- * A bug concerning renming computer objects
-   has been fixed.
+ * A bug concerning renming computer objects has been fixed.
 bug: [31083]
