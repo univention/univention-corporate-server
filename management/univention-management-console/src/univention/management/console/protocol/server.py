@@ -193,7 +193,7 @@ class MagicBucket(object):
 			Server.reload()
 			state.authResponse = Response(msg)
 			try:
-				state.authenticate(msg.body['username'], msg.body['password'], msg.body.get('new_password'), msg.body.get('locale'))
+				state.authenticate(msg)
 			except (TypeError, KeyError):
 				state.authResponse.status = BAD_REQUEST_INVALID_OPTS
 				state.authResponse.message = 'insufficient authentification information'

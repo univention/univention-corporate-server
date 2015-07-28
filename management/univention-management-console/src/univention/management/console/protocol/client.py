@@ -350,18 +350,13 @@ class Client(signals.Provider, Translation):
 			CORE.warn('Client: _handle: received an unknown response: %s' % (response.id,))
 			self.signal_emit('error', UnknownRequestError())
 
-	def authenticate(self, username, password, new_password=None, locale=None):
+	def authenticate(self, msg):
 		"""Authenticate against the UMC server"""
-		authRequest = Request('AUTH')
-		authRequest.body['username'] = username
-		authRequest.body['password'] = password
-		authRequest.body['new_password'] = new_password
-		if locale:
-			authRequest.body['locale'] = locale
+		if msg.command != 'AUTH':
+			raise TypeError('Must be AUTH command!')
+		self.__auth_id = msg.id
+		self.request(msg)
 
-		self.request(authRequest)
-
-		self.__auth_id = authRequest.id
 
 if __name__ == '__main__':
 	from getpass import getpass
@@ -373,12 +368,11 @@ if __name__ == '__main__':
 
 	client = Client()
 	client.signal_connect('authenticated', auth)
-	if client.connect():
-		print 'connected successfully'
-	else:
-		print 'ERROR connecting to daemon'
-	username = raw_input('Username: ')
-	password = getpass()
-	client.authenticate(username, password)
+	client.connect()
+
+	authRequest = Request('AUTH')
+	authRequest.body['username'] = raw_input('Username: ')
+	authRequest.body['password'] = getpass()
+	client.authenticate(authRequest)
 
 	notifier.loop()

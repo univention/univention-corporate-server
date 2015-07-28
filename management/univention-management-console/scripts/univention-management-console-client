@@ -86,6 +86,15 @@ class CLI_Client(Client):
 				print >> sys.stderr, 'existing without waiting for response'
 			sys.exit(0)
 
+	def authenticate(self, username, password, new_password=None, locale=None):
+		authRequest = umcp.Request('AUTH')
+		authRequest.body['username'] = username
+		authRequest.body['password'] = password
+		authRequest.body['new_password'] = new_password
+		if locale:
+			authRequest.body['locale'] = locale
+		return super(CLI_Client, self).authenticate(authRequest)
+
 	def create(self, command, args=[], options=[], flavor=None):
 		msg = umcp.Request(command.upper())
 		msg.arguments = args

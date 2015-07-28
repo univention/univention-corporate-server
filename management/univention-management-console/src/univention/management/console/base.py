@@ -280,6 +280,9 @@ class Base(signals.Provider, Translation):
 		MODULE.info('Executing %s' % (request.arguments,))
 		try:
 			function(self, request)
+		except (KeyboardInterrupt, SystemExit):
+			self.finished(request.id, None, _('The UMC service is currently shutting down or restarting. Please retry soon.'), status=503)
+			raise
 		except:
 			self.__error_handling(request, method, *sys.exc_info())
 

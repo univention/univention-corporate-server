@@ -17,7 +17,7 @@ Architecture: all
 Depends: ${misc:Depends},
  python-univention-management-console (= ${source:Version}),
  univention-management-console-server (= ${source:Version}),
- univention-management-console-web-server,
+ univention-management-console-web-server (>= 5.0.5),
  univention-management-console-module-lib,
  univention-management-console-module-top,
  univention-management-console-module-reboot,

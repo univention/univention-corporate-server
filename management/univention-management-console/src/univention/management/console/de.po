@@ -458,3 +458,6 @@ msgstr ""
 #: univention/management/console/protocol/message.py:257
 msgid "error parsing UMCP message body"
 msgstr "Fehler beim Parsen des UMCP-Nachrichtenrumpfes"
+
+msgid "The UMC service is currently shutting down or restarting. Please retry soon."
+msgstr "Der UMC-Dienst ist gerade am Neustarten oder Herunterfahren. Bitte später erneut versuchen."

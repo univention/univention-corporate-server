@@ -1,3 +1,10 @@
+univention-management-console (8.0.1-1) unstable; urgency=medium
+
+  * Bug #31943: make UMCP authentication API more generic
+  * Bug #39031: display user friendly message when SystemExit occurrs.
+
+ -- Florian Best <best@univention.de>  Tue, 28 Jul 2015 14:03:21 +0200
+
 univention-management-console (8.0.0-1) unstable; urgency=medium
 
   * Bug #38528: allow login with primary email address

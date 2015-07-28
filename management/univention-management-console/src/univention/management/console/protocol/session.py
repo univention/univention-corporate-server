@@ -100,7 +100,6 @@ class State(signals.Provider):
 		self.signal_new('authenticated')
 		self.resend_queue = []
 		self.running = False
-		self.username = None
 
 	def __del__(self):
 		CORE.info('The session is shutting down')
@@ -112,10 +111,9 @@ class State(signals.Provider):
 		self.__credentials = result.credentials
 		self.signal_emit('authenticated', result, self)
 
-	def authenticate(self, username, password, new_password=None, locale=None):
+	def authenticate(self, msg):
 		"""Initiates an authentication process"""
-		self.username = username
-		self.__auth.authenticate(username, password, new_password, locale)
+		self.__auth.authenticate(msg)
 
 	def credentials(self):
 		"""Returns the credentials"""
@@ -259,10 +257,13 @@ class Processor(Base):
 	def __del__(self):
 		CORE.process('Processor: dying')
 		for process in self.__processes.values():
-			#process.__del__()  # calling this will cause python notifier to fail hard! Bug #37457
+			process.__del__()
 			del process
 		if self.lo:
-			self.lo.lo.lo.unbind()  # close the connection to LDAP
+			try:
+				self.lo.lo.lo.unbind()  # close the connection to LDAP
+			finally:
+				self.lo = None
 
 	def get_module_name(self, command):
 		"""Returns the name of the module that provides the given command
@@ -405,7 +406,6 @@ class Processor(Base):
 						favcat = []
 						if '%s:%s' % (id, flavor.id) in favorites:
 							favcat.append('_favorites_')
-
 
 						translationId = flavor.translationId
 						if not translationId:

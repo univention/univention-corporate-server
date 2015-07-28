@@ -80,7 +80,8 @@ class AuthHandler(signals.Provider):
 		signals.Provider.__init__(self)
 		self.signal_new('authenticated')
 
-	def authenticate(self, username, password, new_password=None, locale=None):
+	def authenticate(self, msg):
+		username, password, new_password, locale = msg.body['username'], msg.body['password'], msg.body.get('new_password'), msg.body.get('locale')
 		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, username, password, new_password, locale), self.__authentication_result)
 		thread.run()
 
