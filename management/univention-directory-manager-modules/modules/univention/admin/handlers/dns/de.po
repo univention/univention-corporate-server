@@ -27,17 +27,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: univention-directory-manager-modules\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2015-04-15 16:16+0200\n"
 "PO-Revision-Date: 2009-08-04 14:47+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: German <packages@univention.de>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
-"Generated-By: pygettext.py 1.5\n"
 
 #: alias.py:50
 msgid "DNS: Alias record"

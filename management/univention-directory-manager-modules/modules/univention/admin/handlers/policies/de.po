@@ -27,17 +27,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2015-06-18 20:13+0200\n"
 "PO-Revision-Date: 2011-10-29 22:19+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: German <packages@univention.de>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
-"Generated-By: pygettext.py 1.5\n"
 
 #: modules/univention/admin/handlers/policies/print_quota.py:185
 #: modules/univention/admin/handlers/policies/print_quota.py:191
@@ -1185,7 +1184,7 @@ msgstr "Ohne Angabe wird die aktuelleste Version verwendet"
 
 #: modules/univention/admin/handlers/policies/policy.py:49
 msgid "http://docs.univention.de/manual.html#central:policies"
-msgstr ""
+msgstr "http://docs.univention.de/handbuch.html#central:policies"
 
 #~ msgid "Activate access to client devices"
 #~ msgstr "Aktiviere den Zugriff auf Client-Peripheriegeräte"
