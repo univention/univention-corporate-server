@@ -6,8 +6,7 @@ fix: 2:4.2.3-1.758.201507271307
 version: [2]
 desc: |
  This update addresses the following issue:
- * A coding error in the Samba implementation of
-   the BACKUPKEY serverwrap protocol may cause
-   problems with retriving saved passwords on
-   Windows clients (DPAPI).
+ * A coding error in the Samba implementation of the BACKUPKEY
+   serverwrap protocol may cause problems with retrieving saved
+   passwords on Windows clients (DPAPI).
 bug: [39025]
