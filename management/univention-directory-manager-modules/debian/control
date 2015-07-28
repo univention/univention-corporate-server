@@ -23,7 +23,8 @@ Depends: ${misc:Depends}, ${python:Depends},
  shell-univention-lib,
  python-imaging,
  python-univention-lib (>= 3.0.26-50),
- python-univention-directory-manager-cli (= ${binary:Version})
+ python-univention-directory-manager-cli (= ${binary:Version}),
+ iso-codes
 Provides: ${python:Provides}
 Replaces: python-univention-lib (<< 1.0.15-1)
 Description: UCS - Modules for administration tools

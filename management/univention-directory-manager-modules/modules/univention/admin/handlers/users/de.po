@@ -195,6 +195,9 @@ msgid "City"
 msgstr "Stadt"
 
 #: user.py:368
+msgid "Country"
+msgstr "Land"
+
 #: user.py:379
 msgid "Telephone number"
 msgstr "Telefonnummer"
