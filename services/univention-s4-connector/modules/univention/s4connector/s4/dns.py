@@ -35,6 +35,8 @@ import ldap, string
 import univention.debug2 as ud
 import univention.s4connector.s4
 import univention.admin.uldap
++from univention.s4connector.s4.dc import _unixTimeInverval2seconds
++from univention.admin.mapping import unmapUNIX_TimeInterval
 
 from samba.dcerpc import dnsp
 from samba.ndr import ndr_print, ndr_pack, ndr_unpack
@@ -989,6 +991,7 @@ def ucs_zone_create(s4connector, object, dns_type):
 	mx=__unpack_mxRecord(object)
 
 	# Does a zone already exist?
+	modify = False
 	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
 	if len(searchResult) > 0:
 		if dns_type == 'forward_zone':
@@ -1000,13 +1003,17 @@ def ucs_zone_create(s4connector, object, dns_type):
 			if soa['mname'] not in ns:
 				ns.insert(0, soa['mname'])
 			zone['nameserver'] = ns
-		if soa['rname'] != zone['contact']:
+			modify = True
+		if soa['rname'].replace('.', '@', 1) != zone['contact'].rstrip('.'):
 			zone['contact'] = soa['rname'].replace('.', '@', 1)
-		if set(soa['serial']) != set(zone['serial']):
+			modify = True
+		if long(soa['serial']) != long(zone['serial']):
 			zone['serial'] = soa['serial']
-		for k in ['serial', 'refresh', 'retry', 'expire', 'ttl']:
-			if set(soa[k]) != set(zone[k]):
-				zone[k] = [soa[k]]
+			modify = True
+		for k in ['refresh', 'retry', 'expire', 'ttl']:
+			if long(soa[k]) != _unixTimeInverval2seconds(zone[k]):
+				zone[k] = unmapUNIX_TimeInterval(soa[k])
+				modify = True
 		if dns_type == 'forward_zone':
 			# The IP address of the DNS forward zone will be used to determine the
 			# sysvol share. On a selective replicated DC only a short list of DCs
@@ -1016,10 +1023,14 @@ def ucs_zone_create(s4connector, object, dns_type):
 			if not aRecords and not  aAAARecords:
 				if set(a) != set(zone['a']):
 					zone['a'] = a
+					modify = True
 			if mx:
 				mapMX=lambda m: '%s %s' % (m[0], m[1])
 				if set(map(mapMX,mx)) != set(map(mapMX,zone['mx'])):
 					zone['mx'] = mx
+					modify = True
+		if modify:
+			zone.modify()
 	else:
 		position=univention.admin.uldap.position( s4connector.property['dns'].ucs_default_dn )
 

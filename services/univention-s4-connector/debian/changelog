@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.16-32) unstable; urgency=medium
+
+  * Fix sync of SOA record changes back to UDM (Bug #39040)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Jul 2015 23:40:35 +0200
+
 univention-s4-connector (9.0.16-31) unstable; urgency=medium
 
   * Use a dn_mapping_function for DNS objects (Bug #34184)
