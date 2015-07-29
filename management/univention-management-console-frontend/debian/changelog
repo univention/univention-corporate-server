@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.7-1) unstable; urgency=low
+
+  * Bug #38491: adjusted logic for detecting module visibility
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 29 Jul 2015 21:42:36 +0200
+
 univention-management-console-frontend (5.0.6-1) unstable; urgency=low
 
   * Bug #38491: fixed problem with IE and incorrect display of stickyheader
