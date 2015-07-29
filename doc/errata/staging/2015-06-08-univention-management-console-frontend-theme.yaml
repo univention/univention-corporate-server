@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-management-console-frontend-theme
-fix: 0.0.89-19.90.201507221511
+fix: 0.0.89-20.91.201507291238
 version: [2]
 desc: |
   This update addresses the following issue:
