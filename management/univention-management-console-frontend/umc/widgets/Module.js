@@ -122,6 +122,10 @@ define([
 
 			// redirect childrens to stack container
 			this.containerNode = this.__container.containerNode;
+
+			this.watch('selected', lang.hitch(this, function(attr, oldval, newval) {
+				this._top.set('isModuleTabSelected', newval);
+			}));
 		},
 
 		__colorizeModuleHeader: function() {

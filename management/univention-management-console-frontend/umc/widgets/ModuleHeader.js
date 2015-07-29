@@ -52,6 +52,7 @@ define([
 	return declare('umc.widgets.ModuleHeader', [ContainerWidget], {
 
 		baseClass: 'umcModuleHeader',
+		isModuleTabSelected: false,
 		_title: null,
 //		buttons: null,
 		_outerContainer: null,
@@ -102,7 +103,8 @@ define([
 
 		_moduleHeaderHeight: null,
 		_updateStickyHeader: function() {
-			if (!this.selected) {
+			var isModuleVisible = !this.isModuleTabSelected || !this.domNode.getBoundingClientRect().height;
+			if (isModuleVisible) {
 				return;
 			}
 			var scroll = geometry.docScroll();
@@ -150,7 +152,7 @@ define([
 			});
 			this._left.addChild(this._title);
 
-			this.watch('selected', lang.hitch(this, '_updateStickyHeader'));
+			this.watch('isModuleTabSelected', lang.hitch(this, '_updateStickyHeader'));
 
 //			array.forEach(this.buttons.$order$, lang.hitch(this, function(button) {
 //				this._right.addChild(button);
