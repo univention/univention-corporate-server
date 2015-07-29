@@ -12,7 +12,7 @@ desc: |
    * If multiple policies of the same type are referenced UMC prevents
      removing policy references when saving the object.
    * Errors during requesting a new license are now handled.
-   * A default user templates for new users can be configured by the UCR
+   * The default user template for new users can be configured via the UCR
      variable "directory/manager/web/modules/users/user/add/default". The
      variable expects the DN or the label of a user template.
    * If too many user accounts for the license have been created, the UMC
