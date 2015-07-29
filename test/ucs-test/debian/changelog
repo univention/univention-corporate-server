@@ -1,3 +1,9 @@
+ucs-test (5.0.161-1) unstable; urgency=low
+
+  * Bug #38942: workaround for Bug 37649.
+
+ -- Ammar Najjar <najjar@univention.de>  Wed, 29 Jul 2015 11:59:03 +0200
+
 ucs-test (5.0.160-2) unstable; urgency=low
 
   * Bug #39002: Fix broken tags
