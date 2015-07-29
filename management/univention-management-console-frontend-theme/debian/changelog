@@ -1,3 +1,10 @@
+univention-management-console-frontend-theme (1.0.0-2) unstable; urgency=low
+
+  * Bug #38491: adjusted the font size for the sticky ModuleHeader
+    to match the font size from the module page headers
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 29 Jul 2015 13:05:28 +0200
+
 univention-management-console-frontend-theme (1.0.0-1) unstable; urgency=low
 
   * Bug #38491: added css transition for the sticky ModuleHeader
