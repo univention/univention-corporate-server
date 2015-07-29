@@ -35,3 +35,13 @@
 	/* change icon color to white on hover */
 	background-image: url("../../dijit/themes/umc/images/icons-white.svg");
 }
+
+.umcAppPage .umcAppButton {
+	float: left;
+}
+.umcAppPage .umcAppButton.umcAppButtonFirstRow {
+	margin-bottom: 15px;
+}
+.umcAppPage .umcAppButton.umcAppButtonFirstRow + .umcAppButton:not(.umcAppButtonFirstRow) {
+	clear: left;
+}

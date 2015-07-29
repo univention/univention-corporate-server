@@ -56,6 +56,7 @@ define([
 	return declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
 		appLoadingDeferred: null,
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
+		'class': 'umcAppPage',
 		standby: null,
 
 		title: _("App management"),
@@ -64,6 +65,7 @@ define([
 
 		backLabel: _('Back to overview'),
 		detailsDialog: null,
+		isSubPage: false,
 
 		appCenterInformation:
 			'<p>' + _('Univention App Center is the simplest method to install or uninstall applications on Univention Corporate Server.') + '</p>' +
@@ -88,7 +90,7 @@ define([
 
 			this.headerButtons = [{
 				name: 'close',
-				iconClass: 'umcCloseIconWhite',
+				iconClass: this.isSubPage ? 'umcArrowLeftIconWhite' : 'umcCloseIconWhite',
 				label: this.backLabel,
 				align: 'left',
 				callback: lang.hitch(this, 'onBack')
@@ -146,40 +148,24 @@ define([
 
 		getButtons: function() {
 			var buttons = [];
-			if (this.app.useShop) {
-				buttons.push({
-					name: 'shop',
-					label: _('Buy'),
-					iconClass: 'umcShopIcon',
-					align: 'right',
-					callback: lang.hitch(this, 'openShop')
-				});
-			}
 			if (this.app.canOpen()) {
 				buttons.push({
 					name: 'open',
-					label: _('Open'),
-					align: 'right',
+					label: this.app.getWebInterfaceURL() ? _('Open web site') : _('Open module'),
+					defaultButton: true,
+					'class': 'umcAppButton umcAppButtonFirstRow',
 					callback: lang.hitch(this, function() {
 						this.app.open();
 					})
 				});
 			}
-			if (this.app.canDisable()) {
+			if (this.app.useShop) {
 				buttons.push({
-					name: 'disable',
-					label: _('Continue using'),
-					align: 'right',
-					callback: lang.hitch(this, 'disableApp')
-				});
-			}
-			if (this.app.canUninstall()) {
-				buttons.push({
-					name: 'uninstall',
-					label: _('Uninstall'),
-					align: 'right',
-					defaultButton: this.app.endOfLife,
-					callback: lang.hitch(this.app, 'uninstall')
+					name: 'shop',
+					label: _('Buy'),
+					iconClass: 'umcShopIcon',
+					'class': 'umcAppButton umcAppButtonFirstRow',
+					callback: lang.hitch(this, 'openShop')
 				});
 			}
 			if (this.app.canUpgrade()) {
@@ -187,15 +173,39 @@ define([
 					name: 'update',
 					label: _('Upgrade'),
 					defaultButton: true,
+					'class': 'umcAppButton',
 					callback: lang.hitch(this.app, 'upgrade')
 				});
 			}
-			if (this.app.canInstall()) {
+			if (this.app.canDisable()) {
 				buttons.push({
+					name: 'disable',
+					label: _('Continue using'),
+					'class': 'umcAppButton',
+					callback: lang.hitch(this, 'disableApp')
+				});
+			}
+			if (this.app.canInstall()) {
+				var tmpButton = {
 					name: 'install',
 					label: _('Install'),
-					defaultButton: true,
+					'class': 'umcAppButton',
 					callback: lang.hitch(this.app, 'install')
+				};
+				if (this.app.isInstalled) {
+					buttons.push(tmpButton);
+				} else {
+					tmpButton['class'] += ' umcAppButtonFirstRow';
+					tmpButton.defaultButton = true;
+					buttons.unshift(tmpButton);
+				}
+			}
+			if (this.app.canUninstall()) {
+				buttons.push({
+					name: 'uninstall',
+					label: _('Uninstall'),
+					'class': 'umcAppButton',
+					callback: lang.hitch(this.app, 'uninstall')
 				});
 			}
 			return buttons;

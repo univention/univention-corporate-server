@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.0-1) unstable; urgency=medium
+
+  * Bug #39042: improve the display of buttons on an app detail page
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 29 Jul 2015 20:44:50 +0200
+
 univention-management-console-module-appcenter (4.1.20-39) unstable; urgency=medium
 
   * Bug #38926: fix error handling
