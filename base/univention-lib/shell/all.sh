@@ -4,3 +4,4 @@
 . /usr/share/univention-lib/umc.sh
 . /usr/share/univention-lib/admember.sh
 . /usr/share/univention-lib/samba.sh
+. /usr/share/univention-lib/license.sh

@@ -1,3 +1,10 @@
+univention-lib (4.0.5-20) unstable; urgency=low
+
+  * Bug #38951: added univention.lib.license_tools and
+    shell command ucs_check_license_csp()
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 29 Jul 2015 17:14:46 +0200
+
 univention-lib (4.0.5-19) unstable; urgency=medium
 
   * Bug #38129: don't add duplicated newline
