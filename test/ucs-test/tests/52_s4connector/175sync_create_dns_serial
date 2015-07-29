@@ -10,41 +10,36 @@
 ##   - 32156
 
 import univention.testing.udm as udm_test
-import univention.testing.strings as uts
 import univention.testing.utils as utils
-import re
-import ldap
-import univention.config_registry
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
 import dnstests
-import getpass
 import s4connector
+import univention.admin.uldap
+import univention.admin.modules as udm_modules
+udm_modules.update()
 
-
-def get_serial_number(random_zone, host):
-	ldapconnect = utils.get_ldap_connection()
-	ldapbase = ucr.get("ldap/base")
-	ldap_dns_serial_line = (ldapconnect.search('zoneName={0}'.format(random_zone), ldapbase))[0][1]['sOARecord'][0]
-	user = getpass.getuser()
-	temp = host.split('.')
-	full_user = '{0}.{1}.{2}.'.format(user, temp[1], temp[2])
-	re_ldap_serial = re.compile(r"{0}.+\s+{1}\s+(?P<LdapSerial>\d+)".format(host, full_user))
-	match_ldap_serial_number = re_ldap_serial.match(ldap_dns_serial_line)
-	ldap_serial = match_ldap_serial_number.group("LdapSerial")
-	return ldap_serial
-
+def get_serial_number(zone_dn):
+	lo = utils.get_ldap_connection()
+	position=univention.admin.uldap.position(lo.base)
+	udm_modules.init(lo, position, udm_modules.get('dns/forward_zone'))
+	results = udm_modules.lookup('dns/forward_zone', None, lo, base=zone_dn, scope='base')
+	udm_object = results[0]
+	udm_object.open()
+	return udm_object['serial']
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		s4connector.exit_if_connector_not_running()
-		random_zone = dnstests.random_zone()
+		test_zone = dnstests.random_zone()
 		host = dnstests.get_hostname()
-		forward_zone = udm.create_object('dns/forward_zone', zone = random_zone, nameserver = host)
-		dnstests.check_ldap_object(forward_zone, 'forward zone')
+		test_zone_dn = udm.create_object('dns/forward_zone', zone = test_zone, nameserver = host)
+		# dnstests.check_ldap_object(forward_zone, 'forward zone')
 		s4connector.wait_for_sync(30)
-		serial = get_serial_number(random_zone, host)
+
+		serial = get_serial_number(test_zone_dn)
 		print ("Forward zone serial : " + serial)
-		dnstests.test_dns_serial(random_zone, serial)
-		dnstests.check_ldap_object(forward_zone, 'forward zone')
+		dnstests.test_dns_serial(test_zone, serial)
+		# dnstests.check_ldap_object(test_zone_dn, 'forward zone')
+
 	s4connector.wait_for_sync()
+	## Removing a DNS zone triggers bind restart in postrun, better check:
+	dnstests.fail_if_cant_resolve_own_hostname()	## wait up to 17 seconds

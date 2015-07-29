@@ -1,3 +1,16 @@
+ucs-test (5.0.162-1) unstable; urgency=medium
+
+  * added Bind -> Samba4 -> UDM tests to 175sync_create_dns_a*_record
+    as a starting point for testing Bug #34184
+  * revised 175sync_create_dns_serial to use UDM instead of LDAP
+  * revised 52_s4connector/175sync_create_dns_* for timing stability
+  * remove 52_s4connector/175sync_create_dns_forward_zone, obsolete
+    already testet in 175sync_create_dns_a*_record
+  * remove 52_s4connector/175sync_create_dns_reverse_zone, obsolete
+    already testet in 175sync_create_dns_ptr_record
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Jul 2015 22:33:24 +0200
+
 ucs-test (5.0.161-1) unstable; urgency=low
 
   * Bug #38942: workaround for Bug 37649.
