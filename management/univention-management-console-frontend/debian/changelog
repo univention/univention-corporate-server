@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.106-82) unstable; urgency=low
+
+  * Bug #38491: fixed problem with IE and incorrect display of stickyheader
+    when switching between tabs
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 29 Jul 2015 18:22:41 +0200
+
 univention-management-console-frontend (4.1.106-81) unstable; urgency=medium
 
   * Bug #20714: fixed fragment decoding, flavor mapping and live search

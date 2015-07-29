@@ -63,29 +63,29 @@ define([
 		_stickyTimer: null,
 
 		_stickyHeaderTopPadding: null,
-
 		_getStickyHeaderTopPadding: function() {
-			var stickyHeaderNode = put(document.body, 'div.umcModuleHeader.dijitOffscreen > div.umcModuleHeaderSticky');
-			this._stickyHeaderTopPadding =  geometry.getPadExtents(stickyHeaderNode).t;
-			put(stickyHeaderNode.parentNode, '!');
+			if (!this._stickyHeaderTopPadding) {
+				var stickyHeaderNode = put(document.body, 'div.umcModuleHeader.dijitOffscreen > div.umcModuleHeaderSticky');
+				this._stickyHeaderTopPadding =  geometry.getPadExtents(stickyHeaderNode).t;
+				put(stickyHeaderNode.parentNode, '!');
+			}
+			return this._stickyHeaderTopPadding;
 		},
 
 		_moduleHeaderTopPadding: null,
-
 		_getModuleHeaderTopPadding: function() {
-			var moduleHeaderNode = put(document.body, 'div.umcModuleHeader.dijitOffscreen > div.umcModuleHeaderOuterContainer');
-			this._moduleHeaderTopPadding =  geometry.getPadExtents(moduleHeaderNode).t;
-			put(moduleHeaderNode.parentNode, '!');
+			if (!this._moduleHeaderTopPadding) {
+				var moduleHeaderNode = put(document.body, 'div.umcModuleHeader.dijitOffscreen > div.umcModuleHeaderOuterContainer');
+				this._moduleHeaderTopPadding =  geometry.getPadExtents(moduleHeaderNode).t;
+				put(moduleHeaderNode.parentNode, '!');
+			}
+			return this._moduleHeaderTopPadding;
 		},
-
-		_moduleHeaderHeight: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this._stickyTimer = new Deferred();
 			this._stickyTimer.resolve();
-			this._getStickyHeaderTopPadding();
-			this._getModuleHeaderTopPadding();
 		},
 
 		_removeModuleHeaderHeight: function()  {
@@ -100,17 +100,14 @@ define([
 			this._stickyTimer.cancel();
 		},
 
-		_isModuleFocused: function() {
-			return Boolean(this.domNode.offsetParent);
-		},
-
+		_moduleHeaderHeight: null,
 		_updateStickyHeader: function() {
-			if (!this._isModuleFocused()) {
+			if (!this.selected) {
 				return;
 			}
 			var scroll = geometry.docScroll();
 			var bboxHeader = geometry.getMarginBox('umcHeader');
-			var topPaddingDifference = this._moduleHeaderTopPadding - this._stickyHeaderTopPadding;
+			var topPaddingDifference = this._getModuleHeaderTopPadding() - this._getStickyHeaderTopPadding();
 			var sticky = scroll.y >= bboxHeader.h + bboxHeader.t + topPaddingDifference;
 			if (sticky) {
 				this._moduleHeaderHeight = this._moduleHeaderHeight || geometry.getContentBox(this.domNode).h;
@@ -119,6 +116,8 @@ define([
 			} else if (this._moduleHeaderHeight) {
 				this._removeModuleHeaderHeight();
 				this._moduleHeaderHeight = 0;
+				this._moduleHeaderTopPadding = null;
+				this._stickyHeaderTopPadding = null;
 			}
 			domClass.toggle(this._outerContainer.domNode, 'umcModuleHeaderSticky', sticky);
 		},
@@ -150,6 +149,8 @@ define([
 				baseClass: 'umcModuleTitle'
 			});
 			this._left.addChild(this._title);
+
+			this.watch('selected', lang.hitch(this, '_updateStickyHeader'));
 
 //			array.forEach(this.buttons.$order$, lang.hitch(this, function(button) {
 //				this._right.addChild(button);
