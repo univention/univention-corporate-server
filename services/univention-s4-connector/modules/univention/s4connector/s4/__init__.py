@@ -38,12 +38,17 @@ import univention.uldap
 import univention.s4connector
 import univention.debug2 as ud
 from ldap.controls import LDAPControl
-from ldap.controls import SimplePagedResultsControl
+from ldap.controls import SimplePagedResultsControl, LDAPControl
 from samba.dcerpc import security
 from samba.ndr import ndr_pack, ndr_unpack
 from samba.dcerpc import misc
 
 DECODE_IGNORELIST=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord']
+
+LDAP_SERVER_SHOW_DELETED_OID = "1.2.840.113556.1.4.417"
+LDB_CONTROL_DOMAIN_SCOPE_OID = "1.2.840.113556.1.4.1339"
+LDB_CONTROL_RELAX_OID = "1.3.6.1.4.1.4203.666.5.12"
+LDB_CONTROL_PROVISION_OID = '1.3.6.1.4.1.7165.4.3.16'
 
 # page results
 PAGE_SIZE = 1000
@@ -110,7 +115,6 @@ def add_primary_group_to_addlist(s4connector, property_type, object, addlist, se
 
 		ud.debug(ud.LDAP, ud.INFO, 'add_primary_group_to_addlist: Set primary group to %s (rid) for %s' % (primary_group_rid, object.get('dn')))
 		addlist.append(('primaryGroupID', [primary_group_rid]))
-		LDB_CONTROL_RELAX_OID = '1.3.6.1.4.1.4203.666.5.12'
 		serverctrls.append(LDAPControl(LDB_CONTROL_RELAX_OID,criticality=0))
 
 def __is_groupType_local(groupType):
@@ -126,7 +130,6 @@ def check_for_local_group_and_extend_serverctrls_and_sid(s4connector, property_t
 
 	ud.debug(ud.LDAP, ud.INFO, "groupType: %s" % groupType)
 	if __is_groupType_local(groupType):
-		LDB_CONTROL_RELAX_OID = '1.3.6.1.4.1.4203.666.5.12'
 		serverctrls.append(LDAPControl(LDB_CONTROL_RELAX_OID,criticality=0))
 
 		sambaSID = object.get('attributes', {}).get('sambaSID', [])[0]
@@ -266,7 +269,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 						try:
 							if value.lower() == ucsval.lower():
 								value = conval
-								ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map samaccountanme regarding to mapping-table")
+								ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map samaccountanme according to mapping-table")
 								continue
 						except UnicodeDecodeError:
 							pass # values are not the same codec
@@ -316,7 +319,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 					for ucsval, conval in s4connector.property[propertyname].mapping_table[propertyattrib]:
 						if samaccountname.lower() == conval.lower():
 							samaccountname = ucsval
-							ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map samaccountanme regarding to mapping-table")
+							ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: map samaccountanme according to mapping-table")
 							continue
 						else:
 							ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: samaccountname not in mapping-table")
@@ -384,8 +387,7 @@ def dc_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 def old_user_dn_mapping(s4connector, given_object):
 	object = copy.deepcopy(given_object)
 
-	# LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
-	ctrls = [LDAPControl('1.2.840.113556.1.4.417',criticality=1)]
+	ctrls = [LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1)]
 	samaccountname = ''
 
 	if object.has_key('sAMAccountName'):
@@ -753,8 +755,7 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO,"__init__: init add config section 'S4 GUID'")
 			self.config.add_section('S4 GUID')
 		try:
-			# LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
-			self.ctrl_show_deleted = LDAPControl('1.2.840.113556.1.4.417',criticality=1)
+			self.ctrl_show_deleted = LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1)
 			res = self.lo_s4.lo.search_ext_s('',ldap.SCOPE_BASE, 'objectclass=*',[],
 								serverctrls=[ self.ctrl_show_deleted ],
 								timeout=-1, sizelimit=0)
@@ -773,7 +774,6 @@ class s4(univention.s4connector.ucs):
 
 		# objectSid modification for an Samba4 object is only possible with the "provision" control:
 		if self.configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
-			LDB_CONTROL_PROVISION_OID = '1.3.6.1.4.1.7165.4.3.16'
 			self.serverctrls_for_add_and_modify.append(LDAPControl(LDB_CONTROL_PROVISION_OID,criticality=0) )
 
 		# Save a list of objects just created, this is needed to
@@ -864,6 +864,12 @@ class s4(univention.s4connector.ucs):
 		self.lo_s4=univention.uldap.access(host=self.s4_ldap_host, port=int(self.s4_ldap_port), base=self.s4_ldap_base, binddn=self.s4_ldap_binddn, bindpw=self.s4_ldap_bindpw, start_tls=tls_mode, ca_certfile=self.s4_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'], uri=ldapuri, reconnect=False)
 
 		self.lo_s4.lo.set_option(ldap.OPT_REFERRALS,0)
+
+		if self.configRegistry.get('connector/s4/mapping/dns/position') == 'legacy':
+			self.s4_ldap_partitions = (self.s4_ldap_base,)
+		else:
+			self.s4_ldap_partitions = (self.s4_ldap_base, "DC=DomainDnsZones,%s" % self.s4_ldap_base, "DC=ForestDnsZones,%s" % self.s4_ldap_base)
+
 
 	# encode string to unicode
 	def encode(self, string):
@@ -968,6 +974,24 @@ class s4(univention.s4connector.ucs):
 	def isInCreationList(self, dn):
 		return dn.lower() in self.creation_list
 
+	def get_object_dn(self, dn):
+		_d=ud.function('ldap.get_object_dn')
+		for i in [0, 1]: # do it twice if the LDAP connection was closed
+			try:
+				dn, s4_object=self.lo_s4.lo.search_ext_s(compatible_modstring(dn),ldap.SCOPE_BASE,'(objectClass=*)', ('dn',))[0]
+				try:
+					ud.debug(ud.LDAP, ud.INFO,"get_object: got object: %s" % dn)
+				except: # FIXME: which exception is to be caught?
+					ud.debug(ud.LDAP, ud.INFO,"get_object: got object: <print failed>")
+				return dn
+			except (ldap.SERVER_DOWN, SystemExit):
+				if i == 0:
+					self.open_s4()
+					continue
+				raise
+			except: # FIXME: which exception is to be caught?
+				pass
+		
 	def get_object(self, dn):
 		_d=ud.function('ldap.get_object')
 		for i in [0, 1]: # do it twice if the LDAP connection was closed
@@ -1003,6 +1027,17 @@ class s4(univention.s4connector.ucs):
 
 		return max(usnchanged,usncreated)
 
+	def __search_s4_partitions(self, scope=ldap.SCOPE_SUBTREE, filter='', attrlist= [], show_deleted=False):
+		'''
+		search s4 across all partitions listed in self.s4_ldap_partitions
+		'''
+		_d=ud.function('ldap.__search_s4_partitions')
+		res = []
+		for base in self.s4_ldap_partitions:
+			res += self.__search_s4(base, scope, filter, attrlist, show_deleted)
+
+		return res
+
 	def __search_s4(self, base=None, scope=ldap.SCOPE_SUBTREE, filter='', attrlist= [], show_deleted=False):
 		'''
 		search s4
@@ -1012,12 +1047,13 @@ class s4(univention.s4connector.ucs):
 		if not base:
 			base=self.lo_s4.base
 
-		ctrls=[]
-		ctrls.append(SimplePagedResultsControl(True, PAGE_SIZE, ''))
+		ctrls=[
+			LDAPControl(LDB_CONTROL_DOMAIN_SCOPE_OID, criticality=0),	## Don't show referrals
+			SimplePagedResultsControl(True, PAGE_SIZE, ''),
+		]
 
 		if show_deleted:
-			# LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
-			ctrls.append(LDAPControl('1.2.840.113556.1.4.417',criticality=1))
+			ctrls.append(LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1))
 
 		ud.debug(ud.LDAP, ud.INFO, "Search S4 with filter: %s" % filter)
 		msgid = self.lo_s4.lo.search_ext(base, scope, filter, attrlist, serverctrls=ctrls, timeout=-1, sizelimit=0)
@@ -1046,7 +1082,6 @@ class s4(univention.s4connector.ucs):
 			else:
 				ud.debug(ud.LDAP, ud.WARN, "S4 ignores PAGE_RESULTS")
 				break
-
 		
 		return encode_s4_resultlist(res)
 		
@@ -1078,7 +1113,8 @@ class s4(univention.s4connector.ucs):
 			if filter !='':
 				usnFilter = '(&(%s)(%s))' % ( filter, usnFilter )
 				
-			return self.__search_s4( filter=usnFilter, show_deleted=show_deleted)
+			res = self.__search_s4_partitions(filter=usnFilter, show_deleted=show_deleted)
+			return sorted(res, key=lambda element: element[1][attribute][0])
 
 
 		# search fpr objects with uSNCreated and uSNChanged in the known range
@@ -1132,7 +1168,8 @@ class s4(univention.s4connector.ucs):
 			filter = '(&(%s)(|(uSNChanged=%s)(uSNCreated=%s)))' % (filter,changeUSN,changeUSN)
 		else:
 			filter = '(|(uSNChanged=%s)(uSNCreated=%s))' % (changeUSN,changeUSN)
-		return self.__search_s4(filter=filter, show_deleted=show_deleted)
+
+		return self.__search_s4_partitions(filter=filter, show_deleted=show_deleted)
 
 
 	def __dn_from_deleted_object(self, object, GUID):

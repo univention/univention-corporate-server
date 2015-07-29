@@ -1,3 +1,12 @@
+univention-s4-connector (9.0.16-31) unstable; urgency=medium
+
+  * Use a dn_mapping_function for DNS objects (Bug #34184)
+  * Monitor changes on DC=DomainDnsZones and DC=ForestDnsZones partitions
+  * New UCR variable connector/s4/mapping/dns/position
+  * For new installations write new DNS zones to DC=DomainDnsZones
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Jul 2015 23:38:16 +0200
+
 univention-s4-connector (9.0.16-30) unstable; urgency=medium
 
   [ Arvid Requate ]
