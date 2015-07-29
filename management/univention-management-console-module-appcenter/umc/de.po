@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-09-12 11:19+0200\n"
+"POT-Creation-Date: Wed, 29 Jul 2015 20:26:42 +0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,26 +12,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/appcenter.xml: 5
 msgid "App Center"
 msgstr "App Center"
 
-#: umc/appcenter.xml: 6
-msgid "Installation of apps"
-msgstr "Installation von Apps"
-
-#: umc/appcenter.xml: 13
-msgid "Package Management"
-msgstr "Paket-Verwaltung"
-
-#: umc/appcenter.xml: 14
 msgid "Install or remove applications"
 msgstr "Applikationen hinzufügen oder entfernen"
 
-#: umc/appcenter.xml: 21
+msgid "Installation of software packages"
+msgstr "Installation von Software-Paketen"
+
+msgid "Package Management"
+msgstr "Paket-Verwaltung"
+
 msgid "Repository Settings"
 msgstr "Repository-Einstellungen"
 
-#: umc/appcenter.xml: 23
 msgid "Repository server configuration"
 msgstr "Konfiguration des Repository-Servers"

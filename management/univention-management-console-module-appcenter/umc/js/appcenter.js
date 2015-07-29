@@ -145,7 +145,8 @@ define([
 				hostDialog: appChooseHostDialog,
 				udmAccessible: this.udmAccessible(),
 				standby: lang.hitch(this, 'standby'),
-				standbyDuring: lang.hitch(this, 'standbyDuring')
+				standbyDuring: lang.hitch(this, 'standbyDuring'),
+				isSubPage: true
 			});
 			appDetailsPage.own(appChooseHostDialog);
 			appDetailsPage.own(appDetailsDialog);
