@@ -1,3 +1,9 @@
+ucs-test (5.0.162-2) unstable; urgency=medium
+
+  * Fix 175sync_create_dns_a_record (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Jul 2015 22:18:49 +0200
+
 ucs-test (5.0.162-1) unstable; urgency=medium
 
   * added Bind -> Samba4 -> UDM tests to 175sync_create_dns_a*_record
