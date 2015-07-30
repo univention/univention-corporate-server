@@ -343,12 +343,12 @@ define([
 			this._createNavButton('upload');
 			var contentNode = dom.byId('content');
 			var tabNode = put(contentNode, 'div.tab#upload-tab.hide-tab');
-			put(tabNode, 'p > b', _('You have got mail!'));
+			put(tabNode, 'p > b', _('You have received a license file by email!'));
 			put(tabNode, 'p', {
-				innerHTML: _('A license file has been sent to <strong id="email-address">{0}</strong>. Upload the license file from the email to activate {1} Univention App. Once the activation has been finished, your email address will be sent to the app provider. The app provider may contact you.', [email_address, entries.appliance_name])
+				innerHTML: _('A license file has been sent to <strong id="email-address">{0}</strong>. This file is necessary to activate the system. For this, please carry out the following steps: <ol><li>Open the email.</li><li>Save the attachement (ucs.license) on your computer.</li><li>Click the button \'Upload license file\'.</li><li>Select the file (ucs.license) you just saved.</li><li>Confirm the selection.</li></ol>Once the activation has been finished your email address will be sent to the app provider. The app provider may contact you.', [email_address])
 			});
 			put(tabNode, 'p', {
-				innerHTML: _('If you did not received an email, please make sure to check your SPAM directory or <a href="#register">try it again</a>.')
+				innerHTML: _('If you did not receive an email, please check your SPAM directory or <a href="#register"> request the email again</a>.')
 			});
 			put(tabNode, '>', this._createUploader());
 			this._uploader.startup();
