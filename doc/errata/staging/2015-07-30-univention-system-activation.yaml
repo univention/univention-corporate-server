@@ -2,9 +2,10 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-system-activation
-fix: 0.0.1-30.26.201507301223
+fix: 0.0.1-31.27.201507301307
 version: [2]
 desc: |
   This update addresses the following issues:
    * The wording on the activation page has been improved.
-bug: [39019]
+   * The loading animation is now visible in Firefox.
+bug: [39019, 39018]
