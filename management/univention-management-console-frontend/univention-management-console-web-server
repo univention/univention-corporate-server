@@ -754,7 +754,7 @@ class CPAuth(CPgeneric):
 
 		data = dict((x, ''.join(y)) for x, y in user.data.iteritems())
 		req = umcp.Request('AUTH')
-		req.body = {"username": data['uid']}
+		req.body = {"username": data['uid'], "password": data.message}
 		req.body.update(data)
 
 		try:
@@ -902,7 +902,7 @@ class SAML(object):
 		response.ava = response.get_identity()
 
 		CORE.info('Got IDP response: %r' % (response.ava,))
-		user = SAMLUser(response.name_id, response.ava)
+		user = SAMLUser(response.name_id, response.ava, message)
 		SAMLUser.set_cookie(user)
 
 		raise HTTPRedirect('/umcp/auth/sso')
@@ -1127,9 +1127,10 @@ class SAMLUser(object):
 	uid2user = {}
 	cookie_name = "UMCSSOSessionId"
 
-	def __init__(self, username, data):
+	def __init__(self, username, data, message):
 		self.username = username
 		self.data = data
+		self.message = message
 
 	@classmethod
 	def get_user(cls):

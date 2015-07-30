@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.8-1) unstable; urgency=medium
+
+  * Bug #31943: adapt config, add SAML message as password which is passed to
+  	the UMC server
+
+ -- Florian Best <best@univention.de>  Wed, 29 Jul 2015 17:17:51 +0200
+
 univention-management-console-frontend (5.0.7-1) unstable; urgency=low
 
   * Bug #38491: adjusted logic for detecting module visibility
