@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.16-33) unstable; urgency=medium
+
+  * Fix syntax issue (Bug #39040)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Jul 2015 11:48:45 +0200
+
 univention-s4-connector (9.0.16-32) unstable; urgency=medium
 
   * Fix sync of SOA record changes back to UDM (Bug #39040)

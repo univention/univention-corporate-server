@@ -35,8 +35,8 @@ import ldap, string
 import univention.debug2 as ud
 import univention.s4connector.s4
 import univention.admin.uldap
-+from univention.s4connector.s4.dc import _unixTimeInverval2seconds
-+from univention.admin.mapping import unmapUNIX_TimeInterval
+from univention.s4connector.s4.dc import _unixTimeInverval2seconds
+from univention.admin.mapping import unmapUNIX_TimeInterval
 
 from samba.dcerpc import dnsp
 from samba.ndr import ndr_print, ndr_pack, ndr_unpack
