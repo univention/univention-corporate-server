@@ -1,6 +1,7 @@
 univention-system-setup (9.0.1-1) unstable; urgency=medium
 
   * Bug #39048: return IP also for DHCP for redirection after setup wizard
+  * Bug #39044: correct server-side validation for unjoined systems
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 30 Jul 2015 16:52:22 +0200
 

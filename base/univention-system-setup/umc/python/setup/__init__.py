@@ -341,8 +341,8 @@ class Instance(Base, ProgressMixin):
 		util.cleanup()
 		MODULE.info('... cleanup done')
 
-	@simple_response
-	def validate(self, values=None):
+	@simple_response(with_flavor=True)
+	def validate(self, values=None, flavor=None):
 		'''Validate the specified values given in the dict as option named "values".
 		Return a dict (with variable names as key) of dicts with the structure:
 		{ "valid": True/False, "message": "..." }'''
@@ -351,6 +351,7 @@ class Instance(Base, ProgressMixin):
 		messages = []
 		values = values or {}
 		orgValues = util.load_values()
+		is_wizard_mode = flavor == 'wizard'
 
 		# determine new system role
 		newrole = values.get('server/role', orgValues.get('server/role', ''))
@@ -393,11 +394,12 @@ class Instance(Base, ProgressMixin):
 		_check('domainname', util.is_domainname, _("Please enter a valid fully qualified domain name (e.g. host.example.com)."))
 		hostname = allValues.get('hostname', '')
 		domainname = allValues.get('domainname', '')
-		if len('%s%s' % (hostname, domainname)) >= 63:
-			_append('domainname', _('The length of fully qualified domain name is greater than 63 characters.'))
-		if hostname == domainname.split('.')[0]:
-			_append('domainname', _("Hostname is equal to domain name."))
-		if not util.is_system_joined():
+		if hostname or domainname:
+			if len('%s%s' % (hostname, domainname)) >= 63:
+				_append('domainname', _('The length of fully qualified domain name is greater than 63 characters.'))
+			if hostname == domainname.split('.')[0]:
+				_append('domainname', _("Hostname is equal to domain name."))
+		if is_wizard_mode and not util.is_system_joined():
 			if newrole == 'domaincontroller_master' and not values.get('domainname'):
 				_append('domainname', _("No fully qualified domain name has been specified for the system."))
 			elif not values.get('hostname'):
@@ -460,7 +462,7 @@ class Instance(Base, ProgressMixin):
 					if guessed_domain:
 						return guessed_domain
 
-		if not util.is_system_joined() and (newrole not in ['domaincontroller_master', 'basesystem'] or ad_member):
+		if is_wizard_mode and not util.is_system_joined() and (newrole not in ['domaincontroller_master', 'basesystem'] or ad_member):
 			if all(nameserver in values and not values[nameserver] for nameserver in ('nameserver1', 'nameserver2', 'nameserver3')):
 				# 'nameserver1'-key exists → widget is displayed → = not in UCS/debian installer mode
 				if not any(interface.ip4dynamic or interface.ip6dynamic for interface in interfaces.values()):
