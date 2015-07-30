@@ -377,11 +377,13 @@ def __split_s4_dnsNode_dn(dn):
 
 def __get_zone_name_from_ucs_dn(dn):
 	dn=ldap.explode_dn(dn)
-	if not dn[0].lower().startswith('zonename'):
+	if dn[0].lower().startswith('zonename'):
+		zoneName = string.join(dn[0].split('=')[1:], '=')
+	elif dn[1].lower().startswith('zonename'):
+		zoneName = string.join(dn[1].split('=')[1:], '=')
+	else:
 		ud.debug(ud.LDAP, ud.WARN, 'Failed to get zone name for object %s' % (object['dn']))
 		zoneName = None
-
-	zoneName = string.join(dn[0].split('=')[1:], '=')
 	return zoneName
 
 def __create_s4_forward_zone(s4connector, zone_dn):
