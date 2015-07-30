@@ -8,4 +8,5 @@ desc: |
   This update addresses the following issue:
   * The DHCP configuration of a system, led to problems with the browser
     redirection at the end of the setup wizard. This has been corrected.
-bug: [39048]
+  * The network settings module can now be executed also on unjoined systems.
+bug: [39048, 39044]
