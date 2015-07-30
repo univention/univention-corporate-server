@@ -539,6 +539,19 @@ if ! is_ucr_true update40/skip/autoremove; then
     DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
 fi
 
+# Bug #39051: update problems have been reported if the unmaintained repositories were included.
+if ! is_ucr_true update40/skip/deactivation_unmaintained ; then
+	echo "---------------------------------------------------------------------------"
+	echo "Note: unmaintained repositories are now disabled to prevent update problems"
+	echo "---------------------------------------------------------------------------"
+	ucr set repository/online/unmaintained=no
+else
+	echo "-----------------------------------------------------------------------------"
+	echo "Note: deactivation of unmaintained repositories has been skipped as requested"
+	echo "      via update40/skip/disable_unmaintained"
+	echo "-----------------------------------------------------------------------------"
+fi
+
 # Added python2.7 to the supported versions
 egrep -q '^supported-versions.*python2.7' /usr/share/python/debian_defaults ||\
 	sed -i 's|\(^supported-versions.*\)|\1, python2.7|' /usr/share/python/debian_defaults
