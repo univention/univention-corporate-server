@@ -2508,39 +2508,33 @@ define([
 						vals['interfaces/primary'] = idev;
 					}
 
-					if (_vals._dhcp) {
-						// activate DHCP configuration
-						vals.interfaces[idev] = {
-							name: idev,
-							interfaceType: 'Ethernet',
-							ip4dynamic: true
-						};
-					}
-					else {
-						// make sure valid values are set
-						var iip = _vals['_ip' + i];
-						var imask = _vals['_netmask' + i];
-						if (!iip || !imask) {
-							return;
-						}
+					// prepare interface entry
+					var iconf = {
+						name: idev,
+						interfaceType: 'Ethernet',
+						ip4dynamic: _vals._dhcp
+					};
 
-						// prepare interface entry
-						var iconf = {
-							name: idev,
-							interfaceType: 'Ethernet',
-							ip4dynamic: false
-						};
-						if (_regIPv4.test(iip)) {
-							// IPv4 address
-							iconf.ip4 = [[iip, imask]];
-							iconf.ip6 = [];
-						} else {
-							// IPv6 address
-							iconf.ip4 = [];
-							iconf.ip6 = [[iip, imask, 'default']];
-						}
-						vals.interfaces[idev] = iconf;
+					// if IPs are not given for a static configuration -> ignore interface
+					var iip = _vals['_ip' + i];
+					var imask = _vals['_netmask' + i];
+					var ipIsSet = iip && imask;
+					if (!_vals._dhcp && !ipIsSet) {
+						return;
 					}
+
+					// set IP address and mask
+					iconf.ip4 = [];
+					iconf.ip6 = [];
+					if (ipIsSet && _regIPv4.test(iip)) {
+						// IPv4 address
+						iconf.ip4 = [[iip, imask]];
+					}
+					else if (ipIsSet && _regIPv6.test(iip)) {
+						// IPv6 address
+						iconf.ip6 = [[iip, imask, 'default']];
+					}
+					vals.interfaces[idev] = iconf;
 				});
 			}
 
