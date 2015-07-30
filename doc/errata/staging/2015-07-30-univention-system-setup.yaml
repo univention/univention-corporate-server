@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-system-setup
+fix: 
+version: [2]
+desc: |
+  This update addresses the following issue:
+  * The DHCP configuration of a system, led to problems with the browser
+    redirection at the end of the setup wizard. This has been corrected.
+bug: [39048]
