@@ -6,9 +6,8 @@ fix: 0.0.89-20.91.201507291238
 version: [2]
 desc: |
   This update addresses the following issue:
-  * On a desktop browser the modules in the UMC overview page change their
-    color if you hover over them. On mobile devices there is no hover
-    so the styling has been adjusted.
+  * The styling of hovered entries on the UMC overview page has been adapted
+    for mobile devices.
   * New icons for tooltips have been added and the style for tooltips
     has been adadpted.
   * Added a transition when a UMC-module-header reaches the top of the screen.
