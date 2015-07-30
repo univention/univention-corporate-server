@@ -32,10 +32,8 @@
 
 #DEBHELPER#
 
-case "$1" in
-	upgrade)
-		ln -s /usr/share/pyshared/univention/management/console/modules/appcenter/decorators.py /usr/lib/pymodules/python2.7/univention/management/console/modules/appcenter/decorators.py
-		;;
-esac
+if [ "$2" = "uprade" ] && dpkg --compare-versions "$2" lt 4.1.20-41; then
+	ln -s /usr/share/pyshared/univention/management/console/modules/appcenter/decorators.py /usr/lib/pymodules/python2.7/univention/management/console/modules/appcenter/decorators.py
+fi
 
 exit 0

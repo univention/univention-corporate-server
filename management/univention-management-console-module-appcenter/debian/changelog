@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-42) unstable; urgency=low
+
+  * Bug #38345: Added version check
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 30 Jul 2015 14:12:36 +0200
+
 univention-management-console-module-appcenter (4.1.20-41) unstable; urgency=low
 
   * Bug #38345: Add preinst for module-appcenter and moved necessary lines
