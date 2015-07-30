@@ -97,6 +97,8 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 	'''
 	map dn of given object (which must have an s4_RR_attr in S4)
 	ol_oc_filter and s4_RR_filter are objectclass filters in UCS and S4
+
+	Code is based on univention.s4connector.s4.samaccountname_dn_mapping
 	'''
 	obj = copy.deepcopy(given_object)
 
@@ -190,6 +192,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 						else:
 							raise ## can't determine zoneName for this relativeDomainName
 
+				s4dn_utf16_le = None
 				if '@' == relativeDomainName:	## or dn starts with 'zoneName='
 					s4_filter = '(&(objectClass=dnsZone)(%s=%s))' % (s4_RR_attr, ol_zone_name)
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: search in S4 %s" % s4_filter)
@@ -202,6 +205,8 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 								show_deleted=False)
 
 						if result:
+							## We only need the SOA dn here
+							s4dn_utf16_le = 'DC=@,' + result[0][0]
 							break
 				else:
 					## identify position by parent zone name
@@ -226,28 +231,23 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 							univention.s4connector.s4.compatible_modstring('(&%s(%s=%s))' % (s4_RR_filter, s4_RR_attr, relativeDomainName)),
 							attrlist=('dn',),
 							show_deleted=False)
-
-				try:
-					s4dn_utf16_le = result[0][0]
-				except (IndexError, TypeError):
-					s4dn_utf16_le = None
+					if result:
+						s4dn_utf16_le = result[0][0]
 
 				if s4dn_utf16_le: # no referral, so we've got a valid result
-					s4dn = univention.s4connector.s4.encode_attrib(result[0][0])
+					s4dn = univention.s4connector.s4.encode_attrib(s4dn_utf16_le)
 					s4pos2 = len(univention.s4connector.s4.explode_unicode_dn(s4dn)[0])
 					if dn_key == 'olddn' or (dn_key == 'dn' and not 'olddn' in obj):
-						## TODO: Why do we differenciate here?
+						## Cases: ("delete") or ("add" but exists already)
 						newdn = s4dn
 					else:
-						## TODO: Why do we need to patch the DNs here? Rename case? Modify case?
+						## Case: "moved" (?)
 						s4dn = s4dn[:s4pos2] + dn[pos2:]
 						newdn = s4dn.lower().replace(s4connector.lo_s4.base.lower(), s4connector.lo.base.lower())					
+						ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: move case newdn=%s" % newdn)
 				else:
 					## Ok, it's a new object, so propose a S4 DN for it:
-					if '@' == relativeDomainName:	## or dn starts with 'zoneName='
-						new_rdn = 'dc=%s' % ol_zone_name
-					else:
-						new_rdn = 'dc=%s,dc=%s' % (relativeDomainName, ol_zone_name)
+					new_rdn = 'DC=%s,DC=%s' % (relativeDomainName, ol_zone_name)
 					newdn = new_rdn + ',' + s4connector.property['dns'].con_default_dn
 
 			else:
@@ -311,7 +311,8 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					## could use a specific LDAP filter here, but not necessary:
 					# ol_oc_filter = '(&(objectClass=dNSZone)(!(|(univentionObjectType=dns/forward_zone)(univentionObjectType=dns/reverse_zone))))'
 
-				ud.debug(ud.LDAP, ud.WARN, "dns_dn_mapping: UCS filter: (&%s(%s=%s))" % (ol_oc_filter, ol_search_attr, s4_RR_val))
+				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: UCS filter: (&%s(%s=%s))" % (ol_oc_filter, ol_search_attr, s4_RR_val))
+				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: UCS base: %s" % (base,))
 				ucsdn_result = s4connector.search_ucs(filter=u'(&%s(%s=%s))' % (ol_oc_filter, ol_search_attr, s4_RR_val),
 								   base=base, scope='sub', attr=('dn',))
 
@@ -321,20 +322,25 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					ucsdn = None
 					
 				ud.debug(ud.LDAP, ud.ALL, "dns_dn_mapping: Found ucsdn: %s" % ucsdn)
-				if ucsdn:
-					## In this case we have found the old or first known DN:
+				if ucsdn and (dn_key == 'olddn' or (dn_key == 'dn' and not 'olddn' in obj)):
+					## Cases: ("delete") or ("add" but exists already)
 					newdn = ucsdn
-					## HACK:
-					# pos = string.find(ucsdn, '=')
-					# newdn = ol_search_attr + ucsdn[pos:]	## adjust for zoneName
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: newdn is ucsdn")
+					if not (dn_key == 'olddn' or (dn_key == 'dn' and not 'olddn' in obj)):
+						ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: move case newdn=%s" % newdn)
 				else:
+					## Cases: (Target not found) or/and ("moved" (?))
 					## Ok, it's a new object, so propose a S4 DN for it:
-					if 'dnsZone' in s4_ocs or '@' == s4_RR_val:
+					if '@' == s4_RR_val:
+						new_rdn = 'zoneName=%s' % s4_zone_name
+					elif 'dnsZone' in s4_ocs:
+						## Hmm, is it ok to map it to the same as '@'?
 						new_rdn = 'zoneName=%s' % s4_zone_name
 					else:
 						new_rdn = 'relativeDomainName=%s,zoneName=%s' % (s4_RR_val, s4_zone_name)
 					newdn = new_rdn + ',' + s4connector.property['dns'].ucs_default_dn
+					if not (dn_key == 'olddn' or (dn_key == 'dn' and not 'olddn' in obj)):
+						ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: move case newdn=%s" % newdn)
 
 			try:
 				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: mapping for key '%s':" % dn_key)
@@ -359,27 +365,39 @@ def __remove_dot(str):
 	else:
 		return str
 
-def __get_zone_name(object):
-	zoneName=object['attributes'].get('zoneName')
-	if not zoneName:
+def __split_s4_dnsNode_dn(dn):
+	# split zone
+	dn=ldap.explode_dn(dn)
+
+	# split the DC= from the zoneName
+	zoneName=string.join(dn[1].split('=')[1:], '=')
+	relativeDomainName=string.join(dn[0].split('=')[1:], '=')
+
+	return (zoneName, relativeDomainName)
+
+def __get_zone_name_from_ucs_dn(dn):
+	dn=ldap.explode_dn(dn)
+	if not dn[0].lower().startswith('zonename'):
 		ud.debug(ud.LDAP, ud.WARN, 'Failed to get zone name for object %s' % (object['dn']))
-		raise 
+		zoneName = None
+
+	zoneName = string.join(dn[0].split('=')[1:], '=')
 	return zoneName
 
-def __create_s4_forward_zone(s4connector, zoneDn):
+def __create_s4_forward_zone(s4connector, zone_dn):
 	al=[]
 	al.append(('objectClass', ['top', 'dnsZone']))
 
-	ud.debug(ud.LDAP, ud.INFO, '_dns_zone_forward_con_create: dn: %s' % zoneDn)
+	ud.debug(ud.LDAP, ud.INFO, '_dns_zone_forward_con_create: dn: %s' % zone_dn)
 	ud.debug(ud.LDAP, ud.INFO, '_dns_zone_forward_con_create: al: %s' % al)
-	s4connector.lo_s4.lo.add_s(zoneDn, al)
+	s4connector.lo_s4.lo.add_s(zone_dn, al)
 
-def __create_s4_forward_zone_at(s4connector, zoneDnAt):
+def __create_s4_forward_zone_soa(s4connector, soa_dn):
 	al=[]
 	al.append(('objectClass', ['top', 'dnsNode']))
 	al.append(('dc', ['@']))
 
-	s4connector.lo_s4.lo.add_s(zoneDnAt, al)
+	s4connector.lo_s4.lo.add_s(soa_dn, al)
 
 def __create_s4_dns_node(s4connector, dnsNodeDn, relativeDomainNames, dnsRecords):
 	al=[]
@@ -410,7 +428,7 @@ def __pack_aRecord(object, dnsRecords):
 
 def __unpack_aRecord(object):
 	a=[]
-	dnsRecords=object['attributes'].get('dnsRecord')
+	dnsRecords=object['attributes'].get('dnsRecord', [])
 	for dnsRecord in dnsRecords:
 		dnsRecord=dnsRecord.encode('latin1')
 		ndrRecord=ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
@@ -419,7 +437,7 @@ def __unpack_aRecord(object):
 	return a
 
 def __pack_soaRecord(object, dnsRecords):
-	soaRecord=object['attributes'].get('sOARecord', [])[0]
+	soaRecord=object['attributes'].get('sOARecord', [None])[0]
 	if soaRecord:
 		soaRecord=univention.s4connector.s4.compatible_modstring(soaRecord)
 		soa=soaRecord.split(' ')
@@ -436,7 +454,7 @@ def __pack_soaRecord(object, dnsRecords):
 
 def __unpack_soaRecord(object):
 	soa={}
-	dnsRecords=object['attributes'].get('dnsRecord')
+	dnsRecords=object['attributes'].get('dnsRecord', [])
 	for dnsRecord in dnsRecords:
 		dnsRecord=dnsRecord.encode('latin1')
 		ndrRecord=ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
@@ -459,7 +477,7 @@ def __pack_nsRecord(object, dnsRecords):
 
 def __unpack_nsRecord(object):
 	ns=[]
-	dnsRecords=object['attributes'].get('dnsRecord')
+	dnsRecords=object['attributes'].get('dnsRecord', [])
 	for dnsRecord in dnsRecords:
 		dnsRecord=dnsRecord.encode('latin1')
 		ndrRecord=ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
@@ -481,7 +499,7 @@ def __pack_mxRecord(object, dnsRecords):
 
 def __unpack_mxRecord(object):
 	mx=[]
-	dnsRecords=object['attributes'].get('dnsRecord')
+	dnsRecords=object['attributes'].get('dnsRecord', [])
 	for dnsRecord in dnsRecords:
 		dnsRecord=dnsRecord.encode('latin1')
 		ndrRecord=ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
@@ -497,7 +515,7 @@ def __pack_cName(object, dnsRecords):
 
 def __unpack_cName(object):
 	c=[]
-	dnsRecords=object['attributes'].get('dnsRecord')
+	dnsRecords=object['attributes'].get('dnsRecord', [])
 	for dnsRecord in dnsRecords:
 		dnsRecord=dnsRecord.encode('latin1')
 		ndrRecord=ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
@@ -518,7 +536,7 @@ def __pack_sRVrecord(object, dnsRecords):
 
 def __unpack_sRVrecord(object):
 	srv=[]
-	dnsRecords=object['attributes'].get('dnsRecord')
+	dnsRecords=object['attributes'].get('dnsRecord', [])
 	for dnsRecord in dnsRecords:
 		dnsRecord=dnsRecord.encode('latin1')
 		ndrRecord=ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
@@ -534,7 +552,7 @@ def __pack_ptrRecord(object, dnsRecords):
 
 def __unpack_ptrRecord(object):
 	ptr=[]
-	dnsRecords=object['attributes'].get('dnsRecord')
+	dnsRecords=object['attributes'].get('dnsRecord', [])
 	for dnsRecord in dnsRecords:
 		dnsRecord=dnsRecord.encode('latin1')
 		ndrRecord=ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
@@ -546,26 +564,26 @@ def __unpack_ptrRecord(object):
 def s4_zone_create(s4connector, object):
 	_d=ud.function('s4_zone_create')
 
-	zoneDn = object['dn']
-	zoneName = __get_zone_name(object)
-		
+	soa_dn = object['dn']
+	(zoneName, relativeDomainName) = __split_s4_dnsNode_dn(soa_dn)
+
+	zone_dn = s4connector.lo.parentDn(soa_dn)
+
 	# Create the forward zone in S4 if it does not exist
 	try:
-		searchResult=s4connector.lo_s4.lo.search_s(zoneDn, ldap.SCOPE_BASE, '(objectClass=*)',['dn'])
+		searchResult=s4connector.lo_s4.lo.search_s(zone_dn, ldap.SCOPE_BASE, '(objectClass=*)',['dn'])
 	except ldap.NO_SUCH_OBJECT:
-		__create_s4_forward_zone(s4connector, zoneDn)
+		__create_s4_forward_zone(s4connector, zone_dn)
 	
-	# Create @ object
-	zoneDnAt='DC=@,%s' % zoneDn
-
+	# Create SOA DC=@ object
 	old_dnsRecords=[]
 
 	try:
-		searchResult=s4connector.lo_s4.lo.search_s(zoneDnAt, ldap.SCOPE_BASE, '(objectClass=*)')
+		searchResult=s4connector.lo_s4.lo.search_s(soa_dn, ldap.SCOPE_BASE, '(objectClass=*)')
 		if searchResult and searchResult[0][1]:
 			old_dnsRecords=searchResult[0][1].get('dnsRecord')
 	except ldap.NO_SUCH_OBJECT:
-		__create_s4_forward_zone_at(s4connector, zoneDnAt)
+		__create_s4_forward_zone_soa(s4connector, soa_dn)
 
 	dnsRecords=[]
 
@@ -597,7 +615,7 @@ def s4_zone_create(s4connector, object):
 
 	__pack_mxRecord(object, dnsRecords)
 
-	s4connector.lo_s4.modify(zoneDnAt, [('dnsRecord', old_dnsRecords, dnsRecords)])
+	s4connector.lo_s4.modify(soa_dn, [('dnsRecord', old_dnsRecords, dnsRecords)])
 
 	return True
 
@@ -606,17 +624,19 @@ def s4_zone_create(s4connector, object):
 def s4_zone_delete(s4connector, object):
 	_d=ud.function('s4_zone_delete')
 
-	zoneDn = object['dn']
+	# zone_dn = object['dn']
+	soa_dn = object['dn']
+	(zoneName, relativeDomainName) = __split_s4_dnsNode_dn(soa_dn)
 
-	zoneDnAt='DC=@,%s' % zoneDn
+	zone_dn = s4connector.lo.parentDn(soa_dn)
 
 	try:
-		res=s4connector.lo_s4.lo.delete_s(zoneDnAt)
+		res=s4connector.lo_s4.lo.delete_s(soa_dn)
 	except ldap.NO_SUCH_OBJECT:
 		pass #the object was already removed
 	
 	try:
-		res=s4connector.lo_s4.lo.delete_s(zoneDn)
+		res=s4connector.lo_s4.lo.delete_s(zone_dn)
 	except ldap.NO_SUCH_OBJECT:
 		pass #the object was already removed
 
@@ -670,21 +690,12 @@ def s4_host_record_create(s4connector, object):
 
 	return True
 
-def __split_s4_dns_dn(dn):
-	# split zone
-	dn=ldap.explode_dn(dn)
-
-	# split the DC= from the zoneName
-	zoneName=string.join(dn[1].split('=')[1:], '=')
-	relativeDomainName=string.join(dn[0].split('=')[1:], '=')
-
-	return (zoneName, relativeDomainName)
-
 def ucs_host_record_create(s4connector, object):
 	_d=ud.function('ucs_host_record_create')
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_host_record_create: object: %s' % object)
 
-	zoneName, relativeDomainName=__split_s4_dns_dn(object['dn'])
+	zoneName = object['attributes']['zoneName'][0]
+	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
 	# unpack the host record
 	a=__unpack_aRecord(object)
@@ -720,7 +731,8 @@ def ucs_host_record_delete(s4connector, object):
 	_d=ud.function('ucs_host_record_delete')
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_host_record_delete: object: %s' % object)
 
-	zoneName, relativeDomainName=__split_s4_dns_dn(object['dn'])
+	zoneName = object['attributes']['zoneName'][0]
+	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
 	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
 	if len(searchResult) > 0:
@@ -749,7 +761,8 @@ def ucs_ptr_record_create(s4connector, object):
 	_d=ud.function('ucs_ptr_record_create')
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_ptr_record_create: object: %s' % object)
 
-	zoneName, relativeDomainName=__split_s4_dns_dn(object['dn'])
+	zoneName = object['attributes']['zoneName'][0]
+	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
 	# unpack the host record
 	ptr=__unpack_ptrRecord(object)
@@ -784,7 +797,8 @@ def ucs_ptr_record_delete(s4connector, object):
 	_d=ud.function('ucs_ptr_record_delete')
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_ptr_record_delete: object: %s' % object)
 
-	zoneName, relativeDomainName=__split_s4_dns_dn(object['dn'])
+	zoneName = object['attributes']['zoneName'][0]
+	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
 	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
 	if len(searchResult) > 0:
@@ -801,7 +815,8 @@ def ucs_cname_create(s4connector, object):
 	_d=ud.function('ucs_cname_create')
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_cname_create: object: %s' % object)
 
-	zoneName, relativeDomainName=__split_s4_dns_dn(object['dn'])
+	zoneName = object['attributes']['zoneName'][0]
+	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
 	# unpack the host record
 	c=__unpack_cName(object)
@@ -836,7 +851,8 @@ def ucs_cname_delete(s4connector, object):
 	_d=ud.function('ucs_cname_delete')
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_cname_delete: object: %s' % object)
 
-	zoneName, relativeDomainName=__split_s4_dns_dn(object['dn'])
+	zoneName = object['attributes']['zoneName'][0]
+	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
 	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
 	if len(searchResult) > 0:
@@ -862,7 +878,8 @@ def ucs_srv_record_create(s4connector, object):
 	_d=ud.function('ucs_srv_record_create')
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: object: %s' % object)
 
-	zoneName, relativeDomainName=__split_s4_dns_dn(object['dn'])
+	zoneName = object['attributes']['zoneName'][0]
+	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
 	# unpack the host record
 	srv=__unpack_sRVrecord(object)
@@ -921,7 +938,8 @@ def ucs_srv_record_delete(s4connector, object):
 	_d=ud.function('ucs_srv_record_delete')
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_delete: object: %s' % object)
 
-	zoneName, relativeDomainName=__split_s4_dns_dn(object['dn'])
+	zoneName = object['attributes']['zoneName'][0]
+	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
 	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
 	if len(searchResult) > 0:
@@ -940,8 +958,7 @@ def s4_srv_record_create(s4connector, object):
 
 	dnsRecords=[]
 
-	zoneDn = object['dn']
-	zoneName = __get_zone_name(object)
+	(zoneName, relativeDomainName) = __split_s4_dnsNode_dn(object['dn'])
 
 	relativeDomainName=object['attributes'].get('relativeDomainName')
 	relativeDomainName=univention.s4connector.s4.compatible_list(relativeDomainName)
@@ -976,10 +993,12 @@ def s4_srv_record_create(s4connector, object):
 def ucs_zone_create(s4connector, object, dns_type):
 	_d=ud.function('ucs_zone_create')
 
-	zoneName, relativeDomainName=__split_s4_dns_dn(object['dn'])
+	zoneName = object['attributes']['zoneName'][0]
+	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
-	# create the zone if the dc=@ object was created
+	# create the zone when the dc=@ object has been created
 	if relativeDomainName != '@':
+		ud.debug(ud.LDAP, ud.INFO, "ucs_zone_create: ignoring DC=%s object" % (relativeDomainName,))
 		return
 
 	ns=__unpack_nsRecord(object)
@@ -1062,17 +1081,21 @@ def ucs_zone_create(s4connector, object, dns_type):
 def ucs_zone_delete(s4connector, object, dns_type):
 	_d=ud.function('ucs_zone_delete')
 
-	zoneName, relativeDomainName=__split_s4_dns_dn(object['dn'])
+	zoneName = object['attributes']['zoneName'][0]
+	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
-	if relativeDomainName == '@':
-		searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
-		if len(searchResult) > 0:
-			if dns_type == 'forward_zone':
-				zone= univention.admin.handlers.dns.forward_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=None, attributes=[], update_zone=False)
-			elif dns_type == 'reverse_zone':
-				zone= univention.admin.handlers.dns.reverse_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=None, attributes=[], update_zone=False)
-			zone.open()
-			zone.delete()
+	if relativeDomainName != '@':
+		ud.debug(ud.LDAP, ud.INFO, "ucs_zone_delete: ignoring DC=%s object" % (relativeDomainName,))
+		return
+
+	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
+	if len(searchResult) > 0:
+		if dns_type == 'forward_zone':
+			zone= univention.admin.handlers.dns.forward_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=None, attributes=[], update_zone=False)
+		elif dns_type == 'reverse_zone':
+			zone= univention.admin.handlers.dns.reverse_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=None, attributes=[], update_zone=False)
+		zone.open()
+		zone.delete()
 
 	
 
@@ -1149,7 +1172,7 @@ def ucs2con (s4connector, key, object):
 		return True
 
 	ud.debug(ud.LDAP, ud.INFO, 'dns ucs2con: Object (%s) is of type %s' % (object['dn'], dns_type))
-		
+
 	if dns_type == 'forward_zone' or dns_type == 'reverse_zone':
 		if object['modtype'] in ['add', 'modify']:
 			s4_zone_create(s4connector, object)
@@ -1200,6 +1223,16 @@ def con2ucs (s4connector, key, object):
 		return True
 
 	ud.debug(ud.LDAP, ud.INFO, 'dns con2ucs: Object (%s) is from type %s' % (object['dn'], dns_type))
+
+	## At this point dn_mapping_function already has converted object['dn'] from con to ucs
+	## But since there is no attribute mapping defined for DNS, the object attributes still
+	## are the ones from Samba.
+	## The object here is DC=<relative_domainname>,DC=<zone_name>,
+	## We can only get the zone_name from the DN here:
+
+	zoneName = __get_zone_name_from_ucs_dn(object['dn'])
+	object['attributes']['zoneName'] = [zoneName]
+	object['attributes']['relativeDomainName'] = object['attributes']['dc']
 
 	if dns_type == 'host_record':
 		if object['modtype'] in ['add', 'modify']:
