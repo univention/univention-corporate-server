@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention Management Console Module Apps
+# Univention Management Console Module Appcenter
 #  preinst file for the debian package
 #
-# Copyright 2013-2015 Univention GmbH
+# Copyright 2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,12 +33,8 @@
 #DEBHELPER#
 
 case "$1" in
-	install)
-		# load applications from app center server!
-		# this has to be done only once after initial install.
-		# otherwise the cache dir will be empty and the conffiles
-		# will not be populated
-		echo 'from univention.management.console.modules.appcenter.app_center import Application; Application.sync_with_server()' | python
+	upgrade)
+		ln -s /usr/share/pyshared/univention/management/console/modules/appcenter/decorators.py /usr/lib/pymodules/python2.7/univention/management/console/modules/appcenter/decorators.py
 		;;
 esac
 
