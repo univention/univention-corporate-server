@@ -74,7 +74,7 @@ msgstr ""
 "wird das Zertifikat mit dem Zertifikatsdienst des Active Directory. Die "
 "notwendigen Schritte sind abhängig von der eingesetzten Microsoft Windows-"
 "Version und sind in der <a href=\"http://docs.univention.de/handbuch-4.0."
-"html#ad-connector:ad-zertifikat.\" target=\"_blank\">UCS Dokumentation</a> "
+"html#ad-connector:ad-zertifikat\" target=\"_blank\">UCS Dokumentation</a> "
 "beispielhaft beschrieben. Alternativ können Sie auch ohne diese "
 "Konfiguration fortfahren.</p>"
 

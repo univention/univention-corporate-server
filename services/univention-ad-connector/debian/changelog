@@ -1,3 +1,9 @@
+univention-ad-connector (9.0.11-12) unstable; urgency=low
+
+  * Bug #38147: fix documentation link
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 30 Jul 2015 12:58:17 +0200
+
 univention-ad-connector (9.0.11-11) unstable; urgency=medium
 
   * Bug #38147: fix documentation links
