@@ -8,4 +8,4 @@ desc: |
   This update addresses the following issues:
    * The wording on the activation page has been improved.
    * The loading animation is now visible in Firefox.
-bug: [39019, 39018]
+bug: [39019, 38918]
