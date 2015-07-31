@@ -16,11 +16,8 @@ desc: |
 
  For the full list of changes from bind9 9.8.0-P4 to 9.8.4-P1 see:
  * https://kb.isc.org/article/AA-00446/81/BIND-9.8.1-Release-Notes.html
- * https://kb.isc.org/article/AA-00540/81/BIND-9.8.1-P1-Release-Notes.html
  * https://kb.isc.org/article/AA-00645/81/BIND-9.8.2-Release-Notes.html
  * https://kb.isc.org/article/AA-00670/81/BIND-9.8.3-Release-Notes.html
- * https://kb.isc.org/article/AA-00697/81/BIND-9.8.3-P1-Release-Notes.html
- * https://kb.isc.org/article/AA-00719/81/BIND-9.8.3-P2-Release-Notes.html
  * https://kb.isc.org/article/AA-00797/81/BIND-9.8.4-Release-Notes.html
  * https://kb.isc.org/article/AA-00830/81/BIND-9.8.4-P1-Release-Notes.html
 bug:
