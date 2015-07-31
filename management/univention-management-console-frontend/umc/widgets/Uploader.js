@@ -35,15 +35,17 @@ define([
 	"dojo/_base/array",
 	"dojo/when",
 	"dojo/dom-class",
+	"dojo/dom-construct",
 	"dojo/dom-style",
 	"dojox/form/Uploader",
+	"dijit/Tooltip",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/i18n!"
-], function(declare, lang, array, when, domClass, style, Uploader, tools, dialog, ContainerWidget, Button, _FormWidgetMixin, _) {
+], function(declare, lang, array, when, domClass, domConstruct, style, Uploader, Tooltip, tools, dialog, ContainerWidget, Button, _FormWidgetMixin, _) {
 	return declare("umc.widgets.Uploader", [ ContainerWidget, _FormWidgetMixin ], {
 		baseClass: 'umcUploader',
 
@@ -107,6 +109,11 @@ define([
 
 		// internal flag that indicates that the data is being set
 		_settingData: false,
+
+		tooltip: null,
+
+		//uploader will handle the tooltip on its own
+		handlesTooltips: true,
 
 		constructor: function() {
 			this.buttonLabel = _('Upload');
@@ -243,6 +250,11 @@ define([
 
 			// update the view
 			this.set('value', this.value);
+
+			//register onChange events for description
+			this.own(this.watch('description', lang.hitch(this, function(attr, oldVal, newVal) {
+				this._setDescriptionAttr(newVal);
+			})));
 		},
 
 		_setDataAttr: function(data) {
@@ -310,6 +322,24 @@ define([
 			}
 			this.buttonLabel = newVal;
 			this._uploader.set('label', newVal);
+		},
+
+
+		_setDescriptionAttr: function(description) {
+			if (description && this.handlesTooltips) {
+				this.tooltip = new Tooltip({
+					label: description,
+					connectId: [ this.domNode ]
+				});
+				// destroy the tooltip when the widget is destroyed
+				this.own(this.tooltip);
+			} else {
+				if (this.tooltip) {
+					//destroy tooltip
+					this.tooltip.destroy();
+					this.tooltip = null;
+				}
+			}
 		},
 
 		_setDisabledAttr: function(newVal) {

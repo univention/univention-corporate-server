@@ -314,7 +314,7 @@ define([
 			if (!(description instanceof Array)) {
 				description = [];
 				array.forEach(this.subtypes, function(itype, i) {
-					description.push(i === 0 ? _description || itype.description || '' : itype.description || '');
+					description.push(i === 0 ? itype.description || _description || '' : itype.description || '');
 				}, this);
 			}
 
@@ -530,9 +530,10 @@ define([
 					dynamicValues: lang.partial(iwidget.dynamicValues, iname)
 				});
 
-				// if no label is given, set the main label as label
+				// if no label and description is given, set the main label/description as label/description
 				// of the first subwidget
 				iconf.label = iconf.label || (i === 0 && this.label ? this.label : '&nbsp;');
+				iconf.description = iconf.description || (i === 0 && this.description ? this.description : '');
 
 				if (iwidget.dynamicValuesInfo) {
 					iconf.dynamicValuesInfo = lang.partial(iwidget.dynamicValuesInfo, iname);

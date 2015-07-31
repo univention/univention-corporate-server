@@ -104,6 +104,7 @@ define([
 
 		_orgClass: '',
 
+
 		constructor: function(params) {
 			this._startupDeferred = new Deferred();
 
@@ -185,22 +186,17 @@ define([
 
 			// register watch handler for label and visibility changes
 			if (this._isContentAWidget()) {
-				if (this._isLabelDisplayed()) {
-					// only watch the label and required property if widget is not a button
-					this.own(this.content.watch('label', lang.hitch(this, function(attr, oldVal, newVal) {
-						this.set('label', this.content.get('label') || '');
-					})));
-					this.own(this.content.watch('required', lang.hitch(this, function(attr, oldVal, newVal) {
-						this.set('label', this.content.get('label') || '');
-					})));
-				}
-				if (this._isLabelDisplayed() || this.usesHoverTooltip) {
-					// watch for decription changes an adapt tooltip accordingly
-					this.own(this.content.watch('description', lang.hitch(this, function(attr, oldVal, newVal) {
+				this.own(this.content.watch('label', lang.hitch(this, function(attr, oldVal, newVal) {
+						this._setLabelResetTooltip();
+				})));
+				this.own(this.content.watch('required', lang.hitch(this, function(attr, oldVal, newVal) {
+					this._setLabelResetTooltip();
+				})));
+				this.own(this.content.watch('description', lang.hitch(this, function(attr, oldVal, newVal) {
+					if (!this.content.handlesTooltips) {
 						this._setDescriptionAttr(newVal);
-						}
-					)));
-				}
+					}
+				})));
 				this.own(this.content.watch('visible', lang.hitch(this, function(attr, oldVal, newVal) {
 					domClass.toggle(this.domNode, 'dijitHidden', !newVal);
 				})));
@@ -224,6 +220,19 @@ define([
 			this._forEachLabeNode(function(inode) {
 				domClass.toggle(inode, 'dijitHidden', exceptOfThisNode != inode);
 			});
+		},
+
+		_setLabelResetTooltip: function() {
+			if (this._isLabelDisplayed()) {
+				this.set('label', this.content.get('label') || '');
+				if (!this.label || this.label === '&nbsp') {
+					this._destroyExistingTooltipNode();
+				} else {
+					if (!this.content.handlesTooltips) {
+						this._setDescriptionAttr(this.content.description);
+					}
+				}
+			}
 		},
 
 		_setLabelAttr: function(label) {
@@ -255,15 +264,12 @@ define([
 		},
 
 		_setDescriptionAttr: function(description) {
-
-			if (description) {
+			//prevent duplicates
+			this._destroyExistingTooltipNode();
+			if (description && !this.content.handlesTooltips) {
 				//default to the 'new' tooltip style
 				if (!this.usesHoverTooltip) {
-					// prevent duplicates
-					if (this.tooltipNode != null) {
-						domConstruct.destroy(this.tooltipNode);
-					}
-					if (this._isLabelDisplayed()) {
+					if (this._isLabelDisplayed() && this.label && !(this.label === '&nbsp;')) {
 						labelNode = this._getLabelNode();
 						this.tooltipNode = domConstruct.create("div",{
 							'class': "umcDescription umcDescriptionIcon"
@@ -284,12 +290,17 @@ define([
 					// use "old" hovering tooltip instead
 					var tooltip = new Tooltip({
 						label: description,
-						connectId: [ this.domNode ]
+						connectId: [ this.content.domNode ]
 					});
-
 					// destroy the tooltip when the widget is destroyed
-					tooltip.connect(this, 'destroy', 'destroy');
+					this.own(tooltip);
 				}
+			}
+		},
+
+		_destroyExistingTooltipNode: function() {
+			if ((!this.usesHoverTooltip) && this.tooltipNode) {
+				domConstruct.destroy(this.tooltipNode);
 			}
 		},
 
