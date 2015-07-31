@@ -24,7 +24,7 @@
 				"dojo/on",
 				"dojo/Stateful",
 				"dijit/layout/StackContainer",
-				"dijit/form/Button",
+				"umc/widgets/Button",
 				"dijit/form/Textarea",
 				"umc/tools",
 				"umc/widgets/Text",
@@ -61,11 +61,6 @@
 					onClick: function() {
 						setDescriptions();
 					}
-				}, {
-					name: 'button',
-					type: Button,
-					label: defaultLabel,
-					description: defaultDesc
 				}];
 
 				var widgets = [{
@@ -144,6 +139,11 @@
 					type: Text,
 					name: 'header7',
 					label: "<h1>Buttons</h1>"
+				}, {
+					name: 'button',
+					type: Button,
+					label: defaultLabel,
+					description: defaultDesc
 				}, {
 					type: Text,
 					name: 'header8',

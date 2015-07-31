@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.106-84) unstable; urgency=low
+
+  * Bug #336771: uploader and button will now handl tooltips on their own,
+    also fixed tooltips not appearing/disapearing where they should
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 31 Jul 2015 10:56:32 +0200
+
 univention-management-console-frontend (4.1.106-83) unstable; urgency=low
 
   * Bug #38491: adjusted logic for detecting module visibility

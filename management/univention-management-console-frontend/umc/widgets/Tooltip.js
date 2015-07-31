@@ -56,8 +56,7 @@ define([
 		hdl.remove();
 	});
 
-	Tooltip.defaultPosition = ['below', 'above'];
-	//Tooltip.defaultPosition = ['above', 'before', 'after', 'below'];
+	Tooltip.defaultPosition = ['below', 'above', 'after', 'before'];
 
 	return declare("umc.widgets.Tooltip", Tooltip, {});
 });

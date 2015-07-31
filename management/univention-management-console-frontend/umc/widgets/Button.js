@@ -32,8 +32,9 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/dom-class",
-	"dijit/form/Button"
-], function(declare, lang, domClass, Button) {
+	"dijit/form/Button",
+	"dijit/Tooltip"
+], function(declare, lang, domClass, Button, Tooltip) {
 	return declare("umc.widgets.Button", [ Button ], {
 		// defaultButton: Boolean
 		//		If set to 'true', button will be rendered as default, i.e., submit button.
@@ -47,10 +48,10 @@ define([
 
 		type: 'button',
 
+		handlesTooltips: true,
+
 		// do not display button labels via the LabelPane
 		displayLabel: false,
-		// use old hovering Tooltip since there is no label to attach a tooltip to
-		usesHoverTooltip: true,
 
 		constructor: function(props) {
 			lang.mixin(this, props);
@@ -71,6 +72,11 @@ define([
 			if (typeof this.callback == "function") {
 				this.on('click', lang.hitch(this, 'callback'));
 			}
+
+			//register onChange events for description
+			this.own(this.watch('description', lang.hitch(this, function(attr, oldVal, newVal) {
+				this._setDescriptionAttr(newVal);
+			})));
 		},
 
 		show: function() {
@@ -84,7 +90,25 @@ define([
 		_setVisibleAttr: function(newVal) {
 			this._set('visible', newVal);
 			domClass.toggle(this.domNode, 'dijitHidden', !newVal);
-		}
+		},
+
+		_setDescriptionAttr: function(description) {
+			if (description && this.handlesTooltips) {
+				this.tooltip = new Tooltip({
+					label: description,
+					connectId: [ this.domNode ]
+				});
+				// destroy the tooltip when the widget is destroyed
+				this.own(this.tooltip);
+			} else {
+				if (this.tooltip) {
+					//destroy tooltip
+					this.tooltip.destroy();
+					this.tooltip = null;
+				}
+			}
+		},
+
 	});
 });
 
