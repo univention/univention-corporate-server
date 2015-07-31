@@ -1,8 +1,18 @@
-Type: file
-File: etc/pam.d/univention-management-console
+Type: multifile
+Multifile: etc/pam.d/univention-management-console
+
+Type: subfile
+Multifile: etc/pam.d/univention-management-console
+Subfile: etc/pam.d/univention-management-console.d/50_base
 Variables: auth/methods
 Variables: auth/passwdcache/max_user
 Variables: auth/passwdcache
+
+Type: subfile
+Multifile: etc/pam.d/univention-management-console
+Subfile: etc/pam.d/univention-management-console.d/40_saml
+Variables: hostname
+Variables: domainname
 
 Type: file
 File: etc/logrotate.d/univention-management-console
