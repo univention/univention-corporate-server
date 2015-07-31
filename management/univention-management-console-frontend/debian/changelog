@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.7-4) unstable; urgency=medium
+
+  * Bug #31943: fixed typo
+
+ -- Florian Best <best@univention.de>  Fri, 31 Jul 2015 15:54:44 +0200
+
 univention-management-console-frontend (5.0.7-3) unstable; urgency=low
 
   * Bug #36771: fixed typo
@@ -6,8 +12,8 @@ univention-management-console-frontend (5.0.7-3) unstable; urgency=low
 
 univention-management-console-frontend (5.0.7-2) unstable; urgency=low
 
- * Bug #36771: uploader and button will now handle tooltips on their own,
-    also fixed tooltips not appearing/disapearing where they should
+  * Bug #36771: uploader and button will now handle tooltips on their own,
+  	also fixed tooltips not appearing/disapearing where they should
 
  -- Drees Dormann <dormann@univention.de>  Fri, 31 Jul 2015 10:56:32 +0200
 

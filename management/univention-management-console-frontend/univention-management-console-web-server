@@ -752,10 +752,8 @@ class CPAuth(CPgeneric):
 		if user is None:
 			raise HTTPRedirect('/umcp/saml/')
 
-		data = dict((x, ''.join(y)) for x, y in user.data.iteritems())
 		req = umcp.Request('AUTH')
-		req.body = {"username": data['uid'], "password": data.message}
-		req.body.update(data)
+		req.body = {"username": ''.join(user.data['uid']), "password": user.message}
 
 		try:
 			response = self._auth_request(req)
