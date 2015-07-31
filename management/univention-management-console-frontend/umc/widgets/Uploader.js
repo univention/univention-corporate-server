@@ -110,7 +110,7 @@ define([
 		// internal flag that indicates that the data is being set
 		_settingData: false,
 
-		tooltip: null,
+		_tooltip: null,
 
 		//uploader will handle the tooltip on its own
 		handlesTooltips: true,
@@ -327,17 +327,17 @@ define([
 
 		_setDescriptionAttr: function(description) {
 			if (description && this.handlesTooltips) {
-				this.tooltip = new Tooltip({
+				this._tooltip = new Tooltip({
 					label: description,
 					connectId: [ this.domNode ]
 				});
 				// destroy the tooltip when the widget is destroyed
 				this.own(this.tooltip);
 			} else {
-				if (this.tooltip) {
+				if (this._tooltip) {
 					//destroy tooltip
-					this.tooltip.destroy();
-					this.tooltip = null;
+					this._tooltip.destroy();
+					this._tooltip = null;
 				}
 			}
 		},

@@ -53,6 +53,8 @@ define([
 		// do not display button labels via the LabelPane
 		displayLabel: false,
 
+		_tooltip: null,
+
 		constructor: function(props) {
 			lang.mixin(this, props);
 			if (this.defaultButton) {
@@ -94,20 +96,20 @@ define([
 
 		_setDescriptionAttr: function(description) {
 			if (description && this.handlesTooltips) {
-				this.tooltip = new Tooltip({
+				this._tooltip = new Tooltip({
 					label: description,
 					connectId: [ this.domNode ]
 				});
 				// destroy the tooltip when the widget is destroyed
-				this.own(this.tooltip);
+				this.own(this._tooltip);
 			} else {
-				if (this.tooltip) {
+				if (this._tooltip) {
 					//destroy tooltip
-					this.tooltip.destroy();
-					this.tooltip = null;
+					this._tooltip.destroy();
+					this._tooltip = null;
 				}
 			}
-		},
+		}
 
 	});
 });
