@@ -1,6 +1,12 @@
+univention-system-activation (0.0.1-32) unstable; urgency=low
+
+  * Bug #38918: version bump
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 31 Jul 2015 13:12:44 +0200
+
 univention-system-activation (0.0.1-31) unstable; urgency=low
 
-  * Bug #39018: Loading animation is now visible in Firefox
+  * Bug #38918: Loading animation is now visible in Firefox
 
  -- Alexander Kramer <kramer@univention.de>  Thu, 30 Jul 2015 13:05:28 +0200
 
