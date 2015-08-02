@@ -1640,7 +1640,7 @@ class Application(object):
 				else:
 					MODULE.process('Cannot run them without credentials')
 					return
-			run_join_scripts = Thread(target=subprocess.call, args=[args], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			run_join_scripts = Thread(target=subprocess.call, args=[args], kwargs=dict(stdout=subprocess.PIPE, stderr=subprocess.PIPE))
 			run_join_scripts.start()
 			while run_join_scripts.is_alive():
 				# i did not find anything nearly as efficient as this one
