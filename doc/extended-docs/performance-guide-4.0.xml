@@ -380,7 +380,7 @@ slapadd -l ldif
 	</section>
 
 	<section id="mailserver">
-		<title>Mailserver</title>
+		<title>Cyrus mailserver</title>
 		<para>
 			In the default configuration the UCS mail stack uses the SASL authentication daemon
 			for authentication. The SASL daemon has its own authentication credentials
@@ -388,6 +388,31 @@ slapadd -l ldif
 			timeout for this cache is 1800 seconds but can be increased by setting the &ucsUCRV;
 			<envar>mail/saslauthd/cache/timeout</envar> in case of too much authentication
 			requests.
+		</para>
+	</section>
+
+	<section id="dovecot::highperformance">
+		<title>Dovecot high-performance mode</title>
+		<para>
+			&ucsUCS; configures Dovecot to run in "High-security mode" by default.
+			Each connection is served by a separate login process.
+			This security has a price: for each connection at least two processes must run.
+		</para>
+		<para>
+			Thus installations with 10.000s of users hit operating system boundaries.
+			For this case Dovecot offers the "High-performance mode".
+			To activate it, login processes are allowed to serve more than one connection.
+			To configure this run
+<programlisting language="sh">
+ucr mail/dovecot/limits/imap-login/service_count=0
+</programlisting>
+			If <literal>client_limit=1000</literal> and <literal>process_limit=100</literal> are set, only 100 login processes are started, but each serves up to 1000 connections &ndash; a total of 100.000 connections.
+		</para>
+		<para>
+			The cost of this is that if a login process is compromised, an attacker might read the login credentials and emails of all users this login process is serving.
+		</para>
+		<para>
+			To distribute the load of the login processes evenly between CPU cores, <envar>mail/dovecot/limits/imap-login/process_min_avail</envar> should be set to the number of CPU cores in the system.
 		</para>
 	</section>
 </chapter>

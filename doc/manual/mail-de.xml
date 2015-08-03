@@ -1065,7 +1065,7 @@ postmap /etc/postfix/smtp_auth
 			<programlisting language="sh">doveadm who -1 | wc -l</programlisting>
 		</para>
 		<para>
-			Um die Beschränkungen zu verändern, können die &ucsUCRV; <envar>mail/dovecot/limits/*</envar> angepasst werden.
+			Um die Beschränkungen zu verändern, können die &ucsUCRV;s <envar>mail/dovecot/limits/*</envar> angepasst werden.
 			Der Vorgang ist auf Grund des komplexen Zusammenspiels dieser Variablen nur halb automatisch.
 			Die Bedeutung aller Variablen kann in der Dovecot Dokumentation nachgelesen werden: <xref linkend="dovecot-wiki-services"/>.
 		</para>
@@ -1093,7 +1093,12 @@ config: Warning: service anvil { client_limit=1603 } is lower than required unde
 			Die Dienste <literal>auth</literal> (Zuständig für Login und SSL-Verbindungen) sowie <literal>anvil</literal> (Zuständig für Statistiken) haben noch das Standardlimit.
 			Es werden zwar je 3000 POP3- und IMAP-Verbindungen und -Prozesse erlaubt, aber die Anzahl der Prozesse für Login und SSL ist nun zu niedrig um sie alle zu bedienen.
 			Dies wird dazu führen, dass Logins fehlschlagen.
-			Die Werte für diese Dienste müssen nun der Fehlermeldung entsprechend angepasst werden:
+		</para>
+		<para>
+			Die hohen Werte kommen dadurch zustande, dass mit <literal>default_client_limit</literal> und <literal>default_process_limit</literal> nicht nur die Beschränkungen von IMAP und POP3 erhöht werden, sondern auch einiger weiterer Dienste wie <literal>lmtp</literal> und <literal>managesieve-login</literal>. Diese Dienste können nun mehr zu überwachende Prozesse starten und theoretisch mehr Authentifikationsanfragen stellen, wodurch sich die maximale Anzahl gleichzeitiger Verbindungen zu den Diensten <literal>auth</literal> und <literal>anvil</literal> erhöht.
+		</para>
+		<para>
+			Die Werte für die Dienste müssen nun der Fehlermeldung entsprechend angepasst werden:
 <programlisting language="sh">
 ucr set mail/dovecot/limits/auth/client_limit=15000 mail/dovecot/limits/anvil/client_limit=12003
 doveadm reload
@@ -1104,35 +1109,13 @@ master: Warning: fd limit (ulimit -n) is lower than required under max. load (20
 </screen>
 			Das vom Linux-Kernel kontrolliere <literal>ulimit</literal> (die erlaubte Anzahl gleichzeitig geöffneter Dateien/Verbindungen pro Prozess) wird nur bei einem Neustart des Dovecot-Dienstes verändert, daher:
 <programlisting language="sh">
-/etc/init.d/dovecot restart
+invoke-rc.d dovecot restart
 </programlisting>
 			Nun erscheint keine Fehlermeldung mehr, und IMAP- und POP3-Server akzeptieren nun beide je 3000 Verbindungen.
 		</para>
-		<section id="mail::serverconfig::limits::highperformance">
-			<title>High-Performance Modus</title>
-			<para>
-				In der Standardkonfiguration von UCS wird Dovecot im <foreignphrase>High-security mode</foreignphrase> betrieben.
-				Jede Verbindung wird von einem separaten Login-Prozess betreut.
-				Diese Sicherheit hat einen Preis: Pro Benutzer und Verbindung laufen mindestens zwei separate Prozesse.
-			</para>
-			<para>
-				Installationen mit 10.000en Benutzern stoßen daher an Betriebssystemgrenzen.
-				Dovecot kann in einem solchen Fall im <foreignphrase>High-performance mode</foreignphrase> betrieben werden.
-				Um ihn zu aktivieren, wird den Login-Prozessen erlaubt, mehr als eine Verbindung zu bedienen.
-				Dies wird konfiguriert mit:
-<programlisting language="sh">
-ucr set mail/dovecot/limits/imap-login/service_count=0
-</programlisting>
-				Wird nun z.B. <literal>client_limit=1000</literal> und <literal>process_limit=100</literal> gesetzt, so werden nur 100 Login-Prozesse gestartet, diese bedienen jedoch jeweils bis zu 1000 Verbindungen &ndash; insgesamt 100.000 Verbindungen.
-			</para>
-			<para>
-				Der Preis:
-				Würde ein Login-Prozess kompromittiert, könnte der Angreifer womöglich die Logindaten und E-Mails aller anderen Benutzer, die dieser Prozess bedient, abgreifen.
-			</para>
-			<para>
-				Um die Last der Login-Prozesse zwischen allen CPU-Kernen gleichmäßig aufzuteilen, sollte <envar>mail/dovecot/limits/imap-login/process_min_avail</envar> auf die Anzahl der CPU-Kerne im System gesetzt werden.
-			</para>
-		</section>
+		<para>
+			&ucsUCS; konfiguriert Dovecot so, dass es standardmäßig im "High-security mode" läuft. In Installationen mit 10.000en Benutzern kann Dovecot im "High-performance mode" betrieben werden. Der Performance-Leitfaden beschreibt, wie dieser konfiguriert werden kann: <biblioref linkend="ucs-performance-guide"/>.
+		</para>
 	</section>
 
   </section>
