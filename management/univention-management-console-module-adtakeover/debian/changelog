@@ -1,3 +1,11 @@
+univention-management-console-module-adtakeover (2.0.7-2) unstable; urgency=medium
+
+  * Turn off the legacy DNS S4-Connector position_mapping during takeover
+  * Remove existing *._msdcs DNS records from domain zone before starting
+    the S4 connector (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 03 Aug 2015 20:53:18 +0200
+
 univention-management-console-module-adtakeover (2.0.7-1) unstable; urgency=medium
 
   * Fix traceback when ForeignSecurityPrincipal is on main LDAP partition
