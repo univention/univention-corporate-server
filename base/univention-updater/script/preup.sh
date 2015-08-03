@@ -446,6 +446,22 @@ then
 	fi
 fi
 
+# Bug #39051: update problems have been reported if the unmaintained repositories were included.
+if is_ucr_true repository/online/unmaintained ; then
+	if ! is_ucr_true update40/skip/deactivation_unmaintained ; then
+		echo "---------------------------------------------------------------------------"
+		echo "Note: unmaintained repositories are now disabled to prevent update problems"
+		echo "---------------------------------------------------------------------------"
+		ucr set repository/online/unmaintained=no
+		sed -i '/unmaintained/d' /etc/apt/sources.list.d/00_ucs_temporary_installation.list
+	else
+		echo "-----------------------------------------------------------------------------"
+		echo "Note: deactivation of unmaintained repositories has been skipped as requested"
+		echo "      via update40/skip/disable_unmaintained"
+		echo "-----------------------------------------------------------------------------"
+	fi
+fi
+
 mark_app_as_installed ()
 {
 	previous_apps="$(ucr get update/ucs40/installedapps)"
@@ -537,21 +553,6 @@ fi
 # autoremove before the update
 if ! is_ucr_true update40/skip/autoremove; then
     DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
-fi
-
-# Bug #39051: update problems have been reported if the unmaintained repositories were included.
-if is_ucr_true repository/online/unmaintained ; then
-	if ! is_ucr_true update40/skip/deactivation_unmaintained ; then
-		echo "---------------------------------------------------------------------------"
-		echo "Note: unmaintained repositories are now disabled to prevent update problems"
-		echo "---------------------------------------------------------------------------"
-		ucr set repository/online/unmaintained=no
-	else
-		echo "-----------------------------------------------------------------------------"
-		echo "Note: deactivation of unmaintained repositories has been skipped as requested"
-		echo "      via update40/skip/disable_unmaintained"
-		echo "-----------------------------------------------------------------------------"
-	fi
 fi
 
 # Added python2.7 to the supported versions
