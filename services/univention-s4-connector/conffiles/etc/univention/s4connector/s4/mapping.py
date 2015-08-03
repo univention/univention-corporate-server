@@ -1027,7 +1027,7 @@ else:
 
 			identify=univention.s4connector.s4.dc.identify,
 
-			con_search_filter='(|(objectClass=domain)(objectClass=sambaDomainName))',
+			con_search_filter='(|(&(objectClass=domain)(!(|(name=DomainDnsZones)(name=ForestDnsZones))))(objectClass=sambaDomainName))',
 
 @!@
 ignore_filter = ''

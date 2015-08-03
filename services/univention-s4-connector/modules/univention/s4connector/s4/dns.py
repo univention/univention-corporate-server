@@ -195,7 +195,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 				s4dn_utf16_le = None
 				if '@' == relativeDomainName:	## or dn starts with 'zoneName='
 					s4_filter = '(&(objectClass=dnsZone)(%s=%s))' % (s4_RR_attr, ol_zone_name)
-					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: search in S4 %s" % s4_filter)
+					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: search in S4")
 					for base in s4connector.s4_ldap_partitions:
 						result = s4connector._s4__search_s4(
 								base,
@@ -219,12 +219,11 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 							'relativeDomainName': ['@'],
 							'zoneName': [ol_zone_name],
 							},
-						'olddn': None,	## Just fake, not used
 						}
 					s4_zone_object = dns_dn_mapping(s4connector, fake_ol_zone_object, dn_mapping_stored, isUCSobject)
 					## and use its parent as the search base
 					s4_zone_dn = s4connector.lo_s4.parentDn(s4_zone_object['dn'])
-					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: search in s4 %s=%s" % (s4_RR_attr, relativeDomainName))
+					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: search in S4")
 					result = s4connector._s4__search_s4(
 							s4_zone_dn,
 							ldap.SCOPE_SUBTREE,
@@ -243,6 +242,8 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					else:
 						## Case: "moved" (?)
 						s4dn = s4dn[:s4pos2] + dn[pos2:]
+						## The next line looks wrong to me: the source DN is a UCS dn here..
+						## But this is just like samaccountname_dn_mapping does it:
 						newdn = s4dn.lower().replace(s4connector.lo_s4.base.lower(), s4connector.lo.base.lower())					
 						ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: move case newdn=%s" % newdn)
 				else:
@@ -302,7 +303,6 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 							'objectClass': ['top', 'dnsZone'],
 							'dc': [s4_zone_name],
 						},
-						'olddn': None,	## Just fake, not used
 						}
 					ol_zone_object = dns_dn_mapping(s4connector, fake_s4_zone_object, dn_mapping_stored, isUCSobject)
 					## and use that as the search base
@@ -313,8 +313,11 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 
 				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: UCS filter: (&%s(%s=%s))" % (ol_oc_filter, ol_search_attr, s4_RR_val))
 				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: UCS base: %s" % (base,))
-				ucsdn_result = s4connector.search_ucs(filter=u'(&%s(%s=%s))' % (ol_oc_filter, ol_search_attr, s4_RR_val),
+				try:
+					ucsdn_result = s4connector.search_ucs(filter=u'(&%s(%s=%s))' % (ol_oc_filter, ol_search_attr, s4_RR_val),
 								   base=base, scope='sub', attr=('dn',))
+				except univention.admin.uexceptions.noObject:
+					ucsdn_result = None
 
 				try:
 					ucsdn = ucsdn_result[0][0]
@@ -339,8 +342,6 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					else:
 						new_rdn = 'relativeDomainName=%s,zoneName=%s' % (s4_RR_val, s4_zone_name)
 					newdn = new_rdn + ',' + s4connector.property['dns'].ucs_default_dn
-					if not (dn_key == 'olddn' or (dn_key == 'dn' and not 'olddn' in obj)):
-						ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: move case newdn=%s" % newdn)
 
 			try:
 				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: mapping for key '%s':" % dn_key)

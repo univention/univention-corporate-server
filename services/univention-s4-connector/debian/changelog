@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.16-37) unstable; urgency=medium
+
+  * Filter out DC=DomainDnsZones, these are no usual containers (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 03 Aug 2015 20:09:02 +0200
+
 univention-s4-connector (9.0.16-36) unstable; urgency=low
 
   * also look for dn_attr=dn_attr_val in
