@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-s4-connector
+fix: 9.0.16-36.567.201508031855
+version: [2]
+desc: |
+ This update addresses the following issue:
+ * A bug concerning renaming computer objects has been fixed.
+bug: [37709]
