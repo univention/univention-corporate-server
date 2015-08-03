@@ -1,4 +1,4 @@
-ucs-test (5.0.163-1) unstable; urgency=low
+ucs-test (5.0.163-2) unstable; urgency=low
 
   * Bug #37709: add test tests/52_s4connector/403rename_computer_object 
 
