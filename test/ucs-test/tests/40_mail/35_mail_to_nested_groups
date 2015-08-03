@@ -1,0 +1,96 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test mail to nested groups
+## tags: [apptest]
+## exposure: dangerous
+## packages: [univention-mail-server]
+
+from essential.mail import send_mail, check_delivery
+import time
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+
+def main():
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		with udm_test.UCSTestUDM() as udm:
+			domain = ucr.get('domainname')
+			password = 'univention'
+			mails_list= []
+			users_list = []
+			for i in xrange(3):
+				mail = '%s@%s' % (uts.random_name(), domain)
+				user_dn , username = udm.create_user(
+					set={
+						'password'           : password,
+						'mailHomeServer'     : '%s.%s' % (ucr.get('hostname'), domain),
+						'mailPrimaryAddress' : mail
+					}
+				)
+				mails_list.append(mail)
+				users_list.append(user_dn)
+			group1_name = uts.random_name()
+			group1_mail = '%s@%s' % (group1_name, domain)
+			group1_dn = udm.create_object(
+				'groups/group',
+				users = users_list[0],
+				position = 'cn=groups,%s' % ucr.get('ldap/base'),
+				set={
+					'name'        : group1_name,
+					'mailAddress' : group1_mail,
+					'users'       : users_list[1],
+				}
+			)
+			group2_name = uts.random_name()
+			group2_mail = '%s@%s' % (group2_name, domain)
+			group2_dn = udm.create_object(
+				'groups/group',
+				position = 'cn=groups,%s' % ucr.get('ldap/base'),
+				set={
+					'name'        : group2_name,
+					'mailAddress' : group2_mail,
+					'users'       : users_list[2],
+				}
+			)
+			group3_name = uts.random_name()
+			group3_mail = '%s@%s' % (group3_name, domain)
+			udm.create_object(
+				'groups/group',
+				nestedGroup = group1_dn,
+				position = 'cn=groups,%s' % ucr.get('ldap/base'),
+				set={
+					'name'        : group3_name,
+					'mailAddress' : group3_mail,
+					'nestedGroup' : group2_dn
+				}
+			)
+
+			token = str(time.time())
+			send_mail(recipients=group1_mail, msg=token)
+			for i, mail in enumerate(mails_list):
+				should_be_delivered = False
+				if i in [0, 1]:
+					should_be_delivered = True
+				print  40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered)
+				check_delivery(token, mail, should_be_delivered)
+
+			token = str(time.time())
+			send_mail(recipients=group2_mail, msg=token)
+			for i, mail in enumerate(mails_list):
+				should_be_delivered = False
+				if i in [2]:
+					should_be_delivered = True
+				print  40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered)
+				check_delivery(token, mail, should_be_delivered)
+
+			token = str(time.time())
+			send_mail(recipients=group3_mail, msg=token)
+			for i, mail in enumerate(mails_list):
+				should_be_delivered = True
+				print  40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered)
+				check_delivery(token, mail, should_be_delivered)
+
+
+if __name__ == '__main__':
+	main()
+
+# vim: set ft=python ts=4 sw=4 noet :
