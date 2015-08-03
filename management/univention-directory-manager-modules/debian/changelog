@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.31-9) unstable; urgency=medium
+
+  * Allow _msdcs in syntax of dns/forward_zone (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 03 Aug 2015 20:10:18 +0200
+
 univention-directory-manager-modules (10.0.31-8) unstable; urgency=low
 
   * Bug #18512: sort country names after translating them
