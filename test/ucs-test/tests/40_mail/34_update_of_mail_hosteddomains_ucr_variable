@@ -1,0 +1,37 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test update of mail/hosteddomains ucr variable
+## tags: [apptest]
+## exposure: dangerous
+
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+def main():
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		with udm_test.UCSTestUDM() as udm:
+			maildomain = '%s.%s' % (uts.random_name(), uts.random_name())
+			udm.create_object(
+				'mail/domain',
+				position='cn=domain,cn=mail,%s' % ucr.get('ldap/base'),
+				name = maildomain
+			)
+			ucr.load()
+			registered = ucr.get('mail/hosteddomains')
+			if maildomain not in registered:
+				utils.fail('maildomain (%s) not registered in mail/hosteddomains')
+			udm.remove_object(
+				'mail/domain',
+				dn = 'cn=%s,cn=domain,cn=mail,%s' % (maildomain, ucr.get('ldap/base'))
+			)
+			ucr.load()
+			registered = ucr.get('mail/hosteddomains')
+			if maildomain in registered:
+				utils.fail('maildomain (%s) is removed but still registered in mail/hosteddomains')
+
+
+if __name__ == '__main__':
+	main()
+
+# vim: set ft=python ts=4 sw=4 noet :
