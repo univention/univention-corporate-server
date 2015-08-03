@@ -1,5 +1,11 @@
 ucs-test (5.0.163-1) unstable; urgency=low
 
+  * Bug #37709: add test tests/52_s4connector/403rename_computer_object 
+
+ -- Felix Botner <botner@univention.de>  Mon, 03 Aug 2015 18:56:31 +0200
+
+ucs-test (5.0.163-1) unstable; urgency=low
+
   * Bug #17807: add test 35_mail_to_nested_groups
   * Bug #39053: add test 34_update_of_mail_hosteddomains_ucr_variable
 
