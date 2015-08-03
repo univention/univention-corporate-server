@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (2.0.7-3) unstable; urgency=medium
+
+  * Fix time synchronization to german UCS (Bug #39069)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 03 Aug 2015 20:54:25 +0200
+
 univention-management-console-module-adtakeover (2.0.7-2) unstable; urgency=medium
 
   * Turn off the legacy DNS S4-Connector position_mapping during takeover

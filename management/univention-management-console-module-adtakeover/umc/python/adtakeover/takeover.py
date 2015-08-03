@@ -62,6 +62,7 @@ from univention.admin.handlers.dns.reverse_zone import mapSubnet
 import univention.lib
 import univention.lib.s4
 from datetime import datetime, timedelta
+import locale
 import univention.config_registry
 # from samba.netcmd.common import netcmd_get_domain_infos_via_cldap
 from samba.dcerpc import nbt
@@ -802,10 +803,15 @@ class AD_Takeover():
 			return False
 
 		TIME_FORMAT = "%a %b %d %H:%M:%S %Z %Y"
+		time_string = stdout.strip()
+		old_locale = locale.getlocale(locale.LC_TIME)
 		try:
-			remote_datetime = datetime.strptime(stdout.strip(), TIME_FORMAT)
+			locale.setlocale(locale.LC_TIME, (None, None)) # 'C' as env['LC_ALL'] some lines earlier
+			remote_datetime = datetime.strptime(time_string, TIME_FORMAT)
 		except ValueError as ex:
-			raise TimeSynchronizationFailed(_("AD Server did not return proper time string: %s.") % (stdout.strip(),))
+			raise TimeSynchronizationFailed(_("AD Server did not return proper time string: %s.") % (time_string,))
+		finally:
+			locale.setlocale(locale.LC_TIME, old_locale)
 
 		local_datetime = datetime.today()
 		delta_t = local_datetime - remote_datetime
