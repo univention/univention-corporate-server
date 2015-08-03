@@ -5,7 +5,7 @@ src: univention-lib
 fix: 4.0.5-20.305.201507291733
 version: [2]
 desc: |
-  This update addresses the following issue:
-  * Two new internal functions for UCS license checks have been added
-  to the package univention-lib.
+ This update addresses the following issue:
+ * Two new internal functions for UCS license checks have been added
+   to the package univention-lib.
 bug: [38951]
