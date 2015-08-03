@@ -1,3 +1,10 @@
+univention-s4-connector (9.0.16-36) unstable; urgency=low
+
+  * also look for dn_attr=dn_attr_val in
+    samaccountname_dn_mapping to detect modrdn (Bug #37709)
+
+ -- Felix Botner <botner@univention.de>  Mon, 03 Aug 2015 18:49:33 +0200
+
 univention-s4-connector (9.0.16-35) unstable; urgency=medium
 
   * Some fixes (Bug #34184)

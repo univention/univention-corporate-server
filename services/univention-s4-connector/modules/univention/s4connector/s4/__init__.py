@@ -275,9 +275,14 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 							pass # values are not the same codec
 								
 				
-				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: search in s4 samaccountname=%s"%value)
-				result = s4connector.lo_s4.lo.search_ext_s(s4connector.lo_s4.base,ldap.SCOPE_SUBTREE,
-								     compatible_modstring('(&(objectclass=%s)(samaccountname=%s))'%(ocs4,value)), ['sAMAccountName'])
+				filter_s4 = '(objectclass=%s)(samaccountname=%s)' % (ocs4, value)
+				if dn_attr and dn_attr_val:
+					# also look for dn attr (needed to detect modrdn)
+					filter_s4 = filter_s4 + '(%s=%s)' % (dn_attr, dn_attr_val)
+				filter_s4 = compatible_modstring('(&%s)' % filter_s4)
+				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: search in s4 for %s" % filter_s4)
+				result = s4connector.lo_s4.lo.search_ext_s(s4connector.lo_s4.base,ldap.SCOPE_SUBTREE, filter_s4, ['sAMAccountName'])
+
 				if result and len(result)>0 and result[0] and len(result[0])>0 and result[0][0]: # no referral, so we've got a valid result
 					s4dn = encode_attrib(result[0][0])
 					s4pos2 = len(univention.s4connector.s4.explode_unicode_dn(s4dn)[0])
