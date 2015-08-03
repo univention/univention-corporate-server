@@ -104,9 +104,8 @@ define([
 				this.own(this._tooltip);
 			} else {
 				if (this._tooltip) {
-					//destroy tooltip
-					this._tooltip.destroy();
-					this._tooltip = null;
+					//deactivate tooltip
+					this._tooltip.set('label', '');
 				}
 			}
 		}
