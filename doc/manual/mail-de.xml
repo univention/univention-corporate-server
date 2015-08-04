@@ -1065,7 +1065,7 @@ postmap /etc/postfix/smtp_auth
 			<programlisting language="sh">doveadm who -1 | wc -l</programlisting>
 		</para>
 		<para>
-			Um die Beschränkungen zu verändern, können die &ucsUCRV;s <envar>mail/dovecot/limits/*</envar> angepasst werden.
+			Um die Beschränkungen zu verändern, können die &ucsUCRV;n <envar>mail/dovecot/limits/*</envar> angepasst werden.
 			Der Vorgang ist auf Grund des komplexen Zusammenspiels dieser Variablen nur halb automatisch.
 			Die Bedeutung aller Variablen kann in der Dovecot Dokumentation nachgelesen werden: <xref linkend="dovecot-wiki-services"/>.
 		</para>
@@ -1080,7 +1080,8 @@ postmap /etc/postfix/smtp_auth
 		<para>
 			Um 3000 Verbindungen von Benutzern zu ihren E-Mails zu erlauben, muss daher eine weitere &ucsUCRV; gesetzt werden:
 			<programlisting language="sh">
-ucr set mail/dovecot/limits/default_client_limit=3000 mail/dovecot/limits/default_process_limit=3000
+ucr set mail/dovecot/limits/default_client_limit=3000
+ucr set mail/dovecot/limits/default_process_limit=3000
 doveadm reload
 			</programlisting>
 		</para>
@@ -1100,7 +1101,8 @@ config: Warning: service anvil { client_limit=1603 } is lower than required unde
 		<para>
 			Die Werte für die Dienste müssen nun der Fehlermeldung entsprechend angepasst werden:
 <programlisting language="sh">
-ucr set mail/dovecot/limits/auth/client_limit=15000 mail/dovecot/limits/anvil/client_limit=12003
+ucr set mail/dovecot/limits/auth/client_limit=15000
+ucr set mail/dovecot/limits/anvil/client_limit=12003
 doveadm reload
 </programlisting>
 			Ein Blick in <filename>/var/log/dovecot.info</filename> offenbart nun noch eine letzte Warnung:

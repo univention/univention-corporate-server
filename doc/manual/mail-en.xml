@@ -1029,7 +1029,8 @@ postmap /etc/postfix/smtp_auth
 		<para>
 			To allow 3000 clients to connect to their emails, another &ucsUCRV; has to be set:
 			<programlisting language="sh">
-ucr set mail/dovecot/limits/default_client_limit=3000 mail/dovecot/limits/default_process_limit=3000
+ucr set mail/dovecot/limits/default_client_limit=3000
+ucr set mail/dovecot/limits/default_process_limit=3000
 doveadm reload
 			</programlisting>
 		</para>
@@ -1049,7 +1050,8 @@ config: Warning: service anvil { client_limit=1603 } is lower than required unde
 		<para>
 			The values have to be adapted, using the numbers from the log file:
 <programlisting language="sh">
-ucr set mail/dovecot/limits/auth/client_limit=15000 mail/dovecot/limits/anvil/client_limit=12003
+ucr set mail/dovecot/limits/auth/client_limit=15000
+ucr set mail/dovecot/limits/anvil/client_limit=12003
 doveadm reload
 </programlisting>
 			Another warning appears in <filename>/var/log/dovecot.info</filename>:
