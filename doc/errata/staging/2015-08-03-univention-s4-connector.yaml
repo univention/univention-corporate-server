@@ -2,9 +2,12 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-s4-connector
-fix: 9.0.16-36.567.201508031855
+fix: 9.0.16-38.569.201508041551
 version: [2]
 desc: |
  This update addresses the following issue:
+ * Synchronize DC=DomainDNSZones and DC=ForestDNSZones, this is relevant
+   in AD Takeover scenarios. For updated domains, this is not activated.
  * A bug concerning renaming computer objects has been fixed.
-bug: [37709]
+ * Ignore unknown Samba4 DNS objects instead of creating a dns/host_record.
+bug: [34184, 37709, 39077]
