@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (2.0.7-4) unstable; urgency=low
+
+  * Bug #38792: fix error if primary interface isn't eth*
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 03 Aug 2015 14:11:20 +0200
+
 univention-management-console-module-adtakeover (2.0.7-3) unstable; urgency=medium
 
   * Fix time synchronization to german UCS (Bug #39069)
