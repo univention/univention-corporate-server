@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.31-10) unstable; urgency=low
+
+  * Bug #38835: Adapted user modify for s4connector
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 04 Aug 2015 14:55:42 +0200
+
 univention-directory-manager-modules (10.0.31-9) unstable; urgency=medium
 
   * Allow _msdcs in syntax of dns/forward_zone (Bug #34184)
