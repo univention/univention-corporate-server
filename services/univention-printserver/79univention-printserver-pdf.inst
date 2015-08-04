@@ -41,35 +41,6 @@ univention-directory-manager settings/printeruri modify "$@" \
 	--dn="cn=printeruris,cn=cups,cn=univention,$ldap_base" \
 	--append printeruri="cups-pdf:/" || die
 
-# redefine credentials --binddn to -D and --bindpwd to -w in case of server/role is backup or slave
-credentials=()
-while getopts  "h-:" option; do
-    case "${option}" in
-        -)
-            case "${OPTARG}" in
-                binddn)
-                    credentials+=("-D" "${!OPTIND}")
-                    OPTIND=$((OPTIND+1))
-                    ;;
-                bindpwd)
-                    credentials+=("-w" "${!OPTIND}")
-                    OPTIND=$((OPTIND+1))
-                    ;;
-            esac;;
-        *) ;;
-    esac
-done
-
-if [ $JS_LAST_EXECUTED_VERSION -le 2 ]; then
-	if [ "$cups_keep_ppds" != "true" ]; then
-		if univention-ldapsearch -h "$ldap_master" -p "$ldap_master_port" ${credentials[@]} "(&(objectclass=univentionPrinterModels)(cn=PDF))" dn | grep -q ^dn:
-		then
-			univention-directory-manager settings/printermodel remove "$@" \
-				--dn "cn=PDF,cn=cups,cn=univention,$ldap_base" || die
-		fi
-	fi
-fi
-
 # install the new PDF manufacturer
 univention-directory-manager settings/printermodel create "$@" --ignore_exists \
 	--position "cn=cups,cn=univention,$ldap_base" --set name=PDF \
