@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: Check home page by FQDN using plain http
+## desc: Check home page by FQDN using https
 ## tags: [apptest]
 ## exposure: safe
 
