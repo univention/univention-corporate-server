@@ -1,3 +1,10 @@
+univention-management-console-module-adtakeover (2.0.7-5) unstable; urgency=medium
+
+  * Remove existing * DNS records from _msdcs.<domain> zone before starting
+    the S4 connector (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Aug 2015 20:45:56 +0200
+
 univention-management-console-module-adtakeover (2.0.7-3) unstable; urgency=medium
 
   * Fix time synchronization to german UCS (Bug #39069)
