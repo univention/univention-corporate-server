@@ -1,9 +1,55 @@
-univention-s4-connector (9.0.16-31) unstable; urgency=low
+univention-s4-connector (9.0.16-38) unstable; urgency=medium
+
+  * Fix dns_type comparison to ignore unknown DNS objects instread of
+    creating a dns/host_record for them (Bug #39077)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Aug 2015 15:50:30 +0200
+
+univention-s4-connector (9.0.16-37) unstable; urgency=medium
+
+  * Filter out DC=DomainDnsZones, these are no usual containers (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 03 Aug 2015 20:09:02 +0200
+
+univention-s4-connector (9.0.16-36) unstable; urgency=low
 
   * also look for dn_attr=dn_attr_val in
     samaccountname_dn_mapping to detect modrdn (Bug #37709)
  
  -- Felix Botner <botner@univention.de>  Mon, 03 Aug 2015 18:52:17 +0200
+
+univention-s4-connector (9.0.16-35) unstable; urgency=medium
+
+  * Some fixes (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Jul 2015 23:23:17 +0200
+
+univention-s4-connector (9.0.16-34) unstable; urgency=medium
+
+  * Some fixes (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Jul 2015 22:17:28 +0200
+
+univention-s4-connector (9.0.16-33) unstable; urgency=medium
+
+  * Fix syntax issue (Bug #39040)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Jul 2015 11:48:45 +0200
+
+univention-s4-connector (9.0.16-32) unstable; urgency=medium
+
+  * Fix sync of SOA record changes back to UDM (Bug #39040)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Jul 2015 23:40:35 +0200
+
+univention-s4-connector (9.0.16-31) unstable; urgency=medium
+
+  * Use a dn_mapping_function for DNS objects (Bug #34184)
+  * Monitor changes on DC=DomainDnsZones and DC=ForestDnsZones partitions
+  * New UCR variable connector/s4/mapping/dns/position
+  * For new installations write new DNS zones to DC=DomainDnsZones
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Jul 2015 23:38:16 +0200
 
 univention-s4-connector (9.0.16-30) unstable; urgency=medium
 

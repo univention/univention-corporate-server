@@ -59,6 +59,8 @@ global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base
 			'CN=DomainUpdates,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=Password Settings Container,CN=System,@%@connector/s4/ldap/base@%@',
 			'DC=RootDNSServers,CN=MicrosoftDNS,CN=System,@%@connector/s4/ldap/base@%@',
+			'DC=RootDNSServers,CN=MicrosoftDNS,DC=DomainDnsZones,@%@connector/s4/ldap/base@%@',
+			'DC=RootDNSServers,CN=MicrosoftDNS,DC=ForestDnsZones,@%@connector/s4/ldap/base@%@',
 			'CN=File Replication Service,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=RpcServices,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=Meetings,CN=System,@%@connector/s4/ldap/base@%@',
@@ -600,42 +602,56 @@ univention.s4connector.s4.sid_mapping.print_sid_mapping(configRegistry)
 				},
 
 		),
+@!@
+
+sync_mode_dns = configRegistry.get('connector/s4/mapping/dns/syncmode')
+if not sync_mode_dns:
+	sync_mode_dns = configRegistry.get('connector/s4/mapping/syncmode')
+
+if configRegistry.get('connector/s4/mapping/dns/position') == 'legacy':
+	s4_dns_ldap_base = "CN=System,%s" % (configRegistry['connector/s4/ldap/base'],)
+else:
+	s4_dns_ldap_base = "DC=DomainDnsZones,%s" % (configRegistry['connector/s4/ldap/base'],)
+
+dns_section = '''
 	'dns': univention.s4connector.property (
-			ucs_default_dn='cn=dns,@%@ldap/base@%@',
-			con_default_dn='CN=MicrosoftDNS,CN=System,@%@connector/s4/ldap/base@%@',
+			ucs_default_dn='cn=dns,%(ldap_base)s',
+			con_default_dn='CN=MicrosoftDNS,%(s4_dns_ldap_base)s',
 			ucs_module='dns/dns',
 			
 			identify=univention.s4connector.s4.dns.identify,
-
-			@!@
-if configRegistry.get('connector/s4/mapping/dns/syncmode'):
-	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/dns/syncmode')
-else:
-	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/syncmode')
-@!@
+			sync_mode='%(sync_mode_dns)s',
 
 			scope='sub',
 
 			con_search_filter='(|(objectClass=dnsNode)(objectClass=dnsZone))',
 
-			position_mapping = [( ',cn=dns,@%@ldap/base@%@', ',CN=MicrosoftDNS,CN=System,@%@connector/s4/ldap/base@%@' )],
+			dn_mapping_function=[ univention.s4connector.s4.dns.dns_dn_mapping ],
+''' % {
+	'ldap_base': configRegistry['ldap/base'],
+	'sync_mode_dns': sync_mode_dns,
+	's4_dns_ldap_base': s4_dns_ldap_base,
+	}
 
-@!@
 ignore_filter = ''
 for dns in configRegistry.get('connector/s4/mapping/dns/ignorelist', '').split(','):
 	if dns:
 		ignore_filter += '(%s)' % (dns)
 if ignore_filter:
-	print "			ignore_filter='(|%s)'," % ignore_filter
-@!@
+	dns_section = dns_section + '''
+			ignore_filter='(|%s)',''' % ignore_filter
 
+	dns_section = dns_section + '''
 			ignore_subtree = global_ignore_subtree,
 			
 			con_sync_function = univention.s4connector.s4.dns.ucs2con,
 			ucs_sync_function = univention.s4connector.s4.dns.con2ucs,
 
-		),
-@!@
+		),'''
+
+print dns_section
+
+
 if configRegistry.is_true('connector/s4/mapping/gpo', True):
 	ignore_filter = ''
 	for gpo in configRegistry.get('connector/s4/mapping/gpo/ignorelist', '').split(','):
@@ -1011,7 +1027,7 @@ else:
 
 			identify=univention.s4connector.s4.dc.identify,
 
-			con_search_filter='(|(objectClass=domain)(objectClass=sambaDomainName))',
+			con_search_filter='(|(&(objectClass=domain)(!(|(name=DomainDnsZones)(name=ForestDnsZones))))(objectClass=sambaDomainName))',
 
 @!@
 ignore_filter = ''
