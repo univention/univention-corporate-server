@@ -50,25 +50,6 @@ from univention.config_registry import ConfigRegistry
 # "global" translation for univention-appcenter
 _ = Translation('univention-appcenter').translate
 
-def app_is_running(app):
-	from univention.appcenter.app import AppManager
-	if isinstance(app, basestring):
-		app = AppManager.find(app)
-	if app:
-		if not app.docker:
-			return False
-		if not app.is_installed():
-			return False
-		try:
-			from univention.appcenter.docker import Docker
-		except ImportError:
-			return None
-		else:
-			docker = Docker(app)
-			return docker.is_running()
-	else:
-		return None
-
 def docker_is_running():
 	return call_process(['invoke-rc.d', 'docker', 'status']).returncode == 0
 
