@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-management-console-module-appcenter
-fix: 4.1.20-43.388.201507301424
+fix: 4.1.20-45.390.201508050052
 version: [2]
 desc: |
   This update addresses the following issue:
@@ -11,4 +11,5 @@ desc: |
    * The startup performance of the App Center has been improved.
    * Fix an exception in error handling.
    * The display of buttons for installing, updating etc. has been improved.
-bug: [38544, 38345, 38926, 39042]
+   * Added functionality for univention-upgrade to upgrade apps
+bug: [38544, 38345, 38926, 39042, 38697]
