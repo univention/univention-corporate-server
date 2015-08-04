@@ -1360,6 +1360,24 @@ class AD_Takeover():
 					except univention.admin.uexceptions.ldapError, e:
 						print "Removal of %s '%s' failed" % (module_name, obj.dn,)
 
+		## Also remove records from a _msdcs zone in case it exists separately
+		objs = udm_dns_forward_zone.lookup(self.co, self.lo, "zoneName=_msdcs.%s" % self.ucr["domainname"], scope="domain", base=self.position.getDomain(), unique=1)
+		for zone_obj in objs:
+			zone_position=univention.admin.uldap.position(self.lo.base)
+			zone_position.setDn(zone_obj.dn)
+
+			for module_name in ("dns/host_record", "dns/alias", "dns/srv_record"):
+				udm_module = udm_modules.get(module_name)
+				udm_modules.init(self.lo, zone_position, udm_module)
+				objs = udm_module.lookup(self.co, self.lo, "relativeDomainName=*", superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=0)
+				for obj in objs:
+					print "Removing %s '%s' from Univention Directory Manager" % (module_name, obj.dn,)
+					try:
+						obj.remove()
+					except univention.admin.uexceptions.ldapError, e:
+						print "Removal of %s '%s' failed" % (module_name, obj.dn,)
+
+
 	def start_s4_connector(self, progress):
 		old_sleep = self.ucr.get("connector/s4/poll/sleep", "5")
 		old_retry = self.ucr.get("connector/s4/retryrejected", "10")
