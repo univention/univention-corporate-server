@@ -5,7 +5,7 @@ src: univention-s4-connector
 fix: 9.0.16-38.569.201508041551
 version: [2]
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * Synchronize DC=DomainDNSZones and DC=ForestDNSZones, this is relevant
    in AD Takeover scenarios. For updated domains, this is not activated.
  * A bug concerning renaming computer objects has been fixed.
