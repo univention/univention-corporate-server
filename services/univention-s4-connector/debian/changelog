@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.16-39) unstable; urgency=medium
+
+  * Fix case of new DNS object sync_from_ucs (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Aug 2015 20:34:20 +0200
+
 univention-s4-connector (9.0.16-38) unstable; urgency=medium
 
   * Fix dns_type comparison to ignore unknown DNS objects instread of
