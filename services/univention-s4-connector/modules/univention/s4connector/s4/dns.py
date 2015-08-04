@@ -1146,11 +1146,11 @@ def _identify_dns_con_object(s4connector, object):
 				if not dnsRecords:
 					return None
 
-				dns_types=[]
+				dns_types=set()
 				for dnsRecord in dnsRecords:
 					dnsRecord=dnsRecord.encode('latin1')
 					dnsRecord_DnssrvRpcRecord=ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
-					dns_types.append(dnsRecord_DnssrvRpcRecord.wType)
+					dns_types.add(dnsRecord_DnssrvRpcRecord.wType)
 
 				if dnsp.DNS_TYPE_PTR in dns_types:
 					return 'ptr_record'
@@ -1158,7 +1158,7 @@ def _identify_dns_con_object(s4connector, object):
 					return 'alias'
 				elif dnsp.DNS_TYPE_SRV in dns_types:
 					return 'srv_record'
-				elif dnsp.DNS_TYPE_A in dns_types or dnsp.DNS_TYPE_AAAA:
+				elif set((dnsp.DNS_TYPE_A, dnsp.DNS_TYPE_AAAA)) & dns_types:
 					return 'host_record'
 				
 	return None
