@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-management-console-module-adtakeover
+fix: 9.0.11-12.467.201507301300
+version: [2]
+desc: |
+ This update addresses the following issue:
+ * A bug has been addressed which prevented the usage of AD Takover
+   with a primary interface other than eth*.
+bug: [38729]
