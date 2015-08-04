@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-management-console-module-adtakeover
-fix: 2.0.7-4.63.201508041107
+fix: 2.0.7-5.64.201508042057
 version: [2]
 desc: |
  This update addresses the following issues:
