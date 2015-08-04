@@ -9,4 +9,5 @@ desc: |
   * The "contact" tab of the users module has a "country" entry now.
   * Renaming of domain controller or memberserver computers is prevented now.
   * User accounts can now be disabled if the license count is exceeded.
-bug: [18512, 38364, 38835]
+  * Allow _msdcs in syntax of dns/forward_zone
+bug: [18512, 34184, 38364, 38835]
