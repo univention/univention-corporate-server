@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-s4-connector
-fix: 9.0.16-38.569.201508041551
+fix: 9.0.16-39.570.201508042053
 version: [2]
 desc: |
  This update addresses the following issues:
