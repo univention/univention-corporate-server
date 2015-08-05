@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-46) unstable; urgency=medium
+
+  * Bug #39042: adjusted button labeling
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 05 Aug 2015 08:52:27 +0200
+
 univention-management-console-module-appcenter (4.1.20-45) unstable; urgency=medium
 
   * Bug #38697: Removed a function not needed at the moment

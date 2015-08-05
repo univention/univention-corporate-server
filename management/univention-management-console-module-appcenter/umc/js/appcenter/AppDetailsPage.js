@@ -151,7 +151,7 @@ define([
 			if (this.app.canOpen()) {
 				buttons.push({
 					name: 'open',
-					label: this.app.getWebInterfaceURL() ? _('Open web site') : _('Open module'),
+					label: this.app.getOpenLabel(),
 					defaultButton: true,
 					'class': 'umcAppButton umcAppButtonFirstRow',
 					callback: lang.hitch(this, function() {
@@ -304,7 +304,7 @@ define([
 					});
 					if (item.canOpen()) {
 						_addButton({
-							label: _('Open'),
+							label: item.getOpenLabel(),
 							callback: function() {
 								item.open();
 							},
