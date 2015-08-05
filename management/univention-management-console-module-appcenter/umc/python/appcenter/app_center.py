@@ -1327,6 +1327,22 @@ class Application(object):
 					value = ''
 				super_ucr.set_registry_var(registry_key % key, value)
 
+	def set_metering_ucr_variables(self, super_ucr, unset=False):
+		registry_key = 'appreport/%s/%%s' % self.id
+		anything_set = False
+		for key in ['object_type', 'object_filter', 'object_attribute', 'attribute_type', 'attribute_filter']:
+			value = self.get('appreport%s' % key.replace('_', '')) or ''
+			if unset:
+				value = ''
+			if value != '':
+				anything_set = True
+			super_ucr.set_registry_var(registry_key % key, value)
+		if anything_set:
+			report = 'true'
+		else:
+			report = ''
+		super_ucr.set_registry_var(registry_key % 'report', report)
+
 	def register(self, component_manager, package_manager, tell_ldap=False):
 		'''Registers the component of the app in UCR and unregisters
 		all other versions in one operation ("atomic"). Does an apt-get
@@ -1368,6 +1384,7 @@ class Application(object):
 				#   there are multiple already registered
 				if app is not to_be_registered: # dont remove the one we want to register (may be already added)
 					app.set_ucs_overview_ucr_variables(super_ucr, unset=True)
+					app.set_metering_ucr_variables(super_ucr, unset=True)
 					if app.unregister(component_manager, super_ucr):
 						# this app actually was registered!
 						previously_registered = app
@@ -1378,6 +1395,7 @@ class Application(object):
 					previously_registered = app
 			if to_be_registered:
 				to_be_registered.set_ucs_overview_ucr_variables(super_ucr)
+				to_be_registered.set_metering_ucr_variables(super_ucr)
 				if not to_be_registered.is_current(component_manager.ucr): # does not hold for withoutrepository
 					# add the new repository component for the app
 					component_manager.put_app(to_be_registered, super_ucr)

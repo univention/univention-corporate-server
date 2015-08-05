@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-47) unstable; urgency=medium
+
+  * Bug #38956: Add UCR variables for app reporting
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 05 Aug 2015 13:43:52 +0200
+
 univention-management-console-module-appcenter (4.1.20-46) unstable; urgency=medium
 
   * Bug #39042: adjusted button labeling
