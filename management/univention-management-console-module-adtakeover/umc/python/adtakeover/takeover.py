@@ -663,7 +663,7 @@ class AD_Connection():
 				try:
 					msds_behavior_version = int(obj["msDS-Behavior-Version"][0])
 				except ValueError, ex:
-					log.error("Cannot parse msDS-Behavior-Version: %s" % (obj["msDS-Behavior-Version"][0],)) 
+					log.error("Cannot parse msDS-Behavior-Version: %s" % (obj["msDS-Behavior-Version"][0],))
 				if msds_behavior_version > 4:
 					raise TakeoverError(_("The Active Directory domain has a function level of Windows Server 2012 or newer, Samba currently only supports up to Windows 2008R2: %s") % (msds_behavior_version))
 			else:
@@ -1134,7 +1134,7 @@ class AD_Takeover():
 
 			if udm_type:
 				run_and_output_to_log(["/usr/sbin/univention-directory-manager", udm_type, "create", "--ignore_exists", "--position", position, "--set" , "name=%s" % ou_name], log.debug)
-		
+
 		## Identify and rename UCS group names to match Samba4 (localized) group names
 		AD_well_known_sids = {}
 		for (rid, name) in univention.lib.s4.well_known_domain_rids.items():
@@ -1638,6 +1638,12 @@ class AD_Takeover_Finalize():
 		## Determine primary network interface, UCS 3.0-2 style:
 		ip_version = determine_IP_version(self.ad_server_ip)
 
+		interfaces = Interfaces()
+		aI = []
+		for interface in interfaces.all_interfaces:
+			aI.append(interface[0])
+
+		new_interface = None
 		if not ip_version:
 			msg=[]
 			msg.append("Error: Parsing AD server address failed")
@@ -1645,15 +1651,15 @@ class AD_Takeover_Finalize():
 			log.error("\n".join(msg))
 			new_interface = None
 		elif ip_version == 4:
-			for i in xrange(4):
-				if "interfaces/eth%s/address" % i in self.ucr:
-					for j in xrange(4):
-						if not "interfaces/eth%s_%s/address" % (i, j) in self.ucr and j > 0:
-							self.primary_interface = "eth%s" % i
-							new_interface_ucr = "eth%s_%s" % (i, j)
-							new_interface = "eth%s:%s" % (i, j)
+			for iInterface in aI:
+				if "interfaces/%s/address" % (iInterface) in self.ucr:
+					for i in xrange(4):
+						if not "interfaces/%s_%s/address" % (iInterface, i) in self.ucr and i > 0:
+							self.primary_interface = "%s" % (iInterface)
+							new_interface_ucr = "%s_%s" % (iInterface, i)
+							new_interface = "%s:%s" % (iInterface, i)
 							break
-			
+
 			if new_interface:
 				guess_network = self.ucr["interfaces/%s/network" % self.primary_interface]
 				guess_netmask = self.ucr["interfaces/%s/netmask" % self.primary_interface]
@@ -1674,15 +1680,14 @@ class AD_Takeover_Finalize():
 				msg.append("         Failed to setup a virtual IPv4 network interface with the AD IP address.")
 				log.warn("\n".join(msg))
 		elif ip_version == 6:
-			for i in xrange(4):
-				if "interfaces/eth%s/ipv6/default/address" % i in self.ucr:
-					for j in xrange(4):
-						if not "interfaces/eth%s_%s/ipv6/default/address" % (i, j) in self.ucr and j > 0:
-							self.primary_interface = "eth%s" % i
-							new_interface_ucr = "eth%s_%s" % (i, j)
-							new_interface = "eth%s:%s" % (i, j)
-							break
-			
+			if "interfaces/%s/ipv6/default/address" % iInterface in self.ucr:
+				for j in xrange(4):
+					if not "interfaces/%s_%s/ipv6/default/address" % (iInterface, j) in self.ucr and j > 0:
+						self.primary_interface = "%s" % iInterface
+						new_interface_ucr = "%s_%s" % (iInterface, j)
+						new_interface = "%s:%s" % (iInterface, j)
+						break
+
 			if new_interface:
 				guess_prefix = self.ucr["interfaces/%s/ipv6/default/prefix" % self.primary_interface]
 				run_and_output_to_log(["/usr/share/univention-updater/disable-apache2-umc"], log.debug)
@@ -1808,7 +1813,7 @@ class AD_Takeover_Finalize():
 			"saltPrincipal": "DNS/%s@%s" % (self.local_fqdn, self.ucr["kerberos/realm"]),
 			"name": dns_SPN_account_name,
 			"msDS-KeyVersionNumber": dnsKeyVersion})
-		
+
 		# returncode = run_and_output_to_log(["/usr/share/univention-samba4/scripts/create_dns-host_spn.py"], log.debug)
 		# if returncode != 0:
 		#	log.error("Creation of DNS SPN account 'dns-%s' failed. See %s for details." % (ucr["hostname"], LOGFILE_NAME,))
@@ -2092,7 +2097,7 @@ def wait_for_listener_replication(progress = None, max_time=None):
 	return True
 
 def wait_for_s4_connector_replication(ucr, lp, progress = None, max_time=None):
-	
+
 	conn = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
 	c = conn.cursor()
 
@@ -2351,7 +2356,7 @@ def operatingSystem_attribute(ucr, samdb):
 			delta.dn = obj.dn
 			delta["operatingSystemVersion"] = ldb.MessageElement("3.0", ldb.FLAG_MOD_REPLACE, "operatingSystemVersion")
 			samdb.modify(delta)
-			
+
 def takeover_DC_Behavior_Version(ucr, remote_samdb, samdb, ad_server_name, sitename):
 	## DC Behaviour Version
 	msg = remote_samdb.search(base="CN=NTDS Settings,CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (ad_server_name, sitename, samdb.domain_dn()),
