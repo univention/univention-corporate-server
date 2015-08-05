@@ -1,0 +1,35 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: mysql-5.5
+fix: 5.5.44-0.15.201508042121
+version: [2]
+desc: |
+ Multiple security issues have been fixed in MySQL 5.5.44.
+ Since Oracle does not disclose sufficient information to
+ provide backported patches, we needed to update MySQL
+ to the new release.
+bug:
+ - 37578
+cve:
+ - CVE-2015-0411
+ - CVE-2015-0382
+ - CVE-2015-0381
+ - CVE-2015-0391
+ - CVE-2015-0432
+ - CVE-2014-6568
+ - CVE-2015-0374
+ - CVE-2015-0441
+ - CVE-2015-0433
+ - CVE-2015-0499
+ - CVE-2015-0501
+ - CVE-2015-0505
+ - CVE-2015-2568
+ - CVE-2015-2571
+ - CVE-2015-2573
+ - CVE-2015-4752
+ - CVE-2015-4737
+ - CVE-2015-2648
+ - CVE-2015-2643
+ - CVE-2015-2620
+ - CVE-2015-2582
