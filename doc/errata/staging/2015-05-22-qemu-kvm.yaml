@@ -5,7 +5,7 @@ src: qemu-kvm
 fix: 1.1.2+dfsg-6.29.46.201506231342
 version: [6]
 desc: |
- These vulernabilities have been fixed in qemu-kvm:
+ These vulnerabilities have been fixed in qemu-kvm:
  * Buffer overflow in the e1000 driver (CVE-2012-6075)
  * Buffer overflow in virtio-net (CVE-2014-0150)
  * Buffer overflow in processing SMART commands in the emulated IDE adaptor
