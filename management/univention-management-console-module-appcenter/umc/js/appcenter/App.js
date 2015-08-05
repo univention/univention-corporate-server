@@ -291,6 +291,16 @@ define([
 			} else {
 				return !!this.umcModuleName;
 			}
+		},
+
+		getOpenLabel: function() {
+			var module = this.getModule();
+			var webInterface = this.getWebInterfaceURL();
+			if (module) {
+				return _('Open module');
+			} else if (webInterface) {
+				return _('Open web site');
+			}
 		}
 	});
 
