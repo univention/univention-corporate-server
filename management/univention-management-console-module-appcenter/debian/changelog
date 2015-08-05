@@ -1,6 +1,6 @@
 univention-management-console-module-appcenter (4.1.20-47) unstable; urgency=medium
 
-  * Bug #38956: Add UCR variables for app reporting
+  * Bug #38954: Add UCR variables for app reporting
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 05 Aug 2015 13:43:52 +0200
 
