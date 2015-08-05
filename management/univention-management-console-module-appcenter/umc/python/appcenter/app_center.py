@@ -298,6 +298,8 @@ class Application(object):
 		def _escape_value(key, value):
 			if key in ['longdescription']:
 				return value
+			if key.startswith('appreport'):
+				return value
 			if key == 'ucsoverviewcategory':
 				if value == 'False':
 					return ''
