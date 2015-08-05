@@ -1,3 +1,9 @@
+ucs-test (6.0.0-2) unstable; urgency=medium
+
+  * Moved 99check_log_files from 01_base/ to 00_checks/ (Bug #39087)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Aug 2015 15:37:57 +0200
+
 ucs-test (6.0.0-1) unstable; urgency=medium
 
   * Skip 10_ldap/50ppolicy_account_lockout on DC slaves (Bug #39086)
