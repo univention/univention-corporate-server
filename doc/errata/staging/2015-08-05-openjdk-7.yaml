@@ -1,0 +1,49 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-0
+src: openjdk-7
+fix: 7u79-2.5.6-1.16.201508041927
+version: [2]
+desc: |
+ The following security issues have been fixed in openjdk-7:
+ * deserialization issue in ObjectInputStream.readSerialData() (CVE-2015-2590)
+ * unspecified vulnerability in the hotspot component (CVE-2015-2596)
+ * non-constant time comparisons in crypto code (CVE-2015-2601)
+ * NSS/JCE: missing EC parameter validation in ECDH_Derive() (CVE-2015-2613)
+ * unspecified vulnerability in the 2D component (CVE-2015-2619)
+ * incorrect code permission checks in RMIConnectionImpl (CVE-2015-2621)
+ * name for reverse DNS lookup used in certificate identity check (CVE-2015-2625)
+ * IIOPInputStream type confusion vulnerability (CVE-2015-2628)
+ * ICU: integer overflow in LETableReference verifyLength() (CVE-2015-2632)
+ * unspecified vulnerability in the 2D component (CVE-2015-2637)
+ * unspecified vulnerability in the 2D component (CVE-2015-2638)
+ * SSL/TLS: "Invariance Weakness" vulnerability in RC4 stream cipher (CVE-2015-2808)
+ * LOGJAM: TLS connections which support export grade DHE key-exchange are vulnerable to MITM attacks (CVE-2015-4000)
+ * improper permission checks in MBeanServerInvocationHandler (CVE-2015-4731)
+ * insufficient context checks during object deserialization (CVE-2015-4732)
+ * RemoteObjectInvocationHandler allows calling finalize() (CVE-2015-4733)
+ * incorrect OCSP nextUpdate checking (CVE-2015-4748)
+ * DnsClient fails to release request information after error (CVE-2015-4749)
+ * ICU: missing boundary checks in layout engine (CVE-2015-4760)
+bug:
+ - 38928
+cve:
+ - CVE-2015-2590
+ - CVE-2015-2596
+ - CVE-2015-2601
+ - CVE-2015-2613
+ - CVE-2015-2619
+ - CVE-2015-2621
+ - CVE-2015-2625
+ - CVE-2015-2628
+ - CVE-2015-2632
+ - CVE-2015-2637
+ - CVE-2015-2638
+ - CVE-2015-2808
+ - CVE-2015-4000
+ - CVE-2015-4731
+ - CVE-2015-4732
+ - CVE-2015-4733
+ - CVE-2015-4748
+ - CVE-2015-4749
+ - CVE-2015-4760
