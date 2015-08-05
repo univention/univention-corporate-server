@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-management-console-module-appcenter
-fix: 4.1.20-46.392.201508050905
+fix: 4.1.20-47.393.201508051345
 version: [2]
 desc: |
   This update addresses the following issue:
@@ -12,4 +12,6 @@ desc: |
    * Fix an exception in error handling.
    * The display of buttons for installing, updating etc. has been improved.
    * Added functionality for univention-upgrade to upgrade apps.
-bug: [38544, 38345, 38926, 39042, 38697]
+   * ini files may now specify how the app is to be included in the app
+     reporting tool.
+bug: [38544, 38345, 38926, 39042, 38697, 38954]
