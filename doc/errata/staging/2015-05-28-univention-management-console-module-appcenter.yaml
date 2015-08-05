@@ -11,5 +11,5 @@ desc: |
    * The startup performance of the App Center has been improved.
    * Fix an exception in error handling.
    * The display of buttons for installing, updating etc. has been improved.
-   * Added functionality for univention-upgrade to upgrade apps
+   * Added functionality for univention-upgrade to upgrade apps.
 bug: [38544, 38345, 38926, 39042, 38697]
