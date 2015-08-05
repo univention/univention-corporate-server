@@ -1,3 +1,9 @@
+ucs-test (5.0.163-3) unstable; urgency=medium
+
+  * Skip 10_ldap/50ppolicy_account_lockout on DC slaves (Bug #39086)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Aug 2015 15:25:42 +0200
+
 ucs-test (5.0.163-2) unstable; urgency=low
 
   * Bug #37709: add test tests/52_s4connector/403rename_computer_object 
