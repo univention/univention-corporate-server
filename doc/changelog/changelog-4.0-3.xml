@@ -373,15 +373,26 @@
 	</section>
 
 
-	<!--
 	<section id="changelog:lib">
 		<title>Univention base libraries</title>
 		<itemizedlist>
 			<listitem><simpara>
+				Two new internal functions for UCS license checks have been added to the package univention-lib  (<u:bug>38951</u:bug>).
+			<listitem><simpara>
+			</simpara></listitem>
+				If the initialization of the package manager failed it is retried  (<u:bug>38951</u:bug>).
+			<listitem><simpara>
+			</simpara></listitem>
+				Held packages can't cause a traceback anymore  (<u:bug>38951</u:bug>).
+			<listitem><simpara>
+			</simpara></listitem>
+				Error messages when opening apt Packages files have improved (<u:bug>38951</u:bug>).
+			<listitem><simpara>
+			</simpara></listitem>
+				Error messages when the system has too few free disk space have improved (<u:bug>38951</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
-	-->
 
 
 	<section id="changelog:service">
@@ -488,6 +499,14 @@
 			</itemizedlist>
 		</section>
 		-->
+		<section id="changelog:service:kerberos">
+			<title>Kerberos server</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Huawei Unified Storage System S5500 V3 failed to join Samba AD domains. The heimdal kerberos server has been imrpoved to allow the join (<u:bug>38827</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
 
 		<!--
 		<section id="changelog:service:other">
