@@ -1,3 +1,11 @@
+ucs-test (5.0.164-3) unstable; urgency=medium
+
+  * Skip 61_udm-
+    users/16_user_modification_set_pwdChangeNextLogin_kerberos_option
+    (Bug #39097)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 06 Aug 2015 20:45:53 +0200
+
 ucs-test (5.0.164-2) unstable; urgency=medium
 
   * 01_base/50ktutil: use wait_for_replication (Bug #39096)
