@@ -2,12 +2,11 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-directory-manager-modules
-fix: 10.0.31-10.1333.201508041458
+fix: 10.0.31-11.1336.201508061247
 version: [2]
 desc: |
   This update addresses the following issues:
   * The "contact" tab of the users module has a "country" entry now.
-  * Allow _msdcs in syntax of dns/forward_zone
   * Renaming of domain controller or memberserver computers is prevented now.
   * User accounts can now be disabled if the license count is exceeded.
-bug: [18512, 34184, 38364, 38835]
+bug: [18512, 38364, 38835]
