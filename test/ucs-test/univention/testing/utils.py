@@ -234,6 +234,53 @@ class AutoCallCommand(object):
 		if self.exit_cmd:
 			subprocess.call(self.exit_cmd, stdout=self.pipe_stdout, stderr=self.pipe_stderr)
 
+class FollowLogfile(object):
+	"""
+		Prints the contents of the listed files on exit of the with block if
+		an exception occured.
+		Set always=True to also print them without exception.
+		You may wish to make the server flush its logs before existing the
+		with block. Use AutoCallCommand inside the block for that.
+
+		with FollowLogfile(logfiles=['/var/log/syslog', '/var/log/mail.log']) as flf:
+			with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'],
+				exit_cmd=['doveadm', 'log', 'reopen']) as acc:
+				...
+
+		with FollowLogfile(logfiles=['/var/log/syslog'], always=True) as flf:
+			with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'],
+				exit_cmd=['doveadm', 'log', 'reopen']) as acc:
+				...
+	"""
+	def __init__(self, logfiles=None, always=False):
+		"""
+		:param logfiles: list of absolut filenames to read from
+		:param always: bool, if True: print logfile change also if no error occurred (default=False)
+		"""
+		assert isinstance(logfiles, list)
+		self.logfiles = logfiles
+		assert isinstance(always, bool)
+		self.always = always
+		self.logfile_pos = dict()
+
+	def __enter__(self):
+		for logfile in self.logfiles:
+			with open(logfile, "rb") as log:
+				log.seek(0, 2)
+				self.logfile_pos[logfile] = log.tell()
+		return self
+
+	def __exit__(self, exc_type, exc_value, traceback):
+		if self.always or exc_type:
+			for logfile, pos in self.logfile_pos.items():
+				with open(logfile, "r") as log:
+					log.seek(pos, 0)
+					lim = (79 - len(logfile) - 2) / 2
+					lin = "{0} {1} {0}".format("=" * lim, logfile)
+					print lin + "=" * (79-len(lin))
+					sys.stdout.writelines(log)
+					print "=" * 79
+
 
 def wait_for_replication():
 	sys.stdout.flush()
