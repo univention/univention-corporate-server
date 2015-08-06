@@ -105,7 +105,6 @@
 	</section>
 
 
-	<!--
 	<section id="changelog:domain">
 		<title>Domain services</title>
 
@@ -113,9 +112,11 @@
 			<title>OpenLDAP</title>
 			<itemizedlist>
 				<listitem><simpara>
+ 					The diversion of the "msgpo.schema" file introduced as a fix for <u:bug>38488</u:bug> has been removed again (<u:bug>38566</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 
+	<!--
 			<section id="changelog:domain:openldap:acl">
 				<title>LDAP ACL changes</title>
 				<itemizedlist>
@@ -123,11 +124,13 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
+	-->
 
 			<section id="changelog:domain:openldap:schema">
 				<title>LDAP schema changes</title>
 				<itemizedlist>
 					<listitem><simpara>
+						The attribute "ldapFilter" has been added to the schema for univentionPolicy objects (<u:bug>36255</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
@@ -136,10 +139,21 @@
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
 					<listitem><simpara>
+						LDAP entries using non-ASCII-characters in their DN are now handled more correctly in case of case differences (<u:bug>35334</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						A confusing error message was removed (<u:bug>32819</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						The Listener is now restarted asynchronously when the network interfaces are reconfigured (<u:bug>36532</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						The Notifier is now restarted asynchronously when the network interfaces are reconfigured (<u:bug>36532</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
 
+	<!--
 			<section id="changelog:domain:dnsserver">
 				<title>DNS server</title>
 				<itemizedlist>
@@ -147,9 +161,9 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
+	-->
 		</section>
 	</section>
-	-->
 
 
 	<section id="changelog:umc">
@@ -161,14 +175,41 @@
 				<listitem><simpara>
 					The "clear input" and "view password" icons are now diplayed correctly in the login dialog with Internet Explorer 10 and above (<u:bug>38127</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+  					It is now possible to create a core dump of the UMC-Webserver (<u:bug>37280</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+  					A check for free disk space is now only done once per file upload request (<u:bug>38335</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+  					The place holders in the login dialogue are now diplayed correctly in Internet Explorer 9 (<u:bug>38127</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+  					Scrolling in the appcenter on mobile devices is now more responsive (<u:bug>38050</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A missing pre dependency to python-univention-management-console has been added (<u:bug>38617</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:umc:server">
 			<title>Univention Management Console server</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The UMC server does not crash anymore during request processing (<u:bug>37366</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Errors due to a not running LDAP server are now handled by the UMC server process (<u:bug>36794</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					It is now possible to create a core dump of the UMC server and UMC module processes (<u:bug>37280</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The username is not treated case sensitive anymore when changing an expired password in the UMC login (<u:bug>38826</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Code for error handling has been moved into the UMC core server (<u:bug>36794</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -177,6 +218,25 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
+					If the initialization of the App Center module fails, an error message is shown (<u:bug>33627</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Display error message if contacting the LDAP server fails (<u:bug>36794</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The error messages when contacting the App Center server or the UCS activation fails have been improved (<u:bug>35678</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Errors when opening apt Packages files are now handled (<u:bug>38112</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Errors when the system has too few free disk space are now handled (<u:bug>38129</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Error messages which are raised from the package manager are now displayed instead of displaying a traceback (<u:bug>37230</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The wording for app maintainer has been adjusted to app provider (<u:bug>37591</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -185,10 +245,27 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Attributes of the UCR policy are now sorted (<u:bug>32146</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Broken UDM handler modules are ignored when updating module list (<u:bug>38297</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					An exception when handling LDAP exceptions is prevented now (<u:bug>38616</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The attribute "ldapFilter" has been added to policy UDM modules (<u:bug>36255</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The UDM module policies/mailquota has been moved to the package univention-mail-cyrus. From now on the module will only be available if the UCS domain contains an UCS system with installed cyrus mail stack (<u:bug>38473</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A default user template for new users can be configured by the UCR variable "directory/manager/web/modules/users/user/add/default". The variable expects the DN or the label of a user template (<u:bug>38832</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
+		<!--
 		<section id="changelog:umc:setup">
 			<title>Basic settings / Appliance mode</title>
 			<itemizedlist>
