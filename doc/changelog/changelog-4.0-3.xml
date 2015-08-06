@@ -90,15 +90,14 @@
 			-->
 		</section>
 
-		<!--
 		<section id="changelog:basis:boot">
 			<title>Boot Loader</title>
 			<itemizedlist>
 				<listitem><simpara>
+ 					The title for the entry of UCS in the GRUB boot menu can be configured through the Univention Configuration Registry variable 'grub/title' (<u:bug>38779</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
 		<!--
 		<section id="changelog:basis:other">
@@ -296,7 +295,7 @@
 					Uppercase hostnames and hostnames beginning with a digit are now possible (<u:bug>37816</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					The package univention-welcome-screen will be installed on new installations (<u:bug>37537</u:bug>).
+					The package univention-welcome-screen has been added. It shows an informative screen which indicates how the system can be accessed via a web browser (<u:bug>37537</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Fixed an error which could occur while installing UCS with non-default locales via the text based installer, resulting in an unconfigured system (<u:bug>38382</u:bug>).
@@ -812,6 +811,9 @@
 			</listitem>
 			<listitem><simpara>
 				The time zone database was updated to include information about the scheduled leap second at the end of June 2015 (<u:bug>38717</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The package clucene-core has been updated to version 2.3.3.4 (<u:bug>34839</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
