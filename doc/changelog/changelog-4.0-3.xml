@@ -56,15 +56,15 @@
 	<section id="changelog:basic">
 		<title>Basic system services</title>
 
-		<!--
 		<section id="changelog:basic:kernel">
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
+                The Linux kernel has been updated to 3.16.7-ckt11. It provides many bugfixes and fixes
+                several vulnerabilities (<u:bug>37385</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
 		<!--
 		<section id="changelog:basis:ucr">
@@ -155,15 +155,16 @@
 	<section id="changelog:umc">
 		<title>Univention Management Console</title>
 
-		<!--
 		<section id="changelog:umc:web">
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The "clear input" and "view password" icons are now diplayed correctly in the login dialog with Internet Explorer 10 and above (<u:bug>38127</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
+		<!--
 		<section id="changelog:umc:server">
 			<title>Univention Management Console server</title>
 			<itemizedlist>
@@ -386,15 +387,16 @@
 	<section id="changelog:service">
 		<title>System services</title>
 
-		<!--
 		<section id="changelog:service:mail">
 			<title>Mail services</title>
 			<itemizedlist>
 				<listitem><simpara>
+  					This update provides the new package univention-mail-dovecot which integrates the IMAP/POP3 server dovecot into the UCS mail stack (<u:bug>34839</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
+		<!--
 		<section id="changelog:service:virus">
 			<title>Spam/virus detection and countermeasures</title>
 			<itemizedlist>
@@ -483,15 +485,14 @@
 	<section id="changelog:virt">
 		<title>Virtualization</title>
 
-		<!--
 		<section id="changelog:virt:uvmm">
 			<title>Univention Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
 				<listitem><simpara>
+ 					The VirtIO drivers for Windows have been updated to version 0.1.105 to fix a problem with broken driver signatures in Windows 2012 server (<u:bug>38655</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
 		<!--
 		<section id="changelog:virt:operation">
@@ -517,15 +518,22 @@
 
 	<section id="changelog:win">
 		<title>Services for Windows</title>
-		<!--
 		<section id="changelog:win:samba">
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Samba has been upgraded to version 4.2.3 (<u:bug>37939</u:bug>).
+				<listitem><simpara>
+				</simpara></listitem>
+ 					The list of groups in the Kerberos PAC_LOGON_INFO now also contains the RID of primary group, this fixes GPO security filtering for primary group membership (<u:bug>37101</u:bug>).
+				<listitem><simpara>
+				</simpara></listitem>
+ 					Huawei Unified Storage System S5500 V3 failed to join Samba AD domains (<u:bug>38827</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
+		<!--
 		<section id="changelog:win:takeover">
 			<title>Univention AD Takeover</title>
 			<itemizedlist>
