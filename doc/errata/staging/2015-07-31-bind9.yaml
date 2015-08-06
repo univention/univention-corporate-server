@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-6
 src: bind9
-fix: 1:9.8.4.dfsg.P1-6+nmu2.111.201507311324
+fix: 1:9.8.4.dfsg.P1-6+nmu2.113.201508061528
 version: [6]
 desc: |
  The DNS server bind9 has been updated to the new release 9.8.4-P1 which
@@ -11,6 +11,10 @@ desc: |
  These vulernabilities have been fixed in bind9:
  * Missing error handling in delegation handling could lead to denial 
    of service against named (CVE-2014-8500).
+ * Denial of service when DNSSEC validation and the managed-keys feature
+   are enabled (CVE-2015-1349). Both not enabled in UCS by default.
+ * Denial of service: crash in DNSSEC validation of specially crafted
+   zone data (CVE-2015-4620). Not enabled in UCS by default.
  * An error in handling TKEY queries could be used to trigger a REQUIRE assertion
    failure leading to denial of service against named (CVE-2015-5477).
 
@@ -24,4 +28,6 @@ bug:
  - 37247
 cve:
  - CVE-2014-8500
+ - CVE-2015-1349
+ - CVE-2015-4620
  - CVE-2015-5477
