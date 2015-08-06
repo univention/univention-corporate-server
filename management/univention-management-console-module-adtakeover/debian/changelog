@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (2.0.7-7) unstable; urgency=low
+
+  * Bug #38729: Reverted r62613, postponed to errata4.0-3
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 06 Aug 2015 15:09:45 +0200
+
 univention-management-console-module-adtakeover (2.0.7-6) unstable; urgency=medium
 
   * Revert r62607 r62643, postponed to errata4.0-3 (Bug #34184)
