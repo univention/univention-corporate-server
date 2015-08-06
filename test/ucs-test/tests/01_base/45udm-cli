@@ -3,9 +3,10 @@
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
+##  - domaincontroller_slave
+##  - memberserver
 ## tags:
 ##  - basic
-##  - WIP
 ##  - apptest
 ## packages:
 ##  - univention-directory-manager-tools
@@ -15,57 +16,27 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/samba.sh" || exit 137
 
 USERNAME=$(user_randomname)
 PASSWORD=univention
 
 info "Create a test user with UDM CLI" 
-user_create "$USERNAME" \
-	--set groups="cn=Administrators,cn=groups,$ldap_base"
+user_create "$USERNAME"
+
+wait_for_replication
+if checkpkg univention-samba4; then
+	wait_for_drs_replication "(sAMAccountName=$USERNAME)"
+fi
 
 ldapsearch -x -D "uid=$USERNAME,cn=users,$ldap_base" -w "$PASSWORD" -s base || RETVAL=110
 
-info -e "Try to get a kerberos ticket for the new user"
+info "Try to get a kerberos ticket for the new user"
 
-echo "$PASSWORD" | kinit --password-file=STDIN "$USERNAME"
-klist
-krsh -l "$USERNAME" "$hostname.$domainname" ls / || RETVAL=110
+echo "$PASSWORD" | kinit --password-file=STDIN "$USERNAME" || RETVAL=110
 
-# check if univention-samba is installed
-if [ -x /usr/sbin/smbd ]; then
-	# workaround for Bug #17821
-	if [ -x /etc/init.d/winbind ] && /etc/init.d/winbind status >/dev/null; then
-		invoke-rc.d winbind stop
-		sleep 3
-		case "$server_role" in
-		domaincontroller_master|domaincontroller_backup)
-			#univention-directory-manager users/user modify \
-			#	--dn "uid=join-backup,cn=users,$ldap_base" \
-			#	--append groups="cn=Domain Admins,cn=groups,$ldap_base"
-			#nscd -i group
-			#net rpc join -Ujoin-backup%$(cat /etc/backup-join.secret)
-			#univention-directory-manager users/user modify \
-			#	--dn "uid=join-backup,cn=users,$ldap_base" \
-			#	--remove groups="cn=Domain Admins,cn=groups,$ldap_base"
-			#nscd -i group
-			net rpc join -UAdministrator%univention
-			;;
-		domaincontroller_slave)
-			if checkpkg univention-samba-slave-pdc
-			then
-				net rpc join -UAdministrator%univention
-			else
-				net rpc join member -UAdministrator%univention
-			fi
-			;;
-		esac
-		invoke-rc.d winbind start
-	fi
-	info "Samba Logon with this new user"
-	smbclient -L localhost -U "${USERNAME}%${PASSWORD}" || RETVAL=110
-fi
-
-#TODO: get a kerberos ticket
+info "Samba Logon with this new user"
+smbclient -L localhost -U "${USERNAME}%${PASSWORD}" || RETVAL=110
 
 user_remove "$USERNAME"
 
