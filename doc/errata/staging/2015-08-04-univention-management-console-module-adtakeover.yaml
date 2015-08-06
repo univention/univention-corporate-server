@@ -2,12 +2,11 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-management-console-module-adtakeover
-fix: 2.0.7-5.64.201508042057
+fix: 2.0.7-6.65.201508061238
 version: [2]
 desc: |
  This update addresses the following issues:
- * Synchronize DC=DomainDnsZones and DC=ForestDnsZones
  * A bug has been addressed which prevented the usage of AD Takover
    with a primary interface other than eth*.
  * Fix time synchronization to german UCS
-bug: [34184, 38729, 39069]
+bug: [38729, 39069]
