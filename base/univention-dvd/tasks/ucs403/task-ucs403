@@ -570,7 +570,11 @@ imapsync
 attr
 lsb-core
 
-/* 7i App*/
+/* edyou App */
+nodejs
+npm
+
+/* 7i App */
 libapache2-mod-python
 php5-sqlite
 python-clearsilver

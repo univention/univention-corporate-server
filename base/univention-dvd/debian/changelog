@@ -1,3 +1,9 @@
+univention-dvd (0.2.29-14) unstable; urgency=low
+
+  * added nodejs and npm to tasklist (Bug #37972) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 06 Aug 2015 11:35:20 +0200
+
 univention-dvd (0.2.29-13) unstable; urgency=medium
 
   * More UCS 4.0-3 updates (Bug #38960)
