@@ -6,14 +6,14 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-4.0-2-en">
+<book lang="en" id="releasenotes-4.0-3-en">
 	<bookinfo>
-		<title>UCS 4.0-2 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.0-2</subtitle>
+		<title>UCS 4.0-3 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.0-3</subtitle>
 		<revhistory>
 			<revision>
-				<revnumber>4.0-2</revnumber>
-				<date>May 2015</date>
+				<revnumber>4.0-3</revnumber>
+				<date>August 2015</date>
 			</revision>
 		</revhistory>
 
@@ -50,7 +50,7 @@
 		<title>Release highlights</title>
 
 		<para>
-			With &ucsUCS; 4.0-2, the second point release of &ucsUCS; (UCS) 4.0 is now available.
+			With &ucsUCS; 4.0-3, the third point release of &ucsUCS; (UCS) 4.0 is now available.
 			It provides various improvements and bugfixes.
 			An overview of the most important changes:
 		</para>
@@ -251,10 +251,10 @@
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS 4.0-1:
+			Listed are the changes since UCS 4.0-2:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.0-2.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.0-3.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 
 	<bibliography id="bibliography">
