@@ -154,6 +154,7 @@ univention-mail-server
 univention-mail-postfix
 univention-mail-postfix-forward
 univention-mail-dovecot
+univention-mail-cyrus
 libpam-univentionmailcyrus
 univention-spamassassin
 univention-antivir-mail
@@ -161,7 +162,10 @@ univention-fetchmail
 univention-postgrey
 procmail
 pyzor
+univention-mail-cyrus-murder
 univention-mail-canonical-maps
+univention-mail-cyrus-pop
+univention-mail-cyrus-imap
 php-gettext
 
 /* Virtualization */
