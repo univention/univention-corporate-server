@@ -1,4 +1,4 @@
-ucs-test (5.0.164-3) UNRELEASED; urgency=medium
+ucs-test (5.0.164-3) unstable; urgency=medium
 
   * Skip 61_udm-
     users/16_user_modification_set_pwdChangeNextLogin_kerberos_option
