@@ -1,12 +1,12 @@
 product: ucs
 release: "4.0"
-scope: ucs_4.0-0-errata4.0-0
+scope: ucs_4.0-0-errata4.0-2
 src: bind9
 fix: 1:9.8.4.dfsg.P1-6+nmu2.114.201508061539
 version: [2]
 desc: |
- An error in handling TKEY queries could be used to trigger a REQUIRE assertion
- failure leading to denial of service against named.
+ An error in handling TKEY queries could be used to trigger a REQUIRE
+ assertion failure leading to denial of service against named.
 bug:
  - 39058
 cve:
