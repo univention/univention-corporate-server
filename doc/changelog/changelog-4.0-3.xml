@@ -523,11 +523,11 @@
 			<itemizedlist>
 				<listitem><simpara>
 					Samba has been upgraded to version 4.2.3 (<u:bug>37939</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
  					The list of groups in the Kerberos PAC_LOGON_INFO now also contains the RID of primary group, this fixes GPO security filtering for primary group membership (<u:bug>37101</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
  					Huawei Unified Storage System S5500 V3 failed to join Samba AD domains (<u:bug>38827</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
