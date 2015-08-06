@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (2.0.7-6) unstable; urgency=medium
+
+  * Revert r62607 r62643, postponed to errata4.0-3 (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 06 Aug 2015 12:36:49 +0200
+
 univention-management-console-module-adtakeover (2.0.7-5) unstable; urgency=medium
 
   * Remove existing * DNS records from _msdcs.<domain> zone before starting
