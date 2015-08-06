@@ -391,7 +391,26 @@
 			<title>Mail services</title>
 			<itemizedlist>
 				<listitem><simpara>
-  					This update provides the new package univention-mail-dovecot which integrates the IMAP/POP3 server dovecot into the UCS mail stack (<u:bug>34839</u:bug>).
+  					This update provides the new package univention-mail-dovecot which integrates the IMAP/POP3 server dovecot into the UCS mail stack (<u:bug>34839</u:bug> <u:bug>38884</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+  					dovecot has been updated to version 2.2.13. The update provides several bugfixes and enhancements (<u:bug>34839</u:bug> <u:bug>38475</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The UCR variable mail/cyrus/imap/allowplaintext to (dis)allow plain text passwords over non-TLS connections has been added. The variable defaults to "no".
+					This changes the previous default behaviour! Plain text authentication over unencrypted connections is now disabled by default. To revert to the old behaviour set mail/cyrus/imap/allowplaintext=yes resp.  mail/dovecot/imap/allowplaintext=yes (<u:bug>38500</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The UDM module policies/mailquota has been moved to the package univention-mail-cyrus. The UDM module will only be available if the UCS mail stack with cyrus is installed (<u:bug>38473</u:bug> <u:bug>39004</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Postfix will no longer resolve address mappings (e.g. BCC) before handing them over to amavis for content scanning if an archive folder has been defined (<u:bug>14619</u:bug> <u:bug>38884</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					To configure the max. number of concurrent Amavis processes, a new UCR variable has been introduced: mail/antivir/max_servers. When unset, the current default "2" is used (<u:bug>37653</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Add options to check IP-FQDN-mapping as a means to fight spam. Adds two new UCR variables: mail/postfix/smtpd/restrictions/sender/reject_unknown_client_hostname and mail/postfix/smtpd/restrictions/sender/reject_unknown_reverse_client_hostname for weaker and stricter reverse DNS checking respectively (<u:bug>38292</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
