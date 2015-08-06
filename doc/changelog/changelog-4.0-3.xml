@@ -378,17 +378,17 @@
 		<itemizedlist>
 			<listitem><simpara>
 				Two new internal functions for UCS license checks have been added to the package univention-lib  (<u:bug>38951</u:bug>).
-			<listitem><simpara>
 			</simpara></listitem>
+			<listitem><simpara>
 				If the initialization of the package manager failed it is retried  (<u:bug>38951</u:bug>).
-			<listitem><simpara>
 			</simpara></listitem>
+			<listitem><simpara>
 				Held packages can't cause a traceback anymore  (<u:bug>38951</u:bug>).
-			<listitem><simpara>
 			</simpara></listitem>
+			<listitem><simpara>
 				Error messages when opening apt Packages files have improved (<u:bug>38951</u:bug>).
-			<listitem><simpara>
 			</simpara></listitem>
+			<listitem><simpara>
 				Error messages when the system has too few free disk space have improved (<u:bug>38951</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
