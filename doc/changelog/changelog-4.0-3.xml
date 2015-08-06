@@ -530,9 +530,29 @@
 				<listitem><simpara>
  					Huawei Unified Storage System S5500 V3 failed to join Samba AD domains (<u:bug>38827</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					A coding error in the Samba implementation of the BACKUPKEY serverwrap protocol may cause problems with retrieving saved passwords on Windows clients (DPAPI). This issue has been fixed (<u:bug>39025</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					This update adds support for the default profile directory paths of Windows 8, 8.1 and 10. For new users they will now be created automatically on first logon (<u:bug>38643</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The ldb library and tools have been upgraded to version 1.1.20 (<u:bug>37939</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The talloc library has been upgraded to version 2.1.2 (<u:bug>37939</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The tdb library and tools have been upgraded to version 1.3.6 (<u:bug>37939</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The tevent library has been upgraded to version 0.9.25 (<u:bug>37939</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The package univention-ldb-modules has been rebuilt to match the new Samba version 4.2.3 (<u:bug>37939</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
-
 		<!--
 		<section id="changelog:win:takeover">
 			<title>Univention AD Takeover</title>
@@ -541,15 +561,30 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<section id="changelog:win:s4c">
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The user synchronization failed if the username contains special characters like an apostrophe. This issue has been fixed (<u:bug>38614</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The Samba 4/Active Directory lockout attributes are now reset while synchronizing the password from UCS to Samba 4 (<u:bug>38557</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Some GPO and WMI attributes have not been treated as single-value. This issue has been fixed (<u:bug>37259</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Some scripts have been optimized to allow a faster restart when the network interfaces are re-configured (<u:bug>36532</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The synchronization of objects with umlauts has been improved, for example for nested groups (<u:bug>38645</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
+		<!--
 		<section id="changelog:win:adc">
 			<title>Univention Active Directory Connection</title>
 			<itemizedlist>
