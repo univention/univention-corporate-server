@@ -807,6 +807,7 @@
 					<listitem><simpara><package>smarty3</package></simpara></listitem>
 					<listitem><simpara><package>nodejs</package></simpara></listitem>
 					<listitem><simpara><package>npm</package></simpara></listitem>
+					<listitem><simpara><package>libv8-3.14.5</package></simpara></listitem>
 				</itemizedlist>
 			</listitem>
 			<listitem><simpara>
