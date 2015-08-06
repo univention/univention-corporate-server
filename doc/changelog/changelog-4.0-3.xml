@@ -155,6 +155,7 @@
 	<section id="changelog:umc">
 		<title>Univention Management Console</title>
 
+		<!--
 		<section id="changelog:umc:web">
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
@@ -194,6 +195,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<!--
 		<section id="changelog:umc:user">
@@ -229,6 +231,7 @@
 		</section>
 		-->
 
+		<!--
 		<section id="changelog:umc:license">
 			<title>License module</title>
 			<itemizedlist>
@@ -252,6 +255,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<!--
 		<section id="changelog:umc:share">
@@ -287,6 +291,7 @@
 		</section>
 		-->
 
+		<!--
 		<section id="changelog:umc:quota">
 			<title>Filesystem quota module</title>
 			<itemizedlist>
@@ -294,7 +299,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
+		<!--
 		<section id="changelog:umc:ucr">
 			<title>Univention Configuration Registry module</title>
 			<itemizedlist>
@@ -302,6 +309,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<!--
 		<section id="changelog:umc:ldap">
@@ -313,6 +321,7 @@
 		</section>
 		-->
 
+		<!--
 		<section id="changelog:umc:other">
 			<title>Other modules</title>
 			<itemizedlist>
@@ -320,6 +329,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<!--
 		<section id="changelog:umc:development">
@@ -362,6 +372,7 @@
 	</section>
 
 
+	<!--
 	<section id="changelog:lib">
 		<title>Univention base libraries</title>
 		<itemizedlist>
@@ -369,11 +380,13 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+	-->
 
 
 	<section id="changelog:service">
 		<title>System services</title>
 
+		<!--
 		<section id="changelog:service:mail">
 			<title>Mail services</title>
 			<itemizedlist>
@@ -397,6 +410,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<!--
 		<section id="changelog:service:nagios">
@@ -408,6 +422,7 @@
 		</section>
 		-->
 
+		<!--
 		<section id="changelog:service:ssl">
 			<title>SSL</title>
 			<itemizedlist>
@@ -423,6 +438,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<!--
 		<section id="changelog:service:systeminfo">
@@ -434,6 +450,7 @@
 		</section>
 		-->
 
+		<!--
 		<section id="changelog:service:apache">
 			<title>Apache</title>
 			<itemizedlist>
@@ -449,6 +466,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<!--
 		<section id="changelog:service:other">
@@ -465,6 +483,7 @@
 	<section id="changelog:virt">
 		<title>Virtualization</title>
 
+		<!--
 		<section id="changelog:virt:uvmm">
 			<title>Univention Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
@@ -472,6 +491,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<!--
 		<section id="changelog:virt:operation">
@@ -484,6 +504,7 @@
 		-->
 	</section>
 
+	<!--
 	<section id="changelog:container">
 		<title>Container Technologies</title>
 			<itemizedlist>
@@ -491,10 +512,12 @@
 				</simpara></listitem>
 			</itemizedlist>
 	</section>
+	-->
 
 
 	<section id="changelog:win">
 		<title>Services for Windows</title>
+		<!--
 		<section id="changelog:win:samba">
 			<title>Samba</title>
 			<itemizedlist>
@@ -526,9 +549,11 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 	</section>
 
 
+	<!--
 	<section id="changelog:other">
 		<title>Other changes</title>
 		<itemizedlist>
@@ -536,5 +561,6 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+	-->
 </chapter>
 <!-- vim: set ts=4 sw=4 noet: -->
