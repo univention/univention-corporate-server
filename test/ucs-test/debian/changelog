@@ -1,3 +1,9 @@
+ucs-test (5.0.164-4) unstable; urgency=medium
+
+  * 01_base/45udm-cli: First cleanup (Bug #39100)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 06 Aug 2015 21:26:45 +0200
+
 ucs-test (5.0.164-3) unstable; urgency=medium
 
   * Skip 61_udm-
