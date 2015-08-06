@@ -267,9 +267,3 @@ Description[de]=Gruppenrichtlinien werden in Group Policy Objects (GPOs) gespeic
 Description[en]=Group policies are stored in Group Policy Objects (GPOs) in the directory /var/lib/samba/sysvol/ on all Samba 4 domain controllers. The GPOs and the corresponding access rights are referenced in Samba 4 LDAP. If this option is activated, the access rights of the GPO references are synchronised to the UCS LDAP along with the references. If the variable is unset, the references are not synchronised.
 Type=bool
 Categories=service-s4con
-
-[connector/s4/mapping/dns/position]
-Description[de]=Diese Variable bestimmt die Basis-DN der DNS Objekte im Samba Verzeichnisdienst. Falls sie auf dem Wert 'legacy' steht, dann schreibt der S4-Connector neue DNS-Zonen in Samba4 unter CN=System statt unter DC=DomainDnsZones. Diese Variable sollte nur einmalig nach manueller Migration der DNS-Objekte angepasst werden, falls sie noch auf 'legacy' steht.
-Description[en]=This variable determins the base DN of DNS objects in the Samba directory service. When set to 'legacy', the S4 Connector writes new DNS zones in Samba4 below CN=System instead of below DC=DomainDnsZones. This variable should only be modified once after manual migration of the DNS objects, if it still has the value 'legacy'.
-Type=str
-Categories=service-s4con

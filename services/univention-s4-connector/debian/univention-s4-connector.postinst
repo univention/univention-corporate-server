@@ -134,10 +134,6 @@ if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join
 		fi
 	fi
 
-	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.16-33; then
-		univention-config-registry set connector/s4/mapping/dns/position?'legacy'
-	fi
-
 	if [ "$skip_final_restart" != "true" ]; then
 		/etc/init.d/univention-s4-connector restart
 	fi
