@@ -686,9 +686,10 @@
 	</section>
 
 
-	<!--
 	<section id="changelog:deployment">
 		<title>Software deployment</title>
+
+		<!--
 		<itemizedlist>
 			<listitem><simpara>
 			</simpara></listitem>
@@ -701,16 +702,17 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<section id="changelog:deployment:cli">
 			<title>Software deployment command line tools</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The update scripts have been adjusted to UCS 4.0-3 (<u:bug>38961</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>
-	-->
 
 
 	<section id="changelog:lib">
