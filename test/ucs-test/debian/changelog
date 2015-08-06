@@ -1,3 +1,9 @@
+ucs-test (5.0.164-1) unstable; urgency=low
+
+  * Bug #39057: add 38_mail_messagesizelimit test script
+
+ -- Ammar Najjar <najjar@univention.de>  Thu, 06 Aug 2015 12:00:32 +0200
+
 ucs-test (5.0.163-5) unstable; urgency=medium
 
   * Moved check_log_files_definitions from 01_base/ to 00_checks/
