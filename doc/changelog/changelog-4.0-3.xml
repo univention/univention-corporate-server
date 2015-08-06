@@ -615,14 +615,29 @@
 	</section>
 
 
-	<!--
 	<section id="changelog:other">
 		<title>Other changes</title>
 		<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
+			<listitem>
+				<simpara>
+					The following packages have been added to the maintained package repository
+					(<u:bug>37972</u:bug>, <u:bug>38628</u:bug>):
+				</simpara>
+				<itemizedlist spacing="compact">
+					<listitem><simpara><package>altermime</package></simpara></listitem>
+					<listitem><simpara><package>libboost-thread1.49.0</package></simpara></listitem>
+					<listitem><simpara><package>libjansson4</package></simpara></listitem>
+					<listitem><simpara><package>php-mdb2-driver-mysql</package></simpara></listitem>
+					<listitem><simpara><package>php-net-ldap2</package></simpara></listitem>
+					<listitem><simpara><package>php-net-url2</package></simpara></listitem>
+					<listitem><simpara><package>ripole</package></simpara></listitem>
+					<listitem><simpara><package>smarty3</package></simpara></listitem>
+					<listitem><simpara><package>nodejs</package></simpara></listitem>
+					<listitem><simpara><package>npm</package></simpara></listitem>
+				</itemizedlist>
+			</listitem>
 		</itemizedlist>
 	</section>
-	-->
+
 </chapter>
 <!-- vim: set ts=4 sw=4 noet: -->
