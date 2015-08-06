@@ -77,8 +77,8 @@ readcontinue ()
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-echo " English version: http://docs.univention.de/release-notes-4.0-2-en.html"
-echo " German version:  http://docs.univention.de/release-notes-4.0-2-de.html"
+echo " English version: http://docs.univention.de/release-notes-4.0-3-en.html"
+echo " German version:  http://docs.univention.de/release-notes-4.0-3-de.html"
 echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."

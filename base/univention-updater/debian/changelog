@@ -1,3 +1,9 @@
+univention-updater (10.0.55-1) unstable; urgency=low
+
+  * Bug #38961: Adapt preup/postup.sh 
+
+ -- Felix Botner <botner@univention.de>  Thu, 06 Aug 2015 10:41:01 +0200
+
 univention-updater (10.0.54-2) unstable; urgency=low
 
   * Bug #38416: Bump patchlevel version
