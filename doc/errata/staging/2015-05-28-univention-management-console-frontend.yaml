@@ -5,14 +5,14 @@ src: univention-management-console-frontend
 fix: 4.1.106-87.1089.201508030810
 version: [2]
 desc: |
-  This update addresses the following issue:
+  This update addresses the following issues:
   * The query string parameters are now passed to automatically started UMC
     modules.
   * The handling of the UMC overview page on mobile devices has been improved.
   * A race condition in the UMC webserver has been fixed which could lead to
     failing starts of the UMC webserver.
   * The PID file is no longer created world-writable.
-  * Behaviour and apperance of tooltips has been changed. Tooltips will no
+  * Behaviour and appearance of tooltips has been changed. Tooltips will no
     longer automatically pop up and need to be opened manually by clicking
     the tooltip icon.
   * The module header in UMC modules now sticks smoothly to the top when

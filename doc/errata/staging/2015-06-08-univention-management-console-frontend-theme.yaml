@@ -5,10 +5,10 @@ src: univention-management-console-frontend-theme
 fix: 0.0.89-21.93.201507311505
 version: [2]
 desc: |
-  This update addresses the following issue:
+  This update addresses the following issues:
   * The styling of hovered entries on the UMC overview page has been adapted
     for mobile devices.
   * New icons for tooltips have been added and the style for tooltips
-    has been adadpted.
+    has been adapted.
   * Added a transition when a UMC-module-header reaches the top of the screen.
 bug: [38658, 36771, 38491]

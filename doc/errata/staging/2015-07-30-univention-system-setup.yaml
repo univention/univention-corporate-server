@@ -5,8 +5,8 @@ src: univention-system-setup
 fix: 8.1.69-23.912.201507301733
 version: [2]
 desc: |
-  This update addresses the following issue:
-  * The DHCP configuration of a system, led to problems with the browser
+  This update addresses the following issues:
+  * The DHCP configuration of a system led to problems with the browser
     redirection at the end of the setup wizard. This has been corrected.
-  * The network settings module can now be executed also on unjoined systems.
+  * The network settings module can now also be executed on unjoined systems.
 bug: [39048, 39044]

@@ -6,6 +6,6 @@ fix: 4.2.2.dfsg.1-5+deb70u6.30.201507161139
 version: [2]
 desc: |
  This update addresses the following issue:
- - An error in the LDAP policy extension lead to the first option being
+ * An error in the LDAP policy extension lead to the first option being
    ignored.
 bug: [38584]
