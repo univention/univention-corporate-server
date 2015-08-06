@@ -66,13 +66,20 @@
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:basis:ucr">
 			<title>Univention Configuration Registry</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The UCR variable 'ipv6/gateway' now supports a zone index (<u:bug>35694</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Multiple IPv6 addresses from the same subnet can now be added to an interface (<u:bug>33986</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The handling of the 'prefix' for secondary IPv6 addresses has been corrected (<u:bug>33986</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
+			<!--
 			<section id="changelog:basis:ucr:template">
 				<title>Changes to templates and modules</title>
 				<itemizedlist>
@@ -80,8 +87,8 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
+			-->
 		</section>
-		-->
 
 		<!--
 		<section id="changelog:basis:boot">
@@ -113,6 +120,15 @@
 			<itemizedlist>
 				<listitem><simpara>
  					The diversion of the "msgpo.schema" file introduced as a fix for <u:bug>38488</u:bug> has been removed again (<u:bug>38566</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The description for the UCR variable 'ldap/server/addition' has been improved (<u:bug>38094</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The UCR variable 'ldap/server/addition' is used to configure additional LDAP servers in case the primary LDAP server is unavailable. The setting can be configured through a UMC policy 'LDAP server'.
+    				Previously the so configured value was written into the NORMAL layer of the Univention Configuration Registry, which overwrote any setting configured by the user.  The value is now written into the LDAP layer, which has a higher priority
+    				than the NORMAL layer and thus overrules any local configuration, but preserves the user configured setting.  The value can still be overwritten locally by using the FORCED layer of UCR, e.g. "ucr set --force ldap/server/addition=...".
+    				Setting the UCR variable through a UMC policy 'Univention Configuration Registry' is not recommended and will clash with the 'LDAP server' policy (<u:bug>38094</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 
@@ -153,15 +169,14 @@
 				</itemizedlist>
 			</section>
 
-	<!--
 			<section id="changelog:domain:dnsserver">
 				<title>DNS server</title>
 				<itemizedlist>
 					<listitem><simpara>
+						The configuration files and scripts have been optimized to allow a faster restart when the network interfaces are re-configured (<u:bug>36532</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
-	-->
 		</section>
 	</section>
 
@@ -262,18 +277,63 @@
 				<listitem><simpara>
 					A default user template for new users can be configured by the UCR variable "directory/manager/web/modules/users/user/add/default". The variable expects the DN or the label of a user template (<u:bug>38832</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The evaluation of "requiredObjectClass", "prohibitedObjectClasses", "fixedAttributes" and "emptyAttributes" is now case insensitive (<u:bug>38663</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:umc:setup">
 			<title>Basic settings / Appliance mode</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Extended the list of default language settings to include Switzerland, Austria and the United Kingdom (<u:bug>38512</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Show server address in Univention System Setup welcome screen in EC2 and other cloud environments (<u:bug>38391</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Uppercase hostnames and hostnames beginning with a digit are now possible (<u:bug>37816</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
+					The package univention-welcome-screen will be installed on new installations (<u:bug>37537</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Fixed an error which could occur while installing UCS with non-default locales via the text based installer, resulting in an unconfigured system (<u:bug>38382</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Changed the wording in the Univention System Setup to suit Univention App Appliances (<u:bug>38780</u:bug> <u:bug>38781</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
+					The new package univention-system-activation has been released. It registers a web service to enforce the upload of an
+					activated license key prior to accessing the management web interface (<u:bug>38547</u:bug> <u:bug>38782</u:bug> <u:bug>38850</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Proxy settings were accidentally removed when changing network settings (<u:bug>38593</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The network mask is not overwritten in the initial UCS configuration anymore if if was set manually (<u:bug>38593</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A typo in the German translation has been corrected (<u:bug>38215</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					If accessible, the name server specified via DHCP is pre-configured on the network settings page (<u:bug>38330</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The links on the last page of the setup wizard have been adjusted (<u:bug>38850</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A non authoritative DNS answer is now correctly handled during validation of settings (<u:bug>38522</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A information is shown during domain setup that the process might take a while (<u:bug>38833</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The NETBIOS domain name of the Active Directory domain is used when the UCS system joins into an Active Directory domain (<u:bug>37460</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
 		<!--
 		<section id="changelog:umc:user">
@@ -468,6 +528,12 @@
 			<listitem><simpara>
 				Error messages when the system has too few free disk space have improved (<u:bug>38951</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The Python implementation of univention-policy-result did not evaluate the attributes "requiredObjectClass" and "prohibitedObjectClasses". This has been fixed (<u:bug>38663</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The Python implementation of univention-policy-result did not return the most specific policy in all cases. This has been fixed (<u:bug>38712</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
@@ -500,6 +566,9 @@
 				<listitem><simpara>
 					Add options to check IP-FQDN-mapping as a means to fight spam. Adds two new UCR variables: mail/postfix/smtpd/restrictions/sender/reject_unknown_client_hostname and mail/postfix/smtpd/restrictions/sender/reject_unknown_reverse_client_hostname for weaker and stricter reverse DNS checking respectively (<u:bug>38292</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The package sieve-connect has been updated to version 0.87-1 and provides several bugfixes and new security features (<u:bug>34839</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -521,15 +590,14 @@
 		</section>
 		-->
 
-		<!--
 		<section id="changelog:service:nagios">
 			<title>Nagios</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The 'check_univention_ldap' plugin has been modified to use the FQDN of the LDAP server (<u:bug>27043</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
 		<!--
 		<section id="changelog:service:ssl">
@@ -559,15 +627,25 @@
 		</section>
 		-->
 
-		<!--
-		<section id="changelog:service:apache">
-			<title>Apache</title>
+		<section id="changelog:service:dhcp">
+			<title>DHCP server</title>
 			<itemizedlist>
 				<listitem><simpara>
+					A broken configuration was generated for named DHCP host entries. This issue has been fixed (<u:bug>38675</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
+		<section id="changelog:service:apache">
+			<title>Apache</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The Univention Configuration Registry variable 'apache2/force_https' can be used to force using encryption by re-directing to HTTPS (<u:bug>38016</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
 		<section id="changelog:service:pam">
 			<title>PAM / Local group cache</title>
 			<itemizedlist>
@@ -732,6 +810,9 @@
 					<listitem><simpara><package>npm</package></simpara></listitem>
 				</itemizedlist>
 			</listitem>
+			<listitem><simpara>
+				The time zone database was updated to include information about the scheduled leap second at the end of June 2015 (<u:bug>38717</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
