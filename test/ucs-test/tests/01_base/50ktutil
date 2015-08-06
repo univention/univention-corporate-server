@@ -7,26 +7,26 @@
 ## exposure: dangerous
 eval "$(univention-config-registry shell)"
 
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
 tmpfile=$(mktemp)
 trap "rm -f '$tmpfile'" EXIT
 cat >$tmpfile <<__HERE__
 dn: $ldap_hostdn
 changetype: modify
 replace: description
-description: ktutil check
+description: ktutil check $(random_chars)
 __HERE__
 
 echo -e "\n\n***Change the description of the local host"
-ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret -h "$ldap_master" -f "$tmpfile"
+ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret -h "$ldap_master:$ldap_master_port" -f "$tmpfile"
 
-sleep 3
-
-nid=$(/usr/share/univention-directory-listener/get_notifier_id.py)
-lid=$(cat /var/lib/univention-directory-listener/notifier_id)
-if [ "$nid" != "$lid" ]; then
+if ! wait_for_replication; then
 	echo "Error: The notifier_id is wrong. Please check Bug #10047."
 	exit 111
 else
 	exit 101
 fi
+
 # vim: set ft=sh :
