@@ -551,8 +551,8 @@
   					dovecot has been updated to version 2.2.13. The update provides several bugfixes and enhancements (<u:bug>34839</u:bug> <u:bug>38475</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The UCR variable mail/cyrus/imap/allowplaintext to (dis)allow plain text passwords over non-TLS connections has been added. The variable defaults to "no".
-					This changes the previous default behaviour! Plain text authentication over unencrypted connections is now disabled by default. To revert to the old behaviour set mail/cyrus/imap/allowplaintext=yes resp.  mail/dovecot/imap/allowplaintext=yes (<u:bug>38500</u:bug>).
+					The UCR variable mail/cyrus/auth/allowplaintext to (dis)allow plain text passwords over non-TLS connections has been added. The variable defaults to "no".
+					This changes the previous default behaviour! Plain text authentication over unencrypted connections is now disabled by default. To revert to the old behaviour set mail/cyrus/auth/allowplaintext=yes resp.  mail/dovecot/auth/allowplaintext=yes (<u:bug>38500</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The UDM module policies/mailquota has been moved to the package univention-mail-cyrus. The UDM module will only be available if the UCS mail stack with cyrus is installed (<u:bug>38473</u:bug> <u:bug>39004</u:bug>).
