@@ -2,11 +2,10 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-2
 src: univention-management-console-module-adtakeover
-fix: 2.0.7-6.65.201508061238
+fix: 2.0.7-7.66.201508061513
 version: [2]
 desc: |
  This update addresses the following issues:
- * A bug has been addressed which prevented the usage of AD Takover
    with a primary interface other than eth*.
  * Fix time synchronization to german UCS
-bug: [38729, 39069]
+bug: [39069]
