@@ -1,3 +1,9 @@
+ucs-test (6.0.0-12) unstable; urgency=medium
+
+  * Disabled 43_proxy/05_custom_ACL_snippets_in_squidconf (Bug #39098)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Aug 2015 11:43:02 +0200
+
 ucs-test (6.0.0-11) unstable; urgency=medium
 
   * Disable 40_mail/21_special_mail_adresses test case (Bug #38481)
