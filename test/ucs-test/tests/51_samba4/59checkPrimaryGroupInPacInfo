@@ -7,6 +7,8 @@
 ## - domaincontroller_master
 ## - domaincontroller_backup
 ## - domaincontroller_slave
+## versions:
+##  4.0-2: skip
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
