@@ -78,6 +78,7 @@ def main():
 				# Change mailPrimaryAddress
 				# → mailbox with NEW name should have been created and is accessible
 				# → mailbox with OLD name should NOT be accessible
+				print "== case 1 =="
 				name = uts.random_name()
 				usermail = '%s@%s' % (name, domain)
 				userdn, username = udm.create_user(
@@ -104,6 +105,7 @@ def main():
 				# → mailbox should NOT have been created
 				# Add local FQDN as mailHomeServer
 				# → mailbox should have been created and is accessible
+				print "== case 2 =="
 				name = uts.random_name()
 				usermail = '%s@%s' % (name, domain)
 				userdn, username = udm.create_user(
@@ -128,6 +130,7 @@ def main():
 				# → mailbox should NOT have been created
 				# Add "foreign" FQDN as mailHomeServer
 				# → mailbox should NOT have been created
+				print "== case 3 =="
 				name = uts.random_name()
 				usermail = '%s@%s' % (name, domain)
 				userdn, username = udm.create_user(
@@ -152,6 +155,7 @@ def main():
 				# → mailbox should NOT have been created
 				# Add mailPrimaryAddress
 				# → mailbox should have been created and is accessible
+				print "== case 4 =="
 				name = uts.random_name()
 				usermail = '%s@%s' % (name, domain)
 				userdn, username = udm.create_user(
@@ -175,6 +179,7 @@ def main():
 				# → mailbox should have been created and is accessible
 				# Change mailHomeServer
 				# → mailbox should NOT be accessible
+				print "== case 5 =="
 				ip = uts.random_ip()
 				new_host = uts.random_name()
 				udm.create_object(
@@ -212,6 +217,7 @@ def main():
 				# → mailbox should have been created and is accessible
 				# Remove mailHomeServer
 				# → mailbox should still be accessible
+				print "== case 6 =="
 				ip = uts.random_ip()
 				new_host = uts.random_name()
 				udm.create_object(
@@ -248,6 +254,7 @@ def main():
 				# → mailbox should have been created and is accessible
 				# Remove mailPrimaryAddress
 				# → mailbox should NOT be accessible
+				print "== case 7 =="
 				ip = uts.random_ip()
 				new_host = uts.random_name()
 				udm.create_object(
