@@ -57,9 +57,34 @@
 
 		<itemizedlist>
 			<listitem><para>
-				Die
+				Der Mailsever Dovecot wurde als Standard IMAP/POP3-Server in UCS integriert und bietet somit eine Alternative
+				zum weiterhin zur Verfügung stehenden Cyrus-IMAP-Serer. Weitere Informationen zur Integration sind in
+				<ulink url="https://www.univention.de/2015/07/mailserver-dovecot-als-standard-imappop3-server-in-ucs">diesem Blogartikel
+				</ulink> beschrieben.
 			</para></listitem>
-
+			<listitem><para>
+				Mit dem Update auf Samba 4.2.3 wurde die Active Directory-Kompatibiliät weiter ausgebaut. In erster Linie wurden
+				kleinere Bugfixes und Performanceprobleme behoben. So gab es u.a. Updates in den Bereichen der DRS-Replikation, des
+				Druckertreiber-Handlings sowie beim Joinen von Huawai Storage Systemen in die von UCS bereitgestellte Active Directory-Domäne.
+			</para></listitem>
+			<listitem><para>
+				Es gibt zahlreiche Verbesserungen in Design und Usability des UCS-Managementsystems. So ist es nun bspw. möglich die Vor- und
+				Zurück-Buttons des Webbrowsers zu benutzen. Dadurch ist ein einfacheres und schnelleres navigieren in der Managementoberfläche
+				möglich.
+			</para></listitem>
+			<listitem><para>
+				Für LDAP-Richtlinien können nun LDAP-Filter definiert werden, das bedeutet die LDAP-Richtlinien gelten nur auf die Objekte, die 
+				dem LDAP-Filter entsprechen. Dadurch ist es vor allen in größeren Umgebungen möglich, LDAP-Richtlinien noch einfacher und generischer
+				anzuwenden.
+			</para></listitem>
+			<listitem><para>
+				Der Linux Kernel wurde auf den letzten stabilen 3.16er Longterm-Kernel aktualisiert. Dieser beinhaltet diverse Sicherheitsaktualisierungen
+				sowie neuere und aktualsiierte Treiber für eine verbesserte Hardware-Unterstützung.
+			</para></listitem>
+			<listitem><para>
+				Sämtliche für UCS 4.0-2 veröffentlichten Sicherheitsupdates sind in diesem Update enthalten. Um die Sicherheit des UCS-Systems
+				zu erhöhen, ist es nun einfach per Univention Configuration Regitstry Variable möglich die HTTP-Anfragen auf HTTPS umzulenken.
+			</para></listitem>
 		</itemizedlist>
 	</chapter>
 
