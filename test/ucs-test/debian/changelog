@@ -1,3 +1,10 @@
+ucs-test (5.0.164-13) unstable; urgency=medium
+
+  * wait_for_drs_replication upon creation, modification or renaming of users
+    and groups (bug #39103)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 07 Aug 2015 14:28:11 +0200
+
 ucs-test (5.0.164-12) unstable; urgency=medium
 
   * 52_s4connector/174sync_nested_umlaut_groups: use ldapmodify instead
