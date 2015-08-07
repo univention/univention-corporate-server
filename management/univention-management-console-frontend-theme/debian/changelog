@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (1.0.0-4) unstable; urgency=low
+
+  * Bug #39105: overridden min-height of the UMC header for the installer
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 07 Aug 2015 13:26:11 +0200
+
 univention-management-console-frontend-theme (1.0.0-3) unstable; urgency=low
 
   * Bug #36771: adapted tooltip style
