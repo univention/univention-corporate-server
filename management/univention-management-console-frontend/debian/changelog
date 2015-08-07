@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.8-6) unstable; urgency=medium
+
+  * The user wizard didn't complete after updating to UCS 4.0-2
+    errata266. This patch provided by Alex fixes the issue (Bug #39109)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Aug 2015 18:10:19 +0200
+
 univention-management-console-frontend (5.0.8-5) unstable; urgency=low
 
   * Bug #36771: Uploader/Button: deactivate Tooltip instead of destroying when
@@ -5,6 +12,7 @@ univention-management-console-frontend (5.0.8-5) unstable; urgency=low
   * Fixed version numbers in changelog
 
  -- Drees Dormann <dormann@univention.de>  Mon, 03 Aug 2015 07:59:53 +0200
+
 univention-management-console-frontend (5.0.8-4) unstable; urgency=medium
 
   * Bug #31943: fixed typo
