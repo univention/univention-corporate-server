@@ -253,6 +253,9 @@
 				<listitem><simpara>
 					The size of the UMC installer header was too big. This issue has been fixed (<u:bug>39105</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The UMC user wizard was not always terminated after creating a user. This issue has been fixed (<u:bug>39109</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
