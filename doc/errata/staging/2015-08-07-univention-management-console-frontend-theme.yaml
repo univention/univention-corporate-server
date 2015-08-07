@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-2
+src: univention-management-console-frontend-theme
+fix: 0.0.89-22.94.201508071246
+version: [2]
+desc: |
+  This update addresses the following issues:
+  * Corrected styling for the header in the UMC installer
+bug: [39105]
