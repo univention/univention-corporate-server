@@ -6,6 +6,8 @@
 ##   - univention-directory-manager-tools
 ##   - univention-s4-connector
 ##   - dnsutils
+## versions:
+##  4.0-2: skip
 
 import univention.testing.udm as udm_test
 from univention.testing.utils import fail, wait_for_replication_and_postrun
