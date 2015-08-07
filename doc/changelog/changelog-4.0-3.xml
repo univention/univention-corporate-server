@@ -17,25 +17,34 @@
 				</para>
 				<itemizedlist>
 					<listitem><simpara>
-							<package>curl</package> (<u:cve>2015-3143</u:cve><u:cve>2015-3148</u:cve>) (<u:bug>38352</u:bug>)
+							<package>curl</package> (<u:cve>2015-3143</u:cve> <u:cve>2015-3148</u:cve>) (<u:bug>38352</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-							<package>ntp</package> (<u:cve>2015-1798</u:cve><u:cve>2015-1799</u:cve>) (<u:bug>38244</u:bug>)
+							<package>ntp</package> (<u:cve>2015-1798</u:cve> <u:cve>2015-1799</u:cve>) (<u:bug>38244</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-							<package>clamav</package> (<u:cve>2015-2170</u:cve><u:cve>2015-2221</u:cve><u:cve>2015-2222</u:cve><u:cve>2015-2668</u:cve><u:cve>2015-2305</u:cve>) (<u:bug>38425</u:bug>)
+							<package>clamav</package> (<u:cve>2015-2170</u:cve> <u:cve>2015-2221</u:cve> <u:cve>2015-2222</u:cve> <u:cve>2015-2668</u:cve> <u:cve>2015-2305</u:cve>) (<u:bug>38425</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 							<package>proftpd-dfsg</package> (<u:cve>2015-3306</u:cve>) (<u:bug>38372</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-							<package>qemu-kvm</package> (<u:cve>2015-4037</u:cve><u:cve>2015-3209</u:cve>) (<u:bug>38744</u:bug>)
+							<package>qemu-kvm</package> (<u:cve>2015-4037</u:cve> <u:cve>2015-3209</u:cve>) (<u:bug>38744</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-							<package>linux</package> (<u:cve>2013-7421</u:cve><u:cve>2014-8133</u:cve><u:cve>2014-8134</u:cve><u:cve>2014-8159</u:cve><u:cve>2014-8160</u:cve><u:cve>2014-8559</u:cve><u:cve>2014-8989</u:cve><u:cve>2014-9419</u:cve><u:cve>2014-9420</u:cve><u:cve>2014-9428</u:cve><u:cve>2014-9529</u:cve><u:cve>2014-9584</u:cve><u:cve>2014-9585</u:cve><u:cve>2014-9644</u:cve><u:cve>2014-9683</u:cve><u:cve>2014-9710</u:cve><u:cve>2014-9715</u:cve><u:cve>2015-0239</u:cve><u:cve>2015-0275</u:cve><u:cve>2015-1421</u:cve><u:cve>2015-1465</u:cve><u:cve>2015-1593</u:cve><u:cve>2015-2041</u:cve><u:cve>2015-2042</u:cve><u:cve>2015-2150</u:cve><u:cve>2015-2666</u:cve><u:cve>2015-2830</u:cve><u:cve>2015-2922</u:cve><u:cve>2015-3331</u:cve><u:cve>2015-3332</u:cve><u:cve>2015-3339</u:cve><u:cve>2015-3636</u:cve><u:cve>2015-4036</u:cve>) (<u:bug>37385</u:bug>)
+							<package>linux</package> (<u:cve>2013-7421</u:cve> <u:cve>2014-8133</u:cve> <u:cve>2014-8134</u:cve> <u:cve>2014-8159</u:cve> <u:cve>2014-8160</u:cve> <u:cve>2014-8559</u:cve> <u:cve>2014-8989</u:cve> <u:cve>2014-9419</u:cve> <u:cve>2014-9420</u:cve> <u:cve>2014-9428</u:cve> <u:cve>2014-9529</u:cve> <u:cve>2014-9584</u:cve> <u:cve>2014-9585</u:cve> <u:cve>2014-9644</u:cve> <u:cve>2014-9683</u:cve> <u:cve>2014-9710</u:cve> <u:cve>2014-9715</u:cve> <u:cve>2015-0239</u:cve> <u:cve>2015-0275</u:cve> <u:cve>2015-1421</u:cve> <u:cve>2015-1465</u:cve> <u:cve>2015-1593</u:cve> <u:cve>2015-2041</u:cve> <u:cve>2015-2042</u:cve> <u:cve>2015-2150</u:cve> <u:cve>2015-2666</u:cve> <u:cve>2015-2830</u:cve> <u:cve>2015-2922</u:cve> <u:cve>2015-3331</u:cve> <u:cve>2015-3332</u:cve> <u:cve>2015-3339</u:cve> <u:cve>2015-3636</u:cve> <u:cve>2015-4036</u:cve>) (<u:bug>37385</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-							<package>openjdk-7</package> (<u:cve>2015-0460</u:cve><u:cve>2015-0469</u:cve><u:cve>2015-0477</u:cve><u:cve>2015-0478</u:cve><u:cve>2015-0480</u:cve><u:cve>2015-0488</u:cve>) (<u:bug>38302</u:bug>)
+							<package>openjdk-7</package> (<u:cve>2015-0460</u:cve> <u:cve>2015-0469</u:cve> <u:cve>2015-0477</u:cve> <u:cve>2015-0478</u:cve> <u:cve>2015-0480</u:cve> <u:cve>2015-0488</u:cve>) (<u:bug>38302</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+							<package>openjdk-7</package> (<u:cve>2015-2590</u:cve> <u:cve>2015-2596</u:cve> <u:cve>2015-2601</u:cve> <u:cve>2015-2613</u:cve> <u:cve>2015-2619</u:cve> <u:cve>2015-2621</u:cve> <u:cve>2015-2625</u:cve> <u:cve>2015-2628</u:cve> <u:cve>2015-2632</u:cve> <u:cve>2015-2637</u:cve> <u:cve>2015-2638</u:cve> <u:cve>2015-2808</u:cve> <u:cve>2015-4000</u:cve> <u:cve>2015-4731</u:cve> <u:cve>2015-4732</u:cve> <u:cve>2015-4733</u:cve> <u:cve>2015-4748</u:cve> <u:cve>2015-4749</u:cve> <u:cve>2015-4760</u:cve>) (<u:bug>38928</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>bind9</package> (<u:cve>2015-5477</u:cve>) (<u:bug>39058</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>mysql-5.5</package> (<u:cve>2015-0411</u:cve> <u:cve>2015-0382</u:cve> <u:cve>2015-0381</u:cve> <u:cve>2015-0391</u:cve> <u:cve>2015-0432</u:cve> <u:cve>2014-6568</u:cve> <u:cve>2015-0374</u:cve> <u:cve>2015-0441</u:cve> <u:cve>2015-0433</u:cve> <u:cve>2015-0499</u:cve> <u:cve>2015-0501</u:cve> <u:cve>2015-0505</u:cve> <u:cve>2015-2568</u:cve> <u:cve>2015-2571</u:cve> <u:cve>2015-2573</u:cve> <u:cve>2015-4752</u:cve> <u:cve>2015-4737</u:cve> <u:cve>2015-2648</u:cve> <u:cve>2015-2643</u:cve> <u:cve>2015-2620</u:cve> <u:cve>2015-2582</u:cve>) (<u:bug>37578</u:bug>)
 					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
@@ -129,7 +138,14 @@
     				than the NORMAL layer and thus overrules any local configuration, but preserves the user configured setting.  The value can still be overwritten locally by using the FORCED layer of UCR, e.g. "ucr set --force ldap/server/addition=...".
     				Setting the UCR variable through a UMC policy 'Univention Configuration Registry' is not recommended and will clash with the 'LDAP server' policy (<u:bug>38094</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+ 					Adds UCR variables 'ldap/tls/ciphersuite' and 'ldap/tls/minprotocol' to configure the allowed ciphers and the minimum requires TLS version.  By default 'RC4', 'NULL' and 'SSLv3' are now disabled (<u:bug>38685</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+ 					Enables Forward Secrecy by default, which can be configured further through several new UCR variables starting with 'ldap/tls/dh/...' (<u:bug>38685</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
+
 
 	<!--
 			<section id="changelog:domain:openldap:acl">
@@ -204,6 +220,39 @@
 				<listitem><simpara>
 					A missing pre dependency to python-univention-management-console has been added (<u:bug>38617</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The query string parameters are now passed to automatically started UMC modules (<u:bug>38544</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The handling of the UMC overview page on mobile devices has been improved (<u:bug>38658</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A race condition in the UMC webserver has been fixed which could lead to failing starts of the UMC webserver (<u:bug>37844</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The PID file is no longer created world-writable (<u:bug>38825</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Behaviour and appearance of tooltips has been changed. Tooltips will no longer automatically pop up and need to be opened manually by clicking the tooltip icon (<u:bug>36771</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The module header in UMC modules now sticks smoothly to the top when scrolling down (<u:bug>38491</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The browser next/back buttons have been integrated into UMC in order to simplify its navigation (<u:bug>20714</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The styling of hovered entries on the UMC overview page has been adapted for mobile devices (<u:bug>38658</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					New icons for tooltips have been added and the style for tooltips has been adapted (<u:bug>36771</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Added a transition when a UMC-module-header reaches the top of the screen (<u:bug>38491</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The size of the UMC installer header was too big. This issue has been fixed (<u:bug>39105</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -224,6 +273,12 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					Code for error handling has been moved into the UMC core server (<u:bug>36794</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A parameter to open a specific object immediately on opening a module has been added (<u:bug>38544</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					If multiple policies of the same type are referenced UMC prevents removing policy references when saving the object (<u:bug>36256</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -251,6 +306,21 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The wording for app maintainer has been adjusted to app provider (<u:bug>37591</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The startup performance of the App Center has been improved (<u:bug>38345</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Fixed an exception in error handling (<u:bug>38926</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The display of buttons for installing, updating etc. have been improved (<u:bug>39042</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Added functionality for univention-upgrade to upgrade apps (<u:bug>38697</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Ini files may now specify how the app is to be included in the app reporting tool (<u:bug>38954</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -331,18 +401,35 @@
 				<listitem><simpara>
 					The NETBIOS domain name of the Active Directory domain is used when the UCS system joins into an Active Directory domain (<u:bug>37460</u:bug>).
 				</simpara></listitem>
-			</itemizedlist>
-		</section>
-
-		<!--
-		<section id="changelog:umc:user">
-			<title>Users module</title>
-			<itemizedlist>
 				<listitem><simpara>
+					The DHCP configuration of a system led to problems with the browser redirection at the end of the setup wizard. This has been corrected (<u:bug>39048</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
+					The network settings module can now also be executed on unjoined systems (<u:bug>39044</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The wording on the activation page has been improved (<u:bug>39019</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The loading animation is now visible in Firefox (<u:bug>38918</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
+		<section id="changelog:umc:user">
+			<title>Users module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The default user template for new users can be configured via the UCR variable "directory/manager/web/modules/users/user/add/default". The variable expects the DN or the label of a user template (<u:bug>38832</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The "contact" tab of the users module has a "country" entry now (<u:bug>18512</u:bug>).
+				</simpara></listitem>
+
+			</itemizedlist>
+		</section>
+
+		<!--
 		<section id="changelog:umc:reports">
 			<title>Univention Directory Reports</title>
 			<itemizedlist>
@@ -350,15 +437,18 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<section id="changelog:umc:computers">
 			<title>Computers module</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Renaming of domain controller or memberserver computers is prevented now (<u:bug>38364</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
+		<!--
 		<section id="changelog:umc:dns">
 			<title>DNS module</title>
 			<itemizedlist>
@@ -368,15 +458,22 @@
 		</section>
 		-->
 
-		<!--
 		<section id="changelog:umc:license">
 			<title>License module</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Errors while requesting a new license are now handled (<u:bug>35614</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					If too many user accounts for the license have been created, the UMC now provides information about how to re-enable editing (<u:bug>38836</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					User accounts can now be disabled if the license count is exceeded (<u:bug>38835</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
+		<!--
 		<section id="changelog:umc:top">
 			<title>Process overview module</title>
 			<itemizedlist>
@@ -394,15 +491,16 @@
 		</section>
 		-->
 
-		<!--
 		<section id="changelog:umc:share">
 			<title>Shares module</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The Shares module has been moved into the "Domain" category (<u:bug>38202</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
+		<!--
 		<section id="changelog:umc:policy">
 			<title>Policies</title>
 			<itemizedlist>
@@ -410,7 +508,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
+		<!--
 		<section id="changelog:umc:printer">
 			<title>Printers module</title>
 			<itemizedlist>
@@ -579,15 +679,16 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<section id="changelog:service:print">
 			<title>Printing services</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The old printer model list is no longer deleted during the join (<u:bug>38117</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
 		<section id="changelog:service:nagios">
 			<title>Nagios</title>
@@ -631,6 +732,15 @@
 			<itemizedlist>
 				<listitem><simpara>
 					A broken configuration was generated for named DHCP host entries. This issue has been fixed (<u:bug>38675</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The DHCP policies are now linked directly to the first created DHCP subnet instead of the LDAP base (<u:bug>38584</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The default DHCP policies are only used for the first created DHCP subnet (<u:bug>37614</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
+					The default routing policy is only updated for the first created DHCP subnet (<u:bug>38822</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -773,18 +883,29 @@
 				<listitem><simpara>
 					The synchronization of objects with umlauts has been improved, for example for nested groups (<u:bug>38645</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					A bug concerning renaming computer objects has been fixed (<u:bug>37709</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Ignore unknown Samba4 DNS objects instead of creating a dns/host_record (<u:bug>39077</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:win:adc">
 			<title>Univention Active Directory Connection</title>
 			<itemizedlist>
 				<listitem><simpara>
+					A bug in the network device detection has been fixed (<u:bug>39069</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Fix time synchronization to german UCS (<u:bug>38729</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+  					Wrong links that lead to an old manual have been adjusted (<u:bug>38147</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 	</section>
 
 
