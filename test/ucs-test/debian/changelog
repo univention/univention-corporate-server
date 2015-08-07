@@ -1,3 +1,9 @@
+ucs-test (6.0.0-11) unstable; urgency=medium
+
+  * Disable 40_mail/21_special_mail_adresses test case (Bug #38481)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Aug 2015 05:55:31 +0200
+
 ucs-test (6.0.0-10) unstable; urgency=medium
 
   * 10_ldap/43replication_performance: Increase the timeout if dovecot
