@@ -1,6 +1,9 @@
 #!/usr/share/ucs-test/runner bash 
 ## desc: "Test nested groups with umlauts in sync-mode"
 ## exposure: dangerous
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
 ## packages:
 ## - univention-s4-connector
 
@@ -26,13 +29,23 @@ invoke-rc.d univention-s4-connector start
 groupname1="a$(random_chars)ö1"
 groupname2="a$(random_chars)ä2"
 
+udm-test groups/group create --position cn=groups,$ldap_base  \
+		--set name=$groupname1
+
 udm-test groups/group create --position cn=groups,$ldap_base \
 		--set name=$groupname2
+
 # read DN from LDAP to get the exact case
+grp1_dn=$(univention-ldapsearch cn=$groupname1 dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|dn: ||p')
 grp2_dn=$(univention-ldapsearch cn=$groupname2 dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|dn: ||p')
-udm-test groups/group create --position cn=groups,$ldap_base  \
-		--set name=$groupname1 \
-		--set nestedGroup="$grp2_dn"
+
+# Use ldapmodify, see Bug #33656
+ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret -h "$ldap_master" -p "$ldap_master_port" <<EOF
+dn: $grp1_dn
+changetype: modify
+add: uniqueMember
+uniqueMember: $grp2_dn
+EOF
 
 ad_wait_for_synchronization; fail_bool 0 110
 
