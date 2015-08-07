@@ -4,6 +4,8 @@
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-squid]
+## versions:
+##  4.0-2: skip
 
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 from essential.simplecurl import SimpleCurl
