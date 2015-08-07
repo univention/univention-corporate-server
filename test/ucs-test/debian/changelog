@@ -1,3 +1,11 @@
+ucs-test (6.0.0-8) unstable; urgency=medium
+
+  * 01_base/45udm-cli: In case of a memberserver in a S4 environment, we
+    have to wait until the user has been synchonized to Samba 4.
+    Otherwise we can't get a kerberos ticket (Bug #39100)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Aug 2015 05:13:05 +0200
+
 ucs-test (6.0.0-7) unstable; urgency=medium
 
   * 01_base/45udm-cli: First cleanup (Bug #39100)
