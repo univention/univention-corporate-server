@@ -9,14 +9,15 @@ desc: |
  is covered by security maintenance in Debian wheezy. It replaces the
  bind9 version 9.8.0-P4 distributed with previous releases of UCS 3.2.
  These vulernabilities have been fixed in bind9:
- * Missing error handling in delegation handling could lead to denial 
+ * Missing error handling in delegation handling could lead to denial
    of service against named (CVE-2014-8500).
  * Denial of service when DNSSEC validation and the managed-keys feature
    are enabled (CVE-2015-1349). Both not enabled in UCS by default.
  * Denial of service: crash in DNSSEC validation of specially crafted
    zone data (CVE-2015-4620). Not enabled in UCS by default.
- * An error in handling TKEY queries could be used to trigger a REQUIRE assertion
-   failure leading to denial of service against named (CVE-2015-5477).
+ * An error in handling TKEY queries could be used to trigger a
+   REQUIRE assertion failure leading to denial of service against
+   named (CVE-2015-5477).
 
  For the full list of changes from bind9 9.8.0-P4 to 9.8.4-P1 see:
  * https://kb.isc.org/article/AA-00446/81/BIND-9.8.1-Release-Notes.html
