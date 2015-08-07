@@ -28,6 +28,12 @@ ccount=50 gcount=50 ucount=50 max=60""000000000 # ns
 set -o errexit #"script bail out when it detects an error (a non-zero exit code).
 set -o nounset #If expansion is attempted on an unset variable or parameter --> prints error
 
+# Increase the timeout if dovecot is installed. In this case the user
+# creation takes more time (Bug #39102)
+if checkpkg univention-mail-dovecot; then
+	max=$((max+30000000000))
+fi
+
 info "Stopping replication..."
 wait_for_replication ||
 	fail_fast 1 "Initial replication failed"
