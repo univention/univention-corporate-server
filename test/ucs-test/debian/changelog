@@ -1,3 +1,10 @@
+ucs-test (6.0.0-16) unstable; urgency=medium
+
+  * 52_s4connector/174sync_nested_umlaut_groups: use ldapmodify instead
+    of UDM to add nested umlaut groups (Bug #38814)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Aug 2015 12:32:27 +0200
+
 ucs-test (6.0.0-15) unstable; urgency=medium
 
   * Merge modifications from 4.0-3 branch
