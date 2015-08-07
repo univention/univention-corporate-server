@@ -44,7 +44,7 @@ def main():
 			c.select('INBOX', readonly=True)
 			c.send("%s IDLE\r\n"%(c._new_tag()))
 			while True:
-				line = c.readline().strip();
+				line = c.readline().strip()
 				print 'idle-client: got line %s' % line
 				if line.endswith('EXISTS'):
 					print 'idle-client: OK, we are good'
