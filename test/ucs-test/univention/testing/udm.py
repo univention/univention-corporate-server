@@ -52,6 +52,8 @@ import univention.testing.ucr
 import univention.testing.strings as uts
 import univention.testing.utils as utils
 import ldap
+from univention.testing.ucs_samba import wait_for_drs_replication
+
 
 class UCSTestUDM_Exception(Exception):
 	pass
@@ -196,6 +198,9 @@ class UCSTestUDM(object):
 
 		if wait_for_replication:
 			utils.wait_for_replication()
+			if modulename in ["users/user", "groups/group"] and utils.package_installed('univention-samba4'):
+				if "options" not in kwargs or "kerberos" in kwargs["options"]:
+					wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
 		return dn
 
 
@@ -240,6 +245,8 @@ class UCSTestUDM(object):
 
 		if wait_for_replication:
 			utils.wait_for_replication()
+			if modulename in ["users/user", "groups/group"] and utils.package_installed('univention-samba4'):
+				wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
 		return dn
 
 	def move_object(self, modulename, wait_for_replication = True, **kwargs):
@@ -271,6 +278,8 @@ class UCSTestUDM(object):
 
 		if wait_for_replication:
 			utils.wait_for_replication()
+			if modulename in ["users/user", "groups/group"] and utils.package_installed('univention-samba4'):
+				wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
 
 
 	def remove_object(self, modulename, wait_for_replication = True, **kwargs):
@@ -295,7 +304,6 @@ class UCSTestUDM(object):
 
 		if wait_for_replication:
 			utils.wait_for_replication()
-
 
 
 	def create_user(self, wait_for_replication = True, **kwargs): # :pylint: disable-msg=W0613
