@@ -1,3 +1,11 @@
+ucs-test (5.0.164-7) unstable; urgency=medium
+
+  * 10_ldap/43replication_performance: Increase the timeout if dovecot
+    is installed. In this case the user creation takes more time
+    (Bug #39102)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Aug 2015 05:46:46 +0200
+
 ucs-test (5.0.164-6) unstable; urgency=medium
 
   * Disable 51_samba4/59checkPrimaryGroupInPacInfo since it fails in
