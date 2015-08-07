@@ -2,7 +2,7 @@
 ## desc: Test is list of country names in univention.admin.syntax.Country.choices is uptodate
 ## tags: [udm]
 ## roles: [domaincontroller_master]
-## exposure: careful
+## exposure: safe
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
@@ -10,7 +10,6 @@
 
 
 import univention.testing.utils as utils
-import univention.testing.udm as udm_test
 
 from univention.admin.handlers import simplePolicy
 import univention.admin.syntax as udm_syntax
@@ -18,10 +17,8 @@ import univention.admin.syntax as udm_syntax
 import pycountry
 
 if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
-		current_countries = sorted([(country.alpha2, country.name) for country in pycountry.countries.objects], cmp=lambda x,y: x[0] < x[1])
-		if current_countries != udm_syntax.Country.choices:
-			set_cc = set(current_countries)
-			set_choices = set(udm_syntax.Country.choices)
-			utils.fail("List in UDM and Debian differ: %r" % str(set_choices.symmetric_difference(set_cc)))
-
+	current_countries = sorted([(country.alpha2, country.name) for country in pycountry.countries.objects], cmp=lambda x,y: x[0] < x[1])
+	if dict(current_countries) != dict(udm_syntax.Country.choices):
+		set_cc = set(current_countries)
+		set_choices = set(udm_syntax.Country.choices)
+		utils.fail("List in UDM and Debian differ: %r" % str(set_choices.symmetric_difference(set_cc)))
