@@ -246,7 +246,7 @@ install_apps_test_packages ()
 
 install_ucs_test_appcenter_uninstall ()
 {
-	install_with_unmaintained ucs-test
+	install_with_unmaintained ucs-test-appcenter-uninstall
 }
 
 install_ucs_windows_tools ()
