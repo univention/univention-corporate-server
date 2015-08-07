@@ -1,3 +1,10 @@
+ucs-test (5.0.164-11) unstable; urgency=medium
+
+  * 52_s4connector/174sync_nested_umlaut_groups: restart UDM CLI after
+    re-setting the group syntax (Bug #38814)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Aug 2015 12:07:40 +0200
+
 ucs-test (5.0.164-10) unstable; urgency=medium
 
   * Disable 52_s4connector/175sync_create_dns_a\*_record test cases

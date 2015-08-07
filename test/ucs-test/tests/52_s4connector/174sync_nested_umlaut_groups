@@ -52,6 +52,7 @@ ad_exists "$AD_GROUP_DN1"; fail_bool 1 110
 ad_exists "$AD_GROUP_DN2"; fail_bool 1 110
 
 ucr unset --force directory/manager/web/modules/groups/group/properties/name/syntax
+pkill -f univention-cli-server
 
 ad_set_sync_mode "$SYNCMODE"
 
