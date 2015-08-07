@@ -1,3 +1,9 @@
+ucs-test (6.0.0-18) unstable; urgency=medium
+
+  * Bug #39099: fix bad comparison of lists
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 07 Aug 2015 14:57:59 +0200
+
 ucs-test (6.0.0-17) unstable; urgency=medium
 
   * wait_for_drs_replication upon creation, modification or renaming of users
