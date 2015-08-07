@@ -1,3 +1,10 @@
+ucs-test (6.0.0-13) unstable; urgency=medium
+
+  * Disable 52_s4connector/175sync_create_dns_a\*_record test cases
+    (Bug #34184)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Aug 2015 11:58:28 +0200
+
 ucs-test (6.0.0-12) unstable; urgency=medium
 
   * Disabled 43_proxy/05_custom_ACL_snippets_in_squidconf (Bug #39098)
