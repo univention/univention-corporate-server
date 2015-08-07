@@ -52,6 +52,29 @@ class BaseMailClient(object):
 			print "Login Failed with exeption:%r" % ex
 			raise
 
+	def login_ok(self, usermail, password, expected_to_succeed=True):
+		"""Check if login is OK
+
+		:usermail: string, user mail
+		:password: string, user password
+		:expected_to_succeed: boolean, True if expected to be OK
+		:return: 0 if the result = expected, else 1
+		"""
+		try:
+			self.login(usermail, password)
+			self.logout()
+		except Exception as ex:
+			if expected_to_succeed:
+				print "Login Failed with exeption:%r" % ex
+				return 1
+		return 0
+
+	def get_quota_root(self, mailbox):
+		"""docstring for get_quota_root"""
+		response, quota_list = self.getquotaroot(mailbox)
+		quota = quota_list[1][0].split(')')[0].split()[-1]
+		return response, quota
+
 	def getMailBoxes(self):
 		"""Get Mail boxes for the user logged in
 

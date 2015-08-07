@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Checking for the ktutil replication problem
-## bugs: 10047]
+## bugs: [10047]
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## tags: [basic]
 ## packages: [ldap-utils]

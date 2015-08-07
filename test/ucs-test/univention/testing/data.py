@@ -6,7 +6,8 @@ import os
 from univention.config_registry import ConfigRegistry
 import yaml
 from univention.testing.codes import TestCodes
-from univention.testing.utils import UCSVersion
+from univention.testing.internal import UCSVersion
+from univention.testing.errors import TestError
 from operator import and_, or_
 from subprocess import call, Popen, PIPE
 import apt
@@ -16,10 +17,8 @@ import signal
 import select
 import errno
 import re
-try:  # >= Python 2.5
-	from hashlib import md5
-except ImportError:
-	from md5 import new as md5
+from hashlib import md5
+from time import sleep
 
 
 __all__ = ['TestEnvironment', 'TestCase', 'TestResult', 'TestFormatInterface']
@@ -41,6 +40,14 @@ RE_ILLEGAL_XML = re.compile(u'[%s]' % u''.join((u'%s-%s' %
 		if low < sys.maxunicode)))
 
 
+def checked_set(values):
+	if values is None:
+		return None
+	if not isinstance(values, (list, tuple, set, frozenset)):
+		raise TypeError('"%r" not a list or tuple' % values)
+	return set(values)
+
+
 class TestEnvironment(object):
 	"""Test environment for running test cases.
 
@@ -52,6 +59,7 @@ class TestEnvironment(object):
 	def __init__(self, interactive=True, logfile=None):
 		self.exposure = 'safe'
 		self.interactive = interactive
+		self.timeout = 0
 
 		self._load_host()
 		self._load_ucr()
@@ -80,9 +88,9 @@ class TestEnvironment(object):
 		self.role = self.ucr.get('server/role', '')
 		TestEnvironment.logger.debug('Role=%r' % self.role)
 
-		version = self.ucr.get('version/version').split('.', 1)
+		version = self.ucr.get('version/version', '0.0').split('.', 1)
 		major, minor = int(version[0]), int(version[1])
-		patchlevel = int(self.ucr.get('version/patchlevel'))
+		patchlevel = int(self.ucr.get('version/patchlevel', 0))
 		if (major, minor) < (3, 0):
 			securitylevel = int(self.ucr.get('version/security-patchlevel', 0))
 			self.ucs_version = UCSVersion((major, minor, patchlevel,
@@ -97,9 +105,13 @@ class TestEnvironment(object):
 		"""Load join status."""
 		devnull = open(os.path.devnull, 'w+')
 		try:
-			ret = call(('/usr/sbin/univention-check-join-status',),
+			try:
+				ret = call(
+					('/usr/sbin/univention-check-join-status',),
 					stdin=devnull, stdout=devnull, stderr=devnull)
-			self.joined = ret == 0
+				self.joined = ret == 0
+			except OSError:
+				self.joined = False
 		finally:
 			devnull.close()
 		TestEnvironment.logger.debug('Join=%r' % self.joined)
@@ -119,6 +131,7 @@ class TestEnvironment(object):
 				(' '.join(self.tags_required) or '-',)
 		print >> stream, 'tags_prohibited: %s' % \
 				(' '.join(self.tags_prohibited) or '-',)
+		print >> stream, 'timeout: %d' % (self.timeout,)
 
 	def tag(self, require=set(), ignore=set(), prohibit=set()):
 		"""Update required, ignored, prohibited tags."""
@@ -134,6 +147,10 @@ class TestEnvironment(object):
 	def set_exposure(self, exposure):
 		"""Set maximum allowed exposure level."""
 		self.exposure = exposure
+
+	def set_timeout(self, timeout):
+		"""Set maximum allowed time for single test."""
+		self.timeout = timeout
 
 
 class _TestReader(object):  # pylint: disable-msg=R0903
@@ -267,7 +284,7 @@ class CheckTags(Check):
 
 	def __init__(self, tags):
 		super(CheckTags, self).__init__()
-		self.tags = set(tags)
+		self.tags = checked_set(tags)
 
 	def check(self, environment):
 		"""Check environment for required / prohibited tags."""
@@ -309,8 +326,8 @@ class CheckRoles(Check):
 
 	def __init__(self, roles_required=(), roles_prohibited=()):
 		super(CheckRoles, self).__init__()
-		self.roles_required = set(roles_required)
-		self.roles_prohibited = set(roles_prohibited)
+		self.roles_required = checked_set(roles_required)
+		self.roles_prohibited = checked_set(roles_prohibited)
 
 	def check(self, environment):
 		"""Check environment for required / prohibited server role."""
@@ -495,6 +512,7 @@ class TestCase(object):
 		self.description = None
 		self.bugs = set()
 		self.otrs = set()
+		self.timeout = None
 
 	def load(self, filename):
 		"""
@@ -502,11 +520,18 @@ class TestCase(object):
 		"""
 		TestCase.logger.info('Loading test %s' % (filename,))
 		digest = md5()
-		tc_file = open(filename, 'r')
+		try:
+			tc_file = open(filename, 'r')
+		except IOError as ex:
+			TestCase.logger.critical(
+				'Failed to read "%s": %s',
+				filename, ex)
+			raise TestError('Failed to open file')
+
 		try:
 			firstline = tc_file.readline()
 			if not firstline.startswith('#!'):
-				raise ValueError('Missing hash-bang')
+				raise TestError('Missing hash-bang')
 			args = firstline.split(None)
 			try:
 				lang = args[1]
@@ -517,25 +542,43 @@ class TestCase(object):
 
 			digest.update(firstline)
 			reader = _TestReader(tc_file, digest)
-			header = yaml.load(reader) or {}
+			try:
+				header = yaml.load(reader) or {}
+			except yaml.scanner.ScannerError as ex:
+				TestCase.logger.critical(
+					'Failed to read "%s": %s',
+					filename, ex,
+					exc_info=True)
+				raise TestError('Invalid test YAML data')
 		finally:
 			tc_file.close()
 
 		self.filename = os.path.abspath(filename)
 		self.uid = os.path.sep.join(self.filename.rsplit(os.path.sep, 2)[-2:])
 
-		self.description = header.get('desc', '').strip()
-		self.bugs = set(header.get('bugs', []))
-		self.otrs = set(header.get('otrs', []))
-		self.versions = CheckVersion(header.get('versions', {}))
-		self.tags = CheckTags(header.get('tags', []))
-		self.roles = CheckRoles(header.get('roles', []),
+		try:
+			self.description = header.get('desc', '').strip()
+			self.bugs = checked_set(header.get('bugs', []))
+			self.otrs = checked_set(header.get('otrs', []))
+			self.versions = CheckVersion(header.get('versions', {}))
+			self.tags = CheckTags(header.get('tags', []))
+			self.roles = CheckRoles(
+				header.get('roles', []),
 				header.get('roles-not', []))
-		self.join = CheckJoin(header.get('join', None))
-		self.components = CheckComponents(header.get('components', {}))
-		self.packages = CheckPackages(header.get('packages', []))
-		self.exposure = CheckExposure(header.get('exposure', 'dangerous'),
+			self.join = CheckJoin(header.get('join', None))
+			self.components = CheckComponents(header.get('components', {}))
+			self.packages = CheckPackages(header.get('packages', []))
+			self.exposure = CheckExposure(
+				header.get('exposure', 'dangerous'),
 				digest)
+			if header.get('timeout'):
+				self.timeout = int(header['timeout'])
+		except (TypeError, ValueError) as ex:
+			TestCase.logger.critical(
+				'Tag error in "%s": %s',
+				filename, ex,
+				exc_info=True)
+			raise TestError(ex)
 
 		return self
 
@@ -544,6 +587,8 @@ class TestCase(object):
 		Check if the test case should run.
 		"""
 		TestCase.logger.info('Checking test %s' % (self.filename,))
+		if self.timeout is None:
+			self.timeout = environment.timeout
 		conditions = []
 		conditions += list(self.exe.check(environment))
 		conditions += list(self.versions.check(environment))
@@ -662,6 +707,7 @@ class TestCase(object):
 			result.result = TestCodes.RESULT_SKIP
 			result.reason = TestCodes.REASON_ABORT
 		old_sig_int = signal.signal(signal.SIGINT, handle_int)
+		old_sig_alrm = signal.getsignal(signal.SIGALRM)
 
 		def prepare_child():
 			"""Setup child process."""
@@ -687,6 +733,25 @@ class TestCase(object):
 						devnull.close()
 					to_stdout = to_stderr = result.environment.log
 
+				if self.timeout:
+					def handle_alarm(_signal, _frame):
+						try:
+							for i in range(8):  # 2^8 * 100ms = 25.5s
+								TestCase.logger.info('Sending %d. SIGTERM', i + 1)
+								proc.terminate()
+								if proc.poll() is not None:
+									return
+								sleep((1 << i) / 10.0)
+							TestCase.logger.info('Sending SIGKILL')
+							proc.kill()
+						except OSError as ex:
+							if ex.errno != errno.ESRCH:
+								TestCase.logger.warn(
+									'Failed to kill process %r: %s', cmd, ex,
+									exc_info=True)
+					old_sig_alrm = signal.signal(signal.SIGALRM, handle_alarm)
+					signal.alarm(self.timeout)
+
 				TestCase._run_tee(proc, result, to_stdout, to_stderr)
 
 				result.result = proc.wait()
@@ -695,6 +760,8 @@ class TestCase(object):
 						cmd, self.exe, dirname)
 				raise
 		finally:
+			signal.alarm(0)
+			signal.signal(signal.SIGALRM, old_sig_alrm)
 			signal.signal(signal.SIGINT, old_sig_int)
 			if result.reason == TestCodes.REASON_ABORT:
 				raise KeyboardInterrupt()  # pylint: disable-msg=W1010

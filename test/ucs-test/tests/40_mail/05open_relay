@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Basic email functions
-## tags: apptest
+## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 ## bugs: []
@@ -17,7 +17,9 @@ def set_postfix_networks(networks='127.0.0.0/8'):
 	handler_set(['main/postfix/mynetworks=%s' % networks])
 
 def restart_postfix():
-	subprocess.call(['/etc/init.d/postfix', 'restart'])
+	print '\n* restarting postfix'
+	cmd = ['service', 'postfix', 'restart']
+	subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
 
 # ACTUAL_MYNETWORKS="$(postconf -nh mynetworks)"
 # def networks_set():

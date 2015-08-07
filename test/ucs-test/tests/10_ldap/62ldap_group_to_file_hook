@@ -8,18 +8,14 @@
 ## exposure: dangerous
 
 . "$TESTLIBPATH/base.sh" || exit 137
-. "$TESTLIBPATH/user.sh" || exit 137
-. "$TESTLIBPATH/group.sh" || exit 137
-. "$TESTLIBPATH/maildomain.sh" || exit 137
-. "$TESTLIBPATH/ucr.sh" || exit 137
-. "$TESTLIBPATH/undo.sh" || exit 137
 
 f="$(mktemp)"
 rm -f "$f"
 
+remove_hook_dir_on_cleanup=false
 if [ ! -d /var/lib/ldap-group-to-file-hooks.d ]; then
 	mkdir -p /var/lib/ldap-group-to-file-hooks.d
-	remove_hook_dir_on_cleanup=TRUE
+	remove_hook_dir_on_cleanup=true
 fi
 
 echo -e '#!/bin/sh\necho "TEST" >'$f'' >>/var/lib/ldap-group-to-file-hooks.d/62ldap_group_to_file_hook
@@ -34,9 +30,9 @@ fi
 
 rm -f "$f" /var/lib/ldap-group-to-file-hooks.d/62ldap_group_to_file_hook
 
-if [ -n "$remove_hook_dir_on_cleanup" ]; then
+if "$remove_hook_dir_on_cleanup"
+then
 	rmdir /var/lib/ldap-group-to-file-hooks.d
 fi
 
 exit "$RETVAL"
-

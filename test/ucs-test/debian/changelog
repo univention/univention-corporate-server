@@ -1,3 +1,9 @@
+ucs-test (6.0.0-15) unstable; urgency=medium
+
+  * Merge modifications from 4.0-3 branch
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 07 Aug 2015 12:15:54 +0200
+
 ucs-test (6.0.0-14) unstable; urgency=medium
 
   * 52_s4connector/174sync_nested_umlaut_groups: restart UDM CLI after
@@ -92,7 +98,7 @@ ucs-test (6.0.0-1) unstable; urgency=medium
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Aug 2015 15:25:42 +0200
 
-ucs-test (5.0.153-1) unstable; urgency=low
+ucs-test (5.0.163-2) unstable; urgency=low
 
   * Bug #37709: add test tests/52_s4connector/403rename_computer_object 
 
@@ -103,7 +109,146 @@ ucs-test (5.0.163-1) unstable; urgency=low
   * Bug #17807: add test 35_mail_to_nested_groups
   * Bug #39053: add test 34_update_of_mail_hosteddomains_ucr_variable
 
- -- Ammar Najjar <najjar@univention.de>  Mon, 03 Aug 2015 11:33:57 +0200
+ -- Ammar Najjar <najjar@univention.de>  Mon, 03 Aug 2015 11:27:29 +0200
+
+ucs-test (5.0.162-2) unstable; urgency=medium
+
+  * Fix 175sync_create_dns_a_record (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Jul 2015 22:18:49 +0200
+
+ucs-test (5.0.162-1) unstable; urgency=medium
+
+  * added Bind -> Samba4 -> UDM tests to 175sync_create_dns_a*_record
+    as a starting point for testing Bug #34184
+  * revised 175sync_create_dns_serial to use UDM instead of LDAP
+  * revised 52_s4connector/175sync_create_dns_* for timing stability
+  * remove 52_s4connector/175sync_create_dns_forward_zone, obsolete
+    already testet in 175sync_create_dns_a*_record
+  * remove 52_s4connector/175sync_create_dns_reverse_zone, obsolete
+    already testet in 175sync_create_dns_ptr_record
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Jul 2015 22:33:24 +0200
+
+ucs-test (5.0.161-1) unstable; urgency=low
+
+  * Bug #38942: workaround for Bug 37649.
+
+ -- Ammar Najjar <najjar@univention.de>  Wed, 29 Jul 2015 11:59:03 +0200
+
+ucs-test (5.0.160-2) unstable; urgency=low
+
+  * Bug #39002: Fix broken tags
+  * Bug #38601: Tags for producttest
+  * Bug #38828: Rename test
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 24 Jul 2015 08:54:43 +0200
+
+ucs-test (5.0.160-1) unstable; urgency=low
+
+  * Bug #35153: Add timeout mechanism.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 23 Jul 2015 08:57:16 +0200
+
+ucs-test (5.0.159-1) unstable; urgency=low
+
+  * Bug #38942: add new test 14_delivery_to_root_without_univention_mail_server
+  * Bug #38828: direct stderr to /dev/null
+
+ -- Ammar Najjar <najjar@univention.de>  Thu, 23 Jul 2015 08:26:05 +0200
+
+ucs-test (5.0.158-4) unstable; urgency=medium
+
+  * Bug #31792: Meta fixes
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 22 Jul 2015 23:25:12 +0200
+
+ucs-test (5.0.158-3) unstable; urgency=low
+
+  * Bug #39002: Validate tags
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 22 Jul 2015 11:07:52 +0200
+
+ucs-test (5.0.158-2) unstable; urgency=low
+
+  * Bug #38601: Tags for producttest
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 21 Jul 2015 18:22:58 +0200
+
+ucs-test (5.0.158-1) unstable; urgency=low
+
+  * Bug #27653:direct stderr to /dev/zero when restarting postfix
+
+ -- Ammar Najjar <najjar@univention.de>  Tue, 21 Jul 2015 12:05:38 +0200
+
+ucs-test (5.0.157-1) unstable; urgency=low
+
+  * Bug #38803: use AutoCallCommand and MailClient_SSL for ssl connection support
+  * Bug #38600: use AutoCallCommand
+
+ -- Ammar Najjar <najjar@univention.de>  Tue, 21 Jul 2015 08:24:10 +0200
+
+ucs-test (5.0.156-2) unstable; urgency=low
+
+  * Bug #37931 test: Fix lint build dependencies
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 17 Jul 2015 13:46:27 +0200
+
+ucs-test (5.0.156-1) unstable; urgency=low
+
+  * Bug #27656: Fix broken symbolic links to Apache tests
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 17 Jul 2015 11:46:49 +0200
+
+ucs-test (5.0.155-2) unstable; urgency=low
+
+  * Bug #38893: updated AutoCallCommand() in univention.testing.utils
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 17 Jul 2015 12:27:33 +0200
+
+ucs-test (5.0.155-1) unstable; urgency=low
+
+  * Bug #38893: disable auth caching during tests
+
+ -- Ammar Najjar <najjar@univention.de>  Fri, 17 Jul 2015 09:25:22 +0200
+
+ucs-test (5.0.154-3) unstable; urgency=low
+
+  * Bug #18512: check if static list of country names and abbreviations in
+  univention.admin.syntax.Country.choices is uptodate
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 17 Jul 2015 00:07:03 +0200
+
+ucs-test (5.0.154-2) unstable; urgency=low
+
+  * Bug #38924 test: Fix call of fail_test
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 16 Jul 2015 12:35:39 +0200
+
+ucs-test (5.0.154-1) unstable; urgency=low
+
+  * Bug #38828 :remove column from desc meta section
+  * Bug #38828 :use time instead of ctime as a subject token
+
+ -- Ammar Najjar <najjar@univention.de>  Thu, 16 Jul 2015 10:51:24 +0200
+
+ucs-test (5.0.153-1) unstable; urgency=low
+
+  * Bug #38883 :authenticate using the user mailAddress instead of uid 
+
+ -- Ammar Najjar <najjar@univention.de>  Thu, 16 Jul 2015 09:01:59 +0200
+
+ucs-test (5.0.152-4) unstable; urgency=low
+
+  * Bug #38837: 01/27 Ignore /var/log/univention/welcome-screen.log
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 16 Jul 2015 08:42:58 +0200
+
+ucs-test (5.0.152-3) unstable; urgency=low
+
+  * Bug #38924: Fix undo.sh quoting
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Jul 2015 16:25:05 +0200
 
 ucs-test (5.0.152-2) unstable; urgency=low
 

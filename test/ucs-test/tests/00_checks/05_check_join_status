@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Check join status
-## roles-not: basesystem
+## roles-not: [basesystem]
 ## tags:
 ##  - basic
 ##  - apptest
@@ -13,5 +13,3 @@ RETVAL=100
 /usr/share/univention-join/check_join_status || fail_test 110 "check_join_status failed"
 
 exit $RETVAL
-
-

@@ -116,16 +116,18 @@ log_and_execute () {
 RETVAL=100
 ALREADY_FAILED=false
 fail_test () { #This is intended to make life easier for readers of test-logs while #searching the spot where a testcase failed first.  #In order for this to work you should consequently call fail_test #with the corresponding error-code in your test-case instead of directly #using exit and when you really want to exit do so with "exit $RETVAL" #The first occurence of an error will then be marked specially in #the log file.
-	local errorcode="$1"
-	local failure_message="${2:-}"
+	local errorcode=110
+	case "$1" in
+	[0-9]|[0-9][0-9]|[0-9][0-9][0-9]) errorcode="$1" ; shift ;;
+	esac
 
 	if ! $ALREADY_FAILED
 	then
 		ALREADY_FAILED=true
 		RETVAL="$errorcode"
-		if [ -n "$failure_message" ]
+		if [ -n "$*" ]
 		then
-			error "$failure_message"
+			error "$@"
 		fi
 		error "**************** Test failed above this line ($errorcode) ****************"
 	else

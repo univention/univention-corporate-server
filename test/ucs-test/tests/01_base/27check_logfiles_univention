@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: World-readable Univention-specific logfiles
-## bugs: [11431]
+## bugs: [11431, 38837]
 ## exposure: safe
 ## tags:
 ##  - basic
@@ -11,7 +11,13 @@
 
 tmpfile=$(mktemp)
 
-find /var/log/univention -perm /o+r ! -type l ! -type d ! -name test_\*.log ! -name directory-reports-cleanup.log -print0 >"$tmpfile"
+find /var/log/univention \
+	-perm /o+r \
+	! -type l ! -type d \
+	! -name test_\*.log \
+	! -name directory-reports-cleanup.log \
+	! -name welcome-screen.log $(: Bug 38837)\
+	-print0 >"$tmpfile"
 
 if [ -s "$tmpfile" ]
 then

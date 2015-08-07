@@ -16,7 +16,7 @@ do
 	*-archive-keyring)
 		case "$status" in
 		"install"*|*" installed")
-			fail_test "found other APT keyring: $pkg $status"
+			fail_test 1 "found other APT keyring: $pkg $status"
 			found_other=true
 			;;
 		esac
@@ -28,7 +28,7 @@ __EOF__
 
 case "$found_ucs" in
 	"install ok installed") info "GOOD: found APT keyring for UCS" ;;
-	*) fail_test "missing APT keyring for UCS: $found_ucs" ;;
+	*) fail_test 1 "missing APT keyring for UCS: $found_ucs" ;;
 esac
 
 if ! "$found_other"

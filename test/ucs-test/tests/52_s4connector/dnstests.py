@@ -8,22 +8,26 @@ ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 import os
 import sys
-from time import sleep
+import time
 
 
-MATCH_ATTEMPTS = 10  # number of 'dig' attempts to be done, see Bug #38288
+## Adding a DNS zone causes bind restart in postrun, so we may have to
+## retry a couple of times:
+MATCH_ATTEMPTS = 17  # number of 'dig' attempts to be done, see Bug #38288
 
 
-def check_ldap_object(item, item_name, item_attribute = None, name_string = None):
+def check_ldap_object(item, item_name, item_attribute = None, expected_values = None):
 	print (" Testing Ldap object : {0}			".format(item_name)),
+	if not isinstance(expected_values, list):
+		expected_values = [expected_values]
 	try:
 		if item_attribute:
-			utils.verify_ldap_object(item, {item_attribute:[name_string]})
+			utils.verify_ldap_object(item, {item_attribute: expected_values})
 		else:
 			utils.verify_ldap_object(item)
-	except:
+	except utils.LDAPError as exc:
 		print (' Failed')
-		print ('Verification of Ldap object failed ')
+		print ('Verification of Ldap object failed: %s' % exc)
 		sys.exit(1)
 	else:
 		print(' Success ')
@@ -99,6 +103,8 @@ def match(re_test_object, zone_name, typ, param=None):
 	else:
 		dig_cmd = ("dig", param, zone_name, typ, '+noall', '+answer')
 
+	## Adding a DNS zone causes bind restart in postrun, so we may have to
+	## retry a couple of times
 	for attempt in range(MATCH_ATTEMPTS):
 		dig_subprocess = subprocess.Popen(dig_cmd, shell = False, stdout = subprocess.PIPE).communicate()
 		dig_answer = dig_subprocess[0].splitlines()
@@ -111,7 +117,7 @@ def match(re_test_object, zone_name, typ, param=None):
 				return
 
 		print("\n  DNS not synced yet, making another dig attempt in 1 sec.")
-		sleep(1)
+		time.sleep(1)
 
 	print("\nFAIL: DNS still not synced, made %s dig attempts " % MATCH_ATTEMPTS)
 	sys.exit(1)
@@ -173,3 +179,16 @@ def random_hex():
 	result = []
 	result = ''.join([random.choice('0123456789abcdef') for i in range(4)])
 	return result
+
+def fail_if_cant_resolve_own_hostname(max_attempts=17, delta_t_seconds=1):
+		p = subprocess.Popen(["host", "%(hostname)s.%(domainname)s" % ucr])
+		rc = p.wait()
+		attempt = 1
+		while rc != 0:
+			if attempt > max_attempts:
+				fail("Cannot resolve own hostname after %s seconds" % max_attempts)
+			sys.stdout.flush()
+			time.sleep(delta_t_seconds)
+			p = subprocess.Popen(["host", "%(hostname)s.%(domainname)s" % ucr])
+			rc = p.wait()
+			attempt += 1

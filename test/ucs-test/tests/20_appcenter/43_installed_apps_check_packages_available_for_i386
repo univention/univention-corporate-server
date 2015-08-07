@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Checks if App packages are available as i386
-## tags: [appcenter]
+## roles: [domaincontroller_master]
+## tags: [apptest]
 ## exposure: dangerous
 ## packages:
 ##   - univention-directory-manager-tools
@@ -95,7 +96,7 @@ class Test():
 		if ignore_if_not_installed and not new_pkg.is_installed:
 			return None
 		if new_pkg and new_pkg.installed and new_pkg.installed.uri:
-			if '://appcenter.'in new_pkg.installed.uri:
+			if '://appcenter.' in new_pkg.installed.uri:
 				return(new_pkg_name)
 
 

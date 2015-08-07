@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Imap Server with hunderds of connections
-## tags: apptest
+## tags: [producttest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
@@ -63,7 +63,7 @@ def main():
 			mem_start = used_memory()
 			servers = []
 			time_start = time.time()
-			for i in xrange(1500):
+			for i in xrange(700):
 				imap = MailClient_SSL(host)
 				servers.append(imap)
 			print '%d IMAP connections are OK (took %f seconds)' % (i + 1, time.time()-time_start)

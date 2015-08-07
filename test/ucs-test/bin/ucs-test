@@ -11,9 +11,10 @@ from optparse import OptionParser, OptionGroup
 
 import univention.testing.format
 from univention.testing.codes import TestCodes
-from univention.testing.utils import setup_environment, setup_debug, \
+from univention.testing.internal import setup_environment, setup_debug, \
 		LOG_BASE, get_sections, get_tests
 from univention.testing.data import TestEnvironment, TestCase, TestResult
+from univention.testing.errors import TestError
 
 
 def parse_options(sections):
@@ -23,6 +24,9 @@ def parse_options(sections):
 	parser.add_option("-H", "--hold",
 			dest="hold", action="store_true", default=False,
 			help="Stop execution after the first failed test")
+	parser.add_option("-t", "--timeout",
+			dest="timeout", action="store", default=3600, type=int,
+			help="Abort single test after [%default]s")
 
 	selection_group = OptionGroup(parser, 'Test selection')
 	selection_group.add_option("-s", "--section",
@@ -109,7 +113,15 @@ class TestSet(object):
 				try:
 					for fname in cases:
 						count += 1
-						test_case = TestCase().load(fname)
+						try:
+							test_case = TestCase().load(fname)
+						except TestError as ex:
+							logger = logging.getLogger('test')
+							logger.critical(
+								'Failed to load test "%s": %s',
+								fname, ex)
+							continue
+
 						test_result = TestResult(test_case,
 								self.test_environment)
 						check = test_result.check()
@@ -166,6 +178,7 @@ def main():
 			prohibit=options.tags_prohibited)
 	if options.exposure:
 		test_environment.set_exposure(options.exposure)
+	test_environment.set_timeout(options.timeout)
 	test_set.set_environment(test_environment)
 	test_set.set_prefix(options.count)
 	test_set.set_format(options.format)

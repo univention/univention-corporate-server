@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Checking for filesystem permissions on machine.secret
-## roles-not: basesystem
+## roles-not: [basesystem]
 ## tags:
 ## - basic
 ## - apptest

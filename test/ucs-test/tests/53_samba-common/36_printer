@@ -91,7 +91,7 @@ while ! grep -q "$(uname -a)" "/tmp/$printername"
 do
 	let i=$i+1
 	if [ $i = 20 ]; then
-		fail_fast "Nothing has been printed to the output file."
+		fail_fast 1 "Nothing has been printed to the output file."
 	fi
 	sleep 1
 done

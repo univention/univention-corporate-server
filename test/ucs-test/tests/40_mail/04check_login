@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Cyrus authentication
-## tags: apptest
+## tags: [apptest]
 ## exposure: safe
 ## packages: [cyrus-common]
 ## bugs: [23527, 38321]

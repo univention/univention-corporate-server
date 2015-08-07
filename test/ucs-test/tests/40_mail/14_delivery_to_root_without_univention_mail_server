@@ -1,0 +1,23 @@
+#!/usr/share/ucs-test/runner python
+## desc: Delivery to root without univention mail server
+## tags: [apptest]
+## exposure: dangerous
+
+from essential.mail import send_mail, check_delivery
+from univention.config_registry import handler_set
+import time
+import univention.testing.ucr as ucr_test
+
+def main():
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+		handler_set(['mail/alias/root=systemmail@%s' % fqdn])
+		for recipient in ['root', 'root@localhost', 'root@%s' % fqdn]:
+			token = str(time.time())
+			send_mail(recipients=recipient, msg=token, tls=True)
+			check_delivery(token, recipient, True)
+
+if __name__ == '__main__':
+	main()
+
+# vim: set ft=python ts=4 sw=4 noet :

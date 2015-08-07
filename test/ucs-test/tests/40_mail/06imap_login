@@ -1,38 +1,61 @@
 #!/usr/share/ucs-test/runner python
 ## desc: IMAP mail login
-## tags: apptest
+## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 ## bugs: []
 
-from essential.mail import disable_mail_quota, enable_mail_quota, ImapMail
+from essential.mailclient import MailClient_SSL
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+import univention.config_registry
+
 
 def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr:
-		with udm_test.UCSTestUDM() as udm:
-			username = uts.random_name()
-			password = uts.random_string()
-			mailAddress = '%s@%s' % (username, ucr.get('domainname'))
-			userdn, username = udm.create_user(
-					username=username,
-					password=password,
-					mailPrimaryAddress= mailAddress,
-					option=['mail', 'person', 'posix', 'samba', 'pki']
-					)
+		univention.config_registry.handler_set(['mail/dovecot/logging/auth_debug=yes',
+			'mail/dovecot/logging/auth_debug_passwords=yes', 'mail/dovecot/logging/auth_verbose=yes',
+			'mail/dovecot/logging/auth_verbose_passwords=yes', 'mail/dovecot/logging/mail_debug=yes'])
+		with utils.AutoCallCommand(enter_cmd=['doveadm', 'reload'], exit_cmd=['doveadm', 'reload']) as acc1:
+			with udm_test.UCSTestUDM() as udm:
+				if ucr.is_true('mail/dovecot'):
+					logfiles = ['/var/log/dovecot.log']
+				else:
+					logfiles = ['/var/log/mail.log']
+				logfiles.append('/var/log/auth.log')
+				with utils.FollowLogfile(logfiles=logfiles) as flf:
+					with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'], exit_cmd=['doveadm', 'log', 'reopen']) as acc2:
+						username = uts.random_name()
+						password =  uts.random_string()
+						mailAddress = '%s@%s' % (username, ucr.get('domainname'))
+						userdn, username = udm.create_user(
+								username=username,
+								password=password,
+								mailPrimaryAddress=mailAddress,
+								option=['mail', 'person', 'posix', 'samba', 'pki']
+								)
+						try:
+							print '* Test imap login with the correct password:'
+							imap = MailClient_SSL('%s.%s' % (ucr.get('hostname'), ucr.get('domainname')))
+							if imap.login_ok(mailAddress, password):
+								utils.fail('IMAP login failed with the correct password')
 
-			imap = ImapMail()
-
-			print '* Test imap login with the correct password:'
-			if not imap.login_OK(mailAddress, password):
-				utils.fail('IMAP login failed with the correct password')
-
-			print '* Test imap login with the wrong password:'
-			if imap.login_OK(mailAddress, uts.random_name()):
-				utils.fail('IMAP login succeeded with the wrong password')
+							print '* Test imap login with the wrong password:'
+							imap = MailClient_SSL('%s.%s' % (ucr.get('hostname'), ucr.get('domainname')))
+							if imap.login_ok(mailAddress, uts.random_name(), expected_to_succeed=False):
+								utils.fail('IMAP login succeeded with the wrong password')
+						finally:
+							try:
+								imap.logout()
+							except:
+								pass
+							try:
+								imap.shutdown()
+							except:
+								pass
+							imap = None
 
 
 if __name__ == '__main__':

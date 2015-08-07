@@ -19,11 +19,15 @@ if __name__ == '__main__':
 		host = dnstests.get_hostname()
 		random_name1 = uts.random_string()
 		random_name2 = uts.random_string()
-		forward_zone = udm.create_object('dns/forward_zone', zone = random_zone, nameserver = host)
-		dns_alias = udm.create_object('dns/alias', superordinate = forward_zone, name = random_name1, cname = random_name2)
+		test_zone_dn = udm.create_object('dns/forward_zone', zone = random_zone, nameserver = host)
+		dns_alias = udm.create_object('dns/alias', superordinate = test_zone_dn, name = random_name1, cname = random_name2)
 		dnstests.check_ldap_object(dns_alias, 'alias', 'cNAMERecord', random_name2)
 		s4connector.wait_for_sync(30)
+
 		test_string = random_name1 + '.' +random_zone
 		dnstests.test_dns_alias(test_string, random_name2)
 		dnstests.check_ldap_object(dns_alias, 'alias', 'cNAMERecord', random_name2 + '.')
+
 	s4connector.wait_for_sync()
+	## Removing a DNS zone triggers bind reload in postrun, better check:
+	dnstests.fail_if_cant_resolve_own_hostname()	## wait up to 17 seconds

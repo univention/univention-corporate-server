@@ -22,9 +22,12 @@ if __name__ == '__main__':
 		random_zone = dnstests.random_zone()
 		host = dnstests.get_hostname()
 		txt = uts.random_string()
-		forward_zone = udm.create_object('dns/forward_zone', zone = random_zone, txt = txt, nameserver = host)
-		dnstests.check_ldap_object(forward_zone, 'txt record', 'tXTRecord', txt)
+		test_zone_dn = udm.create_object('dns/forward_zone', zone = random_zone, txt = txt, nameserver = host)
+		dnstests.check_ldap_object(test_zone_dn, 'txt record', 'tXTRecord', txt)
 		s4connector.wait_for_sync(30)
 		dnstests.test_dns_txt(random_zone, txt)
-		dnstests.check_ldap_object(forward_zone, 'txt record', 'tXTRecord', txt)
+		dnstests.check_ldap_object(test_zone_dn, 'txt record', 'tXTRecord', txt)
+
 	s4connector.wait_for_sync()
+	## Removing a DNS zone triggers bind reload in postrun, better check:
+	dnstests.fail_if_cant_resolve_own_hostname()	## wait up to 17 seconds

@@ -5,7 +5,10 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 8.0.0),
  ucslint-univention,
  python-support,
- univention-management-console-dev
+ python-yaml,
+ python-apt,
+ univention-management-console-dev,
+ univention-config,
 Standards-Version: 3.6.1
 XS-Python-Version: 2.6, 2.7
 
@@ -256,7 +259,8 @@ Package: ucs-test-udm-users
 Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
+ ${misc:Depends},
+ python-pycountry
 Provides: ucs-test-module
 Description: Test scripts for the users/user-module of the UDM
  This package includes some scripts for testing the functionality of the
@@ -458,7 +462,8 @@ Depends: ucs-test-libs (= ${source:Version}),
  ucs-test-udm-groups,
  ucs-test-udm-users,
  ucs-test-ldap,
- ucs-test-base
+ ucs-test-base,
+ ucs-test-apache,
 Provides: ucs-test-module
 Description: Test scripts to test the app removal
  This package includes test-cases for the app removal.

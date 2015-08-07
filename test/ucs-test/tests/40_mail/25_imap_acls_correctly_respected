@@ -1,70 +1,72 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Mail imap acl flags are correctly respected by the IMAP server
-## tags: apptest
+## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
-from essential.mailclient import MailClient_SSL
 from essential.mail import create_shared_mailfolder
-from univention.config_registry import handler_set
+from essential.mailclient import MailClient_SSL
 import itertools
 import subprocess
+import univention.config_registry
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 
 
 def main():
 	with udm_test.UCSTestUDM() as udm:
-		with ucr_test.UCSTestConfigRegistry() as ucr:
-			domain = ucr.get('domainname')
-			dovecot = ucr.is_true('mail/dovecot')
-			if dovecot:
-				handler_set(['mail/dovecot/mailbox/delete=yes'])
-				subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/zero', 'w'))
-			else:
-				handler_set(['mail/cyrus/mailbox/delete=yes'])
-				subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/zero', 'w'))
-			host = '%s.%s' % (ucr.get('hostname'), domain)
-			password = 'univention'
-			mails = []
-			users = []
-			for i in xrange(3):
-				usermail = '%s@%s' % (uts.random_name(), domain)
-				userdn, username = udm.create_user(
-					set={
-						'password'           : password,
-						'mailHomeServer'     : host,
-						'mailPrimaryAddress' : usermail
-					}
-				)
-				mails.append(usermail)
-				users.append(userdn)
-			default_shared_permissions = {'anyone': 'lrswipkxtecda'}
-			permissions = 'lrswipkxtecda'
-			shared_dn, shared_mailbox, shared_address = create_shared_mailfolder(
-				udm, host, mailAddress=True, user_permission=['"%s" "%s"' % ('anyone', 'all')])
+		ucr_tmp = univention.config_registry.ConfigRegistry()
+		ucr_tmp.load()
+		cmd =  ['/etc/init.d/cyrus-imapd', 'restart']
+		if ucr_tmp.is_true('mail/dovecot'):
+			cmd = ['/etc/init.d/dovecot', 'restart']
+		with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')) as acc:
+			with ucr_test.UCSTestConfigRegistry() as ucr:
+				domain = ucr.get('domainname')
+				dovecot = ucr.is_true('mail/dovecot')
+				if dovecot:
+					univention.config_registry.handler_set(['mail/dovecot/mailbox/delete=yes'])
+					subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
+				else:
+					univention.config_registry.handler_set(['mail/cyrus/mailbox/delete=yes'])
+					subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/null', 'w'))
+				host = '%s.%s' % (ucr.get('hostname'), domain)
+				password = 'univention'
+				mails = []
+				users = []
+				for i in xrange(3):
+					usermail = '%s@%s' % (uts.random_name(), domain)
+					userdn, username = udm.create_user(
+						set={
+							'password'           : password,
+							'mailHomeServer'     : host,
+							'mailPrimaryAddress' : usermail
+						}
+					)
+					mails.append(usermail)
+					users.append(userdn)
+				default_shared_permissions = {'anyone': 'lrswipkxtecda'}
+				permissions = 'lrswipkxtecda'
+				shared_dn, shared_mailbox, shared_address = create_shared_mailfolder(
+					udm, host, mailAddress=True, user_permission=['"%s" "%s"' % ('anyone', 'all')])
 
-			test_cases = itertools.product(mails[0:2], permissions)
-			for i in xrange(len(mails[0:2]) * len(permissions)):
-				who, what = next(test_cases)
-				imap = MailClient_SSL(host)
-				imap.log_in(mails[2], password)
-				mailboxs = imap.getMailBoxes()
-				mailboxs.append(shared_mailbox)
-				for mailbox in mailboxs:
-					print '%d: Mailbox = %s, %s -> %s' % (i, mailbox, who, what)
-					imap.deleteacl(mailbox, who)
-					if mailbox == shared_mailbox:
-						imap.check_acls({mailbox: default_shared_permissions})
-					imap.setacl(mailbox, who, what)
-					imap.check_acls({mailbox: {who: what} })
-				imap.logout()
-		# restart imap server
-		if dovecot:
-			subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/zero', 'w'))
-		else:
-			subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/zero', 'w'))
+				test_cases = itertools.product(mails[0:2], permissions)
+				for i in xrange(len(mails[0:2]) * len(permissions)):
+					who, what = next(test_cases)
+					imap = MailClient_SSL(host)
+					imap.log_in(mails[2], password)
+					mailboxs = imap.getMailBoxes()
+					mailboxs.append(shared_mailbox)
+					for mailbox in mailboxs:
+						print '%d: Mailbox = %s, %s -> %s' % (i, mailbox, who, what)
+						imap.deleteacl(mailbox, who)
+						if mailbox == shared_mailbox:
+							imap.check_acls({mailbox: default_shared_permissions})
+						imap.setacl(mailbox, who, what)
+						imap.check_acls({mailbox: {who: what} })
+					imap.logout()
 
 
 if __name__ == '__main__':
