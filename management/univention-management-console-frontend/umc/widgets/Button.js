@@ -95,19 +95,16 @@ define([
 		},
 
 		_setDescriptionAttr: function(description) {
-			if (description && this.handlesTooltips) {
+			if (!this._tooltip) {
+				// create the tooltip for the first time
 				this._tooltip = new Tooltip({
 					label: description,
 					connectId: [ this.domNode ]
 				});
-				// destroy the tooltip when the widget is destroyed
 				this.own(this._tooltip);
-			} else {
-				if (this._tooltip) {
-					//deactivate tooltip
-					this._tooltip.set('label', '');
-				}
 			}
+
+			this._tooltip.set('label', description || '');
 		}
 
 	});
