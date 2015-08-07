@@ -31,6 +31,13 @@ fi
 
 ldapsearch -x -D "uid=$USERNAME,cn=users,$ldap_base" -w "$PASSWORD" -s base || RETVAL=110
 
+# In case of a memberserver in a S4 environment, we have to
+# wait until the user has been synchonized to Samba 4. Otherwise
+# we can't get a kerberos ticket
+if [ "$server_role" = "memberserver" ]; then
+	sleep 16
+fi
+
 info "Try to get a kerberos ticket for the new user"
 
 echo "$PASSWORD" | kinit --password-file=STDIN "$USERNAME" || RETVAL=110
