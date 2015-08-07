@@ -726,7 +726,8 @@ appliance_basesettings ()
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/umc-favorites <<__EOF__
 #!/bin/bash
 eval "\$(ucr shell)"
-fav="favorites udm:users/user,udm:groups/group,udm:computers/computer,appcenter,updater$app_fav_list"
+old_fav=\$(udm users/user list --dn "uid=Administrator,cn=users,\$ldap_base" | grep "^  umcProperty: favorites = " | awk '{print \$4}')
+fav="favorites \$old_fav\$app_fav_list"
 udm users/user modify --dn "uid=Administrator,cn=users,\$ldap_base" --set umcProperty="\$fav"
 __EOF__
 	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/umc-favorites

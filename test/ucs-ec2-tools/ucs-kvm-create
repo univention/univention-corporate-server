@@ -5,7 +5,7 @@
 Run ucs-test in local KVM test environment.
 """
 #
-# Copyright 2013-2014 Univention GmbH
+# Copyright 2013-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -39,10 +39,10 @@ import logging
 
 try:
 	import python.ec2.lib as univention_ec2_lib
-	from python.ec2.lib import _print_done, _print_process
+	from python.ec2.lib import _print_done, _print_process, check_missing_files
 except ImportError:
 	import univention.ec2.lib as univention_ec2_lib
-	from univention.ec2.lib import _print_done, _print_process
+	from univention.ec2.lib import _print_done, _print_process, check_missing_files
 
 
 def main():
@@ -80,6 +80,8 @@ def main():
 		_print_process('Creating VM [%s]' % host)
 		vms.append( univention_ec2_lib.VM_KVM(host, config) )
 		_print_done()
+
+	check_missing_files(vms)
 
 	# start instances
 	for vm in vms:

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim:set shiftwidth=4 tabstop=4:
 #
-# Copyright 2013-2014 Univention GmbH
+# Copyright 2013-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -135,6 +135,8 @@ class VM:
 			if config.has_option(sname, 'logfile'):
 				self.logfile = os.path.expanduser(config.get(sname, 'logfile'))
 				break
+		else:
+			self.logfile = None
 
 		# Create the logfile
 		if self.logfile:
@@ -231,26 +233,35 @@ class VM:
 
 		self._close_client_sftp_connection()
 
-	def copy_files(self):
-		''' Copy the given files to the instance '''
-		if self._is_windows:
-			return
+	def list_files(self):
+		'''Iterate files to copy'''
 		if not self.files:
 			return
-
-		self._open_client_sftp_connection()
 
 		for line in self.files:
 			localfiles, remotedir = line.rsplit(' ', 1)
 			expanded_files = glob.glob(os.path.expanduser(localfiles))
-			self._remote_mkdir(remotedir)
+			if expanded_files:
+				for localfile in expanded_files:
+					yield localfile, remotedir
+			else:
+				yield localfiles, None
 
-			for localfile in expanded_files:
-				if os.path.exists(localfile):
-					fname = os.path.basename(localfile)
-					remfile = os.path.join(remotedir, fname)
-					self.client_sftp.put(localfile, remfile)
-					self.client_sftp.chmod(remfile, os.stat(localfile).st_mode & 0777)
+	def copy_files(self):
+		''' Copy the given files to the instance '''
+		if self._is_windows:
+			return
+
+		self._open_client_sftp_connection()
+
+		for localfile, remotedir in self.list_files():
+			if not remotedir:
+				continue
+			fname = os.path.basename(localfile)
+			remfile = os.path.join(remotedir, fname)
+			self._remote_mkdir(remotedir)
+			self.client_sftp.put(localfile, remfile)
+			self.client_sftp.chmod(remfile, os.stat(localfile).st_mode & 0777)
 
 		self._close_client_sftp_connection()
 
@@ -427,11 +438,14 @@ class VM:
 
 	def _open_client_sftp_connection(self):
 		'''	Open the SFTP connection and save the connection as self.client_sftp '''
-		self.client_sftp = self.client.open_sftp()
+		if not self.client_sftp:
+			self.client_sftp = self.client.open_sftp()
 
 	def _close_client_sftp_connection(self):
 		'''	Close the SFTP connection '''
-		self.client_sftp.close()
+		if self.client_sftp:
+			self.client_sftp.close()
+		self.client_sftp = None
 
 	def _remote_mkdir(self, directory):
 		'''	Helpder function to create the given directory structure through
@@ -458,7 +472,6 @@ class VM:
 				lfile.write('\n')
 			lfile.close()
 		else:
-			print 'I: no logfile is configured, print to stdout'
 			print msg
 
 
@@ -619,11 +632,15 @@ class VM_EC2(VM):
 				'ec2_ami',
 				'ec2_security_group',
 				'ec2_instance_type',
+				'ec2_instance_ebsOptimized',
 				'ec2_keypair',
 				'ec2_region',
 				'ec2_subnet_id',
 				'ec2_partition_size',
-				]
+				'ec2_instance_store',
+				'ec2_volume_type',
+				'ec2_volume_iops',
+		]
 		for key in params:
 			if not config.has_option(section, key):
 				if config.has_option('Global', key):
@@ -637,18 +654,39 @@ class VM_EC2(VM):
 
 		self.ec2 = None
 
-	def _get_blockdevicemapping(self):
+	def _create_blockdevicemapping(self, ami):
 		"""
 		Create explicit block device with given size.
+		Also make additional ephemeral disk available.
 		"""
-		bdm = None
-		if self.aws_cfg.get('ec2_partition_size'):
-			dev_sda1 = blockdevicemapping.EBSBlockDeviceType(
-					size = self.aws_cfg.get('ec2_partition_size'),
-					delete_on_termination=True,
-					)
-			bdm = blockdevicemapping.BlockDeviceMapping()
-			bdm['/dev/sda1'] = dev_sda1
+		size = self.aws_cfg.get('ec2_partition_size')
+		max_ephemeral = int(self.aws_cfg.get('ec2_instance_store', 4))
+		bdm = blockdevicemapping.BlockDeviceMapping()
+
+		last_used = 0
+		for dev, desc in ami.block_device_mapping.iteritems():
+			bdm[dev] = blockdevicemapping.BlockDeviceType(
+				ephemeral_name=desc.ephemeral_name,
+				volume_id=desc.volume_id,
+				snapshot_id=desc.snapshot_id,
+				size=int(size) if size else desc.size,
+				delete_on_termination=True,
+			)
+			if tuple(map(int, boto.Version.split('.'))) >= (2, 6):
+				iops = self.aws_cfg.get('ec2_volume_iops')
+				if iops:
+					bdm[dev].iops = int(iops)
+				bdm[dev].volume_type = self.aws_cfg.get('ec2_volume_type')
+			if desc.ephemeral_name:
+				max_ephemeral = 0
+			last_used = max(last_used, ord(dev.rstrip("0123456789")[-1]))
+
+		for ephemeral in range(max_ephemeral):
+			dev = u'/dev/xvd%c' % (chr(last_used + 1 + ephemeral),)
+			bdm[dev] = blockdevicemapping.BlockDeviceType(
+				ephemeral_name=u"ephemeral%d" % (ephemeral,),
+			)
+
 		return bdm
 
 	def _connect_vm(self):
@@ -675,29 +713,28 @@ class VM_EC2(VM):
 		reuse = self.aws_cfg.get('ec2_reuse')
 		if reuse:
 			reservation = self.ec2.get_all_instances(instance_ids=[reuse])[0]
-		elif self.aws_cfg.get('ec2_subnet_id'):
-			ami = self.ec2.get_image(self.aws_cfg['ec2_ami'])
-			reservation = ami.run(min_count=1,
-				max_count=1,
-				key_name=self.aws_cfg['ec2_keypair'],
-				subnet_id=self.aws_cfg['ec2_subnet_id'],
-				user_data=user_data,
-				security_group_ids=[self.aws_cfg['ec2_security_group']],
-				instance_type=self.aws_cfg['ec2_instance_type'],
-				instance_initiated_shutdown_behavior='terminate',  # 'save'
-				block_device_map=self._get_blockdevicemapping()
-				)
 		else:
 			ami = self.ec2.get_image(self.aws_cfg['ec2_ami'])
-			reservation = ami.run(min_count=1,
+
+			param = dict(
+				image_id=ami.id,
 				max_count=1,
 				key_name=self.aws_cfg['ec2_keypair'],
 				user_data=user_data,
-				security_groups=[self.aws_cfg['ec2_security_group']],
 				instance_type=self.aws_cfg['ec2_instance_type'],
 				instance_initiated_shutdown_behavior='terminate',  # 'save'
-				block_device_map=self._get_blockdevicemapping()
-				)
+				block_device_map=self._create_blockdevicemapping(ami),
+			)
+			if self.aws_cfg.get('ec2_subnet_id'):
+				param['subnet_id'] = self.aws_cfg['ec2_subnet_id']
+				param['security_group_ids'] = [self.aws_cfg['ec2_security_group']]
+			else:
+				param['security_groups'] = [self.aws_cfg['ec2_security_group']]
+			if tuple(map(int, boto.Version.split('.'))) >= (2, 9, 3):
+				if self.aws_cfg.get('ec2_instance_ebsOptimized', '').lower() in ('1', 'true', 'yes'):
+					param['ebs_optimized'] = True
+
+			reservation = self.ec2.run_instances(**param)
 
 		self.instance = reservation.instances[0]
 
@@ -738,6 +775,10 @@ class VM_EC2(VM):
 
 def _print_process(msg):
 	'''	Print s status line '''
+	if not os.isatty(sys.stdout.fileno()):
+		print msg
+		return
+
 	if len(msg) > 64:
 		print '%s..' % msg[:63],
 	else:
@@ -749,6 +790,19 @@ def _print_done(msg='done'):
 	'''	Close the status line opend with _print_process '''
 	print '%s' % msg
 	sys.stdout.flush()
+
+
+def check_missing_files(vms):
+	missing = [
+		localfile
+		for vm in vms
+		for localfile, remotedir in vm.list_files()
+		if not os.path.exists(localfile) or not remotedir
+	]
+	if missing:
+		print >> sys.stderr, 'fail: missing local files:\n%s' % ('\n'.join(missing),)
+		if os.isatty(sys.stdout.fileno()):
+			sys.exit(1)
 
 
 class Parser(ConfigParser.ConfigParser):
