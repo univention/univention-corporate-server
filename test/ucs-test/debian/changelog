@@ -1,3 +1,10 @@
+ucs-test (5.0.164-21) unstable; urgency=medium
+
+  * 49_nfs/10many-groups: wait up to 10 minutes until the replication
+    has been finished (Bug #39120)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Aug 2015 19:34:57 +0200
+
 ucs-test (5.0.164-20) unstable; urgency=medium
 
   * Disable 40_mail/41_dovecot_quota-status (Bug #38727)
