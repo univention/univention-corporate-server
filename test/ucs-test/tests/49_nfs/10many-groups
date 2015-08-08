@@ -69,7 +69,7 @@ create_groups_and_user () {
 wait_setup_complete () {
 	wait_for_replication_and_postrun
 	info "wait for '/usr/lib/univention-directory-listener/system/nss.py' to call 'ldap-group-to-file'"
-	for ((t=60;t>=0;t--))
+	for ((t=600;t>=0;t--))
 	do
 		g="$(id -G "$USER" | wc -w)"
 		printf '[%02d] %d < %d\n' "$t" "$g" "$GCOUNT"
