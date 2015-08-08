@@ -310,7 +310,7 @@ def wait_for_connector_replication():
 def package_installed(package):
 	sys.stdout.flush()
 	with open('/dev/null', 'w') as null:
-        return (subprocess.call("dpkg-query -W -f '${Status}' %s | grep -q ^install" % package, stderr=null, shell=True) == 0)
+		return (subprocess.call("dpkg-query -W -f '${Status}' %s | grep -q ^install" % package, stderr=null, shell=True) == 0)
 
 
 def fail(log_message = None, returncode = 1):

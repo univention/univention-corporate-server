@@ -1,3 +1,10 @@
+ucs-test (5.0.164-17) unstable; urgency=medium
+
+  * utils.package_installed(): Fixed python IndentationError
+    (Bug #39114)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Aug 2015 10:45:30 +0200
+
 ucs-test (5.0.164-16) unstable; urgency=medium
 
   * utils.package_installed(): consider uninstalled packages (Bug #39114)
