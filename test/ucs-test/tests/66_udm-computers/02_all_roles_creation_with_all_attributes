@@ -69,8 +69,8 @@ if __name__ == '__main__':
 				properties['password'] =  uts.random_string()
 				properties['unixhome'] = '/home/'
 				properties['shell'] =  uts.random_string()
-				properties['primaryGroup'] =  udm.create_group()[0]
-				properties['groups'] = [udm.create_group()[0], udm.create_group()[0]]
+				properties['primaryGroup'] =  udm.create_group(check_for_drs_replication=False)[0]
+				properties['groups'] = [udm.create_group(check_for_drs_replication=False)[0], udm.create_group(check_for_drs_replication=False)[0]]
 				properties['sambaRID'] = uts.random_int(10000, 12000)
 				expectedLdap['gidNumber'] = ldap.search(base = properties['primaryGroup'], attr = ['gidNumber'])[0][1].get('gidNumber', [])
 				expectedLdap['loginShell'] =  [properties['shell']]
