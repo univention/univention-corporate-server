@@ -4,6 +4,8 @@
 ## exposure: dangerous
 ## packages: [univention-ldap-server]
 ## bugs: [35329, 35088]
+## versions:
+##  4.0-2: skip
 
 from datetime import datetime, timedelta
 from univention.uldap import getMachineConnection
