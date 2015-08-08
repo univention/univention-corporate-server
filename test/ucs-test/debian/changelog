@@ -1,3 +1,9 @@
+ucs-test (6.0.0-24) unstable; urgency=medium
+
+  * Disable 40_mail/41_dovecot_quota-status (Bug #38727)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Aug 2015 19:24:19 +0200
+
 ucs-test (6.0.0-23) unstable; urgency=medium
 
   * Disable 10_ldap/03_shadowExpire_in_nis_schema (Bug #39119)
