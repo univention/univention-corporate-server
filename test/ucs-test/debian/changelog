@@ -1,3 +1,10 @@
+ucs-test (6.0.0-26) unstable; urgency=medium
+
+  * 64_udm-printers/50_create_printer_for_every_printer_URI: in case of
+    an error, wait for 30 seconds and try again (Bug #39112)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Aug 2015 19:43:34 +0200
+
 ucs-test (6.0.0-25) unstable; urgency=medium
 
   * 49_nfs/10many-groups: wait up to 10 minutes until the replication

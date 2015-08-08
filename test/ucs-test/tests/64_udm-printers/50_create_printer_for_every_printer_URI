@@ -7,6 +7,7 @@
 
 import re
 import subprocess
+import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
@@ -45,7 +46,10 @@ def main():
 							}
 						)
 				if not printer_enabled(printer_name):
-					utils.fail('Printer (%s) is created but not enabled' % printer_name)
+					print 'Wait for 30 seconds and try again'
+					time.sleep(30)
+					if not printer_enabled(printer_name):
+						utils.fail('Printer (%s) is created but not enabled' % printer_name)
 
 if __name__ == '__main__':
 	main()
