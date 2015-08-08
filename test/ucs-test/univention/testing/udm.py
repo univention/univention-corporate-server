@@ -165,7 +165,7 @@ class UCSTestUDM(object):
 		return cmd
 
 
-	def create_object(self, modulename, wait_for_replication = True, **kwargs):
+	def create_object(self, modulename, wait_for_replication = True, check_for_drs_replication = False, **kwargs):
 		"""
 		Creates a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
 		only and have to exactly match UDM property names (case-sensitive!).
@@ -198,13 +198,14 @@ class UCSTestUDM(object):
 
 		if wait_for_replication:
 			utils.wait_for_replication()
-			if modulename in ["users/user", "groups/group"] and utils.package_installed('univention-samba4'):
-				if "options" not in kwargs or "kerberos" in kwargs["options"]:
-					wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
+			if check_for_drs_replication:
+				if utils.package_installed('univention-samba4'):
+					if "options" not in kwargs or "kerberos" in kwargs["options"]:
+						wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
 		return dn
 
 
-	def modify_object(self, modulename, wait_for_replication = True, **kwargs):
+	def modify_object(self, modulename, wait_for_replication = True, check_for_drs_replication = False, **kwargs):
 		"""
 		Modifies a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
 		only and have to exactly match UDM property names (case-sensitive!).
@@ -245,11 +246,12 @@ class UCSTestUDM(object):
 
 		if wait_for_replication:
 			utils.wait_for_replication()
-			if modulename in ["users/user", "groups/group"] and utils.package_installed('univention-samba4'):
-				wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
+			if check_for_drs_replication:
+				if utils.package_installed('univention-samba4'):
+					wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
 		return dn
 
-	def move_object(self, modulename, wait_for_replication = True, **kwargs):
+	def move_object(self, modulename, wait_for_replication = True, check_for_drs_replication = False, **kwargs):
 		if not modulename:
 			raise UCSTestUDM_MissingModulename()
 		dn = kwargs.get('dn')
@@ -278,8 +280,9 @@ class UCSTestUDM(object):
 
 		if wait_for_replication:
 			utils.wait_for_replication()
-			if modulename in ["users/user", "groups/group"] and utils.package_installed('univention-samba4'):
-				wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
+			if check_for_drs_replication:
+				if utils.package_installed('univention-samba4'):
+					wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
 
 
 	def remove_object(self, modulename, wait_for_replication = True, **kwargs):
@@ -306,7 +309,7 @@ class UCSTestUDM(object):
 			utils.wait_for_replication()
 
 
-	def create_user(self, wait_for_replication = True, **kwargs): # :pylint: disable-msg=W0613
+	def create_user(self, wait_for_replication = True, check_for_drs_replication = True, **kwargs): # :pylint: disable-msg=W0613
 		"""
 		Creates a user via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
 		have to exactly match UDM property names (case-sensitive!). Some properties have default values:
@@ -327,10 +330,10 @@ class UCSTestUDM(object):
 											    ( 'lastname', uts.random_name()),
 											    ( 'firstname', uts.random_name()) ))
 
-		return (self.create_object('users/user', wait_for_replication, **attr), attr['username'])
+		return (self.create_object('users/user', wait_for_replication, check_for_drs_replication, **attr), attr['username'])
 
 
-	def create_group(self, wait_for_replication = True, **kwargs): # :pylint: disable-msg=W0613
+	def create_group(self, wait_for_replication = True, check_for_drs_replication = True, **kwargs): # :pylint: disable-msg=W0613
 		"""
 		Creates a group via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
 		have to exactly match UDM property names (case-sensitive!). Some properties have default values:
@@ -344,7 +347,7 @@ class UCSTestUDM(object):
 		attr = self._set_module_default_attr(kwargs, (( 'position', 'cn=groups,%s' % self.LDAP_BASE ),
 											   ( 'name', uts.random_groupname() ) ))
 
-		return (self.create_object('groups/group', wait_for_replication, **attr), attr['name'])
+		return (self.create_object('groups/group', wait_for_replication, check_for_drs_replication, **attr), attr['name'])
 
 	def _set_module_default_attr(self, attributes, defaults):
 		"""
