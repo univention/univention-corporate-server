@@ -1,3 +1,9 @@
+ucs-test (5.0.164-16) unstable; urgency=medium
+
+  * utils.package_installed(): consider uninstalled packages (Bug #39114)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Aug 2015 10:28:46 +0200
+
 ucs-test (5.0.164-15) unstable; urgency=medium
 
   * 64_udm-printers/50_create_printer_for_every_printer_URI: added more
