@@ -63,23 +63,22 @@
 				</ulink> beschrieben.
 			</para></listitem>
 			<listitem><para>
-				Mit dem Update auf Samba 4.2.3 wurde die Active Directory-Kompatibiliät weiter ausgebaut. In erster Linie wurden
-				kleinere Bugfixes und Performanceprobleme behoben. So gab es u.a. Updates in den Bereichen der DRS-Replikation, des
-				Druckertreiber-Handlings sowie beim Joinen von Huawai Storage Systemen in die von UCS bereitgestellte Active Directory-Domäne.
+				Mit dem Update auf Samba 4.2.3 wurde die Active Directory-Kompatibilität weiter ausgebaut. Dies beinhaltet u.a. Verbesserungen
+				in der DRS-Replikation und dem Druckertreiber-Handling. Auch ist der Domänenbeitritt von Huawai Storage Systemen
+				in die von UCS bereitgestellte Active Directory-Domäne nun möglich.
 			</para></listitem>
 			<listitem><para>
 				Es gibt zahlreiche Verbesserungen in Design und Usability des UCS-Managementsystems. So ist es nun bspw. möglich die Vor- und
-				Zurück-Buttons des Webbrowsers zu benutzen. Dadurch ist ein einfacheres und schnelleres navigieren in der Managementoberfläche
-				möglich.
+				Zurück-Buttons des Webbrowsers zu benutzen. Dies ermöglicht ein einfacheres und schnelleres Navigieren in der Managementoberfläche.
 			</para></listitem>
 			<listitem><para>
 				Für LDAP-Richtlinien können nun LDAP-Filter definiert werden, das bedeutet die LDAP-Richtlinien gelten nur auf die Objekte, die 
-				dem LDAP-Filter entsprechen. Dadurch ist es vor allen in größeren Umgebungen möglich, LDAP-Richtlinien noch einfacher und generischer
+				dem LDAP-Filter entsprechen. Dadurch ist es, vor allen in größeren Umgebungen möglich, LDAP-Richtlinien noch einfacher und generischer
 				anzuwenden.
 			</para></listitem>
 			<listitem><para>
 				Der Linux Kernel wurde auf den letzten stabilen 3.16er Longterm-Kernel aktualisiert. Dieser beinhaltet diverse Sicherheitsaktualisierungen
-				sowie neuere und aktualsiierte Treiber für eine verbesserte Hardware-Unterstützung.
+				sowie neuere und aktualisierte Treiber für eine verbesserte Hardware-Unterstützung.
 			</para></listitem>
 			<listitem><para>
 				Sämtliche für UCS 4.0-2 veröffentlichten Sicherheitsupdates sind in diesem Update enthalten. Um die Sicherheit des UCS-Systems

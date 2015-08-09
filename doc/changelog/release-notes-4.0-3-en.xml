@@ -57,7 +57,30 @@
 
 		<itemizedlist>
 			<listitem><para>
-				The
+				The mail server Dovecot has been integrated as standard IMAP/POP3 server into UCS and offers
+				an alternative to the still available Cyrus IMAO server. More information are described in 
+				<ulink url="https://www.univention.com/2015/07/dovecot-is-the-default-imappop3-mail-server-in-ucs/">this blog article</ulink>.
+			</para></listitem>
+			<listitem><para>
+				The compatibility to Active Directory has been improved with the Samba update to 4.2.3. This includes, among others, improvements
+				in ithe DRS replication and the printer driver handling. In addition, the join of Huawai storage systems in the Active Directory domain
+				provided by UCS is now also possible.
+			</para></listitem>
+			<listitem><para>
+				Several enhancements in design and usability of the Univention Management Console have been implemented. For example it is now possible
+				to use the forward and back buttons of the web browser. This allows a simpler and faster navigation in the management interface.
+			</para></listitem>
+			<listitem><para>
+				LDAP filters can now be defined for LDAP policies. That means the LDAP policy applies only to the objects that match the LDAP filter.
+				This makes it possible to use LDAP policies in an easy and generic way especially in large environments.
+			</para></listitem>
+			<listitem><para>
+                The Linux kernel has been updated to the latest stable version of the 3.16 longterm kernel. This includes several security updates
+				as well as new and updated drivers for a better hardware support.
+			</para></listitem>
+			<listitem><para>
+				All security updates released for UCS 4.0-2 are included in this update. It is now also possible to redirect all HTTP requests to HTTPS
+				by only setting an Univention Configuration Registry variable. This increases the security of the UCS system.
 			</para></listitem>
 		</itemizedlist>
 
