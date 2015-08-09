@@ -1,3 +1,10 @@
+ucs-test (6.0.0-27) unstable; urgency=medium
+
+  * Disable 52_s4connector/401check_posix_pwd_expiry_after_ad_pwdchange
+    (Bug #39121)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 09 Aug 2015 10:42:26 +0200
+
 ucs-test (6.0.0-26) unstable; urgency=medium
 
   * 64_udm-printers/50_create_printer_for_every_printer_URI: in case of
