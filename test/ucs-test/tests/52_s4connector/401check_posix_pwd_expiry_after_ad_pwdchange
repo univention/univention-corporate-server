@@ -10,6 +10,8 @@
 ## - domaincontroller_slave
 ## bugs:
 ##  - 36317
+## versions:
+##  4.0-2: skip
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/udm.sh" || exit 137
