@@ -1,3 +1,10 @@
+ucs-test (5.0.164-26) unstable; urgency=medium
+
+  * 00_checks/check_log_files_definitions.py: ignore S4 setup traceback
+    (Bug #39123)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 09 Aug 2015 11:30:52 +0200
+
 ucs-test (5.0.164-25) unstable; urgency=medium
 
   * Disable 53_samba-common/35smbclient_auth (Bug #39122)
