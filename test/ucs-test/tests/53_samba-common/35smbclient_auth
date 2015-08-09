@@ -12,6 +12,8 @@
 ##  - basic
 ##  - apptest
 ##  - skip_admember
+## versions:
+##  4.0-2: skip
 
 import os
 import sys
