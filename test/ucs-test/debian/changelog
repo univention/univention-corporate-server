@@ -1,3 +1,17 @@
+ucs-test (6.0.0-28) unstable; urgency=medium
+
+  * Disable 40_mail/26_imap_acls_correctly_evaluated (Bug #38600)
+  * Disable 40_mail/42_dovecot_rename_user (Bug #38828)
+  * Disable 40_mail/35_mail_to_nested_groups (Bug #17807)
+  * Disable 40_mail/43_dovecot_shared_folder_add_remove_mail_primary_address
+    (Bug #38792)
+  * Disable 40_mail/43_dovecot_shared_folder_change_primary_mailaddress
+    (Bug 38792)
+  * Disable 40_mail/43_dovecot_shared_folder_create_and_delete (Bug
+    38792)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 09 Aug 2015 10:51:23 +0200
+
 ucs-test (6.0.0-27) unstable; urgency=medium
 
   * Disable 52_s4connector/401check_posix_pwd_expiry_after_ad_pwdchange
