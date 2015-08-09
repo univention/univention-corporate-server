@@ -72,7 +72,8 @@ class Errors(LogMessage):
 		r"E: Unable to locate package could-initramfs-growroot",
 		r"'www-browser -dump http://localhost:80/server-status' failed.",  # Bug #38797
 		'.*Failed to download required packages for univention-welcome-screen.*',  # Bug #37537: remove after release of univention-welcome-screen
-		'.*E: Unable to locate package univention-welcome-screen.*', '.*E: Handler silently failed.*'  # Bug #37537 ^^
+		'.*E: Unable to locate package univention-welcome-screen.*', '.*E: Handler silently failed.*',  # Bug #37537 ^^
+		'.*ERROR(runtime): uncaught exception - (-1073741823.*', '.*open: error=2 (No such file or directory).*' #Bug #39123
 	]
 
 	# extra ignore patterns for case when line == 'failed.'
