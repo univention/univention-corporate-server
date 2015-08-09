@@ -3,6 +3,8 @@
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
+## versions:
+##  4.0-2: skip
 
 from essential.mail import send_mail, check_delivery
 import time
