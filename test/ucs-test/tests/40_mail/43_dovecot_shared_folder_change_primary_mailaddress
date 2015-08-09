@@ -6,6 +6,8 @@
 ##  - univention-mail-server
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
+## versions:
+##  4.0-2: skip
 
 import time
 import os
