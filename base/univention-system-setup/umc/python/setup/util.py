@@ -223,21 +223,18 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 		newValues['ssl/organizationalunit'] = 'Univention Corporate Server'
 		newValues['ssl/email'] = 'ssl@{domainname}'.format(**newValues)
 
+	# make sure that the locale of the current session is also supported
+	# ... otherwise the setup scripts will fail after regenerating the
+	# locale data (in 20_language/10language)
 	if 'locale' not in newValues:
-		# auto set the locale variable if not specified
-		# make sure that en_US is supported in any case
 		newValues['locale'] = newValues.get('locale/default', '')
-
-		# make sure that the locale of the current session is also supported
-		# ... otherwise the setup scripts will fail after regenerating the
-		# locale data (in 20_language/10language)
-		forcedLocales = ['en_US.UTF-8:UTF-8'] # we need en_US locale as default language
-		if current_locale:
-			current_locale = '{0}:{1}'.format(str(current_locale), current_locale.codeset)
-			forcedLocales.append(current_locale)
-		for ilocale in forcedLocales:
-			if ilocale not in newValues['locale']:
-				newValues['locale'] = '%s %s' % (newValues['locale'], ilocale)
+	forcedLocales = ['en_US.UTF-8:UTF-8', 'de_DE.UTF-8:UTF-8']  # we need en_US and de_DE locale as default language
+	if current_locale:
+		current_locale = '{0}:{1}'.format(str(current_locale), current_locale.codeset)
+		forcedLocales.append(current_locale)
+	for ilocale in forcedLocales:
+		if ilocale not in newValues['locale']:
+			newValues['locale'] = '%s %s' % (newValues['locale'], ilocale)
 
 	return newValues
 
