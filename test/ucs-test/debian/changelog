@@ -1,3 +1,9 @@
+ucs-test (6.0.1-2) unstable; urgency=medium
+
+  * Bug #38727: exclude 'tmp' directory from searches in dovecot spool
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 10 Aug 2015 12:37:15 +0200
+
 ucs-test (6.0.1-1) unstable; urgency=low
 
   * Bug #37014: add new script 60_postgrey_can_be_stopped
