@@ -6,6 +6,8 @@
 ##  - domaincontroller_slave
 ##  - memberserver
 ## exposure: dangerous
+## versions:
+##  4.0-2: skip
 
 import os
 import sys
