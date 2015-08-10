@@ -1,3 +1,9 @@
+ucs-test (5.0.165-1) unstable; urgency=low
+
+  * Bug #37014: Add new script 60_postgrey_can_be_stopped
+
+ -- Ammar Najjar <najjar@univention.de>  Mon, 10 Aug 2015 11:19:52 +0200
+
 ucs-test (5.0.164-28) unstable; urgency=medium
 
   * Disabled 40_mail/00delivery00basic (Bug #39125)
