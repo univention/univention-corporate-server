@@ -498,7 +498,7 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>[Sizing: xx]</term>
+					<term>[Sizing: <replaceable>xx</replaceable>]</term>
 					<listitem>
 						<simpara>
 							(Optional) Sections starting with <literal>Sizing</literal> are not
@@ -506,7 +506,7 @@
 							Providers a hint how to tailor a server for a customer. The
 							number inside the section name means users (or something else
 							depending on the app's functionality) working with the app (not
-							simultaniuosly, of course).
+							simultaneously, of course).
 							The following variables can be defined inside this section:
 						</simpara>
 						<simpara>
