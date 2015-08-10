@@ -409,7 +409,7 @@ override_dh_auto_test:
 			<title>Filter rules by &ucsUCR;</title>
 			<para>
 				Besides pre-defined service definitions, Univention Firewall also allows the implementation of package filter rules via &ucsUCR;.
-				These rules are included in <filename class="directory">/etc/security/netfilter.d/</filename> via a &ucsUCR; module.
+				These rules are included in <filename class="directory">/etc/security/packetfilter.d/</filename> via a &ucsUCR; module.
 			</para>
 			<para>
 				Filter rules can be provided via packages or can be configured locally by the administrator.
