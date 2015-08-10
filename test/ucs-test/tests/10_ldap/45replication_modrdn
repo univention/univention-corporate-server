@@ -6,7 +6,6 @@
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
-##  - domaincontroller_slave
 ## packages:
 ##  - univention-config
 ##  - univention-directory-manager-tools

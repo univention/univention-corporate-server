@@ -1,3 +1,10 @@
+ucs-test (5.0.165-2.1) unstable; urgency=medium
+
+  * Disabled 10_ldap/45replication_modrdn on DC slaves (Bug #39132)
+  * Disabled 60_umc-system/40_umc-service-domain-join (Bug #39133)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Aug 2015 16:16:05 +0200
+
 ucs-test (5.0.165-2) unstable; urgency=medium
 
   * Bug #38727: exclude 'tmp' directory from searches in dovecot spool
