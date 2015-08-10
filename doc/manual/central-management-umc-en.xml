@@ -1687,7 +1687,7 @@ univention-directory-manager settings/extended_attribute create \
     --position "cn=custom attributes,cn=univention,dc=example,dc=com" \
     --set name="CarLicense" \
     --set module="users/user" \
-    --set ldapMapping="univentionFreeAttribute01" \
+    --set ldapMapping="univentionFreeAttribute1" \
     --set objectClass="univentionFreeAttributes" \
     --set longDescription="License plate number of the company car" \
     --set tabName="Company car" \
