@@ -49,7 +49,8 @@ def main():
 					print 'Wait for 30 seconds and try again'
 					time.sleep(30)
 					if not printer_enabled(printer_name):
-						utils.fail('Printer (%s) is created but not enabled' % printer_name)
+						print 'Warning: Printer (%s) is created but not enabled' % printer_name
+						#utils.fail('Printer (%s) is created but not enabled' % printer_name)
 
 if __name__ == '__main__':
 	main()

@@ -9,92 +9,95 @@
 import sys
 import subprocess
 
-from univention.lib.package_manager import PackageManager
-from univention.management.console.modules.appcenter.app_center import Application
-from univention.management.console.modules.appcenter.util import ComponentManager
-from univention.config_registry import ConfigRegistry
-from univention.updater import UniventionUpdater
+import univention.config_registry
+from univention.testing.ucr import UCSTestConfigRegistry
 
-# monkey patch Application to avoid the error 'must_not_have_concurrent_operation'
-Application.must_not_have_concurrent_operation = lambda x: True
+with UCSTestConfigRegistry() as ucr:
 
-# the next lines are a workaround for the following traceback:
-#   Error in function stop
-#   Traceback (most recent call last):
-#     File "/usr/lib/python2.7/dist-packages/apt/progress/text.py", line 229, in stop
-#       signal.signal(signal.SIGWINCH, self._signal)
-#   ValueError: signal only works in main thread
-def _dummy(*args):
-	pass
-import signal
-signal._signal_old = signal.signal
-signal.signal = _dummy
+	univention.config_registry.handler_set(['repository/app_center/server=appcenter.software-univention.de'])
 
-# helper functions
-def _msg_handler(msg_type):
-	def _handler(msg):
-		print '%s: %s' % (msg_type, msg)
+	from univention.lib.package_manager import PackageManager
+	from univention.management.console.modules.appcenter.app_center import Application
+	from univention.management.console.modules.appcenter.util import ComponentManager
+	from univention.updater import UniventionUpdater
 
-# initiate UCR and manager instances
-ucr = ConfigRegistry()
-ucr.load()
-# instantiate needed tools
-pm = PackageManager(
-	info_handler=_msg_handler('INFO'),
-	step_handler=_msg_handler('STEP'),
-	error_handler=_msg_handler('WARN'),
-	lock=False,
-	always_noninteractive=True,
-)
-pm.update()
-uu = UniventionUpdater(False)
-cm = ComponentManager(ucr, uu)
+	# monkey patch Application to avoid the error 'must_not_have_concurrent_operation'
+	Application.must_not_have_concurrent_operation = lambda x: True
 
-# more helper functions/variables
-is_master = ucr.get('server/role') == 'domaincontroller_master' or ucr.get('server/role') == 'domaincontroller_backup'
+	# the next lines are a workaround for the following traceback:
+	#   Error in function stop
+	#   Traceback (most recent call last):
+	#     File "/usr/lib/python2.7/dist-packages/apt/progress/text.py", line 229, in stop
+	#       signal.signal(signal.SIGWINCH, self._signal)
+	#   ValueError: signal only works in main thread
+	def _dummy(*args):
+		pass
+	import signal
+	signal._signal_old = signal.signal
+	signal.signal = _dummy
 
-def _packages_to_install(app):
-	packages = []
-	packages.extend(app.get('defaultpackages'))
-	if is_master:
-		packages.extend(app.get('defaultpackagesmaster'))
-	return packages
+	# helper functions
+	def _msg_handler(msg_type):
+		def _handler(msg):
+			print '%s: %s' % (msg_type, msg)
 
-def _apt_get_simulate(app):
-	app.register(cm, pm)
-	packages = _packages_to_install(app)
-	cmd = ['/usr/bin/apt-get', 'install', '-s'] + packages
-	print 'Executing the command: %s' % cmd
-	subprocess.call(cmd, stderr=subprocess.STDOUT)
-	app.unregister(cm)
+	# instantiate needed tools
+	pm = PackageManager(
+		info_handler=_msg_handler('INFO'),
+		step_handler=_msg_handler('STEP'),
+		error_handler=_msg_handler('WARN'),
+		lock=False,
+		always_noninteractive=True,
+	)
+	pm.update()
+	uu = UniventionUpdater(False)
+	cm = ComponentManager(ucr, uu)
 
-# print overview of installed apps
-all_apps = Application.all()
-_installed_apps = [app for app in all_apps if app.is_installed(pm)]
-installed_apps = set([app.id for app in _installed_apps])
+	# more helper functions/variables
+	is_master = ucr.get('server/role') == 'domaincontroller_master' or ucr.get('server/role') == 'domaincontroller_backup'
 
-print 'Installed apps: %s' % [app for app in installed_apps]
+	def _packages_to_install(app):
+		packages = []
+		packages.extend(app.get('defaultpackages'))
+		if is_master:
+			packages.extend(app.get('defaultpackagesmaster'))
+		return packages
 
-failed = []
-for app in all_apps:
-	forbidden, warning = app.check_invokation('install', pm)
-	if forbidden:
-		print 'Ignoring app %r: requirements not met -> %s' % (app, forbidden)
-		continue
+	def _apt_get_simulate(app):
+		app.register(cm, pm)
+		packages = _packages_to_install(app)
+		cmd = ['/usr/bin/apt-get', 'install', '-s'] + packages
+		print 'Executing the command: %s' % cmd
+		subprocess.call(cmd, stderr=subprocess.STDOUT)
+		app.unregister(cm)
 
-	print 'Checking app: %r' % app
-	result, previously_registered_by_dry_run = app.install_dry_run(pm, cm)
-	if result.get('broken'):
-		failed.append((app, result['broken']))
+	# print overview of installed apps
+	all_apps = Application.all()
+	_installed_apps = [app for app in all_apps if app.is_installed(pm)]
+	installed_apps = set([app.id for app in _installed_apps])
 
-if failed:
-	print '\nTEST FAILED: the following apps cannot be installed due to broken packages...'
-	for app, brokenPackages in failed:
-		print '\n[ APP: %s ]' % app.id
-		print 'broken packages: %s' % brokenPackages
-		print 'output of apt-get install -s'
-		_apt_get_simulate(app)
-	sys.exit(1)
+	print 'Installed apps: %s' % [app for app in installed_apps]
+
+	failed = []
+	for app in all_apps:
+		forbidden, warning = app.check_invokation('install', pm)
+		if forbidden:
+			print 'Ignoring app %r: requirements not met -> %s' % (app, forbidden)
+			continue
+
+		print 'Checking app: %r' % app
+		result, previously_registered_by_dry_run = app.install_dry_run(pm, cm)
+		if result.get('broken'):
+			failed.append((app, result['broken']))
+
+	if failed:
+		print '\nTEST FAILED: the following apps cannot be installed due to broken packages...'
+		for app, brokenPackages in failed:
+			print '\n[ APP: %s ]' % app.id
+			print 'broken packages: %s' % brokenPackages
+			print 'output of apt-get install -s'
+			_apt_get_simulate(app)
+		sys.exit(1)
 
 sys.exit(0)
 
