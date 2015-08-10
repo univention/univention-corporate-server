@@ -1,3 +1,10 @@
+univention-s4-connector (9.0.16-40) unstable; urgency=medium
+
+  * dns con2ucs: Always map _msdcs.<domain> zone entries to entries within
+    the OpenLDAP domain zone (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 10 Aug 2015 16:16:29 +0200
+
 univention-s4-connector (9.0.16-39) unstable; urgency=medium
 
   * Fix case of new DNS object sync_from_ucs (Bug #34184)

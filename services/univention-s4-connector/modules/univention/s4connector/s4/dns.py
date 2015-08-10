@@ -192,6 +192,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 						else:
 							raise ## can't determine zoneName for this relativeDomainName
 
+				target_RR_val = relativeDomainName
 				s4dn_utf16_le = None
 				s4_zone_dn = None
 				if '@' == relativeDomainName:	## or dn starts with 'zoneName='
@@ -211,14 +212,21 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 							break
 				else:
 					## identify position by parent zone name
-					ol_zone_dn = s4connector.lo.parentDn(dn)
-					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: get dns_dn_mapping for zone %s" % ol_zone_dn)
+					target_zone_dn = s4connector.lo.parentDn(dn)
+					if s4connector.configRegistry.get('connector/s4/mapping/dns/position') != 'legacy':
+						if relativeDomainName.endswith('._msdcs'):
+							target_zone_name = '_msdcs.' + ol_zone_name
+							target_RR_val = relativeDomainName[:-7]
+							_rdn = [s4_RR_attr.upper() + '=' + target_zone_dn] + rdn[2:]
+							target_zone_dn = ','.join(_rdn)
+
+					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: get dns_dn_mapping for target zone %s" % target_zone_dn)
 					fake_ol_zone_object = {
-						'dn': ol_zone_dn,
+						'dn': target_zone_dn,
 						'attributes': {
 							'objectClass': ['top', 'dNSZone'],
 							'relativeDomainName': ['@'],
-							'zoneName': [ol_zone_name],
+							'zoneName': [target_zone_name],
 							},
 						}
 					s4_zone_object = dns_dn_mapping(s4connector, fake_ol_zone_object, dn_mapping_stored, isUCSobject)
@@ -228,7 +236,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					result = s4connector._s4__search_s4(
 							s4_zone_dn,
 							ldap.SCOPE_SUBTREE,
-							univention.s4connector.s4.compatible_modstring('(&%s(%s=%s))' % (s4_RR_filter, s4_RR_attr, relativeDomainName)),
+							univention.s4connector.s4.compatible_modstring('(&%s(%s=%s))' % (s4_RR_filter, s4_RR_attr, target_RR_val)),
 							attrlist=('dn',),
 							show_deleted=False)
 					if result:
@@ -251,7 +259,9 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 				else:
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: target object not found")
 					if s4_zone_dn:
+						## At least we found the zone
 						zone_dn = s4_zone_dn
+						relativeDomainName = target_RR_val
 					else:
 						## Ok, it's a new object without existing parent zone in S4 (probably this object itself is a soa/zone), so propose an S4 DN for it:
 						zone_dn = 'DC=%s,%s' % (ol_zone_name, s4connector.property['dns'].con_default_dn)
@@ -291,9 +301,13 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 				except (KeyError, TypeError):
 					s4_ocs = []
 
+				target_RR_val = s4_RR_val
 				ol_zone_dn = None
 				if 'dnsZone' in s4_ocs:
-					s4_zone_name = s4_RR_val
+					if s4connector.configRegistry.get('connector/s4/mapping/dns/position') != 'legacy':
+						if s4_RR_val.startswith('_msdcs.'):
+							target_RR_val = s4_RR_val[7:]
+					target_zone_name = target_RR_val
 					base = s4connector.lo.base
 					ol_search_attr = 'zoneName'
 					## could use a specific LDAP filter here, but not necessary:
@@ -301,14 +315,21 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 				elif 'dnsNode' in s4_ocs:
 					## identify position of the parent zone
 					s4pos = string.find(rdn[1], '=')
-					s4_zone_name = rdn[1][s4pos+1:]
-					s4_zone_dn = s4connector.lo_s4.parentDn(dn)
-					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: get dns_dn_mapping for %s" % s4_zone_dn)
+					target_zone_name = rdn[1][s4pos+1:]
+					target_zone_dn = s4connector.lo_s4.parentDn(dn)
+					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: get dns_dn_mapping for %s" % target_zone_dn)
+					if s4connector.configRegistry.get('connector/s4/mapping/dns/position') != 'legacy':
+						if target_zone_name.startswith('_msdcs.'):
+							target_zone_name = target_zone_name[7:]
+							target_RR_val += '._msdcs'
+							_rdn = [rdn[1][:s4pos+1] + target_zone_name] + rdn[2:]
+							target_zone_dn = ','.join(_rdn)
+
 					fake_s4_zone_object = {
-						'dn': s4_zone_dn,
+						'dn': target_zone_dn,
 						'attributes': {
 							'objectClass': ['top', 'dnsZone'],
-							'dc': [s4_zone_name],
+							'dc': [target_zone_name],
 						},
 						}
 					ol_zone_object = dns_dn_mapping(s4connector, fake_s4_zone_object, dn_mapping_stored, isUCSobject)
@@ -319,10 +340,10 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					## could use a specific LDAP filter here, but not necessary:
 					# ol_oc_filter = '(&(objectClass=dNSZone)(!(|(univentionObjectType=dns/forward_zone)(univentionObjectType=dns/reverse_zone))))'
 
-				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: UCS filter: (&%s(%s=%s))" % (ol_oc_filter, ol_search_attr, s4_RR_val))
+				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: UCS filter: (&%s(%s=%s))" % (ol_oc_filter, ol_search_attr, target_RR_val))
 				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: UCS base: %s" % (base,))
 				try:
-					ucsdn_result = s4connector.search_ucs(filter=u'(&%s(%s=%s))' % (ol_oc_filter, ol_search_attr, s4_RR_val),
+					ucsdn_result = s4connector.search_ucs(filter=u'(&%s(%s=%s))' % (ol_oc_filter, ol_search_attr, target_RR_val),
 								   base=base, scope='sub', attr=('dn',))
 				except univention.admin.uexceptions.noObject:
 					ucsdn_result = None
@@ -341,10 +362,12 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					## Cases: (Target not found) or/and ("moved" (?))
 					## Ok, it's a new object, so propose a S4 DN for it:
 					if ol_zone_dn:
+						## At least we found the zone
 						zone_dn = ol_zone_dn
+						s4_RR_val = target_RR_val
 					else:
 						## Fallback, e.g. for new zones
-						zone_dn = 'zoneName=%s,%s' % (s4_zone_name, s4connector.property['dns'].ucs_default_dn)
+						zone_dn = 'zoneName=%s,%s' % (target_zone_name, s4connector.property['dns'].ucs_default_dn)
 					if '@' == s4_RR_val:
 						newdn = zone_dn
 					elif 'dnsZone' in s4_ocs:
@@ -970,7 +993,7 @@ def ucs_srv_record_delete(s4connector, object):
 	return True
 
 
-def s4_srv_record_create(s4connector, object):                                                                                                                                                     
+def s4_srv_record_create(s4connector, object):
 	_d=ud.function('s4_srv_record_create')
 
 	dnsRecords=[]
