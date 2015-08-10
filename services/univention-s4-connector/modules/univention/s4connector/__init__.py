@@ -701,7 +701,7 @@ class ucs:
 		
 		if not new:
 			change_type="delete"
-			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was deleted")
+			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was deleted")
 			for k in self.property.keys():
 				if self.modules[k].identify(unicode(dn,'utf8'), old):
 					key=k
@@ -739,9 +739,9 @@ class ucs:
 			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new: %s" % new)
 			if old and new:
 				change_type = "modify"
-				ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was modified")
+				ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was modified")
 				if old_dn and not old_dn == dn:
-					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was moved")
+					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was moved")
 					# object was moved
 					new_object = { 'dn': unicode(dn,'utf8'), 'modtype': change_type, 'attributes': new}
 					old_object = { 'dn': unicode(old_dn,'utf8'), 'modtype': change_type, 'attributes': old}
@@ -767,18 +767,18 @@ class ucs:
 					else:
 						if old_dn and not old_dn == dn:
 							change_type="modify"
-							ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was moved")
+							ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was moved")
 						else:
 							change_type="add"
 							old_dn = '' # there may be an old_dn if object was moved from ignored container
-							ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was added: %s" % dn)
+							ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was added: %s" % dn)
 				except (ldap.SERVER_DOWN, SystemExit):
 					raise
 				except:
 					# the ignore_object method might throw an exception if the subschema will be synced
 					change_type="add"
 					old_dn = '' # there may be an old_dn if object was moved from ignored container
-					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was added: %s" % dn)
+					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was added: %s" % dn)
 
 		if key:
 			if change_type == 'delete':
@@ -824,26 +824,6 @@ class ucs:
 		else:				
 			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: No mapping was found for dn: %s" % dn)
 			return True
-
-	def get_ucs_ldap_object_dn(self, dn):
-		_d=ud.function('ldap.get_ucs_ldap_object_dn')
-
-		for i in [0, 1]: # do it twice if the LDAP connection was closed
-			if type(dn) == type(u''):
-				searchdn = dn
-			else:
-				searchdn = unicode(dn)
-			try:			
-				return self.lo.lo.lo.search_s( searchdn, ldap.SCOPE_BASE, '(objectClass=*)', ('dn',))[0][0]
-			except ldap.NO_SUCH_OBJECT:
-				return None
-			except ldap.INVALID_DN_SYNTAX:
-				return None
-			except ldap.INVALID_SYNTAX:
-				return None
-			except (ldap.SERVER_DOWN, SystemExit):
-				self.open_ucs()
-				continue
 
 	def get_ucs_ldap_object(self, dn):
 		_d=ud.function('ldap.get_ucs_ldap_object')
