@@ -31,7 +31,7 @@ set -o nounset #If expansion is attempted on an unset variable or parameter --> 
 # Increase the timeout if dovecot is installed. In this case the user
 # creation takes more time (Bug #39102)
 if checkpkg univention-mail-dovecot; then
-	max=$((max+30000000000))
+	max=$((max+60000000000))
 fi
 
 info "Stopping replication..."
