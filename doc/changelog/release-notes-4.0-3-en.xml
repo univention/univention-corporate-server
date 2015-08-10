@@ -58,16 +58,16 @@
 		<itemizedlist>
 			<listitem><para>
 				The mail server Dovecot has been integrated as standard IMAP/POP3 server into UCS and offers
-				an alternative to the still available Cyrus IMAO server. More information are described in 
+				an alternative to the still available Cyrus IMAP server. More information is available in 
 				<ulink url="https://www.univention.com/2015/07/dovecot-is-the-default-imappop3-mail-server-in-ucs/">this blog article</ulink>.
 			</para></listitem>
 			<listitem><para>
 				The compatibility to Active Directory has been improved with the Samba update to 4.2.3. This includes, among others, improvements
-				in ithe DRS replication and the printer driver handling. In addition, the join of Huawai storage systems in the Active Directory domain
+				in the DRS replication and the printer driver handling. In addition, the join of Huawai storage systems in the Active Directory domain
 				provided by UCS is now also possible.
 			</para></listitem>
 			<listitem><para>
-				Several enhancements in design and usability of the Univention Management Console have been implemented. For example it is now possible
+				Several enhancements in design and usability of the Univention Management Console have been implemented. For example, it is now possible
 				to use the forward and back buttons of the web browser. This allows a simpler and faster navigation in the management interface.
 			</para></listitem>
 			<listitem><para>
@@ -104,15 +104,6 @@
 			<para>
 				The authoritative version of the LDAP directory service is maintained on the &ucsMaster; and replicated on all the remaining LDAP servers of the UCS domain.
 				As changes to the LDAP schemes can occur during release updates, the &ucsMaster; must always be the first system to be updated during a release update.
-			</para>
-		</section>
-
-		<section id="relnotes:apps">
-			<title>Univention App Center</title>
-			<para>
-				If applications have been installed from the Univention App Center, the update can only be performed once all installed applications are available in a compatible version.
-				Some applications are updated to newer versions during the update.
-				If an application is not yet available for UCS 4.0, the release date can be obtained from the application vendor.
 			</para>
 		</section>
 

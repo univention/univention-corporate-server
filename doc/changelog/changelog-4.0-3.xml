@@ -29,6 +29,9 @@
 							<package>proftpd-dfsg</package> (<u:cve>2015-3306</u:cve>) (<u:bug>38372</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
+							<package>qemu-kvm</package> (<u:cve>2015-3456</u:cve>) (<u:bug>38537</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
 							<package>qemu-kvm</package> (<u:cve>2015-4037</u:cve> <u:cve>2015-3209</u:cve>) (<u:bug>38744</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
@@ -203,7 +206,7 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The "clear input" and "view password" icons are now diplayed correctly in the login dialog with Internet Explorer 10 and above (<u:bug>38127</u:bug>).
+					The "clear input" and "view password" icons are now displayed correctly in the login dialog with Internet Explorer 10 and above (<u:bug>38127</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
   					It is now possible to create a core dump of the UMC-Webserver (<u:bug>37280</u:bug>).
@@ -212,7 +215,7 @@
   					A check for free disk space is now only done once per file upload request (<u:bug>38335</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-  					The place holders in the login dialogue are now diplayed correctly in Internet Explorer 9 (<u:bug>38127</u:bug>).
+  					The place holders in the login dialogue are now displayed correctly in Internet Explorer 9 (<u:bug>38127</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
   					Scrolling in the appcenter on mobile devices is now more responsive (<u:bug>38050</u:bug>).

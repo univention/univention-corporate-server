@@ -109,15 +109,6 @@
 			</para>
 		</section>
 
-		<section id="relnotes:apps">
-			<title>Univention App Center</title>
-			<para>
-				Sofern Applikationen aus dem App Center installiert sind, ist das Update erst dann möglich, wenn alle lokal installierten Applikationen im App Center verfügbar sind.
-				Einige Applikationen werden beim Update ebenfalls auf neuere Versionen aktualisiert.
-				Sollte eine Applikation noch nicht für UCS 4.0 verfügbar sein, kann der Zeitpunkt der Veröffentlichung beim Applikationshersteller nachgefragt werden.
-			</para>
-		</section>
-
 		<section id="relnotes:32bit">
 			<title>UCS-Installations-DVDs nur noch als 64-Bit-Variante</title>
 			<para>
