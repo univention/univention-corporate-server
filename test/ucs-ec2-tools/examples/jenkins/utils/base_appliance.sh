@@ -174,6 +174,7 @@ app_get_appliance_pages_blacklist ()
 app_appliance_is_software_blacklisted ()
 {
 	local app="$1"
+	[ -z "$app" ] && return 1
 	python -c "
 import sys
 from univention.management.console.modules.appcenter.app_center import Application
@@ -759,4 +760,45 @@ appliance_poweroff ()
 	rm /root/.bash_history
 	history -c
 	halt -p
+}
+
+appliance_write_ucs403_sources_list ()
+{
+	# Set initial repository settings
+        cat >/etc/apt/sources.list.d/15_ucs-online-version.list <<__EOF__
+#Warning: This file is auto-generated and might be overwritten by
+#         univention-config-registry.
+#         Please edit the following file(s) instead:
+#Warnung: Diese Datei wurde automatisch generiert und kann durch
+#         univention-config-registry überschrieben werden.
+#         Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
+#
+#       /etc/univention/templates/files/etc/apt/sources.list.d/15_ucs-online-version.list
+#
+ 
+deb http://updates.software-univention.de/4.0/maintained/ 4.0-0/all/
+deb http://updates.software-univention.de/4.0/maintained/ 4.0-0/amd64/
+deb http://updates.software-univention.de/4.0/maintained/ 4.0-1/all/
+deb http://updates.software-univention.de/4.0/maintained/ 4.0-1/amd64/
+deb http://updates.software-univention.de/4.0/maintained/ 4.0-2/all/
+deb http://updates.software-univention.de/4.0/maintained/ 4.0-2/amd64/
+deb http://updates.software-univention.de/4.0/maintained/ 4.0-3/all/
+deb http://updates.software-univention.de/4.0/maintained/ 4.0-3/amd64/
+__EOF__
+
+	cat >/etc/apt/sources.list.d/20_ucs-online-component.list <<__EOF__
+#Warning: This file is auto-generated and might be overwritten by
+#         univention-config-registry.
+#         Please edit the following file(s) instead:
+#Warnung: Diese Datei wurde automatisch generiert und kann durch
+#         univention-config-registry überschrieben werden.
+#         Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
+#
+#       /etc/univention/templates/files/etc/apt/sources.list.d/20_ucs-online-component.list
+#
+ 
+deb http://updates.software-univention.de/4.0/maintained/component/ 4.0-3-errata/all/
+deb http://updates.software-univention.de/4.0/maintained/component/ 4.0-3-errata/amd64/
+__EOF__
+
 }
