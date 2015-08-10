@@ -1,3 +1,10 @@
+univention-s4-connector (9.0.16-41) unstable; urgency=medium
+
+  * Mapping _msdcs.<domain> DNs also requires mapping of relativeDomainName
+    (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 10 Aug 2015 22:28:09 +0200
+
 univention-s4-connector (9.0.16-40) unstable; urgency=medium
 
   * dns con2ucs: Always map _msdcs.<domain> zone entries to entries within

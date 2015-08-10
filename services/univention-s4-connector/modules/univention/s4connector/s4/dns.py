@@ -193,6 +193,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 							raise ## can't determine zoneName for this relativeDomainName
 
 				target_RR_val = relativeDomainName
+				target_zone_name = ol_zone_name
 				s4dn_utf16_le = None
 				s4_zone_dn = None
 				if '@' == relativeDomainName:	## or dn starts with 'zoneName='
@@ -413,16 +414,23 @@ def __split_s4_dnsNode_dn(dn):
 
 	return (zoneName, relativeDomainName)
 
-def __get_zone_name_from_ucs_dn(dn):
+def __split_ol_dNSZone_dn(dn, objectclasses):
 	dn=ldap.explode_dn(dn)
+	relativeDomainName = None
 	if dn[0].lower().startswith('zonename'):
 		zoneName = string.join(dn[0].split('=')[1:], '=')
+		if 'dnsNode' in objectclasses:
+			relativeDomainName = '@'
+		elif 'dnsZone' in objectclasses:
+			## make S4 dnsZone containers distinguishable from SOA records
+			relativeDomainName = zoneName
 	elif dn[1].lower().startswith('zonename'):
 		zoneName = string.join(dn[1].split('=')[1:], '=')
+		relativeDomainName = string.join(dn[0].split('=')[1:], '=')
 	else:
 		ud.debug(ud.LDAP, ud.WARN, 'Failed to get zone name for object %s' % (object['dn']))
 		zoneName = None
-	return zoneName
+	return (zoneName, relativeDomainName)
 
 def __create_s4_forward_zone(s4connector, zone_dn):
 	al=[]
@@ -446,6 +454,8 @@ def __create_s4_dns_node(s4connector, dnsNodeDn, relativeDomainNames, dnsRecords
 	al.append(('dc', relativeDomainNames))
 	al.append(('dnsRecord', dnsRecords))
 
+	ud.debug(ud.LDAP, ud.INFO, '__create_s4_dns_node: dn: %s' % dnsNodeDn)
+	ud.debug(ud.LDAP, ud.INFO, '__create_s4_dns_node: al: %s' % al)
 	s4connector.lo_s4.lo.add_s(dnsNodeDn, al)
 
 ''' Pack and unpack DNS records by using the
@@ -605,9 +615,9 @@ def s4_zone_create(s4connector, object):
 	_d=ud.function('s4_zone_create')
 
 	soa_dn = object['dn']
-	(zoneName, relativeDomainName) = __split_s4_dnsNode_dn(soa_dn)
-
 	zone_dn = s4connector.lo.parentDn(soa_dn)
+
+	zoneName = object['attributes']['zoneName'][0]
 
 	# Create the forward zone in S4 if it does not exist
 	try:
@@ -634,8 +644,8 @@ def s4_zone_create(s4connector, object):
 	# The IP address of the DNS forward zone will be used to determine the
 	# sysvol share. On a selective replicated DC only a short list of DCs
 	# should be returned
-	aRecords = s4connector.configRegistry.get('connector/s4/mapping/dns/forward_zone/%s/static/ipv4' % zoneName[0].lower())
-	aAAARecords = s4connector.configRegistry.get('connector/s4/mapping/dns/forward_zone/%s/static/ipv6' % zoneName[0].lower())
+	aRecords = s4connector.configRegistry.get('connector/s4/mapping/dns/forward_zone/%s/static/ipv4' % zoneName.lower())
+	aAAARecords = s4connector.configRegistry.get('connector/s4/mapping/dns/forward_zone/%s/static/ipv6' % zoneName.lower())
 	if aRecords or aAAARecords:
 		#IPv4
 		if aRecords:
@@ -664,10 +674,7 @@ def s4_zone_create(s4connector, object):
 def s4_zone_delete(s4connector, object):
 	_d=ud.function('s4_zone_delete')
 
-	# zone_dn = object['dn']
 	soa_dn = object['dn']
-	(zoneName, relativeDomainName) = __split_s4_dnsNode_dn(soa_dn)
-
 	zone_dn = s4connector.lo.parentDn(soa_dn)
 
 	try:
@@ -998,15 +1005,13 @@ def s4_srv_record_create(s4connector, object):
 
 	dnsRecords=[]
 
-	(zoneName, relativeDomainName) = __split_s4_dnsNode_dn(object['dn'])
-
-	relativeDomainName=object['attributes'].get('relativeDomainName')
-	relativeDomainName=univention.s4connector.s4.compatible_list(relativeDomainName)
+	zoneName = object['attributes']['zoneName'][0]
+	relativeDomainName = object['attributes']['relativeDomainName'][0]
 
 	# ucr set connector/s4/mapping/dns/srv_record/_ldap._tcp.test.local/location='100 0 389 foobar.test.local.'
 	# ucr set connector/s4/mapping/dns/srv_record/_ldap._tcp.test.local/location='100 0 389 foobar.test.local. 100 0 389 foobar2.test.local.'
-	ucr_locations = s4connector.configRegistry.get('connector/s4/mapping/dns/srv_record/%s.%s/location' % (relativeDomainName[0].lower(),zoneName[0].lower()))
-	ud.debug(ud.LDAP, ud.INFO, 's4_srv_record_create: ucr_locations for connector/s4/mapping/dns/srv_record/%s.%s/location: %s' % (relativeDomainName[0].lower(),zoneName[0].lower(),ucr_locations))
+	ucr_locations = s4connector.configRegistry.get('connector/s4/mapping/dns/srv_record/%s.%s/location' % (relativeDomainName.lower(),zoneName.lower()))
+	ud.debug(ud.LDAP, ud.INFO, 's4_srv_record_create: ucr_locations for connector/s4/mapping/dns/srv_record/%s.%s/location: %s' % (relativeDomainName.lower(),zoneName.lower(),ucr_locations))
 	if ucr_locations:
 		if ucr_locations.lower() == 'ignore':
 			return
@@ -1213,6 +1218,16 @@ def ucs2con (s4connector, key, object):
 
 	ud.debug(ud.LDAP, ud.INFO, 'dns ucs2con: Object (%s) is of type %s' % (object['dn'], dns_type))
 
+	## At this point dn_mapping_function already has converted object['dn'] from ucs to con
+	## But since there is no attribute mapping defined for DNS, the object attributes still
+	## are the ones from UCS.
+	## We can only get the mapped zone_name from the DN here:
+
+	(zoneName, relativeDomainName) = __split_s4_dnsNode_dn(object['dn'])
+	object['attributes']['zoneName'] = [zoneName]
+	relativeDomainName=univention.s4connector.s4.compatible_list([relativeDomainName])[0]
+	object['attributes']['relativeDomainName'] = [relativeDomainName]
+
 	if dns_type == 'forward_zone' or dns_type == 'reverse_zone':
 		if object['modtype'] in ['add', 'modify']:
 			s4_zone_create(s4connector, object)
@@ -1267,12 +1282,11 @@ def con2ucs (s4connector, key, object):
 	## At this point dn_mapping_function already has converted object['dn'] from con to ucs
 	## But since there is no attribute mapping defined for DNS, the object attributes still
 	## are the ones from Samba.
-	## The object here is DC=<relative_domainname>,DC=<zone_name>,
-	## We can only get the zone_name from the DN here:
+	## We can only get the mapped zone_name from the DN here:
 
-	zoneName = __get_zone_name_from_ucs_dn(object['dn'])
+	(zoneName, relativeDomainName) = __split_ol_dNSZone_dn(object['dn'], object['attributes']['objectClass'])
 	object['attributes']['zoneName'] = [zoneName]
-	object['attributes']['relativeDomainName'] = object['attributes']['dc']
+	object['attributes']['relativeDomainName'] = [relativeDomainName]
 
 	if dns_type == 'host_record':
 		if object['modtype'] in ['add', 'modify']:
