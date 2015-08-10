@@ -1045,7 +1045,9 @@ config: Warning: service anvil { client_limit=1603 } is lower than required unde
 			Leaving it like this will lead to failed logins.
 		</para>
 		<para>
-			The values are so high, because <literal>default_client_limit</literal> and <literal>default_process_limit</literal> do not only lift limits for IMAP and POP3, but also for other services like <literal>lmtp</literal> and <literal>managesieve-login</literal>. Those services can now start more processes that have to be monitored and can theoretically make more authentication requests. This increases the number of possible concurrent connections to the <literal>auth</literal> and <literal>anvil</literal> services.
+			The values are so high, because <literal>default_client_limit</literal> and <literal>default_process_limit</literal> do not only lift limits for IMAP and POP3, but also for other services like <literal>lmtp</literal> and <literal>managesieve-login</literal>.
+			Those services can now start more processes that have to be monitored and can theoretically make more authentication requests.
+			This increases the number of possible concurrent connections to the <literal>auth</literal> and <literal>anvil</literal> services.
 		</para>
 		<para>
 			The values have to be adapted, using the numbers from the log file:
@@ -1065,7 +1067,9 @@ invoke-rc.d dovecot restart
 			No more warnings are written to the log file and both IMAP and POP3 servers now accept 3000 client connections each.
 		</para>
 		<para>
-			&ucsUCS; configures Dovecot to run in "High-security mode" by default. For installations with 10.000s of users, Dovecot offers the "High-performance mode". The performance guide has further details on how to configure it: <biblioref linkend="ucs-performance-guide"/>.
+			&ucsUCS; configures Dovecot to run in "High-security mode" by default.
+			For installations with 10.000s of users, Dovecot offers the "High-performance mode".
+			The performance guide has further details on how to configure it: <biblioref linkend="ucs-performance-guide"/>.
 		</para>
 	</section>
 
