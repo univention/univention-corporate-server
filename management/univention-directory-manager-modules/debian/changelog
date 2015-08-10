@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.31-12) unstable; urgency=medium
+
+  * Bug #39131: do now crash on missing locale
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 10 Aug 2015 16:36:28 +0200
+
 univention-directory-manager-modules (10.0.31-11) unstable; urgency=medium
 
   * Revert r62606, postponed to errata4.0-3 (Bug #34184)

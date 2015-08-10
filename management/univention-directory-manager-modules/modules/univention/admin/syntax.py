@@ -3041,10 +3041,16 @@ class ObjectFlag( select ):
 
 
 class Country(select):
+	empty_value = True
+
+	try:
+		locale.setlocale(locale.LC_ALL, "")
+	except locale.Error:
+		# unsupported locale setting: a locale was not installed (probably de_DE.UTF-8)
+		pass
 	translation = univention.admin.localization.translation('iso_3166')
 	_iso_3166 = translation.translate
 
-	empty_value = True
 	choices = [('AF', _iso_3166(u'Afghanistan')), ('AX', _iso_3166(u'\xc5land Islands')),
 		('AL', _iso_3166(u'Albania')), ('DZ', _iso_3166(u'Algeria')),
 		('AS', _iso_3166(u'American Samoa')), ('AD', _iso_3166(u'Andorra')),
@@ -3161,7 +3167,6 @@ class Country(select):
 		('VI', _iso_3166(u'Virgin Islands, U.S.')), ('WF', _iso_3166(u'Wallis and Futuna')),
 		('EH', _iso_3166(u'Western Sahara')), ('YE', _iso_3166(u'Yemen')), ('ZM', _iso_3166(u'Zambia')),
 		('ZW', _iso_3166(u'Zimbabwe'))]
-	locale.setlocale(locale.LC_ALL, "")
 	choices.sort(cmp=locale.strcoll, key=itemgetter(1))
 
 
