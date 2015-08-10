@@ -8,6 +8,7 @@
 ## tags:
 ##  - basic
 ##  - apptest
+##  - skip_admember
 ## packages:
 ##  - univention-directory-manager-tools
 ## exposure: dangerous

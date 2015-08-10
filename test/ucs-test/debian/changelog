@@ -1,3 +1,19 @@
+ucs-test (6.0.0-32) unstable; urgency=medium
+
+  * Disabled 40_mail/00delivery00basic (Bug #39125)
+  * 64_udm-printers/50_create_printer_for_every_printer_URI: Don't fail
+    if the printer is not enabled (Bug #39112)
+  * 20_appcenter/20_can_apps_be_installed: Alwayes use the regular app
+    center (Bug #39113)
+  * 01_base/45udm-cli: skip in admember mode (Bug #39100)
+  * Disable 66_udm-computers/02_all_roles_creation_with_all_attributes
+    (Bug #37390)
+  * 10_ldap/43replication_performance: Increase the timeout if dovecot
+    is installed. In this case the user creation takes more time
+    (Bug #39102)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Aug 2015 07:25:03 +0200
+
 ucs-test (6.0.0-31) unstable; urgency=medium
 
   * 00_checks/check_log_files_definitions.py: Fixed typo in regular
