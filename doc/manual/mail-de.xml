@@ -1096,7 +1096,8 @@ config: Warning: service anvil { client_limit=1603 } is lower than required unde
 			Dies wird dazu führen, dass Logins fehlschlagen.
 		</para>
 		<para>
-			Die hohen Werte kommen dadurch zustande, dass mit <literal>default_client_limit</literal> und <literal>default_process_limit</literal> nicht nur die Beschränkungen von IMAP und POP3 erhöht werden, sondern auch einiger weiterer Dienste wie <literal>lmtp</literal> und <literal>managesieve-login</literal>. Diese Dienste können nun mehr zu überwachende Prozesse starten und theoretisch mehr Authentifikationsanfragen stellen, wodurch sich die maximale Anzahl gleichzeitiger Verbindungen zu den Diensten <literal>auth</literal> und <literal>anvil</literal> erhöht.
+			Die hohen Werte kommen dadurch zustande, dass mit <literal>default_client_limit</literal> und <literal>default_process_limit</literal> nicht nur die Beschränkungen von IMAP und POP3 erhöht werden, sondern auch einiger weiterer Dienste wie <literal>lmtp</literal> und <literal>managesieve-login</literal>.
+			Diese Dienste können nun mehr zu überwachende Prozesse starten und theoretisch mehr Authentifizierungen durchführen, wodurch sich die maximale Anzahl gleichzeitiger Verbindungen zu den Diensten <literal>auth</literal> und <literal>anvil</literal> erhöht.
 		</para>
 		<para>
 			Die Werte für die Dienste müssen nun der Fehlermeldung entsprechend angepasst werden:
@@ -1116,7 +1117,9 @@ invoke-rc.d dovecot restart
 			Nun erscheint keine Fehlermeldung mehr, und IMAP- und POP3-Server akzeptieren nun beide je 3000 Verbindungen.
 		</para>
 		<para>
-			&ucsUCS; konfiguriert Dovecot so, dass es standardmäßig im "High-security mode" läuft. In Installationen mit 10.000en Benutzern kann Dovecot im "High-performance mode" betrieben werden. Der Performance-Leitfaden beschreibt, wie dieser konfiguriert werden kann: <biblioref linkend="ucs-performance-guide"/>.
+			&ucsUCS; konfiguriert Dovecot so, dass es standardmäßig im <foreignphrase>High-security mode</foreignphrase> läuft.
+			In Installationen mit 10.000en Benutzern kann Dovecot im <foreignphrase>High-performance mode</foreignphrase> betrieben werden.
+			Der Performance-Leitfaden beschreibt, wie dieser konfiguriert werden kann: <biblioref linkend="ucs-performance-guide"/>.
 		</para>
 	</section>
 
