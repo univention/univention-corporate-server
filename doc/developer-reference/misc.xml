@@ -513,7 +513,7 @@ security/packetfilter/udp/500:600/all/en=Accept UDP port 500 to 600
 			<para>
 				Besides the existing possibilities for settings via &ucsUCR;, there is also the possibility of integrating user-defined enhanced configurations in <filename class="directory">/etc/security/packetfilter.d/</filename>, e.g. for realising a firewall or <firstterm>Network Address Translation</firstterm>.
 				The enhancements should be realised in the form of shell scripts which execute the corresponding <command>iptables</command> for <acronym>IPv4</acronym> and <command>ip6table</command> for <acronym>IPv6</acronym> calls.
-				For packages this is best done through using a &ucsUCR; template as described in<xref linkend="ucr:file"/>.
+				For packages this is best done through using a &ucsUCR; template as described in <xref linkend="ucr:file"/>.
 			</para>
 			<para>
 				Full documentation for IPTables can be found at <ulink url="http://www.netfilter.org/"/>.
@@ -529,16 +529,12 @@ security/packetfilter/udp/500:600/all/en=Accept UDP port 500 to 600
 			<para>
 				Since Nmap requires elevated privileges in the network stack, it should be started as <literal>root</literal> user.
 				A <acronym>TCP</acronym> port can be tested with the following command:
-			</para>
-			<programlisting language="sh">
 				<command>nmap <replaceable class="option">HOSTNAME</replaceable> <option>-p</option> <replaceable class="option">PORT(s)</replaceable></command>
-			</programlisting>
+			</para>
 			<para>
 				A <acronym>UDP</acronym> port can be tested with the following command:
-			</para>
-			<programlisting language="sh">
 				<command>nmap <replaceable class="option">HOSTNAME</replaceable> <option>-sU</option> <option>-p</option> <replaceable class="option">PORT(s)</replaceable></command>
-			</programlisting>
+			</para>
 			<example id="misc:firewall:testing">
 				<title>Using <command>nmap</command> for firewall port testing</title>
 				<programlisting language="sh">
