@@ -1,0 +1,9 @@
+product: ucs
+release: "4.0" 
+version: [2]
+scope: ucs_4.0-0-errata4.0-2
+src: univention-system-setup
+fix: 8.1.69-24.913.201508101852
+desc: |
+ System Setup now always creates german and english locales
+bug: [39136]
