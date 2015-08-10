@@ -210,12 +210,14 @@ def make_token():
 	return str(time.time())
 
 
-def get_dir_files(dir_path, recursive=True):
+def get_dir_files(dir_path, recursive=True, exclude=None):
 	result = []
+	if not exclude:
+		exclude = []
 	for f in glob.glob('%s/*' % dir_path):
 		if os.path.isfile(f):
 			result.append(f)
-		if os.path.isdir(f) and recursive:
+		if os.path.isdir(f) and recursive and f not in exclude:
 			result.extend(get_dir_files(f))
 	return result
 
@@ -230,7 +232,7 @@ def get_maildir_filenames(maildir):
 	result = []
 	for dirpath, dirnames, filenames in os.walk(maildir):
 		for name in list(dirnames):
-			if name not in ('cur', 'new', 'tmp'):
+			if name not in ('cur', 'new'):
 				dirnames.remove(name)
 		result.extend([os.path.join(dirpath, x) for x in filenames])
 	return result
@@ -331,7 +333,7 @@ def spam_delivered(token, mail_address):
 	mail_dir = get_dovecot_maildir(mail_address, folder=spam_folder)
 	if not os.path.isdir(mail_dir):
 		print 'Warning: maildir %r does not exist!' % (mail_dir,)
-	for _file in get_dir_files(mail_dir, recursive=True):
+	for _file in get_dir_files(mail_dir, recursive=True, exclude=["tmp"]):
 		with open(_file) as fi:
 			content = fi.read()
 		delivered = delivered or (token in content)
@@ -373,7 +375,7 @@ def mail_delivered(token, user=None, mail_address=None, check_root=True):
 				if delivered:
 					break
 		mail_dir = get_dovecot_maildir(mail_address)
-		for _file in get_dir_files(mail_dir, recursive=True):
+		for _file in get_dir_files(mail_dir, recursive=True, exclude=["tmp"]):
 			with open(_file) as fi:
 				delivered = delivered or (token in fi.read())
 				if delivered:
