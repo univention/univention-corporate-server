@@ -35,12 +35,6 @@
 			  <trademark class="registered">Linux</trademark> is a registered trademark of Linus Torvalds.
 			</para>
 		</legalnotice>
-		<revhistory>
-			<revision>
-				<revnumber>4.0-3</revnumber>
-				<date>11th of August 2015</date>
-			</revision>
-		</revhistory>
 	</bookinfo>
 
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="introduction.xml"/>

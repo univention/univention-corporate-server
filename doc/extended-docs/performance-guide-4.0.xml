@@ -13,12 +13,6 @@
 <bookinfo>
   <title>Univention Corporate Server</title>
   <subtitle>Performance guide</subtitle>
-	<revhistory>
-		<revision>
-			<revnumber>4.0-0</revnumber>
-			<date>18 Nov 2014</date>
-		</revision>
-	</revhistory>
 </bookinfo>
 
 <chapter id="intro">

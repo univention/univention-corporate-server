@@ -12,13 +12,6 @@
   <bookinfo>
 	<title>Univention Corporate Server</title>
 	<subtitle>Extended print services documentation</subtitle>
-
-	<revhistory>
-	  <revision>
-		<revnumber>4.0-3</revnumber>
-		<date>August 11, 2015</date>
-	  </revision>
-	</revhistory>
   </bookinfo>
 
   <chapter id="quota">
