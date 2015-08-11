@@ -1,0 +1,30 @@
+#!/usr/share/ucs-test/runner python
+## desc: Postfix accepts mails on port 25, 465 and 587
+## tags: [apptest]
+## exposure: dangerous
+
+from essential.mail import send_mail, check_delivery
+from univention.config_registry import handler_set
+import time
+import univention.testing.ucr as ucr_test
+
+def main():
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+		handler_set(['mail/alias/root=systemmail@%s' % fqdn])
+		recipient = 'root@%s' % fqdn
+
+		for port in [25, 587]:
+			token = str(time.time())
+			send_mail(recipients=recipient, msg=token, port=port, tls=True)
+			check_delivery(token, recipient, True)
+
+		port = 465
+		token = str(time.time())
+		send_mail(recipients=recipient, msg=token, port=port, ssl=True)
+		check_delivery(token, recipient, True)
+
+if __name__ == '__main__':
+	main()
+
+# vim: set ft=python ts=4 sw=4 noet :
