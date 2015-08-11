@@ -39,10 +39,10 @@ from univention.s4connector.s4.dc import _unixTimeInverval2seconds
 from univention.admin.mapping import unmapUNIX_TimeInterval
 
 from samba.dcerpc import dnsp
-from samba.ndr import ndr_print, ndr_pack, ndr_unpack
-import binascii
+from samba.ndr import ndr_pack, ndr_unpack, ndr_print
 import copy
 import time
+import sys
 
 from samba.provision.sambadns import ARecord
 # def __init__(self, ip_addr, serial=1, ttl=3600):
@@ -610,7 +610,44 @@ def __unpack_ptrRecord(object):
 			ptr.append(__append_dot(ndrRecord.data))
 	return ptr
 
-''' Create a forward zone in Samaba 4 '''
+def __get_s4_msdcs_soa(s4connector, zoneName):
+	''' Required to keep the SOA serial numbers in sync
+	'''
+	func_name = sys._getframe().f_code.co_name
+	_d=ud.function(func_name)
+
+	msdcs_obj = {}
+	s4_filter = '(&(objectClass=dnsZone)(DC=%s))' % ('_msdcs.%s' % zoneName,)
+	ud.debug(ud.LDAP, ud.INFO, "%s: search _msdcs in S4" % func_name)
+	msdcs_obj = {}
+	for base in s4connector.s4_ldap_partitions:
+		resultlist = s4connector._s4__search_s4(
+				base,
+				ldap.SCOPE_SUBTREE,
+				univention.s4connector.s4.compatible_modstring(s4_filter),
+				show_deleted=False)
+
+		if resultlist:
+			break
+	else:
+		ud.debug(ud.LDAP, ud.WARN, "%s: _msdcs sub-zone for %s not found in S4" % (func_name, zoneName))
+		return
+
+	## We need the SOA here
+	msdcs_soa_dn = 'DC=@,' + resultlist[0][0]
+	ud.debug(ud.LDAP, ud.INFO, "%s: search DC=@ for _msdcs in S4", func_name)
+	resultlist = s4connector._s4__search_s4(
+			msdcs_soa_dn,
+			ldap.SCOPE_BASE,
+			'(objectClass=dnsNode)',
+			show_deleted=False)
+	if resultlist:
+		## __object_from_element not required here
+		msdcs_obj = s4connector._s4__object_from_element(resultlist[0])
+		return msdcs_obj
+
+
+''' Create/modify a DNS zone in Samba 4 '''
 def s4_zone_create(s4connector, object):
 	_d=ud.function('s4_zone_create')
 
@@ -668,6 +705,71 @@ def s4_zone_create(s4connector, object):
 	s4connector.lo_s4.modify(soa_dn, [('dnsRecord', old_dnsRecords, dnsRecords)])
 
 	return True
+
+
+def s4_zone_msdcs_sync(s4connector, object):
+	_d=ud.function('s4_zone_msdcs_sync')
+
+	## Get the current serial number of the OpenLDAP domainname zone
+	domainZoneName = object['attributes']['zoneName'][0]
+	soaRecord = object['attributes'].get('sOARecord', [None])[0]
+	if not soaRecord:
+		ud.debug(ud.LDAP, ud.WARN, 's4_zone_msdcs_sync: OL zone %s has no SOA info' % domainZoneName)
+		return
+
+	soaRecord=univention.s4connector.s4.compatible_modstring(soaRecord)
+	soa=soaRecord.split(' ')
+	serial=int(soa[2])
+
+	## lookup the the SOA record of the _msdcs sub-zone for the domainname zone
+	msdcs_soa_obj = __get_s4_msdcs_soa(s4connector, domainZoneName)
+	if not msdcs_soa_obj:
+		return
+	msdcs_soa_dn = msdcs_soa_obj['dn']
+
+	dnsRecords=[]
+	msdcs_soa={}
+	old_dnsRecords=msdcs_soa_obj['attributes'].get('dnsRecord', [])
+	found = False
+	for dnsRecord in old_dnsRecords:
+		dnsRecord=dnsRecord.encode('latin1')
+		ndrRecord=ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
+		if ndrRecord.wType == dnsp.DNS_TYPE_SOA:
+			if ndrRecord.data.serial >= serial:
+				ud.debug(ud.LDAP, ud.WARN, 's4_zone_msdcs_sync: SOA serial OpenLDAP zone %s is higher than corresponding value of %s' % (domainZoneName, msdcs_soa_dn))
+				return
+			ndrRecord.data.serial = serial
+			dnsRecords.append(ndr_pack(ndrRecord))
+			found = True
+		else:
+			dnsRecords.append(dnsRecord)
+
+	if not found:
+		ud.debug(ud.LDAP, ud.WARN, 's4_zone_msdcs_sync: object %s has no SOA info' % msdcs_soa_dn)
+		return
+
+	s4connector.lo_s4.modify(msdcs_soa_dn, [('dnsRecord', old_dnsRecords, dnsRecords)])
+
+	return True
+
+
+''' Create/modify a DNS zone and possibly _msdcs in Samba 4 '''
+def s4_zone_create_wrapper(s4connector, object):
+	''' Handle s4_zone_create to additionally sync to _msdcs.$domainname
+	    Required to keep the SOA serial numbers in sync
+	'''
+	result = s4_zone_create(s4connector, object)
+
+	zoneName = object['attributes']['zoneName'][0]
+	if	(
+		zoneName == s4connector.configRegistry.get('domainname')
+		and s4connector.configRegistry.get('connector/s4/mapping/dns/position') != 'legacy'
+		and object['modtype'] == 'modify'
+		):
+		# Additionally sync serialNumber to _msdcs zone
+		result = result and s4_zone_msdcs_sync(s4connector, object)
+
+	return result
 
 
 ''' Delete a forward zone in Samaba 4 '''
@@ -1054,6 +1156,17 @@ def ucs_zone_create(s4connector, object, dns_type):
 
 	mx=__unpack_mxRecord(object)
 
+	if	(
+		zoneName == s4connector.configRegistry.get('domainname')
+		and s4connector.configRegistry.get('connector/s4/mapping/dns/position') != 'legacy'
+		and object['modtype'] == 'modify'
+		):
+		# Determine max of serialNumber from _msdcs zone
+		msdcs_soa_obj = __get_s4_msdcs_soa(s4connector, zoneName)
+		if msdcs_soa_obj:
+			msdcs_soa = __unpack_soaRecord(msdcs_soa_obj)
+			soa['serial'] = str(max(int(soa['serial']), int(msdcs_soa['serial'])))
+	
 	# Does a zone already exist?
 	modify = False
 	searchResult=s4connector.lo.search(filter='(&(relativeDomainName=%s)(zoneName=%s))' % (relativeDomainName, zoneName), unique=1)
@@ -1230,7 +1343,7 @@ def ucs2con (s4connector, key, object):
 
 	if dns_type == 'forward_zone' or dns_type == 'reverse_zone':
 		if object['modtype'] in ['add', 'modify']:
-			s4_zone_create(s4connector, object)
+			s4_zone_create_wrapper(s4connector, object)
 		elif object['modtype'] in ['delete']:
 			s4_zone_delete(s4connector, object)
 		# ignore move

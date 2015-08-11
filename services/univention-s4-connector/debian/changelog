@@ -1,3 +1,11 @@
+univention-s4-connector (9.0.16-42) unstable; urgency=medium
+
+  * ucs2con hack to sync the SOA serialNumber to separate S4 _msdcs sub-zone.
+    This is only relevant in case connector/s4/mapping/dns/position=legacy.
+    In the con2ucs direction take the max of the serialNumber.  (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 11 Aug 2015 16:13:21 +0200
+
 univention-s4-connector (9.0.16-41) unstable; urgency=medium
 
   * Mapping _msdcs.<domain> DNs also requires mapping of relativeDomainName
