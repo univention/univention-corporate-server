@@ -53,8 +53,7 @@
 			<listitem><para>
 				Der Mailserver Dovecot wurde als Standard IMAP/POP3-Server in UCS integriert und bietet somit eine Alternative
 				zum weiterhin zur Verfügung stehenden Cyrus IMAP Server. Weitere Informationen zur Integration sind in
-				<ulink url="https://www.univention.de/2015/07/mailserver-dovecot-als-standard-imappop3-server-in-ucs">diesem Artikel
-				</ulink> beschrieben.
+				<ulink url="https://www.univention.de/2015/07/mailserver-dovecot-als-standard-imappop3-server-in-ucs/">diesem Artikel </ulink> beschrieben.
 			</para></listitem>
 			<listitem><para>
 				Mit dem Update auf Samba 4.2.3 wurde die Kompatibilität zu Active Directory weiter ausgebaut.
