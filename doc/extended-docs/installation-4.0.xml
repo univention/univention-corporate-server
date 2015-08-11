@@ -12,12 +12,6 @@
 <bookinfo>
   <title>Univention Corporate Server</title>
   <subtitle>Extended installation documentation</subtitle>
-  <revhistory>
-     <revision>
-        <revnumber>4.0-2</revnumber>
-        <date>July 9, 2015</date>
-     </revision>
-  </revhistory>
 </bookinfo>
 
 <chapter id="appliance:use">

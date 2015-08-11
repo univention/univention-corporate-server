@@ -10,12 +10,6 @@
 	<bookinfo>
 		<title>UCS 4.0-2 Release Notes</title>
 		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.0-2</subtitle>
-		<revhistory>
-			<revision>
-				<revnumber>4.0-2</revnumber>
-				<date>May 2015</date>
-			</revision>
-		</revhistory>
 
 		<legalnotice lang="">
 			<para>

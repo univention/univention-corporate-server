@@ -13,12 +13,6 @@
 	<bookinfo>
 		<title>Univention Corporate Server</title>
 		<subtitle>Cyrus mail server</subtitle>
-		<revhistory>
-			<revision>
-				<revnumber>4.0-0</revnumber>
-				<date>10 July 2015</date>
-			</revision>
-		</revhistory>
 	</bookinfo>
 
 	<chapter id="mail::introduction">
