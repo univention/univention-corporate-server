@@ -63,7 +63,7 @@
 			</para></listitem>
 			<listitem><para>
 				The compatibility to Active Directory has been improved with the Samba update to 4.2.3. This includes, among others, improvements
-				in the DRS replication and the printer driver handling. In addition, the join of Huawai storage systems in the Active Directory domain
+				in the DRS replication and the printer driver handling. In addition, the join of <application>Huawai storage systems</application> in the Active Directory domain
 				provided by UCS is now also possible.
 			</para></listitem>
 			<listitem><para>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE chapter  PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
@@ -72,8 +72,8 @@
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
-                The Linux kernel has been updated to 3.16.7-ckt11. It provides many bugfixes and fixes
-                several vulnerabilities (<u:bug>37385</u:bug>).
+						The Linux kernel has been updated to <wordasword>3.16.7-ckt11</wordasword>. It provides many bugfixes and fixes
+						several vulnerabilities (<u:bug>37385</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -82,7 +82,7 @@
 			<title>Univention Configuration Registry</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The UCR variable 'ipv6/gateway' now supports a zone index (<u:bug>35694</u:bug>).
+					The UCR variable <envar>ipv6/gateway</envar> now supports a zone index (<u:bug>35694</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Multiple IPv6 addresses from the same subnet can now be added to an interface (<u:bug>33986</u:bug>).
@@ -106,7 +106,7 @@
 			<title>Boot Loader</title>
 			<itemizedlist>
 				<listitem><simpara>
- 					The title for the entry of UCS in the GRUB boot menu can be configured through the Univention Configuration Registry variable 'grub/title' (<u:bug>38779</u:bug>).
+					The title for the entry of UCS in the GRUB boot menu can be configured through the &ucsUCRV; <envar>grub/title</envar> (<u:bug>38779</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -130,22 +130,22 @@
 			<title>OpenLDAP</title>
 			<itemizedlist>
 				<listitem><simpara>
- 					The diversion of the "msgpo.schema" file introduced as a fix for <u:bug>38488</u:bug> has been removed again (<u:bug>38566</u:bug>).
+					The diversion of the <filename>msgpo.schema</filename> file introduced as a fix for <u:bug>38488</u:bug> has been removed again (<u:bug>38566</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The description for the UCR variable 'ldap/server/addition' has been improved (<u:bug>38094</u:bug>).
+					The description for the UCR variable <envar>ldap/server/addition</envar> has been improved (<u:bug>38094</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The UCR variable 'ldap/server/addition' is used to configure additional LDAP servers in case the primary LDAP server is unavailable. The setting can be configured through a UMC policy 'LDAP server'.
-    				Previously the so configured value was written into the NORMAL layer of the Univention Configuration Registry, which overwrote any setting configured by the user.  The value is now written into the LDAP layer, which has a higher priority
-    				than the NORMAL layer and thus overrules any local configuration, but preserves the user configured setting.  The value can still be overwritten locally by using the FORCED layer of UCR, e.g. "ucr set --force ldap/server/addition=...".
-    				Setting the UCR variable through a UMC policy 'Univention Configuration Registry' is not recommended and will clash with the 'LDAP server' policy (<u:bug>38094</u:bug>).
+					The UCR variable <envar>ldap/server/addition</envar> is used to configure additional LDAP servers in case the primary LDAP server is unavailable. The setting can be configured through a UMC policy 'LDAP server'.
+				Previously the so configured value was written into the NORMAL layer of the &ucsUCR;, which overwrote any setting configured by the user.  The value is now written into the LDAP layer, which has a higher priority
+				than the NORMAL layer and thus overrules any local configuration, but preserves the user configured setting.  The value can still be overwritten locally by using the FORCED layer of UCR, e.g. <command>ucr set --force ldap/server/addition=...</command>.
+				Setting the UCR variable through a UMC policy '&ucsUCR;' is not recommended and will clash with the 'LDAP server' policy (<u:bug>38094</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
- 					Adds UCR variables 'ldap/tls/ciphersuite' and 'ldap/tls/minprotocol' to configure the allowed ciphers and the minimum requires TLS version.  By default 'RC4', 'NULL' and 'SSLv3' are now disabled (<u:bug>38685</u:bug>).
+					Adds UCR variables <envar>ldap/tls/ciphersuite</envar> and <envar>ldap/tls/minprotocol</envar> to configure the allowed ciphers and the minimum requires TLS version.  By default 'RC4', 'NULL' and 'SSLv3' are now disabled (<u:bug>38685</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
- 					Enables Forward Secrecy by default, which can be configured further through several new UCR variables starting with 'ldap/tls/dh/...' (<u:bug>38685</u:bug>).
+					Enables Forward Secrecy by default, which can be configured further through several new UCR variables starting with <envar>ldap/tls/dh/...</envar> (<u:bug>38685</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 
@@ -164,7 +164,7 @@
 				<title>LDAP schema changes</title>
 				<itemizedlist>
 					<listitem><simpara>
-						The attribute "ldapFilter" has been added to the schema for univentionPolicy objects (<u:bug>36255</u:bug>).
+						The attribute <property>ldapFilter</property> has been added to the schema for <classname>univentionPolicy</classname> objects (<u:bug>36255</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
@@ -206,22 +206,22 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The "clear input" and "view password" icons are now displayed correctly in the login dialog with Internet Explorer 10 and above (<u:bug>38127</u:bug>).
+					The "clear input" and "view password" icons are now displayed correctly in the login dialogue with Internet Explorer 10 and above (<u:bug>38127</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-  					It is now possible to create a core dump of the UMC-Webserver (<u:bug>37280</u:bug>).
+					It is now possible to create a core dump of the UMC web-server (<u:bug>37280</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-  					A check for free disk space is now only done once per file upload request (<u:bug>38335</u:bug>).
+					A check for free disk space is now only done once per file upload request (<u:bug>38335</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-  					The place holders in the login dialogue are now displayed correctly in Internet Explorer 9 (<u:bug>38127</u:bug>).
+					The place holders in the login dialogue are now displayed correctly in Internet Explorer 9 (<u:bug>38127</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-  					Scrolling in the appcenter on mobile devices is now more responsive (<u:bug>38050</u:bug>).
+					Scrolling in the App Center on mobile devices is now more responsive (<u:bug>38050</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A missing pre dependency to python-univention-management-console has been added (<u:bug>38617</u:bug>).
+					A missing pre dependency to <package>python-univention-management-console</package> has been added (<u:bug>38617</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The query string parameters are now passed to automatically started UMC modules (<u:bug>38544</u:bug>).
@@ -251,7 +251,7 @@
 					New icons for tooltips have been added and the style for tooltips has been adapted (<u:bug>36771</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Added a transition when a UMC-module-header reaches the top of the screen (<u:bug>38491</u:bug>).
+					Added a transition when a UMC module header reaches the top of the screen (<u:bug>38491</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The size of the UMC installer header was too big. This issue has been fixed (<u:bug>39105</u:bug>).
@@ -302,7 +302,7 @@
 					The error messages when contacting the App Center server or the UCS activation fails have been improved (<u:bug>35678</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Errors when opening apt Packages files are now handled (<u:bug>38112</u:bug>).
+					Errors when opening APT <filename>Packages</filename> files are now handled (<u:bug>38112</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Errors when the system has too few free disk space are now handled (<u:bug>38129</u:bug>).
@@ -323,7 +323,7 @@
 					The display of buttons for installing, updating etc. have been improved (<u:bug>39042</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Added functionality for univention-upgrade to upgrade apps (<u:bug>38697</u:bug>).
+					Added functionality for <command>univention-upgrade</command> to upgrade apps (<u:bug>38697</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Ini files may now specify how the app is to be included in the app reporting tool (<u:bug>38954</u:bug>).
@@ -344,16 +344,16 @@
 					An exception when handling LDAP exceptions is prevented now (<u:bug>38616</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The attribute "ldapFilter" has been added to policy UDM modules (<u:bug>36255</u:bug>).
+					The attribute <property>ldapFilter</property> has been added to policy UDM modules (<u:bug>36255</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The UDM module policies/mailquota has been moved to the package univention-mail-cyrus. From now on the module will only be available if the UCS domain contains an UCS system with installed cyrus mail stack (<u:bug>38473</u:bug>).
+					The UDM module <classname>policies/mailquota</classname> has been moved to the package <package>univention-mail-cyrus</package>. From now on the module will only be available if the UCS domain contains an UCS system with installed Cyrus mail stack (<u:bug>38473</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A default user template for new users can be configured by the UCR variable "directory/manager/web/modules/users/user/add/default". The variable expects the DN or the label of a user template (<u:bug>38832</u:bug>).
+					A default user template for new users can be configured by the UCR variable <envar>directory/manager/web/modules/users/user/add/default</envar>. The variable expects the DN or the label of a user template (<u:bug>38832</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The evaluation of "requiredObjectClass", "prohibitedObjectClasses", "fixedAttributes" and "emptyAttributes" is now case insensitive (<u:bug>38663</u:bug>).
+					The evaluation of <property>requiredObjectClass</property>, <property>prohibitedObjectClasses</property>, <property>fixedAttributes</property> and <property>emptyAttributes</property> is now case insensitive (<u:bug>38663</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -365,22 +365,22 @@
 					Extended the list of default language settings to include Switzerland, Austria and the United Kingdom (<u:bug>38512</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Show server address in Univention System Setup welcome screen in EC2 and other cloud environments (<u:bug>38391</u:bug>).
+					Show server address in <package>Univention System Setup</package> welcome screen in EC2 and other cloud environments (<u:bug>38391</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Uppercase hostnames and hostnames beginning with a digit are now possible (<u:bug>37816</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					The package univention-welcome-screen has been added. It shows an informative screen which indicates how the system can be accessed via a web browser (<u:bug>37537</u:bug>).
+					The package <package>univention-welcome-screen</package> has been added. It shows an informative screen which indicates how the system can be accessed via a web browser (<u:bug>37537</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Fixed an error which could occur while installing UCS with non-default locales via the text based installer, resulting in an unconfigured system (<u:bug>38382</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Changed the wording in the Univention System Setup to suit Univention App Appliances (<u:bug>38780</u:bug> <u:bug>38781</u:bug>)
+					Changed the wording in the <package>Univention System Setup</package> to suit Univention App Appliances (<u:bug>38780</u:bug> <u:bug>38781</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					The new package univention-system-activation has been released. It registers a web service to enforce the upload of an
+					The new package <package>univention-system-activation</package> has been released. It registers a web service to enforce the upload of an
 					activated license key prior to accessing the management web interface (<u:bug>38547</u:bug> <u:bug>38782</u:bug> <u:bug>38850</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -405,7 +405,7 @@
 					A information is shown during domain setup that the process might take a while (<u:bug>38833</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The NETBIOS domain name of the Active Directory domain is used when the UCS system joins into an Active Directory domain (<u:bug>37460</u:bug>).
+					The NetBIOS domain name of the Active Directory domain is used when the UCS system joins into an Active Directory domain (<u:bug>37460</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The DHCP configuration of a system led to problems with the browser redirection at the end of the setup wizard. This has been corrected (<u:bug>39048</u:bug>)
@@ -426,7 +426,8 @@
 			<title>Users module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The default user template for new users can be configured via the UCR variable "directory/manager/web/modules/users/user/add/default". The variable expects the DN or the label of a user template (<u:bug>38832</u:bug>).
+					The default user template for new users can be configured via the UCR variable <envar>directory/manager/web/modules/users/user/add/default</envar>.
+					The variable expects the DN or the label of a user template (<u:bug>38832</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The "contact" tab of the users module has a "country" entry now (<u:bug>18512</u:bug>).
@@ -449,7 +450,7 @@
 			<title>Computers module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Renaming of domain controller or memberserver computers is prevented now (<u:bug>38364</u:bug>).
+					Renaming of Domaincontroller or Memberserver computers is prevented now (<u:bug>38364</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -619,7 +620,7 @@
 		<title>Univention base libraries</title>
 		<itemizedlist>
 			<listitem><simpara>
-				Two new internal functions for UCS license checks have been added to the package univention-lib  (<u:bug>38951</u:bug>).
+				Two new internal functions for UCS license checks have been added to the package <package>univention-lib</package>  (<u:bug>38951</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				If the initialization of the package manager failed it is retried  (<u:bug>38951</u:bug>).
@@ -628,16 +629,16 @@
 				Held packages can't cause a traceback anymore  (<u:bug>38951</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				Error messages when opening apt Packages files have improved (<u:bug>38951</u:bug>).
+				Error messages when opening APT Packages files have improved (<u:bug>38951</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				Error messages when the system has too few free disk space have improved (<u:bug>38951</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The Python implementation of univention-policy-result did not evaluate the attributes "requiredObjectClass" and "prohibitedObjectClasses". This has been fixed (<u:bug>38663</u:bug>).
+				The Python implementation of <package>univention-policy-result</package> did not evaluate the attributes <property>requiredObjectClass</property> and <property>prohibitedObjectClasses</property>. This has been fixed (<u:bug>38663</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The Python implementation of univention-policy-result did not return the most specific policy in all cases. This has been fixed (<u:bug>38712</u:bug>).
+				The Python implementation of <package>univention-policy-result</package> did not return the most specific policy in all cases. This has been fixed (<u:bug>38712</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -650,26 +651,26 @@
 			<title>Mail services</title>
 			<itemizedlist>
 				<listitem><simpara>
-  					This update provides the new package univention-mail-dovecot which integrates the IMAP/POP3 server dovecot into the UCS mail stack (<u:bug>34839</u:bug> <u:bug>38884</u:bug>).
+					This update provides the new package <package>univention-mail-dovecot</package> which integrates the IMAP/POP3 server dovecot into the UCS mail stack (<u:bug>34839</u:bug> <u:bug>38884</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-  					dovecot has been updated to version 2.2.13. The update provides several bugfixes and enhancements (<u:bug>34839</u:bug> <u:bug>38475</u:bug>).
+					dovecot has been updated to version 2.2.13. The update provides several bugfixes and enhancements (<u:bug>34839</u:bug> <u:bug>38475</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The UCR variable mail/cyrus/auth/allowplaintext to (dis)allow plain text passwords over non-TLS connections has been added. The variable defaults to "no".
-					This changes the previous default behaviour! Plain text authentication over unencrypted connections is now disabled by default. To revert to the old behaviour set mail/cyrus/auth/allowplaintext=yes resp.  mail/dovecot/auth/allowplaintext=yes (<u:bug>38500</u:bug>).
+					The UCR variable <envar>mail/cyrus/auth/allowplaintext</envar> to (dis)allow plain text passwords over non-TLS connections has been added. The variable defaults to <literal>no</literal>.
+					This changes the previous default behaviour! Plain text authentication over unencrypted connections is now disabled by default. To revert to the old behaviour set <envar>mail/cyrus/auth/allowplaintext=yes</envar> resp. <envar>mail/dovecot/auth/allowplaintext=yes</envar> (<u:bug>38500</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The UDM module policies/mailquota has been moved to the package univention-mail-cyrus. The UDM module will only be available if the UCS mail stack with cyrus is installed (<u:bug>38473</u:bug> <u:bug>39004</u:bug>).
+					The UDM module <classname>policies/mailquota</classname> has been moved to the package <package>univention-mail-cyrus</package>. The UDM module will only be available if the UCS mail stack with Cyrus is installed (<u:bug>38473</u:bug> <u:bug>39004</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Postfix will no longer resolve address mappings (e.g. BCC) before handing them over to amavis for content scanning if an archive folder has been defined (<u:bug>14619</u:bug> <u:bug>38884</u:bug>).
+					Postfix will no longer resolve address mappings (e.g. BCC) before handing them over to AMaViS for content scanning if an archive folder has been defined (<u:bug>14619</u:bug> <u:bug>38884</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					To configure the max. number of concurrent Amavis processes, a new UCR variable has been introduced: mail/antivir/max_servers. When unset, the current default "2" is used (<u:bug>37653</u:bug>).
+					To configure the max. number of concurrent AMaViS processes, a new UCR variable has been introduced: <envar>mail/antivir/max_servers</envar>. When unset, the current default <literal>2</literal> is used (<u:bug>37653</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Add options to check IP-FQDN-mapping as a means to fight spam. Adds two new UCR variables: mail/postfix/smtpd/restrictions/sender/reject_unknown_client_hostname and mail/postfix/smtpd/restrictions/sender/reject_unknown_reverse_client_hostname for weaker and stricter reverse DNS checking respectively (<u:bug>38292</u:bug>).
+					Add options to check IP FQDN mapping as a means to fight spam. Adds two new UCR variables: <envar>mail/postfix/smtpd/restrictions/sender/reject_unknown_client_hostname</envar> and <envar>mail/postfix/smtpd/restrictions/sender/reject_unknown_reverse_client_hostname</envar> for weaker and stricter reverse DNS checking respectively (<u:bug>38292</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The package sieve-connect has been updated to version 0.87-1 and provides several bugfixes and new security features (<u:bug>34839</u:bug>).
@@ -700,7 +701,7 @@
 			<title>Nagios</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The 'check_univention_ldap' plugin has been modified to use the FQDN of the LDAP server (<u:bug>27043</u:bug>).
+					The <command>check_univention_ldap</command> plugin has been modified to use the FQDN of the LDAP server (<u:bug>27043</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -755,7 +756,7 @@
 			<title>Apache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The Univention Configuration Registry variable 'apache2/force_https' can be used to force using encryption by re-directing to HTTPS (<u:bug>38016</u:bug>).
+					The &ucsUCRV; <envar>apache2/force_https</envar> can be used to force using encryption by re-directing to HTTPS (<u:bug>38016</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -773,7 +774,7 @@
 			<title>Kerberos server</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Huawei Unified Storage System S5500 V3 failed to join Samba AD domains. The heimdal kerberos server has been imrpoved to allow the join (<u:bug>38827</u:bug>).
+					<application>Huawei Unified Storage System S5500 V3</application> failed to join Samba AD domains. The Heimdal Kerberos server has been improved to allow the join (<u:bug>38827</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -797,7 +798,7 @@
 			<title>Univention Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
 				<listitem><simpara>
- 					The VirtIO drivers for Windows have been updated to version 0.1.105 to fix a problem with broken driver signatures in Windows 2012 server (<u:bug>38655</u:bug>).
+					The VirtIO drivers for Windows have been updated to version 0.1.105 to fix a problem with broken driver signatures in Windows 2012 server (<u:bug>38655</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -833,31 +834,31 @@
 					Samba has been upgraded to version 4.2.3 (<u:bug>37939</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
- 					The list of groups in the Kerberos PAC_LOGON_INFO now also contains the RID of primary group, this fixes GPO security filtering for primary group membership (<u:bug>37101</u:bug>).
+					The list of groups in the Kerberos <wordasword>PAC_LOGON_INFO</wordasword> now also contains the RID of primary group, this fixes GPO security filtering for primary group membership (<u:bug>37101</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
- 					Huawei Unified Storage System S5500 V3 failed to join Samba AD domains (<u:bug>38827</u:bug>).
+					<application>Huawei Unified Storage System S5500 V3</application> failed to join Samba AD domains (<u:bug>38827</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A coding error in the Samba implementation of the BACKUPKEY serverwrap protocol may cause problems with retrieving saved passwords on Windows clients (DPAPI). This issue has been fixed (<u:bug>39025</u:bug>).
+					A coding error in the Samba implementation of the <systemitem class="protocol">BACKUPKEY serverwrap</systemitem> protocol may cause problems with retrieving saved passwords on Windows clients (DPAPI). This issue has been fixed (<u:bug>39025</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					This update adds support for the default profile directory paths of Windows 8, 8.1 and 10. For new users they will now be created automatically on first logon (<u:bug>38643</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The ldb library and tools have been upgraded to version 1.1.20 (<u:bug>37939</u:bug>).
+					The <package>ldb</package> library and tools have been upgraded to version 1.1.20 (<u:bug>37939</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The talloc library has been upgraded to version 2.1.2 (<u:bug>37939</u:bug>).
+					The <package>talloc</package> library has been upgraded to version 2.1.2 (<u:bug>37939</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The tdb library and tools have been upgraded to version 1.3.6 (<u:bug>37939</u:bug>).
+					The <package>tdb</package> library and tools have been upgraded to version 1.3.6 (<u:bug>37939</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The tevent library has been upgraded to version 0.9.25 (<u:bug>37939</u:bug>).
+					The <package>tevent</package> library has been upgraded to version 0.9.25 (<u:bug>37939</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The package univention-ldb-modules has been rebuilt to match the new Samba version 4.2.3 (<u:bug>37939</u:bug>).
+					The package <package>univention-ldb-modules</package> has been rebuilt to match the new Samba version 4.2.3 (<u:bug>37939</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -893,7 +894,7 @@
 					A bug concerning renaming computer objects has been fixed (<u:bug>37709</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Ignore unknown Samba4 DNS objects instead of creating a dns/host_record (<u:bug>39077</u:bug>).
+					Ignore unknown Samba4 DNS objects instead of creating a <classname>dns/host_record</classname> (<u:bug>39077</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -905,10 +906,10 @@
 					A bug in the network device detection has been fixed (<u:bug>39069</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Fix time synchronization to german UCS (<u:bug>38729</u:bug>).
+					Fix time synchronization to German UCS (<u:bug>38729</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-  					Wrong links that lead to an old manual have been adjusted (<u:bug>38147</u:bug>).
+					Wrong links that lead to an old manual have been adjusted (<u:bug>38147</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -941,7 +942,7 @@
 				The time zone database was updated to include information about the scheduled leap second at the end of June 2015 (<u:bug>38717</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The package clucene-core has been updated to version 2.3.3.4 (<u:bug>34839</u:bug>).
+				The package <package>clucene-core</package> has been updated to version 2.3.3.4 (<u:bug>34839</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>

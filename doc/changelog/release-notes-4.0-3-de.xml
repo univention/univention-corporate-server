@@ -57,14 +57,15 @@
 
 		<itemizedlist>
 			<listitem><para>
-				Der Mailsever Dovecot wurde als Standard IMAP/POP3-Server in UCS integriert und bietet somit eine Alternative
-				zum weiterhin zur Verfügung stehenden Cyrus-IMAP-Serer. Weitere Informationen zur Integration sind in
-				<ulink url="https://www.univention.de/2015/07/mailserver-dovecot-als-standard-imappop3-server-in-ucs">diesem Blogartikel
+				Der Mailserver Dovecot wurde als Standard IMAP/POP3-Server in UCS integriert und bietet somit eine Alternative
+				zum weiterhin zur Verfügung stehenden Cyrus IMAP Server. Weitere Informationen zur Integration sind in
+				<ulink url="https://www.univention.de/2015/07/mailserver-dovecot-als-standard-imappop3-server-in-ucs">diesem Artikel
 				</ulink> beschrieben.
 			</para></listitem>
 			<listitem><para>
-				Mit dem Update auf Samba 4.2.3 wurde die Active Directory-Kompatibilität weiter ausgebaut. Dies beinhaltet u.a. Verbesserungen
-				in der DRS-Replikation und dem Druckertreiber-Handling. Auch ist der Domänenbeitritt von Huawai Storage Systemen
+				Mit dem Update auf Samba 4.2.3 wurde die Kompatibilität zu Active Directory weiter ausgebaut.
+				Dies beinhaltet u.a. Verbesserungen in der DRS-Replikation und der Handhabung von Druckertreibern.
+				Auch ist der Domänenbeitritt von <application>Huawai Storage Systemen</application>
 				in die von UCS bereitgestellte Active Directory-Domäne nun möglich.
 			</para></listitem>
 			<listitem><para>
@@ -77,12 +78,12 @@
 				anzuwenden.
 			</para></listitem>
 			<listitem><para>
-				Der Linux Kernel wurde auf den letzten stabilen 3.16er Longterm-Kernel aktualisiert. Dieser beinhaltet diverse Sicherheitsaktualisierungen
-				sowie neuere und aktualisierte Treiber für eine verbesserte Hardware-Unterstützung.
+				Der Linux Kernel wurde auf den letzten stabilen 3.16er <foreignphrase>Longterm-Kernel</foreignphrase> aktualisiert.
+				Dieser beinhaltet diverse Sicherheitsaktualisierungen sowie neuere und aktualisierte Treiber für eine verbesserte Hardware-Unterstützung.
 			</para></listitem>
 			<listitem><para>
 				Sämtliche für UCS 4.0-2 veröffentlichten Sicherheitsupdates sind in diesem Update enthalten. Um die Sicherheit des UCS-Systems
-				zu erhöhen, ist es nun einfach per Univention Configuration Regitstry Variable möglich die HTTP-Anfragen auf HTTPS umzulenken.
+				zu erhöhen, ist es nun einfach per &ucsUCRV; möglich die HTTP-Anfragen auf HTTPS umzuleiten.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
