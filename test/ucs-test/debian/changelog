@@ -1,3 +1,10 @@
+ucs-test (5.0.166-1) unstable; urgency=low
+
+  * Bug #39056: Add ssl support for send_mail essential/mail.py
+  * Bug #39056: Add new script 39_postfix_accepts_mails_on_ports_25_465_587
+
+ -- Ammar Najjar <najjar@univention.de>  Tue, 11 Aug 2015 12:41:25 +0200
+
 ucs-test (5.0.165-3) unstable; urgency=medium
 
   * fix mail file listing function (Bug #39143)
