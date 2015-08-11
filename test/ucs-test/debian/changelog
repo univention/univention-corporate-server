@@ -1,3 +1,9 @@
+ucs-test (5.0.166-2) unstable; urgency=medium
+
+  * Disable 40_mail/40_dovecot_quota (Bug #39147)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Aug 2015 13:41:56 +0200
+
 ucs-test (5.0.166-1) unstable; urgency=low
 
   * Bug #39056: Add ssl support for send_mail essential/mail.py
