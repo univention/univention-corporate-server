@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+version: [3]
+scope: ucs_4.0-0-errata4.0-3
+src: univention-mail-dovecot
+fix: 1.0.0-3.38.201508111847
+desc: |
+  This update addresses the following issues:
+  * The long waiting for the DH parameter generation on the first install was
+  removed.
+bug: [38990]
