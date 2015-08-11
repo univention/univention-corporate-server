@@ -10,13 +10,6 @@
   <bookinfo>
 	<title>Univention Corporate Server</title>
 	<subtitle>Extended print services documentation</subtitle>
-
-	<revhistory>
-	  <revision>
-		<revnumber>4.0-0</revnumber>
-		<date>16 Oct 2014</date>
-	  </revision>
-	</revhistory>
   </bookinfo>
 
   <chapter>

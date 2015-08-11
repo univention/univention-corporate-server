@@ -14,12 +14,6 @@
 <book lang="de" id='scenarios'>
 <bookinfo>
   <title>Einsatzszenarien für Univention Corporate Server</title>
-  <revhistory>
-     <revision>
-        <revnumber>3.2</revnumber>
-        <date>1 Dec 2013</date>
-     </revision>
-  </revhistory>
 </bookinfo>
 
   &kanzlei;

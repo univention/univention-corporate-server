@@ -12,12 +12,6 @@
 <book lang="de" id='bestpractice'>
 <bookinfo>
   <title>Empfehlungen/"Best practices" für den Einsatz von Univention Corporate Server</title>
-  <revhistory>
-     <revision>
-        <revnumber>3.2</revnumber>
-        <date>1 Aug 2014</date>
-     </revision>
-  </revhistory>
 </bookinfo>
 
   &planning;
@@ -41,9 +35,6 @@
 	<bibliomixed id="ucs-winprinter"/>
 	<bibliomixed id="ucs-adconnector"/>
   </bibliography>
-
-
-  
 
 <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
