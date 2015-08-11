@@ -342,8 +342,10 @@ create_install_script ()
 . /usr/share/univention-join/joinscripthelper.lib
 VERSION="1"
 joinscript_init
+eval "\$(ucr shell update/commands/install)"
+export DEBIAN_FRONTEND=noninteractive
 apt-get update
-univention-install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages || die
+\$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages || die
 joinscript_save_current_version
 univention-register-apps
 if [ \$# -gt 1 ]; then
