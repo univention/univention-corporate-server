@@ -1,6 +1,6 @@
 @%@UCRWARNING=# @%@
 
-DISTRIB_ID="Univention"
-DISTRIB_RELEASE="@%@version/version@%@-@%@version/patchlevel@%@ errata@%@version/erratalevel@%@"
-DISTRIB_CODENAME="@%@version/releasename@%@"
-DISTRIB_DESCRIPTION="Univention Corporate Server @%@version/version@%@-@%@version/patchlevel@%@ errata@%@version/erratalevel@%@ (@%@version/releasename@%@)"
+DISTRIB_ID=Univention
+DISTRIB_RELEASE=@%@version/version@%@-@%@version/patchlevel@%@ errata@%@version/erratalevel@%@
+DISTRIB_CODENAME=@%@version/releasename@%@
+DISTRIB_DESCRIPTION=Univention Corporate Server @%@version/version@%@-@%@version/patchlevel@%@ errata@%@version/erratalevel@%@ (@%@version/releasename@%@)

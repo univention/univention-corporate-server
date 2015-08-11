@@ -1,3 +1,9 @@
+univention-base-files (4.0.8-5) unstable; urgency=low
+
+  * fix lsb_release information (Bug #37725)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 11 Aug 2015 17:30:50 +0200
+
 univention-base-files (4.0.8-4) unstable; urgency=medium
 
   * Depend on newer univention-config-registry (Bug #35694)
