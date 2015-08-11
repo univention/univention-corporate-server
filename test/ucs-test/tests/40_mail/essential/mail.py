@@ -35,6 +35,7 @@ import smtplib
 import imaplib
 import email
 import os
+from os.path import basename
 import re
 import socket
 import subprocess
@@ -229,12 +230,12 @@ def get_maildir_filenames(maildir):
 	['/var/spool/dovecot/private/example.com/user1/Maildir/cur/1435755414.M432893P22169.slave22b,S=1744,W=1783',
 	 '/var/spool/dovecot/private/example.com/user1/Maildir/new/1435734534.M432834534215.slave22b,S=2342,W=6545']
 	"""
+	blacklist = ["maildirfolder", "maildirsize"]
 	result = []
-	for dirpath, dirnames, filenames in os.walk(maildir):
-		for name in list(dirnames):
-			if name not in ('cur', 'new'):
-				dirnames.remove(name)
-		result.extend([os.path.join(dirpath, x) for x in filenames])
+	for dirpath, dirnames, filenames in os.walk(maildir.rstrip("/")):
+		if basename(dirpath) == "Maildir":
+			continue
+		result.extend([os.path.join(dirpath, x) for x in filenames if not x.startswith("dovecot") and x not in blacklist])
 	return result
 
 def get_file_contain(token, _dir):
