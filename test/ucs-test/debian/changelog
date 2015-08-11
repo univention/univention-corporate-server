@@ -1,3 +1,9 @@
+ucs-test (6.0.1-4) unstable; urgency=medium
+
+  * fix mail file listing function (Bug #39143)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 11 Aug 2015 12:08:26 +0200
+
 ucs-test (6.0.1-3) unstable; urgency=medium
 
   * Disabled 10_ldap/45replication_modrdn on DC slaves (Bug #39132)
