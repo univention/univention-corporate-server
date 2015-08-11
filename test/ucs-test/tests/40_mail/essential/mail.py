@@ -711,7 +711,7 @@ def create_random_msgid():
 
 def send_mail(recipients=None, sender=None, subject=None, msg=None, idstring='no id string',
 	       gtube=False, virus=False, attachments=[], server=None, port=25, tls=False, username=None, password=None,
-	       debuglevel=1, messageid=None):
+	       debuglevel=1, messageid=None, ssl=False):
 	"""
 	Send a mail to mailserver.
 	Arguments:
@@ -802,7 +802,10 @@ Regards,
 		mimemsg.attach(part)
 
 	# The actual mail send part
-	server = smtplib.SMTP(host=m_server, port=m_port, local_hostname=m_ehlo)
+	if ssl:
+		server = smtplib.SMTP_SSL(host=m_server, port=m_port, local_hostname=m_ehlo)
+	else:
+		server = smtplib.SMTP(host=m_server, port=m_port, local_hostname=m_ehlo)
 	server.set_debuglevel(debuglevel)
 	if tls:
 		server.starttls()
