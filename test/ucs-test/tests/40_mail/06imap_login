@@ -15,18 +15,22 @@ import univention.config_registry
 
 def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr:
-		univention.config_registry.handler_set(['mail/dovecot/logging/auth_debug=yes',
-			'mail/dovecot/logging/auth_debug_passwords=yes', 'mail/dovecot/logging/auth_verbose=yes',
-			'mail/dovecot/logging/auth_verbose_passwords=yes', 'mail/dovecot/logging/mail_debug=yes'])
-		with utils.AutoCallCommand(enter_cmd=['doveadm', 'reload'], exit_cmd=['doveadm', 'reload']) as acc1:
+		if ucr.is_true('mail/dovecot'):
+			univention.config_registry.handler_set(['mail/dovecot/logging/auth_debug=yes',
+				'mail/dovecot/logging/auth_debug_passwords=yes', 'mail/dovecot/logging/auth_verbose=yes',
+				'mail/dovecot/logging/auth_verbose_passwords=yes', 'mail/dovecot/logging/mail_debug=yes'])
+			autocallcmd = ['doveadm', 'reload']
+		else:
+			autocallcmd = ['true']
+		with utils.AutoCallCommand(enter_cmd=autocallcmd, exit_cmd=autocallcmd) as acc1:
 			with udm_test.UCSTestUDM() as udm:
 				if ucr.is_true('mail/dovecot'):
-					logfiles = ['/var/log/dovecot.log']
+					logfiles = ['/var/log/auth.log', '/var/log/univention/listener.log', '/var/log/dovecot.log']
 				else:
-					logfiles = ['/var/log/mail.log']
-				logfiles.append('/var/log/auth.log')
+					logfiles = ['/var/log/auth.log', '/var/log/univention/listener.log', '/var/log/mail.log']
 				with utils.FollowLogfile(logfiles=logfiles) as flf:
-					with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'], exit_cmd=['doveadm', 'log', 'reopen']) as acc2:
+					with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'],
+						exit_cmd=['doveadm', 'log', 'reopen']) as acc2:
 						username = uts.random_name()
 						password =  uts.random_string()
 						mailAddress = '%s@%s' % (username, ucr.get('domainname'))
