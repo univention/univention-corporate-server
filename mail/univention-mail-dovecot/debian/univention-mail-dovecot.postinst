@@ -77,16 +77,12 @@ univention-config-registry set \
 
 # fresh installation
 if [ "$1" = "configure" -a -z "$2" ] ; then
-	# make sure there are no ssl-params processes still running, when we
-	# reconfigure and restart dovecot
-	pkill -P $(cat /run/dovecot/master.pid) ssl-params
-	invoke-rc.d dovecot stop
-	fuser -s -k /var/lib/dovecot/ssl-parameters*
-	rm -f /var/lib/dovecot/ssl-parameters.dat*
-
 	chown -R dovemail:dovemail /var/lib/dovecot /var/spool/dovecot
+	# Set dh_parameters_length=1024 for a quick start (parameter file generation
+	# was already started by debian package) and raise it later.
 	univention-config-registry set \
-		mail/dovecot/pop3/client_workarounds?"outlook-no-nuls oe-ns-eoh"
+		mail/dovecot/pop3/client_workarounds?"outlook-no-nuls oe-ns-eoh" \
+		mail/dovecot/ssl/dh_parameters_length=1024
 fi
 
 # add quota check for Postfix as last (potentially expensive)
@@ -145,6 +141,15 @@ if [ $TIME_RUNNING = $TIMEOUT ]; then
 else
 	echo "done"
 fi
+
+# fresh installation
+if [ "$1" = "configure" -a -z "$2" ] ; then
+	# Raise dh_parameters_length to 2048. Generation of the paramters file
+	# will run in the background.
+	univention-config-registry unset mail/dovecot/ssl/dh_parameters_length
+	doveadm reload
+fi
+
 
 if [ -x /etc/init.d/univention-directory-listener ]; then
 	invoke-rc.d univention-directory-listener crestart
