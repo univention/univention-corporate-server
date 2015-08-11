@@ -337,6 +337,10 @@ create_install_script ()
 	for app in $apps; do
 		packages="$packages $(app_get_packages $app)"
 	done
+	if [ "$main_app" = "oxseforucs" ] || [ "$main_app" = "kolab-enterprise" ]; then
+		close_fds=TRUE
+	fi
+	
 	cat >/usr/lib/univention-install/99_setup_${main_app}.inst <<__EOF__
 #!/bin/sh
 . /usr/share/univention-join/joinscripthelper.lib
@@ -345,6 +349,10 @@ joinscript_init
 eval "\$(ucr shell update/commands/install)"
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
+if [ "$close_fds" = "TRUE" ]; then
+	exec 1> /dev/null
+	exec 2> /dev/null
+fi
 \$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages || die
 joinscript_save_current_version
 univention-register-apps
