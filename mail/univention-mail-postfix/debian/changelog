@@ -1,3 +1,10 @@
+univention-mail-postfix (9.0.3-7) unstable; urgency=low
+
+  * Bug #39151: a configuration error prevented Postfix from sending emails
+    if Dovecot was also installed.
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 12 Aug 2015 17:54:09 +0200
+
 univention-mail-postfix (9.0.3-6) unstable; urgency=low
 
   * Bug #39093: fix listfilter.secret file

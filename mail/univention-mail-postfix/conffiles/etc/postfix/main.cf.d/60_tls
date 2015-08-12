@@ -27,8 +27,6 @@ smtpd_sasl_security_options = noanonymous
 
 @!@
 if configRegistry.is_true('mail/postfix/dovecot_sasl'):
-	print 'smtp_sasl_type = dovecot'
-	print 'lmtp_sasl_type = dovecot'
 	print 'smtpd_sasl_type = dovecot'
 	print 'smtpd_sasl_path = private/auth'
 @!@
