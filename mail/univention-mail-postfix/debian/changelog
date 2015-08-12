@@ -1,3 +1,13 @@
+univention-mail-postfix (9.0.3-5) unstable; urgency=low
+
+  * Bug #37459: Do not create DH parameters at installation time
+  * provide precalculated 512 and 2048 bit DH parameters
+  * schedule one time generation of DH parameters for the next day
+  * change default of UCRV mail/postfix/cron/recreate/dh/parameter to not
+    recreate DH parameters every night, existing cronjob not changed
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 12 Aug 2015 15:52:19 +0200
+
 univention-mail-postfix (9.0.3-4) unstable; urgency=low
 
   * Bug #38948: safer smtp_restrictions sorting code
