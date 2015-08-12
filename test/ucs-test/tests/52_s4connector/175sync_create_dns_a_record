@@ -1,13 +1,11 @@
 #!/usr/share/ucs-test/runner python
-## desc: Univention-s4-connector dns a record syncronisation
+## desc: s4connector bidirectional sync of DNS A record (on zone)
 ## exposure: dangerous
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
 ##   - univention-s4-connector
 ##   - dnsutils
-## versions:
-##  4.0-2: skip
 
 import univention.testing.udm as udm_test
 from univention.testing.utils import fail, wait_for_replication_and_postrun
@@ -17,15 +15,14 @@ import subprocess
 import sys
 
 if __name__ == '__main__':
+	s4connector.exit_if_connector_not_running()
 	with udm_test.UCSTestUDM() as udm:
-
 		print("========== create DNS zone in UDM ==========")
 		sys.stdout.flush()
-		s4connector.exit_if_connector_not_running()
 		ip = dnstests.make_random_ip()
 		random_zone = dnstests.random_zone()
-		host = dnstests.get_hostname()
-		test_zone_dn = udm.create_object('dns/forward_zone', zone = random_zone, nameserver = host, a = ip)
+		test_nameserver = dnstests.get_hostname_of_ldap_master()
+		test_zone_dn = udm.create_object('dns/forward_zone', zone = random_zone, nameserver = test_nameserver, a = ip)
 		dnstests.check_ldap_object(test_zone_dn, 'A Record', 'aRecord' , ip)
 		s4connector.wait_for_sync(30)
 		## Adding a DNS zone triggers bind reload in postrun
@@ -35,21 +32,13 @@ if __name__ == '__main__':
 		dnstests.check_ldap_object(test_zone_dn, 'A Record', 'aRecord', ip)
 
 		print("========== modify address in Samba ==========")
-		sys.stdout.flush()
-		p = subprocess.Popen(["kdestroy"])
-		rc = p.wait()
-
-		principal_for_nsupdate = "%s$" % dnstests.ucr["hostname"].upper()
-		p = subprocess.Popen(["kinit", "-t", "/etc/krb5.keytab", principal_for_nsupdate])
-		rc = p.wait()
-		if rc != 0:
-			fail("kinit for %s failed" % principal_for_nsupdate)
+		dnstests.get_kerberos_ticket_for_machine()
 
 		## Adding a DNS zone triggers bind reload in postrun, better check:
 		dnstests.fail_if_cant_resolve_own_hostname()	## wait up to 17 seconds
 
 		ip2 = dnstests.make_random_ip()
-		nsupdate_request='''server %(hostname)s.%(domainname)s
+		nsupdate_add_request='''server %(hostname)s.%(domainname)s
 zone %(zonename)s.
 ; debug yes
 ; update delete %(zonename)s. A
@@ -63,12 +52,9 @@ quit''' % {
 			"ttl": 1200,
 			"ip": ip2,
 		}
-		print nsupdate_request
 
-		p = subprocess.Popen(["nsupdate", "-v", "-g"], stdin=subprocess.PIPE)
-		(stdout, stderr) = p.communicate(input=nsupdate_request)
-		if p.returncode != 0:
-			fail("nsupdate failed")
+		dnstests.nsupdate(nsupdate_add_request)
+
 		s4connector.wait_for_sync(30)
 		dnstests.test_dns_a_record(random_zone, ip2)
 		dnstests.check_ldap_object(test_zone_dn, 'A Record', 'aRecord', [ip, ip2])

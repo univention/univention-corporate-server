@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Univention-s4-connector dns alias record syncronisation
+## desc: s4connector ucs2con sync of DNS CNAME record
 ## exposure: dangerous
 ## packages:
 ##   - univention-config
@@ -13,20 +13,20 @@ import dnstests
 import s4connector
 
 if __name__ == '__main__':
+	s4connector.exit_if_connector_not_running()
 	with udm_test.UCSTestUDM() as udm:
-		s4connector.exit_if_connector_not_running()
-		random_zone = dnstests.random_zone()
-		host = dnstests.get_hostname()
+		test_zone_name = dnstests.random_zone()
+		test_nameserver = dnstests.get_hostname_of_ldap_master()
 		random_name1 = uts.random_string()
 		random_name2 = uts.random_string()
-		test_zone_dn = udm.create_object('dns/forward_zone', zone = random_zone, nameserver = host)
-		dns_alias = udm.create_object('dns/alias', superordinate = test_zone_dn, name = random_name1, cname = random_name2)
-		dnstests.check_ldap_object(dns_alias, 'alias', 'cNAMERecord', random_name2)
+		test_zone_dn = udm.create_object('dns/forward_zone', zone = test_zone_name, nameserver = test_nameserver)
+		dns_alias_dn = udm.create_object('dns/alias', superordinate = test_zone_dn, name = random_name1, cname = random_name2)
+		dnstests.check_ldap_object(dns_alias_dn, 'alias', 'cNAMERecord', random_name2)
 		s4connector.wait_for_sync(30)
 
-		test_string = random_name1 + '.' +random_zone
-		dnstests.test_dns_alias(test_string, random_name2)
-		dnstests.check_ldap_object(dns_alias, 'alias', 'cNAMERecord', random_name2 + '.')
+		test_fqdn = random_name1 + '.' +test_zone_name
+		dnstests.test_dns_alias(test_fqdn, random_name2)
+		dnstests.check_ldap_object(dns_alias_dn, 'alias', 'cNAMERecord', random_name2 + '.')
 
 	s4connector.wait_for_sync()
 	## Removing a DNS zone triggers bind reload in postrun, better check:

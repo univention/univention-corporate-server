@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Univention-s4-connector dns ttl syncronisation
+## desc: s4connector ucs2con sync of DNS SOA ttl
 ## exposure: dangerous
 ## packages:
 ##   - univention-config
@@ -21,17 +21,14 @@ import s4connector
 
 
 if __name__ == '__main__':
+	s4connector.exit_if_connector_not_running()
 	with udm_test.UCSTestUDM() as udm:
-		s4connector.exit_if_connector_not_running()
-		random_zone = dnstests.random_zone()
-		host = dnstests.get_hostname()
-		random_ttl = random.randrange (1,10000)
-		test_zone_dn = udm.create_object('dns/forward_zone', zone = random_zone, nameserver = host, zonettl = random_ttl)
-		dnstests.check_ldap_object(test_zone_dn, 'Forward Zone TTL', 'dNSTTL', '%s'%random_ttl)
+		test_zone_name = dnstests.random_zone()
+		test_nameserver = dnstests.get_hostname_of_ldap_master()
+		test_ttl = random.randrange (1,10000)
+		forward_zone_dn = udm.create_object('dns/forward_zone', zone = test_zone_name, nameserver = test_nameserver, zonettl = test_ttl)
+		dnstests.check_ldap_object(forward_zone_dn, 'Forward Zone TTL', 'dNSTTL', '%s'%test_ttl)
 		s4connector.wait_for_sync(30)
-		dnstests.test_dns_ttl(random_zone, random_ttl)
-		dnstests.check_ldap_object(test_zone_dn, 'Forward Zone TTL', 'dNSTTL', '%s'%random_ttl)
-
+		dnstests.test_dns_soa_ttl(test_zone_name, test_ttl)
+		dnstests.check_ldap_object(forward_zone_dn, 'Forward Zone TTL', 'dNSTTL', '%s'%test_ttl)
 	s4connector.wait_for_sync()
-	## Removing a DNS zone triggers bind reload in postrun, better check:
-	dnstests.fail_if_cant_resolve_own_hostname()	## wait up to 17 seconds
