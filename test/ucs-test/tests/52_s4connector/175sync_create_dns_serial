@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Univention-s4-connector dns serial syncronisation
+## desc: s4connector ucs2con sync of DNS SOA serial
 ## exposure: dangerous
 ## packages:
 ##   - univention-config
@@ -27,11 +27,11 @@ def get_serial_number(zone_dn):
 	return udm_object['serial']
 
 if __name__ == '__main__':
+	s4connector.exit_if_connector_not_running()
 	with udm_test.UCSTestUDM() as udm:
-		s4connector.exit_if_connector_not_running()
 		test_zone = dnstests.random_zone()
-		host = dnstests.get_hostname()
-		test_zone_dn = udm.create_object('dns/forward_zone', zone = test_zone, nameserver = host)
+		test_nameserver = dnstests.get_hostname_of_ldap_master()
+		test_zone_dn = udm.create_object('dns/forward_zone', zone = test_zone, nameserver = test_nameserver)
 		# dnstests.check_ldap_object(forward_zone, 'forward zone')
 		s4connector.wait_for_sync(30)
 

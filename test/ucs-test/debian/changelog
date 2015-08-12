@@ -1,3 +1,9 @@
+ucs-test (6.0.3-2) unstable; urgency=medium
+
+  * Updated s4connector DNS test cases (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 12 Aug 2015 21:53:15 +0200
+
 ucs-test (6.0.3-1) unstable; urgency=low
 
   * Bug #38481: enable the test and set mail/alias/root=systemmail@fqdn	manually

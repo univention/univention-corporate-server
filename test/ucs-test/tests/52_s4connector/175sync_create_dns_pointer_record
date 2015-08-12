@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Univention-s4-connector dns pointer record syncronisation
+## desc: s4connector ucs2con sync of DNS PTR record
 ## exposure: dangerous
 ## packages:
 ##   - univention-config
@@ -16,23 +16,22 @@ import s4connector
 
 
 if __name__ == '__main__':
+	s4connector.exit_if_connector_not_running()
 	with udm_test.UCSTestUDM() as udm:
-
-		s4connector.exit_if_connector_not_running()
 		revzone = dnstests.random_reverse_zone()
-		host = dnstests.get_hostname()
+		test_nameserver = dnstests.get_hostname_of_ldap_master()
 		ptr_record = uts.random_name()
-		random_address = random.randrange(1, 254)
+		test_address = random.randrange(1, 254)
 		zone_ip_parts = revzone.split('.')
 		reverse_ip = '{2}.{1}.{0}.in-addr.arpa'.format(zone_ip_parts[0], zone_ip_parts[1], zone_ip_parts[2])
-		test_zone_dn = udm.create_object('dns/reverse_zone', subnet = revzone, nameserver = host)
+		test_zone_dn = udm.create_object('dns/reverse_zone', subnet = revzone, nameserver = test_nameserver)
 		# dnstests.check_ldap_object(test_zone_dn, 'Reverse Zone', '', '')
-		ptr = udm.create_object('dns/ptr_record', address = random_address, superordinate = test_zone_dn, ptr_record = ptr_record)
-		# dnstests.check_ldap_object(ptr, 'Pointer Record', 'pTRRecord', ptr_record)
+		test_ptr_dn = udm.create_object('dns/ptr_record', address = test_address, superordinate = test_zone_dn, ptr_record = ptr_record)
+		# dnstests.check_ldap_object(test_ptr_dn, 'Pointer Record', 'pTRRecord', ptr_record)
 		s4connector.wait_for_sync(30)
-		dnstests.test_dns_pointer_record(reverse_ip, random_address, ptr_record)
+		dnstests.test_dns_pointer_record(reverse_ip, test_address, ptr_record)
 		dnstests.check_ldap_object(test_zone_dn, 'Reverse Zone', '', '')
-		dnstests.check_ldap_object(ptr, 'Pointer Record', 'pTRRecord', ptr_record + '.')
+		dnstests.check_ldap_object(test_ptr_dn, 'Pointer Record', 'pTRRecord', ptr_record + '.')
 
 	s4connector.wait_for_sync()
 	## Removing a DNS zone triggers bind reload in postrun, better check:
