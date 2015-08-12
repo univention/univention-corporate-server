@@ -290,7 +290,6 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	takeover.rewrite_sambaSIDs_in_OpenLDAP()
 	progress.headline(_('Checking group policies'))
 	takeover.remove_conflicting_msgpo_objects()
-	takeover.remove_old_msdcs_records(progress)
 	progress.headline(_('Initializing the S4 Connector listener'))
 	progress.percentage(23)
 	progress._scale = 70 - progress._percentage
@@ -1336,47 +1335,6 @@ class AD_Takeover():
 		#	time.sleep(1)
 		#	print_progress()
 		#print
-
-	def remove_old_msdcs_records(self, progress):
-		self.lo = _connect_ucs(self.ucr)
-		self.position = univention.admin.uldap.position(self.lo.base)
-		self.co = univention.admin.config.config()
-
-		udm_dns_forward_zone = udm_modules.get("dns/forward_zone")
-		udm_modules.init(self.lo, self.position, udm_dns_forward_zone)
-		objs = udm_dns_forward_zone.lookup(self.co, self.lo, "zoneName=%s" % self.ucr["domainname"], scope="domain", base=self.position.getDomain(), unique=0)
-		for zone_obj in objs:
-			zone_position=univention.admin.uldap.position(self.lo.base)
-			zone_position.setDn(zone_obj.dn)
-
-			for module_name in ("dns/host_record", "dns/alias", "dns/srv_record"):
-				udm_module = udm_modules.get(module_name)
-				udm_modules.init(self.lo, zone_position, udm_module)
-				objs = udm_module.lookup(self.co, self.lo, "relativeDomainName=*._msdcs", superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=0)
-				for obj in objs:
-					print "Removing %s '%s' from Univention Directory Manager" % (module_name, obj.dn,)
-					try:
-						obj.remove()
-					except univention.admin.uexceptions.ldapError, e:
-						print "Removal of %s '%s' failed" % (module_name, obj.dn,)
-
-		## Also remove records from a _msdcs zone in case it exists separately
-		objs = udm_dns_forward_zone.lookup(self.co, self.lo, "zoneName=_msdcs.%s" % self.ucr["domainname"], scope="domain", base=self.position.getDomain(), unique=1)
-		for zone_obj in objs:
-			zone_position=univention.admin.uldap.position(self.lo.base)
-			zone_position.setDn(zone_obj.dn)
-
-			for module_name in ("dns/host_record", "dns/alias", "dns/srv_record"):
-				udm_module = udm_modules.get(module_name)
-				udm_modules.init(self.lo, zone_position, udm_module)
-				objs = udm_module.lookup(self.co, self.lo, "relativeDomainName=*", superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=0)
-				for obj in objs:
-					print "Removing %s '%s' from Univention Directory Manager" % (module_name, obj.dn,)
-					try:
-						obj.remove()
-					except univention.admin.uexceptions.ldapError, e:
-						print "Removal of %s '%s' failed" % (module_name, obj.dn,)
-
 
 	def start_s4_connector(self, progress):
 		old_sleep = self.ucr.get("connector/s4/poll/sleep", "5")

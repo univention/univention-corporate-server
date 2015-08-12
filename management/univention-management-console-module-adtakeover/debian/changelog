@@ -1,3 +1,16 @@
+univention-management-console-module-adtakeover (2.0.7-8) unstable; urgency=medium
+
+  * Turn off the legacy DNS S4-Connector position_mapping during takeover
+    (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 12 Aug 2015 22:38:26 +0200
+
+univention-management-console-module-adtakeover (2.0.7-7) unstable; urgency=low
+
+  * Revert r62607 r62643, postponed to errata4.0-3 (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 06 Aug 2015 12:36:49 +0200
+
 univention-management-console-module-adtakeover (2.0.7-6) unstable; urgency=low
 
   * Bug #38729: reverted r62649
@@ -10,6 +23,7 @@ univention-management-console-module-adtakeover (2.0.7-5) unstable; urgency=medi
     the S4 connector (Bug #34184)
 
  -- Arvid Requate <requate@univention.de>  Tue, 04 Aug 2015 20:45:56 +0200
+
 univention-management-console-module-adtakeover (2.0.7-4) unstable; urgency=low
 
   * Bug #38792: fix error if primary interface isn't eth*
