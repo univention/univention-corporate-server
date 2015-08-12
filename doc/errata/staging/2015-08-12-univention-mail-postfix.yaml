@@ -1,0 +1,16 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: univention-mail-postfix
+fix: 9.0.3-5.261.201508121636
+version: [3]
+desc: |
+ This update addresses the following issues:
+ * DH parameters are not created at installation time any more.
+   Precalculated DH parameters for 512 and 2048 bit are provided.
+   A one time generation of DH parameters is scheduled for the next day.
+ * The default of the UCR variable mail/postfix/cron/recreate/dh/parameter
+   is changed to not recreate the DH parameters every night. The cronjob of
+   existing installations is not changed.
+
+bug: [37459]
