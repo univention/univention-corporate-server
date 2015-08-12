@@ -1,3 +1,10 @@
+ucs-test (5.0.166-3) unstable; urgency=medium
+
+  * 00_checks/99check_log_files: Ignore another EC2 specific grub error
+    message (Bug #38911)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 Aug 2015 09:27:37 +0200
+
 ucs-test (5.0.166-2) unstable; urgency=medium
 
   * Disable 40_mail/40_dovecot_quota (Bug #39147)
