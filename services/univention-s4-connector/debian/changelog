@@ -1,3 +1,10 @@
+univention-s4-connector (9.0.16-44) unstable; urgency=medium
+
+  * After some merging the ucs-4.0-3 branch and ucs-4.1-0 are now back
+    in sync, adjusting version number to reflect that. (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 12 Aug 2015 22:27:38 +0200
+
 univention-s4-connector (9.0.16-42) unstable; urgency=medium
 
   * ucs2con hack to sync the SOA serialNumber to separate S4 _msdcs sub-zone.
