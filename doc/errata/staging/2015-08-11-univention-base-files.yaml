@@ -3,7 +3,7 @@ release: "4.0"
 version: [3]
 scope: ucs_4.0-0-errata4.0-3
 src: univention-base-files
-fix: 4.0.8-5.191.201508111849
+fix: 4.0.8-6.192.201508121927
 desc: |
   This update addresses the following issues:
   * Remove incorrect quotation marks from /etc/lsb-release.
