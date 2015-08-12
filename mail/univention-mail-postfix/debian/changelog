@@ -1,3 +1,9 @@
+univention-mail-postfix (9.0.3-6) unstable; urgency=low
+
+  * Bug #39093: fix listfilter.secret file
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 12 Aug 2015 17:22:33 +0200
+
 univention-mail-postfix (9.0.3-5) unstable; urgency=low
 
   * Bug #37459: Do not create DH parameters at installation time
