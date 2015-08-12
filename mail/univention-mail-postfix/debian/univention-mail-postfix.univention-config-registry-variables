@@ -348,8 +348,8 @@ Type=int
 Categories=service-mail
 
 [mail/postfix/cron/recreate/dh/parameter]
-Description[de]=Cronjob Intervall für die Erneuerung der DH Parameter Dateien (Forward Secrecy).
-Description[en]=Cronjob interval for recreating dh parameter files (forward secrecy).
+Description[de]=Cronjob Intervall für die Erneuerung der DH Parameter Dateien (Forward Secrecy), z.B. "0 4 * * *". Standard ist keine automatische Erneuerung.
+Description[en]=Cronjob interval for recreating dh parameter files (forward secrecy), e.g. "0 4 * * *". Defaults to no automatic recreation.
 Type=str
 Categories=service-mail
 

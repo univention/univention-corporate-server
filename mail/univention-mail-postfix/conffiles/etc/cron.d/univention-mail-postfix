@@ -5,6 +5,9 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
 # recreate dh paramter files for forward secrecy
 @!@
 script = '/usr/share/univention-mail-postfix/create-dh-parameter-files.sh'
-interval = configRegistry.get('mail/postfix/cron/recreate/dh/parameter', '0 4 * * *')
-print '%s root %s >/dev/null 2>&1' % (interval, script)
+interval = configRegistry.get('mail/postfix/cron/recreate/dh/parameter')
+if interval:
+	print '%s root %s >/dev/null 2>&1' % (interval, script)
+else:
+	print '# deactivated by mail/postfix/cron/recreate/dh/parameter'
 @!@

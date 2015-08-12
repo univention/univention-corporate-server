@@ -4,3 +4,4 @@ share/aliases.sh usr/share/univention-mail-postfix/
 usr/lib/univention-server/server_password_change.d/50univention-mail-server usr/lib/univention-server/server_password_change.d/
 hosteddomains.py /usr/lib/univention-directory-listener/system
 share/create-dh-parameter-files.sh usr/share/univention-mail-postfix/
+dh_*.pem usr/share/postfix/
