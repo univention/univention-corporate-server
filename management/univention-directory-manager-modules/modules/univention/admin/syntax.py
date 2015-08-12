@@ -1246,8 +1246,6 @@ class reverseLookupZoneName(simple):
 class dnsZone(simple):
 	_re_label = r'[0-9A-Za-z]([0-9A-Za-z-]{0,61}[0-9A-Za-z])?'
 	regex = re.compile(r'^(%s)(\.(%s))*$' % (_re_label, _re_label, ))
-	regex_msdcs = re.compile(r'^_msdcs(\.(%s))*$' % (_re_label, ))
-
 	error_message = _('Invalid DNS zone name! (Must not end with a ".", only "0"-"9", "A"-"Z", "a"-"z", and "-" allowed)')
 
 	@classmethod
@@ -1256,7 +1254,7 @@ class dnsZone(simple):
 			raise univention.admin.uexceptions.valueError(_('Missing value!'))
 		if len(text) > 255:
 			raise univention.admin.uexceptions.valueError(_('A DNS zone may not be longer than 255 characters!'))
-		if self.regex.match(text) is None and self.regex_msdcs.match(text) is None:
+		if self.regex.match(text) is None:
 			raise univention.admin.uexceptions.valueError(self.error_message)
 		return text
 
