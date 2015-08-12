@@ -174,6 +174,7 @@ app_get_appliance_pages_blacklist ()
 app_appliance_is_software_blacklisted ()
 {
 	local app="$1"
+	[ -z "$app" ] && return 1
 	python -c "
 import sys
 from univention.management.console.modules.appcenter.app_center import Application
@@ -336,13 +337,29 @@ create_install_script ()
 	for app in $apps; do
 		packages="$packages $(app_get_packages $app)"
 	done
+	# Due to dovect: https://forge.univention.org/bugzilla/show_bug.cgi?id=39148
+	if [ "$main_app" = "oxseforucs" ] || [ "$main_app" = "egroupware" ] || [ "$main_app" = "horde" ] || [ "$main_app" = "tine20" ]; then
+		close_fds=TRUE
+	fi
+	# Ticket #2015052821000587
+	if [ "$main_app" = "kolab-enterprise" ]; then
+		close_fds=TRUE
+	fi
+	
 	cat >/usr/lib/univention-install/99_setup_${main_app}.inst <<__EOF__
 #!/bin/sh
 . /usr/share/univention-join/joinscripthelper.lib
 VERSION="1"
 joinscript_init
+eval "\$(ucr shell update/commands/install)"
+export DEBIAN_FRONTEND=noninteractive
 apt-get update
-univention-install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages || die
+if [ "$close_fds" = "TRUE" ]; then
+	echo "Close logfile output now. Please see /var/log/dpkg.log for more information"
+	exec 1> /dev/null
+	exec 2> /dev/null
+fi
+\$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages || die
 joinscript_save_current_version
 univention-register-apps
 if [ \$# -gt 1 ]; then
@@ -727,7 +744,7 @@ appliance_basesettings ()
 #!/bin/bash
 eval "\$(ucr shell)"
 old_fav=\$(udm users/user list --dn "uid=Administrator,cn=users,\$ldap_base" | grep "^  umcProperty: favorites = " | awk '{print \$4}')
-fav="favorites \$old_fav\$app_fav_list"
+fav="favorites \$old_fav$app_fav_list"
 udm users/user modify --dn "uid=Administrator,cn=users,\$ldap_base" --set umcProperty="\$fav"
 __EOF__
 	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/umc-favorites
@@ -759,4 +776,45 @@ appliance_poweroff ()
 	rm /root/.bash_history
 	history -c
 	halt -p
+}
+
+appliance_write_ucs403_sources_list ()
+{
+	# Set initial repository settings
+        cat >/etc/apt/sources.list.d/15_ucs-online-version.list <<__EOF__
+#Warning: This file is auto-generated and might be overwritten by
+#         univention-config-registry.
+#         Please edit the following file(s) instead:
+#Warnung: Diese Datei wurde automatisch generiert und kann durch
+#         univention-config-registry überschrieben werden.
+#         Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
+#
+#       /etc/univention/templates/files/etc/apt/sources.list.d/15_ucs-online-version.list
+#
+ 
+deb http://updates.software-univention.de/4.0/maintained/ 4.0-0/all/
+deb http://updates.software-univention.de/4.0/maintained/ 4.0-0/amd64/
+deb http://updates.software-univention.de/4.0/maintained/ 4.0-1/all/
+deb http://updates.software-univention.de/4.0/maintained/ 4.0-1/amd64/
+deb http://updates.software-univention.de/4.0/maintained/ 4.0-2/all/
+deb http://updates.software-univention.de/4.0/maintained/ 4.0-2/amd64/
+deb http://updates.software-univention.de/4.0/maintained/ 4.0-3/all/
+deb http://updates.software-univention.de/4.0/maintained/ 4.0-3/amd64/
+__EOF__
+
+	cat >/etc/apt/sources.list.d/20_ucs-online-component.list <<__EOF__
+#Warning: This file is auto-generated and might be overwritten by
+#         univention-config-registry.
+#         Please edit the following file(s) instead:
+#Warnung: Diese Datei wurde automatisch generiert und kann durch
+#         univention-config-registry überschrieben werden.
+#         Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
+#
+#       /etc/univention/templates/files/etc/apt/sources.list.d/20_ucs-online-component.list
+#
+ 
+deb http://updates.software-univention.de/4.0/maintained/component/ 4.0-3-errata/all/
+deb http://updates.software-univention.de/4.0/maintained/component/ 4.0-3-errata/amd64/
+__EOF__
+
 }
