@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: univention-mail-postfix
-fix: 9.0.3-6.262.201508121751
+fix: 9.0.3-7.263.201508121801
 version: [3]
 desc: |
  This update addresses the following issues:
@@ -14,5 +14,8 @@ desc: |
    existing installations is not changed.
  * The activation of mail/postfix/policy/listfilter lead to the mail server
    rejecting all emails. This has been fixed.
+ * A configuration error prevented Postfix from sending emails if Dovecot
+   was also installed. Postfix' smtp client now always uses the Cyrus SASL
+   implementation.
 
-bug: [37459,39093]
+bug: [37459,39093,62964]
