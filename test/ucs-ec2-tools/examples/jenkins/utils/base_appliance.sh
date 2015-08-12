@@ -744,6 +744,7 @@ appliance_basesettings ()
 #!/bin/bash
 eval "\$(ucr shell)"
 old_fav=\$(udm users/user list --dn "uid=Administrator,cn=users,\$ldap_base" | grep "^  umcProperty: favorites = " | awk '{print \$4}')
+test -z "\$old_fav" && old_fav="udm:users/user,udm:groups/group,appcenter,updater"
 fav="favorites \$old_fav$app_fav_list"
 udm users/user modify --dn "uid=Administrator,cn=users,\$ldap_base" --set umcProperty="\$fav"
 __EOF__
