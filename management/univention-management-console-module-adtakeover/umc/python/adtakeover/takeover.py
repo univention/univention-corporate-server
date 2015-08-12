@@ -980,8 +980,7 @@ class AD_Takeover():
 		## Use Samba4 as DNS backend
 		run_and_output_to_log(["univention-config-registry", "set", "dns/backend=samba4"], log.debug)
 
-
-		## Restart bind9 to use the OpenLDAP backend, just to be sure
+		## Restart bind9 to use the Samba4 backend, just to be sure
 		run_and_output_to_log(["/etc/init.d/bind9", "restart"], log.debug)
 
 		## Start the NSCD again
@@ -1341,6 +1340,10 @@ class AD_Takeover():
 		old_sleep = self.ucr.get("connector/s4/poll/sleep", "5")
 		old_retry = self.ucr.get("connector/s4/retryrejected", "10")
 		run_and_output_to_log(["univention-config-registry", "set", "connector/s4/poll/sleep=1", "connector/s4/retryrejected=2"], log.debug)
+
+		## turn off the legacy position_mapping:
+		run_and_output_to_log(["univention-config-registry", "unset", "connector/s4/mapping/dns/position"], log.debug)
+
 		run_and_output_to_log(["/usr/share/univention-s4-connector/msgpo.py", "--write2ucs"], log.debug)
 
 		### rotate S4 connector log and start the S4 Connector
