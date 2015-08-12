@@ -337,7 +337,12 @@ create_install_script ()
 	for app in $apps; do
 		packages="$packages $(app_get_packages $app)"
 	done
-	if [ "$main_app" = "oxseforucs" ] || [ "$main_app" = "kolab-enterprise" ]; then
+	# Due to dovect: https://forge.univention.org/bugzilla/show_bug.cgi?id=39148
+	if [ "$main_app" = "oxseforucs" ] || [ "$main_app" = "egroupware" ] || [ "$main_app" = "horde" ] || [ "$main_app" = "tine20" ]; then
+		close_fds=TRUE
+	fi
+	# Ticket #2015052821000587
+	if [ "$main_app" = "kolab-enterprise" ]; then
 		close_fds=TRUE
 	fi
 	
@@ -350,6 +355,7 @@ eval "\$(ucr shell update/commands/install)"
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
 if [ "$close_fds" = "TRUE" ]; then
+	echo "Close logfile output now. Please see /var/log/dpkg.log for more information"
 	exec 1> /dev/null
 	exec 2> /dev/null
 fi
@@ -738,7 +744,7 @@ appliance_basesettings ()
 #!/bin/bash
 eval "\$(ucr shell)"
 old_fav=\$(udm users/user list --dn "uid=Administrator,cn=users,\$ldap_base" | grep "^  umcProperty: favorites = " | awk '{print \$4}')
-fav="favorites \$old_fav\$app_fav_list"
+fav="favorites \$old_fav$app_fav_list"
 udm users/user modify --dn "uid=Administrator,cn=users,\$ldap_base" --set umcProperty="\$fav"
 __EOF__
 	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/umc-favorites
