@@ -1,3 +1,9 @@
+univention-dvd (1.0.0-1) unstable; urgency=low
+
+  * Bug #38898: UCS-4.1-0 DVD
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 12 Aug 2015 14:25:19 +0200
+
 univention-dvd (0.2.29-14) unstable; urgency=low
 
   * added nodejs and npm to tasklist (Bug #37972) 
