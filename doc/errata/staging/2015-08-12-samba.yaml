@@ -1,0 +1,13 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: samba
+fix: 2:4.2.3-1.763.201508121545
+version: [2,3]
+desc: |
+ This update addresses the following issue:
+ * The Samba dlz_bind9 module didn't properly handle zone reloads.
+   The next request after a zone reload triggered a segementation fault.
+   After that named/bind9 was automatically restarted via runit, so the
+   crash went unnoticed in most cases. Now the zone reload is fixed.
+bug: [39076, 39139]
