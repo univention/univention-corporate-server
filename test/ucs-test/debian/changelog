@@ -1,3 +1,9 @@
+ucs-test (5.0.168-1) unstable; urgency=low
+
+  * Bug #38481: enable the test and set mail/alias/root=systemmail@fqdn manually
+
+ -- Ammar Najjar <najjar@univention.de>  Wed, 12 Aug 2015 11:09:43 +0200
+
 ucs-test (5.0.167-1) unstable; urgency=low
 
   * Bug #39148: 01/11 daemonize FDs
