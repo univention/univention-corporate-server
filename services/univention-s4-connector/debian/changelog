@@ -1,3 +1,33 @@
+univention-s4-connector (9.0.16-44) unstable; urgency=medium
+
+  * Changes reverted for 9.0.16-40 merged again
+  * -> r62513 r62545 r62547 r62605 r62641 (Bug #34184)
+  * -> r62514 r62518 (Bug #39040)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 12 Aug 2015 22:10:51 +0200
+
+univention-s4-connector (9.0.16-43) unstable; urgency=medium
+
+  * ucs2con hack to sync the SOA serialNumber to separate S4 _msdcs sub-zone.
+    This is only relevant in case connector/s4/mapping/dns/position=legacy.
+    In the con2ucs direction take the max of the serialNumber.  (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 11 Aug 2015 16:13:21 +0200
+
+univention-s4-connector (9.0.16-42) unstable; urgency=medium
+
+  * Mapping _msdcs.<domain> DNs also requires mapping of relativeDomainName
+    (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 10 Aug 2015 22:28:09 +0200
+
+univention-s4-connector (9.0.16-41) unstable; urgency=medium
+
+  * dns con2ucs: Always map _msdcs.<domain> zone entries to entries within
+    the OpenLDAP domain zone (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 10 Aug 2015 16:16:29 +0200
+
 univention-s4-connector (9.0.16-40) unstable; urgency=medium
 
   * Revert r62513 r62545 r62547 r62605 r62641 (Bug #34184)
