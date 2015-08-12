@@ -1,3 +1,9 @@
+univention-base-files (4.0.8-6) unstable; urgency=low
+
+  * make /etc/lsb-release conform to README.Debian (Bug #37725)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 12 Aug 2015 19:05:07 +0200
+
 univention-base-files (4.0.8-5) unstable; urgency=low
 
   * fix lsb_release information (Bug #37725)
