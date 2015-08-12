@@ -1,3 +1,9 @@
+ucs-test (6.0.3-1) unstable; urgency=low
+
+  * Bug #38481: enable the test and set mail/alias/root=systemmail@fqdn	manually
+
+ -- Ammar Najjar <najjar@univention.de>  Wed, 12 Aug 2015 11:14:20 +0200
+
 ucs-test (6.0.2-3) unstable; urgency=medium
 
   * 00_checks/99check_log_files: Ignore another EC2 specific grub error
