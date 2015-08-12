@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: univention-mail-postfix
-fix: 9.0.3-5.261.201508121636
+fix: 9.0.3-6.262.201508121751
 version: [3]
 desc: |
  This update addresses the following issues:
@@ -12,5 +12,7 @@ desc: |
  * The default of the UCR variable mail/postfix/cron/recreate/dh/parameter
    is changed to not recreate the DH parameters every night. The cronjob of
    existing installations is not changed.
+ * The activation of mail/postfix/policy/listfilter lead to the mail server
+   rejecting all emails. This has been fixed.
 
-bug: [37459]
+bug: [37459,39093]
