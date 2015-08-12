@@ -1,0 +1,86 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Restart services to test proper daemonize
+## bugs: [39126, 39148, 37952]
+## packages:
+##  - lsof
+## exposure: dangerous
+
+tmpdir=$(mktemp -d)
+: >"$tmpdir/0"
+: >"$tmpdir/1"
+: >"$tmpdir/2"
+: >"$tmpdir/42"
+trap "rm -rf '$tmpdir'" EXIT
+
+for service in $(run-parts --list --lsbsysinit /etc/init.d)
+do
+	[ -x "$service" ] || continue
+	[ -L "$service" ] && continue
+	name="${service##*/}"
+
+	case "$name" in # skip run-level scripts
+	halt) continue ;;
+	killprocs) continue ;;
+	rc) continue ;;
+	reboot) continue ;;
+	single) continue ;;
+	umount*) continue ;;
+	esac
+
+	case "$name" in # handle incomplete scripts
+	heimdal-kdc) status= ;;
+	networking) status= ;;
+	plymouth*) status= ;;
+	slapd) restart=crestart status= ;;
+	univention-directory-listener) restart=crestart status= ;;
+	univention-directory-notifier) restart=crestart status= ;;
+	univention-directory-policy) status= ;;
+	univention-firewall) status= ;;
+	univention-iptables) status= ;;
+	univention-maintenance) status= ;;
+	univention-management-console-server) restart=crestart status= ;;
+	univention-management-console-web-server) restart=crestart status= ;;
+	univention-runit) status= ;;
+	*) restart=restart status=status ;;
+	esac
+
+	echo
+	echo "* Testing $service $restart ..."
+	[ -n "$status" ] && ! "$service" "$status" && continue
+
+	(
+		case "$name" in # known broken daemons not closing all FDs
+		# apache2) ;; Bug #37952 FIXED
+		atd) ;;
+		amavis) ;;
+		clamav-freshclam) ;; # freshclam
+		clamav-daemon) ;; # clamd
+		cron) ;;
+		dovecot) ;; # Bug #39148 TODO
+		nagios-nrpe-server) ;; # nrped
+		nfs-common) ;; # rpc.idmap rpc.gssd
+		ntp) ;; # ntpd
+		openbsd-inetd) ;; # inetd
+		rpcbind) ;;
+		slapd) ;;
+		spamassassin) ;;
+		udev) ;;
+		*) exec 42>"$tmpdir/42" # <https://xkcd.com/221/>
+		esac
+		"$service" "$restart" <"$tmpdir/0" >"$tmpdir/1" 2>"$tmpdir/2"
+	)
+	for ((count=0;count<5;count+=1))
+	do
+		sleep 1
+		[ -z "$status" ] || "$service" "$status" && break
+	done
+
+	lsof -- "$tmpdir/"[0-9]* |
+		grep -F -v -x -f "$tmpdir/failed" |
+		grep -E -v -e "^ntpd +[0-9]+ +ntp +42w +REG +[0-9,]+ +0 +[0-9]+ +$tmpdir/42$" |
+		tee -a "$tmpdir/failed"
+done
+
+[ ! -s "$tmpdir/failed" ]
+
+# vim: set ft=sh :

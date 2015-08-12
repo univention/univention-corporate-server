@@ -1,3 +1,9 @@
+ucs-test (5.0.167-1) unstable; urgency=low
+
+  * Bug #39148: 01/11 daemonize FDs
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 12 Aug 2015 10:15:20 +0200
+
 ucs-test (5.0.166-3) unstable; urgency=medium
 
   * 00_checks/99check_log_files: Ignore another EC2 specific grub error
