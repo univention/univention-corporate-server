@@ -23,7 +23,9 @@ do
 	killprocs) continue ;;
 	rc) continue ;;
 	reboot) continue ;;
+	resize2fs) continue ;;
 	single) continue ;;
+	sendsigs) continue ;;
 	umount*) continue ;;
 	esac
 
@@ -51,17 +53,21 @@ do
 	(
 		case "$name" in # known broken daemons not closing all FDs
 		# apache2) ;; Bug #37952 FIXED
-		atd) ;;
 		amavis) ;;
-		clamav-freshclam) ;; # freshclam
+		atd) ;;
 		clamav-daemon) ;; # clamd
+		clamav-freshclam) ;; # freshclam
 		cron) ;;
 		dovecot) ;; # Bug #39148 TODO
+		ifplugd) ;;
 		nagios-nrpe-server) ;; # nrped
 		nfs-common) ;; # rpc.idmap rpc.gssd
+		nmbd) ;;
 		ntp) ;; # ntpd
 		openbsd-inetd) ;; # inetd
 		rpcbind) ;;
+		samba) ;;
+		samba-ad-dc) ;;
 		slapd) ;;
 		spamassassin) ;;
 		udev) ;;

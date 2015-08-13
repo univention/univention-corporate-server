@@ -1,3 +1,9 @@
+ucs-test (5.0.168-3) unstable; urgency=low
+
+  * Bug #39148: 01/99 daemonize FDs
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 13 Aug 2015 17:19:14 +0200
+
 ucs-test (5.0.168-2) unstable; urgency=medium
 
   * Updated s4connector DNS test cases (Bug #34184)
