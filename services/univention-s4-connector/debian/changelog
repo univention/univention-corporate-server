@@ -1,3 +1,10 @@
+univention-s4-connector (9.0.16-45) unstable; urgency=medium
+
+  * Fix another corner case in the hnadling of the S4-dnsZone object
+    (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 13 Aug 2015 13:48:59 +0200
+
 univention-s4-connector (9.0.16-44) unstable; urgency=medium
 
   * Changes reverted for 9.0.16-40 merged again
