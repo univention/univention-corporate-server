@@ -1,4 +1,4 @@
-univention-management-console-frontend (5.0.8-7) unstable; urgency=medium
+univention-management-console-frontend (5.0.9-1) unstable; urgency=medium
 
   * Bug #31943: Add script to generate metadata dynamically
 
