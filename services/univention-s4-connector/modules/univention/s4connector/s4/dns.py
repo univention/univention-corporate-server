@@ -230,9 +230,19 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 							'zoneName': [target_zone_name],
 							},
 						}
-					s4_zone_object = dns_dn_mapping(s4connector, fake_ol_zone_object, dn_mapping_stored, isUCSobject)
+					s4_soa_object = dns_dn_mapping(s4connector, fake_ol_zone_object, dn_mapping_stored, isUCSobject)
 					## and use its parent as the search base
-					s4_zone_dn = s4connector.lo_s4.parentDn(s4_zone_object['dn'])
+					if s4_soa_object['dn'].startswith('DC=@,'):
+						s4_zone_dn = s4connector.lo_s4.parentDn(s4_soa_object['dn'])
+					else:
+						# There is the corner case, where con2ucsc 
+						# syncs the objectClass=dnsZone container and
+						# stores it's DN in the premapping.
+						# After that, we don't get the DC=@ dnsNode
+						# object DN here, but directly the parent.
+						# So, actually it's not the SOA object DN:
+						s4_zone_dn = s4_soa_object['dn']
+
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: search in S4 base %s" % (s4_zone_dn,))
 					result = s4connector._s4__search_s4(
 							s4_zone_dn,
