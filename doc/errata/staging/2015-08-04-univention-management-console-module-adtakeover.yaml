@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: univention-management-console-module-adtakeover
+fix: 2.0.7-8.67.201508122224
+version: [2,3]
+desc: |
+ This update addresses the following issues:
+ * Synchronize DC=DomainDnsZones and DC=ForestDnsZones
+bug: [34184]
