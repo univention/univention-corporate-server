@@ -1,0 +1,88 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test smart host configuration
+## tags: [apptest]
+## exposure: dangerous
+
+from essential.mail import send_mail, check_delivery, restart_postfix
+from univention.testing.mail import MailSink
+from univention.config_registry import handler_set
+from univention.testing.network import NetworkRedirector
+import tempfile
+import time
+import dns.resolver
+import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
+
+TIMEOUT = 20 #sec
+
+def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
+	delivered = False
+	print "Waiting for an email delivery to a mailsink"
+	for i in xrange(TIMEOUT):
+		if token in open(mailsink_file).read():
+			delivered = True
+			print 'Mail Delivered'
+			break
+		else:
+			time.sleep(1)
+	if should_be_delivered != delivered:
+		utils.fail('Mail sent with token = %r, Delivered to the mail sink = %r' % (token, delivered))
+
+def wait_for_dns(hosts):
+	for host, ip in hosts:
+		for i in xrange(TIMEOUT):
+			try:
+				dns.resolver.query(host, 'A')
+				break
+			except dns.resolver.NXDOMAIN:
+				time.sleep(1)
+		found = dns.resolver.query(host, 'A')[0].address
+		if found != ip:
+			utils.fail('DNS query answer address found = %s, expected = %s' % (found, ip))
+
+
+def main():
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		with udm_test.UCSTestUDM() as udm:
+			with NetworkRedirector() as nethelper:
+				dcslave = uts.random_name()
+				domain = ucr.get('domainname')
+				basedn = ucr.get('ldap/base')
+				dcslave_ip = uts.random_ip()
+				udm.create_object(
+					'computers/domaincontroller_slave',
+					set={
+						'position'            : 'cn=computers,%s' % basedn,
+						'ip'                  : dcslave_ip,
+						'name'                : dcslave,
+						'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (
+							domain, basedn, dcslave_ip)
+					}
+				)
+				dcslave_fqdn = '%s.%s' % (dcslave, domain)
+				handler_set(['mail/relayhost=%s' % dcslave_fqdn])
+				restart_postfix()
+				port = 60025
+				f = tempfile.NamedTemporaryFile(suffix='.eml', dir='/tmp')
+				nethelper.add_redirection(dcslave_ip, 25, port)
+				ms = MailSink('127.0.0.1', port, filename=f.name)
+				ms.start()
+				wait_for_dns([(dcslave, dcslave_ip)])
+
+				try:
+					recipient = 'noreply@univention.de'
+					token = str(time.time())
+					send_mail(recipients=recipient, msg=token)
+					check_delivery_mailsink(token, f.name, True)
+					check_delivery(token, recipient, False)
+				finally:
+					ms.stop()
+					f.close()
+
+
+if __name__ == '__main__':
+	main()
+
+# vim: set ft=python ts=4 sw=4 noet :
