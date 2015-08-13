@@ -1,6 +1,5 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test smart host configuration
-## tags: [apptest]
 ## exposure: dangerous
 
 from essential.mail import send_mail, check_delivery, restart_postfix
