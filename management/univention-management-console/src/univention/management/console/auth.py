@@ -82,15 +82,16 @@ class AuthHandler(signals.Provider):
 
 	def authenticate(self, msg):
 		username, password, new_password, locale = msg.body['username'], msg.body['password'], msg.body.get('new_password'), msg.body.get('locale')
-		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, username, password, new_password, locale), self.__authentication_result)
+		# PAM MUST be initialized outside of a thread. Otherwise it segfaults e.g. with pam_saml.so. See http://pam-python.sourceforge.net/doc/html/#bugs
+		self.pam = PamAuth(locale)
+		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, username, password, new_password, locale), notifier.Callback(self.__authentication_result))
 		thread.run()
 
 	def __authenticate_thread(self, username, password, new_password, locale):
 		AUTH.info('Trying to authenticate user %r' % (username,))
-		pam = PamAuth(locale)
-		username = self.__canonicalize_username(username)
+#		username = self.__canonicalize_username(username)
 		try:
-			pam.authenticate(username, password)
+			self.pam.authenticate(username, password)
 		except AuthenticationFailed as auth_failed:
 			AUTH.error(str(auth_failed))
 			raise
@@ -100,7 +101,7 @@ class AuthHandler(signals.Provider):
 				raise
 
 			try:
-				pam.change_password(username, password, new_password)
+				self.pam.change_password(username, password, new_password)
 			except PasswordChangeFailed as change_failed:
 				AUTH.error(str(change_failed))
 				raise

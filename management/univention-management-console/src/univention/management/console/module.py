@@ -328,7 +328,8 @@ class XML_Definition(ET.ElementTree):
 		return None
 
 	def __nonzero__(self):
-		return bool(self.find('module'))
+		module = self.find('module')
+		return module is not None and len(module) != 0
 
 _manager = None
 

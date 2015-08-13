@@ -106,6 +106,7 @@ class PamAuth(object):
 			i18n.set_language('C')
 		self._ = i18n.translate
 		self.__workaround_pw_expired = False
+		self.pam = self.init()
 
 	def authenticate(self, username, password):
 		answers = {
@@ -120,25 +121,25 @@ class PamAuth(object):
 		}
 		conversation = self._get_conversation(answers)
 
-		pam = self.start(conversation, username)
+		self.start(conversation, username)
 
 		try:
-			pam.authenticate()
+			self.pam.authenticate()
 			# the following line should be moved to the else block of this exception handling (but POSIX is currently broken), Bug #36319 comment #3
-			self._validate_account(pam)
+			self._validate_account()
 		except PAMError as pam_err:
 			AUTH.error("PAM: authentication error: %s" % (pam_err,))
 
 			if self.__workaround_pw_expired:
-				self._validate_account(pam)
+				self._validate_account()
 
 			raise AuthenticationFailed(self.error_message(pam_err))
 		else:
 			self.__workaround_pw_expired = False
 
-	def _validate_account(self, pam):
+	def _validate_account(self):
 		try:
-			pam.acct_mgmt()
+			self.pam.acct_mgmt()
 		except PAMError as pam_err:
 			if pam_err[1] == PAM_NEW_AUTHTOK_REQD:  # error: ('Authentication token is no longer valid; new one required', 12)
 				raise PasswordExpired(self.error_message(pam_err))
@@ -156,21 +157,23 @@ class PamAuth(object):
 		}
 		conversation = self._get_conversation(answers, prompts)
 
-		pam = self.start(conversation, username)
+		self.start(conversation, username)
 
 		try:
-			pam.chauthtok()
+			self.pam.chauthtok()
 		except PAMError as pam_err:
 			AUTH.warn('Changing password failed (%s). Prompts: %r' % (pam_err, prompts))
 			message = self._parse_error_message_from(pam_err, prompts)
 			raise PasswordChangeFailed('%s %s' % (self._('Changing password failed.'), message))
 
-	def start(self, conversation, username):
+	def init(self):
 		pam = PAM()
 		pam.start('univention-management-console')
-		pam.set_item(PAM_CONV, conversation)
-		pam.set_item(PAM_USER, username)
 		return pam
+
+	def start(self, conversation, username):
+		self.pam.set_item(PAM_CONV, conversation)
+		self.pam.set_item(PAM_USER, username)
 
 	def _get_conversation(self, answers, prompts=None):
 		def conversation(auth, query_list, data):
@@ -182,7 +185,7 @@ class PamAuth(object):
 					prompts.extend([query for query, qt in query_list])
 				answer = [(answers.get(qt, ['']).pop(0), 0) for query, qt in query_list]
 			except:
-				#AUTH.error('## query_list=%r, auth=%r, data=%r, prompts=%r' % (query_list, auth, data, prompts))
+				#AUTH.error('## query_list=%r, auth=%r, data=%r, prompts=%r, answers=%r' % (query_list, auth, data, prompts, answers))
 				AUTH.error(traceback.format_exc())
 				raise
 			#AUTH.error('### query_list=%r, auth=%r, data=%r, answer=%r, prompts=%r' % (query_list, auth, data, answer, prompts))
