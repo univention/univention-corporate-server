@@ -1,2 +1,3 @@
 var/tmp/univention-management-console-frontend
 usr/share/univention-management-console/saml/idp
+usr/share/univention-management-console/saml/pki

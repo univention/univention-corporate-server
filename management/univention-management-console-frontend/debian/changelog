@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.8-7) unstable; urgency=medium
+
+  * Bug #31943: Add script to generate metadata dynamically
+
+ -- Florian Best <best@univention.de>  Thu, 13 Aug 2015 15:14:14 +0200
+
 univention-management-console-frontend (5.0.8-6) unstable; urgency=medium
 
   * The user wizard didn't complete after updating to UCS 4.0-2
