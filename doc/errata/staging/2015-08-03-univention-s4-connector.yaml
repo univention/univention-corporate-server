@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issues:
  * Synchronize DC=DomainDNSZones and DC=ForestDNSZones, this is relevant
    in AD Takeover scenarios. For updated domains, this is not activated.
-bug: [34184]
+ * Fix sync of SOA record changes back to UDM
+bug: [34184, 39040]
