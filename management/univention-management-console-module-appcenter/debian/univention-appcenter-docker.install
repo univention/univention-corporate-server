@@ -1,0 +1,3 @@
+python/appcenter-docker/actions/*.py usr/share/pyshared/univention/appcenter/actions
+python/appcenter-docker/*.py usr/share/pyshared/univention/appcenter
+scripts/docker-app-container-init-script usr/share

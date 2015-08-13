@@ -82,7 +82,7 @@ import univention.admin.uexceptions as udm_errors
 from univention.management.console.modules.appcenter.decorators import reload_ucr, machine_connection, get_machine_connection
 from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
 
-CACHE_DIR = '/var/cache/univention-management-console/appcenter'
+CACHE_DIR = '/var/cache/univention-appcenter'
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/local/all.tar.gz'
 FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons'
 ucr = ConfigRegistry()
@@ -93,21 +93,24 @@ _ = umc.Translation('univention-management-console-module-appcenter').translate
 
 class License(object):
 	def __init__(self):
-		self.uuid = None
-		self.has_loaded = False
+		self._uuid = None
+
+	@property
+	def uuid(self):
+		self.reload()
+		return self._uuid
 
 	def reload(self, force=False):
-		self.has_loaded = True
-		if self.uuid is not None and not force:
+		if self._uuid is not None and not force:
 			# license with uuid has already been found
 			return
-		self.uuid = None
+		self._uuid = None
 		# last time we checked, no uuid was found
 		# but maybe the user installed a new license?
 		try:
 			lo = get_machine_connection(write=False)[0].lo
 			data = lo.search('objectClass=univentionLicense')
-			self.uuid = data[0][1]['univentionLicenseKeyID'][0]
+			self._uuid = data[0][1]['univentionLicenseKeyID'][0]
 		except Exception as e:
 			# no licensing available
 			MODULE.warn('Failed to load license information: %s' % e)
@@ -117,7 +120,6 @@ class License(object):
 		return self.uuid is not None
 
 	def allows_using(self, email_required):
-		self.reload()
 		return self.email_known() or not email_required
 
 LICENSE = License()
@@ -287,6 +289,7 @@ class Application(object):
 
 	def __init__(self, ini_file, localize=True):
 		# load config file
+		self._ini_file = ini_file
 		self._options = {}
 		config = ConfigParser.ConfigParser()
 		with open(ini_file, 'rb') as fp:
@@ -919,6 +922,9 @@ class Application(object):
 			ret = len(hosts) > 1
 		return ret
 
+	def to_app(self):
+		return App.from_ini(self._ini_file)
+
 	@reload_ucr(ucr)
 	def to_dict(self, package_manager, domainwide_managed=None, hosts=None):
 		res = copy.copy(self._options)
@@ -938,6 +944,13 @@ class Application(object):
 		res['host_master'] = ucr.get('ldap/master')
 		res['umc_module'] = 'apps'
 		res['umc_flavor'] = self.id
+		configure = get_action('configure')
+		if configure:
+			res['config'] = configure.list_config(self.to_app())
+		else:
+			res['config'] = []
+		res['is_running'] = app_is_running(self.id)
+		res['autostart'] = ucr.get('%s/autostart' % self.id, 'yes')
 		ldap_object = self.get_ldap_object()
 		if ldap_object is None:
 			res['is_installed_anywhere'] = False
@@ -974,6 +987,10 @@ class Application(object):
 			if int(required or 0) > int(present):
 				return {'required_version': required_version}
 		return True
+
+	@HardRequirement('install', 'update')
+	def must_not_be_docker_in_docker(self):
+		return not self.get('docker') or not ucr.get('docker/container/uuid')
 
 	@HardRequirement('install', 'update')
 	def must_have_valid_license(self):
@@ -1124,6 +1141,8 @@ class Application(object):
 		return _check(True), _check(False)
 
 	def is_installed(self, package_manager, strict=True):
+		if self.get('docker'):
+			return self.to_app().is_installed()
 		default_packages = self.get('defaultpackages')
 		if strict:
 			return all(package_manager.is_installed(package) for package in default_packages)
@@ -1259,7 +1278,7 @@ class Application(object):
 			previously_registered_list.append(previously_registered) # HACK it into a list so that it is accessible after the thread ends
 
 			# get package objects
-			to_install = package_manager.get_packages(to_install)
+			to_install_pkgs = package_manager.get_packages(to_install)
 
 			# determine the changes
 			# also check for changes from dist-upgrade (as it will
@@ -1267,8 +1286,14 @@ class Application(object):
 			#   dry_run will throw away changes marked by upgrade
 			if not is_install:
 				package_manager.cache.upgrade(dist_upgrade=True)
-			package_changes = package_manager.mark(to_install, [], dry_run=True)
+			package_changes = package_manager.mark(to_install_pkgs, [], dry_run=True)
 			result.update(dict(zip(['install', 'remove', 'broken'], package_changes)))
+			for to_inst in to_install:
+				for to_install_pkg in to_install_pkgs:
+					if to_inst == to_install_pkg.name:
+						break
+				else:
+					result['broken'].append(to_inst)
 
 			if remove_component:
 				# remove the newly added component
@@ -1640,7 +1665,7 @@ class Application(object):
 				else:
 					MODULE.process('Cannot run them without credentials')
 					return
-			run_join_scripts = Thread(target=subprocess.call, args=[args], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			run_join_scripts = Thread(target=subprocess.call, args=[args])
 			run_join_scripts.start()
 			while run_join_scripts.is_alive():
 				# i did not find anything nearly as efficient as this one
@@ -1659,8 +1684,6 @@ class Application(object):
 	def _send_information(self, action, status):
 		if not self.get('notifyvendor'):
 			return
-		if not LICENSE.has_loaded:
-			LICENSE.reload()
 		ucr.load()
 		server = self.get_server(with_scheme=True)
 		url = '%s/postinst' % (server, )

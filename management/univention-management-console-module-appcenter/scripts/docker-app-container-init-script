@@ -1,0 +1,253 @@
+#!/bin/bash
+#
+# Copyright 2015 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+### BEGIN INIT INFO
+# Provides:          App1_Container
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      
+# Short-Description: Start the Container for App1
+# Description:       Start the Docker container
+#                    for App1
+### END INIT INFO
+
+set -e
+
+# Get lsb functions
+. /lib/lsb/init-functions
+
+app_container_init_script_name=$(basename "$0")
+
+app_name="${app_container_init_script_name#docker-app-}"	## cut away the prefix
+app_name="${app_name#container-init-script}"	## cut away the extended prefix
+
+
+if [ -z "$app_name" ]; then
+	echo "This is a generic SysV init script for docker app containers."
+	echo "Do do anything useful it needs to be copied to a file named"
+	echo "according to this scheme:"
+	echo -e "\tdocker-app-<APP_AME>"
+	echo "or"
+	echo -e "\tdocker-app-container-init-script-<APP_NAME>"
+	exit 1
+fi
+app_name="${app_name#-}"	## cut away the remaining leading dash
+
+## Early check for sane usage:
+case "$1" in
+	start|stop|restart|crestart|kill|status)
+		requested_action="$1"
+		;;
+	*)
+		log_success_msg "Usage: init_script_name {start|stop|restart|crestart|kill|status}"
+		exit 1
+esac
+
+## Get the relevant UCR variables
+AUTOSTART_VARIABLE="$app_name/autostart"
+ucr_container_key="$(univention-app get $app_name ucr_container_key --values-only)"
+container_uuid=$(ucr get "$ucr_container_key")
+
+if [ -z "$container_uuid" ]; then
+	echo "Don't know which container to $requested_action."
+	echo "The UCR variable ucsapp/$app_name/container is not set."
+	exit 1
+fi
+
+# Include defaults if available
+DEFAULTS="/etc/default/$app_container_init_script_name"
+[ -r "$DEFAULTS" ] && . "$DEFAULTS"
+
+## Define functions to be used below
+create_container_from_image() {
+	local app_image_name
+	app_image_name="$1"
+
+	echo "This script cannot create a container from an image."
+	echo "It can just stop/restart existing containers."
+	return 1
+}
+
+container_run_state() {
+	local container_uuid
+	container_uuid="$1"
+
+	run_state=$(docker inspect -f "{{.State.Running}}" "$container_uuid")
+	if [ $? -ne 0 ]; then
+		echo "invalid"
+		echo "Failed to determine container state. Probably it doesn't exist." 1>&2
+		return 1
+	fi
+
+	if [ "$run_state" = "true" ]; then
+		echo "running"
+	elif [ "$run_state" = "false" ]; then
+		echo "stopped"
+	fi
+}
+
+start_container() {
+	local container_uuid
+	container_uuid="$1"
+
+	run_state=$(container_run_state "$container_uuid") || create_container_from_image "$app_name" || return $?
+	if [ "$run_state" = "running" ]; then
+		echo "Container is already running"
+		return 0
+	fi
+
+	log_begin_msg "Starting $app_name Container $container_uuid ..."
+	_do_restart_container "$run_state" "$container_uuid"
+	log_end_msg $?
+}
+
+restart_container() {
+	local container_uuid
+	container_uuid="$1"
+
+	run_state=$(container_run_state "$container_uuid") || return $?
+
+	log_begin_msg "Restarting $app_name Container $container_uuid ..."
+	_do_restart_container "$run_state" "$container_uuid"
+	log_end_msg $?
+}
+
+crestart_container() {
+	local container_uuid
+	container_uuid="$1"
+
+	run_state=$(container_run_state "$container_uuid") || return $?
+	if [ "$run_state" != "running" ]; then
+		echo "Container not running, skipping crestart."
+		return 0
+	fi
+
+	log_begin_msg "Restarting $app_name Container $container_uuid ..."
+	_do_restart_container "$run_state" "$container_uuid"
+	log_end_msg $?
+}
+
+_do_restart_container() {
+	local run_state
+	run_state="$1"
+
+	local container_uuid
+	container_uuid="$2"
+
+	if [ "$run_state" = "running" ]; then
+		output=$(docker exec "$container_uuid" halt 2>&1)
+	fi
+
+	uuid=$(docker restart "$container_uuid")
+	local ip="$(docker inspect --format={{.NetworkSettings.IPAddress}} "$uuid")"
+	local ucr_key="$(univention-app get $app_name ucr_ip_key --values-only)"
+	ucr set "${ucr_key}=${ip}" >/dev/null
+}
+
+stop_container() {
+	local container_uuid
+	container_uuid="$1"
+
+	run_state=$(container_run_state "$container_uuid") || return $?
+	if [ "$run_state" = "stopped" ]; then
+		echo "Container not running, skipping stop."
+		return 0
+	fi
+
+	log_begin_msg "Stopping $app_name Container $container_uuid ..."
+	output=$(docker exec "$container_uuid" halt 2>&1 || true)
+	output=$(docker stop "$container_uuid")
+	log_end_msg $?
+	if [ "$output" != "$container_uuid" ]; then
+		echo -n "$output"
+	fi
+	local ucr_key="$(univention-app get $app_name ucr_ip_key --values-only)"
+	ucr unset "${ucr_key}" >/dev/null
+}
+
+kill_container() {
+	local container_uuid
+	container_uuid="$1"
+
+	run_state=$(container_run_state "$container_uuid") || return $?
+	if [ "$run_state" = "stopped" ]; then
+		echo "Container not running."
+		## try to kill anyway
+		# return 0
+	fi
+
+	log_begin_msg "Killing $app_name Container $container_uuid ..."
+	output=$(docker kill "$container_uuid")
+	log_end_msg $?
+	if [ "$output" != "$container_uuid" ]; then
+		echo "$output"
+	fi
+}
+
+## Ok, action:
+AUTOSTART_LIB_PATH='/usr/share/univention-config-registry/init-autostart.lib'
+case "$requested_action" in
+	start)
+		# check UCR autostart setting
+		if [ -f "$AUTOSTART_LIB_PATH" ]; then
+			. "$AUTOSTART_LIB_PATH"
+			check_autostart "$app_name" "$AUTOSTART_VARIABLE"
+		fi
+		start_container "$container_uuid"
+		;;
+	stop)
+		stop_container "$container_uuid"
+		;;
+	restart)
+		# check UCR autostart setting
+		if [ -f "$AUTOSTART_LIB_PATH" ]; then
+			. "$AUTOSTART_LIB_PATH"
+			check_autostart "$app_name" "$AUTOSTART_VARIABLE"
+		fi
+		restart_container "$container_uuid"
+		;;
+	crestart)
+		# check UCR autostart setting
+		if [ -f "$AUTOSTART_LIB_PATH" ]; then
+			. "$AUTOSTART_LIB_PATH"
+			check_autostart "$app_name" "$AUTOSTART_VARIABLE"
+		fi
+		crestart_container "$container_uuid"
+		;;
+	kill)
+		kill_container "$container_uuid"
+		;;
+	status)
+		container_run_state "$container_uuid"
+		;;
+	*)
+		log_success_msg "Usage: init_script_name {start|stop|restart|crestart|kill|status}"
+		exit 1
+esac

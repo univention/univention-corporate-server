@@ -43,13 +43,14 @@ define([
 	"umc/modules/appcenter/AppCenterPage",
 	"umc/modules/appcenter/AppDetailsPage",
 	"umc/modules/appcenter/AppDetailsDialog",
+	"umc/modules/appcenter/AppConfigDialog",
 	"umc/modules/appcenter/AppChooseHostDialog",
 	"umc/modules/appcenter/PackagesPage",
 	"umc/modules/appcenter/SettingsPage",
 	"umc/modules/appcenter/DetailsPage",
 	"umc/i18n!umc/modules/appcenter", // not needed atm
 	"xstyle/css!umc/modules/appcenter.css"
-], function(declare, lang, array, when, Deferred, topic, app, tools, dialog, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppChooseHostDialog, PackagesPage, SettingsPage, DetailsPage, _) {
+], function(declare, lang, array, when, Deferred, topic, app, tools, dialog, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppConfigDialog, AppChooseHostDialog, PackagesPage, SettingsPage, DetailsPage, _) {
 
 	topic.subscribe('/umc/license/activation', function() {
 		if (!app.getModule('udm', 'navigation'/*FIXME: 'license' Bug #36689*/)) {
@@ -136,12 +137,20 @@ define([
 			});
 			this.addChild(appChooseHostDialog);
 
+			var appConfigDialog = new AppConfigDialog({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				standbyDuring: lang.hitch(this, 'standbyDuring')
+			});
+			this.addChild(appConfigDialog);
+
 			var appDetailsPage = new AppDetailsPage({
 				app: app,
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
 				updateApplications: lang.hitch(this._appCenterPage, 'updateApplications'),
 				detailsDialog: appDetailsDialog,
+				configDialog: appConfigDialog,
 				hostDialog: appChooseHostDialog,
 				udmAccessible: this.udmAccessible(),
 				standby: lang.hitch(this, 'standby'),
@@ -150,6 +159,7 @@ define([
 			});
 			appDetailsPage.own(appChooseHostDialog);
 			appDetailsPage.own(appDetailsDialog);
+			appDetailsPage.own(appConfigDialog);
 			appDetailsPage.on('back', lang.hitch(this, function() {
 				this.selectChild(this._appCenterPage);
 				this.removeChild(appDetailsDialog);
@@ -163,11 +173,14 @@ define([
 				this.selectChild(appDetailsPage);
 			}));
 
+			appChooseHostDialog.on('showUp', lang.hitch(this, function() {
+				this.selectChild(appChooseHostDialog);
+			}));
 			appDetailsDialog.on('showUp', lang.hitch(this, function() {
 				this.selectChild(appDetailsDialog);
 			}));
-			appChooseHostDialog.on('showUp', lang.hitch(this, function() {
-				this.selectChild(appChooseHostDialog);
+			appConfigDialog.on('showUp', lang.hitch(this, function() {
+				this.selectChild(appConfigDialog);
 			}));
 			appChooseHostDialog.on('back', lang.hitch(this, function() {
 				this.selectChild(appDetailsPage);
@@ -181,6 +194,23 @@ define([
 				when(loadPage).then(lang.hitch(this, function() {
 					this.selectChild(appDetailsPage);
 				}));
+			}));
+			appConfigDialog.on('back', lang.hitch(this, function(applied) {
+				var loadPage = true;
+				if (applied) {
+					loadPage = all([appDetailsPage.updateApplications(), appDetailsPage.reloadPage()]);
+					this.standbyDuring(loadPage);
+				}
+				when(loadPage).then(lang.hitch(this, function() {
+					this.selectChild(appDetailsPage);
+				}));
+			}));
+			appConfigDialog.on('update', lang.hitch(this, function() {
+				var loadPage = all([appDetailsPage.updateApplications(), appDetailsPage.reloadPage()]);
+				loadPage = loadPage.then(function() {
+					appConfigDialog.showUp();
+				});
+				this.standbyDuring(loadPage);
 			}));
 		},
 

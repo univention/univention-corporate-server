@@ -1,0 +1,17 @@
+@!@
+from univention.appcenter import AppManager
+from univention.appcenter.utils import app_ports
+
+for app_id, container_port, host_port in app_ports():
+	app = AppManager.find(app_id)
+	if app and app.has_local_web_interface():
+		web_interface = app.web_interface
+		if app.web_interface_port_http == container_port:
+			print '''
+	ProxyPass %(web_interface)s http://127.0.0.1:%(web_port)s%(web_interface)s retry=0
+	ProxyPassReverse %(web_interface)s https://127.0.0.1:%(web_port)s%(web_interface)s
+''' % {'id': app.id, 'web_interface': web_interface, 'web_port': host_port}
+		else:
+			# not relevant for mod_proxy
+			continue
+@!@

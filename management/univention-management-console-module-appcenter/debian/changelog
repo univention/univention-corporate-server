@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.1-2) unstable; urgency=medium
+
+  * Bug #38194: Merge from docker component
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 13 Aug 2015 12:47:58 +0200
+
 univention-management-console-module-appcenter (5.0.1-1) unstable; urgency=medium
 
   * Bug #39042: adjusted button labeling

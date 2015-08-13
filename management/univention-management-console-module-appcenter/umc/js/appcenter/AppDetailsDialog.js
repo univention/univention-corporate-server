@@ -39,21 +39,28 @@ define([
 	"umc/widgets/TitlePane",
 	"umc/widgets/Button",
 	"umc/widgets/Text",
+	"umc/widgets/TextBox",
+	"umc/widgets/CheckBox",
 	"umc/widgets/Form",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Page",
 	"umc/modules/appcenter/requirements",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, topic, when, Deferred, tools, TitlePane, Button, Text, Form, ContainerWidget, Page, requirements, _) {
+], function(declare, lang, array, topic, when, Deferred, tools, TitlePane, Button, Text, TextBox, CheckBox, Form, ContainerWidget, Page, requirements, _) {
 	return declare("umc.modules.appcenter.AppDetailsDialog", [ Page ], {
 		app: null,
 		_container: null,
 		_continueDeferred: null,
+		_confForm: null,
 		noFooter: true,
 
 		title: _('App management'),
 
 		reset: function(mayContinue, title, actionLabel) {
+			if (this._confForm) {
+				this._confForm.destroyRecursive();
+				this._confForm = null;
+			}
 			if (this._continueDeferred) {
 				this._continueDeferred.reject();
 			}
@@ -86,7 +93,11 @@ define([
 					name: 'submit',
 					label: this.actionLabel,
 					callback: lang.hitch(this, function() {
-						this._continueDeferred.resolve();
+						var values = null;
+						if (this._confForm) {
+							values = this._confForm.get('value');
+						}
+						this._continueDeferred.resolve(values);
 					})
 				});
 			}
@@ -99,6 +110,47 @@ define([
 			this._container = new ContainerWidget({
 			});
 			this.addChild(this._container);
+		},
+
+		showConfiguration: function(funcName) {
+			var widgets = [];
+			if (funcName == 'install') {
+				var addWidgets = function(conf, disabled, _widgets) {
+					array.forEach(conf, function(variable) {
+						var type = TextBox;
+						var value = variable.value;
+						if (variable.type === 'bool') {
+							type = CheckBox;
+							value = tools.isTrue(value);
+						}
+						widgets.push({
+							name: variable.id,
+							type: type,
+							label: variable.description,
+							disabled: disabled,
+							value: value
+						});
+					});
+				};
+				addWidgets(array.filter(this.app.config, function(w) { return !w.advanced; }), false, widgets);
+			} else if (funcName == 'uninstall') {
+				widgets.push({
+					name: 'dont_keep_data',
+					type: CheckBox,
+					value: true,
+					label: _('Also delete any data the app stored')
+				});
+			}
+			if (widgets.length) {
+				this._confForm = new Form({
+					widgets: widgets
+				});
+				var titlePane = new TitlePane({
+					title: _('Configure %s', this.app.name)
+				});
+				titlePane.addChild(this._confForm);
+				this._container.addChild(titlePane);
+			}
 		},
 
 		showRequirements: function(label, stressedRequirements, appDetailsPage) {

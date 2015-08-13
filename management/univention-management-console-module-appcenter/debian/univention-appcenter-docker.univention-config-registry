@@ -1,0 +1,9 @@
+Type: subfile
+Multifile: etc/apache2/sites-available/ssl
+Subfile: etc/apache2/sites-available/ssl.d/10univention-appcenter
+Variables: appcenter/apps/.*/ports/.*
+
+Type: subfile
+Multifile: etc/apache2/sites-available/default
+Subfile: etc/apache2/sites-available/default.d/10univention-appcenter
+Variables: appcenter/apps/.*/ports/.*

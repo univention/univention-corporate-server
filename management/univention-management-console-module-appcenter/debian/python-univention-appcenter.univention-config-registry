@@ -1,0 +1,4 @@
+Type: file
+File: etc/univention/service.info/services/univention-appcenter.cfg
+Variables: appcenter/apps/.*/status
+Variables: appcenter/apps/.*/version

@@ -1,0 +1,83 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Univention App Center
+#  univention-app
+#
+# Copyright 2015 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+#
+
+import sys
+from argparse import ArgumentParser
+import locale
+
+from univention.config_registry import ConfigRegistry
+
+from univention.appcenter import all_actions
+from univention.appcenter.log import _reverse_umc_module_logger, log_to_logfile, log_to_stream
+
+ucr = ConfigRegistry()
+ucr.load()
+
+def add_action(subparsers, action):
+	description = action.__doc__ or action.help
+	help = action.help or action.__doc__
+	subparser = subparsers.add_parser(action.get_action_name(), description=description, help=help)
+	action.setup_parser(subparser)
+	subparser.set_defaults(func=action.call_with_namespace)
+	return subparser
+
+def main():
+	usage = '%(prog)s'
+	description = '%(prog)s is a program to manage Apps from the Univention App Center'
+	parser = ArgumentParser(usage=usage, description=description)
+	subparsers = parser.add_subparsers(description='type %(prog)s <action> --help for further help and possible arguments', metavar='action')
+
+	locale.setlocale(locale.LC_ALL, locale.getdefaultlocale())
+	try:
+		log_to_logfile()
+	except IOError:
+		pass
+	log_to_stream()
+	_reverse_umc_module_logger()
+
+	for action_name, action in all_actions():
+		add_action(subparsers, action())
+
+	args = parser.parse_args()
+
+	ret = args.func(args)
+	if ret is False:
+		ret = 1
+	if not isinstance(ret, int):
+		ret = 0
+	sys.exit(ret)
+
+if __name__ == '__main__':
+	main()
+

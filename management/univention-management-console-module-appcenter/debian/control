@@ -5,6 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
  python-support,
  ucslint-univention,
+ univention-join,
  univention-config-dev,
  univention-management-console-dev,
  python-all
@@ -17,6 +18,7 @@ Depends: univention-management-console-server,
  python-univention-lib,
  shell-univention-lib (>= 3.0.12-4),
  python-univention-directory-manager (>=9.0.22-13),
+ python-univention-appcenter,
  univention-config,
  univention-updater,
  univention-management-console-module-lib
@@ -35,6 +37,52 @@ Architecture: all
 Depends: univention-management-console-module-appcenter
 Description: transitional dummy package
  This is a transitional dummy package. It can safely be removed.
+
+Package: univention-appcenter
+Depends: python-univention-appcenter
+Architecture: all
+Description: Tools for the Univention App Center.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: python-univention-appcenter
+Architecture: all
+Depends: univention-ssh,
+ python-univention-config-registry,
+ python-univention-directory-manager
+Recommends: univention-appcenter
+Description: Library for the Univention App Center.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-appcenter-dev
+Architecture: all
+Replaces: python-univention-appcenter-dev
+Depends: univention-appcenter, dpkg-dev, apt-utils
+Description: Development tools for packaging an app in
+ the Univention App Center.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-appcenter-docker
+Architecture: all
+Depends: python-univention-appcenter, docker.io, univention-apache
+Description: Docker integration for certain apps of
+ the Univention App Center.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
 
 Package: univention-management-console-module-apps
 Architecture: all
