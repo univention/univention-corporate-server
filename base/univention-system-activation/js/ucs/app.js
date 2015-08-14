@@ -32,6 +32,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/kernel",
 	"dojo/_base/array",
+	"dojo/request",
 	"dojo/request/xhr",
 	"dojo/request/script",
 	"dojo/io-query",
@@ -59,7 +60,7 @@ define([
 	"./text!/entries.json",
 	"./text!/license",
 	"./i18n!."
-], function(lang, kernel, array, xhr, script, ioQuery, query, keys, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Deferred, Menu, MenuItem, Button, DropDownButton, DropDownMenu, Uploader, put, TextBox, _availableLocales, entries, license, _) {
+], function(lang, kernel, array, request, xhr, script, ioQuery, query, keys, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Deferred, Menu, MenuItem, Button, DropDownButton, DropDownMenu, Uploader, put, TextBox, _availableLocales, entries, license, _) {
 	// strip starting/ending '"' and replace newlines
 	license = license.substr(1, license.length - 2).replace(/\\n/g, '\n');
 
@@ -376,7 +377,33 @@ define([
 				username: 'Administrator'
 			});
 			var uri = '/univention-management-console?' + ioQuery.objectToQuery(query);
-			location.href = uri;
+			var reachableDeferred = new Deferred();
+			reachableDeferred.then(function() {
+				location.href = uri;
+			}, lang.hitch(this, function() {
+				this._showError(_('The server is not responding. Please restart the system.'));
+			}));
+			this._isReachableWithinSecs(uri, 10, reachableDeferred);
+		},
+
+		_isReachableWithinSecs: function(uri, secs, deferred) {
+			var countUntil = secs / 0.5;
+			var counter = 0;
+			var requestUriTillCounter = function() {
+				request(uri).then(function(success) {
+					deferred.resolve();
+				},
+				function(error) {
+					console.log(counter, countUntil);
+					if(counter >= countUntil) {
+						deferred.reject();
+					} else {
+						setTimeout(requestUriTillCounter, 500);
+					}
+					counter++;
+				});
+			};
+			requestUriTillCounter();
 		},
 
 		createElements: function() {

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-07-29 07:58+0200\n"
+"POT-Creation-Date: 2015-08-14 14:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: app.js:348
+#: app.js:349
 msgid ""
 "A license file has been sent to <strong id=\"email-address\">{0}</strong>. "
 "This file is necessary to activate the system. For this, please carry out "
@@ -24,40 +24,40 @@ msgid ""
 msgstr ""
 "Eine Lizenzdatei wurde an <strong id=\"email-address\">{0}</strong> "
 "gesendet. Sie wird benötigt um das System zu aktivieren. Bitte führen Sie "
-"dazu folgende Schritte aus: <ol><li>Öffnen Sie die E-Mail.</li>"
-"<li>Speichern Sie den Anhang (ucs.license) auf Ihren Computer.</li>"
-"<li>Klicken Sie auf die Schaltfläche 'Lizenzdatei hochladen'.</li>"
-"<li>Wählen Sie die soeben gespeicherte Datei (ucs.license) aus.</li>"
-"<li>Bestätigen Sie die Auswahl.</li></ol> Sobald die Aktivierung "
-"durchgeführt ist, wird Ihre E-Mail-Adresse an den App-Anbieter "
-"weitergeleitet. Der App-Anbieter wird Sie ggf. kontaktieren."
+"dazu folgende Schritte aus: <ol><li>Öffnen Sie die E-Mail.</li><li>Speichern "
+"Sie den Anhang (ucs.license) auf Ihren Computer.</li><li>Klicken Sie auf die "
+"Schaltfläche 'Lizenzdatei hochladen'.</li><li>Wählen Sie die soeben "
+"gespeicherte Datei (ucs.license) aus.</li><li>Bestätigen Sie die Auswahl.</"
+"li></ol> Sobald die Aktivierung durchgeführt ist, wird Ihre E-Mail-Adresse "
+"an den App-Anbieter weitergeleitet. Der App-Anbieter wird Sie ggf. "
+"kontaktieren."
 
-#: app.js:173
+#: app.js:174
 msgid "Activation of {appliance_name} Univention App"
 msgstr "Aktivierung von {appliance_name} Univention App"
 
-#: app.js:367
+#: app.js:368
 msgid "Activation successful!"
 msgstr "Aktivierung erfolgreich!"
 
-#: app.js:331 app.js:337
+#: app.js:332 app.js:338
 msgid "An unknown error has occurred."
 msgstr "Ein unbekannter Fehler trat auf."
 
-#: app.js:246
+#: app.js:247
 msgid "An unknown error occured. Please try it again later!"
 msgstr ""
 "Ein unbekannter Fehler trat auf. Bitte versuchen sie es später noch einmal!"
 
-#: app.js:362
+#: app.js:363
 msgid "Continue"
 msgstr "Weiter"
 
-#: app.js:194
+#: app.js:195
 msgid "E-mail address"
 msgstr "E-Mail-Adresse"
 
-#: app.js:248
+#: app.js:249
 msgid "Error "
 msgstr "Fehler "
 
@@ -71,7 +71,7 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: app.js:351
+#: app.js:352
 msgid ""
 "If you did not receive an email, please check your SPAM directory or <a href="
 "\"#register\"> request the email again</a>."
@@ -79,7 +79,7 @@ msgstr ""
 "Sollten Sie keine E-Mail erhalten haben, prüfen Sie Ihr SPAM-Verzeichnis "
 "oder <a href=\"#register\">fordern Sie die Lizenzdatei noch einmal an</a>."
 
-#: app.js:290
+#: app.js:291
 msgid ""
 "If you encounter problems during the activation, please send an email to: "
 "<strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
@@ -89,15 +89,15 @@ msgstr ""
 "an: <strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
 "#000\">feedback@univention.de</a></strong>"
 
-#: app.js:163
+#: app.js:164
 msgid "Language"
 msgstr "Language"
 
-#: app.js:189
+#: app.js:190
 msgid "License request."
 msgstr "Anforderung einer Lizenz."
 
-#: app.js:207
+#: app.js:208
 msgid ""
 "More details about the activation can be found in the <a href=\"http://docs."
 "univention.de/manual.html#central:license\" target=\"_blank\">UCS manual</a>."
@@ -106,11 +106,11 @@ msgstr ""
 "univention.de/handbuch.html#central:license\" target=\"_blank\">UCS-"
 "Handbuch</a> gefunden werden."
 
-#: app.js:196
+#: app.js:197
 msgid "No valid email address."
 msgstr "Keine gültige E-Mail-Adresse."
 
-#: app.js:190
+#: app.js:191
 msgid ""
 "Please enter a valid email address in order to activate {appliance_name} "
 "Univention App. The activation is mandatory to deploy the system. In the "
@@ -122,13 +122,17 @@ msgstr ""
 "System in Gebrauch zu nehmen. Im nächsten Schritt können sie die Lizenzdatei "
 "hochladen, die an Ihre E-Mail-Adresse gesendet wurde."
 
-#: app.js:212
+#: app.js:213
 msgid "Request activation"
 msgstr "Aktivierung anfordern"
 
-#: app.js:288
+#: app.js:289
 msgid "The following error occurred:"
 msgstr "Der folgende Fehler trat auf:"
+
+#: app.js:384
+msgid "The server is not responding. Please restart the system."
+msgstr "Der Webserver antwortet nicht. Bitte starten Sie das System neu."
 
 #: i18n.js:82
 #, python-format
@@ -139,19 +143,19 @@ msgstr ""
 msgid "Translate me!"
 msgstr ""
 
-#: app.js:305
+#: app.js:306
 msgid "Upload license file"
 msgstr "Lizenzdatei hochladen"
 
-#: app.js:346
+#: app.js:347
 msgid "You have received a license file by email!"
 msgstr "Sie haben eine Lizendatei per E-Mail erhalten!"
 
-#: app.js:66
+#: app.js:67
 msgid "your email address"
 msgstr "Ihre E-Mail-Adresse"
 
-#: app.js:368
+#: app.js:369
 msgid ""
 "{appliance_name} Univention App is now activated. Click \"Continue\" to "
 "access the management interface."
