@@ -16,6 +16,7 @@ Depends: ${misc:Depends},
  univention-config-registry,
  shell-univention-lib (>= 3.0.26-28),
  univention-ssh (>= 3.0.1-2),
+ iputils-ping,
  tofrodos,
  ldap-utils,
  python-univention-lib (>= 1.0.25-1)

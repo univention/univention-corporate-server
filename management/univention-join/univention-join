@@ -520,7 +520,7 @@ fi
 
 # invalidate the nscd hosts cache
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=30886
-nscd -i hosts
+test -x /usr/sbin/nscd && nscd -i hosts
 
 echo -n "Join Computer Account: "
 args+=(-role "$server_role" -hostname "$hostname" -domainname "$domainname")
@@ -741,7 +741,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 
 
 	# invalidate the nscd hosts cache
-	nscd -i hosts
+	test -x /usr/sbin/nscd && nscd -i hosts
 
 	univention-config-registry set \
 		ldap/server/name?"$DCNAME" \
@@ -817,7 +817,7 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	mkdir -p /var/lib/univention-ldap/notify/
 
 	# invalidate the nscd hosts cache
-	nscd -i hosts
+	test -x /usr/sbin/nscd && nscd -i hosts
 
 	univention-config-registry set \
 		ldap/server/name?"$DCNAME" \
@@ -865,7 +865,7 @@ elif [ "$server_role" = "memberserver" ]; then
 	grep -q '^TLS_CACERT' /etc/ldap/ldap.conf || echo "TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem" >>/etc/ldap/ldap.conf
 
 	# invalidate the nscd hosts cache
-	nscd -i hosts
+	test -x /usr/sbin/nscd && nscd -i hosts
 
 	univention-config-registry set \
 		ldap/server/name?"$DCNAME" \
@@ -907,7 +907,7 @@ else
 	download_host_certificate
 
 	# invalidate the nscd hosts cache
-	nscd -i hosts
+	test -x /usr/sbin/nscd && nscd -i hosts
 
 	univention-config-registry set \
 		ldap/server/name="$DCNAME" \

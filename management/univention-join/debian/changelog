@@ -1,3 +1,9 @@
+univention-join (8.0.0-1) unstable; urgency=low
+
+  * Bug #38662: Check for nscd; Bug #38714: depend on ping
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 24 Jun 2015 00:39:02 +0200
+
 univention-join (7.1.2-15) unstable; urgency=low
 
   * Bug #38216: Fixed typo in German translation
