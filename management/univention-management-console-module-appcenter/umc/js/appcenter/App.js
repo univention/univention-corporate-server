@@ -88,7 +88,7 @@ define([
 			this.readmePostUninstall = props.readmepostuninstall;
 			this.candidateReadmeUpdate = props.candidate_readmeupdate;
 			this.candidateReadmePostUpdate = props.candidate_readmepostupdate;
-			this.useShop = props.useshop;
+			this.useShop = !!props.shopurl;
 			this.shopURL = props.shopurl;
 			this.isMaster = props.is_master;
 			this.hostMaster = props.host_master;

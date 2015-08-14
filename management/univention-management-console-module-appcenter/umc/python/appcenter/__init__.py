@@ -32,12 +32,15 @@
 # <http://www.gnu.org/licenses/>.
 
 # standard library
+import os
 import locale
 import time
 import sys
 #import urllib2
 from httplib import HTTPException
 from functools import wraps
+import logging
+from tempfile import NamedTemporaryFile
 
 # related third party
 import notifier
@@ -55,6 +58,9 @@ from univention.updater.errors import ConfigurationError
 import univention.config_registry
 import univention.management.console as umc
 import univention.management.console.modules as umcm
+from univention.appcenter import get_action, AppManager
+from univention.appcenter.utils import docker_is_running, call_process
+from univention.appcenter.log import get_base_logger, log_to_logfile
 
 # local application
 from app_center import Application, AppcenterServerContactFailed, LICENSE
@@ -73,6 +79,23 @@ class NoneCandidate(object):
 		self.summary = self.version = self.description = self.priority = self.section = _('Package not found in repository')
 		self.installed_size = 0
 
+class ProgressInfoHandler(logging.Handler):
+	def __init__(self, package_manager):
+		super(ProgressInfoHandler, self).__init__()
+		self.state = package_manager.progress_state
+
+	def emit(self, record):
+		if record.levelno >= logging.ERROR:
+			self.state.error(record.msg)
+		else:
+			self.state.info(record.msg)
+
+
+class ProgressPercentageHandler(ProgressInfoHandler):
+	def emit(self, record):
+		percentage = float(record.msg)
+		self.state.percentage(percentage)
+		self.state._finished = percentage >= 100
 
 def error_handler(func):  # imported in apps module ;)
 	@wraps(func)
@@ -112,6 +135,22 @@ class Instance(umcm.Base):
 		# in order to set the correct locale for Application
 		locale.setlocale(locale.LC_ALL, str(self.locale))
 
+		try:
+			log_to_logfile()
+		except IOError:
+			pass
+
+		# connect univention.appcenter.log to the progress-method
+		handler = ProgressInfoHandler(self.package_manager)
+		handler.setLevel(logging.INFO)
+		get_base_logger().addHandler(handler)
+
+		percentage = ProgressPercentageHandler(self.package_manager)
+		percentage.setLevel(logging.DEBUG)
+		get_base_logger().getChild('actions.install.progress').addHandler(percentage)
+		get_base_logger().getChild('actions.upgrade.progress').addHandler(percentage)
+		get_base_logger().getChild('actions.remove.progress').addHandler(percentage)
+
 	@error_handler
 	@simple_response
 	def version(self):
@@ -121,6 +160,11 @@ class Instance(umcm.Base):
 	@simple_response
 	def query(self):
 		applications = Application.all(force_reread=True)
+		if not docker_is_running():
+			MODULE.warn('Docker is not running! Trying to start it now...')
+			call_process(['invoke-rc.d', 'docker', 'start'])
+			if not docker_is_running():
+				raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly. Make sure docker.io is installed, try starting the service with "invoke-rc.d docker start"'))
 		result = []
 		self.package_manager.reopen_cache()
 		hosts = util.get_all_hosts()
@@ -196,6 +240,64 @@ class Instance(umcm.Base):
 		self.package_manager.reopen_cache()
 		return application.to_dict(self.package_manager)
 
+	@sanitize(application=StringSanitizer(minimum=1, required=True), values=DictSanitizer({}))
+	@simple_response
+	def configure(self, application, autostart, values):
+		application = AppManager.find(application)
+		configure = get_action('configure')
+		configure.call(app=application, set_vars=values, autostart=autostart)
+
+	@sanitize(application=StringSanitizer(minimum=1, required=True), mode=ChoicesSanitizer(['start', 'stop']))
+	@simple_response
+	def app_service(self, application, mode):
+		application = AppManager.find(application)
+		service = get_action(mode)
+		service.call(app=application)
+
+	def _invoke_docker(self, function, application, force, values):
+		can_continue = force # always show configuration after first request
+		serious_problems = False
+		app = application.to_app()
+		errors, warnings = app.check(function)
+		if errors:
+			MODULE.process('Cannot %s %s: %r' % (function, application.id, errors))
+			serious_problems = True
+			can_continue = False
+		if warnings:
+			MODULE.process('Warning trying to %s %s: %r' % (function, application.id, warnings))
+		result = {
+			'serious_problems': serious_problems,
+			'invokation_forbidden_details': errors,
+			'invokation_warning_details': warnings,
+			'can_continue': can_continue,
+			'software_changes_computed': False,
+		}
+		if can_continue:
+			def _thread(app, function):
+				with self.package_manager.locked(reset_status=True, set_finished=True):
+					with self.package_manager.no_umc_restart(exclude_apache=True):
+						if function not in ['install', 'uninstall', 'upgrade']:
+							raise umcm.UMC_CommandError('Cannot %s. Not supported!' % function)
+						if function == 'uninstall':
+							function = 'remove'
+						action = get_action(function)
+						kwargs = {'noninteractive': True}
+						if function == 'install':
+							kwargs['set_vars'] = values
+						if function == 'uninstall':
+							kwargs['keep_data'] = not values.get('dont_keep_data', False)
+						with NamedTemporaryFile('w+b') as password_file:
+							password_file.write(self._password)
+							password_file.flush()
+							action.call(app=app, username=self._username, pwdfile=password_file.name, **kwargs)
+			def _finished(thread, result):
+				if isinstance(result, BaseException):
+					MODULE.warn('Exception during %s %s: %s' % (function, app.id, str(result)))
+			thread = notifier.threads.Simple('invoke',
+				notifier.Callback(_thread, app, function), _finished)
+			thread.run()
+		return result
+
 	@error_handler
 	def invoke_dry_run(self, request):
 		request.options['only_dry_run'] = True
@@ -208,7 +310,8 @@ class Instance(umcm.Base):
 		force=BooleanSanitizer(),
 		host=StringSanitizer(),
 		only_dry_run=BooleanSanitizer(),
-		dont_remote_install=BooleanSanitizer()
+		dont_remote_install=BooleanSanitizer(),
+		values=DictSanitizer({})
 	)
 	def invoke(self, request):
 		# ATTENTION!!!!!!!
@@ -230,6 +333,7 @@ class Instance(umcm.Base):
 		if application is None:
 			raise umcm.UMC_CommandError(_('Could not find an application for %s') % (application_id,))
 		force = request.options.get('force')
+		values = request.options.get('values')
 		only_dry_run = request.options.get('only_dry_run')
 		dont_remote_install = request.options.get('dont_remote_install')
 		only_master_packages = send_as.endswith('schema')
@@ -260,6 +364,13 @@ class Instance(umcm.Base):
 					thread = notifier.threads.Simple('invoke',
 						notifier.Callback(_thread_remote, connection, self.package_manager), _finished_remote)
 					thread.run()
+			self.finished(request.id, result)
+			return
+
+		# DOCKER is different!
+		# TODO
+		if application and application.get('docker'):
+			result = self._invoke_docker(function, application, force, values)
 			self.finished(request.id, result)
 			return
 

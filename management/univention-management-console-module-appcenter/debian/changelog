@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.2-2) unstable; urgency=medium
+
+  * Bug #38194: Merge from docker component (2)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 14 Aug 2015 12:05:13 +0200
+
 univention-management-console-module-appcenter (5.0.2-1) unstable; urgency=medium
 
   * Import get_action, App and app_is_running to prevent tracebacks
