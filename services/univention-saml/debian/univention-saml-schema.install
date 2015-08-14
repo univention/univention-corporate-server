@@ -1,7 +1,6 @@
 schema/univention-saml.schema usr/share/univention-ldap/schema
 modules/univention usr/share/pyshared/
 univention-saml.py usr/lib/univention-directory-listener/system
-simplesamlphp/metadata/saml20-sp-remote.php etc/simplesamlphp/metadata
 24univention-saml-uninstall.uinst usr/lib/univention-uinstall
 76univention-saml.inst usr/lib/univention-install
 modules/univention/admin/syntax.d/samlserviceprovider.py usr/share/pyshared/univention/admin/syntax.d

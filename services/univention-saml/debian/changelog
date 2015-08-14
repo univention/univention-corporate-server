@@ -1,3 +1,9 @@
+univention-saml (3.0.1-2) unstable; urgency=medium
+
+  * Bug #31943: the sp metadata configuration is a UCR multifile now
+
+ -- Florian Best <best@univention.de>  Fri, 14 Aug 2015 10:25:13 +0200
+
 univention-saml (3.0.1-1) unstable; urgency=medium
 
   * Bug #39015: allow AssertionConsumerService to be multivalue
