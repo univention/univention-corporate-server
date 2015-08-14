@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 
 . /usr/share/univention-join/joinscripthelper.lib
 
@@ -57,6 +57,21 @@ else
 	ucs/web/overview/entries/admin/umc/description/de="Univention Management Console für die Verwaltung des lokalen UCS-Systems"
 
 fi
+
+# generate SSL cert + private key for the SAML service provider
+if [ ! -e /usr/share/univention-management-console/saml/pki/mycert.pem ]; then
+	# TODO: we should not use the ones from simplesamlphp directly
+	openssl x509 -in "/etc/simplesamlphp/$hostname.$domainname-idp-certificate.crt" -out /usr/share/univention-management-console/saml/pki/mycert.pem -outform PEM || die
+	openssl rsa -in "/etc/simplesamlphp/$hostname.$domainname-idp-certificate.key" -out /usr/share/univention-management-console/saml/pki/mykey.pem -outform PEM || die
+fi
+
+# configure SAML SP and IDP
+# 1. generate simplesamlphp configuration
+ucr commit /etc/simplesamlphp/metadata/umc.php || die
+# 2. get the XML metadata from the previous generated configuration so that UMC can use it
+wget https://$(hostname -f)/simplesamlphp/saml2/idp/metadata.php -O /usr/share/univention-management-console/saml/idp/simplesamlphp.xml || die
+# 3. rewrite UMC-PAM configuration to include every IDP entry
+ucr commit /etc/pam.d/univention-management-console || die
 
 /etc/init.d/univention-management-console-web-server restart
 
