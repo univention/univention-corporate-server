@@ -77,6 +77,8 @@ from univention.lib.umc_connection import UMCConnection
 import univention.admin.handlers.appcenter.app as appcenter_udm_module
 import univention.admin.handlers.container.cn as container_udm_module
 import univention.admin.uexceptions as udm_errors
+from univention.appcenter import get_action, App
+from univention.appcenter.utils import app_is_running
 
 # local application
 from univention.management.console.modules.appcenter.decorators import reload_ucr, machine_connection, get_machine_connection
