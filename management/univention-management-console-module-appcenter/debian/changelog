@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.1-3) unstable; urgency=medium
+
+  * Copy python-univention-appcenter.install from docker scope
+    (Bug #38194)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Aug 2015 07:00:56 +0200
+
 univention-management-console-module-appcenter (5.0.1-2) unstable; urgency=medium
 
   * Bug #38194: Merge from docker component
