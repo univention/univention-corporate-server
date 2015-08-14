@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: univention-system-activation
+fix: 0.0.1-33.31.201508141435
+version: [2,3]
+desc: |
+ This update addresses the following issues:
+ * Fix a problem that occured during uploading the license.
+bug: [39159]
