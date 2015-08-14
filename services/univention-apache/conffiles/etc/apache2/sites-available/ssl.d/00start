@@ -1,0 +1,66 @@
+@%@UCRWARNING=# @%@
+
+<IfModule mod_ssl.c>
+NameVirtualHost *:443
+<VirtualHost *:443>
+	RewriteEngine on
+	RewriteOptions Inherit
+	SSLEngine on
+	SSLProxyEngine on
+	ProxyPreserveHost on
+	ProxyTimeout 600 
+@!@
+if configRegistry.get('apache2/ssl/certificate'):
+	print '	SSLCertificateFile %s' % configRegistry.get('apache2/ssl/certificate')
+else:
+	print '	SSLCertificateFile /etc/univention/ssl/%s.%s/cert.pem' % (configRegistry.get('hostname'), configRegistry.get('domainname'))
+if configRegistry.get('apache2/ssl/key'):
+	print '	SSLCertificateKeyFile %s' % configRegistry.get('apache2/ssl/key')
+else:
+	print '	SSLCertificateKeyFile /etc/univention/ssl/%s.%s/private.key' % (configRegistry.get('hostname'), configRegistry.get('domainname'))
+if configRegistry.get('apache2/ssl/ca'):
+	print '	SSLCACertificateFile %s' % configRegistry.get('apache2/ssl/ca')
+else:
+	print '	SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem'
+if configRegistry.get('apache2/ssl/certificatechain'):
+	print '	SSLCertificateChainFile %s' % configRegistry.get('apache2/ssl/certificatechain')
+@!@
+	#SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown
+
+	### To enable special log format for HTTPS-access
+	# LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" %p" combinedssl
+	# CustomLog /var/log/apache2/access.log combinedssl	## with port number
+
+@%@UCRWARNING=# @%@
+
+<IfModule mod_ssl.c>
+NameVirtualHost *:443
+<VirtualHost *:443>
+	RewriteEngine on
+	RewriteOptions Inherit
+	SSLEngine on
+	SSLProxyEngine on
+	ProxyPreserveHost on
+	ProxyTimeout 600 
+@!@
+if configRegistry.get('apache2/ssl/certificate'):
+	print '	SSLCertificateFile %s' % configRegistry.get('apache2/ssl/certificate')
+else:
+	print '	SSLCertificateFile /etc/univention/ssl/%s.%s/cert.pem' % (configRegistry.get('hostname'), configRegistry.get('domainname'))
+if configRegistry.get('apache2/ssl/key'):
+	print '	SSLCertificateKeyFile %s' % configRegistry.get('apache2/ssl/key')
+else:
+	print '	SSLCertificateKeyFile /etc/univention/ssl/%s.%s/private.key' % (configRegistry.get('hostname'), configRegistry.get('domainname'))
+if configRegistry.get('apache2/ssl/ca'):
+	print '	SSLCACertificateFile %s' % configRegistry.get('apache2/ssl/ca')
+else:
+	print '	SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem'
+if configRegistry.get('apache2/ssl/certificatechain'):
+	print '	SSLCertificateChainFile %s' % configRegistry.get('apache2/ssl/certificatechain')
+@!@
+	#SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown
+
+	### To enable special log format for HTTPS-access
+	# LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" %p" combinedssl
+	# CustomLog /var/log/apache2/access.log combinedssl	## with port number
+

@@ -1,5 +1,18 @@
-Type: file
-File: etc/apache2/sites-available/default
+Type: multifile
+Multifile: etc/apache2/sites-available/default
+
+Type: subfile
+Multifile: etc/apache2/sites-available/default
+Subfile: etc/apache2/sites-available/default.d/00start
+Variables: apache2/startsite
+Variables: apache2/allowoverride
+Variables: apache2/documentroot
+Variables: apache2/maxclients
+Variables: apache2/force_https
+
+Type: subfile
+Multifile: etc/apache2/sites-available/default
+Subfile: etc/apache2/sites-available/default.d/99end
 Variables: apache2/startsite
 Variables: apache2/allowoverride
 Variables: apache2/documentroot
@@ -8,12 +21,6 @@ Variables: apache2/force_https
 
 Type: file
 File: etc/apache2/mods-available/ssl.conf
-Variables: hostname
-Variables: domainname
-Variables: apache2/ssl/certificate
-Variables: apache2/ssl/key
-Variables: apache2/ssl/ca
-Variables: apache2/ssl/certificatechain
 Variables: apache2/ssl/v3
 Variables: apache2/ssl/tlsv11
 Variables: apache2/ssl/tlsv12
@@ -21,6 +28,23 @@ Variables: apache2/ssl/compression
 Variables: apache2/ssl/honorcipherorder
 Variables: apache2/ssl/ciphersuite
 Variables: apache2/force_https
+
+Type: multifile
+Multifile: etc/apache2/sites-available/ssl
+
+Type: subfile
+Multifile: etc/apache2/sites-available/ssl
+Subfile: etc/apache2/sites-available/ssl.d/00start
+Variables: apache2/ssl/certificate
+Variables: hostname
+Variables: domainname
+Variables: apache2/ssl/key
+Variables: apache2/ssl/ca
+Variables: apache2/ssl/certificatechain
+
+Type: subfile
+Multifile: etc/apache2/sites-available/ssl
+Subfile: etc/apache2/sites-available/ssl.d/99end
 
 Type: module
 Module: extension.py

@@ -36,6 +36,9 @@ a2enmod auth_pam || true
 a2enmod unique_id || true
 a2enmod rewrite || true
 a2enmod headers || true
+a2enmod proxy || true
+
+a2ensite ssl || true
 
 if [ "$1" = configure -a -z "$2" ]; then
 	a2dismod ssl || true

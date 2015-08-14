@@ -1,3 +1,9 @@
+univention-apache (8.0.0-1) unstable; urgency=medium
+
+  * Bug #38807: Add multifiles for VHosts :80 and :443
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 14 Aug 2015 13:11:05 +0200
+
 univention-apache (7.0.16-15) unstable; urgency=low
 
   * Bug #38391: Fix IP address by DHCP
