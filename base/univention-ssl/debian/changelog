@@ -1,3 +1,9 @@
+univention-ssl (10.0.0-1) unstable; urgency=low
+
+  * Bug #38859: Remove length check when generating a SSL certificate
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 08 Jul 2015 14:14:31 +0200
+
 univention-ssl (9.0.4-4) unstable; urgency=low
 
   * Bug #38125: Make request non-interactive
