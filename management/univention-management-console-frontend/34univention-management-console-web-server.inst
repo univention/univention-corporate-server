@@ -66,11 +66,13 @@ if [ ! -e /usr/share/univention-management-console/saml/pki/mycert.pem ]; then
 fi
 
 # configure SAML SP and IDP
-# 1. generate simplesamlphp configuration
+# 1. restart UMC-webserver so that we can download the metadata
+/etc/init.d/univention-management-console-web-server restart
+# 2. generate simplesamlphp configuration
 ucr commit /etc/simplesamlphp/metadata/umc.php || die
-# 2. get the XML metadata from the previous generated configuration so that UMC can use it
-wget https://$(hostname -f)/simplesamlphp/saml2/idp/metadata.php -O /usr/share/univention-management-console/saml/idp/simplesamlphp.xml || die
-# 3. rewrite UMC-PAM configuration to include every IDP entry
+# 3. get the XML metadata from the previous generated configuration so that UMC can use it
+wget --ca-certificate /etc/univention/ssl/ucsCA/CAcert.pem https://$(hostname -f)/simplesamlphp/saml2/idp/metadata.php -O /usr/share/univention-management-console/saml/idp/simplesamlphp.xml || die
+# 4. rewrite UMC-PAM configuration to include every IDP entry
 ucr commit /etc/pam.d/univention-management-console || die
 
 /etc/init.d/univention-management-console-web-server restart
