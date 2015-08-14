@@ -1,3 +1,9 @@
+ucs-test (5.0.168-4) unstable; urgency=low
+
+  * Bug #39176: fixed 17_app_status 
+
+ -- Felix Botner <botner@univention.de>  Fri, 14 Aug 2015 10:44:11 +0200
+
 ucs-test (5.0.168-3) unstable; urgency=low
 
   * Bug #39148: 01/99 daemonize FDs
