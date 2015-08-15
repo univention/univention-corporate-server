@@ -1,3 +1,19 @@
+ucs-test (6.0.4-1) unstable; urgency=medium
+
+  * Merged from UCS 4.0-3:
+
+    * test: 01/11 daemonize FDs
+      [Philipp Hahn]
+
+    * Bug #39176: fixed 17_app_status 
+      [Felix Botner]
+
+    * Disable 01_base/99restart_services to check if it breaks the current
+      Jenkins tests (Bug #39148)
+      [Stefan Gohmann]
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 15 Aug 2015 07:24:48 +0200
+
 ucs-test (6.0.3-2) unstable; urgency=medium
 
   * Updated s4connector DNS test cases (Bug #34184)

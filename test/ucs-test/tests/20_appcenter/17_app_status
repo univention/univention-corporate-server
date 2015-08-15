@@ -132,33 +132,14 @@ def check_app_packages(App, server_role):
         for package in App.get('defaultpackagesmaster'):
             check_package_installed(package)
 
-
-def check_app_allowed_on_server_role(App, server_role):
-    """
-    Checks if a given 'App' is allowed on the current server role.
-    """
-    print("\nChecking if '%s' app is allowed on current server role '%s'"
-          % (App.id, server_role))
-
-    # first check using existing App Center functionality:
-    if not App.allowed_on_local_server():
-        print("FAIL: the app '%s' is not allowed on current server role '%s'"
-              " according to App Center module." % (App.id, server_role))
-        set_test_return_code_failure()
-
-    # second check if current 'server_role' is in the 'ServerRole' ini file:
-    allowed_roles = App.get('serverrole')
-
-    if not allowed_roles:
-        # a case when all DC roles are allowed (an empty element in .ini)
-        return
-
-    if server_role not in allowed_roles:
-        print("FAIL: the app '%s' is not allowed on current server role '%s'"
-              " according to App's ini file 'ServerRole' settings."
-              % (App.id, server_role))
-        set_test_return_code_failure()
-
+def is_app_allowed_on_server_role(App, server_role):
+    '''
+    True if app is allowed on current server role
+    False if not
+    '''
+    if App.allowed_on_local_server():
+        return True
+    return False
 
 def find_an_application(app_id):
     """
@@ -208,10 +189,14 @@ def check_installed_apps():
             set_test_return_code_failure()
             continue
 
-        check_app_allowed_on_server_role(App, server_role)
-        check_app_packages(App, server_role)
-        verify_app_ldap_objects(App)
-        check_app_webinterface_registration(App)
+        print "App is allowed on: %s, current: %s" % (App.get('serverrole'), server_role)
+        if is_app_allowed_on_server_role(App, server_role):
+            print "App %s is allowed on current server role" % app_id
+            check_app_packages(App, server_role)
+            verify_app_ldap_objects(App)
+            check_app_webinterface_registration(App)
+        else:
+            print "App %s is not allowed on current server role" % app_id
 
     try:
         AppsFile.close()
