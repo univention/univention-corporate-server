@@ -1,3 +1,10 @@
+ucs-test (5.0.168-9) unstable; urgency=medium
+
+  * 60_umc-system/80_umc-service-license: skio in AD member mode
+    (Bug #37289)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 15 Aug 2015 16:52:07 +0200
+
 ucs-test (5.0.168-8) unstable; urgency=low
 
   * Bug #39148: 01/99 more broken daemonize FDs
