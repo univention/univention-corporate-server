@@ -1,3 +1,12 @@
+ucs-test (6.0.4-2) unstable; urgency=medium
+
+  * Disable 60_umc-system/31_umc-service-user-authentication in AD
+    member mode (Bug #36901)
+  * Disable 40_mail/33_smart_host_configuration. The test is currently
+    unstable (Bug #38941)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 15 Aug 2015 12:39:43 +0200
+
 ucs-test (6.0.4-1) unstable; urgency=medium
 
   * Merged from UCS 4.0-3:
