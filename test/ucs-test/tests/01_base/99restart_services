@@ -29,6 +29,7 @@ do
 	single) continue ;;
 	sendsigs) continue ;;
 	umount*) continue ;;
+	univention-runit) continue ;; # breaks running services
 	esac
 
 	case "$name" in # handle incomplete scripts
@@ -60,6 +61,7 @@ do
 		clamav-daemon) ;; # clamd
 		clamav-freshclam) ;; # freshclam
 		cron) ;;
+		dbus) ;;
 		dovecot) ;; # Bug #39148 TODO
 		ifplugd) ;;
 		nagios-nrpe-server) ;; # nrped
@@ -67,9 +69,11 @@ do
 		nmbd) ;;
 		ntp) ;; # ntpd
 		openbsd-inetd) ;; # inetd
+		postgresql) ;;
 		rpcbind) ;;
 		samba) ;;
 		samba-ad-dc) ;;
+		saslauthd) ;;
 		slapd) ;;
 		spamassassin) ;;
 		udev) ;;

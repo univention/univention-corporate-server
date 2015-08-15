@@ -1,3 +1,9 @@
+ucs-test (5.0.168-8) unstable; urgency=low
+
+  * Bug #39148: 01/99 more broken daemonize FDs
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 15 Aug 2015 11:55:44 +0200
+
 ucs-test (5.0.168-7) unstable; urgency=medium
 
   * Disable 40_mail/39_postfix_accepts_mails_on_ports_25_465_587. The
