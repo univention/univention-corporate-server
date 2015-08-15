@@ -1,3 +1,10 @@
+ucs-test (5.0.168-7) unstable; urgency=medium
+
+  * Disable 40_mail/39_postfix_accepts_mails_on_ports_25_465_587. The
+    test is currently unstable (Bug #39056)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 15 Aug 2015 13:04:56 +0200
+
 ucs-test (5.0.168-6) unstable; urgency=medium
 
   * Disable 60_umc-system/31_umc-service-user-authentication in AD
