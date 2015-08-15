@@ -2,6 +2,8 @@
 ## desc: Postfix accepts mails on port 25, 465 and 587
 ## tags: [apptest]
 ## exposure: dangerous
+## versions:
+##  4.0-3: skip
 
 from essential.mail import send_mail, check_delivery
 from univention.config_registry import handler_set
