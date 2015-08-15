@@ -4,6 +4,8 @@
 ## packages:
 ##  - lsof
 ## exposure: dangerous
+## versions:
+##  4.0-2: skip
 
 tmpdir=$(mktemp -d)
 : >"$tmpdir/0"

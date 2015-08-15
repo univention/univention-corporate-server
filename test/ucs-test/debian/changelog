@@ -1,3 +1,10 @@
+ucs-test (5.0.168-5) unstable; urgency=medium
+
+  * Disable 01_base/99restart_services to check if it breaks the current
+    Jenkins tests (Bug #39148)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 15 Aug 2015 07:22:14 +0200
+
 ucs-test (5.0.168-4) unstable; urgency=low
 
   * Bug #39176: fixed 17_app_status 
