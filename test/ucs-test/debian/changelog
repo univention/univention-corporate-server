@@ -1,3 +1,10 @@
+ucs-test (6.0.4-6) unstable; urgency=medium
+
+  * Skip 60_umc-system/23_umc-service-create-user in AD member mode
+    tests (Bug #38168)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 16 Aug 2015 10:55:05 +0200
+
 ucs-test (6.0.4-5) unstable; urgency=medium
 
   * 60_umc-system/80_umc-service-license: skio in AD member mode
