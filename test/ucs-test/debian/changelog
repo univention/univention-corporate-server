@@ -1,4 +1,4 @@
-ucs-test (5.0.168-10) UNRELEASED; urgency=medium
+ucs-test (5.0.168-10) unstable; urgency=medium
 
   * Skip 60_umc-system/23_umc-service-create-user in AD member mode
     tests (Bug #38168)
