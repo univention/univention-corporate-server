@@ -5,6 +5,7 @@
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
+## tags: [skip_admember]
 ## exposure: dangerous
 
 import sys
