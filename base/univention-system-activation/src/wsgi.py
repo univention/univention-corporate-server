@@ -97,18 +97,11 @@ def application(environ, start_response):
 			'message': exc.output
 		})
 
-	# disable system activation service
-	try:
-		subprocess.check_call(['/usr/bin/sudo', '/usr/sbin/univention-system-activation', 'stop'], stderr=subprocess.STDOUT)
-	except subprocess.CalledProcessError as exc:
-		_log('Error stopping the system activation service:\n%s\n%s' % (exc.output, exc))
-		return _finish('500 Internal Server Error', {
-			'success': False,
-			'message': exc.output
-		})
-
+	# disable system activation service (stop is executed with a small delay)
+	# and answer request
 	ucr.load()
 	apps = get_installed_apps()
+	subprocess.Popen(['/usr/bin/sudo', '/usr/sbin/univention-system-activation', 'stop'], stderr=subprocess.STDOUT)
 	return _finish('200 OK', {
 		'success': True,
 		'uuid': ucr.get('uuid/license', ''),

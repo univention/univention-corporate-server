@@ -72,6 +72,9 @@ elif [ "$ACTION" = "stop" -a -z "$apache2_system_activation_sites" ]; then
 	echo
 	exit 1
 elif [ "$ACTION" = "stop" ]; then
+	# delay the execution to allow the final HTTP request to be answered
+	sleep 1
+
 	# enable previous sites
 	a2ensite ${apache2_system_activation_sites}
 
