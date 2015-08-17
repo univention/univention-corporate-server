@@ -1,4 +1,4 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -147,13 +147,13 @@ __widgets.extend([
 	Widget('PasswordInputBox', (udm_syntax.passwd, udm_syntax.userPasswd), ''),
 	Widget('DateBox', (udm_syntax.iso8601Date, udm_syntax.date), '1970-01-01'),
 	Widget('TimeBox', (udm_syntax.TimeString), '00:00'),
-	Widget(lambda syn, prop: syn.viewonly and 'LinkList' or 'ComboBox', (udm_syntax.LDAP_Search, ), [], subclasses=False),
+	Widget(lambda syn, prop: 'LinkList' if syn.viewonly else 'ComboBox', (udm_syntax.LDAP_Search, ), [], subclasses=False),
 	Widget('ComboBox', udm_syntax.select, []),
 	Widget('TextBox', (udm_syntax.ldapDnOrNone, udm_syntax.ldapDn), '', subclasses=False),
-	Widget(lambda syn, prop: prop['multivalue'] and len(syn.udm_modules) == 1 and syn.simple == False and 'umc/modules/udm/MultiObjectSelect' or 'umc/modules/udm/ComboBox',
+	Widget(lambda syn, prop: 'umc/modules/udm/MultiObjectSelect' if prop['multivalue'] and len(syn.udm_modules) == 1 and syn.simple == False else 'umc/modules/udm/ComboBox',
 		udm_syntax.UDM_Objects, ''),
 	Widget('ComboBox', udm_syntax.UDM_Attribute, ''),
-	Widget(lambda syn, prop: prop['multivalue'] and 'umc/modules/udm/MultiObjectSelect' or 'ComboBox',
+	Widget(lambda syn, prop: 'umc/modules/udm/MultiObjectSelect' if prop['multivalue'] else 'ComboBox',
 		(udm_syntax.ldapDnOrNone, udm_syntax.ldapDn), ''),
 	Widget('UnixAccessRights', udm_syntax.UNIX_AccessRight, '000'),
 	Widget('UnixAccessRightsExtended', udm_syntax.UNIX_AccessRight_extended, '0000'),
@@ -162,7 +162,7 @@ __widgets.extend([
 	Widget('ImageUploader', udm_syntax.jpegPhoto, ''),
 	Widget('TextArea', udm_syntax.TextArea, ''),
 	Widget('TextBox', udm_syntax.simple, '*'),
-	Widget(lambda syn, prop: prop['multivalue'] and 'MultiInput' or 'ComplexInput', udm_syntax.complex, None),
+	Widget(lambda syn, prop: 'MultiInput' if prop['multivalue'] else 'ComplexInput', udm_syntax.complex, None),
 ])
 
 
@@ -261,9 +261,9 @@ def widget(syntax, udm_property):
 	Returns a widget description as a dictionary
 	"""
 
-	for widget in __widgets:
-		if syntax in widget:
-			descr = {'type': widget.name(syntax, udm_property)}
+	for widget_ in __widgets:
+		if syntax in widget_:
+			descr = {'type': widget_.name(syntax, udm_property)}
 			values = choices(syntax, udm_property)
 			subtypes = subsyntaxes(syntax, udm_property)
 			if values:
@@ -289,8 +289,8 @@ def default_value(syntax):
 	"""
 	Returns a default search pattern/value for the given widget.
 	"""
-	for widget in __widgets:
-		if syntax in widget:
-			return widget.default_value
+	for widget_ in __widgets:
+		if syntax in widget_:
+			return widget_.default_value
 
 	return '*'

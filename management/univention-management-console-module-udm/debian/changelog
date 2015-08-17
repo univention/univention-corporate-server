@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.1-2) unstable; urgency=medium
+
+  * Bug #39041: fix hashbang
+
+ -- Florian Best <best@univention.de>  Mon, 17 Aug 2015 10:29:19 +0200
+
 univention-management-console-module-udm (6.0.1-1) unstable; urgency=medium
 
   * Bug #39041: allow widget override via UCR variables
