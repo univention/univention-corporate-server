@@ -43,6 +43,7 @@ ucsschool-fetch-results () {
 	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/{syslog,auth.log}" "$TARGETDIR"
 	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/univention/connector* "$TARGETDIR"
 	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/samba/* "$TARGETDIR"
+	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/{mail,dovecot}.log" "$TARGETDIR"
 }
 
 ec2-start-job-async () {
