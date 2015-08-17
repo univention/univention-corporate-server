@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-34) unstable; urgency=low
+
+  * Bug #39159: Added a delay for stopping the service
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 17 Aug 2015 15:22:06 +0200
+
 univention-system-activation (0.0.1-33) unstable; urgency=low
 
   * Bug #39159: Added a sleep for the last page of the wizard

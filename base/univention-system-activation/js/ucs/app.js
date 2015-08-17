@@ -372,6 +372,10 @@ define([
 		},
 
 		_continue: function() {
+			this._removeError();
+			this._continueButton.setAttribute('disabled', true);
+			var finishedLoadingBar = dom.byId('finished-loading-bar');
+			put(finishedLoadingBar, '.focused');
 			var query = ioQuery.queryToObject(location.search.substring(1));
 			lang.mixin(query, {
 				username: 'Administrator'
@@ -382,6 +386,8 @@ define([
 				location.href = uri;
 			}, lang.hitch(this, function() {
 				this._showError(_('The server is not responding. Please restart the system.'));
+				this._continueButton.setAttribute('disabled', false);
+				put(finishedLoadingBar, '!focused');
 			}));
 			this._isReachableWithinSecs(uri, 10, reachableDeferred);
 		},
