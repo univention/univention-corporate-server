@@ -1,3 +1,9 @@
+grub-efi-amd64-signed (1.1-6) unstable; urgency=low
+
+  * Update to GRUB 2.00-18.92.201506300903 (Bug #39027)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 17 Aug 2015 14:41:54 +0200
+
 grub-efi-amd64-signed (1.1-5) unstable; urgency=medium
 
   * Update to GRUB 2.00-18.91.201411041456 (Bug #36417)
