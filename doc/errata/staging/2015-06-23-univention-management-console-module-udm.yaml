@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: univention-management-console-module-udm
+fix: 5.1.25-82.594.201508171031
+version: [3]
+desc: |
+  The mapping of syntax classes to UMC widgets is now extendable via the
+  UCR variable group "directory/manager/web/widget/.*/".
+bug: [39041]
