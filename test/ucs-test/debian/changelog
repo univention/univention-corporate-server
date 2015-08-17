@@ -1,9 +1,16 @@
+ucs-test (5.0.168-11) unstable; urgency=medium
+
+  * Fix 51_samba4/55dns_update (Bug #34184)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 17 Aug 2015 19:18:32 +0200
+
 ucs-test (5.0.168-10) unstable; urgency=medium
 
+  [ Stefan Gohmann ]
   * Skip 60_umc-system/23_umc-service-create-user in AD member mode
     tests (Bug #38168)
 
- -- Stefan Gohmann <gohmann@univention.de>  Sun, 16 Aug 2015 10:55:05 +0200
+ -- Arvid Requate <requate@univention.de>  Mon, 17 Aug 2015 19:18:03 +0200
 
 ucs-test (5.0.168-9) unstable; urgency=medium
 

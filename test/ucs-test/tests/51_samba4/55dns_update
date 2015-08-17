@@ -22,33 +22,57 @@ eval "$(ucr shell)"
 kinit -t /var/lib/samba/private/dns.keytab  dns-$hostname
 
 test_nqdn=$(random_hostname)
+test_fqdn="$test_nqdn.$domainname"
+
+ipv6addr1a="2011:6f8:13dc:2:19b7:d592:9dd:1041"
+ipv6addr2a="fd11:6f8:13dc:2:19b7:d592:9dd:1041"
+ipv4addr1a="10.199.92.161"
+
+ipv6addr1b="2011:6f8:13dc:2:19b7:d592:9dd:1042"
+ipv6addr2b="fd11:6f8:13dc:2:19b7:d592:9dd:1042"
+ipv4addr1b="10.199.92.162"
+
+cleanup() {
+	cat <<-%EOF | nsupdate -v -g
+	server $hostname.$domainname
+	zone $domainname.
+	; debug yes
+	update delete $test_fqdn.
+	; show
+	send
+	quit
+	%EOF
+}
+
+trap cleanup EXIT
 
 cat << %EOF | nsupdate -v -g
 server $hostname.$domainname
 zone $domainname.
 ; debug yes
-prereq nxrrset $test_nqdn.$domainname. CNAME
-update delete $test_nqdn.$domainname. AAAA
-update delete $test_nqdn.$domainname. A
-update add $test_nqdn.$domainname. 1200 AAAA 2011:6f8:13dc:2:19b7:d592:9dd:1041
-update add $test_nqdn.$domainname. 1200 AAAA fd11:6f8:13dc:2:19b7:d592:9dd:1041
-update add $test_nqdn.$domainname. 1200 A 10.199.92.161
+prereq nxrrset $test_fqdn. CNAME
+update delete $test_fqdn. AAAA
+update delete $test_fqdn. A
+update add $test_fqdn. 1200 AAAA $ipv6addr1a
+update add $test_fqdn. 1200 AAAA $ipv6addr2a
+update add $test_fqdn. 1200 A $ipv4addr1a
 ; show
 send
 quit
 %EOF
 
 
-test_output=$(ldbsearch -H /var/lib/samba/private/sam.ldb DC="$test_nqdn" | ldapsearch-wrapper | s4search-decode)
+test_output=$(dig +noall +answer @localhost "$test_fqdn" ANY)
 
-for ipv4addr in 10.199.92.161; do
-	if ! egrep -q "^# *\<ipv4\> *: $ipv4addr" <<<"$test_output"; then
+tab=$'\t'
+for ipv4addr in "$ipv4addr1a"; do
+	if ! egrep -q "^${test_fqdn//\./\\.}\.[ $tab]+[0-9]+[ $tab]+IN[ $tab]+A[ $tab]+${ipv4addr//\./\\.}" <<<"$test_output"; then
 		fail_fast 110 "new IPv4 address not registered: $ipv4addr"
 	fi
 done
 
-for ipv6addr in 2011:06f8:13dc:0002:19b7:d592:09dd:1041 fd11:06f8:13dc:0002:19b7:d592:09dd:1041; do
-	if ! egrep -q "^# *\<ipv6\> *: $ipv6addr" <<<"$test_output"; then
+for ipv6addr in "$ipv6addr1a" "$ipv6addr2a"; do
+	if ! egrep -q "^${test_fqdn//\./\\.}\.[ $tab]+[0-9]+[ $tab]+IN[ $tab]+AAAA[ $tab]+$ipv6addr" <<<"$test_output"; then
 		fail_fast 110 "new IPv6 address not registered: $ipv6addr"
 	fi
 done
@@ -57,43 +81,46 @@ cat << %EOF | nsupdate -v -g
 server $hostname.$domainname
 zone $domainname.
 ; debug yes
-prereq nxrrset $test_nqdn.$domainname. CNAME
-update delete $test_nqdn.$domainname. AAAA
-update delete $test_nqdn.$domainname. A
-update add $test_nqdn.$domainname. 1200 AAAA 2011:6f8:13dc:2:19b7:d592:9dd:1042
-update add $test_nqdn.$domainname. 1200 AAAA fd11:6f8:13dc:2:19b7:d592:9dd:1042
-update add $test_nqdn.$domainname. 1200 A 10.199.92.162
+prereq nxrrset $test_fqdn. CNAME
+update delete $test_fqdn. AAAA
+update delete $test_fqdn. A
+update add $test_fqdn. 1200 AAAA $ipv6addr1b
+update add $test_fqdn. 1200 AAAA $ipv6addr2b
+update add $test_fqdn. 1200 A $ipv4addr1b
 ; show
 send
 quit
 %EOF
 
-test_output=$(ldbsearch -H /var/lib/samba/private/sam.ldb DC="$test_nqdn" | ldapsearch-wrapper | s4search-decode)
+test_output=$(dig +noall +answer @localhost "$test_fqdn" ANY)
 
-for ipv4addr in 10.199.92.162; do
-	if ! egrep -q "^# *\<ipv4\> *: $ipv4addr" <<<"$test_output"; then
+for ipv4addr in "$ipv4addr1b"; do
+	if ! egrep -q "^${test_fqdn//\./\\.}\.[ $tab]+[0-9]+[ $tab]+IN[ $tab]+A[ $tab]+${ipv4addr//\./\\.}" <<<"$test_output"; then
 		fail_fast 110 "new IPv4 address not registered: $ipv4addr"
 	fi
 done
 
-for ipv6addr in 2011:06f8:13dc:0002:19b7:d592:09dd:1042 fd11:06f8:13dc:0002:19b7:d592:09dd:1042; do
-	if ! egrep -q "^# *\<ipv6\> *: $ipv6addr" <<<"$test_output"; then
+for ipv6addr in "$ipv6addr1b" "$ipv6addr2b"; do
+	if ! egrep -q "^${test_fqdn//\./\\.}\.[ $tab]+[0-9]+[ $tab]+IN[ $tab]+AAAA[ $tab]+$ipv6addr" <<<"$test_output"; then
 		fail_fast 110 "new IPv6 address not registered: $ipv6addr"
 	fi
 done
 
-for ipv4addr in 10.199.92.161; do
-	if egrep -q "^# *\<ipv4\> *: $ipv4addr" <<<"$test_output"; then
+for ipv4addr in "$ipv4addr1a"; do
+	if egrep -q "^${test_fqdn//\./\\.}\.[ $tab]+[0-9]+[ $tab]+IN[ $tab]+A[ $tab]+${ipv4addr//\./\\.}" <<<"$test_output"; then
 		fail_fast 110 "old IPv4 address still present: $ipv4addr"
 	fi
 done
 
-for ipv6addr in 2011:06f8:13dc:0002:19b7:d592:09dd:1041 fd11:06f8:13dc:0002:19b7:d592:09dd:1041; do
-	if egrep -q "^# *\<ipv6\> *: $ipv6addr" <<<"$test_output"; then
+for ipv6addr in "$ipv6addr1a" "$ipv6addr2a"; do
+	if egrep -q "^${test_fqdn//\./\\.}\.[ $tab]+[0-9]+[ $tab]+IN[ $tab]+AAAA[ $tab]+$ipv6addr" <<<"$test_output"; then
 		fail_fast 110 "old IPv6 address still present: $ipv6addr"
 	fi
 done
 
-ldbdel -k yes -H ldap://$hostname.$domainname \
-	"DC=$test_nqdn,DC=$domainname,CN=MicrosoftDNS,CN=System,$samba4_ldap_base" || \
-		fail_fast 110 "Deleting of DNS record object failed."
+cleanup && trap - EXIT
+
+test_output=$(dig +short @localhost "$test_fqdn" ANY)
+if [ -n "$test_output" ]; then
+	fail_fast 110 "Record has not been deleted: $test_output"
+fi
