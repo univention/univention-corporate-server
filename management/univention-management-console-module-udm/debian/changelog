@@ -1,4 +1,4 @@
-univention-management-console-module-udm (4.0.99-7) unstable; urgency=medium
+univention-management-console-module-udm (5.1.25-81) unstable; urgency=medium
 
   * Bug #39041: allow widget override via UCR variables
 
