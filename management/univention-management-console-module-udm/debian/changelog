@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.99-7) unstable; urgency=medium
+
+  * Bug #39041: allow widget override via UCR variables
+
+ -- Florian Best <best@univention.de>  Tue, 23 Jun 2015 13:55:57 +0200
+
 univention-management-console-module-udm (5.1.25-80) unstable; urgency=low
 
   * Bug #38836: - Improve license exceed message
