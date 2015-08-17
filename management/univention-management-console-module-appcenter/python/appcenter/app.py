@@ -56,6 +56,8 @@ SHARE_DIR = '/usr/share/univention-appcenter/apps'
 DATA_DIR = '/var/lib/appcenter/app'
 CONTAINER_SCRIPTS_PATH = '/usr/share/univention-docker-container-mode/'
 
+app_logger = get_base_logger().getChild('apps')
+
 class Requirement(UniventionMetaInfo):
 	save_as_list = '_requirements'
 	auto_set_name = True
@@ -92,7 +94,7 @@ class AppAttribute(UniventionMetaInfo):
 	save_as_list = '_attrs'
 	auto_set_name = True
 
-	def __init__(self, required=False, default=None, regex=None, choices=None, escape=True, localizable=False):
+	def __init__(self, required=False, default=None, regex=None, choices=None, escape=True, localizable=False, strict=True):
 		super(AppAttribute, self).__init__()
 		self.regex = regex
 		self.default = default
@@ -100,9 +102,10 @@ class AppAttribute(UniventionMetaInfo):
 		self.choices = choices
 		self.escape = escape
 		self.localizable = localizable
+		self.strict = strict
 
 	def test_regex(self, regex, value):
-		if value is None or not re.match(regex, value):
+		if value is not None and not re.match(regex, value):
 			raise ValueError('Invalid format')
 
 	def test_choices(self, value):
@@ -124,13 +127,19 @@ class AppAttribute(UniventionMetaInfo):
 		return self.parse(value)
 
 	def test(self, value):
-		if self.required:
-			self.test_required(value)
-		self.test_type(value, basestring)
-		if self.choices:
-			self.test_choices(value)
-		if self.regex:
-			self.test_regex(self.regex, value)
+		try:
+			if self.required:
+				self.test_required(value)
+			self.test_type(value, basestring)
+			if self.choices:
+				self.test_choices(value)
+			if self.regex:
+				self.test_regex(self.regex, value)
+		except ValueError as e:
+			if self.strict:
+				raise
+			else:
+				app_logger.warn(str(e))
 
 	def parse(self, value):
 		if self.escape and value:
@@ -141,12 +150,15 @@ class AppAttribute(UniventionMetaInfo):
 		if value is None:
 			value = copy(self.default)
 		try:
-			return self.parse_with_ini_file(value, ini_file)
+			value = self.parse_with_ini_file(value, ini_file)
 		except ValueError as exc:
 			raise ValueError('%s: %s (%r): %s' % (ini_file, self.name, value, exc))
+		else:
+			self.test(value)
+			return value
 
 class AppBooleanAttribute(AppAttribute):
-	def test_type(self, value, type):
+	def test_type(self, value, instance_type):
 		super(AppBooleanAttribute, self).test_type(value, bool)
 
 	def parse(self, value):
@@ -159,7 +171,7 @@ class AppBooleanAttribute(AppAttribute):
 		return value
 
 class AppIntAttribute(AppAttribute):
-	def test_type(self, value, type):
+	def test_type(self, value, instance_type):
 		super(AppIntAttribute, self).test_type(value, int)
 
 	def parse(self, value):
@@ -178,7 +190,7 @@ class AppListAttribute(AppAttribute):
 		if not value:
 			raise ValueError('Value required')
 
-	def test_type(self, value, type):
+	def test_type(self, value, instance_type):
 		super(AppListAttribute, self).test_type(value, list)
 
 	def test_choices(self, value):
@@ -205,6 +217,17 @@ class AppAttributeOrFalse(AppBooleanAttribute):
 			if boolean_value is True:
 				return value
 			return boolean_value
+
+	def test_choices(self, value):
+		if value is False:
+			return
+		super(AppAttributeOrFalse, self).test_choices(value)
+
+	def test_type(self, value, instance_type):
+		try:
+			super(AppAttributeOrFalse, self).test_type(value, bool)
+		except ValueError:
+			super(AppBooleanAttribute, self).test_type(value, None)
 
 class AppFileAttribute(AppAttribute):
 	def __init__(self, required=False, default=None, regex=None, choices=None, escape=False, localizable=True):
@@ -241,7 +264,7 @@ class AppDockerScriptAttribute(AppAttribute):
 class App(object):
 	__metaclass__ = UniventionMetaClass
 
-	id = AppAttribute(regex='^[a-z0-9]+(([a-z0-9-_]+)?[a-z0-9])?$')
+	id = AppAttribute(regex='^[a-zA-Z0-9]+(([a-zA-Z0-9-_]+)?[a-zA-Z0-9])?$', required=True)
 	code = AppAttribute(regex='^[A-Za-z0-9]{2}$', required=True)
 	component_id = AppAttribute(required=True)
 
@@ -250,7 +273,7 @@ class App(object):
 	description = AppAttribute(localizable=True)
 	long_description = AppAttribute(escape=False, localizable=True)
 	screenshot = AppAttribute() # localizable=True
-	categories = AppListAttribute(choices=['Administration', 'Business', 'Collaboration', 'Education', 'System services', 'UCS components', 'Virtualization', ''])
+	categories = AppListAttribute(choices=['Administration', 'Business', 'Collaboration', 'Education', 'System services', 'UCS components', 'Virtualization', ''], strict=False)
 
 	website = AppAttribute(localizable=True)
 	support_url = AppAttribute(localizable=True)
@@ -277,7 +300,7 @@ class App(object):
 	web_interface_port_http = AppIntAttribute(default=80)
 	web_interface_port_https = AppIntAttribute(default=443)
 	auto_mod_proxy = AppBooleanAttribute(default=True)
-	ucs_overview_category = AppAttributeOrFalse(default='service', choices=['admin', 'service', 'False', ''])
+	ucs_overview_category = AppAttributeOrFalse(default='services', choices=['admin', 'services'])
 
 	conflicted_apps = AppListAttribute()
 	required_apps = AppListAttribute()
@@ -354,6 +377,7 @@ class App(object):
 
 	@classmethod
 	def from_ini(cls, ini_file, locale=True):
+		app_logger.debug('Loading app from %s' % ini_file)
 		if locale is True:
 			locale = getlocale()[0]
 			if locale:
@@ -377,7 +401,11 @@ class App(object):
 						value = config_parser.get('Application', ini_attr_name)
 					except (NoSectionError, NoOptionError):
 						pass
-			value = attr.get(value, ini_file)
+			try:
+				value = attr.get(value, ini_file)
+			except ValueError as e:
+				app_logger.error('Ignoring %s because of %s: %s' % (ini_file, attr.name, e))
+				return
 			attr_values[attr.name] = value
 		return cls(**attr_values)
 
@@ -681,7 +709,9 @@ class AppManager(object):
 	def _get_every_single_app(cls):
 		if not cls._cache:
 			for ini in glob(os.path.join(CACHE_DIR, '*.ini')):
-				cls._cache.append(App.from_ini(ini))
+				app = App.from_ini(ini)
+				if app is not None:
+					cls._cache.append(app)
 			cls._cache.sort()
 		return cls._cache
 

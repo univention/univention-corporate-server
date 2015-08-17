@@ -90,7 +90,6 @@ class ProgressInfoHandler(logging.Handler):
 		else:
 			self.state.info(record.msg)
 
-
 class ProgressPercentageHandler(ProgressInfoHandler):
 	def emit(self, record):
 		percentage = float(record.msg)
@@ -131,6 +130,7 @@ class Instance(umcm.Base):
 		self.package_manager.set_finished() # currently not working. accepting new tasks
 		self.uu = UniventionUpdater(False)
 		self.component_manager = util.ComponentManager(self.ucr, self.uu)
+		AppManager.set_package_manager(self.package_manager)
 
 		# in order to set the correct locale for Application
 		locale.setlocale(locale.LC_ALL, str(self.locale))
@@ -160,11 +160,13 @@ class Instance(umcm.Base):
 	@simple_response
 	def query(self):
 		applications = Application.all(force_reread=True)
-		if not docker_is_running():
-			MODULE.warn('Docker is not running! Trying to start it now...')
-			call_process(['invoke-rc.d', 'docker', 'start'])
+		self.ucr.load()
+		if not self.ucr.get('docker/container/uuid'):
 			if not docker_is_running():
-				raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly. Make sure docker.io is installed, try starting the service with "invoke-rc.d docker start"'))
+				MODULE.warn('Docker is not running! Trying to start it now...')
+				call_process(['invoke-rc.d', 'docker', 'start'])
+				if not docker_is_running():
+					raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly. Make sure docker.io is installed, try starting the service with "invoke-rc.d docker start"'))
 		result = []
 		self.package_manager.reopen_cache()
 		hosts = util.get_all_hosts()
@@ -178,11 +180,10 @@ class Instance(umcm.Base):
 	@error_handler
 	@simple_response
 	def sync_ldap(self, application=None):
-		# TODO: Remove in (UCS 3.2) + 1
-		self.ucr.load()
-		for old, new in [('tine20org', 'tine20'),]:
-			if util.component_registered(old, self.ucr):
-				util.rename_app(old, new, self.component_manager, self.package_manager)
+		#self.ucr.load()
+		#for old, new in [('tine20org', 'tine20'),]:
+		#	if util.component_registered(old, self.ucr):
+		#		util.rename_app(old, new, self.component_manager, self.package_manager)
 		self.ucr.load()
 
 		if application is not None:
