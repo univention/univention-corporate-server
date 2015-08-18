@@ -753,7 +753,11 @@ class CPAuth(CPgeneric):
 			raise HTTPRedirect('/umcp/saml/')
 
 		req = umcp.Request('AUTH')
-		req.body = {"username": ''.join(user.data['uid']), "password": user.message}
+		req.body = {
+			"auth_type": "SAML",
+			"username": ''.join(user.data['uid']),
+			"password": user.message
+		}
 
 		try:
 			response = self._auth_request(req)
@@ -789,6 +793,7 @@ class CPAuth(CPgeneric):
 
 		# create new UMCP request
 		req = umcp.Request('AUTH')
+		req.body["auth_type"] = None
 		req.body['username'] = data['options'].get('username', '')
 		req.body['password'] = data['options'].get('password', '')
 		req.body['new_password'] = data['options'].get('new_password')

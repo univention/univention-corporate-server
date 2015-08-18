@@ -1,0 +1,16 @@
+#@%@UCRWARNING=# @%@
+saml_grace: 600
+saml_userid: uid
+@!@
+import sys
+import glob
+sys.path.insert(0, '/usr/share/univention-management-console/saml/')
+from sp import CONFIG
+
+identity_provider = glob.glob('/usr/share/univention-management-console/saml/idp/*.xml')
+service_provider = [CONFIG['entityid']]
+for i, idp in enumerate(identity_provider):
+	print 'saml_idp%d: %s' % (i, idp)
+for i, sp in enumerate(service_provider):
+	print 'saml_trusted_sp%d: %s' % (i, sp)
+@!@

@@ -10,3 +10,6 @@ Subfile: etc/simplesamlphp/metadata/10umc-sp.php
 
 Type: file
 File: etc/simplesamlphp/metadata/umc.php
+
+Type: file
+File: etc/ldap/sasl2/saml
