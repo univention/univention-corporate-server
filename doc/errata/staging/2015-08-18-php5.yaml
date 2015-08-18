@@ -1,0 +1,40 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-6
+src: php5
+fix: 5.3.3.1-7.212.201508171807
+version: [6]
+desc: |
+ This erratum fixes the following issues in php5:
+ * Denial of service in CDF property info parsing (CVE-2014-0237)
+ * Infinite loop or out-of-bounds memory access in CDF property info parsing (CVE-2014-0238)
+ * Denial of service via crafted offsets in the softmagic of a PE executable (CVE-2014-2270)
+ * Denial of service issues in the ELF parser of the filemagic extensions (CVE-2014-8117)
+ * Denial of service via long pascal strings (CVE-2014-9652)
+ * Heap buffer overflow in enchant_broker_request_dict for PHP "enchant" extension (CVE-2014-9705)
+ * Memory corruption in processing EXIF tags (CVE-2015-0232)
+ * Denial of Service due to use after free in phar_object.c (CVE-2015-2301)
+ * ZIP Integer Overflow leads to writing past heap boundary (CVE-2015-2331)
+ * Buffer Over-read in unserialize when parsing Phar (CVE-2015-2783)
+ * Use-after-free vulnerability in the process_nested_data function allows execution of arbitrary code by remote attackers (CVE-2015-2787)
+ * Buffer Overflow when parsing tar/zip/phar in phar_set_inode (CVE-2015-3329)
+ * Remote code execution with apache 2.4 apache2handler (CVE-2015-3330)
+ * denial of service when processing a crafted file with Fileinfo (CVE-2015-4604 CVE-2015-4605)
+bug:
+ - 37093
+cve:
+ - CVE-2014-0237
+ - CVE-2014-0238
+ - CVE-2014-2270
+ - CVE-2014-8117
+ - CVE-2014-9652
+ - CVE-2014-9705
+ - CVE-2015-0232
+ - CVE-2015-2301
+ - CVE-2015-2331
+ - CVE-2015-2783
+ - CVE-2015-2787
+ - CVE-2015-3329
+ - CVE-2015-3330
+ - CVE-2015-4604
+ - CVE-2015-4605
