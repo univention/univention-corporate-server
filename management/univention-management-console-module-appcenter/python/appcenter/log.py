@@ -31,6 +31,26 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 #
+'''
+Univention App Center library:
+  Logging module
+
+The library logs various messages to logger objects (python stdlib logging)
+univention.appcenter.log defines the appcenter base logger, as well as
+functions to link the logger objects to the application using the library.
+
+>>> from univention.appcenter.log import *
+
+>>> log_to_logfile()
+>>> # logs all messages to '/var/log/univention/appcenter.log'
+
+>>> log_to_stream()
+>>> # logs messages other than debug to stdout or (warning/error) stderr
+
+>>> base_logger = get_base_logger()
+>>> base_logger.info('This is an info message')
+>>> base_logger.warn('And this is a warning')
+'''
 
 import logging
 import sys
@@ -38,10 +58,14 @@ import sys
 LOG_FILE = '/var/log/univention/appcenter.log'
 
 def get_base_logger():
+	'''Returns the base logger for univention.appcenter'''
 	return logging.getLogger('univention.appcenter')
 
 class RangeFilter(logging.Filter):
+	'''A Filter object that filters messages in a certain
+	range of logging levels'''
 	def __init__(self, min_level=None, max_level=None):
+		super(RangeFilter, self).__init__()
 		self.min_level = min_level
 		self.max_level = max_level
 
@@ -53,6 +77,7 @@ class RangeFilter(logging.Filter):
 		return self.min_level <= record.levelno <= self.max_level
 
 class UMCHandler(logging.Handler):
+	'''Handler to link a logger to the UMC logging mechanism'''
 	def emit(self, record):
 		try:
 			from univention.management.console.log import MODULE
@@ -70,33 +95,46 @@ class UMCHandler(logging.Handler):
 				MODULE.error(msg)
 
 def _reverse_umc_module_logger(exclusive=True):
+	'''Function to redirect UMC logs to the univention.appcenter logger.
+	Useful when using legacy code when the App Center lib was part of the
+	UMC module
+	'''
 	try:
 		from univention.management.console.log import MODULE
 	except ImportError:
 		pass
 	else:
-		logger = MODULE._fallbackLogger
+		logger = MODULE._fallbackLogger # pylint: disable=protected-access
 		if exclusive:
 			for handler in logger.handlers:
 				logger.removeHandler(handler)
 		logger.parent = get_base_logger()
 
-_logging_to_stream = False
+_LOGGING_TO_STREAM = False
 def log_to_stream():
-	global _logging_to_stream
-	if not _logging_to_stream:
-		_logging_to_stream = True
+	'''Call this function to log to stdout/stderr
+	stdout: logging.INFO
+	stderr: logging.WARN and upwards
+	logging.DEBUG: suppressed
+	only the message is logged, no further formatting
+	stderr is logged in red (if its a tty)
+	'''
+	global _LOGGING_TO_STREAM
+	if not _LOGGING_TO_STREAM:
+		_LOGGING_TO_STREAM = True
 		logger = get_base_logger()
 		handler = logging.StreamHandler(sys.stdout)
 		handler.addFilter(RangeFilter(min_level=logging.INFO, max_level=logging.INFO))
 		logger.addHandler(handler)
 		handler = logging.StreamHandler(sys.stderr)
-		formatter = logging.Formatter('\x1b[1;31m%(message)s\x1b[0m') # red
-		handler.setFormatter(formatter)
+		if sys.stderr.isatty():
+			formatter = logging.Formatter('\x1b[1;31m%(message)s\x1b[0m') # red
+			handler.setFormatter(formatter)
 		handler.addFilter(RangeFilter(min_level=logging.WARN))
 		logger.addHandler(handler)
 
 class ShortNameFormatter(logging.Formatter):
+	'''Simple formatter to cut out unneeded bits of the logger's name'''
 	shorten = get_base_logger().name
 
 	def format(self, record):
@@ -105,12 +143,18 @@ class ShortNameFormatter(logging.Formatter):
 			record.short_name = record.short_name[len(self.shorten) + 1:]
 		return super(ShortNameFormatter, self).format(record)
 
-_logging_to_logfile = False
+_LOGGING_TO_LOGFILE = False
 def log_to_logfile():
-	global _logging_to_logfile
-	if not _logging_to_logfile:
-		_logging_to_logfile = True
-		log_format = '%(process)6d %(short_name)-32s %(asctime)s: %(message)s'
+	'''Call this function to log to /var/log/univention/appcenter.log
+	Needs rights to write to it (i.e. should be root)
+	Formats the message so that it can be analyzed later (i.e. process id)
+	Logs DEBUG as well
+	'''
+	global _LOGGING_TO_LOGFILE
+	if not _LOGGING_TO_LOGFILE:
+		_LOGGING_TO_LOGFILE = True
+		log_format = '%(process)6d %(short_name)-32s %(asctime)s [%(levelname)8s]: ' \
+				'%(message)s'
 		log_format_time = '%y-%m-%d %H:%M:%S'
 		formatter = ShortNameFormatter(log_format, log_format_time)
 		handler = logging.FileHandler(LOG_FILE)

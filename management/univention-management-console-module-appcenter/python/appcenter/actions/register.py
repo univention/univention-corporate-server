@@ -190,7 +190,7 @@ class Register(CredentialsAction):
 			else:
 				self.warn('%s should be the host for %s. But it was not found in LDAP. Creating a new one' % (hostdn, app.id))
 		# quasi unique hostname; make sure it does not exceed 63 chars
-		hostname = '%s-%d' % (app.component_id[:46], time.time() * 1000000)
+		hostname = '%s-%d' % (app.id[:46], time.time() * 1000000)
 		password = get_md5(time.time())
 		self.log('Registering the container host %s for %s' % (hostname, app.id))
 		if app.docker_server_role == 'memberserver':

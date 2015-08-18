@@ -1,19 +1,25 @@
+univention-management-console-module-appcenter (5.0.2-4) unstable; urgency=medium
+
+  * Bug #39185: Merge from docker component (3); improve logging module
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 18 Aug 2015 22:37:17 +0200
+
 univention-management-console-module-appcenter (5.0.2-3) unstable; urgency=medium
 
-  * Bug #38194: Merge from docker component (2); activate ini checks
+  * Bug #39185: Merge from docker component (2); activate ini checks
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 17 Aug 2015 13:02:26 +0200
 
 univention-management-console-module-appcenter (5.0.2-2) unstable; urgency=medium
 
-  * Bug #38194: Merge from docker component (2)
+  * Bug #39185: Merge from docker component (2)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 14 Aug 2015 12:05:13 +0200
 
 univention-management-console-module-appcenter (5.0.2-1) unstable; urgency=medium
 
   * Import get_action, App and app_is_running to prevent tracebacks
-    while opening the 4.1 App Center (Bug #38194)
+    while opening the 4.1 App Center (Bug #39185)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Aug 2015 07:16:55 +0200
 
@@ -26,7 +32,7 @@ univention-management-console-module-appcenter (5.0.1-3) unstable; urgency=mediu
 
 univention-management-console-module-appcenter (5.0.1-2) unstable; urgency=medium
 
-  * Bug #38194: Merge from docker component
+  * Bug #39185: Merge from docker component
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 13 Aug 2015 12:47:58 +0200
 
