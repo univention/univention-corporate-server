@@ -1,0 +1,28 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-6
+src: nss
+fix: 3.12.8-1.28.201508172244
+version: [6]
+desc: |
+ Multiple vulnerabilities have been fixed in the nss library:
+ * Error in the CBC modes of the TLS implementation (CVE-2011-3389)
+ * Denial of service in certificate parsing (CVE-2013-1741)
+ * Incomplete rejection of invalid certificates (CVE-2013-5606)
+ * Insecure DH key exchange (CVE-2014-1491)
+ * Incorrect wildcard parsing in internationalised domain names (CVE-2014-1492)
+ * Use-after-free in certificate handling (CVE-2014-1544)
+ * Incorrect parsing of ASN.1 data can result in signature forgery
+   (CVE-2014-1568)
+ * ASN.1 DER decoding of lengths is too permissive (CVE-2014-1569)
+bug:
+ - 33281
+cve:
+ - CVE-2011-3389
+ - CVE-2013-1741
+ - CVE-2013-5606
+ - CVE-2014-1491
+ - CVE-2014-1492
+ - CVE-2014-1544
+ - CVE-2014-1568
+ - CVE-2014-1569
