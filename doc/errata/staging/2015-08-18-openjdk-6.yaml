@@ -11,8 +11,6 @@ desc: |
  released based on the Oracle update 6u91 which fixes these issues:
  * Incorrect handling of phantom references (CVE-2015-0460)
  * Layout engine glyphStorage off-by-one (CVE-2015-0469)
- * bypass certain Java sandbox restrictions by untrusted Java application
-   or app due to incorrect handling of default methods (CVE-2015-0470)
  * Incorrect permissions check in resource loading (CVE-2015-0477)
  * RSA implementation hardening (CVE-2015-0478)
  * Jar directory traversal issues (CVE-2015-0480)
@@ -22,7 +20,6 @@ bug:
 cve:
  * CVE-2015-0460
  * CVE-2015-0469
- * CVE-2015-0470
  * CVE-2015-0477
  * CVE-2015-0478
  * CVE-2015-0480
