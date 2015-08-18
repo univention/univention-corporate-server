@@ -1,0 +1,29 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-6
+src: openjdk-6
+fix: 6b35-1.13.7-1.77.201508171914
+version: [6]
+desc: |
+ Multiple vulnerabilities have been discovered in the implementation
+ of the Java platform. In Univention Corporate Server OpenJDK is
+ used instead of Oracle Java. This erratum updates OpenJDK to the
+ released based on the Oracle update 6u91 which fixes these issues:
+ * Incorrect handling of phantom references (CVE-2015-0460)
+ * Layout engine glyphStorage off-by-one (CVE-2015-0469)
+ * bypass certain Java sandbox restrictions by untrusted Java application
+   or app due to incorrect handling of default methods (CVE-2015-0470)
+ * Incorrect permissions check in resource loading (CVE-2015-0477)
+ * RSA implementation hardening (CVE-2015-0478)
+ * Jar directory traversal issues (CVE-2015-0480)
+ * Certificate options parsing uncaught exception (CVE-2015-0488)
+bug:
+ - 38303
+cve:
+ * CVE-2015-0460
+ * CVE-2015-0469
+ * CVE-2015-0470
+ * CVE-2015-0477
+ * CVE-2015-0478
+ * CVE-2015-0480
+ * CVE-2015-0488
