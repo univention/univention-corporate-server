@@ -1,0 +1,23 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-6
+src: openssl
+fix: 0.9.8o-4.100.201508172249
+version: [6]
+desc: |
+ Multiple vulnerabilities have been fixed in openssl:
+ * Invalid free in DTLS (CVE-2014-8176)
+ * Exploitable out-of-bounds read in X509_cmp_time (CVE-2015-1789)
+ * PKCS7 crash with missing EnvelopedContent (CVE-2015-1790)
+ * race condition in NewSessionTicket (CVE-2015-1791)
+ * CMS verify infinite loop with unknown hash function (CVE-2015-1792)
+ * Require a minimum of 768 bit for DH parameters (CVE-2015-4000)
+bug:
+ - 38692
+cve:
+ - CVE-2014-8176
+ - CVE-2015-1789
+ - CVE-2015-1790
+ - CVE-2015-1791
+ - CVE-2015-1792
+ - CVE-2015-4000
