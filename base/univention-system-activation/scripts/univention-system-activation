@@ -78,9 +78,8 @@ elif [ "$ACTION" = "stop" ]; then
 	# enable previous sites
 	a2ensite ${apache2_system_activation_sites}
 
-	# disable system activation site configuration and reload apache
+	# disable system activation site configuration
 	a2dissite univention-system-activation
-	/etc/init.d/apache2 reload
 
 	# unset previously stored sites
 	ucr unset apache2/system_activation/sites
@@ -105,6 +104,8 @@ elif [ "$ACTION" = "stop" ]; then
 				auth/other/user/root?yes \
 				auth/sshd/user/root?yes
 
+	# apache reload as last step
+	/etc/init.d/apache2 reload
 else
 	echo
 	echo "ERROR: Unknown action given"
