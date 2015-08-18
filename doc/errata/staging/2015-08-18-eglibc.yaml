@@ -5,7 +5,7 @@ src: eglibc
 fix: 2.11.3-4.24.201508171457
 version: [6]
 desc: |
- This erratum fixes the following issues in the eglic library:
+ This erratum fixes the following issue in the eglibc library:
  * buffer overflow in gethostbyname_r and related functions (CVE-2015-1781)
 bug:
  - 38115
