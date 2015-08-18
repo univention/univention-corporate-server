@@ -1,0 +1,31 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-6
+src: univention-kernel-image
+fix: 7.0.0-19.76.201508180621
+version: [6]
+desc: |
+ This erratum updates the Linux kernel in UCS 3.2 to 3.10.87. Among
+ several further bugfixes, this resolves multiple security issues:
+ * Xen: Non-maskable interrupts triggerable by guests (CVE-2015-2150)
+ * infiniband: uverbs: unprotected physical memory access (CVE-2014-8159)
+ * Incorrect implementation of SYSENTER emulation (CVE-2015-0239)
+ * iptables doesn't handle SCTP rules unless the SCTP module is loaded
+   (CVE-2014-8160)
+ * ext4 denial of service (CVE-2014-7822)
+ * Incorrect implementation of SYSENTER emulation (CVE-2015-0239)
+ * pipe: iovec: Fix memory corruption when retrying atomic copy as
+   non-atomic (CVE-2015-1805)
+ * btrfs: non-atomic xattr replace operation (CVE-2014-9710)
+note: This is the second part of the fix, which provides the meta package.
+bug:
+ - 38008
+cve:
+ - CVE-2015-2150
+ - CVE-2014-8159
+ - CVE-2015-0239
+ - CVE-2014-8160
+ - CVE-2014-7822
+ - CVE-2015-0239
+ - CVE-2015-1805
+ - CVE-2014-9710
