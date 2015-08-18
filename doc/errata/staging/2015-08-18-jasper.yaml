@@ -1,0 +1,23 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-6
+src: jasper
+fix: 1.900.1-7.26.201508181100
+version: [6]
+desc: |
+ Multiple vulnerabilities have been fixed in the jasper library:
+ * Two buffer overflows in the processing of JPEG-2000 images may result
+   in the execution of arbitrary code (CVE-2014-9029)
+ * Buffer overflow and double free in processing JPEG2000 images
+   (CVE-2014-8137, CVE-2014-8138)
+ * Off-by-one and buffer overflows in processing JPEG2000 images
+   (CVE-2014-8157, CVE-2014-8158)
+ * 
+bug:
+ - 33281
+cve:
+ - CVE-2014-9029
+ - CVE-2014-8137
+ - CVE-2014-8138
+ - CVE-2014-8157
+ - CVE-2014-8158
