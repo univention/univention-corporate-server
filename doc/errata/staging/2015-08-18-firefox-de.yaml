@@ -1,0 +1,97 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-6
+src: firefox-de
+fix: 1:38.2.0esr-1.60.201508181738
+version: [6]
+desc: |
+ Firefox has been updated to the new Firefox Extended Support Release based
+ on Firefox 38. The previosly used ESR 31 series is no longer maintained.
+ This update consists of two updates for firefox-en and firefox-de.
+ Several vulnerabilities have been fixed with the update to Firefox ESR 38.2
+ * heap-buffer-overflow (read of size 0xffffffff) when playing a m4v video
+   (CVE-2015-0797)
+ * Heap-buffer-overflow in SVGTextFrame (CVE-2015-2710)
+ * Heap-use-after-free in SetBreaks (CVE-2015-2713)
+ * Buffer overflow xml parser (CVE-2015-2716)
+ * NSS incorrectly permits skipping of ServerKeyExchange (CVE-2015-2721)
+ * Use After Free in CanonicalizeXPCOMParticipant (CVE-2015-2722)
+ * Memory safety bugs fixed in Firefox ESR 31.8, Firefox 38.1, and Firefox 39.
+   (CVE-2015-2724)
+ * Memory safety bugs fixed in Firefox 38.1 and Firefox 39. (CVE-2015-2725)
+ * Memory safety bugs fixed in Firefox 39. (CVE-2015-2726)
+ * Type Confusion mozilla::dom::indexedDB::IndexedDatabaseManager
+   (CVE-2015-2728)
+ * ECC correctness issues (CVE-2015-2730)
+ * Use After Free in CanonicalizeXPCOMParticipant() with dedicated worker
+   (CVE-2015-2733)
+ * CairoTextureClientD3D9::BorrowDrawTarget using uninitialized memory
+   (CVE-2015-2734)
+ * Memory safety bug due to bad test in nsZipArchive.cpp (CVE-2015-2735)
+ * nsZipArchive::BuildFileList has memory-safety bug (CVE-2015-2736)
+ * rx::d3d11::SetBufferData using uninitialized memory (CVE-2015-2737)
+ * YCbCrImageDataDeserializer::ToDataSourceSurface using uninitialized memory
+   (CVE-2015-2738)
+ * Memory safety problem in ArrayBufferBuilder::append (CVE-2015-2739)
+ * Overflow in nsXMLHttpRequest::AppendToResponseText causes memory-safety bug
+   (CVE-2015-2740)
+ * Privilege escalation in PDF.js (CVE-2015-2743)
+ * NSS accepts export-length DHE keys with regular DHE cipher suites
+   (CVE-2015-4000)
+ * out of bounds read at mozilla::AudioSink (CVE-2015-4475)
+ * JSON.parse with reviver allows redefining non-configurable properties
+   (CVE-2015-4478)
+ * MPEG4 saio Chunk Integer Overflow (libstagefright) (CVE-2015-4479)
+ * crash in stagefright::SampleTable::isValid() with h264 mp4 (CVE-2015-4480)
+ * Out of bounds write in mar_read.c (CVE-2015-4482)
+ * crash in void js::jit::AssemblerX86Shared::lock_addl<js::jit::Imm32>
+   (CVE-2015-4484)
+ * Heap-buffer-overflow WRITE in resize_context_buffers (CVE-2015-4485)
+ * Out of bounds read in decrease_ref_count (CVE-2015-4486)
+ * Overflow nsTSubstring::ReplacePrep causes memory-safety bugs
+   in stringlibrary (CVE-2015-4487)
+ * StyleAnimationValue::operator= uses objects after delete on self-assignment
+   (CVE-2015-4488)
+ * Self-assignment in nsTArray_Impl causes memory-safety bug (CVE-2015-4489)
+ * gdk-pixbuf heap overflow and DoS (CVE-2015-4491)
+ * Use After Free in XMLHttpRequest::Open() (CVE-2015-4492)
+ * Stagefright: heap-buffer-overflow crash stagefright::ESDS::parseESDescriptor
+   (CVE-2015-4493)
+bug:
+ - 38524
+cve:
+ - CVE-2015-0797
+ - CVE-2015-2710
+ - CVE-2015-2713
+ - CVE-2015-2716
+ - CVE-2015-2721
+ - CVE-2015-2722
+ - CVE-2015-2724
+ - CVE-2015-2725
+ - CVE-2015-2726
+ - CVE-2015-2728
+ - CVE-2015-2730
+ - CVE-2015-2733
+ - CVE-2015-2734
+ - CVE-2015-2735
+ - CVE-2015-2736
+ - CVE-2015-2737
+ - CVE-2015-2738
+ - CVE-2015-2739
+ - CVE-2015-2740
+ - CVE-2015-2743
+ - CVE-2015-4000
+ - CVE-2015-4475
+ - CVE-2015-4478
+ - CVE-2015-4479
+ - CVE-2015-4480
+ - CVE-2015-4482
+ - CVE-2015-4484
+ - CVE-2015-4485
+ - CVE-2015-4486
+ - CVE-2015-4487
+ - CVE-2015-4488
+ - CVE-2015-4489
+ - CVE-2015-4491
+ - CVE-2015-4492
+ - CVE-2015-4493
