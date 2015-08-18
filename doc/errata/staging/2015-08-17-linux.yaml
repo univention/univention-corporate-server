@@ -17,6 +17,11 @@ desc: |
  * pipe: iovec: Fix memory corruption when retrying atomic copy as
    non-atomic (CVE-2015-1805)
  * btrfs: non-atomic xattr replace operation (CVE-2014-9710)
+ * TCP Fast Open local DoS (CVE-2015-3332)
+ * privilege escalation via ping sockets due to use-after-free
+   (CVE-2015-3636)
+ * Linux UDP checksum DoS (CVE-2015-5364)
+ * Linux UDP checksum DoS EGAIN part (CVE-2015-5366)
 note: This is the first part of the fix, which provides the new kernel package.
 bug:
  - 38008
@@ -29,3 +34,7 @@ cve:
  - CVE-2015-0239
  - CVE-2015-1805
  - CVE-2014-9710
+ - CVE-2015-3332
+ - CVE-2015-3636
+ - CVE-2015-5364
+ - CVE-2015-5366
