@@ -1,0 +1,13 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-6
+src: nspr
+fix: 4.8.6-1.14.201508172248
+version: [6]
+desc: |
+ The following vulnerability has been fixed in the nspr library:
+ * Execution of arbitrary code or denial of service by remote attacker
+bug:
+ - 35097
+cve:
+ - CVE-2014-1545
