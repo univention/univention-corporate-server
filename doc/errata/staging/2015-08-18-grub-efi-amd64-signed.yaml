@@ -1,0 +1,12 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: grub-efi-amd64-signed
+fix: 1.1-6-2.00-18.16.201508172055
+version: [2,3]
+desc: |
+ This update provides a SecureBoot-signed version of GRUB that
+ has been provided with errata 228. Erratum 228 has to be installed
+ at one go with this erratum to ensure a successful boot on EFI
+ systems.
+bug: [39027]
