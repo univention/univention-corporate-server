@@ -355,6 +355,16 @@ Description: Test scripts for udm extensions.
  This package includes some scripts for testing the functionality of the
  UDM extension modules for UDM modules, syntaxes and hooks.
 
+Package: ucs-test-grub-uefi
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ python-apt,
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts for GRUB and UEFI.
+ This package includes some scripts for testing GRUB and UEFI.
+
 Package: ucs-test-updater
 Architecture: all
 Recommends: ucs-test-framework

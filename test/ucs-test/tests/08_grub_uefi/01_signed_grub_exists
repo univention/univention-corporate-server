@@ -1,0 +1,59 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check if a signed version of all available grub versions exist
+## tags: [basic]
+## exposure: safe
+
+import platform
+import apt_pkg
+import sys
+import pprint
+import univention.testing.utils as utils
+
+PKG_GRUB = 'grub-efi-amd64'
+PKG_GRUB_SIGNED = 'grub-efi-amd64-signed'
+
+
+def check_for_signed_grub():
+	if platform.machine() != 'x86_64':
+		print 'NOTICE: this system seems to be no amd64 system - stopping here'
+		sys.exit(0)
+
+	apt_pkg.init()
+	cache = apt_pkg.Cache()
+
+	# get available grub versions
+	if PKG_GRUB not in cache:
+		utils.fail('package %r not found in repository' % (PKG_GRUB,))
+	if not cache[PKG_GRUB].version_list:
+		utils.fail('empty version list for %r' % (PKG_GRUB,))
+
+	available_grub_versions = dict([(x.ver_str, False) for x in cache[PKG_GRUB].version_list])
+	print 'available_grub_versions=%s' % (pprint.PrettyPrinter(indent=3).pformat(available_grub_versions),)
+
+	# get available signed grub versions
+	if PKG_GRUB_SIGNED not in cache:
+		utils.fail('package %r not found in repository' % (PKG_GRUB_SIGNED,))
+	if not cache[PKG_GRUB_SIGNED].version_list:
+		utils.fail('empty version list for %r' % (PKG_GRUB_SIGNED,))
+
+	# match those versions
+	for pkg_version in cache[PKG_GRUB_SIGNED].version_list:
+		for dependencies in pkg_version.depends_list_str.get('Depends'):
+			for dependency in dependencies:
+				if dependency[0] == PKG_GRUB:
+					if not dependency[1] in available_grub_versions:
+						print 'WARNING: Found dependency to %s %s in %s %s but dependency does not exist in repo' % (
+							PKG_GRUB, dependency[1],
+							PKG_GRUB_SIGNED, pkg_version.ver_str
+						)
+					else:
+						available_grub_versions[dependency[1]] = True
+
+	print 'scan complete'
+	print 'available_grub_versions=%s' % (pprint.PrettyPrinter(indent=3).pformat(available_grub_versions),)
+	for version, status in available_grub_versions.items():
+		if not status:
+			utils.fail('For %s %s there is no corresponding %s package' % (PKG_GRUB, version, PKG_GRUB_SIGNED))
+
+if __name__ == '__main__':
+	check_for_signed_grub()

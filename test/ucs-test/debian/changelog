@@ -1,3 +1,10 @@
+ucs-test (5.0.169-1) unstable; urgency=low
+
+  * Added new section 08_grub_uefi
+  * Added 08_grub_uefi/01_signed_grub_exists (Bug #39027)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Aug 2015 17:18:04 +0200
+
 ucs-test (5.0.168-11) unstable; urgency=medium
 
   * Fix 51_samba4/55dns_update (Bug #34184)
