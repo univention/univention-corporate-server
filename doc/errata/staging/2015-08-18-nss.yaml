@@ -5,7 +5,7 @@ src: nss
 fix: 3.12.8-1.28.201508172244
 version: [6]
 desc: |
- Multiple vulnerabilities have been fixed in the nss library:
+ Multiple vulnerabilities have been fixed in the Mozilla nss library:
  * Error in the CBC modes of the TLS implementation (CVE-2011-3389)
  * Denial of service in certificate parsing (CVE-2013-1741)
  * Incomplete rejection of invalid certificates (CVE-2013-5606)
