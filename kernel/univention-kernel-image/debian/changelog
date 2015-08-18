@@ -1,3 +1,9 @@
+univention-kernel-image (7.0.0-19) unstable; urgency=medium
+
+  * Update to the latest kernel build (Bug #38008)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Aug 2015 06:20:10 +0200
+
 univention-kernel-image (7.0.0-18) unstable; urgency=low
 
   * Update to the latest kernel build (Bug #37353)
