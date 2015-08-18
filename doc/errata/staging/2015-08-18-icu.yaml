@@ -1,0 +1,37 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-6
+src: icu
+fix: 4.4.1-8.24.201508172234
+version: [6]
+desc: |
+ Multiple vulnerabilities have been fixed in the International Components
+ for Unicode library:
+  * Race condition in locid.cpp (CVE-2013-0900)
+  * Use-after-free issue in csrucode.cpp (CVE-2013-2924)
+  * Potential execution of arbitrary code with user privileges due to
+    incorrect memory handling while processing fonts (CVE-2013-1569,
+    CVE-2013-2383, CVE-2013-2384, and CVE-2013-2419)
+  * Out-of-bounds read (CVE-2014-6585)
+  * Out-of-bounds reads (CVE-2014-6591)
+  * Memory corruption in regular expression comparison (CVE-2014-7923)
+  * Memory corruption in regular expression comparison (CVE-2014-7926)
+  * Uninitialized memory in i18n/icol.cpp (CVE-2014-7940)
+  * Regular expression handling issues (CVE-2014-9654)
+  * Fix boundary checks in layout engine (CVE-2015-4760)
+bug:
+ - 33284
+cve:
+ * CVE-2013-0900
+ - CVE-2013-1569
+ - CVE-2013-2383
+ - CVE-2013-2384
+ - CVE-2013-2419
+ - CVE-2013-2924
+ - CVE-2014-6585
+ - CVE-2014-6591
+ - CVE-2014-7923
+ - CVE-2014-7926
+ - CVE-2014-7940
+ - CVE-2014-9654
+ - CVE-2015-4760
