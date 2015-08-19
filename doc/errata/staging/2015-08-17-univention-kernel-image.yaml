@@ -7,18 +7,21 @@ version: [6]
 desc: |
  This erratum updates the Linux kernel in UCS 3.2 to 3.10.87. Among
  several further bugfixes, this resolves multiple security issues:
- * Xen: Non-maskable interrupts triggerable by guests (CVE-2015-2150)
- * infiniband: uverbs: unprotected physical memory access (CVE-2014-8159)
+ * Xen did not properly restrict access to PCI command registers
+   (CVE-2015-2150)
+ * The InfiniBand (IB) implementation didd not properly restrict use of
+   User Verbs for registration of memory regions (CVE-2014-8159)
  * Incorrect implementation of SYSENTER emulation (CVE-2015-0239)
  * iptables doesn't handle SCTP rules unless the SCTP module is loaded
    (CVE-2014-8160)
  * ext4 denial of service (CVE-2014-7822)
  * Incorrect implementation of SYSENTER emulation (CVE-2015-0239)
- * pipe: iovec: Fix memory corruption when retrying atomic copy as
-   non-atomic (CVE-2015-1805)
- * btrfs: non-atomic xattr replace operation (CVE-2014-9710)
+ * The pipe implementation did not properly consider the side effects of
+   failed inatomic calls (CVE-2015-1805)
+ * The Btrfs implementation did not ensure that the visible xattr state is
+   consistent with a requested replacement (CVE-2014-9710)
  * TCP Fast Open local DoS (CVE-2015-3332)
- * privilege escalation via ping sockets due to use-after-free
+ * Privilege escalation via ping sockets due to use-after-free
    (CVE-2015-3636)
  * Linux UDP checksum DoS (CVE-2015-5364)
  * Linux UDP checksum DoS EGAIN part (CVE-2015-5366)
