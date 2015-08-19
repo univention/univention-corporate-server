@@ -61,5 +61,5 @@ print 'ProxyTimeout %s' % int(configRegistry.get('umc/http/session/timeout', '30
 </LocationMatch>
 
 # redirect accesses to UMC to the activation service
-RedirectMatch ^/univention-management-console.*$ /
+# RedirectMatch ^/univention-management-console.*$ /
 
