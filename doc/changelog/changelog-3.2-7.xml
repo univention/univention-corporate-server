@@ -468,7 +468,7 @@
 			<title>DNS</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The DNS server bind9 has been updated to <wordasword>9.8.4-P1</wordasword>. It
+					The DNS server <package>bind9</package> has been updated to <wordasword>9.8.4-P1</wordasword>. It
 					provides many bugfixes and fixes several vulnerabilities (<u:bug>37247</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>

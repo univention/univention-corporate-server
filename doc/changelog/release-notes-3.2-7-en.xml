@@ -53,19 +53,19 @@
 
 		<itemizedlist>
 			<listitem><para>
-					The release contains several security updates which have been released in the previous weeks and months as errata updates for UCS 3.2-5.
-					Among others, it contains updated packages for the <package>Linux kernel</package>, <package>OpenSSL</package>, <package>glibc</package>, <package>sudo</package>.
+					The release contains several security updates which have been released in the previous weeks and months as errata updates for UCS 3.2-6.
+					Among others, it contains updated packages for <package>OpenSSL</package>, <package>glibc</package>, <package>ntp</package>.
 			</para></listitem>
 			<listitem><para>
-					Various tools using the PAM stack now support the configuration of multiple LDAP servers.
-					Such a configuration can be used to improve the reliability of authentication services.
+					The Linux kernel has been updated to the latest stable version of the 3.10 longterm kernel, <wordasword>3.10.87</wordasword>. It includes
+					several security updates and bugfixes.
 			</para></listitem>
 			<listitem><para>
-					The login performance in large environments has been improved:
-					Time consuming queries for quota settings have been separated from the login process.
+					The number of concurrent AMaViS processes can now easily configured via Univention Configuration Registry. In environments with a very
+					high volume of mail the mail delivery may be delayed if not enough AMaViS processes are started.
 			</para></listitem>
 			<listitem><para>
-					Provided that UCS receives a network configuration via <systemitem class="service">DHCP</systemitem>, additional parameters like routing information are now also evaluated.
+					The DNS server <package>bind9</package> has been updated to <wordasword>9.8.4-P1</wordasword>. It includes various enhancements and bugfixes.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>

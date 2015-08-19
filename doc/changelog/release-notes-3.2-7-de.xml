@@ -53,20 +53,20 @@
 		</para>
 
 		<itemizedlist>
+            <listitem><para>
+					Das Release enthält diverse Sicherheitsupdates, die in den letzten Wochen und Monaten für UCS 3.2-6 als Errata Updates veröffentlicht wurden.
+					U.a. enthalten sind aktualisierte Pakete für <package>OpenSSL</package>, <package>glibc</package>, <package>ntp</package>.
+            </para></listitem>
+            <listitem><para>
+					Der Linux Kernel wurde auf den letzten stabilen 3.10er <foreignphrase>Longterm-Kernel</foreignphrase> aktualisiert,
+					<wordasword>3.10.87</wordasword>.  Dieser beinhaltet diverse Sicherheitsaktualisierungen und Fehlerkorrekturen.
+            </para></listitem>
 			<listitem><para>
-					Das Release enthält diverse Sicherheitsupdates, die in den letzten Wochen und Monaten für UCS 3.2-5 als Errata Updates veröffentlicht wurden.
-					U.a. enthalten sind aktualisierte Pakete für den <package>Linux Kernel</package>, <package>OpenSSL</package>, <package>glibc</package>, <package>sudo</package>.
+					Es ist jetzt möglich die Anzahl der Amavis Prozesse über Univention Configuration Registry einfach zu steuern. In Umgebungen mit einem sehr
+					hohen Mailaufkommen kann es zu Verzögerungen bei der Mailauslieferung kommen, wenn nicht genügend Amavis Prozesse gestartet werden.
 			</para></listitem>
 			<listitem><para>
-					Diverse Tools aus dem PAM Stack unterstützen nun die Konfiguration von mehreren LDAP Servern.
-					Eine solche Konfiguration kann genutzt werden, um die generelle Ausfallsicherheit zu erhöhen.
-			</para></listitem>
-			<listitem><para>
-					In großen Umgebungen wurde die Login Performance verbessert:
-					Aufwendige Quota Abfragen wurden dazu aus dem Login Prozess ausgelagert.
-			</para></listitem>
-			<listitem><para>
-					Sofern UCS die Netzwerkeinstellungen via <systemitem class="service">DHCP</systemitem> bezieht, werden nun weitere Parameter ausgewertet, wie bspw. Routing-Informationen.
+					Der DNS-Server <package>bind9</package> wurde auf 9.8.4-P1 aktualisiert. Dieser beinhaltet diverse Weiterentwicklunge und Fehlerkorrekturen.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
