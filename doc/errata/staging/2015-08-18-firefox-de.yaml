@@ -55,8 +55,8 @@ desc: |
  * Self-assignment in nsTArray_Impl causes memory-safety bug (CVE-2015-4489)
  * gdk-pixbuf heap overflow and DoS (CVE-2015-4491)
  * Use After Free in XMLHttpRequest::Open() (CVE-2015-4492)
- * Stagefright: heap-buffer-overflow crash stagefright::ESDS::parseESDescriptor
-   (CVE-2015-4493)
+ * Stagefright: heap-buffer-overflow crash
+   stagefright::ESDS::parseESDescriptor (CVE-2015-4493)
 bug:
  - 38524
 cve:
