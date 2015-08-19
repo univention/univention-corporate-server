@@ -14,7 +14,7 @@ import univention.testing.udm as udm_test
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 
-TIMEOUT = 90 #sec
+TIMEOUT = 300 #sec
 
 def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
 	delivered = False
@@ -68,14 +68,16 @@ def main():
 				nethelper.add_redirection(dcslave_ip, 25, port)
 				ms = MailSink('127.0.0.1', port, filename=f.name)
 				ms.start()
-				wait_for_dns([(dcslave, dcslave_ip)])
 
 				try:
+					wait_for_dns([(dcslave, dcslave_ip)])
 					recipient = 'noreply@univention.de'
 					token = str(time.time())
 					send_mail(recipients=recipient, msg=token)
 					check_delivery_mailsink(token, f.name, True)
 					check_delivery(token, recipient, False)
+				except dns.resolver.NXDOMAIN:
+					pass
 				finally:
 					ms.stop()
 					f.close()
