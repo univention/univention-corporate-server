@@ -9,15 +9,14 @@ desc: |
  several further bugfixes, this resolves multiple security issues:
  * Xen did not properly restrict access to PCI command registers
    (CVE-2015-2150)
- * The InfiniBand (IB) implementation didd not properly restrict use of
+ * The InfiniBand (IB) implementation did not properly restrict use of
    User Verbs for registration of memory regions (CVE-2014-8159)
  * Incorrect implementation of SYSENTER emulation (CVE-2015-0239)
  * iptables doesn't handle SCTP rules unless the SCTP module is loaded
    (CVE-2014-8160)
  * ext4 denial of service (CVE-2014-7822)
- * Incorrect implementation of SYSENTER emulation (CVE-2015-0239)
  * The pipe implementation did not properly consider the side effects of
-   failed inatomic calls (CVE-2015-1805)
+   failed in atomic calls (CVE-2015-1805)
  * The Btrfs implementation did not ensure that the visible xattr state is
    consistent with a requested replacement (CVE-2014-9710)
  * TCP Fast Open local DoS (CVE-2015-3332)
@@ -34,7 +33,6 @@ cve:
  - CVE-2015-0239
  - CVE-2014-8160
  - CVE-2014-7822
- - CVE-2015-0239
  - CVE-2015-1805
  - CVE-2014-9710
  - CVE-2015-3332
