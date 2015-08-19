@@ -1,3 +1,10 @@
+univention-system-activation (1.0.0-7) unstable; urgency=low
+
+  * Bug #39159: Adapted the text #finished page and set the time to wait
+    for apache to 30secs
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 19 Aug 2015 11:46:33 +0200
+
 univention-system-activation (1.0.0-6) unstable; urgency=low
 
   * Bug #39159: Deactivated apache redirect from umc to system-activation
