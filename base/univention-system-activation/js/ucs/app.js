@@ -396,18 +396,25 @@ define([
 			var countUntil = secs / 0.5;
 			var counter = 0;
 			var requestUriTillCounter = function() {
-				request(uri).then(function(success) {
-					deferred.resolve();
+				request(uri).response.then(function(result) {
+					// if uri is reachable http status code has to be 200
+					if (result.status === 200) {
+						deferred.resolve();
+					} else { // otherwise tryAgain
+						tryAgain();
+					}
 				},
 				function(error) {
-					console.log(counter, countUntil);
-					if(counter >= countUntil) {
-						deferred.reject();
-					} else {
-						setTimeout(requestUriTillCounter, 500);
-					}
-					counter++;
+					tryAgain();
 				});
+			};
+			var tryAgain = function() {
+				if (counter >= countUntil) {
+					deferred.reject();
+				} else {
+					setTimeout(requestUriTillCounter, 500);
+				}
+				counter++;
 			};
 			requestUriTillCounter();
 		},
