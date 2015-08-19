@@ -450,7 +450,7 @@
 							<envar>apache2/ssl/ciphersuite</envar>.
 						</simpara></listitem>
 						<listitem><simpara>
-							If the new UCR variable <nvar>apache2/ssl/honorcipherorder</envar> is
+							If the new UCR variable <envar>apache2/ssl/honorcipherorder</envar> is
 							set, the server choice of ciphers is used instead of the ciphers
 							preferred by the TLS client.
 						</simpara></listitem>
