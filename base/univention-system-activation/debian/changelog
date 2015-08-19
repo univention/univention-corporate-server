@@ -1,4 +1,4 @@
-univention-system-activation (1.0.1-1) unstable; urgency=low
+univention-system-activation (1.0.0-6) unstable; urgency=low
 
   * Bug #39159: Deactivated apache redirect from umc to system-activation
 
