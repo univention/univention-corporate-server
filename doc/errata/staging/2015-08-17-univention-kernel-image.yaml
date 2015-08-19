@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-6
 src: univention-kernel-image
-fix: 7.0.0-19.76.201508180621
+fix: 7.0.0-20.77.201508190548
 version: [6]
 desc: |
  This erratum updates the Linux kernel in UCS 3.2 to 3.10.87. Among
