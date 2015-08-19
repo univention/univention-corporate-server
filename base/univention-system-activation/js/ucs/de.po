@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-08-14 14:16+0200\n"
+"POT-Creation-Date: 2015-08-19 11:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -130,7 +130,7 @@ msgstr "Aktivierung anfordern"
 msgid "The following error occurred:"
 msgstr "Der folgende Fehler trat auf:"
 
-#: app.js:384
+#: app.js:388
 msgid "The server is not responding. Please restart the system."
 msgstr "Der Webserver antwortet nicht. Bitte starten Sie das System neu."
 
@@ -158,10 +158,10 @@ msgstr "Ihre E-Mail-Adresse"
 #: app.js:369
 msgid ""
 "{appliance_name} Univention App is now activated. Click \"Continue\" to "
-"access the management interface."
+"access the management interface (which may take a while)."
 msgstr ""
 "{appliance_name} Univention App ist nun aktiviert. Klicken sie auf \"Weiter"
-"\", um auf die Verwaltungsoberfläche zuzugreifen."
+"\", um auf die Verwaltungsoberfläche zuzugreifen. (Das kann einige Zeit benötigen.)"
 
 #~ msgid "You have got mail!"
 #~ msgstr "Sie haben eine neue E-Mail!"

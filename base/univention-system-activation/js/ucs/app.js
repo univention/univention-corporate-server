@@ -366,7 +366,7 @@ define([
 				})
 			});
 			put(tabNode, 'p > b', _('Activation successful!'));
-			put(tabNode, 'p', _('{appliance_name} Univention App is now activated. Click "Continue" to access the management interface.', entries));
+			put(tabNode, 'p', _('{appliance_name} Univention App is now activated. Click "Continue" to access the management interface (which may take a while).', entries));
 			put(tabNode, '>', this._continueButton.domNode);
 			this._continueButton.startup();
 		},
@@ -389,7 +389,7 @@ define([
 				this._continueButton.setAttribute('disabled', false);
 				put(finishedLoadingBar, '!focused');
 			}));
-			this._isReachableWithinSecs(uri, 10, reachableDeferred);
+			this._isReachableWithinSecs(uri, 30, reachableDeferred);
 		},
 
 		_isReachableWithinSecs: function(uri, secs, deferred) {
