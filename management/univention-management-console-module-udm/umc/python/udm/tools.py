@@ -38,6 +38,7 @@ import ldif
 import binascii
 
 import univention.admin.uldap
+import univention.admin.uexceptions as udm_errors
 from univention.lib.i18n import Translation
 
 from univention.management.console.config import ucr
@@ -112,12 +113,78 @@ class LicenseImport(ldif.LDIFParser):
 			ldap_con.add_s(self.dn, self.addlist)
 		ldap_con.unbind_s()
 
+
+def check_license(ldap_connection, ignore_core_edition=False):
+	try:
+		try:
+			_check_license(ldap_connection)
+		except (udm_errors.freeForPersonalUse, udm_errors.licenseGPLversion):
+			if ignore_core_edition:
+				return
+	except udm_errors.licenseNotFound:
+		raise LicenseError(_('License not found. During this session add and modify are disabled.'))
+	except udm_errors.licenseAccounts: #UCS license v1
+		raise LicenseError(_('You have too many user accounts for your license. Add and modify are disabled. Disable or delete <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'users/user\', {})"> user accounts</a> to re-enable editing.'))
+	except udm_errors.licenseUsers: #UCS license v2
+		raise LicenseError(_('You have too many user accounts for your license. Add and modify are disabled. Disable or delete <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'users/user\', {})"> user accounts</a> to re-enable editing.'))
+	except udm_errors.licenseClients: # UCS license v1
+		raise LicenseError(_('You have too many client accounts for your license. During this session add and modify are disabled.'))
+	except udm_errors.licenseServers: # UCS license v2
+		raise LicenseError(_('You have too many server accounts for your license. During this session add and modify are disabled.'))
+	except udm_errors.licenseManagedClients: # UCS license v2
+		raise LicenseError(_('You have too many managed client accounts for your license. During this session add and modify are disabled.'))
+	except udm_errors.licenseCorporateClients: # UCS license v2
+		raise LicenseError(_('You have too many corporate client accounts for your license. During this session add and modify are disabled.'))
+	except udm_errors.licenseDesktops: # UCS license v1
+		raise LicenseError(_('You have too many desktop accounts for your license. During this session add and modify are disabled.'))
+	except udm_errors.licenseGroupware: # UCS license v1
+		raise LicenseError(_('You have too many groupware accounts for your license. During this session add and modify are disabled.'))
+	except udm_errors.licenseDVSUsers: # UCS license v2
+		raise LicenseError(_('You have too many DVS user accounts for your license. During this session add and modify are disabled.'))
+	except udm_errors.licenseDVSClients: # UCS license v2
+		raise LicenseError(_('You have too many DVS client accounts for your license. During this session add and modify are disabled.'))
+	except udm_errors.licenseExpired:
+		raise LicenseError(_('Your license is expired. During this session add and modify are disabled.'))
+	except udm_errors.licenseWrongBaseDn:
+		raise LicenseError(_('Your license is not valid for your LDAP-Base. During this session add and modify are disabled.'))
+	except udm_errors.licenseInvalid:
+		raise LicenseError(_('Your license is not valid. During this session add and modify are disabled.'))
+	except udm_errors.licenseDisableModify:
+		raise LicenseError(_('Your license does not allow modifications. During this session add and modify are disabled.'))
+	except udm_errors.freeForPersonalUse:
+		raise LicenseError(_('You are currently using the "Free for personal use" edition of Univention Corporate Server.'))
+	except udm_errors.licenseGPLversion:
+		raise LicenseError(_('Your license status could not be validated. Thus, you are not eligible to support and maintenance. If you have bought a license, please contact Univention or your Univention partner.'))
+
+
+def _check_license(ldap_connection):
+	try:
+		import univention.admin.license
+	except ImportError:
+		raise udm_errors.licenseGPLversion
+	mapping = {
+		1: udm_errors.licenseClients,
+		2: udm_errors.licenseAccounts,
+		3: udm_errors.licenseDesktops,
+		4: udm_errors.licenseGroupware,
+		5: udm_errors.freeForPersonalUse,
+		6: udm_errors.licenseUsers,
+		7: udm_errors.licenseServers,
+		8: udm_errors.licenseManagedClients,
+		9: udm_errors.licenseCorporateClients,
+		10: udm_errors.licenseDVSUsers,
+		11: udm_errors.licenseDVSClients,
+	}
+	code = univention.admin.license.init_select(ldap_connection, 'admin')
+	ldap_connection._validateLicense()  # throws more exceptions in case the license could not be found
+	if code in mapping:
+		raise mapping[code]
+
+
 # TODO: this should probably go into univention-lib
 # and hide urllib/urllib2 completely
 # i.e. it should be unnecessary to import them directly
 # in a module
-
-
 def install_opener(ucr):
 	proxy_http = ucr.get('proxy/http')
 	if proxy_http:

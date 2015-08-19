@@ -36,26 +36,25 @@ import copy
 import re
 import threading
 import gc
-import traceback
+import functools
 
 from univention.management.console import Translation
 from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
 from univention.management.console.modules import UMC_OptionTypeError, UMC_OptionMissing, UMC_Error
+from univention.management.console.ldap import user_connection
+from univention.management.console.config import ucr
+from univention.management.console.log import MODULE
 
 import univention.admin as udm
 import univention.admin.layout as udm_layout
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
-import univention.admin.uldap as udm_uldap
 import univention.admin.syntax as udm_syntax
 import univention.admin.uexceptions as udm_errors
 
-from ...config import ucr
-from ...log import MODULE
-
 from .syntax import widget, default_value
 
-from ldap import LDAPError, SERVER_DOWN, INVALID_CREDENTIALS, NO_SUCH_OBJECT
+from ldap import LDAPError, NO_SUCH_OBJECT
 
 try:
 	import univention.admin.license
@@ -68,113 +67,23 @@ _ = Translation('univention-management-console-module-udm').translate
 
 udm_modules.update()
 
-# current user
-_user_dn = None
-_password = None
-# decorator for LDAP connections
-_ldap_connection = None
-_ldap_position = None
+__bind_function = None
 _licenseCheck = 0
 
 
-def set_credentials(dn, passwd):
-	global _user_dn, _password
-	_user_dn = dn
-	_password = passwd
-	MODULE.info('Saved LDAP DN for user %s' % _user_dn)
+def set_bind_function(connection_getter):
+	global __bind_function
+	__bind_function = connection_getter
 
 
 def LDAP_Connection(func):
-	"""This decorator function provides an open LDAP connection that can
-	be accessed via the variable ldap_connection and a vaild position
-	within the LDAP directory in the variable ldap_position. It reuses
-	an already open connection or creates a new one.
-
-	When using the decorator the method get two additional keyword arguments.
-
-	example:
-		@LDAP_Connection
-		def do_ldap_stuff(arg1, arg2, ldap_connection=None, ldap_position=None):
-			...
-			ldap_connection.searchDn(..., position=ldap_position)
-			...
-	"""
-	def _get_user_connection():
-		global _licenseCheck
-		lo = _ldap_connection
-		po = _ldap_position
-		if _ldap_connection is None:
-			MODULE.info('Opening LDAP connection for user %s' % _user_dn)
-			lo = udm_uldap.access(host=ucr.get('ldap/master'), base=ucr.get('ldap/base'), binddn=_user_dn, bindpw=_password)
-
-			# license check (see also univention.admin.uldap.access.bind())
-			if not GPLversion:
-				try:
-					_licenseCheck = univention.admin.license.init_select(lo, 'admin')
-					if _licenseCheck in range(1, 5) or _licenseCheck in range(6, 12):
-						lo.allow_modify = 0
-					if _licenseCheck is not None:
-						lo.requireLicense()
-				except univention.admin.uexceptions.licenseInvalid:
-					lo.allow_modify = 0
-					lo.requireLicense()
-				except univention.admin.uexceptions.licenseNotFound:
-					lo.allow_modify = 0
-					lo.requireLicense()
-				except univention.admin.uexceptions.licenseExpired:
-					lo.allow_modify = 0
-					lo.requireLicense()
-				except univention.admin.uexceptions.licenseWrongBaseDn:
-					lo.allow_modify = 0
-					lo.requireLicense()
-
-			po = udm_uldap.position(lo.base)
-		return lo, po
-
-	def _func(*args, **kwargs):
-		global _ldap_connection, _ldap_position
-		lo, po = _get_user_connection()
-		kwargs['ldap_connection'] = lo
-		kwargs['ldap_position'] = po
-		ret = func(*args, **kwargs)
-		_ldap_connection = lo
-		_ldap_position = po
-		return ret
-
-	def wrapper_func(*args, **kwargs):
-		try:
-			return _func(*args, **kwargs)
-		except (LDAPError, udm_errors.ldapError) as exc:
-			MODULE.warn('Exception during ldap operation: %s' % (exc,))
-			global _ldap_connection, _ldap_position
-			_ldap_connection = None
-			_ldap_position = None
-			raise
-			# TODO: find out which specific exception was raised (Bug #37740):
-			# ldap.BUSY, ldap.CANCELLED, ldap.MORE_RESULTS_TO_RETURN, ldap.LOCAL_ERROR, ldap.NO_MEMORY, ldap.NOT_SUPPORTED, ldap.OTHER, ldap.UNAVAILABLE, ldap.UNWILLING_TO_PERFORM, ldap.USER_CANCELLED
-			#return _func(*args, **kwargs)
-
-	return error_handler(wrapper_func)
-
-
-def error_handler(func):
+	@functools.wraps(func)
 	def _decorated(*args, **kwargs):
+		method = user_connection(func, bind=__bind_function, write=True)
 		try:
-			return func(*args, **kwargs)
-		except SERVER_DOWN:
-			raise LDAP_ServerDown()
-		except (udm_errors.authFail, INVALID_CREDENTIALS):
-			raise LDAP_AuthenticationFailed()
-		except (udm_errors.ldapSizelimitExceeded, udm_errors.ldapTimeout):
-			raise
-		except udm_errors.base:
-			MODULE.info('LDAP operation for user %s has failed' % (_user_dn,))
-			if _ldap_connection is None:
-				MODULE.error(traceback.format_exc())
-			raise
-		except LDAPError:
-			MODULE.error(traceback.format_exc())
-			raise
+			return method(*args, **kwargs)
+		except (LDAPError, udm_errors.ldapError):
+			return method(*args, **kwargs)
 	return _decorated
 
 
@@ -190,29 +99,6 @@ class UMCError(UMC_Error):
 	def _error_msg(self):
 		# return a generator or a list of strings which are concatenated by a newline
 		yield ''
-
-
-try:
-	from univention.management.console.modules import LDAP_ServerDown
-except ImportError:  # remove ASAP
-	class LDAP_ServerDown(UMCError):
-
-		def __init__(self):
-			super(LDAP_ServerDown, self).__init__(status=503)
-
-		def _error_msg(self):
-			yield _('Cannot connect to the LDAP service.')
-			yield _('The following steps can help to solve this problem:')
-			if self._is_master:
-				yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server or free some resources')
-			else:
-				yield ' * ' + _('Make sure the domaincontroller master is running and reachable from %s') % (self._fqdn,)
-				yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server and on the domaincontroller master or free some resources')
-			yield ' * ' + _('Restart the LDAP service on the domaincontroller master either via "invoke-rc.d slapd restart" on command line or with the UMC module "System services"')
-			if self._updates_available:
-				yield ' * ' + _('Install the latest software updates')
-			yield _('If the problem persists additional hints about the cause can be found in the following log file(s):')
-			yield ' * /var/log/univention/management-console-module-udm.log'
 
 
 class UserWithoutDN(UMCError):
@@ -1072,38 +958,6 @@ class UDM_Settings(object):
 
 	def resultColumns(self, module_name):
 		pass
-
-
-def check_license(ldap_connection=None, ldap_position=None):
-	"""Checks the license cases and throws exceptions accordingly"""
-	global GPLversion
-	if GPLversion:
-		raise udm_errors.licenseGPLversion
-	ldap_connection._validateLicense()  # throws more exceptions in case the license could not be found
-	MODULE.info('_validateLicense result=%s' % _licenseCheck)
-	if _licenseCheck == 1:
-		raise udm_errors.licenseClients
-	elif _licenseCheck == 2:
-		raise udm_errors.licenseAccounts
-	elif _licenseCheck == 3:
-		raise udm_errors.licenseDesktops
-	elif _licenseCheck == 4:
-		raise udm_errors.licenseGroupware
-	# elif _licenseCheck == 5:
-	# Free for personal use edition
-	# 	raise udm_errors.freeForPersonalUse
-	elif _licenseCheck == 6:
-		raise udm_errors.licenseUsers
-	elif _licenseCheck == 7:
-		raise udm_errors.licenseServers
-	elif _licenseCheck == 8:
-		raise udm_errors.licenseManagedClients
-	elif _licenseCheck == 9:
-		raise udm_errors.licenseCorporateClients
-	elif _licenseCheck == 10:
-		raise udm_errors.licenseDVSUsers
-	elif _licenseCheck == 11:
-		raise udm_errors.licenseDVSClients
 
 
 def container_modules():

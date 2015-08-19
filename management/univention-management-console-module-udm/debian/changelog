@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.2-1) unstable; urgency=medium
+
+  * Bug #39178: use generic UMC functionality for authentication
+
+ -- Florian Best <best@univention.de>  Wed, 19 Aug 2015 16:27:46 +0200
+
 univention-management-console-module-udm (6.0.1-2) unstable; urgency=medium
 
   * Bug #39041: fix hashbang

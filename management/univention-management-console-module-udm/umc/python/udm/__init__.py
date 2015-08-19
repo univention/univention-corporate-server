@@ -42,11 +42,12 @@ import pwd
 import tempfile
 import urllib
 import urllib2
+import traceback
 
-from ldap import LDAPError
+from ldap import LDAPError, INVALID_CREDENTIALS
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
-from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError, UMC_Error, error_handling
+from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError, UMC_Error
 from univention.management.console.modules.decorators import simple_response, sanitize, multi_response
 from univention.management.console.modules.sanitizers import (
 	Sanitizer, LDAPSearchSanitizer, EmailSanitizer, ChoicesSanitizer,
@@ -67,13 +68,14 @@ import univention.directory.reports as udr
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 from .udm_ldap import (
-	UDM_Error, UDM_Module, UDM_Settings, check_license,
+	UDM_Error, UDM_Module, UDM_Settings,
 	ldap_dn2path, get_module, read_syntax_choices, list_objects,
-	LDAP_Connection, set_credentials, container_modules,
+	LDAP_Connection, set_bind_function, container_modules,
 	info_syntax_choices, search_syntax_choices_by_key,
-	UserWithoutDN, ObjectDoesNotExist, SuperordinateDoesNotExist, NoIpLeft
+	UserWithoutDN, ObjectDoesNotExist, SuperordinateDoesNotExist, NoIpLeft,
+	LDAP_AuthenticationFailed
 )
-from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license
+from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license, check_license
 
 _ = Translation('univention-management-console-module-udm').translate
 
@@ -138,26 +140,48 @@ class Instance(Base, ProgressMixin):
 		self.settings = None
 		self.reports_cfg = None
 		self.modules_with_childs = []
+		self.__license_checks = set()
 		install_opener(ucr)
 
-	@Base.password.setter
-	def password(self, password):
-		super(Instance, Instance).password.fset(self, password)
-		set_credentials(self._user_dn, self._password)
-
 	def init(self):
-		'''Initialize the module. Invoked when ACLs, commands and
-		credentials are available'''
-		if not self._user_dn:
+		if not self.user_dn:
 			raise UserWithoutDN(self._username)
 
-		set_credentials(self._user_dn, self._password)
+		MODULE.info('Initializing module as user %r' % (self.user_dn,))
+		set_bind_function(self.bind_user_connection)
 
 		# read user settings and initial UDR
 		self.settings = UDM_Settings()
-		self.settings.user(self._user_dn)
+		self.settings.user(self.user_dn)
 		self.reports_cfg = udr.Config()
 		self.modules_with_childs = container_modules()
+
+	def error_handling(self, etype, exc, etraceback):
+		super(Instance, self).error_handling(etype, exc, etraceback)
+		if isinstance(exc, (udm_errors.authFail, INVALID_CREDENTIALS)):
+			raise LDAP_AuthenticationFailed()
+		if isinstance(exc, (udm_errors.ldapSizelimitExceeded, udm_errors.ldapTimeout)):
+			raise UMC_Error(exc.args[0], status=MODULE_ERR_COMMAND_FAILED)
+		if isinstance(exc, (udm_errors.base, LDAPError)):
+			MODULE.error(''.join(traceback.format_exception(etype, exc, etraceback)))
+
+	def bind_user_connection(self, lo):
+		super(Instance, self).bind_user_connection(lo)
+		self.require_license(lo)
+
+	def require_license(self, lo):
+		if id(lo) in self.__license_checks:
+			return
+		self.__license_checks.add(id(lo))
+		try:
+			import univention.admin.license
+		except ImportError:
+			return  # GPL Version
+		try:
+			check_license(lo, True)
+		except LicenseError:
+			lo.allow_modify = False
+		lo.requireLicense()
 
 	def _get_module_by_request(self, request, object_type=None):
 		"""Tries to determine the UDM module to use. If no specific
@@ -178,61 +202,13 @@ class Instance(Base, ProgressMixin):
 
 		return UDM_Module(module_name)
 
-	def _thread_finished(self, thread, result, request):
-		if not isinstance(result, BaseException):
-			self.finished(request.id, result)
-			return
-
-		if isinstance(result, (udm_errors.ldapSizelimitExceeded, udm_errors.ldapTimeout)):
-			self.finished(request.id, None, result.args[0], status=MODULE_ERR_COMMAND_FAILED)
-			return
-
-		def fake_func(self, request):
-			raise thread.exc_info[0], thread.exc_info[1], thread.exc_info[2]
-		fake_func.__name__ = 'thread %s' % (request.arguments[0],)
-		error_handling(fake_func)(self, request)
-
 	@LDAP_Connection
 	def license(self, request, ldap_connection=None, ldap_position=None):
 		message = None
 		try:
-			# call the check_license method, handle the different exceptions, and
-			# return a user friendly message
 			check_license(ldap_connection)
-		except udm_errors.licenseNotFound:
-			message = _('License not found. During this session add and modify are disabled.')
-		except udm_errors.licenseAccounts:  # UCS license v1
-			message = _('You have too many user accounts for your license. Add and modify are disabled. Disable or delete <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'users/user\', {})"> user accounts</a> to re-enable editing.');
-		except udm_errors.licenseUsers:  # UCS license v2
-			message = _('You have too many user accounts for your license. Add and modify are disabled. Disable or delete <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'users/user\', {})"> user accounts</a> to re-enable editing.');
-		except udm_errors.licenseClients:  # UCS license v1
-			message = _('You have too many client accounts for your license. During this session add and modify are disabled.')
-		except udm_errors.licenseServers:  # UCS license v2
-			message = _('You have too many server accounts for your license. During this session add and modify are disabled.')
-		except udm_errors.licenseManagedClients:  # UCS license v2
-			message = _('You have too many managed client accounts for your license. During this session add and modify are disabled.')
-		except udm_errors.licenseCorporateClients:  # UCS license v2
-			message = _('You have too many corporate client accounts for your license. During this session add and modify are disabled.')
-		except udm_errors.licenseDesktops:  # UCS license v1
-			message = _('You have too many desktop accounts for your license. During this session add and modify are disabled.')
-		except udm_errors.licenseGroupware:  # UCS license v1
-			message = _('You have too many groupware accounts for your license. During this session add and modify are disabled.')
-		except udm_errors.licenseDVSUsers:  # UCS license v2
-			message = _('You have too many DVS user accounts for your license. During this session add and modify are disabled.')
-		except udm_errors.licenseDVSClients:  # UCS license v2
-			message = _('You have too many DVS client accounts for your license. During this session add and modify are disabled.')
-		except udm_errors.licenseExpired:
-			message = _('Your license is expired. During this session add and modify are disabled.')
-		except udm_errors.licenseWrongBaseDn:
-			message = _('Your license is not valid for your LDAP-Base. During this session add and modify are disabled.')
-		except udm_errors.licenseInvalid:
-			message = _('Your license is not valid. During this session add and modify are disabled.')
-		except udm_errors.licenseDisableModify:
-			message = _('Your license does not allow modifications. During this session add and modify are disabled.')
-		except udm_errors.freeForPersonalUse:
-			message = _('You are currently using the "Free for personal use" edition of Univention Corporate Server.')
-		except udm_errors.licenseGPLversion:
-			message = _('Your license status could not be validated. Thus, you are not eligible to support and maintenance. If you have bought a license, please contact Univention or your Univention partner.')
+		except LicenseError as exc:
+			message = str(exc)
 
 		self.finished(request.id, {'message': message})
 
@@ -390,7 +366,7 @@ class Instance(Base, ProgressMixin):
 
 			return result
 
-		thread = notifier.threads.Simple('Get', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
+		thread = notifier.threads.Simple('Get', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	@sanitize(DictSanitizer(dict(
@@ -427,7 +403,7 @@ class Instance(Base, ProgressMixin):
 					result.append({'$dn$': ldap_dn, 'success': False, 'details': str(exc)})
 			return result
 
-		thread = notifier.threads.Simple('Get', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
+		thread = notifier.threads.Simple('Get', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	def remove(self, request):
@@ -455,7 +431,7 @@ class Instance(Base, ProgressMixin):
 
 			return result
 
-		thread = notifier.threads.Simple('Get', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
+		thread = notifier.threads.Simple('Get', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	@simple_response
@@ -507,7 +483,7 @@ class Instance(Base, ProgressMixin):
 			return result
 
 		MODULE.info('Starting thread for udm/get request')
-		thread = notifier.threads.Simple('Get', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
+		thread = notifier.threads.Simple('Get', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	@sanitize(
@@ -579,7 +555,7 @@ class Instance(Base, ProgressMixin):
 				entries.append(entry)
 			return entries
 
-		thread = notifier.threads.Simple('Query', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
+		thread = notifier.threads.Simple('Query', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	def reports_query(self, request):
@@ -641,7 +617,7 @@ class Instance(Base, ProgressMixin):
 			else:
 				return {'success': False, 'count': 0, 'URL': None, 'docType': doc_type}
 
-		thread = notifier.threads.Simple('ReportsCreate', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
+		thread = notifier.threads.Simple('ReportsCreate', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	def values(self, request):
@@ -911,7 +887,7 @@ class Instance(Base, ProgressMixin):
 
 			return result
 
-		thread = notifier.threads.Simple('Validate', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
+		thread = notifier.threads.Simple('Validate', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	@sanitize(key=LDAPSearchSanitizer(use_asterisks=False))
@@ -940,7 +916,7 @@ class Instance(Base, ProgressMixin):
 		def _thread(request):
 			return read_syntax_choices(request.options['syntax'], request.options)
 
-		thread = notifier.threads.Simple('SyntaxChoice', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
+		thread = notifier.threads.Simple('SyntaxChoice', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	def nav_container_query(self, request):
@@ -1048,7 +1024,7 @@ class Instance(Base, ProgressMixin):
 
 			return entries
 
-		thread = notifier.threads.Simple('NavObjectQuery', notifier.Callback(_thread, request.options['container']), notifier.Callback(self._thread_finished, request))
+		thread = notifier.threads.Simple('NavObjectQuery', notifier.Callback(_thread, request.options['container']), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	@sanitize(DictSanitizer(dict(
@@ -1159,7 +1135,7 @@ class Instance(Base, ProgressMixin):
 				ret.append(infos)
 			return ret
 
-		thread = notifier.threads.Simple('ObjectPolicies', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
+		thread = notifier.threads.Simple('ObjectPolicies', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	def object_options(self, request):
@@ -1179,7 +1155,7 @@ class Instance(Base, ProgressMixin):
 
 			return module.get_option(object_dn)
 
-		thread = notifier.threads.Simple('ObjectOptions', notifier.Callback(_thread, object_type, object_dn), notifier.Callback(self._thread_finished, request))
+		thread = notifier.threads.Simple('ObjectOptions', notifier.Callback(_thread, object_type, object_dn), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	@sanitize(email=EmailSanitizer(required=True))
