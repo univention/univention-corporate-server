@@ -18,52 +18,52 @@
 					<package>qemu-kvm</package> (<u:cve>2012-6075</u:cve> <u:cve>2014-0150</u:cve> <u:cve>2014-2894</u:cve> <u:cve>2013-4344</u:cve> <u:cve>2014-0142</u:cve> <u:cve>2014-0143</u:cve> <u:cve>2014-0144</u:cve> <u:cve>2014-0145</u:cve> <u:cve>2014-0146</u:cve> <u:cve>2014-0147</u:cve> <u:cve>2014-0223</u:cve> <u:cve>2014-0222</u:cve> <u:cve>2014-3640</u:cve> <u:cve>2014-3689</u:cve> <u:cve>2014-7815</u:cve> <u:cve>2014-8106</u:cve> <u:cve>2014-3615</u:cve> <u:cve>2015-3456</u:cve> <u:cve>2015-4037</u:cve> <u:cve>2015-3209</u:cve>) (<u:bug>33279</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>clamav</package> ( <u:cve>2014-9050</u:cve> <u:cve>2013-6497</u:cve> <u:cve>2014-9328</u:cve> <u:cve>2015-1461</u:cve> <u:cve>2015-1462</u:cve> <u:cve>2015-1463</u:cve> <u:cve>2015-2170</u:cve> <u:cve>2015-2221</u:cve> <u:cve>2015-2222</u:cve> <u:cve>2015-2668</u:cve> <u:cve>2015-2305</u:cve>) (<u:bug>36965</u:bug>)
+					<package>clamav</package> (<u:cve>2014-9050</u:cve> <u:cve>2013-6497</u:cve> <u:cve>2014-9328</u:cve> <u:cve>2015-1461</u:cve> <u:cve>2015-1462</u:cve> <u:cve>2015-1463</u:cve> <u:cve>2015-2170</u:cve> <u:cve>2015-2221</u:cve> <u:cve>2015-2222</u:cve> <u:cve>2015-2668</u:cve> <u:cve>2015-2305</u:cve>) (<u:bug>36965</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>curl</package> ( <u:cve>2014-3707</u:cve> <u:cve>2014-8150</u:cve> <u:cve>2015-3143</u:cve> <u:cve>2015-3148</u:cve>) (<u:bug>36468</u:bug>)
+					<package>curl</package> (<u:cve>2014-3707</u:cve> <u:cve>2014-8150</u:cve> <u:cve>2015-3143</u:cve> <u:cve>2015-3148</u:cve>) (<u:bug>36468</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>ntp</package> ( <u:cve>2015-1798</u:cve> <u:cve>2015-1799</u:cve>) (<u:bug>38245</u:bug>)
+					<package>ntp</package> (<u:cve>2015-1798</u:cve> <u:cve>2015-1799</u:cve>) (<u:bug>38245</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>bind9</package> ( <u:cve>22014-8500</u:cve> <u:cve>22015-1349</u:cve> <u:cve>22015-4620</u:cve> <u:cve>22015-5477</u:cve>) (<u:bug>37247</u:bug>)
+					<package>bind9</package> (<u:cve>22014-8500</u:cve> <u:cve>22015-1349</u:cve> <u:cve>22015-4620</u:cve> <u:cve>22015-5477</u:cve>) (<u:bug>37247</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>linux</package> ( <u:cve>2015-2150</u:cve> <u:cve>2014-8159</u:cve> <u:cve>2015-0239</u:cve> <u:cve>2014-8160</u:cve> <u:cve>2014-7822</u:cve> <u:cve>2015-0239</u:cve> <u:cve>2015-1805</u:cve> <u:cve>2014-9710</u:cve> <u:cve>2015-3332</u:cve> <u:cve>2015-3636</u:cve> <u:cve>2015-5364</u:cve> <u:cve>2015-5366</u:cve>) (<u:bug>38008</u:bug>)
+					<package>linux</package> (<u:cve>2015-2150</u:cve> <u:cve>2014-8159</u:cve> <u:cve>2015-0239</u:cve> <u:cve>2014-8160</u:cve> <u:cve>2014-7822</u:cve> <u:cve>2015-0239</u:cve> <u:cve>2015-1805</u:cve> <u:cve>2014-9710</u:cve> <u:cve>2015-3332</u:cve> <u:cve>2015-3636</u:cve> <u:cve>2015-5364</u:cve> <u:cve>2015-5366</u:cve>) (<u:bug>38008</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>eglibc</package> ( <u:cve>2015-1781</u:cve>) (<u:bug>38115</u:bug>)
+					<package>eglibc</package> (<u:cve>2015-1781</u:cve>) (<u:bug>38115</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>firefox-de</package> ( <u:cve>2015-0797</u:cve> <u:cve>2015-2710</u:cve> <u:cve>2015-2713</u:cve> <u:cve>2015-2716</u:cve> <u:cve>2015-2721</u:cve> <u:cve>2015-2722</u:cve> <u:cve>2015-2724</u:cve> <u:cve>2015-2725</u:cve> <u:cve>2015-2726</u:cve> <u:cve>2015-2728</u:cve> <u:cve>2015-2730</u:cve> <u:cve>2015-2733</u:cve> <u:cve>2015-2734</u:cve> <u:cve>2015-2735</u:cve> <u:cve>2015-2736</u:cve> <u:cve>2015-2737</u:cve> <u:cve>2015-2738</u:cve> <u:cve>2015-2739</u:cve> <u:cve>2015-2740</u:cve> <u:cve>2015-2743</u:cve> <u:cve>2015-4000</u:cve> <u:cve>2015-4475</u:cve> <u:cve>2015-4478</u:cve> <u:cve>2015-4479</u:cve> <u:cve>2015-4480</u:cve> <u:cve>2015-4482</u:cve> <u:cve>2015-4484</u:cve> <u:cve>2015-4485</u:cve> <u:cve>2015-4486</u:cve> <u:cve>2015-4487</u:cve> <u:cve>2015-4488</u:cve> <u:cve>2015-4489</u:cve> <u:cve>2015-4491</u:cve> <u:cve>2015-4492</u:cve> <u:cve>2015-4493</u:cve>) (<u:bug>38524</u:bug>)
+					<package>firefox-de</package> (<u:cve>2015-0797</u:cve> <u:cve>2015-2710</u:cve> <u:cve>2015-2713</u:cve> <u:cve>2015-2716</u:cve> <u:cve>2015-2721</u:cve> <u:cve>2015-2722</u:cve> <u:cve>2015-2724</u:cve> <u:cve>2015-2725</u:cve> <u:cve>2015-2726</u:cve> <u:cve>2015-2728</u:cve> <u:cve>2015-2730</u:cve> <u:cve>2015-2733</u:cve> <u:cve>2015-2734</u:cve> <u:cve>2015-2735</u:cve> <u:cve>2015-2736</u:cve> <u:cve>2015-2737</u:cve> <u:cve>2015-2738</u:cve> <u:cve>2015-2739</u:cve> <u:cve>2015-2740</u:cve> <u:cve>2015-2743</u:cve> <u:cve>2015-4000</u:cve> <u:cve>2015-4475</u:cve> <u:cve>2015-4478</u:cve> <u:cve>2015-4479</u:cve> <u:cve>2015-4480</u:cve> <u:cve>2015-4482</u:cve> <u:cve>2015-4484</u:cve> <u:cve>2015-4485</u:cve> <u:cve>2015-4486</u:cve> <u:cve>2015-4487</u:cve> <u:cve>2015-4488</u:cve> <u:cve>2015-4489</u:cve> <u:cve>2015-4491</u:cve> <u:cve>2015-4492</u:cve> <u:cve>2015-4493</u:cve>) (<u:bug>38524</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>firefox-en</package> ( <u:cve>2015-0797</u:cve> <u:cve>2015-2710</u:cve> <u:cve>2015-2713</u:cve> <u:cve>2015-2716</u:cve> <u:cve>2015-2721</u:cve> <u:cve>2015-2722</u:cve> <u:cve>2015-2724</u:cve> <u:cve>2015-2725</u:cve> <u:cve>2015-2726</u:cve> <u:cve>2015-2728</u:cve> <u:cve>2015-2730</u:cve> <u:cve>2015-2733</u:cve> <u:cve>2015-2734</u:cve> <u:cve>2015-2735</u:cve> <u:cve>2015-2736</u:cve> <u:cve>2015-2737</u:cve> <u:cve>2015-2738</u:cve> <u:cve>2015-2739</u:cve> <u:cve>2015-2740</u:cve> <u:cve>2015-2743</u:cve> <u:cve>2015-4000</u:cve> <u:cve>2015-4475</u:cve> <u:cve>2015-4478</u:cve> <u:cve>2015-4479</u:cve> <u:cve>2015-4480</u:cve> <u:cve>2015-4482</u:cve> <u:cve>2015-4484</u:cve> <u:cve>2015-4485</u:cve> <u:cve>2015-4486</u:cve> <u:cve>2015-4487</u:cve> <u:cve>2015-4488</u:cve> <u:cve>2015-4489</u:cve> <u:cve>2015-4491</u:cve> <u:cve>2015-4492</u:cve> <u:cve>2015-4493</u:cve>) (<u:bug>38524</u:bug>)
+					<package>firefox-en</package> (<u:cve>2015-0797</u:cve> <u:cve>2015-2710</u:cve> <u:cve>2015-2713</u:cve> <u:cve>2015-2716</u:cve> <u:cve>2015-2721</u:cve> <u:cve>2015-2722</u:cve> <u:cve>2015-2724</u:cve> <u:cve>2015-2725</u:cve> <u:cve>2015-2726</u:cve> <u:cve>2015-2728</u:cve> <u:cve>2015-2730</u:cve> <u:cve>2015-2733</u:cve> <u:cve>2015-2734</u:cve> <u:cve>2015-2735</u:cve> <u:cve>2015-2736</u:cve> <u:cve>2015-2737</u:cve> <u:cve>2015-2738</u:cve> <u:cve>2015-2739</u:cve> <u:cve>2015-2740</u:cve> <u:cve>2015-2743</u:cve> <u:cve>2015-4000</u:cve> <u:cve>2015-4475</u:cve> <u:cve>2015-4478</u:cve> <u:cve>2015-4479</u:cve> <u:cve>2015-4480</u:cve> <u:cve>2015-4482</u:cve> <u:cve>2015-4484</u:cve> <u:cve>2015-4485</u:cve> <u:cve>2015-4486</u:cve> <u:cve>2015-4487</u:cve> <u:cve>2015-4488</u:cve> <u:cve>2015-4489</u:cve> <u:cve>2015-4491</u:cve> <u:cve>2015-4492</u:cve> <u:cve>2015-4493</u:cve>) (<u:bug>38524</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>icu</package> ( <u:cve>2013-0900</u:cve> <u:cve>2013-1569</u:cve> <u:cve>2013-2383</u:cve> <u:cve>2013-2384</u:cve> <u:cve>2013-2419</u:cve> <u:cve>2013-2924</u:cve> <u:cve>2014-6585</u:cve> <u:cve>2014-6591</u:cve> <u:cve>2014-7923</u:cve> <u:cve>2014-7926</u:cve> <u:cve>2014-7940</u:cve> <u:cve>2014-9654</u:cve> <u:cve>2015-4760</u:cve>) (<u:bug>33284</u:bug>)
+					<package>icu</package> (<u:cve>2013-0900</u:cve> <u:cve>2013-1569</u:cve> <u:cve>2013-2383</u:cve> <u:cve>2013-2384</u:cve> <u:cve>2013-2419</u:cve> <u:cve>2013-2924</u:cve> <u:cve>2014-6585</u:cve> <u:cve>2014-6591</u:cve> <u:cve>2014-7923</u:cve> <u:cve>2014-7926</u:cve> <u:cve>2014-7940</u:cve> <u:cve>2014-9654</u:cve> <u:cve>2015-4760</u:cve>) (<u:bug>33284</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>jasper</package> ( <u:cve>2014-9029</u:cve> <u:cve>2014-8137</u:cve> <u:cve>2014-8138</u:cve> <u:cve>2014-8157</u:cve> <u:cve>2014-8158</u:cve>) (<u:bug>33281</u:bug>)
+					<package>jasper</package> (<u:cve>2014-9029</u:cve> <u:cve>2014-8137</u:cve> <u:cve>2014-8138</u:cve> <u:cve>2014-8157</u:cve> <u:cve>2014-8158</u:cve>) (<u:bug>33281</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>nspr</package> ( <u:cve>2014-1545</u:cve>) (<u:bug>35097</u:bug>)
+					<package>nspr</package> (<u:cve>2014-1545</u:cve>) (<u:bug>35097</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>nss</package> ( <u:cve>2011-3389</u:cve> <u:cve>2013-1741</u:cve> <u:cve>2013-5606</u:cve> <u:cve>2014-1491</u:cve> <u:cve>2014-1492</u:cve> <u:cve>2014-1544</u:cve> <u:cve>2014-1568</u:cve> <u:cve>2014-1569</u:cve>) (<u:bug>33281</u:bug>)
+					<package>nss</package> (<u:cve>2011-3389</u:cve> <u:cve>2013-1741</u:cve> <u:cve>2013-5606</u:cve> <u:cve>2014-1491</u:cve> <u:cve>2014-1492</u:cve> <u:cve>2014-1544</u:cve> <u:cve>2014-1568</u:cve> <u:cve>2014-1569</u:cve>) (<u:bug>33281</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>openjdk-6</package> ( <u:cve>2015-0460</u:cve> <u:cve>2015-0469</u:cve> <u:cve>2015-0477</u:cve> <u:cve>2015-0478</u:cve> <u:cve>2015-0480</u:cve> <u:cve>2015-0488</u:cve>) (<u:bug>38303</u:bug>)
+					<package>openjdk-6</package> (<u:cve>2015-0460</u:cve> <u:cve>2015-0469</u:cve> <u:cve>2015-0477</u:cve> <u:cve>2015-0478</u:cve> <u:cve>2015-0480</u:cve> <u:cve>2015-0488</u:cve>) (<u:bug>38303</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>openssl</package> ( <u:cve>2014-8176</u:cve> <u:cve>2015-1789</u:cve> <u:cve>2015-1790</u:cve> <u:cve>2015-1791</u:cve> <u:cve>2015-1792</u:cve> <u:cve>2015-4000</u:cve>) (<u:bug>38692</u:bug>)
+					<package>openssl</package> (<u:cve>2014-8176</u:cve> <u:cve>2015-1789</u:cve> <u:cve>2015-1790</u:cve> <u:cve>2015-1791</u:cve> <u:cve>2015-1792</u:cve> <u:cve>2015-4000</u:cve>) (<u:bug>38692</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>php5</package> ( <u:cve>2014-0237</u:cve> <u:cve>2014-0238</u:cve> <u:cve>2014-2270</u:cve> <u:cve>2014-8117</u:cve> <u:cve>2014-9652</u:cve> <u:cve>2014-9705</u:cve> <u:cve>2015-0232</u:cve> <u:cve>2015-2301</u:cve> <u:cve>2015-2331</u:cve> <u:cve>2015-2783</u:cve> <u:cve>2015-2787</u:cve> <u:cve>2015-3329</u:cve> <u:cve>2015-3330</u:cve> <u:cve>2015-4604</u:cve> <u:cve>2015-4605</u:cve>) (<u:bug>37093</u:bug>)
+					<package>php5</package> (<u:cve>2014-0237</u:cve> <u:cve>2014-0238</u:cve> <u:cve>2014-2270</u:cve> <u:cve>2014-8117</u:cve> <u:cve>2014-9652</u:cve> <u:cve>2014-9705</u:cve> <u:cve>2015-0232</u:cve> <u:cve>2015-2301</u:cve> <u:cve>2015-2331</u:cve> <u:cve>2015-2783</u:cve> <u:cve>2015-2787</u:cve> <u:cve>2015-3329</u:cve> <u:cve>2015-3330</u:cve> <u:cve>2015-4604</u:cve> <u:cve>2015-4605</u:cve>) (<u:bug>37093</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>wget</package> ( <u:cve>2014-4877</u:cve>) (<u:bug>36368</u:bug>)
+					<package>wget</package> (<u:cve>2014-4877</u:cve>) (<u:bug>36368</u:bug>)
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -438,8 +438,10 @@
 		<section id="changelog:service:apache">
 			<title>Apache</title>
 			<itemizedlist>
-				<listitem><simpara>
+				<listitem>
+					<simpara>
  					The configuration of the SSL/TLS support in Apache has been improved.
+					</simpara>
 					<itemizedlist>
 						<listitem><simpara>
 							Apache no longer accepts various insecure ciphers and hash algorithms
@@ -455,6 +457,7 @@
 							preferred by the TLS client.
 						</simpara></listitem>
 					</itemizedlist>
+					<simpara>
 					Please refer to the UCR variable descriptions for additional details
 					(<u:bug>38632</u:bug>).
 				</simpara></listitem>
