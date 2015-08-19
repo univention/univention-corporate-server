@@ -30,7 +30,7 @@
 					<package>bind9</package> (<u:cve>22014-8500</u:cve> <u:cve>22015-1349</u:cve> <u:cve>22015-4620</u:cve> <u:cve>22015-5477</u:cve>) (<u:bug>37247</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>linux</package> (<u:cve>2015-2150</u:cve> <u:cve>2014-8159</u:cve> <u:cve>2015-0239</u:cve> <u:cve>2014-8160</u:cve> <u:cve>2014-7822</u:cve> <u:cve>2015-0239</u:cve> <u:cve>2015-1805</u:cve> <u:cve>2014-9710</u:cve> <u:cve>2015-3332</u:cve> <u:cve>2015-3636</u:cve> <u:cve>2015-5364</u:cve> <u:cve>2015-5366</u:cve>) (<u:bug>38008</u:bug>)
+					<package>linux</package> (<u:cve>2015-2150</u:cve> <u:cve>2014-8159</u:cve> <u:cve>2015-0239</u:cve> <u:cve>2014-8160</u:cve> <u:cve>2014-7822</u:cve> <u:cve>2015-0239</u:cve> <u:cve>2015-1805</u:cve> <u:cve>2014-9710</u:cve> <u:cve>2015-3332</u:cve> <u:cve>2015-3636</u:cve> <u:cve>2015-5364</u:cve> <u:cve>2015-5366</u:cve> <u:cve>2015-2830</u:cve> <u:cve>2015-3331</u:cve> <u:cve>2015-3339</u:cve>) (<u:bug>38008</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
 					<package>eglibc</package> (<u:cve>2015-1781</u:cve>) (<u:bug>38115</u:bug>)
