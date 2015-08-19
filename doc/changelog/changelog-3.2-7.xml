@@ -401,7 +401,7 @@
 			<title>Software deployment command line tools</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The update scripts have been adjusted to UCS 3.2-6 (<u:bug>38516</u:bug>).
+						The update scripts have been adjusted to UCS 3.2-7 (<u:bug>38972</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
