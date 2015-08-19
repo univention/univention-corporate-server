@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+
 import traceback
 
 import ldap
@@ -49,7 +51,7 @@ class AuthenticationResult(object):
 
 	def __init__(self, result):
 		from univention.management.console.protocol.definitions import SUCCESS, BAD_REQUEST_AUTH_FAILED, BAD_REQUEST_PASSWORD_EXPIRED
-		self.credentials = (None, None)
+		self.credentials = None
 		self.status = SUCCESS
 		self.authenticated = not isinstance(result, BaseException)
 		if self.authenticated:
@@ -67,8 +69,7 @@ class AuthenticationResult(object):
 			self.status = 500
 			self.message = str(result)
 		else:
-			username, password = result
-			self.result = {'username': username}
+			self.result = {'username': result['username']}
 
 	def __nonzero__(self):
 		return self.authenticated
@@ -81,6 +82,7 @@ class AuthHandler(signals.Provider):
 		self.signal_new('authenticated')
 
 	def authenticate(self, msg):
+		self.__auth_type = msg.body.get('auth_type')
 		username, password, new_password, locale = msg.body['username'], msg.body['password'], msg.body.get('new_password'), msg.body.get('locale')
 		# PAM MUST be initialized outside of a thread. Otherwise it segfaults e.g. with pam_saml.so. See http://pam-python.sourceforge.net/doc/html/#bugs
 		self.pam = PamAuth(locale)
@@ -89,7 +91,7 @@ class AuthHandler(signals.Provider):
 
 	def __authenticate_thread(self, username, password, new_password, locale):
 		AUTH.info('Trying to authenticate user %r' % (username,))
-#		username = self.__canonicalize_username(username)
+		username = self.__canonicalize_username(username)
 		try:
 			self.pam.authenticate(username, password)
 		except AuthenticationFailed as auth_failed:
@@ -133,5 +135,9 @@ class AuthHandler(signals.Provider):
 		if isinstance(result, BaseException) and not isinstance(result, (AuthenticationFailed, PasswordExpired, PasswordChangeFailed)):
 			import traceback
 			AUTH.error(''.join(traceback.format_exception(*thread.exc_info)))
+		if isinstance(result, tuple):
+			username, password = result
+			result = {'username': username, 'password': password, 'auth_type': self.__auth_type}
+			AUTH.error(password)
 		auth_result = AuthenticationResult(result)
 		self.signal_emit('authenticated', auth_result)

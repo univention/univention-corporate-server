@@ -93,7 +93,7 @@ class State(signals.Provider):
 		self.socket = socket
 		self.processor = None
 		self.authenticated = False
-		self.__credentials = (None, None)
+		self.__credentials = None
 		self.buffer = ''
 		self.requests = {}
 		self.authResponse = None
@@ -106,6 +106,7 @@ class State(signals.Provider):
 		if self.processor:
 			self.processor.__del__()
 		del self.processor
+		self.processor = None
 
 	def _authenticated(self, result):
 		self.__credentials = result.credentials
@@ -196,11 +197,12 @@ class Processor(Base):
 	:param str password: password of the user
 	"""
 
-	def __init__(self, username, password):
+	def __init__(self, username, password, auth_type):
 		Base.__init__(self, 'univention-management-console')
 
 		self.username = username
 		self.password = password
+		self.auth_type = auth_type
 		self.__udm_users_module_initialised = False
 		self.__command_list = None
 		self.i18n = I18N_Manager()
@@ -848,13 +850,18 @@ class Processor(Base):
 			options = {
 				'acls': self.acls.json(),
 				'commands': self.__command_list[mod.name].json(),
-				'credentials': {'username': self._username, 'password': self._password, 'user_dn': self._user_dn},
+				'credentials': {
+					'auth_type': self.auth_type,
+					'username': self._username,
+					'password': self._password,
+					'user_dn': self._user_dn
+				},
 			}
 			if str(self.i18n.locale):
 				options['locale'] = str(self.i18n.locale)
 
 			# WARNING! This debug message contains credentials!!!
-			# CORE.info( 'Initialize module process: %s' % options )
+			# CORE.info('Initialize module process: %s' % (options,))
 
 			req = Request('SET', options=options)
 			mod.request(req)
@@ -929,7 +936,3 @@ class Processor(Base):
 		res.message = status_description(res.status)
 
 		self.result(res)
-
-if __name__ == '__main__':
-	processor = Processor('Administrator', 'univention')
-	processor.handle_request_get(None)

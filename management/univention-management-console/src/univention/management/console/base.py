@@ -123,18 +123,21 @@ Methods
 
 """
 
+from __future__ import absolute_import
+
 from notifier import signals
 import traceback
 import ldap
+import ldap.sasl
 import sys
 
 from univention.lib.i18n import Translation
 
-import univention.admin.uldap as udm_uldap
 import univention.admin.uexceptions as udm_errors
 
 from univention.management.console.protocol.message import Response, MIMETYPE_JSON
 from univention.management.console.protocol.definitions import BAD_REQUEST, MODULE_ERR, MODULE_ERR_COMMAND_FAILED, SUCCESS, SUCCESS_MESSAGE, SUCCESS_PARTIAL, SUCCESS_SHUTDOWN
+from univention.management.console.ldap import get_user_connection
 from univention.management.console.log import MODULE, CORE
 from univention.management.console.config import ucr
 
@@ -220,6 +223,7 @@ class Base(signals.Provider, Translation):
 		self._username = None
 		self._user_dn = None
 		self._password = None
+		self.__auth_type = None
 		self.__acls = None
 		self.__requests = {}
 		Translation.__init__(self, domain)
@@ -257,6 +261,14 @@ class Base(signals.Provider, Translation):
 	def acls(self, acls):
 		self.__acls = acls
 
+	@property
+	def auth_type(self):
+		return self.__auth_type
+
+	@auth_type.setter
+	def auth_type(self, auth_type):
+		self.__auth_type = auth_type
+
 	def init(self):
 		'''this function is invoked after the initial UMCP SET command
 		that passes the base configuration to the module process'''
@@ -285,6 +297,13 @@ class Base(signals.Provider, Translation):
 			raise
 		except:
 			self.__error_handling(request, method, *sys.exc_info())
+
+	def thread_finished_callback(self, thread, result, request):
+		if not isinstance(result, BaseException):
+			self.finished(request.id, result)
+			return
+		method = '%s: %s' % (thread.name, request.arguments[0],)
+		self.__error_handling(request, method, *thread.exc_info)
 
 	def error_handling(self, etype, exc, etraceback):
 		if isinstance(exc, ldap.SERVER_DOWN):
@@ -325,17 +344,20 @@ class Base(signals.Provider, Translation):
 		if not self._user_dn:
 			return  # local user (probably root)
 		try:
-			# open an LDAP connection with the user password and credentials
-			return udm_uldap.access(
-				host=ucr.get('ldap/server/name'),
-				base=ucr.get('ldap/base'),
-				port=int(ucr.get('ldap/server/port', '7389')),
-				binddn=self._user_dn,
-				bindpw=self._password,
-				follow_referral=True
-			)
+			lo, po = get_user_connection(bind=self.bind_user_connection, write=False, follow_referral=True)
+			return lo
 		except (ldap.LDAPError, udm_errors.base) as exc:
 			CORE.warn('Failed to open LDAP connection for user %s: %s' % (self._user_dn, exc))
+
+	def bind_user_connection(self, lo):
+		if self.auth_type == 'SAML':
+			saml = ldap.sasl.sasl({
+				ldap.sasl.CB_AUTHNAME: self._user_dn,
+				ldap.sasl.CB_PASS: self._password
+			}, 'SAML')
+			lo.lo.lo.sasl_interactive_bind_s('', saml)
+		else:
+			lo.lo.bind(self._user_dn, self._password)
 
 	def required_options(self, request, *options):
 		"""Raises an UMC_OptionMissing exception if any of the given

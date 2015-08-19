@@ -202,7 +202,7 @@ class MagicBucket(object):
 		else:
 			# inform processor
 			if not state.processor:
-				state.processor = Processor(*state.credentials())
+				state.processor = Processor(**state.credentials())
 				state.processor.signal_connect('success', notifier.Callback(self._response, state))
 			state.processor.request(msg)
 

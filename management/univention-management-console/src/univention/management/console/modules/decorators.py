@@ -54,10 +54,12 @@ flexibility.
 
 import sys
 import inspect
+import time
 import types
 import traceback
 import notifier
 import notifier.threads
+import functools
 from threading import Thread
 
 from univention.lib.i18n import Translation
@@ -627,4 +629,24 @@ def file_upload(function):
 	copy_function_meta_data(function, _response)
 	return _response
 
-__all__ = ['simple_response', 'multi_response', 'sanitize', 'log', 'sanitize_list', 'sanitize_dict', 'file_upload']
+
+class reloading_ucr(object):
+
+	_last_reload = dict()
+
+	def __init__(self, ucr, timeout=0.2):
+		self._ucr = ucr
+		self._timeout = timeout
+
+	def __call__(self, func):
+		@functools.wraps(func)
+		def wrapper(*args, **kwargs):
+			last_reload = self._last_reload.get(id(self._ucr), 0)
+			if last_reload == 0 or time.time() - last_reload > self._timeout:
+				self._ucr.load()
+				self._last_reload[id(self._ucr)] = time.time()
+			return func(*args, **kwargs)
+		return wrapper
+
+
+__all__ = ['simple_response', 'multi_response', 'sanitize', 'log', 'sanitize_list', 'sanitize_dict', 'file_upload', 'reloading_ucr']
