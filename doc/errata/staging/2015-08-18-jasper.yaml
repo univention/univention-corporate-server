@@ -12,9 +12,8 @@ desc: |
    (CVE-2014-8137, CVE-2014-8138)
  * Off-by-one and buffer overflows in processing JPEG2000 images
    (CVE-2014-8157, CVE-2014-8158)
- * 
 bug:
- - 33281
+ - 37209
 cve:
  - CVE-2014-9029
  - CVE-2014-8137
