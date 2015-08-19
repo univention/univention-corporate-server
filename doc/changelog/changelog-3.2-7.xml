@@ -93,7 +93,7 @@
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The Linux kernel has been updated to <wordasword>3.10.87<wordasword>. It
+						The Linux kernel has been updated to <wordasword>3.10.87</wordasword>. It
 						provides many bugfixes and fixes several vulnerabilities (<u:bug>38008</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
