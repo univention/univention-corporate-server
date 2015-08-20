@@ -149,10 +149,8 @@ def LDAP_Connection(func):
 			global _ldap_connection, _ldap_position
 			_ldap_connection = None
 			_ldap_position = None
-			raise
-			# TODO: find out which specific exception was raised (Bug #37740):
-			# ldap.BUSY, ldap.CANCELLED, ldap.MORE_RESULTS_TO_RETURN, ldap.LOCAL_ERROR, ldap.NO_MEMORY, ldap.NOT_SUPPORTED, ldap.OTHER, ldap.UNAVAILABLE, ldap.UNWILLING_TO_PERFORM, ldap.USER_CANCELLED
-			#return _func(*args, **kwargs)
+			# the ldap connection might be broken, reexecute the function which creates a new ldap connection. Bug #38346
+			return _func(*args, **kwargs)
 
 	return error_handler(wrapper_func)
 
