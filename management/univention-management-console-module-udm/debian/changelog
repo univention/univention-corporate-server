@@ -1,3 +1,10 @@
+univention-management-console-module-udm (6.0.2-2) unstable; urgency=low
+
+  * Bug #37799: the detailDialog won't display objects any more that are
+    already a value of MultiObjectSelect
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 20 Aug 2015 08:53:02 +0200
+
 univention-management-console-module-udm (6.0.2-1) unstable; urgency=medium
 
   * Bug #39178: use generic UMC functionality for authentication
