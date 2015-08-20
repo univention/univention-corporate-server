@@ -1,3 +1,9 @@
+univention-ssl (9.0.4-5) unstable; urgency=low
+
+  * Bug #33870: Fix removing deleted certificates
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 20 Aug 2015 07:39:42 +0200
+
 univention-ssl (9.0.4-4) unstable; urgency=low
 
   * Bug #38125: Make request non-interactive
