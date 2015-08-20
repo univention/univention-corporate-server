@@ -388,6 +388,7 @@
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
+						Deleted SSL certificates are also deleted on DC backups (<u:bug>33870</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
