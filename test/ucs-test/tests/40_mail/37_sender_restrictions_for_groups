@@ -1,0 +1,95 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test sender restrictions for mailing lists
+## exposure: dangerous
+## packages: [univention-mail-server]
+## version:
+##  4.0-3: skip
+
+from essential.mail import send_mail, restart_postfix
+import univention.testing.utils as utils
+import smtplib
+from univention.config_registry import handler_set
+import time
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+
+def check_sending_mail(sender, recipient, username, password, should_be_accepted):
+	token = str(time.time())
+	try:
+		ret_code = send_mail( recipients=recipient, sender=sender, msg=token, tls=True, username=username, password=password)
+		if (bool(ret_code) == should_be_accepted):
+			utils.fail('Sending should_be_accepted = %r, but return code = %r\n {} means there are no refused recipient' % (should_be_accepted, ret_code))
+	except smtplib.SMTPRecipientsRefused as ex:
+		if should_be_accepted:
+			utils.fail('Mail sent failed with exception: %s' % ex)
+
+
+def main():
+	cmd = ['/etc/init.d/postfix', 'restart']
+	with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')) as acc:
+		with ucr_test.UCSTestConfigRegistry() as ucr:
+			with udm_test.UCSTestUDM() as udm:
+				handler_set(['mail/postfix/policy/listfilter=yes'])
+				restart_postfix()
+				domain = ucr.get('domainname')
+				password = 'univention'
+				mails= []
+				users = []
+				for i in xrange(5):
+					mail = '%s@%s' % (uts.random_name(), domain)
+					user_dn , username = udm.create_user(
+						set={
+							'password'           : password,
+							'mailHomeServer'     : '%s.%s' % (ucr.get('hostname'), domain),
+							'mailPrimaryAddress' : mail
+						}
+					)
+					mails.append(mail)
+					users.append(user_dn)
+				group1_name = uts.random_name()
+				group1_mail = '%s@%s' % (group1_name, domain)
+				group1_dn = udm.create_object(
+					'groups/group',
+					position = 'cn=groups,%s' % ucr.get('ldap/base'),
+					set={
+						'name'        : group1_name,
+						'mailAddress' : group1_mail,
+						'users'       : users[0],
+					}
+				)
+				group2_name = uts.random_name()
+				group2_mail = '%s@%s' % (group2_name, domain)
+				udm.create_object(
+					'groups/group',
+					position = 'cn=groups,%s' % ucr.get('ldap/base'),
+					set={
+						'name'        : group2_name,
+						'mailAddress' : group2_mail,
+						'users'       : users[1],
+					}
+				)
+				group3_name = uts.random_name()
+				group3_mail = '%s@%s' % (group3_name, domain)
+				udm.create_object(
+					'groups/group',
+					position = 'cn=groups,%s' % ucr.get('ldap/base'),
+					set={
+						'name'        : group3_name,
+						'mailAddress' : group3_mail,
+						'users'       : users[4],
+						'allowedEmailUsers': users[2],
+						'allowedEmailGroups': group1_dn,
+					}
+				)
+
+				check_sending_mail(mails[0], mails[4], mails[0], password, True)
+				check_sending_mail(mails[1], mails[4], mails[1], password, False)
+				check_sending_mail(mails[2], mails[4], mails[2], password, True)
+				check_sending_mail(mails[3], mails[4], mails[3], password, False)
+
+
+if __name__ == '__main__':
+	main()
+
+# vim: set ft=python ts=4 sw=4 noet :
