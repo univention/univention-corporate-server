@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+version: [3]
+scope: ucs_4.0-0-errata4.0-3
+src: univention-ssl
+fix: 9.0.4-5.161.201508200928
+desc: |
+  This update addresses the following issues:
+  * Deleted SSL certificates are also deleted on DC backups.
+bug: [33870]
