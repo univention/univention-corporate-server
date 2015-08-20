@@ -10,29 +10,24 @@
 	<title>Changelog</title>
 	<section id="changelog:general">
 		<title>General</title>
-		<!--
 		<itemizedlist>
 			<listitem><simpara>
 			</simpara></listitem>
 		</itemizedlist>
-		-->
 	</section>
 
 	<section id="changelog:installer">
 		<title>Univention Installer</title>
-		<!--
 		<itemizedlist>
 			<listitem><simpara>
 			</simpara></listitem>
 		</itemizedlist>
-		-->
 	</section>
 
 
 	<section id="changelog:basic">
 		<title>Basic system services</title>
 
-		<!--
 		<section id="changelog:basic:kernel">
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
@@ -40,18 +35,14 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
 		<section id="changelog:basis:ucr">
 			<title>Univention Configuration Registry</title>
-			<!--
 			<itemizedlist>
 				<listitem><simpara>
 				</simpara></listitem>
 			</itemizedlist>
-			-->
 
-			<!--
 			<section id="changelog:basis:ucr:template">
 				<title>Changes to templates and modules</title>
 				<itemizedlist>
@@ -59,20 +50,16 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
-			-->
 		</section>
 
 		<section id="changelog:basis:boot">
 			<title>Boot Loader</title>
-			<!--
 			<itemizedlist>
 				<listitem><simpara>
 				</simpara></listitem>
 			</itemizedlist>
-			-->
 		</section>
 
-		<!--
 		<section id="changelog:basis:other">
 			<title>Other system services</title>
 			<itemizedlist>
@@ -80,7 +67,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 	</section>
 
 
@@ -89,7 +75,6 @@
 
 		<section id="changelog:domain:openldap">
 			<title>OpenLDAP</title>
-			<!--
 			<itemizedlist>
 				<listitem><simpara>
 				</simpara></listitem>
@@ -126,7 +111,6 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
-			-->
 		</section>
 	</section>
 
@@ -175,7 +159,6 @@
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:umc:user">
 			<title>Users module</title>
 			<itemizedlist>
@@ -207,7 +190,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
 		<section id="changelog:umc:license">
 			<title>License module</title>
@@ -233,7 +215,6 @@
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:umc:share">
 			<title>Shares module</title>
 			<itemizedlist>
@@ -265,7 +246,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
 		<section id="changelog:umc:quota">
 			<title>Filesystem quota module</title>
@@ -283,7 +263,6 @@
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:umc:ldap">
 			<title>LDAP directory browser</title>
 			<itemizedlist>
@@ -307,11 +286,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 	</section>
 
 
-	<!--
 	<section id="changelog:deployment">
 		<title>Software deployment</title>
 		<itemizedlist>
@@ -335,7 +312,6 @@
 			</itemizedlist>
 		</section>
 	</section>
-	-->
 
 
 	<section id="changelog:lib">
@@ -374,7 +350,6 @@
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:service:nagios">
 			<title>Nagios</title>
 			<itemizedlist>
@@ -382,7 +357,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
 		<section id="changelog:service:ssl">
 			<title>SSL</title>
@@ -401,7 +375,6 @@
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:service:systeminfo">
 			<title>Univention System Info</title>
 			<itemizedlist>
@@ -409,7 +382,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
 		<section id="changelog:service:apache">
 			<title>Apache</title>
@@ -427,7 +399,6 @@
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:service:other">
 			<title>Other services</title>
 			<itemizedlist>
@@ -435,7 +406,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 	</section>
 
 
@@ -450,7 +420,6 @@
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:virt:operation">
 			<title>Operate UCS as virtual machine</title>
 			<itemizedlist>
@@ -458,8 +427,8 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 	</section>
+
 
 	<section id="changelog:container">
 		<title>Container Technologies</title>
