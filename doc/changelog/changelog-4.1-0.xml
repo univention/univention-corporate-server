@@ -100,7 +100,6 @@
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
 					<listitem><simpara>
-							Any running &ucsUDL; and &ucsUDN; are forcefully terminated before the domain is joined (<u:bug>38756</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
@@ -363,7 +362,6 @@
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
-						Deleted SSL certificates are also deleted on DC backups (<u:bug>33870</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
