@@ -32,14 +32,6 @@
 			</para>
 		</legalnotice>
 		<releaseinfo>Draft</releaseinfo>
-		<revhistory>
-			<revision>
-				<revnumber>3.1-0</revnumber>
-				<date><?dbtimestamp format="Y-m-d"?></date>
-				<authorinitials>pmh</authorinitials>
-				<revremark>Draft</revremark>
-			</revision>
-		</revhistory>
 	</bookinfo>
 
 	<!--

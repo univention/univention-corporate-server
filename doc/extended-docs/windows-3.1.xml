@@ -11,12 +11,6 @@
       <title>Univention Corporate Server</title>
       <subtitle>Extended Windows integration documentation</subtitle>
 
-        <revhistory>
-            <revision>
-                <revnumber>3.1-1</revnumber>
-                <date>3 Jun 2013</date>
-            </revision>
-        </revhistory>
     </bookinfo>
 
     <chapter>
