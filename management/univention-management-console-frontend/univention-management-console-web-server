@@ -782,8 +782,8 @@ class CPAuth(CPgeneric):
 		# get body and parse json
 		body = ''
 		if cherrypy.request.method in cherrypy.request.methods_with_bodies:
-			max_length = 512
-			if content_length <= max_length:
+			max_length = 2000 * 1024
+			if content_length <= max_length:  # prevent some DoS
 				raise HTTPError(REQUEST_ENTITY_TOO_LARGE, 'Request data is too large, allowed length is %d' % max_length)
 			body = cherrypy.request.body.read()
 
@@ -793,7 +793,7 @@ class CPAuth(CPgeneric):
 
 		# create new UMCP request
 		req = umcp.Request('AUTH')
-		req.body["auth_type"] = None
+		req.body["auth_type"] = data['options'].get('auth_type')
 		req.body['username'] = data['options'].get('username', '')
 		req.body['password'] = data['options'].get('password', '')
 		req.body['new_password'] = data['options'].get('new_password')

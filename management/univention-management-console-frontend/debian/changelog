@@ -1,6 +1,12 @@
+univention-management-console-frontend (5.0.12-1) unstable; urgency=medium
+
+  * Bug #39178: allow SAML authentication via /umcp/auth
+
+ -- Florian Best <best@univention.de>  Thu, 20 Aug 2015 14:43:30 +0200
+
 univention-management-console-frontend (5.0.11-1) unstable; urgency=medium
 
-  * Bug #39178: reach authentication type to the UMC server, enable SASL
+  * Bug #39178: pass authentication type to the UMC server, enable SASL
   	module for SAML
 
  -- Florian Best <best@univention.de>  Tue, 18 Aug 2015 12:48:28 +0200
