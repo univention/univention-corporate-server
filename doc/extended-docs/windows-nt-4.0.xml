@@ -12,13 +12,6 @@
     <bookinfo>
       <title>Univention Corporate Server</title>
 		<subtitle>Operation of a Samba domain based on Windows NT domain services</subtitle>
-
-        <revhistory>
-            <revision>
-                <revnumber>4.0-0</revnumber>
-                <date>18 Nov 2014</date>
-            </revision>
-        </revhistory>
     </bookinfo>
 
 	<chapter id="windows:ntsetup">
