@@ -6,8 +6,9 @@ fix: 1.12-2.1.26.201508181058
 version: [6]
 desc: |
  The following vulnerability has been fixed in wget:
- * If wget is used to recursively download a directory over FTP, a symlink
-   attack can create arbitrary files or overwrite existing ones (CVE-2014-4877)
+ * If wget is used to recursively download a directory over FTP, a
+   symlink attack can create arbitrary files or overwrite existing
+   ones (CVE-2014-4877)
 bug:
  - 36368
 cve:
