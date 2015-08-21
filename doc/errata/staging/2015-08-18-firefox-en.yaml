@@ -9,7 +9,7 @@ desc: |
  on Firefox 38. The previosly used ESR 31 series is no longer maintained.
  This update consists of two updates for firefox-en and firefox-de.
  Several vulnerabilities have been fixed with the update to Firefox ESR 38.2
- * heap-buffer-overflow (read of size 0xffffffff) when playing a m4v video
+ * Heap-buffer-overflow (read of size 0xffffffff) when playing a m4v video
    (CVE-2015-0797)
  * Heap-buffer-overflow in SVGTextFrame (CVE-2015-2710)
  * Heap-use-after-free in SetBreaks (CVE-2015-2713)

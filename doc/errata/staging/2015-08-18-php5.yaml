@@ -24,7 +24,7 @@ desc: |
    execution of arbitrary code by remote attackers (CVE-2015-2787)
  * Buffer Overflow when parsing tar/zip/phar in phar_set_inode (CVE-2015-3329)
  * Remote code execution with apache 2.4 apache2handler (CVE-2015-3330)
- * denial of service when processing a crafted file with Fileinfo
+ * Denial of service when processing a crafted file with Fileinfo
    (CVE-2015-4604 CVE-2015-4605)
 bug:
  - 37093

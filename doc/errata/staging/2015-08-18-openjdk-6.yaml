@@ -8,7 +8,7 @@ desc: |
  Multiple vulnerabilities have been discovered in the implementation
  of the Java platform. In Univention Corporate Server OpenJDK is
  used instead of Oracle Java. This erratum updates OpenJDK to the
- released based on the Oracle update 6u91 which fixes these issues:
+ release based on the Oracle update 6u91 which fixes these issues:
  * Incorrect handling of phantom references (CVE-2015-0460)
  * Layout engine glyphStorage off-by-one (CVE-2015-0469)
  * Incorrect permissions check in resource loading (CVE-2015-0477)
