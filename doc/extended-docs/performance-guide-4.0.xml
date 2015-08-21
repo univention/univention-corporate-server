@@ -67,8 +67,8 @@ grep 'not indexed' /var/log/syslog
 		<title>Configuration of the database backend</title>
 		<para>
 			The memory mapped database (MDB) has been used for new installations since UCS
-			4.0. If BDB is still in use, a migration to MDB should be performed. The
-			database backend can be controlled via the UCR variable
+			4.0. If BDB is still in use, a migration to MDB should be performed for amd64 systems (not i386).
+			The database backend can be controlled via the UCR variable
 			<envar>ldap/database/type</envar>. A migration can be performed as follows:
 			<programlisting language="sh">
 /etc/init.d/slapd stop
