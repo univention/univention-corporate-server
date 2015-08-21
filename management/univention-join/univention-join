@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 # execute univention-server-join
+LOG='/var/log/univention/join.log'
 
 export PATH="$PATH:/sbin:/usr/sbin:/bin:/usr/bin"
 
@@ -590,33 +591,15 @@ if [ -e "/etc/univention/ssl" ]; then
 	mkdir /etc/univention/ssl
 fi
 
-# Stop Notifier
-notifier_pid="$(pidof univention-directory-notifier)"
-if [ -n "$notifier_pid" -a -e /etc/runit/univention/univention-directory-notifier ]; then
-	echo -n "Stopping univention-directory-notifier daemon: "
-	/etc/init.d/univention-directory-notifier stop >/dev/null 2>&1
-	while ! sv status univention-directory-notifier | grep -q "^down"
-	do
-		sleep 1
-		/etc/init.d/univention-directory-notifier stop >/dev/null 2>&1
-		echo -n "."
-	done
-	echo " done"
-fi
-
-# Stop Listener
-listener_pid="$(pidof univention-directory-listener)"
-if [ -e /etc/runit/univention/univention-directory-listener ]; then
-	echo -n "Stopping univention-directory-listener daemon: "
-	/etc/init.d/univention-directory-listener stop >/dev/null 2>&1
-	while ! sv status univention-directory-listener | grep "^down" >/dev/null
-	do
-		sleep 1
-		/etc/init.d/univention-directory-listener stop >/dev/null 2>&1
-		echo -n "."
-	done
-	echo " done"
-fi
+for service in univention-directory-notifier univention-directory-listener
+do
+	if [ -e "/etc/runit/univention/$service" ]
+	then
+		echo -n "Stopping $service daemon: "
+		sv force-stop "$service" >>"$LOG" 2>&1
+		echo " done"
+	fi
+done
 rm -Rf /var/lib/univention-directory-listener/*
 
 set_kerberos_realm () {
