@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.12-2) unstable; urgency=medium
+
+  * Bug #39178: handle another pysaml2 exception
+
+ -- Florian Best <best@univention.de>  Fri, 21 Aug 2015 15:31:18 +0200
+
 univention-management-console-frontend (5.0.12-1) unstable; urgency=medium
 
   * Bug #39178: allow SAML authentication via /umcp/auth

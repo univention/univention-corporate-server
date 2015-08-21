@@ -69,6 +69,7 @@ from saml2.httputil import make_cookie, parse_cookie
 from saml2.response import VerificationError, UnsolicitedResponse
 from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, sid as generate_sid, rndstr
 from saml2.samlp import Extensions
+from saml2.sigver import MissingKey
 #from saml2 import xmldsig as ds  # FIXME: pysaml2 v3 required
 
 ucr = ConfigRegistry()
@@ -898,6 +899,8 @@ class SAML(object):
 			raise HTTPError(500, "Verification error: %s" % (exc,))
 		except UnsolicitedResponse as exc:  # e.g. UMC-webserver restart between IDP→SP authentication
 			raise HTTPError(500, 'Unsolicited response: %s' % (exc,))
+		except MissingKey as exc:
+			raise HTTPError(500, 'Unknown issuer: %s' % (exc,))
 		if response is None:
 			raise HTTPError(400, "The SAML message is invalid for this service provider.")
 
