@@ -98,7 +98,8 @@ else
         --set operatingSystem="$(lsb_release -is)" \
         --set operatingSystemVersion="$(lsb_release -rs)"
 fi
-echo "${password}" > /etc/ldap.secret
+printf '%s' "$password" >/etc/ldap.secret
+chmod 0400 /etc/ldap.secret
 
 # Create ldap.conf
 cat >/etc/ldap/ldap.conf <<__EOF__
