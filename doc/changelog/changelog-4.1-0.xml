@@ -2,8 +2,8 @@
 <!DOCTYPE chapter  PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
-	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
 	%extensions;
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
 	%entities;
 ]>
 <chapter id="relnotes:changelog" lang="en">
@@ -100,6 +100,7 @@
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
 					<listitem><simpara>
+							Any running &ucsUDL; and &ucsUDN; are forcefully terminated before the domain is joined (<u:bug>38756</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>

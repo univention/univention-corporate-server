@@ -1,3 +1,9 @@
+univention-join (8.0.0-2) unstable; urgency=low
+
+  * Bug #38756: Force kill UDN und UDL
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 20 Aug 2015 18:37:16 +0200
+
 univention-join (8.0.0-1) unstable; urgency=low
 
   * Bug #38662: Check for nscd; Bug #38714: depend on ping
