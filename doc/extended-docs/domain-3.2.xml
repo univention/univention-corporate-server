@@ -11,12 +11,6 @@
       <title>Univention Corporate Server</title>
       <subtitle>Extended domain services documentation</subtitle>
 
-        <revhistory>
-            <revision>
-                <revnumber>3.2-2</revnumber>
-                <date>16 Jun 2014</date>
-            </revision>
-        </revhistory>
     </bookinfo>
 
     <chapter id="ext-dom-ubuntu">

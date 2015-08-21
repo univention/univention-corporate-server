@@ -12,12 +12,6 @@
 	<bookinfo>
 		<title>UCS 3.2-2 Release Notes</title>
 		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 3.2-2</subtitle>
-		<revhistory>
-			<revision>
-				<revnumber>3.2-2</revnumber>
-				<date>7 May 2014</date>
-			</revision>
-		</revhistory>
 
 		<legalnotice>
 			<para>
