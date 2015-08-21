@@ -12,12 +12,6 @@
 	<bookinfo>
 		<title>UCS 3.2-1 Release Notes</title>
 		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 3.2-1</subtitle>
-		<revhistory>
-			<revision>
-				<revnumber>3.2-1</revnumber>
-				<date>17 Feb 2014</date>
-			</revision>
-		</revhistory>
 
 		<legalnotice>
 			<para>
