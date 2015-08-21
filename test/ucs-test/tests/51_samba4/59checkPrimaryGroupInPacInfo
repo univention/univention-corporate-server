@@ -7,8 +7,6 @@
 ## - domaincontroller_master
 ## - domaincontroller_backup
 ## - domaincontroller_slave
-## versions:
-##  4.0-2: skip
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
@@ -32,15 +30,13 @@ echo "kerberos.file: $keytab" >> /root/.wireshark/preferences
 # export keytab
 samba-tool domain exportkeytab "$keytab" || fail_test 110
 
-# start network dump
-tshark -i lo -K "$keytab" -O Kerberos -w "$capture_file" &
-PID=$!
-sleep 1
+# start network dump, for 10s
+tshark -a duration:10 -i any -K "$keytab" -O Kerberos -w "$capture_file" >/dev/null &
+sleep 2
 
 # get kerberos ticket/pac
 net ads kerberos pac dump -U "$hostname"\$%"$machine_password" >/dev/null || fail_test 110
-sleep 2
-kill -9 $PID
+sleep 10
 
 tshark -K "$keytab" -r "$capture_file" -V  -R 'kerberos.msg.type==11' >"$capture_text" || fail_test 110
 
@@ -48,9 +44,9 @@ pac_info=false
 group_membership_array=false
 declare -a groups
 while read line; do
-
-	type="$(echo $line | awk -F ': ' '{print $1}')"
-	value="$(echo $line | awk -F ': ' '{print $NF}')"
+	echo $line
+	type=${line%%: *}
+	value=${line#*: }
 	case $type in
 		"PAC_LOGON_INFO")
 			# enter pacinfo
@@ -61,26 +57,26 @@ while read line; do
 			pac_info=false
 			;;
 		"GROUP_MEMBERSHIP_ARRAY")
-			if [ "$pac_info" = "true" ]; then
+			if $pac_info; then
 				# now we are in the pacinfo groupmembership part
 				group_membership_array=true
 			fi
 			;;
 		"User Flags")
-			if [ "$pac_info" = "true" -a "$group_membership_array" = "true" ]; then
+			if $pac_info && $group_membership_array; then
 				# leave pacinfo groupmembership part
 				group_membership_array=false
 			fi
 			;;
 		"Group RID")
-			if [ "$pac_info" = "true" -a "$group_membership_array" = "false" ]; then
+			if $pac_info && ! $group_membership_array; then
 				# this ist the pacinfo Group RID, the primary group
 				primary_gid="$value"
 				continue
 			fi
-			if [ "$pac_info" = "true" -a "$group_membership_array" = "true" ]; then
+			if $pac_info && $group_membership_array; then
 				# this is a element of the groupmembership array
-				groups=("${groups[@]}" "$value")
+				groups+=("$value")
 				continue
 			fi
 			;;
