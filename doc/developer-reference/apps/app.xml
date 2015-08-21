@@ -498,7 +498,7 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-+					<term>[Sizing: <replaceable>xx</replaceable>]</term>
+					<term>[Sizing: <replaceable>xx</replaceable>]</term>
 					<listitem>
 						<simpara>
 							(Optional) Sections starting with <literal>Sizing</literal> are not
