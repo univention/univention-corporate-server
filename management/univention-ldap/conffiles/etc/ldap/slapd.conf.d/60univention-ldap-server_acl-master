@@ -12,7 +12,7 @@ groups_default_domainadmins = custom_groupname('Domain Admins')
 users_default_administrator = custom_username('Administrator')
 
 print 'sasl-regexp'
-print '    uid=(.*),cn=gssapi,cn=auth'
+print '    uid=([^,]*),cn=(gssapi|saml),cn=auth'
 print '    ldap://0.0.0.0:%s/"%s"??sub?uid=$1' % (ldap_port, ldap_base)
 print
 
