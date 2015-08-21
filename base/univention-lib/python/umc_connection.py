@@ -31,17 +31,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# stdlib
 from httplib import HTTPSConnection, HTTPException
 from json import loads, dumps
 from socket import error as SocketError
 
-# univention
 from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()
 ucr.load()
 
+
 class UMCConnection(object):
+
 	def __init__(self, host, username=None, password=None, error_handler=None):
 		self._host = host
 		self._headers = {
@@ -78,14 +78,14 @@ class UMCConnection(object):
 				error_handler('Could not connect to UMC on %s: %s' % (ucr.get('ldap/master'), e))
 		return None
 
-	def auth(self, username, password):
+	def auth(self, username, password, auth_type=None):
 		'''Tries to authenticate against the host and preserves the
 		cookie. Has to be done only once (but keep in mind that the
 		session probably expires after 10 minutes of inactivity)'''
-		data = self.build_data({'username' : username, 'password' : password})
+		data = self.build_data({'username' : username, 'password' : password, 'auth_type': auth_type})
 		con = self.get_connection()
 		try:
-			con.request('POST', '/umcp/auth', data)
+			con.request('POST', '/umcp/auth', data, headers=self._headers)
 		except Exception as e:
 			# probably unreachable
 			if self._error_handler:
@@ -141,4 +141,3 @@ class UMCConnection(object):
 			raise HTTPException(error_message)
 		content = response.read()
 		return loads(content)['result']
-
