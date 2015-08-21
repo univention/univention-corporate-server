@@ -264,7 +264,11 @@ class ModuleServer(Server):
 			# process
 			if 'acls' in msg.options and 'commands' in msg.options and 'credentials' in msg.options:
 				try:
-					self.__handler.init()
+					try:
+						self.__handler.init()
+					except:
+						self.__handler.error_handling(*sys.exc_info())
+						raise
 				except BaseException as exc:
 					self.__handler = None
 					error = _('The initialization of the module failed: %s') % (exc,)
@@ -272,7 +276,7 @@ class ModuleServer(Server):
 
 					MODULE.error('The init function of the module failed\n%s: %s' % (exc, trace,))
 
-					from ..modules import UMC_Error
+					from ..base import UMC_Error
 					if not isinstance(exc, UMC_Error):
 						error = trace
 					else:

@@ -1,3 +1,10 @@
+univention-management-console (8.0.5-1) unstable; urgency=medium
+
+  * Bug #39178: error handling is now done also at initialization of the
+  	module
+
+ -- Florian Best <best@univention.de>  Fri, 21 Aug 2015 15:29:08 +0200
+
 univention-management-console (8.0.4-1) unstable; urgency=medium
 
   * Bug #39178: pass authentication type to UMC modules and provide generic
