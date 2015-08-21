@@ -50,7 +50,7 @@ from univention.admin.handlers.computers import domaincontroller_slave
 from univention.admin.handlers.computers import memberserver
 
 # local application
-from univention.management.console.modules.appcenter.decorators import get_machine_connection
+from univention.management.console.ldap import get_machine_connection
 from constants import COMPONENT_BASE, COMP_PARAMS, STATUS_ICONS, DEFAULT_ICON, PUT_SUCCESS, PUT_PROCESSING_ERROR
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate

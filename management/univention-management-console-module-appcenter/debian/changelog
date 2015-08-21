@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.3-1) unstable; urgency=medium
+
+  * Bug #39226: use UMC utilities for ldap connections
+
+ -- Florian Best <best@univention.de>  Fri, 21 Aug 2015 15:49:00 +0200
+
 univention-management-console-module-appcenter (5.0.2-4) unstable; urgency=medium
 
   * Bug #39185: Merge from docker component (3); improve logging module

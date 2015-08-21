@@ -81,7 +81,8 @@ from univention.appcenter import get_action, App
 from univention.appcenter.utils import app_is_running
 
 # local application
-from univention.management.console.modules.appcenter.decorators import reload_ucr, machine_connection, get_machine_connection
+from univention.management.console.modules.decorators import reloading_ucr
+from univention.management.console.ldap import machine_connection, get_machine_connection
 from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
 
 CACHE_DIR = '/var/cache/univention-appcenter'
@@ -927,7 +928,7 @@ class Application(object):
 	def to_app(self):
 		return App.from_ini(self._ini_file)
 
-	@reload_ucr(ucr)
+	@reloading_ucr(ucr)
 	def to_dict(self, package_manager, domainwide_managed=None, hosts=None):
 		res = copy.copy(self._options)
 		res['component_id'] = self.component_id
@@ -1717,4 +1718,3 @@ class Application(object):
 	@classmethod
 	def update_conffiles(cls):
 		handler_commit(['/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo'])
-
