@@ -11,12 +11,6 @@
       <title>Univention Corporate Server</title>
       <subtitle>Extended computer management documentation</subtitle>
 
-        <revhistory>
-            <revision>
-                <revnumber>3.2-0</revnumber>
-                <date>19 Nov 2013</date>
-            </revision>
-        </revhistory>
     </bookinfo>
 
     <chapter>

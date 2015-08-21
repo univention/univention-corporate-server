@@ -13,12 +13,6 @@
       <title>UCS 3.2 Release Notes</title>
       <subtitle>Release notes for the installation and update of Univention Corporate Server (UCS) 3.2</subtitle>
 
-        <revhistory>
-            <revision>
-                <revnumber>3.2-0</revnumber>
-                <date>19 Nov 2013</date>
-            </revision>
-        </revhistory>
 
 		<legalnotice>
 		  <para>
