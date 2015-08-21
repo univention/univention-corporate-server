@@ -11,12 +11,6 @@
 	<bookinfo>
 		<title>UCS 3.2-6 Release Notes</title>
 		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 3.2-6</subtitle>
-		<revhistory>
-			<revision>
-				<revnumber>3.2-6</revnumber>
-				<date>26 May 2015</date>
-			</revision>
-		</revhistory>
 
 		<legalnotice lang="">
 			<para>

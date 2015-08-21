@@ -11,12 +11,6 @@
 <bookinfo>
   <title>Univention Corporate Server</title>
   <subtitle>Quickstart Guide für Univention Corporate Server</subtitle>
-  <revhistory>
-     <revision>
-        <revnumber>3.2-2</revnumber>
-        <date>24 Jun 2014</date>
-     </revision>
-  </revhistory>
 </bookinfo>
 
 <chapter id="quickstart:intro">

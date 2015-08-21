@@ -11,12 +11,6 @@
       <title>Univention Corporate Server</title>
       <subtitle>Extended virtualization documentation</subtitle>
 
-	  <revhistory>
-		<revision>
-		  <revnumber>3.2-0</revnumber>
-		  <date>10 Dec 2013</date>
-		</revision>
-	  </revhistory>
     </bookinfo>
 
     <chapter id="uvmmext:iscsi">

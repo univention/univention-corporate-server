@@ -10,12 +10,6 @@
 <bookinfo>
   <title>Univention Corporate Server</title>
   <subtitle>Extended installation documentation</subtitle>
-  <revhistory>
-     <revision>
-        <revnumber>3.2-0</revnumber>
-        <date>13 Dec 2013</date>
-     </revision>
-  </revhistory>
 </bookinfo>
 
 <chapter id="profile:intro"><title>Profile-based installation</title>
