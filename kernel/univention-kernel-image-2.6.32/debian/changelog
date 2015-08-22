@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.32 (1.0.15-10) unstable; urgency=medium
+
+  * Update kernel for security update (Bug #38141)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 22 Aug 2015 13:36:38 +0200
+
 univention-kernel-image-2.6.32 (1.0.15-9) unstable; urgency=low
 
   * Update kernel for bugfix update (Bug #26839)
