@@ -84,7 +84,7 @@ app_get_packages ()
 	local app=$1
 	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
 				app = Application.find('$app'); \
-				print ' '.join(app.get('defaultpackages'))"
+				print ' '.join(app.get('defaultpackages')+app.get('defaultpackagesmaster'))"
 }
 
 app_get_component ()
