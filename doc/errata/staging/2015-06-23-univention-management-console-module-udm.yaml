@@ -2,15 +2,13 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: univention-management-console-module-udm
-fix: 5.1.25-84.600.201508201103
+fix: 5.1.25-85.602.201508241410
 version: [3]
 desc: |
  This update addresses the following issues:
  * The mapping of syntax classes to UMC widgets is now extendable via the
    UCR variable group "directory/manager/web/widget/.*/".
- * Objects (e.g. superior, groups) that have been already selected won't
-   be displayed if the user adds another object.
  * In some cases ldap operations against a broken ldap connection were done
    which lead to "LDAP connection invalid" error messages. In that case the
    operation is executed again with a new ldap connection.
-bug: [39041, 37799, 38346]
+bug: [39041, 38346]
