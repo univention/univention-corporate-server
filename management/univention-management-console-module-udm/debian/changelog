@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-85) unstable; urgency=low
+
+  * Bug #37799: Moved the changes to the frontend package
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 24 Aug 2015 14:00:19 +0200
+
 univention-management-console-module-udm (5.1.25-84) unstable; urgency=medium
 
   * Bug #38346: reexecute function if the ldap connection gets broken
