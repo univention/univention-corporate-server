@@ -47,7 +47,7 @@ case "$1" in
 		fi
 
 		stop_udm_cli_server
-		call_joinscript 76univention-saml.inst
+		call_joinscript 33univention-saml.inst
 		;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)
