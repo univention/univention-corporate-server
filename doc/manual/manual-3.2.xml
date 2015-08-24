@@ -24,7 +24,7 @@
 
   %entities;
 ]>
-<book lang="en" id="ucs-3.2-4">
+<book lang="en" id="ucs-3.2-6">
   <bookinfo>
     <title>
       Univention Corporate Server
@@ -40,7 +40,7 @@ Date: May 26, 2015
 
       <literallayout>
 Alle Rechte vorbehalten./ All rights reserved.
-(c) 2002-2014
+(c) 2002-2015
 Univention GmbH
 Mary-Somerville-Straße 1
 28359 Bremen
