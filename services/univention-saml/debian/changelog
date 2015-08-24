@@ -1,3 +1,9 @@
+univention-saml (3.0.1-3) unstable; urgency=medium
+
+  * Bug #39255: move certificate creation into joinscript
+
+ -- Florian Best <best@univention.de>  Mon, 24 Aug 2015 13:57:25 +0200
+
 univention-saml (3.0.1-2) unstable; urgency=medium
 
   * Bug #31943: the sp metadata configuration is a UCR multifile now

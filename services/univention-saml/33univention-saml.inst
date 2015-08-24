@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION="1"
+VERSION="2"
 
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
@@ -38,7 +38,20 @@ joinscript_init
 
 eval "$(ucr shell)"
 
-ucs_addServiceToLocalhost "univention-saml" "$@"
+fqdn="${hostname}.${domainname}"
+ucr set saml/idp/certificate/privatekey?"/etc/simplesamlphp/${fqdn}-idp-certificate.key" \
+		saml/idp/certificate/certificate?"/etc/simplesamlphp/${fqdn}-idp-certificate.crt"
+
+eval "$(ucr shell)"  # as variables were changed we need the new ones
+
+# check if we need to create a new certificate
+if [ ! -e "${saml_idp_certificate_certificate}" ]; then
+	openssl req -newkey rsa:2048 -new -x509 -days "${ssl_default_days:-1825}" -subj "/C=US/ST=Unknown/L=Unknown/O=Unknown/CN=${fqdn}" -nodes -out "${saml_idp_certificate_certificate}" -keyout "${saml_idp_certificate_privatekey}" || die
+	chown root:www-data "${saml_idp_certificate_certificate}" "${saml_idp_certificate_privatekey}" || die
+	chmod 640 "${saml_idp_certificate_certificate}" "${saml_idp_certificate_privatekey}" || die
+fi
+
+ucs_addServiceToLocalhost "univention-saml" "$@" || die
 
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position="cn=univention,$ldap_base" \

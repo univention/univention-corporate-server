@@ -31,29 +31,12 @@
 
 case "$1" in
 configure)
-	hostname=$(ucr get hostname)
-	domainname=$(ucr get domainname)
-	fqdn="${hostname}.${domainname}"
-	# check if we need a certificate and create one if necessary
-	if [ ! -e /etc/simplesamlphp/${fqdn}-idp-certificate.crt ]; then	
-		days_valid=$(ucr get ssl/default/days)
-		if [ -z $days_valid ]; then
-			# default: valid for 5 years
-			days_valid=1825
-		fi
-		openssl req -newkey rsa:2048 -new -x509 -days ${days_valid} -subj "/C=US/ST=Unknown/L=Unknown/O=Unknown/CN=${fqdn}" -nodes -out /etc/simplesamlphp/${fqdn}-idp-certificate.crt -keyout /etc/simplesamlphp/${fqdn}-idp-certificate.key
-		chown root:www-data /etc/simplesamlphp/${fqdn}-idp-certificate.crt \
-			/etc/simplesamlphp/${fqdn}-idp-certificate.key 
-		chmod 640 /etc/simplesamlphp/${fqdn}-idp-certificate.crt /etc/simplesamlphp/${fqdn}-idp-certificate.key
-	fi
 
 	chown -R root:www-data /etc/simplesamlphp
 
 	ucr set saml/idp/enableSAML20-IdP?true \
 		saml/idp/ldap/get_attributes?"'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'" \
 		saml/idp/ldap/search_attributes?"'uid', 'mailPrimaryAddress'" \
-		saml/idp/certificate/privatekey?"/etc/simplesamlphp/${fqdn}-idp-certificate.key" \
-		saml/idp/certificate/certificate?"/etc/simplesamlphp/${fqdn}-idp-certificate.crt" \
 		saml/idp/lookandfeel/theme?"univentiontheme:univention" \
 		saml/idp/https?"true"
 
@@ -63,8 +46,6 @@ configure)
 
 	a2ensite univention-saml-apache
 	invoke-rc.d apache2 reload
-	invoke-rc.d univention-management-console-server restart
-
 	;;
 abort-upgrade|abort-remove|abort-deconfigure)
 	;;
