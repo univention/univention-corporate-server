@@ -88,7 +88,7 @@ class MailSink(object):
 	def start(self):
 		self.do_run = True
 		self.thread = threading.Thread(target=self.runner)
-		self.thread.daemoon = True
+		self.thread.daemon = True
 		self.thread.start()
 
 	def stop(self):
