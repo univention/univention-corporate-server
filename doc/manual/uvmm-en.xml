@@ -22,7 +22,7 @@
 			However, the technologies have different advantages and disadvantages depending on the host systems and hardware used.
 			For example, KVM requires virtualization support in the central processing unit, while Xen can also virtualize (within limits) systems without support from the hardware.
 			More detailed information can be found on their respective websites:
-			<ulink url="http://www.linux-kvm.org/"/> and <ulink url="http://www.xen.org/"/>.
+			<ulink url="http://www.linux-kvm.org/"/> and <ulink url="http://www.xenproject.org/"/>.
 		</para>
 		<para>
 			KVM and Xen each offer interfaces to provide the virtualized systems with direct access to the resources of the virtualization server.

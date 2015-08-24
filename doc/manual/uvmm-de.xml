@@ -22,7 +22,7 @@
 			Allerdings gibt es bei den Techniken in Abhängigkeit von den Gastsystemen und der eingesetzten Hardware unterschiedliche Vor- und Nachteile.
 			KVM beispielsweise benötigt zwingend CPU-Virtualisierungunterstützung während Xen auch (eingeschränkt) Systeme ohne Unterstützung durch die Hardware virtualisieren kann.
 			Zu Details können die Webseiten der beiden Projekte konsultiert werden:
-			<ulink url="http://www.linux-kvm.org/"/> und <ulink url="http://www.xen.org/"/>.
+			<ulink url="http://www.linux-kvm.org/"/> und <ulink url="http://www.xenproject.org/"/>.
 		</para>
 		<para>
 			KVM und Xen stellen jeweils Schnittstellen bereit, mit denen die virtualisierten Systeme einen direkten Zugriff auf die Ressourcen des Virtualisierungsservers erhalten können.
