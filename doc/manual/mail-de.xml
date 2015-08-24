@@ -552,12 +552,12 @@
 	  Punkte überschreiten - werden bei der Auslieferung durch Cyrus nicht im
 	  Posteingang des Empfängers, sondern im darunter liegenden Ordner
 	  <emphasis>Spam</emphasis> abgelegt. Die Filterung erfolgt durch ein
-	  SIEVE-Skript, das beim Anlegen des IMAP-Postfachs eines Benutzers automatisch
+	  Sieve-Skript, das beim Anlegen des IMAP-Postfachs eines Benutzers automatisch
 	  generiert wird.
 	</para>
 
 	<para>
-	  Der in die SIEVE-Skripte eingetragene Schwellwert, ab der E-Mails als Spam
+	  Der in die Sieve-Skripte eingetragene Schwellwert, ab der E-Mails als Spam
 	  deklariert werden, ist mit der &ucsUCRV;
 	  <envar>mail/antispam/requiredhits</envar> konfigurierbar. Die Voreinstellung
 	  (5) muss in der Regel nicht angepasst werden. Je nach Erfahrung im eigenen
@@ -932,7 +932,7 @@ postmap /etc/postfix/smtp_auth
 	<para>
 	  UCS integriert mehrere Applikationen des Horde-Frameworks für den Webzugriff
 	  auf E-Mails und zur webbasierten Verwaltung von serverseitigen
-	  E-Mail-Filterregeln auf Basis von SIEVE. Horde kann über das Univention App Center installiert
+	  E-Mail-Filterregeln auf Basis von Sieve. Horde kann über das Univention App Center installiert
 	  werden (siehe <xref linkend="software:appcenter"/>).
 	</para>
 
@@ -1041,7 +1041,7 @@ postmap /etc/postfix/smtp_auth
 
 	  <para>
 		Cyrus unterstützt serverseitige Filterskripte, die in einer eigenen
-		Skriptsprache namens SIEVE geschrieben werden. Das Filter-Modul erlaubt die
+		Skriptsprache namens Sieve geschrieben werden. Das Filter-Modul erlaubt die
 		Generierung dieser Filterskripte. Sie gelten allgemein, greifen also auch für
 		Benutzer, die über einen Standard-Mail-Client auf ihre Postfächer zugreifen.
 	  </para>
@@ -1083,7 +1083,7 @@ postmap /etc/postfix/smtp_auth
 
 	  <para>
 		Ein Klick auf <guimenu>Skript</guimenu> zeigt den Quelltext des generierten
-		SIEVE-Skripts an.
+		Sieve-Skripts an.
 	  </para>
 	</section>
   </section>
