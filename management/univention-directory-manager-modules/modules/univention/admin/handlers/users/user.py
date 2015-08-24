@@ -2023,6 +2023,18 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					if old_gecos == self.oldinfo.get( 'gecos', '' ):
 						ml.append( ( 'gecos', self.oldinfo.get( 'gecos', [ '' ] )[ 0 ], gecos ) )
 
+		# update displayName automatically if no custom value has been entered by the user
+		if self.info.get('displayName') == self.oldinfo.get('displayName'):
+			prop_displayName = self.descriptions['displayName']
+			# check if options for property displayName are used
+			if any([x in self.options for x in prop_displayName.options]):
+				old_default_displayName = prop_displayName._replace(prop_displayName.base_default, self.oldinfo)
+				# does old displayName match with old default displayName?
+				if self.oldinfo.get('displayName', '') == old_default_displayName:
+					# yes ==> update displayName automatically
+					new_displayName = prop_displayName._replace(prop_displayName.base_default, self)
+					ml.append(('displayName', self.oldinfo.get('displayName', [''])[0], new_displayName))
+
 		# shadowlastchange=self.oldattr.get('shadowLastChange',[str(long(time.time())/3600/24)])[0]
 
 		pwd_change_next_login=0
