@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.2-3) unstable; urgency=low
+
+  * Bug #37799: Moved the changes to the frontend package
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 24 Aug 2015 14:08:45 +0200
+
 univention-management-console-module-udm (6.0.2-2) unstable; urgency=low
 
   * Bug #37799: the detailDialog won't display objects any more that are

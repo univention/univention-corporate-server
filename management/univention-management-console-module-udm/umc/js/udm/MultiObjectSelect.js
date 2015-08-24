@@ -55,19 +55,10 @@ define([
 		queryCommand: function(options) {
 			// return a Deferred
 			options.syntax = this.syntax;
-			return this.umcpCommand('udm/syntax/choices', options).then(lang.hitch(this, function(data) {
+			return this.umcpCommand('udm/syntax/choices', options).then(function(data) {
 				// return array of id-label-pairs
-				// filter existing entries
-				if (this.value && this.value.length) {
-					var ignoreIds = array.map(this.value, function(ival) {
-						return ival.id;
-					});
-					return array.filter(data.result, function(ires) {
-						return array.indexOf(ignoreIds, ires.id) < 0;
-					});
-				}
 				return data.result;
-			}));
+			});
 		},
 
 
@@ -143,13 +134,6 @@ define([
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				depends: [ 'objectProperty' ]
 			}];
-
-			// trigger a new search if this.value changed
-			this.watch('value', lang.hitch(this, function(attr, oldVal, newVal ) {
-				if(this._detailDialog) {
-					this._detailDialog.search(this._detailDialog._form.get('value'));
-				}
-			}));
 		}
 
 		// _umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor ) {
