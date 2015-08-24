@@ -66,6 +66,8 @@ define([
 
 			_container: null,
 
+			ignoreIds: null,
+
 			uninitialize: function() {
 				// make sure that the container widget is destroyed correctly
 				this._container.destroyRecursive();
@@ -166,8 +168,28 @@ define([
 
 				if (!this._multiSelect.dynamicValues) {
 					// the first time we need to set dynamicValues
-					this._multiSelect.set('dynamicValues', this.queryCommand);
+					this._multiSelect.set('dynamicValues', lang.hitch(this, function(options) {
+						return when(this.queryCommand(options), lang.hitch(this, function(values) {
+							if (this.ignoreIds && this.ignoreIds.length) {
+								return this._filterSearch(values);
+							} else {
+								return values;
+							}
+						}));
+					}));
 				}
+			},
+
+			_filterSearch: function(values) {
+				return array.filter(values, lang.hitch(this, function(ival) {
+					var id = null;
+					if ("string" == typeof(ival) || "Number" == typeof(ival)) {
+						id = ival;
+					} else {
+						id = ival.id;
+					}
+					return array.indexOf(this.ignoreIds, id) < 0;
+				}));
 			},
 
 			onAdd: function(ids) {
@@ -183,6 +205,8 @@ define([
 		queryWidgets: [],
 
 		queryCommand: '',
+
+		ignoreIds: null,
 
 		queryOptions: {},
 
@@ -230,9 +254,25 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
+			// update ignoreIds and trigger new _detailDialog.search if value changed
+			this.watch('value', lang.hitch(this, function(attr, oldval, newval) {
+				this.ignoreIds = array.map(newval, function(ival) {
+					return ival.id;
+				});
+
+				if (this._detailDialog) {
+					this._detailDialog.ignoreIds = this.ignoreIds;
+					this._detailDialog.search(this._detailDialog._form.get('value'));
+				}
+			}));
+
 			// in case 'value' is not specified, generate a new array
 			if (!(this.value instanceof Array)) {
 				this.value = [];
+			} else { // make sure ignoreIds contains all value ids
+				this.ignoreIds = array.map(this.value, function(ival) {
+					return ival.id;
+				});
 			}
 
 			// convert 'formatter' to a function
@@ -271,7 +311,8 @@ define([
 							queryCommand: lang.hitch( this, 'queryCommand' ),
 							queryOptions: this.queryOptions || {},
 							autoSearch: this.autoSearch,
-							title: this.dialogTitle
+							title: this.dialogTitle,
+							ignoreIds: this.ignoreIds
 						});
 
 						// register the event handler

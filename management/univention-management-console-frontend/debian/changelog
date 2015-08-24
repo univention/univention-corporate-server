@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.106-89) unstable; urgency=low
+
+  * Bug #37799: the detailDialog won't display objects any more that are
+    already a value of MultiObjectSelect
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 24 Aug 2015 14:19:00 +0200
+
 univention-management-console-frontend (4.1.106-88) unstable; urgency=medium
 
   * The user wizard didn't complete after updating to UCS 4.0-2
