@@ -59,10 +59,11 @@ else
 fi
 
 # generate SSL cert + private key for the SAML service provider
-if [ ! -e /usr/share/univention-management-console/saml/pki/mycert.pem ]; then
-	# TODO: we should not use the ones from simplesamlphp directly
-	openssl x509 -in "/etc/simplesamlphp/$hostname.$domainname-idp-certificate.crt" -out /usr/share/univention-management-console/saml/pki/mycert.pem -outform PEM || die
-	openssl rsa -in "/etc/simplesamlphp/$hostname.$domainname-idp-certificate.key" -out /usr/share/univention-management-console/saml/pki/mykey.pem -outform PEM || die
+if [ ! -e /usr/share/univention-management-console/saml/pki/idp1cert.pem ]; then
+	openssl req -newkey rsa:2048 -new -x509 -days "${ssl_default_days}" -subj "/C=US/ST=Unknown/L=Unknown/O=Unknown/CN=${hostname}.${domainname}" -nodes \
+		-outform PEM -out /usr/share/univention-management-console/saml/pki/sp.pem \
+		-keyform PEM -keyout /usr/share/univention-management-console/saml/pki/sp.key || die
+	chmod 0600 /usr/share/univention-management-console/saml/pki/sp.key || die
 fi
 
 # configure SAML SP and IDP
@@ -71,7 +72,7 @@ fi
 # 2. generate simplesamlphp configuration
 ucr commit /etc/simplesamlphp/metadata/umc.php || die
 # 3. get the XML metadata from the previous generated configuration so that UMC can use it
-wget --ca-certificate /etc/univention/ssl/ucsCA/CAcert.pem https://$(hostname -f)/simplesamlphp/saml2/idp/metadata.php -O /usr/share/univention-management-console/saml/idp/simplesamlphp.xml || die
+wget --ca-certificate /etc/univention/ssl/ucsCA/CAcert.pem "https://${hostname}.${domainname}/simplesamlphp/saml2/idp/metadata.php" -O /usr/share/univention-management-console/saml/idp/simplesamlphp.xml || die
 # 4. rewrite UMC-PAM configuration to include every IDP entry
 ucr commit /etc/pam.d/univention-management-console || die
 # 5. enable saml sasl module

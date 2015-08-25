@@ -35,8 +35,8 @@ CONFIG = {
 		},
 	},
 	"attribute_map_dir": "/usr/share/univention-management-console/saml/attributes/",
-	"key_file": "/usr/share/univention-management-console/saml/pki/mykey.pem",
-	"cert_file": "/usr/share/univention-management-console/saml/pki/mycert.pem",
+	"key_file": "/usr/share/univention-management-console/saml/pki/sp.key",
+	"cert_file": "/usr/share/univention-management-console/saml/pki/sp.pem",
 	"xmlsec_binary": "/usr/bin/xmlsec1",
 	"metadata": {
 		"local": glob.glob('/usr/share/univention-management-console/saml/idp/*.xml'),

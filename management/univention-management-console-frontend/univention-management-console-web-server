@@ -120,6 +120,7 @@ class SessionClient(object):
 		self.client = umcp.Client()
 		self.client.signal_connect('authenticated', self._authenticated)
 		self.client.signal_connect('response', self._response)
+		self.client.signal_connect('closed', self._closed)
 		try:
 			self.client.connect()
 			CORE.info('SessionClient(0x%x): connected to UMC server' % (id(self),))
@@ -191,7 +192,7 @@ class SessionClient(object):
 		try:
 			try:
 				# get and remove queue for response
-				queue = self._requestid2response_queue.pop(response.id)
+				queue = self._requestid2response_queue.pop(response.id)[0]
 			except KeyError:
 				CORE.process('SessionClient(0x%x): no request(%s) found: status=%s' % (id(self), response.id, response.status))
 			else:
@@ -209,11 +210,31 @@ class SessionClient(object):
 		CORE.info('SessionClient(0x%x): sending request(%s)' % (id(self), request.id))
 		self._lock.acquire()
 		try:
-			self._requestid2response_queue[request.id] = response_queue
+			self._requestid2response_queue[request.id] = (response_queue, request)
 		finally:
 			self._lock.release()
 		self.client.request(request)
 		self.renew_timer()
+
+	def _closed(self):
+		message = '\n'.join((
+			'The connection to the Univention Management Console Server broke up unexpectedly. ',
+			'If you have root permissions on the system you can restart UMC by executing the following commands:',
+			' * invoke-rc.d univention-management-console-server restart',
+			' * invoke-rc.d univention-management-console-web-server restart',
+			'Otherwise please contact an administrator or try again later.'
+		))
+		if self._auth_response_queue is not None:
+			self._auth_response.status = SERVICE_UNAVAILABLE
+			self._auth_response.message = message
+			self._auth_response_queue.put(self._auth_response)
+			self._auth_response_queue = None
+		for id, (queue, request) in self._requestid2response_queue.items():
+			self._requestid2response_queue.pop(id)
+			response = umcp.Response(request)
+			response.status = SERVICE_UNAVAILABLE
+			response.message = message
+			queue.put(response)
 
 	def cleanup_request(self, request):
 		"""Remove request from mapping."""

@@ -9,6 +9,11 @@ from sp import CONFIG
 
 
 php_code = '''<?php
+
+set_error_handler(function($errno, $errstr, $errfile, $errline) {
+    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+});
+
 $entityid = $argv[1];
 $_SERVER['REQUEST_URI'] = $entityid;
 $_SERVER['REQUEST_METHOD'] = 'POST';

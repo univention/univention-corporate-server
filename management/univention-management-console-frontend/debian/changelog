@@ -1,3 +1,12 @@
+univention-management-console-frontend (5.0.13-1) unstable; urgency=medium
+
+  * Bug #31943: generate service provider certificate and private key
+  * add PHP error handler when configuring service provider entries at
+  	simplesamlphp
+  * handle errors when UMC-Server blocks connections
+
+ -- Florian Best <best@univention.de>  Tue, 25 Aug 2015 12:33:00 +0200
+
 univention-management-console-frontend (5.0.12-3) unstable; urgency=low
 
   * Bug #37799: the detailDialog won't display objects any more that are
