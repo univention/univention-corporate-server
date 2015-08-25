@@ -58,25 +58,7 @@ else
 
 fi
 
-# generate SSL cert + private key for the SAML service provider
-if [ ! -e /usr/share/univention-management-console/saml/pki/sp.pem ]; then
-	openssl req -newkey rsa:2048 -new -x509 -days "${ssl_default_days}" -subj "/C=US/ST=Unknown/L=Unknown/O=Unknown/CN=${hostname}.${domainname}" -nodes \
-		-outform PEM -out /usr/share/univention-management-console/saml/pki/sp.pem \
-		-keyform PEM -keyout /usr/share/univention-management-console/saml/pki/sp.key || die
-	chmod 0600 /usr/share/univention-management-console/saml/pki/sp.key || die
-fi
-
-# configure SAML SP and IDP
-# 1. restart UMC-webserver so that we can download the metadata
-/etc/init.d/univention-management-console-web-server restart
-# 2. generate simplesamlphp configuration
-ucr commit /etc/simplesamlphp/metadata/umc.php || die
-# 3. get the XML metadata from the previous generated configuration so that UMC can use it
-wget --ca-certificate /etc/univention/ssl/ucsCA/CAcert.pem "https://${hostname}.${domainname}/simplesamlphp/saml2/idp/metadata.php" -O /usr/share/univention-management-console/saml/idp/simplesamlphp.xml || die
-# 4. rewrite UMC-PAM configuration to include every IDP entry
-ucr commit /etc/pam.d/univention-management-console || die
-# 5. enable saml sasl module
-ucr commit /etc/ldap/sasl2/saml || die
+/usr/share/univention-management-console/saml/renew_saml_configuration || die
 
 /etc/init.d/univention-management-console-web-server restart
 

@@ -6,7 +6,9 @@ from tempfile import NamedTemporaryFile
 import sys
 sys.path.insert(0, '/usr/share/univention-management-console/saml/')
 from sp import CONFIG
+from saml2.metadata import create_metadata_string
 
+metadata = create_metadata_string('/usr/share/univention-management-console/saml/sp.py', None, valid='4', cert=None, keyfile=None, mid=None, name=None, sign=False)
 
 php_code = '''<?php
 
@@ -17,7 +19,7 @@ set_error_handler(function($errno, $errstr, $errfile, $errline) {
 $entityid = $argv[1];
 $_SERVER['REQUEST_URI'] = $entityid;
 $_SERVER['REQUEST_METHOD'] = 'POST';
-$_POST['xmldata'] = file_get_contents(str_replace('https://', 'http://', $entityid));  # FIXME: can we use https?
+$_POST['xmldata'] = file_get_contents("php://stdin");
 chdir('/usr/share/simplesamlphp/www/admin');
 ob_start();
 require_once('./metadata-converter.php');
@@ -35,8 +37,8 @@ print("array_merge(\$metadata['$entityid'], array(
 with NamedTemporaryFile() as temp:
 	temp.write(php_code)
 	temp.flush()
-	process = Popen(['/usr/bin/php', temp.name, CONFIG['entityid']], stdout=PIPE, stderr=PIPE)
-	stdout, stderr = process.communicate()
+	process = Popen(['/usr/bin/php', temp.name, CONFIG['entityid']], stdout=PIPE, stderr=PIPE, stdin=PIPE)
+	stdout, stderr = process.communicate(metadata)
 	if process.returncode != 0:
 		sys.stderr.write(stderr)
 		sys.exit(1)
