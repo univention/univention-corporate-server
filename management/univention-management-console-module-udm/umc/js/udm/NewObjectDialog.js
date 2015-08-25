@@ -39,8 +39,9 @@ define([
 	"dijit/layout/StackContainer",
 	"umc/tools",
 	"umc/modules/udm/wizards/FirstPageWizard",
+	"umc/modules/udm/NotificationText",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, topic, all, Deferred, Dialog, StackContainer, tools, FirstPageWizard, _) {
+], function(declare, lang, array, topic, all, Deferred, Dialog, StackContainer, tools, FirstPageWizard, NotificationText, _) {
 
 	return declare("umc.modules.udm.NewObjectDialog", [ Dialog ], {
 		// summary:
@@ -77,6 +78,8 @@ define([
 		objectNamePlural: '',
 
 		autofocus: false, // interferes with Wizard.autoFocus
+
+		_notificationText: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -176,6 +179,10 @@ define([
 			// TODO: replace event by deferred to make it stable because: The order here is important: 1. selectChild(this._preWizard) 2. _preWizard.on('Finished', createWizard)
 			// otherwise the prewidget gets selected after the real wizard has been selected so that the wrong wizard is shown
 			this.canContinue.then(undefined, lang.hitch(this._preWizard, 'selectCorrectChild'));
+
+			this._notificationText = new NotificationText({_siblingNode: this.domNode});
+			this.own(this._notificationText);
+
 		},
 
 		buildCreateWizard: function(firstPageValues, objectTypeName) {
@@ -221,7 +228,7 @@ define([
 											createWizard.standbyDuring(saveDeferred);
 											saveDeferred.then(
 												lang.hitch(this, function() {
-													this.addNotification(_('%s created', createWizard.objectName()));
+													this._notificationText.showSuccess(_('%s created', createWizard.objectName()));
 													this.createWizardAdded = new Deferred();
 													this.buildCreateWizard(firstPageValues, objectTypeName);
 													this.createWizardAdded.then(lang.hitch(this, function() {

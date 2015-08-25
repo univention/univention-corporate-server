@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-86) unstable; urgency=low
+
+  * Bug #38834: Improved object creation notification
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 25 Aug 2015 12:14:24 +0200
+
 univention-management-console-module-udm (5.1.25-85) unstable; urgency=low
 
   * Bug #37799: Moved the changes to the frontend package
