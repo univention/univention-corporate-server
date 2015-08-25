@@ -40,6 +40,7 @@ Description: transitional dummy package
 
 Package: univention-appcenter
 Depends: python-univention-appcenter
+Recommends: univention-appcenter-docker
 Architecture: all
 Description: Tools for the Univention App Center.
  .
