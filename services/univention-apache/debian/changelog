@@ -1,3 +1,10 @@
+univention-apache (5.0.14-2) unstable; urgency=medium
+
+  * disable SSLv2 and SSLv3 (Bug #37906)
+  * add apache2/ssl/v2 and apache2/ssl/v3 to configure SSL protocols (Bug #37906)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 24 Aug 2015 18:31:00 +0200
+
 univention-apache (5.0.14-1) unstable; urgency=low
 
   * univention-apache now uses the current joinscript-lib (Bug #28993)

@@ -70,6 +70,18 @@ Description[en]=Path to the certificate chain file to inform client browsers abo
 Type=str
 Categories=service-apache
 
+[apache2/ssl/v2]
+Description[de]=Aktiviert das unsichere Protokoll SSL 2.0 (Standard: no)
+Description[en]=Enables the insecure protocoll SSL 2.0 (Default: no)
+Type=bool
+Categories=service-apache
+
+[apache2/ssl/v3]
+Description[de]=Aktiviert das unsichere Protokoll SSL 3.0 (Standard: no)
+Description[en]=Enables the insecure protocoll SSL 3.0 (Default: no)
+Type=bool
+Categories=service-apache
+
 [apache2/documentroot]
 Description[de]=Wurzelverzeichnis für die Dokumente des Web-Server [/var/www/]
 Description[en]=Root directory for documents of the web server [/var/www/]
