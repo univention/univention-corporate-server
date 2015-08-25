@@ -122,6 +122,7 @@ class Client(signals.Provider, Translation):
 		self.signal_new('authenticated')
 		self.signal_new('error')
 		self.signal_new('closed')
+		self.signal_connect('closed', self.__closed)
 
 	@property
 	def openRequests(self):
@@ -144,6 +145,9 @@ class Client(signals.Provider, Translation):
 		if self.__ssl and not self.__unix:
 			self.__socket = SSL.Connection(self.__crypto_context, self.__realsocket)
 		else:
+			if self.__socket:
+				notifier.socket_remove(self.__socket)
+				self.__socket.close()
 			self.__socket = None
 
 	def disconnect(self, force=True):
@@ -229,7 +233,10 @@ class Client(signals.Provider, Translation):
 					CORE.process('Client: Communication will not be encrypted!')
 					save = self.__resend_queue[self.__socket]
 					del self.__resend_queue[self.__socket]
-					self.__realsocket.shutdown(socket.SHUT_RDWR)
+					try:
+						self.__realsocket.shutdown(socket.SHUT_RDWR)
+					except socket.error:
+						pass  # socket is not yet connected
 					self.__ssl = False
 					self._init_socket()
 					self.__realsocket.connect((self.__server, self.__port))
@@ -356,6 +363,17 @@ class Client(signals.Provider, Translation):
 			raise TypeError('Must be AUTH command!')
 		self.__auth_id = msg.id
 		self.request(msg)
+
+	def __closed(self):
+		for socket_ in (self.__realsocket, self.__socket):
+			if socket_:
+				notifier.socket_remove(socket_)
+				try:
+					socket_.close()
+				except IOError:
+					pass
+		self.__realsocket = None
+		self.__socket = None
 
 
 if __name__ == '__main__':
