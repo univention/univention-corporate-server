@@ -1,3 +1,10 @@
+univention-management-console (8.0.5-2) unstable; urgency=medium
+
+  * Bug #39178: new file is symlinked in preinst to prevent tracebacks in
+  	updater.log
+
+ -- Florian Best <best@univention.de>  Tue, 25 Aug 2015 19:25:16 +0200
+
 univention-management-console (8.0.5-1) unstable; urgency=medium
 
   * Bug #39178: error handling is now done also at initialization of the

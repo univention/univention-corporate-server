@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # Univention Management Console
-#  postinst script for UMC python modules
+#  preinst script for UMC python modules
 #
-# Copyright 2011-2015 Univention GmbH
+# Copyright 2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,10 +32,8 @@
 
 #DEBHELPER#
 
-# force pysupport to generate empty __init__.py files causing the postinst file
-# of UMC server not to be called during installation, see also:
-#   https://bugs.launchpad.net/ubuntu/+source/python-support/+bug/716789
-update-python-modules -p
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 8.0.0-1; then
+	ln -s /usr/share/pyshared/univention/management/console/ldap.py /usr/lib/pymodules/python2.7/univention/management/console/ldap.py
+fi
 
-# ucslint needs this
 exit 0
