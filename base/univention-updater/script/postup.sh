@@ -88,6 +88,10 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	install univention-managed-client
 fi
 
+if [ -z "$(ucr get docker/container/uuid)" ]; then
+	install univention-appcenter-docker
+fi
+
 # Update to UCS 4.0 autoremove
 if ! is_ucr_true update40/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
