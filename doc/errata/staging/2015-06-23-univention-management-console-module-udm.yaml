@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: univention-management-console-module-udm
-fix: 5.1.25-85.602.201508241410
+fix: 5.1.25-86.603.201508251224
 version: [3]
 desc: |
  This update addresses the following issues:
@@ -11,4 +11,6 @@ desc: |
  * In some cases ldap operations against a broken ldap connection were done
    which lead to "LDAP connection invalid" error messages. In that case the
    operation is executed again with a new ldap connection.
-bug: [39041, 38346]
+ * The notification for successfully creating a user or computer now appears
+   under the wizard dialog.
+bug: [39041, 38346, 38834]
