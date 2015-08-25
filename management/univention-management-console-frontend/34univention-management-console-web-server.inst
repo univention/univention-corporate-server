@@ -59,7 +59,7 @@ else
 fi
 
 # generate SSL cert + private key for the SAML service provider
-if [ ! -e /usr/share/univention-management-console/saml/pki/idp1cert.pem ]; then
+if [ ! -e /usr/share/univention-management-console/saml/pki/sp.pem ]; then
 	openssl req -newkey rsa:2048 -new -x509 -days "${ssl_default_days}" -subj "/C=US/ST=Unknown/L=Unknown/O=Unknown/CN=${hostname}.${domainname}" -nodes \
 		-outform PEM -out /usr/share/univention-management-console/saml/pki/sp.pem \
 		-keyform PEM -keyout /usr/share/univention-management-console/saml/pki/sp.key || die
