@@ -1,3 +1,10 @@
+univention-base-files (4.0.8-7) unstable; urgency=low
+
+  * Kill only children of nscd pid on stop (Bug #38135)
+  * Fix insignificant error message in /etc/init.d/nscd (Bug #38135)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 26 Aug 2015 14:29:53 +0200
+
 univention-base-files (4.0.8-6) unstable; urgency=low
 
   * make /etc/lsb-release conform to README.Debian (Bug #37725)

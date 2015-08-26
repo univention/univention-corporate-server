@@ -56,6 +56,10 @@ stop_nscd()
 	# we try to stop using nscd --shutdown, that fails also if nscd is not present.
 	# in that case, fallback to "good old methods"
 	RETVAL=0
+
+	if [ -r "$PIDFILE" ]; then
+		PID=$(cat "$PIDFILE")
+	fi
 	if ! $DAEMON --shutdown; then
 		start-stop-daemon --stop --quiet --pidfile "$PIDFILE" --name "$NAME" --test > /dev/null
 		RETVAL="$?"
@@ -63,8 +67,14 @@ stop_nscd()
 	fi
 
 	# Wait for children to finish too
-	start-stop-daemon --stop --quiet --oknodo --retry=0/30/KILL/5 --exec "$DAEMON" > /dev/null
-	[ "$?" -ne 0  -a  "$?" -ne 1 ] && return 2
+	if [ -n "$PID" ]; then
+		pkill -HUP -P "$PID"
+		if [ -n "$(pgrep -P "$PID")" ]; then
+			sleep 1
+			pkill -KILL -P "$PID"
+		fi
+	fi
+
 	rm -f "$PIDFILE"
 	return "$RETVAL"
 }
