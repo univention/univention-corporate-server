@@ -1,0 +1,4 @@
+[docker-container]
+name[de]=Docker Container
+name[en]=Docker Container
+icon=service-misc.gif

@@ -1,0 +1,72 @@
+#!/bin/sh
+#
+# Univention Appliance Docker Container
+#  postinst script for the debian package
+#
+# Copyright 2015 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+#DEBHELPER#
+
+eval "$(univention-config-registry shell)"
+
+. /usr/share/univention-lib/all.sh
+
+# prepare the server role selection
+if [ "$1" = "configure" ] && [ -z "$2" ] && [ ! -e /var/univention-join/joined ]; then
+	# don't download packages during update of this metapackage
+
+	# temporarily unset aptconf/dockerclean if it is set
+	if is_ucr_true aptconf/dockerclean; then
+		_set_aptconf_dockerclean() {
+			ucr set aptconf/dockerclean="$aptconf_dockerclean"
+		}
+		trap _set_aptconf_dockerclean EXIT
+		ucr set aptconf/dockerclean='false'
+	fi
+	if [ -d /var/cache/univention-system-setup/packages ]; then
+		rm /var/cache/univention-system-setup/packages/*
+		touch /var/cache/univention-system-setup/packages/Packages
+	fi
+
+	/usr/share/univention-docker-container-mode/download-packages \
+		univention-container-role-server-common \
+		univention-server-master
+	/usr/share/univention-docker-container-mode/download-packages \
+		univention-container-role-server-common \
+		univention-server-backup
+	/usr/share/univention-docker-container-mode/download-packages \
+		univention-container-role-server-common \
+		univention-server-slave
+	/usr/share/univention-docker-container-mode/download-packages \
+		univention-container-role-server-common \
+		univention-server-member
+	/usr/share/univention-docker-container-mode/download-packages \
+		univention-basesystem
+fi
+
+exit 0

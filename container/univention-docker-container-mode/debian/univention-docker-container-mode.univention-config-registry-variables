@@ -1,0 +1,5 @@
+[aptconf/dockerclean]
+Description[de]=Ist diese Option aktiviert, wird apt so configuriert, das Paketcaches immer direkt entfernt werden.
+Description[en]=If this option is enabled, apt caches will always be removed directly.
+Type=bool
+Categories=docker-container

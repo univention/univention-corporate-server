@@ -1,0 +1,3 @@
+sbin/init
+usr/share/univention-docker-container-mode/*
+.univention-environment

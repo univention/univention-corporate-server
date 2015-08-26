@@ -1,0 +1,4 @@
+## Some standard settings for plain shells exec'ed in docker containers
+
+DEBIAN_FRONTEND=noninteractive
+export DEBIAN_FRONTEND

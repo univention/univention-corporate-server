@@ -1,0 +1,15 @@
+Type: file
+File: usr/sbin/update-initramfs
+
+Type: file
+File: usr/sbin/grub-probe
+
+Type: file
+File: etc/apt/apt.conf.d/docker-clean
+Variables: aptconf/dockerclean
+
+Type: file
+File: etc/apt/apt.conf.d/docker-gzip-indexes
+
+Type: file
+File: etc/apt/apt.conf.d/docker-no-languages
