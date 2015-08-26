@@ -1099,12 +1099,12 @@ class SAML(object):
 			return idps.keys()[0]
 
 		for idp in idps:
-			idp = urlparse(idp)
-			host, port = idp.netloc, idp.port or {'https': 443, 'http': 80}[idp.scheme]
+			idp_ = urlparse(idp)
+			host, port = idp_.netloc, idp_.port or {'https': 443, 'http': 80}[idp_.scheme]
 			s = socket.socket()
 			try:
-				s.connect((host, port))
 				s.settimeout(1.0)
+				s.connect((host, port))
 				s.close()
 			except IOError:
 				continue

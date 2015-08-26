@@ -39,7 +39,7 @@ from subprocess import call
 def handler(config_registry, changes):
 	cleanup()
 	metadata_download_failed = []
-	for saml_idp, metadata in config_registry.items():
+	for saml_idp, metadata in config_registry.items():  # TODO: parse the changes, not the whole thing
 		if not saml_idp.startswith('umc/saml/idp/'):
 			continue
 		saml_idp = saml_idp[len('umc/saml/idp/'):]

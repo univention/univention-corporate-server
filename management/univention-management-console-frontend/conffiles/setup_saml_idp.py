@@ -69,7 +69,7 @@ def handler(config_registry, changes):
 		with NamedTemporaryFile() as temp:
 			temp.write(php_code)
 			temp.flush()
-			for server in get_saml_idp_servers():
+			for server in get_saml_service_provider():
 				try:
 					entityid, metadata = get_saml_metadata(server)
 				except (TypeError, ValueError):
@@ -90,9 +90,9 @@ def handler(config_registry, changes):
 		raise SystemExit('/etc/simplesamlphp/metadata/umc.php seems to be broken.')
 
 
-def get_saml_idp_servers():
+def get_saml_service_provider():
 	lo = univention.uldap.getMachineConnection()
-	for dn, attrs in lo.search(filter="(&(objectClass=univentionDomainController)(|(univentionServerRole=master)(univentionServerRole=backup)))", attr=['cn', 'associatedDomain']):
+	for dn, attrs in lo.search(filter="(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))", attr=['cn', 'associatedDomain']):
 		yield '%s.%s' % (attrs['cn'][0], attrs['associatedDomain'][0])
 	lo.lo.unbind()
 

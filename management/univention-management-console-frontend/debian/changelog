@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.15-3) unstable; urgency=medium
+
+  * Bug #31943: add all servers as SP entry in simplesamlphp
+
+ -- Florian Best <best@univention.de>  Wed, 26 Aug 2015 17:07:12 +0200
+
 univention-management-console-frontend (5.0.15-2) unstable; urgency=medium
 
   * Bug #31943: fix typos
