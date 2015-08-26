@@ -7,10 +7,10 @@ version: [2,3]
 desc: |
  This update addresses the following issues:
  * The Samba dlz_bind9 module didn't properly handle zone reloads.
-   The next request after a zone reload triggered a segementation fault.
+   The next request after a zone reload triggered a segmentation fault.
    After that named/bind9 was automatically restarted via runit, so the
    crash went unnoticed in most cases. Now the zone reload is fixed.
- * Samba is now build with the embedded Heimdal code to avoid memory management
-   issues with the external Heimdal libraries.
+ * Samba is now build with the embedded Heimdal code to avoid memory
+   management issues with the external Heimdal libraries.
  * Windows 2008 R2 Foundation raises error popup after join. Regression fixed.
 bug: [39076, 39139, 39244, 39254]
