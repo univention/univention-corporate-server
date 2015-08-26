@@ -1,0 +1,13 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: univention-mail-dovecot
+fix: to be announced
+version: [2,3]
+desc: |
+ This update addresses the following issues:
+ * A configuration error in the PAM stack "dovecot" has been fixed that
+ lead to higher than usual time to authenticate against postfix smtpd.
+ In some cases postfix' authentication timeout has been reached and
+ resulted in authentication failure.
+bug: [39267]
