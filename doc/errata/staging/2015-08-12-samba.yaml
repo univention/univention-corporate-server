@@ -16,4 +16,6 @@ desc: |
    due to an issue in negotiating strong encryption for server
    authentication. This issue has been fixed previously but was not part of
    the last Samba version.
-bug: [39139, 39254, 39263]
+ * Samba is now build with the embedded Heimdal code to avoid memory
+   management issues with the external Heimdal libraries.
+bug: [39139, 39254, 39263, 39244]
