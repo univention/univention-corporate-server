@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.15-2) unstable; urgency=medium
+
+  * Bug #31943: fix typos
+
+ -- Florian Best <best@univention.de>  Wed, 26 Aug 2015 15:53:00 +0200
+
 univention-management-console-frontend (5.0.15-1) unstable; urgency=medium
 
   * Bug #31943: SAML configuration does not depend on local IDP anymore

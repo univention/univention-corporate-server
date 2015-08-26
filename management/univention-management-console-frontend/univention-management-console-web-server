@@ -1104,6 +1104,7 @@ class SAML(object):
 			s = socket.socket()
 			try:
 				s.connect((host, port))
+				s.settimeout(1.0)
 				s.close()
 			except IOError:
 				continue

@@ -72,7 +72,7 @@ def handler(config_registry, changes):
 			for server in get_saml_idp_servers():
 				try:
 					entityid, metadata = get_saml_metadata(server)
-				except ValueError:
+				except (TypeError, ValueError):
 					failed.append(server)
 					continue
 
@@ -98,7 +98,7 @@ def get_saml_idp_servers():
 
 
 def get_saml_metadata(server):
-	metadata = 'https://%s/umcp/saml/metadata' % (server,),
+	metadata = 'https://%s/umcp/saml/metadata' % (server,)
 	process = Popen([
 		'/usr/bin/wget',
 		'--ca-certificate', '/etc/univention/ssl/ucsCA/CAcert.pem',
