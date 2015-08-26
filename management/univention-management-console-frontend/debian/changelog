@@ -1,6 +1,7 @@
 univention-management-console-frontend (5.0.15-1) unstable; urgency=medium
 
   * Bug #31943: SAML configuration does not depend on local IDP anymore
+  * check if IDP is available if multiple IDP's are set up
 
  -- Florian Best <best@univention.de>  Wed, 26 Aug 2015 15:09:07 +0200
 
