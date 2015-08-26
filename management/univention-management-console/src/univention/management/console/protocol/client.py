@@ -155,11 +155,6 @@ class Client(signals.Provider, Translation):
 		*force* is False the connection is kept."""
 		if not force and self.__unfinishedRequests:
 			return False
-		if self.__ssl and not self.__unix:
-			self.__socket.close()
-		self.__realsocket.close()
-		self.__socket = None
-		self.__realsocket = None
 		self.signal_emit('closed')
 		return True
 
