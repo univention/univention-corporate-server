@@ -873,7 +873,7 @@ class SAML(object):
 
 	def __init__(self):
 		self.configfile = '/usr/share/univention-management-console/saml/sp.py'
-		self.sp = Saml2Client(config_file=self.configfile)
+		self.__sp = None
 		self.seed = 'SnabbtInspel'  # FIXME: generate a secure random seed?
 
 		self.idp_query_param = "IdpQuery"
@@ -885,6 +885,22 @@ class SAML(object):
 		self.outstanding_certs = {}
 		self.relay_state = {}
 		self.user = {}
+		try:
+			self._reload_sp()
+		except Exception:
+			CORE.warn('Startup of SAML2.0 service provider failed:\n%s' % (traceback.format_exc(),))
+
+	@property
+	def sp(self):
+		if not self.__sp:
+			try:
+				self._reload_sp()
+			except Exception:
+				raise HTTPError(500, 'Single sign on is not available due to misconfiguration. See logfiles.')
+		return self.__sp
+
+	def _reload_sp(self):
+		self.__sp = Saml2Client(config_file=self.configfile)
 
 	@cherrypy.expose
 	@log_exceptions
@@ -906,6 +922,7 @@ class SAML(object):
 				return self.do_single_sign_on()
 			return self.acs(message, binding, relay_state)
 
+		raise HTTPRedirect('/umcp/auth/sso')
 		cherrypy.response.headers['Content-Type'] = 'text/html'
 		return '<a href="./logout">logout</a>'
 
@@ -1049,7 +1066,7 @@ class SAML(object):
 		return self.redirect_to_auth(identity_provider, came_from)
 
 	def _pick_idp(self, came_from):
-		idps = self.sp.metadata.with_descriptor("idpsso")
+		idps = self._get_idps()
 
 		if self.idp_query_param in cherrypy.request.query and cherrypy.request.query[self.idp_query_param] in idps:
 			return cherrypy.request.query[self.idp_query_param]
@@ -1079,6 +1096,17 @@ class SAML(object):
 
 		if len(idps) == 1:
 			return idps.keys()[0]
+
+	def _get_idps(self):
+		idps = self.sp.metadata.with_descriptor("idpsso")
+		if not idps:  # dynamic reload of IDP's
+			try:
+				self._reload_sp()
+			except Exception:
+				pass
+			else:
+				idps = self.sp.metadata.with_descriptor("idpsso")
+		return idps
 
 	def enhanced_client_proxy_profile(self):
 		if cherrypy.request.headers['Paos'] != PAOS_HEADER_INFO:
@@ -1215,10 +1243,7 @@ def run_cherrypy():
 	root.set = CPSet()
 	root.upload = CPUpload()
 	root.sso = CPSingleSignOn()
-	try:
-		root.saml = SAML()
-	except:
-		CORE.error('Cannot support SAML2.0 single sign on\n%s' % (traceback.format_exc(),))
+	root.saml = SAML()
 	root.get.ipaddress = IPAddresses()
 
 	cherrypy.quickstart(root=root)

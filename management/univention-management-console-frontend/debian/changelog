@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.15-1) unstable; urgency=medium
+
+  * Bug #31943: SAML configuration does not depend on local IDP anymore
+
+ -- Florian Best <best@univention.de>  Wed, 26 Aug 2015 15:09:07 +0200
+
 univention-management-console-frontend (5.0.14-1) unstable; urgency=medium
 
   * Bug #31943: don't rely on UMC-webserver restart when configuring SAML in

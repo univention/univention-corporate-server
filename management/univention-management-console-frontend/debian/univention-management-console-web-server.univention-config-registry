@@ -9,7 +9,12 @@ Multifile: etc/simplesamlphp/metadata/saml20-sp-remote.php
 Subfile: etc/simplesamlphp/metadata/10umc-sp.php
 
 Type: file
-File: etc/simplesamlphp/metadata/umc.php
-
-Type: file
 File: etc/ldap/sasl2/saml
+
+Type: module
+Module: setup_saml_sp.py
+Variables: umc/saml/idp/.*
+
+Type: module
+Module: setup_saml_idp.py
+Variables: umc/saml/is_idp

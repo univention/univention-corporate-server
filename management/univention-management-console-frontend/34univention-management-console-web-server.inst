@@ -58,7 +58,20 @@ else
 
 fi
 
-/usr/share/univention-management-console/saml/renew_saml_configuration || die
+# generate SSL cert + private key for the SAML service provider
+if [ ! -e /usr/share/univention-management-console/saml/pki/sp.pem ]; then
+	openssl req -newkey rsa:2048 -new -x509 -days "${ssl_default_days:-1825}" -subj "/C=US/ST=Unknown/L=Unknown/O=Unknown/CN=${hostname}.${domainname}" -nodes \
+		-outform PEM -out /usr/share/univention-management-console/saml/pki/sp.pem \
+		-keyform PEM -keyout /usr/share/univention-management-console/saml/pki/sp.key || exit 1
+	chmod 0600 /usr/share/univention-management-console/saml/pki/sp.key || exit 1
+fi
+
+ucr set "umc/saml/idp/${ldap_master}=https://${ldap_master}/simplesamlphp/saml2/idp/metadata.php"
+# TODO: the backup servers should also be set somehow
+
+if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+	ucr set umc/saml/is_idp=true
+fi
 
 /etc/init.d/univention-management-console-web-server restart
 
