@@ -1,3 +1,9 @@
+univention-mail-dovecot (1.0.0-4) unstable; urgency=low
+
+  * removed "use_first_pass" from pam_ldap in PAM stack "dovecot" (Bug #39267)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 26 Aug 2015 15:16:22 +0200
+
 univention-mail-dovecot (1.0.0-3) unstable; urgency=low
 
   * prevent long waiting for DH parameter generation on first install
