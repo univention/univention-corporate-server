@@ -1,3 +1,9 @@
+univention-saml (3.0.2-1) unstable; urgency=medium
+
+  * Bug #39250: convert simplesamlphp/authsources.php to a UCR multifile
+
+ -- Florian Best <best@univention.de>  Thu, 27 Aug 2015 17:44:29 +0200
+
 univention-saml (3.0.1-4) unstable; urgency=medium
 
   * Bug #39255: rename joinscript

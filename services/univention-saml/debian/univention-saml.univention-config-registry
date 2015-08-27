@@ -26,11 +26,15 @@ Variables: saml/idp/technicalcontactemail
 Variables: hostname
 Variables: domainname
 
-Type: file
-File: etc/simplesamlphp/authsources.php
+Type: multifile
+Multifile: etc/simplesamlphp/authsources.php
 User: root
 Group: www-data
 Mode: 640
+
+Type: subfile
+Multifile: etc/simplesamlphp/authsources.php
+Subfile: etc/simplesamlphp/00authsources.php
 Variables: saml/idp/ldap/enable_tls
 Variables: ldap/base
 Variables: saml/idp/ldap/debug
