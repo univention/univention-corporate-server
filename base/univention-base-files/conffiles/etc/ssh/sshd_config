@@ -48,4 +48,11 @@ if configRegistry.get('sshd/xuselocalhost'):
 	print "X11UseLocalhost %s" % configRegistry['sshd/xuselocalhost']
 if configRegistry.get('sshd/banner') and len(str(configRegistry.get('sshd/banner')) > 0):
 	print "Banner %s" % configRegistry['sshd/banner']
+
+if configRegistry.get('sshd/MACs'):
+	print "MACs %(sshd/MACs)s" % configRegistry
+if configRegistry.get('sshd/Ciphers'):
+	print "MACs %(sshd/Ciphers)s" % configRegistry
+if configRegistry.get('sshd/KexAlgorithms'):
+	print "MACs %(sshd/KexAlgorithms)s" % configRegistry
 @!@

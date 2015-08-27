@@ -15,6 +15,9 @@ Variables: sshd/xuselocalhost
 Variables: sshd/challengeresponse
 Variables: sshd/passwordauthentication
 Variables: sshd/banner
+Variables: sshd/MACs
+Variables: sshd/Ciphers
+Variables: sshd/KexAlgorithms
 
 Type: file
 File: etc/lsb-release

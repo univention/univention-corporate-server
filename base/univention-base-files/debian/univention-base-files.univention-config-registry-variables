@@ -76,6 +76,24 @@ Description[en]=This variable configures, whether a hint towards the UCS managem
 Type=bool
 Categories=service-ssh
 
+[sshd/MACs]
+Description[de]=Komma-separierte Liste von verfügbaren MAC (message authentication code) Algorithmen. Siehe `man sshd_config` für Details.
+Description[en]=Comma separated list of available MAC (message authentication code) algorithms. See `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/Ciphers]
+Description[de]=Komma-separierte Liste von Verschlüsselungsverfahren für Protokoll Version 2. Siehe `man sshd_config` für Details.
+Description[en]=Comma separated list of ciphers allowed for protocol version 2. See `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/KexAlgorithms]
+Description[de]=Komma-separierte Liste von verfügbaren KEX (Key Exchange) Algorithmen. Siehe `man sshd_config` für Details.
+Description[en]=Comma separated list of available KEX (Key Exchange) algorithms. See `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
 [domainname]
 Description[de]=Der Name der DNS-Domäne des Systems. Dieser Domänenname muss nicht mit dem externen DNS-Domänenname (etwa der Webpräsenz) übereinstimmen.
 Description[en]=The name of the system's DNS domain. This domain name does not need to match the externally used DNS domain name (e.g. of the web site).
