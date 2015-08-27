@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.2-5) unstable; urgency=low
+
+  * Bug #38190: Improved speed for opening a user
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 27 Aug 2015 10:26:05 +0200
+
 univention-management-console-module-udm (6.0.2-4) unstable; urgency=low
 
   * Bug #38834: Improved object creation notification

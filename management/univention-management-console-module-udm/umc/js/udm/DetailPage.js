@@ -35,6 +35,7 @@ define([
 	"dojo/on",
 	"dojo/Deferred",
 	"dojo/promise/all",
+	"dojo/when",
 	"dojo/dom-construct",
 	"dojo/dom-class",
 	"dojo/topic",
@@ -61,7 +62,7 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/widgets"
-], function(declare, lang, array, on, Deferred, all, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
+], function(declare, lang, array, on, Deferred, all, when, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
 
 	var _StandbyPage = declare([Page, StandbyMixin], {});
 
@@ -201,7 +202,7 @@ define([
 			//		and initiate the rendering process.
 			this.inherited(arguments);
 
-			this.headerButtons = this.getButtonDefinitions();
+			this.set('headerButtons', this.getButtonDefinitions());
 
 			this.standby(true);
 
@@ -210,7 +211,7 @@ define([
 
 			// for the detail page, we first need to query property data from the server
 			// for the layout of the selected object type, then we can render the page
-			var objectDN = this._multiEdit || this.moduleFlavor == 'users/self' ? null : this.ldapName || null;
+			var objectDN = this._multiEdit || this.moduleFlavor == 'users/self' || this.ldapName instanceof Deferred ? null : this.ldapName || null;
 			// prepare parallel queries
 			var moduleCache = cache.get(this.moduleFlavor);
 			this.propertyQuery = moduleCache.getProperties(this.objectType, objectDN);
@@ -272,10 +273,6 @@ define([
 		},
 
 		_loadObject: function(formBuiltDeferred, policyDeferred) {
-			formBuiltDeferred.then(lang.hitch(this, function() {
-				this._displayProgressOnSubmitButton();
-			}));
-
 			if (!this.ldapName || this._multiEdit) {
 				// no DN given or multi edit mode
 				all({
@@ -386,11 +383,12 @@ define([
 			}));
 		},
 
-		_displayProgressOnSubmitButton: function() {
+		_displayProgressOnSubmitButton: function(loadedDeferred) {
 			var submitButton = this._headerButtons.submit;
 			var origLabel = submitButton.get('label');
 			submitButton.set('disabled', true);
-			this._form.ready().then(lang.hitch(this, function() {
+
+			loadedDeferred.then(lang.hitch(this, function() {
 				// reset label of submit button
 				submitButton.set('label', origLabel);
 				submitButton.set('disabled', false);
@@ -788,20 +786,23 @@ define([
 
 			var isSyncedObject = function(obj) { return -1 !== obj.$flags$[0].indexOf('synced'); };
 
-			var objects = this.ldapName;
-			if (!this._multiEdit) {
-				objects = [objects];
-			}
-			// load all objects to see if they have univentionObjectFlag == synced
-			all(array.map(objects, lang.hitch(this, function(dn) {
-				return this.moduleStore.get(dn);
-			}))).then(lang.hitch(this, function(objs) {
-				if (array.some(objs, isSyncedObject)) {
-					properties = this._disableSyncedReadonlyProperties(properties);
-					this.isSyncedObject = true;
+			when(this.ldapName, lang.hitch(this, function(ldapName){
+				this.ldapName = ldapName;
+				var objects = this.ldapName;
+				if (!this._multiEdit) {
+					objects = [objects];
 				}
-				deferred.resolve(properties);
-			}), function() { deferred.resolve(properties); });
+				// load all objects to see if they have univentionObjectFlag == synced
+				all(array.map(objects, lang.hitch(this, function(dn) {
+					return this.moduleStore.get(dn);
+				}))).then(lang.hitch(this, function(objs) {
+					if (array.some(objs, isSyncedObject)) {
+						properties = this._disableSyncedReadonlyProperties(properties);
+						this.isSyncedObject = true;
+					}
+					deferred.resolve(properties);
+				}), function() { deferred.resolve(properties); });
+			}));
 			return deferred;
 		},
 
@@ -1080,9 +1081,13 @@ define([
 
 			var formBuiltDeferred = new Deferred();
 			this._policyDeferred = new Deferred();
-			var loadedDeferred = this._loadObject(formBuiltDeferred, this._policyDeferred);
+			var loadedDeferred = when(this.ldapName, lang.hitch(this, function(ldapName) {
+				this.ldapName = ldapName;
+				return this._loadObject(formBuiltDeferred, this._policyDeferred);
+			}));
 			loadedDeferred.then(lang.hitch(this, 'addActiveDirectoryWarning'));
 			loadedDeferred.then(lang.hitch(this, 'set', 'helpLink', metaInfo.help_link));
+			this._displayProgressOnSubmitButton(loadedDeferred);
 			all([loadedDeferred, formBuiltDeferred]).then(lang.hitch(this, '_notifyAboutAutomaticChanges'));
 
 			if (template && template.length > 0) {
