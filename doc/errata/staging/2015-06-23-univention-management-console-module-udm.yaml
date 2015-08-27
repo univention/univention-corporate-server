@@ -13,4 +13,5 @@ desc: |
    operation is executed again with a new ldap connection.
  * The notification for successfully creating a user or computer now appears
    under the wizard dialog.
-bug: [39041, 38346, 38834]
+ * Opening a user is now faster.
+bug: [39041, 38346, 38834, 38190]
