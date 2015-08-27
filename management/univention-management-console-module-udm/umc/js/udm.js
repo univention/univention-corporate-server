@@ -127,6 +127,10 @@ define([
 		// internal reference to the detail page for editing an LDAP object
 		_detailPage: null,
 
+		// internal variables for preloading a DetailPage Bug# 38190
+		_ldapNameDeferred: null,
+		_defaultObjectType: 'users/user',
+
 		// internal reference if Page is fully rendered
 		_pageRenderedDeferred: null,
 
@@ -489,6 +493,7 @@ define([
 			this._searchPage.startup();
 			this.addChild(this._searchPage);
 			this._checkMissingApp();
+			this._loadUCRVariables().then(lang.hitch(this, '_preloadDetailPage'));
 		},
 
 		renderGrid: function() {
@@ -1503,13 +1508,8 @@ define([
 				this.createDetailPage(options.objectType, undefined, options);
 			}));
 			this._newObjectDialog.on('Done', lang.hitch(this, function() {
-				var hideDeferred = this._newObjectDialog.hide();
-				// do it this way: if dialog was never shown
-				//   hide returns undefined
-				when(hideDeferred).then(lang.hitch(this, function() {
-					// really remove _newObjectDialog (on('hide') tried before):
-					//   dialog may never have been shown
-					//   so no onHide() call. See comment above
+				this._ldapNameDeferred.resolve();
+				when(this._ldapNameDeferred).then(lang.hitch(this, function() {
 					if (this._newObjectDialog) {
 						this._newObjectDialog.destroyRecursive();
 						this._newObjectDialog = null;
@@ -1520,6 +1520,9 @@ define([
 			this._newObjectDialog.on('hide', lang.hitch(this, function() {
 				this._newObjectDialog.destroyRecursive();
 				this._newObjectDialog = null;
+			}));
+			this._newObjectDialog.on('cancel', lang.hitch(this, function() {
+				this.closeDetailPage();
 			}));
 			onHandlerRegistered.resolve();
 			if (!this._newObjectDialog) {
@@ -1544,9 +1547,18 @@ define([
 			);
 		},
 
-		createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String?*/ note) {
-			// summary:
-			//		Creates and views the detail page for editing LDAP objects.
+		_preloadDetailPage: function(){
+			this._ldapNameDeferred = new Deferred();
+			this._setDetailPage(
+					this._defaultObjectType,
+					this._ldapNameDeferred,
+					/*newObjectOptions*/ null,
+					/*isClosable*/ false,
+					/*note*/ null
+				);
+		},
+
+		_setDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean*/ isClosable, /*String*/ note) {
 			this._detailPage = new DetailPage({
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				addWarning: lang.hitch(this, 'addWarning'),
@@ -1563,11 +1575,22 @@ define([
 				objectNamePlural: this.objectNamePlural,
 				objectNameSingular: this.objectNameSingular
 			});
+			this.addChild(this._detailPage);
+			this.selectChild(this._searchPage);
+		},
+
+		createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String?*/ note) {
+			// summary:
+			//		Creates and views the detail page for editing LDAP objects.
+			if(this._detailPage && this._defaultObjectType == objectType && !this._newObjectDialog){
+				this._ldapNameDeferred.resolve(ldapName);
+			} else {
+				this._setDetailPage(objectType, ldapName, newObjOptions, isClosable, note);
+			}
 
 			this._detailPage.on('closeTab', lang.hitch(this, 'closeDetailPage'));
 			this._detailPage.on('save', lang.hitch(this, 'onObjectSaved'));
 			this._detailPage.on('focusModule', lang.hitch(this, 'focusModule'));
-			this.addChild(this._detailPage);
 			if (this._newObjectDialog) {
 				var getFromDetailPage = {
 					properties: this._detailPage.propertyQuery,
@@ -1608,6 +1631,7 @@ define([
 				this._detailPage.destroyRecursive();
 				this._detailPage = null;
 			}
+			this._preloadDetailPage();
 			this.resetTitle();
 		},
 
