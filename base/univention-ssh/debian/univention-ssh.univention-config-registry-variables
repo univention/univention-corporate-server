@@ -1,0 +1,6 @@
+[sshd/HostKey/.*]
+Description[de]=Spezifiziert die Anzahl der Bits bei der Schlüsselerzeugung. Siehe `man ssh-keygen` für Details.
+Description[en]=Specifies the number of bits in the key to create. See `man ssh-keygen for details.
+Type=int
+Categories=service-ssh
+

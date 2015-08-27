@@ -42,5 +42,8 @@ override_dh_auto_clean:
 override_dh_auto_build:
 	sed -e "s/@@package_version@@/${version}/" <univention-ssh.in >univention-ssh
 
+override_dh_auto_install:
+	univention-install-config-registry
+
 override_dh_auto_test:
 	# ucslint
