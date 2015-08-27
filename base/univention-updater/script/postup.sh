@@ -92,8 +92,8 @@ if [ -z "$(ucr get docker/container/uuid)" ]; then
 	install univention-appcenter-docker
 fi
 
-# Update to UCS 4.0 autoremove
-if ! is_ucr_true update40/skip/autoremove; then
+# Update to UCS 4.1 autoremove
+if ! is_ucr_true update41/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
 fi
 
@@ -127,14 +127,14 @@ fi
 
 # Move to mirror mode for previous errata component
 ucr set \
-	repository/online/component/4.0-1-errata=false \
-	repository/online/component/4.0-1-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
+	repository/online/component/4.0-3-errata=false \
+	repository/online/component/4.0-3-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
 
-# Set errata component for UCS 4.0-2
+# Set errata component for UCS 4.1-0
 ucr set \
-	repository/online/component/4.0-2-errata=enabled \
-	repository/online/component/4.0-2-errata/description="Errata updates for UCS 4.0-2" \
-	repository/online/component/4.0-2-errata/version="4.0" >>"$UPDATER_LOG" 2>&1
+	repository/online/component/4.1-0-errata=enabled \
+	repository/online/component/4.1-0-errata/description="Errata updates for UCS 4.1-0" \
+	repository/online/component/4.1-0-errata/version="4.1" >>"$UPDATER_LOG" 2>&1
 
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then

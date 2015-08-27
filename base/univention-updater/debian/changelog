@@ -1,3 +1,12 @@
+univention-updater (11.0.1-1) unstable; urgency=medium
+
+  * Bug #39271: adjust postup/preup for UCS 4.1
+  * Bug #39247: set repository/server to testing.univention.de during UCS 4.1
+  	development
+  * Bug #39223: update codename of UCS 4.1 to "Vahr"
+
+ -- Florian Best <best@univention.de>  Thu, 27 Aug 2015 11:14:14 +0200
+
 univention-updater (11.0.0-1) unstable; urgency=medium
 
   * Bug #39258: Install univention-appcenter-docker when upgrading to UCS 4.1

@@ -30,8 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-REPOSITORY="updates.software-univention.de"
-#REPOSITORY="testing.software-univention.de"
+#REPOSITORY="updates.software-univention.de"
+REPOSITORY="testing.software-univention.de"
 . /usr/share/univention-lib/all.sh
 
 create_logfile /var/log/univention/repository.log "root:adm" 640
@@ -83,8 +83,8 @@ if [ "$1" = "configure" ]; then
 		update/check/boot/enabled?yes \
 		update/check/boot/debug?no \
 		update/available?no \
-		version/version?4.0 \
-		version/patchlevel?2 \
+		version/version?4.1 \
+		version/patchlevel?0 \
 		version/erratalevel?0 \
 		uuid/system?"$(cat /proc/sys/kernel/random/uuid)"
 
@@ -110,7 +110,10 @@ if [ "$1" = "configure" ]; then
 	# univention-config-registry set version/releasename="Borgfeld" # UCS 3.2
 	
 	# http://de.wikipedia.org/wiki/Walle_%28Bremen%29
-	univention-config-registry set version/releasename="Walle" # UCS 4.0
+	# univention-config-registry set version/releasename="Walle" # UCS 4.0
+
+	# https://de.wikipedia.org/wiki/Vahr
+	univention-config-registry set version/releasename="Vahr" # UCS 4.1
 
 	if [ -z "$2" ]; then
 		# enable current errata component
