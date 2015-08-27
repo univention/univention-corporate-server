@@ -2,6 +2,7 @@ univention-ssh (7.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.2
   * Bug #38710: Re-create all ssh host keys
+  * Bug #38711: Configure SSH host key bits
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 27 Aug 2015 10:10:39 +0200
 
