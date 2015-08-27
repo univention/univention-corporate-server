@@ -1,3 +1,9 @@
+univention-ssh (6.0.0-2) unstable; urgency=low
+
+  * Bug #38710: Re-create all ssh host keys
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 27 Aug 2015 10:10:39 +0200
+
 univention-ssh (6.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35138)
@@ -171,7 +177,3 @@ univention-ssh (0.1.univention) unstable; urgency=low
   * Initial Release.
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 09 Dec 2003 22:32:12 +0200
-
-Local variables:
-mode: debian-changelog
-End:
