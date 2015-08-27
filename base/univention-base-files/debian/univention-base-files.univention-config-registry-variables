@@ -94,6 +94,30 @@ Description[en]=Comma separated list of available KEX (Key Exchange) algorithms.
 Type=str
 Categories=service-ssh
 
+[sshd/Protocols]
+Description[de]=Komma-separierte Liste von verfügbaren SSH Protokoll Versionen. Standard: 2. Siehe `man sshd_config` für Details.
+Description[en]=Comma separated list of available SSH protocol versions. Default: 2. See `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/HostKey]
+Description[de]=Komma-separierte Liste von verfügbaren SSH Host Keys. Standard: 'rsa,ecdsa'. Siehe `man sshd_config` für Details.
+Description[en]=Comma separated list of available SSH host keys. Default: 'rsa,ecdsa'. See `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/ServerKeyBits]
+Description[de]=Anzahl der Bits für das 'ephemeral' Protokoll für Version 1 Server Schlüssel. Standard: 1024. Siehe `man sshd_config` für Details.
+Description[en]=Defines the number of bits in the ephemeral protocol version 1 server key. Default: 1024. See `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/TCPKeepAlive]
+Description[de]=Spezifiziert, ob TCP keepalive Nachrichten gesendet werden sollen. Standard: yes. Siehe `man sshd_config` für Details.
+Description[en]=Specifies whether to send TCP keepalive messages. Default: yes. See `man sshd_config for details.
+Type=bool
+Categories=service-ssh
+
 [domainname]
 Description[de]=Der Name der DNS-Domäne des Systems. Dieser Domänenname muss nicht mit dem externen DNS-Domänenname (etwa der Webpräsenz) übereinstimmen.
 Description[en]=The name of the system's DNS domain. This domain name does not need to match the externally used DNS domain name (e.g. of the web site).

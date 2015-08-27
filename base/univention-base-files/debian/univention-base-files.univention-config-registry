@@ -18,6 +18,10 @@ Variables: sshd/banner
 Variables: sshd/MACs
 Variables: sshd/Ciphers
 Variables: sshd/KexAlgorithms
+Variables: sshd/Protocols
+Variables: sshd/HostKey
+Variables: sshd/ServerKeyBits
+Variables: sshd/TCPKeepAlive
 
 Type: file
 File: etc/lsb-release
