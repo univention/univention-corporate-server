@@ -2,6 +2,7 @@ univention-base-files (5.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 4.1
   * Bug #38609: Make ssh algorithms configurable
+  * Bug #38709: Make ssh keys configurable
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 27 Aug 2015 07:45:41 +0200
 
