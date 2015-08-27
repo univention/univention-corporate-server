@@ -545,6 +545,7 @@ class Instance(Base, ProgressMixin):
 					'$dn$': obj.dn,
 					'$childs$': module.childs,
 					'$flags$': obj.oldattr.get('univentionObjectFlag', []),
+					'$operations$': module.operations,
 					'objectType': module.name,
 					'labelObjectType': module.subtitle,
 					'name': module.obj_description(obj) or udm_objects.description(obj),

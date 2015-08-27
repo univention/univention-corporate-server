@@ -569,6 +569,7 @@ define([
 				iconClass: 'umcIconEdit',
 				isStandardAction: true,
 				isMultiAction: true,
+				canExecute: lang.hitch(this, '_canEdit'),
 				callback: lang.hitch(this, function(ids, items) {
 					if (items.length == 1 && items[0].objectType) {
 						this.createDetailPage(items[0].objectType, ids[0]);
@@ -593,6 +594,7 @@ define([
 				label: _('Edit in new tab'),
 				description: _( 'Open a new tab in order to edit the UDM-object' ),
 				isMultiAction: false,
+				canExecute: lang.hitch(this, '_canEdit'),
 				callback: lang.hitch(this, function(ids, items) {
 					var moduleProps = {
 						openObject: {
@@ -1013,18 +1015,22 @@ define([
 			domClass.add(this._grid._grid.domNode, 'umcDynamicHeight-55');
 		},
 
+		_canEdit: function(item) {
+			return item.$operations$.indexOf('edit') !== -1;
+		},
+
 		_canMove: function(item) {
 			if (tools.isTrue(this._ucr['ad/member'])) {
 				return -1 === array.indexOf(item.$flags$, 'synced');
 			}
-			return true;
+			return item.$operations$.indexOf('move') !== -1;
 		},
 
 		_canDelete: function(item) {
 			if (tools.isTrue(this._ucr['ad/member'])) {
 				return -1 === array.indexOf(item.$flags$, 'synced');
 			}
-			return true;
+			return item.$operations$.indexOf('remove') !== -1;
 		},
 
 		_reloadSuperordinates: function() {

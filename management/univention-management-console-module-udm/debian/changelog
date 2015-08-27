@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.3-1) unstable; urgency=medium
+
+  * Bug #20439: evaluate operations 'edit', 'move', 'remove' in the frontend
+
+ -- Florian Best <best@univention.de>  Thu, 27 Aug 2015 18:00:32 +0200
+
 univention-management-console-module-udm (6.0.2-5) unstable; urgency=low
 
   * Bug #38190: Improved speed for opening a user

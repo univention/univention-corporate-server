@@ -1034,7 +1034,7 @@ def get_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
 
 @LDAP_Connection
 def list_objects(container, object_type=None, ldap_connection=None, ldap_position=None):
-	"""Returns a list of UDM objects"""
+	"""Yields UDM objects"""
 	try:
 		result = ldap_connection.search(base=container, scope='one')
 	except (LDAPError, udm_errors.ldapError):
@@ -1043,7 +1043,6 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
 		raise ObjectDoesNotExist(container)
 	except udm_errors.base as exc:
 		UDM_Error(exc).reraise()
-	objects = []
 	for dn, attrs in result:
 		modules = udm_modules.objectType(None, ldap_connection, dn, attrs)
 		if not modules:
@@ -1060,16 +1059,14 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
 			so_module = UDM_Module(module.superordinate)
 			so_obj = so_module.get(container)
 			try:
-				objects.append((module, module.get(dn, so_obj, attributes=attrs)))
+				yield (module, module.get(dn, so_obj, attributes=attrs))
 			except:
-				objects.append((module, module.get(dn, so_obj)))
+				yield (module, module.get(dn, so_obj))
 		else:
 			try:
-				objects.append((module, module.get(dn, attributes=attrs)))
+				yield (module, module.get(dn, attributes=attrs))
 			except:
-				objects.append((module, module.get(dn)))
-
-	return objects
+				yield (module, module.get(dn))
 
 
 def split_module_attr(value):
