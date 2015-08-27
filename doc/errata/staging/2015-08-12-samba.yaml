@@ -18,6 +18,6 @@ desc: |
    the last Samba version.
  * Samba is now build with the embedded Heimdal code to avoid memory
    management issues with the external Heimdal libraries.
- * A bug concerning unattended join during during windows sysprep
+ * The unattended Windows sysprep join failed against Samba 4. This issue
    has been fixed.
 bug: [39139, 39254, 39263, 39244, 39079]
