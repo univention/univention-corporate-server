@@ -73,6 +73,7 @@ display_help() {
 	  -realm <kerberos realm>:       Kerberos realm, e.g. TEST.LOCAL
 	  -windom <windows domain name>: Name of the windows (samba) domain
 	  -disableVersionCheck           Disable version check against _dcname_
+	  -skipIpMac                     Do not register IP and MAC in machine account
 	  -verbose                       Enable verbose logging (/var/log/univention/join.log)
 
 	  -h | --help | -?:              Print this usage message and exit program
@@ -281,6 +282,10 @@ do
 			;;
 		"-verbose")
 			VERBOSE="true"
+			shift
+			;;
+		"-skipIpMac")
+			SKIPIPMAC="true"
 			shift
 			;;
 		*)
@@ -503,20 +508,24 @@ else
 	args+=(-binddn "$binddn")
 fi
 
-# TODO: Support multiple network interfaces
-# Search for the standard IP:
-IP="$(get_default_ip_address)"
-if [ -n "$IP" ]; then
-	args+=(-ip "$IP")
-	if [ "${master_version:0:1}" -ge 3 ]; then
-		NETMASK="$(get_default_netmask)"
-		# Since UCS 3.0 it is possible to append the netmask
-		args+=(-netmask "$NETMASK")
+if [ -n "$SKIPIPMAC" -a "$SKIPIPMAC" = "true" ]; then
+	echo "Not registering IP and MAC, as requested with -skipIpMac" >>/var/log/univention/join.log
+else
+	# TODO: Support multiple network interfaces
+	# Search for the standard IP:
+	IP="$(get_default_ip_address)"
+	if [ -n "$IP" ]; then
+		args+=(-ip "$IP")
+		if [ "${master_version:0:1}" -ge 3 ]; then
+			NETMASK="$(get_default_netmask)"
+			# Since UCS 3.0 it is possible to append the netmask
+			args+=(-netmask "$NETMASK")
+		fi
 	fi
-fi
-mac_addr="$(LC_ALL=C ip link show | sed -rne 's|.*link/ether ([0-9a-fA-F:]+) brd .*|\1|p' | head -n1)"
-if [ -n "$mac_addr" ]; then
-	args+=(-mac "$mac_addr")
+	mac_addr="$(LC_ALL=C ip link show | sed -rne 's|.*link/ether ([0-9a-fA-F:]+) brd .*|\1|p' | head -n1)"
+	if [ -n "$mac_addr" ]; then
+		args+=(-mac "$mac_addr")
+	fi
 fi
 
 # invalidate the nscd hosts cache

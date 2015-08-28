@@ -1,3 +1,10 @@
+univention-join (8.0.0-3) unstable; urgency=low
+
+  *  Bug #38437: add option to skip IP / MAC / DNS registration while joining
+     by using "-skipIpMac" command line option
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 28 Aug 2015 18:32:42 +0200
+
 univention-join (8.0.0-2) unstable; urgency=low
 
   * Bug #38756: Force kill UDN und UDL
