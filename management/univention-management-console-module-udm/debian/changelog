@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-88) unstable; urgency=low
+
+  * Bug #38834: Adapted object creation notification
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 28 Aug 2015 10:53:08 +0200
+
 univention-management-console-module-udm (5.1.25-87) unstable; urgency=low
 
   * Bug #38190: Improved speed for opening a user

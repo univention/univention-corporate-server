@@ -32,82 +32,117 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/Deferred",
+	"dojo/when",
 	"dojo/dom-style",
 	"dojo/_base/fx",
 	"dojo/fx",
 	"dojo/fx/easing",
-	"umc/widgets/Text"
-], function(declare, lang, array, domStyle, baseFx, coreFx, easing, Text) {
-	return declare("umc.modules.udm.NotificationText", [ Text ], {
+	"umc/widgets/Text",
+	"umc/widgets/ContainerWidget"
+], function(declare, lang, array, Deferred, when, domStyle, baseFx, coreFx, easing, Text, Container) {
+	return declare("umc.modules.udm.NotificationText", [Container], {
 		// summary:
-		//		This class extends the normal Text widget in order to encapsulate
-		//		some UDM specific behaviour.
+		//		This class extends the normal Container widget in order to encapsulate
+		//		some UDM specific notification behaviour.
 
-		_siblingNode: null,
+		_text: null,
 
-		_animations: null, // use to avoid overlapping animations
+		_currentAnimation: null, // use to avoid overlapping animations
 
-		labelPosition: 'middle',
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			this._text = new Text({
+				labelPosition: 'middle'
+			});
+			this.own(this._text);
+			this.addChild(this._text);
+		},
 
 		postCreate: function() {
 			this.inherited(arguments);
-			this._animations = [];
-			this.set('visible', false);
+
 			domStyle.set(this.domNode, {
-				borderSizing: 'border-box',
-				height: "0px",
-				width: "100%",
+				height: "0",
+				margin: "10px -500px 0 -500px",
+				padding: "3px 500px",
+				position: "relative"
 			});
-			this._siblingNode.appendChild(this.domNode);
-		},
 
-		_showMessage: function(message) {
-			this.set('content', message);
-			this.set('visible', true);
-			
-			// stop all animations
-			if (this._animations.length) {
-				array.forEach(this._animations, function(anim) {
-					anim.stop();
-				});
-				this._animations = [];
-			}
-
-			this._animations.push(baseFx.animateProperty({
-				node: this.domNode,
-				duration: 1000,
-				easing: easing.quadOut,
-				properties: {
-					padding: { end: 5, units: 'px' },
-					opacity: { start: 0, end: 1 },
-					height: { start: 0, end: 30}
-				}
-			}));
-			this._animations.push(baseFx.animateProperty({
-				node: this.domNode,
-				delay: 1500,
-				duration: 1000,
-				easing: easing.quadIn,
-				properties: {
-					padding: { end: 0, units: 'px' },
-					opacity: { start: 1, end: 0 },
-					height: { start: 30, end: 0}
-				},
-				onEnd: lang.hitch(this, function() {
-					this.set('content', '');
-				})
-			}));
-			coreFx.chain(this._animations).play();
+			domStyle.set(this._text.domNode, {
+				fontSize: "14px",
+				overflow: "hidden",
+				padding: "0 5px",
+				height: "100%",
+				width: "100%"
+			});
 		},
 
 		showSuccess: function(message) {
 			domStyle.set(this.domNode, {
-				backgroundColor: '#dff0d8',
-				color: '#3c763d',
-				
+				backgroundColor: "#dff0d8",
+				color: "#3c763d"
 			});
 			this._showMessage(message);
+		},
+
+		_showMessage: function(message) {
+			var stopDeferred = new Deferred();
+			if (this.get('message')) {
+				this._stopCurrentAnimation(stopDeferred);
+			} else {
+				stopDeferred.resolve();
+			}
+
+			when(stopDeferred, lang.hitch(this, function() {
+				this.set('message', message);
+				this._currentAnimation = baseFx.animateProperty({
+					node: this.domNode,
+					duration: 350,
+					easing: easing.quadIn,
+					properties: {
+						height: { start: 0, end: 24 },
+						paddingTop: { start: 0, end: 3 }
+					}
+				});
+				this._currentAnimation.play();
+			}));
+		},
+
+		_stopCurrentAnimation: function(stopDeferred) {
+			if (this._currentAnimation) {
+				this._currentAnimation.stop();
+				this._currentAnimation = null;
+			}
+
+			baseFx.animateProperty({
+				node: this.domNode,
+				duration: 350,
+				easing: easing.quadOut,
+				properties: {
+					height: { start: 24, end: 0 },
+					paddingTop: { start: 3, end: 0}
+				},
+				onEnd: lang.hitch(this, function() {
+					this.set('message', null);
+					stopDeferred.resolve();
+				})
+			}).play();
+		},
+
+		_setMessageAttr: function(value) {
+			if (this._text.domNode) {
+				this._text.domNode.textContent = value;
+			}
+		},
+
+		_getMessageAttr: function() {
+			if (this._text.domNode) {
+				return this.domNode.textContent;
+			} else {
+				return null;
+			}
 		}
 	});
 });
-
