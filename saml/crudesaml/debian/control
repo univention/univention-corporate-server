@@ -1,0 +1,34 @@
+Source: crudesaml
+Section: libs
+Priority: optional
+Maintainer: Florian Best <best@univention.de>
+Build-Depends: debhelper,
+ tar,
+ libxml2-dev,
+ libxmlsec1-dev,
+ libpam-dev,
+ libsasl2-dev,
+ liblasso-dev,
+Standards-Version: 3.7.2
+
+Package: crudesaml
+Architecture: any
+Depends: ${misc:Depends},
+ libxml2,
+ libxmlsec1-openssl,
+ libxmlsec1,
+ xmlsec1,
+ liblasso3
+Description: crudesaml is a package featuring a PAM module and a cyrus SASL plugin 
+ for validating SAML assertions. http://ftp.espci.fr/pub/crudesaml/README
+#
+#Package: crudesaml-dbg
+#Architecture: any
+#Section: debug
+#Priority: extra
+#Depends: crudesaml (= ${binary:Version}),
+# ${misc:Depends},
+#Description: crudesaml is a package featuring a PAM module and a cyrus SASL plugin 
+# for validating SAML assertions. http://ftp.espci.fr/pub/crudesaml/README
+# .
+# This package contains the debugging symbols for crudesaml.
