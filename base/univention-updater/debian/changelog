@@ -1,3 +1,9 @@
+univention-updater (11.0.1-2) unstable; urgency=low
+
+  * Bug #30417: Add App update support
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 28 Aug 2015 14:18:31 +0200
+
 univention-updater (11.0.1-1) unstable; urgency=medium
 
   * Bug #39271: adjust postup/preup for UCS 4.1
