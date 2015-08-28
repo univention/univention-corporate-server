@@ -94,7 +94,7 @@ Description[en]=Comma separated list of available KEX (Key Exchange) algorithms.
 Type=str
 Categories=service-ssh
 
-[sshd/Protocols]
+[sshd/Protocol]
 Description[de]=Komma-separierte Liste von verfügbaren SSH Protokoll Versionen. Standard: 2. Siehe `man sshd_config` für Details.
 Description[en]=Comma separated list of available SSH protocol versions. Default: 2. See `man sshd_config for details.
 Type=str

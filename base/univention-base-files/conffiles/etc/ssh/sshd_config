@@ -19,7 +19,7 @@ for key in configRegistry.get('sshd/HostKey', 'rsa,ecdsa').split(','):
 		print "HostKey %s" % (filename,)
 
 if '1' in protocols:
-	print 'ServerKeyBits %s' % (configRegistry.get('ssh/ServerKeyBits', 1024),)
+	print 'ServerKeyBits %s' % (configRegistry.get('sshd/ServerKeyBits', 1024),)
 
 if configRegistry.get('sshd/TCPKeepAlive'):
 	print "TCPKeepAlive %(sshd/TCPKeepAlive)s" % configRegistry
