@@ -22,6 +22,7 @@ Variables: sshd/Protocols
 Variables: sshd/HostKey
 Variables: sshd/ServerKeyBits
 Variables: sshd/TCPKeepAlive
+Variables: sshd/config/.*
 
 Type: file
 File: etc/lsb-release

@@ -1,3 +1,9 @@
+univention-base-files (5.0.0-3) unstable; urgency=low
+
+  * Bug #38609: Make ssh algorithms configurable
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 28 Aug 2015 15:28:34 +0200
+
 univention-base-files (5.0.0-2) unstable; urgency=low
 
   * Bug #38763: no keyboard or console font setup required inside a docker
