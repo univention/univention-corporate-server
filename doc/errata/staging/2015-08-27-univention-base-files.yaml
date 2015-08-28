@@ -3,13 +3,13 @@ release: "4.0"
 version: [3]
 scope: ucs_4.0-0-errata4.0-3
 src: univention-base-files
-fix: 4.0.8-8.196.201508281549
+fix: 4.0.8-9.198.201508281628
 desc: |
   This update addresses the following issues:
   * The list of supported message digest, encryption and key exchange
     algorithms allowed by the SSH daemon can now be configured through the
     new UCR variables 'sshd/MACs', 'sshd/Ciphers', and 'sshd/KexAlgorithms'.
-    * The un-secure SSH protocols 'rsa1' and 'dsa' have been disabled. They can
+  * The un-secure SSH protocols 'rsa1' and 'dsa' have been disabled. They can
     be re-enabled through the new UCR variables 'sshd/Protocol' and
     'sshd/HostKey'.
 bug: [38609,38709]
