@@ -180,8 +180,9 @@ define([
 			// otherwise the prewidget gets selected after the real wizard has been selected so that the wrong wizard is shown
 			this.canContinue.then(undefined, lang.hitch(this._preWizard, 'selectCorrectChild'));
 
-			this._notificationText = new NotificationText({_siblingNode: this.domNode});
+			this._notificationText = new NotificationText();
 			this.own(this._notificationText);
+			this.addChild(this._notificationText);
 
 		},
 
