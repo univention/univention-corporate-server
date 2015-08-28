@@ -70,7 +70,17 @@ if configRegistry.get('sshd/banner') and len(str(configRegistry.get('sshd/banner
 if configRegistry.get('sshd/MACs'):
 	print "MACs %(sshd/MACs)s" % configRegistry
 if configRegistry.get('sshd/Ciphers'):
-	print "MACs %(sshd/Ciphers)s" % configRegistry
+	print "Ciphers %(sshd/Ciphers)s" % configRegistry
 if configRegistry.get('sshd/KexAlgorithms'):
-	print "MACs %(sshd/KexAlgorithms)s" % configRegistry
+	print "KexAlgorithms %(sshd/KexAlgorithms)s" % configRegistry
+
+PREFIX = 'sshd/config/'
+DIGITS = '0123456789'
+config = [
+	'%s %s' % (key[len(PREFIX):], value)
+	for (key, value) in configRegistry.items()
+	if key.startswith(PREFIX)
+]
+if config:
+	print '\n'.join(line.lstrip(DIGITS) for line in sorted(config))
 @!@
