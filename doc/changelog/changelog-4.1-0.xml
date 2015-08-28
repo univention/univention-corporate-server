@@ -479,6 +479,8 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
+				Asterisk has been updated to 11.13.1. It provides many bugfixes and fixes
+				several vulnerabilities (<u:bug>37738</u:bug>, <u:bug>39285</u:bug>)
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
