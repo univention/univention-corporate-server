@@ -34,5 +34,9 @@ import os
 
 
 def handler(configRegistry, changes):
-	os.system('/sbin/udevadm trigger --subsystem-match=input --action=change')
-	os.system('/bin/setupcon --force --save')
+	if "docker" in open("/proc/1/cgroup","rb").read():
+		# no udev, keyboard or console font inside docker container
+		pass
+	else:
+		os.system('/sbin/udevadm trigger --subsystem-match=input --action=change')
+		os.system('/bin/setupcon --force --save')
