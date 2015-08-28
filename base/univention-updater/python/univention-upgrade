@@ -50,6 +50,8 @@ LOGFN = '/var/log/univention/updater.log'
 
 configRegistry = None
 logfd = None
+silent = False
+
 def dprint(silent, msg, newline=True, debug=False):
 	"""Print debug output."""
 	if silent:
@@ -204,7 +206,6 @@ def performUpdate(updateto=None, checkForUpdates=False, ignoressh=False, ignoret
 						update_status( status='FAILED', errorsource='UPDATE' )
 						sys.exit(1)
 					dprint(silent, 'Update to UCS version %s finished at %s...' % (version_next, time.ctime()), debug=True)
-					run_release_upgrade = True
 					time.sleep(1)
 				else:
 					# The user said: No
@@ -303,7 +304,6 @@ def main():
 	if options.noninteractive:
 		os.environ['UCS_FRONTEND']='noninteractive'
 
-	silent = False
 	dprint(silent, '\nStarting univention-upgrade. Current UCS version is %(version/version)s-%(version/patchlevel)s errata%(version/erratalevel)s\n' % configRegistry)
 
 	dprint(silent, 'Checking for local repository: ', newline=False)
@@ -334,7 +334,6 @@ def main():
 			sys.exit(3)
 		except Exception, e:
 			print 'An error occurred - stopping here.'
-			import traceback
 			print >>logfd, 'Traceback in univention-upgrade:'
 			print >>logfd, traceback.format_exc()
 			sys.exit(2)
@@ -360,7 +359,6 @@ def main():
 		except Exception, e:
 			update_status( status='FAILED' )
 			print 'An error occurred - stopping here.'
-			import traceback
 			print >>logfd, 'Traceback in univention-upgrade:'
 			print >>logfd, traceback.format_exc()
 			sys.exit(2)
@@ -378,7 +376,6 @@ def main():
 			sys.exit(3)
 		except Exception, e:
 			print 'An error occurred - stopping here.'
-			import traceback
 			print >>logfd, 'Traceback in univention-upgrade:'
 			print >>logfd, traceback.format_exc()
 			sys.exit(2)
