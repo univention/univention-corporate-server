@@ -38,6 +38,7 @@ import time
 from optparse import OptionParser, OptionGroup
 import subprocess
 import traceback
+import logging
 
 import univention.config_registry
 
@@ -274,9 +275,81 @@ def performUpdate(options, checkForUpdates=False, silent=False):
 		else:
 			dprint(silent, 'none')
 
+		if not options.skip_apps:
+			if do_app_updates(options, checkForUpdates, silent):
+				if checkForUpdates:
+					return True
+
 	# updates available ==> stop here in "check-mode"
 	if checkForUpdates:
 		return False
+
+
+def do_app_updates(options, checkForUpdates, silent):
+	interactive = not (options.noninteractive or checkForUpdates)
+	try:
+		from univention.appcenter.actions import get_action
+		import univention.appcenter.log as appcenter_log
+		app_upgrade = get_action('upgrade')
+		if app_upgrade is None:
+			raise ImportError()
+	except ImportError:
+		# the new univention.appcenter package is not installed. nevermind
+		# cannot be a dependency as the app center depends on updater...
+		return False
+
+	# check if component updates are available
+	dprint(silent, 'Checking for app updates: ', newline=False)
+	app_upgrade = app_upgrade()
+	appcenter_log.log_to_logfile()
+	appcenter_log._reverse_umc_module_logger()
+
+	# own logging
+	handler = logging.FileHandler(LOGFN)
+	appcenter_log.get_base_logger().addHandler(handler)
+	logger = logging.getLogger('univention.appcenter.actions.upgrade.readme')
+	handler = logging.StreamHandler(sys.stdout)
+	handler.setLevel(logging.INFO)
+	logger.addHandler(handler)
+
+	new_apps = list(app_upgrade.iter_upgradable_apps())
+	if not new_apps:
+		dprint(silent, 'none')
+		return False
+	elif checkForUpdates:
+		dprint(silent, 'found')
+		return True
+
+	dprint(silent, 'found\n')
+	dprint(silent, 'The following apps can be updated:\n')
+	for app in new_apps:
+		dprint(silent, '%(name)s: Version %(old)s can be updated to %(new)s' % {
+			'name': app.name,
+			'old': app.version,
+			'new': app.candidate.version,
+		})
+
+	dprint(silent, 'Starting univention-app update at %s...' % time.ctime(), debug=True)
+	if not (options.pwdfile and options.username):
+		dprint(silent, 'LDAP credential may be required for installing apps')
+	dprint(silent, '\nStarting app update', newline=False)
+	success = True
+	for app in new_apps:
+		if interactive and not readcontinue('\nDo you want to update %s [Y|n]?' % app.name):
+			continue
+		success &= bool(app_upgrade.call(
+			app=app,
+			noninteractive=not interactive,
+			username=options.username,
+			pwdfile=options.pwdfile,
+		))
+
+	if not success:
+		dprint(silent, 'ERROR: app upgrade failed. Please check /var/log/univention/updater.log\n')
+		sys.exit(1)
+	dprint(silent, 'univention-app upgrade finished at %s...' % time.ctime(), debug=True)
+	dprint(silent, 'done')
+	return not success  # pending updates
 
 
 def parse_args():
@@ -291,10 +364,37 @@ def parse_args():
 	parser.add_option("--noninteractive", dest="noninteractive", default=False, action="store_true", help="Perform a non-interactive update")
 	parser.add_option("--iso", dest="iso", default=None, action="store", help="ISO image for the repository update")
 	parser.add_option("--cdrom", dest="cdrom", default="/dev/cdrom", action="store", help="CDROM device for the repository update")
+	group = OptionGroup(parser, "App updates")
+	group.add_option(
+		"--skip-apps",
+		dest="skip_apps", action="store_true",
+		help="Skip updating installed Apps")
+	group.add_option(
+		"--username",
+		dest="username", action="store",
+		help="Name of the user used for registering the app")
+	group.add_option(
+		"--pwdfile",
+		dest="pwdfile", action="store",
+		help="Name of the file containing the user password")
+	parser.add_option_group(group)
+
 	(options, args) = parser.parse_args()
 
 	if args:
 		parser.error("Extra arguments: %r" % (args,))
+
+	if options.skip_apps:
+		if options.pwdfile or options.username:
+			parser.error("Apps are disabled, but LDAP credentials are passed")
+	else:
+		if options.pwdfile:
+			if not os.path.exists(options.pwdfile):
+				parser.error("File missing: '%s'" % (options.pwdfile,))
+			if not options.username:
+				parser.error("--pwdfile without --username")
+		elif options.username:
+			parser.error("--username without --pwdfile")
 
 	return options
 
