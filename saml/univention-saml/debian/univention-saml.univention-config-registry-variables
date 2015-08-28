@@ -1,3 +1,9 @@
+[saml/idp/entityID]
+Description[de]=Diese Variable konfiguriert die entityID des SAML 2.0 identity provider.
+Description[en]=This variable configures the entityID of the SAML 2.0 identity provider.
+Type=str
+Categories=saml
+
 [saml/idp/enableSAML20-IdP]
 Description[de]=Wenn diese Variable auf 'true' gesetzt ist, ist der saml 2.0 Identity Provider aktiviert. (default: true)
 Description[en]=If this variable is set to 'true', the saml 2.0 identity provider is activated. (default: true)

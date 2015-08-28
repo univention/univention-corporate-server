@@ -6,7 +6,10 @@
  * See: https://rnd.feide.no/content/idp-hosted-metadata-reference
  */
 
-$metadata['__DYNAMIC:1__'] = array(
+@!@
+entity_id = configRegistry.get('saml/idp/entityID', 'https://%(hostname)s.%(domainname)s/simplesamlphp/saml2/idp/metadata.php' % configRegistry)
+print "$metadata['%s'] = array(" % (entity_id,)
+@!@
 	/*
 	 * The hostname of the server (VHOST) that will use this SAML entity.
 	 *

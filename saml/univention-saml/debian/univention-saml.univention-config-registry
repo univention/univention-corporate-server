@@ -3,6 +3,7 @@ File: etc/simplesamlphp/metadata/saml20-idp-hosted.php
 User: root
 Group: www-data
 Mode: 640
+Variables: saml/idp/entityID
 Variables: saml/idp/certificate/privatekey
 Variables: saml/idp/certificate/certificate
 Variables: apache2/ssl/key

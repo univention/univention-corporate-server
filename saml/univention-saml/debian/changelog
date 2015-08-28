@@ -1,3 +1,9 @@
+univention-saml (3.0.3-1) unstable; urgency=medium
+
+  * Bug #33912: allow to set entityID of SAML IDP via UCR variable
+
+ -- Florian Best <best@univention.de>  Fri, 28 Aug 2015 14:36:48 +0200
+
 univention-saml (3.0.2-1) unstable; urgency=medium
 
   * Bug #39250: convert simplesamlphp/authsources.php to a UCR multifile
