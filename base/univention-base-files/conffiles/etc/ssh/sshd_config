@@ -64,7 +64,7 @@ if configRegistry.get('sshd/xdisplayoffset'):
 	print "X11DisplayOffset %s" % configRegistry['sshd/xdisplayoffset']
 if configRegistry.get('sshd/xuselocalhost'):
 	print "X11UseLocalhost %s" % configRegistry['sshd/xuselocalhost']
-if configRegistry.get('sshd/banner') and len(str(configRegistry.get('sshd/banner')) > 0):
+if configRegistry.get('sshd/banner'):
 	print "Banner %s" % configRegistry['sshd/banner']
 
 if configRegistry.get('sshd/MACs'):
