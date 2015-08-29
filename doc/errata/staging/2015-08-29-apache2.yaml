@@ -1,0 +1,28 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-7
+src: apache2
+fix: 2.2.16-6.88.201508292044
+version: [6,7]
+desc: |
+ These vulnerabilities have been fixed in apache2:
+  * Denial of service in mod_dav (CVE-2013-6438)
+  * Heap overflow in mod_status scoreboard handling (CVE-2014-0226)
+  * Denial of service in mod_deflate (CVE-2014-0118)
+  * Denial of service in mod_cgid (CVE-2014-0231)
+  * Denial of service in mod_cache (CVE-2014-3581)
+  * Incorrect handling of chunked trailer fields in mod_headers
+    (CVE-2013-5704)
+  * HTTP request smuggling attack against chunked request parser, allowing
+    cache poisoning or credential hijacking if an intermediary proxy is in
+    use (CVE-2015-3183)
+bug:
+ - 33286
+cve:
+ - CVE-2013-6438
+ - CVE-2014-0226
+ - CVE-2014-0118
+ - CVE-2014-0231
+ - CVE-2014-3581
+ - CVE-2013-5704
+ - CVE-2015-3183
