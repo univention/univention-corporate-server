@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: file
-fix: 5.11-2...
+fix: 5.11-2.36.201508290031
 version: [2,3]
 desc: |
   Multiple security vulnerabilities have been fixed in file:
