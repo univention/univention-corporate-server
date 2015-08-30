@@ -3,7 +3,7 @@ release: "4.0"
 version: [3]
 scope: ucs_4.0-0-errata4.0-3
 src: univention-ssh
-fix: 6.0.0-2.47.201508271121
+fix: 6.0.0-3.48.201508301608
 desc: |
   This update addresses the following issues:
   * 'univention-openssh-recreate-host-keys' now re-creates all host key files
