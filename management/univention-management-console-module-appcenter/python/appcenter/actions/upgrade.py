@@ -35,9 +35,10 @@
 from univention.appcenter.app import AppManager
 from univention.appcenter.actions.install import Install
 
+
 class Upgrade(Install):
 	'''Upgrades an installed application from the Univention App Center.'''
-	help='Upgrade an app'
+	help = 'Upgrade an app'
 
 	pre_readme = 'readme_update'
 	post_readme = 'readme_post_update'
@@ -86,3 +87,6 @@ class Upgrade(Install):
 		if app > self.old_app:
 			super(Upgrade, self)._send_information(app, status)
 
+	def iter_upgradable_apps(self):
+		# TODO: implement
+		return [].__iter__()
