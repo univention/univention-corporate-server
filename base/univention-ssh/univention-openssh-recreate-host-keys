@@ -31,8 +31,9 @@
 # <http://www.gnu.org/licenses/>.
 
 die () {
-	echo "For $typ: $*" >&2
-	exit 1
+	echo "For $typ: $*." >&2
+	echo "Continuing..."
+	continue
 }
 
 dir="/var/univention-backup/ssh-$(date '+%F_%T')"
