@@ -209,6 +209,11 @@ define([
 				};
 				return replacements[page] || page;
 			});
+			var rolePageDisabled = array.indexOf('role', pageBlacklist) === -1;
+			if (rolePageDisabled) {
+				// make sure to disable all pages linked to role selection
+				pageBlacklist.push('role-nonmaster-ad');
+			}
 
 			this.wizard = new ApplianceWizard({
 				//progressBar: progressBar

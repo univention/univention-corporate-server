@@ -1818,8 +1818,11 @@ define([
 
 		_isRoleMaster: function() {
 			var showRoleSelection = array.indexOf(this.disabledPages, 'role') === -1;
+			if (!showRoleSelection) {
+				return this.ucr['server/role'] == 'domaincontroller_master';
+			}
 			var createNewDomain = this.getWidget('_createDomain').get('value');
-			return createNewDomain || !showRoleSelection;
+			return createNewDomain;
 		},
 
 		_isRoleNonMaster: function() {
@@ -2482,7 +2485,9 @@ define([
 			var _vals = this._gatherVisibleValues();
 			var showRoleSelection = array.indexOf(this.disabledPages, 'role') === -1;
 			var implicitMaster = this._isAdMemberMaster();
-			if (_vals._createDomain || !showRoleSelection || implicitMaster) {
+			if (!showRoleSelection) {
+				return this.ucr['server/role'];
+			} else if (_vals._createDomain || implicitMaster) {
 				return 'domaincontroller_master';
 			} else if (_vals._roleBackup) {
 				return 'domaincontroller_backup';
