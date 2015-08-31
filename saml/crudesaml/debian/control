@@ -21,14 +21,14 @@ Depends: ${misc:Depends},
  liblasso3
 Description: crudesaml is a package featuring a PAM module and a cyrus SASL plugin 
  for validating SAML assertions. http://ftp.espci.fr/pub/crudesaml/README
-#
-#Package: crudesaml-dbg
-#Architecture: any
-#Section: debug
-#Priority: extra
-#Depends: crudesaml (= ${binary:Version}),
-# ${misc:Depends},
-#Description: crudesaml is a package featuring a PAM module and a cyrus SASL plugin 
-# for validating SAML assertions. http://ftp.espci.fr/pub/crudesaml/README
-# .
-# This package contains the debugging symbols for crudesaml.
+
+Package: crudesaml-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends: crudesaml (= ${binary:Version}),
+ ${misc:Depends},
+Description: crudesaml is a package featuring a PAM module and a cyrus SASL plugin 
+ for validating SAML assertions. http://ftp.espci.fr/pub/crudesaml/README
+ .
+ This package contains the debugging symbols for crudesaml.
