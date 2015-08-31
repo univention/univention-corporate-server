@@ -91,6 +91,7 @@ Package: python-univention-config-registry
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  python-ipaddr,
+ ifupdown,
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Description: UCS - Python interface to configuration registry

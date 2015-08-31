@@ -376,15 +376,20 @@ class _ConfigRegistry(dict):
 				os.chmod(temp_filename, mode)
 				os.chown(temp_filename, user, group)
 				os.rename(temp_filename, filename)
-			except OSError:
-				# In this case the temp file created above in this
-				# function was already moved by a concurrent UCR
-				# operation. Dump the current state to a backup file
-				temp_filename = '%s.concurrent_%s' % (filename, time.time())
-				reg_file = open(temp_filename, 'w')
-				reg_file.write('# univention_ base.conf\n\n')
-				reg_file.write(self.__str__())
-				reg_file.close()
+			except OSError as ex:
+				if ex.errno == errno.EBUSY:
+					with open(filename, 'w+') as fd:
+						fd.write(open(temp_filename, 'r').read())
+					os.unlink(temp_filename)
+				else:
+					# In this case the temp file created above in this
+					# function was already moved by a concurrent UCR
+					# operation. Dump the current state to a backup file
+					temp_filename = '%s.concurrent_%s' % (filename, time.time())
+					reg_file = open(temp_filename, 'w')
+					reg_file.write('# univention_ base.conf\n\n')
+					reg_file.write(self.__str__())
+					reg_file.close()
 		except EnvironmentError, ex:
 			# suppress certain errors
 			if ex.errno != errno.EACCES:

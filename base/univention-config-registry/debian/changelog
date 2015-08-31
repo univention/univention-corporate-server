@@ -1,3 +1,17 @@
+univention-config-registry (10.0.3-1) unstable; urgency=medium
+
+  * Merge Bug #38011 to 4.1:
+  * r61446 | arequate: python-univention-config-registry calls tools from
+    ifupdown and fails if they are not installed, so depend on ifupdown (Bug
+    #38011).
+  * r61446 | arequate: Use errno.EBUSY instead of corresponding constant value
+  * r59435 | arequate: Bug #38011: Also adjust backend.py for this and remove
+    tmp files
+  * r58905 | sschwardt: Bug #38011: allow UCR to modify bind-mounted files
+    provided by docker
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 31 Aug 2015 10:10:55 +0200
+
 univention-config-registry (10.0.2-3) unstable; urgency=medium
 
   * always use UCR access with KeyError (Bug #35694)

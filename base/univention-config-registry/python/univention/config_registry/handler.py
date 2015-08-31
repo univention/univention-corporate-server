@@ -342,7 +342,13 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 			self._set_perm(stat, tmp_to_file)
 			to_fp.close()
 
-			os.rename(tmp_to_file, self.to_file)
+			try:
+				os.rename(tmp_to_file, self.to_file)
+			except OSError as ex:
+				if ex.errno == errno.EBUSY:
+					with open(self.to_file, 'w+') as fd:
+						fd.write(open(tmp_to_file, 'r').read())
+					os.unlink(tmp_to_file)
 		except:
 			if os.path.exists(tmp_to_file):
 				os.unlink(tmp_to_file)
@@ -415,7 +421,13 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 			from_fp.close()
 			to_fp.close()
 
-			os.rename(tmp_to_file, self.to_file)
+			try:
+				os.rename(tmp_to_file, self.to_file)
+			except OSError as ex:
+				if ex.errno == errno.EBUSY:
+					with open(self.to_file, 'w+') as fd:
+						fd.write(open(tmp_to_file, 'r').read())
+					os.unlink(tmp_to_file)
 		except:
 			if os.path.exists(tmp_to_file):
 				os.unlink(tmp_to_file)
