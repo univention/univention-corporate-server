@@ -1,3 +1,9 @@
+univention-heimdal (8.0.0-3) unstable; urgency=medium
+
+  * Fix UCRV registry (Bug #38295)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 31 Aug 2015 18:02:44 +0200
+
 univention-heimdal (8.0.0-2) unstable; urgency=medium
 
   * Bug #38295: Configure realm 'UNIVENTION.UNCONFIGURED' in krb5.conf if UCRV
