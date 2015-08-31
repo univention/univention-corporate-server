@@ -1,3 +1,9 @@
+univention-join (8.0.0-4) unstable; urgency=low
+
+  * Bug #38437: removed bashism
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 31 Aug 2015 08:50:57 +0200
+
 univention-join (8.0.0-3) unstable; urgency=low
 
   *  Bug #38437: add option to skip IP / MAC / DNS registration while joining

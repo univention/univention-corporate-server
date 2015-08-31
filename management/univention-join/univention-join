@@ -45,6 +45,7 @@ USERTMP="$(mktemp -d)"
 DCPWD="$USERTMP/dcpwd"
 VERSION_CHECK=true
 VERBOSE=false
+SKIPIPMAC=false
 
 trapOnExit() {
 	rm -rf "$USERTMP"
@@ -285,7 +286,7 @@ do
 			shift
 			;;
 		"-skipIpMac")
-			SKIPIPMAC="true"
+			SKIPIPMAC=true
 			shift
 			;;
 		*)
@@ -508,7 +509,7 @@ else
 	args+=(-binddn "$binddn")
 fi
 
-if [ -n "$SKIPIPMAC" -a "$SKIPIPMAC" = "true" ]; then
+if "$SKIPIPMAC"; then
 	echo "Not registering IP and MAC, as requested with -skipIpMac" >>/var/log/univention/join.log
 else
 	# TODO: Support multiple network interfaces
