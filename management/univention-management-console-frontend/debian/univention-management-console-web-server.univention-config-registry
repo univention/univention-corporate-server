@@ -9,7 +9,7 @@ Multifile: etc/simplesamlphp/metadata/saml20-sp-remote.php
 Subfile: etc/simplesamlphp/metadata/10umc-sp.php
 
 Type: file
-File: etc/ldap/sasl2/saml
+File: etc/ldap/sasl2/slapd.conf
 
 Type: module
 Module: setup_saml_sp.py

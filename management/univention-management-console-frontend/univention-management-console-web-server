@@ -948,7 +948,7 @@ class SAML(object):
 
 		CORE.info('Got IDP response: %r' % (response.ava,))
 		user = SAMLUser(response.name_id, response.ava, message)
-		SAMLUser.set_cookie(user)
+		SAMLUser.set_cookie(user)  # TODO: expire
 
 		raise HTTPRedirect('/umcp/auth/sso')
 

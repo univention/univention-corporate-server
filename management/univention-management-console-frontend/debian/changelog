@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.16-1) unstable; urgency=medium
+
+  * Bug #31943: fix SASL configuration file path for slapd
+
+ -- Florian Best <best@univention.de>  Mon, 31 Aug 2015 15:38:46 +0200
+
 univention-management-console-frontend (5.0.15-3) unstable; urgency=medium
 
   * Bug #31943: add all servers as SP entry in simplesamlphp

@@ -57,12 +57,16 @@ def cleanup():
 
 
 def download_idp_metadata(idp, metadata):
-	return 0 == call([
+	filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
+	rc == call([
 		'/usr/bin/wget',
 		'--ca-certificate', '/etc/univention/ssl/ucsCA/CAcert.pem',
 		metadata,
-		'-O', '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,),
+		'-O', filename,
 	])
+	if rc and os.path.exists(filename):
+		os.remove(filename)
+	return rc == 0
 
 
 def rewrite_sasl_configuration():
