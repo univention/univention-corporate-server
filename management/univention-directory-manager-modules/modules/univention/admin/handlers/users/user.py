@@ -2023,8 +2023,10 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					if old_gecos == self.oldinfo.get( 'gecos', '' ):
 						ml.append( ( 'gecos', self.oldinfo.get( 'gecos', [ '' ] )[ 0 ], gecos ) )
 
-		# update displayName automatically if no custom value has been entered by the user
-		if self.info.get('displayName') == self.oldinfo.get('displayName'):
+		# update displayName automatically if no custom value has been entered by the user and the name changed
+		if self.info.get('displayName') == self.oldinfo.get('displayName') \
+			and (self.info.get('firstname') != self.oldinfo.get('firstname')
+				or self.info.get('lastname') != self.oldinfo.get('lastname')):
 			prop_displayName = self.descriptions['displayName']
 			# check if options for property displayName are used
 			if any([x in self.options for x in prop_displayName.options]):
@@ -2044,7 +2046,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			pwd_change_next_login=2
 
 		if self.hasChanged('username'):
- 			if 'kerberos' in self.options:
+			if 'kerberos' in self.options:
 				ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
 
 		if self.modifypassword:
