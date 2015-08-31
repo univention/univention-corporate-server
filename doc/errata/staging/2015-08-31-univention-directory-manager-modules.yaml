@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: univention-directory-manager-modules
+fix: 10.0.31-14.1340.201508311925
+version: [3]
+desc: |
+ This update addresses the following issues:
+ * Users diplay name will only be set automatically, if first or last name
+   were changed.
+bug: [39292]
