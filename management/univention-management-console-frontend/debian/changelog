@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.16-2) unstable; urgency=medium
+
+  * Bug #31943: fix typo
+
+ -- Florian Best <best@univention.de>  Tue, 01 Sep 2015 11:26:21 +0200
+
 univention-management-console-frontend (5.0.16-1) unstable; urgency=medium
 
   * Bug #31943: fix SASL configuration file path for slapd

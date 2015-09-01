@@ -58,7 +58,7 @@ def cleanup():
 
 def download_idp_metadata(idp, metadata):
 	filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
-	rc == call([
+	rc = call([
 		'/usr/bin/wget',
 		'--ca-certificate', '/etc/univention/ssl/ucsCA/CAcert.pem',
 		metadata,
