@@ -86,8 +86,10 @@ class Client(signals.Provider, Translation):
 		CORE.info('__verify_cert_cb: Got certificate issuer: %s' % cert.get_issuer())
 		CORE.info('__verify_cert_cb: errnum=%d depth=%d ok=%d' % (errnum, depth, ok))
 		if depth == 0 and ok == 0:
-			status = status_get(BAD_REQUEST_AUTH_FAILED)
-			self.signal_emit('authenticated', False, status.code, status.description)
+			response = Response()
+			response.status = BAD_REQUEST_AUTH_FAILED
+			response.message = 'SSL verification error'
+			self.signal_emit('authenticated', False, response)
 		return ok
 
 	def __init__(self, servername='localhost', port=6670, unix=None, ssl=True, auth=True):
@@ -103,9 +105,9 @@ class Client(signals.Provider, Translation):
 			self.__crypto_context.set_verify(SSL.VERIFY_PEER | SSL.VERIFY_FAIL_IF_NO_PEER_CERT, self.__verify_cert_cb)
 			try:
 				self.__crypto_context.load_verify_locations(os.path.join('/etc/univention/ssl/ucsCA', 'CAcert.pem'))
-			except SSL.Error as e:
+			except SSL.Error as exc:
 				# SSL is not possible
-				CORE.process('Client: Setting up SSL configuration failed: %s' % str(e))
+				CORE.process('Client: Setting up SSL configuration failed: %s' % (exc,))
 				CORE.process('Client: Communication will not be encrypted!')
 				self.__crypto_context = None
 				self.__ssl = False
@@ -170,16 +172,12 @@ class Client(signals.Provider, Translation):
 					self.__socket.set_connect_state()
 					notifier.socket_add(self.__socket, self._recv)
 					CORE.info('Client.connect: SSL connection established')
-				except SSL.Error as e:
-					CORE.process('Client: Setting up SSL configuration failed: %s' % str(e))
-					CORE.process('Client: Communication will not be encrypted!')
+				except SSL.Error as exc:
+					CORE.process('Client: Setting up SSL configuration failed: %s' % (exc,))
 					self.__realsocket.shutdown(socket.SHUT_RDWR)
-					self.__ssl = False
-					self._init_socket()
-					self.__realsocket.connect((self.__server, self.__port))
-					self.__realsocket.setblocking(0)
+					self.__realsocket.close()
+					self.__reconnect_without_ssl()
 					notifier.socket_add(self.__realsocket, self._recv)
-					CORE.info('Client.connect: connection established')
 			else:
 				if self.__unix:
 					self.__realsocket.connect(self.__unix)
@@ -187,62 +185,79 @@ class Client(signals.Provider, Translation):
 					self.__realsocket.connect((self.__server, self.__port))
 				self.__realsocket.setblocking(0)
 				notifier.socket_add(self.__realsocket, self._recv)
-		except socket.error as e:
+		except socket.error as exc:
 			# ENOENT: file not found, ECONNREFUSED: connection refused
-			if e.errno in (errno.ENOENT, errno.ECONNREFUSED):
+			if exc.errno in (errno.ENOENT, errno.ECONNREFUSED):
 				raise NoSocketError()
-			raise e
+			raise
 
 	def _resend(self, sock):
-		if sock in self.__resend_queue:
-			while len(self.__resend_queue[sock]) > 0:
-				data = str(self.__resend_queue[sock][0])
+		while self.__resend_queue.get(sock):
+			data = str(self.__resend_queue[sock][0])
+			try:
+				bytessent = sock.send(data)
+				if bytessent < len(data):
+					# only sent part of message
+					self.__resend_queue[sock][0] = data[bytessent:]
+					return True
+				else:
+					del self.__resend_queue[sock][0]
+			except socket.error as exc:
+				if exc.errno in (errno.ECONNABORTED, errno.EISCONN, errno.ENOEXEC, errno.EPIPE, errno.ECONNRESET):
+					# Error may happen if module process died and server tries to send request at the same time
+					# ECONNABORTED: connection reset by peer
+					# EISCONN: socket not connected
+					# ENOEXEC: bad file descriptor
+					# EPIPE: broken pipe
+					# ECONNRESET: Connection reset by peer
+					CORE.info('Client: _resend: socket is damaged: %s' % str(exc))
+					self.signal_emit('closed')
+					return False
+				if exc.errno in (errno.ENOTCONN, errno.EAGAIN):
+					# EAGAIN: Resource temporarily unavailable
+					# ENOTCONN: socket not connected
+					return True
+				raise
+			except (SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError):
+				return True
+			except SSL.Error as sslexc:
+				CORE.process('Client: Sending via SSL connection failed: %s' % (sslexc,))
+
+				save = self.__resend_queue.pop(self.__socket, None)
 				try:
-					bytessent = sock.send(data)
-					if bytessent < len(data):
-						# only sent part of message
-						self.__resend_queue[sock][0] = data[bytessent:]
-						return True
-					else:
-						del self.__resend_queue[sock][0]
-				except socket.error as e:
-					if e.errno in (errno.ECONNABORTED, errno.EISCONN, errno.ENOEXEC, errno.EPIPE, errno.ECONNRESET):
-						# Error may happen if module process died and server tries to send request at the same time
-						# ECONNABORTED: connection reset by peer
-						# EISCONN: socket not connected
-						# ENOEXEC: bad file descriptor
-						# EPIPE: broken pipe
-						# ECONNRESET: Connection reset by peer
-						CORE.info('Client: _resend: socket is damaged: %s' % str(e))
+					if self.__realsocket:
+						self.__realsocket.shutdown(socket.SHUT_RDWR)
+						self.__realsocket.close()
+				except socket.error as exc:
+					CORE.process('Client: could not shutdown socket (not yet connected): %s' % (exc,))
+
+				try:
+					self.__reconnect_without_ssl()
+				except socket.error as exc:
+					CORE.info('Client: reconnecting failed: %s' % (exc,))  # [Errno 111] Connection refused
+					if exc.errno in (errno.ENOENT, errno.ECONNREFUSED):
 						self.signal_emit('closed')
 						return False
-					if e.errno in (errno.ENOTCONN, errno.EAGAIN):
-						# EAGAIN: Resource temporarily unavailable
-						# ENOTCONN: socket not connected
-						return True
 					raise
-				except (SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError) as e:
-					return True
-				except SSL.Error as e:
-					CORE.process('Client: Setting up SSL configuration failed: %s' % str(e))
-					CORE.process('Client: Communication will not be encrypted!')
-					save = self.__resend_queue[self.__socket]
-					del self.__resend_queue[self.__socket]
-					try:
-						self.__realsocket.shutdown(socket.SHUT_RDWR)
-					except socket.error:
-						pass  # socket is not yet connected
-					self.__ssl = False
-					self._init_socket()
-					self.__realsocket.connect((self.__server, self.__port))
-					self.__realsocket.setblocking(0)
+
+				if save is not None:
 					self.__resend_queue[self.__realsocket] = save
-					notifier.socket_add(self.__realsocket, self._recv)
-					notifier.socket_add(self.__realsocket, self._resend, notifier.IO_WRITE)
-					return False
-			if len(self.__resend_queue[sock]) == 0:
-				del self.__resend_queue[sock]
+
+				notifier.socket_add(self.__realsocket, self._recv)
+				notifier.socket_add(self.__realsocket, self._resend, notifier.IO_WRITE)
+				return False
+
+		if sock in self.__resend_queue and not self.__resend_queue[sock]:
+			del self.__resend_queue[sock]
 		return False
+
+	def __reconnect_without_ssl(self):
+		CORE.process('Client: Communication will not be encrypted!')
+		self.__ssl = False
+		self._init_socket()
+		self.__realsocket.connect((self.__server, self.__port))
+		self.__realsocket.setblocking(0)
+		CORE.info('Client.connect: connection established')
 
 	def request(self, msg):
 		"""Sends an UMCP request to the UMC server
@@ -259,12 +274,7 @@ class Client(signals.Provider, Translation):
 		else:
 			sock = self.__realsocket
 
-		data = str(msg)
-
-		if sock in self.__resend_queue:
-			self.__resend_queue[sock].append(data)
-		else:
-			self.__resend_queue[sock] = [data]
+		self.__resend_queue.setdefault(sock, []).append(str(msg))
 
 		if self._resend(sock):
 			notifier.socket_add(sock, self._resend, notifier.IO_WRITE)
@@ -295,10 +305,10 @@ class Client(signals.Provider, Translation):
 						break
 				else:
 					break
-		except socket.error as e:
-			CORE.warn('Client: _recv: error on socket: %s' % str(e))
+		except socket.error as exc:
+			CORE.warn('Client: _recv: error on socket: %s' % (exc,))
 			recv = None
-		except SSL.SysCallError as e:
+		except SSL.SysCallError:
 			# lost connection or any other unfixable error
 			recv = None
 		except SSL.Error:

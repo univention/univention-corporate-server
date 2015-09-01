@@ -138,6 +138,5 @@ class AuthHandler(signals.Provider):
 		if isinstance(result, tuple):
 			username, password = result
 			result = {'username': username, 'password': password, 'auth_type': self.__auth_type}
-			AUTH.error(password)
 		auth_result = AuthenticationResult(result)
 		self.signal_emit('authenticated', auth_result)
