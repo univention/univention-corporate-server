@@ -159,6 +159,7 @@ class Instance(Base, ProgressMixin):
 	def error_handling(self, etype, exc, etraceback):
 		super(Instance, self).error_handling(etype, exc, etraceback)
 		if isinstance(exc, (udm_errors.authFail, INVALID_CREDENTIALS)):
+			MODULE.warn('Authentication failed: %s' % (exc,))
 			raise LDAP_AuthenticationFailed()
 		if isinstance(exc, (udm_errors.ldapSizelimitExceeded, udm_errors.ldapTimeout)):
 			raise UMC_Error(exc.args[0], status=MODULE_ERR_COMMAND_FAILED)
@@ -1086,7 +1087,7 @@ class Instance(Base, ProgressMixin):
 				policy_module = UDM_Module(ioptions['policyType'])
 				policy_obj = _get_object(policy_dns[0] if policy_dns else None, policy_module)
 
-				if policy_dns and not policy_obj.exists():
+				if policy_dns and not policy_obj.exists() or (not policy_dns and not object_dn and not container_dn):
 					# a policy DN was provided which does not exists
 					ret.append({})
 					continue

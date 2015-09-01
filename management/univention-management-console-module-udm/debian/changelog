@@ -1,3 +1,10 @@
+univention-management-console-module-udm (6.0.4-1) unstable; urgency=medium
+
+  * Bug #37667: fix traceback when receiving policies for a not existing
+  	object
+
+ -- Florian Best <best@univention.de>  Tue, 01 Sep 2015 14:18:58 +0200
+
 univention-management-console-module-udm (6.0.3-2) unstable; urgency=low
 
   * Bug #38834: Adapted object creation notification
