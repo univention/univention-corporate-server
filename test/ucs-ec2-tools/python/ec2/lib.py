@@ -292,7 +292,7 @@ class VM:
 		"""
 		Close internal self.logfile.
 		"""
-		if self.logfile_fd:
+		if self.logfile_fd and self.logfile_fd != sys.stdout:
 			self.logfile_fd.close()
 		self.logfile_fd = None
 
