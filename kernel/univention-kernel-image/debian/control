@@ -46,7 +46,7 @@ Description: UCS - Linux kernel (standard)
  refer to: http://www.univention.de/
 
 Package: univention-kernel-image-486
-Architecture: any
+Architecture: i386
 Pre-Depends: univention-initrd, module-init-tools
 Depends: linux-image-${F:KernelVersion486},
  univention-initrd (>= 6.0.0-2),
@@ -99,7 +99,7 @@ Description: UCS - Linux kernel headers (standard)
  refer to: http://www.univention.de/
 
 Package: univention-kernel-headers-486
-Architecture: any
+Architecture: i386
 Depends: linux-headers-${F:KernelVersion486}
 Description: UCS - Linux kernel headers (PAE)
  This meta-package depends on the latest UCS kernel headers compatible
