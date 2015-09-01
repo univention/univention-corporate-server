@@ -1,0 +1,14 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: libssh2
+fix: 1.4.2-1.1.10.201509011748
+version: [2,3]
+desc: |
+  A security vulnerability has been fixed in libssh2:
+  * Denial of service and memory disclosure due to insufficient range checks
+    during SSH_MSG_KEXINIT (CVE-2015-1782)
+bug:
+ - 38013
+cve:
+ - CVE-2015-1782
