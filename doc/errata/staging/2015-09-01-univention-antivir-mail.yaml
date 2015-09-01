@@ -1,0 +1,13 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: univention-antivir-mail
+fix: 6.0.0-8.125.201509011531
+version: [3]
+desc: |
+ This update addresses the following issue:
+ * Amavis is now configured to use the default log template. Statistic tools
+   like logwatch work better with it.
+ * The UCR variable mail/antivir/amavis/debug/level can be used to set Amavis'
+   log level.
+bug: [38915]
