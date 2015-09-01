@@ -1,6 +1,6 @@
-sasl-regexp
+authz-regexp
     uid=([^,]*),cn=(gssapi|saml),cn=auth
-    ldap:///"@%@ldap/base@%@"??sub?uid=$1
+    ldap:///@%@ldap/base@%@??sub?uid=$1
 
 # allow authentication 
 access to attrs=userPassword
@@ -21,6 +21,11 @@ if baseConfig['ldap/hostdn']:
 @!@   by * none
 
 @!@
+if configRegistry.is_false('ldap/acl/read/anonymous'):
+	print 'access to dn.subtree="%s" attrs=entry,uid' % (configRegistry['ldap/base'],)
+	print '   by anonymous auth'
+	print '   by * +0 break'
+	print ''
 print 'access to *'
 if baseConfig.is_false('ldap/acl/read/anonymous'):
 	print '   by users read'
