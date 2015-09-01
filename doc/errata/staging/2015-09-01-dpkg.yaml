@@ -1,0 +1,14 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: dpkg
+fix: 1.16.16.95.201509011754
+version: [2,3]
+desc: |
+  A security vulnerability has been fixed in dpkg:
+  * Incorrect signature validation when extracting local source packages
+    (CVE-2015-0840).
+bug:
+ - 38243
+cve:
+ - CVE-2015-0840
