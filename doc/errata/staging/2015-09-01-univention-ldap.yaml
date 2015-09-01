@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: univention-ldap
+fix: 11.0.12-12.765.201509011618
+version: [3]
+desc: |
+ This update addresses the following issue:
+ * Remove confirmation prompt in non-interactive scrip
+   univention-backup2master.
+bug: [38774]
