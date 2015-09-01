@@ -303,21 +303,17 @@ $LOGFILE = "/var/log/amavis.log";  # (defaults to empty, no log)
 # 3: server, client
 # 4: decompose parts
 # 5: more debug details
-#$log_level = 2;		# (defaults to 0)
-
+@!@
+print "$log_level = %s;" % configRegistry.get('mail/antivir/amavis/debug/level', '0')
+@!@
 # Customizable template for the most interesting log file entry (e.g. with
 # $log_level=0) (take care to properly quote Perl special characters like '\')
 # For a list of available macros see README.customize .
-
-# only log infected messages (useful with log level 0):
-# $log_templ = '[? %#V |[? %#F ||banned filename ([%F|,])]|infected ([%V|,])]#
-# [? %#V |[? %#F ||, from=[?%o|(?)|<%o>], to=[<%R>|,][? %i ||, quarantine %i]]#
-# |, from=[?%o|(?)|<%o>], to=[<%R>|,][? %i ||, quarantine %i]]';
-
-# log both infected and noninfected messages (default):
-$log_templ = '[? %#V |[? %#F |[?%#D|Not-Delivered|Passed]|BANNED name/type (%F)]|INFECTED (%V)], #
-[?%o|(?)|<%o>] -> [<%R>|,][? %i ||, quarantine %i], Message-ID: %m, Hits: %c';
-
+#
+# We rely on the built-in log template for now.
+# If needed, a custom log template can be specified via
+# $log_templ =
+# in /etc/amavis/conf.d/50-user
 
 #
 # Section IV - Notifications/DSN, BOUNCE/REJECT/DROP/PASS destiny, quarantine

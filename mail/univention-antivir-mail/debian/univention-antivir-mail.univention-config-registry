@@ -3,6 +3,7 @@ File: etc/amavis/conf.d/60-univention
 Variables: domainname
 Variables: hostname
 Variables: mail/hosteddomains
+Variables: mail/antivir/amavis/debug/level
 Variables: mail/antivir/scanner
 Variables: mail/antivir/virus_admin
 Variables: mail/antivir/spam
