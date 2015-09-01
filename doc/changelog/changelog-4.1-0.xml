@@ -12,6 +12,7 @@
 		<title>General</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The codename for UCS 4.1 has been set to "Vahr" (<u:bug>39223</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -85,6 +86,7 @@
 				<title>LDAP ACL changes</title>
 				<itemizedlist>
 					<listitem><simpara>
+						The permissions for GSSAPI SASL authentication have been fixed (<u:bug>29482</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
@@ -115,7 +117,6 @@
 		</section>
 	</section>
 
-
 	<section id="changelog:umc">
 		<title>Univention Management Console</title>
 
@@ -125,6 +126,9 @@
 				<listitem><simpara>
 					Support for logging in with the primary email address at UMC has been added (<u:bug>38528</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Unmoveable objects are no longer shown as moveable (<u:bug>20439</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -132,6 +136,10 @@
 			<title>Univention Management Console server</title>
 			<itemizedlist>
 				<listitem><simpara>
+					SystemExit are now caught by the UMC-Server and not shown as traceback to the user (<u:bug>39031</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A memory leak in the UMC-Webserver has been fixed which could occur when a SSL communication between UMC-Webserver and UMC-Server was not possible (<u:bug>38402</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -228,6 +236,7 @@
 			<title>Policies</title>
 			<itemizedlist>
 				<listitem><simpara>
+					 A traceback has been fixed when adding a objects without having policies referenced (<u:bug>37667</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -327,6 +336,42 @@
 	<section id="changelog:service">
 		<title>System services</title>
 
+		<section id="changelog:service:saml">
+			<title>SAML</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The SAML identity provider app has been integrated into UCS  (<u:bug>38881</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Single sign on via SAML 2.0 is now possible with Univention Management Console
+					(<u:bug>39171</u:bug>), (<u:bug>39178</u:bug>), (<u:bug>31943</u:bug>), (<u:bug>39178</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The SimpleSAMLphp certificate is now creating in the joinscript instead of the postinst of the package (<u:bug>39255</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The SimpleSAMLphp authsources.php has been changed to a UCR multifile template (<u:bug>39250</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					SimpleSAMLphp has been updated to version 1.13.2-1 (<u:bug>38982</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					AssertionConsumerService is now a multivalue field (<u:bug>39015</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The ACL evaluation of SimpleSAMLphp has been fixed (<u:bug>38935</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Renaming of a service provider is now prevented as the user references weren't updated when doing so (<u:bug>38934</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Transmitting LDAP attributes from the identity provider is now possible and does not cause exceptions in SimpleSAMLphp anymore (<u:bug>38927</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The entityID of the identity provider is now configurable via the &ucsUCRV; <envar>saml/idp/entityID</envar> (<u:bug>33912</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
 		<section id="changelog:service:mail">
 			<title>Mail services</title>
 			<itemizedlist>
