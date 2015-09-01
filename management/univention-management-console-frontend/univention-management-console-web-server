@@ -46,7 +46,7 @@ import hashlib
 import urllib
 import json
 import socket
-from urlparse import urlparse
+from urlparse import urlparse, urlunparse
 from httplib import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
 
 import notifier
@@ -214,7 +214,12 @@ class SessionClient(object):
 			self._requestid2response_queue[request.id] = (response_queue, request)
 		finally:
 			self._lock.release()
-		self.client.request(request)
+		try:
+			self.client.request(request)
+		except IOError:
+			CORE.error(traceback.format_exc())
+			self.client.disconnect()
+			return
 		self.renew_timer()
 
 	def _closed(self):
@@ -1179,15 +1184,17 @@ class SAML(object):
 		for key, value in http_args["headers"]:
 			cherrypy.response.headers[key] = value
 
+		body = ''.join(http_args["data"])
 		if binding == BINDING_HTTP_ARTIFACT:
 			raise HTTPRedirect(None, status=302)  # FIXME: hmm, no location header?
 		elif binding == BINDING_HTTP_REDIRECT:
-			for param, value in http_args["headers"]:
-				if param.lower() == "location":
-					raise HTTPRedirect(str(value), status=303)
-			raise HTTPError(500, "Parameter error")
+			if 'Location' not in cherrypy.response.headers:
+				raise HTTPError(500, "Parameter error")
+			cherrypy.response.status = 303
+			if not body:
+				raise HTTPRedirect(cherrypy.response.headers['Location'], status=303)
 
-		return ''.join(http_args["data"])
+		return body
 
 
 class SAMLUser(object):

@@ -460,7 +460,7 @@ class Processor(Base):
 			self._init_ldap_connection()
 			if self.lo:
 				try:
-					domaincontrollers = self.lo.search(filter="(objectClass=univentionDomainController)")
+					domaincontrollers = self.lo.search(filter="(objectClass=univentionDomainController)", attr=['cn', 'associatedDomain'])
 				except (ldap.LDAPError, udm_errors.base) as exc:
 					CORE.warn('Could not search for domaincontrollers: %s' % (exc))
 					domaincontrollers = []

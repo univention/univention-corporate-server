@@ -34,16 +34,17 @@
 import os
 from glob import glob
 from subprocess import call
+from urlparse import urlparse
 
 
 def handler(config_registry, changes):
+	# TODO: write a listener module which triggers this and stores the IDP metadata in LDAP
 	cleanup()
 	metadata_download_failed = []
-	for saml_idp, metadata in config_registry.items():  # TODO: parse the changes, not the whole thing
-		if not saml_idp.startswith('umc/saml/idp/'):
+	for key, saml_idp in config_registry.items():  # TODO: parse the changes, not the whole thing
+		if not key.startswith('umc/saml/idp/'):
 			continue
-		saml_idp = saml_idp[len('umc/saml/idp/'):]
-		if not download_idp_metadata(saml_idp, metadata):
+		if not download_idp_metadata(saml_idp):
 			metadata_download_failed.append(saml_idp)
 	if not rewrite_sasl_configuration():
 		raise SystemExit('Could not rewrite SASL configuration for UMC.')
@@ -56,7 +57,8 @@ def cleanup():
 		os.remove(metadata)
 
 
-def download_idp_metadata(idp, metadata):
+def download_idp_metadata(metadata):
+	idp = bytes(urlparse(metadata).netloc)
 	filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
 	rc = call([
 		'/usr/bin/wget',

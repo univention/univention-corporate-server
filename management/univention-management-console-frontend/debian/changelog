@@ -1,3 +1,11 @@
+univention-management-console-frontend (5.0.17-1) unstable; urgency=medium
+
+  * Bug #31943: Move univention-saml dependency into univention-server
+  	metapackages
+   * small cleanup
+
+ -- Florian Best <best@univention.de>  Tue, 01 Sep 2015 14:24:19 +0200
+
 univention-management-console-frontend (5.0.16-2) unstable; urgency=medium
 
   * Bug #31943: fix typo

@@ -37,6 +37,7 @@ import sys
 import string
 import socket
 import signal
+import traceback
 import time
 
 from optparse import OptionParser
@@ -113,7 +114,8 @@ class UMC_Daemon( DaemonRunner ):
 		self.daemon_context.signal_map = {
 			signal.SIGHUP : self.signal_hang_up,
 			signal.SIGUSR1 : self.signal_user1,
-			signal.SIGTERM : self.signal_terminate
+			signal.SIGTERM: self.signal_terminate,
+#			signal.SIGSEGV: self.signal_segfault,
 			}
 		# set_signal_handlers( signal_map )
 
@@ -206,6 +208,11 @@ class UMC_Daemon( DaemonRunner ):
 		self.server.exit()
 		raise SystemExit( 'Shutting down UMC server' )
 
+	def signal_segfault(self, signal, frame):
+		CORE.error('SEGFAULT! %s' % (''.join(traceback.format_stack(frame),)))
+		signal.signal(signal.SIGSEGV,  signal.SIG_DFL)
+		os.kill(os.getpid(), signal.SIGSEGV)
+
 if __name__ == "__main__":
 	try:
 		umc_daemon = UMC_Daemon()
@@ -217,6 +224,5 @@ if __name__ == "__main__":
 	except (SystemExit, KeyboardInterrupt):
 		raise
 	except:
-		import traceback
 		CORE.error(traceback.format_exc())
 		raise

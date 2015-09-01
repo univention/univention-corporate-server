@@ -40,7 +40,6 @@ CONFIG = {
 	"xmlsec_binary": "/usr/bin/xmlsec1",
 	"metadata": {
 		"local": glob.glob('/usr/share/univention-management-console/saml/idp/*.xml'),
-#		"remote": [{"url": "https://%s/simplesamlphp/saml2/idp/metadata.php" % (host,), "cert":""} for host in addresses],
 	},
 	# TODO: add contact_person?
 }
