@@ -5,7 +5,7 @@ src: univention-directory-manager-modules
 fix: 10.0.31-14.1340.201508311925
 version: [3]
 desc: |
- This update addresses the following issues:
- * Users diplay name will only be set automatically, if first or last name
+ This update addresses the following issue:
+ * Users diplay name will only be set automatically if first or last name
    were changed.
 bug: [39292]
