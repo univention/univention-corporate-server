@@ -289,7 +289,7 @@ fi
 
 # try to download univention-server-master
 apt-get update >>"$LOGFILE"
-apt-get -d install univention-server-master >>"$LOGFILE"
+apt-get -y -d install univention-server-master >>"$LOGFILE"
 if [ -z "$(ls /var/cache/apt/archives/univention-server-master_*.deb)" ]; then
   printf "ERROR: Could not download package univention-server-master. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
   if [ $opt_force -eq 0 ] ; then
