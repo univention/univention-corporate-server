@@ -753,6 +753,17 @@ __EOF__
 
 }
 
+install_appreport ()
+{
+	ucr set repository/online/component/appreport=yes \
+		repository/online/component/appreport/version="current"
+	cat >/usr/lib/univention-system-setup/appliance-hooks.d/install-appreport <<__EOF__
+#!/bin/sh
+univention-install -y --force-yes univention-appreport
+__EOF__
+	chmod +x /usr/lib/univention-system-setup/appliance-hooks.d/install-appreport
+}
+
 appliance_reset_servers ()
 {
 	ucr set repository/online/server="updates.software-univention.de"
