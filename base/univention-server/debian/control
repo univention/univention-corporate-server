@@ -28,6 +28,7 @@ Depends: ${misc:Depends},
  univention-management-console-module-udm,
  univention-management-console-module-ipchange,
  univention-management-console,
+ univention-saml,
 Description: UCS - master domain controller
  This package installs a UCS master domain controller.
  .
@@ -58,7 +59,8 @@ Depends: ${misc:Depends},
  univention-management-console-module-ipchange,
  univention-management-console,
  shell-univention-lib (>= 3.0.1-1),
- python-univention-lib (>= 3.0.1-1)
+ python-univention-lib (>= 3.0.1-1),
+ univention-saml,
 Description: UCS - backup domain controller
  This package installs a UCS backup domain controller.
  Unlike slave domain controllers, backup domain controllers

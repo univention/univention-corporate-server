@@ -1,3 +1,10 @@
+univention-server (11.0.0-2) unstable; urgency=medium
+
+  * Bug #31943: add dependency to univention-saml for DC master and DC backup
+  	systems
+
+ -- Florian Best <best@univention.de>  Tue, 01 Sep 2015 14:14:06 +0200
+
 univention-server (11.0.0-1) unstable; urgency=medium
 
   * Bug #39258: Add package univention-appcenter to each installation
