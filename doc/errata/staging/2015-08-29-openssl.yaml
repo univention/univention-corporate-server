@@ -5,19 +5,19 @@ src: openssl
 fix: 1.0.1e-2.103.201508290009
 version: [2,3]
 desc: |
-  Multiple security vulnerabilities have been fixed in openssl:
-  * Invalid free in DTLS (CVE-2014-8176)
-  * Malformed ECParameters causes infinite loop (CVE-2015-1788)
-  * Exploitable out-of-bounds read in X509_cmp_time (CVE-2015-1789)
-  * PKCS7 crash with missing EnvelopedContent (CVE-2015-1790)
-  * race condition in NewSessionTicket (CVE-2015-1791)
-  * CMS verify infinite loop with unknown hash function (CVE-2015-1792)
-  * The TLS protocol 1.2 and earlier, when a DHE_EXPORT ciphersuite is
-    enabled on a server but not on a client, does not properly convey a
-    DHE_EXPORT choice, which allows man-in-the-middle attackers to conduct
-    cipher-downgrade attacks by rewriting a ClientHello with DHE replaced
-    by DHE_EXPORT and then rewriting a ServerHello with DHE_EXPORT replaced
-    by DHE, aka the "Logjam" issue. (CVE-2015-4000)
+ Multiple security vulnerabilities have been fixed in openssl:
+ * Invalid free in DTLS (CVE-2014-8176)
+ * Malformed ECParameters causes infinite loop (CVE-2015-1788)
+ * Exploitable out-of-bounds read in X509_cmp_time (CVE-2015-1789)
+ * PKCS7 crash with missing EnvelopedContent (CVE-2015-1790)
+ * race condition in NewSessionTicket (CVE-2015-1791)
+ * CMS verify infinite loop with unknown hash function (CVE-2015-1792)
+ * The TLS protocol 1.2 and earlier, when a DHE_EXPORT ciphersuite is
+   enabled on a server but not on a client, does not properly convey a
+   DHE_EXPORT choice, which allows man-in-the-middle attackers to conduct
+   cipher-downgrade attacks by rewriting a ClientHello with DHE replaced
+   by DHE_EXPORT and then rewriting a ServerHello with DHE_EXPORT replaced
+   by DHE, aka the "Logjam" issue. (CVE-2015-4000)
 bug:
  - 38691
 cve:
