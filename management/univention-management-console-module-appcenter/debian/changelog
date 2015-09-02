@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.3-5) unstable; urgency=low
+
+  * Bug #38894: [WIP] AppCenter redesign
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 02 Sep 2015 18:59:53 +0200
+
 univention-management-console-module-appcenter (5.0.3-4) unstable; urgency=low
 
   * Bug #38894: [WIP] AppCenter redesign

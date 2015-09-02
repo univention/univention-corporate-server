@@ -39,8 +39,9 @@ define([
 	"umc/widgets/Button",
 	"dojo/query",
 	"dojo/dom-geometry",
-	"dojo/dom-style"
-], function(declare, array, lang, put, domClass, tools, GalleryPane, Button, query, domGeometry, domStyle) {
+	"dojo/dom-style",
+	"umc/i18n!umc/modules/appcenter"
+], function(declare, array, lang, put, domClass, tools, GalleryPane, Button, query, domGeometry, domStyle, _) {
 	return declare("umc.modules.appcenter.AppCenterGallery", [ GalleryPane ], {
 		region: 'main',
 
@@ -89,7 +90,26 @@ define([
 				put(text, 'span.umcGalleryName', this.getItemName(item));
 				put(text, 'span.umcGalleryVendor', item.vendor || item.maintainer || '');
 
-				put(innerWrapper, 'div#appHover');
+				var hover = put(innerWrapper, 'div#appHover');
+				if (item.is_installed) {
+					put(hover, 'span', _('Local installation'));
+				}
+				if (!!item.installations) {
+					var notLocalDomainInstallations = 0;
+					tools.forIn(item.installations, function(server, info) {
+						if (server != tools.status('hostname') && !!info.version) {
+							notLocalDomainInstallations += 1;
+						}
+					});
+					if (notLocalDomainInstallations > 0) {
+						put(hover, 'span', notLocalDomainInstallations + _(' domain installations'));
+					}
+				}
+				if (array.indexOf(item.unlocalised_categories, 'UCS components') >= 0) {
+					put(hover, 'span', _('(UCS component)'));
+				} else if (item.version) {
+					put(hover, 'span', 'Version: ' + item.version);
+				}
 
 				innerWrapper.onmouseover = function() {
 					domClass.toggle(innerWrapper, 'hover');

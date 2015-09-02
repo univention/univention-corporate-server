@@ -139,18 +139,20 @@
 #appHover {
 	width: 100%;
 	height: 40%;
-	background-color: darkgrey;
-	/*transition: height 1s;
-	display: inline-block;
-	position: relative;
-	bottom: -3px;*/
+	background-color: #6e6e6e;
+	color: #fff;
+	padding: 0.6em 0 0 0.6em;
 	position: absolute;
 	bottom: 0;
 	transform: translateY(100%);
 	transition: transform 0.5s;
 }
+#appHover span {
+	font-size: 1.1em;
+	display: block;
+	padding-bottom: 0.3em;
+}
 #appInnerWrapper.hover #appHover {
-	/*height: 50px;*/
 	transform: translateY(0);
 }
 

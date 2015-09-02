@@ -165,6 +165,7 @@ define([
 					this._appCenterPage._searchSidebar.set('category', category);
 				}
 				this.selectChild(this._appCenterPage);
+				this._appCenterPage._grid._resizeItemNames();
 				this.removeChild(appDetailsDialog);
 				this.removeChild(appChooseHostDialog);
 				this.removeChild(appDetailsPage);
