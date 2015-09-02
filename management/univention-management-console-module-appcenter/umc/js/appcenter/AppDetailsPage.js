@@ -40,6 +40,10 @@ define([
 	"dojo/topic",
 	"dojo/Deferred",
 	"dojo/dom-construct",
+	"dojo/dom-class",
+	"dojo/dom-style",
+	"dojo/store/Memory",
+	"dojo/store/Observable",
 	"dojox/image/LightboxNano",
 	"umc/app",
 	"umc/tools",
@@ -49,10 +53,20 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/ProgressBar",
 	"umc/widgets/Page",
+	"umc/widgets/Text",
+	"umc/widgets/Grid",
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/modules/appcenter/App",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, Button, ProgressBar, Page, AppCenterGallery, App, _) {
+], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, domClass, domStyle, Memory, Observable, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, Button, ProgressBar, Page, Text, Grid, AppCenterGallery, App, _) {
+	
+	var adaptedGrid = declare([Grid], {
+		_updateContextActions: function() {
+			this.inherited(arguments);
+			domStyle.set(this._contextActionsToolbar.domNode, 'visibility', 'visible');
+		}
+	});
+
 	return declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
 		appLoadingDeferred: null,
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
@@ -62,6 +76,10 @@ define([
 		title: _("App management"),
 		noFooter: true,
 		getAppCommand: 'appcenter/get',
+
+		navBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
+		mainBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
+		_initialBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
 
 		backLabel: _('Back to overview'),
 		detailsDialog: null,
@@ -122,7 +140,7 @@ define([
 				this.hostDialog.set('app', app);
 				this.detailsDialog.set('app', app);
 				this.set('headerText', app.name);
-				this.set('helpText', app.longDescription);
+				//this.set('helpText', app.longDescription);
 				this.buildInnerPage();
 				this.appLoadingDeferred.resolve();
 			}));
@@ -148,7 +166,7 @@ define([
 
 		getButtons: function() {
 			var buttons = [];
-			if (this.app.canOpen()) {
+			if (this.app.canOpen() && (this._appIsInstalledInDomain() || this.app.isInstalled)) {
 				buttons.push({
 					name: 'open',
 					label: this.app.getOpenLabel(),
@@ -158,7 +176,18 @@ define([
 						this.app.open();
 					})
 				});
+			} else if (this.app.canInstall) {
+				buttons.push({
+					name: 'install',
+					label: _('Install'),
+					'class': 'umcAppButton',
+					isStandardAction: true,
+					isContextAction: false,
+					iconClass: 'umcIconAdd',
+					callback: lang.hitch(this.app, 'install')
+				});
 			}
+
 			if (this.app.useShop) {
 				buttons.push({
 					name: 'shop',
@@ -168,72 +197,88 @@ define([
 					callback: lang.hitch(this, 'openShop')
 				});
 			}
-			if (this.app.canUpgrade()) {
+			return buttons;
+		},
+
+		getActionButtons: function() {
+			var buttons = [];
+			if (this.app.canInstall) {
 				buttons.push({
-					name: 'update',
-					label: _('Upgrade'),
-					defaultButton: true,
-					'class': 'umcAppButton',
-					callback: lang.hitch(this.app, 'upgrade')
-				});
-			}
-			if (this.app.canDisable()) {
-				buttons.push({
-					name: 'disable',
-					label: _('Continue using'),
-					'class': 'umcAppButton',
-					callback: lang.hitch(this, 'disableApp')
-				});
-			}
-			if (this.app.canInstall()) {
-				var tmpButton = {
 					name: 'install',
 					label: _('Install'),
 					'class': 'umcAppButton',
+					isStandardAction: true,
+					isContextAction: false,
+					iconClass: 'umcIconAdd',
 					callback: lang.hitch(this.app, 'install')
-				};
-				if (this.app.isInstalled) {
-					buttons.push(tmpButton);
-				} else {
-					tmpButton['class'] += ' umcAppButtonFirstRow';
-					tmpButton.defaultButton = true;
-					buttons.unshift(tmpButton);
-				}
+				});
 			}
-			if (this.app.canUninstall()) {
+			if (this.app.canOpenInDomain()) {
+				buttons.push({
+					name: 'open',
+					label: this.app.getOpenLabel(),
+					'class': 'umcAppButton umcAppButtonFirstRow',
+					isContextAction: true,
+					isStandardAction: true,
+					canExecute: lang.hitch(this, function(app) {
+						return app.data.canOpen();
+					}),
+					callback: lang.hitch(this, function(host, app) {
+						app[0].data.open();
+ 					})
+				});
+			}
+			if (this.app.canDisableInDomain()) {
+				buttons.push({
+					name: 'disable',
+					label: _('Continue using'),
+					'class': 'umcAppButton umcAppButtonFirstRow',
+					isContextAction: true,
+					isStandardAction: true,
+					canExecute: lang.hitch(this, function(app) {
+						return app.data.canDisable();
+					}),
+ 					callback: lang.hitch(this, 'disableApp')
+ 				});
+ 			}
+			if (this.app.canUninstallInDomain()) {
 				buttons.push({
 					name: 'uninstall',
 					label: _('Uninstall'),
+					isContextAction: true,
+					isStandardAction: true,
 					'class': 'umcAppButton',
-					callback: lang.hitch(this.app, 'uninstall')
-				});
-			}
+					canExecute: lang.hitch(this, function(app) {
+						return app.data.canUninstall();
+					}),
+					callback: lang.hitch(this, function(host, app) {
+						app[0].data.uninstall();
+					})
+ 				});
+ 			}
+ 			if (this.app.canUpgradeInDomain()) {
+ 				buttons.push({
+ 					name: 'update',
+ 					label: _('Upgrade'),
+					isContextAction: true,
+					isStandardAction: true,
+					canExecute: lang.hitch(this, function(app) {
+						return app.data.canUpgrade();
+					}),
+					callback: lang.hitch(this, function(host, app) {
+						app[0].data.upgrade();
+					})
+ 				});
+ 			}
 			return buttons;
 		},
 
 		buildInnerPage: function() {
-			if (this._container) {
-				this.removeChild(this._container);
-				this._container.destroyRecursive();
-				this._container = null;
-			}
 			if (this._icon) {
 				this.removeChild(this._icon);
 				this._icon.destroyRecursive();
 				this._icon = null;
 			}
-			this._container = new ContainerWidget({});
-			this.addChild(this._container);
-			this.own(this._container);
-			this.set('navButtons', this.getButtons());
-			this._detailsTable = domConstruct.create('table', {
-				style: {borderSpacing: '1em 0.1em'}
-			});
-			var detailsPane = new TitlePane({
-				title: _('Details'),
-				content: this._detailsTable
-			});
-			this._container.addChild(detailsPane);
 			var iconClass = this._grid.getIconClass(this.app);
 			if (iconClass) {
 				this._icon = new ContainerWidget({
@@ -241,9 +286,259 @@ define([
 					'class': iconClass,
 					'style': 'margin-bottom: 1em;'
 				});
-				this.addChild(this._icon, 1);
+				this.addChild(this._icon, 0);
 			}
 
+			// 'nav'
+			this._icon.set('style', {
+				'width': '200px', 
+				'height': '120px',
+				'display': 'inline-block',
+				'margin-right': '20px',
+				'background-size': '120px',
+				'background-position': 'center center'
+			});
+			
+			if (this._navHeaderButtonContainer) {
+				this.removeChild(this._navHeaderButtonContainer);
+				//TODO fix
+				//this._navHeaderButtonContainer.destroyRecursive();
+				this._navHeaderButtonContainer = null;
+			}
+			this._navHeaderButtonContainer = new ContainerWidget({
+				region: 'nav',
+				style: {
+					'display': 'inline-block',
+					'vertical-align': 'top'
+				}
+			});
+
+			this._navHeaderButtonContainer.addChild(this._headerTextPane, 0);
+
+			var vendor = this._detailFieldCustomVendor();
+			if (vendor) {
+				var _vendorTextPane = new Text({
+					content: vendor,
+					style: 'margin-bottom: 0.3em;'
+				});
+				this._navHeaderButtonContainer.addChild(_vendorTextPane);
+			}
+
+			if (this.app.isInstalled || this.app.getHosts().length) {
+				var installedText = new Text({
+					content: _('Installed'),
+					style: 'color: #787878'
+				});
+				this._navHeaderButtonContainer.addChild(installedText);
+			} else {
+				var categoryButtons = this._detailFieldCustomCategories();
+				if (categoryButtons) {
+					this._navHeaderButtonContainer.domNode.appendChild(categoryButtons);
+				}
+			}
+
+			this.set('navButtons', this.getButtons());
+			this._navButtons.set('style', {'margin-left': '-0.2em', 'margin-top': '1em'});
+			this._navHeaderButtonContainer.addChild(this._navButtons);
+
+			this.addChild(this._navHeaderButtonContainer);
+			this.own(this._navHeaderButtonContainer);
+			
+			// 'main'
+			//
+			if (this._mainRegionContainer) {
+				this.removeChild(this._mainRegionContainer);
+				this._mainRegionContainer.destroyRecursive();
+				this._mainRegionContainer = null;
+			}
+			this._mainRegionContainer = new ContainerWidget({});
+			this.addChild(this._mainRegionContainer);
+			this.own(this._mainRegionContainer);
+
+			if (this.app.isInstalled || this.app.getHosts().length > 0) {
+				var usage = this.app.readme;
+				if (usage) {
+					usage = lang.replace(usage, this.app);
+				} else {
+					usage = this._detailFieldCustomUsage();
+				}
+				if (usage) {
+					usageHeader = new Text({
+						content: _('More information'), 
+						style: {
+							display: 'blocK',
+							'font-size': '1.6em',
+							'font-weight': 'bold',
+							'margin-bottom': '1em'
+						}
+					});
+					this._mainRegionContainer.addChild(usageHeader);
+
+					var usagePane = new Text({
+						content: usage,
+						style: 'margin-bottom: 2em'
+					});
+					this._mainRegionContainer.addChild(usagePane);
+				}
+
+				//grid
+				//
+				//grid header
+				//
+				var gridHeader = new Text({
+					content: _('Notes on using'),
+					style: {
+						display: 'blocK',
+						'font-size': '1.6em',
+						'font-weight': 'bold',
+						'margin-bottom': '1em'
+					}
+				});
+				this._mainRegionContainer.addChild(gridHeader);
+
+				var actions = this.getActionButtons();
+
+				var columns = [{
+					name: 'server',
+					label: _('Server')
+				}, {
+					name: 'appStatus',
+					label: _('App Status')
+				}, {
+					name: 'moreInformation',
+					label: _('More Information')
+				}];
+
+				var myStore = new Observable(new Memory({
+					data: this.app.getHosts()
+				}));
+				this._installedAppsGrid = new adaptedGrid({
+					actions: actions,
+					columns: columns,
+					moduleStore: myStore,
+					gridOptions: {
+						'class': 'fooBar',
+						style: 'height: 200px'
+					},
+					style: {
+						'margin-bottom': '3em'
+					}
+				});
+				this._mainRegionContainer.addChild(this._installedAppsGrid);
+			}
+			
+			//imageCarousel
+			this._detailsContainer = new ContainerWidget({
+				'class': 'mainContainer',
+				style: {
+					'background-color': '#f0f0f0',
+					'margin': '0 -1000px',
+					'padding': '0 1000px'
+				}
+			});			
+
+			var styleContainer = new ContainerWidget({
+				'class': 'aaa',
+				style: {
+					'border-bottom': '1px solid #c8c8c8',
+					'padding': '1em 0',
+					//'margin-bottom': '3em'
+				}
+			});
+			
+			var carouselContainer = new ContainerWidget({
+				'class': 'carousel',
+				style: {
+					'margin': 'auto',
+					'display': 'table'
+				}
+			});
+
+			var screenshot = this._detailFieldCustomScreenshot();
+			if (screenshot) {
+				domConstruct.place(screenshot, carouselContainer.domNode);
+				query('.umcScreenshot', carouselContainer.domNode).forEach(function(imgNode) {
+					new Lightbox({ href: imgNode.src }, imgNode);
+				});
+
+				styleContainer.addChild(carouselContainer);
+				this._detailsContainer.addChild(styleContainer);
+			}
+
+			//description + functionlist
+			var descriptionContainer = new ContainerWidget({
+				style: {'padding-bottom': '2em', 'padding-top': '3em'}
+			});
+			var descriptionTable = domConstruct.create('table');
+			var tr = domConstruct.create('tr', {}, descriptionTable);
+
+			var tableHeader = domConstruct.create('th', {
+				innerHTML: _('Beschreibung'), 
+				colspan: 2,
+				style: {
+					'font-weight': 'bold',
+					'font-size': '1.6em',
+					'height': '30px',
+					'vertical-align': 'top'
+				}
+			}, tr);
+
+			var tr = domConstruct.create('tr', {}, descriptionTable);
+			domConstruct.create('td', {
+				innerHTML: this.app.longDescription, 
+				style: {
+					'vertical-align': 'top',
+					'width': '50%',
+					'-webkit-column-count': '2',
+					'-moz-column-count': '2'
+				}
+			}, tr);
+
+			domConstruct.place(descriptionTable, descriptionContainer.domNode);
+			this._detailsContainer.addChild(descriptionContainer);
+
+			if (this.app.isInstalled || this.app.getHosts().length) {
+				var detailsPane = new TitlePane({
+					open: false,
+					style: {
+						'background-color': '#f0f0f0',
+						'margin': '0 -1000px',
+						'padding': '0 1000px'
+					},
+					//class: 'installedAppDetailsPane',
+					title: _('Details'),
+					content: this._detailsContainer,
+					'class': 'appDetailsPage'
+				});
+				this._mainRegionContainer.addChild(detailsPane);
+			} else {
+				this._mainRegionContainer.addChild(this._detailsContainer, 0);
+			}
+			//footer
+			//TODO just for testing
+			domConstruct.empty(this._footer.domNode);
+			
+			domConstruct.create('span', {
+				innerHTML: _('More information'), 
+				style: {
+					display: 'blocK',
+					'font-size': '1.6em',
+					'font-weight': 'bold',
+					'margin-bottom': '1em'
+				}
+			}, this._footer.domNode)
+
+			var footerLeft = new ContainerWidget({style: 'display: inline-block; width: 50%'});
+			this._footer.own(footerLeft);
+			this._footer.addChild(footerLeft);
+			var footerRight = new ContainerWidget({style: 'display: inline-block; vertical-align: top; width: 50%'});
+			this._footer.own(footerRight);
+			this._footer.addChild(footerRight);
+
+
+			this._detailsTable = domConstruct.create('table', {
+				style: {borderSpacing: '1em 0.1em'}
+			});
 			if (this.app.hasMaintainer()) {
 				this.addToDetails(_('Vendor'), 'Vendor');
 				this.addToDetails(_('App provider'), 'Maintainer');
@@ -255,99 +550,25 @@ define([
 			this.addToDetails(_('Support'), 'SupportURL');
 			this.addToDetails(_('Installed version'), 'Version');
 			this.addToDetails(_('Candidate version'), 'CandidateVersion');
-			this.addToDetails(_('Screenshot'), 'Screenshot');
-			this.addToDetails(_('Notification'), 'NotifyVendor');
+			this.addToDetails(_('Categories'), 'Categories');
 			this.addToDetails(_('End of life'), 'EndOfLife');
 
-			query('.umcScreenshot', this._detailsTable).forEach(function(imgNode) {
-				new Lightbox({ href: imgNode.src }, imgNode);
-			});
+			domConstruct.place(this._detailsTable, footerLeft.domNode);
 
-			var usage = this.app.readme;
-			if (usage) {
-				usage = lang.replace(usage, this.app);
-			} else {
-				usage = this._detailFieldCustomUsage();
-			}
-			if (usage) {
-				var usagePane = new TitlePane({
-					title: _('Notes on using'),
-					content: usage
+			if (this._detailFieldCustomNotifyVendor()) {
+				var notificationHeader = new Text({
+					content: _('Notification'),
+					style: 'font-weight: bold'
 				});
-				this._container.addChild(usagePane);
+				footerRight.addChild(notificationHeader);
+				var notificationText = new Text({
+					content: this._detailFieldCustomNotifyVendor()
+				});
+				footerRight.addChild(notificationText);
 			}
 
-			if (this._appIsInstalledInDomain()) {
-				var installationTable = domConstruct.create('table', {
-					style: {borderSpacing: '1em 0.1em'}
-				});
-				array.forEach(this.app.installationData, lang.hitch(this, function(item) {
-					if (!item.isInstalled) {
-						return;
-					}
-					var tr;
-					if (item.isLocal()) {
-						if (this._appCountInstallations() > 1) {
-							domConstruct.create('tr', {style: {height: '4ex'}}, installationTable, 'first');
-						}
-						tr = domConstruct.create('tr', {}, installationTable, 'first');
-					} else {
-						tr = domConstruct.create('tr', {}, installationTable);
-					}
-					domConstruct.create('td', {innerHTML: item.displayName}, tr);
-					// value is a DOM node
-					var td = domConstruct.create('td', {}, tr);
-					var _addButton = lang.hitch(this, function(buttonConf) {
-						var button = new Button(buttonConf);
-						this.own(button);
-						domConstruct.place(button.domNode, td);
-					});
-					if (item.canOpen()) {
-						_addButton({
-							label: item.getOpenLabel(),
-							callback: function() {
-								item.open();
-							},
-							name: 'open'
-						});
-					}
-					if (item.canUninstall()) {
-						_addButton({
-							label: _('Uninstall'),
-							callback: function() {
-								item.uninstall();
-							},
-							name: 'uninstall'
-						});
-					}
-					if (item.canUpgrade()) {
-						_addButton({
-							label: _('Upgrade'),
-							callback: function() {
-								item.upgrade();
-							},
-							defaultButton: true,
-							name: 'upgrade'
-						});
-					}
-					if (item.canInstall()) {
-						_addButton({
-							label: _('Install'),
-							callback: function() {
-								item.install();
-							},
-							defaultButton: true,
-							name: 'install'
-						});
-					}
-				}));
-				var installationPane = new TitlePane({
-					title: _('Installations throughout the domain'),
-					open: false,
-					content: installationTable
-				});
-				this._container.addChild(installationPane);
-			}
+			domStyle.set(document.getElementsByClassName('umcModuleContent')[0], 'overflow', 'visible');
+			domStyle.set(this._main.domNode, 'margin-bottom', '2em');
 		},
 
 		openShop: function() {
@@ -366,8 +587,8 @@ define([
 			);
 		},
 
-		disableApp: function() {
-			var action = tools.umcpCommand('appcenter/enable_disable_app', {application: this.app.id, enable: false}).then(lang.hitch(this, 'reloadPage'));
+		disableApp: function(host, app) {
+			var action = tools.umcpCommand('appcenter/enable_disable_app', {application: app[0].data.id, enable: false}).then(lang.hitch(this, 'reloadPage'));
 			this.standbyDuring(action);
 		},
 
@@ -380,6 +601,7 @@ define([
 			}));
 		},
 
+		
 		installAppDialog: function() {
 			if (this.app.installationData) {
 				var hosts = [];
@@ -796,6 +1018,23 @@ define([
 			}
 		},
 
+		_detailFieldCustomCategories: function() {
+			if (this.app.categories) {
+				var categoriesContainerNode = domConstruct.create('div', {
+					'class': 'categoryContainer'
+				});
+				this.app.categories.forEach(lang.hitch(this, function(category) {
+					var categoryButton = domConstruct.create('button', {
+						textContent: _(category),
+						onclick: lang.hitch(this, function() { this.onBack(category) }),
+						'class': 'categoryButton'
+					});
+					domConstruct.place(categoryButton, categoriesContainerNode);
+				}));
+				return categoriesContainerNode;
+			}
+		},
+
 		addToDetails: function(label, attribute) {
 			var value;
 			var detailFunc = this['_detailFieldCustom' + attribute];
@@ -818,7 +1057,6 @@ define([
 
 		onBack: function() {
 		}
-
 	});
 });
 

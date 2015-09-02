@@ -31,11 +31,16 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/array",
+	"dojo/_base/lang",
 	"put-selector/put",
 	"dojo/dom-class",
 	"umc/tools",
-	"umc/widgets/GalleryPane"
-], function(declare, array, put, domClass, tools, GalleryPane) {
+	"umc/widgets/GalleryPane",
+	"umc/widgets/Button",
+	"dojo/query",
+	"dojo/dom-geometry",
+	"dojo/dom-style"
+], function(declare, array, lang, put, domClass, tools, GalleryPane, Button, query, domGeometry, domStyle) {
 	return declare("umc.modules.appcenter.AppCenterGallery", [ GalleryPane ], {
 		region: 'main',
 
@@ -43,7 +48,7 @@ define([
 
 		style: 'height: 100%; width: 100%;',
 
-		bootstrapClasses: "col-xs-12.col-sm-6.col-md-6.col-lg-6",
+		bootstrapClasses: "col-xxs-6.col-xs-4.col-sm-3.col-md-3.col-lg-3",
 
 		getIconClass: function(item) {
 			if (array.indexOf(item.unlocalised_categories, 'UCS components') >= 0) {
@@ -57,11 +62,55 @@ define([
 			var div;
 			if (item.isSeparator) {
 				div = put('div.umcGalleryCategoryHeader.col-xs-12[style=display: block]', item.name);
+			} else if (item.isButton) {
+				div = put('div.umcGalleryButton.col-xs-12[style=display: block]');
+				var button = new Button({
+					name: 'more',
+					label: 'More',
+					style: 'float: right'
+				});
+				//this.own(button);
+				div.appendChild(button.domNode);
 			} else {
-				div = this.inherited(arguments);
-				domClass.add(div.firstElementChild, 'umcGalleryCategory-software');
+				var appWrapperDiv = put(lang.replace('div.umcGalleryWrapperItem.{bootstrapClasses}[moduleID={moduleID}]', {
+					moduleID: item.$id$,
+					bootstrapClasses: this.bootstrapClasses
+				}));
+				var innerWrapper = put(appWrapperDiv, 'div#appInnerWrapper.umcGalleryItem');
+				
+				put(innerWrapper, 'div#border');
+				
+				var iconClass = this.getIconClass(item);
+				if (iconClass) {
+					put(innerWrapper, 'div#appIcon.umcGalleryIcon.' + iconClass);
+				}
+
+				var text = put(innerWrapper, 'div#appContent');
+				put(text, 'span.umcGalleryName', this.getItemName(item));
+				put(text, 'span.umcGalleryVendor', item.vendor || item.maintainer || '');
+
+				put(innerWrapper, 'div#appHover');
+
+				innerWrapper.onmouseover = function() {
+					domClass.toggle(innerWrapper, 'hover');
+				};
+				innerWrapper.onmouseout = function() {
+					domClass.toggle(innerWrapper, 'hover');
+				};
+				var div = appWrapperDiv;
 			}
 			return div;
+		},
+
+		_resizeItemNames: function() {
+			var defaultHeight = this._getDefaultItemNameHeight();
+			query('.umcGalleryName', this.contentNode).forEach(lang.hitch(this, function(inode) {
+				var fontSize = 1.3;
+				while (domGeometry.position(inode).h > 40) {
+					domStyle.set(inode, 'font-size', fontSize + 'em');
+					fontSize *= 0.9;
+				}
+			}));
 		},
 
 		getStatusIconClass: function(item) {

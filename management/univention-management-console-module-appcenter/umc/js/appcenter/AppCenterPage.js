@@ -37,15 +37,16 @@ define([
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dojo/Deferred",
+	"dojo/query",
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Page",
 	"umc/widgets/Text",
 	"umc/widgets/CheckBox",
 	"umc/modules/appcenter/AppCenterGallery",
-	"umc/widgets/LiveSearchSidebar",
+	"umc/modules/appcenter/AppLiveSearchSidebar",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, when, domConstruct, Memory, Observable, Deferred, dialog, tools, Page, Text, CheckBox, AppCenterGallery, LiveSearchSidebar, _) {
+], function(declare, lang, array, when, domConstruct, Memory, Observable, Deferred, dquery, dialog, tools, Page, Text, CheckBox, AppCenterGallery, AppLiveSearchSidebar, _) {
 
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
@@ -56,18 +57,22 @@ define([
 		openApp: null, // if set, this app is opened on module opening
 
 		liveSearch: true,
-		addMissingAppButton: true,
+		addMissingAppButton: false,
 		appQuery: null,
 
 		title: _("App management"),
 		headerText: _("Manage Applications for UCS"),
 		helpText: _("Install or remove applications on this or another UCS system."),
 
+		navBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
+		mainBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
+		_initialBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
 			if (this.liveSearch) {
-				this._searchSidebar = new LiveSearchSidebar({
+				this._searchSidebar = new AppLiveSearchSidebar({
 					region: 'nav',
 					searchLabel: _('Search applications...'),
 					searchableAttributes: ['name', 'description', 'longdescription', 'categories']
@@ -229,11 +234,19 @@ define([
 					});
 					applications = applications.concat(installedApps);
 					applications.push({
+						isButton: true,
+						id: '_moreButton'
+					});
+					applications.push({
 						isSeparator: true,
 						id: '_other',
 						name: _('Available Applications')
 					});
 					applications = applications.concat(otherApps);
+					applications.push({
+						isButton: true,
+						id: '_moreButton'
+					});
 				}
 				this._grid.set('store', new Observable(new Memory({
 					data: applications
@@ -278,7 +291,6 @@ define([
 						return false;
 					}
 				}
-
 				return true;
 			};
 
@@ -289,7 +301,7 @@ define([
 
 			if (discriminatedApps.installedApps.length && discriminatedApps.otherApps.length) {
 				actualQuery = function(object) {
-					return object.isSeparator || query(object);
+					return object.isSeparator || object.isButton || query(object);
 				};
 			}
 

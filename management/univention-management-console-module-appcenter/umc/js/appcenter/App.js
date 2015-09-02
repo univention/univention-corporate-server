@@ -31,6 +31,7 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/array",
 	"dojo/_base/kernel",
 	"dojo/_base/lang",
 	"dojo/topic",
@@ -39,7 +40,7 @@ define([
 	"umc/app",
 	"umc/tools",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, kernel, lang, topic, json, entities, UMCApplication, tools, _) {
+], function(declare, array, kernel, lang, topic, json, entities, UMCApplication, tools, _) {
 	var App = declare('umc.modules.appcenter.App', null, {
 		constructor: function(props, page, host) {
 			props = lang.clone(props);
@@ -55,6 +56,7 @@ define([
 			this.icon = props.icon;
 			this.version = props.version;
 			this.candidateVersion = props.candidate_version;
+			this.categories = props.categories;
 			this.website = props.website;
 			this.description = props.description;
 			this.longDescription = props.longdescription;
@@ -248,12 +250,31 @@ define([
 			return this.isInstalled && this.endOfLife && this.isCurrent;
 		},
 
+		canDisableInDomain: function() {
+			return array.some(this.getHosts(), lang.hitch(this, function(app) {
+				return app.data.canDisable();
+			}));
+		},
+
 		canUninstall: function() {
 			return this.isInstalled;
 		},
 
+		canUninstallInDomain: function() {
+			return array.some(this.getHosts(), lang.hitch(this, function(app) {
+				return app.data.canUninstall();
+			}));
+		},
+
+
 		canUpgrade: function() {
 			return this.isInstalled && !!this.candidateVersion;
+		},
+
+		canUpgradeInDomain: function() {
+			return array.some(this.getHosts(), lang.hitch(this, function(app) {
+				return app.data.canUpgrade();
+			}));
 		},
 
 		canInstall: function() {
@@ -301,6 +322,41 @@ define([
 			} else if (webInterface) {
 				return _('Open web site');
 			}
+		},
+
+		canOpenInDomain: function() {
+			return array.some(this.getHosts(), lang.hitch(this, function(app) {
+				return app.data.canOpen();
+			}));
+		},
+
+		getHosts: function() {
+			var hosts = [];
+			if (!!this.installationData) {
+				array.forEach(this.installationData, function(item) {
+					if (item.isInstalled) {
+						var ihost = {
+							server: item.displayName,
+							id: item.hostName,
+							data: item,
+							appStatus: item.canUpgrade() ? 'Update available' : '',
+							moreInformation: ''
+						};
+						hosts.push(ihost);
+					}
+				});
+			} else {
+				if (this.isInstalled) {
+					hosts.push({
+						server: this.displayName,
+						id: this.hostName,
+						data: this,
+						appStatus: this.canUpgrade() ? 'Update available' : '',
+						moreInformation: ''
+					});
+				}
+			}
+			return hosts;
 		}
 	});
 

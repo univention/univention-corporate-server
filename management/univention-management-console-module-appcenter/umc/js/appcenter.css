@@ -45,3 +45,158 @@
 .umcAppPage .umcAppButton.umcAppButtonFirstRow + .umcAppButton:not(.umcAppButtonFirstRow) {
 	clear: left;
 }
+
+.categoryButton {
+	background-color: transparent;
+	border: 0;
+	border-right: 1px solid lightgrey;
+	padding: 0 0.4em 0 0;
+	margin-right: 0.4em;
+	text-decoration: underline;
+	opacity: 0.66;
+}
+
+.categoryButton:first-child {
+	padding-left: 0;
+}
+.categoryButton:last-child {
+	border-right: 0;
+}
+.categoryButton:hover {
+	opacity: 1;
+}
+
+.umcGalleryCategoryHeader {
+	margin: 1em 5px 1em 5px;
+	border-bottom: 0;
+}
+
+.umcGalleryButton {
+	margin-top: 1em;
+	padding-bottom: 1em;
+	border-bottom: 1px solid #b4b4b4;
+}
+.umcGalleryButton:last-child {
+	border-bottom: 0;
+}
+
+#appWrapperDiv {
+	float: left;
+	height: 180px;
+	width:25%;
+}
+
+#appInnerWrapper {
+	background-color: #eaeaea;
+	margin-right: 1em;
+	width:155px;
+	height: 170px;
+	padding: 0;
+}
+#appInnerWrapper div {
+}
+
+#border {
+	background-image: url("../../dijit/themes/umc/icons/schablone.png");
+	background-size: 100% 100%;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+}
+
+#appIcon {
+	height: 55%;
+	background-size: 80% 80%;
+	background-position: bottom center;
+	width: 100%;
+	z-index: 0;
+	/*position: absolute;*/
+	top: 0;
+	transition: opacity 1s;
+}
+#appInnerWrapper.hover #appIcon {
+	opacity: 0.2;
+}
+
+#hoverContainer {
+	position: absolute;
+	bottom: 0;
+	width:100%;
+	min-height: 45%;
+}
+
+#appContent {
+	width: 100%;
+	padding: 0.6em 0 0 0.6em;
+	display: inline-block;
+	transition: transform 0.5s;
+}
+#appInnerWrapper.hover #appContent {
+	transform: translateY(-100%);
+}
+
+#appHover {
+	width: 100%;
+	height: 40%;
+	background-color: darkgrey;
+	/*transition: height 1s;
+	display: inline-block;
+	position: relative;
+	bottom: -3px;*/
+	position: absolute;
+	bottom: 0;
+	transform: translateY(100%);
+	transition: transform 0.5s;
+}
+#appInnerWrapper.hover #appHover {
+	/*height: 50px;*/
+	transform: translateY(0);
+}
+
+#appContent .umcGalleryName {
+	font-size: 1.3em;
+	display: block;
+	margin-bottom: 0.5em;
+	margin-right: 0;
+	transform: none;
+}
+
+#appInnerWrapper.umcGalleryItem:hover .umcGalleryName {
+	color: #5a5a5a !important;
+}
+
+#appContent .umcGalleryVendor {
+	font-size: 1em;
+	opacity: 0.8;
+}
+
+.umc .dijitTitlePane.appDetailsPage .dijitTitlePaneTitle {
+	color: #a9a9a9;
+	border-top: 0;
+	padding: 0.5em 0 0.5em 0;
+}		
+.umc .dijitTitlePane.appDetailsPage .dijitTitlePaneTitle .dijitTitlePaneTextNode {
+	vertical-align: middle;
+}
+.umc .dijitTitlePane.appDetailsPage	.dijitTitlePaneTitle .dijitArrowNode {
+	opacity: 0.66;
+}	
+.umc .dijitTitlePane.appDetailsPage .dijitTitlePaneTitleClosed .dijitArrowNode {
+	background-position: -80px 0;
+}
+.umc .dijitTitlePane.appDetailsPage .dijitTitlePaneTitleClosed.dijitTitlePaneTitleHover .dijitArrowNode {
+	background-position: -100px 0;
+	opacity: 0.66;
+}
+.umc .dijitTitlePane.appDetailsPage .dijitTitlePaneTitleOpen .dijitArrowNode {
+	background-position: 0px 0;
+}
+.umc .dijitTitlePane.appDetailsPage .dijitTitlePaneTitleOpen.dijitTitlePaneTitleHover .dijitArrowNode {
+	background-position: -20px 0;
+	opacity: 0.66;
+}
+
+
+
+

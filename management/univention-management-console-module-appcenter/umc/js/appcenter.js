@@ -160,7 +160,10 @@ define([
 			appDetailsPage.own(appChooseHostDialog);
 			appDetailsPage.own(appDetailsDialog);
 			appDetailsPage.own(appConfigDialog);
-			appDetailsPage.on('back', lang.hitch(this, function() {
+			appDetailsPage.on('back', lang.hitch(this, function(category) {
+				if (category && category.length) {
+					this._appCenterPage._searchSidebar.set('category', category);
+				}
 				this.selectChild(this._appCenterPage);
 				this.removeChild(appDetailsDialog);
 				this.removeChild(appChooseHostDialog);
