@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: ruby1.9.1
-fix: to be announced
+fix: 1.9.3.194-8.1.10.201509021406
 version: [2,3]
 desc: |
  Multiple security vulnerabilities have been fixed in ruby1.9.1:

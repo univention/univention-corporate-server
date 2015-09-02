@@ -1,0 +1,15 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: vlc
+fix: 2.0.3-5.14.201509021503
+version: [2,3]
+desc: |
+ Multiple security vulnerabilities have been fixed in vlc:
+ * Information leak of Authorization and Proxy-Authorization headers in
+   redirected requests (CVE-2014-1829, CVE-2014-1830)
+bug:
+ - 36952
+cve:
+ - CVE-2014-1829
+ - CVE-2014-1830

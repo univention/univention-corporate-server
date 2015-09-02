@@ -1,0 +1,15 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: requests
+fix: 0.12.1-1.18.201509021430
+version: [2,3]
+desc: |
+ Multiple security vulnerabilities have been fixed in requests:
+ * Information leak of Authorization and Proxy-Authorization headers in
+   redirected requests (CVE-2014-1829, CVE-2014-1830)
+bug:
+ - 37069
+cve:
+ - CVE-2014-1829
+ - CVE-2014-1830
