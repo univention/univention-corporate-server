@@ -1,0 +1,19 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: ruby1.9.1
+fix: to be announced
+version: [2,3]
+desc: |
+ Multiple security vulnerabilities have been fixed in ruby1.9.1:
+ * Denial of service in the encodes() function (CVE-2014-4975)
+ * Denial of service through unrestricted XML entity expansion
+   (CVE-2014-8080, CVE-2014-8090)
+ * Man-in-the-middle attack via crafted SSL certificates (CVE-2015-1855)
+bug:
+ - 36993
+cve:
+ - CVE-2014-4975
+ - CVE-2014-8080
+ - CVE-2014-8090
+ - CVE-2015-1855

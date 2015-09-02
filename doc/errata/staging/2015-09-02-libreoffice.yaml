@@ -1,0 +1,18 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: libreoffice
+fix: to be announced
+version: [2,3]
+desc: |
+ Multiple security vulnerabilities have been fixed in libreoffice:
+ * Opening a malformed RTF document may lead to the potential execution of
+   arbitrary code (CVE-2014-9093)
+ * Execution of arbitrary code when opening a malformed document due to
+   missing input sanitising in Libreoffice's filter for HWP documents
+   (CVE-2015-1774)
+bug:
+ - 37073
+cve:
+ - CVE-2014-9093
+ - CVE-2015-1774
