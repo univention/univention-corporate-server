@@ -2,10 +2,10 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: univention-management-console-frontend
-fix: 4.1.106-89.1099.201508241425
+fix: 4.1.106-90.1110.201509030947
 version: [3]
 desc: |
  This update addresses the following issues:
- * Objects (e.g. superior, groups) that have been already selected won't
-   be displayed if the user adds another object.
+ * Some widgets are now filtering out values which are already selected and
+   don't present them in a dialog anymore.
 bug: [37799]
