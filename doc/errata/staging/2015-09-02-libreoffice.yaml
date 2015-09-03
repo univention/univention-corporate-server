@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: libreoffice
-fix: to be announced
+fix: 1:3.5.4+dfsg2-0.16.201509021100
 version: [2,3]
 desc: |
  Multiple security vulnerabilities have been fixed in libreoffice:
