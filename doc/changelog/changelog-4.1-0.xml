@@ -491,6 +491,7 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The default domain and forest function level for new installations is now <emphasis>2008 R2</emphasis> (<u:bug>38800</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
