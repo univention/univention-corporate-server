@@ -338,7 +338,7 @@ create_install_script ()
 		packages="$packages $(app_get_packages $app)"
 	done
 	# Due to dovect: https://forge.univention.org/bugzilla/show_bug.cgi?id=39148
-	if [ "$main_app" = "oxseforucs" ] || [ "$main_app" = "egroupware" ] || [ "$main_app" = "horde" ] || [ "$main_app" = "tine20" ]; then
+	if [ "$main_app" = "oxseforucs" ] || [ "$main_app" = "egroupware" ] || [ "$main_app" = "horde" ] || [ "$main_app" = "tine20" ] || [ "$main_app" = "fortnox" ]; then
 		close_fds=TRUE
 	fi
 	# Ticket #2015052821000587
