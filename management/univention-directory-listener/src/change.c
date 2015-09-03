@@ -135,7 +135,16 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 		   other handlers that use the entry since it might have changed.
 		   It's not a problem that a newer entry is possibly available;
 		   we'll update it later anyway */
-		if ((rv =  ldap_search_ext_s(lp->ld, (*f)->base, (*f)->scope, (*f)->filter, NULL, 1,  NULL /*serverctrls*/, NULL /*clientctrls*/, NULL /*timeout*/, 0 /*sizelimit*/, &res)) != LDAP_SUCCESS) {
+		char **_attrs = NULL;
+		int attrsonly1 = 1;
+		LDAPControl **serverctrls = NULL;
+		LDAPControl **clientctrls = NULL;
+		struct timeval timeout = {
+			.tv_sec = 5*60,
+			.tv_usec = 0,
+		};
+		int sizelimit0 = 0;
+		if ((rv =  ldap_search_ext_s(lp->ld, (*f)->base, (*f)->scope, (*f)->filter, _attrs, attrsonly1,  serverctrls, clientctrls, &timeout, sizelimit0, &res)) != LDAP_SUCCESS) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not get DNs when initializing %s: %s", handler->name, ldap_err2string(rv));
 			return rv;
 		}
@@ -169,7 +178,8 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 
 			if ((rv = cache_get_entry_lower_upper(dns[i].dn, &cache_entry)) == DB_NOTFOUND) { /* XXX */
 				LDAPMessage *res2, *first;
-				if ((rv = ldap_search_ext_s(lp->ld, dns[i].dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, NULL /*timeout*/, 0 /*sizelimit*/, &res2)) == LDAP_SUCCESS) {
+				int attrsonly0 = 0;
+				if ((rv = ldap_search_ext_s(lp->ld, dns[i].dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, attrsonly0, serverctrls, clientctrls, &timeout, sizelimit0, &res2)) == LDAP_SUCCESS) {
 					first = ldap_first_entry(lp->ld, res2);
 					cache_new_entry_from_ldap(NULL, &cache_entry, lp->ld, first);
 					ldap_msgfree(res2);
@@ -322,7 +332,14 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 				*cur;
 	char			*attrs[]={"*", "+", NULL};
 	int			 rv = 0;
-	struct timeval timeout;
+	int attrsonly0 = 0;
+	LDAPControl **serverctrls = NULL;
+	LDAPControl **clientctrls = NULL;
+	struct timeval timeout = {
+		.tv_sec = 5*60,
+		.tv_usec = 0,
+	};
+	int sizelimit0 = 0;
 	char *server_role;
 
 	server_role = univention_config_get_string("server/role");
@@ -333,9 +350,6 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 	}
 
 	free(server_role);
-	/* max wait for 5 minutes */
-	timeout.tv_sec = 300;
-	timeout.tv_usec = 0;
 
 #ifdef WITH_DB42
 	if ((rv=cache_get_master_entry(&master_entry)) == DB_NOTFOUND) {
@@ -357,7 +371,7 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 	if (new_id > id)
 #endif
 	{
-		if ((rv=ldap_search_ext_s(lp->ld, "cn=Subschema", LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res)) == LDAP_SUCCESS) {
+		if ((rv=ldap_search_ext_s(lp->ld, "cn=Subschema", LDAP_SCOPE_BASE, "(objectClass=*)", attrs, attrsonly0, serverctrls, clientctrls, &timeout, sizelimit0, &res)) == LDAP_SUCCESS) {
 			if ((cur=ldap_first_entry(lp->ld, res)) == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "got no entry for schema");
 				return LDAP_OTHER;
@@ -478,14 +492,14 @@ int check_parent_dn(struct transaction *trans, char *dn)
 	char filter[] = "(objectClass=*)";
 	char *attrs_local[] = {"dn", NULL};
 	char *attrs[] = {"*", "+", NULL};
-	int attrsonly = 0;
+	int attrsonly0 = 0;
 	LDAPControl **serverctrls = NULL;
 	LDAPControl **clientctrls = NULL;
 	struct timeval timeout = {
-		.tv_sec = 60,
+		.tv_sec = 5*60,
 		.tv_usec = 0,
 	};
-	int sizelimit = 0;
+	int sizelimit0 = 0;
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "checking parent_dn of %s in local LDAP", dn);
 
@@ -500,13 +514,13 @@ int check_parent_dn(struct transaction *trans, char *dn)
 	}
 
 	/* search for parent_dn in local LDAP */
-	rv = ldap_search_ext_s(trans->lp_local->ld, parent_dn, LDAP_SCOPE_BASE, filter, attrs_local, attrsonly, serverctrls, clientctrls, &timeout, sizelimit, &res);
+	rv = ldap_search_ext_s(trans->lp_local->ld, parent_dn, LDAP_SCOPE_BASE, filter, attrs_local, attrsonly0, serverctrls, clientctrls, &timeout, sizelimit0, &res);
 	ldap_msgfree(res);
 	if (rv == LDAP_NO_SUCH_OBJECT) {		/* parent_dn not present in local LDAP */
 		rv = check_parent_dn(trans, parent_dn);	/* check if parent of parent_dn is here */
 		if (rv == LDAP_SUCCESS) {			/* parent of parent_dn found in local LDAP */
 			/* lookup parent_dn object in remote LDAP */
-			rv = ldap_search_ext_s(trans->lp->ld, parent_dn, LDAP_SCOPE_BASE, filter, attrs, attrsonly, serverctrls, clientctrls, &timeout, sizelimit, &res);
+			rv = ldap_search_ext_s(trans->lp->ld, parent_dn, LDAP_SCOPE_BASE, filter, attrs, attrsonly0, serverctrls, clientctrls, &timeout, sizelimit0, &res);
 			if (rv == LDAP_NO_SUCH_OBJECT) {
 				 univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not find parent container of dn: %s from %s (%s)", dn, trans->lp->host, ldap_err2string(rv));
 				 if (is_move(trans))
@@ -693,14 +707,14 @@ int change_update_dn(struct transaction *trans) {
 	int scope;
 	char filter[64]; /* "(entryUUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX)" */
 	char *attrs[] = {"*", "+", NULL};
-	int attrsonly = 0;
+	int attrsonly0 = 0;
 	LDAPControl **serverctrls = NULL;
 	LDAPControl **clientctrls = NULL;
 	struct timeval timeout = {
 		.tv_sec = 5*60,
 		.tv_usec = 0,
 	};
-	int sizelimit = 0;
+	int sizelimit0 = 0;
 	int rv;
 	const char *uuid = NULL;
 
@@ -756,7 +770,7 @@ retry_dn:
 	}
 
 	bool delete = false;
-	rv = ldap_search_ext_s(trans->lp->ld, base, scope, filter, attrs, attrsonly, serverctrls, clientctrls, &timeout, sizelimit, &res);
+	rv = ldap_search_ext_s(trans->lp->ld, base, scope, filter, attrs, attrsonly0, serverctrls, clientctrls, &timeout, sizelimit0, &res);
 	if (rv == LDAP_NO_SUCH_OBJECT) {
 		delete = true;
 	} else if (rv == LDAP_SUCCESS) {

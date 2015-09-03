@@ -2,6 +2,7 @@ univention-directory-listener (10.0.0-1) unstable; urgency=low
 
   * UCS-4.1 version bump
   * Bug #38823: Add cache filter mechanism
+  * Bug #34763: Add LDAP timeout
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 03 Sep 2015 07:41:48 +0200
 

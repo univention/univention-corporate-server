@@ -147,6 +147,14 @@ int main(int argc, char* argv[])
 	LDAP		*ld;
 	LDAPMessage	*res;
 	char		*attrs[]={"*", "+", NULL};
+	int attrsonly0 = 0;
+	LDAPControl **serverctrls = NULL;
+	LDAPControl **clientctrls = NULL;
+	struct timeval timeout = {
+		.tv_sec = 5*60,
+		.tv_usec = 0,
+	};
+	int sizelimit0 = 0;
 	struct berval cred;
 
 	univention_debug_init("stderr", 1, 1);
@@ -211,7 +219,7 @@ int main(int argc, char* argv[])
 		cred.bv_val=bindpw;
 		cred.bv_len=strlen(bindpw);
 	}
-	if (ldap_sasl_bind_s(ld, binddn, LDAP_SASL_SIMPLE, &cred, NULL, NULL, NULL) != LDAP_SUCCESS) {
+	if (ldap_sasl_bind_s(ld, binddn, LDAP_SASL_SIMPLE, &cred, serverctrls, clientctrls, NULL) != LDAP_SUCCESS) {
 		fprintf(stderr, "E: Could not bind to LDAP server\n");
 		exit(1);
 	}
@@ -229,7 +237,7 @@ int main(int argc, char* argv[])
 		}
 
 		if ((rv=ldap_search_ext_s(ld, dn, LDAP_SCOPE_BASE, "(objectClass=*)",
-				attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, NULL /*timeout*/, 0 /*sizelimit*/, &res)) == LDAP_NO_SUCH_OBJECT) {
+				attrs, attrsonly0, serverctrls, clientctrls, &timeout, sizelimit0, &res)) == LDAP_NO_SUCH_OBJECT) {
 			printf("W: %s only in cache\n", dn);
 		} else if(rv != LDAP_SUCCESS) {
 			printf("E: could not receive %s from LDAP\n", dn);
@@ -244,7 +252,7 @@ int main(int argc, char* argv[])
 	cache_free_cursor(cur);
 
 	if ((rv=ldap_search_ext_s(ld, basedn, LDAP_SCOPE_SUBTREE, "(objectClass=*)",
-			attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, NULL /*timeout*/, 0 /*sizelimit*/, &res)) != LDAP_SUCCESS) {
+			attrs, attrsonly0, serverctrls, clientctrls, &timeout, sizelimit0, &res)) != LDAP_SUCCESS) {
 		printf("E: ldapsearch failed\n");
 		exit(1);
 	} else {
