@@ -406,6 +406,20 @@ int notifier_client_new(NotifierClient *client,
 			    continue;
 		}
 
+		{
+			struct timeval timeout = {
+				.tv_sec = NOTIFIER_TIMEOUT * 2,
+				.tv_usec = 0,
+			};
+			int ret;
+			ret = setsockopt(client->fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
+			if (ret < 0)
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set SO_RCVTIMEO\n");
+			ret = setsockopt(client->fd, SOL_SOCKET, SO_SNDTIMEO, &timeout, sizeof(timeout));
+			if (ret < 0)
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set SO_SNDTIMEO\n");
+		}
+
 		if (connect(client->fd, address, addrlen) == -1) {
 		    univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "connection to %s failed with errorcode %d: %s", addrstr, errno, strerror(errno));
 			close(client->fd);
@@ -426,9 +440,15 @@ int notifier_client_new(NotifierClient *client,
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "established connection to %s port %d", addrstr, NOTIFIER_PORT_PROTOCOL2);
 
 	const char	*header = "Version: 2\nCapabilities: \n\n";
+	const size_t len = strlen(header);
 	char		*result, *tok;
 
-	send_block(client, header, strlen(header));
+	if (send_block(client, header, len) != len) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "couldn't send header");
+		free(client->server);
+		client->server = NULL;
+		return 1;
+	}
 	if (recv_block(client, &result, NOTIFIER_TIMEOUT) < 1) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "couldn't receive header");
 		free(client->server);
