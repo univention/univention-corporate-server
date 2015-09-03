@@ -2,8 +2,6 @@
 ## desc: Test sender restrictions for mailing lists
 ## exposure: dangerous
 ## packages: [univention-mail-server]
-## version:
-##  4.0-3: skip
 
 from essential.mail import send_mail, restart_postfix
 import univention.testing.utils as utils
@@ -17,7 +15,7 @@ import univention.testing.udm as udm_test
 def check_sending_mail(sender, recipient, username, password, should_be_accepted):
 	token = str(time.time())
 	try:
-		ret_code = send_mail( recipients=recipient, sender=sender, msg=token, tls=True, username=username, password=password)
+		ret_code = send_mail(recipients=recipient, sender=sender, msg=token, port=587, tls=True, username=username, password=password, debuglevel=0)
 		if (bool(ret_code) == should_be_accepted):
 			utils.fail('Sending should_be_accepted = %r, but return code = %r\n {} means there are no refused recipient' % (should_be_accepted, ret_code))
 	except smtplib.SMTPRecipientsRefused as ex:
@@ -34,18 +32,22 @@ def main():
 				restart_postfix()
 				domain = ucr.get('domainname')
 				password = 'univention'
-				mails= []
+				mails = []
+				alts = []
 				users = []
 				for i in xrange(5):
 					mail = '%s@%s' % (uts.random_name(), domain)
+					alt = '%s@%s' % (uts.random_name(), domain)
 					user_dn , username = udm.create_user(
 						set={
 							'password'           : password,
 							'mailHomeServer'     : '%s.%s' % (ucr.get('hostname'), domain),
-							'mailPrimaryAddress' : mail
+							'mailPrimaryAddress' : mail,
+							'mailAlternativeAddress': alt
 						}
 					)
 					mails.append(mail)
+					alts.append(alt)
 					users.append(user_dn)
 				group1_name = uts.random_name()
 				group1_mail = '%s@%s' % (group1_name, domain)
@@ -83,10 +85,29 @@ def main():
 					}
 				)
 
-				check_sending_mail(mails[0], mails[4], mails[0], password, True)
-				check_sending_mail(mails[1], mails[4], mails[1], password, False)
-				check_sending_mail(mails[2], mails[4], mails[2], password, True)
-				check_sending_mail(mails[3], mails[4], mails[3], password, False)
+				print ""
+				for i in xrange(3, 5):
+					print "user: %r \t email: %r emailAlt: %r" % (users[i].partition(",")[0], mails[i], alts[i])
+				print "group %r: email: %r users: %r" % (group1_name, group1_mail, mails[0])
+				print "group %r: email: %r users: %r" % (group2_name, group2_mail, mails[1])
+				print "group %r: email: %r users: %r allowedEmailUsers: %r allowedEmailGroups: %r" % (group3_name, group3_mail, mails[4], mails[2], group1_name)
+
+				print "\n>>> sending to unrestricted mail group %r with a member posix account -> allowed" % group1_mail
+				check_sending_mail(mails[0], group1_mail, mails[0], password, True)
+				print "\n>>> sending to unrestricted mail group %r with a non-member -> allowed" % group1_mail
+				check_sending_mail(mails[1], group1_mail, mails[1], password, True)
+				print "\n>>> sending to restricted mail group %r with a member posix account -> not allowed" % group3_mail
+				check_sending_mail(mails[4], group3_mail, mails[4], password, False)
+				print "\n>>> sending to restricted mail group %r with a non-member -> not allowed" % group3_mail
+				check_sending_mail(mails[3], group3_mail, mails[3], password, False)
+				print "\n>>> sending to restricted mail group %r with a non-member posix account but as a user in allowedEmailUsers using its mailPrimaryAddress -> allowed" % group3_mail
+				check_sending_mail(mails[2], group3_mail, mails[2], password, True)
+				print "\n>>> sending to restricted mail group %r with a non-member posix account but as a user in allowedEmailUsers using its mailAlternativeAddress -> allowed" % group3_mail
+				check_sending_mail(alts[2], group3_mail, mails[2], password, True)
+				print "\n>>> sending to restricted mail group %r with a non-member posix account but as a member of a group in allowedEmailGroups using its mailPrimaryAddress -> allowed" % group3_mail
+				check_sending_mail(mails[0], group3_mail, mails[0], password, True)
+				print "\n>>> sending to restricted mail group %r with a non-member posix account but as a member of a group in allowedEmailGroups using its mailAlternativeAddress -> allowed" % group3_mail
+				check_sending_mail(alts[0], group3_mail, mails[0], password, True)
 
 
 if __name__ == '__main__':
