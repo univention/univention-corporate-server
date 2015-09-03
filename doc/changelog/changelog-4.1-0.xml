@@ -33,6 +33,7 @@
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
+						The Linux kernel was updates to 4.1.6 (<u:bug>38873</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
