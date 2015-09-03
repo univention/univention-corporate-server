@@ -777,19 +777,23 @@ class CPAuth(CPgeneric):
 		CORE.info('CPAuth/auth/sso: got new auth request (%s:%s <=> %s)' % (get_ip_address(), remote.port, remote.name))
 
 		user = SAMLUser.get_user()
-		if user is None:
+		if user is None or user.timed_out():
+			SAMLUser.delete_cookie()
 			raise HTTPRedirect('/umcp/saml/')
 
 		req = umcp.Request('AUTH')
 		req.body = {
 			"auth_type": "SAML",
-			"username": ''.join(user.data['uid']),
+			"username": user.username,
 			"password": user.message
 		}
 
 		try:
 			response = self._auth_request(req)
-		except HTTPError:
+		except HTTPError as exc:
+			if exc.status in (401, 411):
+				SAMLUser.delete_cookie()
+				raise HTTPRedirect('/umcp/saml/')
 			raise
 
 		cherrypy.response.status = 303
@@ -952,8 +956,8 @@ class SAML(object):
 		response.ava = response.get_identity()
 
 		CORE.info('Got IDP response: %r' % (response.ava,))
-		user = SAMLUser(response.name_id, response.ava, message)
-		SAMLUser.set_cookie(user)  # TODO: expire
+		user = SAMLUser(response, message)
+		SAMLUser.set_cookie(user)
 
 		raise HTTPRedirect('/umcp/auth/sso')
 
@@ -977,7 +981,7 @@ class SAML(object):
 			return self.do_single_sign_on()
 
 		# What if more than one
-		data = self.sp.global_logout(user.username)
+		data = self.sp.global_logout(user.response.name_id)
 
 		for entity_id, logout_info in data.items():
 			if not isinstance(logout_info, tuple):
@@ -1202,10 +1206,16 @@ class SAMLUser(object):
 	uid2user = {}
 	cookie_name = "UMCSSOSessionId"
 
-	def __init__(self, username, data, message):
-		self.username = username
-		self.data = data
+	def __init__(self, response, message):
+		self.response = response
 		self.message = message
+		self.data = response.ava
+		self.username = ''.join(self.data['uid'])
+
+	def timed_out(self):
+		if self.response.not_on_or_after == 0:
+			return False
+		return self.response.not_on_or_after - time.time() < 0
 
 	@classmethod
 	def get_user(cls):
@@ -1227,7 +1237,9 @@ class SAMLUser(object):
 		cookie = cherrypy.response.cookie
 		cookie[cls.cookie_name] = uid
 		cookie[cls.cookie_name]['path'] = "/"  # FIXME?
-		cookie[cls.cookie_name]["expires"] = cls._expiration(480)
+		cookie[cls.cookie_name]["expires"] = cls._expiration(int(user.response.not_on_or_after - time.time()))
+		cookie['UMCUsername'] = user.username
+		cookie['UMCUsername']['path'] = '/'  # FIXME
 
 	@classmethod
 	def _expiration(cls, timeout=None, tformat='%a, %d-%b-%Y %T GMT'):
@@ -1378,6 +1390,7 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		# to prevent race conditions this must be called before the cherrypy thread gets created
 		cherrypy.engine.signal_handler.handlers['SIGHUP'] = log_reopen
 		cherrypy.engine.signal_handler.subscribe()
+		cherrypy.engine.subscribe('exit', lambda: notifier.dispatcher_add(lambda: sys.exit(0)))
 
 		# start webserver as separate thread
 		_thread_http = threading.Thread(target=run_cherrypy)

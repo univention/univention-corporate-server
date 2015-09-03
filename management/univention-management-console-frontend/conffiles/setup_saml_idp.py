@@ -93,7 +93,8 @@ def handler(config_registry, changes):
 def get_saml_service_provider():
 	lo = univention.uldap.getMachineConnection()
 	for dn, attrs in lo.search(filter="(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))", attr=['cn', 'associatedDomain']):
-		yield '%s.%s' % (attrs['cn'][0], attrs['associatedDomain'][0])
+		if 'cn' in attrs and 'associatedDomain' in attrs:
+			yield '%s.%s' % (attrs['cn'][0], attrs['associatedDomain'][0])
 	lo.lo.unbind()
 
 

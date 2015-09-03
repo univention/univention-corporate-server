@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.18-1) unstable; urgency=medium
+
+  * Bug #31943: evaluate NotOnOrAfter when doing login
+
+ -- Florian Best <best@univention.de>  Thu, 03 Sep 2015 15:47:52 +0200
+
 univention-management-console-frontend (5.0.17-2) unstable; urgency=low
 
   * Bug #37799: Adapted fix - setIgnoreIdsAttr and null condition
