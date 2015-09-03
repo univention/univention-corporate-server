@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.4-2) unstable; urgency=low
+
+  * Bug #38834: Improved object creation notification
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 03 Sep 2015 14:55:34 +0200
+
 univention-management-console-module-udm (6.0.4-1) unstable; urgency=medium
 
   * Bug #37667: fix traceback when receiving policies for a not existing

@@ -34,13 +34,12 @@ define([
 	"dojo/_base/array",
 	"dojo/Deferred",
 	"dojo/when",
+	"dojo/on",
 	"dojo/dom-style",
-	"dojo/_base/fx",
-	"dojo/fx",
-	"dojo/fx/easing",
+	"dojo/dom-geometry",
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget"
-], function(declare, lang, array, Deferred, when, domStyle, baseFx, coreFx, easing, Text, Container) {
+], function(declare, lang, array, Deferred, when, on, domStyle, domGeom, Text, Container) {
 	return declare("umc.modules.udm.NotificationText", [Container], {
 		// summary:
 		//		This class extends the normal Container widget in order to encapsulate
@@ -58,6 +57,8 @@ define([
 			});
 			this.own(this._text);
 			this.addChild(this._text);
+			
+			on(this.domNode, 'click', lang.hitch(this, '_hideMessage'));
 		},
 
 		postCreate: function() {
@@ -65,15 +66,15 @@ define([
 
 			domStyle.set(this.domNode, {
 				height: "0",
-				margin: "10px -500px 0 -500px",
-				padding: "3px 500px",
-				position: "relative"
+				margin: "-1.61em -1.6em 1em -1.6em",
+				position: "relative",
+				"-webkit-transition": "height 1s",
+				"transition": "height 1s",
+				cursor: "pointer"
 			});
 
 			domStyle.set(this._text.domNode, {
-				fontSize: "14px",
 				overflow: "hidden",
-				padding: "0 5px",
 				height: "100%",
 				width: "100%"
 			});
@@ -81,54 +82,39 @@ define([
 
 		showSuccess: function(message) {
 			domStyle.set(this.domNode, {
-				backgroundColor: "#dff0d8",
-				color: "#3c763d"
+				color: "rgb(60, 118, 61)",
+				backgroundColor: "rgb(223, 240, 216)"
 			});
 			this._showMessage(message);
 		},
 
 		_showMessage: function(message) {
+			var current_height = domGeom.getContentBox(this.domNode).h;
 			var stopDeferred = new Deferred();
-			if (this.get('message')) {
-				this._stopCurrentAnimation(stopDeferred);
+			if (current_height > 0) {
+				this._hideMessage(stopDeferred);
 			} else {
 				stopDeferred.resolve();
 			}
 
 			when(stopDeferred, lang.hitch(this, function() {
 				this.set('message', message);
-				this._currentAnimation = baseFx.animateProperty({
-					node: this.domNode,
-					duration: 350,
-					easing: easing.quadIn,
-					properties: {
-						height: { start: 0, end: 24 },
-						paddingTop: { start: 0, end: 3 }
-					}
+				domStyle.set(this.domNode, {
+					padding: "0.3em 1.6em",
+					height: "auto"
 				});
-				this._currentAnimation.play();
 			}));
 		},
 
-		_stopCurrentAnimation: function(stopDeferred) {
-			if (this._currentAnimation) {
-				this._currentAnimation.stop();
-				this._currentAnimation = null;
-			}
+		_hideMessage: function(stopDeferred) {
+			domStyle.set(this.domNode, {
+				padding: "0",
+				height: "0"
+			});
 
-			baseFx.animateProperty({
-				node: this.domNode,
-				duration: 350,
-				easing: easing.quadOut,
-				properties: {
-					height: { start: 24, end: 0 },
-					paddingTop: { start: 3, end: 0}
-				},
-				onEnd: lang.hitch(this, function() {
-					this.set('message', null);
-					stopDeferred.resolve();
-				})
-			}).play();
+			if (stopDeferred) {
+				setTimeout(stopDeferred.resolve, 1000);
+			}
 		},
 
 		_setMessageAttr: function(value) {

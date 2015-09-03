@@ -182,7 +182,7 @@ define([
 
 			this._notificationText = new NotificationText();
 			this.own(this._notificationText);
-			this.addChild(this._notificationText);
+			this.addChild(this._notificationText, 0);
 
 		},
 
@@ -229,7 +229,7 @@ define([
 											createWizard.standbyDuring(saveDeferred);
 											saveDeferred.then(
 												lang.hitch(this, function() {
-													this._notificationText.showSuccess(_('%s created', createWizard.objectName()));
+													this._notificationText.showSuccess(_('The %s has been created.', createWizard.objectName()));
 													this.createWizardAdded = new Deferred();
 													this.buildCreateWizard(firstPageValues, objectTypeName);
 													this.createWizardAdded.then(lang.hitch(this, function() {
