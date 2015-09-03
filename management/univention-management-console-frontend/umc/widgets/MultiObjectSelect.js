@@ -66,7 +66,7 @@ define([
 
 			_container: null,
 
-			ignoreIds: null,
+			_ignoreIds: null,
 
 			uninitialize: function() {
 				// make sure that the container widget is destroyed correctly
@@ -170,7 +170,7 @@ define([
 					// the first time we need to set dynamicValues
 					this._multiSelect.set('dynamicValues', lang.hitch(this, function(options) {
 						return when(this.queryCommand(options), lang.hitch(this, function(values) {
-							if (this.ignoreIds && this.ignoreIds.length) {
+							if (this._ignoreIds && this._ignoreIds.length) {
 								return this._filterSearch(values);
 							} else {
 								return values;
@@ -182,13 +182,17 @@ define([
 
 			_filterSearch: function(values) {
 				return array.filter(values, lang.hitch(this, function(ival) {
-					var id = null;
-					if ("string" == typeof(ival) || "Number" == typeof(ival)) {
-						id = ival;
+					if(ival) {
+						var id = null;
+						if ("string" == typeof(ival) || "Number" == typeof(ival)) {
+							id = ival;
+						} else {
+							id = ival.id;
+						}
+						return array.indexOf(this._ignoreIds, id) < 0;
 					} else {
-						id = ival.id;
+						return false;
 					}
-					return array.indexOf(this.ignoreIds, id) < 0;
 				}));
 			},
 
@@ -206,7 +210,7 @@ define([
 
 		queryCommand: '',
 
-		ignoreIds: null,
+		_ignoreIds: null,
 
 		queryOptions: {},
 
@@ -254,25 +258,16 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			// update ignoreIds and trigger new _detailDialog.search if value changed
+			// update _ignoreIds and trigger new _detailDialog.search if value changed
 			this.watch('value', lang.hitch(this, function(attr, oldval, newval) {
-				this.ignoreIds = array.map(newval, function(ival) {
-					return ival.id;
-				});
-
-				if (this._detailDialog) {
-					this._detailDialog.ignoreIds = this.ignoreIds;
-					this._detailDialog.search(this._detailDialog._form.get('value'));
-				}
+				this.set('ignoreIds', newval);
 			}));
 
 			// in case 'value' is not specified, generate a new array
 			if (!(this.value instanceof Array)) {
 				this.value = [];
-			} else { // make sure ignoreIds contains all value ids
-				this.ignoreIds = array.map(this.value, function(ival) {
-					return ival.id;
-				});
+			} else { // make sure _ignoreIds contains all value ids
+				this.set('ignoreIds', this.value);
 			}
 
 			// convert 'formatter' to a function
@@ -312,7 +307,7 @@ define([
 							queryOptions: this.queryOptions || {},
 							autoSearch: this.autoSearch,
 							title: this.dialogTitle,
-							ignoreIds: this.ignoreIds
+							_ignoreIds: this._ignoreIds
 						});
 
 						// register the event handler
@@ -360,6 +355,19 @@ define([
 				values.push( item.id );
 			} );
 			return values;
+		},
+
+		_setIgnoreIdsAttr: function(values) {
+			this._ignoreIds = array.map(values, function(ival) {
+				return ival.id;
+			});
+
+			if (this._detailDialog) {
+				this._detailDialog._ignoreIds = this._ignoreIds;
+				this._detailDialog.search(this._detailDialog._form.get('value'));
+			}
+
+			this._set('ignoreIds', values);
 		},
 
 		_setDisabledAttr: function(disabled) {
@@ -428,4 +436,3 @@ define([
 		}
 	});
 });
-

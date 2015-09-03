@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.17-2) unstable; urgency=low
+
+  * Bug #37799: Adapted fix - setIgnoreIdsAttr and null condition
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 03 Sep 2015 09:49:57 +0200
+
 univention-management-console-frontend (5.0.17-1) unstable; urgency=medium
 
   * Bug #31943: Move univention-saml dependency into univention-server
