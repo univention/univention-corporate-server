@@ -307,10 +307,15 @@ static int do_connection(univention_ldap_parameters_t *lp)
 {
 	LDAPMessage *res;
 	int rc;
+	char **_attrs = NULL;
+	int attrsonly0 = 0;
+	LDAPControl **serverctrls = NULL;
+	LDAPControl **clientctrls = NULL;
 	struct timeval timeout = {
-		.tv_sec = 10,
+		.tv_sec = 5*60,
 		.tv_usec = 0,
 	};
+	int sizelimit0 = 0;
 
 	if (univention_ldap_open(lp) != LDAP_SUCCESS) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to LDAP server %s:%d", lp->host, lp->port);
@@ -321,7 +326,7 @@ static int do_connection(univention_ldap_parameters_t *lp)
 
 	/* check if we are connected to an OpenLDAP */
 	rc = ldap_search_ext_s(lp->ld, lp->base, LDAP_SCOPE_BASE, "objectClass=univentionBase",
-			NULL, 0, NULL, NULL, &timeout, 0, &res);
+			_attrs, attrsonly0, serverctrls, clientctrls, &timeout, sizelimit0, &res);
 	ldap_msgfree(res);
 	switch (rc) {
 		case LDAP_SUCCESS:
