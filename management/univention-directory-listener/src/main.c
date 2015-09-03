@@ -389,6 +389,19 @@ int main(int argc, char* argv[])
 		ret = ldap_set_option(NULL, LDAP_OPT_TIMEOUT, &timeout);
 		if (ret != LDAP_OPT_SUCCESS)
 			fprintf(stderr, "Failed to set LDAP synchronous API timeout: %s\n", ldap_err2string(ret));
+
+		const int idle = 60;
+		ret = ldap_set_option(NULL, LDAP_OPT_X_KEEPALIVE_IDLE, &idle);
+		if (ret != LDAP_OPT_SUCCESS)
+			fprintf(stderr, "Failed to set TCP KA idle: %s\n", ldap_err2string(ret));
+		const int probes = 12;
+		ret = ldap_set_option(NULL, LDAP_OPT_X_KEEPALIVE_PROBES, &probes);
+		if (ret != LDAP_OPT_SUCCESS)
+			fprintf(stderr, "Failed to set TCP KA probes: %s\n", ldap_err2string(ret));
+		const int interval = 5;
+		ret = ldap_set_option(NULL, LDAP_OPT_X_KEEPALIVE_PROBES, &interval);
+		if (ret != LDAP_OPT_SUCCESS)
+			fprintf(stderr, "Failed to set TCP KA interval: %s\n", ldap_err2string(ret));
 	}
 
 	if ((lp = univention_ldap_new()) == NULL)
