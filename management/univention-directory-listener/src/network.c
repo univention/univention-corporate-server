@@ -44,6 +44,7 @@
 #include <stdio.h>
 #include <netdb.h>
 #include <netinet/in.h>
+#include <netinet/tcp.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
@@ -418,6 +419,23 @@ int notifier_client_new(NotifierClient *client,
 			ret = setsockopt(client->fd, SOL_SOCKET, SO_SNDTIMEO, &timeout, sizeof(timeout));
 			if (ret < 0)
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set SO_SNDTIMEO\n");
+
+			const int enable = 1;
+			ret = setsockopt(client->fd, SOL_SOCKET, SO_KEEPALIVE, &enable, sizeof(enable));
+			if (ret < 0)
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to enable TCP KEEPALIVE\n");
+			const int idle = 60;
+			ret = setsockopt(client->fd, SOL_TCP, TCP_KEEPIDLE, &idle, sizeof(idle));
+			if (ret < 0)
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set TCP_KEEPIDLE\n");
+			const int probes = 12;
+			ret = setsockopt(client->fd, SOL_TCP, TCP_KEEPCNT, &probes, sizeof(probes));
+			if (ret < 0)
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set TCP_KEEPCNT\n");
+			const int interval = 5;
+			ret = setsockopt(client->fd, SOL_TCP, TCP_KEEPINTVL, &interval, sizeof(interval));
+			if (ret < 0)
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set TCP_KEEPINTVL\n");
 		}
 
 		if (connect(client->fd, address, addrlen) == -1) {
