@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Univention GmbH
+ * Copyright 2015 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -32,41 +32,35 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojox/html/styles",
 	"umc/tools",
-	"dijit/Menu",
-	"dijit/MenuItem",
-	"dijit/form/DropDownButton",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/Button",
+	"umc/widgets/Text",
 	"umc/widgets/ComboBox",
 	"umc/widgets/StandbyMixin",
-	"umc/i18n/tools",
 	"umc/i18n!",
 	"dojo/domReady!",
 	"dojo/NodeList-dom"
-], function(declare, lang, array, tools, Menu, MenuItem, DropDownButton, ContainerWidget, ComboBox, StandbyMixin, i18nTools, _) {
-	return declare("umc.app.LanguageSwitch", [ContainerWidget], {
+], function(declare, lang, array, styles, tools, ContainerWidget, Button, Text, ComboBox, StandbyMixin, _) {
+	return declare("umc.app.SingleSignOn", [ContainerWidget], {
 		_languageMenu: null,
 		_languageButton: null,
 
+		style: 'float: left; padding-top: 2px;',
+
 		buildRendering: function() {
 			this.inherited(arguments);
-
-			this._languageMenu = new Menu({});
-			this._languageButton = new DropDownButton({
-				label: _('Language'),
-				dropDown: this._languageMenu
-			});
-
-			array.forEach(i18nTools.availableLanguages, function(language) {
-				this._languageMenu.addChild(new MenuItem({
-					label: language.label,
-					onClick: function() {
-						i18nTools.setLanguage(language.id);
-					}
-				}));
-			}, this);
-
-			this.addChild(this._languageButton);
+			styles.insertCssRule('#umcSingleSignOn .dijitButtonNode', 'border: 0 none; box-shadow: none; background: none; filter: none;');
+			styles.insertCssRule('#umcSingleSignOn .dijitButtonNode .dijitIcon', 'background-position: -140px -20px;');
+			this.addChild(new Button({
+				label: _('Single sign on'),
+				iconClass: 'umcPlayIcon',
+				description: _('<b>Warning:</b> Make sure hostnames of this UCS domain %s can be resolved by your browser.', '%s'),
+				callback: function() {
+					window.location.pathname = '/umcp/saml/';
+				}
+			}));
 		}
 	});
 });

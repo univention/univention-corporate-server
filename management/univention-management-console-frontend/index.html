@@ -121,7 +121,10 @@
 		<!--[if gte IE 9]><!-->
 		<div id="umcLoginWrapper">
 			<div id="umcFakeLoginLogo"></div>
-			<div id="umcLanguageSwitch" data-dojo-type="umc/app/LanguageSwitch"></div>
+			<div style="position: absolute; right: 0; top: 0;">
+				<div id="umcSingleSignOn" data-dojo-type="umc/app/SingleSignOn"></div>
+				<div id="umcLanguageSwitch" data-dojo-type="umc/app/LanguageSwitch" style="position: relative; float: left;"></div>
+			</div>
 			<div id="umcLoginCenterer"></div>
 			<div id="umcLoginDialog" class="umcLoginLoading dijitDialog dojoxDialog umcLoginDialog">
 				<div id="umcLoginLogo" class="umcLoginLogo">

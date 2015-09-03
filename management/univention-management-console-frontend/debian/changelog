@@ -1,6 +1,7 @@
 univention-management-console-frontend (5.0.18-1) unstable; urgency=medium
 
   * Bug #31943: evaluate NotOnOrAfter when doing login
+  * Bug #39171: add single sign on button on login page
 
  -- Florian Best <best@univention.de>  Thu, 03 Sep 2015 15:47:52 +0200
 
