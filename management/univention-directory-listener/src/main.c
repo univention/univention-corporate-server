@@ -377,6 +377,20 @@ int main(int argc, char* argv[])
 
 	univention_debug_init("stderr", 1, 1);
 
+	{
+		struct timeval timeout = {
+			.tv_sec = 5*60,
+			.tv_usec = 0,
+		};
+		int ret;
+		ret = ldap_set_option(NULL, LDAP_OPT_NETWORK_TIMEOUT, &timeout);
+		if (ret != LDAP_OPT_SUCCESS)
+			fprintf(stderr, "Failed to set LDAP connection timeout: %s\n", ldap_err2string(ret));
+		ret = ldap_set_option(NULL, LDAP_OPT_TIMEOUT, &timeout);
+		if (ret != LDAP_OPT_SUCCESS)
+			fprintf(stderr, "Failed to set LDAP synchronous API timeout: %s\n", ldap_err2string(ret));
+	}
+
 	if ((lp = univention_ldap_new()) == NULL)
 		exit(1);
 	lp->authmethod = LDAP_AUTH_SASL;
