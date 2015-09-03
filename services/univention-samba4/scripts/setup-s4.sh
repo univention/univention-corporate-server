@@ -194,7 +194,7 @@ if [ ! -e /usr/modules ]; then
 fi
 
 if [ -z "$samba4_function_level" ]; then
-	samba4_function_level=2003
+	samba4_function_level=2008_R2
 	univention-config-registry set samba4/function/level="$samba4_function_level"
 fi
 

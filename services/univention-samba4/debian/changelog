@@ -1,3 +1,10 @@
+univention-samba4 (5.0.0-1) unstable; urgency=low
+
+  * 2008_R2 as default for domain and forest function level (Bug #38800) 
+  * UCS 4.1-0 version bump
+
+ -- Felix Botner <botner@univention.de>  Thu, 03 Sep 2015 19:32:49 +0200
+
 univention-samba4 (4.0.3-6) unstable; urgency=medium
 
   * Create default.V3, .V4 and .V5 directories in windows-profiles
