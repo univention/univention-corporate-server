@@ -1,3 +1,9 @@
+univention-radius (2.0.2-1) unstable; urgency=low
+
+  * Bug #38785: Fixed key expansion for des encryption in pyMsChapV2.py
+
+ -- Felix Botner <botner@univention.de>  Thu, 03 Sep 2015 10:40:03 +0200
+
 univention-radius (2.0.1-1) unstable; urgency=medium
 
   * Bug #35516: Support Samba ADDS kerberos principal style client names
