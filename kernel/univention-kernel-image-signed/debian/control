@@ -5,14 +5,14 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7)
 Standards-Version: 3.8.2
 
-Package: kernel-image-3.16.0-ucs134-amd64-di-signed
+Package: kernel-image-4.1.0-ucs143-amd64-di-signed
 Architecture: amd64
 Section: debian-installer
 Package-Type: udeb
 Description: UCS - Linux kernel (standard)
  This package provides the signed version of:
  .
- The Linux kernel 3.16 and modules for use on PCs with AMD64, Intel 64 or
+ The Linux kernel 4.1 and modules for use on PCs with AMD64, Intel 64 or
  VIA Nano processors.
  .
  This kernel also runs on a Xen hypervisor.  It supports both privileged
@@ -23,13 +23,13 @@ Description: UCS - Linux kernel (standard)
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: linux-image-3.16.0-ucs134-amd64-signed
+Package: linux-image-4.1.0-ucs143-amd64-signed
 Architecture: amd64
-Depends: linux-image-3.16.0-ucs134-amd64
+Depends: linux-image-4.1.0-ucs143-amd64
 Description: UCS - Linux kernel (standard)
  This package provides the signed version of:
  .
- The Linux kernel 3.16 and modules for use on PCs with AMD64, Intel 64 or
+ The Linux kernel 4.1 and modules for use on PCs with AMD64, Intel 64 or
  VIA Nano processors.
  .
  This kernel also runs on a Xen hypervisor.  It supports both privileged
@@ -40,13 +40,13 @@ Description: UCS - Linux kernel (standard)
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: linux-image-3.16.0-ucs134-686-pae-signed
+Package: linux-image-4.1.0-ucs143-686-pae-signed
 Architecture: i386
-Depends: linux-image-3.16.0-ucs134-686-pae
+Depends: linux-image-4.1.0-ucs143-686-pae
 Description: UCS - Linux kernel (standard)
  This package depends on the unsigned version of:
  .
- The Linux kernel 3.16 and modules for use on PCs with one or more
+ The Linux kernel 4.1 and modules for use on PCs with one or more
  processors supporting PAE.
  .
  This kernel requires PAE (Physical Address Extension). This feature is
