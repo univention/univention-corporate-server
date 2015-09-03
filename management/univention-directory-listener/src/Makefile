@@ -32,12 +32,12 @@
 CC=gcc
 DB_LDADD=-ldb3
 DB_CFLAGS=-I/usr/include/db3 -DWITH_DB3
-DB_OBJS=cache.o cache_entry.o cache_lowlevel.o base64.o
+DB_OBJS=cache.o cache_entry.o cache_lowlevel.o base64.o filter.o
 
 CFLAGS=-g -Wall -Werror -D_FILE_OFFSET_BITS=64 $(DB_CFLAGS)
 LDADD=-g -luniventiondebug -licuuc
 LISTENER_LDADD=$(LDADD) -luniventionpolicy -lldap -lpython2.7 $(DB_LDADD)
-LISTENER_OBJS=main.o notifier.o transfile.o handlers.o cache.o cache_entry.o cache_lowlevel.o change.o network.o filter.o signals.o base64.o select_server.o utils.o
+LISTENER_OBJS=main.o notifier.o transfile.o handlers.o change.o network.o signals.o select_server.o utils.o $(DB_OBJS)
 DUMP_LDADD=$(LDADD) -lldap -luniventionconfig $(DB_LDADD)
 DUMP_OBJS=dump.o dump_signals.o utils.o $(DB_OBJS)
 DEMO_LDADD=$(LDADD) -luniventionconfig

@@ -4,6 +4,11 @@
 #include <ldap.h>
 
 
+#define FREE(ptr) \
+	free(ptr); \
+	ptr = NULL;
+
+
 static inline bool BERSTREQ(const struct berval *ber, const char *str, size_t len) {
 	return ber->bv_len == len && memcmp(ber->bv_val, str, len) == 0;
 }
