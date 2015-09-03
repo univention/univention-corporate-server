@@ -27,3 +27,9 @@ Description[de]=Ist diese Variable auf 'yes' gesetzt, führt der Univention Dire
 Description[en]=If this variable is set to 'yes', the Univention Directory Listener performs consistency checks to prevent a user name being added into a group multiple times. These checks can be deactivated by setting the variables 'listener/memberuid/skip' and 'listener/uniquemember/skip' to 'no'.
 Type=str
 Categories=service-ln
+
+[listener/cache/filter]
+Description[de]=LDAP filter string, um das lokale Cachen zu verhindern.
+Description[en]=LDAP filter string to prevent local caching
+Type=str
+Categories=service-ln

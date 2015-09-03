@@ -72,6 +72,7 @@
 #include <assert.h>
 
 #include <univention/debug.h>
+#include <univention/config.h>
 
 #include "common.h"
 #include "cache.h"
@@ -79,6 +80,7 @@
 #include "cache_entry.h"
 #include "network.h"
 #include "signals.h"
+#include "filter.h"
 #include "utils.h"
 
 #define MASTER_KEY "__master__"
@@ -94,6 +96,20 @@ DB *dbp;
 DB_ENV *dbenvp;
 #endif
 static FILE *lock_fp=NULL;
+
+static struct filter cache_filter;
+static struct filter *cache_filters[] = {&cache_filter, NULL};
+
+static void setup_cache_filter(void) {
+	cache_filter.filter = univention_config_get_string("listener/cache/filter");
+	if (cache_filter.filter && cache_filter.filter[0]) {
+		cache_filter.base = univention_config_get_string("ldap/base");
+		cache_filter.scope = LDAP_SCOPE_SUBTREE;
+	} else {
+		FREE(cache_filter.filter);
+		FREE(cache_filter.base);
+	}
+}
 
 #ifdef WITH_DB42
 static void cache_panic_call(DB_ENV *dbenvp, int errval)
@@ -176,6 +192,7 @@ int cache_init(void)
 	}
 	dbp->set_errcall(dbp, cache_error_message);
 #endif
+	setup_cache_filter();
 	return 0;
 }
 
@@ -412,6 +429,9 @@ int cache_update_entry_lower(NotifierID id, char *dn, CacheEntry *entry)
 {
 	char *lower_dn;
 	int rv = 0;
+
+	if (cache_filter.filter && cache_entry_ldap_filter_match(cache_filters, dn, entry))
+		return rv;
 
 	lower_dn = lower_utf8(dn);
 	rv = cache_update_entry(id, lower_dn, entry);

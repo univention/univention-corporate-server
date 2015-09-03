@@ -1,3 +1,9 @@
+univention-directory-listener (9.0.2-6) unstable; urgency=low
+
+  * Bug #38823: Add cache filter mechanism
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 03 Sep 2015 07:41:48 +0200
+
 univention-directory-listener (9.0.2-5) unstable; urgency=low
 
   * Bug #36532: Speed up network re-config
