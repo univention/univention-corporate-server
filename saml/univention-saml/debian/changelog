@@ -1,3 +1,9 @@
+univention-saml (3.0.4-1) unstable; urgency=medium
+
+  * Bug #39015: adapt mapping of 'AssertionConsumerService'
+
+ -- Florian Best <best@univention.de>  Fri, 04 Sep 2015 09:59:15 +0200
+
 univention-saml (3.0.3-1) unstable; urgency=medium
 
   * Bug #33912: allow to set entityID of SAML IDP via UCR variable

@@ -68,7 +68,7 @@ property_descriptions = {
 		),
 	'AssertionConsumerService': univention.admin.property(
 			short_description = _(u'Respond to this service provider URL after login'),
-			long_description = _(u'The URLs of the AssertionConsumerService endpoints for this SP. Users will be redirected to the URL upon succesful authentication. Example: https://sp.example.com/login'),
+			long_description = _(u'The URL(s) of the AssertionConsumerService endpoints for this SP. Users will be redirected to the URL upon succesful authentication. Example: https://sp.example.com/login'),
 			syntax = univention.admin.syntax.FiveThirdsString,
 			multivalue = True,
 			options = [],
@@ -198,7 +198,7 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('isActivated', 'isServiceProviderActivated', None, univention.admin.mapping.ListToString)
 mapping.register('Identifier', 'SAMLServiceProviderIdentifier', None, univention.admin.mapping.ListToString)
-mapping.register('AssertionConsumerService', 'AssertionConsumerService', None, univention.admin.mapping.ListToString)
+mapping.register('AssertionConsumerService', 'AssertionConsumerService')
 mapping.register('NameIDFormat', 'NameIDFormat', None, univention.admin.mapping.ListToString)
 mapping.register('simplesamlNameIDAttribute', 'simplesamlNameIDAttribute', None, univention.admin.mapping.ListToString)
 mapping.register('simplesamlAttributes', 'simplesamlAttributes', None, univention.admin.mapping.ListToString)
