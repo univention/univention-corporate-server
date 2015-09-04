@@ -1,3 +1,9 @@
+ucs-test (6.0.4-11) unstable; urgency=low
+
+  * Bug #39055: fix 40_mail/37_sender_restrictions_for_groups
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 03 Sep 2015 14:42:00 +0200
+
 ucs-test (6.0.4-10) unstable; urgency=low
 
   * Bug #38823: 10/52listener-filter
