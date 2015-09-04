@@ -1,3 +1,9 @@
+univention-dhcp (8.0.0-4) unstable; urgency=low
+
+  * Bug #39238: Create missing default DHCP routing policy
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 04 Sep 2015 07:41:09 +0200
+
 univention-dhcp (8.0.0-3) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)

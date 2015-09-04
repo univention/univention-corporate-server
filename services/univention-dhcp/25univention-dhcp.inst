@@ -37,12 +37,16 @@ joinscript_init
 
 . /usr/share/univention-lib/all.sh
 
+log () {
+	echo "${0##*/}: $*"
+}
+
 eval "$(univention-config-registry shell)"
 
 # Bug #23718:
 # The isc-dhcpd-ldap uses a LDAP-filter like (!(|(objectClass=dhcpXXX)(...))), which returns no result if dhcpXXX is not known to the LDAP server.
 # dhcpTSigKey and dhcpFailOverPeer are only defines with univention-ldap-config_8.0.34-1.
-if [ 2 -ne "$(ldapsearch -xLLL -D "$ldap_hostdn" -w "$(cat /etc/machine.secret)" -b 'cn=Subschema' -s base objectClasses | ldapsearch-wrapper | egrep -c "objectClasses: \( [0-9.]+ NAME '(dhcpTSigKey|dhcpFailOverPeer)'")" ]
+if [ 2 -ne "$(univention-ldapsearch -LLL -b 'cn=Subschema' -s base objectClasses | ldapsearch-wrapper | egrep -c "objectClasses: \( [0-9.]+ NAME '(dhcpTSigKey|dhcpFailOverPeer)'")" ]
 then
 	echo "The LDAP schema for DHCP is too old." >&2
 	echo "objectClasses 'dhcpTSigKey' and 'dhcpFailOverPeer' are not found." >&2
@@ -50,35 +54,55 @@ then
 	exit 1
 fi
 
-old=$(univention-directory-manager policies/dhcp_routing list "$@" --filter cn=default-settings | sed -ne 's|.*routers: ||p')
-if [ -z "$old" -a -n "$gateway" ]; then
-	univention-directory-manager policies/dhcp_routing modify "$@" --ignore_exists \
-		--dn "cn=default-settings,cn=routing,cn=dhcp,cn=policies,$ldap_base" \
-		--set name=default-settings \
-		--set routers="$gateway" || die
-fi
-
 univention-directory-manager dhcp/service create "$@" --ignore_exists \
 	--position "cn=dhcp,$ldap_base" \
 	--set service="$domainname" || die
+SERVICE="cn=$domainname,cn=dhcp,$ldap_base"
 univention-directory-manager dhcp/server create "$@" --ignore_exists \
-	--superordinate "cn=$domainname,cn=dhcp,$ldap_base" \
+	--superordinate "$SERVICE" \
 	--set server="$hostname" || die
+
+# Reference policies only for the first DHCP subnet created ever
+declare -a policies=()
+prepare_policies () {
+	local count cn data
+	count="$(univention-ldapsearch -LLL -b "$ldap_base" "(objectClass=univentionDhcpSubnet)" dn | grep -c ^dn)"
+	log "Number of existing DHCP (Shared) Sub-Networks: $count"
+	[ $count -ge 1 ] && return
+
+	for cn in boot dns routing # 'routing' must be last for the following code
+	do
+		dn="cn=default-settings,cn=$cn,cn=dhcp,cn=policies,$ldap_base"
+		data="$(univention-ldapsearch -LLL -o ldif-wrap=no -s base -b "$dn")" || continue
+		log "Referencing DHCP policy $cn"
+		policies+=(--policy-reference "$dn")
+	done
+
+	[ -n "$gateway" ] || return
+	[ -n "$data" ] || return
+	[[ "$data" = *"univentionDhcpRouters:"* ]] && return
+
+	log "Configuring first router $gateway"
+	univention-directory-manager policies/dhcp_routing modify "$@" \
+		--dn "$dn" \
+		--set routers="$gateway" || die
+}
+prepare_policies "$@"
 
 for var in ${!interfaces_*} # no quotes!
 do
 	case "$var" in
+	*_fallback_*) continue ;;
 	interfaces_*_network) network="${!var}" var=${var%work}mask netmask="${!var}" ;;
 	*) continue ;;
 	esac
 	[ -n "$network" -a -n "$netmask" ] || continue
-	if ! univention-directory-manager dhcp/sharedsubnet list "$@" \
-		--superordinate "cn=$domainname,cn=dhcp,$ldap_base" \
-		--filter "subnet=$network" | grep -q ^DN
+	if ! univention-ldapsearch -LLL -b "$SERVICE" "(&(objectClass=univentionDhcpSubnet)(cn=$network))" dn | grep ^dn
 	then
-		univention-directory-manager dhcp/subnet create "$@" --ignore_exists \
-			--superordinate "cn=$domainname,cn=dhcp,$ldap_base" \
+		univention-directory-manager dhcp/subnet create "$@" \
+			--superordinate "$SERVICE" \
 			--set subnet=$network \
+			"${policies[@]}" \
 			--set subnetmask="$netmask" || die
 	fi
 done
