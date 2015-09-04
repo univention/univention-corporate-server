@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-7
+src: univention-dhcp
+fix: 8.0.0-4.523.201509040829
+version: [7]
+desc: |
+  This update addresses the following issue:
+  * The default routing policy is only updated for the first created DHCP
+    subnet.
+bug: [39238]
