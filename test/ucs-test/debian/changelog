@@ -1,3 +1,10 @@
+ucs-test (6.0.4-12) unstable; urgency=medium
+
+  * Bug #39054: fix 40_mail/36_sender_restrictions_for_mailing_lists
+  * Bug #39055: cleanup
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 04 Sep 2015 10:26:04 +0200
+
 ucs-test (6.0.4-11) unstable; urgency=low
 
   * Bug #39055: fix 40_mail/37_sender_restrictions_for_groups
