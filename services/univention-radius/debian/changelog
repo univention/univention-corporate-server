@@ -1,3 +1,10 @@
+univention-radius (3.0.0-1) unstable; urgency=low
+
+  * Bug #38785: updated copyright
+  * version bump for 4.1 
+
+ -- Felix Botner <botner@univention.de>  Fri, 04 Sep 2015 12:58:21 +0200
+
 univention-radius (2.0.2-1) unstable; urgency=low
 
   * Bug #38785: Fixed key expansion for des encryption in pyMsChapV2.py
