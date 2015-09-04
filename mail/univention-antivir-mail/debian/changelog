@@ -1,3 +1,10 @@
+univention-antivir-mail (6.0.0-8) unstable; urgency=low
+
+  * Bug #38915: switch from custom amavis log template to default one.
+  * Add UCR variable mail/antivir/amavis/debug/level to set amavis log level.
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 01 Sep 2015 14:53:15 +0200
+
 univention-antivir-mail (6.0.0-7) unstable; urgency=low
 
   * Bug #37653: make  number of amavis processes configurable via ucr

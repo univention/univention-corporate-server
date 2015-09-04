@@ -4,6 +4,12 @@ Description[en]=This variable configures the start mode of the Amavis service. I
 Type=str
 Categories=service-mail,system-services
 
+[mail/antivir/amavis/debug/level]
+Description[de]=Log Level für amavisd-new. Mögliche Werte sind 0 bis 5. Ist die Variable nicht gesetzt, wird der Standardwert 0 verwendet.
+Description[en]=Log level for amavisd-new. Possible values are 0 to 5. If the variable is unset, the default value 0 is used.
+Type=int
+Categories=service-mail
+
 [mail/antivir/max_servers]
 Description[de]=Maximale Anzahl gleichzeitiger AMaViS-Prozesse. Wenn nicht gesetzt, ist der Standard 2.
 Description[en]=Maximum number of concurrent AMaViS processes. If not set, the default of 2 is used.
