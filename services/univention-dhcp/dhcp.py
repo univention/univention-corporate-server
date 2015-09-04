@@ -3,7 +3,7 @@
 # Univention DHCP
 #  listener module
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
