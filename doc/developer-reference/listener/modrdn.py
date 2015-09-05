@@ -33,6 +33,6 @@ def handler_move(old_dn, old, new_dn, dn):
 	pass  # replace this
 
 
-def handlee_schema(old, new):
+def handler_schema(old, new):
 	"""Handle change in LDAP schema."""
 	pass  # replace this
