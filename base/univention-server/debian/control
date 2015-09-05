@@ -14,7 +14,8 @@ Pre-Depends: univention-ssl,
  python-univention-lib (>= 3.0.1-1),
 Recommends: univention-nagios-client,
  openssh-server,
- python-univention-license
+ python-univention-license,
+ univention-saml,
 Depends: ${misc:Depends},
  univention-role-server-common (= ${source:Version}),
  univention-ldap-acl-master,
@@ -28,7 +29,6 @@ Depends: ${misc:Depends},
  univention-management-console-module-udm,
  univention-management-console-module-ipchange,
  univention-management-console,
- univention-saml,
 Description: UCS - master domain controller
  This package installs a UCS master domain controller.
  .
@@ -42,7 +42,8 @@ Architecture: all
 Recommends: univention-nagios-client,
  univention-bind,
  openssh-server,
- python-univention-license
+ python-univention-license,
+ univention-saml,
 Pre-Depends: univention-config (>= 7.0.25)
 Depends: ${misc:Depends},
  univention-role-server-common (= ${source:Version}),
@@ -60,7 +61,6 @@ Depends: ${misc:Depends},
  univention-management-console,
  shell-univention-lib (>= 3.0.1-1),
  python-univention-lib (>= 3.0.1-1),
- univention-saml,
 Description: UCS - backup domain controller
  This package installs a UCS backup domain controller.
  Unlike slave domain controllers, backup domain controllers
