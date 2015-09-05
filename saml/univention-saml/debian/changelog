@@ -1,3 +1,9 @@
+univention-saml (3.0.5-1) unstable; urgency=medium
+
+  * Bug #39310: allow the raw XML metadata to be set on service provider entries
+
+ -- Florian Best <best@univention.de>  Sat, 05 Sep 2015 10:10:32 +0200
+
 univention-saml (3.0.4-1) unstable; urgency=medium
 
   * Bug #39015: adapt mapping of 'AssertionConsumerService'

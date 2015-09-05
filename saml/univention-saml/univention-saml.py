@@ -32,16 +32,37 @@
 
 __package__=''  # workaround for PEP 366
 import listener
+
 import os
 import os.path
+import xml.etree.ElementTree
+from tempfile import NamedTemporaryFile
+from subprocess import call, Popen, PIPE
+
 import univention.debug as ud
 
 name='univention-saml'
 description='Manage simpleSAMLphp service providers'
 filter='(objectClass=univentionSAMLServiceProvider)'
 
+raw_metadata_generator = '''<?php
+set_error_handler(function($errno, $errstr, $errfile, $errline) {
+    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+});
+
+$entityid = $argv[1];
+$_SERVER['REQUEST_URI'] = $entityid;
+$_SERVER['REQUEST_METHOD'] = 'POST';
+$_POST['xmldata'] = file_get_contents("php://stdin");
+chdir('/usr/share/simplesamlphp/www/admin');
+ob_start();
+require_once('./metadata-converter.php');
+ob_end_clean();
+print($output["saml20-sp-remote"]);
+'''
 sp_config_dir = '/etc/simplesamlphp/metadata.d'
 include_file = '/etc/simplesamlphp/metadata/metadata_include.php'
+
 
 def remove_sp_config(old_filename):
 	listener.setuid(0)
@@ -67,13 +88,13 @@ def remove_sp_config(old_filename):
 	finally:
 		listener.unsetuid()
 	
-def add_sp_config(new_filename):
+def add_sp_config(filename):
 	try:
 		with open(include_file, 'a') as f:
-			f.write('<?php require_once("%s"); ?>\n' % new_filename)
+			f.write('<?php require_once("%s"); ?>\n' % filename)
 
 	except IOError as e:
-		print 'Error: Could not open %s: %s' % (new_filename, str(e))
+		print 'Error: Could not open %s: %s' % (filename, str(e))
 
 def handler(dn, new, old):
 	if old:
@@ -83,46 +104,15 @@ def handler(dn, new, old):
 			ud.debug(ud.LISTENER, ud.INFO, 'Deleting old SAML SP Configuration file %s' % old_filename)
 			remove_sp_config(old_filename)
 
-	if new:
-		if new.get('SAMLServiceProviderIdentifier') and new.get('isServiceProviderActivated')[0] == "TRUE":
-			# write new service provider config file
-			new_filename = os.path.join(sp_config_dir, '%s.php' % new.get('SAMLServiceProviderIdentifier')[0].replace('/', '_'))
-			ud.debug(ud.LISTENER, ud.INFO, 'Writing to SAML SP Configuration file %s' % new_filename)
+	if new and new.get('SAMLServiceProviderIdentifier') and new.get('isServiceProviderActivated')[0] == "TRUE":
+		# write new service provider config file
+		filename = os.path.join(sp_config_dir, '%s.php' % new.get('SAMLServiceProviderIdentifier')[0].replace('/', '_'))
+		ud.debug(ud.LISTENER, ud.INFO, 'Writing to SAML SP Configuration file %s' % filename)
 
-			listener.setuid(0)
-			with open(new_filename, 'w') as f:
-				f.write("<?php\n")
-				f.write("$metadata[\'%s\'] = array(\n" % new.get('SAMLServiceProviderIdentifier')[0])
-				f.write("	'AssertionConsumerService'	=> array('%s'),\n" % "', '".join(new.get('AssertionConsumerService')))
-				if new.get('NameIDFormat'):
-					f.write("	'NameIDFormat'	=> '%s',\n" % new.get('NameIDFormat')[0])
-				if new.get('simplesamlNameIDAttribute'):
-					f.write("	'simplesaml.nameidattribute'	=> '%s',\n" % new.get('simplesamlNameIDAttribute')[0])
-				if new.get('simplesamlAttributes'):
-					f.write("	'simplesaml.attributes'	=> %s,\n" % new.get('simplesamlAttributes')[0])
-				simplesamlLDAPattributes = list(new.get('simplesamlLDAPattributes', [])) + ['enabledServiceProviderIdentifier']
-				f.write("	'attributes'	=> array('%s'),\n" % "', '".join(simplesamlLDAPattributes))
-				if new.get('serviceproviderdescription'):
-					f.write("	'description'	=> '%s',\n" % new.get('serviceproviderdescription')[0])
-				if new.get('serviceProviderOrganizationName'):
-					f.write("	'OrganizationName'	=> '%s',\n" % new.get('serviceProviderOrganizationName')[0])
-				if new.get('privacypolicyURL'):
-					f.write("	'privacypolicy'	=> '%s',\n" % new.get('privacypolicyURL')[0])
-				if new.get('attributesNameFormat'):
-					f.write("	'attributes.NameFormat'	=> '%s',\n" % new.get('attributesNameFormat')[0])
-				if new.get('singleLogoutService'):
-					f.write("	'SingleLogoutService'	=> '%s',\n" % new.get('singleLogoutService')[0])
-
-				# make sure that only users that are enabled to use this service provider are allowed
-				f.write("	'authproc' => array(\n")
-				f.write("		60 => array(\n")
-				f.write("		'class' => 'authorize:Authorize',\n")
-				f.write("		'regex' => FALSE,\n")
-				f.write("		'enabledServiceProviderIdentifier' =>  array('%s'),\n" % dn )
-				f.write("	)),\n")
-				f.write(");\n")
-					
-			add_sp_config(new_filename)
+		listener.setuid(0)
+		try:
+			write_configuration_file(dn, new, filename)
+		finally:
 			listener.unsetuid()
 
 	script = '/etc/init.d/apache2'
@@ -131,3 +121,72 @@ def handler(dn, new, old):
 		listener.run(script, ['apache2', 'reload'], uid=0)
 	else:
 		ud.debug(ud.LISTENER, ud.INFO, "Apache Webserver not reloaded: %s does not exist" % (script,))
+
+
+def write_configuration_file(dn, new, filename):
+	if new.get('serviceProviderMetadata') and new['serviceProviderMetadata'][0]:
+		metadata = new['serviceProviderMetadata'][0]
+		try:
+			root = xml.etree.ElementTree.fromstring(metadata)
+			entityid = root.get('entityID')
+		except xml.etree.ElementTree.ParseError as exc:
+			ud.debug(ud.LISTENER, ud.ERROR, 'Parsing metadata failed: %s' % (exc,))
+			return False
+	else:
+		metadata = None
+		entityid = new.get('SAMLServiceProviderIdentifier')[0]
+
+	fd = open(filename, 'w')
+	fd.write("<?php\n")
+	fd.flush()
+
+	if metadata:
+		with NamedTemporaryFile() as temp:
+			temp.write(raw_metadata_generator)
+			temp.flush()
+
+			process = Popen(['/usr/bin/php', temp.name, entityid], stdout=fd, stderr=PIPE, stdin=PIPE)
+			stdout, stderr = process.communicate(metadata)
+			if process.returncode != 0:
+				ud.debug(ud.LISTENER, ud.ERROR, 'Failed to create %s: %s' % (filename, stderr,))
+		fd.write("$further = array(\n")
+	else:
+		fd.write("$metadata[\'%s\'] = array(\n" % entityid)
+		fd.write("	'AssertionConsumerService'	=> array('%s'),\n" % "', '".join(new.get('AssertionConsumerService')))
+
+	if new.get('NameIDFormat'):
+		fd.write("	'NameIDFormat'	=> '%s',\n" % new.get('NameIDFormat')[0])
+	if new.get('simplesamlNameIDAttribute'):
+		fd.write("	'simplesaml.nameidattribute'	=> '%s',\n" % new.get('simplesamlNameIDAttribute')[0])
+	if new.get('simplesamlAttributes'):
+		fd.write("	'simplesaml.attributes'	=> %s,\n" % new.get('simplesamlAttributes')[0])
+	simplesamlLDAPattributes = list(new.get('simplesamlLDAPattributes', [])) + ['enabledServiceProviderIdentifier']
+	fd.write("	'attributes'	=> array('%s'),\n" % "', '".join(simplesamlLDAPattributes))
+	if new.get('serviceproviderdescription'):
+		fd.write("	'description'	=> '%s',\n" % new.get('serviceproviderdescription')[0])
+	if new.get('serviceProviderOrganizationName'):
+		fd.write("	'OrganizationName'	=> '%s',\n" % new.get('serviceProviderOrganizationName')[0])
+	if new.get('privacypolicyURL'):
+		fd.write("	'privacypolicy'	=> '%s',\n" % new.get('privacypolicyURL')[0])
+	if new.get('attributesNameFormat'):
+		fd.write("	'attributes.NameFormat'	=> '%s',\n" % new.get('attributesNameFormat')[0])
+	if new.get('singleLogoutService'):
+		fd.write("	'SingleLogoutService'	=> '%s',\n" % new.get('singleLogoutService')[0])
+
+	if not metadata:  # TODO: make it configurable
+		# make sure that only users that are enabled to use this service provider are allowed
+		fd.write("	'authproc' => array(\n")
+		fd.write("		60 => array(\n")
+		fd.write("		'class' => 'authorize:Authorize',\n")
+		fd.write("		'regex' => FALSE,\n")
+		fd.write("		'enabledServiceProviderIdentifier' =>  array('%s'),\n" % dn )
+		fd.write("	)),\n")
+
+	fd.write(");\n")
+	if metadata:
+		fd.write("array_merge($metadata['%s'], $further);" % (entityid,))
+
+	if call(['/usr/bin/php', '-lf', filename]):
+		raise SystemExit('SyntaxCheck failed for %s.' % (filename,))
+	else:
+		add_sp_config(filename)

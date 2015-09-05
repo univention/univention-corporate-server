@@ -168,6 +168,16 @@ property_descriptions = {
 			may_change = True,
 			identifies = True,
 		),
+	'serviceProviderMetadata': univention.admin.property(
+			short_description=_('XML metadata'),
+			long_description=_('Raw XML metadata of the service provider to extend the simplesamlphp configuration.'),
+			syntax=univention.admin.syntax.string,
+			multivalue=False,
+			required=False,
+			may_change=True,
+			dontsearch=True,
+			identifies=False,
+		),
 }
 
 layout = [
@@ -208,6 +218,7 @@ mapping.register('serviceProviderOrganizationName', 'serviceProviderOrganization
 mapping.register('privacypolicyURL', 'privacypolicyURL', None, univention.admin.mapping.ListToString)
 mapping.register('attributesNameFormat', 'attributesNameFormat', None, univention.admin.mapping.ListToString)
 mapping.register('singleLogoutService', 'singleLogoutService', None, univention.admin.mapping.ListToString)
+mapping.register('serviceProviderMetadata', 'serviceProviderMetadata', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
