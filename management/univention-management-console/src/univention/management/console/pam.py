@@ -113,8 +113,8 @@ class PamAuth(object):
 			# 'Your password will expire at ...\n', 'Changing password', 'Error: Password does not meet complexity requirements\n'
 			PAM_TEXT_INFO: ['', '', ''],
 
-			# 'Password: ', 'New password: ', 'Repeat new password: '
-			PAM_PROMPT_ECHO_OFF: [password],
+			# e.g.: 'Password: ', 'New password: ', 'Repeat new password: ' or 'SAML message: ', 'Password: '
+			PAM_PROMPT_ECHO_OFF: [password, password],
 
 			# 'You are required to change your password immediately (password aged)'
 			PAM_ERROR_MSG: ['']

@@ -1,3 +1,9 @@
+univention-management-console (8.0.9-1) unstable; urgency=medium
+
+  * Bug #31943: rename uid attribute to urn:oid:0.9.2342.19200300.100.1.1
+
+ -- Florian Best <best@univention.de>  Mon, 07 Sep 2015 17:16:00 +0200
+
 univention-management-console (8.0.8-1) unstable; urgency=medium
 
   * Bug #38402: enhance error handling in client

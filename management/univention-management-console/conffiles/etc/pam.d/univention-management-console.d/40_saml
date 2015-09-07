@@ -3,6 +3,7 @@
 @!@
 import glob
 args = ['idp=%s' % (g,) for g in glob.glob('/usr/share/univention-management-console/saml/idp/*.xml')]
-args.append('trusted_sp=https://%(hostname)s.%(domainname)s/umcp/saml/metadata' % configRegistry)
-print 'auth sufficient pam_saml.so grace=600 userid=uid %s' % (' '.join(args),)
+if args:
+	args.append('trusted_sp=https://%(hostname)s.%(domainname)s/umcp/saml/metadata' % configRegistry)
+	print 'auth sufficient pam_saml.so grace=600 userid=urn:oid:0.9.2342.19200300.100.1.1 %s' % (' '.join(args),)
 @!@
