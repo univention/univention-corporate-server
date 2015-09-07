@@ -1,3 +1,9 @@
+univention-mail-dovecot (1.0.0-7) unstable; urgency=low
+
+  * fix logrotate configuration (Bug #39130)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 07 Sep 2015 10:00:07 +0200
+
 univention-mail-dovecot (1.0.0-6) unstable; urgency=low
 
   * Bug #39148: close stderr when starting Dovecot server
