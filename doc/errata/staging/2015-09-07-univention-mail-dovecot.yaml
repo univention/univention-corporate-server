@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+version: [3]
+scope: ucs_4.0-0-errata4.0-3
+src: univention-mail-dovecot
+fix: 1.0.0-8.43.201509071016
+desc: |
+  This update addresses the following issue:
+  * Fix logrotate configuration.
+bug: [39130]
