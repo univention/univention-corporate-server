@@ -42,8 +42,7 @@ trap "rm -rf '$TMPDIR'" 0               # EXIT
 trap "rm -rf '$TMPDIR'; exit 1" 2       # INT
 trap "rm -rf '$TMPDIR'; exit 1" 1 15    # HUP TERM
 
-[ ! -e "$sslbase/dh" ] && openssl dhparam -out "$sslbase/dh" 1024
-mv "$sslbase/dh" "$TMPDIR"
+[ ! -e "$sslbase/dh" ] && openssl dhparam -out "$TMPDIR/dh" 1024 && chmod 444 "$TMPDIR/dh"
 
 init
 

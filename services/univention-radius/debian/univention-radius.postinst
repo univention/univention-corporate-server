@@ -38,9 +38,6 @@ case "$1" in
 		uinst=/usr/lib/univention-install/20univention-radius.uinst
 		[ -e "$uinst" ] && rm "$uinst"
 
-		. /usr/share/univention-lib/base.sh
-		call_joinscript 80univention-radius.inst
-
 		univention-config-registry set \
 			security/packetfilter/package/univention-radius/udp/1812/all=ACCEPT \
 			security/packetfilter/package/univention-radius/udp/1812/all/en='freeradius (802.1x)' \
@@ -62,6 +59,18 @@ case "$1" in
 			freeradius/conf/ca/file?/etc/univention/ssl/ucsCA/CAcert.pem
 
 		[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+
+		# fresh installation
+		if [ -z "$2" ] ; then
+			hostname="$(univention-config-registry get hostname)"
+			cp /etc/univention/ssl/$(hostname)/private.key /etc/freeradius/ssl/private.key
+			cp /etc/univention/ssl/$(hostname)/cert.pem /etc/freeradius/ssl/cert.pem
+			openssl gendh -out /etc/freeradius/ssl/dh 1024
+			chgrp freerad /etc/freeradius/ssl/private.key
+			chgrp freerad /etc/freeradius/ssl/cert.pem
+			chmod 440 /etc/freeradius/ssl/private.key
+			chmod 444 /etc/freeradius/ssl/cert.pem /etc/freeradius/ssl/dh
+		fi
 		;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
@@ -72,5 +81,10 @@ case "$1" in
         exit 0
 		;;
 esac
+
+invoke-rc.d freeradius restart
+
+. /usr/share/univention-lib/base.sh
+call_joinscript 80univention-radius.inst
 
 exit 0
