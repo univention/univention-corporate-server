@@ -275,17 +275,23 @@ def performUpdate(options, checkForUpdates=False, silent=False):
 		else:
 			dprint(silent, 'none')
 
-		if not options.skip_apps:
-			if do_app_updates(options, checkForUpdates, silent):
-				if checkForUpdates:
-					return True
+		if do_app_updates(options, checkForUpdates, silent):
+			if checkForUpdates:
+				return True
 
 	# updates available ==> stop here in "check-mode"
 	if checkForUpdates:
 		return False
 
+	subprocess.call(('univention-check-join-status',))
+
 
 def do_app_updates(options, checkForUpdates, silent):
+	dprint(silent, 'Checking for app updates: ', newline=False)
+	if not options.app_updates:
+		dprint(silent, 'skipped')
+		return
+
 	interactive = not (options.noninteractive or checkForUpdates)
 	try:
 		from univention.appcenter.actions import get_action
@@ -294,12 +300,12 @@ def do_app_updates(options, checkForUpdates, silent):
 		if app_upgrade is None:
 			raise ImportError()
 	except ImportError:
-		# the new univention.appcenter package is not installed. nevermind
+		# the new univention.appcenter package is not installed. Never mind
 		# cannot be a dependency as the app center depends on updater...
+		dprint(silent, 'unavailable')
 		return False
 
 	# check if component updates are available
-	dprint(silent, 'Checking for app updates: ', newline=False)
 	app_upgrade = app_upgrade()
 	appcenter_log.log_to_logfile()
 	appcenter_log._reverse_umc_module_logger()
@@ -356,6 +362,7 @@ def parse_args():
 	description = sys.modules[__name__].__doc__
 	usage = "%prog [options] "
 	parser = OptionParser(usage=usage, description=description)
+	parser.set_defaults(app_updates=False)
 	parser.add_option("--updateto", dest="updateto", default=None, action="store", help="update up to specified version")
 	parser.add_option("--check", dest="check", default=False, action="store_true", help="check if updates are available")
 	parser.add_option("--setucr", dest="setucr", default=False, action="store_true", help="if set, variable update/available will be updated if --check is specified too")
@@ -366,8 +373,12 @@ def parse_args():
 	parser.add_option("--cdrom", dest="cdrom", default="/dev/cdrom", action="store", help="CDROM device for the repository update")
 	group = OptionGroup(parser, "App updates")
 	group.add_option(
-		"--skip-apps",
-		dest="skip_apps", action="store_true",
+		"--enable-app-updates",
+		dest="app_updates", action="store_true",
+		help="Skip updating installed Apps")
+	group.add_option(
+		"--disable-app-updates",
+		dest="app_updates", action="store_false",
 		help="Skip updating installed Apps")
 	group.add_option(
 		"--username",
@@ -384,7 +395,7 @@ def parse_args():
 	if args:
 		parser.error("Extra arguments: %r" % (args,))
 
-	if options.skip_apps:
+	if not options.app_updates:
 		if options.pwdfile or options.username:
 			parser.error("Apps are disabled, but LDAP credentials are passed")
 	else:
