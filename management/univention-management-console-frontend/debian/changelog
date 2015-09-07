@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.19-2) unstable; urgency=medium
+
+  * Bug #39310: cleanup
+
+ -- Florian Best <best@univention.de>  Mon, 07 Sep 2015 18:40:59 +0200
+
 univention-management-console-frontend (5.0.19-1) unstable; urgency=medium
 
   * Bug #39310: create saml/serviceprovider entry for UMC

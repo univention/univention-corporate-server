@@ -32,7 +32,7 @@
 
 metadata=$(python -c "from saml2.metadata import create_metadata_string; print create_metadata_string('/usr/share/univention-management-console/saml/sp.py', None, valid=None, cert=None, keyfile=None, mid=None, name=None, sign=False)") || exit 1
 
-eval "$(ucr shell hostname domainname ldap_base)"
+eval "$(ucr shell hostname domainname ldap/base)"
 
 udm saml/serviceprovider modify "$@" \
 	--dn "SAMLServiceProviderIdentifier=https://$hostname.$domainname/umcp/saml/metadata,cn=saml-serviceprovider,cn=univention,$ldap_base" \

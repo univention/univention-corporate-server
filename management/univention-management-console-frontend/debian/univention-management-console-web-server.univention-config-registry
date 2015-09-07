@@ -4,10 +4,6 @@ Variables: umc/http/port
 Variables: umc/http/interface
 Variables: umc/http/session/timeout
 
-Type: subfile
-Multifile: etc/simplesamlphp/metadata/saml20-sp-remote.php
-Subfile: etc/simplesamlphp/metadata/10umc-sp.php
-
 Type: file
 File: etc/ldap/sasl2/slapd.conf
 
