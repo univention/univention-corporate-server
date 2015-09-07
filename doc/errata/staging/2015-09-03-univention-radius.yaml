@@ -2,9 +2,10 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: univention-radius
-fix: 2.0.2-2.10.201509041259
+fix: 2.0.2-3.11.201509071410
 version: [3]
 desc: |
- This update addresses the following issue:
- * Key expansion for DES encryption has been fixed.
-bug: [38785]
+ This update addresses the following issues:
+ * Key expansion for DES encryption has been fixed (#38785).
+ * File system permission of DH file on UCS slaves was fixed (#38786).
+bug: [38785,38786]
