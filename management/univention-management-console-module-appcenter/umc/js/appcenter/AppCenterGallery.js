@@ -49,7 +49,7 @@ define([
 
 		style: 'height: 100%; width: 100%;',
 
-		bootstrapClasses: "col-xxs-6.col-xs-4.col-sm-3.col-md-3.col-lg-3",
+		bootstrapClasses: "",
 
 		getIconClass: function(item) {
 			if (array.indexOf(item.unlocalised_categories, 'UCS components') >= 0) {
@@ -62,9 +62,9 @@ define([
 		renderRow: function(item) {
 			var div;
 			if (item.isSeparator) {
-				div = put('div.umcGalleryCategoryHeader.col-xs-12[style=display: block]', item.name);
+				div = put('div.umcGalleryCategoryHeader.col-xs-12', item.name);
 			} else if (item.isButton) {
-				div = put('div.umcGalleryButton.col-xs-12[style=display: block]');
+				div = put('div.umcGalleryButton.col-xs-12');
 				var button = new Button({
 					name: 'more',
 					label: 'More',

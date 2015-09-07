@@ -88,7 +88,6 @@
 
 #appInnerWrapper {
 	background-color: #eaeaea;
-	margin-right: 1em;
 	width:155px;
 	height: 170px;
 	padding: 0;
@@ -107,11 +106,8 @@
 
 #appIcon {
 	height: 55%;
-	background-size: 80% 80%;
-	background-position: bottom center;
 	width: 100%;
 	z-index: 0;
-	/*position: absolute;*/
 	top: 0;
 	transition: opacity 1s;
 }
@@ -171,6 +167,11 @@
 #appContent .umcGalleryVendor {
 	font-size: 1em;
 	opacity: 0.8;
+}
+
+.umcGalleryPane .umcGalleryWrapperItem {
+	float: left;
+	padding-left: 20px;
 }
 
 .umc .dijitTitlePane.appDetailsPage .dijitTitlePaneTitle {

@@ -295,7 +295,6 @@ define([
 				'height': '120px',
 				'display': 'inline-block',
 				'margin-right': '20px',
-				'background-size': '120px',
 				'background-position': 'center center'
 			});
 			
