@@ -123,7 +123,7 @@ do_start()
     start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON --test -- -c ${CONF} > /dev/null \
         || return 1
     start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- -c ${CONF} \
-        $DAEMON_ARGS \
+        $DAEMON_ARGS 2>/dev/null \
         || return 2
 }
 
