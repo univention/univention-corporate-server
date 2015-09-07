@@ -1,4 +1,4 @@
-@%@BCWARNING=# @%@
+@%@UCRWARNING=# @%@
 #
 # Mapping of RADIUS dictionary attributes to LDAP directory attributes
 # to be used by LDAP authentication and authorization module (rlm_ldap)
