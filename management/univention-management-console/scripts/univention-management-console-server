@@ -39,6 +39,7 @@ import socket
 import signal
 import traceback
 import time
+from errno import ESRCH
 
 from optparse import OptionParser
 
@@ -130,7 +131,13 @@ class UMC_Daemon( DaemonRunner ):
 		if self.pidfile.is_locked():
 			CORE.process( 'Reloading configuration ...' )
 			pid = self.pidfile.read_pid()
-			os.kill( pid, signal.SIGUSR1 )
+			try:
+				os.kill(pid, signal.SIGUSR1)
+			except OSError as exc:
+				if exc.errno == ESRCH:
+					CORE.process('Reload failed: UMC-Server is not running')
+					return
+				raise
 		else:
 			CORE.process( 'Reload failed: server ist not running' )
 
