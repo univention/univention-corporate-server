@@ -14,7 +14,3 @@ File: etc/ldap/sasl2/slapd.conf
 Type: module
 Module: setup_saml_sp.py
 Variables: umc/saml/idp/.*
-
-Type: module
-Module: setup_saml_idp.py
-Variables: umc/saml/is_idp

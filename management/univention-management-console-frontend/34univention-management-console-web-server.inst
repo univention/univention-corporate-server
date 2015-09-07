@@ -66,12 +66,19 @@ if [ ! -e /usr/share/univention-management-console/saml/pki/sp.pem ]; then
 	chmod 0600 /usr/share/univention-management-console/saml/pki/sp.key || exit 1
 fi
 
+udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
+	--set Identifier="https://$hostname.$domainname/umcp/saml/metadata" \
+	--set AssertionConsumerService="https://$hostname.$domainname/umcp/saml/" \
+	--set serviceProviderOrganizationName="Univention Management Console $hostname.$domainname" \
+	--set isActivated=TRUE \
+	--set simplesamlAttributes=TRUE \
+	--set attributesNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" \
+	--append LDAPattributes=uid || exit 1
+
+/usr/share/univention-management-console/saml/update_metadata "$@" || exit 1
+
 ucr set "umc/saml/idp/${ldap_master}=https://${ldap_master}/simplesamlphp/saml2/idp/metadata.php"
 # TODO: the backup servers should also be set somehow
-
-if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-	ucr set umc/saml/is_idp=true
-fi
 
 /etc/init.d/univention-management-console-web-server restart
 

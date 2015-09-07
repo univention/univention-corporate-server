@@ -67,7 +67,7 @@ from saml2.extension.pefim import SPCertEnc
 from saml2.metadata import create_metadata_string
 from saml2.ecp_client import PAOS_HEADER_INFO
 from saml2.httputil import make_cookie, parse_cookie
-from saml2.response import VerificationError, UnsolicitedResponse
+from saml2.response import VerificationError, UnsolicitedResponse, StatusError
 from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, sid as generate_sid, rndstr
 from saml2.samlp import Extensions
 from saml2.sigver import MissingKey
@@ -793,7 +793,7 @@ class CPAuth(CPgeneric):
 		except HTTPError as exc:
 			if exc.status in (401, 411):
 				SAMLUser.delete_cookie()
-				raise HTTPRedirect('/umcp/saml/')
+				raise HTTPRedirect('/umcp/saml/')  # FIXME: this might cause a endless redirection loop e.g. if slapd is down
 			raise
 
 		cherrypy.response.status = 303
@@ -946,14 +946,15 @@ class SAML(object):
 		except VerificationError as exc:
 			raise HTTPError(500, "Verification error: %s" % (exc,))
 		except UnsolicitedResponse as exc:  # e.g. UMC-webserver restart between IDP→SP authentication
+			# TODO: redirect to SSO?
 			raise HTTPError(500, 'Unsolicited response: %s' % (exc,))
+		except StatusError as exc:
+			CORE.error('Status error: %s' % (exc,))
+			raise HTTPError(500, 'Status error: %s' % (exc,))
 		except MissingKey as exc:
 			raise HTTPError(500, 'Unknown issuer: %s' % (exc,))
 		if response is None:
 			raise HTTPError(400, "The SAML message is invalid for this service provider.")
-
-		response.allow_unknown_attributes = True  # TODO: remove workaround, how to specify valid attributes?
-		response.ava = response.get_identity()
 
 		CORE.info('Got IDP response: %r' % (response.ava,))
 		user = SAMLUser(response, message)

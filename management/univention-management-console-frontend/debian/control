@@ -44,6 +44,7 @@ Depends: ${misc:Depends},
  python-daemon,
  python-ipaddr,
  python-pysaml2,
+ univention-saml-schema,
 Description: UCS Management Console - Web server
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement

@@ -31,10 +31,10 @@ CONFIG = {
 				"assertion_consumer_service": [('%s/' % (url,), binding) for url in bases for binding in (BINDING_HTTP_POST, BINDING_HTTP_REDIRECT)],
 				"single_logout_service": [('%s/slo/' % (url,), binding) for url in bases for binding in (BINDING_HTTP_POST, BINDING_HTTP_REDIRECT)],
 			},
-#			"required_attributes": ["uid"], FIXME: pysaml2 exception, https://github.com/rohe/pysaml2/issues/246
+			"required_attributes": ["uid"],
 		},
 	},
-	"attribute_map_dir": "/usr/share/univention-management-console/saml/attributes/",
+	"attribute_map_dir": "/usr/lib/python2.7/dist-packages/saml2/attributemaps/",
 	"key_file": "/usr/share/univention-management-console/saml/pki/sp.key",
 	"cert_file": "/usr/share/univention-management-console/saml/pki/sp.pem",
 	"xmlsec_binary": "/usr/bin/xmlsec1",
