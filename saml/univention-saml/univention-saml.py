@@ -153,39 +153,44 @@ def write_configuration_file(dn, new, filename):
 	else:
 		fd.write("$metadata[\'%s\'] = array(\n" % entityid)
 		fd.write("	'AssertionConsumerService'	=> array('%s'),\n" % "', '".join(new.get('AssertionConsumerService')))
+		if new.get('singleLogoutService'):
+			fd.write("	'SingleLogoutService'	=> array('%s'),\n" % "', '".join(new.get('singleLogoutService')))
 
 	if new.get('NameIDFormat'):
 		fd.write("	'NameIDFormat'	=> '%s',\n" % new.get('NameIDFormat')[0])
 	if new.get('simplesamlNameIDAttribute'):
 		fd.write("	'simplesaml.nameidattribute'	=> '%s',\n" % new.get('simplesamlNameIDAttribute')[0])
+
+	simplesamlLDAPattributes = list(new.get('simplesamlLDAPattributes', [])) + ['enabledServiceProviderIdentifier']
 	if new.get('simplesamlAttributes'):
 		fd.write("	'simplesaml.attributes'	=> %s,\n" % new.get('simplesamlAttributes')[0])
-	simplesamlLDAPattributes = list(new.get('simplesamlLDAPattributes', [])) + ['enabledServiceProviderIdentifier']
+	if new.get('attributesNameFormat'):
+		fd.write("	'attributes.NameFormat'	=> '%s',\n" % new.get('attributesNameFormat')[0])
 	fd.write("	'attributes'	=> array('%s'),\n" % "', '".join(simplesamlLDAPattributes))
+
 	if new.get('serviceproviderdescription'):
 		fd.write("	'description'	=> '%s',\n" % new.get('serviceproviderdescription')[0])
 	if new.get('serviceProviderOrganizationName'):
 		fd.write("	'OrganizationName'	=> '%s',\n" % new.get('serviceProviderOrganizationName')[0])
 	if new.get('privacypolicyURL'):
 		fd.write("	'privacypolicy'	=> '%s',\n" % new.get('privacypolicyURL')[0])
-	if new.get('attributesNameFormat'):
-		fd.write("	'attributes.NameFormat'	=> '%s',\n" % new.get('attributesNameFormat')[0])
-	if new.get('singleLogoutService'):
-		fd.write("	'SingleLogoutService'	=> '%s',\n" % new.get('singleLogoutService')[0])
 
+	fd.write("	'authproc' => array(\n")
 	if not metadata:  # TODO: make it configurable
 		# make sure that only users that are enabled to use this service provider are allowed
-		fd.write("	'authproc' => array(\n")
 		fd.write("		60 => array(\n")
 		fd.write("		'class' => 'authorize:Authorize',\n")
 		fd.write("		'regex' => FALSE,\n")
 		fd.write("		'enabledServiceProviderIdentifier' =>  array('%s'),\n" % dn )
-		fd.write("	)),\n")
+	else:
+		fd.write("		100 => array('class' => 'core:AttributeMap', 'name2oid'),\n")
+	fd.write("	)),\n")
 
 	fd.write(");\n")
 	if metadata:
-		fd.write("array_merge($metadata['%s'], $further);" % (entityid,))
+		fd.write("$metadata['%s'] = array_merge($metadata['%s'], $further);" % (entityid, entityid))
 
+	fd.close()
 	if call(['/usr/bin/php', '-lf', filename]):
 		raise SystemExit('SyntaxCheck failed for %s.' % (filename,))
 	else:
