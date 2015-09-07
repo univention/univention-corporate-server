@@ -37,6 +37,8 @@ import optparse
 import sys
 import univention.pyMsChapV2 as pyMsChapV2
 import univention.uldap
+from ldap import SERVER_DOWN
+
 
 def main():
 	parser = optparse.OptionParser()
@@ -67,7 +69,12 @@ def main():
 		stationId = stationId.decode('hex')
 	options.Challenge = options.Challenge.decode('hex')
 	options.Response = options.Response.decode('hex')
-	ldapConnection = univention.uldap.getMachineConnection()
+	try:
+		# try ldap/server/name, then each of ldap/server/addition
+		ldapConnection = univention.uldap.getMachineConnection(ldap_master=False)
+	except SERVER_DOWN:
+		# then master dc
+		ldapConnection = univention.uldap.getMachineConnection()
 	PasswordHash = getNTPasswordHash(ldapConnection, options.Username, stationId)
 	if PasswordHash and pyMsChapV2.ChallengeResponse(options.Challenge, PasswordHash) == options.Response:
 		print 'NT_KEY: %s' % (pyMsChapV2.HashNtPasswordHash(PasswordHash).encode('hex').upper(), )

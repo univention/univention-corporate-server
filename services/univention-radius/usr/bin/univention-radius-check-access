@@ -37,6 +37,8 @@ from univention.networkaccess import traceStationWhitelist
 import optparse
 import sys
 import univention.uldap
+from ldap import SERVER_DOWN
+
 
 def main():
 	usage = 'Usage: %prog [options]\n\nCheck network access for a user and/or MAC address'
@@ -44,7 +46,12 @@ def main():
 	parser.add_option('--username', dest='Username')
 	parser.add_option('--station-id', dest='stationId')
 	(options, args, ) = parser.parse_args()
-	ldapConnection = univention.uldap.getMachineConnection()
+	try:
+		# try ldap/server/name, then each of ldap/server/addition
+		ldapConnection = univention.uldap.getMachineConnection(ldap_master=False)
+	except SERVER_DOWN:
+		# then master dc
+		ldapConnection = univention.uldap.getMachineConnection()
 	exitCode = 0
 	if options.Username:
 		result, message = traceNetworkAccess(ldapConnection, options.Username)
