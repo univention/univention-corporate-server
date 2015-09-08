@@ -65,14 +65,18 @@ sp_config_dir = '/etc/simplesamlphp/metadata.d'
 include_file = '/etc/simplesamlphp/metadata/metadata_include.php'
 
 
+def escape_php_string(string):
+	return string.replace('\x00', '').replace("\\", "\\\\")).replace("'", "\'")
+
+
 def php_string(string):
-	return "'%s'" % (string.replace("'", "\'"),)
+	return "'%s'" % (escape_php_string(string),)
 
 
 def php_array(list_):
 	if not list_:
 		return 'array()'
-	return "array('%s')" % "', '".join(x.replace("'", "\'") for x in list_)
+	return "array('%s')" % "', '".join(escape_php_string(x) for x in list_)
 
 
 def php_bool(bool_):
