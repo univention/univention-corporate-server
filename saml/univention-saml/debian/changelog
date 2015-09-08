@@ -1,3 +1,9 @@
+univention-saml (3.0.7-1) unstable; urgency=medium
+
+  * Bug #39310: cleanup unnecessary things (e.g. apache reload)
+
+ -- Florian Best <best@univention.de>  Tue, 08 Sep 2015 13:26:11 +0200
+
 univention-saml (3.0.6-2) unstable; urgency=medium
 
   * Bug #39310: fixup typo

@@ -34,6 +34,7 @@ __package__=''  # workaround for PEP 366
 import listener
 
 import os
+import glob
 import os.path
 import xml.etree.ElementTree
 from tempfile import NamedTemporaryFile
@@ -64,63 +65,32 @@ sp_config_dir = '/etc/simplesamlphp/metadata.d'
 include_file = '/etc/simplesamlphp/metadata/metadata_include.php'
 
 
-def remove_sp_config(old_filename):
+def handler(dn, new, old):
 	listener.setuid(0)
 	try:
-		# delete file
-		if os.path.exists(old_filename):
-			os.unlink(old_filename)
+		if old:
+			if old.get('SAMLServiceProviderIdentifier'):
+				# delete old service provider config file
+				old_filename = os.path.join(sp_config_dir, '%s.php' % old.get('SAMLServiceProviderIdentifier')[0].replace('/', '_'))
+				if os.path.exists(old_filename):
+					ud.debug(ud.LISTENER, ud.INFO, 'Deleting old SAML SP Configuration file %s' % old_filename)
+					try:
+						os.unlink(old_filename)
+					except IOError as exc:
+						ud.debug(ud.LISTENER, ud.ERROR, 'Deleting failed: %s' % (exc,))
 
-		# delete file reference from include file
-		if not os.path.isfile(include_file):
-			return
+		if new and new.get('SAMLServiceProviderIdentifier') and new.get('isServiceProviderActivated')[0] == "TRUE":
+			# write new service provider config file
+			filename = os.path.join(sp_config_dir, '%s.php' % new.get('SAMLServiceProviderIdentifier')[0].replace('/', '_'))
+			ud.debug(ud.LISTENER, ud.INFO, 'Writing to SAML SP Configuration file %s' % filename)
+			write_configuration_file(dn, new, filename)
 
-		with open(include_file, 'r') as f:
-			lines = f.readlines()
-
-		with open(include_file, 'w') as f:
-			for line in lines:
-				if not old_filename in line:
-					f.write(line)
-	except IOError as e:
-		print 'Error: Could not open %s: %s' % (include_file, str(e))
-
+		with open(include_file, 'w') as fd:
+			fd.write('<?php\n')
+			for filename in glob.glob(os.path.join(sp_config_dir, '*.php')):
+				fd.write("require_once('%s');\n" % (filename,))
 	finally:
 		listener.unsetuid()
-	
-def add_sp_config(filename):
-	try:
-		with open(include_file, 'a') as f:
-			f.write('<?php require_once("%s"); ?>\n' % filename)
-
-	except IOError as e:
-		print 'Error: Could not open %s: %s' % (filename, str(e))
-
-def handler(dn, new, old):
-	if old:
-		if old.get('SAMLServiceProviderIdentifier'):
-			# delete old service provider config file
-			old_filename = os.path.join(sp_config_dir, '%s.php' % old.get('SAMLServiceProviderIdentifier')[0].replace('/', '_'))
-			ud.debug(ud.LISTENER, ud.INFO, 'Deleting old SAML SP Configuration file %s' % old_filename)
-			remove_sp_config(old_filename)
-
-	if new and new.get('SAMLServiceProviderIdentifier') and new.get('isServiceProviderActivated')[0] == "TRUE":
-		# write new service provider config file
-		filename = os.path.join(sp_config_dir, '%s.php' % new.get('SAMLServiceProviderIdentifier')[0].replace('/', '_'))
-		ud.debug(ud.LISTENER, ud.INFO, 'Writing to SAML SP Configuration file %s' % filename)
-
-		listener.setuid(0)
-		try:
-			write_configuration_file(dn, new, filename)
-		finally:
-			listener.unsetuid()
-
-	script = '/etc/init.d/apache2'
-	if os.path.exists(script):
-		ud.debug(ud.LISTENER, ud.INFO, "%s reload" % script )
-		listener.run(script, ['apache2', 'reload'], uid=0)
-	else:
-		ud.debug(ud.LISTENER, ud.INFO, "Apache Webserver not reloaded: %s does not exist" % (script,))
 
 
 def write_configuration_file(dn, new, filename):
@@ -191,7 +161,11 @@ def write_configuration_file(dn, new, filename):
 		fd.write("$metadata['%s'] = array_merge($metadata['%s'], $further);" % (entityid, entityid))
 
 	fd.close()
-	if call(['/usr/bin/php', '-lf', filename]):
-		raise SystemExit('SyntaxCheck failed for %s.' % (filename,))
-	else:
-		add_sp_config(filename)
+	process = Popen(['/usr/bin/php', '-lf', filename], stderr=PIPE, stdout=PIPE)
+	stdout, stderr = process.communicate()
+	if process.returncode:
+		ud.debug(ud.LISTENER, ud.ERROR, 'broken PHP syntax(%d) in %s: %s%s' % (process.returncode, filename, stderr, stdout))
+		try:
+			os.unlink(filename)
+		except IOError:
+			pass
