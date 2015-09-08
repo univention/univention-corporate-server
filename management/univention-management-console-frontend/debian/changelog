@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.21-2) unstable; urgency=medium
+
+  * Bug #39319: Shorten module's description if necessary to fit in the gallery
+    box
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 08 Sep 2015 22:11:33 +0200
+
 univention-management-console-frontend (5.0.21-1) unstable; urgency=medium
 
   * Bug #39227: let the host dropdown use SAML SSO
@@ -36,6 +43,7 @@ univention-management-console-frontend (5.0.17-2) unstable; urgency=low
 
  -- Alexander Kramer <kramer@univention.de>  Thu, 03 Sep 2015 09:49:57 +0200
 
+>>>>>>> .r63530
 univention-management-console-frontend (5.0.17-1) unstable; urgency=medium
 
   * Bug #31943: Move univention-saml dependency into univention-server
