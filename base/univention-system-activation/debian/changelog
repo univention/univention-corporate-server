@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-38) unstable; urgency=low
+
+  * Bug #39153: Show e-mail field instead of error message block
+
+ -- Eduard Mai <mai@univention.de>  Tue, 08 Sep 2015 13:40:16 +0200
+
 univention-system-activation (0.0.1-37) unstable; urgency=low
 
   * Bug #39159: Adapted the text #finished page and set the time to wait
