@@ -66,7 +66,7 @@ include_file = '/etc/simplesamlphp/metadata/metadata_include.php'
 
 
 def escape_php_string(string):
-	return string.replace('\x00', '').replace("\\", "\\\\")).replace("'", "\'")
+	return string.replace('\x00', '').replace("\\", "\\\\").replace("'", "\'")
 
 
 def php_string(string):
