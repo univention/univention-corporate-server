@@ -1,3 +1,10 @@
+univention-welcome-screen (1.0.0-1) unstable; urgency=low
+
+  * Bug #39137: Made 98_start_univention_welcome_screen executable
+  * Bug #39137: version bump for ucs 4.1-0
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 08 Sep 2015 09:50:17 +0200
+
 univention-welcome-screen (0.0.0-11) unstable; urgency=medium
 
   * Bug #37537: fix race condition if X doesn't run yet
