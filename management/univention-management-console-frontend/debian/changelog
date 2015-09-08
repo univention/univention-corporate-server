@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.106-89) unstable; urgency=medium
+
+  * Bug #39319: Shorten module's description if necessary to fit in the gallery
+    box
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 08 Sep 2015 22:07:21 +0200
+
 univention-management-console-frontend (4.1.106-88) unstable; urgency=medium
 
   * The user wizard didn't complete after updating to UCS 4.0-2
