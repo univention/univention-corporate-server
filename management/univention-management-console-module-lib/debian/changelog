@@ -1,3 +1,9 @@
+univention-management-console-module-lib (5.0.0-1) unstable; urgency=medium
+
+  * Bug #39227: remove UMC SSO feature
+
+ -- Florian Best <best@univention.de>  Tue, 08 Sep 2015 12:54:26 +0200
+
 univention-management-console-module-lib (4.0.2-3) unstable; urgency=medium
 
   * Bug #37347: allow a call to lib/server/sso with host=localhost
