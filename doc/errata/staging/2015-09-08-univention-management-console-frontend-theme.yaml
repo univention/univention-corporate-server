@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: univention-management-console-frontend-theme
+fix: 0.0.89-24.98.201509082231
+version: [3]
+desc: |
+ This update addresses the following issue:
+ * UMC modules with long descriptions had their text overflow the box in the
+   Gallery. Now the text is cut at some point.
+bug: [39319]
