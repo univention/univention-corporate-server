@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.20-1) unstable; urgency=medium
+
+  * Bug #39233: implement UCR variable umc/saml/grace_time
+
+ -- Florian Best <best@univention.de>  Tue, 08 Sep 2015 09:10:57 +0200
+
 univention-management-console-frontend (5.0.19-2) unstable; urgency=medium
 
   * Bug #39310: cleanup

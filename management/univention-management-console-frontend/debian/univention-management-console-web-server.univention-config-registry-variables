@@ -44,4 +44,10 @@ Categories=management-umc
 Description[de]=Definiert den SAML 2.0 Identity Provider, der vom UMC-Web-Server für Single sign on verwendet wird.
 Description[en]=Defines the SAML 2.0 identity provider which is used for single sign on by the UMC web server.
 Type=str
-Categories=management-umc
+Categories=management-umc,saml
+
+[umc/saml/grace_time]
+Description[de]=Definiert die nach Gültigkeitsende der SAML-Assertion akzeptierte Zeitabweichung (in Sekunden) für PAM und LDAP authentifizierung.
+Description[en]=Defines the accepted time difference (in seconds) of the SAML assertion validity time for PAM and LDAP authentication.
+Type=int
+Categories=management-umc,saml
