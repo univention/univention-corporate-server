@@ -39,31 +39,16 @@ from univention.lib.i18n import Translation
 
 import subprocess
 import locale
-import json
-import hashlib
-import urllib2
-import socket
-import cookielib
-import traceback
-import univention.lib.urllib2_ssl
-import univention.config_registry
 
-_ = Translation( 'univention-management-console-module-lib' ).translate
+_ = Translation('univention-management-console-module-lib').translate
 
 CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-restart']
 CMD_ENABLE_EXEC_WITH_RESTART = '/usr/share/univention-updater/enable-apache2-umc'
 CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
 
-def convertExceptionToString(ex):
-	"""
-	Exceptions like urllib2.URLError may contain a string or another exception as arguments.
-	Try to create a user readable string of it.
-	"""
-	if hasattr(ex, 'args') and ex.args and isinstance(ex.args[0], socket.error):
-		return str(ex.args[0][1])
-	return str(ex)
 
 class MessageSanitizer(StringSanitizer):
+
 	def _sanitize(self, value, name, further_args):
 		value = super(MessageSanitizer, self)._sanitize(value, name, further_args)
 		if isinstance(value, unicode):
@@ -75,6 +60,7 @@ class MessageSanitizer(StringSanitizer):
 				except UnicodeEncodeError:
 					pass
 		return value
+
 
 class Server(object):
 
@@ -133,78 +119,3 @@ class Server(object):
 		except (OSError, Exception):
 			pass
 		return subprocess.call(('/sbin/shutdown', action, 'now', message))
-
-	def sso_getsession( self, request ):
-		""" Create new UMC session on remote host and return session information
-		    umc-command -s master.example.com -U Administrator -P univention lib/singlesignon/getsession -o host=slave.example.com
-		"""
-		result = False
-
-		MODULE.process('Creating new session on remote host %s for user %s' % (request.options.get('host'), self._username))
-
-		host = request.options.get('host','')
-		if not host.lower().strip():
-			MODULE.error('sso_getsession: no hostname given')
-			self.finished( request.id, result, success=False, message=_('option "host" has not been specified'), status=400)
-			return
-
-		# this is a very simple and stupid check:
-		# remove all valid characters and check if string is empty ==> valid hostname/FQDN
-		if host.lower().strip('abcdefghijklmnopqrstuvwxyz0123456789-._'):
-			MODULE.error('sso_getsession: given hostname seem to contain invalid characters')
-			self.finished( request.id, result, success=False, message=_('given hostname seems to contain invalid characters'), status=400)
-			return
-
-		if not self._username or not self._password:
-			MODULE.error('sso_getsession: cannot read credentials')
-			self.finished( request.id, result, success=False, message=_('no credentials available'), status=400)
-			return
-
-		url = 'https://%s/umcp/auth' % host
-		body = json.dumps({'options': {'username': self._username, 'password': self._password}})
-
-		ucr = univention.config_registry.ConfigRegistry()
-		ucr.load()
-
-		MODULE.process('Preparing request...')
-
-		# create urllib2 opener object
-		opener = urllib2.build_opener(
-			univention.lib.urllib2_ssl.VerifiedHTTPSHandler(
-				key_file='/etc/univention/ssl/%s/private.key' % ucr.get('hostname'),
-				cert_file='/etc/univention/ssl/%s/cert.pem' % ucr.get('hostname'),
-				ca_certs_file='/etc/univention/ssl/ucsCA/CAcert.pem',
-				check_hostname=(host != 'localhost'),
-				))
-
-		cookie_jar = cookielib.CookieJar()
-		opener.add_handler(urllib2.HTTPCookieProcessor(cookie_jar))
-		MODULE.process('Sending request...')
-		try:
-			response = opener.open(urllib2.Request(url, body, {'Content-Type': 'application/json', 'User-Agent': 'UMC 2'}))
-			MODULE.process('Got response ...')
-		except (urllib2.HTTPError, urllib2.URLError), ex:
-			MODULE.error('sso_getsession: unable to connect to %r: %r' % (host, ex))
-			self.finished( request.id, result, success=False, message=_('unable to connect to %r: %s') % (host, convertExceptionToString(ex),), status=500)
-			return
-		except univention.lib.urllib2_ssl.CertificateError, ex:
-			MODULE.error('sso_getsession: certificate error when connecting to %r: %s' % (host, ex))
-			self.finished( request.id, result, success=False, message=_('certificate error when connecting to %r: %s') % (host, ex), status=500)
-			return
-		except Exception, ex:
-			MODULE.error('sso_getsession: unknown exception while connecting to %r: %s\n%s' % (host, ex, traceback.format_exc()))
-			self.finished( request.id, result, success=False, message=_('unable to connect to %r: %s') % (host, ex), status=500)
-			return
-
-		login_token = None
-		for cookie in cookie_jar:
-			MODULE.info('sso_getsession: found cookie in response: name=%r  value=%r' % (cookie.name, cookie.value))
-			if cookie.name == 'UMCSessionId':
-				login_token = hashlib.sha256(cookie.value).hexdigest()
-
-		if not login_token:
-			self.finished( request.id, result, success=False, message=_('failed to get login token for host %r') % (host,), status=500)
-			return
-
-		self.finished( request.id, { 'loginToken': login_token })
-

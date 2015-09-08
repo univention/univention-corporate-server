@@ -42,11 +42,9 @@ import traceback
 import functools
 import uuid
 import datetime
-import hashlib
-import urllib
 import json
 import socket
-from urlparse import urlparse, urlunparse
+from urlparse import urlparse
 from httplib import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
 
 import notifier
@@ -251,45 +249,11 @@ class SessionClient(object):
 			self._lock.release()
 
 
-class LoginToken(object):
-
-	def __init__(self, sessionid, username, timeout=None):
-		self.sessionid = sessionid
-		self.username = username
-		if timeout is not None:
-			self.timeout = timeout
-		else:
-			self.timeout = time.time() + int(ucr.get('umc/web/sso/timeout', 15))
-
-	def repr(self):
-		return '<LoginToken(username=%s, sessionid=%s, timeout=%d)>' % (self.username, self.sessionid, self.timeout)
-
-	def is_valid(self):
-		return self.timeout > time.time()
-
-
-class LoginTokenDict(dict):
-
-	def add_session(self, sessionid, username, timeout=None):
-		""" adds a new session to dictionary """
-		login_token = hashlib.sha256(sessionid).hexdigest()
-		self[login_token] = LoginToken(sessionid, username, timeout)
-
-	def remove_session(self, sessionid):
-		""" remove specific session and all timed out sessions from dictionary """
-		now = time.time()
-		remove_list = [key for (key, value) in self.items() if value.sessionid == sessionid or value.timeout < now]
-		for key in remove_list:
-			del self[key]
-
-
 class UMCP_Dispatcher(object):
 
 	"""Dispatcher used to exchange the requests between CherryPy and UMC"""
 	# sessionid ==> SessionClient
 	sessions = {}
-	# loginToken ==> LoginToken(sessionid, username, timeout)
-	logintokens = LoginTokenDict()
 	_queue_send = Queue.Queue()
 
 	@classmethod
@@ -378,8 +342,6 @@ class UMCP_Dispatcher(object):
 			CORE.info('Cleaning up session %s' % sessionid)
 		except KeyError:
 			CORE.info('Session %s not found' % sessionid)
-		# remove onetime session keys
-		cls.logintokens.remove_session(sessionid)
 
 
 class UploadManager(dict):
@@ -590,48 +552,6 @@ class CPgeneric(object):
 		self._log('error', 'response message: %s' % response.message)
 		self._log('error', 'response result: %s' % response.result)
 		raise UMC_HTTPError(response.status, response.message, response.result)
-
-
-class CPSingleSignOn(CPgeneric):
-
-	@cherrypy.expose
-	@log_exceptions
-	def default(self, *path, **kwargs):
-		self._log('info', 'got SSO request %r %r' % (path, kwargs))
-		login_token = UMCP_Dispatcher.logintokens.get(kwargs.get('loginToken'))
-		if login_token and not login_token.is_valid():
-			login_token = None
-
-		self._log('info', 'found login_token=%r' % (login_token,))
-		if login_token:
-			# update IP address of sesssion ==> address changes during single sign on
-			UMCP_Dispatcher.sessions[login_token.sessionid].ip = get_ip_address()
-
-			self.set_cookies(sessionid=login_token.sessionid, username=login_token.username)
-
-			# invalidate login token after first use
-			UMCP_Dispatcher.logintokens.remove_session(login_token.sessionid)
-		else:
-			self._log('error', 'Unknown SSO token: %r' % kwargs)
-
-		# Redirect in any case to UMC start page
-		targeturl = '/univention-management-console/'
-
-		# copy query string
-		query_args = {}
-		query_args.update(kwargs)
-		# remove some arguments from query string
-		for remove_arg in ('loginToken', 'username', 'password'):
-			if remove_arg in query_args:
-				query_args.pop(remove_arg)
-		if query_args:
-			targeturl += '?%s' % urllib.urlencode(query_args)
-
-		scheme = 'https' if cherrypy.request.headers.get('X-UMC-HTTPS') == 'on' else 'http'
-		targeturl = '%s://%s%s' % (scheme, cherrypy.request.base.split('://')[1], targeturl)
-
-		self._log('info', 'redirecting to %s' % targeturl)
-		raise HTTPRedirect(targeturl)
 
 
 class CPGet(CPgeneric):
@@ -848,9 +768,6 @@ class CPAuth(CPgeneric):
 		if response.status == umcp.SUCCESS and response.body.get('sessionid'):
 			sessionid = response.body.pop('sessionid')
 			CORE.info('CPRoot/auth: creating session with sessionid=%s' % (sessionid,))
-
-			# add new one time session
-			UMCP_Dispatcher.logintokens.add_session(sessionid, req.body.get('username', ''))
 
 			self.set_cookies(sessionid=sessionid)
 
@@ -1275,7 +1192,6 @@ def run_cherrypy():
 	root.get = CPGet()
 	root.set = CPSet()
 	root.upload = CPUpload()
-	root.sso = CPSingleSignOn()
 	root.saml = SAML()
 	root.get.ipaddress = IPAddresses()
 

@@ -9,6 +9,5 @@
 		<command name="lib/server/ping" function="ping"></command>
 		<command name="lib/server/reboot" function="reboot"></command>
 		<command name="lib/server/shutdown" function="shutdown"></command>
-		<command name="lib/sso/getsession" function="sso_getsession"></command>
 	</module>
 </umc>

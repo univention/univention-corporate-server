@@ -40,9 +40,7 @@ joinscript_init
 
 umc_init
 umc_operation_create "lib-all" "Server commands" "" "lib/*"
-umc_operation_create "lib-sso" "Single sign on commands" "" "lib/sso/*"
 umc_policy_append "default-umc-all" "lib-all"
-umc_policy_append "default-umc-users" "lib-sso"
 
 joinscript_save_current_version
 
