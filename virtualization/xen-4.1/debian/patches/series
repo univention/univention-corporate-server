@@ -70,3 +70,4 @@ CVE-2015-2044.patch
 CVE-2015-2045.patch
 CVE-2015-2151.patch
 CVE-2015-3456.patch
+35104-tools-xenstore-Correct-use-of-va_end-after-va_copy.patch
