@@ -1501,7 +1501,7 @@ define([
 			});
 
 			var port = window.location.port ? ':' + window.location.port : '';
-			jumpToUrl(window.location.protocol + '//' host + port + '/umcp/saml/');
+			jumpToUrl(window.location.protocol + '//' + host + port + '/umcp/saml/');
 		},
 
 		defer: function(func, waitingTime) {
