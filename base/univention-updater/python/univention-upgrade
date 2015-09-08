@@ -336,8 +336,6 @@ def do_app_updates(options, checkForUpdates, silent):
 		})
 
 	dprint(silent, 'Starting univention-app update at %s...' % time.ctime(), debug=True)
-	if not (options.pwdfile and options.username):
-		dprint(silent, 'LDAP credential may be required for installing apps')
 	dprint(silent, '\nStarting app update', newline=False)
 	success = True
 	for app in new_apps:
@@ -395,10 +393,7 @@ def parse_args():
 	if args:
 		parser.error("Extra arguments: %r" % (args,))
 
-	if not options.app_updates:
-		if options.pwdfile or options.username:
-			parser.error("Apps are disabled, but LDAP credentials are passed")
-	else:
+	if options.app_updates:
 		if options.pwdfile:
 			if not os.path.exists(options.pwdfile):
 				parser.error("File missing: '%s'" % (options.pwdfile,))
