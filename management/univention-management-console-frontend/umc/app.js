@@ -1151,8 +1151,6 @@ define([
 				'umc/web/favorites/default',
 				'umc/web/startupdialog',
 				'umc/web/host_referrallimit',
-				'umc/web/sso/enabled',
-				'umc/web/sso/allow/http',
 				'umc/web/sso/newwindow',
 				'umc/web/overview/tabs/animation_length',
 				'umc/http/session/timeout',
@@ -1173,8 +1171,6 @@ define([
 				lang.mixin(_ucr, res);
 				this._loadPiwik();
 				this._saveVersionStatus();
-				tools.status('umcWebSsoEnabled', _ucr['umc/web/sso/enabled']);
-				tools.status('umcWebSsoAllowHttp', _ucr['umc/web/sso/allow/http']);
 				tools.status('umcWebSsoNewwindow', _ucr['umc/web/sso/newwindow']);
 			}));
 		},

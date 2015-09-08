@@ -41,10 +41,7 @@ eval "$(ucr shell)"
 univention-config-registry set "umc/web/feedback/mail?feedback@univention.de" \
 	"umc/web/feedback/description?[UMC-Feedback] Traceback" \
 	"umc/web/favorites/default?udm:users/user,udm:groups/group,udm:computers/computer,appcenter:appcenter,updater" \
-	"umc/web/sso/enabled=yes" \
-	"umc/web/sso/allow/http=yes" \
-	"umc/web/sso/newwindow=yes" \
-	"umc/web/sso/timeout=15" 
+	"umc/web/sso/newwindow=true"
 
 if [ "$umc_web_favorites_default" = 'udm:users/user,udm:groups/group,udm:computers/computer,appcenter,updater' ]; then
 	# fix for default favorites ... appcenter module needs now 

@@ -1500,39 +1500,8 @@ define([
 				}
 			});
 
-			var simpleRedirect = function(host) {
-				var port = window.location.port ? ':' + window.location.port : '';
-				jumpToUrl(window.location.protocol + '//' + host + port + window.location.pathname + window.location.search);
-			};
-
-			if (this.isTrue(this.status('umcWebSsoEnabled'))) {
-				if (this.isFalse(this.status('umcWebSsoAllowHttp')) && window.location.protocol == 'http:') {
-					// TODO show warning if HTTP is used and SSO is enabled
-					console.log('SSO is enabled but HTTP is not - using simple redirect');
-					simpleRedirect(host);
-				} else {
-					this.umcpCommand('lib/sso/getsession', { host: host }).then(
-						function(response) {
-							var loginToken = response.result.loginToken;
-							var port = window.location.port ? ':' + window.location.port : '';
-							var querystr = window.location.search ? window.location.search + '&' : '?' ;
-							jumpToUrl(window.location.protocol + '//' + host + port + '/umcp/sso' + querystr + 'loginToken=' + loginToken );
-						},
-						function(error) {
-							var errormessage = _('Unknown error while performing automatic login at host ') + host;
-							if (error.response.data.message) {
-								errormessage = error.response.data.message;
-							}
-							console.log('SSO failed: ' + error.response.data.status + ' ' + error.response.data.message);
-							dialog.alert(errormessage, _('Automatic logon failed'));
-							simpleRedirect(host);
-						});
-				}
-			} else {
-				console.log('SSO has been disabled via UCR');
-				simpleRedirect(host);
-			}
-
+			var port = window.location.port ? ':' + window.location.port : '';
+			jumpToUrl(window.location.protocol + '//' host + port + '/umcp/saml/');
 		},
 
 		defer: function(func, waitingTime) {
