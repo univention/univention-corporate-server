@@ -1,3 +1,9 @@
+ucs-test (6.0.4-13) unstable; urgency=low
+
+  * Bug #38804: cope with inconsistent auth behaviour (caused by Bug #39317)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 08 Sep 2015 11:21:41 +0200
+
 ucs-test (6.0.4-12) unstable; urgency=medium
 
   * Bug #39054: fix 40_mail/36_sender_restrictions_for_mailing_lists
