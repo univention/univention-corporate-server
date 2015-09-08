@@ -65,6 +65,28 @@ sp_config_dir = '/etc/simplesamlphp/metadata.d'
 include_file = '/etc/simplesamlphp/metadata/metadata_include.php'
 
 
+def php_string(string):
+	return "'%s'" % (string.replace("'", "\'"),)
+
+
+def php_array(list_):
+	if not list_:
+		return 'array()'
+	return "array('%s')" % "', '".join(x.replace("'", "\'") for x in list_)
+
+
+def php_bool(bool_):
+	mapped = {
+		'true': True,
+		'1': True,
+		'false': False,
+		'0': False,
+	}.get(bool_.lower())
+	if mapped is None:
+		raise TypeError('Not a PHP bool: %s' % (bool_,))
+	return 'true' if mapped else 'false'
+
+
 def handler(dn, new, old):
 	listener.setuid(0)
 	try:
@@ -88,7 +110,7 @@ def handler(dn, new, old):
 		with open(include_file, 'w') as fd:
 			fd.write('<?php\n')
 			for filename in glob.glob(os.path.join(sp_config_dir, '*.php')):
-				fd.write("require_once('%s');\n" % (filename,))
+				fd.write("require_once(%s);\n" % (php_string(filename),))
 	finally:
 		listener.unsetuid()
 
@@ -121,29 +143,29 @@ def write_configuration_file(dn, new, filename):
 				ud.debug(ud.LISTENER, ud.ERROR, 'Failed to create %s: %s' % (filename, stderr,))
 		fd.write("$further = array(\n")
 	else:
-		fd.write("$metadata[\'%s\'] = array(\n" % entityid)
-		fd.write("	'AssertionConsumerService'	=> array('%s'),\n" % "', '".join(new.get('AssertionConsumerService')))
+		fd.write('$metadata[%s] = array(\n' % php_string(entityid))
+		fd.write("	'AssertionConsumerService'	=> %s,\n" % php_array(new.get('AssertionConsumerService')))
 		if new.get('singleLogoutService'):
-			fd.write("	'SingleLogoutService'	=> array('%s'),\n" % "', '".join(new.get('singleLogoutService')))
+			fd.write("	'SingleLogoutService'	=> %s,\n" % php_array(new.get('singleLogoutService')))
 
 	if new.get('NameIDFormat'):
-		fd.write("	'NameIDFormat'	=> '%s',\n" % new.get('NameIDFormat')[0])
+		fd.write("	'NameIDFormat'	=> %s,\n" % php_string(new.get('NameIDFormat')[0]))
 	if new.get('simplesamlNameIDAttribute'):
-		fd.write("	'simplesaml.nameidattribute'	=> '%s',\n" % new.get('simplesamlNameIDAttribute')[0])
+		fd.write("	'simplesaml.nameidattribute'	=> %s,\n" % php_string(new.get('simplesamlNameIDAttribute')[0]))
 
 	simplesamlLDAPattributes = list(new.get('simplesamlLDAPattributes', [])) + ['enabledServiceProviderIdentifier']
 	if new.get('simplesamlAttributes'):
-		fd.write("	'simplesaml.attributes'	=> %s,\n" % new.get('simplesamlAttributes')[0])
+		fd.write("	'simplesaml.attributes'	=> %s,\n" % php_bool(new.get('simplesamlAttributes')[0]))
 	if new.get('attributesNameFormat'):
-		fd.write("	'attributes.NameFormat'	=> '%s',\n" % new.get('attributesNameFormat')[0])
-	fd.write("	'attributes'	=> array('%s'),\n" % "', '".join(simplesamlLDAPattributes))
+		fd.write("	'attributes.NameFormat'	=> %s,\n" % php_string(new.get('attributesNameFormat')[0]))
+	fd.write("	'attributes'	=> %s,\n" % php_array(simplesamlLDAPattributes))
 
 	if new.get('serviceproviderdescription'):
-		fd.write("	'description'	=> '%s',\n" % new.get('serviceproviderdescription')[0])
+		fd.write("	'description'	=> %s,\n" % php_string(new.get('serviceproviderdescription')[0]))
 	if new.get('serviceProviderOrganizationName'):
-		fd.write("	'OrganizationName'	=> '%s',\n" % new.get('serviceProviderOrganizationName')[0])
+		fd.write("	'OrganizationName'	=> %s,\n" % php_string(new.get('serviceProviderOrganizationName')[0]))
 	if new.get('privacypolicyURL'):
-		fd.write("	'privacypolicy'	=> '%s',\n" % new.get('privacypolicyURL')[0])
+		fd.write("	'privacypolicy'	=> %s,\n" % php_string(new.get('privacypolicyURL')[0]))
 
 	fd.write("	'authproc' => array(\n")
 	if not metadata:  # TODO: make it configurable
@@ -151,14 +173,15 @@ def write_configuration_file(dn, new, filename):
 		fd.write("		60 => array(\n")
 		fd.write("		'class' => 'authorize:Authorize',\n")
 		fd.write("		'regex' => FALSE,\n")
-		fd.write("		'enabledServiceProviderIdentifier' =>  array('%s'),\n" % dn )
+		fd.write("		'enabledServiceProviderIdentifier' => %s,\n" % php_array([dn]))
+		fd.write("		)\n")
 	else:
 		fd.write("		100 => array('class' => 'core:AttributeMap', 'name2oid'),\n")
 	fd.write("	),\n")
 
 	fd.write(");\n")
 	if metadata:
-		fd.write("$metadata['%s'] = array_merge($metadata['%s'], $further);" % (entityid, entityid))
+		fd.write("$metadata[%s] = array_merge($metadata[%s], $further);" % (php_string(entityid), php_string(entityid)))
 
 	fd.close()
 	process = Popen(['/usr/bin/php', '-lf', filename], stderr=PIPE, stdout=PIPE)
