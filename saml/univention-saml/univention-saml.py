@@ -184,7 +184,7 @@ def write_configuration_file(dn, new, filename):
 		fd.write("		'enabledServiceProviderIdentifier' =>  array('%s'),\n" % dn )
 	else:
 		fd.write("		100 => array('class' => 'core:AttributeMap', 'name2oid'),\n")
-	fd.write("	)),\n")
+	fd.write("	),\n")
 
 	fd.write(");\n")
 	if metadata:
