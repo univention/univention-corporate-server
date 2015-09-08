@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.106-91) unstable; urgency=medium
+
+  * Bug #39319: Shorten module's description if necessary to fit in the gallery
+    box
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 08 Sep 2015 22:20:57 +0200
+
 univention-management-console-frontend (4.1.106-90) unstable; urgency=low
 
   * Bug #37799: Adapted fix - setIgnoreIdsAttr and null condition

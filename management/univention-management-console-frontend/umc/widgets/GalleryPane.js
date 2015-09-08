@@ -62,7 +62,7 @@ define([
 		query: {},
 
 		queryOptions: {},
-		
+
 		useTouchScroll: false,
 
 		_defaultActionHandle: null,
@@ -331,37 +331,56 @@ define([
 			this.own(on(win.doc, 'resize', lang.hitch(this, '_handleResize')));
 		},
 
-		_getItemNameHeight: function(node) {
-			var nameNode = query('.umcGalleryName', node)[0];
-			return domGeometry.position(nameNode).h;
+		_getItemHeight: function(node, cssClass) {
+                        var queriedNode = query(cssClass, node)[0];
+                        return domGeometry.position(queriedNode).h;
 		},
 
-		_getDefaultItemNameHeight: function() {
-			// render empty gallery item
-			var node = this.renderRow({
-				name: '*',
-				description: '*'
-			});
-			domClass.add(node, 'dijitOffScreen');
-			domConstruct.place(node, this.contentNode);
-			var height = this._getItemNameHeight(node);
-			domConstruct.destroy(node);
-			return height;
-		},
+                _getDefaultItemHeight: function(cssClass) {
+                        // render empty gallery item
+                        var node = this.renderRow({
+                                name: '*',
+                                description: '*'
+                        });
+                        domClass.add(node, 'dijitOffScreen');
+                        domConstruct.place(node, this.contentNode);
+			var height = this._getItemHeight(node, cssClass);
+                        domConstruct.destroy(node);
+                        return height;
+                },
 
-		_resizeItemNames: function() {
-			var defaultHeight = this._getDefaultItemNameHeight();
-			query('.umcGalleryName', this.contentNode).forEach(lang.hitch(this, function(inode) {
-				domStyle.set(inode, 'fontSize', '');
-				var iheight = domGeometry.position(inode).h;
-				var fontSize = 1.5;
-				while (iheight > defaultHeight + 0.5 && fontSize > 0.5) {
-					domStyle.set(inode, 'fontSize', fontSize + 'em');
-					iheight = domGeometry.position(inode).h;
-					fontSize *= 0.9;
+                _getDefaultItemNameHeight: function() {
+                        return this._getDefaultItemHeight('.umcGalleryName');
+                },
+
+                _getDefaultItemDescriptionHeight: function() {
+                        return this._getDefaultItemHeight('.umcGalleryDescription');
+                },
+
+                _resizeItemNames: function() {
+                        var defaultHeight = this._getDefaultItemNameHeight();
+                        query('.umcGalleryName', this.contentNode).forEach(lang.hitch(this, function(inode) {
+                                domStyle.set(inode, 'fontSize', '');
+                                var iheight = domGeometry.position(inode).h;
+                                var fontSize = 1.5;
+                                while (iheight > defaultHeight + 0.5 && fontSize > 0.5) {
+                                        domStyle.set(inode, 'fontSize', fontSize + 'em');
+                                        iheight = domGeometry.position(inode).h;
+                                        fontSize *= 0.9;
+                                }
+                        }));
+                        defaultHeight = this._getDefaultItemDescriptionHeight();
+                        query('.umcGalleryDescription', this.contentNode).forEach(lang.hitch(this, function(inode) {
+				var originalText = inode._originalTextContent;
+				if (originalText === undefined) {
+					originalText = inode._originalTextContent = inode.textContent;
 				}
-			}));
-		},
+				inode.textContent = originalText;
+                                while (domGeometry.position(inode).h > defaultHeight + 3.5) {
+                                        inode.textContent = inode.textContent.slice(0, inode.textContent.length - 10 + '...');
+                                }
+                        }));
+                },
 
 		_handleResize: function() {
 			if (this._resizeDeferred && !this._resizeDeferred.isFulfilled()) {
