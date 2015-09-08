@@ -195,7 +195,7 @@ define([
 				inlineLabel: _('E-mail address'),
 				regExp: '.+@.+',
 				invalidMessage: _('No valid email address.'),
-                required: true
+				required: true
 			});
 			this._email.on("keyup", lang.hitch(this, function(evt){
 				if(evt.keyCode === keys.ENTER){
@@ -221,9 +221,9 @@ define([
 		},
 
 		_sendEmail: function(){
-            if (!this._email.isValid()){
-                return;
-            }
+			if (!this._email.isValid()){
+				return;
+			}
 			email_address = this._email.get('value');
 			emailAddressNode = dom.byId('email-address');
 			emailAddressNode.innerHTML = email_address;
@@ -443,4 +443,3 @@ define([
 		}
 	};
 });
-
