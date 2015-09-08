@@ -1,0 +1,29 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-7
+src: qt4-x11
+fix: 4:4.6.3-4.48.201509081017
+version: [6,7]
+desc: |
+ Multiple security vulnerabilitues have been fixed in qt4-x11:
+ * Buffer overflow in Harfbuzz extension (CVE-2011-3193).
+ * Buffer overflow in processing greyscale images (CVE-2011-3194).
+ * Access to shared memory segments was insufficiently restricted, allowing
+   local users to manipulate memory (CVE-2013-0254).
+ * Denial of service vulnerability in BMP images handler (CVE-2015-0295).
+ * Segmentation fault and potential remote code execution in Qt BPM handler
+   (CVE-2015-1858).
+ * Segmentation fault and potential remote code execution in Qt ICO handler
+   (CVE-2015-1859).
+ * Segmentation fault and potential remote code execution in Qt GIF handler
+   (CVE-2015-1860).
+bug:
+ - 33269
+cve:
+ - CVE-2011-3193
+ - CVE-2011-3194
+ - CVE-2013-0254
+ - CVE-2015-0295
+ - CVE-2015-1858
+ - CVE-2015-1859
+ - CVE-2015-1860
