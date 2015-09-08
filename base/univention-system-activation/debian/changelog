@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-39) unstable; urgency=low
+
+  * Bug #39153: Fixed indentation
+
+ -- Eduard Mai <mai@univention.de>  Tue, 08 Sep 2015 16:19:49 +0200
+
 univention-system-activation (0.0.1-38) unstable; urgency=low
 
   * Bug #39153: Show e-mail field instead of error message block
