@@ -2,9 +2,10 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: univention-mail-dovecot
-fix: 1.0.0-6.41.201509021824
+fix: 1.0.0-8.43.201509071016
 version: [3]
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * The Dovecot server did not close its standard error file descriptor.
-bug: [39148]
+ * [WIP]: The rotation of the log files was fixed.
+bug: [39148,39130]
