@@ -1,3 +1,9 @@
+univention-management-console-module-top (4.1.0-7) unstable; urgency=medium
+
+  * Bug #39302: support psutil 0.9 and >= 2.0
+
+ -- Florian Best <best@univention.de>  Wed, 09 Sep 2015 10:34:53 +0200
+
 univention-management-console-module-top (4.1.0-6) unstable; urgency=medium
 
   * Bug #39302: fix KeyError in top/query

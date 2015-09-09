@@ -45,6 +45,24 @@ from univention.management.console.modules.sanitizers import PatternSanitizer
 _ = Translation('univention-management-console-module-top').translate
 
 
+class Process(object):
+	"""A wrapper for psutil.Process which is able to handle API changes to support psutil 0.9 and >= 2.0"""
+
+	def __init__(self, process):
+		self.process = process
+
+	def __getattribute__(self, name):
+		try:
+			attr = object.__getattribute__(self, 'process').__getattribute__(name)
+			if name in ('name', 'parent', 'ppid', 'exe', 'cmdline', 'status', 'uids', 'gids', 'username', 'create_time') and callable(attr):
+				return attr()
+			return attr
+		except AttributeError:
+			if name.startswith('get_'):
+				return object.__getattribute__(self, 'process').__getattribute__(name[4:])
+			raise
+
+
 class Instance(Base):
 
 	@sanitize(pattern=PatternSanitizer(default='.*'))
@@ -53,6 +71,7 @@ class Instance(Base):
 		pattern = request.options.get('pattern')
 		processes = []
 		for process in psutil.process_iter():
+			process = Process(process)
 			listEntry = {}
 			# Temporary variables; used to calculate cpu percentage
 			listEntry['timestamp'] = []
@@ -68,9 +87,7 @@ class Instance(Base):
 			listEntry['pid'] = process.pid
 			listEntry['cpu'] = 0.0
 			listEntry['mem'] = process.get_memory_percent()
-			listEntry['command'] = ' '.join(process.cmdline or [])
-			if listEntry['command'] == '':
-				listEntry['command'] = process.name
+			listEntry['command'] = ' '.join(process.cmdline or []) or process.name
 			if category == 'all':
 				for value in listEntry.itervalues():
 					if pattern.match(str(value)):
@@ -84,7 +101,7 @@ class Instance(Base):
 		time.sleep(1)
 		for process_entry in processes:
 			try:
-				process = psutil.Process(process_entry['pid'])
+				process = Process(psutil.Process(process_entry['pid']))
 			except psutil.NoSuchProcess:
 				pass
 			else:
@@ -110,14 +127,14 @@ class Instance(Base):
 		pidList = request.options.get('pid', [])
 		for pid in pidList:
 			try:
-				process = psutil.Process(int(pid))
+				process = Process(psutil.Process(int(pid)))
 				if signal == 'SIGTERM':
 					process.terminate()
 				elif signal == 'SIGKILL':
 					process.kill()
-			except psutil.NoSuchProcess, error:
+			except psutil.NoSuchProcess as exc:
 				failed.append(pid)
-				MODULE.error(str(error))
+				MODULE.error(str(exc))
 		if not failed:
 			request.status = SUCCESS
 			success = True
