@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-92) unstable; urgency=medium
+
+  * Bug #39319: Restore accidentally removed tab stops
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 09 Sep 2015 11:43:59 +0200
+
 univention-management-console-frontend (4.1.106-91) unstable; urgency=medium
 
   * Bug #39319: Shorten module's description if necessary to fit in the gallery
