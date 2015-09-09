@@ -4,7 +4,7 @@
 # Univention AD Connector
 #  Univention LDAP Listener script for the ad connector
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #

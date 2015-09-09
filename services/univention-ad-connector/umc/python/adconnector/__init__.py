@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: AD connector
 #
-# Copyright 2011-2014 Univention GmbH
+# Copyright 2011-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -352,7 +352,8 @@ class Instance(Base, ProgressMixin):
 
 	def __is_process_running( self, command ):
 		for proc in psutil.process_iter():
-			if proc.cmdline and fnmatch.fnmatch( ' '.join( proc.cmdline ), command ):
+			cmdline =  proc.cmdline() if callable(proc.cmdline) else proc.cmdline
+			if cmdline and fnmatch.fnmatch(' '.join(cmdline), command):
 				return True
 		return False
 
