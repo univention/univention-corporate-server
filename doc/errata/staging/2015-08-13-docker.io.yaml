@@ -8,5 +8,4 @@ desc: |
  This update addresses the following issues:
  * Package upgrade will not fail anymore if server was not running.
  * The docker server automatically starts when booting.
-
 bug: [38549]
