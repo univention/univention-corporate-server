@@ -90,46 +90,66 @@ def requestGroupSid(lo, position, gid_s, generateDomainLocalSid = False):
 	return request(lo, position, 'sid', sid)
 
 
-def acquireRange(lo, position, type, attr, ranges, scope='base'):
+def acquireRange(lo, position, atype, attr, ranges, scope='base'):
 
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Start allocation for type = %s' % (type))
-	startID = lo.getAttr('cn=%s,cn=temporary,cn=univention,%s' % (type,position.getBase()),'univentionLastUsedValue')
+	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Start allocation for type = %r' % atype)
+	startID = lo.getAttr('cn=%s,cn=temporary,cn=univention,%s' % (atype, position.getBase()), 'univentionLastUsedValue')
 
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Start ID = %s' % (startID))
+	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Start ID = %r' % startID)
 
 	if not startID:
 		startID = ranges[0]['first']
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Set Start ID to first %s' % (startID))
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Set Start ID to first %r' % startID)
 	else:
-		startID = startID[0]
+		startID = int(startID[0])
 
-	for range in ranges:
-		if int(startID) < range['first']:
-			startID = range['first']
-		last = range['last']
-		while int(startID) < last+1:
-			startID = int(startID)+1
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Set Start ID %s' % (startID))
+	for _range in ranges:
+		if startID < _range['first']:
+			startID = _range['first']
+		last = _range['last'] + 1
+		other = None
+
+		while startID < last:
+			startID += 1
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Set Start ID %r' % startID)
 			try:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Lock ID %s' % (startID))
-				univention.admin.locking.lock(lo, position, type, str(startID), scope=scope)
+				if other:
+					# exception occurred while locking other, so atype was successfully locked and must be released
+					univention.admin.locking.unlock(lo, position, atype, str(startID - 1), scope=scope)
+					other = None
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Lock ID %r for %r' % (startID, atype))
+				univention.admin.locking.lock(lo, position, atype, str(startID), scope=scope)
+				if atype in ('uidNumber', 'gidNumber'):
+					# reserve the same ID for both
+					other = 'uidNumber' if atype == 'gidNumber' else 'gidNumber'
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Lock ID %r for %r' % (startID, other))
+					univention.admin.locking.lock(lo, position, other, str(startID), scope=scope)
 			except univention.admin.uexceptions.noLock:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Cant Lock ID %s' % (startID))
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Cant Lock ID %r' % startID)
 				continue
 			except univention.admin.uexceptions.objectExists:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Cant Lock existing ID %s' % (startID))
-				continue
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: searchfor %s=%s' % (attr,startID))
-
-			if lo.searchDn(base=position.getBase(), filter='(%s=%s)'%(attr,str(startID))):
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Already used ID %s' % (startID))
-				univention.admin.locking.unlock(lo, position, type, str(startID), scope=scope)
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Cant Lock existing ID %r' % startID)
 				continue
 
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Return ID %s' % (startID))
+			if atype in ('uidNumber', 'gidNumber'):
+				_filter = '(|(uidNumber=%d)(gidNumber=%d))' % (startID, startID)
+			else:
+				_filter = '(%s=%d)' % (attr, startID)
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: searchfor %r' % _filter)
+			if lo.searchDn(base=position.getBase(), filter=_filter):
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Already used ID %r' % startID)
+				univention.admin.locking.unlock(lo, position, atype, str(startID), scope=scope)
+				if other:
+					univention.admin.locking.unlock(lo, position, other, str(startID), scope=scope)
+					other = None
+				continue
+
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Return ID %r' % startID)
+			if other:
+					univention.admin.locking.unlock(lo, position, other, str(startID), scope=scope)
 			return str(startID)
 
-	raise univention.admin.uexceptions.noLock, _(': type was %s')%type
+	raise univention.admin.uexceptions.noLock, _(': type was %s') % atype
 
 
 def acquireUnique(lo, position, type, value, attr, scope='base'):
@@ -164,9 +184,9 @@ def acquireUnique(lo, position, type, value, attr, scope='base'):
 
 
 def request(lo, position, type, value=None):
-	if type in ( 'uidNumber', 'gidNumber' ):
-		return acquireRange(lo, position, type, _type2attr[type], [{'first':1000,'last':55000},{'first':65536,'last':1000000}], scope = _type2scope[type])
-	return acquireUnique(lo, position, type, value, _type2attr[type], scope = _type2scope[type])
+	if type in ('uidNumber', 'gidNumber'):
+		return acquireRange(lo, position, type, _type2attr[type], [{'first': 1000, 'last': 55000}, {'first': 65536, 'last': 1000000}], scope=_type2scope[type])
+	return acquireUnique(lo, position, type, value, _type2attr[type], scope=_type2scope[type])
 
 
 def confirm(lo, position, type, value):
