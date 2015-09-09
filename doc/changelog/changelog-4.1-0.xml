@@ -286,6 +286,7 @@
 			<title>Other modules</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Various modules are now able to handle python-psutil API changes (<u:bug>39322</u:bug>, <u:bug>39323</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
