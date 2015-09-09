@@ -34,17 +34,19 @@
 import time
 import psutil
 
-import univention.management.console as umc
-import univention.management.console.modules as umcm
+from univention.lib.i18n import Translation
+from univention.management.console.modules import Base
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import SUCCESS, MODULE_ERR
 
 from univention.management.console.modules.decorators import sanitize
 from univention.management.console.modules.sanitizers import PatternSanitizer
 
-_ = umc.Translation('univention-management-console-module-top').translate
+_ = Translation('univention-management-console-module-top').translate
 
-class Instance(umcm.Base):
+
+class Instance(Base):
+
 	@sanitize(pattern=PatternSanitizer(default='.*'))
 	def query(self, request):
 		category = request.options.get('category', 'all')
@@ -66,7 +68,7 @@ class Instance(umcm.Base):
 			listEntry['pid'] = process.pid
 			listEntry['cpu'] = 0.0
 			listEntry['mem'] = process.get_memory_percent()
-			listEntry['command'] = ' '.join(process.cmdline)
+			listEntry['command'] = ' '.join(process.cmdline or [])
 			if listEntry['command'] == '':
 				listEntry['command'] = process.name
 			if category == 'all':

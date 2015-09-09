@@ -1,3 +1,9 @@
+univention-management-console-module-top (4.1.0-6) unstable; urgency=medium
+
+  * Bug #39302: fix KeyError in top/query
+
+ -- Florian Best <best@univention.de>  Wed, 09 Sep 2015 09:41:40 +0200
+
 univention-management-console-module-top (4.1.0-5) unstable; urgency=low
 
   * Bug #25305: prevent traceback when SIGKILL/SIGTERM is send to an
