@@ -1,3 +1,9 @@
+ucs-test (5.0.170-1) unstable; urgency=low
+
+  * Bug #39269: Added test: check for ntpd
+
+ -- Bastian Reitemeier <reitemeier@univention.de>  Wed, 09 Sep 2015 10:06:55 +0200
+
 ucs-test (5.0.169-9) unstable; urgency=low
 
   * Bug #38804: cope with inconsistent auth behaviour (caused by Bug #39317)
