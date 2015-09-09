@@ -101,14 +101,15 @@ def acquireRange(lo, position, atype, attr, ranges, scope='base'):
 		startID = ranges[0]['first']
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Set Start ID to first %r' % startID)
 	else:
-		startID = startID[0]
+		startID = int(startID[0])
 
 	for _range in ranges:
-		if int(startID) < _range['first']:
+		if startID < _range['first']:
 			startID = _range['first']
-		last = _range['last']
-		while int(startID) < last + 1:
-			startID = int(startID) + 1
+		last = _range['last'] + 1
+
+		while startID < last:
+			startID += 1
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Set Start ID %r' % startID)
 			try:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Lock ID %r' % startID)
