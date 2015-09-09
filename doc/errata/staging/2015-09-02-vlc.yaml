@@ -7,7 +7,8 @@ version: [2,3]
 desc: |
  Multiple security vulnerabilities have been fixed in vlc:
  * Overflow in processing RTSP streams (CVE-2013-6933)
- * Buffer overflow in MP4 demuxer (CVE-2014-9626, CVE-2014-9627, CVE-2014-9628)
+ * Buffer overflow in MP4 demuxer (CVE-2014-9626, CVE-2014-9627,
+   CVE-2014-9628)
  * Buffer overflow in the Dirac encoder (CVE-2014-9629)
  * Buffer overflow in RTP streaming (CVE-2014-9630)
 bug:
