@@ -1,0 +1,57 @@
+#!/usr/share/ucs-test/runner python
+## desc: check wether the file names in /etc/rc2.d have been
+##  compromised by insserv
+## exposure: safe
+## bugs: [39000]
+
+#import univention.testing.utils as utils
+import apt
+import os.path
+import univention.testing.utils as utils
+from sys import exit
+
+script_dir = '/etc/rc2.d/'
+# a dictionary containing univention packet names as keys and
+# the file names of their respective file names as values
+packets = {
+	'univention-management-console-server':
+		'S20univention-management-console-server',
+	'univention-welcome-screen': 'S99univention-welcome-screen',
+	'univention-directory-policy': 'S20univention-directory-policy',
+	'univention-firewall': 'S05univention-firewall',
+	'univention-runit': 'S08univention-runit',
+	'univention-updater': 'S97univention-maintenance',
+	'univention-network-common': 'S98univention-network-common',
+	'univention-system-setup-boot': 'S93univention-system-setup-boot',
+	'univention-directory-notifier': 'S20univention-directory-notifier',
+	'univention-directory-listener': 'S50univention-directory-listener',
+	'univention-s4-connector': 'S97univention-s4-connector',
+	'univention-management-console-web-server':
+		'S20univention-management-console-web-server'
+}
+
+
+#returns False iff the packet is installed but the startscript is missing.
+def check_packet(apt_cache, packet, startscript):
+	#check wether the startscript is installed:
+	if packet in apt_cache and apt_cache[packet].is_installed:
+		#check wether the start script is correctly named
+		return os.path.isfile(script_dir + startscript)
+	#the packet is not installed, so we dont need the script:
+	else:
+		return True
+
+
+def main():
+	apt_cache = apt.Cache()
+	apt_cache.open()
+	errors = [
+		'{} is installed, but the script {} does not exist'.format(packet, script)
+		for (packet, script) in packets.iteritems()
+		if not check_packet(apt_cache, packet, script)]
+	if errors:
+		utils.fail('\n'.join(errors))
+	exit(0)
+
+if __name__ == '__main__':
+	main()

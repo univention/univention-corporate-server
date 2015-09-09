@@ -1,8 +1,14 @@
+ucs-test (5.0.17s) precise; urgency=low
+
+  * Bug #39000: Added test: Checking file names in '/etc/rc2.d' for modification
+
+ -- Bastian Reitemeier <reitemeier@univention.de>  Wed, 09 Sep 2015 13:37:18 +0200
+
 ucs-test (5.0.170-1) unstable; urgency=low
 
   * Bug #39297: Added test: check for ntpd
 
- -- Bastian Reitemeier <reitemeier@univention.de>  Wed, 09 Sep 2015 10:06:55 +0200
+ -- Bastian Reitemeier <reitemeier@univention.de>  Wed, 09 Sep 2015 13:28:40 +0200
 
 ucs-test (5.0.169-9) unstable; urgency=low
 
