@@ -1,3 +1,9 @@
+univention-system-activation (0.0.1-40) unstable; urgency=low
+
+  * Bug #39154: Added a link to skip requesting a license file
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 09 Sep 2015 07:25:26 +0200
+
 univention-system-activation (0.0.1-39) unstable; urgency=low
 
   * Bug #39153: Fixed indentation

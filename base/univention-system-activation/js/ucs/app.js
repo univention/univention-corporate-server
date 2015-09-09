@@ -214,10 +214,17 @@ define([
 				label: _('Request activation'),
 				onClick: lang.hitch(this, function() {
 					this._sendEmail();
-				})
+				}),
+				style: {
+					margin: '0.5em 0 0 0'
+				}
 			});
 			put(tabNode, '>', this._sendEmailButton.domNode);
 			this._sendEmailButton.startup();
+
+			put(tabNode, 'p', {
+				innerHTML: _('If you already have a license file you can <a href="#upload">skip this step and upload the license</a>.')
+			});
 		},
 
 		_sendEmail: function(){

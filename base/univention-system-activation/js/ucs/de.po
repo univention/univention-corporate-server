@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-08-19 11:36+0200\n"
+"POT-Creation-Date: 2015-09-09 07:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: app.js:349
+#: app.js:360
 msgid ""
 "A license file has been sent to <strong id=\"email-address\">{0}</strong>. "
 "This file is necessary to activate the system. For this, please carry out "
@@ -36,20 +36,20 @@ msgstr ""
 msgid "Activation of {appliance_name} Univention App"
 msgstr "Aktivierung von {appliance_name} Univention App"
 
-#: app.js:368
+#: app.js:379
 msgid "Activation successful!"
 msgstr "Aktivierung erfolgreich!"
 
-#: app.js:332 app.js:338
+#: app.js:343 app.js:349
 msgid "An unknown error has occurred."
 msgstr "Ein unbekannter Fehler trat auf."
 
-#: app.js:247
+#: app.js:258
 msgid "An unknown error occured. Please try it again later!"
 msgstr ""
 "Ein unbekannter Fehler trat auf. Bitte versuchen sie es später noch einmal!"
 
-#: app.js:363
+#: app.js:374
 msgid "Continue"
 msgstr "Weiter"
 
@@ -57,7 +57,7 @@ msgstr "Weiter"
 msgid "E-mail address"
 msgstr "E-Mail-Adresse"
 
-#: app.js:249
+#: app.js:260
 msgid "Error "
 msgstr "Fehler "
 
@@ -71,7 +71,15 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: app.js:352
+#: app.js:226
+msgid ""
+"If you already have a license file you can <a href=\"#upload\">skip this "
+"step and upload the license</a>."
+msgstr ""
+"Wenn Sie bereits über eine Lizenzdatei verfügen, dann können Sie diesen "
+"<a href=\"#upload\">Schritt überspringen und die Lizenz einspielen</a>."
+
+#: app.js:363
 msgid ""
 "If you did not receive an email, please check your SPAM directory or <a href="
 "\"#register\"> request the email again</a>."
@@ -79,7 +87,7 @@ msgstr ""
 "Sollten Sie keine E-Mail erhalten haben, prüfen Sie Ihr SPAM-Verzeichnis "
 "oder <a href=\"#register\">fordern Sie die Lizenzdatei noch einmal an</a>."
 
-#: app.js:291
+#: app.js:302
 msgid ""
 "If you encounter problems during the activation, please send an email to: "
 "<strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
@@ -97,7 +105,7 @@ msgstr "Language"
 msgid "License request."
 msgstr "Anforderung einer Lizenz."
 
-#: app.js:208
+#: app.js:209
 msgid ""
 "More details about the activation can be found in the <a href=\"http://docs."
 "univention.de/manual.html#central:license\" target=\"_blank\">UCS manual</a>."
@@ -122,15 +130,15 @@ msgstr ""
 "System in Gebrauch zu nehmen. Im nächsten Schritt können sie die Lizenzdatei "
 "hochladen, die an Ihre E-Mail-Adresse gesendet wurde."
 
-#: app.js:213
+#: app.js:214
 msgid "Request activation"
 msgstr "Aktivierung anfordern"
 
-#: app.js:289
+#: app.js:300
 msgid "The following error occurred:"
 msgstr "Der folgende Fehler trat auf:"
 
-#: app.js:388
+#: app.js:399
 msgid "The server is not responding. Please restart the system."
 msgstr "Der Webserver antwortet nicht. Bitte starten Sie das System neu."
 
@@ -143,11 +151,11 @@ msgstr ""
 msgid "Translate me!"
 msgstr ""
 
-#: app.js:306
+#: app.js:317
 msgid "Upload license file"
 msgstr "Lizenzdatei hochladen"
 
-#: app.js:347
+#: app.js:358
 msgid "You have received a license file by email!"
 msgstr "Sie haben eine Lizendatei per E-Mail erhalten!"
 
@@ -155,13 +163,14 @@ msgstr "Sie haben eine Lizendatei per E-Mail erhalten!"
 msgid "your email address"
 msgstr "Ihre E-Mail-Adresse"
 
-#: app.js:369
+#: app.js:380
 msgid ""
 "{appliance_name} Univention App is now activated. Click \"Continue\" to "
 "access the management interface (which may take a while)."
 msgstr ""
 "{appliance_name} Univention App ist nun aktiviert. Klicken sie auf \"Weiter"
-"\", um auf die Verwaltungsoberfläche zuzugreifen. (Das kann einige Zeit benötigen.)"
+"\", um auf die Verwaltungsoberfläche zuzugreifen. (Das kann einige Zeit "
+"benötigen.)"
 
 #~ msgid "You have got mail!"
 #~ msgstr "Sie haben eine neue E-Mail!"
