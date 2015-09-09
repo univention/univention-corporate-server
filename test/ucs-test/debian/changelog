@@ -1,6 +1,6 @@
 ucs-test (5.0.170-1) unstable; urgency=low
 
-  * Bug #39269: Added test: check for ntpd
+  * Bug #39297: Added test: check for ntpd
 
  -- Bastian Reitemeier <reitemeier@univention.de>  Wed, 09 Sep 2015 10:06:55 +0200
 
