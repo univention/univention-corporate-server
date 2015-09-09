@@ -2,9 +2,12 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: univention-system-activation
-fix: 0.0.1-39.43.201509081631
+fix: 0.0.1-40.45.201509090748
 version: [3]
 desc: |
  This update addresses the following issues:
   * E-mail validation is now done by the wizard page.
-bug: [39153]
+  * A link has been added to skip the first wizard page thus
+    the user has the opportunity to upload an existing license
+    directly.
+bug: [39153, 39154]
