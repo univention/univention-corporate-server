@@ -56,11 +56,14 @@ def shut_down_browser():
 		except psutil.NoSuchProcess:
 			print 'ERROR: cannot kill process with PID: %s' % pid
 
+		# support psutil 0.9 and 2.0
+		pname = lambda p: p.name() if callable(p.name) else p.name
+		pcmdline = lambda p: p.cmdline() if callable(p.cmdline) else p.cmdline
+
 		# Maybe the system-setup CMD tool was started
 		for p in psutil.process_iter():
-			if p.name == 'python2.7' and '/usr/share/univention-system-setup/univention-system-setup' in p.cmdline:
+			if pname(p) == 'python2.7' and '/usr/share/univention-system-setup/univention-system-setup' in pcmdline(p):
 				p.kill()
 
 if __name__ == "__main__":
 	shut_down_browser()
-
