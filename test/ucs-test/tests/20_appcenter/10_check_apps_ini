@@ -120,7 +120,7 @@ def parse_options():
                       default="https://appcenter.software-univention.de/",
                       help=("External Univention App Center Server "
                             "(defaults to %default. May also be: "
-                            "http://appcenter.test.software-univention.de/ "
+                            "http://appcenter-test.software-univention.de/ "
                             "or http://appcenter.knut.univention.de/)"),
                       metavar="APPCENTER")
 
