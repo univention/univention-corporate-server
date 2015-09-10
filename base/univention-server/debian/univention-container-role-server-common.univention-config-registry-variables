@@ -1,0 +1,5 @@
+[server/password/interval]
+Description[de]=Das Password des Maschinenkontos (gespeichert in /etc/machine.sectet) wird regelmässig erneuert. Diese Variable legt das Rotationsintervall in Tagen fest.
+Description[en]=The password of the machine account is renewed regularly. This variable configures the rotation interval in days.
+Type=int
+Categories=system-base
