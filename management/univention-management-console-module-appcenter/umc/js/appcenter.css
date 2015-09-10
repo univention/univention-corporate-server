@@ -89,7 +89,7 @@
 #appInnerWrapper {
 	background-color: #eaeaea;
 	width:155px;
-	height: 170px;
+	height: 165px;
 	padding: 0;
 }
 #appInnerWrapper div {
@@ -109,7 +109,7 @@
 	width: 100%;
 	z-index: 0;
 	top: 0;
-	transition: opacity 1s;
+	transition: opacity 0.5s;
 }
 #appInnerWrapper.hover #appIcon {
 	opacity: 0.2;

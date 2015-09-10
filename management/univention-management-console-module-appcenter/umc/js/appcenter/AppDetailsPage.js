@@ -225,7 +225,7 @@ define([
 					}),
 					callback: lang.hitch(this, function(host, app) {
 						app[0].data.open();
- 					})
+					})
 				});
 			}
 			if (this.app.canDisableInDomain()) {
@@ -238,9 +238,9 @@ define([
 					canExecute: lang.hitch(this, function(app) {
 						return app.data.canDisable();
 					}),
- 					callback: lang.hitch(this, 'disableApp')
- 				});
- 			}
+					callback: lang.hitch(this, 'disableApp')
+				});
+			}
 			if (this.app.canUninstallInDomain()) {
 				buttons.push({
 					name: 'uninstall',
@@ -254,12 +254,12 @@ define([
 					callback: lang.hitch(this, function(host, app) {
 						app[0].data.uninstall();
 					})
- 				});
- 			}
- 			if (this.app.canUpgradeInDomain()) {
- 				buttons.push({
- 					name: 'update',
- 					label: _('Upgrade'),
+				});
+			}
+			if (this.app.canUpgradeInDomain()) {
+				buttons.push({
+					name: 'update',
+					label: _('Upgrade'),
 					isContextAction: true,
 					isStandardAction: true,
 					canExecute: lang.hitch(this, function(app) {
@@ -268,8 +268,8 @@ define([
 					callback: lang.hitch(this, function(host, app) {
 						app[0].data.upgrade();
 					})
- 				});
- 			}
+				});
+			}
 			return buttons;
 		},
 
@@ -295,7 +295,7 @@ define([
 				'height': '120px',
 				'display': 'inline-block',
 				'margin-right': '20px',
-				'background-position': 'center center'
+				'background-position': 'bottom center'
 			});
 			
 			if (this._navHeaderButtonContainer) {
@@ -402,7 +402,7 @@ define([
 					label: _('Server')
 				}, {
 					name: 'appStatus',
-					label: _('App Status')
+					label: _('Status')
 				}, {
 					name: 'moreInformation',
 					label: _('More Information')
@@ -440,8 +440,7 @@ define([
 				'class': 'aaa',
 				style: {
 					'border-bottom': '1px solid #c8c8c8',
-					'padding': '1em 0',
-					//'margin-bottom': '3em'
+					'padding': '1em 0'
 				}
 			});
 			
@@ -482,7 +481,7 @@ define([
 				}
 			}, tr);
 
-			var tr = domConstruct.create('tr', {}, descriptionTable);
+			tr = domConstruct.create('tr', {}, descriptionTable);
 			domConstruct.create('td', {
 				innerHTML: this.app.longDescription, 
 				style: {
@@ -525,7 +524,7 @@ define([
 					'font-weight': 'bold',
 					'margin-bottom': '1em'
 				}
-			}, this._footer.domNode)
+			}, this._footer.domNode);
 
 			var footerLeft = new ContainerWidget({style: 'display: inline-block; width: 50%'});
 			this._footer.own(footerLeft);
@@ -1025,7 +1024,7 @@ define([
 				this.app.categories.forEach(lang.hitch(this, function(category) {
 					var categoryButton = domConstruct.create('button', {
 						textContent: _(category),
-						onclick: lang.hitch(this, function() { this.onBack(category) }),
+						onclick: lang.hitch(this, function() { this.onBack(category); }),
 						'class': 'categoryButton'
 					});
 					domConstruct.place(categoryButton, categoriesContainerNode);

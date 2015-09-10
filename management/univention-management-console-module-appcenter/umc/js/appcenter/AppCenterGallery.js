@@ -92,7 +92,7 @@ define([
 
 				var hover = put(innerWrapper, 'div#appHover');
 				if (item.is_installed) {
-					put(hover, 'span', _('Local installation'));
+					put(hover, 'span', _('installed locally'));
 				}
 				if (!!item.installations) {
 					var notLocalDomainInstallations = 0;
@@ -102,13 +102,12 @@ define([
 						}
 					});
 					if (notLocalDomainInstallations > 0) {
-						put(hover, 'span', notLocalDomainInstallations + _(' domain installations'));
+						put(hover, 'span', notLocalDomainInstallations + _('installed in domain'));
 					}
 				}
-				if (array.indexOf(item.unlocalised_categories, 'UCS components') >= 0) {
-					put(hover, 'span', _('(UCS component)'));
-				} else if (item.version) {
-					put(hover, 'span', 'Version: ' + item.version);
+
+				if (item.version) {
+					put(hover, 'span', _('Version: ') + item.version);
 				}
 
 				innerWrapper.onmouseover = function() {
@@ -117,7 +116,7 @@ define([
 				innerWrapper.onmouseout = function() {
 					domClass.toggle(innerWrapper, 'hover');
 				};
-				var div = appWrapperDiv;
+				div = appWrapperDiv;
 			}
 			return div;
 		},

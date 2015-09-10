@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.3-7) unstable; urgency=low
+
+  * Bug #38894: [WIP] AppCenterPage style adaption for the Gallery
+    AppCenterDetailsPage adapted wording
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 10 Sep 2015 11:22:34 +0200
+
 univention-management-console-module-appcenter (5.0.3-6) unstable; urgency=low
 
   * Bug #38894: [WIP] AppCenter redesign
