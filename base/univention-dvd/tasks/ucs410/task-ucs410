@@ -26,6 +26,7 @@ univention-server-backup
 univention-server-slave
 univention-server-member
 univention-basesystem
+univention-container-role-common
 
 /* Kernel Packages */
 univention-kernel-image

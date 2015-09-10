@@ -1,3 +1,9 @@
+univention-dvd (1.0.0-3) unstable; urgency=medium
+
+  * Added univention-container-role-common to the DVD (Bug #38283)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Sep 2015 10:43:09 +0200
+
 univention-dvd (1.0.0-2) unstable; urgency=low
 
   * Bug #38898: UCS-4.1-0 DVD
