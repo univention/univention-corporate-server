@@ -14,6 +14,11 @@
 			<listitem><simpara>
 				The codename for UCS 4.1 has been set to <wordasword>Vahr</wordasword> (<u:bug>39223</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The package <package>univention-container-role-common</package> has been added. It
+				is used to strip down the base installed packages in a Docker image
+				(<u:bug>38283</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
