@@ -54,7 +54,8 @@ Depends: ${misc:Depends},
  shell-univention-lib (>= 1.0.10-1),
  python-daemon,
  python-univention-lib (>= 1.0.25-1),
- crudesaml
+ pam-saml,
+ cy2-saml,
 Description: UCS Management Console - server
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement

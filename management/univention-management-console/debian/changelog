@@ -1,3 +1,9 @@
+univention-management-console (8.0.11-1) unstable; urgency=medium
+
+  * Bug #31943: adapt dependencies
+
+ -- Florian Best <best@univention.de>  Thu, 10 Sep 2015 10:17:49 +0200
+
 univention-management-console (8.0.10-1) unstable; urgency=medium
 
   * Bug #39233: implement UCR variable umc/saml/grace_time

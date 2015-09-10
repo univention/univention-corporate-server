@@ -4,10 +4,6 @@ Variables: umc/http/port
 Variables: umc/http/interface
 Variables: umc/http/session/timeout
 
-Type: file
-File: etc/ldap/sasl2/slapd.conf
-Variables: umc/saml/grace_time
-
 Type: module
 Module: setup_saml_sp.py
 Variables: umc/saml/idp/.*

@@ -18,3 +18,7 @@ Variables: umc/saml/grace_time
 Type: file
 File: etc/logrotate.d/univention-management-console
 Variables: logrotate/.*
+
+Type: file
+File: etc/ldap/sasl2/slapd.conf
+Variables: umc/saml/grace_time
