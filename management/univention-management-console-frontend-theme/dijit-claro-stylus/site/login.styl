@@ -135,20 +135,40 @@
 	padding: 0;
 }
 
-#umcLanguageSwitch {
+#umcLoginHeaderRight {
 	position: absolute;
 	top: 0;
 	right: 0;
+}
+
+#umcLanguageSwitch, #umcSingleSignOn {
+	float: left;
 	.dijitButtonNode {
 		border: 0 none;
 		box-shadow: none;
 		background: none;
 		filter: none;
-		.dijitArrowButtonInner {
-			icon-image(0, -220, "../", "", 20px, 25px);
-		}
 	}
 }
+
+#umcSingleSignOn {
+	padding-top: 2px;
+}
+#umcSingleSignOn .dijitButtonNode .dijitIcon {
+	background-position: -140px -20px;
+	float: right;
+}
+#umcSingleSignOn .dijitHover .dijitIcon {
+	opacity: 0.66;
+}
+#umcSingleSignOn .dijitActive .dijitIcon {
+	opacity: 1;
+}
+
+#umcLanguageSwitch .dijitButtonNode .dijitArrowButtonInner {
+	icon-image(0, -220, "../", "", 20px, 25px);
+}
+
 #umcLanguageSwitch .dijitHover .dijitArrowButtonInner {
 	background-position: -20px -220px;
 	opacity: 0.66;
