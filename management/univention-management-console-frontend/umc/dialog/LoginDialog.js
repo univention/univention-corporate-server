@@ -375,8 +375,8 @@ define([
 				// user has already logged in before, show message for relogin
 				msg = '<h1>' + _('Session timeout')  + '</h1><p>' + _('Your session has been closed due to inactivity. Please login again.') + '</p>';
 
-				// remove language selection after first successful login
-				query('#umcLanguageSwitch').style('display', 'none');
+				// remove language selection and SSO button after first successful login
+				query('#umcLoginHeaderRight').style('display', 'none');
 				query('#umcFakeLoginLogo').style('display', 'none');
 			}
 

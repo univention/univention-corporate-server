@@ -898,6 +898,9 @@ msgstr "http://www.univention.de"
 msgid "{number} errors occurred: "
 msgstr "{number} Fehler sind aufgetreten: "
 
+msgid "<b>Warning:</b> Make sure hostnames of this UCS domain can be resolved by your browser."
+msgstr "<b>Warnung:</b> Stellen Sie sicher, dass Rechner dieser UCS Domäne von Ihrem Browser erreichbar sind."
+
 #~ msgid "<b>Host</b> "
 #~ msgstr "<b>Host</b> "
 

@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.21-4) unstable; urgency=medium
+
+  * Bug #31943: adapt dependencies
+  * Bug #39171: styling for Single Sign On button
+
+ -- Florian Best <best@univention.de>  Thu, 10 Sep 2015 10:17:11 +0200
+
 univention-management-console-frontend (5.0.21-3) unstable; urgency=medium
 
   * Bug #39319: Restore accidentally removed tab stops

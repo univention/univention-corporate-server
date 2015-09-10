@@ -32,7 +32,6 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojox/html/styles",
 	"umc/tools",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
@@ -42,21 +41,17 @@ define([
 	"umc/i18n!",
 	"dojo/domReady!",
 	"dojo/NodeList-dom"
-], function(declare, lang, array, styles, tools, ContainerWidget, Button, Text, ComboBox, StandbyMixin, _) {
+], function(declare, lang, array, tools, ContainerWidget, Button, Text, ComboBox, StandbyMixin, _) {
 	return declare("umc.app.SingleSignOn", [ContainerWidget], {
 		_languageMenu: null,
 		_languageButton: null,
 
-		style: 'float: left; padding-top: 2px;',
-
 		buildRendering: function() {
 			this.inherited(arguments);
-			styles.insertCssRule('#umcSingleSignOn .dijitButtonNode', 'border: 0 none; box-shadow: none; background: none; filter: none;');
-			styles.insertCssRule('#umcSingleSignOn .dijitButtonNode .dijitIcon', 'background-position: -140px -20px;');
 			this.addChild(new Button({
 				label: _('Single sign on'),
 				iconClass: 'umcPlayIcon',
-				description: _('<b>Warning:</b> Make sure hostnames of this UCS domain %s can be resolved by your browser.', '%s'),
+				description: _('<b>Warning:</b> Make sure hostnames of this UCS domain can be resolved by your browser.'),
 				callback: function() {
 					window.location.pathname = '/umcp/saml/';
 				}
