@@ -118,7 +118,7 @@ upgrade_to_latest_test_errata ()
 
 upgrade_to_testing ()
 {
-	ucr set repository/online/server=testing.univention.de
+	ucr set repository/online/server=updates-test.software-univention.de
 	upgrade_to_latest "$@"
 }
 
@@ -184,7 +184,7 @@ wait_for_reboot ()
 
 switch_to_test_app_center ()
 {
-	ucr set repository/app_center/server=appcenter.test.software-univention.de
+	ucr set repository/app_center/server=appcenter-test.software-univention.de
 }
 
 install_apps ()

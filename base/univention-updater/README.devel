@@ -16,7 +16,7 @@ modules/univention/updater/tools.py#UniventionUpdater
 	Using UCR variables repository/online**
 
 modules/univention/updater/tools.py#LocalUpdater
-	Specialized version ot UniventionUpdater using local file access for the local repository.
+	Specialized version of UniventionUpdater using local file access for the local repository.
 
 modules/univention/updater/mirror.py#UniventionMiror
 	High level functions to handle the mirroring of remote repositories to the local repository, normally /var/lib/univention-repository/

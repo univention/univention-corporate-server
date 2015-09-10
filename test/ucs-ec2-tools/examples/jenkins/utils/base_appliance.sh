@@ -768,7 +768,7 @@ appliance_reset_servers ()
 {
 	ucr set repository/online/server="updates.software-univention.de"
 
-	ucr search --brief --value "^appcenter.test.software-univention.de$" | sed -ne 's|: .*||p' | while read key; do
+	ucr search --brief --value "^appcenter-test.software-univention.de$" | sed -ne 's|: .*||p' | while read key; do
 		ucr set "$key=appcenter.software-univention.de"
 	done
 }

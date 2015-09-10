@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 #REPOSITORY="updates.software-univention.de"
-REPOSITORY="testing.software-univention.de"
+REPOSITORY="updates-test.software-univention.de"
 . /usr/share/univention-lib/all.sh
 
 create_logfile /var/log/univention/repository.log "root:adm" 640
