@@ -11,7 +11,7 @@ Build-Depends: debhelper,
  liblasso-dev,
 Standards-Version: 3.7.2
 
-Package: crudesaml
+Package: pam-saml
 Architecture: any
 Depends: ${misc:Depends},
  libxml2,
@@ -19,16 +19,46 @@ Depends: ${misc:Depends},
  libxmlsec1,
  xmlsec1,
  liblasso3
-Description: crudesaml is a package featuring a PAM module and a cyrus SASL plugin 
- for validating SAML assertions. http://ftp.espci.fr/pub/crudesaml/README
+Description: This package contains a PAM module that perform a crude
+ check on a SAML authentication assertion. The assertion signature and date
+ are verified, and access is granted on behalf ot the user taked for a
+ onfigurable attribute.
+ .
+ The only protection against replay attacks is the assertion validity dates
+ checks, this authentication is therefore secure only if the SAML
+ authentication assertion remains secret. The assertion has the same role
+ as a web cookie used for authentication.
 
-Package: crudesaml-dbg
+Package: cy2-saml
+Architecture: any
+Depends: ${misc:Depends},
+ libxml2,
+ libxmlsec1-openssl,
+ libxmlsec1,
+ xmlsec1,
+ liblasso3
+Description: This package contains a SASL plugin that perform a crude check on a SAML
+ authentication assertion. The assertion signature and date are verified,
+ and access is granted on behalf ot the user taked for a onfigurable
+ attribute.
+ .
+ The only protection against replay attacks is the assertion validity dates
+ checks, this authentication is therefore secure only if the SAML
+ authentication assertion remains secret. The assertion has the same role
+ as a web cookie used for authentication.
+
+Package: pam-saml-dbg
 Architecture: any
 Section: debug
 Priority: extra
-Depends: crudesaml (= ${binary:Version}),
+Depends: pam-saml (= ${binary:Version}),
  ${misc:Depends},
-Description: crudesaml is a package featuring a PAM module and a cyrus SASL plugin 
- for validating SAML assertions. http://ftp.espci.fr/pub/crudesaml/README
- .
- This package contains the debugging symbols for crudesaml.
+Description: This package contains the debugging symbols for pam-saml.
+
+Package: cy2-saml-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends: cy2-saml (= ${binary:Version}),
+ ${misc:Depends},
+Description: This package contains the debugging symbols for cy2-saml.

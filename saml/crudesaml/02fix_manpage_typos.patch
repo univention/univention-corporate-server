@@ -1,0 +1,178 @@
+Index: ChangeLog
+===================================================================
+RCS file: /cvsroot/crudesaml/ChangeLog,v
+retrieving revision 1.5
+diff -U 4 -r1.5 ChangeLog
+--- ChangeLog	27 Nov 2013 16:21:59 -0000	1.5
++++ ChangeLog	1 Sep 2015 03:53:30 -0000
+@@ -1,4 +1,7 @@
++crusdesaml-1.6		?
++Typos in man pages (Florian Best)
++
+ crusdesaml-1.5		2012-11-13
+ mod_shib2 compatibility, debug messages (Jan Tomasek)
+ 
+ crusdesaml-1.4		2012-11-13
+Index: cy2_saml.5
+===================================================================
+RCS file: /cvsroot/crudesaml/cy2_saml.5,v
+retrieving revision 1.4
+diff -U 4 -r1.4 cy2_saml.5
+--- cy2_saml.5	3 Apr 2011 05:22:45 -0000	1.4
++++ cy2_saml.5	1 Sep 2015 03:52:32 -0000
+@@ -52,9 +52,9 @@
+ Identity provider (IdP) signature validity. This prevents an attacker 
+ from forging a SAML assertion.
+ .TP
+ Date validity, with a grace period for gracefully handling clock skews.
+-This revents replays using a very old assertion that has been disclosed.
++This prevents replays using a very old assertion that has been disclosed.
+ .TP
+ Optionnaly, the IdP-specified assertion audience can be restricted to a
+ set of Service Providers (SP). This prevents an attacker from using an
+ assertion collected on an other weak SP that does not use encrypted 
+@@ -66,11 +66,11 @@
+ .TP 
+ .B
+ saml_compressed_assertion={0|1}
+ When decoding the SAML assertion, try to uncompress it (default is not
+-to try). This is only usefull if the client is not the SASL plugin.
++to try). This is only useful if the client is not the SASL plugin.
+ .TP
+-saml_userid=<uid_attribute>
++.B saml_userid=<uid_attribute>
+ Check the value of the
+ .B uid_attribute
+ attribute in the SAML assertion against the authenticating user login.
+ Default is 
+@@ -80,9 +80,9 @@
+ saml_grace=<time>
+ When checking assertion time validity, use a 
+ .B time
+ grace delay (in seconds) to work around minor clock skews. Default it
+-.B 600 s
++.B 600\fRs.
+ .TP
+ .B 
+ saml_check_assertion_timeframe={0|1}
+ When checking assertion time validity, check 
+@@ -95,13 +95,19 @@
+ .B Assertion/AuthnStatement@SessionNotOnOrAfter 
+ (Default is to check it).
+ .TP
+ .B
+-saml_idp=<path>
++saml_idp<number>=<path>
+ Load SAML metadata for a trusted IdP from 
+-.B path .
+-This option can be used multiple times, to use several IdP. This option
+-is mandatory, otherwise no assrertion will be validated at all.
++.B path\fR.
++This option can be used multiple times with 
++.B number
++being a unique serial number starting at 0 (ie: use 
++.B saml_idp0\fR,
++.B saml_idp1\fR,
++.B saml_idp2\fR,
++etc), to use several IdP. This option
++is mandatory, otherwise no assertion will be validated at all.
+ .TP
+ .B
+ saml_cacert=<path>
+ Use the certificates from
+@@ -111,16 +117,16 @@
+ .TP
+ .B
+ saml_trusted_sp=<provider_id>
+ In order to be validated, the assertion must have its audience set to 
+-.B provider_id .
++.B provider_id\fR.
+ This is optional and can be specified multiple times. If the option is
+-not specifie, the audience is not checked.
++not specified, the audience is not checked.
+-cified multiple times.
+ .SH AUTHOR
+ Emmanuel Dreyfus <manu@netbsd.org>
+ .SH SEE ALSO
+-.BR sasl (8)
++.BR sasl (8)\fR,
++.BR pam_saml (5)
+ 
+ 
+ 
+ 
+Index: pam_saml.5
+===================================================================
+RCS file: /cvsroot/crudesaml/pam_saml.5,v
+retrieving revision 1.4
+diff -U 4 -r1.4 pam_saml.5
+--- pam_saml.5	5 Jun 2010 15:14:41 -0000	1.4
++++ pam_saml.5	1 Sep 2015 03:52:38 -0000
+@@ -52,9 +52,9 @@
+ Identity provider (IdP) signature validity. This prevents an attacker 
+ from forging a SAML assertion.
+ .TP
+ Date validity, with a grace period for gracefully handling clock skews.
+-This revents replays using a very old assertion that has been disclosed.
++This prevents replays using a very old assertion that has been disclosed.
+ .TP
+ Optionnaly, the IdP-specified assertion audience can be restricted to a
+ set of Service Providers (SP). This prevents an attacker from using an
+ assertion collected on an other weak SP that does not use encrypted 
+@@ -76,9 +76,9 @@
+ grace=<time>
+ When checking assertion time validity, use a 
+ .B time
+ grace delay (in seconds) to work around minor clock skews. Default it
+-.B 600 s
++.B 600\fRs.
+ .TP
+ .B
+ saml_check_assertion_timeframe={0|1}
+ When checking assertion time validity, check
+@@ -93,11 +93,11 @@
+ .TP
+ .B 
+ idp=<path>
+ Load SAML metadata for a trusted IdP from 
+-.B path .
++.B path\fR.
+ This option can be used multiple times, to use several IdP. This option
+-is mandatory, otherwise no assrertion will be validated at all.
++is mandatory, otherwise no assertion will be validated at all.
+ .TP
+ .B
+ cacert=<path>
+ Use the certificates from
+@@ -107,26 +107,26 @@
+ .TP
+ .B
+ trusted_sp=<provider_id>
+ In order to be validated, the assertion must have its audience set to 
+-.B provider_id .
++.B provider_id\fR.
+ This is optional and can be specified multiple times. If the option is
+-not specifie, the audience is not checked.
++not specified, the audience is not checked.
+-cified multiple times.
+ .TP
+ .B
+ only_from=<hosts>
+ This module will only perform its checks for a remote host present in the
+ comma-separated lists specified in
+-.B hosts .
++.B hosts\fR.
+ If this option is not specified, the module is enabled for any host.
+ .SH AUTHOR
+ Emmanuel Dreyfus <manu@netbsd.org>
+ .SH FILES
+ .TP
+ /etc/pam.conf
+ .SH SEE ALSO
+-.BR pam (8)
++.BR pam (8)\fR,
++.BR cy2_saml (5)
+ 
+ 
+ 
+ 

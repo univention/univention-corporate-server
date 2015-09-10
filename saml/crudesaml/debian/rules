@@ -1,13 +1,7 @@
 #!/usr/bin/make -f
 
 override_dh_strip:
-	dh_strip --dbg-package=crudesaml-dbg
-
-override_dh_auto_install:
-	dh_auto_install --destdir=debian/crudesaml
-
-override_dh_installdocs:
-	dh_installdocs --link-doc=crudesaml
+	dh_strip --dbg-package=pam-saml-dbg --dbg-package=cy2-saml-dbg  # FIXME: howto specify 2 packages?
 
 %:
 	dh $@
