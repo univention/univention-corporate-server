@@ -295,7 +295,7 @@ define([
 				'height': '120px',
 				'display': 'inline-block',
 				'margin-right': '20px',
-				'background-position': 'bottom center'
+				'background-position': 'center center'
 			});
 			
 			if (this._navHeaderButtonContainer) {
@@ -495,23 +495,26 @@ define([
 			domConstruct.place(descriptionTable, descriptionContainer.domNode);
 			this._detailsContainer.addChild(descriptionContainer);
 
+			// for an uninstalled app show details (open TitlePane) at the top of main
+			// otherwise close the Titlepane and move it under the grid
+			var isOpen = true;
 			if (this.app.isInstalled || this.app.getHosts().length) {
-				var detailsPane = new TitlePane({
-					open: false,
-					style: {
-						'background-color': '#f0f0f0',
-						'margin': '0 -1000px',
-						'padding': '0 1000px'
-					},
-					//class: 'installedAppDetailsPane',
-					title: _('Details'),
-					content: this._detailsContainer,
-					'class': 'appDetailsPage'
-				});
-				this._mainRegionContainer.addChild(detailsPane);
-			} else {
-				this._mainRegionContainer.addChild(this._detailsContainer, 0);
+				isOpen = false;
 			}
+			var detailsPane = new TitlePane({
+				open: isOpen,
+				style: {
+					'background-color': '#f0f0f0',
+					'margin': '0 -1000px',
+					'padding': '0 1000px'
+				},
+				//class: 'installedAppDetailsPane',
+				title: _('Details'),
+				content: this._detailsContainer,
+				'class': 'appDetailsPage'
+			});
+			this._mainRegionContainer.addChild(detailsPane, isOpen ? 0 : null);
+
 			//footer
 			//TODO just for testing
 			domConstruct.empty(this._footer.domNode);

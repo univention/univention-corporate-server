@@ -110,6 +110,7 @@
 	z-index: 0;
 	top: 0;
 	transition: opacity 0.5s;
+	background-position: bottom center;
 }
 #appInnerWrapper.hover #appIcon {
 	opacity: 0.2;
@@ -134,7 +135,7 @@
 
 #appHover {
 	width: 100%;
-	height: 40%;
+	height: 45%;
 	background-color: #6e6e6e;
 	color: #fff;
 	padding: 0.6em 0 0 0.6em;
@@ -200,6 +201,6 @@
 	opacity: 0.66;
 }
 
-
-
-
+.umcPageFooter {
+	margin-bottom: 9em;
+}
