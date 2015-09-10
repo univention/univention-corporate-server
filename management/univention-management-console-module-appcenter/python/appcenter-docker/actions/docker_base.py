@@ -45,6 +45,7 @@ from univention.appcenter.actions import Abort
 from univention.appcenter.actions.configure import Configure
 from univention.appcenter.actions.service import Start
 
+
 class DockerActionMixin(object):
 	def _execute_container_script(self, _app, _interface, _args=None, _credentials=True, _output=False, **kwargs):
 		self.log('Executing interface %s for %s' % (_interface, _app.id))
@@ -59,7 +60,7 @@ class DockerActionMixin(object):
 		error_file = docker.execute_with_output('mktemp').strip()
 		if _credentials:
 			password_file = docker.execute_with_output('mktemp').strip()
-			self._get_ldap_connection(_args) # to get a working username/password
+			self._get_ldap_connection(_args)  # to get a working username/password
 			username = self._get_username(_args)
 			password = self._get_password(_args)
 			with open(docker.path(password_file), 'w') as f:
@@ -99,11 +100,11 @@ class DockerActionMixin(object):
 		set_vars = (args.set_vars or {}).copy()
 		for variable in Configure.list_config(app):
 			if variable['value'] is not None and variable['id'] not in set_vars:
-				set_vars[variable['id']] = variable['value'] # default
+				set_vars[variable['id']] = variable['value']  # default
 		set_vars['ldap/hostdn'] = hostdn
 		set_vars['server/role'] = app.docker_server_role
 		set_vars['update/warning/releasenotes'] = 'no'
-		for var in ['nameserver.*', 'repository/app_center/server', 'ldap/master.*', 'locale.*', 'uuid/system', 'domainname']:
+		for var in ['nameserver.*', 'repository/app_center/server', 'ldap/master.*', 'locale.*', 'uuid/system', 'domainname', 'update/secure_apt']:
 			for key in ucr.iterkeys():
 				if re.match(var, key):
 					set_vars[key] = ucr.get(key)
@@ -121,9 +122,8 @@ class DockerActionMixin(object):
 					self.log('Copying App Center\'s %s to container\'s %s' % (attr.name[14:], local_script_name))
 					local_script_name = docker.path_not_running(local_script_name)
 					shutil.copy2(remote_script, local_script_name)
-					os.chmod(local_script_name, 0755) # -rwxr-xr-x
+					os.chmod(local_script_name, 0755)  # -rwxr-xr-x
 		if not Start.call(app=app):
 			self.fatal('Unable to start the container!')
 			raise Abort()
 		Configure.call(app=app, autostart=autostart, set_vars=set_vars)
-

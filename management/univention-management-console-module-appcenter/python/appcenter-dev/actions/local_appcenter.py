@@ -50,10 +50,12 @@ from univention.config_registry.frontend import ucr_update
 ucr = ConfigRegistry()
 ucr.load()
 
-from univention.appcenter.app import App
+from univention.appcenter.app import App, AppManager
 from univention.appcenter.actions import UniventionAppAction
 from univention.appcenter.utils import get_md5_from_file, mkdir
 from univention.appcenter.actions.update import Update
+from univention.appcenter.utils import urlopen
+
 
 class LocalAppcenterAction(UniventionAppAction):
 	def setup_parser(self, parser):
@@ -71,6 +73,7 @@ class LocalAppcenterAction(UniventionAppAction):
 		else:
 			return True
 
+
 class FileInfo(object):
 	def __init__(self, app, name, url, filename):
 		self.name = name
@@ -78,6 +81,7 @@ class FileInfo(object):
 		self.filename = filename
 		self.md5 = get_md5_from_file(filename)
 		self.archive_filename = '%s.%s' % (app.name, name)
+
 
 class AppcenterApp(object):
 	def __init__(self, name, ucs_version, meta_inf_dir, components_dir, server):
@@ -146,7 +150,7 @@ class AppcenterApp(object):
 			yield self.file_info(basename, url, readme_filename)
 
 		# Adding ucr, schema, (un)joinscript, etc
-		for ext in ['univention-config-registry-variables', 'schema', 'preinst', 'inst', 'init', 'prerm', 'uinst']:
+		for ext in ['univention-config-registry-variables', 'schema', 'preinst', 'inst', 'init', 'prerm', 'uinst', 'setup', 'store_data', 'restore_data_before_setup', 'restore_data_after_setup', 'update_available', 'update_packages', 'update_release', 'update_app_version']:
 			control_filename = self._components_dir(ext)
 			if os.path.exists(control_filename):
 				basename = os.path.basename(control_filename)
@@ -160,13 +164,15 @@ class AppcenterApp(object):
 	def to_index(self):
 		index = {}
 		for file_info in self.important_files():
-			index[file_info.name] = {'url' : file_info.url, 'md5' : file_info.md5}
+			index[file_info.name] = {'url': file_info.url, 'md5': file_info.md5}
 		return index
+
 
 def check_ini_file(filename):
 	name, ext = os.path.splitext(os.path.basename(filename))
 	if ext == '.ini':
 		return name
+
 
 class DevRegenerateMetaInf(LocalAppcenterAction):
 	'''Generate necessary cache files for the App Center server'''
@@ -194,6 +200,7 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 				index_json.write(dumps(apps, sort_keys=True, indent=4))
 		Update.call()
 
+
 class DevPopulateAppcenter(LocalAppcenterAction):
 	'''Add/update an app in the (local) App Center'''
 	help = 'To be called after dev-setup-local-appcenter! Puts meta data (like ini file) and packages in the correct directories. Generates other meta files for the App Center to work'
@@ -215,6 +222,14 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		parser.add_argument('--prerm', help='Path to a prerm script that will be called by the App Center before uninstallation')
 		parser.add_argument('--unjoin', help='Path to an unjoin script that will be called by the App Center after uninstallation')
 		parser.add_argument('--init', help='Path to the init script that will be the entrypoint for a docker image (docker only)')
+		parser.add_argument('--setup', help='Path to a script that sets up the app after the container has been initialized (docker only)')
+		parser.add_argument('--store-data', help='Path to a script that stores data before the docker container is changed (docker only)')
+		parser.add_argument('--restore-data-before-setup', help='Path to a script that restores data after the docker container is changed and before setup is run (docker only)')
+		parser.add_argument('--restore-data-after-setup', help='Path to a script that restores data after the docker container is changed and after setup is run (docker only)')
+		parser.add_argument('--update-available', help='Path to a script that finds out whether an update for the operating system in the container is available (docker only)')
+		parser.add_argument('--update-packages', help='Path to a script that updates packages in the container (docker only)')
+		parser.add_argument('--update-release', help='Path to a script that upgrades the operating system in the container (docker only)')
+		parser.add_argument('--update-app-version', help='Path to a script that updates the app within the container (docker only)')
 		parser.add_argument('-r', '--readme', nargs='+', help='Path to (multiple) README files like README_DE, README_POST_INSTALL, but also LICENSE_AGREEMENT, LICENSE_AGREEMENT_DE')
 		parser.add_argument('-p', '--packages', nargs='+', help='Path to debian packages files for the app', metavar='PACKAGE')
 		parser.add_argument('-u', '--unmaintained', nargs='+', help='Package names that exist in the unmaintained repository for UCS. ATTENTION: Only works for --ucs-version=%s; takes some time, but it is only needed once, so for further package updates of this very app version this is not need to be done again. ATTENTION: Only works for architecture %s.' % (version, arch), metavar='PACKAGE')
@@ -300,6 +315,22 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 			self.copy_file(args.unjoin, os.path.join(repo_dir, 'uinst'))
 		if args.init:
 			self.copy_file(args.init, os.path.join(repo_dir, 'init'))
+		if args.setup:
+			self.copy_file(args.setup, os.path.join(repo_dir, 'setup'))
+		if args.store_data:
+			self.copy_file(args.store_data, os.path.join(repo_dir, 'store_data'))
+		if args.restore_data_before_setup:
+			self.copy_file(args.restore_data_before_setup, os.path.join(repo_dir, 'restore_data_before_setup'))
+		if args.restore_data_after_setup:
+			self.copy_file(args.restore_data_after_setup, os.path.join(repo_dir, 'restore_data_after_setup'))
+		if args.update_available:
+			self.copy_file(args.update_available, os.path.join(repo_dir, 'update_available'))
+		if args.update_packages:
+			self.copy_file(args.update_packages, os.path.join(repo_dir, 'update_packages'))
+		if args.update_release:
+			self.copy_file(args.update_release, os.path.join(repo_dir, 'update_release'))
+		if args.update_app_version:
+			self.copy_file(args.update_app_version, os.path.join(repo_dir, 'update_app_version'))
 
 	def _handle_packages(self, app, repo_dir, args):
 		dirname = mkdtemp()
@@ -348,7 +379,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 				stdout, stderr = process.communicate()
 				for line in stdout.splitlines():
 					if line.startswith('Filename:'):
-						path = line[len(os.path.dirname(repo_dir)) + 11:] # -"Filename: /var/www/.../maintained/component/"
+						path = line[len(os.path.dirname(repo_dir)) + 11:]  # -"Filename: /var/www/.../maintained/component/"
 						line = 'Filename: %s' % path
 					packages.write('%s\n' % line)
 			with open('%s.gz' % filename, 'wb') as gz:
@@ -357,6 +388,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 
 	def _generate_meta_index_files(self, args):
 		DevRegenerateMetaInf.call(ucs_version=args.ucs_version, path=args.path, appcenter_host=args.appcenter_host)
+
 
 class DevSetupLocalAppcenter(LocalAppcenterAction):
 	'''Use this host as an App Center server'''
@@ -384,10 +416,12 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
 		else:
 			mkdir(meta_inf_dir)
 			mkdir(os.path.join(repo_dir, 'maintained', 'component'))
+			with open(os.path.join(meta_inf_dir, '..', 'categories.ini'), 'wb') as f:
+				categories = urlopen('%s/meta-inf/categories.ini' % AppManager.get_server()).read()
+				f.write(categories)
 			server = 'http://%s' % args.appcenter_host
 			ucr_update(ucr, {'repository/app_center/server': server, 'update/secure_apt': 'no'})
 			DevRegenerateMetaInf.call(ucs_version=args.ucs_version, path=args.path, appcenter_host=server)
 			self.log('Local App Center server is set up at %s.' % server)
 			self.log('If this server should serve as an App Center server for other computers in the UCS domain, the following command has to be executed on each computer:')
 			self.log('  ucr set repository/app_center/server="%s"' % server)
-

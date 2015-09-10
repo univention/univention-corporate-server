@@ -32,11 +32,10 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from subprocess import check_output, call, CalledProcessError
+from subprocess import check_output, call
 import os.path
 import shlex
 from json import loads
-import time
 
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
@@ -44,19 +43,17 @@ from univention.config_registry.frontend import ucr_update
 from univention.appcenter.utils import app_ports, call_process, mkdir, shell_safe
 from univention.appcenter.log import get_base_logger
 
-CONTAINER_SCRIPTS_PATH = '/usr/share/univention-docker-container-mode/'
-
 _logger = get_base_logger().getChild('docker')
 
-class ImageDown(Exception):
-	pass
 
 def inspect(name):
 	out = check_output(['docker', 'inspect', name])
 	return loads(out)[0]
 
+
 def pull(image):
 	call(['docker', 'pull', image])
+
 
 def ps(only_running=True):
 	args = ['docker', 'ps', '--no-trunc=true']
@@ -64,9 +61,11 @@ def ps(only_running=True):
 		args.append('--all')
 	return check_output(args)
 
+
 def execute_with_output(container, args):
 	args = ['docker', 'exec', container] + args
 	return check_output(args)
+
 
 def execute_with_process(container, args, logger=None):
 	if logger is None:
@@ -74,6 +73,7 @@ def execute_with_process(container, args, logger=None):
 
 	args = ['docker', 'exec', container] + args
 	return call_process(args, logger)
+
 
 def create(image, command, hostname=None, env=None, ports=None, volumes=None):
 	args = []
@@ -90,26 +90,14 @@ def create(image, command, hostname=None, env=None, ports=None, volumes=None):
 		args.extend(['-v', volume])
 	return check_output(['docker', 'create'] + args + [image] + command).strip()
 
-def wait_for_runlevel2(container):
-	i = 0
-	while i < 30:
-		try:
-			run_level = execute_with_output(container, ['runlevel'])
-		except CalledProcessError:
-			pass
-		else:
-			if run_level.endswith('2\n'):
-				break
-		time.sleep(1)
-		i += 1
-	else:
-		raise ImageDown(container)
 
 def rm(container):
 	return call(['docker', 'rm', container])
 
+
 def commit(container, new_base_image):
 	return call(['docker', 'commit', container, new_base_image])
+
 
 class Docker(object):
 	def __init__(self, app, logger=None):
@@ -194,4 +182,3 @@ class Docker(object):
 
 	def rm(self):
 		return rm(self.container)
-

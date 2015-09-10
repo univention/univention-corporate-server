@@ -58,6 +58,7 @@ CONTAINER_SCRIPTS_PATH = '/usr/share/univention-docker-container-mode/'
 
 app_logger = get_base_logger().getChild('apps')
 
+
 class Requirement(UniventionMetaInfo):
 	save_as_list = '_requirements'
 	auto_set_name = True
@@ -71,7 +72,7 @@ class Requirement(UniventionMetaInfo):
 	def test(self, app, function, package_manager, ucr):
 		method = getattr(app, self.name)
 		kwargs = {}
-		arguments = getargspec(method).args[1:] # remove self
+		arguments = getargspec(method).args[1:]  # remove self
 		if 'function' in arguments:
 			kwargs['function'] = function
 		if 'package_manager' in arguments:
@@ -84,11 +85,14 @@ class Requirement(UniventionMetaInfo):
 		super(Requirement, self).contribute_to_class(klass, name)
 		setattr(klass, name, self.func)
 
+
 def hard_requirement(*actions):
 	return lambda func: Requirement(actions, True, func)
 
+
 def soft_requirement(*actions):
 	return lambda func: Requirement(actions, False, func)
+
 
 class AppAttribute(UniventionMetaInfo):
 	save_as_list = '_attrs'
@@ -157,6 +161,7 @@ class AppAttribute(UniventionMetaInfo):
 			self.test(value)
 			return value
 
+
 class AppBooleanAttribute(AppAttribute):
 	def test_type(self, value, instance_type):
 		super(AppBooleanAttribute, self).test_type(value, bool)
@@ -170,6 +175,7 @@ class AppBooleanAttribute(AppAttribute):
 				raise ValueError('Invalid value')
 		return value
 
+
 class AppIntAttribute(AppAttribute):
 	def test_type(self, value, instance_type):
 		super(AppIntAttribute, self).test_type(value, int)
@@ -177,6 +183,7 @@ class AppIntAttribute(AppAttribute):
 	def parse(self, value):
 		if value is not None:
 			return int(value)
+
 
 class AppListAttribute(AppAttribute):
 	def parse(self, value):
@@ -203,7 +210,8 @@ class AppListAttribute(AppAttribute):
 		if not value:
 			return
 		for val in value:
-			super(AppListAttribute, self).test_regex(regex, value)
+			super(AppListAttribute, self).test_regex(regex, val)
+
 
 class AppAttributeOrFalse(AppBooleanAttribute):
 	def parse(self, value):
@@ -228,6 +236,7 @@ class AppAttributeOrFalse(AppBooleanAttribute):
 			super(AppAttributeOrFalse, self).test_type(value, bool)
 		except ValueError:
 			super(AppBooleanAttribute, self).test_type(value, None)
+
 
 class AppFileAttribute(AppAttribute):
 	def __init__(self, required=False, default=None, regex=None, choices=None, escape=False, localizable=True):
@@ -256,10 +265,12 @@ class AppFileAttribute(AppAttribute):
 			if os.path.exists(filename):
 				return filename
 
+
 class AppDockerScriptAttribute(AppAttribute):
 	def set_name(self, name):
 		self.default = os.path.join(CONTAINER_SCRIPTS_PATH, name[14:])
 		super(AppDockerScriptAttribute, self).set_name(name)
+
 
 class App(object):
 	__metaclass__ = UniventionMetaClass
@@ -272,7 +283,7 @@ class App(object):
 	version = AppAttribute(required=True)
 	description = AppAttribute(localizable=True)
 	long_description = AppAttribute(escape=False, localizable=True)
-	screenshot = AppAttribute() # localizable=True
+	screenshot = AppAttribute()  # localizable=True
 	categories = AppListAttribute(choices=['Administration', 'Business', 'Collaboration', 'Education', 'System services', 'UCS components', 'Virtualization', ''], strict=False)
 
 	website = AppAttribute(localizable=True)
@@ -435,7 +446,7 @@ class App(object):
 
 	@property
 	def ucr_ports_key(self):
-		return 'appcenter/apps/%s/ports/%%d' % self.id
+		return 'appcenter/apps/%s/ports/%%s' % self.id
 
 	def is_installed(self):
 		ucr = ConfigRegistry()
@@ -572,7 +583,7 @@ class App(object):
 		if self.docker:
 			return True
 		else:
-			return package_manager.progress_state._finished # TODO: package_manager.is_finished()
+			return package_manager.progress_state._finished  # TODO: package_manager.is_finished()
 
 	@hard_requirement('install', 'upgrade')
 	def must_have_correct_server_role(self, ucr):
@@ -582,8 +593,8 @@ class App(object):
 		server_role = ucr.get('server/role')
 		if not self._allowed_on_local_server(ucr):
 			return {
-				'current_role' : server_role,
-				'allowed_roles' : ', '.join(self.server_role),
+				'current_role': server_role,
+				'allowed_roles': ', '.join(self.server_role),
 			}
 		return True
 
@@ -697,6 +708,7 @@ class App(object):
 	def __cmp__(self, other):
 		return cmp(self.id, other.id) or cmp(LooseVersion(self.version), LooseVersion(other.version))
 
+
 class AppManager(object):
 	_cache = []
 	_package_manager = None
@@ -767,7 +779,7 @@ class AppManager(object):
 	def get_package_manager(cls):
 		if cls._package_manager is None:
 			cls._package_manager = PackageManager(lock=False)
-			cls._package_manager.set_finished() # currently not working. accepting new tasks
+			cls._package_manager.set_finished()  # currently not working. accepting new tasks
 			cls._package_manager.logger.parent = get_base_logger()
 		return cls._package_manager
 
@@ -783,4 +795,3 @@ class AppManager(object):
 		if not server.startswith('http'):
 			server = 'https://%s' % server
 		return server
-

@@ -77,7 +77,7 @@ container_uuid=$(ucr get "$ucr_container_key")
 
 if [ -z "$container_uuid" ]; then
 	echo "Don't know which container to $requested_action."
-	echo "The UCR variable ucsapp/$app_name/container is not set."
+	echo "The UCR variable $ucr_container_key is not set."
 	exit 1
 fi
 

@@ -34,7 +34,6 @@
 
 import os.path
 import shutil
-import stat
 from getpass import getuser
 import subprocess
 from argparse import SUPPRESS
@@ -43,8 +42,9 @@ from univention.config_registry.frontend import ucr_update
 from univention.config_registry import ConfigRegistry
 
 from univention.appcenter.app import App, AppManager
-from univention.appcenter.actions import Abort, JOINSCRIPT_DIR, StoreAppAction
+from univention.appcenter.actions import Abort, StoreAppAction
 from univention.appcenter.actions.register import Register
+
 
 class _AptLogger(object):
 	def __init__(self, action, end):
@@ -72,6 +72,7 @@ class _AptLogger(object):
 	def warn(self, msg):
 		self.action.warn(msg)
 
+
 class InstallRemoveUpgrade(Register):
 	pre_readme = None
 	post_readme = None
@@ -82,7 +83,7 @@ class InstallRemoveUpgrade(Register):
 		parser.add_argument('--do-not-send-info', action='store_false', dest='send_info', help=SUPPRESS)
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the application')
 
-	main = None # no action by itself
+	main = None  # no action by itself
 
 	def do_it(self, args):
 		app = args.app
@@ -212,32 +213,22 @@ class InstallRemoveUpgrade(Register):
 				installed_codes.append(app.code)
 		ucr_update(ucr, {
 			'appcenter/installed': '-'.join(installed_codes),
-			'repository/app_center/installed': '-'.join(installed_codes), # to be deprecated
+			'repository/app_center/installed': '-'.join(installed_codes),  # to be deprecated
 		})
 
 	def _call_join_script(self, app, args, unjoin=False):
-		def _get_joinscript_path(_app, _unjoin):
-			number = 50
-			suffix = ''
-			ext = 'inst'
-			if _unjoin:
-				number = 51
-				ext = 'uinst'
-				suffix = '-uninstall'
-			return os.path.join(JOINSCRIPT_DIR, '%d%s%s.%s' % (number, _app.id, suffix, ext))
-
 		if unjoin:
 			ext = 'uinst'
 		else:
 			ext = 'inst'
-			unjoinscript = _get_joinscript_path(app, True)
+			unjoinscript = self._get_joinscript_path(app, True)
 			if os.path.exists(unjoinscript):
 				self.log('Uninstalling unjoin script')
 				os.unlink(unjoinscript)
 		joinscript = self._get_cache_file(app, ext)
 		if os.path.exists(joinscript):
 			self.log('Installing join script %s' % joinscript)
-			dest = _get_joinscript_path(app, unjoin)
+			dest = self._get_joinscript_path(app, unjoin)
 			shutil.copy2(joinscript, dest)
 			# change to UCS umask + +x:      -rwxr-xr-x
 			os.chmod(dest, 0755)
@@ -263,4 +254,3 @@ class InstallRemoveUpgrade(Register):
 			self._subprocess(['apt-get', 'update'])
 		apt_logger = _AptLogger(self, percentage_end)
 		return self._subprocess(['apt-get', '-o', 'APT::Status-Fd=1', '-o', 'DPkg::Options::=--force-confold', '--assume-yes', '--force-yes', '--auto-remove', command] + packages, logger=apt_logger, env=env)
-

@@ -568,7 +568,6 @@ class Application(object):
 				MODULE.warn('Could not load category translations from: %s\n%s' % (url, exc))
 			except (urllib2.HTTPError, urllib2.URLError) as exc:
 				MODULE.warn('Could not load category translations from: %s\n%s' % (url, verbose_http_error(exc)))
-				cls._category_translations = None
 			MODULE.info('loaded category translations: %s' % cls._category_translations)
 		return cls._category_translations
 

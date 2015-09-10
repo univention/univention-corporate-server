@@ -36,6 +36,7 @@ import os
 import os.path
 from math import ceil
 import time
+import shutil
 from threading import Thread
 from urlparse import urljoin
 from glob import glob
@@ -48,13 +49,14 @@ import urllib2
 
 from univention.config_registry import ConfigRegistry
 
-from univention.appcenter.app import CACHE_DIR, LOCAL_ARCHIVE
-from univention.appcenter.actions import UniventionAppAction
+from univention.appcenter.app import App, CACHE_DIR, LOCAL_ARCHIVE
+from univention.appcenter.actions import UniventionAppAction, JOINSCRIPT_DIR
 from univention.appcenter.utils import urlopen, get_md5_from_file
+
 
 class Update(UniventionAppAction):
 	'''Updates the list of all available applications by asking the App Center server'''
-	help='Updates the list of apps'
+	help = 'Updates the list of apps'
 
 	def __init__(self):
 		super(Update, self).__init__()
@@ -76,13 +78,13 @@ class Update(UniventionAppAction):
 			# normally, this should be only one thread as
 			# _download_archive() is used if many files are to be downloaded
 			# but if all.tar.gz fails, everything needs to be downloaded
-			# don't do this at once, at this opens 100 connections.
+			# don't do this at once as this opens 100 connections.
 			files_to_download_in_thread, files_to_download = files_to_download[:files_per_thread], files_to_download[files_per_thread:]
 			self.log('Starting to download %d file(s) directly' % len(files_to_download_in_thread))
 			thread = Thread(target=self._download_directly, args=(files_to_download_in_thread,))
 			thread.start()
 			threads.append(thread)
-			time.sleep(0.1) # wait 100 milliseconds so that not all threads start at the same time
+			time.sleep(0.1)  # wait 100 milliseconds so that not all threads start at the same time
 		for thread in threads:
 			thread.join()
 		if something_changed_locally or something_changed_remotely:
@@ -143,6 +145,38 @@ class Update(UniventionAppAction):
 				if local_md5sum != remote_md5sum:
 					self.fatal('Checksum for %s should be %r but was %r! Giving up for this time!' % (filename, remote_md5sum, local_md5sum))
 
+	def _process_new_file(self, filename):
+		self.log('Installing %s' % os.path.basename(filename))
+		component, ext = os.path.splitext(os.path.basename(filename))
+		if hasattr(self, '_process_new_file_%s' % ext):
+			ini_file = os.path.join(CACHE_DIR, '%s.ini' % component)
+			try:
+				local_app = App.from_ini(ini_file)
+			except IOError:
+				self.log('Could not find a previously existing app with component %s' % component)
+			else:
+				self.getattr('_process_new_file_%s' % ext)(filename, local_app)
+		if filename.endswith('.png'):
+			pass
+		if filename.endswith('.inst'):
+			pass
+		if filename.endswith('.uinst'):
+			pass
+		shutil.copy2(filename, CACHE_DIR)
+
+	def _process_new_file_ini(self, filename, local_app):
+		pass
+
+	def _process_new_file_inst(self, filename, local_app):
+		if local_app.is_installed():
+			shutil.copy2(filename, JOINSCRIPT_DIR)
+
+	def _process_new_file_uinst(self, filename, local_app):
+		pass
+		#uinst_filename = os.path.join(JOINSCRIPT_DIR, ...)
+		#if os.path.exists(uinst_filename):
+		#	shutil.copy2(filename, uinst_filename)
+
 	def _update_local_files(self):
 		# overwritten when UMC is installed
 		pass
@@ -174,10 +208,7 @@ class Update(UniventionAppAction):
 		return True
 
 	def _get_metainf_url(self):
-		return '%s/meta-inf/%s' % (
-			self._get_server(),
-			self._get_ucs_version(),
-		)
+		return '%s/meta-inf/%s' % (self._get_server(), self._get_ucs_version())
 
 	def _get_server(self):
 		ucr = ConfigRegistry()
@@ -249,4 +280,3 @@ class Update(UniventionAppAction):
 			self.debug('UCS Version is %r' % version)
 			self._ucs_version = version
 		return self._ucs_version
-

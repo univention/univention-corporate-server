@@ -50,8 +50,10 @@ from univention.appcenter.utils import underscore, call_process, urlopen
 _ACTIONS = {}
 JOINSCRIPT_DIR = '/usr/lib/univention-install'
 
+
 class Abort(Exception):
 	pass
+
 
 class StoreAppAction(Action):
 	def __call__(self, parser, namespace, value, option_string=None):
@@ -74,6 +76,7 @@ class StoreAppAction(Action):
 			apps = apps[0]
 		setattr(namespace, self.dest, apps)
 
+
 class UniventionAppActionMeta(type):
 	def __new__(mcs, name, bases, attrs):
 		new_cls = super(UniventionAppActionMeta, mcs).__new__(mcs, name, bases, attrs)
@@ -82,6 +85,7 @@ class UniventionAppActionMeta(type):
 			new_cls.logger = new_cls.parent_logger.getChild(new_cls.get_action_name())
 			new_cls.progress = new_cls.logger.getChild('progress')
 		return new_cls
+
 
 class UniventionAppAction(object):
 	__metaclass__ = UniventionAppActionMeta
@@ -168,6 +172,16 @@ class UniventionAppAction(object):
 			self.percentage = 100
 			return result
 
+	def _get_joinscript_path(self, app, unjoin=False):
+		number = 50
+		suffix = ''
+		ext = 'inst'
+		if unjoin:
+			number = 51
+			ext = 'uinst'
+			suffix = '-uninstall'
+		return os.path.join(JOINSCRIPT_DIR, '%d%s%s.%s' % (number, app.id, suffix, ext))
+
 	def _get_cache_file(self, app, ext):
 		return app.get_cache_file(ext)
 
@@ -235,17 +249,20 @@ class UniventionAppAction(object):
 			request = urllib2.Request(url, request_data)
 			urlopen(request)
 		except Exception as exc:
+			self.warn('Error sending app infos to the App Center server')
 			self.log_exception(exc)
+
 
 def get_action(action_name):
 	return _ACTIONS.get(action_name)
+
 
 def all_actions():
 	for action_name in sorted(_ACTIONS):
 		yield action_name, _ACTIONS[action_name]
 
+
 path = os.path.dirname(__file__)
 for pymodule in glob(os.path.join(path, '*.py')):
-	pymodule_name = os.path.basename(pymodule)[:-3] # without .py
+	pymodule_name = os.path.basename(pymodule)[:-3]  # without .py
 	__import__('univention.appcenter.actions.%s' % pymodule_name)
-

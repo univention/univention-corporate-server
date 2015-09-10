@@ -1,10 +1,10 @@
 #!/bin/sh
 # -*- coding: utf-8 -*-
 #
-# Univention Management Console Module appcenter
-#  "Software Management"
+# Univention App Center
+#  join script
 #
-# Copyright 2011-2015 Univention GmbH
+# Copyright 2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,33 +31,23 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=8
+VERSION=1
 
 . /usr/share/univention-join/joinscripthelper.lib
-. /usr/share/univention-lib/umc.sh
 . /usr/share/univention-lib/ldap.sh
 
 joinscript_init
 
-umc_init
-
 eval "$(ucr shell ldap/base)"
 
-if [ $JS_LAST_EXECUTED_VERSION -eq 1 ]; then
-	# remove previous operation sets as packages-all needs to grant access to lib/server/*
-	udm settings/umc_operationset remove "$@" --dn "cn=appcenter-all,cn=operations,cn=UMC,cn=univention,$ldap_base" || die
-fi
+univention-directory-manager container/cn create "$@" --ignore_exists \
+	--set name="apps" \
+	--position "cn=univention,$ldap_base"
 
-if [ $JS_LAST_EXECUTED_VERSION -eq 6 ]; then
-	# remove accidently registered overview variables from UCS 3.1 app
-	WRONGLY_SET_KEYS=$(ucr --keys-only search "ucs/web/overview/entries/service/(zarafa|oxseforucs)/.*")
-	[ -n "$WRONGLY_SET_KEYS" ] && ucr unset $WRONGLY_SET_KEYS
-fi
-
-umc_operation_create "appcenter-all" "Manage Software packages" "" "appcenter/*" "lib/server/*"
-umc_policy_append "default-umc-all" "appcenter-all"
-
-/usr/sbin/univention-register-apps
+ucs_registerLDAPExtension "$@" \
+	--schema /usr/share/univention-appcenter/univention-app.schema \
+	--acl /usr/share/univention-appcenter/66univention-appcenter_app.acl \
+	--udm_module /usr/share/univention-appcenter/app.py || die
 
 joinscript_save_current_version
 

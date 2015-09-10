@@ -32,9 +32,12 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+import os.path
+
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 
 ORIGINAL_INIT_SCRIPT = '/usr/share/docker-app-container-init-script'
+
 
 class Service(UniventionAppAction):
 	def setup_parser(self, parser):
@@ -45,40 +48,48 @@ class Service(UniventionAppAction):
 		return '/etc/init.d/docker-app-%s' % app.id
 
 	def call_init(self, app, command):
+		init = self.get_init(app)
+		if not os.path.exists(init):
+			self.fatal('%s is not installed' % app.id)
+			return False
 		return self._call_script(self.get_init(app), command)
+
 
 class Start(Service):
 	'''Starts an application previously installed.'''
-	help='Start an app'
+	help = 'Start an app'
 
 	def main(self, args):
 		return self.call_init(args.app, 'start')
 
+
 class Stop(Service):
 	'''Stops a running application.'''
-	help='Stop an app'
+	help = 'Stop an app'
 
 	def main(self, args):
 		return self.call_init(args.app, 'stop')
 
+
 class Restart(Service):
 	'''Restarts an app. Stops and Starts. Does not have to be running'''
-	help='Restart an app'
+	help = 'Restart an app'
 
 	def main(self, args):
 		return self.call_init(args.app, 'restart')
 
+
 class CRestart(Service):
 	'''CRestarts an app. Stops and Starts. Has to be running'''
-	help='CRestart an app'
+	help = 'CRestart an app'
 
 	def main(self, args):
 		return self.call_init(args.app, 'crestart')
 
+
 class Status(Service):
 	'''Ask service about status. Possible answers: running stopped'''
-	help='Retrieve status of an app'
+	help = 'Retrieve status of an app'
 
 	def main(self, args):
 		return self.call_init(args.app, 'status')
-

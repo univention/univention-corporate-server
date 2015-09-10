@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.3-9) unstable; urgency=medium
+
+  * Bug #39185: Merge from docker component (4); added join scripts
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 10 Sep 2015 23:53:26 +0200
+
 univention-management-console-module-appcenter (5.0.3-8) unstable; urgency=low
 
   * Bug #38894: [WIP] AppCenterDetailsPage added margin bottom and used

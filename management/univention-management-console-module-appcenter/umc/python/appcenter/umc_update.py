@@ -1,10 +1,11 @@
-#!/bin/sh
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
-# Univention Management Console Module appcenter
-#  "Software Management"
+# Univention App Center
+#  univention-app module for updating the list of available apps
+#  (UMC version)
 #
-# Copyright 2011-2015 Univention GmbH
+# Copyright 2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,35 +31,34 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+#
 
-VERSION=8
+import os
+import os.path
+from glob import glob
+import shutil
 
-. /usr/share/univention-join/joinscripthelper.lib
-. /usr/share/univention-lib/umc.sh
-. /usr/share/univention-lib/ldap.sh
+from univention.config_registry import handler_commit
 
-joinscript_init
+from univention.appcenter.actions.update import Update
 
-umc_init
+FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons'
 
-eval "$(ucr shell ldap/base)"
 
-if [ $JS_LAST_EXECUTED_VERSION -eq 1 ]; then
-	# remove previous operation sets as packages-all needs to grant access to lib/server/*
-	udm settings/umc_operationset remove "$@" --dn "cn=appcenter-all,cn=operations,cn=UMC,cn=univention,$ldap_base" || die
-fi
+class Update(Update):
+	def _process_new_file_png(self, filename, local_app):
+		component, ext = os.path.splitext(os.path.basename(filename))
+		png_50 = os.path.join(FRONTEND_ICONS_DIR, '50x50', 'apps-%s.png' % component)
+		shutil.copy2(filename, png_50)
 
-if [ $JS_LAST_EXECUTED_VERSION -eq 6 ]; then
-	# remove accidently registered overview variables from UCS 3.1 app
-	WRONGLY_SET_KEYS=$(ucr --keys-only search "ucs/web/overview/entries/service/(zarafa|oxseforucs)/.*")
-	[ -n "$WRONGLY_SET_KEYS" ] && ucr unset $WRONGLY_SET_KEYS
-fi
+	def _update_local_files(self):
+		# some variables could change apps.xml
+		# e.g. Name, Description
+		self._update_conffiles()
 
-umc_operation_create "appcenter-all" "Manage Software packages" "" "appcenter/*" "lib/server/*"
-umc_policy_append "default-umc-all" "appcenter-all"
+		# special handling for icons
+		for png in glob(os.path.join(FRONTEND_ICONS_DIR, '**', 'apps-*.png')):
+			os.unlink(png)
 
-/usr/sbin/univention-register-apps
-
-joinscript_save_current_version
-
-exit 0
+	def _update_conffiles(self):
+		handler_commit(['/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo'])
