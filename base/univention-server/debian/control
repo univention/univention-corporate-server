@@ -17,7 +17,7 @@ Recommends: univention-nagios-client,
  python-univention-license,
  univention-saml,
 Depends: ${misc:Depends},
- univention-role-server-common (= ${source:Version}),
+ univention-role-server-common (= ${source:Version}) | univention-container-role-server-common (= ${source:Version}),
  univention-ldap-acl-master,
  univention-ldap-server,
  univention-heimdal-kdc,
@@ -46,7 +46,7 @@ Recommends: univention-nagios-client,
  univention-saml,
 Pre-Depends: univention-config (>= 7.0.25)
 Depends: ${misc:Depends},
- univention-role-server-common (= ${source:Version}),
+ univention-role-server-common (= ${source:Version}) | univention-container-role-server-common (= ${source:Version}),
  univention-ssl,
  univention-ldap-acl-master,
  univention-ldap-server,
@@ -78,7 +78,7 @@ Recommends: univention-management-console,
  openssh-server,
  univention-nagios-client
 Depends: ${misc:Depends},
- univention-role-server-common (= ${source:Version}),
+ univention-role-server-common (= ${source:Version}) | univention-container-role-server-common (= ${source:Version}),
  univention-ldap-acl-slave,
  univention-ldap-server,
  univention-heimdal-kdc,
@@ -103,7 +103,7 @@ Recommends: univention-management-console,
  openssh-server,
  univention-nagios-client
 Depends: ${misc:Depends},
- univention-role-server-common (= ${source:Version}),
+ univention-role-server-common (= ${source:Version}) | univention-container-role-server-common (= ${source:Version}),
  univention-heimdal-member,
  ntp | ntp-server,
  shell-univention-lib (>= 3.0.1-1),
@@ -165,6 +165,27 @@ Recommends: vim,
  univention-network-common,
 Description: UCS system role common dependencies and files
  This package contains common files used by all system roles.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-container-role-common
+Architecture: all
+Depends: ${misc:Depends},
+ univention-config-registry,
+ univention-join,
+ univention-updater,
+ univention-archive-key,
+ univention-policy-tools,
+ univention-system-setup,
+ univention-appcenter,
+ shell-univention-lib (>= 1.0.25-1),
+ python-univention-lib (>= 1.0.25-1)
+Description: UCS system role common dependencies and files
+ This package contains common files used by all system roles
+ which will be installed in a container, for example docker.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing

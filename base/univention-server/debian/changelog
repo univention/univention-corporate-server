@@ -1,3 +1,11 @@
+univention-server (11.0.1-1) unstable; urgency=medium
+
+  * Added univention-container-role-common. It is an alternative to the
+    univention-role-server-common package which has more dependencies
+    (Bug #38283)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Sep 2015 10:39:18 +0200
+
 univention-server (11.0.0-3) unstable; urgency=medium
 
   * Bug #31943: make univention-saml a Recommends insteaf of Dependency
