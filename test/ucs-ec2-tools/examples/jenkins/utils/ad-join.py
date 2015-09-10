@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Copyright 2013-2015 Univention GmbH

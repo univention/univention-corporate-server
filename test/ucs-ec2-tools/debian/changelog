@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.22-19) unstable; urgency=low
+
+  * Bug #35856: fix Python version for 3.2
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 10 Sep 2015 12:11:21 +0200
+
 ucs-ec2-tools (0.1.22-18) unstable; urgency=low
 
   * Bug #39324: rename testing repositories
