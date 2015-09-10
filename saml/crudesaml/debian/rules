@@ -1,7 +1,8 @@
 #!/usr/bin/make -f
 
 override_dh_strip:
-	dh_strip --dbg-package=pam-saml-dbg --dbg-package=cy2-saml-dbg  # FIXME: howto specify 2 packages?
+	dh_strip -p pam-saml --dbg-package=pam-saml-dbg
+	dh_strip -p cy2-saml --dbg-package=cy2-saml-dbg
 
 %:
 	dh $@

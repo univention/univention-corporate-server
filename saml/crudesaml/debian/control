@@ -18,7 +18,8 @@ Depends: ${misc:Depends},
  libxmlsec1-openssl,
  libxmlsec1,
  xmlsec1,
- liblasso3
+ liblasso3,
+Replaces: crudesaml
 Description: This package contains a PAM module that perform a crude
  check on a SAML authentication assertion. The assertion signature and date
  are verified, and access is granted on behalf ot the user taked for a
@@ -36,7 +37,8 @@ Depends: ${misc:Depends},
  libxmlsec1-openssl,
  libxmlsec1,
  xmlsec1,
- liblasso3
+ liblasso3,
+Replaces: crudesaml
 Description: This package contains a SASL plugin that perform a crude check on a SAML
  authentication assertion. The assertion signature and date are verified,
  and access is granted on behalf ot the user taked for a onfigurable

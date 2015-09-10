@@ -5,8 +5,8 @@
 crudesaml: crudesaml-*.tar.gz
 	tar xvzf $< --transform s/crudesaml-1.5/crudesaml/g && \
 		cd crudesaml && \
-		patch -p1 < ../01fix_destdir.patch \
-		patch -p1 < ../02fix_manpage_typos.patch
+		patch -p1 < ../01fix_destdir.patch && \
+		patch -p0 < ../02fix_manpage_typos.patch
 
 all: crudesaml
 	cd crudesaml && \
@@ -19,3 +19,4 @@ install: crudesaml all
 
 clean:
 	cd crudesaml && make clean || true
+	rm -rf crudesaml
