@@ -6,8 +6,6 @@
 ##  - univention-mail-server
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
-## versions:
-##  4.0-2: skip
 
 import imaplib
 import os
@@ -43,7 +41,6 @@ def main():
 			#
 			# send email to each user
 			#
-			utils.wait_for_replication()
 			for dn, name, addr, msgid in userbase:
 				send_mail(recipients=[addr], messageid=msgid, server=fqdn)
 			loopcnt = 60
@@ -76,8 +73,7 @@ def main():
 					'mail/dovecot/mailbox/delete=%s' % (flag_delete,),
 				])
 				subprocess.call(['invoke-rc.d', 'univention-directory-listener', 'restart'])
-				udm.modify_object('users/user', dn=userbase[i][0], set={'username': '%scopy' % (userbase[i][1],)})
-				utils.wait_for_replication()
+				udm.modify_object('users/user', dn=userbase[i][0], set={'username': '%scopy' % (userbase[i][1],)}, check_for_drs_replication=True)
 
 				if not os.path.exists(old_dir):
 					utils.fail('Test %d: old_dir = %r has been removed unexpectedly! %r' % (i, old_dir, userbase[i]))

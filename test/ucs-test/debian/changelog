@@ -1,3 +1,12 @@
+ucs-test (6.0.4-15) unstable; urgency=low
+
+  * fix errors on samba4 servers: add check_for_drs_replication=True or use
+    create_user() / create_group(), which do it by default
+  * deactivate waiting for drs replication in dovecot_login_performance_test
+  * implement test for nested groups (Bug #17807)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 11 Sep 2015 11:40:17 +0200
+
 ucs-test (6.0.4-14) unstable; urgency=low
 
   * Bug #39324: rename testing repositories
