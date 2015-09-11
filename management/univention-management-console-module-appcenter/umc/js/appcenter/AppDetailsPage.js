@@ -518,6 +518,7 @@ define([
 			//footer
 			//TODO just for testing
 			domConstruct.empty(this._footer.domNode);
+			domStyle.set(this._footer.domNode, 'margin-bottom', '9em');
 			
 			domConstruct.create('span', {
 				innerHTML: _('More information'), 

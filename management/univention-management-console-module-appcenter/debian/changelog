@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.4-3) unstable; urgency=low
+
+  * Bug #38894: [WIP] Made margin-bottom for AppDetailsPage more specific
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 11 Sep 2015 14:30:27 +0200
+
 univention-management-console-module-appcenter (5.0.4-2) unstable; urgency=low
 
   * Bug #38894: [WIP] Adapted height for installedAppsGrid and changed some
