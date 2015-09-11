@@ -65,6 +65,13 @@ mk_config () {
 	local password=$2
 	local days=$3
 	local name=$4
+	local subjectAltName=$5
+
+	if [ -z $subjectAltName ]; then
+		SAN_txt=""
+	else
+		SAN_txt="subjectAltName = DNS:$name, DNS:$subjectAltName"
+	fi
 
 	if test -e "$outfile"; then
 		rm -f "$outfile"
@@ -103,6 +110,7 @@ RANDFILE            = \$dir/private/.rand
 
 x509_extensions     = ${CA}_ext
 crl_extensions     = crl_ext
+copy_extensions     = copy
 default_days        = $days
 default_crl_days    = 30
 default_md          = ${DEFAULT_MD}
@@ -183,7 +191,7 @@ authorityKeyIdentifier  = keyid,issuer:always
 
 basicConstraints = critical, CA:FALSE
 keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-
+$SAN_txt
 
 [ v3_ca ]
 
@@ -409,7 +417,24 @@ gencert () {
 	fi
 	# generate a key pair
 	mkdir -pm 700 "$name"
-	mk_config "$name/openssl.cnf" "" "$days" "$cn"
+	if [ ${#cn} -gt 64 ]; then
+		hostname=$(echo "$cn" | cut -f 1 -d '.')
+		if [ ${#hostname} -gt 63 ]; then
+			domainname=$(echo "$cn" | cut -f 2- -d '.')
+			echo "ERROR: Hostname longer than 63 charaters. Setting Common Name for certificate"
+			echo "ERROR: to \"hostname-to-long.$domainname.\""
+			echo
+			mk_config "$name/openssl.cnf" "" "$days" "hostname-to-long.$domainname"
+		else
+			echo "Warning: FQDN $cn"
+			echo "Warning: is longer than 64 characters, using Subject Alternative"
+			echo "Warning: Name instead of Common Name in SSL certificate."
+			echo
+			mk_config "$name/openssl.cnf" "" "$days" "$hostname" "$cn"
+		fi
+	else
+		mk_config "$name/openssl.cnf" "" "$days" "$cn"
+	fi
 	openssl genrsa -out "$name/private.key" "$DEFAULT_BITS"
 	openssl req -batch -config "$name/openssl.cnf" -new -key "$name/private.key" -out "$name/req.pem"
 

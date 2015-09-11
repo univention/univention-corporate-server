@@ -153,6 +153,12 @@ def create_certificate(hostname, domainname):
 		if os.path.islink(link_path):
 			return
 	else:
+		if len(fqdn) > 64:
+			if len(hostname) > 63:
+				ud.debug(ud.LISTENER, ud.ERROR, 'CERTIFICATE: hostname "%s" is longer than 63 characters' % hostname)
+			else:
+				ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: FQDN "%s" is longer than 64 characters, using Subject Alternative Name instead of Common Name.' % fqdn)
+
 		ud.debug(ud.LISTENER, ud.INFO,
 				'CERTIFICATE: Creating certificate %s' % hostname)
 

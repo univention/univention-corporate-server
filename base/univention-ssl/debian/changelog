@@ -1,3 +1,10 @@
+univention-ssl (10.0.0-3) unstable; urgency=low
+
+  * Use Subject Alternative Name in certificates if FQDN longer than 64 chars
+    (Bug #38859)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 11 Sep 2015 16:45:48 +0200
+
 univention-ssl (10.0.0-2) unstable; urgency=low
 
   * Bug #33870: Fix removing deleted certificates
