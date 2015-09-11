@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: openldap
+fix: 2.4.40-1.201.201509111450
+version: [3]
+desc: |
+  This update addresses the following issue:
+  * When using the mdb backend, the ldap search erroneously returned
+    the base object in some cases. This has been fixed.
+bug: [36343]
