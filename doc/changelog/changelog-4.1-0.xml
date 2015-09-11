@@ -19,6 +19,9 @@
 				is used to strip down the base installed packages in a Docker image
 				(<u:bug>38283</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The errata level is reset during the upgrade to UCS 4.1 (<u:bug>39312</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
