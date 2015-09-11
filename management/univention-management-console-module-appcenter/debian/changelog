@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.4-1) unstable; urgency=medium
+
+  * Set updater/identify to 'Docker App' (Bug #39206)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Sep 2015 08:06:39 +0200
+
 univention-management-console-module-appcenter (5.0.3-9) unstable; urgency=medium
 
   * Bug #39185: Merge from docker component (4); added join scripts

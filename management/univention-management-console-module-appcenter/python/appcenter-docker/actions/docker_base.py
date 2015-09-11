@@ -104,10 +104,11 @@ class DockerActionMixin(object):
 		set_vars['ldap/hostdn'] = hostdn
 		set_vars['server/role'] = app.docker_server_role
 		set_vars['update/warning/releasenotes'] = 'no'
-		for var in ['nameserver.*', 'repository/app_center/server', 'ldap/master.*', 'locale.*', 'uuid/system', 'domainname', 'update/secure_apt']:
+		for var in ['nameserver.*', 'repository/app_center/server', 'ldap/master.*', 'locale.*', 'domainname', 'update/secure_apt']:
 			for key in ucr.iterkeys():
 				if re.match(var, key):
 					set_vars[key] = ucr.get(key)
+		set_vars['updater/identify'] = 'Docker App'
 		container = docker.create(hostname, set_vars)
 		self.log('Preconfiguring container %s' % container)
 		autostart = 'yes'
