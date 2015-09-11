@@ -482,7 +482,7 @@
 							New in UCS 3.2: If there is a <literal>WebInterface</literal> the
 							App Center automatically registers a link in the overview page of
 							the UCS server. By default these are added in the
-							<envar>services</envar> section of the overview page. If
+							<envar>service</envar> section of the overview page. If
 							<literal>UCSOverviewCategory</literal> is set to
 							<envar>admin</envar> the link will be generated there. Can be
 							disabled completely if set to <envar>False</envar>. See also
