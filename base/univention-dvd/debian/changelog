@@ -1,3 +1,10 @@
+univention-dvd (1.0.0-4) unstable; urgency=medium
+
+  * Added univention-saml and univention-appcenter-docker to the DVD
+    (Bug #39313)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Sep 2015 13:36:59 +0200
+
 univention-dvd (1.0.0-3) unstable; urgency=medium
 
   * Added univention-container-role-common to the DVD (Bug #38283)

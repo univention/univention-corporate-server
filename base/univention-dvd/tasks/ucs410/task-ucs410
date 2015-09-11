@@ -123,6 +123,8 @@ univention-join
 univention-log-collector-server
 univention-log-collector-client
 gdisk
+univention-saml
+univention-appcenter-docker
 
 /* UEFI */
 grub-efi
