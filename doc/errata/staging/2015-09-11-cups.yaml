@@ -1,0 +1,29 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: cups
+fix: 1.5.3-5.96.201509111033
+version: [2,3]
+desc: |
+  A security vulnerability has been fixed in cups:
+  * Integer underflow in the cupsRasterReadPixels function in
+    filter/raster.c in CUPS before 2.0.2 allows remote attackers to
+    have unspecified impact via a malformed compressed raster file,
+    which triggers a buffer overflow (CVE-2014-9679).
+  * The add_job function in scheduler/ipp.c in cupsd in CUPS before
+    2.0.3 performs incorrect free operations for multiple-value
+    job-originating-host-name attributes, which allows remote
+    attackers to trigger data corruption for reference-counted strings
+    via a crafted (1) IPP_CREATE_JOB or (2) IPP_PRINT_JOB request, as
+    demonstrated by replacing the configuration file and consequently
+    executing arbitrary code (CVE-2015-1158).
+  * Cross-site scripting (XSS) vulnerability in the cgi_puts function
+    in cgi-bin/template.c in the template engine in CUPS before 2.0.3
+    allows remote attackers to inject arbitrary web script or HTML via
+    the QUERY parameter to help/ (CVE-2015-1159).
+bug:
+ - 37815
+cve:
+ - CVE-2014-9679
+ - CVE-2015-1158
+ - CVE-2015-1159
