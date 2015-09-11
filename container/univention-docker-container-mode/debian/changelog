@@ -1,3 +1,11 @@
+univention-docker-container-mode (1.0.1-1) unstable; urgency=medium
+
+  * Register the IP only if an old IP address was set. The IP and MAC
+    registration is skipped if a Docker App is installed / configured
+    (Bug #38365)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Sep 2015 15:29:52 +0200
+
 univention-docker-container-mode (1.0.0-0) unstable; urgency=low
 
   * merge to ucs 4.1
