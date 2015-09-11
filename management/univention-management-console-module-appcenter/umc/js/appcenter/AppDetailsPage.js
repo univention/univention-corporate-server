@@ -363,9 +363,9 @@ define([
 				}
 				if (usage) {
 					usageHeader = new Text({
-						content: _('More information'), 
+						content: _('First steps'), 
 						style: {
-							display: 'blocK',
+							display: 'block',
 							'font-size': '1.6em',
 							'font-weight': 'bold',
 							'margin-bottom': '1em'
@@ -385,9 +385,9 @@ define([
 				//grid header
 				//
 				var gridHeader = new Text({
-					content: _('Notes on using'),
+					content: _('Manage domain wide installations'),
 					style: {
-						display: 'blocK',
+						display: 'block',
 						'font-size': '1.6em',
 						'font-weight': 'bold',
 						'margin-bottom': '1em'
@@ -416,8 +416,8 @@ define([
 					columns: columns,
 					moduleStore: myStore,
 					gridOptions: {
-						'class': 'fooBar',
-						style: 'height: 200px'
+						'class': '', // overwritten to avoid css inheritage
+						style: 'height: 105px' // display 4 entires without scorlling
 					},
 					style: {
 						'margin-bottom': '3em'
@@ -522,7 +522,7 @@ define([
 			domConstruct.create('span', {
 				innerHTML: _('More information'), 
 				style: {
-					display: 'blocK',
+					display: 'block',
 					'font-size': '1.6em',
 					'font-weight': 'bold',
 					'margin-bottom': '1em'
