@@ -1,3 +1,10 @@
+univention-errata-level (4.0.0-1) unstable; urgency=medium
+
+  * Bump version to reset the errata level for UCS 4.1 (Bug #39312)
+  * Update copyright
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Sep 2015 06:54:54 +0200
+
 univention-errata-level (3.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35138)
