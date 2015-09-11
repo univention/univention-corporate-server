@@ -92,6 +92,12 @@ if [ -z "$(ucr get docker/container/uuid)" ]; then
 	install univention-appcenter-docker
 fi
 
+# Install univention-saml on DC Master and DC Backup while updating to UCS 4.1
+#  https://forge.univention.org/bugzilla/show_bug.cgi?id=39313
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	install univention-saml
+fi
+
 # Update to UCS 4.1 autoremove
 if ! is_ucr_true update41/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1

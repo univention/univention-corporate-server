@@ -1,3 +1,10 @@
+univention-updater (11.0.2-1) unstable; urgency=medium
+
+  * Install univention-saml while updating to UCS 4.1 on master and
+    backup (Bug #39313)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Sep 2015 06:42:53 +0200
+
 univention-updater (11.0.1-4) unstable; urgency=low
 
   * Bug #39324: rename testing repositories
