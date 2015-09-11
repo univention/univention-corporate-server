@@ -347,7 +347,12 @@
 			<title>SAML</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The SAML identity provider app has been integrated into UCS  (<u:bug>38881</u:bug>).
+					The SAML identity provider app has been integrated into UCS (<u:bug>38881</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The package <package>univention-saml</package> is installed on DC Master and
+					DC Backup systems automatically during the UCS 4.1 upgrade
+					(<u:bug>39313</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Single sign on via SAML 2.0 is now possible with Univention Management Console
