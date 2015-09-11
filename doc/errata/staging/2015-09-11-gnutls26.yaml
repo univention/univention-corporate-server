@@ -1,0 +1,18 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: gnutls26
+fix: 2.12.20-8.29.201509111022
+version: [2,3]
+desc: |
+  A security vulnerability has been fixed in gnutls26:
+  * A certificate algorithm consistency checking issue (CVE-2015-0294).
+  * GnuTLS before 3.1.0 does not verify that the RSA PKCS #1 signature 
+    algorithm matches the signature algorithm in the certificate, which
+    allows remote attackers to conduct downgrade attacks via unspecified
+    vectors (CVE-2015-0282).
+bug:
+ - 38067
+cve:
+ - CVE-2015-0294
+ - CVE-2015-0282
