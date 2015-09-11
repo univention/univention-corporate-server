@@ -72,7 +72,7 @@ def main():
 				])
 				subprocess.call(['invoke-rc.d', 'univention-directory-listener', 'restart'])
 				new_mpa = random_email()
-				udm.modify_object('users/user', dn=userbase[i][0], set={'mailPrimaryAddress': new_mpa})
+				udm.modify_object('users/user', dn=userbase[i][0], set={'mailPrimaryAddress': new_mpa}, check_for_drs_replication=True)
 				utils.wait_for_replication()
 
 				new_dir = get_dovecot_maildir(new_mpa)

@@ -50,13 +50,9 @@ def main():
 					mails.append(mail)
 					alts.append(alt)
 					users.append(user_dn)
-				group1_name = uts.random_name()
-				group1_mail = '%s@%s' % (group1_name, domain)
-				group1_dn = udm.create_object(
-					'groups/group',
-					position='cn=groups,%s' % ucr.get('ldap/base'),
+				group1_mail = '%s@%s' % (uts.random_name(), domain)
+				group1_dn, group1_name = udm.create_group(
 					set={
-						'name'        : group1_name,
 						'mailAddress' : group1_mail,
 						'users'       : users[0],
 					}
