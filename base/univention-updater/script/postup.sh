@@ -136,6 +136,10 @@ ucr set \
 	repository/online/component/4.0-3-errata=false \
 	repository/online/component/4.0-3-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
 
+ucr set \
+	repository/online/component/4.0-4-errata=false \
+	repository/online/component/4.0-4-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
+
 # Set errata component for UCS 4.1-0
 ucr set \
 	repository/online/component/4.1-0-errata=enabled \

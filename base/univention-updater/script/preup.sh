@@ -202,11 +202,11 @@ pruneOldKernel () {
 }
 
 if [ "$update41_pruneoldkernel" = "yes" ]; then
-	echo "Purging old kernel..." | tee -a /var/log/univention/updater.log
-	pruneOldKernel "2.6.*"
-	pruneOldKernel "3.2.0"
-	pruneOldKernel "3.10.0"
-	echo "done" | tee -a /var/log/univention/updater.log
+	echo -n "Purging old kernel... " | tee -a "$UPDATER_LOG"
+	for kernel_version in 2.6.* 3.2.0 3.10.0 3.16 3.16.0; do
+		pruneOldKernel "$kernel_version" >>"$UPDATER_LOG" 2>&1
+	done
+	echo "done" | tee -a "$UPDATER_LOG"
 fi
 
 #####################
