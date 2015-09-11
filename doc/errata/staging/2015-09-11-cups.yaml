@@ -5,7 +5,7 @@ src: cups
 fix: 1.5.3-5.96.201509111033
 version: [2,3]
 desc: |
-  A security vulnerability has been fixed in cups:
+  Multiple security vulnerabilities have been fixed in cups:
   * Integer underflow in the cupsRasterReadPixels function in
     filter/raster.c in CUPS before 2.0.2 allows remote attackers to
     have unspecified impact via a malformed compressed raster file,

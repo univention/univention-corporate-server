@@ -5,7 +5,7 @@ src: e2fsprogs
 fix: 1.42.5-1.1.42.201509111046
 version: [2,3]
 desc: |
-  A security vulnerability has been fixed in e2fsprogs:
+  Multiple security vulnerabilities have been fixed in e2fsprogs:
   * Heap-based buffer overflow in openfs.c in the libext2fs library
     in e2fsprogs before 1.42.12 allows local users to execute
     arbitrary code via crafted block group descriptor data in a

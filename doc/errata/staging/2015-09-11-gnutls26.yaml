@@ -5,7 +5,7 @@ src: gnutls26
 fix: 2.12.20-8.29.201509111022
 version: [2,3]
 desc: |
-  A security vulnerability has been fixed in gnutls26:
+  Multiple security vulnerabilities have been fixed in gnutls26:
   * A certificate algorithm consistency checking issue (CVE-2015-0294).
   * GnuTLS before 3.1.0 does not verify that the RSA PKCS #1 signature 
     algorithm matches the signature algorithm in the certificate, which

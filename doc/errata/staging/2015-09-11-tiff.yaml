@@ -1,0 +1,26 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: tiff
+fix: 4.0.2-6.61.201509111053
+version: [2,3]
+desc: |
+  Multiple security vulnerabilities have been fixed in tiff:
+  * Out-of-bound reads (CVE-2014-8127)
+  * Out-of-bounds write (CVE-2014-8128)
+  * Out-of-bound read and write (CVE-2014-8129)
+  * Integer overflow in tif_packbits.c in bmp2tif in libtiff 4.0.3
+    allows remote attackers to cause a denial of service (crash) via
+    crafted BMP image, related to dimensions, which triggers an
+    out-of-bounds read (CVE-2014-9330).
+  * Access of uninitialized memory (CVE-2014-9655)
+  * Uninitialized memory in NeXTDecode (CVE-2015-1547)
+bug:
+ - 37434
+cve:
+ - CVE-2014-8127
+ - CVE-2014-8128
+ - CVE-2014-8129
+ - CVE-2014-9330
+ - CVE-2014-9655
+ - CVE-2015-1547
