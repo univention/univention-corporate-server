@@ -2,10 +2,14 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: openldap
-fix: 2.4.40-1.201.201509111450
-version: [3]
+fix: 2.4.40-1.202.201509141730
+version: [2,3]
 desc: |
-  This update addresses the following issue:
+  This update addresses the following issues:
   * When using the mdb backend, the ldap search erroneously returned
     the base object in some cases. This has been fixed.
-bug: [36343]
+  * Denial of service by unauthenticated remote attackers
+    via crafted BER data (CVE-2015-6908)
+bug: [36343, 39340]
+cve:
+ - CVE-2015-6908
