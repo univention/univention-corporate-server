@@ -139,17 +139,30 @@ define([
 				array.forEach(conf, function(variable) {
 					var type = TextBox;
 					var value = variable.value;
+					var additionalParams = {};
 					if (variable.type === 'bool') {
 						type = CheckBox;
 						value = tools.isTrue(value);
+					} else if (variable.type == 'list') {
+						type = ComboBox;
+						additionalParams.staticValues = [];
+						array.forEach(variable.values, function(val, i) {
+							var label = variable.labels[i] || val;
+							additionalParams.staticValues.push({
+								id: val,
+								label: label
+							});
+						});
 					}
-					widgets.push({
+					var widget = {
 						name: variable.id,
 						type: type,
 						label: variable.description,
 						disabled: disabled,
 						value: value
-					});
+					};
+					widget = lang.mixin(widget, additionalParams);
+					widgets.push(widget);
 				});
 			};
 

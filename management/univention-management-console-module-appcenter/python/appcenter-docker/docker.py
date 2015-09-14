@@ -62,16 +62,21 @@ def ps(only_running=True):
 	return check_output(args)
 
 
-def execute_with_output(container, args):
-	args = ['docker', 'exec', container] + args
+def execute_with_output(container, args, tty=True):
+	docker_exec = ['docker', 'exec']
+	if tty:
+		docker_exec.append('-it')
+	args = docker_exec + [container] + args
 	return check_output(args)
 
 
-def execute_with_process(container, args, logger=None):
+def execute_with_process(container, args, logger=None, tty=True):
 	if logger is None:
 		logger = _logger
-
-	args = ['docker', 'exec', container] + args
+	docker_exec = ['docker', 'exec']
+	if tty:
+		docker_exec.append('-it')
+	args = docker_exec + [container] + args
 	return call_process(args, logger)
 
 

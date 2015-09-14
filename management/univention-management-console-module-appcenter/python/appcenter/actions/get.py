@@ -41,9 +41,11 @@ from fnmatch import translate
 from univention.appcenter.utils import shell_safe
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 
+
 class CaseSensitiveConfigParser(RawConfigParser):
 	def optionxform(self, optionstr):
 		return optionstr
+
 
 class StoreKeysAction(Action):
 	def __call__(self, parser, namespace, value, option_string=None):
@@ -56,13 +58,15 @@ class StoreKeysAction(Action):
 			keys.append((section, key))
 		setattr(namespace, self.dest, keys)
 
+
 def _match(value, pattern):
 	regex = re.compile(translate(pattern), re.I)
 	return regex.match(value)
 
+
 class Get(UniventionAppAction):
 	'''Fetches meta information about the app.'''
-	help='Query an app'
+	help = 'Query an app'
 
 	def setup_parser(self, parser):
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the app that shall be queried')
@@ -124,4 +128,3 @@ class Get(UniventionAppAction):
 						self.warn('Could not find option %s:%s' % (search_section, key))
 				else:
 					yield None, key, value
-

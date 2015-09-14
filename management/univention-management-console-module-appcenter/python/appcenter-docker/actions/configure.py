@@ -35,6 +35,7 @@
 import os.path
 import locale
 import ConfigParser
+import shlex
 from argparse import Action
 
 from univention.config_registry import ConfigRegistry
@@ -45,8 +46,10 @@ from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 from univention.appcenter.docker import Docker
 from univention.appcenter.utils import app_is_running, mkdir
 
+
 class NoDatabaseFound(Exception):
 	pass
+
 
 class StoreConfigAction(Action):
 	def __call__(self, parser, namespace, value, option_string=None):
@@ -60,9 +63,10 @@ class StoreConfigAction(Action):
 				set_vars[key] = value
 		setattr(namespace, self.dest, set_vars)
 
+
 class Configure(UniventionAppAction):
 	'''Configures an application.'''
-	help='Configure an app'
+	help = 'Configure an app'
 
 	def setup_parser(self, parser):
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the app that shall be configured')
@@ -112,17 +116,23 @@ class Configure(UniventionAppAction):
 		except NoDatabaseFound:
 			_ucr = {}
 
-		def _get_cfg(config, sec, name):
+		def _get_cfg(config, sec, name, split=False):
 			try:
-				return config.get(sec, name)
+				val = config.get(sec, name)
 			except ConfigParser.NoOptionError:
 				return None
+			else:
+				if split:
+					val = shlex.split(val)
+				return val
 
 		variables = []
 		ucr = ConfigRegistry()
 		for section in parser.sections():
 			variable = {'id': section}
 			variable['description'] = _get_cfg(parser, section, 'Description[%s]' % loc) or _get_cfg(parser, section, 'Description[en]')
+			variable['labels'] = _get_cfg(parser, section, 'Labels[%s]' % loc, split=True) or _get_cfg(parser, section, 'Labels[en]', split=True)
+			variable['values'] = _get_cfg(parser, section, 'values', split=True)
 			variable['type'] = _get_cfg(parser, section, 'type')
 			if variable['type'] == 'boolean':
 				variable['type'] = 'bool'
@@ -196,4 +206,3 @@ class Configure(UniventionAppAction):
 			docker.execute('ucr', 'set', *set_args)
 		if unset_args:
 			docker.execute('ucr', 'unset', *unset_args)
-
