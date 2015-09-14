@@ -1,0 +1,99 @@
+#!/usr/share/ucs-test/runner python
+## desc: Creates dns forward zone entry and trys to resolve it
+## bugs: [39269]
+## tags: [WIP]
+## roles:
+##  - domaincontroller_master
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+## versions:
+##  4.0-3: found
+## exposure: dangerous
+
+import univention.testing.udm as udm_test
+import dns.resolver as resolver
+import dns.query as query_udp
+import dns.message as message
+import dns.rdatatype
+import time
+
+from dns.exception import Timeout
+from dns.exception import DNSException
+from dns.exception import FormError
+from dns.resolver import NXDOMAIN
+from dns.resolver import YXDOMAIN
+from dns.resolver import NoAnswer
+from dns.resolver import NoNameservers
+
+
+def resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number):
+	start = time.time()
+	timeout = 3
+	flag = False
+
+	while flag == False:
+		try:
+			wait = time.time()
+			wait_flag = False
+			while wait_flag == False:
+				if(time.time() - wait > 1):
+					wait_flag = True
+
+			answer = resolver.query(zoneName, resourceRecord)
+			flag = True
+			return answer
+
+		except Timeout:
+			timeout = timeout - 1
+			if timeout < 1:
+				raise Timeout('no answers could be found in the specified lifetime '+ 'NameToResolve: ' +zoneName + ' ResourceRecord: ' +resourceRecord)
+		except NXDOMAIN:
+			diff = time.time() - start
+			if(diff > duration):
+				raise NXDOMAIN('the query name does not exist ' + 'NameToResolve: ' +zoneName + ' ResourceRecord: ' +resourceRecord + ' Time waited: ' + str(diff) )
+		except YXDOMAIN:
+			raise YXDOMAIN('the query name is too long after DNAME substitution ' + 'NameToResolve: ' +zoneName + ' ResourceRecord: ' +resourceRecord )
+		except NoAnswer:
+			query = message.make_query(zoneName, resourceRecord_Number)
+			try:
+				answer = query_udp.udp(query, zoneName)
+				flag = True
+				return answer
+			except DNSException:
+				raise DNSException('query response comes from unexpected address or port ' + 'NameToResolve: ' +zoneName + ' ResourceRecord: ' +resourceRecord)
+			except FormError:
+				raise FormError('query response does not respond to the question asked ' + 'NameToResolve: ' +zoneName + ' ResourceRecord: ' +resourceRecord)
+
+			print 'the response did not contain an answer to the question '+ 'NameToResolve: ' +zoneName + ' ResourceRecord: ' +resourceRecord
+		except NoNameservers:
+			raise NoNameservers('no non-broken nameservers are available to answer the query '+ 'NameToResolve: ' +zoneName + ' ResourceRecord: ' +resourceRecord )
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		duration = 120
+		resourceRecord = 'SOA'
+		resourceRecord_Number = dns.rdatatype.SOA
+		forward_zone_properties = {
+			'zone': '%s.%s' % (uts.random_name(), uts.random_name()),
+			'nameserver': uts.random_string(),
+			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+			'serial': '%s' % (uts.random_int()),
+			'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
+			'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
+			'expire': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
+			'ttl': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
+			'retry': '%s' % (uts.random_int())
+		}
+
+		forward_zone = udm.create_object('dns/forward_zone', **forward_zone_properties)
+
+		query = resolveDnsEntry(duration,forward_zone_properties['zone'],resourceRecord, resourceRecord_Number)
+
+		s = str(query.response.answer[0])
+		s =  s[0:s.find('. ')]
+
+		if s != forward_zone_properties['zone']:
+			raise Exception('the resolved name is not equal to the created ldap-object')
+
