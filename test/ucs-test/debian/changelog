@@ -1,3 +1,9 @@
+ucs-test (5.0.171-2) unstable; urgency=low
+
+  * Bug #39269: Added test for resolving dns forward-zone
+
+ -- Julian Hupertz <hupertz@univention.de>  Mon, 14 Sep 2015 15:33:07 +0200
+
 ucs-test (5.0.171-1) unstable; urgency=low
 
   * fix errors on samba4 servers: add check_for_drs_replication=True or use
