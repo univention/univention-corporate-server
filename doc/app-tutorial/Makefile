@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-MAIN := app-tutorial-4.0
+MAIN := app-tutorial-4.1
 STYLESHEET := univention
 OPTIONS += --stringparam show.comments 0
 
