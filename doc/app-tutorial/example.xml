@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
+<chapter id="example">
+	<title>Example: Docker App <emphasis>Radicale</emphasis></title>
+	<para>
+		In this chapter we will develop a docker based app step by step.
+	</para>
+	<para>
+		We use the software Radiacle for it. Radicale is a CardDAV and CalDAV server already packaged in Debian
+		and therefore available in UCS. So we do not really develop something from scratch but use an existing application
+		and put it into the Univention App Center.
+	</para>
+	<note><para>
+		In general, apps need to come in the debian package format (".deb"). If you do not have your application packaged
+		in this way, please see ???.
+		Here we will use a pre packaged application already present in (the unmaintained repository of) UCS.
+	</para></note>
+	<section id="example:prerequisites">
+		<title>Prerequisites</title>
+		<para>
+			You need a running UCS 4.1 system (Domaincontroller Master for the sake of convenience).
+			As radicale will be installed from the UCS repository, not from the App Center and radicale is unmaintained by Univention, you need to activate the unmaintained repository:
+			<programlisting><![CDATA[ucr set repository/online/unmaintained='yes']]></programlisting>
+			Also, make sure your system has the following packages installed:
+			<programlisting><![CDATA[univention-install univention-appcenter univention-appcenter-docker univention-appcenter-dev]]></programlisting>
+		</para>
+		<para>
+			After this has been done, run
+			<programlisting><![CDATA[univention-app dev-setup-local-appcenter]]></programlisting>
+		</para>
+		<warning><para>
+			Due to a bug in the current implementation, you also need to do run
+			<programlisting><![CDATA[univention-app dev-setup-local-appcenter --ucs-version=4.0]]></programlisting>
+			This holds for every time you find <command>univention-app dev-setup-local-appcenter</command> and <command>univention-app dev-populate-appcenter</command> in this document: You need to rerun
+			the script with an additional <literal>--ucs-version=4.0</literal>.
+		</para></warning>
+	</section>
+	<section id="example:ini">
+		<title>The ini file</title>
+		<para>
+			An app consists of the actual packages and meta information about the app. The app may ship a screenshot, various README files and so on. But every app <emphasis>has</emphasis> to have an ini file.
+		</para>
+		<note><para>
+				Every version of an app (i.e. the original upload and every update of it) has its own ini file! It may be just a copy of the original file with the Version= increased, yet a new ini file is necessary.
+		</para></note>
+		<para>
+			Create a file <filename>~/radicale.ini</filename> (name it as you like...) and put the very first content in it:
+			<programlisting language="ini">
+[Application]
+# Can be chosen arbitrarily but after it has been chosen,
+# needs to stay the same in each version
+ID=radicale
+# Code is necessary, but given by Univention. Normally, you do not
+# need to specify it
+Code=RD
+Name=Radicale
+			</programlisting>
+			The version will be set to that of the repository:
+			<programlisting language="ini">
+Version=0.7
+			</programlisting>
+			Radicale is developed by Kozea, we are "only" doing the integration work. If you develop the software and do the integration, you only need the first two lines:
+			<programlisting language="ini">
+Vendor=Kozea
+WebsiteVendor=http://kozea.fr/
+Maintainer=Univention
+WebsiteMaintainer=http://www.univention.de/
+			</programlisting>
+			Radicale can be used to manage shared calendars, so this makes it a Collaboration app:
+			<programlisting language="ini">
+Categories=Collaboration
+			</programlisting>
+			<note><para>
+				The following categories are allowed (multiple can be specified, splitted by ","): Administration, Business, Collaboration, Education, System services, Virtualization (+ UCS Components, but these are meant for Univention Software)
+			</para></note>
+			Now the important parts: The debian package that is to be installed is called "radicale". It lives in a repository created for this app on the App Center server. The package is unmaintained by Univention, so it needs to be copied from the unmaintained repository to the app's repository (this is done later).
+			<programlisting language="ini">
+DefaultPackages=radicale
+			</programlisting>
+			It shall be installed as a Docker app, so the following needs to be specified:
+			<programlisting language="ini">
+Docker=True
+			</programlisting>
+			This means that the package is not installed on your system but rather in a docker container running on your system. To access the relevant bits of the container (i.e. the calendars and contacts, you need to forward the port (which happens to be 5232 for radicale):
+			<programlisting language="ini">
+PortsExclusive=5232
+# You could also use PortsRedirection=1234:5232
+			</programlisting>
+		</para>
+		<para>
+			Together, this makes:
+			<programlisting language="ini"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="radicale.ini0" parse="text"/></programlisting>
+			Finally, put the ini file into the (local) App Center (do not forget to upload the debian packages - here this means two unmaintained packages already built):
+			<programlisting><![CDATA[univention-app dev-populate-appcenter --new --ini ~/radicale.ini --unmaintained radicale python-radicale]]></programlisting>
+		</para>
+	</section>
+	<section>
+		<title>Integration, first iteration</title>
+		<para>
+			Radicale should already be installable. Alas, it will not work. This is due to way radicale is packaged in Debian.
+			To make it work as expected, we need to modify it. Here starts the integration work of the App.
+		</para>
+		<para>
+			First of all, radicale is not started by default. To change that, we need to modify <filename>/etc/default/radicale</filename> and set START=TRUE.
+			The Univention App Center supports variuos scripts that can be added to the App and will be executed at various points in time.
+			Maybe the most important one is the join script.
+		</para>
+		<section>
+			<title>The join script</title>
+			<para>
+				The join script is a fundamental feature of UCS. UCS is used to run and administrate a domain. New computers may "join"
+				the domain. The computer searches for the Domain Controller Master (DC Master) and adds itself to LDAP (hostname, IP address, etc).
+				Join scripts are used to "join software packages" into the domain. This means that if you install, say, radicale, it
+				may need to register radicale somewhere and make some changes in the domain.
+			</para>
+			<para>
+				The domain is administrated by manipulating the core database on the DC Master, the LDAP database. Normally, this is done
+				by using tools provided by Univention, mainly the Univention Directory Manager, udm.
+			</para>
+			<para>
+				But here, we do not really need to alter LDAP. We just want to change a local file. We are just making use of the fact
+				that the join script is executed after the package is installed. (Here: After the app is installed)
+			</para>
+			<note><para>
+				We need to distinguish between the <emphasis>Docker Host</emphasis> - this is the "real" UCS installed. The Docker Host is
+				running the <emphasis>Docker Container</emphasis>s. These may also be UCS systems, but they essentially only run the app packages.
+			</para></note>
+			<para>
+				The App Center provides an easy way to add a join script to the App by just adding it to the repository on the App Center server.
+				The join script is then executed on the <emphasis>Docker Host</emphasis> after the <emphasis>Docker Container</emphasis> is set up.
+				So the join script is not executed locally with respect to the app, but the Docker Host may access the file system of the Container anyways.
+			</para>
+			<para>
+				To add a join script, just create a file <filename>~/radicale.inst</filename> and add the following to it:
+				<programlisting language="bash"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="radicale.inst0" parse="text"/></programlisting>
+				Now you can add it to the App Center:
+				<programlisting><![CDATA[univention-app dev-populate-appcenter --new --ini ~/radicale.ini --join ~/radicale.inst --unmaintained radicale python-radicale]]></programlisting>
+			</para>
+			<note><para>
+				<programlisting><![CDATA[univention-app dev-populate-appcenter --new]]></programlisting>
+				will create a new version of the app and write the internal component to the screen
+				(In this case something like radicale_yyyymmdd). But if you are fast enough, it will overwrite the existing app version because the date does not (yet) differ.
+				Correct would be something like
+				<programlisting><![CDATA[univention-app dev-populate-appcenter --component radicale_20150910 --join ~/radicale.inst]]></programlisting>
+				to really alter the app.
+			</para></note>
+		</section>
+		<section>
+			<title>Storing the data persistently</title>
+			<para>
+				Now the App should be installable and run as expected. As the ini did not specify it otherwise the default container image will be used:
+				univention/ucs-appbox-amd64:4.0-0-minbase. It is downloaded from the docker hub and started on the Docker Host. The image contains a minimal
+				UCS memberserver which will eventually contain the app packages.
+			</para>
+			<note><para>
+				There are some things you should be aware of when developing a docker app for the Univention App Center:
+				<itemizedlist>
+					<listitem><simpara>
+						The default image is a minimal, yet fully functional UCS.
+					</simpara></listitem>
+					<listitem><simpara>
+						The system will join into the domain. The docker app will be listed as a memberserver when showing all hosts of the domain.
+					</simpara></listitem>
+					<listitem><simpara>
+						The system will not run something like /usr/bin/radicale directly. Instead it runs <command>/sbin/init</command> (it is actually a slightly altered version of the original <command>/sbin/init</command> of UCS).
+						The app will be run because it is somehow configured to be started on a certain runlevel (somehow means: This is the job of the corresponding debian package).
+					</simpara></listitem>
+					<listitem><simpara>
+						The docker image is writable, i.e. the app can create and modify all files it wants and after restarting the container, the files persist.
+						This also holds for updates: The docker container may install package updates released by Univention (so called errata updates) and even new major versions of the operating system.
+						This means that the image can be used "forever".
+					</simpara></listitem>
+				</itemizedlist>
+			</para></note>
+			<para>
+				Last point for this section will be storing and restoring data from the docker container. Although the container may be used forever, it may be that the underlying
+				image needs to be exchanged. This is done by effectively removing the old container and setting up a completely new one. Thus, we need to store the app data just before
+				removing the old container and restore it in the new one.
+			</para>
+			<para>
+				radicale has some backends where to store the data, but preconfigured is the file backend - which makes it very easy for us to backup the data. The calender and contact
+				data is stored at <filename>/var/lib/radicale/collections/</filename>. We just need to save this directory and restore it accordingly. Luckily, the Univention App Center
+				provides a shared directory where the App can store its data easily. This directory is <filename>/var/lib/appcenter/app/<replaceable>$APPID</replaceable>/data</filename>.
+			</para>
+			<para>
+				Create the file <filename>~/radicale.store_data</filename> with the following content:
+				<programlisting language="bash"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="radicale.store_data" parse="text"/></programlisting>
+				Next, create <filename>~/radicale.restore_data</filename>:
+				<programlisting language="bash"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="radicale.restore_data" parse="text"/></programlisting>
+			</para>
+			<para>
+				Finally, make these scripts known to the App by specifying them in the ini file. You can use any name you like. The scripts will be copied to that place in the container. You may even overwrite existing files.
+				<programlisting language="ini">
+DockerScriptStoreData=/usr/share/univention-appcenter/app/radicale/store_data
+DockerScriptRestoreDataAfterSetup=/usr/share/univention-appcenter/app/radicale/restore_data
+				</programlisting>
+			</para>
+			<note><para>
+				All docker scripts that may be specified in the ini file have a reasonable default already installed in the default container. So it is generally a good idea to execute the default script in your script.
+			</para></note>
+			<para>
+				Add the new scripts to your App Center:
+				<programlisting><![CDATA[univention-app dev-populate-appcenter --new --ini ~/radicale.ini --join ~/radicale.inst --store-data ~/radicale.store_data --restore-data-after-setup ~/radicale.restore_data --unmaintained radicale python-radicale]]></programlisting>
+			</para>
+		</section>
+	</section>
+	<section>
+		<title>Integration, second iteration</title>
+		<para>
+			The app should be in a functional state now.
+			<programlisting><![CDATA[univention-app install radicale]]></programlisting>
+			should give you a running CalDAV/CardDAV service at port 5232 on you Docker Host.
+		</para>
+		<para>
+			The configuration of the service is not optimal, though. Every user, even
+			an anonymous user can create and change any calender and contact.
+			We want to limit the access to domain users. And they should only be
+			able to change their own calendars.
+			Note that radicale provides mechanisms for even finer grained control. This
+			is not scope of this example, though.
+		</para>
+		<section>
+			<title>Making the app configurable by the user</title>
+			<para>
+				Radicale's rights management can be configured in various ways. We want to
+				let the administrator decide whether the app's configuration is <envvar>owner_write</envvar> (users
+				need to have valid credentials; their own calenders/contacts can be modified,
+				other's can be read) or <envvar>authenticated</envvar> (same, but other's can also be modified).
+			</para>
+			<para>
+				This is achieved by adding <filename>~/radicale.ucr</filename>. This file
+				defines some Univention Configuration Registry variables (UCR). These are a core feature of UCS
+				and thus of a docker app based on UCS.
+				<programlisting language="ini"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="radicale.ucr" parse="text"/></programlisting>
+			</para>
+			<para>
+				The definition itself is not very useful on its own. It just sets the variable
+				in the database. The interesting part of UCR are the triggers and the templates.
+				One may define triggers that are called whenever a variable is changed. And one
+				may define templates that overwrite existing files depending on UCR variables.
+			</para>
+			<para>
+				Normally, one would now create a package with all the triggers. But for this
+				example, we do not want to create packages at all. We may misuse the join script
+				to add this trigger and a template in the container.
+			</para>
+			<note><para>
+				The integration part starts getting complicated. One should really create
+				a package <emphasis>univention-radicale</emphasis> and add the UCR definition there.
+				One could also do the modification of <filename>/etc/default/radicale</filename> there, e.g. by using
+				a dpkg-divert. The package would depend on exactly one package (radicale) and be defined
+				as the only DefaultPackages in the ini file.
+			</para></note>
+			<para>
+				We will show what to do in the next section as the join script is modified one more time.
+			</para>
+		</section>
+		<section>
+			<title>Making the app LDAP aware</title>
+			<para>
+				Radicale comes with LDAP support. We just need to configure it.
+				Radicale binds to LDAP and can then check any credentials.
+				But for that we need a binddn for Radicale. A new user for that app needs
+				to be created in LDAP.
+			</para>
+			<para>
+				After that this very user has to be specified in the configuration file
+				of radicale, <filename>/etc/radicale/conf</filename>.
+			</para>
+			<para>
+				This should be done in the join script.
+				We change <filename>~/radicale.inst</filename> so that it adds a new
+				user for us and creates a file in the container. Note that the latter
+				operation is quick and dirty and is only done because we would have
+				to create a package for basically one file otherwise.
+				<programlisting language="bash"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="radicale.inst" parse="text"/></programlisting>
+				Note that ucs_addServiceToLocalhost was added. This is a best practice to
+				make the domain administrator aware where the application "Radicale" is installed.
+			</para>
+			<note><para>
+				The command ucs_addServiceToLocalhost should be reverted when the app is uninstalled.
+				But even more importantly, the join script needs to be run again as soon as the app
+				is uninstalled and then installed again (changing <filename>/etc/default/radicale</filename> and so on...).
+				As the joinscript saved the information bit that it was successfully executed at the
+				end of itself, we need to revert that, too.
+				To do so, we need an <emphasis>unjoin script</emphasis>. Technically it is similar to a join script
+				but run when uninstalling the app, not when installing it. The script would
+				simple do this (save to <filename>~/radicale.uinst</filename>:
+				<programlisting language="bash"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="radicale.uinst" parse="text"/></programlisting>
+			</para></note>
+			<para>
+				One last time we need to update our App Center server:
+				<programlisting><![CDATA[univention-app dev-populate-appcenter --new --ini ~/radicale.ini --join ~/radicale.inst --unjoin ~/radicale.uinst --store-data ~/radicale.store_data --restore-data-after-setup ~/radicale.restore_data --ucr ~/radicale.ucr --unmaintained radicale python-radicale]]></programlisting>
+			</para>
+			<para>
+				Now we can test and use our application:
+				<programlisting><![CDATA[univention-app install radicale]]></programlisting>
+			</para>
+			<para>
+				The configuration option regarding the rights management can now be set
+				in the &ucsUMC; or via
+				<programlisting><![CDATA[univention-app configure radicale --set radicale/rights/type=authenticated]]></programlisting>
+				<programlisting><![CDATA[univention-app restart radicale]]></programlisting>
+			</para>
+		</section>
+	</section>
+</chapter>
+
+<!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->
