@@ -231,9 +231,9 @@ DockerScriptRestoreDataAfterSetup=/usr/share/univention-appcenter/app/radicale/r
 			<title>Making the app configurable by the user</title>
 			<para>
 				Radicale's rights management can be configured in various ways. We want to
-				let the administrator decide whether the app's configuration is <envvar>owner_write</envvar> (users
+				let the administrator decide whether the app's configuration is <envar>owner_write</envar> (users
 				need to have valid credentials; their own calenders/contacts can be modified,
-				other's can be read) or <envvar>authenticated</envvar> (same, but other's can also be modified).
+				other's can be read) or <envar>authenticated</envar> (same, but other's can also be modified).
 			</para>
 			<para>
 				This is achieved by adding <filename>~/radicale.ucr</filename>. This file
