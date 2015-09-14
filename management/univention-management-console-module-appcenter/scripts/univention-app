@@ -72,9 +72,11 @@ def main():
 	args = parser.parse_args()
 
 	ret = args.func(args)
-	if ret is False:
+	if ret is True:
+		ret = 0
+	elif ret is False:
 		ret = 1
-	if not isinstance(ret, int):
+	elif not isinstance(ret, int):
 		ret = 0
 	sys.exit(ret)
 

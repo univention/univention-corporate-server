@@ -215,7 +215,7 @@ class UniventionAppAction(object):
 				subprocess_args.append(value)
 
 		process = self._subprocess(subprocess_args)
-		self.log('%s returned with %s' % (_script, process.returncode))
+		self.debug('%s returned with %s' % (_script, process.returncode))
 
 		return process.returncode == 0
 

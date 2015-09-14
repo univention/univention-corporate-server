@@ -73,6 +73,14 @@ joinscript_run_in_container () {
 	docker exec $CONTAINER $@
 }
 
+joinscript_container_file_touch () {
+	local filename
+	filename="$(joinscript_container_file $1)"
+	mkdir -p "$(dirname $filename)"
+	touch "$filename"
+	echo "$filename"
+}
+
 joinscript_container_file () {
 	joinscript_container_is_running 1>/dev/null || die
 	echo "/var/lib/docker/aufs/mnt/$CONTAINER/$1"

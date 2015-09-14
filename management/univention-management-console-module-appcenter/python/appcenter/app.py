@@ -311,7 +311,7 @@ class App(object):
 	web_interface_port_http = AppIntAttribute(default=80)
 	web_interface_port_https = AppIntAttribute(default=443)
 	auto_mod_proxy = AppBooleanAttribute(default=True)
-	ucs_overview_category = AppAttributeOrFalse(default='services', choices=['admin', 'services'])
+	ucs_overview_category = AppAttributeOrFalse(default='service', choices=['admin', 'service'])
 
 	conflicted_apps = AppListAttribute()
 	required_apps = AppListAttribute()

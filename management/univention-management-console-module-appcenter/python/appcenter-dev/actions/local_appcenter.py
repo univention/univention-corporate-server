@@ -198,7 +198,8 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 						for filename_in_directory, filename_in_archive in app.tar_files():
 							archive.add(filename_in_directory, filename_in_archive)
 				index_json.write(dumps(apps, sort_keys=True, indent=4))
-		Update.call()
+		if args.ucs_version == ucr.get('version/version'):
+			Update.call()
 
 
 class DevPopulateAppcenter(LocalAppcenterAction):
