@@ -1,0 +1,84 @@
+#!/bin/sh
+
+VERSION=1
+
+. /usr/share/univention-appcenter/joinscripthelper.sh
+. /usr/share/univention-lib/all.sh
+
+joinscript_init
+
+eval "$(ucr shell ldap/base)"
+
+ucs_addServiceToLocalhost "${SERVICE}" "$@"
+
+joinscript_add_simple_app_system_user "$@"
+
+cat > "$(joinscript_container_file_touch /etc/univention/templates/files/var/lib/radicale/.config/radicale/config)" <<- EOF
+@%@UCRWARNING=#@%@
+
+[rights]
+type = @%@radicale/rights/type@%@
+
+[auth]
+# Access method
+# Value: None | htpasswd | LDAP | PAM | courier
+type = LDAP
+
+# Usernames used for public collections, separated by a comma
+#public_users = public
+# Usernames used for private collections, separated by a comma
+#private_users = private
+
+# Htpasswd filename
+#htpasswd_filename = /etc/radicale/users
+# Htpasswd encryption method
+# Value: plain | sha1 | crypt
+#htpasswd_encryption = crypt
+
+# LDAP server URL, with protocol and port
+ldap_url = ldap://@%@ldap/server/name@%@:@%@ldap/server/port@%@/
+# LDAP base path
+ldap_base = @%@ldap/base@%@
+# LDAP login attribute
+#ldap_attribute = uid
+# LDAP filter string
+# placed as X in a query of the form (&(...)X)
+# example: (objectCategory=Person)(objectClass=User)(memberOf=cn=calenderusers,ou=users,dc=example,dc=org)
+# leave empty if no additional filter is needed
+#ldap_filter =
+# LDAP dn for initial login, used if LDAP server does not allow anonymous searches
+# Leave empty if searches are anonymous
+ldap_binddn = uid=radicale-systemuser,cn=users,@%@ldap/base@%@
+# LDAP password for initial login, used with ldap_binddn
+@!@
+#ldap_password =
+print 'ldap_password = %s' % open('/etc/radicale.secret').read()
+@!@
+# LDAP scope of the search
+ldap_scope = SubTree
+
+# PAM group user should be member of
+#pam_group_membership =
+
+# Path to the Courier Authdaemon socket
+#courier_socket =
+EOF
+
+cat > "$(joinscript_container_file /etc/univention/templates/info/univention-radicale.info)" <<- EOF
+Type: file
+File: var/lib/radicale/.config/radicale/config
+Variables: radicale/.*
+Variables: ldap/base
+Variables: ldap/server/port
+Variables: ldap/server/name
+EOF
+
+joinscript_run_in_container ucr update
+joinscript_run_in_container ucr commit /var/lib/radicale/.config/radicale/config
+
+joinscript_run_in_container sed -i /etc/default/radicale -e "s/#ENABLE_RADICALE/ENABLE_RADICALE/" || die
+joinscript_run_in_container invoke-rc.d radicale restart
+
+joinscript_save_current_version
+
+exit 0

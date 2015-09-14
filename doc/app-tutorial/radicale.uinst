@@ -1,0 +1,15 @@
+#!/bin/sh
+
+VERSION=1
+
+. /usr/share/univention-appcenter/joinscripthelper.sh
+. /usr/share/univention-lib/all.sh
+
+joinscript_init
+
+ucs_removeServiceFromLocalhost "${SERVICE}" "$@"
+
+joinscript_remove_script_from_status_file radicale
+
+exit 0
+

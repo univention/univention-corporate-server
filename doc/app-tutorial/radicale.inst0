@@ -1,0 +1,15 @@
+#!/bin/sh
+
+VERSION=1
+
+. /usr/share/univention-appcenter/joinscripthelper.sh
+
+joinscript_init
+
+eval "$(ucr shell ldap/base)"
+
+joinscript_run_in_container sed -i /etc/default/radicale -e "s/#ENABLE_RADICALE/ENABLE_RADICALE/" || die
+
+joinscript_save_current_version
+
+exit 0

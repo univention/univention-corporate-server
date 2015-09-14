@@ -1,0 +1,9 @@
+#!/bin/sh
+# -*- coding: utf-8 -*-
+
+/usr/share/univention-docker-container-mode/restore_data_after_setup $@
+
+rm -r /var/lib/radicale/collections
+cp -r /var/lib/appcenter/app/radicale/data/collections /var/lib/radicale/
+
+exit 0

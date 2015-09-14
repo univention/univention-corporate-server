@@ -1,0 +1,9 @@
+[radicale/rights/type]
+Description[de]=Rechtevergabe für Kalender, Kontakte
+Description[en]=Access control for calendars, contacts
+Type=list
+Labels[de]="Alle lesen, eigene schreiben" "Alle lesen, alle schreiben"
+Labels[en]="Read all, write own" "Read all, write all"
+Values=owner_write authenticated
+Default=owner_write
+Categories=apps
