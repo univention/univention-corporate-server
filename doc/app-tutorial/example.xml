@@ -102,7 +102,7 @@ PortsExclusive=5232
 			<programlisting><![CDATA[univention-app dev-populate-appcenter --new --ini ~/radicale.ini --unmaintained radicale python-radicale]]></programlisting>
 		</para>
 	</section>
-	<section>
+	<section id="example:integration1">
 		<title>Integration, first iteration</title>
 		<para>
 			Radicale should already be installable. Alas, it will not work. This is due to way radicale is packaged in Debian.
@@ -113,7 +113,7 @@ PortsExclusive=5232
 			The Univention App Center supports variuos scripts that can be added to the App and will be executed at various points in time.
 			Maybe the most important one is the join script.
 		</para>
-		<section>
+		<section id="example:join">
 			<title>The join script</title>
 			<para>
 				The join script is a fundamental feature of UCS. UCS is used to run and administrate a domain. New computers may "join"
@@ -153,7 +153,7 @@ PortsExclusive=5232
 				to really alter the app.
 			</para></note>
 		</section>
-		<section>
+		<section id="example:store">
 			<title>Storing the data persistently</title>
 			<para>
 				Now the App should be installable and run as expected. As the ini did not specify it otherwise the default container image will be used:
@@ -212,7 +212,7 @@ DockerScriptRestoreDataAfterSetup=/usr/share/univention-appcenter/app/radicale/r
 			</para>
 		</section>
 	</section>
-	<section>
+	<section id="example:integration2">
 		<title>Integration, second iteration</title>
 		<para>
 			The app should be in a functional state now.
@@ -227,7 +227,7 @@ DockerScriptRestoreDataAfterSetup=/usr/share/univention-appcenter/app/radicale/r
 			Note that radicale provides mechanisms for even finer grained control. This
 			is not scope of this example, though.
 		</para>
-		<section>
+		<section id="example:ucr">
 			<title>Making the app configurable by the user</title>
 			<para>
 				Radicale's rights management can be configured in various ways. We want to
@@ -263,7 +263,7 @@ DockerScriptRestoreDataAfterSetup=/usr/share/univention-appcenter/app/radicale/r
 				We will show what to do in the next section as the join script is modified one more time.
 			</para>
 		</section>
-		<section>
+		<section id="example:ldap">
 			<title>Making the app LDAP aware</title>
 			<para>
 				Radicale comes with LDAP support. We just need to configure it.
