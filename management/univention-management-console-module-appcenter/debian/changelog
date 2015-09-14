@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.4-5) unstable; urgency=low
+
+  * Bug #38894: [WIP] adjusted style for apps in the overview and added
+  	padding for the TitlePane in the DetailPage
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 14 Sep 2015 14:51:43 +0200
+
 univention-management-console-module-appcenter (5.0.4-4) unstable; urgency=medium
 
   * UCSOverviewCategory allows service, not services (Bug #39329)

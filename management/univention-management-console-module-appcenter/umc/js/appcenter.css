@@ -110,7 +110,7 @@
 	z-index: 0;
 	top: 0;
 	transition: opacity 0.5s;
-	background-position: bottom center;
+	background-position: center center;
 }
 #appInnerWrapper.hover #appIcon {
 	opacity: 0.2;
@@ -125,7 +125,7 @@
 
 #appContent {
 	width: 100%;
-	padding: 0.6em 0 0 0.6em;
+	padding: 0.6em 0 0.3em 0.6em;
 	display: inline-block;
 	transition: transform 0.5s;
 }
@@ -156,7 +156,7 @@
 #appContent .umcGalleryName {
 	font-size: 1.3em;
 	display: block;
-	margin-bottom: 0.5em;
+	margin-bottom: 0.3em;
 	margin-right: 0;
 	transform: none;
 }

@@ -440,7 +440,8 @@ define([
 				'class': 'aaa',
 				style: {
 					'border-bottom': '1px solid #c8c8c8',
-					'padding': '1em 0'
+					'padding': '1em 0',
+					'margin-bottom': '3em'
 				}
 			});
 			
@@ -465,7 +466,7 @@ define([
 
 			//description + functionlist
 			var descriptionContainer = new ContainerWidget({
-				style: {'padding-bottom': '2em', 'padding-top': '3em'}
+				style: {'padding-bottom': '2em'}
 			});
 			var descriptionTable = domConstruct.create('table');
 			var tr = domConstruct.create('tr', {}, descriptionTable);
