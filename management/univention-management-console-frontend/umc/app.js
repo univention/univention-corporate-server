@@ -923,7 +923,7 @@ define([
 			// save some config properties
 			tools.status('overview', tools.isTrue(props.overview));
 			// username will be overriden by final authenticated username
-			tools.status('username', props.username || cookie('UMCUsername'));
+			tools.status('username', props.username || tools.getCookies().username);
 			// password has been given in the query string... in this case we may cache it, as well
 			tools.status('password', props.password);
 
@@ -940,10 +940,9 @@ define([
 			}
 
 			// check whether we still have a possibly valid cookie
-			var sessionCookie = cookie('UMCSessionId');
-			var usernameCookie = cookie('UMCUsername');
-			if (undefined !== sessionCookie && usernameCookie !== undefined &&
-				(!tools.status('username') || tools.status('username') == usernameCookie)) {
+			var cookies = tools.getCookies();
+			if (undefined !== cookies.sessionID && cookies.username !== undefined &&
+				(!tools.status('username') || tools.status('username') == cookies.username)) {
 				// the following conditions need to be given for an automatic login
 				// * session and username need to be set via cookie
 				// * if a username is given via the query string, it needs to match the
@@ -952,7 +951,7 @@ define([
 					locale: i18nTools.defaultLang().replace('-', '_')
 				}, false).then(lang.hitch(this, function() {
 					// session is still valid
-					this.onLogin(cookie('UMCUsername'));
+					this.onLogin(tools.getCookies().username);
 				}), lang.hitch(this, function() {
 					this.login();
 				}));
@@ -975,7 +974,7 @@ define([
 
 		onLogin: function(username) {
 			// save the username internally and as cookie
-			cookie('UMCUsername', username, { expires: 100, path: '/' });
+			tools.setUsernameCookie(username, { expires: 100, path: '/' });
 			tools.status('username', username);
 
 			// start the timer for session checking

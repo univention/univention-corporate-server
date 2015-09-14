@@ -50,7 +50,6 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!"
 ], function(lang, array, _window, xhr, basexhr, Deferred, json, string, topic, cookie, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, i18nTools, _) {
-
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
 	// require it explicitely
@@ -119,11 +118,28 @@ define([
 			return undefined;
 		},
 
+		getCookies: function() {
+			return {
+				sessionID: cookie('UMCSessionId-' + document.location.port) || cookie('UMCSessionId'),
+				username: cookie('UMCUsername-' + document.location.port) || cookie('UMCUsername')
+			};
+		},
+
+		setSessionCookie: function(value, params) {
+			var key = 'UMCSessionId' + (document.location.port ? '-' + document.location.port : '');
+			cookie(key, value, params);
+		},
+
+		setUsernameCookie: function(value, params) {
+			var key = 'UMCUsername' + (document.location.port ? '-' + document.location.port : '');
+			cookie(key, value, params);
+		},
+
 		closeSession: function() {
 			// summary:
 			//		Reset the session cookie in order to close the session from the client side.
 			this.status('sessionLastRequest', new Date(0));
-			cookie('UMCSessionId', null, {
+			this.setSessionCookie(null, {
 				expires: -1,
 				path: '/'
 			});
@@ -132,17 +148,17 @@ define([
 		renewSession: function() {
 			topic.publish('/umc/actions', 'session', 'renew');
 			this.resetModules();
-			var sessionID = cookie('UMCSessionId');
+			var sessionID = this.getCookies().sessionID;
 			return tools.umcpCommand('lib/sso/getsession', {
 				host: 'localhost'
-			}, false).then(function(response) {
+			}, false).then(lang.hitch(this, function(response) {
 				var loginToken = response.result.loginToken;
 				return xhr('/umcp/sso', {
 					query: {
 						loginToken: loginToken
 					}
-				}).then(function() {
-					var newSessionID = cookie('UMCSessionId');
+				}).then(lang.hitch(this, function() {
+					var newSessionID = this.getCookies().sessionID;
 					if (newSessionID == sessionID) {
 						console.log('UMC server session could not be renewed, therefore a re-login is enforced.');
 						this.closeSession();
@@ -151,8 +167,8 @@ define([
 
 					console.log('UMC server session has been renewed successfully.');
 					return;
-				});
-			}).then(null, lang.hitch(this, function(err) {
+				}));
+			})).then(null, lang.hitch(this, function(err) {
 				// if lib/sso/getsession is not accessible, simply close the session
 				console.error('WARNING: Could not renew session, access to lib/sso/getsession not granted... forcing re-login again instead:', err);
 				this.closeSession();

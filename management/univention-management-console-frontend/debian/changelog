@@ -1,3 +1,21 @@
+univention-management-console-frontend (5.0.22-3) unstable; urgency=medium
+
+  * Bug #38344: fix errors during UMC SSO request
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Apr 2015 16:05:49 +0200
+
+univention-management-console-frontend (5.0.22-2) unstable; urgency=medium
+
+  * Bug #38344: ensure backwards compatibility for session cookie handling
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Apr 2015 15:47:15 +0200
+
+univention-management-console-frontend (5.0.22-1) unstable; urgency=medium
+
+  * Bug #38344: allow for parallel UMC sessions on different ports
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Apr 2015 14:25:53 +0200
+
 univention-management-console-frontend (5.0.21-4) unstable; urgency=medium
 
   * Bug #31943: adapt dependencies
@@ -386,7 +404,7 @@ univention-management-console-frontend (4.1.106-61) unstable; urgency=low
 univention-management-console-frontend (4.1.106-60) unstable; urgency=low
 
   * Bug #38276: callbacks will now always recieve an array if mutliFile
-   is set to true
+    is set to true
 
  -- Drees Dormann <dormann@univention.de>  Thu, 23 Apr 2015 14:58:42 +0200
 
