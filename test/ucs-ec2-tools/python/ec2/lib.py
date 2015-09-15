@@ -544,15 +544,16 @@ class VM_KVM(VM):
 		fn_kvm_results = stdout.strip()
 		self._log('  fn_kvm_results: %s:%s' % (kvm_server, fn_kvm_results,))
 
-		cmdline = '%s -y -V %s -A %s -l %s %s --onlyone -r %s' % (
-			quote(PATH_UCS_KT_GET),
-			quote(self.config.get(self.section, 'kvm_ucsversion')),
-			quote(self.config.get(self.section, 'kvm_architecture')),
-			quote(kvm_name_short),
-			quote(self.config.get(self.section, 'kvm_template')),
-			quote(fn_kvm_results),
-			)
-
+		cmdline = ' '.join(quote(arg) for arg in [
+			PATH_UCS_KT_GET,
+			'--yes',
+			'--version', self.config.get(self.section, 'kvm_ucsversion'),
+			'--architecture', self.config.get(self.section, 'kvm_architecture'),
+			'--label', kvm_name_short,
+			'--onlyone',
+			'--resultfile', fn_kvm_results,
+			self.config.get(self.section, 'kvm_template'),
+		])
 		self._log('  %s' % cmdline)
 		ret, stdout, stderr = self._ssh_exec_get_data(cmdline, self.server)
 		if ret != 0:
