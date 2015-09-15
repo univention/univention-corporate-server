@@ -32,11 +32,9 @@ Terminate Amazon EC2 instances by AMI.
 # <http://www.gnu.org/licenses/>.
 
 from optparse import OptionParser
-import os
 import sys
 import boto
 from boto.ec2 import regions
-from boto.vpc import VPCConnection
 
 
 def main():
@@ -71,7 +69,6 @@ def main():
 	reservations = ec2.get_all_instances(instance_ids=amis)
 	instances = [i for r in reservations for i in r.instances]
 	for instance in instances:
-		name = instance.tags.get('Name')
 		print 'Name:   %s' % instance.tags.get('Name')
 		print 'IP:     %s' % instance.ip_address
 		print 'AMI:    %s' % instance.id
