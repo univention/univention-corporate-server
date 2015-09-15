@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.89-25) unstable; urgency=medium
+
+  * Bug #39319: Define a min-height for GalleryItem's description
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 15 Sep 2015 11:56:06 +0200
+
 univention-management-console-frontend-theme (0.0.89-24) unstable; urgency=medium
 
   * Bug #39319: Define a height for GalleryItem's description
