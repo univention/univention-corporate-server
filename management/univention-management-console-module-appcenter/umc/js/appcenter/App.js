@@ -340,7 +340,6 @@ define([
 							id: item.hostName,
 							data: item,
 							appStatus: item.canUpgrade() ? 'Update available' : '',
-							moreInformation: ''
 						};
 						hosts.push(ihost);
 					}
@@ -352,7 +351,6 @@ define([
 						id: this.hostName,
 						data: this,
 						appStatus: this.canUpgrade() ? 'Update available' : '',
-						moreInformation: ''
 					});
 				}
 			}

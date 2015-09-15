@@ -216,3 +216,11 @@
 .appcenterMetaCategory .dijitButton {
 	float: right;
 }
+
+.appDetailsPageGrid {
+	margin-bottom: 3em;
+}
+
+.appDetailsPageGrid .appDetailsPageGridContent {
+	height: 105px !important;
+}

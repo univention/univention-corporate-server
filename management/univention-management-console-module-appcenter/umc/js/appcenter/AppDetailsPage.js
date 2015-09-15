@@ -402,27 +402,22 @@ define([
 				}, {
 					name: 'appStatus',
 					label: _('Status')
-				}, {
-					name: 'moreInformation',
-					label: _('More Information')
 				}];
 
 				var myStore = new Observable(new Memory({
 					data: this.app.getHosts()
 				}));
 				this._installedAppsGrid = new adaptedGrid({
+					'class': 'appDetailsPageGrid',
 					actions: actions,
 					columns: columns,
 					moduleStore: myStore,
 					gridOptions: {
-						'class': '', // overwritten to avoid css inheritage
-						style: 'height: 105px' // display 4 entires without scorlling
-					},
-					style: {
-						'margin-bottom': '3em'
+						'class': 'appDetailsPageGridContent'
 					}
 				});
 				this._mainRegionContainer.addChild(this._installedAppsGrid);
+				this._installedAppsGrid._grid.resize();
 			}
 			
 			//imageCarousel
