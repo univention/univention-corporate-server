@@ -157,10 +157,12 @@ define([
 					label: _('Installed'),
 					grid: null,
 					widget: null,
-					filter: function(applications) {
-						var installedApps = array.filter(applications, function(app) {
-							return app.is_installed || app.is_installed_anywhere;
-						});
+					query: function(app) {
+						// currently only local because no reliable attribute for domain wide installations
+						return app.is_installed;
+					},
+					setGridStore: function(applications) {
+						var installedApps = array.filter(applications, this.query);
 						this.grid.set('store', new Observable(new Memory({
 							data: installedApps
 						})));
@@ -170,10 +172,12 @@ define([
 					label: _('Available'),
 					grid: null,
 					widget: null,
-					filter: function(applications) { 
-						var availableApps = array.filter(applications, function(app) {
-							return !app.is_installed_anywhere || !app.is_installed;
-						});
+					query: function(app) {
+						// currently only local because no reliable attribute for domain wide installations
+						return !app.is_installed;
+					},
+					setGridStore: function(applications) { 
+						var availableApps = array.filter(applications, this.query);
 						this.grid.set('store', new Observable( new Memory({
 							data: availableApps
 						})));
@@ -285,7 +289,7 @@ define([
 			this._applications = null;
 			var updating = when(this.getApplications()).then(lang.hitch(this, function(applications) {
 				tools.forIn(this.metaCategories, function(metaKey, metaObj) {
-					metaObj.filter(applications);
+					metaObj.setGridStore(applications);
 				});
 
 				if (this.liveSearch) {
@@ -298,6 +302,9 @@ define([
 						});
 					});
 					categories.sort();
+					tools.forIn(this.metaCategories, function(metaKey, metaObj) {
+						categories.unshift(metaObj.label);
+					});
 					categories.unshift(_('All'));
 					this._searchSidebar.set('categories', categories);
 					this._searchSidebar.set('allCategory', categories[0]);
@@ -327,8 +334,15 @@ define([
 						return false;
 					}
 				}
+				
 				return true;
 			};
+
+			tools.forIn(this.metaCategories, function(metaKey, metaObj) {
+				if (metaObj.label === category) {
+					query = metaObj.query;
+				}
+			});
 
 			// set query options and refresh grid
 			this.set('appQuery', query);

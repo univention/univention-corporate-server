@@ -46,8 +46,8 @@ define([
 		//		This class is used in the UMC overview and the App Center.
 
 		// categories: Object[]|String[]
-		// 		Array of categories exposing at least the fields 'id' and 'label'
-		// 		or array of strings.
+		//		Array of categories exposing at least the fields 'id' and 'label'
+		//		or array of strings.
 		categories: null,
 
 		_categoriesAsIdLabelPairs: true,

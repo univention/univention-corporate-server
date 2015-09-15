@@ -417,7 +417,6 @@ define([
 					}
 				});
 				this._mainRegionContainer.addChild(this._installedAppsGrid);
-				this._installedAppsGrid._grid.resize();
 			}
 			
 			//imageCarousel

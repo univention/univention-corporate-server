@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.4-11) unstable; urgency=low
+
+  * Bug #38894: [WIP] added metaCategories in the LiveSearchSideBar
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 15 Sep 2015 18:37:54 +0200
+
 univention-management-console-module-appcenter (5.0.4-10) unstable; urgency=low
 
   * Bug #38894: [WIP] fixed appDetailsPage grid not showing content
