@@ -13,6 +13,7 @@ desc: |
   * SQL injection in Zend_Db_Select (CVE-2014-4914)
   * Incorrect NULL byte handling in LDAP authentication (CVE-2014-8088)
   * SQL injection in sqlsrv extension (CVE-2014-8089)
+  * CRLF injections in HTTP and Mail (CVE-2015-3154)
   * Improper Restriction of XML External Entity Reference (CVE-2015-5161)
 bug:
  - 37002
@@ -25,4 +26,5 @@ cve:
  - CVE-2014-4914
  - CVE-2014-8088
  - CVE-2014-8089
+ - CVE-2015-3154
  - CVE-2015-5161
