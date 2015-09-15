@@ -496,6 +496,10 @@
 		<title>Container Technologies</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The packages <package>univention-docker-container-mode</package> and
+					<package>univention-appliance-docker-container</package> have been added.
+					These packages help to run UCS in a Docker container
+					(<u:bug>39331</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 	</section>
