@@ -295,6 +295,7 @@ def do_app_updates(options, checkForUpdates, silent):
 	interactive = not (options.noninteractive or checkForUpdates)
 	try:
 		from univention.appcenter.actions import get_action
+		from univention.appcenter.app_center import AppcenterServerContactFailed
 		import univention.appcenter.log as appcenter_log
 		app_upgrade = get_action('upgrade')
 		if app_upgrade is None:
@@ -318,7 +319,13 @@ def do_app_updates(options, checkForUpdates, silent):
 	handler.setLevel(logging.INFO)
 	logger.addHandler(handler)
 
-	new_apps = list(app_upgrade.iter_upgradable_apps())
+	try:
+		new_apps = list(app_upgrade.iter_upgradable_apps())
+	except AppcenterServerContactFailed:
+		dprint(silent, 'not available')
+		if logfd:
+			print >> logfd, traceback.format_exc()
+		return False
 	if not new_apps:
 		dprint(silent, 'none')
 		return False
