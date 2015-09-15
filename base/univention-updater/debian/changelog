@@ -1,3 +1,9 @@
+univention-updater (11.0.2-3) unstable; urgency=low
+
+  * Bug #30417: Ignore app center unavailable
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 15 Sep 2015 08:40:33 +0200
+
 univention-updater (11.0.2-2) unstable; urgency=medium
 
   * preup.sh: also prune old 3.16er kernel packages (Bug #39271)
