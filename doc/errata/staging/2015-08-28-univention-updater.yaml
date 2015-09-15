@@ -3,7 +3,7 @@ release: "4.0"
 version: [3]
 scope: ucs_4.0-0-errata4.0-3
 src: univention-updater
-fix: 10.0.55-3.1400.201508281517
+fix: 10.0.55-4.1406.201509151021
 desc: |
   This update addresses the following issues:
   * The command line tool 'univention-upgrade' now performa App updated by
