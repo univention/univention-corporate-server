@@ -58,6 +58,9 @@ def main():
 	parser.add_option(
 		"-p", "--parallel", action="store_true",
 		dest="parallel", help="Run commands in parallel")
+	parser.add_option(
+		"-d", "--debug", action="store_true",
+		dest="debug", help="Enable debug output")
 
 	(options, args) = parser.parse_args()
 
@@ -76,7 +79,7 @@ def main():
 	_print_done()
 
 	# The paramiko module uses the logging module
-	logging.basicConfig(level=logging.WARNING)
+	logging.basicConfig(stream=sys.stderr, level=logging.DEBUG if options.debug else logging.WARNING)
 
 	_print_process('Checking for ~/.boto')
 	if os.path.exists(os.path.expanduser('~/.boto')):
