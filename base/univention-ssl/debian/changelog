@@ -1,3 +1,9 @@
+univention-ssl (10.0.0-4) unstable; urgency=low
+
+  * fix potential root exploit (Bug #38859)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 15 Sep 2015 13:38:31 +0200
+
 univention-ssl (10.0.0-3) unstable; urgency=low
 
   * When creating certificates, always write FQDN to Subject Alternative Name.
