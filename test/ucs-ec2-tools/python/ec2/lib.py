@@ -112,7 +112,6 @@ class VM:
 		except ConfigParser.NoOptionError:
 			self._is_windows = None
 
-
 		# Read and save the file lines and ignore comments
 		try:
 			lines = config.get(section, 'files')
@@ -162,7 +161,7 @@ class VM:
 		while now - start < timeout:
 			scan_result = scanner.scan(ip, ports_string, '-PN')
 			now = time.time()
-			self._log('Pending %d...'  % (timeout - now + start))
+			self._log('Pending %d...' % (timeout - now + start))
 			if not scan_result['scan']:
 				self._log('Error: No scan results were returned')
 				continue
@@ -178,7 +177,6 @@ class VM:
 		self._log("Port(s) %s could not be reached" % (', '.join(ports), ))
 		return False
 
-
 	def connect(self):
 		''' Wait until the connection is ready '''
 		self.client = paramiko.SSHClient()
@@ -193,11 +191,11 @@ class VM:
 					self._connect_vm()
 					break
 				except socket_error as ex:
-					self._log('[%d] Network error: %s'  % (timeout - now + start, ex))
+					self._log('[%d] Network error: %s' % (timeout - now + start, ex))
 				except paramiko.AuthenticationException as ex:
 					self._log('[%d]: Authentication failed... [%s]' % (timeout - now + start, ex))
 				except Exception, ex:
-					self._log('[%d]: Unknown error "%s"...'  % (timeout - now + start, ex))
+					self._log('[%d]: Unknown error "%s"...' % (timeout - now + start, ex))
 				time.sleep(5)
 				now = time.time()
 			else:
@@ -209,15 +207,12 @@ class VM:
 				self._log('Not able to reach %s' % (self.get_ip(), ))
 				raise TimeoutError(timeout)
 
-
-
 	def create_profiles(self):
 		''' Write the given profile to the instance '''
 		if self._is_windows:
 			return
 		if not self.profile:
 			return
-
 
 		self._open_client_sftp_connection()
 		remote_profile = self.client_sftp.file('/var/cache/univention-system-setup/profile', 'w')
@@ -448,13 +443,15 @@ class VM_KVM(VM):
 
 	def __init__(self, section, config):
 		''' Initialize a VM instance in local KVM environment '''
-		params = [ 'kvm_server',
-				   'kvm_user',
-				   'kvm_ucsversion',
-				   'kvm_architecture',
-				   'kvm_template',
-				   'kvm_interface',
-				   'ec2_keypair' ]
+		params = [
+			'kvm_server',
+			'kvm_user',
+			'kvm_ucsversion',
+			'kvm_architecture',
+			'kvm_template',
+			'kvm_interface',
+			'ec2_keypair',
+		]
 		for key in params:
 			if not config.has_option(section, key):
 				if config.has_option('Global', key):
@@ -466,11 +463,12 @@ class VM_KVM(VM):
 
 	def _connect_vm(self):
 		"""Connect to KVM."""
-		self.client.connect(self.get_ip(),
-							port=22,
-							username='root',
-							password='univention',
-							)
+		self.client.connect(
+			self.get_ip(),
+			port=22,
+			username='root',
+			password='univention',
+		)
 
 	def start(self):
 		''' Start the VM '''
@@ -481,11 +479,13 @@ class VM_KVM(VM):
 		if not kvm_user:
 			kvm_user = getpass.getuser()
 		try:
-			server.connect(kvm_server,
-								username=kvm_user,
-								port=22)
-		except socket_error, ex:
-			self._log('Failed to connect to %s...'  % (kvm_server,))
+			server.connect(
+				kvm_server,
+				username=kvm_user,
+				port=22,
+			)
+		except socket_error as ex:
+			self._log('Failed to connect to %s...' % (kvm_server,))
 			_print_done('fail (%s)' % (ex,))
 			sys.exit(1)
 
@@ -544,15 +544,15 @@ class VM_KVM(VM):
 			else:
 				raise ValueError('name is not set in kvm_results or kvm_results is empty')
 		except (IOError, OSError, ValueError, TypeError), ex:
-			self._log('Failed to load result file %s of %s: %s'  % (fn_kvm_results, PATH_UCS_KT_GET, ex,))
+			self._log('Failed to load result file %s of %s: %s' % (fn_kvm_results, PATH_UCS_KT_GET, ex,))
 			_print_done('error (unreadable results)')
 			sys.exit(1)
 
 		_print_done('done (VM: %s)' % kvm_name_full)
 
 		cmdline = 'sudo /usr/bin/virsh dumpxml %s' % (
-				quote(kvm_name_full),
-				)
+			quote(kvm_name_full),
+		)
 		_print_process('Detecting IPv6 address')
 		stdout, stderr = bytearray(), bytearray()
 		rt = self._ssh_exec(cmdline, server, stdout, stderr)
@@ -564,10 +564,11 @@ class VM_KVM(VM):
 			_print_done('failed to get mac address')
 			sys.exit(1)
 
-		self.instance = { 'section': self.section,
-						  'mac': match.group(1),
-						  'ipv6': '%s%%%s' % (mac2IPv6linklocal(match.group(1)), self.config.get(self.section, 'kvm_interface')),
-						  }
+		self.instance = {
+			'section': self.section,
+			'mac': match.group(1),
+			'ipv6': '%s%%%s' % (mac2IPv6linklocal(match.group(1)), self.config.get(self.section, 'kvm_interface')),
+		}
 		self._log('Instance %(section)s: MAC=%(mac)s  IPv6=%(ipv6)s' % self.instance)
 		server.close()
 
@@ -650,11 +651,12 @@ class VM_EC2(VM):
 
 	def _connect_vm(self):
 		"""Connect to EC2 VM."""
-		self.client.connect(self.get_ip(),
-							port=22,
-							username='root',
-							key_filename=self.private_key,
-							)
+		self.client.connect(
+			self.get_ip(),
+			port=22,
+			username='root',
+			key_filename=self.private_key,
+		)
 
 	def start(self):
 		''' Start the VM '''
