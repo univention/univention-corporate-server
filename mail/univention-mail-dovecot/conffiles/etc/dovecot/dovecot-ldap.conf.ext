@@ -141,7 +141,7 @@ additional_user_filter_objectclasses = configRegistry.get("mail/dovecot/auth/lda
 additional_user_filter_objectclasses = additional_user_filter_objectclasses.split(",")
 if additional_user_filter_objectclasses[0]:
 	default_user_filter_objectclasses.extend(additional_user_filter_objectclasses)
-print 'user_filter = (&(|%s)(|(!(univentionMailHomeServer=*))(univentionMailHomeServer=%s.%s))(|(mailPrimaryAddress=%%u)(uid=%%u)))' % (
+print 'user_filter = (&(|%s)(|(!(univentionMailHomeServer=*))(univentionMailHomeServer=%s.%s))(|(mailPrimaryAddress=%%Lu)(uid=%%u)))' % (
 	"".join(["(objectClass=%s)" % obj for obj in default_user_filter_objectclasses]),
 	configRegistry.get("hostname"),
 	configRegistry.get("domainname"))
@@ -163,7 +163,7 @@ print 'user_filter = (&(|%s)(|(!(univentionMailHomeServer=*))(univentionMailHome
 #  homeDirectory=userdb_home,uidNumber=userdb_uid,gidNumber=userdb_gid
 
 # Filter for password lookups
-#pass_filter = (&(objectClass=univentionMail)(mailPrimaryAddress=%u))
+#pass_filter = (&(objectClass=univentionMail)(mailPrimaryAddress=%Lu))
 
 # Attributes and filter to get a list of all users
 iterate_attrs = mailPrimaryAddress=user

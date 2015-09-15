@@ -1,3 +1,9 @@
+univention-mail-dovecot (2.0.0-1) unstable; urgency=low
+
+  * lowercase email addresses for authdb cache and userdb queries (Bug #39346)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 15 Sep 2015 09:37:09 +0200
+
 univention-mail-dovecot (2.0.0-0) unstable; urgency=low
 
   * version bump
