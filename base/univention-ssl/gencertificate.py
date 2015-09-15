@@ -154,17 +154,16 @@ def create_certificate(hostname, domainname):
 			return
 	else:
 		if len(fqdn) > 64:
-			if len(hostname) > 63:
-				ud.debug(ud.LISTENER, ud.ERROR, 'CERTIFICATE: hostname "%s" is longer than 63 characters' % hostname)
-			else:
-				ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: FQDN "%s" is longer than 64 characters, using Subject Alternative Name instead of Common Name.' % fqdn)
+			ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: FQDN %r is longer than 64 characters, setting Common Name to hostname.' % fqdn)
 
 		ud.debug(ud.LISTENER, ud.INFO,
 				'CERTIFICATE: Creating certificate %s' % hostname)
 
 		cmd = '. /usr/share/univention-ssl/make-certificates.sh;gencert "%s" "%s"' % \
 				(fqdn, fqdn)
-		subprocess.call(cmd, shell=True)
+		ret = subprocess.call(cmd, shell=True)
+		if ret:
+			raise Exception("Certificate creation failed.")
 
 	# Create symlink
 	try:

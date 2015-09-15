@@ -1,7 +1,8 @@
 univention-ssl (10.0.0-3) unstable; urgency=low
 
-  * Use Subject Alternative Name in certificates if FQDN longer than 64 chars
-    (Bug #38859)
+  * When creating certificates, always write FQDN to Subject Alternative Name.
+  * When creating certificates with FQDN longer than 64 characters, use only
+    hostname for CN (Bug #38859).
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 11 Sep 2015 16:45:48 +0200
 
