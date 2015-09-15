@@ -39,6 +39,7 @@ import glob
 import time
 import traceback
 import json
+from threading import Thread
 from socket import error as socket_error
 from select import select
 import nmap
@@ -830,6 +831,20 @@ class Parser(ConfigParser.ConfigParser):
 					hosts.append(sectname)
 		ifile.close()
 		return hosts
+
+
+def each_vm(vms, parallel, run, *args, **kwargs):
+	if parallel:
+		threads = []
+		for vm in vms:
+			thread = Thread(target=run, name=vm.get_name(), args=(vm,)+args, kwargs=kwargs)
+			thread.start()
+			threads.append(thread)
+		for thread in threads:
+			thread.join()
+	else:
+		for vm in vms:
+			run(vm, *args, **kwargs)
 
 
 if __name__ == '__main__':
