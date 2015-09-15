@@ -36,7 +36,6 @@ import os
 import sys
 import boto
 from boto.ec2 import regions
-from boto.vpc import VPCConnection
 
 
 def parse_args():
