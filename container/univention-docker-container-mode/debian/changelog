@@ -1,3 +1,9 @@
+univention-docker-container-mode (1.0.2-1) unstable; urgency=medium
+
+  * Use -skipIpMac while joining a Docker App (Bug #39331)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Sep 2015 05:59:41 +0200
+
 univention-docker-container-mode (1.0.1-1) unstable; urgency=medium
 
   * Register the IP only if an old IP address was set. The IP and MAC

@@ -40,7 +40,7 @@ if [ -z "$username" -o -z "$password_file" -o -z "$APP" ]; then
 fi
 
 echo "Joining"
-univention-join -dcaccount "$username" -dcpwd "$password_file"
+univention-join -dcaccount "$username" -dcpwd "$password_file" -skipIpMac
 if [ "$?" -ne 0 ]; then
 	die "Something went wrong while joining the system"
 fi
