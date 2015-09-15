@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-94) unstable; urgency=medium
+
+  * Bug #39319: Version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 15 Sep 2015 17:10:18 +0200
+
 univention-management-console-frontend (4.1.106-93) unstable; urgency=medium
 
   * Bug #39319: Trigger description shortening after an arbitrary point in time
