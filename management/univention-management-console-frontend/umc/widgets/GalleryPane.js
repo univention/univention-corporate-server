@@ -329,6 +329,7 @@ define([
 			}
 			this.own(on(kernel.global, 'resize', lang.hitch(this, '_handleResize')));
 			this.own(on(win.doc, 'resize', lang.hitch(this, '_handleResize')));
+			tools.defer(lang.hitch(this, '_handleResize'), 800); // _OverviewPane somehow rerenders the grid with the original data
 		},
 
 		_getItemHeight: function(node, cssClass) {
