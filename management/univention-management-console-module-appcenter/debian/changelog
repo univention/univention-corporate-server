@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.4-7) unstable; urgency=low
+
+  * Bug #38894: [WIP] Restoring appcenter-ucs-component.svg
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 15 Sep 2015 10:19:45 +0200
+
 univention-management-console-module-appcenter (5.0.4-6) unstable; urgency=medium
 
   * Bug #39185: Execute docker commands as interactive with a tty
