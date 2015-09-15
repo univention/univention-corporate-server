@@ -460,6 +460,7 @@ class VM_KVM(VM):
 		VM.__init__(self, section, config, 'kvm')
 
 		self.config = config
+		self.kvm_name_full = '%s_%s' % (os.getenv('USER'), self.section,)
 
 	def _connect_vm(self):
 		"""Connect to KVM."""
@@ -514,7 +515,7 @@ class VM_KVM(VM):
 			'--yes',
 			'--version', self.config.get(self.section, 'kvm_ucsversion'),
 			'--architecture', self.config.get(self.section, 'kvm_architecture'),
-			'--label', kvm_name_short,
+			'--label', self.section,
 			'--onlyone',
 			'--resultfile', fn_kvm_results,
 			self.config.get(self.section, 'kvm_template'),
@@ -541,7 +542,7 @@ class VM_KVM(VM):
 			# convert JSON kvm_results from ucs-kt-get into python structure
 			kvm_results = json.loads(kvm_results)
 			if kvm_results and 'name' in kvm_results[0]:
-				kvm_name_full = kvm_results[0]['name']
+				self.kvm_name_full = kvm_results[0]['name']
 			else:
 				raise ValueError('name is not set in kvm_results or kvm_results is empty')
 		except (IOError, OSError, ValueError, TypeError), ex:
@@ -549,10 +550,10 @@ class VM_KVM(VM):
 			_print_done('error (unreadable results)')
 			sys.exit(1)
 
-		_print_done('done (VM: %s)' % kvm_name_full)
+		_print_done('done (VM: %s)' % self.kvm_name_full)
 
 		cmdline = 'sudo /usr/bin/virsh dumpxml %s' % (
-			quote(kvm_name_full),
+			quote(self.kvm_name_full),
 		)
 		_print_process('Detecting IPv6 address')
 		stdout, stderr = bytearray(), bytearray()
