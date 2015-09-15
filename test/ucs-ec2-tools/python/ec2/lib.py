@@ -470,8 +470,8 @@ class VM_KVM(VM):
 			password='univention',
 		)
 
-	def start(self):
-		''' Start the VM '''
+	def _connect_kvm_host(self):
+		'''Connect to KVM host.'''
 		server = paramiko.SSHClient()
 		server.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 		kvm_server = self.config.get(self.section, 'kvm_server')
@@ -492,8 +492,11 @@ class VM_KVM(VM):
 		transport = server.get_transport()
 		transport.set_keepalive(15)
 
-		kvm_name_short = '%s' % (self.section,)
-		kvm_name_full = '%s_%s' % (os.getenv('USER'), self.section,)
+		return server
+
+	def start(self):
+		''' Start the VM '''
+		server = self._connect_kvm_host()
 
 		# create temporary result file for ucs-kt-get
 		cmdline = 'mktemp'
@@ -506,8 +509,6 @@ class VM_KVM(VM):
 			sys.exit(1)
 
 		fn_kvm_results = str(stdout.strip())
-		self._log('  fn_kvm_results: %s:%s' % (kvm_server, fn_kvm_results,))
-
 		cmdline = ' '.join(quote(arg) for arg in [
 			PATH_UCS_KT_GET,
 			'--yes',
