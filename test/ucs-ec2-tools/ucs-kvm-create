@@ -39,10 +39,10 @@ import logging
 
 try:
 	import python.ec2.lib as univention_ec2_lib
-	from python.ec2.lib import _print_done, _print_process, check_missing_files
+	from python.ec2.lib import _print_done, _print_process, check_missing_files, each_vm
 except ImportError:
 	import univention.ec2.lib as univention_ec2_lib
-	from univention.ec2.lib import _print_done, _print_process, check_missing_files
+	from univention.ec2.lib import _print_done, _print_process, check_missing_files, each_vm
 
 
 def main():
@@ -55,6 +55,9 @@ def main():
 	parser = OptionParser(usage=usage, description=description)
 	parser.add_option("-c", "--conf", action="store",
 			dest="config_file", help="Config file")
+	parser.add_option(
+		"-p", "--parallel", action="store_true",
+		dest="parallel", help="Run commands in parallel")
 
 	(options, args) = parser.parse_args()
 
@@ -83,17 +86,17 @@ def main():
 
 	check_missing_files(vms)
 
-	# start instances
-	for vm in vms:
+	def start_vm(vm):
 		_print_process('Starting VM %s' % vm.get_name())
 		vm.start()
 		_print_done('done (IP: %s)' % vm.get_ip())
+	each_vm(vms, options.parallel, start_vm)
 
-	# conenct to instances
-	for vm in vms:
+	def connect_vm(vm):
 		_print_process('Connect to VM %s' % vm.get_name())
 		vm.connect()
 		_print_done()
+	each_vm(vms, options.parallel, connect_vm)
 
 	# replace profile variables and commands
 	replace_list = [('[%s_IP]' % (vm.section,), vm.get_ip()) for vm in vms]
@@ -105,24 +108,24 @@ def main():
 			for (host_str, ip) in replace_list:
 				vm.commands[i] = [cmd.replace(host_str, ip) for cmd in vm.commands[i]]
 
-	# create profiles
-	for vm in vms:
+	def create_profile(vm):
 		_print_process('Create profile for VM %s' % vm.get_name())
 		vm.create_profiles()
 		_print_done()
+	each_vm(vms, options.parallel, create_profile)
 
-	# copy files
-	for vm in vms:
+	def copy_files(vm):
 		_print_process('Copy files to VM %s' % vm.get_name())
 		vm.copy_files()
 		_print_done()
+	each_vm(vms, options.parallel, copy_files)
 
-	# run commands
 	max_command = max((_.command_count() for _ in vms))
 	for phase in range(max_command):
-		for vm in vms:
+		def run_command(vm):
 			print 'Running command phase (%d/%d) on VM %s' % (phase + 1, max_command, vm.get_name())
 			vm.run_commands(phase)
+		each_vm(vms, options.parallel, run_command)
 
 
 if __name__ == '__main__':
