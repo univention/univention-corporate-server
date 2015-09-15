@@ -34,6 +34,8 @@ define([
 	"dojo/_base/array",
 	"dojo/when",
 	"dojo/dom-construct",
+	"dojo/dom-class",
+	"dojo/dom-style",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dojo/Deferred",
@@ -42,11 +44,13 @@ define([
 	"umc/tools",
 	"umc/widgets/Page",
 	"umc/widgets/Text",
+	"umc/widgets/Button",
 	"umc/widgets/CheckBox",
+	"umc/widgets/ContainerWidget",
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/modules/appcenter/AppLiveSearchSidebar",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, when, domConstruct, Memory, Observable, Deferred, dquery, dialog, tools, Page, Text, CheckBox, AppCenterGallery, AppLiveSearchSidebar, _) {
+], function(declare, lang, array, when, domConstruct, domClass, domStyle, Memory, Observable, Deferred, dquery, dialog, tools, Page, Text, Button, CheckBox, Container, AppCenterGallery, AppLiveSearchSidebar, _) {
 
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
@@ -55,6 +59,8 @@ define([
 		'class': 'umcAppCenter',
 
 		openApp: null, // if set, this app is opened on module opening
+
+		metaCategories: null,
 
 		liveSearch: true,
 		addMissingAppButton: false,
@@ -95,18 +101,7 @@ define([
 				}));
 			}
 
-			this._grid = new AppCenterGallery({
-				actions: [{
-					name: 'open',
-					isDefaultAction: true,
-					isContextAction: false,
-					label: _('Open'),
-					callback: lang.hitch(this, function(id, item) {
-						this.showDetails(item);
-					})
-				}]
-			});
-			this.addChild(this._grid);
+			this.createMetaCategories();
 
 			this.standbyDuring(when(this.getAppCenterSeen()).then(lang.hitch(this, function(appcenterSeen) {
 				if (tools.isTrue(appcenterSeen)) {
@@ -146,12 +141,104 @@ define([
 				return this.updateApplications();
 			}))).then(lang.hitch(this ,function() {
 				if (this.openApp) {
-					var apps = this._grid.store.query({id: this.openApp});
-					if (apps && apps.length) {
-						this.showDetails(apps[0]);
-					}
-
+					tools.forIn(this.metaCategories, function(metaKey, metaObj) {
+						var apps = metaObj.grid.store.query({id: this.openApp});
+						if (apps && apps.length) {
+							this.showDetails(apps[0]);
+							break;
+						}
+					});
 				}
+			}));
+		},
+
+		createMetaCategories: function() {
+			this.metaCategories  = {
+				installed : {
+					label: _('Installed'),
+					grid: null,
+					widget: null,
+					filter: function(applications) {
+						var installedApps = array.filter(applications, function(app) {
+							return app.is_installed || app.is_installed_anywhere;
+						});
+						this.grid.set('store', new Observable(new Memory({
+							data: installedApps
+						})));
+					}
+				},
+				other : {
+					label: _('Available'),
+					grid: null,
+					widget: null,
+					filter: function(applications) { 
+						var availableApps = array.filter(applications, function(app) {
+							return !app.is_installed_anywhere || !app.is_installed;
+						});
+						this.grid.set('store', new Observable( new Memory({
+							data: availableApps
+						})));
+					}
+				}
+			};
+
+			tools.forIn(this.metaCategories, lang.hitch(this, function(metaKey, metaObj){
+				var gridContainer = new Container({
+					'class': 'appcenterMetaCategory'
+				});
+
+				var gridLabel = new Text({ 
+					content: metaObj.label
+				});
+
+				var gridButton = new Button({
+					label: _('More'),
+					onClick: function() {
+						if (this.label === _('More')) {
+							domStyle.set(grid.domNode, 'height', 'auto');
+							this.set('label', _('Less'));
+						} else {
+							domStyle.set(grid.domNode, 'height', '175px');
+							this.set('label', _('More'));
+						}
+					}
+				});
+
+				var clearContainer = new Container({
+					style: {
+						clear: 'both'
+					}
+				});
+
+				var grid = new AppCenterGallery({
+					actions: [{
+						name: 'open',
+						isDefaultAction: true,
+						isContextAction: false,
+						label: _('Open'),
+						callback: lang.hitch(this, function(id, item) {
+							this.showDetails(item);
+						})
+					}],
+					style: {
+						height: '175px'
+					}
+				});
+
+				gridContainer.addChild(gridLabel);
+				gridContainer.own(gridLabel);
+				gridContainer.gridLabel = gridLabel;
+				gridContainer.addChild(gridButton);
+				gridContainer.own(gridButton);
+				gridContainer.gridButton = gridButton;
+				gridContainer.addChild(clearContainer);
+				gridContainer.own(clearContainer);
+				gridContainer.addChild(grid);
+				gridContainer.own(grid);
+				gridContainer.grid = grid;
+				this.metaCategories[metaKey].grid = grid;
+				this.metaCategories[metaKey].widget = gridContainer;
+				this.addChild(gridContainer);
 			}));
 		},
 
@@ -194,63 +281,13 @@ define([
 			return this._applications;
 		},
 
-		_discriminateApps: function(applications) {
-			var installedApps = [];
-			var otherApps = [];
-			array.forEach(applications, function(app) {
-				var installed = app.is_installed;
-				if (app.installations) {
-					tools.forIn(app.installations, function(server, info) {
-						if (info.version) {
-							installed = true;
-						}
-					});
-				}
-				if (installed) {
-					installedApps.push(app);
-				} else {
-					otherApps.push(app);
-				}
-			});
-			return {
-				installedApps: installedApps,
-				otherApps: otherApps
-			};
-		},
-
 		updateApplications: function() {
 			// query all applications
 			this._applications = null;
 			var updating = when(this.getApplications()).then(lang.hitch(this, function(applications) {
-				var discriminatedApps = this._discriminateApps(applications);
-				var installedApps = discriminatedApps.installedApps;
-				var otherApps = discriminatedApps.otherApps;
-				if (installedApps.length && otherApps.length) {
-					applications = [];
-					applications.push({
-						isSeparator: true,
-						id: '_installed',
-						name: _('Installed Applications')
-					});
-					applications = applications.concat(installedApps);
-					applications.push({
-						isButton: true,
-						id: '_moreButton'
-					});
-					applications.push({
-						isSeparator: true,
-						id: '_other',
-						name: _('Available Applications')
-					});
-					applications = applications.concat(otherApps);
-					applications.push({
-						isButton: true,
-						id: '_moreButton'
-					});
-				}
-				this._grid.set('store', new Observable(new Memory({
-					data: applications
-				})));
+				tools.forIn(this.metaCategories, function(metaKey, metaObj) {
+					metaObj.filter(applications);
+				});
 
 				if (this.liveSearch) {
 					var categories = [];
@@ -294,23 +331,16 @@ define([
 				return true;
 			};
 
-			var actualQuery = query;
-
-			var filteredApplications = this._grid.store.query(query);
-			var discriminatedApps = this._discriminateApps(filteredApplications);
-
-			if (discriminatedApps.installedApps.length && discriminatedApps.otherApps.length) {
-				actualQuery = function(object) {
-					return object.isSeparator || object.isButton || query(object);
-				};
-			}
-
 			// set query options and refresh grid
-			this.set('appQuery', actualQuery);
+			this.set('appQuery', query);
 		},
 
 		_setAppQueryAttr: function(query) {
-			this._grid.set('query', query);
+			tools.forIn(this.metaCategories, function(metaKey, metaObj) {
+				metaObj.grid.set('query', query);
+				var queryResult = metaObj.grid.store.query(query);
+				domClass.toggle(metaObj.widget.domNode, 'dijitHidden', !queryResult.length);
+			});
 			this._set('appQuery', query);
 		},
 

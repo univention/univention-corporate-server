@@ -131,6 +131,8 @@
 }
 #appInnerWrapper.hover #appContent {
 	transform: translateY(-100%);
+	-webkit-transform: translateY(-100%);
+	-ms-transform: translateY(-100%);
 }
 
 #appHover {
@@ -142,6 +144,8 @@
 	position: absolute;
 	bottom: 0;
 	transform: translateY(100%);
+	-webkit-transform: translateY(100%);
+	-ms-transform: translateY(100%);
 	transition: transform 0.5s;
 }
 #appHover span {
@@ -151,6 +155,8 @@
 }
 #appInnerWrapper.hover #appHover {
 	transform: translateY(0);
+	-webkit-transform: translateY(0);
+	-ms-transform: translateY(0);
 }
 
 #appContent .umcGalleryName {
@@ -199,4 +205,14 @@
 .umc .dijitTitlePane.appDetailsPage .dijitTitlePaneTitleOpen.dijitTitlePaneTitleHover .dijitArrowNode {
 	background-position: -20px 0;
 	opacity: 0.66;
+}
+
+.appcenterMetaCategory .umcText {
+	font-size: 1.8em;
+	padding-top: 0.4em;
+	float: left;
+}
+
+.appcenterMetaCategory .dijitButton {
+	float: right;
 }

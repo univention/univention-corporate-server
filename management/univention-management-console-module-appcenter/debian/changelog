@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.4-8) unstable; urgency=low
+
+  * Bug #38894: [WIP] added a galleryPane for every meta-category
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 15 Sep 2015 15:32:35 +0200
+
 univention-management-console-module-appcenter (5.0.4-7) unstable; urgency=low
 
   * Bug #38894: [WIP] Restoring appcenter-ucs-component.svg

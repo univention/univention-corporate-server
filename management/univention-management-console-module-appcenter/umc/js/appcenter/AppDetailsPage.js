@@ -50,7 +50,6 @@ define([
 	"umc/dialog",
 	"umc/widgets/TitlePane",
 	"umc/widgets/ContainerWidget",
-	"umc/widgets/Button",
 	"umc/widgets/ProgressBar",
 	"umc/widgets/Page",
 	"umc/widgets/Text",
@@ -58,7 +57,7 @@ define([
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/modules/appcenter/App",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, domClass, domStyle, Memory, Observable, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, Button, ProgressBar, Page, Text, Grid, AppCenterGallery, App, _) {
+], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, domClass, domStyle, Memory, Observable, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, Grid, AppCenterGallery, App, _) {
 	
 	var adaptedGrid = declare([Grid], {
 		_updateContextActions: function() {
