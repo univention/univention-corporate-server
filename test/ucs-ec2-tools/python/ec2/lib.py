@@ -578,6 +578,22 @@ class VM_KVM(VM):
 		''' Return the IP address of the started VM '''
 		return self.instance['ipv6']
 
+	def terminate(self):
+		_print_process('Terminating VM')
+		cmdline = ' '.join(quote(arg) for arg in [
+			'ucs-kt-remove',
+			'-t',
+			self.kvm_name_full,
+		])
+		server = self._connect_kvm_host()
+		ret = self._ssh_exec(cmdline, server)
+		if ret != 0:
+			_print_done('fail:' % (ret,))
+			sys.exit(1)
+		else:
+			_print_done()
+		server.close()
+
 
 class VM_EC2(VM):
 	"""
