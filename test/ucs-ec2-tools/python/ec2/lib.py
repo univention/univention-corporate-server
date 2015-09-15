@@ -40,7 +40,7 @@ import time
 import traceback
 import json
 from threading import Thread
-from socket import error as socket_error
+from socket import error as socket_error, timeout as socket_timeout
 from select import select
 import nmap
 try:
@@ -359,21 +359,23 @@ class VM:
 		'''	Execute command using ssh and writes output to logfile.
 			sshconnection defines, which ssh connection shall be used - default is self.client.
 		'''
-		if sshconnection:
-			transport = sshconnection.get_transport()
-		else:
-			transport = self.client.get_transport()
+		transport = (sshconnection or self.client).get_transport()
 		transport.set_keepalive(15)
 		session = transport.open_session()
+		session.setblocking(False)
 		try:
 			self._log('Execute: %s' % command)
 			session.exec_command(command)
 			# Close STDIN for remote command
 			session.shutdown_write()
 			while True:
+				data_available = False
 				r_list, _w_list, _e_list = select([session], [], [], 10)
-				if r_list:
-					if session.recv_ready():
+				# print r_list, session.recv_ready(), session.recv_stderr_ready(), session.send_ready(), session.exit_status_ready()
+
+				try:
+					while session.recv_ready():
+						data_available = True
 						data = session.recv(4096)
 						if hasattr(stdout, 'extend'):
 							stdout.extend(data)
@@ -381,8 +383,12 @@ class VM:
 							stdout.write(data)
 						else:
 							self._log(data, newline=False)
-						continue
-					elif session.recv_stderr_ready():
+				except socket_timeout:
+					self._log('*** Timeout stdout')
+
+				try:
+					while session.recv_stderr_ready():
+						data_available = True
 						data = session.recv_stderr(4096)
 						if hasattr(stderr, 'extend'):
 							stderr.extend(data)
@@ -390,10 +396,10 @@ class VM:
 							stderr.write(data)
 						else:
 							self._log(data, newline=False)
-						continue
-					else:
-						pass  # EOF
-				if session.exit_status_ready():
+				except socket_timeout:
+					self._log('*** Timeout stderr')
+
+				if not data_available and session.exit_status_ready():
 					break
 			if session.exit_status != 0:
 				self._log('*** Failed %d: %s' % (session.exit_status, command))
