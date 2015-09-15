@@ -121,15 +121,12 @@ class VM:
 			self.files = []
 
 		# list of commands
-		self.commands = []
-		while True:
-			try:
-				commands = config.get(self.section,
-						'command%d' % (len(self.commands) + 1,))
-			except ConfigParser.NoOptionError:
-				break
-			cmds = list(_split_config(commands))
-			self.commands.append(cmds)
+		self.commands = {}
+		for key, value in config.items(self.section):
+			if not key.startswith('command'):
+				continue
+			i = int(key[len('command'):], 10)
+			self.commands[i] = list(_split_config(value))
 
 		# logfile
 		for sname in (section, 'Global'):
@@ -302,11 +299,11 @@ class VM:
 		if not self.commands:
 			return
 		try:
-			self.commands[phase]
-		except IndexError:
+			commands = self.commands[phase]
+		except LookupError:
 			_print_done('fail: phase %s does not exists' % (phase,))
 			return
-		for cmdline in self.commands[phase]:
+		for cmdline in commands:
 			try:
 				_print_process('  %s' % cmdline)
 				if cmdline.startswith('LOCAL'):
@@ -343,7 +340,7 @@ class VM:
 
 	def command_count(self):
 		''' Retrun the  IP address of the started VM '''
-		return len(self.commands)
+		return max(self.commands or (0,))
 
 	def get_ip(self):
 		''' Retrun the IP address of the started VM '''

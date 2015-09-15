@@ -111,9 +111,10 @@ def main():
 		if vm.profile:
 			for (host_str, ip) in replace_list:
 				vm.profile = vm.profile.replace(host_str, ip)
-		for i in range(len(vm.commands)):
-			for (host_str, ip) in replace_list:
-				vm.commands[i] = [cmd.replace(host_str, ip) for cmd in vm.commands[i]]
+		vm.commands = dict(
+			(phase, [cmd.replace(host_str, ip) for cmd in commands])
+			for phase, commands in vm.commands.iteritems()
+		)
 
 	def create_profile(vm):
 		_print_process('Create profile for VM %s' % vm.get_name())
@@ -128,9 +129,9 @@ def main():
 	each_vm(vms, options.parallel, copy_files)
 
 	max_command = max((_.command_count() for _ in vms))
-	for phase in range(max_command):
+	for phase in range(1, max_command + 1):
 		def run_command(vm):
-			print 'Running command phase (%d/%d) on VM %s' % (phase + 1, max_command, vm.get_name())
+			print 'Running command phase (%d/%d) on VM %s' % (phase, max_command, vm.get_name())
 			vm.run_commands(phase)
 		each_vm(vms, options.parallel, run_command)
 
