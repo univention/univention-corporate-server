@@ -5,6 +5,6 @@ src: univention-management-console-module-top
 fix: 4.1.0-7.40.201509091540
 version: [3]
 desc: |
- This update addresses the following issues:
+ This update addresses the following issue:
  * An error has been fixed which could occur during querying the process list.
 bug: [39302]

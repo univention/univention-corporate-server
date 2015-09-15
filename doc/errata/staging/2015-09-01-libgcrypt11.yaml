@@ -5,9 +5,9 @@ src: libgcrypt11
 fix: 1.5.0-5.19.201509011656
 version: [2,3]
 desc: |
-  Multiple security vulnerabilities have been fixed in libgcrypt11:
-  * Side-channel attack on El-Gamal keys (CVE-2014-3591)
-  * Side-channel attack in the mpi_pow() function (CVE-2015-0837)
+ Multiple security vulnerabilities have been fixed in libgcrypt11:
+ * Side-channel attack on El-Gamal keys (CVE-2014-3591)
+ * Side-channel attack in the mpi_pow() function (CVE-2015-0837)
 bug:
  - 37922
 cve:
