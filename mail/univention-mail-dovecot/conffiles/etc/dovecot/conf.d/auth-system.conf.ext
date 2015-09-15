@@ -13,7 +13,7 @@ passdb {
   driver = pam
   # [session=yes] [setcred=yes] [failure_show_msg=yes] [max_requests=<n>]
   # [cache_key=<key>] [<service name>]
-  args = cache_key=%u dovecot
+  args = cache_key=%Lu dovecot
 }
 
 # System users (NSS, /etc/passwd, or similiar).
