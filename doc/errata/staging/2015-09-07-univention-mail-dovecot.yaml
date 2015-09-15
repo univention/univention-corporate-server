@@ -3,8 +3,10 @@ release: "4.0"
 version: [3]
 scope: ucs_4.0-0-errata4.0-3
 src: univention-mail-dovecot
-fix: 1.0.0-8.43.201509071016
+fix: 1.0.0-9.45.201509150943
 desc: |
-  This update addresses the following issue:
-  * Fix logrotate configuration.
-bug: [39130]
+  This update addresses the following issues:
+  * Fix logrotate configuration (Bug 39130).
+  * Lowercase email addresses for authdb cache and userdb queries
+    (Bug 39346).
+bug: [39130,39346]
