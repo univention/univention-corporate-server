@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (1.0.1-2) unstable; urgency=medium
+
+  * Bug #39319: Define a min-height for GalleryItem's description
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 15 Sep 2015 11:56:42 +0200
+
 univention-management-console-frontend-theme (1.0.1-1) unstable; urgency=medium
 
   * Bug #39171: styling for Single Sign On button
