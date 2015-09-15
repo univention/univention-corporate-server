@@ -355,7 +355,7 @@ class VM:
 		return '[%s]' % self.section
 
 	# Helper functions
-	def _ssh_exec(self, command, sshconnection=None):
+	def _ssh_exec(self, command, sshconnection=None, stdout=None, stderr=None):
 		'''	Execute command using ssh and writes output to logfile.
 			sshconnection defines, which ssh connection shall be used - default is self.client.
 		'''
@@ -375,11 +375,21 @@ class VM:
 				if r_list:
 					if session.recv_ready():
 						data = session.recv(4096)
-						self._log(data, newline=False)
+						if hasattr(stdout, 'extend'):
+							stdout.extend(data)
+						elif hasattr(stdout, 'write'):
+							stdout.write(data)
+						else:
+							self._log(data, newline=False)
 						continue
 					elif session.recv_stderr_ready():
 						data = session.recv_stderr(4096)
-						self._log(data, newline=False)
+						if hasattr(stderr, 'extend'):
+							stderr.extend(data)
+						elif hasattr(stderr, 'write'):
+							stderr.write(data)
+						else:
+							self._log(data, newline=False)
 						continue
 					else:
 						pass  # EOF
@@ -390,49 +400,6 @@ class VM:
 		finally:
 			session.close()
 		return session.exit_status
-
-	def _ssh_exec_get_data(self, command, sshconnection=None, log_stdout=False, log_stderr=True):
-		'''	Execute command using ssh and writes output to logfile.
-			sshclient defines, which ssh connection shall be used - default is self.client.
-		'''
-		if sshconnection:
-			transport = sshconnection.get_transport()
-		else:
-			transport = self.client.get_transport()
-		transport.set_keepalive(15)
-		session = transport.open_session()
-		stdout = ''
-		stderr = ''
-		try:
-			self._log('Execute: %s' % command)
-			session.exec_command(command)
-			# Close STDIN for remote command
-			session.shutdown_write()
-			while True:
-				r_list, _w_list, _e_list = select([session], [], [], 10)
-				if r_list:
-					if session.recv_ready():
-						data = session.recv(4096)
-						stdout += data
-						if log_stdout:
-							self._log(data, newline=False)
-						continue
-					elif session.recv_stderr_ready():
-						data = session.recv_stderr(4096)
-						stderr += data
-						if log_stderr:
-							self._log(data, newline=False)
-						continue
-					else:
-						pass  # EOF
-				if session.exit_status_ready():
-					break
-			if session.exit_status != 0:
-				self._log('*** Failed %d: %s' % (session.exit_status, command))
-		finally:
-			session.close()
-		return session.exit_status, stdout, stderr
-
 
 	def _open_client_sftp_connection(self):
 		'''	Open the SFTP connection and save the connection as self.client_sftp '''
@@ -529,15 +496,15 @@ class VM_KVM(VM):
 
 		# create temporary result file for ucs-kt-get
 		cmdline = 'mktemp'
-		self._log('  %s' % cmdline)
-		ret, stdout, stderr = self._ssh_exec_get_data(cmdline, server)
+		stdout, stderr = bytearray(), bytearray()
+		ret = self._ssh_exec(cmdline, server, stdout, stderr)
 		if ret != 0:
 			_print_done('fail (step 1 - return code %s)' % (ret,))
 			print stdout
 			print stderr
 			sys.exit(1)
 
-		fn_kvm_results = stdout.strip()
+		fn_kvm_results = str(stdout.strip())
 		self._log('  fn_kvm_results: %s:%s' % (kvm_server, fn_kvm_results,))
 
 		cmdline = ' '.join(quote(arg) for arg in [
@@ -550,8 +517,8 @@ class VM_KVM(VM):
 			'--resultfile', fn_kvm_results,
 			self.config.get(self.section, 'kvm_template'),
 		])
-		self._log('  %s' % cmdline)
-		ret, stdout, stderr = self._ssh_exec_get_data(cmdline, server)
+		stdout, stderr = bytearray(), bytearray()
+		ret = self._ssh_exec(cmdline, server, stdout, stderr)
 		if ret != 0:
 			_print_done('fail (step 2 - return code %s)' % (ret,))
 			print stdout
@@ -586,11 +553,12 @@ class VM_KVM(VM):
 				quote(kvm_name_full),
 				)
 		_print_process('Detecting IPv6 address')
-		rt, stdout, stderr = self._ssh_exec_get_data(cmdline, server)
+		stdout, stderr = bytearray(), bytearray()
+		rt = self._ssh_exec(cmdline, server, stdout, stderr)
 		if rt:
 			_print_done('fail (return code %s)' % rt)
 			sys.exit(1)
-		match = re.search('mac address=.([0-9a-f:]+)', stdout)
+		match = re.search('mac address=.([0-9a-f:]+)', str(stdout))
 		if not match:
 			_print_done('failed to get mac address')
 			sys.exit(1)
