@@ -61,6 +61,9 @@ def main():
 	parser.add_option(
 		"-d", "--debug", action="store_true",
 		dest="debug", help="Enable debug output")
+	parser.add_option(
+		"-t", "--terminate", action="store_true",
+		dest="terminate", help="Terminate VMs after run")
 
 	(options, args) = parser.parse_args()
 
@@ -130,6 +133,13 @@ def main():
 			print 'Running command phase (%d/%d) on VM %s' % (phase, max_command, vm.get_name())
 			vm.run_commands(phase)
 		each_vm(vms, options.parallel, run_command)
+
+	def terminate_vm(vm):
+		_print_process('Terminating VM %s' % vm.get_name())
+		vm.terminate()
+		_print_done()
+	if options.terminate:
+		each_vm(vms, options.parallel, terminate_vm)
 
 
 if __name__ == '__main__':
