@@ -141,13 +141,12 @@ define([
 				return this.updateApplications();
 			}))).then(lang.hitch(this ,function() {
 				if (this.openApp) {
-					tools.forIn(this.metaCategories, function(metaKey, metaObj) {
+					tools.forIn(this.metaCategories, lang.hitch(this, function(metaKey, metaObj) {
 						var apps = metaObj.grid.store.query({id: this.openApp});
 						if (apps && apps.length) {
 							this.showDetails(apps[0]);
-							break;
 						}
-					});
+					}));
 				}
 			}));
 		},
