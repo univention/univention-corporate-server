@@ -477,7 +477,8 @@ class Instance(Base, ProgressMixin):
 							if pol_mod and pol_mod.name:
 								props['$policies$'].setdefault(pol_mod.name, []).append(policy)
 						props['$labelObjectType$'] = module.title
-						props['$flags$'] = obj.oldattr.get('univentionObjectFlag', []),
+						props['$flags$'] = obj.oldattr.get('univentionObjectFlag', [])
+						props['$operations$'] = module.operations
 						result.append(props)
 					else:
 						MODULE.process('The LDAP object for the LDAP DN %s could not be found' % ldap_dn)
@@ -958,7 +959,7 @@ class Instance(Base, ProgressMixin):
 							'icon': 'udm-%s-%s' % (base, typ),
 							'path': ldap_dn2path(item.dn),
 							'objectType': '%s/%s' % (base, typ),
-							'operations': module.operations,
+							'$operations$': module.operations,
 							'$flags$': item.oldattr.get('univentionObjectFlag', []),
 						})
 				except UDM_Error as e:
@@ -1022,6 +1023,7 @@ class Instance(Base, ProgressMixin):
 					'name': udm_objects.description(obj),
 					'path': ldap_dn2path(obj.dn, include_rdn=False),
 					'$flags$': obj.oldattr.get('univentionObjectFlag', []),
+					'$operations$': module.operations,
 				})
 
 			return entries

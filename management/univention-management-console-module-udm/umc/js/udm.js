@@ -1053,7 +1053,7 @@ define([
 		},
 
 		_updateMenuAvailability: function() {
-			var operations = this._navContextItemFocused.operations;
+			var operations = this._navContextItemFocused.$operations$;
 			this._menuEdit.set('disabled', operations.indexOf('edit') === -1);
 			this._menuDelete.set('disabled', operations.indexOf('remove') === -1 || !this._canDelete(this._navContextItemFocused));
 			this._menuMove.set('disabled', operations.indexOf('move') === -1 || !this._canMove(this._navContextItemFocused));

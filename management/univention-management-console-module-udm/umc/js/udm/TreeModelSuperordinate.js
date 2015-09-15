@@ -48,7 +48,7 @@ define([
 				id: "None",
 				label: this.rootName,
 				root: true,
-				operations: []
+				$operations$: []
 			};
 			onItem(this.root);
 		},
