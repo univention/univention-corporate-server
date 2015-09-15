@@ -192,19 +192,14 @@ class VM:
 				try:
 					self._connect_vm()
 					break
-				except socket_error:
-					self._log('Pending %d...'  % (timeout - now + start))
-					time.sleep(5)
-					now = time.time()
-				except paramiko.AuthenticationException:
-					self._log('Authentication failed %d...' % (timeout - now + start))
-					time.sleep(5)
-					now = time.time()
+				except socket_error as ex:
+					self._log('[%d] Network error: %s'  % (timeout - now + start, ex))
+				except paramiko.AuthenticationException as ex:
+					self._log('[%d]: Authentication failed... [%s]' % (timeout - now + start, ex))
 				except Exception, ex:
-					self._log('Unknown error "%s"...'  % (ex,))
-					self._log('Pending %d...'  % (timeout - now + start))
-					time.sleep(5)
-					now = time.time()
+					self._log('[%d]: Unknown error "%s"...'  % (timeout - now + start, ex))
+				time.sleep(5)
+				now = time.time()
 			else:
 				raise TimeoutError(timeout)
 		# port probe if it's a windows host
