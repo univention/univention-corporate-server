@@ -494,8 +494,6 @@ class VM_KVM(VM):
 
 		VM.__init__(self, section, config, 'kvm')
 
-		self.server = None
-		self.server_sftp = None
 		self.config = config
 
 	def _connect_vm(self):
@@ -508,14 +506,14 @@ class VM_KVM(VM):
 
 	def start(self):
 		''' Start the VM '''
-		self.server = paramiko.SSHClient()
-		self.server.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+		server = paramiko.SSHClient()
+		server.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 		kvm_server = self.config.get(self.section, 'kvm_server')
 		kvm_user = self.config.get(self.section, 'kvm_user')
 		if not kvm_user:
 			kvm_user = getpass.getuser()
 		try:
-			self.server.connect(kvm_server,
+			server.connect(kvm_server,
 								username=kvm_user,
 								port=22)
 		except socket_error, ex:
@@ -523,7 +521,7 @@ class VM_KVM(VM):
 			_print_done('fail (%s)' % (ex,))
 			sys.exit(1)
 
-		transport = self.server.get_transport()
+		transport = server.get_transport()
 		transport.set_keepalive(15)
 
 		kvm_name_short = '%s' % (self.section,)
@@ -532,7 +530,7 @@ class VM_KVM(VM):
 		# create temporary result file for ucs-kt-get
 		cmdline = 'mktemp'
 		self._log('  %s' % cmdline)
-		ret, stdout, stderr = self._ssh_exec_get_data(cmdline, self.server)
+		ret, stdout, stderr = self._ssh_exec_get_data(cmdline, server)
 		if ret != 0:
 			_print_done('fail (step 1 - return code %s)' % (ret,))
 			print stdout
@@ -553,7 +551,7 @@ class VM_KVM(VM):
 			self.config.get(self.section, 'kvm_template'),
 		])
 		self._log('  %s' % cmdline)
-		ret, stdout, stderr = self._ssh_exec_get_data(cmdline, self.server)
+		ret, stdout, stderr = self._ssh_exec_get_data(cmdline, server)
 		if ret != 0:
 			_print_done('fail (step 2 - return code %s)' % (ret,))
 			print stdout
@@ -565,10 +563,10 @@ class VM_KVM(VM):
 		_print_process('Determine instance name')
 
 		# get and remove temporary file
-		self._open_server_sftp_connection()
-		kvm_results = self.server_sftp.file(fn_kvm_results).read()
-		self.server_sftp.unlink(fn_kvm_results)
-		self._close_server_sftp_connection()
+		server_sftp = server.open_sftp()
+		kvm_results = server_sftp.file(fn_kvm_results).read()
+		server_sftp.unlink(fn_kvm_results)
+		server_sftp.close()
 
 		try:
 			# convert JSON kvm_results from ucs-kt-get into python structure
@@ -588,7 +586,7 @@ class VM_KVM(VM):
 				quote(kvm_name_full),
 				)
 		_print_process('Detecting IPv6 address')
-		rt, stdout, stderr = self._ssh_exec_get_data(cmdline, self.server)
+		rt, stdout, stderr = self._ssh_exec_get_data(cmdline, server)
 		if rt:
 			_print_done('fail (return code %s)' % rt)
 			sys.exit(1)
@@ -602,18 +600,11 @@ class VM_KVM(VM):
 						  'ipv6': '%s%%%s' % (mac2IPv6linklocal(match.group(1)), self.config.get(self.section, 'kvm_interface')),
 						  }
 		self._log('Instance %(section)s: MAC=%(mac)s  IPv6=%(ipv6)s' % self.instance)
+		server.close()
 
 	def get_ip(self):
 		''' Return the IP address of the started VM '''
 		return self.instance['ipv6']
-
-	def _open_server_sftp_connection(self):
-		'''	Open the SFTP connection and save the connection as self.server_sftp '''
-		self.server_sftp = self.server.open_sftp()
-
-	def _close_server_sftp_connection(self):
-		'''	Close the SFTP connection '''
-		self.server_sftp.close()
 
 
 class VM_EC2(VM):
