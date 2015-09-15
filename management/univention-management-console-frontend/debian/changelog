@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.22-4) unstable; urgency=medium
+
+  * Bug #39319: Trigger description shortening after an arbitrary point in time
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 15 Sep 2015 15:03:15 +0200
+
 univention-management-console-frontend (5.0.22-3) unstable; urgency=medium
 
   * Bug #38344: fix errors during UMC SSO request
