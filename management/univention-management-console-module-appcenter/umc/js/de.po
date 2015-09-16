@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-09-15 13:03+0200\n"
+"POT-Creation-Date: 2015-09-16 14:33+0200\n"
 "PO-Revision-Date: 2011-11-02 09:36+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgstr "%(name)s unterstützt nur die Architektur %(supported)s. %(msg)s"
 msgid "%(verb)s %(ids)s"
 msgstr "%(verb)s %(ids)s"
 
-#: appcenter/AppDetailsPage.js:784
+#: appcenter/AppDetailsPage.js:778
 #, python-format
 msgid "%(verb)s %(ids)s on %(host)s"
 msgstr "%(verb)s %(ids)s auf %(host)s"
@@ -114,7 +114,7 @@ msgstr ""
 "%s wurde aus der Auswahl ausgeschlossen, weil die Applikation eine andere "
 "Serverrolle voraussetzt, als dieser Rechner hat."
 
-#: appcenter/AppDetailsPage.js:741
+#: appcenter/AppDetailsPage.js:735
 #, python-format
 msgid "%s: Performing software tests on involved systems"
 msgstr "%s: Führe Softwaretests auf den beteiligten Systemen durch"
@@ -128,12 +128,12 @@ msgstr "--- alle ---"
 msgid "...<br>[%d more chars]"
 msgstr "...<br>[weitere %d Zeichen]"
 
-#: appcenter/AppDetailsPage.js:908
+#: appcenter/AppDetailsPage.js:902
 #, python-format
 msgid "A module for the administration of the app is available: %s."
 msgstr "Ein Modul zur Administration dieser App steht zur Verfügung: %s."
 
-#: appcenter/AppDetailsPage.js:645
+#: appcenter/AppDetailsPage.js:639
 msgid "Accept license"
 msgstr "Lizenz akzeptieren"
 
@@ -148,7 +148,7 @@ msgstr ""
 "Aktivierung is nicht möglich. Bitte als Administrator auf dem DC Master "
 "einloggen."
 
-#: appcenter/AppDetailsPage.js:816
+#: appcenter/AppDetailsPage.js:810
 msgid "Activation of UCS"
 msgstr "Aktivierung von UCS"
 
@@ -168,12 +168,12 @@ msgstr "Neue Komponentendefinition hinzufügen"
 msgid "Advanced settings"
 msgstr "Weitere Einstellungen"
 
-#: appcenter/AppDetailsPage.js:820
+#: appcenter/AppDetailsPage.js:814
 #, python-format
 msgid "After that you can \"%(action)s\" \"%(app)s\" here on this system."
 msgstr "Danach können Sie \"%(app)s\" hier auf diesem System \"%(action)s\"."
 
-#: appcenter/AppCenterPage.js:292 appcenter/AppCenterPage.js:316
+#: appcenter/AppCenterPage.js:246 appcenter/AppCenterPage.js:270
 msgid "All"
 msgstr "Alle"
 
@@ -186,17 +186,17 @@ msgstr ""
 msgid "An unknown error with code %d occured."
 msgstr "Es ist ein unbekannter Fehler mit Code %d aufgetreten."
 
-#: appcenter/AppDetailsPage.js:838 appcenter/requirements.js:82
+#: appcenter/AppDetailsPage.js:832 appcenter/requirements.js:82
 msgid "Another package operation is in progress."
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt."
 
 #: appcenter/AppConfigDialog.js:54 appcenter/AppDetailsPage.js:75
 #: appcenter/AppDetailsDialog.js:57 appcenter/AppChooseHostDialog.js:49
-#: appcenter/AppCenterPage.js:69
+#: appcenter/AppCenterPage.js:63
 msgid "App management"
 msgstr "App-Verwaltung"
 
-#: appcenter/AppDetailsPage.js:546 appcenter/AppDetailsPage.js:548
+#: appcenter/AppDetailsPage.js:540 appcenter/AppDetailsPage.js:542
 msgid "App provider"
 msgstr "App-Anbieter"
 
@@ -220,11 +220,11 @@ msgstr "Achtung!"
 msgid "Autostart"
 msgstr ""
 
-#: appcenter/SettingsPage.js:248 appcenter/AppCenterPage.js:169
+#: appcenter/SettingsPage.js:248 appcenter/AppCenterPage.js:158
 msgid "Available"
 msgstr "Verfügbar"
 
-#: appcenter/AppDetailsPage.js:953
+#: appcenter/AppDetailsPage.js:947
 msgid "Available support options"
 msgstr "Verfügbare Supportoptionen"
 
@@ -248,7 +248,7 @@ msgstr ""
 "Führen Sie den folgenden Befehl als root auf den diesen Backup-Servern aus, "
 "<em>nachdem</em> Sie die Applikation auf diesem System installiert haben."
 
-#: appcenter/AppDetailsPage.js:474
+#: appcenter/AppDetailsPage.js:468
 msgid "Beschreibung"
 msgstr ""
 
@@ -258,21 +258,25 @@ msgstr "Kaufen"
 
 #: appcenter/SettingsPage.js:314 appcenter/AppConfigDialog.js:63
 #: appcenter/AppConfigDialog.js:70 appcenter/PackagesPage.js:420
-#: appcenter/PackagesPage.js:429 appcenter/AppDetailsPage.js:674
+#: appcenter/PackagesPage.js:429 appcenter/AppDetailsPage.js:668
 #: appcenter/AppDetailsDialog.js:81 appcenter/AppDetailsDialog.js:88
 #: appcenter/AppChooseHostDialog.js:71
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: appcenter/PackagesPage.js:324 appcenter/AppDetailsPage.js:554
+#: appcenter/PackagesPage.js:324 appcenter/AppDetailsPage.js:548
 msgid "Candidate version"
 msgstr "Verfügbare Version"
 
-#: appcenter/AppDetailsPage.js:555
+#: appcenter/AppDetailsPage.js:549
 msgid "Categories"
 msgstr "Kategorien"
 
-#: appcenter/AppDetailsPage.js:1008
+#: appcenter/AppCenterPage.js:170
+msgid "Charged"
+msgstr "Kostenpflichtig"
+
+#: appcenter/AppDetailsPage.js:1002
 #, python-format
 msgid ""
 "Click on \"%(button)s\" if you want to continue running this application at "
@@ -298,7 +302,7 @@ msgstr "Komponenten"
 msgid "Configure %s"
 msgstr ""
 
-#: appcenter/AppDetailsPage.js:550
+#: appcenter/AppDetailsPage.js:544
 msgid "Contact"
 msgstr "Kontakt"
 
@@ -310,11 +314,11 @@ msgstr "Fortfahren nicht möglich"
 msgid "Continuation is not recommended"
 msgstr "Fortfahren nicht empfohlen"
 
-#: appcenter/AppDetailsPage.js:683 appcenter/AppCenterPage.js:128
+#: appcenter/AppDetailsPage.js:677 appcenter/AppCenterPage.js:122
 msgid "Continue"
 msgstr "Fortfahren"
 
-#: appcenter/AppDetailsPage.js:233 appcenter/AppDetailsPage.js:1008
+#: appcenter/AppDetailsPage.js:233 appcenter/AppDetailsPage.js:1002
 msgid "Continue using"
 msgstr "Weiterhin nutzen"
 
@@ -345,7 +349,7 @@ msgstr ""
 msgid "Description"
 msgstr "Beschreibung"
 
-#: appcenter/AppDetailsPage.js:512
+#: appcenter/AppDetailsPage.js:506
 msgid "Details"
 msgstr "Details"
 
@@ -366,13 +370,13 @@ msgstr "Diese Komponente deaktivieren"
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: appcenter/PackagesPage.js:424 appcenter/AppDetailsPage.js:633
-#: appcenter/AppDetailsPage.js:752
+#: appcenter/PackagesPage.js:424 appcenter/AppDetailsPage.js:627
+#: appcenter/AppDetailsPage.js:746
 #, python-format
 msgid "Do you really want to %(verb)s %(ids)s?"
 msgstr "Möchten Sie %(ids)s wirklich %(verb)s?"
 
-#: appcenter/AppDetailsPage.js:900
+#: appcenter/AppDetailsPage.js:894
 msgid "Domain administration"
 msgstr "Domänenadministration"
 
@@ -396,7 +400,7 @@ msgstr "Aktivieren"
 msgid "Enable this component"
 msgstr "Diese Komponente aktivieren"
 
-#: appcenter/AppDetailsPage.js:556
+#: appcenter/AppDetailsPage.js:550
 msgid "End of life"
 msgstr "Lebensende"
 
@@ -416,7 +420,11 @@ msgstr ""
 "Für die Installation dieser Applikation ist ein UCS-Lizenzschlüssel mit "
 "Schlüsselidentifikation (Key-ID) notwendig."
 
-#: appcenter/AppDetailsPage.js:862
+#: appcenter/AppCenterPage.js:164
+msgid "Free"
+msgstr "Kostenlos"
+
+#: appcenter/AppDetailsPage.js:856
 #, python-format
 msgid ""
 "Further information can be found in the following log file on each of the "
@@ -435,7 +443,7 @@ msgid ""
 "application."
 msgstr ""
 
-#: appcenter/AppDetailsPage.js:860
+#: appcenter/AppDetailsPage.js:854
 #, python-format
 msgid ""
 "If everything else went correct and this is just a temporary network "
@@ -459,15 +467,15 @@ msgstr ""
 
 #: appcenter/SettingsPage.js:174 appcenter/PackagesPage.js:91
 #: appcenter/PackagesPage.js:237 appcenter/AppDetailsPage.js:181
-#: appcenter/AppDetailsPage.js:207 appcenter/AppDetailsPage.js:646
+#: appcenter/AppDetailsPage.js:207 appcenter/AppDetailsPage.js:640
 msgid "Install"
 msgstr "Installieren"
 
-#: appcenter/AppDetailsPage.js:646 appcenter/AppDetailsPage.js:650
+#: appcenter/AppDetailsPage.js:640 appcenter/AppDetailsPage.js:644
 msgid "Install Information"
 msgstr "Informationen zur Installation"
 
-#: appcenter/AppCenterPage.js:71
+#: appcenter/AppCenterPage.js:65
 msgid "Install or remove applications on this or another UCS system."
 msgstr ""
 "Fügen Sie dieser oder einer anderen UCS-Instanz Applikationen hinzu oder "
@@ -486,19 +494,19 @@ msgid "Installation status"
 msgstr "Paketstatus"
 
 #: appcenter/SettingsPage.js:252 appcenter/AppDetailsPage.js:327
-#: appcenter/AppCenterPage.js:156
+#: appcenter/AppCenterPage.js:152
 msgid "Installed"
 msgstr "Installiert"
 
-#: appcenter/PackagesPage.js:323 appcenter/AppDetailsPage.js:553
+#: appcenter/PackagesPage.js:323 appcenter/AppDetailsPage.js:547
 msgid "Installed version"
 msgstr "Installierte Version"
 
-#: appcenter/PackagesPage.js:379 appcenter/AppDetailsPage.js:711
+#: appcenter/PackagesPage.js:379 appcenter/AppDetailsPage.js:705
 msgid "Installing"
 msgstr "Installiere"
 
-#: appcenter/AppDetailsPage.js:858
+#: appcenter/AppDetailsPage.js:852
 #, python-format
 msgid "Installing the extension of the LDAP schema on %s seems to have failed."
 msgstr ""
@@ -517,20 +525,20 @@ msgstr "Aktualisierbar"
 msgid "It can only be configured while it is running."
 msgstr ""
 
-#: appcenter/AppCenterPage.js:216
+#: appcenter/AppCenterMetaCategory.js:97
 msgid "Less"
 msgstr "Weniger"
 
-#: appcenter/AppCenterPage.js:95
+#: appcenter/AppCenterPage.js:89
 msgid "Let us know if you you miss any application in Univention App Center!"
 msgstr ""
 "Teilen Sie uns mit, welche Anwendung Sie im Univention App Center vermissen!"
 
-#: appcenter/AppDetailsPage.js:645
+#: appcenter/AppDetailsPage.js:639
 msgid "License agreement"
 msgstr "Lizenzbestimmungen"
 
-#: appcenter/AppCenterPage.js:70
+#: appcenter/AppCenterPage.js:64
 msgid "Manage Applications for UCS"
 msgstr "Applikationen für UCS verwalten"
 
@@ -538,16 +546,12 @@ msgstr "Applikationen für UCS verwalten"
 msgid "Manage domain wide installations"
 msgstr "Installationen in der Domäne verwalten"
 
-#: appcenter/AppCenterPage.js:209 appcenter/AppCenterPage.js:214
-#: appcenter/AppCenterPage.js:219
+#: appcenter/AppCenterMetaCategory.js:93 appcenter/AppCenterMetaCategory.js:95
+#: appcenter/AppCenterMetaCategory.js:100
 msgid "More"
 msgstr "Mehr"
 
-#: appcenter/AppDetailsPage.js:407
-msgid "More Information"
-msgstr "Weitere Informationen"
-
-#: appcenter/AppDetailsPage.js:524 appcenter/AppDetailsPage.js:551
+#: appcenter/AppDetailsPage.js:518 appcenter/AppDetailsPage.js:545
 msgid "More information"
 msgstr "Weitere Informationen"
 
@@ -567,7 +571,7 @@ msgstr "Nein"
 msgid "No changes"
 msgstr "Keine Änderungen"
 
-#: appcenter/AppDetailsPage.js:951
+#: appcenter/AppDetailsPage.js:945
 msgid "No support option provided"
 msgstr "Keine Supportoption verfügbar"
 
@@ -579,7 +583,7 @@ msgstr "Nicht alle Rechner sind in der Auswahl zugelassen"
 msgid "Not found"
 msgstr "Nicht gefunden"
 
-#: appcenter/AppDetailsPage.js:562
+#: appcenter/AppDetailsPage.js:556
 msgid "Notification"
 msgstr "Benachrichtigung"
 
@@ -602,7 +606,7 @@ msgstr ""
 "ermöglicht es, diese zu installieren, zu deinstallieren oder zu "
 "aktualisieren."
 
-#: appcenter/AppCenterPage.js:198
+#: appcenter/AppCenterMetaCategory.js:82
 msgid "Open"
 msgstr "Öffnen"
 
@@ -669,7 +673,7 @@ msgstr "Suchbegriff"
 msgid "Permission denied"
 msgstr "Zugriff verweigert"
 
-#: appcenter/AppDetailsPage.js:955
+#: appcenter/AppDetailsPage.js:949
 msgid "Please contact the provider of the application"
 msgstr "Bitte kontaktieren Sie den Anbieter der Applikation"
 
@@ -697,7 +701,7 @@ msgstr "Anzeige aktualisieren"
 msgid "Registered email address"
 msgstr "Registrierte E-Mail-Adresse"
 
-#: appcenter/AppCenterPage.js:259
+#: appcenter/AppCenterPage.js:209
 msgid ""
 "Registration of the applications in the domain failed. It will be retried "
 "when opening this module again. This may also cause problems when installing "
@@ -731,7 +735,7 @@ msgstr "Zurücksetzen"
 msgid "Search"
 msgstr "Suchen"
 
-#: appcenter/AppCenterPage.js:83
+#: appcenter/AppCenterPage.js:77
 msgid "Search applications..."
 msgstr "Suche Applikationen..."
 
@@ -772,7 +776,7 @@ msgstr "Details anzeigen"
 msgid "Show progress"
 msgstr "Fortschritt anzeigen"
 
-#: appcenter/AppCenterPage.js:122
+#: appcenter/AppCenterPage.js:116
 msgid "Show this message again"
 msgstr "Diese Nachricht später wieder zeigen"
 
@@ -809,7 +813,7 @@ msgstr "Status"
 msgid "Stop the application"
 msgstr "Applikation stoppen"
 
-#: appcenter/AppCenterPage.js:96
+#: appcenter/AppCenterPage.js:90
 msgid "Suggest new app"
 msgstr "Neue App vorschlagen"
 
@@ -817,11 +821,11 @@ msgstr "Neue App vorschlagen"
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: appcenter/AppDetailsPage.js:552
+#: appcenter/AppDetailsPage.js:546
 msgid "Support"
 msgstr "Support"
 
-#: appcenter/AppDetailsPage.js:912
+#: appcenter/AppDetailsPage.js:906
 #, python-format
 msgid "The app provides a web interface: %s."
 msgstr "Die App bietet ein Webinterface: %s."
@@ -944,7 +948,7 @@ msgstr ""
 msgid "This application requires an extension of the LDAP schema."
 msgstr "Diese Applikation erfordert eine Erweiterung des LDAP Schemas."
 
-#: appcenter/AppDetailsPage.js:998
+#: appcenter/AppDetailsPage.js:992
 msgid ""
 "This application will inform the app provider about (un)installation. The "
 "app provider may contact you."
@@ -952,7 +956,7 @@ msgstr ""
 "Diese Applikation setzt den App-Anbieter über eine (De)Installation in "
 "Kenntnis. Der App-Anbieter wird Sie ggf. kontaktieren."
 
-#: appcenter/AppDetailsPage.js:1006
+#: appcenter/AppDetailsPage.js:1000
 #, python-format
 msgid ""
 "This application will not get any further updates. We suggest to uninstall "
@@ -961,7 +965,7 @@ msgstr ""
 "Diese Applikation wird keine weiteren Aktualisierungen erhalten. Wir "
 "empfehlen, %(app)s zu deinstallieren und alternative Software zu suchen."
 
-#: appcenter/AppDetailsPage.js:1000
+#: appcenter/AppDetailsPage.js:994
 msgid ""
 "This application will not inform the app provider about (un)installation."
 msgstr ""
@@ -976,7 +980,7 @@ msgstr ""
 "Die Aktion führt bei folgenden Paketen zu nicht automatisch behebbaren "
 "Problemen:"
 
-#: appcenter/AppDetailsPage.js:808
+#: appcenter/AppDetailsPage.js:802
 #, python-format
 msgid ""
 "To do this please log in as %s and repeat the steps taken until this dialog. "
@@ -985,7 +989,7 @@ msgstr ""
 "Melden Sie sich dazu bitte als %s an und wiederholen Sie alle Schritte bis "
 "zu diesem Dialog. Sie werden durch die Installation geführt werden."
 
-#: appcenter/AppDetailsPage.js:819
+#: appcenter/AppDetailsPage.js:813
 #, python-format
 msgid ""
 "To do this please log in on %(host)s as an administrator. Click on the gear-"
@@ -997,11 +1001,11 @@ msgstr ""
 "Sie den Punkt \"%(dialogName)s\". Dort können Sie eine neue Lizenz anfordern."
 
 #: appcenter/PackagesPage.js:104 appcenter/PackagesPage.js:246
-#: appcenter/AppDetailsPage.js:246 appcenter/AppDetailsPage.js:599
+#: appcenter/AppDetailsPage.js:246 appcenter/AppDetailsPage.js:593
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
-#: appcenter/AppDetailsPage.js:599 appcenter/AppDetailsPage.js:601
+#: appcenter/AppDetailsPage.js:593 appcenter/AppDetailsPage.js:595
 msgid "Uninstall Information"
 msgstr "Informationen zur Deinstallation"
 
@@ -1010,11 +1014,11 @@ msgstr "Informationen zur Deinstallation"
 msgid "Uninstall them first."
 msgstr "Deinstallieren Sie diese zuerst."
 
-#: appcenter/PackagesPage.js:383 appcenter/AppDetailsPage.js:715
+#: appcenter/PackagesPage.js:383 appcenter/AppDetailsPage.js:709
 msgid "Uninstalling"
 msgstr "Deinstalliere"
 
-#: appcenter/AppCenterPage.js:112
+#: appcenter/AppCenterPage.js:106
 msgid "Univention App Center"
 msgstr "Univention App Center"
 
@@ -1044,20 +1048,20 @@ msgstr ""
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: appcenter/PackagesPage.js:489 appcenter/AppDetailsPage.js:889
+#: appcenter/PackagesPage.js:489 appcenter/AppDetailsPage.js:883
 msgid "Updating session and module data..."
 msgstr "Aktualisiere Sitzungs- und Moduldaten..."
 
 #: appcenter/PackagesPage.js:117 appcenter/PackagesPage.js:255
-#: appcenter/AppDetailsPage.js:261 appcenter/AppDetailsPage.js:658
+#: appcenter/AppDetailsPage.js:261 appcenter/AppDetailsPage.js:652
 msgid "Upgrade"
 msgstr "Aktualisieren"
 
-#: appcenter/AppDetailsPage.js:658 appcenter/AppDetailsPage.js:660
+#: appcenter/AppDetailsPage.js:652 appcenter/AppDetailsPage.js:654
 msgid "Upgrade Information"
 msgstr "Informationen zur Aktualisierung"
 
-#: appcenter/PackagesPage.js:387 appcenter/AppDetailsPage.js:719
+#: appcenter/PackagesPage.js:387 appcenter/AppDetailsPage.js:713
 msgid "Upgrading"
 msgstr "Aktualisiere"
 
@@ -1069,7 +1073,7 @@ msgstr "'Unmaintained' Repositories benutzen"
 msgid "Username"
 msgstr "Benutzername"
 
-#: appcenter/AppDetailsPage.js:904
+#: appcenter/AppDetailsPage.js:898
 #, python-format
 msgid "Users need to be modified in the %s in order to use this service."
 msgstr "Benutzer müssen in der %s für diesen Dienst freigeschaltet werden."
@@ -1084,7 +1088,7 @@ msgstr ""
 "werden<br/>Da es auch ein temporäres Problem des betreffenden Servers sein "
 "kann, wurden Ihre Eingaben trotzdem gespeichert.<br/>Das Problem ist:"
 
-#: appcenter/AppDetailsPage.js:545
+#: appcenter/AppDetailsPage.js:539
 msgid "Vendor"
 msgstr "Hersteller"
 
@@ -1112,11 +1116,11 @@ msgstr ""
 msgid "Yes"
 msgstr "Ja"
 
-#: appcenter/PackagesPage.js:415 appcenter/AppDetailsPage.js:756
+#: appcenter/PackagesPage.js:415 appcenter/AppDetailsPage.js:750
 msgid "You cannot continue"
 msgstr "Fortfahren nicht möglich"
 
-#: appcenter/AppDetailsPage.js:807 appcenter/AppDetailsPage.js:818
+#: appcenter/AppDetailsPage.js:801 appcenter/AppDetailsPage.js:812
 msgid ""
 "You need to request and install a new license in order to use the Univention "
 "App Center."
@@ -1140,7 +1144,7 @@ msgstr "Sie bearbeiten die Details der Komponenten-Definition."
 msgid "https://docs.univention.de/manual.html#ad-connector:password-dienst"
 msgstr "https://docs.univention.de/handbuch.html#ad-connector:password-dienst"
 
-#: appcenter/AppCenterPage.js:92
+#: appcenter/AppCenterPage.js:86
 msgid "https://www.univention.com/products/univention-app-center/vote-for-app/"
 msgstr "https://www.univention.de/produkte/univention-app-center/vote-for-app/"
 
@@ -1148,8 +1152,8 @@ msgstr "https://www.univention.de/produkte/univention-app-center/vote-for-app/"
 msgid "incompatible"
 msgstr "inkompatibel"
 
-#: appcenter/PackagesPage.js:378 appcenter/AppDetailsPage.js:634
-#: appcenter/AppDetailsPage.js:710
+#: appcenter/PackagesPage.js:378 appcenter/AppDetailsPage.js:628
+#: appcenter/AppDetailsPage.js:704
 msgid "install"
 msgstr "installieren"
 
@@ -1165,15 +1169,15 @@ msgstr "lokal installiert"
 msgid "this computer"
 msgstr "dieser Rechner"
 
-#: appcenter/AppDetailsPage.js:784 appcenter/AppDetailsDialog.js:264
+#: appcenter/AppDetailsPage.js:778 appcenter/AppDetailsDialog.js:264
 msgid "this host"
 msgstr "diesem Rechner"
 
-#: appcenter/PackagesPage.js:382 appcenter/AppDetailsPage.js:714
+#: appcenter/PackagesPage.js:382 appcenter/AppDetailsPage.js:708
 msgid "uninstall"
 msgstr "deinstallieren"
 
-#: appcenter/PackagesPage.js:386 appcenter/AppDetailsPage.js:718
+#: appcenter/PackagesPage.js:386 appcenter/AppDetailsPage.js:712
 msgid "upgrade"
 msgstr "aktualisieren"
 
@@ -1257,6 +1261,9 @@ msgstr "aktualisieren"
 
 #~ msgid "Maintainer"
 #~ msgstr "Betreuer"
+
+#~ msgid "More Information"
+#~ msgstr "Weitere Informationen"
 
 #~ msgid "Name"
 #~ msgstr "Name"

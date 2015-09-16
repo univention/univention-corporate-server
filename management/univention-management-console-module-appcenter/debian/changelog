@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.4-15) unstable; urgency=low
+
+  * Bug #38894: [WIP] adapted po file
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 16 Sep 2015 14:35:17 +0200
+
 univention-management-console-module-appcenter (5.0.4-14) unstable; urgency=low
 
   * Bug #38894: [WIP] adapted MetaCategory logic
