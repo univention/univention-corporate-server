@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/when",
 	"dojo/dom-construct",
+	"dojo/dom-style",
 	"dojo/Deferred",
 	"umc/dialog",
 	"umc/tools",
@@ -43,7 +44,7 @@ define([
 	"umc/modules/appcenter/AppLiveSearchSidebar",
 	"umc/modules/appcenter/AppCenterMetaCategory",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, when, domConstruct, Deferred, dialog, tools, Page, Text, CheckBox, AppLiveSearchSidebar, AppCenterMetaCategory, _) {
+], function(declare, lang, array, when, domConstruct, domStyle, Deferred, dialog, tools, Page, Text, CheckBox, AppLiveSearchSidebar, AppCenterMetaCategory, _) {
 
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
@@ -158,7 +159,21 @@ define([
 				query: function(app) {
 					return !app.is_installed_anywhere;
 				}
-			}];
+			},
+			{
+				label: _('Free'),
+				query: function(app) {
+					return !app.shopurl;
+				}
+			},
+			{
+				label: _('Charged'),
+				query: function(app) {
+					return !!app.shopurl;
+				}
+			},
+			
+			];
 
 			array.forEach(assumedMetaCategories, lang.hitch(this, function(metaObj){
 				var metaCategory = new AppCenterMetaCategory(metaObj);
@@ -261,11 +276,24 @@ define([
 				return true;
 			};
 
-			array.forEach(this.metaCategories, function(metaObj) {
-				if (metaObj.label === category) {
-					query = metaObj.query;
-				}
+			var selectedMeta = array.filter(this.metaCategories, function(metaObj) {
+				return metaObj.label === category;
 			});
+			if (selectedMeta.length) {
+				selectedMeta = selectedMeta[0];
+				query = selectedMeta.query;
+				array.forEach(this.metaCategories, function(metaObj) {
+					if (metaObj !== selectedMeta) {
+						domStyle.set(metaObj.domNode, 'display', 'none');
+					} else {
+						domStyle.set(metaObj.domNode, 'display', 'block');
+					}
+				});
+			} else { 
+				array.forEach(this.metaCategories, function(metaObj) {
+					domStyle.set(metaObj.domNode, 'display', 'block');
+				});
+			}
 
 			// set query options and refresh grid
 			this.set('appQuery', query);

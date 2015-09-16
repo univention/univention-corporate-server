@@ -207,6 +207,10 @@
 	opacity: 0.66;
 }
 
+.appcenterMetaCategory {
+	margin-bottom: 2em;
+}
+
 .appcenterMetaCategory .umcText {
 	font-size: 1.8em;
 	padding-top: 0.4em;
