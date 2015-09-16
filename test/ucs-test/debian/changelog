@@ -1,4 +1,4 @@
-ucs-test (5.0.171-2) unstable; urgency=medium
+ucs-test (5.0.171-4) unstable; urgency=medium
 
   * Bug #39354: Fail if DefaultPackagesMaster is used
 
