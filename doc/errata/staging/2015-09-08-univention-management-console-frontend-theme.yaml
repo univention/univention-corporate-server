@@ -6,6 +6,6 @@ fix: 0.0.89-25.100.201509151343
 version: [3]
 desc: |
  This update addresses the following issue:
- * UMC modules with long descriptions had their text overflow the box in the
-   Gallery. Now the text is cut at some point.
+ * UMC modules with long descriptions might overlap the borders of the box in
+   the Gallery. Now the text is cut at some point.
 bug: [39319]

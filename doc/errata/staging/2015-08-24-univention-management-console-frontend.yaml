@@ -8,6 +8,6 @@ desc: |
  This update addresses the following issues:
  * Some widgets are now filtering out values which are already selected and
    don't present them in a dialog anymore.
- * UMC modules with long descriptions had their text overflow the box in the
-   Gallery. Now the text is cut at some point.
+ * UMC modules with long descriptions might overlap the borders of the box in
+   the Gallery. Now the text is cut at some point.
 bug: [37799, 39319]
