@@ -28,13 +28,14 @@ if configRegistry.get('server/role') in ['domaincontroller_master', 'domaincontr
 	domain = configRegistry.get('domainname')
 
 	if host and domain:
-		startsite = host + "." + domain + "/"
+		startsite = "%s.%s/" % (host, domain)
 
 	from univention.config_registry.interfaces import Interfaces
-	ip = str(Interfaces(configRegistry).get_default_ip_address().ip)
-
-	if ip:
-		startsite = startsite + " (" + ip + ")"
+	address = Interfaces(configRegistry).get_default_ip_address()
+	if address:
+		ip = str(address.ip)
+		if ip:
+			startsite = "%s (%s)" % (startsite, ip)
 
 	if configRegistry.get('server/role') =='domaincontroller_master':
 		print 'The UCS management system is available at https://' + startsite
