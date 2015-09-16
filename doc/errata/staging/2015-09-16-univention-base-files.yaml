@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: univention-base-files
+fix: 4.0.8-11.202.201509161525
+version: [3]
+desc: |
+ This update addresses the following issue:
+ * ntpd and ntpdate won't collide with each other, when started in short
+   succession (e.g. while booting).
+bug: [39299]
