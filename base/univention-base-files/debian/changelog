@@ -1,3 +1,10 @@
+univention-base-files (5.0.0-6) unstable; urgency=low
+
+  * Bug #39299: depened on lockfile-progs to make sure ntpd and ntpdate
+    don't collide
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 16 Sep 2015 15:21:49 +0200
+
 univention-base-files (5.0.0-5) unstable; urgency=low
 
   * Bug #39166: Fix sshd/banner handling
