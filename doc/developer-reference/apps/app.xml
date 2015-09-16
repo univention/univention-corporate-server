@@ -369,8 +369,7 @@
 					<listitem>
 						<warning>
 							<para>
-								This attribute is DEPRECATED. While it works, it has some design issues
-								and should not be used at least in new apps.
+								This attribute is deprecated amd should not be used anymore.
 								Old apps will have to be migrated eventually. Please see below for some easy
 								replacements. Otherwise get in touch with Univention
 								if you feel that you need DefaultPackagesMaster functionality.
@@ -378,7 +377,7 @@
 						</warning>
 						<simpara>
 							Installing an application may require an extension of the LDAP
-							schema. This is done by providing a separate package for this
+							schema. This can be done by providing a separate package for this
 							schema file and install it on the &ucsMaster; (and all &ucsBackup;
 							servers). The App Center will install these packages automatically
 							throughout the domain — in opposite to the
