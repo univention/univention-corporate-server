@@ -10,7 +10,7 @@ desc: |
     the base object in some cases. This has been fixed.
   * If the slapo-deref overlay is used (which is not the case in 
     a standard UCS installation) and if the list of attributes 
-    to be dereferenced is left empty, slapd can be crashed
+    to be dereferenced is left empty, slapd can be crashed (CVE-2015-1545)
   * Denial of service by unauthenticated remote attackers
     via crafted BER data (CVE-2015-6908)
 bug: [38424, 37728]
