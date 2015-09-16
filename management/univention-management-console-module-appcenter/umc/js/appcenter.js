@@ -80,6 +80,60 @@ define([
 			}
 		},
 
+		postCreate: function() {
+			this.inherited(arguments);
+			
+			this.watch('selectedChildWidget', lang.hitch(this, '_updateModuleState'));
+			this._appCenterPage._searchSidebar.watch('category', lang.hitch(this, '_updateModuleState'));
+		},
+
+		_updateModuleState: function() {
+			tools.defer(lang.hitch(this, function() {
+				this.set('moduleState', this.get('moduleState'));
+			}), 0);
+		},
+
+		_setModuleStateAttr: function(_state) {
+			var currentState = this.get('moduleState');
+			if (this._created && _state == this.moduleState || currentState == _state) {
+				this._set('moduleState', _state);
+				return;
+			}
+			if (!_state) {
+				if (this._appCenterPage) {
+					this.selectChild(this._appCenterPage);
+				}
+			}
+			else {
+				state = _state.split(':');
+				if (state[0] === 'id' ) {
+					this.showApp({id: state[1]});
+				} else {
+					if (this._appCenterPage && state[0] === 'category') {
+						this.selectChild(this._appCenterPage);
+						when(this._appCenterPage._searchSidebar.selectFormDeferred, lang.hitch(this, function() {
+							this._appCenterPage._searchSidebar.set('category', state[1]);
+						}));
+					}
+				}
+			}
+			this._set('moduleState', _state);
+		},
+
+		_getModuleStateAttr: function() {
+			var state = [];
+			if (this.selectedChildWidget && this.selectedChildWidget == this._detailPage) {
+				state = ['id', this._detailPage.app.id];
+			} else if (this.selectedChildWidget && this.selectedChildWidget == this._appCenterPage) {
+				state = ['category', this._appCenterPage._searchSidebar.get('category')];
+			}
+			return state.join(':');
+		},
+
+
+
+
+
 		udmAccessible: function() {
 			// FIXME: this is a synchronous call and can
 			// potentially fail although the module would
@@ -174,6 +228,7 @@ define([
 				appDetailsPage.destroyRecursive();
 			}));
 			this.addChild(appDetailsPage);
+			this._detailPage = appDetailsPage;
 
 			this.standbyDuring(appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
 				this.selectChild(appDetailsPage);

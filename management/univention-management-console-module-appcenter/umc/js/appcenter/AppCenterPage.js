@@ -135,12 +135,7 @@ define([
 				return this.updateApplications();
 			}))).then(lang.hitch(this ,function() {
 				if (this.openApp) {
-					array.forEach(this.metaCategories, lang.hitch(this, function(metaObj) {
-						var apps = metaObj.grid.store.query({id: this.openApp});
-						if (apps && apps.length) {
-							this.showDetails(apps[0]);
-						}
-					}));
+					this.onShowApp({id: this.openApp});
 				}
 			}));
 		},
@@ -245,7 +240,6 @@ define([
 					categories = metaLabels.concat(categories);
 					categories.unshift(_('All'));
 					this._searchSidebar.set('categories', categories);
-					this._searchSidebar.set('allCategory', categories[0]);
 				}
 			}));
 			return updating;

@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.4-16) unstable; urgency=low
+
+  * Bug #38894: [WIP] added browser navigation for the appcenter
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 16 Sep 2015 17:48:28 +0200
+
 univention-management-console-module-appcenter (5.0.4-15) unstable; urgency=low
 
   * Bug #38894: [WIP] adapted po file

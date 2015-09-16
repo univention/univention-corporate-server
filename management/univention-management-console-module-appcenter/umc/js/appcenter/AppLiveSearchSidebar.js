@@ -33,13 +33,14 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/has",
+	"dojo/Deferred",
 	"dojo/regexp",
 	"dojo/dom-style",
 	"dijit/form/Select",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/SearchBox",
 	"umc/i18n!"
-], function(declare, lang, array, has, regexp, domStyle, Select, ContainerWidget, SearchBox, _) {
+], function(declare, lang, array, has, Deferred, regexp, domStyle, Select, ContainerWidget, SearchBox, _) {
 	return declare("umc.modules.appcenter.AppLiveSearchSidebar", [ContainerWidget], {
 		// summary:
 		//		Offers a side bar for live searching, a set of categories can be defined.
@@ -52,13 +53,11 @@ define([
 
 		_categoriesAsIdLabelPairs: true,
 
+		selectFormDeferred: null,
+
 		// category: Object|String
 		//		Reference to the currently selected category
 		category: null,
-
-		// category: Object|String
-		//		Reference to the 'all' category
-		allCategory: null,
 
 		searchLabel: null,
 
@@ -76,6 +75,7 @@ define([
 		_lastValue: '',
 
 		buildRendering: function() {
+			this.selectFormDeferred = new Deferred();
 			this.inherited(arguments);
 			if (this.searchableAttributes === null) {
 				this.searchableAttributes = ['name', 'description', 'categories', 'keywords'];
@@ -100,6 +100,7 @@ define([
 					this.onSearch();
 				}
 			}));
+			
 		},
 
 		_getUniformCategory: function(category) {
@@ -124,10 +125,6 @@ define([
 
 		_getCategoryAttr: function() {
 			var category = this.category;
-			//if (this._isInSearchMode() && this.allCategory) {
-			//	//in search mode, the current category is always the "all" category
-			//	category = this._getUniformCategory(this.allCategory);
-			//}
 			if (!this._categoriesAsIdLabelPairs) {
 				return category.id;
 			}
@@ -166,12 +163,14 @@ define([
 				this.removeChild(this.selectForm);
 				this.selectForm.destroyRecursive();
 				this.selectForm = null;
+				this.selectFormDeferred = this.selectFormDeferred.isResolved() ? new Deferred() : this.selectFormDeferred;
 			}
 			this.selectForm = new ContainerWidget({'class': 'umcSize-TwoThirds'});
 			domStyle.set(this.selectForm.domNode, {display: 'inline-block', padding: '0 0.5em 1em 0.5em'});
 			this._selectForm = new Select({
 				options: selectFormOptions
 			});
+			this.selectFormDeferred.resolve();
 
 			this._selectForm.watch('value', lang.hitch(this, function(attr, oldval, newval) {
 				if (newval) {
