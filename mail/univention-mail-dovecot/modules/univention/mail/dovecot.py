@@ -72,7 +72,7 @@ class DovecotListener(object):
 			try:
 				old_localpart, old_domainpart = email.split("@")
 				global_mail_home = self.get_maillocation()
-				old_home_calc = str(global_mail_home).replace("%d", old_domainpart).replace("%n", old_localpart)
+				old_home_calc = str(global_mail_home).replace("%Ld", old_domainpart).replace("%Ln", old_localpart)
 			except:
 				self.log_e("dovecot: Delete mailbox: Configuration error. Could not remove mailbox (dn:'%s' old mail: '%s')." % (dn, email))
 				raise
@@ -117,11 +117,11 @@ class DovecotListener(object):
 			self.log_p("Renaming of mailboxes disabled, not moving ('%s' -> '%s')." % (oldMailPrimaryAddress, newMailPrimaryAddress))
 			return
 
-		old_localpart, old_domainpart = oldMailPrimaryAddress.split("@")
+		old_localpart, old_domainpart = oldMailPrimaryAddress.lower().split("@")
 
 		try:
 			global_mail_home = self.get_maillocation()
-			old_home_calc = str(global_mail_home).replace("%d", old_domainpart).replace("%n", old_localpart)
+			old_home_calc = str(global_mail_home).replace("%Ld", old_domainpart).replace("%Ln", old_localpart)
 			new_home_dove = self.get_user_home(newMailPrimaryAddress)
 		except:
 			self.log_e("Move mailbox: Configuration error. Could not move mailbox ('%s' -> '%s')." % (oldMailPrimaryAddress, newMailPrimaryAddress))
@@ -204,7 +204,7 @@ class DovecotListener(object):
 
 	def get_user_home(self, username):
 		try:
-			return self.read_from_ext_proc_as_root(["/usr/bin/doveadm", 'user', "-f", "home", username])
+			return self.read_from_ext_proc_as_root(["/usr/bin/doveadm", 'user', "-f", "home", username]).lower()
 		except:
 			self.log_e("Failed to get mail home for user '%s'.\n%s" % (username, traceback.format_exc()))
 			raise

@@ -1,3 +1,9 @@
+univention-mail-dovecot (1.0.0-10) unstable; urgency=low
+
+  * lowercase all paths (except shared folder w/o email address) (Bug #39346)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 16 Sep 2015 10:56:42 +0200
+
 univention-mail-dovecot (1.0.0-9) unstable; urgency=low
 
   * lowercase email addresses for authdb cache and userdb queries (Bug #39346)
