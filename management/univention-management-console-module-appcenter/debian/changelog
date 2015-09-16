@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.4-12) unstable; urgency=low
+
+  * Bug #38894: [WIP] Added new Module for MetaCategories
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 16 Sep 2015 10:45:08 +0200
+
 univention-management-console-module-appcenter (5.0.4-11) unstable; urgency=low
 
   * Bug #38894: [WIP] added metaCategories in the LiveSearchSideBar

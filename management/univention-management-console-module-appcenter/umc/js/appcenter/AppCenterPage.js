@@ -49,8 +49,9 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/modules/appcenter/AppLiveSearchSidebar",
+	"umc/modules/appcenter/AppCenterMetaCategory",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, when, domConstruct, domClass, domStyle, Memory, Observable, Deferred, dquery, dialog, tools, Page, Text, Button, CheckBox, Container, AppCenterGallery, AppLiveSearchSidebar, _) {
+], function(declare, lang, array, when, domConstruct, domClass, domStyle, Memory, Observable, Deferred, dquery, dialog, tools, Page, Text, Button, CheckBox, Container, AppCenterGallery, AppLiveSearchSidebar, AppCenterMetaCategory, _) {
 
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
@@ -141,7 +142,7 @@ define([
 				return this.updateApplications();
 			}))).then(lang.hitch(this ,function() {
 				if (this.openApp) {
-					tools.forIn(this.metaCategories, lang.hitch(this, function(metaKey, metaObj) {
+					array.forEach(this.metaCategories, lang.hitch(this, function(metaObj) {
 						var apps = metaObj.grid.store.query({id: this.openApp});
 						if (apps && apps.length) {
 							this.showDetails(apps[0]);
@@ -152,96 +153,33 @@ define([
 		},
 
 		createMetaCategories: function() {
-			this.metaCategories  = {
-				installed : {
-					label: _('Installed'),
-					grid: null,
-					widget: null,
-					query: function(app) {
-						// currently only local because no reliable attribute for domain wide installations
-						return app.is_installed;
-					},
-					setGridStore: function(applications) {
-						var installedApps = array.filter(applications, this.query);
-						this.grid.set('store', new Observable(new Memory({
-							data: installedApps
-						})));
-					}
-				},
-				other : {
-					label: _('Available'),
-					grid: null,
-					widget: null,
-					query: function(app) {
-						// currently only local because no reliable attribute for domain wide installations
-						return !app.is_installed;
-					},
-					setGridStore: function(applications) { 
-						var availableApps = array.filter(applications, this.query);
-						this.grid.set('store', new Observable( new Memory({
-							data: availableApps
-						})));
-					}
+			this.metaCategories = [];
+			var assumedMetaCategories = [
+			{
+				label: _('Installed'),
+				query: function(app) {
+					// app.is_installed_anywhere is not reliable for domain
+					// wide installations, so currently only local installations
+					// were checked
+					return app.is_installed;
 				}
-			};
+			},
+			{
+				label: _('Available'),
+				query: function(app) {
+					// app.is_installed_anywhere is not reliable for domain
+					// wide installations, so currently only local installations
+					// were checked
+						return !app.is_installed;
+				}
+			}];
 
-			tools.forIn(this.metaCategories, lang.hitch(this, function(metaKey, metaObj){
-				var gridContainer = new Container({
-					'class': 'appcenterMetaCategory'
-				});
-
-				var gridLabel = new Text({ 
-					content: metaObj.label
-				});
-
-				var gridButton = new Button({
-					label: _('More'),
-					onClick: function() {
-						if (this.label === _('More')) {
-							domStyle.set(grid.domNode, 'height', 'auto');
-							this.set('label', _('Less'));
-						} else {
-							domStyle.set(grid.domNode, 'height', '175px');
-							this.set('label', _('More'));
-						}
-					}
-				});
-
-				var clearContainer = new Container({
-					style: {
-						clear: 'both'
-					}
-				});
-
-				var grid = new AppCenterGallery({
-					actions: [{
-						name: 'open',
-						isDefaultAction: true,
-						isContextAction: false,
-						label: _('Open'),
-						callback: lang.hitch(this, function(id, item) {
-							this.showDetails(item);
-						})
-					}],
-					style: {
-						height: '175px'
-					}
-				});
-
-				gridContainer.addChild(gridLabel);
-				gridContainer.own(gridLabel);
-				gridContainer.gridLabel = gridLabel;
-				gridContainer.addChild(gridButton);
-				gridContainer.own(gridButton);
-				gridContainer.gridButton = gridButton;
-				gridContainer.addChild(clearContainer);
-				gridContainer.own(clearContainer);
-				gridContainer.addChild(grid);
-				gridContainer.own(grid);
-				gridContainer.grid = grid;
-				this.metaCategories[metaKey].grid = grid;
-				this.metaCategories[metaKey].widget = gridContainer;
-				this.addChild(gridContainer);
+			array.forEach(assumedMetaCategories, lang.hitch(this, function(metaObj){
+				var metaCategory = new AppCenterMetaCategory(metaObj);
+				metaCategory.on('showApp', lang.hitch(this, 'onShowApp'));
+				this.metaCategories.push(metaCategory);
+				this.addChild(metaCategory);
+				this.own(metaCategory);
 			}));
 		},
 
@@ -256,11 +194,6 @@ define([
 				}
 			);
 			return deferred;
-		},
-
-		// inspired by PackagesPage._show_details
-		showDetails: function(app) {
-			this.onShowApp(app);
 		},
 
 		getApplications: function() {
@@ -288,8 +221,8 @@ define([
 			// query all applications
 			this._applications = null;
 			var updating = when(this.getApplications()).then(lang.hitch(this, function(applications) {
-				tools.forIn(this.metaCategories, function(metaKey, metaObj) {
-					metaObj.setGridStore(applications);
+				array.forEach(this.metaCategories, function(metaObj) {
+					metaObj.set('store', applications);
 				});
 
 				if (this.liveSearch) {
@@ -302,7 +235,7 @@ define([
 						});
 					});
 					categories.sort();
-					tools.forIn(this.metaCategories, function(metaKey, metaObj) {
+					array.forEach(this.metaCategories, function(metaObj) {
 						categories.unshift(metaObj.label);
 					});
 					categories.unshift(_('All'));
@@ -338,7 +271,7 @@ define([
 				return true;
 			};
 
-			tools.forIn(this.metaCategories, function(metaKey, metaObj) {
+			array.forEach(this.metaCategories, function(metaObj) {
 				if (metaObj.label === category) {
 					query = metaObj.query;
 				}
@@ -349,10 +282,11 @@ define([
 		},
 
 		_setAppQueryAttr: function(query) {
-			tools.forIn(this.metaCategories, function(metaKey, metaObj) {
+			array.forEach(this.metaCategories, function(metaObj) {
+				//metaObj.set('query', query);
 				metaObj.grid.set('query', query);
 				var queryResult = metaObj.grid.store.query(query);
-				domClass.toggle(metaObj.widget.domNode, 'dijitHidden', !queryResult.length);
+				domClass.toggle(metaObj.domNode, 'dijitHidden', !queryResult.length);
 			});
 			this._set('appQuery', query);
 		},
