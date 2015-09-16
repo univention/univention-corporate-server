@@ -57,6 +57,8 @@ define([
 
 		query: null,
 
+		store: null,
+
 		baseClass: 'appcenterMetaCategory',
 
 		buildRendering: function() {
@@ -90,12 +92,12 @@ define([
 			this.button = new Button({
 				label: _('More'),
 				onClick: lang.hitch(this, function() {
-					if (this.label === _('More')) {
+					if (this.button.label === _('More')) {
 						domStyle.set(this.grid.domNode, 'height', 'auto');
-						this.set('label', _('Less'));
+						this.set('ButtonLabel', _('Less'));
 					} else {
 						domStyle.set(this.grid.domNode, 'height', '175px');
-						this.set('label', _('More'));
+						this.set('ButtonLabel', _('More'));
 					}
 				})
 			});
@@ -110,10 +112,6 @@ define([
 			this.own(this.grid);
 		},
 
-		postCreate: function() {
-			this.inherited(arguments);
-		},
-
 		_setStoreAttr: function(applications) {
 			var filteredApps = array.filter(applications, this.query);
 			this.grid.set('store', new Observable(new Memory({
@@ -122,13 +120,16 @@ define([
 			this._set('store', applications);
 		},
 
-		_setQueryAttr: function(query) {
-			if (this.grid.store) {
-				this.grid.set('query', query);
-				var queryResult = this.grid.store.query(query);
-				domClass.toggle(this.domNode, 'dijitHidden', !queryResult.length);
-				this._set('query', query);
-			}
+		_setFilterQueryAttr: function(query) {
+			this.grid.set('query', query);
+			var queryResult = this.grid.store.query(query);
+			domClass.toggle(this.domNode, 'dijitHidden', !queryResult.length);
+			this._set('filterQuery', query);
+		},
+
+		_setButtonLabelAttr: function(label) {
+			this.button.set('label', label);
+			this._set('ButtonLabel', label);
 		},
 
 		onShowApp: function(app) {

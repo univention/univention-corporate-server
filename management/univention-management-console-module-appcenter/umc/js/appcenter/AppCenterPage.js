@@ -34,24 +34,16 @@ define([
 	"dojo/_base/array",
 	"dojo/when",
 	"dojo/dom-construct",
-	"dojo/dom-class",
-	"dojo/dom-style",
-	"dojo/store/Memory",
-	"dojo/store/Observable",
 	"dojo/Deferred",
-	"dojo/query",
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Page",
 	"umc/widgets/Text",
-	"umc/widgets/Button",
 	"umc/widgets/CheckBox",
-	"umc/widgets/ContainerWidget",
-	"umc/modules/appcenter/AppCenterGallery",
 	"umc/modules/appcenter/AppLiveSearchSidebar",
 	"umc/modules/appcenter/AppCenterMetaCategory",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, when, domConstruct, domClass, domStyle, Memory, Observable, Deferred, dquery, dialog, tools, Page, Text, Button, CheckBox, Container, AppCenterGallery, AppLiveSearchSidebar, AppCenterMetaCategory, _) {
+], function(declare, lang, array, when, domConstruct, Deferred, dialog, tools, Page, Text, CheckBox, AppLiveSearchSidebar, AppCenterMetaCategory, _) {
 
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
@@ -158,19 +150,13 @@ define([
 			{
 				label: _('Installed'),
 				query: function(app) {
-					// app.is_installed_anywhere is not reliable for domain
-					// wide installations, so currently only local installations
-					// were checked
-					return app.is_installed;
+					return app.is_installed_anywhere;
 				}
 			},
 			{
 				label: _('Available'),
 				query: function(app) {
-					// app.is_installed_anywhere is not reliable for domain
-					// wide installations, so currently only local installations
-					// were checked
-						return !app.is_installed;
+					return !app.is_installed_anywhere;
 				}
 			}];
 
@@ -180,6 +166,9 @@ define([
 				this.metaCategories.push(metaCategory);
 				this.addChild(metaCategory);
 				this.own(metaCategory);
+				this.watch('appQuery', function(attr, oldval, newval) {
+					metaCategory.set('filterQuery', newval);
+				});
 			}));
 		},
 
@@ -221,9 +210,12 @@ define([
 			// query all applications
 			this._applications = null;
 			var updating = when(this.getApplications()).then(lang.hitch(this, function(applications) {
+				var metaLabels = [];
 				array.forEach(this.metaCategories, function(metaObj) {
 					metaObj.set('store', applications);
+					metaLabels.push(metaObj.label);
 				});
+				metaLabels.push(''); // seperates meta and normal categories
 
 				if (this.liveSearch) {
 					var categories = [];
@@ -235,9 +227,7 @@ define([
 						});
 					});
 					categories.sort();
-					array.forEach(this.metaCategories, function(metaObj) {
-						categories.unshift(metaObj.label);
-					});
+					categories = metaLabels.concat(categories);
 					categories.unshift(_('All'));
 					this._searchSidebar.set('categories', categories);
 					this._searchSidebar.set('allCategory', categories[0]);
@@ -282,12 +272,6 @@ define([
 		},
 
 		_setAppQueryAttr: function(query) {
-			array.forEach(this.metaCategories, function(metaObj) {
-				//metaObj.set('query', query);
-				metaObj.grid.set('query', query);
-				var queryResult = metaObj.grid.store.query(query);
-				domClass.toggle(metaObj.domNode, 'dijitHidden', !queryResult.length);
-			});
 			this._set('appQuery', query);
 		},
 
