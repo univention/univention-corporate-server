@@ -1,5 +1,13 @@
 ucs-test (6.0.4-15) unstable; urgency=low
 
+  * Bug #39269: Modified dns-test for forward-zone and added some tests for
+  	other dns records. Should work on samba4 and openldap as dns-backend
+  	Section 67, Tests 100-106
+
+ -- Julian Hupertz <hupertz@univention.de>  Wed, 16 Sep 2015 16:22:08 +0200
+
+ucs-test (6.0.4-15) unstable; urgency=low
+
   * fix errors on samba4 servers: add check_for_drs_replication=True or use
     create_user() / create_group(), which do it by default
   * deactivate waiting for drs replication in dovecot_login_performance_test

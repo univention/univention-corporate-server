@@ -1,0 +1,115 @@
+#!/usr/share/ucs-test/runner python
+## desc: Creates dns pointer record entry and trys to resolve it
+## bugs: [39269]
+## tags: [WIP]
+## roles:
+##  - domaincontroller_master
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+## versions:
+##  4.0-3: found
+## exposure: dangerous
+
+import univention.testing.ucr as ucr_test
+import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+import dns.rdatatype
+from essential.dns_helper import resolveDnsEntry
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		with ucr_test.UCSTestConfigRegistry() as ucr:
+
+			duration = 120
+			resourceRecord = 'PTR'
+			resourceRecord_Number = dns.rdatatype.PTR
+			zoneName = ''
+			ptr_record = uts.random_name()
+
+			host = uts.random_name()+'.'+ucr.get('domainname')
+
+			ip = uts.random_ip().split('.',2)
+			ip[2] = ip[2].partition('.')[0]
+			ip = '.'.join(ip)
+
+			#IPv4
+			reverse_zone_properties = {
+				'subnet': ip,
+				'nameserver': host,
+				'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+				'serial': '%s' % (uts.random_int()),
+				'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
+				'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
+				'expire': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
+				'ttl': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
+				'retry': '%s' % (uts.random_int()),
+				'a': ['%s' % (uts.random_ip())]
+			}
+
+			baseDn = ucr.get('domainname').split('.')
+			
+			pos = 'cn=dns'
+			
+			for s in baseDn:
+				pos = pos + ',' + 'dc=' + s
+
+			reverse_zone = udm.create_object('dns/reverse_zone',position=pos,**reverse_zone_properties)
+
+			words = reverse_zone_properties['subnet'].split('.')
+
+			words.reverse()
+
+			ptr_address = uts.random_int()
+
+			zoneName = ptr_address + '.'
+
+			zoneName += '.'.join(words)
+
+			zoneName += '.in-addr.arpa'
+
+			ptr = udm.create_object('dns/ptr_record', address = ptr_address, superordinate = reverse_zone, ptr_record = ptr_record)
+
+			query = resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number)
+
+			s = str(query.response.answer[0])
+			s =  s[0:s.find('. ')]
+
+			if s != zoneName:
+				raise Exception('the resolved name is not equal to the created ldap-object')
+
+			#IPv6
+
+			zoneName = ''
+
+			reverse_zone_properties.update({
+				'subnet': '2011:06f8:13dc:0002:19b7:d592:09dd',
+				'nameserver': host,
+				'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+				'a': '2011:06f8:13dc:0002:19b7:d592:09dd:113a'
+			})
+
+			reverse_zone = udm.create_object('dns/reverse_zone',position=pos, **reverse_zone_properties)
+
+			words = reverse_zone_properties['subnet'].split(':')
+
+			words.reverse()
+
+			zoneName = ptr_address +'.'
+
+			for s in words:
+				t = s[::-1]
+				for c in t:
+					zoneName += c + '.'
+
+			zoneName += 'ip6.arpa'
+
+			ptr = udm.create_object('dns/ptr_record', address = ptr_address, superordinate = reverse_zone, ptr_record = ptr_record)
+
+			query = resolveDnsEntry(duration, zoneName, resourceRecord, resourceRecord_Number)
+
+			s = str(query.response.answer[0])
+			s =  s[0:s.find('. ')]
+
+			if s != zoneName:
+				raise Exception('the resolved name is not equal to the created ldap-object')
