@@ -99,7 +99,7 @@ class DovecotSharedFolderListener(DovecotListener):
 			old_mailbox = old["mailPrimaryAddress"][0]
 			old_loc, old_domain = old_mailbox.split("@")
 			global_mail_home = self.get_maillocation()
-			path = str(global_mail_home).replace("%d", old_domain).replace("%n", old_loc)
+			path = str(global_mail_home).replace("%Ld", old_domain).replace("%Ln", old_loc)
 			# cannot unsubscribe to non-existing shared folder (a.k.a. private mailbox)
 		else:
 			# public folder
@@ -136,7 +136,7 @@ class DovecotSharedFolderListener(DovecotListener):
 			if "mailPrimaryAddress" in old:
 				# it remains a shared folder
 				old_mailbox = old["mailPrimaryAddress"][0]
-				if new_mailbox.lower() != old_mailbox.lower():
+				if new_mailbox != old_mailbox:
 					# rename/move mailbox inside private namespace
 					#
 					# cannot unsubscribe to non-existing shared folder (a.k.a. private mailbox)
@@ -147,6 +147,7 @@ class DovecotSharedFolderListener(DovecotListener):
 					pass
 			else:
 				# move mailbox from public to private namespace
+				self.log_p("Moving mailbox from public to private namespace...")
 				old_mailbox = old["cn"][0]
 				try:
 					pub_loc = self.get_public_location(old_mailbox)
@@ -196,12 +197,13 @@ class DovecotSharedFolderListener(DovecotListener):
 			new_mailbox = new["cn"][0]
 			if "mailPrimaryAddress" in old:
 				# move mailbox from private to public namespace
+				self.log_p("Moving mailbox from private to public namespace...")
 				old_mailbox = old["mailPrimaryAddress"][0]
 				old_loc, old_domain = old_mailbox.split("@")
 				# cannot unsubscribe to non-existing shared folder (a.k.a. private mailbox)
 				try:
 					global_mail_home = self.get_maillocation()
-					old_path = str(global_mail_home).replace("%d", old_domain).replace("%n", old_loc)
+					old_path = str(global_mail_home).replace("%Ld", old_domain).replace("%Ln", old_loc).lower()
 					# update dovecot config
 					self.update_public_mailbox_configuration()
 					pub_loc = self.get_public_location(new_mailbox)
