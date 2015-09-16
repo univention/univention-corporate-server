@@ -27,7 +27,8 @@ Depends: ${misc:Depends},
  bzip2,
  psmisc,
  lsb-base,
- lsb-release
+ lsb-release,
+ lockfile-progs
 Recommends: vim,
  emacs23,
  less,
