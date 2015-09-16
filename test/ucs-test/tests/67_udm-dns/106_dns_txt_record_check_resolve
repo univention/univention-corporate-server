@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Creates dns forward zone entry and trys to resolve it
+## desc: Creates dns pointer record entry and trys to resolve it
 ## bugs: [39269]
 ## tags: [WIP]
 ## roles:
@@ -11,30 +11,34 @@
 ##  4.0-3: found
 ## exposure: dangerous
 
-import univention.testing.udm as udm_test
 import univention.testing.ucr as ucr_test
 import univention.testing.strings as uts
+import univention.testing.udm as udm_test
 import dns.rdatatype
 from essential.dns_helper import resolveDnsEntry
-
+import sys
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
+			dns_backend = 'samba4'
+
+			#Workaround for Bug #37346
+			if dns_backend == ucr.get('dns/backend'):
+				print 'Samba 4 was detected as dns-backend on the system. Refer to Bug 37346 for further information.'
+				sys.exit(0)
 
 			duration = 120
-
-			resourceRecord = 'SOA'
-
-			resourceRecord_Number = dns.rdatatype.SOA
+			resourceRecord = 'TXT'
+			resourceRecord_Number = dns.rdatatype.TXT
 
 			zone = uts.random_name() + '.' + uts.random_name()
-
+			
 			host = uts.random_name()
 
 			forward_zone_properties = {
 				'zone': zone,
-				'nameserver': host + '.' + zone,
+				'nameserver': host,
 				'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
 				'serial': '%s' % (uts.random_int()),
 				'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
@@ -42,7 +46,7 @@ if __name__ == '__main__':
 				'expire': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
 				'ttl': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
 				'retry': '%s' % (uts.random_int()),
-				'a': ['%s' % (uts.random_ip())]
+				'a': [ '%s' % (uts.random_ip())]
 			}
 
 			baseDn = ucr.get('domainname').split('.')
@@ -52,7 +56,7 @@ if __name__ == '__main__':
 			for s in baseDn:
 				pos = pos + ',' + 'dc=' + s
 
-			forward_zone = udm.create_object('dns/forward_zone', position=pos, **forward_zone_properties)
+			forward_zone = udm.create_object('dns/forward_zone',position=pos, **forward_zone_properties)
 
 			host_record_properties = {
 				'name': host,
@@ -64,11 +68,18 @@ if __name__ == '__main__':
 
 			host_record = udm.create_object('dns/host_record', superordinate = forward_zone, **host_record_properties)
 
-			query = resolveDnsEntry(duration,forward_zone_properties['zone'],resourceRecord, resourceRecord_Number)
+			txt_record = uts.random_string()
 
-			s = str(query.response.answer[0])
-			s =  s[0:s.find('. ')]
+			udm.modify_object('dns/forward_zone', dn = forward_zone, txt = txt_record)
 
-			if s != forward_zone_properties['zone']:
-				raise Exception('the resolved name is not equal to the created ldap-object')
+			query = resolveDnsEntry(duration,forward_zone_properties['zone'],resourceRecord,resourceRecord_Number)
+
+			s = str(query.response.answer[0]).split(' ')[-1][1:-1]
+
+
+			print s
+			print txt_record
+
+			if s != txt_record:
+				raise Exception('the resolved name is not the created txt record')
 

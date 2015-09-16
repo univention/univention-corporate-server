@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Creates dns forward zone entry and trys to resolve it
+## desc: Creates dns srv record and trys to resolve it
 ## bugs: [39269]
 ## tags: [WIP]
 ## roles:
@@ -11,22 +11,20 @@
 ##  4.0-3: found
 ## exposure: dangerous
 
-import univention.testing.udm as udm_test
 import univention.testing.ucr as ucr_test
 import univention.testing.strings as uts
+import univention.testing.udm as udm_test
 import dns.rdatatype
 from essential.dns_helper import resolveDnsEntry
-
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
-
+			
 			duration = 120
 
-			resourceRecord = 'SOA'
-
-			resourceRecord_Number = dns.rdatatype.SOA
+			resourceRecord = 'SRV'
+			resourceRecord_Number = dns.rdatatype.SRV
 
 			zone = uts.random_name() + '.' + uts.random_name()
 
@@ -34,7 +32,7 @@ if __name__ == '__main__':
 
 			forward_zone_properties = {
 				'zone': zone,
-				'nameserver': host + '.' + zone,
+				'nameserver': host,
 				'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
 				'serial': '%s' % (uts.random_int()),
 				'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
@@ -64,11 +62,26 @@ if __name__ == '__main__':
 
 			host_record = udm.create_object('dns/host_record', superordinate = forward_zone, **host_record_properties)
 
-			query = resolveDnsEntry(duration,forward_zone_properties['zone'],resourceRecord, resourceRecord_Number)
+			name = uts.random_string()
+
+			name_extension = uts.random_string()
+
+			protocol = 'tcp'
+
+			srv_record_properties = {
+				'name': '%s tcp %s' % (name, name_extension),
+				'location': '0 1 2 %s.%s' % (host, zone),
+				'zonettl' : '128'
+			}
+
+			srv_record = udm.create_object('dns/srv_record', superordinate = forward_zone, **srv_record_properties)
+
+			zoneName = '_'+name+'.'+'_'+protocol+'.'+name_extension+'.'+forward_zone_properties['zone']
+
+			query = resolveDnsEntry(duration,zoneName,resourceRecord, resourceRecord_Number)
 
 			s = str(query.response.answer[0])
 			s =  s[0:s.find('. ')]
 
-			if s != forward_zone_properties['zone']:
+			if s != zoneName:
 				raise Exception('the resolved name is not equal to the created ldap-object')
-

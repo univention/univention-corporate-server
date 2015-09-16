@@ -1,3 +1,11 @@
+ucs-test (5.0.171-3) unstable; urgency=low
+
+  * Bug #39269: Modified dns-test for forward-zone and added some tests for
+  	other dns records. Should work on samba4 and openldap as dns-backend
+  	Section 67, Tests 100-106
+
+ -- Julian Hupertz <hupertz@univention.de>  Wed, 16 Sep 2015 14:25:19 +0200
+
 ucs-test (5.0.171-2) unstable; urgency=low
 
   * Bug #39269: Added test for resolving dns forward-zone
