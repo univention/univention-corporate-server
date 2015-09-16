@@ -1,0 +1,23 @@
+diff --git a/pam_saml.c b/pam_saml.c
+--- a/pam_saml.c
++++ b/pam_saml.c
+@@ -436,7 +436,7 @@ pam_sm_authenticate(pamh, flags, ac, av)
+ 
+ 	/* Is it big enough to make sense? */
+ 	if (strlen(saml_msg) < SAML_MINLEN) {
+-		syslog(LOG_ERR, "saml_msg is too small: %d", strlen(saml_msg));
++		syslog(LOG_ERR, "saml_msg is too small: minlength = %d", SAML_MINLEN);
+ 		return PAM_AUTH_ERR;
+ 	};
+ 
+diff --git a/saml.c b/saml.c
+--- a/saml.c
++++ b/saml.c
+@@ -538,6 +538,7 @@ saml_check_all_assertions(ctx, params, userid, saml_msg, flags)
+ 	   (const xmlChar *)"urn:oasis:names:tc:SAML:2.0:assertion") != 0) {
+ 		saml_error(params, 0, "wxmlXPathRegisterNs failed");
+ 		error = ENOMEM;;
++		goto out;
+ 	}
+ 
+ 	if ((xpobj = xmlXPathEvalExpression((const xmlChar *)
