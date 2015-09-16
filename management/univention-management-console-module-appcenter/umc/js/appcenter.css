@@ -125,7 +125,7 @@
 
 #appContent {
 	width: 100%;
-	padding: 0.6em 0 0.3em 0.6em;
+	padding: 0.6em 0.3em 0.3em 0.6em;
 	display: inline-block;
 	transition: transform 0.5s;
 }
@@ -140,7 +140,7 @@
 	height: 45%;
 	background-color: #6e6e6e;
 	color: #fff;
-	padding: 0.6em 0 0 0.6em;
+	padding: 0.6em 0.3em 0.3em 0.6em;
 	position: absolute;
 	bottom: 0;
 	transform: translateY(100%);
@@ -165,6 +165,7 @@
 	margin-bottom: 0.3em;
 	margin-right: 0;
 	transform: none;
+	word-break: normal;
 }
 
 #appInnerWrapper.umcGalleryItem:hover .umcGalleryName {
@@ -208,7 +209,9 @@
 }
 
 .appcenterMetaCategory {
-	margin-bottom: 2em;
+	margin-bottom: 3em;
+	padding-bottom: 2em;
+	border-bottom: 1px solid #c8c8c8;
 }
 
 .appcenterMetaCategory .umcText {
