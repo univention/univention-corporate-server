@@ -14,12 +14,11 @@ import univention.testing.utils as utils
 def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		with udm_test.UCSTestUDM() as udm:
-			username = uts.random_name()
+			usermail = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
 			password = uts.random_string()
 			userdn, username = udm.create_user(
-					username=username,
 					password=password,
-					mailPrimaryAddress='%s@%s' % (username, ucr.get('domainname')),
+					mailPrimaryAddress=usermail,
 					option=['mail', 'person', 'posix', 'samba', 'pki']
 					)
 

@@ -39,10 +39,8 @@ def main():
 				handler_set(['mail/alias/root=systemmail@%s.%s' % (host, domain)])
 				reload_postfix()
 
-				user = uts.random_name()
-				mail = '%s@%s' % (user, domain)
+				mail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
-						username = user,
 						set={
 							'mailHomeServer': '%s.%s' % (host, domain),
 							'mailPrimaryAddress': mail,

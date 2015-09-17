@@ -77,10 +77,8 @@ def main():
 				# → mailbox with NEW name should have been created and is accessible
 				# → mailbox with OLD name should NOT be accessible
 				print "== case 1 =="
-				name = uts.random_name()
-				usermail = '%s@%s' % (name, domain)
+				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
-					username=name,
 					set={
 						'password'           : password,
 						'mailHomeServer'     : host,
@@ -104,10 +102,8 @@ def main():
 				# Add local FQDN as mailHomeServer
 				# → mailbox should have been created and is accessible
 				print "== case 2 =="
-				name = uts.random_name()
-				usermail = '%s@%s' % (name, domain)
+				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
-					username=name,
 					set={
 						'password'           : password,
 						'mailPrimaryAddress' : usermail
@@ -129,10 +125,8 @@ def main():
 				# Add "foreign" FQDN as mailHomeServer
 				# → mailbox should NOT have been created
 				print "== case 3 =="
-				name = uts.random_name()
-				usermail = '%s@%s' % (name, domain)
+				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
-					username=name,
 					set={
 						'password'           : password,
 						'mailPrimaryAddress' : usermail
@@ -154,10 +148,8 @@ def main():
 				# Add mailPrimaryAddress
 				# → mailbox should have been created and is accessible
 				print "== case 4 =="
-				name = uts.random_name()
-				usermail = '%s@%s' % (name, domain)
+				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
-					username=name,
 					set={
 						'password'       : password,
 						'mailHomeServer' : host
@@ -190,10 +182,8 @@ def main():
 							domain, basedn, ip)
 					}
 				)
-				name = uts.random_name()
-				usermail = '%s@%s' % (name, domain)
+				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
-					username=name,
 					set={
 						'password'           : password,
 						'mailHomeServer'     : host,
@@ -228,10 +218,8 @@ def main():
 							domain, basedn, ip)
 					}
 				)
-				name = uts.random_name()
-				usermail = '%s@%s' % (name, domain)
+				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
-					username=name,
 					set={
 						'password'           : password,
 						'mailHomeServer'     : host,
@@ -265,10 +253,8 @@ def main():
 							domain, basedn, ip)
 					}
 				)
-				name = uts.random_name()
-				usermail = '%s@%s' % (name, domain)
+				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
-					username=name,
 					set={
 						'password'           : password,
 						'mailHomeServer'     : host,

@@ -1,3 +1,9 @@
+ucs-test (5.0.171-5) unstable; urgency=low
+
+  * always use random usernames (Bug #39358)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 17 Sep 2015 10:09:25 +0200
+
 ucs-test (5.0.171-4) unstable; urgency=medium
 
   * Bug #39354: Fail if DefaultPackagesMaster is used

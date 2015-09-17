@@ -15,16 +15,13 @@ import univention.testing.utils as utils
 def main():
 	with udm_test.UCSTestUDM() as udm:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
-			username = uts.random_name()
 			password = uts.random_string()
-			mailAddress = '%s@%s' % (username, ucr.get('domainname'))
+			mailAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
 			userdn, username = udm.create_user(
-					username=username,
 					password=password,
 					mailPrimaryAddress= mailAddress,
 					option=['mail', 'person', 'posix', 'samba', 'pki']
 					)
-
 
 			disable_mail_quota()
 			print '* Test imap login with the correct password:'

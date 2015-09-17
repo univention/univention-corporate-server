@@ -29,11 +29,9 @@ def main():
 			with udm_test.UCSTestUDM() as udm:
 				with utils.FollowLogfile(logfiles=logfiles) as flf:
 					with utils.AutoCallCommand(enter_cmd=autocallcmd2, exit_cmd=autocallcmd2) as acc2:
-						username = uts.random_name()
-						password =  uts.random_string()
-						mailAddress = '%s@%s' % (username, ucr.get('domainname'))
-						userdn, username = udm.create_user(
-								username=username,
+						password = uts.random_string()
+						mailAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
+						udm.create_user(
 								password=password,
 								mailPrimaryAddress=mailAddress,
 								option=['mail', 'person', 'posix', 'samba', 'pki']

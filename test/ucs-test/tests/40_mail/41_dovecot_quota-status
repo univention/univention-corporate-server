@@ -34,11 +34,9 @@ def main():
 		with ucr_test.UCSTestConfigRegistry() as ucr:
 			quota01 = 2
 			domain = ucr.get('domainname')
-			user = uts.random_name()
 			pw = 'univention'
-			mail = '%s@%s' % (user, domain)
+			mail = '%s@%s' % (uts.random_name(), domain)
 			userdn, username = udm.create_user(
-				username=user,
 				password=pw,
 				set={"mailHomeServer": '%s.%s' % (ucr.get("hostname"), domain),
 					"mailPrimaryAddress": mail,

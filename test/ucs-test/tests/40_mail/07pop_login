@@ -14,24 +14,27 @@ import univention.testing.utils as utils
 def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		with udm_test.UCSTestUDM() as udm:
-			username = uts.random_name()
+			usermail = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
 			password = uts.random_string()
 			userdn, username = udm.create_user(
-					username=username,
 					password=password,
-					mailPrimaryAddress='%s@%s' % (username, ucr.get('domainname')),
+					mailPrimaryAddress=usermail,
 					option=['mail', 'person', 'posix', 'samba', 'pki']
 					)
 
 			pop = PopMail()
 
 			print '* Test pop login with the correct password:'
-			if pop.login_OK(username, password):
+			if pop.login_OK(usermail, password):
 				utils.fail('POP3 login failed with the correct password')
 
 			print '* Test pop login with the wrong password:'
-			if pop.login_OK(username, uts.random_name()):
+			if pop.login_OK(usermail, uts.random_name()):
 				utils.fail('POP3 login succeeded with the wrong password')
+
+			print '* Test pop login with the correct password but with username instead of mailPrimaryAddress:'
+			if pop.login_OK(username, password):
+				utils.fail('POP3 login failed with the correct password')
 
 
 if __name__ == '__main__':

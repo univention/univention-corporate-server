@@ -25,10 +25,8 @@ def main():
 				subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/null', 'w'))
 			host = '%s.%s' % (ucr.get('hostname'), domain)
 			password = 'univention'
-			name = uts.random_name()
-			usermail1 = '%s@%s' % (name, domain)
-			userdn, username = udm.create_user(
-				username=name,
+			usermail1 = '%s@%s' % (uts.random_name(), domain)
+			udm.create_user(
 				set={
 					'password'           : password,
 					'mailHomeServer'     : host,
@@ -36,10 +34,8 @@ def main():
 					'disabled': 'all'
 				}
 			)
-			name = uts.random_name()
-			usermail = '%s@%s' % (name, domain)
-			userdn, username = udm.create_user(
-				username=name,
+			usermail = '%s@%s' % (uts.random_name(), domain)
+			udm.create_user(
 				set={
 					'password'           : password,
 					'mailHomeServer'     : host,
