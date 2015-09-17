@@ -69,7 +69,7 @@ define([
 	return declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
 		appLoadingDeferred: null,
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
-		'class': 'umcAppPage',
+		'class': 'umcAppDetailsPage',
 		standby: null,
 
 		title: _("App management"),

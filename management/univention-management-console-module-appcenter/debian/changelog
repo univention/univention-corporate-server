@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.4-25) unstable; urgency=low
+
+  * Bug #38894: [WIP] adjusted logic to toggle visibility of More/Less
+    Button and moved styles from js files into appcenter.css
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 17 Sep 2015 19:38:39 +0200
+
 univention-management-console-module-appcenter (5.0.4-24) unstable; urgency=low
 
   * Bug #38894: [WIP] adjusted logic to toggle visibility of More/Less

@@ -36,13 +36,13 @@
 	background-image: url("../../dijit/themes/umc/images/icons-white.svg");
 }
 
-.umcAppPage .umcAppButton {
+.umcAppDetailsPage .umcAppButton {
 	float: left;
 }
-.umcAppPage .umcAppButton.umcAppButtonFirstRow {
+.umcAppDetailsPage .umcAppButton.umcAppButtonFirstRow {
 	margin-bottom: 15px;
 }
-.umcAppPage .umcAppButton.umcAppButtonFirstRow + .umcAppButton:not(.umcAppButtonFirstRow) {
+.umcAppDetailsPage .umcAppButton.umcAppButtonFirstRow + .umcAppButton:not(.umcAppButtonFirstRow) {
 	clear: left;
 }
 
@@ -232,7 +232,7 @@
 	height: 105px !important;
 }
 
-.umc .umcAppPage .umcPageNav .icon {
+.umc .umcAppDetailsPage .umcPageNav .icon {
 	margin-bottom: 1em;
 	width: 200px; 
 	height: 120px;
@@ -241,89 +241,108 @@
 	background-position: center center;
 }
 
-.umc .umcAppPage .umcPageNav .navHeaderButton {
+.umc .umcAppDetailsPage .umcPageNav .navHeaderButton {
 	display: inline-block;
 	vertical-align: top;
 }
 
-.umc .umcAppPage .umcPageNav .navHeaderButton .umcText {
+.umc .umcAppDetailsPage .umcPageNav .navHeaderButton .umcText {
 	margin-bottom: 0.3em;
 	color: #787878;
 }
 
-.umc .umcAppPage h1 {
+.umc .umcAppDetailsPage h1 {
 	margin-bottom: 0.3em;
 }
 
-.umc .umcAppPage .mainHeader {
+.umc .umcAppDetailsPage .mainHeader {
 	display: block;
 	font-size: 1.6em;
 	font-weight: bold;
 	margin-bottom: 0.4em;
 }
 
-.umc .umcAppPage .usage {
+.umc .umcAppDetailsPage .usage {
 	margin-bottom: 2em;
 }
 
-.umc .umcAppPage .detailsContainer {
+.umc .umcAppDetailsPage .detailsContainer {
 	background-color: #f0f0f0;
 	margin: 0 -1000px;
 	padding: 0 1000px;
 }
 
-.umc .umcAppPage .carouselWrapper {
+.umc .umcAppDetailsPage .carouselWrapper {
 	border-bottom: 1px solid #c8c8c8;
 	padding: 1em 0;
 	margin-bottom: 3em;
 }
 
-.umc .umcAppPage .carouselWrapper {
+.umc .umcAppDetailsPage .carouselWrapper {
 	border-bottom: 1px solid #c8c8c8;
 	padding: 1em 0;
 	margin-bottom: 3em;
 }
 
-.umc .umcAppPage .carousel {
+.umc .umcAppDetailsPage .carousel {
 	margin: auto;
 	display: table;
 }
 
-.umc .umcAppPage .descriptionContainer {
+.umc .umcAppDetailsPage .descriptionContainer {
 	margin-bottom: 2em;
 }
 
-.umc .umcAppPage .descriptionContainer th {
+.umc .umcAppDetailsPage .descriptionContainer th {
 	font-weight: bold;
 	font-size: 1.6em;
 	height: 30px;
 	vertical-align: top;
 }
 
-.umc .umcAppPage .descriptionContainer td {
+.umc .umcAppDetailsPage .descriptionContainer td {
 	vertical-align: top;
 }
 
-.umc .umcAppPage .descriptionContainer.longText td {
+.umc .umcAppDetailsPage .descriptionContainer.longText td {
 	vertical-align: top;
 	-webkit-column-count: 2;
 	-moz-column-count: 2;
 }
 
-.umc .umcAppPage .appDetailsPane {
+.umc .umcAppDetailsPage .appDetailsPane {
 	background-color: #f0f0f0;
 	margin: 0 -1000px;
 	padding: 0 1000px;
 }
 
-.umc .umcAppPage .appDetailsFooter {
+.umc .umcAppDetailsPage .appDetailsFooter {
 	display: inline-block;
 	vertical-align: top;
 	width: 50%;
 }
 
-.dijitMenuSeparatorIconCell, .dijitMenuSeparatorLabelCell {
-	padding: 0 !important;
+.AppLiveSearchSidebarDropDown .dijitMenuSeparatorIconCell, 
+.AppLiveSearchSidebarDropDown .dijitMenuSeparatorLabelCell {
+	padding: 3px 0;
+}
+
+.umc .umcAppCenter .appcenterMetaCategory .dijitButton.hiddenButton {
+	visibility: hidden;
+}
+
+.umc .umcAppCenter .appcenterMetaCategory .umcAppCenterGallery {
+	height: 175px;
+}
+
+.umc .umcAppCenter .appcenterMetaCategory .umcAppCenterGallery.open {
+	height: auto;
+}
+
+.umc .umcAppCenter .umcLiveSearchSidebar .searchField,
+.umc .umcAppCenter .umcLiveSearchSidebar .dropDownMenu {
+	display: inline-block;
+	padding: 0 0.5em 1em;
 }
 
 @media screen and (max-width: 549px) {

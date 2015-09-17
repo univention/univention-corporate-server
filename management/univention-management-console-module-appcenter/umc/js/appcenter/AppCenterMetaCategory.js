@@ -35,7 +35,6 @@ define([
 	"dojo/_base/window",
 	"dojo/on",
 	"dojo/query",
-	"dojo/dom-style",
 	"dojo/dom-class",
 	"dojo/dom-geometry",
 	"dojo/store/Memory",
@@ -46,7 +45,7 @@ define([
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!"
-], function(declare, lang, array, win, on, domQuery, domStyle, domClass, domGeom, Memory, Observable, tools, Text, Button, AppCenterGallery, Container, _) {
+], function(declare, lang, array, win, on, domQuery, domClass, domGeom, Memory, Observable, tools, Text, Button, AppCenterGallery, Container, _) {
 	return declare("umc.modules.appcenter.AppCenterMetaCategory", [Container], {
 		// summary:
 		//		Offers a container which contains a label, More/Less button and a grid to
@@ -66,6 +65,8 @@ define([
 
 		store: null,
 
+		allAppsDisplayed: null, 
+
 		baseClass: 'appcenterMetaCategory',
 
 		buildRendering: function() {
@@ -73,6 +74,21 @@ define([
 
 			this._label = new Text({
 				content: this.label
+			});
+
+			this.button = new Button({
+				label: _('More'),
+				onClick: lang.hitch(this, function() {
+					if (this.button.label === _('More')) {
+						domClass.add(this.grid.domNode, 'open');
+						this.button.set('label', _('Less'));
+						this.set('allAppsDisplayed', true);
+					} else {
+						domClass.remove(this.grid.domNode, 'open');
+						this.button.set('label', _('More'));
+						this.set('allAppsDisplayed', false);
+					}
+				})
 			});
 
 			var clearContainer = new Container({
@@ -90,23 +106,7 @@ define([
 					callback: lang.hitch(this, function(id, app) {
 						this.onShowApp(app);
 					})
-				}],
-				style: {
-					height: '175px'
-				}
-			});
-
-			this.button = new Button({
-				label: _('More'),
-				onClick: lang.hitch(this, function() {
-					if (this.button.label === _('More')) {
-						domStyle.set(this.grid.domNode, 'height', 'auto');
-						this.set('ButtonLabel', _('Less'));
-					} else {
-						domStyle.set(this.grid.domNode, 'height', '175px');
-						this.set('ButtonLabel', _('More'));
-					}
-				})
+				}]
 			});
 
 			this.addChild(this._label);
@@ -140,11 +140,6 @@ define([
 			this._handleButtonVisibility();
 		},
 
-		_setButtonLabelAttr: function(label) {
-			this.button.set('label', label);
-			this._set('ButtonLabel', label);
-		},
-
 		_handleButtonVisibility: function() {
 			if (!this._visibilityDeferred || this._visibilityDeferred.isFulfilled()) {
 				this._visibilityDeferred = tools.defer(lang.hitch(this, '_updateButtonVisibility'), 200);
@@ -152,6 +147,8 @@ define([
 		},
 
 		_updateButtonVisibility: function() {
+			//make sure the domNode is not hidden
+			domClass.remove(this.domNode, 'dijitHidden');
 			var appsDisplayed = domQuery('div[class*="dgrid-row"]', this.id);
 			if (appsDisplayed.length) {
 				var gridMarginBox = domGeom.getMarginBox(this.grid.domNode);
@@ -162,7 +159,7 @@ define([
 				var neededWidthToDisplayApps = appsDisplayed.length * appWidth;
 
 				var hideButton = neededWidthToDisplayApps < gridWidth;
-				domClass.toggle(this.button.domNode, 'dijitHidden', hideButton);
+				domClass.toggle(this.button.domNode, 'hiddenButton', hideButton);
 			}
 			domClass.toggle(this.domNode, 'dijitHidden', !appsDisplayed.length);
 		},

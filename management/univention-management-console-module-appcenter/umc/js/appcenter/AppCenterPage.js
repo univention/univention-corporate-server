@@ -79,6 +79,7 @@ define([
 				});
 				this.addChild(this._searchSidebar);
 				this._searchSidebar.on('search', lang.hitch(this, 'filterApplications'));
+				this._searchSidebar.on('categorySelected', lang.hitch(this, 'toggleGridSize'));
 			}
 
 			if (this.addMissingAppButton) {
@@ -280,13 +281,29 @@ define([
 					domStyle.set(metaObj.domNode, 'display', 'block');
 				});
 			}
-
+ 
 			// set query options and refresh grid
 			this.set('appQuery', query);
 		},
 
-		_setAppQueryAttr: function(query) {
-			this._set('appQuery', query);
+		toggleGridSize: function() {
+			var category = this._searchSidebar.get('category');
+			var selectedMeta = array.filter(this.metaCategories, function(metaObj) {
+				return metaObj.label === category;
+			});
+			if (selectedMeta.length) {
+				array.forEach(this.metaCategories, function(metaObj) {
+					if (metaObj === selectedMeta[0] && !metaObj.allAppsDisplayed) {
+							metaObj.button.onClick();
+					}
+				});
+			} else { 
+				array.forEach(this.metaCategories, function(metaObj) {
+					if (metaObj.allAppsDisplayed) {
+						metaObj.button.onClick();
+					}
+				});
+			}
 		},
 
 		onShowApp: function(app) {

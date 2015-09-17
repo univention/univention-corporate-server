@@ -35,12 +35,11 @@ define([
 	"dojo/has",
 	"dojo/Deferred",
 	"dojo/regexp",
-	"dojo/dom-style",
 	"dijit/form/Select",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/SearchBox",
 	"umc/i18n!"
-], function(declare, lang, array, has, Deferred, regexp, domStyle, Select, ContainerWidget, SearchBox, _) {
+], function(declare, lang, array, has, Deferred, regexp, Select, ContainerWidget, SearchBox, _) {
 	return declare("umc.modules.appcenter.AppLiveSearchSidebar", [ContainerWidget], {
 		// summary:
 		//		Offers a side bar for live searching, a set of categories can be defined.
@@ -81,8 +80,7 @@ define([
 				this.searchableAttributes = ['name', 'description', 'categories', 'keywords'];
 			}
 
-			this.searchTextBox = new ContainerWidget({ 'class': 'umcSize-FourThirds'});
-			domStyle.set(this.searchTextBox.domNode, {display: 'inline-block', padding: '0 0.5em 1em 0.5em'});
+			this.searchTextBox = new ContainerWidget({ 'class': 'umcSize-FourThirds searchField'});
 			this._searchTextBox = new SearchBox({
 				inlineLabel: this.searchLabel || _('Search term')
 			});
@@ -100,7 +98,6 @@ define([
 					this.onSearch();
 				}
 			}));
-			
 		},
 
 		_getUniformCategory: function(category) {
@@ -139,6 +136,7 @@ define([
 			});
 			this._selectForm.focusChild(selectedChild[0]);
 			this.onSearch();
+			this.onCategorySelected();
 			if (!has('touch')) {
 				this._searchTextBox.focus();
 			}
@@ -165,8 +163,7 @@ define([
 				this.selectForm = null;
 				this.selectFormDeferred = this.selectFormDeferred.isResolved() ? new Deferred() : this.selectFormDeferred;
 			}
-			this.selectForm = new ContainerWidget({'class': 'umcSize-TwoThirds'});
-			domStyle.set(this.selectForm.domNode, {display: 'inline-block', padding: '0 0.5em 1em 0.5em'});
+			this.selectForm = new ContainerWidget({'class': 'umcSize-TwoThirds dropDownMenu'});
 			this._selectForm = new Select({
 				options: selectFormOptions
 			});
@@ -183,6 +180,7 @@ define([
 			this._selectForm.loadDropDown(function() {
 				//empty callback for loading the SelectForm dropdown
 			});
+			this._selectForm.dropDown.set('class', 'AppLiveSearchSidebarDropDown');
 
 			this.selectForm.addChild(this._selectForm);
 			this.own(this.selectForm);
@@ -224,6 +222,10 @@ define([
 
 		onSearch: function() {
 			// event stub
+		},
+
+		onCategorySelected: function() {
+			//event stub
 		}
 	});
 });

@@ -36,18 +36,15 @@ define([
 	"dojo/dom-class",
 	"umc/tools",
 	"umc/widgets/GalleryPane",
-	"umc/widgets/Button",
 	"dojo/query",
 	"dojo/dom-geometry",
 	"dojo/dom-style",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, array, lang, put, domClass, tools, GalleryPane, Button, query, domGeometry, domStyle, _) {
+], function(declare, array, lang, put, domClass, tools, GalleryPane, query, domGeometry, domStyle, _) {
 	return declare("umc.modules.appcenter.AppCenterGallery", [ GalleryPane ], {
 		region: 'main',
 
 		baseClass: 'umcGalleryPane umcAppCenterGallery',
-
-		style: 'height: 100%; width: 100%;',
 
 		bootstrapClasses: "",
 
@@ -60,65 +57,51 @@ define([
 		},
 
 		renderRow: function(item) {
-			var div;
-			if (item.isSeparator) {
-				div = put('div.umcGalleryCategoryHeader.col-xs-12', item.name);
-			} else if (item.isButton) {
-				div = put('div.umcGalleryButton.col-xs-12');
-				var button = new Button({
-					name: 'more',
-					label: 'More',
-					style: 'float: right'
-				});
-				//this.own(button);
-				div.appendChild(button.domNode);
-			} else {
-				var appWrapperDiv = put(lang.replace('div.umcGalleryWrapperItem.{bootstrapClasses}[moduleID={moduleID}]', {
-					moduleID: item.$id$,
-					bootstrapClasses: this.bootstrapClasses
-				}));
-				var innerWrapper = put(appWrapperDiv, 'div#appInnerWrapper.umcGalleryItem');
-				
-				put(innerWrapper, 'div#border');
-				
-				var iconClass = this.getIconClass(item);
-				if (iconClass) {
-					put(innerWrapper, 'div#appIcon.umcGalleryIcon.' + iconClass);
-				}
-
-				var text = put(innerWrapper, 'div#appContent');
-				put(text, 'span.umcGalleryName', this.getItemName(item));
-				put(text, 'span.umcGalleryVendor', item.vendor || item.maintainer || '');
-
-				var hover = put(innerWrapper, 'div#appHover');
-				if (item.is_installed) {
-					put(hover, 'span', _('installed locally'));
-				}
-				if (!!item.installations) {
-					var notLocalDomainInstallations = 0;
-					tools.forIn(item.installations, function(server, info) {
-						if (server != tools.status('hostname') && !!info.version) {
-							notLocalDomainInstallations += 1;
-						}
-					});
-					if (notLocalDomainInstallations > 0) {
-						put(hover, 'span', notLocalDomainInstallations + _('installed in domain'));
-					}
-				}
-
-				if (item.version) {
-					put(hover, 'span', _('Version: ') + item.version);
-				}
-
-				innerWrapper.onmouseover = function() {
-					domClass.toggle(innerWrapper, 'hover');
-				};
-				innerWrapper.onmouseout = function() {
-					domClass.toggle(innerWrapper, 'hover');
-				};
-				div = appWrapperDiv;
+			var appWrapperDiv = put(lang.replace('div.umcGalleryWrapperItem.{bootstrapClasses}[moduleID={moduleID}]', {
+				moduleID: item.$id$,
+				bootstrapClasses: this.bootstrapClasses
+			}));
+			var innerWrapper = put(appWrapperDiv, 'div#appInnerWrapper.umcGalleryItem');
+			
+			put(innerWrapper, 'div#border');
+			
+			var iconClass = this.getIconClass(item);
+			if (iconClass) {
+				put(innerWrapper, 'div#appIcon.umcGalleryIcon.' + iconClass);
 			}
-			return div;
+
+			var text = put(innerWrapper, 'div#appContent');
+			put(text, 'span.umcGalleryName', this.getItemName(item));
+			put(text, 'span.umcGalleryVendor', item.vendor || item.maintainer || '');
+
+			var hover = put(innerWrapper, 'div#appHover');
+			if (item.is_installed) {
+				put(hover, 'span', _('installed locally'));
+			}
+			if (!!item.installations) {
+				var notLocalDomainInstallations = 0;
+				tools.forIn(item.installations, function(server, info) {
+					if (server != tools.status('hostname') && !!info.version) {
+						notLocalDomainInstallations += 1;
+					}
+				});
+				if (notLocalDomainInstallations > 0) {
+					put(hover, 'span', notLocalDomainInstallations + _('installed in domain'));
+				}
+			}
+
+			if (item.version) {
+				put(hover, 'span', _('Version: ') + item.version);
+			}
+
+			innerWrapper.onmouseover = function() {
+				domClass.toggle(innerWrapper, 'hover');
+			};
+			innerWrapper.onmouseout = function() {
+				domClass.toggle(innerWrapper, 'hover');
+			};
+
+			return appWrapperDiv;
 		},
 
 		_resizeItemNames: function() {
