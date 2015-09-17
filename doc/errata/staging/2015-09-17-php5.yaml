@@ -1,0 +1,116 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: php5
+fix: 5.4.45-0.213.201509171749
+version: [2,3]
+desc: |
+ This update to PHP 5.4.45 fixes the following security issues:
+ * Denial of service issues in the ELF parser of the filemagic
+   extensions (CVE-2014-8116)
+ * Denial of service via long pascal strings (CVE-2014-9652)
+ * Memory corruption in processing EXIF tags (CVE-2015-0232)
+ * Remote code execution due to use after free vulnerability in
+   unserialize() of the DateTimeZone implementation (CVE-2015-0273)
+ * NULL pointer dereference in pgsql extension (CVE-2015-1352)
+ * Denial of Service due to use after free in phar_object.c
+   (CVE-2015-2301)
+ * Heap overflow vulnerability in regcomp.c (CVE-2015-2305)
+ * ZIP Integer Overflow leads to writing past heap boundary
+   (CVE-2015-2331)
+ * Bypass of extension restrictions in move_uploaded_file, creation of
+   files with unexpected names by remote attacker (CVE-2015-2348)
+ * Buffer Over-read in unserialize when parsing Phar (CVE-2015-2783)
+ * Use-after-free vulnerability in the process_nested_data function
+   allows execution of arbitrary code by remote attackers
+   (CVE-2015-2787)
+ * Buffer Overflow when parsing tar/zip/phar in phar_set_inode
+   (CVE-2015-3329)
+ * Remote code execution with apache 2.4 apache2handler
+   (CVE-2015-3330)
+ * missing null byte checks for paths in various PHP extensions
+   (CVE-2015-3411, CVE-2015-3412)
+ * Multiple vulnerabilities in the phar extension may result in denial
+   of service or potentially the execution of arbitrary code when
+   processing malformed archives. (CVE-2015-4021)
+ * Integer overflow in the ftp_genlist() function may result in denial
+   of service or potentially the execution of arbitrary
+   code. (CVE-2015-4022)
+ * Denial of service when processing multipart/form-data
+   requests. (CVE-2015-4024)
+ * Multiple function didn't check for NULL bytes in path
+   names. (CVE-2015-4025, CVE-2015-4026)
+ * Arbitrary code execution by providing crafted serialized data with
+   an unexpected data type, due to SoapClient::__call method in
+   ext/soap/soap.c in PHP before 5.4.39 not verifying that
+   __default_headers is an array (CVE-2015-4147)
+ * Information disclosure providing crafted serialized data with an
+   int data type due to the do_soap_call function in ext/soap/soap.c
+   in PHP before 5.4.39 not verifying that the uri property is a
+   string (CVE-2015-4148)
+ * missing null byte checks for paths in DOM and GD extensions
+   (CVE-2015-4598)
+ * Type confusion vulnerability in exception::getTraceAsString in
+   unserialize() with various SOAP methods (CVE-2015-4599
+   CVE-2015-4600 CVE-2015-4601)
+ * Incomplete Class unserialization type confusion (CVE-2015-4602)
+ * exception::getTraceAsString type confusion issue after unserialize
+   (CVE-2015-4603)
+ * denial of service when processing a crafted file with Fileinfo
+   (CVE-2015-4604 CVE-2015-4605)
+ * integer overflow in ftp_genlist() resulting in heap overflow
+   (improved fix for CVE-2015-4022) (CVE-2015-4643)
+ * NULL pointer dereference in php_pgsql_meta_data() (CVE-2015-4644)
+ * Denial of Service due to Segfault in Phar::convertToData on invalid
+   file (CVE-2015-5589)
+ * Crash or code injection due to Buffer overflow and stack smashing
+   error in phar_fix_filepath (CVE-2015-5590)
+ * use-after-free attack and remote code injection via vulnerability
+   in unserialize() (CVE-2015-6834)
+ * Use after free vulnerability in session deserializer
+   (CVE-2015-6835)
+ * SOAP serialize_function_call() type confusion / RCE (CVE-2015-6836)
+ * Remote Denial of Service due to NULL pointer dereference in
+   XSLTProcessor (CVE-2015-6837 CVE-2015-6838)
+bug:
+ - 36997
+cve:
+ - CVE-2014-8116
+ - CVE-2014-9652
+ - CVE-2015-0232
+ - CVE-2015-0273
+ - CVE-2015-1352
+ - CVE-2015-2301
+ - CVE-2015-2305
+ - CVE-2015-2331
+ - CVE-2015-2348
+ - CVE-2015-2783
+ - CVE-2015-2787
+ - CVE-2015-3329
+ - CVE-2015-3330
+ - CVE-2015-3411
+ - CVE-2015-3412
+ - CVE-2015-4021
+ - CVE-2015-4022
+ - CVE-2015-4024
+ - CVE-2015-4025
+ - CVE-2015-4026
+ - CVE-2015-4147
+ - CVE-2015-4148
+ - CVE-2015-4598
+ - CVE-2015-4599
+ - CVE-2015-4600
+ - CVE-2015-4601
+ - CVE-2015-4602
+ - CVE-2015-4603
+ - CVE-2015-4604
+ - CVE-2015-4605
+ - CVE-2015-4643
+ - CVE-2015-4644
+ - CVE-2015-5589
+ - CVE-2015-5590
+ - CVE-2015-6834
+ - CVE-2015-6835
+ - CVE-2015-6836
+ - CVE-2015-6837
+ - CVE-2015-6838
