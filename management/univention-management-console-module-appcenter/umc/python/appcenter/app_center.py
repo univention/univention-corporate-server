@@ -88,6 +88,7 @@ from univention.management.console.modules.appcenter.util import urlopen, get_cu
 CACHE_DIR = '/var/cache/univention-appcenter'
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/local/all.tar.gz'
 FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons'
+UCR_VARIABLE_TOKEN = re.compile('@%@')
 ucr = ConfigRegistry()
 ucr.load()
 
@@ -450,7 +451,23 @@ class Application(object):
 				# open the license file
 				filename = os.path.join(CACHE_DIR, '%s.%s' % (self.component_id, localised_file_ext))
 				with open(filename, 'rb') as fp:
-					self._options[key] = ''.join(fp.readlines()).strip()
+					template = ''.join(fp.readlines()).strip()
+					while True:
+					    # stolen from config_registry.handler.run_filter()
+						i = UCR_VARIABLE_TOKEN.finditer(template)
+						try:
+							start = i.next()
+							end = i.next()
+							name = template[start.end():end.start()]
+							value = ''
+							if name in ucr:
+								value = ucr[name]
+								if isinstance(value, (list, tuple)):
+									value = value[0]
+							template = template[:start.start()] + value + template[end.end():]
+						except StopIteration:
+							break
+					self._options[key] = template
 					self._options['%s_file' % key] = filename
 					return
 			except IOError:
