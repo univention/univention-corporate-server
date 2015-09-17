@@ -106,12 +106,12 @@ def main():
 
 	# replace profile variables and commands
 	replace_list = [('[%s_IP]' % (vm.section,), vm.get_ip()) for vm in vms]
+	subst = lambda cmd, (old, new): cmd.replace(old, new)
 	for vm in vms:
 		if vm.profile:
-			for (host_str, ip) in replace_list:
-				vm.profile = vm.profile.replace(host_str, ip)
+			vm.profile = reduce(subst, replace_list, vm.profile)
 		vm.commands = dict(
-			(phase, [cmd.replace(host_str, ip) for cmd in commands])
+			(phase, [reduce(subst, replace_list, cmd) for cmd in commands])
 			for phase, commands in vm.commands.iteritems()
 		)
 
