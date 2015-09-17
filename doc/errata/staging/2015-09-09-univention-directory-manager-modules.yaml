@@ -2,10 +2,11 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: univention-directory-manager-modules
-fix: 10.0.31-15.1341.201509091104
+fix: 10.0.31-16.1343.201509171736
 version: [3]
 desc: |
  This update addresses the following issue:
  * When acquiring new uidNumber or gidNumber ensure they do not collide with
    each other.
-bug: [38796]
+ * DNS TXT records are now shown via the DNS UMC module.
+bug: [38796, 25356]
