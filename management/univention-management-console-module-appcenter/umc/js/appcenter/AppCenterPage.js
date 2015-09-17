@@ -166,9 +166,7 @@ define([
 				query: function(app) {
 					return !!app.shopurl;
 				}
-			},
-			
-			];
+			}];
 
 			array.forEach(assumedMetaCategories, lang.hitch(this, function(metaObj){
 				var metaCategory = new AppCenterMetaCategory(metaObj);
@@ -251,33 +249,27 @@ define([
 				searchPattern = this._searchSidebar.getSearchQuery(searchPattern);
 			}
 			var category = this._searchSidebar.get('category');
-
-			var query = function(object) {
-				// query logic for search pattern
-				if (searchPattern) {
-					if (!searchPattern.test(object.name, object)) {
-						return false;
-					}
-				}
-
-				// query logic for categories
-				if (category != _('All')) {
-					if (array.indexOf(object.categories, category) === -1) {
-						return false;
-					}
-				}
-				
-				return true;
-			};
-
 			var selectedMeta = array.filter(this.metaCategories, function(metaObj) {
 				return metaObj.label === category;
 			});
+
+			var query = function(app) {
+				// returns true if
+				// (a) the searchPattern matches
+				// AND
+				// (b) a meta category (incl. 'All') was picked
+				//     or the category matches
+
+				var matchesSearchPattern = searchPattern ? searchPattern.test(app.name, app) : true;
+				var isMetaCategory = selectedMeta.length || category === _('All');
+				var matchesCategory = array.indexOf(app.categories, category) >= 0;
+
+				return matchesSearchPattern && (isMetaCategory || matchesCategory);
+			};
+
 			if (selectedMeta.length) {
-				selectedMeta = selectedMeta[0];
-				query = selectedMeta.query;
 				array.forEach(this.metaCategories, function(metaObj) {
-					if (metaObj !== selectedMeta) {
+					if (metaObj !== selectedMeta[0]) {
 						domStyle.set(metaObj.domNode, 'display', 'none');
 					} else {
 						domStyle.set(metaObj.domNode, 'display', 'block');
