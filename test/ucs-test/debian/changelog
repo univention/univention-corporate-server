@@ -1,3 +1,10 @@
+ucs-test (5.0.171-7) unstable; urgency=low
+
+  * disable 40_mail/35_mail_to_nested_groups, as long as #38088 is not
+    resolved (Bug #17807)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 17 Sep 2015 15:46:55 +0200
+
 ucs-test (5.0.171-6) unstable; urgency=low
 
   * Add wait_for_replication() and logging to IMAP ACL test (Bug #38600)
