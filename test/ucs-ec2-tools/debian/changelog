@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.13-1) unstable; urgency=low
+
+  * Bug #39359: Added config files for ipv6 kvm instances
+
+ -- Bastian Reitemeier <reitemeier@univention.de>  Thu, 17 Sep 2015 10:54:51 +0200
+
 ucs-ec2-tools (1.0.12-23) unstable; urgency=low
 
   * Bug #38517: remove bashism
