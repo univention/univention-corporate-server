@@ -465,7 +465,7 @@ define([
 			var tr = domConstruct.create('tr', {}, descriptionTable);
 
 			var tableHeader = domConstruct.create('th', {
-				innerHTML: _('Beschreibung'), 
+				innerHTML: _('Description'), 
 				colspan: 2,
 				style: {
 					'font-weight': 'bold',

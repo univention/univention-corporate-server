@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.4-20) unstable; urgency=low
+
+  * Bug #38894: [WIP] Added logic to update the visibility of the More/Less
+    Button
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 17 Sep 2015 10:37:34 +0200
+
 univention-management-console-module-appcenter (5.0.4-19) unstable; urgency=low
 
   * Bug #38894: [WIP] Refactored appDetailsPage to this._appDetailsPage for

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-09-16 14:33+0200\n"
+"POT-Creation-Date: 2015-09-17 10:43+0200\n"
 "PO-Revision-Date: 2011-11-02 09:36+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -173,26 +173,26 @@ msgstr "Weitere Einstellungen"
 msgid "After that you can \"%(action)s\" \"%(app)s\" here on this system."
 msgstr "Danach können Sie \"%(app)s\" hier auf diesem System \"%(action)s\"."
 
-#: appcenter/AppCenterPage.js:246 appcenter/AppCenterPage.js:270
+#: appcenter/AppCenterPage.js:239 appcenter/AppCenterPage.js:264
 msgid "All"
 msgstr "Alle"
 
 #: appcenter/AppDetailsDialog.js:141
 msgid "Also delete any data the app stored"
-msgstr ""
+msgstr "Daten, die die App gespeichert hat ebenfalls löschen"
 
 #: appcenter/SettingsPage.js:357
 #, python-format
 msgid "An unknown error with code %d occured."
 msgstr "Es ist ein unbekannter Fehler mit Code %d aufgetreten."
 
-#: appcenter/AppDetailsPage.js:832 appcenter/requirements.js:82
+#: appcenter/requirements.js:82 appcenter/AppDetailsPage.js:832
 msgid "Another package operation is in progress."
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt."
 
+#: appcenter/AppDetailsDialog.js:57 appcenter/AppCenterPage.js:63
 #: appcenter/AppConfigDialog.js:54 appcenter/AppDetailsPage.js:75
-#: appcenter/AppDetailsDialog.js:57 appcenter/AppChooseHostDialog.js:49
-#: appcenter/AppCenterPage.js:63
+#: appcenter/AppChooseHostDialog.js:49
 msgid "App management"
 msgstr "App-Verwaltung"
 
@@ -202,7 +202,7 @@ msgstr "App-Anbieter"
 
 #: appcenter/AppConfigDialog.js:74
 msgid "Apply"
-msgstr ""
+msgstr "Anwenden"
 
 #: appcenter/SettingsPage.js:98 appcenter/DetailsPage.js:64
 msgid "Apply changes"
@@ -218,9 +218,9 @@ msgstr "Achtung!"
 
 #: appcenter/AppConfigDialog.js:99
 msgid "Autostart"
-msgstr ""
+msgstr "Autostart"
 
-#: appcenter/SettingsPage.js:248 appcenter/AppCenterPage.js:158
+#: appcenter/SettingsPage.js:248 appcenter/AppCenterPage.js:153
 msgid "Available"
 msgstr "Verfügbar"
 
@@ -248,23 +248,19 @@ msgstr ""
 "Führen Sie den folgenden Befehl als root auf den diesen Backup-Servern aus, "
 "<em>nachdem</em> Sie die Applikation auf diesem System installiert haben."
 
-#: appcenter/AppDetailsPage.js:468
-msgid "Beschreibung"
-msgstr ""
-
 #: appcenter/AppDetailsPage.js:193
 msgid "Buy"
 msgstr "Kaufen"
 
-#: appcenter/SettingsPage.js:314 appcenter/AppConfigDialog.js:63
-#: appcenter/AppConfigDialog.js:70 appcenter/PackagesPage.js:420
-#: appcenter/PackagesPage.js:429 appcenter/AppDetailsPage.js:668
 #: appcenter/AppDetailsDialog.js:81 appcenter/AppDetailsDialog.js:88
+#: appcenter/SettingsPage.js:314 appcenter/AppConfigDialog.js:63
+#: appcenter/AppConfigDialog.js:70 appcenter/AppDetailsPage.js:668
+#: appcenter/PackagesPage.js:420 appcenter/PackagesPage.js:429
 #: appcenter/AppChooseHostDialog.js:71
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: appcenter/PackagesPage.js:324 appcenter/AppDetailsPage.js:548
+#: appcenter/AppDetailsPage.js:548 appcenter/PackagesPage.js:324
 msgid "Candidate version"
 msgstr "Verfügbare Version"
 
@@ -272,7 +268,7 @@ msgstr "Verfügbare Version"
 msgid "Categories"
 msgstr "Kategorien"
 
-#: appcenter/AppCenterPage.js:170
+#: appcenter/AppCenterPage.js:165
 msgid "Charged"
 msgstr "Kostenpflichtig"
 
@@ -297,10 +293,10 @@ msgstr "Name der Komponente"
 msgid "Components"
 msgstr "Komponenten"
 
-#: appcenter/AppConfigDialog.js:57 appcenter/AppDetailsDialog.js:149
+#: appcenter/AppDetailsDialog.js:149 appcenter/AppConfigDialog.js:57
 #, python-format
 msgid "Configure %s"
-msgstr ""
+msgstr "Konfiguriere %s"
 
 #: appcenter/AppDetailsPage.js:544
 msgid "Contact"
@@ -314,7 +310,7 @@ msgstr "Fortfahren nicht möglich"
 msgid "Continuation is not recommended"
 msgstr "Fortfahren nicht empfohlen"
 
-#: appcenter/AppDetailsPage.js:677 appcenter/AppCenterPage.js:122
+#: appcenter/AppCenterPage.js:122 appcenter/AppDetailsPage.js:677
 msgid "Continue"
 msgstr "Fortfahren"
 
@@ -345,7 +341,8 @@ msgstr ""
 "Applikationshersteller erhält daraufhin eine Nachricht von Univention mit "
 "folgenden Informationen:"
 
-#: appcenter/PackagesPage.js:318 appcenter/DetailsPage.js:90
+#: appcenter/AppDetailsPage.js:468 appcenter/DetailsPage.js:90
+#: appcenter/PackagesPage.js:318
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -370,8 +367,8 @@ msgstr "Diese Komponente deaktivieren"
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: appcenter/PackagesPage.js:424 appcenter/AppDetailsPage.js:627
-#: appcenter/AppDetailsPage.js:746
+#: appcenter/AppDetailsPage.js:627 appcenter/AppDetailsPage.js:746
+#: appcenter/PackagesPage.js:424
 #, python-format
 msgid "Do you really want to %(verb)s %(ids)s?"
 msgstr "Möchten Sie %(ids)s wirklich %(verb)s?"
@@ -420,7 +417,7 @@ msgstr ""
 "Für die Installation dieser Applikation ist ein UCS-Lizenzschlüssel mit "
 "Schlüsselidentifikation (Key-ID) notwendig."
 
-#: appcenter/AppCenterPage.js:164
+#: appcenter/AppCenterPage.js:159
 msgid "Free"
 msgstr "Kostenlos"
 
@@ -465,9 +462,9 @@ msgstr ""
 "direkt bei Univention anzufordern. Anschließend kann der neue Schlüssel "
 "eingespielt werden."
 
-#: appcenter/SettingsPage.js:174 appcenter/PackagesPage.js:91
-#: appcenter/PackagesPage.js:237 appcenter/AppDetailsPage.js:181
+#: appcenter/SettingsPage.js:174 appcenter/AppDetailsPage.js:181
 #: appcenter/AppDetailsPage.js:207 appcenter/AppDetailsPage.js:640
+#: appcenter/PackagesPage.js:91 appcenter/PackagesPage.js:237
 msgid "Install"
 msgstr "Installieren"
 
@@ -493,16 +490,16 @@ msgstr "Installieren Sie diese zuerst."
 msgid "Installation status"
 msgstr "Paketstatus"
 
-#: appcenter/SettingsPage.js:252 appcenter/AppDetailsPage.js:327
-#: appcenter/AppCenterPage.js:152
+#: appcenter/SettingsPage.js:252 appcenter/AppCenterPage.js:147
+#: appcenter/AppDetailsPage.js:327
 msgid "Installed"
 msgstr "Installiert"
 
-#: appcenter/PackagesPage.js:323 appcenter/AppDetailsPage.js:547
+#: appcenter/AppDetailsPage.js:547 appcenter/PackagesPage.js:323
 msgid "Installed version"
 msgstr "Installierte Version"
 
-#: appcenter/PackagesPage.js:379 appcenter/AppDetailsPage.js:705
+#: appcenter/AppDetailsPage.js:705 appcenter/PackagesPage.js:379
 msgid "Installing"
 msgstr "Installiere"
 
@@ -525,7 +522,7 @@ msgstr "Aktualisierbar"
 msgid "It can only be configured while it is running."
 msgstr ""
 
-#: appcenter/AppCenterMetaCategory.js:97
+#: appcenter/AppCenterMetaCategory.js:104
 msgid "Less"
 msgstr "Weniger"
 
@@ -546,8 +543,9 @@ msgstr "Applikationen für UCS verwalten"
 msgid "Manage domain wide installations"
 msgstr "Installationen in der Domäne verwalten"
 
-#: appcenter/AppCenterMetaCategory.js:93 appcenter/AppCenterMetaCategory.js:95
 #: appcenter/AppCenterMetaCategory.js:100
+#: appcenter/AppCenterMetaCategory.js:102
+#: appcenter/AppCenterMetaCategory.js:107
 msgid "More"
 msgstr "Mehr"
 
@@ -606,7 +604,7 @@ msgstr ""
 "ermöglicht es, diese zu installieren, zu deinstallieren oder zu "
 "aktualisieren."
 
-#: appcenter/AppCenterMetaCategory.js:82
+#: appcenter/AppCenterMetaCategory.js:89
 msgid "Open"
 msgstr "Öffnen"
 
@@ -701,7 +699,7 @@ msgstr "Anzeige aktualisieren"
 msgid "Registered email address"
 msgstr "Registrierte E-Mail-Adresse"
 
-#: appcenter/AppCenterPage.js:209
+#: appcenter/AppCenterPage.js:202
 msgid ""
 "Registration of the applications in the domain failed. It will be retried "
 "when opening this module again. This may also cause problems when installing "
@@ -711,7 +709,7 @@ msgstr ""
 "wird beim nächsten Öffnen des Moduls wiederholt werden. Es kann zu Problemen "
 "bei der Installation von Applikationen kommen."
 
-#: appcenter/SettingsPage.js:55 appcenter/AppDetailsDialog.js:212
+#: appcenter/AppDetailsDialog.js:212 appcenter/SettingsPage.js:55
 msgid "Repository Settings"
 msgstr "Repository-Einstellungen"
 
@@ -881,11 +879,11 @@ msgstr ""
 "Folgende Hosts konnten nicht erreicht werden oder haben ihrerseits keinen "
 "Zugriff auf den App Center-Server:"
 
-#: appcenter/PackagesPage.js:401 appcenter/AppDetailsDialog.js:250
+#: appcenter/AppDetailsDialog.js:250 appcenter/PackagesPage.js:401
 msgid "The following packages will be installed or upgraded:"
 msgstr "Folgende Pakete werden installiert bzw. aktualisiert:"
 
-#: appcenter/PackagesPage.js:405 appcenter/AppDetailsDialog.js:251
+#: appcenter/AppDetailsDialog.js:251 appcenter/PackagesPage.js:405
 msgid "The following packages will be removed:"
 msgstr "Folgende Pakete werden deinstalliert:"
 
@@ -972,7 +970,7 @@ msgstr ""
 "Diese Applikation setzt den App-Anbieter nicht über eine (De)Installation in "
 "Kenntnis."
 
-#: appcenter/PackagesPage.js:409 appcenter/AppDetailsDialog.js:252
+#: appcenter/AppDetailsDialog.js:252 appcenter/PackagesPage.js:409
 msgid ""
 "This operation causes problems in the following packages that cannot be "
 "resolved:"
@@ -1000,8 +998,8 @@ msgstr ""
 "Sie in der oberen rechten Bildschirmzeile auf das Zahnrad-Symbol und wählen "
 "Sie den Punkt \"%(dialogName)s\". Dort können Sie eine neue Lizenz anfordern."
 
-#: appcenter/PackagesPage.js:104 appcenter/PackagesPage.js:246
 #: appcenter/AppDetailsPage.js:246 appcenter/AppDetailsPage.js:593
+#: appcenter/PackagesPage.js:104 appcenter/PackagesPage.js:246
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
@@ -1014,7 +1012,7 @@ msgstr "Informationen zur Deinstallation"
 msgid "Uninstall them first."
 msgstr "Deinstallieren Sie diese zuerst."
 
-#: appcenter/PackagesPage.js:383 appcenter/AppDetailsPage.js:709
+#: appcenter/AppDetailsPage.js:709 appcenter/PackagesPage.js:383
 msgid "Uninstalling"
 msgstr "Deinstalliere"
 
@@ -1042,18 +1040,18 @@ msgstr ""
 "anonymisierte Benachrichtigung, die nur bei Univention zur Datenverarbeitung "
 "gespeichert und nicht an Dritte weiter gegeben wird."
 
-#: appcenter/SettingsPage.js:251 appcenter/AppDetailsDialog.js:239
-#: appcenter/AppDetailsDialog.js:259 appcenter/AppDetailsDialog.js:260
-#: appcenter/AppDetailsDialog.js:261
+#: appcenter/AppDetailsDialog.js:239 appcenter/AppDetailsDialog.js:259
+#: appcenter/AppDetailsDialog.js:260 appcenter/AppDetailsDialog.js:261
+#: appcenter/SettingsPage.js:251
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: appcenter/PackagesPage.js:489 appcenter/AppDetailsPage.js:883
+#: appcenter/AppDetailsPage.js:883 appcenter/PackagesPage.js:489
 msgid "Updating session and module data..."
 msgstr "Aktualisiere Sitzungs- und Moduldaten..."
 
-#: appcenter/PackagesPage.js:117 appcenter/PackagesPage.js:255
 #: appcenter/AppDetailsPage.js:261 appcenter/AppDetailsPage.js:652
+#: appcenter/PackagesPage.js:117 appcenter/PackagesPage.js:255
 msgid "Upgrade"
 msgstr "Aktualisieren"
 
@@ -1061,7 +1059,7 @@ msgstr "Aktualisieren"
 msgid "Upgrade Information"
 msgstr "Informationen zur Aktualisierung"
 
-#: appcenter/PackagesPage.js:387 appcenter/AppDetailsPage.js:713
+#: appcenter/AppDetailsPage.js:713 appcenter/PackagesPage.js:387
 msgid "Upgrading"
 msgstr "Aktualisiere"
 
@@ -1116,7 +1114,7 @@ msgstr ""
 msgid "Yes"
 msgstr "Ja"
 
-#: appcenter/PackagesPage.js:415 appcenter/AppDetailsPage.js:750
+#: appcenter/AppDetailsPage.js:750 appcenter/PackagesPage.js:415
 msgid "You cannot continue"
 msgstr "Fortfahren nicht möglich"
 
@@ -1152,8 +1150,8 @@ msgstr "https://www.univention.de/produkte/univention-app-center/vote-for-app/"
 msgid "incompatible"
 msgstr "inkompatibel"
 
-#: appcenter/PackagesPage.js:378 appcenter/AppDetailsPage.js:628
-#: appcenter/AppDetailsPage.js:704
+#: appcenter/AppDetailsPage.js:628 appcenter/AppDetailsPage.js:704
+#: appcenter/PackagesPage.js:378
 msgid "install"
 msgstr "installieren"
 
@@ -1169,15 +1167,15 @@ msgstr "lokal installiert"
 msgid "this computer"
 msgstr "dieser Rechner"
 
-#: appcenter/AppDetailsPage.js:778 appcenter/AppDetailsDialog.js:264
+#: appcenter/AppDetailsDialog.js:264 appcenter/AppDetailsPage.js:778
 msgid "this host"
 msgstr "diesem Rechner"
 
-#: appcenter/PackagesPage.js:382 appcenter/AppDetailsPage.js:708
+#: appcenter/AppDetailsPage.js:708 appcenter/PackagesPage.js:382
 msgid "uninstall"
 msgstr "deinstallieren"
 
-#: appcenter/PackagesPage.js:386 appcenter/AppDetailsPage.js:712
+#: appcenter/AppDetailsPage.js:712 appcenter/PackagesPage.js:386
 msgid "upgrade"
 msgstr "aktualisieren"
 
@@ -1233,6 +1231,9 @@ msgstr "aktualisieren"
 #~ "Führen Sie die folgenden Befehle als root auf all Ihren Backup-Servern "
 #~ "aus, <em>nachdem</em> Sie die Applikation auf diesem System installiert "
 #~ "haben."
+
+#~ msgid "Beschreibung"
+#~ msgstr "Beschreibung"
 
 #~ msgid ""
 #~ "Changes on %(host)s (installed/upgraded: %(installed)s, removed: "

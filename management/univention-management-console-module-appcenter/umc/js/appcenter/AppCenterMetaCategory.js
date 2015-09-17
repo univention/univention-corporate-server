@@ -32,16 +32,21 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/_base/window",
+	"dojo/on",
+	"dojo/query",
 	"dojo/dom-style",
 	"dojo/dom-class",
+	"dojo/dom-geometry",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
+	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!"
-], function(declare, lang, array, domStyle, domClass, Memory, Observable, Text, Button, AppCenterGallery, Container, _) {
+], function(declare, lang, array, win, on, domQuery, domStyle, domClass, domGeom, Memory, Observable, tools, Text, Button, AppCenterGallery, Container, _) {
 	return declare("umc.modules.appcenter.AppCenterMetaCategory", [Container], {
 		// summary:
 		//		Offers a container which contains a label, More/Less button and a grid to
@@ -52,10 +57,12 @@ define([
 		_label: null, // Text widget
 
 		button: null,
+		_visibilityDeferred: null, // for updaeting the visibility of the button
 
 		grid: null,
 
-		query: null,
+		query: null, // query for setting the store
+		filterQuery: null, // query to filter the store
 
 		store: null,
 
@@ -110,6 +117,12 @@ define([
 			this.own(clearContainer);
 			this.addChild(this.grid);
 			this.own(this.grid);
+
+			this.own(on(win.global, 'resize', lang.hitch(this, function() {
+				// TODO: call this only once during the next x seconds
+				// instead for every px change
+				this._handleButtonVisibility();
+			})));
 		},
 
 		_setStoreAttr: function(applications) {
@@ -118,6 +131,7 @@ define([
 				data: filteredApps
 			})));
 			this._set('store', applications);
+			this._handleButtonVisibility();
 		},
 
 		_setFilterQueryAttr: function(query) {
@@ -125,11 +139,33 @@ define([
 			var queryResult = this.grid.store.query(query);
 			domClass.toggle(this.domNode, 'dijitHidden', !queryResult.length);
 			this._set('filterQuery', query);
+			this._handleButtonVisibility();
 		},
 
 		_setButtonLabelAttr: function(label) {
 			this.button.set('label', label);
 			this._set('ButtonLabel', label);
+		},
+
+		_handleButtonVisibility: function() {
+			if (this._visibilityDeferred && !this._visibilityDeferred.isFulfilled()) {
+				this._visibilityDeferred.cancel();
+			}
+			this._visibilityDeferred = tools.defer(lang.hitch(this, '_updateButtonVisibility'), 200);
+			this._visibilityDeferred.otherwise(function() { /* prevent logging of exception */ });
+		},
+
+		_updateButtonVisibility: function() {
+			var gridMarginBox = domGeom.getMarginBox(this.grid.domNode);
+			var gridWidth = gridMarginBox.w;
+			var appsDisplayed = this.grid.store.query(this.filterQuery);
+			var appDomNode = domQuery('div:not([class*="col"])[id*="dgrid_"][class*="odd"]')[0];
+			var appMarginBox = domGeom.getMarginBox(appDomNode);
+			var appWidth = appMarginBox.w;
+			var neededWidthToDisplayApps = appsDisplayed.length * appWidth;
+
+			var hideButton = neededWidthToDisplayApps < gridWidth;
+			domClass.toggle(this.button.domNode, 'dijitHidden', hideButton);
 		},
 
 		onShowApp: function(app) {
