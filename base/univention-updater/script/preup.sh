@@ -522,7 +522,10 @@ if ! is_ucr_true update40/skip/obsolete_packages; then
 	for p in $obsolete_packages; do
 		if dpkg -l "$p" 2>&3 | grep ^ii  >&3 ; then
 			echo "ERROR: The package \"$p\" is no longer supported in UCS."
-			echo "       The following packages have to be removed before the update!"
+			echo "       Please remove it before the update."
+			echo ""
+			echo "INFO:  The following list contains all packages that might prevent the update."
+			echo "       If installed, please remove them as well before the update:"
 			echo "       $obsolete_packages"
 			echo "       Further information how to remove software packages via"
 			echo "       UMC or commandline can be found in the manual:"
