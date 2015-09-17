@@ -278,24 +278,14 @@ define([
 				this._icon.destroyRecursive();
 				this._icon = null;
 			}
-			var iconClass = this._grid.getIconClass(this.app);
-			if (iconClass) {
+			var icon_class = this._grid.getIconClass(this.app);
+			if (icon_class) {
 				this._icon = new ContainerWidget({
 					region: 'nav',
-					'class': iconClass,
-					'style': 'margin-bottom: 1em;'
+					'class': icon_class + ' icon',
 				});
 				this.addChild(this._icon, 0);
 			}
-
-			// 'nav'
-			this._icon.set('style', {
-				'width': '200px', 
-				'height': '120px',
-				'display': 'inline-block',
-				'margin-right': '20px',
-				'background-position': 'center center'
-			});
 			
 			if (this._navHeaderButtonContainer) {
 				this.removeChild(this._navHeaderButtonContainer);
@@ -305,10 +295,7 @@ define([
 			}
 			this._navHeaderButtonContainer = new ContainerWidget({
 				region: 'nav',
-				style: {
-					'display': 'inline-block',
-					'vertical-align': 'top'
-				}
+				'class': 'navHeaderButton'
 			});
 
 			this._navHeaderButtonContainer.addChild(this._headerTextPane, 0);
@@ -316,16 +303,14 @@ define([
 			var vendor = this._detailFieldCustomVendor();
 			if (vendor) {
 				var _vendorTextPane = new Text({
-					content: vendor,
-					style: 'margin-bottom: 0.3em;'
+					content: vendor
 				});
 				this._navHeaderButtonContainer.addChild(_vendorTextPane);
 			}
 
 			if (this.app.isInstalled || this.app.getHosts().length) {
 				var installedText = new Text({
-					content: _('Installed'),
-					style: 'color: #787878'
+					content: _('Installed')
 				});
 				this._navHeaderButtonContainer.addChild(installedText);
 			} else {
@@ -342,8 +327,6 @@ define([
 			this.addChild(this._navHeaderButtonContainer);
 			this.own(this._navHeaderButtonContainer);
 			
-			// 'main'
-			//
 			if (this._mainRegionContainer) {
 				this.removeChild(this._mainRegionContainer);
 				this._mainRegionContainer.destroyRecursive();
@@ -363,34 +346,20 @@ define([
 				if (usage) {
 					usageHeader = new Text({
 						content: _('First steps'), 
-						style: {
-							display: 'block',
-							'font-size': '1.6em',
-							'font-weight': 'bold',
-							'margin-bottom': '1em'
-						}
+						'class': 'mainHeader'
 					});
 					this._mainRegionContainer.addChild(usageHeader);
 
 					var usagePane = new Text({
 						content: usage,
-						style: 'margin-bottom: 2em'
+						'class': 'usage'
 					});
 					this._mainRegionContainer.addChild(usagePane);
 				}
 
-				//grid
-				//
-				//grid header
-				//
 				var gridHeader = new Text({
 					content: _('Manage domain wide installations'),
-					style: {
-						display: 'block',
-						'font-size': '1.6em',
-						'font-weight': 'bold',
-						'margin-bottom': '1em'
-					}
+					'class': 'mainHeader'
 				});
 				this._mainRegionContainer.addChild(gridHeader);
 
@@ -421,29 +390,15 @@ define([
 			
 			//imageCarousel
 			this._detailsContainer = new ContainerWidget({
-				'class': 'mainContainer',
-				style: {
-					'background-color': '#f0f0f0',
-					'margin': '0 -1000px',
-					'padding': '0 1000px'
-				}
+				'class': 'detailsContainer'
 			});			
 
 			var styleContainer = new ContainerWidget({
-				'class': 'aaa',
-				style: {
-					'border-bottom': '1px solid #c8c8c8',
-					'padding': '1em 0',
-					'margin-bottom': '3em'
-				}
+				'class': 'carouselWrapper'
 			});
 			
 			var carouselContainer = new ContainerWidget({
-				'class': 'carousel',
-				style: {
-					'margin': 'auto',
-					'display': 'table'
-				}
+				'class': 'carousel'
 			});
 
 			var screenshot = this._detailFieldCustomScreenshot();
@@ -457,33 +412,22 @@ define([
 				this._detailsContainer.addChild(styleContainer);
 			}
 
-			//description + functionlist
+			var descriptionContainerClass = 'descriptionContainer';
+			descriptionContainerClass += this.app.longDescription.length > 360 ? ' longText' : '';
 			var descriptionContainer = new ContainerWidget({
-				style: {'padding-bottom': '2em'}
+				'class': descriptionContainerClass
 			});
 			var descriptionTable = domConstruct.create('table');
 			var tr = domConstruct.create('tr', {}, descriptionTable);
 
 			var tableHeader = domConstruct.create('th', {
 				innerHTML: _('Description'), 
-				colspan: 2,
-				style: {
-					'font-weight': 'bold',
-					'font-size': '1.6em',
-					'height': '30px',
-					'vertical-align': 'top'
-				}
+				colspan: 2
 			}, tr);
 
 			tr = domConstruct.create('tr', {}, descriptionTable);
 			domConstruct.create('td', {
-				innerHTML: this.app.longDescription, 
-				style: {
-					'vertical-align': 'top',
-					'width': '50%',
-					'-webkit-column-count': '2',
-					'-moz-column-count': '2'
-				}
+				innerHTML: this.app.longDescription
 			}, tr);
 
 			domConstruct.place(descriptionTable, descriptionContainer.domNode);
@@ -497,15 +441,10 @@ define([
 			}
 			var detailsPane = new TitlePane({
 				open: isOpen,
-				style: {
-					'background-color': '#f0f0f0',
-					'margin': '0 -1000px',
-					'padding': '0 1000px'
-				},
 				//class: 'installedAppDetailsPane',
 				title: _('Details'),
 				content: this._detailsContainer,
-				'class': 'appDetailsPage'
+				'class': 'appDetailsPane'
 			});
 			this._mainRegionContainer.addChild(detailsPane, isOpen ? 0 : null);
 
@@ -515,19 +454,18 @@ define([
 			domStyle.set(this._footer.domNode, 'margin-bottom', '9em');
 			
 			domConstruct.create('span', {
-				innerHTML: _('More information'), 
-				style: {
-					display: 'block',
-					'font-size': '1.6em',
-					'font-weight': 'bold',
-					'margin-bottom': '1em'
-				}
+				innerHTML: _('More information'),
+				'class': 'mainHeader'
 			}, this._footer.domNode);
 
-			var footerLeft = new ContainerWidget({style: 'display: inline-block; width: 50%'});
+			var footerLeft = new ContainerWidget({
+				'class': 'appDetailsFooter'
+			});
 			this._footer.own(footerLeft);
 			this._footer.addChild(footerLeft);
-			var footerRight = new ContainerWidget({style: 'display: inline-block; vertical-align: top; width: 50%'});
+			var footerRight = new ContainerWidget({
+				'class': 'appDetailsFooter'
+			});
 			this._footer.own(footerRight);
 			this._footer.addChild(footerRight);
 

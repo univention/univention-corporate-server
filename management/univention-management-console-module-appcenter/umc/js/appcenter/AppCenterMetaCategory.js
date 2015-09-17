@@ -148,24 +148,24 @@ define([
 		},
 
 		_handleButtonVisibility: function() {
-			if (this._visibilityDeferred && !this._visibilityDeferred.isFulfilled()) {
-				this._visibilityDeferred.cancel();
+			if (!this._visibilityDeferred || this._visibilityDeferred.isFulfilled()) {
+				this._visibilityDeferred = tools.defer(lang.hitch(this, '_updateButtonVisibility'), 200);
 			}
-			this._visibilityDeferred = tools.defer(lang.hitch(this, '_updateButtonVisibility'), 200);
-			this._visibilityDeferred.otherwise(function() { /* prevent logging of exception */ });
 		},
 
 		_updateButtonVisibility: function() {
-			var gridMarginBox = domGeom.getMarginBox(this.grid.domNode);
-			var gridWidth = gridMarginBox.w;
-			var appsDisplayed = this.grid.store.query(this.filterQuery);
-			var appDomNode = domQuery('div:not([class*="col"])[id*="dgrid_"][class*="odd"]')[0];
-			var appMarginBox = domGeom.getMarginBox(appDomNode);
-			var appWidth = appMarginBox.w;
-			var neededWidthToDisplayApps = appsDisplayed.length * appWidth;
+			var appDomNode = domQuery('div:not([class*="col"])[class*="dgrid-row"]')[0];
+			if (appDomNode) {
+				var gridMarginBox = domGeom.getMarginBox(this.grid.domNode);
+				var gridWidth = gridMarginBox.w;
+				var appMarginBox = domGeom.getMarginBox(appDomNode);
+				var appWidth = appMarginBox.w;
+				var appsDisplayed = this.grid.store.query(this.filterQuery);
+				var neededWidthToDisplayApps = appsDisplayed.length * appWidth;
 
-			var hideButton = neededWidthToDisplayApps < gridWidth;
-			domClass.toggle(this.button.domNode, 'dijitHidden', hideButton);
+				var hideButton = neededWidthToDisplayApps < gridWidth;
+				domClass.toggle(this.button.domNode, 'dijitHidden', hideButton);
+			}
 		},
 
 		onShowApp: function(app) {

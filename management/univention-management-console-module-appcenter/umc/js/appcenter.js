@@ -123,7 +123,7 @@ define([
 		_getModuleStateAttr: function() {
 			var state = [];
 			if (this.selectedChildWidget && this.selectedChildWidget == this._appDetailsPage) {
-				state = ['id', this._detailPage.app.id];
+				state = ['id', this._appDetailsPage.app.id];
 			} else if (this.selectedChildWidget && this.selectedChildWidget == this._appCenterPage) {
 				state = ['category', this._appCenterPage._searchSidebar.get('category')];
 			}
