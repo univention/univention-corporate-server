@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-49) unstable; urgency=low
+
+  * Bug #38233: Add support for @%@ucr@%@ in appcenter README files
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Sep 2015 15:22:34 +0200
+
 univention-management-console-module-appcenter (4.1.20-48) unstable; urgency=medium
 
   * Bug #38954: Fix escape of UCR variables
