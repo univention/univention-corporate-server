@@ -1,3 +1,9 @@
+ucs-test (5.0.171-6) unstable; urgency=low
+
+  * Add wait_for_replication() and logging to IMAP ACL test (Bug #38600)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 17 Sep 2015 11:06:29 +0200
+
 ucs-test (5.0.171-5) unstable; urgency=low
 
   * always use random usernames (Bug #39358)
