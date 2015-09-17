@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: univention-management-console-module-appcenter
+fix: 4.1.20-49.432.201509171525
+version: [3]
+desc: |
+ This update addresses the following issue:
+ * Added support for UCR variable templates in AppCenter readme files.
+bug: [38233]
