@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.4-21) unstable; urgency=medium
+
+  * Bug #39184: Fixed umask of UMC module
+  * Bug #39304: Add some parameters to univention-app to help identifying apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 17 Sep 2015 13:14:37 +0200
+
 univention-management-console-module-appcenter (5.0.4-20) unstable; urgency=low
 
   * Bug #38894: [WIP] Added logic to update the visibility of the More/Less

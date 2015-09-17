@@ -35,6 +35,7 @@
 import os
 import os.path
 from math import ceil
+from argparse import SUPPRESS
 import time
 import shutil
 from threading import Thread
@@ -62,7 +63,13 @@ class Update(UniventionAppAction):
 		super(Update, self).__init__()
 		self._ucs_version = None
 
+	def setup_parser(self, parser):
+		parser.add_argument('--ucs-version', help=SUPPRESS)
+		parser.add_argument('--appcenter-server', help=SUPPRESS)
+
 	def main(self, args):
+		self._ucs_version = args.ucs_version
+		self._appcenter_server = args.appcenter_server
 		something_changed_locally = self._extract_local_archive()
 		json_apps = self._load_index_json()
 		files_to_download, something_changed_remotely = self._read_index_json(json_apps)
@@ -143,7 +150,8 @@ class Update(UniventionAppAction):
 					f.write(urlcontent.read())
 				local_md5sum = get_md5_from_file(cached_filename)
 				if local_md5sum != remote_md5sum:
-					self.fatal('Checksum for %s should be %r but was %r! Giving up for this time!' % (filename, remote_md5sum, local_md5sum))
+					self.fatal('Checksum for %s should be %r but was %r! Rather removing this file...' % (filename, remote_md5sum, local_md5sum))
+					os.unlink(cached_filename)
 
 	def _process_new_file(self, filename):
 		self.log('Installing %s' % os.path.basename(filename))
@@ -211,12 +219,14 @@ class Update(UniventionAppAction):
 		return '%s/meta-inf/%s' % (self._get_server(), self._get_ucs_version())
 
 	def _get_server(self):
-		ucr = ConfigRegistry()
-		ucr.load()
-		server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
-		if not server.startswith('http'):
-			server = 'https://%s' % server
-		return server
+		if self._appcenter_server is None:
+			ucr = ConfigRegistry()
+			ucr.load()
+			server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
+			self._appcenter_server = server
+		if not self._appcenter_server.startswith('http'):
+			self._appcenter_server = 'https://%s' % self._appcenter_server
+		return self._appcenter_server
 
 	def _load_index_json(self):
 		json_url = urljoin('%s/' % self._get_metainf_url(), 'index.json.gz')

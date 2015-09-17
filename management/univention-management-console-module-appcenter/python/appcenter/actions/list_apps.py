@@ -39,12 +39,14 @@ from univention.appcenter.app import AppManager
 from univention.appcenter.udm import get_app_ldap_object
 from univention.appcenter.utils import flatten
 
+
 class List(UniventionAppAction):
 	'''Lists all available apps; shows installed version.'''
-	help='List all app'
+	help = 'List all app'
 
 	def setup_parser(self, parser):
 		parser.add_argument('app', nargs='?', help='The ID of the app that shall be listed. May contain asterisk. Default: list all apps')
+		parser.add_argument('--with-repository', action='store_true', help='Also list the repository name')
 
 	def main(self, args):
 		first = True
@@ -53,6 +55,8 @@ class List(UniventionAppAction):
 				self.log('')
 			self.log('%s' % app.id)
 			self.log('  Name: %s' % app.name)
+			if args.with_repository:
+				self.log('  Repository: %s' % app.component_id)
 			if args.app:
 				self.log('  Versions:')
 				for version in versions:
@@ -81,4 +85,3 @@ class List(UniventionAppAction):
 				installations[_app.version] = servers
 			ret.append((app, versions, installations))
 		return ret
-

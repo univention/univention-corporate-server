@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+import sys
 from subprocess import check_output, call
 import os.path
 import shlex
@@ -62,18 +63,22 @@ def ps(only_running=True):
 	return check_output(args)
 
 
-def execute_with_output(container, args, tty=True):
+def execute_with_output(container, args, tty=None):
 	docker_exec = ['docker', 'exec']
+	if tty is None:
+		tty = sys.stdin.isatty()
 	if tty:
 		docker_exec.append('-it')
 	args = docker_exec + [container] + args
 	return check_output(args)
 
 
-def execute_with_process(container, args, logger=None, tty=True):
+def execute_with_process(container, args, logger=None, tty=None):
 	if logger is None:
 		logger = _logger
 	docker_exec = ['docker', 'exec']
+	if tty is None:
+		tty = sys.stdin.isatty()
 	if tty:
 		docker_exec.append('-it')
 	args = docker_exec + [container] + args

@@ -112,6 +112,7 @@ def error_handler(func):  # imported in apps module ;)
 class Instance(umcm.Base):
 
 	def init(self):
+		os.umask(0022)  # umc umask is too restrictive for app center as it creates a lot of files in docker containers
 		self.ucr = univention.config_registry.ConfigRegistry()
 		self.ucr.load()
 

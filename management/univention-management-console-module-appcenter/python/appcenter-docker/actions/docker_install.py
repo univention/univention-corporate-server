@@ -41,11 +41,12 @@ from univention.appcenter.actions.docker_remove import Remove
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions import Abort
 
+
 class Install(Install, DockerActionMixin):
 	def setup_parser(self, parser):
 		super(Install, self).setup_parser(parser)
 		parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
-		parser.add_argument('--do-not-revert', action='store_false', dest='revert', help=SUPPRESS) # debugging
+		parser.add_argument('--do-not-revert', action='store_false', dest='revert', help=SUPPRESS)  # debugging
 
 	def _install_app(self, app, args):
 		if not app.docker:
@@ -73,4 +74,3 @@ class Install(Install, DockerActionMixin):
 				self.fatal('Setup script failed!')
 				raise Abort()
 		self._execute_container_script(app, 'restore_data_after_setup', _credentials=False)
-
