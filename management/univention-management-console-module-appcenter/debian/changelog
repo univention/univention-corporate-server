@@ -1,4 +1,4 @@
-univention-management-console-module-appcenter (5.0.5-1) unstable; urgency=low
+univention-management-console-module-appcenter (5.0.4-19) unstable; urgency=low
 
   * Bug #38894: [WIP] Refactored appDetailsPage to this._appDetailsPage for
     browser navigation
