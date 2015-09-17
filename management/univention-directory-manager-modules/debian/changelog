@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.1-1) unstable; urgency=medium
+
+  * Bug #25356: add lookup of TXT records in dns/dns
+
+ -- Florian Best <best@univention.de>  Thu, 17 Sep 2015 17:31:06 +0200
+
 univention-directory-manager-modules (11.0.0-7) unstable; urgency=low
 
   * Bug #38796: when acquiring new uidNumber or gidNumber ensure they do not
