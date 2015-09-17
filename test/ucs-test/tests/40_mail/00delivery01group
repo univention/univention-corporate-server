@@ -28,15 +28,15 @@ def main():
 		group_mail = 'g%s@%s' % (uts.random_string(), domain)
 		mails = []
 		for i in xrange(3):
-			user = uts.random_name()
-			userdn, username = udm.create_user(username=user,
+			usermail = '%s@%s' % (uts.random_name(), domain)
+			udm.create_user(
 					set={
 						'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
 						'mailAlternativeAddress': group_mail,
-						'mailPrimaryAddress': '%s@%s' % (user, domain),
+						'mailPrimaryAddress': usermail,
 						}
 					)
-			mails.append('%s@%s' % (user, domain))
+			mails.append(usermail)
 
 		token = str(time.time())
 		send_mail(recipients=group_mail, msg=token, idstring=token, subject='Test Group Send')

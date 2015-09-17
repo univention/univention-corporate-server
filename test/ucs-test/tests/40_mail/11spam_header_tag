@@ -17,9 +17,8 @@ def main():
 	with udm_test.UCSTestUDM() as udm:
 		try:
 			with ucr_test.UCSTestConfigRegistry() as ucr:
-				username = uts.random_name()
 				password = uts.random_string()
-				mailPrimaryAddress = '%s@%s' % (username, ucr.get('domainname'))
+				mailPrimaryAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
 				mailHomeServer = '%s.%s' % (ucr.get('hostname'),  ucr.get('domainname'))
 				if ucr.is_true('mail/cyrus'):
 					spam_folder = 'INBOX/%s' % (essential.mail.get_spam_folder_name(),)
@@ -27,7 +26,6 @@ def main():
 					spam_folder = essential.mail.get_spam_folder_name()
 
 				userdn, username = udm.create_user(
-					username=username,
 					password=password,
 					set={
 						'mailHomeServer': mailHomeServer,

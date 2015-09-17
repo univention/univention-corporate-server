@@ -26,10 +26,8 @@ def main():
 		with udm_test.UCSTestUDM() as udm:
 			fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 			handler_set(['mail/alias/root=systemmail@%s' % fqdn])
-			username = uts.random_name()
-			mailAddress = '%s@%s' % (username, ucr.get('domainname'))
+			mailAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
 			userdn, username = udm.create_user(
-				username=username,
 				set={
 					'password': 'univention',
 					'mailHomeServer': fqdn,
@@ -42,5 +40,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+	main()
 # vim: ft=python:ts=4:sw=4:noet:
