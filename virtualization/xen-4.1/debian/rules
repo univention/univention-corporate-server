@@ -36,6 +36,7 @@ else
 	LIBDIR=lib
 endif
 
+.PHONY: configure
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
@@ -45,23 +46,29 @@ configure-stamp:
 	touch $@
 
 #Architecture
+.PHONY: build
 build: build-arch build-indep
 
+.PHONY: build-arch
 build-arch: build-arch-stamp
-build-arch-common: configure-stamp
+build-arch-stamp: build-arch-common-stamp $(PYVERS:%=build-python%-stamp)
+	touch $@
+build-arch-common-stamp: configure-stamp
 	$(MAKE) -C xen-${XENVER}/xen build
 	$(MAKE) -C xen-${XENVER}/tools all
-build-python%: build-arch-common
+	touch $@
+build-python%-stamp: build-arch-common-stamp
 	$(MAKE) -C xen-${XENVER}/tools/pygrub build PYTHON=/usr/bin/python$*
 	$(MAKE) -C xen-${XENVER}/tools/python build PYTHON=/usr/bin/python$*
+	touch $@
 
+.PHONY: build-indep
 build-indep: build-indep-stamp
 build-indep-stamp: configure-stamp
 	$(MAKE) -C xen-${XENVER}/docs
 	touch $@
-build-arch-stamp: build-arch-common $(PYVERS:%=build-python%)
-	touch $@
 
+.PHONY: clean
 clean:
 	dh_testdir
 	$(RM) build-arch-stamp build-indep-stamp
@@ -70,7 +77,9 @@ clean:
 	rm -f debian/xen-4.1.xend.udev debian/xen-4.1.xen-backend.udev
 	rm -rf .pc/
 
+.PHONY: install
 install: install-indep install-arch
+.PHONY: install-indep
 install-indep:
 	dh_testdir
 	dh_testroot
@@ -89,6 +98,7 @@ install-python%: install-arch-common
 	$(MAKE) -C xen-${XENVER}/tools/pygrub install PYTHON=/usr/bin/python$*
 	$(MAKE) -C xen-${XENVER}/tools/python install PYTHON=/usr/bin/python$*
 	#$(MAKE) -C xen-${XENVER}/tools/security install PYTHON=/usr/bin/python$*
+.PHONY: install-arch
 install-arch: install-arch-common $(PYVERS:%=install-python%)
 	cp $(CURDIR)/xen-${XENVER}/tools/libxc/libxenctrl.a debian/libxen-dev/usr/lib/
 	cp $(CURDIR)/xen-${XENVER}/tools/libxc/libxenguest.a debian/libxen-dev/usr/lib/
@@ -156,17 +166,15 @@ binary-common:
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
-# Build architecture independant packages using the common target.
-ifdef SPLIT_ARCH_FROM_INDEP
+
+.PHONY: binary
+binary: binary install
+	$(MAKE) -f debian/rules binary-common
+
+.PHONY: binary-indep
 binary-indep: build-indep install-indep
 	$(MAKE) -f debian/rules DH_OPTIONS=-i binary-common
-else
-binary-arch: build-indep install-indep
-endif
 
-# Build architecture dependant packages using the common target.
+.PHONY: binary-arch
 binary-arch: build-arch install-arch
 	$(MAKE) -f debian/rules DH_OPTIONS=-s binary-common
-
-binary: binary-arch binary-indep
-.PHONY: build clean binary-indep binary-arch binary install install-indep install-arch configure

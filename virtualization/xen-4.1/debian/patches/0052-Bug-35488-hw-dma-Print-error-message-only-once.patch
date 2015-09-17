@@ -1,0 +1,34 @@
+From: Philipp Hahn <hahn@univention.de>
+Date: Fri, 9 May 2014 10:53:57 +0200
+Subject: Bug #35488 hw/dma: Print error message only once
+
+otherwise the message
+	dma: unregistered DMA channel used nchan=0 dma_pos=0 dma_len=1
+gets printed every time and fills up the log-file with 50 MiB / minute.
+
+Signed-off-by: Philipp Hahn <hahn@univention.de>
+---
+ tools/ioemu-qemu-xen/hw/dma.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/tools/ioemu-qemu-xen/hw/dma.c b/tools/ioemu-qemu-xen/hw/dma.c
+index ad275d1..3c5a110 100644
+--- a/tools/ioemu-qemu-xen/hw/dma.c
++++ b/tools/ioemu-qemu-xen/hw/dma.c
+@@ -462,8 +462,14 @@ static void dma_reset(void *opaque)
+ 
+ static int dma_phony_handler (void *opaque, int nchan, int dma_pos, int dma_len)
+ {
+-    dolog ("unregistered DMA channel used nchan=%d dma_pos=%d dma_len=%d\n",
+-           nchan, dma_pos, dma_len);
++    static int once = 0;
++    int mask = 1 << nchan;
++
++    if (0 == (once & mask)) {
++        once |= mask;
++        dolog ("unregistered DMA channel used nchan=%d dma_pos=%d dma_len=%d\n",
++               nchan, dma_pos, dma_len);
++    }
+     return dma_pos;
+ }
+ 
