@@ -136,8 +136,6 @@ define([
 
 		_setFilterQueryAttr: function(query) {
 			this.grid.set('query', query);
-			var queryResult = this.grid.store.query(query);
-			domClass.toggle(this.domNode, 'dijitHidden', !queryResult.length);
 			this._set('filterQuery', query);
 			this._handleButtonVisibility();
 		},
@@ -154,18 +152,19 @@ define([
 		},
 
 		_updateButtonVisibility: function() {
-			var appDomNode = domQuery('div:not([class*="col"])[class*="dgrid-row"]')[0];
-			if (appDomNode) {
+			var appsDisplayed = domQuery('div[class*="dgrid-row"]', this.id);
+			if (appsDisplayed.length) {
 				var gridMarginBox = domGeom.getMarginBox(this.grid.domNode);
 				var gridWidth = gridMarginBox.w;
+				var appDomNode = appsDisplayed[0];
 				var appMarginBox = domGeom.getMarginBox(appDomNode);
 				var appWidth = appMarginBox.w;
-				var appsDisplayed = this.grid.store.query(this.filterQuery);
 				var neededWidthToDisplayApps = appsDisplayed.length * appWidth;
 
 				var hideButton = neededWidthToDisplayApps < gridWidth;
 				domClass.toggle(this.button.domNode, 'dijitHidden', hideButton);
 			}
+			domClass.toggle(this.domNode, 'dijitHidden', !appsDisplayed.length);
 		},
 
 		onShowApp: function(app) {

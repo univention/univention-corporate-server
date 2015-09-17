@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.4-24) unstable; urgency=low
+
+  * Bug #38894: [WIP] adjusted logic to toggle visibility of More/Less
+    Button
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 17 Sep 2015 15:48:00 +0200
+
 univention-management-console-module-appcenter (5.0.4-23) unstable; urgency=low
 
   * Bug #38233: Add support for @%@ucr@%@ in appcenter README files 

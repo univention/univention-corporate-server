@@ -322,6 +322,10 @@
 	width: 50%;
 }
 
+.dijitMenuSeparatorIconCell, .dijitMenuSeparatorLabelCell {
+	padding: 0 !important;
+}
+
 @media screen and (max-width: 549px) {
 	.umc .umcPage.umcAppCenter .umcSize-TwoThirds {
 		width: 100%;
