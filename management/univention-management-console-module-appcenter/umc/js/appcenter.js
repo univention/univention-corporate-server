@@ -122,7 +122,7 @@ define([
 
 		_getModuleStateAttr: function() {
 			var state = [];
-			if (this.selectedChildWidget && this.selectedChildWidget == this._detailPage) {
+			if (this.selectedChildWidget && this.selectedChildWidget == this._appDetailsPage) {
 				state = ['id', this._detailPage.app.id];
 			} else if (this.selectedChildWidget && this.selectedChildWidget == this._appCenterPage) {
 				state = ['category', this._appCenterPage._searchSidebar.get('category')];
@@ -198,7 +198,7 @@ define([
 			});
 			this.addChild(appConfigDialog);
 
-			var appDetailsPage = new AppDetailsPage({
+			this._appDetailsPage = new AppDetailsPage({
 				app: app,
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
@@ -211,10 +211,10 @@ define([
 				standbyDuring: lang.hitch(this, 'standbyDuring'),
 				isSubPage: true
 			});
-			appDetailsPage.own(appChooseHostDialog);
-			appDetailsPage.own(appDetailsDialog);
-			appDetailsPage.own(appConfigDialog);
-			appDetailsPage.on('back', lang.hitch(this, function(category) {
+			this._appDetailsPage.own(appChooseHostDialog);
+			this._appDetailsPage.own(appDetailsDialog);
+			this._appDetailsPage.own(appConfigDialog);
+			this._appDetailsPage.on('back', lang.hitch(this, function(category) {
 				if (category && category.length) {
 					this._appCenterPage._searchSidebar.set('category', category);
 				}
@@ -224,14 +224,13 @@ define([
 				});
 				this.removeChild(appDetailsDialog);
 				this.removeChild(appChooseHostDialog);
-				this.removeChild(appDetailsPage);
-				appDetailsPage.destroyRecursive();
+				this.removeChild(this._appDetailsPage);
+				this._appDetailsPage.destroyRecursive();
 			}));
-			this.addChild(appDetailsPage);
-			this._detailPage = appDetailsPage;
+			this.addChild(this._appDetailsPage);
 
-			this.standbyDuring(appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
-				this.selectChild(appDetailsPage);
+			this.standbyDuring(this._appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
+				this.selectChild(this._appDetailsPage);
 			}));
 
 			appChooseHostDialog.on('showUp', lang.hitch(this, function() {
@@ -244,30 +243,30 @@ define([
 				this.selectChild(appConfigDialog);
 			}));
 			appChooseHostDialog.on('back', lang.hitch(this, function() {
-				this.selectChild(appDetailsPage);
+				this.selectChild(this._appDetailsPage);
 			}));
 			appDetailsDialog.on('back', lang.hitch(this, function(continued) {
 				var loadPage = true;
 				if (!continued) {
-					loadPage = appDetailsPage.reloadPage();
+					loadPage = this._appDetailsPage.reloadPage();
 					this.standbyDuring(loadPage);
 				}
 				when(loadPage).then(lang.hitch(this, function() {
-					this.selectChild(appDetailsPage);
+					this.selectChild(this._appDetailsPage);
 				}));
 			}));
 			appConfigDialog.on('back', lang.hitch(this, function(applied) {
 				var loadPage = true;
 				if (applied) {
-					loadPage = all([appDetailsPage.updateApplications(), appDetailsPage.reloadPage()]);
+					loadPage = all([this._appDetailsPage.updateApplications(), this._appDetailsPage.reloadPage()]);
 					this.standbyDuring(loadPage);
 				}
 				when(loadPage).then(lang.hitch(this, function() {
-					this.selectChild(appDetailsPage);
+					this.selectChild(this._appDetailsPage);
 				}));
 			}));
 			appConfigDialog.on('update', lang.hitch(this, function() {
-				var loadPage = all([appDetailsPage.updateApplications(), appDetailsPage.reloadPage()]);
+				var loadPage = all([this._appDetailsPage.updateApplications(), this._appDetailsPage.reloadPage()]);
 				loadPage = loadPage.then(function() {
 					appConfigDialog.showUp();
 				});
