@@ -1,0 +1,25 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-7
+src: postgresql-8.4
+fix: 8.4.22lts4-0.26.201509171802
+version: [6,7]
+desc: |
+ This update addresses the following issues:
+ * Denial of service due to double-free after authentication timeout
+   (CVE-2015-3165)
+ * Information disclosure due to missing checks of return codes from
+   the standard library (CVE-2015-3166)
+ * Inconsistent error messages from contrib/pgcrypto (CVE-2015-3167)
+ * Fix rare failure to invalidate relation cache init file (Tom Lane)
+   With just the wrong timing of concurrent activity, a VACUUM  FULL
+   on a system catalog might fail to update the init file that's used to
+   avoid cache-loading work for new sessions.  This would result in
+   later sessions being unable to access that catalog at all.
+   This is a very ancient bug, but it's so hard to trigger that no
+   reproducible case had been seen until recently. (No CVE)
+bug: [38607]
+cve:
+ - CVE-2015-3165
+ - CVE-2015-3166
+ - CVE-2015-3167
