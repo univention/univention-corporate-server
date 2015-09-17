@@ -1,3 +1,10 @@
+univention-server (11.0.1-3) unstable; urgency=medium
+
+  * Add univention-container-role-server-common package definition
+    (Bug #38283)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Sep 2015 19:45:15 +0200
+
 univention-server (11.0.1-2) unstable; urgency=medium
 
   * Added univention-container-role-server-common.univention-config-

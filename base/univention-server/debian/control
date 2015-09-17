@@ -137,6 +137,23 @@ Description: UCS system server role common dependencies and files
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
+Package: univention-container-role-server-common
+Architecture: all
+Depends: ${misc:Depends},
+ univention-container-role-common (= ${source:Version}),
+ univention-directory-listener,
+ univention-ldap-client,
+ univention-directory-manager-tools,
+ univention-ifplugd | univention-network-manager,
+ univention-mail-postfix | mail-transport-agent,
+Description: UCS system server role common dependencies and files
+ This package contains common files used by all server system roles.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
 Package: univention-role-common
 Architecture: all
 Depends: ${misc:Depends},
