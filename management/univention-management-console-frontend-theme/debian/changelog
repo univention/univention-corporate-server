@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.89-26) unstable; urgency=low
+
+  * Bug #39234: added icon for extendedable attributes
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 18 Sep 2015 12:34:16 +0200
+
 univention-management-console-frontend-theme (0.0.89-25) unstable; urgency=medium
 
   * Bug #39319: Define a min-height for GalleryItem's description
