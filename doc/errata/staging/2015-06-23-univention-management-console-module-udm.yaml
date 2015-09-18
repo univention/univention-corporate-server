@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: univention-management-console-module-udm
-fix: 5.1.25-89.611.201509031505
+fix: 5.1.25-90.614.201509181256
 version: [3]
 desc: |
  This update addresses the following issues:
@@ -14,4 +14,5 @@ desc: |
  * The notification for successfully creating a user or computer now appears
    inside the wizard dialog.
  * Opening a user is now faster.
-bug: [39041, 38346, 38834, 38190]
+ * It is now easier to find information for creating cutom attributes.
+bug: [39041, 38346, 38834, 38190, 39234]
