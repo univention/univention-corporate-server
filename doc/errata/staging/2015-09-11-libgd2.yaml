@@ -5,7 +5,7 @@ src: libgd2
 fix: 2.0.36~rc1~dfsg-6.1.33.201509111112
 version: [2,3]
 desc: |
-  A security vulnerability has been fixed in libgd2:
+  Multiple security vulnerabilities were fixed in libgd2:
   * The gdImageCreateFromXpm function in gdxpm.c in libgd, as used in
     PHP 5.4.26 and earlier, allows remote attackers to cause a denial
     of service (NULL pointer dereference and application crash) via a
