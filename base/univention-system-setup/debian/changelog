@@ -1,3 +1,10 @@
+univention-system-setup (9.0.2-2) unstable; urgency=medium
+
+  * Bug #38275: Merge from container scope: Make the nameserver and domain
+    setting transparent in the appliance wizard
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 18 Sep 2015 09:41:01 +0200
+
 univention-system-setup (9.0.2-1) unstable; urgency=medium
 
   * Bug #39323: support psutil 0.9 and >= 2.0

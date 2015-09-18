@@ -325,7 +325,7 @@ class SetupScript(object):
 		to run() itself. If you dont return False, True will be
 		used implicitely.
 		'''
-		raise NotImplementedError('Define you own inner_run() method, please.')
+		raise NotImplementedError('Define your own inner_run() method, please.')
 
 	def up(self, *args, **kwargs):
 		'''Override this method if needed.

@@ -108,6 +108,9 @@ UCR_VARIABLES = [
 	# ssl
 	'ssl/common', 'ssl/locality', 'ssl/country', 'ssl/state',
 	'ssl/organization', 'ssl/organizationalunit', 'ssl/email',
+	# fqdn
+	'hostname',
+	'domainname',
 ]
 
 def timestamp():

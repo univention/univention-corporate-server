@@ -191,6 +191,15 @@ define([
 		return acceptEmtpy || (isFQDN && hasNoDots);
 	};
 
+	var _invalidDomainNameMessage = _('Invalid domain name!<br/>Expected format: <i>mydomain.intranet</i>');
+	var _validateDomainName = function(domainName) {
+		domainName = domainName || '';
+		var isFQDN = _regFQDN.test(domainName);
+		var hasEnoughParts = domainName.split('.').length >= 2;
+		var acceptEmtpy = !domainName && !this.required;
+		return acceptEmtpy || (isFQDN && hasEnoughParts);
+	};
+
 	var _invalidFQDNMessage = _('Invalid fully qualified domain name!<br/>Expected format: <i>hostname.mydomain.intranet</i>');
 	var _validateFQDN = function(fqdn) {
 		fqdn = fqdn || '';
@@ -740,9 +749,31 @@ define([
 				headerText: _('Host settings'),
 				helpText: _('Specify the name of this system.'),
 				layout: [
+					['_hostname', '_domainname'], // for docker only!
 					['_fqdn', 'ldap/base']
 				],
 				widgets: [{
+					type: TextBox,
+					name: '_hostname',
+					label: _('Hostname (unchangeable. Was set while creating the container)'),
+					disabled: true,
+					visible: false,
+					validator: _validateHostname,
+					invalidMessage: _invalidHostOrFQDNMessage
+				}, {
+					type: TextBox,
+					name: '_domainname',
+					label: _('Domain name'),
+					disabled: true,
+					visible: false,
+					required: true,
+					onChange: lang.hitch(this, function(value) {
+						var fqdn = 'dummy.' + value;
+						this._updateLDAPBase(fqdn);
+					}),
+					validator: _validateDomainName,
+					invalidMessage: _invalidDomainNameMessage
+				}, {
 					type: TextBox,
 					name: '_fqdn',
 					label: _('Fully qualified domain name'),
@@ -865,6 +896,11 @@ define([
 				this.getWidget('network', 'gateway').set('value', this.values.gateway);
 				this.getWidget('network', 'nameserver1').set('value', this.values.nameserver1);
 			}
+			if (this._isDocker()) {
+				this.getWidget('fqdn-nonmaster-all', 'hostname').set('value', this.values.hostname);
+				this.getWidget('fqdn-master', '_hostname').set('value', this.values.hostname);
+				this.getWidget('fqdn-master', '_domainname').set('value', this.values.domainname);
+			}
 		},
 
 		_adjustWizardHeight: function() {
@@ -913,6 +949,12 @@ define([
 				} else if (field == 'proxy') {
 					disable.push(['network', 'proxy/http']);
 					disable.push(['network', 'configureProxySettings']);
+				} else if (field == 'hostname') {
+					this.getWidget('fqdn-nonmaster-all', 'hostname').set('disabled', true);
+					this.getWidget('fqdn-master', '_hostname').set('visible', true);
+					this.getWidget('fqdn-master', '_domainname').set('visible', true);
+					this.getWidget('fqdn-master', '_domainname').set('disabled', false);
+					disable.push(['fqdn-master', '_fqdn']);
 				} else if (field == 'locale') {
 					disable.push(['welcome', '_language']);
 					disable.push(['welcome', '_search']);
@@ -1345,16 +1387,16 @@ define([
 			organization = _replaceUmlauts(organization);
 			organization = organization.toLowerCase();
 			organization = organization.replace(/[^0-9a-z\-]+/g, '-').replace(/-+$/, '').replace(/^-+/, '').replace(/-+/, '-');
-			var hostname = this._randomHostName();
-			var fqdn = lang.replace('{0}.{1}.intranet', [hostname, organization]);
-			if (this.ucr['system/setup/boot/force/fqdn']) {  // in some environments (like docker) the hostname cannot be changed
-				fqdn = this.ucr['system/setup/boot/force/fqdn'];
-				hostname = this.ucr['system/setup/boot/force/fqdn'];
-				this.getWidget('fqdn-master', '_fqdn').set('disabled', true);
+			if (this._isDocker()) {  // in some environments (like docker) the hostname cannot be changed
+				this.getWidget('fqdn-master', '_domainname').set('value', lang.replace('{0}.intranet', [organization]));
 				this.getWidget('fqdn-nonmaster-all', 'hostname').set('disabled', true);
+				this.getWidget('fqdn-nonmaster-all', 'hostname').set('label', _('Hostname (unchangeable. Was set while creating the container)'));
+			} else {
+				var hostname = this._randomHostName();
+				var fqdn = lang.replace('{0}.{1}.intranet', [hostname, organization]);
+				this.getWidget('fqdn-nonmaster-all', 'hostname').set('value', hostname);
+				this.getWidget('fqdn-master', '_fqdn').set('value', fqdn);
 			}
-			this.getWidget('fqdn-master', '_fqdn').set('value', fqdn);
-			this.getWidget('fqdn-nonmaster-all', 'hostname').set('value', hostname);
 		},
 
 		_computeLDAPBase: function(domain) {
@@ -1841,6 +1883,10 @@ define([
 			return this.getWidget('role', '_noDomain').get('value');
 		},
 
+		_isDocker: function() {
+			return !!this.ucr['docker/container/uuid'];
+		},
+
 		_isPageForRole: function(pageName) {
 			if (pageName == 'software') {
 				return !this._isRoleBaseSystem();
@@ -1905,6 +1951,10 @@ define([
 				}
 			}, this);
 			return fallbackDevices.length;
+		},
+
+		areFieldsVisible: function(fieldsName) {
+			return array.indexOf(this.disabledFields, fieldsName) == -1;
 		},
 
 		_getLinkLocalDHCPAddresses: function() {
@@ -2172,6 +2222,10 @@ define([
 				this._processDHCPQueries(this._initialDHCPQueriesDeferred);
 			}
 
+			// dummy Deferred
+			var deferred = new Deferred();
+			deferred.resolve(nextPage);
+
 			// check dhcp config
 			if (pageName == 'network') {
 				var _linkLocalAddressesWarning = lang.hitch(this, function(fallbackDevices) {
@@ -2232,10 +2286,6 @@ define([
 					}));
 				});
 
-				// dummy Deferred
-				var deferred = new Deferred();
-				deferred.resolve(nextPage);
-
 				// check fallback devices
 				var fallbackDevices = this._getLinkLocalDHCPAddresses();
 				if (fallbackDevices.length) {
@@ -2248,16 +2298,23 @@ define([
 					deferred = deferred.then(_noGatewayWarning);
 				}
 
+				deferred = deferred.then(_applyNetworkSettings);
 				// apply network settings
-				return deferred.then(_applyNetworkSettings);
+				if (this.isPageVisible('role')) {
+					return deferred;
+				}
 			}
 
-			if (pageName == 'role') {
+			if (pageName == 'role' || (pageName == 'network' && !this.isPageVisible('role'))) {
 				if (this._isRoleMaster() || this._isRoleBaseSystem()) {
 					// no further checks regarding the domain need to done
 					return this._forcePageTemporarily(nextPage);
 				}
 
+				var nextPageIfNoAdMember = 'role-nonmaster-ad';
+				if (!this.isPageVisible('role')) {
+					nextPageIfNoAdMember = 'credentials-nonmaster';
+				}
 				var _noUcsDomainWarning = lang.hitch(this, function() {
 					this.getWidget('credentials-nonmaster', '_ucs_autosearch_master').set('value', false);
 					return dialog.confirm(_('No domain controller was found at the address of the name server. It is recommended to verify that the network settings are correct.'), [{
@@ -2266,7 +2323,7 @@ define([
 					}, {
 						label: _('Continue with incomplete settings'),
 						'default': true,
-						name: 'role-nonmaster-ad'
+						name: nextPageIfNoAdMember
 					}], _('Warning')).then(lang.hitch(this, function(response) {
 						return this._forcePageTemporarily(response);
 					}));
@@ -2282,36 +2339,38 @@ define([
 					return pageName;
 				});
 
-				return this._checkDomain().then(lang.hitch(this, function(info) {
-					if (this._isAdMember()) {
-						this._domainHasMaster = info.ucs_master;
-						if (!info.dc_name) {
+				return deferred.then(lang.hitch(this, function() {
+					return this._checkDomain().then(lang.hitch(this, function(info) {
+						if (this._isAdMember()) {
+							this._domainHasMaster = info.ucs_master;
+							if (!info.dc_name) {
+								return _noAdDcFoundWarning();
+							}
+							this.getWidget('credentials-ad', 'ad/address').set('value', info.dc_name);
+							if (info.ucs_master) {
+								// UCS DC master already has joined into the AD domain
+								// let the user choose a system role
+								if (this._areRolesDisabled('domaincontroller_backup', 'domaincontroller_slave', 'memberserver')) {
+									return _adJoinWithNonMasterNotPossibleWarning();
+								}
+								return this._forcePageTemporarily('role-nonmaster-ad');
+							}
+							return this._forcePageTemporarily('credentials-ad');
+						}
+						else {
+							if (info.ucs_master) {
+								this.getWidget('credentials-nonmaster', '_ucs_autosearch_master').set('value', true);
+								this.getWidget('credentials-nonmaster', '_ucs_address').set('value', info.dc_name || '');
+								return this._forcePageTemporarily(nextPageIfNoAdMember);
+							}
+							return _noUcsDomainWarning();
+						}
+					}), lang.hitch(this, function() {
+						if (this._isAdMember()) {
 							return _noAdDcFoundWarning();
 						}
-						this.getWidget('credentials-ad', 'ad/address').set('value', info.dc_name);
-						if (info.ucs_master) {
-							// UCS DC master already has joined into the AD domain
-							// let the user choose a system role
-							if (this._areRolesDisabled('domaincontroller_backup', 'domaincontroller_slave', 'memberserver')) {
-								return _adJoinWithNonMasterNotPossibleWarning();
-							}
-							return this._forcePageTemporarily('role-nonmaster-ad');
-						}
-						return this._forcePageTemporarily('credentials-ad');
-					}
-					else {
-						if (info.ucs_master) {
-							this.getWidget('credentials-nonmaster', '_ucs_autosearch_master').set('value', true);
-							this.getWidget('credentials-nonmaster', '_ucs_address').set('value', info.dc_name || '');
-							return this._forcePageTemporarily('role-nonmaster-ad');
-						}
 						return _noUcsDomainWarning();
-					}
-				}), lang.hitch(this, function() {
-					if (this._isAdMember()) {
-						return _noAdDcFoundWarning();
-					}
-					return _noUcsDomainWarning();
+					}));
 				}));
 			}
 
@@ -2478,6 +2537,11 @@ define([
 					});
 				}
 			}, this);
+
+			// put docker widgets together
+			if (_vals._hostname && _vals._domainname) {
+				_vals._fqdn = _vals._hostname + '.' + _vals._domainname;
+			}
 			return _vals;
 		},
 
@@ -2504,7 +2568,7 @@ define([
 			// network configuration
 			var _vals = this._gatherVisibleValues();
 			var vals = {};
-			if (this.isPageVisible('network')) {
+			if (this.areFieldsVisible('network')) {
 				// prepare values for network interfaces
 				vals.interfaces = {};
 				array.forEach(this._getNetworkDevices(), function(idev, i) {
