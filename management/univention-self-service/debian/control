@@ -1,0 +1,38 @@
+Source: univention-self-service
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 7.0.50~),
+ ucslint-univention,
+ python2.6-dev,
+ python2.7-dev,
+ python-support,
+ python-polib,
+ univention-config-dev,
+ univention-management-console-dev
+Standards-Version: 3.7.2
+XS-Python-Version: 2.7
+
+
+Package: univention-self-service
+Architecture: all
+Depends: ${misc:Depends},
+ python-cherrypy3,
+ libapache2-mod-wsgi,
+Description: 
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+
+Package: univention-management-console-module-passwordreset
+Architecture: all
+Depends: ${misc:Depends},
+Description: 
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

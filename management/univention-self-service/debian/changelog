@@ -1,0 +1,5 @@
+univention-self-service (0.0.0-1) unstable; urgency=medium
+
+  * Bug #37890: Initial release
+
+ -- Florian Best <best@univention.de>  Thu, 17 Sep 2015 20:56:48 +0200
