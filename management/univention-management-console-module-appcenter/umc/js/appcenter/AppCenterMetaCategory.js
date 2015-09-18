@@ -65,7 +65,7 @@ define([
 
 		store: null,
 
-		allAppsDisplayed: null, 
+		allAppsDisplayed: false, // false: only one row of apps is shown
 
 		baseClass: 'appcenterMetaCategory',
 
@@ -80,13 +80,9 @@ define([
 				label: _('More'),
 				onClick: lang.hitch(this, function() {
 					if (this.button.label === _('More')) {
-						domClass.add(this.grid.domNode, 'open');
-						this.button.set('label', _('Less'));
-						this.set('allAppsDisplayed', true);
+						this.showAllApps();
 					} else {
-						domClass.remove(this.grid.domNode, 'open');
-						this.button.set('label', _('More'));
-						this.set('allAppsDisplayed', false);
+						this.showOneRowOfApps();
 					}
 				})
 			});
@@ -119,10 +115,20 @@ define([
 			this.own(this.grid);
 
 			this.own(on(win.global, 'resize', lang.hitch(this, function() {
-				// TODO: call this only once during the next x seconds
-				// instead for every px change
 				this._handleButtonVisibility();
 			})));
+		},
+
+		showAllApps: function() {
+			domClass.add(this.grid.domNode, 'open');
+			this.button.set('label', _('Less'));
+			this.set('allAppsDisplayed', true);
+		},
+
+		showOneRowOfApps: function() {
+			domClass.remove(this.grid.domNode, 'open');
+			this.button.set('label', _('More'));
+			this.set('allAppsDisplayed', false);
 		},
 
 		_setStoreAttr: function(applications) {

@@ -276,22 +276,13 @@ define([
 
 		toggleGridSize: function() {
 			var category = this._searchSidebar.get('category');
-			var selectedMeta = array.filter(this.metaCategories, function(metaObj) {
-				return metaObj.label === category;
+			array.forEach(this.metaCategories, function(metaObj) {
+				if (metaObj.label === category) {
+					metaObj.showAllApps();	
+				} else {
+					metaObj.showOneRowOfApps();
+				}
 			});
-			if (selectedMeta.length) {
-				array.forEach(this.metaCategories, function(metaObj) {
-					if (metaObj === selectedMeta[0] && !metaObj.allAppsDisplayed) {
-							metaObj.button.onClick();
-					}
-				});
-			} else { 
-				array.forEach(this.metaCategories, function(metaObj) {
-					if (metaObj.allAppsDisplayed) {
-						metaObj.button.onClick();
-					}
-				});
-			}
 		},
 
 		onShowApp: function(app) {
