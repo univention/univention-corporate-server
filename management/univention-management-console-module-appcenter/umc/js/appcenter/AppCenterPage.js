@@ -155,18 +155,6 @@ define([
 				query: function(app) {
 					return !app.is_installed_anywhere;
 				}
-			},
-			{
-				label: _('Free'),
-				query: function(app) {
-					return !app.shopurl;
-				}
-			},
-			{
-				label: _('Charged'),
-				query: function(app) {
-					return !!app.shopurl;
-				}
 			}];
 
 			array.forEach(assumedMetaCategories, lang.hitch(this, function(metaObj){

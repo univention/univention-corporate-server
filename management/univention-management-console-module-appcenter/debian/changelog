@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.4-26) unstable; urgency=low
+
+  * Bug #38894: [WIP] Removed meta categories free and charged
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 18 Sep 2015 08:10:12 +0200
+
 univention-management-console-module-appcenter (5.0.4-25) unstable; urgency=low
 
   * Bug #38894: [WIP] adjusted logic to toggle visibility of More/Less
