@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-90) unstable; urgency=low
+
+  * Bug #39234: Made extended attributes more visible
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 18 Sep 2015 12:39:12 +0200
+
 univention-management-console-module-udm (5.1.25-89) unstable; urgency=low
 
   * Bug #38834: Improved object creation notification

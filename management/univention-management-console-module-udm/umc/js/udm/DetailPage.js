@@ -1195,7 +1195,8 @@ define([
 				closeLabel = _('Cancel');
 			}
 
-			return [{
+			var buttonDefinitions = [
+			{
 				name: 'submit',
 				iconClass: 'umcSaveIconWhite',
 				label: createLabel,
@@ -1216,6 +1217,25 @@ define([
 				iconClass: 'umcCloseIconWhite',
 				callback: lang.hitch(this, 'confirmClose')
 			}];
+
+			var extendableModules = [
+				'users/user',
+				'groups/group',
+				'computers/computer'
+			];
+			if (array.indexOf(extendableModules, this.moduleFlavor) >= 0) {
+				buttonDefinitions.unshift({
+					name: 'extendedAttr',
+					iconClass: 'umcExtendedAttrIconWhite',
+					label: _('Customize this page'),
+					callback: lang.hitch(this, function() {
+						var link = lang.replace('http://docs.software-univention.de/{0}-4.0.html#central:extendedattrs', [_('manual')]); 
+						window.open(link);
+					})
+				});
+			}
+
+			return buttonDefinitions;
 		},
 
 		getValues: function() {
