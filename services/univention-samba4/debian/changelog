@@ -1,3 +1,9 @@
+univention-samba4 (5.0.0-2) unstable; urgency=low
+
+  * added logging/error handling to sysvol-sync.sh (Bug #38868) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Sep 2015 14:46:43 +0200
+
 univention-samba4 (5.0.0-1) unstable; urgency=low
 
   * 2008_R2 as default for domain and forest function level (Bug #38800) 
