@@ -149,26 +149,7 @@ define([
 			topic.publish('/umc/actions', 'session', 'renew');
 			this.resetModules();
 			var sessionID = this.getCookies().sessionID;
-			return tools.umcpCommand('lib/sso/getsession', {
-				host: 'localhost'
-			}, false).then(lang.hitch(this, function(response) {
-				var loginToken = response.result.loginToken;
-				return xhr('/umcp/sso', {
-					query: {
-						loginToken: loginToken
-					}
-				}).then(lang.hitch(this, function() {
-					var newSessionID = this.getCookies().sessionID;
-					if (newSessionID == sessionID) {
-						console.log('UMC server session could not be renewed, therefore a re-login is enforced.');
-						this.closeSession();
-						return dialog.login();
-					}
-
-					console.log('UMC server session has been renewed successfully.');
-					return;
-				}));
-			})).then(null, lang.hitch(this, function(err) {
+			return tools.umcpCommand('get/newsession', {}, false).then(null, lang.hitch(this, function(err) {
 				// if lib/sso/getsession is not accessible, simply close the session
 				console.error('WARNING: Could not renew session, access to lib/sso/getsession not granted... forcing re-login again instead:', err);
 				this.closeSession();

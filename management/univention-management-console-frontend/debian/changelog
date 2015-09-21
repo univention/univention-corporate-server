@@ -1,5 +1,6 @@
 univention-management-console-frontend (5.0.23-1) unstable; urgency=medium
 
+  * Bug #39227: reimplement umc.tools.renewSession()
   * Bug #39178: [WIP] UMC modules now may ask for the password if logged in via SSO
   * response.status is now always an integer
   * removed unused status descriptions
