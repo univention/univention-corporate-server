@@ -27,3 +27,9 @@ Description[de]=Ist diese Option aktiviert, werden die ACLs der Sysvol-Replikati
 Description[en]=If this option is activated the ACLs are set during each Sysvol replication. If the variable is unset, this isn't done.
 Type=bool
 Categories=service-samba
+
+[samba4/sysvol/sync/debug]
+Description[de]=Ist diese Option aktiviert, werden Debug Meldungen im während der Sysvol-Replikation angezeigt.
+Description[en]=If this option is activated the Sysvol replication is started in debug mode.
+Type=bool
+Categories=service-samba
