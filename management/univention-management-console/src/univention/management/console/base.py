@@ -167,6 +167,13 @@ class UMC_CommandError(UMC_Error):
 	pass  # deprecated, please use .sanitizers instead!
 
 
+class UMC_PasswordRequired(UMC_Error):
+
+	def __init__(self):
+		message = _('For this action the password is required.')
+		super(UMC_PasswordRequired, self).__init__(message, 401, {'password_required': True})
+
+
 class UMC_OptionSanitizeError(UMC_OptionTypeError):
 
 	def __init__(self, message, body=None):
@@ -358,6 +365,10 @@ class Base(signals.Provider, Translation):
 			lo.lo.lo.sasl_interactive_bind_s('', saml)
 		else:
 			lo.lo.bind(self._user_dn, self._password)
+
+	def require_password(self):
+		if self.auth_type is not None:
+			raise UMC_PasswordRequired()
 
 	def required_options(self, request, *options):
 		"""Raises an UMC_OptionMissing exception if any of the given

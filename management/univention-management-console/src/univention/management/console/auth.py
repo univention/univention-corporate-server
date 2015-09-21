@@ -44,13 +44,13 @@ import notifier.threads as threads
 
 from univention.uldap import getMachineConnection
 from univention.management.console.log import AUTH
-from univention.management.console.pam import PamAuth, AuthenticationError, AuthenticationFailed, PasswordExpired, PasswordChangeFailed
+from univention.management.console.pam import PamAuth, AuthenticationError, AuthenticationFailed, PasswordExpired, AccountExpired, PasswordChangeFailed
 
 
 class AuthenticationResult(object):
 
 	def __init__(self, result):
-		from univention.management.console.protocol.definitions import SUCCESS, BAD_REQUEST_AUTH_FAILED, BAD_REQUEST_PASSWORD_EXPIRED
+		from univention.management.console.protocol.definitions import SUCCESS, BAD_REQUEST_UNAUTH
 		self.credentials = None
 		self.status = SUCCESS
 		self.authenticated = not isinstance(result, BaseException)
@@ -60,11 +60,13 @@ class AuthenticationResult(object):
 		self.result = None
 		self.password_expired = False
 		if isinstance(result, AuthenticationError):
-			self.status = BAD_REQUEST_AUTH_FAILED
+			self.status = BAD_REQUEST_UNAUTH
 			self.message = str(result)
+			self.result = {}
 			if isinstance(result, PasswordExpired):
-				self.status = BAD_REQUEST_PASSWORD_EXPIRED
-				self.password_expired = True
+				self.result['password_expired'] = True
+			elif isinstance(result, AccountExpired):
+				self.result['account_expired'] = True
 		elif isinstance(result, BaseException):
 			self.status = 500
 			self.message = str(result)

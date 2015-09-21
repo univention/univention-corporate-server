@@ -100,24 +100,19 @@ class Status(object):
 STATUS = (
 	# UMCP request success messages
 	Status('SUCCESS', 200, _('OK, operation successful')),
-	Status('SUCCESS_MESSAGE', 204, _('OK, containing report message')),
-	Status('SUCCESS_PARTIAL', 206, _('OK, partial response')),  # not yet used
+	Status('SUCCESS_MESSAGE', 204, _('OK, containing report message')),  # FIXME: HTTP violation
+	Status('SUCCESS_PARTIAL', 206, _('OK, partial response')),  # not yet used  # FIXME: HTTP violation
 	Status('SUCCESS_SHUTDOWN', 250, _('OK, operation successful ask for shutdown of connection')),
-
-	Status('CLIENT_ERR_NONFATAL', 301, _('A non-fatal error has occurred processing may continue')),
 
 	# the UMCP request was parsable but within the context it is not valid
 	Status('BAD_REQUEST', 400, _('Bad request')),
 	Status('BAD_REQUEST_UNAUTH', 401, _('Unauthorized')),
 	Status('BAD_REQUEST_FORBIDDEN', 403, _('Forbidden')),
 	Status('BAD_REQUEST_NOT_FOUND', 404, _('Not found')),
-	Status('BAD_REQUEST_INVALID_ARGS', 406, _('Invalid command arguments')),
-	Status('BAD_REQUEST_INVALID_OPTS', 407, _('Invalid or missing command options')),
-	Status('BAD_REQUEST_AUTH_FAILED', 411, _('The authentication has failed')),
-	Status('BAD_REQUEST_ACCOUNT_EXPIRED', 412, _('The account is expired and can not be used anymore')),
-	Status('BAD_REQUEST_ACCOUNT_DISABLED', 413, _('The account as been disabled')),
-	Status('BAD_REQUEST_UNAVAILABLE_LOCALE', 414, _('Specified locale is not available')),
-	Status('BAD_REQUEST_PASSWORD_EXPIRED', 415, _('The password has expired and must be renewed')),
+	Status('BAD_REQUEST_INVALID_ARGS', 406, _('Invalid command arguments')),  # FIXME: HTTP violation
+	Status('BAD_REQUEST_INVALID_OPTS', 407, _('Invalid or missing command options')),  # FIXME: HTTP violation
+	Status('BAD_REQUEST_AUTH_FAILED', 401, _('The authentication has failed')),
+	Status('BAD_REQUEST_UNAVAILABLE_LOCALE', 414, _('Specified locale is not available')),  # FIXME: HTTP violation
 
 	# UMCP server core errors
 	Status('SERVER_ERR', 500, _('Internal error')),

@@ -649,4 +649,12 @@ class reloading_ucr(object):
 		return wrapper
 
 
+def password_required(function):
+	@functools.wraps(function)
+	def _decorated(self, request, *args, **kwargs):
+		self.require_password()
+		return function(self, request, *args, **kwargs)
+	return _decorated
+
+
 __all__ = ['simple_response', 'multi_response', 'sanitize', 'log', 'sanitize_list', 'sanitize_dict', 'file_upload', 'reloading_ucr']

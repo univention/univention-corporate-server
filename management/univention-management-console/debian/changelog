@@ -1,3 +1,9 @@
+univention-management-console (8.0.12-1) unstable; urgency=medium
+
+  * Bug #39178: add decorator for methods which require a password
+
+ -- Florian Best <best@univention.de>  Mon, 21 Sep 2015 18:36:11 +0200
+
 univention-management-console (8.0.11-1) unstable; urgency=medium
 
   * Bug #31943: adapt dependencies
