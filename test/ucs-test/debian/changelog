@@ -1,7 +1,15 @@
+ucs-test (6.0.4-19) unstable; urgency=low
+
+  * Bug #39178: adjust UMC password change test
+
+ -- Florian Best <best@univention.de>  Mon, 21 Sep 2015 19:23:53 +0200
+
 ucs-test (6.0.4-18) unstable; urgency=low
 
   * disable 40_mail/35_mail_to_nested_groups, as long as #38088 is not
     resolved (Bug #17807)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 17 Sep 2015 11:06:29 +0200
 
 ucs-test (6.0.4-17) unstable; urgency=low
 
