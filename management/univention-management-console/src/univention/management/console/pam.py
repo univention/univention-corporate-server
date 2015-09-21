@@ -42,6 +42,7 @@ from PAM import (
 	PAM_ERROR_MSG,
 	PAM_TEXT_INFO,
 	PAM_NEW_AUTHTOK_REQD,
+	PAM_AUTHTOK_ERR,
 	PAM_AUTHTOK_RECOVER_ERR,
 	PAM_USER_UNKNOWN,
 	PAM_ACCT_EXPIRED,
@@ -105,7 +106,6 @@ class PamAuth(object):
 		except (I18N_Error, AttributeError, TypeError):
 			i18n.set_language('C')
 		self._ = i18n.translate
-		self.__workaround_pw_expired = False
 		self.pam = self.init()
 
 	def authenticate(self, username, password):
@@ -119,33 +119,18 @@ class PamAuth(object):
 			# 'You are required to change your password immediately (password aged)'
 			PAM_ERROR_MSG: ['']
 		}
-		conversation = self._get_conversation(answers)
-
-		self.start(conversation, username)
+		self.start(username, (answers, None))
 
 		try:
 			self.pam.authenticate()
-			# the following line should be moved to the else block of this exception handling (but POSIX is currently broken), Bug #36319 comment #3
-			self._validate_account()
-		except PAMError as pam_err:
-			AUTH.error("PAM: authentication error: %s" % (pam_err,))
-
-			if self.__workaround_pw_expired:
-				self._validate_account()
-
-			raise AuthenticationFailed(self.error_message(pam_err))
-		else:
-			self.__workaround_pw_expired = False
-
-	def _validate_account(self):
-		try:
 			self.pam.acct_mgmt()
 		except PAMError as pam_err:
+			AUTH.error("PAM: authentication error: %s" % (pam_err,))
 			if pam_err[1] == PAM_NEW_AUTHTOK_REQD:  # error: ('Authentication token is no longer valid; new one required', 12)
 				raise PasswordExpired(self.error_message(pam_err))
 			if pam_err[1] == PAM_ACCT_EXPIRED:  # error: ('User account has expired', 13)
 				raise AccountExpired(self.error_message(pam_err))
-			raise
+			raise AuthenticationFailed(self.error_message(pam_err))
 
 	def change_password(self, username, old_password, new_password):
 		prompts = []
@@ -155,9 +140,7 @@ class PamAuth(object):
 			# 'Current Kerberos password: ', 'New password: ', 'Retype new password: '
 			PAM_PROMPT_ECHO_OFF: [old_password, new_password, new_password],
 		}
-		conversation = self._get_conversation(answers, prompts)
-
-		self.start(conversation, username)
+		self.start(username, (answers, prompts))
 
 		try:
 			self.pam.chauthtok()
@@ -171,43 +154,43 @@ class PamAuth(object):
 		pam.start('univention-management-console')
 		return pam
 
-	def start(self, conversation, username):
-		self.pam.set_item(PAM_CONV, conversation)
+	def start(self, username, data):
+		self.pam.set_item(PAM_CONV, self.conversation)
 		self.pam.set_item(PAM_USER, username)
+		self.pam.setUserData(data)
 
-	def _get_conversation(self, answers, prompts=None):
-		def conversation(auth, query_list, data):
-			try:
-				if any(b == PAM_TEXT_INFO or b == PAM_ERROR_MSG for a, b in query_list):
-					# the user must change its password (see PAM_TEXT_INFO/PAM_TEXT_INFO comment above)
-					self.__workaround_pw_expired = True
-				if prompts is not None:
-					prompts.extend([query for query, qt in query_list])
-				answer = [(answers.get(qt, ['']).pop(0), 0) for query, qt in query_list]
-			except:
-				#AUTH.error('## query_list=%r, auth=%r, data=%r, prompts=%r, answers=%r' % (query_list, auth, data, prompts, answers))
-				AUTH.error(traceback.format_exc())
-				raise
-			#AUTH.error('### query_list=%r, auth=%r, data=%r, answer=%r, prompts=%r' % (query_list, auth, data, answer, prompts))
-			return answer
-		return conversation
+	def conversation(self, auth, query_list, data):
+		answers, prompts = data
+		try:
+			if prompts is not None:
+				prompts.extend(query_list)
+			answer = [(answers.get(qt, ['']).pop(0), 0) for query, qt in query_list]
+		except:
+			#AUTH.error('## query_list=%r, auth=%r, data=%r, prompts=%r, answers=%r' % (query_list, auth, data, prompts, answers))
+			AUTH.error(traceback.format_exc())
+			raise
+		#AUTH.error('### query_list=%r, auth=%r, data=%r, answer=%r, prompts=%r' % (query_list, auth, data, answer, prompts))
+		return answer
 
 	def _parse_error_message_from(self, pam_err, prompts):
 		# okay, check prompts, maybe they have a hint why it failed?
 		# most often the last prompt contains a error message
 		# prompts are localised, i.e. if the operating system uses German, the prompts are German!
 		# try to be exhaustive. otherwise the errors will not be presented to the user.
-		if pam_err[1] == PAM_AUTHTOK_RECOVER_ERR:  # error: ('Authentifizierungsinformationen k?nnen nicht wiederhergestellt werden', 21)
+		if pam_err[1] in (PAM_AUTHTOK_RECOVER_ERR, PAM_AUTHTOK_ERR):
+			# error: ('Authentifizierungsinformationen k?nnen nicht wiederhergestellt werden', 21)
+			# error: ('Fehler beim \xc3\x84ndern des Authentifizierungstoken', 20)
 			return self.error_message(pam_err)
-		if not prompts:
-			prompts = [str(pam_err[0])]
-		for prompt in prompts[::-1]:
+		raw_message = '%s, %s' % (pam_err[1], pam_err[0],)
+		for prompt, errno in prompts[::-1]:
 			if prompt in self.known_errors:
 				return self._(self.known_errors[prompt])
-		return '%s. %s: %s' % (
+			if errno in (PAM_TEXT_INFO, PAM_ERROR_MSG):
+				raw_message = '%s, %s' % (raw_message, self._(prompt).strip(': '))
+		return '%s. %s: %s, %s, %s' % (
 			self._('The reason could not be determined'),
 			self._('In case it helps, the raw error message will be displayed'),
-			self._(prompts[-1]).strip(': ')
+			raw_message
 		)
 
 	def error_message(self, pam_err):
@@ -216,6 +199,7 @@ class PamAuth(object):
 			PAM_ACCT_EXPIRED: self._('The account is expired and can not be used anymore'),
 			PAM_USER_UNKNOWN: self._('The authentication has failed, please login again'),
 			PAM_AUTH_ERR: self._('The authentication has failed, please login again'),
+			PAM_AUTHTOK_ERR: self._('There is probably an error with the kerberos server. Please inform your Administrator.'),
 			PAM_AUTHTOK_RECOVER_ERR: self._('The entered password does not match the current one.'),
 		}
 		return errors.get(pam_err[1], self._(str(pam_err[0])))
