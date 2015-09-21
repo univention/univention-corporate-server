@@ -125,6 +125,9 @@ class InstallRemoveUpgrade(Register):
 			if args.send_info:
 				self._send_information(app, status)
 			self._register_installed_apps_in_ucr()
+			from univention.appcenter import get_action
+			upgrade_search = get_action('upgrade-search')
+			upgrade_search.call(app=[app])
 
 	def _handle_errors(self, app, args, errors, fatal):
 		can_continue = True

@@ -35,6 +35,8 @@
 from univention.appcenter.app import AppManager
 from univention.appcenter.actions.install import Install
 
+from univention.config_registry import ConfigRegistry
+
 
 class Upgrade(Install):
 	'''Upgrades an installed application from the Univention App Center.'''
@@ -88,5 +90,8 @@ class Upgrade(Install):
 			super(Upgrade, self)._send_information(app, status)
 
 	def iter_upgradable_apps(self):
-		# TODO: implement
-		return [].__iter__()
+		ucr = ConfigRegistry()
+		ucr.load()
+		for app in AppManager.get_all_locally_installed_apps():
+			if ucr.is_true(app.ucr_upgrade_key):
+				yield app

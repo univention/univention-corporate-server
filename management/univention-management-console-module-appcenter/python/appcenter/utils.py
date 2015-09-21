@@ -50,6 +50,7 @@ from univention.config_registry import ConfigRegistry
 # "global" translation for univention-appcenter
 _ = Translation('univention-appcenter').translate
 
+
 def app_is_running(app):
 	from univention.appcenter.app import AppManager
 	if isinstance(app, basestring):
@@ -69,8 +70,10 @@ def app_is_running(app):
 	else:
 		return None
 
+
 def docker_is_running():
 	return call_process(['invoke-rc.d', 'docker', 'status']).returncode == 0
+
 
 def app_ports():
 	ret = []
@@ -85,12 +88,15 @@ def app_ports():
 				pass
 	return sorted(ret)
 
+
 def underscore(value):
 	if value:
 		return re.sub('([a-z])([A-Z])', r'\1_\2', value).lower()
 
+
 def shell_safe(value):
 	return underscore(key_shell_escape(value))
+
 
 def mkdir(directory):
 	if os.path.exists(directory):
@@ -99,15 +105,18 @@ def mkdir(directory):
 	mkdir(parent)
 	os.mkdir(directory)
 
+
 def rmdir(directory):
 	if os.path.exists(directory):
 		shutil.rmtree(directory)
+
 
 def call_process(args, logger=None, env=None):
 	process = Popen(args, stdout=PIPE, stderr=PIPE, bufsize=1, close_fds=True, env=env)
 	if logger is not None:
 		logger.debug('Calling %s' % ' '.join(pipes.quote(arg) for arg in args))
 		remove_ansi_escape_sequence_regex = re.compile(r'\x1B\[[0-9;]*[a-zA-Z]')
+
 		def _handle_output(out, handler):
 			for line in iter(out.readline, b''):
 				if line.endswith('\n'):
@@ -130,8 +139,9 @@ def call_process(args, logger=None, env=None):
 		process.communicate()
 	return process
 
+
 _opener_installed = False
-def urlopen(request):
+def urlopen(request):  # flake8: noqa
 	global _opener_installed
 	if not _opener_installed:
 		ucr = ConfigRegistry()
@@ -144,15 +154,18 @@ def urlopen(request):
 		_opener_installed = True
 	return urllib2.urlopen(request, timeout=60)
 
+
 def get_md5(content):
 	m = md5()
 	m.update(str(content))
 	return m.hexdigest()
 
+
 def get_md5_from_file(filename):
 	if os.path.exists(filename):
 		with open(filename, 'r') as f:
 			return get_md5(f.read())
+
 
 def get_current_ram_available():
 	''' Returns RAM currently available in MB, excluding Swap '''
@@ -160,22 +173,22 @@ def get_current_ram_available():
 	# implement here. see http://code.google.com/p/psutil/source/diff?spec=svn550&r=550&format=side&path=/trunk/psutil/_pslinux.py
 	with open('/proc/meminfo', 'r') as f:
 		splitlines = map(lambda line: line.split(), f.readlines())
-		meminfo = dict([(line[0], int(line[1]) * 1024) for line in splitlines]) # bytes
-	avail_phymem = meminfo['MemFree:'] # at least MemFree is required
+		meminfo = dict([(line[0], int(line[1]) * 1024) for line in splitlines])  # bytes
+	avail_phymem = meminfo['MemFree:']  # at least MemFree is required
 
 	# see also http://code.google.com/p/psutil/issues/detail?id=313
-	phymem_buffers = meminfo.get('Buffers:', 0) # OpenVZ does not have Buffers, calculation still correct, see Bug #30659
-	cached_phymem = meminfo.get('Cached:', 0) # OpenVZ might not even have Cached? Dont know if calculation is still correct but it is better than raising KeyError
+	phymem_buffers = meminfo.get('Buffers:', 0)  # OpenVZ does not have Buffers, calculation still correct, see Bug #30659
+	cached_phymem = meminfo.get('Cached:', 0)  # OpenVZ might not even have Cached? Dont know if calculation is still correct but it is better than raising KeyError
 	return (avail_phymem + phymem_buffers + cached_phymem) / (1024 * 1024)
 
-def flatten(list_of_lists):
-        # return [item for sublist in list_of_lists for item in sublist]
-        # => does not work well for strings in list
-        ret = []
-        for sublist in list_of_lists:
-                if isinstance(sublist, (list, tuple)):
-                        ret.extend(flatten(sublist))
-                else:
-                        ret.append(sublist)
-        return ret
 
+def flatten(list_of_lists):
+	# return [item for sublist in list_of_lists for item in sublist]
+	# => does not work well for strings in list
+	ret = []
+	for sublist in list_of_lists:
+		if isinstance(sublist, (list, tuple)):
+			ret.extend(flatten(sublist))
+		else:
+			ret.append(sublist)
+	return ret

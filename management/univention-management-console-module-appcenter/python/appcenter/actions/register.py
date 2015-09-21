@@ -47,12 +47,14 @@ from univention.appcenter.actions import StoreAppAction
 from univention.appcenter.actions.credentials import CredentialsAction
 from univention.appcenter.utils import mkdir, get_md5, app_ports
 
+
 class NoMorePorts(Exception):
 	pass
 
+
 class Register(CredentialsAction):
 	'''Registers one or more applications. Done automatically via install, only useful if something went wrong / finer grained control is needed.'''
-	help='Registers an app'
+	help = 'Registers an app'
 
 	def setup_parser(self, parser):
 		super(Register, self).setup_parser(parser)
@@ -226,10 +228,17 @@ class Register(CredentialsAction):
 			ucr = ConfigRegistry()
 			ucr.load()
 		updates = {}
-		priority_updates = {} # merged with updates, but overwrites it
+		priority_updates = {}  # merged with updates, but overwrites it
 		self.log('Registering UCR for %s' % app.id)
 		lo, pos = self._get_ldap_connection(args, allow_machine_connection=True)
-		for _app in AppManager.get_all_apps_with_id(app.id):
+		apps = AppManager.get_all_apps_with_id(app.id)
+		#try:
+		#	idx = [_app.component_id for _app in apps].index(app.component_id)
+		#except ValueError:
+		#	apps.append(app)
+		#else:
+		#	apps[idx] = app
+		for _app in apps:
 			if force and _app == app:
 				self.log('Marking %s as installed' % _app)
 				ucr_update(ucr, {_app.ucr_status_key: 'installed', _app.ucr_version_key: _app.version})
@@ -247,6 +256,9 @@ class Register(CredentialsAction):
 						os.symlink(ORIGINAL_INIT_SCRIPT, init_script)
 					except OSError:
 						pass
+					for app_id, container_port, host_port in app_ports():
+						if app_id == _app.id:
+							updates[_app.ucr_ports_key % container_port] = None
 					for port in _app.ports_exclusive:
 						updates[_app.ucr_ports_key % port] = str(port)
 					for port in _app.ports_redirection:
@@ -292,14 +304,14 @@ class Register(CredentialsAction):
 				self.log('Setting overview variables')
 				registry_key = 'ucs/web/overview/entries/%s/%s/%%s' % (_app.ucs_overview_category, _app.id)
 				variables = {
-					'icon' : '/univention-management-console/js/dijit/themes/umc/icons/50x50/%s' % _app.icon,
-					'port_http' : str(_app.web_interface_port_http or ''),
-					'port_https' : str(_app.web_interface_port_https or ''),
-					'label' : _app.get_localised('name'),
-					'label/de' : _app.get_localised('name', 'de'),
-					'description' : _app.get_localised('description'),
-					'description/de' : _app.get_localised('description', 'de'),
-					'link' : _app.web_interface,
+					'icon': '/univention-management-console/js/dijit/themes/umc/icons/50x50/%s' % _app.icon,
+					'port_http': str(_app.web_interface_port_http or ''),
+					'port_https': str(_app.web_interface_port_https or ''),
+					'label': _app.get_localised('name'),
+					'label/de': _app.get_localised('name', 'de'),
+					'description': _app.get_localised('description'),
+					'description/de': _app.get_localised('description', 'de'),
+					'link': _app.web_interface,
 				}
 				for key, value in variables.iteritems():
 					if not is_installed:
@@ -311,4 +323,3 @@ class Register(CredentialsAction):
 			ucr_update(ucr, updates)
 			self._reload_apache()
 		return updates
-

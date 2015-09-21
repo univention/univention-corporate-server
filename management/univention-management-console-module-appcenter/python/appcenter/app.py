@@ -433,6 +433,10 @@ class App(object):
 		return 'appcenter/apps/%s/version' % self.id
 
 	@property
+	def ucr_upgrade_key(self):
+		return 'appcenter/apps/%s/update/available' % self.id
+
+	@property
 	def ucr_container_key(self):
 		return 'appcenter/apps/%s/container' % self.id
 

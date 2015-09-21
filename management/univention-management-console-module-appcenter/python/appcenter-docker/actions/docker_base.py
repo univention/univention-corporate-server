@@ -47,9 +47,15 @@ from univention.appcenter.actions.service import Start
 
 
 class DockerActionMixin(object):
+	@classmethod
+	def _get_docker(cls, app):
+		if not app.docker:
+			return
+		return Docker(app, cls.logger)
+
 	def _execute_container_script(self, _app, _interface, _args=None, _credentials=True, _output=False, **kwargs):
 		self.log('Executing interface %s for %s' % (_interface, _app.id))
-		docker = Docker(_app, self.logger)
+		docker = self._get_docker(_app)
 		_interface = getattr(_app, 'docker_script_%s' % _interface)
 		if not _interface:
 			self.log('No interface defined')
@@ -86,9 +92,9 @@ class DockerActionMixin(object):
 			docker.execute('rm', error_file)
 
 	def _start_docker_image(self, app, hostdn, password, args):
-		if not app.docker:
+		docker = self._get_docker(app)
+		if not docker:
 			return
-		docker = Docker(app, self.logger)
 
 		self.log('Downloading app image %s. This may take several minutes' % docker.image)
 		docker.pull()

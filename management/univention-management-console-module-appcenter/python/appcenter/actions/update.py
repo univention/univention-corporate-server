@@ -49,8 +49,9 @@ from urlparse import urlsplit
 import urllib2
 
 from univention.config_registry import ConfigRegistry
+from univention.config_registry.frontend import ucr_update
 
-from univention.appcenter.app import App, CACHE_DIR, LOCAL_ARCHIVE
+from univention.appcenter.app import App, AppManager, CACHE_DIR, LOCAL_ARCHIVE
 from univention.appcenter.actions import UniventionAppAction, JOINSCRIPT_DIR
 from univention.appcenter.utils import urlopen, get_md5_from_file
 
@@ -95,6 +96,11 @@ class Update(UniventionAppAction):
 		for thread in threads:
 			thread.join()
 		if something_changed_locally or something_changed_remotely:
+			ucr = ConfigRegistry()
+			AppManager.clear_cache()
+			for app in AppManager.get_all_locally_installed_apps():
+				if AppManager.find(app.id, latest=True) > app:
+					ucr_update(ucr, {app.ucr_upgrade_key: 'yes'})
 			self._update_local_files()
 
 	def _download_archive(self, files_to_download):
@@ -140,7 +146,7 @@ class Update(UniventionAppAction):
 
 			cached_filename = os.path.join(CACHE_DIR, filename)
 
-			self.debug('Downloading %s to %s' % (filename_url, cached_filename))
+			self.debug('Downloading %s' % filename_url)
 			try:
 				urlcontent = urlopen(filename_url)
 			except Exception as e:
@@ -156,6 +162,7 @@ class Update(UniventionAppAction):
 	def _process_new_file(self, filename):
 		self.log('Installing %s' % os.path.basename(filename))
 		component, ext = os.path.splitext(os.path.basename(filename))
+		ret = None
 		if hasattr(self, '_process_new_file_%s' % ext):
 			ini_file = os.path.join(CACHE_DIR, '%s.ini' % component)
 			try:
@@ -163,27 +170,39 @@ class Update(UniventionAppAction):
 			except IOError:
 				self.log('Could not find a previously existing app with component %s' % component)
 			else:
-				self.getattr('_process_new_file_%s' % ext)(filename, local_app)
-		if filename.endswith('.png'):
-			pass
-		if filename.endswith('.inst'):
-			pass
-		if filename.endswith('.uinst'):
-			pass
-		shutil.copy2(filename, CACHE_DIR)
+				ret = self.getattr('_process_new_file_%s' % ext)(filename, local_app)
+		if ret != 'reject':
+			shutil.copy2(filename, CACHE_DIR)
+		return ret
 
 	def _process_new_file_ini(self, filename, local_app):
-		pass
+		if local_app.is_installed():
+			new_app = App.from_ini(filename)
+			if new_app:
+				if new_app.component_id == local_app.component_id:
+					pass
+					#register = get_action('register')()
+					#register._register_app(new_app)
+			else:
+				return 'reject'
+		else:
+			new_app = App.from_ini(filename)
+			if new_app:
+				local_app = AppManager.find(new_app.id)
+				if local_app.is_installed() and local_app < new_app:
+					ucr = ConfigRegistry()
+					ucr_update(ucr, {local_app.ucr_upgrade_key: 'yes'})
+			else:
+				return 'reject'
 
 	def _process_new_file_inst(self, filename, local_app):
 		if local_app.is_installed():
 			shutil.copy2(filename, JOINSCRIPT_DIR)
 
 	def _process_new_file_uinst(self, filename, local_app):
-		pass
-		#uinst_filename = os.path.join(JOINSCRIPT_DIR, ...)
-		#if os.path.exists(uinst_filename):
-		#	shutil.copy2(filename, uinst_filename)
+		uinst_filename = self._get_joinscript_path(local_app, unjoin=True)
+		if os.path.exists(uinst_filename):
+			shutil.copy2(filename, uinst_filename)
 
 	def _update_local_files(self):
 		# overwritten when UMC is installed
