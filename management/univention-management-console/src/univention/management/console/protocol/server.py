@@ -53,7 +53,7 @@ _ = Translation('univention.management.console').translate
 from .message import Message, Response, IncompleteMessageError, ParseError, UnknownCommandError, InvalidArgumentsError, InvalidOptionsError, MIMETYPE_JSON
 from .session import State, Processor
 from .definitions import (
-	BAD_REQUEST_INVALID_ARGS,
+	BAD_REQUEST_INVALID_ARGS, SUCCESS,
 	BAD_REQUEST_INVALID_OPTS, BAD_REQUEST_NOT_FOUND,
 	BAD_REQUEST_UNAUTH, RECV_BUFFER_SIZE, SERVER_ERR, status_description,
 	SUCCESS_SHUTDOWN, UMCP_ERR_UNPARSABLE_BODY
@@ -95,8 +95,7 @@ class MagicBucket(object):
 		# remove all sockets
 		for sock, state in self.__states.items():
 			CORE.info('Shutting down connection %s' % sock)
-			if state.processor is not None:
-				state.processor.shutdown()
+			state.shutdown()
 			notifier.socket_remove(sock)
 		# delete states
 		for state in self.__states.values():
@@ -199,6 +198,12 @@ class MagicBucket(object):
 				state.authResponse.message = 'insufficient authentification information'
 				self._response(state.authResponse, state)
 				state.authResponse = None
+		elif msg.command == 'GET' and 'newsession' in msg.arguments:
+			CORE.info('Renewing session')
+			state.processor = None
+			res = Response(msg)
+			res.status = SUCCESS
+			self._response(res, state)
 		else:
 			# inform processor
 			if not state.processor:
@@ -267,8 +272,7 @@ class MagicBucket(object):
 		if socket not in self.__states:
 			return
 
-		if self.__states[socket].processor is not None:
-			self.__states[socket].processor.shutdown()
+		self.__states[socket].shutdown()
 
 		notifier.socket_remove(socket)
 		self.__states[socket].__del__()

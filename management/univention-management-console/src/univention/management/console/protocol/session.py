@@ -101,6 +101,10 @@ class State(signals.Provider):
 		self.resend_queue = []
 		self.running = False
 
+	def shutdown(self):
+		if self.processor is not None:
+			self.processor.shutdown()
+
 	def __del__(self):
 		CORE.info('The session is shutting down')
 		if self.processor:
