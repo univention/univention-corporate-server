@@ -14,7 +14,7 @@
 		In this chapter we will develop a docker based app step by step.
 	</para>
 	<para>
-		We use the software Radiacle for it. Radicale is a CardDAV and CalDAV server already packaged in Debian
+		We use the software Radicale for it. Radicale is a CardDAV and CalDAV server already packaged in Debian
 		and therefore available in UCS. So we do not really develop something from scratch but use an existing application
 		and put it into the Univention App Center.
 	</para>
@@ -87,13 +87,18 @@ DefaultPackages=radicale
 			</programlisting>
 			It shall be installed as a Docker app, so the following needs to be specified:
 			<programlisting language="ini">
-Docker=True
+DockerImage=docker.software-univention.de/ucs-appbox-amd64:4.1-0-minbase
 			</programlisting>
 			This means that the package is not installed on your system but rather in a docker container running on your system. To access the relevant bits of the container (i.e. the calendars and contacts, you need to forward the port (which happens to be 5232 for radicale):
 			<programlisting language="ini">
 PortsExclusive=5232
 # You could also use PortsRedirection=1234:5232
 			</programlisting>
+			<note><para>
+				Univention provides a set of images at <uri>docker.software-univention.de</uri>, at least one per minor version of UCS. If unsure,
+				is probably a good idea to have the image's UCS	version match the UCS version of the Docker host. But this is absolutely not mandatory. In
+				fact, it is one of the advantages of Docker apps that their OS may differ from the host's. For a list of the images, ask Univention.
+			</para></note>
 		</para>
 		<para>
 			Together, this makes:
@@ -105,11 +110,11 @@ PortsExclusive=5232
 	<section id="example:integration1">
 		<title>Integration, first iteration</title>
 		<para>
-			Radicale should already be installable. Alas, it will not work. This is due to way radicale is packaged in Debian.
+			Radicale should already be installable. Alas, it will not work. This is due to the way radicale is packaged in Debian.
 			To make it work as expected, we need to modify it. Here starts the integration work of the App.
 		</para>
 		<para>
-			First of all, radicale is not started by default. To change that, we need to modify <filename>/etc/default/radicale</filename> and set START=TRUE.
+			First of all, radicale is not started by default. To change that, we need to modify <filename>/etc/default/radicale</filename> and uncomment <literal>#ENABLE_RADICALE</literal>.
 			The Univention App Center supports variuos scripts that can be added to the App and will be executed at various points in time.
 			Maybe the most important one is the join script.
 		</para>
@@ -170,7 +175,7 @@ PortsExclusive=5232
 						The system will join into the domain. The docker app will be listed as a memberserver when showing all hosts of the domain.
 					</simpara></listitem>
 					<listitem><simpara>
-						The system will not run something like /usr/bin/radicale directly. Instead it runs <command>/sbin/init</command> (it is actually a slightly altered version of the original <command>/sbin/init</command> of UCS).
+						The system will not run something like <filename>/usr/bin/radicale</filename> directly. Instead it runs <command>/sbin/init</command> (it is actually a slightly altered version of the original <command>/sbin/init</command> of UCS).
 						The app will be run because it is somehow configured to be started on a certain runlevel (somehow means: This is the job of the corresponding debian package).
 					</simpara></listitem>
 					<listitem><simpara>
@@ -233,7 +238,7 @@ DockerScriptRestoreDataAfterSetup=/usr/share/univention-appcenter/app/radicale/r
 				Radicale's rights management can be configured in various ways. We want to
 				let the administrator decide whether the app's configuration is <envar>owner_write</envar> (users
 				need to have valid credentials; their own calenders/contacts can be modified,
-				other's can be read) or <envar>authenticated</envar> (same, but other's can also be modified).
+				others' can be read) or <envar>authenticated</envar> (same, but others' can also be modified).
 			</para>
 			<para>
 				This is achieved by adding <filename>~/radicale.ucr</filename>. This file
@@ -282,18 +287,18 @@ DockerScriptRestoreDataAfterSetup=/usr/share/univention-appcenter/app/radicale/r
 				operation is quick and dirty and is only done because we would have
 				to create a package for basically one file otherwise.
 				<programlisting language="bash"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="radicale.inst" parse="text"/></programlisting>
-				Note that ucs_addServiceToLocalhost was added. This is a best practice to
+				Note that <command>ucs_addServiceToLocalhost</command> was added. This is a best practice to
 				make the domain administrator aware where the application "Radicale" is installed.
 			</para>
 			<note><para>
-				The command ucs_addServiceToLocalhost should be reverted when the app is uninstalled.
+				The command <command>ucs_addServiceToLocalhost</command> should be reverted when the app is uninstalled.
 				But even more importantly, the join script needs to be run again as soon as the app
 				is uninstalled and then installed again (changing <filename>/etc/default/radicale</filename> and so on...).
 				As the joinscript saved the information bit that it was successfully executed at the
 				end of itself, we need to revert that, too.
 				To do so, we need an <emphasis>unjoin script</emphasis>. Technically it is similar to a join script
 				but run when uninstalling the app, not when installing it. The script would
-				simple do this (save to <filename>~/radicale.uinst</filename>:
+				simple do this (save to <filename>~/radicale.uinst</filename>):
 				<programlisting language="bash"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="radicale.uinst" parse="text"/></programlisting>
 			</para></note>
 			<para>
