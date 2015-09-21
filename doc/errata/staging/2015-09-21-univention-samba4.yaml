@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: univention-samba4
+fix: 4.0.3-7.607.201509211445
+version: [3]
+desc: |
+ This update addresses the following issue:
+ * Error handling and logging has been improved in the sysvol sync
+   script.
+bug: [38868]
