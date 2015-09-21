@@ -1,3 +1,11 @@
+univention-management-console-frontend (5.0.23-1) unstable; urgency=medium
+
+  * Bug #39178: [WIP] UMC modules now may ask for the password if logged in via SSO
+  * response.status is now always an integer
+  * removed unused status descriptions
+
+ -- Florian Best <best@univention.de>  Mon, 21 Sep 2015 18:58:28 +0200
+
 univention-management-console-frontend (5.0.22-4) unstable; urgency=medium
 
   * Bug #39319: Trigger description shortening after an arbitrary point in time

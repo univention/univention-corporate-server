@@ -49,6 +49,7 @@ from httplib import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_RE
 
 import notifier
 import cherrypy
+from cherrypy.lib.httputil import valid_status
 import Queue
 from ipaddr import IPAddress
 from cherrypy import HTTPError, HTTPRedirect
@@ -386,15 +387,21 @@ class QueueRequest(object):
 		self.ip = ip
 
 
+@log_exceptions
 def default_error_page(status, message, traceback, version, result=None):
 	""" The default error page for UMCP responses """
-	cherrypy.response.headers['Content-type'] = umcp.MIMETYPE_JSON
+	status, _, description = valid_status(status)
+	if status == 401 and message == description:
+		message = ''
 	response = {
 		'status': status,
 		'message': cherrypy._cperror._escape(str(message), True)  # html escaped
 	}
 	if result:
 		response['result'] = result
+	if traceback:
+		response['message'] = '%s\n\n%s' % (response['message'], traceback)
+	cherrypy.response.headers['Content-type'] = 'application/json'
 	return json.dumps(response)
 
 
@@ -463,7 +470,7 @@ class CPgeneric(object):
 		else:
 			# a sessionid is required to use this command
 			self._log('info', 'no sessionid found')
-			raise HTTPError(UNAUTHORIZED)
+			raise UMC_HTTPError(UNAUTHORIZED)
 
 		self._log('info', 'found sessionid')
 		self._log(99, 'sessionid="%s"' % (sessionid))
@@ -493,10 +500,10 @@ class CPgeneric(object):
 		try:
 			json_ = json.loads(body)
 			if not isinstance(json_, dict):
-				raise HTTPError(BAD_REQUEST, 'JSON document have to be dict')
+				raise UMC_HTTPError(BAD_REQUEST, 'JSON document have to be dict')
 		except ValueError:
 			self._log('error', 'cannot parse JSON body')
-			raise HTTPError(BAD_REQUEST, 'Invalid JSON document')
+			raise UMC_HTTPError(BAD_REQUEST, 'Invalid JSON document')
 		return json_
 
 	@cherrypy.expose
@@ -513,7 +520,7 @@ class CPgeneric(object):
 			if cherrypy.request.method in cherrypy.request.methods_with_bodies:
 				if not cherrypy.request.headers.get(u"Content-Length"):
 					self._log('warn', 'missing Content-Length header')
-					raise HTTPError(LENGTH_REQUIRED, 'Missing Content-Length header')
+					raise UMC_HTTPError(LENGTH_REQUIRED, 'Missing Content-Length header')
 				body = cherrypy.request.body.read()
 
 			args = self.load_json(body)
@@ -572,7 +579,7 @@ class CPGet(CPgeneric):
 	def get_request(self, path, args):
 		if not path:
 			self._log('error', 'get_request: path is empty')
-			raise HTTPError(NOT_FOUND)
+			raise UMC_HTTPError(NOT_FOUND)
 
 		return umcp.Request('GET', arguments=[path], options=args.get('options', {}))
 
@@ -622,7 +629,7 @@ class CPUpload(CPgeneric):
 		free_disk_space = s.f_bavail * s.f_frsize / 1024  # kilobyte
 		if free_disk_space < min_size:
 			self._log('error', 'there is not enough free space to upload files')
-			raise HTTPError(BAD_REQUEST, 'There is not enough free space on disk')
+			raise UMC_HTTPError(BAD_REQUEST, 'There is not enough free space on disk')
 
 		for iid, ifield in args.iteritems():
 			if isinstance(ifield, cherrypy._cpreqbody.Part):
@@ -654,7 +661,7 @@ class CPUpload(CPgeneric):
 		max_size = int(ucr.get('umc/server/upload/max', 64)) * 1024
 		if st.st_size > max_size:
 			self._log('warn', 'file of size %d could not be uploaded' % (st.st_size))
-			raise HTTPError(BAD_REQUEST, 'The size of the uploaded file is too large')
+			raise UMC_HTTPError(BAD_REQUEST, 'The size of the uploaded file is too large')
 
 		filename = store.filename
 		# some security
@@ -672,7 +679,7 @@ class CPUpload(CPgeneric):
 		sessionid = self.get_session_id()
 
 		if not cherrypy.request.headers.get('Content-Type', '').startswith('multipart/form-data'):
-			raise HTTPError(BAD_REQUEST, 'Content type and URL do not match')
+			raise UMC_HTTPError(BAD_REQUEST, 'Content type and URL do not match')
 
 		response = self.get_response(sessionid, path, kwargs)
 
@@ -691,7 +698,7 @@ class CPCommand(CPgeneric):
 	def get_request(self, path, args):
 		if not path:
 			self._log('error', 'get_request: path is empty')
-			raise HTTPError(NOT_FOUND)
+			raise UMC_HTTPError(NOT_FOUND)
 
 		req = umcp.Command([path], options=args.get('options', {}))
 		if 'flavor' in args:
@@ -722,8 +729,8 @@ class CPAuth(CPgeneric):
 
 		try:
 			response = self._auth_request(req)
-		except HTTPError as exc:
-			if exc.status in (401, 411):
+		except UMC_HTTPError as exc:
+			if exc.status == UNAUTHORIZED:
 				SAMLUser.delete_cookie()
 				raise HTTPRedirect('/umcp/saml/')  # FIXME: this might cause a endless redirection loop e.g. if slapd is down
 			raise
@@ -741,14 +748,14 @@ class CPAuth(CPgeneric):
 		content_length = cherrypy.request.headers.get("Content-Length")
 		if not content_length and content_length != 0:
 			CORE.process('CPRoot/auth: missing Content-Length header')
-			raise HTTPError(LENGTH_REQUIRED)
+			raise UMC_HTTPError(LENGTH_REQUIRED)
 
 		# get body and parse json
 		body = ''
 		if cherrypy.request.method in cherrypy.request.methods_with_bodies:
 			max_length = 2000 * 1024
 			if content_length <= max_length:  # prevent some DoS
-				raise HTTPError(REQUEST_ENTITY_TOO_LARGE, 'Request data is too large, allowed length is %d' % max_length)
+				raise UMC_HTTPError(REQUEST_ENTITY_TOO_LARGE, 'Request data is too large, allowed length is %d' % max_length)
 			body = cherrypy.request.body.read()
 
 		data = self.load_json(body)
@@ -789,7 +796,7 @@ class CPAuth(CPgeneric):
 			return response.body
 
 		CORE.process('CPRoot/auth: username: %s, status code: %s' % (req.body.get('username'), response.status))
-		raise HTTPError(response.status, response.message)
+		raise UMC_HTTPError(response.status, response.message)
 
 
 class CPRoot(object):
@@ -835,7 +842,7 @@ class SAML(object):
 			try:
 				self._reload_sp()
 			except Exception:
-				raise HTTPError(500, 'Single sign on is not available due to misconfiguration. See logfiles.')
+				raise UMC_HTTPError(500, 'Single sign on is not available due to misconfiguration. See logfiles.')
 		return self.__sp
 
 	def _reload_sp(self):
@@ -869,21 +876,21 @@ class SAML(object):
 		try:
 			response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries, self.outstanding_certs)
 		except UnknownPrincipal as exc:
-			raise HTTPError(500, "UnknownPrincipal: %s" % (exc,))
+			raise UMC_HTTPError(500, "UnknownPrincipal: %s" % (exc,))
 		except UnsupportedBinding as exc:
-			raise HTTPError(500, "UnsupportedBinding: %s" % (exc,))
+			raise UMC_HTTPError(500, "UnsupportedBinding: %s" % (exc,))
 		except VerificationError as exc:
-			raise HTTPError(500, "Verification error: %s" % (exc,))
+			raise UMC_HTTPError(500, "Verification error: %s" % (exc,))
 		except UnsolicitedResponse as exc:  # e.g. UMC-webserver restart between IDP→SP authentication
 			# TODO: redirect to SSO?
-			raise HTTPError(500, 'Unsolicited response: %s' % (exc,))
+			raise UMC_HTTPError(500, 'Unsolicited response: %s' % (exc,))
 		except StatusError as exc:
 			CORE.error('Status error: %s' % (exc,))
-			raise HTTPError(500, 'Status error: %s' % (exc,))
+			raise UMC_HTTPError(500, 'Status error: %s' % (exc,))
 		except MissingKey as exc:
-			raise HTTPError(500, 'Unknown issuer: %s' % (exc,))
+			raise UMC_HTTPError(500, 'Unknown issuer: %s' % (exc,))
 		if response is None:
-			raise HTTPError(400, "The SAML message is invalid for this service provider.")
+			raise UMC_HTTPError(400, "The SAML message is invalid for this service provider.")
 
 		CORE.info('Got IDP response: %r' % (response.ava,))
 		user = SAMLUser(response, message)
@@ -897,7 +904,7 @@ class SAML(object):
 	def slo(self, *args, **kwargs):  # single logout service
 		message, binding, relay_state = self._get_saml_arguments()
 		if message is None:
-			raise HTTPError(400, 'The HTTP request is missing required SAML parameter.')
+			raise UMC_HTTPError(400, 'The HTTP request is missing required SAML parameter.')
 		self.sp.parse_logout_request_response(message, binding)
 		return self._logout_success()
 
@@ -927,9 +934,9 @@ class SAML(object):
 				for key, value in http_args['headers']:
 					if key.lower() == 'location':
 						raise HTTPRedirect(value, status=302)
-				raise HTTPError(500, 'Cannot redirect due to missing Location header')
+				raise UMC_HTTPError(500, 'Cannot redirect due to missing Location header')
 			else:
-				raise HTTPError(500, 'unknown logout binding: %s', binding)
+				raise UMC_HTTPError(500, 'unknown logout binding: %s', binding)
 		return self._logout_success()
 
 	def _logout_success(self):
@@ -945,11 +952,11 @@ class SAML(object):
 			sid = kwargs['sid']
 			entity_id = kwargs['entityID']
 		except KeyError as key:
-			raise HTTPError(400, 'missing query string parameter: %s' % (key,))
+			raise UMC_HTTPError(400, 'missing query string parameter: %s' % (key,))
 		try:
 			came_from = self.outstanding_queries[sid]
 		except KeyError:
-			raise HTTPError(400, 'unknown sid!')
+			raise UMC_HTTPError(400, 'unknown sid!')
 
 		resp = self.redirect_to_auth(entity_id, came_from)
 
@@ -962,7 +969,7 @@ class SAML(object):
 	def _get_saml_arguments(self):
 		if cherrypy.request.method not in ('GET', 'POST'):
 			cherrypy.response.headers['Allow'] = 'GET, HEAD, POST'
-			raise HTTPError(405)
+			raise UMC_HTTPError(405)
 
 		if cherrypy.request.method == 'GET':
 			binding = BINDING_HTTP_REDIRECT
@@ -1001,7 +1008,7 @@ class SAML(object):
 			identity_provider = self._pick_idp(came_from)
 
 		if identity_provider is None:
-			raise HTTPError(500, 'Could not pick an identity provider. You can specify one via the query string parameter %r' % (self.idp_query_param,))
+			raise UMC_HTTPError(500, 'Could not pick an identity provider. You can specify one via the query string parameter %r' % (self.idp_query_param,))
 
 		return self.redirect_to_auth(identity_provider, came_from)
 
@@ -1062,10 +1069,10 @@ class SAML(object):
 
 	def enhanced_client_proxy_profile(self):
 		if cherrypy.request.headers['Paos'] != PAOS_HEADER_INFO:
-			raise HTTPError(500, 'unknown ECP version')
+			raise UMC_HTTPError(500, 'unknown ECP version')
 
 		if 'application/vnd.paos+xml' not in cherrypy.request.headers.values('Accept'):
-			raise HTTPError(406, 'application/vnd.paos+xml must be acceptable.')
+			raise UMC_HTTPError(406, 'application/vnd.paos+xml must be acceptable.')
 
 		# Where should I redirect the user to
 		# entityid -> the IdP to use
@@ -1076,7 +1083,7 @@ class SAML(object):
 		_entityid = self.sp.config.ecp_endpoint(get_ip_address())
 
 		if not _entityid:
-			raise HTTPError(500, "Could not determine identity provider.")
+			raise UMC_HTTPError(500, "Could not determine identity provider.")
 		return ecp.ecp_auth_request(self.sp, _entityid, relay_state)
 
 	def redirect_to_auth(self, entity_id, came_from, sigalg=""):
@@ -1123,7 +1130,7 @@ class SAML(object):
 			raise HTTPRedirect(None, status=302)  # FIXME: hmm, no location header?
 		elif binding == BINDING_HTTP_REDIRECT:
 			if 'Location' not in cherrypy.response.headers:
-				raise HTTPError(500, "Parameter error")
+				raise UMC_HTTPError(500, "Parameter error")
 			cherrypy.response.status = 303
 			if not body:
 				raise HTTPRedirect(cherrypy.response.headers['Location'], status=303)

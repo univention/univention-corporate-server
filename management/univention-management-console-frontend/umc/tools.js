@@ -374,14 +374,9 @@ define([
 						if (!this.noLogin) {
 							// handle login cases
 							if (401 == result.status) {
-								// command was rejected, user is not authorized... continue to poll after successful login
+								// command was rejected, user is not authorized / or login failed... continue to poll after successful login
 								dialog.login().then(lang.hitch(this, 'sendRequest'));
-								return;
-							}
-							if (411 == result.status) {
-								// login failed... continue to poll after successful login
-								dialog.login().then(lang.hitch(this, 'sendRequest'));
-								dialog._loginDialog.updateForm(false, tools._statusMessages[result.status]);
+								dialog._loginDialog.updateForm(false, result.message || tools._statusMessages[result.status]);
 								return;
 							}
 						}
@@ -589,18 +584,13 @@ define([
 		// Status( 'SUCCESS_PARTIAL'				   , 206, ( 'OK, partial response' ) ),
 		// Status( 'SUCCESS_SHUTDOWN'				  , 250, ( 'OK, operation successful ask for shutdown of connection' ) ),
 		//
-		// Status( 'CLIENT_ERR_NONFATAL'			   , 301, ( 'A non-fatal error has occured processing may continue' ) ),
-		//
 		// Status( 'BAD_REQUEST'					   , 400, ( 'Bad request' ) ),
 		// Status( 'BAD_REQUEST_UNAUTH'				, 401, ( 'Unauthorized' ) ),
 		// Status( 'BAD_REQUEST_FORBIDDEN'			 , 403, ( 'Forbidden' ) ),
 		// Status( 'BAD_REQUEST_NOT_FOUND'			 , 404, ( 'Not found' ) ),
-		// Status( 'BAD_REQUEST_NOT_ALLOWED'		   , 405, ( 'Command not allowed' ) ),
 		// Status( 'BAD_REQUEST_INVALID_ARGS'		  , 406, ( 'Invalid command arguments' ) ),
 		// Status( 'BAD_REQUEST_INVALID_OPTS'		  , 407, ( 'Invalid or missing command options' ) ),
-		// Status( 'BAD_REQUEST_AUTH_FAILED'		   , 411, ( 'The authentication has failed' ) ),
-		// Status( 'BAD_REQUEST_ACCOUNT_EXPIRED'	   , 412, ( 'The account is expired and can not be used anymore' ) ),
-		// Status( 'BAD_REQUEST_ACCOUNT_DISABLED'	  , 413, ( 'The account as been disabled' ) ),
+		// Status( 'BAD_REQUEST_AUTH_FAILED'		   , 401, ( 'The authentication has failed' ) ),
 		// Status( 'BAD_REQUEST_UNAVAILABLE_LOCALE'	, 414, ( 'Specified locale is not available' ) ),
 		//
 		// Status( 'SERVER_ERR'						, 500, ( 'Internal error' ) ),
@@ -618,19 +608,14 @@ define([
 
 		_statusMessages: {
 			400: _( 'Could not fulfill the request.' ),
-			401: _( 'Your session has expired, please login again.' ), // error occurrs only when user is not authenticated and a request is sent
+			401: _( 'Your session has expired, please login again.' ),
 			403: _( 'You are not authorized to perform this action.' ),
 
 			404: _( 'Webfrontend error: The specified request is unknown.' ),
 			406: _( 'Webfrontend error: The specified UMCP command arguments of the request are invalid.' ),
 			407: _( 'Webfrontend error: The specified arguments for the UMCP module method are invalid or missing.'),
 			409: _( 'Webfrontend error: The specified arguments for the UMCP module method are invalid or missing.'), // hack: umcp defined a validation error as 407, but this is not a good http error code
-
-			411: _( 'Authentication failed, please login again.' ),
-			412: _( 'The account is expired and can not be used anymore.' ),
-			413: _( 'The account as been disabled.' ),
 			414: _( 'Specified locale is not available.' ),
-			415: _( 'The password has expired and must be changed.' ),
 
 			500: _( 'Internal server error.' ),
 			503: _( 'Internal server error: The service is temporarily not available.' ),
@@ -721,17 +706,18 @@ define([
 			// handle the different status codes
 			var deferred = null;
 			if (statusMessage) {
-				if (411 == status || 415 == status) {
-					// authentification failed, show a notification
-					dialog.login();
-					dialog._loginDialog.updateForm(415 === status, message);
-				} else if(401 == status) {
-					// session has expired
-					topic.publish('/umc/actions', 'session', 'expired');
-					deferred = dialog.login();
-					if (tools.status('setupGui')) {
+				if (401 == status) {
+					// authentification failed or session has expired
+					var session_expired = !message;
+					if (session_expired) {
+						topic.publish('/umc/actions', 'session', 'expired');
+						deferred = dialog.login();
+					} else {
+						dialog.login();
+					}
+					if (tools.status('setupGui') || !session_expired) {
 						// do not show on intial start
-						dialog._loginDialog.updateForm(false, statusMessage);
+						dialog._loginDialog.updateForm(result && result.password_expired, message || statusMessage);
 					}
 				} else if (409 == status && handleErrors && handleErrors.onValidationError) {
 					// validation error
@@ -761,10 +747,11 @@ define([
 				}
 			} else if (status) {
 				// unknown status code .. should not happen
-				topic.publish('/umc/actions', 'error', 'unknown');
+				topic.publish('/umc/actions', 'error', status);
 				dialog.alert(_('An unknown error with status code %s occurred while connecting to the server, please try again later.', status));
 			} else {
 				// probably server timeout, could also be a different error
+				topic.publish('/umc/actions', 'error', 'unknown');
 				dialog.alert(_('An error occurred while connecting to the server, please try again later.'));
 			}
 			return deferred;
