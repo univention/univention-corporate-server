@@ -33,16 +33,13 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from univention.config_registry import ConfigRegistry
-from univention.config_registry.frontend import ucr_update
-
 from univention.appcenter.actions.upgrade_search import UpgradeSearch
 from univention.appcenter.actions.docker_base import DockerActionMixin
 
 
 class UpgradeSearch(UpgradeSearch, DockerActionMixin):
-	def _check_for_updates(self, app):
-		upgrade_available = super(UpgradeSearch, self)._check_for_updates(self, app)
+	def _check_for_upgrades(self, app):
+		upgrade_available = super(UpgradeSearch, self)._check_for_upgrades(self, app)
 		docker = self._get_docker(app)
 		if not docker:
 			return upgrade_available

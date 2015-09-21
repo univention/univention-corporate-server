@@ -43,6 +43,7 @@ from univention.appcenter.actions.docker_remove import Remove
 from univention.appcenter.actions.service import Start, Stop
 from univention.appcenter.actions.configure import Configure
 
+
 class Upgrade(Upgrade, Install, DockerActionMixin):
 	def __init__(self):
 		super(Upgrade, self).__init__()
@@ -70,7 +71,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			# packages and release first!
 			if app > self.old_app:
 				mode = 'app'
-			if app.get_docker_image_name() != self.old_app.get_docker_image_name():
+			if app.get_docker_image_name() not in self.old_app.get_docker_images():
 				mode = 'image'
 		return mode
 
@@ -143,4 +144,3 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 				pass
 		else:
 			Start.call(app=self.old_app)
-

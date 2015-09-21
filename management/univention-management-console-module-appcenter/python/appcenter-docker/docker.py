@@ -34,6 +34,7 @@
 
 import sys
 from subprocess import check_output, call
+import os
 import os.path
 import shlex
 from json import loads
@@ -53,6 +54,21 @@ def inspect(name):
 
 
 def pull(image):
+	try:
+		hub, image_name = image.split('/', 1)
+	except ValueError:
+		pass
+	else:
+		if hub == 'docker.software-univention.de':
+			cfg = {}
+			dockercfg_file = os.path.expanduser('~/.dockercfg')
+			if os.path.exists(dockercfg_file):
+				with open(dockercfg_file) as dockercfg:
+					cfg = loads(dockercfg.read())
+			if hub not in cfg:
+				retcode = call(['docker', 'login', '-e', 'invalid', '-u', 'ucs', '-p', 'readonly', 'docker.software-univention.de'])
+				if retcode != 0:
+					raise ValueError('Could not login to %s' % hub)
 	call(['docker', 'pull', image])
 
 

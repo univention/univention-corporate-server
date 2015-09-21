@@ -340,8 +340,8 @@ class App(object):
 	ad_member_issue_hide = AppBooleanAttribute()
 	ad_member_issue_password = AppBooleanAttribute()
 
-	docker = AppBooleanAttribute()
 	docker_image = AppAttribute()
+	docker_allowed_images = AppListAttribute()
 	docker_volumes = AppListAttribute()
 	docker_server_role = AppAttribute(default='memberserver', choices=['memberserver', 'domaincontroller_slave'])
 	docker_auto_update = AppAttribute(choices=[None, 'packages', 'release'])
@@ -362,19 +362,15 @@ class App(object):
 			self.supported_architectures = ['amd64']
 
 	def get_docker_image_name(self):
-		image = self.docker_image
-		if image is None:
-			#ucr = ConfigRegistry()
-			#ucr.load()
-			#version = '%s-%s' % (ucr.get('version/version'), ucr.get('version/patchlevel'))
-			#if self.docker_server_role == 'memberserver':
-			#	role = 'member'
-			#else:
-			#	role = 'slave'
-			#arch = 'amd64'
-			#image = 'univention/ucs-%(role)s-%(arch)s:%(version)s' % {'role': role, 'arch': arch, 'version': version}
-			image = 'univention/ucs-appbox-amd64:4.0-0-minbase'
+		image = self.get_docker_images()[0]
+		if self.is_installed():
+			ucr = ConfigRegistry()
+			ucr.load()
+			image = ucr.get(self.ucr_image_key) or image
 		return image
+
+	def get_docker_images(self):
+		return [self.docker_image] + self.docker_allowed_images
 
 	def has_local_web_interface(self):
 		if self.web_interface:
@@ -425,6 +421,10 @@ class App(object):
 		return 'apps-%s.png' % self.component_id
 
 	@property
+	def docker(self):
+		return self.docker_image is not None
+
+	@property
 	def ucr_status_key(self):
 		return 'appcenter/apps/%s/status' % self.id
 
@@ -443,6 +443,10 @@ class App(object):
 	@property
 	def ucr_hostdn_key(self):
 		return 'appcenter/apps/%s/hostdn' % self.id
+
+	@property
+	def ucr_image_key(self):
+		return 'appcenter/apps/%s/image' % self.id
 
 	@property
 	def ucr_ip_key(self):

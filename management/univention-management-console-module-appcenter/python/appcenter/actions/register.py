@@ -256,6 +256,7 @@ class Register(CredentialsAction):
 						os.symlink(ORIGINAL_INIT_SCRIPT, init_script)
 					except OSError:
 						pass
+					updates[_app.ucr_image_key] = _app.get_docker_image_name()
 					for app_id, container_port, host_port in app_ports():
 						if app_id == _app.id:
 							updates[_app.ucr_ports_key % container_port] = None
