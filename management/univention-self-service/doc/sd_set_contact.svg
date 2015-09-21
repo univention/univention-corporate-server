@@ -13,7 +13,7 @@
    content="%3Cmxfile%20userAgent%3D%22Mozilla%2F5.0%20(X11%3B%20Linux%20x86_64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F47.0.2508.0%20Safari%2F537.36%22%20type%3D%22device%22%3E%3Cdiagram%3E7Vrtb6M4E%2F9rIt1zUiMIzdvHpOnTPWlXqtSt9u5T5AQnoAXMgdNN76%2FfMXjA2JBXru3qyIeEjD3jwfP280DPuQv3DwmJvS%2FMpUFvYLn7nrPoDQb21LHgR1Bec8pwOs4J28R35aSS8OT%2FQyVR8m13vkvTykTOWMD9uEpcsyiia16hbVhQXSImWxRfEp7WJDCp33yXezl1MhiV9E%2FU33q4jD2a5iMpf0UZLt2QXcBvMhKMieGQoKzsrpx72LGEMRAjrsL9HQ3EruGG5Lf%2B%2F4bRQsmERlKRwwxSiRcS7KSOszVniaF56pFYXO7CIJ%2FgzF9own3Yn89kRYNHlvrcZxFMWTHOWahMmAX%2BVgxwFgPV42EAf2y4lGvDNIo%2BYeqfkaTyD5SFlCevMAUZpCtID7LRpX6UJkKSp1hnJGlEOsq2EFzuFVzI7arfOml4Zes2CYs4jVygPv%2FRG4wCWG3u%2Bi9wuRWXv5FMwPPdE3wnLKDp%2F3AWLKZMrOFF0gpsU6V0rB3rEVYtmJUQjJkf8SwIhvPecCEoNPEhFiiE%2BIIl3GNbFpHgsaS2Era31bjFeFTCFiNbDdsilq%2BJW1ljlLj99PXrI1CAMaEp5Yf2S89pRbKDsJ8lCfshaAFbf89IoNmfQLDwz1%2F4Z%2B9zMSAkiuuM3ne0jxxUtj5jztWjrlauOEm2oLuamgx7wF2xXbKWjFnubzTRjdW%2FHY0lmzQTSkloQLj%2FUlWgziZS%2BqPwslK0Znz8iwJyHSVPaVfYXiL0w2nSdRtXmdS6WOkkuTyNF%2BtIVSO22aBfqE5WbNpJfjdp8Dsjrn%2BXcGKJY2lMoopHjv7eCYAwD%2FyI3mCAzGCK3YclcBTlpeCbSxoSX2gjanuRJHLBF6adK7Uq7jJTLw3BkrlyJBQwIVql4uejKRuxJaBJTgBNioShK1tDOkv%2F6xIPiykMzV2SelQ4XZZeIgTOEzUl5UMyJRV%2FTkw1ahJpTjVqQjqcaqy%2BNRrdVoGcBM9XZpqxBg9tqS5KyHU0Uo0hR69XDlanlnMW1kHMt9OTklaraco2jwQlrjXiK6XJiw%2B%2BcGo8qhC4PlKujFQDVr9n2jiI0DrFOsU6xTrF3kKxX%2FCIqNdurMBHjoiO1cIR0XaMGvjt6aGupQPoYZkdGpewiMdcqO2nVsId1M6IhLSxB9TOKbQBw51giCuxlz2sP%2BMfgUyGHN0RdDkNGO4S6CMxqGL2CyLb6Q%2FifU1wj%2Bf5GSybtYI%2BdW8AGh2M78wdrlk0ZCtf8BZLjoWUD3T0sPqTCTjQWcePt3ddxOFnnxt03zUENQTBJc5r9rVWZP29Jdi%2BgPXhUUUqjKM1EQ5zZoxCkV3cNbs71l8WjjgYue8BR8zW4fOXu7rW4ceHIw1N8b4NN9nUGC%2FH9ApxTtlQ%2B1GYLI90yPNeSOvlxZEPZdGXsFP9LxQF2UZTEc0hHKIY%2FCNBB%2BkVVn9Y8Ysmr3g33KA%2FczgVq5oeMh0eFtSei6Av1oBexcifF7Mi3xzPJRDrJPBYyruS37H%2BF9HCsOER51ugBdRWCWg1eis1P%2BM5WvlNy9wPepNRb5ql2T2fcS5OBXGaLonrAv5I4a2sD9rUwEfQ%2BotDh3a%2B6Sn2ERGnNjh0ZzEEtdfhqHnfCx8MS8tVTneK5WKPRXBetKJduDr3DBhlrO%2BMHSrIYewgkmgPOzR41gDfobjcs4oafS6M0D3LEHQxjBDvyhQvKebTy3c8nfuf%3C%2Fdiagram%3E%3C%2Fmxfile%3E"
    id="svg2985"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="sd_password_reset_wish.svg">
+   sodipodi:docname="sd_set_contact.svg">
   <title
      id="title4255">sequence diagram password reset wish</title>
   <metadata
@@ -82,12 +82,12 @@
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:zoom="1.8243243"
-     inkscape:cx="281.07148"
-     inkscape:cy="1.5860569"
+     inkscape:cx="398.67312"
+     inkscape:cy="1.2423381"
      inkscape:window-x="0"
      inkscape:window-y="25"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg2985"
+     inkscape:current-layer="g4052"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -96,7 +96,7 @@
      id="defs2987" />
   <path
      style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:6, 1;stroke-dashoffset:0"
-     d="m 425.26859,40.468602 0,175.407398"
+     d="m 425.26859,40.468602 0,186.066378"
      id="path4090"
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="cc" />
@@ -109,22 +109,22 @@
      y="0.48341644" />
   <text
      xml:space="preserve"
-     style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
-     x="365.16492"
-     y="94.735268"
+     style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+     x="313.35382"
+     y="106.24638"
      id="text4100"
      sodipodi:linespacing="125%"><tspan
        sodipodi:role="line"
        id="tspan4102"
-       x="365.16492"
-       y="94.735268">LDAP (uid=username)</tspan><tspan
+       x="313.35382"
+       y="106.24638">LDAP bind(uid=username,</tspan><tspan
        sodipodi:role="line"
-       x="365.16492"
-       y="104.73527"
-       id="tspan4104">→ extAttr pss_addresses</tspan></text>
+       x="313.35382"
+       y="116.24638"
+       id="tspan4104">password=password)</tspan></text>
   <path
      style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:6, 1;stroke-dashoffset:0"
-     d="m 175.86119,40.468602 0,175.407398"
+     d="m 175.86119,40.468602 0,41.298048"
      id="path4056"
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="cc" />
@@ -132,7 +132,7 @@
      sodipodi:nodetypes="cc"
      inkscape:connector-curvature="0"
      id="path4078"
-     d="m 306.32045,40.468602 0,175.407398"
+     d="m 306.32045,40.468602 0,186.066378"
      style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:6, 1;stroke-dashoffset:0" />
   <g
      id="g4273"
@@ -178,7 +178,7 @@
      style="fill:#ffffff;stroke:#000000"
      id="rect3003"
      pointer-events="none"
-     height="101.73333"
+     height="134.62222"
      width="10"
      y="75.701935"
      x="170.86119" />
@@ -205,7 +205,7 @@
      id="g4052"
      transform="translate(15.446379,-98.06474)">
     <path
-       d="M 154.84102,275.5 93.5,275.5 c -7.441866,0 -7.746338,0.0246 -16.223592,-5.93401 L 48.242229,244.35708"
+       d="m 154.84102,308.33985 -61.34102,0 c -7.441866,0 -7.746338,0.0246 -16.223592,-5.93401 L 48.242229,244.35708"
        stroke-miterlimit="10"
        pointer-events="none"
        id="path3025"
@@ -213,7 +213,7 @@
        style="fill:none;stroke:#000000;stroke-miterlimit:10;stroke-dasharray:3, 3"
        sodipodi:nodetypes="cscc" />
     <path
-       d="m 53.991128,244.33627 -7.056594,-1.61753 1.762041,7.59643"
+       d="m 53.729766,246.24461 -6.836107,-2.38318 0.916596,7.74405"
        stroke-miterlimit="10"
        pointer-events="none"
        id="path3027"
@@ -225,7 +225,7 @@
      style="fill:#ffffff;stroke:#000000"
      id="rect3037"
      pointer-events="none"
-     height="69.229607"
+     height="112.53332"
      width="10"
      y="90.783417"
      x="301.32047" />
@@ -249,7 +249,7 @@
   </g>
   <g
      id="g4032"
-     transform="translate(15.446379,-115.51659)">
+     transform="translate(15.446379,-72.212886)">
     <path
        d="m 285.5,275.5 -117.76,0"
        stroke-miterlimit="10"
@@ -314,93 +314,85 @@
   <text
      xml:space="preserve"
      style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
-     x="46.569008"
-     y="61.001183"
+     x="16.969007"
+     y="52.230812"
      id="text4028"
      sodipodi:linespacing="125%"><tspan
        sodipodi:role="line"
        id="tspan4030"
-       x="46.569008"
-       y="61.001183">HTTP POST /password</tspan><tspan
+       x="16.969007"
+       y="52.230812">HTTP POST /password/contact</tspan><tspan
        sodipodi:role="line"
-       x="46.569008"
-       y="71.001183"
-       id="tspan4301">{username: &lt;str&gt;}</tspan></text>
+       x="16.969007"
+       y="62.230812"
+       id="tspan4301">{username: &lt;str&gt;, password: &lt;str&gt;,</tspan><tspan
+       sodipodi:role="line"
+       x="16.969007"
+       y="72.230812"
+       id="tspan3055">email: &lt;str&gt;, mobile: &lt;str&gt;}</tspan></text>
   <text
      sodipodi:linespacing="125%"
      id="text4130"
      y="149.55006"
-     x="336.11307"
+     x="348.17233"
      style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
      xml:space="preserve"><tspan
-       id="tspan4134"
-       y="149.55006"
-       x="336.11307"
-       sodipodi:role="line">email address / </tspan><tspan
-       y="159.55006"
-       x="336.11307"
        sodipodi:role="line"
-       id="tspan4176">phone number /</tspan><tspan
-       y="169.55006"
-       x="336.11307"
-       sodipodi:role="line"
-       id="tspan4209">both / none</tspan></text>
+       id="tspan3092"
+       x="348.17233"
+       y="149.55006">OK / fail</tspan></text>
   <text
      xml:space="preserve"
-     style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:150%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
-     x="240.73157"
-     y="75.386528"
+     style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:150%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+     x="193.59082"
+     y="86.349495"
      id="text4100-5"
      sodipodi:linespacing="150%"><tspan
        sodipodi:role="line"
-       x="240.73157"
-       y="75.386528"
-       id="tspan4104-3">UMCP</tspan><tspan
+       id="tspan3061"
+       x="193.59082"
+       y="86.349495">UMCP pw_set_contact(</tspan><tspan
        sodipodi:role="line"
-       x="240.73157"
-       y="87.386528"
-       id="tspan4164">pw_get_reset_methods(</tspan><tspan
+       id="tspan3063"
+       x="193.59082"
+       y="98.349495">username, password,</tspan><tspan
        sodipodi:role="line"
-       x="240.73157"
-       y="99.386528"
-       id="tspan3419">                     username)</tspan></text>
+       id="tspan3065"
+       x="193.59082"
+       y="110.34949">email, mobile)</tspan></text>
   <text
      sodipodi:linespacing="125%"
      id="text4166"
-     y="171.8606"
+     y="215.16431"
      x="243.44476"
      style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
      xml:space="preserve"><tspan
-       y="171.8606"
+       y="215.16431"
        x="243.44476"
        sodipodi:role="line"
-       id="tspan4727">[&quot;sms&quot;, &quot;email&quot;]</tspan></text>
+       id="tspan4727">OK / fail(UNKNOWN)</tspan></text>
   <text
      sodipodi:linespacing="125%"
      id="text4199"
-     y="179.01599"
-     x="60.628265"
+     y="211.46887"
+     x="52.986465"
      style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
      xml:space="preserve"><tspan
-       y="179.01599"
-       x="60.628265"
+       y="211.46887"
+       x="52.986465"
        id="tspan4201"
        sodipodi:role="line">HTTP</tspan><tspan
-       y="189.01599"
-       x="60.628265"
+       y="221.46887"
+       x="52.986465"
        sodipodi:role="line"
-       id="tspan4203">* page: send email or</tspan><tspan
-       y="199.01599"
-       x="60.628265"
+       id="tspan4203">* page: set contact OK or</tspan><tspan
+       y="231.46887"
+       x="52.986465"
        sodipodi:role="line"
-       id="tspan4205">* page: send sms or</tspan><tspan
-       y="209.01599"
-       x="60.628265"
-       sodipodi:role="line"
-       id="tspan4207">* page: no method</tspan></text>
+       id="tspan4207">* page: fail(REASON)</tspan></text>
   <text
      xml:space="preserve"
-     style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+     style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
      x="3.3904109"
      y="15.776948"
      id="text4213"
@@ -408,10 +400,10 @@
        sodipodi:role="line"
        id="tspan4215"
        x="3.3904109"
-       y="15.776948">sd password reset wish</tspan></text>
+       y="15.776948">sd set contact</tspan></text>
   <path
      style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     d="m 0.54814815,21.732493 139.01358185,0 8.22222,-4.933333 0,-16.44444474"
+     d="m 0.54814815,21.732493 84.74691485,0 8.22222,-4.933333 0,-16.44444474"
      id="path4280"
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="cccc" />
@@ -505,4 +497,98 @@
          x="425.34442"
          sodipodi:role="line">(localhost)</tspan></text>
   </g>
+  <text
+     sodipodi:linespacing="125%"
+     id="text3094"
+     y="163.2538"
+     x="313.63898"
+     style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+     xml:space="preserve"><tspan
+       y="163.2538"
+       x="313.63898"
+       id="tspan3096"
+       sodipodi:role="line">LDAP (uid=username,</tspan><tspan
+       id="tspan3098"
+       y="173.2538"
+       x="313.63898"
+       sodipodi:role="line">email=email,</tspan><tspan
+       y="183.2538"
+       x="313.63898"
+       sodipodi:role="line"
+       id="tspan3114">mobile=mobile)</tspan></text>
+  <rect
+     x="419.85748"
+     y="165.33157"
+     width="10.822235"
+     height="30.859264"
+     pointer-events="none"
+     id="rect3100"
+     style="fill:#ffffff;stroke:#000000" />
+  <g
+     transform="translate(14.076009,105.20934)"
+     id="g3102">
+    <path
+       sodipodi:nodetypes="cc"
+       style="fill:none;stroke:#000000;stroke-miterlimit:10"
+       inkscape:connector-curvature="0"
+       id="path3104"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="m 297.41852,60.5 99.96148,0" />
+    <path
+       style="fill:#000000;stroke:#000000;stroke-miterlimit:10"
+       inkscape:connector-curvature="0"
+       id="path3106"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="m 404.38,60.5 -7,3.5 0,-7 z" />
+  </g>
+  <g
+     transform="translate(15.446379,-49.331402)"
+     id="g3108">
+    <path
+       sodipodi:nodetypes="cc"
+       style="fill:none;stroke:#000000;stroke-miterlimit:10;stroke-dasharray:3, 3"
+       inkscape:connector-curvature="0"
+       id="path3110"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 405.01852,245.5 297.74,245.5" />
+    <path
+       style="fill:none;stroke:#000000;stroke-miterlimit:10"
+       inkscape:connector-curvature="0"
+       id="path3112"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="m 305.62,241 -9,4.5 9,4.5" />
+  </g>
+  <g
+     transform="translate(15.446379,-127.84992)"
+     id="g3116">
+    <path
+       style="fill:none;stroke:#000000;stroke-miterlimit:10;stroke-dasharray:3, 3"
+       inkscape:connector-curvature="0"
+       id="path3118"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="m 285.5,275.5 -117.76,0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-miterlimit:10"
+       inkscape:connector-curvature="0"
+       id="path3120"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="m 175.62,271 -9,4.5 9,4.5" />
+  </g>
+  <text
+     xml:space="preserve"
+     style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+     x="243.44476"
+     y="159.52727"
+     id="text3122"
+     sodipodi:linespacing="125%"><tspan
+       id="tspan3124"
+       sodipodi:role="line"
+       x="243.44476"
+       y="159.52727">fail(AUTH_OR_NET)</tspan></text>
 </svg>
