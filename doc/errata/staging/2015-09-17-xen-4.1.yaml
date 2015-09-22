@@ -5,7 +5,7 @@ src: xen-4.1
 fix: 4.1.3-21.52.201509171449
 version: [7]
 desc: |
- The following security vulnerability have been fixed in xen-4.1:
+ The following security vulnerabilities have been fixed in xen-4.1:
  * x86/mm: Fix loop increment in paging_log_dirty_range() (CVE-2012-5511)
    fix was incomplete
  * tools: xenstored: if the reply is too big then send E2BIG error
