@@ -387,6 +387,9 @@
 				<listitem><simpara>
 					The <property>entityID</property> of the identity provider is now configurable via the &ucsUCRV; <envar>saml/idp/entityID</envar> (<u:bug>33912</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The SAML identity provider now uses a dedicated LDAP user to access the LDAP (<u:bug>38947</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 		<section id="changelog:service:mail">
