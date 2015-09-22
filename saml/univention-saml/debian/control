@@ -11,6 +11,7 @@ XS-Python-Version: 2.6,2.7
 Package: univention-saml
 Architecture: all
 Depends: ${misc:Depends},
+ python-univention-lib,
  univention-apache,
  php-xml-parser,
  php5-mcrypt,

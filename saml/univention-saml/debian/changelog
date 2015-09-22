@@ -1,3 +1,9 @@
+univention-saml (3.0.8-1) unstable; urgency=medium
+
+  * Bug #38947: Use dedicated ldap user for ldap access by SAML IdP
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 22 Sep 2015 13:00:43 +0200
+
 univention-saml (3.0.7-1) unstable; urgency=medium
 
   * Bug #38933: escape PHP strings/arrays/booleans

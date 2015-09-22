@@ -46,15 +46,23 @@ $config = array(
 
 
 @!@
+from univention.lib.misc import getLDAPURIs
+hostname = getLDAPURIs()
+
+print "	'hostname'		=> '%s'," % hostname
 print "	'enable_tls'		=> %s," % configRegistry.get('saml/idp/ldap/enable_tls', 'true')
-print "	'hostname'		=> '%s:%s'," % (configRegistry.get('ldap/server/name', 'localhost'), configRegistry.get('ldap/server/port', 389))
 print "	'debug' 		=> %s," % configRegistry.get('saml/idp/ldap/debug', 'FALSE')
 print "	'attributes'		=> array(%s)," % configRegistry.get('saml/idp/ldap/get_attributes', '\'uid\'')
 print "	'search.base'		=> '%s'," % configRegistry.get('ldap/base', 'null')
 print "	'search.attributes' 	=> array(%s)," % configRegistry.get('saml/idp/ldap/search_attributes', '\'uid\'')
-print "	'search.username'	=> '%s'," % configRegistry.get('ldap/hostdn')
+
+ldap_user = 'uid=sys-idp-user,cn=users,%s' % configRegistry.get('ldap/base', 'null')
+if configRegistry.get('saml/idp/ldap/user'):
+	ldap_user = configRegistry.get('saml/idp/ldap/user')
+
+print "	'search.username'	=> '%s'," % ldap_user
 try:
-	password = open('/etc/machine.secret','r').read().strip()
+	password = open('/etc/simplesamlphp/idp-ldap-user.secret','r').read().strip()
 	if password:
 		print "	'search.password'	=> '%s'," % password
 except:

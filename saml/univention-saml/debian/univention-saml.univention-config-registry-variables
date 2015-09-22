@@ -70,6 +70,12 @@ Description[en]=A list of ldap user attributes that are read from ldap after suc
 Type=str
 Categories=saml
 
+[saml/idp/ldap/user]
+Description[de]=Der LDAP DN des Benutzers, mit dem der SAML IdP LDAP Abfragen durchführt. Das Passwort muss in der Datei /etc/simplesamlphp/idp-ldap-user.secret stehen.
+Description[en]=The LDAP DN of the user, with which the SAML IdP will execute queries. The password has to be placed in the file /etc/simplesamlphp/idp-ldap-user.secret
+Type=str
+Categories=saml
+
 [saml/idp/certificate/privatekey]
 Description[de]=Der Pfad zum Zertifikatsschlüssel, mit dem die SAML Assertion signiert an den Service Provider gesendet wird.
 Description[en]=The path of the certificate key which is used to sign the SAML assertion that is send to the service provider.

@@ -41,6 +41,7 @@ Variables: ldap/base
 Variables: saml/idp/ldap/debug
 Variables: saml/idp/ldap/get_attributes
 Variables: saml/idp/ldap/search_attributes
+Variables: saml/idp/ldap/user
 Variables: ldap/hostdn
 Variables: ldap/server/name
 Variables: ldap/server/port

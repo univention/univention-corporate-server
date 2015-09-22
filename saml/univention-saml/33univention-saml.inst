@@ -117,5 +117,35 @@ udm saml/serviceprovider create "$@" \
 	--set privacypolicyURL="https://trust.salesforce.com/trust/privacy/" \
 	--set serviceProviderOrganizationName="Salesforce" || die
 
+SECRETFILE="/etc/simplesamlphp/idp-ldap-user.secret"
+
+if [ "$server_role" = "domaincontroller_master" ]; then
+	# Only set password if sys-idp-user does not exist
+	username=$(ucs_getAttrOfDN uid uid=sys-idp-user,cn=users,"$ldap_base" "$@" 2>/dev/null)
+	if [ ! "$username" = "sys-idp-user" ]; then
+		PASSWORD=$(makepasswd --chars=20)
+		touch "$SECRETFILE"
+		chown root:"DC Backup Hosts" "$SECRETFILE"
+		chmod 640 "$SECRETFILE"
+		printf '%s' "$PASSWORD" > "$SECRETFILE"
+		udm users/user create "$@" \
+			--position "cn=users,$ldap_base" \
+			--set username="sys-idp-user" --set lastname="idp-user" \
+			--set password="$PASSWORD" --set objectFlag="functional" \
+			--option ldap_pwd || die
+		ucr commit /etc/simplesamlphp/authsources.php
+	fi
+
+elif [ "$server_role" = "domaincontroller_backup" ]; then
+	HOSTPWD="/etc/machine.secret"
+	HOSTACCOUNT="$hostname\$"
+	touch "$SECRETFILE"
+	chown root:"DC Backup Hosts" "$SECRETFILE"
+	chmod 640 "$SECRETFILE"
+	univention-scp $HOSTPWD "-r $HOSTACCOUNT@$ldap_master:$SECRETFILE $SECRETFILE" || die
+	echo "Successfully downloaded the sys-idp-user credential file"
+	ucr commit /etc/simplesamlphp/authsources.php
+fi
+
 joinscript_save_current_version
 exit 0
