@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: univention-management-console-module-diagnostic
+fix: 1.0.14-6.21.201509221442
+version: [3]
+desc: |
+ This update addresses the following issue:
+ * A new diagnostic plugin has been added to check ssh connections
+   to other UCS servers.
+bug: [38137]
