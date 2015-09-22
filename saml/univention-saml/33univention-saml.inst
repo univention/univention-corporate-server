@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION="2"
+VERSION="3"
 
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
@@ -38,16 +38,22 @@ joinscript_init
 
 eval "$(ucr shell)"
 
-fqdn="${hostname}.${domainname}"
-ucr set saml/idp/certificate/privatekey?"/etc/simplesamlphp/${fqdn}-idp-certificate.key" \
-		saml/idp/certificate/certificate?"/etc/simplesamlphp/${fqdn}-idp-certificate.crt"
+ssofqdn="${ucs_server_sso_fqdn:-ucs-sso.$domainname}"
+ucr set saml/idp/certificate/privatekey?"/etc/simplesamlphp/${ssofqdn}-idp-certificate.key" \
+		saml/idp/certificate/certificate?"/etc/simplesamlphp/${ssofqdn}-idp-certificate.crt" \
+		ucs/server/sso/fqdn?"$ssofqdn"
 
 eval "$(ucr shell)"  # as variables were changed we need the new ones
 
+/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add a ucs-sso "$(get_default_ip_address)" || die
+
 # check if we need to create a new certificate
 if [ ! -e "${saml_idp_certificate_certificate}" ]; then
-	openssl req -newkey rsa:2048 -new -x509 -days "${ssl_default_days:-1825}" -subj "/C=US/ST=Unknown/L=Unknown/O=Unknown/CN=${fqdn}" -nodes -out "${saml_idp_certificate_certificate}" -keyout "${saml_idp_certificate_privatekey}" || die
-	chown root:www-data "${saml_idp_certificate_certificate}" "${saml_idp_certificate_privatekey}" || die
+	univention-certificate new -name "${ucs_server_sso_fqdn}" -days "${ssl_default_days:-1825}" || die
+
+	cp "/etc/univention/ssl/${ucs_server_sso_fqdn}/cert.pem" "${saml_idp_certificate_certificate}" || die  # FIXME: copied because www-data cannot +rx the directory contents
+	cp "/etc/univention/ssl/${ucs_server_sso_fqdn}/private.key" "${saml_idp_certificate_privatekey}" || die
+	chown root:www-data "${saml_idp_certificate_certificate}" "${saml_idp_certificate_privatekey}" || die  # FIXME: www-data can read private-key
 	chmod 640 "${saml_idp_certificate_certificate}" "${saml_idp_certificate_privatekey}" || die
 fi
 

@@ -19,6 +19,7 @@ Depends: ${misc:Depends},
  php5-ldap,
  openssl,
  simplesamlphp (>= 1.11.0-1),
+ univention-directory-manager-tools,
  univention-saml-schema (= ${source:Version})
 Description: Integrates simpleSAMLphp Identity Provider into UCS
  This packages provides the basic configuration for the

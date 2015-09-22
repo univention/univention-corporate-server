@@ -52,3 +52,5 @@ User: root
 Group: root
 Mode: 644
 Variables: saml/idp/https
+Variables: domainname
+Variables: ucs/server/sso/fqdn

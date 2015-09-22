@@ -1,3 +1,9 @@
+[ucs/server/sso/fqdn]
+Description[de]=Definiert den FQDN des Identity Provider dieser UCS Domäne.
+Description[en]=Defines the fqdn of the identity provider of this ucs domain.
+Type=str
+Categories=management
+
 [saml/idp/entityID]
 Description[de]=Diese Variable konfiguriert die entityID des SAML 2.0 identity provider.
 Description[en]=This variable configures the entityID of the SAML 2.0 identity provider.
