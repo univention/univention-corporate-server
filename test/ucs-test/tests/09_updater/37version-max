@@ -63,7 +63,7 @@ config_repo \
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
-	univention-upgrade net
+	univention-upgrade
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 	test 99.99 = "$(ucr get version/version)"
 	test 99 = "$(ucr get version/patchlevel)"
