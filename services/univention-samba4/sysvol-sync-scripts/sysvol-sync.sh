@@ -34,7 +34,7 @@
 
 log() {
 	local msg="${2//$'\r'/}"
-	builtin echo $(date +"%F %T") $1 $msg
+	builtin echo $(date +"%F %T") "$1" "${msg//$'\n'/}"
 }
 
 log_error() {
