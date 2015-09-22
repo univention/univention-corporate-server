@@ -54,3 +54,4 @@ Mode: 644
 Variables: saml/idp/https
 Variables: domainname
 Variables: ucs/server/sso/fqdn
+Variables: saml/idp/certificate/certificate
