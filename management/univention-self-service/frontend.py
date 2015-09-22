@@ -35,6 +35,9 @@ class UniventionSelfServiceFrontend(object):
 	"""
 	base class
 	"""
+	def __init__(self):
+		self.log("TEST")
+
 	def log(self, msg, traceback=False):
 		cherrypy.log("{}: {}".format(self.__class__.__name__, msg), traceback=traceback)
 

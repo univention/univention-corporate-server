@@ -35,14 +35,16 @@ sys.stdout = sys.stderr
 import atexit
 import cherrypy
 import json
-import imp
 import os
+import imp
+import inspect
 
 from univention.lib.umc_connection import UMCConnection
+from univention.selfservice.frontend import UniventionSelfServiceFrontend
 
 
-PluginFolder = "/usr/share/univention-self-service/plugins"
-MainModule = "__init__"
+PLUGIN_FOLDER = "/usr/share/univention-self-service/plugins"
+MAIN_MODULE = "__init__"
 
 
 class Root(object):
@@ -81,35 +83,44 @@ def load_selfservice_plugins():
 
 	def find_plugins():
 		plugins = list()
-		plugin_dirs = os.listdir(PluginFolder)
-		for dir in plugin_dirs:
-			location = os.path.join(PluginFolder, dir)
-			if not os.path.isdir(location) or not "%s.py" % MainModule in os.listdir(location):
-				cherrypy.log("No %s.py in plugin_dir %r, ignoring." % (MainModule, dir))
+		plugin_dirs = os.listdir(PLUGIN_FOLDER)
+		for dir_ in plugin_dirs:
+			location = os.path.join(PLUGIN_FOLDER, dir_)
+			if not os.path.isdir(location) or not "%s.py" % MAIN_MODULE in os.listdir(location):
+				cherrypy.log("wsgi.find_plugins(): No %s.py in plugin_dir %r, ignoring." % (MAIN_MODULE, dir_))
 				continue
-			info = imp.find_module(MainModule, [location])
-			plugins.append({"name": dir, "info": info})
+			info = imp.find_module(MAIN_MODULE, [location])
+			plugins.append({"name": dir_, "info": info})
 		return plugins
 
-	def load_plugin(plugin):
-		return imp.load_module(MainModule, *plugin["info"])
+	def load_plugin(module):
+		res = imp.load_module(MAIN_MODULE, *module["info"])
+		for thing in dir(res):
+			if thing.lower() == module["name"].lower():
+				possible_plugin_class = getattr(res, thing)
+				if inspect.isclass(possible_plugin_class) and issubclass(possible_plugin_class, UniventionSelfServiceFrontend):
+					return possible_plugin_class
+		cherrypy.log("wsgi.load_plugin(): Not a UniventionSelfServiceFrontend class: %r" % module["name"])
+		return None
 
-	for pluginf in find_plugins():
-		cherrypy.log("Loading plugin %r..." % pluginf["name"])
-		plugin = load_plugin(pluginf)
-		obj = plugin.get_obj()
-		cherrypy.log("obj.get_cherrypy_conf(): %r" % obj.get_cherrypy_conf())
-		selfservice_plugins.append(obj)
+	for module in find_plugins():
+		cherrypy.log("wsgi.load_selfservice_plugins(): Loading plugin %r..." % module["name"])
+		plugin_class = load_plugin(module)
+		if plugin_class:
+			plugin = plugin_class()
+			cherrypy.log("wsgi.load_selfservice_plugins(): obj.get_cherrypy_conf(): %r" % plugin.get_cherrypy_conf())
+			selfservice_plugins.append(plugin)
 
 	return selfservice_plugins
 
+
 cherrypy.config.update({'environment': 'embedded'})
 
-cherrypy.config.update(
-	{"log.access_file": "/var/log/univention/self-service-access.log",
+cherrypy.config.update({
+	"log.access_file": "/var/log/univention/self-service-access.log",
 	"log.error_file": "/var/log/univention/self-service-error.log"})
 
-cherrypy.log("Going to load plugins...")
+cherrypy.log("wsgi: Going to load plugins...")
 selfservice_plugins = load_selfservice_plugins()
 
 

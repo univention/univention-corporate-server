@@ -82,7 +82,7 @@ class Instance(Base):
 	@simple_response
 	def request_token(self, username, mailaddress):
 		if invalid:
-			raise UMC_Error(_('This user is not allowed to request a token.'))
+			raise UMC_Error(_('This user is not allowed to reset its password.'))
 		return 'token'
 
 	@prevent_denial_of_service
