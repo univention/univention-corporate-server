@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.5-1) unstable; urgency=medium
+
+  * Bug #39226: require a non-SSO session to install apps
+
+ -- Florian Best <best@univention.de>  Tue, 22 Sep 2015 12:06:14 +0200
+
 univention-management-console-module-appcenter (5.0.4-29) unstable; urgency=medium
 
   * Bug #39374: Add DockerAllowedImages; docker login for App Center hub

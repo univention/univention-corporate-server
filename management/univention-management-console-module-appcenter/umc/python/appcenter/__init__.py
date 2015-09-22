@@ -51,7 +51,7 @@ import apt # for independent apt.Cache
 from univention.lib.package_manager import PackageManager, LockError
 from univention.lib.umc_connection import UMCConnection
 from univention.management.console.log import MODULE
-from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response
+from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response, require_password
 from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, BooleanSanitizer
 from univention.updater import UniventionUpdater
 from univention.updater.errors import ConfigurationError
@@ -256,6 +256,7 @@ class Instance(umcm.Base):
 		service = get_action(mode)
 		service.call(app=application)
 
+	@require_password
 	def _invoke_docker(self, function, application, force, values):
 		can_continue = force # always show configuration after first request
 		serious_problems = False
@@ -306,6 +307,7 @@ class Instance(umcm.Base):
 		self.invoke(request)
 
 	@error_handler
+	@require_password
 	@sanitize(
 		function=ChoicesSanitizer(['install', 'uninstall', 'update', 'install-schema', 'update-schema'], required=True),
 		application=StringSanitizer(minimum=1, required=True),
@@ -345,7 +347,7 @@ class Instance(umcm.Base):
 		if host and host != self.ucr.get('hostname'):
 			try:
 				connection = UMCConnection(host, error_handler=MODULE.warn)
-				connection.auth(self._username, self._password)
+				connection.auth(self._username, self.password)
 				result = connection.request('appcenter/invoke', request.options)
 			except HTTPException:
 				result = {
@@ -422,7 +424,7 @@ class Instance(umcm.Base):
 					previously_registered_by_dry_run = False
 					if can_continue and function in ('install', 'update'):
 						remove_component = only_dry_run
-						dry_run_result, previously_registered_by_dry_run = application.install_dry_run(self.package_manager, self.component_manager, remove_component=remove_component, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, function=function, force=force)
+						dry_run_result, previously_registered_by_dry_run = application.install_dry_run(self.package_manager, self.component_manager, remove_component=remove_component, username=self._username, password=self.password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, function=function, force=force)
 						result.update(dry_run_result)
 						result['software_changes_computed'] = True
 						serious_problems = bool(result['broken'] or result['master_unreachable'] or result['serious_problems_with_hosts'])
@@ -451,9 +453,9 @@ class Instance(umcm.Base):
 								with module.package_manager.no_umc_restart(exclude_apache=True):
 									if function in ('install', 'update'):
 										# dont have to add component: already added during dry_run
-										return application.install(module.package_manager, module.component_manager, add_component=only_master_packages, send_as=send_as, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, previously_registered_by_dry_run=previously_registered_by_dry_run)
+										return application.install(module.package_manager, module.component_manager, add_component=only_master_packages, send_as=send_as, username=self._username, password=self.password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, previously_registered_by_dry_run=previously_registered_by_dry_run)
 									else:
-										return application.uninstall(module.package_manager, module.component_manager, self._username, self._password)
+										return application.uninstall(module.package_manager, module.component_manager, self._username, self.password)
 						def _finished(thread, result):
 							if isinstance(result, BaseException):
 								MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
