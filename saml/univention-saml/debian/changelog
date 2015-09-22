@@ -1,6 +1,7 @@
 univention-saml (3.0.9-1) unstable; urgency=medium
 
   * Bug #39386: create ucs-sso.$domainname virtual host
+  * Bug #32786: provide certificate via /simplesamlphp/saml2/idp/certificate
 
  -- Florian Best <best@univention.de>  Tue, 22 Sep 2015 18:40:58 +0200
 

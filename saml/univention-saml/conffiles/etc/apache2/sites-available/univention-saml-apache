@@ -1,5 +1,11 @@
 @%@UCRWARNING=# @%@
 
+@!@
+import os.path
+certificate = configRegistry.get('saml/idp/certificate/certificate', '')
+if os.path.isfile(certificate):
+	print "Alias /simplesamlphp/saml2/idp/certificate %s" % (certificate,)
+@!@
 Alias /simplesamlphp /usr/share/simplesamlphp/www
 
 @!@
