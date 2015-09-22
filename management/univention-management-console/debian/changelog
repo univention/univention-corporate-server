@@ -1,3 +1,9 @@
+univention-management-console (8.0.13-1) unstable; urgency=medium
+
+  * Bug #39226: rename decorator
+
+ -- Florian Best <best@univention.de>  Tue, 22 Sep 2015 12:35:57 +0200
+
 univention-management-console (8.0.12-1) unstable; urgency=medium
 
   * Bug #39178: add decorator for methods which require a password
