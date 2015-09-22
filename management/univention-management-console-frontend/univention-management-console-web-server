@@ -70,7 +70,7 @@ from saml2.httputil import make_cookie, parse_cookie
 from saml2.response import VerificationError, UnsolicitedResponse, StatusError
 from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, sid as generate_sid, rndstr
 from saml2.samlp import Extensions
-from saml2.sigver import MissingKey
+from saml2.sigver import MissingKey, SignatureError
 #from saml2 import xmldsig as ds  # FIXME: pysaml2 v3 required
 
 ucr = ConfigRegistry()
@@ -891,6 +891,8 @@ class SAML(object):
 			raise UMC_HTTPError(500, 'Status error: %s' % (exc,))
 		except MissingKey as exc:
 			raise UMC_HTTPError(500, 'Unknown issuer: %s' % (exc,))
+		except SignatureError as exc:
+			raise UMC_HTTPError(500, 'Signature error: %s' % (exc,))
 		if response is None:
 			raise UMC_HTTPError(400, "The SAML message is invalid for this service provider.")
 
