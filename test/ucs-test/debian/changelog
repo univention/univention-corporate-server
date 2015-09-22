@@ -1,3 +1,9 @@
+ucs-test (6.0.4-20) unstable; urgency=low
+
+  * Bug #30417 updater: Remove extra argument
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 22 Sep 2015 11:55:14 +0200
+
 ucs-test (6.0.4-19) unstable; urgency=low
 
   * Bug #39178: adjust UMC password change test
