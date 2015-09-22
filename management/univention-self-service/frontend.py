@@ -1,7 +1,6 @@
-#!/usr/bin/make -f
+# -*- coding: utf-8 -*-
 #
-# 
-#  rules file for the debian package
+# Univention Password Self Service frontend base class
 #
 # Copyright 2015 Univention GmbH
 #
@@ -30,18 +29,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_build:
-	dh-umc-module-build
-	dh_auto_build
+import cherrypy
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh-umc-module-install
-	dh_auto_install
+class UniventionSelfServiceFrontend(object):
+	"""
+	base class
+	"""
+	def log(self, msg, traceback=False):
+		cherrypy.log("{}: {}".format(self.__class__.__name__, msg), traceback=traceback)
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
-%:
-	dh $@ --with 'python_support'
+	def get_cherrypy_conf(self):
+		return {}

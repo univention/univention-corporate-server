@@ -1,7 +1,5 @@
-#!/usr/bin/make -f
-#
-# 
-#  rules file for the debian package
+#!/bin/sh
+# postinst script for univention-self-service
 #
 # Copyright 2015 Univention GmbH
 #
@@ -30,18 +28,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_build:
-	dh-umc-module-build
-	dh_auto_build
+#DEBHELPER#
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh-umc-module-install
-	dh_auto_install
+ACCESS_LOG=/var/log/univention/self-service-access.log
+ERROR_LOG=/var/log/univention/self-service-error.log
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
+touch $ACCESS_LOG $ERROR_LOG
+chown www-data:adm $ACCESS_LOG $ERROR_LOG
+chmod 640 $ACCESS_LOG $ERROR_LOG
 
-%:
-	dh $@ --with 'python_support'
+a2ensite univention-self-service > /dev/null
+a2enmod wsgi
+invoke-rc.d apache2 reload
+
+exit 0

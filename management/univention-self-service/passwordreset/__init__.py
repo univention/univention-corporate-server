@@ -1,7 +1,6 @@
-#!/usr/bin/make -f
+# -*- coding: utf-8 -*-
 #
-# 
-#  rules file for the debian package
+# Univention Password Self Service
 #
 # Copyright 2015 Univention GmbH
 #
@@ -30,18 +29,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_build:
-	dh-umc-module-build
-	dh_auto_build
+from univention.selfservice.frontend import UniventionSelfServiceFrontend
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh-umc-module-install
-	dh_auto_install
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
+class PasswordReset(UniventionSelfServiceFrontend):
+	def get_cherrypy_conf(self):
+		self.log("TEST")
+		return {"foo": "bar"}
 
-%:
-	dh $@ --with 'python_support'
+
+def get_obj():
+	return PasswordReset()

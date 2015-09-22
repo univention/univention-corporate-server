@@ -1,2 +1,2 @@
-wsgi.py /usr/share/univention-self-service/wsgi.py
-var
+wsgi.py usr/share/univention-self-service/
+frontend.py usr/share/pyshared/univention/selfservice/
