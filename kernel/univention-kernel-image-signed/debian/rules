@@ -30,5 +30,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+BLANK :=
+SPACE := $(BLANK) $(BLANK)
+KERNEL := $(wildcard vmlinuz-*.efi.signed)
+VERSION := $(patsubst vmlinuz-%-amd64.efi.signed,%,$(KERNEL))
+VER := $(subst $(SPACE),.,$(wordlist 1,2,$(subst .,$(SPACE),$(VERSION))))
+
 %:
 	dh $@
+
+override_dh_install:
+	dh_install --all $(KERNEL) /boot
+
+debian/control: FORCED
+	sed -e 's/\$$(VERSION)/$(VERSION)/;s/\$$(VER)/$(VER)/' debian/control.in >$@
+FORCED: ;
