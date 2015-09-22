@@ -46,6 +46,7 @@ def handler(config_registry, changes):
 			continue
 		if not download_idp_metadata(saml_idp):
 			metadata_download_failed.append(saml_idp)
+	reload_webserver()
 	if not rewrite_sasl_configuration():
 		raise SystemExit('Could not rewrite SASL configuration for UMC.')
 	if metadata_download_failed:
@@ -77,3 +78,10 @@ def rewrite_sasl_configuration():
 	# enable saml sasl module
 	rc += call(['/usr/sbin/ucr', 'commit', '/etc/ldap/sasl2/saml'])
 	return rc == 0
+
+
+def reload_webserver():
+	try:
+		call(['/etc/init.d/univention-management-console-web-server', 'reload'])
+	except (IOError, OSError):
+		pass

@@ -65,6 +65,11 @@ case "$1" in
 		$DAEMON restart
 		log_action_end_msg 0
 		;;
+	reload)
+		log_action_msg "Reloading $NAME"
+		$DAEMON reload
+		log_action_end_msg 0
+		;;
 	crestart)
 		# check UCR autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then

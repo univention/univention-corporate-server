@@ -44,6 +44,7 @@ import uuid
 import datetime
 import json
 import socket
+from errno import ESRCH
 from urlparse import urlparse
 from httplib import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
 
@@ -831,22 +832,23 @@ class SAML(object):
 		self.outstanding_certs = {}
 		self.relay_state = {}
 		self.user = {}
-		try:
-			self._reload_sp()
-		except Exception:
-			CORE.warn('Startup of SAML2.0 service provider failed:\n%s' % (traceback.format_exc(),))
+		self.reload()
 
 	@property
 	def sp(self):
-		if not self.__sp:
-			try:
-				self._reload_sp()
-			except Exception:
-				raise UMC_HTTPError(500, 'Single sign on is not available due to misconfiguration. See logfiles.')
+		if not self.__sp and not self.reload():
+			raise UMC_HTTPError(500, 'Single sign on is not available due to misconfiguration. See logfiles.')
 		return self.__sp
 
-	def _reload_sp(self):
-		self.__sp = Saml2Client(config_file=self.configfile)
+	def reload(self):
+		CORE.info('Reloading SAML service provider configuration')
+		sys.modules.pop(os.path.splitext(os.path.basename(self.configfile))[0], None)
+		try:
+			self.__sp = Saml2Client(config_file=self.configfile)
+			return True
+		except Exception:
+			CORE.warn('Startup of SAML2.0 service provider failed:\n%s' % (traceback.format_exc(),))
+		return False
 
 	@cherrypy.expose
 	@log_exceptions
@@ -1060,7 +1062,7 @@ class SAML(object):
 		idps = self.sp.metadata.with_descriptor("idpsso")
 		if not idps:  # dynamic reload of IDP's
 			try:
-				self._reload_sp()
+				self.reload()
 			except Exception:
 				pass
 			else:
@@ -1214,7 +1216,15 @@ def run_cherrypy():
 	root.saml = SAML()
 	root.get.ipaddress = IPAddresses()
 
+	reload_webserver.callbacks.append(root.saml.reload)
+
 	cherrypy.quickstart(root=root)
+
+
+def reload_webserver():
+	for func in reload_webserver.callbacks:
+		func()
+reload_webserver.callbacks = [log_reopen]
 
 
 class UMC_HTTP_Daemon(DaemonRunner):
@@ -1292,8 +1302,23 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		CORE.process('Starting UMC web server ...')
 		self._start()
 
+	def _reload(self):
+		"""Handler for the reload action"""
+		if self.pidfile.is_locked():
+			pid = self.pidfile.read_pid()
+			try:
+				os.kill(pid, signal.SIGUSR1)
+			except OSError as exc:
+				if exc.errno == ESRCH:
+					CORE.process('Reload failed: UMC-WebServer is not running')
+					return
+				raise
+		else:
+			CORE.process('Reload failed: webserver ist not running')
+
 	DaemonRunner.action_funcs['restart'] = _restart
 	DaemonRunner.action_funcs['crestart'] = _crestart
+	DaemonRunner.action_funcs['reload'] = _reload
 
 	def _terminate_daemon_process(self):
 		""" Terminate the daemon process specified in the current PID file.
@@ -1325,6 +1350,7 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		# cherrypy runs in a thread. signals can only be registered in the main thread
 		# to prevent race conditions this must be called before the cherrypy thread gets created
 		cherrypy.engine.signal_handler.handlers['SIGHUP'] = log_reopen
+		cherrypy.engine.signal_handler.handlers['SIGUSR1'] = reload_webserver
 		cherrypy.engine.signal_handler.subscribe()
 		cherrypy.engine.subscribe('exit', lambda: notifier.dispatcher_add(lambda: sys.exit(0)))
 

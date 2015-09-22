@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.24-1) unstable; urgency=medium
+
+  * Bug #31943: make a reload of SAML configuration possible
+
+ -- Florian Best <best@univention.de>  Tue, 22 Sep 2015 16:53:48 +0200
+
 univention-management-console-frontend (5.0.23-1) unstable; urgency=medium
 
   * Bug #39227: reimplement umc.tools.renewSession()
