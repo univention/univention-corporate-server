@@ -16,7 +16,8 @@ Depends: ${misc:Depends},
  univention-management-console-server,
  python-pycurl,
  python-psutil,
- python-dnspython
+ python-dnspython,
+ python-paramiko
 Description: System Diagnosis UMC module
  .
  It is part of Univention Corporate Server (UCS), an
