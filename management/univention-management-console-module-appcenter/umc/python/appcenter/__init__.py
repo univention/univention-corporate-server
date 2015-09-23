@@ -290,7 +290,7 @@ class Instance(umcm.Base):
 						if function == 'uninstall':
 							kwargs['keep_data'] = not values.get('dont_keep_data', False)
 						with NamedTemporaryFile('w+b') as password_file:
-							password_file.write(self._password)
+							password_file.write(self.password)
 							password_file.flush()
 							action.call(app=app, username=self._username, pwdfile=password_file.name, **kwargs)
 			def _finished(thread, result):

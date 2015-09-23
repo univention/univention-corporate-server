@@ -336,6 +336,7 @@ class Application(object):
 				self._options[ikey] = config.getboolean('Application', ikey)
 			else:
 				self._options[ikey] = False
+		self._options['docker'] = bool(self.get('dockerimage'))
 
 		# parse int values:
 		for ikey in ('minphysicalram', 'webinterfaceporthttp', 'webinterfaceporthttps'):

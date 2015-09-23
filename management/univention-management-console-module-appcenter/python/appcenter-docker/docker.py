@@ -59,16 +59,15 @@ def pull(image):
 	except ValueError:
 		pass
 	else:
-		if hub == 'docker.software-univention.de':
-			cfg = {}
-			dockercfg_file = os.path.expanduser('~/.dockercfg')
-			if os.path.exists(dockercfg_file):
-				with open(dockercfg_file) as dockercfg:
-					cfg = loads(dockercfg.read())
-			if hub not in cfg:
-				retcode = call(['docker', 'login', '-e', 'invalid', '-u', 'ucs', '-p', 'readonly', 'docker.software-univention.de'])
-				if retcode != 0:
-					raise ValueError('Could not login to %s' % hub)
+		cfg = {}
+		dockercfg_file = os.path.expanduser('~/.dockercfg')
+		if os.path.exists(dockercfg_file):
+			with open(dockercfg_file) as dockercfg:
+				cfg = loads(dockercfg.read())
+		if hub not in cfg:
+			retcode = call(['docker', 'login', '-e', 'invalid', '-u', 'ucs', '-p', 'readonly', hub])
+			if retcode != 0:
+				_logger.warn('Could not login to %s. You may not be able to pull the image from the repository!' % hub)
 	call(['docker', 'pull', image])
 
 
