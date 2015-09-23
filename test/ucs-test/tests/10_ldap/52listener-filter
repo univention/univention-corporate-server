@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python2.6
+#!/usr/share/ucs-test/runner python2.7
 ## desc: |
 ##  Test filter mechanism for Listener cache
 ## bugs: [38823]
@@ -167,7 +167,7 @@ def unexpected_transactions(env, ucr):
 			elif line == repr((dn, True, False, 'm')):
 				print 'I: Found modify: %s' % (line,)
 				found_modify = True
-			else:
+			elif eval(line)[0].endswith(dn):
 				found_other = True
 				print 'E: Found other: %s' % (line,)
 

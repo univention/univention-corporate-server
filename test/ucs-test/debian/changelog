@@ -1,3 +1,9 @@
+ucs-test (6.0.4-21) unstable; urgency=low
+
+  * Bug #38823: Fix 10/52listener-filter
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Sep 2015 15:49:56 +0200
+
 ucs-test (6.0.4-20) unstable; urgency=low
 
   * Bug #30417 updater: Remove extra argument
