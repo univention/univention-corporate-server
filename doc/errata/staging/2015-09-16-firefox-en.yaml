@@ -3,7 +3,7 @@ release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: firefox-en
 fix: 1:38.2.1esr-1.56.201509161401
-version: [2,3]
+version: [3]
 desc: |
   Multiple security vulnerabilities have been fixed in firefox-en:
   * Memory safety bugs fixed in Firefox ESR 31.7 and Firefox 38.
