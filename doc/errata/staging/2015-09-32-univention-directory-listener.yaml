@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: univention-directory-listener
-fix: 9.0.2-6.278.201509031256
+fix: 9.0.2-7.283.201509231400
 version: [3]
 desc: |
  This update addresses the following issues:
