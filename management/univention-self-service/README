@@ -1,0 +1,16 @@
+== Univention Self Service ==
+...
+
+=== Plugins ===
+To add a new self service, create UMC module (see [1] and umc directory here)
+as backend and a Python module for the frontend.
+
+Place the directory with the frontend Python module inside
+/usr/share/univention-self-service/plugins/. Its __init__.py must contain a
+class that is derived from univention.selfservice.frontend.UniventionSelfServiceFrontend.
+
+
+
+
+== Reference ==
+[1] http://wiki.univention.com/index.php?title=UCS_3.0_UMC_API_for_Modules

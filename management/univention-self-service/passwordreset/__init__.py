@@ -31,12 +31,60 @@
 
 from univention.selfservice.frontend import UniventionSelfServiceFrontend
 
+import cherrypy
+
 
 class PasswordReset(UniventionSelfServiceFrontend):
-	def get_cherrypy_conf(self):
-		self.log("TEST")
-		return {"foo": "bar"}
+	@property
+	def cherrypy_conf(self):
+		return {}
+
+	@property
+	def url(self):
+		return "passwordreset/"
+
+	@property
+	def name(self):
+		return "Univention Password Self Service"
+
+	@cherrypy.expose
+	def index(self):
+		return """<html>
+	<head></head>
+	<body>
+		<p><a href="edit_contact">Edit contact</a></p>
+	</body>
+</html>"""
+
+	@cherrypy.expose
+	def edit_contact(self):
+		return 'Edit contact'
 
 
-def get_obj():
-	return PasswordReset()
+# class PasswordReset(UniventionSelfServiceFrontend):
+# 	def get_cherrypy_conf(self):
+# 		return {'/passwordreset': {
+# 			'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
+# 			'tools.sessions.on': True,
+# 			'tools.response_headers.on': True,
+# 			'tools.response_headers.headers': [('Content-Type', 'text/plain')],
+# 		}}
+#
+# 	@cherrypy.tools.accept(media='text/plain')
+# 	@cherrypy.expose
+# 	def GET(self):
+# 		return cherrypy.session['mystring']
+#
+# 	@cherrypy.expose
+# 	def POST(self, length=8):
+# 		some_string = ''.join(random.sample(string.hexdigits, int(length)))
+# 		cherrypy.session['mystring'] = some_string
+# 		return some_string
+#
+# 	@cherrypy.expose
+# 	def PUT(self, another_string):
+# 		cherrypy.session['mystring'] = another_string
+#
+# 	@cherrypy.expose
+# 	def DELETE(self):
+# 		cherrypy.session.pop('mystring', None)
