@@ -157,6 +157,7 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The App Center is now able to install docker based apps. These apps are installed in a small container (minimal UCS) within the host system. (..., <u:bug>39374</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -555,6 +556,9 @@
 			<listitem><simpara>
 				Asterisk has been updated to 11.13.1. It provides many bugfixes and fixes
 				several vulnerabilities (<u:bug>37738</u:bug>, <u:bug>39285</u:bug>)
+			</simpara></listitem>
+			<listitem><simpara>
+				<package>univention-join</package> now correctly checks for the existence of <command>nscd</command>. This is needed in a minimal environment (<u:bug>38662</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
