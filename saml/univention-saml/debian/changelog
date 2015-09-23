@@ -1,3 +1,9 @@
+univention-saml (3.0.9-3) unstable; urgency=medium
+
+  * Bug #39250: convert saml20-idp-hosted.php to multifile
+
+ -- Florian Best <best@univention.de>  Wed, 23 Sep 2015 16:19:49 +0200
+
 univention-saml (3.0.9-2) unstable; urgency=medium
 
   * Bug #32786: fixup

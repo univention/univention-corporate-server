@@ -1,8 +1,12 @@
-Type: file
-File: etc/simplesamlphp/metadata/saml20-idp-hosted.php
+Type: multifile
+Multifile: etc/simplesamlphp/metadata/saml20-idp-hosted.php
 User: root
 Group: www-data
 Mode: 640
+
+Type: subfile
+Multifile: etc/simplesamlphp/metadata/saml20-idp-hosted.php
+Subfile: etc/simplesamlphp/metadata/00_saml20-idp-hosted.php
 Variables: saml/idp/entityID
 Variables: saml/idp/certificate/privatekey
 Variables: saml/idp/certificate/certificate
