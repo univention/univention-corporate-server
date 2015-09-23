@@ -3,7 +3,7 @@ release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: e2fsprogs
 fix: 1.42.5-1.1.42.201509111046
-version: [2,3]
+version: [3]
 desc: |
   Multiple security vulnerabilities have been fixed in e2fsprogs:
   * Heap-based buffer overflow in openfs.c in the libext2fs library
