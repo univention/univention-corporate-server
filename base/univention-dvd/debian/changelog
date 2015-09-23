@@ -1,3 +1,9 @@
+univention-dvd (1.0.0-5) unstable; urgency=medium
+
+  * Add cgroupfs-mount to the DVD (Bug #39258)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 23 Sep 2015 15:03:11 +0200
+
 univention-dvd (1.0.0-4) unstable; urgency=medium
 
   * Added univention-saml and univention-appcenter-docker to the DVD
