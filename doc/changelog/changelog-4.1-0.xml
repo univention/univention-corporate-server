@@ -499,6 +499,10 @@
 		<title>Container Technologies</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The package <package>docker.io</package> has been updated to
+					<wordasword>1.6</wordasword> (<u:bug>39350</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					The packages <package>univention-docker-container-mode</package> and
 					<package>univention-appliance-docker-container</package> have been added.
 					These packages help to run UCS in a Docker container
