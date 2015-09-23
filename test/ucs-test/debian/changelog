@@ -1,3 +1,9 @@
+ucs-test (5.0.171-10) unstable; urgency=low
+
+  * Bug #38823: Fix 10/52listener-filter
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Sep 2015 15:49:56 +0200
+
 ucs-test (5.0.171-9) unstable; urgency=low
 
   * Bug #39346: added 45_dovecot_test_camelcase_mailadresses
