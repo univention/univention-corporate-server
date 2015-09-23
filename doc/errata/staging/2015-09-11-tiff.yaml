@@ -3,7 +3,7 @@ release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: tiff
 fix: 4.0.2-6.61.201509111053
-version: [2,3]
+version: [3]
 desc: |
   Multiple security vulnerabilities have been fixed in tiff:
   * Out-of-bound reads (CVE-2014-8127)
