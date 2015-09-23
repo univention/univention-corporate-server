@@ -3,7 +3,7 @@ release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: samba
 fix: 2:4.2.3-1.789.201509171607
-version: [2,3]
+version: [3]
 desc: |
  This update addresses the following issue:
  * Under certain circumstances the Samba dlz_bind9 module segfaulted.
