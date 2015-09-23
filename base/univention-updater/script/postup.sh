@@ -88,10 +88,6 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	install univention-managed-client
 fi
 
-if [ -z "$(ucr get docker/container/uuid)" ]; then
-	install univention-appcenter-docker
-fi
-
 # Install univention-saml on DC Master and DC Backup while updating to UCS 4.1
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=39313
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
