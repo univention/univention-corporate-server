@@ -101,13 +101,12 @@ static struct filter cache_filter;
 static struct filter *cache_filters[] = {&cache_filter, NULL};
 
 static void setup_cache_filter(void) {
+	FREE(cache_filter.filter);
+	FREE(cache_filter.base);
 	cache_filter.filter = univention_config_get_string("listener/cache/filter");
 	if (cache_filter.filter && cache_filter.filter[0]) {
 		cache_filter.base = univention_config_get_string("ldap/base");
 		cache_filter.scope = LDAP_SCOPE_SUBTREE;
-	} else {
-		FREE(cache_filter.filter);
-		FREE(cache_filter.base);
 	}
 }
 
@@ -430,8 +429,10 @@ int cache_update_entry_lower(NotifierID id, char *dn, CacheEntry *entry)
 	char *lower_dn;
 	int rv = 0;
 
-	if (cache_filter.filter && cache_entry_ldap_filter_match(cache_filters, dn, entry))
+	if (cache_filter.filter && cache_entry_ldap_filter_match(cache_filters, dn, entry)) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "Not caching %s, filtered out.", dn);
 		return rv;
+	}
 
 	lower_dn = lower_utf8(dn);
 	rv = cache_update_entry(id, lower_dn, entry);

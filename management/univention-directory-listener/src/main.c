@@ -399,7 +399,7 @@ int main(int argc, char* argv[])
 		if (ret != LDAP_OPT_SUCCESS)
 			fprintf(stderr, "Failed to set TCP KA probes: %s\n", ldap_err2string(ret));
 		const int interval = 5;
-		ret = ldap_set_option(NULL, LDAP_OPT_X_KEEPALIVE_PROBES, &interval);
+		ret = ldap_set_option(NULL, LDAP_OPT_X_KEEPALIVE_INTERVAL, &interval);
 		if (ret != LDAP_OPT_SUCCESS)
 			fprintf(stderr, "Failed to set TCP KA interval: %s\n", ldap_err2string(ret));
 	}

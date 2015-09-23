@@ -1,3 +1,10 @@
+univention-directory-listener (9.0.2-7) unstable; urgency=low
+
+  * Bug #38823: Improved cache filter mechanism
+  * Bug #34763: Fix LDAP timeout
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Sep 2015 13:42:13 +0200
+
 univention-directory-listener (9.0.2-6) unstable; urgency=low
 
   * Bug #38823: Add cache filter mechanism

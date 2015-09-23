@@ -5,8 +5,10 @@
 
 
 #define FREE(ptr) \
+	do { \
 	free(ptr); \
-	ptr = NULL;
+	ptr = NULL; \
+	} while (0)
 
 
 static inline bool BERSTREQ(const struct berval *ber, const char *str, size_t len) {
