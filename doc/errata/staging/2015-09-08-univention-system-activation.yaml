@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: univention-system-activation
-fix: 0.0.1-40.45.201509090748
+fix: 0.0.1-41.47.201509240928
 version: [3]
 desc: |
  This update addresses the following issues:
@@ -10,4 +10,5 @@ desc: |
   * A link has been added to skip the first wizard page thus
     the user has the opportunity to upload an existing license
     directly.
-bug: [39153, 39154]
+  * The AppCenter notification has been fixed.
+bug: [39153, 39154, 39395]
