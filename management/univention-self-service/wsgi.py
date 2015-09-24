@@ -39,7 +39,6 @@ import os
 import imp
 import inspect
 
-from univention.lib.umc_connection import UMCConnection
 from univention.selfservice.frontend import UniventionSelfServiceFrontend
 
 
@@ -62,35 +61,6 @@ class Root(object):
 	</body>
 </html>""" % "\n".join(['		<p><a href="{url}">{name}</a></p>'.format(url=plugin.url, name=plugin.name)
 		for plugin in self.plugins])
-
-
-# 	@cherrypy.expose
-# 	def index(self):
-# 		cherrypy.response.headers['Content-Type'] = 'application/json'
-# 		return json.dumps('Hello World!')
-#
-#
-# def request_token(username, mailaddress):
-# 	connection = UMCConnection.get_machine_connection()  # uses the machine.secret, must run as root then, ... (replace?)
-# 	try:
-# 		result = connection.request('passwordreset/reset', {
-# 			'username': username,
-# 			'mailaddress': mailaddress,
-# 		})
-# 	except (ValueError, NotImplementedError, HTTPException):
-# 		raise  # the lib is completely broken ...
-# 	return result
-#
-#
-# def submit_token(token):
-# 	connection = UMCConnection.get_machine_connection()
-# 	try:
-# 		result = connection.request('passwordreset/submit', {
-# 			'token': token,
-# 		})
-# 	except (ValueError, NotImplementedError, HTTPException):
-# 		raise  # the lib is completely broken ...
-# 	return result
 
 
 def load_selfservice_plugins():

@@ -26,3 +26,4 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
+define([], function() { return null; });

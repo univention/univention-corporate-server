@@ -46,6 +46,10 @@ Description:
 Package: univention-management-console-module-passwordreset
 Architecture: all
 Depends: ${misc:Depends},
+ univention-postgresql,
+ univention-join,
+ univention-apache,
+ python-psycopg2
 Description:
  This package contains a UMC module that is the backend for the
  passwordreset package. It that must be installed on a DC master

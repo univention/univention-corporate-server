@@ -1,0 +1,18 @@
+Dear user {username},
+
+we have received a password reset request for your account. If you did not
+wish to change your password, you can safely ignore this message.
+
+To change your password please follow this link:
+
+{tokenlink}
+
+If the link does not work, you can go to
+
+{link}
+
+and enter the following token manually:
+
+{token}
+
+Greetings from your password self service system.

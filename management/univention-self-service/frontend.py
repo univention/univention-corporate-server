@@ -31,6 +31,11 @@
 
 import cherrypy
 
+from univention.lib.umc_connection import UMCConnection
+
+LDAP_SECRETS_FILE = "/etc/self-service-ldap.secret"
+
+
 class UniventionSelfServiceFrontend(object):
 	"""
 	base class
@@ -52,3 +57,13 @@ class UniventionSelfServiceFrontend(object):
 	@property
 	def name(self):
 		return self.__class__.__name__
+
+	def get_umc_connection(self):
+		try:
+			with open(LDAP_SECRETS_FILE) as machine_file:
+				password = machine_file.readline().strip()
+		except (OSError, IOError) as e:
+			self.log('Could not read {}: {}'.format(LDAP_SECRETS_FILE, e))
+			raise
+
+		return UMCConnection.get_machine_connection()

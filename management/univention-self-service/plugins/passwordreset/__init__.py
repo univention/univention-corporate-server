@@ -58,8 +58,16 @@ class PasswordReset(UniventionSelfServiceFrontend):
 
 	@cherrypy.expose
 	def edit_contact(self):
-		return 'Edit contact'
-
+		connection = self.get_umc_connection()
+		if connection:
+			result = connection.request('passwordreset/editcontact', {
+				"username": "test1",
+				"password": "test1",
+				"email": "test1m@uni.dtr"
+			})
+			return str(result)
+		else:
+			return "Error connecting to UMC."
 
 # class PasswordReset(UniventionSelfServiceFrontend):
 # 	def get_cherrypy_conf(self):
@@ -88,3 +96,33 @@ class PasswordReset(UniventionSelfServiceFrontend):
 # 	@cherrypy.expose
 # 	def DELETE(self):
 # 		cherrypy.session.pop('mystring', None)
+
+
+
+# 	@cherrypy.expose
+# 	def index(self):
+# 		cherrypy.response.headers['Content-Type'] = 'application/json'
+# 		return json.dumps('Hello World!')
+#
+#
+# def request_token(username, mailaddress):
+# 	connection = UMCConnection.get_machine_connection()  # uses the machine.secret, must run as root then, ... (replace?)
+# 	try:
+# 		result = connection.request('passwordreset/reset', {
+# 			'username': username,
+# 			'mailaddress': mailaddress,
+# 		})
+# 	except (ValueError, NotImplementedError, HTTPException):
+# 		raise  # the lib is completely broken ...
+# 	return result
+#
+#
+# def submit_token(token):
+# 	connection = UMCConnection.get_machine_connection()
+# 	try:
+# 		result = connection.request('passwordreset/submit', {
+# 			'token': token,
+# 		})
+# 	except (ValueError, NotImplementedError, HTTPException):
+# 		raise  # the lib is completely broken ...
+# 	return result
