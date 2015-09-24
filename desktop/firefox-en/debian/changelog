@@ -1,3 +1,9 @@
+firefox-en (1:38.3.0esr-ucs-3.2) unstable; urgency=medium
+
+  * Update to Firefox 38.3 ESR (Bug #39338)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 24 Sep 2015 18:33:12 +0200
+
 firefox-en (1:38.2.0esr-1) unstable; urgency=medium
 
   * Update to Firefox 38.2 ESR (Bug #38524)
