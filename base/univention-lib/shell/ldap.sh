@@ -316,26 +316,78 @@ ucs_registerLDAPExtension () {
 	local SH_FUNCNAME
 	SH_FUNCNAME=ucs_registerLDAPExtension
 
-	local package_name package_version calling_script_name calling_script_basename
-	calling_script_name=$(basename -- "$0")
-	calling_script_basename=$(basename -- "$calling_script_name" .postinst)
-	if [ "$calling_script_basename" != "$calling_script_name" ]; then
-		package_name="$calling_script_basename"
-	elif [ -n "$JS_SCRIPT_FULLNAME" ]; then
-		package_name=$(dpkg -S "$JS_SCRIPT_FULLNAME" | cut -d: -f1)
-	fi
+	package_options_are_passed() {
+		local opttemp
+		opttemp=$(getopt -q -o '' --longoptions 'packagename:,packageversion:' --name "ucs_registerLDAPExtension" -- "$@")
+		eval set -- "$opttemp"
 
-	if [ -n "$package_name" ]; then
-		package_version=$(dpkg-query -f '${Version}' -W "$package_name")
-	else
-		eval "$(/usr/sbin/univention-config-registry shell '^tests/ucs_registerLDAP/.*')"
-		if [ -n "$tests_ucs_registerLDAP_packagename" ] && [ -n "$tests_ucs_registerLDAP_packageversion" ]; then
-			package_name="$tests_ucs_registerLDAP_packagename"
-			package_version="$tests_ucs_registerLDAP_packageversion"
+	usage() {
+		echo >&2 "usage: ucs_registerLDAPExtension [--packagename <name> --packageversion <version>]"
+		exit 1
+	}
+
+		local package_name
+		local package_version
+		while [ $# -gt 0 ]; do
+			case "$1" in
+				--packagename)
+					package_name="$2"
+					shift 2
+					;;
+				--packageversion)
+					package_version="$2"
+					shift 2
+					;;
+				--)
+					shift
+					break
+					;;
+				*)
+					shift
+					;;
+			esac
+		done
+
+		if   [ -n "$package_name" ]; then
+			if [ -n "$package_version" ]; then
+				return 0
+			else
+				echo >&2 "Option --packagename requires --packageversion too"
+				exit 1
+			fi
 		else
-			echo "ERROR: $SH_FUNCNAME: Unable to determine Debian package name"
-			echo "ERROR: This function only works in joinscript or postinst context"
-			return 1
+			if [ -n "$package_version" ]; then
+				echo >&2 "Option --packageversion requires --packagename too"
+				exit 1
+			else
+				return 1
+			fi
+		fi
+	}
+
+	if ! package_options_are_passed "$@"; then
+		local calling_script_name
+		local calling_script_basename
+		calling_script_name=$(basename -- "$0")
+		calling_script_basename=$(basename -- "$calling_script_name" .postinst)
+		if [ "$calling_script_basename" != "$calling_script_name" ]; then
+			package_name="$calling_script_basename"
+		elif [ -n "$JS_SCRIPT_FULLNAME" ]; then
+			package_name=$(dpkg -S "$JS_SCRIPT_FULLNAME" | cut -d: -f1)
+		fi
+
+		if [ -n "$package_name" ]; then
+			package_version=$(dpkg-query -f '${Version}' -W "$package_name")
+		else
+			eval "$(/usr/sbin/univention-config-registry shell '^tests/ucs_registerLDAP/.*')"
+			if [ -n "$tests_ucs_registerLDAP_packagename" ] && [ -n "$tests_ucs_registerLDAP_packageversion" ]; then
+				package_name="$tests_ucs_registerLDAP_packagename"
+				package_version="$tests_ucs_registerLDAP_packageversion"
+			else
+				echo "ERROR: $SH_FUNCNAME: Unable to determine Debian package name"
+				echo "ERROR: This function only works in joinscript or postinst context"
+				return 1
+			fi
 		fi
 	fi
 

@@ -1,3 +1,10 @@
+univention-lib (5.0.0-2) unstable; urgency=medium
+
+  * Bug #38205: Let registerLDAPExtension skip the postinst / joinscript
+    name detection if --packagename and --packageversion options are given
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Sep 2015 17:07:39 +0200
+
 univention-lib (5.0.0-1) unstable; urgency=medium
 
   * Bug #39178: pass auth_type param along with authentication request in
