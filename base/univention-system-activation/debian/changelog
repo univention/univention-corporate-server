@@ -1,3 +1,9 @@
+univention-system-activation (1.0.0-11) unstable; urgency=low
+
+  * Bug #39395: get uuid from license file 
+
+ -- Felix Botner <botner@univention.de>  Thu, 24 Sep 2015 09:30:55 +0200
+
 univention-system-activation (1.0.0-10) unstable; urgency=low
 
   * Bug #39154: Added a link to skip requesting a license file

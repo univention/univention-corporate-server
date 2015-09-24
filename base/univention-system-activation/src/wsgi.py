@@ -4,7 +4,25 @@ import cgi
 import subprocess
 import json
 import re
+from ldif import LDIFParser
 from univention.config_registry import ConfigRegistry
+
+class LicenseLDIF(LDIFParser):
+
+	def __init__(self, input, ucr):
+		LDIFParser.__init__(self, input)
+		self.ucr = ucr
+		self.uuid = '00000000-0000-0000-0000-000000000000'
+
+	@property
+	def uuid(self):
+		return self.uuid
+
+	def handle(self, dn, entry):
+		if dn == 'cn=admin,cn=license,cn=univention,%s' % self.ucr.get('ldap/base'):
+			if 'univentionLicenseKeyID' in entry and len(entry['univentionLicenseKeyID']) > 0:
+				self.uuid = entry['univentionLicenseKeyID'][0]
+
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -97,14 +115,19 @@ def application(environ, start_response):
 			'message': exc.output
 		})
 
+	ucr.load()
+
+	# get uuid from ldif file, ucr['uuid/license'] is not yet up-to-date at this point
+	license_ldif = LicenseLDIF(open(LICENSE_UPLOAD_PATH, 'rb'), ucr)
+	license_ldif.parse()
+
 	# disable system activation service (stop is executed with a small delay)
 	# and answer request
-	ucr.load()
 	apps = get_installed_apps()
 	subprocess.Popen(['/usr/bin/sudo', '/usr/sbin/univention-system-activation', 'stop'], stderr=subprocess.STDOUT)
 	return _finish('200 OK', {
 		'success': True,
-		'uuid': ucr.get('uuid/license', ''),
+		'uuid': license_ldif.uuid,
 		'apps': apps,
 	})
 
