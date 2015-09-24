@@ -219,6 +219,40 @@ define([
 				return opts.appDetailsPage.appLoadingDeferred;
 			}
 		}),
+		must_have_no_unmet_dependencies_domainwide: new Requirement({
+			reasonDescription: function(details) {
+				var txt = _('%s requires the following applications.', details.name);
+				txt += '<ul><li>' + array.map(details.detail, function(app) { return app.name; }).join('</li><li>') + '</li></ul>';
+				return txt;
+			},
+			solutionDescription: function() {
+				return _('Install them first.');
+			},
+			solutionLabel: function(details) {
+				return _('Open %s', details.detail[0].name);
+			},
+			solution: function(opts, details) {
+				opts.appDetailsPage.set('app', details[0]);
+				return opts.appDetailsPage.appLoadingDeferred;
+			}
+		}),
+		must_not_be_depended_on_domainwide: new Requirement({
+			reasonDescription: function(details) {
+				var txt = _('%s is required for the following applications to work.', details.name);
+				txt += '<ul><li>' + array.map(details.detail, function(app) { return app.name; }).join('</li><li>') + '</li></ul>';
+				return txt;
+			},
+			solutionDescription: function() {
+				return _('Uninstall them first.');
+			},
+			solutionLabel: function(details) {
+				return _('Open %s', details.detail[0].name);
+			},
+			solution: function(opts, details) {
+				opts.appDetailsPage.set('app', details[0]);
+				return opts.appDetailsPage.appLoadingDeferred;
+			}
+		}),
 		shall_only_be_installed_in_ad_env_with_password_service: new Requirement({
 			stayAfterSolution: true,
 			reasonDescription: function() {

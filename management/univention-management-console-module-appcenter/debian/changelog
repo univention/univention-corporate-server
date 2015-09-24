@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.20-50) unstable; urgency=medium
+
+  * Bug #36674: Implement RequiredAppsInDomain
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 24 Sep 2015 23:46:09 +0200
+
 univention-management-console-module-appcenter (4.1.20-49) unstable; urgency=low
 
   * Bug #38233: Add support for @%@ucr@%@ in appcenter README files

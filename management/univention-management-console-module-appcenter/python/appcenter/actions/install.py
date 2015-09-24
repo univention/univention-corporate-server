@@ -41,9 +41,10 @@ from univention.config_registry import ConfigRegistry
 from univention.lib.package_manager import PackageManager
 from univention.updater import UniventionUpdater
 
+
 class Install(UniventionAppAction):
 	'''Installs or upgrades an application from the Univention App Center.'''
-	help='Install/upgrade an app'
+	help = 'Install/upgrade an app'
 
 	_package_manager = None
 
@@ -79,10 +80,14 @@ class Install(UniventionAppAction):
 		if self._password is not None:
 			return self._password
 		if args.pwdfile:
-			return open(args.pwdfile).read()
+			password = open(args.pwdfile).read()
+			if password.endswith('\n'):
+				password = password[:-1]
+			return password
 		if not args.noninteractive:
 			password = getpass('Password for %s: ' % username)
 			self._password = password
+			return self._password
 
 	def _send_as_function(self):
 		return 'install'
@@ -91,7 +96,7 @@ class Install(UniventionAppAction):
 	def _get_package_manager(cls):
 		if cls._package_manager is None:
 			cls._package_manager = PackageManager(info_handler=cls.log, error_handler=cls.warn)
-			cls._package_manager.set_finished() # currently not working. accepting new tasks
+			cls._package_manager.set_finished()  # currently not working. accepting new tasks
 		return cls._package_manager
 
 	def _install_app_deb(self, app, args):
@@ -164,4 +169,3 @@ class Install(UniventionAppAction):
 		finally:
 			success = success and status in [200, 401]
 		return success
-

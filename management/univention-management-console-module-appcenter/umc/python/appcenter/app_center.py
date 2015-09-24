@@ -235,9 +235,12 @@ class ApplicationLDAPObject(object):
 			MODULE.process('Removing %s from %s' % (self._localhost, self._udm_obj.dn))
 			self._udm_obj.modify()
 
-	def anywhere_installed(self):
+	def installed_on(self):
 		self.reload()
-		return bool(self._udm_obj.info.get('server', []))
+		return self._udm_obj.info.get('server', [])
+
+	def anywhere_installed(self):
+		return bool(self.installed_on())
 
 	def remove_from_directory(self):
 		MODULE.process('%s: Remove because unused.' % self._udm_obj.dn)
@@ -341,7 +344,7 @@ class Application(object):
 				self._options[ikey] = 0
 
 		# parse list values
-		for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'requiredapps', 'serverrole', 'supportedarchitectures'):
+		for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'requiredapps', 'requiredappsindomain', 'serverrole', 'supportedarchitectures'):
 			ival = self.get(ikey)
 			if ival:
 				self._options[ikey] = self._reg_comma.split(ival)
@@ -1097,6 +1100,45 @@ class Application(object):
 			return depending_apps
 		return True
 
+	@HardRequirement('install', 'update')
+	def must_have_no_unmet_dependencies_domainwide(self):
+		unmet_packages = []
+		for app in self.all():
+			if app.id in self.get('requiredappsindomain'):
+				for ldap_object in self.all_ldap_objects():
+					if ldap_object.anywhere_installed():
+						break
+				else:
+					unmet_packages.append({'id' : app.id, 'name' : app.name})
+		if unmet_packages:
+			return unmet_packages
+		return True
+
+	@HardRequirement('uninstall')
+	def must_not_be_depended_on_domainwide(self):
+		depending_apps = []
+		i_am_the_last_installation = None
+		for app in self.all():
+			if self.id in app.get('requiredappsindomain'):
+				if i_am_the_last_installation is None:
+					localhost = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+					for ldap_object in self.all_ldap_objects():
+						installed_on = ldap_object.installed_on()
+						if installed_on and installed_on != [localhost]:
+							i_am_the_last_installation = False
+							break
+					else:
+						i_am_the_last_installation = True
+				if not i_am_the_last_installation:
+					return True
+				for ldap_object in app.all_ldap_objects():
+					if ldap_object.is_installed_anywhere():
+						depending_apps.append({'id' : app.id, 'name' : app.name})
+						break
+		if depending_apps:
+			return depending_apps
+		return True
+
 	@SoftRequirement('install', 'update')
 	def shall_have_enough_ram(self, function):
 		current_ram = get_current_ram_available()
@@ -1309,6 +1351,12 @@ class Application(object):
 		result['hosts_info'] = hosts_info
 		result.update(remote_info)
 		return result, previously_registered
+
+	@machine_connection(write=False)
+	def all_ldap_objects(self, ldap_connection=None):
+		co = None
+		for obj in appcenter_udm_module.lookup(co, ldap_connection, '', base=self.ldap_container):
+			yield ApplicationLDAPObject(obj.info['id'], ldap_connection, co)
 
 	@machine_connection(write=True)
 	def get_ldap_object(self, ldap_id=None, or_create=False, ldap_connection=None, ldap_position=None):
