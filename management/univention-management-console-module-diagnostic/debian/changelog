@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (2.0.0-3) unstable; urgency=low
+
+  * Bug #38137: more error handling
+
+ -- Felix Botner <botner@univention.de>  Thu, 24 Sep 2015 09:53:05 +0200
+
 univention-management-console-module-diagnostic (2.0.0-2) unstable; urgency=low
 
   * Bug #38137: added python-paramiko

@@ -3,6 +3,7 @@
 
 from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import Critical
+from univention.management.console.modules.diagnostic import Warning
 from univention.admin import uldap
 from univention.admin import modules
 
@@ -20,7 +21,12 @@ class IgnorePolicy(paramiko.MissingHostKeyPolicy):
 
 def run():
 	ucr.load()
-	lo, position = uldap.getMachineConnection(ldap_master=False)
+
+	try:
+		lo, position = uldap.getMachineConnection(ldap_master=False)
+	except Exception as err:
+		raise Warning(str(err))
+
 	modules.update()
 	ucs_hosts = []
 	roles = ['computers/domaincontroller_backup',
