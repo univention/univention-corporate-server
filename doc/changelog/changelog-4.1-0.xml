@@ -509,6 +509,9 @@
 					These packages help to run UCS in a Docker container
 					(<u:bug>39331</u:bug>, <u:bug>38260</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The <emphasis>ucs_registerLDAPExtension</emphasis> function from <package>shell-univention-lib</package> now supports the options <emphasis>--packagename</emphasis> and <emphasis>--packageversion</emphasis> (<u:bug>38205</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 	</section>
 
