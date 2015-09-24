@@ -1,7 +1,6 @@
 #!/bin/sh
-# -*- coding: utf-8 -*-
 
-/usr/share/univention-docker-container-mode/restore_data_after_setup $@
+/usr/share/univention-docker-container-mode/restore_data_after_setup "$@"
 
 cp -r /var/lib/radicale/collections /var/lib/appcenter/app/radicale/data/
 
