@@ -58,14 +58,6 @@ else
 
 fi
 
-# generate SSL cert + private key for the SAML service provider
-if [ ! -e /usr/share/univention-management-console/saml/pki/sp.pem ]; then
-	openssl req -newkey rsa:2048 -new -x509 -days "${ssl_default_days:-1825}" -subj "/C=US/ST=Unknown/L=Unknown/O=Unknown/CN=${hostname}.${domainname}" -nodes \
-		-outform PEM -out /usr/share/univention-management-console/saml/pki/sp.pem \
-		-keyform PEM -keyout /usr/share/univention-management-console/saml/pki/sp.key || exit 1
-	chmod 0600 /usr/share/univention-management-console/saml/pki/sp.key || exit 1
-fi
-
 udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
 	--set Identifier="https://$hostname.$domainname/umcp/saml/metadata" \
 	--set AssertionConsumerService="https://$hostname.$domainname/umcp/saml/" \
@@ -75,12 +67,10 @@ udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-service
 	--set attributesNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" \
 	--append LDAPattributes=uid || exit 1
 
-/usr/share/univention-management-console/saml/update_metadata "$@" || exit 1
-
-ucr set "umc/saml/idp/${ldap_master}=https://${ldap_master}/simplesamlphp/saml2/idp/metadata.php"
-# TODO: the backup servers should also be set somehow
+/usr/share/univention-management-console/saml/update_metadata "$@" || die
 
 /etc/init.d/univention-management-console-web-server restart
+/etc/init.d/slapd restart
 
 joinscript_save_current_version
 

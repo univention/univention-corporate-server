@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.25-1) unstable; urgency=medium
+
+  * Bug #31943: use original host certificate SAML service provider
+
+ -- Florian Best <best@univention.de>  Fri, 25 Sep 2015 16:29:54 +0200
+
 univention-management-console-frontend (5.0.24-1) unstable; urgency=medium
 
   * Bug #31943: make a reload of SAML configuration possible

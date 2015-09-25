@@ -1,5 +1,7 @@
 # http://pysaml2.readthedocs.org/en/latest/howto/config.html
 import glob
+import re
+from tempfile import NamedTemporaryFile
 
 from saml2 import BINDING_HTTP_REDIRECT, BINDING_HTTP_POST
 from saml2.saml import NAME_FORMAT_URI
@@ -35,11 +37,17 @@ CONFIG = {
 		},
 	},
 	"attribute_map_dir": "/usr/lib/python2.7/dist-packages/saml2/attributemaps/",
-	"key_file": "/usr/share/univention-management-console/saml/pki/sp.key",
-	"cert_file": "/usr/share/univention-management-console/saml/pki/sp.pem",
+	"key_file": "/etc/univention/ssl/%s/private.key" % (fqdn,),
+	"cert_file": "/etc/univention/ssl/%s/cert.pem" % (fqdn,),
 	"xmlsec_binary": "/usr/bin/xmlsec1",
 	"metadata": {
 		"local": glob.glob('/usr/share/univention-management-console/saml/idp/*.xml'),
 	},
 	# TODO: add contact_person?
 }
+
+tmpfile = NamedTemporaryFile()  # workaround for broken PEM parsing in pysaml2
+with open(CONFIG['cert_file'], 'rb') as fd:
+	tmpfile.write(re.split('\n(?=-----BEGIN CERTIFICATE-----)', fd.read(), re.M)[-1])
+	tmpfile.flush()
+CONFIG['cert_file'] = tmpfile.name

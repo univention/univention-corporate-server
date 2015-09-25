@@ -41,11 +41,9 @@ def handler(config_registry, changes):
 	# TODO: write a listener module which triggers this and stores the IDP metadata in LDAP
 	cleanup()
 	metadata_download_failed = []
-	for key, saml_idp in config_registry.items():  # TODO: parse the changes, not the whole thing
-		if not key.startswith('umc/saml/idp/'):
-			continue
-		if not download_idp_metadata(saml_idp):
-			metadata_download_failed.append(saml_idp)
+	saml_idp = config_registry.get('umc/saml/idp-server')
+	if saml_idp and not download_idp_metadata(saml_idp):
+		metadata_download_failed.append(saml_idp)
 	reload_webserver()
 	if not rewrite_sasl_configuration():
 		raise SystemExit('Could not rewrite SASL configuration for UMC.')
@@ -76,7 +74,7 @@ def rewrite_sasl_configuration():
 	# rewrite UMC-PAM configuration to include every IDP entry
 	rc = call(['/usr/sbin/ucr', 'commit', '/etc/pam.d/univention-management-console'])
 	# enable saml sasl module
-	rc += call(['/usr/sbin/ucr', 'commit', '/etc/ldap/sasl2/saml'])
+	rc += call(['/usr/sbin/ucr', 'commit', '/etc/ldap/sasl2/slapd.conf'])
 	return rc == 0
 
 

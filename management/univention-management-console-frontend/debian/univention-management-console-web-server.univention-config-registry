@@ -6,4 +6,4 @@ Variables: umc/http/session/timeout
 
 Type: module
 Module: setup_saml_sp.py
-Variables: umc/saml/idp/.*
+Variables: umc/saml/idp-server

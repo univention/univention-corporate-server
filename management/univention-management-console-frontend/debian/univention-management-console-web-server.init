@@ -86,7 +86,7 @@ case "$1" in
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-management-console-web-server {start|stop|restart|crestart}"
+		echo "Usage: /etc/init.d/univention-management-console-web-server {start|stop|restart|reload|crestart}"
 		exit 1
 		;;
 esac
