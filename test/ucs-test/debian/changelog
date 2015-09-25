@@ -1,3 +1,9 @@
+ucs-test (5.0.171-11) unstable; urgency=low
+
+  * Bug #39409: improved 28_displayName_update
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 25 Sep 2015 22:05:57 +0200
+
 ucs-test (5.0.171-10) unstable; urgency=low
 
   * Bug #38823: Fix 10/52listener-filter
