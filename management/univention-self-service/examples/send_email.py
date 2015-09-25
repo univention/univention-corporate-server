@@ -36,6 +36,10 @@
 # it to your needs. After testing it, change the UCR variable               #
 # self-service/email/cmd to point to your file.                             #
 #                                                                           #
+# To test your script, run:                                                 #
+#                                                                           #
+# echo '{"username": "test", "addresses": ["test@example.org"], "server": "localhost", "token": "abcdefgh"}' | /usr/lib/univention-self-service/my_send_email.py #
+#                                                                           #
 #############################################################################
 
 #############################################################################
@@ -54,9 +58,12 @@ import os.path
 import sys
 import json
 import smtplib
-from email.mime.text import MIMEText
+from email.mime.nonmultipart import MIMENonMultipart
+from email.utils import formatdate
+import email.charset
 
 from univention.config_registry import ConfigRegistry
+
 
 try:
 	infos = json.loads(sys.stdin.read().rstrip())
@@ -75,16 +82,19 @@ link = "https://{fqdn}/univention-self-service/".format(fqdn=fqdn)
 tokenlink = "https://{fqdn}/univention-self-service/token/{token}".format(fqdn=fqdn, token=infos["token"])
 
 txt = txt.format(username=infos["username"], token=infos["token"], link=link, tokenlink=tokenlink)
-print "txt:\n"+txt
-exit(1)
 
-msg = MIMEText(txt)
+msg = MIMENonMultipart('text', 'plain', charset='utf-8')
+cs = email.charset.Charset("utf-8")
+cs.body_encoding = email.charset.QP
 msg["Subject"] = "Password reset"
-msg["From"] = ""
-msg["To"] = ""
-
-s = smtplib.SMTP(infos["server"])
-s.sendmail(msg["From"], [msg["To"]], msg.as_string())
-s.quit()
+msg["Date"] = formatdate(localtime=True)
+msg["From"] = "noreply@{}".format(fqdn)
+msg["To"] = ", ".join(infos["addresses"])
+msg.set_payload(txt, charset=cs)
+sys.exit(1)
+smtp = smtplib.SMTP(infos["server"])
+smtp.sendmail(msg["From"], infos["addresses"], msg.as_string())
+smtp.quit()
+print "Sent mail with token '{}' to addresses {}.".format(infos["token"], infos["addresses"])
 
 sys.exit(0)

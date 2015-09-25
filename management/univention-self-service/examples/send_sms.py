@@ -36,6 +36,10 @@
 # it to your needs. After testing it, change the UCR variable               #
 # self-service/email/cmd to point to your file.                             #
 #                                                                           #
+# To test your script, run:                                                 #
+#                                                                           #
+# echo '{"username": "test", "addresses": ["test@example.org"], "server": "localhost", "token": "abcdefgh"}' | /usr/lib/univention-self-service/my_send_sms.py #
+#                                                                           #
 #############################################################################
 
 #############################################################################

@@ -53,6 +53,7 @@ class PasswordReset(UniventionSelfServiceFrontend):
 	<head></head>
 	<body>
 		<p><a href="edit_contact">Edit contact</a></p>
+		<p><a href="token">Enter token</a></p>
 	</body>
 </html>"""
 
@@ -60,14 +61,50 @@ class PasswordReset(UniventionSelfServiceFrontend):
 	def edit_contact(self):
 		connection = self.get_umc_connection()
 		if connection:
-			result = connection.request('passwordreset/editcontact', {
+			result = connection.request('passwordreset/edit_contact', {
 				"username": "test1",
 				"password": "test1",
 				"email": "test1m@uni.dtr"
 			})
-			return str(result)
+			return "UMC returned: {}".format(result)
 		else:
 			return "Error connecting to UMC."
+
+	@cherrypy.expose
+	def token(self, tokenarg=None):
+		if tokenarg:
+			html = '''<p>Thank you for token <code>{thetoken}</code></p>
+			<input type="hidden" name="token" value="{thetoken}">'''.format(thetoken=tokenarg)
+		else:
+			html = '<p>Token: <input type="text" name="token" value="please enter token"></p>'
+		return """<html>
+	<head></head>
+	<body>
+		<form action="../submit_token" method="post">
+			{token_input}
+			<p>New password: <input type="text" name="password1" value="please enter new password"></p>
+			<p>New password again: <input type="text" name="password2" value="please enter new password again"></p>
+			<p><input type="submit" value="Submit"></p>
+		</form>
+	</body>
+</html>""".format(token_input=html)
+
+	@cherrypy.expose
+	def submit_token(self, token=None, password1=None, password2=None):
+		if not all([token, password1, password2]):
+			return "missing parameter"
+		elif password1 != password2:
+			return "passwords do not match"
+		else:
+			connection = self.get_umc_connection()
+			if connection:
+				result = connection.request('passwordreset/submit_token', {
+					"token": token,
+					"password": password1,
+				})
+				return "UMC returned: {}".format(result)
+			else:
+				return "Error connecting to UMC."
 
 # class PasswordReset(UniventionSelfServiceFrontend):
 # 	def get_cherrypy_conf(self):
