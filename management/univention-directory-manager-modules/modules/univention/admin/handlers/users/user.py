@@ -2035,7 +2035,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				if self.oldinfo.get('displayName', '') == old_default_displayName:
 					# yes ==> update displayName automatically
 					new_displayName = prop_displayName._replace(prop_displayName.base_default, self)
-					ml.append(('displayName', self.oldinfo.get('displayName', [''])[0], new_displayName))
+					ml.append(('displayName', self.oldinfo.get('displayName'), new_displayName))
 
 		# shadowlastchange=self.oldattr.get('shadowLastChange',[str(long(time.time())/3600/24)])[0]
 

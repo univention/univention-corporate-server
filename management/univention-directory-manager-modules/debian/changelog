@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.31-17) unstable; urgency=low
+
+  * Bug #39409: fixed automatic update of displayName
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 25 Sep 2015 22:03:12 +0200
+
 univention-directory-manager-modules (10.0.31-16) unstable; urgency=medium
 
   * Bug #25356: add lookup of TXT records in dns/dns
