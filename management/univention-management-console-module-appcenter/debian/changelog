@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.5-4) unstable; urgency=medium
+
+  * Bug #39082: Fix method call
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 25 Sep 2015 21:36:14 +0200
+
 univention-management-console-module-appcenter (5.0.5-3) unstable; urgency=low
 
   * Bug #38894: [WIP] hovering over apps now shows shortDescription.

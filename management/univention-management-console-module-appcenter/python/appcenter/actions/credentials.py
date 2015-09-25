@@ -45,6 +45,7 @@ from univention.config_registry import ConfigRegistry
 from univention.appcenter.actions import UniventionAppAction, Abort
 from univention.appcenter.udm import search_objects, get_machine_connection, get_admin_connection, get_connection
 
+
 class CredentialsAction(UniventionAppAction):
 	def __init__(self):
 		super(CredentialsAction, self).__init__()
@@ -77,9 +78,7 @@ class CredentialsAction(UniventionAppAction):
 		if self._password is not None:
 			return self._password
 		if args.pwdfile:
-			password = open(args.pwdfile).read()
-			if password.endswith('\n'):
-				password = password[:-1]
+			password = open(args.pwdfile).read().rstrip('\n')
 			return password
 		if not args.noninteractive:
 			self._password = self._get_password_for(username)
@@ -179,4 +178,3 @@ class CredentialsAction(UniventionAppAction):
 					self._password = None
 			self.fatal('Too many failed attempts!')
 		raise Abort()
-

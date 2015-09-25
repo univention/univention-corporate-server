@@ -39,7 +39,7 @@ from univention.appcenter.actions.docker_base import DockerActionMixin
 
 class UpgradeSearch(UpgradeSearch, DockerActionMixin):
 	def _check_for_upgrades(self, app):
-		upgrade_available = super(UpgradeSearch, self)._check_for_upgrades(self, app)
+		upgrade_available = super(UpgradeSearch, self)._check_for_upgrades(app)
 		docker = self._get_docker(app)
 		if not docker:
 			return upgrade_available
