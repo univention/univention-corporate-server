@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION="3"
+VERSION="4"
 
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
@@ -41,7 +41,9 @@ eval "$(ucr shell)"
 ssofqdn="${ucs_server_sso_fqdn:-ucs-sso.$domainname}"
 ucr set saml/idp/certificate/privatekey?"/etc/simplesamlphp/${ssofqdn}-idp-certificate.key" \
 		saml/idp/certificate/certificate?"/etc/simplesamlphp/${ssofqdn}-idp-certificate.crt" \
-		ucs/server/sso/fqdn?"$ssofqdn"
+		ucs/server/sso/fqdn?"$ssofqdn" \
+		umc/saml/idp-server?"https://${ssofqdn}/simplesamlphp/saml2/idp/metadata.php" \
+		"umc/saml/idp-servers/$hostname.$domainname=$hostname.$domainname"
 
 eval "$(ucr shell)"  # as variables were changed we need the new ones
 
@@ -56,6 +58,21 @@ if [ ! -e "${saml_idp_certificate_certificate}" ]; then
 	chown root:www-data "${saml_idp_certificate_certificate}" "${saml_idp_certificate_privatekey}" || die  # FIXME: www-data can read private-key
 	chmod 640 "${saml_idp_certificate_certificate}" "${saml_idp_certificate_privatekey}" || die
 fi
+
+udm policies/registry "$@" create \
+	--ignore_exists \
+	--position "cn=config-registry,cn=policies,$ldap_base" \
+	--set name='umc-saml-servers' \
+	--set ldapFilter="(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))" \
+	--append registry="umc/saml/idp-server https://${ssofqdn}/simplesamlphp/saml2/idp/metadata.php"
+
+udm policies/registry "$@" modify \
+	--dn "cn=umc-saml-servers,cn=config-registry,cn=policies,$ldap_base" \
+	--append registry="umc/saml/idp-servers/$hostname.$domainname $hostname.$domainname"
+
+udm container/cn "$@" modify  \
+	--dn "cn=computers,$ldap_base" \
+	--policy-reference "cn=umc-saml-servers,cn=config-registry,cn=policies,$ldap_base"
 
 ucs_addServiceToLocalhost "univention-saml" "$@" || die
 
@@ -152,6 +169,8 @@ elif [ "$server_role" = "domaincontroller_backup" ]; then
 	echo "Successfully downloaded the sys-idp-user credential file"
 	ucr commit /etc/simplesamlphp/authsources.php
 fi
+
+/etc/init.d/univention-saml restart
 
 joinscript_save_current_version
 exit 0

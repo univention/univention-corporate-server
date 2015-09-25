@@ -42,9 +42,9 @@ from subprocess import call, Popen, PIPE
 
 import univention.debug as ud
 
-name='univention-saml'
-description='Manage simpleSAMLphp service providers'
-filter='(objectClass=univentionSAMLServiceProvider)'
+name = 'univention-saml'
+description = 'Manage simpleSAMLphp service providers'
+filter = '(objectClass=univentionSAMLServiceProvider)'
 
 raw_metadata_generator = '''<?php
 set_error_handler(function($errno, $errstr, $errfile, $errline) {

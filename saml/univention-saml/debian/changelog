@@ -1,3 +1,10 @@
+univention-saml (3.0.10-1) unstable; urgency=medium
+
+  * Bug #39399: change simplesamlphp session type to memcache
+  * replicate SAML IDP server via UCR policy
+
+ -- Florian Best <best@univention.de>  Fri, 25 Sep 2015 16:03:57 +0200
+
 univention-saml (3.0.9-3) unstable; urgency=medium
 
   * Bug #39250: convert saml20-idp-hosted.php to multifile

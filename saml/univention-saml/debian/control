@@ -20,7 +20,9 @@ Depends: ${misc:Depends},
  openssl,
  simplesamlphp (>= 1.11.0-1),
  univention-directory-manager-tools,
- univention-saml-schema (= ${source:Version})
+ univention-saml-schema (= ${source:Version}),
+ memcached,
+ stunnel4,
 Description: Integrates simpleSAMLphp Identity Provider into UCS
  This packages provides the basic configuration for the
  simpleSAMLphp Identity Provider which is an authentication and federation application

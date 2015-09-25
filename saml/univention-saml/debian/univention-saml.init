@@ -1,6 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 #
-# Copyright 2013-2015 Univention GmbH
+# UCS - univention-saml integration - domain integration
+#  init script
+#
+# Copyright 2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,32 +30,37 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#DEBHELPER#
+. /lib/lsb/init-functions
+
+NAME=univention-saml
 
 case "$1" in
-configure)
-
-	chown -R root:www-data /etc/simplesamlphp
-
-	ucr set saml/idp/enableSAML20-IdP?true \
-		saml/idp/ldap/get_attributes?"'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'" \
-		saml/idp/ldap/search_attributes?"'uid', 'mailPrimaryAddress'" \
-		saml/idp/lookandfeel/theme?"univentiontheme:univention" \
-		saml/idp/https?"true"
-
-	if [ ! -e /etc/simplesamlphp/metadata/metadata_include.php ]; then
-		touch /etc/simplesamlphp/metadata/metadata_include.php
-	fi
-
-	a2ensite univention-saml-apache
-	a2enmod headers
-	invoke-rc.d apache2 reload
-	;;
-abort-upgrade|abort-remove|abort-deconfigure)
-	;;
-*)
-	echo "postinst called with unknown argument \`$1'" >&2
-	exit 1
-	;;
+	start)
+		# TODO: runit
+		log_action_msg "Starting $NAME"
+		chown www-data:root /usr/share/univention-saml/memcached/
+		/etc/init.d/memcached start
+		/etc/init.d/stunnel4 start
+		sleep 1
+		chmod 0600 /usr/share/univention-saml/memcached/*.socket
+		chown www-data:root /usr/share/univention-saml/memcached/*.socket
+		log_action_end_msg 0
+		;;
+	stop)
+		log_action_msg "Stopping $NAME"
+		/etc/init.d/memcached stop
+		/etc/init.d/stunnel4 stop
+		rm -f -- /usr/share/univention-saml/memcached/*.socket
+		log_action_end_msg 0
+		;;
+	restart)
+		log_action_msg "Restarting $NAME"
+		/etc/init.d/univention-saml stop
+		/etc/init.d/univention-saml start
+		log_action_end_msg 0
+		;;
+	*)
+		echo "Usage: /etc/init.d/univention-saml {start|stop|restart}"
+		exit 1
+		;;
 esac
-exit 0

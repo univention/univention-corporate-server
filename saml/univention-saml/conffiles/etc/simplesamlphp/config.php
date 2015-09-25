@@ -50,7 +50,7 @@ print"	'hostfqdn'	=> '%s.%s'," % (configRegistry.get('hostname', ''),configRegis
 	 *
 	 * SimpleSAMLphp will attempt to create this directory if it doesn't exist.
 	 */
-	'tempdir'               => '/tmp/simplesaml',
+	'tempdir'               => '/usr/share/univention-saml/memcached/simplesaml',
 	
 
 	/*
@@ -558,8 +558,9 @@ print"	'hostfqdn'	=> '%s.%s'," % (configRegistry.get('hostname', ''),configRegis
 	 *
 	 * (This option replaces the old 'session.handler'-option.)
 	 */
-	'store.type' => 'phpsession',
-
+@!@
+print "\t'store.type' => '%s'," % (configRegistry.get('saml/idp/session-type', 'memcache'),)
+@!@
 
 	/*
 	 * The DSN the sql datastore should connect to.
@@ -634,8 +635,18 @@ print"	'hostfqdn'	=> '%s.%s'," % (configRegistry.get('hostname', ''),configRegis
 	 */
 	'memcache_store.servers' => array(
 		array(
-			array('hostname' => 'localhost'),
+			array('hostname' => 'unix:///usr/share/univention-saml/memcached/localhost.socket'),
 		),
+@!@
+for key, server in configRegistry.items():
+	if not key.startswith('umc/saml/idp-servers/'):
+		continue
+	print '''
+		array(
+			array('hostname' => 'unix:///usr/share/univention-saml/memcached/%s.socket'),
+		),
+''' % (server,)
+@!@
 	),
 
 

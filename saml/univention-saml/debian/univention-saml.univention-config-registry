@@ -30,6 +30,8 @@ Variables: saml/idp/technicalcontactname
 Variables: saml/idp/technicalcontactemail
 Variables: hostname
 Variables: domainname
+Variables: saml/idp/session-type
+Variables: umc/saml/idp-servers/.*
 
 Type: multifile
 Multifile: etc/simplesamlphp/authsources.php
@@ -59,3 +61,18 @@ Variables: saml/idp/https
 Variables: domainname
 Variables: ucs/server/sso/fqdn
 Variables: saml/idp/certificate/certificate
+
+Type: file
+File: etc/stunnel/univention_saml.conf
+User: root
+Group: root
+Mode: 644
+Variables: hostname
+Variables: domainname
+Variables: umc/saml/idp-servers/.*
+
+Type: file
+File: etc/memcached_univention_saml.conf
+User: root
+Group: root
+Mode: 644

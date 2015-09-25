@@ -36,6 +36,7 @@ if os.path.isfile('/etc/univention/ssl/%(ssofqdn)s/cert.pem' % ssofqdn) and os.p
 	SSLCertificateFile /etc/univention/ssl/%(ssofqdn)s/cert.pem
 	SSLCertificateKeyFile /etc/univention/ssl/%(ssofqdn)s/private.key
 	SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem
+	Header set Access-Control-Allow-Origin "*"
 </VirtualHost>
 </IfModule>
 ''' % ssofqdn
