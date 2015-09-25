@@ -116,7 +116,7 @@ upgrade_to_latest () {
 		case "$rv" in
 		0) return 0 ;;  # success
 		5) delay=30 ;;  # /var/lock/univention-updater exists
-		*) delay=$max ;;  # all other errors
+		*) delay=$remain ;;  # all other errors
 		esac
 		echo "ERROR: univention-upgrade failed exitcode $rv"
 		ps faxwww
