@@ -15,7 +15,7 @@ import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-from essential.mail import send_mail, random_email, imap_search_mail, get_dovecot_maildir
+from essential.mail import send_mail, random_email, file_search_mail, get_dovecot_maildir
 import univention.uldap
 
 timeout = 10
@@ -96,7 +96,7 @@ def main():
 					loopcnt -= 1
 					found = 0
 					for user in userbase:
-						if imap_search_mail(messageid=user.msgid, server=fqdn, imap_user=user.addr, imap_folder='INBOX', use_ssl=True):
+						if file_search_mail(tokenlist=[user.msgid], mail_address=user.addr):
 							found += 1
 					print 'Found %d of %d mails' % (found, len(userbase))
 					if found == len(userbase):
