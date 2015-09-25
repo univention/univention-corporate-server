@@ -1,0 +1,62 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-7
+src: firefox-de
+fix: 1:38.3.0esr-ucs-3.2.63.201509241916
+version: [6,7]
+desc: |
+ Firefox ESR 38.2.1 fixes these issues:
+ * Firefox Addon bypass dialog and spoof vulnerability (CVE-2015-4498)
+ * use-after-free (& crash) after style flush in
+   CanvasRenderingContext2D (CVE-2015-4497)
+ * Mozilla Firefox nsIPresShell Use-After-Free Remote Code Execution
+   Vulnerability
+ Firefox ESR 38.3 fixes these issues:
+ * Memory-safety bugs in NetworkUtils.cpp generally (CVE-2015-4517)
+ * Memory-safety bugs in ConvertDialogOptions (CVE-2015-4521)
+ * Overflow in nsUnicodeToUTF8::GetMaxLength can create memory-safety
+   bugs in callers (CVE-2015-4522)
+ * Overflow in nsAttrAndChildArray::GrowBy causes memory-safety bug
+   (CVE-2015-7174)
+ * Overflow in XULContentSinkImpl::AddText causes memory-safety bug
+   (CVE-2015-7175)
+ * Bad sscanf argument in AnimationThread overruns stack variable
+   (CVE-2015-7176)
+ * Memory-safety bug in InitTextures (CVE-2015-7177)
+ * Mishandling return status in ReadbackResultWriterD3D11::Run might
+   cause memory-safety bug (CVE-2015-7180)
+ * CORS preflight cache poisoning with the credentials flag
+   (CVE-2015-4520)
+ * CORS preflight cache poisoning with a CORS header being mistaken
+   with another CORS header
+ * Information leakage: Dragging and dropping image to <textbox>
+   pastes final URL of image after redirects (CVE-2015-4519)
+ * HTMLVideoElement Use-After-Free Remote Code Execution
+   (CVE-2015-4509)
+ * Heap-buffer-overflow due to overflow in nestegg_track_codec_data
+   (MFSA-2015-105)
+ * maliciously crafted vp9 format video could be used to trigger a
+   buffer overflow while parsing the file in vp9_init_context_buffers
+   (CVE-2015-4506)
+ * memory safety problems and crashes that affect Firefox ESR 38.2
+   (CVE-2015-4500)
+ * Heap-buffer-overflow due to overflow in nestegg_track_codec_data
+   (CVE-2015-4511)
+bug: [39338]
+cve:
+ - CVE-2015-4498
+ - CVE-2015-4497
+ - CVE-2015-4517
+ - CVE-2015-4521
+ - CVE-2015-4522
+ - CVE-2015-7174
+ - CVE-2015-7175
+ - CVE-2015-7176
+ - CVE-2015-7177
+ - CVE-2015-7180
+ - CVE-2015-4520
+ - CVE-2015-4519
+ - CVE-2015-4509
+ - CVE-2015-4506
+ - CVE-2015-4500
+ - CVE-2015-4511
