@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.5-5) unstable; urgency=medium
+
+  * Bug #39374: Copy repository/online/server into the container (useful esp
+    while developing)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 25 Sep 2015 23:13:06 +0200
+
 univention-management-console-module-appcenter (5.0.5-4) unstable; urgency=medium
 
   * Bug #39082: Fix method call
