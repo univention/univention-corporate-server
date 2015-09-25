@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.5-3) unstable; urgency=low
+
+  * Bug #38894: [WIP] hovering over apps now shows shortDescription.
+    The UCS Logo for UCS components is now green
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 25 Sep 2015 18:06:59 +0200
+
 univention-management-console-module-appcenter (5.0.5-2) unstable; urgency=medium
 
   * Bug #39374: Fix DockerAllowedImages for UMC module

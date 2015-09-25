@@ -80,19 +80,11 @@
 	border-bottom: 0;
 }
 
-#appWrapperDiv {
-	float: left;
-	height: 180px;
-	width:25%;
-}
-
 #appInnerWrapper {
-	background-color: #eaeaea;
+	background-image: linear-gradient(to bottom, #f0f0f0 0%, #eaeaea 100%);
 	width:155px;
 	height: 165px;
 	padding: 0;
-}
-#appInnerWrapper div {
 }
 
 #border {
@@ -116,16 +108,9 @@
 	opacity: 0.2;
 }
 
-#hoverContainer {
-	position: absolute;
-	bottom: 0;
-	width:100%;
-	min-height: 45%;
-}
-
 #appContent {
 	width: 100%;
-	padding: 0.6em 0.3em 0.3em 0.6em;
+	padding: 0.3em 0.6em 0.3em 1em;
 	display: inline-block;
 	transition: transform 0.5s;
 }
@@ -140,7 +125,7 @@
 	height: 45%;
 	background-color: #6e6e6e;
 	color: #fff;
-	padding: 0.6em 0.3em 0.3em 0.6em;
+	padding: 0.3em 1.1em 0.3em 1em;
 	position: absolute;
 	bottom: 0;
 	transform: translateY(100%);
@@ -149,9 +134,9 @@
 	transition: transform 0.5s;
 }
 #appHover span {
-	font-size: 1.1em;
 	display: block;
-	padding-bottom: 0.3em;
+	padding-bottom: 0.2em;
+	word-break: break-word;
 }
 #appInnerWrapper.hover #appHover {
 	transform: translateY(0);
@@ -160,12 +145,12 @@
 }
 
 #appContent .umcGalleryName {
-	font-size: 1.3em;
+	font-size: 1.4em;
 	display: block;
-	margin-bottom: 0.3em;
+	margin-bottom: 0.2em;
 	margin-right: 0;
 	transform: none;
-	word-break: normal;
+	font-weight: normal;
 }
 
 #appInnerWrapper.umcGalleryItem:hover .umcGalleryName {
@@ -173,8 +158,7 @@
 }
 
 #appContent .umcGalleryVendor {
-	font-size: 1em;
-	opacity: 0.8;
+	color: #787878;
 }
 
 .umcGalleryPane .umcGalleryWrapperItem {

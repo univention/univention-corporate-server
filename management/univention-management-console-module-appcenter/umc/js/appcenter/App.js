@@ -315,8 +315,12 @@ define([
 		},
 
 		getOpenLabel: function() {
-			var module = this.getModule();
-			var webInterface = this.getWebInterfaceURL();
+			var module = array.some(this.installationData, function(app) {
+				return app.getModule();
+			});
+			var webInterface = array.some(this.installationData, function(app) {
+				return app.getWebInterfaceURL();
+			});
 			if (module) {
 				return _('Open module');
 			} else if (webInterface) {

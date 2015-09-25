@@ -51,7 +51,7 @@ define([
 		getIconClass: function(item) {
 			if (array.indexOf(item.unlocalised_categories, 'UCS components') >= 0) {
 				// do not display icon of UCS components
-				return tools.getIconClass('appcenter-ucs-component', 50, 'umcAppCenter');
+				return tools.getIconClass('appcenter-ucs-component-green', 50, 'umcAppCenter', 'background-size: 100% 100%');
 			}
 			return tools.getIconClass(item.icon, 50, 'umcAppCenter');
 		},
@@ -75,23 +75,8 @@ define([
 			put(text, 'span.umcGalleryVendor', item.vendor || item.maintainer || '');
 
 			var hover = put(innerWrapper, 'div#appHover');
-			if (item.is_installed) {
-				put(hover, 'span', _('installed locally'));
-			}
-			if (!!item.installations) {
-				var notLocalDomainInstallations = 0;
-				tools.forIn(item.installations, function(server, info) {
-					if (server != tools.status('hostname') && !!info.version) {
-						notLocalDomainInstallations += 1;
-					}
-				});
-				if (notLocalDomainInstallations > 0) {
-					put(hover, 'span', notLocalDomainInstallations + _('installed in domain'));
-				}
-			}
-
-			if (item.version) {
-				put(hover, 'span', _('Version: ') + item.version);
+			if (item.description) {
+				put(hover, 'span', item.description);
 			}
 
 			innerWrapper.onmouseover = function() {
@@ -105,12 +90,11 @@ define([
 		},
 
 		_resizeItemNames: function() {
-			var defaultHeight = this._getDefaultItemNameHeight();
 			query('.umcGalleryName', this.contentNode).forEach(lang.hitch(this, function(inode) {
-				var fontSize = 1.3;
+				var fontSize = 1.4;
 				while (domGeometry.position(inode).h > 40) {
 					domStyle.set(inode, 'font-size', fontSize + 'em');
-					fontSize *= 0.9;
+					fontSize *= 0.95;
 				}
 			}));
 		},

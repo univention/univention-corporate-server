@@ -165,7 +165,7 @@ define([
 
 		getButtons: function() {
 			var buttons = [];
-			if (this.app.canOpen() && (this._appIsInstalledInDomain() || this.app.isInstalled)) {
+			if (this.app.canOpen() && this.app.isInstalled) {
 				buttons.push({
 					name: 'open',
 					label: this.app.getOpenLabel(),
@@ -946,8 +946,7 @@ define([
 		_detailFieldCustomScreenshot: function() {
 			if (this.app.screenshot) {
 				return lang.replace('<img src="{url}" style="max-width: 90%; height:200px;" class="umcScreenshot" />', {
-					url: this.app.screenshot,
-					id: this.id
+					url: this.app.screenshot
 				});
 			}
 		},
