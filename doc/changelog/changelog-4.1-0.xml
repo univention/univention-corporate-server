@@ -517,8 +517,8 @@
 				<listitem><simpara>
 					The <emphasis>ucs_registerLDAPExtension</emphasis> function
 					from <package>shell-univention-lib</package> now supports
-					the options <emphasis>--packagename</emphasis> and
-					<emphasis>--packageversion</emphasis>
+					the options <emphasis>packagename</emphasis> and
+					<emphasis>packageversion</emphasis>
 					(<u:bug>38205</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
