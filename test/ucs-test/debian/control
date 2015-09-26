@@ -516,6 +516,15 @@ Provides: ucs-test-module
 Description: Test scripts to test the web server Apache
  This package includes test-cases for Apache.
 
+Package: ucs-test-docker
+Architecture: all
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Recommends: ucs-test-framework
+Provides: ucs-test-module
+Description: Test scripts to test the Docker integration
+ This package includes test-cases for Docker.
+
 Package: ucs-test-modules-all
 Architecture: all
 Depends: ${ucs-test:all-packages}
