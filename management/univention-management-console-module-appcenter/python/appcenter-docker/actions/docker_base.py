@@ -118,8 +118,11 @@ class DockerActionMixin(object):
 		container = docker.create(hostname, set_vars)
 		self.log('Preconfiguring container %s' % container)
 		autostart = 'yes'
+		if not Start.call(app=app):
+			self.fatal('Unable to start the container!')
+			raise Abort()
 		if password:
-			with open(docker.path_not_running('/etc/machine.secret'), 'w+b') as f:
+			with open(docker.path('/etc/machine.secret'), 'w+b') as f:
 				f.write(password)
 		for attr in app._attrs:
 			if attr.name.startswith('docker_script_'):
@@ -127,10 +130,7 @@ class DockerActionMixin(object):
 				if os.path.exists(remote_script):
 					local_script_name = getattr(app, attr.name)
 					self.log('Copying App Center\'s %s to container\'s %s' % (attr.name[14:], local_script_name))
-					local_script_name = docker.path_not_running(local_script_name)
+					local_script_name = docker.path(local_script_name)
 					shutil.copy2(remote_script, local_script_name)
 					os.chmod(local_script_name, 0755)  # -rwxr-xr-x
-		if not Start.call(app=app):
-			self.fatal('Unable to start the container!')
-			raise Abort()
 		Configure.call(app=app, autostart=autostart, set_vars=set_vars)

@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.5-6) unstable; urgency=medium
+
+  * Bug #39412: New path for devicemapper driven docker apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 27 Sep 2015 01:07:51 +0200
+
 univention-management-console-module-appcenter (5.0.5-5) unstable; urgency=medium
 
   * Bug #39374: Copy repository/online/server into the container (useful esp

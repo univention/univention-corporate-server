@@ -173,17 +173,17 @@ class Docker(object):
 			return
 		if filename.startswith('/'):
 			filename = filename[1:]
-		return os.path.join('/var/lib/docker/aufs/mnt', self.container, filename)
+		return os.path.join('/var/lib/docker/devicemapper/mnt', self.container, 'rootfs', filename)
 
-	def path_not_running(self, filename='', create=True):
-		if self.container is None:
-			return
-		if filename.startswith('/'):
-			filename = filename[1:]
-		fname = os.path.join('/var/lib/docker/aufs/diff', self.container, filename)
-		if create:
-			mkdir(os.path.dirname(fname))
-		return fname
+	#def path_not_running(self, filename='', create=True):
+	#	if self.container is None:
+	#		return
+	#	if filename.startswith('/'):
+	#		filename = filename[1:]
+	#	fname = os.path.join('/var/lib/docker/aufs/diff', self.container, filename)
+	#	if create:
+	#		mkdir(os.path.dirname(fname))
+	#	return fname
 
 	def create(self, hostname, env):
 		ports = []
