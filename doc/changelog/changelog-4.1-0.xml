@@ -74,6 +74,11 @@
 			<title>Other system services</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The network registration is now skipped in the init script
+					<filename>univention-network-common</filename> if UCS is running in a Docker
+					container because the network registration for this mode is implemented in
+					the init script <filename>univention-docker-container-mode</filename>
+					(<u:bug>38365</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
