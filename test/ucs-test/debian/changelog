@@ -1,3 +1,9 @@
+ucs-test (6.0.5-2) unstable; urgency=medium
+
+  * First draft for more docker app tests (Bug #38887)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 26 Sep 2015 21:40:56 +0200
+
 ucs-test (6.0.5-1) unstable; urgency=medium
 
   * Added first docker tests (Bug #38887)
