@@ -1,3 +1,10 @@
+ucs-test (6.0.5-4) unstable; urgency=medium
+
+  * 80_docker/61_app_updater_identify: Check for the UCR variable
+    updater/identify in a Docker App (Bug #39206)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 27 Sep 2015 20:14:27 +0200
+
 ucs-test (6.0.5-3) unstable; urgency=medium
 
   * Build and install a simple Docker App (Bug #38887)

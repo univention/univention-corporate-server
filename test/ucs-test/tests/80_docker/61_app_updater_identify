@@ -1,11 +1,14 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create and install a simple docker app
+## desc: Check updater/identify in a new Docker App
 ## tags: [docker,WIP]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
 
 from dockertest import *
+import subprocess
+
+class UCSTest_DockerApp_Identify(UCSTest_Docker_Exception): pass
 
 if __name__ == '__main__':
 	
@@ -24,6 +27,12 @@ if __name__ == '__main__':
 			app.install()
 
 			app.verify()
+
+			identify =  app.execute_command_in_container('ucr get updater/identify')
+			print 'Identify: %s' % identify
+			if identify.strip() != 'Docker App':
+				raise UCSTest_DockerApp_Identify()
+
 		finally:
 			app.uninstall()
 			app.remove()

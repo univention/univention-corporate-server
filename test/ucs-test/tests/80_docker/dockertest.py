@@ -112,6 +112,9 @@ class App:
 		if ret != 0:
 			raise UCSTest_DockerApp_InstallationFailed()
 
+		self.ucr.load()
+		self.container_id = self.ucr.get('appcenter/apps/%s/container' % self.app_name)
+
 	def verify(self):
 		ret = subprocess.call(['univention-app', 'status', self.app_name])
 		if ret != 0:
@@ -122,6 +125,10 @@ class App:
 		if ret != 0:
 			raise UCSTest_DockerApp_RemoveFailed()
 
+	def execute_command_in_container(self, cmd):
+		print 'Execute: %s' % cmd
+		return subprocess.check_output('docker exec %s %s' % (self.container_id, cmd), stderr=subprocess.STDOUT, shell=True)
+		
 	def remove(self):
 		self.package.remove()
 
