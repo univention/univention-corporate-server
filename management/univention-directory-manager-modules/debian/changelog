@@ -1,3 +1,13 @@
+univention-directory-manager-modules (11.0.2-1) unstable; urgency=low
+
+  * Bug #38395: update users/user's displayName property automatically
+    upon change of its superordinate properties (per default firstname and
+    lastname)
+  * Bug #39292: update displayName only if firstname or lastname changed
+  * Bug #39409: fixed automatic update of displayName
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 25 Sep 2015 22:03:12 +0200
+
 univention-directory-manager-modules (11.0.1-1) unstable; urgency=medium
 
   * Bug #25356: add lookup of TXT records in dns/dns
