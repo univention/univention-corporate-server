@@ -1,3 +1,9 @@
+ucs-test (6.0.5-3) unstable; urgency=medium
+
+  * Build and install a simple Docker App (Bug #38887)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 27 Sep 2015 19:45:13 +0200
+
 ucs-test (6.0.5-2) unstable; urgency=medium
 
   * First draft for more docker app tests (Bug #38887)

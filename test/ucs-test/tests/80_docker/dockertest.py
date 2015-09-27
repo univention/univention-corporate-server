@@ -30,8 +30,9 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.testing.strings import random_name, random_version
-from univention.config_registry import ConfigRegistry
 from univention.testing.debian_package import DebianPackage
+from univention.testing.ucr import UCSTestConfigRegistry
+from univention.config_registry import handler_set, ConfigRegistry
 import os
 import shutil
 import subprocess
@@ -41,6 +42,10 @@ class UCSTest_Docker_LoginFailed(Exception): pass
 class UCSTest_Docker_PullFailed(Exception): pass
 class AppcenterMetainfAlreadyExists(Exception): pass
 class AppcenterRepositoryAlreadyExists(Exception): pass
+class UCSTest_DockerApp_InstallationFailed(Exception): pass
+class UCSTest_DockerApp_UpdateFailed(Exception): pass
+class UCSTest_DockerApp_VerifyFailed(Exception): pass
+class UCSTest_DockerApp_RemoveFailed(Exception): pass
 
 def docker_login(server='docker.software-univention.de'):
 	ret = subprocess.call(['docker','login','-e','foo@bar','-u','ucs','-p','readonly',server])
@@ -63,47 +68,97 @@ class App:
 	def __init__(self, name, version):
 		self.app_name = name
 		self.app_version = version
+		self.app_directory_suffix = random_name()
+
+		self.app_directory = '%s_%s' % (self.app_name,self.app_directory_suffix)
 
 		self.package_name = get_app_name()
 		self.package_version = get_app_version()
 
+		self.ucr = ConfigRegistry()
+		self.ucr.load()
+
 		self.package = DebianPackage(name=self.package_name, version=self.package_version)
 		self.package.build()
 
-	def build(self):
+		self.ini = {}
+
+		self.ini['ID'] = self.app_name
+		self.ini['Code'] = self.app_name[0:2]
+		self.ini['Name'] = self.app_name
+		self.ini['Version'] = self.app_version
+		self.ini['NotifyVendor'] = False
+		self.ini['Categories'] = 'System services'
+		self.ini['DefaultPackages'] = self.package_name
+		self.ini['ServerRole'] = 'domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver'
+
+
+	def set_ini_parameter(self, **kwargs):
+		for key, value in kwargs.iteritems():
+			self.ini[key] = value
 		pass
 
 	def add_to_local_appcenter(self):
-		pass
+		self._dump_ini()
+		self._copy_package()
 
 	def install(self):
-		pass
+		ret = subprocess.call('univention-app update', shell=True)
+		if ret != 0:
+			raise UCSTest_DockerApp_UpdateFailed()
+		admin_user = self.ucr.get('tests/domainadmin/account').split(',')[0][len('uid='):]
+		ret = subprocess.call('univention-app install --noninteractive --username=%s --pwdfile=%s %s' %
+					(admin_user, self.ucr.get('tests/domainadmin/pwdfile'), self.app_name), shell=True)
+		if ret != 0:
+			raise UCSTest_DockerApp_InstallationFailed()
 
 	def verify(self):
-		pass
+		ret = subprocess.call(['univention-app', 'status', self.app_name])
+		if ret != 0:
+			raise UCSTest_DockerApp_VerifyFailed()
 
 	def uninstall(self):
-		pass
+		ret = subprocess.call(['univention-app', 'remove', self.app_name])
+		if ret != 0:
+			raise UCSTest_DockerApp_RemoveFailed()
 
 	def remove(self):
 		self.package.remove()
+
+	def _dump_ini(self):
+		target = os.path.join('/var/www/meta-inf/%s' % self.ucr.get('version/version'), '%s.ini' % self.app_directory)
+		f = open(target, 'w')
+		f.write('[Application]\n')
+		for key in self.ini.keys():
+			f.write('%s: %s\n' % (key, self.ini[key]))
+		f.close()
+
+	def _copy_package(self):
+		target = os.path.join('/var/www/univention-repository/%s/maintained/component' % self.ucr.get('version/version'), '%s/all' % self.app_directory)
+		os.makedirs(target)
+		shutil.copy(self.package.get_binary_name(), target)
+		subprocess.call('''
+			cd /var/www/univention-repository/%(version)s/maintained/component;
+			apt-ftparchive packages %(app)s/all >%(app)s/all/Packages;
+			gzip -c %(app)s/all/Packages >%(app)s/all/Packages.gz
+		''' % {'version': self.ucr.get('version/version'), 'app': self.app_directory}, shell=True)
 
 class Appcenter:
 	def __init__(self):
 		self.meta_inf_created = False
 		self.univention_repository_created = False
 		
-		ucr = ConfigRegistry()
-		ucr.load()
+		self.ucr = UCSTestConfigRegistry()
+		self.ucr.load()
 
-		version = ucr.get('version/version')
+		self.version = self.ucr.get('version/version')
 
 		if os.path.exists('/var/www/meta-inf'):
 			print 'ERROR: /var/www/meta-inf already exists'
-			raise AppcenterMetainfAlreadyExists
+			raise AppcenterMetainfAlreadyExists()
 		if os.path.exists('/var/www/univention-repository'):
 			print 'ERROR: /var/www/univention-repository already exists'
-			raise AppcenterRepositoryAlreadyExists
+			raise AppcenterRepositoryAlreadyExists()
 
 		os.makedirs('/var/www/meta-inf', 0755)
 		self.meta_inf_created = True
@@ -111,14 +166,21 @@ class Appcenter:
 		os.makedirs('/var/www/univention-repository', 0755)
 		self.univention_repository_created = True
 
-		os.makedirs('/var/www/univention-repository/%s/maintained/component' % version)
-		os.makedirs('/var/www/meta-inf/%s' % version)
+		os.makedirs('/var/www/univention-repository/%s/maintained/component' % self.version)
+		os.makedirs('/var/www/meta-inf/%s' % self.version)
+
+		handler_set(['update/secure_apt=no', 'repository/app_center/server=%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])])
+
+	def update(self):
+		subprocess.call('create_appcenter_json.py -u %(version)s -d /var/www -o /var/www/meta-inf/%(version)s/index.json.gz -s http://%(fqdn)s' %
+			 {'version': self.version, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
 
 	def cleanup(self):
 		if self.meta_inf_created:
 			shutil.rmtree('/var/www/meta-inf')
 		if self.univention_repository_created:
 			shutil.rmtree('/var/www/univention-repository')
+		self.ucr.revert_to_original_registry()
 
 	def __enter__(self):
 		return self

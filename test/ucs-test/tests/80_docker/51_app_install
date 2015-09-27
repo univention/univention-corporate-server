@@ -17,13 +17,14 @@ if __name__ == '__main__':
 		app = App(name=app_name, version=app_version)
 
 		try:
-			app.build()
+			app.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0')
 			app.add_to_local_appcenter()
+
+			appcenter.update()
 
 			app.install()
 
 			app.verify()
-
 		finally:
 			app.uninstall()
 			app.remove()
