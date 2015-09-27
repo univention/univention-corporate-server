@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.5-7) unstable; urgency=medium
+
+  * Copy update/secure_apt into the container (Bug #39413)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 27 Sep 2015 14:44:23 +0200
+
 univention-management-console-module-appcenter (5.0.5-6) unstable; urgency=medium
 
   * Bug #39412: New path for devicemapper driven docker apps
