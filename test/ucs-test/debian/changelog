@@ -1,3 +1,9 @@
+ucs-test (6.0.5-5) unstable; urgency=medium
+
+  * Set hashbang to python2.7 in create_appcenter_json.py (Bug #38887)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 27 Sep 2015 20:39:04 +0200
+
 ucs-test (6.0.5-4) unstable; urgency=medium
 
   * 80_docker/61_app_updater_identify: Check for the UCR variable
