@@ -1,3 +1,9 @@
+ucs-test (6.0.6-2) unstable; urgency=medium
+
+  * Bug #39409: improved 28_displayName_update
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 25 Sep 2015 22:05:57 +0200
+
 ucs-test (6.0.6-1) unstable; urgency=medium
 
   * added 28_displayName_update (Bug #38385)

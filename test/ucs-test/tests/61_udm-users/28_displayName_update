@@ -40,6 +40,18 @@ if __name__ == '__main__':
 		utils.verify_ldap_object(userdn, {'displayName': ['%s %s' % (firstname2, lastname2)]})
 
 		#########################################################
+		print '>>> create user with default settings'
+		#########################################################
+		lastname = random_string()
+		userdn = udm.create_user(firstname='', lastname=lastname)[0]
+		utils.verify_ldap_object(userdn, {'displayName': [lastname]})
+
+		print '>>> change lastname'
+		lastname2 = random_string()
+		udm.modify_object('users/user', dn=userdn, lastname=lastname2)
+		utils.verify_ldap_object(userdn, {'displayName': [lastname2]})
+
+		#########################################################
 		print '>>> create user with custom displayName'
 		#########################################################
 		firstname = random_string()
