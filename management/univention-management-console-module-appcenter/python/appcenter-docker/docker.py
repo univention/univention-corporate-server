@@ -42,7 +42,7 @@ from json import loads
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 
-from univention.appcenter.utils import app_ports, call_process, mkdir, shell_safe
+from univention.appcenter.utils import app_ports, call_process, shell_safe
 from univention.appcenter.log import get_base_logger
 
 _logger = get_base_logger().getChild('docker')
@@ -174,16 +174,6 @@ class Docker(object):
 		if filename.startswith('/'):
 			filename = filename[1:]
 		return os.path.join('/var/lib/docker/devicemapper/mnt', self.container, 'rootfs', filename)
-
-	#def path_not_running(self, filename='', create=True):
-	#	if self.container is None:
-	#		return
-	#	if filename.startswith('/'):
-	#		filename = filename[1:]
-	#	fname = os.path.join('/var/lib/docker/aufs/diff', self.container, filename)
-	#	if create:
-	#		mkdir(os.path.dirname(fname))
-	#	return fname
 
 	def create(self, hostname, env):
 		ports = []

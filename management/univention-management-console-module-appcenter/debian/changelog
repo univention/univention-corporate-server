@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.5-8) unstable; urgency=medium
+
+  * Bug #39412: Copy docker scripts only when needed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 27 Sep 2015 17:17:10 +0200
+
 univention-management-console-module-appcenter (5.0.5-7) unstable; urgency=medium
 
   * Copy update/secure_apt into the container (Bug #39413)

@@ -44,6 +44,7 @@ from univention.appcenter.docker import Docker
 from univention.appcenter.actions import Abort
 from univention.appcenter.actions.configure import Configure
 from univention.appcenter.actions.service import Start
+from univention.appcenter.utils import mkdir
 
 
 class DockerActionMixin(object):
@@ -56,12 +57,19 @@ class DockerActionMixin(object):
 	def _execute_container_script(self, _app, _interface, _args=None, _credentials=True, _output=False, **kwargs):
 		self.log('Executing interface %s for %s' % (_interface, _app.id))
 		docker = self._get_docker(_app)
-		_interface = getattr(_app, 'docker_script_%s' % _interface)
-		if not _interface:
+		interface = getattr(_app, 'docker_script_%s' % _interface)
+		if not interface:
 			self.log('No interface defined')
 			return None
-		if not os.path.exists(docker.path(_interface)):
-			self.warn('Interface script %s not found!' % _interface)
+		remote_interface_script = _app.get_cache_file(_interface)
+		container_interface_script = docker.path(interface)
+		if os.path.exists(remote_interface_script):
+			self.log('Copying App Center\'s %s to container\'s %s' % (_interface, interface))
+			mkdir(os.path.dirname(container_interface_script))
+			shutil.copy2(remote_interface_script, container_interface_script)
+			os.chmod(container_interface_script, 0755)  # -rwxr-xr-x
+		if not os.path.exists(container_interface_script):
+			self.warn('Interface script %s not found!' % interface)
 			return None
 		error_file = docker.execute_with_output('mktemp').strip()
 		if _credentials:
@@ -78,9 +86,9 @@ class DockerActionMixin(object):
 		kwargs['app_version'] = _app.version
 		try:
 			if _output:
-				return docker.execute_with_output(_interface, **kwargs)
+				return docker.execute_with_output(interface, **kwargs)
 			else:
-				process = docker.execute(_interface, **kwargs)
+				process = docker.execute(interface, **kwargs)
 				if process.returncode != 0:
 					with open(docker.path(error_file), 'r+b') as error_handle:
 						for line in error_handle:
@@ -124,13 +132,4 @@ class DockerActionMixin(object):
 		if password:
 			with open(docker.path('/etc/machine.secret'), 'w+b') as f:
 				f.write(password)
-		for attr in app._attrs:
-			if attr.name.startswith('docker_script_'):
-				remote_script = app.get_cache_file(attr.name[14:])
-				if os.path.exists(remote_script):
-					local_script_name = getattr(app, attr.name)
-					self.log('Copying App Center\'s %s to container\'s %s' % (attr.name[14:], local_script_name))
-					local_script_name = docker.path(local_script_name)
-					shutil.copy2(remote_script, local_script_name)
-					os.chmod(local_script_name, 0755)  # -rwxr-xr-x
 		Configure.call(app=app, autostart=autostart, set_vars=set_vars)
