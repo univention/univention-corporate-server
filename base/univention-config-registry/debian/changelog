@@ -1,3 +1,9 @@
+univention-config-registry (11.0.0-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #38011)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 27 Sep 2015 21:06:59 +0200
+
 univention-config-registry (10.0.3-1) unstable; urgency=medium
 
   * Merge Bug #38011 to 4.1:
