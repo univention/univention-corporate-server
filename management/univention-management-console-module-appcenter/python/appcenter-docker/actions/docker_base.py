@@ -118,7 +118,7 @@ class DockerActionMixin(object):
 		set_vars['ldap/hostdn'] = hostdn
 		set_vars['server/role'] = app.docker_server_role
 		set_vars['update/warning/releasenotes'] = 'no'
-		for var in ['nameserver.*', 'repository/online/server', 'repository/app_center/server', 'update/secure_apt', 'ldap/master.*', 'locale.*', 'domainname', 'update/secure_apt']:
+		for var in ['nameserver.*', 'repository/online/server', 'repository/app_center/server', 'update/secure_apt', 'ldap/master.*', 'locale.*', 'domainname']:
 			for key in ucr.iterkeys():
 				if re.match(var, key):
 					set_vars[key] = ucr.get(key)

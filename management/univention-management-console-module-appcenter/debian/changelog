@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.5-9) unstable; urgency=medium
+
+  * Bug #39414: Don't loop when update_available script returns bugged output
+  * Bug #39413: Revert
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 28 Sep 2015 01:02:36 +0200
+
 univention-management-console-module-appcenter (5.0.5-8) unstable; urgency=medium
 
   * Bug #39412: Copy docker scripts only when needed

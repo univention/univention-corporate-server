@@ -90,6 +90,9 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 				self._upgrade_app(app, args)
 			elif mode == 'image':
 				self._upgrade_image(app, args)
+			else:
+				self.warn('Unable to process %r' % (mode,))
+				return
 			self._do_it(app, args)
 		else:
 			self.log('Nothing to upgrade')
