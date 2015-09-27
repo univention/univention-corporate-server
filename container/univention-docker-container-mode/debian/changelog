@@ -1,3 +1,9 @@
+univention-docker-container-mode (1.0.2-2) unstable; urgency=medium
+
+  * Bug #39414: Correctly output "packages" if packages may be updated
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 28 Sep 2015 01:04:56 +0200
+
 univention-docker-container-mode (1.0.2-1) unstable; urgency=medium
 
   * Use -skipIpMac while joining a Docker App (Bug #39331)

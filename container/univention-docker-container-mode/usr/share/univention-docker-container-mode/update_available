@@ -37,7 +37,7 @@ release=$(echo "$upgrade" | grep "Checking for release updates:" | sed -n "s/.*f
 if [ -n "$release" ]; then
 	echo "release: $release"
 else
-	packages=$(echo "$upgrade" | grep "Checking for package updates:" | sed -n "s/found/packages/p")
+	packages=$(echo "$upgrade" | grep "Checking for package updates:" | sed -n "s/.*found/packages/p")
 	echo "$packages"
 fi
 
