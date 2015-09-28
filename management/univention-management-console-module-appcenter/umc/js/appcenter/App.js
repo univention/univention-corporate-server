@@ -93,6 +93,7 @@ define([
 			this.useShop = !!props.shopurl;
 			this.shopURL = props.shopurl;
 			this.isMaster = props.is_master;
+			this.isUCSComponent = array.indexOf(props.unlocalised_categories, 'UCS components') >= 0;
 			this.hostMaster = props.host_master;
 			this.userActivationRequired = props.useractivationrequired;
 			this.ipAddress = props.ip_address;

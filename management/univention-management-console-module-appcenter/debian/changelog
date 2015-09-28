@@ -1,6 +1,9 @@
 univention-management-console-module-appcenter (5.0.6-1) unstable; urgency=medium
 
-  * Bug #38894: fine tuning of appearance
+  Bug #38894:
+  * Fine tuning of appearance
+  * Show all items of meta categories
+  * Show correct icon for UCS components on AppDetailsPage
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 28 Sep 2015 16:06:42 +0200
 
