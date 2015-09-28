@@ -62,7 +62,7 @@ define([
 
 		title: _("App management"),
 		headerText: _("Manage Applications for UCS"),
-		helpText: _("Install or remove applications on this or another UCS system."),
+		//helpText: _("Install or remove applications on this or another UCS system."),
 
 		navBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
 		mainBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',

@@ -51,7 +51,7 @@ define([
 		getIconClass: function(item) {
 			if (array.indexOf(item.unlocalised_categories, 'UCS components') >= 0) {
 				// do not display icon of UCS components
-				return tools.getIconClass('appcenter-ucs-component-green', 50, 'umcAppCenter', 'background-size: 100% 100%');
+				return tools.getIconClass('appcenter-ucs-component-green', 50, 'umcAppCenter', 'background-size: auto 100%');
 			}
 			return tools.getIconClass(item.icon, 50, 'umcAppCenter');
 		},
@@ -61,22 +61,22 @@ define([
 				moduleID: item.$id$,
 				bootstrapClasses: this.bootstrapClasses
 			}));
-			var innerWrapper = put(appWrapperDiv, 'div#appInnerWrapper.umcGalleryItem');
+			var innerWrapper = put(appWrapperDiv, 'div.appInnerWrapper.umcGalleryItem');
 			
-			put(innerWrapper, 'div#border');
+			put(innerWrapper, 'div.border');
 			
 			var iconClass = this.getIconClass(item);
 			if (iconClass) {
-				put(innerWrapper, 'div#appIcon.umcGalleryIcon.' + iconClass);
+				put(innerWrapper, 'div.appIcon.umcGalleryIcon.' + iconClass);
 			}
 
-			var text = put(innerWrapper, 'div#appContent');
-			put(text, 'span.umcGalleryName', this.getItemName(item));
-			put(text, 'span.umcGalleryVendor', item.vendor || item.maintainer || '');
+			var text = put(innerWrapper, 'div.appContent');
+			put(text, 'div.umcGalleryName', this.getItemName(item));
+			put(text, 'div.umcGalleryVendor', item.vendor || item.maintainer || '');
 
-			var hover = put(innerWrapper, 'div#appHover');
+			var hover = put(innerWrapper, 'div.appHover');
 			if (item.description) {
-				put(hover, 'span', item.description);
+				put(hover, 'div', item.description);
 			}
 
 			innerWrapper.onmouseover = function() {

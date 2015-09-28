@@ -65,7 +65,7 @@ define([
 
 		store: null,
 
-		allAppsDisplayed: false, // false: only one row of apps is shown
+		allAppsDisplayed: true, // false: only one row of apps is shown
 
 		baseClass: 'appcenterMetaCategory',
 
@@ -107,8 +107,8 @@ define([
 
 			this.addChild(this._label);
 			this.own(this._label);
-			this.addChild(this.button);
-			this.own(this.button);
+			//this.addChild(this.button);
+			//this.own(this.button);
 			this.addChild(clearContainer);
 			this.own(clearContainer);
 			this.addChild(this.grid);

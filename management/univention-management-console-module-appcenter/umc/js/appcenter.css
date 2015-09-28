@@ -80,15 +80,15 @@
 	border-bottom: 0;
 }
 
-#appInnerWrapper {
+.umcAppCenterGallery .umcGalleryItem.appInnerWrapper {
 	background-image: linear-gradient(to bottom, #f0f0f0 0%, #eaeaea 100%);
 	width:155px;
 	height: 165px;
 	padding: 0;
 }
 
-#border {
-	background-image: url("../../dijit/themes/umc/icons/schablone.png");
+.umcAppCenterGallery .appInnerWrapper .border {
+	background-image: url("appcenter/app-vignette.svg");
 	background-size: 100% 100%;
 	position: absolute;
 	width: 100%;
@@ -96,33 +96,34 @@
 	z-index: 2;
 }
 
-#appIcon {
-	height: 55%;
+.umcAppCenterGallery .appInnerWrapper .appIcon {
+	height: 95px;
 	width: 100%;
 	z-index: 0;
 	top: 0;
 	transition: opacity 0.5s;
 	background-position: center center;
 }
-#appInnerWrapper.hover #appIcon {
+.umcAppCenterGallery .appInnerWrapper.hover .appIcon {
 	opacity: 0.2;
 }
 
-#appContent {
+.umcAppCenterGallery .appInnerWrapper .appContent {
 	width: 100%;
+	height: 70px;
 	padding: 0.3em 0.6em 0.3em 1em;
 	display: inline-block;
 	transition: transform 0.5s;
 }
-#appInnerWrapper.hover #appContent {
+.umcAppCenterGallery .appInnerWrapper.hover .appContent {
 	transform: translateY(-100%);
 	-webkit-transform: translateY(-100%);
 	-ms-transform: translateY(-100%);
 }
 
-#appHover {
+.umcAppCenterGallery .appInnerWrapper .appHover {
 	width: 100%;
-	height: 45%;
+	height: 70px;
 	background-color: #6e6e6e;
 	color: #fff;
 	padding: 0.3em 1.1em 0.3em 1em;
@@ -133,32 +134,37 @@
 	-ms-transform: translateY(100%);
 	transition: transform 0.5s;
 }
-#appHover span {
+.umcAppCenterGallery .appHover span {
 	display: block;
 	padding-bottom: 0.2em;
 	word-break: break-word;
 }
-#appInnerWrapper.hover #appHover {
+.umcAppCenterGallery .appInnerWrapper.hover .appHover {
 	transform: translateY(0);
 	-webkit-transform: translateY(0);
 	-ms-transform: translateY(0);
 }
 
-#appContent .umcGalleryName {
+.umcAppCenterGallery .appContent .umcGalleryName {
 	font-size: 1.4em;
 	display: block;
 	margin-bottom: 0.2em;
 	margin-right: 0;
 	transform: none;
 	font-weight: normal;
+	color: #282828 !important;
 }
 
-#appInnerWrapper.umcGalleryItem:hover .umcGalleryName {
+/*#appInnerWrapper.umcGalleryItem:hover .umcGalleryName {
 	color: #5a5a5a !important;
-}
+}*/
 
-#appContent .umcGalleryVendor {
-	color: #787878;
+.umcAppCenterGallery .appContent .umcGalleryVendor {
+	color: #666666;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	width: 100%;
 }
 
 .umcGalleryPane .umcGalleryWrapperItem {
@@ -170,13 +176,13 @@
 	color: #a9a9a9;
 	border-top: 0;
 	padding: 0.5em 0 0.5em 0;
-}		
+}
 .umc .dijitTitlePane.appDetailsPane .dijitTitlePaneTitle .dijitTitlePaneTextNode {
 	vertical-align: middle;
 }
 .umc .dijitTitlePane.appDetailsPane	.dijitTitlePaneTitle .dijitArrowNode {
 	opacity: 0.66;
-}	
+}
 .umc .dijitTitlePane.appDetailsPane .dijitTitlePaneTitleClosed .dijitArrowNode {
 	background-position: -80px 0;
 }
@@ -199,8 +205,10 @@
 }
 
 .appcenterMetaCategory .umcText {
-	font-size: 1.8em;
+	font-size: 1.6em;
+	font-weight: bold;
 	padding-top: 0.4em;
+	padding-bottom: 1em;
 	float: left;
 }
 
@@ -311,17 +319,22 @@
 	padding: 3px 0;
 }
 
+.umc .umcAppCenter .umcPageNav {
+	margin-bottom: 1.5em;
+}
+
 .umc .umcAppCenter .appcenterMetaCategory .dijitButton.hiddenButton {
 	visibility: hidden;
 }
 
 .umc .umcAppCenter .appcenterMetaCategory .umcAppCenterGallery {
-	height: 175px;
-}
-
-.umc .umcAppCenter .appcenterMetaCategory .umcAppCenterGallery.open {
+	/*height: 175px;*/
 	height: auto;
 }
+
+/*.umc .umcAppCenter .appcenterMetaCategory .umcAppCenterGallery.open {
+	height: auto;
+}*/
 
 .umc .umcAppCenter .umcLiveSearchSidebar .searchField,
 .umc .umcAppCenter .umcLiveSearchSidebar .dropDownMenu {
