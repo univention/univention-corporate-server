@@ -1,3 +1,12 @@
+ucs-test (6.0.6-3) unstable; urgency=medium
+
+  * Merged from UCS 4.0-3:
+    * Bug #39000: Added test: Checking file names in '/etc/rc2.d' for modification
+    * Bug #39297: Added test: check for ntpd
+    [Bastian Reitemeier <reitemeier@univention.de>]
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Sep 2015 08:08:40 +0200
+
 ucs-test (6.0.6-2) unstable; urgency=medium
 
   * Bug #39409: improved 28_displayName_update
