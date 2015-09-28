@@ -1,3 +1,9 @@
+univention-management-console (8.0.14-1) unstable; urgency=medium
+
+  * Bug #38820: change /umcp/ to /univention-management-console/
+
+ -- Florian Best <best@univention.de>  Mon, 28 Sep 2015 18:49:12 +0200
+
 univention-management-console (8.0.13-1) unstable; urgency=medium
 
   * Bug #39226: rename decorator

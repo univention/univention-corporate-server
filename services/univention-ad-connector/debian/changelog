@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.1-1) unstable; urgency=medium
+
+  * Bug #38820: change /umcp/ to /univention-management-console/
+
+ -- Florian Best <best@univention.de>  Mon, 28 Sep 2015 18:51:25 +0200
+
 univention-ad-connector (10.0.0-1) unstable; urgency=medium
 
   * Bug #39322: support psutil 0.9 and >= 2.0

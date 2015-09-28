@@ -48,7 +48,7 @@ define([
 
 		// command: String
 		//		The UMCP command to which the data shall be uploaded.
-		//		If not given, the data is sent to umcp/upload which will return the
+		//		If not given, the data is sent to univention-management-console/upload which will return the
 		//		file content encoded as base64.
 		command: '',
 

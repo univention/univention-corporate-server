@@ -410,10 +410,10 @@ define([
 			dataObj = dataObj || {};
 			handleErrors = undefined === handleErrors || handleErrors;
 			// build the URL for the UMCP command
-			var url = '/umcp/command/' + commandStr;
-			if ((/^(get\/|set$|auth)/i).test(commandStr)) {
+			var url = '/univention-management-console/command/' + commandStr;
+			if ((/^(get\/|set$|auth|saml|logout)/i).test(commandStr)) {
 				// special case for 'get' and 'auth' commands .. here we do not need to add 'command'
-				url = '/umcp/' + commandStr;
+				url = '/univention-management-console/' + commandStr;
 			}
 
 			// build message body
@@ -1485,7 +1485,7 @@ define([
 			});
 
 			var port = window.location.port ? ':' + window.location.port : '';
-			jumpToUrl(window.location.protocol + '//' + host + port + '/umcp/saml/');
+			jumpToUrl(window.location.protocol + '//' + host + port + '/univention-management-console/saml/');
 		},
 
 		defer: function(func, waitingTime) {

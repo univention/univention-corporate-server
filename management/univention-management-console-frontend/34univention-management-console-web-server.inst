@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=3
+VERSION=4
 
 . /usr/share/univention-join/joinscripthelper.lib
 
@@ -59,13 +59,13 @@ else
 fi
 
 udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
-	--set Identifier="https://$hostname.$domainname/umcp/saml/metadata" \
-	--set AssertionConsumerService="https://$hostname.$domainname/umcp/saml/" \
+	--set Identifier="https://$hostname.$domainname/univention-management-console/saml/metadata" \
+	--set AssertionConsumerService="https://$hostname.$domainname/univention-management-console/saml/" \
 	--set serviceProviderOrganizationName="Univention Management Console $hostname.$domainname" \
 	--set isActivated=TRUE \
 	--set simplesamlAttributes=TRUE \
 	--set attributesNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" \
-	--append LDAPattributes=uid || exit 1
+	--append LDAPattributes=uid || die
 
 /usr/share/univention-management-console/saml/update_metadata "$@" || die
 

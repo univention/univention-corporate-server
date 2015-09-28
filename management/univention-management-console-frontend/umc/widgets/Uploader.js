@@ -51,7 +51,7 @@ define([
 
 		// command: String
 		//		The UMCP command to which the data shall be uploaded.
-		//		If not given, the data is sent to umcp/upload which will return the
+		//		If not given, the data is sent to univention-management-console/upload which will return the
 		//		file content encoded as base64.
 		command: '',
 
@@ -138,7 +138,7 @@ define([
 
 			// until Dojo2.0 "dojox.form.Uploader" must be used!
 			this._uploader = new dojox.form.Uploader({
-				url: '/umcp/upload' + (this.command ? '/' + this.command : ''),
+				url: '/univention-management-console/upload' + (this.command ? '/' + this.command : ''),
 				label: this.buttonLabel,
 				multiple: this.multiFile,
 				uploadOnSelect: false,

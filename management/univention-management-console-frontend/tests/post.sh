@@ -10,7 +10,7 @@ password=${2:-"univention"}
 host=${3:-"$hostname.$domainname"}
 port=${4:-80}
 key=$5
-prefix=${6-"umcp/"}
+prefix=${6-"univention-management-console/"}
 
 # prints a HTTP POST command
 # parameters:

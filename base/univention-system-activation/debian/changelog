@@ -1,3 +1,9 @@
+univention-system-activation (1.0.1-1) unstable; urgency=medium
+
+  * Bug #38820: change /umcp/ to /univention-management-console/
+
+ -- Florian Best <best@univention.de>  Mon, 28 Sep 2015 18:50:59 +0200
+
 univention-system-activation (1.0.0-11) unstable; urgency=low
 
   * Bug #39395: get uuid from license file 

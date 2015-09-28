@@ -489,12 +489,12 @@ class CPgeneric(object):
 			cherrypy.response.cookie[idCookie] = sessionid
 			cherrypy.response.cookie[idCookie]['expires'] = expirationStr
 			cherrypy.response.cookie[idCookie]['version'] = 1
-			cherrypy.response.cookie[idCookie]['path'] = '/'
+			cherrypy.response.cookie[idCookie]['path'] = '/univention-management-console/'
 		if username:
 			cherrypy.response.cookie[userCookie] = username
 			cherrypy.response.cookie[userCookie]['expires'] = expirationStr
 			cherrypy.response.cookie[userCookie]['version'] = 1
-			cherrypy.response.cookie[userCookie]['path'] = '/'
+			cherrypy.response.cookie[userCookie]['path'] = '/univention-management-console/'
 
 	@log_exceptions
 	def load_json(self, body):
@@ -719,7 +719,7 @@ class CPAuth(CPgeneric):
 		user = SAMLUser.get_user()
 		if user is None or user.timed_out():
 			SAMLUser.delete_cookie()
-			raise HTTPRedirect('/umcp/saml/')
+			raise HTTPRedirect('/univention-management-console/saml/')
 
 		req = umcp.Request('AUTH')
 		req.body = {
@@ -733,7 +733,7 @@ class CPAuth(CPgeneric):
 		except UMC_HTTPError as exc:
 			if exc.status == UNAUTHORIZED:
 				SAMLUser.delete_cookie()
-				raise HTTPRedirect('/umcp/saml/')  # FIXME: this might cause a endless redirection loop e.g. if slapd is down
+				raise HTTPRedirect('/univention-management-console/saml/')  # FIXME: this might cause a endless redirection loop e.g. if slapd is down
 			raise
 
 		cherrypy.response.status = 303
@@ -870,7 +870,7 @@ class SAML(object):
 				return self.do_single_sign_on()
 			return self.acs(message, binding, relay_state)
 
-		raise HTTPRedirect('/umcp/auth/sso')
+		raise HTTPRedirect('/univention-management-console/auth/sso')
 		cherrypy.response.headers['Content-Type'] = 'text/html'
 		return '<a href="./logout">logout</a>'
 
@@ -900,7 +900,7 @@ class SAML(object):
 		user = SAMLUser(response, message)
 		SAMLUser.set_cookie(user)
 
-		raise HTTPRedirect('/umcp/auth/sso')
+		raise HTTPRedirect('/univention-management-console/auth/sso')
 
 	@cherrypy.expose
 	@log_exceptions
@@ -1168,7 +1168,7 @@ class SAMLUser(object):
 	def delete_cookie(cls):
 		cookie = cherrypy.response.cookie
 		cookie[cls.cookie_name] = ""
-		cookie[cls.cookie_name]['path'] = "/"  # FIXME?
+		cookie[cls.cookie_name]['path'] = "/univention-management-console/"
 		cookie[cls.cookie_name]["expires"] = cls._expiration()
 
 	@classmethod
@@ -1177,10 +1177,10 @@ class SAMLUser(object):
 		cls.uid2user[uid] = user
 		cookie = cherrypy.response.cookie
 		cookie[cls.cookie_name] = uid
-		cookie[cls.cookie_name]['path'] = "/"  # FIXME?
+		cookie[cls.cookie_name]['path'] = "/univention-management-console/"
 		cookie[cls.cookie_name]["expires"] = cls._expiration(int(user.response.not_on_or_after - time.time()))
 		cookie['UMCUsername'] = user.username
-		cookie['UMCUsername']['path'] = '/'  # FIXME
+		cookie['UMCUsername']['path'] = '/univention-management-console/'
 
 	@classmethod
 	def _expiration(cls, timeout=None, tformat='%a, %d-%b-%Y %T GMT'):

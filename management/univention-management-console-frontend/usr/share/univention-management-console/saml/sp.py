@@ -19,9 +19,9 @@ except KeyError:
 addresses = [fqdn]
 addresses.extend([y['address'] for x, y in i.all_interfaces])
 
-bases = ['%s://%s/umcp/saml' % (scheme, addr) for addr in addresses for scheme in ('https', 'http')]
+bases = ['%s://%s/univention-management-console/saml' % (scheme, addr) for addr in addresses for scheme in ('https', 'http')]
 CONFIG = {
-	"entityid": "https://%s/umcp/saml/metadata" % (fqdn,),
+	"entityid": "https://%s/univention-management-console/saml/metadata" % (fqdn,),
 	"name_form": NAME_FORMAT_URI,
 	"description": "Univention Management Console SAML2.0 Service Provider",
 	"service": {

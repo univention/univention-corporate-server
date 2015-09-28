@@ -53,7 +53,7 @@ define([
 				iconClass: 'umcPlayIcon',
 				description: _('<b>Warning:</b> Make sure hostnames of this UCS domain can be resolved by your browser.'),
 				callback: function() {
-					window.location.pathname = '/umcp/saml/';
+					window.location.pathname = '/univention-management-console/saml/';
 				}
 			}));
 		}

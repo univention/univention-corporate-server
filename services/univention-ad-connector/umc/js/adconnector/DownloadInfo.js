@@ -62,11 +62,11 @@ define([
 				linkAttrs += ' target="_blank"';
 			}
 			if (configured) {
-				downloadText += '<li><a href="/umcp/command/adconnector/cert.pem"' + linkAttrs + '>cert.pem</a><br>' +
+				downloadText += '<li><a href="/univention-management-console/command/adconnector/cert.pem"' + linkAttrs + '>cert.pem</a><br>' +
 				_('The <b>cert.pem</b> file contains the SSL certificates created in UCS for secure communication.') + ' ' +
 				_('It must be copied into the installation directory of the password service.') +
 				_('<br />Please verify that the file has been downloaded as <b>cert.pem</b>, Internet Explorer appends a .txt under some circumstances.') +
-				'</li><li><a href="/umcp/command/adconnector/private.key"' + linkAttrs + '>private.key</a><br>' +
+				'</li><li><a href="/univention-management-console/command/adconnector/private.key"' + linkAttrs + '>private.key</a><br>' +
 				_('The <b>private.key</b> file contains the private key to the SSL certificates.') + ' ' +
 				_('It must be copied into the installation directory of the password service.') +
 				'</li>';
@@ -76,4 +76,3 @@ define([
 		}
 	});
 });
-
