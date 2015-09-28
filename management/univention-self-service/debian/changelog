@@ -1,3 +1,9 @@
+univention-self-service (0.0.0-2) unstable; urgency=low
+
+  * Implement backend (Bug #37890)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 28 Sep 2015 15:54:48 +0200
+
 univention-self-service (0.0.0-1) unstable; urgency=medium
 
   * Bug #37890: Initial release

@@ -29,6 +29,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from os.path import realpath, dirname
+
 from univention.selfservice.frontend import UniventionSelfServiceFrontend
 
 import cherrypy
@@ -37,7 +39,13 @@ import cherrypy
 class PasswordReset(UniventionSelfServiceFrontend):
 	@property
 	def cherrypy_conf(self):
-		return {}
+		return {
+			"/": {
+				"tools.sessions.on": True,
+				"tools.staticdir.root": realpath(dirname(__file__))},
+			"/static": {
+				"tools.staticdir.on": True,
+				"tools.staticdir.dir": './static'}}
 
 	@property
 	def url(self):
@@ -52,6 +60,7 @@ class PasswordReset(UniventionSelfServiceFrontend):
 		return """<html>
 	<head></head>
 	<body>
+		<p>static stuff here: <img src="static/debian-logo.png"/></p>
 		<p><a href="edit_contact">Edit contact</a></p>
 		<p><a href="token">Enter token</a></p>
 	</body>
@@ -61,7 +70,7 @@ class PasswordReset(UniventionSelfServiceFrontend):
 	def edit_contact(self):
 		connection = self.get_umc_connection()
 		if connection:
-			result = connection.request('passwordreset/edit_contact', {
+			result = connection.request('passwordreset/set_contact', {
 				"username": "test1",
 				"password": "test1",
 				"email": "test1m@uni.dtr"
@@ -80,7 +89,7 @@ class PasswordReset(UniventionSelfServiceFrontend):
 		return """<html>
 	<head></head>
 	<body>
-		<form action="../submit_token" method="post">
+		<form action="submit_token" method="post">
 			{token_input}
 			<p>New password: <input type="text" name="password1" value="please enter new password"></p>
 			<p>New password again: <input type="text" name="password2" value="please enter new password again"></p>
@@ -98,7 +107,7 @@ class PasswordReset(UniventionSelfServiceFrontend):
 		else:
 			connection = self.get_umc_connection()
 			if connection:
-				result = connection.request('passwordreset/submit_token', {
+				result = connection.request('passwordreset/set_password', {
 					"token": token,
 					"password": password1,
 				})

@@ -32,7 +32,6 @@
 import sys
 sys.stdout = sys.stderr
 
-import atexit
 import cherrypy
 import json
 import os
@@ -42,7 +41,7 @@ import inspect
 from univention.selfservice.frontend import UniventionSelfServiceFrontend
 
 
-URL_ROOT = "/univention-self-service/"
+URL_ROOT = "/"
 PLUGIN_FOLDER = "/usr/share/univention-self-service/plugins"
 MAIN_MODULE = "__init__"
 
@@ -72,7 +71,7 @@ def load_selfservice_plugins():
 		for dir_ in plugin_dirs:
 			location = os.path.join(PLUGIN_FOLDER, dir_)
 			if not os.path.isdir(location) or not "%s.py" % MAIN_MODULE in os.listdir(location):
-				cherrypy.log("wsgi.find_plugins(): No %s.py in plugin_dir %r, ignoring." % (MAIN_MODULE, dir_))
+				cherrypy.log("uss-web.find_plugins(): No %s.py in plugin_dir %r, ignoring." % (MAIN_MODULE, dir_))
 				continue
 			info = imp.find_module(MAIN_MODULE, [location])
 			_plugins.append({"name": dir_, "info": info})
@@ -85,24 +84,24 @@ def load_selfservice_plugins():
 				possible_plugin_class = getattr(res, thing)
 				if inspect.isclass(possible_plugin_class) and issubclass(possible_plugin_class, UniventionSelfServiceFrontend):
 					return possible_plugin_class
-		cherrypy.log("wsgi.load_plugin(): Not a UniventionSelfServiceFrontend class: %r" % module["name"])
+		cherrypy.log("uss-web.load_plugin(): Not a UniventionSelfServiceFrontend class: %r" % module["name"])
 		return None
 
 	for module in find_plugins():
-		cherrypy.log("wsgi.load_selfservice_plugins(): Loading plugin %r..." % module["name"])
+		cherrypy.log("uss-web.load_selfservice_plugins(): Loading plugin %r..." % module["name"])
 		plugin_class = load_plugin(module)
 		if plugin_class:
 			selfservice_plugins.append(plugin_class)
 	return selfservice_plugins
 
 
-cherrypy.config.update({'environment': 'embedded'})
-
 cherrypy.config.update({
 	"log.access_file": "/var/log/univention/self-service-access.log",
-	"log.error_file": "/var/log/univention/self-service-error.log"})
+	"log.error_file": "/var/log/univention/self-service-error.log",
+	"server.socket_port": 8099,
+	"engine.autoreload_on": False})
 
-cherrypy.log("wsgi: Going to load plugins...")
+cherrypy.log("uss-web: Going to load plugins...")
 plugin_classes = load_selfservice_plugins()
 plugins = list()
 for plugin_class in plugin_classes:
@@ -114,12 +113,8 @@ root = Root(plugins)
 cherrypy.tree.mount(root, URL_ROOT, None)
 for plugin in plugins:
 	cherrypy.tree.mount(plugin, URL_ROOT + plugin.url, plugin.cherrypy_conf)
-	cherrypy.log("wsgi: started serving plugin '{}' at '{}'.".format(plugin.name, URL_ROOT + plugin.url))
-	cherrypy.log("wsgi: plugin '{}' provided conf '{}'.".format(plugin.name, plugin.cherrypy_conf))
+	cherrypy.log("uss-web: started serving plugin '{}' at '{}'.".format(plugin.name, URL_ROOT + plugin.url))
+	cherrypy.log("uss-web: plugin '{}' provided conf '{}'.".format(plugin.name, plugin.cherrypy_conf))
 
-if cherrypy.__version__.startswith('3.0') and cherrypy.engine.state == 0:
-	cherrypy.engine.start()
-	atexit.register(cherrypy.engine.stop)
-	cherrypy.server.unsubscribe()
-
-application = cherrypy.tree
+cherrypy.engine.start()
+cherrypy.engine.block()

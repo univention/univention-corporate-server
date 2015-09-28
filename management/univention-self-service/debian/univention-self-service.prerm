@@ -34,10 +34,10 @@
 
 case "$1" in
 	remove)
+		supervisorctl stop self-service
 		a2dissite univention-self-service
 		invoke-rc.d apache2 reload
 	;;
 esac
 
 exit 0
-

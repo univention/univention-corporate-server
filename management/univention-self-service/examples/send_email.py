@@ -91,7 +91,7 @@ msg["Date"] = formatdate(localtime=True)
 msg["From"] = "noreply@{}".format(fqdn)
 msg["To"] = ", ".join(infos["addresses"])
 msg.set_payload(txt, charset=cs)
-sys.exit(1)
+
 smtp = smtplib.SMTP(infos["server"])
 smtp.sendmail(msg["From"], infos["addresses"], msg.as_string())
 smtp.quit()

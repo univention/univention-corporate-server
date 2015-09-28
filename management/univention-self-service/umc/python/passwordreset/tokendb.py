@@ -68,8 +68,9 @@ class TokenDB(object):
 		self.conn.commit()
 		cur.close()
 
-	def delete_tokens(self, username):
-		sql = "DELETE FROM tokens WHERE username='{}';".format(username)
+	def delete_tokens(self, **kwargs):
+		sql = "DELETE FROM tokens WHERE "
+		sql += " AND ".join(["{0}='{1}'".format(*item) for item in kwargs.items()])
 		cur = self.conn.cursor()
 		cur.execute(sql)
 		self.conn.commit()

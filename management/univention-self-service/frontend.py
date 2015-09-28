@@ -31,7 +31,11 @@
 
 import cherrypy
 
+from httplib import HTTPException
+from socket import error as SocketError
+
 from univention.lib.umc_connection import UMCConnection
+from univention.management.console.config import ucr
 
 LDAP_SECRETS_FILE = "/etc/self-service-ldap.secret"
 
@@ -59,6 +63,12 @@ class UniventionSelfServiceFrontend(object):
 		return self.__class__.__name__
 
 	def get_umc_connection(self):
+		"""
+		This is UMCConnection.get_machine_connection(), but using
+		LDAP_SECRETS_FILE instead of /etc/machine.secret.
+		:return: UMCConnection
+		"""
+		username = '%s$' % ucr.get('hostname')
 		try:
 			with open(LDAP_SECRETS_FILE) as machine_file:
 				password = machine_file.readline().strip()
@@ -66,4 +76,12 @@ class UniventionSelfServiceFrontend(object):
 			self.log('Could not read {}: {}'.format(LDAP_SECRETS_FILE, e))
 			raise
 
-		return UMCConnection.get_machine_connection()
+		error_handler = self.log
+		try:
+			connection = UMCConnection(ucr.get('ldap/master'))
+			connection.auth(username, password)
+			return connection
+		except (HTTPException, SocketError) as e:
+			if error_handler:
+				error_handler('Could not connect to UMC on %s: %s' % (ucr.get('ldap/master'), e))
+		return None

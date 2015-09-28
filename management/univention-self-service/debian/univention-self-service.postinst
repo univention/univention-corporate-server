@@ -33,8 +33,13 @@
 ACCESS_LOG=/var/log/univention/self-service-access.log
 ERROR_LOG=/var/log/univention/self-service-error.log
 
+if [ "$1" = "configure" -a -z "$2" ] ; then
+	echo "Fresh installation..."
+	adduser --system --no-create-home --group self-service
+fi
+
 touch $ACCESS_LOG $ERROR_LOG
-chown www-data:adm $ACCESS_LOG $ERROR_LOG
+chown self-service:adm $ACCESS_LOG $ERROR_LOG
 chmod 640 $ACCESS_LOG $ERROR_LOG
 
 /usr/lib/univention-server/server_password_change.d/univention-self-service postchange
@@ -55,8 +60,8 @@ univention-config-registry set \
 	self-service/sms/enabled?no \
 	self-service/sms/server?""
 
+invoke-rc.d supervisor restart
 a2ensite univention-self-service
-a2enmod wsgi
 invoke-rc.d apache2 reload
 
 exit 0

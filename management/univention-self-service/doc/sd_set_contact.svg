@@ -82,12 +82,12 @@
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:zoom="1.8243243"
-     inkscape:cx="398.67312"
+     inkscape:cx="399.76942"
      inkscape:cy="1.2423381"
      inkscape:window-x="0"
      inkscape:window-y="25"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g4052"
+     inkscape:current-layer="svg2985"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -344,22 +344,22 @@
   <text
      xml:space="preserve"
      style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:150%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
-     x="193.59082"
+     x="191.59082"
      y="86.349495"
      id="text4100-5"
      sodipodi:linespacing="150%"><tspan
        sodipodi:role="line"
        id="tspan3061"
-       x="193.59082"
-       y="86.349495">UMCP pw_set_contact(</tspan><tspan
+       x="191.59082"
+       y="86.349495">UMCP set_contact(</tspan><tspan
        sodipodi:role="line"
        id="tspan3063"
-       x="193.59082"
-       y="98.349495">username, password,</tspan><tspan
+       x="191.59082"
+       y="98.349495">    username, password,</tspan><tspan
        sodipodi:role="line"
        id="tspan3065"
-       x="193.59082"
-       y="110.34949">email, mobile)</tspan></text>
+       x="191.59082"
+       y="110.34949">    email, mobile)</tspan></text>
   <text
      sodipodi:linespacing="125%"
      id="text4166"

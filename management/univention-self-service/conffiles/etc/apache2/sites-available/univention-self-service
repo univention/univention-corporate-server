@@ -1,3 +1,8 @@
 @%@UCRWARNING=# @%@
 
-WSGIScriptAlias /univention-self-service /usr/share/univention-self-service/wsgi.py
+ProxyVia On
+ProxyRequests Off
+ProxyPreserveHost on
+
+ProxyPass /univention-self-service/ http://127.0.0.1:8099/ retry=0
+ProxyPassReverse /univention-self-service/ http://127.0.0.1:8099/
