@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-1) unstable; urgency=medium
+
+  * Bug #38894: fine tuning of appearance
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 28 Sep 2015 16:06:42 +0200
+
 univention-management-console-module-appcenter (5.0.5-9) unstable; urgency=medium
 
   * Bug #39414: Don't loop when update_available script returns bugged output
