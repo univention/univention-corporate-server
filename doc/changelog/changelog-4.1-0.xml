@@ -522,6 +522,10 @@
 					<option>packageversion</option>
 					(<u:bug>38205</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						When joining a UCS domain, Docker containers do not register their IP
+						and MAC addresses in the computer object (<u:bug>38437</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 	</section>
 
