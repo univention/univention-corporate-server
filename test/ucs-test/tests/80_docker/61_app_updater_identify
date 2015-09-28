@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check updater/identify in a new Docker App
-## tags: [docker,WIP]
+## tags: [docker]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io

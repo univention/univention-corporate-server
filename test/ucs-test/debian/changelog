@@ -1,3 +1,9 @@
+ucs-test (6.0.6-5) unstable; urgency=medium
+
+  * Removed WIP tag for docker tests (Bug #38887)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Sep 2015 19:50:04 +0200
+
 ucs-test (6.0.6-4) unstable; urgency=medium
 
   * Added a docker process check test: 00_checks/51_check_for_docker
