@@ -45,4 +45,6 @@ eval "$(ucr shell)"
 ucr set ucs/server/sso/fqdn?"ucs-sso.$domainname"
 /etc/init.d/apache2 reload
 
+joinscript_save_current_version
+
 exit 0

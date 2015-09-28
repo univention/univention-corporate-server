@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.26-2) unstable; urgency=medium
+
+  * Bug #31943: fix joinscript execution
+
+ -- Florian Best <best@univention.de>  Mon, 28 Sep 2015 20:15:19 +0200
+
 univention-management-console-frontend (5.0.26-1) unstable; urgency=medium
 
   * Bug #38820: change /umcp/ to /univention-management-console/
