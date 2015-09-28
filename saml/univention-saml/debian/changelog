@@ -1,3 +1,9 @@
+univention-saml (3.0.11-2) unstable; urgency=medium
+
+  * Bug #39399: fixup
+
+ -- Florian Best <best@univention.de>  Mon, 28 Sep 2015 20:31:02 +0200
+
 univention-saml (3.0.11-1) unstable; urgency=medium
 
   * Bug #39399: fixup
