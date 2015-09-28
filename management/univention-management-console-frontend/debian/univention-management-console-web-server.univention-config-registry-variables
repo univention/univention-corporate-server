@@ -40,7 +40,7 @@ Description[en]=Defines the number of unaccepted connections that the UMC web se
 Type=int
 Categories=management-umc
 
-[umc/saml/idp-servers/.*]
+[umc/saml/idp-server]
 Description[de]=Definiert den SAML 2.0 Identity Provider, der vom UMC-Web-Server für Single sign on verwendet wird.
 Description[en]=Defines the SAML 2.0 identity provider which is used for single sign on by the UMC web server.
 Type=str

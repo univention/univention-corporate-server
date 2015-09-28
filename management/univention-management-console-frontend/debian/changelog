@@ -1,6 +1,7 @@
 univention-management-console-frontend (5.0.26-1) unstable; urgency=medium
 
   * Bug #38820: change /umcp/ to /univention-management-console/
+  * Bug #31943: set IDP server
 
  -- Florian Best <best@univention.de>  Mon, 28 Sep 2015 18:55:33 +0200
 
