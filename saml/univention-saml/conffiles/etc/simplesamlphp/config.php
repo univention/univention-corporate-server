@@ -639,7 +639,7 @@ print "\t'store.type' => '%s'," % (configRegistry.get('saml/idp/session-type', '
 		),
 @!@
 for key, server in configRegistry.items():
-	if not key.startswith('umc/saml/idp-servers/'):
+	if not key.startswith('ucs/server/saml-idp-server/'):
 		continue
 	print '''
 		array(

@@ -31,7 +31,7 @@ Variables: saml/idp/technicalcontactemail
 Variables: hostname
 Variables: domainname
 Variables: saml/idp/session-type
-Variables: umc/saml/idp-servers/.*
+Variables: ucs/server/saml-idp-server/.*
 
 Type: multifile
 Multifile: etc/simplesamlphp/authsources.php
@@ -69,7 +69,7 @@ Group: root
 Mode: 644
 Variables: hostname
 Variables: domainname
-Variables: umc/saml/idp-servers/.*
+Variables: ucs/server/saml-idp-server/.*
 
 Type: file
 File: etc/memcached_univention_saml.conf

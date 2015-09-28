@@ -38,20 +38,48 @@ joinscript_init
 
 eval "$(ucr shell)"
 
-ssofqdn="${ucs_server_sso_fqdn:-ucs-sso.$domainname}"
-ucr set saml/idp/certificate/privatekey?"/etc/simplesamlphp/${ssofqdn}-idp-certificate.key" \
-		saml/idp/certificate/certificate?"/etc/simplesamlphp/${ssofqdn}-idp-certificate.crt" \
-		ucs/server/sso/fqdn?"$ssofqdn" \
-		umc/saml/idp-server?"https://${ssofqdn}/simplesamlphp/saml2/idp/metadata.php" \
-		"umc/saml/idp-servers/$hostname.$domainname=$hostname.$domainname"
+ucr set saml/idp/certificate/privatekey?"/etc/simplesamlphp/${ucs_server_sso_fqdn}-idp-certificate.key" \
+		saml/idp/certificate/certificate?"/etc/simplesamlphp/${ucs_server_sso_fqdn}-idp-certificate.crt"
 
 eval "$(ucr shell)"  # as variables were changed we need the new ones
 
-/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add a ucs-sso "$(get_default_ip_address)" || die
+SECRETFILE="/etc/simplesamlphp/idp-ldap-user.secret"
+HOSTPWD="/etc/machine.secret"
+HOSTACCOUNT="$hostname\$"
+
+if [ "$server_role" = "domaincontroller_master" ]; then
+	# Only set password if sys-idp-user does not exist
+	username=$(ucs_getAttrOfDN uid uid=sys-idp-user,cn=users,"$ldap_base" "$@" 2>/dev/null)
+	if [ ! "$username" = "sys-idp-user" ]; then
+		PASSWORD=$(makepasswd --chars=20)
+		touch "$SECRETFILE"
+		chown root:"DC Backup Hosts" "$SECRETFILE"
+		chmod 640 "$SECRETFILE"
+		printf '%s' "$PASSWORD" > "$SECRETFILE"
+		udm users/user create "$@" \
+			--position "cn=users,$ldap_base" \
+			--set username="sys-idp-user" --set lastname="idp-user" \
+			--set password="$PASSWORD" --set objectFlag="functional" \
+			--option ldap_pwd || die
+		ucr commit /etc/simplesamlphp/authsources.php
+	fi
+
+elif [ "$server_role" = "domaincontroller_backup" ]; then
+	touch "$SECRETFILE"
+	chown root:"DC Backup Hosts" "$SECRETFILE" || die
+	chmod 640 "$SECRETFILE" || die
+	univention-scp $HOSTPWD "$HOSTACCOUNT@$ldap_master:$SECRETFILE $SECRETFILE" || die
+	echo "Successfully downloaded the sys-idp-user credential file"
+	ucr commit /etc/simplesamlphp/authsources.php
+fi
 
 # check if we need to create a new certificate
 if [ ! -e "${saml_idp_certificate_certificate}" ]; then
-	univention-certificate new -name "${ucs_server_sso_fqdn}" -days "${ssl_default_days:-1825}" || die
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		univention-certificate new -name "${ucs_server_sso_fqdn}" -days "${ssl_default_days:-1825}" || die
+	else
+		univention-scp $HOSTPWD "-r $HOSTACCOUNT@$ldap_master:/etc/univention/ssl/${ucs_server_sso_fqdn}/ /etc/univention/ssl/" || die
+	fi
 
 	cp "/etc/univention/ssl/${ucs_server_sso_fqdn}/cert.pem" "${saml_idp_certificate_certificate}" || die  # FIXME: copied because www-data cannot +rx the directory contents
 	cp "/etc/univention/ssl/${ucs_server_sso_fqdn}/private.key" "${saml_idp_certificate_privatekey}" || die
@@ -59,20 +87,7 @@ if [ ! -e "${saml_idp_certificate_certificate}" ]; then
 	chmod 640 "${saml_idp_certificate_certificate}" "${saml_idp_certificate_privatekey}" || die
 fi
 
-udm policies/registry "$@" create \
-	--ignore_exists \
-	--position "cn=config-registry,cn=policies,$ldap_base" \
-	--set name='umc-saml-servers' \
-	--set ldapFilter="(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))" \
-	--append registry="umc/saml/idp-server https://${ssofqdn}/simplesamlphp/saml2/idp/metadata.php"
-
-udm policies/registry "$@" modify \
-	--dn "cn=umc-saml-servers,cn=config-registry,cn=policies,$ldap_base" \
-	--append registry="umc/saml/idp-servers/$hostname.$domainname $hostname.$domainname"
-
-udm container/cn "$@" modify  \
-	--dn "cn=computers,$ldap_base" \
-	--policy-reference "cn=umc-saml-servers,cn=config-registry,cn=policies,$ldap_base"
+/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add a ucs-sso "$(get_default_ip_address)" || die
 
 ucs_addServiceToLocalhost "univention-saml" "$@" || die
 
@@ -140,37 +155,8 @@ udm saml/serviceprovider create "$@" \
 	--set privacypolicyURL="https://trust.salesforce.com/trust/privacy/" \
 	--set serviceProviderOrganizationName="Salesforce" || die
 
-SECRETFILE="/etc/simplesamlphp/idp-ldap-user.secret"
-
-if [ "$server_role" = "domaincontroller_master" ]; then
-	# Only set password if sys-idp-user does not exist
-	username=$(ucs_getAttrOfDN uid uid=sys-idp-user,cn=users,"$ldap_base" "$@" 2>/dev/null)
-	if [ ! "$username" = "sys-idp-user" ]; then
-		PASSWORD=$(makepasswd --chars=20)
-		touch "$SECRETFILE"
-		chown root:"DC Backup Hosts" "$SECRETFILE"
-		chmod 640 "$SECRETFILE"
-		printf '%s' "$PASSWORD" > "$SECRETFILE"
-		udm users/user create "$@" \
-			--position "cn=users,$ldap_base" \
-			--set username="sys-idp-user" --set lastname="idp-user" \
-			--set password="$PASSWORD" --set objectFlag="functional" \
-			--option ldap_pwd || die
-		ucr commit /etc/simplesamlphp/authsources.php
-	fi
-
-elif [ "$server_role" = "domaincontroller_backup" ]; then
-	HOSTPWD="/etc/machine.secret"
-	HOSTACCOUNT="$hostname\$"
-	touch "$SECRETFILE"
-	chown root:"DC Backup Hosts" "$SECRETFILE"
-	chmod 640 "$SECRETFILE"
-	univention-scp $HOSTPWD "-r $HOSTACCOUNT@$ldap_master:$SECRETFILE $SECRETFILE" || die
-	echo "Successfully downloaded the sys-idp-user credential file"
-	ucr commit /etc/simplesamlphp/authsources.php
-fi
-
 /etc/init.d/univention-saml restart
+/etc/init.d/apache2 reload
 
 joinscript_save_current_version
 exit 0

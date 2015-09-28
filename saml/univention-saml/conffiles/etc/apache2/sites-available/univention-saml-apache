@@ -20,6 +20,9 @@ RewriteRule ^/?simplesamlphp/(.*) https://%{SERVER_NAME}/simplesamlphp/$1 [R,L]
 	Order allow,deny
 	Allow from all
 	php_admin_value suhosin.get.max_value_length "2048"
+
+	# AJAX-Requests via UMC should be possible:
+	Header always set Access-Control-Allow-Origin "*"
 </Directory>
 
 @!@
@@ -36,7 +39,6 @@ if os.path.isfile('/etc/univention/ssl/%(ssofqdn)s/cert.pem' % ssofqdn) and os.p
 	SSLCertificateFile /etc/univention/ssl/%(ssofqdn)s/cert.pem
 	SSLCertificateKeyFile /etc/univention/ssl/%(ssofqdn)s/private.key
 	SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem
-	Header set Access-Control-Allow-Origin "*"
 </VirtualHost>
 </IfModule>
 ''' % ssofqdn

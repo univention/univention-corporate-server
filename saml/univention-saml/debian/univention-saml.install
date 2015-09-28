@@ -1,2 +1,3 @@
 umc/saml-serviceprovider.xml usr/share/univention-management-console/modules
 simplesamlphp-theme/univentiontheme usr/share/simplesamlphp/modules
+listener/univention-schema.py usr/lib/univention-directory-listener/system/
