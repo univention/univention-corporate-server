@@ -1,0 +1,20 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: Check if docker is running
+## exposure: safe
+## packages:
+## - docker.io
+
+RETVAL=0
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+echo "Trying to find 'docker' process:"
+
+if pgrep -f "/usr/bin/docker " >/dev/null
+then
+    echo "OK. Process found."
+else
+    fail_fast 110 "Could not find the 'docker' process."
+fi
+
+exit $RETVAL

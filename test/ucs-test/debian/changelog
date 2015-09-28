@@ -1,3 +1,10 @@
+ucs-test (6.0.6-4) unstable; urgency=medium
+
+  * Added a docker process check test: 00_checks/51_check_for_docker
+    (Bug #39350)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Sep 2015 08:24:22 +0200
+
 ucs-test (6.0.6-3) unstable; urgency=medium
 
   * Merged from UCS 4.0-3:
