@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-3) unstable; urgency=medium
+
+  * Bug #38894: include svg icon
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 28 Sep 2015 17:27:51 +0200
+
 univention-management-console-module-appcenter (5.0.6-2) unstable; urgency=medium
 
   * Bug #38894: version bump
