@@ -163,7 +163,7 @@
 			<itemizedlist>
 				<listitem><simpara>
 					The App Center is now able to install docker based apps. These apps are installed in a small container (minimal UCS) within the host system
- 					(..., <u:bug>39258</u:bug>, <u:bug>39374</u:bug>, <u:bug>39331</u:bug>, <u:bug>39413</u:bug>).
+ 					(..., <u:bug>39258</u:bug>, <u:bug>39374</u:bug>, <u:bug>39331</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
