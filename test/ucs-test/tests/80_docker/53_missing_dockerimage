@@ -6,16 +6,14 @@
 ##   - docker.io
 
 from dockertest import *
-from univention.testing.utils import get_ldap_connection, fail
+from univention.testing.utils import fail
 from univention.testing.internal import package_installed
 
 if __name__ == '__main__':
 	
 	with Appcenter() as appcenter:
-		apps = {}
-		for i in range(0,20):
-			apps['app_name'] = get_app_name()
-			apps['app_version'] = get_app_version()
+		apps['app_name'] = get_app_name()
+		apps['app_version'] = get_app_version()
 
 		app = App(name=app_name, version=app_version)
 

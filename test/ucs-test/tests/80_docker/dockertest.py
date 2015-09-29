@@ -94,6 +94,8 @@ class App:
 
 		self.scripts = {}
 
+		self.ucs_version = self.ucr.get('version/version')
+
 	def set_ini_parameter(self, **kwargs):
 		for key, value in kwargs.iteritems():
 			self.ini[key] = value
@@ -140,7 +142,10 @@ class App:
 		self.package.remove()
 
 	def _dump_ini(self):
-		target = os.path.join('/var/www/meta-inf/%s' % self.ucr.get('version/version'), '%s.ini' % self.app_directory)
+		if not os.path.exists('/var/www/meta-inf/%s' % self.ucs_version):
+			os.makedirs('/var/www/meta-inf/%s' % self.ucs_version)
+
+		target = os.path.join('/var/www/meta-inf/%s' % self.ucs_version, '%s.ini' % self.app_directory)
 		f = open(target, 'w')
 		print 'Write ini file: %s' % target
 		f.write('[Application]\n')
@@ -153,7 +158,7 @@ class App:
 
 	def _dump_scripts(self):
 		for script in self.scripts.keys():
-			target = os.path.join('/var/www/univention-repository/%s/maintained/component' % self.ucr.get('version/version'), '%s/%s' % (self.app_directory, script))
+			target = os.path.join('/var/www/univention-repository/%s/maintained/component' % self.ucs_version, '%s/%s' % (self.app_directory, script))
 
 			print 'Create %s' % target
 			print self.scripts[script]
@@ -163,24 +168,27 @@ class App:
 			f.close()
 
 	def _copy_package(self):
-		target = os.path.join('/var/www/univention-repository/%s/maintained/component' % self.ucr.get('version/version'), '%s/all' % self.app_directory)
+		target = os.path.join('/var/www/univention-repository/%s/maintained/component' % self.ucs_version, '%s/all' % self.app_directory)
 		os.makedirs(target)
 		shutil.copy(self.package.get_binary_name(), target)
 		subprocess.call('''
 			cd /var/www/univention-repository/%(version)s/maintained/component;
 			apt-ftparchive packages %(app)s/all >%(app)s/all/Packages;
 			gzip -c %(app)s/all/Packages >%(app)s/all/Packages.gz
-		''' % {'version': self.ucr.get('version/version'), 'app': self.app_directory}, shell=True)
+		''' % {'version': self.ucs_version, 'app': self.app_directory}, shell=True)
 
 class Appcenter:
-	def __init__(self):
+	def __init__(self, version=None):
 		self.meta_inf_created = False
 		self.univention_repository_created = False
 		
 		self.ucr = UCSTestConfigRegistry()
 		self.ucr.load()
 
-		self.version = self.ucr.get('version/version')
+		if version:
+			self.version = version
+		else:
+			self.version = self.ucr.get('version/version')
 
 		if os.path.exists('/var/www/meta-inf'):
 			print 'ERROR: /var/www/meta-inf already exists'
@@ -201,8 +209,13 @@ class Appcenter:
 		handler_set(['update/secure_apt=no', 'repository/app_center/server=%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])])
 
 	def update(self):
-		subprocess.call('create_appcenter_json.py -u %(version)s -d /var/www -o /var/www/meta-inf/%(version)s/index.json.gz -s http://%(fqdn)s' %
-			 {'version': self.version, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
+		for vv in os.listdir('/var/www/meta-inf/'):
+			directory = os.path.join('/var/www/meta-inf/', vv)
+			if not os.path.isdir(directory):
+				continue
+			print 'create_appcenter_json.py for %s' % vv
+			subprocess.call('create_appcenter_json.py -u %(version)s -d /var/www -o /var/www/meta-inf/%(version)s/index.json.gz -s http://%(fqdn)s' %
+				 {'version': vv, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
 
 	def cleanup(self):
 		if self.meta_inf_created:
