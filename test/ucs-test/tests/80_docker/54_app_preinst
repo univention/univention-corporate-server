@@ -1,0 +1,47 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check the preinst script
+## tags: [docker]
+## exposure: dangerous
+## packages:
+##   - docker.io
+
+from dockertest import *
+from univention.testing.utils import get_ldap_connection
+
+	
+def create_app(fail_in_preinst):
+		app_name = get_app_name()
+		app_version = get_app_version()
+
+		app = App(name=app_name, version=app_version)
+
+		try:
+			app.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0')
+			app.add_script(preinst='''#!/bin/bash
+set -x -e
+echo "Test preinst script"
+exit %d
+''' % (1 if fail_in_preinst else 0))
+
+			app.add_to_local_appcenter()
+
+			appcenter.update()
+
+			try:
+				app.install()
+				app.verify()
+			except (UCSTest_DockerApp_VerifyFailed, UCSTest_DockerApp_InstallationFailed):
+				if not fail_in_preinst:
+					raise
+			else:
+				if fail_in_preinst:
+					raise
+
+		finally:
+			app.uninstall()
+			app.remove()
+
+if __name__ == '__main__':
+	with Appcenter() as appcenter:
+		create_app(fail_in_preinst=False)
+		create_app(fail_in_preinst=True)

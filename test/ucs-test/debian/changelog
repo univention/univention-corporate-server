@@ -1,3 +1,12 @@
+ucs-test (6.0.8-3) unstable; urgency=medium
+
+  * 80_docker/54_app_preinst: Check the preinst script (Bug #39195)
+  * 80_docker/55_app_modproxy: Added mod_proxy test case (Bug #39198)
+  * 80_docker/70_app_scaling: Added test case for multiple docker
+    instances
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Sep 2015 14:04:36 +0200
+
 ucs-test (6.0.8-2) unstable; urgency=medium
 
   * Bug #39331: Test non-existance of IP/MAC after docker container join

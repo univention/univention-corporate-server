@@ -1,0 +1,39 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create and install a simple docker app
+## tags: [docker]
+## exposure: dangerous
+## packages:
+##   - docker.io
+
+from dockertest import *
+from univention.testing.utils import get_ldap_connection
+
+DOCKER_APP_COUNT=20
+
+if __name__ == '__main__':
+	
+	with Appcenter() as appcenter:
+		apps = []
+
+		try:
+			for i in range(0,DOCKER_APP_COUNT):
+				app = App(name=get_app_name(), version=get_app_version())
+				app.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0')
+				app.add_to_local_appcenter()
+
+				apps.append(app)
+
+
+			appcenter.update()
+
+			for i in range(0,DOCKER_APP_COUNT):
+				apps[i].install()
+
+			for i in range(0,DOCKER_APP_COUNT):
+				apps[i].verify()
+
+		finally:
+			for i in range(0,len(apps)):
+				apps[i].uninstall()
+				apps[i].remove()
+

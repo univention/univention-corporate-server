@@ -1,0 +1,60 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check Docker App mod_proxy configuration
+## tags: [docker]
+## exposure: dangerous
+## packages:
+##   - docker.io
+
+import urllib2
+from dockertest import *
+from univention.testing.utils import get_ldap_connection
+
+class UCSTest_DockerApp_ModProxyFailed(Exception): pass
+	
+
+if __name__ == '__main__':
+
+	with Appcenter() as appcenter:
+		app_name = get_app_name()
+		app_version = get_app_version()
+
+		app = App(name=app_name, version=app_version)
+
+		try:
+			app.set_ini_parameter(	DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0',
+									WebInterface='/testapp',
+									WebInterfacePortHTTP='80',
+									WebInterfacePortHTTPS='443',
+									AutoModProxy='True',
+									DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
+								)
+			app.add_script(setup='''#!/bin/bash
+set -x -e
+univention-install --yes univention-apache
+mkdir /var/www/testapp
+echo "TEST" >>/var/www/testapp/index.txt
+/usr/share/univention-docker-container-mode/setup "$@"
+''')
+
+			app.add_to_local_appcenter()
+
+			appcenter.update()
+
+			app.install()
+			app.verify()
+			
+			fqdn = '%s.%s' % (appcenter.ucr['hostname'], appcenter.ucr['domainname'])
+
+			response = urllib2.urlopen('http://%s/testapp/index.txt' % fqdn)
+			html = response.read()
+			if html != 'TEST\n':
+				raise UCSTest_DockerApp_ModProxyFailed(Exception)
+
+			response = urllib2.urlopen('https://%s/testapp/index.txt' % fqdn)
+			html = response.read()
+			if html != 'TEST\n':
+				raise UCSTest_DockerApp_ModProxyFailed(Exception)
+
+		finally:
+			app.uninstall()
+			app.remove()
