@@ -71,6 +71,7 @@ class Update(UniventionAppAction):
 	def main(self, args):
 		self._ucs_version = args.ucs_version
 		self._appcenter_server = args.appcenter_server
+		self._download_supra_files()
 		something_changed_locally = self._extract_local_archive()
 		json_apps = self._load_index_json()
 		files_to_download, something_changed_remotely = self._read_index_json(json_apps)
@@ -102,6 +103,12 @@ class Update(UniventionAppAction):
 				if AppManager.find(app.id, latest=True) > app:
 					ucr_update(ucr, {app.ucr_upgrade_key: 'yes'})
 			self._update_local_files()
+
+	def _download_supra_files(self):
+		categories_url = urljoin('%s/' % self._get_metainf_url(), '../categories.ini')
+		self.log('Downloading "%s"...' % categories_url)
+		with open(os.path.join(CACHE_DIR, '.categories.ini'), 'wb') as f:
+			f.write(urlopen(categories_url).read())
 
 	def _download_archive(self, files_to_download):
 		# a lot of files to download? Do not download them

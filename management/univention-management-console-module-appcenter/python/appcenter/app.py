@@ -59,6 +59,18 @@ CONTAINER_SCRIPTS_PATH = '/usr/share/univention-docker-container-mode/'
 app_logger = get_base_logger().getChild('apps')
 
 
+def _get_locale():
+	locale = getlocale()[0]
+	if locale:
+		locale = locale.split('_', 1)[0]
+	return locale
+
+
+class CaseSensitiveConfigParser(RawConfigParser):
+	def optionxform(self, optionstr):
+		return optionstr
+
+
 class Requirement(UniventionMetaInfo):
 	save_as_list = '_requirements'
 	auto_set_name = True
@@ -98,14 +110,15 @@ class AppAttribute(UniventionMetaInfo):
 	save_as_list = '_attrs'
 	auto_set_name = True
 
-	def __init__(self, required=False, default=None, regex=None, choices=None, escape=True, localizable=False, strict=True):
+	def __init__(self, required=False, default=None, regex=None, choices=None, escape=True, localisable=False, localisable_by_file=None, strict=True):
 		super(AppAttribute, self).__init__()
 		self.regex = regex
 		self.default = default
 		self.required = required
 		self.choices = choices
 		self.escape = escape
-		self.localizable = localizable
+		self.localisable = localisable
+		self.localisable_by_file = localisable_by_file
 		self.strict = strict
 
 	def test_regex(self, regex, value):
@@ -213,6 +226,51 @@ class AppListAttribute(AppAttribute):
 			super(AppListAttribute, self).test_regex(regex, val)
 
 
+class AppLocalisedListAttribute(AppListAttribute):
+	_cache = {}
+
+	@classmethod
+	def _translate(cls, fname, locale, value, reverse=False):
+		if fname not in cls._cache:
+			cls._cache[fname] = translations = {}
+			localiser = CaseSensitiveConfigParser()
+			cached_file = os.path.join(CACHE_DIR, '.%s' % fname)
+			try:
+				with open(cached_file, 'rb') as f:
+					localiser.readfp(f)
+			except IOError:
+				pass
+			else:
+				for section in localiser.sections():
+					translations[section] = dict(localiser.items(section))
+		translations = cls._cache[fname].get(locale)
+		if translations:
+			if reverse:
+				for k, v in translations.iteritems():
+					if v == value:
+						value = k
+						break
+			else:
+				if value in translations:
+					value = translations[value]
+		return value
+
+	def parse(self, value):
+		value = super(AppLocalisedListAttribute, self).parse(value)
+		locale = _get_locale()
+		if self.localisable_by_file and locale:
+			for i, val in enumerate(value):
+				value[i] = self._translate(self.localisable_by_file, locale, val)
+		return value
+
+	def test_choices(self, value):
+		value = value[:]
+		locale = _get_locale()
+		for i, val in enumerate(value):
+			value[i] = self._translate(self.localisable_by_file, locale, val, reverse=True)
+		super(AppLocalisedListAttribute, self).test_choices(value)
+
+
 class AppAttributeOrFalse(AppBooleanAttribute):
 	def parse(self, value):
 		try:
@@ -239,9 +297,9 @@ class AppAttributeOrFalse(AppBooleanAttribute):
 
 
 class AppFileAttribute(AppAttribute):
-	def __init__(self, required=False, default=None, regex=None, choices=None, escape=False, localizable=True):
-		# escape=False, localizable=True !
-		super(AppFileAttribute, self).__init__(required, default, regex, choices, escape, localizable)
+	def __init__(self, required=False, default=None, regex=None, choices=None, escape=False, localisable=True):
+		# escape=False, localisable=True !
+		super(AppFileAttribute, self).__init__(required, default, regex, choices, escape, localisable)
 
 	def parse_with_ini_file(self, value, ini_file):
 		filename = self.get_filename(ini_file)
@@ -255,11 +313,10 @@ class AppFileAttribute(AppAttribute):
 		component_id = os.path.splitext(os.path.basename(ini_file))[0]
 		fname = self.name.upper()
 		localised_file_exts = [fname, '%s_EN' % fname]
-		if self.localizable:
-			locale = getlocale()[0]
+		if self.localisable:
+			locale = _get_locale()
 			if locale:
-				locale = locale.split('_', 1)[0].upper()
-				localised_file_exts.insert(0, '%s_%s' % (fname, locale))
+				localised_file_exts.insert(0, '%s_%s' % (fname, locale.upper()))
 		for localised_file_ext in localised_file_exts:
 			filename = os.path.join(directory, '%s.%s' % (component_id, localised_file_ext))
 			if os.path.exists(filename):
@@ -279,20 +336,20 @@ class App(object):
 	code = AppAttribute(regex='^[A-Za-z0-9]{2}$', required=True)
 	component_id = AppAttribute(required=True)
 
-	name = AppAttribute(required=True, localizable=True)
+	name = AppAttribute(required=True, localisable=True)
 	version = AppAttribute(required=True)
-	description = AppAttribute(localizable=True)
-	long_description = AppAttribute(escape=False, localizable=True)
-	screenshot = AppAttribute()  # localizable=True
-	categories = AppListAttribute(choices=['Administration', 'Business', 'Collaboration', 'Education', 'System services', 'UCS components', 'Virtualization', ''], strict=False)
+	description = AppAttribute(localisable=True)
+	long_description = AppAttribute(escape=False, localisable=True)
+	screenshot = AppAttribute(localisable=True)
+	categories = AppLocalisedListAttribute(choices=['Administration', 'Business', 'Collaboration', 'Education', 'System services', 'UCS components', 'Virtualization', ''], localisable_by_file='categories.ini', strict=False)
 
-	website = AppAttribute(localizable=True)
-	support_url = AppAttribute(localizable=True)
+	website = AppAttribute(localisable=True)
+	support_url = AppAttribute(localisable=True)
 	contact = AppAttribute()
 	vendor = AppAttribute()
-	website_vendor = AppAttribute(localizable=True)
+	website_vendor = AppAttribute(localisable=True)
 	maintainer = AppAttribute()
-	website_maintainer = AppAttribute(localizable=True)
+	website_maintainer = AppAttribute(localisable=True)
 
 	license_agreement = AppFileAttribute()
 	readme = AppFileAttribute()
@@ -334,8 +391,8 @@ class App(object):
 	supported_architectures = AppListAttribute(default=['amd64', 'i386'], choices=['amd64', 'i386'])
 	min_physical_ram = AppIntAttribute(default=0)
 
-	use_shop = AppBooleanAttribute(localizable=True)
-	shop_url = AppAttribute(localizable=True)
+	use_shop = AppBooleanAttribute(localisable=True)
+	shop_url = AppAttribute(localisable=True)
 
 	ad_member_issue_hide = AppBooleanAttribute()
 	ad_member_issue_password = AppBooleanAttribute()
@@ -386,9 +443,7 @@ class App(object):
 	def from_ini(cls, ini_file, locale=True):
 		app_logger.debug('Loading app from %s' % ini_file)
 		if locale is True:
-			locale = getlocale()[0]
-			if locale:
-				locale = locale.split('_', 1)[0]
+			locale = _get_locale()
 		config_parser = RawConfigParser()
 		with open(ini_file, 'rb') as f:
 			config_parser.readfp(f)
@@ -400,7 +455,7 @@ class App(object):
 			else:
 				ini_attr_name = attr.name.replace('_', '')
 				try:
-					if not attr.localizable or not locale:
+					if not attr.localisable or not locale:
 						raise NoOptionError(ini_attr_name, locale)
 					value = config_parser.get(locale, ini_attr_name)
 				except (NoSectionError, NoOptionError):

@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.6-6) unstable; urgency=medium
+
+  * Bug #39412: New path for overlayfs driven docker apps
+  * Bug #39434: Download categories.ini
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 29 Sep 2015 23:13:13 +0200
+
 univention-management-console-module-appcenter (5.0.6-5) unstable; urgency=medium
 
   * Bug #39195: Replace removed function call

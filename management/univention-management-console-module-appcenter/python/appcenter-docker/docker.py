@@ -173,7 +173,7 @@ class Docker(object):
 			return
 		if filename.startswith('/'):
 			filename = filename[1:]
-		return os.path.join('/var/lib/docker/devicemapper/mnt', self.container, 'rootfs', filename)
+		return os.path.join('/var/lib/docker/overlay', self.container, 'merged', filename)
 
 	def create(self, hostname, env):
 		ports = []

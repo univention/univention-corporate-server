@@ -83,5 +83,5 @@ joinscript_container_file_touch () {
 
 joinscript_container_file () {
 	joinscript_container_is_running 1>/dev/null || die
-	echo "/var/lib/docker/devicemapper/mnt/$CONTAINER/rootfs/$1"
+	echo "/var/lib/docker/overlay/$CONTAINER/merged/$1"
 }

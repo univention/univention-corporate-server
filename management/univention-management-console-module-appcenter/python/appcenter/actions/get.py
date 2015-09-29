@@ -32,19 +32,14 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from ConfigParser import RawConfigParser
 from pipes import quote
 import re
 from argparse import Action
 from fnmatch import translate
 
+from univention.appcenter.app import CaseSensitiveConfigParser
 from univention.appcenter.utils import shell_safe
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
-
-
-class CaseSensitiveConfigParser(RawConfigParser):
-	def optionxform(self, optionstr):
-		return optionstr
 
 
 class StoreKeysAction(Action):
