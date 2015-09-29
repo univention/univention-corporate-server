@@ -228,7 +228,7 @@ class InstallRemoveUpgrade(Register):
 			if os.path.exists(unjoinscript):
 				self.log('Uninstalling unjoin script')
 				os.unlink(unjoinscript)
-		joinscript = self._get_cache_file(app, ext)
+		joinscript = app.get_cache_file(ext)
 		if os.path.exists(joinscript):
 			self.log('Installing join script %s' % joinscript)
 			dest = self._get_joinscript_path(app, unjoin)

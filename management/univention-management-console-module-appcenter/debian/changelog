@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-5) unstable; urgency=medium
+
+  * Bug #39195: Replace removed function call
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 29 Sep 2015 14:41:44 +0200
+
 univention-management-console-module-appcenter (5.0.6-4) unstable; urgency=medium
 
   * Bug #39195: Fix chmod of cache files
