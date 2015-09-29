@@ -305,6 +305,11 @@ DockerScriptRestoreDataAfterSetup=/usr/share/univention-appcenter/app/radicale/r
 					All docker scripts that may be specified in the ini file have a reasonable default already installed in the default container.
 					So it is generally a good idea to execute the default script in your script.
 				</para></note>
+				<warning><para>
+					When using custom scripts (like <filename>store_data</filename>) you should also set the corresponding <envar>DockerScript</envar>
+					variable in the ini file. The default of this variable is the path to the default script. If you want to run that default script in
+					your custom script (as adviced)	you will instead call yourself!
+				</para></warning>
 				<para>
 					Add the new scripts to your App Center:
 					<programlisting language="sh"><![CDATA[
