@@ -1,3 +1,10 @@
+ucs-test (6.0.6-6) unstable; urgency=medium
+
+  * 80_docker/52_app_install_dc_slave: install a Docker App as DC slave
+    (Bug #39196)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Sep 2015 06:58:52 +0200
+
 ucs-test (6.0.6-5) unstable; urgency=medium
 
   * Removed WIP tag for docker tests (Bug #38887)
