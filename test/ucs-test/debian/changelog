@@ -1,3 +1,9 @@
+ucs-test (6.0.8-4) unstable; urgency=medium
+
+  * Mark 80_docker/70_app_scaling as WIP (Bug #38887)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Sep 2015 15:37:46 +0200
+
 ucs-test (6.0.8-3) unstable; urgency=medium
 
   * 80_docker/54_app_preinst: Check the preinst script (Bug #39195)
