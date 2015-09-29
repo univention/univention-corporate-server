@@ -1,3 +1,9 @@
+ucs-test (6.0.8-2) unstable; urgency=medium
+
+  * Bug #39331: Test non-existance of IP/MAC after docker container join
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 29 Sep 2015 14:37:15 +0200
+
 ucs-test (6.0.8-1) unstable; urgency=medium
 
   * Bug #39346: added fixes for 45_dovecot_test_camelcase_mailadresses
