@@ -1,8 +1,11 @@
 @%@UCRWARNING=# @%@
 
-ProxyVia On
+@!@
+if configRegistry.is_true("self-service/passwordreset/web/enabled", True):
+    print """ProxyVia On
 ProxyRequests Off
 ProxyPreserveHost on
 
 ProxyPass /univention-self-service/ http://127.0.0.1:8099/ retry=0
-ProxyPassReverse /univention-self-service/ http://127.0.0.1:8099/
+ProxyPassReverse /univention-self-service/ http://127.0.0.1:8099/"""
+@!@

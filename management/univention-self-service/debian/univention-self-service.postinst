@@ -30,6 +30,7 @@
 
 #DEBHELPER#
 
+# web site logging
 ACCESS_LOG=/var/log/univention/self-service-access.log
 ERROR_LOG=/var/log/univention/self-service-error.log
 
@@ -43,22 +44,6 @@ chown self-service:adm $ACCESS_LOG $ERROR_LOG
 chmod 640 $ACCESS_LOG $ERROR_LOG
 
 /usr/lib/univention-server/server_password_change.d/univention-self-service postchange
-
-# try to find a UCS registered SMTP server
-HOST=$(univention-ldapsearch -LLL '(univentionService=SMTP)' cn | egrep '^cn' | cut -f 2 -d ' ')
-DOMAIN=$(univention-ldapsearch -LLL '(univentionService=SMTP)' associatedDomain | egrep '^associatedDomain:' | cut -f 2 -d ' ')
-FQDN="$HOST.$DOMAIN"
-if ! ping -c 1 -q $FQDN >/dev/null 2>&1; then
-	FQDN="localhost"
-fi
-
-univention-config-registry set \
-	self-service/email/cmd?/usr/lib/univention-self-service/send_email.py \
-	self-service/email/enabled?yes \
-	self-service/email/server?$FQDN \
-	self-service/sms/cmd?/usr/lib/univention-self-service/send_sms.py \
-	self-service/sms/enabled?no \
-	self-service/sms/server?""
 
 invoke-rc.d supervisor restart
 a2ensite univention-self-service

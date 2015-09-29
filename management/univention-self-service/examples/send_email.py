@@ -34,7 +34,7 @@
 #                                                                           #
 # This is meant as an example. Please feel free to copy this file and adapt #
 # it to your needs. After testing it, change the UCR variable               #
-# self-service/email/cmd to point to your file.                             #
+# self-service/passwordreset/email/cmd to point to your file.               #
 #                                                                           #
 # To test your script, run:                                                 #
 #                                                                           #

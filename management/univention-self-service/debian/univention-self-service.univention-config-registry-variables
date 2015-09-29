@@ -1,34 +1,34 @@
-[self-service/email/cmd]
+[self-service/passwordreset/email/cmd]
 Description[de]=Der vollständige Pfad zu einer ausführbaren Datei, die zum Versenden von Passwort-reset-tokens per E-mail ausgeführt wird.
 Description[en]=Complete path to an executable that will be run to send emails with password reset tokens.
 Type=str
 Categories=self-service
 
-[self-service/email/enabled]
+[self-service/passwordreset/email/enabled]
 Description[de]=Die Möglichkeit Passwort-reset-tokens per E-mail zu versenden einschalten.
 Description[en]=Enable sending of password reset tokens by email.
 Type=bool
 Categories=self-service
 
-[self-service/email/server]
+[self-service/passwordreset/email/server]
 Description[de]=Servername oder IP Adresse des zu verwendenden Mailservers.
 Description[en]=Server name or IP address of the mail server to use.
 Type=str
 Categories=self-service
 
-[self-service/sms/cmd]
+[self-service/passwordreset/sms/cmd]
 Description[de]=Der vollständige Pfad zu einer ausführbaren Datei, die zum Versenden von Passwort-reset-tokens per SMS ausgeführt wird.
 Description[en]=Complete path to an executable that will be run to send text messages with password reset tokens.
 Type=str
 Categories=self-service
 
-[self-service/sms/enabled]
+[self-service/passwordreset/sms/enabled]
 Description[de]=Die Möglichkeit Passwort-reset-tokens per SMS zu versenden einschalten.
 Description[en]=Enable sending of password reset tokens in text messages.
 Type=bool
 Categories=self-service
 
-[self-service/sms/server]
+[self-service/passwordreset/sms/server]
 Description[de]=Servername oder IP Adresse des zu verwendenden SMS-Servers.
 Description[en]=Server name or IP address of the text message server to use.
 Type=str

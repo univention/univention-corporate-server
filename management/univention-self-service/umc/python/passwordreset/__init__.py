@@ -65,6 +65,9 @@ METHODS = {
 	"sms": ("mobileTelephoneNumber", 12, "self-service/sms/")}
 TOKEN_VALIDITY_TIME = 3600
 
+GRP_BLACKLIST = ["Domain Admins", "Windows Hosts", "DC Backup Hosts", "DC Slave", "Hosts", "Computers", "Backup Join", "Slave Join", "World Authority", "Null Authority", "Nobody", "Enterprise Domain Controllers", "Remote Interactive Logon", "SChannel Authentication", "Digest Authentication", "Terminal Server User", "NTLM Authentication", "Other Organization", "This Organization", "Anonymous Logon", "Network Service", "Creator Group", "Creator Owner", "Local Service", "Owner Rights", "Interactive", "Restricted", "Network", "Service", "System", "Batch", "Proxy", "IUSR", "Self", "Performance Log Users", "DnsUpdateProxy", "Cryptographic Operators", "Schema Admins", "Backup Operators", "Administrators", "Domain Computers", "Windows Authorization Access Group", "IIS_IUSRS", "RAS and IAS Servers", "Network Configuration Operators", "Account Operators", "Distributed COM Users", "Read-Only Domain Controllers", "Terminal Server License Servers", "Replicator", "Allowed RODC Password Replication Group", "Denied RODC Password Replication Group", "Enterprise Admins", "Group Policy Creator Owners", "Server Operators", "Domain Controllers", "DnsAdmins", "Cert Publishers", "Incoming Forest Trust Builders", "Event Log Readers", "Pre-Windows 2000 Compatible Access", "Remote Desktop Users", "Performance Monitor Users", "Certificate Service DCOM Access", "Enterprise Read-Only Domain Controllers"]
+
+USER_BLACKLIST = ["Administrator", "krbtgt"]
 
 def prevent_denial_of_service(func):
 	def _decorated(self, request, *args, **kwargs):
@@ -84,7 +87,7 @@ class Instance(Base):
 
 	def init(self):
 		MODULE.info("init()")
-		if not ucr.is_true("umc/self-service/enabled"):
+		if not ucr.is_true("umc/self-service/passwordreset/enabled"):
 			err = "Module is disabled by UCR."
 			MODULE.error(err)
 			raise UMC_CommandError(err, status=500)
@@ -100,6 +103,8 @@ class Instance(Base):
 	@simple_response
 	def set_contact(self, username, password, email=None, mobile=None):
 		MODULE.info("set_contact(): username: {} password: {} email: {} mobile: {}".format(username, password, email, mobile))
+		if self.is_blacklisted(username):
+			raise UMC_CommandError("User is blacklisted.")
 		try:
 			succ, dn = self.auth(username, password)
 			if succ:
@@ -114,6 +119,8 @@ class Instance(Base):
 	@simple_response
 	def send_token(self, username, method):
 		MODULE.info("send_token(): username: '{}' method: '{}'.".format(username, method))
+		if self.is_blacklisted(username):
+			raise UMC_CommandError("User is blacklisted.")
 		if method not in METHODS.keys():
 			MODULE.error("send_token() method '{}' not in {}.".format(method, METHODS.keys()))
 			raise UMC_OptionTypeError(_("Unknown method '{}'.".format(method)))
@@ -185,6 +192,11 @@ class Instance(Base):
 			if (datetime.datetime.now() - token_from_db["timestamp"]).seconds < TOKEN_VALIDITY_TIME:
 				# token is correct and valid
 				MODULE.info("Receive valid token for '{username}'.".format(**token_from_db))
+				if self.is_blacklisted(token_from_db["username"]):
+					# this should not happen
+					MODULE.error("Found token in DB for blacklisted user {}.".format(token_from_db["username"]))
+					self.db.delete_tokens(token=token)
+					raise UMC_CommandError("User is blacklisted.")
 				ret = self.udm_set_password(token_from_db["username"], password)
 				self.db.delete_tokens(token=token)
 				return ret
@@ -205,6 +217,8 @@ class Instance(Base):
 		if not username:
 			raise UMC_OptionMissing(_("Empty username supplied."))
 		MODULE.info("get_reset_methods(): username: '{}'".format(username))
+		if self.is_blacklisted(username):
+			raise UMC_CommandError("User is blacklisted.")
 		config = univention.admin.config.config()
 		univention.admin.modules.update()
 		usersmod = univention.admin.modules.get("users/user")
@@ -329,6 +343,101 @@ class Instance(Base):
 		except:
 			MODULE.info("udm_set_password(): failed to set password: {}".format(traceback.format_exc()))
 			return False
+
+	#TODO: decoratorize
+	def is_blacklisted(self, username):
+		def listize(li):
+			return [x.lower() for x in map(str.strip, li.split(",")) if x]
+
+		bl_users = listize(ucr.get("umc/self-service/blacklist/users", ""))
+		bl_groups = listize(ucr.get("umc/self-service/blacklist/group", ""))
+		wh_users = listize(ucr.get("umc/self-service/whitelist/users", ""))
+		wh_groups = listize(ucr.get("umc/self-service/whitelist/groups", ""))
+
+		bl_users.extend(map(str.lower, USER_BLACKLIST))
+		bl_groups.extend(map(str.lower, GRP_BLACKLIST))
+
+		# user blacklist
+		if username.lower() in bl_users:
+			MODULE.info("is_blacklisted({}): match in blacklisted users".format(username))
+			return True
+
+		# get groups
+		lo = getMachineConnection()
+		userdn = lo.search(filter="(uid={})".format(username))[0][0]
+		groups_dns= Instance.get_groups(userdn)
+		for group_dn in list(groups_dns):
+			groups_dns.extend(Instance.get_nested_groups(group_dn))
+		groups_dns = list(set(groups_dns))
+		gr_names = map(str.lower, Instance.dns_to_groupname(groups_dns))
+
+		# group blacklist
+		if any([gr in bl_groups for gr in gr_names]):
+			MODULE.info("is_blacklisted({}): match in blacklisted groups".format(username))
+			return True
+
+		# if not on blacklist, check whitelists
+		# user whitelist
+		if username.lower() in wh_users:
+			MODULE.info("is_blacklisted({}): match in whitelisted users".format(username))
+			return False
+
+		# group whitelist
+		if any([gr in wh_groups for gr in gr_names]):
+			MODULE.info("is_blacklisted({}): match in whitelisted groups".format(username))
+			return False
+
+		# not on either black or white list -> not allowed if whitelist exists, else OK
+		MODULE.info("is_blacklisted({}): neither black nor white listed".format(username))
+		return not (wh_users or wh_groups)
+
+	@staticmethod
+	def get_groups(userdn):
+		config = univention.admin.config.config()
+		univention.admin.modules.update()
+		usersmod = univention.admin.modules.get("users/user")
+		lo, position = univention.admin.uldap.getMachineConnection()
+		univention.admin.modules.init(lo, position, usersmod)
+		dn_part = userdn.partition(",")
+		try:
+			user = usersmod.lookup(config, lo, dn_part[0], base=dn_part[-1])[0]
+		except IndexError:
+			# no user found
+			raise UMC_CommandError(_("Unknown user '{}'.".format(userdn)))
+		user.open()
+		groups = user["groups"]
+		prim_group = user["primaryGroup"]
+		if prim_group not in groups:
+			groups.append(prim_group)
+		return groups
+
+	@staticmethod
+	def get_nested_groups(groupdn):
+		config = univention.admin.config.config()
+		univention.admin.modules.update()
+		groupmod = univention.admin.modules.get("groups/group")
+		lo, position = univention.admin.uldap.getMachineConnection()
+		univention.admin.modules.init(lo, position, groupmod)
+		dn_part = groupdn.partition(",")
+		group = groupmod.lookup(config, lo, dn_part[0], base=dn_part[-1])[0]
+		res = group["nestedGroup"] or []
+		for ng in list(res):
+			res.extend(Instance.get_nested_groups(ng))
+		return res
+
+	@staticmethod
+	def dns_to_groupname(dns):
+		config = univention.admin.config.config()
+		univention.admin.modules.update()
+		groupmod = univention.admin.modules.get("groups/group")
+		lo, position = univention.admin.uldap.getMachineConnection()
+		univention.admin.modules.init(lo, position, groupmod)
+		names = list()
+		for groupdn in dns:
+			dn_part = groupdn.partition(",")
+			group = groupmod.lookup(config, lo, dn_part[0], base=dn_part[-1])[0]
+			names.append(group["name"])
+		return names
 
 	def prevent_denial_of_service(self):
 		# TODO: implement

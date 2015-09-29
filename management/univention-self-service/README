@@ -1,5 +1,13 @@
 == Univention Self Service ==
-...
+..
+
+=== Packages ===
+* univention-management-console-module-passwordreset: UMC module for the
+    password reset plugin (to be installed on DC master or backup)
+* univention-self-service: frontent base package, requirement for all plugins
+    (can be installed on all UCS roles)
+* univention-self-service-passwordreset: password reset plugin frontend (can
+    be installed on all UCS roles)
 
 === Plugins ===
 To add a new self service, create UMC module (see [1] and umc directory here)
@@ -9,7 +17,11 @@ Place the directory with the frontend Python module inside
 /usr/share/univention-self-service/plugins/. Its __init__.py must contain a
 class that is derived from univention.selfservice.frontend.UniventionSelfServiceFrontend.
 
+=== Password reset black/white lists ===
+Blacklists take precedence over whitelists.
 
+A user on a blacklist or in a group in a blacklist cannot use the service
+even if it is a whitelisted user or in a whitelisted group.
 
 
 == Reference ==
