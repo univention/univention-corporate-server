@@ -374,7 +374,7 @@
 					The <application>SimpleSAMLphp</application> certificate is now creating in the joinscript instead of the postinst of the package (<u:bug>39255</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The <application>SimpleSAMLphp</application> <filename>authsources.php</filename> has been changed to a UCR multifile template (<u:bug>39250</u:bug>).
+					The <application>SimpleSAMLphp</application> files <filename>authsources.php</filename> and <filename>saml20-idp-hosted.php</filename> have been changed to a UCR multifile template (<u:bug>39250</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					<application>SimpleSAMLphp</application> has been updated to version 1.13.2-1 (<u:bug>38982</u:bug>).
