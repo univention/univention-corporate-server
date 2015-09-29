@@ -36,7 +36,6 @@ import sys
 from glob import glob
 import os.path
 from argparse import ArgumentParser, Action, Namespace
-import stat
 import logging
 import urllib2
 import urllib
@@ -182,23 +181,11 @@ class UniventionAppAction(object):
 			suffix = '-uninstall'
 		return os.path.join(JOINSCRIPT_DIR, '%d%s%s.%s' % (number, app.id, suffix, ext))
 
-	def _get_cache_file(self, app, ext):
-		return app.get_cache_file(ext)
-
 	def _call_cache_script(self, _app, _ext, *args, **kwargs):
-		fname = self._get_cache_file(_app, _ext)
+		fname = _app.get_cache_file(_ext)
 		# change to UCS umask + u+x:      -rwxr--r--
 		if os.path.exists(fname):
-			os.chmod(0744)
-		return self._call_script(fname, *args, **kwargs)
-
-	def _get_share_file(self, app, ext):
-		return app.get_share_file(ext)
-
-	def _call_share_script(self, _app, _ext, *args, **kwargs):
-		fname = self._get_share_file(_app, _ext)
-		if os.path.exists(fname):
-			os.chmod(fname, stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC | stat.S_IRGRP | stat.S_IROTH)
+			os.chmod(fname, 0744)
 		return self._call_script(fname, *args, **kwargs)
 
 	def _call_script(self, _script, *args, **kwargs):

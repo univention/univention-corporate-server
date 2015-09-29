@@ -77,7 +77,7 @@ Description: Development tools for packaging an app in
 
 Package: univention-appcenter-docker
 Architecture: all
-Depends: python-univention-appcenter, docker.io, univention-apache
+Depends: python-univention-appcenter, univention-docker, univention-apache
 Description: Docker integration for certain apps of
  the Univention App Center.
  .

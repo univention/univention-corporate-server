@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.6-4) unstable; urgency=medium
+
+  * Bug #39195: Fix chmod of cache files
+  * Bug #39418: Depend on univention-docker, not docker.io
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 29 Sep 2015 13:41:40 +0200
+
 univention-management-console-module-appcenter (5.0.6-3) unstable; urgency=medium
 
   * Bug #38894: include svg icon
