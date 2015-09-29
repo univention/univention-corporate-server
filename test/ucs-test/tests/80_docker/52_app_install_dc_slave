@@ -20,7 +20,7 @@ if __name__ == '__main__':
 			app.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0', DockerServerRole='domaincontroller_slave', DockerScriptSetup='/usr/sbin/%s-setup' % app_name)
 			app.add_script(setup='''#!/bin/bash
 set -x -e
-univention-install --yes univention-ldap-server univention-ldap-acl-slave univention-directory-replication
+univention-install --yes --no-install-recommends univention-server-slave univention-server-member-
 /usr/share/univention-docker-container-mode/setup "$@"
 ''')
 
