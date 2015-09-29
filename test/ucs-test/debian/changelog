@@ -1,3 +1,11 @@
+ucs-test (6.0.6-9) unstable; urgency=medium
+
+  * 80_docker/52_app_install_dc_slave: Install ldap-server packages
+    (Bug #39196)
+  * dockertest: Add App scripts
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Sep 2015 10:25:57 +0200
+
 ucs-test (6.0.6-8) unstable; urgency=medium
 
   * 80_docker/53_missing_dockerimage: An App without a DockerImage is a

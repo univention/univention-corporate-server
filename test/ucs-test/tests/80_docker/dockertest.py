@@ -92,6 +92,8 @@ class App:
 		self.ini['DefaultPackages'] = self.package_name
 		self.ini['ServerRole'] = 'domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver'
 
+		self.scripts = {}
+
 	def set_ini_parameter(self, **kwargs):
 		for key, value in kwargs.iteritems():
 			self.ini[key] = value
@@ -100,6 +102,11 @@ class App:
 	def add_to_local_appcenter(self):
 		self._dump_ini()
 		self._copy_package()
+		self._dump_scripts()
+
+	def add_script(self, **kwargs):
+		for key, value in kwargs.iteritems():
+			self.scripts[key] = value
 
 	def install(self):
 		ret = subprocess.call('univention-app update', shell=True)
@@ -143,6 +150,17 @@ class App:
 			print '%s: %s' % (key, self.ini[key])
 		print
 		f.close()
+
+	def _dump_scripts(self):
+		for script in self.scripts.keys():
+			target = os.path.join('/var/www/univention-repository/%s/maintained/component' % self.ucr.get('version/version'), '%s/%s' % (self.app_directory, script))
+
+			print 'Create %s' % target
+			print self.scripts[script]
+
+			f = open(target, 'w')
+			f.write(self.scripts[script])
+			f.close()
 
 	def _copy_package(self):
 		target = os.path.join('/var/www/univention-repository/%s/maintained/component' % self.ucr.get('version/version'), '%s/all' % self.app_directory)
