@@ -6,7 +6,8 @@
 ##   - docker.io
 
 from dockertest import *
-from univention.testing.utils import get_ldap_connection
+from univention.testing.utils import fail
+from univention.testing.internal import package_installed
 
 if __name__ == '__main__':
 	
@@ -23,14 +24,12 @@ if __name__ == '__main__':
 
 			appcenter.update()
 
-			try:
-				app.install()
-				app.verify()
-			except (UCSTest_DockerApp_InstallationFailed, UCSTest_DockerApp_VerifyFailed):
-				pass
-			else:
-				utils.fail('The ini parameter DockerImage was not defined but the App was installed anyway.')
+			app.install()
 
+			# The package must be installed locally
+			if not package_installed(app.package_name):
+				fail('The package %s is not installed locally.' % app.package_name)
+			
 		finally:
 			app.uninstall()
 			app.remove()

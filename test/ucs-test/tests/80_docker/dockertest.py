@@ -91,8 +91,6 @@ class App:
 		self.ini['Categories'] = 'System services'
 		self.ini['DefaultPackages'] = self.package_name
 		self.ini['ServerRole'] = 'domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver'
-		self.ini['Docker'] = True
-
 
 	def set_ini_parameter(self, **kwargs):
 		for key, value in kwargs.iteritems():
@@ -108,6 +106,7 @@ class App:
 		if ret != 0:
 			raise UCSTest_DockerApp_UpdateFailed()
 		admin_user = self.ucr.get('tests/domainadmin/account').split(',')[0][len('uid='):]
+		# ret = subprocess.call('univention-app install --noninteractive --do-not-revert --username=%s --pwdfile=%s %s' %
 		ret = subprocess.call('univention-app install --noninteractive --username=%s --pwdfile=%s %s' %
 					(admin_user, self.ucr.get('tests/domainadmin/pwdfile'), self.app_name), shell=True)
 		if ret != 0:
