@@ -91,6 +91,7 @@ class App:
 		self.ini['Categories'] = 'System services'
 		self.ini['DefaultPackages'] = self.package_name
 		self.ini['ServerRole'] = 'domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver'
+		self.ini['Docker'] = True
 
 
 	def set_ini_parameter(self, **kwargs):
@@ -135,9 +136,13 @@ class App:
 	def _dump_ini(self):
 		target = os.path.join('/var/www/meta-inf/%s' % self.ucr.get('version/version'), '%s.ini' % self.app_directory)
 		f = open(target, 'w')
+		print 'Write ini file: %s' % target
 		f.write('[Application]\n')
+		print '[Application]'
 		for key in self.ini.keys():
 			f.write('%s: %s\n' % (key, self.ini[key]))
+			print '%s: %s' % (key, self.ini[key])
+		print
 		f.close()
 
 	def _copy_package(self):

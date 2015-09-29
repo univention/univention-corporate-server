@@ -1,3 +1,10 @@
+ucs-test (6.0.6-7) unstable; urgency=medium
+
+  * 80_docker/53_missing_dockerimage: Test the Docker App installation
+    without the DockerImage parameter (Bug #39374)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Sep 2015 07:27:24 +0200
+
 ucs-test (6.0.6-6) unstable; urgency=medium
 
   * 80_docker/52_app_install_dc_slave: install a Docker App as DC slave
