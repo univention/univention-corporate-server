@@ -21,6 +21,7 @@ Depends: ${misc:Depends},
  simplesamlphp (>= 1.11.0-1),
  univention-directory-manager-tools,
  univention-saml-schema (= ${source:Version}),
+ php5-memcache,
  memcached,
  stunnel4,
 Description: Integrates simpleSAMLphp Identity Provider into UCS
