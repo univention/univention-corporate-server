@@ -1,5 +1,11 @@
+univention-docker (0.1.0-2) unstable; urgency=medium
+
+  * Bug #39418: whitespace in univention-docker.univention-config-registry
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Sep 2015 13:09:59 +0200
+
 univention-docker (0.1.0-1) unstable; urgency=medium
 
-  * Initial release (Bug #39418)
+  * Bug #39418: Initial release
 
  -- Arvid Requate <requate@univention.de>  Tue, 29 Sep 2015 12:43:45 +0200
