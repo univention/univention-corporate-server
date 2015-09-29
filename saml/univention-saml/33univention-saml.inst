@@ -39,7 +39,8 @@ joinscript_init
 eval "$(ucr shell)"
 
 ucr set saml/idp/certificate/privatekey?"/etc/simplesamlphp/${ucs_server_sso_fqdn}-idp-certificate.key" \
-		saml/idp/certificate/certificate?"/etc/simplesamlphp/${ucs_server_sso_fqdn}-idp-certificate.crt"
+		saml/idp/certificate/certificate?"/etc/simplesamlphp/${ucs_server_sso_fqdn}-idp-certificate.crt" \
+		saml/idp/entityID?"https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php"
 
 eval "$(ucr shell)"  # as variables were changed we need the new ones
 
@@ -88,6 +89,9 @@ if [ ! -e "${saml_idp_certificate_certificate}" ]; then
 fi
 
 /usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add a ucs-sso "$(get_default_ip_address)" || die
+
+ucr set security/packetfilter/package/univention-saml/tcp/11211/all?ACCEPT \
+	security/packetfilter/package/univention-saml/tcp/11211/all/en?memcached
 
 ucs_addServiceToLocalhost "univention-saml" "$@" || die
 

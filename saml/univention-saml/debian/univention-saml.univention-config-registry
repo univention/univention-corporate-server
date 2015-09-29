@@ -76,3 +76,9 @@ File: etc/memcached_univention_saml.conf
 User: root
 Group: root
 Mode: 644
+
+Type: file
+File: etc/default/stunnel4
+User: root
+Group: root
+Mode: 644
