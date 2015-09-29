@@ -1,3 +1,9 @@
+univention-saml (3.0.12-2) unstable; urgency=medium
+
+  * Bug #38947: Move idp-ldap-user.secret to /etc
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 29 Sep 2015 17:13:39 +0200
+
 univention-saml (3.0.12-1) unstable; urgency=medium
 
   * Bug #39399: adjust firewall settings, save global entityID

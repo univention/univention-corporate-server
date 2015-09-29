@@ -44,7 +44,7 @@ ucr set saml/idp/certificate/privatekey?"/etc/simplesamlphp/${ucs_server_sso_fqd
 
 eval "$(ucr shell)"  # as variables were changed we need the new ones
 
-SECRETFILE="/etc/simplesamlphp/idp-ldap-user.secret"
+SECRETFILE="/etc/idp-ldap-user.secret"
 HOSTPWD="/etc/machine.secret"
 HOSTACCOUNT="$hostname\$"
 

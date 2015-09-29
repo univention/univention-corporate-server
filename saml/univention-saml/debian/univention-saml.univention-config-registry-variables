@@ -77,8 +77,8 @@ Type=str
 Categories=saml
 
 [saml/idp/ldap/user]
-Description[de]=Der LDAP DN des Benutzers, mit dem der SAML IdP LDAP Abfragen durchführt. Das Passwort muss in der Datei /etc/simplesamlphp/idp-ldap-user.secret stehen.
-Description[en]=The LDAP DN of the user, with which the SAML IdP will execute queries. The password has to be placed in the file /etc/simplesamlphp/idp-ldap-user.secret
+Description[de]=Der LDAP DN des Benutzers, mit dem der SAML IdP LDAP Abfragen durchführt. Das Passwort muss in der Datei /etc/idp-ldap-user.secret stehen.
+Description[en]=The LDAP DN of the user, with which the SAML IdP will execute queries. The password has to be placed in the file /etc/idp-ldap-user.secret
 Type=str
 Categories=saml
 

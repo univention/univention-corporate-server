@@ -62,7 +62,7 @@ if configRegistry.get('saml/idp/ldap/user'):
 
 print "	'search.username'	=> '%s'," % ldap_user
 try:
-	password = open('/etc/simplesamlphp/idp-ldap-user.secret','r').read().strip()
+	password = open('/etc/idp-ldap-user.secret','r').read().strip()
 	if password:
 		print "	'search.password'	=> '%s'," % password
 except:
