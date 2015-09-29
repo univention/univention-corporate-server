@@ -12,7 +12,7 @@
 	<title>Docker Apps for the Univention App Center</title>
 	<para>
 		Starting with UCS 4.1 the Univention App Center will support Docker. Docker is an OS level virtualization software that helps
-		deploying applications in isolated containers. In this chapter we will dicuss the reasoning and aim of the Docker support, give
+		deploying applications in isolated containers. In this chapter we will discuss the reasoning and aim of the Docker support, give
 		some technical insights and also go through example apps.
 	</para>
 	<section id="docker:goal">
@@ -34,7 +34,7 @@
 			By supporting Docker, we aim to overcome those points while preserving the simplicity of developing an app.
 		</para>
 		<para>
-			If you have already worked with Docker, you may know that Docker is sometimes advertized as a way to encapsulate each and
+			If you have already worked with Docker, you may know that Docker is sometimes advertised as a way to encapsulate each and
 			every task into its own container, sometimes referred to as <emphasis>Micro services</emphasis>. In the Univention App Center
 			we currently focus on a different route: We start minimal, yet fully functional UCS systems in which one app is installed
 			and started.
@@ -45,7 +45,7 @@
 					debian packages just like the app would be installed "on metal" (or just like it was prior to UCS 4.1).
 				</para>
 				<para>
-					ISVs need to provide debian packages, not docker images (very much the same as in UCS &lt; 4.1). The integration
+					An ISV needs to provide debian packages, not docker images (very much the same as in UCS &lt; 4.1). The integration
 					of the app into the UCS infrastructure may be done via an additional package or via separate scripts that live
 					unpackaged on the App Center server (see below for an example).
 				</para>
@@ -308,7 +308,7 @@ DockerScriptRestoreDataAfterSetup=/usr/share/univention-appcenter/app/radicale/r
 				<warning><para>
 					When using custom scripts (like <filename>store_data</filename>) you should also set the corresponding <envar>DockerScript</envar>
 					variable in the ini file. The default of this variable is the path to the default script. If you want to run that default script in
-					your custom script (as adviced)	you will instead call yourself!
+					your custom script (as advised)	you will instead call yourself!
 				</para></warning>
 				<para>
 					Add the new scripts to your App Center:
