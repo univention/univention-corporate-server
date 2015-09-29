@@ -1,0 +1,43 @@
+#!/usr/share/ucs-test/runner python
+## desc: check for the correct settings for signed kernel modules 
+## exposure: safe
+## bugs: [36383]
+
+import univention.testing.utils as utils
+from subprocess import Popen, PIPE
+
+
+MINIMUM_CONFIG = [
+	"CONFIG_MODULE_SIG=y",
+	"CONFIG_MODULE_SIG_SHA512=y",
+	"CONFIG_MODULE_SIG_HASH=\"sha512\"",
+	"CONFIG_MODULE_SIG_ALL=y",
+	"CONFIG_MODULE_SIG_FORCE"
+	]
+
+def main():
+
+	#determine the kernel release name, to get the name of the config-file
+	#file name is /boot/config-$(uname -r)
+	proc = Popen(['uname','-r'], stdout=PIPE, stderr=PIPE)
+	stdout, stderr = proc.communicate()
+	if stderr.strip():
+		utils.fail('error calling uname, STDERR : {0}'.format(stderr))
+	if stdout[-1]=='\n':
+		stdout = stdout[:-1]
+	config_file = "/boot/config-{0}".format(stdout)
+
+	#check if all lines that appear in the above MINIMUM_CONFIG are also 
+	#set in the config file.
+	with open(config_file) as cfg:
+		lines = cfg.read().splitlines()
+	exclusive_lines = [line for line in MINIMUM_CONFIG if line not in lines]
+	if exclusive_lines:
+		missing_options = "missing options: " + ", ".join(exclusive_lines)
+		msg = "Not all necessary module signing options are set in {0}\n.".format(
+				config_file
+				)
+		utils.fail(msg + missing_options)
+		
+if __name__=="__main__":
+	main()

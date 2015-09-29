@@ -1,3 +1,9 @@
+ucs-test (5.0.172-0) unstable; urgency=low
+
+  * Bug #36383: check settings for signed kernel modules
+
+ -- Bastian Reitemeier <reitemeier@univention.de>  Tue, 29 Sep 2015 16:38:06 +0200
+
 ucs-test (5.0.171-12) unstable; urgency=low
 
   * Bug #39346: added fixes for 45_dovecot_test_camelcase_mailadresses
