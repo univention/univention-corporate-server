@@ -50,7 +50,7 @@ def main():
 	Create KVM instances for testing.
 	"""
 
-	usage = '''%prog [options] -c config_file '''
+	usage = '''%prog [options] [-c] config_file'''
 	description = sys.modules[__name__].__doc__
 	parser = OptionParser(usage=usage, description=description)
 	parser.add_option("-c", "--conf", action="store",
@@ -106,6 +106,7 @@ def main():
 
 	# replace profile variables and commands
 	replace_list = [('[%s_IP]' % (vm.section,), vm.get_ip()) for vm in vms]
+	replace_list += [('[ENV:%s]' % (key,), value) for (key, value) in os.environ.iteritems()]
 	subst = lambda cmd, (old, new): cmd.replace(old, new)
 	for vm in vms:
 		if vm.profile:

@@ -1,3 +1,9 @@
+ucs-ec2-tools (2.0.0-2) unstable; urgency=low
+
+  * Bug #39356: Add support for environment variable substitution
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 30 Sep 2015 12:51:53 +0200
+
 ucs-ec2-tools (2.0.0-1) unstable; urgency=low
 
   * Bug #38517: remove bashism
