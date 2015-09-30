@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-7) unstable; urgency=medium
+
+  * Bug #39204: Fix image upgrades
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 30 Sep 2015 22:40:28 +0200
+
 univention-management-console-module-appcenter (5.0.6-6) unstable; urgency=medium
 
   * Bug #39412: New path for overlayfs driven docker apps

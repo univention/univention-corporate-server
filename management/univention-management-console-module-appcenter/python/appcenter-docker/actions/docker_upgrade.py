@@ -33,6 +33,9 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+from univention.config_registry.frontend import ucr_update
+from univention.config_registry import ConfigRegistry
+
 from univention.appcenter.docker import Docker
 from univention.appcenter.docker import rm as docker_rm
 from univention.appcenter.actions import Abort
@@ -130,6 +133,8 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self.log('Stopping old container')
 		Stop.call(app=self.old_app)
 		self.log('Setting up new container (%s)' % app)
+		ucr = ConfigRegistry()
+		ucr_update(ucr, {app.ucr_image_key: None})
 		args.set_vars = dict((var['id'], var['value']) for var in config)
 		self._install_new_app(app, args)
 		self.log('Removing old container')
