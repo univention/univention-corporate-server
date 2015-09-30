@@ -9,9 +9,6 @@ import urllib2
 from dockertest import *
 from univention.testing.utils import get_ldap_connection
 
-class UCSTest_DockerApp_ModProxyFailed(Exception): pass
-	
-
 if __name__ == '__main__':
 
 	with Appcenter() as appcenter:
@@ -28,13 +25,7 @@ if __name__ == '__main__':
 									AutoModProxy='True',
 									DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
 								)
-			app.add_script(setup='''#!/bin/bash
-set -x -e
-univention-install --yes univention-apache
-mkdir /var/www/testapp
-echo "TEST" >>/var/www/testapp/index.txt
-/usr/share/univention-docker-container-mode/setup "$@"
-''')
+			app.create_basic_modproxy_settings()
 
 			app.add_to_local_appcenter()
 
@@ -43,17 +34,7 @@ echo "TEST" >>/var/www/testapp/index.txt
 			app.install()
 			app.verify()
 			
-			fqdn = '%s.%s' % (appcenter.ucr['hostname'], appcenter.ucr['domainname'])
-
-			response = urllib2.urlopen('http://%s/testapp/index.txt' % fqdn)
-			html = response.read()
-			if html != 'TEST\n':
-				raise UCSTest_DockerApp_ModProxyFailed(Exception)
-
-			response = urllib2.urlopen('https://%s/testapp/index.txt' % fqdn)
-			html = response.read()
-			if html != 'TEST\n':
-				raise UCSTest_DockerApp_ModProxyFailed(Exception)
+			app.verify_basic_modproxy_settings()
 
 		finally:
 			app.uninstall()

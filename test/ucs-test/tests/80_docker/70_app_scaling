@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create and install a simple docker app
+## desc: Create and install multiple Docker Apps at once
 ## tags: [WIP,docker]
 ## exposure: dangerous
 ## packages:
