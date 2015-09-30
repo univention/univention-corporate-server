@@ -510,6 +510,10 @@
 					<wordasword>1.6</wordasword> (<u:bug>39350</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+					OverlayFS has been chosen as the Docker storage driver
+					(<u:bug>39412</u:bug>, <u:bug>39418</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					The packages <package>univention-docker-container-mode</package> and
 					<package>univention-appliance-docker-container</package> have been added.
 					These packages help to run UCS in a Docker container
