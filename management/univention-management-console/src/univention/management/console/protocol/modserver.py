@@ -237,7 +237,7 @@ class ModuleServer(Server):
 					self.__username = value['username']
 					self.__user_dn = value['user_dn']
 					self.__password = value['password']
-					self.__auth_type = value['auth_type']
+					self.__auth_type = value.get('auth_type')
 					self.__handler.username = self.__username
 					self.__handler.user_dn = self.__user_dn
 					self.__handler.password = self.__password
