@@ -6,7 +6,6 @@
 ##   - docker.io
 
 from dockertest import *
-from univention.testing.utils import get_ldap_connection
 
 DOCKER_APP_COUNT=20
 

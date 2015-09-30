@@ -6,7 +6,6 @@
 ##   - docker.io
 
 from dockertest import *
-import subprocess
 
 class UCSTest_DockerApp_Identify(UCSTest_Docker_Exception): pass
 
