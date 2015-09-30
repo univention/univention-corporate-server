@@ -141,7 +141,7 @@ define([
 			this.status('sessionLastRequest', new Date(0));
 			this.setSessionCookie(null, {
 				expires: -1,
-				path: '/'
+				path: '/univention-management-console/'
 			});
 		},
 

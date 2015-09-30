@@ -920,6 +920,9 @@ define([
 			//		* overview: if false and a module is given for autostart, the overview and module header will
 			//		  not been shown and the module cannot be closed
 
+			// remove cookie from UCS 4.0 to prevent login problems
+			cookie('UMCSessionId', null, {path: '/', expires: -1})
+
 			// save some config properties
 			tools.status('overview', tools.isTrue(props.overview));
 			// username will be overriden by final authenticated username
