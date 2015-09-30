@@ -1,0 +1,31 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-7
+src: subversion
+fix: 1.6.12dfsg-7.92.201509300953
+version: [6,7]
+desc: |
+ This update addresses the following issues:
+ * Various denial of service issues in mod_dav_svn (CVE-2013-1845,
+   CVE-2013-1846, CVE-2013-1847, CVE-2013-1849)
+ * Denial of service in mod_dav_svn (CVE-2014-0032)
+ * Denial of service in mod_dav_svn (CVE-2014-3580)
+ * mod_dav_svn and svnserve: Denial of service via crafted parameter
+   combinations (CVE-2015-0248)
+ * mod_dav_svn: Spoofing of svn:author by remote authenticated users
+   (CVE-2015-0251)
+ * The svn_repos_trace_node_locations function, when path-based
+   authorization is used, allows remote authenticated users to obtain
+   sensitive path information by reading the history of a node that has been
+   moved from a hidden path. (CVE-2015-3187)
+bug: [33285]
+cve:
+ - CVE-2013-1845
+ - CVE-2013-1846
+ - CVE-2013-1847
+ - CVE-2013-1849
+ - CVE-2014-0032
+ - CVE-2014-3580
+ - CVE-2015-0248
+ - CVE-2015-0251
+ - CVE-2015-3187
