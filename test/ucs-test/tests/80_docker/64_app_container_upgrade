@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create and install a simple UCS 4.0-3 docker app
-## tags: [docker]
+## desc: Test the container upgrade
+## tags: [docker,WIP]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
@@ -15,17 +15,18 @@ if __name__ == '__main__':
 		appcenter.add_ucs_version_to_appcenter('4.0')
 
 		app_name = get_app_name()
+		package_name = get_app_name()
 
 		# The UCS 4.0-3 image needs a 4.0-3 App Center
-		app = App(name=app_name, version='1')
+		app = App(name=app_name, version='1', package_name=package_name)
 		app.ucs_version = '4.0'
 		app.add_to_local_appcenter()
 
 		
 		# Since we are installing on a 4.1, a 4.1 ini entry is needed
-		app = App(name=app_name, version='1', build_package=False)
+		app = App(name=app_name, version='1', package_name=package_name, build_package=False)
 		app.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.0-3',
-									WebInterface='/testapp',
+									WebInterface='/%s' % app_name,
 									WebInterfacePortHTTP='80',
 									WebInterfacePortHTTPS='443',
 									AutoModProxy='True',
@@ -46,6 +47,20 @@ if __name__ == '__main__':
 
 			lo = get_ldap_connection()
 			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app_name, unique=True, required=True)
+
+			app = App(name=app_name, version='2', package_name=package_name)
+			app.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0',
+										WebInterface='/testapp',
+										WebInterfacePortHTTP='80',
+										WebInterfacePortHTTPS='443',
+										AutoModProxy='True',
+										DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
+								)
+			app.create_basic_modproxy_settings()
+
+			app.add_to_local_appcenter()
+
+			app.upgrade()
 
 		finally:
 			app.uninstall()

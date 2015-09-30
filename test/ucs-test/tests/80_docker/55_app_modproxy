@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
 		try:
 			app.set_ini_parameter(	DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0',
-									WebInterface='/testapp',
+									WebInterface='/%s' % app.app_name,
 									WebInterfacePortHTTP='80',
 									WebInterfacePortHTTPS='443',
 									AutoModProxy='True',

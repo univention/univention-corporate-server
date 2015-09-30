@@ -17,7 +17,14 @@ if __name__ == '__main__':
 		try:
 			for i in range(0,DOCKER_APP_COUNT):
 				app = App(name=get_app_name(), version=get_app_version())
-				app.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0')
+				app.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0',
+									WebInterface='/%s' % app.app_name,
+									WebInterfacePortHTTP='80',
+									WebInterfacePortHTTPS='443',
+									AutoModProxy='True',
+									DockerScriptSetup='/usr/sbin/%s-setup' % app.app_name,
+						)
+				app.create_basic_modproxy_settings()
 				app.add_to_local_appcenter()
 
 				apps.append(app)
@@ -30,6 +37,7 @@ if __name__ == '__main__':
 
 			for i in range(0,DOCKER_APP_COUNT):
 				apps[i].verify()
+				apps[i].verify_basic_modproxy_settings()
 
 		finally:
 			for i in range(0,len(apps)):

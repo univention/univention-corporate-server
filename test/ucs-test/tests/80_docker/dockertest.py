@@ -46,6 +46,7 @@ class AppcenterMetainfAlreadyExists(Exception): pass
 class AppcenterRepositoryAlreadyExists(Exception): pass
 class UCSTest_DockerApp_InstallationFailed(Exception): pass
 class UCSTest_DockerApp_UpdateFailed(Exception): pass
+class UCSTest_DockerApp_UpgradeFailed(Exception): pass
 class UCSTest_DockerApp_VerifyFailed(Exception): pass
 class UCSTest_DockerApp_RemoveFailed(Exception): pass
 class UCSTest_DockerApp_ModProxyFailed(Exception): pass
@@ -73,20 +74,24 @@ def get_app_version():
 
 
 class App:
-	def __init__(self, name, version, buildPackage=True):
+	def __init__(self, name, version, package_name=None, build_package=True):
 		self.app_name = name
 		self.app_version = version
 		self.app_directory_suffix = random_name()
 
 		self.app_directory = '%s_%s' % (self.app_name, self.app_directory_suffix)
 
-		self.package_name = get_app_name()
+		if package_name:
+			self.package_name = package_name
+		else:
+			self.package_name = get_app_name()
+
 		self.package_version = get_app_version()
 
 		self.ucr = ConfigRegistry()
 		self.ucr.load()
 
-		if buildPackage:
+		if build_package:
 			self.package = DebianPackage(name=self.package_name, version=self.package_version)
 			self.package.build()
 		else:
@@ -126,9 +131,7 @@ class App:
 			self.scripts[key] = value
 
 	def install(self):
-		ret = subprocess.call('univention-app update', shell=True)
-		if ret != 0:
-			raise UCSTest_DockerApp_UpdateFailed()
+		self._update()
 		admin_user = self.ucr.get('tests/domainadmin/account').split(',')[0][len('uid='):]
 		# ret = subprocess.call('univention-app install --noninteractive --do-not-revert --username=%s --pwdfile=%s %s' %
 		ret = subprocess.call('univention-app install --noninteractive --username=%s --pwdfile=%s %s' %
@@ -140,6 +143,19 @@ class App:
 		self.container_id = self.ucr.get('appcenter/apps/%s/container' % self.app_name)
 
 		self.installed = True
+
+	def _update(self):
+		ret = subprocess.call(['univention-app', 'update'])
+		if ret != 0:
+			raise UCSTest_DockerApp_UpdateFailed()
+
+	def upgrade(self):
+		self._update()
+		admin_user = self.ucr.get('tests/domainadmin/account').split(',')[0][len('uid='):]
+		ret = subprocess.call('univention-app upgrade --noninteractive --username=%s --pwdfile=%s %s' %
+					(admin_user, self.ucr.get('tests/domainadmin/pwdfile'), self.app_name), shell=True)
+		if ret != 0:
+			raise UCSTest_DockerApp_UpgradeFailed()
 
 	def verify(self):
 		ret = subprocess.call(['univention-app', 'status', self.app_name])
@@ -203,22 +219,23 @@ class App:
 		self.add_script(setup='''#!/bin/bash
 set -x -e
 univention-install --yes univention-apache
-mkdir /var/www/testapp
-echo "TEST" >>/var/www/testapp/index.txt
+mkdir /var/www/%(app_name)s
+echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
 /usr/share/univention-docker-container-mode/setup "$@"
-''')
+''' % {'app_name': self.app_name})
 
 	def verify_basic_modproxy_settings(self):
 		fqdn = '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+		test_string = 'TEST-%s\n' % self.app_name
 
-		response = urllib2.urlopen('http://%s/testapp/index.txt' % fqdn)
+		response = urllib2.urlopen('http://%s/%s/index.txt' % (fqdn, self.app_name))
 		html = response.read()
-		if html != 'TEST\n':
+		if html != test_string:
 			raise UCSTest_DockerApp_ModProxyFailed(Exception)
 
-		response = urllib2.urlopen('https://%s/testapp/index.txt' % fqdn)
+		response = urllib2.urlopen('https://%s/%s/index.txt' % (fqdn, self.app_name))
 		html = response.read()
-		if html != 'TEST\n':
+		if html != test_string:
 			raise UCSTest_DockerApp_ModProxyFailed(Exception)
 
 
