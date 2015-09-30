@@ -368,7 +368,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					Single sign on via SAML 2.0 is now possible with Univention Management Console
-					(<u:bug>39171</u:bug>), (<u:bug>39178</u:bug>), (<u:bug>31943</u:bug>), (<u:bug>39178</u:bug>).
+					(<u:bug>39171</u:bug>), (<u:bug>39178</u:bug>), (<u:bug>31943</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The <application>SimpleSAMLphp</application> certificate is now created in the joinscript instead of the postinst of the package (<u:bug>39255</u:bug>).
