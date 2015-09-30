@@ -656,7 +656,7 @@ define([
 					$priority$: -1,
 					id: 'umcMenuLogout',
 					label: _('Logout'),
-					onClick: function() { require('umc/app').relogin(); }
+					onClick: function() { require('umc/app').logout(); }
 				}));
 			}
 
@@ -1840,23 +1840,42 @@ define([
 			topic.publish('/umc/module/startup', callback);
 		},
 
+		logout: function() {
+			this._askLogout.then(lang.hitch(this, function() {
+					this.umcpCommand('logout').always(function() {
+						tools.checkSession(false);
+						window.location = '/univention-management-console/logout';
+					});
+			}));
+		},
+
 		relogin: function(username) {
+			if (username === undefined) {
+				return this.logout();
+			}
+			this._askLogout().then(function() {
+				tools.checkSession(false);
+				tools.closeSession();
+				window.location.search = 'username=' + username;
+			});
+		},
+
+		_askLogout: function() {
+			var deferred = new Deferred();
 			dialog.confirm(_('Do you really want to logout?'), [{
-				label: _('Cancel')
+				label: _('Cancel'),
+				callback: function() {
+					deferred.cancel();
+				}
 			}, {
 				label: _('Logout'),
 				'default': true,
 				callback: lang.hitch(this, function() {
 					topic.publish('/umc/actions', 'session', 'logout');
-					tools.checkSession(false);
-					tools.closeSession();
-					if (username === undefined) {
-						window.location.reload(true);
-					} else {
-						window.location.search = 'username=' + username;
-					}
+					deferred.resolve();
 				})
 			}]);
+			return deferred;
 		},
 
 		linkToModule: function(/*String*/ moduleId, /*String?*/ moduleFlavor, /*String?*/ linkName) {

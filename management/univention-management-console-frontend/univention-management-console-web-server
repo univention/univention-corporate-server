@@ -426,7 +426,7 @@ class UMC_HTTPError(HTTPError):
 		cherrypy._cperror._be_ie_unfriendly(self.status)
 
 
-class CPgeneric(object):
+class Ressource(object):
 
 	# NOTE: only use CORE.process, _not_ CORE.error; since CORE.error writes as
 	#	   well to /var/log/syslog, this seems to cause problems with cherrypy.
@@ -446,9 +446,6 @@ class CPgeneric(object):
 		remote = cherrypy.request.remote
 		msg = '%s (%s:%s) %s' % (self.name, get_ip_address(), remote.port, _msg)
 		self._logOptions.get(loglevel, CORE.info)(msg)
-
-	def get_request(self, path, args):
-		return umcp.Request(['generic'], opts={})
 
 	def _get_cookie_names(self):
 		req = cherrypy.request
@@ -471,7 +468,7 @@ class CPgeneric(object):
 		else:
 			# a sessionid is required to use this command
 			self._log('info', 'no sessionid found')
-			raise UMC_HTTPError(UNAUTHORIZED)
+			return
 
 		self._log('info', 'found sessionid')
 		self._log(99, 'sessionid="%s"' % (sessionid))
@@ -496,6 +493,11 @@ class CPgeneric(object):
 			cherrypy.response.cookie[userCookie]['version'] = 1
 			cherrypy.response.cookie[userCookie]['path'] = '/univention-management-console/'
 
+class CPgeneric(Ressource):
+
+	def get_request(self, path, args):
+		return umcp.Request(['generic'], opts={})
+
 	@log_exceptions
 	def load_json(self, body):
 		try:
@@ -514,6 +516,8 @@ class CPgeneric(object):
 
 		# get the session id from the request
 		sessionid = self.get_session_id()
+		if not sessionid:
+			raise UMC_HTTPError(UNAUTHORIZED)
 
 		if cherrypy.request.headers.get('Content-Type', '').startswith('application/json'):  # normal (json) request
 			# get body and parse json
@@ -678,6 +682,8 @@ class CPUpload(CPgeneric):
 
 		# get the session id from the request
 		sessionid = self.get_session_id()
+		if not sessionid:
+			raise UMC_HTTPError(UNAUTHORIZED)
 
 		if not cherrypy.request.headers.get('Content-Type', '').startswith('multipart/form-data'):
 			raise UMC_HTTPError(BAD_REQUEST, 'Content type and URL do not match')
@@ -748,7 +754,7 @@ class CPAuth(CPgeneric):
 
 		content_length = cherrypy.request.headers.get("Content-Length")
 		if not content_length and content_length != 0:
-			CORE.process('CPRoot/auth: missing Content-Length header')
+			CORE.process('auth: missing Content-Length header')
 			raise UMC_HTTPError(LENGTH_REQUIRED)
 
 		# get body and parse json
@@ -761,7 +767,7 @@ class CPAuth(CPgeneric):
 
 		data = self.load_json(body)
 
-		CORE.info('CPRoot/command: request: command=%s' % cherrypy.request.path_info)
+		CORE.info('auth: request: command=%s' % cherrypy.request.path_info)
 
 		# create new UMCP request
 		req = umcp.Request('AUTH')
@@ -781,13 +787,13 @@ class CPAuth(CPgeneric):
 		request = QueueRequest(None, req, response_queue, get_ip_address())
 		UMCP_Dispatcher._queue_send.put(request)
 
-		CORE.info('CPRoot/auth: pushed request to queue - waiting for response')
+		CORE.info('auth: pushed request to queue - waiting for response')
 		response = response_queue.get()
-		CORE.info('CPRoot/auth: got response with status %s' % response.status)
+		CORE.info('auth: got response with status %s' % response.status)
 
 		if response.status == umcp.SUCCESS and response.body.get('sessionid'):
 			sessionid = response.body.pop('sessionid')
-			CORE.info('CPRoot/auth: creating session with sessionid=%s' % (sessionid,))
+			CORE.info('auth: creating session with sessionid=%s' % (sessionid,))
 
 			self.set_cookies(sessionid=sessionid, username=req.body.get('username'))
 
@@ -796,11 +802,21 @@ class CPAuth(CPgeneric):
 				return json.dumps(response.body)
 			return response.body
 
-		CORE.process('CPRoot/auth: username: %s, status code: %s' % (req.body.get('username'), response.status))
+		CORE.process('auth: username: %s, status code: %s' % (req.body.get('username'), response.status))
 		raise UMC_HTTPError(response.status, response.message)
 
 
-class CPRoot(object):
+class Root(Ressource):
+
+	def __init__(self):
+		self.command = CPCommand()
+		self.auth = CPAuth()
+		self.get = CPGet()
+		self.get.ipaddress = IPAddresses()
+		self.set = CPSet()
+		self.upload = CPUpload()
+		self.saml = SAML()
+		reload_webserver.callbacks.append(self.saml.reload)
 
 	@cherrypy.expose
 	@log_exceptions
@@ -808,6 +824,22 @@ class CPRoot(object):
 		"""
 		http://localhost:<ucr:umc/http/port>/
 		"""
+		raise HTTPRedirect('/univention-management-console/', status=305)
+
+	@cherrypy.expose
+	@log_exceptions
+	def logout(self, **kwargs):
+		sessionid = self.get_session_id()
+		if sessionid:
+			UMCP_Dispatcher.cleanup_session(sessionid)
+		idCookie = self._get_cookie_names()[0]
+		cherrypy.response.cookie[idCookie] = ''
+		cherrypy.response.cookie[idCookie]['expires'] = '-1'
+		cherrypy.response.cookie[idCookie]['version'] = 1
+		cherrypy.response.cookie[idCookie]['path'] = '/univention-management-console/'
+		user = SAMLUser.get_user()
+		if user is not None:
+			raise HTTPRedirect('/univention-management-console/saml/logout')
 		raise HTTPRedirect('/univention-management-console/')
 
 
@@ -919,7 +951,7 @@ class SAML(object):
 		user = SAMLUser.get_user()
 
 		if user is None:
-			return self.do_single_sign_on()
+			return self._logout_success()
 
 		# What if more than one
 		data = self.sp.global_logout(user.response.name_id)
@@ -945,8 +977,7 @@ class SAML(object):
 
 	def _logout_success(self):
 		SAMLUser.delete_cookie()
-		cherrypy.response.headers['Content-Type'] = 'text/html'
-		return 'You are now logged out of this service. <a href="../">Relogin</a>'
+		raise HTTPRedirect('/univention-management-console/')
 
 	@cherrypy.expose
 	@log_exceptions
@@ -1209,18 +1240,7 @@ def run_cherrypy():
 	})
 	cherrypy.tools.proxy(base=None, local='X-Forwarded-Host', remote='X-Forwarded-For', scheme='X-Forwarded-Proto')
 
-	root = CPRoot()
-	root.command = CPCommand()
-	root.auth = CPAuth()
-	root.get = CPGet()
-	root.set = CPSet()
-	root.upload = CPUpload()
-	root.saml = SAML()
-	root.get.ipaddress = IPAddresses()
-
-	reload_webserver.callbacks.append(root.saml.reload)
-
-	cherrypy.quickstart(root=root)
+	cherrypy.quickstart(root=Root())
 
 
 def reload_webserver():

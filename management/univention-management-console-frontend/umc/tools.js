@@ -411,7 +411,7 @@ define([
 			handleErrors = undefined === handleErrors || handleErrors;
 			// build the URL for the UMCP command
 			var url = '/univention-management-console/command/' + commandStr;
-			if ((/^(get\/|set$|auth|saml|logout)/i).test(commandStr)) {
+			if ((/^(get\/|set$|auth|logout(\/|$)|saml(\/|$))/i).test(commandStr)) {
 				// special case for 'get' and 'auth' commands .. here we do not need to add 'command'
 				url = '/univention-management-console/' + commandStr;
 			}

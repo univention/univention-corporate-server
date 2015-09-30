@@ -69,9 +69,9 @@ udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-service
 
 /usr/share/univention-management-console/saml/update_metadata "$@" || die
 
-ucr set umc/saml/idp-server?"https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || die
+ucr set umc/saml/idp-server?"https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || (ucr unset umc/saml/idp-server; exit 1)
 
-[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || die
+#[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || (ucr unset umc/saml/idp-server; exit 1)
 
 /etc/init.d/univention-management-console-web-server restart
 /etc/init.d/slapd restart
