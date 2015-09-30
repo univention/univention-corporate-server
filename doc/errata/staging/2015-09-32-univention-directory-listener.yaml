@@ -9,6 +9,6 @@ desc: |
  * LDAP and Univention Directory Notifier connections now use the TCP
    keep-alive mechanism and timeouts consistently to detect stuck
    connections.
- * A filter mechanism was added to the Univention Directory Notifier to
+ * A filter mechanism was added to the Univention Directory Listener to
    prevent certain objects from being stored to the local cache.
 bug: [34763,38823]
