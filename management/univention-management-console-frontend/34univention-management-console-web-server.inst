@@ -58,8 +58,6 @@ else
 
 fi
 
-ucr set umc/saml/idp-server?"https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || die
-
 udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
 	--set Identifier="https://$hostname.$domainname/univention-management-console/saml/metadata" \
 	--set AssertionConsumerService="https://$hostname.$domainname/univention-management-console/saml/" \
@@ -70,6 +68,10 @@ udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-service
 	--append LDAPattributes=uid || die
 
 /usr/share/univention-management-console/saml/update_metadata "$@" || die
+
+ucr set umc/saml/idp-server?"https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || die
+
+[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || die
 
 /etc/init.d/univention-management-console-web-server restart
 /etc/init.d/slapd restart

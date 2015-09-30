@@ -35,10 +35,16 @@ import os
 from glob import glob
 from subprocess import call
 from urlparse import urlparse
-
+workaround = set()
 
 def handler(config_registry, changes):
-	# TODO: write a listener module which triggers this and stores the IDP metadata in LDAP
+	if not isinstance(changes.get('umc/saml/idp-server'), (list, tuple)):
+		# workaround for Bug #39444
+		print 'skipping UCR registration'
+		return
+	if workaround:
+		return  # Bug #39443
+	workaround.add(True)
 	cleanup()
 	metadata_download_failed = []
 	saml_idp = config_registry.get('umc/saml/idp-server')
