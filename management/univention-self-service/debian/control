@@ -17,7 +17,7 @@ Package: univention-self-service
 Architecture: all
 Depends: ${misc:Depends},
  python-cherrypy3,
- supervisor
+ libapache2-mod-wsgi
 Description:
  This package contains the base modules for the UI of all
  univention self service packages. It can be installed on

@@ -78,10 +78,9 @@ class UniventionSelfServiceFrontend(object):
 
 		error_handler = self.log
 		try:
-			connection = UMCConnection(ucr.get('ldap/master'))
-			connection.auth(username, password)
+			connection = UMCConnection(ucr.get('ldap/master'), username, password)
 			return connection
 		except (HTTPException, SocketError) as e:
 			if error_handler:
 				error_handler('Could not connect to UMC on %s: %s' % (ucr.get('ldap/master'), e))
-		return None
+			return None

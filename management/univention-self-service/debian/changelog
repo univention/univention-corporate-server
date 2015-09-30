@@ -1,3 +1,9 @@
+univention-self-service (0.0.0-4) unstable; urgency=low
+
+  * Error messages reach UMC (Bug #37890)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 30 Sep 2015 13:27:20 +0200
+
 univention-self-service (0.0.0-3) unstable; urgency=low
 
   * Add black and white lists (Bug #37890)

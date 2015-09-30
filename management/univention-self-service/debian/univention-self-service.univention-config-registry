@@ -1,7 +1,3 @@
 Type: file
 File: etc/apache2/sites-available/univention-self-service
 Variables: self-service/passwordreset/web/enabled
-
-Type: file
-File: etc/supervisor/conf.d/self-service.conf
-Variables: self-service/passwordreset/web/enabled

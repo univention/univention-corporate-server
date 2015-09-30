@@ -41,6 +41,8 @@ import os.path
 import subprocess
 import json
 from functools import wraps
+from ldap import LDAPError
+from ldap.filter import escape_filter_chars
 
 from univention.lib.i18n import Translation
 from univention.uldap import getMachineConnection
@@ -48,12 +50,14 @@ import univention.admin.uldap
 import univention.admin.uexceptions
 import univention.admin.config
 import univention.admin.objects
+import univention.admin.uexceptions as udm_errors
 from univention.management.console.base import Base
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
 from univention.management.console.modules.decorators import sanitize, simple_response
 from univention.management.console.modules.sanitizers import StringSanitizer, EmailSanitizer
-from univention.management.console.modules import UMC_CommandError, UMC_OptionMissing, UMC_OptionTypeError
+from univention.management.console.modules import UMC_Error
+from univention.management.console.ldap import get_user_connection
 
 from univention.management.console.modules.passwordreset.tokendb import TokenDB, MultipleTokensInDB
 
@@ -61,8 +65,8 @@ _ = Translation('univention-management-console-module-passwordreset').translate
 
 METHODS = {
 	# method: (LDAP attribute, tolken length, UCRV)
-	"email": ("e-mail", 64, "self-service/email/"),
-	"sms": ("mobileTelephoneNumber", 12, "self-service/sms/")}
+	"email": ("e-mail", 64, "self-service/passwordreset/email/"),
+	"sms": ("mobileTelephoneNumber", 12, "self-service/passwordreset/sms/")}
 TOKEN_VALIDITY_TIME = 3600
 
 GRP_BLACKLIST = ["Domain Admins", "Windows Hosts", "DC Backup Hosts", "DC Slave", "Hosts", "Computers", "Backup Join", "Slave Join", "World Authority", "Null Authority", "Nobody", "Enterprise Domain Controllers", "Remote Interactive Logon", "SChannel Authentication", "Digest Authentication", "Terminal Server User", "NTLM Authentication", "Other Organization", "This Organization", "Anonymous Logon", "Network Service", "Creator Group", "Creator Owner", "Local Service", "Owner Rights", "Interactive", "Restricted", "Network", "Service", "System", "Batch", "Proxy", "IUSR", "Self", "Performance Log Users", "DnsUpdateProxy", "Cryptographic Operators", "Schema Admins", "Backup Operators", "Administrators", "Domain Computers", "Windows Authorization Access Group", "IIS_IUSRS", "RAS and IAS Servers", "Network Configuration Operators", "Account Operators", "Distributed COM Users", "Read-Only Domain Controllers", "Terminal Server License Servers", "Replicator", "Allowed RODC Password Replication Group", "Denied RODC Password Replication Group", "Enterprise Admins", "Group Policy Creator Owners", "Server Operators", "Domain Controllers", "DnsAdmins", "Cert Publishers", "Incoming Forest Trust Builders", "Event Log Readers", "Pre-Windows 2000 Compatible Access", "Remote Desktop Users", "Performance Monitor Users", "Certificate Service DCOM Access", "Enterprise Read-Only Domain Controllers"]
@@ -75,12 +79,25 @@ def prevent_denial_of_service(func):
 		return func(self, request, *args, **kwargs)
 
 
-class ContactChangingFailed(Exception):
-	pass
-class UnknownMethodError(Exception):
-	pass
-class MethodDisabledError(Exception):
-	pass
+class ContactChangingFailed(UMC_Error):
+	status = 500
+
+	def __init__(self, msg):
+		super(ContactChangingFailed, self).__init__(_(msg))
+
+
+class UnknownMethodError(UMC_Error):
+	status = 500
+
+	def __init__(self, msg):
+		super(UnknownMethodError, self).__init__(_(msg))
+
+
+class MethodDisabledError(UMC_Error):
+	status = 500
+
+	def __init__(self, msg):
+		super(MethodDisabledError, self).__init__(_(msg))
 
 
 class Instance(Base):
@@ -90,7 +107,7 @@ class Instance(Base):
 		if not ucr.is_true("umc/self-service/passwordreset/enabled"):
 			err = "Module is disabled by UCR."
 			MODULE.error(err)
-			raise UMC_CommandError(err, status=500)
+			raise UMC_Error(err, status=500)
 
 		self.db = TokenDB(MODULE)
 		self.conn = self.db.conn
@@ -99,31 +116,31 @@ class Instance(Base):
 			self.db.create_table()
 
 #	@prevent_denial_of_service
-	@sanitize(username=StringSanitizer(required=True), password=StringSanitizer(required=True), email=EmailSanitizer(required=False), mobile=StringSanitizer(required=False))
+	@sanitize(
+		username=StringSanitizer(required=True),
+		password=StringSanitizer(required=True),
+		email=EmailSanitizer(required=False),
+		mobile=StringSanitizer(required=False))
 	@simple_response
 	def set_contact(self, username, password, email=None, mobile=None):
 		MODULE.info("set_contact(): username: {} password: {} email: {} mobile: {}".format(username, password, email, mobile))
 		if self.is_blacklisted(username):
-			raise UMC_CommandError("User is blacklisted.")
-		try:
-			succ, dn = self.auth(username, password)
-			if succ:
-				return self.set_contact_data(dn, email, mobile)
-			else:
-				return False
-		except ContactChangingFailed as exc:
-			raise UMC_CommandError(str(exc), status=500)
+			raise UMC_Error(_("User is blacklisted."))
+		dn = self.auth(username, password)
+		return self.set_contact_data(dn, email, mobile)
 
 #	@prevent_denial_of_service
-	@sanitize(username=StringSanitizer(required=True), method=StringSanitizer(required=True))
+	@sanitize(
+		username=StringSanitizer(required=True),
+		method=StringSanitizer(required=True))
 	@simple_response
 	def send_token(self, username, method):
 		MODULE.info("send_token(): username: '{}' method: '{}'.".format(username, method))
 		if self.is_blacklisted(username):
-			raise UMC_CommandError("User is blacklisted.")
+			raise UMC_Error(_("User is blacklisted."))
 		if method not in METHODS.keys():
 			MODULE.error("send_token() method '{}' not in {}.".format(method, METHODS.keys()))
-			raise UMC_OptionTypeError(_("Unknown method '{}'.".format(method)))
+			raise UMC_Error(_("Unknown method '{}'.".format(method)))
 		# check if the user has the required attribute set
 		config = univention.admin.config.config()
 		univention.admin.modules.update()
@@ -131,10 +148,10 @@ class Instance(Base):
 		lo, position = univention.admin.uldap.getMachineConnection()
 		univention.admin.modules.init(lo, position, usersmod)
 		try:
-			user = usersmod.lookup(config, lo, 'uid={}'.format(username))[0]
+			user = usersmod.lookup(config, lo, 'uid={}'.format(escape_filter_chars(username)))[0]
 		except IndexError:
 			# no user found
-			raise UMC_CommandError(_("Unknown user '{}'.".format(username)))
+			raise UMC_Error(_("Unknown user '{}'.".format(username)))
 		user.open()
 
 		ldap_attr = METHODS[method][0]
@@ -152,9 +169,7 @@ class Instance(Base):
 			token = self.create_token(token_length)
 			if token_from_db:
 				if (datetime.datetime.now() - token_from_db["timestamp"]).seconds < TOKEN_VALIDITY_TIME:
-					# token is still valid
-					MODULE.info("send_token(): Token for user '{}' still valid.".format(username))
-					return False
+					raise UMC_Error(_("Token for user '{}' still valid. Please retry in one hour.".format(username)))
 				else:
 					# replace with fresh token
 					MODULE.info("send_token(): Updating token for user '{}'...".format(username))
@@ -165,18 +180,20 @@ class Instance(Base):
 				self.db.insert_token(username, method, token)
 			try:
 				self.send_message(username, method, user[ldap_attr], token)
-			except Exception as e:
-				MODULE.error("send_token(): Error sending token with via '{method}' to '{username}': {ex}".format(
-					method=method, username=username, ex=e))
+			except:
+				MODULE.error("send_token(): Error sending token with via '{method}' to '{username}'.".format(
+					method=method, username=username))
 				self.db.delete_tokens(username=username)
-				return False
+				raise
 			return True
 		else:
 			# no contact info
-			return False
+			raise UMC_Error(_("No contact information to send a token to has been found."))
 
 #	@prevent_denial_of_service
-	@sanitize(token=StringSanitizer(required=True), password=StringSanitizer(required=True))
+	@sanitize(
+		token=StringSanitizer(required=True),
+		password=StringSanitizer(required=True))
 	@simple_response
 	def set_password(self, token, password):
 		MODULE.info("set_password(): token: '{}' password: '{}'.".format(token, password))
@@ -187,7 +204,7 @@ class Instance(Base):
 				# regardless of correctness of token
 				MODULE.error("set_password(): {}".format(e))
 				self.db.delete_tokens(token=token)
-				return False
+				raise UMC_Error(_("A problem occurred on the server and hsa been corrected, please retry."), status=500)
 		if token_from_db:
 			if (datetime.datetime.now() - token_from_db["timestamp"]).seconds < TOKEN_VALIDITY_TIME:
 				# token is correct and valid
@@ -196,7 +213,7 @@ class Instance(Base):
 					# this should not happen
 					MODULE.error("Found token in DB for blacklisted user {}.".format(token_from_db["username"]))
 					self.db.delete_tokens(token=token)
-					raise UMC_CommandError("User is blacklisted.")
+					raise UMC_Error(_("User is blacklisted."))
 				ret = self.udm_set_password(token_from_db["username"], password)
 				self.db.delete_tokens(token=token)
 				return ret
@@ -204,31 +221,31 @@ class Instance(Base):
 				# token is correct but expired
 				MODULE.info("Receive correct but expired token for '{username}'.".format(**token_from_db))
 				self.db.delete_tokens(token=token)
-				return False
+				raise UMC_Error(_("The token you supplied has expired. Please request a new one."))
 		else:
 			# no token in DB
 			MODULE.info("Token '{}' not found in DB.".format(token))
-			return False
+			raise UMC_Error(_("The token you supplied could not be found. Please request a new one."))
 
 #	@prevent_denial_of_service
 	@sanitize(username=StringSanitizer(required=True))
 	def get_reset_methods(self, request):
 		username = request.options.get("username")
 		if not username:
-			raise UMC_OptionMissing(_("Empty username supplied."))
+			raise UMC_Error(_("Empty username supplied."))
 		MODULE.info("get_reset_methods(): username: '{}'".format(username))
 		if self.is_blacklisted(username):
-			raise UMC_CommandError("User is blacklisted.")
+			raise UMC_Error(_("User is blacklisted."))
 		config = univention.admin.config.config()
 		univention.admin.modules.update()
 		usersmod = univention.admin.modules.get("users/user")
 		lo, position = univention.admin.uldap.getMachineConnection()
 		univention.admin.modules.init(lo, position, usersmod)
 		try:
-			user = usersmod.lookup(config, lo, 'uid={}'.format(username))[0]
+			user = usersmod.lookup(config, lo, 'uid={}'.format(escape_filter_chars(username)))[0]
 		except IndexError:
 			# no user found
-			raise UMC_CommandError(_("Unknown user '{}'.".format(username)))
+			raise UMC_Error(_("Unknown user '{}'.".format(username)))
 		user.open()
 		res = list()
 		# return list of method names, for all LDAP attribs user has data
@@ -273,31 +290,30 @@ class Instance(Base):
 			if cmd_exit != 0:
 				MODULE.info("send_message(): Sending not successful, deleting token...")
 				self.db.delete_tokens(username=username)
-			return cmd_exit == 0
+			if cmd_exit == 0:
+				return True
+			else:
+				raise UMC_Error(_("Failed sending token."), status=500)
 		else:
 			raise IOError("send_message(): Cannot execute '{}'.".format(method_cmd))
 
 	@staticmethod
 	def auth(username, password):
 		MODULE.info("auth(): username: {} password: {}".format(username, password))
+		lo = None
 		try:
 			lo = getMachineConnection()
-			binddn = lo.search(filter="(uid={})".format(username))[0][0]
+			binddn = lo.search(filter="(uid={})".format(escape_filter_chars(username)))[0][0]
 			MODULE.info("auth(): Connecting as {} to LDAP...".format(binddn))
-			lo = univention.admin.uldap.access(
-				host=ucr.get("ldap/server/name"),
-				port=int(ucr.get("ldap/server/port", "7389")),
-				base=ucr.get("ldap/base"),
-				binddn=binddn,
-				bindpw=password)
-			MODULE.info("auth(): OK.")
-		except IndexError:
-			MODULE.error("auth(): ERROR: user {} does not exist".format(username))
-			return False, ""
+			get_user_connection(binddn=binddn, bindpw=password)
 		except univention.admin.uexceptions.authFail:
-			MODULE.error("auth(): ERROR: username or password is incorrect")
-			return False, ""
-		return True, binddn
+			raise UMC_Error(_("Username or password is incorrect."))
+		except (LDAPError, udm_errors.ldapError, udm_errors.base):
+			MODULE.error("auth(): ERROR: connecting to LDAP: {}".format(traceback.format_exc()))
+			raise UMC_Error(_("Could not connect to the LDAP server."))
+		finally:
+			lo.lo.unbind()
+		return binddn
 
 	@staticmethod
 	def set_contact_data(dn, email, mobile):
@@ -319,14 +335,14 @@ class Instance(Base):
 			return True
 		except:
 			MODULE.info("set_contact_data(): failed to add contact: {}".format(traceback.format_exc()))
-			return False
+			raise ContactChangingFailed("Failed to change contact information.")
 
 	@staticmethod
 	def udm_set_password(username, password):
 		MODULE.info("udm_set_password(): username: {} password: {}".format(username, password))
 		try:
 			lo = getMachineConnection()
-			dn = lo.search(filter="(uid={})".format(username))[0][0]
+			dn = lo.search(filter="(uid={})".format(escape_filter_chars(username)))[0][0]
 			if dn:
 				MODULE.info("udm_set_password(): DN: {}.".format(dn))
 			config = univention.admin.config.config()
@@ -340,19 +356,23 @@ class Instance(Base):
 			user["password"] = password
 			user.modify()
 			return True
+		except udm_errors.pwToShort as ex:
+			raise UMC_Error(str(ex))
+		except udm_errors.pwalreadyused:
+			raise UMC_Error(_("The Password has been used already. Please supply a new one."))
 		except:
 			MODULE.info("udm_set_password(): failed to set password: {}".format(traceback.format_exc()))
-			return False
+			raise
 
 	#TODO: decoratorize
 	def is_blacklisted(self, username):
 		def listize(li):
 			return [x.lower() for x in map(str.strip, li.split(",")) if x]
 
-		bl_users = listize(ucr.get("umc/self-service/blacklist/users", ""))
-		bl_groups = listize(ucr.get("umc/self-service/blacklist/group", ""))
-		wh_users = listize(ucr.get("umc/self-service/whitelist/users", ""))
-		wh_groups = listize(ucr.get("umc/self-service/whitelist/groups", ""))
+		bl_users = listize(ucr.get("umc/self-service/passwordreset/blacklist/users", ""))
+		bl_groups = listize(ucr.get("umc/self-service/passwordreset/blacklist/group", ""))
+		wh_users = listize(ucr.get("umc/self-service/passwordreset/whitelist/users", ""))
+		wh_groups = listize(ucr.get("umc/self-service/passwordreset/whitelist/groups", ""))
 
 		bl_users.extend(map(str.lower, USER_BLACKLIST))
 		bl_groups.extend(map(str.lower, GRP_BLACKLIST))
@@ -364,7 +384,7 @@ class Instance(Base):
 
 		# get groups
 		lo = getMachineConnection()
-		userdn = lo.search(filter="(uid={})".format(username))[0][0]
+		userdn = lo.search(filter="(uid={})".format(escape_filter_chars(username)))[0][0]
 		groups_dns= Instance.get_groups(userdn)
 		for group_dn in list(groups_dns):
 			groups_dns.extend(Instance.get_nested_groups(group_dn))
@@ -403,7 +423,7 @@ class Instance(Base):
 			user = usersmod.lookup(config, lo, dn_part[0], base=dn_part[-1])[0]
 		except IndexError:
 			# no user found
-			raise UMC_CommandError(_("Unknown user '{}'.".format(userdn)))
+			raise UMC_Error(_("Unknown user '{}'.".format(userdn)))
 		user.open()
 		groups = user["groups"]
 		prim_group = user["primaryGroup"]
@@ -443,4 +463,4 @@ class Instance(Base):
 		# TODO: implement
 		MODULE.error("prevent_denial_of_service(): implement me")
 		if False:
-			raise UMC_CommandError(_('There have been too many requests in the last time. Please wait 5 minutes for the next request.'))
+			raise UMC_Error(_('There have been too many requests in the last time. Please wait 5 minutes for the next request.'))

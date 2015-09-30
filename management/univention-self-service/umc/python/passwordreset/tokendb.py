@@ -53,34 +53,34 @@ class TokenDB(object):
 		self.conn = self.open_db()
 
 	def insert_token(self, username, method, token):
-		sql = "INSERT INTO tokens (username, method, timestamp, token) VALUES ('{username}', '{method}', '{ts}', '{token}');".format(
-			username=username, method=method, ts=datetime.datetime.now(), token=token)
+		sql = "INSERT INTO tokens (username, method, timestamp, token) VALUES (%(username)s, %(method)s, %(ts)s, %(token)s);"
+		data = {"username": username, "method": method, "ts": datetime.datetime.now(), "token": token}
 		cur = self.conn.cursor()
-		cur.execute(sql)
+		cur.execute(sql, data)
 		self.conn.commit()
 		cur.close()
 
 	def update_token(self, username, method, token):
-		sql = "UPDATE tokens SET method='{method}', timestamp='{ts}', token='{token}' WHERE username='{username}';".format(
-			username=username, method=method, ts=datetime.datetime.now(), token=token)
+		sql = "UPDATE tokens SET method=%(method)s, timestamp=%(ts)s, token=%(token)s WHERE username=%(username)s;"
+		data = {"username": username, "method": method, "ts": datetime.datetime.now(), "token": token}
 		cur = self.conn.cursor()
-		cur.execute(sql)
+		cur.execute(sql, data)
 		self.conn.commit()
 		cur.close()
 
 	def delete_tokens(self, **kwargs):
 		sql = "DELETE FROM tokens WHERE "
-		sql += " AND ".join(["{0}='{1}'".format(*item) for item in kwargs.items()])
+		sql += " AND ".join(["{0}=%({0})s".format(key) for key in kwargs.keys()])
 		cur = self.conn.cursor()
-		cur.execute(sql)
+		cur.execute(sql, kwargs)
 		self.conn.commit()
 		cur.close()
 
 	def get_all(self, **kwargs):
 		sql = "SELECT * FROM tokens WHERE "
-		sql += " AND ".join(["{0}='{1}'".format(*item) for item in kwargs.items()])
+		sql += " AND ".join(["{0}=%({0})s".format(key) for key in kwargs.keys()])
 		cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-		cur.execute(sql)
+		cur.execute(sql, kwargs)
 		rows = cur.fetchall()
 		cur.close()
 		return rows
