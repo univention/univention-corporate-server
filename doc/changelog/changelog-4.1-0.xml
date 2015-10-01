@@ -167,7 +167,7 @@
 			<itemizedlist>
 				<listitem><simpara>
 					The App Center is now able to install docker based apps. These apps are installed in a small container (minimal UCS) within the host system
- 					(<u:bug>39185</u:bug>, <u:bug>39258</u:bug>, <u:bug>39374</u:bug>, <u:bug>39331</u:bug>).
+					(<u:bug>39185</u:bug>, <u:bug>39258</u:bug>, <u:bug>39374</u:bug>, <u:bug>39331</u:bug>, <u:bug>39184</u:bug>, <u:bug>39183</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -184,6 +184,8 @@
 			<title>Basic settings / Appliance mode</title>
 			<itemizedlist>
 				<listitem><simpara>
+					System setup's wizard now can have a configurable domain while the hostname itself is fixed. This is needed
+					for Univention Apps <u:bug>38275</u:bug>.
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
