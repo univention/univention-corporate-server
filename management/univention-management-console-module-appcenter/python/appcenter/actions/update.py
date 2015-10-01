@@ -52,7 +52,7 @@ from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 
 from univention.appcenter.app import App, AppManager, CACHE_DIR, LOCAL_ARCHIVE
-from univention.appcenter.actions import UniventionAppAction, JOINSCRIPT_DIR
+from univention.appcenter.actions import UniventionAppAction, JOINSCRIPT_DIR, possible_network_error
 from univention.appcenter.utils import urlopen, get_md5_from_file
 
 
@@ -104,12 +104,14 @@ class Update(UniventionAppAction):
 					ucr_update(ucr, {app.ucr_upgrade_key: 'yes'})
 			self._update_local_files()
 
+	@possible_network_error
 	def _download_supra_files(self):
 		categories_url = urljoin('%s/' % self._get_metainf_url(), '../categories.ini')
 		self.log('Downloading "%s"...' % categories_url)
 		with open(os.path.join(CACHE_DIR, '.categories.ini'), 'wb') as f:
 			f.write(urlopen(categories_url).read())
 
+	@possible_network_error
 	def _download_archive(self, files_to_download):
 		# a lot of files to download? Do not download them
 		#   one at a time. Download the full archive!
@@ -144,6 +146,7 @@ class Update(UniventionAppAction):
 			self.fatal('Could not read "%s": %s' % (archive_url, exc))
 			return files_to_download
 
+	@possible_network_error
 	def _download_directly(self, files_to_download):
 		for filename_url, filename, remote_md5sum in files_to_download:
 			# dont forget to quote: 'foo & bar.ini' -> 'foo%20&%20bar.ini'
@@ -254,6 +257,7 @@ class Update(UniventionAppAction):
 			self._appcenter_server = 'https://%s' % self._appcenter_server
 		return self._appcenter_server
 
+	@possible_network_error
 	def _load_index_json(self):
 		json_url = urljoin('%s/' % self._get_metainf_url(), 'index.json.gz')
 		self.log('Downloading "%s"...' % json_url)

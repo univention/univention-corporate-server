@@ -41,6 +41,7 @@ import shutil
 from univention.config_registry import handler_commit
 
 from univention.appcenter.actions.update import Update
+from univention.appcenter.log import catch_stdout
 
 FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons'
 
@@ -61,4 +62,5 @@ class Update(Update):
 			os.unlink(png)
 
 	def _update_conffiles(self):
-		handler_commit(['/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo'])
+		with catch_stdout(self.logger):
+			handler_commit(['/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo'])

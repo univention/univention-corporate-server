@@ -42,8 +42,9 @@ from univention.config_registry.frontend import ucr_update
 from univention.config_registry import ConfigRegistry
 
 from univention.appcenter.app import App, AppManager
-from univention.appcenter.actions import Abort, StoreAppAction
+from univention.appcenter.actions import Abort, StoreAppAction, NetworkError
 from univention.appcenter.actions.register import Register
+from univention.appcenter.log import catch_stdout
 
 
 class _AptLogger(object):
@@ -123,7 +124,10 @@ class InstallRemoveUpgrade(Register):
 			if status != 200:
 				self._revert(app, args)
 			if args.send_info:
-				self._send_information(app, status)
+				try:
+					self._send_information(app, status)
+				except NetworkError:
+					self.warn('Ignoring this error...')
 			self._register_installed_apps_in_ucr()
 			from univention.appcenter import get_action
 			upgrade_search = get_action('upgrade-search')
@@ -214,10 +218,11 @@ class InstallRemoveUpgrade(Register):
 		for app in AppManager.get_all_apps():
 			if app.is_installed():
 				installed_codes.append(app.code)
-		ucr_update(ucr, {
-			'appcenter/installed': '-'.join(installed_codes),
-			'repository/app_center/installed': '-'.join(installed_codes),  # to be deprecated
-		})
+		with catch_stdout(self.logger):
+			ucr_update(ucr, {
+				'appcenter/installed': '-'.join(installed_codes),
+				'repository/app_center/installed': '-'.join(installed_codes),  # to be deprecated
+			})
 
 	def _call_join_script(self, app, args, unjoin=False):
 		if unjoin:

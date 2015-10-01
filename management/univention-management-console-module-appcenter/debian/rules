@@ -45,6 +45,7 @@ override_dh_auto_build: $(MO_FILES)
 
 override_dh_auto_install:
 	univention-install-config-registry
+	univention-install-joinscript
 	dh-umc-module-install
 	dh_auto_install
 

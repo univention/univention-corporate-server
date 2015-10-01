@@ -39,12 +39,13 @@ from argparse import ArgumentParser, Action, Namespace
 import logging
 import urllib2
 import urllib
+from functools import wraps
 
 from univention.config_registry import ConfigRegistry
 
 from univention.appcenter import AppManager
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.utils import underscore, call_process, urlopen
+from univention.appcenter.utils import underscore, call_process, urlopen, verbose_http_error
 
 _ACTIONS = {}
 JOINSCRIPT_DIR = '/usr/lib/univention-install'
@@ -52,6 +53,21 @@ JOINSCRIPT_DIR = '/usr/lib/univention-install'
 
 class Abort(Exception):
 	pass
+
+
+class NetworkError(Abort):
+	pass
+
+
+def possible_network_error(func):
+	@wraps(func)
+	def _func(*args, **kwargs):
+		try:
+			return func(*args, **kwargs)
+		except (urllib2.HTTPError, urllib2.URLError) as exc:
+			func.im_self.fatal(verbose_http_error(exc))
+			raise NetworkError()
+	return _func
 
 
 class StoreAppAction(Action):
@@ -164,6 +180,9 @@ class UniventionAppAction(object):
 		self.percentage = 0
 		try:
 			result = self.main(namespace)
+		except Abort:
+			self.percentage = 100
+			return 10
 		except Exception as exc:
 			self.log_exception(exc)
 			raise
@@ -213,6 +232,7 @@ class UniventionAppAction(object):
 			logger = self.logger.getChild(logger)
 		return call_process(args, logger, env)
 
+	@possible_network_error
 	def _send_information(self, app, status):
 		action = self.get_action_name()
 		self.debug('%s %s: %s' % (action, app.id, status))

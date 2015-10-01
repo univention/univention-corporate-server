@@ -46,6 +46,7 @@ from univention.appcenter.udm import create_object_if_not_exists, init_object, g
 from univention.appcenter.actions import StoreAppAction
 from univention.appcenter.actions.credentials import CredentialsAction
 from univention.appcenter.utils import mkdir, get_md5, app_ports
+from univention.appcenter.log import catch_stdout
 
 
 class NoMorePorts(Exception):
@@ -87,7 +88,8 @@ class Register(CredentialsAction):
 		updates = {}
 		for app in apps:
 			updates.update(self._register_component(app, ucr, server, delay=True, force=self._explicit(args)))
-		ucr_update(ucr, updates)
+		with catch_stdout(self.logger):
+			ucr_update(ucr, updates)
 
 	def _register_component(self, app, ucr=None, server=None, delay=False, force=True):
 		if app.docker and not force:
@@ -105,7 +107,8 @@ class Register(CredentialsAction):
 		if force:
 			updates.update(self._register_component_dict(app, server, ucr, force=True))
 		if not delay:
-			ucr_update(ucr, updates)
+			with catch_stdout(self.logger):
+				ucr_update(ucr, updates)
 		return updates
 
 	def _ucr_component_base(self, app):

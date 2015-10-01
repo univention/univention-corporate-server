@@ -4,10 +4,8 @@
 @%@UCRWARNING=# @%@
 	-->
 @!@
-from univention.management.console.modules.appcenter.app_center import Application
-from univention.lib.package_manager import PackageManager
-package_manager = PackageManager(lock=False)
-apps = Application.all_installed(package_manager, only_local=True, localize=False)
+from univention.appcenter.app import AppManager
+apps = AppManager.get_all_locally_installed_apps()
 
 deactivated = 'no'
 if not apps:
@@ -27,8 +25,8 @@ for app in apps:
 			id=app.id,
 			name=app.name,
 			version=app.version,
-			description=app.get('description'),
-			icon='apps-%s' % app.component_id if 'UCS components' not in app._options['unlocalised_categories'] else 'appcenter-ucs-component.svg',
+			description=app.description,
+			icon='apps-%s' % app.component_id if 'UCS components' not in app.categories else 'appcenter-ucs-component.svg',
 		)
 	print xml
 @!@

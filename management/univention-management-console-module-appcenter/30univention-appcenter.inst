@@ -42,7 +42,7 @@ eval "$(ucr shell ldap/base)"
 
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--set name="apps" \
-	--position "cn=univention,$ldap_base"
+	--position "cn=univention,$ldap_base" || die
 
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-appcenter/univention-app.schema \

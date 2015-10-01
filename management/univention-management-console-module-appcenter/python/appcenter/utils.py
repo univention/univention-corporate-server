@@ -140,10 +140,35 @@ def call_process(args, logger=None, env=None):
 	return process
 
 
-_opener_installed = False
-def urlopen(request):  # flake8: noqa
-	global _opener_installed
-	if not _opener_installed:
+def verbose_http_error(exc):
+	strerror = ''
+	if hasattr(exc, 'getcode'):
+		code = exc.getcode()
+		if code == 404:
+			strerror = _('%s could not be downloaded. This seems to be a problem with the App Center server. Please try again later.') % exc.url
+		elif code >= 500:
+			strerror = _('This is a problem with the App Center server. Please try again later.')
+	while hasattr(exc, 'reason'):
+		exc = exc.reason
+	if hasattr(exc, 'errno'):
+		ucr = ConfigRegistry()
+		ucr.load()
+		version = ucr.get('version/version')
+		errno = exc.errno
+		strerror += getattr(exc, 'strerror', '') or ''
+		if errno == 1:  # gaierror(1, something like 'SSL Unknown protocol')
+			link_to_doc = _('http://docs.univention.de/manual-%s.html#ip-config:Web_proxy_for_caching_and_policy_management__virus_scan') % version
+			strerror += '. ' + _('This may be a problem with the proxy of your system. You may find help at %s.') % link_to_doc
+		if errno == -2:  # gaierror(-2, 'Name or service not known')
+			link_to_doc = _('http://docs.univention.de/manual-%s.html#networks:dns') % version
+			strerror += '. ' + _('This is probably due to the DNS settings of your server. You may find help at %s.') % link_to_doc
+	if not strerror.strip():
+		strerror = str(exc)
+	return strerror
+
+
+def urlopen(request):
+	if not urlopen._opener_installed:
 		ucr = ConfigRegistry()
 		ucr.load()
 		proxy_http = ucr.get('proxy/http')
@@ -151,8 +176,9 @@ def urlopen(request):  # flake8: noqa
 			proxy = urllib2.ProxyHandler({'http': proxy_http, 'https': proxy_http})
 			opener = urllib2.build_opener(proxy)
 			urllib2.install_opener(opener)
-		_opener_installed = True
+		urlopen._opener_installed = True
 	return urllib2.urlopen(request, timeout=60)
+urlopen._opener_installed = False
 
 
 def get_md5(content):

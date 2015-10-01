@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.6-8) unstable; urgency=medium
+
+  * Bug #39082: Fixes for a clean output of univention-upgrade
+  * Bug #39183: Include join scripts
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 01 Oct 2015 22:19:09 +0200
+
 univention-management-console-module-appcenter (5.0.6-7) unstable; urgency=medium
 
   * Bug #39204: Fix image upgrades
