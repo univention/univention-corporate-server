@@ -516,7 +516,7 @@
 					<wordasword>1.6</wordasword> (<u:bug>39350</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					OverlayFS has been chosen as the Docker storage driver
+					OverlayFS has been configured as the Docker storage driver
 					(<u:bug>39412</u:bug>, <u:bug>39418</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
