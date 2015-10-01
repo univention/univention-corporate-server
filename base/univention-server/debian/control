@@ -198,6 +198,7 @@ Depends: ${misc:Depends},
  univention-policy-tools,
  univention-system-setup,
  univention-appcenter,
+ univention-docker-container-mode,
  shell-univention-lib (>= 1.0.25-1),
  python-univention-lib (>= 1.0.25-1)
 Description: UCS system role common dependencies and files
