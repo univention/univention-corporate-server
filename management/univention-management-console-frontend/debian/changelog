@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.28-2) unstable; urgency=medium
+
+  * Bug #31943: don't "exit 1" in a subshell
+
+ -- Florian Best <best@univention.de>  Thu, 01 Oct 2015 17:41:25 +0200
+
 univention-management-console-frontend (5.0.28-1) unstable; urgency=medium
 
   * Bug #31943: still improoving error handling
