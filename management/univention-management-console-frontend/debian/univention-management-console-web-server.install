@@ -1,4 +1,3 @@
 univention-management-console-web-server	usr/sbin/
 34univention-management-console-web-server.inst usr/lib/univention-install/
-31univention-management-console-web-server-init.inst usr/lib/univention-install/
 usr
