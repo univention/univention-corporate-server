@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: univention-radius
-fix: 2.0.2-4.13.201509071719
+fix: 2.0.2-6.16.201510011043
 version: [3]
 desc: |
  This update addresses the following issues:
