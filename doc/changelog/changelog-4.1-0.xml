@@ -145,7 +145,7 @@
 					Support for logging in with the primary email address at UMC has been added (<u:bug>38528</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Unmoveable objects are no longer shown as moveable (<u:bug>20439</u:bug>).
+					Unmovable objects are no longer shown as movable (<u:bug>20439</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
