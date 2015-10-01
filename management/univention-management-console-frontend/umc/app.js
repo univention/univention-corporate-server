@@ -1841,11 +1841,9 @@ define([
 		},
 
 		logout: function() {
-			this._askLogout.then(lang.hitch(this, function() {
-					this.umcpCommand('logout').always(function() {
-						tools.checkSession(false);
-						window.location = '/univention-management-console/logout';
-					});
+			this._askLogout().then(lang.hitch(this, function() {
+				tools.checkSession(false);
+				window.location = '/univention-management-console/logout';
 			}));
 		},
 
@@ -1854,6 +1852,7 @@ define([
 				return this.logout();
 			}
 			this._askLogout().then(function() {
+				// TODO: we should do a real logout here. maybe the UMCUsername cookie can be set
 				tools.checkSession(false);
 				tools.closeSession();
 				window.location.search = 'username=' + username;
