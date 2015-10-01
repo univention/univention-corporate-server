@@ -534,6 +534,10 @@
 						UCR can now modify files on a bind-mounted filesystem in a Docker
 						container (<u:bug>38011</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						The Heimdal Kerberos installation does not fail anymore in a Docker
+						container (<u:bug>38295</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 	</section>
 
