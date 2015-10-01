@@ -1,3 +1,10 @@
+univention-radius (2.0.2-5) unstable; urgency=low
+
+  * move DH file generation back to join script (partly revert r63484)
+    (Bug #38786)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 01 Oct 2015 09:56:44 +0200
+
 univention-radius (2.0.2-4) unstable; urgency=low
 
   * raise fault tolerance by trying all available LDAP servers (Bug #39039)
