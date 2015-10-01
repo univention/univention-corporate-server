@@ -49,8 +49,10 @@ if [ -x /usr/bin/docker ] && [ -z $(ucr get docker/container/uuid) ]; then
 	# this is a docker host
 	nat_core_rules
 	
-	for CONT_ID in $(docker ps -q); do
-		nat_container_rule $CONT_ID
-	done
+	if [ -x /etc/init.d/docker ] && /etc/init.d/docker status > /dev/null; then
+		for CONT_ID in $(docker ps -q); do
+			nat_container_rule $CONT_ID
+		done
+	fi
 fi
 

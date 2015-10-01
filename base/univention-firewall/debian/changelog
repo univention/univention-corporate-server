@@ -1,3 +1,9 @@
+univention-firewall (7.0.0-5) unstable; urgency=medium
+
+  * Check if docker daemon runs before sending commands (Bug #38307)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 01 Oct 2015 18:32:34 +0200
+
 univention-firewall (7.0.0-4) unstable; urgency=low
 
   * Create docker rules if not in container (Bug #38307)
