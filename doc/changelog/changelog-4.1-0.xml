@@ -80,6 +80,10 @@
 					the init script <filename>univention-docker-container-mode</filename>
 					(<u:bug>38365</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						<filename>univention-firewall</filename> new creates port forwarding
+						rules for services in Docker containers (<u:bug>38307</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>
