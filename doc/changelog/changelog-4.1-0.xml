@@ -185,7 +185,7 @@
 			<itemizedlist>
 				<listitem><simpara>
 					The System Setup wizard now can have a configurable domain while the hostname itself is fixed. This is needed
-					for Univention Apps <u:bug>38275</u:bug>.
+					for Univention Apps (<u:bug>38275</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
