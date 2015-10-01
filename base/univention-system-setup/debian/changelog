@@ -1,3 +1,9 @@
+univention-system-setup (9.0.2-3) unstable; urgency=medium
+
+  * Bug #38275: Fix interface validation errors in installation mode
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 01 Oct 2015 15:34:15 +0200
+
 univention-system-setup (9.0.2-2) unstable; urgency=medium
 
   * Bug #38275: Merge from container scope: Make the nameserver and domain

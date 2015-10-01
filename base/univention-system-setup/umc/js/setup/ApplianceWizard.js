@@ -2568,7 +2568,7 @@ define([
 			// network configuration
 			var _vals = this._gatherVisibleValues();
 			var vals = {};
-			if (this.areFieldsVisible('network')) {
+			if (this.isPageVisible('network') && this.areFieldsVisible('network')) {
 				// prepare values for network interfaces
 				vals.interfaces = {};
 				array.forEach(this._getNetworkDevices(), function(idev, i) {
