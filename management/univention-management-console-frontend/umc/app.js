@@ -922,6 +922,7 @@ define([
 
 			// remove cookie from UCS 4.0 to prevent login problems
 			cookie('UMCSessionId', null, {path: '/', expires: -1})
+			cookie('UMCUsername', null, {path: '/', expires: -1})
 
 			// save some config properties
 			tools.status('overview', tools.isTrue(props.overview));
@@ -977,7 +978,7 @@ define([
 
 		onLogin: function(username) {
 			// save the username internally and as cookie
-			tools.setUsernameCookie(username, { expires: 100, path: '/' });
+			tools.setUsernameCookie(username, { expires: 100, path: '/univention-management-console/' });
 			tools.status('username', username);
 
 			// start the timer for session checking

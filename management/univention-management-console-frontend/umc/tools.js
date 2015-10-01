@@ -1253,7 +1253,7 @@ define([
 
 			// set the cookie with all preferences
 			cookieStr = json.stringify(this._userPreferences);
-			cookie('UMCPreferences', cookieStr, { expires: 100, path: '/' } );
+			cookie('UMCPreferences', cookieStr, { expires: 100, path: '/univention-management-console/' } );
 			return; // undefined
 		},
 

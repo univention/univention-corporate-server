@@ -94,7 +94,7 @@ define([
 			// reload the page when a different language is selected
 			var query = ioQuery.queryToObject(window.location.search.substring(1));
 			query.lang = locale;
-			cookie('UMCLang', query.lang, { expires: 100, path: '/' });
+			cookie('UMCLang', query.lang, { expires: 100, path: '/univention-management-console/' });
 			window.location.search = '?' + ioQuery.objectToQuery(query);
 		}
 	};
