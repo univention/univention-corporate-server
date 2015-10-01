@@ -127,6 +127,8 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 	--set ldapMapping=univentionNetworkAccess \
 	--set deleteObjectClass=1 || exit "$?"
 
+invoke-rc.d freeradius restart
+
 stop_udm_cli_server
 
 joinscript_save_current_version

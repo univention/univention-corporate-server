@@ -1,3 +1,9 @@
+univention-radius (2.0.2-6) unstable; urgency=low
+
+  * restart service in joinscript too, in case its run manually (Bug #38786)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 01 Oct 2015 10:40:08 +0200
+
 univention-radius (2.0.2-5) unstable; urgency=low
 
   * move DH file generation back to join script (partly revert r63484)
