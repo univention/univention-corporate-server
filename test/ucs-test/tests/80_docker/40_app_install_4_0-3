@@ -25,7 +25,7 @@ if __name__ == '__main__':
 		# Since we are installing on a 4.1, a 4.1 ini entry is needed
 		app = App(name=app_name, version='1', build_package=False)
 		app.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.0-3',
-									WebInterface='/testapp',
+									WebInterface='/%s' % app_name,
 									WebInterfacePortHTTP='80',
 									WebInterfacePortHTTPS='443',
 									AutoModProxy='True',

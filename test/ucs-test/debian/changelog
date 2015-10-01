@@ -1,3 +1,10 @@
+ucs-test (6.0.8-9) unstable; urgency=medium
+
+  * 80_docker/65_app_container_upgrade_dockerallowedimage: Added a test
+    case for DockerAllowedImages (Bug #39374)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 01 Oct 2015 07:03:03 +0200
+
 ucs-test (6.0.8-8) unstable; urgency=medium
 
   * 80_docker/64_app_container_upgrade: Test container upgrade

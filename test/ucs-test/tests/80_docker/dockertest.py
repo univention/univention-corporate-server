@@ -74,10 +74,14 @@ def get_app_version():
 
 
 class App:
-	def __init__(self, name, version, package_name=None, build_package=True):
+	def __init__(self, name, version, app_directory_suffix=None, package_name=None, build_package=True):
 		self.app_name = name
 		self.app_version = version
-		self.app_directory_suffix = random_name()
+
+		if not app_directory_suffix:
+			self.app_directory_suffix = random_version()
+		else:
+			self.app_directory_suffix = app_directory_suffix
 
 		self.app_directory = '%s_%s' % (self.app_name, self.app_directory_suffix)
 
@@ -86,7 +90,7 @@ class App:
 		else:
 			self.package_name = get_app_name()
 
-		self.package_version = get_app_version()
+		self.package_version = '%s.%s' % (version,get_app_version())
 
 		self.ucr = ConfigRegistry()
 		self.ucr.load()

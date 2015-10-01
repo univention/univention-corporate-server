@@ -1,12 +1,12 @@
 #!/usr/share/ucs-test/runner python
-## desc: Test the container upgrade
+## desc: Test DockerAllowedImages
 ## tags: [docker,WIP]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
 
 from dockertest import *
-from univention.testing.utils import get_ldap_connection, fail
+from univention.testing.utils import get_ldap_connection,fail
 from univention.config_registry import ConfigRegistry
 
 
@@ -49,13 +49,14 @@ if __name__ == '__main__':
 
 			lo = get_ldap_connection()
 			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app_name, unique=True, required=True)
-
 			ucr = ConfigRegistry()
 			ucr.load()
 			container_uuid = ucr.get('appcenter/apps/%s/container' % app_name)
+			print 'Container UUID: %s' % container_uuid
 
 			app = App(name=app_name, version='2', package_name=package_name, app_directory_suffix=app_directory_suffix)
 			app.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0',
+										DockerAllowedImages='docker.software-univention.de/nonexisting-image1,docker.software-univention.de/ucs-appbox-amd64:4.0-3,docker.software-univention.de/nonexisting-image1',
 										WebInterface='/%s' % app_name,
 										WebInterfacePortHTTP='80',
 										WebInterfacePortHTTPS='443',
@@ -77,8 +78,8 @@ if __name__ == '__main__':
 			ucr.load()
 			container_uuid_new = ucr.get('appcenter/apps/%s/container' % app_name)
 			print 'Container UUID: %s' % container_uuid_new
-			if container_uuid == container_uuid_new:
-				fail('The container UUID has not been changed.')
+			if container_uuid != container_uuid_new:
+				fail('The container UUID has been changed.')
 
 		finally:
 			app.uninstall()
