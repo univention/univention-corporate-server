@@ -74,7 +74,7 @@ mk_config () {
 	_check_ssl ssl/email 128
 
 	local SAN_txt= san IFS=' '
-	for san in $5 # IFS
+	for san in $subjectAltName # IFS
 	do
 		SAN_txt="${SAN_txt:+${SAN_txt}, }DNS:${san}"
 	done
@@ -257,7 +257,7 @@ init () {
 	mkdir -m 700 -p "${CA}"
 	mkdir -p "${CA}/certs"
 	mkdir -p "${CA}/crl"
-	mkdir -p "${CA}/newcerts,private"
+	mkdir -p "${CA}/newcerts"
 	mkdir -p "${CA}/private"
 	echo "01" >"${CA}/serial"
 	touch "${CA}/index.txt"

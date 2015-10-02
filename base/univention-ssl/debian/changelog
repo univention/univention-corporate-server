@@ -1,3 +1,9 @@
+univention-ssl (10.0.0-6) unstable; urgency=low
+
+  * Bug #38859: Fix init()
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 02 Oct 2015 19:57:11 +0200
+
 univention-ssl (10.0.0-5) unstable; urgency=low
 
   * fix list_cert_names and revoke_cert (Bug #38859)
