@@ -595,6 +595,9 @@
 			<listitem><simpara>
 				<package>univention-join</package> now correctly checks for the existence of <command>nscd</command>. This is needed in a minimal environment (<u:bug>38662</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				<command>nscd</command> terminates its children when stopping (<u:bug>38135</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
