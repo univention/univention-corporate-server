@@ -441,6 +441,8 @@
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
+					<package>univention-ssl</package> can now create certificates for FQDNs longer than 64 characters.
+					The OpenSSL extension <property>Subject Alternative Name</property> is used in such a case (<u:bug>38859</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>

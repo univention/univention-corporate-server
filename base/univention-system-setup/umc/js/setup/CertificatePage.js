@@ -69,6 +69,7 @@ define([
 			var widgets = [{
 				type: TextBox,
 				name: 'ssl/common',
+				maxLength: 64,
 				label: _('Common name for the root SSL certificate'),
 				umcpCommand: this.umcpCommand,
 				dynamicValues: 'ssl/lang/countrycodes'
@@ -81,22 +82,27 @@ define([
 			}, {
 				type: TextBox,
 				name: 'ssl/state',
+				maxLength: 128,
 				label: _('State')
 			}, {
 				type: TextBox,
 				name: 'ssl/locality',
+				maxLength: 128,
 				label: _('Location')
 			}, {
 				type: TextBox,
 				name: 'ssl/organization',
+				maxLength: 64,
 				label: _('Organization')
 			}, {
 				type: TextBox,
 				name: 'ssl/organizationalunit',
+				maxLength: 64,
 				label: _('Business unit')
 			}, {
 				type: TextBox,
 				name: 'ssl/email',
+				maxLength: 128,
 				label: _('Email address')
 			}];
 

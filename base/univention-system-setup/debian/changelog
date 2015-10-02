@@ -1,3 +1,9 @@
+univention-system-setup (9.0.2-4) unstable; urgency=medium
+
+  * Bug #38859: Check maximum length of SSL fields.
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 02 Oct 2015 14:20:54 +0200
+
 univention-system-setup (9.0.2-3) unstable; urgency=medium
 
   * Bug #38275: Fix interface validation errors in installation mode
