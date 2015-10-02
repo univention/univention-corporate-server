@@ -91,6 +91,11 @@ fi
 # Install univention-saml on DC Master and DC Backup while updating to UCS 4.1
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=39313
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	# Deactivate app center component if present
+	if is_ucr_true repository/online/component/simplesamlphp_20140304; then
+		ucr set repository/online/component/simplesamlphp_20140304=disabled
+		/usr/sbin/univention-register-apps
+	fi
 	install univention-saml
 fi
 

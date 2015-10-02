@@ -1,3 +1,9 @@
+univention-updater (11.0.2-5) unstable; urgency=medium
+
+  * Bug #38881: Deactivate SAML component if present
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 02 Oct 2015 11:19:54 +0200
+
 univention-updater (11.0.2-4) unstable; urgency=medium
 
   * Bug #39258: Revert; is done by apt automatically
