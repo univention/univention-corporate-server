@@ -1,4 +1,11 @@
-ucs-test (6.0.8-10) UNRELEASED; urgency=medium
+ucs-test (6.0.8-11) unstable; urgency=medium
+
+  * 80_docker/62_app_update_available: Check the update_available script
+    (Bug #39414)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 02 Oct 2015 11:42:05 +0200
+
+ucs-test (6.0.8-10) unstable; urgency=medium
 
   * dockertest: also verify the join status (Bug #39196)
 
