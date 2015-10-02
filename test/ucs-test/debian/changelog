@@ -1,3 +1,9 @@
+ucs-test (6.0.8-10) UNRELEASED; urgency=medium
+
+  * dockertest: also verify the join status (Bug #39196)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 02 Oct 2015 07:05:26 +0200
+
 ucs-test (6.0.8-9) unstable; urgency=medium
 
   * 80_docker/65_app_container_upgrade_dockerallowedimage: Added a test

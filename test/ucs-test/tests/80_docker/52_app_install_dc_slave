@@ -24,9 +24,7 @@ univention-install --yes --no-install-recommends univention-server-slave univent
 /usr/share/univention-docker-container-mode/setup "$@"
 ''')
 
-
 			app.add_to_local_appcenter()
-
 
 			appcenter.update()
 

@@ -166,6 +166,10 @@ class App:
 		if ret != 0:
 			raise UCSTest_DockerApp_VerifyFailed()
 
+		ret = subprocess.call('docker exec %s univention-check-join-status' % self.container_id, stderr=subprocess.STDOUT, shell=True)
+		if ret != 0:
+			raise UCSTest_DockerApp_VerifyFailed()
+
 	def uninstall(self):
 		if self.installed:
 			ret = subprocess.call(['univention-app', 'remove', self.app_name])
