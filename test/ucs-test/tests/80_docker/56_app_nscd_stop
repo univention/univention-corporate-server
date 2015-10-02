@@ -1,0 +1,48 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check if a nscd stop also kills the container nscd processes
+## tags: [docker]
+## exposure: dangerous
+## packages:
+##   - docker.io
+
+from dockertest import *
+import subprocess
+import time
+
+if __name__ == '__main__':
+
+	nscd_stopped = False
+
+	with Appcenter() as appcenter:
+		app_name = get_app_name()
+		app_version = get_app_version()
+
+		app = App(name=app_name, version=app_version)
+
+		try:
+			app.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0')
+			app.add_to_local_appcenter()
+
+			appcenter.update()
+
+			app.install()
+
+			app.verify()
+
+			print app.execute_command_in_container('univention-install nscd')
+
+			ncs_container_pid_old = app.execute_command_in_container('pidof nscd')
+			print ncs_container_pid_old
+			subprocess.call('/etc/init.d/nscd stop', shell=True)
+			nscd_stopped = True
+			time.sleep(3)
+			ncs_container_pid_new = app.execute_command_in_container('pidof nscd')
+			print ncs_container_pid_new
+			if ncs_container_pid_old != ncs_container_pid_new:
+				fail('nscd pid in container have been changed. old: [%s], new: [%s]' % (ncs_container_pid_old, ncs_container_pid_new))
+
+		finally:
+			if nscd_stopped:
+				subprocess.call('/etc/init.d/nscd start', shell=True)
+			app.uninstall()
+			app.remove()

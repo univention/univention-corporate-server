@@ -1,4 +1,11 @@
-ucs-test (6.0.8-12) UNRELEASED; urgency=low
+ucs-test (6.0.8-13) unstable; urgency=medium
+
+  * 80_docker/56_app_nscd_stop: Check if a nscd stop also kills the
+    container nscd processes (Bug #38135)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 02 Oct 2015 12:05:23 +0200
+
+ucs-test (6.0.8-12) unstable; urgency=low
 
   * Bug #38823: Wait for pending transactions
 
