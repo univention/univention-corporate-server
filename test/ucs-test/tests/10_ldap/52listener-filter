@@ -15,6 +15,7 @@ from sys import exit
 from time import sleep
 from pwd import getpwnam
 from subprocess import Popen
+from socket import (socket, AF_INET, SOCK_STREAM, error as socket_error)
 
 from univention.config_registry.frontend import handler_set
 
@@ -86,6 +87,7 @@ class Listener(object):
 	def __enter__(self):
 		self.init_listener()
 		self.run_listener()
+		return self
 
 	def init_listener(self):
 		cmd = self.cmd + [
@@ -109,11 +111,52 @@ class Listener(object):
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
+		if not exc_type:
+			self.wait_transactions()
 		self.kill_listener()
 
 		ret = self.proc.wait()
 		print 'I: ret=%d' % (ret,)
 		self.proc = None
+
+	def wait_transactions(self):
+		prev_master = 0
+		i = 0
+		while i < 10:
+			master = self.get_master_transaction()
+			local = self.get_local_transaction()
+			print "I: %d <= %d >= %d %d..." % (local, master, prev_master, i)
+			if local == master:
+				return
+			i = i + 1 if master == prev_master else 0
+			prev_master = master
+			sleep(1)
+
+	def get_master_transaction(self):
+		hostname = self.ucr['ldap/master']
+		try:
+			sock = socket(AF_INET, SOCK_STREAM)
+			sock.connect((hostname, 6669))
+
+			sock.send('Version: 2\nCapabilities: \n\n')
+			sock.recv(100)
+
+			sock.send('MSGID: 1\nGET_ID\n\n')
+			result = sock.recv(100)
+
+			sock.close()
+		except socket_error as ex:
+			print 'E: error talking to UDN on %s: %s' % (hostname, ex)
+			return
+
+		lines = result.splitlines()
+		return int(lines[1])
+
+	def get_local_transaction(self):
+		filename = join(self.env.cdir, 'notifier_id')
+		with open(filename, 'r') as nid_file:
+			nid = nid_file.read()
+		return int(nid)
 
 	def kill_listener(self):
 		if not self.proc:
@@ -139,10 +182,11 @@ def main():
 				opts={'schedule': True},
 				quiet=False)
 
-			with Listener(ucr, env):
+			with Listener(ucr, env) as listener:
 				with UCSTestUDM() as udm:
 					ou = udm.create_object(MODULE, name=UNIQUE)
 					udm.modify_object(MODULE, dn=ou, description=UNIQUE)
+					listener.wait_transactions()
 					verify_ldap_object(ou)
 
 			error |= unexpected_transactions(env, ucr)

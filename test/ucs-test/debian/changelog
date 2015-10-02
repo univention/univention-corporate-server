@@ -1,3 +1,9 @@
+ucs-test (5.0.172-1) unstable; urgency=low
+
+  * Bug #38823: Wait for pending transactions
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 02 Oct 2015 12:03:51 +0200
+
 ucs-test (5.0.172-0) unstable; urgency=low
 
   * Bug #36383: check settings for signed kernel modules
