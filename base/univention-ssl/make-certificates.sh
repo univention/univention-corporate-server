@@ -29,30 +29,20 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+set -e -u
 
 # See:
 # http://www.ibiblio.org/pub/Linux/docs/HOWTO/other-formats/html_single/SSL-Certificates-HOWTO.html
 # http://www.pca.dfn.de/dfnpca/certify/ssl/handbuch/ossl092/
 
-if [ -n "$sslbase" ]; then
-	SSLBASE="$sslbase"
-else
-	SSLBASE=/etc/univention/ssl
-fi
-
+SSLBASE="${sslbase:-/etc/univention/ssl}"
 CA=ucsCA
 DEFAULT_DAYS="$(/usr/sbin/univention-config-registry get ssl/default/days)"
-if [ -z "$DEFAULT_DAYS" ]; then
-	DEFAULT_DAYS=1825
-fi
+: ${DEFAULT_DAYS:=1825}
 DEFAULT_MD="$(/usr/sbin/univention-config-registry get ssl/default/hashfunction)"
-if [ -z "$DEFAULT_MD" ]; then
-	DEFAULT_MD=sha256
-fi
+: ${DEFAULT_MD:=sha256}
 DEFAULT_BITS="$(/usr/sbin/univention-config-registry get ssl/default/bits)"
-if [ -z "$DEFAULT_BITS" ]; then
-	DEFAULT_BITS="2048"
-fi
+: ${DEFAULT_BITS:=2048}
 
 if test -e "$SSLBASE/password"; then
 	PASSWD=`cat "$SSLBASE/password"`
@@ -60,26 +50,38 @@ else
 	PASSWD=""
 fi
 
+_check_ssl () {
+	local var="$1" len="$2" val="${3:-}"
+	[ -n "$val" ] || val=$(ucr get "$var")
+	[ ${#val} -le $len ] && return 0
+	echo "$var too long; max $len" >&2
+	return 1
+}
+
 mk_config () {
-	local outfile=$1
-	local password=$2
-	local days=$3
-	local name=$4
-	local subjectAltName=$5
+	local outfile=${1:?Missing argument: outfile}
+	local password=${2:-?Missing argument: password}
+	local days=${3:?Missing argument: days}
+	local name=${4:?Missing argument: common name}
+	local subjectAltName=${5:-}
 
-	if [ -z $subjectAltName ]; then
-		SAN_txt="subjectAltName = DNS:$name"
-	else
-		SAN_txt="subjectAltName = DNS:$name, DNS:$subjectAltName"
-	fi
+	_check_ssl ssl/country 2
+	_check_ssl ssl/state 128
+	_check_ssl ssl/locality 128
+	_check_ssl ssl/organization 64
+	_check_ssl ssl/organizationalunit 64
+	_check_ssl common-name 64 "$name"
+	_check_ssl ssl/email 128
 
-	if test -e "$outfile"; then
-		rm -f "$outfile"
-	fi
+	local SAN_txt= san IFS=' '
+	for san in $5 # IFS
+	do
+		SAN_txt="${SAN_txt:+${SAN_txt}, }DNS:${san}"
+	done
+
+	rm -f "$outfile"
 	touch "$outfile"
 	chmod 0600 "$outfile"
-
-	eval "$(univention-config-registry shell ssl/country ssl/state ssl/locality ssl/organization ssl/organizationalunit ssl/email)"
 
 	cat >"$outfile" <<EOF
 # HOME			= .
@@ -147,29 +149,20 @@ distinguished_name	= req_distinguished_name
 attributes		= req_attributes
 x509_extensions		= v3_ca
 prompt		= no
-EOF
-
-	if [ -n "$password" ]; then
-		cat >>"$outfile" <<EOF
-input_password = $password
-output_password = $password
-EOF
-	fi
-
-	cat >>"$outfile" <<EOF
-
+${password:+input_password = $password}
+${password:+output_password = $password}
 string_mask = nombstr
 req_extensions = v3_req
 
 [ req_distinguished_name ]
 
-C	= $ssl_country
-ST	= $ssl_state
-L	= $ssl_locality
-O	= $ssl_organization
-OU	= $ssl_organizationalunit
+C	= $(ucr get ssl/country)
+ST	= $(ucr get ssl/state)
+L	= $(ucr get ssl/locality)
+O	= $(ucr get ssl/organization)
+OU	= $(ucr get ssl/organizationalunit)
 CN	= $name
-emailAddress	= $ssl_email
+emailAddress	= $(ucr get ssl/email)
 
 [ req_attributes ]
 
@@ -191,7 +184,7 @@ authorityKeyIdentifier  = keyid,issuer:always
 
 basicConstraints = critical, CA:FALSE
 keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-$SAN_txt
+${SAN_txt:+subjectAltName = $SAN_txt}
 
 [ v3_ca ]
 
@@ -213,11 +206,10 @@ EOF
 }
 
 move_cert () {
-	local count=0
-	local OPWD=$(pwd)
+	(
 	cd "$SSLBASE"
 
-	local i
+	local i count
 	for i in "$@"
 	do
 		if [ -f "$i" ]
@@ -225,6 +217,7 @@ move_cert () {
 			local new="${SSLBASE}/${CA}/certs/$(basename "$i")"
 			mv "$i" "$new"
 			local hash=$(openssl x509 -hash -noout -in "$new")
+			count=0
 			while :
 			do
 				local linkname="${CA}/certs/${hash}.${count}"
@@ -239,7 +232,7 @@ move_cert () {
 			done
 		fi
 	done
-	cd "$OPWD"
+	)
 }
 
 init () {
@@ -256,23 +249,23 @@ init () {
 		. /usr/share/univention-lib/base.sh
 		create_machine_password > "$SSLBASE/password"
 	fi
-	local PASSWD=`cat "$SSLBASE/password"`
+	PASSWD=`cat "$SSLBASE/password"`
 
-	local OPWD=$(pwd)
-
+	(
 	# create directory infrastructure
 	cd "$SSLBASE"
 	mkdir -m 700 -p "${CA}"
-	mkdir -p "${CA}/"{certs,crl,newcerts,private}
+	mkdir -p "${CA}/certs"
+	mkdir -p "${CA}/crl"
+	mkdir -p "${CA}/newcerts,private"
+	mkdir -p "${CA}/private"
 	echo "01" >"${CA}/serial"
 	touch "${CA}/index.txt"
 
-	eval "$(ucr shell ssl/common)"
-
 	# make the root-CA configuration file
-	mk_config openssl.cnf "$PASSWD" "$DEFAULT_DAYS" "$ssl_common"
+	mk_config openssl.cnf "$PASSWD" "$DEFAULT_DAYS" "$(ucr get ssl/common)"
 
-	openssl genrsa -des3 -passout pass:"$PASSWD" -out "${CA}/private/CAkey.pem" 2048
+	openssl genrsa -des3 -passout pass:"$PASSWD" -out "${CA}/private/CAkey.pem" "$DEFAULT_BITS"
 	openssl req -batch -config openssl.cnf -new -x509 -days "$DEFAULT_DAYS" -key "${CA}/private/CAkey.pem" -out "${CA}/CAcert.pem"
 
 	# copy the public key to a place, from where browsers can access it
@@ -300,15 +293,13 @@ init () {
 		chgrp -R 'DC Backup Hosts' -- "$SSLBASE"
 		chmod -R g+rwX -- "$SSLBASE"
 	fi
-
-	cd "$OPWD"
+	)
 }
 
 list_cert_names () {
-	local OPWD=$(pwd)
-	cd "$SSLBASE"
-	awk 'BEGIN { FS="\t"; }
-	{ if ( $1 == "V" ) {
+	awk -F '\t' '
+	{
+		if ( $1 == "V" ) {
 			split ( $6, X, "/" );
 			for ( i=2; X[i] != ""; i++ ) {
 				if ( X[i] ~ /^CN=/ ) {
@@ -317,84 +308,63 @@ list_cert_names () {
 				}
 			}
 		}
-	}' <"${CA}/index.txt"
-	cd "$OPWD"
+	}' <"${SSLBASE}/${CA}/index.txt"
 }
 
-has_valid_cert () {
-	list_cert_names | egrep -q "$1$"
+has_valid_cert () { # returns 0 if yes, 1 if none found, 2 if expired
+	local cn="${1:?Missing argument: common name}"
+
+	awk -F '\t' -v name="$cn" '
+	BEGIN { ret=1; seq=""; }
+	{
+		split ( $6, X, "/" );
+		for ( i=2; X[i] != ""; i++ ) {
+			if ( X[i] ~ /^CN=/ ) {
+				split ( X[i], Y, "=" );
+				if ( name == Y[2] ) {
+					seq = $4;
+					ret = ( $1 == "V" ) ? 0 : 2;
+				}
+			}
+		}
+	}
+	END { print seq; exit ret; }' <"${SSLBASE}/${CA}/index.txt"
 }
 
 renew_cert () {
-	local OPWD=$(pwd)
+	local fqdn="${1:?Missing argument: common name}"
+	local days="${2:-$DEFAULT_DAYS}"
+
+	revoke_cert "$fqdn" || [ $? -eq 2 ] || return $?
+
+	(
 	cd "$SSLBASE"
 
-	if [ -z "$1" ]; then
-		echo "missing certificate name" >&2
-		cd "$OPWD"
-		return 1
-	fi
-
-	local NUM=`list_cert_names | grep "$1" | sed -e 's/^\([0-9A-Fa-f]*\).*/\1/1'`
-	if [ -z "$NUM" ]; then
-		echo "no certificate for $1 registered" >&2
-		cd "$OPWD"
-		return 1
-	fi
-
-	if [ -z "$2" ]; then
-		days=$DEFAULT_DAYS
-	fi
-
-	# revoke cert
-	revoke_cert "$1"
-
-	# get host extension file
-	hostExt=$(ucr get ssl/host/extensions)
-	if [ -s "$hostExt" ]; then
-		. "$hostExt"
-		extFile=$(createHostExtensionsFile "$1")
-	fi
-
-	# sign the request
-	if [ -s "$extFile" ]; then
-		openssl ca -batch -config openssl.cnf -days "$days" -in "$1/req.pem" \
-			-out "$1/cert.pem" -passin pass:"$PASSWD" -extfile "$extFile"
-		rm -f "$extFile"
-	else
-		openssl ca -batch -config openssl.cnf -days "$days" -in "$1/req.pem" \
-			-out "$1/cert.pem" -passin pass:"$PASSWD"
-	fi
-
-	# move the new certificate to its place
-	move_cert "${CA}/newcerts/"*
-	cd "$OPWD"
+	_common_gen_cert "$fqdn" "$fqdn"
+	)
 }
 
 # Parameter 1: Name des CN dessen Zertifikat wiederufen werden soll
 
 revoke_cert () {
-	local OPWD=`pwd`
-	cd "$SSLBASE"
+	local fqdn="${1:?Missing argument: common name}"
 
-	if [ -z "$1" ]; then
-		echo "missing certificate name" >&2
-		cd "$OPWD"
-		return 1
-	fi
+	local cn NUM
+	[ ${#fqdn} -gt 64 ] && cn="${fqdn%%.*}" || cn="$fqdn"
 
-	local NUM=`list_cert_names | grep "$1" | sed -e 's/^\([0-9A-Fa-f]*\).*/\1/1'`
-	if [ -z "$NUM" ]; then
+	if ! NUM="$(has_valid_cert "$cn")"
+	then
 		echo "no certificate for $1 registered" >&2
-		cd "$OPWD"
-		return 1
+		return 2
 	fi
+
+	(
+	cd "$SSLBASE"
 	openssl ca -config openssl.cnf -revoke "${CA}/certs/${NUM}.pem" -passin pass:"$PASSWD"
 	openssl ca -config openssl.cnf -gencrl -out "${CA}/crl/crl.pem" -passin pass:"$PASSWD"
 	openssl crl -in "${CA}/crl/crl.pem" -out "${CA}/crl/${CA}.crl" -inform pem -outform der
 	cp "${CA}/crl/${CA}.crl" /var/www/
-
-	cd "$OPWD"
+	)
 }
 
 
@@ -402,42 +372,53 @@ revoke_cert () {
 # Parameter 2: Name des CN für den das Zertifikat ausgestellt wird.
 
 gencert () {
-	local name="$1"
-	local cn="$2"
+	local name="${1:?Missing argument: dirname}"
+	local fqdn="${2:?Missing argument: common name}"
 
-	local OPWD=`pwd`
-	cd "$SSLBASE"
-	if has_valid_cert "$2"; then
-		revoke_cert "$2"
+	local hostname=${fqdn%%.*} cn="$fqdn"
+	if [ ${#hostname} -gt 64 ]
+	then
+		echo "FATAL: Hostname '$hostname' is longer than 64 characters" >&2
+		return 2
 	fi
 
 	local days=$(/usr/sbin/univention-config-registry get ssl/default/days)
-	if [ -z "$days" ]; then
-		days=$DEFAULT_DAYS
-	fi
+	: ${days:=$DEFAULT_DAYS}
+
+	revoke_cert "$fqdn" || [ $? -eq 2 ] || return $?
+
+	(
+	cd "$SSLBASE"
+
 	# generate a key pair
 	mkdir -pm 700 "$name"
-	if [ ${#cn} -gt 64 ]; then
-		hostname=${cn%%.*}
-		echo "Info: FQDN $cn"
-		echo "Info: is longer than 64 characters, using hostname in CN."
-		echo
-		mk_config "$name/openssl.cnf" "" "$days" "$hostname" "$cn"
-	else
-		mk_config "$name/openssl.cnf" "" "$days" "$cn"
+	if [ ${#fqdn} -gt 64 ]
+	then
+		echo "INFO: FQDN '$fqdn' is longer than 64 characters, using hostname '$hostname' as CN."
+		cn="$hostname"
 	fi
+	mk_config "$name/openssl.cnf" "" "$days" "$cn" "$fqdn $hostname"
 	openssl genrsa -out "$name/private.key" "$DEFAULT_BITS"
 	openssl req -batch -config "$name/openssl.cnf" -new -key "$name/private.key" -out "$name/req.pem"
 
+	_common_gen_cert "$name" "$fqdn"
+	)
+}
+
+_common_gen_cert () {
+	local name="$1" fqdn="$2"
+
 	# get host extension file
-	local hostExt=$(ucr get ssl/host/extensions)
+	local extFile hostExt=$(ucr get ssl/host/extensions)
 	if [ -s "$hostExt" ]; then
+		set +e
 		. "$hostExt"
-		local extFile=$(createHostExtensionsFile "$cn")
+		extFile=$(createHostExtensionsFile "$fqdn")
+		set -e
 	fi
 
-	# sign the key
-	if [ -s "$extFile" ]; then
+	# process the request
+	if [ -s "${extFile:-}" ]; then
 		openssl ca -batch -config openssl.cnf -days $days -in "$name/req.pem" \
 			-out "$name/cert.pem" -passin pass:"$PASSWD" -extfile "$extFile"
 		rm -f "$extFile"
@@ -451,5 +432,4 @@ gencert () {
 
 	find "$name" -type f -exec chmod 600 {} +
 	find "$name" -type d -exec chmod 700 {} +
-	cd "$OPWD"
 }

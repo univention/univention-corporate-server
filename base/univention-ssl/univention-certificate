@@ -31,16 +31,13 @@
 # <http://www.gnu.org/licenses/>.
 set -o errexit
 
-usage ()
-{
+usage () {
 	if [ -n "$1" ]; then
-		echo ""
-		echo "$1"
+		echo "${0##*/}: $1"
 		echo ""
 	fi
 
-	echo ""
-	echo "Usage: univention-certificate command [options] "
+	echo "Usage: ${0##*/} command [options] "
 	echo ""
 	echo "Commands:"
 	echo "        new"
@@ -53,52 +50,36 @@ usage ()
 	echo "Options:"
 	echo "        -name <name>"
 	echo "        -days <days>"
-	echo ""
 
-	exit 2
+	[ -n "$1" ] && exit 2 || exit 0
 }
 
-command="$1"
-shift
-
-if [ "$command" != "new" -a "$command" != "revoke" -a "$command" != "renew" -a "$command" != "check" -a "$command" != "list" -a "$command" != "dump" ]; then
-	if [ -n "$command" ]; then
-		usage "unknown command: $command" >&2
-	else
-		usage >&2
-	fi
-fi
-
-while [ $# -gt 0 ]; do
+while [ $# -ge 1 ]
+do
 	case "$1" in
-	"-path")
-		path="$2"
-		shift 2 || usage "Missing argument to -path" >&2
-		;;
-	"-name")
-		name="$2"
-		shift 2 || usage "Missing argument to -name" >&2
-		;;
-	"-days")
-		days="$2" || usage "Missing argument to -days" >&2
-		shift 2
-		;;
-	*)
-		usage "unknown option $1" >&2
-		;;
+	new) command="$1" ;;
+	revoke) command="$1" ;;
+	renew) command="$1" ;;
+	check) command="$1" ;;
+	list) command="$1" name="DUMMY" ;;
+	dump) command="$1" ;;
+	-name|--name) name="${2:?Missing argument to -name}" ; shift ;;
+	-days|--days) days="${2:?Missing argument to -days}" ; shift ;;
+	-h|--help|--usage|-\?) usage ;;
+	-*) usage "Unknown option: '$1'" >&2 ;;
+	*) usage "Unknown command: '$1'" >&2 ;;
 	esac
+	shift
 done
 
-if [ "$command" != "list" -a -z "$name" ]; then
-	usage "missing -name" >&2
-fi
+[ -n "$command" ] || usage "Missing command"
+: ${name:?Missing argument '-name'}
 
 cd /etc/univention/ssl
 
 . /usr/share/univention-ssl/make-certificates.sh
 
-case "$command" in
-	"new")
+new () {
 		echo "Creating certificate: $name"
 		gencert "/etc/univention/ssl/$name" "$name"
 		if getent group "DC Backup Hosts" 2>&1 >/dev/null
@@ -106,21 +87,22 @@ case "$command" in
 			chgrp -R "DC Backup Hosts" "/etc/univention/ssl/$name"
 			chmod -R g+rX "/etc/univention/ssl/$name"
 		fi
-		;;
-	"revoke")
+}
+
+revoke () {
 		echo "Revoke certificate: $name"
 		revoke_cert "$name"
-		;;
-	"renew")
-		if [ -z "$days" ]; then
-			usage "missing -days" >&2
-		fi
+}
+
+renew () {
+		: ${days:?Missing argument -days}
 		echo "Renew certificate: $name"
 		renew_cert "$name" "$days"
-		;;
-	"check")
+}
+
+check () {
 		echo -n "Certificate \"$name\" is "
-		if has_valid_cert "$name"
+		if has_valid_cert "$name" >/dev/null
 		then
 			echo "valid"
 			exit 0
@@ -128,13 +110,16 @@ case "$command" in
 			echo "invalid"
 			exit 1
 		fi
-		;;
-	"list")
+}
+
+list () {
 		echo "List all certificates"
 		list_cert_names
-		;;
-	"dump")
+}
+
+dump () {
 		echo "Dump certificate: $name"
 		openssl x509 -in "/etc/univention/ssl/$name/cert.pem" -noout -text
-		;;
-esac
+}
+
+"$command"

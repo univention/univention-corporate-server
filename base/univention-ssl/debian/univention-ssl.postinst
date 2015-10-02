@@ -30,27 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# update paths (dir name changed on switch from 1.3-2 to 2.0-0)
-if [ ! -e /etc/univention/ssl/ucsCA -a -d /etc/univention/ssl/udsCA ] ; then
-	mv /etc/univention/ssl/udsCA /etc/univention/ssl/ucsCA
-fi
-
 CERTPATH="/etc/univention/ssl/ucsCA/certs"
 
 test -d "$CERTPATH" || /bin/mkdir -p "$CERTPATH"
 
-# add symlink for backward compatibility (will be removed in future releases!)
-if [ ! -e /etc/univention/ssl/udsCA ] ; then
-	ln -s ucsCA /etc/univention/ssl/udsCA
-fi
-
-eval "$(ucr shell)"
-
 # add random id to default SSL common name (Bug #22846)
 random_id="$(tr -d -c '[:alnum:]' < /dev/urandom | head -c8)"
-
-country="$(echo "$locale_default"  | cut -c 4-5)"
-
+country="$(ucr get locale/default | cut -c 4-5)"
 univention-config-registry set ssl/country?"${country:-DE}" \
 	ssl/state?"${country:-DE}" \
 	ssl/locality?"${country:-DE}" \
@@ -86,33 +72,14 @@ if [ "$server_role" = "domaincontroller_master" ] || [ -z "$server_role" ] || [ 
 	fi
 fi
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.3; then
-	# generate root ca request
-	(cd /etc/univention/ssl
-	openssl x509 -x509toreq -in ucsCA/CAcert.pem -signkey ucsCA/private/CAkey.pem -out ucsCA/CAreq.pem -passin pass:`cat /etc/univention/ssl/password`
-	)
-fi
-
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.3-1; then
-	ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
-fi
-
-# update to 3.1
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.3; then
-	# remove obsolete ucr variable
-	if [ -n "$ssl_validity_days" ]; then
-		ucr unset ssl/validity/days
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 10.0.0-5; then
+	if ! grep -q 'copy_extensions     = copy' /etc/univention/ssl/openssl.cnf; then
+		sed --in-place 's/crl_extensions     = crl_ext/crl_extensions     = crl_ext\ncopy_extensions     = copy/g' /etc/univention/ssl/openssl.cnf
 	fi
 	# create new ssl/validity/... ucr variables
 	if [ -x /usr/sbin/univention-certificate-check-validity ]; then
 		/usr/sbin/univention-certificate-check-validity
 	fi
-fi
-
-# update to 3.1-1, revoke list in .der form should now also reside in ssl dir to work with domain backup ssl-sync
-# future calls to make-certificates.sh will place the revoke list correcly, so this is a one time thing
-if [ "$1" = configure -a -n "$2" ] && [ "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions "$2" lt 7.0.6; then
-	cp /var/www/ucsCA.crl /etc/univention/ssl/ucsCA/crl/
 fi
 
 if [ "$1" = "$configure" -a -z "$2" ]; then

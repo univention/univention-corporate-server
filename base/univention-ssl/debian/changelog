@@ -1,3 +1,12 @@
+univention-ssl (10.0.0-5) unstable; urgency=low
+
+  * fix list_cert_names and revoke_cert (Bug #38859)
+  * modify openssl.cnf when updating
+  * removed old update code in postinst
+  * add length limitation to UMC certificate page
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 02 Oct 2015 11:16:06 +0200
+
 univention-ssl (10.0.0-4) unstable; urgency=low
 
   * fix potential root exploit (Bug #38859)

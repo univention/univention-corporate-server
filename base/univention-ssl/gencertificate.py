@@ -36,7 +36,6 @@ __package__ = ''	# workaround for PEP 366
 from listener import configRegistry, setuid, unsetuid
 import grp
 import os
-import tempfile
 
 import univention.debug as ud
 import subprocess
@@ -159,12 +158,7 @@ def create_certificate(hostname, domainname):
 
 		ud.debug(ud.LISTENER, ud.INFO,
 				'CERTIFICATE: Creating certificate %s' % hostname)
-
-		with tempfile.NamedTemporaryFile() as fd:
-			fd.write('. /usr/share/univention-ssl/make-certificates.sh; gencert "$@"; exit $?')
-			fd.flush()
-			if subprocess.call(('/bin/sh', fd.name, fqdn, fqdn)):
-				raise Exception("Certificate creation failed.")
+		subprocess.call(('/usr/sbin/univention-certificate', 'new', '-name', fqdn))
 
 	# Create symlink
 	try:
