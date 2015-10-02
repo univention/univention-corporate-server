@@ -154,7 +154,7 @@
 			<title>Univention Management Console server</title>
 			<itemizedlist>
 				<listitem><simpara>
-					<classname>SystemExit</classname> are now caught by the UMC server and not shown as traceback to the user (<u:bug>39031</u:bug>).
+					The exception <classname>SystemExit</classname> is now caught by the UMC server and not shown as a traceback to the user (<u:bug>39031</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					A memory leak in the UMC webserver has been fixed which could occur when a SSL communication between UMC webserver and UMC server was not possible (<u:bug>38402</u:bug>).
@@ -184,7 +184,7 @@
 			<title>Basic settings / Appliance mode</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The System Setup wizard now can have a configurable domain while the hostname itself is fixed. This is needed
+					The <package>System Setup</package> wizard now can have a configurable domain while the hostname itself is fixed. This is needed
 					for Univention Apps (<u:bug>38275</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
