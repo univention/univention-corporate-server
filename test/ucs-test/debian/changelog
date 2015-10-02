@@ -1,3 +1,9 @@
+ucs-test (6.0.8-12) UNRELEASED; urgency=low
+
+  * Bug #38823: Wait for pending transactions
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 02 Oct 2015 12:03:51 +0200
+
 ucs-test (6.0.8-11) unstable; urgency=medium
 
   * 80_docker/62_app_update_available: Check the update_available script
