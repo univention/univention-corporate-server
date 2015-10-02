@@ -533,16 +533,20 @@
 					(<u:bug>38205</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						When joining a UCS domain, Docker containers do not register their IP
-						and MAC addresses in the computer object (<u:bug>38437</u:bug>).
+					When joining a UCS domain, Docker containers do not register their IP
+					and MAC addresses in the computer object (<u:bug>38437</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						UCR can now modify files on a bind-mounted filesystem in a Docker
-						container (<u:bug>38011</u:bug>).
+					UCR can now modify files on a bind-mounted filesystem in a Docker
+					container (<u:bug>38011</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						The Heimdal Kerberos installation does not fail anymore in a Docker
-						container (<u:bug>38295</u:bug>).
+					The Heimdal Kerberos installation does not fail anymore in a Docker
+					container (<u:bug>38295</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					No keyboard or console font setup is done inside a Docker container
+					(<u:bug>38763</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 	</section>
