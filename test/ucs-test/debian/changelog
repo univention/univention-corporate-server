@@ -1,3 +1,10 @@
+ucs-test (6.0.8-14) unstable; urgency=medium
+
+  * 80_docker/57_app_without_package: Create and install a simple docker
+    app without a Debian package (plain container app) (Bug #38887)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 03 Oct 2015 16:33:31 +0200
+
 ucs-test (6.0.8-13) unstable; urgency=medium
 
   * 80_docker/56_app_nscd_stop: Check if a nscd stop also kills the
