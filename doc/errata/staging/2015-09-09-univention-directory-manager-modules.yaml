@@ -5,7 +5,7 @@ src: univention-directory-manager-modules
 fix: 10.0.31-17.1344.201509252214
 version: [3]
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * When acquiring new uidNumber or gidNumber ensure they do not collide with
    each other.
  * DNS TXT records are now shown via the DNS UMC module.
