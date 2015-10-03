@@ -1,3 +1,10 @@
+univention-samba4 (5.0.0-4) unstable; urgency=medium
+
+  * Exclude the docker0 interface by default from the auto IP address
+    registration (Bug #39466)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 03 Oct 2015 23:04:34 +0200
+
 univention-samba4 (5.0.0-3) unstable; urgency=low
 
   * added logging/error handling to sysvol-sync.sh (Bug #38868) 
