@@ -34,6 +34,7 @@
 import os
 from glob import glob
 from subprocess import call
+from time import sleep
 from urlparse import urlparse
 workaround = set()
 
@@ -65,15 +66,20 @@ def cleanup():
 def download_idp_metadata(metadata):
 	idp = bytes(urlparse(metadata).netloc)
 	filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
-	rc = call([
-		'/usr/bin/wget',
-		'--ca-certificate', '/etc/univention/ssl/ucsCA/CAcert.pem',
-		metadata,
-		'-O', filename,
-	])
-	if rc and os.path.exists(filename):
-		os.remove(filename)
-	return rc == 0
+	for i in range(0,30):
+		print 'Try to download idp metadata (%s/30)' % (i+1)
+		rc = call([
+			'/usr/bin/wget',
+			'--ca-certificate', '/etc/univention/ssl/ucsCA/CAcert.pem',
+			metadata,
+			'-O', filename,
+		])
+		if rc and os.path.exists(filename):
+			os.remove(filename)
+		if rc == 0:
+			return True
+		sleep(1)
+	return False
 
 
 def rewrite_sasl_configuration():

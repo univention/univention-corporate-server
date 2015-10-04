@@ -1,3 +1,11 @@
+univention-management-console-frontend (5.0.28-3) unstable; urgency=medium
+
+  * It takes some time until the DNS has been updated and the apache is
+    ready. The download of the IDP metadata is now done in a loop up to
+    30 seconds (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 04 Oct 2015 14:26:30 +0200
+
 univention-management-console-frontend (5.0.28-2) unstable; urgency=medium
 
   * Bug #31943: don't "exit 1" in a subshell
