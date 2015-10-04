@@ -166,7 +166,14 @@ udm saml/serviceprovider create "$@" \
 	--set serviceProviderOrganizationName="Salesforce" || die
 
 /etc/init.d/univention-saml restart
-/etc/init.d/apache2 reload
+
+if [ -f "/usr/sbin/apache2" ] && [ ! -x "/usr/sbin/apache2" ]; then
+	/bin/chmod a+x "/usr/sbin/$prog"
+	/etc/init.d/apache2 reload
+	/bin/chmod a-x "/usr/sbin/$prog"
+else
+	/etc/init.d/apache2 reload
+fi
 
 joinscript_save_current_version
 exit 0
