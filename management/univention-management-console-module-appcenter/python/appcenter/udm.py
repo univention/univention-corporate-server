@@ -48,6 +48,8 @@ from univention.admin.uldap import getMachineConnection, getAdminConnection, acc
 udm_modules.update()
 
 _initialized = set()
+
+
 def _get_module(module, lo, pos):
 	mod = udm_modules.get(module)
 	if module not in _initialized:
@@ -55,11 +57,13 @@ def _get_module(module, lo, pos):
 		_initialized.add(module)
 	return mod
 
+
 def init_object(module, lo, pos, dn=''):
 	module = _get_module(module, lo, pos)
 	obj = udm_objects.get(module, None, lo, pos, dn)
 	udm_objects.open(obj)
 	return obj
+
 
 def remove_object_if_exists(module, lo, pos, dn):
 	obj = init_object(module, lo, pos, dn)
@@ -69,6 +73,7 @@ def remove_object_if_exists(module, lo, pos, dn):
 		pass
 	else:
 		udm_objects.performCleanup(obj)
+
 
 def create_object_if_not_exists(module, lo, pos, **kwargs):
 	obj = init_object(module, lo, pos)
@@ -83,6 +88,7 @@ def create_object_if_not_exists(module, lo, pos, **kwargs):
 	else:
 		return obj
 
+
 def search_objects(module, lo, pos, base='', **kwargs):
 	module = _get_module(module, lo, pos)
 	filter_str = ''
@@ -93,22 +99,26 @@ def search_objects(module, lo, pos, base='', **kwargs):
 		udm_objects.open(obj)
 	return objs
 
+
 def get_machine_connection():
 	return getMachineConnection()
+
 
 def get_admin_connection():
 	return getAdminConnection()
 
+
 def get_connection(userdn, password):
 	ucr = ConfigRegistry()
 	ucr.load()
-	port = int(ucr.get('ldap/server/port', '7389'))
-	host = ucr['ldap/server/name']
+	port = int(ucr.get('ldap/master/port', '7389'))
+	host = ucr['ldap/master']
 	base = ucr['ldap/base']
 	lo = base_access(host=host, port=port, base=base, binddn=userdn, bindpw=password)
 	lo = access(lo=lo)
 	pos = position(lo.base)
 	return lo, pos
+
 
 class ApplicationLDAPObject(object):
 	def __init__(self, app, lo, pos, ucr, create_if_not_exists=False):
@@ -149,28 +159,28 @@ class ApplicationLDAPObject(object):
 		except (ImportError, IOError):
 			pass
 		attrs = {
-			'id' : self._rdn,
-			'name' : app.get_localised_list('name'),
-			'version' : app.version,
-			'shortDescription' : app.get_localised_list('description'),
-			'longDescription' : app.get_localised_list('long_description'),
-			'contact' : app.contact,
-			'maintainer' : app.maintainer,
-			'website' : app.get_localised_list('website'),
-			'websiteVendor' : app.get_localised_list('website_vendor'),
-			'websiteMaintainer' : app.get_localised_list('website_maintainer'),
-			'screenshot' : app.screenshot,
-			'icon' : base64icon,
-			'category' : app.get_localised('categories'),
-			'webInterface' : app.web_interface,
-			'webInterfaceName' : app.web_interface_name,
-			'conflictingApps' : app.conflicted_apps,
-			'conflictingSystemPackages' : app.conflicted_system_packages,
-			'defaultPackages' : app.default_packages,
-			'defaultPackagesMaster' : app.default_packages_master,
-			'umcModuleName' : app.umc_module_name,
-			'umcModuleFlavor' : app.umc_module_flavor,
-			'serverRole' : app.server_role,
+			'id': self._rdn,
+			'name': app.get_localised_list('name'),
+			'version': app.version,
+			'shortDescription': app.get_localised_list('description'),
+			'longDescription': app.get_localised_list('long_description'),
+			'contact': app.contact,
+			'maintainer': app.maintainer,
+			'website': app.get_localised_list('website'),
+			'websiteVendor': app.get_localised_list('website_vendor'),
+			'websiteMaintainer': app.get_localised_list('website_maintainer'),
+			'screenshot': app.screenshot,
+			'icon': base64icon,
+			'category': app.get_localised('categories'),
+			'webInterface': app.web_interface,
+			'webInterfaceName': app.web_interface_name,
+			'conflictingApps': app.conflicted_apps,
+			'conflictingSystemPackages': app.conflicted_system_packages,
+			'defaultPackages': app.default_packages,
+			'defaultPackagesMaster': app.default_packages_master,
+			'umcModuleName': app.umc_module_name,
+			'umcModuleFlavor': app.umc_module_flavor,
+			'serverRole': app.server_role,
 		}
 		obj = create_object_if_not_exists('appcenter/app', self._lo, self._pos, **attrs)
 		if obj:
@@ -202,6 +212,7 @@ class ApplicationLDAPObject(object):
 	def anywhere_installed(self):
 		return bool(self.installed_on_servers())
 
+
 def get_app_ldap_object(app, lo=None, pos=None, ucr=None, or_create=False):
 	if lo is None or pos is None:
 		lo, pos = get_machine_connection()
@@ -209,4 +220,3 @@ def get_app_ldap_object(app, lo=None, pos=None, ucr=None, or_create=False):
 		ucr = ConfigRegistry()
 		ucr.load()
 	return ApplicationLDAPObject(app, lo, pos, ucr, or_create)
-

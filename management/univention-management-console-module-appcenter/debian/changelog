@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.6-9) unstable; urgency=medium
+
+  * Bug #39184: Fix exception during exception logging
+  * Fix backup/slave getting localhost LDAP connections when trying to write
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 04 Oct 2015 23:24:15 +0200
+
 univention-management-console-module-appcenter (5.0.6-8) unstable; urgency=medium
 
   * Bug #39082: Fixes for a clean output of univention-upgrade

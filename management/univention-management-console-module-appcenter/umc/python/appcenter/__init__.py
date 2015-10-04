@@ -41,6 +41,7 @@ from httplib import HTTPException
 from functools import wraps
 import logging
 from tempfile import NamedTemporaryFile
+from copy import deepcopy
 
 # related third party
 import notifier
@@ -85,6 +86,9 @@ class ProgressInfoHandler(logging.Handler):
 		self.state = package_manager.progress_state
 
 	def emit(self, record):
+		if isinstance(record.msg, Exception):
+			record = deepcopy(record)
+			record.msg = str(record.msg)
 		if record.levelno >= logging.ERROR:
 			self.state.error(record.msg)
 		else:
