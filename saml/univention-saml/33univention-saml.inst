@@ -91,6 +91,9 @@ if [ ! -e "${saml_idp_certificate_certificate}" ]; then
 	chmod 640 "${saml_idp_certificate_certificate}" "${saml_idp_certificate_privatekey}" || die
 fi
 
+# Re-create Apache configuration after the certificate generation
+ucr commit /etc/apache2/sites-available/univention-saml-apache
+
 /usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add a ucs-sso "$(get_default_ip_address)" || die
 
 ucr set security/packetfilter/package/univention-saml/tcp/11212/all?ACCEPT \

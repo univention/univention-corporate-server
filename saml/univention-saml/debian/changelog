@@ -1,3 +1,10 @@
+univention-saml (3.0.14-1) unstable; urgency=medium
+
+  * Re-create Apache configuration after the certificate generation
+    (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 04 Oct 2015 14:51:59 +0200
+
 univention-saml (3.0.13-1) unstable; urgency=medium
 
   * Bug #39399: resolve dependency problems
