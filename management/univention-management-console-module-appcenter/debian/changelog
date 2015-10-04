@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-10) unstable; urgency=medium
+
+  * Bug #38807: Rename of ssl site
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 05 Oct 2015 01:07:22 +0200
+
 univention-management-console-module-appcenter (5.0.6-9) unstable; urgency=medium
 
   * Bug #39184: Fix exception during exception logging
