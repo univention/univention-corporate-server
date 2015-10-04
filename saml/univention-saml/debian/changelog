@@ -1,3 +1,10 @@
+univention-saml (3.0.14-2) unstable; urgency=medium
+
+  * Move univention-saml join script to a later point because it needs
+    a running DNS server (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 04 Oct 2015 19:29:43 +0200
+
 univention-saml (3.0.14-1) unstable; urgency=medium
 
   * Re-create Apache configuration after the certificate generation
