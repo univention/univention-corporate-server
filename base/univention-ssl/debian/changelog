@@ -1,3 +1,9 @@
+univention-ssl (10.0.0-7) unstable; urgency=medium
+
+  * Fixed typo in univention-ssl postinst (Bug #38859)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 04 Oct 2015 20:29:26 +0200
+
 univention-ssl (10.0.0-6) unstable; urgency=low
 
   * Bug #38859: Fix init()
