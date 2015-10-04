@@ -1,3 +1,10 @@
+univention-saml (3.0.14-4) unstable; urgency=medium
+
+  * Ensure apache is reloaded in the SAML join script. Fixed typo of
+    previous commit (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 04 Oct 2015 21:26:58 +0200
+
 univention-saml (3.0.14-3) unstable; urgency=medium
 
   * Ensure apache is reloaded in the SAML join script (Bug #39386)
