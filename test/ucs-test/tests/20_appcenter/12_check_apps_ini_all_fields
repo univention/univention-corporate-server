@@ -69,8 +69,12 @@ class AppCheck(object):
                 return
             print "Checking App", App.name
 
+        try:
+                appid = self.config.get('Application', 'ID')
+        except NoSectionError, NoOptionError:
+                raise Error('No [Application] ID given...')
         for section in self.config.sections():
-            with Section(self, section) as sec:
+            with Section(self, section, appid) as sec:
                 if section == 'Application':
                     sec.check_all(sec.APPLICATION)
                 elif section.startswith('Sizing: '):
@@ -112,8 +116,9 @@ class Value(object):
     RE_CAPACITY = regex_compile(r'\d+(?:\s*[G]B)?$')
     RE_URL = regex_compile(r'^(?:https?://' + DOMAIN + r'(?::\d+)?)?' + PATH + r'$')
 
-    def __init__(self, value):
+    def __init__(self, value, appid):
         self.value = value
+        self.appid = appid
 
     def __str__(self):
         return str(self.value)
@@ -178,8 +183,13 @@ class Value(object):
             return
         raise Error('Wrong capacity: "%s"' % self.value)
 
+    def deprecated_master_packages(self):
+        if self.value:
+                if self.appid not in 'agorumcore-pro asterisk4ucs bareos fetchmail openvpn4ucs oxseforucs plucs simplesamlphp sugarcrm ucc zarafa'.split():
+                        raise Error('Should not have DefaultPackagesMaster!!')
+
     def is_category(self):
-        ALLOWED = set(('admin', 'services', 'False'))
+        ALLOWED = set(('admin', 'service', 'False'))
         if self.value in ALLOWED:
             return
         raise Error('Not an allowed category: "%s"' % self.value)
@@ -195,7 +205,7 @@ class Section(object):
         'ConflictedApps': ('optional',),
         'ConflictedSystemPackages': ('optional',),
         'Contact': ('required', 'is_email',),
-        'DefaultPackagesMaster': ('optional',),
+        'DefaultPackagesMaster': ('optional', 'deprecated_master_packages',),
         'DefaultPackages': ('required',),
         'Description': ('required', 'is_90c',),
         'EmailRequired': ('optional',),
@@ -242,10 +252,11 @@ class Section(object):
         'Description': APPLICATION['Description'],
         'LongDescription': APPLICATION['LongDescription']}
 
-    def __init__(self, check, section):
+    def __init__(self, check, section, appid):
         self.config = check.config
         self.section = section
         self.log = check.log
+	self.appid = appid
 
     def __enter__(self):
         return self
@@ -291,7 +302,7 @@ class Section(object):
             if not parsed.quiet:
                 print >> stderr, exc
             value = None
-        return Value(value)
+        return Value(value, self.appid)
 
 
 def exclude_ignored(names, remove):
