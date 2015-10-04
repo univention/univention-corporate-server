@@ -1,23 +1,26 @@
+Type: file
+File: etc/apache2/conf.d/ucs.conf
+Variables: apache2/maxclients
+
+Type: file
+File: etc/apache2/ucs-sites.conf
+Variables: hostname
+Variables: domainname
+Variables: apache2/loglevel
+Variables: apache2/documentroot
+Variables: apache2/allowoverride
+Variables: apache2/startsite
+
 Type: multifile
 Multifile: etc/apache2/sites-available/default
 
 Type: subfile
 Multifile: etc/apache2/sites-available/default
 Subfile: etc/apache2/sites-available/default.d/00start
-Variables: apache2/startsite
-Variables: apache2/allowoverride
-Variables: apache2/documentroot
-Variables: apache2/maxclients
-Variables: apache2/force_https
 
 Type: subfile
 Multifile: etc/apache2/sites-available/default
 Subfile: etc/apache2/sites-available/default.d/99end
-Variables: apache2/startsite
-Variables: apache2/allowoverride
-Variables: apache2/documentroot
-Variables: apache2/maxclients
-Variables: apache2/force_https
 
 Type: file
 File: etc/apache2/mods-available/ssl.conf
@@ -30,10 +33,10 @@ Variables: apache2/ssl/ciphersuite
 Variables: apache2/force_https
 
 Type: multifile
-Multifile: etc/apache2/sites-available/ssl
+Multifile: etc/apache2/sites-available/default-ssl
 
 Type: subfile
-Multifile: etc/apache2/sites-available/ssl
+Multifile: etc/apache2/sites-available/default-ssl
 Subfile: etc/apache2/sites-available/ssl.d/00start
 Variables: apache2/ssl/certificate
 Variables: hostname
@@ -43,7 +46,7 @@ Variables: apache2/ssl/ca
 Variables: apache2/ssl/certificatechain
 
 Type: subfile
-Multifile: etc/apache2/sites-available/ssl
+Multifile: etc/apache2/sites-available/default-ssl
 Subfile: etc/apache2/sites-available/ssl.d/99end
 
 Type: module

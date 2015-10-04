@@ -1,3 +1,10 @@
+univention-apache (8.0.0-4) unstable; urgency=medium
+
+  * Bug #38807: Rename ssl -> default-ssl; do not define default directives
+    globally, rather Include them
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 05 Oct 2015 01:05:26 +0200
+
 univention-apache (8.0.0-3) unstable; urgency=medium
 
   * Bug #38807: Fix merge (2)

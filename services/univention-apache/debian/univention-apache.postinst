@@ -38,8 +38,6 @@ a2enmod rewrite || true
 a2enmod headers || true
 a2enmod proxy || true
 
-a2ensite ssl || true
-
 if [ "$1" = configure -a -z "$2" ]; then
 	a2dismod ssl || true
 	a2enmod ssl || true
@@ -90,10 +88,14 @@ if [ ! -f "$CERT_PATH" ]; then
 	ENABLE_SSL=no
 fi
 
+a2dissite ssl || true # TODO: remove, dev version
+
 if [ $ENABLE_SSL = yes ]; then
 	a2enmod ssl
+	a2ensite default-ssl || true
 else
 	a2dismod ssl
+	a2dissite default-ssl || true
 fi
 
 if [ -x /etc/init.d/apache2 ]; then

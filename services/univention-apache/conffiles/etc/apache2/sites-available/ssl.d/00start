@@ -3,12 +3,9 @@
 <IfModule mod_ssl.c>
 NameVirtualHost *:443
 <VirtualHost *:443>
-	RewriteEngine on
-	RewriteOptions Inherit
+	Include /etc/apache2/ucs-sites.conf
 	SSLEngine on
 	SSLProxyEngine on
-	ProxyPreserveHost on
-	ProxyTimeout 600
 @!@
 if configRegistry.get('apache2/ssl/certificate'):
 	print '	SSLCertificateFile %s' % configRegistry.get('apache2/ssl/certificate')
