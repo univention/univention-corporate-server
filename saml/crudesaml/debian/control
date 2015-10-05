@@ -19,11 +19,10 @@ Depends: ${misc:Depends},
  libxmlsec1,
  xmlsec1,
  liblasso3,
-Replaces: crudesaml
-Description: This package contains a PAM module that perform a crude
+Description: This package contains a PAM module that performs a crude
  check on a SAML authentication assertion. The assertion signature and date
- are verified, and access is granted on behalf ot the user taked for a
- onfigurable attribute.
+ are verified, and access is granted on behalf to the user taken for a
+ configurable attribute.
  .
  The only protection against replay attacks is the assertion validity dates
  checks, this authentication is therefore secure only if the SAML
@@ -38,11 +37,10 @@ Depends: ${misc:Depends},
  libxmlsec1,
  xmlsec1,
  liblasso3,
-Replaces: crudesaml
-Description: This package contains a SASL plugin that perform a crude check on a SAML
- authentication assertion. The assertion signature and date are verified,
- and access is granted on behalf ot the user taked for a onfigurable
- attribute.
+Description: This package contains a SASL plugin that performs a crude
+ check on a SAML authentication assertion. The assertion signature and date
+ are verified, and access is granted on behalf to the user taken for a
+ configurable attribute.
  .
  The only protection against replay attacks is the assertion validity dates
  checks, this authentication is therefore secure only if the SAML
