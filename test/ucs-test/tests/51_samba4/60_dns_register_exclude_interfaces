@@ -1,0 +1,48 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check UCR variable samba/register/exclude/interfaces
+## exposure: safe
+## bugs:
+## - 34868
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+## tags:
+##  - basic
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+RETVAL=100
+
+samba_register_exclude_interfaces="$(ucr get samba/register/exclude/interfaces)"
+
+# Create a dummy interface
+ifconfig eth0:100 1.2.3.100
+ifconfig eth0:101 1.2.3.101
+ifconfig eth0:102 1.2.3.102
+
+/usr/sbin/samba_dnsupdate
+
+host $(hostname -f) | grep 1.2.3.100 || fail_test "eth0_100 is not registered"
+host $(hostname -f) | grep 1.2.3.101 || fail_test "eth0_101 is not registered"
+host $(hostname -f) | grep 1.2.3.102 || fail_test "eth0_102 is not registered"
+
+ucr set samba/register/exclude/interfaces="eth0:100 eth0:102"
+/usr/sbin/samba_dnsupdate
+
+host $(hostname -f) | grep 1.2.3.100 && fail_test "samba/register/exclude/interfaces has been set but eth0:100 was registered anyway"
+host $(hostname -f) | grep 1.2.3.101 || fail_test "eth0_101 is not excluded but the IP has not been registered"
+host $(hostname -f) | grep 1.2.3.102 && fail_test "samba/register/exclude/interfaces has been set but eth0:100 was registered anyway"
+
+ifconfig eth0:100 down
+ifconfig eth0:101 down
+ifconfig eth0:102 down
+
+test -n "$samba_register_exclude_interfaces" && ucr set samba/register/exclude/interfaces="$samba_register_exclude_interfaces" || ucr unset samba/register/exclude/interfaces
+/usr/sbin/samba_dnsupdate
+host $(hostname -f)
+
+exit $RETVAL

@@ -1,3 +1,10 @@
+ucs-test (6.0.8-16) unstable; urgency=medium
+
+  * 51_samba4/60_dns_register_exclude_interfaces: Added a test case for
+    samba/register/exclude/interfaces (Bug #39466)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 05 Oct 2015 07:12:10 +0200
+
 ucs-test (6.0.8-15) unstable; urgency=medium
 
   * Bug #39354: Fail if DefaultPackagesMaster is used
