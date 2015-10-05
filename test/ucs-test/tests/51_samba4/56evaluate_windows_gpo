@@ -342,36 +342,41 @@ def check_gpo_application_listed(gpo_name, username):
 				   "all user/computer GPOs." % gpo_name)
 
 
-def get_host_ip(host_name):
+def get_host_ip(host_name, all=False):
 	"""
-	Using 'univention-s4search' looks for 'host_name' record;
-	Decodes it and looks for 'ipv4' value.
-	Used to find a Windows host IP from DNSrecord.
+	Lookup host_name;
 	"""
 	print "\nLooking for '%s' host ip address:" % host_name
-	s4_stdout, s4_stderr = run_cmd(('univention-s4search', 'DC=' + host_name))
 
-	s4_stdout = remove_samba_warnings(s4_stdout)
-	s4_stderr = remove_samba_warnings(s4_stderr)
-	if s4_stderr:
-		print "univention-s4search STDERR:", s4_stderr
-	if not s4_stdout:
-		utils.fail("Could not find 'DC=%s' record in Samba4. "
-				   "Probably DNS did not work." % host_name)
+	ips = []
+	dig_sources = []
+	for source in ['nameserver1', 'nameserver2', 'nameserver3']:
+		if source in ucr:
+			dig_sources.append("@%s" % ucr[source])
 
-	stdout, stderr = run_cmd('s4search-decode', stdin=PIPE, std_in=s4_stdout)
-	if stderr:
-		print "s4search-decode STDERR:", stderr
+	for dig_source in dig_sources:
+		try:
+			cmd = ['dig', dig_source, host_name, '+short']
+			p1 = Popen(cmd, close_fds=True, stdout=PIPE, stderr=PIPE)
+			stdout, stderr = p1.communicate()
+			if p1.returncode == 0:
+				for i in stdout.split('\n'):
+					if i:
+						ips.append(i)
+			if ips:
+				break
+		except OSError as ex:
+			print "\n%s failed: %s" % (cmd, ex.args[1])
 
-	sed_stdout, stderr = run_cmd(('sed', '-n',
-								 's/#		  ipv4					   ://p'),
-								 stdin=PIPE, std_in=stdout)  # to get ipv4
-	if not sed_stdout:
-		utils.fail("Could not determine the Host IP from DNS record")
-
-	sed_stdout = sed_stdout.strip()
-	print "Host IP is:", sed_stdout
-	return sed_stdout
+	if not ips:
+		utils.fail("Could not resolve '%s' via DNS." % host_name)
+	else:
+		if all:
+			print "Host IPs are: %s" % (ips,)
+			return ips
+		else:
+			print "Host IP is: %s" % (ips[0],)
+			return ips[0]
 
 
 def get_windows_hostname():
@@ -451,14 +456,14 @@ if __name__ == '__main__':
 	GPOs are applied using 'Security Filtering',
 	'Authenticated Users' are set to have only GpoRead permissions.
 	"""
-	UCR = ConfigRegistry()
-	UCR.load()
+	ucr = ConfigRegistry()
+	ucr.load()
 
-	admin_username = UCR.get('tests/domainadmin/account')
-	admin_password = UCR.get('tests/domainadmin/pwd')
-	domainname = UCR.get('domainname')
-	hostname = UCR.get('hostname')
-	ldap_base = UCR.get('ldap/base')
+	admin_username = ucr.get('tests/domainadmin/account')
+	admin_password = ucr.get('tests/domainadmin/pwd')
+	domainname = ucr.get('domainname')
+	hostname = ucr.get('hostname')
+	ldap_base = ucr.get('ldap/base')
 
 	if not all((admin_username, admin_password, domainname, hostname, ldap_base)):
 		print("\nFailed to obtain settings for the test from UCR. "
