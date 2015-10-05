@@ -1,3 +1,9 @@
+univention-updater (11.0.2-6) unstable; urgency=low
+
+  * Bug #30417: Remove join status check
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 05 Oct 2015 07:43:12 +0200
+
 univention-updater (11.0.2-5) unstable; urgency=medium
 
   * Bug #38881: Deactivate SAML component if present

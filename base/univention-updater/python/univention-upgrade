@@ -283,8 +283,6 @@ def performUpdate(options, checkForUpdates=False, silent=False):
 	if checkForUpdates:
 		return False
 
-	subprocess.call(('univention-check-join-status',))
-
 
 def do_app_updates(options, checkForUpdates, silent):
 	dprint(silent, 'Checking for app updates: ', newline=False)
