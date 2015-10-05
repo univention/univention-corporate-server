@@ -567,7 +567,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The &ucsUCRV; <envar>samba/register/exclude/interfaces</envar> has been added.
-					The IP addresses of theses network interfaces are not registered automatically.
+					The IP addresses of theses network interfaces are not registered automatically in DNS.
 					By default the variable is set to <option>docker0</option>
 					(<u:bug>39466</u:bug>).
 				</simpara></listitem>
