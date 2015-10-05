@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.31-1) unstable; urgency=medium
+
+  * Re-export ucs/server/sso/fqdn variable in join script (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 05 Oct 2015 21:43:25 +0200
+
 univention-management-console-frontend (5.0.30-1) unstable; urgency=medium
 
   * Bug #39178: Bug #39226: defer authentication if password_required flag is

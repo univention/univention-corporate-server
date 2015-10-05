@@ -70,6 +70,7 @@ udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-service
 /usr/share/univention-management-console/saml/update_metadata "$@" || die
 
 ucr set ucs/server/sso/fqdn?"ucs-sso.$domainname"
+eval "$(ucr shell ucs/server/sso/fqdn)"
 
 /etc/init.d/apache2 reload  # make a apache reload for the next call:
 
