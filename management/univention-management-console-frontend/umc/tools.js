@@ -692,6 +692,8 @@ define([
 					var session_expired = !message;
 					if (session_expired) {
 						topic.publish('/umc/actions', 'session', 'expired');
+					}
+					if (session_expired || (result && result.password_required)) {
 						deferred = dialog.login();
 					} else {
 						dialog.login();
