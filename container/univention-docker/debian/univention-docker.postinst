@@ -32,6 +32,8 @@
 
 #DEBHELPER#
 
+univention-config-registry set docker/autostart?yes
+
 eval "$(univention-config-registry shell)"
 
 . /usr/share/univention-lib/all.sh

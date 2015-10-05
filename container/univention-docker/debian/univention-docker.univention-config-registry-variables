@@ -1,0 +1,6 @@
+[docker/autostart]
+Description[de]=Die Variable konfiguriert den Startmodus des Docker-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden. Standard ist: "yes".
+Description[en]=This variable configures the start mode of the Docker service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point. Defaults to "yes".
+Type=bool
+Categories=service-container
+

@@ -1,3 +1,13 @@
+univention-docker (0.1.0-3) unstable; urgency=low
+
+  * add docker.io init script
+  * start and stop modified to properly shutdown and start running containers
+    (Bug #39474)
+  * add UCRV to disable starting Docker engine (docker/autostart)
+  * add timeout to "start-stop-daemon --stop" to fix restart (Bug #39447)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 05 Oct 2015 15:57:01 +0200
+
 univention-docker (0.1.0-2) unstable; urgency=medium
 
   * Bug #39418: whitespace in univention-docker.univention-config-registry

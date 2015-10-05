@@ -1,2 +1,5 @@
 Type: file
 File: etc/default/docker
+
+Type: file
+File: etc/init.d/docker
