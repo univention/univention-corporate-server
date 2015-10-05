@@ -1,8 +1,5 @@
 schema/univention-saml.schema usr/share/univention-ldap/schema
 modules/univention usr/share/pyshared/
-listener/univention-saml-schema.py usr/lib/univention-directory-listener/system/
-24univention-saml-uninstall.uinst usr/lib/univention-uinstall
-91univention-saml.inst usr/lib/univention-install
 modules/univention/admin/syntax.d/samlserviceprovider.py usr/share/pyshared/univention/admin/syntax.d
 univention-admin-handlers-saml-serviceprovider.mo usr/share/locale/de/LC_MESSAGES
 umc/icons/50x50/udm-saml-serviceprovider.png usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/50x50/

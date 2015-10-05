@@ -1,3 +1,10 @@
+univention-saml (3.0.16-1) unstable; urgency=medium
+
+  * Move the univention-saml join script from univention-saml-schema to
+    univention-saml (Bug #39472)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 05 Oct 2015 16:00:59 +0200
+
 univention-saml (3.0.15-1) unstable; urgency=medium
 
   * Bug #32786: add link to certificate of identity provider

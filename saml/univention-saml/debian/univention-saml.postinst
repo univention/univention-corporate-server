@@ -32,6 +32,10 @@
 case "$1" in
 configure)
 
+	if [ -e /usr/lib/univention-install/24univention-saml-uninstall.uinst ]; then
+		rm /usr/lib/univention-install/24univention-saml-uninstall.uinst
+	fi
+
 	chown -R root:www-data /etc/simplesamlphp
 
 	ucr set saml/idp/enableSAML20-IdP?true \
@@ -40,8 +44,14 @@ configure)
 		saml/idp/lookandfeel/theme?"univentiontheme:univention" \
 		saml/idp/https?"true"
 
+	call_joinscript 91univention-saml.inst
+
 	if [ ! -e /etc/simplesamlphp/metadata/metadata_include.php ]; then
 		touch /etc/simplesamlphp/metadata/metadata_include.php
+	fi
+
+	if [ -x /etc/init.d/univention-directory-listener ]; then
+		invoke-rc.d univention-directory-listener restart
 	fi
 
 	a2ensite univention-saml-apache

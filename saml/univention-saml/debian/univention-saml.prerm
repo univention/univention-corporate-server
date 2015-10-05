@@ -29,9 +29,12 @@
 
 #DEBHELPER#
 
-a2dissite univention-saml-apache >/dev/null 2>&1
-/etc/init.d/apache2 reload	
+. /usr/share/univention-lib/all.sh
+
+case "$1" in
+	remove)
+		cp /usr/lib/univention-uinstall/24univention-saml-uninstall.uinst /usr/lib/univention-install/
+		;;
+esac
 
 exit 0
-
-

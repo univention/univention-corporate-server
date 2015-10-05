@@ -33,21 +33,12 @@
 
 case "$1" in
 	configure)
-		if [ -e /usr/lib/univention-install/24univention-saml-uninstall.uinst ]; then
-			rm /usr/lib/univention-install/24univention-saml-uninstall.uinst
-		fi
-
 		
 		if [ -x /etc/init.d/slapd ]; then
 			invoke-rc.d slapd restart
 		fi
 
-		if [ -x /etc/init.d/univention-directory-listener ]; then
-			invoke-rc.d univention-directory-listener restart
-		fi
-
 		stop_udm_cli_server
-		call_joinscript 33univention-saml.inst
 		;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)
