@@ -55,6 +55,6 @@ univention-config-registry set "umc/http/session/timeout?600" \
 	umc/http/interface?127.0.0.1 \
 	umc/server/upload/min_free_space?51200
 
-call_joinscript 34univention-management-console-web-server.inst
+call_joinscript 92univention-management-console-web-server.inst
 
 exit 0

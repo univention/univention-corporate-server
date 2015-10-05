@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.29-2) unstable; urgency=medium
+
+  * Call the renamed join script (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 05 Oct 2015 16:12:13 +0200
+
 univention-management-console-frontend (5.0.29-1) unstable; urgency=medium
 
   * Bug #39473: add cookie suffix in SAML cookies for docker integration
