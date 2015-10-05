@@ -463,3 +463,10 @@ Description[de]=Mit dieser Variable lässt sich der Wert des Parameters "spoolss
 Description[en]=This variable can be used to manually override the value of the smb.conf parameter "spoolss: architecture".
 Type=str
 Categories=service-samba
+
+[samba/register/exclude/interfaces]
+Description[de]=Mit dieser Variable können Netzwerk Interfaces definiert werden, deren IP-Adresse nicht automatisch registriert wird, z.B. eth0. Mehrere Werte müssen durch Leerzeichen getrennt werden.
+Description[en]=This variable defines network interfaces whose IP addresses are not registered automatically, e.g. eth0. Multiple values need to be separated by blanks.
+Type=str
+Categories=service-samb
+

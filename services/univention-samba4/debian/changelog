@@ -1,3 +1,9 @@
+univention-samba4 (5.0.0-5) unstable; urgency=medium
+
+  * Added samba/register/exclude/interfaces UCR description (Bug #39466)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 05 Oct 2015 06:28:04 +0200
+
 univention-samba4 (5.0.0-4) unstable; urgency=medium
 
   * Exclude the docker0 interface by default from the auto IP address
