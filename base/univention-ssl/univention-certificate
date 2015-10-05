@@ -119,7 +119,7 @@ list () {
 
 dump () {
 		echo "Dump certificate: $name"
-		openssl x509 -in "/etc/univention/ssl/$name/cert.pem" -noout -text
+		openssl x509 -in "$SSLBASE/$name/cert.pem" -noout -text
 }
 
 "$command"
