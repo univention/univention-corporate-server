@@ -196,6 +196,7 @@ class VM:
 					self._log('[%d]: Authentication failed... [%s]' % (timeout - now + start, ex))
 				except Exception, ex:
 					self._log('[%d]: Unknown error "%s"...' % (timeout - now + start, ex))
+					raise
 				time.sleep(5)
 				now = time.time()
 			else:
@@ -504,9 +505,7 @@ class VM_KVM(VM):
 		stdout, stderr = bytearray(), bytearray()
 		ret = self._ssh_exec(cmdline, server, stdout, stderr)
 		if ret != 0:
-			_print_done('fail (step 1 - return code %s)' % (ret,))
-			print stdout
-			print stderr
+			_print_done('fail:\ncmd=%s\nret=%d\nstdout=%s\nstderr=%s' % (cmdline, ret, stdout, stderr))
 			sys.exit(1)
 
 		fn_kvm_results = str(stdout.strip())
@@ -523,9 +522,7 @@ class VM_KVM(VM):
 		stdout, stderr = bytearray(), bytearray()
 		ret = self._ssh_exec(cmdline, server, stdout, stderr)
 		if ret != 0:
-			_print_done('fail (step 2 - return code %s)' % (ret,))
-			print stdout
-			print stderr
+			_print_done('fail:\ncmd=%s\nret=%d\nstdout=%s\nstderr=%s' % (cmdline, ret, stdout, stderr))
 			sys.exit(1)
 		else:
 			_print_done()
@@ -541,11 +538,16 @@ class VM_KVM(VM):
 		try:
 			# convert JSON kvm_results from ucs-kt-get into python structure
 			kvm_results = json.loads(kvm_results)
-			if kvm_results and 'name' in kvm_results[0]:
-				self.kvm_name_full = kvm_results[0]['name']
-			else:
-				raise ValueError('name is not set in kvm_results or kvm_results is empty')
-		except (IOError, OSError, ValueError, TypeError), ex:
+			if not kvm_results:
+				raise ValueError('kvm_results is empty')
+			vm_info, = kvm_results
+			if vm_info['status'] != 'ok':
+				raise ValueError('Failed to start VM: %r' % (vm_info,))
+			try:
+				self.kvm_name_full = vm_info['name']
+			except KeyError:
+				raise ValueError('name is not set in kvm_results: %r' % (vm_info,))
+		except (EnvironmentError, TypeError, ValueError) as ex:
 			self._log('Failed to load result file %s of %s: %s' % (fn_kvm_results, PATH_UCS_KT_GET, ex,))
 			_print_done('error (unreadable results)')
 			sys.exit(1)
@@ -557,9 +559,9 @@ class VM_KVM(VM):
 		)
 		_print_process('Detecting IPv6 address')
 		stdout, stderr = bytearray(), bytearray()
-		rt = self._ssh_exec(cmdline, server, stdout, stderr)
-		if rt:
-			_print_done('fail (return code %s)' % rt)
+		ret = self._ssh_exec(cmdline, server, stdout, stderr)
+		if ret:
+			_print_done('fail:\ncmd=%s\nret=%d\nstdout=%s\nstderr=%s' % (cmdline, ret, stdout, stderr))
 			sys.exit(1)
 		match = re.search('mac address=.([0-9a-f:]+)', str(stdout))
 		if not match:
