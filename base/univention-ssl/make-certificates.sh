@@ -1,4 +1,4 @@
-#! /bin/bash -e
+#! /bin/bash
 #
 # Univention SSL
 #  gencertificate script
@@ -29,7 +29,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-set -e -u
 
 # See:
 # http://www.ibiblio.org/pub/Linux/docs/HOWTO/other-formats/html_single/SSL-Certificates-HOWTO.html
@@ -57,6 +56,16 @@ _check_ssl () {
 	echo "$var too long; max $len" >&2
 	return 1
 }
+check_ssl_parameters () {
+	_check_ssl ssl/country 2 || return $?
+	_check_ssl ssl/state 128 || return $?
+	_check_ssl ssl/locality 128 || return $?
+	_check_ssl ssl/organization 64 || return $?
+	_check_ssl ssl/organizationalunit 64 || return $?
+	_check_ssl common-name 64 "$1" || return $?
+	_check_ssl ssl/email 128 || return $?
+	return 0
+}
 
 mk_config () {
 	local outfile=${1:?Missing argument: outfile}
@@ -65,15 +74,9 @@ mk_config () {
 	local name=${4:?Missing argument: common name}
 	local subjectAltName=${5:-}
 
-	_check_ssl ssl/country 2
-	_check_ssl ssl/state 128
-	_check_ssl ssl/locality 128
-	_check_ssl ssl/organization 64
-	_check_ssl ssl/organizationalunit 64
-	_check_ssl common-name 64 "$name"
-	_check_ssl ssl/email 128
+	check_ssl_parameters "$name" || return $?
 
-	local SAN_txt= san IFS=' '
+	local SAN_txt san IFS=' '
 	for san in $subjectAltName # IFS
 	do
 		SAN_txt="${SAN_txt:+${SAN_txt}, }DNS:${san}"
@@ -236,6 +239,9 @@ move_cert () {
 }
 
 init () {
+	local cn="$(ucr get ssl/common)"
+	check_ssl_parameters "$cn" || return $?
+
 	# remove old stuff
 	rm -rf "$SSLBASE"
 
@@ -263,7 +269,7 @@ init () {
 	touch "${CA}/index.txt"
 
 	# make the root-CA configuration file
-	mk_config openssl.cnf "$PASSWD" "$DEFAULT_DAYS" "$(ucr get ssl/common)"
+	mk_config openssl.cnf "$PASSWD" "$DEFAULT_DAYS" "$cn" || return $?
 
 	openssl genrsa -des3 -passout pass:"$PASSWD" -out "${CA}/private/CAkey.pem" "$DEFAULT_BITS"
 	openssl req -batch -config openssl.cnf -new -x509 -days "$DEFAULT_DAYS" -key "${CA}/private/CAkey.pem" -out "${CA}/CAcert.pem"
@@ -411,10 +417,8 @@ _common_gen_cert () {
 	# get host extension file
 	local extFile hostExt=$(ucr get ssl/host/extensions)
 	if [ -s "$hostExt" ]; then
-		set +e
 		. "$hostExt"
 		extFile=$(createHostExtensionsFile "$fqdn")
-		set -e
 	fi
 
 	# process the request

@@ -1,3 +1,9 @@
+univention-ssl (10.0.0-8) unstable; urgency=low
+
+  * Bug #38859: Fix error handling
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 05 Oct 2015 11:11:51 +0200
+
 univention-ssl (10.0.0-7) unstable; urgency=medium
 
   * Fixed typo in univention-ssl postinst (Bug #38859)
