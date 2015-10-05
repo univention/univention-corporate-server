@@ -437,6 +437,9 @@ class Ressource(object):
 		'info': CORE.info,
 	}
 
+	uid2user = {}
+	saml_cookie_name = "UMCSSOSessionId"
+
 	@property
 	def name(self):
 		"""returns class name"""
@@ -447,51 +450,69 @@ class Ressource(object):
 		msg = '%s (%s:%s) %s' % (self.name, get_ip_address(), remote.port, _msg)
 		self._logOptions.get(loglevel, CORE.info)(msg)
 
-	def _get_cookie_names(self):
-		req = cherrypy.request
-		host = req.headers.get('Host', '')
-		suffix = ''
-		if ':' in host:
-			suffix = '-%s' % host.split(':')[-1]
-		return ('UMCSessionId%s' % suffix, 'UMCUsername%s' % suffix)
+	def suffixed_cookie_name(self, name):
+		host, _, port = cherrypy.request.headers.get('Host', '').partition(':')
+		if port:
+			try:
+				port = '-%d' % (int(port),)
+			except ValueError:
+				port = ''
+		return '%s%s' % (name, port)
 
 	@log_exceptions
 	def get_session_id(self):
-		"""get the current session ID, either set via headers or cookie."""
-		# check for a valid session key
-		req = cherrypy.request
-		idCookie, userCookie = self._get_cookie_names()
-		if req.cookie.get(idCookie):
-			sessionid = req.cookie[idCookie].value
-		elif req.cookie.get('UMCSessionId'):
-			sessionid = req.cookie['UMCSessionId'].value
-		else:
-			# a sessionid is required to use this command
+		"""get the current session ID from cookie."""
+		sessionid = self.get_cookie('UMCSessionId')
+		if not sessionid:
 			self._log('info', 'no sessionid found')
 			return
-
 		self._log('info', 'found sessionid')
 		self._log(99, 'sessionid="%s"' % (sessionid))
 		return sessionid
 
-	def set_cookies(self, sessionid=None, username=None):
+	def set_cookies(self, *cookies, **kwargs):
 		# set the cookie once during successful authentication
 		# force expiration of cookie in 5 years from now on...
 		# IE does not support max-age
-		expiration = datetime.datetime.now()
-		expiration = expiration.replace(year=expiration.year + 5)
-		expirationStr = expiration.strftime("%a, %d-%b-%Y %H:%M:%S GMT")
-		idCookie, userCookie = self._get_cookie_names()
-		if sessionid:
-			cherrypy.response.cookie[idCookie] = sessionid
-			cherrypy.response.cookie[idCookie]['expires'] = expirationStr
-			cherrypy.response.cookie[idCookie]['version'] = 1
-			cherrypy.response.cookie[idCookie]['path'] = '/univention-management-console/'
-		if username:
-			cherrypy.response.cookie[userCookie] = username
-			cherrypy.response.cookie[userCookie]['expires'] = expirationStr
-			cherrypy.response.cookie[userCookie]['version'] = 1
-			cherrypy.response.cookie[userCookie]['path'] = '/univention-management-console/'
+		expires = kwargs.get('expires')
+		if expires is None:
+			expiration = datetime.datetime.now()
+			expiration = expiration.replace(year=expiration.year + 5)
+			expires = expiration.strftime("%a, %d-%b-%Y %H:%M:%S GMT")
+		cookie = cherrypy.response.cookie
+		for name, value in cookies:
+			name = self.suffixed_cookie_name(name)
+			cookie[name] = value
+			cookie[name]['expires'] = expires
+			cookie[name]['version'] = 1
+			cookie[name]['path'] = '/univention-management-console/'
+
+	def get_cookie(self, name):
+		morsel = cherrypy.request.cookie.get(self.suffixed_cookie_name(name), None)
+		if morsel is None:
+			morsel = cherrypy.request.cookie.get(name, None)
+		if morsel:
+			return morsel.value
+
+	def get_saml_user(self):
+		value = self.get_cookie(self.saml_cookie_name)
+		if value:
+			return self.uid2user.get(value)
+
+	def delete_saml_cookie(self):
+		self.set_cookies((self.saml_cookie_name, ''), expires=self._saml_expiration())
+
+	def set_saml_cookie(self, user):
+		uid = rndstr(32)
+		self.uid2user[uid] = user
+		self.set_cookies((self.saml_cookie_name, uid), ('UMCUsername', user.username), expires=self._saml_expiration(int(user.response.not_on_or_after - time.time())))
+
+	def _saml_expiration(self, timeout=None, tformat='%a, %d-%b-%Y %T GMT'):
+		if timeout is None:  # now
+			return time_util.instant(tformat)
+		# validity time should match lifetime of assertions
+		return time_util.in_a_while(minutes=timeout, format=tformat)
+
 
 class CPgeneric(Ressource):
 
@@ -589,7 +610,7 @@ class CPGet(CPgeneric):
 		return umcp.Request('GET', arguments=[path], options=args.get('options', {}))
 
 
-class IPAddresses(object):
+class IPAddresses(Ressource):
 
 	@cherrypy.expose
 	@log_exceptions
@@ -722,9 +743,9 @@ class CPAuth(CPgeneric):
 		remote = cherrypy.request.remote
 		CORE.info('CPAuth/auth/sso: got new auth request (%s:%s <=> %s)' % (get_ip_address(), remote.port, remote.name))
 
-		user = SAMLUser.get_user()
+		user = self.get_saml_user()
 		if user is None or user.timed_out():
-			SAMLUser.delete_cookie()
+			self.delete_saml_cookie()
 			raise HTTPRedirect('/univention-management-console/saml/')
 
 		req = umcp.Request('AUTH')
@@ -738,7 +759,7 @@ class CPAuth(CPgeneric):
 			response = self._auth_request(req)
 		except UMC_HTTPError as exc:
 			if exc.status == UNAUTHORIZED:
-				SAMLUser.delete_cookie()
+				self.delete_saml_cookie()
 				raise HTTPRedirect('/univention-management-console/saml/')  # FIXME: this might cause a endless redirection loop e.g. if slapd is down
 			raise
 
@@ -795,7 +816,7 @@ class CPAuth(CPgeneric):
 			sessionid = response.body.pop('sessionid')
 			CORE.info('auth: creating session with sessionid=%s' % (sessionid,))
 
-			self.set_cookies(sessionid=sessionid, username=req.body.get('username'))
+			self.set_cookies(('UMCSessionId', sessionid), ('UMCUsername', req.body.get('username')))
 
 			cherrypy.response.headers['Content-Type'] = response.mimetype
 			if response.mimetype == 'application/json':
@@ -832,12 +853,8 @@ class Root(Ressource):
 		sessionid = self.get_session_id()
 		if sessionid:
 			UMCP_Dispatcher.cleanup_session(sessionid)
-		idCookie = self._get_cookie_names()[0]
-		cherrypy.response.cookie[idCookie] = ''
-		cherrypy.response.cookie[idCookie]['expires'] = '-1'
-		cherrypy.response.cookie[idCookie]['version'] = 1
-		cherrypy.response.cookie[idCookie]['path'] = '/univention-management-console/'
-		user = SAMLUser.get_user()
+			self.set_cookies(('UMCSessionId', ''), expires='-1')
+		user = self.get_saml_user()
 		if user is not None:
 			raise HTTPRedirect('/univention-management-console/saml/logout')
 		raise HTTPRedirect('/univention-management-console/')
@@ -848,12 +865,11 @@ def get_ip_address():
 	return cherrypy.request.headers.get('X-FORWARDED-FOR', cherrypy.request.remote.ip).rsplit(', ', 1).pop()
 
 
-class SAML(object):
+class SAML(Ressource):
 
 	def __init__(self):
 		self.configfile = '/usr/share/univention-management-console/saml/sp.py'
 		self.__sp = None
-		self.seed = 'SnabbtInspel'  # FIXME: generate a secure random seed?
 
 		self.idp_query_param = "IdpQuery"
 		self.wayf = None
@@ -863,7 +879,6 @@ class SAML(object):
 		self.outstanding_queries = {}
 		self.outstanding_certs = {}
 		self.relay_state = {}
-		self.user = {}
 		self.reload()
 
 	@property
@@ -894,7 +909,7 @@ class SAML(object):
 	@log_exceptions
 	@cherrypy.tools.fix_uri()
 	def index(self, *args, **kwargs):
-		user = SAMLUser.get_user()
+		user = self.get_saml_user()
 
 		if user is None:
 			message, binding, relay_state = self._get_saml_arguments()
@@ -930,7 +945,7 @@ class SAML(object):
 
 		CORE.info('Got IDP response: %r' % (response.ava,))
 		user = SAMLUser(response, message)
-		SAMLUser.set_cookie(user)
+		self.set_saml_cookie(user)
 
 		raise HTTPRedirect('/univention-management-console/auth/sso')
 
@@ -948,7 +963,7 @@ class SAML(object):
 	@log_exceptions
 	@cherrypy.tools.fix_uri()
 	def logout(self, *args, **kwargs):
-		user = SAMLUser.get_user()
+		user = self.get_saml_user()
 
 		if user is None:
 			return self._logout_success()
@@ -976,7 +991,7 @@ class SAML(object):
 		return self._logout_success()
 
 	def _logout_success(self):
-		SAMLUser.delete_cookie()
+		self.delete_saml_cookie()
 		raise HTTPRedirect('/univention-management-console/')
 
 	@cherrypy.expose
@@ -1175,9 +1190,6 @@ class SAML(object):
 
 class SAMLUser(object):
 
-	uid2user = {}
-	cookie_name = "UMCSSOSessionId"
-
 	def __init__(self, response, message):
 		self.response = response
 		self.message = message
@@ -1188,37 +1200,6 @@ class SAMLUser(object):
 		if self.response.not_on_or_after == 0:
 			return False
 		return self.response.not_on_or_after - time.time() < 0
-
-	@classmethod
-	def get_user(cls):
-		morsel = cherrypy.request.cookie.get(cls.cookie_name, None)
-		if morsel:
-			return cls.uid2user.get(morsel.value)
-
-	@classmethod
-	def delete_cookie(cls):
-		cookie = cherrypy.response.cookie
-		cookie[cls.cookie_name] = ""
-		cookie[cls.cookie_name]['path'] = "/univention-management-console/"
-		cookie[cls.cookie_name]["expires"] = cls._expiration()
-
-	@classmethod
-	def set_cookie(cls, user):
-		uid = rndstr(32)
-		cls.uid2user[uid] = user
-		cookie = cherrypy.response.cookie
-		cookie[cls.cookie_name] = uid
-		cookie[cls.cookie_name]['path'] = "/univention-management-console/"
-		cookie[cls.cookie_name]["expires"] = cls._expiration(int(user.response.not_on_or_after - time.time()))
-		cookie['UMCUsername'] = user.username
-		cookie['UMCUsername']['path'] = '/univention-management-console/'
-
-	@classmethod
-	def _expiration(cls, timeout=None, tformat='%a, %d-%b-%Y %T GMT'):
-		if timeout is None:  # now
-			return time_util.instant(tformat)
-		# validity time should match lifetime of assertions
-		return time_util.in_a_while(minutes=timeout, format=tformat)
 
 
 @log_exceptions

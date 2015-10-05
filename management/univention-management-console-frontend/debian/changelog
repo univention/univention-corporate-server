@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.29-1) unstable; urgency=medium
+
+  * Bug #39473: add cookie suffix in SAML cookies for docker integration
+
+ -- Florian Best <best@univention.de>  Mon, 05 Oct 2015 14:01:39 +0200
+
 univention-management-console-frontend (5.0.28-5) unstable; urgency=medium
 
   * Wait up to one minute for the idp metadata (Bug #39386)
