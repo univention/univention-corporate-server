@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e -u
+. ${0%/*}/common.sh
+
+ucr set ssl/state="X${R128}"
+init && exit 1
+:

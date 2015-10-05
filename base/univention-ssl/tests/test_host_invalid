@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e -u
+. ${0%/*}/common.sh
+
+init
+gencert "X${R64}" "X${R64}" && exit 1
+:

@@ -1,0 +1,13 @@
+# No copyright for tests
+0010-2: tests/common.sh
+0010-2: tests/test_host_fqdn
+0010-2: tests/test_host_hook
+0010-2: tests/test_host_invalid
+0010-2: tests/test_host_valid
+0010-2: tests/test_init_invalid_c
+0010-2: tests/test_init_invalid_cn
+0010-2: tests/test_init_invalid_l
+0010-2: tests/test_init_invalid_o
+0010-2: tests/test_init_invalid_ou
+0010-2: tests/test_init_invalid_st
+0010-2: tests/test_init_valid
