@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.14-1) unstable; urgency=low
+
+  * Bug #38984: Detect ucs-kt-get errors
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 05 Oct 2015 14:09:33 +0200
+
 ucs-ec2-tools (1.0.13-1) unstable; urgency=low
 
   * Bug #39359: Added config files for ipv6 kvm instances
