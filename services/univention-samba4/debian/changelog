@@ -1,3 +1,9 @@
+univention-samba4 (5.0.0-6) unstable; urgency=medium
+
+  * Typo fix for samba/register/exclude/interfaces (Bug #39466)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Oct 2015 15:47:41 +0200
+
 univention-samba4 (5.0.0-5) unstable; urgency=medium
 
   * Added samba/register/exclude/interfaces UCR description (Bug #39466)
