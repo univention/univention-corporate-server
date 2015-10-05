@@ -1,3 +1,9 @@
+univention-saml (3.0.15-1) unstable; urgency=medium
+
+  * Bug #32786: add link to certificate of identity provider
+
+ -- Florian Best <best@univention.de>  Mon, 05 Oct 2015 15:01:17 +0200
+
 univention-saml (3.0.14-4) unstable; urgency=medium
 
   * Ensure apache is reloaded in the SAML join script. Fixed typo of

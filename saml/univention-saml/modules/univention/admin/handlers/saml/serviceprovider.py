@@ -41,6 +41,7 @@ short_description = _(u'SAML service provider')
 long_description = _(u'Management of service provider configurations for the SAML identity provider.')
 operations = ['add', 'edit', 'remove', 'search']
 default_containers = ["cn=saml-serviceprovider,cn=univention"]
+help_text = _(u'You can download the public certificate for this identity provider at %s.') % ('<a href="/simplesamlphp/saml2/idp/certificate" target="_blank">/simplesamlphp/saml2/idp/certificate</a>',)
 
 options = {}
 

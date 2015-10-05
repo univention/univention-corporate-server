@@ -183,3 +183,6 @@ msgstr "Weitere Einstellungen"
 #: modules/univention/admin/handlers/saml/serviceprovider.py:185
 msgid "Additional configuration options"
 msgstr "Zusätzliche Konfigurationsoptionen"
+
+msgid "You can download the public certificate for this identity provider at %s."
+msgstr "Das öffentliche Zertifikat dieses Identity Provider kann unter %s heruntergeladen werden."
