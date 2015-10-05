@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.28-5) unstable; urgency=medium
+
+  * Wait up to one minute for the idp metadata (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 05 Oct 2015 07:34:11 +0200
+
 univention-management-console-frontend (5.0.28-4) unstable; urgency=medium
 
   * Move univention-management-console-web-server join script to a later

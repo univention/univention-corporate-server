@@ -66,8 +66,8 @@ def cleanup():
 def download_idp_metadata(metadata):
 	idp = bytes(urlparse(metadata).netloc)
 	filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
-	for i in range(0,30):
-		print 'Try to download idp metadata (%s/30)' % (i+1)
+	for i in range(0,60):
+		print 'Try to download idp metadata (%s/60)' % (i+1)
 		rc = call([
 			'/usr/bin/wget',
 			'--ca-certificate', '/etc/univention/ssl/ucsCA/CAcert.pem',
