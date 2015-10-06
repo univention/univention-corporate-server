@@ -35,6 +35,7 @@
 import os.path
 import shutil
 import time
+import subprocess
 
 from ldap.dn import str2dn, dn2str
 
@@ -257,8 +258,15 @@ class Register(CredentialsAction):
 						init_script = Start.get_init(_app)
 						self.log('Creating %s' % init_script)
 						os.symlink(ORIGINAL_INIT_SCRIPT, init_script)
-					except OSError:
-						pass
+						cmd = ['update-rc.d', os.path.basename(init_script), 'defaults', '41', '14']
+						self.log(" ".join(cmd))
+						p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+						(stdout, stderr) = p.communicate()
+						self.log(stdout)
+						if stderr:
+						    self.log(stderr)
+					except OSError as ex:
+						self.warn(str(ex))
 					updates[_app.ucr_image_key] = _app.get_docker_image_name()
 					for app_id, container_port, host_port in app_ports():
 						if app_id == _app.id:

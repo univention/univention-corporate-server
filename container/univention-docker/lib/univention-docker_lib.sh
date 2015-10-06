@@ -30,10 +30,10 @@
 CONT_ID_FILE=/var/lib/docker/.stopped_containers
 
 get_container_names() {
-	docker ps -q "$@"
+	docker ps -q "$@" | tr '\n' ' '
 }
 
-shutdown_container() {
+_shutdown_container() {
 	local CONT_ID="${1:?Missing argument: container ID}"
 	local BACKGR="${2:-}"
 	local cmd
@@ -67,25 +67,40 @@ shutdown_container() {
 }
 
 shutdown_all_containers() {
-	rm -f "$CONT_ID_FILE"
+	# shutdown all running containers.
+	# saves a list of IDs, that will be started with
+	# start_previous_containers()
+
+	if [ -z "$(get_container_names)" ]; then
+		return 0
+	fi
+
+	get_container_names > "$CONT_ID_FILE"
+	shutdown_containers
+}
+
+shutdown_containers() {
+	# no arguments: shutdown all running containers
+	# ID ID ...: shutdown the containers with these IDs
+	CONTAINERS=${@:-$(get_container_names)}
 
 	# start parallel shutdown
-	for CONT_ID in $(get_container_names); do
-		echo "${CONT_ID}" >> "$CONT_ID_FILE"
-		shutdown_container "${CONT_ID}" 1
+	for CONT_ID in ${CONTAINERS}; do
+		_shutdown_container "${CONT_ID}" 1
 	done
 
 	# wait for all containers to have stopped
-	if [ -z "$(get_container_names)" ]; then
+	if [ -z "${CONTAINERS}" ]; then
 		return
 	fi
-	docker wait $(get_container_names) >/dev/null 2>&1 &
+	docker wait ${CONTAINERS} >/dev/null 2>&1 &
 	DW_PID="$!"
 
 	# don't wait 60s if system has already shutdown, "docker wait" will exit when
 	# all containers have either shutdown or been killed
 	while kill -0 "${DW_PID}" 2>/dev/null; do
-		for CONT_ID in $(get_container_names); do
+		RUNNING_CONTAINERS=$(containers_running ${CONTAINERS})
+		for CONT_ID in $RUNNING_CONTAINERS; do
 			if is_container_with_init "${CONT_ID}" && container_with_init_has_shutdown "${CONT_ID}"; then
 				output=$(docker kill "${CONT_ID}" 2>&1)
 				if ! [ $? -eq 0 ] && [ -n "$output" ]; then
@@ -127,5 +142,24 @@ is_container_with_init() {
 	local CONT_ID="${1:?Missing argument: container ID}"
 
 	docker exec -t "${CONT_ID}" ps -p 1 -o comm= | grep -q init
+}
+
+containers_running() {
+	# args: [id] ...
+	# return IDs of those containers that are running
+	ALL_CONT_ID=$(get_container_names)
+
+	if [ $# = 0 ] || [ -z "$ALL_CONT_ID" ]; then
+		return
+	fi
+
+	RET=""
+	for CONT_ID in $@; do
+		for LIVE_CONT_ID in $ALL_CONT_ID; do
+			if [ $CONT_ID = $LIVE_CONT_ID ]; then
+				echo -n "$CONT_ID "
+			fi
+		done
+	done
 }
 

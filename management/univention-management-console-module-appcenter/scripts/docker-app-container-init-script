@@ -29,10 +29,10 @@
 
 ### BEGIN INIT INFO
 # Provides:          App1_Container
-# Required-Start:    $remote_fs $syslog
-# Required-Stop:     $remote_fs $syslog
+# Required-Start:    $remote_fs $syslog docker
+# Required-Stop:     $remote_fs $syslog docker
 # Default-Start:     2 3 4 5
-# Default-Stop:      
+# Default-Stop:      0 1 6
 # Short-Description: Start the Container for App1
 # Description:       Start the Docker container
 #                    for App1
@@ -43,15 +43,23 @@ set -e
 # Get lsb functions
 . /lib/lsb/init-functions
 
+# load UCS docker functions
+. /usr/lib/univention-docker/univention-docker_lib.sh
+
+AUTOSTART_LIB_PATH=/usr/share/univention-config-registry/init-autostart.lib
+
 app_container_init_script_name=$(basename "$0")
 
+if [ "${app_container_init_script_name:0:1}" = "S" ] || [ "${app_container_init_script_name:0:1}" = "K" ]; then
+	# started by init switching runlevel, strip first 3 characters
+	app_container_init_script_name="${app_container_init_script_name:3}"
+fi
 app_name="${app_container_init_script_name#docker-app-}"	## cut away the prefix
 app_name="${app_name#container-init-script}"	## cut away the extended prefix
 
-
 if [ -z "$app_name" ]; then
 	echo "This is a generic SysV init script for docker app containers."
-	echo "Do do anything useful it needs to be copied to a file named"
+	echo "To do anything useful it needs to be copied to a file named"
 	echo "according to this scheme:"
 	echo -e "\tdocker-app-<APP_AME>"
 	echo "or"
@@ -63,7 +71,12 @@ app_name="${app_name#-}"	## cut away the remaining leading dash
 ## Early check for sane usage:
 case "$1" in
 	start|stop|restart|crestart|kill|status)
-		requested_action="$1"
+		if ! docker_is_running; then
+			log_failure_msg "Docker not running"
+			exit 1
+		else
+			requested_action="$1"
+		fi
 		;;
 	*)
 		log_success_msg "Usage: init_script_name {start|stop|restart|crestart|kill|status}"
@@ -182,8 +195,7 @@ stop_container() {
 	fi
 
 	log_begin_msg "Stopping $app_name Container $container_uuid ..."
-	output=$(docker exec "$container_uuid" halt 2>&1 || true)
-	output=$(docker stop "$container_uuid")
+	output=$(shutdown_containers $(echo "$container_uuid" | cut -b -12))
 	log_end_msg $?
 	if [ "$output" != "$container_uuid" ]; then
 		echo -n "$output"
@@ -212,7 +224,6 @@ kill_container() {
 }
 
 ## Ok, action:
-AUTOSTART_LIB_PATH='/usr/share/univention-config-registry/init-autostart.lib'
 case "$requested_action" in
 	start)
 		# check UCR autostart setting

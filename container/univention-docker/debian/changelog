@@ -1,3 +1,9 @@
+univention-docker (0.1.0-5) unstable; urgency=low
+
+  * change docker.io init script start/stop order (Bug #39429)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 06 Oct 2015 13:36:15 +0200
+
 univention-docker (0.1.0-4) unstable; urgency=low
 
   * add variable quoting, exec wait, kernel version check (Bug #39474)

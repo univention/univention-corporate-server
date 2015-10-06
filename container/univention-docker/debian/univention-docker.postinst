@@ -44,6 +44,12 @@ if [ "$1" = "configure" ]; then
 	else			# Update installation
 		:		# Nothing to do
 	fi
+
+	# fix docker start/stop order if not modified from defaults
+	if [ -L /etc/rc2.d/S20docker ] && [ -L /etc/rc0.d/K20docker ]; then
+		update-rc.d -f docker remove
+		update-rc.d docker defaults 40 15
+	fi
 fi
 
 exit 0

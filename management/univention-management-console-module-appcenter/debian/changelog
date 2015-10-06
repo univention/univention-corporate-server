@@ -1,3 +1,14 @@
+univention-management-console-module-appcenter (5.0.6-11) unstable; urgency=low
+
+  * make docker-app-container-init-script depend on running docker service
+    (Bug #39429)
+  * start docker-app-container-init-script after and stop before docker
+    service (Bug #39429)
+  * remove init script when uninstalling
+  * use shutdown_containers to safely and quickly shutdown containers
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 06 Oct 2015 14:15:15 +0200
+
 univention-management-console-module-appcenter (5.0.6-10) unstable; urgency=medium
 
   * Bug #38807: Rename of ssl site

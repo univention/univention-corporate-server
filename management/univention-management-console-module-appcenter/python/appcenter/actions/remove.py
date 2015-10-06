@@ -32,11 +32,21 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+import os
+import subprocess
+
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 
 from univention.appcenter.utils import rmdir
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
+
+try:
+	from univention.appcenter.actions.service import Start
+except ImportError:
+	# univention-appcenter-docker is not installed
+	pass
+
 
 class Remove(InstallRemoveUpgrade):
 	'''Removes an application from the Univention App Center.'''
@@ -72,6 +82,19 @@ class Remove(InstallRemoveUpgrade):
 				updates[key] = None
 		ucr_update(ucr, updates)
 		self._register_app(app, args, ucr, force=False)
+		try:
+			init_script = Start.get_init(app)
+			cmd = ['update-rc.d', '-f', os.path.basename(init_script), 'remove']
+			self.log(" ".join(cmd))
+			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			(stdout, stderr) = p.communicate()
+			self.log(stdout)
+			if stderr:
+			    self.log(stderr)
+			self.log('Removing %s' % init_script)
+			os.rm(init_script)
+		except OSError as ex:
+			self.warn(str(ex))
 
 	def _unregister_files(self, app, args):
 		if not args.keep_data:
