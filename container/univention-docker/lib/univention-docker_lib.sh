@@ -30,64 +30,80 @@
 CONT_ID_FILE=/var/lib/docker/.stopped_containers
 
 get_container_names() {
-	docker ps -q $@
+	docker ps -q "$@"
 }
 
 shutdown_container() {
-	local CONT_ID=${1:?Missing argument: container ID}
-	local BACKGR=${2:-}
+	local CONT_ID="${1:?Missing argument: container ID}"
+	local BACKGR="${2:-}"
+	local cmd
 
-	if EXE=$(docker exec ${CONT_ID} which telinit); then
-		docker exec ${CONT_ID} telinit 0
+	if EXE=$(docker exec "${CONT_ID}" which telinit); then
+		cmd="telinit 0"
 		TIME=60
-	elif EXE=$(docker exec ${CONT_ID} which halt); then
-		docker exec ${CONT_ID} halt
+	elif EXE=$(docker exec "${CONT_ID}" which halt); then
+		cmd="halt"
 		TIME=60
 	elif EXE=$(docker exec ${CONT_ID} which init); then
-		docker exec ${CONT_ID} init 0
+		cmd="init 0"
 		TIME=60
 	else
 		TIME=10
 	fi
 
-	if [ -z $BACKGR ]; then
-		docker stop --time=$TIME ${CONT_ID}
+	if [ -n "$cmd" ]; then
+		docker exec "${CONT_ID}" ${cmd} >/dev/null 2>&1
+		if ! [ "$?" -eq 0 ]; then
+			sleep 1
+			docker exec "${CONT_ID}" ${cmd}
+		fi
+	fi
+
+	if [ -z "$BACKGR" ]; then
+		docker stop --time=$TIME "${CONT_ID}"
 	else
-		docker stop --time=$TIME ${CONT_ID} &
+		docker stop --time=$TIME "${CONT_ID}" &
 	fi
 }
 
 shutdown_all_containers() {
-	rm -f $CONT_ID_FILE
+	rm -f "$CONT_ID_FILE"
 
 	# start parallel shutdown
 	for CONT_ID in $(get_container_names); do
-		echo ${CONT_ID} >> $CONT_ID_FILE
-		shutdown_container ${CONT_ID} 1
+		echo "${CONT_ID}" >> "$CONT_ID_FILE"
+		shutdown_container "${CONT_ID}" 1
 	done
 
 	# wait for all containers to have stopped
-	docker wait $(get_container_names) &
-	DW_PID=$!
+	if [ -z "$(get_container_names)" ]; then
+		return
+	fi
+	docker wait $(get_container_names) >/dev/null 2>&1 &
+	DW_PID="$!"
 
 	# don't wait 60s if system has already shutdown, "docker wait" will exit when
 	# all containers have either shutdown or been killed
-	while kill -0 ${DW_PID} 2>/dev/null; do
+	while kill -0 "${DW_PID}" 2>/dev/null; do
 		for CONT_ID in $(get_container_names); do
-			if is_container_with_init ${CONT_ID} && container_with_init_has_shutdown ${CONT_ID}; then
-				docker kill ${CONT_ID}
+			if is_container_with_init "${CONT_ID}" && container_with_init_has_shutdown "${CONT_ID}"; then
+				output=$(docker kill "${CONT_ID}" 2>&1)
+				if ! [ $? -eq 0 ] && [ -n "$output" ]; then
+					echo "$output"
+				fi
 			fi
 		done
+		sleep 1
 	done
 }
 
 previous_containers_exist() {
-	test -e $CONT_ID_FILE
+	test -e "$CONT_ID_FILE"
 }
 
 start_previous_containers() {
-	for CONT_ID in $(cat $CONT_ID_FILE); do
-		docker start ${CONT_ID}
+	for CONT_ID in $(cat "$CONT_ID_FILE"); do
+		docker start "${CONT_ID}"
 	done
 }
 
@@ -97,19 +113,19 @@ docker_is_running() {
 
 start_all_stopped_containers() {
 	for CONT_ID in $(get_container_names --all); do
-		docker start ${CONT_ID}
+		docker start "${CONT_ID}"
 	done
 }
 
 container_with_init_has_shutdown()  {
-	local CONT_ID=${1:?Missing argument: container ID}
+	local CONT_ID="${1:?Missing argument: container ID}"
 
-	test $(docker exec -t ${CONT_ID} ps ax | wc -l) -lt 4
+	test "$(docker exec -t "${CONT_ID}" ps ax | wc -l)" -lt 4
 }
 
 is_container_with_init() {
-	local CONT_ID=${1:?Missing argument: container ID}
+	local CONT_ID="${1:?Missing argument: container ID}"
 
-	docker exec -t ${CONT_ID} ps -p 1 -o comm= | grep -q init
+	docker exec -t "${CONT_ID}" ps -p 1 -o comm= | grep -q init
 }
 

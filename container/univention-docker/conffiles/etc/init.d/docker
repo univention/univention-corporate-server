@@ -1,8 +1,6 @@
 #!/bin/sh
 @%@UCRWARNING=# @%@
 
-set -e
-
 ### BEGIN INIT INFO
 # Provides:           docker
 # Required-Start:     $syslog $remote_fs
@@ -72,6 +70,11 @@ case "$1" in
 			check_autostart docker docker/autostart
 		fi
 
+		if ! dpkg --compare-versions "$(uname -r)" gt-nl 4.1.0; then
+			log_failure_msg "$DOCKER_DESC requires Linux Kernel 4.1, if you just updated, a reboot may be required."
+			exit 1
+		fi
+
 		touch "$DOCKER_LOGFILE"
 		chgrp docker "$DOCKER_LOGFILE"
 
@@ -83,21 +86,34 @@ case "$1" in
 		fi
 
 		log_begin_msg "Starting $DOCKER_DESC: engine... "
-		start-stop-daemon --start --background \
-			--no-close \
+		output=$(start-stop-daemon --start --background \
 			--exec "$DOCKER" \
 			--pidfile "$DOCKER_SSD_PIDFILE" \
 			--make-pidfile \
 			-- \
-				-d -p "$DOCKER_PIDFILE" \
-				$DOCKER_OPTS \
-					>> "$DOCKER_LOGFILE" 2>&1
+			-d -p "$DOCKER_PIDFILE" \
+			$DOCKER_OPTS \
+				2>&1
+		)
 		ret=$?
-		if [ $ret=0 ] && previous_containers_exist; then
-			sleep 1
+		if [ -n "$output" ]; then
+			echo "$output" >> "$DOCKER_LOGFILE"
+		fi
+		if ! [ "$ret" -eq 0 ]; then
+			echo "$output"
+			exit "$ret"
+		fi
+		for i in $(seq 10); do
 			if ! docker_is_running; then
-				sleep 5
+				sleep 1
 			fi
+		done
+		if ! docker_is_running; then
+			echo "$output"
+			log_failure_msg "$DOCKER_DESC: did not start properly"
+			exit 1
+		fi
+		if previous_containers_exist; then
 			if docker_is_running; then
 				log_progress_msg "previously stopped containers... "
 				start_previous_containers
@@ -112,7 +128,7 @@ case "$1" in
 			log_begin_msg "Stopping $DOCKER_DESC: "
 			log_progress_msg "shutting down containers... "
 			shutdown_all_containers
-			log_progress_msg ", engine..."
+			log_progress_msg "engine..."
 		else
 			log_begin_msg "Stopping $DOCKER_DESC: engine..."
 		fi
