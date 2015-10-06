@@ -1,3 +1,9 @@
+univention-saml (3.0.18-2) unstable; urgency=medium
+
+  * Bug #38881: Remove UMC module icon
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 06 Oct 2015 13:41:12 +0200
+
 univention-saml (3.0.18-1) unstable; urgency=medium
 
   * Bug #38933: fix php escaping
