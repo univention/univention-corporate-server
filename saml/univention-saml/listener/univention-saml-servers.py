@@ -35,7 +35,8 @@ import listener
 
 from univention.config_registry import handler_set, handler_unset
 
-name = description = __name__
+name = 'univention-saml-servers'
+description = 'Manage ucs/server/saml-idp-server/* variables'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))'
 attributes = ['univentionService']
 

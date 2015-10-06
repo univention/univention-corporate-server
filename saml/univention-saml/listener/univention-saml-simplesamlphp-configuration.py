@@ -42,7 +42,7 @@ from subprocess import call, Popen, PIPE
 
 import univention.debug as ud
 
-name = 'univention-saml'
+name = 'univention-saml-simplesamlphp-configuration'
 description = 'Manage simpleSAMLphp service providers'
 filter = '(objectClass=univentionSAMLServiceProvider)'
 
