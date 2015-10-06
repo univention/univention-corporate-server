@@ -571,6 +571,10 @@
 					No keyboard or console font setup is done inside a Docker container
 					(<u:bug>38763</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					A docker repository is now hosted on <literal>docker.software-univention.de</literal>
+					(<u:bug>39188</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 	</section>
 
