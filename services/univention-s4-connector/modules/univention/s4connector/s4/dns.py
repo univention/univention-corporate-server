@@ -646,7 +646,7 @@ def __get_s4_msdcs_soa(s4connector, zoneName):
 
 	## We need the SOA here
 	msdcs_soa_dn = 'DC=@,' + resultlist[0][0]
-	ud.debug(ud.LDAP, ud.INFO, "%s: search DC=@ for _msdcs in S4", func_name)
+	ud.debug(ud.LDAP, ud.INFO, "%s: search DC=@ for _msdcs in S4" % (func_name,))
 	resultlist = s4connector._s4__search_s4(
 			msdcs_soa_dn,
 			ldap.SCOPE_BASE,
