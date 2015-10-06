@@ -1,3 +1,9 @@
+univention-samba4 (5.0.0-8) unstable; urgency=medium
+
+  * Change deprecated "syslog" parameter to "logging" (Bug #38875)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Oct 2015 19:26:08 +0200
+
 univention-samba4 (5.0.0-7) unstable; urgency=medium
 
   * Adjust wording for samba/register/exclude/interfaces description
