@@ -593,6 +593,14 @@
 					By default the variable is set to <option>docker0</option>
 					(<u:bug>39466</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The &ucsUCRV; <envar>samba/max/protocol</envar> doesn't get set anyl longer for new
+					installations. Additionally, if it was set to the default "SMB2" it will get unset
+					as well during updates. The purpose of this change is to give customers the
+					highest protocol level considered stable by the Samba team. Currently this
+					is <option>SMB3_11</option>.
+					(<u:bug>32939</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
