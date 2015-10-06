@@ -45,14 +45,12 @@ nat_container_rule() {
 	iptables -t filter -A FORWARD -d "IP"/32 ! -i docker0 -o docker0 -p tcp -m tcp --dport "$1" -j ACCEPT") }'
 }
 
-if [ -x /usr/bin/docker ] && [ -z $(ucr get docker/container/uuid) ]; then
+if [ -x /usr/bin/docker ] && [ -z $(ucr get docker/container/uuid) ] && /etc/init.d/docker status > /dev/null; then
 	# this is a docker host
 	nat_core_rules
 	
-	if [ -x /etc/init.d/docker ] && /etc/init.d/docker status > /dev/null; then
-		for CONT_ID in $(docker ps -q); do
-			nat_container_rule $CONT_ID
-		done
-	fi
+	for CONT_ID in $(docker ps -q); do
+		nat_container_rule $CONT_ID
+	done
 fi
 
