@@ -417,7 +417,7 @@
 					The UMC server and LDAP server allow authentication with a SAML assertion via the packages <application>pam-saml</application> and <application>cy2-saml</application> (<u:bug>39315</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					<package>PHP</package> syntax is now correctly escaped and validated when writing the simplesamlphp service provider configuration (<u:bug>38933</u:bug>).
+					<package>PHP</package> syntax is now correctly escaped and validated when writing the <package>simplesamlphp</package> service provider configuration (<u:bug>38933</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The SAML join script has been moved from <package>univention-saml-schema</package> to
