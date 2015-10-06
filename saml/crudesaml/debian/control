@@ -1,7 +1,7 @@
 Source: crudesaml
 Section: libs
 Priority: optional
-Maintainer: Florian Best <best@univention.de>
+Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper,
  tar,
  libxml2-dev,
