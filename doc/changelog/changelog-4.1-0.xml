@@ -419,6 +419,10 @@
 				<listitem><simpara>
 					PHP syntax is now correctly escaped and validated when writing the simplesamlphp service provider configuration (<u:bug>38933</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The SAML join script has been moved from <package>univention-saml-schema</package> to
+					<package>univention-saml</package> (<u:bug>39472</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 		<section id="changelog:service:mail">
