@@ -107,7 +107,6 @@ univention-config-registry set \
 	samba/short_preserve_case?yes \
 	samba/guest_account?nobody \
 	samba/map_to_guest?"Bad User" \
-	samba/max/protocol?SMB2 \
 	samba/enable-msdfs?yes \
 	samba/acl/allow/execute/always?yes \
 	samba/register/exclude/interfaces='docker0'
@@ -290,6 +289,13 @@ secret: $machine_secret
 			/usr/share/univention-samba4/scripts/create-keytab.sh
 			if ! [ -r "/etc/krb5.keytab" ]; then
 				echo "WARNING: /etc/krb5.keytab not created."
+			fi
+		fi
+
+		### The following block of code may be removed after ucs_4.1-0
+		if dpkg --compare-versions "$2" lt-nl "5.0.0-11"; then
+			if [ "$samba_max_protocol" = "SMB2" ]; then
+				univention-config-registry unset samba/max/protocol
 			fi
 		fi
 	fi
