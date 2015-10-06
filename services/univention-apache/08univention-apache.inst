@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
@@ -39,6 +39,8 @@ eval "$(univention-config-registry shell)"
 
 a2dismod ssl
 a2enmod ssl
+a2dissite default-ssl
+a2ensite default-ssl
 
 if [ -z "$UMC_MODE" ]; then
 	/etc/init.d/apache2 force-reload

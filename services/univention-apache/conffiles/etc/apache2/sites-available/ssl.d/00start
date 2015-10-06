@@ -3,7 +3,7 @@
 <IfModule mod_ssl.c>
 NameVirtualHost *:443
 <VirtualHost *:443>
-	Include /etc/apache2/ucs-sites.conf
+	Include /etc/apache2/ucs-sites.conf.d
 	SSLEngine on
 	SSLProxyEngine on
 @!@

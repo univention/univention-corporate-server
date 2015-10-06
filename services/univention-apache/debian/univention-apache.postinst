@@ -41,6 +41,8 @@ a2enmod proxy || true
 if [ "$1" = configure -a -z "$2" ]; then
 	a2dismod ssl || true
 	a2enmod ssl || true
+	a2dissite default-ssl || true
+	a2ensite default-ssl || true
 fi
 
 univention-config-registry set apache2/autostart?"yes"
@@ -87,8 +89,6 @@ fi
 if [ ! -f "$CERT_PATH" ]; then
 	ENABLE_SSL=no
 fi
-
-a2dissite ssl || true # TODO: remove, dev version
 
 if [ $ENABLE_SSL = yes ]; then
 	a2enmod ssl

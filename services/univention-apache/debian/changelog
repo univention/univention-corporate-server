@@ -1,3 +1,11 @@
+univention-apache (8.0.0-5) unstable; urgency=medium
+
+  * Bug #38807: Enable default-ssl without checking for certificate;
+    make ucs-sites.conf a directory; put options that are better defined
+    globally in a global file
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Oct 2015 17:56:55 +0200
+
 univention-apache (8.0.0-4) unstable; urgency=medium
 
   * Bug #38807: Rename ssl -> default-ssl; do not define default directives

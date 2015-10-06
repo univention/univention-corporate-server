@@ -2,5 +2,5 @@
 
 NameVirtualHost *:80
 <VirtualHost *:80>
-	Include /etc/apache2/ucs-sites.conf
+	Include /etc/apache2/ucs-sites.conf.d
 

@@ -1,9 +1,6 @@
 Type: file
 File: etc/apache2/conf.d/ucs.conf
 Variables: apache2/maxclients
-
-Type: file
-File: etc/apache2/ucs-sites.conf
 Variables: hostname
 Variables: domainname
 Variables: apache2/loglevel
