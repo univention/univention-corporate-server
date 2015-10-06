@@ -331,8 +331,8 @@ Categories=service-samba
 ReadOnly=yes
 
 [samba/max/protocol]
-Description[de]=Diese Variable konfiguriert das höchste Protokoll, welches dieser Server unterstützt (gültige Werte sind in "man smb.conf" dokumentiert). Ist die Variable nicht gesetzt, gilt der Standardwert, der in der Manual-Seite zu smb.conf dokumentiert ist.
-Description[en]=This variable configures the highest protocol level that will be supported by this server (valid values may be found in "man smb.conf"). If the variable is unset, the deafult givent in the smb.conf manual page applies.
+Description[de]=Diese Variable konfiguriert das höchste Protokoll, welches dieser Server unterstützt (gültige Werte sind in "man smb.conf" dokumentiert). Ist die Variable nicht gesetzt, so gilt der Standardwert, der in der Manual-Seite zu smb.conf dokumentiert ist.
+Description[en]=This variable configures the highest protocol level that will be supported by this server (valid values may be found in "man smb.conf"). If the variable is unset, the default given in the smb.conf manual page applies.
 Type=str
 Categories=service-samba
 
