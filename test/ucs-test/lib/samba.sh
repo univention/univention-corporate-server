@@ -5,6 +5,7 @@ wait_for_LDAP_replication_of_domain_sambaSid () {
 	username="${1:?username}"
 	t0=$(date +%Y%m%d%H%M%S)
 	t=t0
+	test -x /usr/sbin/univention-s4search || return
 	sambaSID=$(univention-ldapsearch -xLLL uid="$username" sambaSID | sed -n 's/^sambaSID: //p')
 	if [ -z "${sambaSID%S-1-4*}" ]; then
 		echo -n "Waiting for S4-Connector and LDAP replication of domain sambaSID for user $username (current: $sambaSID)."
