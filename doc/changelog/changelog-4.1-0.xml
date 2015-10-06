@@ -148,8 +148,8 @@
 					Unmovable objects are no longer shown as movable (<u:bug>20439</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					All UMC cookies are now restricted to the path /univention-management-console/.
-					The entry point /umcp/ has therefore been moved to /univention-management-console/ (<u:bug>38820</u:bug>).
+					All UMC cookies are now restricted to the path <filename>/univention-management-console/</filename>.
+					The entry point <filename>/umcp/</filename> has therefore been moved to /<filename>univention-management-console/</filename> (<u:bug>38820</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -369,7 +369,7 @@
 			<title>SAML</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The SAML identity provider app has been integrated into UCS (<u:bug>38881</u:bug>).
+					The SAML identity provider app has been integrated into UCS (<u:bug>38881</u:bug>, <u:bug>39468</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The package <package>univention-saml</package> is installed on DC Master and
@@ -381,7 +381,7 @@
 					(<u:bug>39171</u:bug>), (<u:bug>39178</u:bug>), (<u:bug>31943</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A downloadlink for the public certificate of the identity provider has been added to the module (<u:bug>32786</u:bug>).
+					A download link for the public certificate of the identity provider has been added to the module (<u:bug>32786</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The <application>SimpleSAMLphp</application> certificate is now created in the joinscript instead of the postinst of the package (<u:bug>39255</u:bug>).
@@ -417,7 +417,7 @@
 					The UMC server and LDAP server allow authentication with a SAML assertion via the packages <application>pam-saml</application> and <application>cy2-saml</application> (<u:bug>39315</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					PHP syntax is now correctly escaped and validated when writing the simplesamlphp service provider configuration (<u:bug>38933</u:bug>).
+					<package>PHP</package> syntax is now correctly escaped and validated when writing the simplesamlphp service provider configuration (<u:bug>38933</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The SAML join script has been moved from <package>univention-saml-schema</package> to
@@ -487,7 +487,7 @@
 			<title>Apache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					<package>univention-apache</package> now ships expandable VHost configuration files (<u:bug>38807</u:bug>).
+					<package>univention-apache</package> now ships expandable <property>VHost</property> configuration files (<u:bug>38807</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
