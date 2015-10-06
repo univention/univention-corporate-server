@@ -4,7 +4,7 @@
 # Univention Samba
 #  listener module: manage idmap
 #
-# Copyright 2001-2014 Univention GmbH
+# Copyright 2001-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
