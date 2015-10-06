@@ -147,6 +147,10 @@
 				<listitem><simpara>
 					Unmovable objects are no longer shown as movable (<u:bug>20439</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					All UMC cookies are now restricted to the path /univention-management-console/.
+					The entry point /umcp/ has therefore been moved to /univention-management-console/ (<u:bug>38820</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
