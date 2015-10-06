@@ -29,6 +29,8 @@
 
 #DEBHELPER#
 
+. /usr/share/univention-lib/all.sh
+
 case "$1" in
 configure)
 

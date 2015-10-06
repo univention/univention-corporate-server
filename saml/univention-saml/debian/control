@@ -12,6 +12,7 @@ Package: univention-saml
 Architecture: all
 Depends: ${misc:Depends},
  python-univention-lib,
+ shell-univention-lib,
  univention-apache,
  php-xml-parser,
  php5-mcrypt,
