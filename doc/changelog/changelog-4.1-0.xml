@@ -601,6 +601,12 @@
 					is <option>SMB3_11</option>.
 					(<u:bug>32939</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The <emphasis>IPC$ share</emphasis> is not explicitly configured any longer
+					in the default configuration where <envar>samba4/service/smb</envar> is <option>s3fs</option>.
+					This change avoids a lot of unnecessary warning messages from samba
+					(<u:bug>29227</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
