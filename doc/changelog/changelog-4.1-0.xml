@@ -487,6 +487,7 @@
 			<title>Apache</title>
 			<itemizedlist>
 				<listitem><simpara>
+					<package>univention-apache</package> now ships expandable VHost configuration files (<u:bug>38807</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
