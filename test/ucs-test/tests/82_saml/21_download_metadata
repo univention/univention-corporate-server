@@ -1,0 +1,31 @@
+#!/usr/share/ucs-test/runner python
+## desc: Download metadata.php
+## tags: [saml]
+## exposure: safe
+
+import urllib2
+from univention.config_registry import ConfigRegistry
+from univention.testing.utils import fail
+
+if __name__ == '__main__':
+	ucr = ConfigRegistry()
+	ucr.load()
+
+	metadata_url = ucr['umc/saml/idp-server']
+
+	res = []
+
+	# read at least five times because ucs-sso is an alias for different IPs
+	for i in range(0,5):
+		response = urllib2.urlopen(metadata_url)
+		metadata = response.read()
+		if not metadata:
+			fail('Empty response')
+		print metadata
+		res.append(metadata)
+
+	for i in range(0,4):
+		if res[i] != res[i+1]:
+			fail('Metadata is different: %d and %d' % (i,i+1))
+
+

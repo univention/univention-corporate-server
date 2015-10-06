@@ -525,6 +525,15 @@ Provides: ucs-test-module
 Description: Test scripts to test the Docker integration
  This package includes test-cases for Docker.
 
+Package: ucs-test-saml
+Architecture: all
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Recommends: ucs-test-framework
+Provides: ucs-test-module
+Description: Test scripts to test the SAML integration
+ This package includes test-cases for SAML.
+
 Package: ucs-test-modules-all
 Architecture: all
 Depends: ${ucs-test:all-packages}

@@ -1,3 +1,9 @@
+ucs-test (6.0.8-19) unstable; urgency=medium
+
+  * Added first basic SAML tests (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 Oct 2015 21:18:26 +0200
+
 ucs-test (6.0.8-18) unstable; urgency=medium
 
   * lib/samba.sh. check if univention-s4search exists (Bug #39470)

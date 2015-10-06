@@ -1,0 +1,26 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check if every DC Master and DC Backup is registered in ucs-sso
+## tags: [saml]
+## exposure: safe
+## packages:
+##   - univention-saml
+
+import dns.resolver
+from univention.testing.utils import get_ldap_connection, fail
+
+if __name__ == '__main__':
+	dns_entries = set()
+	for addr in dns.resolver.query('ucs-sso', 'A'):
+		dns_entries.add(addr.address)
+	print dns_entries
+
+	master_backup_ips = set()
+	lo = get_ldap_connection()
+	for res in lo.search('(|(univentionServerRole=master)(univentionServerRole=backup))', attr=['aRecord']):
+		for ip in res[1].get('aRecord'):
+			master_backup_ips.add(ip)
+	print master_backup_ips
+
+	if master_backup_ips.difference(dns_entries):
+		fail('Not all master and backup IPs are registered: DNS: [%s], LDAP: [%s]' % (dns_entries, master_backup_ips)) 
+
