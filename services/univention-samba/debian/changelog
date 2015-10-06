@@ -1,3 +1,10 @@
+univention-samba (10.0.1-2) unstable; urgency=medium
+
+  * Don't set samba/max/protocol on new installations (Bug #32939)
+  * Unset samba/max/protocol on updates if SMB2 was set
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Oct 2015 22:45:37 +0200
+
 univention-samba (10.0.1-1) unstable; urgency=medium
 
   * Change deprecated "syslog" parameter to "logging" (Bug #38875)

@@ -131,7 +131,6 @@ univention-config-registry set \
 	samba/netlogon/sync?sync \
 	samba/domain/logons?auto \
 	samba/password/checkscript?"/usr/share/univention-samba/password_check %u" \
-	samba/max/protocol?SMB2 \
 	samba/acl/allow/execute/always?yes
 
 if [ "$1" = "configure" ]; then
@@ -151,6 +150,13 @@ if [ "$1" = "configure" ]; then
 					sleep 3
 				fi
 				/etc/init.d/winbind restart
+			fi
+		fi
+
+		### The following block of code may be removed after ucs_4.1-0
+		if dpkg --compare-versions "$2" lt-nl "10.0.1-2"; then
+			if [ "$samba_max_protocol" = "SMB2" ]; then
+				univention-config-registry unset samba/max/protocol
 			fi
 		fi
 	fi
