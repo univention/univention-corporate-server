@@ -35,6 +35,7 @@ import ldap, string
 import univention.debug2 as ud
 import univention.s4connector.s4
 import univention.admin.uldap
+from univention.uldap import explodeDn
 from univention.s4connector.s4.dc import _unixTimeInverval2seconds
 from univention.admin.mapping import unmapUNIX_TimeInterval
 
@@ -151,7 +152,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 				break
 
 			pos = string.find(dn,'=')
-			rdn = univention.s4connector.s4.explode_unicode_dn(dn)
+			rdn = explodeDn(dn)
 			pos2 = len(rdn[0])
 
 			if isUCSobject:
@@ -256,7 +257,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 				if s4dn_utf16_le: # no referral, so we've got a valid result
 					s4dn = univention.s4connector.s4.encode_attrib(s4dn_utf16_le)
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: got s4dn %s" % (s4dn,))
-					s4pos2 = len(univention.s4connector.s4.explode_unicode_dn(s4dn)[0])
+					s4pos2 = len(explodeDn(s4dn)[0])
 					if dn_key == 'olddn' or (dn_key == 'dn' and not 'olddn' in obj):
 						## Cases: ("delete") or ("add" but exists already)
 						newdn = s4dn
