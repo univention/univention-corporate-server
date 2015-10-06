@@ -2,8 +2,8 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: univention-s4-connector
-fix: 9.0.16-46.575.201510062153
-version: [2,3]
+fix: 9.0.16-47.578.201510070005
+version: [3]
 desc: |
  This update addresses the following issues:
  * Synchronize DC=DomainDNSZones and DC=ForestDNSZones, this is relevant
