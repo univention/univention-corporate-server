@@ -37,6 +37,17 @@ is_ucr_true () { # test if UCR variable is "true" or "false"
 	esac
 }
 
+is_ucr_false () { # test if UCS variable is "false"
+	local value
+	value="$(/usr/sbin/univention-config-registry get "$1")"
+	case "$(echo -n "$value" | tr [:upper:] [:lower:])" in
+		1|yes|on|true|enable|enabled) return 1 ;;
+		0|no|off|false|disable|disabled) return 0 ;;
+		*) return 2 ;;
+	esac
+}
+
+
 #
 # removes a UCR template and moves it to /etc/univention/templates/removed
 #

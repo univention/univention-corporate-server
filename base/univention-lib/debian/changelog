@@ -1,3 +1,9 @@
+univention-lib (5.0.0-3) unstable; urgency=low
+
+  * Bug #27701: added is_ucr_false
+
+ -- Felix Botner <botner@univention.de>  Wed, 07 Oct 2015 11:11:57 +0200
+
 univention-lib (5.0.0-2) unstable; urgency=medium
 
   * Bug #38205: Let registerLDAPExtension skip the postinst / joinscript
