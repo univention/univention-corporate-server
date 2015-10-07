@@ -650,7 +650,7 @@ univention-app restart radicale
 		</section>
 		<section id="docker:epilogue:ini">
 			<title>Docker related variables in the ini file</title>
-			/<para>
+			<para>
 				We used some of the ini's variables to adjust the Docker App to our needs. Here is a brief overview regarding all docker related
 				variables:
 				<variablelist>
