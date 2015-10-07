@@ -554,7 +554,7 @@ univention-app restart radicale
 							current image is thrown away and a new image is set up. Therefore it is important
 							to store the data of the current app to be able to start into exactly that state
 							when the container was removed.
-							You may call any app specific commands like <command>myapp-backup --full</emphasis>
+							You may call any app specific commands like <command>myapp-backup --full</command>
 							or just copy the important files. The App Center always mounts the following
 							directory into the container, which can be used to store the data (and later
 							restore the data from there as the very same directory will be mounted into the
