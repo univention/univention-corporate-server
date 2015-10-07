@@ -91,8 +91,6 @@ class Remove(InstallRemoveUpgrade):
 			self.log(stdout)
 			if stderr:
 			    self.log(stderr)
-			self.log('Removing %s' % init_script)
-			os.remove(init_script)
 		except OSError as ex:
 			self.warn(str(ex))
 

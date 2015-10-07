@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-13) unstable; urgency=low
+
+  * symlink is removed by other code already (Bug #39429)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 07 Oct 2015 09:36:48 +0200
+
 univention-management-console-module-appcenter (5.0.6-12) unstable; urgency=low
 
   * fix typo (Bug #39429)
