@@ -586,7 +586,7 @@ univention-app restart radicale
 						Upgrade of the operating system (a new patchlevel release or even a minor/major update of UCS (4.1-1 or 4.2-0)
 					</simpara></listitem>
 					<listitem><simpara>
-						Upgrade of app packages, i.e. a new version (with the same <literal>DockerImage</literal> was released
+						Upgrade of app packages, i.e. a new version (with the same <literal>DockerImage</literal>) was released
 					</simpara></listitem>
 				</itemizedlist>
 			</para>
@@ -601,7 +601,7 @@ univention-app restart radicale
 							The script needs to <command>echo</command> the result:
 							<itemizedlist>
 								<listitem><simpara>
-									<emphasis>package</emphasis> if mere package updates are avaiable. These include
+									<emphasis>packages</emphasis> if mere package updates are avaiable. These include
 									security fixes for operating system packages.
 								</simpara></listitem>
 								<listitem><simpara>
