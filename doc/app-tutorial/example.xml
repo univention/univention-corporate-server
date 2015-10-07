@@ -125,7 +125,7 @@ WebsiteMaintainer=http://www.univention.de/
 Categories=Collaboration
 				</programlisting>
 				<note><para>
-					The following categories are allowed (multiple can be specified, splitted by ","):
+					The following categories are allowed (multiple can be specified, split by ","):
 					Administration, Business, Collaboration, Education, System services, <wordasword>Virtualization</wordasword> (+ UCS Components, but these are meant for Univention Software)
 				</para></note>
 				Now the important parts:
@@ -432,6 +432,311 @@ univention-app restart radicale
 ]]></programlisting>
 				</para>
 			</section>
+		</section>
+	</section>
+	<section id="docker:epilogue">
+		<title>Epilogue</title>
+		<para>
+			In this section we will go briefly over things we may have missed in the example.
+		</para>
+		<section id="docker:epilogue:scripts">
+			<title>Docker scripts</title>
+			<para>
+				For every App, the App Center server holds a repository containing the debian packages. But it also may hold
+				several scripts that do not need to be packaged. In theory one may integrate one's app without needing to
+				build an additional integration package. That being said, with increasing complexity, it is advised to build
+				such a package nonetheless. Furthermore, not everything can be achieved easily with these scripts. There are
+				interfaces rarely used that the App Center does not support. Should your app require these interfaces, it may
+				be necessary to create a package.
+			</para>
+			<para>
+				We need to distinguish between <emphasis>outer scripts</emphasis> and <emphasis>inner scripts</emphasis>. An
+				<emphasis>outer script</emphasis> is called on the <emphasis>Docker Host</emphasis>, <emphasis>inner scripts</emphasis>
+				are called in the running <emphasis> Docker Container</emphasis>.
+			</para>
+			<para>
+				All scripts are called with root privileges. For <emphasis>inner scripts</emphasis> this means the local root
+				of the <emphasis>Docker Container</emphasis>. Some scripts may get LDAP credentials. Normally these credentials
+				are that of the <emphasis>Administrator account</emphasis>.
+			</para>
+			<note><para>
+				None of the following scripts is mandatory, all have reasonable defaults / fallbacks. But every scripts may be
+				overridden! Just upload them along with the ini file and Univention will place them on the App Center server.
+				See also ??? to specify these scripts in the ini file.
+			</para></note>
+			<para>
+				The following scripts are for installation and uninstallation. Upgrades use these scripts, too, if (and only if)
+				the upgrade consists of an image exchange (i.e. the new version with the new ini file specifies a different
+				<envar>DockerImage</envar>). In that case the old app is uninstalled and the new app is installed.
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term>preinst</term>
+					<listitem>
+						<simpara>
+							An <emphasis>outer script</emphasis> called before the Docker container is initialized, even
+							before the image is downloaded. Its purpose is to check whether installation may be successful.
+							For example, the preinst may fail if certain hardware requirements are not met. Any exit code
+							other than 0 will result in cancellation of the installation process.
+							If the installation of an app is the result of an image exchange (and thus more of an upgrade)
+							the preinst is also called.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>restore_data_before_setup</term>
+					<listitem>
+						<simpara>
+							An <emphasis>inner script</emphasis> called before <emphasis>setup</emphasis> is called, right after
+							the container is started. Its purpose is to restore those bits that may be needed to successfully
+							run the setup script. May be useful in an upgrade process where one needs to restore the state the old
+							container was in instead of setting up the container as if it were fresh.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>setup</term>
+					<listitem>
+						<simpara>
+							An <emphasis>inner script</emphasis> and heart of the whole installation process. By default it joins the system,
+							(a script called <command>univention-join</command> provided by Univention), adds the repository that was created
+							on the App Center server and installs <envar>DefaultPackages</envar> specified in the ini file.
+							After that it once again joins, running all scripts that may have been installed during the app installation.
+							If the script fails (exit code != 0) the installation is aborted.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>restore_data_after_setup</term>
+					<listitem>
+						<simpara>
+							An <emphasis>inner script</emphasis> called after <emphasis>setup</emphasis> is called. Its purpose
+							is to actually restore the data that may have been saved in <emphasis>store_data</emphasis> – now that
+							the app is up and running but the database is still empty.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>inst</term>
+					<listitem>
+						<simpara>
+							Also called <emphasis>joinscript</emphasis>. An <emphasis>outer script</emphasis> called after the
+							<emphasis>Docker Container</emphasis> is configured. Think of it as a postinst of the app.
+							See ??? for how to write a join script. If the join script runs successfully, the join script
+							may save this information in a status file. If this does not happen, the user is constantly
+							reminded to re-run the join script. So the join script does not need to run successfully. The installtion
+							will not be aborted at this point. But of course at some point it should run through successfully.
+							The main purpose of the joinscript is to set up the domain for the new app, e.g. by adding a domain
+							user that can be used as the <literal>LDAP binddn</literal> that your App may need to authenticate
+							against the central user management of UCS.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>prerm</term>
+					<listitem>
+						<simpara>
+							An <emphasis>outer script</emphasis> called before the Docker container is removed.
+							Its purpose is to check whether an uninstallation may be successful. But it may
+							be used to somehow prepare the system for the uninstallation.
+							For example, the prerm may fail if other software still depends on it. Any exit code
+							other than 0 will result in cancellation of the uninstallation process.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>store_data</term>
+					<listitem>
+						<simpara>
+							An <emphasis>inner script</emphasis> called before removing the
+							<emphasis>Docker Container</emphasis>. In fact the app is not really uninstalled.
+							The container is just thrown away. This also happens during image upgrades: The
+							current image is thrown away and a new image is set up. Therefore it is important
+							to store the data of the current app to be able to start into exactly that state
+							when the container was removed.
+							You may call any app specific commands like <command>myapp-backup --full</emphasis>
+							or just copy the important files. The App Center always mounts the following
+							directory into the container, which can be used to store the data (and later
+							restore the data from there as the very same directory will be mounted into the
+							new container): <filename class="directory">/var/lib/appcenter/app/<replaceable>$APPID</replaceable>/data/</filename>.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>uinst</term>
+					<listitem>
+						<simpara>
+							Also called <emphasis>unjoinscript</emphasis>. An <emphasis>outer script</emphasis> called after the
+							<emphasis>Docker Container</emphasis> is removed. Think of it as a postrm of the app.
+							See ??? for how to write an unjoin script. It should somehow revert most (if not all) changes done
+							in the <emphasis>inst</emphasis> script (or joinscript). With the notable exception of schema
+							registration. An LDAP schema extension should never be removed once it was registered.
+						</simpara>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+			<para>
+				The following scripts are for upgrading the software within the <emphasis>Docker Container</emphasis>. Three possible
+				scenarios have to be covered:
+				<itemizedlist>
+					<listitem><simpara>
+						Upgrade of system packages (security fixes, UCS calls them Errata Updates)
+					</simpara></listitem>
+					<listitem><simpara>
+						Upgrade of the operating system (a new patchlevel release or even a minor/major update of UCS (4.1-1 or 4.2-0)
+					</simpara></listitem>
+					<listitem><simpara>
+						Upgrade of app packages, i.e. a new version (with the same <literal>DockerImage</literal> was released
+					</simpara></listitem>
+				</itemizedlist>
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term>update_available</term>
+					<listitem>
+						<simpara>
+							An <emphasis>inner script</emphasis> called when the App Center wants to find out whether the
+							container may install package updates or release updates. By default, this is done automatically
+							once a day. It can be triggered manually, too, though.
+							The script needs to <command>echo</command> the result:
+							<itemizedlist>
+								<listitem><simpara>
+									<emphasis>package</emphasis> if mere package updates are avaiable. These include
+									security fixes for operating system packages.
+								</simpara></listitem>
+								<listitem><simpara>
+									<emphasis>release: <replaceable>RELEASE</replaceable></emphasis> if a new version
+									of the operating itself is available. <replaceable>RELEASE</replaceable> can be anything,
+									it is just presented to the user.
+								</simpara></listitem>
+							</itemizedlist>
+							<note><para>
+								The script does not search for App updates, nor does it search for a change in the <envar>DockerImage</envar>!
+								This is done by the "outer" App Center.
+							</para></note>
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>update_packages</term>
+					<listitem>
+						<simpara>
+							An <emphasis>inner script</emphasis> called when (all) updates of existing packages shall be installed.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>update_release</term>
+					<listitem>
+						<simpara>
+							An <emphasis>inner script</emphasis> called when a new version of the operating system shall be installed.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>update_app_version</term>
+					<listitem>
+						<simpara>
+							An <emphasis>inner script</emphasis> called when a new version of the App packages shall be installed.
+							This script is different from <literal>update_packages</literal>. This has technical reasons, because
+							for normal UCS based docker images, this requires a new repository to be registered. But it also has
+							usability reasons: First, users may want to distinguish between necessary, stability improving package
+							updates and (potentially) groundshaking App updates; second, an App can be configured to install those
+							package updates automatically through <envar>DockerAutoUpdate</envar>.
+						</simpara>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</section>
+		<section id="docker:epilogue:ini">
+			<title>Docker related variables in the ini file</title>
+			/<para>
+				We used some of the ini's variables to adjust the Docker App to our needs. Here is a brief overview regarding all docker related
+				variables:
+				<variablelist>
+					<varlistentry>
+						<term>DockerImage</term>
+						<listitem>
+							<simpara>
+								The image the container will be based on. The Univention App Center will provide a list of
+								UCS based images that can be used to run the application. Other images may work but are strongly
+								discouraged as they will lack domain functionality that would be required to integrate the app
+								into the UCS domain.
+								<note><simpara>
+									If you want to develop a Docker App, this variable is <emphasis>required</emphasis>.
+									The following variables on the other hand have meaningful defaults (or are empty, which is
+									fine, too).
+								</simpara></note>
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term>DockerAllowedImages</term>
+						<listitem>
+							<simpara>
+								When the app does not rely on a well defined basis, it may be convenient to update <literal>DockerImage</literal>
+								every now and then (e.g. when a new minor version of UCS is released). This is not required, but not doing so
+								would configure an outdated base image that needs to be upgraded after the app installation. This may take
+								a long time depending on the age of the image.
+							</simpara>
+							<simpara>
+								If <literal>DockerImage</literal> is changed, the App Center recognizes this and will exchange the image
+								by removing the container and setting up a new one. This is of course not necessary for an old, but
+								constantly updated image. So one can put the old image name in the <literal>DockerAllowedImages</literal>
+								list and the App Center will accept it. New apps will be installed with <literal>DockerImage</literal>, though.
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term>DockerVolumes</term>
+						<listitem>
+							<simpara>
+								Apart from <filename class="directory">/var/lib/appcenter/app/<replaceable>$APPID</replaceable>/{data,conf}/</filename>,
+								one may choose further directories that shall be mounted into the docker container. This is a good idea if it makes
+								storing / restoring data easy and also provides the benefit of increased I/O performance. The syntax is
+								<envar>DockerVolumes=/path/on/host/:/path/in/container/,...</envar>.
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term>DockerServerRole</term>
+						<listitem>
+							<simpara>
+								The Univention App Center adds a computer object for the container in the LDAP database. This computer
+								object can either be a <envar>memberserver</envar> (default) or a <envar>domaincontroller_slave</envar>.
+								The latter is useful if the container needs more rights (DC systems may have more rights in the ACL definitions
+								of LDAP). Other than that, both roles are free to choose their software selection (depending on the app package
+								definitions in its <filename>debian/control</filename>.
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term>DockerAutoUpdate</term>
+						<listitem>
+							<simpara>
+								The container can be configured to automatically update itself. This does not hold for the App itself, but
+								rather for either <envar>packages</envar> (security fixes in PHP etc) or <envar>release</envar>s (new UCS versions).
+								Default is that the container is not updated automatically. Note that release updates are only performed if the
+								app is actually released for that specific UCS version, otherwise the update process will stall.
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term>DockerScript*</term>
+						<listitem>
+							<simpara>
+								The various <literal>DockerScript*</literal> variables are used to specify the path to the script that shall
+								be executed. So an app package may ship its own <literal>DockerScriptStoreData</literal> and the ini file
+								can point to it. More importantly though, the app can ship these scripts unpackaged along with the ini file
+								and the App Center will install these scripts at that destination and then call it. See ??? for a brief
+								overview over the scripts. The name in the ini file for <filename>store_data</filename> is
+								<literal>DockerScriptStoreData</literal> and so on.
+							</simpara>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+				For the other variables, see ???.
+			</para>
 		</section>
 	</section>
 	<section id="docker:debugging">
