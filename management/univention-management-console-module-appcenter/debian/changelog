@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-12) unstable; urgency=low
+
+  * fix typo (Bug #39429)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 07 Oct 2015 08:58:16 +0200
+
 univention-management-console-module-appcenter (5.0.6-11) unstable; urgency=low
 
   * make docker-app-container-init-script depend on running docker service
