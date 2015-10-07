@@ -37,6 +37,7 @@ _shutdown_container() {
 	local CONT_ID="${1:?Missing argument: container ID}"
 	local BACKGR="${2:-}"
 	local cmd
+	local output
 
 	if EXE=$(docker exec "${CONT_ID}" which telinit); then
 		cmd="telinit 0"
@@ -52,17 +53,28 @@ _shutdown_container() {
 	fi
 
 	if [ -n "$cmd" ]; then
-		docker exec "${CONT_ID}" ${cmd} >/dev/null 2>&1
-		if ! [ "$?" -eq 0 ]; then
+		for i in $(seq 2); do
+			docker exec "${CONT_ID}" ${cmd} >/dev/null 2>&1
+			rc=$?
+			if [ "$rc" -eq 0 ]; then
+				break
+			fi
 			sleep 1
+		done
+		if ! [ "$rc" -eq 0 ]; then
+			## One final time with output
 			docker exec "${CONT_ID}" ${cmd}
 		fi
 	fi
 
 	if [ -z "$BACKGR" ]; then
-		docker stop --time=$TIME "${CONT_ID}"
+		output=$(docker stop --time=$TIME "${CONT_ID}" 2>&1)
+		echo -n " $output"
 	else
-		docker stop --time=$TIME "${CONT_ID}" &
+		(
+		output=$(docker stop --time=$TIME "${CONT_ID}" 2>&1);
+		echo -n " $output"
+		) &
 	fi
 }
 
@@ -117,8 +129,10 @@ previous_containers_exist() {
 }
 
 start_previous_containers() {
+	local output
 	for CONT_ID in $(cat "$CONT_ID_FILE"); do
-		docker start "${CONT_ID}"
+		output=$(docker start "${CONT_ID}" 2>&1)
+		echo -n " $output"
 	done
 }
 

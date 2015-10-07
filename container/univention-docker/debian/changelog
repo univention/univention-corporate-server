@@ -1,3 +1,9 @@
+univention-docker (0.1.0-6) unstable; urgency=medium
+
+  * Some cosmetic changes (Bug #39429)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Oct 2015 18:55:29 +0200
+
 univention-docker (0.1.0-5) unstable; urgency=low
 
   * change docker.io init script start/stop order (Bug #39429)
