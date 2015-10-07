@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-14) unstable; urgency=low
+
+  * silenced univention-appcenter-docker postinst (Bug #39469)
+
+ -- Felix Botner <botner@univention.de>  Wed, 07 Oct 2015 12:40:02 +0200
+
 univention-management-console-module-appcenter (5.0.6-13) unstable; urgency=low
 
   * symlink is removed by other code already (Bug #39429)
