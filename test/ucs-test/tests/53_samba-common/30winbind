@@ -66,6 +66,8 @@ else
 fi
 
 wait_for_LDAP_replication_of_domain_sambaSid "$username"
+# give some some more seconds
+sleep 15
 
 printf "##  wbinfo --name-to-sid:\t"
 output=$(wbinfo -n "$username")

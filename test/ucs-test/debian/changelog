@@ -1,3 +1,10 @@
+ucs-test (6.0.8-20) unstable; urgency=medium
+
+  * lib/samba.sh and 53_samba-common/30winbind: some more updates if
+    univention-s4search does not exist (Bug #39470)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 07 Oct 2015 06:40:45 +0200
+
 ucs-test (6.0.8-19) unstable; urgency=medium
 
   * Added first basic SAML tests (Bug #39386)
