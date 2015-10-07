@@ -357,6 +357,7 @@
 		<title>Univention base libraries</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The function <emphasis>is_ucr_true</emphasis> has been added to the univention shell libs (<u:bug>27701</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
