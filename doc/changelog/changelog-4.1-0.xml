@@ -576,6 +576,11 @@
 					A docker repository is now hosted on <literal>docker.software-univention.de</literal>
 					(<u:bug>39188</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					A <filename>docker</filename> init script has been added
+					which properly stops and restarts running containers
+					(<u:bug>39474</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 	</section>
 
