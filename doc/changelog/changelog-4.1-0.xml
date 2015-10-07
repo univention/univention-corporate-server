@@ -582,13 +582,17 @@
 					(<u:bug>39474</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Docker images running UCS in container mode now update
-					their IP addresses in LDAP. This is useful because Docker
-					dynamically assignes IP addresses during container restarts.
-					Additionally these containers also try to register the IP
-					also with a <literal>consul</literal> and <literal>etcd</literal>
-					service running the Docker host.
+					Docker images running UCS in container mode now update their
+					IP addresses in LDAP if one is already registered there.
+					This is useful because Docker dynamically assignes IP
+					addresses during container restarts.
 					(<u:bug>38334</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Docker images running UCS in container mode now try to
+					register the IP also with a <literal>consul</literal> and
+					<literal>etcd</literal> service running the Docker host.
+					(<u:bug>38331</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 	</section>
