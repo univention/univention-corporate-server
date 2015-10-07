@@ -594,7 +594,7 @@ univention-app restart radicale
 				<varlistentry>
 					<term>update_available</term>
 					<listitem>
-						<simpara>
+						<para>
 							An <emphasis>inner script</emphasis> called when the App Center wants to find out whether the
 							container may install package updates or release updates. By default, this is done automatically
 							once a day. It can be triggered manually, too, though.
@@ -614,7 +614,7 @@ univention-app restart radicale
 								The script does not search for App updates, nor does it search for a change in the <envar>DockerImage</envar>!
 								This is done by the "outer" App Center.
 							</para></note>
-						</simpara>
+						</para>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
