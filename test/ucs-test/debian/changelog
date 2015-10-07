@@ -1,3 +1,9 @@
+ucs-test (6.0.8-21) unstable; urgency=low
+
+  * added 04_univention-lib/010_check_is_true_false_shell (Bug #27701)
+
+ -- Felix Botner <botner@univention.de>  Wed, 07 Oct 2015 12:16:02 +0200
+
 ucs-test (6.0.8-20) unstable; urgency=medium
 
   * lib/samba.sh and 53_samba-common/30winbind: some more updates if

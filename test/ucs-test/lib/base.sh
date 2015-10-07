@@ -172,6 +172,16 @@ fail_bool () { #This is intended to be called directly after functions that are 
 	return $rc
 }
 
+assert () {
+	E_ASSERT_FAILED=99
+	if [ -z "$2" ]; then
+		fail_fast $E_ASSERT_FAILED "not enough parameters passed to assert() - $@"
+	fi
+	if [ ! $1 ]; then
+		fail_fast $E_ASSERT_FAILED "Assertion \"$1\" failed, line $2"
+	fi
+}
+
 get_current_ucs_version_string () {
 	echo "${version_version}-${version_patchlevel}"
 }

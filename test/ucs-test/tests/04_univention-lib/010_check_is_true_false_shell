@@ -1,0 +1,34 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test is_ucr_true is_ucr_false in univention-lib/ucr.sh
+## bugs: [27701]
+## tags: [basic]
+## packages:
+##   - shell-univention-lib
+## exposure: safe
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. /usr/share/univention-lib/ucr.sh || exit 137
+
+base=$(mktemp)
+trap "rm -f '$base'" INT TERM EXIT
+export UNIVENTION_BASECONF=$base
+
+is_ucr_true a; assert "$? -eq 2" $LINENO
+is_ucr_false a; assert "$? -eq 2" $LINENO
+
+ucr set a=true
+
+is_ucr_true a; assert "$? -eq 0" $LINENO
+is_ucr_false a; assert "$? -eq 1" $LINENO
+
+ucr set a=false
+
+is_ucr_true a; assert "$? -eq 1" $LINENO
+is_ucr_false a; assert "$? -eq 0" $LINENO
+
+ucr set a=moin
+
+is_ucr_true a; assert "$? -eq 2" $LINENO
+is_ucr_false a; assert "$? -eq 2" $LINENO
+
+exit 0
