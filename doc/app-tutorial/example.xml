@@ -657,7 +657,7 @@ univention-app restart radicale
 					<varlistentry>
 						<term>DockerImage</term>
 						<listitem>
-							<simpara>
+							<para>
 								The image the container will be based on. The Univention App Center will provide a list of
 								UCS based images that can be used to run the application. Other images may work but are strongly
 								discouraged as they will lack domain functionality that would be required to integrate the app
@@ -667,7 +667,7 @@ univention-app restart radicale
 									The following variables on the other hand have meaningful defaults (or are empty, which is
 									fine, too).
 								</simpara></note>
-							</simpara>
+							</para>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
