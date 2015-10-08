@@ -1,3 +1,12 @@
+univention-saml (3.0.20-1) unstable; urgency=medium
+
+  * Added more UCR variables for the ucs-sso configuration
+    ucs/server/sso/autoregistraton,
+    ucs/server/sso/certificate/generation and
+    ucs/server/sso/certificate/download (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Oct 2015 15:36:05 +0200
+
 univention-saml (3.0.19-2) unstable; urgency=medium
 
   * Bug #38947: Execute Single Sign On php processes as separate

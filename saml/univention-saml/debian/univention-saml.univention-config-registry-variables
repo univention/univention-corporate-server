@@ -1,7 +1,25 @@
 [ucs/server/sso/fqdn]
 Description[de]=Definiert den FQDN des Identity Provider dieser UCS Domäne.
-Description[en]=Defines the fqdn of the identity provider of this ucs domain.
+Description[en]=Defines the fqdn of the identity provider of this UCS domain.
 Type=str
+Categories=management
+
+[ucs/server/sso/autoregistraton]
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, registriert dieses UCS System die eigene IP-Adresse am FQDN des Identity Provider (ucs/server/sso/fqdn). (default: true)
+Description[en]=If this variable is set to 'true', this UCS system tregisters its IP address at the fqdn of the identity provider (ucs/server/sso/fqdn). (default: true)
+Type=bool
+Categories=management
+
+[ucs/server/sso/certificate/generation]
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird das Zertifikat für den FQDN des Identity Provider (ucs/server/sso/fqdn) automatisch erstellt. (default: true)
+Description[en]=If this variable is set to 'true', the certificate for the fqdn of the identity provider (ucs/server/sso/fqdn) is created automatically. (default: true)
+Type=bool
+Categories=management
+
+[ucs/server/sso/certificate/download]
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird das Zertifikat für den FQDN des Identity Provider (ucs/server/sso/fqdn) automatisch heruntergeladen. (default: true)
+Description[en]=If this variable is set to 'true', the certificate for the fqdn of the identity provider (ucs/server/sso/fqdn) is downloaded automatically. (default: true)
+Type=bool
 Categories=management
 
 [saml/idp/entityID]
