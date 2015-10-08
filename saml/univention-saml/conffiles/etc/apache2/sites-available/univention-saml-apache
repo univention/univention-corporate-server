@@ -19,7 +19,8 @@ RewriteRule ^/?simplesamlphp/(.*) https://%{SERVER_NAME}/simplesamlphp/$1 [R,L]
 @!@
 sso_fqdn = configRegistry.get('ucs/server/sso/fqdn', 'ucs-sso.%s' % configRegistry.get('domainname'))
 ssofqdn = {'ssofqdn': sso_fqdn}
-if configRegistry.is_true('saml/idp/enableSAML20-IdP'):
+import os.path
+if os.path.isfile('/etc/univention/ssl/%(ssofqdn)s/cert.pem' % ssofqdn) and os.path.isfile('/etc/univention/ssl/%(ssofqdn)s/private.key' % ssofqdn):
 	print '''
 <IfModule mod_ssl.c>
 <VirtualHost *:443>
