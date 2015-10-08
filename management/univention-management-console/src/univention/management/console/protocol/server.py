@@ -39,6 +39,7 @@ Defines the basic class for an UMC server.
 import fcntl
 import os
 import socket
+import traceback
 
 # external packages
 import notifier
@@ -116,6 +117,13 @@ class MagicBucket(object):
 		state.authenticated = bool(result)
 		self._response(state.authResponse, state)
 		state.authResponse = None
+		if state.authenticated and state.processor is not None:
+			# a second authentication request must cause an update of the password in all modules
+			state.processor.set_credentials(**state.credentials())
+			try:
+				state.processor.update_module_passwords()
+			except Exception:  # don't let it crash here until we catch exceptions on a higher layer
+				CORE.error('Failed to update module passwords: %s' % (traceback.format_exc(),))
 
 	def _receive(self, socket):
 		"""Signal callback: Handles incoming data. Processes SSL events

@@ -51,24 +51,20 @@ The following python code example matches the definition in the previous section
 
  from univention.management.console import Translation
  from univention.management.console.config import ucr
- from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
+ from univention.management.console.modules import Base
+ from univention.management.console.modules.decorators import sanitize
+ from univention.management.console.modules.sanitizers import IntegerSanitizer
  from univention.management.console.log import MODULE
 
- _ = Translation( 'univention-management-console-modules-udm' ).translate
+ _ = Translation('univention-management-console-modules-udm').translate
 
  class Instance(Base):
+
+   @sanitize(end=IntegerSanitizer(minimum=0),)
    def query(self, request):
-     ...
-
-   def containers(self, request):
-     module_name = request.options.get('objectType')
-     if not module_name or 'all' == module_name:
-       module_name = request.flavor
-     if not module_name:
-      raise UMC_OptionMissing('No valid module name found')
-
-     module = UDM_Module(module_name)
-     self.finished(request.id, module.containers + self.settings.containers(request.flavor))
+     end = request.options['end']
+     result = list(range(end))
+     self.finished(request.id, result)
 
 Each command methods has one parameter that contains the UMCP request of
 type
@@ -86,29 +82,14 @@ an object has the following properties:
 	is the name of the flavor that was used to invoke the command. This
 	might be *None*
 
-The *containers* method in the example above shows how to retrieve the
+The *query* method in the example above shows how to retrieve the
 command parameters and what to do to send the result back to the
 client. Important is that returning a value in a command function does
 not send anything back to the client. Therefor the function *finished*
 must be invoked. The first parameter is the identifier of the request
 that will be answered and the second parameter the data structure
 containing the result. As the result is converted to JSON it must just
-contain data types that can be converted. The *finished* function has
-two further optional parameters. *message* may contain a human readable
-text explaining the result and *success* is a boolean parameter defining
-the success of the operation. By default *success* is true. By setting
-*success* to *False* the UCM module sends an error status back to the
-client. Another way to send an error message back to the client is by
-raising one of the following exceptions:
-
-*UMC_OptionTypeError*
-	The type of a given option does not match
-
-*UMC_OptionMissing*
-	One required option is missing
-
-*UMC_CommandError*
-	A general error occurred
+contain data types that can be converted.
 
 The base class for modules provides some properties and methods that
 could be useful when writing UMC modules:
@@ -116,6 +97,7 @@ could be useful when writing UMC modules:
 Properties
  * *username*: The username of the owner of this session
  * *password*: The password of the user
+ * *auth_type*: The authentication method which was used to authenticate this user
 
 Methods
  * *init*: Is invoked after the module process has been initialised. At that moment, the settings, like locale and username and password are available.
@@ -341,7 +323,7 @@ class Base(signals.Provider, Translation):
 			status = MODULE_ERR_COMMAND_FAILED
 			message = _("Execution of command '%(command)s' has failed:\n\n%(text)s")
 			message = message % {
-				'command': ('%s %s' % (request.arguments[0], request.flavor or '')).strip(),
+				'command': ('%s %s' % (' '.join(request.arguments), request.flavor or '')).strip().decode('utf-8', 'replace'),
 				'text': unicode(traceback.format_exc())
 			}
 		MODULE.process(str(message))

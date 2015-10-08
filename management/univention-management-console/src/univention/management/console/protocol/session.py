@@ -203,10 +203,8 @@ class Processor(Base):
 
 	def __init__(self, username, password, auth_type):
 		Base.__init__(self, 'univention-management-console')
+		self.set_credentials(username, password, auth_type)
 
-		self.username = username
-		self.password = password
-		self.auth_type = auth_type
 		self.__udm_users_module_initialised = False
 		self.__command_list = None
 		self.i18n = I18N_Manager()
@@ -224,6 +222,11 @@ class Processor(Base):
 		self._reload_acls_and_permitted_commands()
 
 		self.signal_new('response')
+
+	def set_credentials(self, username, password, auth_type):
+		self.username = username
+		self.password = password
+		self.auth_type = auth_type
 
 	def _search_user_dn(self):
 		if self.lo is not None:
@@ -623,10 +626,11 @@ class Processor(Base):
 			res.status = 200
 			res.message = self.i18n._('Password successfully changed.')
 
+			self.auth_type = None
 			self._password = new_password
 
 			try:
-				self._update_module_passwords()
+				self.update_module_passwords()
 			except:
 				res.status = 500
 				error_msg = self.i18n._('Nevertheless an error occured while updating the password for running modules. Please relogin to UMC to solve this problem.')
@@ -634,11 +638,11 @@ class Processor(Base):
 
 		self.result(res)
 
-	def _update_module_passwords(self):
+	def update_module_passwords(self):
 		exc_info = None
 		for module_name, proc in self.__processes.items():
 			CORE.info('Changing password on running module %s' % (module_name,))
-			req = Request('SET', arguments=[module_name], options={'password': self._password})
+			req = Request('SET', arguments=[module_name], options={'password': self._password, 'auth_type': self.auth_type})
 			try:
 				proc.request(req)
 			except:

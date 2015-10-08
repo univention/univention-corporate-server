@@ -1,3 +1,10 @@
+univention-management-console (8.0.16-1) unstable; urgency=medium
+
+  * Bug #39233: distribute (new) credentials to module processes on second
+  	authentication request
+
+ -- Florian Best <best@univention.de>  Thu, 08 Oct 2015 19:39:51 +0200
+
 univention-management-console (8.0.15-1) unstable; urgency=medium
 
   * Bug #39178: workaround for update scenarios
