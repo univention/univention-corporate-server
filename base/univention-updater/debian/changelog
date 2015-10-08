@@ -1,3 +1,9 @@
+univention-updater (11.0.2-7) unstable; urgency=low
+
+  * Bug #39366: added check_for_postgresql84 
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Oct 2015 18:59:51 +0200
+
 univention-updater (11.0.2-6) unstable; urgency=low
 
   * Bug #30417: Remove join status check
