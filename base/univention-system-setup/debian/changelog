@@ -1,4 +1,4 @@
-univention-system-setup (9.0.2-4.1) unstable; urgency=medium
+univention-system-setup (9.0.2-5) unstable; urgency=medium
 
   * Add ip change module for updating ucs-sso (Bug #39386)
 
