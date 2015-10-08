@@ -357,7 +357,7 @@
 		<title>Univention base libraries</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The function <emphasis>is_ucr_true</emphasis> has been added to the univention shell libs (<u:bug>27701</u:bug>).
+				The function <function>is_ucr_true</function> has been added to the univention shell libs (<u:bug>27701</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -589,7 +589,7 @@
 				<listitem><simpara>
 					Docker images running UCS in container mode now update their
 					IP addresses in LDAP if one is already registered there.
-					This is useful because Docker dynamically assignes IP
+					This is useful because Docker dynamically assigns IP
 					addresses during container restarts.
 					(<u:bug>38334</u:bug>).
 				</simpara></listitem>
@@ -618,7 +618,7 @@
 					(<u:bug>39466</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The &ucsUCRV; <envar>samba/max/protocol</envar> doesn't get set anyl longer for new
+					The &ucsUCRV; <envar>samba/max/protocol</envar> doesn't get set any longer for new
 					installations. Additionally, if it was set to the default "SMB2" it will get unset
 					as well during updates. The purpose of this change is to give customers the
 					highest protocol level considered stable by the Samba team. Currently this
@@ -626,7 +626,7 @@
 					(<u:bug>32939</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The <emphasis>IPC$ share</emphasis> is not explicitly configured any longer
+					The <filename>IPC$ share</filename> is not explicitly configured any longer
 					in the default configuration where <envar>samba4/service/smb</envar> is <option>s3fs</option>.
 					This change avoids a lot of unnecessary warning messages from samba
 					(<u:bug>29227</u:bug>).
