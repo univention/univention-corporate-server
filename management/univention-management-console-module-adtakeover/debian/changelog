@@ -1,3 +1,10 @@
+univention-management-console-module-adtakeover (3.0.0-1) unstable; urgency=low
+
+  * added FSMO roles 'domaindnsmaster' and 'forestdnsmaster' (Bug #39222)
+  * UCS 4.1 verion bump
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Oct 2015 17:47:05 +0200
+
 univention-management-console-module-adtakeover (2.0.7-8) unstable; urgency=medium
 
   * Turn off the legacy DNS S4-Connector position_mapping during takeover

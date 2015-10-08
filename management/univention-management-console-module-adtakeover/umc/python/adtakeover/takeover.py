@@ -1714,7 +1714,7 @@ class AD_Takeover_Finalize():
 		## Claim FSMO roles
 		log.info("Claiming FSMO roles")
 		takeover_hasMasterNCs(self.ucr, self.samdb, self.sitename, self.partitions)
-		for fsmo_role in ('pdc', 'rid', 'infrastructure', 'schema', 'naming'):
+		for fsmo_role in ('pdc', 'rid', 'infrastructure', 'schema', 'naming', 'domaindns', 'forestdns'):
 			for attempt in xrange(3):
 				if attempt > 0:
 					time.sleep(1)
