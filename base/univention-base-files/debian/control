@@ -17,8 +17,6 @@ Depends: ${misc:Depends},
  rsyslog,
  bash-completion,
  locales,
- ntpdate,
- rdate,
  acl,
  xfsprogs,
  lsof,
@@ -39,7 +37,9 @@ Recommends: vim,
  unzip,
  eject,
  locate,
- univention-network-common
+ univention-network-common,
+ rdate,
+ ntpdate,
 Description: UCS - base packages
  This metapackage depends on all packages and recommends several other
  packages which should be installed on a default UCS installation.

@@ -1,3 +1,10 @@
+univention-server (11.0.1-5) unstable; urgency=low
+
+  * moved ntp|ntp-server dependency from specific role
+    packages to univention-role-server-common (Bug #39410)
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Oct 2015 17:03:29 +0200
+
 univention-server (11.0.1-4) unstable; urgency=medium
 
   * univention-container-role-common now depends on univention-docker-
