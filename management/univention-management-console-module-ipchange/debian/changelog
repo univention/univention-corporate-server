@@ -1,3 +1,10 @@
+univention-management-console-module-ipchange (4.0.1-1) unstable; urgency=medium
+
+  * Also change the ucs-sso host record (Bug #39386)
+  * Bump version for UCS 4.1
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Oct 2015 08:25:10 +0200
+
 univention-management-console-module-ipchange (3.0.1-1) unstable; urgency=medium
 
   * Bug #35654: correctly initialize empty javascript UMC module definition

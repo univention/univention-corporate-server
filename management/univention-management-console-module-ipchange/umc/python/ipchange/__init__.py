@@ -66,13 +66,18 @@ class Instance(umcm.Base):
 		result = {'success' : True}
 		message = None
 		MODULE.info('IP Change')
+
 		if self._username.endswith('$'):
+
+			ucr = univention.config_registry.ConfigRegistry()
+			ucr.load()
+
 			server_name='%s' % self._username[:-1]
 			MODULE.info('Server Name: %s' % server_name)
 
-			lo, position = univention.admin.uldap.getAdminConnection()                                                                                                                                       
-			co = univention.admin.config.config()   
-			cmodule = univention.admin.modules.get('computers/%s' % request.options.get('role'))                                                                                                                                
+			lo, position = univention.admin.uldap.getAdminConnection()
+			co = univention.admin.config.config()
+			cmodule = univention.admin.modules.get('computers/%s' % request.options.get('role'))
 
 			filter='(cn=%s)' % server_name
 			cobject = univention.admin.modules.lookup(cmodule, co, lo, scope='sub', superordinate=None, filter=filter)
@@ -124,6 +129,24 @@ class Instance(umcm.Base):
 					MODULE.warn('Failed to change DNS reverse zone: %s' % traceback.format_exc())
 					result['success'] = False
 					message = 'Failed to change DNS reverse zone'
+
+				# Change ucs-sso entry
+				sso_fqdn = ucr.get('ucs/server/sso/fqdn')
+				if ucr.is_true('ucs/server/sso/autoregistraton', True):
+					fmodule = univention.admin.modules.get('dns/forward_zone')
+					hmodule = univention.admin.modules.get('dns/host_record')
+					forwardobjects = univention.admin.modules.lookup(fmodule, co, lo, scope='sub', superordinate=None, filter=None)
+					for forwardobject in forwardobjects:
+						zone = forwardobject.get('zone')
+						if not sso_fqdn.endswith(zone):
+							continue
+						sso_name = sso_fqdn[:-(len(zone)+1)]
+						records = univention.admin.modules.lookup(hmodule, co, lo, scope='sub', superordinate=forwardobject, filter='(&(relativeDomainName=%s)(aRecord=%s))' % (sso_name, old_ip[0]))
+						for record in records:
+							record.open()
+							record['a'].remove(request.options.get('oldip'))
+							record['a'].append(request.options.get('ip'))
+							record.modify()
 
 		self.finished(request.id, result, message)
 
