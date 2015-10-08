@@ -43,7 +43,6 @@ import functools
 import uuid
 import datetime
 import json
-import socket
 from errno import ESRCH
 from urlparse import urlparse
 from httplib import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
@@ -61,17 +60,12 @@ from univention.management.console.log import CORE, log_init
 from univention.management.console.log import log_reopen
 from univention.config_registry import ConfigRegistry
 
-from saml2 import BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT, BINDING_HTTP_REDIRECT, element_to_extension_element, time_util, ecp
+from saml2 import BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT, BINDING_HTTP_REDIRECT, time_util
 from saml2.client import Saml2Client
-from saml2.extension.pefim import SPCertEnc
 from saml2.metadata import create_metadata_string
-from saml2.ecp_client import PAOS_HEADER_INFO
-from saml2.httputil import make_cookie, parse_cookie
 from saml2.response import VerificationError, UnsolicitedResponse, StatusError
-from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, sid as generate_sid, rndstr
-from saml2.samlp import Extensions
+from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, rndstr
 from saml2.sigver import MissingKey, SignatureError
-#from saml2 import xmldsig as ds  # FIXME: pysaml2 v3 required
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -103,7 +97,7 @@ def _fix_uri_for_saml():
 	scheme = cherrypy.request.scheme
 	if cherrypy.request.headers.get('X-UMC-HTTPS') == 'on':
 		scheme = 'https'
-	cherrypy.request.uri = '%s://%s%s?%s' % (scheme, cherrypy.request.headers['Host'], cherrypy.request.path_info, cherrypy.request.query_string)
+	cherrypy.request.uri = ('%s://%s%s?%s' % (scheme, cherrypy.request.headers['Host'], cherrypy.request.path_info, cherrypy.request.query_string)).rstrip('?')
 	foo = cherrypy.request.params
 	try:
 		cherrypy.request.params = {}
@@ -283,6 +277,7 @@ class UMCP_Dispatcher(object):
 					CORE.process('The sessionid (ip=%s) is not valid for this IP address (%s)' % (client.ip, queuerequest.ip))
 					raise ValueError()
 			except (KeyError, ValueError):
+				client = None
 				if queuerequest.request.command != 'AUTH':
 					CORE.process('UMCP_Dispatcher: check_queue: invalid session: sessionid=%r' % (queuerequest.sessionid))
 					response = umcp.Response(queuerequest.request)
@@ -290,16 +285,16 @@ class UMCP_Dispatcher(object):
 					queuerequest.response_queue.put(response)
 					continue  # with next request
 
-			if queuerequest.request.command == 'AUTH':
+			if queuerequest.request.command == 'AUTH' and client is None:
 				# AUTH request
 				CORE.info('UMCP_Dispatcher: check_queue: AUTH request')
 				if not queuerequest.sessionid:
 					CORE.info('UMCP_Dispatcher: check_queue: creating new sessionid')
-					# FIXME: create nice session id via uuid or something else
 					queuerequest.sessionid = str(uuid.uuid4())
-				# create new session / umcp client
-				# add a small offset to the timeout in order to avoid a mismatch between frontend and backend
+
 				try:
+					# create new session / umcp client
+					# add a small offset to the timeout in order to avoid a mismatch between frontend and backend
 					client = SessionClient(timeout=_session_timeout + 5, ip=queuerequest.ip)
 				except Exception as exc:
 					CORE.process('Failed to create UMC connection: %s' % (exc,))
@@ -320,6 +315,7 @@ class UMCP_Dispatcher(object):
 				callback = notifier.Callback(cls.cleanup_session, queuerequest.sessionid)
 				client.client.signal_connect('closed', callback)
 
+			if queuerequest.request.command == 'AUTH':
 				# save new sessionid in UMCP request so it can be returned after authentication
 				queuerequest.request.body['sessionid'] = queuerequest.sessionid
 				client.authenticate_user(queuerequest.request, queuerequest.response_queue)
@@ -424,6 +420,30 @@ class UMC_HTTPError(HTTPError):
 		cherrypy.response.headers['Content-Length'] = len(content)
 
 		cherrypy._cperror._be_ie_unfriendly(self.status)
+
+
+class SAML_Error(UMC_HTTPError):
+	pass
+
+
+class NoIdentityProvider(UMC_HTTPError):
+
+	def __init__(self):
+		super(NoIdentityProvider, self).__init__(500, self.get_message())
+
+	def get_message(self):
+		return 'There is a configuration error in the service provider: No identity provider are set up for use.'
+
+
+class MultipleIdentityProvider(UMC_HTTPError):
+
+	def __init__(self, idps, idp_query_param):
+		self.idps = idps
+		self.idp_query_param = idp_query_param
+		super(MultipleIdentityProvider, self).__init__(400, self.get_message())  # TODO: multiple choices status
+
+	def get_message(self):
+		return 'Could not pick an identity provider. You can specify one via the query string parameter %r from %r' % (self.idp_query_param, self.idps)
 
 
 class Ressource(object):
@@ -763,8 +783,9 @@ class CPAuth(CPgeneric):
 				raise HTTPRedirect('/univention-management-console/saml/')  # FIXME: this might cause a endless redirection loop e.g. if slapd is down
 			raise
 
-		cherrypy.response.status = 303
-		cherrypy.response.headers['Location'] = '/univention-management-console/'
+		if 'passive' not in kwargs:
+			cherrypy.response.status = 303
+			cherrypy.response.headers['Location'] = '/univention-management-console/'
 		return response
 
 	@cherrypy.expose
@@ -805,7 +826,10 @@ class CPAuth(CPgeneric):
 		response_queue = Queue.Queue()
 
 		# send request to UMC server
-		request = QueueRequest(None, req, response_queue, get_ip_address())
+		sessionid = self.get_session_id()
+		if sessionid not in UMCP_Dispatcher.sessions:
+			sessionid = None
+		request = QueueRequest(sessionid, req, response_queue, get_ip_address())
 		UMCP_Dispatcher._queue_send.put(request)
 
 		CORE.info('auth: pushed request to queue - waiting for response')
@@ -872,12 +896,9 @@ class SAML(Ressource):
 		self.__sp = None
 
 		self.idp_query_param = "IdpQuery"
-		self.wayf = None
-		self.discosrv = None
 		self.bindings = [BINDING_HTTP_REDIRECT, BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT]
 
 		self.outstanding_queries = {}
-		self.outstanding_certs = {}
 		self.relay_state = {}
 		self.reload()
 
@@ -899,7 +920,6 @@ class SAML(Ressource):
 
 	@cherrypy.expose
 	@log_exceptions
-	@cherrypy.tools.fix_uri()
 	def metadata(self, *args, **kwargs):
 		metadata = create_metadata_string(self.configfile, None, valid='4', cert=None, keyfile=None, mid=None, name=None, sign=False)
 		cherrypy.response.headers['Content-Type'] = 'text/xml'
@@ -909,51 +929,32 @@ class SAML(Ressource):
 	@log_exceptions
 	@cherrypy.tools.fix_uri()
 	def index(self, *args, **kwargs):
+		binding, message, relay_state = self._get_saml_message()
 		user = self.get_saml_user()
+		relay_state = self.relay_state.get(relay_state, '')
 
-		if user is None:
-			message, binding, relay_state = self._get_saml_arguments()
-			if message is None:
-				return self.do_single_sign_on()
-			return self.acs(message, binding, relay_state)
+		is_passive = 'passive' in kwargs or '?passive=true' in relay_state
 
-		raise HTTPRedirect('/univention-management-console/auth/sso')
-		cherrypy.response.headers['Content-Type'] = 'text/html'
-		return '<a href="./logout">logout</a>'
+		if user is not None and not is_passive:
+			raise HTTPRedirect('/univention-management-console/auth/sso')
 
-	def acs(self, message, binding, relay_state):  # assertion consumer service
-		try:
-			response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries, self.outstanding_certs)
-		except UnknownPrincipal as exc:
-			raise UMC_HTTPError(500, "UnknownPrincipal: %s" % (exc,))
-		except UnsupportedBinding as exc:
-			raise UMC_HTTPError(500, "UnsupportedBinding: %s" % (exc,))
-		except VerificationError as exc:
-			raise UMC_HTTPError(500, "Verification error: %s" % (exc,))
-		except UnsolicitedResponse as exc:  # e.g. UMC-webserver restart between IDP→SP authentication
-			# TODO: redirect to SSO?
-			raise UMC_HTTPError(500, 'Unsolicited response: %s' % (exc,))
-		except StatusError as exc:
-			CORE.error('Status error: %s' % (exc,))
-			raise UMC_HTTPError(500, 'Status error: %s' % (exc,))
-		except MissingKey as exc:
-			raise UMC_HTTPError(500, 'Unknown issuer: %s' % (exc,))
-		except SignatureError as exc:
-			raise UMC_HTTPError(500, 'Signature error: %s' % (exc,))
-		if response is None:
-			raise UMC_HTTPError(400, "The SAML message is invalid for this service provider.")
+		if message is None:
+			return self.do_single_sign_on(is_passive='true' if is_passive else 'false')
 
-		CORE.info('Got IDP response: %r' % (response.ava,))
+		response = self.acs(message, binding)
 		user = SAMLUser(response, message)
 		self.set_saml_cookie(user)
 
-		raise HTTPRedirect('/univention-management-console/auth/sso')
+		path = '/univention-management-console/auth/sso'
+		if is_passive:
+			path += '?passive=true'
+		raise HTTPRedirect(path)
 
 	@cherrypy.expose
 	@log_exceptions
 	@cherrypy.tools.fix_uri()
 	def slo(self, *args, **kwargs):  # single logout service
-		message, binding, relay_state = self._get_saml_arguments()
+		binding, message, relay_state = self._get_saml_message()
 		if message is None:
 			raise UMC_HTTPError(400, 'The HTTP request is missing required SAML parameter.')
 		self.sp.parse_logout_request_response(message, binding)
@@ -976,47 +977,18 @@ class SAML(Ressource):
 				continue  # result from logout, should be OK
 
 			binding, http_args = logout_info
-
-			if binding == BINDING_HTTP_POST:
-				body = ''.join(http_args['data'])
-				cherrypy.response.headers['Content-Type'] = 'text/html'
-				return body
-			elif binding == BINDING_HTTP_REDIRECT:
-				for key, value in http_args['headers']:
-					if key.lower() == 'location':
-						raise HTTPRedirect(value, status=302)
-				raise UMC_HTTPError(500, 'Cannot redirect due to missing Location header')
-			else:
+			if binding not in (BINDING_HTTP_POST, BINDING_HTTP_REDIRECT):
 				raise UMC_HTTPError(500, 'unknown logout binding: %s', binding)
+
+			return self.http_response(binding, http_args)
 		return self._logout_success()
 
 	def _logout_success(self):
 		self.delete_saml_cookie()
 		raise HTTPRedirect('/univention-management-console/')
 
-	@cherrypy.expose
-	@log_exceptions
-	@cherrypy.tools.fix_uri()
-	def disco(self, *args, **kwargs):
-		try:
-			sid = kwargs['sid']
-			entity_id = kwargs['entityID']
-		except KeyError as key:
-			raise UMC_HTTPError(400, 'missing query string parameter: %s' % (key,))
-		try:
-			came_from = self.outstanding_queries[sid]
-		except KeyError:
-			raise UMC_HTTPError(400, 'unknown sid!')
-
-		resp = self.redirect_to_auth(entity_id, came_from)
-
-		# Add cookie
-		key, value = make_cookie("ve_disco", entity_id, "SEED_SAW")  # TODO: find out why "SEED_SAW"
-		cherrypy.response.headers[key] = value
-
-		return resp
-
-	def _get_saml_arguments(self):
+	def _get_saml_message(self):
+		"""Get the SAML message and corresponding binding from the HTTP request"""
 		if cherrypy.request.method not in ('GET', 'POST'):
 			cherrypy.response.headers['Allow'] = 'GET, HEAD, POST'
 			raise UMC_HTTPError(405)
@@ -1042,148 +1014,111 @@ class SAML(Ressource):
 				message = self.sp.artifact2message(message, 'spsso')
 				binding = BINDING_HTTP_ARTIFACT
 
-		return message, binding, relay_state
+		return binding, message, relay_state
 
-	def do_single_sign_on(self):
-		came_from = cherrypy.request.uri
+	def acs(self, message, binding):  # attribute consuming service  # TODO: rename into parse
+		try:
+			response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries)#, allow_unsolicited=True)
+		except UnknownPrincipal as exc:
+			raise UMC_HTTPError(500, "UnknownPrincipal: %s" % (exc,))
+		except UnsupportedBinding as exc:
+			raise UMC_HTTPError(500, "UnsupportedBinding: %s" % (exc,))
+		except VerificationError as exc:
+			raise UMC_HTTPError(500, "Verification error: %s" % (exc,))
+		except UnsolicitedResponse as exc:  # e.g. UMC-webserver restart between IDP→SP authentication
+			# TODO: redirect to SSO?
+			raise UMC_HTTPError(500, 'Unsolicited response: %s' % (exc,))
+		except StatusError as exc:
+			CORE.error('Status error: %s' % (exc,))
+			raise UMC_HTTPError(500, 'Status error: %s' % (exc,))
+		except MissingKey as exc:
+			raise UMC_HTTPError(500, 'Unknown issuer: %s' % (exc,))
+		except SignatureError as exc:
+			raise UMC_HTTPError(500, 'Signature error: %s' % (exc,))
+		if response is None:
+			raise UMC_HTTPError(400, "The SAML message is invalid for this service provider.")
+		return response
 
-		if 'Paos' in cherrypy.request.headers:
-			done, response = self.enhanced_client_proxy_profile()
-			if done > 0:
-				self.outstanding_queries[done] = came_from
-				cherrypy.response.headers['Content-Type'] = 'text/xml'
-				return response
-			identity_provider = response
-		else:
-			identity_provider = self._pick_idp(came_from)
+	def do_single_sign_on(self, **kwargs):
+		binding, http_args = self.create_authn_request(**kwargs)
+		return self.http_response(binding, http_args)
 
-		if identity_provider is None:
-			raise UMC_HTTPError(500, 'Could not pick an identity provider. You can specify one via the query string parameter %r' % (self.idp_query_param,))
+	def create_authn_request(self, **kwargs):
+		"""Creates the SAML <AuthnRequest> request and returns the SAML binding and HTTP response.
 
-		return self.redirect_to_auth(identity_provider, came_from)
+			Returns (binding, http-arguments)
+		"""
+		identity_provider_entity_id = self.select_identity_provider()
+		binding, destination = self.get_identity_provider_destination(identity_provider_entity_id)
 
-	def _pick_idp(self, came_from):
-		idps = self._get_idps()
-
-		if self.idp_query_param in cherrypy.request.query and cherrypy.request.query[self.idp_query_param] in idps:
-			return cherrypy.request.query[self.idp_query_param]
-
-		if cherrypy.request.cookie.get('ve_disco'):
-			return parse_cookie("ve_disco", "SEED_SAW", cherrypy.request.headers.get('Cookie'))[0]
-
-		if self.wayf:
-			wayf_selected = cherrypy.request.query.get('wayf_selected')
-			if not wayf_selected:
-				sid = generate_sid()
-				self.outstanding_queries[sid] = came_from
-				raise HTTPRedirect("%s?sid=%s" % (self.wayf, sid), status=303)
-			return wayf_selected
-
-		if self.discosrv and cherrypy.request.query_string:
-			idp_entity_id = self.sp.parse_discovery_service_response(query=cherrypy.request.query_string)
-			if not idp_entity_id:
-				sid_ = generate_sid()
-				self.outstanding_queries[sid_] = came_from
-				eid = self.sp.config.entityid
-				ret = self.sp.config.getattr("endpoints", "sp")["discovery_response"][0][0]
-				ret += "?sid=%s" % sid_
-				loc = self.sp.create_discovery_service_request(self.discosrv, eid, **{"return": ret})
-				raise HTTPRedirect(loc, status=303)
-			return idp_entity_id
-
-		if len(idps) == 1:
-			return idps.keys()[0]
-
-		for idp in idps:
-			idp_ = urlparse(idp)
-			host, port = idp_.netloc, idp_.port or {'https': 443, 'http': 80}[idp_.scheme]
-			s = socket.socket()
-			try:
-				s.settimeout(1.0)
-				s.connect((host, port))
-				s.close()
-			except IOError:
-				continue
-			return idp
-
-	def _get_idps(self):
-		idps = self.sp.metadata.with_descriptor("idpsso")
-		if not idps:  # dynamic reload of IDP's
-			try:
-				self.reload()
-			except Exception:
-				pass
-			else:
-				idps = self.sp.metadata.with_descriptor("idpsso")
-		return idps
-
-	def enhanced_client_proxy_profile(self):
-		if cherrypy.request.headers['Paos'] != PAOS_HEADER_INFO:
-			raise UMC_HTTPError(500, 'unknown ECP version')
-
-		if 'application/vnd.paos+xml' not in cherrypy.request.headers.values('Accept'):
-			raise UMC_HTTPError(406, 'application/vnd.paos+xml must be acceptable.')
-
-		# Where should I redirect the user to
-		# entityid -> the IdP to use
-		# relay_state -> when back from authentication
+		reply_binding, service_provider_url = self.select_service_provider()
+#		import pdb; pdb.set_trace()
+		sid, message = self.sp.create_authn_request(destination, binding=reply_binding, assertion_consumer_service_urls=(service_provider_url,), **kwargs)
 
 		relay_state = rndstr()
 		self.relay_state[relay_state] = cherrypy.request.uri
-		_entityid = self.sp.config.ecp_endpoint(get_ip_address())
 
-		if not _entityid:
-			raise UMC_HTTPError(500, "Could not determine identity provider.")
-		return ecp.ecp_auth_request(self.sp, _entityid, relay_state)
+		http_args = self.sp.apply_binding(binding, message, destination, relay_state=relay_state)
+		self.outstanding_queries[sid] = cherrypy.request.uri  # TODO: shouldn't this contain service_provider_url?
+		return binding, http_args
 
-	def redirect_to_auth(self, entity_id, came_from, sigalg=""):
-		binding, destination = self.sp.pick_binding("single_sign_on_service", self.bindings, "idpsso", entity_id=entity_id)
+	def select_identity_provider(self):
+		"""Select an identity provider based on the available identity providers.
+			If multiple IDP's are set up the client might have specified one in the query string.
+			Otherwise an error is raised where the user can choose one.
+
+			Returns the EntityID of the IDP.
+		"""
+		idps = self.sp.metadata.with_descriptor("idpsso")
+		if not idps:
+			if not self.reload():
+				raise NoIdentityProvider()
+			idps = self.sp.metadata.with_descriptor("idpsso")
+		if self.idp_query_param in cherrypy.request.query and cherrypy.request.query[self.idp_query_param] in idps:
+			return cherrypy.request.query[self.idp_query_param]
+		if len(idps) == 1:
+			return idps.keys()[0]
+		raise MultipleIdentityProvider(idps.keys(), self.idp_query_param)
+
+	def get_identity_provider_destination(self, entity_id):
+		"""Get the destination (with SAML binding) of the specified entity_id.
+
+			Returns (binding, destination-URI)
+		"""
+		return self.sp.pick_binding("single_sign_on_service", self.bindings, "idpsso", entity_id=entity_id)
+
+	def select_service_provider(self):
+		"""Select the ACS-URI and binding of this service provider based on the request uri.
+			Tries to preserve the current scheme (HTTP/HTTPS) and netloc (host/IP) but falls back to FQDN if it is not set up.
+
+			Returns (binding, service-provider-URI)
+		"""
 		acs = self.sp.config.getattr("endpoints", "sp")["assertion_consumer_service"]
-
 		service_url, reply_binding = acs[0]
+		netloc = False
+		p2 = urlparse(cherrypy.request.uri)
 		for _url, _binding in acs:
 			p1 = urlparse(_url)
-			p2 = urlparse(came_from)
 			if p1.scheme == p2.scheme and p1.netloc == p2.netloc:
+				netloc = True
 				service_url, reply_binding = _url, _binding
-				break
-			elif p1.netloc == p2.netloc:
+				if p1.path == p2.path:
+					break
+			elif not netloc and p1.netloc == p2.netloc:
 				service_url, reply_binding = _url, _binding
+		CORE.info('SAML: picked %r for %r with binding %r' % (service_url, cherrypy.request.uri, reply_binding))
+		return reply_binding, service_url
 
-		extensions = None
-		cert = None
-		if self.sp.config.generate_cert_func is not None:
-			cert_str, req_key_str = self.sp.config.generate_cert_func()
-			cert = {
-				"cert": cert_str,
-				"key": req_key_str
-			}
-			spcertenc = SPCertEnc(x509_data=ds.X509Data(x509_certificate=ds.X509Certificate(text=cert_str)))
-			extensions = Extensions(extension_elements=[element_to_extension_element(spcertenc)])
-
-		sid, message = self.sp.create_authn_request(destination, binding=reply_binding, extensions=extensions, assertion_consumer_service_urls=(service_url,))
-
-		relay_state = rndstr()
-		self.relay_state[relay_state] = came_from
-
-		http_args = self.sp.apply_binding(binding, message, destination, relay_state=relay_state, sigalg=sigalg)
-
-		if cert is not None:
-			self.outstanding_certs[sid] = cert
-		self.outstanding_queries[sid] = came_from
-
+	def http_response(self, binding, http_args):
+		"""Converts the HTTP arguments from pysaml2 into the cherrypy response."""
+		body = ''.join(http_args["data"])
 		for key, value in http_args["headers"]:
 			cherrypy.response.headers[key] = value
 
-		body = ''.join(http_args["data"])
-		if binding == BINDING_HTTP_ARTIFACT:
-			raise HTTPRedirect(None, status=302)  # FIXME: hmm, no location header?
-		elif binding == BINDING_HTTP_REDIRECT:
-			if 'Location' not in cherrypy.response.headers:
-				raise UMC_HTTPError(500, "Parameter error")
-			cherrypy.response.status = 303
+		if binding in (BINDING_HTTP_ARTIFACT, BINDING_HTTP_REDIRECT):
+			cherrypy.response.status = 303 if cherrypy.request.protocol >= (1, 1) and cherrypy.request.method == 'POST' else 302
 			if not body:
-				raise HTTPRedirect(cherrypy.response.headers['Location'], status=303)
+				raise HTTPRedirect(cherrypy.response.headers['Location'], status=cherrypy.response.status)
 
 		return body
 
