@@ -1,3 +1,9 @@
+univention-saml (3.0.20-2) unstable; urgency=medium
+
+  * Bug #38947: Add preinst
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 08 Oct 2015 15:49:49 +0200
+
 univention-saml (3.0.20-1) unstable; urgency=medium
 
   * Added more UCR variables for the ucs-sso configuration
