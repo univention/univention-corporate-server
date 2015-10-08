@@ -644,6 +644,9 @@
 			<title>Univention AD Takeover</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The FSMO roles <emphasis>domaindnsmaster</emphasis> and
+					<emphasis>forestdnsmaster</emphasis> are now seized during
+					the takeover (<u:bug>39222</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
