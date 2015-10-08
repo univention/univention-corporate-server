@@ -1,7 +1,7 @@
 Type: multifile
 Multifile: etc/simplesamlphp/metadata/saml20-idp-hosted.php
 User: root
-Group: www-data
+Group: samlcgi
 Mode: 640
 
 Type: subfile
@@ -18,7 +18,7 @@ Variables: domainname
 Type: file
 File: etc/simplesamlphp/config.php
 User: root
-Group: www-data
+Group: samlcgi
 Mode: 640
 Variables: saml/idp/enableSAML20-IdP
 Variables: saml/idp/timezone
@@ -36,7 +36,7 @@ Variables: ucs/server/saml-idp-server/.*
 Type: multifile
 Multifile: etc/simplesamlphp/authsources.php
 User: root
-Group: www-data
+Group: samlcgi
 Mode: 640
 
 Type: subfile
@@ -61,6 +61,7 @@ Variables: saml/idp/https
 Variables: domainname
 Variables: ucs/server/sso/fqdn
 Variables: saml/idp/certificate/certificate
+Variables: saml/idp/enableSAML20-IdP
 
 Type: file
 File: etc/stunnel/univention_saml.conf

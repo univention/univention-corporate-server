@@ -1,6 +1,9 @@
 #!/bin/sh
 #
-# Copyright 2013-2015 Univention GmbH
+# UCS - univention-saml integration
+#  php-cgi wrapper for system user samlcgi
+#
+# Copyright 2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,21 +30,4 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#DEBHELPER#
-
-. /usr/share/univention-lib/all.sh
-
-case "$1" in
-	remove)
-		cp /usr/lib/univention-uinstall/24univention-saml-uninstall.uinst /usr/lib/univention-install/
-
-		for i in /var/www/saml /var/www/saml/php-cgi /var/lib/simplesamlphp/secrets.inc.php
-		do
-			if dpkg-statoverride --list $i >/dev/null 2>&1; then
-				dpkg-statoverride --remove $i
-			fi
-		done
-		;;
-esac
-
-exit 0
+exec /etc/alternatives/php-cgi "$@"

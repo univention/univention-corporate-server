@@ -50,6 +50,6 @@ if ucs_isServiceUnused "univention-saml" "$@"; then
 fi
 
 
-joinscript_remove_script_from_status_file 33univention-saml.inst
+joinscript_remove_script_from_status_file 91univention-saml.inst
 
 exit 0

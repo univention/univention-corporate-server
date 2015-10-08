@@ -1,3 +1,11 @@
+univention-saml (3.0.19-2) unstable; urgency=medium
+
+  * Bug #38947: Execute Single Sign On php processes as separate
+    system user
+  * Bug #39386: Fix all references to old joinscript name
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 08 Oct 2015 14:53:38 +0200
+
 univention-saml (3.0.19-1) unstable; urgency=medium
 
   * Fixed listener name (Bug #39468)

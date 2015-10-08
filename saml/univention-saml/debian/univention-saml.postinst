@@ -38,13 +38,19 @@ configure)
 		rm /usr/lib/univention-install/24univention-saml-uninstall.uinst
 	fi
 
-	chown -R root:www-data /etc/simplesamlphp
-
 	ucr set saml/idp/enableSAML20-IdP?true \
 		saml/idp/ldap/get_attributes?"'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'" \
 		saml/idp/ldap/search_attributes?"'uid', 'mailPrimaryAddress'" \
 		saml/idp/lookandfeel/theme?"univentiontheme:univention" \
 		saml/idp/https?"true"
+
+	for i in /var/www/saml /var/www/saml/php-cgi /var/lib/simplesamlphp/secrets.inc.php
+	do
+		# only do something when no setting exists
+		if ! dpkg-statoverride --list $i >/dev/null 2>&1; then
+			dpkg-statoverride --update --add samlcgi samlcgi 755 $i
+		fi
+	done
 
 	call_joinscript 91univention-saml.inst
 
@@ -52,12 +58,19 @@ configure)
 		touch /etc/simplesamlphp/metadata/metadata_include.php
 	fi
 
+	chown -R root:samlcgi /etc/simplesamlphp
+
 	if [ -x /etc/init.d/univention-directory-listener ]; then
 		invoke-rc.d univention-directory-listener restart
 	fi
 
+	touch /var/log/apache2/suexec.log
+	chown root:adm /var/log/apache2/suexec.log
+
 	a2ensite univention-saml-apache
 	a2enmod headers
+	a2enmod actions
+	a2enmod suexec
 	invoke-rc.d apache2 reload
 	;;
 abort-upgrade|abort-remove|abort-deconfigure)

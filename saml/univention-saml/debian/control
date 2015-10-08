@@ -25,6 +25,9 @@ Depends: ${misc:Depends},
  php5-memcache,
  memcached,
  stunnel4,
+ apache2-suexec,
+ php5-cgi,
+ adduser,
 Breaks: univention-saml-schema (<< 3.0.16-1)
 Description: Integrates simpleSAMLphp Identity Provider into UCS
  This packages provides the basic configuration for the
