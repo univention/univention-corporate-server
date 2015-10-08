@@ -1,3 +1,9 @@
+univention-dvd (1.0.0-6) unstable; urgency=low
+
+  * added ntpdate and rdate (Bug #39410) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Oct 2015 17:12:14 +0200
+
 univention-dvd (1.0.0-5) unstable; urgency=medium
 
   * Add cgroupfs-mount to the DVD (Bug #39258)

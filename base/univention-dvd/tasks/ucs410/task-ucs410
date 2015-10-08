@@ -18,6 +18,8 @@ kde-window-manager
 univention-cloud-init
 univention-system-activation
 univention-welcome-screen
+rdate
+ntpdate
 
 
 /* Role Packages */
