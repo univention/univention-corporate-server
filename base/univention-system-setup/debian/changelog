@@ -1,3 +1,9 @@
+univention-system-setup (9.0.2-4.1) unstable; urgency=medium
+
+  * Add ip change module for updating ucs-sso (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Oct 2015 09:33:23 +0200
+
 univention-system-setup (9.0.2-4) unstable; urgency=medium
 
   * Bug #38859: Check maximum length of SSL fields.
