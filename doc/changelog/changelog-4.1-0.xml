@@ -631,6 +631,12 @@
 					This change avoids a lot of unnecessary warning messages from samba
 					(<u:bug>29227</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					A <option>testparm</option> error message about
+					the UCS default for <option>winbind separator</option>
+					has been relaxed to only issue a warning message
+					(<u:bug>36581</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
