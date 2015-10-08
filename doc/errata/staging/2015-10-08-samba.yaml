@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: samba
+fix: 2:4.2.3-1.795.201510081809
+version: [3]
+desc: |
+ This update addresses the following issues:
+ * A testparm error message about the UCS default for winbind separator
+   has been relaxed to only issue a warning message.
+bug: [36581]
