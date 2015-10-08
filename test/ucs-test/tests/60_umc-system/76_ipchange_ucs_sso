@@ -1,0 +1,52 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check if ip_change also changes the ucs-ssoo entry
+## roles-not: [basesystem]
+## exposure: dangerous
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+from univention.config_registry import ConfigRegistry
+import subprocess
+
+if __name__ == '__main__':
+	ucr = ConfigRegistry()
+	ucr.load()
+
+	with udm_test.UCSTestUDM() as udm:
+		role = ucr.get('server/role')
+
+		# Don't create a new Master object
+		if role == 'domaincontroller_master':
+			role = 'domaincontroller_backup'
+		computerName = uts.random_string()
+		computer = udm.create_object('computers/%s' % role, name=computerName, password='univention', network='cn=default,cn=networks,%s' % ucr.get('ldap/base'), univentionService='univention-saml')
+
+		lo = utils.get_ldap_connection()
+		computer_object = lo.get(computer)
+		print computer_object
+		ip = computer_object['aRecord']
+		utils.verify_ldap_object(computer, {'aRecord': ip})
+
+		ucs_sso_object = lo.search('relativeDomainName=ucs-sso', unique=True)
+		ucs_sso_dn = ucs_sso_object[0][0]
+		ips = ucs_sso_object[0][1].get('aRecord')
+		lo.modify(ucs_sso_dn, [('aRecord', ips, ips+ip)])
+		try:
+			new_ip = '1.2.3.10'
+			
+			iface = ucr.get('interfaces/primary', 'eth0')
+			import string
+			p1 = subprocess.Popen(['/usr/sbin/umc-command', '-U', '%s$' % computerName, '-P', 'univention', '-s', ucr.get('ldap/master'), 'ip/change', '-o' ,'ip=%s' % new_ip, '-o', 'oldip=%s' % ip[0], '-o', 'netmask=%s' % ucr.get('interfaces/%s/netmask' % iface), '-o',  'role=%s' % role], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			res = p1.communicate()
+			if p1.returncode != 0:
+				print 'umc-command stdout: %s' % res[1]
+				print 'umc-command stderr: %s' % res[0]
+				utils.fail('ip/change command failed: %d' % p1.returncode)
+
+			utils.wait_for_replication()
+			utils.verify_ldap_object(computer, {'aRecord': [new_ip]}, strict=True)
+			utils.verify_ldap_object(ucs_sso_dn, {'aRecord': ips+[new_ip]}, strict=True)
+		finally:
+			lo.modify(ucs_sso_dn, [('aRecord', lo.get(ucs_sso_dn).get('aRecord'), ips)])
+

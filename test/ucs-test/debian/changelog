@@ -1,3 +1,10 @@
+ucs-test (6.0.8-22) unstable; urgency=medium
+
+  * 60_umc-system/75_ipchange_basic + 60_umc-system/76_ipchange_ucs_sso:
+    Added basic ip/change tests (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Oct 2015 08:21:43 +0200
+
 ucs-test (6.0.8-21) unstable; urgency=low
 
   * added 04_univention-lib/010_check_is_true_false_shell (Bug #27701)
