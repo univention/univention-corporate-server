@@ -462,5 +462,5 @@ msgstr "Fehler beim Parsen des UMCP-Nachrichtenrumpfes"
 msgid "The UMC service is currently shutting down or restarting. Please retry soon."
 msgstr "Der UMC-Dienst ist gerade am Neustarten oder Herunterfahren. Bitte später erneut versuchen."
 
-msgid "There is probably an error with the kerberos server. Please inform your Administrator."
-msgstr "Es liegt vermutlich ein Fehler im Kerberos-Dienst vor. Bitte informieren Sie Ihren Administrator."
+msgid "Make sure the kerberos service is functioning or inform an Administrator."
+msgstr "Stellen Sie sicher, dass der Kerberos Dienst läuft oder informieren Sie einen Administrator."

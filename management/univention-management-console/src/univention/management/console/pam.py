@@ -177,20 +177,21 @@ class PamAuth(object):
 		# most often the last prompt contains a error message
 		# prompts are localised, i.e. if the operating system uses German, the prompts are German!
 		# try to be exhaustive. otherwise the errors will not be presented to the user.
-		if pam_err[1] in (PAM_AUTHTOK_RECOVER_ERR, PAM_AUTHTOK_ERR):
+		if pam_err[1] in (PAM_AUTHTOK_RECOVER_ERR,):
 			# error: ('Authentifizierungsinformationen k?nnen nicht wiederhergestellt werden', 21)
 			# error: ('Fehler beim \xc3\x84ndern des Authentifizierungstoken', 20)
 			return self.error_message(pam_err)
-		raw_message = '%s, %s' % (pam_err[1], pam_err[0],)
+		messages = []
 		for prompt, errno in prompts[::-1]:
 			if prompt in self.known_errors:
 				return self._(self.known_errors[prompt])
 			if errno in (PAM_TEXT_INFO, PAM_ERROR_MSG):
-				raw_message = '%s, %s' % (raw_message, self._(prompt).strip(': '))
-		return '%s. %s: %s, %s, %s' % (
+				messages.append('%s.' % (self._(prompt).strip(': .'),))
+		messages.append('Errorcode %s: %s' % (pam_err[1], self.error_message(pam_err)))
+		return '%s. %s: %s' % (
 			self._('The reason could not be determined'),
 			self._('In case it helps, the raw error message will be displayed'),
-			raw_message
+			' '.join(messages)
 		)
 
 	def error_message(self, pam_err):
@@ -199,7 +200,7 @@ class PamAuth(object):
 			PAM_ACCT_EXPIRED: self._('The account is expired and can not be used anymore'),
 			PAM_USER_UNKNOWN: self._('The authentication has failed, please login again'),
 			PAM_AUTH_ERR: self._('The authentication has failed, please login again'),
-			PAM_AUTHTOK_ERR: self._('There is probably an error with the kerberos server. Please inform your Administrator.'),
+			PAM_AUTHTOK_ERR: self._('Make sure the kerberos service is functioning or inform an Administrator.'),
 			PAM_AUTHTOK_RECOVER_ERR: self._('The entered password does not match the current one.'),
 		}
 		return errors.get(pam_err[1], self._(str(pam_err[0])))
