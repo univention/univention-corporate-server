@@ -112,6 +112,20 @@
 			If updating should occur over a network connection nevertheless, it must be verified that the update continues despite disconnection from the network.
 			This can be done, e.g., using the tools <command>screen</command> and <command>at</command>.  These tools are installed on all system roles by default.
 		</para>
+		<section id="relnotes:removed">
+			<title>Removed/unsupported Components</title>
+			<para>
+				Some components have been removed and are not shipped any longer with UCS 4.1:
+			</para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						<application>PostgreSQL 8.4</application> is no longer provided in UCS 4.1. The
+						migration of the databases to PostgreSQL 9.1 is described in <u:sdb>1292</u:sdb>.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</section>
 	</chapter>
 
 	<chapter id="relnotes:post">

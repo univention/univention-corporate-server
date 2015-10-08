@@ -113,6 +113,21 @@
 			Sollte dennoch eine Aktualisierung über eine Netzverbindung durchgeführt werden, ist sicherzustellen, dass das Update bei Unterbrechung der Netzverbindung trotzdem weiterläuft.
 			Hierfür können beispielsweise die Tools <command>screen</command> oder <command>at</command> eingesetzt werden, die auf allen Systemrollen installiert sind.
 		</para>
+		<section id="relnotes:removed">
+			<title>Entfernte/nicht mehr unterstützte Komponenten</title>
+			<para>
+				Einige Komponenten sind entfernt worden und werden mit UCS 4.1 nicht mehr ausgeliefert:
+			</para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						<application>PostgreSQL-8.4</application> wurde in UCS 4.1 entfernt.
+						Die Daten müssen von Hand in eine neuere Version migriert werden.
+						Das Vorgehen ist in <u:sdb>1292</u:sdb> beschrieben.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</section>
 	</chapter>
 
 	<chapter id="relnotes:post">
