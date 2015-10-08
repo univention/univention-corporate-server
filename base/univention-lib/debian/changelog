@@ -1,3 +1,10 @@
+univention-lib (4.0.5-21) unstable; urgency=medium
+
+  * AD Member: Fix lookup of LDAP defaultNamingContext
+    of forest subdomain-DCs (Bug #37626)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Oct 2015 20:34:10 +0200
+
 univention-lib (4.0.5-20) unstable; urgency=low
 
   * Bug #38951: added univention.lib.license_tools and

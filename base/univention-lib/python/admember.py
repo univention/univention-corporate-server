@@ -687,7 +687,7 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 	remote_ldb = ldb.Ldb()
 	try:
 		remote_ldb.connect(url="ldap://%s" % ad_server_ip)
-		ad_ldap_base = str(remote_ldb.get_root_basedn())
+		ad_ldap_base = str(remote_ldb.get_default_basedn())
 	except ldb.LdbError as ex:
 		raise failedADConnect(["Could not detect LDAP base on %s: %s" % (ad_server, ex.args[1])])
 
