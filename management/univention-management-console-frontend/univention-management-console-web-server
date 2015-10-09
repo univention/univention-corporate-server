@@ -97,6 +97,7 @@ def _fix_uri_for_saml():
 	scheme = cherrypy.request.scheme
 	if cherrypy.request.headers.get('X-UMC-HTTPS') == 'on':
 		scheme = 'https'
+	cherrypy.request.scheme = scheme
 	cherrypy.request.uri = ('%s://%s%s?%s' % (scheme, cherrypy.request.headers['Host'], cherrypy.request.path_info, cherrypy.request.query_string)).rstrip('?')
 	foo = cherrypy.request.params
 	try:
@@ -922,7 +923,7 @@ class SAML(Ressource):
 	@log_exceptions
 	def metadata(self, *args, **kwargs):
 		metadata = create_metadata_string(self.configfile, None, valid='4', cert=None, keyfile=None, mid=None, name=None, sign=False)
-		cherrypy.response.headers['Content-Type'] = 'text/xml'
+		cherrypy.response.headers['Content-Type'] = 'application/xml'
 		return metadata
 
 	@cherrypy.expose
@@ -1052,7 +1053,6 @@ class SAML(Ressource):
 		binding, destination = self.get_identity_provider_destination(identity_provider_entity_id)
 
 		reply_binding, service_provider_url = self.select_service_provider()
-#		import pdb; pdb.set_trace()
 		sid, message = self.sp.create_authn_request(destination, binding=reply_binding, assertion_consumer_service_urls=(service_provider_url,), **kwargs)
 
 		relay_state = rndstr()
@@ -1138,10 +1138,11 @@ class SAMLUser(object):
 
 
 @log_exceptions
-def run_cherrypy():
+def run_cherrypy(options):
 	# TODO FIXME Folgenden Configeintrag einbauen, wenn loglevel in (0,1,2)
 	# 'server.environment': 'production',
 	cherrypy.config.update({
+		'log.screen': not options.daemon_mode,
 		'server.socket_port': int(ucr.get('umc/http/port', 8090)),
 		'server.socket_host': ucr.get('umc/http/interface', '127.0.0.1'),
 		'server.request_queue_size': int(ucr.get('umc/http/requestqueuesize', 100)),
@@ -1293,7 +1294,7 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		cherrypy.engine.subscribe('exit', lambda: notifier.dispatcher_add(lambda: sys.exit(0)))
 
 		# start webserver as separate thread
-		_thread_http = threading.Thread(target=run_cherrypy)
+		_thread_http = threading.Thread(target=run_cherrypy, args=(self.options,))
 		_thread_http.deamon = True
 		_thread_http.start()
 

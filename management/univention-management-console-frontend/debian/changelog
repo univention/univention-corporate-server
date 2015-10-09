@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.33-1) unstable; urgency=medium
+
+  * Bug #31943: fix scheme for redirections
+
+ -- Florian Best <best@univention.de>  Fri, 09 Oct 2015 17:31:50 +0200
+
 univention-management-console-frontend (5.0.32-1) unstable; urgency=medium
 
   * Bug #39233: make "isPassive" SAML requests possible
