@@ -1,3 +1,9 @@
+univention-kernel-image (9.0.0-2) unstable; urgency=low
+
+  * Bug #38872: Fix univention-kernel-source dependency
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 Oct 2015 13:09:01 +0200
+
 univention-kernel-image (9.0.0-1) unstable; urgency=low
 
   * UCS-4.1 version bump
