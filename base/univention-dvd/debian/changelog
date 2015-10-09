@@ -1,3 +1,9 @@
+univention-dvd (1.0.0-9) unstable; urgency=low
+
+  * Bug #38913: Add recommended packages
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 Oct 2015 17:59:14 +0200
+
 univention-dvd (1.0.0-8) unstable; urgency=low
 
   * Bug #38913: Add recommended packages

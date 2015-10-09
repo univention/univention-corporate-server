@@ -96,7 +96,7 @@ univention-firewall
 
 univention-virtual-machine-manager-daemon
 univention-nagios-uvmmd
-univention-nagios-uvmmd
+bvirt-clients
 
 univention-welcome-screen
 firefox-de
