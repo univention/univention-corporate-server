@@ -1,3 +1,9 @@
+univention-management-console (8.0.17-1) unstable; urgency=medium
+
+  * Bug #39233: fix typo from last commit
+
+ -- Florian Best <best@univention.de>  Fri, 09 Oct 2015 17:27:36 +0200
+
 univention-management-console (8.0.16-1) unstable; urgency=medium
 
   * Bug #39233: distribute (new) credentials to module processes on second

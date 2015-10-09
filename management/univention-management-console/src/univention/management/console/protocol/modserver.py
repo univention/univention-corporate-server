@@ -234,7 +234,7 @@ class ModuleServer(Server):
 					self.__password = value
 					self.__handler.password = self.__password
 				elif key == 'auth_type':
-					self.__auth_type = value.get('auth_type')
+					self.__auth_type = value
 					self.__handler.auth_type = self.__auth_type
 				elif key == 'credentials':
 					self.__username = value['username']
