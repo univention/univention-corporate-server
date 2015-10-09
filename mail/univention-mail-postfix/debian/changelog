@@ -1,3 +1,9 @@
+univention-mail-postfix (10.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 4.1 (Bug #39093)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 09 Oct 2015 13:04:35 +0200
+
 univention-mail-postfix (9.0.4-1) unstable; urgency=low
 
   * Bug #39021: disable authentication (and thus submitting) by default on
