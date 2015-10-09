@@ -1,3 +1,9 @@
+ucs-test (6.0.9-1) unstable; urgency=low
+
+  * Bug #38941: make MailSink a daemon thread to fix timeout
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 24 Aug 2015 14:16:06 +0200
+
 ucs-test (6.0.8-22) unstable; urgency=medium
 
   * 60_umc-system/75_ipchange_basic + 60_umc-system/76_ipchange_ucs_sso:
@@ -342,7 +348,6 @@ ucs-test (6.0.4-10) unstable; urgency=low
   * Bug #38823: 10/52listener-filter
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 03 Sep 2015 09:54:15 +0200
-
 ucs-test (6.0.4-9) unstable; urgency=low
 
   * Fix 51_samba4.59checkPrimaryGroupInPacInfo (Bug #39101)
