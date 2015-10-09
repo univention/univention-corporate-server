@@ -348,6 +348,7 @@ ucs-test (6.0.4-10) unstable; urgency=low
   * Bug #38823: 10/52listener-filter
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 03 Sep 2015 09:54:15 +0200
+
 ucs-test (6.0.4-9) unstable; urgency=low
 
   * Fix 51_samba4.59checkPrimaryGroupInPacInfo (Bug #39101)
