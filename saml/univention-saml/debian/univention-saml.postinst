@@ -59,6 +59,8 @@ configure)
 	fi
 
 	chown -R root:samlcgi /etc/simplesamlphp
+	chown root:samlcgi /var/run/univention-saml/
+	chmod 770 /var/run/univention-saml/
 
 	if [ -x /etc/init.d/univention-directory-listener ]; then
 		invoke-rc.d univention-directory-listener restart

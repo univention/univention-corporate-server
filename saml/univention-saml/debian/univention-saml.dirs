@@ -1,1 +1,1 @@
-usr/share/univention-saml/memcached/
+var/run/univention-saml/

@@ -38,19 +38,19 @@ case "$1" in
 	start)
 		# TODO: runit
 		log_action_msg "Starting $NAME"
-		chown samlcgi:root /usr/share/univention-saml/memcached/
+		chown samlcgi:root /var/run/univention-saml/
 		/etc/init.d/memcached start
 		/etc/init.d/stunnel4 start
 		sleep 1
-		chmod 0600 /usr/share/univention-saml/memcached/*.socket
-		chown samlcgi:root /usr/share/univention-saml/memcached/*.socket
+		chmod 0600 /var/run/univention-saml/*.socket
+		chown samlcgi:root /var/run/univention-saml/*.socket
 		log_action_end_msg 0
 		;;
 	stop)
 		log_action_msg "Stopping $NAME"
 		/etc/init.d/memcached stop
 		/etc/init.d/stunnel4 stop
-		rm -f -- /usr/share/univention-saml/memcached/*.socket
+		rm -f -- /var/run/univention-saml/*.socket
 		log_action_end_msg 0
 		;;
 	restart)

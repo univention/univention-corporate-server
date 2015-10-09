@@ -50,7 +50,7 @@ print"	'hostfqdn'	=> '%s.%s'," % (configRegistry.get('hostname', ''),configRegis
 	 *
 	 * SimpleSAMLphp will attempt to create this directory if it doesn't exist.
 	 */
-	'tempdir'               => '/usr/share/univention-saml/memcached/simplesaml',
+	'tempdir'               => '/tmp/simplesaml',
 	
 
 	/*
@@ -635,15 +635,16 @@ print "\t'store.type' => '%s'," % (configRegistry.get('saml/idp/session-type', '
 	 */
 	'memcache_store.servers' => array(
 		array(
-			array('hostname' => 'unix:///usr/share/univention-saml/memcached/localhost.socket'),
+			array('hostname' => 'unix:///var/run/univention-saml/memcached.socket'),
 		),
 @!@
+fqdn = '%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname'))
 for key, server in configRegistry.items():
-	if not key.startswith('ucs/server/saml-idp-server/'):
+	if not key.startswith('ucs/server/saml-idp-server/') or server == fqdn:
 		continue
 	print '''
 		array(
-			array('hostname' => 'unix:///usr/share/univention-saml/memcached/%s.socket'),
+			array('hostname' => 'unix:///var/run/univention-saml/%s.socket'),
 		),
 ''' % (server,)
 @!@

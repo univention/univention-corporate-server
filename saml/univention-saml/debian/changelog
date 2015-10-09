@@ -1,3 +1,9 @@
+univention-saml (3.0.21-1) unstable; urgency=medium
+
+  * Bug #39399: move saml sockets into /var/run/univention-saml/
+
+ -- Florian Best <best@univention.de>  Fri, 09 Oct 2015 12:50:30 +0200
+
 univention-saml (3.0.20-3) unstable; urgency=medium
 
   * Bug #38947: Prevent apache config from being written if certificates
