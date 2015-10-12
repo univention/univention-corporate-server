@@ -1,9 +1,15 @@
+univention-x-core (8.0.0-3) unstable; urgency=low
+
+  * Bug #39513: Fix dependency on univention-kdm.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 12 Oct 2015 12:07:05 +0200
+
 univention-x-core (8.0.0-2) unstable; urgency=low
 
   * Removed the dependencies univention-fonts 
   * and xserver-xorg-video-via (Bug #35266)
 
- -- Alexander Kramer <kramer@univention.de>  Wed, 27 Aug 2014 12:20:20 +0200
+ -- Philipp Hahn <hahn@univention.de>  Mon, 12 Oct 2015 12:06:36 +0200
 
 univention-x-core (8.0.0-1) unstable; urgency=low
 
