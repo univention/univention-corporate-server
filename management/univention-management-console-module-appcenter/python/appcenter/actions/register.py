@@ -368,5 +368,5 @@ class Register(CredentialsAction):
 				ucr_update(ucr, updates)
 				self._reload_apache()
 		else:
-			self.log('%s is not installed. Cannot unregister')
+			self.log('%s is not installed. Cannot unregister' % app)
 		return updates

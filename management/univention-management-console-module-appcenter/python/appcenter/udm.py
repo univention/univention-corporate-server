@@ -133,10 +133,13 @@ class ApplicationLDAPObject(object):
 	def __nonzero__(self):
 		return self._udm_obj is not None
 
+	@property
+	def dn(self):
+		return 'univentionAppID=%s,%s' % (self._rdn, self._container)
+
 	def _reload(self, app, ucr, create_if_not_exists=False):
-		dn = 'cn=%s,%s' % (self._rdn, self._container)
 		try:
-			self._udm_obj = init_object('appcenter/app', self._lo, self._pos, dn)
+			self._udm_obj = init_object('appcenter/app', self._lo, self._pos, self.dn)
 		except ValueError:
 			if create_if_not_exists:
 				self._create_obj(app, ucr)

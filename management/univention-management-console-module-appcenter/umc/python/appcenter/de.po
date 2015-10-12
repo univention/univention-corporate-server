@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
-"Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-07-29 20:26+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-10-12 16:09+0200\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Konnte %s nicht herunterladen. Das deutet auf ein Problem auf dem App Center-"
 "Server hin. Bitte versuchen Sie es später noch einmal."
 
-#: umc/python/appcenter/__init__.py:356 umc/python/appcenter/__init__.py:514
+#: umc/python/appcenter/__init__.py:456 umc/python/appcenter/__init__.py:609
 msgid "Another package operation is in progress"
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 
@@ -30,27 +30,27 @@ msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 msgid "Any of %r must be given"
 msgstr "Ein Wert aus %r muss gegeben sein"
 
-#: umc/python/appcenter/__init__.py:177 umc/python/appcenter/__init__.py:195
-#: umc/python/appcenter/__init__.py:231
+#: umc/python/appcenter/__init__.py:210 umc/python/appcenter/__init__.py:227
+#: umc/python/appcenter/__init__.py:323
 #, python-format
 msgid "Could not find an application for %s"
 msgstr "Konnte keine Applikation für %s finden"
 
-#: umc/python/appcenter/app_center.py:128
+#: umc/python/appcenter/app_center.py:134
 #, python-format
 msgid "Error while contacting the App Center server. %s"
 msgstr "Fehler bei der Kontaktaufnahme mit dem App Center-Server. %s"
 
-#: umc/python/appcenter/app_center.py:1512
+#: umc/python/appcenter/app_center.py:1557
 #, python-format
 msgid "Installing LDAP packages on %s"
 msgstr "Installiere LDAP Pakete auf %s"
 
-#: umc/python/appcenter/__init__.py:73
+#: umc/python/appcenter/__init__.py:79
 msgid "Package not found in repository"
 msgstr "Paket wurde in keinem Repository gefunden"
 
-#: umc/python/appcenter/app_center.py:1426
+#: umc/python/appcenter/app_center.py:1471
 msgid ""
 "Registration of the application in LDAP failed. It will be retried every "
 "time the App Center module is opened."
@@ -58,7 +58,7 @@ msgstr ""
 "Die Registrierung der Applikation im LDAP ist fehlgeschlagen. Sie wird bei "
 "jedem Öffnen des App Center Moduls wiederholt werden."
 
-#: umc/python/appcenter/app_center.py:1013
+#: umc/python/appcenter/app_center.py:1050
 #, python-format
 msgid ""
 "The application needs a %(needs)s-bit operating system. This server is "
@@ -67,11 +67,18 @@ msgstr ""
 "Die Applikation benötigt ein %(needs)s-Bit-Betriebssystem. Dieser Server "
 "läuft mit einem %(has)s-Bit-Betriebssystem."
 
+#: umc/python/appcenter/__init__.py:177
+msgid ""
+"The docker service is not running! The App Center will not work properly. "
+"Make sure docker.io is installed, try starting the service with \"invoke-rc."
+"d docker start\""
+msgstr ""
+
 #: umc/python/appcenter/sanitizers.py:22
 msgid "There already is a component with this name"
 msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 
-#: umc/python/appcenter/__init__.py:718
+#: umc/python/appcenter/__init__.py:813
 msgid ""
 "There is no repository at this server (or at least none for the current UCS "
 "version)"
@@ -116,15 +123,15 @@ msgstr ""
 msgid "http://docs.univention.de/manual-%s.html#networks:dns"
 msgstr "http://docs.univention.de/handbuch-%s.html#networks:dns"
 
-#: umc/python/appcenter/__init__.py:560
+#: umc/python/appcenter/__init__.py:655
 msgid "installed"
 msgstr "installiert"
 
-#: umc/python/appcenter/__init__.py:562
+#: umc/python/appcenter/__init__.py:657
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: umc/python/appcenter/__init__.py:558
+#: umc/python/appcenter/__init__.py:653
 msgid "upgradable"
 msgstr "aktualisierbar"
 

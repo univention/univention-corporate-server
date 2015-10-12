@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+import os
 import os.path
 from glob import glob
 import re
@@ -416,6 +417,9 @@ class App(object):
 	def __init__(self, **kwargs):
 		for attr in self._attrs:
 			setattr(self, attr.name, kwargs.get(attr.name))
+		ucr = ConfigRegistry()
+		ucr.load()
+		self.ucs_version = ucr.get('version/version')
 		if self.docker:
 			self.supported_architectures = ['amd64']
 
@@ -549,6 +553,10 @@ class App(object):
 	def get_ini_file(self):
 		return self.get_cache_file('ini')
 
+	def get_screenshot_url(self):
+		if self.screenshot:
+			return '%s/meta-inf/%s/%s' % (AppManager.get_server(), self.ucs_version, self.screenshot)
+
 	def get_localised(self, key, loc=None):
 		from univention.appcenter import get_action
 		get = get_action('get')()
@@ -584,6 +592,14 @@ class App(object):
 		for required, present in comparisons:
 			if int(required or 0) > int(present):
 				return {'required_version': required_version}
+		return True
+
+	@hard_requirement('install', 'upgrade')
+	def must_have_fitting_kernel_version(self, ucr):
+		if self.docker:
+			kernel = LooseVersion(os.uname()[2])
+			if kernel < LooseVersion('4.1'):
+				return False
 		return True
 
 	@hard_requirement('install', 'upgrade')
