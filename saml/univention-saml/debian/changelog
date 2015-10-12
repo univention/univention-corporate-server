@@ -1,3 +1,9 @@
+univention-saml (3.0.21-3) unstable; urgency=medium
+
+  * Bug #38947: Do not break config file if secret file cannot be read
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 12 Oct 2015 16:45:53 +0200
+
 univention-saml (3.0.21-2) unstable; urgency=medium
 
   * Bug #39495: don't create logfiles world-readable

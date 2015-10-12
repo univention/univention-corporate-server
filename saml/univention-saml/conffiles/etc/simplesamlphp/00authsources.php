@@ -61,12 +61,15 @@ if configRegistry.get('saml/idp/ldap/user'):
 	ldap_user = configRegistry.get('saml/idp/ldap/user')
 
 print "	'search.username'	=> '%s'," % ldap_user
+
+password = ''
 try:
 	password = open('/etc/idp-ldap-user.secret','r').read().strip()
-	if password:
-		print "	'search.password'	=> '%s'," % password
-except:
-	print "	'search.password'	=> NULL,"
+except (IOError, OSError):
+	import sys
+	print >> sys.stderr, '/etc/idp-ldap-user.secret could not be read!'
+
+print "	'search.password'	=> '%s'," % password
 @!@
 
 
