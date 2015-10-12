@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-16) unstable; urgency=medium
+
+  * Bug #39496: Block app installation for docker apps if kernel < 4.1
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Oct 2015 16:24:51 +0200
+
 univention-management-console-module-appcenter (5.0.6-15) unstable; urgency=medium
 
   * Bug #39417: Use the new App class where possible
