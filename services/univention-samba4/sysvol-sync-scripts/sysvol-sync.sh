@@ -57,6 +57,20 @@ LOCKFILE="/var/lock/sysvol-sync"
 
 LC_ALL=C
 
+# hash over the list of files/directories with ACLs set
+all_files_and_dirs_have_acls () {
+	local dir="$1"
+	local host="$2"
+	log_debug "[$host] checking ACL's"
+	a_md5=$(getfacl -span -R "$1" | sed -ne 's/^# file: //p' | sort | md5sum)
+	f_md5=$(find "$1" -type f -o -type d | sort | md5sum)
+	if [ "$a_md5" != "$f_md5" ]; then
+		log_error "[$host] some files from $host don't have ACLs set. Will not sync to hot target!"
+		return 1
+	fi
+	return 0
+}
+
 ########
 # MAIN #
 ########
@@ -115,11 +129,7 @@ for triggerfile in $(find "${SYSVOL_SYNC_TRIGGERDIR}" -mindepth 1 -maxdepth 1 -t
 	fi
 
 	## hash over the list of files/directories with ACLs set
-	log_debug "[${s4dc}] checking ACL's"
-	a_md5=$(getfacl -span -R "$importdir" | sed -ne 's/^# file: //p' | sort | md5sum)
-	f_md5=$(find "$importdir" | sort | md5sum)
-	if [ "$a_md5" != "$f_md5" ]; then
-		log_error "[${s4dc}] some files from ${s4dc} don't have ACLs set. Will not sync to hot target!"
+	if ! all_files_and_dirs_have_acls "$importdir" "$s4dc"; then
 		continue
 	fi
 
@@ -145,12 +155,8 @@ for s4dc in $samba4_sysvol_sync_host; do	## usually there should only be one..
 		continue
 	fi
 
-	## hash over the list of files/directorys with ACLs set
-	log_debug "[${s4dc}] checking ACL's"
-	a_md5=$(getfacl -span -R "$importdir" | sed -ne 's/^# file: //p' | sort | md5sum)
-	f_md5=$(find "$importdir" | sort | md5sum)
-	if [ "$a_md5" != "$f_md5" ]; then
-		log_error "[${s4dc}] some files from ${s4dc} don't have ACLs set. Will not sync to hot target!"
+	## hash over the list of files/directories with ACLs set
+	if ! all_files_and_dirs_have_acls "$importdir" "$s4dc"; then
 		continue
 	fi
 
