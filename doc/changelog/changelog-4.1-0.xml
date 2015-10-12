@@ -414,7 +414,7 @@
 					The <property>entityID</property> of the identity provider is now configurable via the &ucsUCRV; <envar>saml/idp/entityID</envar> (<u:bug>33912</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The SAML identity provider now uses a dedicated LDAP user to access the LDAP (<u:bug>38947</u:bug>).
+					The SAML identity provider now uses a dedicated LDAP user to access the LDAP and a seperate user is used to access SSO specific web-content by apache2 (<u:bug>38947</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The App Center module has been adapted to work with single sign on (<u:bug>39226</u:bug>).
