@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention App Center
-#  univention-app module for uninstalling an app
+#  univention-app base module for freezing an app
 #
 # Copyright 2015 Univention GmbH
 #
@@ -32,36 +32,38 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.actions.install_base import InstallRemoveUpgrade
+from univention.config_registry.frontend import ucr_update
+from univention.config_registry import ConfigRegistry
+
+from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 
 
-class Remove(InstallRemoveUpgrade):
-	'''Removes an application from the Univention App Center.'''
-	help = 'Uninstall an app'
+class Stall(UniventionAppAction):
+	'''Disbales updates for this app. Useful for suppressing
+	warnings when an app reached its end of life but shall still
+	be used.'''
+	help = 'Stalls an app'
 
-	pre_readme = 'readme_uninstall'
-	post_readme = 'readme_post_uninstall'
+	def setup_parser(self, parser):
+		parser.add_argument('app', action=StoreAppAction, help='The ID of the app that shall be stalled')
+		parser.add_argument('--undo', action='store_true', help='Reenable a previously stalled app')
 
 	def main(self, args):
-		self.do_it(args)
+		if not args.app.is_installed():
+			self.fatal('%s is not installed!' % args.app.id)
+			return
+		if args.undo:
+			self._undo_stall(args.app)
+		else:
+			self._stall(args.app)
 
-	def _show_license(self, app, args):
-		pass
+	def _ucr_component_base(self, app):
+		return 'repository/online/component/%s' % app.component_id
 
-	def _do_it(self, app, args):
-		self._remove_app(app, args)
-		self.percentage = 45
-		self._unregister_app(app, args)
-		self.percentage = 70
-		self._unregister_files(app, args)
-		self.percentage = 80
-		self._call_unjoin_script(app, args)
+	def _undo_stall(self, app):
+		ucr = ConfigRegistry()
+		ucr_update(ucr, {app.ucr_status_key: 'installed', self._ucr_component_base(app): 'enabled'})
 
-	def _remove_app(self, app, args):
-		self._apt_get('remove', app.default_packages, 45)
-
-	def _unregister_files(self, app, args):
-		if args.keep_data:
-			# TODO
-			pass
-		super(Remove, self)._unregister_files(app, args)
+	def _stall(self, app):
+		ucr = ConfigRegistry()
+		ucr_update(ucr, {app.ucr_status_key: 'stalled', self._ucr_component_base(app): 'disabled'})

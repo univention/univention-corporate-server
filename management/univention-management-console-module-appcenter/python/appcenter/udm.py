@@ -134,12 +134,12 @@ class ApplicationLDAPObject(object):
 		return self._udm_obj is not None
 
 	def _reload(self, app, ucr, create_if_not_exists=False):
-		result = search_objects('appcenter/app', self._lo, self._pos, id=self._rdn)
-		if result:
-			self._udm_obj = result[0]
-			self._udm_obj.open()
-		elif create_if_not_exists:
-			self._create_obj(app, ucr)
+		dn = 'cn=%s,%s' % (self._rdn, self._container)
+		try:
+			self._udm_obj = init_object('appcenter/app', self._lo, self._pos, dn)
+		except ValueError:
+			if create_if_not_exists:
+				self._create_obj(app, ucr)
 
 	def _create_obj(self, app, ucr):
 		containers = explode_dn(self._container, 1)
@@ -191,6 +191,9 @@ class ApplicationLDAPObject(object):
 		if self._localhost not in self._udm_obj.info['server']:
 			self._udm_obj.info['server'].append(self._localhost)
 			self._udm_obj.modify()
+		for ldap_object in self.get_siblings():
+			if ldap_object.dn != self.dn:
+				ldap_object.remove_localhost()
 
 	def remove_localhost(self):
 		try:
@@ -200,14 +203,19 @@ class ApplicationLDAPObject(object):
 			pass
 		else:
 			self._udm_obj.modify()
+			if not self.anywhere_installed():
+				self.remove_from_directory()
 
 	def remove_from_directory(self):
-		self._udm_obj.remove()
+		remove_object_if_exists('appcenter/app', self._lo, self._pos, self._udm_obj.dn)
 
 	def installed_on_servers(self):
 		if not self:
 			return []
 		return self._udm_obj.info.get('server', [])
+
+	def get_siblings(self):
+		return search_objects('appcenter/app', self._lo, self._pos, self._container)
 
 	def anywhere_installed(self):
 		return bool(self.installed_on_servers())

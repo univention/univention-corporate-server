@@ -35,7 +35,7 @@
 import os.path
 import shutil
 import time
-import subprocess
+import re
 
 from ldap.dn import str2dn, dn2str
 
@@ -43,10 +43,10 @@ from univention.config_registry.frontend import ucr_update
 from univention.config_registry import ConfigRegistry
 
 from univention.appcenter.app import AppManager
-from univention.appcenter.udm import create_object_if_not_exists, init_object, get_app_ldap_object
+from univention.appcenter.udm import create_object_if_not_exists, init_object, get_app_ldap_object, remove_object_if_exists
 from univention.appcenter.actions import StoreAppAction
 from univention.appcenter.actions.credentials import CredentialsAction
-from univention.appcenter.utils import mkdir, get_md5, app_ports
+from univention.appcenter.utils import mkdir, rmdir, get_md5, app_ports
 from univention.appcenter.log import catch_stdout
 
 
@@ -60,10 +60,12 @@ class Register(CredentialsAction):
 
 	def setup_parser(self, parser):
 		super(Register, self).setup_parser(parser)
-		parser.add_argument('--files', dest='register_task', action='append_const', const='files')
-		parser.add_argument('--component', dest='register_task', action='append_const', const='component')
-		parser.add_argument('--host', dest='register_task', action='append_const', const='host')
-		parser.add_argument('--app', dest='register_task', action='append_const', const='app')
+		parser.add_argument('--files', dest='register_task', action='append_const', const='files', help='Creating shared directories; copying files from App Center server')
+		parser.add_argument('--component', dest='register_task', action='append_const', const='component', help='Adding the component to the list of available repositories')
+		parser.add_argument('--host', dest='register_task', action='append_const', const='host', help='Creating a computer object for the app (docker apps only)')
+		parser.add_argument('--app', dest='register_task', action='append_const', const='app', help='Registering the app itself (internal UCR variables, ucs-overview variables, adding a special LDAP object for the app)')
+		parser.add_argument('--do-it', dest='do_it', action='store_true', default=None, help='Always do it, disregarding installation status')
+		parser.add_argument('--undo-it', dest='do_it', action='store_false', default=None, help='Undo any registrations, disregarding installation status')
 		parser.add_argument('apps', nargs='*', action=StoreAppAction, help='The ID of the app that shall be registered')
 
 	def main(self, args):
@@ -75,6 +77,11 @@ class Register(CredentialsAction):
 		self._register_files_for_apps(apps, args)
 		self._register_host_for_apps(apps, args)
 		self._register_app_for_apps(apps, args)
+
+	def _do_register(self, app, args):
+		if args.do_it is None:
+			return app.is_installed()
+		return args.do_it
 
 	def _shall_register(self, args, task):
 		return args.register_task is None or task in args.register_task
@@ -88,25 +95,33 @@ class Register(CredentialsAction):
 		ucr.load()
 		updates = {}
 		for app in apps:
-			updates.update(self._register_component(app, ucr, server, delay=True, force=self._explicit(args)))
+			if self._do_register(app, args):
+				updates.update(self._register_component(app, ucr, server, delay=True))
+			else:
+				updates.update(self._unregister_component_dict(app, ucr))
 		with catch_stdout(self.logger):
 			ucr_update(ucr, updates)
 
-	def _register_component(self, app, ucr=None, server=None, delay=False, force=True):
-		if app.docker and not force:
-			return {}
+	def _register_component(self, app, ucr=None, server=None, delay=False):
 		if ucr is None:
 			ucr = ConfigRegistry()
 			ucr.load()
+		if app.docker and not ucr.get('docker/container/uuid'):
+			self.log('Component needs to be registered in the container')
+			return {}
+		if app.without_repository:
+			self.log('No repository to register')
+			return {}
 		if server is None:
 			server = AppManager.get_server()
 			server = server[server.find('/') + 2:]
 		updates = {}
 		self.log('Registering component for %s' % app.id)
 		for _app in AppManager.get_all_apps_with_id(app.id):
-			updates.update(self._register_component_dict(_app, server, ucr, force=False))
-		if force:
-			updates.update(self._register_component_dict(app, server, ucr, force=True))
+			if _app == app:
+				updates.update(self._register_component_dict(_app, ucr, server))
+			else:
+				updates.update(self._unregister_component_dict(_app, ucr))
 		if not delay:
 			with catch_stdout(self.logger):
 				ucr_update(ucr, updates)
@@ -115,40 +130,37 @@ class Register(CredentialsAction):
 	def _ucr_component_base(self, app):
 		return 'repository/online/component/%s' % app.component_id
 
-	def _register_component_dict(self, app, server, ucr, force):
+	def _register_component_dict(self, app, ucr, server):
 		ret = {}
 		ucr_base_key = self._ucr_component_base(app)
-		to_be_added = force or app.is_installed() and (not app.docker or ucr.get(app.ucr_container_key))
-		if to_be_added:
-			ucr_base_key = self._ucr_component_base(app)
-			self.debug('Adding %s' % ucr_base_key)
-			ret[ucr_base_key] = 'enabled'
-			ucr_base_key = '%s/%%s' % ucr_base_key
-			ret[ucr_base_key % 'server'] = server
-			ret[ucr_base_key % 'description'] = app.name
-			ret[ucr_base_key % 'localmirror'] = 'false'
-			ret[ucr_base_key % 'version'] = ucr.get(ucr_base_key % 'version', 'current')
-		else:
-			for key in ucr.keys():
-				if key == ucr_base_key or key.startswith('%s/' % ucr_base_key):
-					self.debug('Removing %s' % key)
-					ret[key] = None
+		self.debug('Adding %s' % ucr_base_key)
+		ret[ucr_base_key] = 'enabled'
+		ucr_base_key = '%s/%%s' % ucr_base_key
+		ret[ucr_base_key % 'server'] = server
+		ret[ucr_base_key % 'description'] = app.name
+		ret[ucr_base_key % 'localmirror'] = 'false'
+		ret[ucr_base_key % 'version'] = ucr.get(ucr_base_key % 'version', 'current')
+		return ret
+
+	def _unregister_component_dict(self, app, ucr):
+		ret = {}
+		ucr_base_key = self._ucr_component_base(app)
+		for key in ucr.keys():
+			if key == ucr_base_key or key.startswith('%s/' % ucr_base_key):
+				self.debug('Removing %s' % key)
+				ret[key] = None
 		return ret
 
 	def _register_files_for_apps(self, apps, args):
 		if not self._shall_register(args, 'files'):
 			return
 		for app in apps:
-			self._register_files(app, force=self._explicit(args))
+			if self._do_register(app, args):
+				self._register_files(app)
+			else:
+				self._unregister_files(app)
 
-	def _explicit(self, args):
-		return bool(args.apps) and args.register_task is not None
-
-	def _register_files(self, app, force=True):
-		if not app.docker:
-			return
-		if not force or not app.is_installed():
-			return
+	def _register_files(self, app):
 		self.log('Creating data directories for %s...' % app.id)
 		mkdir(app.get_data_dir())
 		mkdir(app.get_conf_dir())
@@ -159,18 +171,24 @@ class Register(CredentialsAction):
 				self.log('Copying %s' % fname)
 				shutil.copy2(fname, app.get_share_file(ext))
 
+	def _unregister_files(self, app):
+		self.log('Removing data directories for %s...' % app.id)
+		rmdir(app.get_data_dir())
+		rmdir(app.get_conf_dir())
+		rmdir(app.get_share_dir())
+
 	def _register_host_for_apps(self, apps, args):
 		if not self._shall_register(args, 'host'):
 			return
 		for app in apps:
-			self._register_host(app, args, force=self._explicit(args))
+			if self._do_register(app, args):
+				self._register_host(app, args)
+			else:
+				self._unregister_host(app, args)
 
-	def _register_host(self, app, args, force=True):
+	def _register_host(self, app, args):
 		if not app.docker:
 			self.debug('App is not docker. Skip registering host')
-			return None, None
-		if not force and not app.is_installed():
-			self.debug('App is not installed. Skip registering host')
 			return None, None
 		ucr = ConfigRegistry()
 		ucr.load()
@@ -217,121 +235,138 @@ class Register(CredentialsAction):
 		ucr_update(ucr, {app.ucr_hostdn_key: obj.dn})
 		return obj.dn, password
 
+	def _unregister_host(self, app, args):
+		ucr = ConfigRegistry()
+		ucr.load()
+		hostdn = ucr.get(app.ucr_hostdn_key)
+		if not hostdn:
+			self.log('No hostdn for %s found. Nothing to remove' % app.id)
+			return
+		lo, pos = self._get_ldap_connection(args)
+		remove_object_if_exists('computers/%s' % app.docker_server_role, lo, pos, hostdn)
+		ucr_update(ucr, {app.ucr_hostdn_key: None})
+
 	def _register_app_for_apps(self, apps, args):
 		if not self._shall_register(args, 'app'):
 			return
 		ucr = ConfigRegistry()
 		ucr.load()
 		updates = {}
+		if apps:
+			lo, pos = self._get_ldap_connection(args, allow_machine_connection=True)
 		for app in apps:
-			updates.update(self._register_app(app, args, ucr, delay=True, force=self._explicit(args)))
+			if self._do_register(app, args):
+				updates.update(self._register_app(app, args, ucr, lo, pos, delay=True))
+			else:
+				updates.update(self._unregister_app(app, args, ucr, lo, pos, delay=True))
 		ucr_update(ucr, updates)
 
-	def _register_app(self, app, args, ucr=None, delay=False, force=True):
-		if ucr is None:
-			ucr = ConfigRegistry()
-			ucr.load()
+	def _register_app(self, app, args, ucr, lo, pos, delay=False):
 		updates = {}
-		priority_updates = {}  # merged with updates, but overwrites it
 		self.log('Registering UCR for %s' % app.id)
-		lo, pos = self._get_ldap_connection(args, allow_machine_connection=True)
-		apps = AppManager.get_all_apps_with_id(app.id)
-		#try:
-		#	idx = [_app.component_id for _app in apps].index(app.component_id)
-		#except ValueError:
-		#	apps.append(app)
-		#else:
-		#	apps[idx] = app
-		for _app in apps:
-			if force and _app == app:
-				self.log('Marking %s as installed' % _app)
-				ucr_update(ucr, {_app.ucr_status_key: 'installed', _app.ucr_version_key: _app.version})
-			is_installed = _app.is_installed()
-			if is_installed and _app.docker:
+		self.log('Marking %s as installed' % app)
+		ucr_update(ucr, {app.ucr_status_key: 'installed', app.ucr_version_key: app.version})
+		if app.docker:
+			try:
+				from univention.appcenter.actions.service import Service, ORIGINAL_INIT_SCRIPT
+			except ImportError:
+				# univention-appcenter-docker is not installed
+				pass
+			else:
 				try:
-					from univention.appcenter.actions.service import Start, ORIGINAL_INIT_SCRIPT
+					init_script = Service.get_init(app)
+					self.log('Creating %s' % init_script)
+					os.symlink(ORIGINAL_INIT_SCRIPT, init_script)
+					self._call_script('update-rc.d', os.path.basename(init_script), 'defaults', '41', '14')
+				except OSError as ex:
+					self.warn(str(ex))
+				updates[app.ucr_image_key] = app.get_docker_image_name()
+				for app_id, container_port, host_port in app_ports():
+					if app_id == app.id:
+						updates[app.ucr_ports_key % container_port] = None
+				for port in app.ports_exclusive:
+					updates[app.ucr_ports_key % port] = str(port)
+				for port in app.ports_redirection:
+					host_port, container_port = port.split(':')
+					updates[app.ucr_ports_key % container_port] = str(host_port)
+				if app.auto_mod_proxy and app.has_local_web_interface():
+					self.log('Setting ports for apache proxy')
+					try:
+						min_port = int(ucr.get('appcenter/ports/min'))
+					except (TypeError, ValueError):
+						min_port = 40000
+					try:
+						max_port = int(ucr.get('appcenter/ports/max'))
+					except (TypeError, ValueError):
+						max_port = 41000
+					ports_taken = [min_port]
+					for app_id, container_port, host_port in app_ports():
+						if host_port < max_port:
+							ports_taken.append(host_port)
+					next_port = max(ports_taken) + 1
+					if next_port > (max_port - 2):
+						raise NoMorePorts(next_port)
+					if app.web_interface_port_http:
+						updates[app.ucr_ports_key % app.web_interface_port_http] = str(next_port)
+						next_port = max(ports_taken) + 2
+					if app.web_interface_port_https:
+						updates[app.ucr_ports_key % app.web_interface_port_https] = str(next_port)
+
+			# Register app in LDAP (cn=...,cn=apps,cn=univention)
+			ldap_object = get_app_ldap_object(app, lo, pos, ucr, or_create=True)
+			self.log('Adding localhost to LDAP object')
+			ldap_object.add_localhost()
+			for key in ucr.iterkeys():
+				if re.match('ucs/web/overview/entries/[^/]+/%s/' % app.id, key):
+					updates[key] = None
+			if app.ucs_overview_category and app.web_interface:
+				self.log('Setting overview variables')
+				registry_key = 'ucs/web/overview/entries/%s/%s/%%s' % (app.ucs_overview_category, app.id)
+				variables = {
+					'icon': '/univention-management-console/js/dijit/themes/umc/icons/50x50/%s' % app.icon,
+					'port_http': str(app.web_interface_port_http or ''),
+					'port_https': str(app.web_interface_port_https or ''),
+					'label': app.get_localised('name'),
+					'label/de': app.get_localised('name', 'de'),
+					'description': app.get_localised('description'),
+					'description/de': app.get_localised('description', 'de'),
+					'link': app.web_interface,
+				}
+				for key, value in variables.iteritems():
+					updates[registry_key % key] = value
+		if not delay:
+			ucr_update(ucr, updates)
+			self._reload_apache()
+		return updates
+
+	def _unregister_app(self, app, args, ucr, lo, pos, delay=False):
+		updates = {}
+		if app.is_installed():
+			for key in ucr.iterkeys():
+				if key.startswith('appcenter/apps/%s/' % app.id):
+					updates[key] = None
+				if re.match('ucs/web/overview/entries/[^/]+/%s/' % app.id, key):
+					updates[key] = None
+			if app.docker:
+				try:
+					from univention.appcenter.actions.service import Service
 				except ImportError:
 					# univention-appcenter-docker is not installed
 					pass
 				else:
 					try:
-						init_script = Start.get_init(_app)
-						self.log('Creating %s' % init_script)
-						os.symlink(ORIGINAL_INIT_SCRIPT, init_script)
-						cmd = ['update-rc.d', os.path.basename(init_script), 'defaults', '41', '14']
-						self.log(" ".join(cmd))
-						p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-						(stdout, stderr) = p.communicate()
-						self.log(stdout)
-						if stderr:
-						    self.log(stderr)
-					except OSError as ex:
-						self.warn(str(ex))
-					updates[_app.ucr_image_key] = _app.get_docker_image_name()
-					for app_id, container_port, host_port in app_ports():
-						if app_id == _app.id:
-							updates[_app.ucr_ports_key % container_port] = None
-					for port in _app.ports_exclusive:
-						updates[_app.ucr_ports_key % port] = str(port)
-					for port in _app.ports_redirection:
-						host_port, container_port = port.split(':')
-						updates[_app.ucr_ports_key % container_port] = str(host_port)
-					if _app.auto_mod_proxy and _app.has_local_web_interface():
-						self.log('Setting ports for apache proxy')
-						try:
-							min_port = int(ucr.get('appcenter/ports/min'))
-						except (TypeError, ValueError):
-							min_port = 40000
-						try:
-							max_port = int(ucr.get('appcenter/ports/max'))
-						except (TypeError, ValueError):
-							max_port = 41000
-						ports_taken = [min_port]
-						for app_id, container_port, host_port in app_ports():
-							if host_port < max_port:
-								ports_taken.append(host_port)
-						next_port = max(ports_taken) + 1
-						if next_port > (max_port - 2):
-							raise NoMorePorts(next_port)
-						if _app.web_interface_port_http:
-							updates[_app.ucr_ports_key % _app.web_interface_port_http] = str(next_port)
-							next_port = max(ports_taken) + 2
-						if _app.web_interface_port_https:
-							updates[_app.ucr_ports_key % _app.web_interface_port_https] = str(next_port)
-
-			# Register app in LDAP (cn=...,cn=apps,cn=univention)
-			ldap_object = get_app_ldap_object(_app, lo, pos, ucr, or_create=is_installed)
-			if is_installed:
-				self.log('Adding localhost to LDAP object')
-				ldap_object.add_localhost()
-			else:
-				if ldap_object:
-					self.log('Removing localhost from LDAP object')
-					ldap_object.remove_localhost()
-					if not ldap_object.anywhere_installed():
-						self.log('Removing LDAP object')
-						ldap_object.remove_from_directory()
-
-			if _app.ucs_overview_category and _app.web_interface:
-				self.log('Setting overview variables')
-				registry_key = 'ucs/web/overview/entries/%s/%s/%%s' % (_app.ucs_overview_category, _app.id)
-				variables = {
-					'icon': '/univention-management-console/js/dijit/themes/umc/icons/50x50/%s' % _app.icon,
-					'port_http': str(_app.web_interface_port_http or ''),
-					'port_https': str(_app.web_interface_port_https or ''),
-					'label': _app.get_localised('name'),
-					'label/de': _app.get_localised('name', 'de'),
-					'description': _app.get_localised('description'),
-					'description/de': _app.get_localised('description', 'de'),
-					'link': _app.web_interface,
-				}
-				for key, value in variables.iteritems():
-					if not is_installed:
-						updates[registry_key % key] = None
-					else:
-						priority_updates[registry_key % key] = value
-		updates.update(priority_updates)
-		if not delay:
-			ucr_update(ucr, updates)
-			self._reload_apache()
+						init_script = Service.get_init(app)
+						os.unlink(init_script)
+						self._call_script('update-rc.d', os.path.basename(init_script), 'remove')
+					except OSError:
+						pass
+			ldap_object = get_app_ldap_object(app, lo, pos, ucr)
+			if ldap_object:
+				self.log('Removing localhost from LDAP object')
+				ldap_object.remove_localhost()
+			if not delay:
+				ucr_update(ucr, updates)
+				self._reload_apache()
+		else:
+			self.log('%s is not installed. Cannot unregister')
 		return updates

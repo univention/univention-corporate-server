@@ -36,10 +36,14 @@ from pipes import quote
 import re
 from argparse import Action
 from fnmatch import translate
+from ConfigParser import NoOptionError, NoSectionError
 
-from univention.appcenter.app import CaseSensitiveConfigParser
+from univention.config_registry import ConfigRegistry
+
+from univention.appcenter.app import CaseSensitiveConfigParser, AppManager
 from univention.appcenter.utils import shell_safe
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
+from univention.appcenter.udm import get_app_ldap_object
 
 
 class StoreKeysAction(Action):
@@ -94,6 +98,43 @@ class Get(UniventionAppAction):
 					self.log(value)
 				else:
 					self.log('%s: %s' % (key, value))
+
+	@classmethod
+	def to_dict(cls, app):
+		ucr = ConfigRegistry()
+		ucr.load()
+		ret = app.attrs_dict()
+		ret['icon'] = app.icon
+		ret['is_installed'] = app.is_installed()
+		ret['is_current'] = app.without_repository or ucr.get('repository/online/component/%s' % app.component_id) == 'enabled'
+		ret['local_role'] = ucr.get('server/role')
+		ret['is_master'] = ret['local_role'] == 'domaincontroller_master'
+		ret['host_master'] = ucr.get('ldap/master')
+		ret['autostart'] = ucr.get('%s/autostart' % app.id, 'yes')
+		ret['is_ucs_component'] = 'UCS Components' in cls.raw_value(app, 'Application', 'Categories')
+		ldap_obj = get_app_ldap_object(app)
+		if ldap_obj:
+			ret['is_installed_anywhere'] = ldap_obj.anywhere_installed()
+		else:
+			ret['is_installed_anywhere'] = False
+		latest = AppManager.find(app.id, latest=True)
+		if latest != app:
+			ret['candidate_version'] = latest.version
+			ret['candidate_component_id'] = latest.component_id
+			ret['candidate_readme_update'] = latest.readme_update
+			ret['candidate_readme_post_update'] = latest.readme_post_update
+		ret['fully_loaded'] = True
+		return ret
+
+	@classmethod
+	def raw_value(cls, app, section, option):
+		config_parser = CaseSensitiveConfigParser()
+		with open(app.get_ini_file(), 'rb') as f:
+			config_parser.readfp(f)
+		try:
+			return config_parser.get(section, option)
+		except (NoSectionError, NoOptionError):
+			return None
 
 	def get_values(self, app, keys, warn=True):
 		config_parser = CaseSensitiveConfigParser()

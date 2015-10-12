@@ -41,12 +41,11 @@ from httplib import HTTPException
 from functools import wraps
 import logging
 from tempfile import NamedTemporaryFile
-from copy import deepcopy
 
 # related third party
 import notifier
 import notifier.threads
-import apt # for independent apt.Cache
+import apt  # for independent apt.Cache
 
 # univention
 from univention.lib.package_manager import PackageManager, LockError
@@ -86,13 +85,13 @@ class ProgressInfoHandler(logging.Handler):
 		self.state = package_manager.progress_state
 
 	def emit(self, record):
+		msg = record.msg
 		if isinstance(record.msg, Exception):
-			record = deepcopy(record)
-			record.msg = str(record.msg)
+			msg = str(msg)
 		if record.levelno >= logging.ERROR:
-			self.state.error(record.msg)
+			self.state.error(msg)
 		else:
-			self.state.info(record.msg)
+			self.state.info(msg)
 
 class ProgressPercentageHandler(ProgressInfoHandler):
 	def emit(self, record):
@@ -159,12 +158,16 @@ class Instance(umcm.Base):
 	@error_handler
 	@simple_response
 	def version(self):
-		return Application.get_appcenter_version()
+		info = get_action('info')
+		return info.get_compatibility()
 
 	@error_handler
 	@simple_response
 	def query(self):
-		applications = Application.all(force_reread=True)
+		AppManager.clear_cache()
+		list_apps = get_action('list')
+		get = get_action('get')
+		apps = list_apps.get_apps()
 		self.ucr.load()
 		if not self.ucr.get('docker/container/uuid'):
 			if not docker_is_running():
@@ -174,55 +177,35 @@ class Instance(umcm.Base):
 					raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly. Make sure docker.io is installed, try starting the service with "invoke-rc.d docker start"'))
 		result = []
 		self.package_manager.reopen_cache()
-		hosts = util.get_all_hosts()
-		domainwide_managed = Application.domainwide_managed(hosts)
-		for application in applications:
-			if application.should_show_up_in_app_center(self.package_manager, domainwide_managed=domainwide_managed):
-				props = application.to_dict(self.package_manager, domainwide_managed, hosts)
-				result.append(props)
+		for app in apps:
+			props = get.to_dict(app)
+			result.append(props)
 		return result
 
 	@error_handler
 	@simple_response
-	def sync_ldap(self, application=None):
-		#self.ucr.load()
-		#for old, new in [('tine20org', 'tine20'),]:
-		#	if util.component_registered(old, self.ucr):
-		#		util.rename_app(old, new, self.component_manager, self.package_manager)
-		self.ucr.load()
-
-		if application is not None:
-			applications = [Application.find(application)]
-		else:
-			applications = Application.all()
-		for application in applications:
-			if application is None:
-				continue
-			application.tell_ldap(self.ucr, self.package_manager, inform_about_error=False)
+	def sync_ldap(self):
+		register = get_action('register')
+		register.call(register_task=['app'])
 
 	# used in updater-umc
 	@error_handler
 	@simple_response
 	def get_by_component_id(self, component_id):
-		all_apps = Application.all(force_reread=True)
-		def _get_by_component_id(component, apps):
-			for app in apps:
-				for version in app.versions:
-					if version.component_id == component:
-						return version
+		get = get_action('get')
 		if isinstance(component_id, list):
 			requested_apps = []
 			for cid in component_id:
-				version = _get_by_component_id(cid, all_apps)
-				if version:
-					requested_apps.append(version.to_dict(self.package_manager))
+				app = AppManager.find_by_component_id(component_id)
+				if app:
+					requested_apps.append(get.to_dict(app))
 				else:
 					requested_apps.append(None)
 			return requested_apps
 		else:
-			version = _get_by_component_id(component_id, all_apps)
-			if version:
-				return version.to_dict(self.package_manager)
+			app = AppManager.find_by_component_id(component_id)
+			if app:
+				return get.to_dict(app)
 			else:
 				raise umcm.UMC_CommandError(_('Could not find an application for %s') % component_id)
 
@@ -230,21 +213,19 @@ class Instance(umcm.Base):
 	@error_handler
 	@simple_response
 	def app_updates(self):
-		self.package_manager.reopen_cache()
-		applications = Application.all_installed(self.package_manager, force_reread=True)
-		hosts = util.get_all_hosts()
-		domainwide_managed = Application.domainwide_managed(hosts)
-		return [app.to_dict(self.package_manager, domainwide_managed, hosts) for app in applications if app.candidate is not None]
+		upgrade = get_action('upgrade')
+		get = get_action('get')
+		return [get.to_dict(app) for app in upgrade.iter_upgradable_apps()]
 
 	@error_handler
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
 	@simple_response
 	def get(self, application):
-		application = Application.find(application)
-		if application is None:
+		get = get_action('get')
+		app = AppManager.find(application)
+		if app is None:
 			raise umcm.UMC_CommandError(_('Could not find an application for %s') % (application,))
-		self.package_manager.reopen_cache()
-		return application.to_dict(self.package_manager)
+		return get.to_dict(app)
 
 	@sanitize(application=StringSanitizer(minimum=1, required=True), values=DictSanitizer({}))
 	@simple_response
@@ -499,32 +480,27 @@ class Instance(umcm.Base):
 	@error_handler
 	@simple_response
 	def buy(self, application):
-		application = Application.find(application)
-		if not application or not application.get('useshop'):
+		app = AppManager.find(application)
+		if not app or not app.shop_url:
 			return None
 		ret = {}
 		ret['key_id'] = LICENSE.uuid
 		ret['ucs_version'] = self.ucr.get('version/version')
-		ret['app_id'] = application.id
-		ret['app_version'] = application.version
+		ret['app_id'] = app.id
+		ret['app_version'] = app.version
 		# ret['locale'] = locale.getlocale()[0] # done by frontend
-		ret['user_count'] = None # FIXME: get users and computers from license
+		ret['user_count'] = None  # FIXME: get users and computers from license
 		ret['computer_count'] = None
 		return ret
 
 	@error_handler
 	@simple_response
 	def enable_disable_app(self, application, enable=True):
-		application = Application.find(application)
-		if not application:
+		app = AppManager.find(application)
+		if not app:
 			return
-		should_update = False
-		if enable:
-			should_update = application.enable_component(self.component_manager)
-		else:
-			should_update = application.disable_component(self.component_manager)
-		if should_update:
-			self.package_manager.update()
+		stall = get_action('stall')
+		stall.call(app=app, undo=enable)
 
 	@error_handler
 	@simple_response

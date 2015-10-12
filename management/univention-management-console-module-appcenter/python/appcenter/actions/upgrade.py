@@ -89,6 +89,7 @@ class Upgrade(Install):
 		if app > self.old_app:
 			super(Upgrade, self)._send_information(app, status)
 
+	@classmethod
 	def iter_upgradable_apps(self):
 		ucr = ConfigRegistry()
 		ucr.load()

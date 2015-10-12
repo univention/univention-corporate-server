@@ -250,7 +250,7 @@ class InstallRemoveUpgrade(Register):
 					if password_file:
 						joinargs.extend(['-dcname', self._get_username(args)])
 						joinargs.extend(['-dcpwd', self.password_file])
-					return self._call_script(dest, *joinargs, run_scripts=os.path.basename(dest))
+					return self._call_script(dest, *joinargs)
 
 	def _reload_apache(self):
 		self._call_script('/etc/init.d/apache2', 'reload')

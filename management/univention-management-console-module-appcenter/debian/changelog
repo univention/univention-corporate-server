@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-15) unstable; urgency=medium
+
+  * Bug #39417: Use the new App class where possible
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Oct 2015 14:24:12 +0200
+
 univention-management-console-module-appcenter (5.0.6-14) unstable; urgency=low
 
   * silenced univention-appcenter-docker postinst (Bug #39469)

@@ -34,6 +34,8 @@
 
 from fnmatch import fnmatch
 
+from univention.config_registry import ConfigRegistry
+
 from univention.appcenter.actions import UniventionAppAction
 from univention.appcenter.app import AppManager
 from univention.appcenter.udm import get_app_ldap_object
@@ -69,9 +71,25 @@ class List(UniventionAppAction):
 				self.log('  Installations: %s' % ' '.join(sorted(flatten(installations.values()))))
 			first = False
 
+	@classmethod
+	def get_apps(cls):
+		ret = []
+		apps = AppManager.get_all_apps()
+		ucr = ConfigRegistry()
+		ucr.load()
+		for app in apps:
+			if app.end_of_life and not app.is_installed():
+				continue
+			if ucr.is_true('ad/member') and app.ad_member_issue_hide:
+				continue
+			if ucr.get('server/role') not in app.server_role:
+				continue
+			ret.append(app)
+		return ret
+
 	def _list(self, pattern):
 		ret = []
-		for app in AppManager.get_all_apps():
+		for app in self.get_apps():
 			versions = []
 			installations = {}
 			if pattern:

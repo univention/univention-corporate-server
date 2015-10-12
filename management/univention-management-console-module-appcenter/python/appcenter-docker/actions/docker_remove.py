@@ -33,15 +33,11 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-import os
-
-from univention.config_registry import ConfigRegistry
-
 from univention.appcenter.docker import Docker
 from univention.appcenter.actions.remove import Remove
 from univention.appcenter.actions.service import Stop
 from univention.appcenter.actions.docker_base import DockerActionMixin
-from univention.appcenter.udm import remove_object_if_exists
+
 
 class Remove(Remove, DockerActionMixin):
 	def setup_parser(self, parser):
@@ -53,33 +49,15 @@ class Remove(Remove, DockerActionMixin):
 		self.percentage = 5
 		super(Remove, self)._do_it(app, args)
 
-	def _unregister_host(self, app, args):
-		ucr = ConfigRegistry()
-		ucr.load()
-		hostdn = ucr.get(app.ucr_hostdn_key)
-		if not hostdn:
-			self.log('No hostdn for %s found. Nothing to remove' % app.id)
-			return
-		lo, pos = self._get_ldap_connection(args)
-		remove_object_if_exists('computers/%s' % app.docker_server_role, lo, pos, hostdn)
-
 	def _remove_app(self, app, args):
 		if not app.docker:
 			super(Remove, self)._remove_app(app, args)
 		else:
-			self._remove_docker_image(app, args)
+			self._remove_docker_container(app, args)
 
-	def _remove_docker_image(self, app, args):
+	def _remove_docker_container(self, app, args):
 		Stop.call(app=app)
 		if not args.keep_data:
 			docker = Docker(app, self.logger)
 			if docker.container:
 				docker.rm()
-
-	def _unregister_app(self, app, args):
-		try:
-			os.unlink(Stop.get_init(app))
-		except OSError:
-			pass
-		return super(Remove, self)._unregister_app(app, args)
-

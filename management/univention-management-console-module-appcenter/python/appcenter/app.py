@@ -53,7 +53,7 @@ from univention.appcenter.utils import mkdir, get_current_ram_available, _
 CACHE_DIR = '/var/cache/univention-appcenter'
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/archives/all.tar.gz'
 SHARE_DIR = '/usr/share/univention-appcenter/apps'
-DATA_DIR = '/var/lib/appcenter/app'
+DATA_DIR = '/var/lib/univention-appcenter/apps'
 CONTAINER_SCRIPTS_PATH = '/usr/share/univention-docker-container-mode/'
 
 app_logger = get_base_logger().getChild('apps')
@@ -376,6 +376,7 @@ class App(object):
 	required_ucs_version = AppAttribute(regex=r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$')
 	end_of_life = AppBooleanAttribute()
 
+	without_repository = AppBooleanAttribute()
 	default_packages = AppListAttribute()
 	default_packages_master = AppListAttribute()
 
@@ -391,7 +392,7 @@ class App(object):
 	supported_architectures = AppListAttribute(default=['amd64', 'i386'], choices=['amd64', 'i386'])
 	min_physical_ram = AppIntAttribute(default=0)
 
-	use_shop = AppBooleanAttribute(localisable=True)
+	#use_shop = AppBooleanAttribute(localisable=True)
 	shop_url = AppAttribute(localisable=True)
 
 	ad_member_issue_hide = AppBooleanAttribute()
@@ -417,6 +418,12 @@ class App(object):
 			setattr(self, attr.name, kwargs.get(attr.name))
 		if self.docker:
 			self.supported_architectures = ['amd64']
+
+	def attrs_dict(self):
+		ret = {}
+		for attr in self._attrs:
+			ret[attr.name] = getattr(self, attr.name)
+		return ret
 
 	def get_docker_image_name(self):
 		image = self.get_docker_images()[0]

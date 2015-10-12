@@ -28,12 +28,14 @@
 # <http://www.gnu.org/licenses/>.
 
 . /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/ldap.sh
 
 JS_SCRIPT_FULLNAME="$(readlink -f "$JS_RUNNING_FILENAME")"
 joinscript_get_package_name
 APP="$JS_PACKAGE"
 SERVICE="$(univention-app get "$APP" Application:Name --values-only)"
 ucr_container_key="$(univention-app get $APP ucr_container_key --values-only)"
+APP_VERSION="$(univention-app get $APP version --values-only)"
 CONTAINER=$(ucr get "$ucr_container_key")
 
 joinscript_add_simple_app_system_user () {
@@ -84,4 +86,12 @@ joinscript_container_file_touch () {
 joinscript_container_file () {
 	joinscript_container_is_running 1>/dev/null || die
 	echo "/var/lib/docker/overlay/$CONTAINER/merged/$1"
+}
+
+joinscript_register_schema () {
+	ucs_registerLDAPExtension \
+		--schema "/usr/share/univention-appcenter/apps/$APP/$APP.schema" \
+		--packagename "appcenter-app-$APP" \
+		--packageversion "$APP_VERSION" \
+		"$@"
 }
