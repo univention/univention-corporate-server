@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.34-1) unstable; urgency=medium
+
+  * Bug #39233: unify cookies, add get/session-info
+
+ -- Florian Best <best@univention.de>  Mon, 12 Oct 2015 19:23:19 +0200
+
 univention-management-console-frontend (5.0.33-1) unstable; urgency=medium
 
   * Bug #31943: fix scheme for redirections

@@ -60,7 +60,7 @@ from univention.management.console.log import CORE, log_init
 from univention.management.console.log import log_reopen
 from univention.config_registry import ConfigRegistry
 
-from saml2 import BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT, BINDING_HTTP_REDIRECT, time_util
+from saml2 import BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT, BINDING_HTTP_REDIRECT
 from saml2.client import Saml2Client
 from saml2.metadata import create_metadata_string
 from saml2.response import VerificationError, UnsolicitedResponse, StatusError
@@ -176,9 +176,8 @@ class SessionClient(object):
 
 	def authenticate_user(self, request, response_queue):
 		"""Send authentication request to UMC server."""
-		CORE.info('SessionClient(0x%x): authenticate_user: sending authentication request for user %s' % (id(self), request.body['username']))
+		CORE.info('SessionClient(0x%x): authenticate_user: sending authentication request for user %r' % (id(self), request.body['username']))
 		self._auth_response = umcp.Response(request)
-		self._auth_response.body['sessionid'] = request.body.get('sessionid', '')
 		self._auth_response_queue = response_queue
 		self.client.authenticate(request)
 
@@ -289,14 +288,10 @@ class UMCP_Dispatcher(object):
 			if queuerequest.request.command == 'AUTH' and client is None:
 				# AUTH request
 				CORE.info('UMCP_Dispatcher: check_queue: AUTH request')
-				if not queuerequest.sessionid:
-					CORE.info('UMCP_Dispatcher: check_queue: creating new sessionid')
-					queuerequest.sessionid = str(uuid.uuid4())
-
 				try:
 					# create new session / umcp client
 					# add a small offset to the timeout in order to avoid a mismatch between frontend and backend
-					client = SessionClient(timeout=_session_timeout + 5, ip=queuerequest.ip)
+					client = SessionClient(timeout=queuerequest.timeout + 5, ip=queuerequest.ip)
 				except Exception as exc:
 					CORE.process('Failed to create UMC connection: %s' % (exc,))
 					response = umcp.Response(queuerequest.request)
@@ -317,8 +312,6 @@ class UMCP_Dispatcher(object):
 				client.client.signal_connect('closed', callback)
 
 			if queuerequest.request.command == 'AUTH':
-				# save new sessionid in UMCP request so it can be returned after authentication
-				queuerequest.request.body['sessionid'] = queuerequest.sessionid
 				client.authenticate_user(queuerequest.request, queuerequest.response_queue)
 			else:
 				# COMMAND / GET / SET request
@@ -338,9 +331,9 @@ class UMCP_Dispatcher(object):
 		CORE.info('Open sessions: %s' % (','.join(cls.sessions.keys())))
 		try:
 			del cls.sessions[sessionid]
-			CORE.info('Cleaning up session %s' % sessionid)
+			CORE.info('Cleaning up session %r' % (sessionid,))
 		except KeyError:
-			CORE.info('Session %s not found' % sessionid)
+			CORE.info('Session %r not found' % (sessionid,))
 
 
 class UploadManager(dict):
@@ -378,11 +371,50 @@ class QueueRequest(object):
 	"""Element for the request queue containing the assoziated session
 	ID, the request object, a response queue and the request ip address."""
 
-	def __init__(self, sessionid, request, response_queue, ip):
+	def __init__(self, sessionid, request, response_queue, ip, timeout):
 		self.sessionid = sessionid
 		self.request = request
 		self.response_queue = response_queue
 		self.ip = ip
+		self.timeout = timeout
+
+
+class User(object):
+
+	def __init__(self, sessionid, username, saml=None):
+		self.sessionid = sessionid
+		self.username = username
+		self.saml = saml
+
+	@property
+	def time_remaining(self):
+		return self.saml.time_remaining
+
+	def timed_out(self):
+		return self.saml.timed_out()
+
+	def __repr__(self):
+		return '<User(%s, %s, %s)>' % (self.username, self.sessionid, self.saml is not None)
+
+
+class SAMLUser(object):
+
+	def __init__(self, response, message):
+		self.response = response
+		self.message = message
+		self.data = response.ava
+		self.username = ''.join(self.data['uid'])
+
+	@property
+	def time_remaining(self):
+		if self.response.not_on_or_after == 0:
+			return 0
+		return int(self.response.not_on_or_after - time.time())
+
+	def timed_out(self):
+		if self.response.not_on_or_after == 0:
+			return False
+		return self.time_remaining < 0
 
 
 @log_exceptions
@@ -424,6 +456,7 @@ class UMC_HTTPError(HTTPError):
 
 
 class SAML_Error(UMC_HTTPError):
+
 	pass
 
 
@@ -458,8 +491,7 @@ class Ressource(object):
 		'info': CORE.info,
 	}
 
-	uid2user = {}
-	saml_cookie_name = "UMCSSOSessionId"
+	sessions = {}
 
 	@property
 	def name(self):
@@ -480,59 +512,81 @@ class Ressource(object):
 				port = ''
 		return '%s%s' % (name, port)
 
-	@log_exceptions
 	def get_session_id(self):
 		"""get the current session ID from cookie."""
 		sessionid = self.get_cookie('UMCSessionId')
 		if not sessionid:
-			self._log('info', 'no sessionid found')
+			self._log('info', 'no session found')
 			return
 		self._log('info', 'found sessionid')
-		self._log(99, 'sessionid="%s"' % (sessionid))
+		self._log(99, 'sessionid=%r' % (sessionid,))
 		return sessionid
 
+	def get_session(self):
+		return UMCP_Dispatcher.sessions.get(self.get_session_id())
+
+	@property
+	def session_validity(self):
+		validity = _session_timeout
+		user = self.get_user()
+		if user and user.saml is not None:
+			validity = user.time_remaining
+		return validity
+
+	@property
+	def session_remaining(self):
+		user = self.get_user()
+		remaining = 0
+		if user and user.saml is not None:
+			remaining = user.time_remaining
+		else:
+			client = self.get_session()
+			if client is not None:
+				remaining = client._time_remaining
+		return remaining
+
 	def set_cookies(self, *cookies, **kwargs):
+		# TODO: use expiration from session timeout?
 		# set the cookie once during successful authentication
 		# force expiration of cookie in 5 years from now on...
 		# IE does not support max-age
 		expires = kwargs.get('expires')
 		if expires is None:
-			expiration = datetime.datetime.now()
-			expiration = expiration.replace(year=expiration.year + 5)
-			expires = expiration.strftime("%a, %d-%b-%Y %H:%M:%S GMT")
+			expires = datetime.datetime.now()
+			expires = expires.replace(year=expires.year + 5)
 		cookie = cherrypy.response.cookie
 		for name, value in cookies:
 			name = self.suffixed_cookie_name(name)
 			cookie[name] = value
-			cookie[name]['expires'] = expires
+			cookie[name]['expires'] = expires.strftime("%a, %d-%b-%Y %H:%M:%S GMT")
 			cookie[name]['version'] = 1
 			cookie[name]['path'] = '/univention-management-console/'
 
 	def get_cookie(self, name):
-		morsel = cherrypy.request.cookie.get(self.suffixed_cookie_name(name), None)
-		if morsel is None:
-			morsel = cherrypy.request.cookie.get(name, None)
+		cookie = cherrypy.request.cookie.get
+		morsel = cookie(self.suffixed_cookie_name(name)) or cookie(name)
 		if morsel:
 			return morsel.value
 
-	def get_saml_user(self):
-		value = self.get_cookie(self.saml_cookie_name)
+	def set_session(self, sessionid, username, saml=None):
+		olduser = self.get_user()
+
+		user = User(sessionid, username, saml or olduser and olduser.saml)
+
+		self.sessions[sessionid] = user
+		self.set_cookies(('UMCSessionId', sessionid), ('UMCUsername', username))
+		return user
+
+	def expire_session(self):
+		sessionid = self.get_session_id()
+		if sessionid:
+			UMCP_Dispatcher.cleanup_session(sessionid)
+			self.set_cookies(('UMCSessionId', ''), expires=datetime.datetime.now())
+
+	def get_user(self):
+		value = self.get_cookie('UMCSessionId')
 		if value:
-			return self.uid2user.get(value)
-
-	def delete_saml_cookie(self):
-		self.set_cookies((self.saml_cookie_name, ''), expires=self._saml_expiration())
-
-	def set_saml_cookie(self, user):
-		uid = rndstr(32)
-		self.uid2user[uid] = user
-		self.set_cookies((self.saml_cookie_name, uid), ('UMCUsername', user.username), expires=self._saml_expiration(int(user.response.not_on_or_after - time.time())))
-
-	def _saml_expiration(self, timeout=None, tformat='%a, %d-%b-%Y %T GMT'):
-		if timeout is None:  # now
-			return time_util.instant(tformat)
-		# validity time should match lifetime of assertions
-		return time_util.in_a_while(minutes=timeout, format=tformat)
+			return self.sessions.get(value)
 
 
 class CPgeneric(Ressource):
@@ -561,6 +615,11 @@ class CPgeneric(Ressource):
 		if not sessionid:
 			raise UMC_HTTPError(UNAUTHORIZED)
 
+		args = self.get_arguments(kwargs)
+
+		return self.get_response(sessionid, path, args)
+
+	def get_arguments(self, kwargs):
 		if cherrypy.request.headers.get('Content-Type', '').startswith('application/json'):  # normal (json) request
 			# get body and parse json
 			body = '{}'
@@ -576,8 +635,7 @@ class CPgeneric(Ressource):
 			args = {'options': kwargs}
 			if 'flavor' in kwargs:
 				args['flavor'] = kwargs['flavor']
-
-		return self.get_response(sessionid, path, args)
+		return args
 
 	@log_exceptions
 	def get_response(self, sessionid, path, args):
@@ -588,12 +646,13 @@ class CPgeneric(Ressource):
 		response_queue = Queue.Queue()
 
 		# send request to UMC server
-		request = QueueRequest(sessionid, req, response_queue, get_ip_address())
+		request = QueueRequest(sessionid, req, response_queue, get_ip_address(), self.session_validity)
 		UMCP_Dispatcher._queue_send.put(request)
 
-		self._log('info', 'pushed request(0x%x) to queue(0x%x) - waiting for response (sessionid="%s")' % (id(req), id(response_queue), sessionid))
+		self._log(99, 'queue(0x%x): sessionid=%r' % (id(response_queue), sessionid,))
+		self._log('info', 'pushed request(0x%x) to queue(0x%x) - waiting for response' % (id(req), id(response_queue)))
 		response = response_queue.get()
-		self._log('info', 'got response(0x%x) from queue(0x%x): status=%s (sessionid="%s")' % (id(response), id(response_queue), response.status, sessionid))
+		self._log('info', 'got response(0x%x) from queue(0x%x): status=%s' % (id(response), id(response_queue), response.status))
 
 		status = response.status
 		body = response.body
@@ -630,12 +689,21 @@ class CPGet(CPgeneric):
 
 		return umcp.Request('GET', arguments=[path], options=args.get('options', {}))
 
-
-class IPAddresses(Ressource):
+	@cherrypy.expose
+	def session_info(self, *args ,**kwargs):
+		info = {}
+		user = self.get_user()
+		if user is None:
+			raise UMC_HTTPError(UNAUTHORIZED)
+		info['username'] = user.username
+		info['auth_type'] = user.saml and 'SAML'
+		info['remaining'] = self.session_remaining
+		info['validity'] = self.session_validity
+		return json.dumps({"status": 200, "result": info})
 
 	@cherrypy.expose
 	@log_exceptions
-	def default(self, *a, **kw):
+	def ipaddress(self, *a, **kw):
 		try:
 			addresses = self.addresses
 		except ValueError:
@@ -720,25 +788,20 @@ class CPUpload(CPgeneric):
 	@cherrypy.expose
 	@log_exceptions
 	def default(self, *path, **kwargs):
-		self._log('info', 'got new request')
-
-		# get the session id from the request
-		sessionid = self.get_session_id()
-		if not sessionid:
-			raise UMC_HTTPError(UNAUTHORIZED)
-
-		if not cherrypy.request.headers.get('Content-Type', '').startswith('multipart/form-data'):
-			raise UMC_HTTPError(BAD_REQUEST, 'Content type and URL do not match')
-
-		response = self.get_response(sessionid, path, kwargs)
+		response = super(CPUpload, self).default(*path, **kwargs)
 
 		# check if the request is a iframe upload
 		if 'iframe' in kwargs and (kwargs['iframe'] not in ('false', False, 0, '0')):
 			# this is a workaround to make iframe uploads work, they need the textarea field
-			cherrypy.response.headers['Content-Type'] = umcp.MIMETYPE_HTML
+			cherrypy.response.headers['Content-Type'] = 'text/html'
 			return '<html><body><textarea>%s</textarea></body></html>' % (response)
 
 		return response
+
+	def get_arguments(self, kwargs):
+		if not cherrypy.request.headers.get('Content-Type', '').startswith('multipart/form-data'):
+			raise UMC_HTTPError(BAD_REQUEST, 'Content type and URL do not match')
+		return kwargs
 
 
 class CPCommand(CPgeneric):
@@ -764,23 +827,23 @@ class CPAuth(CPgeneric):
 		remote = cherrypy.request.remote
 		CORE.info('CPAuth/auth/sso: got new auth request (%s:%s <=> %s)' % (get_ip_address(), remote.port, remote.name))
 
-		user = self.get_saml_user()
-		if user is None or user.timed_out():
-			self.delete_saml_cookie()
+		user = self.get_user()
+		if user is None or (user and user.saml is None) or user.timed_out():
+			# redirect user to login page in case he's not authenticated or his session timed out
 			raise HTTPRedirect('/univention-management-console/saml/')
 
 		req = umcp.Request('AUTH')
 		req.body = {
 			"auth_type": "SAML",
 			"username": user.username,
-			"password": user.message
+			"password": user.saml.message
 		}
 
 		try:
-			response = self._auth_request(req)
+			response = self._auth_request(req, user.sessionid)
 		except UMC_HTTPError as exc:
 			if exc.status == UNAUTHORIZED:
-				self.delete_saml_cookie()
+				# slapd down, time synchronization between IDP and SP is wrong, etc.
 				raise HTTPRedirect('/univention-management-console/saml/')  # FIXME: this might cause a endless redirection loop e.g. if slapd is down
 			raise
 
@@ -812,41 +875,44 @@ class CPAuth(CPgeneric):
 
 		CORE.info('auth: request: command=%s' % cherrypy.request.path_info)
 
+		# create a sessionid if the user is not yet authenticated
+		sessionid = self.get_session_id()
+		if sessionid not in UMCP_Dispatcher.sessions:
+			sessionid = str(uuid.uuid4())
+
 		# create new UMCP request
 		req = umcp.Request('AUTH')
 		req.body["auth_type"] = data['options'].get('auth_type')
 		req.body['username'] = data['options'].get('username', '')
 		req.body['password'] = data['options'].get('password', '')
 		req.body['new_password'] = data['options'].get('new_password')
-		return self._auth_request(req)
+		return self._auth_request(req, sessionid)
 
-	def _auth_request(self, req):
+	def _auth_request(self, req, sessionid):
 		req.body['locale'] = (cherrypy.request.headers.values('Accept-Language') or ['C'])[0].replace('-', '_')
 
 		# create new response queue
 		response_queue = Queue.Queue()
 
 		# send request to UMC server
-		sessionid = self.get_session_id()
-		if sessionid not in UMCP_Dispatcher.sessions:
-			sessionid = None
-		request = QueueRequest(sessionid, req, response_queue, get_ip_address())
+		request = QueueRequest(sessionid, req, response_queue, get_ip_address(), self.session_validity)
 		UMCP_Dispatcher._queue_send.put(request)
 
 		CORE.info('auth: pushed request to queue - waiting for response')
 		response = response_queue.get()
 		CORE.info('auth: got response with status %s' % response.status)
 
-		if response.status == umcp.SUCCESS and response.body.get('sessionid'):
-			sessionid = response.body.pop('sessionid')
-			CORE.info('auth: creating session with sessionid=%s' % (sessionid,))
+		if response.status == umcp.SUCCESS:
+			CORE.info('auth: creating session with sessionid=%r' % (sessionid,))
 
-			self.set_cookies(('UMCSessionId', sessionid), ('UMCUsername', req.body.get('username')))
-
+			username = req.body.get('username')
+			body = response.body
 			cherrypy.response.headers['Content-Type'] = response.mimetype
 			if response.mimetype == 'application/json':
-				return json.dumps(response.body)
-			return response.body
+				username = response.body.get('username', username)
+				body = json.dumps(response.body)
+			self.set_session(sessionid, username)
+			return body
 
 		CORE.process('auth: username: %s, status code: %s' % (req.body.get('username'), response.status))
 		raise UMC_HTTPError(response.status, response.message)
@@ -858,7 +924,6 @@ class Root(Ressource):
 		self.command = CPCommand()
 		self.auth = CPAuth()
 		self.get = CPGet()
-		self.get.ipaddress = IPAddresses()
 		self.set = CPSet()
 		self.upload = CPUpload()
 		self.saml = SAML()
@@ -875,13 +940,10 @@ class Root(Ressource):
 	@cherrypy.expose
 	@log_exceptions
 	def logout(self, **kwargs):
-		sessionid = self.get_session_id()
-		if sessionid:
-			UMCP_Dispatcher.cleanup_session(sessionid)
-			self.set_cookies(('UMCSessionId', ''), expires='-1')
-		user = self.get_saml_user()
-		if user is not None:
+		user = self.get_user()
+		if user and user.saml is not None:
 			raise HTTPRedirect('/univention-management-console/saml/logout')
+		self.expire_session()
 		raise HTTPRedirect('/univention-management-console/')
 
 
@@ -931,20 +993,21 @@ class SAML(Ressource):
 	@cherrypy.tools.fix_uri()
 	def index(self, *args, **kwargs):
 		binding, message, relay_state = self._get_saml_message()
-		user = self.get_saml_user()
+		user = self.get_user()
 		relay_state = self.relay_state.get(relay_state, '')
 
 		is_passive = 'passive' in kwargs or '?passive=true' in relay_state
 
-		if user is not None and not is_passive:
+		if user and user.saml is not None and not is_passive:
 			raise HTTPRedirect('/univention-management-console/auth/sso')
 
 		if message is None:
 			return self.do_single_sign_on(is_passive='true' if is_passive else 'false')
 
 		response = self.acs(message, binding)
-		user = SAMLUser(response, message)
-		self.set_saml_cookie(user)
+
+		saml = SAMLUser(response, message)
+		user = self.set_session(str(uuid.uuid4()), saml.username, saml)
 
 		path = '/univention-management-console/auth/sso'
 		if is_passive:
@@ -965,13 +1028,13 @@ class SAML(Ressource):
 	@log_exceptions
 	@cherrypy.tools.fix_uri()
 	def logout(self, *args, **kwargs):
-		user = self.get_saml_user()
+		user = self.get_user()
 
-		if user is None:
+		if user is None or user.saml is None:
 			return self._logout_success()
 
 		# What if more than one
-		data = self.sp.global_logout(user.response.name_id)
+		data = self.sp.global_logout(user.saml.response.name_id)
 
 		for entity_id, logout_info in data.items():
 			if not isinstance(logout_info, tuple):
@@ -985,8 +1048,10 @@ class SAML(Ressource):
 		return self._logout_success()
 
 	def _logout_success(self):
-		self.delete_saml_cookie()
-		raise HTTPRedirect('/univention-management-console/')
+		user = self.get_user()
+		if user:
+			user.saml = None
+		raise HTTPRedirect('/univention-management-console/logout')
 
 	def _get_saml_message(self):
 		"""Get the SAML message and corresponding binding from the HTTP request"""
@@ -1021,23 +1086,23 @@ class SAML(Ressource):
 		try:
 			response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries)#, allow_unsolicited=True)
 		except UnknownPrincipal as exc:
-			raise UMC_HTTPError(500, "UnknownPrincipal: %s" % (exc,))
+			raise SAML_Error(500, "UnknownPrincipal: %s" % (exc,))
 		except UnsupportedBinding as exc:
-			raise UMC_HTTPError(500, "UnsupportedBinding: %s" % (exc,))
+			raise SAML_Error(500, "UnsupportedBinding: %s" % (exc,))
 		except VerificationError as exc:
-			raise UMC_HTTPError(500, "Verification error: %s" % (exc,))
+			raise SAML_Error(500, "Verification error: %s" % (exc,))
 		except UnsolicitedResponse as exc:  # e.g. UMC-webserver restart between IDP→SP authentication
 			# TODO: redirect to SSO?
-			raise UMC_HTTPError(500, 'Unsolicited response: %s' % (exc,))
+			raise SAML_Error(500, 'Unsolicited response: %s' % (exc,))
 		except StatusError as exc:
 			CORE.error('Status error: %s' % (exc,))
-			raise UMC_HTTPError(500, 'Status error: %s' % (exc,))
+			raise SAML_Error(500, 'Status error: %s' % (exc,))
 		except MissingKey as exc:
-			raise UMC_HTTPError(500, 'Unknown issuer: %s' % (exc,))
+			raise SAML_Error(500, 'Unknown issuer: %s' % (exc,))
 		except SignatureError as exc:
-			raise UMC_HTTPError(500, 'Signature error: %s' % (exc,))
+			raise SAML_Error(500, 'Signature error: %s' % (exc,))
 		if response is None:
-			raise UMC_HTTPError(400, "The SAML message is invalid for this service provider.")
+			raise SAML_Error(400, "The SAML message is invalid for this service provider.")
 		return response
 
 	def do_single_sign_on(self, **kwargs):
@@ -1121,20 +1186,6 @@ class SAML(Ressource):
 				raise HTTPRedirect(cherrypy.response.headers['Location'], status=cherrypy.response.status)
 
 		return body
-
-
-class SAMLUser(object):
-
-	def __init__(self, response, message):
-		self.response = response
-		self.message = message
-		self.data = response.ava
-		self.username = ''.join(self.data['uid'])
-
-	def timed_out(self):
-		if self.response.not_on_or_after == 0:
-			return False
-		return self.response.not_on_or_after - time.time() < 0
 
 
 @log_exceptions
