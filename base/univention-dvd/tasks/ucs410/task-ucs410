@@ -63,6 +63,7 @@ univention-nagios-cups
 univention-dhcp
 
 univention-fetchmail
+univention-fetchmail-schema
 
 univention-kde
 kde-l10n-de
@@ -85,6 +86,7 @@ univention-nagios-server
 
 univention-pkgdb
 
+univention-samba
 univention-samba4
 
 univention-s4-connector
