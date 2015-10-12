@@ -24,6 +24,7 @@ ntpdate
 univention-kernel-image
 univention-initrd
 dkms
+firmware-linux
 /* add the list of firmware packages here too if required */
 #ifdef FORCE_FIRMWARE
 #    include <firmware>
@@ -35,6 +36,21 @@ efibootmgr
 shim-signed
 grub-efi-amd64-signed
 
+/* Recommended base packages */
+eject
+elinks
+less
+locate
+nmap
+univention-network-common
+locate
+vim
+wget
+zip
+bridge-utils
+ifenslave-2.6
+vlan
+
 /* Role Packages */
 univention-server-master
 univention-server-backup
@@ -44,9 +60,12 @@ univention-basesystem
 univention-container-role-common
 /* Recommends */
 openssh-server
+openssh-blacklist
 python-univention-license
 univention-nagios-client
 univention-saml
+
+univention-management-console-module-quota
 
 
 /* usr/share/univention-system-setup/download-packages */
@@ -76,13 +95,17 @@ univention-radius
 univention-virtual-machine-manager-node-kvm
 univention-kvm-virtio
 univention-nagios-libvirtd-kvm
+etherboot-qemu
 
 univention-mail-server
 bsd-mailx
 univention-antivir-mail
 univention-spamassassin
+libmail-spf-perl
+re2c
 
 univention-nagios-server
+nagios-plugins-contrib
 
 univention-pkgdb
 
@@ -99,6 +122,7 @@ univention-firewall
 univention-virtual-machine-manager-daemon
 univention-nagios-uvmmd
 libvirt-clients
+ebtables
 
 univention-welcome-screen
 firefox-de
