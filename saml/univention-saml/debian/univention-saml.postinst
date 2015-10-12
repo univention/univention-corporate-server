@@ -59,15 +59,15 @@ configure)
 	fi
 
 	chown -R root:samlcgi /etc/simplesamlphp
-	chown root:samlcgi /var/run/univention-saml/
-	chmod 770 /var/run/univention-saml/
 
 	if [ -x /etc/init.d/univention-directory-listener ]; then
 		invoke-rc.d univention-directory-listener restart
 	fi
 
-	touch /var/log/apache2/suexec.log
-	chown root:adm /var/log/apache2/suexec.log
+	for file in /var/log/apache2/suexec.log /var/log/memcached.log /var/log/memcached-saml.log /var/log/stunnel4/stunnel.log; do
+		touch "$file"
+		chown root:adm "$file"
+	done
 
 	a2ensite univention-saml-apache
 	a2enmod headers

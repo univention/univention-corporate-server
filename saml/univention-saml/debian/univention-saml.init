@@ -38,7 +38,9 @@ case "$1" in
 	start)
 		# TODO: runit
 		log_action_msg "Starting $NAME"
+		mkdir -p /var/run/univention-saml/
 		chown samlcgi:root /var/run/univention-saml/
+		chmod 770 /var/run/univention-saml/
 		/etc/init.d/memcached start
 		/etc/init.d/stunnel4 start
 		sleep 1

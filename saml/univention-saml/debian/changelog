@@ -1,3 +1,10 @@
+univention-saml (3.0.21-2) unstable; urgency=medium
+
+  * Bug #39495: don't create logfiles world-readable
+  * Bug #39399: create /var/run/univention-saml/ dynamically
+
+ -- Florian Best <best@univention.de>  Mon, 12 Oct 2015 11:21:52 +0200
+
 univention-saml (3.0.21-1) unstable; urgency=medium
 
   * Bug #39399: move saml sockets into /var/run/univention-saml/
