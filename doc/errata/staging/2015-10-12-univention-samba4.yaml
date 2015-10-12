@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: univention-samba4
+fix: 4.0.3-9.617.201510121031
+version: [3]
+desc: |
+ This update addresses the following issue:
+ * The ALC check in the sysvol sync script has been fixed.
+bug: [39511]
