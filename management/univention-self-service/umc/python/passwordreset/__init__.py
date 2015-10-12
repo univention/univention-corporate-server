@@ -36,10 +36,6 @@ import datetime
 import random
 import string
 import atexit
-import os
-import os.path
-import subprocess
-import json
 from functools import wraps
 from ldap import LDAPError
 from ldap.filter import escape_filter_chars
@@ -60,18 +56,16 @@ from univention.management.console.modules import UMC_Error
 from univention.management.console.ldap import get_user_connection
 
 from univention.management.console.modules.passwordreset.tokendb import TokenDB, MultipleTokensInDB
+from univention.management.console.modules.passwordreset.sending import get_plugins as get_sending_plugins
 
 _ = Translation('univention-management-console-module-passwordreset').translate
 
-METHODS = {
-	# method: (LDAP attribute, tolken length, UCRV)
-	"email": ("e-mail", 64, "self-service/passwordreset/email/"),
-	"sms": ("mobileTelephoneNumber", 12, "self-service/passwordreset/sms/")}
 TOKEN_VALIDITY_TIME = 3600
 
 GRP_BLACKLIST = ["Domain Admins", "Windows Hosts", "DC Backup Hosts", "DC Slave", "Hosts", "Computers", "Backup Join", "Slave Join", "World Authority", "Null Authority", "Nobody", "Enterprise Domain Controllers", "Remote Interactive Logon", "SChannel Authentication", "Digest Authentication", "Terminal Server User", "NTLM Authentication", "Other Organization", "This Organization", "Anonymous Logon", "Network Service", "Creator Group", "Creator Owner", "Local Service", "Owner Rights", "Interactive", "Restricted", "Network", "Service", "System", "Batch", "Proxy", "IUSR", "Self", "Performance Log Users", "DnsUpdateProxy", "Cryptographic Operators", "Schema Admins", "Backup Operators", "Administrators", "Domain Computers", "Windows Authorization Access Group", "IIS_IUSRS", "RAS and IAS Servers", "Network Configuration Operators", "Account Operators", "Distributed COM Users", "Read-Only Domain Controllers", "Terminal Server License Servers", "Replicator", "Allowed RODC Password Replication Group", "Denied RODC Password Replication Group", "Enterprise Admins", "Group Policy Creator Owners", "Server Operators", "Domain Controllers", "DnsAdmins", "Cert Publishers", "Incoming Forest Trust Builders", "Event Log Readers", "Pre-Windows 2000 Compatible Access", "Remote Desktop Users", "Performance Monitor Users", "Certificate Service DCOM Access", "Enterprise Read-Only Domain Controllers"]
 
 USER_BLACKLIST = ["Administrator", "krbtgt"]
+
 
 def prevent_denial_of_service(func):
 	def _decorated(self, request, *args, **kwargs):
@@ -115,6 +109,8 @@ class Instance(Base):
 		if not self.db.table_exists():
 			self.db.create_table()
 
+		self.send_plugins = get_sending_plugins(MODULE.info)
+
 #	@prevent_denial_of_service
 	@sanitize(
 		username=StringSanitizer(required=True),
@@ -138,8 +134,10 @@ class Instance(Base):
 		MODULE.info("send_token(): username: '{}' method: '{}'.".format(username, method))
 		if self.is_blacklisted(username):
 			raise UMC_Error(_("User is blacklisted."))
-		if method not in METHODS.keys():
-			MODULE.error("send_token() method '{}' not in {}.".format(method, METHODS.keys()))
+		try:
+			plugin = self.send_plugins[method]
+		except KeyError:
+			MODULE.error("send_token() method '{}' not in {}.".format(method, self.send_plugins.keys()))
 			raise UMC_Error(_("Unknown method '{}'.".format(method)))
 		# check if the user has the required attribute set
 		config = univention.admin.config.config()
@@ -154,9 +152,7 @@ class Instance(Base):
 			raise UMC_Error(_("Unknown user '{}'.".format(username)))
 		user.open()
 
-		ldap_attr = METHODS[method][0]
-		token_length = METHODS[method][1]
-		if len(user[ldap_attr]) > 0:
+		if len(user[plugin.ldap_attribute]) > 0:
 			# found contact info
 			try:
 				token_from_db = self.db.get_one(username=username)
@@ -166,7 +162,7 @@ class Instance(Base):
 				self.db.delete_tokens(username=username)
 				token_from_db = None
 
-			token = self.create_token(token_length)
+			token = self.create_token(plugin.token_length)
 			if token_from_db:
 				if (datetime.datetime.now() - token_from_db["timestamp"]).seconds < TOKEN_VALIDITY_TIME:
 					raise UMC_Error(_("Token for user '{}' still valid. Please retry in one hour.".format(username)))
@@ -179,7 +175,7 @@ class Instance(Base):
 				MODULE.info("send_token(): Adding new token for user '{}'...".format(username))
 				self.db.insert_token(username, method, token)
 			try:
-				self.send_message(username, method, user[ldap_attr], token)
+				self.send_message(username, method, user[plugin.ldap_attribute], token)
 			except:
 				MODULE.error("send_token(): Error sending token with via '{method}' to '{username}'.".format(
 					method=method, username=username))
@@ -247,9 +243,10 @@ class Instance(Base):
 			# no user found
 			raise UMC_Error(_("Unknown user '{}'.".format(username)))
 		user.open()
-		res = list()
 		# return list of method names, for all LDAP attribs user has data
-		self.finished(request.id, [k for k, v in METHODS.items() if user[v[0]]])
+		for k, v in self.send_plugins.items():
+			MODULE.info("get_reset_methods(): k: {} v: {} v.ldap_attribute".format(k, v, v.ldap_attribute))
+		self.finished(request.id, [k for k, v in self.send_plugins.items() if user[v.ldap_attribute]])
 
 	@staticmethod
 	def create_token(length):
@@ -259,43 +256,31 @@ class Instance(Base):
 		res = ""
 		for _ in xrange(length):
 			res += rand.choice(chars)
-		MODULE.info("create_token(%d): %r" % (length, res))
+		MODULE.info("create_token({}): {}".format(length, res))
 		return res
 
 	def send_message(self, username, method, addresses, token):
 		MODULE.info("send_message(): username: {} method: {} addresses: {} token: {}".format(username, method, addresses, token))
 		try:
-			method_cmd = ucr.get(METHODS[method][2]+"cmd")
-			method_enabled = ucr.is_true(METHODS[method][2]+"enabled")
-			method_server = ucr.get(METHODS[method][2]+"server")
+			plugin = self.send_plugins[method]
 		except KeyError:
 			raise UnknownMethodError("send_message(): Unknown method '{}'.".format(method))
-		if not method_enabled:
+		if not plugin.is_enabled:
 			raise MethodDisabledError("send_message(): Method '{}' is disabled by UCR.".format(method))
-		if os.path.isfile(method_cmd) and os.access(method_cmd, os.X_OK):
-			infos = json.dumps({
-				"server": method_server,
-				"username": username,
-				"addresses": addresses,
-				"token": token})
-			MODULE.info("send_message(): Running {}...".format(method_cmd))
-			cmd_proc = subprocess.Popen(method_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-			cmd_out, cmd_err = cmd_proc.communicate(input=infos)
-			cmd_exit = cmd_proc.wait()
-			MODULE.info("send_message(): EXIT code of {}: {}".format(method_cmd, cmd_exit))
-			if cmd_out:
-				MODULE.info("send_message(): STDOUT of {}:\n{}".format(method_cmd, cmd_out))
-			if cmd_err:
-				MODULE.info("send_message(): STDERR of {}:\n{}".format(method_cmd, cmd_err))
-			if cmd_exit != 0:
-				MODULE.info("send_message(): Sending not successful, deleting token...")
-				self.db.delete_tokens(username=username)
-			if cmd_exit == 0:
-				return True
-			else:
-				raise UMC_Error(_("Failed sending token."), status=500)
+		data = {
+			"username": username,
+			"addresses": addresses,
+			"token": token}
+		plugin.set_data(data)
+		MODULE.info("send_message(): Running plugin of class {}...".format(plugin.__class__.__name__))
+		try:
+			ret = plugin.send()
+		except Exception as ex:
+			raise UMC_Error(_("Failed while sending token: {}".format(ex)), status=500)
+		if ret:
+			return True
 		else:
-			raise IOError("send_message(): Cannot execute '{}'.".format(method_cmd))
+			raise UMC_Error(_("Failed sending token."), status=500)
 
 	@staticmethod
 	def auth(username, password):
@@ -384,7 +369,10 @@ class Instance(Base):
 
 		# get groups
 		lo = getMachineConnection()
-		userdn = lo.search(filter="(uid={})".format(escape_filter_chars(username)))[0][0]
+		try:
+			userdn = lo.search(filter="(uid={})".format(escape_filter_chars(username)))[0][0]
+		except IndexError:
+			raise UMC_Error(_("Unknown user '{}'.".format(username)))
 		groups_dns= Instance.get_groups(userdn)
 		for group_dn in list(groups_dns):
 			groups_dns.extend(Instance.get_nested_groups(group_dn))

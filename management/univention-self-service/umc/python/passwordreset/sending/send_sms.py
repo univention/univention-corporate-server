@@ -33,35 +33,41 @@
 #############################################################################
 #                                                                           #
 # This is meant as an example. Please feel free to copy this file and adapt #
-# it to your needs. After testing it, change the UCR variable               #
-# self-service/passwordreset/sms/cmd to point to your file.                 #
-#                                                                           #
-# To test your script, run:                                                 #
-#                                                                           #
-# echo '{"username": "test", "addresses": ["test@example.org"], "server": "localhost", "token": "abcdefgh"}' | /usr/lib/univention-self-service/my_send_sms.py #
+# it to your needs.                                                         #
 #                                                                           #
 #############################################################################
 
 #############################################################################
 #                                                                           #
-# A JSON string must be read from the standard input (stdin). Decoded it    #
-# yields the username, the text message gateway that is configured in the   #
-# UCR variable 'self-service/sms/server'.                                   #
-#                                                                           #
-# If the return code is other that 0, it is assumed that it was not         #
-# possible to send the token to the user. The token is then deleted from    #
-# the database.                                                             #
+# If the return code is other that True or an exception is raised and not   #
+# caught, it is assumed that it was not possible to send the token to the   #
+# user. The token is then deleted from the database.                        #
 #                                                                           #
 #############################################################################
 
-import sys
-import json
+from univention.config_registry import ConfigRegistry
+from univention.management.console.modules.passwordreset.send_plugin import UniventionSelfServiceTokenEmitter
 
-try:
-	infos = json.loads(sys.stdin.read().rstrip())
-except ValueError:
-	print "JSON is expected as input."
-	sys.exit(1)
 
-print "send_sms.py: received data: %r" % infos
-sys.exit(0)
+class SendSMS(UniventionSelfServiceTokenEmitter):
+	@staticmethod
+	def send_method():
+		return "sms"
+
+	@staticmethod
+	def is_enabled():
+		ucr = ConfigRegistry()
+		ucr.load()
+		return ucr.is_true("self-service/passwordreset/sms/enabled")
+
+	@property
+	def ldap_attribute(self):
+		return "mobileTelephoneNumber"
+		#return "self-service-mobile"
+
+	@property
+	def token_length(self):
+		return 12
+
+	def send(self):
+		raise NotImplementedError("Text message sending not yet implemented")

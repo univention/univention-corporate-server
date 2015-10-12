@@ -1,3 +1,9 @@
+univention-self-service (0.0.0-5) unstable; urgency=low
+
+  * make token sending code to plugins (Bug #37890)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 12 Oct 2015 17:49:43 +0200
+
 univention-self-service (0.0.0-4) unstable; urgency=low
 
   * Error messages reach UMC (Bug #37890)

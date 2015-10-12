@@ -77,19 +77,19 @@ def load_selfservice_plugins():
 			_plugins.append({"name": dir_, "info": info})
 		return _plugins
 
-	def load_plugin(module):
-		res = imp.load_module(MAIN_MODULE, *module["info"])
+	def load_plugin(_module):
+		res = imp.load_module(MAIN_MODULE, *_module["info"])
 		for thing in dir(res):
-			if thing.lower() == module["name"].lower():
+			if thing.lower() == _module["name"].lower():
 				possible_plugin_class = getattr(res, thing)
 				if inspect.isclass(possible_plugin_class) and issubclass(possible_plugin_class, UniventionSelfServiceFrontend):
 					return possible_plugin_class
-		cherrypy.log("self-service-wsgi.load_plugin(): Not a UniventionSelfServiceFrontend class: %r" % module["name"])
+		cherrypy.log("self-service-wsgi.load_plugin(): Not a UniventionSelfServiceFrontend class: %r" % _module["name"])
 		return None
 
-	for module in find_plugins():
-		cherrypy.log("self-service-wsgi.load_selfservice_plugins(): Loading plugin %r..." % module["name"])
-		plugin_class = load_plugin(module)
+	for _module in find_plugins():
+		cherrypy.log("self-service-wsgi.load_selfservice_plugins(): Loading plugin %r..." % _module["name"])
+		plugin_class = load_plugin(_module)
 		if plugin_class:
 			selfservice_plugins.append(plugin_class)
 	return selfservice_plugins
