@@ -1,3 +1,10 @@
+univention-samba4 (4.0.3-9) unstable; urgency=low
+
+  * fixed ACL check in sysvol-sync.sh (Bug #39511) 
+    (check only files and directories)
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Oct 2015 10:06:37 +0200
+
 univention-samba4 (4.0.3-8) unstable; urgency=low
 
   * added logging/error handling to sysvol-sync.sh (Bug #38868) 
