@@ -399,6 +399,12 @@ class App(object):
 	ad_member_issue_hide = AppBooleanAttribute()
 	ad_member_issue_password = AppBooleanAttribute()
 
+	app_report_object_type = AppAttribute()
+	app_report_object_filter = AppAttribute()
+	app_report_object_attribute = AppAttribute()
+	app_report_attribute_type = AppAttribute()
+	app_report_attribute_filter = AppAttribute()
+
 	docker_image = AppAttribute()
 	docker_allowed_images = AppListAttribute()
 	docker_volumes = AppListAttribute()

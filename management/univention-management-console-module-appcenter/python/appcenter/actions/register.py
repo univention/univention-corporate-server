@@ -265,7 +265,25 @@ class Register(CredentialsAction):
 		updates = {}
 		self.log('Registering UCR for %s' % app.id)
 		self.log('Marking %s as installed' % app)
-		ucr_update(ucr, {app.ucr_status_key: 'installed', app.ucr_version_key: app.version})
+		if app.is_installed():
+			status = ucr.get(app.ucr_status_key)
+		else:
+			status = 'installed'
+		ucr_update(ucr, {app.ucr_status_key: status, app.ucr_version_key: app.version})
+		updates.update(self._register_docker_variables(app, ucr))
+		updates.update(self._register_app_report_variables(app, ucr))
+		# Register app in LDAP (cn=...,cn=apps,cn=univention)
+		ldap_object = get_app_ldap_object(app, lo, pos, ucr, or_create=True)
+		self.log('Adding localhost to LDAP object')
+		ldap_object.add_localhost()
+		updates.update(self._register_overview_variables(app, ucr))
+		if not delay:
+			ucr_update(ucr, updates)
+			self._reload_apache()
+		return updates
+
+	def _register_docker_variables(self, app, ucr):
+		updates = {}
 		if app.docker:
 			try:
 				from univention.appcenter.actions.service import Service, ORIGINAL_INIT_SCRIPT
@@ -281,14 +299,17 @@ class Register(CredentialsAction):
 				except OSError as ex:
 					self.warn(str(ex))
 				updates[app.ucr_image_key] = app.get_docker_image_name()
+				port_updates = {}
+				current_port_config = {}
 				for app_id, container_port, host_port in app_ports():
 					if app_id == app.id:
-						updates[app.ucr_ports_key % container_port] = None
+						current_port_config[app.ucr_ports_key % container_port] = str(host_port)
+						port_updates[app.ucr_ports_key % container_port] = None
 				for port in app.ports_exclusive:
-					updates[app.ucr_ports_key % port] = str(port)
+					port_updates[app.ucr_ports_key % port] = str(port)
 				for port in app.ports_redirection:
 					host_port, container_port = port.split(':')
-					updates[app.ucr_ports_key % container_port] = str(host_port)
+					port_updates[app.ucr_ports_key % container_port] = str(host_port)
 				if app.auto_mod_proxy and app.has_local_web_interface():
 					self.log('Setting ports for apache proxy')
 					try:
@@ -307,36 +328,63 @@ class Register(CredentialsAction):
 					if next_port > (max_port - 2):
 						raise NoMorePorts(next_port)
 					if app.web_interface_port_http:
-						updates[app.ucr_ports_key % app.web_interface_port_http] = str(next_port)
+						key = app.ucr_ports_key % app.web_interface_port_http
+						value = str(next_port)
+						if key in current_port_config:
+							value = current_port_config[key]
+						port_updates[key] = value
 						next_port = max(ports_taken) + 2
 					if app.web_interface_port_https:
-						updates[app.ucr_ports_key % app.web_interface_port_https] = str(next_port)
+						key = app.ucr_ports_key % app.web_interface_port_https
+						value = str(next_port)
+						if key in current_port_config:
+							value = current_port_config[key]
+						port_updates[key] = value
+				for container_port, host_port in current_port_config.iteritems():
+					if container_port in port_updates:
+						if port_updates[container_port] == host_port:
+							port_updates.pop(container_port)
+				if port_updates:
+					ucr_update(ucr, port_updates)
+					updates.update(port_updates)
+		return updates
 
-			# Register app in LDAP (cn=...,cn=apps,cn=univention)
-			ldap_object = get_app_ldap_object(app, lo, pos, ucr, or_create=True)
-			self.log('Adding localhost to LDAP object')
-			ldap_object.add_localhost()
-			for key in ucr.iterkeys():
-				if re.match('ucs/web/overview/entries/[^/]+/%s/' % app.id, key):
-					updates[key] = None
-			if app.ucs_overview_category and app.web_interface:
-				self.log('Setting overview variables')
-				registry_key = 'ucs/web/overview/entries/%s/%s/%%s' % (app.ucs_overview_category, app.id)
-				variables = {
-					'icon': '/univention-management-console/js/dijit/themes/umc/icons/50x50/%s' % app.icon,
-					'port_http': str(app.web_interface_port_http or ''),
-					'port_https': str(app.web_interface_port_https or ''),
-					'label': app.get_localised('name'),
-					'label/de': app.get_localised('name', 'de'),
-					'description': app.get_localised('description'),
-					'description/de': app.get_localised('description', 'de'),
-					'link': app.web_interface,
-				}
-				for key, value in variables.iteritems():
-					updates[registry_key % key] = value
-		if not delay:
-			ucr_update(ucr, updates)
-			self._reload_apache()
+	def _register_app_report_variables(self, app, ucr):
+		updates = {}
+		for key in ucr.iterkeys():
+			if re.match('appreport/%s/' % app.id, key):
+				updates[key] = None
+		registry_key = 'appreport/%s/%%s' % app.id
+		anything_set = False
+		for key in ['object_type', 'object_filter', 'object_attribute', 'attribute_type', 'attribute_filter']:
+			value = getattr(app, 'app_report_%s' % key)
+			if value:
+				anything_set = True
+			updates[registry_key % key] = value
+		if anything_set:
+			updates[registry_key % 'report'] = 'yes'
+		return updates
+
+	def _register_overview_variables(self, app, ucr):
+		updates = {}
+		for key in ucr.iterkeys():
+			if re.match('ucs/web/overview/entries/[^/]+/%s/' % app.id, key):
+				updates[key] = None
+		if app.ucs_overview_category and app.web_interface:
+			self.log('Setting overview variables')
+			registry_key = 'ucs/web/overview/entries/%s/%s/%%s' % (app.ucs_overview_category, app.id)
+			variables = {
+				'icon': '/univention-management-console/js/dijit/themes/umc/icons/50x50/%s' % app.icon,
+				'port_http': str(app.web_interface_port_http or ''),
+				'port_https': str(app.web_interface_port_https or ''),
+				'label': app.get_localised('name'),
+				'label/de': app.get_localised('name', 'de'),
+				'description': app.get_localised('description'),
+				'description/de': app.get_localised('description', 'de'),
+				'link': app.web_interface,
+			}
+			for key, value in variables.iteritems():
+				updates[registry_key % key] = value
 		return updates
 
 	def _unregister_app(self, app, args, ucr, lo, pos, delay=False):
@@ -346,6 +394,8 @@ class Register(CredentialsAction):
 				if key.startswith('appcenter/apps/%s/' % app.id):
 					updates[key] = None
 				if re.match('ucs/web/overview/entries/[^/]+/%s/' % app.id, key):
+					updates[key] = None
+				if re.match('appreport/%s/' % app.id, key):
 					updates[key] = None
 			if app.docker:
 				try:
