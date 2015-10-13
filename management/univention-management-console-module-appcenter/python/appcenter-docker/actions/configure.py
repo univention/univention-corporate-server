@@ -43,7 +43,6 @@ from univention.config_registry.backend import _ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
-from univention.appcenter.docker import Docker
 from univention.appcenter.utils import app_is_running, mkdir
 
 
@@ -90,7 +89,7 @@ class Configure(UniventionAppAction):
 
 	@classmethod
 	def _get_app_ucr(cls, app):
-		docker = Docker(app, cls.logger)
+		docker = cls._get_docker(app)
 		ucr_file = docker.path('/etc/univention/base.conf')
 		if ucr_file:
 			mkdir(os.path.dirname(ucr_file))
@@ -189,7 +188,7 @@ class Configure(UniventionAppAction):
 			_ucr.unlock()
 
 	def _set_config_via_tool(self, app, set_vars):
-		docker = Docker(app, self.logger)
+		docker = self._get_docker(app)
 		if not docker.execute('which', 'ucr').returncode == 0:
 			self.warn('ucr cannot be found, falling back to changing the database file directly')
 			self._set_config_directly(app, set_vars)

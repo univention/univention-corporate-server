@@ -59,6 +59,6 @@ class Remove(Remove, DockerActionMixin):
 			# TODO
 			pass
 		Stop.call(app=app)
-		docker = self._get_docker()
+		docker = self._get_docker(app)
 		if docker.container:
 			docker.rm()

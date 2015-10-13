@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-19) unstable; urgency=medium
+
+  * Bug #39417: Fix bugs in registration methods
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 13 Oct 2015 13:04:35 +0200
+
 univention-management-console-module-appcenter (5.0.6-18) unstable; urgency=medium
 
   * Bug #39463: Re-register apps from 4.0 in 4.1

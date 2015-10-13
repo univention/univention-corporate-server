@@ -261,7 +261,12 @@ class Register(CredentialsAction):
 				updates.update(self._unregister_app(app, args, ucr, lo, pos, delay=True))
 		ucr_update(ucr, updates)
 
-	def _register_app(self, app, args, ucr, lo, pos, delay=False):
+	def _register_app(self, app, args, ucr=None, lo=None, pos=None, delay=False):
+		if ucr is None:
+			ucr = ConfigRegistry()
+			ucr.load()
+		if lo is None:
+			lo, pos = self._get_ldap_connection(args, allow_machine_connection=True)
 		updates = {}
 		self.log('Registering UCR for %s' % app.id)
 		self.log('Marking %s as installed' % app)
@@ -387,7 +392,12 @@ class Register(CredentialsAction):
 				updates[registry_key % key] = value
 		return updates
 
-	def _unregister_app(self, app, args, ucr, lo, pos, delay=False):
+	def _unregister_app(self, app, args, ucr=None, lo=None, pos=None, delay=False):
+		if ucr is None:
+			ucr = ConfigRegistry()
+			ucr.load()
+		if lo is None:
+			lo, pos = self._get_ldap_connection(args, allow_machine_connection=True)
 		updates = {}
 		if app.is_installed():
 			for key in ucr.iterkeys():

@@ -36,17 +36,20 @@ from tempfile import NamedTemporaryFile
 
 from univention.config_registry import ConfigRegistry
 
-from univention.appcenter.actions import Abort
+from univention.appcenter.app import AppManager
+from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
 from univention.appcenter.actions.remove import Remove
 from univention.appcenter.udm import search_objects
 
+
 class ControlScriptException(Exception):
 	pass
 
+
 class Install(InstallRemoveUpgrade):
 	'''Installs an application from the Univention App Center.'''
-	help='Install an app'
+	help = 'Install an app'
 
 	pre_readme = 'readme_install'
 	post_readme = 'readme_post_install'
@@ -77,7 +80,9 @@ class Install(InstallRemoveUpgrade):
 	def _install_master_packages(self, app, percentage_end=100):
 		self._register_component(app)
 		self._apt_get('install', app.default_packages_master, percentage_end)
-		self._register_component(app, force=False)
+		register = get_action('register')
+		app = AppManager.find(app.id)
+		register.call(apps=[app], register_task=['component'])
 
 	def _install_only_master_packages_remotely(self, app, host, is_master, args):
 		if args.install_master_packages_remotely:
@@ -125,7 +130,7 @@ class Install(InstallRemoveUpgrade):
 	def _install_app(self, app, args):
 		ucr = ConfigRegistry()
 		ucr.load()
-		self._register_component(app)
+		self._register_component(app, ucr)
 		install_master = False
 		if app.default_packages_master:
 			if ucr.get('server/role') == 'domaincontroller_master':
@@ -157,4 +162,3 @@ class Install(InstallRemoveUpgrade):
 				for line in error_file:
 					self.warn(line)
 			return success
-

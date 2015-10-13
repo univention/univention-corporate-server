@@ -36,7 +36,6 @@
 from univention.config_registry.frontend import ucr_update
 from univention.config_registry import ConfigRegistry
 
-from univention.appcenter.docker import Docker
 from univention.appcenter.docker import rm as docker_rm
 from univention.appcenter.actions import Abort
 from univention.appcenter.actions.upgrade import Upgrade
@@ -120,10 +119,10 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self.old_app = app
 
 	def _upgrade_image(self, app, args):
-		docker = Docker(app, self.logger)
+		docker = self._get_docker(app)
 		docker.pull()
 		self.log('Saving data from old container (%s)' % self.old_app)
-		old_docker = Docker(self.old_app, self.logger)
+		old_docker = self._get_docker(self.old_app)
 		old_container = old_docker.container
 		config = Configure.list_config(self.old_app)
 		process = self._execute_container_script(self.old_app, 'store_data', _credentials=False)
