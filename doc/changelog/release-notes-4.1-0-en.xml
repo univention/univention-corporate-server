@@ -47,8 +47,34 @@
 		</para>
 
 		<itemizedlist>
-			<listitem><para>
-			</para></listitem>
+			<listitem>
+				<para>
+					With UCS 4.1 the handling of <phrase>maintained</phrase> and <phrase>unmaintained</phrase> packages was changed.
+				</para>
+				<itemizedlist spacing="compact">
+					<listitem><simpara>
+							The <emphasis>Installation DVD</emphasis> now only contains the packages needed to install a new UCS system with all the components provided by Univention.
+							Previously the DVD also contained all other <phrase>maintained</phrase> packages too.
+							They were removed from the DVD to decrease the download size.
+					</simpara></listitem>
+					<listitem><simpara>
+							The full set of <phrase>maintained</phrase> packages is provided through the <emphasis>Update DVD</emphasis>.
+							It can be used to update a local repository.
+					</simpara></listitem>
+					<listitem><simpara>
+							All packages (<phrase>maintained</phrase> and <phrase>unmaintained</phrase>) are available online through <ulink url="https://updates.software-univention.de/"/>.
+					</simpara></listitem>
+				</itemizedlist>
+				<para>
+					With this change the definition of <phrase>maintained</phrase> also changed:
+					<phrase>maintained</phrase> is now defined on the basis of the <emphasis>source package</emphasis>, while previously it was defined on a subset of <emphasis>binary packages</emphasis>.
+					This might lead to an increased space requirement for local repositories, as <phrase>maintained</phrase> now consists of more packages than in previous releases.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+				</para>
+			</listitem>
 		</itemizedlist>
 	</chapter>
 
@@ -218,7 +244,7 @@
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS 4.0-2:
+			Listed are the changes since UCS 4.0-3:
 		</para>
 
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-0.xml" xpointer="xpointer(/chapter/section)"/>

@@ -47,6 +47,30 @@
 		</para>
 
 		<itemizedlist>
+			<listitem>
+				<para>
+					Mit UCS 4.1 wurde das Verfahren für <foreignphrase>maintained</foreignphrase> und <foreignphrase>unmaintained</foreignphrase>-Pakete geändert.
+				</para>
+				<itemizedlist spacing="compact">
+					<listitem><simpara>
+							Die <emphasis>Installations-DVD</emphasis> beinhaltet nur noch die Pakete, die für die Installation eines neuen UCS Systems mit allen Komponenten, die von Univention bereitgestellt werden.
+							Frühere DVD enthielten auch alle anderen <foreignphrase>maintained</foreignphrase>-Pakete.
+							Diese wurden entfernt, um die Größe für den Download zu reduzieren.
+					</simpara></listitem>
+					<listitem><simpara>
+							Die vollständige Menge alle <foreignphrase>maintained</foreignphrase>-Pakete wird über die <emphasis>Update DVD</emphasis> bereitgestellt.
+							Diese kann benutzt werden, um ein lokales Repository zu aktualisieren.
+					</simpara></listitem>
+					<listitem><simpara>
+							Alle Pakete (<foreignphrase>maintained</foreignphrase> und <foreignphrase>unmaintained</foreignphrase>) sind auch online über <ulink url="https://updates.software-univention.de/"/> verfügbar.
+					</simpara></listitem>
+				</itemizedlist>
+				<para>
+					Mit dieser Änderung ändert sich auch die Definition der <foreignphrase>maintained</foreignphrase>-Pakete:
+					<foreignphrase>maintained</foreignphrase> ist nun auf der Basis der <emphasis>Quellpakete</emphasis> definiert, während es früher auf einer Untermenge der <emphasis>Binärpakete</emphasis> definiert war.
+					Diese Änderung kann zu einer erhöhten Nutzung von Speicherplatz auf einem lokalen Repository-Server führen, da <foreignphrase>maintained</foreignphrase> nun mehr Pakete enthält als in früheren Releases-
+				</para>
+			</listitem>
 			<listitem><para>
 			</para></listitem>
 		</itemizedlist>
@@ -220,7 +244,7 @@
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS 4.0-2:
+			Aufgeführt sind die Änderungen seit UCS 4.0-3:
 		</para>
 
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-0.xml" xpointer="xpointer(/chapter/section)"/>
