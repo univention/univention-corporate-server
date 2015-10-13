@@ -311,7 +311,7 @@ def main():
 	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
 
 	for cdrom_mount_point in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
-		if os.path.isdir(mount_point_default):
+		if os.path.isdir(cdrom_mount_point):
 			break
 	iso=None
 	global nostdout

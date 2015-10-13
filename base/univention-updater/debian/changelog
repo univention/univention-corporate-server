@@ -1,3 +1,9 @@
+univention-updater (11.0.2-9) unstable; urgency=low
+
+  * Bug #36721: Fix usage of /cdrom
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Oct 2015 13:36:00 +0200
+
 univention-updater (11.0.2-8) unstable; urgency=low
 
   * Bug #36721: Fix usage of /cdrom
