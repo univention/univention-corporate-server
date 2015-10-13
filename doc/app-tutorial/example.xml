@@ -460,7 +460,7 @@ univention-app restart radicale
 				are that of the <emphasis>Administrator account</emphasis>.
 			</para>
 			<note><para>
-				None of the following scripts is mandatory, all have reasonable defaults / fallbacks. But every scripts may be
+				None of the following scripts is mandatory, all have reasonable defaults / fall-backs. But every scripts may be
 				overridden! Just upload them along with the ini file and Univention will place them on the App Center server.
 				See also ??? to specify these scripts in the ini file.
 			</para></note>
@@ -471,7 +471,7 @@ univention-app restart radicale
 			</para>
 			<variablelist>
 				<varlistentry>
-					<term>preinst</term>
+					<term><filename>preinst</filename></term>
 					<listitem>
 						<simpara>
 							An <emphasis>outer script</emphasis> called before the Docker container is initialized, even
@@ -484,7 +484,7 @@ univention-app restart radicale
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>restore_data_before_setup</term>
+					<term><filename>restore_data_before_setup</filename></term>
 					<listitem>
 						<simpara>
 							An <emphasis>inner script</emphasis> called before <emphasis>setup</emphasis> is called, right after
@@ -495,7 +495,7 @@ univention-app restart radicale
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>setup</term>
+					<term><filename>setup</filename></term>
 					<listitem>
 						<simpara>
 							An <emphasis>inner script</emphasis> and heart of the whole installation process. By default it joins the system,
@@ -507,7 +507,7 @@ univention-app restart radicale
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>restore_data_after_setup</term>
+					<term><filename>restore_data_after_setup</filename></term>
 					<listitem>
 						<simpara>
 							An <emphasis>inner script</emphasis> called after <emphasis>setup</emphasis> is called. Its purpose
@@ -517,14 +517,14 @@ univention-app restart radicale
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>inst</term>
+					<term><filename>inst</filename></term>
 					<listitem>
 						<simpara>
 							Also called <emphasis>joinscript</emphasis>. An <emphasis>outer script</emphasis> called after the
 							<emphasis>Docker Container</emphasis> is configured. Think of it as a postinst of the app.
 							See ??? for how to write a join script. If the join script runs successfully, the join script
 							may save this information in a status file. If this does not happen, the user is constantly
-							reminded to re-run the join script. So the join script does not need to run successfully. The installtion
+							reminded to re-run the join script. So the join script does not need to run successfully. The installation
 							will not be aborted at this point. But of course at some point it should run through successfully.
 							The main purpose of the joinscript is to set up the domain for the new app, e.g. by adding a domain
 							user that can be used as the <literal>LDAP binddn</literal> that your App may need to authenticate
@@ -533,7 +533,7 @@ univention-app restart radicale
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>prerm</term>
+					<term><filename>prerm</filename></term>
 					<listitem>
 						<simpara>
 							An <emphasis>outer script</emphasis> called before the Docker container is removed.
@@ -545,7 +545,7 @@ univention-app restart radicale
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>store_data</term>
+					<term><filename>store_data</filename></term>
 					<listitem>
 						<simpara>
 							An <emphasis>inner script</emphasis> called before removing the
@@ -563,10 +563,10 @@ univention-app restart radicale
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>uinst</term>
+					<term><filename>uinst</filename></term>
 					<listitem>
 						<simpara>
-							Also called <emphasis>unjoinscript</emphasis>. An <emphasis>outer script</emphasis> called after the
+							Also called <emphasis>unjoin script</emphasis>. An <emphasis>outer script</emphasis> called after the
 							<emphasis>Docker Container</emphasis> is removed. Think of it as a postrm of the app.
 							See ??? for how to write an unjoin script. It should somehow revert most (if not all) changes done
 							in the <emphasis>inst</emphasis> script (or joinscript). With the notable exception of schema
@@ -592,7 +592,7 @@ univention-app restart radicale
 			</para>
 			<variablelist>
 				<varlistentry>
-					<term>update_available</term>
+					<term><filename>update_available</filename></term>
 					<listitem>
 						<para>
 							An <emphasis>inner script</emphasis> called when the App Center wants to find out whether the
@@ -601,7 +601,7 @@ univention-app restart radicale
 							The script needs to <command>echo</command> the result:
 							<itemizedlist>
 								<listitem><simpara>
-									<emphasis>packages</emphasis> if mere package updates are avaiable. These include
+									<emphasis>packages</emphasis> if mere package updates are available. These include
 									security fixes for operating system packages.
 								</simpara></listitem>
 								<listitem><simpara>
@@ -618,7 +618,7 @@ univention-app restart radicale
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>update_packages</term>
+					<term><filename>update_packages</filename></term>
 					<listitem>
 						<simpara>
 							An <emphasis>inner script</emphasis> called when (all) updates of existing packages shall be installed.
@@ -626,7 +626,7 @@ univention-app restart radicale
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>update_release</term>
+					<term><filename>update_release</filename></term>
 					<listitem>
 						<simpara>
 							An <emphasis>inner script</emphasis> called when a new version of the operating system shall be installed.
@@ -634,14 +634,14 @@ univention-app restart radicale
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>update_app_version</term>
+					<term><filename>update_app_version</filename></term>
 					<listitem>
 						<simpara>
 							An <emphasis>inner script</emphasis> called when a new version of the App packages shall be installed.
 							This script is different from <literal>update_packages</literal>. This has technical reasons, because
 							for normal UCS based docker images, this requires a new repository to be registered. But it also has
 							usability reasons: First, users may want to distinguish between necessary, stability improving package
-							updates and (potentially) groundshaking App updates; second, an App can be configured to install those
+							updates and (potentially) ground-shaking App updates; second, an App can be configured to install those
 							package updates automatically through <envar>DockerAutoUpdate</envar>.
 						</simpara>
 					</listitem>
@@ -655,7 +655,7 @@ univention-app restart radicale
 				variables:
 				<variablelist>
 					<varlistentry>
-						<term>DockerImage</term>
+						<term><varname>DockerImage</varname></term>
 						<listitem>
 							<para>
 								The image the container will be based on. The Univention App Center will provide a list of
@@ -671,7 +671,7 @@ univention-app restart radicale
 						</listitem>
 					</varlistentry>
 					<varlistentry>
-						<term>DockerAllowedImages</term>
+						<term><varname>DockerAllowedImages</varname></term>
 						<listitem>
 							<simpara>
 								When the app does not rely on a well defined basis, it may be convenient to update <literal>DockerImage</literal>
@@ -688,7 +688,7 @@ univention-app restart radicale
 						</listitem>
 					</varlistentry>
 					<varlistentry>
-						<term>DockerVolumes</term>
+						<term><varname>DockerVolumes</varname></term>
 						<listitem>
 							<simpara>
 								Apart from <filename class="directory">/var/lib/appcenter/app/<replaceable>$APPID</replaceable>/{data,conf}/</filename>,
@@ -699,7 +699,7 @@ univention-app restart radicale
 						</listitem>
 					</varlistentry>
 					<varlistentry>
-						<term>DockerServerRole</term>
+						<term><varname>DockerServerRole</varname></term>
 						<listitem>
 							<simpara>
 								The Univention App Center adds a computer object for the container in the LDAP database. This computer
@@ -711,7 +711,7 @@ univention-app restart radicale
 						</listitem>
 					</varlistentry>
 					<varlistentry>
-						<term>DockerAutoUpdate</term>
+						<term><varname>DockerAutoUpdate</varname></term>
 						<listitem>
 							<simpara>
 								The container can be configured to automatically update itself. This does not hold for the App itself, but
@@ -722,10 +722,10 @@ univention-app restart radicale
 						</listitem>
 					</varlistentry>
 					<varlistentry>
-						<term>DockerScript*</term>
+						<term><varname>DockerScript</varname>*</term>
 						<listitem>
 							<simpara>
-								The various <literal>DockerScript*</literal> variables are used to specify the path to the script that shall
+								The various <varname>DockerScript<replaceable>*</replaceable></varname> variables are used to specify the path to the script that shall
 								be executed. So an app package may ship its own <literal>DockerScriptStoreData</literal> and the ini file
 								can point to it. More importantly though, the app can ship these scripts unpackaged along with the ini file
 								and the App Center will install these scripts at that destination and then call it. See ??? for a brief
