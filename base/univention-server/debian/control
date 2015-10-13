@@ -211,15 +211,15 @@ Description: UCS system role common dependencies and files
 
 Package: univention-basesystem
 Architecture: all
-Recommends: openssh-server
+Recommends: openssh-server,
+ rdate,
+ ntpdate,
 Depends: ${misc:Depends},
  univention-updater,
  univention-grub,
  univention-archive-key,
  univention-firewall,
  univention-ifplugd | univention-network-manager,
-Recommends: rdate,
- ntpdate,
 Description: UCS - Basesytem
  This is a Meta-package, that sets up a UCS Basesystem
  .
