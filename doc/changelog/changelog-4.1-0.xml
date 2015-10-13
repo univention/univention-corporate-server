@@ -148,8 +148,8 @@
 					Unmovable objects are no longer shown as movable (<u:bug>20439</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					All UMC cookies are now restricted to the path <filename>/univention-management-console/</filename>.
-					The entry point <filename>/umcp/</filename> has therefore been moved to /<filename>univention-management-console/</filename> (<u:bug>38820</u:bug>).
+					All UMC cookies are now restricted to the path <uri>/univention-management-console/</uri>.
+					The entry point <uri>/umcp/</uri> has therefore been moved to <uri>/univention-management-console/</uri> (<u:bug>38820</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -347,6 +347,7 @@
 			<title>Software deployment command line tools</title>
 			<itemizedlist>
 				<listitem><simpara>
+						The mount point for CD-ROM images in <command>univention-updater</command> and <command>univention-repository-update</command> have been fixed (<u:bug>36721</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -414,7 +415,7 @@
 					The <property>entityID</property> of the identity provider is now configurable via the &ucsUCRV; <envar>saml/idp/entityID</envar> (<u:bug>33912</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The SAML identity provider now uses a dedicated LDAP user to access the LDAP and a seperate user is used to access SSO specific web-content by apache2 (<u:bug>38947</u:bug>).
+					The SAML identity provider now uses a dedicated LDAP user to access the LDAP and a separate user is used to access <acronym>SSO</acronym> specific web-content by <application>apache2</application> (<u:bug>38947</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The App Center module has been adapted to work with single sign on (<u:bug>39226</u:bug>).
@@ -578,7 +579,7 @@
 					(<u:bug>38763</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A docker repository is now hosted on <literal>docker.software-univention.de</literal>
+					A docker repository is now hosted on <uri>docker.software-univention.de</uri>
 					(<u:bug>39188</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -595,8 +596,8 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					Docker images running UCS in container mode now try to
-					register the IP also with a <literal>consul</literal> and
-					<literal>etcd</literal> service running the Docker host.
+					register the IP also with a <systemitem class="service">consul</systemitem> and
+					<systemitem class="service">etcd</systemitem> service running the Docker host.
 					(<u:bug>38331</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -638,8 +639,8 @@
 			<title>Univention AD Takeover</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The FSMO roles <emphasis>domaindnsmaster</emphasis> and
-					<emphasis>forestdnsmaster</emphasis> are now seized during
+					The FSMO roles <wordasword>domaindnsmaster</wordasword> and
+					<wordasword>forestdnsmaster</wordasword> are now seized during
 					the takeover (<u:bug>39222</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
