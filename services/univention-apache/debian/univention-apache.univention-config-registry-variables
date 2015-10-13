@@ -16,6 +16,24 @@ Description[de]=Erzwingt eine verschlüsselte Verbindung durch Weiterleitung auf
 Type=bool
 Categories=service-apache
 
+[apache2/hsts]
+Description[en]=Enable HTTP Strict Transport Security (HSTS) by setting this variable to 'yes'. 'apache2/force_https' should be enabled additionally to take full advantage of HSTS.
+Description[de]=Aktiviert HTTP Strict Transport Security (HSTS), wenn auf 'yes' gesetzt. 'apache2/force_https' sollte zusätzlich aktiviert werden, um den Vorteil von HSTS voll nutzen zu können.
+Type=bool
+Categories=service-apache
+
+[apache2/hsts/max-age]
+Description[en]=Time in seconds of how long web browsers will cache and enforce the HSTS policy on the host. Defaults to '10886400' - which are 18 weeks.
+Description[de]=Zeit in Sekunden, für die Web-Browser die HSTS Richtlinie für diesen Host zwischenspeichern und anwenden. Der Standard ist '10886400' - also 18 Wochen.
+Type=int
+Categories=service-apache
+
+[apache2/hsts/includeSubDomains]
+Description[en]=Applies HSTS policy also to subdomains if set to 'yes'.
+Description[de]=Wendet die HSTS Richtlinie auch auf Subdomains an, wenn auf 'yes' gesetzt.
+Type=bool
+Categories=service-apache
+
 [php/memory/limit]
 Description[de]=Der maximale Speicher, den ein PHP-Skript in Anspruch nehmen kann. Um z.B. 256 Megabyte zu konfigurieren, muss '256M' angegeben werden. Ist die Variable nicht gesetzt, können 128 MB benutzt werden.
 Description[en]=The maximum memory that a PHP script can use. E.g., to configure 256 megabytes, '256M' needs to be specified. If the variable is unset, 128 MB are permitted.

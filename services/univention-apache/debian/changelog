@@ -1,3 +1,9 @@
+univention-apache (7.0.16-16) unstable; urgency=low
+
+  * Bug #37637: Support HTTP Strict-Transport-Security (HSTS)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Oct 2015 11:23:53 +0200
+
 univention-apache (7.0.16-15) unstable; urgency=low
 
   * Bug #38391: Fix IP address by DHCP
