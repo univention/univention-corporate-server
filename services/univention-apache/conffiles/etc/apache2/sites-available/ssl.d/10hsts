@@ -1,0 +1,25 @@
+@!@
+import re
+RE_TIME = re.compile(r'([0-9]+)([wdhms]?)')
+def parse_time(text):
+	return reduce(
+		lambda s, (v, u): s + int(v, 10) * {
+			'': 1,
+			's': 1,
+			'm': 60,
+			'h': 60*60,
+			'd': 24*60*60,
+			'w': 7*24*60*60,
+		}[u],
+		RE_TIME.findall(text),
+		0)
+if configRegistry.is_true('apache2/hsts'):
+	options = [
+		'max-age=%s' % parse_time(configRegistry.get('apache2/hsts/max-age', '10886400')),
+	]
+	if configRegistry.is_true('apache2/hsts/includeSubDomains'):
+		options.append('includeSubDomains')
+	print '<IfModule mod_headers.c>'
+	print 'Header always set Strict-Transport-Security "%s"' % ('; '.join(options),)
+	print '</IfModule>'
+@!@

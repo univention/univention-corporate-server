@@ -44,6 +44,13 @@ Variables: apache2/ssl/certificatechain
 
 Type: subfile
 Multifile: etc/apache2/sites-available/default-ssl
+Subfile: etc/apache2/sites-available/ssl.d/10hsts
+Variables: apache2/hsts
+Variables: apache2/hsts/max-age
+Variables: apache2/hsts/includeSubDomains
+
+Type: subfile
+Multifile: etc/apache2/sites-available/default-ssl
 Subfile: etc/apache2/sites-available/ssl.d/99end
 
 Type: module
