@@ -138,11 +138,12 @@ class ApplicationLDAPObject(object):
 		return 'univentionAppID=%s,%s' % (self._rdn, self._container)
 
 	def _reload(self, app, ucr, create_if_not_exists=False):
-		try:
-			self._udm_obj = init_object('appcenter/app', self._lo, self._pos, self.dn)
-		except ValueError:
-			if create_if_not_exists:
-				self._create_obj(app, ucr)
+		self._udm_obj = None
+		udm_obj = init_object('appcenter/app', self._lo, self._pos, self.dn)
+		if udm_obj.exists():
+			self._udm_obj = udm_obj
+		elif create_if_not_exists:
+			self._create_obj(app, ucr)
 
 	def _create_obj(self, app, ucr):
 		containers = explode_dn(self._container, 1)
@@ -210,7 +211,7 @@ class ApplicationLDAPObject(object):
 				self.remove_from_directory()
 
 	def remove_from_directory(self):
-		remove_object_if_exists('appcenter/app', self._lo, self._pos, self._udm_obj.dn)
+		remove_object_if_exists('appcenter/app', self._lo, self._pos, self.dn)
 
 	def installed_on_servers(self):
 		if not self:

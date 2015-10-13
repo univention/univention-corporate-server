@@ -77,8 +77,6 @@ from univention.lib.umc_connection import UMCConnection
 import univention.admin.handlers.appcenter.app as appcenter_udm_module
 import univention.admin.handlers.container.cn as container_udm_module
 import univention.admin.uexceptions as udm_errors
-from univention.appcenter import get_action, App
-from univention.appcenter.utils import app_is_running
 
 # local application
 from univention.management.console.modules.decorators import reloading_ucr
@@ -942,9 +940,6 @@ class Application(object):
 			ret = len(hosts) > 1
 		return ret
 
-	def to_app(self):
-		return App.from_ini(self._ini_file)
-
 	@reloading_ucr(ucr)
 	def to_dict(self, package_manager, domainwide_managed=None, hosts=None):
 		res = copy.copy(self._options)
@@ -964,13 +959,6 @@ class Application(object):
 		res['host_master'] = ucr.get('ldap/master')
 		res['umc_module'] = 'apps'
 		res['umc_flavor'] = self.id
-		configure = get_action('configure')
-		if configure:
-			res['config'] = configure.list_config(self.to_app())
-		else:
-			res['config'] = []
-		res['is_running'] = app_is_running(self.id)
-		res['autostart'] = ucr.get('%s/autostart' % self.id, 'yes')
 		ldap_object = self.get_ldap_object()
 		if ldap_object is None:
 			res['is_installed_anywhere'] = False
@@ -1161,8 +1149,6 @@ class Application(object):
 		return _check(True), _check(False)
 
 	def is_installed(self, package_manager, strict=True):
-		if self.get('docker'):
-			return self.to_app().is_installed()
 		default_packages = self.get('defaultpackages')
 		if strict:
 			return all(package_manager.is_installed(package) for package in default_packages)

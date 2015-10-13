@@ -245,7 +245,7 @@ class Instance(umcm.Base):
 	def _invoke_docker(self, function, application, force, values):
 		can_continue = force # always show configuration after first request
 		serious_problems = False
-		app = application.to_app()
+		app = AppManager.find(application.id)
 		errors, warnings = app.check(function)
 		if errors:
 			MODULE.process('Cannot %s %s: %r' % (function, application.id, errors))

@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 #
 # Univention App Center
-#  univention-app module for uninstalling an app
-#  (docker version)
+#  univention-register-apps
 #
-# Copyright 2015 Univention GmbH
+# Copyright 2014-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,32 +32,26 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.actions.remove import Remove
-from univention.appcenter.actions.service import Stop
-from univention.appcenter.actions.docker_base import DockerActionMixin
+import sys
 
+from univention.management.console.modules.appcenter.app_center import Application
+from univention.lib.package_manager import PackageManager
 
-class Remove(Remove, DockerActionMixin):
-	def setup_parser(self, parser):
-		super(Remove, self).setup_parser(parser)
-		parser.add_argument('--keep-data', action='store_true', help='Do not store the current data. New installations will not be able to restore them')
+from univention.appcenter.app import AppManager
+from univention.appcenter.actions import get_action
 
-	def _do_it(self, app, args):
-		self._unregister_host(app, args)
-		self.percentage = 5
-		super(Remove, self)._do_it(app, args)
+register = get_action('register')
 
-	def _remove_app(self, app, args):
-		if not app.docker:
-			super(Remove, self)._remove_app(app, args)
-		else:
-			self._remove_docker_container(app, args)
+package_manager = PackageManager(lock=False)
+applications = Application.all_installed(package_manager, only_local=True, localize=False)
+apps = []
+for application in applications:
+	app = AppManager.find(application.id)
+	if app is None:
+		sys.stderr.write('Could not load %s!\n' % application.id)
+		continue
+	else:
+		sys.stdout.write('Re-registering %s!\n' % application.id)
+		apps.append(app)
+register.call(apps=apps, do_it=True)
 
-	def _remove_docker_container(self, app, args):
-		if args.keep_data:
-			# TODO
-			pass
-		Stop.call(app=app)
-		docker = self._get_docker()
-		if docker.container:
-			docker.rm()

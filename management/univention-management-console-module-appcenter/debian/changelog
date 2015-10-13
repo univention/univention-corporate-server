@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.6-18) unstable; urgency=medium
+
+  * Bug #39463: Re-register apps from 4.0 in 4.1
+  * Bug #39417: Fix bugs in registration methods
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 13 Oct 2015 11:19:19 +0200
+
 univention-management-console-module-appcenter (5.0.6-17) unstable; urgency=medium
 
   * Bug #39085: App metering parameters in ini file: 4.1 version

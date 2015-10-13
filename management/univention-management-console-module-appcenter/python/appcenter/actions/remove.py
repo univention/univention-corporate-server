@@ -32,6 +32,8 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+from univention.config_registry import ConfigRegistry
+
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
 
 
@@ -51,17 +53,14 @@ class Remove(InstallRemoveUpgrade):
 	def _do_it(self, app, args):
 		self._remove_app(app, args)
 		self.percentage = 45
-		self._unregister_app(app, args)
+		lo, pos = self._get_ldap_connection(args, allow_machine_connection=True)
+		ucr = ConfigRegistry()
+		ucr.load()
+		self._unregister_app(app, args, ucr, lo, pos)
 		self.percentage = 70
-		self._unregister_files(app, args)
+		self._unregister_files(app)
 		self.percentage = 80
 		self._call_unjoin_script(app, args)
 
 	def _remove_app(self, app, args):
 		self._apt_get('remove', app.default_packages, 45)
-
-	def _unregister_files(self, app, args):
-		if args.keep_data:
-			# TODO
-			pass
-		super(Remove, self)._unregister_files(app, args)

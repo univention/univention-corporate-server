@@ -298,6 +298,7 @@ class AppAttributeOrFalse(AppBooleanAttribute):
 
 
 class AppFileAttribute(AppAttribute):
+	# TODO: UCR TOKEN
 	def __init__(self, required=False, default=None, regex=None, choices=None, escape=False, localisable=True):
 		# escape=False, localisable=True !
 		super(AppFileAttribute, self).__init__(required, default, regex, choices, escape, localisable)
