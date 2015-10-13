@@ -41,8 +41,7 @@ from ldap.dn import explode_dn
 from univention.config_registry import ConfigRegistry
 
 from univention.appcenter.docker import Docker
-from univention.appcenter.actions import Abort
-from univention.appcenter.actions.configure import Configure
+from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.service import Start
 from univention.appcenter.utils import mkdir
 
@@ -112,7 +111,8 @@ class DockerActionMixin(object):
 		ucr.load()
 		hostname = explode_dn(hostdn, 1)[0]
 		set_vars = (args.set_vars or {}).copy()
-		for variable in Configure.list_config(app):
+		configure = get_action('configure')
+		for variable in configure.list_config(app):
 			if variable['value'] is not None and variable['id'] not in set_vars:
 				set_vars[variable['id']] = variable['value']  # default
 		set_vars['ldap/hostdn'] = hostdn
@@ -132,4 +132,4 @@ class DockerActionMixin(object):
 		if password:
 			with open(docker.path('/etc/machine.secret'), 'w+b') as f:
 				f.write(password)
-		Configure.call(app=app, autostart=autostart, set_vars=set_vars)
+		configure.call(app=app, autostart=autostart, set_vars=set_vars)

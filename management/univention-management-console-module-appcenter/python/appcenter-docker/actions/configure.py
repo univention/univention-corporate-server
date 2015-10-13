@@ -43,6 +43,7 @@ from univention.config_registry.backend import _ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
+from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.utils import app_is_running, mkdir
 
 
@@ -63,7 +64,7 @@ class StoreConfigAction(Action):
 		setattr(namespace, self.dest, set_vars)
 
 
-class Configure(UniventionAppAction):
+class Configure(UniventionAppAction, DockerActionMixin):
 	'''Configures an application.'''
 	help = 'Configure an app'
 

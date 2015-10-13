@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-20) unstable; urgency=medium
+
+  * Bug #39417: Fix configure action
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 13 Oct 2015 13:20:30 +0200
+
 univention-management-console-module-appcenter (5.0.6-19) unstable; urgency=medium
 
   * Bug #39417: Fix bugs in registration methods
