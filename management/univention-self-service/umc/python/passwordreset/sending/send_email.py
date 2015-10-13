@@ -73,8 +73,7 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
 
 	@property
 	def ldap_attribute(self):
-		return "e-mail"
-		#return "self-service-email"
+		return "PasswordRecoveryEmail"
 
 	@property
 	def token_length(self):
@@ -102,12 +101,12 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
 		msg["Subject"] = "Password reset"
 		msg["Date"] = formatdate(localtime=True)
 		msg["From"] = "noreply@{}".format(fqdn)
-		msg["To"] = ", ".join(self.data["addresses"])
+		msg["To"] = self.data["address"]
 		msg.set_payload(txt, charset=cs)
 
 		smtp = smtplib.SMTP(self.server)
-		smtp.sendmail(msg["From"], self.data["addresses"], msg.as_string())
+		smtp.sendmail(msg["From"], self.data["address"], msg.as_string())
 		smtp.quit()
-		print "Sent mail with token '{}' to addresses {}.".format(self.data["token"], self.data["addresses"])
+		print "Sent mail with token '{}' to address {}.".format(self.data["token"], self.data["address"])
 
 		return True

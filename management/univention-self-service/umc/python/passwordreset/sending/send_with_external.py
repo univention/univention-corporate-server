@@ -67,7 +67,6 @@ class SendWithExernal(UniventionSelfServiceTokenEmitter):
 	@property
 	def ldap_attribute(self):
 		return "e-mail"
-		#return "self-service-email"
 
 	@property
 	def token_length(self):

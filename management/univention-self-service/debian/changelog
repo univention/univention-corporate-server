@@ -1,3 +1,10 @@
+univention-self-service (0.0.0-6) unstable; urgency=low
+
+  * use extended attributes for pasword recovery contacts (Bug #37890)
+  * add translations
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 13 Oct 2015 08:49:50 +0200
+
 univention-self-service (0.0.0-5) unstable; urgency=low
 
   * make token sending code to plugins (Bug #37890)

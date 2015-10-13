@@ -42,7 +42,7 @@ from univention.selfservice.frontend import UniventionSelfServiceFrontend
 
 
 URL_ROOT = "/univention-self-service/"
-PLUGIN_FOLDER = "/usr/share/univention-self-service/plugins"
+PLUGIN_FOLDER = "/usr/share/univention-self-service/web/plugins"
 MAIN_MODULE = "__init__"
 
 

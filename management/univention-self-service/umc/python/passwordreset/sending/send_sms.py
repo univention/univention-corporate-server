@@ -62,8 +62,7 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 
 	@property
 	def ldap_attribute(self):
-		return "mobileTelephoneNumber"
-		#return "self-service-mobile"
+		return "PasswordRecoveryMobile"
 
 	@property
 	def token_length(self):

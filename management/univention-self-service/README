@@ -14,7 +14,7 @@ To add a new self service, create UMC module (see [1] and umc directory here)
 as backend and a Python module for the frontend.
 
 Place the directory with the frontend Python module inside
-/usr/share/univention-self-service/plugins/. Its __init__.py must contain a
+/usr/share/univention-self-service/web/plugins/. Its __init__.py must contain a
 class that is derived from univention.selfservice.frontend.UniventionSelfServiceFrontend.
 
 === Password reset black/white lists ===

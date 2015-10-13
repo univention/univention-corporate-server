@@ -48,6 +48,7 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-postgresql,
  univention-join,
+ shell-univention-lib,
  univention-apache,
  python-psycopg2
 Description:

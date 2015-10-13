@@ -138,7 +138,7 @@ class Instance(Base):
 			plugin = self.send_plugins[method]
 		except KeyError:
 			MODULE.error("send_token() method '{}' not in {}.".format(method, self.send_plugins.keys()))
-			raise UMC_Error(_("Unknown method '{}'.".format(method)))
+			raise UMC_Error(_("Unknown recovery method '{}'.".format(method)))
 		# check if the user has the required attribute set
 		config = univention.admin.config.config()
 		univention.admin.modules.update()
@@ -184,7 +184,7 @@ class Instance(Base):
 			return True
 		else:
 			# no contact info
-			raise UMC_Error(_("No contact information to send a token to has been found."))
+			raise UMC_Error(_("No contact information to send a token for password recovery to has been found."))
 
 #	@prevent_denial_of_service
 	@sanitize(
@@ -200,7 +200,7 @@ class Instance(Base):
 				# regardless of correctness of token
 				MODULE.error("set_password(): {}".format(e))
 				self.db.delete_tokens(token=token)
-				raise UMC_Error(_("A problem occurred on the server and hsa been corrected, please retry."), status=500)
+				raise UMC_Error(_("A problem occurred on the server and has been corrected, please retry."), status=500)
 		if token_from_db:
 			if (datetime.datetime.now() - token_from_db["timestamp"]).seconds < TOKEN_VALIDITY_TIME:
 				# token is correct and valid
@@ -259,8 +259,8 @@ class Instance(Base):
 		MODULE.info("create_token({}): {}".format(length, res))
 		return res
 
-	def send_message(self, username, method, addresses, token):
-		MODULE.info("send_message(): username: {} method: {} addresses: {} token: {}".format(username, method, addresses, token))
+	def send_message(self, username, method, address, token):
+		MODULE.info("send_message(): username: {} method: {} address: {} token: {}".format(username, method, address, token))
 		try:
 			plugin = self.send_plugins[method]
 		except KeyError:
@@ -269,18 +269,18 @@ class Instance(Base):
 			raise MethodDisabledError("send_message(): Method '{}' is disabled by UCR.".format(method))
 		data = {
 			"username": username,
-			"addresses": addresses,
+			"address": address,
 			"token": token}
 		plugin.set_data(data)
 		MODULE.info("send_message(): Running plugin of class {}...".format(plugin.__class__.__name__))
 		try:
 			ret = plugin.send()
 		except Exception as ex:
-			raise UMC_Error(_("Failed while sending token: {}".format(ex)), status=500)
+			raise UMC_Error(_("Error sending token: {}".format(ex)), status=500)
 		if ret:
 			return True
 		else:
-			raise UMC_Error(_("Failed sending token."), status=500)
+			raise UMC_Error(_("Error sending token."), status=500)
 
 	@staticmethod
 	def auth(username, password):
@@ -312,10 +312,10 @@ class Instance(Base):
 			dn_part = dn.partition(",")
 			user = usersmod.lookup(config, lo, dn_part[0], base=dn_part[-1])[0]
 			user.open()
-			if email and email not in user["e-mail"]:
-				user["e-mail"].append(email)
-			if mobile and mobile not in user["mobileTelephoneNumber"]:
-				user["mobileTelephoneNumber"].append(mobile)
+			if email and email.lower() != user["univentionPasswordSelfServiceEmail"].lower():
+				user["PasswordRecoveryEmail"] = email
+			if mobile and mobile.lower() != user["univentionPasswordSelfServiceMobile"].lower():
+				user["PasswordRecoveryMobile"] = mobile
 			user.modify()
 			return True
 		except:
