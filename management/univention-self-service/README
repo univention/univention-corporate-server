@@ -17,12 +17,30 @@ Place the directory with the frontend Python module inside
 /usr/share/univention-self-service/web/plugins/. Its __init__.py must contain a
 class that is derived from univention.selfservice.frontend.UniventionSelfServiceFrontend.
 
+=== Password reset sending plugins ==
+As a reference three plugins are provided that can be used to send a token to a user.
+A token sending plugin is a Python class that inherits from
+univention.management.console.modules.passwordreset.send_plugin.UniventionSelfServiceTokenEmitter
+and implements its functions.
+
+If you wish to create a sending plugin in a different language, you can use
+the provided send_with_external.py. Activate and configure it with the UCRs
+* umc/self-service/passwordreset/external/enabled
+* umc/self-service/passwordreset/external/command
+* umc/self-service/passwordreset/external/token_length
+* umc/self-service/passwordreset/external/method
+
+Set umc/self-service/passwordreset/external/method to "email" or "sms" and deactivate
+self-service/passwordreset/email/enabled or self-service/passwordreset/sms/enabled to
+replace them.
+
 === Password reset black/white lists ===
 Blacklists take precedence over whitelists.
 
 A user on a blacklist or in a group in a blacklist cannot use the service
 even if it is a whitelisted user or in a whitelisted group.
 
+A user must be in a whitelist to use the service.
 
 == Reference ==
 [1] http://wiki.univention.com/index.php?title=UCS_3.0_UMC_API_for_Modules

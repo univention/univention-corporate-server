@@ -1,3 +1,11 @@
+univention-self-service (0.0.0-7) unstable; urgency=low
+
+  * add support to run external sending plaugin (Bug #37890)
+  * sort UCRs into correct files
+  * add UCRV to choose backend server
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 13 Oct 2015 17:26:18 +0200
+
 univention-self-service (0.0.0-6) unstable; urgency=low
 
   * use extended attributes for pasword recovery contacts (Bug #37890)

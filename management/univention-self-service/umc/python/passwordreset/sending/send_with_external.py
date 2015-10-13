@@ -51,26 +51,28 @@ import subprocess
 from univention.config_registry import ConfigRegistry
 from univention.management.console.modules.passwordreset.send_plugin import UniventionSelfServiceTokenEmitter
 
+ucr = ConfigRegistry()
+ucr.load()
 
 class SendWithExernal(UniventionSelfServiceTokenEmitter):
 
 	@staticmethod
 	def send_method():
-		return "external"
+		return ucr.get("umc/self-service/passwordreset/external/method")
 
 	@staticmethod
 	def is_enabled():
-		ucr = ConfigRegistry()
-		ucr.load()
-		return ucr.is_true("self-service/passwordreset/external/enabled")
+		return ucr.is_true("umc/self-service/passwordreset/external/enabled")
 
 	@property
 	def ldap_attribute(self):
-		return "e-mail"
+		ucr.load()
+		return ucr.get("umc/self-service/passwordreset/external/ldap_attribute")
 
 	@property
 	def token_length(self):
-		length = self.ucr.get("self-service/passwordreset/external/token_length", 64)
+		ucr.load()
+		length = ucr.get("umc/self-service/passwordreset/external/token_length", 64)
 		try:
 			length = int(length)
 		except ValueError:
@@ -79,10 +81,9 @@ class SendWithExernal(UniventionSelfServiceTokenEmitter):
 
 	def send(self):
 		env = os.environ.copy()
-		env["server"] = self.server
-		env["username"] = self.username
-		env["addresses"] = self.addresses
-		env["token"] = self.token
+		env["username"] = self.data["username"]
+		env["address"] = self.data["address"]
+		env["token"] = self.data["token"]
 
 		#############################################################################
 		#                                                                           #
@@ -93,7 +94,10 @@ class SendWithExernal(UniventionSelfServiceTokenEmitter):
 		#                                                                           #
 		#############################################################################
 
-		cmd = ["/usr/bin/example", "-v"]
+		ucr.load()
+		cmd = ucr.get("umc/self-service/passwordreset/external/command", "/bin/false")
+		cmd = cmd.split()
+		print "Starting external program {}...".format(cmd)
 		cmd_proc = subprocess.Popen(cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		cmd_out, cmd_err = cmd_proc.communicate()
 		cmd_exit = cmd_proc.wait()
@@ -106,5 +110,4 @@ class SendWithExernal(UniventionSelfServiceTokenEmitter):
 		if cmd_exit == 0:
 			return True
 		else:
-			print "Sending not successful"
-			return False
+			raise Exception("Error sending token.")

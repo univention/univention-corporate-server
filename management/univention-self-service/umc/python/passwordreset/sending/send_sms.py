@@ -50,6 +50,10 @@ from univention.management.console.modules.passwordreset.send_plugin import Univ
 
 
 class SendSMS(UniventionSelfServiceTokenEmitter):
+	def __init__(self):
+		super(SendSMS, self).__init__()
+		self.server = self.ucr.get("self-service/passwordreset/sms/server", "localhost")
+
 	@staticmethod
 	def send_method():
 		return "sms"
@@ -66,7 +70,12 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 
 	@property
 	def token_length(self):
-		return 12
+		length = self.ucr.get("self-service/passwordreset/email/token_length", 12)
+		try:
+			length = int(length)
+		except ValueError:
+			length = 12
+		return length
 
 	def send(self):
 		raise NotImplementedError("Text message sending not yet implemented")
