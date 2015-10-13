@@ -64,10 +64,12 @@ configure)
 		invoke-rc.d univention-directory-listener restart
 	fi
 
-	for file in /var/log/apache2/suexec.log /var/log/memcached.log /var/log/memcached-saml.log /var/log/stunnel4/stunnel.log; do
+	for file in /var/log/apache2/suexec.log /var/log/memcached.log /var/log/memcached-saml.log; do
 		touch "$file"
 		chown root:adm "$file"
+		chmod 640 "$file"
 	done
+	chmod 640 /var/log/stunnel4/stunnel.log
 
 	a2ensite univention-saml-apache
 	a2enmod headers
