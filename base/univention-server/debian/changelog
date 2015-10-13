@@ -1,3 +1,10 @@
+univention-server (11.0.1-6) unstable; urgency=low
+
+  * added ntpdate/rdate to dependencies in
+    univention-basesystem and univention-basesystem (Bug #39410)
+
+ -- Felix Botner <botner@univention.de>  Tue, 13 Oct 2015 16:32:05 +0200
+
 univention-server (11.0.1-5) unstable; urgency=low
 
   * moved ntp|ntp-server dependency from specific role
