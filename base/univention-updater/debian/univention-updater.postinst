@@ -134,13 +134,6 @@ fi
 
 #DEBHELPER#
 
-# Set correct permissions for apt directories (Bug #29450)
-# Can be removed after UCS 3.2-1
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 9.0.0-1; then
-	find /var/cache/apt/archives/partial /var/lib/apt/lists/partial -type d -not -perm 0755 -execdir chmod 0755 {} +
-	chmod 0755 /cdrom /floppy /etc/univention
-fi
-
 test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener restart
 
 # force the listener module license_uuid to be executed

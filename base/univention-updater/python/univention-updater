@@ -310,7 +310,9 @@ def main():
 	# PATH does not contain */sbin when called from cron
 	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
 
-	cdrom_mount_point='/cdrom'
+	for cdrom_mount_point in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
+		if os.path.isdir(mount_point_default):
+			break
 	iso=None
 	global nostdout
 

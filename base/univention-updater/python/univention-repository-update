@@ -196,9 +196,10 @@ def update_net( options ):
 			print >> ver, 'PATCHLEVEL=%d' % (min_version.patchlevel,)
 
 
-if __name__ == '__main__':
-	# PATH does not contain */sbin when called from cron
-	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
+def parse_args():
+	for mount_point_default in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
+		if os.path.isdir(mount_point_default):
+			break
 
 	parser = OptionParser( usage = "usage: %prog (net|cdrom) [options] " )
 	parser.add_option( '-i', '--iso', action = 'store',
@@ -208,7 +209,7 @@ if __name__ == '__main__':
 					   dest = 'device',
 					   help = 'defines the device name of the CD-ROM drive' )
 	parser.add_option( '-c', '--cdrom', action = 'store',
-					   dest = 'mount_point', default = '/cdrom',
+					   dest = 'mount_point', default=mount_point_default,
 					   help = 'devices mount point for CD-ROM drive' )
 	parser.add_option( '-s', '--sync-only', action = 'store_true',
 					   dest = 'sync', default = False,
@@ -225,16 +226,22 @@ if __name__ == '__main__':
 
 	( options, arguments ) = parser.parse_args()
 
-	if not arguments or len( arguments ) != 1:
-		print >> sys.stderr, 'Error: A command is required'
-		parser.print_usage()
-		sys.exit( 1 )
-	elif not arguments[ 0 ] in ( 'net', 'cdrom' ):
-		print >> sys.stderr, "Error: Unknown command '%s' specified" % arguments[ 0 ]
-		parser.print_usage()
-		sys.exit( 1 )
+	try:
+		(command,)  = arguments
+	except ValueError:
+		parser.error('A command is required')
 
-	command = arguments[ 0 ]
+	if command not in ('net', 'cdrom'):
+		parser.error("Unknown command '%s' specified" % (command,))
+
+	return (command, options)
+
+
+def main():
+	# PATH does not contain */sbin when called from cron
+	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
+
+	(command, options) = parse_args()
 	# redirect output to logfile
 	options.logfile = open('/var/log/univention/repository.log', 'a+')
 	options.stdout = sys.stdout
@@ -280,13 +287,10 @@ if __name__ == '__main__':
 				sys.exit(1)
 		elif command == 'cdrom':
 			update_cdrom( options )
-		else:
-			if command == 'local':
-				print >> options.teefile, 'Error: This mode is not supported anymore by univention-repository-update'
-			else:
-				print >> options.teefile, 'Error: Unknown mode %s for univention-repsitory-update' % command
-			parser.print_usage()
-			sys.exit( 1 )
 	finally:
 		if not univention.updater.tools.updater_lock_release(lock):
 			print >> sys.stderr, 'WARNING: updater-lock already released!'
+
+
+if __name__ == '__main__':
+	main()
