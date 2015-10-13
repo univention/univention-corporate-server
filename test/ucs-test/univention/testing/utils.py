@@ -115,7 +115,7 @@ def get_ldap_connection(pwdfile = False, start_tls = 2, decode_ignorelist = []):
 
 	for ldapServer in ldapServers:
 		try:
-			return uldap.access(host=ldapServer, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+			return uldap.access(host=ldapServer, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, follow_referral=True)
 		except ldap.SERVER_DOWN():
 			pass
 	raise ldap.SERVER_DOWN()

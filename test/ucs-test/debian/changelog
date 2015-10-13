@@ -1,3 +1,11 @@
+ucs-test (6.0.9-3) unstable; urgency=medium
+
+  * testing/utils.py: get_ldap_connection: follow referral otherwise the
+    connection can't be used on a backup or slave for modifications
+    (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Oct 2015 20:50:34 +0200
+
 ucs-test (6.0.9-2) unstable; urgency=medium
 
   * Bug #38947: Add saml specific file permission check
