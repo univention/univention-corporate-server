@@ -4,6 +4,12 @@ Description[en]=Defines the fqdn of the identity provider of this UCS domain.
 Type=str
 Categories=management
 
+[ucs/server/sso/virtualhost]
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird ein Virtual Host Eintrag für den FQDN des Identity Provider erstellt. (default: true)
+Description[en]=If this variable is set to 'true', a virtual host entry for the fqdn of the identity provider is generated. (default: true)
+Type=bool
+Categories=management
+
 [ucs/server/sso/autoregistraton]
 Description[de]=Wenn diese Variable auf 'true' gesetzt ist, registriert dieses UCS System die eigene IP-Adresse am FQDN des Identity Provider (ucs/server/sso/fqdn). (default: true)
 Description[en]=If this variable is set to 'true', this UCS system tregisters its IP address at the fqdn of the identity provider (ucs/server/sso/fqdn). (default: true)

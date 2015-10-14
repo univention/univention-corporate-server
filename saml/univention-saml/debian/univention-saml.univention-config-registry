@@ -61,6 +61,7 @@ Variables: saml/idp/https
 Variables: domainname
 Variables: ucs/server/sso/fqdn
 Variables: saml/idp/certificate/certificate
+Variables: ucs/server/sso/virtualhost
 
 Type: file
 File: etc/stunnel/univention_saml.conf

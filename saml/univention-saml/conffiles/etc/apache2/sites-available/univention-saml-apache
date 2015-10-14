@@ -36,7 +36,7 @@ SuexecUserGroup samlcgi samlcgi
 sso_fqdn = configRegistry.get('ucs/server/sso/fqdn', 'ucs-sso.%s' % configRegistry.get('domainname'))
 ssofqdn = {'ssofqdn': sso_fqdn}
 import os.path
-enable_virtualhost = True
+enable_virtualhost = configRegistry.is_true('ucs/server/sso/virtualhost', True)
 if enable_virtualhost and os.path.isfile('/etc/univention/ssl/%(ssofqdn)s/cert.pem' % ssofqdn) and os.path.isfile('/etc/univention/ssl/%(ssofqdn)s/private.key' % ssofqdn):
 	print '''
 <IfModule mod_ssl.c>
