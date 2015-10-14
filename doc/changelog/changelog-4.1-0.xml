@@ -364,6 +364,9 @@
 			<listitem><simpara>
 				The function <function>is_ucr_true</function> has been added to the package <package>shell-univention-lib</package> (<u:bug>27701</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+					The package <package>OpenSSL</package> was updates to version <literal>1.0.2d</literal> (<u:bug>39500</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
