@@ -282,23 +282,29 @@ class FollowLogfile(object):
 					print "=" * 79
 
 
-def wait_for_replication():
+def wait_for_replication(verbose=True):
 	sys.stdout.flush()
-	print 'Waiting for replication:'
+	if verbose:
+		print 'Waiting for replication...'
 	for _ in xrange(300):
-		rc = subprocess.call('/usr/lib/nagios/plugins/check_univention_replication')
-		if rc == 0:
-			print 'Done: replication complete.'
+		cmd = ('/usr/lib/nagios/plugins/check_univention_replication',)
+		proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		stdout, _stderr = proc.communicate()
+		if proc.returncode == 0:
+			if verbose:
+				print 'Done: replication complete.'
 			return
+		print proc.stdout
 		time.sleep(1)
 
 	print 'Error: replication incomplete.'
 	raise LDAPReplicationFailed()
 
 
-def wait_for_replication_and_postrun ():
-	wait_for_replication ()
-	print "Waiting for postrun"
+def wait_for_replication_and_postrun(verbose=True):
+	wait_for_replication(verbose=verbose)
+	if verbose:
+		print "Waiting for postrun..."
 	time.sleep(17)
 
 

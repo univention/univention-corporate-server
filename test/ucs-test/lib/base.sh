@@ -205,23 +205,23 @@ current_ucs_version_less_equal () {
 
 wait_for_replication () { # wait for listener/notifier replication to complete (timeout 5m)
 	local i
-	echo "Waiting for replication:"
+	debug "Waiting for replication..."
 	for ((i=0;i<300;i++)); do
 		if /usr/lib/nagios/plugins/check_univention_replication
 		then
-			echo "Done: replication complete."
+			info "replication complete."
 			return 0
 		fi
 		sleep 1
 	done
-	echo "Error: replication incomplete."
+	error "replication incomplete."
 	return 1
 }
 wait_for_replication_and_postrun () { #wait for listener/notifier replicaion and listener postrun delay
 	local rc
 	wait_for_replication
 	rc=$?
-	echo "Waiting for postrun"
+	debug "Waiting for postrun..."
 	sleep 17
 	return $rc
 }
