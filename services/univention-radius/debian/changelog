@@ -1,3 +1,10 @@
+univention-radius (3.0.0-6) unstable; urgency=low
+
+  * Don't try to reconnect if LDAP server of DC slave is down, try DC master
+  immediately (Bug #39039).
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 14 Oct 2015 10:00:19 +0200
+
 univention-radius (3.0.0-5) unstable; urgency=low
 
   * restart service in joinscript too, in case its run manually (Bug #38786)
