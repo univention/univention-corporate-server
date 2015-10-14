@@ -45,85 +45,84 @@ def main():
 					univention.config_registry.handler_set(['mail/cyrus/mailbox/delete=yes'])
 					subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/null', 'w'))
 				with utils.AutoCallCommand(enter_cmd=autocallcmd1, exit_cmd=autocallcmd1) as acc1:
-					with udm_test.UCSTestUDM() as udm:
-						with utils.FollowLogfile(logfiles=logfiles) as flf:
-							with utils.AutoCallCommand(enter_cmd=autocallcmd2, exit_cmd=autocallcmd2) as acc2:
-								password = 'univention'
-								mails = []
-								users = []
-								for i in xrange(3):
-									usermail = '%s@%s' % (uts.random_name(), domain)
-									userdn, username = udm.create_user(
-										set={
-											'password'           : password,
-											'mailHomeServer'     : host,
-											'mailPrimaryAddress' : usermail
-										}
-									)
-									mails.append(usermail)
-									users.append(userdn)
-								token = str(time.time())
-								send_mail(recipients=mails,	msg=token, port=587, tls=True,
-									username=usermail, password=password, debuglevel=0)
-								check_delivery(token, mails[0], True)
-								group_mail = '%s@%s' % (uts.random_name(), domain)
-								groupdn, groupname = udm.create_group(
+					with utils.FollowLogfile(logfiles=logfiles) as flf:
+						with utils.AutoCallCommand(enter_cmd=autocallcmd2, exit_cmd=autocallcmd2) as acc2:
+							password = 'univention'
+							mails = []
+							users = []
+							for i in xrange(3):
+								usermail = '%s@%s' % (uts.random_name(), domain)
+								userdn, username = udm.create_user(
 									set={
-										'users'       : users[1],
-										'mailAddress' : group_mail,
-									},
+										'password'           : password,
+										'mailHomeServer'     : host,
+										'mailPrimaryAddress' : usermail
+									}
 								)
-								permissions = {
-									'lookup' : 'l',
-									'read'   : 'lrs',
-									'post'   : 'lrsp',
-									'append' : 'lrspi',
-									'write'  : 'lrspiwcd',
-									'all'    : 'lrspiwcda',
-								}
+								mails.append(usermail)
+								users.append(userdn)
+							token = str(time.time())
+							send_mail(recipients=mails,	msg=token, port=587, tls=True,
+								username=usermail, password=password, debuglevel=0)
+							check_delivery(token, mails[0], True)
+							group_mail = '%s@%s' % (uts.random_name(), domain)
+							groupdn, groupname = udm.create_group(
+								set={
+									'users'       : users[1],
+									'mailAddress' : group_mail,
+								},
+							)
+							permissions = {
+								'lookup' : 'l',
+								'read'   : 'lrs',
+								'post'   : 'lrsp',
+								'append' : 'lrspi',
+								'write'  : 'lrspiwcd',
+								'all'    : 'lrspiwcda',
+							}
 
-								create_shared_mailfolder(udm, host, mailAddress=False,
-									user_permission=['"%s" "%s"' % ('anyone', 'none')])
-								create_shared_mailfolder(udm, host, mailAddress=True,
-									user_permission=['"%s" "%s"' % ('anyone', 'none')])
-								utils.wait_for_replication()
+							create_shared_mailfolder(udm, host, mailAddress=False,
+								user_permission=['"%s" "%s"' % ('anyone', 'none')])
+							create_shared_mailfolder(udm, host, mailAddress=True,
+								user_permission=['"%s" "%s"' % ('anyone', 'none')])
+							utils.wait_for_replication()
 
-								owner_user = mails[0]
-								independent_user = mails[2]
+							owner_user = mails[0]
+							independent_user = mails[2]
 
-								for permission in permissions.values():
-									imap = MailClient_SSL(host)
-									imap.log_in(owner_user, password)
-									mailboxs = imap.getMailBoxes()
-									for mailbox in mailboxs:
-										print '** %s Mailbox = %s, Setting %s -> %s' % (
-											owner_user, mailbox, independent_user, permission)
-										imap.setacl(mailbox, independent_user, permission)
-										imap2 = MailClient_SSL(host)
-										imap2.log_in(independent_user, password)
-										imap2.check_permissions(owner_user, mailbox, permission, dovecot)
-										imap2.logout()
-									imap.logout()
-
-								group_user = mails[1]
-								if dovecot:
-									groupname = '$%s' % groupname
-								for permission in [permissions.get(x) for x in permissions]:
-									imap = MailClient_SSL(host)
-									imap.log_in(owner_user, password)
-									mailbox = 'INBOX'
+							for permission in permissions.values():
+								imap = MailClient_SSL(host)
+								imap.log_in(owner_user, password)
+								mailboxs = imap.getMailBoxes()
+								for mailbox in mailboxs:
 									print '** %s Mailbox = %s, Setting %s -> %s' % (
-										owner_user, mailbox, groupname, permission)
-									if dovecot:
-										imap.setacl(mailbox, groupname, permission)
-										time.sleep(20)
-									else:
-										imap.set_acl_cyrus(groupname, permission)
+										owner_user, mailbox, independent_user, permission)
+									imap.setacl(mailbox, independent_user, permission)
 									imap2 = MailClient_SSL(host)
-									imap2.log_in(group_user, password)
+									imap2.log_in(independent_user, password)
 									imap2.check_permissions(owner_user, mailbox, permission, dovecot)
 									imap2.logout()
-									imap.logout()
+								imap.logout()
+
+							group_user = mails[1]
+							if dovecot:
+								groupname = '$%s' % groupname
+							for permission in [permissions.get(x) for x in permissions]:
+								imap = MailClient_SSL(host)
+								imap.log_in(owner_user, password)
+								mailbox = 'INBOX'
+								print '** %s Mailbox = %s, Setting %s -> %s' % (
+									owner_user, mailbox, groupname, permission)
+								if dovecot:
+									imap.setacl(mailbox, groupname, permission)
+									time.sleep(20)
+								else:
+									imap.set_acl_cyrus(groupname, permission)
+								imap2 = MailClient_SSL(host)
+								imap2.log_in(group_user, password)
+								imap2.check_permissions(owner_user, mailbox, permission, dovecot)
+								imap2.logout()
+								imap.logout()
 
 
 if __name__ == '__main__':

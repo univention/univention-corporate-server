@@ -1,3 +1,7 @@
+ucs-test (6.0.9-4) unstable; urgency=medium
+
+  * fix some mail tests (Bug #39477)
+
 ucs-test (6.0.9-3) unstable; urgency=medium
 
   * testing/utils.py: get_ldap_connection: follow referral otherwise the

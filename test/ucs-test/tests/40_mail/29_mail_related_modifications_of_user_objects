@@ -92,7 +92,8 @@ def main():
 					dn=userdn,
 					binddn=admin,
 					bindpwd=passwd,
-					set={'mailPrimaryAddress': new_usermail})
+					set={'mailPrimaryAddress': new_usermail},
+					check_for_drs_replication=True)
 				check_login_lookup(host, new_usermail, password, True, dovecot)
 				check_login_lookup(host, usermail, password, False, dovecot)
 
@@ -116,7 +117,8 @@ def main():
 					dn=userdn,
 					binddn=admin,
 					bindpwd=passwd,
-					set={'mailHomeServer': host})
+					set={'mailHomeServer': host},
+					check_for_drs_replication=True)
 				check_login_lookup(host, usermail, password, True, dovecot)
 
 				# Case 3
@@ -139,7 +141,8 @@ def main():
 					dn=userdn,
 					binddn=admin,
 					bindpwd=passwd,
-					set={'mailHomeServer': 'mail.example.com'})
+					set={'mailHomeServer': 'mail.example.com'},
+					check_for_drs_replication=True)
 				check_login_lookup(host, usermail, password, False, dovecot)
 
 				# Case 4
@@ -161,7 +164,8 @@ def main():
 					dn=userdn,
 					binddn=admin,
 					bindpwd=passwd,
-					set={'mailPrimaryAddress': usermail})
+					set={'mailPrimaryAddress': usermail},
+					check_for_drs_replication=True)
 				check_login_lookup(host, usermail, password, True, dovecot)
 
 				# Case 5
@@ -196,7 +200,8 @@ def main():
 					dn=userdn,
 					binddn=admin,
 					bindpwd=passwd,
-					set={'mailHomeServer': '%s.%s' % (new_host, domain)})
+					set={'mailHomeServer': '%s.%s' % (new_host, domain)},
+					check_for_drs_replication=True)
 				expected_result = False if dovecot else True
 				check_login_lookup(host, usermail, password, expected_result, dovecot)
 
@@ -232,7 +237,8 @@ def main():
 					dn=userdn,
 					binddn=admin,
 					bindpwd=passwd,
-					set={'mailHomeServer': ''})
+					set={'mailHomeServer': ''},
+					check_for_drs_replication=True)
 				check_login_lookup(host, usermail, password, True, dovecot)
 
 				# Case 7
@@ -267,7 +273,8 @@ def main():
 					dn=userdn,
 					binddn=admin,
 					bindpwd=passwd,
-					set={'mailPrimaryAddress': ''})
+					set={'mailPrimaryAddress': ''},
+					check_for_drs_replication=True)
 				expected_result = False if dovecot else True
 				check_login_lookup(host, usermail, password, expected_result, dovecot)
 
