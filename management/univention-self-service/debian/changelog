@@ -1,3 +1,11 @@
+univention-self-service (0.0.0-9) unstable; urgency=low
+
+  * add password self service plugin (Bug #37890)
+  * modify framework to work with multiple WSGI scripts (Bug #37890)
+  * add example HTML/static code to verify plugin loading & URLs/paths
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 14 Oct 2015 23:33:37 +0200
+
 univention-self-service (0.0.0-8) unstable; urgency=low
 
   * refactor common UDM/LDAP code (Bug #37890)

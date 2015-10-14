@@ -30,39 +30,51 @@
 # <http://www.gnu.org/licenses/>.
 
 import sys
-sys.stdout = sys.stderr
-
-import cherrypy
-import json
 import os
 import imp
 import inspect
+from os.path import realpath, dirname
+
+sys.stdout = sys.stderr
+
+import cherrypy
 
 from univention.selfservice.frontend import UniventionSelfServiceFrontend
 
 
-URL_ROOT = "/univention-self-service/"
+URL_ROOT = "/univention-self-service"
 PLUGIN_FOLDER = "/usr/share/univention-self-service/web/plugins"
 MAIN_MODULE = "__init__"
 
 
 class Root(object):
 
-	def __init__(self, plugins):
+	def __init__(self, plugins, root_dir):
 		self.plugins = plugins
+		self.cherry_conf = {
+			"/": {
+				"tools.sessions.on": True,
+				"tools.staticdir.root": root_dir},
+			"/static": {
+				"tools.staticdir.on": True,
+				"tools.staticdir.dir": './static'}}
+		cherrypy.log("Root: __init__() config: {}".format(self.cherry_conf))
 
 	@cherrypy.expose
 	def index(self):
 		return """<html>
-	<head></head>
+	<head>
+		<title>Univention Self Service</title>
+	</head>
 	<body>
+	<p>Root static stuff here: <img src="static/debian-logo-root.png"/></p>
 %s
 	</body>
 </html>""" % "\n".join(['		<p><a href="{url}">{name}</a></p>'.format(url=plugin.url, name=plugin.name)
 		for plugin in self.plugins])
 
 
-def load_selfservice_plugins():
+def get_plugins_classes():
 	selfservice_plugins = list()
 
 	def find_plugins():
@@ -88,31 +100,31 @@ def load_selfservice_plugins():
 		return None
 
 	for _module in find_plugins():
-		cherrypy.log("self-service-wsgi.load_selfservice_plugins(): Loading plugin %r..." % _module["name"])
+		cherrypy.log("self-service-wsgi.get_plugins_classes(): Loading plugin class %r..." % _module["name"])
 		plugin_class = load_plugin(_module)
 		if plugin_class:
 			selfservice_plugins.append(plugin_class)
 	return selfservice_plugins
 
-cherrypy.config.update({'environment': 'embedded'})
 cherrypy.config.update({
 	"environment": "embedded",
 	"log.access_file": "/var/log/univention/self-service-access.log",
 	"log.error_file": "/var/log/univention/self-service-error.log"})
 
+file_root = realpath(dirname(__file__))
+
 cherrypy.log("self-service-wsgi: Going to load plugins...")
-plugin_classes = load_selfservice_plugins()
+plugin_classes = get_plugins_classes()
 plugins = list()
 for plugin_class in plugin_classes:
-	pl_obj = plugin_class()
-	name = pl_obj.name
+	pl_obj = plugin_class(URL_ROOT, os.path.join(file_root, "plugins"))
 	plugins.append(pl_obj)
 
-root = Root(plugins)
-cherrypy.tree.mount(root, URL_ROOT, None)
+root = Root(plugins, file_root)
+cherrypy.tree.mount(root, URL_ROOT, root.cherry_conf)
+
 for plugin in plugins:
-	cherrypy.tree.mount(plugin, URL_ROOT + plugin.url, plugin.cherrypy_conf)
-	cherrypy.log("self-service-wsgi: started serving plugin '{}' at '{}'.".format(plugin.name, URL_ROOT + plugin.url))
-	cherrypy.log("self-service-wsgi: plugin '{}' provided conf '{}'.".format(plugin.name, plugin.cherrypy_conf))
+	cherrypy.tree.graft(plugin.get_wsgi_app(), plugin.url)
+	cherrypy.log("self-service-wsgi: started serving plugin '{}' at '{}'.".format(plugin.name, plugin.url))
 
 application = cherrypy.tree

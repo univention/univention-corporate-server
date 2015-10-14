@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Password Self Service
+# Univention Password Reset Self Service
 #
 # Copyright 2015 Univention GmbH
 #
@@ -29,38 +29,41 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from os.path import realpath, dirname
-
-from univention.selfservice.frontend import UniventionSelfServiceFrontend
+import os.path
 
 import cherrypy
 
+from univention.selfservice.frontend import UniventionSelfServiceFrontend
+
 
 class PasswordReset(UniventionSelfServiceFrontend):
-	@property
-	def cherrypy_conf(self):
-		return {
+
+	def get_wsgi_app(self):
+		config = {
 			"/": {
 				"tools.sessions.on": True,
-				"tools.staticdir.root": realpath(dirname(__file__))},
+				"tools.staticdir.root": os.path.join(self.file_root, "passwordreset")},
 			"/static": {
 				"tools.staticdir.on": True,
 				"tools.staticdir.dir": './static'}}
+		self.log("get_wsgi_app() config: {}".format(config))
+
+		return cherrypy.Application(self, self.url, config=config)
 
 	@property
 	def url(self):
-		return "passwordreset/"
+		return self.url_root + "/passwordreset"
 
 	@property
 	def name(self):
-		return "Univention Password Self Service"
+		return "Password Reset"
 
 	@cherrypy.expose
 	def index(self):
 		return """<html>
 	<head></head>
 	<body>
-		<p>static stuff here: <img src="static/debian-logo.png"/></p>
+		<p>PasswordReset static stuff here: <img src="static/debian-logo-reset.png"/></p>
 		<p><a href="edit_contact">Edit contact</a></p>
 		<p><a href="token">Enter token</a></p>
 	</body>

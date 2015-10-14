@@ -44,37 +44,54 @@ class UniventionSelfServiceFrontend(object):
 	"""
 	base class
 	"""
-	def __init__(self):
-		self.log("init")
+	def __init__(self, url_root, file_root):
+		self.url_root = url_root
+		self.file_root = file_root
+		self.log("__init__(): url_root: {} file_root: {}".format(url_root, file_root))
 
 	def log(self, msg, traceback=False):
-		cherrypy.log("{}: {}".format(self.__class__.__name__, msg), traceback=traceback)
+		cherrypy.log("{}: {}".format(self.name, msg), traceback=traceback)
 
-	@property
-	def cherrypy_conf(self):
-		return {}
+	def get_wsgi_app(self):
+		"""
+		Implement me
+
+		:return: a WSGI application
+		"""
+		raise NotImplementedError("WSGI not implemented")
 
 	@property
 	def url(self):
-		return "test/"
+		"""
+		Implement me
+
+		:return: a path under which to present the WSGI
+		"""
+		return self.url_root + "/test"
 
 	@property
 	def name(self):
+		"""
+		Implement me
+
+		:return: unique name of plugin (used for logging and overview page)
+		"""
 		return self.__class__.__name__
 
-	def get_umc_connection(self):
+	def get_umc_connection(self, username=None, password=None):
 		"""
 		This is UMCConnection.get_machine_connection(), but using
 		LDAP_SECRETS_FILE instead of /etc/machine.secret.
 		:return: UMCConnection
 		"""
-		username = '%s$' % ucr.get('hostname')
-		try:
-			with open(LDAP_SECRETS_FILE) as machine_file:
-				password = machine_file.readline().strip()
-		except (OSError, IOError) as e:
-			self.log('Could not read {}: {}'.format(LDAP_SECRETS_FILE, e))
-			raise
+		if not username:
+			username = '%s$' % ucr.get('hostname')
+			try:
+				with open(LDAP_SECRETS_FILE) as machine_file:
+					password = machine_file.readline().strip()
+			except (OSError, IOError) as e:
+				self.log('Could not read {}: {}'.format(LDAP_SECRETS_FILE, e))
+				raise
 
 		error_handler = self.log
 		try:
