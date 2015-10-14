@@ -32,6 +32,10 @@
 
 . /usr/share/univention-docker-container-mode/lib.sh
 
+available=$(ucr get update/available)
+if [ "$available" != "yes" ]; then
+	exit 0
+fi
 upgrade=$(univention-upgrade --check)
 release=$(echo "$upgrade" | grep "Checking for release updates:" | sed -n "s/.*found: UCS \(.*\)"/\\1/p)
 if [ -n "$release" ]; then

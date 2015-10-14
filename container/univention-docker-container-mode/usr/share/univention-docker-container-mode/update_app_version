@@ -41,7 +41,7 @@ fi
 
 echo "Installing packages for $APP_ARG"
 univention-app update
-univention-app register "$APP_ARG" --component
+univention-app register "$APP_ARG" --component --do-it
 app_packages="$(univention-app get "$APP_ARG" default_packages --values-only --shell)"
 if [ -n "$app_packages" ]; then
 	if [ -n "$ERROR_FILE" ]; then

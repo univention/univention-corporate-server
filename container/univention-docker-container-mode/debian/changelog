@@ -1,3 +1,9 @@
+univention-docker-container-mode (1.0.2-3) unstable; urgency=medium
+
+  * Bug #39082: Only search for updates if suitable
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 14 Oct 2015 12:59:44 +0200
+
 univention-docker-container-mode (1.0.2-2) unstable; urgency=medium
 
   * Bug #39414: Correctly output "packages" if packages may be updated
