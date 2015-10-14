@@ -72,7 +72,7 @@ do
 			--set fax-number='+1-555-234' --set fax-number='+1-555-432' \
 			--set roomNumber=1 \
 			--set departmentNumber=1 \
-			--set street="Mayr Somerville Str. 1" \
+			--set street="Mary Somerville Str. 1" \
 			--set postcode="28359" \
 			--set city="Bremen" \
 			--set homeTelephoneNumber='+1-555-345' --set homeTelephoneNumber='+1-555-543' \
