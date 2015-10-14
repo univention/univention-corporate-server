@@ -121,7 +121,7 @@ eingetragen/modifiziert oder entfernt.
 </para>
 
 <figure id="shares:create"><title>Anlegen einer Freigabe in UMC</title>
- <graphic scalefit="1" width="100%" fileref="illustrations40/projekt-freigabe_DE.png"/>
+ <graphic scalefit="1" width="100%" fileref="illustrations41/projekt-freigabe_DE.png"/>
 </figure>
 
 <table>
@@ -185,7 +185,7 @@ eingetragen/modifiziert oder entfernt.
 		  <xref linkend="shares::permissions"/>.
 		</entry>
 	  </row>
-	  
+	
 	  <row>
 		<entry>Besitzergruppe für das Wurzelverzeichnis der Freigabe</entry>
 		<entry>
@@ -201,7 +201,7 @@ eingetragen/modifiziert oder entfernt.
 		  siehe <xref linkend="shares::permissions"/>.
 		</entry>
 	  </row>
-	  
+	
 	</tbody>
   </tgroup>
 </table>
@@ -226,7 +226,7 @@ eingetragen/modifiziert oder entfernt.
 		  Freigabe nur lesend verwendet werden.
 		</entry>
 	  </row>
-	  
+	
 	  <row>
 		<entry>Subtree-Überprüfung</entry>
 		<entry>
@@ -268,7 +268,7 @@ eingetragen/modifiziert oder entfernt.
 		  kontrolliertes Herunterfahren abgeschaltet wird.
 		</entry>
 	  </row>
-	  
+	
 	  <row>
 		<entry>Zugriff nur für diese Rechner, IP-Adressen oder Netze erlauben</entry>
 		<entry>
@@ -384,8 +384,8 @@ eingetragen/modifiziert oder entfernt.
 	  </row>
 	</thead>
 	<tbody>
-	  
-	  
+	
+	
 	  <row>
 		<entry>Erzwungener Benutzer</entry>
 		<entry>
@@ -521,7 +521,7 @@ eingetragen/modifiziert oder entfernt.
 		  (Access Control List) des Verzeichnisses, in dem sie angelegt wird.
 		</entry>
 	  </row>
-	  
+	
 	  <row>
 		<entry>Neue Dateien und Verzeichnisse erhalten den Besitzer des übergeordneten Verzeichnisses</entry>
 		<entry>
@@ -539,7 +539,7 @@ eingetragen/modifiziert oder entfernt.
 		  übergeordneten Verzeichnisses übernommen.
 		</entry>
 	  </row>
-	  
+	
 	</tbody>
   </tgroup>
 </table>
@@ -1102,7 +1102,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 
 	<figure id="shares:quota">
 	  <title>Aktivierung von Quota</title>
-	  <graphic scalefit="1" width="100%" fileref="illustrations40/quota-overview-en.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations41/quota-overview-en.png"/>
 	</figure>
 
 	<para>
@@ -1143,7 +1143,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 	<para>
 	  Über eine Freigabe-Richtlinie gesetzte Quotaeinstellungen werden standardmäßig nur einmal
 	  ausgewertet und auf das Dateisystem angewendet. Sollte sich die Einstellung ändern, wird
-	  dies nicht automatisch bei der nächsten Anmeldung des Benutzers angewendet. Um geänderte 
+	  dies nicht automatisch bei der nächsten Anmeldung des Benutzers angewendet. Um geänderte
 	  Quota-Werte zu übernehmen, kann an der Freigabe-Richtlinie der Punkt <emphasis>Einstellungen
 	  bei jedem Login anwenden</emphasis> aktiviert werden.
 	</para>

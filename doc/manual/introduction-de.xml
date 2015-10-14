@@ -26,7 +26,7 @@ Umgebungen integrieren lässt.
 <para>
 UCS besteht aus zuverlässiger, in Organisationen
 unterschiedlicher Größe erprobter Open Source Software. Diese
-Software wird durch das &ucsUMS; zu einem einheitlichen Gesamtsystem 
+Software wird durch das &ucsUMS; zu einem einheitlichen Gesamtsystem
 integriert. Damit ist das System nicht nur in einfachen, sondern auch in
 anspruchsvollen, verteilten oder virtualisierten Umgebungen einfach einsetz- und
 administrierbar.
@@ -81,7 +81,7 @@ durch die Änderungen auf die davon betroffenen Systeme übertragen und dort
 aktiviert werden.
 </para>
 <para>
-Zusätzliche Komponenten von Univention und anderen Herstellern lassen sich bequem über das 
+Zusätzliche Komponenten von Univention und anderen Herstellern lassen sich bequem über das
 <emphasis>App Center</emphasis> installieren und erweitern
 das System um zahlreiche Funktionen wie Groupware, Dokumentenmanagement oder
 Services für Microsoft Windows, so dass sie ebenfalls von einem UCS-System ausgeführt und
@@ -94,7 +94,7 @@ Services für Microsoft Windows, so dass sie ebenfalls von einem UCS-System ausg
   Linux ist ein Betriebssystem, bei dessen Entwicklung stets Wert auf
   Stabilität, Sicherheit und die Kompatibilität zu anderen Betriebssystemen
   gelegt wurde. Dadurch ist es prädestiniert für den Einsatz als stabiles, sicheres
-  und jederzeit verfügbares Serverbetriebssystem. 
+  und jederzeit verfügbares Serverbetriebssystem.
 </para>
 
 <para>
@@ -132,7 +132,7 @@ Systemrollen sind Domänencontroller, &ucsMember; und Client.
 </para>
 
 <figure id="introduction:domain"><title>UCS-Domänenkonzept</title>
- <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/domainconcept.jpg"/>
+ <graphic scalefit="1" width="90%" align="center" fileref="illustrations41/domainconcept.jpg"/>
 </figure>
 
 <para>
@@ -223,7 +223,7 @@ Weiterführende Informationen finden sich in <xref linkend="domain:ldap"/>.
 
 <para>
 <figure id="introduction:umc"><title>Univention Management Console</title>
- <graphic scalefit="1" width="100%" fileref="illustrations40/umc-overview.png"/>
+ <graphic scalefit="1" width="100%" fileref="illustrations41/umc-overview.png"/>
 </figure>
 </para>
 

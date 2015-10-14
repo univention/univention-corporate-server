@@ -41,7 +41,7 @@
 	</para>
 	<figure id="net-networks">
 	  <title>Erstellen eines Netzwerk-Objekts</title>
-	  <graphic scalefit="1" width="100%" fileref="illustrations40/create-network_DE.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations41/create-network_DE.png"/>
 	</figure>
 	<para>
 	  So kann beispielsweise ein Netzwerk-Objekt <emphasis>Produktivnetz</emphasis>
@@ -294,7 +294,7 @@
 				  bedient den DNS-Standard-Port 53. Ein zweiter Server im Hintergrund arbeitet auf
 				  Port 7777. Werden Daten der internen DNS-Zonen im LDAP bearbeitet, wird die
 				  Zonendatei auf dem zweiten Server basierend auf den LDAP-Informationen
-				  aktualisiert und durch einen Zonentransfer an den BIND-Proxy übertragen. 
+				  aktualisiert und durch einen Zonentransfer an den BIND-Proxy übertragen.
 				</simpara>
 			</listitem>
 			<listitem>
@@ -378,7 +378,7 @@
 		</para>
 		  <figure id="net-dns-forward">
 			<title>Konfiguration einer Forward Lookup Zone in UMC</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations40/forward-lookup-zone_DE.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations41/forward-lookup-zone_DE.png"/>
 		  </figure>
 		  <table>
 			<title>Reiter 'Allgemein'</title>
@@ -699,7 +699,7 @@
 		</para>
 		<figure id="net-srv-record">
 		  <title>Konfiguration eines Service Records</title>
-		  <graphic scalefit="1" width="100%" fileref="illustrations40/srv-record_DE.png"/>
+		  <graphic scalefit="1" width="100%" fileref="illustrations41/srv-record_DE.png"/>
 		</figure>
 		<table>
 		  <title>Reiter 'Allgemein'</title>
@@ -2022,7 +2022,7 @@ univention-config-registry set squid/webports="80 443"
 
 	  <para>
 		Proxy-Authentifizierung und die damit erst mögliche Überprüfung der Gruppenzugehörigkeiten
-		muss zuerst aktiviert werden. Dafür werden drei verschiedene Mechanismen angeboten: 
+		muss zuerst aktiviert werden. Dafür werden drei verschiedene Mechanismen angeboten:
 
 		<itemizedlist>
 		  <listitem><simpara>
@@ -2034,7 +2034,7 @@ univention-config-registry set squid/webports="80 443"
 		  <listitem><simpara>
 			Die Authentifizierung wird über die NTLM-Schnittstelle durchgeführt. Benutzer, die an
 			einem Windows-Client angemeldet sind, müssen dann beim Zugriff auf den Proxy keine
-			weitere Authentifizierung durchführen. Um NTLM-Authentifizierung zu aktivieren muss die 
+			weitere Authentifizierung durchführen. Um NTLM-Authentifizierung zu aktivieren muss die
 			&ucsUCRV; <envar>squid/ntlmauth</envar> auf <literal>yes</literal> gesetzt werden und
 			Squid neu gestartet werden.
 		  </simpara></listitem>
@@ -2079,7 +2079,7 @@ univention-config-registry set squid/webports="80 443"
 	  </para>
 	  <figure id="net-dansguardian">
 		<title>Sperrung einer Web-Seite durch DansGuardian</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations40/dansguardian_DE.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations41/dansguardian_DE.png"/>
 	  </figure>
 	  <para>
 		Angeforderte Dateien können außerdem auf Viren überprüft werden. Dabei kommt

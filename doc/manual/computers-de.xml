@@ -62,11 +62,11 @@
 
 		<figure id="computer-create">
 			<title>Anlegen eines Rechners in UMC</title>
-			<graphic scalefit="1" width="65%" align="center" fileref="illustrations40/computers_computer_de.png"/>
+			<graphic scalefit="1" width="65%" align="center" fileref="illustrations41/computers_computer_de.png"/>
 		</figure>
 		<figure id="computer-create-advanced">
 			<title>Erweiterte Rechneransicht</title>
-			<graphic scalefit="1" width="90%" align="center" fileref="illustrations40/computers_computer_advanced_de.png"/>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations41/computers_computer_advanced_de.png"/>
 		</figure>
         <table>
             <title>Reiter 'Allgemein'</title>
@@ -580,7 +580,7 @@
             </para>
             <para>
                 <figure id="grub-selection"><title>GRUB-Auswahlmenü</title>
-                    <graphic scalefit="1" width="80%" align="center" fileref="illustrations40/computers_grub.png"/>
+                    <graphic scalefit="1" width="80%" align="center" fileref="illustrations41/computers_grub.png"/>
                 </figure>
             </para>
             <para>
@@ -642,7 +642,7 @@
                     direkt gesetzt werden können. Die Variablen sind in den einzelnen Abschnitten
                     zusätzlich in Klammern aufgeführt.
                     <figure id="network-settings"><title>Konfiguration der Netzwerkeinstellungen</title>
-                        <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/computers_network_de.png"/>
+                        <graphic scalefit="1" width="90%" align="center" fileref="illustrations41/computers_network_de.png"/>
                     </figure>
                     Unter <guimenu>IPv4-Netzwerkgeräte</guimenu> und
                     <guimenu>IPv6-Netzwerkgeräte</guimenu> werden alle im System verfügbaren
@@ -707,7 +707,7 @@
 					verschiedene IPv6-Adressen bedienen. Der <guimenu>Bezeichner</guimenu>
 					ist ein eindeutiger Name für einzelne Adressen. Die Haupt-Adresse verwendet
 					immer den Bezeichner <emphasis>default</emphasis>, für alle anderen Adressen können
-					funktionale Bezeichner vergeben werden z.B. <emphasis>Interface-Mailserver</emphasis>. 
+					funktionale Bezeichner vergeben werden z.B. <emphasis>Interface-Mailserver</emphasis>.
 				  </para>
 
                     <para>
@@ -983,7 +983,7 @@ ucr unset umc/modules/setup/network/disabled/by
 						  <para>
 							Dies ist typischerweise der Fall, wenn nur ein einzelnes Endgerät über diese Netzwerkverbindung angebunden wird.
 						  </para>
-						</listitem> 
+						</listitem>
 
 						<listitem>
 						  <para>
@@ -1128,7 +1128,7 @@ ucr unset umc/modules/setup/network/disabled/by
             <guimenu>NFS-Freigabe</guimenu>, die unter dem in <guimenu>Mount
             point</guimenu> angegebenen Dateipfad eingehängt wird.
             <figure id="nfs-mount"><title>Einbinden einer NFS-Freigabe</title>
-                <graphic scalefit="1" width="100%" fileref="illustrations40/computers_policy_nfsshare_de.png"/>
+                <graphic scalefit="1" width="100%" fileref="illustrations41/computers_policy_nfsshare_de.png"/>
             </figure>
 			</para>
         </section>
@@ -1510,7 +1510,7 @@ master.firma.de
                 werden.
             </para>
                 <figure id="policy-mailsize"><title>Konfiguration der maximalen Mailgröße über eine Richtlinie</title>
-                    <graphic scalefit="1" width="100%" fileref="illustrations40/computers_policy_mailsize_de.png"/>
+                    <graphic scalefit="1" width="100%" fileref="illustrations41/computers_policy_mailsize_de.png"/>
                 </figure>
             <para>
                 Zuerst muss für die anzulegende Richtlinie ein <guimenu>Name</guimenu>
@@ -1685,7 +1685,7 @@ if configRegistry.get('version/version') and \
                 festgelegt.
             </para>
                 <figure id="language-settings"><title>Konfiguration der Spracheinstellungen</title>
-                    <graphic scalefit="1" width="100%" fileref="illustrations40/computers_timezone_de.png"/>
+                    <graphic scalefit="1" width="100%" fileref="illustrations41/computers_timezone_de.png"/>
                 </figure>
             <para>
                 Das <guimenu>Tastaturlayout</guimenu> im Menüpunkt
@@ -1701,7 +1701,7 @@ if configRegistry.get('version/version') and \
                 gestoppt werden.
             </para>
                 <figure id="umc-services"><title>Übersicht der Systemdienste</title>
-                    <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/umc-systemservices.png"/>
+                    <graphic scalefit="1" width="90%" align="center" fileref="illustrations41/umc-systemservices.png"/>
                 </figure>
             <para>
                 In der Liste aller auf dem System installierten Dienste ist unter

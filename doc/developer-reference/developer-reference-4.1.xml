@@ -8,7 +8,7 @@
 	%DocBookDTD;
 	%entities;
 ]>
-<book lang="en" id="developer-reference-4.0">
+<book lang="en" id="developer-reference-4.1">
 	<bookinfo>
 		<title>Univention Developer Reference</title>
 		<subtitle>Manual for developers</subtitle>
@@ -42,7 +42,7 @@
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="introduction.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="packaging/packaging.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ucr/ucr.xml"/>
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join/join.xml"/>	
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join/join.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ldap/ldap.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="listener/listener.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="udm/udm.xml"/>

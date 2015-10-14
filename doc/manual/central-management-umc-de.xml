@@ -94,7 +94,7 @@
 		</para>
 		<figure id="umc-login">
 			<title>UMC-Anmeldemaske</title>
-			<graphic align="center" width="35%" fileref="illustrations40/umc_login_de.png"/>
+			<graphic align="center" width="35%" fileref="illustrations41/umc_login_de.png"/>
 		</figure>
 		<para>
 			Nach Aufruf der URL erscheint die Anmeldemaske, in der
@@ -153,7 +153,7 @@
 		</para>
 		<figure id="umc-license">
 			<title>Anzeige der UCS-Lizenz</title>
-			<graphic scalefit="1" width="70%" align="center" fileref="illustrations40/umc_coreedition_de.png"/>
+			<graphic scalefit="1" width="70%" align="center" fileref="illustrations41/umc_coreedition_de.png"/>
 		</figure>
 
 		<para>
@@ -168,7 +168,7 @@
 
 		<para>
 		  Die Installation der meisten Anwendungen aus dem Univention App Center erfordert einen individuell
-		  ausgestellten Lizenzschlüssel mit eindeutiger Schlüsselidentifikation. UCS-Core-Edition-Lizenzen 
+		  ausgestellten Lizenzschlüssel mit eindeutiger Schlüsselidentifikation. UCS-Core-Edition-Lizenzen
 		  können durch Klick auf die Schaltfläche <guimenu>Aktivierung von UCS</guimenu> aktualisiert werden.
 		  Der aktuelle Lizenzschlüssel wird dabei an Univention geschickt
 		  und der aktualisierte Schlüssel nach einigen Minuten an eine angegebene E-Mail-Adresse
@@ -199,7 +199,7 @@
 
 		<figure id="umc-modules">
 			<title>Modulübersicht</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations40/umc_modules_de.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations41/umc_modules_de.png"/>
 		</figure>
 		<para>
 			Die inhaltlichen Eigenschaften/Konfigurationsmöglichkeiten der
@@ -266,7 +266,7 @@
 			</para>
 			<figure id="umc-search">
 			<title>Suche nach Benutzern</title>
-				<graphic scalefit="1" width="100%" fileref="illustrations40/umc_user_de.png"/>
+				<graphic scalefit="1" width="100%" fileref="illustrations41/umc_user_de.png"/>
 			</figure>
 		</section>
 
@@ -391,7 +391,7 @@
 	</para>
 	<figure id="umc-navigation">
 		<title>Navigation im LDAP-Verzeichnis</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations40/umc_navigation_de.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations41/umc_navigation_de.png"/>
 	</figure>
 	<para>
 		In der linken Bildschirmhälfte ist das LDAP-Verzeichnis in einer
@@ -413,7 +413,7 @@
 	</para>
 	<figure id="umc-container-edit">
 		<title>Bearbeiten von LDAP-Container-Einstellungen</title>
-		<graphic scalefit="1" width="30%" fileref="illustrations40/umc_navigation_edit_de.png"/>
+		<graphic scalefit="1" width="30%" fileref="illustrations41/umc_navigation_edit_de.png"/>
 	</figure>
 	<para>
 		Durch Rechtsklick auf ein Element der Baumstruktur können über
@@ -615,7 +615,7 @@
 
 	<figure id="umc-extended-attr">
 	  <title>Erweitertes Attribut zur Verwaltung von KFZ-Kennzeichen</title>
-	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/umc_extended_attribute_de.png"/>
+	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations41/umc_extended_attribute_de.png"/>
 	</figure>
 
 	<para>
@@ -649,7 +649,7 @@
 			  Der angegebene Attributname ist bei der Verwendung der Kommandozeilenschnittstelle
 			  &ucsUDM; zu verwenden. Beim Anlegen des erweiterten Attributs wird hier automatisch
 			  <emphasis>Eindeutiger Name</emphasis> von der Karteikarte <emphasis>Allgemein</emphasis>
-			übernommen und kann nachträglich modifiziert werden. 
+			übernommen und kann nachträglich modifiziert werden.
 			</entry>
 		  </row>
 		  <row>
@@ -708,7 +708,7 @@
 			  erweitertes Attribut kann auch für mehrere Module gelten.
 			</entry>
 		  </row>
-		  
+
 		  <row>
 			<entry>Benötigte Optionen/Objektklassen</entry>
 			<entry>
@@ -719,7 +719,7 @@
 			  Attribut angezeigt bzw. editierbar ist.
 			</entry>
 		  </row>
-		  
+
 		  <row>
 			<entry>Hook-Klasse</entry>
 			<entry>
@@ -820,7 +820,7 @@
 				  werden können, kann diese Option aktiviert werden, um das erweiterte Attribut aus
 				  der Liste der möglichen Sucheigenschaften zu entfernen.
 				</para>
-			  
+
 				<para>
 				  Dies ist nur in Sonderfällen nötig.
 				</para>
@@ -1789,7 +1789,7 @@ univention-directory-manager settings/extended_attribute create \
 
 	  <figure id="umc-report">
 		<title>Erstellen eines Reports</title>
-		<graphic width="45%" align="center" fileref="illustrations40/umc_report_de2.png"/>
+		<graphic width="45%" align="center" fileref="illustrations41/umc_report_de2.png"/>
 	  </figure>
 
 	  <para>

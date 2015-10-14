@@ -61,7 +61,7 @@
 	  </listitem>
 	</varlistentry>
   </variablelist>
-  
+
   <section id="computers:Integration_of_repository_components_via_the_Univention_Management_Console">
 	<title>Integration of repository components via &ucsUMC;</title>
 	<para>
@@ -70,14 +70,14 @@
 	  Applications which have been added via the Univention App Center are still listed
 	  here, but should be managed via the <guimenu>App Center</guimenu> module.
 	</para>
-	
+
 	<para>
 	  A further component can be set up with <guimenu>Add</guimenu>. The
 	  <guimenu>Component name</guimenu> identifies the component on the repository
 	  server. A free text can be entered under <guimenu>Description</guimenu>, for
 	  example, for describing the functions of the component in more detail.
 	</para>
-	
+
 	<para>
 	  The host name of the download server is to be entered in the input field
 	  <guimenu>Repository server</guimenu>, and, if necessary, an additional file

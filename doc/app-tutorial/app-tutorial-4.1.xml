@@ -8,7 +8,7 @@
 	%DocBookDTD;
 	%entities;
 ]>
-<book lang="en" id="app-developer-tutorial-4.0">
+<book lang="en" id="app-developer-tutorial-4.1">
 	<bookinfo>
 		<title>App Tutorial</title>
 		<subtitle>Building Apps for the Univention App Center</subtitle>

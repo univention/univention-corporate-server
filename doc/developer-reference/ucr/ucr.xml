@@ -867,11 +867,11 @@ programs=<executable>]]></programlisting>
 # Warnung: Diese Datei wurde automatisch generiert und kann durch
 #          univention-config-registry überschrieben werden.
 #          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
-# 
+#
 #       /etc/univention/templates/files/etc/hosts.d/00-base
 #       /etc/univention/templates/files/etc/hosts.d/20-static
 #       /etc/univention/templates/files/etc/hosts.d/90-ipv6defaults
-# 
+#
 					]]></screen>
 					<para>
 						It should be inserted once at the top to prevent the user from editing the generated file.

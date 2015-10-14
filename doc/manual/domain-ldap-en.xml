@@ -263,7 +263,7 @@
 
 	  <figure id="domain-ldap:join:win7">
 		<title>Domain join of a Windows 7 system</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations40/win7-join_2-en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations41/win7-join_2-en.png"/>
 	  </figure>
 
 	  <para>
@@ -424,7 +424,7 @@
 
 		<figure id="domain-ldap:join:osx">
 			<title>Domain join of a Mac OS X system</title>
-			<graphic scalefit="1" width="60%" fileref="illustrations40/macosx-bind_en.png"/>
+			<graphic scalefit="1" width="60%" fileref="illustrations41/macosx-bind_en.png"/>
 		</figure>
 
 		  <para>
@@ -689,7 +689,7 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 		  uncovered.
 		</para>
 
-		  
+		
 		<para>
 		  Individual areas of the directory service can be excluded from the logging. These branches
 		  can be configured using the &ucsUCR; variables <envar>ldap/logging/exclude1</envar>,
@@ -830,7 +830,7 @@ slapcat &gt; ldapdata.txt
 			  allows the setting of new passwords. During the installation a new
 			  <uri>default-user-password-admins</uri> policy is created
 			  automatically, which is linked to the members of the <systemitem class="groupname">User
-			  Password Admins</systemitem> group and can be assigned to a corresponding 
+			  Password Admins</systemitem> group and can be assigned to a corresponding
 			  container in the LDAP directory. Further information on the configuration of UMC
 			  policies can be found in Section <xref linkend="delegated-administration"/>.
 			</para>
@@ -952,7 +952,7 @@ slapcat &gt; ldapdata.txt
 
 	<para>
 	  Replication of the directory data within a UCS domain occurs via the Univention
-	  Directory Listener/Notifier mechanism: 
+	  Directory Listener/Notifier mechanism:
 
 	  <itemizedlist>
 		<listitem> <simpara>
@@ -970,7 +970,7 @@ slapcat &gt; ldapdata.txt
 
 	<figure id="domain-join:listener-notifier">
 	  <title>Listener/Notifier mechanism</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations40/administration-overview_en.png"/>
+	  <graphic scalefit="1" width="80%" fileref="illustrations41/administration-overview_en.png"/>
 	</figure>
 
 	<para>

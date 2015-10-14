@@ -105,7 +105,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					Recommended: The application is integrated in UCS and the UCS
-					management system (see <xref linkend="app:integration"/>). 
+					management system (see <xref linkend="app:integration"/>).
 				</simpara></listitem>
 			</itemizedlist>
 		</para>
@@ -113,7 +113,7 @@
 			<para>
 				The software vendor is responsible for the maintenance of his
 				application(s). Package updates are provided for Univention App Center
-				in a contemporary way (see also <xref linkend="app:update" />). 
+				in a contemporary way (see also <xref linkend="app:update" />).
 			</para>
 		</note>
 	</section>
@@ -683,7 +683,7 @@
 		</para>
 		<para>
 			All further communication will be done through the ticket system after
-			the upload. 
+			the upload.
 		</para>
 	</section>
 	<section id="app:notification">

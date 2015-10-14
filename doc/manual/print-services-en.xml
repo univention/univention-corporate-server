@@ -119,7 +119,7 @@
 	</para>
 	<figure id="create-printershare">
 	<title>Creating a printer share</title>
-		<graphic scalefit="1" width="90%" align="center" fileref="illustrations40/create_printershare_en.png"/>
+		<graphic scalefit="1" width="90%" align="center" fileref="illustrations41/create_printershare_en.png"/>
 	</figure>
 	<para>
 		When adding/deleting/editing a printer share, the printer is
@@ -389,7 +389,7 @@
 	</para>
 	<figure id="printergroup">
 	<title>Configuring a printer group</title>
-		<graphic scalefit="1" width="90%" align="center" fileref="illustrations40/printer_group-en.png"/>
+		<graphic scalefit="1" width="90%" align="center" fileref="illustrations41/printer_group-en.png"/>
 	</figure>
 	<para>
 		A printer group must have at least one printer as a member. Only
@@ -516,7 +516,7 @@
 	</para>
 	<figure id="printer-admin">
 	<title>Printer administration</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations40/umc-printer_administration-en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations41/umc-printer_administration-en.png"/>
 	</figure>
 	<para>
 		The start page of the module contains a search mask with which the available
@@ -621,21 +621,21 @@
   </para>
 
   <para>
-  	<orderedlist>
-  	  <listitem><simpara>
+	<orderedlist>
+	  <listitem><simpara>
 		Firstly, the printer drivers must be downloaded from the manufacturer's website. If you
-		are using an environment in which 64-bit installations of Windows are used, you will need 
+		are using an environment in which 64-bit installations of Windows are used, you will need
 		both versions of the drivers (32 and 64 bit). The <filename class="extension">INF</filename> files are required.
 	  </simpara></listitem>
 
-  	  <listitem><simpara>
+	  <listitem><simpara>
 		You now need to start Windows Explorer and open the network environment there. Here, you
 		need to select the print server on which you want to create the printer share. You can
 		display a list of all printer shares by clicking on <guimenu>View remote printer</guimenu>
 		in the menu bar at the top.
 	  </simpara></listitem>
 
-  	  <listitem><simpara>
+	  <listitem><simpara>
 		You now need to right-click on the empty space below the printer shares (not on one of the
 		shares, as this will open the printer share's context-sensitive menu!) and select
 		<guimenu>Server Properties</guimenu>. Then select <guimenu>Add &ar; Next &ar; Select x86
@@ -646,46 +646,46 @@
 		driver (x86) can be uploaded in the same way.
 	  </simpara></listitem>
 
- 	  <listitem><simpara>
+	  <listitem><simpara>
 		After these steps the drivers are stored in the directory
 		<filename class="directory">/var/lib/samba/drivers/</filename> on the print server.
- 	  </simpara></listitem>
+	  </simpara></listitem>
 
 
 
-  	</orderedlist>
+	</orderedlist>
   </para>
 
 
   <para>
 	The printer share is now linked to the uploaded printer driver:
-  	<orderedlist>
-  	  <listitem><simpara>
+	<orderedlist>
+	  <listitem><simpara>
 		You now need to start Windows Explorer and open the network environment there. Here, you
 		need to select the print server on which you want to create the printer share. You can
 		display a list of all printer shares by clicking on <guimenu>View remote printers</guimenu>
 		in the menu bar at the top. You now need to select a printer by left-clicking on it, turning
 		it blue. Now right-click and select <guimenu>Properties</guimenu> (Caution: Another dialogue
 		opens if the printer has not been selected with a left click!).
-  	  </simpara></listitem>
+	  </simpara></listitem>
 
-  	  <listitem><simpara>
+	  <listitem><simpara>
 		If no printer driver is yet stored, the following error is displayed, which must be
 		confirmed with <guimenu>No</guimenu>.
 		</simpara>
-  		<figure id="printer:error">
-  		  <title>Error message during first access</title>
-  		  <graphic scalefit="1" align="center" width="40%" fileref="illustrations40/windows-printerdriver-en.png"/>
-  		</figure>
-  	  </listitem>
+		<figure id="printer:error">
+		  <title>Error message during first access</title>
+		  <graphic scalefit="1" align="center" width="40%" fileref="illustrations41/windows-printerdriver-en.png"/>
+		</figure>
+	  </listitem>
 
-  	  <listitem><simpara>
+	  <listitem><simpara>
 		The uploaded driver must now be selected from the dropdown menu under
 		<guimenu>Driver</guimenu> on the <guimenu>Advanced</guimenu> tab. Then click on
 		<guimenu>Apply</guimenu> (Important: Do not click <guimenu>OK</guimenu>!).
-  	  </simpara></listitem>
+	  </simpara></listitem>
 
-  	  <listitem><simpara>
+	  <listitem><simpara>
 		A dialogue is now shown asking whether you trust the printer. This must be confirmed with
 		<guimenu>Install driver</guimenu>. Important: You must not click directly on
 		<guimenu>OK</guimenu> - instead you must switch to the <guimenu>General</guimenu>
@@ -695,13 +695,13 @@
 		the stylised printer symbol) must be changed back to the name of the printer share. This is
 		done using the <guimenu>Samba name</guimenu> field configured in the UMC's printer
 		management; if it is blank, then the value from <guimenu>Name</guimenu>.
-  	  </simpara></listitem>
+	  </simpara></listitem>
 
-  	  <listitem><simpara>
+	  <listitem><simpara>
 		Then click on <guimenu>Apply</guimenu> and <guimenu>OK</guimenu>. The printer drivers stored
 		on the server side are downloaded onto the client, so e.g. a test page can be printed.
-  	  </simpara></listitem>
-  	</orderedlist>
+	  </simpara></listitem>
+	</orderedlist>
   </para>
 </section>
 

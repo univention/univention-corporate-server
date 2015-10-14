@@ -56,7 +56,7 @@
 	</para>
 
 	<para>
-	  Samba can not join an Active Directory Forest yet at this point. 
+	  Samba can not join an Active Directory Forest yet at this point.
 	  </para>
 
 	<para>
@@ -418,7 +418,7 @@ instanceType: 4
 		  </para>
 
 			<figure id="windows:gpo:activate"><title>Activating the Group Policy Management tools</title>
-			<graphic scalefit="1" width="90%" align="center" fileref="illustrations40/gpo-activate-en.png"/>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations41/gpo-activate-en.png"/>
 			</figure>
 
 		  <para>
@@ -477,7 +477,7 @@ instanceType: 4
 		  </para>
 
 			<figure id="windows:gpo:edit"><title>Editing a policy</title>
-			<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/gpo-edit-policy-en.png"/>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations41/gpo-edit-policy-en.png"/>
 			</figure>
 
 		  <para>
@@ -519,7 +519,7 @@ instanceType: 4
 		  </para>
 
 			<figure id="windows:gpo:user"><title>Evaluating the GPO for the user <systemitem class="username">user01</systemitem></title>
-			<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/gpo-gpresult-en.png"/>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations41/gpo-gpresult-en.png"/>
 			</figure>
 
 		  <para>
@@ -626,7 +626,7 @@ END CATEGORY
 		  </para>
 
 			<figure id="windows:gpo:admin"><title>The activated administrative template</title>
-			<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/gpo-adm-template-en.png"/>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations41/gpo-adm-template-en.png"/>
 			</figure>
 
 		  <para>
@@ -647,7 +647,7 @@ END CATEGORY
 			builds on this is known as <emphasis>WMI filtering</emphasis>. This makes it possible, for example, to apply
 			a policy only to PCS with a 64-bit processor architecture or with at least 8 GB of
 			RAM. If a system property changes (e.g., if more memory is installed), the respective
-			filter is automatically re-evaluated by the client. 
+			filter is automatically re-evaluated by the client.
 		  </para>
 
 		  <para>
@@ -805,7 +805,7 @@ END CATEGORY
   </note>
 
     <figure id="windows:gpo:mode"><title>Configuration of the operating mode as part of an AD domain</title>
-      <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/admember_1-en.png"/>
+      <graphic scalefit="1" width="100%" align="center" fileref="illustrations41/admember_1-en.png"/>
     </figure>
 
   <para>
@@ -819,7 +819,7 @@ END CATEGORY
   </para>
 
     <figure id="windows:ad:join"><title>Domain join of an AD domain</title>
-      <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/admember_2-en.png"/>
+      <graphic scalefit="1" width="100%" align="center" fileref="illustrations41/admember_2-en.png"/>
     </figure>
 
   <para>
@@ -850,7 +850,7 @@ END CATEGORY
   <note>
   	<para>
     As the AD Kerberos infrastructure is used for the authentication of users in this mode, it is essential that the system times of UCS and the AD domain controller are synchronised (with a tolerance of 5 minutes). For this purpose, the AD domain controller is configured as the NTP time server in UCS.
-    
+
     	In the case of authentication problems, the system time should always be the first thing to be checked.
     </para>
   </note>
@@ -904,19 +904,19 @@ echo -n "Administrator password" > /etc/univention/connector/password
   <para>
     In the default setting, containers, organisational units, users and groups are synchronised. Users have an exceptional position since the password cannot be queried via the LDAP protocol in Active Directory. A special service is installed on the Windows server for this purpose, which enables password synchronisation (see <xref linkend="ad-connector:password-dienst"/>).
   </para>
-  
+
   <para>
     Information on the attributes configured in the basic setting and particularities to take into account can be found in <xref linkend="ad-connector:details-zur-vorkonfigurierten-synchronisation"/>.
   </para>
-  
+
   <para>
     The computer accounts are not synchronised, as Windows computers can only be mounted in one domain.
   </para>
-  
+
   <para>
     The identical user settings in both domains allow users to access services in both environments transparently. After logging on to a UCS domain, subsequent connection to a file share or to an Exchange server with Active Directory is possible without a renewed password request. Users and administrators will find users and groups of the same name on the resources of the other domain and can thus work with their familiar permission structures.
   </para>
-  
+
   <para>
     The initialisation is performed after the first start of the connector. All the entries are read out of the UCS, converted to AD objects according to the mapping set and added (or modified if already present) on the AD side. All the objects are then exported from the AD and converted to UCS objects and added/modified accordingly on the UCS side. As long as there are changes, the directory service servers continue to be requested. The UCS AD connector can also be operated in a unidirectional mode.
   </para>
@@ -977,7 +977,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
 	</para>
 
 	<figure id="windows:ad:connector"><title>Configuration of the UCS AD Connector in UMC</title>
-	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/adconnector_1-en.png"/>
+	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations41/adconnector_1-en.png"/>
 	</figure>
 
   <para>
@@ -1045,7 +1045,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
   </note>
 
     <figure id="windows:ad:dialog"><title>Administration dialogue for the Active Directory Connection</title>
-      <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/adconnector_2-en.png"/>
+      <graphic scalefit="1" width="90%" align="center" fileref="illustrations41/adconnector_2-en.png"/>
     </figure>
 
 </section>
@@ -1090,7 +1090,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	  &ar; DER binary encoded X.509</guimenu>.
 	</para>
   </section>
-  
+
   <section id="windows:Exporting_the_certificate_on_Windows_2008">
 	<title>Exporting the certificate on Windows 2008</title>
 	<para>
@@ -1099,7 +1099,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	</para>
 
 	  <figure id="windows:2008:ca"><title>Exporting the root certificate on Windows 2008</title>
-	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/adconnector_23-en.png"/>
+	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations41/adconnector_23-en.png"/>
 	  </figure>
 
 	<para>
@@ -1611,7 +1611,7 @@ The <systemitem class="username">root</systemitem> and <systemitem class="userna
 		  If user logins to the AD server are possible  (e.g. through domain logins or terminal
 		  server sessions) it is recommended to deactivate them and to stop any services in the AD
 		  domain, which deliver data, e.g. mail servers. This ensures that no data is lost in case
-		  of a rollback to the original snapshot/backup. 
+		  of a rollback to the original snapshot/backup.
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1623,7 +1623,7 @@ The <systemitem class="username">root</systemitem> and <systemitem class="userna
 
 		<listitem><simpara>
 		  In a default installation the <systemitem class="username">Administrator</systemitem> account of the AD server
-		  is deactivated. It should be activated in the local user management module. 
+		  is deactivated. It should be activated in the local user management module.
 		</simpara></listitem>
 
 	  </itemizedlist>
@@ -1684,7 +1684,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	<figure id="windows:ad:takeover1">
 	  <title>First phase of domain migration</title>
-	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover1-en.png"/>
+	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations41/takeover1-en.png"/>
 	</figure>
 
 	<para>
@@ -1693,7 +1693,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	<figure id="windows:ad:takeover2">
 	  <title>Overview of the data to be migrated</title>
-	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover2-en.png"/>
+	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations41/takeover2-en.png"/>
 	</figure>
 	</para>
 
@@ -1750,7 +1750,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	  <figure id="windows:ad:sysvol">
 		<title>Copying the SYSVOL share</title>
-		<graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover3-en.png"/>
+		<graphic scalefit="1" width="100%" align="center" fileref="illustrations41/takeover3-en.png"/>
 	  </figure>
 
 	  It may be necessary to install the required <command>robocopy</command> tool, which is part of the Windows Server
@@ -1771,7 +1771,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	  <figure id="windows:ad:shutdown">
 		<title>Shutdown of the AD server(s)</title>
-		<graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover4-en.png"/>
+		<graphic scalefit="1" width="100%" align="center" fileref="illustrations41/takeover4-en.png"/>
 	  </figure>
 	</para>
 
@@ -1800,7 +1800,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Finally restart Samba and the DNS server 
+		  Finally restart Samba and the DNS server
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
@@ -1876,7 +1876,7 @@ samba-tool dbcheck --fix --yes
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Creation of a new UCS user and login to a Windows client 
+		  Creation of a new UCS user and login to a Windows client
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>

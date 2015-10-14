@@ -264,7 +264,7 @@
 		</para>
 		<figure id="domain-ldap:join:win7">
 			<title>Domänenbeitritt eines Windows 7-Systems</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations40/win7-join_2-de.png"/>
+			<graphic scalefit="1" width="80%" fileref="illustrations41/win7-join_2-de.png"/>
 		</figure>
 		<para>
 			Der Domänenbeitritt dauert einige Zeit und sollte nicht vorzeitig
@@ -445,7 +445,7 @@
 
 		<figure id="domain-ldap:join:osx">
 			<title>Domänenbeitritt eines Mac OS X-Systems</title>
-			<graphic scalefit="1" width="60%" fileref="illustrations40/macosx-bind_de.png"/>
+			<graphic scalefit="1" width="60%" fileref="illustrations41/macosx-bind_de.png"/>
 		</figure>
 
 		  <para>
@@ -861,7 +861,7 @@ slapcat &gt; ldapdaten.txt
 				Passwörter gesetzt werden können. Während der Installation wird automatisch
 				eine neue Richtlinie <uri>default-user-password-admins</uri> erstellt,
 				die den Mitgliedern der Gruppe <systemitem class="groupname">User Password Admins</systemitem>
-				zugewiesen ist bzw. mit einem entsprechenden Container im LDAP-Verzeichnis 
+				zugewiesen ist bzw. mit einem entsprechenden Container im LDAP-Verzeichnis
 				verknüpft werden kann. Weitere Hinweise zur Konfiguration von UMC-Richtlinien finden
 				sich in Kapitel <xref linkend="delegated-administration"/>.
 			</para>
@@ -882,7 +882,7 @@ slapcat &gt; ldapdaten.txt
 
 			<para>
 			  Das Zurücksetzen der Passwörter durch die Passwort-Gruppe kann für sensible Benutzer oder Gruppen
-			  (z.B. Domänen-Administratoren) verhindert werden. Mit den &ucsUCR;-Variablen 
+			  (z.B. Domänen-Administratoren) verhindert werden. Mit den &ucsUCR;-Variablen
 			  <envar>ldap/acl/user/passwordreset/protected/uid</envar> und
 			  <envar>ldap/acl/user/passwordreset/protected/gid</envar> können Benutzer und Gruppen
 			  konfiguriert werden. Mehrere Werte müssen durch Kommas getrennt werden. Nach
@@ -984,7 +984,7 @@ slapcat &gt; ldapdaten.txt
 	  <title>Ablauf der Listener/Notifier-Replikation</title>
 	  <para>
 		Die Replikation der Verzeichnisdaten innerhalb einer UCS-Domäne erfolgt über den
-		Listener/Notifier-Mechanismus: 
+		Listener/Notifier-Mechanismus:
 
 		<itemizedlist>
 		  <listitem> <simpara>
@@ -1002,7 +1002,7 @@ slapcat &gt; ldapdaten.txt
 	
 	  <figure id="domain-join:listener-notifier">
 		<title>Listener/Notifier-Mechanismus</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations40/administration-overview.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations41/administration-overview.png"/>
 	  </figure>
 
 	  <para>
@@ -1053,7 +1053,7 @@ slapcat &gt; ldapdaten.txt
 
 	<section id="domain:listenernotifier:erroranalysis">
 	  <title>Analyse von Listener/Notifier-Problemen</title>
-	  
+	
 	  <section id="domain:listenernotifier:erroranalysis:debug">
 		<title>Logdateien/Debug-Level der Replikation</title>
 

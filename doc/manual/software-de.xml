@@ -133,7 +133,7 @@
 	</para>
 
 	<figure id="appcenter-overview"><title>Überblick der verfügbaren Applikationen im App Center</title>
-	<graphic scalefit="1" width="100%" fileref="illustrations40/appcenter_overview_de.png"/>
+	<graphic scalefit="1" width="100%" fileref="illustrations41/appcenter_overview_de.png"/>
 	</figure>
 
 	<para>
@@ -156,7 +156,7 @@
 	</para>
 
 	<figure id="appcenter-details"><title>Details einer Applikation im App Center</title>
-	<graphic scalefit="1" width="100%" fileref="illustrations40/appcenter_details_de.png"/>
+	<graphic scalefit="1" width="100%" fileref="illustrations41/appcenter_details_de.png"/>
 	</figure>
 
 	<para>
@@ -251,7 +251,7 @@
 	  </para>
 
 	  <figure id="software-umcupdate"><title>Aktualisierung eines UCS-Systems über UMC</title>
-	  <graphic scalefit="1" width="100%" fileref="illustrations40/software_onlineupdate_de.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations41/software_onlineupdate_de.png"/>
 	  </figure>
 
 	  <para>
@@ -330,7 +330,7 @@
 	  </para>
 
 	  <figure id="software-policyupdate"><title>Aktualisierung eines UCS-Systems über eine Update-Richtlinie</title>
-	  <graphic scalefit="1" width="100%" fileref="illustrations40/software_policy_de.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations41/software_policy_de.png"/>
 	  </figure>
 
 	  <para>
@@ -591,7 +591,7 @@ univention-repository-update -h
 
 	  <figure id="appcenter-ucscomponents">
 		<title>Auswahl von UCS-Komponenten im App Center</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations40/appcenter-ucs-de.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations41/appcenter-ucs-de.png"/>
 	  </figure>
 
 	</section>
@@ -605,7 +605,7 @@ univention-repository-update -h
 	  </para>
 
 	  <figure id="software-umcinstall"><title>Installation des Pakets <package>univention-squid</package> in &ucsUMC;</title>
-	  <graphic scalefit="1" width="100%" fileref="illustrations40/software_install_de1.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations41/software_install_de1.png"/>
 	  </figure>
 
 	  <para>
@@ -888,7 +888,7 @@ apt-cache search fax
 
 	</itemizedlist>
 	<figure id="software-monitor"><title>Suche nach Paketen im Software-Monitor</title>
-	<graphic scalefit="1" width="100%" fileref="illustrations40/software_softwaremonitor_de.png"/>
+	<graphic scalefit="1" width="100%" fileref="illustrations41/software_softwaremonitor_de.png"/>
 	</figure>
 
 	<para>

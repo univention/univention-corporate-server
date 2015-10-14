@@ -69,7 +69,7 @@
 
 	<figure id="service-detail">
 		<title>Nagios Status-Webinterface</title>
-		<graphic scalefit="1" align="center" width="90%" fileref="illustrations40/nagios_service_detail.png"/>
+		<graphic scalefit="1" align="center" width="90%" fileref="illustrations41/nagios_service_detail.png"/>
 	</figure>
 
 	<para>
@@ -123,7 +123,7 @@
 	  <command>univention-run-join-scripts</command> aufgerufen werden). Weitere Informationen
 	  finden sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
 	  Der Nagios-Server kann auf beliebigen Systemrollen installiert werden, wobei die Verwendung
-	  eines Domänencontroller-Systems empfohlen wird. 
+	  eines Domänencontroller-Systems empfohlen wird.
 	  Der Nagios-Client ist auf allen Systemrollen standardmäßig installiert.
 	</para>
 
@@ -491,7 +491,7 @@
 
 		<figure id="nagios-service">
 			<title>Konfiguration eines Nagios-Dienstes</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations40/nagios-object_DE.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations41/nagios-object_DE.png"/>
 		</figure>
 
 		<table>
@@ -859,7 +859,7 @@
 
 		<figure id="nagios-assign">
 			<title>Zuweisung von Nagios-Prüfungen zu einem Rechner</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations40/nagios-services_DE.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations41/nagios-services_DE.png"/>
 		</figure>
 
 		<table>
@@ -969,7 +969,7 @@
 
 	<figure id="nagios-tact-overview">
 		<title>Nagios-Statusübersicht</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations40/overview_EN.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations41/overview_EN.png"/>
 	</figure>
 
 	<para>

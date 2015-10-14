@@ -376,7 +376,7 @@
 		<para>
 		  Trust settings can only be set up on domain controllers.
 		</para>
-		
+
 		<para>
 		  An outgoing trust relationship must be created on the Windows PDC.
 		</para>
@@ -387,7 +387,7 @@
 		  &ucsUMC;.
 		</para>
 	  </section>
-	  
+
 	  <section id="windows:trustdom:samba-trusts-windows">
 		<title>Samba domain trusts Windows domain</title>
 		<para>

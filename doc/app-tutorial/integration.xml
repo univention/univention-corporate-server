@@ -710,7 +710,7 @@ udm/handlers/appcenter/
 			<para>
 				UMC modules are very versatile (both the JavaScript based frontend part as well as the Python
 				backend part) and can be used for nearly anything. This guide cannot cover everything there is about
-				UMC modules. One starting point may be 
+				UMC modules. One starting point may be
 			</para>
 
 			<programlisting language="sh">

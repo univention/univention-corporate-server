@@ -173,7 +173,7 @@
 			<para>
 			  The <emphasis>primary e-mail address</emphasis> is used for authentication on Postfix
 			  and Dovecot. Primary e-mail addresses must always be unique. Only one primary e-mail
-			  address can be configured for every user. It also defines the user's IMAP mailbox. 
+			  address can be configured for every user. It also defines the user's IMAP mailbox.
 			  If a mail home server is assigned to a user (see <xref linkend="mail::homeserver"/>),
 			  the IMAP inbox is automatically created by a Univention directory listener module.
 			  The domain part of the e-mail address must be registered in &ucsUMC; (see
@@ -203,7 +203,7 @@
 	  </para>
 	  <note>
 		<para>
-		Once the user account is properly configured authentication to the mail stack 
+		Once the user account is properly configured authentication to the mail stack
 		is possible (<systemitem class="service">IMAP</systemitem>/<systemitem class="service">POP3</systemitem>/<systemitem class="service">SMTP</systemitem>). Please keep in mind that after disabling the account
 		or changing the password the login to the mail stack is still possible for 5min
 		due to the authentication cache of the mail stack.
@@ -229,7 +229,7 @@ doveadm auth cache flush
 	  <para>
 		<figure id="mail-mailinglist">
 		  <title>Creating a mailing list</title>
-		  <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/mail_mailinglist_en.png"/>
+		  <graphic scalefit="1" width="90%" align="center" fileref="illustrations41/mail_mailinglist_en.png"/>
 		</figure>
 	  </para>
 	  <para>
@@ -318,7 +318,7 @@ doveadm auth cache flush
 	  <para>
 		<figure id="mail-sharedfolder">
 		  <title>Creating a shared IMAP folder</title>
-		  <graphic scalefit="1" width="100%" fileref="illustrations40/mail_imapfolder_en.png"/>
+		  <graphic scalefit="1" width="100%" fileref="illustrations41/mail_imapfolder_en.png"/>
 		</figure>
 	  </para>
 
@@ -1086,7 +1086,7 @@ ucr set mail/dovecot/limits/imap-login/service_count=0
   </section>
 
   <section id="mail:clients">
-  	<title>Configuration of mail clients for the mail server</title>
+		<title>Configuration of mail clients for the mail server</title>
 
 	<para>
 	  The use of IMAP is recommended for using a mail client with the UCS mail server. STARTTLS is
@@ -1098,12 +1098,12 @@ ucr set mail/dovecot/limits/imap-login/service_count=0
 	  the setup of Mozilla Thunderbird as an example.
 	</para>
 
-  	<para>
-  	  <figure id="mail:clients:thunderbird">
-  		<title>Setup of Mozilla Thunderbird</title>
-  		<graphic scalefit="1" align="center" width="80%" fileref="illustrations40/thunderbird_en.png"/>
-  	  </figure>
-  	</para>
+	<para>
+	  <figure id="mail:clients:thunderbird">
+		<title>Setup of Mozilla Thunderbird</title>
+		<graphic scalefit="1" align="center" width="80%" fileref="illustrations41/thunderbird_en.png"/>
+	  </figure>
+	</para>
   </section>
 
   <section id="mail::horde">
@@ -1124,7 +1124,7 @@ ucr set mail/dovecot/limits/imap-login/service_count=0
 	  <para>
 		<figure id="horde-login">
 		  <title>Login on Horde</title>
-		  <graphic scalefit="1" align="center" width="35%" fileref="illustrations40/login_en.png"/>
+		  <graphic scalefit="1" align="center" width="35%" fileref="illustrations41/login_en.png"/>
 		  </figure>
 	  </para>
 	  <para>
@@ -1156,7 +1156,7 @@ ucr set mail/dovecot/limits/imap-login/service_count=0
 	  <para>
 		<figure id="horde-inbox">
 		  <title>Web mail (Inbox)</title>
-		  <graphic scalefit="1" width="95%" fileref="illustrations40/inbox_en.png"/>
+		  <graphic scalefit="1" width="95%" fileref="illustrations41/inbox_en.png"/>
 		  </figure>
 	  </para>
 	  <para>
@@ -1176,7 +1176,7 @@ ucr set mail/dovecot/limits/imap-login/service_count=0
 	  </para>
 	  <figure id="horde-address">
 		<title>Address book for webmail</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations40/addressbook_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations41/addressbook_en.png"/>
 	  </figure>
 	  <para>
 		Contact information found using the simple or advanced search can then be
@@ -1206,7 +1206,7 @@ ucr set mail/dovecot/limits/imap-login/service_count=0
 	  </para>
 	  <figure id="horde-filter">
 		<title>Filter management in Horde</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations40/filter_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations41/filter_en.png"/>
 	  </figure>
 	  <para>
 		Filters can be edited and expanded

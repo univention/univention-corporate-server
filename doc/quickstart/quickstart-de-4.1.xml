@@ -8,7 +8,7 @@
 	%DocBookDTD;
 	%entities;
 ]>
-<book lang="de" id="quickstart-de-4.0">
+<book lang="de" id="quickstart-de-4.1">
 <bookinfo>
   <title>Univention Corporate Server</title>
   <subtitle>Quickstart Guide für Univention Corporate Server</subtitle>
@@ -20,7 +20,7 @@
   <para>
 	Univention Corporate Server (UCS) ist ein auf Debian GNU/Linux basierendes Serverbetriebssystem
 	mit integriertem Managementsystem für die zentrale Verwaltung von Servern, Diensten, Clients,
-	Desktops und Benutzern. 
+	Desktops und Benutzern.
   </para>
 
   <para>
@@ -56,7 +56,7 @@
 
   <para>
 	Die Installation erfolgt per menügeführtem Installer und kann sowohl interaktiv, als auch
-	vollständig profilbasiert <biblioref linkend="ext-doc-inst"/> durchgeführt werden. 
+	vollständig profilbasiert <biblioref linkend="ext-doc-inst"/> durchgeführt werden.
   </para>
 
   <para>
@@ -76,9 +76,9 @@
 
   <figure id="quick-systemrole">
 	<title>Auswahl der Domäneneinstellungen</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/systemrole-de.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations41/systemrole-de.png"/>
   </figure>
-  
+
   <para>
 	Während der Installation kann ausgewählt werden, ob das System das erste System in einer neuen
 	UCS-Domäne sein soll, ob das System einer vorhandenen Active Directory Domäne oder einer
@@ -107,7 +107,7 @@
 	Zeichen umfassen und wird bei der Installation des ersten UCS-Servers (&ucsMaster;) auch als
 	Passwort für den <emphasis>Administrator</emphasis>-Benutzer gesetzt.
   </para>
-  
+
   <para>
 	Während der Installation kann eine Autopartitionierung verwendet werden, die standardmäßig die
 	erste Festplatte im System als LVM Volume Group nutzt.
@@ -149,7 +149,7 @@
 
   <figure id="quick-umclogin">
 	<title>Module in der UMC</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/umc-modules-de.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations41/umc-modules-de.png"/>
   </figure>
 
 </chapter>
@@ -169,19 +169,19 @@
 	<itemizedlist>
 	  <listitem><simpara>
 		Weitere UCS-Software kann über die Kategorie <guimenu>UCS-Komponenten</guimenu>
-		nachträglich installiert oder entfernt werden. 
+		nachträglich installiert oder entfernt werden.
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		Lösungen von Drittanbietern (z.B. verschiedene Groupwarelösungen) und UCS-kompatible
 		Zusatzprodukte (z.B. UCS@school für den Schuleinsatz) können ebenfalls über das App Center
-		installiert werden. 
+		installiert werden.
 	  </simpara></listitem>
 	</itemizedlist>
 
 	<figure id="quick-appcenter">
 	  <title>Nachträgliche Installation von UCS-Komponenten</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations40/appcenter-de.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations41/appcenter-de.png"/>
 	</figure>
 
   </para>
@@ -189,7 +189,7 @@
 
 <chapter id="quickstart:ucr">
   <title>Konfigurationsmanagement mit Univention Configuration Registry</title>
-  
+
   <para>
 	Univention Configuration Registry ist das zentrale Werkzeug zur Verwaltung der lokalen
 	Systemkonfiguration eines UCS-Systems. Einstellungen werden in einem einheitlichen Format
@@ -206,7 +206,7 @@
 
   <figure id="quick-ucr">
 	<title>Verwaltung von &ucsUCR;-Variablen</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/ucr-de.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations41/ucr-de.png"/>
   </figure>
 
 </chapter>
@@ -226,7 +226,7 @@
 		Samba und dem Domänenbeitritt von Windows-Clients findet sich im UCS-Handbuch <biblioref
 		linkend="ucs-winjoin"/>.
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		Mac OS X-Systeme werden ebenfalls über eine AD-kompatible Windows-Domäne auf Basis von
 		Samba integriert. Weitere Informationen zur Einrichtung von Samba und dem Domänenbeitritt
@@ -267,19 +267,19 @@
 	  <listitem><simpara>
 		Single Sign On mit Webdiensten über einen SAML Identity Providers <biblioref linkend="wiki-saml"/>
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		IP-Management mit DHCP <biblioref linkend="ucs-dhcp"/>
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		Web-Proxy für Caching und Policy Management/Virenscan <biblioref linkend="ucs-proxy"/>
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		Service-Überwachung mit Nagios <biblioref linkend="ucs-nagios"/>
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		Hybride Cloudumgebungen <biblioref linkend="ucs-uvmm"/>
 	  </simpara></listitem>

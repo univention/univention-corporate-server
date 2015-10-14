@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
-MAIN := installation-4.0 performance-guide-4.0 networks-4.0 printers-4.0
-MAIN += domain-4.0 windows-4.0 windows-nt-4.0 uvmm-4.0 cyrus-4.0
+MAIN := installation-4.1 performance-guide-4.1 networks-4.1 printers-4.1
+MAIN += domain-4.1 windows-4.1 windows-nt-4.1 uvmm-4.1 cyrus-4.1
 STYLESHEET := univention_extdocs
 OPTIONS += --stringparam callout.graphics 0
 OPTIONS += --stringparam callout.unicode 1

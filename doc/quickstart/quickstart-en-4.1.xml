@@ -8,21 +8,21 @@
 	%DocBookDTD;
 	%entities;
 ]>
-<book lang="en" id="quickstart-en-4.0">
+<book lang="en" id="quickstart-en-4.1">
 <bookinfo>
   <title>Univention Corporate Server</title>
   <subtitle>Quick start guide for Univention Corporate Server</subtitle>
 </bookinfo>
 
 <chapter id="quickstart:intro">
-  <title>Introduction</title> 
+  <title>Introduction</title>
 
   <para>
 	Univention Corporate Server (UCS) is a server operating system based on Debian GNU/Linux with
 	integrated management system for the central administration of servers, services, clients,
-	desktops and users. 
+	desktops and users.
   </para>
-  
+
   <para>
 	This quickstart guide offers a short introduction on how to get started with UCS. Several
 	features of UCS are only mentioned briefly with a reference to further documentation. The
@@ -74,9 +74,9 @@
 
   <figure id="quick-systemrole">
 	<title>Selecting the domain setup</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/systemrole-en.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations41/systemrole-en.png"/>
   </figure>
-  
+
 
   <para>
 	During the installation, it is possible to select whether the system should be the first system
@@ -96,7 +96,7 @@
 	name should also be used as the domain name in this case, e.g.,
 	<systemitem class="domainname">company.local</systemitem>. (If the system is used as a mail server, for example,
 	the mail domains can be used independently of the domain names).
-	For example, to commission the <systemitem class="systemname">mailserver</systemitem> host system in the 
+	For example, to commission the <systemitem class="systemname">mailserver</systemitem> host system in the
 	<systemitem class="domainname">company.local</systemitem> DNS domain,
 	<systemitem class="fqdomainname">mailserver.company.local</systemitem> should be entered as the fully qualified host
 	name.
@@ -146,7 +146,7 @@
 
 	<figure id="quick-umclogin">
 	  <title>Modules in the UMC</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations40/umc-modules-en.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations41/umc-modules-en.png"/>
 	</figure>
 
 </chapter>
@@ -170,13 +170,13 @@
 
 	  <listitem><simpara>
 		Third-party software (e.g. various groupware solutions) and UCS-compatible addon products
-		(e.g. UCS@school for school deployment can also be installed through the App Center. 
+		(e.g. UCS@school for school deployment can also be installed through the App Center.
 	  </simpara></listitem>
 	</itemizedlist>
 
 	<figure id="quick-appcenter">
 	  <title>Subsequent installation of UCS components</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations40/appcenter-en.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations41/appcenter-en.png"/>
 	</figure>
 
   </para>
@@ -192,7 +192,7 @@
 	configuration files used effectively by the services/programs. Direct editing of the
 	configuration files is only needed in exceptional cases.
   </para>
-  
+
   <para>
 	&ucsUCR; variables are managed via the &ucsUMC; module <guimenu>Univention Configuration
 	Registry</guimenu>. Configuration files are automatically updated when the UCR variables
@@ -201,7 +201,7 @@
 
   <figure id="quick-ucr">
 	<title>Managing &ucsUCR; variables</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/ucr-en.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations41/ucr-en.png"/>
   </figure>
 
 </chapter>
@@ -260,19 +260,19 @@
 	  <listitem><simpara>
 		Single-sign-on with web services using a SAML identity provider <biblioref linkend="wiki-saml"/>
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		IP management using DHCP <biblioref linkend="ucs-dhcp"/>
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		Web proxy for caching and policy management / virus scan <biblioref linkend="ucs-proxy"/>
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		Service monitoring with Nagios <biblioref linkend="ucs-nagios"/>
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		Hybrid cloud setups <biblioref linkend="ucs-uvmm"/>
 	  </simpara></listitem>

@@ -8,7 +8,7 @@
 	%DocBookDTD;
 	%entities;
 ]>
-<book lang="en" id="windows-4.0">
+<book lang="en" id="windows-4.1">
     <bookinfo>
       <title>Univention Corporate Server</title>
       <subtitle>Extended Windows integration documentation</subtitle>
@@ -96,7 +96,7 @@ root@backup:~#
 
 			<figure id="s4connector-rejoin">
 			  <title>Re-execute S4 connector join script</title>
-			  <graphic scalefit="1" width="80%" fileref="illustrations40/s4connector-re-execute.png"/>
+			  <graphic scalefit="1" width="80%" fileref="illustrations41/s4connector-re-execute.png"/>
 			</figure>
 
 			<para>
@@ -122,7 +122,7 @@ Will not attempt transfer, seizing...
 FSMO transfer of 'infrastructure' role successful
 Will not attempt transfer, seizing...
 FSMO transfer of 'schema' role successful
-root@backup:~# 
+root@backup:~#
 </screen>
         </section>
     </chapter>
@@ -169,7 +169,7 @@ root@backup:~#
 openssl x509 -inform der -outform pem -in infile.cer -out ad-connector2.pem
 </programlisting>
 
-		The file name of the converted certificate then needs to be stored in 
+		The file name of the converted certificate then needs to be stored in
 		&ucsUCR;:
 
 <programlisting language="sh">

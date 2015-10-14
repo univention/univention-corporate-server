@@ -8,7 +8,7 @@
 	%DocBookDTD;
 	%entities;
 ]>
-<book lang="en" id="uvmm-4.0">
+<book lang="en" id="uvmm-4.1">
 	<bookinfo>
 		<title>Univention Corporate Server</title>
 		<subtitle>Extended virtualization documentation</subtitle>
@@ -30,7 +30,7 @@
 				<itemizedlist>
 					<listitem><simpara>
 							The <package>open-iscsi</package> package must be installed on the virtualization
-							servers. 
+							servers.
 					</simpara></listitem>
 
 					<listitem><simpara>
@@ -44,7 +44,7 @@
 					<listitem><simpara>
 							The libvirt interface used by UVMM does not currently support any authentication. If
 							CHAP is used, the <filename>/etc/iscsi/iscsid.conf</filename> file must be
-							adjusted by hand. 
+							adjusted by hand.
 					</simpara></listitem>
 				</itemizedlist>
 			</para>
@@ -79,7 +79,7 @@
 					<listitem><simpara>
 							The <property>target</property> element is used to define the path to the device
 							files. The <filename class="directory">/dev/disk/by-path</filename> should be used there for stable
-							names. 
+							names.
 					</simpara></listitem>
 				</itemizedlist>
 			</para>
@@ -87,7 +87,7 @@
 			<para>
 				In the following example, a storage pool is defined, which mounts the
 				<systemitem class="resource">iqn.2010-08.local.ucs:sdb</systemitem> iSCSI target from the
-				<systemitem class="server">xen6.ucs.local</systemitem> server: 
+				<systemitem class="server">xen6.ucs.local</systemitem> server:
 
 				<programlisting language="xml"><![CDATA[
 <pool type='iscsi'>
@@ -529,7 +529,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 					<para>
 						The following <abbrev>XSLT</abbrev> style sheet file <filename>xen2qemu.xslt</filename> can be used to transform a <application>Xen</application> domain definition into a <application>QEMU/KVM</application> definition.
 					</para>
-					<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="uvmm-4.0-xen2qemu.xsl" parse="text"/></programlisting>
+					<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="uvmm-4.1-xen2qemu.xsl" parse="text"/></programlisting>
 					<para>
 						It requires an <abbrev>XSLT</abbrev> command line processor, for example the one provided by the package <package>xsltproc</package>.
 						Running a command like <command>xsltproc xen2qemu.xslt "xen/$vm.xml" &gt;"qemu/$vm.xml"</command> produces an XML file, which can be copied to the <application>QEMU/KVM</application> host to re-define the virtual machine there as described above.
@@ -741,12 +741,12 @@ univention-install xen
 				The following example can be used to convert the network interface name <filename class="devicefile">eth0</filename> to <filename class="devicefile">br0</filename>.
 				The following script must be copied to <filename>/etc/libvirt/hooks/qemu</filename> and be marked as executable using <command>chmod +x</command>:
 			</para>
-			<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="uvmm-4.0-qemu_hook.sh" parse="text"/></programlisting>
+			<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="uvmm-4.1-qemu_hook.sh" parse="text"/></programlisting>
 			<para>
 				The script uses the <command>xsltproc</command> <abbrev>XSLT</abbrev> command line processor, which is provided by the package <package>xsltproc</package>.
 				The corresponding style sheet file must be copies to <filename>/etc/libvirt/hooks/qemu.xsl</filename>, which looks like this:
 			</para>
-			<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="uvmm-4.0-qemu_hook.xsl" parse="text"/></programlisting>
+			<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="uvmm-4.1-qemu_hook.xsl" parse="text"/></programlisting>
 			<warning>
 				<para>
 					Migration can only be done in the direction UCS-3 to UCS-4, not the reverse.

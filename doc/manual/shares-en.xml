@@ -114,7 +114,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 </para>
 
 <figure id="shares:umc"><title>Creating a share in UMC</title>
- <graphic scalefit="1" width="100%" fileref="illustrations40/projekt-freigabe_EN.png"/>
+ <graphic scalefit="1" width="100%" fileref="illustrations41/projekt-freigabe_EN.png"/>
 </figure>
 
 <table>
@@ -142,7 +142,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  <row>
 		<entry>Host</entry>
 		<entry>
-		  The server where the share is located. 
+		  The server where the share is located.
 		  All of the domain controller master/backup/slave computers and &ucsMember;s
 		  entered in the LDAP directory for the domain are available for selection which
 		  are entered in a DNS forward lookup zone in the LDAP directory. This setting
@@ -1056,12 +1056,12 @@ Microsoft Distributed File System Tree'.
 
 	<figure id="shares:quota">
 	  <title>Managing quota in the UMC</title>
-	  <graphic scalefit="1" width="100%" fileref="illustrations40/quota-overview-en.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations41/quota-overview-en.png"/>
 	</figure>
 
 	<para>
 	  The current quota status (activated/deactivated) is shown and can be changed with
-	  <guimenu>Activate</guimenu> and <guimenu>Deactivate</guimenu>. 
+	  <guimenu>Activate</guimenu> and <guimenu>Deactivate</guimenu>.
 	</para>
 
 	<para>

@@ -8,7 +8,7 @@
 	%DocBookDTD;
 	%entities;
 ]>
-<book lang="en" id="networks-4.0">
+<book lang="en" id="networks-4.1">
     <bookinfo>
       <title>Univention Corporate Server</title>
       <subtitle>Extended IP and network management documentation</subtitle>

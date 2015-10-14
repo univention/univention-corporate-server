@@ -131,7 +131,7 @@ during the installation. Possible system roles are domain controller, &ucsMember
 </para>
 <para>
 <figure id="introduction:domain"><title>UCS domain concept</title>
- <graphic scalefit="1" width="100%" fileref="illustrations40/domainconcept.jpg"/>
+ <graphic scalefit="1" width="100%" fileref="illustrations41/domainconcept.jpg"/>
  </figure>
 </para>
 <para>
@@ -218,7 +218,7 @@ Further information can be found in <xref linkend="domain:ldap"/>.
 <section id="introduction:Domain_administration"><title>Domain administration</title>
 <para>
 <figure id="introduction:umc"><title>Univention Management Console</title>
- <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/umc-overview_en.png"/>
+ <graphic scalefit="1" width="90%" align="center" fileref="illustrations41/umc-overview_en.png"/>
 </figure>
 </para>
 <para>

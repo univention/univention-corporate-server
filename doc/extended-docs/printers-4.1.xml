@@ -8,7 +8,7 @@
 	%DocBookDTD;
 	%entities;
 ]>
-<book lang="en" id="printers-4.0">
+<book lang="en" id="printers-4.1">
   <bookinfo>
 	<title>Univention Corporate Server</title>
 	<subtitle>Extended print services documentation</subtitle>
@@ -41,7 +41,7 @@
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			Once the <emphasis>soft limit</emphasis> is reached, an e-mail can be sent 
+			Once the <emphasis>soft limit</emphasis> is reached, an e-mail can be sent
 			warning the user that the hard limit will soon be reached. This is done by
 			setting the &ucsUCRV; <envar>cups/quota/inform</envar> to <emphasis>yes</emphasis>. This
 			notification is disabled in the standard setting.
@@ -85,7 +85,7 @@
 
 		<figure id="printquota-enable">
 		  <title>Enabling quota support</title>
-		  <graphic scalefit="1" width="80%" fileref="illustrations40/enable-print-quota-support.png"/>
+		  <graphic scalefit="1" width="80%" fileref="illustrations41/enable-print-quota-support.png"/>
 		</figure>
 
 		<note>
@@ -152,7 +152,7 @@
 
 		  <figure id="printquota-listprinters">
 			<title>List of available printers</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations40/printquota-umc1.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations41/printquota-umc1.png"/>
 		  </figure>
 
 		  <para>
@@ -167,7 +167,7 @@
 
 		  <figure id="printquota-listquota">
 			<title>List of configured print quotas</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations40/printquota-umc2.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations41/printquota-umc2.png"/>
 		  </figure>
 
 		</section>
@@ -187,7 +187,7 @@
 		or alternatively for a single user with  <command>repykota USERNAME</command>:
 
 <screen>
-:~# repykota 
+:~# repykota
 Report for user quota on printer HP ()
 Pages grace time: 7 days
 Price per job: 0.000
@@ -221,7 +221,7 @@ Done.
 		The following command removes the print quota for a user on all printer shares:
 
 <programlisting language="sh">
-edpykota --delete user01 
+edpykota --delete user01
 </programlisting>
 		or on a specific printer:
 <programlisting language="sh">

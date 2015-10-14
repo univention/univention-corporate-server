@@ -72,7 +72,7 @@ cd work/
 						<para>Checkout example package from Univention Subversion</para>
 						<programlisting><![CDATA[
 SERVER=http://forge.univention.org
-svn co $SERVER/svn/dev/branches/ucs-4.0/ucs-4.0-0/base/univention-ssh
+svn co $SERVER/svn/dev/branches/ucs-4.1/ucs-4.1-0/base/univention-ssh
 cd univention-ssh/
 							]]></programlisting>
 					</step>

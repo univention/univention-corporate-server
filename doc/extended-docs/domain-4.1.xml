@@ -8,7 +8,7 @@
 	%DocBookDTD;
 	%entities;
 ]>
-<book lang="en" id="domain-4.0">
+<book lang="en" id="domain-4.1">
     <bookinfo>
       <title>Univention Corporate Server</title>
       <subtitle>Extended domain services documentation</subtitle>
@@ -29,7 +29,7 @@
 	</para>
 
 	<caution><para>
-		  In case a command fails or does not return the expected output, 
+		  In case a command fails or does not return the expected output,
 		  please make sure that all configuration options and files are entered and
 		  have been written as shown in this document. For example, some text editors do not
   		  preserve the indentation which is required for some configuration files.
@@ -750,13 +750,13 @@ openssl ca -batch -config /etc/univention/ssl/openssl.cnf \
 		  system with OpenLDAP. The guide has been tested with Debian 7 Wheezy. Syncrepl is part of
 		  OpenLDAP starting with version 2.2.
 	  	</para>
-   	
+
 	  	<para>
 		  The external OpenLDAP server is described as <systemitem class="fqdomainname">extldap.univention.test</systemitem>
 		  below and synchronises with the &ucsMaster;, which uses the LDAP base
 		  <uri>dc=univention,dc=test</uri>.
 	  	</para>
-   	
+
 	  	<para>
 		  The following steps must be run on the OpenLDAP system and the UCS system as the
 		  <systemitem class="username">root</systemitem> user:
@@ -963,7 +963,7 @@ ucr commit /etc/ldap/syncrepl-proxy.conf
 /etc/init.d/slapd restart
 		  </programlisting>
 		</para>
-   	
+
 		<para>
 		  If several systems are connected, the corresponding LDAP-URIs can be entered in the
 		  variable separated with commas and additional replica password files created. The number

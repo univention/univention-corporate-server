@@ -44,7 +44,7 @@ for arch in source all amd64 i386; do
    apt-ftparchive "$mode" "$APP/$arch" >"$APP/$arch/$file"
    gzip -c "$APP/$arch/$file" >"$APP/$arch/$file.gz"
    bzip2 -c "$APP/$arch/$file" >"$APP/$arch/$file.bz2"
- fi  
+ fi
  mode=packages file=Packages
 done
 cd "$oldpwd"

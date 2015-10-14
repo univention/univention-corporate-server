@@ -118,7 +118,7 @@
 		<para>
 		  Benutzer, die sich an einem Windows-System anmelden erhalten bei der Anmeldung ein
 		  Kerberos-Ticket, mit dem die weitere Authentifizierung durchgeführt wird. Mit diesem
-		  Ticket wird dann auf die Ressourcen der Domäne zugegriffen. 
+		  Ticket wird dann auf die Ressourcen der Domäne zugegriffen.
 		</para>
 
 		<para>
@@ -421,7 +421,7 @@ instanceType: 4
 		  </para>
 
 			<figure id="windows:gpo:activate"><title>Aktivierung der Gruppenrichtlinienverwaltung</title>
-			<graphic scalefit="1" width="90%" align="center" fileref="illustrations40/gpo-activate-de.png"/>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations41/gpo-activate-de.png"/>
 			</figure>
 
 		  <para>
@@ -484,7 +484,7 @@ instanceType: 4
 		  </para>
 
 			<figure id="windows:gpo:edit"><title>Bearbeiten einer Richtlinie</title>
-			<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/gpo-edit-policy-de.png"/>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations41/gpo-edit-policy-de.png"/>
 			</figure>
 
 		  <para>
@@ -529,7 +529,7 @@ instanceType: 4
 		  </para>
 
 			<figure id="windows:gpo:user"><title>Auswertung der GPO für den Benutzer <systemitem class="username">user01</systemitem></title>
-			<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/gpo-gpresult-de.png"/>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations41/gpo-gpresult-de.png"/>
 			</figure>
 
 		  <para>
@@ -638,7 +638,7 @@ END CATEGORY
 		  </para>
 
 			<figure id="windows:gpo:admin"><title>Die eingebundene administrative Vorlage</title>
-			<graphic scalefit="1" width="80%" align="center" fileref="illustrations40/gpo-adm-template-de.png"/>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations41/gpo-adm-template-de.png"/>
 			</figure>
 
 		  <para>
@@ -761,7 +761,7 @@ END CATEGORY
 
 
 
-  
+
 
 
 
@@ -770,7 +770,7 @@ END CATEGORY
 
 <section id="ad-connector:general">
   <title>Active Directory-Verbindung</title>
-  
+
   <section id="ad-connector:einfuehrung">
 	<title>Einführung</title>
 
@@ -790,7 +790,7 @@ END CATEGORY
 	    </simpara></listitem>
 	  </itemizedlist>
 	</para>
-	  
+	
 	<para>
 	  In beiden Modi wird unter UCS der Active Directory-Verbindungsdienst verwendet (kurz UCS AD-Connector), der Verzeichnisdienstobjekte zwischen einem
 	  Windows 2003/2008/2012-Server mit Active Directory (AD) und dem OpenLDAP-Verzeichnis aus &ucsUCS; synchronisieren kann.
@@ -854,7 +854,7 @@ END CATEGORY
   </note>
 
     <figure id="windows:gpo:mode"><title>Konfiguration des Betriebsmodus als Teil einer AD-Domäne</title>
-      <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/admember_1-de.png"/>
+      <graphic scalefit="1" width="100%" align="center" fileref="illustrations41/admember_1-de.png"/>
     </figure>
 
   <para>
@@ -874,7 +874,7 @@ END CATEGORY
   </para>
 
     <figure id="windows:ad:join"><title>Domänenbeitritt zu einer AD-Domäne</title>
-      <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/admember_2-de.png"/>
+      <graphic scalefit="1" width="100%" align="center" fileref="illustrations41/admember_2-de.png"/>
     </figure>
 
   <para>
@@ -905,7 +905,7 @@ END CATEGORY
   <note>
   	<para>
     Da in diesem Modus die AD-Kerberos-Infrastruktur zur Authentifizierung von Benutzern verwendet wird, ist es essenziell, dass die Systemzeiten von UCS und AD-Domänencontroller synchron sind (mit einer Toleranz von 5 Minuten). Zu diesem Zweck ist unter UCS der AD-Domänencontroller als NTP-Zeitserver konfiguriert.
-    
+
     	Im Falle von Authentifikationsproblemen sollte immer als erstes die Systemzeit überprüft werden.
     </para>
   </note>
@@ -961,18 +961,18 @@ echo -n "Administrator password" > /etc/univention/connector/password
     Dienst auf dem Windows-Server installiert, der diese Passwortsynchronisation ermöglicht (siehe
     <xref linkend="ad-connector:password-dienst"/>).
   </para>
-  
+
   <para>
     Hinweise zu den in der Grundeinstellung konfigurierten Attributen und zu beachtende
     Besonderheiten finden sich in <xref
     linkend="ad-connector:details-zur-vorkonfigurierten-synchronisation"/>.
   </para>
-  
+
   <para>
     Die Rechnerkonten werden nicht synchronisiert, da Windows-Rechner nur in eine Domäne
     eingebunden sein können.
   </para>
-  
+
   <para>
     Durch die in beiden Domänen gleichen Benutzereinstellungen können Benutzer transparent auf
     Dienste beider Umgebungen zugreifen. Nachdem eine Domänenanmeldung an einer UCS-Domäne
@@ -981,7 +981,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
     der anderen Domäne finden Benutzer und Administratoren gleichnamige Benutzer und Gruppen vor
     und können so mit den gewohnten Rechtestrukturen arbeiten.
   </para>
-  
+
   <para>
     Nach dem erstmaligen Start des Connectors wird die Initialisierung vorgenommen. Dabei werden
     alle Einträge aus dem UCS gelesen und entsprechend dem eingestellten Mapping in AD-Objekte
@@ -1052,7 +1052,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
 	</para>
 
 	  <figure id="windows:ad:connector"><title>Konfiguration des UCS AD-Connectors in UMC</title>
-	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/adconnector_1-de.png"/>
+	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations41/adconnector_1-de.png"/>
 	  </figure>
 
 	<para>
@@ -1134,7 +1134,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	</note>
 
 	 <figure id="windows:ad:dialog"><title>Administrationsdialog für die Active Directory-Verbindung</title>
-	 <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/adconnector_2-de.png"/>
+	 <graphic scalefit="1" width="90%" align="center" fileref="illustrations41/adconnector_2-de.png"/>
 	 </figure>
 
 	</section>
@@ -1190,7 +1190,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	</para>
 
 	  <figure id="windows:2008:ca"><title>Export des Root-Zertifikats unter Windows 2008</title>
-	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations40/adconnector_23-de.png"/>
+	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations41/adconnector_23-de.png"/>
 	  </figure>
 
 	<para>
@@ -1761,7 +1761,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	<figure id="windows:ad:takeover1">
 	  <title>Erste Phase der Domänenmigration</title>
-	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover1-de.png"/>
+	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations41/takeover1-de.png"/>
 	</figure>
 
 	<para>
@@ -1770,7 +1770,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	<figure id="windows:ad:takeover2">
 	  <title>Übersicht über die zu migrierenden Daten</title>
-	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover2-de.png"/>
+	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations41/takeover2-de.png"/>
 	</figure>
 	</para>
 
@@ -1828,9 +1828,9 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	  <figure id="windows:ad:sysvol">
 		<title>Kopieren der Sysvol-Freigabe</title>
-		<graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover3-de.png"/>
+		<graphic scalefit="1" width="100%" align="center" fileref="illustrations41/takeover3-de.png"/>
 	  </figure>
-	  
+	
 	  Wenn <command>robocopy</command> nicht vorhanden ist, kann es mit den Windows Server 2003
 	  Resource Kit Tools nachinstalliert werden. Ab Windows 2008 ist es vorinstalliert.
 	</para>
@@ -1842,13 +1842,13 @@ ucr set connector/s4/mapping/group/grouptype=false
 	</para>
 
 	<para>
-	  Nach erfolgreichem Abschluss dieser Schritte sollten der/die AD-Domänencontroller 
+	  Nach erfolgreichem Abschluss dieser Schritte sollten der/die AD-Domänencontroller
 	  heruntergefahren werden. Anschließend muss im UMC-Modul auf <guimenu>Weiter</guimenu> geklickt
 	  werden.
 
 	  <figure id="windows:ad:shutdown">
 		<title>Herunterfahren des/der AD-Systeme</title>
-		<graphic scalefit="1" width="100%" align="center" fileref="illustrations40/takeover4-de.png"/>
+		<graphic scalefit="1" width="100%" align="center" fileref="illustrations41/takeover4-de.png"/>
 	  </figure>
 	</para>
 

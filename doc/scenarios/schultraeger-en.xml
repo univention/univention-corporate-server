@@ -103,7 +103,7 @@
 	<para>
 	  <figure id="schule-schema">
 		<title>Structure of the school domain</title>
-		<graphic scalefit="1" width="88%" fileref="illustrations40/schultraeger_en.png"/>
+		<graphic scalefit="1" width="88%" fileref="illustrations41/schultraeger_en.png"/>
 	  </figure>
 	</para>
   </section>
@@ -201,7 +201,7 @@
 	<para>
 	  <figure id="schule-module">
 		<title>Applications related to teaching</title>
-		<graphic scalefit="1" width="88%" fileref="illustrations40/schule-module_en.png"/>
+		<graphic scalefit="1" width="88%" fileref="illustrations41/schule-module_en.png"/>
 	  </figure>
 	</para>
 
@@ -220,7 +220,7 @@
 	<para>
 	  <figure id="schule-passwoerter">
 		<title>Password reset</title>
-		<graphic scalefit="1" width="60%" fileref="illustrations40/schule-benutzer_en.png"/>
+		<graphic scalefit="1" width="60%" fileref="illustrations41/schule-benutzer_en.png"/>
 	  </figure>
 	</para>
 
@@ -269,7 +269,7 @@
 	<para>
 	  <figure id="schule-gruppen">
 		<title>Group management</title>
-		<graphic scalefit="1" width="60%" fileref="illustrations40/schule-gruppen_en.png"/>
+		<graphic scalefit="1" width="60%" fileref="illustrations41/schule-gruppen_en.png"/>
 	  </figure>
 	</para>
 
@@ -283,7 +283,7 @@
 	<para>
 	  <figure id="schule-drucker">
 		<title>Printer moderation</title>
-		<graphic scalefit="1" width="60%" fileref="illustrations40/schule-drucker_en.png"/>
+		<graphic scalefit="1" width="60%" fileref="illustrations41/schule-drucker_en.png"/>
 	  </figure>
 	</para>
 
@@ -301,7 +301,7 @@
 	<para>
 	  <figure id="schule-material">
 		<title>Distribution of teaching material</title>
-		<graphic scalefit="1" width="60%" fileref="illustrations40/schule-material_en.png"/>
+		<graphic scalefit="1" width="60%" fileref="illustrations41/schule-material_en.png"/>
 	  </figure>
 	</para>
 

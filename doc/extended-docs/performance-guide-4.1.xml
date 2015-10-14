@@ -8,7 +8,7 @@
 	%DocBookDTD;
 	%entities;
 ]>
-<book lang="en" id="performance-guide-4.0">
+<book lang="en" id="performance-guide-4.1">
 
 <bookinfo>
   <title>Univention Corporate Server</title>
@@ -86,7 +86,7 @@ slapadd -l ldif
 			<itemizedlist>
 				<listitem><simpara>
 					<option>nosync</option> specify that on-disk  database contents should not be
-					immediately synchronized with in memory changes. Enabling 
+					immediately synchronized with in memory changes. Enabling
 					this option may improve performance at the expense of data security. In
 					particular, if the operating system crashes before changes are flushed, some
 					number of transactions may be lost.  By default, a full data flush/sync is
@@ -369,7 +369,7 @@ slapadd -l ldif
 			The log file <filename>/var/log/univention/system-stats.log</filename> can be
 			checked for further performance analyses. The system status is logged every 30
 			minutes. If more regular logging is required, it can be controlled via the UCR
-			variable <envar>system/stats/cron</envar>. 
+			variable <envar>system/stats/cron</envar>.
 		</para>
 	</section>
 
