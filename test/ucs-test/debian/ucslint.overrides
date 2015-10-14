@@ -9,6 +9,7 @@
 0011-16: debian/pyversions
 # Copyright
 0010-2
+0010-4: debian/copyright
 # Depcreated univention-*
 0016-2: tests/01_base/check_log_files_definitions.py
 # Violations for testing
