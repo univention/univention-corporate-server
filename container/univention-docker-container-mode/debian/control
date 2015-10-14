@@ -16,7 +16,10 @@ Depends: ${misc:Depends},
  univention-appcenter,
  curl,
  jq
-Conflicts: univention-appcenter-docker
+Conflicts: univention-appcenter-docker,
+ univention-docker,
+ docker.io,
+ cgroupfs-mount
 Description: Settings for running UCS in a Docker container
  This package installs settings for running UCS in a Docker
  container.
