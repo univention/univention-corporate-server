@@ -9,6 +9,7 @@
 
 import os
 import subprocess
+from time import sleep
 from univention.config_registry import handler_set
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -39,7 +40,6 @@ def main():
 			#
 			# send email to each user
 			#
-			utils.wait_for_replication()
 			for dn, name, addr, msgid in userbase:
 				send_mail(recipients=[addr], messageid=msgid, server=fqdn)
 			loopcnt = 60
@@ -52,6 +52,8 @@ def main():
 				print 'Found %d of %d mails' % (found, len(userbase))
 				if found == len(userbase):
 					break
+				else:
+					sleep(1)
 			if loopcnt == 0:
 				utils.fail('Could only deliver %d of %d mails to test users' % (found, len(userbase)))
 
@@ -59,10 +61,9 @@ def main():
 			# test changing mail primary address with all flag combinations
 			#
 			for i, flag_rename, flag_delete in [(0, 'no', 'no'),
-												(1, 'no', 'yes'),
-												(2, 'yes', 'no'),
-												(3, 'yes', 'yes'),
-											]:
+				(1, 'no', 'yes'),
+				(2, 'yes', 'no'),
+				(3, 'yes', 'yes')]:
 				old_dir = get_dovecot_maildir(userbase[i][2])
 				if not os.path.exists(old_dir):
 					utils.fail('Test %d: old_dir = %r does not exist! %r' % (i, old_dir, userbase[i]))
@@ -73,7 +74,6 @@ def main():
 				subprocess.call(['invoke-rc.d', 'univention-directory-listener', 'restart'])
 				new_mpa = random_email()
 				udm.modify_object('users/user', dn=userbase[i][0], set={'mailPrimaryAddress': new_mpa}, check_for_drs_replication=True)
-				utils.wait_for_replication()
 
 				new_dir = get_dovecot_maildir(new_mpa)
 				if not os.path.exists(new_dir):

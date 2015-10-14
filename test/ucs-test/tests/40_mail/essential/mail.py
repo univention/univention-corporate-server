@@ -693,7 +693,8 @@ def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permiss
 		append = {
 			'sharedFolderUserACL'  : user_permission or [],
 			'sharedFolderGroupACL' : group_permission or [],
-		}
+		},
+		check_for_drs_replication=True
 	)
 	if dovecat:
 		if mailAddress:

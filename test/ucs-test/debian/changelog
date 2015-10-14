@@ -1,3 +1,9 @@
+ucs-test (5.0.172-3) unstable; urgency=low
+
+  * fix some mail tests (Bug #39477)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 14 Oct 2015 10:34:58 +0200
+
 ucs-test (5.0.172-2) unstable; urgency=medium
 
   * Fix 51_samba4/56evaluate_windows_gpo (Bug #39456)

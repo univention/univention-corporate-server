@@ -1,8 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test smart host configuration
 ## exposure: dangerous
-## version:
-##  4.0-3: skip
 
 from essential.mail import send_mail, check_delivery, restart_postfix
 from univention.testing.mail import MailSink
@@ -16,7 +14,7 @@ import univention.testing.udm as udm_test
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 
-TIMEOUT = 300 #sec
+TIMEOUT = 90 #sec
 
 def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
 	delivered = False
@@ -60,7 +58,8 @@ def main():
 						'name'                : dcslave,
 						'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (
 							domain, basedn, dcslave_ip)
-					}
+					},
+					check_for_drs_replication=True
 				)
 				dcslave_fqdn = '%s.%s' % (dcslave, domain)
 				handler_set(['mail/relayhost=%s' % dcslave_fqdn])
