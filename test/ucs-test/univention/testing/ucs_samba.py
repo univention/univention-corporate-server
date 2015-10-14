@@ -12,7 +12,7 @@ CONNECTOR_WAIT_INTERVAL=12
 CONNECTOR_WAIT_SLEEP=5
 CONNECTOR_WAIT_TIME=CONNECTOR_WAIT_SLEEP*CONNECTOR_WAIT_INTERVAL
 
-def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1):
+def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1, verbose=True):
 	if not lp:
 		lp = LoadParm()
 		lp.load('/etc/samba/smb.conf')
@@ -24,13 +24,15 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 	samdb = SamDB("tdb://%s" % lp.private_path("sam.ldb"), session_info=system_session(lp), lp=lp)
 	controls = ["domain_scope:0"]
 
-	print "Waiting for DRS replication, filter: '%s'" % (ldap_filter, ),
+	if verbose:
+		print "Waiting for DRS replication, filter: '%s'" % (ldap_filter, ),
 	t = t0 = time.time()
 	while t < t0 + timeout:
 		try:
 			res = samdb.search(base=samdb.domain_dn(), scope=scope, expression=ldap_filter, attrs=attrs, controls=controls)
 			if res:
-				print "\nDRS replication took %d seconds" % (t-t0, )
+				if verbose:
+					print "\nDRS replication took %d seconds" % (t-t0, )
 				return res
 		except ldb.LdbError, (_num, msg):
 			print "Error during samdb.search: %s" % (msg, )

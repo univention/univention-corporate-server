@@ -197,7 +197,7 @@ class UCSTestUDM(object):
 			raise UCSTestUDM_CreateUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
 		if wait_for_replication:
-			utils.wait_for_replication()
+			utils.wait_for_replication(verbose=False)
 			if check_for_drs_replication:
 				if utils.package_installed('univention-samba4'):
 					if "options" not in kwargs or "kerberos" in kwargs["options"]:
@@ -245,7 +245,7 @@ class UCSTestUDM(object):
 			raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
 		if wait_for_replication:
-			utils.wait_for_replication()
+			utils.wait_for_replication(verbose=False)
 			if check_for_drs_replication:
 				if utils.package_installed('univention-samba4'):
 					wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
@@ -279,7 +279,7 @@ class UCSTestUDM(object):
 			raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
 		if wait_for_replication:
-			utils.wait_for_replication()
+			utils.wait_for_replication(verbose=False)
 			if check_for_drs_replication:
 				if utils.package_installed('univention-samba4'):
 					wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
@@ -306,7 +306,7 @@ class UCSTestUDM(object):
 			self._cleanup[modulename].remove(dn)
 
 		if wait_for_replication:
-			utils.wait_for_replication()
+			utils.wait_for_replication(verbose=False)
 
 
 	def create_user(self, wait_for_replication = True, check_for_drs_replication = True, **kwargs): # :pylint: disable-msg=W0613

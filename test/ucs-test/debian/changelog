@@ -1,6 +1,7 @@
 ucs-test (6.0.9-5) unstable; urgency=medium
 
   * Bug #31873: Fix copyright
+  * Bug #39533: Hide replication messages
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 14 Oct 2015 14:12:27 +0200
 
