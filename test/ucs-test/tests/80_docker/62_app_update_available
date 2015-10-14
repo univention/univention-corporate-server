@@ -59,8 +59,8 @@ if __name__ == '__main__':
 
 			app.execute_command_in_container('univention-install %s' % package_name)
 			res = app.execute_command_in_container('/usr/share/univention-docker-container-mode/update_available')
-			if res != '\n':
-				fail('update_available returned [%s] instead of [\n]' % res)
+			if res:
+				fail('update_available returned [%s] instead of []' % res)
 
 			test_package_v2 = DebianPackage(name=package_name, version='0.2')
 			test_package_v2.build()

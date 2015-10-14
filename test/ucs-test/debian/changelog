@@ -1,3 +1,10 @@
+ucs-test (6.0.9-7) unstable; urgency=medium
+
+  * 80_docker/62_app_update_available: adjust test case to latest
+    changes (Bug #39414)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Oct 2015 22:03:13 +0200
+
 ucs-test (6.0.9-6) unstable; urgency=medium
 
   * Bug #31873: Fix copyright
