@@ -71,7 +71,7 @@ def main():
 	options.Response = options.Response.decode('hex')
 	try:
 		# try ldap/server/name, then each of ldap/server/addition
-		ldapConnection = univention.uldap.getMachineConnection(ldap_master=False)
+		ldapConnection = univention.uldap.getMachineConnection(ldap_master=False, reconnect=False)
 	except SERVER_DOWN:
 		# then master dc
 		ldapConnection = univention.uldap.getMachineConnection()
