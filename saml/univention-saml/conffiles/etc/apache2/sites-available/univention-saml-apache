@@ -16,11 +16,28 @@ RewriteRule ^/?simplesamlphp/(.*) https://%{SERVER_NAME}/simplesamlphp/$1 [R,L]
 '''
 @!@
 
+ScriptAlias /saml-bin /var/www/saml
+SuexecUserGroup samlcgi samlcgi
+
+<Directory /usr/share/simplesamlphp/www/>
+	<FilesMatch ".+\.ph(p[345]?|t|tml)$">
+		SetHandler php5-cgi
+	</FilesMatch>
+	Action php5-cgi /saml-bin/php-cgi
+
+	Order allow,deny
+	Allow from all
+
+	# AJAX-Requests via UMC should be possible:
+	Header always set Access-Control-Allow-Origin "*"
+</Directory>
+
 @!@
 sso_fqdn = configRegistry.get('ucs/server/sso/fqdn', 'ucs-sso.%s' % configRegistry.get('domainname'))
 ssofqdn = {'ssofqdn': sso_fqdn}
 import os.path
-if os.path.isfile('/etc/univention/ssl/%(ssofqdn)s/cert.pem' % ssofqdn) and os.path.isfile('/etc/univention/ssl/%(ssofqdn)s/private.key' % ssofqdn):
+enable_virtualhost = True
+if enable_virtualhost and os.path.isfile('/etc/univention/ssl/%(ssofqdn)s/cert.pem' % ssofqdn) and os.path.isfile('/etc/univention/ssl/%(ssofqdn)s/private.key' % ssofqdn):
 	print '''
 <IfModule mod_ssl.c>
 <VirtualHost *:443>
@@ -30,23 +47,6 @@ if os.path.isfile('/etc/univention/ssl/%(ssofqdn)s/cert.pem' % ssofqdn) and os.p
 	SSLCertificateFile /etc/univention/ssl/%(ssofqdn)s/cert.pem
 	SSLCertificateKeyFile /etc/univention/ssl/%(ssofqdn)s/private.key
 	SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem
-
-	ScriptAlias /saml-bin /var/www/saml
-        SuexecUserGroup samlcgi samlcgi
-
-	<Directory /usr/share/simplesamlphp/www/>
-		<FilesMatch ".+\.ph(p[345]?|t|tml)$">
-			SetHandler php5-cgi
-		</FilesMatch>
-		Action php5-cgi /saml-bin/php-cgi
-
-		Order allow,deny
-		Allow from all
-
-		# AJAX-Requests via UMC should be possible:
-		Header always set Access-Control-Allow-Origin "*"
-	</Directory>
-
 </VirtualHost>
 </IfModule>
 ''' % ssofqdn
