@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 #
 # Univention App Center
-#  univention-register-apps
+#  univention-appcenter-register-40-to-41
 #
-# Copyright 2014-2015 Univention GmbH
+# Copyright 2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -34,24 +34,38 @@
 
 import sys
 
-from univention.management.console.modules.appcenter.app_center import Application
+import univention.management.console.modules.appcenter.app_center
 from univention.lib.package_manager import PackageManager
 
 from univention.appcenter.app import AppManager
-from univention.appcenter.actions import get_action
+from univention.appcenter.actions import get_action, Abort
 
+univention.management.console.modules.appcenter.app_center.CACHE_DIR = '/var/cache/univention-appcenter'
+Application = univention.management.console.modules.appcenter.app_center.Application
+
+update = get_action('update')
 register = get_action('register')
+upgrade_search = get_action('upgrade-search')
+
+try:
+	update.call()
+except Abort:
+	pass
 
 package_manager = PackageManager(lock=False)
 applications = Application.all_installed(package_manager, only_local=True, localize=False)
 apps = []
 for application in applications:
-	app = AppManager.find(application.id)
+	app = AppManager.find_by_component_id(application.component_id)
 	if app is None:
-		sys.stderr.write('Could not load %s!\n' % application.id)
+		sys.stderr.write('Could not find %s!\n' % application.id)
 		continue
 	else:
 		sys.stdout.write('Re-registering %s!\n' % application.id)
 		apps.append(app)
-register.call(apps=apps, do_it=True)
-
+if apps:
+	register.call(apps=apps, do_it=True)
+	try:
+		upgrade_search.call()
+	except Abort:
+		pass

@@ -65,7 +65,7 @@ def possible_network_error(func):
 		try:
 			return func(*args, **kwargs)
 		except (urllib2.HTTPError, urllib2.URLError) as exc:
-			func.im_self.fatal(verbose_http_error(exc))
+			args[0].fatal(verbose_http_error(exc))
 			raise NetworkError()
 	return _func
 

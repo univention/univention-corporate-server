@@ -165,6 +165,7 @@ class Instance(umcm.Base):
 	@simple_response
 	def query(self):
 		AppManager.clear_cache()
+		update = get_action('update')
 		list_apps = get_action('list')
 		get = get_action('get')
 		apps = list_apps.get_apps()
@@ -175,8 +176,8 @@ class Instance(umcm.Base):
 				call_process(['invoke-rc.d', 'docker', 'start'])
 				if not docker_is_running():
 					raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly. Make sure docker.io is installed, try starting the service with "invoke-rc.d docker start"'))
+		update.call()
 		result = []
-		self.package_manager.reopen_cache()
 		for app in apps:
 			props = get.to_dict(app)
 			result.append(props)
