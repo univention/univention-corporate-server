@@ -5,7 +5,7 @@ src: postgresql-9.1
 fix: 9.1.16-0.9.201509171755
 version: [2,3]
 desc: |
- A security vulnerability has been fixed in postgresql-9.1:
+ This update to postgresql-9.1 fixes the following security issues:
  * Denial of service due to double-free after authentication timeout
    (CVE-2015-3165)
  * Information disclosure due to missing checks of return codes from
