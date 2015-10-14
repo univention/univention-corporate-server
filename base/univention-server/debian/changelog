@@ -1,14 +1,21 @@
+univention-server (11.0.1-8) unstable; urgency=low
+
+  * back to hard dependency for ntpdate/rdate (Bug #39410)
+    in univention-basesystem and univention-role-server-common 
+
+ -- Felix Botner <botner@univention.de>  Wed, 14 Oct 2015 11:26:56 +0200
+
 univention-server (11.0.1-7) unstable; urgency=low
 
-  * added ntpdate/rdate to recommends in
-    univention-basesystem and univention-basesystem (Bug #39410) 
+  * added ntpdate/rdate to recommends in (Bug #39410)
+    univention-basesystem and univention-role-server-common
 
  -- Felix Botner <botner@univention.de>  Tue, 13 Oct 2015 17:04:04 +0200
 
 univention-server (11.0.1-6) unstable; urgency=low
 
-  * added ntpdate/rdate to dependencies in
-    univention-basesystem and univention-basesystem (Bug #39410)
+  * added ntpdate/rdate to dependencies in (Bug #39410)
+    univention-basesystem and univention-role-server-common
 
  -- Felix Botner <botner@univention.de>  Tue, 13 Oct 2015 16:32:05 +0200
 

@@ -126,7 +126,7 @@ Depends: ${misc:Depends},
  univention-mail-postfix | mail-transport-agent,
  univention-nfs-server,
  ntp | ntp-server,
-Recommends: rdate,
+ rdate,
  ntpdate,
 Description: UCS system server role common dependencies and files
  This package contains common files used by all server system roles.
@@ -211,15 +211,15 @@ Description: UCS system role common dependencies and files
 
 Package: univention-basesystem
 Architecture: all
-Recommends: openssh-server,
- rdate,
- ntpdate,
+Recommends: openssh-server
 Depends: ${misc:Depends},
  univention-updater,
  univention-grub,
  univention-archive-key,
  univention-firewall,
  univention-ifplugd | univention-network-manager,
+ rdate,
+ ntpdate,
 Description: UCS - Basesytem
  This is a Meta-package, that sets up a UCS Basesystem
  .
