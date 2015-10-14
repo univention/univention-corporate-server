@@ -679,13 +679,13 @@ License:
 				The format is described in <ulink url="http://dep.debian.net/deps/dep5/"/> at looks like this:
 			</para>
 			<programlisting><![CDATA[
-Format: http://www.debian.org/doc/packing-manuals/copyright-format/1.0/
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: Univention GmbH
 Upstream-Contact: <package@univention.de>
 Source: http://docs.univention.de/
 
 Files: *
-Copyright: 2013-2014 Univention GmbH
+Copyright: 2013-2015 Univention GmbH
 License: AGPL
 			]]></programlisting>
 		</section>
