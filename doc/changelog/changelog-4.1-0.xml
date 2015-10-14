@@ -689,7 +689,7 @@
 				have been updated (<u:bug>32443</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				Package dependencies in some univention base packages have been fixed (<u:bug>39410</u:bug>).
+				Several package dependencies in Docker related base packages have been changed (<u:bug>39410</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
