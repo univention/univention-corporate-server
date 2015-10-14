@@ -685,6 +685,9 @@
 				The packages for the default <emphasis>settings/packages</emphasis> &ucsUDM; objects
 				have been updated (<u:bug>32443</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				Package dependencies in some univention base packages have been fixed (<u:bug>39410</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
