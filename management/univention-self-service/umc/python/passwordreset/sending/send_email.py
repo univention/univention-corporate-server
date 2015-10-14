@@ -59,7 +59,7 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
 
 	def __init__(self):
 		super(SendEmail, self).__init__()
-		self.server = self.ucr.get("self-service/passwordreset/email/server", "localhost")
+		self.server = self.ucr.get("umc/self-service/passwordreset/email/server", "localhost")
 
 	@staticmethod
 	def send_method():
@@ -69,7 +69,7 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
 	def is_enabled():
 		ucr = ConfigRegistry()
 		ucr.load()
-		return ucr.is_true("self-service/passwordreset/email/enabled")
+		return ucr.is_true("umc/self-service/passwordreset/email/enabled")
 
 	@property
 	def ldap_attribute(self):
@@ -77,7 +77,7 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
 
 	@property
 	def token_length(self):
-		length = self.ucr.get("self-service/passwordreset/email/token_length", 64)
+		length = self.ucr.get("umc/self-service/passwordreset/email/token_length", 64)
 		try:
 			length = int(length)
 		except ValueError:

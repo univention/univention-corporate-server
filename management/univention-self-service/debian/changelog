@@ -1,3 +1,10 @@
+univention-self-service (0.0.0-8) unstable; urgency=low
+
+  * refactor common UDM/LDAP code (Bug #37890)
+  * allow to delete contact data
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 14 Oct 2015 13:37:18 +0200
+
 univention-self-service (0.0.0-7) unstable; urgency=low
 
   * add support to run external sending plaugin (Bug #37890)

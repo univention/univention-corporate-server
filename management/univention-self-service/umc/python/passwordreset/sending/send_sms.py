@@ -52,7 +52,7 @@ from univention.management.console.modules.passwordreset.send_plugin import Univ
 class SendSMS(UniventionSelfServiceTokenEmitter):
 	def __init__(self):
 		super(SendSMS, self).__init__()
-		self.server = self.ucr.get("self-service/passwordreset/sms/server", "localhost")
+		self.server = self.ucr.get("umc/self-service/passwordreset/sms/server", "localhost")
 
 	@staticmethod
 	def send_method():
@@ -62,7 +62,7 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 	def is_enabled():
 		ucr = ConfigRegistry()
 		ucr.load()
-		return ucr.is_true("self-service/passwordreset/sms/enabled")
+		return ucr.is_true("umc/self-service/passwordreset/sms/enabled")
 
 	@property
 	def ldap_attribute(self):
@@ -70,7 +70,7 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 
 	@property
 	def token_length(self):
-		length = self.ucr.get("self-service/passwordreset/email/token_length", 12)
+		length = self.ucr.get("umc/self-service/passwordreset/email/token_length", 12)
 		try:
 			length = int(length)
 		except ValueError:

@@ -103,6 +103,15 @@ class Instance(Base):
 			MODULE.error(err)
 			raise UMC_Error(err, status=500)
 
+		self.usersmod = None
+		self.usersmod_rw = None
+		self.groupmod = None
+		self.config = None
+		self.lo = None
+		self.lo_rw = None
+		self.position = None
+		self.position_rw = None
+
 		self.db = TokenDB(MODULE)
 		self.conn = self.db.conn
 		atexit.register(self.db.close_db)
@@ -140,17 +149,7 @@ class Instance(Base):
 			MODULE.error("send_token() method '{}' not in {}.".format(method, self.send_plugins.keys()))
 			raise UMC_Error(_("Unknown recovery method '{}'.".format(method)))
 		# check if the user has the required attribute set
-		config = univention.admin.config.config()
-		univention.admin.modules.update()
-		usersmod = univention.admin.modules.get("users/user")
-		lo, position = univention.admin.uldap.getMachineConnection()
-		univention.admin.modules.init(lo, position, usersmod)
-		try:
-			user = usersmod.lookup(config, lo, 'uid={}'.format(escape_filter_chars(username)))[0]
-		except IndexError:
-			# no user found
-			raise UMC_Error(_("Unknown user '{}'.".format(username)))
-		user.open()
+		user = self.get_udm_user(username=username)
 
 		if len(user[plugin.ldap_attribute]) > 0:
 			# found contact info
@@ -232,20 +231,8 @@ class Instance(Base):
 		MODULE.info("get_reset_methods(): username: '{}'".format(username))
 		if self.is_blacklisted(username):
 			raise UMC_Error(_("User is blacklisted."))
-		config = univention.admin.config.config()
-		univention.admin.modules.update()
-		usersmod = univention.admin.modules.get("users/user")
-		lo, position = univention.admin.uldap.getMachineConnection()
-		univention.admin.modules.init(lo, position, usersmod)
-		try:
-			user = usersmod.lookup(config, lo, 'uid={}'.format(escape_filter_chars(username)))[0]
-		except IndexError:
-			# no user found
-			raise UMC_Error(_("Unknown user '{}'.".format(username)))
-		user.open()
+		user = self.get_udm_user(username=username)
 		# return list of method names, for all LDAP attribs user has data
-		for k, v in self.send_plugins.items():
-			MODULE.info("get_reset_methods(): k: {} v: {} v.ldap_attribute".format(k, v, v.ldap_attribute))
 		self.finished(request.id, [k for k, v in self.send_plugins.items() if user[v.ldap_attribute]])
 
 	@staticmethod
@@ -300,21 +287,13 @@ class Instance(Base):
 			lo.lo.unbind()
 		return binddn
 
-	@staticmethod
-	def set_contact_data(dn, email, mobile):
+	def set_contact_data(self, dn, email, mobile):
 		MODULE.info("set_contact_data(): dn: {} email: {} mobile: {}".format(dn, email, mobile))
 		try:
-			config = univention.admin.config.config()
-			univention.admin.modules.update()
-			usersmod = univention.admin.modules.get("users/user")
-			lo, position = univention.admin.uldap.getAdminConnection()
-			univention.admin.modules.init(lo, position, usersmod)
-			dn_part = dn.partition(",")
-			user = usersmod.lookup(config, lo, dn_part[0], base=dn_part[-1])[0]
-			user.open()
-			if email and email.lower() != user["univentionPasswordSelfServiceEmail"].lower():
+			user = self.get_udm_user(userdn=dn, admin=True)
+			if email is not None and email.lower() != user["PasswordRecoveryEmail"].lower():
 				user["PasswordRecoveryEmail"] = email
-			if mobile and mobile.lower() != user["univentionPasswordSelfServiceMobile"].lower():
+			if mobile is not None and mobile.lower() != user["PasswordRecoveryMobile"].lower():
 				user["PasswordRecoveryMobile"] = mobile
 			user.modify()
 			return True
@@ -322,22 +301,10 @@ class Instance(Base):
 			MODULE.info("set_contact_data(): failed to add contact: {}".format(traceback.format_exc()))
 			raise ContactChangingFailed("Failed to change contact information.")
 
-	@staticmethod
-	def udm_set_password(username, password):
+	def udm_set_password(self, username, password):
 		MODULE.info("udm_set_password(): username: {} password: {}".format(username, password))
 		try:
-			lo = getMachineConnection()
-			dn = lo.search(filter="(uid={})".format(escape_filter_chars(username)))[0][0]
-			if dn:
-				MODULE.info("udm_set_password(): DN: {}.".format(dn))
-			config = univention.admin.config.config()
-			univention.admin.modules.update()
-			usersmod = univention.admin.modules.get("users/user")
-			lo, position = univention.admin.uldap.getAdminConnection()
-			univention.admin.modules.init(lo, position, usersmod)
-			dn_part = dn.partition(",")
-			user = usersmod.lookup(config, lo, dn_part[0], base=dn_part[-1])[0]
-			user.open()
+			user = self.get_udm_user(username=username, admin=True)
 			user["password"] = password
 			user.modify()
 			return True
@@ -373,11 +340,11 @@ class Instance(Base):
 			userdn = lo.search(filter="(uid={})".format(escape_filter_chars(username)))[0][0]
 		except IndexError:
 			raise UMC_Error(_("Unknown user '{}'.".format(username)))
-		groups_dns= Instance.get_groups(userdn)
+		groups_dns = self.get_groups(userdn)
 		for group_dn in list(groups_dns):
-			groups_dns.extend(Instance.get_nested_groups(group_dn))
+			groups_dns.extend(self.get_nested_groups(group_dn))
 		groups_dns = list(set(groups_dns))
-		gr_names = map(str.lower, Instance.dns_to_groupname(groups_dns))
+		gr_names = map(str.lower, self.dns_to_groupname(groups_dns))
 
 		# group blacklist
 		if any([gr in bl_groups for gr in gr_names]):
@@ -399,51 +366,25 @@ class Instance(Base):
 		MODULE.info("is_blacklisted({}): neither black nor white listed".format(username))
 		return not (wh_users or wh_groups)
 
-	@staticmethod
-	def get_groups(userdn):
-		config = univention.admin.config.config()
-		univention.admin.modules.update()
-		usersmod = univention.admin.modules.get("users/user")
-		lo, position = univention.admin.uldap.getMachineConnection()
-		univention.admin.modules.init(lo, position, usersmod)
-		dn_part = userdn.partition(",")
-		try:
-			user = usersmod.lookup(config, lo, dn_part[0], base=dn_part[-1])[0]
-		except IndexError:
-			# no user found
-			raise UMC_Error(_("Unknown user '{}'.".format(userdn)))
-		user.open()
+	def get_groups(self, userdn):
+		user = self.get_udm_user(userdn=userdn)
 		groups = user["groups"]
 		prim_group = user["primaryGroup"]
 		if prim_group not in groups:
 			groups.append(prim_group)
 		return groups
 
-	@staticmethod
-	def get_nested_groups(groupdn):
-		config = univention.admin.config.config()
-		univention.admin.modules.update()
-		groupmod = univention.admin.modules.get("groups/group")
-		lo, position = univention.admin.uldap.getMachineConnection()
-		univention.admin.modules.init(lo, position, groupmod)
-		dn_part = groupdn.partition(",")
-		group = groupmod.lookup(config, lo, dn_part[0], base=dn_part[-1])[0]
+	def get_nested_groups(self, groupdn):
+		group = self.get_udm_group(groupdn)
 		res = group["nestedGroup"] or []
 		for ng in list(res):
-			res.extend(Instance.get_nested_groups(ng))
+			res.extend(self.get_nested_groups(ng))
 		return res
 
-	@staticmethod
-	def dns_to_groupname(dns):
-		config = univention.admin.config.config()
-		univention.admin.modules.update()
-		groupmod = univention.admin.modules.get("groups/group")
-		lo, position = univention.admin.uldap.getMachineConnection()
-		univention.admin.modules.init(lo, position, groupmod)
+	def dns_to_groupname(self, dns):
 		names = list()
 		for groupdn in dns:
-			dn_part = groupdn.partition(",")
-			group = groupmod.lookup(config, lo, dn_part[0], base=dn_part[-1])[0]
+			group = self.get_udm_group(groupdn)
 			names.append(group["name"])
 		return names
 
@@ -452,3 +393,66 @@ class Instance(Base):
 		MODULE.error("prevent_denial_of_service(): implement me")
 		if False:
 			raise UMC_Error(_('There have been too many requests in the last time. Please wait 5 minutes for the next request.'))
+
+	def get_udm_user(self, userdn=None, username=None, admin=False):
+		if userdn:
+			dn_part = userdn.partition(",")
+			uidf = dn_part[0]
+			base = dn_part[-1]
+		elif username:
+			uidf = 'uid={}'.format(escape_filter_chars(username))
+			base = ""
+		else:
+			MODULE.error("userdn=None and username=None")
+			raise UMC_Error(_("Program error. Please report this to the administrator."), status=500)
+
+		if admin:
+			if not self.usersmod_rw:
+				if not self.config:
+					self.config = univention.admin.config.config()
+				univention.admin.modules.update()
+				self.usersmod_rw = univention.admin.modules.get("users/user")
+				if not self.lo_rw:
+					self.lo_rw, self.position_rw = univention.admin.uldap.getAdminConnection()
+				univention.admin.modules.init(self.lo_rw, self.position_rw, self.usersmod_rw)
+			lo = self.lo_rw
+			usersmod = self.usersmod_rw
+		else:
+			if not self.usersmod:
+				if not self.config:
+					self.config = univention.admin.config.config()
+				univention.admin.modules.update()
+				self.usersmod = univention.admin.modules.get("users/user")
+				if not self.lo or not self.position:
+					self.lo, self.position = univention.admin.uldap.getMachineConnection()
+				univention.admin.modules.init(self.lo, self.position, self.usersmod)
+			lo = self.lo
+			usersmod = self.usersmod
+		try:
+			user = usersmod.lookup(self.config, lo, filter_s=uidf, base=base)[0]
+			user.open()
+			return user
+		except IndexError:
+			# no user found
+			raise UMC_Error(_("Unknown user '{}'.".format(userdn if userdn else username)))
+
+	def get_udm_group(self, groupdn):
+		dn_part = groupdn.partition(",")
+		gidf = dn_part[0]
+		base = dn_part[-1]
+
+		if not self.groupmod:
+			if not self.config:
+				self.config = univention.admin.config.config()
+			univention.admin.modules.update()
+			self.groupmod = univention.admin.modules.get("groups/group")
+			if not self.lo or not self.position:
+				self.lo, self.position = univention.admin.uldap.getMachineConnection()
+			univention.admin.modules.init(self.lo, self.position, self.groupmod)
+		try:
+			group = self.groupmod.lookup(self.config, self.lo, filter_s=gidf, base=base)[0]
+			group.open()
+			return group
+		except IndexError:
+			# no group found
+			raise UMC_Error(_("Unknown group '{}'.".format(groupdn)))

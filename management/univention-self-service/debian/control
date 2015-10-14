@@ -16,6 +16,8 @@ XS-Python-Version: 2.7
 Package: univention-self-service
 Architecture: all
 Depends: ${misc:Depends},
+ univention-config,
+ ${misc:Depends},
  python-cherrypy3,
  libapache2-mod-wsgi
 Description:
@@ -31,7 +33,9 @@ Description:
 
 Package: univention-self-service-passwordreset
 Architecture: all
-Depends: univention-self-service
+Depends: univention-self-service,
+ univention-config,
+ ${misc:Depends}
 Description:
  This package contains the password self service module that
  allows users to reset their password without administrator
