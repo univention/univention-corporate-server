@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.35-1) unstable; urgency=medium
+
+  * Introduce umc/saml/sp-server (Bug #39549)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Oct 2015 22:00:18 +0200
+
 univention-management-console-frontend (5.0.34-1) unstable; urgency=medium
 
   * Bug #39233: unify cookies, add get/session-info

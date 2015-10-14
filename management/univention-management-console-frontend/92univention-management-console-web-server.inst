@@ -58,10 +58,16 @@ else
 
 fi
 
+if [ -n "$umc_saml_sp_server" ]; then
+	fqdn="$umc_saml_sp_server"
+else
+	fqdn="$hostname.$domainname"
+fi
+
 udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
-	--set Identifier="https://$hostname.$domainname/univention-management-console/saml/metadata" \
-	--set AssertionConsumerService="https://$hostname.$domainname/univention-management-console/saml/" \
-	--set serviceProviderOrganizationName="Univention Management Console $hostname.$domainname" \
+	--set Identifier="https://$fqdn/univention-management-console/saml/metadata" \
+	--set AssertionConsumerService="https://$fqdn/univention-management-console/saml/" \
+	--set serviceProviderOrganizationName="Univention Management Console $fqdn" \
 	--set isActivated=TRUE \
 	--set simplesamlAttributes=TRUE \
 	--set attributesNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" \

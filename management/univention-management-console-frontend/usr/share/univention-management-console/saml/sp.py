@@ -11,13 +11,17 @@ from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()
 ucr.load()
 
-i = Interfaces()
-try:
-	fqdn = '%s.%s' % (ucr['hostname'], ucr['domainname'])
-except KeyError:
-	fqdn = ''
-addresses = [fqdn]
-addresses.extend([y['address'] for x, y in i.all_interfaces])
+if ucr.get('umc/saml/sp-server'):
+	fqdn = ucr.get('umc/saml/sp-server')
+	addresses = [fqdn]
+else:
+	i = Interfaces()
+	try:
+		fqdn = '%s.%s' % (ucr['hostname'], ucr['domainname'])
+	except KeyError:
+		fqdn = ''
+	addresses = [fqdn]
+	addresses.extend([y['address'] for x, y in i.all_interfaces])
 
 bases = ['%s://%s/univention-management-console/saml' % (scheme, addr) for addr in addresses for scheme in ('https', 'http')]
 CONFIG = {
