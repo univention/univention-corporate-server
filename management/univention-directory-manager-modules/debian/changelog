@@ -1,3 +1,10 @@
+univention-directory-manager-modules (10.0.31-18) unstable; urgency=low
+
+  * Bug #38796: do not allow deliberate collisions of uidNumbers and
+    gidNumbers, except if UCRV directory/manager/uid_gid/uniqueness=no
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 15 Oct 2015 15:37:28 +0200
+
 univention-directory-manager-modules (10.0.31-17) unstable; urgency=low
 
   * Bug #39409: fixed automatic update of displayName

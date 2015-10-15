@@ -1834,3 +1834,11 @@ msgid "This policy applies only to objects which matches this LDAP filter."
 msgstr ""
 "Diese Richtlinie wird nur auf Objekte angewendet, die diesem LDAP-Filter "
 "entsprechen."
+
+#: modules/univention/admin/uexceptions.py:108
+msgid "The uidNumber is already in use as a gidNumber"
+msgstr "Die uidNumber wird bereits als gidNumber verwendet."
+
+#: modules/univention/admin/uexceptions.py:111
+msgid "The gidNumber is already in use as a uidNumber"
+msgstr "Die gidNumber wird bereits als uidNumber verwendet."
