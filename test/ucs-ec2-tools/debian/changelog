@@ -1,3 +1,9 @@
+ucs-ec2-tools (2.0.0-6) unstable; urgency=low
+
+  * Bug #39566: added ucs-kvm-create-dynamic to ucslint.overrides 
+
+ -- Julian Hupertz <hupertz@univention.de>  Thu, 15 Oct 2015 18:05:15 +0200
+
 ucs-ec2-tools (2.0.0-5) unstable; urgency=low
 
   * Bug #39566: added ucs-kvm-create-dynamic to UCS-4.1-0 to parametrize the
