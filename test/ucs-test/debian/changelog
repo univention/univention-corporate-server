@@ -1,3 +1,10 @@
+ucs-test (6.0.9-8) unstable; urgency=medium
+
+  * 80_docker/62_app_update_available: Execute univention-updater-check
+    before checking for an update (Bug #39414)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 15 Oct 2015 10:03:27 +0200
+
 ucs-test (6.0.9-7) unstable; urgency=medium
 
   * 80_docker/62_app_update_available: adjust test case to latest
