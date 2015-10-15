@@ -104,6 +104,12 @@ class groupNameAlreadyUsed(base):
 	else:
 		message=_('The groupname is already in use')
 
+class uidNumberAlreadyUsedAsGidNumber(base):
+	message=_('The uidNumber is already in use as a gidNumber')
+
+class gidNumberAlreadyUsedAsUidNumber(base):
+	message=_('The gidNumber is already in use as a uidNumber')
+
 class adGroupTypeChangeLocalToAny(base):
 	message = _('The AD group type can not be changed from type local to any other type.')
 class adGroupTypeChangeToLocal(base):

@@ -76,6 +76,12 @@ Description[en]=If this option is activated or the variable unset, user names an
 Type=bool
 Categories=management-udm
 
+[directory/manager/uid_gid/uniqueness]
+Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, dürfen UIDs und GIDs nicht die selbe Zahl haben.
+Description[en]=If this option is activated or the variable unset, UIDs and GIDs must not use the same number.
+Type=bool
+Categories=management-udm
+
 [directory/manager/user/primarygroup/update]
 Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, wird beim Anlegen/Löschen eines Benutzers auch die primäre Gruppe (in alle Regel 'Domain Users') aktualisiert. Ist diese Option deaktiviert, wird kein Update durchgeführt. Diese Option ist nur in Ausnahmefällen sinnvoll und sollte sorgfältig getestet werden.
 Description[en]=If this option is activated or the variable unset, the primary group (typically 'Domain Users') is updated if a user is added/removed. If this option is disabled, no update is performed. This option should only be used in exceptional cases and should be tested carefully.

@@ -56,6 +56,7 @@ import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.admin.mungeddial as mungeddial
 import univention.admin.handlers.settings.prohibited_username
+from univention.admin import configRegistry
 
 import univention.debug
 import univention.password
@@ -1777,6 +1778,13 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		if self['mailPrimaryAddress']:
 			self['mailPrimaryAddress']=self['mailPrimaryAddress'].lower()
 
+		configRegistry.load()
+		if configRegistry.is_true("directory/manager/uid_gid/uniqueness", True):
+			fg = univention.admin.filter.expression('gidNumber', self['uidNumber'])
+			group_objects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=fg)
+			if group_objects:
+				raise univention.admin.uexceptions.uidNumberAlreadyUsedAsGidNumber, '%r' % self["uidNumber"]
+
 	def _ldap_addlist(self):
 
 		try:
@@ -1950,6 +1958,16 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			else:
 				self.modifypassword=1
 
+		if self.hasChanged('uidNumber'):
+			# this should never happen, as uidNumber is marked as unchangeable
+			configRegistry.load()
+			if configRegistry.is_true("directory/manager/uid_gid/uniqueness", True):
+				fg = univention.admin.filter.expression('gidNumber', self['uidNumber'])
+				group_objects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=fg)
+				if group_objects:
+					raise univention.admin.uexceptions.uidNumberAlreadyUsedAsGidNumber, '%r' % self["uidNumber"]
+
+
 	def _remove_attr(self, ml, attr):
 		for m in ml:
 			if m[0] == attr:
@@ -2046,7 +2064,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			pwd_change_next_login=2
 
 		if self.hasChanged('username'):
- 			if 'kerberos' in self.options:
+			if 'kerberos' in self.options:
 				ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
 
 		if self.modifypassword:
