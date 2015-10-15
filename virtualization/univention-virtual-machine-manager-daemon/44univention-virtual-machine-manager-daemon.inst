@@ -229,6 +229,8 @@ create_hvm_profile "UCS 3.2 (64 Bit)" "ucs32-64-" "kvm" "x86_64" "1024MB" "1" "0
 
 create_hvm_profile "UCS 4.0 (64 Bit)" "ucs40-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
 
+create_hvm_profile "UCS 4.1 (64 Bit)" "ucs41-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
+
 create_hvm_profile "Other" "other-" "kvm" "automatic" "512MB" "0" "0" "0" "20GB" "utc"
 
 create_hvm_profile "Other (64 Bit)" "other-" "kvm" "x86_64" "512MB" "0" "0" "0" "20GB" "utc"
