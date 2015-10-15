@@ -1,3 +1,10 @@
+ucs-ec2-tools (2.0.0-5) unstable; urgency=low
+
+  * Bug #39566: added ucs-kvm-create-dynamic to UCS-4.1-0 to parametrize the
+  	IPv6-Tests in Jenkins
+
+ -- Julian Hupertz <hupertz@univention.de>  Thu, 15 Oct 2015 17:34:37 +0200
+
 ucs-ec2-tools (2.0.0-4) unstable; urgency=medium
 
   * Bug #38984: ucs-kvm-create: Start instances in sequence, as paramiko has
