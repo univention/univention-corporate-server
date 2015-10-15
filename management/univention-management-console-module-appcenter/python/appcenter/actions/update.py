@@ -71,8 +71,8 @@ class Update(UniventionAppAction):
 	def main(self, args):
 		self._ucs_version = args.ucs_version
 		self._appcenter_server = args.appcenter_server
-		self._download_supra_files()
 		something_changed_locally = self._extract_local_archive()
+		self._download_supra_files()
 		json_apps = self._load_index_json()
 		files_to_download, something_changed_remotely = self._read_index_json(json_apps)
 		num_files_to_be_downloaded = len(files_to_download)
@@ -108,8 +108,9 @@ class Update(UniventionAppAction):
 	def _download_supra_files(self):
 		categories_url = urljoin('%s/' % self._get_metainf_url(), '../categories.ini')
 		self.log('Downloading "%s"...' % categories_url)
+		categories = urlopen(categories_url).read()
 		with open(os.path.join(CACHE_DIR, '.categories.ini'), 'wb') as f:
-			f.write(urlopen(categories_url).read())
+			f.write(categories)
 
 	@possible_network_error
 	def _download_archive(self, files_to_download):
