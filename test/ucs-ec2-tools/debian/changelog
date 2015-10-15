@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.14-2) unstable; urgency=medium
+
+  * Bug #38984: ucs-kvm-create: Start instances in sequence, as paramiko has
+    problems with many concurrent connections
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 15 Oct 2015 10:23:06 +0200
+
 ucs-ec2-tools (1.0.14-1) unstable; urgency=low
 
   * Bug #38984: Detect ucs-kt-get errors

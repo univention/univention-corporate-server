@@ -96,7 +96,7 @@ def main():
 		_print_process('Starting VM %s' % vm.get_name())
 		vm.start()
 		_print_done('done (IP: %s)' % vm.get_ip())
-	each_vm(vms, options.parallel, start_vm)
+	each_vm(vms, False, start_vm)
 
 	def connect_vm(vm):
 		_print_process('Connect to VM %s' % vm.get_name())
