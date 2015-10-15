@@ -167,7 +167,7 @@ class Instance(umcm.Base):
 		AppManager.clear_cache()
 		update = get_action('update')
 		list_apps = get_action('list')
-		get = get_action('get')
+		domain = get_action('domain')
 		apps = list_apps.get_apps()
 		self.ucr.load()
 		if not self.ucr.get('docker/container/uuid'):
@@ -177,11 +177,7 @@ class Instance(umcm.Base):
 				if not docker_is_running():
 					raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly. Make sure docker.io is installed, try starting the service with "invoke-rc.d docker start"'))
 		update.call()
-		result = []
-		for app in apps:
-			props = get.to_dict(app)
-			result.append(props)
-		return result
+		return domain.to_dict(apps)
 
 	@error_handler
 	@simple_response
@@ -193,20 +189,14 @@ class Instance(umcm.Base):
 	@error_handler
 	@simple_response
 	def get_by_component_id(self, component_id):
-		get = get_action('get')
+		domain = get_action('domain')
 		if isinstance(component_id, list):
-			requested_apps = []
-			for cid in component_id:
-				app = AppManager.find_by_component_id(component_id)
-				if app:
-					requested_apps.append(get.to_dict(app))
-				else:
-					requested_apps.append(None)
-			return requested_apps
+			requested_apps = [AppManager.find_by_component_id(component_id) for cid in component_id]
+			return domain.to_dict(requested_apps)
 		else:
 			app = AppManager.find_by_component_id(component_id)
 			if app:
-				return get.to_dict(app)
+				return domain.to_dict([app])[0]
 			else:
 				raise umcm.UMC_CommandError(_('Could not find an application for %s') % component_id)
 
@@ -215,18 +205,18 @@ class Instance(umcm.Base):
 	@simple_response
 	def app_updates(self):
 		upgrade = get_action('upgrade')
-		get = get_action('get')
-		return [get.to_dict(app) for app in upgrade.iter_upgradable_apps()]
+		domain = get_action('domain')
+		return domain.to_dict(list(upgrade.iter_upgradable_apps()))
 
 	@error_handler
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
 	@simple_response
 	def get(self, application):
-		get = get_action('get')
+		domain = get_action('domain')
 		app = AppManager.find(application)
 		if app is None:
 			raise umcm.UMC_CommandError(_('Could not find an application for %s') % (application,))
-		return get.to_dict(app)
+		return domain.to_dict([app])[0]
 
 	@sanitize(application=StringSanitizer(minimum=1, required=True), values=DictSanitizer({}))
 	@simple_response

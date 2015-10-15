@@ -63,7 +63,8 @@ class Install(Install, DockerActionMixin):
 		if not args.revert:
 			return
 		try:
-			Remove.call(app=app, noninteractive=args.noninteractive, username=args.username, pwdfile=args.pwdfile, send_info=False, skip_checks=[], keep_data=False)
+			password = self._get_password(args, ask=False)
+			Remove.call(app=app, noninteractive=args.noninteractive, username=args.username, password=password, send_info=False, skip_checks=[], keep_data=False)
 		except Exception:
 			pass
 

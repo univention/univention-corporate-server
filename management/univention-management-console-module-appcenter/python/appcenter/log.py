@@ -109,6 +109,51 @@ class StreamReader(object):
 			self.logger.log(self.level, msg.rstrip('\n'))
 
 
+class LogCatcher(object):
+	def __init__(self, logger=None):
+		self.logger = logger
+		self.logs = []
+
+	def debug(self, msg):
+		if self.logger:
+			self.logger.debug(msg)
+
+	def info(self, msg):
+		if self.logger:
+			self.logger.info(msg)
+		self.logs.append(('OUT', msg))
+
+	def warn(self, msg):
+		if self.logger:
+			self.logger.warn(msg)
+		self.logs.append(('ERR', msg))
+
+	def fatal(self, msg):
+		if self.logger:
+			self.logger.warn(msg)
+		self.logs.append(('ERR', msg))
+
+	def has_stdout(self):
+		return any(msg for msg in self.stdout())
+
+	def has_stderr(self):
+		return any(msg for msg in self.stderr())
+
+	def stdout(self):
+		for level, msg in self.logs:
+			if level == 'OUT':
+				yield msg
+
+	def stderr(self):
+		for level, msg in self.logs:
+			if level == 'ERR':
+				yield msg
+
+	def stdstream(self):
+		for level, msg in self.logs:
+			yield msg
+
+
 def _reverse_umc_module_logger(exclusive=True):
 	'''Function to redirect UMC logs to the univention.appcenter logger.
 	Useful when using legacy code when the App Center lib was part of the

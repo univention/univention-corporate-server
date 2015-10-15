@@ -145,7 +145,8 @@ class Install(InstallRemoveUpgrade):
 
 	def _revert(self, app, args):
 		try:
-			Remove.call(app=app, noninteractive=args.noninteractive, username=args.username, pwdfile=args.pwdfile, send_info=False, skip_checks=[])
+			password = self._get_password(args, ask=False)
+			Remove.call(app=app, noninteractive=args.noninteractive, username=args.username, password=password, send_info=False, skip_checks=[])
 		except Exception:
 			pass
 

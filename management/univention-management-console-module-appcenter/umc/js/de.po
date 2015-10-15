@@ -996,7 +996,7 @@ msgid ""
 "This is probably due to a missing reboot after an UCS upgrade. After a "
 "reboot, a newer kernel may be used."
 msgstr ""
-"Das liegt vermutlich an meinem ausgebliebenen Neustart nach einer UCS-Aktualisierung. Ein Neustart kann dazu führen, dass ein neuerer Kernel verwendet wird."
+"Das liegt vermutlich an einem ausgebliebenen Neustart nach einer UCS-Aktualisierung. Ein Neustart kann dazu führen, dass ein neuerer Kernel verwendet wird."
 
 #: umc/js/appcenter/PackagesPage.js:409
 #: umc/js/appcenter/AppDetailsDialog.js:252

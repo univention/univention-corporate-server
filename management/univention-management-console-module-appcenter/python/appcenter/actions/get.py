@@ -124,7 +124,6 @@ class Get(UniventionAppAction):
 			ret['candidate_component_id'] = latest.component_id
 			ret['candidate_readme_update'] = latest.readme_update
 			ret['candidate_readme_post_update'] = latest.readme_post_update
-		ret['installations'] = None  # TODO
 		ret['fully_loaded'] = True
 		return ret
 

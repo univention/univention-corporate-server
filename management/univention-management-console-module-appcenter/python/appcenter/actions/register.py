@@ -231,7 +231,7 @@ class Register(CredentialsAction):
 			policies = ['cn=appcenter-update-packages,cn=policies,%s' % ucr.get('ldap/base')]
 		elif app.docker_auto_update == 'release':
 			policies = ['cn=appcenter-update-release,cn=policies,%s' % ucr.get('ldap/base')]
-		obj = create_object_if_not_exists('computers/%s' % app.docker_server_role, lo, pos, name=hostname, description=description, domain=domain, password=password, policies=policies)
+		obj = create_object_if_not_exists('computers/%s' % app.docker_server_role, lo, pos, name=hostname, description=description, domain=domain, password=password, objectFlag='docker', policies=policies)
 		ucr_update(ucr, {app.ucr_hostdn_key: obj.dn})
 		return obj.dn, password
 

@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+from argparse import SUPPRESS
 from getpass import getpass, getuser
 from tempfile import NamedTemporaryFile
 from contextlib import contextmanager
@@ -57,6 +58,7 @@ class CredentialsAction(UniventionAppAction):
 		parser.add_argument('--noninteractive', action='store_true', help='Do not prompt for anything, just agree or skip')
 		parser.add_argument('--username', default='Administrator', help='The username used for registering the app. Default: %(default)s')
 		parser.add_argument('--pwdfile', help='Filename containing the password for registering the app. See --username')
+		parser.add_argument('--password', help=SUPPRESS)
 
 	def _get_username(self, args):
 		if self._username is not None:
@@ -71,7 +73,7 @@ class CredentialsAction(UniventionAppAction):
 			self._username = username
 		return username
 
-	def _get_password(self, args):
+	def _get_password(self, args, ask=True):
 		username = self._get_username(args)
 		if not username:
 			return None
@@ -80,7 +82,7 @@ class CredentialsAction(UniventionAppAction):
 		if args.pwdfile:
 			password = open(args.pwdfile).read().rstrip('\n')
 			return password
-		if not args.noninteractive:
+		if ask and not args.noninteractive:
 			self._password = self._get_password_for(username)
 		return self._password
 

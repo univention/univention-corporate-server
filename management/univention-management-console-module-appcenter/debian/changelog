@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-23) unstable; urgency=medium
+
+  * Bug #39417: Reimplement getting installation information of apps from LDAP
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 16 Oct 2015 01:22:34 +0200
+
 univention-management-console-module-appcenter (5.0.6-22) unstable; urgency=low
 
   * Bug #39434: Fix .categories.ini handling in actions/update.py

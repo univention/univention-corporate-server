@@ -32,6 +32,8 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+from json import dumps
+
 from univention.config_registry import ConfigRegistry
 
 from univention.appcenter.actions import UniventionAppAction, get_action
@@ -43,9 +45,22 @@ class Info(UniventionAppAction):
 	help = 'Show general info'
 
 	def setup_parser(self, parser):
-		pass
+		parser.add_argument('--as-json', action='store_true', help='Output in a machine readable format')
 
 	def main(self, args):
+		if args.as_json:
+			self._as_json()
+		else:
+			self._output()
+
+	def _as_json(self):
+		installed = [str(app) for app in self.get_installed_apps()]
+		upgradable = [app.id for app in self.get_upgradable_apps()]
+		ret = {'ucs': self.get_ucs_version(), 'compat': self.get_compatibility(), 'installed': installed, 'upgradable': upgradable}
+		self.log(dumps(ret))
+		return ret
+
+	def _output(self):
 		self.log('UCS: %s' % self.get_ucs_version())
 		self.log('App Center compatibility: %s' % self.get_compatibility())
 		self.log('Installed: %s' % ' '.join(str(app) for app in self.get_installed_apps()))

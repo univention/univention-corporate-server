@@ -94,7 +94,10 @@ def search_objects(module, lo, pos, base='', **kwargs):
 	filter_str = ''
 	for key, value in kwargs.iteritems():
 		filter_str = '%s=%s' % (key, escape_filter_chars(value))
-	objs = module.lookup(None, lo, filter_str, base=base)
+	try:
+		objs = module.lookup(None, lo, filter_str, base=base)
+	except udm_errors.noObject:
+		objs = []
 	for obj in objs:
 		udm_objects.open(obj)
 	return objs

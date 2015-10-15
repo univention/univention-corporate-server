@@ -245,11 +245,11 @@ class InstallRemoveUpgrade(Register):
 			if ucr.get('server/role') == 'domaincontroller_master' and getuser() == 'root':
 				return self._call_script(dest, run_scripts=os.path.basename(dest))
 			else:
-				with self._get_password_file() as password_file:
+				with self._get_password_file(args) as password_file:
 					joinargs = []
 					if password_file:
 						joinargs.extend(['-dcname', self._get_username(args)])
-						joinargs.extend(['-dcpwd', self.password_file])
+						joinargs.extend(['-dcpwd', password_file])
 					return self._call_script(dest, *joinargs)
 
 	def _reload_apache(self):
