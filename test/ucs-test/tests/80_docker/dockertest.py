@@ -160,6 +160,9 @@ class App:
 					(admin_user, self.ucr.get('tests/domainadmin/pwdfile'), self.app_name), shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_UpgradeFailed()
+		self.ucr.load()
+		self.container_id = self.ucr.get('appcenter/apps/%s/container' % self.app_name)
+		self.installed = True
 
 	def verify(self):
 		ret = subprocess.call(['univention-app', 'status', self.app_name])
