@@ -535,6 +535,7 @@
 			<title>Univention Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
 				<listitem><simpara>
+					UVMM profiles for Windows 10 have been added (<u:bug>39335</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
