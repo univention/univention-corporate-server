@@ -1,0 +1,211 @@
+#!/usr/bin/python
+#
+# -*- coding: utf-8 -*-
+# vim:set shiftwidth=4 tabstop=4:
+"""
+Wrapper script for ucs-kvm-create that replaces numerous placeholder in cfg file.
+"""
+#
+# Copyright 2013-2015 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+from optparse import OptionParser
+import ConfigParser
+import os
+import subprocess
+import tempfile
+import time
+import shutil
+
+
+def update_defaults(defaults):
+	fn_cfg = os.path.expanduser('~/.config/ucs-kvm-create-dynamic.conf')
+	if os.path.exists(fn_cfg):
+		config = ConfigParser.SafeConfigParser()
+		config.read(fn_cfg)
+		for i in (
+				'kvmserver',
+				'subnetprefix4',
+				'subnetprefix6',
+				'nameserver4',
+				'nameserver6',
+				'domainname',
+				'ldapbase',
+				'windowsdomain',
+		):
+			try:
+				val = config.get('defaults', i)
+			except (ConfigParser.NoOptionError, ConfigParser.NoSectionError):
+				continue
+			if val:
+				defaults[i] = val
+	return defaults
+
+
+def print_longhelp(usage, defaults):
+	print usage + '''\n\nAutomatically replaced keys in profile file:
+    %%(datetimennow)s     current date and time
+    %%(subnetprefix4)s    prefix of IPv4 subnet (default: %(subnetprefix4)s)
+    %%(subnetprefix6)s    prefix of IPv6 subnet (default: %(subnetprefix6)s)
+    %%(kvmserver)s        hostname of KVM server (default: %(kvmserver)s)
+    %%(number*)s          last octet of IP address (e.g. 87)
+    %%(ipaddr*)s          IPv4 address of instance (e.g. %(subnetprefix4)s.87)
+    %%(ip6addr*)s         IPv6 address of instance (e.g. %(subnetprefix6)s:0057)
+    %%(nameserver4)s      IPv4 nameserver (default: %(nameserver4)s)
+    %%(nameserver6)s      IPv6 nameserver (default: %(nameserver6)s)
+    %%(domainname)s       domain name (default: %(domainname)s)
+    %%(ldapbase)s         LDAP base DN (default: %(ldapbase)s)
+    %%(windowsdomain)s    windows domain name (default: %(windowsdomain)s)
+
+Default values are read from ~/.config/ucs-kvm-create-dynamic.conf.
+
+Example content of ~/.config/ucs-kvm-create-dynamic.conf:
+
+[defaults]
+kvmserver: krus.knut.univention.de
+subnetprefix4: 10.200.99
+subnetprefix6: 2001:4dd0:ff00:8c42:ff99:
+nameserver4: 192.168.0.3
+nameserver6: 2001:4dd0:ff00:8c42::1
+domainname: example.intra
+ldapbase: dc=example,dc=intra
+windowsdomain: EXAMPLE
+
+Example profile for IPv4 master:
+
+[UCS-master-%%(number1)s]
+profile:
+ hostname="master%%(number1)s"
+ domainname="%%(domainname)s"
+ windows/domain="%%(windowsdomain)s%%(number1)s"
+ ldap/base="%%(ldapbase)s"
+ ssl/email="ssl@%%(domainname)s"
+ timezone="Europe/Berlin"
+ locale/default="de_DE.UTF-8:UTF-8"
+ root_password="univention"
+ server/role="domaincontroller_master"
+ packages_install=""
+ packages_remove=""
+ interfaces/eth0/address="%%(subnetprefix4)s.%%(number1)s"
+ interfaces/eth0/broadcast="%%(subnetprefix4)s.255"
+ interfaces/eth0/netmask="24"
+ interfaces/eth0/network="%%(subnetprefix4)s.0"
+ gateway="%%(subnetprefix4)s.1"
+ nameserver1="%%(nameserver4)s"''' % defaults
+
+
+def main():
+	"""
+	Create KVM instances for testing.
+	"""
+
+	defaults = {
+		'kvmserver': 'krus.knut.univention.de',
+		'subnetprefix4': '10.200.18',
+		'subnetprefix6': '2001:4dd0:ff00:8c42:ff18:',
+		'nameserver4': '192.168.0.3',
+		'nameserver6': '2001:4dd0:ff00:8c42::1',
+		'domainname': 'nstx.local',
+		'ldapbase': 'dc=nstx,dc=local',
+		'windowsdomain': 'NSTX',
+	}
+
+	defaults = update_defaults(defaults)
+
+	usage = '''ucs-kvm-create-dynamic [options] -i <IPADDR> -c <CFGFILE>
+
+Example: ucs-kvm-create-dynamic -s 10.200.18 -i 87 -c myprofile.cfg
+
+ucs-kvm-create-dynamic is a wrapper script for ucs-kvm-create. It automatically
+replaces several placeholders in the original cfg file and calls ucs-kvm-create
+with the altered cfg file. This way it is possible to instantiate several
+environments with the same cfg file in KVM environment with the need to alter
+the cfg file.'''
+
+	parser = OptionParser(usage=usage)
+	parser.add_option("--longhelp", action="store_true", dest="longhelp", help="show long version of help text")
+	parser.add_option("-c", "--conf", action="store", dest="config_file", metavar='CFGFILE', help="Config file")
+	parser.add_option("-s", "--subnet4", action="store", dest="subnet4", help="IPv4 subnet (default: %default)", metavar='SUBNET', default=defaults.get('subnetprefix4'))
+	parser.add_option("--subnet6", action="store", dest="subnet6", help="IPv6 subnet (default: %default)", metavar='SUBNET', default=defaults.get('subnetprefix6'))
+	parser.add_option("-i", "--ipaddr", action="store", dest="ipaddr", type='int', help="IP address of first system (<SUBNET>.<IPADDR>)", metavar='IPADDR')
+	parser.add_option("-k", "--kvm-server", action="store", dest="kvm_server", default=defaults.get('kvmserver'), help="hostname of target KVM server (default: %default)", metavar='HOSTNAME')
+	parser.add_option("--dns4", action="store", dest="nameserver4", default=defaults.get('nameserver4'), help="IPv4 DNS server (default: %default)", metavar='ADDRESS')
+	parser.add_option("--dns6", action="store", dest="nameserver6", default=defaults.get('nameserver6'), help="IPv6 DNS server (default: %default)", metavar='ADDRESS')
+	parser.add_option("--domainname", action="store", dest="domainname", default=defaults.get('domainname'), help="DNS domain name (default: %default)", metavar='DOMAIN')
+	parser.add_option("--ldapbase", action="store", dest="ldapbase", default=defaults.get('ldapbase'), help="LDAP base DN (default: %default)", metavar='BASEDN')
+	parser.add_option("--windowsdomain", action="store", dest="windowsdomain", default=defaults.get('windowsdomain'), help="windows domain name (default: %default)", metavar='DOMAIN')
+
+	(options, _args) = parser.parse_args()
+
+	if options.longhelp:
+		print_longhelp(usage, defaults)
+		sys.exit(0)
+
+	if not options.config_file:
+		parser.error('fail: -c config_file is required')
+	if not os.path.exists(options.config_file):
+		parser.error('fail: "%s" does not exist' % options.config_file)
+	if not options.subnet4 and not options.subnet6:
+		parser.error('fail: -s has to be specified')
+	if not options.ipaddr:
+		parser.error('fail: -i has to be specified')
+
+	tmpfn = tempfile.mkstemp(suffix='.%s' % os.path.basename(options.config_file))[1]
+	try:
+		print 'Temporary template file: %s' % (tmpfn, )
+		content = open(options.config_file, 'r').read()
+		mapping = {
+			'datetimenow': time.strftime('%Y%m%d-%H%M%S'),
+			'subnetprefix4': options.subnet4,
+			'subnetprefix6': options.subnet6,
+			'kvmserver': options.kvm_server,
+			'nameserver4': options.nameserver4,
+			'nameserver6': options.nameserver6,
+			'domainname': options.domainname,
+			'ldapbase': options.ldapbase,
+			'windowsdomain': options.windowsdomain,
+		}
+		for i in xrange(1, 100):
+			mapping['number%d' % (i, )] = str(options.ipaddr + i - 1)
+			mapping['ipaddr%d' % (i, )] = '%s.%d' % (options.subnet4, options.ipaddr + i - 1)
+			mapping['ip6addr%d' % (i, )] = '%s:%04x' % (options.subnet6, options.ipaddr + i - 1)
+		with open(tmpfn, 'w') as fd:
+			fd.write(content % mapping)
+
+		# create backup of template
+		target_dir = os.path.join(os.path.dirname(options.config_file), 'dynamic')
+		target_fn = os.path.join(target_dir, '%s.' % os.path.basename(options.config_file) + mapping['datetimenow'])
+		if not os.path.isdir(target_dir):
+			os.makedirs(target_dir)
+		shutil.copy2(tmpfn, target_fn)
+
+		subprocess.call(['ucs-kvm-create', '-c', tmpfn])
+	finally:
+		os.remove(tmpfn)
+
+if __name__ == '__main__':
+	main()
