@@ -191,6 +191,10 @@
 					The <package>System Setup</package> wizard now can have a configurable domain while the hostname itself is fixed. This is needed
 					for Univention Apps (<u:bug>38275</u:bug>, <u:bug>38154</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					During the initial System Setup the restart of the webserver is no longer disabled.
+					This is needed for Univention Apps (<u:bug>39476</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
