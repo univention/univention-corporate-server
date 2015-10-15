@@ -1,3 +1,9 @@
+univention-saml (3.0.22-1) unstable; urgency=medium
+
+  * Bug #39233: enable CORS header
+
+ -- Florian Best <best@univention.de>  Thu, 15 Oct 2015 18:27:16 +0200
+
 univention-saml (3.0.21-5) unstable; urgency=medium
 
   * Introduce ucs/server/sso/virtualhost (Bug #39549)

@@ -28,8 +28,10 @@ SuexecUserGroup samlcgi samlcgi
 	Order allow,deny
 	Allow from all
 
-	# AJAX-Requests via UMC should be possible:
-	Header always set Access-Control-Allow-Origin "*"
+	# AJAX-Requests via UMC should be possible:  FIXME: allow only specific origins
+	SetEnvIf Origin "^https?://" origin=true
+	Header always set Access-Control-Allow-Origin "%{HTTP:Origin}s" env=origin
+	Header always set Access-Control-Allow-Credentials "true"
 </Directory>
 
 @!@
