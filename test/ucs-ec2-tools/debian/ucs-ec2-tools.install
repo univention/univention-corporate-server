@@ -1,5 +1,6 @@
 python/ec2/*.py usr/share/pyshared/univention/ec2/
 ucs-kvm-create usr/bin/
+ucs-kvm-create-dynamic /usr/bin
 ucs-ec2-create usr/bin/
 ucs-ec2-list usr/bin/
 ucs-ec2-terminate usr/bin/
