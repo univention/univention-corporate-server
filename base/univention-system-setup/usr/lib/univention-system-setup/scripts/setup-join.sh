@@ -73,8 +73,20 @@ run-parts -v /usr/lib/univention-system-setup/scripts/15_keyboard
 run-parts -v /usr/lib/univention-system-setup/scripts/20_language
 run-parts -v /usr/lib/univention-system-setup/scripts/25_defaultlocale
 
-# do not allow the UMC or webserver to be restarted
-/usr/share/univention-updater/disable-apache2-umc
+# Do not allow the UMC to be restarted, webserver is OK, but
+# make sure the webserver uses the same certificates during setup.
+# The variables are removed in during cleanup
+/usr/share/univention-updater/disable-apache2-umc --exclude-apache
+certificate="$(mktemp)"
+key="$(mktemp)"
+ca="$(mktemp)"
+cp "/etc/univention/ssl/$(ucr get hostname).$(ucr get domainname)/cert.pem" "$certificate"
+cp "/etc/univention/ssl/$(ucr get hostname).$(ucr get domainname)/private.key" "$key"
+cp "/etc/univention/ssl/ucsCA/CAcert.pem" "$ca"
+ucr set \
+	apache2/ssl/certificate="$certificate" \
+	apache2/ssl/key="$key" \
+	apache2/ssl/ca="$ca"
 
 # Re-create sources.list files before installing the role packages
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=28089

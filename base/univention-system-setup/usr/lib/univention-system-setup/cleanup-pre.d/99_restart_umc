@@ -30,6 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# unset ssl certificate variables, 
+# from now on use the new certificate
+ucr unset \
+	apache2/ssl/certificate \
+	apache2/ssl/key \
+	apache2/ssl/ca
+
 /usr/share/univention-updater/disable-apache2-umc
 /usr/share/univention-updater/enable-apache2-umc
 

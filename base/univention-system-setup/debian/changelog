@@ -1,3 +1,10 @@
+univention-system-setup (9.0.2-7) unstable; urgency=low
+
+  * do not disable apache restart during setup (Bug #39476)
+    keep initial certificates until setup is finished 
+
+ -- Felix Botner <botner@univention.de>  Thu, 15 Oct 2015 13:29:37 +0200
+
 univention-system-setup (9.0.2-6) unstable; urgency=low
 
   * recommend rdate (Bug #39410)
