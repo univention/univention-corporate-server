@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.39-1) unstable; urgency=medium
+
+  * Bug #39577: fix cherrypy redirections
+
+ -- Florian Best <best@univention.de>  Fri, 16 Oct 2015 22:19:10 +0200
+
 univention-management-console-frontend (5.0.38-1) unstable; urgency=medium
 
   * Adjust SSO description (Bug #31943)

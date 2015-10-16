@@ -93,12 +93,14 @@ def log_exceptions(func):
 
 
 @log_exceptions
-def _fix_uri_for_saml():
-	scheme = cherrypy.request.scheme
+def _proxy_uri():
+	scheme, _, base = cherrypy.request.base.partition('://')
 	if cherrypy.request.headers.get('X-UMC-HTTPS') == 'on':
 		scheme = 'https'
+
 	cherrypy.request.scheme = scheme
-	cherrypy.request.uri = ('%s://%s%s?%s' % (scheme, cherrypy.request.headers['Host'], cherrypy.request.path_info, cherrypy.request.query_string)).rstrip('?')
+	cherrypy.request.base = '%s://%s' % (scheme, base)
+	cherrypy.request.uri = ('%s%s?%s' % (cherrypy.request.base, cherrypy.request.path_info, cherrypy.request.query_string)).rstrip('?')
 	foo = cherrypy.request.params
 	try:
 		cherrypy.request.params = {}
@@ -106,7 +108,7 @@ def _fix_uri_for_saml():
 		cherrypy.request.query = cherrypy.request.params
 	finally:
 		cherrypy.request.params = foo
-cherrypy.tools.fix_uri = cherrypy.Tool('before_handler', _fix_uri_for_saml)
+cherrypy.tools.fix_uri = cherrypy.Tool('before_request_body', _proxy_uri, priority=30)
 
 
 class SessionClient(object):
@@ -990,7 +992,6 @@ class SAML(Ressource):
 
 	@cherrypy.expose
 	@log_exceptions
-	@cherrypy.tools.fix_uri()
 	def index(self, *args, **kwargs):
 		binding, message, relay_state = self._get_saml_message()
 		user = self.get_user()
@@ -1016,7 +1017,6 @@ class SAML(Ressource):
 
 	@cherrypy.expose
 	@log_exceptions
-	@cherrypy.tools.fix_uri()
 	def slo(self, *args, **kwargs):  # single logout service
 		binding, message, relay_state = self._get_saml_message()
 		if message is None:
@@ -1026,7 +1026,6 @@ class SAML(Ressource):
 
 	@cherrypy.expose
 	@log_exceptions
-	@cherrypy.tools.fix_uri()
 	def logout(self, *args, **kwargs):
 		user = self.get_user()
 
@@ -1204,9 +1203,9 @@ def run_cherrypy(options):
 		'tools.response_headers.headers': [
 			('Content-Type', umcp.MIMETYPE_JSON)
 		],
+		'tools.fix_uri.on': True,
 		'error_page.default': default_error_page
 	})
-	cherrypy.tools.proxy(base=None, local='X-Forwarded-Host', remote='X-Forwarded-For', scheme='X-Forwarded-Proto')
 
 	cherrypy.quickstart(root=Root())
 
