@@ -156,6 +156,10 @@
 					<package>univention-management-console-web-server</package> join script adds
 					this service automatically to the LDAP host entry (<u:bug>39553</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The Univention Management Console login now supports authentication via SAML
+					(<u:bug>31943</u:bug>, <u:bug>39549</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
