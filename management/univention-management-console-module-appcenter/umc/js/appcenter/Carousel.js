@@ -116,8 +116,12 @@ define([
 				this.itemNodes.push(div);
 				index++;
 			}));
-			styles.insertCssRule('.contentSlider .carouselScreenshot', lang.replace('height: {0}px', [this.itemHeight]), 'defaultItemHeightWrapper');
-			styles.insertCssRule('.contentSlider div', lang.replace('height: {0}px', [this.itemHeight]), 'defaultItemHeightImage');
+			if (!styles.getStyleSheet('defaultItemHeightWrapper')) {
+				styles.insertCssRule('.contentSlider .carouselScreenshot', lang.replace('height: {0}px', [this.itemHeight]), 'defaultItemHeightWrapper');
+			}
+			if (!styles.getStyleSheet('defaultItemHeightImage')) {
+				styles.insertCssRule('.contentSlider div', lang.replace('height: {0}px', [this.itemHeight]), 'defaultItemHeightImage');
+			}
 
 			this.minimizeButton = domConstruct.create('div', {
 				'class': 'minimizeButton dijitHidden',
@@ -307,6 +311,8 @@ define([
 			}));
 			this.own(on(baseWin.doc, 'resize', lang.hitch(this, '_handleResize')));
 			this.own(on(kernel.global, 'resize', lang.hitch(this, '_handleResize')));
+			styles.enableStyleSheet('defaultItemHeightWrapper');
+			styles.enableStyleSheet('defaultItemHeightImage');
 		}
 	});
 });
