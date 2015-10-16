@@ -151,6 +151,11 @@
 					All UMC cookies are now restricted to the path <uri>/univention-management-console/</uri>.
 					The entry point <uri>/umcp/</uri> has therefore been moved to <uri>/univention-management-console/</uri> (<u:bug>38820</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					A service entry for Univention Management Console has been added and the
+					<package>univention-management-console-web-server</package> join script adds
+					this service automatically to the LDAP host entry (<u:bug>39553</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
