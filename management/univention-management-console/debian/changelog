@@ -1,3 +1,9 @@
+univention-management-console (8.0.18-2) unstable; urgency=medium
+
+  * Added description for umc/saml/trusted/sp/ (Bug #39552)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Oct 2015 16:06:48 +0200
+
 univention-management-console (8.0.18-1) unstable; urgency=medium
 
   * Added umc-service-providers listener module which saves all UMC

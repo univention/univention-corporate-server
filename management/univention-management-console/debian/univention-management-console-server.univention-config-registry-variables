@@ -33,3 +33,9 @@ Description[de]=Ist eine Option der Form 'umc/module/.*/.*/disabled' aktiviert, 
 Description[en]=If an option in the format 'umc/module/.*/.*/disabled' is activated, the module isn't shown in the UMC, e.g. 'umc/module/users/user/disabled=true'.
 Type=bool
 Categories=management-umc
+
+[umc/saml/trusted/sp/.*]
+Description[de]=Diese Variable speichert die gültigen Service Provider. Dieser Wert wird automatisch generiert und sollte nicht geändert werden.
+Description[en]=This variable stores the valid service provider. This value is generated automatically and should not be modified.
+Type=str
+Categories=management-umc
