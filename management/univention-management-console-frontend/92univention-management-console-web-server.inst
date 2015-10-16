@@ -31,9 +31,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=4
+VERSION=5
 
 . /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/all.sh
 
 joinscript_init
 
@@ -88,6 +89,8 @@ ucr set umc/saml/idp-server?"https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/
 
 /etc/init.d/univention-management-console-web-server restart
 /etc/init.d/slapd restart
+
+ucs_addServiceToLocalhost 'Univention Management Console' "$@"
 
 joinscript_save_current_version
 

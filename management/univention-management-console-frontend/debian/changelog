@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.36-1) unstable; urgency=medium
+
+  * Register service 'Univention Management Console' (Bug #39553)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Oct 2015 06:16:21 +0200
+
 univention-management-console-frontend (5.0.35-1) unstable; urgency=medium
 
   * Introduce umc/saml/sp-server (Bug #39549)
