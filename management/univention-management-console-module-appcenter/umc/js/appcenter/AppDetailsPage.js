@@ -56,8 +56,9 @@ define([
 	"umc/widgets/Grid",
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/modules/appcenter/App",
+	"umc/modules/appcenter/Carousel",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, domClass, domStyle, Memory, Observable, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, Grid, AppCenterGallery, App, _) {
+], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, domClass, domStyle, Memory, Observable, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, Grid, AppCenterGallery, App, Carousel, _) {
 	
 	var adaptedGrid = declare([Grid], {
 		_updateContextActions: function() {
@@ -388,50 +389,31 @@ define([
 				this._mainRegionContainer.addChild(this._installedAppsGrid);
 			}
 			
-			//imageCarousel
 			this._detailsContainer = new ContainerWidget({
 				'class': 'detailsContainer'
 			});			
-
-			var styleContainer = new ContainerWidget({
-				'class': 'carouselWrapper'
-			});
-			
-			var carouselContainer = new ContainerWidget({
-				'class': 'carousel'
-			});
-
-			var screenshot = this._detailFieldCustomScreenshot();
-			if (screenshot) {
-				domConstruct.place(screenshot, carouselContainer.domNode);
-				query('.umcScreenshot', carouselContainer.domNode).forEach(function(imgNode) {
-					new Lightbox({ href: imgNode.src }, imgNode);
-				});
-
-				styleContainer.addChild(carouselContainer);
-				this._detailsContainer.addChild(styleContainer);
-			}
 
 			var descriptionContainerClass = 'descriptionContainer';
 			descriptionContainerClass += this.app.longDescription.length > 360 ? ' longText' : '';
 			var descriptionContainer = new ContainerWidget({
 				'class': descriptionContainerClass
 			});
-			var descriptionTable = domConstruct.create('table');
-			var tr = domConstruct.create('tr', {}, descriptionTable);
-
-			var tableHeader = domConstruct.create('th', {
-				innerHTML: _('Description'), 
-				colspan: 2
-			}, tr);
-
-			tr = domConstruct.create('tr', {}, descriptionTable);
-			domConstruct.create('td', {
+			domConstruct.create('div', {
 				innerHTML: this.app.longDescription
-			}, tr);
-
-			domConstruct.place(descriptionTable, descriptionContainer.domNode);
+			}, descriptionContainer.domNode);
 			this._detailsContainer.addChild(descriptionContainer);
+
+			if (this.app.screenshot) {
+				var styleContainer = new ContainerWidget({
+					'class': 'carouselWrapper'
+				});
+				
+				this.carousel = new Carousel({
+					items: [{src: this.app.screenshot}]
+				});
+				styleContainer.addChild(this.carousel);
+				this._detailsContainer.addChild(styleContainer);
+			}
 
 			// for an uninstalled app show details (open TitlePane) at the top of main
 			// otherwise close the Titlepane and move it under the grid

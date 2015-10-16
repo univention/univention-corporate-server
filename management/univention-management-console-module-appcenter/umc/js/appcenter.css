@@ -266,38 +266,17 @@
 
 .umc .umcAppDetailsPage .carouselWrapper {
 	border-bottom: 1px solid #c8c8c8;
+	border-top: 1px solid #c8c8c8;
 	padding: 1em 0;
-	margin-bottom: 3em;
-}
-
-.umc .umcAppDetailsPage .carouselWrapper {
-	border-bottom: 1px solid #c8c8c8;
-	padding: 1em 0;
-	margin-bottom: 3em;
-}
-
-.umc .umcAppDetailsPage .carousel {
-	margin: auto;
-	display: table;
-}
-
-.umc .umcAppDetailsPage .descriptionContainer {
 	margin-bottom: 2em;
 }
 
-.umc .umcAppDetailsPage .descriptionContainer th {
-	font-weight: bold;
-	font-size: 1.6em;
-	height: 30px;
-	vertical-align: top;
+.umc .umcAppDetailsPage .descriptionContainer {
+	margin-bottom: 3em;
 }
 
-.umc .umcAppDetailsPage .descriptionContainer td {
-	vertical-align: top;
-}
-
-.umc .umcAppDetailsPage .descriptionContainer.longText td {
-	vertical-align: top;
+.umc .umcAppDetailsPage .descriptionContainer.longText div {
+	column-count: 2;
 	-webkit-column-count: 2;
 	-moz-column-count: 2;
 }
@@ -346,4 +325,108 @@
 	.umc .umcPage.umcAppCenter .umcSize-TwoThirds {
 		width: 100%;
 	}
+}
+
+.carouselOuterContainer {
+	margin: auto;
+	position: relative;
+}
+
+.carouselOuterContainer .contentSliderWrapper {
+	float: left;
+	white-space: nowrap;
+	overflow: hidden;
+	position: relative;
+	height: 100%;
+}
+
+.carouselOuterContainer .contentSliderWrapper .contentSlider {
+	position: absolute;
+	left: 0;
+	transition: left 0.5s;
+}
+
+.carouselOuterContainer .contentSliderWrapper .contentSlider div {
+	margin: 0 10px;
+	display: inline-block;
+	/*border: 2px solid darkgrey;*/
+	/*box-sizing: content-box;*/
+}
+
+.contentSlider.noTransition {
+	transition: none !important;
+}
+
+.contentSlider .carouselScreenshot {
+	display: block;
+	margin: auto;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+}
+
+.carouselButton {
+	float: left;
+
+	cursor: pointer;
+	width: 40px;
+	height: 100%;
+	opacity: 1;
+	transition: opacity 0.5s;
+}
+
+.carouselButton.disabled {
+	opacity: 0;
+	cursor: default;
+}
+
+.carouselButtonImage {
+	background-image: url("appcenter/carouselArrowRight.svg");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: 0 50%;
+	height: 100%;
+	opacity: 0.4;
+	transition: opacity 0.3s;
+}
+
+.carouselButton.leftCarouselButton .carouselButtonImage {
+	transform: rotateY(180deg);
+	-ms-transform: rotateY(180deg);
+	-webkit-transform: rotateY(180deg);
+}
+
+.carouselButtonImage:hover {
+	opacity: 1;
+}
+
+.carouselButton.leftCarouselButton {
+	margin-right: 5px;
+}
+
+.carouselButton.rightCarouselButton {
+	margin-left: 5px;
+}
+
+.minimizeButton {
+	cursor: pointer;
+	width: 40px;
+	height: 40px;
+	background-image: url("appcenter/minimize.svg");
+	background-size: 100% 100%;
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 1;
+	opacity: 0.4;
+}
+
+.minimizeButton:hover {
+	opacity: 1;
+}
+
+.carouselScreenshot {
+	cursor: pointer;
 }

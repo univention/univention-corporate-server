@@ -1,3 +1,12 @@
+univention-management-console-module-appcenter (5.0.6-24) unstable; urgency=low
+
+  Bug #39524: 
+  * Added a Gallery to show multiple images
+  * Added svg images for the gallery
+  * Adjusted layout of the 'Details' titlepane slightly
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 16 Oct 2015 12:43:55 +0200
+
 univention-management-console-module-appcenter (5.0.6-23) unstable; urgency=medium
 
   * Bug #39417: Reimplement getting installation information of apps from LDAP
