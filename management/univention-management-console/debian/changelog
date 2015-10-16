@@ -1,3 +1,9 @@
+univention-management-console (8.0.17-5) unstable; urgency=medium
+
+  * Use umc/saml/sp-server in ucr file (Bug #39549)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Oct 2015 11:16:05 +0200
+
 univention-management-console (8.0.17-4) unstable; urgency=medium
 
   * Use umc/saml/sp-server instead of ucs/server/sso/fqdn in pam

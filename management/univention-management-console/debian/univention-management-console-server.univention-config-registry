@@ -17,7 +17,7 @@ Multifile: etc/pam.d/univention-management-console
 Subfile: etc/pam.d/univention-management-console.d/40_saml
 Variables: hostname
 Variables: domainname
-Variables: ucs/server/sso/fqdn
+Variables: umc/saml/sp-server
 Variables: umc/saml/grace_time
 
 Type: file
