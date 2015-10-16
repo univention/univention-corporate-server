@@ -1,3 +1,10 @@
+univention-management-console (8.0.18-1) unstable; urgency=medium
+
+  * Added umc-service-providers listener module which saves all UMC
+    servers as trusted service providers (Bug #39552)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Oct 2015 15:45:49 +0200
+
 univention-management-console (8.0.17-5) unstable; urgency=medium
 
   * Use umc/saml/sp-server in ucr file (Bug #39549)

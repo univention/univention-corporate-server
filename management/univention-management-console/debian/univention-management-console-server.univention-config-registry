@@ -27,3 +27,4 @@ Variables: logrotate/.*
 Type: file
 File: etc/ldap/sasl2/slapd.conf
 Variables: umc/saml/grace_time
+Variables: umc/saml/trusted/sp/.*
