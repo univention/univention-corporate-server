@@ -1,3 +1,10 @@
+univention-management-console (8.0.17-3) unstable; urgency=medium
+
+  * pam.d/univention-management-console.d/40_saml: fixed typo
+    (Bug #39549)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Oct 2015 07:54:54 +0200
+
 univention-management-console (8.0.17-2) unstable; urgency=medium
 
   * Consider ucs/server/sso/fqdn in UMC pam configuration (Bug #39549)
