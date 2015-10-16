@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.36-2) unstable; urgency=medium
+
+  * saml/sp.py: Check if address really exists (Bug #39557)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Oct 2015 10:18:23 +0200
+
 univention-management-console-frontend (5.0.36-1) unstable; urgency=medium
 
   * Register service 'Univention Management Console' (Bug #39553)

@@ -21,7 +21,7 @@ else:
 	except KeyError:
 		fqdn = ''
 	addresses = [fqdn]
-	addresses.extend([y['address'] for x, y in i.all_interfaces])
+	addresses.extend([y['address'] for x, y in i.all_interfaces if y and y.get('address')])
 
 bases = ['%s://%s/univention-management-console/saml' % (scheme, addr) for addr in addresses for scheme in ('https', 'http')]
 CONFIG = {
