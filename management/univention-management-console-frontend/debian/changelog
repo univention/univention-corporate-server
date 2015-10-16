@@ -1,3 +1,11 @@
+univention-management-console-frontend (5.0.37-1) unstable; urgency=medium
+
+  * Bug #31943: fix URI change when redirecting back from IDP to service
+    provider (simplesamlphp doesn't support SAML HTTP-Redirect binding for
+    ACS) and picks a random URI in that case.
+
+ -- Florian Best <best@univention.de>  Fri, 16 Oct 2015 16:47:27 +0200
+
 univention-management-console-frontend (5.0.36-2) unstable; urgency=medium
 
   * saml/sp.py: Check if address really exists (Bug #39557)

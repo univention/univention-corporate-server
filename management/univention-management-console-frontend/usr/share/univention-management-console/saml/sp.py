@@ -34,7 +34,7 @@ CONFIG = {
 			"authn_requests_signed": True,
 			"logout_requests_signed": True,
 			"endpoints": {
-				"assertion_consumer_service": [('%s/' % (url,), binding) for url in bases for binding in (BINDING_HTTP_POST, BINDING_HTTP_REDIRECT)],
+				"assertion_consumer_service": [('%s/' % (url,), binding) for url in bases for binding in (BINDING_HTTP_POST,)],
 				"single_logout_service": [('%s/slo/' % (url,), binding) for url in bases for binding in (BINDING_HTTP_POST, BINDING_HTTP_REDIRECT)],
 			},
 			"required_attributes": ["uid"],
