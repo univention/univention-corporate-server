@@ -1,5 +1,3 @@
-@%@UCRWARNING=# @%@
-
 auth     sufficient                         pam_unix.so
 @!@
 methods = configRegistry.get('auth/methods','').split(' ')
