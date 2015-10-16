@@ -6,3 +6,5 @@ scripts/univention-rename-app usr/sbin/
 all.tar.gz usr/share/univention-appcenter/local/
 umc/js/appcenter.css usr/share/univention-management-console-frontend/js/umc/modules
 umc/js/appcenter/app-vignette.svg usr/share/univention-management-console-frontend/js/umc/modules/appcenter
+umc/js/appcenter/minimize.svg usr/share/univention-management-console-frontend/js/umc/modules/appcenter
+umc/js/appcenter/carouselArrowRight.svg usr/share/univention-management-console-frontend/js/umc/modules/appcenter
