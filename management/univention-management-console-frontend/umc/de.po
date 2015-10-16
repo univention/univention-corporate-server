@@ -898,8 +898,8 @@ msgstr "http://www.univention.de"
 msgid "{number} errors occurred: "
 msgstr "{number} Fehler sind aufgetreten: "
 
-msgid "<b>Warning:</b> Make sure hostnames of this UCS domain can be resolved by your browser."
-msgstr "<b>Warnung:</b> Stellen Sie sicher, dass Rechner dieser UCS Domäne von Ihrem Browser erreichbar sind."
+msgid "Single Sign On allows a user to login once and access multiple applications seamlessly. For a safe implementation, it is necessary that the names of the involved systems can be reached via DNS by the web browser."
+msgstr "Single Sign On erlaubt es Benutzern eine Anmeldung durchzuführen und auf verschiedene Applikationen nahlos zu zugreifen. Für eine sichere Umsetzung ist es erforderlich, dass die Namen der beteiligten Systeme via DNS vom Webbrowser erreicht werden können."
 
 #~ msgid "<b>Host</b> "
 #~ msgstr "<b>Host</b> "

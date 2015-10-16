@@ -49,9 +49,9 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 			this.addChild(new Button({
-				label: _('Single sign on'),
+				label: _('Single Sign On'),
 				iconClass: 'umcPlayIcon',
-				description: _('<b>Warning:</b> Make sure hostnames of this UCS domain can be resolved by your browser.'),
+				description: _('Single Sign On allows a user to login once and access multiple applications seamlessly. For a safe implementation, it is necessary that the names of the involved systems can be reached via DNS by the web browser.'),
 				callback: function() {
 					window.location.pathname = '/univention-management-console/saml/';
 				}
