@@ -19,6 +19,14 @@ RewriteRule ^/?simplesamlphp/(.*) https://%{SERVER_NAME}/simplesamlphp/$1 [R,L]
 ScriptAlias /saml-bin /var/www/saml
 SuexecUserGroup samlcgi samlcgi
 
+<LocationMatch /simplesamlphp/>
+	# AJAX-Requests via UMC should be possible:  FIXME: allow only specific origins
+	Header always set Access-Control-Allow-Origin "*"
+	SetEnvIf Origin "^https?://" origin=true
+	Header always set Access-Control-Allow-Origin "%{HTTP:Origin}s" env=origin
+	Header always set Access-Control-Allow-Credentials "true"
+</LocationMatch>
+
 <Directory /usr/share/simplesamlphp/www/>
 	<FilesMatch ".+\.ph(p[345]?|t|tml)$">
 		SetHandler php5-cgi
@@ -27,11 +35,6 @@ SuexecUserGroup samlcgi samlcgi
 
 	Order allow,deny
 	Allow from all
-
-	# AJAX-Requests via UMC should be possible:  FIXME: allow only specific origins
-	SetEnvIf Origin "^https?://" origin=true
-	Header always set Access-Control-Allow-Origin "%{HTTP:Origin}s" env=origin
-	Header always set Access-Control-Allow-Credentials "true"
 </Directory>
 
 @!@

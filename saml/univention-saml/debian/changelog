@@ -1,3 +1,9 @@
+univention-saml (3.0.24-1) unstable; urgency=medium
+
+  * Bug #39233: fix setting of CORS header
+
+ -- Florian Best <best@univention.de>  Sat, 17 Oct 2015 21:31:58 +0200
+
 univention-saml (3.0.23-1) unstable; urgency=medium
 
   * Bug #39320: fix PHP warning caused by template
