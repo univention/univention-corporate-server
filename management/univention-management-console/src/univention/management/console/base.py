@@ -159,7 +159,7 @@ class UMC_PasswordRequired(UMC_Error):
 class UMC_OptionSanitizeError(UMC_OptionTypeError):
 
 	def __init__(self, message, body=None):
-		status = 409  # HTTP Conflict
+		status = 422
 		super(UMC_OptionSanitizeError, self).__init__(message, status, body)
 
 
@@ -291,7 +291,7 @@ class Base(signals.Provider, Translation):
 		if not isinstance(result, BaseException):
 			self.finished(request.id, result)
 			return
-		method = '%s: %s' % (thread.name, request.arguments[0],)
+		method = '%s: %s' % (thread.name, ' '.join(request.arguments))
 		self.__error_handling(request, method, *thread.exc_info)
 
 	def error_handling(self, etype, exc, etraceback):

@@ -613,7 +613,7 @@ class Processor(Base):
 	def _password_changed(self, thread, result, request, new_password):
 		res = Response(request)
 		if isinstance(result, PasswordChangeFailed):
-			res.status = 400#409
+			res.status = 400#422
 			res.message = '%s' % (result,)
 			res.result = {'new_password': '%s' % (result,)}
 		elif isinstance(result, BaseException):

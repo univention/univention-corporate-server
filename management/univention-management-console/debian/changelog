@@ -1,3 +1,9 @@
+univention-management-console (8.0.19-1) unstable; urgency=medium
+
+  * Bug #39564: fix status code
+
+ -- Florian Best <best@univention.de>  Sat, 17 Oct 2015 16:23:52 +0200
+
 univention-management-console (8.0.18-2) unstable; urgency=medium
 
   * Added description for umc/saml/trusted/sp/ (Bug #39552)
