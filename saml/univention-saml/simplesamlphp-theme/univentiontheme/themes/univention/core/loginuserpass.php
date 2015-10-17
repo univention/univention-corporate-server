@@ -26,7 +26,11 @@ if (strlen($this->data['username']) > 0) {
 		?>
 	<?php
 	if (isset($this->data['SPMetadata']['description'])) {
-		echo('<p>' . htmlspecialchars($this->data['SPMetadata']['description']) . '</p>');
+		$description = $this->data['SPMetadata']['description'];
+		if (is_array($description)) {
+			$description = implode($this->data['SPMetadata']['description']);
+		}
+		echo('<p>' . htmlspecialchars($description) . '</p>');
 	}
 	if (isset($this->data['SPMetadata']['privacypolicy'])) {
 		echo('<p><a href="' . htmlspecialchars($this->data['SPMetadata']['privacypolicy']) . '">' . htmlspecialchars($this->t('{consent:consent:consent_privacypolicy}')) . '</a></p>');

@@ -1,3 +1,9 @@
+univention-saml (3.0.23-1) unstable; urgency=medium
+
+  * Bug #39320: fix PHP warning caused by template
+
+ -- Florian Best <best@univention.de>  Sat, 17 Oct 2015 15:06:18 +0200
+
 univention-saml (3.0.22-1) unstable; urgency=medium
 
   * Bug #39233: enable CORS header
