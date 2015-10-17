@@ -41,12 +41,10 @@ define([
 	"dojo/has",
 	"dojo/Evented",
 	"dojo/Deferred",
-	"dojo/when",
 	"dojo/promise/all",
 	"dojo/cookie",
 	"dojo/topic",
 	"dojo/io-query",
-	"dojo/fx",
 	"dojo/fx/easing",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
@@ -56,13 +54,13 @@ define([
 	"dojo/dom-class",
 	"dojo/dom-geometry",
 	"dojo/dom-construct",
-	"dojo/date/locale",
 	"dojo/hash",
 	"dojox/html/styles",
 	"dojox/html/entities",
 	"dojox/gfx",
 	"dijit/registry",
 	"./tools",
+	"./auth",
 	"./dialog",
 	"./store",
 	"dijit/Menu",
@@ -81,27 +79,22 @@ define([
 	"./widgets/Button",
 	"./widgets/Text",
 	"./widgets/Module",
-	"./widgets/ModuleHeader",
 	"./app/CategoryButton",
 	"./i18n/tools",
 	"./i18n!",
 	"xstyle/css!./app.css",
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseFx, baseWin, win, on, aspect, has,
-		Evented, Deferred, when, all, cookie, topic, ioQuery, fx, fxEasing, Memory, Observable,
-		dom, style, domAttr, domClass, domGeometry, domConstruct, locale, hash, styles, entities, gfx, registry, tools, dialog, store,
+		Evented, Deferred, all, cookie, topic, ioQuery, fxEasing, Memory, Observable,
+		dom, style, domAttr, domClass, domGeometry, domConstruct, hash, styles, entities, gfx, registry, tools, auth, dialog, store,
 		Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
-		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, Module, ModuleHeader, CategoryButton,
+		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, Module, CategoryButton,
 		i18nTools, _
 ) {
 	// cache UCR variables
 	var _ucr = {};
 	var _favoritesDisabled = false;
 	var _initialHash = hash();
-
-	var _getLang = function() {
-		return kernel.locale.split('-')[0];
-	};
 
 	var _hasFreeLicense = function() {
 		return _ucr['license/base'] == 'Free for personal use edition' || _ucr['license/base'] == 'UCS Core Edition';
@@ -921,8 +914,8 @@ define([
 			//		  not been shown and the module cannot be closed
 
 			// remove cookie from UCS 4.0 to prevent login problems
-			cookie('UMCSessionId', null, {path: '/', expires: -1})
-			cookie('UMCUsername', null, {path: '/', expires: -1})
+//			cookie('UMCSessionId', null, {path: '/', expires: -1})
+//			cookie('UMCUsername', null, {path: '/', expires: -1})
 
 			// save some config properties
 			tools.status('overview', tools.isTrue(props.overview));
@@ -931,64 +924,35 @@ define([
 			// password has been given in the query string... in this case we may cache it, as well
 			tools.status('password', props.password);
 
+			tools.status('app.loaded', new Deferred());
+
 			if (typeof props.module == "string") {
 				// a startup module is specified
 				tools.status('autoStartModule', props.module);
 				tools.status('autoStartFlavor', typeof props.flavor == "string" ? props.flavor : null);
 			}
 
-			if (props.username && props.password && typeof props.username == "string" && typeof props.password == "string") {
-				// username and password are given, try to login directly
-				this.login();
-				return;
-			}
-
-			// check whether we still have a possibly valid cookie
-			var cookies = tools.getCookies();
-			if (undefined !== cookies.sessionID && cookies.username !== undefined &&
-				(!tools.status('username') || tools.status('username') == cookies.username)) {
-				// the following conditions need to be given for an automatic login
-				// * session and username need to be set via cookie
-				// * if a username is given via the query string, it needs to match the
-				//   username saved in the cookie
-				tools.umcpCommand('set', {
-					locale: i18nTools.defaultLang().replace('-', '_')
-				}, false).then(lang.hitch(this, function() {
-					// session is still valid
-					this.onLogin(tools.getCookies().username);
-				}), lang.hitch(this, function() {
-					this.login();
-				}));
-			}
-			else {
-				this.login();
-			}
+			topic.subscribe('/umc/authenticated', lang.hitch(this, '_authenticated'));
+			auth.start();
 		},
 
-		login: function() {
-			return dialog.login().then(lang.hitch(this, 'onLogin')).always(lang.hitch(this, function() {
-				if (dialog._loginDialog) {
-					// display the UCS logo animation some time
-					setTimeout(function() {
-						dialog._loginDialog.hide();
-					}, 1500);
-				}
-			}));
-		},
-
-		onLogin: function(username) {
+		_authenticated: function(username) {
 			// save the username internally and as cookie
 			tools.setUsernameCookie(username, { expires: 100, path: '/univention-management-console/' });
 			tools.status('username', username);
 
-			// start the timer for session checking
-			tools.checkSession(true);
+			if (!tools.status('app.loaded').isFulfilled()) {
+				// start the timer for session checking
+				tools.checkSession(true);
 
-			// setup static GUI part
-			this.setupStaticGui();
+				// setup static GUI part
+				this.setupStaticGui();
 
-			// load the modules
-			return this.load();
+				// load the modules
+				return this.load().always(function() {
+					tools.status('app.loaded').resolve();
+				});
+			}
 		},
 
 		_tabContainer: null,
@@ -1125,7 +1089,6 @@ define([
 		load: function() {
 			// make sure that we don't load the modules twice
 			if (this._loaded) {
-				this.onLoaded();
 				return;
 			}
 
@@ -1137,9 +1100,6 @@ define([
 			return all([modulesDeferred, ucrDeferred]).then(lang.hitch(this, function() {
 				this._loaded = true;
 				this.onLoaded();
-			}), lang.hitch(this, function() {
-				// something went wrong... try to login again
-				this.login();
 			}));
 		},
 

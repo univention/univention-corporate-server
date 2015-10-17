@@ -524,6 +524,11 @@ class Ressource(object):
 		self._log(99, 'sessionid=%r' % (sessionid,))
 		return sessionid
 
+	def check_saml_session_validity(self):
+		user = self.get_user()
+		if user and user.saml is not None and user.time_remaining < 1:
+			raise UMC_HTTPError(UNAUTHORIZED, body={'saml_renewal_required': True})
+
 	def get_session(self):
 		return UMCP_Dispatcher.sessions.get(self.get_session_id())
 
@@ -617,6 +622,8 @@ class CPgeneric(Ressource):
 		if not sessionid:
 			raise UMC_HTTPError(UNAUTHORIZED)
 
+		self.check_saml_session_validity()
+
 		args = self.get_arguments(kwargs)
 
 		return self.get_response(sessionid, path, args)
@@ -701,7 +708,7 @@ class CPGet(CPgeneric):
 		info['auth_type'] = user.saml and 'SAML'
 		info['remaining'] = self.session_remaining
 		info['validity'] = self.session_validity
-		return json.dumps({"status": 200, "result": info})
+		return json.dumps({"status": 200, "result": info, "message": ""})
 
 	@cherrypy.expose
 	@log_exceptions
@@ -917,7 +924,7 @@ class CPAuth(CPgeneric):
 			return body
 
 		CORE.process('auth: username: %s, status code: %s' % (req.body.get('username'), response.status))
-		raise UMC_HTTPError(response.status, response.message)
+		raise UMC_HTTPError(response.status, response.message, response.result)
 
 
 class Root(Ressource):
@@ -999,7 +1006,7 @@ class SAML(Ressource):
 
 		is_passive = 'passive' in kwargs or '?passive=true' in relay_state
 
-		if user and user.saml is not None and not is_passive:
+		if user and user.saml is not None and not user.timed_out() and not is_passive:
 			raise HTTPRedirect('/univention-management-console/auth/sso')
 
 		if message is None:

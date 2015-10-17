@@ -48,8 +48,8 @@ define([
 ], function(lang, array, parser, on, topic, Deferred, domClass, domStyle, LoginDialog, NotificationContainer, ConfirmDialog, Text, Form, tools, i18nTools, _) {
 	var dialog = {};
 	lang.mixin(dialog, {
-		_loginDialog: null, // internal reference to the login dialog
 
+		_loginDialog: null, // internal reference to the login dialog
 		_loginDeferred: null,
 
 		login: function() {
@@ -59,12 +59,6 @@ define([
 			//		A Deferred object that is called upon successful login.
 			//		The callback receives the authorized username as parameter.
 
-			if (!dialog._loginDialog) {
-				// create the login dialog for the first time
-				this._loginDialog = new LoginDialog({});
-				this._loginDialog.startup();
-			}
-
 			if (this._loginDeferred) {
 				// a login attempt is currently running
 				return this._loginDeferred;
@@ -73,76 +67,34 @@ define([
 			// check if a page reload is required
 			tools.checkReloadRequired();
 
-			// if username and password are specified via the query string, try to authenticate directly
-			this._loginDeferred = null;
-			var username = tools.status('username');
-			var password = tools.status('password');
-			if (username && password && typeof username == "string" && typeof password == "string") {
-				// try to authenticate via long polling... i.e., in case of an error try again until it works
-				this._loginDeferred = tools.umcpCommand('auth', {
-					username: username,
-					password: password
-				}, false, undefined, {
-					message: _('So far the authentification failed. Continuing nevertheless.'),
-					noLogin: true
-				}).then(function(response) {
-					return response.result.username;
-				});
-			}
-			else {
-				// reject deferred to force login
-				this._loginDeferred = new Deferred();
-				this._loginDeferred.then(null, function() { /* prevent logging of exception */ });
-				this._loginDeferred.reject();
-			}
-
-			this._loginDeferred = this._loginDeferred.then(null, lang.hitch(dialog, function() {
+			this._loginDeferred = require('umc/auth').autologin().then(undefined, lang.hitch(this, function() {
 				// auto authentication could not be executed or failed...
-
-				// show dialog
-				this._loginDialog.show();
-				tools.status('loggingIn', true);
-
-				// connect to the dialog's onLogin event
-				var deferred = new Deferred();
-				on.once(this._loginDialog, 'login', function(username) {
-					// update loggingIn status
-					tools.status('loggingIn', false);
-
-					// submit the username to the deferred callback
-					deferred.resolve(username);
-				});
-				return deferred;
-			}));
-
-			// after login, set the locale and make sure that the username is passed
-			// over to the next callback
-			this._loginDeferred = this._loginDeferred.then(lang.hitch(dialog, function(username) {
-				// set the locale
-				return tools.umcpCommand('set', {
-					locale: i18nTools.defaultLang().replace('-', '_')
-				}, false).then(function() {
-					topic.publish('/umc/actions', 'session', 'relogin');
-
-					// remove the reference to the login deferred object
-					dialog._loginDeferred = null;
-
-					// make sure the username is handed over to the next callback
-					return username;
-				}, function() {
-					// error... login again
-					return dialog.login();
-				});
+				return this._loginDialog.ask();
 			}));
 
 			return this._loginDeferred;
+		},
+
+		_initLoginDialog: function() {
+			if (!this._loginDialog) {
+				this._loginDialog = new LoginDialog({});
+				this._loginDialog.startup();
+				topic.subscribe('/umc/authenticated', lang.hitch(this, function() {
+					// remove the reference to the login deferred object
+					this._loginDeferred = null;
+				}));
+			}
 		},
 
 		loginOpened: function() {
 			// summary:
 			//		Returns whether the login dialog has been opened or not
 
-			return this._loginDialog && this._loginDialog.open; // Boolean
+			return this._loginDialog && this._loginDialog.get('open'); // Boolean
+		},
+
+		updateLoginForm: function(message) {
+			return require('umc/auth')._loginDialog.updateForm(false, message);
 		},
 
 		_notificationMaster: null,

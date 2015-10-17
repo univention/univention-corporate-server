@@ -86,6 +86,12 @@ define([
 			this._replaceLabels();
 			this.containerNode = dom.byId('umcLoginDialog');
 			this.domNode = dom.byId('umcLoginWrapper');
+
+			// hide the login dialog. but wait for the GUI to be rendered.
+			tools.status('app.loaded').then(lang.hitch(this, function() {
+				// display the UCS logo animation some time
+				setTimeout(lang.hitch(this, 'hide'), 1500);
+			}));
 		},
 
 		buildRendering: function() {
@@ -123,10 +129,13 @@ define([
 		updateForm: function(passwordExpired, message) {
 			this._passwordExpired = passwordExpired;
 			this._updateFormDeferred.resolve(this._passwordExpired);
-			if (message.slice(-1) !== '.') {
-				message += '.';
+
+			if (message) {
+				if (message.slice(-1) !== '.') {
+					message += '.';
+				}
+				this.set('LoginMessage', message);
 			}
-			this.set('LoginMessage', message);
 		},
 
 		_setLoginMessageAttr: function(message) {
@@ -310,29 +319,35 @@ define([
 			}
 			this._updateFormDeferred = new Deferred();
 			this.standby(true);
-			tools.umcpCommand('auth', args).then(lang.hitch(this, function(data) {
-				// delete password ASAP. should not be stored
-				this._username = null;
-				this._password = null;
-				this._newPassword = null;
-				this._passwordExpired = false;
-				this._updateFormDeferred.resolve(this._passwordExpired);
-				this._resetForm();
+			require('umc/auth').authenticate(args).then(lang.hitch(this, '_authenticated'), lang.hitch(this, '_authentication_failed'));
+		},
 
-				// make sure that we got data
-				this.onLogin(data.result.username);
-				if (tools.status('setupGui')) {
-					// the module loading bar was already triggered
-					this.hide();
-				}
-			}), lang.hitch(this, function(error) {
-				// don't call _updateFormDeferred or _resetForm here!
-				// It would break setting of new_password
-				this.standby(false);
-				this._setInitialFocus();
-				Dialog._DialogLevelManager.show(this, this.underlayAttrs);
-				Dialog._DialogLevelManager.hide(this);
-			}));
+		_authenticated: function(username) {
+			// delete password ASAP. should not be stored
+			this._username = null;
+			this._password = null;
+			this._newPassword = null;
+			this._passwordExpired = false;
+			this._updateFormDeferred.resolve(this._passwordExpired);
+			this._resetForm();
+
+			// make sure that we got data
+			this.onLogin(username);
+
+			// hide login dialog
+			if (tools.status('app.loaded').isFulfilled()) {
+				this.hide();
+			}
+		},
+
+		_authentication_failed: function(error) {
+			console.log('authentication dialog failed');
+			// don't call _updateFormDeferred or _resetForm here!
+			// It would break setting of new_password
+			this.standby(false);
+			this._setInitialFocus();
+			Dialog._DialogLevelManager.show(this, this.underlayAttrs);
+			Dialog._DialogLevelManager.hide(this);
 		},
 
 		standby: function(standby) {
@@ -340,6 +355,23 @@ define([
 			if (standby && this._text.get('content')) {
 				fx.wipeOut({node: this._text.id, properties: { duration: 500 }}).play();
 			}
+		},
+
+		ask: function() {
+			// show dialog
+			this.show();
+			tools.status('loggingIn', true);
+
+			// connect to the dialog's onLogin event
+			var deferred = new Deferred();
+			on.once(this, 'login', function(username) {
+				// update loggingIn status
+				tools.status('loggingIn', false);
+
+				// submit the username to the deferred callback
+				deferred.resolve(username);
+			});
+			return deferred.promise;
 		},
 
 		show: function() {

@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.40-1) unstable; urgency=medium
+
+  * Bug #39564: detect SAML session and do automatic login
+  * Bug #39178: enhance dialog which asks for password
+
+ -- Florian Best <best@univention.de>  Sat, 17 Oct 2015 16:15:18 +0200
+
 univention-management-console-frontend (5.0.39-1) unstable; urgency=medium
 
   * Bug #39577: fix cherrypy redirections

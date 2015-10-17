@@ -901,6 +901,9 @@ msgstr "{number} Fehler sind aufgetreten: "
 msgid "Single Sign On allows a user to login once and access multiple applications seamlessly. For a safe implementation, it is necessary that the names of the involved systems can be reached via DNS by the web browser."
 msgstr "Single Sign On erlaubt es Benutzern eine Anmeldung durchzuführen und auf verschiedene Applikationen nahtlos zuzugreifen. Für eine sichere Umsetzung ist es erforderlich, dass die Namen der beteiligten Systeme via DNS vom Webbrowser erreicht werden können."
 
+msgid "Validation error"
+msgstr "Validierungsfehler"
+
 #~ msgid "<b>Host</b> "
 #~ msgstr "<b>Host</b> "
 
