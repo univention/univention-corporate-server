@@ -1,3 +1,9 @@
+univention-join (8.0.1-1) unstable; urgency=medium
+
+  * Bug #39233: simplify error handling
+
+ -- Florian Best <best@univention.de>  Sat, 17 Oct 2015 15:13:29 +0200
+
 univention-join (8.0.0-4) unstable; urgency=low
 
   * Bug #38437: removed bashism

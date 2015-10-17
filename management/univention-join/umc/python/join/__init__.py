@@ -46,7 +46,7 @@ import apt_pkg
 
 import univention.management.console as umc
 from univention.management.console.log import MODULE
-from univention.management.console.modules import Base, UMC_CommandError
+from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.config import ucr
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import StringSanitizer, ListSanitizer, BooleanSanitizer
@@ -312,7 +312,7 @@ class Instance(Base):
 			# is there a general error?
 			match = RE_ERROR.match(line)
 			if match and not line.startswith('Error: Not all install files configured'):
-				raise UMC_CommandError(_('Error: %s') % match.groups()[0])
+				raise UMC_Error(_('Error: %s') % match.groups()[0])
 
 			# unconfigured script
 			match = RE_NOT_CONFIGURED.match(line)
@@ -381,20 +381,17 @@ class Instance(Base):
 	def join(self, request):
 		username, password, hostname = (request.options['username'], request.options['password'], request.options['hostname'])
 
-		def _error(msg):
-			self.finished(request.id, dict(success=False, error=msg), success=False, status=400)
-
 		# Check if already a join process is running
 		if self._running:
-			return _error(_('A join process is already running.'))
+			raise UMC_Error(_('A join process is already running.'))
 
 		# check for valid server role
 		if ucr.get('server/role') == 'domaincontroller_master':
-			return _error(_('Invalid server role! A master domain controller can not be joined.'))
+			raise UMC_Error(_('Invalid server role! A master domain controller can not be joined.'))
 
 		# check for dpkg lock
 		if self._dpkg_locked():
-			return _error(_('Currently, software is being installed or uninstalled. Join scripts should not be run right now.'))
+			raise UMC_Error(_('Currently, software is being installed or uninstalled. Join scripts should not be run right now.'))
 
 		def _thread():
 			self.progress_state.reset()
@@ -424,7 +421,7 @@ class Instance(Base):
 		thread.run()
 
 		request.status = 202
-		self.finished(request.id, {'success': True})
+		self.finished(request.id, True)
 
 	@sanitize(
 		username=StringSanitizer(required=False, minimum=1),
@@ -435,16 +432,13 @@ class Instance(Base):
 	def run(self, request):
 		"""runs the given join scripts"""
 
-		def _error(msg):
-			self.finished(request.id, dict(success=False, error=msg), success=False, status=400)
-
 		# Check if already a join process is running
 		if self._running:
-			return _error(_('A join process is already running.'))
+			raise UMC_Error(_('A join process is already running.'))
 
 		# check for dpkg lock
 		if self._dpkg_locked():
-			return _error(_('Currently, software is being installed or uninstalled. Join scripts should not be run right now.'))
+			raise UMC_Error(_('Currently, software is being installed or uninstalled. Join scripts should not be run right now.'))
 
 		scripts, username, password, force = (request.options['scripts'], request.options.get('username'), request.options.get('password'), request.options.get('force', False))
 
@@ -481,4 +475,4 @@ class Instance(Base):
 
 		# finish request
 		request.status = 202
-		self.finished(request.id, {'success': True})
+		self.finished(request.id, True)

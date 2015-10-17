@@ -310,25 +310,20 @@ define([
 
 		// starts the join process and show progressbar
 		join: function(dataObj) {
-			this.standby(true);
-			this.umcpCommand('join/join', {
+			this.standbyDuring(this.umcpCommand('join/join', {
 				hostname: dataObj.hostname,
 				username: dataObj.username,
 				password: dataObj.password
-			}, false).then(
-				lang.hitch(this, function(data) {
-					this._joining = true;
-					this.showProgressBar();
-				}), lang.hitch(this, function(error) {
-					this._joining = false;
-					this.handleError(error, _("Can't start join process:<br>"));
-				})
-			);
+			})).then(lang.hitch(this, function() {
+				this._joining = true;
+				this.showProgressBar();
+			}), lang.hitch(this, function() {
+				this._joining = false;
+				this.reinit(false);
+			}));
 		},
 
 		runJoinScripts: function(scripts, force, credentials) {
-			this.standby(true);
-
 			var values = { scripts: scripts, force: force };
 			if (credentials.username) {
 				values.username = credentials.username;
@@ -337,38 +332,14 @@ define([
 				values.password = credentials.password;
 			}
 
-			this.umcpCommand('join/run', values, false).then(
-				lang.hitch(this, function(data) {
-					this._joining = false;
-					// Job is started. Now wait for its completion.
-					this.showProgressBar();
-				}),
-				lang.hitch(this, function(error) {
-					this._joining = false;
-					this.handleError(error, _("Can't run join scripts:<br>"));
-				})
-			);
-		},
-
-		handleError: function(error, msg, title) {
-			this.standby(false);
-			if (error.response.status != 400 && error.response.status != 409) {
-				return tools.handleErrorStatus(error.response, true);
-			}
-			var errormessage = '';
-			// lol, we got HTTP errors which are exactly meant the other way round
-			if (error.response.status == 400) {
-				errormessage = msg;
-				errormessage += error.response.data.result.error;
-			} else if (error.response.status == 409) {
-				errormessage = error.response.data.message + ':<br>';
-				_('username'); _('password'); _('hostname');
-				tools.forIn(error.response.data.result, function(key, value) {
-					errormessage += key + ': ' + value + '<br>';
-				});
-			}
-			dialog.alert(errormessage, title || _('Error'));
-			this.reinit(false);
+			this.standbyDuring(this.umcpCommand('join/run', values)).then(lang.hitch(this, function() {
+				this._joining = false;
+				// Job is started. Now wait for its completion.
+				this.showProgressBar();
+			}), lang.hitch(this, function() {
+				this._joining = false;
+				this.reinit(false);
+			}));
 		},
 
 		showProgressBar: function(title, successmsg) {
