@@ -1,3 +1,10 @@
+univention-docker-container-mode (1.0.3-1) unstable; urgency=medium
+
+  * Update store_data and restore_data_before_setup to make the re-join
+    useless (Bug #39462)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 17 Oct 2015 22:15:17 +0200
+
 univention-docker-container-mode (1.0.2-4) unstable; urgency=low
 
   * Bug #39448: Added conflict to univention-docker, docker.io ...

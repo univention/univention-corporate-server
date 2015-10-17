@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/python2.7
 #
 # Univention Appliance Docker Container
 #  restoring previously saved data (before app installation)
@@ -30,11 +30,69 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/share/univention-docker-container-mode/lib.sh
+import os
+import shutil
+import string
+import univention.config_registry
 
-hostname=$(cat /etc/hostname)
-secret_file="/var/lib/appcenter/app/$APP/conf/$hostname.secret"
-if [ -f "$secret_file" ]; then
-	cp "$secret_file" /etc/machine.secret || die "Could not restore machine.secret"
-fi
+BLACKLIST_UCR_VARIABLES = [
+	'version/version',
+	'version/erratalevel',
+	'version/patchlevel',
+	'version/releasename',
+]
 
+
+# Helper function to copy all meta data of a file or directory
+def copy_permissions(src, dest):
+	s_stat = os.stat(src)
+	os.chown(dest, s_stat.st_uid, s_stat.st_gid)
+	shutil.copymode(src, dest)
+	shutil.copystat(src, dest)
+	d_stat = os.stat(dest)
+
+
+def restore_files(source_dir):
+	for (path, dirs, files) in os.walk(source_dir):
+		for d in dirs:
+			r_path = string.replace(path, source_dir, '/', 1)
+			dest = os.path.join(r_path, d)
+			if not os.path.exists(dest):
+				os.makedirs(dest)
+			src = os.path.join(path, d)
+			copy_permissions(src, dest)
+		for i in files:
+			src = os.path.join(path, i)
+			dest = string.replace(src, source_dir, '', 1)
+			print 'cp %s %s' % (src, dest)
+			shutil.copy(src, dest)
+			copy_permissions(src, dest)
+
+
+def restore_ucr_layer(ucr_file, options):
+	f = open(ucr_file, "r")
+	vv = []
+	for v in f.readlines():
+		v = v.strip()
+		if not v or v.startswith('#'):
+			continue
+		key, value = v.split(':', 1)
+		if key not in BLACKLIST_UCR_VARIABLES:
+			vv.append('%s=%s' % (key, value))
+	if vv:
+		print vv
+		univention.config_registry.handler_set(vv, opts=options)
+
+if __name__ == '__main__':
+	app_name = os.environ.get('APP')
+	conf_dir = '/var/lib/appcenter/app/%s/conf/' % app_name
+	source_dir = '/var/lib/appcenter/app/%s/conf/files' % app_name
+
+	restore_files(source_dir)
+
+	print '** Restore forced UCR layer:'
+	restore_ucr_layer(os.path.join(conf_dir, 'base-forced.conf'), {'force': True})
+	print '** Restore ldap UCR layer'
+	restore_ucr_layer(os.path.join(conf_dir, 'base-ldap.conf'), {'ldap-policy': True})
+	print '** Restore normal UCR layer:'
+	restore_ucr_layer(os.path.join(conf_dir, 'base.conf'), {})

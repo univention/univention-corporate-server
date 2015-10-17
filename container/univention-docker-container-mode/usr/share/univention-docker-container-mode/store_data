@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/python2.7
 #
 # Univention Appliance Docker Container
 #  save data before the image gets removed
@@ -30,11 +30,68 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/share/univention-docker-container-mode/lib.sh
+import glob
+import os
+import shutil
+import string
 
-hostname=$(cat /etc/hostname)
-secret_file="/var/lib/appcenter/app/$APP/conf/$hostname.secret"
-touch "$secret_file" || die "Could not save machine.secret"
-chmod 600 "$secret_file"
-cp /etc/machine.secret "$secret_file" || die "Could not save machine.secret"
 
+# Helper function to copy all meta data of a file or directory
+def copy_permissions(src, dest):
+	s_stat = os.stat(src)
+	os.chown(dest, s_stat.st_uid, s_stat.st_gid)
+	shutil.copymode(src, dest)
+	shutil.copystat(src, dest)
+	d_stat = os.stat(dest)
+
+
+# Helper function to copy the files and directory
+def copy_to_persistent_storage(src, dest):
+	l_src = string.split(src, '/')
+	# Ignore first empty entry
+	if l_src[0] == '':
+		l_src = l_src[1:]
+	for j in range(0, len(l_src)):
+		s = os.path.join('/', string.join(l_src[0:j + 1], '/'))
+		d = os.path.join(dest, string.join(l_src[0:j + 1], '/'))
+		if os.path.isdir(s):
+			if not os.path.exists(d):
+				os.makedirs(d)
+				copy_permissions(s, d)
+		else:
+			print 'cp %s %s' % (s, d)
+			shutil.copy(s, d)
+			copy_permissions(s, d)
+
+
+def copy_files(src, dest):
+	for f in glob.glob(src):
+		copy_to_persistent_storage(f, dest)
+
+
+def copy_recursive(src, dest):
+	if not os.path.exists(src):
+		return
+	copy_to_persistent_storage(src, dest)
+	for root, dirs, files in os.walk(src):
+		for f in files:
+			fullpath = os.path.join(root, f)
+			copy_to_persistent_storage(fullpath, dest)
+
+if __name__ == '__main__':
+	app_name = os.environ.get('APP')
+	dest = '/var/lib/appcenter/app/%s/conf/' % app_name
+
+	# The files and directories below the files directory are restored
+	# automatically after the new container has been started
+	store = '/var/lib/appcenter/app/%s/conf/files' % app_name
+
+	for f in glob.glob('/etc/univention/base*conf'):
+		print 'cp %s %s' % (f, dest)
+		shutil.copy(f, dest)
+	copy_files('/etc/*.secret', store)
+	copy_recursive('/etc/univention/ssl', store)
+	copy_recursive('/var/univention-join', store)
+	copy_recursive('/var/lib/univention-ldap/', store)
+	copy_recursive('/var/lib/univention-directory-listener/', store)
+	copy_recursive('/etc/univention/connector', store)
