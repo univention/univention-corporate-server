@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.40-2) unstable; urgency=medium
+
+  * Bug #39178: fix fuzzy
+
+ -- Florian Best <best@univention.de>  Sat, 17 Oct 2015 20:30:14 +0200
+
 univention-management-console-frontend (5.0.40-1) unstable; urgency=medium
 
   * Bug #39564: detect SAML session and do automatic login
