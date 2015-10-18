@@ -66,6 +66,8 @@ if __name__ == '__main__':
 
 			app.add_to_local_appcenter()
 
+			appcenter.update()
+
 			app.upgrade()
 			app.verify()
 

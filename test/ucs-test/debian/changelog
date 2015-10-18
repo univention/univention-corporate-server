@@ -1,3 +1,10 @@
+ucs-test (6.0.9-12) unstable; urgency=medium
+
+  * 80_docker/6*_app_container_upgrade*: update App Center after adding
+    a new App (Bug #39204)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 18 Oct 2015 13:54:03 +0200
+
 ucs-test (6.0.9-10) unstable; urgency=medium
 
   * 82_saml/26_saml_umc_sp_server: Check for umc/saml/trusted/sp
