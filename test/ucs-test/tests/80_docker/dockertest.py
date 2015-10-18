@@ -250,6 +250,8 @@ echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
 			raise UCSTest_DockerApp_ModProxyFailed(Exception)
 
 
+
+
 class Appcenter:
 	def __init__(self, version=None):
 		self.meta_inf_created = False
@@ -320,3 +322,79 @@ Virtualization=Virtualisierung''')
 		if exc_type:
 			print 'Cleanup after exception: %s %s' % (exc_type, exc_value)
 		self.cleanup()
+
+def store_data_script_4_1():
+	return '''#!/usr/bin/python2.7
+
+from optparse import OptionParser
+import glob
+import os
+import shutil
+import string
+
+
+# Helper function to copy all meta data of a file or directory
+def copy_permissions(src, dest):
+	s_stat = os.stat(src)
+	os.chown(dest, s_stat.st_uid, s_stat.st_gid)
+	shutil.copymode(src, dest)
+	shutil.copystat(src, dest)
+	d_stat = os.stat(dest)
+
+
+# Helper function to copy the files and directory
+def copy_to_persistent_storage(src, dest):
+	l_src = string.split(src, '/')
+	# Ignore first empty entry
+	if l_src[0] == '':
+		l_src = l_src[1:]
+	for j in range(0, len(l_src)):
+		s = os.path.join('/', string.join(l_src[0:j + 1], '/'))
+		d = os.path.join(dest, string.join(l_src[0:j + 1], '/'))
+		if os.path.isdir(s):
+			if not os.path.exists(d):
+				os.makedirs(d)
+				copy_permissions(s, d)
+		else:
+			print 'cp %s %s' % (s, d)
+			shutil.copy(s, d)
+			copy_permissions(s, d)
+
+
+def copy_files(src, dest):
+	for f in glob.glob(src):
+		copy_to_persistent_storage(f, dest)
+
+
+def copy_recursive(src, dest):
+	if not os.path.exists(src):
+		return
+	copy_to_persistent_storage(src, dest)
+	for root, dirs, files in os.walk(src):
+		for f in files:
+			fullpath = os.path.join(root, f)
+			copy_to_persistent_storage(fullpath, dest)
+
+if __name__ == '__main__':
+	parser = OptionParser('%prog [options]')
+	parser.add_option('--app', dest='app', help='App ID')
+	parser.add_option('--app-version', dest='app_version', help='Version of App')
+	parser.add_option('--error-file', dest='error_file', help='Name of Error File')
+	opts, args = parser.parse_args()
+
+	dest = '/var/lib/univention-appcenter/apps/%s/conf/' % opts.app
+
+	# The files and directories below the files directory are restored
+	# automatically after the new container has been started
+	store = '/var/lib/univention-appcenter/apps/%s/conf/files' % opts.app
+
+	for f in glob.glob('/etc/univention/base*conf'):
+		print 'cp %s %s' % (f, dest)
+		shutil.copy(f, dest)
+	copy_files('/etc/*.secret', store)
+	copy_recursive('/etc/univention/ssl', store)
+	copy_recursive('/var/univention-join', store)
+	copy_recursive('/var/lib/univention-ldap/', store)
+	copy_recursive('/var/lib/univention-directory-listener/', store)
+	copy_recursive('/etc/univention/connector', store)
+'''

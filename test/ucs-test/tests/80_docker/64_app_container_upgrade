@@ -33,8 +33,10 @@ if __name__ == '__main__':
 									WebInterfacePortHTTPS='443',
 									AutoModProxy='True',
 									DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
+									DockerScriptStoreData='/usr/share/univention-appcenter/app/%s/store_data' % app_name,
 							)
 		app.create_basic_modproxy_settings()
+		app.add_script(store_data=store_data_script_4_1())
 
 		app.add_to_local_appcenter()
 
@@ -54,7 +56,8 @@ if __name__ == '__main__':
 			ucr.load()
 			container_uuid = ucr.get('appcenter/apps/%s/container' % app_name)
 
-			app = App(name=app_name, version='2', package_name=package_name, app_directory_suffix=app_directory_suffix)
+			# app = App(name=app_name, version='2', package_name=package_name, app_directory_suffix=app_directory_suffix)
+			app = App(name=app_name, version='2', package_name=package_name)
 			app.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0',
 										WebInterface='/%s' % app_name,
 										WebInterfacePortHTTP='80',

@@ -1,3 +1,10 @@
+ucs-test (6.0.9-13) unstable; urgency=medium
+
+  * 80_docker/64_app_container_upgrade: use 4.1 store_data script in 4.0-
+    3 container (Bug #39204)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 18 Oct 2015 15:05:43 +0200
+
 ucs-test (6.0.9-12) unstable; urgency=medium
 
   * 80_docker/6*_app_container_upgrade*: update App Center after adding
