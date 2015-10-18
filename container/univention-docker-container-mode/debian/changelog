@@ -1,3 +1,10 @@
+univention-docker-container-mode (1.0.4-1) unstable; urgency=medium
+
+  * store_data and restore_data_before_setup: change directory to
+    /var/lib/univention-appcenter/apps/ and parse arguments (Bug #39462)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 18 Oct 2015 13:23:31 +0200
+
 univention-docker-container-mode (1.0.3-1) unstable; urgency=medium
 
   * Update store_data and restore_data_before_setup to make the re-join

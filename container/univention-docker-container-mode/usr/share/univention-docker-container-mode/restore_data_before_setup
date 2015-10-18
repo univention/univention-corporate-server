@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from optparse import OptionParser
 import os
 import shutil
 import string
@@ -84,9 +85,14 @@ def restore_ucr_layer(ucr_file, options):
 		univention.config_registry.handler_set(vv, opts=options)
 
 if __name__ == '__main__':
-	app_name = os.environ.get('APP')
-	conf_dir = '/var/lib/appcenter/app/%s/conf/' % app_name
-	source_dir = '/var/lib/appcenter/app/%s/conf/files' % app_name
+	parser = OptionParser('%prog [options]')
+	parser.add_option('--app', dest='app', help='App ID')
+	parser.add_option('--app-version', dest='app_version', help='Version of App')
+	parser.add_option('--error-file', dest='error_file', help='Name of Error File')
+	opts, args = parser.parse_args()
+
+	conf_dir = '/var/lib/univention-appcenter/apps/%s/conf/' % opts.app
+	source_dir = '/var/lib/univention-appcenter/apps/%s/conf/files' % opts.app
 
 	restore_files(source_dir)
 

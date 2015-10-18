@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from optparse import OptionParser
 import glob
 import os
 import shutil
@@ -79,12 +80,17 @@ def copy_recursive(src, dest):
 			copy_to_persistent_storage(fullpath, dest)
 
 if __name__ == '__main__':
-	app_name = os.environ.get('APP')
-	dest = '/var/lib/appcenter/app/%s/conf/' % app_name
+	parser = OptionParser('%prog [options]')
+	parser.add_option('--app', dest='app', help='App ID')
+	parser.add_option('--app-version', dest='app_version', help='Version of App')
+	parser.add_option('--error-file', dest='error_file', help='Name of Error File')
+	opts, args = parser.parse_args()
+
+	dest = '/var/lib/univention-appcenter/apps/%s/conf/' % opts.app
 
 	# The files and directories below the files directory are restored
 	# automatically after the new container has been started
-	store = '/var/lib/appcenter/app/%s/conf/files' % app_name
+	store = '/var/lib/univention-appcenter/apps/%s/conf/files' % opts.app
 
 	for f in glob.glob('/etc/univention/base*conf'):
 		print 'cp %s %s' % (f, dest)
