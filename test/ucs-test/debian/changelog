@@ -1,3 +1,10 @@
+ucs-test (6.0.9-14) unstable; urgency=medium
+
+  * 80_docker: Remove WIP flags from app_container_upgrade tests
+    (Bug #39204)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Oct 2015 07:25:03 +0200
+
 ucs-test (6.0.9-13) unstable; urgency=medium
 
   * 80_docker/64_app_container_upgrade: use 4.1 store_data script in 4.0-

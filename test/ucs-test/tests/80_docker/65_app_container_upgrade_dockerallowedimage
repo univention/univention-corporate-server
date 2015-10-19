@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test DockerAllowedImages
-## tags: [docker,WIP]
+## tags: [docker]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
