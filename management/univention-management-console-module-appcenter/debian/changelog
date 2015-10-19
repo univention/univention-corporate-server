@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-29) unstable; urgency=medium
+
+  * Bug #39374: Fix DockerAllowedImages recognition
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 19 Oct 2015 04:36:47 +0200
+
 univention-management-console-module-appcenter (5.0.6-28) unstable; urgency=medium
 
   * Bug #39411: Show error messages when installation of apps fail in UMC

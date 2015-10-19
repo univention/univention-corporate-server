@@ -73,7 +73,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			# packages and release first!
 			if app > self.old_app:
 				mode = 'app'
-			if app.get_docker_image_name() not in self.old_app.get_docker_images():
+			if self.old_app.get_docker_image_name() not in app.get_docker_images():
 				mode = 'image'
 		return mode
 

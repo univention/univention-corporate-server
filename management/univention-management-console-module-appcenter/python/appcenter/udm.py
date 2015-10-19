@@ -50,6 +50,12 @@ udm_modules.update()
 _initialized = set()
 
 
+class FakeApp(object):
+	def __init__(self, id, version):
+		self.id = id
+		self.version = version
+
+
 def _get_module(module, lo, pos):
 	mod = udm_modules.get(module)
 	if module not in _initialized:
@@ -193,14 +199,23 @@ class ApplicationLDAPObject(object):
 		if obj:
 			self._reload(app, ucr, create_if_not_exists=False)
 
+	@classmethod
+	def from_udm_obj(cls, udm_obj, lo, pos, ucr):
+		app_id = explode_dn(udm_obj.dn, 1)[1]
+		app = FakeApp(id=app_id, version=udm_obj.info.get('version'))
+		return cls(app, lo, pos, ucr)
+
 	def add_localhost(self):
 		self._udm_obj.info.setdefault('server', [])
 		if self._localhost not in self._udm_obj.info['server']:
 			self._udm_obj.info['server'].append(self._localhost)
 			self._udm_obj.modify()
+		ucr = ConfigRegistry()
+		ucr.load()
 		for ldap_object in self.get_siblings():
 			if ldap_object.dn != self.dn:
-				ldap_object.remove_localhost()
+				app_obj = self.from_udm_obj(ldap_object, self._lo, self._pos, ucr)
+				app_obj.remove_localhost()
 
 	def remove_localhost(self):
 		try:
