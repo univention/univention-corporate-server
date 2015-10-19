@@ -97,11 +97,12 @@ define([
 			});
 			this.contentSliderWrapper.addChild(this.contentSlider);
 			this.outerContainer.addChild(this.contentSliderWrapper);
-			
+
 			this.loadedImagesCount = 0;
 			var index = 0;
+
 			array.forEach(this.items, lang.hitch(this, function(item) {
-				var div = domConstruct.create('div', {}, this.contentSlider.domNode);
+				var imgWrapper = domConstruct.create('div', {}, this.contentSlider.domNode);
 				var img = domConstruct.create('img', {
 					src: item.src,
 					index: index,
@@ -109,13 +110,14 @@ define([
 					onload: lang.hitch(this, function() {
 						this.imagesLoaded();
 					}),
-					onclick: lang.hitch(this, function() {
-						this.togglePreviewSize(parseInt(img.getAttribute('index')));
+					onclick: lang.hitch(this, function(evt) {
+						this.togglePreviewSize(parseInt(evt.target.getAttribute('index')));
 					})
-				}, div);
-				this.itemNodes.push(div);
+				}, imgWrapper);
+				this.itemNodes.push(imgWrapper);
 				index++;
 			}));
+
 			if (!styles.getStyleSheet('defaultItemHeightWrapper')) {
 				styles.insertCssRule('.contentSlider .carouselScreenshot', lang.replace('height: {0}px', [this.itemHeight]), 'defaultItemHeightWrapper');
 			}
@@ -123,13 +125,13 @@ define([
 				styles.insertCssRule('.contentSlider div', lang.replace('height: {0}px', [this.itemHeight]), 'defaultItemHeightImage');
 			}
 
-			this.minimizeButton = domConstruct.create('div', {
-				'class': 'minimizeButton dijitHidden',
+			this.scaleButton = domConstruct.create('div', {
+				'class': 'scaleButton',
 				onclick: lang.hitch(this, function(e) {
 					//e.stopPropagation();
 					this.togglePreviewSize();
 				})
-			}, this.outerContainer.domNode);
+			}, this.domNode);
 		},
 
 		renderNavButtons: function() {
@@ -206,11 +208,19 @@ define([
 
 			styles.disableStyleSheet('defaultItemHeightWrapper');
 			styles.disableStyleSheet('defaultItemHeightImage');
+
+			var heighestImg = 0;
 			query('.carouselScreenshot', this.contentSlider.domNode).forEach(lang.hitch(this, function(imgNode) {
 				domStyle.set(imgNode, 'max-height', maxHeight + 'px');
 				domStyle.set(imgNode, 'max-width', maxWidth + 'px');
 				domStyle.set(imgNode.parentNode, 'width', maxWidth + 'px');
 				domStyle.set(imgNode.parentNode, 'height', maxHeight + 'px');
+				
+				var imgHeight = domGeometry.getMarginBox(imgNode).h;
+				heighestImg = (imgHeight > heighestImg) ? imgHeight : heighestImg;
+			}));
+			query('.carouselScreenshot', this.contentSlider.domNode).forEach(lang.hitch(this, function(imgNode) {
+				domStyle.set(imgNode.parentNode, 'height', heighestImg + 'px');
 			}));
 		},
 
@@ -223,8 +233,8 @@ define([
 			
 			var maxOffset = domGeometry.getMarginBox(this.contentSlider.domNode).w - domGeometry.getMarginBox(this.contentSliderWrapper.domNode).w;
 
-			domClass.toggle(this.leftButton, 'disabled', (contentSliderOffset === 0));
-			domClass.toggle(this.rightButton, 'disabled', (contentSliderOffset === maxOffset));
+			domClass.toggle(this.leftButton, 'disabled', (contentSliderOffset === 0 || this.shownItemIndex === 0));
+			domClass.toggle(this.rightButton, 'disabled', (contentSliderOffset === maxOffset || this.shownItemIndex === this.items.length-1));
 		},
 
 		togglePreviewSize: function(indexAfterToggle) {
@@ -245,13 +255,13 @@ define([
 				this._resizeBigThumbnails();
 			}
 			this.bigThumbnails = !this.bigThumbnails;
-			domClass.toggle(this.minimizeButton, 'dijitHidden');
+			domClass.toggle(this.scaleButton, 'minimize');
 
 			this.resizeCarousel();
 			this.showItem(indexAfterToggle);
 			domClass.remove(this.contentSlider.domNode, 'noTransition');
 
-			//vertical position including scroll
+			//scroll to the top of the image
 			var scrollTarget = domGeometry.position(this.domNode, true).y - 50;
 			window.scrollTo(0, scrollTarget);
 		},

@@ -327,6 +327,10 @@
 	}
 }
 
+.umcCarouselWidget {
+	position: relative;
+}
+
 .carouselOuterContainer {
 	margin: auto;
 	position: relative;
@@ -410,11 +414,11 @@
 	margin-left: 5px;
 }
 
-.minimizeButton {
+.scaleButton {
 	cursor: pointer;
 	width: 40px;
 	height: 40px;
-	background-image: url("appcenter/minimize.svg");
+	background-image: url("appcenter/maximize.svg");
 	background-size: 100% 100%;
 	position: absolute;
 	right: 0;
@@ -423,7 +427,11 @@
 	opacity: 0.4;
 }
 
-.minimizeButton:hover {
+.scaleButton.minimize {
+	background-image: url("appcenter/minimize.svg")
+}
+
+.scaleButton:hover {
 	opacity: 1;
 }
 

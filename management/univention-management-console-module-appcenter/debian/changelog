@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-31) unstable; urgency=low
+
+  * Bug #39524: adjusted resizing for gallery images
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 19 Oct 2015 13:01:22 +0200
+
 univention-management-console-module-appcenter (5.0.6-30) unstable; urgency=medium
 
   * Bug #39586: Register non-docker apps after (un)installation
