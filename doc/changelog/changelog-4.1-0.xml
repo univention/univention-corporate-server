@@ -158,7 +158,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The session and username cookie are now suffixed with the port to allow multiple parallel UMC session on the same host (<u:bug>38344</u:bug>).
-				</listitem></simpara>
+				</simpara></listitem>
 				<listitem><simpara>
 					A service entry for Univention Management Console has been added and the
 					<package>univention-management-console-web-server</package> join script adds
