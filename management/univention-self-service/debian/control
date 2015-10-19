@@ -64,3 +64,19 @@ Description:
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+
+Package: univention-self-service-setpassword
+Architecture: all
+Depends: univention-self-service,
+ univention-config,
+ ${misc:Depends}
+Description:
+ This package contains the password self service module that
+ allows users to change their own password. It can be installed
+ on all UCS server roles.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

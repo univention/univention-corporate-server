@@ -29,10 +29,10 @@ def get_plugins(log):
 		plugin_class = load_plugin(_plugin)
 		if plugin_class:
 			if plugin_class.is_enabled():
-				log("get_plugins(): Loaded sending plugin class {} for sending method {}.".format(plugin_class.__name__, plugin_class.send_method()))
+				log("get_plugins(): Loaded sending plugin class '{}' for sending method '{}'.".format(plugin_class.__name__, plugin_class.send_method()))
 				plugins[plugin_class.send_method()] = plugin_class()
 			else:
-				log("get_plugins(): Plugin class {} for sending method {} is disabled.".format(plugin_class.__name__, plugin_class.send_method()))
+				log("get_plugins(): Plugin class '{}' for sending method '{}' is disabled.".format(plugin_class.__name__, plugin_class.send_method()))
 	for name, plugin in plugins.items():
-		log("plugin class {} for sending method {}: ldap_attribute: {} token_length: {}".format(plugin.__class__.__name__, plugin.send_method(), plugin.ldap_attribute, plugin.token_length))
+		log("get_plugins(): plugin class '{}' for sending method '{}': ldap_attribute: '{}' token_length: '{}'".format(plugin.__class__.__name__, plugin.send_method(), plugin.ldap_attribute, plugin.token_length))
 	return plugins

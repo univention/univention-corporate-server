@@ -1,4 +1,6 @@
-#!/usr/bin/make -f
+# -*- coding: utf-8 -*-
+#
+# Univention Password Self Service
 #
 # Copyright 2015 Univention GmbH
 #
@@ -27,19 +29,24 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-.PHONY: build install clean
+import cherrypy
 
-# extend the list LANGUAGES to support l10n for other languages
-LANGUAGES := de en
-JSON_FILES := plugins/passwordreset/var/www/ucs-overview/js/passwordreset/de.json plugins/setpassword/var/www/ucs-overview/js/setpassword/de.json
+from univention.selfservice.frontend import UniventionSelfServiceFrontend
 
-build: $(JSON_FILES)
 
-clean:
-	rm -f $(JSON_FILES)
+class SetPassword(UniventionSelfServiceFrontend):
 
-install: build
-	@echo "Nothing to install"
+	@property
+	def name(self):
+		return "Password Self Service"
 
-%.json: %.po
-	dh-umc-po2json "$<"
+	@cherrypy.expose
+	def set_password(self, username, oldpassword, newpassword):
+		connection = self.get_umc_connection(username=username, password=oldpassword)
+		url = ""
+		data = {"username": username,
+				"password": oldpassword,
+				"new_password": newpassword}
+		return self.umc_request(connection, url, data, command='set')
+
+application = cherrypy.Application(SetPassword(), "/self-service/setpassword")

@@ -33,6 +33,8 @@ import cherrypy
 
 from httplib import HTTPException
 from socket import error as SocketError
+import re
+import json
 
 from univention.lib.umc_connection import UMCConnection
 from univention.management.console.config import ucr
@@ -44,30 +46,11 @@ class UniventionSelfServiceFrontend(object):
 	"""
 	base class
 	"""
-	def __init__(self, url_root, file_root):
-		self.url_root = url_root
-		self.file_root = file_root
-		self.log("__init__(): url_root: {} file_root: {}".format(url_root, file_root))
+	def __init__(self):
+		self.log("__init__()")
 
 	def log(self, msg, traceback=False):
 		cherrypy.log("{}: {}".format(self.name, msg), traceback=traceback)
-
-	def get_wsgi_app(self):
-		"""
-		Implement me
-
-		:return: a WSGI application
-		"""
-		raise NotImplementedError("WSGI not implemented")
-
-	@property
-	def url(self):
-		"""
-		Implement me
-
-		:return: a path under which to present the WSGI
-		"""
-		return self.url_root + "/test"
 
 	@property
 	def name(self):
@@ -82,22 +65,51 @@ class UniventionSelfServiceFrontend(object):
 		"""
 		This is UMCConnection.get_machine_connection(), but using
 		LDAP_SECRETS_FILE instead of /etc/machine.secret.
+
+		If username and password are supplied, they are used to connect.
+
 		:return: UMCConnection
 		"""
 		if not username:
-			username = '%s$' % ucr.get('hostname')
+			username = "{}$".format(ucr.get("hostname"))
 			try:
 				with open(LDAP_SECRETS_FILE) as machine_file:
 					password = machine_file.readline().strip()
 			except (OSError, IOError) as e:
-				self.log('Could not read {}: {}'.format(LDAP_SECRETS_FILE, e))
+				self.log("Could not read '{}': {}".format(LDAP_SECRETS_FILE, e))
 				raise
 
-		error_handler = self.log
 		try:
-			connection = UMCConnection(ucr.get('ldap/master'), username, password)
-			return connection
+			return UMCConnection(
+				ucr.get("self-service/backend-server", ucr.get("ldap/master")),
+				username=username,
+				password=password)
 		except (HTTPException, SocketError) as e:
-			if error_handler:
-				error_handler('Could not connect to UMC on %s: %s' % (ucr.get('ldap/master'), e))
-			return None
+			self.log("Could not connect to UMC on '{}': {}".format(ucr.get("ldap/master"), e))
+			raise
+
+	def umc_request(self, connection, url, data, command="command"):
+		try:
+			result = connection.request(url, data, command)
+		except HTTPException as he:
+			self.log(he)
+			try:
+				status, message = UniventionSelfServiceFrontend.work_around_broken_api(he)
+				cherrypy.response.status = status
+				return json.dumps({"status": status, "result": message})
+			except AttributeError:
+				raise he
+		except (ValueError, NotImplementedError) as e:
+			self.log(e)
+			raise
+		return json.dumps({"status": 200, "result": result})
+
+	@staticmethod
+	def work_around_broken_api(httpex):
+		"""
+		Try to extract status and message from a HTTPException object
+
+		:param httperror:  HTTPException object
+		:return: (status, message) or AttributeError if extraction was not possible
+		"""
+		return re.search('\{\"status\": (.*),\ \"message\":\ \"(.*)\"\}', str(httpex)).groups()

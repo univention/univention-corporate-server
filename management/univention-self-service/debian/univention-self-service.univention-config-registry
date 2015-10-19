@@ -1,3 +1,4 @@
 Type: file
 File: etc/apache2/sites-available/univention-self-service
 Variables: self-service/web/enabled
+Variables: self-service/.*/web/enabled
