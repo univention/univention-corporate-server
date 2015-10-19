@@ -33,7 +33,7 @@
 				been increased from 1 inode per 16KiB to 1 inode per 8KiB.
 				This adjustment should avoid running out of inodes on system
 				volumes. This only affects creation of new filesystem volumes.
-				(<u:bug>39432/u:bug>).
+				(<u:bug>39432</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
