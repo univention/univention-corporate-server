@@ -1,3 +1,10 @@
+ucs-test (6.0.9-18) unstable; urgency=medium
+
+  * 80_docker/66_app_container_upgrade_without_rejoin: Ensure the app is
+    not re-joined (Bug #39462)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Oct 2015 19:48:25 +0200
+
 ucs-test (6.0.9-17) unstable; urgency=low
 
   * Bug #39199: added docker port tests 

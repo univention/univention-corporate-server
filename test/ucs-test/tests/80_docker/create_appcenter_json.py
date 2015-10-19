@@ -41,6 +41,7 @@ from optparse import OptionParser
 from simplejson import dumps
 from difflib import unified_diff
 from glob import glob
+from ConfigParser import ConfigParser
 
 class FileInfo(object):
 	def __init__(self, app, name, url, filename):
@@ -110,6 +111,14 @@ class App(object):
 				url = self._repository_url(basename)
 				yield self.file_info(basename, url, filename)
 
+		# Adding logo file
+		config = ConfigParser()
+		config.read(self.get_ini_file())
+		if config.has_option('Application', 'Logo'):
+			basename = config.get('Application', 'Logo')
+			filename = self._meta_inf_dir(basename)
+			url = self._meta_url(basename)
+			yield self.file_info(basename, url, filename)
 
 		# Adding LICENSE_AGREEMENT and localised versions like LICENSE_AGREEMENT_DE
 		for readme_filename in glob(self._components_dir('LICENSE_AGREEMENT*')):

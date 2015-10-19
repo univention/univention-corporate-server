@@ -109,6 +109,7 @@ class App:
 		self.ini['Version'] = self.app_version
 		self.ini['NotifyVendor'] = False
 		self.ini['Categories'] = 'System services'
+		self.ini['Logo'] = '%s.svg' % self.app_name
 		if self.package:
 			self.ini['DefaultPackages'] = self.package_name
 		self.ini['ServerRole'] = 'domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver'
@@ -141,8 +142,9 @@ class App:
 		self._update()
 		admin_user = self.ucr.get('tests/domainadmin/account').split(',')[0][len('uid='):]
 		# ret = subprocess.call('univention-app install --noninteractive --do-not-revert --username=%s --pwdfile=%s %s' %
-		ret = subprocess.call('univention-app install --noninteractive --username=%s --pwdfile=%s %s' %
-					(admin_user, self.ucr.get('tests/domainadmin/pwdfile'), self.app_name), shell=True)
+		cmd = 'univention-app install --noninteractive --username=%s --pwdfile=%s %s' % (admin_user, self.ucr.get('tests/domainadmin/pwdfile'), self.app_name)
+		print cmd
+		ret = subprocess.call(cmd, shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_InstallationFailed()
 
@@ -167,8 +169,7 @@ class App:
 		self.installed = True
 
 	def verify(self, joined=True):
-		ret = subprocess.call('univention-app status --noninteractive --username=%s --pwdfile=%s %s' %
-					(self.admin_user, self.admin_pwdfile, self.app_name), shell=True)
+		ret = subprocess.call('univention-app status %s' % (self.app_name), shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_VerifyFailed()
 
@@ -205,6 +206,10 @@ class App:
 			f.write('%s: %s\n' % (key, self.ini[key]))
 			print '%s: %s' % (key, self.ini[key])
 		print
+		f.close()
+		svg = os.path.join('/var/www/meta-inf/%s' % self.ucs_version, self.ini.get('Logo'))
+		f = open(svg, 'w')
+		f.write(get_dummy_svg())
 		f.close()
 
 	def _dump_scripts(self):
@@ -403,3 +408,45 @@ if __name__ == '__main__':
 	copy_recursive('/var/lib/univention-directory-listener/', store)
 	copy_recursive('/etc/univention/connector', store)
 '''
+
+def get_dummy_svg():
+	return '''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="110"
+   height="126.122"
+   id="svg3555">
+  <defs
+     id="defs3557" />
+  <metadata
+     id="metadata3560">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-319.28571,-275.01547)"
+     id="layer1">
+    <g
+       transform="matrix(1,0,0,-1,331.53071,388.89247)"
+       id="g530">
+      <path
+         d="m 0,0 0,101.633 85.51,0 0,-66.758 C 85.51,15.552 61.655,23.293 61.655,23.293 61.655,23.293 68.958,0 50.941,0 L 0,0 z m 97.755,33.818 0,80.059 -110,0 0,-126.122 63.372,0 c 20.867,0 46.628,27.266 46.628,46.063 M 40.87,21.383 C 33.322,18.73 27.1,21.772 28.349,29.02 c 1.248,7.25 8.41,22.771 9.432,25.705 1.021,2.936 -0.937,3.74 -3.036,2.546 -1.21,-0.698 -3.009,-2.098 -4.554,-3.458 -0.427,0.862 -1.03,1.848 -1.482,2.791 2.52,2.526 6.732,5.912 11.72,7.138 5.958,1.471 15.916,-0.88 11.636,-12.269 -3.056,-8.117 -5.218,-13.719 -6.58,-17.89 -1.361,-4.173 0.256,-5.048 2.639,-3.423 1.862,1.271 3.846,3 5.299,4.342 0.673,-1.093 0.888,-1.442 1.553,-2.698 C 52.452,29.217 45.85,23.163 40.87,21.383 m 15.638,50.213 c -3.423,-2.913 -8.498,-2.85 -11.336,0.143 -2.838,2.992 -2.365,7.779 1.058,10.694 3.423,2.913 8.498,2.85 11.336,-0.141 2.838,-2.993 2.364,-7.781 -1.058,-10.696"
+         id="path532"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+    </g>
+  </g>
+</svg>'''
