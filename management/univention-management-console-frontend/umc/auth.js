@@ -83,20 +83,21 @@ define([
 			//console.debug('starting auth');
 
 			dialog._initLoginDialog();
-			var renewal = this.passiveSamlSSO();
-			xhr.post('/univention-management-console/get/session-info', { handleAs: 'json' }).then(lang.hitch(this, function(response) {
-				//console.debug('using existing session');
-				this.authenticated(response.result.username);
-			}), lang.hitch(this, function() {
+			dialog._loginDialog.show();
+
+			dialog._loginDialog.standbyDuring(this.sessionlogin().then(undefined, lang.hitch(this, function() {
 				//console.debug('no active session found');
-				renewal.then(lang.hitch(this, function() {
-					//console.debug('SSO session renewed');
-					xhr.post('/univention-management-console/get/session-info', { handleAs: 'json' }).then(lang.hitch(this, function(response) {
-						//console.debug('authenticated with found session');
-						this.authenticated(response.result.username);
-					}));
-				}));
-				dialog.login();
+				return this.passiveSamlSSO({ timeout: 3000 }).then(lang.hitch(this, 'sessionlogin'), lang.hitch(dialog, 'login'), function(message) {
+					// TODO: set the message somewhere visibly in the login dialog
+				});
+			})));
+		},
+
+		sessionlogin: function() {
+			// login with a currently existing session (if exists)
+			return xhr.post('/univention-management-console/get/session-info', { handleAs: 'json' }).then(lang.hitch(this, function(response) {
+				//console.debug('using existing session');
+				return this.authenticated(response.result.username);
 			}));
 		},
 
@@ -148,11 +149,13 @@ define([
 			}));
 		},
 
-		passiveSamlSSO: function() {
-			return xhr.get('/univention-management-console/saml/?passive=true', {
+		passiveSamlSSO: function(args) {
+			var deferred = new Deferred();
+			var request = xhr.get('/univention-management-console/saml/?passive=true', lang.mixin(args, {
 				handleAs: 'html',
 				withCredentials: true
-			}).then(function(response) {
+			})).then(function(response) {
+				deferred.progress(_('Received answer from identity provider.'));
 				var data = {};
 				array.forEach(query('input', domConstruct.toDom(response)), function(node) {
 					if (node.name && node.value) {
@@ -163,10 +166,25 @@ define([
 					data: data,
 					handleAs: 'json'
 				}).then(function(response) {
-					//console.debug('successfully renews saml assertion');
-					return true;
+					deferred.progress(_('Successfully renewed single sign on session.'));
+					deferred.resolve();
+				}, function(error) {
+					deferred.progress(_('Could not renew single sign on session.'));
+					deferred.reject(error);
 				});
+			}, function(error) {
+				deferred.progress(_('Could not reach Identity provider for automatic single sign on.'));
+				deferred.reject(error);
+			}).then(undefined, function(error) {
+				deferred.progress(_('Unknown error during single sign on.'));
+				deferred.reject(error);
 			});
+			deferred.then(undefined, function(error) {
+				console.error(error);
+			}, function(progress) {
+				console.debug(progress);
+			});
+			return deferred.promise;
 		},
 
 		setPassword: function() {

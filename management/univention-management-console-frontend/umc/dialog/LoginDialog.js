@@ -360,6 +360,7 @@ define([
 		ask: function() {
 			// show dialog
 			this.show();
+			this.standby(false);
 			tools.status('loggingIn', true);
 
 			// connect to the dialog's onLogin event

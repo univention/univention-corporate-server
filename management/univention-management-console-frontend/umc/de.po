@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-10-17 20:28+0200\n"
+"POT-Creation-Date: 2015-10-19 17:10+0200\n"
 "PO-Revision-Date: 2013-09-12 11:31+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -247,7 +247,7 @@ msgstr ""
 msgid "Authentication failure"
 msgstr "Authentifizierungsfehler"
 
-#: umc/auth.js:174
+#: umc/auth.js:192
 msgid "Authentication required"
 msgstr "Authentifizierung notwendig"
 
@@ -296,6 +296,14 @@ msgstr "Modul \"%s\" konnte nicht geladen werden."
 #: umc/tools.js:606
 msgid "Could not process the request."
 msgstr "Die Anfrage konnte nicht bearbeitet werden."
+
+#: umc/auth.js:176
+msgid "Could not reach Identity provider for automatic single sign on."
+msgstr ""
+
+#: umc/auth.js:172
+msgid "Could not renew single sign on session."
+msgstr ""
 
 #: umc/app/AboutPage.js:59
 msgid "Date of expiry of the SSL certificate for this system"
@@ -381,7 +389,7 @@ msgstr "Dem Hersteller melden"
 msgid "Information"
 msgstr "Hinweis"
 
-#: umc/dialog/LoginDialog.js:390
+#: umc/dialog/LoginDialog.js:391
 msgid "Insecure Connection"
 msgstr "Unsichere Verbindung"
 
@@ -445,7 +453,7 @@ msgstr "Sprache"
 msgid "License import"
 msgstr "Lizenz-Import"
 
-#: umc/dialog/LoginDialog.js:62 umc/auth.js:186
+#: umc/dialog/LoginDialog.js:62 umc/auth.js:204
 msgid "Login"
 msgstr "Anmelden"
 
@@ -517,7 +525,7 @@ msgstr "Andere"
 msgid "Owner"
 msgstr "Besitzer"
 
-#: umc/dialog/LoginDialog.js:59 umc/auth.js:182
+#: umc/dialog/LoginDialog.js:59 umc/auth.js:200
 msgid "Password"
 msgstr "Passwort"
 
@@ -541,6 +549,10 @@ msgstr ""
 #: umc/widgets/UnixAccessRightsExtended.js:88
 msgid "Read"
 msgstr "Lesen"
+
+#: umc/auth.js:158
+msgid "Received answer from identity provider."
+msgstr ""
 
 #: umc/tools.js:232
 msgid "Reload"
@@ -600,7 +612,7 @@ msgstr "Server"
 msgid "Server error message:"
 msgstr "Fehlernachricht des Servers:"
 
-#: umc/dialog/LoginDialog.js:408
+#: umc/dialog/LoginDialog.js:409
 msgid "Session timeout"
 msgstr "Session-Timeout"
 
@@ -631,7 +643,7 @@ msgstr ""
 "ist es erforderlich, dass die Namen der beteiligten Systeme via DNS vom "
 "Webbrowser erreicht werden können."
 
-#: umc/auth.js:126
+#: umc/auth.js:127
 msgid "So far the authentification failed. Continuing nevertheless."
 msgstr ""
 "Bis jetzt schlug die Authentifizierung fehl. Nichtdestotrotz wird weiterhin "
@@ -659,6 +671,10 @@ msgstr "Sticky bit"
 #: umc/dialog.js:308
 msgid "Submit"
 msgstr "Absenden"
+
+#: umc/auth.js:169
+msgid "Successfully renewed single sign on session."
+msgstr ""
 
 #: umc/app.js:528
 #, python-format
@@ -712,11 +728,11 @@ msgstr "The total cost was %.2f EUR!"
 msgid "There is no module available for the authenticated user %s."
 msgstr "Für den angemeldeten Benutzer %s ist kein Modul verfügbar."
 
-#: umc/auth.js:178
+#: umc/auth.js:196
 msgid "This action requires you to supply your password."
 msgstr "Diese Aktion erfordert die Eingabe Ihres Passwortes."
 
-#: umc/dialog/LoginDialog.js:391
+#: umc/dialog/LoginDialog.js:392
 #, python-format
 msgid ""
 "This network connection is not encrypted. All personal or sensitive data "
@@ -754,6 +770,10 @@ msgstr "Univention Management Console"
 #: umc/app.js:770
 msgid "Univention Website"
 msgstr "Univention Webseite"
+
+#: umc/auth.js:179
+msgid "Unknown error during single sign on."
+msgstr ""
 
 #: umc/app/LicenseImportPage.js:62
 msgid "Updating session data..."
@@ -846,11 +866,11 @@ msgstr ""
 "Sie können die Lizenzdatei auch zu einem späteren Zeitpunkt über das "
 "Benutzermenü oben rechts importieren."
 
-#: umc/dialog/LoginDialog.js:402
+#: umc/dialog/LoginDialog.js:403
 msgid "Your Browser is outdated"
 msgstr "Ihr Browser ist veraltet"
 
-#: umc/dialog/LoginDialog.js:403
+#: umc/dialog/LoginDialog.js:404
 msgid ""
 "Your Browser is outdated and should be updated. You may continue to use "
 "Univention Management Console but you may experience performance issues and "
@@ -860,7 +880,7 @@ msgstr ""
 "Univention Management Console benutzen, aber es kann zu Geschwindigkeits- "
 "und anderen Problemen kommen."
 
-#: umc/dialog/LoginDialog.js:408
+#: umc/dialog/LoginDialog.js:409
 msgid "Your session has been closed due to inactivity. Please login again."
 msgstr ""
 "Ihre Sitzung wurde wegen Inaktivität geschlossen. Bitte melden Sie sich "

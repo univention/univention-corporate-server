@@ -1014,8 +1014,14 @@ class SAML(Ressource):
 
 		response = self.acs(message, binding)
 
+		sessionid = str(uuid.uuid4())
+		if self.get_session():
+			# if the user is already authenticated at the UMC-Server
+			# we must not change the session ID cookie as this might cause
+			# race conditions in the frontend during login
+			sessionid = self.get_session_id();
 		saml = SAMLUser(response, message)
-		user = self.set_session(str(uuid.uuid4()), saml.username, saml)
+		user = self.set_session(sessionid, saml.username, saml)
 
 		path = '/univention-management-console/auth/sso'
 		if is_passive:

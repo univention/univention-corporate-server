@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.42-1) unstable; urgency=medium
+
+  * Bug #39564: fix race condition
+
+ -- Florian Best <best@univention.de>  Mon, 19 Oct 2015 17:14:02 +0200
+
 univention-management-console-frontend (5.0.41-1) unstable; urgency=medium
 
   * Bug #39525: allow parameter 'scalable' for umc.tools.getIconClass()
