@@ -1,3 +1,9 @@
+ucs-test (6.0.9-15) unstable; urgency=medium
+
+  * 80_docker: use credentials for univention-app commands (Bug #38887)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Oct 2015 08:19:44 +0200
+
 ucs-test (6.0.9-14) unstable; urgency=medium
 
   * 80_docker: Remove WIP flags from app_container_upgrade tests

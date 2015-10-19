@@ -119,6 +119,9 @@ class App:
 
 		self.installed = False
 
+		self.admin_user = self.ucr.get('tests/domainadmin/account').split(',')[0][len('uid='):]
+		self.admin_pwdfile = self.ucr.get('tests/domainadmin/pwdfile')
+
 	def set_ini_parameter(self, **kwargs):
 		for key, value in kwargs.iteritems():
 			self.ini[key] = value
@@ -155,9 +158,8 @@ class App:
 
 	def upgrade(self):
 		self._update()
-		admin_user = self.ucr.get('tests/domainadmin/account').split(',')[0][len('uid='):]
 		ret = subprocess.call('univention-app upgrade --noninteractive --username=%s --pwdfile=%s %s' %
-					(admin_user, self.ucr.get('tests/domainadmin/pwdfile'), self.app_name), shell=True)
+					(self.admin_user, self.admin_pwdfile, self.app_name), shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_UpgradeFailed()
 		self.ucr.load()
@@ -165,7 +167,8 @@ class App:
 		self.installed = True
 
 	def verify(self):
-		ret = subprocess.call(['univention-app', 'status', self.app_name])
+		ret = subprocess.call('univention-app status --noninteractive --username=%s --pwdfile=%s %s' %
+					(self.admin_user, self.admin_pwdfile, self.app_name), shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_VerifyFailed()
 
@@ -175,7 +178,8 @@ class App:
 
 	def uninstall(self):
 		if self.installed:
-			ret = subprocess.call(['univention-app', 'remove', self.app_name])
+			ret = subprocess.call('univention-app remove --noninteractive --username=%s --pwdfile=%s %s' %
+						(self.admin_user, self.admin_pwdfile, self.app_name), shell=True)
 			if ret != 0:
 				raise UCSTest_DockerApp_RemoveFailed()
 
