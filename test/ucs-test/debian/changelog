@@ -1,3 +1,9 @@
+ucs-test (5.0.173-1) unstable; urgency=low
+
+  * Bug #39373: added 29_user_uidNumber_and_group_gidNumber_collision
+
+ -- Eduard Mai <mai@univention.de>  Mon, 19 Oct 2015 13:24:38 +0200
+
 ucs-test (5.0.173-0) unstable; urgency=low
 
   * Bug #36383: better output, pep8 compliance, more efficient file handling
