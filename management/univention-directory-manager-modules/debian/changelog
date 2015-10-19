@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.31-20) unstable; urgency=low
+
+  * version bump Bug #38796
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 19 Oct 2015 13:30:16 +0200
+
 univention-directory-manager-modules (10.0.31-19) unstable; urgency=low
 
   * Bug #38796: test if object has uid/gidNumber, refactor
