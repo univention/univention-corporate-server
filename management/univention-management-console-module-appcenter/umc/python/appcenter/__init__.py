@@ -87,8 +87,11 @@ class UMCProgressHandler(logging.Handler):
 		self.progress = progress
 
 	def emit(self, record):
-		detail = {'level': record.levelname, 'message': record.msg}
-		self.progress.progress(detail=detail, message=record.msg)
+		msg = record.msg
+		if isinstance(record.msg, Exception):
+			msg = str(msg)
+		detail = {'level': record.levelname, 'message': msg}
+		self.progress.progress(detail=detail, message=msg)
 
 
 class ProgressInfoHandler(logging.Handler):

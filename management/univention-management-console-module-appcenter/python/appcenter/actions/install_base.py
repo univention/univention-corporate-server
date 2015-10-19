@@ -42,7 +42,7 @@ from univention.config_registry.frontend import ucr_update
 from univention.config_registry import ConfigRegistry
 
 from univention.appcenter.app import App, AppManager
-from univention.appcenter.actions import Abort, StoreAppAction, NetworkError
+from univention.appcenter.actions import Abort, StoreAppAction, NetworkError, get_action
 from univention.appcenter.actions.register import Register
 from univention.appcenter.log import catch_stdout
 
@@ -118,21 +118,24 @@ class InstallRemoveUpgrade(Register):
 				except Abort:
 					self.warn('Cancelled...')
 					status = 0
+		except Exception:
+			raise
+		else:
+			return status == 200
 		finally:
 			if status == 0:
-				return False
-			if status != 200:
-				self._revert(app, args)
-			if args.send_info:
-				try:
-					self._send_information(app, status)
-				except NetworkError:
-					self.warn('Ignoring this error...')
-			self._register_installed_apps_in_ucr()
-			from univention.appcenter import get_action
-			upgrade_search = get_action('upgrade-search')
-			upgrade_search.call(app=[app])
-			return status == 200
+				pass
+			else:
+				if status != 200:
+					self._revert(app, args)
+				if args.send_info:
+					try:
+						self._send_information(app, status)
+					except NetworkError:
+						self.warn('Ignoring this error...')
+				self._register_installed_apps_in_ucr()
+				upgrade_search = get_action('upgrade-search')
+				upgrade_search.call(app=[app])
 
 	def _handle_errors(self, app, args, errors, fatal):
 		can_continue = True

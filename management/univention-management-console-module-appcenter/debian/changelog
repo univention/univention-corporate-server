@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.6-39) unstable; urgency=medium
+
+  * Bug #39525: Relax required condition for logos
+  * Bug #39589: Fix return codes when (un)installing an app
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 19 Oct 2015 23:27:21 +0200
+
 univention-management-console-module-appcenter (5.0.6-38) unstable; urgency=medium
 
   * Bug #39591: Split hub part from docker.image to access manifest

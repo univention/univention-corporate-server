@@ -165,12 +165,13 @@ class ApplicationLDAPObject(object):
 			base = 'cn=%s,%s' % (container, base)
 			self._pos.setDn(base)
 		base64icon = ''
-		try:
-			from univention.appcenter.actions.umc_update import FRONTEND_ICONS_DIR
-			with open(os.path.join(FRONTEND_ICONS_DIR, 'scalable', app.logo)) as f:
-				base64icon = base64.b64encode(f.read())
-		except (ImportError, IOError):
-			pass
+		if app.logo:
+			try:
+				from univention.appcenter.actions.umc_update import FRONTEND_ICONS_DIR
+				with open(os.path.join(FRONTEND_ICONS_DIR, 'scalable', app.logo)) as f:
+					base64icon = base64.b64encode(f.read())
+			except (ImportError, IOError):
+				pass
 		attrs = {
 			'id': self._rdn,
 			'name': app.get_localised_list('name'),

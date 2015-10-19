@@ -43,7 +43,7 @@ class Remove(InstallRemoveUpgrade):
 	post_readme = 'readme_post_uninstall'
 
 	def main(self, args):
-		self.do_it(args)
+		return self.do_it(args)
 
 	def _show_license(self, app, args):
 		pass

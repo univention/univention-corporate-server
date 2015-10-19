@@ -60,7 +60,7 @@ class Install(InstallRemoveUpgrade):
 		parser.add_argument('--do-not-install-master-packages-remotely', action='store_false', dest='install_master_packages_remotely', help='Do not install master packages on DC master and DC backup systems')
 
 	def main(self, args):
-		self.do_it(args)
+		return self.do_it(args)
 
 	def _install_only_master_packages(self, args):
 		return args.only_master_packages

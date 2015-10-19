@@ -66,7 +66,7 @@ class Upgrade(Install):
 		if self._app_too_old(self.old_app, app):
 			return
 		args.app = app
-		self.do_it(args)
+		return self.do_it(args)
 
 	def _install_only_master_packages(self, args):
 		return False
