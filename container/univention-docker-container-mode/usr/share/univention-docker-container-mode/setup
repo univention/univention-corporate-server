@@ -39,10 +39,18 @@ if [ -z "$username" -o -z "$password_file" -o -z "$APP" ]; then
 	die "You are lacking --username or --password-file or --app"
 fi
 
-echo "Joining"
-univention-join -dcaccount "$username" -dcpwd "$password_file" -skipIpMac
-if [ "$?" -ne 0 ]; then
-	die "Something went wrong while joining the system"
+if [ -e /var/univention-join/joined ]; then
+	echo "Running join scripts"
+	univention-run.join-scripts -dcaccount "$username" -dcpwd "$password_file"
+	if [ "$?" -ne 0 ]; then
+		die "Something went wrong while running join scripts"
+	fi
+else
+	echo "Joining"
+	univention-join -dcaccount "$username" -dcpwd "$password_file" -skipIpMac
+	if [ "$?" -ne 0 ]; then
+		die "Something went wrong while joining the system"
+	fi
 fi
 
 /usr/share/univention-docker-container-mode/update_app_version $@

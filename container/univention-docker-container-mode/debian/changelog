@@ -1,3 +1,11 @@
+univention-docker-container-mode (1.0.5-1) unstable; urgency=medium
+
+  * univention-docker-container-mod/setup: if the container is already
+    joined, univention-run-joinr-scripts is executed instead of
+    rejoining the container (Bug #39204)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Oct 2015 06:58:28 +0200
+
 univention-docker-container-mode (1.0.4-1) unstable; urgency=medium
 
   * store_data and restore_data_before_setup: change directory to
