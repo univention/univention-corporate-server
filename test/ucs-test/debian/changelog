@@ -1,3 +1,9 @@
+ucs-test (6.0.9-17) unstable; urgency=low
+
+  * Bug #39199: added docker port tests 
+
+ -- Felix Botner <botner@univention.de>  Mon, 19 Oct 2015 17:40:25 +0200
+
 ucs-test (6.0.9-16) unstable; urgency=low
 
   * Bug #39373: added 29_user_uidNumber_and_group_gidNumber_collision

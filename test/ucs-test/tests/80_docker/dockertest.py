@@ -166,15 +166,16 @@ class App:
 		self.container_id = self.ucr.get('appcenter/apps/%s/container' % self.app_name)
 		self.installed = True
 
-	def verify(self):
+	def verify(self, joined=True):
 		ret = subprocess.call('univention-app status --noninteractive --username=%s --pwdfile=%s %s' %
 					(self.admin_user, self.admin_pwdfile, self.app_name), shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_VerifyFailed()
 
-		ret = subprocess.call('docker exec %s univention-check-join-status' % self.container_id, stderr=subprocess.STDOUT, shell=True)
-		if ret != 0:
-			raise UCSTest_DockerApp_VerifyFailed()
+		if joined:
+			ret = subprocess.call('docker exec %s univention-check-join-status' % self.container_id, stderr=subprocess.STDOUT, shell=True)
+			if ret != 0:
+				raise UCSTest_DockerApp_VerifyFailed()
 
 	def uninstall(self):
 		if self.installed:

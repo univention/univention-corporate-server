@@ -1,0 +1,71 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create and install a simple docker app and check ports redirection constraints
+## tags: [docker]
+## exposure: dangerous
+## packages:
+##   - docker.io
+
+from dockertest import *
+from univention.testing.utils import get_ldap_connection
+from univention.testing.utils import is_port_open
+
+import socket
+import pytest
+import time
+
+if __name__ == '__main__':
+	
+	with Appcenter() as appcenter:
+
+		version = get_app_version()
+		image = 'docker.software-univention.de/ucs-appbox-amd64:4.1-0'
+
+		exclusive = App(name='exclusive', version=version, build_package=False)
+		redirect = App(name='redirect', version=version, build_package=False)
+		dummy = App(name='dummy', version=version, build_package=False)
+
+		for port in [21, 23, 40021, 40023]:
+			with pytest.raises(socket.error):
+				is_port_open(port)
+
+		try:
+			exclusive.set_ini_parameter(
+				DockerImage=image,
+				PortsExclusive='23,24,40023',
+				DockerScriptSetup='/usr/sbin/%s-setup')
+			exclusive.add_script(setup='#!/bin/bash')
+
+			redirect.set_ini_parameter(
+				DockerImage=image,
+				PortsRedirection='40021:21,40023:23',
+				DockerScriptSetup='/usr/sbin/%s-setup')
+			redirect.add_script(setup='#!/bin/bash')
+
+			dummy.set_ini_parameter(
+				DockerImage=image,
+				DockerScriptSetup='/usr/sbin/%s-setup')
+			dummy.add_script(setup='#!/bin/bash')
+
+			exclusive.add_to_local_appcenter()
+			redirect.add_to_local_appcenter()
+			dummy.add_to_local_appcenter()
+			appcenter.update()
+
+			# check if installation fails
+			# if exclusive port is already used
+			redirect.install()
+			redirect.verify(joined=False)
+			exclusive.install()
+			with pytest.raises(UCSTest_DockerApp_VerifyFailed):
+				exclusive.verify(joined=False)
+
+			# another app should be fine
+			dummy.install()
+			dummy.verify(joined=False)
+		finally:
+			exclusive.uninstall()
+			exclusive.remove()
+			redirect.uninstall()
+			redirect.remove()
+			dummy.uninstall()
+			dummy.remove()

@@ -32,12 +32,14 @@ import sys
 import subprocess
 import ldap
 import time
+import socket
 
 import univention.config_registry
 import univention.uldap as uldap
 
 S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
 LISTENER_INIT_SCRIPT = '/etc/init.d/univention-directory-listener'
+FIREWALL_INIT_SCRIPT = '/etc/init.d/univention-firewall'
 
 
 class LDAPError(Exception):
@@ -180,6 +182,8 @@ def start_listener():
 def restart_listener():
 	subprocess.call((LISTENER_INIT_SCRIPT, 'restart'))
 
+def restart_firewall():
+	subprocess.call((FIREWALL_INIT_SCRIPT, 'restart'))
 
 class AutomaticListenerRestart(object):
 	"""
@@ -331,6 +335,18 @@ def uppercase_in_ldap_base():
 	ucr.load()
 	return not ucr.get('ldap/base').islower()
 
+def is_port_open(port, hosts=[]):
+	'''
+		check if port is open, if host == None check
+		hostname and 127.0.0.1
+	'''
+	if not hosts :
+		hosts.append(socket.gethostname())
+		hosts.append('127.0.0.1')
+	for host in hosts:
+		s = socket.socket()
+		s.connect((host, int(port)))
+	return True
 
 if __name__ == '__main__':
 	import doctest
