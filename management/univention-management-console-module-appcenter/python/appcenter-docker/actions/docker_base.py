@@ -109,12 +109,17 @@ class DockerActionMixin(object):
 		docker.pull()
 
 		self.log('Verifying app image %s' % docker.image)
-		docker_image_name_parts = docker.image.split(':')
+		try:
+			hub, image_name = docker.image.split('/', 1)
+		except ValueError:
+			image_name = docker.image
+
+		docker_image_name_parts = image_name.split(':', 1)
 		docker_image_repo = docker_image_name_parts[0]
 		if len(docker_image_name_parts) > 1:
 			docker_image_tag = docker_image_name_parts[1]
 		else:
-			docker_image_tag = "latest"
+			docker_image_tag = 'latest'
 
 		docker_image_manifest = requests.get('https://ucs:readonly@docker.software-univention.de/v2/%s/manifests/%s' % (docker_image_repo, docker_image_tag), auth=requests.auth.HTTPBasicAuth('ucs', 'readonly')).content
 		docker_image_manifest_hash = hashlib.sha256(docker_image_manifest).hexdigest()

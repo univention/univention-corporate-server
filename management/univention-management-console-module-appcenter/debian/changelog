@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-38) unstable; urgency=medium
+
+  * Bug #39591: Split hub part from docker.image to access manifest
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Oct 2015 19:16:07 +0200
+
 univention-management-console-module-appcenter (5.0.6-37) unstable; urgency=medium
 
   * Calculate docker_image_manifest_hash (Bug #39591)
