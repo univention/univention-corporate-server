@@ -1,6 +1,7 @@
 univention-management-console-frontend (5.0.42-1) unstable; urgency=medium
 
   * Bug #39564: fix race condition
+  * Bug #39227: adapt link of host dropdown
 
  -- Florian Best <best@univention.de>  Mon, 19 Oct 2015 17:14:02 +0200
 

@@ -1470,7 +1470,7 @@ define([
 			});
 
 			var port = window.location.port ? ':' + window.location.port : '';
-			jumpToUrl(window.location.protocol + '//' + host + port + '/univention-management-console/saml/');
+			jumpToUrl(window.location.protocol + '//' + host + port + '/univention-management-console/');
 		},
 
 		defer: function(func, waitingTime) {
