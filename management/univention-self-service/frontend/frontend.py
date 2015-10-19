@@ -90,7 +90,7 @@ class UniventionSelfServiceFrontend(object):
 
 	def umc_request(self, connection, url, data, command="command"):
 		try:
-			result = connection.request(url, data, command)
+			result = connection.request(url, data, command=command)
 		except HTTPException as he:
 			self.log(he)
 			try:
