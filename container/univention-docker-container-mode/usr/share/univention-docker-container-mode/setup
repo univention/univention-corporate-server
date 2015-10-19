@@ -41,7 +41,7 @@ fi
 
 if [ -e /var/univention-join/joined ]; then
 	echo "Running join scripts"
-	univention-run.join-scripts -dcaccount "$username" -dcpwd "$password_file"
+	univention-run-join-scripts -dcaccount "$username" -dcpwd "$password_file"
 	if [ "$?" -ne 0 ]; then
 		die "Something went wrong while running join scripts"
 	fi
