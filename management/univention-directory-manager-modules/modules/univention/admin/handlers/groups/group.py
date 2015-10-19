@@ -525,29 +525,26 @@ class object(univention.admin.handlers.simpleLdap):
 		# return True if object has been modified
 		return bool(ml)
 
+	def _check_uid_gid_uniqueness(self):
+		fg = univention.admin.filter.expression('uidNumber', self['gidNumber'])
+		user_objects = univention.admin.handlers.users.user.lookup(self.co, self.lo, filter_s=fg)
+		if user_objects:
+			raise univention.admin.uexceptions.gidNumberAlreadyUsedAsUidNumber, '%r' % self["gidNumber"]
+
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 		self.check_for_group_recursion()
 
-		configRegistry.load()
-		if configRegistry.is_true("directory/manager/uid_gid/uniqueness", True):
-			fg = univention.admin.filter.expression('uidNumber', self['gidNumber'])
-			user_objects = univention.admin.handlers.users.user.lookup(self.co, self.lo, filter_s=fg)
-			if user_objects:
-				raise univention.admin.uexceptions.gidNumberAlreadyUsedAsUidNumber, '%r' % self["gidNumber"]
+		if configRegistry.is_true("directory/manager/uid_gid/uniqueness", True) and ("posix" in self.options or "samba" in self.options):
+			self._check_uid_gid_uniqueness()
 
 	def _ldap_pre_modify(self):
 		self.check_for_group_recursion()
 		self.check_ad_group_type_change()
 
-		if self.hasChanged('gidNumber'):
+		if self.hasChanged('gidNumber') and configRegistry.is_true("directory/manager/uid_gid/uniqueness", True) and ("posix" in self.options or "samba" in self.options):
 			# this should never happen, as gidNumber is marked as unchangeable
-			configRegistry.load()
-			if configRegistry.is_true("directory/manager/uid_gid/uniqueness", True):
-				fg = univention.admin.filter.expression('uidNumber', self['gidNumber'])
-				user_objects = univention.admin.handlers.users.user.lookup(self.co, self.lo, filter_s=fg)
-				if user_objects:
-					raise univention.admin.uexceptions.gidNumberAlreadyUsedAsUidNumber, '%r' % self["gidNumber"]
+			self._check_uid_gid_uniqueness()
 
 	def _ldap_addlist(self):
 

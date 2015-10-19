@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.2-3) unstable; urgency=low
+
+  * Bug #38796: test if object has uid/gidNumber, refactor
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 19 Oct 2015 12:28:27 +0200
+
 univention-directory-manager-modules (11.0.2-2) unstable; urgency=low
 
   * Bug #38796: do not allow deliberate collisions of uidNumbers and
