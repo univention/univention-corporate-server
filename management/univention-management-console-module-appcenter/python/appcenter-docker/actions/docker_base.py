@@ -35,6 +35,8 @@
 import shutil
 import os.path
 import re
+import requests
+import hashlib
 
 from ldap.dn import explode_dn
 
@@ -106,6 +108,18 @@ class DockerActionMixin(object):
 		self.log('Downloading app image %s. This may take several minutes' % docker.image)
 		docker.pull()
 
+		self.log('Verifying app image %s' % docker.image)
+		docker_image_name_parts = docker.image.split(':')
+		docker_image_repo = docker_image_name_parts[0]
+		if len(docker_image_name_parts) > 1:
+			docker_image_tag = docker_image_name_parts[1]
+		else:
+			docker_image_tag = "latest"
+
+		docker_image_manifest = requests.get('https://ucs:readonly@docker.software-univention.de/v2/%s/manifests/%s' % (docker_image_repo, docker_image_tag), auth=requests.auth.HTTPBasicAuth('ucs', 'readonly')).content
+		docker_image_manifest_hash = hashlib.sha256(docker_image_manifest).hexdigest()
+		## TODO: verify
+		
 		self.log('Initializing app image')
 		ucr = ConfigRegistry()
 		ucr.load()
