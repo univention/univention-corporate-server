@@ -591,7 +591,7 @@ class Ressource(object):
 			self.set_cookies(('UMCSessionId', ''), expires=datetime.datetime.now())
 
 	def get_user(self):
-		value = self.get_cookie('UMCSessionId')
+		value = self.get_session_id()
 		if value:
 			return self.sessions.get(value)
 
