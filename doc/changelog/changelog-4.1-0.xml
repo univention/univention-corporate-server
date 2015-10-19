@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+ <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE chapter  PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
@@ -167,6 +167,10 @@
 				<listitem><simpara>
 					The Univention Management Console login now supports authentication via SAML
 					(<u:bug>31943</u:bug>, <u:bug>39549</u:bug>, <u:bug>39552</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The dropdown menu to switch the Univention Management Console uses the SAML single sign on process now.
+					The before then used Univention Management Console single sign on has therefore been removed (<u:bug>39227</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
