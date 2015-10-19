@@ -1,4 +1,4 @@
-univention-management-console-frontend (5.0.42-1) unstable; urgency=medium
+univention-management-console-frontend (5.0.42-2) unstable; urgency=medium
 
   * Bug #39564: reimplement commented out code
 
