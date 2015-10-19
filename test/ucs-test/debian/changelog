@@ -1,3 +1,10 @@
+ucs-test (6.0.9-19) unstable; urgency=medium
+
+  * Merge 80_docker/66_app_container_upgrade_without_rejoin into
+    80_docker/64_app_container_upgrade (Bug #39462)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Oct 2015 20:22:15 +0200
+
 ucs-test (6.0.9-18) unstable; urgency=medium
 
   * 80_docker/66_app_container_upgrade_without_rejoin: Ensure the app is
