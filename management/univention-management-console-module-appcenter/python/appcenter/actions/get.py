@@ -112,7 +112,7 @@ class Get(UniventionAppAction):
 		ret['is_master'] = ret['local_role'] == 'domaincontroller_master'
 		ret['host_master'] = ucr.get('ldap/master')
 		ret['autostart'] = ucr.get('%s/autostart' % app.id, 'yes')
-		ret['is_ucs_component'] = 'UCS Components' in cls.raw_value(app, 'Application', 'Categories')
+		ret['is_ucs_component'] = app.is_ucs_component()
 		ldap_obj = get_app_ldap_object(app)
 		if ldap_obj:
 			ret['is_installed_anywhere'] = ldap_obj.anywhere_installed()

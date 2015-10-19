@@ -71,7 +71,7 @@ class CredentialsAction(UniventionAppAction):
 			except (EOFError, KeyboardInterrupt):
 				raise Abort()
 			self._username = username
-		return username
+			return username
 
 	def _get_password(self, args, ask=True):
 		username = self._get_username(args)

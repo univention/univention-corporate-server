@@ -33,11 +33,13 @@
 		<command name="appcenter/query" function="query" />
 		<command name="appcenter/get" function="get" />
 		<command name="appcenter/invoke" function="invoke" />
-		<command name="appcenter/invoke_docker" function="invoke_docker" />
+		<command name="appcenter/docker/invoke" function="invoke_docker" />
 		<!-- ATTENTION: uses invoke. added because of compatibility issues between newer and older versions -->
 		<command name="appcenter/invoke_dry_run" function="invoke_dry_run" />
-		<!-- ATTENTION: same progress function as in packages -->
-		<command name="appcenter/progress" function="progress"/>
+		<!-- ATTENTION: progress comes from ProgressMixin -->
+		<command name="appcenter/docker/progress" function="progress"/>
+		<!-- ATTENTION: custom progress; same progress function as in packages -->
+		<command name="appcenter/progress" function="custom_progress"/>
 		<command name="appcenter/keep_alive" function="keep_alive"/>
 		<command name="appcenter/ping" function="ping"/>
 		<command name="appcenter/buy" function="buy"/>

@@ -664,6 +664,11 @@ class Instance(umcm.Base, ProgressMixin):
 		#   package_manager.is_working() => False or _('Installing UCC')
 		return self._working()
 
+	@simple_response
+	def custom_progress(self):
+		timeout = 5
+		return self.package_manager.poll(timeout)
+
 	def _package_to_dict(self, package, full):
 		""" Helper that extracts properties from a 'apt_pkg.Package' object
 			and stores them into a dictionary. Depending on the 'full'

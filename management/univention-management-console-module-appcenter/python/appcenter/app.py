@@ -532,7 +532,15 @@ class App(object):
 	def is_installed(self):
 		ucr = ConfigRegistry()
 		ucr.load()
-		return ucr.get(self.ucr_status_key) in ['installed', 'stalled'] and ucr.get(self.ucr_version_key) == self.version
+		installed = ucr.get(self.ucr_status_key) in ['installed', 'stalled']
+		if self.is_ucs_component():
+			installed = installed and ucr.get(self.ucr_version_key) == self.version
+		return installed
+
+	def is_ucs_component(self):
+		from univention.appcenter import get_action
+		get = get_action('get')
+		return 'UCS Components' in get.raw_value(self, 'Application', 'Categories')
 
 	def get_share_dir(self):
 		return os.path.join(SHARE_DIR, self.id)

@@ -82,6 +82,8 @@ import univention.admin.uexceptions as udm_errors
 from univention.management.console.modules.decorators import reloading_ucr
 from univention.management.console.ldap import machine_connection, get_machine_connection
 from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
+from univention.appcenter.app import AppManager
+from univention.appcenter.actions import get_action
 
 CACHE_DIR = '/var/cache/univention-appcenter'
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/local/all.tar.gz'
@@ -1189,6 +1191,9 @@ class Application(object):
 			# unregister app in LDAP
 			self.tell_ldap(component_manager.ucr, package_manager)
 
+			register = get_action('register')
+			app = AppManager.find(self.id, self.version)
+			register.call(apps=[app], do_it=False)
 			status = 200
 		except:
 			status = 500
@@ -1640,6 +1645,9 @@ class Application(object):
 				raise
 
 			# successful installation
+			register = get_action('register')
+			app = AppManager.find(self.id, self.version)
+			register.call(apps=[app], do_it=True)
 			status = 200
 		except:
 			MODULE.warn(traceback.format_exc())

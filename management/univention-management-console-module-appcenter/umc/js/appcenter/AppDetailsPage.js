@@ -658,7 +658,7 @@ define([
 				command = 'appcenter/invoke_dry_run';
 			}
 			if (this.app.isDocker) {
-				command = 'appcenter/invoke_docker';
+				command = 'appcenter/docker/invoke';
 			}
 			var commandArguments = {
 				'function': func,
