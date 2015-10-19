@@ -511,9 +511,13 @@ define([
 		uninstallApp: function(host) {
 			// before installing, user must read uninstall readme
 			this.showReadme(this.app.readmeUninstall, _('Uninstall Information'), _('Uninstall')).then(lang.hitch(this, function() {
-				this.callInstaller('uninstall', host).then(lang.hitch(this, function() {
-					this.showReadme(this.app.readmePostUninstall, _('Uninstall Information')).then(lang.hitch(this, 'markupErrors'));
-				}));
+				this.callInstaller('uninstall', host).then(
+					lang.hitch(this, function() {
+						this.showReadme(this.app.readmePostUninstall, _('Uninstall Information'));
+					}), lang.hitch(this, function() {
+						this.markupErrors();
+					})
+				);
 			}));
 		},
 
@@ -558,11 +562,15 @@ define([
 		installApp: function(host) {
 			this.showReadme(this.app.licenseAgreement, _('License agreement'), _('Accept license')).then(lang.hitch(this, function() {
 				this.showReadme(this.app.readmeInstall, _('Install Information'), _('Install')).then(lang.hitch(this, function() {
-					this.callInstaller('install', host).then(lang.hitch(this, function() {
-						// put dedicated module of this app into favorites
-						UMCApplication.addFavoriteModule('apps', this.app.id);
-						this.showReadme(this.app.readmePostInstall, _('Install Information')).then(lang.hitch(this, 'markupErrors'));
-					}));
+					this.callInstaller('install', host).then(
+						lang.hitch(this, function() {
+							// put dedicated module of this app into favorites
+							UMCApplication.addFavoriteModule('apps', this.app.id);
+							this.showReadme(this.app.readmePostInstall, _('Install Information'));
+						}), lang.hitch(this, function() {
+							this.markupErrors();
+						})
+					);
 				}));
 			}));
 		},
@@ -570,9 +578,13 @@ define([
 		upgradeApp: function(host) {
 			// before installing, user must read update readme
 			this.showReadme(this.app.candidateReadmeUpdate, _('Upgrade Information'), _('Upgrade')).then(lang.hitch(this, function() {
-				this.callInstaller('update', host).then(lang.hitch(this, function() {
-					this.showReadme(this.app.candidateReadmePostUpdate, _('Upgrade Information')).then(lang.hitch(this, 'markupErrors'));
-				}));
+				this.callInstaller('update', host).then(
+					lang.hitch(this, function() {
+						this.showReadme(this.app.candidateReadmePostUpdate, _('Upgrade Information'));
+					}), lang.hitch(this, function() {
+						this.markupErrors();
+					})
+				);
 			}));
 		},
 
@@ -645,22 +657,55 @@ define([
 			if (!force) {
 				command = 'appcenter/invoke_dry_run';
 			}
+			if (this.app.isDocker) {
+				command = 'appcenter/invoke_docker';
+			}
 			var commandArguments = {
 				'function': func,
 				'application': this.app.id,
+				'app': this.app.id,
 				'host': host || '',
 				'force': force === true
 			};
 
 			this._progressBar.reset(_('%s: Performing software tests on involved systems', this.app.name));
 			this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
-			var invokation = tools.umcpCommand(command, commandArguments).then(lang.hitch(this, function(data) {
+			var invokation;
+			if (this.app.isDocker) {
+				invokation = tools.umcpProgressCommand(this._progressBar, command, commandArguments).then(
+						undefined,
+						undefined,
+						lang.hitch(this, function(result) {
+							console.debug('INTER', result.intermediate);
+							var errors = array.map(result.intermediate, function(res) {
+								if (res.level == 'WARNING' || res.level == 'ERROR' || res.level == 'CRITICAL') {
+									return res.message;
+								}
+							});
+							console.debug('ERROR', errors);
+							this._progressBar._addErrors(errors);
+							console.debug('ERROR ...', this._progressBar._errors);
+						})
+				);
+			} else {
+				invokation = tools.umcpCommand(command, commandArguments);
+			}
+			invokation = invokation.then(lang.hitch(this, function(data) {
+				if (!('result' in data)) {
+					data = {'result': data};
+				}
 				var result = data.result;
 				var headline = '';
 				var actionLabel = tools.capitalize(verb);
 				var mayContinue = true;
 
-				if (!result.can_continue) {
+				if ('success' in result) {
+					if (result.success) {
+						deferred.resolve();
+					} else {
+						deferred.reject();
+					}
+				} else if (!result.can_continue) {
 					mayContinue = !result.serious_problems;
 					if (mayContinue) {
 						headline = _("Do you really want to %(verb)s %(ids)s?",
@@ -697,9 +742,13 @@ define([
 				} else {
 					var progressMessage = _("%(verb)s %(ids)s on %(host)s", {verb: verb1, ids: this.app.name, host: host || _('this host')});
 
-					this.switchToProgressBar(progressMessage).then(function() {
-						deferred.resolve();
-					});
+					this.switchToProgressBar(progressMessage).then(
+						function() {
+							deferred.resolve();
+						}, function() {
+							deferred.reject();
+						}
+					);
 				}
 			}));
 			this.standbyDuring(all([invokation, deferred, nonInteractive]), this._progressBar);
@@ -750,10 +799,17 @@ define([
 				tools.umcpCommand('appcenter/keep_alive', {}, false);
 			}
 			msg = msg || _('Another package operation is in progress.');
+			var callback = lang.hitch(this, function() {
+				if (this._progressBar.getErrors().errors.length) {
+					deferred.reject();
+				} else {
+					deferred.resolve();
+				}
+			});
 			this._progressBar.reset(msg);
 			this._progressBar.auto('appcenter/progress',
 				{},
-				lang.hitch(deferred, 'resolve'),
+				callback,
 				undefined,
 				undefined,
 				true

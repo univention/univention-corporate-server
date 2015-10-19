@@ -33,6 +33,7 @@
 		<command name="appcenter/query" function="query" />
 		<command name="appcenter/get" function="get" />
 		<command name="appcenter/invoke" function="invoke" />
+		<command name="appcenter/invoke_docker" function="invoke_docker" />
 		<!-- ATTENTION: uses invoke. added because of compatibility issues between newer and older versions -->
 		<command name="appcenter/invoke_dry_run" function="invoke_dry_run" />
 		<!-- ATTENTION: same progress function as in packages -->

@@ -36,9 +36,9 @@ import os
 import locale
 import time
 import sys
+from contextlib import contextmanager
 #import urllib2
 from httplib import HTTPException
-from functools import wraps
 import logging
 from tempfile import NamedTemporaryFile
 
@@ -52,6 +52,7 @@ from univention.lib.package_manager import PackageManager, LockError
 from univention.lib.umc_connection import UMCConnection
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response, require_password
+from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, BooleanSanitizer
 from univention.updater import UniventionUpdater
 from univention.updater.errors import ConfigurationError
@@ -64,7 +65,7 @@ from univention.appcenter.log import get_base_logger, log_to_logfile
 
 # local application
 from app_center import Application, AppcenterServerContactFailed, LICENSE
-from sanitizers import basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
+from sanitizers import AppSanitizer, basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
 import constants
 import util
 
@@ -78,6 +79,17 @@ class NoneCandidate(object):
 	def __init__(self):
 		self.summary = self.version = self.description = self.priority = self.section = _('Package not found in repository')
 		self.installed_size = 0
+
+
+class UMCProgressHandler(logging.Handler):
+	def __init__(self, progress):
+		super(UMCProgressHandler, self).__init__()
+		self.progress = progress
+
+	def emit(self, record):
+		detail = {'level': record.levelname, 'message': record.msg}
+		self.progress.progress(detail=detail, message=record.msg)
+
 
 class ProgressInfoHandler(logging.Handler):
 	def __init__(self, package_manager):
@@ -93,26 +105,15 @@ class ProgressInfoHandler(logging.Handler):
 		else:
 			self.state.info(msg)
 
+
 class ProgressPercentageHandler(ProgressInfoHandler):
 	def emit(self, record):
 		percentage = float(record.msg)
 		self.state.percentage(percentage)
 		self.state._finished = percentage >= 100
 
-def error_handler(func):  # imported in apps module ;)
-	@wraps(func)
-	def _decorated(self, request, *a, **kwargs):
-		try:
-			return func(self, request, *a, **kwargs)
-#		except (urllib2.HTTPError, urllib2.URLError) as exc:
-#			raise umcm.UMC_Error(util.verbose_http_error(exc))
-		except (SystemError, AppcenterServerContactFailed) as exc:
-			MODULE.error(str(exc))
-			raise umcm.UMC_Error(str(exc), status=500)
-	return _decorated
 
-
-class Instance(umcm.Base):
+class Instance(umcm.Base, ProgressMixin):
 
 	def init(self):
 		os.umask(0022)  # umc umask is too restrictive for app center as it creates a lot of files in docker containers
@@ -131,7 +132,7 @@ class Instance(umcm.Base):
 		except SystemError as exc:
 			MODULE.error(str(exc))
 			raise umcm.UMC_Error(str(exc), status=500)
-		self.package_manager.set_finished() # currently not working. accepting new tasks
+		self.package_manager.set_finished()  # currently not working. accepting new tasks
 		self.uu = UniventionUpdater(False)
 		self.component_manager = util.ComponentManager(self.ucr, self.uu)
 		AppManager.set_package_manager(self.package_manager)
@@ -155,17 +156,23 @@ class Instance(umcm.Base):
 		get_base_logger().getChild('actions.upgrade.progress').addHandler(percentage)
 		get_base_logger().getChild('actions.remove.progress').addHandler(percentage)
 
-	@error_handler
+	def error_handling(self, exc, etype, etraceback):
+		if isinstance(exc, (SystemError, AppcenterServerContactFailed)):
+			MODULE.error(str(exc))
+			raise umcm.UMC_Error(str(exc), status=500)
+
 	@simple_response
 	def version(self):
 		info = get_action('info')
 		return info.get_compatibility()
 
-	@error_handler
 	@simple_response
 	def query(self):
-		update = get_action('update')
-		update.call()
+		if self.ucr.is_true('appcenter/umc/update/always', True):
+			update = get_action('update')
+			update.call()
+			Application.all(force_reread=True, only_local=True)
+		Application.all(only_local=True)  # cache 'em!
 		list_apps = get_action('list')
 		domain = get_action('domain')
 		apps = list_apps.get_apps()
@@ -178,14 +185,12 @@ class Instance(umcm.Base):
 					raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly. Make sure docker.io is installed, try starting the service with "invoke-rc.d docker start"'))
 		return domain.to_dict(apps)
 
-	@error_handler
 	@simple_response
 	def sync_ldap(self):
 		register = get_action('register')
 		register.call(register_task=['app'])
 
 	# used in updater-umc
-	@error_handler
 	@simple_response
 	def get_by_component_id(self, component_id):
 		domain = get_action('domain')
@@ -200,14 +205,12 @@ class Instance(umcm.Base):
 				raise umcm.UMC_CommandError(_('Could not find an application for %s') % component_id)
 
 	# used in updater-umc
-	@error_handler
 	@simple_response
 	def app_updates(self):
 		upgrade = get_action('upgrade')
 		domain = get_action('domain')
 		return domain.to_dict(list(upgrade.iter_upgradable_apps()))
 
-	@error_handler
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
 	@simple_response
 	def get(self, application):
@@ -233,7 +236,7 @@ class Instance(umcm.Base):
 
 	@require_password
 	def _invoke_docker(self, function, application, force, values):
-		can_continue = force # always show configuration after first request
+		can_continue = force  # always show configuration after first request
 		serious_problems = False
 		app = AppManager.find(application.id)
 		errors, warnings = app.check(function)
@@ -268,20 +271,76 @@ class Instance(umcm.Base):
 							password_file.write(self.password)
 							password_file.flush()
 							action.call(app=app, username=self._username, pwdfile=password_file.name, **kwargs)
+
 			def _finished(thread, result):
 				if isinstance(result, BaseException):
 					MODULE.warn('Exception during %s %s: %s' % (function, app.id, str(result)))
+				self.package_manager._hacked_thread_result = (result, thread)
 			thread = notifier.threads.Simple('invoke',
 				notifier.Callback(_thread, app, function), _finished)
 			thread.run()
 		return result
 
-	@error_handler
 	def invoke_dry_run(self, request):
 		request.options['only_dry_run'] = True
 		self.invoke(request)
 
-	@error_handler
+	@require_password
+	@sanitize(
+			function=MappingSanitizer({
+				'install': 'install',
+				'upgrade': 'upgrade',
+				'uninstall': 'remove',
+			}, required=True),
+			app=AppSanitizer(required=True),
+			force=BooleanSanitizer(),
+			values=DictSanitizer({})
+	)
+	@simple_response(with_progress=True)
+	def invoke_docker(self, function, app, force, values, progress):
+		with self.locked():
+			serious_problems = False
+			progress.title = _('%s: Running tests' % app.name)
+			errors, warnings = app.check(function)
+			can_continue = force  # "dry_run"
+			if errors:
+				MODULE.process('Cannot %s %s: %r' % (function, app.id, errors))
+				serious_problems = True
+				can_continue = False
+			if warnings:
+				MODULE.process('Warning trying to %s %s: %r' % (function, app.id, warnings))
+			result = {
+				'serious_problems': serious_problems,
+				'invokation_forbidden_details': errors,
+				'invokation_warning_details': warnings,
+				'can_continue': can_continue,
+				'software_changes_computed': False,
+			}
+			if can_continue:
+				kwargs = {'noninteractive': True}
+				if function == 'install':
+					progress.title = _('Installing %s' % app.name)
+					kwargs['set_vars'] = values
+				elif function == 'uninstall':
+					progress.title = _('Uninstalling %s' % app.name)
+					kwargs['keep_data'] = not values.get('dont_keep_data', False)
+				elif function == 'upgrade':
+					progress.title = _('Upgrading %s' % app.name)
+				action = get_action(function)
+				handler = UMCProgressHandler(progress)
+				handler.setLevel(logging.INFO)
+				action.logger.addHandler(handler)
+				try:
+					result['success'] = action.call(app=app, username=self.username, password=self.password, **kwargs)
+				finally:
+					action.logger.removeHandler(handler)
+			return result
+
+	@contextmanager
+	def locked(self):
+		with self.package_manager.locked(reset_status=True, set_finished=True):
+			yield
+
 	@require_password
 	@sanitize(
 		function=ChoicesSanitizer(['install', 'uninstall', 'update', 'install-schema', 'update-schema'], required=True),
@@ -326,17 +385,18 @@ class Instance(umcm.Base):
 				result = connection.request('appcenter/invoke', request.options)
 			except HTTPException:
 				result = {
-					'unreachable' : [host],
-					'master_unreachable' : True,
-					'serious_problems' : True,
-					'software_changes_computed' : True, # not really...
+					'unreachable': [host],
+					'master_unreachable': True,
+					'serious_problems': True,
+					'software_changes_computed': True,  # not really...
 				}
 			else:
 				if result['can_continue']:
 					def _thread_remote(_connection, _package_manager):
 						with _package_manager.locked(reset_status=True, set_finished=True):
-							_package_manager.unlock() # not really locked locally, but busy, so "with locked()" is appropriate
+							_package_manager.unlock()   # not really locked locally, but busy, so "with locked()" is appropriate
 							Application._query_remote_progress(_connection, _package_manager)
+
 					def _finished_remote(thread, result):
 						if isinstance(result, BaseException):
 							MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
@@ -358,18 +418,18 @@ class Instance(umcm.Base):
 		delayed_can_continue = True
 		serious_problems = False
 		result = {
-			'install' : [],
-			'remove' : [],
-			'broken' : [],
-			'unreachable' : [],
-			'master_unreachable' : False,
-			'serious_problems' : False,
-			'hosts_info' : {},
-			'problems_with_hosts' : False,
-			'serious_problems_with_hosts' : False,
-			'invokation_forbidden_details' : {},
-			'invokation_warning_details' : {},
-			'software_changes_computed' : False,
+			'install': [],
+			'remove': [],
+			'broken': [],
+			'unreachable': [],
+			'master_unreachable': False,
+			'serious_problems': False,
+			'hosts_info': {},
+			'problems_with_hosts': False,
+			'serious_problems_with_hosts': False,
+			'invokation_forbidden_details': {},
+			'invokation_warning_details': {},
+			'software_changes_computed': False,
 		}
 		if not application:
 			MODULE.process('Application not found: %s' % application_id)
@@ -431,6 +491,7 @@ class Instance(umcm.Base):
 										return application.install(module.package_manager, module.component_manager, add_component=only_master_packages, send_as=send_as, username=self._username, password=self.password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, previously_registered_by_dry_run=previously_registered_by_dry_run)
 									else:
 										return application.uninstall(module.package_manager, module.component_manager, self._username, self.password)
+
 						def _finished(thread, result):
 							if isinstance(result, BaseException):
 								MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
@@ -438,7 +499,7 @@ class Instance(umcm.Base):
 							notifier.Callback(_thread, self, application, function), _finished)
 						thread.run()
 					else:
-						self.package_manager.set_finished() # nothing to do, ready to take new commands
+						self.package_manager.set_finished()  # nothing to do, ready to take new commands
 			self.finished(request.id, result)
 		except LockError:
 			# make it thread safe: another process started a package manager
@@ -454,6 +515,7 @@ class Instance(umcm.Base):
 		def _thread():
 			while not self.package_manager.progress_state._finished:
 				time.sleep(1)
+
 		def _finished(thread, result):
 			success = not isinstance(result, BaseException)
 			if not success:
@@ -467,7 +529,6 @@ class Instance(umcm.Base):
 	def ping(self):
 		return True
 
-	@error_handler
 	@simple_response
 	def buy(self, application):
 		app = AppManager.find(application)
@@ -483,7 +544,6 @@ class Instance(umcm.Base):
 		ret['computer_count'] = None
 		return ret
 
-	@error_handler
 	@simple_response
 	def enable_disable_app(self, application, enable=True):
 		app = AppManager.find(application)
@@ -492,7 +552,6 @@ class Instance(umcm.Base):
 		stall = get_action('stall')
 		stall.call(app=app, undo=enable)
 
-	@error_handler
 	@simple_response
 	def packages_sections(self):
 		""" fills the 'sections' combobox in the search form """
@@ -504,7 +563,6 @@ class Instance(umcm.Base):
 
 		return sorted(sections)
 
-	@error_handler
 	@sanitize(pattern=PatternSanitizer(required=True))
 	@simple_response
 	def packages_query(self, pattern, section='all', key='package'):
@@ -523,7 +581,6 @@ class Instance(umcm.Base):
 					result.append(self._package_to_dict(package, full=False))
 		return result
 
-	@error_handler
 	@simple_response
 	def packages_get(self, package):
 		""" retrieves full properties of one package """
@@ -535,11 +592,10 @@ class Instance(umcm.Base):
 			# TODO: 404?
 			return {}
 
-	@error_handler
 	@sanitize(function=MappingSanitizer({
-				'install' : 'install',
-				'upgrade' : 'install',
-				'uninstall' : 'remove',
+				'install': 'install',
+				'upgrade': 'install',
+				'uninstall': 'remove',
 			}, required=True),
 		packages=ListSanitizer(StringSanitizer(minimum=1), required=True),
 		update=BooleanSanitizer()
@@ -549,18 +605,17 @@ class Instance(umcm.Base):
 		if update:
 			self.package_manager.update()
 		packages = self.package_manager.get_packages(packages)
-		kwargs = {'install' : [], 'remove' : [], 'dry_run' : True}
+		kwargs = {'install': [], 'remove': [], 'dry_run': True}
 		if function == 'install':
 			kwargs['install'] = packages
 		else:
 			kwargs['remove'] = packages
 		return dict(zip(['install', 'remove', 'broken'], self.package_manager.mark(**kwargs)))
 
-	@error_handler
 	@sanitize(function=MappingSanitizer({
-				'install' : 'install',
-				'upgrade' : 'install',
-				'uninstall' : 'remove',
+				'install': 'install',
+				'upgrade': 'install',
+				'uninstall': 'remove',
 			}, required=True),
 		packages=ListSanitizer(StringSanitizer(minimum=1), required=True)
 		)
@@ -575,7 +630,7 @@ class Instance(umcm.Base):
 				raise LockError()
 			with self.package_manager.locked(reset_status=True):
 				not_found = [pkg_name for pkg_name in packages if self.package_manager.get_package(pkg_name) is None]
-				self.finished(request.id, {'not_found' : not_found})
+				self.finished(request.id, {'not_found': not_found})
 
 				if not not_found:
 					def _thread(package_manager, function, packages):
@@ -585,6 +640,7 @@ class Instance(umcm.Base):
 									package_manager.install(*packages)
 								else:
 									package_manager.uninstall(*packages)
+
 					def _finished(thread, result):
 						if isinstance(result, BaseException):
 							MODULE.warn('Exception during %s %s: %r' % (function, packages, str(result)))
@@ -592,7 +648,7 @@ class Instance(umcm.Base):
 						notifier.Callback(_thread, self.package_manager, function, packages), _finished)
 					thread.run()
 				else:
-					self.package_manager.set_finished() # nothing to do, ready to take new commands
+					self.package_manager.set_finished()  # nothing to do, ready to take new commands
 		except LockError:
 			# make it thread safe: another process started a package manager
 			# this module instance already has a running package manager
@@ -601,7 +657,6 @@ class Instance(umcm.Base):
 	def _working(self):
 		return not self.package_manager.progress_state._finished
 
-	@error_handler
 	@simple_response
 	def working(self):
 		# TODO: PackageManager needs is_idle() or something
@@ -609,19 +664,13 @@ class Instance(umcm.Base):
 		#   package_manager.is_working() => False or _('Installing UCC')
 		return self._working()
 
-	@error_handler
-	@simple_response
-	def progress(self):
-		timeout = 5
-		return self.package_manager.poll(timeout)
-
 	def _package_to_dict(self, package, full):
 		""" Helper that extracts properties from a 'apt_pkg.Package' object
 			and stores them into a dictionary. Depending on the 'full'
 			switch, stores only limited (for grid display) or full
 			(for detail view) set of properties.
 		"""
-		installed = package.installed # may be None
+		installed = package.installed  # may be None
 		found = True
 		candidate = package.candidate
 		found = candidate is not None
@@ -652,14 +701,14 @@ class Instance(umcm.Base):
 			if package.is_installed:
 				result['section'] = installed.section
 				result['priority'] = installed.priority or ''
-				result['summary'] = installed.summary # take the current one
+				result['summary'] = installed.summary   # take the current one
 				result['description'] = installed.description
 				result['installed_version'] = installed.version
 				result['size'] = installed.installed_size
 				if package.is_upgradable:
 					result['candidate_version'] = candidate.version
 			else:
-				del result['upgradable'] # not installed: don't show 'upgradable' at all
+				del result['upgradable']  # not installed: don't show 'upgradable' at all
 				result['section'] = candidate.section
 				result['priority'] = candidate.priority or ''
 				result['description'] = candidate.description
@@ -671,9 +720,9 @@ class Instance(umcm.Base):
 			for byte_mod in byte_mods:
 				if size < 10000:
 					break
-				size = float(size) / 1000 # MB, not MiB
+				size = float(size) / 1000  # MB, not MiB
 			else:
-				size = size * 1000 # once too often
+				size = size * 1000  # once too often
 			if size == int(size):
 				format_string = '%d %s'
 			else:
@@ -682,7 +731,6 @@ class Instance(umcm.Base):
 
 		return result
 
-	@error_handler
 	@simple_response
 	def components_query(self):
 		"""	Returns components list for the grid in the ComponentsPage.
@@ -696,7 +744,6 @@ class Instance(umcm.Base):
 			result.append(self.component_manager.component(comp))
 		return result
 
-	@error_handler
 	@sanitize_list(StringSanitizer())
 	@multi_response(single_values=True)
 	def components_get(self, iterator, component_id):
@@ -706,8 +753,7 @@ class Instance(umcm.Base):
 		for component_id in iterator:
 			yield self.component_manager.component(component_id)
 
-	@error_handler
-	@sanitize_list(DictSanitizer({'object' : advanced_components_sanitizer}))
+	@sanitize_list(DictSanitizer({'object': advanced_components_sanitizer}))
 	@multi_response
 	def components_put(self, iterator, object):
 		"""Writes back one or more component definitions.
@@ -743,10 +789,9 @@ class Instance(umcm.Base):
 
 	# do the same as components_put (update)
 	# but dont allow adding an already existing entry
-	components_add = sanitize_list(DictSanitizer({'object' : add_components_sanitizer}))(components_put)
+	components_add = sanitize_list(DictSanitizer({'object': add_components_sanitizer}))(components_put)
 	components_add.__name__ = 'components_add'
 
-	@error_handler
 	@sanitize_list(StringSanitizer())
 	@multi_response(single_values=True)
 	def components_del(self, iterator, component_id):
@@ -754,7 +799,6 @@ class Instance(umcm.Base):
 			yield self.component_manager.remove(component_id)
 		self.package_manager.update()
 
-	@error_handler
 	@multi_response
 	def settings_get(self, iterator):
 		# *** IMPORTANT *** Our UCR copy must always be current. This is not only
@@ -764,14 +808,13 @@ class Instance(umcm.Base):
 
 		for _ in iterator:
 			yield {
-				'unmaintained' : self.ucr.is_true('repository/online/unmaintained', False),
-				'server' : self.ucr.get('repository/online/server', ''),
-				'prefix' : self.ucr.get('repository/online/prefix', ''),
+				'unmaintained': self.ucr.is_true('repository/online/unmaintained', False),
+				'server': self.ucr.get('repository/online/server', ''),
+				'prefix': self.ucr.get('repository/online/prefix', ''),
 			}
 
-	@error_handler
-	@sanitize_list(DictSanitizer({'object' : basic_components_sanitizer}),
-		min_elements=1, max_elements=1 # moduleStore with one element...
+	@sanitize_list(DictSanitizer({'object': basic_components_sanitizer}),
+		min_elements=1, max_elements=1  # moduleStore with one element...
 	)
 	@multi_response
 	def settings_put(self, iterator, object):
@@ -787,7 +830,7 @@ class Instance(umcm.Base):
 				changed = super_ucr.changed()
 		except Exception as e:
 			MODULE.warn("   !! Writing UCR failed: %s" % str(e))
-			return [{'message' : str(e), 'status' : constants.PUT_WRITE_ERROR}]
+			return [{'message': str(e), 'status': constants.PUT_WRITE_ERROR}]
 
 		self.package_manager.update()
 
@@ -802,7 +845,7 @@ class Instance(umcm.Base):
 		except ConfigurationError:
 			msg = _("There is no repository at this server (or at least none for the current UCS version)")
 			MODULE.warn("   !! Updater error: %s" % msg)
-			response = {'message' : msg, 'status' : constants.PUT_UPDATER_ERROR}
+			response = {'message': msg, 'status': constants.PUT_UPDATER_ERROR}
 			# if nothing was committed, we want a different type of error code,
 			# just to appropriately inform the user
 			if changed:
@@ -812,6 +855,5 @@ class Instance(umcm.Base):
 			info = sys.exc_info()
 			emsg = '%s: %s' % info[:2]
 			MODULE.warn("   !! Updater error [%s]: %s" % (emsg))
-			return [{'message' : str(info[1]), 'status' : constants.PUT_UPDATER_ERROR}]
-		return [{'status' : constants.PUT_SUCCESS}]
-
+			return [{'message': str(info[1]), 'status': constants.PUT_UPDATER_ERROR}]
+		return [{'status': constants.PUT_SUCCESS}]

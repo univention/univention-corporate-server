@@ -93,7 +93,8 @@ define([
 			this.useShop = !!props.shop_url;
 			this.shopURL = props.shop_url;
 			this.isMaster = props.is_master;
-			this.isUCSComponent = props.is_ucs_component
+			this.isUCSComponent = props.is_ucs_component;
+			this.isDocker = !!props.docker_image;
 			this.hostMaster = props.host_master;
 			this.userActivationRequired = props.user_activation_required;
 			this.ipAddress = props.ip_address;

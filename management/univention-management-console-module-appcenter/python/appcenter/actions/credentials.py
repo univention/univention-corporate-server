@@ -79,6 +79,8 @@ class CredentialsAction(UniventionAppAction):
 			return None
 		if self._password is not None:
 			return self._password
+		if args.password:
+			return args.password
 		if args.pwdfile:
 			password = open(args.pwdfile).read().rstrip('\n')
 			return password

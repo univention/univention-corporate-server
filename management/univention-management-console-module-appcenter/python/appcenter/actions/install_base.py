@@ -107,7 +107,7 @@ class InstallRemoveUpgrade(Register):
 					except (Abort, KeyboardInterrupt):
 						self.warn('Aborting...')
 						status = 401
-					except:
+					except Exception:
 						status = 500
 						raise
 					else:
