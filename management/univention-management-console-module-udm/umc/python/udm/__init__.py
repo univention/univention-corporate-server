@@ -929,7 +929,7 @@ class Instance(Base, ProgressMixin):
 
 		if not request.options.get('container'):
 			ldap_base = ucr.get('ldap/base')
-			self.finished(request.id, [{'id': ldap_base, 'label': ldap_dn2path(ldap_base), 'icon': 'udm-container-dc', 'objectType': 'container/dc', 'operations': ['edit']}])
+			self.finished(request.id, [{'id': ldap_base, 'label': ldap_dn2path(ldap_base), 'icon': 'udm-container-dc', 'objectType': 'container/dc', '$operations$': ['edit']}])
 			return
 
 		def _thread(container):
