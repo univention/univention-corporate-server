@@ -257,8 +257,10 @@ class Instance(umcm.Base, ProgressMixin):
 			def _thread(app, function):
 				with self.package_manager.locked(reset_status=True, set_finished=True):
 					with self.package_manager.no_umc_restart(exclude_apache=True):
-						if function not in ['install', 'uninstall', 'upgrade']:
+						if function not in ['install', 'uninstall', 'update']:
 							raise umcm.UMC_CommandError('Cannot %s. Not supported!' % function)
+						if function == 'update':
+							function = 'upgrade'
 						if function == 'uninstall':
 							function = 'remove'
 						action = get_action(function)
@@ -289,7 +291,7 @@ class Instance(umcm.Base, ProgressMixin):
 	@sanitize(
 			function=MappingSanitizer({
 				'install': 'install',
-				'upgrade': 'upgrade',
+				'update': 'upgrade',
 				'uninstall': 'remove',
 			}, required=True),
 			app=AppSanitizer(required=True),

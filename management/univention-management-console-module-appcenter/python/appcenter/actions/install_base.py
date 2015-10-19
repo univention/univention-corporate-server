@@ -120,7 +120,7 @@ class InstallRemoveUpgrade(Register):
 					status = 0
 		finally:
 			if status == 0:
-				return
+				return False
 			if status != 200:
 				self._revert(app, args)
 			if args.send_info:
@@ -132,6 +132,7 @@ class InstallRemoveUpgrade(Register):
 			from univention.appcenter import get_action
 			upgrade_search = get_action('upgrade-search')
 			upgrade_search.call(app=[app])
+			return status == 200
 
 	def _handle_errors(self, app, args, errors, fatal):
 		can_continue = True

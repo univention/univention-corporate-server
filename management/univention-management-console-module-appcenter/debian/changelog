@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.6-32) unstable; urgency=medium
+
+  * Bug #39589: Return error code when (un)installation fails
+  * Bug #39411: Fix showing post installation message again
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 19 Oct 2015 15:23:28 +0200
+
 univention-management-console-module-appcenter (5.0.6-31) unstable; urgency=low
 
   * Bug #39524: adjusted resizing for gallery images

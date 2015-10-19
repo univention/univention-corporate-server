@@ -513,7 +513,7 @@ define([
 			this.showReadme(this.app.readmeUninstall, _('Uninstall Information'), _('Uninstall')).then(lang.hitch(this, function() {
 				this.callInstaller('uninstall', host).then(
 					lang.hitch(this, function() {
-						this.showReadme(this.app.readmePostUninstall, _('Uninstall Information'));
+						this.showReadme(this.app.readmePostUninstall, _('Uninstall Information')).then(lang.hitch(this, 'markupErrors'));
 					}), lang.hitch(this, function() {
 						this.markupErrors();
 					})
@@ -566,7 +566,7 @@ define([
 						lang.hitch(this, function() {
 							// put dedicated module of this app into favorites
 							UMCApplication.addFavoriteModule('apps', this.app.id);
-							this.showReadme(this.app.readmePostInstall, _('Install Information'));
+							this.showReadme(this.app.readmePostInstall, _('Install Information')).then(lang.hitch(this, 'markupErrors'));
 						}), lang.hitch(this, function() {
 							this.markupErrors();
 						})
@@ -580,7 +580,7 @@ define([
 			this.showReadme(this.app.candidateReadmeUpdate, _('Upgrade Information'), _('Upgrade')).then(lang.hitch(this, function() {
 				this.callInstaller('update', host).then(
 					lang.hitch(this, function() {
-						this.showReadme(this.app.candidateReadmePostUpdate, _('Upgrade Information'));
+						this.showReadme(this.app.candidateReadmePostUpdate, _('Upgrade Information')).then(lang.hitch(this, 'markupErrors'));
 					}), lang.hitch(this, function() {
 						this.markupErrors();
 					})
@@ -676,15 +676,12 @@ define([
 						undefined,
 						undefined,
 						lang.hitch(this, function(result) {
-							console.debug('INTER', result.intermediate);
 							var errors = array.map(result.intermediate, function(res) {
 								if (res.level == 'WARNING' || res.level == 'ERROR' || res.level == 'CRITICAL') {
 									return res.message;
 								}
 							});
-							console.debug('ERROR', errors);
 							this._progressBar._addErrors(errors);
-							console.debug('ERROR ...', this._progressBar._errors);
 						})
 				);
 			} else {

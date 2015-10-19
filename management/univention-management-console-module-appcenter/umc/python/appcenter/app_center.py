@@ -1193,7 +1193,8 @@ class Application(object):
 
 			register = get_action('register')
 			app = AppManager.find(self.id, self.version)
-			register.call(apps=[app], do_it=False)
+			if app:
+				register.call(apps=[app], do_it=False)
 			status = 200
 		except:
 			status = 500
@@ -1647,7 +1648,8 @@ class Application(object):
 			# successful installation
 			register = get_action('register')
 			app = AppManager.find(self.id, self.version)
-			register.call(apps=[app], do_it=True)
+			if app:
+				register.call(apps=[app], do_it=True)
 			status = 200
 		except:
 			MODULE.warn(traceback.format_exc())

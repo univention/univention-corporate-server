@@ -37,7 +37,6 @@ import os.path
 from math import ceil
 from argparse import SUPPRESS
 import time
-import shutil
 from threading import Thread
 from urlparse import urljoin
 from glob import glob
@@ -51,8 +50,8 @@ import urllib2
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 
-from univention.appcenter.app import App, AppManager, CACHE_DIR, LOCAL_ARCHIVE
-from univention.appcenter.actions import UniventionAppAction, JOINSCRIPT_DIR, possible_network_error
+from univention.appcenter.app import AppManager, CACHE_DIR, LOCAL_ARCHIVE
+from univention.appcenter.actions import UniventionAppAction, possible_network_error
 from univention.appcenter.utils import urlopen, get_md5_from_file
 
 
@@ -170,50 +169,50 @@ class Update(UniventionAppAction):
 					self.fatal('Checksum for %s should be %r but was %r! Rather removing this file...' % (filename, remote_md5sum, local_md5sum))
 					os.unlink(cached_filename)
 
-	def _process_new_file(self, filename):
-		self.log('Installing %s' % os.path.basename(filename))
-		component, ext = os.path.splitext(os.path.basename(filename))
-		ret = None
-		if hasattr(self, '_process_new_file_%s' % ext):
-			ini_file = os.path.join(CACHE_DIR, '%s.ini' % component)
-			try:
-				local_app = App.from_ini(ini_file)
-			except IOError:
-				self.log('Could not find a previously existing app with component %s' % component)
-			else:
-				ret = self.getattr('_process_new_file_%s' % ext)(filename, local_app)
-		if ret != 'reject':
-			shutil.copy2(filename, CACHE_DIR)
-		return ret
+	#def _process_new_file(self, filename):
+	#	self.log('Installing %s' % os.path.basename(filename))
+	#	component, ext = os.path.splitext(os.path.basename(filename))
+	#	ret = None
+	#	if hasattr(self, '_process_new_file_%s' % ext):
+	#		ini_file = os.path.join(CACHE_DIR, '%s.ini' % component)
+	#		try:
+	#			local_app = App.from_ini(ini_file)
+	#		except IOError:
+	#			self.log('Could not find a previously existing app with component %s' % component)
+	#		else:
+	#			ret = self.getattr('_process_new_file_%s' % ext)(filename, local_app)
+	#	if ret != 'reject':
+	#		shutil.copy2(filename, CACHE_DIR)
+	#	return ret
 
-	def _process_new_file_ini(self, filename, local_app):
-		if local_app.is_installed():
-			new_app = App.from_ini(filename)
-			if new_app:
-				if new_app.component_id == local_app.component_id:
-					pass
-					#register = get_action('register')()
-					#register._register_app(new_app)
-			else:
-				return 'reject'
-		else:
-			new_app = App.from_ini(filename)
-			if new_app:
-				local_app = AppManager.find(new_app.id)
-				if local_app.is_installed() and local_app < new_app:
-					ucr = ConfigRegistry()
-					ucr_update(ucr, {local_app.ucr_upgrade_key: 'yes'})
-			else:
-				return 'reject'
+	#def _process_new_file_ini(self, filename, local_app):
+	#	if local_app.is_installed():
+	#		new_app = App.from_ini(filename)
+	#		if new_app:
+	#			if new_app.component_id == local_app.component_id:
+	#				pass
+	#				#register = get_action('register')()
+	#				#register._register_app(new_app)
+	#		else:
+	#			return 'reject'
+	#	else:
+	#		new_app = App.from_ini(filename)
+	#		if new_app:
+	#			local_app = AppManager.find(new_app.id)
+	#			if local_app.is_installed() and local_app < new_app:
+	#				ucr = ConfigRegistry()
+	#				ucr_update(ucr, {local_app.ucr_upgrade_key: 'yes'})
+	#		else:
+	#			return 'reject'
 
-	def _process_new_file_inst(self, filename, local_app):
-		if local_app.is_installed():
-			shutil.copy2(filename, JOINSCRIPT_DIR)
+	#def _process_new_file_inst(self, filename, local_app):
+	#	if local_app.is_installed():
+	#		shutil.copy2(filename, JOINSCRIPT_DIR)
 
-	def _process_new_file_uinst(self, filename, local_app):
-		uinst_filename = self._get_joinscript_path(local_app, unjoin=True)
-		if os.path.exists(uinst_filename):
-			shutil.copy2(filename, uinst_filename)
+	#def _process_new_file_uinst(self, filename, local_app):
+	#	uinst_filename = self._get_joinscript_path(local_app, unjoin=True)
+	#	if os.path.exists(uinst_filename):
+	#		shutil.copy2(filename, uinst_filename)
 
 	def _update_local_files(self):
 		# overwritten when UMC is installed

@@ -529,18 +529,25 @@ class App(object):
 	def ucr_ports_key(self):
 		return 'appcenter/apps/%s/ports/%%s' % self.id
 
+	def get_attr(self, attr_name):
+		for attr in self._attrs:
+			if attr.name == attr_name:
+				return attr
+
 	def is_installed(self):
 		ucr = ConfigRegistry()
 		ucr.load()
 		installed = ucr.get(self.ucr_status_key) in ['installed', 'stalled']
-		if self.is_ucs_component():
+		if not self.without_repository:
 			installed = installed and ucr.get(self.ucr_version_key) == self.version
 		return installed
 
 	def is_ucs_component(self):
 		from univention.appcenter import get_action
 		get = get_action('get')
-		return 'UCS Components' in get.raw_value(self, 'Application', 'Categories')
+		categories = self.get_attr('categories')
+		value = categories.parse(get.raw_value(self, 'Application', 'Categories'))
+		return 'UCS Components' in value
 
 	def get_share_dir(self):
 		return os.path.join(SHARE_DIR, self.id)
@@ -678,7 +685,7 @@ class App(object):
 		is_joined = os.path.exists('/var/univention-join/joined')
 		return bool(is_joined or not self.default_packages_master)
 
-	@hard_requirement('install', 'upgrade', 'uninstall')
+	@hard_requirement('install', 'upgrade', 'remove')
 	def must_not_have_concurrent_operation(self, package_manager):
 		'''Another package operation is in progress'''
 		if self.docker:
@@ -738,7 +745,7 @@ class App(object):
 			return unmet_packages
 		return True
 
-	@hard_requirement('uninstall')
+	@hard_requirement('remove')
 	def must_not_be_depended_on(self):
 		'''The application is required for the following applications
 		to work: %r'''

@@ -116,6 +116,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		if not process or process.returncode != 0:
 			self.fatal('App upgrade script failed')
 			raise Abort()
+		self._register_app(app, args)
 		self.old_app = app
 
 	def _upgrade_image(self, app, args):
@@ -139,6 +140,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self.log('Removing old container')
 		if old_container:
 			docker_rm(old_container)
+		self._register_app(app, args)
 		self.old_app = app
 		self._had_image_upgrade = True
 

@@ -301,8 +301,12 @@ class Register(CredentialsAction):
 					self.log('Creating %s' % init_script)
 					os.symlink(ORIGINAL_INIT_SCRIPT, init_script)
 					self._call_script('update-rc.d', os.path.basename(init_script), 'defaults', '41', '14')
-				except OSError as ex:
-					self.warn(str(ex))
+				except OSError as exc:
+					msg = str(exc)
+					if exc.errno == 17:
+						self.log(msg)
+					else:
+						self.warn(msg)
 				updates[app.ucr_image_key] = app.get_docker_image_name()
 				port_updates = {}
 				current_port_config = {}
