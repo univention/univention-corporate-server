@@ -79,6 +79,7 @@ import univention.admin.handlers.container.cn as container_udm_module
 import univention.admin.uexceptions as udm_errors
 
 # local application
+from univention.appcenter.utils import app_ports
 from univention.management.console.modules.decorators import reloading_ucr
 from univention.management.console.ldap import machine_connection, get_machine_connection
 from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
@@ -1068,6 +1069,21 @@ class Application(object):
 				conflict_packages.append(pkgname)
 		if conflict_packages:
 			return conflict_packages
+		return True
+
+	@HardRequirement('install', 'update')
+	def must_have_no_port_conflicts(self, ucr):
+		conflictedapps = []
+		ports = []
+		for i in self.ports_exclusive:
+			ports.append(i)
+		for i in self.ports_redirection:
+			ports.append(i.split(':', 1)[0])
+		for app_id, container_port, host_port in app_ports():
+			if str(host_port) in ports:
+				conflictedapps.append({'id': app_id})
+		if conflictedapps:
+			return conflictedapps
 		return True
 
 	@HardRequirement('install', 'update')

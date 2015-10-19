@@ -49,7 +49,8 @@ from univention.lib.package_manager import PackageManager
 
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
-from univention.appcenter.utils import mkdir, get_current_ram_available, _
+from univention.appcenter.utils import app_ports, mkdir, get_current_ram_available, _
+
 
 CACHE_DIR = '/var/cache/univention-appcenter'
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/archives/all.tar.gz'
@@ -713,6 +714,23 @@ class App(object):
 				conflict_packages.append(pkgname)
 		if conflict_packages:
 			return conflict_packages
+		return True
+
+	@hard_requirement('install', 'upgrade')
+	def must_have_no_port_conflicts(self, ucr):
+		'''The application requires ports already used by:
+			%r'''
+		conflictedapps = []
+		ports = []
+		for i in self.ports_exclusive:
+			ports.append(i)
+		for i in self.ports_redirection:
+			ports.append(i.split(':', 1)[0])
+		for app_id, container_port, host_port in app_ports():
+			if str(host_port) in ports:
+				conflictedapps.append({'id': app_id})
+		if conflictedapps:
+			return conflictedapps
 		return True
 
 	@hard_requirement('install', 'upgrade')
