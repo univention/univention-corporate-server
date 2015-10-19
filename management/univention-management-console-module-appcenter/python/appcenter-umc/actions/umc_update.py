@@ -37,30 +37,44 @@ import os
 import os.path
 from glob import glob
 import shutil
+import stat
 
 from univention.config_registry import handler_commit
 
 from univention.appcenter.actions.update import Update
 from univention.appcenter.log import catch_stdout
+from univention.appcenter.app import CACHE_DIR, AppManager
 
-FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons'
+FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable'
 
 
 class Update(Update):
-	def _process_new_file_png(self, filename, local_app):
-		component, ext = os.path.splitext(os.path.basename(filename))
-		png_50 = os.path.join(FRONTEND_ICONS_DIR, '50x50', 'apps-%s.png' % component)
-		shutil.copy2(filename, png_50)
-
 	def _update_local_files(self):
+		self.debug('Updating app icon files in UMC directory...')
+
 		# some variables could change apps.xml
 		# e.g. Name, Description
 		self._update_conffiles()
 
-		# special handling for icons
-		for png in glob(os.path.join(FRONTEND_ICONS_DIR, '**', 'apps-*.png')):
-			os.unlink(png)
+		# clear existing SVG logo files and re-copy them again
+		for isvg in glob(os.path.join(FRONTEND_ICONS_DIR, 'apps-*.svg')):
+			os.unlink(isvg)
+
+		for app in AppManager.get_all_apps():
+			self._update_svg_file(app.get_cache_file(app.logo), app.logo)
+			if app.logo_detail_page:
+				self._update_svg_file(app.get_cache_file(app.logo_detail_page), app.logo_detail_page)
 
 	def _update_conffiles(self):
 		with catch_stdout(self.logger):
 			handler_commit(['/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo'])
+
+	def _update_svg_file(self, src_file, filename):
+		dest_file = os.path.join(FRONTEND_ICONS_DIR, 'apps-%s' % filename)
+		shutil.copy2(src_file, dest_file)
+		self.debug('copying %s -> %s' % (src_file, dest_file))
+
+		# images are created with UMC umask: -rw-------
+		# change the mode to UCS umask:      -rw-r--r--
+		os.chmod(dest_file, stat.S_IREAD | stat.S_IWRITE | stat.S_IRGRP | stat.S_IROTH)
+

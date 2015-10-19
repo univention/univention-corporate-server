@@ -104,7 +104,8 @@ class Get(UniventionAppAction):
 		ucr = ConfigRegistry()
 		ucr.load()
 		ret = app.attrs_dict()
-		ret['icon'] = app.icon
+		ret['logo'] = app.logo
+		ret['logo_detail_page'] = app.logo_detail_page
 		ret['screenshot'] = app.get_screenshot_url()
 		ret['is_installed'] = app.is_installed()
 		ret['is_current'] = app.without_repository or ucr.get('repository/online/component/%s' % app.component_id) == 'enabled'

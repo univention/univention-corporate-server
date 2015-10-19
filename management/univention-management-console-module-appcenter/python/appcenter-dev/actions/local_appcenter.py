@@ -43,6 +43,8 @@ from datetime import date
 import gzip
 import tarfile
 from tempfile import mkdtemp
+from ConfigParser import ConfigParser
+
 
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
@@ -135,6 +137,16 @@ class AppcenterApp(object):
 			url = get_url_method()
 			if os.path.exists(filename):
 				yield self.file_info(special_file, url, filename)
+
+		# Adding logo files
+		config = ConfigParser()
+		config.read(self.get_ini_file())
+		for ikey in ('Logo', 'LogoDetailPage'):
+			if config.has_option('Application', ikey):
+				basename = config.get('Application', ikey)
+				filename = self._meta_inf_dir(basename)
+				url = self._meta_url(basename)
+				yield self.file_info(basename, url, filename)
 
 		# Adding LICENSE_AGREEMENT and localised versions like LICENSE_AGREEMENT_DE
 		for readme_filename in glob(self._components_dir('LICENSE_AGREEMENT*')):

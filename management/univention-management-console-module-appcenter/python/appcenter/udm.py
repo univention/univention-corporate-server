@@ -167,7 +167,7 @@ class ApplicationLDAPObject(object):
 		base64icon = ''
 		try:
 			from univention.appcenter.actions.umc_update import FRONTEND_ICONS_DIR
-			with open(os.path.join(FRONTEND_ICONS_DIR, '50x50', app.icon)) as f:
+			with open(os.path.join(FRONTEND_ICONS_DIR, 'scalable', app.logo)) as f:
 				base64icon = base64.b64encode(f.read())
 		except (ImportError, IOError):
 			pass

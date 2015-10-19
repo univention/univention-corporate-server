@@ -49,11 +49,7 @@ define([
 		bootstrapClasses: "",
 
 		getIconClass: function(item) {
-			if (item.isUCSComponent || array.indexOf(item.unlocalised_categories, 'UCS components') >= 0) {
-				// do not display icon of UCS components
-				return tools.getIconClass('appcenter-ucs-component-green', 50, 'umcAppCenter', 'background-size: auto 100%');
-			}
-			return tools.getIconClass(item.icon, 50, 'umcAppCenter');
+			return tools.getIconClass('apps-' + item.logo, 'scalable', 'umcAppCenter');
 		},
 
 		renderRow: function(item) {

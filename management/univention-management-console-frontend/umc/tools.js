@@ -1062,6 +1062,10 @@ define([
 				dir: 'scalable'
 			};
 
+			if (size == 'scalable') {
+				values.s = '';
+			}
+
 			if (/\.png$/.test(icon)) {
 				// adjust the dir name for PNG images
 				values.dir = lang.replace('{s}x{s}', values);
@@ -1101,7 +1105,7 @@ define([
 					// add dynamic style sheet information for the given icon
 					var css = lang.replace(
 						'background: no-repeat;' +
-						'width: {s}px; height: {s}px;' +
+						(size == 'scalable' ? '' : 'width: {s}px; height: {s}px;') +
 						'background-image: url("{url}");' +
 						cssStyle,
 						values);

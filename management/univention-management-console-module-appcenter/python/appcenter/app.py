@@ -337,6 +337,8 @@ class App(object):
 	id = AppAttribute(regex='^[a-zA-Z0-9]+(([a-zA-Z0-9-_]+)?[a-zA-Z0-9])?$', required=True)
 	code = AppAttribute(regex='^[A-Za-z0-9]{2}$', required=True)
 	component_id = AppAttribute(required=True)
+	logo = AppAttribute(regex='^[a-zA-Z0-9-_]+\.svg$', required=True)
+	logo_detail_page = AppAttribute(regex='^[a-zA-Z0-9-_]+\.svg$', required=False)
 
 	name = AppAttribute(required=True, localisable=True)
 	version = AppAttribute(required=True)
@@ -488,10 +490,6 @@ class App(object):
 				return
 			attr_values[attr.name] = value
 		return cls(**attr_values)
-
-	@property
-	def icon(self):
-		return 'apps-%s.png' % self.component_id
 
 	@property
 	def docker(self):
