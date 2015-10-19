@@ -3,7 +3,7 @@
 # Univention Postgresql
 #  postinst
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,21 +30,31 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# configure firewall
-ucr set security/packetfilter/package/univention-postgresql/tcp/5432/all="ACCEPT" \
-		security/packetfilter/package/univention-postgresql/tcp/5432/all/en="postgresql"
-[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
-
 #DEBHELPER#
 
 . /usr/share/univention-lib/all.sh
 
-call_joinscript 40univention-postgresql.inst
+case "$1" in
+	configure)
+		call_joinscript 40univention-postgresql.inst
 
-# restart postgresql to load correct configfiles (Bug #27786)
-[ -x "/etc/init.d/postgresql" ] && invoke-rc.d postgresql restart
-[ -x "/etc/init.d/postgresql-8.4" ] && invoke-rc.d postgresql-8.4 restart
-[ -x "/etc/init.d/postgresql-8.3" ] && invoke-rc.d postgresql-8.3 restart
-[ -x "/etc/init.d/postgresql-7.4" ] && invoke-rc.d postgresql-7.4 restart
+		# if [ -z "$2" ] # installation
+		# then
+		# fi
+
+		# if [ -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.9-1 # upgrade
+		# then
+		# fi
+
+		;;
+
+	abort-upgrade|abort-remove|abort-deconfigure)
+		;;
+
+	*)
+		echo "postinst called with unknown argument \`$1'" >&2
+		exit 1
+		;;
+esac
 
 exit 0

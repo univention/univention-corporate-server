@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Univention Postgresql
-#  join script
+#  postrm
 #
-# Copyright 2010-2015 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,13 +30,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION="1"
+#DEBHELPER#
 
-. /usr/share/univention-join/joinscripthelper.lib
-joinscript_init
+case "$1" in
+	remove|purge)
+		# Due to Bug #27786 dummy config files have to be created, otherwise
+		# postgresql is not reinstallable
+		touch /etc/postgresql/8.4/main/pg_hba.conf
+		;;
 
-# update pam_ldap.conf to have the current machine.secret
-univention-config-registry commit /etc/postgresql/pam_ldap.conf
+	upgrade|disappear|failed-upgrade|abort-install|abort-upgrade)
+		;;
 
-joinscript_save_current_version
+	*)
+		echo "postrm called with unknown argument \`$1'" >&2
+		exit 1
+		;;
+esac
+
 exit 0

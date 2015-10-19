@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Univention Postgresql
-#  join script
+#  postinst
 #
-# Copyright 2010-2015 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,13 +30,42 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION="1"
+#DEBHELPER#
 
-. /usr/share/univention-join/joinscripthelper.lib
-joinscript_init
+. /usr/share/univention-lib/all.sh
 
-# update pam_ldap.conf to have the current machine.secret
-univention-config-registry commit /etc/postgresql/pam_ldap.conf
+case "$1" in
+	configure)
+		if [ -z "$2" ] # installation
+		then
+			# configure firewall
+			ucr set security/packetfilter/package/univention-postgresql-8.4/tcp/5432/all="ACCEPT" \
+				security/packetfilter/package/univention-postgresql-8.4/tcp/5432/all/en="postgresql"
+			if [ -x "/etc/init.d/univention-firewall" ]
+			then
+				invoke-rc.d univention-firewall restart
+			fi
+		fi
 
-joinscript_save_current_version
+		# if [ -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.9-1 # upgrade
+		# then
+		# fi
+
+		# restart postgresql to load correct configfiles (Bug #27786)
+		if [ -x "/etc/init.d/postgresql" ]
+		then
+			invoke-rc.d postgresql restart
+		fi
+
+		;;
+
+	abort-upgrade|abort-remove|abort-deconfigure)
+		;;
+
+	*)
+		echo "postinst called with unknown argument \`$1'" >&2
+		exit 1
+		;;
+esac
+
 exit 0

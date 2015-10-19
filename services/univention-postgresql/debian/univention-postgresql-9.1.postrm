@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # Univention Postgresql
-#  postinst
+#  postrm
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,11 +32,20 @@
 
 #DEBHELPER#
 
-# Due to Bug #27786 dummy config files have to be created, otherwise
-# postgresql is not reinstallable
-touch /etc/postgresql/9.1/main/pg_hba.conf
-touch /etc/postgresql/8.4/main/pg_hba.conf
-touch /etc/postgresql/8.3/main/pg_hba.conf
-touch /etc/postgresql/7.4/main/pg_hba.conf
+case "$1" in
+	remove|purge)
+		# Due to Bug #27786 dummy config files have to be created, otherwise
+		# postgresql is not reinstallable
+		touch /etc/postgresql/9.1/main/pg_hba.conf
+		;;
+
+	upgrade|disappear|failed-upgrade|abort-install|abort-upgrade)
+		;;
+
+	*)
+		echo "postrm called with unknown argument \`$1'" >&2
+		exit 1
+		;;
+esac
 
 exit 0

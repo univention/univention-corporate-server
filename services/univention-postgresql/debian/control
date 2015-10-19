@@ -8,13 +8,43 @@ Build-Depends: debhelper,
 
 Package: univention-postgresql
 Architecture: all
-Pre-Depends: postgresql-9.1 | postgresql-8.4 | postgresql-8.3 | postgresql-7.4
 Depends: ${misc:Depends},
+ univention-postgresql-9.1 | univention-postgresql-8.4,
  shell-univention-lib (>= 3.0.4-1),
  univention-config-registry
 Description: UCS - postgresql configuration
+ This meta-package depends on the package with the configuration for
+ the specific postgresql-*.* package.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-postgresql-9.1
+Architecture: all
+Pre-Depends: postgresql-9.1
+Depends: ${misc:Depends},
+ shell-univention-lib (>= 3.0.4-1),
+ univention-config-registry
+Description: UCS - postgresql 9.1 configuration
  This package contains the configuration for the
- postgresql package.
+ postgresql-9.1 package.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-postgresql-8.4
+Architecture: all
+Pre-Depends: postgresql-8.4
+Depends: ${misc:Depends},
+ shell-univention-lib (>= 3.0.4-1),
+ univention-config-registry
+Description: UCS - postgresql 8.4 configuration
+ This package contains the configuration for the
+ postgresql-8.4 package.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
