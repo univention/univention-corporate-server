@@ -1,0 +1,121 @@
+#!/usr/share/ucs-test/runner python
+## desc: |
+##  Collisions between user uidNumbers and group gidNumbers
+##  Check different scenarios where the user uidNumbers can collide with group
+##  gidNumbers and vice versa
+## bugs: [38796]
+## tags: [udm]
+## roles: [domaincontroller_master]
+## versions:
+##  4.0-3: found
+##  4.1-0: fixed
+## exposure: dangerous
+## packages:
+##   - python-univention-directory-manager
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.admin.modules as udm_modules
+import univention.config_registry
+
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+
+udm_modules.update()
+lo = utils.get_ldap_connection()
+
+
+def get_max_id():
+	base_dn = ucr['ldap/base']
+	users = udm_modules.lookup('users/user', None, lo, base=base_dn, scope='sub')
+	groups = udm_modules.lookup('groups/group', None, lo, base=base_dn, scope='sub')
+
+	highest_uid = max(int(user['uidNumber']) for user in users)
+	highest_gid = max(int(group['gidNumber']) for group in groups)
+
+	id_to_collide_with = max(highest_uid, highest_gid) + 2
+
+	return id_to_collide_with
+
+
+def consecutive_user_creation():
+	id_to_collide_with = get_max_id()
+	udm.create_group(gidNumber=id_to_collide_with)
+
+	udm.create_user(uidNumber=id_to_collide_with - 1)
+	testcase_user_dn = udm.create_user()[0]
+
+	if int(lo.getAttr(testcase_user_dn, 'uidNumber')[0]) == id_to_collide_with:
+		return {'failed': True,
+					'msg': "Aquired user uidNumber which collides with a groups \
+gidNumber by consecutivley adding users."
+		}
+
+	return {'failed': False,
+			'msg': None}
+
+
+def consecutive_group_creation():
+	id_to_collide_with = get_max_id()
+	udm.create_user(uidNumber=id_to_collide_with)
+
+	udm.create_group(gidNumber=id_to_collide_with - 1)
+	testcase_group_dn = udm.create_group()[0]
+
+	if int(lo.getAttr(testcase_group_dn, 'gidNumber')[0]) == id_to_collide_with:
+		return {'failed': True,
+					'msg': "Aquired a group gidNumber which collides with a \
+users uidNumber by consecutively adding users."
+		}
+
+	return {'failed': False,
+				'msg': None
+	}
+
+
+def explicit_user_creation():
+	id_to_collide_with = get_max_id()
+	udm.create_group(gidNumber=id_to_collide_with)
+
+	try:
+		udm.create_user(uidNumber=id_to_collide_with)
+	except udm_test.UCSTestUDM_CreateUDMObjectFailed:
+		return {'failed': False,
+					'msg': None
+		}
+
+	return {'failed': True, 'msg': "Explicitly added a user setting the \
+uidNumber to an existing groups gidNumber."
+	}
+
+
+def explicit_group_creation():
+	id_to_collide_with = get_max_id()
+	udm.create_user(uidNumber=id_to_collide_with)
+
+	try:
+		udm.create_group(gidNumber=id_to_collide_with)
+	except udm_test.UCSTestUDM_CreateUDMObjectFailed:
+		return {'failed': False,
+					'msg': None
+		}
+
+	return {'failed': True,
+				'msg': "Explicitly added a group setting the gidNumber to an \
+existing users uidNumber."
+	}
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		test_results = [consecutive_user_creation()]
+		test_results.append(consecutive_group_creation())
+		test_results.append(explicit_user_creation())
+		test_results.append(explicit_group_creation())
+
+	failure_msg = '\n'.join(
+		result.get('msg') for result in test_results if result.get('failed')
+	)
+
+	if any(result['failed'] for result in test_results):
+		utils.fail(failure_msg)

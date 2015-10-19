@@ -1,3 +1,9 @@
+ucs-test (6.0.9-16) unstable; urgency=low
+
+  * Bug #39373: added 29_user_uidNumber_and_group_gidNumber_collision
+
+ -- Eduard Mai <mai@univention.de>  Mon, 19 Oct 2015 15:01:42 +0200
+
 ucs-test (6.0.9-15) unstable; urgency=medium
 
   * 80_docker: use credentials for univention-app commands (Bug #38887)
