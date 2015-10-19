@@ -61,7 +61,8 @@ class Update(Update):
 			os.unlink(isvg)
 
 		for app in AppManager.get_all_apps():
-			self._update_svg_file(app.get_cache_file(app.logo), app.logo)
+			if app.logo:
+				self._update_svg_file(app.get_cache_file(app.logo), app.logo)
 			if app.logo_detail_page:
 				self._update_svg_file(app.get_cache_file(app.logo_detail_page), app.logo_detail_page)
 
@@ -71,10 +72,11 @@ class Update(Update):
 
 	def _update_svg_file(self, src_file, filename):
 		dest_file = os.path.join(FRONTEND_ICONS_DIR, 'apps-%s' % filename)
-		shutil.copy2(src_file, dest_file)
-		self.debug('copying %s -> %s' % (src_file, dest_file))
+		if os.path.exists(src_file):
+			shutil.copy2(src_file, dest_file)
+			self.debug('copying %s -> %s' % (src_file, dest_file))
 
-		# images are created with UMC umask: -rw-------
-		# change the mode to UCS umask:      -rw-r--r--
-		os.chmod(dest_file, stat.S_IREAD | stat.S_IWRITE | stat.S_IRGRP | stat.S_IROTH)
+			# images are created with UMC umask: -rw-------
+			# change the mode to UCS umask:      -rw-r--r--
+			os.chmod(dest_file, stat.S_IREAD | stat.S_IWRITE | stat.S_IRGRP | stat.S_IROTH)
 
