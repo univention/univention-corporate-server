@@ -57,7 +57,7 @@ define([
 		itemHeight: null,
 
 		// items: Array
-		//     array of objects({src: <src>})
+		//     array of objects({src: <src-string>})
 		items: null,
 		itemNodes: null,
 
@@ -86,6 +86,7 @@ define([
 
 			this.renderContentSlider();
 			this.renderNavButtons();
+			this.renderScaleButton();
 		},
 
 		renderContentSlider: function() {
@@ -98,6 +99,11 @@ define([
 			this.contentSliderWrapper.addChild(this.contentSlider);
 			this.outerContainer.addChild(this.contentSliderWrapper);
 
+			this._renderThumbs();
+			this._setDefaultThumbsHeight();
+		},
+
+		_renderThumbs: function() {
 			this.loadedImagesCount = 0;
 			var index = 0;
 
@@ -111,27 +117,23 @@ define([
 						this.imagesLoaded();
 					}),
 					onclick: lang.hitch(this, function(evt) {
-						this.togglePreviewSize(parseInt(evt.target.getAttribute('index')));
+						this.togglePreviewSize();
+						//TODO two calls for showItem
+						this.showItem(parseInt(evt.target.getAttribute('index')));
 					})
 				}, imgWrapper);
 				this.itemNodes.push(imgWrapper);
 				index++;
 			}));
-
+		},
+		
+		_setDefaultThumbsHeight: function() {
 			if (!styles.getStyleSheet('defaultItemHeightWrapper')) {
 				styles.insertCssRule('.contentSlider .carouselScreenshot', lang.replace('height: {0}px', [this.itemHeight]), 'defaultItemHeightWrapper');
 			}
 			if (!styles.getStyleSheet('defaultItemHeightImage')) {
 				styles.insertCssRule('.contentSlider div', lang.replace('height: {0}px', [this.itemHeight]), 'defaultItemHeightImage');
 			}
-
-			this.scaleButton = domConstruct.create('div', {
-				'class': 'scaleButton',
-				onclick: lang.hitch(this, function(e) {
-					//e.stopPropagation();
-					this.togglePreviewSize();
-				})
-			}, this.domNode);
 		},
 
 		renderNavButtons: function() {
@@ -154,6 +156,15 @@ define([
 			domConstruct.create('div', {
 				'class': 'carouselButtonImage'
 			}, this.rightButton);
+		},
+
+		renderScaleButton: function() {
+			this.scaleButton = domConstruct.create('div', {
+				'class': 'scaleButton',
+				onclick: lang.hitch(this, function() {
+					this.togglePreviewSize();
+				})
+			}, this.domNode);
 		},
 
 		imagesLoaded: function() {
@@ -191,9 +202,10 @@ define([
 				domClass.remove(this.leftButton, 'dijitHidden');
 				domClass.remove(this.rightButton, 'dijitHidden');
 
-				var widthForItems = availableWidth - (domGeometry.getMarginBox(this.leftButton).w * 2);
+				var widthForThumbs = availableWidth - 
+					  (domGeometry.getMarginBox(this.leftButton).w  + domGeometry.getMarginBox(this.rightButton).w);
 				domStyle.set(this.outerContainer.domNode, 'width', availableWidth + 'px');
-				domStyle.set(this.contentSliderWrapper.domNode, 'width', widthForItems + 'px');
+				domStyle.set(this.contentSliderWrapper.domNode, 'width', widthForThumbs + 'px');
 			}
 			this._toggleNavButtonsVisibility();
 		},
@@ -201,10 +213,10 @@ define([
 		_resizeBigThumbnails: function() {
 			var maxHeight = dojo.window.getBox().h - 200;
 			maxHeight = (maxHeight < this.itemHeight) ? this.itemHeight : maxHeight;
-			var marginWidth = domGeometry.getMarginExtents(this.itemNodes[0]).w;
-			//make sure navButton is visible for sizing calculations
-			domClass.remove(this.leftButton, 'dijitHidden');
-			var maxWidth = domGeometry.getMarginBox(this.domNode).w - (domGeometry.getMarginBox(this.leftButton).w * 2) - marginWidth;
+
+			var marginOfThumbs = domGeometry.getMarginExtents(this.itemNodes[0]).w;
+			domClass.remove(this.leftButton, 'dijitHidden'); //make sure navButton is visible for sizing calculations
+			var maxWidth = domGeometry.getMarginBox(this.domNode).w - (domGeometry.getMarginBox(this.leftButton).w * 2) - marginOfThumbs;
 
 			styles.disableStyleSheet('defaultItemHeightWrapper');
 			styles.disableStyleSheet('defaultItemHeightImage');
@@ -225,22 +237,20 @@ define([
 		},
 
 		_toggleNavButtonsVisibility: function(newOffset) {
+			var _contentSliderOffset;
 			if (newOffset === undefined) {
-				var contentSliderOffset = Math.abs(domStyle.get(this.contentSlider.domNode, 'left'));
+				_contentSliderOffset = Math.abs(domStyle.get(this.contentSlider.domNode, 'left'));
 			} else {
-				var contentSliderOffset = newOffset;
+				_contentSliderOffset = newOffset;
 			}
 			
 			var maxOffset = domGeometry.getMarginBox(this.contentSlider.domNode).w - domGeometry.getMarginBox(this.contentSliderWrapper.domNode).w;
 
-			domClass.toggle(this.leftButton, 'disabled', (contentSliderOffset === 0 || this.shownItemIndex === 0));
-			domClass.toggle(this.rightButton, 'disabled', (contentSliderOffset === maxOffset || this.shownItemIndex === this.items.length-1));
+			domClass.toggle(this.leftButton, 'disabled', (_contentSliderOffset === 0 || this.shownItemIndex === 0));
+			domClass.toggle(this.rightButton, 'disabled', (_contentSliderOffset === maxOffset || this.shownItemIndex === this.items.length-1));
 		},
 
-		togglePreviewSize: function(indexAfterToggle) {
-			if (indexAfterToggle === undefined) {
-				indexAfterToggle = this.shownItemIndex;
-			}
+		togglePreviewSize: function() {
 			domClass.add(this.contentSlider.domNode, 'noTransition');
 			if (this.bigThumbnails) {
 				styles.enableStyleSheet('defaultItemHeightWrapper');
@@ -258,7 +268,7 @@ define([
 			domClass.toggle(this.scaleButton, 'minimize');
 
 			this.resizeCarousel();
-			this.showItem(indexAfterToggle);
+			this.showItem(this.shownItemIndex);
 			domClass.remove(this.contentSlider.domNode, 'noTransition');
 
 			//scroll to the top of the image
@@ -267,7 +277,7 @@ define([
 		},
 
 		showItem: function(newIndex) {
-			if (newIndex < 0 || newIndex > this.itemNodes.length || newIndex === this.itemNodes.length) {
+			if (newIndex < 0 || newIndex >= this.itemNodes.length) {
 				return;
 			}
 
@@ -287,11 +297,14 @@ define([
 			}
 
 			var oldOffset = Math.abs(domStyle.get(this.contentSlider.domNode, 'left'));
-			if (oldOffset === newOffset) {
-				if (newIndex < this.shownItemIndex) {
-					this.showItem(newIndex -1);
-					return;
-				}
+			
+			//if the new index would not change the offset
+			//take the next lower index till a new offset is found
+			//this can only happen when the new index is lower than the current index since the
+			//highest possible index to show without having blank space must not be the last index of all thumbs
+			if (oldOffset === newOffset && newIndex < this.shownItemIndex) {
+				this.showItem(newIndex -1);
+				return;
 			}
 
 			this.shownItemIndex = newIndex;

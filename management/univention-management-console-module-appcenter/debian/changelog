@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-36) unstable; urgency=low
+
+  * Bug #39524: Carousel.js cleanup
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 19 Oct 2015 17:55:15 +0200
+
 univention-management-console-module-appcenter (5.0.6-35) unstable; urgency=low
 
   * Bug #39199: check ports hard requirement 
