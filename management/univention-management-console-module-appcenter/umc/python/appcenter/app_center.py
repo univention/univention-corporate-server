@@ -620,10 +620,15 @@ class Application(object):
 	@classmethod
 	def sync_with_server(cls):
 		something_changed = cls._extract_local_archive()
-		json_url = urljoin('%s/' % cls.get_metainf_url(), 'index.json.gz')
+		index_json_gz_filename = 'index.json.gz'
+		index_json_gz_path = os.path.join(CACHE_DIR, index_json_gz_filename)
+		json_url = urljoin('%s/' % cls.get_metainf_url(), index_json_gz_filename)
 		MODULE.process('Downloading "%s"...' % json_url)
+		index_json_gz = urlopen(json_url).read()
+		with open(index_json_gz_path, 'wb') as f:
+			f.write(index_json_gz)
 		try:
-			zipped = StringIO(urlopen(json_url).read())
+			zipped = StringIO(index_json_gz)
 			content = GzipFile(mode='rb', fileobj=zipped).read()
 		except (urllib2.HTTPError, urllib2.URLError) as exc:
 			raise AppcenterServerContactFailed(exc)
@@ -639,6 +644,8 @@ class Application(object):
 		files_in_json_file = []
 		for appname, appinfo in json_apps.iteritems():
 			for appfile, appfileinfo in appinfo.iteritems():
+				if appfile == 'DockerImage':
+					continue
 				filename = os.path.basename('%s.%s' % (appname, appfile))
 				remote_md5sum = appfileinfo['md5']
 				remote_url = appfileinfo['url']

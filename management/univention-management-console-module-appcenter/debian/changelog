@@ -1,3 +1,11 @@
+univention-management-console-module-appcenter (5.0.6-41) unstable; urgency=medium
+
+  * Bug #39591: Move verification method to Docker class
+  * Cache index.json.gz locally
+  * Actually verify the DockerImage hash
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Oct 2015 16:35:09 +0200
+
 univention-management-console-module-appcenter (5.0.6-40) unstable; urgency=low
 
   * Bug #39199: fixed port checking 

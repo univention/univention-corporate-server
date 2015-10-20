@@ -32,21 +32,60 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+# standard library
 import sys
 from subprocess import check_output, call
 import os
 import os.path
 import shlex
 from json import loads
+from StringIO import StringIO
+from gzip import GzipFile
+import requests
+from hashlib import sha256
 
+# univention
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 
 from univention.appcenter.utils import app_ports, call_process, shell_safe
 from univention.appcenter.log import get_base_logger
+from univention.appcenter.app import CACHE_DIR
 
 _logger = get_base_logger().getChild('docker')
 
+import univention.management.console as umc
+_ = umc.Translation('univention-management-console-module-appcenter').translate
+
+DOCKER_READ_USER_CRED = {
+	'username': 'ucs',
+	'pasword': 'readonly',
+	}
+
+class DockerImageVerificationFailedRegistryContact(Exception):
+
+	def __init__(self, app_name, docker_image_manifest_url):
+		symptom_en_US = 'Image verification for %s failed' % (app_name,)
+		symptom_message = _('Image verification for %s failed') % (app_name,)
+
+		reason_en_US = 'Error while contacting Docker registry server %s' % (docker_image_manifest_url,)
+		reason_message = _('Error while contacting Docker registry server %s') % (docker_image_manifest_url,)
+
+		self.en_US = symptom_en_US + '. ' + reason_en_US
+		message = symptom_message + '. ' + reason_message
+		super(DockerImageVerificationFailedRegistryContact, self).__init__(message)
+
+class DockerImageVerificationFailedChecksum(Exception):
+	def __init__(self, app_name):
+		symptom_en_US = 'Image verification for %s failed' % (app_name,)
+		symptom_message = _('Image verification for %s failed') % (app_name,)
+
+		reason_en_US = 'Manifest checksum mismatch'
+		reason_message = _('Manifest checksum mismatch')
+
+		self.en_US = symptom_en_US + '. ' + reason_en_US
+		message = symptom_message + '. ' + reason_message
+		super(DockerImageVerificationFailedChecksum, self).__init__(message)
 
 def inspect(name):
 	out = check_output(['docker', 'inspect', name])
@@ -65,11 +104,52 @@ def pull(image):
 			with open(dockercfg_file) as dockercfg:
 				cfg = loads(dockercfg.read())
 		if hub not in cfg:
-			retcode = call(['docker', 'login', '-e', 'invalid', '-u', 'ucs', '-p', 'readonly', hub])
+			retcode = call(['docker', 'login', '-e', 'invalid', '-u', DOCKER_READ_USER_CRED['username'], '-p', DOCKER_READ_USER_CRED['password'], hub])
 			if retcode != 0:
 				_logger.warn('Could not login to %s. You may not be able to pull the image from the repository!' % hub)
 	call(['docker', 'pull', image])
 
+def verify(app, image):
+	index_json_gz_filename = 'index.json.gz'
+	index_json_gz_path = os.path.join(CACHE_DIR, index_json_gz_filename)
+	with open(index_json_gz_path, 'wb') as f:
+		index_json_gz = f.read()
+	try:
+		zipped = StringIO(index_json_gz)
+		content = GzipFile(mode='rb', fileobj=zipped).read()
+	except:
+		_logger.error('Could not read "%s"' % index_json_gz_filename)
+		raise
+	try:
+		json_apps = loads(content)
+	except:
+		_logger.error('JSON malformatted: %r' % content)
+		raise
+
+	try:
+		appinfo = json_apps[app.name]
+		appfileinfo = appinfo['DockerImage']
+		appcenter_sha256sum = appfileinfo['sha256']
+		docker_image_manifest_url = appfileinfo['url']
+	except KeyError as exc:
+		_logger.error('Error looking up DockerImage checksum for %s from index.json' % app.name)
+		raise
+
+	https_request_auth = requests.auth.HTTPBasicAuth(DOCKER_READ_USER_CRED['username'], DOCKER_READ_USER_CRED['password'])
+	https_request_answer = requests.get(docker_image_manifest_url, auth=https_request_auth)
+	if not https_request_answer.ok:
+		exc = DockerImageVerificationFailedRegistryContact(app.name, docker_image_manifest_url)
+		_logger.error(exc.en_US)
+		raise exc
+
+	docker_image_manifest = https_request_answer.content
+	docker_image_manifest_hash = sha256(docker_image_manifest).hexdigest()
+
+	# compare with docker registry
+	if appcenter_sha256sum != docker_image_manifest_hash:
+		exc = DockerImageVerificationFailedChecksum(app.name, docker_image_manifest_url)
+		_logger.error(exc.en_US)
+		raise exc
 
 def ps(only_running=True):
 	args = ['docker', 'ps', '--no-trunc=true']
@@ -152,6 +232,9 @@ class Docker(object):
 
 	def pull(self):
 		return pull(self.image)
+
+	def verify(self):
+		return verify(self.app, self.image)
 
 	def execute_with_output(self, *args, **kwargs):
 		args = list(args)

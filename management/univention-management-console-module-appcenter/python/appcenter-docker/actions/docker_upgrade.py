@@ -121,6 +121,10 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 
 	def _upgrade_image(self, app, args):
 		docker = self._get_docker(app)
+
+		self.log('Verifying Docker registry manifest for app image %s' % docker.image)
+		docker.verify()
+		
 		docker.pull()
 		self.log('Saving data from old container (%s)' % self.old_app)
 		old_docker = self._get_docker(self.old_app)
