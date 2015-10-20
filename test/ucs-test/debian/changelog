@@ -1,3 +1,9 @@
+ucs-test (6.0.10-4) unstable; urgency=medium
+
+  * 80_docker/dockertest.py: ignore signature (Bug #39591)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Oct 2015 21:39:42 +0200
+
 ucs-test (6.0.10-3) unstable; urgency=low
 
   * Bug #39500 apache: Disable SSLv3

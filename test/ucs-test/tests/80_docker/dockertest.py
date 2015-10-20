@@ -307,7 +307,11 @@ UCS components=UCS-Komponenten
 Virtualization=Virtualisierung''')
 			f.close()
 
-		handler_set(['update/secure_apt=no', 'repository/app_center/server=%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])])
+		handler_set([
+			'update/secure_apt=no',
+			'appcenter/index/verify=false',
+			'repository/app_center/server=%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+		])
 
 	def update(self):
 		for vv in os.listdir('/var/www/meta-inf/'):
