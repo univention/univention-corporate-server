@@ -347,7 +347,7 @@ class Application(object):
 				self._options[ikey] = 0
 
 		# parse list values
-		for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'requiredapps', 'serverrole', 'supportedarchitectures'):
+		for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'requiredapps', 'serverrole', 'supportedarchitectures', 'portsexclusive', 'portsredirection'):
 			ival = self.get(ikey)
 			if ival:
 				self._options[ikey] = self._reg_comma.split(ival)
@@ -1072,23 +1072,9 @@ class Application(object):
 		return True
 
 	@HardRequirement('install', 'update')
-	def must_have_no_port_conflicts(self, ucr):
-		conflictedapps = []
-		ports = []
-		for i in self.ports_exclusive:
-			ports.append(i)
-		for i in self.ports_redirection:
-			ports.append(i.split(':', 1)[0])
-		for app_id, container_port, host_port in app_ports():
-			if str(host_port) in ports:
-				conflictedapps.append({'id': app_id})
-		if conflictedapps:
-			return conflictedapps
-		return True
-
-	@HardRequirement('install', 'update')
 	def must_have_no_conflicts_apps(self, package_manager):
 		conflictedapps = []
+		# check ConflictedApps
 		for app in self.all():
 			if not app.allowed_on_local_server():
 				# cannot be installed, continue
@@ -1096,6 +1082,15 @@ class Application(object):
 			if app.id in self.get('conflictedapps') or self.id in app.get('conflictedapps'):
 				if app.is_installed(package_manager):
 					conflictedapps.append({'id' : app.id, 'name' : app.name})
+		# check port conflicts
+		ports = []
+		for i in self.get('portsexclusive'):
+			ports.append(i)
+		for i in self.get('portsredirection'):
+			ports.append(i.split(':', 1)[0])
+		for app_id, container_port, host_port in app_ports():
+			if str(host_port) in ports:
+				conflictedapps.append({'id': app_id})
 		if conflictedapps:
 			return conflictedapps
 		return True

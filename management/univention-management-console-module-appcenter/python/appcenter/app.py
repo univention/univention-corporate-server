@@ -717,10 +717,19 @@ class App(object):
 		return True
 
 	@hard_requirement('install', 'upgrade')
-	def must_have_no_port_conflicts(self, ucr):
-		'''The application requires ports already used by:
+	def must_have_no_conflicts_apps(self, ucr):
+		'''The application conflicts with the following applications:
 			%r'''
 		conflictedapps = []
+		# check ConflictedApps
+		for app in AppManager.get_all_apps():
+			if not app._allowed_on_local_server(ucr):
+				# cannot be installed, continue
+				continue
+			if app.id in self.conflicted_apps or self.id in app.conflicted_apps:
+				if app.is_installed():
+					conflictedapps.append({'id': app.id, 'name': app.name})
+		# check port conflicts
 		ports = []
 		for i in self.ports_exclusive:
 			ports.append(i)
@@ -729,22 +738,6 @@ class App(object):
 		for app_id, container_port, host_port in app_ports():
 			if str(host_port) in ports:
 				conflictedapps.append({'id': app_id})
-		if conflictedapps:
-			return conflictedapps
-		return True
-
-	@hard_requirement('install', 'upgrade')
-	def must_have_no_conflicts_apps(self, ucr):
-		'''The application conflicts with the following applications:
-			%r'''
-		conflictedapps = []
-		for app in AppManager.get_all_apps():
-			if not app._allowed_on_local_server(ucr):
-				# cannot be installed, continue
-				continue
-			if app.id in self.conflicted_apps or self.id in app.conflicted_apps:
-				if app.is_installed():
-					conflictedapps.append({'id': app.id, 'name': app.name})
 		if conflictedapps:
 			return conflictedapps
 		return True
