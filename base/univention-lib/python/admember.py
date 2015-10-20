@@ -50,6 +50,7 @@ import univention.uldap
 import univention.lib.package_manager
 from univention.lib.misc import custom_groupname
 import univention.debug as ud
+from univention.config_registry.interfaces import Interfaces
 
 ## Workaround for local module "dns" in s4connector:
 import sys
@@ -1094,6 +1095,66 @@ def run_samba_join_script(username, password, ucr=None):
 		ud.debug(ud.MODULE, ud.ERROR, "26univention-samba.inst failed with %d" % (p1.returncode,))
 		raise sambaJoinScriptFailed()
 
+def add_ucs_sso_host_record_in_ad(ad_ip=None, ucr=None):
+	if ucr is None:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+	if ad_ip is None:
+		ad_domain_info = lookup_adds_dc()
+		ad_ip = ad_domain_info['DC IP']
+
+	ud.debug(ud.MODULE, ud.PROCESS, "Create ucs-sso A record on %s" % ad_ip)
+
+	hostname = ucr.get('hostname')
+	ucs_sso = 'ucs-sso'
+	domainname = ucr.get('domainname')
+	fqdn = '%s.%s' % (ucs_sso, domainname)
+	i = Interfaces()
+	addr = i.get_default_ip_address()
+	found = False
+
+	# check if we are already defined as ucs-sso host record
+	try:
+		resolver = dns.resolver.Resolver()
+		resolver.lifetime = 10
+		resolver.nameservers = [ad_ip]
+		response = resolver.query(fqdn, 'A')
+		for data in response:
+			if str(data) == str(addr.ip):
+				found = True
+	except dns.resolver.NXDOMAIN:
+		found = False
+	except Exception as err:
+		ud.debug(ud.MODULE, ud.PROCESS, "failed to query for ucs-sso A record (%s, %s)" % (err.__class__.__name__, err.message))
+		found = False
+	if found:
+		ud.debug(ud.MODULE, ud.PROCESS, "ucs-sso A record for %s found on %s" % (addr.ip, ad_ip))
+		return True
+
+	# create host record
+	fd = tempfile.NamedTemporaryFile(delete=False)
+	fd.write('server %s\n' % ad_ip)
+	fd.write('update add %s 86400 A %s\n' % (fqdn, addr.ip))
+	fd.write('send\n')
+	fd.write('quit\n')
+	fd.close()
+
+	cmd = ['kinit', '--password-file=/etc/machine.secret']
+	cmd += ['%s\$' % hostname]
+	cmd += ['nsupdate', '-v', '-g', fd.name]
+	try:
+		p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		stdout, stderr = p1.communicate()
+		ud.debug(ud.MODULE, ud.PROCESS, '%s' % stdout)
+		if p1.returncode:
+			ud.debug(ud.MODULE, ud.ERROR, '%s failed with %d (%s)' % (cmd, p1.returncode, stderr))
+			ud.debug(ud.MODULE, ud.ERROR, 'failed to add A record for ucs-sso to %s' % ad_ip)
+			return False
+	finally:
+		os.unlink(fd.name)
+
+	return True
+
 def get_domaincontroller_srv_record(domain, nameserver=None):
 	if not domain:
 		return False
@@ -1233,6 +1294,7 @@ def configure_backup_as_ad_member():
 	set_nameserver_from_ucs_master()
 	remove_install_univention_samba()
 	prepare_ucr_settings()
+	add_ucs_sso_host_record_in_ad()
 
 def configure_slave_as_ad_member():
 	# TODO something else?
