@@ -1,3 +1,9 @@
+ucs-test (6.0.9-21) unstable; urgency=low
+
+  * Bug #39199: fixed docker port tests 
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Oct 2015 10:41:40 +0200
+
 ucs-test (6.0.9-20) unstable; urgency=low
 
   * Bug #39199: added python-pytest ucs-test-docker

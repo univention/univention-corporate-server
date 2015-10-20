@@ -55,9 +55,8 @@ if __name__ == '__main__':
 			# if exclusive port is already used
 			redirect.install()
 			redirect.verify(joined=False)
-			exclusive.install()
-			with pytest.raises(UCSTest_DockerApp_VerifyFailed):
-				exclusive.verify(joined=False)
+			with pytest.raises(UCSTest_DockerApp_InstallationFailed):
+				exclusive.install()
 
 			# another app should be fine
 			dummy.install()

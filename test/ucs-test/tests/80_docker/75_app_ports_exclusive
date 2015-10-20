@@ -12,7 +12,6 @@ from univention.testing.utils import restart_firewall
 
 import pytest
 import socket
-import subprocess
 
 if __name__ == '__main__':
 	
