@@ -29,9 +29,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import json
+
 import cherrypy
 
-from univention.selfservice.frontend import UniventionSelfServiceFrontend
+from univention.selfservice.frontend import UniventionSelfServiceFrontend, UMCConnectionError
 
 
 class PasswordReset(UniventionSelfServiceFrontend):
@@ -49,7 +51,12 @@ class PasswordReset(UniventionSelfServiceFrontend):
 		:param username: username
 		:return: json encoded list of strings in 'result'
 		"""
-		connection = self.get_umc_connection()
+		try:
+			connection = self.get_umc_connection()
+		except UMCConnectionError as ue:
+			cherrypy.response.status = ue.status
+			return json.dumps({"status": ue.status, "result": ue.msg})
+
 		url = "passwordreset/get_reset_methods"
 		data = {"username": username}
 		return self.umc_request(connection, url, data)
@@ -67,7 +74,12 @@ class PasswordReset(UniventionSelfServiceFrontend):
 		:return: json(True) in 'result' if success or HTTPException in case
 		of an authentication error.
 		"""
-		connection = self.get_umc_connection()
+		try:
+			connection = self.get_umc_connection()
+		except UMCConnectionError as ue:
+			cherrypy.response.status = ue.status
+			return json.dumps({"status": ue.status, "result": ue.msg})
+
 		url = "passwordreset/set_contact"
 		data = {"username": username,
 			"password": password,
@@ -84,7 +96,12 @@ class PasswordReset(UniventionSelfServiceFrontend):
 		:param method: method ('sms' / 'email')
 		:return: json(True) in 'result' if success
 		"""
-		connection = self.get_umc_connection()
+		try:
+			connection = self.get_umc_connection()
+		except UMCConnectionError as ue:
+			cherrypy.response.status = ue.status
+			return json.dumps({"status": ue.status, "result": ue.msg})
+
 		url = "passwordreset/send_token"
 		data = {"username": username, "method": method}
 		return self.umc_request(connection, url, data)
@@ -98,7 +115,12 @@ class PasswordReset(UniventionSelfServiceFrontend):
 		:param password: new password
 		:return: json(True) in 'result' if success or error message if error
 		"""
-		connection = self.get_umc_connection()
+		try:
+			connection = self.get_umc_connection()
+		except UMCConnectionError as ue:
+			cherrypy.response.status = ue.status
+			return json.dumps({"status": ue.status, "result": ue.msg})
+
 		url = "passwordreset/set_password"
 		data = {"token": token, "password": password}
 		return self.umc_request(connection, url, data)

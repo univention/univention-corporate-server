@@ -42,12 +42,22 @@ from univention.management.console.config import ucr
 LDAP_SECRETS_FILE = "/etc/self-service-ldap.secret"
 
 
+class UMCConnectionError(Exception):
+	def __init__(self, msg, status):
+		self.msg = msg
+		self.status = status
+
+	def __str__(self):
+		return "(status {}) {}".format(self.status, self.msg)
+
+
 class UniventionSelfServiceFrontend(object):
 	"""
 	base class
 	"""
 	def __init__(self):
 		self.log("__init__()")
+		self._backend = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
 
 	def log(self, msg, traceback=False):
 		cherrypy.log("{}: {}".format(self.name, msg), traceback=traceback)
@@ -68,7 +78,7 @@ class UniventionSelfServiceFrontend(object):
 
 		If username and password are supplied, they are used to connect.
 
-		:return: UMCConnection
+		:return: UMCConnection or UMCConnectionError
 		"""
 		if not username:
 			username = "{}$".format(ucr.get("hostname"))
@@ -76,17 +86,23 @@ class UniventionSelfServiceFrontend(object):
 				with open(LDAP_SECRETS_FILE) as machine_file:
 					password = machine_file.readline().strip()
 			except (OSError, IOError) as e:
-				self.log("Could not read '{}': {}".format(LDAP_SECRETS_FILE, e))
-				raise
+				msg = "Could not read '{}': {}".format(LDAP_SECRETS_FILE, e)
+				self.log(msg)
+				raise UMCConnectionError(msg, 500)
 
 		try:
-			return UMCConnection(
-				ucr.get("self-service/backend-server", ucr.get("ldap/master")),
-				username=username,
-				password=password)
-		except (HTTPException, SocketError) as e:
-			self.log("Could not connect to UMC on '{}': {}".format(ucr.get("ldap/master"), e))
-			raise
+			return UMCConnection(self._backend, username=username, password=password)
+		except HTTPException as he:
+			self.log(he)
+			try:
+				status, message = UniventionSelfServiceFrontend.work_around_broken_api(he)
+				raise UMCConnectionError(message, status)
+			except AttributeError:
+				raise he
+		except SocketError as e:
+			msg = "Could not connect to UMC server on '{}': {}".format(self._backend, e)
+			self.log(msg)
+			raise UMCConnectionError(msg, 500)
 
 	def umc_request(self, connection, url, data, command="command"):
 		try:

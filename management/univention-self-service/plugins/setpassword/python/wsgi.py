@@ -29,9 +29,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import json
+
 import cherrypy
 
-from univention.selfservice.frontend import UniventionSelfServiceFrontend
+from univention.selfservice.frontend import UniventionSelfServiceFrontend, UMCConnectionError
 
 
 class SetPassword(UniventionSelfServiceFrontend):
@@ -42,11 +44,18 @@ class SetPassword(UniventionSelfServiceFrontend):
 
 	@cherrypy.expose
 	def set_password(self, username, oldpassword, newpassword):
-		connection = self.get_umc_connection(username=username, password=oldpassword)
+		try:
+			connection = self.get_umc_connection(username=username, password=oldpassword)
+		except UMCConnectionError as ue:
+			cherrypy.response.status = ue.status
+			return json.dumps({"status": ue.status, "result": ue.msg})
+
 		url = ""
-		data = {"username": username,
+		data = {
+			"password": {
 				"password": oldpassword,
 				"new_password": newpassword}
+		}
 		return self.umc_request(connection, url, data, command='set')
 
 application = cherrypy.Application(SetPassword(), "/self-service/setpassword")
