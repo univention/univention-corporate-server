@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.6-43) unstable; urgency=medium
+
+  * Bug #39591: Allow deactivation of index signature verification
+  * New UCR variable: appcenter/index/verify
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Oct 2015 21:31:16 +0200
+
 univention-management-console-module-appcenter (5.0.6-42) unstable; urgency=medium
 
   * Bug #39591: Add gpg_verify to univention.appcenter.utils

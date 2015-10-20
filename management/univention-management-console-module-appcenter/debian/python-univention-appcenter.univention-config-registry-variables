@@ -1,0 +1,5 @@
+[appcenter/index/verify]
+Description[de]=Mit dieser Variable lässt sich die Signaturprüfung für den Appcenter Index deaktivieren. Vorgabewert ist "true".
+Description[en]=This variable allows deactivation of the signature verification for the Appcenter index. Default value is "true".
+Type=str
+Categories=management-umc
