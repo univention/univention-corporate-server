@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-45) unstable; urgency=medium
+
+  * Bug #39591: Download index_json.gz in Docker.verify in case it's missing
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Oct 2015 22:01:14 +0200
+
 univention-management-console-module-appcenter (5.0.6-44) unstable; urgency=medium
 
   * Bug #39591: Fix file open mode in Docker.verify

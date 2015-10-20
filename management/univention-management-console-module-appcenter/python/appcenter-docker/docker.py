@@ -51,6 +51,7 @@ from univention.config_registry.frontend import ucr_update
 from univention.appcenter.utils import app_ports, call_process, shell_safe
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.app import CACHE_DIR
+from univention.appcenter.actions.update import Update
 
 _logger = get_base_logger().getChild('docker')
 
@@ -112,19 +113,26 @@ def pull(image):
 def verify(app, image):
 	index_json_gz_filename = 'index.json.gz'
 	index_json_gz_path = os.path.join(CACHE_DIR, index_json_gz_filename)
-	with open(index_json_gz_path, 'rb') as f:
-		index_json_gz = f.read()
-	try:
-		zipped = StringIO(index_json_gz)
-		content = GzipFile(mode='rb', fileobj=zipped).read()
-	except:
-		_logger.error('Could not read "%s"' % index_json_gz_filename)
-		raise
-	try:
-		json_apps = loads(content)
-	except:
-		_logger.error('JSON malformatted: %r' % content)
-		raise
+
+	if os.path.exists(index_json_gz_path):
+		with open(index_json_gz_path, 'rb') as f:
+			index_json_gz = f.read()
+		try:
+			zipped = StringIO(index_json_gz)
+			content = GzipFile(mode='rb', fileobj=zipped).read()
+		except:
+			_logger.error('Could not read "%s"' % index_json_gz_filename)
+			raise
+		try:
+			json_apps = loads(content)
+		except:
+			_logger.error('JSON malformatted: %r' % content)
+			raise
+	else:
+		upd = Update()
+		upd._appcenter_server = None
+		upd._get_server()
+		json_apps = upd._load_index_json()
 
 	try:
 		appinfo = json_apps[app.name]
