@@ -112,7 +112,7 @@ def pull(image):
 def verify(app, image):
 	index_json_gz_filename = 'index.json.gz'
 	index_json_gz_path = os.path.join(CACHE_DIR, index_json_gz_filename)
-	with open(index_json_gz_path, 'wb') as f:
+	with open(index_json_gz_path, 'rb') as f:
 		index_json_gz = f.read()
 	try:
 		zipped = StringIO(index_json_gz)

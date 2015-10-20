@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-44) unstable; urgency=medium
+
+  * Bug #39591: Fix file open mode in Docker.verify
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Oct 2015 21:39:31 +0200
+
 univention-management-console-module-appcenter (5.0.6-43) unstable; urgency=medium
 
   * Bug #39591: Allow deactivation of index signature verification
