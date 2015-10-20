@@ -1095,23 +1095,39 @@ def run_samba_join_script(username, password, ucr=None):
 		ud.debug(ud.MODULE, ud.ERROR, "26univention-samba.inst failed with %d" % (p1.returncode,))
 		raise sambaJoinScriptFailed()
 
-def add_ucs_sso_host_record_in_ad(ad_ip=None, ucr=None):
-	if ucr is None:
-		ucr = univention.config_registry.ConfigRegistry()
-		ucr.load()
-	if ad_ip is None:
-		ad_domain_info = lookup_adds_dc()
-		ad_ip = ad_domain_info['DC IP']
+def add_ucs_sso_host_record_in_ad(binddn=None, bindpw=None, bindpwdfile=None):
 
-	ud.debug(ud.MODULE, ud.PROCESS, "Create ucs-sso A record on %s" % ad_ip)
+	uid = None
+	pwdfile = None
+	create_pwdfile = False
 
-	hostname = ucr.get('hostname')
+	if binddn:
+		for i in binddn.split(','):
+			if i.lower().startswith('uid='):
+				uid = i.split('=', 1)[1]
+	if bindpwdfile:
+		create_pwdfile = False
+		pwdfile = bindpwdfile
+	elif bindpw:
+		create_pwdfile = True
+		pwdfile = bindpw
+
+	if not uid or not pwdfile:
+		print 'Missing binddn or bindpw/bindpwdfile, do nothing!'
+		return False
+
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+	ad_domain_info = lookup_adds_dc()
+	ad_ip = ad_domain_info['DC IP']
 	ucs_sso = 'ucs-sso'
 	domainname = ucr.get('domainname')
 	fqdn = '%s.%s' % (ucs_sso, domainname)
 	i = Interfaces()
 	addr = i.get_default_ip_address()
 	found = False
+
+	print "Create ucs-sso A record on %s" % ad_ip
 
 	# check if we are already defined as ucs-sso host record
 	try:
@@ -1125,10 +1141,10 @@ def add_ucs_sso_host_record_in_ad(ad_ip=None, ucr=None):
 	except dns.resolver.NXDOMAIN:
 		found = False
 	except Exception as err:
-		ud.debug(ud.MODULE, ud.PROCESS, "failed to query for ucs-sso A record (%s, %s)" % (err.__class__.__name__, err.message))
+		print 'failed to query for ucs-sso A record (%s, %s)' % (err.__class__.__name__, err.message)
 		found = False
 	if found:
-		ud.debug(ud.MODULE, ud.PROCESS, "ucs-sso A record for %s found on %s" % (addr.ip, ad_ip))
+		print 'ucs-sso A record for %s found on %s' % (addr.ip, ad_ip)
 		return True
 
 	# create host record
@@ -1139,19 +1155,27 @@ def add_ucs_sso_host_record_in_ad(ad_ip=None, ucr=None):
 	fd.write('quit\n')
 	fd.close()
 
-	cmd = ['kinit', '--password-file=/etc/machine.secret']
-	cmd += ['%s\$' % hostname]
+	# create pwd file 
+	if create_pwdfile:
+		tmp = tempfile.NamedTemporaryFile(delete=False)
+		tmp.write('%s' % pwdfile)
+		tmp.close()
+		pwdfile = tmp.name
+
+	cmd = ['kinit', '--password-file=%s' % pwdfile, uid]
 	cmd += ['nsupdate', '-v', '-g', fd.name]
 	try:
 		p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		stdout, stderr = p1.communicate()
 		ud.debug(ud.MODULE, ud.PROCESS, '%s' % stdout)
 		if p1.returncode:
-			ud.debug(ud.MODULE, ud.ERROR, '%s failed with %d (%s)' % (cmd, p1.returncode, stderr))
-			ud.debug(ud.MODULE, ud.ERROR, 'failed to add A record for ucs-sso to %s' % ad_ip)
+			print '%s failed with %d (%s)' % (cmd, p1.returncode, stderr)
+			print 'failed to add A record for ucs-sso to %s' % ad_ip
 			return False
 	finally:
 		os.unlink(fd.name)
+		if create_pwdfile:
+			os.unlink(pwdfile)
 
 	return True
 
@@ -1213,9 +1237,6 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 			return False
 	finally:
 		os.unlink(fd.name)
-
-	# and add ucs-sso A record
-	add_ucs_sso_host_record_in_ad(ad_ip=ad_ip, ucr=ucr)
 
 	return True
 
@@ -1297,7 +1318,6 @@ def configure_backup_as_ad_member():
 	set_nameserver_from_ucs_master()
 	remove_install_univention_samba()
 	prepare_ucr_settings()
-	add_ucs_sso_host_record_in_ad()
 
 def configure_slave_as_ad_member():
 	# TODO something else?

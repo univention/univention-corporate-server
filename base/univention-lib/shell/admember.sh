@@ -27,6 +27,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# create a ucs-sso A record in AD
+# $1 binddn
+# $2 bindpw
+# $3 bindpwdfile
+add_ucs_sso_host_record_in_ad () {
+python -c "
+import univention.lib.admember
+import sys
+if univention.lib.admember.add_ucs_sso_host_record_in_ad(binddn='$1', bindpw='$2', bindpwdfile='$3'):
+	sys.exit(0)
+else:
+	sys.exit(1)
+"
+}
+
 is_domain_in_admember_mode () {
 python -c "
 import univention.lib.admember

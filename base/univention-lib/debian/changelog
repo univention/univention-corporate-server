@@ -1,3 +1,10 @@
+univention-lib (5.0.0-7) unstable; urgency=low
+
+  * AD Member: use join credentials in
+    add_ucs_sso_host_record_in_ad() (Bug #39574) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Oct 2015 17:41:20 +0200
+
 univention-lib (5.0.0-6) unstable; urgency=low
 
   * AD Member: run add_ucs_sso_host_record_in_ad() (Bug #39574)
