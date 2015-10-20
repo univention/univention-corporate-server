@@ -79,7 +79,7 @@ import univention.admin.handlers.container.cn as container_udm_module
 import univention.admin.uexceptions as udm_errors
 
 # local application
-from univention.appcenter.utils import app_ports
+from univention.appcenter.utils import app_ports, gpg_verify
 from univention.management.console.modules.decorators import reloading_ucr
 from univention.management.console.ldap import machine_connection, get_machine_connection
 from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
@@ -620,13 +620,31 @@ class Application(object):
 	@classmethod
 	def sync_with_server(cls):
 		something_changed = cls._extract_local_archive()
+
 		index_json_gz_filename = 'index.json.gz'
-		index_json_gz_path = os.path.join(CACHE_DIR, index_json_gz_filename)
+		detached_sig_filename = index_json_gz_filename + '.gpg'
+
+		sig_url = urljoin('%s/' % cls.get_metainf_url(), detached_sig_filename)
+		MODULE.process('Downloading "%s"...' % sig_url)
+		detached_sig = urlopen(sig_url).read()
+		detached_sig_path = os.path.join(CACHE_DIR, detached_sig_filename)
+		with open(detached_sig_path, 'wb') as f:
+			f.write(detached_sig)
+
 		json_url = urljoin('%s/' % cls.get_metainf_url(), index_json_gz_filename)
 		MODULE.process('Downloading "%s"...' % json_url)
 		index_json_gz = urlopen(json_url).read()
+
+		(rc, gpg_error) = gpg_verify("-", detached_sig_filename, content=index_json_gz)
+		if rc:
+			MODULE.error('Signature verification for %s failed' % (index_json_gz_filename,))
+			if gpg_error:
+				MODULE.error(gpg_error)
+
+		index_json_gz_path = os.path.join(CACHE_DIR, index_json_gz_filename)
 		with open(index_json_gz_path, 'wb') as f:
 			f.write(index_json_gz)
+
 		try:
 			zipped = StringIO(index_json_gz)
 			content = GzipFile(mode='rb', fileobj=zipped).read()

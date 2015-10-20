@@ -1,3 +1,11 @@
+univention-management-console-module-appcenter (5.0.6-42) unstable; urgency=medium
+
+  * Bug #39591: Add gpg_verify to univention.appcenter.utils
+  * Download index_json.gz.gpg signature and run gpg_verify
+  * Add dependencies on gnupg and python-requests
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Oct 2015 18:22:04 +0200
+
 univention-management-console-module-appcenter (5.0.6-41) unstable; urgency=medium
 
   * Bug #39591: Move verification method to Docker class

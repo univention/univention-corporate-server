@@ -52,7 +52,7 @@ from univention.config_registry.frontend import ucr_update
 
 from univention.appcenter.app import AppManager, CACHE_DIR, LOCAL_ARCHIVE
 from univention.appcenter.actions import UniventionAppAction, possible_network_error
-from univention.appcenter.utils import urlopen, get_md5_from_file
+from univention.appcenter.utils import urlopen, get_md5_from_file, gpg_verify
 
 
 class Update(UniventionAppAction):
@@ -260,12 +260,29 @@ class Update(UniventionAppAction):
 	@possible_network_error
 	def _load_index_json(self):
 		index_json_gz_filename = 'index.json.gz'
-		index_json_gz_path = os.path.join(CACHE_DIR, index_json_gz_filename)
+		detached_sig_filename = index_json_gz_filename + '.gpg'
+
+		sig_url = urljoin('%s/' % self._get_metainf_url(), detached_sig_filename)
+		self.log('Downloading "%s"...' % sig_url)
+		detached_sig = urlopen(sig_url).read()
+		detached_sig_path = os.path.join(CACHE_DIR, detached_sig_filename)
+		with open(detached_sig_path, 'wb') as f:
+			f.write(detached_sig)
+
 		json_url = urljoin('%s/' % self._get_metainf_url(), index_json_gz_filename)
 		self.log('Downloading "%s"...' % json_url)
 		index_json_gz = urlopen(json_url).read()
+
+		(rc, gpg_error) = gpg_verify("-", detached_sig_filename, content=index_json_gz)
+		if rc:
+			self.fatal('Signature verification for %s failed' % (index_json_gz_filename,))
+			if gpg_error:
+				self.fatal(gpg_error)
+
+		index_json_gz_path = os.path.join(CACHE_DIR, index_json_gz_filename)
 		with open(index_json_gz_path, 'wb') as f:
 			f.write(index_json_gz)
+
 		zipped = StringIO(index_json_gz)
 		content = GzipFile(mode='rb', fileobj=zipped).read()
 		return loads(content)

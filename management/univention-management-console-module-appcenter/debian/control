@@ -54,7 +54,8 @@ Architecture: all
 Depends: univention-ssh,
  univention-join,
  python-univention-config-registry,
- python-univention-directory-manager
+ python-univention-directory-manager,
+ gnupg
 Recommends: univention-appcenter
 Description: Library for the Univention App Center.
  .
@@ -77,7 +78,10 @@ Description: Development tools for packaging an app in
 
 Package: univention-appcenter-docker
 Architecture: all
-Depends: python-univention-appcenter, univention-docker, univention-apache
+Depends: python-univention-appcenter,
+ univention-docker,
+ univention-apache,
+ python-requests
 Description: Docker integration for certain apps of
  the Univention App Center.
  .
