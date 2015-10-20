@@ -106,8 +106,12 @@ sso_hostname="$(echo "$ucs_server_sso_fqdn"  | cut -d '.' -f 1)"
 sso_domainname="$(echo "$ucs_server_sso_fqdn"  | cut -d '.' -f 2-)"
 
 if [ -z "$ucs_server_sso_autoregistraton" ] || is_ucr_true ucs/server/sso/autoregistraton; then
-	echo /usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$sso_domainname" add a "$sso_hostname" "$(get_default_ip_address)"
-	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$sso_domainname" add a "$sso_hostname" "$(get_default_ip_address)" || die
+	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists \
+		"$sso_domainname" add a "$sso_hostname" "$(get_default_ip_address)" || die
+	if is_localhost_in_admember_mode; then
+		ucs_parseCredentials "$@"
+		add_ucs_sso_host_record_in_ad "$binddn" "$bindpwd" "$bindpwdfile" || die
+	fi
 fi
 
 ucr set security/packetfilter/package/univention-saml/tcp/11212/all?ACCEPT \
