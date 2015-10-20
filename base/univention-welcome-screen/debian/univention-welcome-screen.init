@@ -41,10 +41,11 @@ case "$1" in
 			. "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart univention-welcome-screen welcome-screen/autostart
 		fi
+		# check for running instance
 		if [ -e "/var/run/univention-welcome-screen.pid" ]; then
 			pgrep -f firefox -F /var/run/univention-welcome-screen.pid > /dev/null
-			if [ "0" != "$?" ]; then
-				log_action_end_msg 0
+			if [ "0" = "$?" ]; then
+				log_action_msg "univention-welcome-screen is already running"
 				exit 0
 			fi
 		fi
