@@ -9,7 +9,7 @@ import imaplib
 import sys
 import time
 import univention.testing.strings as uts
-import univention_baseconfig
+import univention.config_registry
 
 class WrongAcls(Exception):
 	pass
@@ -93,8 +93,8 @@ class BaseMailClient(object):
 	def set_acl_cyrus(self, email, permission):
 		"""wrapper for setting /usr/sbin/univention0-cyrus-set-acl"""
 
-		baseConfig = univention_baseconfig.baseConfig()
-		baseConfig.load()
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
 
 		cyrus_user='cyrus'
 		password=open('/etc/cyrus.secret').read()
@@ -104,8 +104,8 @@ class BaseMailClient(object):
 		hostname = 'localhost'
 		shared_name = 'user/%s' % self.owner
 
-		if 'mail/cyrus/murder/backend/hostname' in baseConfig and baseConfig['mail/cyrus/murder/backend/hostname']:
-			hostname = baseConfig['mail/cyrus/murder/backend/hostname']
+		if ucr.get('mail/cyrus/murder/backend/hostname'):
+			hostname = ucr['mail/cyrus/murder/backend/hostname']
 
 		# if we want to give acls to a group, a different syntax is needed
 		if email.find("@")==-1:

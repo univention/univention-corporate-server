@@ -1,3 +1,9 @@
+ucs-test (6.0.10-2) unstable; urgency=low
+
+  * Use port 587 for SMTP with TLS by default (Bug #39477)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 20 Oct 2015 16:29:26 +0200
+
 ucs-test (6.0.10-1) unstable; urgency=low
 
   * Bug #39306: Enable local repository tests

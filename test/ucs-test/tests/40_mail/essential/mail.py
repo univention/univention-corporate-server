@@ -711,7 +711,7 @@ def create_random_msgid():
 	return '%s.%s' % (uuid.uuid1(), random_email())
 
 def send_mail(recipients=None, sender=None, subject=None, msg=None, idstring='no id string',
-	       gtube=False, virus=False, attachments=[], server=None, port=25, tls=False, username=None, password=None,
+	       gtube=False, virus=False, attachments=[], server=None, port=0, tls=False, username=None, password=None,
 	       debuglevel=1, messageid=None, ssl=False):
 	"""
 	Send a mail to mailserver.
@@ -765,6 +765,11 @@ Regards,
 		m_server = server
 	if port:
 		m_port = int(port)
+	else:
+		if tls:
+			m_port = 587
+		else:
+			m_port = 25
 	if msg:
 		m_msg = msg
 
