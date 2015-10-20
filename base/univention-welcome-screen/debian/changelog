@@ -1,3 +1,9 @@
+univention-welcome-screen (1.0.0-3) unstable; urgency=low
+
+  * Bug #39137: Changed defaults back to 99 instead of 100
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 20 Oct 2015 16:15:12 +0200
+
 univention-welcome-screen (1.0.0-2) unstable; urgency=low
 
   * Bug #39137: Start only one instance of univention-welcome-screen
