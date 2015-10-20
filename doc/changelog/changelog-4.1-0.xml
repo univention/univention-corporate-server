@@ -89,6 +89,10 @@
 						<filename>univention-firewall</filename> now creates port forwarding
 						rules for services in Docker containers (<u:bug>38307</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						Prevent an error when logging into a docker image without an interface.
+						(<u:bug>38861</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>
