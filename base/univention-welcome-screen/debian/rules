@@ -32,14 +32,14 @@
 
 override_dh_auto_install:
 	univention-install-config-registry
-	dh_auto_install 
+	dh_auto_install
 
 override_dh_install:
 	dh_install -X.svn -Xde.po
 
 override_dh_installinit:
 	# run after 93univention-system-setup-boot and after 99kde
-	dh_installinit -punivention-welcome-screen --no-start -u"defaults 99"
+	dh_installinit --init-script=univention-welcome-screen --no-start -u"defaults 100"
 
 override_dh_fixperms:
 	dh_fixperms
@@ -47,6 +47,7 @@ override_dh_fixperms:
 
 override_dh_auto_test:
 	ucslint
+	dh_auto_test
 
 %:
 	dh $@
