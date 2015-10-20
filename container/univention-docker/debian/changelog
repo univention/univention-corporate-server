@@ -1,3 +1,9 @@
+univention-docker (0.1.0-7) unstable; urgency=low
+
+  * Docker logfile not world readable anymore (Bug #39494).
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 20 Oct 2015 12:31:06 +0200
+
 univention-docker (0.1.0-6) unstable; urgency=medium
 
   * Some cosmetic changes (Bug #39429)

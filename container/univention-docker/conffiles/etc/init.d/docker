@@ -76,7 +76,8 @@ case "$1" in
 		fi
 
 		touch "$DOCKER_LOGFILE"
-		chgrp docker "$DOCKER_LOGFILE"
+		chown root:docker "$DOCKER_LOGFILE"
+		chmod 660 "$DOCKER_LOGFILE"
 
 		ulimit -n 1048576
 		if [ "$BASH" ]; then

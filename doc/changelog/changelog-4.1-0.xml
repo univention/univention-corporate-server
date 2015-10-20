@@ -637,6 +637,10 @@
 					<systemitem class="service">etcd</systemitem> service running the Docker host.
 					(<u:bug>38331</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The Docker log file is now readable only by root and the docker process
+					(<u:bug>39494</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 	</section>
 
