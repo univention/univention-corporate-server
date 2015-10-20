@@ -32,6 +32,7 @@ nat_core_rules() {
 	iptables -t nat -A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER
 	iptables -t nat -A OUTPUT ! -d 127.0.0.0/8 -m addrtype --dst-type LOCAL -j DOCKER
 	iptables -t nat -A POSTROUTING -s 172.17.0.0/16 ! -o docker0 -j MASQUERADE
+	iptables -A FORWARD -o docker0 -j DOCKER
 	iptables -A FORWARD -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 	iptables -A FORWARD -i docker0 ! -o docker0 -j ACCEPT
 	iptables -A FORWARD -i docker0 -o docker0 -j ACCEPT
@@ -42,7 +43,8 @@ nat_container_rule() {
 
 	docker port $1 | sed -e 's#[/tcp>: -]\+# #g' | awk -v IP=$IP \
 	'{ system("iptables -t nat -A DOCKER ! -i docker0 -p tcp -m tcp --dport "$3" -j DNAT --to-destination "IP":"$1";\
-	iptables -t filter -A FORWARD -d "IP"/32 ! -i docker0 -o docker0 -p tcp -m tcp --dport "$1" -j ACCEPT") }'
+	iptables -t filter -A DOCKER -d "IP"/32 ! -i docker0 -o docker0 -p tcp -m tcp --dport "$1" -j ACCEPT;\
+	iptables -t nat -A POSTROUTING -s "IP"/32 -d "IP"/32 -p tcp -m tcp --dport "$1" -j MASQUERADE") }'
 }
 
 if [ -x /usr/bin/docker ] && [ -z $(ucr get docker/container/uuid) ] && /etc/init.d/docker status > /dev/null; then

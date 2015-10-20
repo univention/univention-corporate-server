@@ -1,3 +1,10 @@
+univention-firewall (7.0.0-7) unstable; urgency=low
+
+  * Move Docker container rules to DOCKER chain, so Docker engine removes them
+    when it shuts down containers (Bug #39429).
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 20 Oct 2015 15:19:59 +0200
+
 univention-firewall (7.0.0-6) unstable; urgency=low
 
   * Check if docker daemon runs before creating rule with DOCKER chain as
