@@ -46,7 +46,12 @@ ucr unset apache2/ssl/v3 apache2/ssl/tlsv11 apache2/ssl/tlsv12
 check ssl2=0 ssl3=0 tls1=1 tls1_1=1 tls1_2=1
 
 ucr set apache2/ssl/v3=true
-check ssl2=0 ssl3=1 tls1=1 tls1_1=1 tls1_2=1
+if dpkg --compare-versions "$OPENSSL" lt 1.0.1j-1
+then
+	check ssl2=0 ssl3=1 tls1=1 tls1_1=1 tls1_2=1
+else
+	check ssl2=0 ssl3=0 tls1=1 tls1_1=1 tls1_2=1
+fi
 
 case "$OPENSSL" in
 1.*)
