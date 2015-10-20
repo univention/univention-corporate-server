@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Univention Management Console</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="../js%HASH%/dijit/themes/umc/umc.css" type="text/css"/>
+
+		<script type="text/javascript">
+			//<!--
+			function getQuery(/*String*/ param, /*mixed*/ defaultVal) {
+				// parse the URI query string
+				var query = window.location.search.substring(1);
+				var vars = query.split('&');
+				for (var i = 0; i < vars.length; i++) {
+					// parse the tuple
+					var tuple = vars[i].split('=');
+
+					// check whether we found the particular parameter we are interested in
+					if (2 == tuple.length && param == tuple[0]) {
+						return tuple[1];
+					}
+				}
+
+				// otherwise return the specified default value
+				return defaultVal;
+			}
+
+			function getCookie(/*String*/ param, /*mixed*/ defaultVal) {
+				// find the given parameter in the cookie string
+				var reg = new RegExp(param + '=([a-zA-Z_-]*)');
+				var m = reg.exec(document.cookie);
+				if (m && m[1]) {
+					return m[1];
+				}
+
+				// in case the parameter does not exist, return the default value
+				return defaultVal;
+			}
+
+			var locale = getQuery('lang') || getCookie('UMCLang');
+			if (locale) {
+				locale = locale.replace('_', '-');
+			}
+			var dojoConfig = {
+				has: {
+					'dojo-undef-api': true
+				},
+				isDebug: window.location.pathname.indexOf('/debug') != -1,
+				locale: locale,
+				async: true,
+				deps: [],
+				callback: function() {
+					require(["dojo/parser", "umc/dialog", "umc/tools", "umc/i18n!", "dojo/domReady!"], function(parser, dialog, tools, _) {
+						// parse the DOM tree
+						parser.parse();
+
+						// set the version of the UMC frontend
+						tools.status('version', '%VERSION%');
+
+						setTimeout(function() { /* dependency problem umc/dialog is not yet require()d in umc/tools*/
+							var info = tools.parseError(%ERROR%);
+							var title = tools._statusMessages[info.status] || _('HTTP Error %s', info.status);
+							var message = info.message;
+							var error_message = title + '\n\n' + message;
+
+							var index = message.indexOf('Traceback');
+							if (~index) {
+								error_message = message.substring(index);
+								message = message.substring(0, index);
+							}
+							tools._handleTraceback(message, error_message, title).then(function() {
+								setTimeout(function() {
+									window.location.href = '/univention-management-console/';
+								});
+							});
+						}, 1000);
+					});
+				}
+			};
+			//-->
+		</script>
+		<script type="text/javascript" async src="../js%HASH%/dojo/dojo.js%JSSUFFIX%"></script>
+	</head>
+	<body class="umc umcOverviewShown">
+		<div id="umcTopContainer" class="umcTopContainer"></div>
+		<noscript>
+			<div class="warningWrapper">
+				<div class="warningCenterer"></div>
+				<div class="warning" id="no-js">
+					<div class="icon"></div>
+					<div class="title">JavaScript required</div>
+					<p>A browser with JavaScript enabled is required in order to use this service.</p>
+					<p>When using Internet Explorer, please check your security settings and add this address to your trusted sites.</p>
+				</div>
+			</div>
+		</noscript>
+	</body>
+</html>

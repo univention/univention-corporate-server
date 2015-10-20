@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.43-1) unstable; urgency=medium
+
+  * Bug #39508: display user friendly SAML errors
+
+ -- Florian Best <best@univention.de>  Tue, 20 Oct 2015 16:31:06 +0200
+
 univention-management-console-frontend (5.0.42-2) unstable; urgency=medium
 
   * Bug #39564: reimplement commented out code

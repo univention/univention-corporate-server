@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
+		<title>Univention Management Console</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Univention Management Console</title>
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="js%HASH%/dijit/themes/umc/umc.css" type="text/css"/>
 
@@ -55,7 +55,7 @@
 			var _showLoginTooltip = function(evt) {
 				require(["dojo/on", "dojo/_base/event", "dijit/Tooltip",  "umc/i18n!umc/app"], function(on, dojoEvent, Tooltip, _) {
 					var node = evt.target;
-					Tooltip.show(_('Please login with a valid username and password. A login with an e-mail address is not possible. The default username to manage the domain is %s.', '<b><a href="javascript:void();" onclick="_fillUsernameField()">Administrator</a></b>'), node);
+					Tooltip.show(_('Please login with a valid username and password. The default username to manage the domain is %s.', '<b><a href="javascript:void();" onclick="_fillUsernameField()">Administrator</a></b>'), node);
 					if (evt) {
 						dojoEvent.stop(evt);
 					}

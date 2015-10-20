@@ -70,6 +70,9 @@ from saml2.sigver import MissingKey, SignatureError
 ucr = ConfigRegistry()
 ucr.load()
 
+from univention.lib.i18n import NullTranslation
+_ = NullTranslation('univention-management-console-frontend').translate
+
 _thread_http = None
 
 try:
@@ -421,13 +424,41 @@ class SAMLUser(object):
 
 @log_exceptions
 def default_error_page(status, message, traceback, version, result=None):
+	#accept_json, accept_html = True, True
+	#for accept in cherrypy.request.headers.elements('Accept'):
+	#	acceptable = accept.qvalue > 0
+	#	mimetype = accept.value
+	#	if mimetype in ('*/*', 'text/*', 'text/html'):
+	#		accept_html = acceptable
+	#	if mimetype in ('*/*', 'application/*', 'application/json'):
+	#		accept_json = acceptable
+	is_ajax = cherrypy.request.headers.get('X-Requested-With', '').lower() == 'XMLHttpRequest'.lower()
+
+	#if not accept_json or (not is_ajax and accept_html):
+	if not is_ajax:
+		return default_error_page_html(status, message, traceback, version, result)
+	return default_error_page_json(status, message, traceback, version, result)
+
+
+def default_error_page_html(status, message, traceback, version, result=None):
+	content = default_error_page_json(status, message, traceback, version, result)
+	try:
+		with open('/usr/share/univention-management-console-frontend/error.html', 'rb') as fd:
+			content = fd.read().replace('%ERROR%', cherrypy._cperror._escape(content, True))
+		cherrypy.response.headers['Content-Type'] = 'text/html; charset=UTF-8'
+	except (OSError, IOError):
+		pass
+	return content
+
+
+def default_error_page_json(status, message, traceback, version, result=None):
 	""" The default error page for UMCP responses """
 	status, _, description = valid_status(status)
 	if status == 401 and message == description:
 		message = ''
 	response = {
 		'status': status,
-		'message': cherrypy._cperror._escape(str(message), True)  # html escaped
+		'message': message
 	}
 	if result:
 		response['result'] = result
@@ -457,29 +488,79 @@ class UMC_HTTPError(HTTPError):
 		cherrypy._cperror._be_ie_unfriendly(self.status)
 
 
-class SAML_Error(UMC_HTTPError):
+class SamlError(UMC_HTTPError):
 
-	pass
+	def __init__(self, _=_):
+		self._ = _
 
+	def error(func=None, status=400):
+		def _decorator(func):
+			def _decorated(self, *args, **kwargs):
+				message = func(self, *args, **kwargs) or ()
+				super(SamlError, self).__init__(status, message)
+				return self
+			return _decorated
+		if func is None:
+			return _decorator
+		return _decorator(func)
 
-class NoIdentityProvider(UMC_HTTPError):
+	def from_exception(self, etype, exc, etraceback):
+		if isinstance(exc, UnknownPrincipal):
+			return self.unknown_principal(exc)
+		if isinstance(exc, UnsupportedBinding):
+			return self.unsupported_binding(exc)
+		if isinstance(exc, VerificationError):
+			return self.verification_error(exc)
+		if isinstance(exc, UnsolicitedResponse):
+			return self.unsolicited_response(exc)
+		if isinstance(exc, StatusError):
+			return self.status_error(exc)
+		if isinstance(exc, MissingKey):
+			return self.missing_key(exc)
+		if isinstance(exc, SignatureError):
+			return self.signature_error(exc)
+		raise etype, exc, etraceback
 
-	def __init__(self):
-		super(NoIdentityProvider, self).__init__(500, self.get_message())
+	@error
+	def unknown_principal(self, exc):
+		return self._('The principal is unknown: %s') % (exc,)
 
-	def get_message(self):
-		return 'There is a configuration error in the service provider: No identity provider are set up for use.'
+	@error
+	def unsupported_binding(self, exc):
+		return self._('The requested SAML binding is not known: %s') % (exc,)
 
+	@error
+	def verification_error(self, exc):
+		return self._('The SAML response could not be verified: %s') % (exc,)
 
-class MultipleIdentityProvider(UMC_HTTPError):
+	@error
+	def unsolicited_response(self, exc):
+		# TODO: redirect to SSO?  # happens e.g. UMC-webserver restart between IDP→SP authentication
+		return self._('Received an unsolicited SAML response. Please try to single sign on again by accessing /univention-management-console/saml/. Error message: %s') % (exc,)
 
-	def __init__(self, idps, idp_query_param):
-		self.idps = idps
-		self.idp_query_param = idp_query_param
-		super(MultipleIdentityProvider, self).__init__(400, self.get_message())  # TODO: multiple choices status
+	@error
+	def status_error(self, exc):
+		return self._('The identity provider reported a status error: %s') % (exc,)
 
-	def get_message(self):
-		return 'Could not pick an identity provider. You can specify one via the query string parameter %r from %r' % (self.idp_query_param, self.idps)
+	@error(status=500)
+	def missing_key(self, exc):
+		return self._('The issuer %r is now known to the SAML service provider. This is probably a misconfiguration and might be resolved by restarting the univention-management-console-web-server.') % (str(exc),)
+
+	@error
+	def signature_error(self, exc):
+		return self._('The SAML response contained a invalid signature: %s') % (exc,)
+
+	@error
+	def unparsed_saml_response(self):
+		return self._("The SAML message is invalid for this service provider.")
+
+	@error(status=500)
+	def no_identity_provider(self):
+		return self._('There is a configuration error in the service provider: No identity provider are set up for use.')
+
+	@error # TODO: multiple choices redirection status
+	def multiple_identity_provider(self, idps, idp_query_param):
+		return self._('Could not pick an identity provider. You can specify one via the query string parameter %r from %r') % (idp_query_param, idps)
 
 
 class Ressource(object):
@@ -1097,24 +1178,10 @@ class SAML(Ressource):
 	def acs(self, message, binding):  # attribute consuming service  # TODO: rename into parse
 		try:
 			response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries)#, allow_unsolicited=True)
-		except UnknownPrincipal as exc:
-			raise SAML_Error(500, "UnknownPrincipal: %s" % (exc,))
-		except UnsupportedBinding as exc:
-			raise SAML_Error(500, "UnsupportedBinding: %s" % (exc,))
-		except VerificationError as exc:
-			raise SAML_Error(500, "Verification error: %s" % (exc,))
-		except UnsolicitedResponse as exc:  # e.g. UMC-webserver restart between IDP→SP authentication
-			# TODO: redirect to SSO?
-			raise SAML_Error(500, 'Unsolicited response: %s' % (exc,))
-		except StatusError as exc:
-			CORE.error('Status error: %s' % (exc,))
-			raise SAML_Error(500, 'Status error: %s' % (exc,))
-		except MissingKey as exc:
-			raise SAML_Error(500, 'Unknown issuer: %s' % (exc,))
-		except SignatureError as exc:
-			raise SAML_Error(500, 'Signature error: %s' % (exc,))
+		except (UnknownPrincipal, UnsupportedBinding, VerificationError, UnsolicitedResponse, StatusError, MissingKey, SignatureError):
+			raise SamlError().from_exception(*sys.exc_info())
 		if response is None:
-			raise SAML_Error(400, "The SAML message is invalid for this service provider.")
+			raise SamlError().unparsed_saml_response()
 		return response
 
 	def do_single_sign_on(self, **kwargs):
@@ -1149,13 +1216,13 @@ class SAML(Ressource):
 		idps = self.sp.metadata.with_descriptor("idpsso")
 		if not idps:
 			if not self.reload():
-				raise NoIdentityProvider()
+				raise SamlError().no_identity_provider()
 			idps = self.sp.metadata.with_descriptor("idpsso")
 		if self.idp_query_param in cherrypy.request.query and cherrypy.request.query[self.idp_query_param] in idps:
 			return cherrypy.request.query[self.idp_query_param]
 		if len(idps) == 1:
 			return idps.keys()[0]
-		raise MultipleIdentityProvider(idps.keys(), self.idp_query_param)
+		raise SamlError().multiple_identity_provider(idps.keys(), self.idp_query_param)
 
 	def get_identity_provider_destination(self, entity_id):
 		"""Get the destination (with SAML binding) of the specified entity_id.

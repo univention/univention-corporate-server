@@ -646,7 +646,7 @@ define([
 					result = error.response.data.result || null;
 				} else {
 					// no JSON was returned, probably proxy error
-					message = r.test(error.response.text) ? entities.encode(r.exec(error.response.text)[1]) : (this._statusMessages[status] || this._statusMessages[500]);
+					message = r.test(error.response.text) ? r.exec(error.response.text)[1] : (this._statusMessages[status] || this._statusMessages[500]);
 				}
 			} else if (error.data) {
 				if (error.data.xhr) {
@@ -667,7 +667,7 @@ define([
 
 			return {
 				status: this._parseStatus(status),
-				message: String(message).replace(/\n/g, '<br>'),
+				message: entities.encode(_(String(message))).replace(/\n/g, '<br>'),
 				result: result
 			};
 		},
@@ -719,7 +719,7 @@ define([
 			}
 		},
 
-		_handleTraceback: function(message, statusMessage) {
+		_handleTraceback: function(message, statusMessage, title) {
 			var readableMessage = message.replace(/<br *\/?>/g, "\n").split('\n');
 			// reverse it. web or mail client could truncate long tracebacks. last calls are important.
 			// See Bug #33798
@@ -787,7 +787,7 @@ define([
 			} else {
 				options[1]['default'] = true; // fallback: as_email is default
 			}
-			dialog.confirm(container, options, _('An error occurred'));
+			return dialog.confirm(container, options, title || _('An error occurred'));
 		},
 
 		forIn: function(/*Object*/ obj, /*Function*/ callback, /*Object?*/ scope, /*Boolean?*/ inheritedProperties) {
