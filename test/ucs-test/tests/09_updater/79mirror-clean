@@ -6,7 +6,7 @@
 ## tags: [basic]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
-##  - univention-debmirror
+##  - apt-mirror
 ## exposure: dangerous
 
 CHECK_INSTALL=false
@@ -14,6 +14,7 @@ CHECK_INSTALL=false
 RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 FIXED_18225=false
+FIXED_39582=false
 
 # Change repoprefix, because both repositories are hosted on the same server
 srcprefix="source-repository-$$-${RANDOM}"
@@ -97,15 +98,16 @@ CLEAN="${BASEDIR}/mirror/var/clean.sh"
 	grep -q "^clean http://localhost\(:80\)\?/${srcprefix}/${major}.${minor}/maintained/${major}.${minor}-0/" /etc/apt/mirror.list
 
 	# preup and postup scripts must not be cleaned
-	grep -Fq "preup.sh" "${CLEAN}" && exit 1
-	grep -Fq "postup.sh" "${CLEAN}" && exit 1
+	grep -Eq "/(pre|post)up.sh['\"]" "${CLEAN}" && false
+	"$FIXED_39582" &&
+		grep -Eq "/(pre|post)up.sh\.gpg['\"]" "${CLEAN}" && false
 	# other unreferenced files should be cleaned
-	grep -Fq "${REPO}/obsolete_1.0-all.deb" "${CLEAN}" || exit 1
-	grep -Fq "${REPO}/obsolete.txt" "${CLEAN}" || exit 1
+	grep -Fq "${REPO}/obsolete_1.0-all.deb" "${CLEAN}" || false
+	grep -Fq "${REPO}/obsolete.txt" "${CLEAN}" || false
 	# unreferenced packages must not be mirrored
 	for deb in "${DEBS[@]}"
 	do
-		ls -1 "${BASEDIR}/mirror/mirror/${deb}" 2>&3 && exit 1
+		ls -1 "${BASEDIR}/mirror/mirror/${deb}" 2>&3 && false
 	done
 
 	if "${CHECK_INSTALL}"

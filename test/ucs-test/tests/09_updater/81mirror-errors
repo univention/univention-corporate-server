@@ -8,7 +8,7 @@
 ## tags: [basic]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
-##  - univention-debmirror
+##  - apt-mirror
 ## bugs: [21127, 22567]
 ## versions:
 ##  2.4-2: fixed
@@ -91,7 +91,7 @@ run_tests () { # execute all updater programs
 
 	ucr set "${comp}DUMMY=yes" "${comp}DUMMY/parts=maintained" "${comp}DUMMY/version=current"
 	grep -F "Configuration error: component not found" /etc/apt/mirror.list
-	univention-repository-update net 2>&1 | grep -F " marked as required."
+	univention-repository-update net 2>&1
 	ucr unset "${comp}DUMMY" "${comp}DUMMY/parts" "${comp}DUMMY/version"
 
 	ucr set proxy/http="http://${username}:${password}@DUMMY:${proxy_port}"

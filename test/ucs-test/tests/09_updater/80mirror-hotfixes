@@ -7,8 +7,8 @@
 ## tags: [basic]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
-##  - univention-debmirror
-## bugs: [19087]
+##  - apt-mirror
+## bugs: [19087, 39582]
 ## versions:
 ##  2.4-2: fixed
 ## exposure: dangerous

@@ -4,7 +4,7 @@
 ## tags: [basic]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
-##  - univention-debmirror
+##  - apt-mirror
 ## exposure: dangerous
 
 RETVAL=110 # Test fehlgeschlagen

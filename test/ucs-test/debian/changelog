@@ -1,3 +1,10 @@
+ucs-test (6.0.10-1) unstable; urgency=low
+
+  * Bug #39306: Enable local repository tests
+  * Bug #37127: Fix 09/81mirror-errors
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 17 Oct 2015 13:42:48 +0200
+
 ucs-test (6.0.9-21) unstable; urgency=low
 
   * Bug #39199: fixed docker port tests 
