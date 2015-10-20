@@ -215,10 +215,10 @@ def commit(container, new_base_image):
 class Docker(object):
 	def __init__(self, app, logger=None):
 		self.app = app
-		ucr = ConfigRegistry()
-		ucr.load()
+		self.ucr = ConfigRegistry()
+		self.ucr.load()
 		self.logger = logger or _logger
-		self.container = ucr.get(self.app.ucr_container_key)
+		self.container = self.ucr.get(self.app.ucr_container_key)
 
 	def inspect_image(self):
 		return inspect(self.image)
@@ -242,6 +242,8 @@ class Docker(object):
 		return pull(self.image)
 
 	def verify(self):
+		if self.ucr.is_false('appcenter/index/verify'):
+			return True
 		return verify(self.app, self.image)
 
 	def execute_with_output(self, *args, **kwargs):
@@ -278,8 +280,7 @@ class Docker(object):
 				volumes.append(app_volume)
 		command = shlex.split(self.app.docker_script_init)
 		container = create(self.image, command, hostname, env, ports, volumes)
-		ucr = ConfigRegistry()
-		ucr_update(ucr, {self.app.ucr_container_key: container})
+		ucr_update(self.ucr, {self.app.ucr_container_key: container})
 		self.container = container
 		return container
 

@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-46) unstable; urgency=medium
+
+  * Bug #39591: Disable DockerImage verification if appcenter/index/verify=0
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Oct 2015 22:15:21 +0200
+
 univention-management-console-module-appcenter (5.0.6-45) unstable; urgency=medium
 
   * Bug #39591: Download index_json.gz in Docker.verify in case it's missing
