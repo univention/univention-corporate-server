@@ -40,7 +40,7 @@ umc_frontend_new_hash () {
 	# create new timestamps for index.html and debug.html in order to
 	# avoid caching problems in browsers
 	timestamp=$(date +'%Y%d%m%H%M%S')
-	for ifile in index.html debug.html js/umc/login.html; do
+	for ifile in index.html debug.html error.html js/umc/login.html; do
 		f="/usr/share/univention-management-console-frontend/$ifile"
 		[ -w "$f" ] && sed -i 's/\$\(.*\)\$/$'$timestamp'$/' "$f"
 	done
@@ -59,13 +59,13 @@ umc_init () {
 	eval "$(/usr/sbin/univention-config-registry shell groups/default/domainadmins groups/default/domainusers)"
 
 	# containers
-	udm container/cn create $BIND_ARGS --ignore_exists --position cn=univention,$ldap_base --set name=UMC || exit $?
-	udm container/cn create $BIND_ARGS --ignore_exists --position cn=policies,$ldap_base --set name=UMC --set policyPath=1 || exit $?
-	udm container/cn create $BIND_ARGS --ignore_exists --position cn=UMC,cn=univention,$ldap_base --set name=operations || exit $?
+	udm container/cn create $BIND_ARGS --ignore_exists --position "cn=univention,$ldap_base" --set name=UMC || exit $?
+	udm container/cn create $BIND_ARGS --ignore_exists --position "cn=policies,$ldap_base" --set name=UMC --set policyPath=1 || exit $?
+	udm container/cn create $BIND_ARGS --ignore_exists --position "cn=UMC,cn=univention,$ldap_base" --set name=operations || exit $?
 
 	# default admin policy
 	udm policies/umc create $BIND_ARGS --ignore_exists --set name=default-umc-all \
-		--position cn=UMC,cn=policies,$ldap_base || exit $?
+		--position "cn=UMC,cn=policies,$ldap_base" || exit $?
 
 	# link default admin policy to the group "Domain Admins"
 	group_admins="${groups_default_domainadmins:-Domain Admins}"
@@ -74,7 +74,7 @@ umc_init () {
 
 	# default user policy
 	udm policies/umc create $BIND_ARGS --ignore_exists --set name=default-umc-users \
-		--position cn=UMC,cn=policies,$ldap_base || exit $?
+		--position "cn=UMC,cn=policies,$ldap_base" || exit $?
 
 	# link default user policy to the group "Domain Users"
 	group_users="${groups_default_domainusers:-Domain Users}"
@@ -101,7 +101,7 @@ umc_operation_create () {
 		operations="$operations --append operation=$oper "
 	done
 	udm settings/umc_operationset create $BIND_ARGS --ignore_exists \
-		--position cn=operations,cn=UMC,cn=univention,$ldap_base \
+		--position "cn=operations,cn=UMC,cn=univention,$ldap_base" \
 		--set name="$name" \
 		--set description="$description" \
 		--set flavor="$flavor" $operations || exit $?

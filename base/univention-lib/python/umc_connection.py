@@ -45,7 +45,9 @@ class UMCConnection(object):
 	def __init__(self, host, username=None, password=None, error_handler=None):
 		self._host = host
 		self._headers = {
-			'Content-Type' : 'application/json; charset=UTF-8'
+			'Content-Type': 'application/json; charset=UTF-8',
+			'Accept': 'application/json; q=1, text/html; q=0.5; */*; q=0.1',
+			'X-Requested-With': 'XMLHttpRequest',
 		}
 		self._error_handler=error_handler
 		if username is not None:
@@ -98,7 +100,7 @@ class UMCConnection(object):
 				cookie = response.getheader('set-cookie')
 				if cookie is None:
 					raise ValueError('No cookie')
-				self._headers['Cookie'] = cookie
+				self._headers['Cookie'] = cookie  # FIXME: transform Set-Cookie to Cookie
 			except Exception as e:
 				if self._error_handler:
 					self._error_handler(str(e))
@@ -140,4 +142,7 @@ class UMCConnection(object):
 				raise NotImplementedError('command forbidden: %s' % url)
 			raise HTTPException(error_message)
 		content = response.read()
-		return loads(content)['result']
+		content = loads(content)  # FIXME: inspect Content-Type response header
+		if isinstance(content, dict):
+			return content.get('result', content)
+		return content

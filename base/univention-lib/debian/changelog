@@ -1,3 +1,12 @@
+univention-lib (5.0.0-8) unstable; urgency=medium
+
+  * Bug #39508: Add error.html to umc_frontend_new_hash
+  * Bug #39508: Add HTTP header to UMCP requests
+  * Bug #39599: Fallback to the raw response if UMCP responses doesn't contain
+  	a result
+
+ -- Florian Best <best@univention.de>  Tue, 20 Oct 2015 18:57:26 +0200
+
 univention-lib (5.0.0-7) unstable; urgency=low
 
   * AD Member: use join credentials in
