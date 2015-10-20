@@ -1,3 +1,10 @@
+univention-lib (5.0.0-6) unstable; urgency=low
+
+  * AD Member: run add_ucs_sso_host_record_in_ad() (Bug #39574)
+    in add_domaincontroller_srv_record_in_ad() for master setup
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Oct 2015 15:52:00 +0200
+
 univention-lib (5.0.0-5) unstable; urgency=low
 
   * AD Member: added add_ucs_sso_host_record_in_ad() (Bug #39574) 

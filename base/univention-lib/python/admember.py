@@ -1214,6 +1214,9 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 	finally:
 		os.unlink(fd.name)
 
+	# and add ucs-sso A record
+	add_ucs_sso_host_record_in_ad(ad_ip=ad_ip, ucr=ucr)
+
 	return True
 
 
