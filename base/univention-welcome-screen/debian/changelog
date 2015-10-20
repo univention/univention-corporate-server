@@ -1,3 +1,9 @@
+univention-welcome-screen (0.0.0-14) unstable; urgency=low
+
+  * Bug #39137: Changed defaults back to 99 instead of 100
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 20 Oct 2015 16:15:12 +0200
+
 univention-welcome-screen (0.0.0-13) unstable; urgency=low
 
   * Bug #39137: Adapted debian rules and init script to avoid multiple
