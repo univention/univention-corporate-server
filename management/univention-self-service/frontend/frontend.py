@@ -107,6 +107,13 @@ class UniventionSelfServiceFrontend(object):
 	def umc_request(self, connection, url, data, command="command"):
 		try:
 			result = connection.request(url, data, command=command)
+		except KeyError as ke:
+			# https://forge.univention.org/bugzilla/show_bug.cgi?id=39599
+			if "result" in str(ke):
+				return json.dumps({"status": 200, "result": ""})
+			else:
+				self.log(ke)
+				raise ke
 		except HTTPException as he:
 			self.log(he)
 			try:
