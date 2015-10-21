@@ -668,7 +668,7 @@ class Application(object):
 		files_in_json_file = []
 		for appname, appinfo in json_apps.iteritems():
 			for appfile, appfileinfo in appinfo.iteritems():
-				if appfile == 'DockerImage':
+				if appfile == 'DockerImageManifestV2S1':
 					continue
 				filename = os.path.basename('%s.%s' % (appname, appfile))
 				remote_md5sum = appfileinfo['md5']

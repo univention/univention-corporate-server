@@ -136,7 +136,7 @@ def verify(app, image):
 
 	try:
 		appinfo = json_apps[app.name]
-		appfileinfo = appinfo['DockerImage']
+		appfileinfo = appinfo['DockerImageManifestV2S1']
 		appcenter_sha256sum = appfileinfo['sha256']
 		docker_image_manifest_url = appfileinfo['url']
 	except KeyError as exc:
