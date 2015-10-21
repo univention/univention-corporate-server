@@ -110,8 +110,10 @@ if [ -z "$ucs_server_sso_autoregistraton" ] || is_ucr_true ucs/server/sso/autore
 		"$sso_domainname" add a "$sso_hostname" "$(get_default_ip_address)" || die
 	if is_localhost_in_admember_mode; then
 		ucs_parseCredentials "$@"
-		add_host_record_in_ad "$binddn" "$bindpwd" "$bindpwdfile" \
-			"$ucs_server_sso_fqdn" "$(get_default_ip_address)" || die
+		if [ -n "$binddn" ] && [ -n "$bindpwd" -o -n "$bindpwdfile" ]; then
+			add_host_record_in_ad "$binddn" "$bindpwd" "$bindpwdfile" \
+				"$ucs_server_sso_fqdn" "$(get_default_ip_address)" || die
+		fi
 	fi
 fi
 
