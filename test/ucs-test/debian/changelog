@@ -1,3 +1,9 @@
+ucs-test (6.0.10-9) unstable; urgency=low
+
+  * Bug #39377: Change appcenter.test. to appcenter-test.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 21 Oct 2015 20:28:53 +0200
+
 ucs-test (6.0.10-8) unstable; urgency=low
 
   * Bug #36383: Fix test for kernel module signing

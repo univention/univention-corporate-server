@@ -168,7 +168,7 @@ if __name__ == '__main__':
 	parser.add_option("-a", "--ask", action="store_true", dest="ask", default=False,
 			help="Diff between existing OUTPUTFILE and buffer. Overwrites if changes are confirmed (interactive! ... if any diff)")
 	parser.add_option("-s", "--server", dest="appcenter", default="https://appcenter.software-univention.de/",
-			help="external Univention App Center Server (defaults to %default. Another possibility may be http://appcenter.test.software-univention.de/ or http://appcenter.knut.univention.de/)", metavar="APPCENTER")
+			help="external Univention App Center Server (defaults to %default. Another possibility may be https://appcenter-test.software-univention.de/ or http://appcenter.knut.univention.de/)", metavar="APPCENTER")
 
 	(options, args) = parser.parse_args()
 	root = options.directory
