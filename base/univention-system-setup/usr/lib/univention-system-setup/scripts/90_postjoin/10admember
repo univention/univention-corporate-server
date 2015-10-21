@@ -118,6 +118,7 @@ class AdMemberScript(SetupScript):
 
 			_progress(85, _('Configuring DNS entries...'))
 			admember.add_domaincontroller_srv_record_in_ad(ad_server_ip)
+			admember.add_host_record_in_ad(uid=username, bindpw=password, sso=True)
 
 			admember.make_deleted_objects_readable_for_this_machine(username, password)
 			admember.synchronize_account_position(ad_domain_info, username, password)

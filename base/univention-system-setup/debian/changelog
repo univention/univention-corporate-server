@@ -1,3 +1,9 @@
+univention-system-setup (9.0.2-8) unstable; urgency=low
+
+  * added add_host_record_in_ad to ad member init (Bug #39574)
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Oct 2015 12:22:58 +0200
+
 univention-system-setup (9.0.2-7) unstable; urgency=low
 
   * do not disable apache restart during setup (Bug #39476)
