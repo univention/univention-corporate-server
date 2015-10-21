@@ -71,6 +71,7 @@
 			<title>Boot Loader</title>
 			<itemizedlist>
 				<listitem><simpara>
+						The boot menu on the installation DVD has been improved (<u:bug>39554</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -737,7 +738,7 @@
 				Several package dependencies in Docker related base packages have been changed (<u:bug>39410</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The response handling in the <classname>univention.lib.umc_connection.UMCConnection</classname> library has been improoved (<u:bug>39599</u:bug>).
+				The response handling in the <classname>univention.lib.umc_connection.UMCConnection</classname> library has been improved (<u:bug>39599</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
