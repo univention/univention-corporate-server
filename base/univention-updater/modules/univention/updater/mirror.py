@@ -40,7 +40,8 @@ import logging
 from operator import itemgetter
 from debian.deb822 import Packages
 
-from tools import UniventionUpdater, UCS_Version, NullHandler
+from tools import UniventionUpdater, NullHandler
+from ucs_version import UCS_Version
 try:
     import univention.debug as ud
 except ImportError:

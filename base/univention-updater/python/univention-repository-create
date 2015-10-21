@@ -42,7 +42,7 @@ from textwrap import dedent
 
 import univention.config_registry as ucr
 import univention.updater.repository as urepo
-from univention.updater.tools import UCS_Version
+from univention.updater.ucs_version import UCS_Version
 from univention.updater.locking import UpdaterLock
 from univention.updater.mirror import makedirs, UniventionMirror
 

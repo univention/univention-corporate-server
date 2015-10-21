@@ -84,6 +84,7 @@ override_dh_installinit:
 override_dh_auto_test:
 	# doctest
 	python modules/univention/updater/locking.py -v
+	python modules/univention/updater/ucs_version.py -v
 	python modules/univention/updater/tools.py -v
 	python modules/univention/updater/mirror.py -v
 	python modules/univention/updater/errors.py -v

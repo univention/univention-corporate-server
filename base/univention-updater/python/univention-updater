@@ -53,7 +53,8 @@ except ImportError:
 import univention.config_registry as ucr
 
 from univention.updater.errors import PreconditionError, ConfigurationError, RequiredComponentError, VerificationError, DownloadError
-from univention.updater.tools import UniventionUpdater, UCS_Version, LocalUpdater
+from univention.updater.ucs_version import UCS_Version
+from univention.updater.tools import UniventionUpdater, LocalUpdater
 from univention.updater.locking import UpdaterLock
 from univention.updater.commands import cmd_update, cmd_dist_upgrade
 
