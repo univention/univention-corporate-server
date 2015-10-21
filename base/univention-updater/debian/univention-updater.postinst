@@ -32,6 +32,12 @@
 
 #REPOSITORY="updates.software-univention.de"
 REPOSITORY="updates-test.software-univention.de"
+
+# Force linking of Python modules
+if which update-python-modules >/dev/null 2>&1; then
+	update-python-modules univention-updater.public
+fi
+
 . /usr/share/univention-lib/all.sh
 
 create_logfile /var/log/univention/repository.log "root:adm" 640
@@ -110,19 +116,13 @@ fi
 
 call_joinscript 41univention-updater.inst
 
-# the UCR debhelper section will be added before the pysupport section,
-# so we added the pysupport section manually
-if which update-python-modules >/dev/null 2>&1; then
-	update-python-modules univention-updater.public
-fi
-
 #DEBHELPER#
-
-test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener restart
 
 # force the listener module license_uuid to be executed
 if [ -x /usr/sbin/univention-directory-listener-ctrl ]; then
 	/usr/sbin/univention-directory-listener-ctrl resync license_uuid || true
+elif [ -x /etc/init.d/univention-directory-listener ]; then
+	invoke-rc.d univention-directory-listener crestart
 fi
 
 exit 0

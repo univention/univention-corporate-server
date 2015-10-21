@@ -162,8 +162,8 @@ Type=bool
 Categories=service-software-management
 
 [repository/online/component/.*/clean]
-Description[de]=Wird ein lokales Repository verwendet (siehe 'local/repository') und ist die Option 'online/repository/clean' aktiviert, wird unter /var/lib/univention-repository/var/clean.sh ein Shell-Skript generiert, mit gespiegelte Repository-Inhalte, die nicht mehr benötigt werden entfernt werden können. Ist diese Option aktiviert, werden nicht mehr benötigte Bestandteile der Komponente dort integriert.
-Description[en]=If a local repository is used (see 'local/repository') and if the option 'online/repository/clean' is activated, a shell script with the filename /var/lib/univention-repository/var/clean.sh is generating. Executing this shell script removes mirrored repository content, which is no longer used. If this option is activated, packages from the component which are no longer needed are integrated in the script.
+Description[de]=Wird ein lokales Repository verwendet (siehe 'local/repository') und ist die Option 'online/repository/clean' aktiviert, wird unter '/var/lib/univention-repository/var/clean.sh' ein Shell-Skript generiert, mit gespiegelte Repository-Inhalte, die nicht mehr benötigt werden entfernt werden können. Ist diese Option aktiviert, werden nicht mehr benötigte Bestandteile der Komponente dort integriert.
+Description[en]=If a local repository is used (see 'local/repository') and if the option 'online/repository/clean' is activated, a shell script with the filename '/var/lib/univention-repository/var/clean.sh' is generating. Executing this shell script removes mirrored repository content, which is no longer used. If this option is activated, packages from the component which are no longer needed are integrated in the script.
 Type=bool
 Categories=service-software-management
 
@@ -174,8 +174,8 @@ Type=bool
 Categories=service-software-management
 
 [repository/mirror/server]
-Description[de]=Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror'), kann hier der Server konfiguriert werden, von dem die Pakete geladen werden. Ist die Variable nicht gesetzt, wird updates.software-univention.de verwendet.
-Description[en]=If the mirroring of the repository has been activated (see 'repository/mirror'), the server can be configured here from which the packages are retrieved. If the variable is unset, updates.software-univention.de is used.
+Description[de]=Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror'), kann hier der Server konfiguriert werden, von dem die Pakete geladen werden. Ist die Variable nicht gesetzt, wird 'updates.software-univention.de' verwendet.
+Description[en]=If the mirroring of the repository has been activated (see 'repository/mirror'), the server can be configured here from which the packages are retrieved. If the variable is unset, 'updates.software-univention.de' is used.
 Type=str
 Categories=service-software-management
 

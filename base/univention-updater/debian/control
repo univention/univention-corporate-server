@@ -17,15 +17,16 @@ Depends: ${misc:Depends}, ${python:Depends},
  univention-config-registry,
  univention-directory-policy,
  netcat,
- wget,
- apt-mirror,
  at,
- screen,
  python-univention (>> 5.0.6),
  shell-univention-lib,
  python-univention-lib (>= 1.0.25-1),
  python-debian,
- univention-errata-level
+ univention-errata-level,
+Recommends:
+ screen,
+Suggests:
+ apt-mirror,
 Description: UCS - system upgrading tool
  UCS Updater can upgrade your version of UCS.
  .

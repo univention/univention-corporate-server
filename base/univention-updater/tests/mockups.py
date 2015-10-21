@@ -62,7 +62,7 @@ class MockUCSHttpServer(U.UCSLocalServer):
         self.mock_port = port
         self.mock_prefix = prefix
         self.mock_username = username
-        self.mocj_password = password
+        self.mock_password = password
         self.mock_uris = []
         self.mock_uri = None
 
